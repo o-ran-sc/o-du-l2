@@ -161,13 +161,11 @@ help:
 
 enb: 
 	$(Q)$(MAKE) -f $(COM_BUILD_DIR)/kw.mak OBJ_DIR=$(OBJ_ROOT) LIB_DIR=$(LIB_ROOT) LOG_DIR=$(LOG_ROOT) CC='$(CC1)'
-	$(Q)$(MAKE) -f $(COM_BUILD_DIR)/pj.mak OBJ_DIR=$(OBJ_ROOT) LIB_DIR=$(LIB_ROOT) LOG_DIR=$(LOG_ROOT) CC='$(CC1)'
 	$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rg.mak OBJ_DIR=$(OBJ_ROOT) LIB_DIR=$(LIB_ROOT) LOG_DIR=$(LOG_ROOT) CC='$(CC1)'
 
 clean_all:
 	$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rg.mak clean OBJ_DIR=$(OBJ_ROOT) LIB_DIR=$(LIB_ROOT) LOG_DIR=$(LOG_ROOT) CC='$(CC2)'
 	$(Q)$(MAKE) -f $(COM_BUILD_DIR)/kw.mak clean OBJ_DIR=$(OBJ_ROOT) LIB_DIR=$(LIB_ROOT) LOG_DIR=$(LOG_ROOT) CC='$(CC2)'
-	$(Q)$(MAKE) -f $(COM_BUILD_DIR)/pj.mak clean OBJ_DIR=$(OBJ_ROOT) LIB_DIR=$(LIB_ROOT) LOG_DIR=$(LOG_ROOT) CC='$(CC2)'
 
 	
 ###################################################################################################

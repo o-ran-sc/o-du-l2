@@ -79,6 +79,9 @@ static int RLOG_MODULE_ID=4096;
 #endif
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
+
+#include "rg_cl.h"         /* MAC CL defines */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -87,6 +90,8 @@ EXTERN Void rgGetSId ARGS((SystemId *s));
 }
 #endif /* __cplusplus */
 
+/* Public variable declaration */
+ClCb   clGlobalCp;
 
 /* forward references */
 PRIVATE U16 rgLMMGenCfg ARGS((
@@ -202,6 +207,21 @@ Reason reason;         /* reason */
    SAttachSRngBuf(SS_RNG_BUF_ULMAC_TO_ULRLC, SS_RBUF_ENT_ULMAC,SS_RNG_TX);
    SAttachSRngBuf(SS_RNG_BUF_ULMAC_TO_ULRLC, SS_RBUF_ENT_ULRLC,SS_RNG_RX);
 #endif
+
+   /* Initializing CL control block */
+   clGlobalCp.region = region;
+   clGlobalCp.pool = 0;
+   clGlobalCp.clCfgDone = FALSE;
+   clGlobalCp.numOfCells = 0;
+   clGlobalCp.phyState = PHY_STATE_IDLE; 
+
+   if( cmHashListInit(&clGlobalCp.cellCbLst, MAX_NUM_CELL_SUPP, 0x0, FALSE, 
+                  CM_HASH_KEYTYPE_DEF, clGlobalCp.region, clGlobalCp.pool ) != ROK )
+   {
+      printf("\n Cellcb hash list initialization failed for MAC CL");
+      RETVALUE(RFAILED);
+   }
+
    RETVALUE(ROK);
 
 } /* rgActvInit */
@@ -273,6 +293,8 @@ RgMngmt  *cfg;    /* config structure  */
       case STTFUSAP:
          reason = rgLMMSapCfg(inst,&cfg->t.cfg, cfg->hdr.elmId.elmnt);
          break;
+      case STCLCELL:
+         reason = RgClCellCfgReq(&cfg->t.cfg.s.cellCfg);
       default:
          ret = LCM_PRIM_NOK;
          reason = LCM_REASON_INVALID_ELMNT;

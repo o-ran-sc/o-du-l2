@@ -232,7 +232,7 @@ typedef struct tskInit            /* task initialization */
    Bool trc;                      /* trace */
 #ifdef DEBUGP
    U32 dbgMask;                   /* debug mask */
-   Txt prntBuf[PRNTSZE];          /* print buffer */
+   Txt prntBuf[255];          /* print buffer */
 #endif
    Txt *prntCirBuf; /* print buffer for each system task */
 #ifdef SS_DIAG

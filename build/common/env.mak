@@ -53,8 +53,10 @@ export S
 BUILD_DIR=$(PWD)
 ROOT_DIR_SCRIPTS =$(patsubst %/build/scripts,%,$(BUILD_DIR))
 COM_BUILD_DIR=$(BUILD_DIR)/../common
+ROOT_DIR=$(patsubst %/build/odu,%,$(BUILD_DIR))
 export BUILD_DIR
 export COM_BUILD_DIR
+export ROOT_DIR
 
 # Path where the .o files or the directories with .o files are located
 OBJ_ROOT =$(BUILD_DIR)/obj

@@ -1183,7 +1183,7 @@ typedef S8   (*PFS8) ARGS((void ));   /* pointer to function returning S8 */
 typedef S16  (*PFS16) ARGS((void ));  /* pointer to function returning S16 */
 typedef S32  (*PFS32) ARGS((void ));  /* pointer to function returning S32 */
 typedef Void (*PFVOID) ARGS((void )); /* pointer to function returning Void */
-typedef Void (INTERRPT *PIF) ARGS((void )); /* pointer to interrupt function */
+typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 
 #endif /* SS_PS */
 #endif /* PROC_PPC */

@@ -85,6 +85,74 @@ typedef enum rlLogCntLmt
    RL_LOG_COUNT_LIMIT_STOP
 }RLLogCntLmt;
 
+#ifndef RLOG_ENABLE_TEXT_LOGGING
+
+typedef enum
+{
+	L_TIME_REFERENCE=0,
+	L_TIME_DELIMITER,
+	L_SIGSEGV,
+    L_TIME_TTI_UPDT
+} LOGID_TYPE;
+
+typedef struct
+{
+	time_t tv_sec;
+	U32	ms_tti;
+} __attribute__ ((__packed__)) LOGTIME;
+
+typedef struct
+{
+	LOGID			logId;		/* 4 bytes | 32 bits */
+	LOGTIME		logTime;		/* 8 bytes */
+	unsigned int argType 	:2;
+	unsigned int logLevel	:3;
+	unsigned int numOfArgs	:3;
+	U16			len;
+} __attribute__ ((__packed__)) LOGDATA;
+
+typedef struct
+{
+	LOGDATA 	logData;
+	char 		buf[MAX_LOG_BUF_SIZE];
+}  __attribute__ ((__packed__)) ARGDATA;
+
+typedef struct
+{
+	LOGDATA logData;
+	U32 arg1;
+	U32 arg2;
+	U32 arg3;
+	U32 arg4;
+   char unusedByte[19]; /* To make it as 50 byte */
+}  __attribute__ ((__packed__)) ARG4DATA;
+
+typedef struct
+{
+	LOGDATA logData;
+	U8		  splEnum;
+	U32 splArg;
+	U32 arg1;
+	U32 arg2;
+	U32 arg3;
+	U32 arg4;
+   char unusedByte[14]; /* To make it as 50 byte */
+}  __attribute__ ((__packed__)) SPL_ARGDATA;
+
+typedef enum _endian {little_endian, big_endian} EndianType;
+
+typedef struct
+{
+	U16			version;
+	U32			dummy32;
+	U8				endianType;
+	char			szTimeZone[RLOG_TIME_ZONE_LEN+1];
+	U16			END_MARKER;
+   time_t      time_sec;
+} __attribute__ ((__packed__)) FILE_HEADER;
+
+#endif /* RLOG_ENABLE_TEXT_LOGGING */
+
 typedef struct {
 	
 	char	szTaskName[RLOG_MAX_TAX_NAME];

@@ -620,10 +620,6 @@
 #if (defined(TF) || defined(YS))
 
 /* Self entity definitions */
-#ifndef TF
-#define TF
-#endif
-
 #ifndef YS
 #define YS
 #endif
@@ -891,10 +887,6 @@
 /* CPU and should not be defined here.                               */
 #ifndef RG
 #define RG
-#endif
-
-#ifndef PJ
-#define PJ
 #endif
 
 /* -------- LKW Interface ------*/

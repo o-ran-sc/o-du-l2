@@ -1,0 +1,65 @@
+################################################################################
+#   Copyright (c) [2017-2019] [Radisys]                                        #
+#                                                                              #
+#   Licensed under the Apache License, Version 2.0 (the "License");            #
+#   you may not use this file except in compliance with the License.           #
+#   You may obtain a copy of the License at                                    #
+#                                                                              #
+#       http://www.apache.org/licenses/LICENSE-2.0                             #
+#                                                                              #
+#   Unless required by applicable law or agreed to in writing, software        #
+#   distributed under the License is distributed on an "AS IS" BASIS,          #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   #
+#   See the License for the specific language governing permissions and        #
+#   limitations under the License.                                             #
+################################################################################
+
+# Max number of Regions
+4
+# Number of Buckets and Pools
+4 4
+# Bucket Idx and Block Size
+0 256
+1 1280
+2 2048
+3 8196
+# Region Idx
+0
+# Bucket Idx  and Number of blocks
+0   10000
+1   500 
+2   500 
+3   500 
+# Heap size
+8194304U
+
+# Region Idx
+1
+# Bucket Idx  and Number of blocks
+0   75000
+1   15000 
+2   500 
+3   1600
+# Heap size
+1004800U
+
+# Region Idx
+2
+# Bucket Idx  and Number of blocks
+0   65000
+1   8000 
+2   600 
+3   900
+# Heap size
+6097512U
+
+# Region Idx
+3
+# Bucket Idx  and Number of blocks
+0   50
+1   10 
+2   10 
+3   10 
+# Heap size
+128U
+

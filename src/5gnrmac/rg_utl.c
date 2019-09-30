@@ -1519,8 +1519,8 @@ Pst                 *pst;
 RgInfRlsRnti        *rlsRnti;
 #endif
 {
-   Pst            schPst;
-   RgInfUeDelInd  ueDelInd;
+//   Pst            schPst;
+//   RgInfUeDelInd  ueDelInd;
    Inst           macInst;
    RgCellCb       *cell;
 #ifdef L2_OPTMZ
@@ -1590,11 +1590,14 @@ TfuDelDatReqInfo delDatReq;
    if(FALSE == rlsRnti->isUeSCellDel)
 #endif
    {
+      //TODO: commented for compilation without SCH 
+#if 0
       ueDelInd.cellSapId  = cell->schInstMap.cellSapId;
       ueDelInd.cellId  = rlsRnti->cellId;
       ueDelInd.rnti    = rlsRnti->rnti; 
       rgGetPstToInst(&schPst,macInst, cell->schInstMap.schInst);
       RgMacSchUeDel(&schPst, &ueDelInd);
+#endif
    }
 
    RETVALUE(ROK);

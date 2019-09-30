@@ -304,7 +304,7 @@ RgRguDedDatReq *datReq;
 #ifdef CCPU_OPT
             boRpt.setMaxDlPrio= datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.staPduPrsnt;
 #endif
-            RgMacSchDedBoUpdt(&schPst, &boRpt);
+            //TODO: commented for compilation without SCH RgMacSchDedBoUpdt(&schPst, &boRpt);
          }
       }
 
@@ -695,7 +695,7 @@ RgRguDedStaRsp *staRsp;
    			boRpt.oldestSduArrTime = staRsp->boReport.oldestSduArrTime;
             rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
             schPst.event = 0;
-            RgMacSchDedBoUpdt(&schPst, &boRpt);
+            //TODO: commented for compilation without SCH RgMacSchDedBoUpdt(&schPst, &boRpt);
             RETVALUE(ROK);
    }
    RLOG_ARG2(L_ERROR,DBG_CELLID,staRsp->cellId,"Invalid cell for CRNTI:%d LCID:%d ",
@@ -726,7 +726,7 @@ S32 bo
      boRpt.bo         = bo;
      rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
      schPst.event = 0;
-     RgMacSchDedBoUpdtReq (&schPst,&boRpt);
+     //TODO: commented for compilation without SCH RgMacSchDedBoUpdtReq (&schPst,&boRpt);
   }
   RETVALUE(ROK);
 }
@@ -904,7 +904,7 @@ RgErrInfo      *err;
    boRpt.lcType  = staRsp->lcType; 
    boRpt.bo      = staRsp->bo;
    rgGetPstToInst(&schPst,macInst, cell->schInstMap.schInst);
-   RgMacSchCmnBoUpdt(&schPst, &boRpt);
+   //TODO: commented for compilation without SCH RgMacSchCmnBoUpdt(&schPst, &boRpt);
 
    RETVALUE(ROK);
 } /* rgROMHndlCcchStaRsp */
@@ -986,7 +986,7 @@ RgErrInfo      *err;
   }
 #endif
    rgGetPstToInst(&schPst,macInst, cell->schInstMap.schInst);
-   RgMacSchCmnBoUpdt(&schPst, &boRpt);
+   //TODO: commented for compilation without SCH RgMacSchCmnBoUpdt(&schPst, &boRpt);
 
    RETVALUE(ROK);
 } /* rgROMHndlBcchPcchStaRsp */

@@ -1396,6 +1396,11 @@
 #define ENTLAST     ENTNL            /* last entity id */
 #endif /* WR_DG_OAM */
 
+#ifdef ODU
+#define ENTDUAPP    0xeb             /* ORAN DU APP */
+#define ENTSCTP     0xec             /* ORAN SCTP */
+#define ENTF1AP     0xed             /* ORAN F1AP */
+#endif //ORAN
 /* un-configured procId */ 
 #ifdef SS_MULTIPLE_PROCS
 #define PROCNC      0xFFFF            /* Processor not configured */

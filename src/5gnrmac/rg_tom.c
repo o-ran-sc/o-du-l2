@@ -1049,7 +1049,7 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, subframe, lcgBytes)
    MsgLen            cpySz;
 #ifdef LTEMAC_SPS
    Pst               schPst1;  
-   RgInfSpsRelInfo   relInfo;
+//   RgInfSpsRelInfo   relInfo;
 #endif
 
 #ifdef LTE_L2_MEAS
@@ -1308,11 +1308,14 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, subframe, lcgBytes)
             /* Indicate scheduler for explicit release */
             cmMemset((U8*)&schPst1, (U8)0, sizeof(Pst));
             rgGetPstToInst(&schPst1,inst, cellCb->schInstMap.schInst);
+           //TODO: commented for compilation without SCH 
+#if 0
             relInfo.cellSapId = cellCb->schInstMap.cellSapId;
             relInfo.cRnti = ueCb->ueId;
             relInfo.isExplRel = TRUE;
             /* Release indicator is called now through the matrix in the function below */
-            RgMacSchSpsRel( &schPst1, &relInfo );
+            //TODO: commented for compilation without SCH RgMacSchSpsRel( &schPst1, &relInfo );
+#endif
             ueCb->ul.implRelCntr = 0;
          }
       }
@@ -1667,7 +1670,7 @@ Inst             inst;
                      relInfo.cellSapId = cellCb->schInstMap.cellSapId;
                      relInfo.cRnti = ueCb->ueId;
                      relInfo.isExplRel = FALSE;
-                     RgMacSchSpsRel(&schPst1, &relInfo);
+                     //TODO: commented for compilation without SCH RgMacSchSpsRel(&schPst1, &relInfo);
                   }
                }
                else
@@ -1745,7 +1748,7 @@ Inst             inst;
 
    rgGetPstToInst(&schPst, inst,cellCb->schInstMap.schInst);
    sfInfo->cellSapId = cellCb->schInstMap.cellSapId;
-   RgMacSchSfRecp(&schPst, sfInfo);
+   //TODO: commented for compilation without SCH RgMacSchSfRecp(&schPst, sfInfo);
    RETVALUE(ROK);
 }  /* rgTOMDatInd */
 

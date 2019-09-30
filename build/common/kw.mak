@@ -32,7 +32,7 @@ C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
 #-------------------------------------------------------------#
 #User macros (to be modified)
 #-------------------------------------------------------------#
-MOD_FLAGS=-DRG -DYS -DKW -DPX -DLCRGU -DLCKWULUDX -DLCUDX -DLWLCKWULUDX 
+MOD_FLAGS=-DRG -DYS -DKW -DLCRGU -DLCKWULUDX -DLCUDX -DLWLCKWULUDX -UPJ
 
 #-------------------------------------------------------------#
 #Linker macros             

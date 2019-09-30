@@ -124,8 +124,9 @@ U8 rrcUeCapabilityInfo[] =
    Buffer *pdu;
 
    Pst ulPst1 ={100,100,217,0,215,0,PRIOR0,0,81,1,1,0,0};
+#ifdef PJ
    Pst ulPst2 ={100,100,217,0,216,0,PRIOR0,0,68,0,1,0,0};
-
+#endif
   TRC2(kwTmmRcvFrmLi) 
 
   if(1 == rrcMsgType)
@@ -150,29 +151,33 @@ U8 rrcUeCapabilityInfo[] =
  }
  else if(2 == rrcMsgType)
  {
+#ifdef PJ
     CmLtePdcpId pdcpId;
     pdcpId.cellId = 1;
     pdcpId.ueId = crnti;
     pdcpId.rbId = 1;
     pdcpId.rbType = 0;
-   
+#endif   
     SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
   
     SAddPstMsgMult(rrcConSetupComplete,34,pdu);
 
     RLOG1(L_INFO,"Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
     printf("Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
+#ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
+#endif
  }
  
  else if(3 == rrcMsgType)
  {
+#ifdef PJ
     CmLtePdcpId pdcpId;
     pdcpId.cellId = 1;
     pdcpId.ueId = crnti;
     pdcpId.rbId = 1;
     pdcpId.rbType = 0;
-   
+#endif   
     SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
   
 #ifndef CA_PAL_5GTF 
@@ -182,15 +187,20 @@ U8 rrcUeCapabilityInfo[] =
 #endif
     RLOG1(L_INFO,"Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
     printf("Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
+#ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
+#endif
+
  }
  else if(4 == rrcMsgType)
  {
+#ifdef PJ
     CmLtePdcpId pdcpId;
     pdcpId.cellId = 1;
     pdcpId.ueId = crnti;
     pdcpId.rbId = 1;
     pdcpId.rbType = 0;
+#endif
    
     SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
   
@@ -198,15 +208,19 @@ U8 rrcUeCapabilityInfo[] =
 
     RLOG1(L_INFO,"Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
     printf("Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
+#ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
+#endif
  }
  else if(5 == rrcMsgType)
  {
+#ifdef PJ
     CmLtePdcpId pdcpId;
     pdcpId.cellId = 1;
     pdcpId.ueId = crnti;
     pdcpId.rbId = 1;
     pdcpId.rbType = 0;
+#endif
    
     SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
   
@@ -214,9 +228,11 @@ U8 rrcUeCapabilityInfo[] =
 
     RLOG1(L_INFO,"Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
     printf("Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
+#ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #ifdef EG_GEN_LOAD_5GTF
     loadStart=1;
+#endif
 #endif
  }
  RETVOID;

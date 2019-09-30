@@ -1,39 +1,30 @@
 Directory Structure :
 
-1. 5gnr_opensource/lte_enb/build/ : contains files required to compile the code
+1. 5gnr_opensource/build/ : contains files required to compile the code
    a. common : contains individual module's makefile
-   b. scripts : contains scripts and final makefile used to compile all layers using makefiles in common directory
+   b. config : contains SSI memory configuration
+   c. odu    : contains main makefile to generate an executable binary
+   b. scripts : contains scripts required for compilation
 	
-2. 5gnr_opensource/lte_enb/src/ : contains layer specific source code
-   a. 5gnrpdcp : PDCP source code
+2. 5gnr_opensource/src/ : contains layer specific source code
+   a. 5gnrmac : MAC source code
    b.	5gnrrlc : RLC source code
-   c. 5gnrmac : MAC source code
-   d. cm : common, environment and interface files
-   e. mt : wrapper functions over OS
-   f. rlog : logging module
+   c. cm : common, environment and interface files
+   d. cu_app : Stub code for CU
+   e. du_app : DU application and F1 code 
+   f. mt : wrapper functions over OS
+   g. phy_stub : Stub code for Physical layer
+   h. rlog : logging module
 
 
 Pre-requisite for Compilation :
 1. Linux 32-bit/64-bit machine
 2. GCC version 4.6.3 and above
-
+3. Copy ASN code generated for F1 messages into 5gnr_opensource/src/du_app/F1AP/asn/
 
 How to Compile :
-1. cd 5gnr_opensource/lte_enb/build/scripts/
-2. Run script to clean and compile: ./build_5gnr.sh
-3. To clean only, run command : make clean_all
+1. cd 5gnr_opensource/build/odu
+2. To clean and compile: make clean_all odu  MACHINE=BIT64 TEXT_LOG=YES
+3. To clean only, run command : make clean_all MACHINE=BIT64 TEXT_LOG=YES
 
-Compilation Error :
-Any compilation error will be reported in file : 5gnr_opensource/lte_enb/build/scripts/err
-
-Generated Libraries : 
-Path : 5gnr_opensource/lte_enb/libs/
-1. librg.a : MAC library
-2. libkw.a : RLC library
-3. libpj.a : PDCP library 
-
-Generated Object Files :
-Path : 5gnr_opensource/lte_enb/build/scripts/obj/
-1. rg* : Object files for MAC. The prefix 'rg' refers to MAC files and functions.
-2. kw* : Object files for RLC. The prefix 'kw' refers to RLC files and functions.
-3. pj* : Object files for PDCP. The prefix 'pj' refers to PDCP files and functions.
+Executable binary generated : 5gnr_opensource/build/odu/obj/odu

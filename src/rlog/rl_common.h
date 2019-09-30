@@ -79,6 +79,7 @@ typedef const char* PSTR;
 
 typedef U32 LOGID;
 
+#ifdef RLOG_ENABLE_TEXT_LOGGING
 #include <stdio.h>
 extern FILE* g_fp;
 void logLev0(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, ...);
@@ -91,6 +92,17 @@ void logLevE(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr,
    U32 splVal, U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
 void logLevH(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, PSTR hexdump, int hexlen, ...);
 void logLevS(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, PSTR str, ...);
+#else
+void logLevH( LOGID logId, R_LOG_LEVEL logLevel, PSTR hex, int hexlen, ...);
+void logLev0( LOGID logId, R_LOG_LEVEL logLevel, ...);
+void logLev1( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, ...);
+void logLev2( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, ...);
+void logLev3( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, ...);
+void logLev4( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
+void logLevE(LOGID logId, R_LOG_LEVEL logLevel, R_SPL_ARG splType, U32 splVal,
+U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
+void logLevS( LOGID logId, R_LOG_LEVEL logLevel, const char* str, ...);
+#endif
 
 void hextostr(char* p, PSTR h, int hexlen);
 

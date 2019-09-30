@@ -38,6 +38,7 @@ HDR_FILES+= $(wildcard $(SRC_DIR)/*.[hx])
 
 #prepare the list of source files
 C_SRCS=$(wildcard $(SRC_DIR)/*.c)
+C_SRCS:=$(filter-out $(SRC_DIR)/rg_sch%, $(C_SRCS))
 
 #prepare the list of object files and RLOG related files
 C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
@@ -48,7 +49,7 @@ C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
 # Including RG_PHASE2_SCHED for supporting more than one schedulers 
 # supported by mac
 # TODO: make it define for LTEMAC_MIMO and remove it from envopt.h
-MOD_FLAGS=-DRGM_LC -DRGM_LWLC -USM -DTF -URG_DEBUG -DxRG_PHASE2_SCHED -DxRGR_V1 \
+MOD_FLAGS=-DRGM_LC -DRGM_LWLC -USM -URG_DEBUG -DxRG_PHASE2_SCHED -DxRGR_V1 \
     -DRG_UL_DELTA=2 -ULTEMAC_DLUE_TMGOPTMZ -UTENB_SPLIT_ARCH -DRG -ULTEMAC_MIMO
 
 lib:$(LIB_DIR)/librg.a

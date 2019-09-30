@@ -152,10 +152,10 @@
 /* per 1024 REs.                                           */
 
 #endif
-EXTERN U32 wrSmDfltNumCells;
+//EXTERN U32 wrSmDfltNumCells;
 #define RGSCH_MAX_UE_PER_DL_SF 32
 #define RGSCH_MAX_RARNTI_PER_DL_SF 4
-#define RGSCH_INST_START wrSmDfltNumCells
+#define RGSCH_INST_START 5
 #define RGSCH_MAX_INST 2
 /*MCELL changes*/
 #define RG_MAX_INST 4

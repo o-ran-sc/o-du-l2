@@ -132,6 +132,8 @@ extern void rlStopLogCountLimit(void);
 
 #else
 
+#if defined(RLOG_ENABLE_TEXT_LOGGING) 
+
 #define FMTSTR "[%d-%d-%d %d:%d:%d.%03d][%s]%s:%d\n%s:"
 #define FMTSTR_S "[%d-%d-%d %d:%d:%d.%03d][%s]%s:%d\n%s:%s:%ld:"
 
@@ -165,6 +167,33 @@ if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 #define RLOG3(_level, _lstr, _arg1, _arg2, _arg3) 	LOG_ARGN(3, _level, _lstr, _arg1, _arg2, _arg3)
 #define RLOG4(_level, _lstr, _arg1, _arg2, _arg3, _arg4)LOG_ARGN(4, _level, _lstr, _arg1, _arg2, _arg3, _arg4)
 
+#else /* BINARY LOGGING */
+
+#define LOG_ARG0(_level, _fmtStr) \
+if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
+{ \
+	logLev0(_LOGID, _level, __FILE__,__LINE__, _fmtStr, RLOG_FILE_ID, RLOG_MODULE_NAME); \
+}
+
+#define LOG_ARGN(_N, _level, _fmtStr, ...) \
+if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
+{ \
+	logLev##_N(_LOGID, _level, ##__VA_ARGS__, __FILE__,__LINE__, _fmtStr, RLOG_FILE_ID, RLOG_MODULE_NAME); \
+}
+
+#define LOG_SPL(_level, _splenum, _splArg, _fmtStr, ...) \
+if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
+{ \
+	logLevE(_LOGID,_level,_splenum, _splArg, ##__VA_ARGS__, __FILE__,__LINE__, _fmtStr, RLOG_FILE_ID, RLOG_MODULE_NAME); \
+}
+
+#define RLOG0(_level, _lstr) 				LOG_ARG0(_level, _lstr)
+#define RLOG1(_level, _lstr, _arg1) 			LOG_ARGN(1, _level, _lstr, _arg1)
+#define RLOG2(_level, _lstr, _arg1, _arg2)		LOG_ARGN(2, _level, _lstr, _arg1, _arg2)
+#define RLOG3(_level, _lstr, _arg1, _arg2, _arg3)	LOG_ARGN(3, _level, _lstr, _arg1, _arg2, _arg3)
+#define RLOG4(_level, _lstr, _arg1, _arg2, _arg3, _arg4)LOG_ARGN(4, _level, _lstr, _arg1, _arg2, _arg3, _arg4)
+
+#endif /* if defined(RLOG_ENABLE_TEXT_LOGGING) */
 
 #define RLOG_STR(_level, _lstr, _strarg)					LOG_ARGN(S, _level, _lstr, _strarg)
 #define RLOG_HEX(_level, _lstr, _hexdata, _hexlen)		LOG_ARGN(H, _level, _lstr, _hexdata, _hexlen)
