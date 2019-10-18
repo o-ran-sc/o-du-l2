@@ -18,7 +18,12 @@
 
 /* This file contains message handling functionality for DU cell management */
 
-#include "du_mgr.h"
+#include "du_sctp.h"
+#include "f1ap_msg_hdl.h"
+
+extern S16 cmUnpkLkwCfgCfm(LkwCfgCfm func,Pst *pst, Buffer *mBuf);
+extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
+extern S16 cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -42,7 +47,24 @@
  ***************************************************************************/
 S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 {
-//TODO: TBD
+   duCb.init.procId  = SFndProcId();
+   duCb.init.ent     = entity;
+   duCb.init.inst    = inst;
+   duCb.init.region  = region;
+   duCb.init.reason  = reason;
+   duCb.init.cfgDone = FALSE;
+   duCb.init.pool    = DU_POOL;
+   duCb.init.acnt    = FALSE;
+   duCb.init.trc     = FALSE;
+   duCb.init.usta    = TRUE;
+   duCb.mem.region   = DFLT_REGION;
+   duCb.mem.pool     = DU_POOL;
+
+   duCb.sctpStatus   = FALSE;
+   duCb.f1Status     = FALSE;
+   duCb.duStatus     = FALSE;
+
+   SSetProcId(DU_PROC);
 
    return ROK;
 
@@ -80,7 +102,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
             {
                case EVTCFG:
                   {
-                     duProcCfgComplete();
+                     duSendRlcUlCfg();
                      SPutMsg(mBuf);
                      break;
                   }
@@ -94,20 +116,51 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 
             break;
          }
-      case ENTF1AP:
+      case ENTKW:
          {
-
+            switch(pst->event)
+            {
+               case LKW_EVT_CFG_CFM:
+                  {
+                     ret = cmUnpkLkwCfgCfm(duHdlRlcCfgComplete, pst, mBuf);
+                     break;
+                  }
+               case LKW_EVT_CNTRL_CFM:
+                  {
+                     ret = cmUnpkLkwCntrlCfm(duHdlRlcCntrlCfgComplete, pst, mBuf);
+                     break;
+                  }
+               case LKW_EVT_STA_IND:
+                  {
+                     break;
+                  }
+               default:
+                  {
+                     printf("\nInvalid event %d received at duActvTsk from ENTKW", \
+                           pst->event);
+                     SPutMsg(mBuf);
+                     ret = RFAILED;
+                  }
+            }
             break;
          }
-      case ENTRG: //TODO: Layer cfg for RLC UL, DL and MAC must be done
+      case ENTRG:
          {
             switch(pst->event)
             {
                //Config complete
                case EVTCFG:
                   {
-                     //TODO: Implement duEstablishSctpToCu();
                      SPutMsg(mBuf);
+                     break;
+                  }
+               case EVTLRGCFGCFM:
+                  {
+                     ret = cmUnpkLrgCfgCfm(duHdlMacCfgComplete, pst, mBuf);
+                     break;
+                  }
+               case EVTLRGCNTRLCFM:
+                  {
                      break;
                   }
                default:
@@ -124,20 +177,25 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
          {
             switch(pst->event)
             {
-               case EVTSCTPUP:
+               case EVTSCTPDATA:
+               {
+                  F1InmsgHdlr(mBuf);
+                  break;
+               }
+               case EVTSCTPNTFY:
                   {
-                     //Setup F1-C
-                     SPutMsg(mBuf);
+                     ret = cmUnpkSctpNtfy(duSctpNtfyHdl, pst, mBuf);
                      break;
                   }
                default:
                   {
                      printf("\nInvalid event received at duActvTsk from ENTRG");
-                     SPutMsg(mBuf);
                      ret = RFAILED;
                   }
 
             }
+            SPutMsg(mBuf);
+            break;
          }
       default:
          {
@@ -147,33 +205,8 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
          }
 
    }
-
    SExitTsk();
    return ret;
-}
-
-/**************************************************************************
- * @brief Function to invoke DU Layer Configs
- *
- * @details
- *
- *      Function : duProcCfgComplete 
- * 
- *      Functionality:
- *           Initiates Configs towards layers of DU
- *     
- * @param[in]  void
- * @return ROK     - success
- *         RFAILED - failure
- *
- ***************************************************************************/
-S16 duProcCfgComplete()
-{
-//TBD: invoke SCTP/layer config
-
-//   duHdlRlcUlCfgEvent();
-
-   return ROK;
 }
 
 /**********************************************************************

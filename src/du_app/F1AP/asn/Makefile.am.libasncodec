@@ -1,0 +1,860 @@
+ASN_MODULE_SRCS=	\
+	./out/F1AP-PDU.c	\
+	./out/InitiatingMessage.c	\
+	./out/SuccessfulOutcome.c	\
+	./out/UnsuccessfulOutcome.c	\
+	./out/Reset.c	\
+	./out/ResetType.c	\
+	./out/ResetAll.c	\
+	./out/UE-associatedLogicalF1-ConnectionListRes.c	\
+	./out/ResetAcknowledge.c	\
+	./out/UE-associatedLogicalF1-ConnectionListResAck.c	\
+	./out/ErrorIndication.c	\
+	./out/F1SetupRequest.c	\
+	./out/GNB-DU-Served-Cells-List.c	\
+	./out/F1SetupResponse.c	\
+	./out/Cells-to-be-Activated-List.c	\
+	./out/F1SetupFailure.c	\
+	./out/GNBDUConfigurationUpdate.c	\
+	./out/Served-Cells-To-Add-List.c	\
+	./out/Served-Cells-To-Modify-List.c	\
+	./out/Served-Cells-To-Delete-List.c	\
+	./out/Cells-Status-List.c	\
+	./out/Dedicated-SIDelivery-NeededUE-List.c	\
+	./out/GNBDUConfigurationUpdateAcknowledge.c	\
+	./out/GNBDUConfigurationUpdateFailure.c	\
+	./out/GNBCUConfigurationUpdate.c	\
+	./out/Cells-to-be-Deactivated-List.c	\
+	./out/GNB-CU-TNL-Association-To-Add-List.c	\
+	./out/GNB-CU-TNL-Association-To-Remove-List.c	\
+	./out/GNB-CU-TNL-Association-To-Update-List.c	\
+	./out/Cells-to-be-Barred-List.c	\
+	./out/Protected-EUTRA-Resources-List.c	\
+	./out/GNBCUConfigurationUpdateAcknowledge.c	\
+	./out/Cells-Failed-to-be-Activated-List.c	\
+	./out/GNB-CU-TNL-Association-Setup-List.c	\
+	./out/GNB-CU-TNL-Association-Failed-To-Setup-List.c	\
+	./out/GNBCUConfigurationUpdateFailure.c	\
+	./out/GNBDUResourceCoordinationRequest.c	\
+	./out/GNBDUResourceCoordinationResponse.c	\
+	./out/UEContextSetupRequest.c	\
+	./out/Candidate-SpCell-List.c	\
+	./out/SCell-ToBeSetup-List.c	\
+	./out/SRBs-ToBeSetup-List.c	\
+	./out/DRBs-ToBeSetup-List.c	\
+	./out/UEContextSetupResponse.c	\
+	./out/DRBs-Setup-List.c	\
+	./out/SRBs-FailedToBeSetup-List.c	\
+	./out/DRBs-FailedToBeSetup-List.c	\
+	./out/SCell-FailedtoSetup-List.c	\
+	./out/SRBs-Setup-List.c	\
+	./out/UEContextSetupFailure.c	\
+	./out/Potential-SpCell-List.c	\
+	./out/UEContextReleaseRequest.c	\
+	./out/UEContextReleaseCommand.c	\
+	./out/UEContextReleaseComplete.c	\
+	./out/UEContextModificationRequest.c	\
+	./out/SCell-ToBeSetupMod-List.c	\
+	./out/SCell-ToBeRemoved-List.c	\
+	./out/SRBs-ToBeSetupMod-List.c	\
+	./out/DRBs-ToBeSetupMod-List.c	\
+	./out/DRBs-ToBeModified-List.c	\
+	./out/SRBs-ToBeReleased-List.c	\
+	./out/DRBs-ToBeReleased-List.c	\
+	./out/UEContextModificationResponse.c	\
+	./out/DRBs-SetupMod-List.c	\
+	./out/DRBs-Modified-List.c	\
+	./out/SRBs-SetupMod-List.c	\
+	./out/SRBs-Modified-List.c	\
+	./out/DRBs-FailedToBeModified-List.c	\
+	./out/SRBs-FailedToBeSetupMod-List.c	\
+	./out/DRBs-FailedToBeSetupMod-List.c	\
+	./out/SCell-FailedtoSetupMod-List.c	\
+	./out/Associated-SCell-List.c	\
+	./out/UEContextModificationFailure.c	\
+	./out/UEContextModificationRequired.c	\
+	./out/DRBs-Required-ToBeModified-List.c	\
+	./out/DRBs-Required-ToBeReleased-List.c	\
+	./out/SRBs-Required-ToBeReleased-List.c	\
+	./out/UEContextModificationConfirm.c	\
+	./out/DRBs-ModifiedConf-List.c	\
+	./out/UEContextModificationRefuse.c	\
+	./out/WriteReplaceWarningRequest.c	\
+	./out/Cells-To-Be-Broadcast-List.c	\
+	./out/WriteReplaceWarningResponse.c	\
+	./out/Cells-Broadcast-Completed-List.c	\
+	./out/PWSCancelRequest.c	\
+	./out/Broadcast-To-Be-Cancelled-List.c	\
+	./out/PWSCancelResponse.c	\
+	./out/Cells-Broadcast-Cancelled-List.c	\
+	./out/UEInactivityNotification.c	\
+	./out/DRB-Activity-List.c	\
+	./out/InitialULRRCMessageTransfer.c	\
+	./out/DLRRCMessageTransfer.c	\
+	./out/ULRRCMessageTransfer.c	\
+	./out/PrivateMessage.c	\
+	./out/SystemInformationDeliveryCommand.c	\
+	./out/Paging.c	\
+	./out/PagingCell-list.c	\
+	./out/Notify.c	\
+	./out/DRB-Notify-List.c	\
+	./out/PWSRestartIndication.c	\
+	./out/NR-CGI-List-For-Restart-List.c	\
+	./out/PWSFailureIndication.c	\
+	./out/PWS-Failed-NR-CGI-List.c	\
+	./out/GNBDUStatusIndication.c	\
+	./out/RRCDeliveryReport.c	\
+	./out/AllocationAndRetentionPriority.c	\
+	./out/Associated-SCell-Item.c	\
+	./out/AvailablePLMNList.c	\
+	./out/AvailablePLMNList-Item.c	\
+	./out/AveragingWindow.c	\
+	./out/BitRate.c	\
+	./out/BearerTypeChange.c	\
+	./out/ServedPLMNs-List.c	\
+	./out/ServedPLMNs-Item.c	\
+	./out/Cancel-all-Warning-Messages-Indicator.c	\
+	./out/Candidate-SpCell-Item.c	\
+	./out/Cause.c	\
+	./out/CauseMisc.c	\
+	./out/CauseProtocol.c	\
+	./out/CauseRadioNetwork.c	\
+	./out/CauseTransport.c	\
+	./out/CellGroupConfig.c	\
+	./out/Cell-Direction.c	\
+	./out/Cells-Failed-to-be-Activated-List-Item.c	\
+	./out/Cells-Status-Item.c	\
+	./out/Cells-To-Be-Broadcast-Item.c	\
+	./out/Cells-Broadcast-Completed-Item.c	\
+	./out/Broadcast-To-Be-Cancelled-Item.c	\
+	./out/Cells-Broadcast-Cancelled-Item.c	\
+	./out/Cells-to-be-Activated-List-Item.c	\
+	./out/Cells-to-be-Deactivated-List-Item.c	\
+	./out/Cells-to-be-Barred-Item.c	\
+	./out/CellBarred.c	\
+	./out/CellULConfigured.c	\
+	./out/CNUEPagingIdentity.c	\
+	./out/CP-TransportLayerAddress.c	\
+	./out/CriticalityDiagnostics.c	\
+	./out/CriticalityDiagnostics-IE-List.c	\
+	./out/CriticalityDiagnostics-IE-Item.c	\
+	./out/C-RNTI.c	\
+	./out/CUtoDURRCInformation.c	\
+	./out/DCBasedDuplicationConfigured.c	\
+	./out/Dedicated-SIDelivery-NeededUE-Item.c	\
+	./out/DLUPTNLInformation-ToBeSetup-List.c	\
+	./out/DLUPTNLInformation-ToBeSetup-Item.c	\
+	./out/DRB-Activity-Item.c	\
+	./out/DRB-Activity.c	\
+	./out/DRBID.c	\
+	./out/DRBs-FailedToBeModified-Item.c	\
+	./out/DRBs-FailedToBeSetup-Item.c	\
+	./out/DRBs-FailedToBeSetupMod-Item.c	\
+	./out/DRB-Information.c	\
+	./out/DRBs-Modified-Item.c	\
+	./out/DRBs-ModifiedConf-Item.c	\
+	./out/DRB-Notify-Item.c	\
+	./out/DRBs-Required-ToBeModified-Item.c	\
+	./out/DRBs-Required-ToBeReleased-Item.c	\
+	./out/DRBs-Setup-Item.c	\
+	./out/DRBs-SetupMod-Item.c	\
+	./out/DRBs-ToBeModified-Item.c	\
+	./out/DRBs-ToBeReleased-Item.c	\
+	./out/DRBs-ToBeSetup-Item.c	\
+	./out/DRBs-ToBeSetupMod-Item.c	\
+	./out/DRXCycle.c	\
+	./out/DRX-Config.c	\
+	./out/DRXConfigurationIndicator.c	\
+	./out/DRX-LongCycleStartOffset.c	\
+	./out/DUtoCURRCContainer.c	\
+	./out/DUtoCURRCInformation.c	\
+	./out/DuplicationActivation.c	\
+	./out/DuplicationIndication.c	\
+	./out/Dynamic5QIDescriptor.c	\
+	./out/Endpoint-IP-address-and-port.c	\
+	./out/ExtendedAvailablePLMN-List.c	\
+	./out/ExtendedAvailablePLMN-Item.c	\
+	./out/ExtendedServedPLMNs-List.c	\
+	./out/ExtendedServedPLMNs-Item.c	\
+	./out/EUTRACells-List.c	\
+	./out/EUTRACells-List-item.c	\
+	./out/EUTRA-Cell-ID.c	\
+	./out/EUTRA-Coex-FDD-Info.c	\
+	./out/EUTRA-Coex-Mode-Info.c	\
+	./out/EUTRA-Coex-TDD-Info.c	\
+	./out/EUTRA-CyclicPrefixDL.c	\
+	./out/EUTRA-CyclicPrefixUL.c	\
+	./out/EUTRA-PRACH-Configuration.c	\
+	./out/EUTRA-SpecialSubframe-Info.c	\
+	./out/EUTRA-SpecialSubframePatterns.c	\
+	./out/EUTRA-SubframeAssignment.c	\
+	./out/EUTRA-Transmission-Bandwidth.c	\
+	./out/EUTRANQoS.c	\
+	./out/ExecuteDuplication.c	\
+	./out/ExtendedEARFCN.c	\
+	./out/EUTRA-Mode-Info.c	\
+	./out/EUTRA-NR-CellResourceCoordinationReq-Container.c	\
+	./out/EUTRA-NR-CellResourceCoordinationReqAck-Container.c	\
+	./out/EUTRA-FDD-Info.c	\
+	./out/EUTRA-TDD-Info.c	\
+	./out/FDD-Info.c	\
+	./out/Flows-Mapped-To-DRB-List.c	\
+	./out/Flows-Mapped-To-DRB-Item.c	\
+	./out/FreqBandNrItem.c	\
+	./out/FullConfiguration.c	\
+	./out/GBR-QosInformation.c	\
+	./out/GBR-QoSFlowInformation.c	\
+	./out/GNB-CUSystemInformation.c	\
+	./out/GNB-CU-TNL-Association-Setup-Item.c	\
+	./out/GNB-CU-TNL-Association-Failed-To-Setup-Item.c	\
+	./out/GNB-CU-TNL-Association-To-Add-Item.c	\
+	./out/GNB-CU-TNL-Association-To-Remove-Item.c	\
+	./out/GNB-CU-TNL-Association-To-Update-Item.c	\
+	./out/GNB-CU-UE-F1AP-ID.c	\
+	./out/GNB-DU-UE-F1AP-ID.c	\
+	./out/GNB-DU-ID.c	\
+	./out/GNB-CU-Name.c	\
+	./out/GNB-DU-Name.c	\
+	./out/GNB-DU-Served-Cells-Item.c	\
+	./out/GNB-DU-System-Information.c	\
+	./out/GNB-DUConfigurationQuery.c	\
+	./out/GNBDUOverloadInformation.c	\
+	./out/GTP-TEID.c	\
+	./out/GTPTunnel.c	\
+	./out/HandoverPreparationInformation.c	\
+	./out/IgnoreResourceCoordinationContainer.c	\
+	./out/InactivityMonitoringRequest.c	\
+	./out/InactivityMonitoringResponse.c	\
+	./out/LCID.c	\
+	./out/LongDRXCycleLength.c	\
+	./out/MaskedIMEISV.c	\
+	./out/MaxDataBurstVolume.c	\
+	./out/MaxPacketLossRate.c	\
+	./out/MIB-message.c	\
+	./out/MeasConfig.c	\
+	./out/MeasGapConfig.c	\
+	./out/MeasurementTimingConfiguration.c	\
+	./out/NeedforGap.c	\
+	./out/NGRANAllocationAndRetentionPriority.c	\
+	./out/NR-CGI-List-For-Restart-Item.c	\
+	./out/NonDynamic5QIDescriptor.c	\
+	./out/Notification-Cause.c	\
+	./out/NotificationControl.c	\
+	./out/NRFreqInfo.c	\
+	./out/NRCGI.c	\
+	./out/NR-Mode-Info.c	\
+	./out/NRCellIdentity.c	\
+	./out/NRNRB.c	\
+	./out/NRPCI.c	\
+	./out/NRSCS.c	\
+	./out/NumberOfBroadcasts.c	\
+	./out/NumberofBroadcastRequest.c	\
+	./out/OffsetToPointA.c	\
+	./out/PacketDelayBudget.c	\
+	./out/PacketErrorRate.c	\
+	./out/PER-Scalar.c	\
+	./out/PER-Exponent.c	\
+	./out/PagingCell-Item.c	\
+	./out/PagingDRX.c	\
+	./out/PagingIdentity.c	\
+	./out/PagingOrigin.c	\
+	./out/PagingPriority.c	\
+	./out/PDCP-SN.c	\
+	./out/PDCPSNLength.c	\
+	./out/PDUSessionID.c	\
+	./out/Ph-InfoSCG.c	\
+	./out/PLMN-Identity.c	\
+	./out/Pre-emptionCapability.c	\
+	./out/Pre-emptionVulnerability.c	\
+	./out/PriorityLevel.c	\
+	./out/ProtectedEUTRAResourceIndication.c	\
+	./out/Protected-EUTRA-Resources-Item.c	\
+	./out/Potential-SpCell-Item.c	\
+	./out/PWS-Failed-NR-CGI-Item.c	\
+	./out/PWSSystemInformation.c	\
+	./out/QCI.c	\
+	./out/QoS-Characteristics.c	\
+	./out/QoSFlowIdentifier.c	\
+	./out/QoSFlowLevelQoSParameters.c	\
+	./out/QoSFlowMappingIndication.c	\
+	./out/QoSInformation.c	\
+	./out/RANAC.c	\
+	./out/RANUEPagingIdentity.c	\
+	./out/RAT-FrequencyPriorityInformation.c	\
+	./out/RAT-FrequencySelectionPriority.c	\
+	./out/Reestablishment-Indication.c	\
+	./out/RequestedBandCombinationIndex.c	\
+	./out/RequestedFeatureSetEntryIndex.c	\
+	./out/RequestedP-MaxFR2.c	\
+	./out/RequestType.c	\
+	./out/ResourceCoordinationEUTRACellInfo.c	\
+	./out/ResourceCoordinationTransferInformation.c	\
+	./out/ResourceCoordinationTransferContainer.c	\
+	./out/RepetitionPeriod.c	\
+	./out/RLCFailureIndication.c	\
+	./out/RLCMode.c	\
+	./out/RLC-Status.c	\
+	./out/RRCContainer.c	\
+	./out/RRCDeliveryStatus.c	\
+	./out/RRCDeliveryStatusRequest.c	\
+	./out/RRCReconfigurationCompleteIndicator.c	\
+	./out/RRC-Version.c	\
+	./out/SCell-FailedtoSetup-Item.c	\
+	./out/SCell-FailedtoSetupMod-Item.c	\
+	./out/SCell-ToBeRemoved-Item.c	\
+	./out/SCell-ToBeSetup-Item.c	\
+	./out/SCell-ToBeSetupMod-Item.c	\
+	./out/SCellIndex.c	\
+	./out/SIBType-PWS.c	\
+	./out/SelectedBandCombinationIndex.c	\
+	./out/SelectedFeatureSetEntryIndex.c	\
+	./out/Latest-RRC-Version-Enhanced.c	\
+	./out/CG-ConfigInfo.c	\
+	./out/ServCellIndex.c	\
+	./out/ServingCellMO.c	\
+	./out/Served-Cell-Information.c	\
+	./out/Served-Cells-To-Add-Item.c	\
+	./out/Served-Cells-To-Delete-Item.c	\
+	./out/Served-Cells-To-Modify-Item.c	\
+	./out/Served-EUTRA-Cells-Information.c	\
+	./out/Service-State.c	\
+	./out/Service-Status.c	\
+	./out/ShortDRXCycleLength.c	\
+	./out/ShortDRXCycleTimer.c	\
+	./out/SIB1-message.c	\
+	./out/SItype.c	\
+	./out/SItype-List.c	\
+	./out/SItype-Item.c	\
+	./out/SibtypetobeupdatedListItem.c	\
+	./out/SliceSupportList.c	\
+	./out/SliceSupportItem.c	\
+	./out/SNSSAI.c	\
+	./out/SpectrumSharingGroupID.c	\
+	./out/SRBID.c	\
+	./out/SRBs-FailedToBeSetup-Item.c	\
+	./out/SRBs-FailedToBeSetupMod-Item.c	\
+	./out/SRBs-Modified-Item.c	\
+	./out/SRBs-Required-ToBeReleased-Item.c	\
+	./out/SRBs-Setup-Item.c	\
+	./out/SRBs-SetupMod-Item.c	\
+	./out/SRBs-ToBeReleased-Item.c	\
+	./out/SRBs-ToBeSetup-Item.c	\
+	./out/SRBs-ToBeSetupMod-Item.c	\
+	./out/SUL-Information.c	\
+	./out/SubscriberProfileIDforRFP.c	\
+	./out/SULAccessIndication.c	\
+	./out/SupportedSULFreqBandItem.c	\
+	./out/FiveGS-TAC.c	\
+	./out/Configured-EPS-TAC.c	\
+	./out/TDD-Info.c	\
+	./out/TimeToWait.c	\
+	./out/TNLAssociationUsage.c	\
+	./out/TransportLayerAddress.c	\
+	./out/TransactionID.c	\
+	./out/Transmission-Bandwidth.c	\
+	./out/TransmissionActionIndicator.c	\
+	./out/TypeOfError.c	\
+	./out/UE-associatedLogicalF1-ConnectionItem.c	\
+	./out/UEAssistanceInformation.c	\
+	./out/UE-CapabilityRAT-ContainerList.c	\
+	./out/UEIdentityIndexValue.c	\
+	./out/ULConfiguration.c	\
+	./out/ULUEConfiguration.c	\
+	./out/ULUPTNLInformation-ToBeSetup-List.c	\
+	./out/ULUPTNLInformation-ToBeSetup-Item.c	\
+	./out/UplinkTxDirectCurrentListInformation.c	\
+	./out/UPTransportLayerInformation.c	\
+	./out/Criticality.c	\
+	./out/Presence.c	\
+	./out/PrivateIE-ID.c	\
+	./out/ProcedureCode.c	\
+	./out/ProtocolExtensionID.c	\
+	./out/ProtocolIE-ID.c	\
+	./out/TriggeringMessage.c	\
+	./out/ProtocolIE-Container.c	\
+	./out/ProtocolIE-SingleContainer.c	\
+	./out/ProtocolIE-Field.c	\
+	./out/ProtocolIE-ContainerPair.c	\
+	./out/ProtocolIE-FieldPair.c	\
+	./out/ProtocolExtensionContainer.c	\
+	./out/ProtocolExtensionField.c	\
+	./out/PrivateIE-Container.c	\
+	./out/PrivateIE-Field.c
+
+ASN_MODULE_HDRS=	\
+	./out/F1AP-PDU.h	\
+	./out/InitiatingMessage.h	\
+	./out/SuccessfulOutcome.h	\
+	./out/UnsuccessfulOutcome.h	\
+	./out/Reset.h	\
+	./out/ResetType.h	\
+	./out/ResetAll.h	\
+	./out/UE-associatedLogicalF1-ConnectionListRes.h	\
+	./out/ResetAcknowledge.h	\
+	./out/UE-associatedLogicalF1-ConnectionListResAck.h	\
+	./out/ErrorIndication.h	\
+	./out/F1SetupRequest.h	\
+	./out/GNB-DU-Served-Cells-List.h	\
+	./out/F1SetupResponse.h	\
+	./out/Cells-to-be-Activated-List.h	\
+	./out/F1SetupFailure.h	\
+	./out/GNBDUConfigurationUpdate.h	\
+	./out/Served-Cells-To-Add-List.h	\
+	./out/Served-Cells-To-Modify-List.h	\
+	./out/Served-Cells-To-Delete-List.h	\
+	./out/Cells-Status-List.h	\
+	./out/Dedicated-SIDelivery-NeededUE-List.h	\
+	./out/GNBDUConfigurationUpdateAcknowledge.h	\
+	./out/GNBDUConfigurationUpdateFailure.h	\
+	./out/GNBCUConfigurationUpdate.h	\
+	./out/Cells-to-be-Deactivated-List.h	\
+	./out/GNB-CU-TNL-Association-To-Add-List.h	\
+	./out/GNB-CU-TNL-Association-To-Remove-List.h	\
+	./out/GNB-CU-TNL-Association-To-Update-List.h	\
+	./out/Cells-to-be-Barred-List.h	\
+	./out/Protected-EUTRA-Resources-List.h	\
+	./out/GNBCUConfigurationUpdateAcknowledge.h	\
+	./out/Cells-Failed-to-be-Activated-List.h	\
+	./out/GNB-CU-TNL-Association-Setup-List.h	\
+	./out/GNB-CU-TNL-Association-Failed-To-Setup-List.h	\
+	./out/GNBCUConfigurationUpdateFailure.h	\
+	./out/GNBDUResourceCoordinationRequest.h	\
+	./out/GNBDUResourceCoordinationResponse.h	\
+	./out/UEContextSetupRequest.h	\
+	./out/Candidate-SpCell-List.h	\
+	./out/SCell-ToBeSetup-List.h	\
+	./out/SRBs-ToBeSetup-List.h	\
+	./out/DRBs-ToBeSetup-List.h	\
+	./out/UEContextSetupResponse.h	\
+	./out/DRBs-Setup-List.h	\
+	./out/SRBs-FailedToBeSetup-List.h	\
+	./out/DRBs-FailedToBeSetup-List.h	\
+	./out/SCell-FailedtoSetup-List.h	\
+	./out/SRBs-Setup-List.h	\
+	./out/UEContextSetupFailure.h	\
+	./out/Potential-SpCell-List.h	\
+	./out/UEContextReleaseRequest.h	\
+	./out/UEContextReleaseCommand.h	\
+	./out/UEContextReleaseComplete.h	\
+	./out/UEContextModificationRequest.h	\
+	./out/SCell-ToBeSetupMod-List.h	\
+	./out/SCell-ToBeRemoved-List.h	\
+	./out/SRBs-ToBeSetupMod-List.h	\
+	./out/DRBs-ToBeSetupMod-List.h	\
+	./out/DRBs-ToBeModified-List.h	\
+	./out/SRBs-ToBeReleased-List.h	\
+	./out/DRBs-ToBeReleased-List.h	\
+	./out/UEContextModificationResponse.h	\
+	./out/DRBs-SetupMod-List.h	\
+	./out/DRBs-Modified-List.h	\
+	./out/SRBs-SetupMod-List.h	\
+	./out/SRBs-Modified-List.h	\
+	./out/DRBs-FailedToBeModified-List.h	\
+	./out/SRBs-FailedToBeSetupMod-List.h	\
+	./out/DRBs-FailedToBeSetupMod-List.h	\
+	./out/SCell-FailedtoSetupMod-List.h	\
+	./out/Associated-SCell-List.h	\
+	./out/UEContextModificationFailure.h	\
+	./out/UEContextModificationRequired.h	\
+	./out/DRBs-Required-ToBeModified-List.h	\
+	./out/DRBs-Required-ToBeReleased-List.h	\
+	./out/SRBs-Required-ToBeReleased-List.h	\
+	./out/UEContextModificationConfirm.h	\
+	./out/DRBs-ModifiedConf-List.h	\
+	./out/UEContextModificationRefuse.h	\
+	./out/WriteReplaceWarningRequest.h	\
+	./out/Cells-To-Be-Broadcast-List.h	\
+	./out/WriteReplaceWarningResponse.h	\
+	./out/Cells-Broadcast-Completed-List.h	\
+	./out/PWSCancelRequest.h	\
+	./out/Broadcast-To-Be-Cancelled-List.h	\
+	./out/PWSCancelResponse.h	\
+	./out/Cells-Broadcast-Cancelled-List.h	\
+	./out/UEInactivityNotification.h	\
+	./out/DRB-Activity-List.h	\
+	./out/InitialULRRCMessageTransfer.h	\
+	./out/DLRRCMessageTransfer.h	\
+	./out/ULRRCMessageTransfer.h	\
+	./out/PrivateMessage.h	\
+	./out/SystemInformationDeliveryCommand.h	\
+	./out/Paging.h	\
+	./out/PagingCell-list.h	\
+	./out/Notify.h	\
+	./out/DRB-Notify-List.h	\
+	./out/PWSRestartIndication.h	\
+	./out/NR-CGI-List-For-Restart-List.h	\
+	./out/PWSFailureIndication.h	\
+	./out/PWS-Failed-NR-CGI-List.h	\
+	./out/GNBDUStatusIndication.h	\
+	./out/RRCDeliveryReport.h	\
+	./out/AllocationAndRetentionPriority.h	\
+	./out/Associated-SCell-Item.h	\
+	./out/AvailablePLMNList.h	\
+	./out/AvailablePLMNList-Item.h	\
+	./out/AveragingWindow.h	\
+	./out/BitRate.h	\
+	./out/BearerTypeChange.h	\
+	./out/ServedPLMNs-List.h	\
+	./out/ServedPLMNs-Item.h	\
+	./out/Cancel-all-Warning-Messages-Indicator.h	\
+	./out/Candidate-SpCell-Item.h	\
+	./out/Cause.h	\
+	./out/CauseMisc.h	\
+	./out/CauseProtocol.h	\
+	./out/CauseRadioNetwork.h	\
+	./out/CauseTransport.h	\
+	./out/CellGroupConfig.h	\
+	./out/Cell-Direction.h	\
+	./out/Cells-Failed-to-be-Activated-List-Item.h	\
+	./out/Cells-Status-Item.h	\
+	./out/Cells-To-Be-Broadcast-Item.h	\
+	./out/Cells-Broadcast-Completed-Item.h	\
+	./out/Broadcast-To-Be-Cancelled-Item.h	\
+	./out/Cells-Broadcast-Cancelled-Item.h	\
+	./out/Cells-to-be-Activated-List-Item.h	\
+	./out/Cells-to-be-Deactivated-List-Item.h	\
+	./out/Cells-to-be-Barred-Item.h	\
+	./out/CellBarred.h	\
+	./out/CellULConfigured.h	\
+	./out/CNUEPagingIdentity.h	\
+	./out/CP-TransportLayerAddress.h	\
+	./out/CriticalityDiagnostics.h	\
+	./out/CriticalityDiagnostics-IE-List.h	\
+	./out/CriticalityDiagnostics-IE-Item.h	\
+	./out/C-RNTI.h	\
+	./out/CUtoDURRCInformation.h	\
+	./out/DCBasedDuplicationConfigured.h	\
+	./out/Dedicated-SIDelivery-NeededUE-Item.h	\
+	./out/DLUPTNLInformation-ToBeSetup-List.h	\
+	./out/DLUPTNLInformation-ToBeSetup-Item.h	\
+	./out/DRB-Activity-Item.h	\
+	./out/DRB-Activity.h	\
+	./out/DRBID.h	\
+	./out/DRBs-FailedToBeModified-Item.h	\
+	./out/DRBs-FailedToBeSetup-Item.h	\
+	./out/DRBs-FailedToBeSetupMod-Item.h	\
+	./out/DRB-Information.h	\
+	./out/DRBs-Modified-Item.h	\
+	./out/DRBs-ModifiedConf-Item.h	\
+	./out/DRB-Notify-Item.h	\
+	./out/DRBs-Required-ToBeModified-Item.h	\
+	./out/DRBs-Required-ToBeReleased-Item.h	\
+	./out/DRBs-Setup-Item.h	\
+	./out/DRBs-SetupMod-Item.h	\
+	./out/DRBs-ToBeModified-Item.h	\
+	./out/DRBs-ToBeReleased-Item.h	\
+	./out/DRBs-ToBeSetup-Item.h	\
+	./out/DRBs-ToBeSetupMod-Item.h	\
+	./out/DRXCycle.h	\
+	./out/DRX-Config.h	\
+	./out/DRXConfigurationIndicator.h	\
+	./out/DRX-LongCycleStartOffset.h	\
+	./out/DUtoCURRCContainer.h	\
+	./out/DUtoCURRCInformation.h	\
+	./out/DuplicationActivation.h	\
+	./out/DuplicationIndication.h	\
+	./out/Dynamic5QIDescriptor.h	\
+	./out/Endpoint-IP-address-and-port.h	\
+	./out/ExtendedAvailablePLMN-List.h	\
+	./out/ExtendedAvailablePLMN-Item.h	\
+	./out/ExtendedServedPLMNs-List.h	\
+	./out/ExtendedServedPLMNs-Item.h	\
+	./out/EUTRACells-List.h	\
+	./out/EUTRACells-List-item.h	\
+	./out/EUTRA-Cell-ID.h	\
+	./out/EUTRA-Coex-FDD-Info.h	\
+	./out/EUTRA-Coex-Mode-Info.h	\
+	./out/EUTRA-Coex-TDD-Info.h	\
+	./out/EUTRA-CyclicPrefixDL.h	\
+	./out/EUTRA-CyclicPrefixUL.h	\
+	./out/EUTRA-PRACH-Configuration.h	\
+	./out/EUTRA-SpecialSubframe-Info.h	\
+	./out/EUTRA-SpecialSubframePatterns.h	\
+	./out/EUTRA-SubframeAssignment.h	\
+	./out/EUTRA-Transmission-Bandwidth.h	\
+	./out/EUTRANQoS.h	\
+	./out/ExecuteDuplication.h	\
+	./out/ExtendedEARFCN.h	\
+	./out/EUTRA-Mode-Info.h	\
+	./out/EUTRA-NR-CellResourceCoordinationReq-Container.h	\
+	./out/EUTRA-NR-CellResourceCoordinationReqAck-Container.h	\
+	./out/EUTRA-FDD-Info.h	\
+	./out/EUTRA-TDD-Info.h	\
+	./out/FDD-Info.h	\
+	./out/Flows-Mapped-To-DRB-List.h	\
+	./out/Flows-Mapped-To-DRB-Item.h	\
+	./out/FreqBandNrItem.h	\
+	./out/FullConfiguration.h	\
+	./out/GBR-QosInformation.h	\
+	./out/GBR-QoSFlowInformation.h	\
+	./out/GNB-CUSystemInformation.h	\
+	./out/GNB-CU-TNL-Association-Setup-Item.h	\
+	./out/GNB-CU-TNL-Association-Failed-To-Setup-Item.h	\
+	./out/GNB-CU-TNL-Association-To-Add-Item.h	\
+	./out/GNB-CU-TNL-Association-To-Remove-Item.h	\
+	./out/GNB-CU-TNL-Association-To-Update-Item.h	\
+	./out/GNB-CU-UE-F1AP-ID.h	\
+	./out/GNB-DU-UE-F1AP-ID.h	\
+	./out/GNB-DU-ID.h	\
+	./out/GNB-CU-Name.h	\
+	./out/GNB-DU-Name.h	\
+	./out/GNB-DU-Served-Cells-Item.h	\
+	./out/GNB-DU-System-Information.h	\
+	./out/GNB-DUConfigurationQuery.h	\
+	./out/GNBDUOverloadInformation.h	\
+	./out/GTP-TEID.h	\
+	./out/GTPTunnel.h	\
+	./out/HandoverPreparationInformation.h	\
+	./out/IgnoreResourceCoordinationContainer.h	\
+	./out/InactivityMonitoringRequest.h	\
+	./out/InactivityMonitoringResponse.h	\
+	./out/LCID.h	\
+	./out/LongDRXCycleLength.h	\
+	./out/MaskedIMEISV.h	\
+	./out/MaxDataBurstVolume.h	\
+	./out/MaxPacketLossRate.h	\
+	./out/MIB-message.h	\
+	./out/MeasConfig.h	\
+	./out/MeasGapConfig.h	\
+	./out/MeasurementTimingConfiguration.h	\
+	./out/NeedforGap.h	\
+	./out/NGRANAllocationAndRetentionPriority.h	\
+	./out/NR-CGI-List-For-Restart-Item.h	\
+	./out/NonDynamic5QIDescriptor.h	\
+	./out/Notification-Cause.h	\
+	./out/NotificationControl.h	\
+	./out/NRFreqInfo.h	\
+	./out/NRCGI.h	\
+	./out/NR-Mode-Info.h	\
+	./out/NRCellIdentity.h	\
+	./out/NRNRB.h	\
+	./out/NRPCI.h	\
+	./out/NRSCS.h	\
+	./out/NumberOfBroadcasts.h	\
+	./out/NumberofBroadcastRequest.h	\
+	./out/OffsetToPointA.h	\
+	./out/PacketDelayBudget.h	\
+	./out/PacketErrorRate.h	\
+	./out/PER-Scalar.h	\
+	./out/PER-Exponent.h	\
+	./out/PagingCell-Item.h	\
+	./out/PagingDRX.h	\
+	./out/PagingIdentity.h	\
+	./out/PagingOrigin.h	\
+	./out/PagingPriority.h	\
+	./out/PDCP-SN.h	\
+	./out/PDCPSNLength.h	\
+	./out/PDUSessionID.h	\
+	./out/Ph-InfoSCG.h	\
+	./out/PLMN-Identity.h	\
+	./out/Pre-emptionCapability.h	\
+	./out/Pre-emptionVulnerability.h	\
+	./out/PriorityLevel.h	\
+	./out/ProtectedEUTRAResourceIndication.h	\
+	./out/Protected-EUTRA-Resources-Item.h	\
+	./out/Potential-SpCell-Item.h	\
+	./out/PWS-Failed-NR-CGI-Item.h	\
+	./out/PWSSystemInformation.h	\
+	./out/QCI.h	\
+	./out/QoS-Characteristics.h	\
+	./out/QoSFlowIdentifier.h	\
+	./out/QoSFlowLevelQoSParameters.h	\
+	./out/QoSFlowMappingIndication.h	\
+	./out/QoSInformation.h	\
+	./out/RANAC.h	\
+	./out/RANUEPagingIdentity.h	\
+	./out/RAT-FrequencyPriorityInformation.h	\
+	./out/RAT-FrequencySelectionPriority.h	\
+	./out/Reestablishment-Indication.h	\
+	./out/RequestedBandCombinationIndex.h	\
+	./out/RequestedFeatureSetEntryIndex.h	\
+	./out/RequestedP-MaxFR2.h	\
+	./out/RequestType.h	\
+	./out/ResourceCoordinationEUTRACellInfo.h	\
+	./out/ResourceCoordinationTransferInformation.h	\
+	./out/ResourceCoordinationTransferContainer.h	\
+	./out/RepetitionPeriod.h	\
+	./out/RLCFailureIndication.h	\
+	./out/RLCMode.h	\
+	./out/RLC-Status.h	\
+	./out/RRCContainer.h	\
+	./out/RRCDeliveryStatus.h	\
+	./out/RRCDeliveryStatusRequest.h	\
+	./out/RRCReconfigurationCompleteIndicator.h	\
+	./out/RRC-Version.h	\
+	./out/SCell-FailedtoSetup-Item.h	\
+	./out/SCell-FailedtoSetupMod-Item.h	\
+	./out/SCell-ToBeRemoved-Item.h	\
+	./out/SCell-ToBeSetup-Item.h	\
+	./out/SCell-ToBeSetupMod-Item.h	\
+	./out/SCellIndex.h	\
+	./out/SIBType-PWS.h	\
+	./out/SelectedBandCombinationIndex.h	\
+	./out/SelectedFeatureSetEntryIndex.h	\
+	./out/Latest-RRC-Version-Enhanced.h	\
+	./out/CG-ConfigInfo.h	\
+	./out/ServCellIndex.h	\
+	./out/ServingCellMO.h	\
+	./out/Served-Cell-Information.h	\
+	./out/Served-Cells-To-Add-Item.h	\
+	./out/Served-Cells-To-Delete-Item.h	\
+	./out/Served-Cells-To-Modify-Item.h	\
+	./out/Served-EUTRA-Cells-Information.h	\
+	./out/Service-State.h	\
+	./out/Service-Status.h	\
+	./out/ShortDRXCycleLength.h	\
+	./out/ShortDRXCycleTimer.h	\
+	./out/SIB1-message.h	\
+	./out/SItype.h	\
+	./out/SItype-List.h	\
+	./out/SItype-Item.h	\
+	./out/SibtypetobeupdatedListItem.h	\
+	./out/SliceSupportList.h	\
+	./out/SliceSupportItem.h	\
+	./out/SNSSAI.h	\
+	./out/SpectrumSharingGroupID.h	\
+	./out/SRBID.h	\
+	./out/SRBs-FailedToBeSetup-Item.h	\
+	./out/SRBs-FailedToBeSetupMod-Item.h	\
+	./out/SRBs-Modified-Item.h	\
+	./out/SRBs-Required-ToBeReleased-Item.h	\
+	./out/SRBs-Setup-Item.h	\
+	./out/SRBs-SetupMod-Item.h	\
+	./out/SRBs-ToBeReleased-Item.h	\
+	./out/SRBs-ToBeSetup-Item.h	\
+	./out/SRBs-ToBeSetupMod-Item.h	\
+	./out/SUL-Information.h	\
+	./out/SubscriberProfileIDforRFP.h	\
+	./out/SULAccessIndication.h	\
+	./out/SupportedSULFreqBandItem.h	\
+	./out/FiveGS-TAC.h	\
+	./out/Configured-EPS-TAC.h	\
+	./out/TDD-Info.h	\
+	./out/TimeToWait.h	\
+	./out/TNLAssociationUsage.h	\
+	./out/TransportLayerAddress.h	\
+	./out/TransactionID.h	\
+	./out/Transmission-Bandwidth.h	\
+	./out/TransmissionActionIndicator.h	\
+	./out/TypeOfError.h	\
+	./out/UE-associatedLogicalF1-ConnectionItem.h	\
+	./out/UEAssistanceInformation.h	\
+	./out/UE-CapabilityRAT-ContainerList.h	\
+	./out/UEIdentityIndexValue.h	\
+	./out/ULConfiguration.h	\
+	./out/ULUEConfiguration.h	\
+	./out/ULUPTNLInformation-ToBeSetup-List.h	\
+	./out/ULUPTNLInformation-ToBeSetup-Item.h	\
+	./out/UplinkTxDirectCurrentListInformation.h	\
+	./out/UPTransportLayerInformation.h	\
+	./out/Criticality.h	\
+	./out/Presence.h	\
+	./out/PrivateIE-ID.h	\
+	./out/ProcedureCode.h	\
+	./out/ProtocolExtensionID.h	\
+	./out/ProtocolIE-ID.h	\
+	./out/TriggeringMessage.h	\
+	./out/ProtocolIE-Container.h	\
+	./out/ProtocolIE-SingleContainer.h	\
+	./out/ProtocolIE-Field.h	\
+	./out/ProtocolIE-ContainerPair.h	\
+	./out/ProtocolIE-FieldPair.h	\
+	./out/ProtocolExtensionContainer.h	\
+	./out/ProtocolExtensionField.h	\
+	./out/PrivateIE-Container.h	\
+	./out/PrivateIE-Field.h
+
+ASN_MODULE_HDRS+=./out/ANY.h
+ASN_MODULE_SRCS+=./out/ANY.c
+ASN_MODULE_HDRS+=./out/OCTET_STRING.h
+ASN_MODULE_HDRS+=./out/OPEN_TYPE.h
+ASN_MODULE_SRCS+=./out/OPEN_TYPE.c
+ASN_MODULE_HDRS+=./out/constr_CHOICE.h
+ASN_MODULE_HDRS+=./out/BOOLEAN.h
+ASN_MODULE_SRCS+=./out/BOOLEAN.c
+ASN_MODULE_HDRS+=./out/INTEGER.h
+ASN_MODULE_SRCS+=./out/INTEGER.c
+ASN_MODULE_HDRS+=./out/NativeEnumerated.h
+ASN_MODULE_SRCS+=./out/NativeEnumerated.c
+ASN_MODULE_HDRS+=./out/NativeInteger.h
+ASN_MODULE_SRCS+=./out/NativeInteger.c
+ASN_MODULE_HDRS+=./out/OBJECT_IDENTIFIER.h
+ASN_MODULE_SRCS+=./out/OBJECT_IDENTIFIER.c
+ASN_MODULE_HDRS+=./out/PrintableString.h
+ASN_MODULE_SRCS+=./out/PrintableString.c
+ASN_MODULE_HDRS+=./out/asn_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=./out/asn_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=./out/asn_SET_OF.h
+ASN_MODULE_SRCS+=./out/asn_SET_OF.c
+ASN_MODULE_SRCS+=./out/constr_CHOICE.c
+ASN_MODULE_HDRS+=./out/constr_SEQUENCE.h
+ASN_MODULE_SRCS+=./out/constr_SEQUENCE.c
+ASN_MODULE_HDRS+=./out/constr_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=./out/constr_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=./out/constr_SET_OF.h
+ASN_MODULE_SRCS+=./out/constr_SET_OF.c
+ASN_MODULE_HDRS+=./out/asn_application.h
+ASN_MODULE_SRCS+=./out/asn_application.c
+ASN_MODULE_HDRS+=./out/asn_ioc.h
+ASN_MODULE_HDRS+=./out/asn_system.h
+ASN_MODULE_HDRS+=./out/asn_codecs.h
+ASN_MODULE_HDRS+=./out/asn_internal.h
+ASN_MODULE_SRCS+=./out/asn_internal.c
+ASN_MODULE_HDRS+=./out/asn_random_fill.h
+ASN_MODULE_SRCS+=./out/asn_random_fill.c
+ASN_MODULE_HDRS+=./out/asn_bit_data.h
+ASN_MODULE_SRCS+=./out/asn_bit_data.c
+ASN_MODULE_SRCS+=./out/OCTET_STRING.c
+ASN_MODULE_HDRS+=./out/BIT_STRING.h
+ASN_MODULE_SRCS+=./out/BIT_STRING.c
+ASN_MODULE_SRCS+=./out/asn_codecs_prim.c
+ASN_MODULE_HDRS+=./out/asn_codecs_prim.h
+ASN_MODULE_HDRS+=./out/ber_tlv_length.h
+ASN_MODULE_SRCS+=./out/ber_tlv_length.c
+ASN_MODULE_HDRS+=./out/ber_tlv_tag.h
+ASN_MODULE_SRCS+=./out/ber_tlv_tag.c
+ASN_MODULE_HDRS+=./out/ber_decoder.h
+ASN_MODULE_SRCS+=./out/ber_decoder.c
+ASN_MODULE_HDRS+=./out/der_encoder.h
+ASN_MODULE_SRCS+=./out/der_encoder.c
+ASN_MODULE_HDRS+=./out/constr_TYPE.h
+ASN_MODULE_SRCS+=./out/constr_TYPE.c
+ASN_MODULE_HDRS+=./out/constraints.h
+ASN_MODULE_SRCS+=./out/constraints.c
+ASN_MODULE_HDRS+=./out/xer_support.h
+ASN_MODULE_SRCS+=./out/xer_support.c
+ASN_MODULE_HDRS+=./out/xer_decoder.h
+ASN_MODULE_SRCS+=./out/xer_decoder.c
+ASN_MODULE_HDRS+=./out/xer_encoder.h
+ASN_MODULE_SRCS+=./out/xer_encoder.c
+ASN_MODULE_HDRS+=./out/per_support.h
+ASN_MODULE_SRCS+=./out/per_support.c
+ASN_MODULE_HDRS+=./out/per_decoder.h
+ASN_MODULE_SRCS+=./out/per_decoder.c
+ASN_MODULE_HDRS+=./out/per_encoder.h
+ASN_MODULE_SRCS+=./out/per_encoder.c
+ASN_MODULE_HDRS+=./out/per_opentype.h
+ASN_MODULE_SRCS+=./out/per_opentype.c
+ASN_MODULE_HDRS+=./out/oer_decoder.h
+ASN_MODULE_HDRS+=./out/oer_encoder.h
+ASN_MODULE_HDRS+=./out/oer_support.h
+ASN_MODULE_SRCS+=./out/oer_decoder.c
+ASN_MODULE_SRCS+=./out/oer_encoder.c
+ASN_MODULE_SRCS+=./out/oer_support.c
+ASN_MODULE_SRCS+=./out/OPEN_TYPE_oer.c
+ASN_MODULE_SRCS+=./out/INTEGER_oer.c
+ASN_MODULE_SRCS+=./out/BIT_STRING_oer.c
+ASN_MODULE_SRCS+=./out/OCTET_STRING_oer.c
+ASN_MODULE_SRCS+=./out/NativeInteger_oer.c
+ASN_MODULE_SRCS+=./out/NativeEnumerated_oer.c
+ASN_MODULE_SRCS+=./out/constr_CHOICE_oer.c
+ASN_MODULE_SRCS+=./out/constr_SEQUENCE_oer.c
+ASN_MODULE_SRCS+=./out/constr_SET_OF_oer.c
+
+ASN_MODULE_CFLAGS=
+
+lib_LTLIBRARIES+=libasncodec.la
+libasncodec_la_SOURCES=$(ASN_MODULE_SRCS) $(ASN_MODULE_HDRS)
+libasncodec_la_CPPFLAGS=-I$(top_srcdir)/./out/
+libasncodec_la_CFLAGS=$(ASN_MODULE_CFLAGS)
+libasncodec_la_LDFLAGS=-lm

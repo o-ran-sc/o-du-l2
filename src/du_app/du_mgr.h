@@ -54,29 +54,110 @@
 #include "lrg.x"
 
 #define DU_PROC  0
+/* Memory related configs */
+#define DU_APP_MEM_REGION    1
+#define RLC_UL_MEM_REGION     1
+#define RLC_DL_MEM_REGION     4
+#define RG_MEM_REGION     4
+
 #define DU_POOL  1
+#define RLC_POOL  1
+#define RG_POOL 1
+
 /* Events */
 #define EVTCFG 0
-#define EVTSCTPUP 1
+#define EVTSCTPSTRT 1
+#define EVTSCTPDATA 2
+#define EVTSCTPNTFY 3
 
 /* Selector */
 #define DU_SELECTOR_LC   0
 #define DU_SELECTOR_TC   1
 #define DU_SELECTOR_LWLC 2
 
+/* SAP IDs */
+#define DU_RG_SUID 0
+#define DU_RG_SPID 0
+
+/* Instance */
+#define RLC_UL_INST 0
+#define RLC_DL_INST 1
+
+#define DU_ZERO_VAL 0
+
+/* Macros */
+#define DEFAULT_CELLS    1
+
+#define RLC_GEN_CFG      1
+#define RLC_MAC_SAP_CFG  2
+#define RLC_UDX_SAP_CFG  4
+
+#define MAC_GEN_CFG   1
+#define MAC_SAP_CFG   2
+#define MAX_MAC_SAP   2
+
+#define DU_RLC_UL_CONFIGURED  (RLC_GEN_CFG |  \
+      RLC_MAC_SAP_CFG | RLC_UDX_SAP_CFG)
+#define DU_RLC_DL_CONFIGURED DU_RLC_UL_CONFIGURED
+
+#define MAC_CONFIGURED (MAC_GEN_CFG | MAC_SAP_CFG)
+
+#define DU_SET_ZERO(_buf, _size)   \
+   cmMemset((U8 *)(_buf), 0, _size);
+
+
 /* DU APP DB */
-typedef struct duDb
+typedef struct duCb
 {
-   F1Status f1Status;
+   Mem      mem;
+   TskInit  init;
+   Bool     sctpStatus;
+   Bool     f1Status;
+   Bool     duStatus;
 
-}DuDb;
+}DuCb;
 
+typedef struct duLSapCfg
+{
+   SuId        suId;
+   SpId        spId;
+   Ent         srcEnt;
+   Inst        srcInst;
+   ProcId      dstProcId;
+   Ent         dstEnt;
+   Inst        dstInst;
+   Priority    dstPrior;
+   Route       dstRoute;
+   Selector    dstSel;
+   Mem         mem;
+   U8          maxBndRetry;
+   TmrCfg      bndTmr;
+   TmrCfg      connTmr;
+}DuLSapCfg;
+
+/* global variables */
+DuCb duCb;
+DuCfgParams duCfgParam;
 
 /* DU Cell Functions */
 S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason);
 S16 duActvTsk(Pst *pst, Buffer *mBuf);
-S16 duProcCfgComplete();
-
+S16 duSendRlcUlCfg();
+S16 duSendRlcDlCfg();
+S16 duBuildRlcCfg(Inst inst);
+S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst);
+S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst);
+S16 duHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm);
+S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cfm);
+S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm);
+S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm);
+S16 duSendMacCfg();
+S16 duBuildMacGenCfg();
+S16 duBuildMacUsapCfg(SpId sapId);
+S16 duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm);
+S16 duBindUnbindRlcToMacSap(U8 inst, U8 action);
+S16 duSctpStartReq();
+S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy);
 #endif
 
 /**********************************************************************

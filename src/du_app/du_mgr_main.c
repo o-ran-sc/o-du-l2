@@ -28,9 +28,6 @@ extern S16 kwDlActvInit (Ent, Inst, Region, Reason);
 extern S16 rgActvTsk (Pst *, Buffer *);
 extern S16 rgActvInit (Ent, Inst, Region, Reason);
 
-DuCfgParams ducfgparam; //global variable to hold all configs
-
-
 /*******************************************************************
  *
  * @brief Initializes DU APP
@@ -51,7 +48,7 @@ DuCfgParams ducfgparam; //global variable to hold all configs
 S16 duAppInit(SSTskId sysTskId)
 {
    /* Register DU APP TAPA Task for DU */
-   if(SRegTTsk((Ent)ENTDUAPP, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(SRegTTsk((Ent)ENTDUAPP, (Inst)DU_INST, (Ttype)TTNORM, (Prior)PRIOR0,
             duActvInit, (ActvTsk)duActvTsk) != ROK)
    {
       return RFAILED;
@@ -66,7 +63,6 @@ S16 duAppInit(SSTskId sysTskId)
          to %d sys task\n", sysTskId);
    return ROK;
 }
-
 /*******************************************************************
  *
  * @brief Initializes SCTP task
@@ -92,7 +88,7 @@ S16 sctpInit(SSTskId sysTskId)
       return RFAILED;
    }
    /* Attach SCTP TAPA Task */
-   if (SAttachTTsk((Ent)ENTSCTP, (Inst)0, sysTskId)!= ROK)
+   if (SAttachTTsk((Ent)ENTSCTP, (Inst)SCTP_INST, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -101,7 +97,6 @@ S16 sctpInit(SSTskId sysTskId)
          sysTskId);
    return ROK;
 }
-
 /*******************************************************************
  *
  * @brief Initializes RLC DL, MAC TAPA task
@@ -207,25 +202,20 @@ S16 commonInit()
    pthread_attr_t attr;
 
    SSetProcId(DU_PROC);
-   //TODO: check regarding cores and add info here
 
    /* system task for DU APP */
    SCreateSTsk(PRIOR0, &du_app_stsk);
-   //TODO: check core info to pin the above task to whcih core
 
    /* system task for RLC_DL and MAC */
    SCreateSTsk(PRIOR0, &rlc_mac_cl_stsk);
    pthread_attr_init(&attr);
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-   //TODO: check core info to pin the above task to whcih core
 
    /* system task for RLC UL */
    SCreateSTsk(PRIOR1, &rlc_ul_stsk);
-   //TODO: check core info to pin the above task to whcih core
 
    /* system task for SCTP receiver thread */
-   SCreateSTsk(PRIOR3, &sctp_stsk);
-   //TODO: check core info to pin the above task to whcih core
+   SCreateSTsk(PRIOR0, &sctp_stsk);
 
    /* Create TAPA tasks */
    if(duAppInit(du_app_stsk) != ROK)

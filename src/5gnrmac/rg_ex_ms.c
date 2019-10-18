@@ -449,7 +449,7 @@ Buffer  *mBuf;                      /* message buffer       */
    {
       /* The originator of this message is the stack manager,
        * unpack and go to the respective primitive processing function */
-      case ENTSM:
+      case ENTDUAPP:
           rgHdlSMEvents(pst, mBuf);
            break;
       case ENTNH:

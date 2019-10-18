@@ -433,8 +433,10 @@ PUBLIC void DumpLayersDebugInformation()
 #else
       //DumpPDCPDlDebugInformation();
       //DumpPDCPUlDebugInformation();   
+#ifdef CU_STUB
       DumpRLCDlDebugInformation();
       DumpRLCUlDebugInformation();
+#endif
       //printSchCellInfo();
 #endif      
    }

@@ -23,8 +23,8 @@
 
 /* Function declarations */
 S16 duReadCfg();
-void readCfg();
-void readClCfg();
+S16 readCfg();
+S16 readClCfg();
 void fillSlotConfig();
 S16 duAppInit(SSTskId sysTskId);
 S16 sctpInit(SSTskId sysTskId);

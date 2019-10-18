@@ -23,7 +23,11 @@
 #include "lcl.h"
 
 #define DU_PROC  0
+#define DU_INST 0
 #define DU_POOL  1
+
+#define SCTP_INST 0
+
 /* Events */
 #define EVTCFG 0
 
@@ -34,14 +38,14 @@
 
 
 /* Macro definitions for F1 procedures */
-#define CU_DU_NAME_LEN_MAX 150      /* Max length of CU/DU name string */
+#define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 #define MAX_F1_CONNECTIONS 65536    /* Max num of F1 connections */
-#define MAXCELLINGNBDU     512      /* Max num of cells served by gNB-DU */
-#define MAXNUMOFBPLMN      6        /* Max num of broadcast PLMN ids */
+#define MAXCELLINGNBDU     2      /* Max num of cells served by gNB-DU */
+#define MAXNUMOFBPLMN      1        /* Max num of broadcast PLMN ids */
 #define MAXNRARFCN         3279165  /* Maximum values of NRAFCN */
-#define MAXNRCELLBANDS     32       /* Maximum number of frequency bands */
+#define MAXNRCELLBANDS     2       /* Maximum number of frequency bands */
 #define MAXNUMOFSLICEITEMS 1024     /* Maximum number of signalled slice support items */
-#define MAXBPLMNNRMINUS1   11       /* Maximum number of PLMN Ids broadcast in an NR cell minus 1 */
+#define MAXBPLMNNRMINUS1   1       /* Maximum number of PLMN Ids broadcast in an NR cell minus 1 */
 #define MAXNUMOFSIBTYPES   32       /* Maximum number of SIB types */
 #define MAX_UEID           512      /* Maximum number of UE Ids */
 #define MAXNUMOFTNLASSOCS  32       /* Max num of TNL Assoc between CU and DU */
@@ -50,15 +54,9 @@
 #define MAXNUMOFUACPLMN    12       /* Maximum number of PLMN ids*/
 #define MAXNUMOFUACPERPLMN 64       /* Maximum number of signalled categories per PLMN */
 
-#define MAX_IPV4_LEN       16        /* Max lenght of IPV4 Address */
-#define MAX_IPV6_LEN       40       /* Max lenght of IPV6 Address */
+#define MAX_IPV6_LEN       16       /* Max lenght of IPV6 Address */
 
 
-typedef enum
-{
-  F1_DOWN,
-  F1_UP
-}F1Status;
 
 typedef enum
 {
@@ -315,13 +313,8 @@ typedef struct f1ResetType
 
 typedef struct f1PLMN
 {
-//<<<<<<< HEAD
   U8 mcc[3];
   U8 mnc[3];
-//=======
-  //char mcc[3];
-  //char mnc[3];
-//>>>>>>> 0fec7aba84be690775c36e49eb31082dc2180f38
 }F1Plmn;
 
 typedef struct nrEcgi
@@ -774,9 +767,9 @@ typedef struct f1NwkAccessRateRed
 typedef struct f1Ipaddr
 {
  Bool ipV4Pres;
- char ipV4Addr[MAX_IPV4_LEN]; 
+ U32  ipV4Addr; 
  Bool ipV6Pres;
- char ipV6Addr[MAX_IPV6_LEN];
+ U8   ipV6Addr[MAX_IPV6_LEN];
 }F1IpAddr;
 
 typedef struct f1SctpParams
@@ -790,22 +783,14 @@ typedef struct f1SctpParams
 typedef struct duCfgParams
 {
    F1SctpParams       sctpParams;                    /* SCTP Params */
+   U32                maxUe;
    U32                duId;
-   char               duName[CU_DU_NAME_LEN_MAX]; 
+   U8                 duName[CU_DU_NAME_LEN_MAX]; 
    F1DuSrvdCellInfo   srvdCellLst[MAXCELLINGNBDU];   /* Serving cell list */
    F1RrcVersion       rrcVersion;                    /* RRC version */
    ClCellCfg          clCellCfg;                     /* CL cell configuration */
 
 }DuCfgParams;
-
-extern DuCfgParams ducfgparam;
-
-typedef struct cuCfgParams
-{
-   U32                cuId;
-   char               cuName[CU_DU_NAME_LEN_MAX]; 
-
-}CuCfgParams;
 
 #endif /* __DU_COMMON_H__ */
 

@@ -240,7 +240,7 @@ Buffer *mBuf;           /* message buffer */
 
    switch(pst->srcEnt)
    {
-      case ENTSM:
+      case ENTDUAPP:
          {
             switch(pst->event)
             {

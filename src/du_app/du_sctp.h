@@ -21,32 +21,24 @@
 #ifndef __DU_SCTP_H__
 #define __DU_SCTP_H__
 
-#include <netinet/in.h>
-#include <netinet/sctp.h>
 #include "du_mgr.h"
+#include "cm_inet.h"
+#include "cm_tpt.h"
+
+#include "cm_inet.x"
+#include "cm_tpt.x"
 
 S16 sctpActvInit(Ent entity, Inst inst, Region region, Reason reason);
 S16 sctpActvTsk(Pst *pst, Buffer *mBuf);
+void sctpAssocReq();
+void sendToDuApp(Buffer *mBuf, Event event);
+S16 sctpOutMsgSend(Buffer *mBuf);
+typedef S16 (*SctpNtfy) ARGS((Buffer *mBuf, CmInetSctpNotification *ntfy));
 
-#define REALLY_BIG 65536
+S16 cmPkSctpNtfy(CmInetSctpNotification *ntfy);
+S16 cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf);
 
-/* Convenience structure to determine space needed for cmsg. */
-typedef union 
-{
-   struct sctp_initmsg init;
-   struct sctp_sndrcvinfo sndrcvinfo;
-}_sctp_cmsg_data_t;
-
-#define CMSG_SPACE_INITMSG (CMSG_SPACE(sizeof(struct sctp_initmsg)))
-#define CMSG_SPACE_SNDRCV (CMSG_SPACE(sizeof(struct sctp_sndrcvinfo)))
-
-typedef union 
-{
-   struct sockaddr_storage ss;
-   struct sockaddr_in v4;
-   struct sockaddr_in6 v6;
-   struct sockaddr sa;
-} sockaddr_storage_t;
+#define MAX_RETRY 5
 
 #endif
 

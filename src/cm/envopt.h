@@ -35,6 +35,14 @@
 #define __ENVOPTH__
 #define IOT_REPETITION
 
+/************************************************************************
+     kernel SCTP parameters
+************************************************************************/
+#define CM_LKSCTP
+#define CM_LKSCTP_NONBLOCK
+#define SCTP_CONNECTX_NEW
+#define CMINETDBG
+
  
 /* defines */
 /**************************************************************************

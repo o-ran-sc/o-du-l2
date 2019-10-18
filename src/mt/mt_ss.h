@@ -63,7 +63,7 @@
 #define SS_MAX_STSKS                    5 
 #endif
 #else 
-#define SS_MAX_STSKS                    4 
+#define SS_MAX_STSKS                    5 
 #endif 
 #endif /* SS_MULTICORE_SUPPORT */
 
