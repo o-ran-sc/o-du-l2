@@ -4,6 +4,8 @@ Directory Structure :
    a. common : contains individual module's makefile
    b. config : contains SSI memory configuration
    c. odu    : contains main makefile to generate an executable binary
+
+2. l2/docs/  : contains README and other configuration files for building docs
 	
 2. l2/src/ : contains layer specific source code
    a. 5gnrmac  : MAC source code

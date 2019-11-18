@@ -10,7 +10,7 @@ This document provides the release notes for <RELEASE> of <COMPONENT>.
 
 
 Version history
----------------
+===============
 
 +--------------------+--------------------+--------------------+--------------------+
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
