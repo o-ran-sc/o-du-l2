@@ -213,55 +213,6 @@ Reason reason;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
-#if 0
-
-/**
-* @brief Request from RRM to MAC to Unbind the interface saps
-*
-* @details
-*
-*     Function : cmUnpkLwLcRgmUbndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   Reason  reason
-*  @return   S16
-*      -# ROK
-**/
-#ifdef ANSI
-PUBLIC S16 cmUnpkLwLcRgmUbndReq
-(
-RgmUbndReq func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmUnpkLwLcRgmUbndReq(func, pst, mBuf)
-RgmUbndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
-{
-   SpId spId;
-   Reason reason;
-   
-   TRC3(cmUnpkLwLcRgmUbndReq)
-
-   if (SUnpkS16(&spId, mBuf) != ROK)
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-   if (SUnpkS16(&reason, mBuf) != ROK)
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-   SPutMsg(mBuf);
-   RETVALUE((*func)(pst, spId, reason));
-}
-#endif
-
 /**
 * @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps

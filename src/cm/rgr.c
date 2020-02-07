@@ -431,8 +431,8 @@ Buffer *mBuf;
 *     Func : cmPkRgrCfgReq
 *
 *
-*     Desc : Configuration Request from RRM to MAC for 
- * configuring Cell/Ue/Lc
+*     Desc : Configuration Request from DU_APP to MAC for 
+*            configuring Cell/Ue/Lc
 *
 *
 *     Ret  : S16
@@ -446,14 +446,12 @@ Buffer *mBuf;
 PUBLIC S16 cmPkRgrCfgReq
 (
 Pst* pst,
-SpId spId,
 RgrCfgTransId transId,
 RgrCfgReqInfo * cfgReqInfo
 )
 #else
-PUBLIC S16 cmPkRgrCfgReq(pst, spId, transId, cfgReqInfo)
+PUBLIC S16 cmPkRgrCfgReq(pst, transId, cfgReqInfo)
 Pst* pst;
-SpId spId;
 RgrCfgTransId transId;
 RgrCfgReqInfo * cfgReqInfo;
 #endif
@@ -490,6 +488,7 @@ RgrCfgReqInfo * cfgReqInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
+#if 0
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -500,6 +499,7 @@ RgrCfgReqInfo * cfgReqInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
+#endif
    if (SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(RgrCfgReqInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -510,7 +510,7 @@ RgrCfgReqInfo * cfgReqInfo;
       RETVALUE(RFAILED);
    }
 
-   pst->event = (Event) EVTRGRCFGREQ;
+   pst->event = (Event) EVTMACSCHCFGREQ;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
@@ -545,12 +545,11 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   SpId spId;
    RgrCfgTransId transId;
    RgrCfgReqInfo *cfgReqInfo;
    
    TRC3(cmUnpkRgrCfgReq)
-
+#if 0
    if (SUnpkS16(&spId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -560,6 +559,8 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
+#endif
+
    if (cmUnpkRgrCfgTransId(&transId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -591,7 +592,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, spId, transId, cfgReqInfo));
+   RETVALUE((*func)(pst, transId, cfgReqInfo));
 }
 
 /* rgr_c_001.main_3: Added TTI indication from MAC to RGR user */
@@ -820,14 +821,12 @@ Buffer *mBuf;
 PUBLIC S16 cmPkRgrCfgCfm
 (
 Pst* pst,
-SuId suId,
 RgrCfgTransId transId,
 U8 status
 )
 #else
-PUBLIC S16 cmPkRgrCfgCfm(pst, suId, transId, status)
+PUBLIC S16 cmPkRgrCfgCfm(pst, transId, status)
 Pst* pst;
-SuId suId;
 RgrCfgTransId transId;
 U8 status;
 #endif
@@ -861,16 +860,7 @@ U8 status;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (SPkS16(suId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ERGR034, (ErrVal)0, "Packing failed");
-#endif
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-   pst->event = (Event) EVTRGRCFGCFM;
+   pst->event = (Event) EVTMACSCHCFGCFM;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
@@ -904,21 +894,11 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   SuId suId;
    RgrCfgTransId transId;
    U8 status;
    
    TRC3(cmUnpkRgrCfgCfm)
 
-   if (SUnpkS16(&suId, mBuf) != ROK) {
-      SPutMsg(mBuf);
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ERGR035, (ErrVal)0, "Packing failed");
-#endif
-      RETVALUE(RFAILED);
-   }
    if (cmUnpkRgrCfgTransId(&transId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -938,7 +918,7 @@ Buffer *mBuf;
       RETVALUE(RFAILED);
    }
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, transId, status));
+   RETVALUE((*func)(pst, transId, status));
 }
 
 /* rgr_c_001.main_4: ADD-Added for SI Enhancement. */
@@ -3687,9 +3667,6 @@ Buffer           *mBuf
    {
 
       CMCHKPK(SPkU32, param->dynConfig[(U8)idx], mBuf);
-#if 0
-      printf("\npk dyn:%u\n",param->dynConfig[(U8)idx]);
-#endif
    }
    CMCHKPK(SPkU8, param->uePerGrp, mBuf);
    CMCHKPK(SPkU8, param->ueGrpPerTti, mBuf);
@@ -3697,13 +3674,6 @@ Buffer           *mBuf
    CMCHKPK(SPkU8, param->numOfCC, mBuf);
    CMCHKPK(SPkU8, param->bwPerCC, mBuf);
    CMCHKPK(SPkU8, param->cfi, mBuf);
-#if 0
-   printf("\npk uePerGrp%:%u\n",param->uePerGrp);
-   printf("\npk ueGrpPerTti:%u\n",param->ueGrpPerTti);
-   printf("\npk num of UEs:%u\n",param->numUes);
-   printf("\npk Num of CC:%u\n",param->numOfCC);
-   printf("\npk bw per cc:%u\n",param->bwPerCC);
-#endif
    RETVALUE(ROK);
 }
 
@@ -3721,20 +3691,10 @@ Buffer           *mBuf
    CMCHKUNPK(SUnpkU8, &param->numUes, mBuf);
    CMCHKUNPK(SUnpkU8, &param->ueGrpPerTti, mBuf);
    CMCHKUNPK(SUnpkU8, &param->uePerGrp, mBuf);
-#if 0
-   printf("\nunpk uePerGrp:%u\n",param->uePerGrp);
-   printf("\nunpk ueGrpPerTti:%u\n",param->ueGrpPerTti);
-   printf("\nunpk num of ues:%u\n",param->numUes);
-   printf("\nunpk num of cc:%u\n",param->numOfCC);
-   printf("\nunpk bw per cc:%u\n",param->bwPerCC);
-#endif
    for (idx = 0; idx < MAX_5GTF_SUBFRAME_INFO ; ++idx)
    {
 
       CMCHKUNPK(SUnpkU32, &param->dynConfig[(U8)idx], mBuf);
-#if 0
-      printf("\nunpk dyn:%u\n",param->dynConfig[(U8)idx]);
-#endif
    }
    RETVALUE(ROK);
 }
@@ -4201,9 +4161,9 @@ PUBLIC S16 cmUnpkRgrCellLteAdvancedFeatureCfg(param, mBuf)
 
 /***********************************************************
 *
-*     Func : cmPkRgrSchedEnbCfg
+*     Func : cmPkMacSchedGnbCfg
 *
-*     Desc : SCH ENB Configurations 
+*     Desc : SCH GNB Configurations 
 *
 *     Ret  : S16
 *
@@ -4213,53 +4173,34 @@ PUBLIC S16 cmUnpkRgrCellLteAdvancedFeatureCfg(param, mBuf)
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgrSchedEnbCfg
+PUBLIC S16 cmPkMacSchedGnbCfg
 (
-RgrSchedEnbCfg *param,
+MacSchedGnbCfg *param,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmPkRgrSchedEnbCfg(param, mBuf)
+PUBLIC S16 cmPkMacSchedGnbCfg(param, mBuf)
 RgrSchedEnbCfg *param;
 Buffer         *mBuf;
 #endif
 {
+   TRC3(cmPkMacSchedGnbCfg)
 
-   //S32 i;
-   TRC3(cmPkRgrSchedEnbCfg)
-
-#ifdef RG_5GTF
-   CMCHKPK(SPkU8, param->isDynTddEnbld, mBuf);
-#endif
-   CMCHKPK(SPkU32, param->accsMode, mBuf);
-   switch(param->ulSchdType) 
-   {
-      case RGR_SCH_TYPE_PFS:
-         CMCHKPK(cmPkRgrEnbPfs, &param->ulSchInfo.ulPfs, mBuf);
-         break;
-      default :
-         break;
-   }
-   CMCHKPK(SPkU8, param->ulSchdType, mBuf);
-   switch(param->dlSchdType) 
-   {
-      case RGR_SCH_TYPE_PFS:
-         CMCHKPK(cmPkRgrEnbPfs, &param->dlSchInfo.dlPfs, mBuf);
-         break;
-      default :
-         break;
-   }
+   CMCHKPK(SPkU8, param->maxDlUePerTti, mBuf);
+   CMCHKPK(SPkU8, param->maxUlUePerTti, mBuf);
+   CMCHKPK(SPkU8, param->numCells, mBuf);
    CMCHKPK(SPkU8, param->dlSchdType, mBuf);
+   CMCHKPK(SPkU8, param->ulSchdType, mBuf);
    CMCHKPK(SPkU8, param->numTxAntPorts, mBuf);
    RETVALUE(ROK);
 } /* cmPkRgrSchedEnbCfg */
 
 /***********************************************************
 *
-*     Func : cmUnpkRgrSchedEnbCfg
+*     Func : cmUnpkMacSchedGnbCfg
 *
 *
-*     Desc : SCH Enodeb Configuration to SCH
+*     Desc : SCH Gnodeb Configuration to SCH
 *
 *
 *     Ret  : S16
@@ -4270,48 +4211,28 @@ Buffer         *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgrSchedEnbCfg
+PUBLIC S16 cmUnpkMacSchedGnbCfg
 (
-RgrSchedEnbCfg *param,
+MacSchedGnbCfg *param,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgrSchedEnbCfg(param, mBuf)
-RgrSchedEnbCfg *param;
+PUBLIC S16 cmUnpkMacSchedGnbCfg(param, mBuf)
+MacSchedGnbCfg *param;
 Buffer         *mBuf;
 #endif
 {
 
-   //S32 i;
-   U32 tmpEnum;
-   TRC3(cmUnpkRgrSchedEnbCfg)
+   TRC3(cmUnpkMacSchedGnbCfg)
 
    CMCHKUNPK(SUnpkU8, &param->numTxAntPorts, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->dlSchdType, mBuf);
-   switch(param->dlSchdType) 
-   {
-      case RGR_SCH_TYPE_PFS:
-         CMCHKUNPK(cmUnpkRgrEnbPfs, &param->dlSchInfo.dlPfs, mBuf);
-         break;
-      default :
-         break;
-   }
    CMCHKUNPK(SUnpkU8, &param->ulSchdType, mBuf);
-   switch(param->ulSchdType) 
-   {
-      case RGR_SCH_TYPE_PFS:
-         CMCHKUNPK(cmUnpkRgrEnbPfs, &param->ulSchInfo.ulPfs, mBuf);
-         break;
-      default :
-         break;
-   }
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
-   param->accsMode = (RgrCellAccsMode) tmpEnum;
-#ifdef RG_5GTF
-   CMCHKUNPK(SUnpkU8, &param->isDynTddEnbld, mBuf);
-#endif
+   CMCHKUNPK(SUnpkU8, &param->dlSchdType, mBuf);
+   CMCHKUNPK(SUnpkU8, &param->numCells, mBuf);
+   CMCHKUNPK(SUnpkU8, &param->maxUlUePerTti, mBuf);
+   CMCHKUNPK(SUnpkU8, &param->maxDlUePerTti, mBuf);
    RETVALUE(ROK);
-} /* cmUnpkRgrSchedEnbCfg */
+} /* cmUnpkMacSchedGnbCfg */
 
 
 /***********************************************************
@@ -6889,9 +6810,6 @@ PUBLIC S16 cmUnpkRgr5gtfUeCfg
    CMCHKUNPK(SUnpkU8, &param->numCC, mBuf);
    CMCHKUNPK(SUnpkU8, &param->mcs, mBuf);
    CMCHKUNPK(SUnpkU8, &param->maxPrb, mBuf);
-#if 0
-   printf("\nunpk %u,%u,%u,%u,%u\n",param->grpId,param->BeamId,param->numCC,param->mcs,param->maxPrb);
-#endif
    RETVALUE(ROK);
 }
 
@@ -6906,9 +6824,6 @@ PUBLIC S16 cmPkRgr5gtfUeCfg
    CMCHKPK(SPkU8, param->numCC, mBuf);
    CMCHKPK(SPkU8, param->BeamId, mBuf);
    CMCHKPK(SPkU8, param->grpId, mBuf);
-#if 0
- printf("\npk %u,%u,%u,%u,%u\n",param->grpId,param->BeamId,param->numCC,param->mcs,param->maxPrb);
-#endif
    RETVALUE(ROK);
 }
 #endif
@@ -7742,8 +7657,8 @@ Buffer *mBuf;
          case RGR_CELL_CFG:
             CMCHKPK(cmPkRgrCellCfg, &param->u.cellCfg, mBuf);
             break;
-         case RGR_ENB_CFG:
-            CMCHKPK(cmPkRgrSchedEnbCfg, &param->u.schedEnbCfg, mBuf);
+         case MAC_GNB_CFG:
+            CMCHKPK(cmPkMacSchedGnbCfg, &param->u.schedGnbCfg, mBuf);
             break;
          default :
             RETVALUE(RFAILED);
@@ -7786,8 +7701,8 @@ Buffer *mBuf;
 
    CMCHKUNPK(SUnpkU8, &param->cfgType, mBuf);
       switch(param->cfgType) {
-         case RGR_ENB_CFG:
-            CMCHKUNPK(cmUnpkRgrSchedEnbCfg, &param->u.schedEnbCfg, mBuf);
+         case MAC_GNB_CFG:
+            CMCHKUNPK(cmUnpkMacSchedGnbCfg, &param->u.schedGnbCfg, mBuf);
             break;
          case RGR_CELL_CFG:
             CMCHKUNPK(cmUnpkRgrCellCfg, &param->u.cellCfg, mBuf);
@@ -9225,7 +9140,7 @@ Buffer *mBuf;
          case RGR_RECONFIG:
             CMCHKPK(cmPkRgrRecfg, &param->u.recfgInfo, mBuf);
             break;
-         case RGR_CONFIG:
+         case SCH_CONFIG:
             CMCHKPK(cmPkRgrCfg, &param->u.cfgInfo, mBuf);
             break;
 #ifdef LTE_ADV
@@ -9276,7 +9191,7 @@ Buffer *mBuf;
 
    CMCHKUNPK(SUnpkU8, &param->action, mBuf);
       switch(param->action) {
-         case RGR_CONFIG:
+         case SCH_CONFIG:
             CMCHKUNPK(cmUnpkRgrCfg, &param->u.cfgInfo, mBuf);
             break;
          case RGR_RECONFIG:
@@ -11372,9 +11287,6 @@ Buffer *mBuf;
 #endif
 {
    S8          idx;
-#if 0
-   Ptr         ptr;
-#endif
 
    /* dsfr_pal_fixes ** 21-March-2013 ** SKS */
    TknStrOSXL  *tknStr;
@@ -11392,9 +11304,6 @@ Buffer *mBuf;
    }
    else
    {
-#if 0
-      ptr =(Ptr)param;
-#endif
 
       /* dsfr_pal_fixes ** 21-March-2013 ** SKS ** Start */
       tknStr = &param->u.rntpInfo;

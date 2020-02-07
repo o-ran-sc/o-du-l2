@@ -36,8 +36,9 @@
 #include "cm_inet.h"
 #include "lkw.h"
 #include "lrg.h"
+#include "legtp.h"
 
-#include "du_common.h"
+/*#include "du_cfg_hdl.h"*/
 
 #include "gen.x"           /* General */
 #include "ssi.x"           /* System services */
@@ -55,7 +56,7 @@
 
 #define DU_PROC  0
 /* Memory related configs */
-#define DU_APP_MEM_REGION    1
+#define DU_APP_MEM_REGION    0
 #define RLC_UL_MEM_REGION     1
 #define RLC_DL_MEM_REGION     4
 #define RG_MEM_REGION     4
@@ -66,9 +67,14 @@
 
 /* Events */
 #define EVTCFG 0
-#define EVTSCTPSTRT 1
-#define EVTSCTPDATA 2
-#define EVTSCTPNTFY 3
+#define EVTSCTPSTRT  1
+#define EVTSCTPDATA  2
+#define EVTSCTPNTFY  3
+#define EVTSRVOPENREQ  4
+#define EVTSRVOPENCFM  5
+#define EVTTNLMGMTREQ  6
+#define EVTTNLMGMTCFM  7
+#define EVTTTIIND    8
 
 /* Selector */
 #define DU_SELECTOR_LC   0
@@ -76,17 +82,26 @@
 #define DU_SELECTOR_LWLC 2
 
 /* SAP IDs */
-#define DU_RG_SUID 0
-#define DU_RG_SPID 0
+#define DU_MAC_SUID 0
+#define DU_MAC_SPID 0
 
 /* Instance */
 #define RLC_UL_INST 0
 #define RLC_DL_INST 1
 
+/* SAP state */
+#define DU_SAP_UNBOUND 1
+#define DU_SAP_BINDING 2
+#define DU_SAP_BOUND   3
+
 #define DU_ZERO_VAL 0
 
 /* Macros */
 #define DEFAULT_CELLS    1
+#define NR_RANAC 150
+
+#define ADD 0
+#define DEL 1
 
 #define RLC_GEN_CFG      1
 #define RLC_MAC_SAP_CFG  2
@@ -105,17 +120,65 @@
 #define DU_SET_ZERO(_buf, _size)   \
    cmMemset((U8 *)(_buf), 0, _size);
 
+/* allocate and zero out a static buffer */
+#define DU_ALLOC(_datPtr, _size)                                \
+{                                                               \
+   S16 _ret;                                                    \
+   _ret = SGetSBuf(DU_APP_MEM_REGION, DU_POOL,                  \
+                    (Data **)&_datPtr, _size);                  \
+   if(_ret == ROK)                                              \
+      cmMemset((U8*)_datPtr, 0, _size);                         \
+   else                                                         \
+      _datPtr = NULLP;                                          \
+}
+
+/* free a static buffer */
+#define DU_FREE(_datPtr, _size)                                 \
+   if(_datPtr)                                                  \
+      SPutSBuf(DU_APP_MEM_REGION, DU_POOL,                      \
+         (Data *)_datPtr, _size);
+
+typedef enum
+{
+   OOS,
+   ACTIVATION_IN_PROGRESS,
+   ACTIVATED,
+   DELETION_IN_PROGRESS
+}CellStatus;
+
+#if 0
+typedef struct duCellCb
+{
+   U32            cellId;      /* Internal cell Id */
+   CellCfgParams  cellInfo;    /* Cell info */
+   CellStatus     cellStatus;  /*Cell status */
+}DuCellCb;
+#endif
+
+typedef struct duLSapCb
+{
+   Pst pst;
+   SuId        suId;
+   SpId        spId;
+   State       sapState;
+   Mem         mem;
+   CmTimer     timer;
+   U8                        bndRetryCnt;
+   U8                        maxBndRetry;
+   TmrCfg                    bndTmr;
+}DuLSapCb;
 
 /* DU APP DB */
 typedef struct duCb
 {
-   Mem      mem;
-   TskInit  init;
-   Bool     sctpStatus;
-   Bool     f1Status;
-   Bool     duStatus;
-
+   Mem           mem;    /* Memory configs */
+   TskInit       init;   /* DU Init */
+   //DuLSapCb      **macSap;  /* MAC SAP */
+   Bool          f1Status; /* Status of F1 connection */
+   CmHashListCp  cellLst;     /* List of cells at DU APP of type DuCellCb */
+   CmHashListCp  actvCellLst; /* List of cells activated/to be activated of type DuCellCb */
 }DuCb;
+
 
 typedef struct duLSapCfg
 {
@@ -137,7 +200,7 @@ typedef struct duLSapCfg
 
 /* global variables */
 DuCb duCb;
-DuCfgParams duCfgParam;
+//DuCfgParams duCfgParam;
 
 /* DU Cell Functions */
 S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason);
@@ -156,8 +219,20 @@ S16 duBuildMacGenCfg();
 S16 duBuildMacUsapCfg(SpId sapId);
 S16 duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm);
 S16 duBindUnbindRlcToMacSap(U8 inst, U8 action);
+S16 duProcCfgComplete();
+S16 duSendSchCfg();
 S16 duSctpStartReq();
 S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy);
+
+S16 duBuildEgtpCfgReq();
+S16 duHdlEgtpCfgComplete(CmStatus cfm);
+S16 duSendEgtpSrvOpenReq();
+S16 duHdlEgtpSrvOpenComplete(CmStatus cfm);
+S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid);
+S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm);
+S16 duSendEgtpDatInd();
+S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
+
 #endif
 
 /**********************************************************************

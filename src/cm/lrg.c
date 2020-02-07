@@ -194,7 +194,7 @@ RgMngmt * cfg;
       RETVALUE(RFAILED);
    }
    if (pst->selector == LRG_SEL_LC) {
-      if (cmPkRgMngmt(pst, cfg, EVTLRGSCHCFGREQ, mBuf) != ROK) {
+      if (cmPkRgMngmt(pst, cfg, EVTMACSCHGENCFGREQ, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -205,7 +205,6 @@ RgMngmt * cfg;
       }
    }
    
-   pst->event = (Event) EVTLRGSCHCFGREQ;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
@@ -242,7 +241,7 @@ Buffer *mBuf;
    
    TRC3(cmUnpkLrgSchCfgReq)
 
-   if (cmUnpkRgMngmt(pst, &cfg, EVTLRGSCHCFGREQ, mBuf) != ROK) {
+   if (cmUnpkRgMngmt(pst, &cfg, EVTMACSCHGENCFGREQ, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -391,7 +390,7 @@ RgMngmt * cfg;
       RETVALUE(RFAILED);
    }
    if (pst->selector == LRG_SEL_LC) {
-      if (cmPkRgMngmt(pst, cfg, EVTLRGSCHCFGCFM, mBuf) != ROK) {
+      if (cmPkRgMngmt(pst, cfg, EVTMACSCHGENCFGCFM, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -402,7 +401,7 @@ RgMngmt * cfg;
       }
    }
    
-   pst->event = (Event) EVTLRGSCHCFGCFM;
+   pst->event = (Event) EVTMACSCHGENCFGCFM;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
@@ -438,7 +437,7 @@ Buffer *mBuf;
    
    TRC3(cmUnpkLrgSchCfgCfm)
   
-   if (cmUnpkRgMngmt(pst, &cfg, EVTLRGSCHCFGCFM, mBuf) != ROK) {
+   if (cmUnpkRgMngmt(pst, &cfg, EVTMACSCHGENCFGCFM, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3571,8 +3570,8 @@ Buffer *mBuf;
             if(cmPkRgCfg(&param->t.cfg, param->hdr.elmId.elmnt, mBuf) != ROK)
                RETVALUE(RFAILED);
             break;
-         case EVTLRGSCHCFGREQ:
-         case  EVTLRGSCHCFGCFM:
+         case EVTMACSCHGENCFGREQ:
+         case  EVTMACSCHGENCFGCFM:
             if(cmPkRgCfg(&param->t.cfg, param->hdr.elmId.elmnt, mBuf) != ROK)
                RETVALUE(RFAILED);
             break;
@@ -3625,8 +3624,8 @@ Buffer *mBuf;
       switch(eventType) {
          case EVTLRGCFGREQ:
          case  EVTLRGCFGCFM:
-         case EVTLRGSCHCFGREQ:
-         case  EVTLRGSCHCFGCFM:
+         case EVTMACSCHGENCFGREQ:
+         case  EVTMACSCHGENCFGCFM:
             if(cmUnpkRgCfg(&param->t.cfg, param->hdr.elmId.elmnt, mBuf) != ROK)
                RETVALUE(RFAILED);
             break;

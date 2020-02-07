@@ -19,21 +19,9 @@
 /* This file contains all SCTP related functionality */
 
 #include <stdio.h> 
-#include "f1ap_msg_hdl.h"
+#include "cu_f1ap_msg_hdl.h"
 #include "cu_stub_sctp.h"
-
-/* Global variable declaration */
-CmInetFd   lstnSockFd; /* Listening Socket file descriptor */
-CmInetFd   sockFd;     /* Socket File descriptor */
-U8   socket_type;      /* Socket type */
-Bool nonblocking;      /* Blocking/Non-blocking socket */
-Bool connUp;           /* Is connection up */
-int  assocId;          /* Assoc Id of connected assoc */
-
-CmInetNetAddrLst localAddrLst;
-CmInetNetAddrLst remoteAddrLst;
-
-SctpParams *sctpCfg;            /* SCTP configurations at DU */
+#include "cu_stub_egtp.h"
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -55,8 +43,9 @@ SctpParams *sctpCfg;            /* SCTP configurations at DU */
  * @return ROK     - success
  *         RFAILED - failure
  ***************************************************************************/
-S16 sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
+S16 sctpActvInit()
 {
+   DU_LOG("\n\nSCTP : Initializing");
    connUp = FALSE;
    assocId = 0;
    nonblocking = FALSE;
@@ -116,24 +105,24 @@ S16 openSctpEndp()
    socket_type = CM_INET_STREAM;
 
    do{
-      ret = cmInetSocket(socket_type, &lstnSockFd, IPPROTO_SCTP,(sctpCfg->cuIpAddr.ipV4Pres ? AF_INET : AF_INET6));
+      ret = cmInetSocket(socket_type, &lstnSockFd, IPPROTO_SCTP);
       if (ret != ROK)
       {
          numRetry++;
          if(numRetry >= MAX_RETRY)
          {
-            printf("\nAll attempts to open socket failed.");
+            DU_LOG("\nSCTP : All attempts to open socket failed.");
             /* Send indication to du_app */
             RETVALUE(RFAILED);
          }
          else
          {
-            printf("\nRetrying socket opening"); 
+            DU_LOG("\nSCTP : Retrying socket opening"); 
          }
       }
       else
       {
-         printf("\nSocket[%d] opened successfully",lstnSockFd.fd);
+         DU_LOG("\nSCTP : Socket[%d] open",lstnSockFd.fd);
          break;
       }
    }while(numRetry < MAX_RETRY);
@@ -189,19 +178,19 @@ S16 bindSctpEndp()
          numRetry++;
          if(numRetry >= MAX_RETRY)
          {
-            printf("\nAll attempts to bind socket failed.");
+            DU_LOG("\nSCTP : All attempts to bind socket failed.");
             cmInetClose(&lstnSockFd);
             /* Send indication to du_app */
             RETVALUE(RFAILED);
          }
          else
          {
-            printf("\nRetrying socket binding");
+            DU_LOG("\nSCTP : Retrying socket binding");
          }
       }
       else
       {
-         printf("\nSocket bind successful");
+         DU_LOG("\nSCTP : Socket bind successful");
          break;
       }
    }while(numRetry < MAX_RETRY);
@@ -264,14 +253,16 @@ S16 sctpAccept()
 {
    U8  ret;
    CmInetAddr    peerAddr;
-
+   
    ret = cmInetListen(&lstnSockFd, 1);;
    if (ret != ROK)
    {
-      printf("\nListening on socket failed");
+      DU_LOG("\nSCTP : Listening on socket failed");
       cmInetClose(&lstnSockFd);
       RETVALUE(RFAILED);
    }
+   
+   DU_LOG("\nSCTP : Connecting");
 
    while(!connUp)
    {
@@ -282,17 +273,17 @@ S16 sctpAccept()
       }
       else if(ret != ROK)
       {
-         printf("\nFailed to accept connection");
+         DU_LOG("\nSCTP : Failed to accept connection");
          RETVALUE(RFAILED);
       }
       else
       {
          connUp = TRUE;
          sctpSetSockOpts();
-         printf("\nAccepted incoming connection");
          break;
       }
    }
+   DU_LOG("\nSCTP : Connection established");
 
    RETVALUE(ROK);
 }/* End of sctpAccept() */
@@ -319,55 +310,56 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy)
    switch(ntfy->header.nType)
    {
       case CM_INET_SCTP_ASSOC_CHANGE :
+         DU_LOG("\nSCTP : Assoc change notification received");
          switch(ntfy->u.assocChange.state)
          {
             case CM_INET_SCTP_COMM_UP:
-               printf("\nSCTP notify assocchange(comm up) received");
+               DU_LOG("Event : COMMUNICATION UP");
                connUp = TRUE;
                break;
             case CM_INET_SCTP_COMM_LOST:
-               printf("\nSCTP notify assocchange(comm lost) received");
+               DU_LOG("Event : COMMUNICATION LOST");
                connUp = FALSE;
                break;
             case CM_INET_SCTP_RESTART:
-               printf("\nSCTP notify assocchange(sctp restart) received");
+               DU_LOG("Event : SCTP RESTART");
                connUp = FALSE;
                break;
             case CM_INET_SCTP_SHUTDOWN_COMP: /* association gracefully shutdown */
-               printf("\nSCTP notify assocchange(shutdown complete) received\n");
+               DU_LOG("Event : SHUTDOWN COMPLETE");
                connUp = FALSE;
                break;
             case CM_INET_SCTP_CANT_STR_ASSOC:
-               printf("\nSCTP notify assocchange(cant str assoc) received\n");
+               DU_LOG("Event : CANT START ASSOC");
                connUp = FALSE;
                break;
             default:
-               printf("\nInvalid event");
+               DU_LOG("\nInvalid event");
                break;
          }
          break;
       case CM_INET_SCTP_PEER_ADDR_CHANGE :
-         printf("\nSCTP notify peer addr change received");
+         DU_LOG("\nSCTP : Peer Address Change notificarion received");
          /* Need to add handler */
          break;
       case CM_INET_SCTP_REMOTE_ERROR :
-         printf("\nSCTP notify remote error received");
+         DU_LOG("\nSCTP : Remote Error notification received");
          break;
       case CM_INET_SCTP_SEND_FAILED :
-         printf("\nSCTP notify send failed received\n");
+         DU_LOG("\nSCTP : Send Failed notification received\n");
          break;
       case CM_INET_SCTP_SHUTDOWN_EVENT : /* peer socket gracefully closed */
-         printf("\nSCTP notify shutdown event received\n");
+         DU_LOG("\nSCTP : Shutdown Event notification received\n");
          connUp = FALSE;
          break;
       case CM_INET_SCTP_ADAPTATION_INDICATION :
-         printf("\nSCTP notify adaptation indication received\n");
+         DU_LOG("\nSCTP : Adaptation Indication received\n");
          break;
       case CM_INET_SCTP_PARTIAL_DELIVERY_EVENT:
-         printf("\nSCTP notify partial delivery received\n");
+         DU_LOG("\nSCTP : Partial Delivery Event received\n");
          break;
       default:
-         printf("\nInvalid sctp notification type\n");
+         DU_LOG("\nSCTP : Invalid notification type\n");
          break;
    }
 
@@ -401,7 +393,10 @@ S16 sctpSockPoll()
    U32           *timeoutPtr;        /* pointer to timeout */
    U32            flag;
    Buffer        *mBuf;
+   Buffer        *egtpBuf;
    MsgLen        bufLen;
+   MsgLen        egtpBufLen;
+   CmInetAddr    egtpFromAddr;   /* Egtp data sender address */
    CmInetMemInfo memInfo;      /* buffer allocation info */
    CmInetNetAddr addr;
    CmInetSctpSndRcvInfo   info;
@@ -420,10 +415,15 @@ S16 sctpSockPoll()
    }
    memInfo.region = CU_APP_MEM_REG;
    memInfo.pool   = CU_POOL;
+   
+   egtpFromAddr.port = egtpCb.dstCb.dstPort;
+   egtpFromAddr.address = egtpCb.dstCb.dstIp;
+
    CM_INET_FD_ZERO(&readFd);
 
    while(1)
    {
+      /* Receiving SCTP data */
       CM_INET_FD_SET(&sockFd, &readFd);
       ret = cmInetSelect(&readFd, NULLP, timeoutPtr, &numFds);
       if (CM_INET_FD_ISSET(&sockFd, &readFd))
@@ -432,7 +432,7 @@ S16 sctpSockPoll()
          ret = cmInetSctpRecvMsg(&sockFd, &addr, &port, &memInfo, &mBuf, &bufLen, &info, &flag, &ntfy);
          if (ret != ROK)
          {
-            printf("\nFailed to receive sctp msg\n");
+            DU_LOG("\nSCTP : Failed to receive sctp msg\n");
          }
          else
          {
@@ -441,12 +441,12 @@ S16 sctpSockPoll()
                ret = sctpNtfyHdlr(&ntfy);
                if(ret != ROK)
                {
-                  printf("\nFailed to process sctp notify msg\n");
+                  DU_LOG("\nSCTP : Failed to process sctp notify msg\n");
                }
             }
             else if(connUp) /* If data received */
             {
-               F1InmsgHdlr(mBuf);
+               F1APMsgHdlr(mBuf);
                SPutMsg(mBuf);
             }
             else
@@ -454,6 +454,17 @@ S16 sctpSockPoll()
                SPutMsg(mBuf);
             }
          }
+      }
+
+      /* Receiving EGTP data */
+      egtpBufLen = -1;
+      ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &egtpFromAddr, &memInfo, &egtpBuf, &egtpBufLen, CM_INET_NO_FLAG);
+      if(ret == ROK && egtpBuf != NULLP)
+      {
+         DU_LOG("\nEGTP : Received message \n");
+         SPrntMsg(egtpBuf, 0 ,0);
+         cuEgtpHdlRecvMsg(egtpBuf);
+
       }
    };
 
@@ -466,7 +477,7 @@ S16 sctpSockPoll()
  *
  * @details
  *
- *    Function : sctpOutMsgSend 
+ *    Function : sctpSend 
  *
  *    Functionality:
  *        Send message on SCTP socket
@@ -476,7 +487,7 @@ S16 sctpSockPoll()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 sctpOutMsgSend(Buffer *mBuf)
+S16 sctpSend(Buffer *mBuf)
 {
    U8               ret;
    MsgLen           len;          /* number of actually sent octets */
@@ -508,12 +519,12 @@ S16 sctpOutMsgSend(Buffer *mBuf)
    ret = cmInetSctpSendMsg(&sockFd, dstAddr, sctpCfg->duPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
-      printf("\nFailed sending the message");
+      DU_LOG("\nSCTP : Send message failed");
       RETVALUE(RFAILED);
    }
 
    RETVALUE(ROK);
-} /* End of sctpOutMsgSend */
+} /* End of sctpSend */
 
 /*******************************************************************
  *
@@ -535,19 +546,19 @@ void sctpStartReq()
 {
    if(openSctpEndp() != ROK)
    {
-      printf("\nFailed while opening socket");
+      DU_LOG("\nSCTP : Failed while opening socket");
    }
    else if(bindSctpEndp() != ROK)
    {
-      printf("\nFailed while binding socket");
+      DU_LOG("\nSCTP : Failed while binding socket");
    }
    else if(sctpAccept() != ROK)
    {
-      printf("\nFailed while accepting connection");
+      DU_LOG("\nSCTP : Failed while accepting connection");
    }
    else if(sctpSockPoll() != ROK)
    {
-      printf("\nFailed while polling");
+      DU_LOG("\nSCTP : Failed while polling");
    }
 } /* End of sctpAssocReq */
 

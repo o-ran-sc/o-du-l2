@@ -5343,12 +5343,6 @@ U16    bktIdx;
    ptrHdr->reqSz      = reqSz;
    ptrHdr->allocSz    = allocSz;
    ptrHdr->bktIdx     = bktIdx;
-#if 0
-   for(btrIdx = 0; btrIdx < BRDCM_MEM_LEAK_BTRACE; btrIdx++)
-   {
- //     ptrHdr->backTrace[btrIdx] = __builtin_return_address(btrIdx);
-   }
-#endif
    cmHashListInsert(&regCb->brdcmSsiLstCp, (PTR)ptrHdr,
          (U8 *)&(ptrHdr), sizeof(PTR));
 #else
@@ -5987,50 +5981,6 @@ Void      *arg;
 
     RETVALUE(0);
 } /* cmLeakCallBack */
-#if 0
-/*
-*
-*       Fun:   backtrace
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
-#ifdef ANSI
-PUBLIC S32 backtrace
-(
-Void      **buffer,
-S32       count
-)
-#else
-PUBLIC S32 backtrace(buffer, count)
-Void      **buffer;
-S32       count;
-#endif
-{
-    TRC3(backtrace);
-
-    Backtrace_t  bt;
-    ucontext_t   u;
-
-    bt.bt_buffer = buffer;
-    bt.bt_maxcount = count;
-    bt.bt_actcount = 0;
-
-    if (getcontext(&u) < 0)
-       RETVALUE(0);
-    (Void) walkcontext(&u, cmLeakCallBack, &bt);
-    RETVALUE(bt.bt_actcount);
-
-} /* backtrace */
-#endif
 #endif /* SS_MEM_LEAK_SOL */
 
 #endif /* SS_MEM_LEAK_STS */

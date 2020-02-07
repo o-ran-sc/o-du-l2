@@ -653,10 +653,7 @@ Buffer *mBuf;
          if(pthread_self() == gMacTId)
          //if(pthread_equal(pthread_self(),gMacTId))
          {
-#if 0
-#else
             if(ROK == mtAddBufToRing(SS_RNG_BUF_MAC_FREE_RING,(Void *)mBuf,0))
-#endif
             {
                RETVALUE(ROK);
             }
@@ -665,10 +662,7 @@ Buffer *mBuf;
 #ifdef RLC_FREE_RING_BUF
          else if(pthread_self() == gRlcTId)
          {
-#if 0
-#else
             if(ROK == mtAddBufToRing(SS_RNG_BUF_RLC_FREE_RING,(Void *)mBuf,0))
-#endif
             {
                RETVALUE(ROK);
             }
@@ -836,10 +830,7 @@ U8   memType;                   /* memory type used if shareable or not */
          if(pthread_self() == gMacTId)
          //if(pthread_equal(pthread_self(),gMacTId))
          {
-#if 0
-#else
             if(ROK == mtAddBufToRing(SS_RNG_BUF_MAC_FREE_RING,(Void *)ptr,1))
-#endif
             {
                RETVALUE(ROK);
             }
@@ -848,10 +839,7 @@ U8   memType;                   /* memory type used if shareable or not */
 #ifdef RLC_FREE_RING_BUF
          else if(pthread_self() == gRlcTId)
          {
-#if 0
-#else
             if(ROK == mtAddBufToRing(SS_RNG_BUF_RLC_FREE_RING,(Void *)ptr,1))
-#endif
             {
                RETVALUE(ROK);
             }
@@ -5985,10 +5973,6 @@ Buffer *mBuf;               /* message buffer */
    MsgLen numBytes;
    MsgLen avail;
 
-#if 0
-   char* file = __FILE__;
-   U32 line = __LINE__;
-#endif
    TRC1(SGetPstMsgMult)
 
 #if ( ERRCLASS & ERRCLS_INT_PAR )
@@ -8000,11 +7984,6 @@ Buffer *mBuf;
          RETVALUE(ROK);
       }
    }
-
-#if 0
-   char * file = __FILE__;
-   U32  line   = __LINE__;
-#endif
 
    /* allocate a DBlk minimum of size Cnt to pack the data */
    newblk = NULLP;

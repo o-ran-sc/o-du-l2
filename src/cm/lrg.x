@@ -647,6 +647,16 @@ typedef S16 (*LrgSchL2MeasStopCfm)     ARGS((
   */
 EXTERN S16 RgMiLrgCfgReq ARGS((Pst *pst, RgMngmt *cfg));
 
+ /** @brief This primitive carries the Configuration Request
+  * for Scheduler sent from the DU APP to MAC.
+  * @details This primitive is used by MAC to sned the configuration
+  * to scheduler
+  * @param pst Pointer to the post structure.
+  * @param cfm pointer to RgMngmt 
+  * @return ROK/RFAILED
+  */
+EXTERN S16 MacSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+
  /** @brief This primitive carries the Confirmation for a Configuration Request
   * sent from the layer manager to MAC.
   * @details This primitive is used by MAC to inform Layer manager about the
@@ -669,7 +679,7 @@ EXTERN S16 RgMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
   * @param cfg pointer to RgMngmt
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgSchCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+EXTERN S16 HandleSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
 
  /** @brief This primitive carries the Confirmation for a Configuration Request
   * sent from the layer manager to Scheduler.

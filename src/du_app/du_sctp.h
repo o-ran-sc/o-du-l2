@@ -21,22 +21,33 @@
 #ifndef __DU_SCTP_H__
 #define __DU_SCTP_H__
 
+#include "du_cfg_hdl.h"
 #include "du_mgr.h"
+#include "du_log.h"
 #include "cm_inet.h"
 #include "cm_tpt.h"
 
 #include "cm_inet.x"
 #include "cm_tpt.x"
 
+/* Global variable declaration */
+CmInetFd   sockFd;           /* Socket file descriptor */
+U8   socket_type;      /* Socket type */
+Bool nonblocking;      /* Blocking/Non-blocking socket */
+Bool connUp;           /* Is connection up */
+int  assocId;          /* Assoc Id of connected assoc */
+ 
+CmInetNetAddrLst localAddrLst;
+CmInetNetAddrLst remoteAddrLst;
+ 
+extern F1SctpParams sctpCfg;            /* SCTP configurations at DU */
+
 S16 sctpActvInit(Ent entity, Inst inst, Region region, Reason reason);
 S16 sctpActvTsk(Pst *pst, Buffer *mBuf);
 void sctpAssocReq();
 void sendToDuApp(Buffer *mBuf, Event event);
-S16 sctpOutMsgSend(Buffer *mBuf);
+S16 sctpSend(Buffer *mBuf);
 typedef S16 (*SctpNtfy) ARGS((Buffer *mBuf, CmInetSctpNotification *ntfy));
-
-S16 cmPkSctpNtfy(CmInetSctpNotification *ntfy);
-S16 cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf);
 
 #define MAX_RETRY 5
 

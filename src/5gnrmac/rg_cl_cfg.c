@@ -29,7 +29,7 @@
 #include "cm_lib.x"
 
 #include "lcl.h"
-#include "rg_cl.h"
+#include "lwr_mac.h"
 
 EXTERN S16 rgClBldAndSndFAPICfgReq ARGS((ClCellCb *cellCb));
 

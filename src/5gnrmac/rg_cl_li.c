@@ -28,8 +28,9 @@
 #include "cm_hash.x"
 
 #include "lcl.h"
-#include "rg_cl.h"
+#include "lwr_mac.h"
 #include "rg_cl_phy.h"
+#include "fapi.h"
 /*#include "wls_lib.h"*/
 
 EXTERN S16 sendToPhy ARGS((U16 msgType, U32 msgLen, void *msg));
@@ -273,6 +274,50 @@ S16 rgClHndlCfgReq(void *msg)
    SPutSBuf(0, 0, (Data *)msg, configRsp->hdr.msgLen );
    
    RETVALUE(ROK);
+}
+
+/*******************************************************************
+ *
+ * @brief Handles FAPI param response
+ *
+ * @details
+ *
+ *    Function : lwrMacHndlParamReq
+ *
+ *    Functionality:
+ *         -Handles FAPI param request
+ *
+ * @params[in] Message pointer
+ *             
+ * @return void
+ *
+ *****************************************************************/
+S16 lwrMacHndlParamReq(void *msg)
+{
+   ClCellCb   *cellCb = NULLP;
+   fapi_param_resp_t *paramRsp;
+
+   paramRsp = (fapi_param_resp_t *)msg;
+
+   if(paramRsp->error_code != MSG_OK)
+   {
+      printf("\nPHY configuration failed");
+      RETVALUE(RFAILED);
+   }
+   
+   if(paramRsp->tlvs[0].value == 0)
+   {
+      cellCb->phyState    = PHY_STATE_IDLE;
+      clGlobalCp.phyState = PHY_STATE_IDLE;           
+   }
+  
+   printf("\nReceived successful PHY configuration response");
+
+   SPutSBuf(0, 0, (Data *)msg, paramRsp->header.length);
+
+
+   RETVALUE(ROK);
+
 }
 
 /**********************************************************************

@@ -20,12 +20,9 @@
 #define __DU_MGR_MAIN_H__
 
 #include "du_mgr.h"
+#include "du_log.h"
 
 /* Function declarations */
-S16 duReadCfg();
-S16 readCfg();
-S16 readClCfg();
-void fillSlotConfig();
 S16 duAppInit(SSTskId sysTskId);
 S16 sctpInit(SSTskId sysTskId);
 S16 rlcDlInit(SSTskId sysTskId);

@@ -35,14 +35,12 @@ HDR_FILES+=$(wildcard $(CM_DIR)/cm*.[hx])
 HDR_FILES+=$(wildcard $(CM_DIR)/lkw*.[hx])
 HDR_FILES+=$(wildcard $(CM_DIR)/lrg*.[hx])
 
-
 lib: $(LIB_DIR)/libduapp.a
 include $(COM_BUILD_DIR)/compile.mak
 
 I_OPTS+=-I$(ROOT_DIR)/src/mt
-I_OPTS+=-I$(SRC_DIR)/F1AP
-I_OPTS+=-I$(ROOT_DIR)/src/du_app/F1AP/asn
-
+I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
+I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
 
 #-------------------------------------------------------------#
 #Linker macros

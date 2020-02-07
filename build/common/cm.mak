@@ -29,6 +29,8 @@ CZ_DIR=$(ROOT_DIR)/src/x2ap
 
 # TODO - The dependency between layers and CM files should be removed #
 I_OPTS+=-I$(EG_DIR) -I$(SZ_DIR) -I$(CZ_DIR)
+I_OPTS+=-I$(ROOT_DIR)/src/du_app
+I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
 
 #-------------------------------------------------------------#
 #User macros (to be modified)

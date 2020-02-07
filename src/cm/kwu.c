@@ -519,16 +519,6 @@ Buffer * mBuf;
 #else
              cmPkKwuDatIndInfo( (datInd), mBuf);
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-#if 0
-             /*Commenting out the below block as no Memory Allocation happens 
-              * in Protocol. This code will be removed once testing is done */
-             if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd,
-                      sizeof(KwuDatIndInfo),SS_SHARABLE_MEMORY) != ROK)
-             {
-                SPutMsg(mBuf);
-                RETVALUE(RFAILED);
-             }
-#endif
           }
           break;
        default:
@@ -715,14 +705,6 @@ KwuDiscSduInfo* discSdu;
 #else
             cmPkKwuDiscSduInfo( (discSdu), mBuf);
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-#if 0
-             if (SPutSBuf(pst->region, pst->pool, (Data *)discSdu,
-                      sizeof(KwuDiscSduInfo)) != ROK)
-             {
-                SPutMsg(mBuf);
-                RETVALUE(RFAILED);
-             }
-#endif 
              break;
           }
     }
@@ -1301,22 +1283,6 @@ Buffer *mBuf;
          break;
       case KWU_SEL_LC:
          {
-#if 0
-        /*This will be removed once the testing is done on all platforms */
-            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&datReq,\
-                        sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY)) != ROK)
-            {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-               /*MBUF_FIXX*/
-               SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                     __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-                     (ErrVal)EKWU026, (ErrVal)0, "SGetMsg() failed");
-
-#endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-               RETVALUE(ret1);
-            }
-
-#endif
             /* Allocate the memory statically  as there is no free 
              * in RLC */
             datReq = &datReqTmp;

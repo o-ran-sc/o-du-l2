@@ -1836,79 +1836,6 @@ Buffer *mBuf;
 
    /*rgu_c_001.main_5 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
-#if 0
-
-/**
-* @brief Packing function for RguLchMapInfo
-*
-* @details
-*
-*     Function : cmPkRguLchMapInfo
-*  @param[in]   RguLchMapInfo  *param
-*  @param[out]  Buffer         *mBuf 
-*  @return  Void 
-**/
-#ifdef ANSI
-PRIVATE S16 cmPkRguLchMapInfo
-(
-RguLchMapInfo   *param,
-Buffer          *mBuf
-)
-#else
-PRIVATE S16 cmPkRguLchMapInfo(param, mBuf)
-RguLchMapInfo   *param;
-Buffer          *mBuf;
-#endif
-{
-   U8    idx;
-
-   TRC3(cmPkRguLchMapInfo);
-
-   for(idx = 0; idx < RGU_MAX_LC; idx++)
-   {
-      CMCHKPK(SPkU16, param->snList[idx], mBuf);
-   }
-   CMCHKPK(cmPkLteLcId, param->lChId, mBuf);
-
-   RETVALUE(ROK);
-}
-
-/**
-* @brief Unpacking function for RguLchMapInfo
-*
-* @details
-*
-*     Function : cmUnpkRguLchMapInfo
-*
-*  @param[out] RguLchMapInfo  *param
-*  @param[in]  Buffer        *mBuf
-*  @return   Void
-**/
-#ifdef ANSI
-PRIVATE S16 cmUnpkRguLchMapInfo
-(
-RguLchMapInfo *param, 
-Buffer       *mBuf
-)
-#else
-PRIVATE S16 cmUnpkRguLchMapInfo(param, mBuf)
-RguLchMapInfo *param;   
-Buffer       *mBuf;
-#endif
-{
-   U8    idx;
-
-   TRC3(cmUnpkRguLchMapInfo)
-
-   CMCHKUNPK(cmUnpkLteLcId, &param->lChId, mBuf);
-   for(idx = RGU_MAX_LC; idx > 0; idx--)
-   {
-      CMCHKUNPK(SUnpkU16, &param->snList[idx - 1], mBuf);
-   }
-
-   RETVALUE(ROK);
-}
-#endif
 
 /**
 * @brief Harq Status Indication from MAC to RLC  
@@ -2034,44 +1961,6 @@ RguHarqStatusInd  *harqStatusInd;
 }
 
 
-#if 0
-/**
-* @brief Unpacking function for RguSnMapInfo
-*
-* @details
-*
-*     Function : cmUnpkRguSnMapInfo
-*
-*  @param[out] RguSnMapInfo  *param
-*  @param[in]  Buffer        *mBuf
-*  @return  Void
-**/
-#ifdef ANSI
-PRIVATE S16 cmUnpkRguSnMapInfo
-(
-RguSnMapInfo *param, 
-Buffer       *mBuf
-)
-#else
-PRIVATE S16 cmUnpkRguSnMapInfo(param, mBuf)
-RguSnMapInfo *param;   
-Buffer       *mBuf;
-#endif
-{
-   U8    idx;
-   
-   TRC3(cmUnpkRguSnMapInfo)
-   
-   CMCHKUNPK(SUnpkU32, &param->tbId, mBuf);   
-   CMCHKUNPK(SUnpkU8, &param->numLch, mBuf);   
-   for(idx = param->numLch; idx > 0; idx--)
-   {
-      CMCHKUNPK(cmUnpkRguLchMapInfo, &param->lchMap[idx - 1], mBuf);
-   }
-   RETVALUE(ROK);
-}
-#endif
-
 /**
 * @brief Harq Status Indication from MAC to RLC  
 *

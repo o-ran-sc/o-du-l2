@@ -20,6 +20,8 @@
 
 #include "du_mgr_main.h"
 #include "du_sctp.h"
+#include "du_egtp.h"
+
 
 extern S16 kwUlActvTsk (Pst *, Buffer *);
 extern S16 kwUlActvInit (Ent, Inst, Region, Reason);
@@ -27,6 +29,9 @@ extern S16 kwDlActvTsk (Pst *, Buffer *);
 extern S16 kwDlActvInit (Ent, Inst, Region, Reason);
 extern S16 rgActvTsk (Pst *, Buffer *);
 extern S16 rgActvInit (Ent, Inst, Region, Reason);
+
+/* Global variable */
+DuCfgParams duCfgParam;
 
 /*******************************************************************
  *
@@ -47,8 +52,8 @@ extern S16 rgActvInit (Ent, Inst, Region, Reason);
  * ****************************************************************/
 S16 duAppInit(SSTskId sysTskId)
 {
-   /* Register DU APP TAPA Task for DU */
-   if(SRegTTsk((Ent)ENTDUAPP, (Inst)DU_INST, (Ttype)TTNORM, (Prior)PRIOR0,
+	/* Register DU APP TAPA Task for DU */
+	if(SRegTTsk((Ent)ENTDUAPP, (Inst)DU_INST, (Ttype)TTNORM, (Prior)PRIOR0,
             duActvInit, (ActvTsk)duActvTsk) != ROK)
    {
       return RFAILED;
@@ -59,10 +64,48 @@ S16 duAppInit(SSTskId sysTskId)
       return RFAILED;
    }
 
-   printf("\nDU APP created and registered \
-         to %d sys task\n", sysTskId);
+   DU_LOG("\nDU_APP : DU APP created and registered \
+   to %d sys task", sysTskId);
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Initializes EGTP
+ *
+ * @details
+ *
+ *    Function : egtpInit
+ *
+ *    Functionality:
+ *       - Registers and attaches TAPA tasks belonging to 
+ *         DU_APP sys task
+ *
+ * @params[in] system task ID
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 egtpInit(SSTskId sysTskId)
+{
+   /* Register DU APP TAPA Task for DU */
+   if(SRegTTsk((Ent)ENTEGTP, (Inst)EGTP_INST, (Ttype)TTNORM, (Prior)PRIOR0,
+             egtpActvInit, (ActvTsk)egtpActvTsk) != ROK)
+   {
+      return RFAILED;
+   }
+   /* Attach DU APP TAPA Task for DU */
+   if (SAttachTTsk((Ent)ENTEGTP, (Inst)0, sysTskId)!= ROK)
+   {
+      return RFAILED;
+   }
+ 
+    DU_LOG("\nDU_APP : EGTP created and registered \
+    to %d sys task", sysTskId);
+    return ROK;
+}
+ 
+
 /*******************************************************************
  *
  * @brief Initializes SCTP task
@@ -93,7 +136,7 @@ S16 sctpInit(SSTskId sysTskId)
       return RFAILED;
    }
 
-   printf("\nSCTP TAPA task created and registered to %d sys task\n", 
+   DU_LOG("\nDU_APP : SCTP TAPA task created and registered to %d sys task", 
          sysTskId);
    return ROK;
 }
@@ -139,8 +182,8 @@ S16 rlcDlInit(SSTskId sysTskId)
       return RFAILED;
    }
 
-   printf("\nRLC DL and MAC TAPA task created and registered to \
-         %d sys task\n", sysTskId);
+   DU_LOG("\nDU_APP : RLC DL and MAC TAPA task created and registered to \
+   %d sys task", sysTskId);
    return ROK;
 }
 
@@ -173,8 +216,8 @@ S16 rlcUlInit(SSTskId sysTskId)
    {
       return RFAILED;
    }
-   printf("\nRLC UL TAPA task created and registered to \
-         %d sys task\n", sysTskId);
+   DU_LOG("\nDU_APP : RLC UL TAPA task created and registered to \
+   %d sys task", sysTskId);
    return ROK;
 }
 
@@ -220,25 +263,31 @@ S16 commonInit()
    /* Create TAPA tasks */
    if(duAppInit(du_app_stsk) != ROK)
    {
-      printf("\nDU APP TAPA Task initialization failed");
+      DU_LOG("\nDU_APP : DU APP TAPA Task initialization failed");
+      return RFAILED;
+   }
+
+   if(egtpInit(du_app_stsk) != ROK)
+   {
+      DU_LOG("\nDU_APP : EGTP TAPA Task initialization failed");
       return RFAILED;
    }
 
    if(sctpInit(sctp_stsk) != ROK)
    {
-      printf("\nSCTP TAPA Task initialization failed");
+      DU_LOG("\nDU_APP : SCTP TAPA Task initialization failed");
       return RFAILED;
    }
 
    if(rlcDlInit(rlc_mac_cl_stsk) != ROK)
    {
-      printf("\nRLC DL Tapa Task initialization failed");
+      DU_LOG("\nDU_APP : RLC DL Tapa Task initialization failed");
       return RFAILED;
    } 
 
    if(rlcUlInit(rlc_ul_stsk) != ROK)
    {
-     printf("\nRLC UL Tapa Task initialization failed");
+     DU_LOG("\nDU_APP : RLC UL Tapa Task initialization failed");
      return RFAILED;
    } 
    return ROK;
@@ -272,6 +321,10 @@ S16 duInit()
    return ret;
 }
 
+void init_log()
+{
+	openlog("ODU",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
+}
 /*******************************************************************
  *
  * @brief Entry point for the DU APP 
@@ -291,24 +344,18 @@ S16 duInit()
  * ****************************************************************/
 S16 tst(void)
 {
+	init_log();
 
-   //Initialize TAPA layers
-   if(duInit() != ROK)
-   {
+	//Initialize TAPA layers
+	if(duInit() != ROK)
+	{
       return RFAILED;
    } 
+
 
    //Read all the configs from du_utils.c into duCfgParams
    duReadCfg();
 
-#if 0
-   //Establish SCTP connection
-   while(ret == -1)
-   {
-      printf("\nEstablishing SCTP link with CU... \n");
-      //ret = establishSctp(); //To be implemeted in du_sctp.c
-   }
-#endif
    return ROK;
 }/* end of main()*/
 

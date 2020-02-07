@@ -284,73 +284,6 @@ PRIVATE S16 cmHeapFree  ARGS((CmMmHeapCb *heapCb, Data *ptr, Size size));
 #endif
 PRIVATE S16 cmCtl   ARGS((Void *regionCb, Event event, SMemCtl *memCtl));
 PRIVATE Void cmMmHeapInit ARGS((Data *memAddr, CmMmHeapCb *heapCb, Size size));
-#if 0
-#ifdef SS_HISTOGRAM_SUPPORT
-#ifdef SSI_DEBUG_LEVEL1
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, 
-            U32 memType, U32 line, U8 *fileName, U8 entId, Bool hstReg));
-PRIVATE S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size, U32 memType, U32 line, U8 *fileName, U8 entId, Bool hstReg));
-/*cm_mem_c_001.main_20-added new functionto allocate memory from new region*/
-#else
-PRIVATE S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size,
-       U32 line, U8 *fileName, U8 entId, Bool hstReg));
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, 
-            U32 line, U8 *fileName, U8 entId, Bool hstReg));
-#endif /* SSI_DEBUG_LEVEL1 */
-
-PRIVATE S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size, U32 line, 
-            U8 *fileName, U8 entId, Bool hstReg));
-
-PRIVATE S16 cmHeapFree  ARGS((CmMmHeapCb *heapCb, Data *ptr, Size size,
-            U32 line, U8 *fileName, U8 entId, Bool hstReg));
-#else /* no histogram support */
-/* cm_mem_c_001.main_12 - prototype is changed to accept memType(static/dynamic) */
-#ifdef SSI_DEBUG_LEVEL1
-PRIVATE S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size, U32 memType));
-#else
-PRIVATE S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size));
-#endif /* SSI_DEBUG_LEVEL1 */
-PRIVATE S16 cmHeapFree  ARGS((CmMmHeapCb *heapCb, Data *ptr, Size size));
-/*  cm_mem_c_001.main_15 :Additions */
-#ifdef SSI_DEBUG_LEVEL1
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, U32 memType));
-#else
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
-#endif /* SSI_DEBUG_LEVEL1 */
-PRIVATE S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size));
-#endif /* SS_HISTOGRAM_SUPPORT */
-
-/*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
-#ifdef SS_FAP
-PRIVATE S16 cmAllocWL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
-PRIVATE S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size));
-#endif
-
-
-PRIVATE Void cmMmBktInit ARGS((Data **memAddr, CmMmRegCb *regCb, 
-                              CmMmRegCfg *cfg, U16 bktIdx, U16 *lstMapIdx));
-
-/* cm_mem_c_001.main_12 - addition of protoypes for sanity check and hash list functions */
-#ifdef SSI_DEBUG_LEVEL1
-PRIVATE S16 cmMmBktSanityChk ARGS((CmMmBkt *bkt));
-PRIVATE S16 cmMmHeapSanityChk ARGS((CmMmHeapCb *heapCb));
-PRIVATE S16 cmMmHashFunc ARGS((CmMmHashListCp *hashListCp, U32 key, U16 *idx ));
-PRIVATE S16 cmMmHashListInit ARGS((CmMmHashListCp *hashListCp, U16 nmbBins,
-                                  Region region, Pool pool));
-PRIVATE S16 cmMmHashListDeinit ARGS((CmMmHashListCp *hashListCp, Region region, Pool pool));
-PRIVATE S16 cmMmHashListInsert ARGS((CmMmHashListCp *hashListCp, U32 key));
-#endif /* SSI_DEBUG_LEVEL1 */
-/*   cm_mem_c_001.main_15 : Addtions */
-#ifdef SS_HISTOGRAM_SUPPORT
-PRIVATE S16 cmHstGrmAllocInsert ARGS((CmHstGrmHashListCp *hashListCp, U32 blkSz, U32 *reqSz, U32 line, U8 *fileName, U8 entId));
-PRIVATE S16 cmHstGrmFreeInsert ARGS((CmHstGrmHashListCp* hashListCp, U32 blkSz, U32 line, U8 *fileName, U8 entId));
-PRIVATE S16 cmHstGrmHashListInit ARGS((CmHstGrmHashListCp *hashListCp));
-PRIVATE S16 cmHstGrmHashListDeInit ARGS((CmHstGrmHashListCp *hashListCp));
-PRIVATE S16 cmHstGrmGetHashIdxAndKey ARGS((U8 *fileName, U32 line, U32 *binIdx, U32 *key));
-PRIVATE S16 cmHstGrmFindEntry ARGS((CmHstGrmHashListCp *hashListCp, U32 key, U32 *binIdx, CmMemEntries **entry));
-PRIVATE S16 cmHstGrmFillEntry ARGS((CmMemEntries *entry, U32 key, U32 line, U8 *fileName, U8 entId));
-#endif /* SS_HISTOGRAM_SUPPORT */
-#endif
 
 /* cm_mem_c_001.main_22: Fixing warnings on GCC compiler */
 #ifdef __cplusplus
@@ -402,9 +335,6 @@ PRIVATE Txt dbgPrntBuf[200];        /* print buffer */
 
 U32 num_times = 0;
 EXTERN pthread_t tmpRegTidMap[20];
-#if 0
-EXTERN pthread_t tmpMainTid;
-#endif
 extern Bool g_usettitmr;
 PUBLIC void DumpLayersDebugInformation()
 {
@@ -433,7 +363,7 @@ PUBLIC void DumpLayersDebugInformation()
 #else
       //DumpPDCPDlDebugInformation();
       //DumpPDCPUlDebugInformation();   
-#ifdef CU_STUB
+#ifndef ODU_TEST_STUB
       DumpRLCDlDebugInformation();
       DumpRLCUlDebugInformation();
 #endif
@@ -861,121 +791,6 @@ CmMmRegCfg  *cfg;
     RETVALUE(ROK);
 } /* end of cmMmRegInit*/
 
-#if 0
-/*
-*
-*       Fun:   ssPutDynBufSet
-*
-*       Desc:  Puts the set of dynamic buffers into the global region
-*
-*
-*       Ret:   ROK     - successful, 
-*              RFAILED - unsuccessful.
-*
-*       Notes: 
-*
-*       File:  cm_mem_wl.c
-*
-*/
-#ifdef ANSI
-PUBLIC S16 ssPutDynBufSet
-(
-U8                 bktIdx,
-CmMmBktLstCb      *bktLstCb
-)
-#else
-PUBLIC S16 ssPutDynBufSet(bktIdx, bktLstCb)
-U8                 bktIdx;
-CmMmBktLstCb      *bktLstCb;
-#endif
-{
-   CmMmGlobRegCb  *globReg;
-   CmMmDynBktCb   *bktCb;
-
-   TRC1(ssPutDynBufSet);
-
-   globReg = &osCp.globRegCb;
-
-   if(bktIdx > CMM_MAX_BKT_ENT)
-   {
-      RETVALUE(RFAILED);
-   }
-
-   bktCb = &(globReg->bktTbl[bktIdx]);
-
-   /* Lock the global region first */
-   SLock(&(globReg->regLock));
-
-   cmLListAdd2Tail(&(bktCb->listBktSet), bktLstCb);
-
-   SUnlock(&(globReg->regLock));
-
-   RETVALUE(ROK);
-}
-
-/*
-*
-*       Fun:   ssGetDynBufSet
-*
-*       Desc:  Gets the set of dynamic buffers into the global region
-*
-*
-*       Ret:   ROK     - successful, 
-*              RFAILED - unsuccessful.
-*
-*       Notes: 
-*
-*       File:  cm_mem_wl.c
-*
-*/
-#ifdef ANSI
-PUBLIC S16 ssGetDynBufSet
-(
-U8                  bktIdx,
-CmMmBktLstCb      **bktLstCb
-)
-#else
-PUBLIC S16 ssGetDynBufSet(bktIdx, bktLstCb)
-U8                  bktIdx;
-CmMmBktLstCb      **bktLstCb;
-#endif
-{
-   CmMmGlobRegCb  *globReg;
-   CmMmDynBktCb   *bktCb;
-   CmLList        *lstNode;
-
-   TRC1(ssGetDynBufSet);
-
-   globReg = &osCp.globRegCb;
-
-   if(bktIdx > CMM_MAX_BKT_ENT)
-   {
-      RETVALUE(RFAILED);
-   }
-
-   *bktLstCb = NULLP;
-   bktCb = &(globReg->bktTbl[bktIdx]);
-
-   /* Lock the global region first */
-   SLock(&(globReg->regLock));
-
-   lstNode = cmLListFirst(&(bktCb->listBktSet));
-
-   if(lstNode == NULLP)
-   {
-      SUnlock(&(globReg->regLock));
-      RETVALUE(RFAILED);
-   }
-
-   cmLListDelFrm(&(bktCb->listBktSet), lstNode);
-   SUnlock(&(globReg->regLock));
-
-   *bktLstCb = (CmMmBktLstCb *)lstNode->node;
-
-   RETVALUE(ROK);
-}
-#endif
-
 
 /*
 *
@@ -1377,11 +1192,6 @@ Size    size;       /* Size of the block */
 #endif
    /*TL_Free(regCb->iccHdl, ptr);*/
 
-#if 0
-   if(a < 10)
-   printf("FREE -ICC Addr Before PA2VA %x After PA2VA %x\n", memPtr, ptr);
-   a++;
-#endif
 
    RETVALUE(ROK);
 } /* end of cmIccFree */
@@ -1435,12 +1245,6 @@ CmMmDynRegCb   *regCb;
 #ifdef T2200_2GB_DDR_CHANGES
    sprintf(regIccStr, "RxID=%d", (regCb->region + 1));
 #else
-#if 0
-   sprintf(regIccStr, "RxID=%d", (regCb->region + 1));
-#else
-   //snprintf(regIccStr, sizeof(regIccStr), "QueueSize=%u RxID=%u", 1024, (regCb->region + 1));
-   
-  // snprintf(regIccStr, sizeof(regIccStr), "QueueSize=%u RxID=%u", 2048, (regCb->region + 1));
 #ifdef L2_L3_SPLIT     
   if(clusterMode == RADIO_CLUSTER_MODE)  
   {
@@ -1463,7 +1267,6 @@ CmMmDynRegCb   *regCb;
   sprintf(regIccStr, "RxID=%d", (regCb->region + 1));
 #else
   sprintf (regIccStr, "queuesize=%d rxid=%d", 512, (regCb->region) + 1);
-#endif
 #endif
 #endif
 #endif
@@ -1593,22 +1396,6 @@ CmMmDynRegCb   *regCb;
    }
 
    /* Initialize the bucket structure */
-#if 0
-   regCb->bktTbl[bktIdx].numAlloc = 0;
-   regCb->bktTbl[bktIdx].maxAlloc = 0;
-
-   /* Update the total bucket size */
-   regCb->bktSize += (regCb->bktTbl[bktIdx].size * regCb->bktTbl[bktIdx].numBkt); 
-
-   regCb->bktTbl[bktIdx].bktFailCnt = 0;
-   regCb->bktTbl[bktIdx].bktNoFitCnt = 0;
-
-   if(regCb->bktMaxBlkSize < regCb->bktTbl[bktIdx].size)
-   {
-      regCb->bktMaxBlkSize = regCb->bktTbl[bktIdx].size;
-   }
-#endif
-
    for(idx = 0; idx < numBkts; idx++)
    {
       regCb->bktTbl[idx].crntMemBlkSetElem = NULLP;
@@ -1623,7 +1410,6 @@ CmMmDynRegCb   *regCb;
 
    /* Call SRegRegion to register the memory region with SSI */
    cmMemset((U8*)&regInfo, 0, sizeof(regInfo));
-#if 1
    if((SS_MAX_REGS - 1) == regCb->region)
    {
       regInfo.alloc = cmDynAllocWithLock;
@@ -1634,26 +1420,9 @@ CmMmDynRegCb   *regCb;
       }
    }
    else
-#endif
    {
-#if 0
-      static dynLockCreated;
-      regInfo.alloc = cmDynAllocWithLock;
-      regInfo.free  = cmDynFreeWithLock;
-      if ( dynLockCreated == 0)
-      {
-         if((SInitLock((&dynAllocFreeLock), SS_LOCK_MUTEX)) != ROK)
-         {
-            printf("Failed to initialize the lock region lock\n");
-         }
-         dynLockCreated = 1;
-      }
-#endif
-
-#if 1
        regInfo.alloc = cmDynAlloc;
        regInfo.free = cmDynFree;
-#endif
    }
 
    regInfo.regCb = regCb;
@@ -1857,12 +1626,6 @@ CmMmDynBktCb  *bkt;        /* Bucket list control block */
       bkt->crntMemBlkSetElem = memBlkSetElem;
    }
 
-#if 0
-   if(memBlkSetElem->nextBktPtr == NULLP)
-   {
-      ssGetDynMemBlkSet(bucketIndex, memBlkSetElem);
-   }
-#endif
    /* If we have reached the threshold value, get the next set of buckets from
     * the global region and place it */
    if(memBlkSetElem->numFreeBlks < bkt->blkSetAcquireThreshold)
@@ -2013,10 +1776,6 @@ CmMmDynBktCb  *bkt;        /* Bucket list control block */
            */
          ssPutDynMemBlkSet(bucketIndex, nextMemBlkSetElem, 
                            (bkt->bucketSetSize - memBlkSetElem->numFreeBlks - 1));
-#if 0
-         nextMemBlkSetElem->numFreeBlks = 0;
-         nextMemBlkSetElem->nextBktPtr = NULLP;
-#endif
       }
    }
    
@@ -2337,11 +2096,6 @@ Data  **ptr;         /* Reference to pointer for which need to be allocate */
 
 #ifdef SS_MEM_WL_DEBUG
       prvAllocPtr[regCb->region] = *ptr;
-#if 0
-      if(regCb->region == 6)
-         printf("cmDynAlloc: PTR = %x\n", *ptr);
-      **ptr = (U32) ((bktIdx << 4) | 0x0f);
-#endif
 
       **ptr = (U8) bktIdx;
       *(*ptr+1) = 0xde;
@@ -2360,9 +2114,6 @@ Data  **ptr;         /* Reference to pointer for which need to be allocate */
             btInfo->btInfo[btIdx].btSize  = backtrace(btInfo->btInfo[btIdx].btArr, NUM_BT_TRACES);
          }
          gettimeofday(&(btInfo->btInfo[btIdx].timeStamp), NULLP);
-#if 0
-         cmInsertAllocPtrToList(regCb, (PTR)*ptr);
-#endif
    
          btIdx++;
          btIdx &= (NUM_FREE_BUFFERS - 1); 
@@ -2768,10 +2519,6 @@ Data  **ptr;
                   /*printf("cmAlloc: bktIdx %u overused %u numAlloc %u\n", bktIdx, g_overused[bktIdx], bkt->numAlloc); */
                }
             }
-#if 0
-            if(bkt->numAlloc < 100)
-	    printf("cmAlloc: Allocated PTR = %x size = %d\n", *ptr, *size);
-#endif
 
 /* cm_mem_c_001.main_12 - addition for header manipulation */
 #ifdef SSI_DEBUG_LEVEL1
@@ -3064,44 +2811,6 @@ U32   idx;
    CmBtInfo  *btInfo;
    U8    regIdx;
 
-#if 0
-   for(regIdx = 0; regIdx < 8; regIdx++)
-   {
-      btInfo = & regBtInfo[regIdx];
-      btIdx = btInfo->btInfoIdx;
-   
-      for (tmpCnt = 0; tmpCnt < NUM_FREE_BUFFERS; tmpCnt++)  
-      {
-#if 0
-         if ((btInfo->btInfo[btIdx].ptr >= ptr) &&   
-             (btInfo->btInfo[btIdx].ptr + 128 ) >= ptr)    
-   
-#endif
-         if(btInfo->btInfo[btIdx].btSize != 0)
-         {
-           U32 i;
-           char **strings;
-           strings = backtrace_symbols( btInfo->btInfo[btIdx].btArr,btInfo->btInfo[btIdx].btSize);
-           printf("*** Last Free Region = %d PTR %x Timestamp sec = (%ld) usec = (%ld) ***\n", idx, ptr, btInfo->btInfo[btIdx].timeStamp.tv_sec, btInfo->btInfo[btIdx].timeStamp.tv_usec);
-           for (i=0; i < btInfo->btInfo[btIdx].btSize; i++)
-           {
-              printf("%s\n", strings[i]); 
-           }
-           printf("*******************************************************\n");
-           
-           free(strings);
-         }
-   
-         btIdx--; 
-         if (btIdx == 0)
-         {
-            btIdx = NUM_FREE_BUFFERS - 1;
-         }
-      }
-   }
-#endif
-
-
 /*   for(regIdx = 0; regIdx < 8; regIdx++)
    { */
    idx = 2;
@@ -3337,9 +3046,6 @@ Size    size;       /* Size of the block */
       {
          btInfo->btInfo[btIdx].btSize  = backtrace(btInfo->btInfo[btIdx].btArr, NUM_BT_TRACES);
       }
-#if 0
-       cmRemoveAllocPtrFromList(regCb, (ptr + sizeof(U32)));
-#endif
       gettimeofday(&(btInfo->btInfo[btIdx].timeStamp), NULLP);
 
       btIdx++;
@@ -3705,31 +3411,10 @@ Size    size;
       bkt->nextBlk = ptrHdr;
 #else
       /* MS_REMOVE */
-#if 0
-      /* sriky: For debugging double deallocation */
-      cmMemset(ptr, 0, 50);
-#endif
       *((CmMmEntry **)ptr) =  bkt->next; 
       bkt->next = (CmMmEntry *)ptr;
 #endif /* SSI_DEBUG_LEVEL1 */
 
-#if 0
-      if(bkt->numAlloc <= 0 || bkt->numAlloc > 12000)
-      {
-         void *array[10];
-         size_t tmpsize, i;
-         char **strings;
-
-         printf("\n cmFree: Freed pointer = %x and backtrace:\n", ptr);
-         printf("****************************************\n");
-         tmpsize = backtrace(array, 10);
-         strings = backtrace_symbols(array, tmpsize);
-         for(i = 0; i < tmpsize; i++)
-           printf("%s\n", strings[i]);
-         printf("****************************************\n");
-         free(strings);
-      }
-#endif
       /* 
       * Decrement the statistics variable of number of memory block 
       * allocated 
@@ -4041,14 +3726,6 @@ Size    size;
    /* 
     * Check if the memory block was allocated from the bucket pool. 
     */
-#if 0
-   if(ptr < regCb->regInfo.start)
-   {
-      Buffer *tmpbuf = NULLP;
-      tmpbuf->b_cont = NULLP;
-   }
-#endif
-
 #ifdef MSPD_T2K_TRACK_BUG
    size += 4;
 #endif
@@ -4100,32 +3777,6 @@ Size    size;
       * allocated 
       */
       bkt->numAlloc--;
-
-#if 0
-      if ((regCb->region == 2) && (bkt->numAlloc < 50))
-      {
-         CmBtInfo *btInfo;
-         U32      btIdx;
-         btInfo  = &allocBtInfo[regCb->region];
-         btIdx = btInfo->btInfoIdx;
-         btInfo->btInfo[btIdx].ptr = (PTR) *ptr;
-         {
-            btInfo->btInfo[btIdx].btSize  = backtrace(btInfo->btInfo[btIdx].btArr, NUM_BT_TRACES);
-         }
-#if 0
-         gettimeofday(&(btInfo->btInfo[btIdx].timeStamp), NULLP);
-         cmInsertAllocPtrToList(regCb, (PTR)*ptr);
-#endif
-   
-         btIdx++;
-         btIdx &= (NUM_FREE_BUFFERS - 1); 
-   
-         btInfo->btInfo[btIdx].ptr = (PTR)0;
-         btInfo->btInfo[btIdx].btSize = 0;
-         cmMemset(btInfo->btInfo[regCb->mapTbl[idx].bktIdx].btArr, 0, sizeof (btInfo->btInfo[regCb->mapTbl[idx].bktIdx].btArr));
-         btInfo->btInfoIdx = btIdx;
-      }
-#endif
 
       RETVALUE(ROK);
    }
@@ -4289,131 +3940,6 @@ SMemCtl *memCtl;
    /* shouldn't reach here */
    RETVALUE(RFAILED);
 } /* end of cmCtl */
-
-
-#if 0
-/*
-*
-*       Fun:   cmMmBktInit
-*
-*       Desc:  Initialize the bucket and the map table.
-*
-*
-*       Ret:   ROK     - successful, 
-*              RFAILED - unsuccessful.
-*
-*       Notes: This function is called by the cmMmRegInit. 
-*
-*       File:  cm_mem_wl.c
-*
-*/
-#ifdef ANSI
-PRIVATE Void cmMmBktInit
-(
-Data      **memAddr,
-CmMmRegCb  *regCb,
-CmMmRegCfg *cfg,
-U16         bktIdx,
-U16        *lstMapIdx
-)
-#else
-PRIVATE Void cmMmBktInit (memAddr, regCb, cfg, bktIdx, lstMapIdx)
-Data      **memAddr;
-CmMmRegCb  *regCb;
-CmMmRegCfg *cfg;
-U16         bktIdx;
-U16        *lstMapIdx;
-#endif
-{
-   U32   cnt;
-   U16   idx;
-   U32   numBlks;
-   Size  size;
-   Data **next;
-   U16   blkSetRelThreshold;
-   CmMmBktLstCb *bktLstCb;
-
-   TRC2(cmMmBktInit);
-
-
-   size = cfg->bktCfg[bktIdx].size; 
-   numBlks = cfg->bktCfg[bktIdx].numBlks; 
-
-   regCb->bktTbl[bktIdx].blkSetRelThreshold = cfg->bktCfg[bktIdx].blkSetRelThreshold;
-   regCb->bktTbl[bktIdx].blkSetAcquireThreshold = cfg->bktCfg[bktIdx].blkSetAcquireThreshold;
-   blkSetRelThreshold = cfg->bktCfg[bktIdx].blkSetRelThreshold;
-
-   /* Initialize the bucket linked list */
-   cmLListInit(&regCb->bktTbl[bktIdx].listBktSet);
-
-   /* Reset the next pointer */
-   regCb->bktTbl[bktIdx].next = NULLP; 
-
-   /* Initialize the link list of the memory block */
-   next = &(regCb->bktTbl[bktIdx].next); 
-   for (cnt = 0; cnt < numBlks; cnt++)
-   {
-      *next     = *memAddr;
-      next      = (CmMmEntry **)(*memAddr);
-      *memAddr  = (*memAddr) + size;
-
-      /* Maintain the list Cb */
-      if((cnt != 0) && (!(cnt % blkSetRelThreshold)))
-      {
-         bktLstCb = calloc(1, sizeof(CmMmBktLstCb));
-         bktLstCb->nextBktPtr = regCb->bktTbl[bktIdx].next;
-         bktLstCb->numBkt = blkSetRelThreshold;
-         cmLListAdd2Tail((&regCb->bktTbl[bktIdx].listBktSet), (&bktLstCb->memSetNode));
-         next = &(regCb->bktTbl[bktIdx].next);
-         regCb->numBkts++;
-      }
-   }
-   *next = NULLP;
-
-   bktLstCb = cmLListFirst((&regCb->bktTbl[bktIdx].listBktSet));
-   regCb->bktTbl[bktIdx].next = bktLstCb->nextBktPtr;
-   cmLListDelFrm((&regCb->bktTbl[bktIdx].listBktSet), bktLstCb);
-   free(bktLstCb);
-
-   /* Initialize the Map entry */
-   idx = size / cfg->bktQnSize;
-
-   /* 
-    * Check if the size is multiple of quantum size. If not we need to initialize
-    * one more map table entry.
-    */ 
-   if(size % cfg->bktQnSize)
-   {
-      idx++;
-   }
-   
-   while ( *lstMapIdx < idx)
-   {
-      regCb->mapTbl[*lstMapIdx].bktIdx = bktIdx;
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-      regCb->mapTbl[*lstMapIdx].numReq     = 0;
-      regCb->mapTbl[*lstMapIdx].numFailure = 0;
-#endif
-
-      (*lstMapIdx)++;
-   } 
-
-   /* Initialize the bucket structure */
-   regCb->bktTbl[bktIdx].size     = size; 
-   regCb->bktTbl[bktIdx].numBlks  = numBlks; 
-   regCb->bktTbl[bktIdx].numAlloc = 0;
-   regCb->bktTbl[bktIdx].maxAlloc = 0;
-
-   /* Update the total bucket size */
-   regCb->bktSize += (size * numBlks); 
-
-   regCb->bktTbl[bktIdx].bktFailCnt = 0;
-   regCb->bktTbl[bktIdx].bktNoFitCnt = 0;
-
-   RETVOID;
-} /* end of cmMmBktInit */
-#endif
 
 
 /*
@@ -6950,29 +6476,6 @@ CmMemEntries        **entry;
 T2kMeamLeakInfo gMemLeakInfo[T2K_MEM_LEAK_INFO_TABLE_SIZE];
 U32 getT2kMemLeakIndex(U32 address)
 {
-#if 0
-   /*
-      1   2   3   4   5   6  7  
-
-      XOR 7 with 3 and remove 7
-      XOR 1 with 5 and remove 1
-   */
-   
-   address -= T2K_MEM_LEAK_START_ADDR;
-
-   U8 Nib7 = address &  0x0000000f;
-   U8 Nib1 = (address & 0x0f000000) >>24;
-   U8 Nib3 = (address & 0x000f0000) >> 16;
-   U8 Nib5 = (address & 0x00000f00) >> 8;
-
-   /* store 8 ^ 3 in 8Nib */
-   Nib7 = Nib7 ^ Nib3;
-   /* store 1 ^ 6 in 6Nib */
-   Nib5 = Nib5 ^ Nib1;
-
-   return(((address & 0x000fff00) | (Nib7 << 20) | (Nib5 << 4)) >> 4);
-   
-#endif
    return ((address - T2K_MEM_LEAK_START_ADDR) >> 8);
 }
 
@@ -7014,32 +6517,6 @@ void InsertToT2kMemLeakInfo(U32 address, U32 size, U32 lineNo, char* fileName)
                gMemLeakInfo[idx].address, gMemLeakInfo[idx].fileName,
                gMemLeakInfo[idx].lineNo, gMemLeakInfo[idx].size,
                gMemLeakInfo[idx].age, (t2kMemAllocTick-gMemLeakInfo[idx].age));
-#if 0
-      /* Try inserting into some other location */
-      int i;
-      int lastIndex = idx  + 1;
-      Bool inserted = FALSE;
-      for(i = 2; lastIndex < T2K_MEM_LEAK_INFO_TABLE_SIZE && i < 30; i++)
-      {
-         if(gMemLeakInfo[lastIndex].address == 0)
-         {
-            gMemLeakInfo[lastIndex].address = address;
-            gMemLeakInfo[lastIndex].size = size;
-            gMemLeakInfo[lastIndex].lineNo = lineNo;
-            gMemLeakInfo[lastIndex].fileName = fileName;
-            gMemLeakInfo[lastIndex].age = (++t2kMemAllocTick) >> 14; /*For every  16384 memory block allocations,Alloc Tick is incremented by 1*/
-            inserted = TRUE;
-            break;
-         }
-         lastIndex = idx + (i * i * i);
-      }
-#if 1
-      if(!inserted)
-      {
-         printf("Something is wrong, trying to insert %x idx = %d no free i = %d\n",address, idx, i);
-      }
-#endif
-#endif
    }
 }
 
@@ -7082,32 +6559,6 @@ void RemoveFromT2kMemLeakInfo(U32 address, char *file, U32 line)
             printf("Previous File:%s, Previous Line:%ld\n",
                   gMemLeakInfo[idx].prevRemFileName, gMemLeakInfo[idx].prevRemLineNo);
          }
-#if 0
-      /* Try removing from some other location where it might have been stored*/
-      int i;
-      int lastIndex = idx + 1;
-      Bool removed = FALSE;
-      for(i = 2; lastIndex < T2K_MEM_LEAK_INFO_TABLE_SIZE && i < 30; i++)
-      {
-         if(gMemLeakInfo[lastIndex].address == address)
-         {
-            gMemLeakInfo[lastIndex].address = 0;
-            gMemLeakInfo[lastIndex].size = 0;
-            gMemLeakInfo[lastIndex].lineNo = 0;
-            gMemLeakInfo[lastIndex].fileName = 0;
-            gMemLeakInfo[lastIndex].age = 0; /*For every  16384 memory block allocations,Alloc Tick is incremented by 1*/
-            removed = TRUE;
-            break;
-         }
-         lastIndex = idx + (i*i*i);
-      }
-#if 1
-      if(!removed)
-      {
-         printf("Something is wrong, trying to remove %x idx = %d  lastIndex = %d FreeCalled from File=%s, line=%d\n",address, idx, lastIndex,file,line);
-      }
-#endif
-#endif
    }
 }
 
@@ -7419,196 +6870,6 @@ Region reg;
 }
 #endif
 #endif /* SS_LOCKLESS_MEMORY */
-#if 0
-T2kMeamLeakInfo gMemLeakInfo[T2K_MEM_LEAK_INFO_TABLE_SIZE];
-U32 getT2kMemLeakIndex(U32 address)
-{
-#if 0
-   /*
-      1   2   3   4   5   6  7  
-
-      XOR 7 with 3 and remove 7
-      XOR 1 with 5 and remove 1
-   */
-   
-   address -= T2K_MEM_LEAK_START_ADDR;
-
-   U8 Nib7 = address &  0x0000000f;
-   U8 Nib1 = (address & 0x0f000000) >>24;
-   U8 Nib3 = (address & 0x000f0000) >> 16;
-   U8 Nib5 = (address & 0x00000f00) >> 8;
-
-   /* store 8 ^ 3 in 8Nib */
-   Nib7 = Nib7 ^ Nib3;
-   /* store 1 ^ 6 in 6Nib */
-   Nib5 = Nib5 ^ Nib1;
-
-   return(((address & 0x000fff00) | (Nib7 << 20) | (Nib5 << 4)) >> 4);
-   
-#endif
-   return ((address - T2K_MEM_LEAK_START_ADDR) >> 8);
-}
-
-static U32 t2kMemAllocTick;
-static U32 smallTick;
-
-void InsertToT2kMemLeakInfo(U32 address, U32 size, U32 lineNo, char* fileName)
-{
-   U32 index = getT2kMemLeakIndex(address);
-
-   if(((U32)(address - T2K_MEM_LEAK_START_ADDR) & 0xff) !=0)
-   {
-     printf("address in InsertToT2kMemLeakInfo is %x size = %d file is %s line is %d \n", address, size, fileName, lineNo);
-   }
-
-   if(gMemLeakInfo[index].address == 0)
-   {
-      gMemLeakInfo[index].address = address;
-      gMemLeakInfo[index].size = size;
-      gMemLeakInfo[index].lineNo = lineNo;
-      gMemLeakInfo[index].fileName = fileName;
-      gMemLeakInfo[index].age = t2kMemAllocTick; 
-      gMemLeakInfo[index].prevRemLineNo = 0;
-      gMemLeakInfo[index].prevRemFileName = '\0';
-
-      if(smallTick++ == 4096)
-      {
-         smallTick = 0;
-	      gMemLeakInfo[index].age = (++t2kMemAllocTick); 
-      }
-   }
-   else
-   {
-         printf("Something is wrong, trying to insert %x index = %d file is %s line is %d \n",address, index, fileName, lineNo);
-         printf("Address present :%x, from File:%s, Line:%d, Size:%d, Age:%d",
-               gMemLeakInfo[index].address, gMemLeakInfo[index].fileName,
-               gMemLeakInfo[index].lineNo, gMemLeakInfo[index].size,
-               gMemLeakInfo[index].age);
-#if 0
-      /* Try inserting into some other location */
-      int i;
-      int lastIndex = index  + 1;
-      Bool inserted = FALSE;
-      for(i = 2; lastIndex < T2K_MEM_LEAK_INFO_TABLE_SIZE && i < 30; i++)
-      {
-         if(gMemLeakInfo[lastIndex].address == 0)
-         {
-            gMemLeakInfo[lastIndex].address = address;
-            gMemLeakInfo[lastIndex].size = size;
-            gMemLeakInfo[lastIndex].lineNo = lineNo;
-            gMemLeakInfo[lastIndex].fileName = fileName;
-            gMemLeakInfo[lastIndex].age = (++t2kMemAllocTick) >> 14; /*For every  16384 memory block allocations,Alloc Tick is incremented by 1*/
-            inserted = TRUE;
-            break;
-         }
-         lastIndex = index + (i * i * i);
-      }
-#if 1
-      if(!inserted)
-      {
-         printf("Something is wrong, trying to insert %x index = %d no free i = %d\n",address, index, i);
-      }
-#endif
-#endif
-   }
-}
-
-
-void RemoveFromT2kMemLeakInfo(U32 address, char *file, U32 line)
-{
-   U32 index = getT2kMemLeakIndex(address);
-
-   if(index >= T2K_MEM_LEAK_INFO_TABLE_SIZE)
-   {
-      printf("Index out of range = %d address is %x file = %s line = %d. We are going to crash!!!\n",
-              index,
-              address,
-              file,
-              line);
-   }
-   if(gMemLeakInfo[index].address == address)
-   {
-      gMemLeakInfo[index].address = 0;
-      gMemLeakInfo[index].age = 0; 
-      gMemLeakInfo[index].prevRemLineNo = gMemLeakInfo[index].lineNo;
-      gMemLeakInfo[index].prevRemFileName = gMemLeakInfo[index].fileName; 
-
-      /*printf("Something is wrong, Trying to double free Address = %x, Index = %d \n",address,index);*/
-   }
-   else
-   {
-         printf("Something is wrong, trying to remove %x index = %d  from File=%s, line=%d address present is %x\n",address, index, file,line, 
-                   gMemLeakInfo[index].address);
-         if(gMemLeakInfo[index].prevRemFileName != NULLP)
-         {
-            printf("Previous File:%s, Previous Line:%d\n",
-                  gMemLeakInfo[index].prevRemFileName, gMemLeakInfo[index].prevRemLineNo);
-         }
-#if 0
-      /* Try removing from some other location where it might have been stored*/
-      int i;
-      int lastIndex = index + 1;
-      Bool removed = FALSE;
-      for(i = 2; lastIndex < T2K_MEM_LEAK_INFO_TABLE_SIZE && i < 30; i++)
-      {
-         if(gMemLeakInfo[lastIndex].address == address)
-         {
-            gMemLeakInfo[lastIndex].address = 0;
-            gMemLeakInfo[lastIndex].size = 0;
-            gMemLeakInfo[lastIndex].lineNo = 0;
-            gMemLeakInfo[lastIndex].fileName = 0;
-            gMemLeakInfo[lastIndex].age = 0; /*For every  16384 memory block allocations,Alloc Tick is incremented by 1*/
-            removed = TRUE;
-            break;
-         }
-         lastIndex = index + (i*i*i);
-      }
-#if 1
-      if(!removed)
-      {
-         printf("Something is wrong, trying to remove %x index = %d  lastIndex = %d FreeCalled from File=%s, line=%d\n",address, index, lastIndex,file,line);
-      }
-#endif
-#endif
-   }
-}
-
-void DumpT2kMemLeakInfoToFile()
-{
-   int i;
-  
-   FILE *fp = fopen("memLeakInfo.txt","wb");
-
-   if(fp == NULL)
-   {
-      printf("Could not open file for dumping mem leak info\n");
-      return;
-   }
-
-   for(i = 0; i< T2K_MEM_LEAK_INFO_TABLE_SIZE; i++)
-   {
-      if(gMemLeakInfo[i].address != 0)
-      {
-         char* onlyFileName = rindex(gMemLeakInfo[i].fileName,'/');
-         if(onlyFileName == NULL)
-         {
-            onlyFileName = gMemLeakInfo[i].fileName;
-         }
-
-         fprintf(fp, "%p  s=%d  a=%d  l=%d  f=%s\n",gMemLeakInfo[i].address,
-                                            gMemLeakInfo[i].size,
-                                            gMemLeakInfo[i].age,
-                                            gMemLeakInfo[i].lineNo,
-                                            onlyFileName);
-      }
-   }
-
-   fprintf(fp,"Current t2kMemAllocTick = %d\n",t2kMemAllocTick);
-
-   fclose(fp);
-}
-#endif
-
 /**********************************************************************
          End of file
  **********************************************************************/

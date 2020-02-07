@@ -19,7 +19,10 @@
 /* This file contains message handling functionality for DU cell management */
 
 #include "du_sctp.h"
-#include "f1ap_msg_hdl.h"
+#include "du_f1ap_msg_hdl.h"
+#include "lsctp.h"
+#include "legtp.h"
+#include "lphy_stub.h"
 
 U8 rlcDlCfg = 0;
 U8 numRlcDlSaps = 0;
@@ -27,6 +30,8 @@ U8 rlcUlCfg = 0;
 U8 numRlcMacSaps = 0;
 U8 macCfg = 0;
 U8 macCfgInst = 0;
+
+extern DuCfgParams duCfgParam;;
 
 extern S16 cmPkLkwCfgReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLkwCntrlReq(Pst *pst, KwMngmt *cfg);
@@ -107,7 +112,7 @@ S16 duBuildRlcCfg(Inst inst)
    pst.srcProcId = DU_PROC;
    pst.region    = duCb.init.region;
 
-   printf("\nRLC Gen Cfg Req sent for inst %d", inst);
+   DU_LOG("\nDU_APP : RLC Gen Cfg Req sent for inst %d", inst);
 
    /* Send the request to RLC */
    cmPkLkwCfgReq(&pst, &kwMngmt);
@@ -173,7 +178,7 @@ S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst)
       lSap->sapId       = lsapInst;      /* SapId will be stored as suId in MAC */
       lSap->selector    = (inst == RLC_UL_INST) ? DU_SELECTOR_LWLC : DU_SELECTOR_TC;
       kwMngmt.hdr.elmId.elmnt  = STRGUSAP;
-      printf("\nRLC MAC Lower Sap Cfg Req sent for inst %d", inst);
+      DU_LOG("\nDU_APP : RLC MAC Lower Sap Cfg Req sent for inst %d", inst);
 
    }
    else
@@ -185,7 +190,7 @@ S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst)
       lSap->sapId       = 0;
       lSap->selector = DU_SELECTOR_LC;
       kwMngmt.hdr.elmId.elmnt  = STUDXSAP;
-      printf("\nRLC DL/UL Lower Sap Cfg Req sent for inst %d", inst);
+      DU_LOG("\nDU_APP : RLC DL/UL Lower Sap Cfg Req sent for inst %d", inst);
    }
 
    cmPkLkwCfgReq(&pst, &kwMngmt);
@@ -252,10 +257,71 @@ S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst)
    pst.srcProcId = DU_PROC;
    pst.region = duCb.init.region;
 
-   printf("\nRLC Kwu Upper Sap Cfg Req sent for inst %d", inst);
+   DU_LOG("\nDU_APP : RLC Kwu Upper Sap Cfg Req sent for inst %d", inst);
    cmPkLkwCfgReq(&pst, &kwMngmt);
 
    return ROK;
+}
+
+/**************************************************************************
+ * @brief Function to populate internal DS of DU APP
+ *
+ * @details
+ *
+ *      Function : duProcCfgComplete
+ * 
+ *      Functionality:
+ *           Populates internal data structures of DU APP after 
+ *           receiving configurations.
+ *     
+ * @param[in]  void
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+S16 duProcCfgComplete()
+{
+   S16 ret = ROK;
+   static U16 cellId = 0;
+   U16 idx;
+   for(idx=0; idx< DEFAULT_CELLS; idx++) //TODO: the length of this loop must be determined
+   {
+      DuCellCb *cell;
+      DU_ALLOC(cell, sizeof(DuCellCb))
+      if(cell == NULLP)
+      {
+         DU_LOG("\nDU_APP : Memory Allocation failed in duProcCfgComplete");
+         ret = RFAILED;
+      }
+      else
+      {
+         U16 nci;
+
+         cell->cellId = cellId++;
+         memcpy((void*)&cell->cellInfo, (void*)&duCfgParam.cellCfg[idx],\
+               sizeof(CellCfgParams));
+         cell->cellStatus = OOS;
+         nci = cell->cellInfo.nrEcgi.cellId;
+         ret = cmHashListInsert(&(duCb.cellLst), (PTR)(cell), 
+                     (U8 *)&(nci), (U16) sizeof(nci));
+
+         if(ret != ROK)
+         {
+            DU_LOG("\nDU_APP : HashListInsert into cellLst failed for [%d]", nci);
+            break;
+         }
+         else
+         {
+            DU_LOG("\nDU_APP : HashListInsert into cellLst successful for [%d]", nci);
+         }
+      }
+   }
+   if(ret != RFAILED)
+   {
+      //Start layer configs
+      ret = duSendRlcUlCfg();
+   }
+   return ret;
 }
 /**************************************************************************
  * @brief Function to invoke DU Layer Configs
@@ -372,7 +438,7 @@ S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cntrl)
             {
                if (pst->srcInst == RLC_DL_INST)
                {
-                  printf("\nBIND OF RLC DL TO MAC (RGU) SAP SUCCESSFUL");
+                  DU_LOG("\nDU_APP : BIND OF RLC DL TO MAC (RGU) SAP SUCCESSFUL");
                   macCfgInst++;
                   if(macCfgInst < DEFAULT_CELLS)
                   {
@@ -386,7 +452,7 @@ S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cntrl)
                }
                else
                {
-                  printf("\nBIND OF RLC UL TO MAC (RGU) SAP SUCCESSFUL");
+                  DU_LOG("\nDU_APP : BIND OF RLC UL TO MAC (RGU) SAP SUCCESSFUL");
                   macCfgInst++;
                   if(macCfgInst < DEFAULT_CELLS)
                   {
@@ -394,9 +460,8 @@ S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cntrl)
                   }
                   else
                   {
-                     duSctpStartReq();
+                     duSendSchCfg();
                   }
-
                   break;
                }
             }
@@ -425,7 +490,7 @@ S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
 {
    S16 ret;
 
-   printf("\nRLC UL Cfg Status %d", cfm->cfm.status);
+   DU_LOG("\nDU_APP : RLC UL Cfg Status %d", cfm->cfm.status);
    if (cfm->cfm.status == LCM_PRIM_OK)
    {
       switch(cfm->hdr.elmId.elmnt)
@@ -454,7 +519,7 @@ S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
          default:
             break;
       }
-      printf("\n RLC UL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
+      DU_LOG("\nDU_APP : RLC UL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
       if(rlcUlCfg == DU_RLC_UL_CONFIGURED)
       {
           rlcUlCfg = 0;
@@ -466,7 +531,7 @@ S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
    }
    else
    {
-      printf("\nConfig confirm NOK from RLC UL");
+      DU_LOG("\nDU_APP : Config confirm NOK from RLC UL");
       ret = RFAILED;
    }
    return ret;
@@ -490,7 +555,7 @@ S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
  ***************************************************************************/
 S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm)
 {
-   printf("\nRLC DL Cfg Status %d", cfm->cfm.status);
+   DU_LOG("\nDU_APP : RLC DL Cfg Status %d", cfm->cfm.status);
    if (cfm->cfm.status == LCM_PRIM_OK)
    {
       switch(cfm->hdr.elmId.elmnt)
@@ -520,7 +585,7 @@ S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm)
             break;
 
       }
-      printf("\n RLC DL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
+      DU_LOG("\nDU_APP : RLC DL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
       if(rlcDlCfg == DU_RLC_DL_CONFIGURED)
       {
           rlcDlCfg = 0;
@@ -531,7 +596,7 @@ S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm)
    }
    else
    {
-      printf("\nConfig confirm NOK from RLC DL");
+      DU_LOG("\nDU_APP : Config confirm NOK from RLC DL");
    }
    return ROK;
 }
@@ -629,7 +694,7 @@ S16 duBuildMacGenCfg()
    pst.srcProcId = DU_PROC;
    pst.region = duCb.init.region;
 
-   printf("\nMAC Gen Cfg Req sent");
+   DU_LOG("\nDU_APP : MAC Gen Cfg Req sent");
 
    /* Send the request to MAC */
    cmPkLrgCfgReq(&pst, &rgMngmt);
@@ -691,7 +756,7 @@ S16 duBuildMacUsapCfg(SpId sapId)
    pst.srcProcId = DU_PROC;
    pst.region    = duCb.init.region;
 
-   printf("\nMAC Rgu USap Cfg Req sent");
+   DU_LOG("\nDU_APP : MAC Rgu USap Cfg Req sent");
 
    /* Send the request to MAC */
    cmPkLrgCfgReq(&pst, &rgMngmt);
@@ -737,11 +802,11 @@ S16 duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
          default:
             break;
       }
-      printf("\n MAC Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
+      DU_LOG("\nDU_APP : MAC Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
       if(macCfg == MAC_CONFIGURED && numRlcMacSaps == MAX_MAC_SAP)
       {
          macCfg = 0;
-         printf("\n Completed sending Configs");
+         DU_LOG("\nDU_APP : Completed sending Configs");
          macCfgInst = 0;
          duBindUnbindRlcToMacSap(RLC_DL_INST, ABND);
       }
@@ -749,7 +814,7 @@ S16 duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
    }
    else
    {
-      printf("\nConfig confirm NOK from MAC");
+      DU_LOG("\nDU_APP : Config confirm NOK from MAC");
       ret = RFAILED;
    }
    return ret;
@@ -784,11 +849,11 @@ S16 duBindUnbindRlcToMacSap(U8 inst, U8 action)
 
    if (action == ABND)
    {
-      printf("\nCntrl Req to RLC inst %d to bind MAC sap", inst);
+      DU_LOG("\nDU_APP : Cntrl Req to RLC inst %d to bind MAC sap", inst);
    }
    else
    {
-      printf("\nCntrl Req to RLC inst %d to unbind MAC sap", inst);
+      DU_LOG("\nDU_APP : Cntrl Req to RLC inst %d to unbind MAC sap", inst);
    }
    cntrl = &(kwMngmt.t.cntrl);
 
@@ -831,13 +896,13 @@ S16 duBindUnbindRlcToMacSap(U8 inst, U8 action)
  *       Function to start SCTP
  *
  * @params[in] 
- * @return void
+ * @return ROK     - success
+ *         RFAILED - failure
  *
  * ****************************************************************/
 S16 duSctpStartReq()
 {
    Pst pst;
-   Buffer *mBuf;
 
    cmMemset((U8 *)&(pst), 0, sizeof(Pst));
    pst.srcEnt = (Ent)ENTDUAPP;
@@ -849,12 +914,8 @@ S16 duSctpStartReq()
    pst.event = EVTSCTPSTRT;
    pst.selector = DU_SELECTOR_LC;
    pst.pool= DU_POOL;
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
-   {
-      printf("\nMemory allocation failed in duReadCfg");
-      return RFAILED;
-   }
-   SPstTsk(&pst, mBuf);
+
+   cmPkSctpAssocReq(&pst, duCfgParam.sctpParams);
 
    RETVALUE(ROK);
 }
@@ -880,9 +941,6 @@ S16 duSctpStartReq()
 
 S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
 {
-   char *finalBuf;
-   int i,j;
-
    switch(ntfy->header.nType)
    {
       case CM_INET_SCTP_ASSOC_CHANGE:
@@ -890,42 +948,20 @@ S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
          {
             case CM_INET_SCTP_COMM_UP:
                {
-                  printf("\nSCTP communication UP");
-                  duCb.sctpStatus = TRUE;
+                  DU_LOG("\nDU_APP : SCTP communication UP");
                   //Setup F1-C
                   if(!duCb.f1Status)
                   {
                      /* Build and send F1 Setup response */
-	                  Buffer *f1SetupReq;
-                     MsgLen  copyCnt;
-
-                     BuildF1SetupReq();
-                     /* Reversing the encoded string */
-                     if(SGetSBuf(1, 1, (Data **)&finalBuf, (Size)encBufSize) != ROK)
+                     if(BuildAndSendF1SetupReq() != ROK)
                      {
-                        printf("Memory allocation failed");
                         RETVALUE(RFAILED);
-                     }
-                     for(i = 0, j = encBufSize-1; i<encBufSize; i++, j--)
-                     {
-                        finalBuf[j] = encBuf[i];
-                     }
-
-                     if(SGetMsg(1, 1, &f1SetupReq) == ROK)
-                     {
-                        if(SCpyFixMsg((Data *)finalBuf, f1SetupReq, 0, encBufSize, &copyCnt) == ROK)
-                        {
-                           printf("\nSending F1 setup request");
-                           SPrntMsg(f1SetupReq, 0,0);
-                           if(sctpOutMsgSend(f1SetupReq) != ROK)
-                           {
-                              printf("\nFailed Sending");
-                           }
-                        }
                      }
                   }
                   else
                   {
+                     //Only SCTP is down, when SCTP comes up again, no need to
+                     //start from setting up F1 link
                   }
                   break;
                }
@@ -935,6 +971,521 @@ S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
    RETVALUE(ROK);
 }
 
+/*******************************************************************
+ *
+ * @brief  Fills Pst struct for ENTEGTP
+ *
+ * @details
+ *
+ *    Function : duFillEgtpPst
+ *
+ *    Functionality:
+ *       Fills Pst struct for ENTEGTP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 duFillEgtpPst(Pst *pst, Event event)
+{
+   cmMemset((U8 *)pst, 0, sizeof(Pst));
+   pst->srcEnt = (Ent)ENTDUAPP;
+   pst->srcInst = (Inst)DU_INST;
+   pst->srcProcId = DU_PROC;
+   pst->dstEnt = (Ent)ENTEGTP;
+   pst->dstInst = (Inst)EGTP_INST;
+   pst->dstProcId = pst->srcProcId;
+   pst->event = event;
+   pst->selector = DU_SELECTOR_LC;
+   pst->pool= DU_POOL;
+  
+   RETVALUE(ROK);
+}
+
+
+/*******************************************************************
+ *
+ * @brief  Function to configure EGTP
+ *
+ * @details
+ *
+ *    Function : duBuildEgtpCfgReq
+ *
+ *    Functionality:
+ *       Function to configure EGTP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+S16 duBuildEgtpCfgReq()
+{
+    Pst pst;
+    EgtpConfig egtpCfg;
+    
+    DU_LOG("\nDU_APP : Sending EGTP config request");
+
+    cmMemset((U8 *)&egtpCfg, 0, sizeof(EgtpConfig));
+    cmMemcpy((U8 *)&egtpCfg, (U8 *)&duCfgParam.egtpParams, (PTR)sizeof(EgtpConfig));
+    
+    duFillEgtpPst(&pst, EVTCFGREQ);
+    cmPkEgtpCfgReq(&pst, egtpCfg);
+ 
+    RETVALUE(ROK);
+}
+
+/*******************************************************************
+ *
+ * @brief  Function to configure EGTP
+ *
+ * @details
+ *
+ *    Function : duBuildEgtpCfgReq
+ *
+ *    Functionality:
+ *       Function to configure EGTP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 duHdlEgtpCfgComplete(CmStatus cfm)
+{
+   S16 ret = ROK;
+
+   if(cfm.status == LCM_PRIM_OK)
+   {
+      DU_LOG("\nDU_APP : EGTP configuraton complete");
+#ifdef EGTP_TEST
+      duSendEgtpSrvOpenReq();
+#endif
+   }
+   else
+   {
+      DU_LOG("\nDU_APP : EGTP configuraton failed");
+      ret = RFAILED;
+   }
+
+   RETVALUE(ret);
+}
+
+/*******************************************************************
+ *
+ * @brief  Sends server open request to EGTP
+ *
+ * @details
+ *
+ *    Function : duSendEgtpSrvOpenReq
+ *
+ *    Functionality:
+ *       Sends server open request to EGTP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+ 
+S16 duSendEgtpSrvOpenReq()
+{
+   Pst pst;
+
+   DU_LOG("\nDU_APP : Sending EGTP server open request");
+
+   duFillEgtpPst(&pst, EVTSRVOPENREQ);
+   cmPkEgtpSrvOpenReq(&pst);
+
+   RETVALUE(ROK);
+}
+
+/*******************************************************************
+ *
+ * @brief Handles server open confirmation
+ *
+ * @details
+ *
+ *    Function : duHdlEgtpSrvOpenComplete
+ *
+ *    Functionality:
+ *        Handles server open confirmation
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *****************************************************************/
+
+S16 duHdlEgtpSrvOpenComplete(CmStatus cfm)
+{
+    S16 ret = ROK;
+ 
+    if(cfm.status == LCM_PRIM_OK)
+    {
+       DU_LOG("\nDU_APP : EGTP server opened successfully");
+#ifdef EGTP_TEST
+       duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_ADD, EGTP_LCL_TEID, EGTP_REM_TEID);
+#endif
+    }
+    else
+    {
+       DU_LOG("\nDU_APP : EGTP server opening failed");
+       ret = RFAILED;
+    }
+ 
+    RETVALUE(ret);
+}
+
+/*******************************************************************
+ *
+ * @brief Sends tunnel management request
+ *
+ * @details
+ *
+ *    Function : duSendEgtpTnlMgmtReq 
+ *
+ *    Functionality:
+ *        Builds and sends tunnel management request to EGTP
+ *
+ * @params[in] Action
+ *             Local tunnel endpoint id
+ *             Remote tunnel endpoint id 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid)
+{
+   Pst pst;
+   EgtpTnlEvt tnlEvt;
+
+   tnlEvt.action = action;
+   tnlEvt.lclTeid = lclTeid;
+   tnlEvt.remTeid = remTeid;
+    
+   DU_LOG("\nDU_APP : Sending EGTP tunnel management request");
+    
+   duFillEgtpPst(&pst, EVTTNLMGMTREQ);
+   cmPkEgtpTnlMgmtReq(&pst, tnlEvt);
+    
+   RETVALUE(ROK);
+}
+
+/*******************************************************************
+ *
+ * @brief Handles Tunnel management confirm 
+ *
+ * @details
+ *
+ *    Function : duHdlEgtpTnlMgmtCfm
+ *
+ *    Functionality:
+ *      Handles tunnel management confirm received from Egtp
+ *
+ * @params[in] Tunnel Event  
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
+{
+   S16 ret = ROK;
+
+   if(tnlEvtCfm.cfmStatus.status == LCM_PRIM_OK)
+   {
+      DU_LOG("\nDU_APP : Tunnel management confirm OK");
+
+#ifdef EGTP_TEST
+      duSendEgtpDatInd();
+      
+      /* For testing purpose. TTI thread should actually be in L1 */
+      duStartTtiThread();
+#endif      
+   }
+   else
+   {
+      DU_LOG("\nDU_APP : Tunnel management failed");
+      ret = RFAILED;
+   }
+
+   RETVALUE(ret);
+}
+
+#ifdef EGTP_TEST
+/*******************************************************************
+ *
+ * @brief Simulate RLC to EGTP data indication 
+ *
+ * @details
+ *
+ *    Function : duSendEgtpDatInd
+ *
+ *    Functionality:
+ *      Simulate RLC to EGTP data indication
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 duSendEgtpDatInd()
+{
+   char data[30] = "This is EGTP data from DU";
+   int datSize = 30;
+
+   Buffer   *mBuf;
+   EgtpMsg  egtpMsg;
+
+   if(SGetMsg(DU_APP_MEM_REGION, DU_POOL, &mBuf) == ROK)
+   {
+      if(SAddPstMsgMult((Data *)data, datSize, mBuf) == ROK)
+      {
+         SPrntMsg(mBuf, 0,0);
+      }
+      else
+      {
+         DU_LOG("\nDU_APP : SAddPstMsgMult failed");
+         SPutMsg(mBuf);
+         RETVALUE(RFAILED);
+      }
+   }
+   else
+   {
+      DU_LOG("\nDU_APP : Failed to allocate memory");
+      RETVALUE(RFAILED);
+   }
+
+   /* filling IPv4 header */ 
+   CmIpv4Hdr ipv4Hdr;
+   MsgLen    mLen;
+
+   mLen = 0;
+   SFndLenMsg(mBuf, &mLen);
+
+   cmMemset((U8 *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
+   ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
+   ipv4Hdr.hdrVer = 0x45;
+   ipv4Hdr.proto = 1;
+   ipv4Hdr.srcAddr = CM_INET_NTOH_U32(duCfgParam.egtpParams.localIp.ipV4Addr);
+   ipv4Hdr.destAddr = CM_INET_NTOH_U32(duCfgParam.egtpParams.destIp.ipV4Addr);
+
+   /* Packing IPv4 header into buffer */
+   S16          ret, cnt, idx;
+   Data         revPkArray[CM_IPV4_HDRLEN];
+   Data         pkArray[CM_IPV4_HDRLEN];
+ 
+   /* initialize locals */
+   cnt = 0;
+   cmMemset(revPkArray, 0, CM_IPV4_HDRLEN);
+   cmMemset(pkArray, 0, CM_IPV4_HDRLEN);
+
+   /* Pack Header Version */
+   pkArray[cnt++] = ipv4Hdr.hdrVer;
+
+   /* Pack TOS */
+   pkArray[cnt++] = ipv4Hdr.tos;
+
+   pkArray[cnt++] = (Data)GetHiByte(ipv4Hdr.length);
+   pkArray[cnt++] = (Data)GetLoByte(ipv4Hdr.length);
+
+   /* Pack Id */
+   pkArray[cnt++] = (Data) GetHiByte(ipv4Hdr.id);
+   pkArray[cnt++] = (Data) GetLoByte(ipv4Hdr.id);
+
+   /* Pack Offset */
+   pkArray[cnt++] = (Data)GetHiByte(ipv4Hdr.off);
+   pkArray[cnt++] = (Data)GetLoByte(ipv4Hdr.off);
+
+   /* Pack TTL */
+   pkArray[cnt++] = ipv4Hdr.ttl;
+
+   /* Pack Protocol */
+   pkArray[cnt++] = ipv4Hdr.proto;
+
+   /* Pack Checksum */
+   pkArray[cnt++] = (Data)GetHiByte(ipv4Hdr.chkSum);
+   pkArray[cnt++] = (Data)GetLoByte(ipv4Hdr.chkSum);
+
+   /* Pack Source Address */
+   pkArray[cnt++] = (Data)GetHiByte(GetHiWord(ipv4Hdr.srcAddr));
+   pkArray[cnt++] = (Data)GetLoByte(GetHiWord(ipv4Hdr.srcAddr));
+   pkArray[cnt++] = (Data)GetHiByte(GetLoWord(ipv4Hdr.srcAddr));
+   pkArray[cnt++] = (Data)GetLoByte(GetLoWord(ipv4Hdr.srcAddr));
+
+   /* Pack Destination Address */
+   pkArray[cnt++] = (Data)GetHiByte(GetHiWord(ipv4Hdr.destAddr));
+   pkArray[cnt++] = (Data)GetLoByte(GetHiWord(ipv4Hdr.destAddr));
+   pkArray[cnt++] = (Data)GetHiByte(GetLoWord(ipv4Hdr.destAddr));
+   pkArray[cnt++] = (Data)GetLoByte(GetLoWord(ipv4Hdr.destAddr));
+
+   for (idx = 0;  idx < CM_IPV4_HDRLEN;  idx++)
+      revPkArray[idx] = pkArray[CM_IPV4_HDRLEN - idx -1];
+
+   /* this function automatically reverses revPkArray */
+   ret = SAddPreMsgMult(revPkArray, (MsgLen)cnt, mBuf);
+
+
+   egtpMsg.msgHdr.msgType = EGTPU_MSG_GPDU;
+   egtpMsg.msgHdr.nPdu.pres = FALSE;
+   egtpMsg.msgHdr.seqNum.pres = FALSE;
+   egtpMsg.msgHdr.extHdr.udpPort.pres = FALSE;
+   egtpMsg.msgHdr.extHdr.pdcpNmb.pres = FALSE;
+   egtpMsg.msgHdr.teId = 1;
+   egtpMsg.msg = mBuf;
+
+   SPrntMsg(mBuf, 0, 0);
+
+   egtpHdlDatInd(egtpMsg);
+ 
+   RETVALUE(ROK);
+}
+#endif /* EGTP_TEST */
+
+
+/**************************************************************************
+ * @brief Function to send configs to SCH
+ *
+ * @details
+ *
+ *      Function : duSendSchCfg 
+ * 
+ *      Functionality:
+ *           Sends general config to Scheduler via MAC layer
+ *     
+ * @param[in]  void
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+S16 duSendSchCfg()
+{
+   RgMngmt       rgMngmt;
+   RgSchInstCfg  *cfg = NULLP;
+   Pst           pst;
+
+   DU_SET_ZERO(&pst, sizeof(Pst));
+   DU_SET_ZERO(&rgMngmt, sizeof(RgMngmt));
+
+   cfg = &(rgMngmt.t.cfg.s.schInstCfg);
+
+   /* Filling of Instance Id */
+   cfg->instId = DEFAULT_CELLS + 1;
+   /* Filling of Gen config */
+   cfg->genCfg.mem.region = RG_MEM_REGION;
+   cfg->genCfg.mem.pool = RG_POOL;
+   cfg->genCfg.tmrRes = 10;
+
+#ifdef LTE_ADV
+   cfg->genCfg.forceCntrlSrbBoOnPCel = FALSE;
+   cfg->genCfg.isSCellActDeactAlgoEnable = TRUE;
+#endif/*LTE_ADV*/
+   cfg->genCfg.startCellId     = 1;
+   cfg->genCfg.lmPst.dstProcId = DU_PROC;
+   cfg->genCfg.lmPst.srcProcId = DU_PROC;
+   cfg->genCfg.lmPst.dstEnt    = ENTDUAPP;
+   cfg->genCfg.lmPst.dstInst   = DU_INST;
+   cfg->genCfg.lmPst.srcEnt    = ENTRG;
+   cfg->genCfg.lmPst.srcInst   = DEFAULT_CELLS + 1;
+   cfg->genCfg.lmPst.prior     = PRIOR0;
+   cfg->genCfg.lmPst.route     = RTESPEC;
+   cfg->genCfg.lmPst.region    = RG_MEM_REGION;
+   cfg->genCfg.lmPst.pool      = RG_POOL;
+   cfg->genCfg.lmPst.selector  = DU_SELECTOR_LC;
+
+   /* Fill Header */
+   rgMngmt.hdr.msgType             = TCFG;
+   rgMngmt.hdr.entId.ent           = ENTRG;
+   rgMngmt.hdr.entId.inst          = DU_INST;
+   rgMngmt.hdr.elmId.elmnt         = STSCHINST;
+   rgMngmt.hdr.response.mem.region = RG_MEM_REGION;
+   rgMngmt.hdr.response.mem.pool   = RG_POOL;
+
+   /* Fill Pst */
+   pst.selector  = DU_SELECTOR_LC;
+   pst.srcEnt    = ENTDUAPP;
+   pst.dstEnt    = ENTRG;
+   pst.dstProcId = DU_PROC;
+   pst.srcProcId = DU_PROC;
+   pst.srcInst   = DU_INST;
+   pst.dstInst   = 0;
+   pst.region    = duCb.init.region;
+   pst.event    = (Event) EVTMACSCHGENCFGREQ;
+
+   DU_LOG("\nDU_APP : MAC Sch Cfg sent");
+
+   /* Send the request to MAC */
+   cmPkLrgSchCfgReq(&pst, &rgMngmt);
+
+   return ROK;
+}
+
+/**************************************************************************
+ * @brief Function to handle  SCH Config Confirm from MAC
+ *
+ * @details
+ *
+ *      Function : duHdlSchCfgComplete 
+ * 
+ *      Functionality:
+ *           Handles Scheduler Gen Config Confirm from MAC
+ *     
+ * @param[in]  Pst     *pst, Post structure of the primitive.     
+ * @param[in]  RgMngmt *cfm, Unpacked primitive info received from MAC
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
+{
+   if (cfm->cfm.status == LCM_PRIM_OK)
+   {
+      switch (cfm->hdr.elmId.elmnt)
+      {
+         case STSCHINST:
+            {
+               DU_LOG("\nDU_APP : Received SCH CFG CFM at DU APP");
+               break;
+            }
+         default:
+            break;
+      }
+   }
+   duSctpStartReq();
+
+   duBuildEgtpCfgReq();
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Handles TTI indication 
+ *
+ * @details
+ *
+ *    Function : duSendEgtpTTIInd
+ *
+ *    Functionality:
+ *     Handles TTI indication received from PHY
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 duSendEgtpTTIInd()
+{
+   Pst pst;
+
+   duFillEgtpPst(&pst, EVTTTIIND);
+   cmPkEgtpTTIInd(&pst);
+   
+   RETVALUE(ROK);
+   
+}
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

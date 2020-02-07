@@ -678,14 +678,12 @@ RgrTtiIndInfo *ttiInd;
 PUBLIC S16 RgUiRgrCfgCfm
 (
 Pst* pst,
-SuId suId,
 RgrCfgTransId transId,
 U8 status
 )
 #else
-PUBLIC S16 RgUiRgrCfgCfm(pst, suId, transId, status)
+PUBLIC S16 RgUiRgrCfgCfm(pst, transId, status)
 Pst* pst;
-SuId suId;
 RgrCfgTransId transId;
 U8 status;
 #endif
@@ -693,7 +691,7 @@ U8 status;
 
    TRC3(RgUiRgrCfgCfm);
 
-   RETVALUE((*RgUiRgrCfgCfmMt[pst->selector])(pst, suId, transId, status));
+   RETVALUE((*RgUiRgrCfgCfmMt[pst->selector])(pst, transId, status));
 
 }
 

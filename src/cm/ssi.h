@@ -1400,6 +1400,7 @@
 #define ENTDUAPP    0xeb             /* ORAN DU APP */
 #define ENTSCTP     0xec             /* ORAN SCTP */
 #define ENTF1AP     0xed             /* ORAN F1AP */
+#define ENTEGTP     0xee             /* ORAN EGTP */
 #endif //ORAN
 /* un-configured procId */ 
 #ifdef SS_MULTIPLE_PROCS

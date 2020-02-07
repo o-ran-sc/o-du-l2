@@ -225,10 +225,6 @@ Desc: Checks if Ring is full
 */
 inline static S16 IsFull(SsRngBuf* rBuf)
 {
-#if 0
-   /* write+1 == read implies ring is full */
-   return ((((rBuf->write + 1)> rBuf->size)?0:(rBuf->write+1))==rBuf->read);
-#endif
 #if 1
    if((rBuf->write+1) == rBuf->read)
    {
@@ -582,33 +578,6 @@ S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType)
 #endif
 
 
-
-#if 0
-int main(int argc, char **argv) 
-{
-    SCreateSRngBuf(1,sizeof(SsRngBuf), 10);
-    rngElem* buf; 
-    /* Fill buffer with test elements 3 times */
-    buf = (SsRngBuf*)malloc(sizeof(rngBuf));
-    buf->ptr = 1;
-    SEnqSRngBuf(1, buf);
-    buf = (SsRngBuf*)malloc(sizeof(rngBuf));
-    buf->ptr = 2;
-    SEnqSRngBuf(1, buf);
-    buf = (SsRngBuf*)malloc(sizeof(rngBuf));
-    buf->ptr = 3;
-    SEnqSRngBuf(1, buf);
-
-   SDeqSRngBuf(1,buf);
-   printf("buf 1 = %d",buf->ptr);
-   SDeqSRngBuf(1,buf);
-   printf("buf 2 = %d",buf->ptr);
-   SDeqSRngBuf(1,buf);
-   printf("buf 3 = %d",buf->ptr);
- 
-    return 0;
-}
-#endif
 
 /**********************************************************************
          End of file

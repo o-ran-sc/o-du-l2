@@ -136,6 +136,7 @@ Inst      inst;
 RgRguDedDatReq *datReq;
 #endif
 {
+#if 0
    RgCellCb     *cell;
    RgUeCb       *ue;
    U8           idx1,idx2;
@@ -304,7 +305,7 @@ RgRguDedDatReq *datReq;
 #ifdef CCPU_OPT
             boRpt.setMaxDlPrio= datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.staPduPrsnt;
 #endif
-            //TODO: commented for compilation without SCH RgMacSchDedBoUpdt(&schPst, &boRpt);
+            RgMacSchDedBoUpdt(&schPst, &boRpt);
          }
       }
 
@@ -326,6 +327,7 @@ RgRguDedDatReq *datReq;
 #endif
    } /* for loop for num of Ue per TTI*/
 
+#endif
    /* Data send successfully to PHY. lets retuns ROK*/
    RETVALUE(ROK);
 }  /* rgROMDedDatReq */

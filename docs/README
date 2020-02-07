@@ -38,9 +38,9 @@ How to Clean and Build:
    a. Build folder
          cd l2/build/odu
    b. Building CU Stub binary
-         make cu_stub MACHINE=BIT64 MODE=FDD
+         make cu_stub NODE=CU_STUB MACHINE=BIT64 MODE=FDD
    c. Cleaning CU Stub binary
-         make clean_cu MACHINE=BIT64 MODE=FDD
+         make clean_cu NODE=CU_STUB MACHINE=BIT64 MODE=FDD
 
 3. Cleaning ODU and CU Stub
       make clean_all MACHINE=BIT64 MODE=FDD

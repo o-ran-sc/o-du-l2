@@ -47,11 +47,13 @@ registered with SSI during the LTE MAC Task initialization.
 #include "rgu.h"           /* RGU defines */
 #include "tfu.h"           /* RGU defines */
 #include "lrg.h"           /* layer management defines for LTE-MAC */
+#include "rgr.h"           /* layer management defines for LTE-MAC */
 #include "crg.h"           /* CRG interface includes */
 #include "rg_sch_inf.h"    /* SCH interface includes */
 #include "rg_prg.h"        /* PRG interface includes */
 #include "rg_env.h"        /* customisable defines and macros for LTE-MAC */
 #include "rg.h"            /* defines and macros for MAC */
+#include "rgr.h"            /* defines and macros for SCH */
 
 
 /* header/extern include files (.x) */
@@ -67,6 +69,7 @@ registered with SSI during the LTE MAC Task initialization.
 #include "rgu.x"           /* RGU types */
 #include "tfu.x"           /* RGU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
+#include "rgr.x"           /* layer management typedefs for MAC */
 #include "crg.x"           /* CRG interface typedes */
 #include "rg_sch_inf.x"    /* SCH interface typedefs */
 #include "rg_prg.x"        /*PRG interface includes*/
@@ -107,6 +110,13 @@ Buffer  *mBuf;                      /* message buffer       */
       case EVTLRGCFGREQ:
          /* Process a config. request */
          cmUnpkLrgCfgReq(RgMiLrgCfgReq, pst, mBuf);
+         break;
+      case EVTMACSCHGENCFGREQ:
+         /* Process a config. request */
+         cmUnpkLrgSchCfgReq(MacSchGenCfgReq, pst, mBuf);
+         break;
+      case EVTMACSCHCFGREQ: 
+         cmUnpkRgrCfgReq(MacSchCfgReq, pst, mBuf);
          break;
       case EVTLRGCNTRLREQ:
          /* Process a control request */

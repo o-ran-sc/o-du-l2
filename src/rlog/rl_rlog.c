@@ -1311,17 +1311,6 @@ void saveLogData(const void* buf, U16 len, U32 g_rlogWritePosIndex)
 
 }
 
-#if 0
-void storeTimeDelimeter(FILE* fp)
-{
-   LOGDATA logData;
-   logData.logId = L_TIME_DELIMITER;
-   logData.argType = 0;
-   logData.logLevel = 0;
-   logData.numOfArgs = 0;
-   logData.len = 0;
-}
-#endif
 void sendToPostProcessor(const void* buf, U16 len)
 {
    if( send(g_nCliSocket, buf, len, 0 ) == -1 ) {

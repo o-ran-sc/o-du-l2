@@ -835,6 +835,22 @@ typedef struct rgrCellCntrlCmdCfg
   * eNB level Scheduler Configurations
   * along with other PFS config Parameters
   */
+typedef struct macSchedGnbCfg
+{
+   U8         numTxAntPorts;    /*!< Number of Tx antenna ports */
+   U8         ulSchdType;     /*!< Indicates which UL scheduler to use, range
+                               * is 0..(number of schedulers - 1) */
+   U8         dlSchdType;     /*!< Indicates which DL scheduler to use, range
+                               * is 0..(number of schedulers - 1) */
+   U8         numCells;       /*!< Max number of cells */
+   U8         maxUlUePerTti;  /*!< Max number of UE in UL per TTI */
+   U8         maxDlUePerTti;  /*!< Max number of UE in DL per TTI */
+}MacSchedGnbCfg;
+/**
+  * @brief
+  * eNB level Scheduler Configurations
+  * along with other PFS config Parameters
+  */
 typedef struct rgrSchedEnbCfg
 {
    U8         numTxAntPorts;    /*!< Number of Tx antenna ports */
@@ -1049,10 +1065,113 @@ typedef struct rgr5gtfCellCfg
 }Rgr5gtfCellCfg;
 #endif
 
+/** @brief This enum defines dl ul transmission periodicity as per spec 38.331
+ * servingCellConfigCommon */
+typedef enum rgrDlUlTxPrdcty
+{
+   RGR_DLULTXPRDCTY_MS0DOT5    = 0,  /*!<Periodicity of 0.5 ms*/
+   RGR_DLULTXPRDCTY_MS0DOT625, /*!<Periodicity of 0.625 ms*/
+   RGR_DLULTXPRDCTY_MS1,       /*!<Periodicity of 1 ms */
+   RGR_DLULTXPRDCTY_MS1DOT25,  /*!<Periodicity of 1.25 ms */
+   RGR_DLULTXPRDCTY_MS2,       /*!<Periodicity of 2 ms */
+   RGR_DLULTXPRDCTY_MS2DOT5,   /*!<Periodicity of 2.5 ms */
+   RGR_DLULTXPRDCTY_MS5,       /*!<Periodicity of 5 ms */
+   RGR_DLULTXPRDCTY_MS10       /*!<Periodicity of 10 ms */
+}RgrDlUlTxPrdcty;
+
+#if 0
+typedef struct rgrSlotCfg
+{
+Bool duplexMode;  /*!< FDD:0, TDD:1 */
+U32  slotFrmt[RGR_MAX_SLOTS_IN_10MS]; /*!< Least significant 2 bits indicates:
+                                        00-DL, 01-UL, 10-Flexi, 11-Mixed
+                                        Rest 28 bits indicates 14 symbols
+                                        types(DL/UL/Flexi) 2 bits for
+                                        each symbol*/
+RgrDlUlTxPrdcty  dlUlTxPrdcty;       /*!< dl-ul-Transmission periodicity
+                                          as per 38.331 in servingCellConfigCommon*/
+
+}RgrSlotCfg;
+#endif
 /** @} */
 /** @brief Cell Configuration at RRM */
 typedef struct rgrCellCfg
 {
+
+#if 0
+   CmLteCellId         cellId;         /*!< Cell ID */
+   U16                 pci;            /*!< Physical Cell ID */
+   U8                  maxMsg3PerUlSlot; /*!< Maximum MSG3 that may be scheduled
+                                            per uplink slot */
+   U8                  maxUePerUlSlot;   /*!<Maximum UE scheduled per UL slot */
+   U8                  maxUePerDlSlot;   /*!<Maximum UE scheduled per DL in a TTI */
+   Bool                isCpUlExtend;   /*!< Cyclic prefix: TRUE-extended, 
+                                         FALSE-normal for UL */
+   Bool                isCpDlExtend;   /*!< Cyclic prefix: TRUE-extended, 
+                                         FALSE-normal for DL*/
+   RgrDlHqCfg          dlHqCfg;        /*!< HARQ related configuration */ 
+   RgrCfiCfg           cfiCfg;         /*!< CFI for PDCCH */
+   RgrUlTrgCqiCfg      trgUlCqi;       /*!< Target UL CQI */
+   RgrDlCmnCodeRateCfg dlCmnCodeRate;  /*!< Coding rate for common DL channels: 
+                                         Expressed in multiples of 1024 */
+   RgrUlCmnCodeRateCfg ulCmnCodeRate;  /*!< Coding rate for common UL channels: 
+                                         Expressed as index into CQI table */
+   RgrBwCfg            bwCfg;          /*!< Bandwidth configuration */
+   RgrUlPwrCfg         pwrCfg;         /*!< Cell-specific power configuration */
+   RgrPuschCfg         puschCfg;       /*!< Cell-specific hopping configuration */
+   RgrPreambleSetCfg   macPreambleSet; /*!< Range of PDCCH Order Preamble IDs
+                                         to be managed by MAC */
+
+   U16                bcchTxPwrOffset; /*!< Tx Pwr Offset for BCCH tx on PDSCH.
+                                         Offset to the reference signal 
+                                         power. Value: 0 -> 10000, 
+                                         representing -6 dB to 4 dB in 0.001
+                                         dB steps */                                    
+   U16                pcchTxPwrOffset; /*!< Tx Pwr Offset for PCCH tx.
+                                         Offset to the reference signal 
+                                         power. Value: 0 -> 10000, 
+                                         representing -6 dB to 4 dB in 0.001
+                                         dB steps */                                    
+   U16                rarTxPwrOffset; /*!< Tx Pwr Offset for RAR tx.
+                                        Offset to the reference signal 
+                                        power. Value: 0 -> 10000, 
+                                        representing -6 dB to 4 dB in 0.001
+                                        dB steps */          
+   U8                   nrMu; /*!<Indicates the number of Slot for a radio frame*/
+   U8                   tbScalingField;/*!< TB Scaling Factor used while
+                                         calucating TBS for P-RNTI, or
+                                         RA-RNTI*/
+   RgrSlotCfg        slotCfg;         /*!< Slot config as per 38.211, sec
+                                              11.1 and
+                                              38.331
+                                              tdd-UL-DL-configcommon */
+#if 0 //TODO: uncomment after study
+   RgrDataDmrsTypAPosEnum dmrsTypAPos;      /*!< Position of (first) DL DM-RS is
+                                              included in NR-PBCH payload. value is 2 or 3 */
+
+   RgrSsPbchBlockCfg  ssPbchCfg;  /*!< SS PBCH Block configuration */
+   RgrFreqRangeType  freqRangeType;       /*!<Cell Frequency Range type (<=
+                                            3Ghz, 3 < x <= 6Ghz, > 6Ghz)*/
+   RgrType0PdcchCSSCfg type0PdcchCSSCfg; /*!< Type 0 CSS Config params */
+   RgrFreqInfoDlCfg      freqInfoDlCfg;    /*!< DL Frequency information
+                                             config  */
+   RgrSulCellCfg         sulCellCfg;   /*!< SUL Cell config */
+   RgrUlCfgCmn         ulCmnCfg;  /*!< initial UL Bwp and Ul freq
+                                    information */
+#endif
+   Bool                initDlBwpPres; /*!< intial common
+                                        DL BWP is present or not */
+   RgrBwpDlCmn      initDlBwp;    /*!<Initial Dl BWP*/
+   RgrAddlBwpCfg    addlBwpCfg; /*!<Additional BWP Configuration apart from
+                    Initial  BWP*/
+
+   RgrCellNsCfgInfo   nsCfg;   /*!< NSI Cfg */
+
+   RgrCellPfsCfgInfo   pfsCfg;   /*!< Pfs Config */
+   Bool   isRateMatchSsPbchEnbld; /*!<PDSCH rate match enabled for SS PBCH */
+   Bool   isRateMatchCsetEnbld; /*!<PDSCH rate match enabled */
+#endif
+#if 1
    CmLteCellId         cellId;         /*!< Cell ID */
    Inst                macInst;        /*!< MAC instance that is serving the cell */
    /**@name RGR_V1 */
@@ -1215,6 +1334,7 @@ typedef struct rgrCellCfg
 #endif
 #ifdef RG_5GTF
    Rgr5gtfCellCfg     Cell5gtfCfg;
+#endif
 #endif
 } RgrCellCfg;
 /** 
@@ -2063,7 +2183,8 @@ typedef struct rgrCfg
       RgrUeCfg        ueCfg;     /*!< UE configuration */ 
       RgrLchCfg       lchCfg;    /*!< Dedicated logical channel configuration */
       RgrLcgCfg       lcgCfg;    /*!< Dedicated logical channel Group configuration */
-      RgrSchedEnbCfg  schedEnbCfg; /*!< EnodeB Sched Configurations */
+      RgrSchedEnbCfg  schedEnbCfg; /*!< EnodeB Sched Configurations */ //TODO:remove this
+      MacSchedGnbCfg  schedGnbCfg; /*!< gNB Sched Configurations */
    } u;
 } RgrCfg;
 
@@ -2653,7 +2774,6 @@ typedef S16 (*RgrUbndReq) ARGS((
  */
 typedef S16 (*RgrCfgReq) ARGS((
    Pst*                 pst,
-   SpId                 spId,
    RgrCfgTransId        transId,
    RgrCfgReqInfo *      cfgReqInfo));
 /** @brief Configuration confirm from MAC to RRM. 
@@ -2668,7 +2788,6 @@ typedef S16 (*RgrCfgReq) ARGS((
  */
 typedef S16 (*RgrCfgCfm) ARGS((
    Pst*                 pst,
-   SuId                 suId,
    RgrCfgTransId        transId,
    U8                   status));
 /* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
@@ -3101,9 +3220,8 @@ EXTERN S16 RgUiRgrUbndReq ARGS((
  *  @param[in] cfgReqInfo Basic RGR configuration/reconfiguration info at RRM. 
  *  @return  ROK/RFAILED
  */
-EXTERN S16 RgUiRgrCfgReq ARGS((
+EXTERN S16 HandleSchCfgReq ARGS((
    Pst*                 pst,
-   SpId                 spId,
    RgrCfgTransId        transId,
    RgrCfgReqInfo *      cfgReqInfo
 ));
@@ -3114,14 +3232,12 @@ EXTERN S16 RgUiRgrCfgReq ARGS((
  * maskId are returned to RRM if request does not contain crnti (For Handover purpose)
  *
  *  @param[in] pst     A pointer to post Structure.
- *  @param[in] suId    SAP Id for a service Provider.
  *  @param[in] transId MAC to RRM User transaction Id. 
  *  @param[in] status  Status indication from the MAC.  
  *  @return ROK/RFAILED
  */
 EXTERN S16 RgUiRgrCfgCfm ARGS((
    Pst*                 pst,
-   SuId                 suId,
    RgrCfgTransId        transId,
    U8                   status
 ));
@@ -3646,7 +3762,6 @@ EXTERN S16 cmUnpkRgrUbndReq ARGS((
 
 EXTERN S16 cmPkRgrCfgReq ARGS((
    Pst*                 pst,
-   SpId                 spId,
    RgrCfgTransId        transId,
    RgrCfgReqInfo *      cfgReqInfo
 ));
@@ -3659,7 +3774,6 @@ EXTERN S16 cmUnpkRgrCfgReq ARGS((
 
 EXTERN S16 cmPkRgrCfgCfm ARGS((
    Pst*                 pst,
-   SuId                 suId,
    RgrCfgTransId        transId,
    U8                   status
 ));
@@ -4007,11 +4121,11 @@ EXTERN S16 cmUnpkRgrUeAprdDlCqiCfg ARGS((
    RgrUeAprdDlCqiCfg    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrSchedEnbCfg ARGS((
+EXTERN S16 cmPkRgrSchedGnbCfg ARGS((
    RgrSchedEnbCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrSchedEnbCfg ARGS((
+EXTERN S16 cmUnpkRgrSchedGnbCfg ARGS((
    RgrSchedEnbCfg       *param,
    Buffer               *mBuf
 ));
@@ -4530,6 +4644,8 @@ RgrCellCntrlCmdCfg *param,
 Buffer *mBuf
 ));
 
+EXTERN S16 MacSchCfgReq ARGS((Pst *pst, RgrCfgTransId transId, 
+       RgrCfgReqInfo *cfgReqInfo));
 #ifdef RLC_MAC_DAT_REQ_RBUF
 EXTERN S16 rgDlDatReqBatchProc ARGS((
 Void));

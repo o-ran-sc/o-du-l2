@@ -2621,9 +2621,7 @@ Inst   inst;
       RETVALUE (RFAILED);
    }
    gCb = KW_GET_KWCB(inst); 
-#if 0
    cmPrcTmr(&(gCb->kwTqCp), gCb->kwTq, (PFV) kwTmrExpiry);
-#endif
    RETVALUE(ROK);
 
 } /* end of kwActvTmr */

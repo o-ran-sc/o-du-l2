@@ -727,19 +727,6 @@ CtfKdfReqInfo* kdfReqInfo;
       }
    }
    else if (pst->selector == CTF_SEL_LWLC) {
-   	#if 0
-      if (cmPkPtr((PTR)cfgReqInfo, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      /* ctf_c_001.main_3 Compilation warning fix with g++ */
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ECTF018, (ErrVal)0, (Txt*)&"Packing failed");
-#endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCfgReqInfo));
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-	  #endif
    }
    if (cmPkCtfCfgTransId(&transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)

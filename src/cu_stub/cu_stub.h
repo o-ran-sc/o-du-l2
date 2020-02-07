@@ -35,6 +35,8 @@
 #include "ss_task.h"
 #include "ss_msg.h"
 #include "cm_inet.h"
+#include "cm_llist.h"      /* Common link list  defines  */
+#include "cm_hash.h"       /* Common hashlist  defines */
 
 #include "gen.x"           /* General */
 #include "ssi.x"   /* System services */
@@ -43,12 +45,33 @@
 #include "ss_msg.x"
 #include "cm_lib.x"
 #include "cm_inet.x"
+#include "cm_llist.x"      /* Common link list  defines  */
+#include "cm_hash.x"       /* Common hashlist  defines */
 
+#include "du_log.h"
 #define MAX_IPV6_LEN 16
-#define CU_DU_NAME_LEN_MAX 50      /* Max length of CU/DU name string */
+#define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 
 #define CU_APP_MEM_REG 1
 #define CU_POOL 1
+
+/* allocate and zero out a static buffer */
+#define CU_ALLOC(_datPtr, _size)                                \
+{                                                               \
+   S16 _ret;                                                    \
+   _ret = SGetSBuf(CU_APP_MEM_REG, CU_POOL,                  \
+                     (Data **)&_datPtr, _size);                  \
+   if(_ret == ROK)                                              \
+      cmMemset((U8*)_datPtr, 0, _size);                         \
+   else                                                         \
+      _datPtr = NULLP;                                          \
+}
+ 
+/* free a static buffer */
+#define CU_FREE(_datPtr, _size)                                 \
+   SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
+         (Data *)_datPtr, _size);
+
 
 typedef struct ipAddr
 {
@@ -64,6 +87,16 @@ typedef struct RrcVersion
   U32   extRrcVer;  /* Latest RRC version extended */
 }RrcVersion;
 
+typedef struct egtpParams
+{
+   SctpIpAddr  localIp;
+   U16         localPort;
+   SctpIpAddr  destIp;
+   U16         destPort;
+   U32       minTunnelId;
+   U32       maxTunnelId;
+}EgtpParams;
+
 typedef struct sctpParams
 {
    SctpIpAddr  duIpAddr;
@@ -72,11 +105,20 @@ typedef struct sctpParams
    U16         cuPort;
 }SctpParams;
 
+typedef struct fPLMN
+{
+   U8 mcc[3];
+   U8 mnc[3];
+}Plmn;
+
+
 typedef struct cuCfgParams
 {
    U32              cuId;
    char             cuName[CU_DU_NAME_LEN_MAX];
    SctpParams       sctpParams;
+   Plmn            plmn;
+   EgtpParams       egtpParams;
    RrcVersion       rrcVersion;
 }CuCfgParams;
 CuCfgParams cuCfgParams; //global variable to hold all configs

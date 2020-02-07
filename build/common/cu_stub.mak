@@ -38,10 +38,8 @@ lib: $(LIB_DIR)/libcu.a
 include $(COM_BUILD_DIR)/compile.mak
 
 I_OPTS+=-I$(ROOT_DIR)/src/mt
-I_OPTS+=-I$(ROOT_DIR)/src/du_app/F1AP
-I_OPTS+=-I$(ROOT_DIR)/src/du_app/F1AP/asn
-
-PLTFRM_FLAGS+=-DCU_STUB
+I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
+I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
 
 #-------------------------------------------------------------#
 #Linker macros

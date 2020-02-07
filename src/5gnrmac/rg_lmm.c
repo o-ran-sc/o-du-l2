@@ -52,8 +52,9 @@ static int RLOG_MODULE_ID=4096;
 #include "crg.h"           /* CRG Interface defines */
 #include "rgu.h"           /* RGU Interface defines */
 #include "tfu.h"           /* RGU Interface defines */
-#include "rg_sch_inf.h"           /* RGR Interface defines */
+#include "rg_sch_inf.h"    /* RGR Interface defines */
 #include "lrg.h"           /* LRG Interface defines */
+#include "rgr.h"           /* LRG Interface defines */
 #include "rg.h"            /* MAC defines */
 #include "rg_err.h"        /* MAC error defines */
 
@@ -73,6 +74,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_sch_inf.x"    /* SCH Interface includes */
 #include "rg_prg.x"    /* PRG Interface includes */
 #include "lrg.x"           /* LRG Interface includes */
+#include "rgr.x"           /* LRG Interface includes */
 #include "rg.x"            /* MAC includes */
 #ifdef SS_DIAG
 #include "ss_diag.h"        /* Common log file */
@@ -221,6 +223,9 @@ Reason reason;         /* reason */
       printf("\n Cellcb hash list initialization failed for MAC CL");
       RETVALUE(RFAILED);
    }
+
+   /* Initialize Scheduler as well */
+   schActvInit(ENTRG, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
 
    RETVALUE(ROK);
 
@@ -1940,6 +1945,112 @@ Inst    inst;
    RETVALUE(ROK);
  
 } /* end of rgActvTmr */
+
+/**
+ * @brief Layer Manager  Configuration request handler for Scheduler
+ *
+ * @details
+ *
+ *     Function : MacSchGenCfgReq
+ *     
+ *     This function receives general configurations for Scheduler
+ *     from DU APP and forwards to Scheduler.
+ *     
+ *  @param[in]  Pst *pst, the post structure     
+ *  @param[in]  RgMngmt *cfg, the configuration parameter's structure
+ *  @return  S16
+ *      -# ROK
+ **/
+#ifdef ANSI
+PUBLIC S16 MacSchGenCfgReq
+(
+Pst      *pst,    /* post structure  */
+RgMngmt  *cfg     /* config structure  */
+)
+#else
+PUBLIC S16 MacSchGenCfgReq(pst, cfg)
+Pst      *pst;    /* post structure  */
+RgMngmt  *cfg;    /* config structure  */
+#endif    
+{
+   printf("\nReceived Scheduler gen config at MAC");
+   pst->dstInst = DEFAULT_CELLS + 1;
+   HandleSchGenCfgReq(pst, cfg);
+
+   return ROK;
+}
+
+/**
+ * @brief Layer Manager Configuration response from Scheduler
+ *
+ * @details
+ *
+ *     Function : SchSendCfgCfm
+ *     
+ *     This function sends general configurations response from
+ *     Scheduler to DU APP.
+ *     
+ *  @param[in]  Pst *pst, the post structure     
+ *  @param[in]  RgMngmt *cfm, the configuration confirm structure
+ *  @return  S16
+ *      -# ROK
+ **/
+#ifdef ANSI
+PUBLIC S16 SchSendCfgCfm 
+(
+Pst      *pst,    /* post structure  */
+RgMngmt  *cfm     /* config confirm structure  */
+)
+#else
+PUBLIC S16 SchSendCfgCfm(pst, cfm)
+Pst      *pst;    /* post structure  */
+RgMngmt  *cfm;    /* config confirm structure  */
+#endif    
+{
+   printf("\nSending Scheduler config confirm to DU APP");
+   RgMiLrgSchCfgCfm(pst, cfm);
+   
+   RETVALUE(ROK);
+}
+
+/**
+ * @brief Layer Manager Configuration request handler. 
+ *
+ * @details
+ *
+ *     Function : MacSchCfgReq 
+ *     
+ *     This function handles the gNB and cell configuration
+ *     request received from DU APP.
+ *     This API unapcks and forwards the config towards SCH
+ *     
+ *  @param[in]  Pst           *pst
+ *  @param[in]  RgrCfgTransId transId
+ *  @param[in]  RgrCfgReqInfo *cfgReqInfo
+ *  @return  S16
+ *      -# ROK
+ **/
+#ifdef ANSI
+PUBLIC S16 MacSchCfgReq 
+(
+ Pst           *pst,
+ RgrCfgTransId transId,
+ RgrCfgReqInfo *cfgReqInfo
+)
+#else
+PUBLIC S16 MacSchCfgReq(pst, transId, cfgReqInfo)
+ Pst           *pst; 
+ RgrCfgTransId transId;
+ RgrCfgReqInfo *cfgReqInfo;
+#endif    
+{
+   printf("\nReceived Scheduler config at MAC");
+   pst->dstInst = DEFAULT_CELLS + 1;
+   HandleSchCfgReq(pst, transId, cfgReqInfo);
+
+   RETVALUE(ROK);
+ 
+} /* end of MacSchCfgReq*/
 
 
 /**********************************************************************

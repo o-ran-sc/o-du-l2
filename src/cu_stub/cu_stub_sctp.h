@@ -30,10 +30,22 @@
 
 #define MAX_RETRY 5
 
-EXTERN S16 sctpActvInit(Ent entity, Inst inst, Region region, Reason reason);
-EXTERN S16 sctpActvTsk(Pst *pst, Buffer *mBuf);
+/* Global variable declaration */
+CmInetFd   lstnSockFd; /* Listening Socket file descriptor */
+CmInetFd   sockFd;     /* Socket File descriptor */
+U8   socket_type;      /* Socket type */
+Bool nonblocking;      /* Blocking/Non-blocking socket */
+Bool connUp;           /* Is connection up */
+int  assocId;          /* Assoc Id of connected assoc */
+  
+CmInetNetAddrLst localAddrLst;
+CmInetNetAddrLst remoteAddrLst;
+  
+SctpParams *sctpCfg;            /* SCTP configurations at DU */
+
+EXTERN S16 sctpActvInit();
 EXTERN void sctpStartReq();
-EXTERN S16 sctpOutMsgSend(Buffer *mBuf);
+EXTERN S16 sctpSend(Buffer *mBuf);
 
 #endif
 

@@ -35,14 +35,14 @@
 #define EVTLRGCFGCFM    1      /* Config Confirm */
 #define EVTLRGCNTRLREQ  2      /* Control Request */
 #define EVTLRGCNTRLCFM  3      /* Control Confirm */
-#define EVTLRGSTSREQ    4      /* Statistics Request */
+#define EVTLRGSTSREQ    44      /* Statistics Request */
 #define EVTLRGSTSCFM    5      /* Statistics Confirm */
 #define EVTLRGSSTAREQ   6      /* Solicited Status Request */
 #define EVTLRGSSTACFM   7      /* Solicited Status Confirm */
 #define EVTLRGUSTAIND   8      /* Unsolicite Status Indication */
 #define EVTLRGTRCIND    9      /* Trace Indication */
-#define EVTLRGSCHCFGREQ 10     /* Scheduler Configuration */
-#define EVTLRGSCHCFGCFM 11     /* Scheduler Config Confirm */
+#define EVTMACSCHGENCFGREQ 10     /* Scheduler Configuration */
+#define EVTMACSCHGENCFGCFM 11     /* Scheduler Config Confirm */
 #define EVTLRGSCHSTAIND 12     /* Scheduler Configuration */
 #define EVTLRGSCHCNTRLREQ 13   /* Scheduler Configuration */
 #define EVTLRGSCHCNTRLCFM 14   /* Scheduler Config Confirm */

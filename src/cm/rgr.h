@@ -54,7 +54,7 @@
 #endif /* LTE_L2_MEAS*/
 
 /* Configuration/Reconfiguration MACROs*/
-#define RGR_CONFIG   1      /*!< Macro for Configuration Request*/
+#define SCH_CONFIG   1      /*!< Macro for Configuration Request*/
 #define RGR_RECONFIG 2      /*!< Macro for Reconfiguration Request*/
 #define RGR_DELETE   3      /*!< Macro for Delete Request*/
 #define RGR_RESET    4      /*!< Macro for Reset Request*/
@@ -70,7 +70,7 @@
 #define RGR_LCH_CFG   3     /*!< Macro for Logical Channel Configuration Type */ 
 #define RGR_LCG_CFG   4     /*!< Macro for Logical Group Configuration Type */
 #define RGR_SCELL_UE_CFG 5  /*!< MACRO for Scell release */
-#define RGR_ENB_CFG   6     /*!< MACRO for ENB Scheduler Configuration Type */
+#define MAC_GNB_CFG   6     /*!< MACRO for ENB Scheduler Configuration Type */
 
 /* Cell-wide reconfiguration MACROs */
 #define RGR_CELL_DL_CMNRATE_RECFG (1<<0)  /*!< Macro for Downlink Common Coderate Reconfiguration */
@@ -250,11 +250,11 @@
 #define RGR_CFG_CFM_TX_COMPLETE  0x01  /*!< Negative confirmation: configuration failed */
 
 /* Event corresponding to each primitive at this interface */
-#define EVTRGRBNDREQ   1     /*!< Bind Request */
-#define EVTRGRBNDCFM   2     /*!< Bind Confirm */
-#define EVTRGRUBNDREQ  3     /*!< Unbind Request */
-#define EVTRGRCFGREQ   4     /*!< Configuration Request */
-#define EVTRGRCFGCFM   5     /*!< Configuration Confirm */
+#define EVTRGRBNDREQ    1     /*!< Bind Request */
+#define EVTRGRBNDCFM    2     /*!< Bind Confirm */
+#define EVTRGRUBNDREQ   3     /*!< Unbind Request */
+#define EVTMACSCHCFGREQ    4     /*!< Configuration Request */
+#define EVTMACSCHCFGCFM    5     /*!< Configuration Confirm */
 /* rgr_h_001.main_2: Added TTI indication from MAC to RGR user */
 /** @name RGR_RRM_TICK */
 /** @{ */

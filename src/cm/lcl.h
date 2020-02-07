@@ -21,7 +21,7 @@
 #define __LCL_H__
 
 #define NUM_NUMEROLOGY 5  /* Number of numerology */
-#define MAX_TDD_PERIODICITY 5
+#define MAXIMUM_TDD_PERIODICITY 5
 #define MAX_SYMB_PER_SLOT 14 
 
 typedef enum
@@ -143,7 +143,7 @@ typedef struct tddCfg
 {
    Bool               pres;
    DlUlTxPeriodicity  tddPeriod;      /* DL UL Transmission periodicity */
-   SlotConfig         slotCfg[MAX_TDD_PERIODICITY][MAX_SYMB_PER_SLOT]; 
+   SlotConfig         slotCfg[MAXIMUM_TDD_PERIODICITY][MAX_SYMB_PER_SLOT]; 
 }TDDCfg;
 
 typedef struct clCellCfg

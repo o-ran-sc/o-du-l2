@@ -1917,7 +1917,7 @@ U16                port;         /* port number */
 
 /* cm_inet_c_001.main_64: New variable used as an argument for sctp_connectx */
 #ifdef SCTP_CONNECTX_NEW
-   U32 assocId = 0;
+   U32    assocId = 0;
 #endif   
    U32    addresses_array_size = 0;
    U32    idx4 = 0;
@@ -2193,8 +2193,7 @@ U16                port;         /* port number */
    {
       RETVALUE(RFAILED);
    }
-/* HLAL */
-#if 0
+
 #ifdef IPV6_SUPPORTED
    if((ipv6_array_size > 0) && (ipv6_array_size <= (CM_INET_NUM_NET_ADDR * \
                sizeof(struct sockaddr_in))))
@@ -2206,7 +2205,7 @@ U16                port;         /* port number */
       RETVALUE(RFAILED);
    }
 #endif /* IPV6_SUPPORTED */
-#endif
+
 /* cm_inet_c_001.main_64: Support for new definition of sctp_connectx */
 #ifndef SCTP_CONNECTX_NEW   
    ret = sctp_connectx(sockFd->fd, (struct sockaddr*)address_array, cnt);

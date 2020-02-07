@@ -75,20 +75,6 @@ struct cmMmBlkSetElement
                                  used for the allocation */
 };
 
-#if 0
-/* This structre is used for the storing the bucket set information in the 
- * system task region. At present the number of array is used for two.
- * The array is indexed using the crntBktNodeIdx value during allocation
- * or deallocation */
-struct cmMmDynMemElem
-{
-   U32        numBkt;          /* Number of buckets avilable in the current
-                                  set */
-   CmMmEntry  *nextBktPtr;    /* Address of the first bucket which will be
-                                  used for the allocation */
-};
-#endif
-
 /* The following structure is used for the storing the buckets/pools
  * this will be present for each bucket which is configured and 
  * will contains the all the information about the bucket. This
@@ -512,21 +498,6 @@ EXTERN S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem,
 #endif
 
 #ifdef T2K_MEM_LEAK_DBG
-#if 0
-typedef struct _t2kMemLeakInfo
-{
-   U32 address; /* 0 means it is free */
-   U32 size;    /* size of the block */
-   U32 age; /* in ticks, when it was allocated */
-   U32 lineNo;  /* lineNo in the file from where allocation was done */
-   char* fileName; /* from where allocation was done */
-   U32 prevRemLineNo;  /* lineNo in the file from where allocation was done */
-   char* prevRemFileName; /* from where allocation was done */
-   U32 lastDelLineNum;  /* lineNo in the file from where allocation was done */
-   char* lastDelFileName; /* from where allocation was done */
-
-}T2kMeamLeakInfo;
-#endif
 #endif
 #endif
 

@@ -626,19 +626,11 @@ PUBLIC MtMemCfg mtMemoCfg =
          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
 #else
-#if 0
-        {256, 500000},
-         {512, 11000},
-         {2048, 100000},
-         {8192, 75128},
-        {16384, 4096}
-#else  /* Page boundary alignment */
          {256, 491520}, /* 60 pages of 2M*/
          {512, 12288},  /* 3 pages of 2M */
          {2048, 99328}, /* 97 Pages of 2M */
          {8192, 75008}, /* 293 Pages of 2M */
          {16384, 4096}  /* 32 pages of 2M */
-#endif
 #endif        
       }
     },
@@ -8632,10 +8624,7 @@ PUBLIC S16 SInitLock(SLockId *l, U8 t)
 PUBLIC Void ssRegMainThread(Void)
 {
 
-#if 0
-#else
    if(SS_INVALID_THREAD_REG_MAP != SS_GET_THREAD_MEM_REGION())
-#endif
    {
       printf("not able to get different Id for main thread\n");
       exit(1);
@@ -8644,14 +8633,11 @@ PUBLIC Void ssRegMainThread(Void)
     * Main thread. The thread should not perform any allocation except 
     * the initial configuratin 
     */
-#if 0
-#else
 #ifdef XEON_SPECIFIC_CHANGES
    SS_GET_THREAD_MEM_REGION() = mtMemoCfg.numRegions;
 #else   
    SS_GET_THREAD_MEM_REGION() = 
 #endif      
-#endif
                                                                   DFLT_REGION;
 }
 
@@ -8694,11 +8680,8 @@ Region       region       /* Region associated with thread */
    /* Here  0xFF is considered as invalid region and if the mapping table
     * contains 0xFF, that mapping entry is free
     */
-#if 0
-#else
    if(SS_INVALID_THREAD_REG_MAP != 
             osCp.threadMemoryRegionMap[((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP)])
-#endif
    {
       /* Klock work fix ccpu00148484 */
       if(!(createdThreads < SS_MAX_THREAD_CREATE_RETRY))
@@ -8713,15 +8696,12 @@ Region       region       /* Region associated with thread */
    /* If we found free mapping table entry, place the region and send pthread_cancel
     * for all the thread Ids which are created before this 
     */
-#if 0
-#else
    osCp.threadMemoryRegionMap[((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP)] = region;
 #ifdef XEON_SPECIFIC_CHANGES
    printf("ThreadId %ld, Thread Idx %d, Region %d\n", threadId,
           ((threadId >> SS_MEM_THREAD_ID_SHIFT) % 
           SS_MAX_THREAD_REGION_MAP), region);
 #endif   
-#endif
    for(indx = 0; indx < createdThreads; indx++)
    {
 #ifdef XEON_SPECIFIC_CHANGES

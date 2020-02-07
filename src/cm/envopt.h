@@ -689,7 +689,7 @@
 #define RG 1
 
 /* Product options */
-#define RG_PHASE2_SCHED 1
+//#define RG_PHASE2_SCHED 1
 #undef RG_DEBUG
 #undef TTI_PROC
 #undef PROC_DL

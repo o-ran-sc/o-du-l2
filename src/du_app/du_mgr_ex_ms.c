@@ -16,10 +16,12 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains message handling functionality for DU cell management */
+/* This file contains message handling functionality for DU APP */
 
 #include "du_sctp.h"
-#include "f1ap_msg_hdl.h"
+#include "du_f1ap_msg_hdl.h"
+#include "lsctp.h"
+#include "legtp.h"
 
 extern S16 cmUnpkLkwCfgCfm(LkwCfgCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
@@ -60,9 +62,29 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
    duCb.mem.region   = DFLT_REGION;
    duCb.mem.pool     = DU_POOL;
 
-   duCb.sctpStatus   = FALSE;
    duCb.f1Status     = FALSE;
-   duCb.duStatus     = FALSE;
+
+   if(ROK != cmHashListInit(&(duCb.cellLst), 
+            (U16) DU_MAX_CELLS,
+            (U16) 0,
+            (Bool) FALSE, 
+            (U16) CM_HASH_KEYTYPE_CONID,
+            0,   
+            0))
+   {
+      DU_LOG("\nDU_APP : cellLst Initialization Failed");
+   }
+
+   if(ROK != cmHashListInit(&(duCb.actvCellLst), 
+            (U16) DU_MAX_CELLS,
+            (U16) 0,
+            (Bool) FALSE, 
+            (U16) CM_HASH_KEYTYPE_CONID,
+            0,   
+            0))
+   {
+      DU_LOG("\nDU_APP : ActvCellLst Initialization Failed");
+   }
 
    SSetProcId(DU_PROC);
 
@@ -102,13 +124,14 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
             {
                case EVTCFG:
                   {
-                     duSendRlcUlCfg();
+                     DU_LOG("\n****** Received initial configs at DU APP ******\n");
+                     duProcCfgComplete();
                      SPutMsg(mBuf);
                      break;
                   }
                default:
                   {
-                     printf("\nInvalid event received at duActvTsk from ENTDUAPP");
+                     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTDUAPP");
                      SPutMsg(mBuf);
                      ret = RFAILED;
                   }
@@ -136,7 +159,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                default:
                   {
-                     printf("\nInvalid event %d received at duActvTsk from ENTKW", \
+                     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \
                            pst->event);
                      SPutMsg(mBuf);
                      ret = RFAILED;
@@ -163,9 +186,15 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                   {
                      break;
                   }
+               case EVTMACSCHGENCFGCFM:
+                  {
+                     ret = cmUnpkLrgSchCfgCfm(duHdlSchCfgComplete, pst, mBuf);
+                     break;
+                  }
+
                default:
                   {
-                     printf("\nInvalid event received at duActvTsk from ENTRG");
+                     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");
                      SPutMsg(mBuf);
                      ret = RFAILED;
                   }
@@ -179,27 +208,55 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
             {
                case EVTSCTPDATA:
                {
-                  F1InmsgHdlr(mBuf);
+                  F1APMsgHdlr(mBuf);
                   break;
                }
                case EVTSCTPNTFY:
-                  {
-                     ret = cmUnpkSctpNtfy(duSctpNtfyHdl, pst, mBuf);
-                     break;
-                  }
+               {
+                  ret = cmUnpkSctpNtfy(duSctpNtfyHdl, pst, mBuf);
+                  break;
+               }
                default:
-                  {
-                     printf("\nInvalid event received at duActvTsk from ENTRG");
-                     ret = RFAILED;
-                  }
+               {
+                  DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTSCTP");
+                  ret = RFAILED;
+               }
 
+            }
+            SPutMsg(mBuf);
+            break;
+         }
+      case ENTEGTP:
+         {
+            switch(pst->event)
+            {
+               case EVTCFGCFM:
+               {
+                  cmUnpkEgtpCfgCfm(duHdlEgtpCfgComplete, mBuf);
+                  break;
+               }
+               case EVTSRVOPENCFM:
+               {
+                  cmUnpkEgtpSrvOpenCfm(duHdlEgtpSrvOpenComplete, mBuf);
+                  break;
+               }
+               case EVTTNLMGMTCFM:
+               {
+                  cmUnpkEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
+                  break;
+               }
+               default:
+               {
+                  DU_LOG("\nDU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
+                  ret = RFAILED;
+               }
             }
             SPutMsg(mBuf);
             break;
          }
       default:
          {
-            printf("\n DU APP can not process message from Entity %d", pst->srcEnt);
+            DU_LOG("\nDU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
             SPutMsg(mBuf);
             ret = RFAILED;
          }

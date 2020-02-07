@@ -41,7 +41,7 @@ include $(COM_BUILD_DIR)/compile.mak
 
 I_OPTS+=-I$(ROOT_DIR)/src/mt
 I_OPTS+=-I$(ROOT_DIR)/src/du_app
-I_OPTS+=-I$(ROOT_DIR)/src/cu_stub
+I_OPTS+=-I$(ROOT_DIR)/src/cu_stub #TODO: Remove this dependency
 I_OPTS+=-I$(ROOT_DIR)/src/du_app/F1AP/asn
 
 
