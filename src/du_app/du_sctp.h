@@ -21,7 +21,7 @@
 #ifndef __DU_SCTP_H__
 #define __DU_SCTP_H__
 
-#include "du_cfg_hdl.h"
+#include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_log.h"
 #include "cm_inet.h"

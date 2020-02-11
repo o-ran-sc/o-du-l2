@@ -18,7 +18,7 @@
 
 /* This file contains message handling functionality for DU APP */
 #include "du_cell_mgr.h"
-#include "du_cfg_hdl.h"
+#include "du_cfg.h"
 
 extern DuCfgParams duCfgParam;
 

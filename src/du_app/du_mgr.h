@@ -38,7 +38,6 @@
 #include "lrg.h"
 #include "legtp.h"
 
-/*#include "du_cfg_hdl.h"*/
 
 #include "gen.x"           /* General */
 #include "ssi.x"           /* System services */
