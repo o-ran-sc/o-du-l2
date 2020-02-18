@@ -884,7 +884,7 @@ typedef struct duCellCb
 }DuCellCb;
 
 /*function declarations */
-void fillSlotConfig();
+void FillSlotConfig();
 S16 readClCfg();
 S16 readCfg();
 S16 duReadCfg(); 

@@ -37,7 +37,7 @@ extern DuCfgParams duCfgParam;
  *
  * @details
  *
- *    Function : fillSlotConfig
+ *    Function : FillSlotConfig
  *
  *    Functionality:Fill the Slot configuration values
  * 
@@ -46,7 +46,7 @@ extern DuCfgParams duCfgParam;
  *         RFAILED - failure
  *
  * ****************************************************************/
-void fillSlotConfig()
+void FillSlotConfig()
 {
    U8 slot;
    U8 symbol;
@@ -77,7 +77,7 @@ void fillSlotConfig()
  *
  *    Functionality:
  *       - Fills up the cell configuration for CL.
- *       - Calls fillSlotConfig()  
+ *       - Calls FillSlotConfig()  
  *
  * @params[in] void
  * @return ROK     - success
@@ -169,7 +169,7 @@ S16 readClCfg()
    duCfgParam.clCellCfg.tddCfg.pres = TRUE;
    duCfgParam.clCellCfg.tddCfg.tddPeriod = TDD_PERIODICITY;
 
-   fillSlotConfig();
+   FillSlotConfig();
 
    /* RSSI Measurement configuration */
    duCfgParam.clCellCfg.rssiUnit = RSS_MEASUREMENT_UNIT;
