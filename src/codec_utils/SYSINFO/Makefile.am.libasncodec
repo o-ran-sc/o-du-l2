@@ -1,240 +1,240 @@
 ASN_MODULE_SRCS=	\
-	./mib_sib_out/MIB.c	\
-	./mib_sib_out/PDCCH-ConfigSIB1.c	\
-	./mib_sib_out/ControlResourceSetZero.c	\
-	./mib_sib_out/SearchSpaceZero.c	\
-	./mib_sib_out/SIB1.c	\
-	./mib_sib_out/UAC-AccessCategory1-SelectionAssistanceInfo.c	\
-	./mib_sib_out/Q-QualMin.c	\
-	./mib_sib_out/Q-RxLevMin.c	\
-	./mib_sib_out/CellAccessRelatedInfo.c	\
-	./mib_sib_out/PLMN-IdentityInfoList.c	\
-	./mib_sib_out/PLMN-IdentityInfo.c	\
-	./mib_sib_out/PLMN-Identity.c	\
-	./mib_sib_out/MCC.c	\
-	./mib_sib_out/MNC.c	\
-	./mib_sib_out/MCC-MNC-Digit.c	\
-	./mib_sib_out/TrackingAreaCode.c	\
-	./mib_sib_out/RAN-AreaCode.c	\
-	./mib_sib_out/CellIdentity.c	\
-	./mib_sib_out/ConnEstFailureControl.c	\
-	./mib_sib_out/SI-SchedulingInfo.c	\
-	./mib_sib_out/SchedulingInfo.c	\
-	./mib_sib_out/SIB-Mapping.c	\
-	./mib_sib_out/SIB-TypeInfo.c	\
-	./mib_sib_out/SI-RequestConfig.c	\
-	./mib_sib_out/SI-RequestResources.c	\
-	./mib_sib_out/RACH-ConfigGeneric.c	\
-	./mib_sib_out/ServingCellConfigCommonSIB.c	\
-	./mib_sib_out/DownlinkConfigCommonSIB.c	\
-	./mib_sib_out/BCCH-Config.c	\
-	./mib_sib_out/PCCH-Config.c	\
-	./mib_sib_out/PagingCycle.c	\
-	./mib_sib_out/FrequencyInfoDL-SIB.c	\
-	./mib_sib_out/MultiFrequencyBandListNR-SIB.c	\
-	./mib_sib_out/NR-MultiBandInfo.c	\
-	./mib_sib_out/FreqBandIndicatorNR.c	\
-	./mib_sib_out/NR-NS-PmaxList.c	\
-	./mib_sib_out/NR-NS-PmaxValue.c	\
-	./mib_sib_out/P-Max.c	\
-	./mib_sib_out/AdditionalSpectrumEmission.c	\
-	./mib_sib_out/SCS-SpecificCarrier.c	\
-	./mib_sib_out/SubcarrierSpacing.c	\
-	./mib_sib_out/BWP-DownlinkCommon.c	\
-	./mib_sib_out/PDCCH-ConfigCommon.c	\
-	./mib_sib_out/ControlResourceSet.c	\
-	./mib_sib_out/ControlResourceSetId.c	\
-	./mib_sib_out/SearchSpace.c	\
-	./mib_sib_out/SearchSpaceId.c	\
-	./mib_sib_out/PDSCH-ConfigCommon.c	\
-	./mib_sib_out/PDSCH-TimeDomainResourceAllocationList.c	\
-	./mib_sib_out/PDSCH-TimeDomainResourceAllocation.c	\
-	./mib_sib_out/UplinkConfigCommonSIB.c	\
-	./mib_sib_out/FrequencyInfoUL-SIB.c	\
-	./mib_sib_out/ARFCN-ValueNR.c	\
-	./mib_sib_out/BWP-UplinkCommon.c	\
-	./mib_sib_out/BWP.c	\
-	./mib_sib_out/PUSCH-ConfigCommon.c	\
-	./mib_sib_out/PUSCH-TimeDomainResourceAllocationList.c	\
-	./mib_sib_out/PUSCH-TimeDomainResourceAllocation.c	\
-	./mib_sib_out/PUCCH-ConfigCommon.c	\
-	./mib_sib_out/TimeAlignmentTimer.c	\
-	./mib_sib_out/TDD-UL-DL-ConfigCommon.c	\
-	./mib_sib_out/TDD-UL-DL-Pattern.c	\
-	./mib_sib_out/RACH-ConfigCommon.c	\
-	./mib_sib_out/RSRP-Range.c	\
-	./mib_sib_out/UE-TimersAndConstants.c	\
-	./mib_sib_out/UAC-BarringPerCatList.c	\
-	./mib_sib_out/UAC-BarringPerCat.c	\
-	./mib_sib_out/UAC-BarringInfoSetIndex.c	\
-	./mib_sib_out/UAC-BarringPerPLMN-List.c	\
-	./mib_sib_out/UAC-BarringPerPLMN.c	\
-	./mib_sib_out/UAC-BarringInfoSetList.c	\
-	./mib_sib_out/UAC-BarringInfoSet.c	\
-	./mib_sib_out/TCI-StateId.c
+	./new_out/MIB.c	\
+	./new_out/PDCCH-ConfigSIB1.c	\
+	./new_out/ControlResourceSetZero.c	\
+	./new_out/SearchSpaceZero.c	\
+	./new_out/SIB1.c	\
+	./new_out/UAC-AccessCategory1-SelectionAssistanceInfo.c	\
+	./new_out/Q-QualMin.c	\
+	./new_out/Q-RxLevMin.c	\
+	./new_out/CellAccessRelatedInfo.c	\
+	./new_out/PLMN-IdentityInfoList.c	\
+	./new_out/PLMN-IdentityInfo.c	\
+	./new_out/PLMN-IdentitY.c	\
+	./new_out/MCC.c	\
+	./new_out/MNC.c	\
+	./new_out/MCC-MNC-Digit.c	\
+	./new_out/TrackingAreaCode.c	\
+	./new_out/RAN-AreaCode.c	\
+	./new_out/CellIdentity.c	\
+	./new_out/ConnEstFailureControl.c	\
+	./new_out/SI-SchedulingInfo.c	\
+	./new_out/SchedulingInfo.c	\
+	./new_out/SIB-Mapping.c	\
+	./new_out/SIB-TypeInfo.c	\
+	./new_out/SI-RequestConfig.c	\
+	./new_out/SI-RequestResources.c	\
+	./new_out/RACH-ConfigGeneric.c	\
+	./new_out/ServingCellConfigCommonSIB.c	\
+	./new_out/DownlinkConfigCommonSIB.c	\
+	./new_out/BCCH-Config.c	\
+	./new_out/PCCH-Config.c	\
+	./new_out/PagingCycle.c	\
+	./new_out/FrequencyInfoDL-SIB.c	\
+	./new_out/MultiFrequencyBandListNR-SIB.c	\
+	./new_out/NR-MultiBandInfo.c	\
+	./new_out/FreqBandIndicatorNR.c	\
+	./new_out/NR-NS-PmaxList.c	\
+	./new_out/NR-NS-PmaxValue.c	\
+	./new_out/P-Max.c	\
+	./new_out/AdditionalSpectrumEmission.c	\
+	./new_out/SCS-SpecificCarrier.c	\
+	./new_out/SubcarrierSpacing.c	\
+	./new_out/BWP-DownlinkCommon.c	\
+	./new_out/PDCCH-ConfigCommon.c	\
+	./new_out/ControlResourceSet.c	\
+	./new_out/ControlResourceSetId.c	\
+	./new_out/SearchSpace.c	\
+	./new_out/SearchSpaceId.c	\
+	./new_out/PDSCH-ConfigCommon.c	\
+	./new_out/PDSCH-TimeDomainResourceAllocationList.c	\
+	./new_out/PDSCH-TimeDomainResourceAllocation.c	\
+	./new_out/UplinkConfigCommonSIB.c	\
+	./new_out/FrequencyInfoUL-SIB.c	\
+	./new_out/ARFCN-ValueNR.c	\
+	./new_out/BWP-UplinkCommon.c	\
+	./new_out/BWP.c	\
+	./new_out/PUSCH-ConfigCommon.c	\
+	./new_out/PUSCH-TimeDomainResourceAllocationList.c	\
+	./new_out/PUSCH-TimeDomainResourceAllocation.c	\
+	./new_out/PUCCH-ConfigCommon.c	\
+	./new_out/TimeAlignmentTimer.c	\
+	./new_out/TDD-UL-DL-ConfigCommon.c	\
+	./new_out/TDD-UL-DL-Pattern.c	\
+	./new_out/RACH-ConfigCommon.c	\
+	./new_out/RSRP-Range.c	\
+	./new_out/UE-TimersAndConstants.c	\
+	./new_out/UAC-BarringPerCatList.c	\
+	./new_out/UAC-BarringPerCat.c	\
+	./new_out/UAC-BarringInfoSetIndex.c	\
+	./new_out/UAC-BarringPerPLMN-List.c	\
+	./new_out/UAC-BarringPerPLMN.c	\
+	./new_out/UAC-BarringInfoSetList.c	\
+	./new_out/UAC-BarringInfoSet.c	\
+	./new_out/TCI-StateId.c
 
 ASN_MODULE_HDRS=	\
-	./mib_sib_out/MIB.h	\
-	./mib_sib_out/PDCCH-ConfigSIB1.h	\
-	./mib_sib_out/ControlResourceSetZero.h	\
-	./mib_sib_out/SearchSpaceZero.h	\
-	./mib_sib_out/SIB1.h	\
-	./mib_sib_out/UAC-AccessCategory1-SelectionAssistanceInfo.h	\
-	./mib_sib_out/Q-QualMin.h	\
-	./mib_sib_out/Q-RxLevMin.h	\
-	./mib_sib_out/CellAccessRelatedInfo.h	\
-	./mib_sib_out/PLMN-IdentityInfoList.h	\
-	./mib_sib_out/PLMN-IdentityInfo.h	\
-	./mib_sib_out/PLMN-Identity.h	\
-	./mib_sib_out/MCC.h	\
-	./mib_sib_out/MNC.h	\
-	./mib_sib_out/MCC-MNC-Digit.h	\
-	./mib_sib_out/TrackingAreaCode.h	\
-	./mib_sib_out/RAN-AreaCode.h	\
-	./mib_sib_out/CellIdentity.h	\
-	./mib_sib_out/ConnEstFailureControl.h	\
-	./mib_sib_out/SI-SchedulingInfo.h	\
-	./mib_sib_out/SchedulingInfo.h	\
-	./mib_sib_out/SIB-Mapping.h	\
-	./mib_sib_out/SIB-TypeInfo.h	\
-	./mib_sib_out/SI-RequestConfig.h	\
-	./mib_sib_out/SI-RequestResources.h	\
-	./mib_sib_out/RACH-ConfigGeneric.h	\
-	./mib_sib_out/ServingCellConfigCommonSIB.h	\
-	./mib_sib_out/DownlinkConfigCommonSIB.h	\
-	./mib_sib_out/BCCH-Config.h	\
-	./mib_sib_out/PCCH-Config.h	\
-	./mib_sib_out/PagingCycle.h	\
-	./mib_sib_out/FrequencyInfoDL-SIB.h	\
-	./mib_sib_out/MultiFrequencyBandListNR-SIB.h	\
-	./mib_sib_out/NR-MultiBandInfo.h	\
-	./mib_sib_out/FreqBandIndicatorNR.h	\
-	./mib_sib_out/NR-NS-PmaxList.h	\
-	./mib_sib_out/NR-NS-PmaxValue.h	\
-	./mib_sib_out/P-Max.h	\
-	./mib_sib_out/AdditionalSpectrumEmission.h	\
-	./mib_sib_out/SCS-SpecificCarrier.h	\
-	./mib_sib_out/SubcarrierSpacing.h	\
-	./mib_sib_out/BWP-DownlinkCommon.h	\
-	./mib_sib_out/PDCCH-ConfigCommon.h	\
-	./mib_sib_out/ControlResourceSet.h	\
-	./mib_sib_out/ControlResourceSetId.h	\
-	./mib_sib_out/SearchSpace.h	\
-	./mib_sib_out/SearchSpaceId.h	\
-	./mib_sib_out/PDSCH-ConfigCommon.h	\
-	./mib_sib_out/PDSCH-TimeDomainResourceAllocationList.h	\
-	./mib_sib_out/PDSCH-TimeDomainResourceAllocation.h	\
-	./mib_sib_out/UplinkConfigCommonSIB.h	\
-	./mib_sib_out/FrequencyInfoUL-SIB.h	\
-	./mib_sib_out/ARFCN-ValueNR.h	\
-	./mib_sib_out/BWP-UplinkCommon.h	\
-	./mib_sib_out/BWP.h	\
-	./mib_sib_out/PUSCH-ConfigCommon.h	\
-	./mib_sib_out/PUSCH-TimeDomainResourceAllocationList.h	\
-	./mib_sib_out/PUSCH-TimeDomainResourceAllocation.h	\
-	./mib_sib_out/PUCCH-ConfigCommon.h	\
-	./mib_sib_out/TimeAlignmentTimer.h	\
-	./mib_sib_out/TDD-UL-DL-ConfigCommon.h	\
-	./mib_sib_out/TDD-UL-DL-Pattern.h	\
-	./mib_sib_out/RACH-ConfigCommon.h	\
-	./mib_sib_out/RSRP-Range.h	\
-	./mib_sib_out/UE-TimersAndConstants.h	\
-	./mib_sib_out/UAC-BarringPerCatList.h	\
-	./mib_sib_out/UAC-BarringPerCat.h	\
-	./mib_sib_out/UAC-BarringInfoSetIndex.h	\
-	./mib_sib_out/UAC-BarringPerPLMN-List.h	\
-	./mib_sib_out/UAC-BarringPerPLMN.h	\
-	./mib_sib_out/UAC-BarringInfoSetList.h	\
-	./mib_sib_out/UAC-BarringInfoSet.h	\
-	./mib_sib_out/TCI-StateId.h
+	./new_out/MIB.h	\
+	./new_out/PDCCH-ConfigSIB1.h	\
+	./new_out/ControlResourceSetZero.h	\
+	./new_out/SearchSpaceZero.h	\
+	./new_out/SIB1.h	\
+	./new_out/UAC-AccessCategory1-SelectionAssistanceInfo.h	\
+	./new_out/Q-QualMin.h	\
+	./new_out/Q-RxLevMin.h	\
+	./new_out/CellAccessRelatedInfo.h	\
+	./new_out/PLMN-IdentityInfoList.h	\
+	./new_out/PLMN-IdentityInfo.h	\
+	./new_out/PLMN-IdentitY.h	\
+	./new_out/MCC.h	\
+	./new_out/MNC.h	\
+	./new_out/MCC-MNC-Digit.h	\
+	./new_out/TrackingAreaCode.h	\
+	./new_out/RAN-AreaCode.h	\
+	./new_out/CellIdentity.h	\
+	./new_out/ConnEstFailureControl.h	\
+	./new_out/SI-SchedulingInfo.h	\
+	./new_out/SchedulingInfo.h	\
+	./new_out/SIB-Mapping.h	\
+	./new_out/SIB-TypeInfo.h	\
+	./new_out/SI-RequestConfig.h	\
+	./new_out/SI-RequestResources.h	\
+	./new_out/RACH-ConfigGeneric.h	\
+	./new_out/ServingCellConfigCommonSIB.h	\
+	./new_out/DownlinkConfigCommonSIB.h	\
+	./new_out/BCCH-Config.h	\
+	./new_out/PCCH-Config.h	\
+	./new_out/PagingCycle.h	\
+	./new_out/FrequencyInfoDL-SIB.h	\
+	./new_out/MultiFrequencyBandListNR-SIB.h	\
+	./new_out/NR-MultiBandInfo.h	\
+	./new_out/FreqBandIndicatorNR.h	\
+	./new_out/NR-NS-PmaxList.h	\
+	./new_out/NR-NS-PmaxValue.h	\
+	./new_out/P-Max.h	\
+	./new_out/AdditionalSpectrumEmission.h	\
+	./new_out/SCS-SpecificCarrier.h	\
+	./new_out/SubcarrierSpacing.h	\
+	./new_out/BWP-DownlinkCommon.h	\
+	./new_out/PDCCH-ConfigCommon.h	\
+	./new_out/ControlResourceSet.h	\
+	./new_out/ControlResourceSetId.h	\
+	./new_out/SearchSpace.h	\
+	./new_out/SearchSpaceId.h	\
+	./new_out/PDSCH-ConfigCommon.h	\
+	./new_out/PDSCH-TimeDomainResourceAllocationList.h	\
+	./new_out/PDSCH-TimeDomainResourceAllocation.h	\
+	./new_out/UplinkConfigCommonSIB.h	\
+	./new_out/FrequencyInfoUL-SIB.h	\
+	./new_out/ARFCN-ValueNR.h	\
+	./new_out/BWP-UplinkCommon.h	\
+	./new_out/BWP.h	\
+	./new_out/PUSCH-ConfigCommon.h	\
+	./new_out/PUSCH-TimeDomainResourceAllocationList.h	\
+	./new_out/PUSCH-TimeDomainResourceAllocation.h	\
+	./new_out/PUCCH-ConfigCommon.h	\
+	./new_out/TimeAlignmentTimer.h	\
+	./new_out/TDD-UL-DL-ConfigCommon.h	\
+	./new_out/TDD-UL-DL-Pattern.h	\
+	./new_out/RACH-ConfigCommon.h	\
+	./new_out/RSRP-Range.h	\
+	./new_out/UE-TimersAndConstants.h	\
+	./new_out/UAC-BarringPerCatList.h	\
+	./new_out/UAC-BarringPerCat.h	\
+	./new_out/UAC-BarringInfoSetIndex.h	\
+	./new_out/UAC-BarringPerPLMN-List.h	\
+	./new_out/UAC-BarringPerPLMN.h	\
+	./new_out/UAC-BarringInfoSetList.h	\
+	./new_out/UAC-BarringInfoSet.h	\
+	./new_out/TCI-StateId.h
 
-ASN_MODULE_HDRS+=./mib_sib_out/OPEN_TYPE.h
-ASN_MODULE_SRCS+=./mib_sib_out/OPEN_TYPE.c
-ASN_MODULE_HDRS+=./mib_sib_out/constr_CHOICE.h
-ASN_MODULE_HDRS+=./mib_sib_out/BOOLEAN.h
-ASN_MODULE_SRCS+=./mib_sib_out/BOOLEAN.c
-ASN_MODULE_HDRS+=./mib_sib_out/INTEGER.h
-ASN_MODULE_SRCS+=./mib_sib_out/INTEGER.c
-ASN_MODULE_HDRS+=./mib_sib_out/NULL.h
-ASN_MODULE_SRCS+=./mib_sib_out/NULL.c
-ASN_MODULE_HDRS+=./mib_sib_out/NativeEnumerated.h
-ASN_MODULE_SRCS+=./mib_sib_out/NativeEnumerated.c
-ASN_MODULE_HDRS+=./mib_sib_out/NativeInteger.h
-ASN_MODULE_SRCS+=./mib_sib_out/NativeInteger.c
-ASN_MODULE_HDRS+=./mib_sib_out/asn_SEQUENCE_OF.h
-ASN_MODULE_SRCS+=./mib_sib_out/asn_SEQUENCE_OF.c
-ASN_MODULE_HDRS+=./mib_sib_out/asn_SET_OF.h
-ASN_MODULE_SRCS+=./mib_sib_out/asn_SET_OF.c
-ASN_MODULE_SRCS+=./mib_sib_out/constr_CHOICE.c
-ASN_MODULE_HDRS+=./mib_sib_out/constr_SEQUENCE.h
-ASN_MODULE_SRCS+=./mib_sib_out/constr_SEQUENCE.c
-ASN_MODULE_HDRS+=./mib_sib_out/constr_SEQUENCE_OF.h
-ASN_MODULE_SRCS+=./mib_sib_out/constr_SEQUENCE_OF.c
-ASN_MODULE_HDRS+=./mib_sib_out/constr_SET_OF.h
-ASN_MODULE_SRCS+=./mib_sib_out/constr_SET_OF.c
-ASN_MODULE_HDRS+=./mib_sib_out/asn_application.h
-ASN_MODULE_SRCS+=./mib_sib_out/asn_application.c
-ASN_MODULE_HDRS+=./mib_sib_out/asn_ioc.h
-ASN_MODULE_HDRS+=./mib_sib_out/asn_system.h
-ASN_MODULE_HDRS+=./mib_sib_out/asn_codecs.h
-ASN_MODULE_HDRS+=./mib_sib_out/asn_internal.h
-ASN_MODULE_SRCS+=./mib_sib_out/asn_internal.c
-ASN_MODULE_HDRS+=./mib_sib_out/asn_random_fill.h
-ASN_MODULE_SRCS+=./mib_sib_out/asn_random_fill.c
-ASN_MODULE_HDRS+=./mib_sib_out/asn_bit_data.h
-ASN_MODULE_SRCS+=./mib_sib_out/asn_bit_data.c
-ASN_MODULE_HDRS+=./mib_sib_out/OCTET_STRING.h
-ASN_MODULE_SRCS+=./mib_sib_out/OCTET_STRING.c
-ASN_MODULE_HDRS+=./mib_sib_out/BIT_STRING.h
-ASN_MODULE_SRCS+=./mib_sib_out/BIT_STRING.c
-ASN_MODULE_SRCS+=./mib_sib_out/asn_codecs_prim.c
-ASN_MODULE_HDRS+=./mib_sib_out/asn_codecs_prim.h
-ASN_MODULE_HDRS+=./mib_sib_out/ber_tlv_length.h
-ASN_MODULE_SRCS+=./mib_sib_out/ber_tlv_length.c
-ASN_MODULE_HDRS+=./mib_sib_out/ber_tlv_tag.h
-ASN_MODULE_SRCS+=./mib_sib_out/ber_tlv_tag.c
-ASN_MODULE_HDRS+=./mib_sib_out/ber_decoder.h
-ASN_MODULE_SRCS+=./mib_sib_out/ber_decoder.c
-ASN_MODULE_HDRS+=./mib_sib_out/der_encoder.h
-ASN_MODULE_SRCS+=./mib_sib_out/der_encoder.c
-ASN_MODULE_HDRS+=./mib_sib_out/constr_TYPE.h
-ASN_MODULE_SRCS+=./mib_sib_out/constr_TYPE.c
-ASN_MODULE_HDRS+=./mib_sib_out/constraints.h
-ASN_MODULE_SRCS+=./mib_sib_out/constraints.c
-ASN_MODULE_HDRS+=./mib_sib_out/xer_support.h
-ASN_MODULE_SRCS+=./mib_sib_out/xer_support.c
-ASN_MODULE_HDRS+=./mib_sib_out/xer_decoder.h
-ASN_MODULE_SRCS+=./mib_sib_out/xer_decoder.c
-ASN_MODULE_HDRS+=./mib_sib_out/xer_encoder.h
-ASN_MODULE_SRCS+=./mib_sib_out/xer_encoder.c
-ASN_MODULE_HDRS+=./mib_sib_out/per_support.h
-ASN_MODULE_SRCS+=./mib_sib_out/per_support.c
-ASN_MODULE_HDRS+=./mib_sib_out/per_decoder.h
-ASN_MODULE_SRCS+=./mib_sib_out/per_decoder.c
-ASN_MODULE_HDRS+=./mib_sib_out/per_encoder.h
-ASN_MODULE_SRCS+=./mib_sib_out/per_encoder.c
-ASN_MODULE_HDRS+=./mib_sib_out/per_opentype.h
-ASN_MODULE_SRCS+=./mib_sib_out/per_opentype.c
-ASN_MODULE_HDRS+=./mib_sib_out/oer_decoder.h
-ASN_MODULE_HDRS+=./mib_sib_out/oer_encoder.h
-ASN_MODULE_HDRS+=./mib_sib_out/oer_support.h
-ASN_MODULE_SRCS+=./mib_sib_out/oer_decoder.c
-ASN_MODULE_SRCS+=./mib_sib_out/oer_encoder.c
-ASN_MODULE_SRCS+=./mib_sib_out/oer_support.c
-ASN_MODULE_SRCS+=./mib_sib_out/OPEN_TYPE_oer.c
-ASN_MODULE_SRCS+=./mib_sib_out/INTEGER_oer.c
-ASN_MODULE_SRCS+=./mib_sib_out/BIT_STRING_oer.c
-ASN_MODULE_SRCS+=./mib_sib_out/OCTET_STRING_oer.c
-ASN_MODULE_SRCS+=./mib_sib_out/NativeInteger_oer.c
-ASN_MODULE_SRCS+=./mib_sib_out/NativeEnumerated_oer.c
-ASN_MODULE_SRCS+=./mib_sib_out/constr_CHOICE_oer.c
-ASN_MODULE_SRCS+=./mib_sib_out/constr_SEQUENCE_oer.c
-ASN_MODULE_SRCS+=./mib_sib_out/constr_SET_OF_oer.c
+ASN_MODULE_HDRS+=./new_out/OPEN_TYPE.h
+ASN_MODULE_SRCS+=./new_out/OPEN_TYPE.c
+ASN_MODULE_HDRS+=./new_out/constr_CHOICE.h
+ASN_MODULE_HDRS+=./new_out/BOOLEAN.h
+ASN_MODULE_SRCS+=./new_out/BOOLEAN.c
+ASN_MODULE_HDRS+=./new_out/INTEGER.h
+ASN_MODULE_SRCS+=./new_out/INTEGER.c
+ASN_MODULE_HDRS+=./new_out/NULL.h
+ASN_MODULE_SRCS+=./new_out/NULL.c
+ASN_MODULE_HDRS+=./new_out/NativeEnumerated.h
+ASN_MODULE_SRCS+=./new_out/NativeEnumerated.c
+ASN_MODULE_HDRS+=./new_out/NativeInteger.h
+ASN_MODULE_SRCS+=./new_out/NativeInteger.c
+ASN_MODULE_HDRS+=./new_out/asn_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=./new_out/asn_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=./new_out/asn_SET_OF.h
+ASN_MODULE_SRCS+=./new_out/asn_SET_OF.c
+ASN_MODULE_SRCS+=./new_out/constr_CHOICE.c
+ASN_MODULE_HDRS+=./new_out/constr_SEQUENCE.h
+ASN_MODULE_SRCS+=./new_out/constr_SEQUENCE.c
+ASN_MODULE_HDRS+=./new_out/constr_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=./new_out/constr_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=./new_out/constr_SET_OF.h
+ASN_MODULE_SRCS+=./new_out/constr_SET_OF.c
+ASN_MODULE_HDRS+=./new_out/asn_application.h
+ASN_MODULE_SRCS+=./new_out/asn_application.c
+ASN_MODULE_HDRS+=./new_out/asn_ioc.h
+ASN_MODULE_HDRS+=./new_out/asn_system.h
+ASN_MODULE_HDRS+=./new_out/asn_codecs.h
+ASN_MODULE_HDRS+=./new_out/asn_internal.h
+ASN_MODULE_SRCS+=./new_out/asn_internal.c
+ASN_MODULE_HDRS+=./new_out/asn_random_fill.h
+ASN_MODULE_SRCS+=./new_out/asn_random_fill.c
+ASN_MODULE_HDRS+=./new_out/asn_bit_data.h
+ASN_MODULE_SRCS+=./new_out/asn_bit_data.c
+ASN_MODULE_HDRS+=./new_out/OCTET_STRING.h
+ASN_MODULE_SRCS+=./new_out/OCTET_STRING.c
+ASN_MODULE_HDRS+=./new_out/BIT_STRING.h
+ASN_MODULE_SRCS+=./new_out/BIT_STRING.c
+ASN_MODULE_SRCS+=./new_out/asn_codecs_prim.c
+ASN_MODULE_HDRS+=./new_out/asn_codecs_prim.h
+ASN_MODULE_HDRS+=./new_out/ber_tlv_length.h
+ASN_MODULE_SRCS+=./new_out/ber_tlv_length.c
+ASN_MODULE_HDRS+=./new_out/ber_tlv_tag.h
+ASN_MODULE_SRCS+=./new_out/ber_tlv_tag.c
+ASN_MODULE_HDRS+=./new_out/ber_decoder.h
+ASN_MODULE_SRCS+=./new_out/ber_decoder.c
+ASN_MODULE_HDRS+=./new_out/der_encoder.h
+ASN_MODULE_SRCS+=./new_out/der_encoder.c
+ASN_MODULE_HDRS+=./new_out/constr_TYPE.h
+ASN_MODULE_SRCS+=./new_out/constr_TYPE.c
+ASN_MODULE_HDRS+=./new_out/constraints.h
+ASN_MODULE_SRCS+=./new_out/constraints.c
+ASN_MODULE_HDRS+=./new_out/xer_support.h
+ASN_MODULE_SRCS+=./new_out/xer_support.c
+ASN_MODULE_HDRS+=./new_out/xer_decoder.h
+ASN_MODULE_SRCS+=./new_out/xer_decoder.c
+ASN_MODULE_HDRS+=./new_out/xer_encoder.h
+ASN_MODULE_SRCS+=./new_out/xer_encoder.c
+ASN_MODULE_HDRS+=./new_out/per_support.h
+ASN_MODULE_SRCS+=./new_out/per_support.c
+ASN_MODULE_HDRS+=./new_out/per_decoder.h
+ASN_MODULE_SRCS+=./new_out/per_decoder.c
+ASN_MODULE_HDRS+=./new_out/per_encoder.h
+ASN_MODULE_SRCS+=./new_out/per_encoder.c
+ASN_MODULE_HDRS+=./new_out/per_opentype.h
+ASN_MODULE_SRCS+=./new_out/per_opentype.c
+ASN_MODULE_HDRS+=./new_out/oer_decoder.h
+ASN_MODULE_HDRS+=./new_out/oer_encoder.h
+ASN_MODULE_HDRS+=./new_out/oer_support.h
+ASN_MODULE_SRCS+=./new_out/oer_decoder.c
+ASN_MODULE_SRCS+=./new_out/oer_encoder.c
+ASN_MODULE_SRCS+=./new_out/oer_support.c
+ASN_MODULE_SRCS+=./new_out/OPEN_TYPE_oer.c
+ASN_MODULE_SRCS+=./new_out/INTEGER_oer.c
+ASN_MODULE_SRCS+=./new_out/BIT_STRING_oer.c
+ASN_MODULE_SRCS+=./new_out/OCTET_STRING_oer.c
+ASN_MODULE_SRCS+=./new_out/NativeInteger_oer.c
+ASN_MODULE_SRCS+=./new_out/NativeEnumerated_oer.c
+ASN_MODULE_SRCS+=./new_out/constr_CHOICE_oer.c
+ASN_MODULE_SRCS+=./new_out/constr_SEQUENCE_oer.c
+ASN_MODULE_SRCS+=./new_out/constr_SET_OF_oer.c
 
 ASN_MODULE_CFLAGS=
 
 lib_LTLIBRARIES+=libasncodec.la
 libasncodec_la_SOURCES=$(ASN_MODULE_SRCS) $(ASN_MODULE_HDRS)
-libasncodec_la_CPPFLAGS=-I$(top_srcdir)/./mib_sib_out/
+libasncodec_la_CPPFLAGS=-I$(top_srcdir)/./new_out/
 libasncodec_la_CFLAGS=$(ASN_MODULE_CFLAGS)
 libasncodec_la_LDFLAGS=-lm
