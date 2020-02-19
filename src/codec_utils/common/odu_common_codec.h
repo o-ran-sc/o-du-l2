@@ -16,46 +16,43 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains all F1AP message handler related functionality */
-#include<stdio.h>
-#include<sys/types.h>
-#include<string.h>
-#include<ProtocolIE-Field.h>
-#include "ProtocolExtensionField.h"
-#include "F1AP-PDU.h"
-#include "Cells-to-be-Activated-List.h"
+#ifndef __ODU_COMMON_CODEC_H__
+#define __ODU_COMMON_CODEC_H__
 
-#include "envopt.h"        /* Environment options */
-#include "envdep.h"        /* Environment dependent */
-#include "envind.h"        /* Environment independent */
-#include "gen.h"           /* General */
-#include "ssi.h"           /* System services */
-#include "ss_queue.h"
-#include "ss_task.h"
-#include "ss_msg.h"
+#include "asn_codecs.h"
 
-#include "gen.x"           /* General */
-#include "ssi.x"   /* System services */
-#include "ss_queue.x"
-#include "ss_task.x"
-#include "ss_msg.x"
+#define ENC_BUF_MAX_LEN 200
+#define ENCODE_FAIL -1
 
-#include "du_log.h"
-#include "odu_common_codec.h"
+char encBuf[ENC_BUF_MAX_LEN];
+int  encBufSize;
 
-#define TRANS_ID 1
-#define RRC_SIZE 1
-#define SUL_BAND_COUNT 0
-#define UL_SRBID        1
-#define DL_SRBID        0
-#define DU_ID           1
-#define CU_ID           1
-#define CRNTI           17017
-#define CELL_INDEX      0
 
-void F1APMsgHdlr(Buffer *mBuf);
-S16 BuildAndSendF1SetupReq();
-S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
+/*******************************************************************
+ *
+ * @brief Writes the encoded chunks into a buffer
+ *
+ * @details
+ *
+ *    Function : PrepFinalEncBuf
+ *
+ *    Functionality:Fills the encoded buffer
+ *
+ * @params[in] void *buffer,initial encoded data
+ * @params[in] size_t size,size of buffer
+ * @params[in] void *encodedBuf,final buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+static int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
+{
+   memcpy(encodedBuf + encBufSize, buffer, size);
+   encBufSize += size;
+   return 0;
+} /* PrepFinalEncBuf */
+
+#endif
 
 /**********************************************************************
          End of file

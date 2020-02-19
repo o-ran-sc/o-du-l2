@@ -22,34 +22,11 @@
 #include "du_cfg.h"
 #include "du_cell_mgr.h"
 #include "du_f1ap_msg_hdl.h"
+#include "GNB-DU-System-Information.h"
 
-char encBuf[ENC_BUF_MAX_LEN];
+extern char encBuf[ENC_BUF_MAX_LEN];
 
 extern DuCfgParams duCfgParam;
-
-/*******************************************************************
- *
- * @brief Writes the encoded chunks into a buffer
- *
- * @details
- *
- *    Function : PrepFinalEncBuf
- *
- *    Functionality:Fills the encoded buffer
- *
- * @params[in] void *buffer,initial encoded data
- * @params[in] size_t size,size of buffer
- * @params[in] void *encodedBuf,final buffer
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-static int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
-{
-   memcpy(encodedBuf + encBufSize, buffer, size);
-   encBufSize += size;
-   return 0;
-} /* PrepFinalEncBuf */
 
 /*******************************************************************
  *
@@ -861,7 +838,27 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
       RETVALUE(RFAILED);
    }
    srvCellItem->served_Cell_Information.measurementTimingConfiguration.buf[0] = \
-                               duCfgParam.srvdCellLst[0].duCellInfo.measTimeCfg;
+             duCfgParam.srvdCellLst[0].duCellInfo.measTimeCfg;
+
+   DU_ALLOC(srvCellItem->gNB_DU_System_Information,
+			sizeof(GNB_DU_System_Information_t));
+   if(!srvCellItem->gNB_DU_System_Information)
+	{
+      DU_LOG("\nF1AP: Memory allocation failure for GNB_DU_System_Information");
+		return RFAILED;
+	}
+	srvCellItem->gNB_DU_System_Information->mIB_message.size =\
+	      strlen(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg) + 1;
+	DU_ALLOC(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
+	      srvCellItem->gNB_DU_System_Information->mIB_message.size);
+   if(!srvCellItem->gNB_DU_System_Information->mIB_message.buf)
+	{
+      DU_LOG("\nF1AP: Memory allocation failure for mIB message");
+		return RFAILED;
+	}
+   strcpy(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
+			duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
+
    RETVALUE(ROK);
 }
 /*******************************************************************

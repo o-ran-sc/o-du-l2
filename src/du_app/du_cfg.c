@@ -18,8 +18,11 @@
 
 /* This file contains all utility functions */
 #include "du_cfg.h"
+#include "MIB.h"
+#include "odu_common_codec.h"
 
 extern DuCfgParams duCfgParam;
+extern char encBuf[ENC_BUF_MAX_LEN];
 
 
 /* Filling Slot configuration as :
@@ -202,6 +205,7 @@ S16 readCfg()
 {
    U8 i,j,k;
    U32 ipv4_du, ipv4_cu;
+	MibParams mib;
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
@@ -231,6 +235,18 @@ S16 readCfg()
    /* DU Info */	
    duCfgParam.duId = DU_ID;	
    strcpy((char*)duCfgParam.duName,DU_NAME);
+
+   /* Mib Params */
+	mib.sysFrmNum = SYS_FRAME_NUM;
+	mib.subCarrierSpacingCommon = MIB__subCarrierSpacingCommon_scs15or60;
+	mib.ssb_SubcarrierOffset = SSB_SC_OFFSET; 
+	mib.dmrs_TypeA_Position = MIB__dmrs_TypeA_Position_pos2;
+	mib.controlResourceSetZero = CORESET_ZERO;
+	mib.searchSpaceZero = SEARCH_SPACE_ZERO;
+	mib.cellBarred = MIB__cellBarred_barred;
+	mib.intraFreqReselection =
+		MIB__intraFreqReselection_notAllowed;
+	duCfgParam.mibParams = mib;
 
    for(i=0; i<DEFAULT_CELLS; i++)
    { 
@@ -358,13 +374,22 @@ S16 readCfg()
       }
 
       /*gnb DU System Info */
-      //TODO: uncomment duCfgParam.srvdCellLst[i].duSysInfo.mibMsg;  //to do
+	   BuildMibMsg();
+		DU_ALLOC(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg,\
+				strlen(encBuf)+1);
+	   if(!(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg))
+		{
+         DU_LOG("\nDU_APP: Memory allocation failure");
+			return RFAILED;
+		}
+		strcpy(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBuf);
       //TODO: uncomment duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg; //to do
    }
 
    /* RRC Version,Extended RRC Version */
    //TODO: uncomment duCfgParam.rrcVersion.rrcVer; //to do
    //TODO: uncomment duCfgParam.rrcVersion.extRrcVer; //to do
+   
 
    if(readClCfg() != ROK)
    {
