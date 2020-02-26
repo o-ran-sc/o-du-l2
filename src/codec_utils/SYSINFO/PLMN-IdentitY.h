@@ -5,38 +5,40 @@
  * 	`asn1c -D ./new_out -fcompound-names -fno-include-deps -findirect-choice -gen-PER -no-gen-example`
  */
 
-#ifndef	_UAC_BarringPerCat_H_
-#define	_UAC_BarringPerCat_H_
+#ifndef	_PLMN_IdentitY_H_
+#define	_PLMN_IdentitY_H_
 
 
 #include <asn_application.h>
 
 /* Including external dependencies */
-#include <NativeInteger.h>
-#include "UAC-BarringInfoSetIndex.h"
+#include "MNC.h"
 #include <constr_SEQUENCE.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* UAC-BarringPerCat */
-typedef struct UAC_BarringPerCat {
-	long	 accessCategory;
-	UAC_BarringInfoSetIndex_t	 uac_barringInfoSetIndex;
+/* Forward declarations */
+struct MCC;
+
+/* PLMN-IdentitY */
+typedef struct PLMN_IdentitY {
+	struct MCC	*mcc;	/* OPTIONAL */
+	MNC_t	 mnc;
 	
 	/* Context for parsing across buffer boundaries */
 	asn_struct_ctx_t _asn_ctx;
-} UAC_BarringPerCat_t;
+} PLMN_IdentitY_t;
 
 /* Implementation */
-extern asn_TYPE_descriptor_t asn_DEF_UAC_BarringPerCat;
-extern asn_SEQUENCE_specifics_t asn_SPC_UAC_BarringPerCat_specs_1;
-extern asn_TYPE_member_t asn_MBR_UAC_BarringPerCat_1[2];
+extern asn_TYPE_descriptor_t asn_DEF_PLMN_IdentitY;
+extern asn_SEQUENCE_specifics_t asn_SPC_PLMN_IdentitY_specs_1;
+extern asn_TYPE_member_t asn_MBR_PLMN_IdentitY_1[2];
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif	/* _UAC_BarringPerCat_H_ */
+#endif	/* _PLMN_IdentitY_H_ */
 #include <asn_internal.h>

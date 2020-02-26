@@ -125,7 +125,8 @@
 #define SSB_SC_OFFSET 8
 #define CORESET_ZERO 1
 #define SEARCH_SPACE_ZERO 8
-
+#define DU_RANAC 1
+#define CELL_IDENTITY 1
 
 
 typedef enum

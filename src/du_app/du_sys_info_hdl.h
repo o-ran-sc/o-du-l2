@@ -21,7 +21,18 @@
 #include "du_log.h"
 #include "odu_common_codec.h"
 
+/* Macros */
+#define ODU_VALUE_ZERO 0
+#define ODU_VALUE_ONE 1
+#define ODU_VALUE_TWO 2
+#define ODU_VALUE_THREE 3
+#define ODU_VALUE_FOUR 4
+#define ODU_VALUE_FIVE 5
+#define ODU_VALUE_SEVEN 7
+
+/* Function declarations */
 S16 BuildMibMsg();
+S16 BuildSib1Msg();
 
 /**********************************************************************
          End of file

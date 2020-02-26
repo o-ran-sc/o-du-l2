@@ -19,6 +19,7 @@
 /* This file contains all utility functions */
 #include "du_cfg.h"
 #include "MIB.h"
+#include "PLMN-IdentityInfo.h"
 #include "odu_common_codec.h"
 
 extern DuCfgParams duCfgParam;
@@ -206,6 +207,7 @@ S16 readCfg()
    U8 i,j,k;
    U32 ipv4_du, ipv4_cu;
 	MibParams mib;
+   Sib1Params sib1;	
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
@@ -247,6 +249,20 @@ S16 readCfg()
 	mib.intraFreqReselection =
 		MIB__intraFreqReselection_notAllowed;
 	duCfgParam.mibParams = mib;
+
+   /* SIB1 Params */
+	sib1.plmn.mcc[0] = PLMN_MCC0;
+	sib1.plmn.mcc[1] = PLMN_MCC1;
+	sib1.plmn.mcc[2] = PLMN_MCC2;
+	sib1.plmn.mnc[0] = PLMN_MNC0;
+	sib1.plmn.mnc[1] = PLMN_MNC1;
+	sib1.plmn.mnc[2] = PLMN_MNC2;
+	sib1.tac = DU_TAC;
+	sib1.ranac = DU_RANAC;
+	sib1.cellIdentity = CELL_IDENTITY;
+	sib1.cellResvdForOpUse =\ 
+		PLMN_IdentityInfo__cellReservedForOperatorUse_notReserved;
+	duCfgParam.sib1Params = sib1;
 
    for(i=0; i<DEFAULT_CELLS; i++)
    { 
@@ -373,23 +389,33 @@ S16 readCfg()
          duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].ranac = NR_RANAC;
       }
 
-      /*gnb DU System Info */
+      /*gnb DU System Info mib msg*/
 	   BuildMibMsg();
 		DU_ALLOC(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg,\
-				strlen(encBuf)+1);
+				strlen(encBuf));
 	   if(!(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg))
 		{
          DU_LOG("\nDU_APP: Memory allocation failure");
 			return RFAILED;
 		}
 		strcpy(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBuf);
-      //TODO: uncomment duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg; //to do
-   }
 
-   /* RRC Version,Extended RRC Version */
-   //TODO: uncomment duCfgParam.rrcVersion.rrcVer; //to do
-   //TODO: uncomment duCfgParam.rrcVersion.extRrcVer; //to do
-   
+      /*gnb DU System Info mib msg*/
+      BuildSib1Msg();
+		DU_ALLOC(duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg,\
+				encBufSize);
+	   if(!(duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg))
+		{
+         DU_LOG("\nDU_APP: Memory allocation failure");
+			return RFAILED;
+		}
+		for(int x=0; x<encBufSize; x++)
+		{
+		   duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg[x]=\
+			encBuf[x];
+	   }
+
+   }
 
    if(readClCfg() != ROK)
    {

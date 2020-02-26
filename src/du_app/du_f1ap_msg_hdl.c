@@ -840,6 +840,7 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    srvCellItem->served_Cell_Information.measurementTimingConfiguration.buf[0] = \
              duCfgParam.srvdCellLst[0].duCellInfo.measTimeCfg;
 
+   /* GNB DU System Information */
    DU_ALLOC(srvCellItem->gNB_DU_System_Information,
 			sizeof(GNB_DU_System_Information_t));
    if(!srvCellItem->gNB_DU_System_Information)
@@ -847,6 +848,7 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
       DU_LOG("\nF1AP: Memory allocation failure for GNB_DU_System_Information");
 		return RFAILED;
 	}
+	/* MIB */
 	srvCellItem->gNB_DU_System_Information->mIB_message.size =\
 	      strlen(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg) + 1;
 	DU_ALLOC(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
@@ -859,6 +861,25 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    strcpy(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
 			duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
 
+   /* SIB1 */
+	srvCellItem->gNB_DU_System_Information->sIB1_message.size =\
+	      encBufSize;
+	DU_ALLOC(srvCellItem->gNB_DU_System_Information->sIB1_message.buf,
+	      srvCellItem->gNB_DU_System_Information->sIB1_message.size);
+   if(!srvCellItem->gNB_DU_System_Information->sIB1_message.buf)
+	{
+      DU_LOG("\nF1AP: Memory allocation failure for SIB1 message");
+		return RFAILED;
+	}
+	for(int x=0; x<srvCellItem->gNB_DU_System_Information->sIB1_message.size; x++)
+	{
+	   srvCellItem->gNB_DU_System_Information->sIB1_message.buf[x]=\
+      duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg[x];
+   }
+   /* Free memory */
+	DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, encBufSize);
+	DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg, 
+			strlen(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg));
    RETVALUE(ROK);
 }
 /*******************************************************************
