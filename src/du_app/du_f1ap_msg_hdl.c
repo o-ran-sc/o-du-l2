@@ -850,7 +850,7 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
 	}
 	/* MIB */
 	srvCellItem->gNB_DU_System_Information->mIB_message.size =\
-	      strlen(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg) + 1;
+	      strlen(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
 	DU_ALLOC(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
 	      srvCellItem->gNB_DU_System_Information->mIB_message.size);
    if(!srvCellItem->gNB_DU_System_Information->mIB_message.buf)
