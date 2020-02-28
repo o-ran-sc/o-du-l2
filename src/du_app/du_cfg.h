@@ -118,6 +118,17 @@
 #define MAXNUMOFUACPERPLMN 64       /* Maximum number of signalled categories per PLMN */
 #define DEFAULT_CELLS      1        /* Max num of broadcast PLMN ids */
 
+
+/* Macro definitions for MIB/SIB1 */
+#define SYS_FRAME_NUM 0
+#define SPARE 0
+#define SSB_SC_OFFSET 8
+#define CORESET_ZERO 1
+#define SEARCH_SPACE_ZERO 8
+#define DU_RANAC 1
+#define CELL_IDENTITY 1
+
+
 typedef enum
 {
    GNBDU,
@@ -861,6 +872,27 @@ typedef struct schedulerCfg
    U8         maxDlUePerTti;  /*!< Max number of UE in DL per TTI */
 }SchedulerCfg;
 
+typedef struct mibParams
+{
+	uint8_t sysFrmNum;
+	long    subCarrierSpacingCommon;
+	long    ssb_SubcarrierOffset;
+	long    dmrs_TypeA_Position;
+	long    controlResourceSetZero;
+	long    searchSpaceZero;
+	long    cellBarred;
+	long    intraFreqReselection;
+}MibParams;
+
+typedef struct sib1Params
+{
+	PlmnId    plmn;
+	uint8_t   tac;
+	long      ranac;
+	U8        cellIdentity;
+	long      cellResvdForOpUse;
+}Sib1Params;
+
 typedef struct duCfgParams
 {
    F1SctpParams       sctpParams;                    /* SCTP Params */
@@ -873,7 +905,8 @@ typedef struct duCfgParams
    F1DuSrvdCellInfo   srvdCellLst[DU_MAX_CELLS];   /* Serving cell list *///TODO: this must be removed eventually
    F1RrcVersion       rrcVersion;                    /* RRC version */
    ClCellCfg          clCellCfg;                     /* CL cell configuration */
-
+   MibParams          mibParams;                     /* MIB Params */
+	Sib1Params         sib1Params;                    /* SIB1 Params */
 }DuCfgParams;
 
 typedef struct duCellCb
