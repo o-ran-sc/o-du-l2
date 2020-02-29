@@ -269,6 +269,37 @@ Reason   reason;
    RETVALUE(ROK);
 } 
 
+/*******************************************************************
+ *
+ * @brief Handler for UE create request
+ *
+ * @details
+ *
+ *    Function : RlcDuappProcUeCreateReq 
+ *
+ *    Functionality:
+ *       Handler for UE create request
+ *
+ * @params[in] pst - Post Structure
+ *             cfg - Configuration information for one or more RLC entities
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+PUBLIC S16 RlcDuappProcUeCreateReq(Pst *pst, CkwCfgInfo *ueCfg)
+{
+   U8 idx;
+
+   ueCfg->transId = 1;
+
+   for(idx = 0; idx < ueCfg->numEnt; idx++)
+   {
+      ueCfg->entCfg[idx].cfgType = CKW_CFG_ADD; 
+   }
+   
+   KwUiCkwCfgReq(pst, ueCfg);
+} /* RlcDuappUeCreateReq */ 
+
 
 /**
  * @brief  
@@ -290,13 +321,14 @@ Reason   reason;
 PUBLIC S16 KwUiCkwCfgReq
 (
 Pst          *pst,
-SpId         spId,
+//SpId         spId,
 CkwCfgInfo   *cfg
 )
 #else
-PUBLIC S16 KwUiCkwCfgReq(pst, spId, cfg)
+//PUBLIC S16 KwUiCkwCfgReq(pst, spId, cfg)
+PUBLIC S16 KwUiCkwCfgReq(pst, cfg)
 Pst          *pst;
-SpId         spId;
+//SpId         spId;
 CkwCfgInfo   *cfg;
 #endif
 {
@@ -318,6 +350,8 @@ CkwCfgInfo   *cfg;
 #endif
    tKwCb = KW_GET_KWCB(pst->dstInst);
 
+/* HLAL */
+#if 0
    RLOG1(L_DEBUG, "spId(%d)", spId);
 
    /* Validate SAP ID under ERRORCLS */
@@ -327,6 +361,7 @@ CkwCfgInfo   *cfg;
       KW_PST_FREE(pst->region, pst->pool, cfg, sizeof(CkwCfgInfo));
       RETVALUE(RFAILED);
    }
+#endif
 
    KW_ALLOC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
 

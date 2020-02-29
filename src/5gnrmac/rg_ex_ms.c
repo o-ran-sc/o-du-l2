@@ -222,17 +222,11 @@ Buffer  *mBuf;                      /* message buffer       */
       case EVTRGUUBNDREQ:
          cmUnpkRguUbndReq(RgUiRguUbndReq, pst, mBuf);
          break;
-      case EVTRGUCDATREQ:
-         cmUnpkRguCDatReq(RgUiRguCDatReq, pst, mBuf);
+      case EVTRLCDLDAT:
+         unpackSendDlData(RgUiRguDDatReq, pst, mBuf);
          break;
-      case EVTRGUDDATREQ:
-         cmUnpkRguDDatReq(RgUiRguDDatReq, pst, mBuf);
-         break;
-      case EVTRGUCSTARSP:
-         cmUnpkRguCStaRsp(RgUiRguCStaRsp, pst, mBuf);
-         break;
-      case EVTRGUDSTARSP:
-         cmUnpkRguDStaRsp(RgUiRguDStaRsp, pst, mBuf);
+      case EVTRLCBOSTA:
+         unpackSendBOStatus(RgUiRguDStaRsp, pst, mBuf);
          break;
 #ifdef LTE_L2_MEAS
 

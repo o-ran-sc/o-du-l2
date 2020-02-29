@@ -506,16 +506,9 @@ Buffer *mBuf;           /* message buffer */
                      ret = cmUnpkRguBndCfm(KwLiRguBndCfm, pst, mBuf );
                      break;
                   }
-
-               case EVTRGUCSTAIND:    /* Coomon Channel Status Response */
+               case EVTSCHREP:    /* Dedicated Channel Status Response */
                   {
-                     ret = cmUnpkRguCStaInd(KwLiRguCStaInd, pst, mBuf);
-                     break;
-                  }
-
-               case EVTRGUDSTAIND:    /* Dedicated Channel Status Response */
-                  {
-                     ret = cmUnpkRguDStaInd(KwLiRguDStaInd, pst, mBuf);
+                     ret = unpackSchedRep(RlcMacProcSchedRep, pst, mBuf);
                      break;
                   }
                   /* kw005.201 added support for L2 Measurement */

@@ -415,175 +415,12 @@ Buffer *mBuf;
 
 
 /**
-* @brief Request from RLC to MAC for forwarding SDUs on common
- * channel for transmission
-*
-* @details
-*
-*     Function : cmPkRguCDatReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   RguCDatReqInfo  *  datReq
-*  @return   S16
-*      -# ROK
-**/
-#ifdef ANSI
-PUBLIC S16 cmPkRguCDatReq
-(
-Pst* pst,
-SpId spId,
-RguCDatReqInfo  * datReq
-)
-#else
-PUBLIC S16 cmPkRguCDatReq(pst, spId, datReq)
-Pst* pst;
-SpId spId;
-RguCDatReqInfo  * datReq;
-#endif
-{
-   Buffer *mBuf = NULLP;
-   TRC3(cmPkRguCDatReq)
-
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU016, (ErrVal)0, "Packing failed");
-#endif      
-      SPutSBuf(pst->region, pst->pool, (Data *)datReq, sizeof(RguCDatReqInfo));
-      RETVALUE(RFAILED);
-   }
-   if (pst->selector == RGU_SEL_LWLC)
-   {
-      CMCHKPK(cmPkPtr,(PTR) datReq, mBuf);
-   }
-   else
-   {
-      if (cmPkRguCDatReqInfo(datReq, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU017, (ErrVal)0, "Packing failed");
-#endif      
-         SPutSBuf(pst->region, pst->pool, 
-                  (Data *)datReq, sizeof(RguCDatReqInfo));
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-      if (SPutSBuf(pst->region, pst->pool, 
-                   (Data *)datReq, sizeof(RguCDatReqInfo)) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU019, (ErrVal)0, "Packing failed");
-#endif      
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-      datReq = NULLP;
-   }
-
-   if (SPkS16(spId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU018, (ErrVal)0, "Packing failed");
-#endif      
-
-      if (datReq != NULLP)
-      {
-         SPutSBuf(pst->region, pst->pool, 
-                   (Data *)datReq, sizeof(RguCDatReqInfo));
-      }
-
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-
-   pst->event = (Event) EVTRGUCDATREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
-}
-
-
-/**
-* @brief Request from RLC to MAC for forwarding SDUs on common
- * channel for transmission
-*
-* @details
-*
-*     Function : cmUnpkRguCDatReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   RguCDatReqInfo  *  datReq
-*  @return   S16
-*      -# ROK
-**/
-#ifdef ANSI
-PUBLIC S16 cmUnpkRguCDatReq
-(
-RguCDatReq func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmUnpkRguCDatReq(func, pst, mBuf)
-RguCDatReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
-{
-   SpId spId;
-   RguCDatReqInfo *datReq;
-   
-   TRC3(cmUnpkRguCDatReq)
-
-   if (SUnpkS16(&spId, mBuf) != ROK) {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-   if (pst->selector == RGU_SEL_LWLC)
-   {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &datReq, mBuf);
-   }
-   else 
-   {
-      if ((SGetSBuf(pst->region, pst->pool, 
-                   (Data **)&datReq, sizeof(RguCDatReqInfo))) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU020, (ErrVal)0, "UnPacking failed");
-#endif      
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-     }
-     cmMemset((U8*)datReq, (U8)0, sizeof(RguCDatReqInfo));
-     if (cmUnpkRguCDatReqInfo(datReq, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU021, (ErrVal)0, "UnPacking failed");
-#endif      
-         SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, 
-                  (Data *)datReq, sizeof(RguCDatReqInfo));
-         RETVALUE(RFAILED);
-      }
-   }
-   SPutMsg(mBuf);
-   RETVALUE((*func)(pst, spId, datReq));
-}
-
-
-/**
 * @brief Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission
 *
 * @details
 *
-*     Function : cmPkRguDDatReq
+*     Function : packSendDlData
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SpId  spId
@@ -592,21 +429,21 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguDDatReq
+PUBLIC S16 packSendDlData
 (
 Pst* pst,
 SpId spId,
-RguDDatReqInfo  * datReq
+RlcMacData  *dlData
 )
 #else
-PUBLIC S16 cmPkRguDDatReq(pst, spId, datReq)
+PUBLIC S16 packSendDlData(pst, spId, dlData)
 Pst* pst;
 SpId spId;
-RguDDatReqInfo  * datReq;
+RlcMacData  dlData;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkRguDDatReq)
+   TRC3(packSendDlData)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -614,21 +451,21 @@ RguDDatReqInfo  * datReq;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU022, (ErrVal)0, "Packing failed");
 #endif      
-      SPutSBuf(pst->region, pst->pool, (Data *)datReq, sizeof(RguDDatReqInfo));
+      SPutSBuf(pst->region, pst->pool, (Data *)dlData, sizeof(RlcMacData));
       RETVALUE(RFAILED);
    }
 
    if (pst->selector == RGU_SEL_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) datReq, mBuf);
+      CMCHKPK(cmPkPtr,(PTR) dlData, mBuf);
    }
    else
    {
       /*rgu_c_001.main_5 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
-      if (cmPkRguDDatReqInfo(pst, datReq, mBuf) != ROK)
+      if (packRlcMacDataInfo(pst, dlData, mBuf) != ROK)
 #else
-      if (cmPkRguDDatReqInfo(datReq, mBuf) != ROK) 
+      if (packRlcMacDataInfo(dlData, mBuf) != ROK) 
 #endif
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -636,14 +473,14 @@ RguDDatReqInfo  * datReq;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU023, (ErrVal)0, "Packing failed");
 #endif      
-         SPutSBuf(pst->region, pst->pool, (Data *)datReq,
-                                       sizeof(RguDDatReqInfo));
+         SPutSBuf(pst->region, pst->pool, (Data *)dlData,
+                                       sizeof(RlcMacData));
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
 
       if (SPutSBuf(pst->region, pst->pool, 
-                   (Data *)datReq, sizeof(RguDDatReqInfo)) != ROK) {
+                   (Data *)dlData, sizeof(RlcMacData)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
               __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -652,7 +489,7 @@ RguDDatReqInfo  * datReq;
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
-      datReq = NULLP;
+      dlData = NULLP;
    }
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -660,15 +497,15 @@ RguDDatReqInfo  * datReq;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU024, (ErrVal)0, "Packing failed");
 #endif      
-      if (datReq != NULLP);
+      if (dlData != NULLP);
       {
          SPutSBuf(pst->region, pst->pool, 
-                  (Data *)datReq, sizeof(RguDDatReqInfo));
+                  (Data *)dlData, sizeof(RlcMacData));
       }
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   pst->event = (Event) EVTRGUDDATREQ;
+   pst->event = (Event) EVTRLCDLDAT;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
@@ -679,7 +516,7 @@ RguDDatReqInfo  * datReq;
 *
 * @details
 *
-*     Function : cmUnpkRguDDatReq
+*     Function : unpackSendDlData
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SpId  spId
@@ -688,23 +525,24 @@ RguDDatReqInfo  * datReq;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDDatReq
+PUBLIC S16 unpackSendDlData
 (
 RguDDatReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDDatReq(func, pst, mBuf)
+PUBLIC S16 unpackSendDlData(func, pst, mBuf)
 RguDDatReq func;
 Pst *pst;
 Buffer *mBuf;
 #endif
 {
    SpId spId;
-   RguDDatReqInfo *datReq;
+//   RguDDatReqInfo *datReq;
+   RlcMacData *dlData;
    
-   TRC3(cmUnpkRguDDatReq)
+   TRC3(unpackSendDlData)
 
    if (SUnpkS16(&spId, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -713,12 +551,12 @@ Buffer *mBuf;
 
    if (pst->selector == RGU_SEL_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &datReq, mBuf);
+      CMCHKUNPK(cmUnpkPtr,(PTR *) &dlData, mBuf);
    }
    else 
    {
       if ((SGetSBuf(pst->region, pst->pool, 
-                     (Data **)&datReq, sizeof(RguDDatReqInfo))) != ROK) {
+                     (Data **)&dlData, sizeof(RlcMacData))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -727,12 +565,12 @@ Buffer *mBuf;
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
-      cmMemset((U8*)datReq, (U8)0, sizeof(RguDDatReqInfo));
+      cmMemset((U8*)dlData, (U8)0, sizeof(RlcMacData));
   /*rgu_c_001.main_5 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
-      if (cmUnpkRguDDatReqInfo(pst,datReq, mBuf) != ROK)
+      if (unpackRlcMacDataInfo(pst,dlData, mBuf) != ROK)
 #else
-      if (cmUnpkRguDDatReqInfo(datReq, mBuf) != ROK) 
+      if (unpackRlcMacDataInfo(dlData, mBuf) != ROK) 
 #endif
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -741,174 +579,17 @@ Buffer *mBuf;
              (ErrVal)ERGU027, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, (Data *)datReq,
-                                     sizeof(RguDDatReqInfo));
+         SPutSBuf(pst->region, pst->pool, (Data *)dlData,
+                                     sizeof(RlcMacData));
          RETVALUE(RFAILED);
       }
    }
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, spId, datReq));
-}
 
-
-/**
-* @brief Data Indication from MAC to RLC to 
- * forward the data received for common channels
-*
-* @details
-*
-*     Function : cmPkRguCDatInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguCDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
-#ifdef ANSI
-PUBLIC S16 cmPkRguCDatInd
-(
-Pst* pst,
-SuId suId,
-RguCDatIndInfo  * datInd
-)
-#else
-PUBLIC S16 cmPkRguCDatInd(pst, suId, datInd)
-Pst* pst;
-SuId suId;
-RguCDatIndInfo  * datInd;
-#endif
-{
-   Buffer *mBuf = NULLP;
-   TRC3(cmPkRguCDatInd)
-
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU028, (ErrVal)0, "Packing failed");
-#endif      
-      SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd, sizeof(RguCDatIndInfo),0);
-      RETVALUE(RFAILED);
-   }
-   if (pst->selector == RGU_SEL_LWLC)
-   {
-      CMCHKPK(cmPkPtr,(PTR) datInd, mBuf);
-   }
-   else
-   {
-      if (cmPkRguCDatIndInfo(datInd, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-        SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ERGU029, (ErrVal)0, "Packing failed");
-#endif      
-        SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd,
-                                    sizeof(RguCDatIndInfo),0);
-        SPutMsg(mBuf);
-        RETVALUE(RFAILED);
-     }
-     if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd, 
-                               sizeof(RguCDatIndInfo),0) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-        SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ERGU031, (ErrVal)0, "Packing failed");
-#endif      
-        SPutMsg(mBuf);
-        RETVALUE(RFAILED);
-     }
-     datInd = NULLP;
-  }
-   if (SPkS16(suId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU030, (ErrVal)0, "Packing failed");
-#endif      
-      SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd, sizeof(RguCDatIndInfo),0);
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-
-   pst->event = (Event) EVTRGUCDATIND;
-   RETVALUE(SPstTsk(pst,mBuf));
-}
-
-
-/**
-* @brief Data Indication from MAC to RLC to 
- * forward the data received for common channels
-*
-* @details
-*
-*     Function : cmUnpkRguCDatInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguCDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
-#ifdef ANSI
-PUBLIC S16 cmUnpkRguCDatInd
-(
-RguCDatInd func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmUnpkRguCDatInd(func, pst, mBuf)
-RguCDatInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
-{
-   SuId suId;
-   RguCDatIndInfo *datInd;
+   /* TODO : change function call to send RlcMacData as below: */
+   RETVALUE((*func)(pst, spId, dlData));
    
-   TRC3(cmUnpkRguCDatInd)
-
-   if (SUnpkS16(&suId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU032, (ErrVal)0, "UnPacking failed");
-#endif      
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-
-   if (pst->selector == RGU_SEL_LWLC)
-   {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &datInd, mBuf);
-   }
-   else 
-   {
-      if ((SGetStaticBuffer(pst->region, pst->pool, 
-                    (Data **)&datInd, sizeof(RguCDatIndInfo),0)) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU033, (ErrVal)0, "UnPacking failed");
-#endif      
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-      if (cmUnpkRguCDatIndInfo(datInd, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU034, (ErrVal)0, "UnPacking failed");
-#endif      
-         SPutMsg(mBuf);
-         SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd, 
-                                       sizeof(RguCDatIndInfo),0);
-         RETVALUE(RFAILED);
-      }
-   }
-   SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, datInd));
+   //RETVALUE((*func)(pst, spId, datReq));
 }
 
 
@@ -918,30 +599,30 @@ Buffer *mBuf;
 *
 * @details
 *
-*     Function : cmPkRguDDatInd
+*     Function : packRcvdUlData
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
+*  @param[in]   RlcMacData *ulData
 *  @return   S16
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguDDatInd
+PUBLIC S16 packRcvdUlData
 (
 Pst* pst,
 SuId suId,
-RguDDatIndInfo  * datInd
+RlcMacData  *ulData
 )
 #else
-PUBLIC S16 cmPkRguDDatInd(pst, suId, datInd)
+PUBLIC S16 packRcvdUlData(pst, suId, ulData)
 Pst* pst;
 SuId suId;
-RguDDatIndInfo  * datInd;
+RlcMacData  *ulData;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkRguDDatInd)
+   TRC3(packRcvdUlData)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -949,29 +630,29 @@ RguDDatIndInfo  * datInd;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU035, (ErrVal)0, "Packing failed");
 #endif      
-      SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd, sizeof(RguDDatIndInfo),0);
+      SPutStaticBuffer(pst->region, pst->pool, (Data *)ulData, sizeof(RlcMacData),0);
       RETVALUE(RFAILED);
    }
 
    if (pst->selector == RGU_SEL_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) datInd, mBuf);
+      CMCHKPK(cmPkPtr,(PTR)ulData, mBuf);
    }
    else
    {
-      if (cmPkRguDDatIndInfo(datInd, mBuf) != ROK) {
+      if (packRlcMacDataInfo(ulData, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
             SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                 (ErrVal)ERGU036, (ErrVal)0, "Packing failed");
 #endif            
-         SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd, sizeof(RguDDatIndInfo),0);
+         SPutStaticBuffer(pst->region, pst->pool, (Data *)ulData, sizeof(RlcMacData),0);
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
 
       if (SPutStaticBuffer(pst->region, pst->pool, 
-                      (Data *)datInd, sizeof(RguDDatIndInfo),0) != ROK) {
+                      (Data *)ulData, sizeof(RlcMacData),0) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -980,7 +661,7 @@ RguDDatIndInfo  * datInd;
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
-      datInd = NULLP;
+      ulData = NULLP;
    }
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -988,12 +669,12 @@ RguDDatIndInfo  * datInd;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU037, (ErrVal)0, "Packing failed");
 #endif      
-      SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd, sizeof(RguDDatIndInfo),0);
+      SPutStaticBuffer(pst->region, pst->pool, (Data *)ulData, sizeof(RlcMacData),0);
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
 
-   pst->event = (Event) EVTRGUDDATIND;
+   pst->event = (Event) EVTRLCULDAT;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
@@ -1004,32 +685,32 @@ RguDDatIndInfo  * datInd;
 *
 * @details
 *
-*     Function : cmUnpkRguDDatInd
+*     Function : unpackRcvdUlData
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
+*  @param[in]   RlcMacData  *ulData
 *  @return   S16
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDDatInd
+PUBLIC S16 unpackRcvdUlData
 (
 RguDDatInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDDatInd(func, pst, mBuf)
+PUBLIC S16 unpackRcvdUlData(func, pst, mBuf)
 RguDDatInd func;
 Pst *pst;
 Buffer *mBuf;
 #endif
 {
    SuId suId;
-   RguDDatIndInfo *datInd;
+   RlcMacData *ulData;
    
-   TRC3(cmUnpkRguDDatInd)
+   TRC3(unpackRcvdUlData)
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -1043,12 +724,12 @@ Buffer *mBuf;
 
    if (pst->selector == RGU_SEL_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &datInd, mBuf);
+      CMCHKUNPK(cmUnpkPtr,(PTR *) &ulData, mBuf);
    }
    else 
    {
        if ((SGetStaticBuffer(pst->region, pst->pool, 
-                    (Data **)&datInd, sizeof(RguDDatIndInfo),0)) != ROK) {
+                    (Data **)&ulData, sizeof(RlcMacData),0)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -1057,7 +738,7 @@ Buffer *mBuf;
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
-      if (cmUnpkRguDDatIndInfo(datInd, mBuf) != ROK) {
+      if (unpackRlcMacDataInfo(ulData, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -1065,178 +746,14 @@ Buffer *mBuf;
 #endif      
          SPutMsg(mBuf);
          SPutStaticBuffer(pst->region, pst->pool, 
-                    (Data *)datInd, sizeof(RguDDatIndInfo),0);
+                    (Data *)ulData, sizeof(RlcMacData),0);
          RETVALUE(RFAILED);
       }
    }
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, datInd));
+   RETVALUE((*func)(pst, suId, ulData));
 }
 
-
-/**
-* @brief Primitive invoked from RLC to MAC to 
- * inform the BO report for common channels
-*
-* @details
-*
-*     Function : cmPkRguCStaRsp
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   RguCStaRspInfo  *  staRsp
-*  @return   S16
-*      -# ROK
-**/
-#ifdef ANSI
-PUBLIC S16 cmPkRguCStaRsp
-(
-Pst* pst,
-SpId spId,
-RguCStaRspInfo  * staRsp
-)
-#else
-PUBLIC S16 cmPkRguCStaRsp(pst, spId, staRsp)
-Pst* pst;
-SpId spId;
-RguCStaRspInfo  * staRsp;
-#endif
-{
-   Buffer *mBuf = NULLP;
-   TRC3(cmPkRguCStaRsp)
-
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU042, (ErrVal)0, "Packing failed");
-#endif      
-      SPutSBuf(pst->region, pst->pool, (Data *)staRsp, sizeof(RguCStaRspInfo));
-      RETVALUE(RFAILED);
-   }
-   if (pst->selector == RGU_SEL_LWLC)
-   {
-      CMCHKPK(cmPkPtr,(PTR) staRsp, mBuf);
-   }
-   else
-   {
-      if (cmPkRguCStaRspInfo(staRsp, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU043, (ErrVal)0, "Packing failed");
-#endif      
-         SPutSBuf(pst->region, pst->pool, (Data *)staRsp, 
-                                     sizeof(RguCStaRspInfo));
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-
-      if (SPutSBuf(pst->region, pst->pool, (Data *)staRsp, 
-                                     sizeof(RguCStaRspInfo)) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU045, (ErrVal)0, "Packing failed");
-#endif      
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-      staRsp = NULLP;
-   }
-   if (SPkS16(spId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU044, (ErrVal)0, "Packing failed");
-#endif      
-      if (staRsp != NULLP)
-      {
-         SPutSBuf(pst->region, pst->pool, 
-                       (Data *)staRsp, sizeof(RguCStaRspInfo));
-      }
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-
-   pst->event = (Event) EVTRGUCSTARSP;
-   RETVALUE(SPstTsk(pst,mBuf));
-}
-
-
-/**
-* @brief Primitive invoked from RLC to MAC to 
- * inform the BO report for common channels
-*
-* @details
-*
-*     Function : cmUnpkRguCStaRsp
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   RguCStaRspInfo  *  staRsp
-*  @return   S16
-*      -# ROK
-**/
-#ifdef ANSI
-PUBLIC S16 cmUnpkRguCStaRsp
-(
-RguCStaRsp func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmUnpkRguCStaRsp(func, pst, mBuf)
-RguCStaRsp func;
-Pst *pst;
-Buffer *mBuf;
-#endif
-{
-   SpId spId;
-   RguCStaRspInfo *staRsp;
-   
-   TRC3(cmUnpkRguCStaRsp)
-
-   if (SUnpkS16(&spId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU046, (ErrVal)0, "UnPacking failed");
-#endif      
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-   if (pst->selector == RGU_SEL_LWLC)
-   {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &staRsp, mBuf);
-   }
-   else 
-   {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&staRsp, 
-                                    sizeof(RguCStaRspInfo))) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU047, (ErrVal)0, "UnPacking failed");
-#endif      
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-      if (cmUnpkRguCStaRspInfo(staRsp, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU048, (ErrVal)0, "UnPacking failed");
-#endif      
-         SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, (Data *)staRsp, 
-                                          sizeof(RguCStaRspInfo));
-         RETVALUE(RFAILED);
-      }
-   }
-   SPutMsg(mBuf);
-   RETVALUE((*func)(pst, spId, staRsp));
-}
 
 /*rgu_c_001.main_5 - ADD - L2M & R9 Support */
 #ifdef LTE_L2_MEAS
@@ -1504,33 +1021,32 @@ Buffer *mBuf;
 *
 * @details
 *
-*     Function : cmPkRguDStaRsp
+*     Function : packSendBOStatus,
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SpId  spId
-*  @param[in]   RguDStaRspInfo  *  staRsp
+*  @param[in]   RlcMacBOStatus  *  staRsp
 *  @return   S16
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguDStaRsp
+PUBLIC S16 packSendBOStatus
 (
 Pst* pst,
 SpId spId,
-RguDStaRspInfo  *staRsp
+RlcMacBOStatus  *boStatus
 )
 #else
-PUBLIC S16 cmPkRguDStaRsp(pst, spId, staRsp)
+PUBLIC S16 packSendBOStatus(pst, spId, staRsp)
 Pst* pst;
 SpId spId;
-RguDStaRspInfo  *staRsp;
+RlcMacBOStatus  *boStatus;
 #endif
 {
-
-   RguDStaRspInfo  *staRspInfo = NULL;
+   RlcMacBOStatus  *boStaInfo = NULL;
    Buffer *mBuf = NULLP;
 
-   if(SGetSBuf(pst->region, pst->pool, (Data **)&staRspInfo, sizeof(RguDStaRspInfo)) != ROK)
+   if(SGetSBuf(pst->region, pst->pool, (Data **)&boStaInfo, sizeof(RlcMacBOStatus)) != ROK)
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1540,30 +1056,30 @@ RguDStaRspInfo  *staRsp;
       RETVALUE(RFAILED);
    }
 #ifdef ERRCLS_KW
-   /* staRspInfo cant be NULL here */
-   if (staRspInfo == NULLP)
+   /* boStaInfo cant be NULL here */
+   if (boStaInfo == NULLP)
    {
       RETVALUE(RFAILED);
    }
 #endif
-   cmMemcpy((U8 *)staRspInfo, (U8 *)staRsp, sizeof(RguDStaRspInfo)); 
+   cmMemcpy((U8 *)boStaInfo, (U8 *)boStatus, sizeof(RlcMacBOStatus)); 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU056, (ErrVal)0, "Packing failed");
 #endif      
-         SPutSBuf(pst->region, pst->pool, (Data *)staRspInfo, sizeof(RguDStaRspInfo));
+         SPutSBuf(pst->region, pst->pool, (Data *)boStaInfo, sizeof(RlcMacBOStatus));
 
       RETVALUE(RFAILED);
    }
    if (pst->selector == RGU_SEL_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) staRspInfo, mBuf);
+      CMCHKPK(cmPkPtr,(PTR) boStaInfo, mBuf);
    }
    else
    {
-      if (cmPkRguDStaRspInfo(staRsp, mBuf) != ROK) {
+      if (packBOStatusInfo(boStatus, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -1579,15 +1095,15 @@ RguDStaRspInfo  *staRsp;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU058, (ErrVal)0, "Packing failed");
 #endif      
-      if (staRspInfo != NULLP)
+      if (boStaInfo != NULLP)
       {
-         SPutSBuf(pst->region, pst->pool, (Data *)staRspInfo, sizeof(RguDStaRspInfo));
+         SPutSBuf(pst->region, pst->pool, (Data *)boStaInfo, sizeof(RlcMacBOStatus));
       }
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
 
-   pst->event = (Event) EVTRGUDSTARSP;
+   pst->event = (Event)EVTRLCBOSTA;
    RETVALUE(SPstTsk(pst,mBuf));
    SPutMsg(mBuf);
 }
@@ -1595,36 +1111,36 @@ RguDStaRspInfo  *staRsp;
 
 /**
 * @brief Primitive invoked from RLC to MAC to 
- * inform the BO report for dedicated channels
+* inform the BO report for dedicated channels
 *
 * @details
 *
-*     Function : cmUnpkRguDStaRsp
+*     Function : unpackSendBOStatus
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SpId  spId
-*  @param[in]   RguDStaRspInfo  *  staRsp
+*  @param[in]   RlcMacBOStatus *  staRsp
 *  @return   S16
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDStaRsp
+PUBLIC S16 unpackSendBOStatus
 (
 RguDStaRsp func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDStaRsp(func, pst, mBuf)
+PUBLIC S16 unpackSendBOStatus(func, pst, mBuf)
 RguDStaRsp func;
 Pst *pst;
 Buffer *mBuf;
 #endif
 {
    SpId spId;
-   RguDStaRspInfo *staRsp;
-   
-   TRC3(cmUnpkRguDStaRsp)
+   RlcMacBOStatus *boSta;
+
+   TRC3(unpackSendBOStatus)
 
    if (SUnpkS16(&spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -1638,12 +1154,12 @@ Buffer *mBuf;
 
    if (pst->selector == RGU_SEL_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &staRsp, mBuf);
+      CMCHKUNPK(cmUnpkPtr,(PTR *) &boSta, mBuf);
    }
    else
    {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&staRsp, 
-                                 sizeof(RguDStaRspInfo))) != ROK) {
+      if ((SGetSBuf(pst->region, pst->pool, (Data **)&boSta, 
+                                 sizeof(RlcMacBOStatus))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -1652,187 +1168,23 @@ Buffer *mBuf;
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
-      if (cmUnpkRguDStaRspInfo(staRsp, mBuf) != ROK) {
+      if (unpackBOStatusInfo(boSta, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
              (ErrVal)ERGU062, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, (Data *)staRsp, sizeof(RguDStaRspInfo));
+         SPutSBuf(pst->region, pst->pool, (Data *)boSta, sizeof(RlcMacBOStatus));
          RETVALUE(RFAILED);
       }
    }
    SPutMsg(mBuf);
-   (*func)(pst, spId, staRsp);
-   SPutSBuf(pst->region, pst->pool, (Data *)staRsp, sizeof(RguDStaRspInfo));
+  // (*func)(pst, spId, boSta);
+   SPutSBuf(pst->region, pst->pool, (Data *)boSta, sizeof(RlcMacBOStatus));
    RETVALUE(ROK);
 }
 
-
-/**
-* @brief Status Indication from MAC to RLC  
- * as a response to the staRsp primitive from RLC.
- * Informs RLC of the totalBufferSize and Timing Info 
- * for the transmission on common channels.
-*
-* @details
-*
-*     Function : cmPkRguCStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguCStaIndInfo  *  staInd
-*  @return   S16
-*      -# ROK
-**/
-#ifdef ANSI
-PUBLIC S16 cmPkRguCStaInd
-(
-Pst* pst,
-SuId suId,
-RguCStaIndInfo  * staInd
-)
-#else
-PUBLIC S16 cmPkRguCStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RguCStaIndInfo  * staInd;
-#endif
-{
-   Buffer *mBuf = NULLP;
-   TRC3(cmPkRguCStaInd)
-
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU063, (ErrVal)0, "Packing failed");
-#endif      
-      SPutSBuf(pst->region, pst->pool, (Data *)staInd, sizeof(RguCStaIndInfo));
-      RETVALUE(RFAILED);
-   }
-      if (pst->selector == RGU_SEL_LWLC)
-   {
-      CMCHKPK(cmPkPtr,(PTR) staInd, mBuf);
-   }
-   else
-   {
-      if (cmPkRguCStaIndInfo(staInd, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-            SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-                (ErrVal)ERGU064, (ErrVal)0, "Packing failed");
-#endif      
-         SPutSBuf(pst->region, pst->pool, (Data *)staInd, sizeof(RguCStaIndInfo));
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-      if (SPutSBuf(pst->region, pst->pool, 
-                    (Data *)staInd, sizeof(RguCStaIndInfo)) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU066, (ErrVal)0, "Packing failed");
-#endif      
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-      staInd = NULLP;
-  }
-  if (SPkS16(suId,mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU065, (ErrVal)0, "Packing failed");
-#endif      
-      if (staInd != NULLP)
-      {
-         SPutSBuf(pst->region, pst->pool, (Data *)staInd,
-                                     sizeof(RguCStaIndInfo));
-      }
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-   pst->event = (Event) EVTRGUCSTAIND;
-   RETVALUE(SPstTsk(pst,mBuf));
-}
-
-
-/**
-* @brief Status Indication from MAC to RLC  
- * as a response to the staRsp primitive from RLC.
- * Informs RLC of the totalBufferSize and Timing Info 
- * for the transmission on common channels.
-*
-* @details
-*
-*     Function : cmUnpkRguCStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguCStaIndInfo  *  staInd
-*  @return   S16
-*      -# ROK
-**/
-#ifdef ANSI
-PUBLIC S16 cmUnpkRguCStaInd
-(
-RguCStaInd func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmUnpkRguCStaInd(func, pst, mBuf)
-RguCStaInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
-{
-   SuId suId;
-   RguCStaIndInfo *staInd;
-   
-   TRC3(cmUnpkRguCStaInd)
-
-   if (SUnpkS16(&suId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU067, (ErrVal)0, "UnPacking failed");
-#endif      
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-
-   if (pst->selector == RGU_SEL_LWLC)
-   {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &staInd, mBuf);
-   }
-   else
-   {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&staInd, sizeof(RguCStaIndInfo))) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-               __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ERGU068, (ErrVal)0, "UnPacking failed");
-#endif      
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
-      }
-      if (cmUnpkRguCStaIndInfo(staInd, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-             (ErrVal)ERGU069, (ErrVal)0, "UnPacking failed");
-#endif      
-         SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, (Data *)staInd, sizeof(RguCStaIndInfo));
-         RETVALUE(RFAILED);
-      }
-   }
-   SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, staInd));
-}
 
    /*rgu_c_001.main_5 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
@@ -2059,30 +1411,30 @@ Buffer *mBuf;
 *
 * @details
 *
-*     Function : cmPkRguDStaInd
+*     Function : packSchedRep
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   RguDStaIndInfo  *  staInd
+*  @param[in]   RlcMacSchedRep*  schRep
 *  @return   S16
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguDStaInd
+PUBLIC S16 packSchedRep
 (
 Pst* pst,
 SuId suId,
-RguDStaIndInfo  * staInd
+RlcMacSchedRep  * schRep
 )
 #else
-PUBLIC S16 cmPkRguDStaInd(pst, suId, staInd)
+PUBLIC S16 packSchedRep(pst, suId, staInd)
 Pst* pst;
 SuId suId;
-RguDStaIndInfo  * staInd;
+RlcMacSchedRep  * schRep;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkRguDStaInd)
+   TRC3(packSchedRep)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -2090,28 +1442,28 @@ RguDStaIndInfo  * staInd;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU076, (ErrVal)0, "Packing failed");
 #endif      
-      SPutSBuf(pst->region, pst->pool, (Data *)staInd, sizeof(RguDStaIndInfo));
+      SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRep));
       RETVALUE(RFAILED);
    }
    if (pst->selector == RGU_SEL_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) staInd, mBuf);
+      CMCHKPK(cmPkPtr,(PTR) schRep, mBuf);
    }
    else
    {
-      if (cmPkRguDStaIndInfo(staInd, mBuf) != ROK) {
+      if (packSchedRepInfo(schRep, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
            SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERGU077, (ErrVal)0, "Packing failed");
 #endif      
-        SPutSBuf(pst->region, pst->pool, (Data *)staInd, 
-                                         sizeof(RguDStaIndInfo));
+        SPutSBuf(pst->region, pst->pool, (Data *)schRep, 
+                                         sizeof(RlcMacSchedRep));
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       } 
-      if (SPutSBuf(pst->region, pst->pool, (Data *)staInd,
-                                  sizeof(RguDStaIndInfo)) != ROK) {
+      if (SPutSBuf(pst->region, pst->pool, (Data *)schRep,
+                                  sizeof(RlcMacSchedRep)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -2120,7 +1472,7 @@ RguDStaIndInfo  * staInd;
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
-      staInd = NULLP;
+      schRep= NULLP;
    }
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -2128,15 +1480,15 @@ RguDStaIndInfo  * staInd;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU078, (ErrVal)0, "Packing failed");
 #endif      
-      if (staInd != NULLP)
+      if (schRep != NULLP)
       {
-         SPutSBuf(pst->region, pst->pool, (Data *)staInd, sizeof(RguDStaIndInfo));
+         SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRep));
       }
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
 
-   pst->event = (Event) EVTRGUDSTAIND;
+   pst->event = (Event) EVTSCHREP;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
@@ -2149,7 +1501,7 @@ RguDStaIndInfo  * staInd;
 *
 * @details
 *
-*     Function : cmUnpkRguDStaInd
+*     Function : unpackSchedRep
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
@@ -2158,23 +1510,24 @@ RguDStaIndInfo  * staInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDStaInd
+PUBLIC S16 unpackSchedRep
 (
 RguDStaInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDStaInd(func, pst, mBuf)
+PUBLIC S16 unpackSchedRep(func, pst, mBuf)
 RguDStaInd func;
 Pst *pst;
 Buffer *mBuf;
 #endif
 {
    SuId suId;
-   RguDStaIndInfo *staInd;
+//   RguDStaIndInfo *staInd;
+   RlcMacSchedRep *schRep;
    
-   TRC3(cmUnpkRguDStaInd)
+   TRC3(unpackSchedRep)
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -2187,11 +1540,11 @@ Buffer *mBuf;
    }
    if (pst->selector == RGU_SEL_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &staInd, mBuf);
+      CMCHKUNPK(cmUnpkPtr,(PTR *) &schRep, mBuf);
    }
    else 
    {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&staInd, sizeof(RguDStaIndInfo))) != ROK) {
+      if ((SGetSBuf(pst->region, pst->pool, (Data **)&schRep, sizeof(RlcMacSchedRep))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -2200,19 +1553,19 @@ Buffer *mBuf;
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
-      if (cmUnpkRguDStaIndInfo(staInd, mBuf) != ROK) {
+      if (unpackSchedRepInfo(schRep, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
              (ErrVal)ERGU082, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, (Data *)staInd, sizeof(RguDStaIndInfo));
+         SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRep));
          RETVALUE(RFAILED);
       }
    }
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, staInd));
+   RETVALUE((*func)(pst, suId, schRep));
 }
 
 #ifdef ANSI
@@ -3316,10 +2669,10 @@ Buffer *mBuf;
 
 /***********************************************************
 *
-*     Func : cmPkRguDDatIndInfo
+*     Func : packRlcMacDataInfo
 *
 *
-*     Desc : RguDDatIndInfo
+*     Desc : RlcMacData
  * Data Indication from MAC to RLC for dedicated channels of a UE
 *
 *
@@ -3331,31 +2684,37 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguDDatIndInfo
+PUBLIC S16 packRlcMacDataInfo
 (
-RguDDatIndInfo *param,
+RlcMacData *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguDDatIndInfo(param, mBuf)
-RguDDatIndInfo *param;
+PUBLIC S16 packRlcMacDataInfo(param, mBuf)
+RlcMacData *param;
 Buffer *mBuf;
 #endif
 {
    S32 i;
+   MsgLen msgLen;
 
-   TRC3(cmPkRguDDatIndInfo);
+   TRC3(packRlcMacDataInfo);
 
-#ifdef LTE_L2_MEAS
-   CMCHKPK(SPkU8, param->burstInd, mBuf);
-   CMCHKPK(SPkU32, param->ttiCnt, mBuf);
-#endif
-   for (i=param->numLch-1; i >= 0; i--) {
-      CMCHKPK(cmPkRguLchDatInd, &param->lchData[i], mBuf);
+   for (i=param->nmbPdu-1; i >= 0; i--)
+   {
+      MsgLen msgLen = 0;
+      if (SFndLenMsg(param->pduInfo[i].pduBuf, &msgLen) != ROK)
+         RETVALUE(RFAILED);
+      if (SCatMsg(mBuf, param->pduInfo[i].pduBuf, M1M2) != ROK)
+          RETVALUE(RFAILED);      
+      CMCHKPK(cmPkMsgLen, msgLen, mBuf);
+      CMCHKPK(cmPkLteLcId, param->pduInfo[i].lcId, mBuf);
+      CMCHKPK(cmPkBool, param->pduInfo[i].commCh, mBuf);
    }
-   CMCHKPK(SPkU8, param->numLch, mBuf);
+   CMCHKPK(SPkU8, param->nmbPdu, mBuf);
    CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
+   CMCHKPK(cmPkLteTimingInfo, &param->timeToTx, mBuf);
    RETVALUE(ROK);
 }
 
@@ -3363,10 +2722,10 @@ Buffer *mBuf;
 
 /***********************************************************
 *
-*     Func : cmUnpkRguDDatIndInfo
+*     Func : unpackRlcMacDataInfo
 *
 *
-*     Desc : RguDDatIndInfo
+*     Desc : RlcMacData
  * Data Indication from MAC to RLC for dedicated channels of a UE
 *
 *
@@ -3378,31 +2737,37 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDDatIndInfo
+PUBLIC S16 unpackRlcMacDataInfo
 (
-RguDDatIndInfo *param,
+RlcMacData *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDDatIndInfo(param, mBuf)
-RguDDatIndInfo *param;
+PUBLIC S16 unpackRlcMacDataInfo(param, mBuf)
+RlcMacData *param;
 Buffer *mBuf;
 #endif
 {
    S32 i;
 
-   TRC3(cmUnpkRguDDatIndInfo);
-
+   TRC3(unpackRlcMacDataInfo);
+   
+   CMCHKUNPK(cmUnpkLteTimingInfo, &param->timeToTx, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numLch, mBuf);
-   for (i=0; i<param->numLch; i++) {
-      CMCHKUNPK(cmUnpkRguLchDatInd, &param->lchData[i], mBuf);
+   CMCHKUNPK(SUnpkU8, &param->nmbPdu, mBuf);
+   for (i=0; i<param->nmbPdu; i++) 
+   {
+      MsgLen totalMsgLen;
+
+      CMCHKUNPK(cmUnpkBool, &param->pduInfo[i].commCh, mBuf);
+      CMCHKUNPK(cmUnpkLteLcId, &param->pduInfo[i].lcId, mBuf);
+      CMCHKUNPK(cmPkMsgLen, &param->pduInfo[i].pduLen, mBuf);
+      if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)
+         RETVALUE(RFAILED);
+      if (SSegMsg(mBuf, totalMsgLen-param->pduInfo[i].pduLen, &param->pduInfo[i].pduBuf) != ROK)
+         RETVALUE(RFAILED);
    }
-#ifdef LTE_L2_MEAS
-   CMCHKUNPK(SUnpkU32, &param->ttiCnt, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->burstInd, mBuf);
-#endif
    RETVALUE(ROK);
 }
 
@@ -3519,10 +2884,10 @@ Buffer *mBuf;
 
 /***********************************************************
 *
-*     Func : cmPkRguDStaRspInfo
+*     Func : packBOStatusInfo
 *
 *
-*     Desc : RguDStaRspInfo
+*     Desc : RlcMacBOStatus
  * Status Response from RLC to MAC  for dedicated logical channel
 *
 *
@@ -3534,35 +2899,36 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguDStaRspInfo
+PUBLIC S16 packBOStatusInfo
 (
-RguDStaRspInfo *param,
+RlcMacBOStatus *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguDStaRspInfo(param, mBuf)
-RguDStaRspInfo *param;
+PUBLIC S16 packBOStatusInfo(param, mBuf)
+RlcMacBOStatus *param;
 Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmPkRguDStaRspInfo);
+   TRC3(packBOStatusInfo);
 
-   CMCHKPK(cmPkRguDBoReport, &param->boReport, mBuf);
+   CMCHKPK(SPkS32, param->bo, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
+   CMCHKPK(cmPkBool, param->commCh, mBuf);
    CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    RETVALUE(ROK);
-}
+} /* End of packBOStatusInfo */
 
 
 
 /***********************************************************
 *
-*     Func : cmUnpkRguDStaRspInfo
+*     Func : unpackBOStatusInfo
 *
 *
-*     Desc : RguDStaRspInfo
+*     Desc : RlcMacBOStatus
  * Status Response from RLC to MAC  for dedicated logical channel
 *
 *
@@ -3574,114 +2940,27 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDStaRspInfo
+PUBLIC S16 unpackBOStatusInfo
 (
-RguDStaRspInfo *param,
+RlcMacBOStatus *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDStaRspInfo(param, mBuf)
-RguDStaRspInfo *param;
+PUBLIC S16 unpackBOStatusInfo(param, mBuf)
+RlcMacBOStatus *param;
 Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmUnpkRguDStaRspInfo);
+   TRC3(unpackBOStatusInfo);
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
+   CMCHKUNPK(cmUnpkBool, &param->commCh, mBuf);
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
-   CMCHKUNPK(cmUnpkRguDBoReport, &param->boReport, mBuf);
+   CMCHKUNPK(SUnpkS32, &param->bo, mBuf);
    RETVALUE(ROK);
-}
-
-
-
-/***********************************************************
-*
-*     Func : cmPkRguCStaIndInfo
-*
-*
-*     Desc : RguCStaIndInfo
- * Status Indication from MAC to RLC for common logical channel
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmPkRguCStaIndInfo
-(
-RguCStaIndInfo *param,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmPkRguCStaIndInfo(param, mBuf)
-RguCStaIndInfo *param;
-Buffer *mBuf;
-#endif
-{
-
-   TRC3(cmPkRguCStaIndInfo);
-#ifdef EMTC_ENBALE
-   CMCHKPK(cmPkLteTimingInfo, &param->pagingTimingInfo, mBuf);
-   CMCHKPK(SPkU8, param->isEmtcPaging, mBuf);
-#endif
-   CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
-   CMCHKPK(SPkU32, param->transId, mBuf);
-   CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
-   CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
-}
-
-
-
-/***********************************************************
-*
-*     Func : cmUnpkRguCStaIndInfo
-*
-*
-*     Desc : RguCStaIndInfo
- * Status Indication from MAC to RLC for common logical channel
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmUnpkRguCStaIndInfo
-(
-RguCStaIndInfo *param,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmUnpkRguCStaIndInfo(param, mBuf)
-RguCStaIndInfo *param;
-Buffer *mBuf;
-#endif
-{
-
-   TRC3(cmUnpkRguCStaIndInfo);
-
-   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-   CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->transId, mBuf);
-   /*TODO:Mukesh: Need to check why rnti unpacking is missing*/
-#ifdef EMTC_ENBALE
-   CMCHKUNPK(SUnpkU8, &param->isEmtcPaging, mBuf);
-   CMCHKUNPK(cmUnpkLteTimingInfo, &param->pagingTimingInfo, mBuf);
-#endif
-   RETVALUE(ROK);
-}
-
+} /* End of unpackBOStatusInfo */
 
 
 /***********************************************************
@@ -3850,10 +3129,10 @@ Buffer *mBuf;
 
 /***********************************************************
 *
-*     Func : cmPkRguDStaIndInfo
+*     Func : packSchedRepInfo
 *
 *
-*     Desc : RguDStaIndInfo
+*     Desc : RlcMacSchedRep
  * StaInd from MAC to RLC for dedicated logical channels of a UE
 *
 *
@@ -3865,46 +3144,43 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguDStaIndInfo
+PUBLIC S16 packSchedRepInfo
 (
-RguDStaIndInfo *param,
+RlcMacSchedRep *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguDStaIndInfo(param, mBuf)
-RguDStaIndInfo *param;
+PUBLIC S16 packSchedRepInfo(param, mBuf)
+RlcMacSchedRep *param;
 Buffer *mBuf;
 #endif
 {
    S32 i;
    S32 idx;
 
-   TRC3(cmPkRguDStaIndInfo);
+   TRC3(packSchedRepInfo);
 
-   for(idx = (param->nmbOfUeGrantPerTti - 1); idx >= 0 ; idx--)
+   for(idx = (param->nmbLch-1); idx >= 0; idx--)
    {
-      RguDStaIndPerUe *staInd = &param->staInd[idx];
-      CMCHKPK(SPkU8, staInd->fillCtrlPdu, mBuf);
-      for (i=staInd->nmbOfTbs-1; i >= 0; i--) {
-         CMCHKPK(cmPkRguStaIndTb, &staInd->staIndTb[i], mBuf);
-      }
-      CMCHKPK(SPkU8, staInd->nmbOfTbs, mBuf);
-      CMCHKPK(SPkU32,staInd->transId, mBuf);
-      CMCHKPK(cmPkLteRnti, staInd->rnti, mBuf);
+      CMCHKPK(cmPkRguLchStaInd, &param->lchSta[idx].lchStaInd, mBuf);
+      CMCHKPK(cmPkBool, param->lchSta[idx].commCh, mBuf);
    }
-   CMCHKPK(SPkU8, param->nmbOfUeGrantPerTti, mBuf);
+   CMCHKPK(SPkU8, param->nmbLch, mBuf);
+   CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
+   CMCHKPK(cmPkLteTimingInfo, &param->timeToTx, mBuf);
+
    RETVALUE(ROK);
-}
+} /* End of packSchedRepInfo */
 
 
 
 /***********************************************************
 *
-*     Func : cmUnpkRguDStaIndInfo
+*     Func : unpackSchedRepInfo
 *
 *
-*     Desc : RguDStaIndInfo
+*     Desc : RlcMacSchedRep
  * StaInd from MAC to RLC for dedicated logical channels of a UE
 *
 *
@@ -3916,38 +3192,34 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDStaIndInfo
+PUBLIC S16 unpackSchedRepInfo
 (
-RguDStaIndInfo *param,
+RlcMacSchedRep *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDStaIndInfo(param, mBuf)
-RguDStaIndInfo *param;
+PUBLIC S16 unpackSchedRepInfo(param, mBuf)
+RlcMacSchedRep *param;
 Buffer *mBuf;
 #endif
 {
    S32 i;
    S32 idx;
 
-   TRC3(cmUnpkRguDStaIndInfo);
+   TRC3(unpackSchedRepInfo);
 
+   CMCHKUNPK(cmUnpkLteTimingInfo, &param->timeToTx, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->nmbOfUeGrantPerTti, mBuf);
-   for(idx = 0; idx < param->nmbOfUeGrantPerTti; idx++)
+   CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
+   CMCHKUNPK(SUnpkU8, &param->nmbLch, mBuf);
+   for(idx = 0; idx < param->nmbLch; idx++)
    {
-      RguDStaIndPerUe *staInd = &param->staInd[idx];
-      CMCHKUNPK(cmUnpkLteRnti, &staInd->rnti, mBuf);
-      CMCHKUNPK(SUnpkU32, &staInd->transId, mBuf);
-      CMCHKUNPK(SUnpkU8, &staInd->nmbOfTbs, mBuf);
-      for (i=0; i<staInd->nmbOfTbs; i++) 
-      {
-         CMCHKUNPK(cmUnpkRguStaIndTb, &staInd->staIndTb[i], mBuf);
-      }
-      CMCHKUNPK(SUnpkU8, &staInd->fillCtrlPdu, mBuf);
+      CMCHKUNPK(cmUnpkBool, &param->lchSta[idx].commCh, mBuf);
+      CMCHKUNPK(cmUnpkRguLchStaInd, &param->lchSta[idx].lchStaInd, mBuf);
    }
+
    RETVALUE(ROK);
-}
+} /* End of unpackSchedRepInfo */
 
 #endif
 

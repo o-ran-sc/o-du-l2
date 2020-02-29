@@ -206,7 +206,7 @@ RguCStaIndInfo   *staInd;
 {
    CmLList          *node;          /* Current Link List Node */
    KwSdu            *sdu;           /* SDU */
-   RguCDatReqInfo   *cDatReqInfo;   /* Data Request Information */
+   RlcMacData       *dlData;
    S16   timeDiff = 0;
    Ticks curTime  = 0;
 
@@ -376,9 +376,9 @@ RguCStaIndInfo   *staInd;
 
     KW_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[suId].pst.region,
                         gCb->u.dlCb->rguDlSap[suId].pst.pool,
-                        cDatReqInfo,(Size)sizeof(RguCDatReqInfo));
+                        dlData,(Size)sizeof(RlcMacData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
-   if ( cDatReqInfo == NULLP )
+   if ( dlData == NULLP )
    {
       RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
             "Memory Allocation failed UEID:%d CELLID:%d",   
@@ -387,29 +387,15 @@ RguCStaIndInfo   *staInd;
       RETVOID; 
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
-#ifdef CCPU_OPT
-   if ( rbCb->lch.lChType == CM_LTE_LCH_BCCH ||  
-        rbCb->lch.lChType == CM_LTE_LCH_PCCH )
-   {
-      cDatReqInfo->u.timeToTx.sfn = sdu->mode.tm.sfn;
-      cDatReqInfo->u.timeToTx.subframe = sdu->mode.tm.subframe;
-#ifdef EMTC_ENABLE
-       if(rbCb->lch.lChType == CM_LTE_LCH_PCCH)
-       {
-         cDatReqInfo->pnb = sdu->mode.tm.pnb; 
-       }
-#endif
-   }
-   else
-   {
-      cDatReqInfo->u.rnti = sdu->mode.tm.rnti;
-   }
-#endif 
-   cDatReqInfo->pdu = sdu->mBuf; 
-   cDatReqInfo->transId = rbCb->transId;
-   cDatReqInfo->cellId  = rbCb->rlcId.cellId;
-   cDatReqInfo->lcId   = rbCb->lch.lChId; 
-   cDatReqInfo->lcType = rbCb->lch.lChType; 
+
+   dlData->timeToTx.sfn = sdu->mode.tm.sfn;
+   dlData->timeToTx.subframe = sdu->mode.tm.subframe;
+   dlData->cellId = rbCb->rlcId.cellId;
+   dlData->rnti = sdu->mode.tm.rnti;
+   dlData->nmbPdu = 1;
+   dlData->pduInfo[0].commCh = TRUE;
+   dlData->pduInfo[0].lcId = rbCb->lch.lChId;
+   dlData->pduInfo[0].pduBuf =  sdu->mBuf;
 
    /* kw005.201 ccpu00117318, updating the statistics */
    gCb->genSts.bytesSent += sdu->sduSz;
@@ -427,12 +413,12 @@ RguCStaIndInfo   *staInd;
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      kwLmmSendTrc(gCb,EVTRGUCDATREQ, NULLP);
+      kwLmmSendTrc(gCb,EVTRLCDLDAT, NULLP);
    }
-   KwLiRguCDatReq (&(gCb->u.dlCb->rguDlSap[suId].pst), 
-                   gCb->u.dlCb->rguDlSap[suId].spId, 
-                   cDatReqInfo);
    
+   RlcMacSendDlData(&(gCb->u.dlCb->rguDlSap[suId].pst),
+                   gCb->u.dlCb->rguDlSap[suId].spId,
+                   dlData);
    RETVOID;
 }
 
@@ -509,7 +495,8 @@ MsgLen          bo;
 KwuDatReqInfo   *datReqInfo;   
 #endif
 {
-   RguCStaRspInfo   *staRspInfo;   /* Status Response Information */
+//   RguCStaRspInfo   *staRspInfo;   /* Status Response Information */
+   RlcMacBOStatus   *boStatus;      /* Buffer occupancy status information */
    KwRguSapCb       *rguSap;       /* SAP Information */
 
    TRC3(kwTmmSndStaRsp)
@@ -519,9 +506,9 @@ KwuDatReqInfo   *datReqInfo;
 
    KW_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.region,
                        gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.pool,
-                       staRspInfo,sizeof(RguCStaRspInfo));
+                       boStatus, sizeof(RguCStaRspInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
-   if ( staRspInfo == NULLP )
+   if ( boStatus == NULLP )
    {
       RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
             "Memory Allocation failed UEID:%d CELLID:%d",
@@ -530,38 +517,21 @@ KwuDatReqInfo   *datReqInfo;
       RETVOID;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
-   staRspInfo->bo = bo;
-   staRspInfo->cellId = rbCb->rlcId.cellId;
-   staRspInfo->lcId   = rbCb->lch.lChId;
-   staRspInfo->lcType = rbCb->lch.lChType;
-#ifdef CCPU_OPT    
-   if ( rbCb->lch.lChType == CM_LTE_LCH_BCCH ||
-        rbCb->lch.lChType == CM_LTE_LCH_PCCH )
-   {
-      staRspInfo->u.timeToTx.sfn      = datReqInfo->tm.tmg.sfn;
-      staRspInfo->u.timeToTx.subframe = datReqInfo->tm.tmg.subframe;
-#ifdef EMTC_ENABLE
-      if(rbCb->lch.lChType == CM_LTE_LCH_PCCH)
-      {
-         staRspInfo->emtcDiReason = datReqInfo->emtcDiReason;
-         staRspInfo->pnb = datReqInfo->pnb;
-      }
-#endif
-   }
-   else if ( rbCb->lch.lChType == CM_LTE_LCH_CCCH )
-   {
-       staRspInfo->u.rnti = datReqInfo->tm.rnti;
-   }
-#endif
+
+   boStatus->cellId = rbCb->rlcId.cellId;
+   boStatus->rnti = rbCb->rlcId.ueId;
+   boStatus->commCh = TRUE;
+   boStatus->lcId = rbCb->lch.lChId;
+   boStatus->bo = bo;
 
    /* If trace flag is enabled send the trace indication */
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      kwLmmSendTrc(gCb,EVTRGUCSTARSP, NULLP);
+      kwLmmSendTrc(gCb, EVTRLCBOSTA, NULLP);
    }
 
-   KwLiRguCStaRsp(&rguSap->pst,rguSap->spId,staRspInfo);
+   RlcMacSendBOStatus(&rguSap->pst, rguSap->spId, boStatus);
 
    RETVOID;
 } 

@@ -687,7 +687,19 @@ PUBLIC MtMemCfg mtMemoCfg =
         {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
         {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
       }
+    },
+    {
+       SS_DFLT_REGION + 4,                         /* region id */
+       MT_MAX_BKTS,                            /* number of buckets */
+       MT_HEAP_SIZE,                           /* heap size */
+       {
+          {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+          {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+       }
     }
+
 #endif /* SS_LOCKLESS_MEMORY */
     STATIC_MEM_CFG
   }

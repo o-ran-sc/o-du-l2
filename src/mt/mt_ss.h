@@ -90,7 +90,7 @@
 #ifdef SS_MULTICORE_SUPPORT
 #define SS_MAX_REGS SS_MAX_STSKS
 #else
-#define SS_MAX_REGS 1
+#define SS_MAX_REGS 5
 #endif
 
 #ifdef CMM_MAX_BKT_ENT
@@ -221,7 +221,7 @@ that are configured below.
 #ifdef XEON_SPECIFIC_CHANGES
 #define MT_BKT_1_DSIZE          1024  /* Modified from 256 to 4096 */
 #else
-#define MT_BKT_1_DSIZE          2048  /* Modified from 256 to 4096 */
+#define MT_BKT_1_DSIZE          1280  /* Modified from 256 to 4096 */
 #endif
 #define MT_BKT_1_NUMBLKS        10496 /* 1000*/
 #else
@@ -240,7 +240,7 @@ that are configured below.
 #define MT_BKT_2_DSIZE   1768 /* 1664 2048 */
 #define MT_BKT_2_NUMBLKS 5248 /* 10496 */
 #else
-#define MT_BKT_2_DSIZE   8196 /* 1664 2048 */
+#define MT_BKT_2_DSIZE   2048 /* 1664 2048 */
 #define MT_BKT_2_NUMBLKS 2000 /* 10496 */
 #endif
 #endif
@@ -256,7 +256,7 @@ that are configured below.
 #define MT_BKT_3_DSIZE     4224      /* Fill in this value as required */
 #define MT_BKT_3_NUMBLKS   5248 /*10496 */       /* Fill in this value as required */
 #else
-#define MT_BKT_3_DSIZE     16896      /* Fill in this value as required */
+#define MT_BKT_3_DSIZE     8196      /* Fill in this value as required */
 #define MT_BKT_3_NUMBLKS   1000 /*10496 */       /* Fill in this value as required */
 #endif
 #endif
@@ -269,10 +269,10 @@ that are configured below.
 #define MT_BKT_3_STATIC_NUMBLKS   40960     /* Fill in this value as required */
 #define MT_BKT_4_STATIC_NUMBLKS   4096     /* Fill in this value as required */
 #else
-#define MT_BKT_0_STATIC_NUMBLKS   10000     /* Fill in this value as required */
-#define MT_BKT_1_STATIC_NUMBLKS   1000     /* Fill in this value as required */
-#define MT_BKT_2_STATIC_NUMBLKS   2000     /* Fill in this value as required */
-#define MT_BKT_3_STATIC_NUMBLKS   1000     /* Fill in this value as required */
+#define MT_BKT_0_STATIC_NUMBLKS   75000     /* Fill in this value as required */
+#define MT_BKT_1_STATIC_NUMBLKS   15000     /* Fill in this value as required */
+#define MT_BKT_2_STATIC_NUMBLKS   500     /* Fill in this value as required */
+#define MT_BKT_3_STATIC_NUMBLKS   1600     /* Fill in this value as required */
 #endif
 /*mt010.301*/
 #ifdef RGL_SPECIFIC_CHANGES
@@ -300,7 +300,7 @@ that are configured below.
 #ifdef XEON_SPECIFIC_CHANGES
 #define MT_HEAP_SIZE            6194304U
 #else
-#define MT_HEAP_SIZE            6194304U /*PAL FIX: 4MB to 6MB flexran */
+#define MT_HEAP_SIZE            1004800U /*PAL FIX: 4MB to 6MB flexran */
 #endif
 #endif
 

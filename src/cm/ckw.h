@@ -44,6 +44,8 @@ EXTERN "C" {
 
 /* Loose Coupling define */
 #define CKW_SEL_LC            0     /*!< Loose Coupling Option */
+#define CKW_SEL_TC            1     /*!< Tight Coupling Option */
+#define CKW_SEL_LWLC          2     /*!< Light Weight Loose Coupling */
 
 /* CKW Interface defines */
 #define CKW_MAX_ENT_CFG       24    /*!< Maximum number of entities to configure */
@@ -101,7 +103,7 @@ EXTERN "C" {
 #define CKW_EVT_BND_REQ       0x01     /*!< Bind Request */
 #define CKW_EVT_BND_CFM       0x02     /*!< Bind Confirm */
 #define CKW_EVT_UBND_REQ      0x03     /*!< Unbind Request */
-#define CKW_EVT_CFG_REQ       0x04     /*!< Config Request */
+#define RLC_EVT_UE_CREATE_REQ       0x04     /*!< UE Create Request */
 #define CKW_EVT_CFG_CFM       0x05     /*!< Config Confirm */
 #define CKW_EVT_UEIDCHG_REQ   0x06     /*!< UE Id Change Request */
 #define CKW_EVT_UEIDCHG_CFM   0x07     /*!< UE Id Change Confirm */

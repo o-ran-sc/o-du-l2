@@ -1,3 +1,4 @@
+/*******************************************************************************
 ################################################################################
 #   Copyright (c) [2017-2019] [Radisys]                                        #
 #                                                                              #
@@ -13,63 +14,20 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
+*******************************************************************************/
 
-# Max number of Regions
-5
-# Number of Buckets and Pools
-4 4
-# Bucket Idx and Block Size
-0 256
-1 1280
-2 2048
-3 8196
-# Region Idx
-0
-# Bucket Idx  and Number of blocks
-0   10000
-1   500 
-2   500 
-3   500 
-# Heap size
-8194304U
+/* This file contains UE management handling functionality for DU APP */
 
-# Region Idx
-1
-# Bucket Idx  and Number of blocks
-0   75000
-1   15000 
-2   500 
-3   1600
-# Heap size
-1004800U
+#ifndef __DU_UE_MGR_H__
+#define __DU_UE_MGR_H__
 
-# Region Idx
-2
-# Bucket Idx  and Number of blocks
-0   65000
-1   8000 
-2   600 
-3   900
-# Heap size
-6097512U
+#include "du_mgr.h"
+#include "du_log.h"
+#include "ckw.h"
+#include "ckw.c"
 
-# Region Idx
-3
-# Bucket Idx  and Number of blocks
-0   75000
-1   15000
-2   500
-3   1600
-# Heap size
-1004800U
+#endif
 
-# Region Idx
-4
-# Bucket Idx  and Number of blocks
-0   75000
-1   15000
-2   500
-3   1600
-# Heap size
-1004800U
-
+/**********************************************************************
+         End of file
+**********************************************************************/

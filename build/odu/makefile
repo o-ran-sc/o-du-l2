@@ -119,6 +119,7 @@ help:
 		@echo -e "$(RULE)clean_all - cleanup everything$(NORM)"
 		@echo -e "$(OPTS)  options: $(NORM)"
 		@echo -e "$(OPTS)    MACHINE=BIT64/BIT32  - Default is BIT32$(NORM)"
+		@echo -e "$(OPTS)    NODE=CU_STUB         - Mandatory option for cu_stub$(NORM)"
 		@echo -e "$(OPTS)    MODE=TDD             - If not specified, MODE=FDD$(NORM)"
 		@echo -e "******************************************************************"
 
@@ -128,7 +129,6 @@ prepare_dirs:
 	$(Q)mkdir -p $(LIB_ROOT)/odu
 	$(Q)mkdir -p $(ROOT_DIR)/libs/
 	$(Q)mkdir -p $(BIN_DIR)/odu
-	$(Q)mkdir -p $(BIN_DIR)/config
 	$(Q)mkdir -p $(ROOT_DIR)/bin
 	$(Q)echo -e "Directories are successfully prepared"
 
@@ -214,9 +214,7 @@ link_cu:
 
 copy_build: link_du
 			$(Q)cp -f ./obj/odu/odu ./bin/odu
-			$(Q)cp -f ../config/ssi_mem ./bin/config
 			$(Q)cp -rf ./bin/odu $(ROOT_DIR)/bin/
-			$(Q)cp -rf ./bin/config $(ROOT_DIR)/bin/
 			$(Q)cp -f ../scripts/odu_script.sh $(ROOT_DIR)/bin/odu
 			$(Q)cp -f ./lib/odu/*.a $(ROOT_DIR)/libs/
 		   $(Q)echo -e "***** BUILD COMPLETE *****"

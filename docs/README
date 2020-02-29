@@ -55,12 +55,12 @@ How to execute:
       cd l2/bin/cu_stub
      
 3. Run CU Stub binary:
-      ./cu_stub -f ../config/ssi_mem
+      ./cu_stub
 
 4. DU execution folder:
       cd l2/bin/odu
      
 5. Run ODU binary:
-      ./odu -f ../config/ssi_mem
+      ./odu
 
 PS: CU stub must be run first

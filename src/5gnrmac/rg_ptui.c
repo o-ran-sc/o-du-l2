@@ -337,7 +337,7 @@ PRIVATE CONSTANT RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
 PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
-   cmPkRguCDatInd,
+//   cmPkRguCDatInd, /* Call packRcvdUlData instead */
 #else
    PtUiRguCDatInd,
 #endif
@@ -347,7 +347,7 @@ PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguCDatInd,
 #endif
 #ifdef LWLCRGUIRGU
-   cmPkRguCDatInd,
+//   cmPkRguCDatInd, /* Call packRcvdUlData instead */
 #else
    PtUiRguCDatInd,
 #endif
@@ -358,7 +358,7 @@ PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
 PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
-   cmPkRguDDatInd,
+//   cmPkRguDDatInd,  /* Call packRcvdUlData instead */
 #else
    PtUiRguDDatInd,
 #endif
@@ -368,7 +368,7 @@ PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguDDatInd,
 #endif
 #ifdef LWLCRGUIRGU
-   cmPkRguDDatInd,
+//   cmPkRguDDatInd, /* Call packRcvdUlData instead */
 #else
    PtUiRguDDatInd,
 #endif
@@ -381,17 +381,17 @@ PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
 PRIVATE CONSTANT RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
-   cmPkRguCStaInd,
+   //cmPkRguCStaInd, /* Call packSchedRep instead of cmPkRguCStaInd */
 #else
    PtUiRguCStaInd,
 #endif
 #ifdef KW
-   KwLiRguCStaInd,
+   //RlcMacProcSchedRep,
 #else
    PtUiRguCStaInd,
 #endif
 #ifdef LWLCRGUIRGU
-   cmPkRguCStaInd,
+   //cmPkRguCStaInd, /* Call packSchedRep instead of cmPkRguCStaInd */
 #else
    PtUiRguCStaInd,
 #endif
@@ -404,17 +404,17 @@ PRIVATE CONSTANT RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
 PRIVATE CONSTANT RguDStaInd RgUiRguDStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
-   cmPkRguDStaInd,
+   //cmPkRguDStaInd, /* Call packSchedRep instead of cmPkRguDStaInd */
 #else
    PtUiRguDStaInd,
 #endif
 #ifdef KW
-   KwLiRguDStaInd,
+   //RlcMacProcSchedRep,
 #else
    PtUiRguDStaInd,
 #endif
 #ifdef LWLCRGUIRGU
-   cmPkRguDStaInd,
+   //cmPkRguDStaInd, /* Call packSchedRep instead of cmPkRguDStaInd */
 #else
    PtUiRguDStaInd,
 #endif

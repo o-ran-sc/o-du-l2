@@ -34,6 +34,8 @@
 #ifndef __ENVOPTH__
 #define __ENVOPTH__
 #define IOT_REPETITION
+#define NOCMDLINE
+#define NOFILESYS
 
 /************************************************************************
      kernel SCTP parameters

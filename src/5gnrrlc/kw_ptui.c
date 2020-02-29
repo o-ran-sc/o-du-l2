@@ -123,88 +123,6 @@ EXTERN S16 kwUtlDlBatchProcPkts ARGS((Void));
 PUBLIC S16 kwDlBatchProcSplit  ARGS((Void));
 #endif
 
-#ifdef PTKWKWU
-PRIVATE S16 PtUiKwuBndCfm  ARGS ((
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-U8 status                       /* status */
-));
-
-#endif /* PTKWKWU */
-
-PUBLIC S16 PtUiKwuDatCfm ARGS ((
-Pst               *pst,
-SuId              suId,
-KwuDatCfmInfo         *datCfm
-));
-
-PUBLIC S16 PtUiKwuStaInd ARGS ((
-Pst               *pst,
-SuId              suId,
-KwuStaIndInfo     *staInd
-));
-
-PUBLIC S16 PtUiKwuReEstCmpInd ARGS ((
-Pst               *pst,
-SuId              suId,
-CmLteRlcId        rlcId
-));
-/* kw005.201 added support for L2 Measurement */
-PUBLIC S16 PtUiKwuDiscSduCfm ARGS((
-Pst               *pst,
-SuId              suId,
-KwuDiscSduInfo    *discCfm
-));
-PUBLIC S16 PtUiKwuFlowCntrlInd ARGS((
-Pst                    *pst,
-SuId                   suId,
-KwuFlowCntrlIndInfo    *flowCntrlIndInfo
-));
-#ifdef LTE_L2_MEAS
-PUBLIC S16 PtUiKwuDatAckInd ARGS((
-Pst               *pst,
-SuId              suId,
-KwuDatAckInfo     *datAckInd
-));
-#endif
-#if (defined(PTKWKWU) || defined(KW_PDCP))
-PUBLIC S16 PtUiKwuDatInd ARGS ((
-Pst               *pst,
-SuId              suId,
-KwuDatIndInfo     *datInd,
-Buffer            *mBuf
-));
-#endif /* PTKWKWU || KW_PDCP */
-
-
-  
-/*********************************************************************
- *             Forward Declartion for CKW Porting Functions
- ********************************************************************/
-#ifdef PTKWCKW
-PRIVATE S16 PtUiCkwBndCfm  ARGS ((
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-U8 status                       /* status */
-));
-
-PUBLIC S16 PtUiCkwCfgCfm ARGS ((
-Pst            *pst,                      /* post structure */
-SuId           suId,                      /* Service User Id */
-CkwCfgCfmInfo  *cfmInfo                    /* Configuration Confirm */
-));
-
-PUBLIC S16 PtUiCkwUeIdChgCfm ARGS((
-Pst            *pst,                      /* post structure */
-SuId           suId,                      /* Service User Id */
-U32            transId,
-CkwUeInfo      *ueInfo,
-CmStatus       status
-));
-
-#endif /* PTKWCKW */
-
-
   
 /*********************************************************************
  *             Primitives for KWU interface 
@@ -216,26 +134,18 @@ PUBLIC KwuBndCfm kwUiKwuBndCfmMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuBndCfm,            /* 0 - loosely coupled */
-#else
-   PtUiKwuBndCfm,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef NH
    NhLiKwuBndCfm,            /* 1 - tightly coupled, RRC  */
-#else
-   PtUiKwuBndCfm,            /* 1 - tightly coupled, portable */
 #endif /* NH */
 #ifndef KW_PDCP
 #ifdef PJ
    PjLiKwuBndCfm,            /* 2 - tightly coupled, PDCP */
-#else
-   PtUiKwuBndCfm,      /* 2 - tightly coupled, portable */ 
 #endif /* NH */
 #endif /* KW_PDCP */
 #ifndef TENB_ACC
 #ifdef LWLCKWUIKWU
    cmPkKwuBndCfm,      /* 3 - light weight loosely coupled */ 
-#else
-   PtUiKwuBndCfm,      /* 3 - light weight loosely coupled, portable */
 #endif /* LCKWUIKWU */
 #endif /*TENB_ACC*/
 };
@@ -246,26 +156,18 @@ PUBLIC KwuDatInd kwUiKwuDatIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuDatInd,            /* 0 - loosely coupled */
-#else
-   PtUiKwuDatInd,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef NH
    NhLiKwuDatInd,            /* 1 - tightly coupled, RRC  */
-#else
-   PtUiKwuDatInd,            /* 1 - tightly coupled, portable */
 #endif /* NH */
 #ifdef KW_PDCP
 #else
 #ifdef PJ
    PjLiKwuDatInd,            /* 2 - tightly coupled, PDCP */
-#else
-   PtUiKwuDatInd,         /* 2 - tightly coupled, portable */ 
 #endif /* NH */
 #ifndef TENB_ACC
 #ifdef LWLCKWUIKWU
    cmPkKwuDatInd,         /* 3 - light weight loosely coupled */ 
-#else
-   PtUiKwuDatInd,         /* 3 - light weight loosely coupled, portable */
 #endif /* LCKWUIKWU */
 #endif /*TENB_ACC*/
 #endif /* KW_PDCP */
@@ -276,20 +178,13 @@ PUBLIC KwuDatCfm kwUiKwuDatCfmMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuDatCfm,            /* 0 - loosely coupled */
-#else
-   PtUiKwuDatCfm,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
-   PtUiKwuDatCfm,            /* 1 - tightly coupled, portable */
 #ifdef PJ
    PjLiKwuDatCfm,            /* 2 - tightly coupled, PDCP */
-#else
-   PtUiKwuDatCfm,            /* 2 - tightly coupled, portable */
 #endif /* PJ */
 #ifndef TENB_ACC
 #ifdef LWLCKWUIKWU
    cmPkKwuDatCfm,         /* 3 - light weight loosely coupled */ 
-#else
-   PtUiKwuDatCfm,         /* 3 - light weight loosely coupled, portable */
 #endif /* LCKWUIKWU */
 #endif /*TENB_ACC*/
 };
@@ -300,20 +195,13 @@ PUBLIC KwuStaInd kwUiKwuStaIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuStaInd,            /* 0 - loosely coupled */
-#else
-   PtUiKwuStaInd,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
-   PtUiKwuStaInd,            /* 2 - tightly coupled, portable */
 #ifdef PJ
    PjLiKwuStaInd,            /* 2 - tightly coupled, PDCP */
-#else
-   PtUiKwuStaInd,            /* 2 - tightly coupled, portable */
 #endif /* PJ */
 #ifndef TENB_ACC
 #ifdef LWLCKWUIKWU
    cmPkKwuStaInd,         /* 3 - light weight loosely coupled */ 
-#else
-   PtUiKwuStaInd,         /* 3 - light weight loosely coupled, portable */
 #endif /* LCKWUIKWU */
 #endif /*TENB_ACC*/
 };
@@ -322,20 +210,14 @@ PUBLIC KwuReEstCmpInd kwUiKwuReEstCmpIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuReEstCmpInd,            /* 0 - loosely coupled */
-#else
-   PtUiKwuReEstCmpInd,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
-   PtUiKwuReEstCmpInd,            /* 1 - loosely coupled, portable  */
 #ifdef PJ
    PjLiKwuReEstCmpInd,            /* 2 - tightly coupled, PDCP */
 #else
-   PtUiKwuReEstCmpInd,            /* 2 - tightly coupled, portable */
 #endif /* PJ */
 #ifndef TENB_ACC
 #ifdef LWLCKWUIKWU
    cmPkKwuReEstCmpInd,    /* 3 - light weight loosely coupled */ 
-#else
-   PtUiKwuReEstCmpInd,    /* 3 - light weight loosely coupled, portable */
 #endif /* LCKWUIKWU */
 #endif /*TENB_ACC*/
 };
@@ -345,20 +227,13 @@ PUBLIC KwuDiscSduCfm kwUiKwuDiscSduCfmMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuDiscSduCfm,            /* 0 - loosely coupled */
-#else
-   PtUiKwuDiscSduCfm,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
-   PtUiKwuDiscSduCfm,            /* 1 - loosely coupled portable */
 #ifdef PJ
    PjLiKwuDiscSduCfm,            /* 2 - tightly coupled, PDCP */
-#else
-   PtUiKwuDiscSduCfm,    /* 2 - tightly coupled, PDCP */     
 #endif
 #ifndef TENB_ACC
 #ifdef LWLCKWUIKWU
    cmPkKwuDiscSduCfm,    /* 3 - light weight loosely coupled */    
-#else
-   PtUiKwuDiscSduCfm,    /* 3 - light weight loosely coupled, portable */  
 #endif /* PJ */
 #endif /*TENB_ACC*/
 };
@@ -366,19 +241,12 @@ PUBLIC KwuFlowCntrlInd kwUiKwuFlowCntrlIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuFlowCntrlInd,            /* 0 - loosely coupled */
-#else
-   PtUiKwuFlowCntrlInd,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
-   PtUiKwuFlowCntrlInd,            /* 1 - loosely coupled portable */
 #ifdef PJ
    PjLiKwuFlowCntrlInd,            /* 2 - tightly coupled, PDCP */
-#else
-   PtUiKwuFlowCntrlInd,            /* 2 - tightly coupled, portable */
 #endif /* PJ */
 #ifdef LCKWUIKWU
    cmPkKwuFlowCntrlInd,            /* 3 - light weight loosely coupled */
-#else
-   PtUiKwuFlowCntrlInd,            /* 3 - light weight loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 };
 #ifdef LTE_L2_MEAS
@@ -386,20 +254,13 @@ PUBLIC KwuDatAckInd kwUiKwuDatAckIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuDatAckInd,            /* 0 - loosely coupled */
-#else
-   PtUiKwuDatAckInd,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
-   PtUiKwuDatAckInd,            /* 1 - loosely coupled, portable  */
 #ifdef PJ
    PjLiKwuDatAckInd,            /* 2 - tightly coupled, PDCP */
-#else
-   PtUiKwuDatAckInd,     /* 1 - tightly coupled, portable */  
 #endif /* PJ */
 #ifndef TENB_ACC
 #ifdef LWLCKWUIKWU
    cmPkKwuDatAckInd,     /* 3 - light weight loosely coupled, portable */          
-#else
-   PtUiKwuDatAckInd,     /* 3 - light weight loosely coupled */        
 #endif /* PJ */
 #endif /*TENB_ACC*/
 };
@@ -764,414 +625,6 @@ KwuDatAckInfo     *datAckInd;
 #endif /* LTE_L2_MEAS */
 #endif /* KW_PDCP */
 
-
-#ifdef PTKWKWU
-/*************************************************************************
- *                         KWU Porting Functions
- ************************************************************************/
-/**
- *
- * @brief 
- *
- *        PtUiKwuBndCfm - Portable SAP bind confirm
- *
- *  @param[in] pst      - Post structure  
- *  @param[in] suId     - Service user SAP ID 
- *  @param[in] status   - Status
- *
- *  @return  S16
- *      -# ROK 
- */
-#ifdef ANSI
-PRIVATE S16 PtUiKwuBndCfm 
-(
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-U8 status                       /* status */
-)
-#else
-PRIVATE S16 PtUiKwuBndCfm(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-U8 status;                      /* status */
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiKwuBndCfm);
-
-   UNUSED(suId);
-   UNUSED(status);
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-} /* end of PtUiKwuBndCfm */
-#endif /* PTKWKWU */
-
-
-/**
- *
- * @brief 
- *
- *        PtUiKwuDatCfm - Portable common channel data request
- *
- *  @param[in] pst    -  Post structure  
- *  @param[in] suId   -  Service user SAP ID 
- *  @param[in] datCfm -  Data Request
- *
- *  @return  S16
- *      -# ROK 
- */
-#ifdef ANSI
-PUBLIC S16 PtUiKwuDatCfm
-(
-Pst               *pst,
-SuId              suId,
-KwuDatCfmInfo    *datCfm
-)
-#else
-PUBLIC S16 PtUiKwuDatCfm(pst, suId, datCfm)
-Pst               *pst;
-SuId              suId;
-KwuDatCfmInfo     *datCfm;
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiKwuDatCfm)
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(datCfm);
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
- 
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-
-} /* end of PtUiKwuDatCfm */
-
-
-/**
- *
- * @brief 
- *
- *        PtUiKwuStaInd - Portable common channel data request
- *
- *  @param[in] pst    -  Post structure  
- *  @param[in] suId   -  Service user SAP ID 
- *  @param[in] staInd -  Data Request
- *
- *  @return  S16
- *      -# ROK 
- */
-#ifdef ANSI
-PUBLIC S16 PtUiKwuStaInd
-(
-Pst               *pst,
-SuId              suId,
-KwuStaIndInfo     *staInd
-)
-#else
-PUBLIC S16 PtUiKwuStaInd(pst, suId, staInd)
-Pst               *pst;
-SuId              suId;
-KwuStaIndInfo     *staInd;
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiKwuStaInd)
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(staInd);
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-
-} /* end of PtUiKwuStaInd */
-
-
-/**
- *
- * @brief 
- *
- *        PtUiKwuReEstCmpInd - Portable common channel data request
- *
- *  @param[in] pst    -  Post structure  
- *  @param[in] suId   -  Service user SAP ID 
- *  @param[in] staInd -  Data Request
- *
- *  @return  S16
- *      -# ROK 
- */
-#ifdef ANSI
-PUBLIC S16 PtUiKwuReEstCmpInd
-(
-Pst               *pst,
-SuId              suId,
-CmLteRlcId        rlcId
-)
-#else
-PUBLIC S16 PtUiKwuReEstCmpInd(pst, suId, rlcId)
-Pst               *pst;
-SuId              suId;
-CmLteRlcId        rlcId;
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiKwuReEstCmpInd)
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(rlcId);
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-
-} /* end of PtUiKwuReEstCmpInd */
-
-/* kw005.201 added support for L2 Measurement */
-/*
- * @brief 
- *
- *        PtUiKwuDiscSduCfm - Portable common channel data request
- *
- *  @param[in] pst    -  Post structure  
- *  @param[in] suId   -  Service user SAP ID 
- *  @param[in] staInd -  Data Request
- *
- *  @return  S16
- *      -# ROK 
- */
-#ifdef ANSI
-PUBLIC S16 PtUiKwuDiscSduCfm
-(
-Pst               *pst,
-SuId              suId,
-KwuDiscSduInfo    *discCfm
-)
-#else
-PUBLIC S16 PtUiKwuDiscSduCfm(pst, suId, discCfm)
-Pst               *pst;
-SuId              suId;
-KwuDiscSduInfo    *discCfm;
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiKwuDiscSduCfm)
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(discCfm);
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-
-} /* end of PtUiKwuDiscSduCfm */
-
-/*
- * @brief 
- *
- *        PtUiKwuFlowCntrlInd - Portable Flow control idication
- *
- *  @param[in] pst          -  Post structure  
- *  @param[in] suId         -  Service user SAP ID 
- *  @param[in] flowCntrlInd -  Flow control information
- *
- *  @return  S16
- *      -# ROK 
- */
-#ifdef ANSI
-PUBLIC S16 PtUiKwuFlowCntrlInd
-(
-Pst                    *pst,
-SuId                   suId,
-KwuFlowCntrlIndInfo    *flowCntrlIndInfo
-)
-#else
-PUBLIC S16 PtUiKwuFlowCntrlInd(pst, suId, flowCntrlIndInfo)
-Pst                    *pst;
-SuId                   suId;
-KwuFlowCntrlIndInfo    *flowCntrlIndInfo;
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiKwuFlowCntrlInd)
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(flowCntrlIndInfo);
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-
-} /* end of PtUiKwuFlowCntrlInd */
-#ifdef LTE_L2_MEAS
-
-/**
- *
- * @brief 
- *
- *        Handler for sending the Data ack indication  to the upper layer. 
- *
- * @b Description:
- *       
- *       This function confirms the succesfull transmission of SDU
- *
- *  @param[in] pst         Post structure  
- *  @param[in] suId        Service User SAP ID 
- *  @param[in] datAckInd   DatAckInd
- *
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED
- */
-#ifdef ANSI
-PUBLIC S16 PtUiKwuDatAckInd
-(
-Pst               *pst,
-SuId              suId,
-KwuDatAckInfo     *datAckInd
-)
-#else
-PUBLIC S16 PtUiKwuDatAckInd(pst, suId, datAckInd)
-Pst               *pst;
-SuId              suId;
-KwuDatAckInfo     *datAckInd;
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiKwuDatAckInd)
-   
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(datAckInd);
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-   RETVALUE(ROK);
-}/* end of PtUiKwuDatAckInd */
-#endif /* LTE_L2_MEAS */
-#if (defined(PTKWKWU) || defined(KW_PDCP))
-
-/**
- *
- * @brief 
- *
- *        PtUiKwuDatInd - Portable common channel data request
- *
- *  @param[in] pst    -  Post structure  
- *  @param[in] suId   -  Service user SAP ID 
- *  @param[in] datInd -  Data Request
- *
- *  @return  S16
- *      -# ROK 
- */
-#ifdef ANSI
-PUBLIC S16 PtUiKwuDatInd
-(
-Pst               *pst,
-SuId              suId,
-KwuDatIndInfo     *datInd,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 PtUiKwuDatInd(pst, suId, datInd, mBuf)
-Pst               *pst;
-SuId              suId;
-KwuDatIndInfo     *datInd;
-Buffer            *mBuf;
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiKwuDatInd)
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(datInd);
-   UNUSED(mBuf);
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-
-} /* end of PtUiKwuDatInd */
-#endif /* PTKWKWU || KW_PDCP */
-
 
   
 /*********************************************************************
@@ -1184,13 +637,9 @@ PUBLIC CkwBndCfm kwUiCkwBndCfmMt[] =
 {
 #ifdef LCKWUICKW
    cmPkCkwBndCfm,            /* 0 - loosely coupled */
-#else
-   PtUiCkwBndCfm,            /* 0 - loosely coupled, portable  */
 #endif /* LCCKUICKW */
 #ifdef NH
    NhLiCkwBndCfm,            /* 1 - tightly coupled, RRC  */
-#else
-   PtUiCkwBndCfm,            /* 1 - tightly coupled, portable */
 #endif /* NH */
 };
 
@@ -1200,13 +649,9 @@ PUBLIC CkwCfgCfm kwUiCkwCfgCfmMt[] =
 {
 #ifdef LCKWUICKW
    cmPkCkwCfgCfm,            /* 0 - loosely coupled */
-#else
-   PtUiCkwCfgCfm,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUICKW */
 #ifdef NH
    NhLiCkwCfgCfm,            /* 1 - tightly coupled, RRC  */
-#else
-   PtUiCkwCfgCfm,            /* 1 - tightly coupled, portable */
 #endif /* NH */
 };
 
@@ -1214,13 +659,9 @@ PUBLIC CkwUeIdChgCfm kwUiCkwUeIdChgCfmMt[] =
 {
 #ifdef LCKWUICKW
    cmPkCkwUeIdChgCfm,            /* 0 - loosely coupled */
-#else
-   PtUiCkwUeIdChgCfm,            /* 0 - loosely coupled, portable  */
 #endif /* LCKWUICKW */
 #ifdef NH
    NhLiCkwUeIdChgCfm,            /* 1 - tightly coupled, RRC  */
-#else
-   PtUiCkwUeIdChgCfm,            /* 1 - tightly coupled, portable */
 #endif /* NH */
 };
 
@@ -1363,151 +804,6 @@ CmStatus       status;
 
 } /* end of KwUiCkwCfgCfm */
 
-
-#ifdef PTKWCKW
-/*************************************************************************
- *                         CKW Porting Functions
- ************************************************************************/
-/**
- *
- * @brief 
- *
- *        KwUiCkwBndCfm - CKW SAP bind confirm
- *
- *  @param[in] pst      - Post structure  
- *  @param[in] suId     - Service user SAP ID 
- *  @param[in] status   - Status
- *
- *  @return  S16
- *      -# ROK 
- */
-#ifdef ANSI
-PRIVATE S16 PtUiCkwBndCfm 
-(
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-U8 status                       /* status */
-)
-#else
-PRIVATE S16 PtUiCkwBndCfm(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-U8 status;                      /* status */
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiCkwBndCfm);
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(status);
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-} /* end of PtUiCkwBndCfm */
-
-
-/**
- *
- * @brief 
- *
- *        PtUiCkwCfgCfm - KWU SAP bind confirm
- *
- *  @param[in] pst      - Post structure  
- *  @param[in] suId     - Service user SAP ID 
- *  @param[in] cfmInfo  - Configuration confirm
- *
- *  @return  S16
- *      -# ROK 
- */
-#ifdef ANSI
-PUBLIC S16 PtUiCkwCfgCfm
-(
-Pst            *pst,                      /* post structure */
-SuId           suId,                      /* Service User Id */
-CkwCfgCfmInfo  *cfmInfo                    /* Configuration Confirm */
-)
-#else
-PUBLIC S16 PtUiCkwCfgCfm(pst, suId, cfmInfo)
-Pst            *pst;                      /* post structure */
-SuId           suId;                      /* Service User Id */
-CkwCfgCfmInfo  *cfmInfo;                   /* Configuration Confirm */
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiCkwCfgCfm);
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(cfmInfo);
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-
-} /* end of PtUiCkwCfgCfm */
-
-#ifdef ANSI
-PUBLIC S16 PtUiCkwUeIdChgCfm 
-(
-Pst            *pst,                      /* post structure */
-SuId           suId,                      /* Service User Id */
-U32            transId,
-CkwUeInfo      *ueInfo,
-CmStatus       status
-)
-#else
-PUBLIC S16 PtUiCkwUeIdChgCfm(pst, suId,transId,ueInfo,status)
-Pst            *pst;                      /* post structure */
-SuId           suId;                      /* Service User Id */
-U32            transId;
-CkwUeInfo      *ueInfo;
-CmStatus       status;
-#endif
-{
-#if (ERRCLASS & ERRCLS_DEBUG)
-   KwCb   *tKwCb;
-#endif
-   TRC3(PtUiCkwUeIdChgCfm);
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(transId);
-   UNUSED(ueInfo);
-   UNUSED(status);
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-   if (pst->srcInst >= KW_MAX_RLC_INSTANCES)
-   {
-      RETVALUE(RFAILED);
-   }
-   tKwCb = KW_GET_KWCB(pst->srcInst);
-   RLOG0(L_ERROR, "Improper selector value");
-#endif /* (ERRCLASS & ERRCLS_DEBUG) */
-
-   RETVALUE(ROK);
-
-} /* end of PtUiCkwUeIdChgCfm */
-#endif /* PTKWCKW */
 
 #if (defined(L2_L3_SPLIT) && defined(ICC_RECV_TSK_RBUF))
 /**

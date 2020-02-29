@@ -507,9 +507,9 @@ Buffer         *mBuf;
 
 /*
 *
-*    Fun:    cmPkCkwCfgReq
+*    Fun:    packUeCreateReq
 *
-*    Desc:    pack the primitive KwUiCkwCfgReq
+*    Desc:    pack the primitive UE Create Req
 *
 *    Ret:    ROK  -ok
 *
@@ -519,23 +519,21 @@ Buffer         *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwCfgReq
+PUBLIC S16 packUeCreateReq
 (
 Pst               *pst,
-SpId              spId,
 CkwCfgInfo        *cfgInfo
 )
 #else
-PUBLIC S16 cmPkCkwCfgReq(pst, spId, cfgInfo)
+PUBLIC S16 packUeCreateReq(pst, cfgInfo)
 Pst               *pst;
-SpId              spId;
 CkwCfgInfo        *cfgInfo;
 #endif
 {
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkCkwCfgReq)
+    TRC3(packUeCreateReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -552,6 +550,13 @@ CkwCfgInfo        *cfgInfo;
 
     switch(pst->selector)
     {
+       case CKW_SEL_LWLC:
+          {
+             CMCHKPK(cmPkPtr,(PTR) cfgInfo, mBuf);
+             break;
+          }
+/* HLAL */
+#if 0          
 #ifdef LCCKW
        case CKW_SEL_LC:
           {
@@ -576,13 +581,12 @@ CkwCfgInfo        *cfgInfo;
              break;
           }
 #endif /* LCCKW */
+#endif /* HLAL */
     }
-
-    CMCHKPKLOG(SPkS16, spId, mBuf, ECKW013, pst);
-    pst->event = (Event) CKW_EVT_CFG_REQ;
+    pst->event = (Event) RLC_EVT_UE_CREATE_REQ;
 
     RETVALUE(SPstTsk(pst,mBuf));
-} /* cmPkCkwCfgReq */
+} /* packUeCreateReq */
 
 
 /*
@@ -1408,9 +1412,9 @@ Buffer         *mBuf;
 
 /*
 *
-*    Fun:    cmUnpkCkwCfgReq
+*    Fun:    unpackUeCreateReq
 *
-*    Desc:    unpack the primitive KwUiCkwCfgReq
+*    Desc:    unpack the primitive UE create request
 *
 *    Ret:    ROK  -ok
 *
@@ -1420,7 +1424,7 @@ Buffer         *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwCfgReq
+PUBLIC S16 unpackUeCreateReq
 (
 CkwCfgReq         func,
 Pst               *pst,
@@ -1434,10 +1438,9 @@ Buffer            *mBuf;
 #endif
 {
     S16 ret1;
-    SpId          spId = 0;
     CkwCfgInfo    *cfgInfo = NULLP;
     
-    TRC3(cmUnpkCkwCfgReq)
+    TRC3(unpackUeCreateReq)
 
     if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&cfgInfo,\
                 sizeof(CkwCfgInfo))) != ROK)
@@ -1452,11 +1455,15 @@ Buffer            *mBuf;
        RETVALUE(ret1);
     }
 
-    cmMemset((U8 *)cfgInfo, 0, sizeof(CkwCfgInfo));
-
-    CMCHKUNPK(SUnpkS16, &(spId), mBuf);
     switch(pst->selector)
     {
+       case CKW_SEL_LWLC:
+          {
+             CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgInfo, mBuf); 
+             break;
+          }
+/* HLAL */
+#if 0
 #ifdef LCCKW
        case CKW_SEL_LC:
        {
@@ -1474,10 +1481,12 @@ Buffer            *mBuf;
           break;
        }
 #endif /* LCCKW */
+#endif /* HLAL */
+
     }
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, cfgInfo));
+    RETVALUE((*func)(pst, cfgInfo));
 } /* cmUnpkCkwCfgReq */
 
 

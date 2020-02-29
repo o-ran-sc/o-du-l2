@@ -256,6 +256,12 @@ Buffer *mBuf;           /* message buffer */
                      ret = cmUnpkLkwCntrlReq(KwMiLkwCntrlReq, pst, mBuf);
                      break;
                   }
+               
+               case RLC_EVT_UE_CREATE_REQ:        /* UE Create Request */
+                  {
+                     ret = unpackUeCreateReq(RlcDuappProcUeCreateReq, pst, mBuf);
+                     break;
+                  }
 
                case LKW_EVT_STS_REQ:
                   {
@@ -365,12 +371,6 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
 
-               case CKW_EVT_CFG_REQ:              /* Configuration request */
-                  {
-                     ret = cmUnpkCkwCfgReq(KwUiCkwCfgReq, pst, mBuf);
-                     break;
-                  }
-
                case CKW_EVT_UEIDCHG_REQ:              /* Configuration request */
                   {
                      ret = cmUnpkCkwUeIdChgReq(KwUiCkwUeIdChgReq, pst, mBuf);
@@ -448,15 +448,9 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
 
-               case EVTRGUCDATIND:    /* Coomon Channel Data request */
+               case EVTRLCULDAT:    /* Dedicated Channel Data request */
                   {
-                     ret = cmUnpkRguCDatInd(KwLiRguCDatInd, pst, mBuf);
-                     break;
-                  }
-
-               case EVTRGUDDATIND:    /* Dedicated Channel Data request */
-                  {
-                     ret = cmUnpkRguDDatInd(KwLiRguDDatInd, pst, mBuf);
+                     ret = unpackRcvdUlData(RlcMacProcUlData, pst, mBuf);
                      break;
                   }
 

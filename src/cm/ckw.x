@@ -188,7 +188,8 @@ typedef struct ckwUeInfo
 /* Control primitives towards LTE RRC */
 
 /* Pointer functiones for Pack/Unpack */
-typedef S16 (*CkwCfgReq)     ARGS((Pst *pst, SpId spId, CkwCfgInfo *cfgInfo));
+//typedef S16 (*CkwCfgReq)     ARGS((Pst *pst, SpId spId, CkwCfgInfo *cfgInfo));
+typedef S16 (*CkwCfgReq)     ARGS((Pst *pst, CkwCfgInfo *cfgInfo));
 typedef S16 (*CkwCfgCfm)     ARGS((Pst *pst, SuId suId, CkwCfgCfmInfo *cfmInfo));
 
 typedef S16 (*CkwUeIdChgReq) ARGS((Pst *pst, SpId spId, U32 transId, 
@@ -273,7 +274,9 @@ EXTERN S16 KwUiCkwUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
  * @param[in] cfgInfo   -  This structure contains the configuration information
  * @return ROK
  */
-EXTERN S16 KwUiCkwCfgReq ARGS((Pst *pst, SpId spId, CkwCfgInfo *cfgInfo));
+//EXTERN S16 KwUiCkwCfgReq ARGS((Pst *pst, SpId spId, CkwCfgInfo *cfgInfo));
+EXTERN S16 KwUiCkwCfgReq ARGS((Pst *pst, CkwCfgInfo *cfgInfo));
+EXTERN S16 RlcDuappProcUeCreateReq ARGS((Pst *pst, CkwCfgInfo *cfgInfo));
 
 /**
  *@details This primitive is used by RLC to confirm the configuration requested
@@ -476,9 +479,8 @@ SuId suId,
 U8 status
 ));
 
-EXTERN S16 cmPkCkwCfgReq ARGS ((
+EXTERN S16 packUeCreateReq ARGS ((
 Pst               *pst,
-SpId              spId,
 CkwCfgInfo        *cfgInfo
 ));
 
@@ -576,7 +578,7 @@ Pst            *pst,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwCfgReq ARGS ((
+EXTERN S16 unpackUeCreateReq ARGS ((
 CkwCfgReq         func,
 Pst               *pst,
 Buffer            *mBuf

@@ -219,6 +219,98 @@ Void PrintRLCStats(Void)
 }
 #endif
 
+/*******************************************************************
+ *
+ * @brief 
+ *    Handler for storing all DL PDU Info into RLC-MAC interface
+ *    struct and sending to lower interface
+ *
+ * @details
+ *    This function stores DL PDU info for all logical channels
+ *    of per UE grant per TTI and sends to MAC
+ *
+ *    Function : KwLiRguDDatReq 
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+#ifdef ANSI
+PUBLIC S16 KwLiRguDDatReq
+(
+Pst               *post,
+SpId              spId,
+RguDDatReqInfo    *datReqInfo
+)
+#else
+PUBLIC S16 KwLiRguDDatReq(post, spId, datReqInfo)
+Pst               *post;
+SpId              spId;
+RguDDatReqInfo    *datReqInfo;
+#endif
+{
+   U8               ueIdx;      /* UE info list iterator */ 
+   U8               tbIdx;      /* TB info list iterator */
+   U8               lchIdx;     /* Lch info list iterator */
+   U8               pduIdx;     /* RLC PDU list iterator */
+   RguDDatReqPerUe  datPerUe;   /* DL data info per UE */
+   RguDatReqTb      datPerTb;   /* DL data info per TB */
+   RguLchDatReq     datPerLch;  /* DL data info per Lch */
+   RguPduInfo       pduInfo;    /* DL RLC PDU infor */
+   RlcMacData       *dlData;    /* DL data to be sent to MAC */
+
+   TRC3(KwLiRguDDatReq)
+
+   dlData = NULLP;
+   KW_ALLOC_SHRABL_BUF(post->region, post->pool,
+                       dlData, sizeof(RlcMacData));
+#if (ERRCLASS & ERRCLS_ADD_RES)
+   if ( datReqInfo == NULLP )
+   {
+      RLOG0(L_FATAL,"Memory allocation failed");
+      RETVALUE(RFAILED);
+   }
+#endif /* ERRCLASS & ERRCLS_ADD_RES */
+
+   for(ueIdx = 0; ueIdx < datReqInfo->nmbOfUeGrantPerTti; ueIdx++)
+   {
+      datPerUe = datReqInfo->datReq[ueIdx];
+
+      cmMemset((U8 *)dlData, 0, sizeof(RlcMacData));
+
+      dlData->cellId = datReqInfo->cellId;
+      dlData->rnti = datPerUe.rnti;
+      //dlData->timeToTx = datPerUe.transId; /* Derive timing info from transId */
+      dlData->nmbPdu = 0;
+
+      for(tbIdx = 0; tbIdx < datPerUe.nmbOfTbs; tbIdx++)
+      {
+         datPerTb = datPerUe.datReqTb[tbIdx];
+         for(lchIdx = 0; lchIdx < datPerTb.nmbLch; lchIdx++)
+         {
+            datPerLch = datPerTb.lchData[lchIdx];
+            for(pduIdx = 0; pduIdx < datPerLch.pdu.numPdu; pduIdx++)
+            {
+               dlData->pduInfo[dlData->nmbPdu].commCh = FALSE;
+               dlData->pduInfo[dlData->nmbPdu].lcId = datPerLch.lcId;
+               dlData->pduInfo[dlData->nmbPdu].pduBuf = datPerLch.pdu.mBuf[pduIdx];
+               dlData->nmbPdu++;
+            }/* For per PDU */
+         }/* For Data per Lch */
+      }/* For Data per Tb */
+      RlcMacSendDlData(post, spId, dlData);
+   } /* For Data per UE */
+
+   /* Check if to be freed here */
+   /*
+   SPutSBuf(post->region, 
+            post->pool, 
+            (Data *)datReqInfo, sizeof(RguDDatReqInfo));
+   */
+   RETVALUE(ROK);
+}/* End of KwLiRguDDatReq */
+
 /**
  *
  * @brief 
@@ -521,7 +613,7 @@ Bool       staPduPrsnt;
 U32        staPduBo;
 #endif
 {
-   RguDStaRspInfo   staRspInfo;   /* Status Response Information */
+   RlcMacBOStatus   boStatus;      /* Buffer occupancy status information */
    KwRguSapCb       *rguSap;       /* MAC SAP Information */
    TRC3(kwUtlSndDStaRsp)
 #ifndef TENB_ACC
@@ -535,47 +627,23 @@ U32        staPduBo;
 
    rguSap = &(gCb->u.dlCb->rguDlSap[rbCb->rguSapId]);
 
-#ifdef CCPU_OPT
-   staRspInfo.boReport.estRlcHdrSz = estHdrSz;
-   staRspInfo.boReport.staPduPrsnt = staPduPrsnt;
-#endif
-#ifdef LTE_ADV
-   staRspInfo.boReport.staPduBo = staPduBo;
-#endif
    rbCb->boUnRprtdCnt = (U32)0;
    rbCb->lastRprtdBoToMac = (U32)bo;
-   staRspInfo.boReport.bo = bo;
-   staRspInfo.cellId      = rbCb->rlcId.cellId;
-   staRspInfo.rnti        = rbCb->rlcId.ueId;
-   staRspInfo.lcId        = rbCb->lch.lChId;
-   if ( CM_LTE_MODE_UM == rbCb->mode && (rbCb->m.umDl.sduQ.count > 0))
-   {
-      staRspInfo.boReport.oldestSduArrTime = 
-        ((KwSdu *)(rbCb->m.umDl.sduQ.first->node))->arrTime;
-   }
-   else if ( CM_LTE_MODE_AM == rbCb->mode )
-   {
-      if (rbCb->m.amDl.nxtRetx != NULLP)
-      { 
-         staRspInfo.boReport.oldestSduArrTime = rbCb->m.amDl.nxtRetx->sduMap.sdu->arrTime;
-      }
-      else if (rbCb->m.amDl.nxtTx != NULLP)
-      {
-         staRspInfo.boReport.oldestSduArrTime = AMDL.nxtTx->arrTime;
-      }
-      else
-      {
-         kwUtlGetCurrTime(&staRspInfo.boReport.oldestSduArrTime);
-      }
-   }
+
+   boStatus.cellId = rbCb->rlcId.cellId;
+   boStatus.rnti = rbCb->rlcId.ueId;
+   boStatus.commCh = FALSE; 
+   boStatus.lcId = rbCb->lch.lChId;
+   boStatus.bo = bo;
+
    /* If trace flag is enabled send the trace indication */
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      kwLmmSendTrc(gCb,EVTRGUDSTARSP, NULLP);
+      kwLmmSendTrc(gCb, EVTRLCBOSTA, NULLP);
    }
    /* Send Status Response to MAC layer */
-   KwLiRguDStaRsp(&rguSap->pst,rguSap->spId,&staRspInfo);
+   RlcMacSendBOStatus(&rguSap->pst,rguSap->spId,&boStatus);
 
 
    RETVALUE(ROK);
