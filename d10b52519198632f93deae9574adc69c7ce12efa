@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "011d779f_e29f9a95",
+        "filename": "src/5gnrmac/rg_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-05T11:05:18Z",
+      "side": 1,
+      "message": "rename to unpackDLData and unpackBoStatus",
+      "revId": "d10b52519198632f93deae9574adc69c7ce12efa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4980da9e_dce5f2f5",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-05T11:05:18Z",
+      "side": 1,
+      "message": "while implementing UL APIs,differentiation between NH and PJ must be eliminated and be sent only towards DU APP",
+      "revId": "d10b52519198632f93deae9574adc69c7ce12efa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "939dacfa_749bbf4d",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-05T11:05:18Z",
+      "side": 1,
+      "message": "should we retain spid?",
+      "revId": "d10b52519198632f93deae9574adc69c7ce12efa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
