@@ -19,6 +19,57 @@
     },
     {
       "key": {
+        "uuid": "bc60bdd8_146a7a1b",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000317
+      },
+      "writtenOn": "2020-03-09T06:47:23Z",
+      "side": 1,
+      "message": "For new functions lets drop the archaic ANSI #ifdef.",
+      "revId": "d10b52519198632f93deae9574adc69c7ce12efa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91fd44da_575d9ac3",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000317
+      },
+      "writtenOn": "2020-03-09T06:47:23Z",
+      "side": 1,
+      "message": "Most of the cases its likely that we might have data for 1 or 2 LCs however this loop is going to iterate for MAX value always. Is it possible to restructure lchULDat definition such that data is sent indexed {0... number of LCs with Data} and not Lc_id. This would reduce the need for dLchPduPres and also the final structure can be filled in the first loop.",
+      "revId": "d10b52519198632f93deae9574adc69c7ce12efa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b17602d9_c0d17234",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1000317
+      },
+      "writtenOn": "2020-03-09T06:47:23Z",
+      "side": 1,
+      "message": "Same comment as above in terms of optimization, we can look at restructuring the internal data structures to reduce the amount of looping we have to do.",
+      "revId": "d10b52519198632f93deae9574adc69c7ce12efa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4980da9e_dce5f2f5",
         "filename": "src/5gnrrlc/kw_ptui.c",
         "patchSetId": 1
