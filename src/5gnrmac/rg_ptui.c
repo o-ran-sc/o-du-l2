@@ -337,7 +337,7 @@ PRIVATE CONSTANT RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
 PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
-//   cmPkRguCDatInd, /* Call packRcvdUlData instead */
+//   cmPkRguCDatInd, /* TODO : Call packRcvdUlData instead */
 #else
    PtUiRguCDatInd,
 #endif
@@ -347,7 +347,7 @@ PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguCDatInd,
 #endif
 #ifdef LWLCRGUIRGU
-//   cmPkRguCDatInd, /* Call packRcvdUlData instead */
+//   cmPkRguCDatInd, /* TODO:Call packRcvdUlData instead */
 #else
    PtUiRguCDatInd,
 #endif
@@ -358,7 +358,7 @@ PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
 PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
-//   cmPkRguDDatInd,  /* Call packRcvdUlData instead */
+//   cmPkRguDDatInd,  /* TODO: Call packRcvdUlData instead */
 #else
    PtUiRguDDatInd,
 #endif
@@ -368,7 +368,7 @@ PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguDDatInd,
 #endif
 #ifdef LWLCRGUIRGU
-//   cmPkRguDDatInd, /* Call packRcvdUlData instead */
+//   cmPkRguDDatInd, /* TODO: Call packRcvdUlData instead */
 #else
    PtUiRguDDatInd,
 #endif
@@ -381,7 +381,7 @@ PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
 PRIVATE CONSTANT RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
-   //cmPkRguCStaInd, /* Call packSchedRep instead of cmPkRguCStaInd */
+   //cmPkRguCStaInd, /* TODO: Call packSchedRep instead of cmPkRguCStaInd */
 #else
    PtUiRguCStaInd,
 #endif
@@ -391,7 +391,7 @@ PRIVATE CONSTANT RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
    PtUiRguCStaInd,
 #endif
 #ifdef LWLCRGUIRGU
-   //cmPkRguCStaInd, /* Call packSchedRep instead of cmPkRguCStaInd */
+   //cmPkRguCStaInd, /* TODO: Call packSchedRep instead of cmPkRguCStaInd */
 #else
    PtUiRguCStaInd,
 #endif
@@ -404,7 +404,7 @@ PRIVATE CONSTANT RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
 PRIVATE CONSTANT RguDStaInd RgUiRguDStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
-   //cmPkRguDStaInd, /* Call packSchedRep instead of cmPkRguDStaInd */
+   //cmPkRguDStaInd, /* TODO: Call packSchedRep instead of cmPkRguDStaInd */
 #else
    PtUiRguDStaInd,
 #endif
@@ -414,7 +414,7 @@ PRIVATE CONSTANT RguDStaInd RgUiRguDStaIndMt[RG_MAX_RGU_USR] =
    PtUiRguDStaInd,
 #endif
 #ifdef LWLCRGUIRGU
-   //cmPkRguDStaInd, /* Call packSchedRep instead of cmPkRguDStaInd */
+   //cmPkRguDStaInd, /* TODO: Call packSchedRep instead of cmPkRguDStaInd */
 #else
    PtUiRguDStaInd,
 #endif

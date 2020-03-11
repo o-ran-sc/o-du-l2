@@ -227,19 +227,7 @@ U8     status;
  *
 */
 
-#ifdef ANSI
-PUBLIC S16 RlcMacProcUlData
-(
-Pst*           pst,
-SuId           suId,
-RlcMacData   *ulData
-)
-#else
-PUBLIC S16 RlcMacProcUlData(pst, suId, ulData)
-Pst*           pst;
-SuId           suId;
-RlcMacData   *ulData;
-#endif
+PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
 {
    U8              idx;
    U8              lcId;                    /* Logical Channel */
@@ -481,19 +469,7 @@ RguDDatIndInfo   *datInd;
  *         RFAILED - failure
  *
  * ****************************************************************/
-#ifdef ANSI
-PUBLIC S16 RlcMacProcSchedRep
-(
-Pst              *pst,
-SuId             suId,
-RlcMacSchedRep   *schRep
-)
-#else
-PUBLIC S16 RlcMacProcSchedRep(pst, suId, schRep)
-Pst              *pst;
-SuId             suId;
-RlcMacSchedRep   *schRep;
-#endif
+PUBLIC S16 RlcMacProcSchedRep(Pst *pst, SuId suId,RlcMacSchedRep *schRep)
 {
    U8 idx;                     /* Iterator */
    U8 nmbDLch = 0;                 /* Number of dedicated logical channles */

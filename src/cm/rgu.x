@@ -825,14 +825,14 @@ EXTERN S16 cmUnpkRguCDatReq ARGS((
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission */
-EXTERN S16 packSendDlData ARGS((
+EXTERN S16 packDlData ARGS((
    Pst*                 pst,
    SpId                 spId,
    RlcMacData      *    datReq
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission */
-EXTERN S16 unpackSendDlData ARGS((
+EXTERN S16 unpackDlData ARGS((
    RguDDatReq           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -881,14 +881,14 @@ EXTERN S16 cmUnpkRguCStaRsp ARGS((
 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for dedicated channels*/
-EXTERN S16 packSendBOStatus ARGS((
+EXTERN S16 packBOStatus ARGS((
    Pst*                 pst,
    SpId                 spId,
    RlcMacBOStatus*      boStatus
 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for dedicated channels*/
-EXTERN S16 unpackSendBOStatus ARGS((
+EXTERN S16 unpackBOStatus ARGS((
    RguDStaRsp           func,
    Pst*                 pst,
    Buffer               *mBuf

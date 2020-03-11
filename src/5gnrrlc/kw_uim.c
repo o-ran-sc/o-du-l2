@@ -289,6 +289,7 @@ Reason   reason;
 PUBLIC S16 RlcDuappProcUeCreateReq(Pst *pst, CkwCfgInfo *ueCfg)
 {
    U8 idx;
+   S16 ret=ROK;
 
    ueCfg->transId = 1;
 
@@ -297,7 +298,9 @@ PUBLIC S16 RlcDuappProcUeCreateReq(Pst *pst, CkwCfgInfo *ueCfg)
       ueCfg->entCfg[idx].cfgType = CKW_CFG_ADD; 
    }
    
-   KwUiCkwCfgReq(pst, ueCfg);
+   ret = KwUiCkwCfgReq(pst, ueCfg);
+   return ret;
+
 } /* RlcDuappUeCreateReq */ 
 
 
@@ -332,7 +335,6 @@ Pst          *pst;
 CkwCfgInfo   *cfg;
 #endif
 {
-   S16         ret = ROK;
    KwCb        *tKwCb;
    KwUlCfgTmpData   *cfgTmpData;
 
@@ -349,19 +351,6 @@ CkwCfgInfo   *cfg;
    }
 #endif
    tKwCb = KW_GET_KWCB(pst->dstInst);
-
-/* HLAL */
-#if 0
-   RLOG1(L_DEBUG, "spId(%d)", spId);
-
-   /* Validate SAP ID under ERRORCLS */
-   KW_VALDATE_SAP(tKwCb, spId, (&(tKwCb->u.ulCb->ckwSap)), ret);
-   if (ret != ROK)
-   {
-      KW_PST_FREE(pst->region, pst->pool, cfg, sizeof(CkwCfgInfo));
-      RETVALUE(RFAILED);
-   }
-#endif
 
    KW_ALLOC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
 

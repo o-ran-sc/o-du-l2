@@ -555,33 +555,6 @@ CkwCfgInfo        *cfgInfo;
              CMCHKPK(cmPkPtr,(PTR) cfgInfo, mBuf);
              break;
           }
-/* HLAL */
-#if 0          
-#ifdef LCCKW
-       case CKW_SEL_LC:
-          {
-             ret1 = cmPkCkwCfgInfo( (cfgInfo), pst, mBuf);
-#if (ERRCLASS & ERRCLS_ADD_RES)
-             if(ret1 != ROK)
-             {
-                SPutMsg(mBuf);
-                SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                      __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-                      (ErrVal)ECKW012, (ErrVal)ret1, "Packing failure");
-                RETVALUE( ret1 );
-             }
-#endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-             if (SPutSBuf(pst->region, pst->pool, (Data *)cfgInfo,
-                      sizeof(CkwCfgInfo)) != ROK)
-             {
-                SPutMsg(mBuf);
-                RETVALUE(RFAILED);
-             }
-
-             break;
-          }
-#endif /* LCCKW */
-#endif /* HLAL */
     }
     pst->event = (Event) RLC_EVT_UE_CREATE_REQ;
 
@@ -1462,27 +1435,6 @@ Buffer            *mBuf;
              CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgInfo, mBuf); 
              break;
           }
-/* HLAL */
-#if 0
-#ifdef LCCKW
-       case CKW_SEL_LC:
-       {
-          ret1 = cmUnpkCkwCfgInfo( (cfgInfo), pst, mBuf);
-#if(ERRCLASS & ERRCLS_DEBUG)
-          if(ret1 != ROK)
-          {
-             SPutMsg(mBuf);
-             SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
-                   __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
-                  (ErrVal)ECKW034, (ErrVal)ret1, "Unpacking failure");
-             RETVALUE( ret1 );
-          }
-#endif /* ERRCLASS & ERRCLS_DEBUG */
-          break;
-       }
-#endif /* LCCKW */
-#endif /* HLAL */
-
     }
     SPutMsg(mBuf);
 

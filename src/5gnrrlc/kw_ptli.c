@@ -150,13 +150,13 @@ PUBLIC RguBndReq kwLiRguUbndReqMt[] =
 PUBLIC RguDDatReq rlcMacSendDlDataOpts[] =
 {
 #ifdef LCKWLIRGU
-   packSendDlData,            /* 0 - loosely coupled */
+   packDlData,            /* 0 - loosely coupled */
 #endif /* LCRGUIRGU */
 #ifdef RG 
    RgUiRguDDatReq,            /* 1 - tightly coupled, MAC  */
 #endif /* RG */
 #ifdef LCKWLIRGU
-   packSendDlData,            /* 0 - loosely coupled */
+   packDlData,            /* 0 - loosely coupled */
 #endif /* LCRGUIRGU */
 };
 
@@ -166,13 +166,13 @@ PUBLIC RguDDatReq rlcMacSendDlDataOpts[] =
 PUBLIC RguDStaRsp rlcMacSendBOStatusOpts[] =
 {
 #ifdef LCKWLIRGU
-   packSendBOStatus,            /* 0 - loosely coupled */
+   packBOStatus,            /* 0 - loosely coupled */
 #endif /* LCRGUIRGU */
 #ifdef RG 
    RgUiRguDStaRsp,            /* 1 - tightly coupled, MAC  */
 #endif /* RG */
 #ifdef LCKWLIRGU
-   packSendBOStatus,            /* 0 - LWLC loosely coupled */
+   packBOStatus,            /* 0 - LWLC loosely coupled */
 #endif /* LCRGUIRGU */
 };
 

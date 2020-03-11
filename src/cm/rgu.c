@@ -420,7 +420,7 @@ Buffer *mBuf;
 *
 * @details
 *
-*     Function : packSendDlData
+*     Function : packDlData
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SpId  spId
@@ -429,21 +429,21 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 packSendDlData
+PUBLIC S16 packDlData
 (
 Pst* pst,
 SpId spId,
 RlcMacData  *dlData
 )
 #else
-PUBLIC S16 packSendDlData(pst, spId, dlData)
+PUBLIC S16 packDlData(pst, spId, dlData)
 Pst* pst;
 SpId spId;
 RlcMacData  dlData;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(packSendDlData)
+   TRC3(packDlData)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -516,7 +516,7 @@ RlcMacData  dlData;
 *
 * @details
 *
-*     Function : unpackSendDlData
+*     Function : unpackDlData
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SpId  spId
@@ -525,14 +525,14 @@ RlcMacData  dlData;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 unpackSendDlData
+PUBLIC S16 unpackDlData
 (
 RguDDatReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 unpackSendDlData(func, pst, mBuf)
+PUBLIC S16 unpackDlData(func, pst, mBuf)
 RguDDatReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -542,7 +542,7 @@ Buffer *mBuf;
 //   RguDDatReqInfo *datReq;
    RlcMacData *dlData;
    
-   TRC3(unpackSendDlData)
+   TRC3(unpackDlData)
 
    if (SUnpkS16(&spId, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -1021,7 +1021,7 @@ Buffer *mBuf;
 *
 * @details
 *
-*     Function : packSendBOStatus,
+*     Function : packBOStatus,
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SpId  spId
@@ -1030,14 +1030,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 packSendBOStatus
+PUBLIC S16 packBOStatus
 (
 Pst* pst,
 SpId spId,
 RlcMacBOStatus  *boStatus
 )
 #else
-PUBLIC S16 packSendBOStatus(pst, spId, staRsp)
+PUBLIC S16 packBOStatus(pst, spId, staRsp)
 Pst* pst;
 SpId spId;
 RlcMacBOStatus  *boStatus;
@@ -1115,7 +1115,7 @@ RlcMacBOStatus  *boStatus;
 *
 * @details
 *
-*     Function : unpackSendBOStatus
+*     Function : unpackBOStatus
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SpId  spId
@@ -1124,14 +1124,14 @@ RlcMacBOStatus  *boStatus;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 unpackSendBOStatus
+PUBLIC S16 unpackBOStatus
 (
 RguDStaRsp func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 unpackSendBOStatus(func, pst, mBuf)
+PUBLIC S16 unpackBOStatus(func, pst, mBuf)
 RguDStaRsp func;
 Pst *pst;
 Buffer *mBuf;
@@ -1140,7 +1140,7 @@ Buffer *mBuf;
    SpId spId;
    RlcMacBOStatus *boSta;
 
-   TRC3(unpackSendBOStatus)
+   TRC3(unpackBOStatus)
 
    if (SUnpkS16(&spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
