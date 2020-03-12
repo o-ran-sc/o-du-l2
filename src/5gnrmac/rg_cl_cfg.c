@@ -28,7 +28,7 @@
 #include "cm_hash.x"
 #include "cm_lib.x"
 
-#include "lcl.h"
+#include "mac_interface.h"
 #include "lwr_mac.h"
 
 EXTERN S16 rgClBldAndSndFAPICfgReq ARGS((ClCellCb *cellCb));
@@ -51,7 +51,7 @@ EXTERN S16 rgClBldAndSndFAPICfgReq ARGS((ClCellCb *cellCb));
  * ****************************************************************/
 PRIVATE S16 rgClVldtCellCfg
 (
-ClCellCfg   *cellCfg
+MacCellCfg   *cellCfg
 )
 {
   RETVALUE(ROK);
@@ -76,7 +76,7 @@ ClCellCfg   *cellCfg
  * ****************************************************************/
 PUBLIC U16 RgClCellCfgReq
 (
-ClCellCfg   *cellCfg
+MacCellCfg   *cellCfg
 )
 {
    ClCellCb   *cellCb = NULLP;
@@ -115,7 +115,7 @@ ClCellCfg   *cellCfg
       clGlobalCp.numOfCells++;
    }
 
-   cmMemcpy((U8 *)&cellCb->cellCfg, (U8 *)cellCfg, sizeof(ClCellCfg));
+   cmMemcpy((U8 *)&cellCb->cellCfg, (U8 *)cellCfg, sizeof(MacCellCfg));
 
    /* Build and send CONFIG request to PHY */
    if(rgClBldAndSndFAPICfgReq(cellCb) != ROK )

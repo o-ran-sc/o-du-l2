@@ -34,7 +34,6 @@
 #ifndef __LRGX__
 #define __LRGX__
 
-#include "lcl.h"
 
 /* ccpu00121930 : ADD: c++ support*/
 #ifdef __cplusplus
@@ -178,7 +177,6 @@ typedef struct rgCfg
       RgUpSapCfg  crgSap;  /*!< CRG interface SAP */
       RgLowSapCfg tfuSap;  /*!< TFU interface SAP */
       RgSchInstCfg schInstCfg;/*!< General Configuration for scheduler instances */
-      ClCellCfg  cellCfg;
    }s;
 }RgCfg;
 

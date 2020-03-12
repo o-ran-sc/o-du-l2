@@ -58,16 +58,16 @@ void FillSlotConfig()
    for(slot = 0; slot <= 3; slot++)
    {
       for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
-         duCfgParam.clCellCfg.tddCfg.slotCfg[slot][symbol] = DL_SLOT;
+         duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = DL_SLOT;
    }
 
-   duCfgParam.clCellCfg.tddCfg.slotCfg[3][10] = GUARD_SLOT;
-   duCfgParam.clCellCfg.tddCfg.slotCfg[3][11] = GUARD_SLOT;
-   duCfgParam.clCellCfg.tddCfg.slotCfg[3][12] = GUARD_SLOT;
-   duCfgParam.clCellCfg.tddCfg.slotCfg[3][13] = UL_SLOT;
+   duCfgParam.macCellCfg.tddCfg.slotCfg[3][10] = GUARD_SLOT;
+   duCfgParam.macCellCfg.tddCfg.slotCfg[3][11] = GUARD_SLOT;
+   duCfgParam.macCellCfg.tddCfg.slotCfg[3][12] = GUARD_SLOT;
+   duCfgParam.macCellCfg.tddCfg.slotCfg[3][13] = UL_SLOT;
 
    for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
-      duCfgParam.clCellCfg.tddCfg.slotCfg[4][symbol] = UL_SLOT;
+      duCfgParam.macCellCfg.tddCfg.slotCfg[4][symbol] = UL_SLOT;
 
 }
 
@@ -77,7 +77,7 @@ void FillSlotConfig()
  *
  * @details
  *
- *    Function : readClCfg
+ *    Function : readMacCfg
  *
  *    Functionality:
  *       - Fills up the cell configuration for CL.
@@ -91,96 +91,96 @@ void FillSlotConfig()
 
 
 /* This function is used to fill up the cell configuration for CL */
-S16 readClCfg()
+S16 readMacCfg()
 {
-   duCfgParam.clCellCfg.carrierId = CARRIER_IDX;
+   duCfgParam.macCellCfg.carrierId = CARRIER_IDX;
 
    /* Cell configuration */
-   duCfgParam.clCellCfg.cellId = NR_CELL_ID;
-   duCfgParam.clCellCfg.phyCellId = NR_PCI;
-   duCfgParam.clCellCfg.dupType = DUPLEX_MODE;
+   duCfgParam.macCellCfg.cellId = NR_CELL_ID;
+   duCfgParam.macCellCfg.phyCellId = NR_PCI;
+   duCfgParam.macCellCfg.dupType = DUPLEX_MODE;
 
    /* DL carrier configuration */
-   duCfgParam.clCellCfg.dlCarrCfg.pres = TRUE;
-   duCfgParam.clCellCfg.dlCarrCfg.bw = SUL_ARFCN;
-   duCfgParam.clCellCfg.dlCarrCfg.freq = NR_ARFCN;
-   duCfgParam.clCellCfg.dlCarrCfg.k0[0] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.k0[1] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.k0[2] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.k0[3] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.k0[4] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.gridSize[0] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.gridSize[1] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.gridSize[2] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.gridSize[3] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.gridSize[4] = 1;
-   duCfgParam.clCellCfg.dlCarrCfg.numAnt = NUM_TX_ANT;
+   duCfgParam.macCellCfg.dlCarrCfg.pres = TRUE;
+   duCfgParam.macCellCfg.dlCarrCfg.bw = SUL_ARFCN;
+   duCfgParam.macCellCfg.dlCarrCfg.freq = NR_ARFCN;
+   duCfgParam.macCellCfg.dlCarrCfg.k0[0] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.k0[1] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.k0[2] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.k0[3] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.k0[4] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.gridSize[0] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.gridSize[1] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.gridSize[2] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.gridSize[3] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.gridSize[4] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.numAnt = NUM_TX_ANT;
 
    /* UL Carrier configuration */
-   duCfgParam.clCellCfg.ulCarrCfg.pres = TRUE;
-   duCfgParam.clCellCfg.ulCarrCfg.bw = SUL_ARFCN;
-   duCfgParam.clCellCfg.ulCarrCfg.freq = NR_ARFCN;
-   duCfgParam.clCellCfg.ulCarrCfg.k0[0] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.k0[1] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.k0[2] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.k0[3] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.k0[4] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.gridSize[0] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.gridSize[1] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.gridSize[2] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.gridSize[3] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.gridSize[4] = 1;
-   duCfgParam.clCellCfg.ulCarrCfg.numAnt = NUM_RX_ANT;
+   duCfgParam.macCellCfg.ulCarrCfg.pres = TRUE;
+   duCfgParam.macCellCfg.ulCarrCfg.bw = SUL_ARFCN;
+   duCfgParam.macCellCfg.ulCarrCfg.freq = NR_ARFCN;
+   duCfgParam.macCellCfg.ulCarrCfg.k0[0] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.k0[1] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.k0[2] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.k0[3] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.k0[4] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.gridSize[0] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.gridSize[1] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.gridSize[2] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.gridSize[3] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.gridSize[4] = 1;
+   duCfgParam.macCellCfg.ulCarrCfg.numAnt = NUM_RX_ANT;
 
-   duCfgParam.clCellCfg.freqShft = FREQ_SHIFT_7P5KHZ;
+   duCfgParam.macCellCfg.freqShft = FREQ_SHIFT_7P5KHZ;
 
    /* SSB configuration */
-   duCfgParam.clCellCfg.ssbCfg.ssbPbchPwr = SSB_PBCH_PWR;
-   duCfgParam.clCellCfg.ssbCfg.bchPayload = BCH_PAYLOAD;
-   duCfgParam.clCellCfg.ssbCfg.scsCmn = SUBCARRIER_SPACING;
-   duCfgParam.clCellCfg.ssbCfg.ssbPrbOffset = PRB_OFFSET;
-   duCfgParam.clCellCfg.ssbCfg.betaPss = BETA_PSS;
-   duCfgParam.clCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITTY;
-   duCfgParam.clCellCfg.ssbCfg.ssbSubcOffset = SSB_SUBCARRIER_OFFSET;
-   duCfgParam.clCellCfg.ssbCfg.mibPdu = 104;
-   duCfgParam.clCellCfg.ssbCfg.nSSBMask[0] = 2162721;
-   duCfgParam.clCellCfg.ssbCfg.nSSBMask[1] = 0;
-   duCfgParam.clCellCfg.ssbCfg.multCarrBand = SSB_MULT_CARRIER_BAND;
-   duCfgParam.clCellCfg.ssbCfg.multCellCarr = MULT_CELL_CARRIER;
+   duCfgParam.macCellCfg.ssbCfg.ssbPbchPwr = SSB_PBCH_PWR;
+   duCfgParam.macCellCfg.ssbCfg.bchPayloadOption = BCH_PAYLOAD;
+   duCfgParam.macCellCfg.ssbCfg.scsCmn = SUBCARRIER_SPACING;
+   duCfgParam.macCellCfg.ssbCfg.ssbPrbOffset = PRB_OFFSET;
+   duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
+   duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITTY;
+   duCfgParam.macCellCfg.ssbCfg.ssbSubcOffset = SSB_SUBCARRIER_OFFSET;
+   duCfgParam.macCellCfg.ssbCfg.mibPdu = 104;
+   duCfgParam.macCellCfg.ssbCfg.nSSBMask[0] = 2162721;
+   duCfgParam.macCellCfg.ssbCfg.nSSBMask[1] = 0;
+   duCfgParam.macCellCfg.ssbCfg.multCarrBand = SSB_MULT_CARRIER_BAND;
+   duCfgParam.macCellCfg.ssbCfg.multCellCarr = MULT_CELL_CARRIER;
 
    /* PRACH configuration */
-   duCfgParam.clCellCfg.prachCfg.pres = TRUE;
-   duCfgParam.clCellCfg.prachCfg.prachSeqLen = PRACH_SEQ_LEN;
-   duCfgParam.clCellCfg.prachCfg.prachSubcSpacing = PRACH_SUBCARRIER_SPACING;
-   duCfgParam.clCellCfg.prachCfg.prachRstSetCfg = PRACH_RESTRICTED_SET_CFG;
-   duCfgParam.clCellCfg.prachCfg.prachFdm = NUM_PRACH_FDM;
-   duCfgParam.clCellCfg.prachCfg.fdm[0].rootSeqIdx = ROOT_SEQ_IDX;
-   duCfgParam.clCellCfg.prachCfg.fdm[0].numRootSeq = NUM_ROOT_SEQ;
-   duCfgParam.clCellCfg.prachCfg.fdm[0].k1 = 1;
-   duCfgParam.clCellCfg.prachCfg.fdm[0].zeroCorrZoneCfg = ZERO_CORRELATION_ZONE_CFG;
-   duCfgParam.clCellCfg.prachCfg.fdm[0].numUnusedRootSeq = NUM_UNUSED_ROOT_SEQ;
-   DU_ALLOC(duCfgParam.clCellCfg.prachCfg.fdm[0].unsuedRootSeq, NUM_UNUSED_ROOT_SEQ * sizeof(U8));
-   if(duCfgParam.clCellCfg.prachCfg.fdm[0].unsuedRootSeq == NULLP)
+   duCfgParam.macCellCfg.prachCfg.pres = TRUE;
+   duCfgParam.macCellCfg.prachCfg.prachSeqLen = PRACH_SEQ_LEN;
+   duCfgParam.macCellCfg.prachCfg.prachSubcSpacing = PRACH_SUBCARRIER_SPACING;
+   duCfgParam.macCellCfg.prachCfg.prachRstSetCfg = PRACH_RESTRICTED_SET_CFG;
+   duCfgParam.macCellCfg.prachCfg.prachFdm = NUM_PRACH_FDM;
+   duCfgParam.macCellCfg.prachCfg.fdm[0].rootSeqIdx = ROOT_SEQ_IDX;
+   duCfgParam.macCellCfg.prachCfg.fdm[0].numRootSeq = NUM_ROOT_SEQ;
+   duCfgParam.macCellCfg.prachCfg.fdm[0].k1 = 1;
+   duCfgParam.macCellCfg.prachCfg.fdm[0].zeroCorrZoneCfg = ZERO_CORRELATION_ZONE_CFG;
+   duCfgParam.macCellCfg.prachCfg.fdm[0].numUnusedRootSeq = NUM_UNUSED_ROOT_SEQ;
+   DU_ALLOC(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq, NUM_UNUSED_ROOT_SEQ * sizeof(U8));
+   if(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq == NULLP)
    {
       DU_LOG("\nDU_APP : Memory allocation failed");
       RETVALUE(RFAILED);
    }
-   *(duCfgParam.clCellCfg.prachCfg.fdm[0].unsuedRootSeq) = UNUSED_ROOT_SEQ;
-   duCfgParam.clCellCfg.prachCfg.ssbPerRach = SSB_PER_RACH;
-   duCfgParam.clCellCfg.prachCfg.prachMultCarrBand = PRACH_MULT_CARRIER_BAND;
+   *(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq) = UNUSED_ROOT_SEQ;
+   duCfgParam.macCellCfg.prachCfg.ssbPerRach = SSB_PER_RACH;
+   duCfgParam.macCellCfg.prachCfg.prachMultCarrBand = PRACH_MULT_CARRIER_BAND;
 
    /* TDD configuration */
-   duCfgParam.clCellCfg.tddCfg.pres = TRUE;
-   duCfgParam.clCellCfg.tddCfg.tddPeriod = TDD_PERIODICITY;
+   duCfgParam.macCellCfg.tddCfg.pres = TRUE;
+   duCfgParam.macCellCfg.tddCfg.tddPeriod = TDD_PERIODICITY;
 
    FillSlotConfig();
 
    /* RSSI Measurement configuration */
-   duCfgParam.clCellCfg.rssiUnit = RSS_MEASUREMENT_UNIT;
+   duCfgParam.macCellCfg.rssiUnit = RSS_MEASUREMENT_UNIT;
 
    /* This should be calculated based on
       (number of mandatory parameters) + (number of otional parameters being filled) */
-   duCfgParam.clCellCfg.numTlv = 39;
+   duCfgParam.macCellCfg.numTlv = 39;
 
    RETVALUE(ROK);
 }
@@ -194,7 +194,7 @@ S16 readClCfg()
  *
  *    Functionality:
  *       - Initializes the DuCfg members.  
- *       - Calls readClCfg()  
+ *       - Calls readMacCfg()  
  *
  * @params[in] system task ID
  * @return ROK     - success
@@ -417,9 +417,9 @@ S16 readCfg()
 
    }
 
-   if(readClCfg() != ROK)
+   if(readMacCfg() != ROK)
    {
-      DU_LOG("\nDU_APP : Failed while reading CL config");
+      DU_LOG("\nDU_APP : Failed while reading MAC config");
       RETVALUE(RFAILED);
    }
 

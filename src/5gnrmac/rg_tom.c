@@ -75,6 +75,7 @@ invoked by PHY towards MAC
 #include "rg_prg.x"        /* PRG interface typedefs */
 #include "rgm.x"           /* layer management typedefs for MAC */
 #include "rgm.h"           /* layer management typedefs for MAC */
+#include "mac_interface.h"
 #include "rg.x"            /* typedefs for MAC */
 
 #ifdef MAC_RLC_UL_RBUF

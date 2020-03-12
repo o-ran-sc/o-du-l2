@@ -24,7 +24,6 @@
 #include "gen.x"
 #include "cm_hash.h"
 #include "cm_hash.x"
-#include "lcl.h"
 #include "lwr_mac.h"
 
  /*******************************************************************

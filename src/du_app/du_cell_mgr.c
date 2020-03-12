@@ -25,6 +25,8 @@ extern DuCfgParams duCfgParam;
 extern S16 cmPkRgrCfgReq(Pst* pst, RgrCfgTransId transId, \
       RgrCfgReqInfo *cfgReqInfo);
 
+extern S16 duBuildAndSendMacCellCfg();
+
 /*******************************************************************
  *
  * @brief Processes cells to be activated
@@ -180,8 +182,9 @@ S16 procF1SetupRsp(F1AP_PDU_t *f1apMsg)
    SPutSBuf(DU_APP_MEM_REGION, DU_POOL,(Data *)&f1apMsg,(Size)sizeof(F1AP_PDU_t));
 #endif
  
-   /* Build and send GNB-DU config update */
-   ret = BuildAndSendDUConfigUpdate();
+   /* Build and send Mac Cell Cfg Paramaters */
+   ret = duBuildAndSendMacCellCfg();
+
    return ret;
 }
 

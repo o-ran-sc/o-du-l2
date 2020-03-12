@@ -79,6 +79,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rgu.x"           /* RGU Interface includes */
 #include "lrg.x"           /* LRG Interface includes */
 
+#include "mac_interface.h"
 #include "rg.x"            /* MAC includes */
 #include "ss_queue.h"
 #include "ss_queue.x"

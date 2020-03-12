@@ -32,6 +32,7 @@ HDR_FILES+=$(wildcard $(CM_DIR)/crg.[hx])
 HDR_FILES+=$(wildcard $(CM_DIR)/lrg*.[hx])
 HDR_FILES+=$(wildcard $(CM_DIR)/rgr.[hx])
 HDR_FILES+=$(wildcard $(CM_DIR)/rgm.[hx])
+HDR_FILES+=$(wildcard $(CM_DIR)/mac*.[hx])
 
 # Add the product specific header files
 HDR_FILES+= $(wildcard $(SRC_DIR)/*.[hx])

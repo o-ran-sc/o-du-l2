@@ -22,6 +22,7 @@
 #include "du_f1ap_msg_hdl.h"
 #include "lsctp.h"
 #include "legtp.h"
+#include "mac_interface.h"
 
 extern S16 cmUnpkLkwCfgCfm(LkwCfgCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
@@ -191,7 +192,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = cmUnpkLrgSchCfgCfm(duHdlSchCfgComplete, pst, mBuf);
                      break;
                   }
-
+               case EVENT_MAC_CELL_CONFIG_CFM:
+                  {
+                     ret = cmUnpackLcMacCellCfgCfm(duHandleMacCellCfgCfm, pst, mBuf);
+                     break;
+                  }
                default:
                   {
                      DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");

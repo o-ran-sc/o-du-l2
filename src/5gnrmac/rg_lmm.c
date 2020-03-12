@@ -75,6 +75,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_prg.x"    /* PRG Interface includes */
 #include "lrg.x"           /* LRG Interface includes */
 #include "rgr.x"           /* LRG Interface includes */
+#include "mac_interface.h"
 #include "rg.x"            /* MAC includes */
 #ifdef SS_DIAG
 #include "ss_diag.h"        /* Common log file */
@@ -129,6 +130,16 @@ RgMngmt       *cfm,
 Pst           *cfmPst
 ));
 
+extern U16 cmPackLcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
+extern U16 cmPackTcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
+extern U16 cmPackLwlcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
+
+packMacCellCfgCfm packMacCellCfmMt[] =
+{
+   cmPackLcMacCellCfgCfm,      /* packing for loosely coupled */
+   cmPackTcMacCellCfgCfm,      /* packing for tightly coupled */
+   cmPackLwlcMacCellCfgCfm,    /* packing for light weight loosly coupled */
+};
 
 /**
  * @brief Task Initiation callback function. 
@@ -298,8 +309,6 @@ RgMngmt  *cfg;    /* config structure  */
       case STTFUSAP:
          reason = rgLMMSapCfg(inst,&cfg->t.cfg, cfg->hdr.elmId.elmnt);
          break;
-      case STCLCELL:
-         reason = RgClCellCfgReq(&cfg->t.cfg.s.cellCfg);
       default:
          ret = LCM_PRIM_NOK;
          reason = LCM_REASON_INVALID_ELMNT;
@@ -2051,6 +2060,88 @@ PUBLIC S16 MacSchCfgReq(pst, transId, cfgReqInfo)
    RETVALUE(ROK);
  
 } /* end of MacSchCfgReq*/
+
+
+/***********************************************************
+ *
+ *     Func : macCellCfgFillCfmPst 
+ *        
+ *
+ *     Desc : Fills the Confirmation Post Structure cfmPst 
+ *
+ *     Ret  : Void
+ *
+ *     Notes: 
+ *
+ *     File : rg_lmm.c 
+ *
+ **********************************************************/
+Void macCellCfgFillCfmPst
+(
+Pst           *reqPst,
+Pst           *cfmPst
+)
+{
+   Inst inst;
+   inst = reqPst->dstInst;
+
+   cfmPst->srcEnt    = rgCb[inst].rgInit.ent;
+   cfmPst->srcInst   = rgCb[inst].rgInit.inst;
+   cfmPst->srcProcId = rgCb[inst].rgInit.procId;
+
+   cfmPst->srcEnt    = reqPst->dstEnt;
+   cfmPst->dstEnt    = reqPst->srcEnt;
+   cfmPst->srcInst   = reqPst->dstInst;
+   cfmPst->dstInst   = reqPst->srcInst;
+   cfmPst->srcProcId = reqPst->dstProcId;
+   cfmPst->dstProcId = reqPst->srcProcId;
+
+   cfmPst->selector  = LRG_SEL_LC;
+   cfmPst->prior     = reqPst->prior;
+   cfmPst->route     = reqPst->route;
+   cfmPst->region    = reqPst->region;
+   cfmPst->pool      = reqPst->pool;
+   cfmPst->event = EVENT_MAC_CELL_CONFIG_CFM;
+
+   RETVOID;
+}
+
+/**
+ * @brief Layer Manager Configuration request handler. 
+ *
+ * @details
+ *
+ *     Function : unpackMacCellCfgReq 
+ *     
+ *     This function handles the gNB and cell configuration
+ *     request received from DU APP.
+ *     This API unapcks and forwards the config towards SCH
+ *     
+ *  @param[in]  Pst           *pst
+ *  @param[in]  MacCellCfg    *macCellCfg 
+ *  @return  S16
+ *      -# ROK
+ **/
+S16 unpackMacCellCfgReq
+(
+ Pst           *pst,
+ MacCellCfg    *macCellCfg
+)
+{
+   U16 ret = ROK;
+   MacCellCfgCfm macCellCfgCfm;
+   Pst cnfPst;
+   Inst inst = pst->dstInst;
+
+   memcpy(&rgCb[inst].macCellCfg,macCellCfg,sizeof(MacCellCfg));
+
+   macCellCfgFillCfmPst(pst,&cnfPst);
+
+   macCellCfgCfm.transId = macCellCfg->transId;
+   //ret = cmPackLcMacCellCfgCfm(&cnfPst,&macCellCfgCfm);
+   ret = (*packMacCellCfmMt[cnfPst.selector])(&cnfPst,&macCellCfgCfm);
+   return ret;
+} /* end of unpackMacCellCfgReq */
 
 
 /**********************************************************************

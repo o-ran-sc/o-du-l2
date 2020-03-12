@@ -73,6 +73,7 @@ static int RLOG_MODULE_ID=4096;
 #include "tfu.x"
 #include "rg_sch_inf.x"
 #include "rg_prg.x"       /* PRG interface typedefs*/
+#include "mac_interface.h"
 #include "rg.x"
 #ifdef LTE_ADV
 #include "rg_pom_scell.x"

@@ -73,6 +73,7 @@
 /* functions in other modules */
 
 /* public variable declarations */
+U16 gTransId = 0;
 
 /* private variable declarations */
 
@@ -3553,6 +3554,25 @@ Buffer *mBuf;           /* message buffer */
 } /* end of cmUnpkIntf */
 #endif /* TDS_ROLL_UPGRADE_SUPPORT */
 
+/*
+*
+*       Fun:   cmGetTransId
+*
+*       Desc:  This function return the transaction ID used for interface transactions 
+*
+*       Ret: gTransId
+*
+*       File:  cm_gen.c
+*
+*/
+U16 cmGetTransId()
+{
+   if(gTransId<65535)
+      gTransId++;
+   else
+      gTransId = 0;
+   return gTransId; 
+}
 /**********************************************************************
          End of file
 **********************************************************************/

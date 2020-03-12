@@ -20,7 +20,7 @@
 #define __DU_CONFIG_H__
 
 #include "du_mgr.h"
-#include "lcl.h"
+#include "mac_interface.h"
 #include "du_log.h"
 #include "BIT_STRING.h"
 
@@ -904,7 +904,8 @@ typedef struct duCfgParams
    CellCfgParams      cellCfg[DU_MAX_CELLS];  /* Cell info config*/
    F1DuSrvdCellInfo   srvdCellLst[DU_MAX_CELLS];   /* Serving cell list *///TODO: this must be removed eventually
    F1RrcVersion       rrcVersion;                    /* RRC version */
-   ClCellCfg          clCellCfg;                     /* CL cell configuration */
+
+   MacCellCfg	      macCellCfg;	/* MAC cell configuration */
    MibParams          mibParams;                     /* MIB Params */
 	Sib1Params         sib1Params;                    /* SIB1 Params */
 }DuCfgParams;

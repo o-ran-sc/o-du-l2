@@ -78,6 +78,7 @@ static int RLOG_FILE_ID=178;
 #include "rgu.x"
 #include "rg_sch_inf.x"
 #include "rg_prg.x"        /* PRG interface typedefs*/
+#include "mac_interface.h"
 #include "rg.x"            /* typedefs for MAC */
 
 #include "ss_rbuf.h"

@@ -65,6 +65,7 @@
 #include "crg.x"           /* layer management typedefs for MAC */
 #include "rg_sch_inf.x"    /* layer management typedefs for MAC */
 #include "rg_prg.x"        /* PRG interface typedefs*/
+#include "mac_interface.h"
 #include "rg.x"            /* typedefs for MAC */
 
 #ifdef LTE_ADV

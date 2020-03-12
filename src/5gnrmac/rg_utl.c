@@ -78,6 +78,7 @@ static int RLOG_FILE_ID=179;
 #include "lrg.x"           /* LRG Interface includes */
 #include "rg_prg.x"        /* PRG(MAC-MAC) Interface includes */
 
+#include "mac_interface.h"
 #include "rg.x"            /* MAC includes */
 
 /* local defines */

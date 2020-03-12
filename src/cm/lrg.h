@@ -95,7 +95,6 @@
 #define STRGRSAP     STGEN + 2
 #define STTFUSAP     STGEN + 4
 #define STSCHINST    STGEN + 5 /* Scheduler Instance */
-#define STCLCELL     STGEN + 6 /* CL cell */
 
 #define LRG_USTA_DGNVAL_MEM      1
 #define LRG_USTA_DGNVAL_HARQ     2

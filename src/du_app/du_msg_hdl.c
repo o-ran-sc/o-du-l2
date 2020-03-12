@@ -37,6 +37,13 @@ extern S16 cmPkLkwCfgReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLkwCntrlReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
 
+packMacCellCfgReq packMacCellCfgMt[] =
+{
+   packLcMacCellCfg, /* packing for loosely coupled */
+   packTcMacCellCfg, /* packing for tightly coupled */
+   packLwLcMacCellCfg, /* packing for light weight loosly coupled */
+};
+
 /**************************************************************************
  * @brief Function to fill configs required by RLC
  *
@@ -1486,6 +1493,95 @@ S16 duSendEgtpTTIInd()
    RETVALUE(ROK);
    
 }
+
+/**************************************************************************
+ * @brief Function to fill and send MacCellconfig
+ *
+ * @details
+ *
+ *      Function : duBuildAndSendMacCellCfg 
+ * 
+ *      Functionality:
+ *           Initiates MAC Configs towards MAC
+ *     
+ * @param[in] void
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+S16 duBuildAndSendMacCellCfg()
+{
+   Pst pst;
+   DU_SET_ZERO(&pst, sizeof(Pst));
+   MacCellCfg *pMacCellCfg = NULLP;
+
+   DU_ALLOC(pMacCellCfg, sizeof(MacCellCfg));
+   if(pMacCellCfg == NULLP)
+   {
+      return RFAILED;
+   }
+
+   /* store the address in the duCb so that we can free on confirm msg */
+   duCb.ptrMacCellCfg = pMacCellCfg;
+
+   /* copy the mac config structure from duCfgParams */
+   memcpy(pMacCellCfg,&duCfgParam.macCellCfg,sizeof(MacCellCfg));
+
+   pMacCellCfg->transId = cmGetTransId(); /* transaction ID */
+   
+   /* Fill Pst */
+   pst.selector  = DU_SELECTOR_LWLC;
+   pst.srcEnt    = ENTDUAPP;
+   pst.dstEnt    = ENTRG;
+   pst.dstInst   = 0;
+   pst.srcInst   = 0;
+   pst.dstProcId = DU_PROC;
+   pst.srcProcId = DU_PROC;
+   pst.region = duCb.init.region;
+   pst.event = EVENT_MAC_CELL_CONFIG_REQ;
+
+   /* Send MAC cell config to MAC */
+   return (*packMacCellCfgMt[pst.selector])(&pst, pMacCellCfg);
+}
+
+/**************************************************************************
+ * @brief Function to Handle MAC cell config confirm
+ *
+ * @details
+ *
+ *      Function : duHandleMacCellCfgCfm 
+ * 
+ *      Functionality:
+ *           Initiates general Configs towards MAC
+ *     
+ * @param[in] void
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+S16 duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm)
+{
+   S16 ret = ROK;
+
+   if(macCellCfgCfm->transId == duCb.ptrMacCellCfg->transId)
+   {
+      /* free the memory allocated during sending macCellCfg request */
+      DU_FREE(duCb.ptrMacCellCfg,sizeof(MacCellCfg));
+      duCb.ptrMacCellCfg = NULLP;
+
+      /* Build and send GNB-DU config update */
+      ret = BuildAndSendDUConfigUpdate();
+   }
+   else
+   {
+      /* transaction ID missmatch */
+      DU_LOG("\n transaction ID mismatch in macCellCfg");
+      ret = RFAILED;
+   }
+
+   return ret;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

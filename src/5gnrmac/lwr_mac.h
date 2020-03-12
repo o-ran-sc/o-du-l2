@@ -31,7 +31,7 @@
 #include "ssi.x"
 #include "cm_hash.x"
 #include "cm_lib.x"
-#include "lcl.h"
+#include "mac_interface.h"
 
 typedef enum
 {
@@ -64,7 +64,7 @@ typedef struct clCb
 typedef struct cellCb
 {
    U16         cellId;
-   ClCellCfg   cellCfg;
+   MacCellCfg   cellCfg;
    PhyState    phyState;
 }ClCellCb;
 

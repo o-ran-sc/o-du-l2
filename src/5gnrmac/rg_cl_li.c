@@ -27,7 +27,7 @@
 #include "ssi.x"
 #include "cm_hash.x"
 
-#include "lcl.h"
+#include "mac_interface.h"
 #include "lwr_mac.h"
 #include "rg_cl_phy.h"
 #include "fapi.h"
@@ -138,7 +138,7 @@ ClCellCb   *cellCb
    U8             *configTlvs;
    L1L2ConfigReq  *FAPIConfigReq;
    L1L2Tlv        *nextTlv;
-   ClCellCfg      cellCfg;
+   MacCellCfg      cellCfg;
 
    FAPIConfigReqSize = sizeof(L1L2ConfigReq)
                        + (cellCb->cellCfg.numTlv * sizeof(L1L2Tlv));
@@ -186,7 +186,7 @@ ClCellCb   *cellCb
 
    /* Filling SSB configuration */
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SS_PBCH_PWR, sizeof(U16), cellCfg.ssbCfg.ssbPbchPwr, &msgLen);
-   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_BCH_PAYLOAD, sizeof(U16), cellCfg.ssbCfg.bchPayload, &msgLen);
+   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_BCH_PAYLOAD, sizeof(U16), cellCfg.ssbCfg.bchPayloadOption, &msgLen);
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SCS_COMM, sizeof(U16), cellCfg.ssbCfg.scsCmn, &msgLen);
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SSB_OFFS_POINT_A, sizeof(U16), cellCfg.ssbCfg.ssbPrbOffset, &msgLen);
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_BETA_PSS, sizeof(U16), cellCfg.ssbCfg.betaPss, &msgLen);
