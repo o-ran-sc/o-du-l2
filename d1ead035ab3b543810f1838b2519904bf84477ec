@@ -1,0 +1,293 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3e6c931e_cabbaf12",
+        "filename": "src/5gnrmac/rg.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "should we be adding this cellcfg as is? shouldnt we make it part of cellCb?",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a81142f_eb3b67f0",
+        "filename": "src/5gnrmac/rg_cl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "here as well, should we be adding whole of macCellCfg in this structure? shouldnt we atleast rename?",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe3b68e3_f4bcde72",
+        "filename": "src/5gnrmac/rg_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "this function should be called unpackMacCellCfg. Selector value must be determined within the function",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1dff0f08_56830a10",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2079,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "this function can be called fillCfmPst so that we can reuse it for other Cfms as well. Event enum can be filled in the caller of this function.",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f66f504_4ba0d465",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2088,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "let\u0027s not use [inst] from now on?",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c990c71_ad4bf1a4",
+        "filename": "src/5gnrmac/rg_pom_scell.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "why is this file included in this file?",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd4da617_198c972f",
+        "filename": "src/cm/cm_gen.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3568,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "no need to prefix \"cm\" for new functions",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3869a406_2dfe6b96",
+        "filename": "src/cm/cm_gen.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3571,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "can this not be implemented using \"%\" operator?",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7938e64f_77709caf",
+        "filename": "src/cm/mac_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "we could add a comment in these empty function as to why it\u0027s empty",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdc76ad8_2638daa2",
+        "filename": "src/cm/mac_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "we can club the packing into 1 function for LC and LWLC and pack based on selector value within it",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "666d2278_d0ef438b",
+        "filename": "src/cm/mac_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be SGetSBuf? We could also, move DU_ALLOC and DU_FREE to common folders and use that in our functions",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c998273_f4e26c17",
+        "filename": "src/cm/mac_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "same comment as above for packing",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f12640d_4c72ffee",
+        "filename": "src/cm/mac_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "don\u0027t use selector name in function name",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "662815e1_b18d43a4",
+        "filename": "src/cm/mac_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "avoiding using these SSI macros in new code",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d47a03c_c7fb61f6",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "make sure you comment this while you submit code. This trigger is for testing purpose and not really where it must be invoked",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42a932da_c8c38067",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "should we use this convention of \"ptr\". we could perhaps discuss",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd7275e2_6f35d6f8",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1516,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-13T08:42:30Z",
+      "side": 1,
+      "message": "disucssion required on naming conventions",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
