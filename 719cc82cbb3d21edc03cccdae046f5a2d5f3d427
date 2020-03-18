@@ -48,6 +48,23 @@
     },
     {
       "key": {
+        "uuid": "cf24f450_2349d0da",
+        "filename": "src/cm/mac_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T09:07:23Z",
+      "side": 1,
+      "message": "As mentioned by Sphoorthi in previous commit, we need not have separate functions for LC and LWLC. we can have one function for packMacCellCfg. Within this one function, itself actions can be taken based on selector type.",
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ba981d5d_228dd883",
         "filename": "src/cm/mac_interface.c",
         "patchSetId": 1
@@ -65,6 +82,23 @@
         "endLine": 132,
         "endChar": 10
       },
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80d799ae_ce354d53",
+        "filename": "src/cm/mac_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T09:07:23Z",
+      "side": 1,
+      "message": "As mentioned by Sphoorthi in previous commit, we need not have separate functions for LC and LWLC. we can have one function for packMacCellCfgCfm. Within this one function, itself actions can be taken based on selector type.",
       "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
