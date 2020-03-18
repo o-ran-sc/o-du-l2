@@ -134,7 +134,7 @@ Buffer  *mBuf;                      /* message buffer       */
 #endif /* LCRGMILRG */
       case EVENT_MAC_CELL_CONFIG_REQ:
          /* Process MAC cell config */
-         cmUnpackLwLcMacCellCfg(unpackMacCellCfgReq, pst, mBuf);
+         unpackDuMacCellCfg(handleMacCellCfgReq, pst, mBuf);
          break;
       default:
          RG_FREE_MSG(mBuf);

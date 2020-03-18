@@ -3556,7 +3556,7 @@ Buffer *mBuf;           /* message buffer */
 
 /*
 *
-*       Fun:   cmGetTransId
+*       Fun:   getTransId
 *
 *       Desc:  This function return the transaction ID used for interface transactions 
 *
@@ -3565,12 +3565,9 @@ Buffer *mBuf;           /* message buffer */
 *       File:  cm_gen.c
 *
 */
-U16 cmGetTransId()
+U16 getTransId()
 {
-   if(gTransId<65535)
-      gTransId++;
-   else
-      gTransId = 0;
+   gTransId = (gTransId%65535) + 1;
    return gTransId; 
 }
 /**********************************************************************

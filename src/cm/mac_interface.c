@@ -24,6 +24,8 @@
 #include "ss_queue.h"
 #include "ss_task.h"
 #include "ss_msg.h"
+#include "du_cfg.h"
+
 #include "gen.x"           /* general */
 #include "ssi.x"           /* system services */
 #include "cm_tkns.x"       /* Common Token Definitions */
@@ -53,28 +55,7 @@
  ***************************************************************************/
 S16 packLcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
 {
-   return ROK;
-}
-
-/**************************************************************************
- * @brief Function to pack tightly Coupled 
- *        MAC cell config parameters required by MAC
- *
- * @details
- *
- *      Function : packTcMacCellCfg
- *
- *      Functionality:
- *           packs the macCellCfg parameters
- *
- * @param[in] Pst     *pst, Post structure of the primitive.
- * @param[in] MacCellCfg  *macCellCfg, mac cell config parameters.
- * @return ROK     - success
- *         RFAILED - failure
- *
- ***************************************************************************/
-S16 packTcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
-{
+   /* we are now implemented only light wieght lossely coupled interface */
    return ROK;
 }
 
@@ -116,7 +97,7 @@ S16 packLwLcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
  *
  * @details
  *
- *      Function : unpackLwLcMacCellCfg
+ *      Function : unpackDuMacCellCfg
  *
  *      Functionality:
  *           packs the macCellCfg parameters
@@ -128,17 +109,27 @@ S16 packLwLcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
  *         RFAILED - failure
  *
  ***************************************************************************/
-void cmUnpackLwLcMacCellCfg(
+void unpackDuMacCellCfg(
    DuMacCellCfgReq func,
    Pst *pst,
    Buffer *mBuf)
 {
+   U16 ret = ROK;
    MacCellCfg *macCellCfg;
 
-   /* unpack the address of the structure */
-   CMCHKUNPK(cmUnpkPtr, (PTR *)&macCellCfg, mBuf);
-
-   RETVALUE((*func)(pst, macCellCfg));
+   if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      /* unpack the address of the structure */
+      CMCHKUNPK(cmUnpkPtr, (PTR *)&macCellCfg, mBuf);
+      ret = (*func)(pst, macCellCfg);
+   }
+   else
+   {
+      /* only LWLC is implemented now */
+      ret = ROK;
+   }
+ 
+   return ret;
 }
 
 /**************************************************************************
@@ -173,28 +164,6 @@ U16 cmPackLcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 }
 
 /**************************************************************************
- * @brief Function to pack tightly Coupled 
- *        MAC cell config confirm message
- *
- * @details
- *
- *      Function : cmPackTcMacCellCfgCfm
- *
- *      Functionality:
- *           packs the transaction ID  
- *
- * @param[in] Pst     *pst, Post structure of the primitive.
- * @param[in] MacCellCfgCfm  *macCellCfgCfm, mac cell config confirm.
- * @return ROK     - success
- *         RFAILED - failure
- *
- ***************************************************************************/
-U16 cmPackTcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
-{
-   return ROK;
-}
-
-/**************************************************************************
  * @brief Function to pack light weight Loose Coupled 
  *        MAC cell config confirm message
  *
@@ -221,7 +190,7 @@ U16 cmPackLwlcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
  *
  * @details
  *
- *      Function : cmUnpackLcMacCellCfgCfm
+ *      Function : unpackMacCellCfgCfm
  *
  *      Functionality:
  *           packs the transaction ID  
@@ -233,14 +202,22 @@ U16 cmPackLwlcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 cmUnpackLcMacCellCfgCfm(
+S16 unpackMacCellCfgCfm(
    DuMacCellCfgCfm func, 
    Pst *pst,
    Buffer *mBuf)
 {
    MacCellCfgCfm macCellCfgCfm;
-   /* pack the transaction ID in CNF structure */
-   CMCHKUNPK(SUnpkU16, &(macCellCfgCfm.transId), mBuf);
 
-   RETVALUE((*func)(&macCellCfgCfm));
+   if(pst->selector == DU_SELECTOR_LC)
+   {
+      /* unpack the transaction ID in CNF structure */
+      CMCHKUNPK(SUnpkU16, &(macCellCfgCfm.transId), mBuf);
+
+      RETVALUE((*func)(&macCellCfgCfm));
+   }
+   else
+   {
+      /* only loose coupling is suported */
+   }
 }

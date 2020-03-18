@@ -158,9 +158,9 @@ typedef struct tddCfg
 typedef struct macCellCfg
 {
    U16            transId;
+   U16            cellId;     /* Cell Id */
    U8             numTlv;     /* Number of configuration TLVs */
    U8             carrierId;  /* Carrired Index */
-   U16            cellId;     /* Cell Id */
    U16            phyCellId;  /* Physical cell id */
    DuplexMode     dupType;    /* Duplex type: TDD/FDD */
    CarrierCfg     dlCarrCfg;  /* DL Carrier configuration */
@@ -198,13 +198,10 @@ typedef S16 (*DuMacCellCfgCfm)     ARGS((
      ));
 
 S16 packLcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
-
-S16 packTcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
-
 S16 packLwLcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
 
 
-EXTERN S16 unpackMacCellCfgReq
+EXTERN S16 handleMacCellCfgReq
 (
  Pst           *pst,
  MacCellCfg    *macCellCfg
@@ -215,7 +212,7 @@ void cmUnpackLwLcMacCellCfg(
    Pst *pst,
    Buffer *mBuf);
 
-S16 cmUnpackLcMacCellCfgCfm(
+S16 unpackMacCellCfgCfm(
    DuMacCellCfgCfm func,
    Pst *pst,
    Buffer *mBuf);

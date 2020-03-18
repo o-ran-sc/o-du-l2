@@ -131,13 +131,12 @@ Pst           *cfmPst
 ));
 
 extern U16 cmPackLcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
-extern U16 cmPackTcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 extern U16 cmPackLwlcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 
 packMacCellCfgCfm packMacCellCfmMt[] =
 {
    cmPackLcMacCellCfgCfm,      /* packing for loosely coupled */
-   cmPackTcMacCellCfgCfm,      /* packing for tightly coupled */
+   duHandleMacCellCfgCfm,      /* packing for tightly coupled */
    cmPackLwlcMacCellCfgCfm,    /* packing for light weight loosly coupled */
 };
 
@@ -2111,7 +2110,7 @@ Pst           *cfmPst
  *
  * @details
  *
- *     Function : unpackMacCellCfgReq 
+ *     Function : handleMacCellCfgReq 
  *     
  *     This function handles the gNB and cell configuration
  *     request received from DU APP.
@@ -2122,7 +2121,7 @@ Pst           *cfmPst
  *  @return  S16
  *      -# ROK
  **/
-S16 unpackMacCellCfgReq
+S16 handleMacCellCfgReq
 (
  Pst           *pst,
  MacCellCfg    *macCellCfg
@@ -2130,10 +2129,12 @@ S16 unpackMacCellCfgReq
 {
    U16 ret = ROK;
    MacCellCfgCfm macCellCfgCfm;
+   RgCellCb      *cellCb;
    Pst cnfPst;
    Inst inst = pst->dstInst;
 
-   memcpy(&rgCb[inst].macCellCfg,macCellCfg,sizeof(MacCellCfg));
+   cellCb = rgCb[inst].cell;
+   memcpy(&cellCb->macCellCfg,macCellCfg,sizeof(MacCellCfg));
 
    macCellCfgFillCfmPst(pst,&cnfPst);
 
@@ -2141,7 +2142,7 @@ S16 unpackMacCellCfgReq
    //ret = cmPackLcMacCellCfgCfm(&cnfPst,&macCellCfgCfm);
    ret = (*packMacCellCfmMt[cnfPst.selector])(&cnfPst,&macCellCfgCfm);
    return ret;
-} /* end of unpackMacCellCfgReq */
+} /* end of handleMacCellCfgReq */
 
 
 /**********************************************************************

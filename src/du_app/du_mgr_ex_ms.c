@@ -194,7 +194,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                case EVENT_MAC_CELL_CONFIG_CFM:
                   {
-                     ret = cmUnpackLcMacCellCfgCfm(duHandleMacCellCfgCfm, pst, mBuf);
+                     ret = unpackMacCellCfgCfm(duHandleMacCellCfgCfm, pst, mBuf);
                      break;
                   }
                default:

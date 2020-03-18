@@ -339,6 +339,8 @@ struct rgCellCb
 #ifdef EMTC_ENABLE
     U8               emtcEnable;
 #endif
+   /* 5GNR changes */
+   MacCellCfg macCellCfg;   /* MAC cell config paramters */
 };
 
 /**
@@ -649,7 +651,6 @@ struct _rgCb
    RgCellCb *prevCell;                     /*!< Reference of last accessed cellCb*/
    U8 bufCnt;                              /*!< Count of buffers in buffersToFree[] */
    Buffer *bufToFree[RG_MAX_DFRD_FREE_BUFS];/*!< List of Shared Buffers to be freed */
-   MacCellCfg macCellCfg;   /* MAC cell config paramters */
 };
 
 /* Declaration for RgCb */

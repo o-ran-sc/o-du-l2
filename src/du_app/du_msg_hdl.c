@@ -40,7 +40,7 @@ extern S16 cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
 packMacCellCfgReq packMacCellCfgMt[] =
 {
    packLcMacCellCfg, /* packing for loosely coupled */
-   packTcMacCellCfg, /* packing for tightly coupled */
+   handleMacCellCfgReq, /* packing for tightly coupled */
    packLwLcMacCellCfg, /* packing for light weight loosly coupled */
 };
 
@@ -1527,7 +1527,7 @@ S16 duBuildAndSendMacCellCfg()
    /* copy the mac config structure from duCfgParams */
    memcpy(pMacCellCfg,&duCfgParam.macCellCfg,sizeof(MacCellCfg));
 
-   pMacCellCfg->transId = cmGetTransId(); /* transaction ID */
+   pMacCellCfg->transId = getTransId(); /* transaction ID */
    
    /* Fill Pst */
    pst.selector  = DU_SELECTOR_LWLC;
