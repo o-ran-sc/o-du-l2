@@ -36,6 +36,23 @@
     },
     {
       "key": {
+        "uuid": "282f90a6_14b4af16",
+        "filename": "src/5gnrmac/rg_cl_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T08:49:12Z",
+      "side": 1,
+      "message": "Since we need to avoid the use of term \"cl\", please rename this file to lwr_mac_cfg.c",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fe3b68e3_f4bcde72",
         "filename": "src/5gnrmac/rg_ex_ms.c",
         "patchSetId": 1
@@ -138,6 +155,23 @@
     },
     {
       "key": {
+        "uuid": "bb4de6c9_99b76551",
+        "filename": "src/cm/mac_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T08:49:12Z",
+      "side": 1,
+      "message": "file can be renamed to something like du_mgr_mac_inf.c",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7938e64f_77709caf",
         "filename": "src/cm/mac_interface.c",
         "patchSetId": 1
@@ -200,6 +234,23 @@
       "writtenOn": "2020-03-13T08:42:30Z",
       "side": 1,
       "message": "same comment as above for packing",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6c3e17e_33199a4a",
+        "filename": "src/cm/mac_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T08:49:12Z",
+      "side": 1,
+      "message": "Interface files name should contain both layer names for this this interface is being used.\nThis file can be renamed to something like du_mgr_mac_inf.h",
       "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
