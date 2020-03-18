@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31b7f53a_ed3a47a1",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2124,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T08:00:45Z",
+      "side": 1,
+      "message": "as discussed, any API name should begin with the layer name. so this function can be renamed to something like MacHdlCellCfgReq",
+      "range": {
+        "startLine": 2124,
+        "startChar": 4,
+        "endLine": 2124,
+        "endChar": 3
+      },
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d219db9_f861960a",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2143,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T08:00:45Z",
+      "side": 1,
+      "message": "as per previous discussions, please change the name of function pointer array packMacCellCfmMt to packMacCellCfmOpts.",
+      "range": {
+        "startLine": 2143,
+        "startChar": 11,
+        "endLine": 2143,
+        "endChar": 27
+      },
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba981d5d_228dd883",
+        "filename": "src/cm/mac_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T08:00:45Z",
+      "side": 1,
+      "message": "In case of light weight loose coupling, we use shared memory(allocated during pack function). Make sure that after return of (*func), this memory should be released (if not already released in *func)",
+      "range": {
+        "startLine": 132,
+        "startChar": 3,
+        "endLine": 132,
+        "endChar": 10
+      },
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ff78ce9_759499e1",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T08:00:45Z",
+      "side": 1,
+      "message": "change the handleMacCellCfgReq to something like MacHdlCellCfgReq.",
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
