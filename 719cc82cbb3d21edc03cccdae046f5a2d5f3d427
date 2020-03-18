@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "57309407_e2c5d9f9",
+        "filename": "src/5gnrmac/rg_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-18T11:05:23Z",
+      "side": 1,
+      "message": "Rename to MacHandleCellCfgReq",
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "31b7f53a_ed3a47a1",
         "filename": "src/5gnrmac/rg_lmm.c",
         "patchSetId": 1
@@ -25,6 +42,23 @@
     },
     {
       "key": {
+        "uuid": "eb376882_36cbb11d",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2136,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-18T11:05:23Z",
+      "side": 1,
+      "message": "is this piece tested? Does \"inst\" have a valid value? Isn\u0027t it better we eliminate usage of inst?",
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1d219db9_f861960a",
         "filename": "src/5gnrmac/rg_lmm.c",
         "patchSetId": 1
@@ -36,6 +70,30 @@
       "writtenOn": "2020-03-18T08:00:45Z",
       "side": 1,
       "message": "as per previous discussions, please change the name of function pointer array packMacCellCfmMt to packMacCellCfmOpts.",
+      "range": {
+        "startLine": 2143,
+        "startChar": 11,
+        "endLine": 2143,
+        "endChar": 27
+      },
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7364cff_9fecb28f",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2143,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-18T11:05:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1d219db9_f861960a",
       "range": {
         "startLine": 2143,
         "startChar": 11,
@@ -105,6 +163,23 @@
     },
     {
       "key": {
+        "uuid": "40f27009_db6fa853",
+        "filename": "src/cm/mac_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-18T11:05:23Z",
+      "side": 1,
+      "message": "Eliminate usage of selector name i.e., lc/lwlc/tc from function name.",
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5ff78ce9_759499e1",
         "filename": "src/du_app/du_msg_hdl.c",
         "patchSetId": 1
@@ -116,6 +191,23 @@
       "writtenOn": "2020-03-18T08:00:45Z",
       "side": 1,
       "message": "change the handleMacCellCfgReq to something like MacHdlCellCfgReq.",
+      "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "301d6c72_1c30097b",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1525,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-18T11:05:23Z",
+      "side": 1,
+      "message": "remove prefixes \"ptr\", \"p\". Doesnt serve much purpose",
       "revId": "719cc82cbb3d21edc03cccdae046f5a2d5f3d427",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
