@@ -53,6 +53,40 @@
     },
     {
       "key": {
+        "uuid": "9ac7f0f1_289c29dc",
+        "filename": "src/5gnrmac/rg_cl_li.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T09:42:32Z",
+      "side": 1,
+      "message": "Rename file to remove the term \"cl\"",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f25914da_4392e78d",
+        "filename": "src/5gnrmac/rg_cl_util.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-18T09:42:32Z",
+      "side": 1,
+      "message": "Rename fike to remove the term \"cl\"",
+      "revId": "d1ead035ab3b543810f1838b2519904bf84477ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fe3b68e3_f4bcde72",
         "filename": "src/5gnrmac/rg_ex_ms.c",
         "patchSetId": 1
