@@ -73,7 +73,7 @@ registered with SSI during the LTE MAC Task initialization.
 #include "crg.x"           /* CRG interface typedes */
 #include "rg_sch_inf.x"    /* SCH interface typedefs */
 #include "rg_prg.x"        /*PRG interface includes*/
-#include "du_mgr_mac_inf.h"
+#include "du_app_mac_inf.h"
 #include "rg.x"            /* typedefs for MAC */
 
 

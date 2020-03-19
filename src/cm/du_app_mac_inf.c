@@ -34,7 +34,7 @@
 #include "cm_hash.x"       /* Common Hash List Definitions */
 #include "cm_lte.x"        /* Common LTE Defines */
 
-#include "du_mgr_mac_inf.h"
+#include "du_app_mac_inf.h"
 
 /**************************************************************************
  * @brief Function to pack Loose Coupled 
@@ -58,7 +58,7 @@ S16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
    if(pst->selector == DU_SELECTOR_LC)
    {
       /* we are now implemented only light wieght lossely coupled interface */
-      return ROK;
+      return RFAILED;
    }
    else if(pst->selector == DU_SELECTOR_LWLC)
    {
@@ -73,7 +73,6 @@ S16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
       CMCHKPK(cmPkPtr,(PTR)macCellCfg, mBuf);
 
       RETVALUE(SPstTsk(pst,mBuf));
-      
    } 
 }
 
@@ -124,7 +123,7 @@ void unpackDuMacCellCfg(
  *
  * @details
  *
- *      Function : cmPackLcMacCellCfgCfm
+ *      Function : cmPackMacCellCfgCfm
  *
  *      Functionality:
  *           packs the transaction ID  
@@ -135,40 +134,26 @@ void unpackDuMacCellCfg(
  *         RFAILED - failure
  *
  ***************************************************************************/
-U16 cmPackLcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
+U16 cmPackMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 {
-   Buffer *mBuf = NULLP;
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+   if(pst->selector == DU_SELECTOR_LC)
    {
-      RETVALUE(RFAILED);
+      Buffer *mBuf = NULLP;
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+         RETVALUE(RFAILED);
+      }
+
+      /* pack the transaction ID in CNF structure */
+      CMCHKPK(SPkU16, macCellCfgCfm->transId, mBuf);
+
+      RETVALUE(SPstTsk(pst,mBuf));
    }
-
-   /* pack the transaction ID in CNF structure */
-   CMCHKPK(SPkU16, macCellCfgCfm->transId, mBuf);
-
-   RETVALUE(SPstTsk(pst,mBuf));
-}
-
-/**************************************************************************
- * @brief Function to pack light weight Loose Coupled 
- *        MAC cell config confirm message
- *
- * @details
- *
- *      Function : cmPackLwlcMacCellCfgCfm
- *
- *      Functionality:
- *           packs the transaction ID  
- *
- * @param[in] Pst     *pst, Post structure of the primitive.
- * @param[in] MacCellCfgCfm  *macCellCfgCfm, mac cell config confirm.
- * @return ROK     - success
- *         RFAILED - failure
- *
- ***************************************************************************/
-U16 cmPackLwlcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
-{
-   return ROK;
+   else if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      /* only LC is supported */
+      return RFAILED;
+   }
 }
 
 /**************************************************************************

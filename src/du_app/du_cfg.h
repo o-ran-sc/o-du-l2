@@ -20,7 +20,7 @@
 #define __DU_CONFIG_H__
 
 #include "du_mgr.h"
-#include "du_mgr_mac_inf.h"
+#include "du_app_mac_inf.h"
 #include "du_log.h"
 #include "BIT_STRING.h"
 

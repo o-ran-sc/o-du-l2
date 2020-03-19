@@ -75,7 +75,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_prg.x"    /* PRG Interface includes */
 #include "lrg.x"           /* LRG Interface includes */
 #include "rgr.x"           /* LRG Interface includes */
-#include "du_mgr_mac_inf.h"
+#include "du_app_mac_inf.h"
 #include "rg.x"            /* MAC includes */
 #ifdef SS_DIAG
 #include "ss_diag.h"        /* Common log file */
@@ -83,7 +83,7 @@ static int RLOG_MODULE_ID=4096;
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
 
-#include "rg_cl.h"         /* MAC CL defines */
+#include "lwr_mac.h"         /* MAC CL defines */
 
 #ifdef __cplusplus
 extern "C" {
@@ -130,14 +130,13 @@ RgMngmt       *cfm,
 Pst           *cfmPst
 ));
 
-extern U16 cmPackLcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
-extern U16 cmPackLwlcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
+extern U16 cmPackMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 
 packMacCellCfgCfm packMacCellCfmOpts[] =
 {
-   cmPackLcMacCellCfgCfm,      /* packing for loosely coupled */
+   cmPackMacCellCfgCfm,      /* packing for loosely coupled */
    duHandleMacCellCfgCfm,      /* packing for tightly coupled */
-   cmPackLwlcMacCellCfgCfm,    /* packing for light weight loosly coupled */
+   cmPackMacCellCfgCfm,    /* packing for light weight loosly coupled */
 };
 
 /**
@@ -2139,7 +2138,7 @@ S16 MacHdlCellCfgReq
    macCellCfgFillCfmPst(pst,&cnfPst);
 
    macCellCfgCfm.transId = macCellCfg->transId;
-   //ret = cmPackLcMacCellCfgCfm(&cnfPst,&macCellCfgCfm);
+
    ret = (*packMacCellCfmOpts[cnfPst.selector])(&cnfPst,&macCellCfgCfm);
    return ret;
 } /* end of MacHdlCellCfgReq */

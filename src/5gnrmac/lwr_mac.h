@@ -31,7 +31,7 @@
 #include "ssi.x"
 #include "cm_hash.x"
 #include "cm_lib.x"
-#include "du_mgr_mac_inf.h"
+#include "du_app_mac_inf.h"
 
 typedef enum
 {

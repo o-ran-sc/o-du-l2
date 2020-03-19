@@ -78,7 +78,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_prg.x"        /* PRG Interface includes */
 #include "lrg.x"           /* LRG Interface includes */
 
-#include "du_mgr_mac_inf.h"
+#include "du_app_mac_inf.h"
 #include "rg.x"            /* MAC includes */
 
 /* local defines */

@@ -37,7 +37,7 @@
 #include "lkw.h"
 #include "lrg.h"
 #include "legtp.h"
-#include "du_mgr_mac_inf.h"
+#include "du_app_mac_inf.h"
 
 #include "gen.x"           /* General */
 #include "ssi.x"           /* System services */
