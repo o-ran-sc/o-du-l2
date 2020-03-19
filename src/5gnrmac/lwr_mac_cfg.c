@@ -28,7 +28,7 @@
 #include "cm_hash.x"
 #include "cm_lib.x"
 
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 #include "lwr_mac.h"
 
 EXTERN S16 rgClBldAndSndFAPICfgReq ARGS((ClCellCb *cellCb));

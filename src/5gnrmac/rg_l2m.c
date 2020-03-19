@@ -69,7 +69,7 @@
 #include "crg.x"           /* layer management typedefs for MAC */
 #include "rg_sch_inf.x"    /* typedefs for Scheduler */
 #include "rg_prg.x"        /* typedefs for PRG interface */
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 #include "rg.x"            /* MAC types */
 
 #ifdef LTE_L2_MEAS

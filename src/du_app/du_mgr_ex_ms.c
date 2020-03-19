@@ -22,7 +22,7 @@
 #include "du_f1ap_msg_hdl.h"
 #include "lsctp.h"
 #include "legtp.h"
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 
 extern S16 cmUnpkLkwCfgCfm(LkwCfgCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);

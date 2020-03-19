@@ -75,7 +75,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_prg.x"    /* PRG Interface includes */
 #include "lrg.x"           /* LRG Interface includes */
 #include "rgr.x"           /* LRG Interface includes */
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 #include "rg.x"            /* MAC includes */
 #ifdef SS_DIAG
 #include "ss_diag.h"        /* Common log file */
@@ -133,7 +133,7 @@ Pst           *cfmPst
 extern U16 cmPackLcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 extern U16 cmPackLwlcMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 
-packMacCellCfgCfm packMacCellCfmMt[] =
+packMacCellCfgCfm packMacCellCfmOpts[] =
 {
    cmPackLcMacCellCfgCfm,      /* packing for loosely coupled */
    duHandleMacCellCfgCfm,      /* packing for tightly coupled */
@@ -2110,7 +2110,7 @@ Pst           *cfmPst
  *
  * @details
  *
- *     Function : handleMacCellCfgReq 
+ *     Function : MacHdlCellCfgReq 
  *     
  *     This function handles the gNB and cell configuration
  *     request received from DU APP.
@@ -2121,7 +2121,7 @@ Pst           *cfmPst
  *  @return  S16
  *      -# ROK
  **/
-S16 handleMacCellCfgReq
+S16 MacHdlCellCfgReq
 (
  Pst           *pst,
  MacCellCfg    *macCellCfg
@@ -2140,9 +2140,9 @@ S16 handleMacCellCfgReq
 
    macCellCfgCfm.transId = macCellCfg->transId;
    //ret = cmPackLcMacCellCfgCfm(&cnfPst,&macCellCfgCfm);
-   ret = (*packMacCellCfmMt[cnfPst.selector])(&cnfPst,&macCellCfgCfm);
+   ret = (*packMacCellCfmOpts[cnfPst.selector])(&cnfPst,&macCellCfgCfm);
    return ret;
-} /* end of handleMacCellCfgReq */
+} /* end of MacHdlCellCfgReq */
 
 
 /**********************************************************************

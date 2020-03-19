@@ -27,7 +27,7 @@
 #include "ssi.x"
 #include "cm_hash.x"
 
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 #include "lwr_mac.h"
 #include "rg_cl_phy.h"
 #include "fapi.h"

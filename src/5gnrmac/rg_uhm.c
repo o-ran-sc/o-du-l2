@@ -74,7 +74,7 @@
 #include "rg_prg.x"        /* PRG Interface defines */
 #include "lrg.x"           /* LRG Interface includes */
 
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 #include "rg.x"            /* MAC includes */
 
 /* local defines */

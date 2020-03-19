@@ -37,11 +37,11 @@ extern S16 cmPkLkwCfgReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLkwCntrlReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
 
-packMacCellCfgReq packMacCellCfgMt[] =
+packMacCellCfgReq packMacCellCfgOpts[] =
 {
-   packLcMacCellCfg, /* packing for loosely coupled */
-   handleMacCellCfgReq, /* packing for tightly coupled */
-   packLwLcMacCellCfg, /* packing for light weight loosly coupled */
+   packMacCellCfg, /* packing for loosely coupled */
+   MacHdlCellCfgReq, /* packing for tightly coupled */
+   packMacCellCfg, /* packing for light weight loosly coupled */
 };
 
 /**************************************************************************
@@ -1513,21 +1513,21 @@ S16 duBuildAndSendMacCellCfg()
 {
    Pst pst;
    DU_SET_ZERO(&pst, sizeof(Pst));
-   MacCellCfg *pMacCellCfg = NULLP;
+   MacCellCfg *duMacCellCfg = NULLP;
 
-   DU_ALLOC(pMacCellCfg, sizeof(MacCellCfg));
-   if(pMacCellCfg == NULLP)
+   DU_ALLOC(duMacCellCfg, sizeof(MacCellCfg));
+   if(duMacCellCfg == NULLP)
    {
       return RFAILED;
    }
 
    /* store the address in the duCb so that we can free on confirm msg */
-   duCb.ptrMacCellCfg = pMacCellCfg;
+   duCb.duMacCellCfg = duMacCellCfg;
 
    /* copy the mac config structure from duCfgParams */
-   memcpy(pMacCellCfg,&duCfgParam.macCellCfg,sizeof(MacCellCfg));
+   memcpy(duMacCellCfg,&duCfgParam.macCellCfg,sizeof(MacCellCfg));
 
-   pMacCellCfg->transId = getTransId(); /* transaction ID */
+   duMacCellCfg->transId = getTransId(); /* transaction ID */
    
    /* Fill Pst */
    pst.selector  = DU_SELECTOR_LWLC;
@@ -1541,7 +1541,7 @@ S16 duBuildAndSendMacCellCfg()
    pst.event = EVENT_MAC_CELL_CONFIG_REQ;
 
    /* Send MAC cell config to MAC */
-   return (*packMacCellCfgMt[pst.selector])(&pst, pMacCellCfg);
+   return (*packMacCellCfgOpts[pst.selector])(&pst, duMacCellCfg);
 }
 
 /**************************************************************************
@@ -1563,11 +1563,11 @@ S16 duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm)
 {
    S16 ret = ROK;
 
-   if(macCellCfgCfm->transId == duCb.ptrMacCellCfg->transId)
+   if(macCellCfgCfm->transId == duCb.duMacCellCfg->transId)
    {
       /* free the memory allocated during sending macCellCfg request */
-      DU_FREE(duCb.ptrMacCellCfg,sizeof(MacCellCfg));
-      duCb.ptrMacCellCfg = NULLP;
+      DU_FREE(duCb.duMacCellCfg,sizeof(MacCellCfg));
+      duCb.duMacCellCfg = NULLP;
 
       /* Build and send GNB-DU config update */
       ret = BuildAndSendDUConfigUpdate();

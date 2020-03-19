@@ -37,7 +37,7 @@
 #include "lkw.h"
 #include "lrg.h"
 #include "legtp.h"
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 
 #include "gen.x"           /* General */
 #include "ssi.x"           /* System services */
@@ -177,7 +177,7 @@ typedef struct duCb
    CmHashListCp  cellLst;     /* List of cells at DU APP of type DuCellCb */
    CmHashListCp  actvCellLst; /* List of cells activated/to be activated of type DuCellCb */
    /* pointer to store the address of macCellCfg params used to send du-app to MAC */
-   MacCellCfg     *ptrMacCellCfg;     /* pointer to store params while sending DU-APP to MAC */
+   MacCellCfg     *duMacCellCfg;     /* pointer to store params while sending DU-APP to MAC */
 }DuCb;
 
 

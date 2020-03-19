@@ -34,7 +34,7 @@
 #include "cm_hash.x"       /* Common Hash List Definitions */
 #include "cm_lte.x"        /* Common LTE Defines */
 
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 
 /**************************************************************************
  * @brief Function to pack Loose Coupled 
@@ -42,7 +42,7 @@
  *
  * @details
  *
- *      Function : packLcMacCellCfg
+ *      Function : packMacCellCfg
  *
  *      Functionality:
  *           packs the macCellCfg parameters
@@ -53,42 +53,28 @@
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 packLcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
+S16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
 {
-   /* we are now implemented only light wieght lossely coupled interface */
-   return ROK;
-}
-
-/**************************************************************************
- * @brief Function to pack light weight Loose Coupled 
- *        MAC cell config parameters required by MAC
- *
- * @details
- *
- *      Function : packLwLcMacCellCfg
- *
- *      Functionality:
- *           packs the macCellCfg parameters
- *
- * @param[in] Pst     *pst, Post structure of the primitive.
- * @param[in] MacCellCfg  *macCellCfg, mac cell config parameters.
- * @return ROK     - success
- *         RFAILED - failure
- *
- ***************************************************************************/
-S16 packLwLcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
-{
-   Buffer *mBuf = NULLP;
-
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+   if(pst->selector == DU_SELECTOR_LC)
    {
-      RETVALUE(RFAILED);
+      /* we are now implemented only light wieght lossely coupled interface */
+      return ROK;
    }
+   else if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      Buffer *mBuf = NULLP;
 
-   /* pack the address of the structure */
-   CMCHKPK(cmPkPtr,(PTR)macCellCfg, mBuf);
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+         RETVALUE(RFAILED);
+      }
 
-   RETVALUE(SPstTsk(pst,mBuf));
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)macCellCfg, mBuf);
+
+      RETVALUE(SPstTsk(pst,mBuf));
+      
+   } 
 }
 
 /**************************************************************************
@@ -221,3 +207,7 @@ S16 unpackMacCellCfgCfm(
       /* only loose coupling is suported */
    }
 }
+
+/**********************************************************************
+         End of file
+**********************************************************************/

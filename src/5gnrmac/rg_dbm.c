@@ -67,7 +67,7 @@
 #include "tfu.x"
 #include "rg_sch_inf.x"
 #include "rg_prg.x"       /* PRG interface typedefs*/
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 #include "rg.x"
 
 

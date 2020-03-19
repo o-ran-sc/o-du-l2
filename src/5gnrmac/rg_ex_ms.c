@@ -73,7 +73,7 @@ registered with SSI during the LTE MAC Task initialization.
 #include "crg.x"           /* CRG interface typedes */
 #include "rg_sch_inf.x"    /* SCH interface typedefs */
 #include "rg_prg.x"        /*PRG interface includes*/
-#include "mac_interface.h"
+#include "du_mgr_mac_inf.h"
 #include "rg.x"            /* typedefs for MAC */
 
 
@@ -134,7 +134,7 @@ Buffer  *mBuf;                      /* message buffer       */
 #endif /* LCRGMILRG */
       case EVENT_MAC_CELL_CONFIG_REQ:
          /* Process MAC cell config */
-         unpackDuMacCellCfg(handleMacCellCfgReq, pst, mBuf);
+         unpackDuMacCellCfg(MacHdlCellCfgReq, pst, mBuf);
          break;
       default:
          RG_FREE_MSG(mBuf);

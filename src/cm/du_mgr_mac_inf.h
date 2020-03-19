@@ -197,11 +197,9 @@ typedef S16 (*DuMacCellCfgCfm)     ARGS((
         MacCellCfgCfm *macCellCfgCfm         /* Config Structure */
      ));
 
-S16 packLcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
-S16 packLwLcMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
+S16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
 
-
-EXTERN S16 handleMacCellCfgReq
+EXTERN S16 MacHdlCellCfgReq
 (
  Pst           *pst,
  MacCellCfg    *macCellCfg
