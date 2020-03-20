@@ -20,8 +20,6 @@
 #ifndef __LSCTP_H___
 #define __LSCTP_H___
 
-extern S16 cmPkSctpAssocReq(Pst *pst, F1SctpParams sctpCfgParam);
-extern S16 cmUnpkSctpAssocReq(Buffer *mBuf);
 extern S16 cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy);
 extern S16 cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf);
 

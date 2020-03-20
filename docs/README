@@ -38,11 +38,19 @@ How to Clean and Build:
    a. Build folder
          cd l2/build/odu
    b. Building CU Stub binary
-         make cu_stub NODE=CU_STUB MACHINE=BIT64 MODE=FDD
+         make cu_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
    c. Cleaning CU Stub binary
-         make clean_cu NODE=CU_STUB MACHINE=BIT64 MODE=FDD
+         make clean_cu NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
-3. Cleaning ODU and CU Stub
+2. Building RIC Stub binary:
+   a. Build folder
+         cd l2/build/odu
+   b. Building RIC Stub binary
+         make ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
+   c. Cleaning RIC Stub binary
+         make clean_ric NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
+
+4. Cleaning ODU and CU Stub
       make clean_all MACHINE=BIT64 MODE=FDD
 
 How to execute:
@@ -50,6 +58,7 @@ How to execute:
 1. Assign virtual IP addresses as follows:
       ifconfig <interface name>:ODU "10.0.2.20"
       ifconfig <interface name>:CU_STUB "10.0.2.25"
+      ifconfig <interface name>:RIC_STUB "10.0.2.30"
 
 2. CU execution folder:
       cd l2/bin/cu_stub
@@ -57,10 +66,16 @@ How to execute:
 3. Run CU Stub binary:
       ./cu_stub
 
+4. RIC execution folder:
+      cd l2/bin/ric_stub
+     
+5. Run RIC Stub binary:
+      ./ric_stub
+
 4. DU execution folder:
       cd l2/bin/odu
      
 5. Run ODU binary:
       ./odu
 
-PS: CU stub must be run first
+PS: CU stub and RIC stub must be run first

@@ -73,7 +73,15 @@ void CC_PRINTFLIKE(1, 2) ASN_DEBUG_f(const char *fmt, ...);
 #endif	/* C99 */
 #else	/* ASN_EMIT_DEBUG != 1 */
 #if __STDC_VERSION__ >= 199901L
+#if 1
 #define ASN_DEBUG(...) do{}while(0)
+#else
+#define	ASN_DEBUG(fmt, args...)	do {		        \
+		fprintf(stderr, fmt, ##args);		\
+		fprintf(stderr, " (%s:%d)\n",		\
+			__FILE__, __LINE__);		\
+  } while(0)
+#endif
 #else   /* not C99 */
 static void CC_PRINTFLIKE(1, 2) ASN_DEBUG(const char *fmt, ...) { (void)fmt; }
 #endif  /* C99 or better */

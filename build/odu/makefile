@@ -79,7 +79,7 @@ ifeq ($(CA_ENABLE),YES)
    PLTFRM_FLAGS += -DCA_ENABLE=YES
 endif
 
-ifeq ($(NODE),CU_STUB)
+ifeq ($(NODE),TEST_STUB)
 	PLTFRM_FLAGS+=-DODU_TEST_STUB
 endif
 
@@ -114,8 +114,10 @@ help:
 		@echo -e "------------------------------------------------------------------"
 		@echo -e "$(RULE)odu       - Builds all components of ODU$(NORM)"
 		@echo -e "$(RULE)cu_stub   - Builds all CU Stub$(NORM)"
+		@echo -e "$(RULE)ric_stub   - Builds all RIC_Stub$(NORM)"
 		@echo -e "$(RULE)clean_odu - clean up ODU$(NORM)"
 		@echo -e "$(RULE)clean_cu  - clean up CU Stub$(NORM)"
+		@echo -e "$(RULE)clean_ric  - clean up RIC Stub$(NORM)"
 		@echo -e "$(RULE)clean_all - cleanup everything$(NORM)"
 		@echo -e "$(OPTS)  options: $(NORM)"
 		@echo -e "$(OPTS)    MACHINE=BIT64/BIT32  - Default is BIT32$(NORM)"
@@ -139,9 +141,17 @@ prepare_cu_dirs:
 	 $(Q)mkdir -p $(BIN_DIR)/cu_stub
 	 $(Q)echo -e "Directories are successfully prepared"
 
+prepare_ric_dirs:
+	 $(Q)echo -e "Preparing directories for build..."
+	 $(Q)mkdir -p $(BUILD_DIR)/obj/ric_stub
+	 $(Q)mkdir -p $(LIB_ROOT)/ric_stub
+	 $(Q)mkdir -p $(BIN_DIR)/ric_stub
+	 $(Q)echo -e "Directories are successfully prepared"
+
 du:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_common.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_f1ap.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2ap.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_sysinfo.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/du_app.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		#$(Q)$(MAKE) -f $(COM_BUILD_DIR)/f1ap.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
@@ -161,6 +171,7 @@ clean_odu:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/du_app.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_common.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_f1ap.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2ap.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_sysinfo.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/kw.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
@@ -175,7 +186,7 @@ clean_odu:
 	   $(Q)rm -rf $(ROOT_DIR)/bin/odu
 	   $(Q)echo -e "***** ODU CLEAN COMPLETE *****"
 
-clean_all: clean_odu clean_cu
+clean_all: clean_odu clean_cu clean_ric
 			  $(Q)rm -rf $(OBJ_ROOT)
 			  $(Q)rm -rf $(LIB_ROOT)
 			  $(Q)rm -rf $(LOG_ROOT)
@@ -212,6 +223,36 @@ link_cu:
 		$(Q)cp -f ../scripts/cu_script.sh $(ROOT_DIR)/bin/cu_stub
 		$(Q)echo -e "***** CU STUB BUILD COMPLETE *****"
 
+ric: 
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/ric_stub.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_common.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2ap.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_sysinfo.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+
+clean_ric:
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/ric_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_common.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2ap.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_sysinfo.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+	 $(Q)rm -rf $(OBJ_ROOT)/ric_stub/*
+	 $(Q)rm -rf $(LIB_ROOT)/ric_stub/*
+	 $(Q)rm -rf $(BIN_DIR)/ric_stub/*
+	 $(Q)rm -rf $(ROOT_DIR)/bin/ric_stub
+	 $(Q)echo -e "***** RIC STUB CLEAN COMPLETE *****"
+
+
+link_ric: 
+		$(Q)$(CC1) -g -o $(OBJ_ROOT)/ric_stub/ric_stub -Wl,-R../lib/:. $(OBJ_ROOT)/ric_stub/*.o\
+		$(L_OPTS) -L$(LIB_ROOT)/ric_stub -L$(ROOT_DIR)/libs/ric_stub
+		$(Q)cp -f ./obj/ric_stub/ric_stub ./bin/ric_stub
+		$(Q)cp -rf ./bin/ric_stub $(ROOT_DIR)/bin/
+		$(Q)echo -e "***** RIC STUB BUILD COMPLETE *****"
+
+
 copy_build: link_du
 			$(Q)cp -f ./obj/odu/odu ./bin/odu
 			$(Q)cp -rf ./bin/odu $(ROOT_DIR)/bin/
@@ -222,4 +263,5 @@ copy_build: link_du
 odu: prepare_dirs copy_build
 
 cu_stub: prepare_cu_dirs cu link_cu
+ric_stub: prepare_ric_dirs ric link_ric
 

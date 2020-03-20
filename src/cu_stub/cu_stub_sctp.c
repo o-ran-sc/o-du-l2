@@ -23,6 +23,7 @@
 #include "cu_stub_sctp.h"
 #include "cu_stub_egtp.h"
 
+CuSctpDestCb f1Params;
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *
@@ -49,7 +50,7 @@ S16 sctpActvInit()
    connUp = FALSE;
    assocId = 0;
    nonblocking = FALSE;
-   sctpCfg = &(cuCfgParams.sctpParams);
+   sctpCfg = cuCfgParams.sctpParams;
    return ROK;
 
 }
@@ -80,125 +81,132 @@ S16 sctpActvTsk(Pst *pst, Buffer *mBuf)
    return ROK;
 }
 
-/*******************************************************************
- *
- * @brief Opens a non-blocking socket and binds to local address
+/**************************************************************************
+ * @brief Function to configure the Sctp Params during config Request
  *
  * @details
  *
- *    Function : openSctpEndp
- *
- *    Functionality:
- *         Opens a non-blocking socket and binds to local address
- *
- * @params[in] 
+ *      Function : duSctpCfgReq
+ * 
+ *      Functionality:
+ *           This function configures SCTP Params during the config Request
+ *     
  * @return ROK     - success
  *         RFAILED - failure
  *
- * ****************************************************************/
-S16 openSctpEndp()
+ ***************************************************************************/
+
+S16 sctpCfgReq()
 {
-   U8 ret;
-   U8 numRetry = 0;
 
-   /* Opening a non-blocking SCTP socket */
-   socket_type = CM_INET_STREAM;
+/* Fill F1 Params */
+   f1Params.destPort             = sctpCfg.duPort;
+   f1Params.srcPort              = sctpCfg.cuPort;
+   f1Params.bReadFdSet           = ROK;
+   cmMemset ((U8 *)&f1Params.sockFd, -1, sizeof(CmInetFd));
+   cmMemset ((U8 *)&f1Params.lstnSockFd, -1, sizeof(CmInetFd));
+   fillDestNetAddr(&f1Params.destIpNetAddr, &sctpCfg.duIpAddr);
 
-   do{
-      ret = cmInetSocket(socket_type, &lstnSockFd, IPPROTO_SCTP);
-      if (ret != ROK)
-      {
-         numRetry++;
-         if(numRetry >= MAX_RETRY)
-         {
-            DU_LOG("\nSCTP : All attempts to open socket failed.");
-            /* Send indication to du_app */
-            RETVALUE(RFAILED);
-         }
-         else
-         {
-            DU_LOG("\nSCTP : Retrying socket opening"); 
-         }
-      }
-      else
-      {
-         DU_LOG("\nSCTP : Socket[%d] open",lstnSockFd.fd);
-         break;
-      }
-   }while(numRetry < MAX_RETRY);
+/* Set polling to FALSE */
+   pollingState = FALSE;  
+
+ RETVALUE(ROK);
+}
+
+
+/*******************************************************************
+ *
+ * @brief Fills the address List of the source Ip Address
+ *
+ * @details
+ *
+ *    Function : fillAddrLst
+ *
+ *    Functionality:
+ *       Fills the address List of source Ip Address
+ *
+ * @params[in] CmInetNetAddrLst *addrLstPtr, Address List pointer
+ * @params[in] F1IpAddr *srcIpAddr, src Ip Adrress to be filled in the Address List
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr)
+{ 
+   addrLstPtr->count++;
+   addrLstPtr->addrs[(addrLstPtr->count - 1)].type = CM_INET_IPV4ADDR_TYPE;
+   addrLstPtr->addrs[(addrLstPtr->count - 1)].u.ipv4NetAddr = CM_INET_NTOH_U32(ipAddr->ipV4Addr);
 
    RETVALUE(ROK);
-} /* End of openSctpEndp */
+}
 
-
-/*******************************************************************
+/******************************************************************************
  *
- * @brief Bind socket to local Ip address and port
+ * @brief Fills the address List of the source Ip Address
  *
  * @details
  *
- *    Function : bindSctpEndp
+ *    Function : fillDestNetAddr
  *
  *    Functionality:
- *      -Bind socket to local Ip address and port
+ *       Fills the address List of destinatoion Ip Address
  *
- * @params[in] 
+ * @params[in] CmInetNetAddr *destAddrPtr, Address List pointer
+ * @params[in] F1IpAddr *dstIpAddr, destIp Address to be filled in the Address List
  * @return ROK     - success
  *         RFAILED - failure
  *
- * ****************************************************************/
-S16 bindSctpEndp()
+ *******************************************************************************/
+S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr)
 {
+   /* Filling destination address */
+   destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
+   destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_U32(dstIpPtr->ipV4Addr);
+   RETVALUE(ROK);
+}
 
-   U8 ret;
-   U8 numRetry = 0;
+/******************************************************************************
+ *
+ * @brief Eastablishes the Assoc Req for the received interface type
+ *
+ * @details
+ *
+ *    Function : sctpStartReq
+ *
+ *    Functionality:
+ *       Eastablishes the Assoc Req for the received interface type
+ *
+ * @params[in] DuSctpDestCb *paramPtr
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *******************************************************************************/
 
-   /* Binding the socket with local address */
-   localAddrLst.count = 1;
-   if(sctpCfg->cuIpAddr.ipV4Pres)
+S16 sctpStartReq()
+{
+   S16 ret = ROK;
+   socket_type = CM_INET_STREAM;
+   fillAddrLst(&f1Params.localAddrLst, &sctpCfg.cuIpAddr);
+
+   if((ret = cmInetSocket(socket_type, &f1Params.lstnSockFd, IPPROTO_SCTP) != ROK))
    {
-      localAddrLst.addrs[0].type = CM_INET_IPV4ADDR_TYPE;
-      localAddrLst.addrs[0].u.ipv4NetAddr = CM_INET_NTOH_U32(sctpCfg->cuIpAddr.ipV4Addr);
-   }
-   else if(sctpCfg->cuIpAddr.ipV6Pres)
-   {
-      localAddrLst.addrs[0].type = CM_INET_IPV6ADDR_TYPE;
-     // CM_INET_COPY_IPV6ADDR(&(localAddrLst.addrs[0].u.ipv6NetAddr),&(sctpCfg->cuIpAddr.ipV6Addr);         
-   }
-   else
-   {
-      localAddrLst.addrs[0].type = CM_INET_IPV4ADDR_TYPE;
-      localAddrLst.addrs[0].u.ipv4NetAddr = 0;
+      DU_LOG("\nSCTP : Socket[%d] coudnt open for listening", f1Params.lstnSockFd.fd);
    } 
-
-   do{
-      ret = cmInetSctpBindx(&lstnSockFd, &localAddrLst, sctpCfg->cuPort);
-      if (ret != ROK)
-      {
-         numRetry++;
-         if(numRetry >= MAX_RETRY)
-         {
-            DU_LOG("\nSCTP : All attempts to bind socket failed.");
-            cmInetClose(&lstnSockFd);
-            /* Send indication to du_app */
-            RETVALUE(RFAILED);
-         }
-         else
-         {
-            DU_LOG("\nSCTP : Retrying socket binding");
-         }
-      }
-      else
-      {
-         DU_LOG("\nSCTP : Socket bind successful");
-         break;
-      }
-   }while(numRetry < MAX_RETRY);
-
-  RETVALUE(ROK);
-
-} /* End of bindSctpEndp() */
-
+   else if((ret = cmInetSctpBindx(&f1Params.lstnSockFd, &f1Params.localAddrLst, f1Params.srcPort)) != ROK)
+   {
+      DU_LOG("\nSCTP: Binding failed at CU");
+   }
+   else if((ret = sctpAccept(&f1Params.lstnSockFd, &f1Params.peerAddr, &f1Params.sockFd)) != ROK)
+   {
+      DU_LOG("\nSCTP: Unable to accept the connection at CU");
+   }
+   else if(sctpSockPoll() != ROK)
+   {
+      DU_LOG("\nSCTP: Polling failed to start at CU");
+   }
+   RETVALUE(ret);
+}
 /*******************************************************************
  *
  * @brief Sets socket options as per requirement
@@ -215,8 +223,9 @@ S16 bindSctpEndp()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 sctpSetSockOpts()
+S16 sctpSetSockOpts(CmInetFd *sock_Fd)
 {
+   S16  ret = ROK;
    CmSctpEvent sctpEvent;
   
    sctpEvent.dataIoEvent          = TRUE;
@@ -228,8 +237,12 @@ S16 sctpSetSockOpts()
    sctpEvent.partialDeliveryEvent = TRUE;
    sctpEvent.adaptationLayerEvent = TRUE;
 
-   cmInetSetOpt(&sockFd, CM_SOCKOPT_LEVEL_SCTP, CM_SOCKOPT_OPT_SCTP_EVENTS, &sctpEvent);
-   RETVALUE(ROK);
+   if((ret = cmInetSetOpt(sock_Fd, CM_SOCKOPT_LEVEL_SCTP, CM_SOCKOPT_OPT_SCTP_EVENTS, &sctpEvent)) != ROK)
+   {
+     ret = RFAILED;
+   }
+  
+   RETVALUE(ret);
 }
 
 /*******************************************************************
@@ -249,16 +262,14 @@ S16 sctpSetSockOpts()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 sctpAccept()
+S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd)
 {
    U8  ret;
-   CmInetAddr    peerAddr;
-   
-   ret = cmInetListen(&lstnSockFd, 1);;
+   ret = cmInetListen(lstnSock_Fd, 1);
    if (ret != ROK)
    {
       DU_LOG("\nSCTP : Listening on socket failed");
-      cmInetClose(&lstnSockFd);
+      cmInetClose(lstnSock_Fd);
       RETVALUE(RFAILED);
    }
    
@@ -266,7 +277,7 @@ S16 sctpAccept()
 
    while(!connUp)
    {
-      ret = cmInetAccept(&lstnSockFd, &peerAddr, &sockFd);
+      ret = cmInetAccept(lstnSock_Fd, peerAddr, sock_Fd);
       if (ret == ROKDNA)
       {
          continue;
@@ -279,14 +290,14 @@ S16 sctpAccept()
       else
       {
          connUp = TRUE;
-         sctpSetSockOpts();
+         sctpSetSockOpts(sock_Fd);
          break;
       }
    }
    DU_LOG("\nSCTP : Connection established");
 
    RETVALUE(ROK);
-}/* End of sctpAccept() */
+}
 
 /*******************************************************************
  *
@@ -351,7 +362,7 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy)
       case CM_INET_SCTP_SHUTDOWN_EVENT : /* peer socket gracefully closed */
          DU_LOG("\nSCTP : Shutdown Event notification received\n");
          connUp = FALSE;
-			exit(1);//Exit process on shutdown indication
+         exit(0);
          break;
       case CM_INET_SCTP_ADAPTATION_INDICATION :
          DU_LOG("\nSCTP : Adaptation Indication received\n");
@@ -386,24 +397,21 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy)
  * ****************************************************************/
 S16 sctpSockPoll()
 {
-   U8   ret;
-   S16  numFds;
-   CmInetFdSet   readFd;
-   U16           port;
-   U32           timeout;           /* timeout for cmInetSelect() */
-   U32           *timeoutPtr;        /* pointer to timeout */
-   U32            flag;
-   Buffer        *mBuf;
+   U16 ret = ROK;
+   U32           timeout;
+   U32           *timeoutPtr;
    Buffer        *egtpBuf;
-   MsgLen        bufLen;
    MsgLen        egtpBufLen;
-   CmInetAddr    egtpFromAddr;   /* Egtp data sender address */
-   CmInetMemInfo memInfo;      /* buffer allocation info */
-   CmInetNetAddr addr;
-   CmInetSctpSndRcvInfo   info;
-   CmInetSctpNotification ntfy;
+   CmInetAddr    egtpFromAddr;
+   CmInetMemInfo memInfo;
+   sctpSockPollParams f1PollParams;
 
-   if (sockFd.blocking)
+   memset(&f1PollParams, 0, sizeof(sctpSockPollParams));
+    
+   egtpFromAddr.port = egtpCb.dstCb.dstPort;
+   egtpFromAddr.address = egtpCb.dstCb.dstIp;
+
+   if(f1Params.sockFd.blocking)
    {
       /* blocking */
       timeoutPtr = NULLP;
@@ -417,44 +425,13 @@ S16 sctpSockPoll()
    memInfo.region = CU_APP_MEM_REG;
    memInfo.pool   = CU_POOL;
    
-   egtpFromAddr.port = egtpCb.dstCb.dstPort;
-   egtpFromAddr.address = egtpCb.dstCb.dstIp;
-
-   CM_INET_FD_ZERO(&readFd);
+   CM_INET_FD_ZERO(&f1PollParams.readFd);
 
    while(1)
    {
-      /* Receiving SCTP data */
-      CM_INET_FD_SET(&sockFd, &readFd);
-      ret = cmInetSelect(&readFd, NULLP, timeoutPtr, &numFds);
-      if (CM_INET_FD_ISSET(&sockFd, &readFd))
+      if((ret = processPolling(&f1PollParams, &f1Params.sockFd, timeoutPtr, &memInfo)) != ROK)
       {
-         CM_INET_FD_CLR(&sockFd, &readFd);
-         ret = cmInetSctpRecvMsg(&sockFd, &addr, &port, &memInfo, &mBuf, &bufLen, &info, &flag, &ntfy);
-         if (ret != ROK)
-         {
-            DU_LOG("\nSCTP : Failed to receive sctp msg\n");
-         }
-         else
-         {
-            if ((flag & CM_INET_SCTP_MSG_NOTIFICATION) != 0)
-            {
-               ret = sctpNtfyHdlr(&ntfy);
-               if(ret != ROK)
-               {
-                  DU_LOG("\nSCTP : Failed to process sctp notify msg\n");
-               }
-            }
-            else if(connUp) /* If data received */
-            {
-               F1APMsgHdlr(mBuf);
-               SPutMsg(mBuf);
-            }
-            else
-            {
-               SPutMsg(mBuf);
-            }
-         }
+         DU_LOG("\nSCTP : Failed to RecvMsg for F1 at CU\n");
       }
 
       /* Receiving EGTP data */
@@ -468,8 +445,67 @@ S16 sctpSockPoll()
 
       }
    };
+   RETVALUE(ret);
+}/* End of sctpSockPoll() */
 
-   RETVALUE(ROK);
+/*******************************************************************
+ *
+ * @brief checks for valid readFd and process the InetSctpRecvMsg
+ * during polling 
+ *
+ * @details
+ *
+ *    Function : processPolling
+ *
+ *    Functionality:
+ *         checks for valid readFd and process the InetSctpRecvMsg
+ *         during polling
+ *
+ * @params[in]  Params required for polling
+ * @params[in]  SockFd for file descriptor
+ * @params[in]  timeoutPtr indicates the timeout value
+ * @params[in]  MemInfo indicates memory region
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+  
+S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo)
+{
+   U16 ret = ROK;
+   CM_INET_FD_SET(sockFd, &pollParams->readFd);
+   ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFds);
+   if(CM_INET_FD_ISSET(sockFd, &pollParams->readFd))
+   {
+      CM_INET_FD_CLR(sockFd, &pollParams->readFd);
+      ret = cmInetSctpRecvMsg(sockFd, &pollParams->addr, &pollParams->port, memInfo, &pollParams->mBuf, &pollParams->bufLen, &pollParams->info, &pollParams->flag, &pollParams->ntfy);
+      if(connUp & (ret != ROK))
+      {
+         f1Params.bReadFdSet = RFAILED;
+      }
+      else
+      {
+         if(((pollParams->flag & CM_INET_SCTP_MSG_NOTIFICATION) != 0) && (ret == ROK))
+         {
+            ret = sctpNtfyHdlr(&pollParams->ntfy);
+            if(ret != ROK)
+            {
+               DU_LOG("\nSCTP : Failed to process sctp notify msg\n");
+            }
+         }
+         else if(connUp & (pollParams->port == f1Params.destPort))
+         {  
+            F1APMsgHdlr(pollParams->mBuf);
+            SPutMsg(pollParams->mBuf);
+         }
+         else
+         {
+            SPutMsg(pollParams->mBuf);
+         }
+      } 
+  }
+  RETVALUE(ROK);
 }/* End of sctpSockPoll() */
 
 /*******************************************************************
@@ -492,32 +528,13 @@ S16 sctpSend(Buffer *mBuf)
 {
    U8               ret;
    MsgLen           len;          /* number of actually sent octets */
-   CmInetNetAddr    peerAddr;     /* destination port address */
-   CmInetNetAddr    *dstAddr;
    CmInetMemInfo    memInfo;                        
    
    memInfo.region = CU_APP_MEM_REG;               
    memInfo.pool   = CU_POOL;
 
+   ret = cmInetSctpSendMsg(&f1Params.sockFd, &f1Params.destIpNetAddr, f1Params.destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
 
-   if(sctpCfg->duIpAddr.ipV4Pres)
-   {
-      peerAddr.type = CM_INET_IPV4ADDR_TYPE;
-      peerAddr.u.ipv4NetAddr = CM_INET_NTOH_U32(sctpCfg->duIpAddr.ipV4Addr);
-      dstAddr = &peerAddr;
-   }
-   else if(sctpCfg->duIpAddr.ipV6Pres)
-   {
-      peerAddr.type = CM_INET_IPV6ADDR_TYPE;
-      //CM_INET_COPY_IPV6ADDR(&(primDstAddr.u.ipv6NetAddr),&(sctpCfg->duIpAddr.ipV6Addr);
-      dstAddr = &peerAddr;
-   }
-   else
-   {
-      dstAddr = NULLP;
-   }
-
-   ret = cmInetSctpSendMsg(&sockFd, dstAddr, sctpCfg->duPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("\nSCTP : Send message failed");
@@ -526,42 +543,6 @@ S16 sctpSend(Buffer *mBuf)
 
    RETVALUE(ROK);
 } /* End of sctpSend */
-
-/*******************************************************************
- *
- * @brief Start SCTP at CU
- *
- * @details
- *
- *    Function : sctpStartReq
- *
- *    Functionality:
- *         Start SCTP at CU
- *
- * @params[in]
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-void sctpStartReq()
-{
-   if(openSctpEndp() != ROK)
-   {
-      DU_LOG("\nSCTP : Failed while opening socket");
-   }
-   else if(bindSctpEndp() != ROK)
-   {
-      DU_LOG("\nSCTP : Failed while binding socket");
-   }
-   else if(sctpAccept() != ROK)
-   {
-      DU_LOG("\nSCTP : Failed while accepting connection");
-   }
-   else if(sctpSockPoll() != ROK)
-   {
-      DU_LOG("\nSCTP : Failed while polling");
-   }
-} /* End of sctpAssocReq */
 
 /**********************************************************************
          End of file

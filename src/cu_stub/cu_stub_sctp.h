@@ -29,24 +29,54 @@
 #include "cm_tpt.x"
 
 #define MAX_RETRY 5
+#define DU_SCTP_DOWN 0
+#define DU_SCTP_UP 1
 
 /* Global variable declaration */
-CmInetFd   lstnSockFd; /* Listening Socket file descriptor */
-CmInetFd   sockFd;     /* Socket File descriptor */
 U8   socket_type;      /* Socket type */
 Bool nonblocking;      /* Blocking/Non-blocking socket */
 Bool connUp;           /* Is connection up */
 int  assocId;          /* Assoc Id of connected assoc */
   
-CmInetNetAddrLst localAddrLst;
-CmInetNetAddrLst remoteAddrLst;
-  
-SctpParams *sctpCfg;            /* SCTP configurations at DU */
+SctpParamsCu sctpCfg;            /* SCTP configurations at DU */
+Bool pollingState; 
+typedef struct
+{
+   S16           numFds;
+   U16           port;   
+   U32           flag;
+   Buffer        *mBuf;
+   MsgLen        bufLen; 
+   CmInetNetAddr addr;
+   CmInetFdSet      readFd;
+   CmInetSctpSndRcvInfo   info;
+   CmInetSctpNotification ntfy;
+}sctpSockPollParams;
+
+typedef struct
+{
+   U16              destPort;         /* DU PORTS */
+   U16              srcPort;
+   Bool             bReadFdSet;
+   CmInetFd         sockFd;           /* Socket file descriptor */
+   CmInetAddr       peerAddr;
+   CmInetFd         lstnSockFd;       /* Listening Socket file descriptor */
+   CmInetNetAddrLst destAddrLst;      /* DU Ip address */
+   CmInetNetAddrLst localAddrLst;
+   CmInetNetAddr    destIpNetAddr;    /* DU Ip address */ 
+}CuSctpDestCb;
 
 EXTERN S16 sctpActvInit();
-EXTERN void sctpStartReq();
+EXTERN S16 sctpStartReq();
 EXTERN S16 sctpSend(Buffer *mBuf);
+EXTERN S16 sctpCfgReq();
 
+S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr);
+S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr);
+S16 sctpSetSockOpts(CmInetFd *sock_Fd);
+S16 sctpSockPoll();
+S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd);
+S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo);
 #endif
 
 /**********************************************************************

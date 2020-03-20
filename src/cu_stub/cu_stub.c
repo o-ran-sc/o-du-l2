@@ -99,7 +99,8 @@ S16 tst()
    sctpActvInit();
  
    /* Start CU-SCTP to listen on incoming connection */
-   sctpStartReq(); 
+   sctpCfgReq();
+   sctpStartReq();
 
    RETVALUE(ROK);
 }
@@ -135,17 +136,13 @@ void readCuCfg()
    strcpy(cuCfgParams.cuName, CU_NAME);
  
    /* DU IP Address and Port*/
-   cuCfgParams.sctpParams.duIpAddr.ipV4Pres = true;
    cuCfgParams.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
    cuCfgParams.sctpParams.duIpAddr.ipV6Pres = false;
-   //strcpy(cuCfgParams.sctpParams.duIpAddr.ipV6Addr, (char*)DU_IP_V6_ADDR);
    cuCfgParams.sctpParams.duPort = DU_PORT;
 
    /* CU IP Address and Port*/
-   cuCfgParams.sctpParams.cuIpAddr.ipV4Pres = true;
    cuCfgParams.sctpParams.cuIpAddr.ipV4Addr = ipv4_cu;
    cuCfgParams.sctpParams.cuIpAddr.ipV6Pres = false;
-   //strcpy(cuCfgParams.sctpParams.cuIpAddr.ipV6Addr, DU_IP_V6_ADDR);
    cuCfgParams.sctpParams.cuPort = CU_PORT;
 
    /*PLMN*/

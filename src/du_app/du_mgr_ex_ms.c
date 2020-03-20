@@ -20,6 +20,7 @@
 
 #include "du_sctp.h"
 #include "du_f1ap_msg_hdl.h"
+#include "du_e2ap_msg_hdl.h"
 #include "lsctp.h"
 #include "legtp.h"
 #include "du_app_mac_inf.h"
@@ -64,6 +65,7 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
    duCb.mem.pool     = DU_POOL;
 
    duCb.f1Status     = FALSE;
+   duCb.e2Status     = FALSE;
 
    if(ROK != cmHashListInit(&(duCb.cellLst), 
             (U16) DU_MAX_CELLS,
@@ -221,6 +223,12 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                   ret = cmUnpkSctpNtfy(duSctpNtfyHdl, pst, mBuf);
                   break;
                }
+               case EVTRICDATA:
+               {
+                  E2APMsgHdlr(mBuf);
+                  break;
+               }
+
                default:
                {
                   DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTSCTP");

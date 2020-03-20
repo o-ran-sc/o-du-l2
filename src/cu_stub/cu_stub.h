@@ -54,6 +54,8 @@
 
 #define CU_APP_MEM_REG 1
 #define CU_POOL 1
+#define MAX_DU_PORT 2
+#define DU_PORT 38472
 
 /* allocate and zero out a static buffer */
 #define CU_ALLOC(_datPtr, _size)                                \
@@ -87,6 +89,12 @@ typedef struct RrcVersion
   U32   extRrcVer;  /* Latest RRC version extended */
 }RrcVersion;
 
+typedef struct
+{
+   U8 f1Itf;
+   U8 e2Itf;
+}ItfType;
+
 typedef struct egtpParams
 {
    SctpIpAddr  localIp;
@@ -97,13 +105,14 @@ typedef struct egtpParams
    U32       maxTunnelId;
 }EgtpParams;
 
-typedef struct sctpParams
+typedef struct sctpParamsCu
 {
    SctpIpAddr  duIpAddr;
    U16         duPort;
    SctpIpAddr  cuIpAddr;
    U16         cuPort;
-}SctpParams;
+   ItfType     itfType;
+}SctpParamsCu;
 
 typedef struct fPLMN
 {
@@ -116,7 +125,7 @@ typedef struct cuCfgParams
 {
    U32              cuId;
    char             cuName[CU_DU_NAME_LEN_MAX];
-   SctpParams       sctpParams;
+   SctpParamsCu     sctpParams;
    Plmn            plmn;
    EgtpParams       egtpParams;
    RrcVersion       rrcVersion;

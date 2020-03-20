@@ -19,6 +19,8 @@
 /* This file contains message handling functionality for DU APP */
 #include "du_cell_mgr.h"
 #include "du_cfg.h"
+#include "PLMN-Identity.h"
+#include "RICeventTriggerDefinition.h"
 
 extern DuCfgParams duCfgParam;
 
@@ -106,6 +108,145 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 
 /******************************************************************
 *
+* @brief Processes E2 Setup Response sent by RIC
+*
+* @details
+*
+*    Function : procE2SetupRsp
+*
+*    Functionality: Processes E2 Setup Response sent by RIC
+*
+* @params[in] E2AP_PDU_t ASN decoded E2AP message
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+S16 procE2SetupRsp(E2AP_PDU_t *e2apMsg)
+{
+   E2setupResponse_t *e2SetRspMsg;
+   E2apMsgDb e2SetupRspDb;
+   U8 idx; 
+
+   DU_LOG("\nE2AP : E2 Setup Response received"); 
+   duCb.e2Status = TRUE; //Set E2 status as true
+   e2SetRspMsg = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
+
+   for(idx=0; idx<e2SetRspMsg->protocolIEs.list.count; idx++)
+   {
+      switch(e2SetRspMsg->protocolIEs.list.array[idx]->id)
+      {
+         case ProtocolIE_IDE2_id_GlobalRIC_ID:
+         {
+            /* To store the Ric Id Params */
+            U32 recvBufLen;             
+            memset(&e2SetupRspDb.plmn, 0, sizeof(PLMN_IdentityE2_t));
+
+            recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity);
+
+            bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, &e2SetupRspDb.ricId);
+            
+            aper_decode(0, &asn_DEF_PLMN_IdentityE2, (void **)&e2SetupRspDb.plmn, &e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity, recvBufLen, 0, 0);
+            //xer_fprint(stdout, &asn_DEF_PLMN_IdentityE2, &e2SetupRspDb.plmn);
+
+            break;
+         }
+         default:
+            DU_LOG("\nE2AP : Invalid IE received in E2SetupRsp:%ld",
+                  e2SetRspMsg->protocolIEs.list.array[idx]->id);
+            break;
+      }
+   }
+   RETVALUE(ROK);
+}
+
+/******************************************************************
+*
+* @brief Processes RIC Subscription Req sent by RIC
+*
+* @details
+*
+*    Function : procRicSubsReq
+*
+*    Functionality: Processes E2 Setup Response sent by CU
+*
+* @params[in] E2AP_PDU_t ASN decoded E2AP message
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+S16 procRicSubsReq(E2AP_PDU_t *e2apMsg)
+{
+   S16 ret = ROK;
+   U8 idx; 
+   U8 ied; 
+   RICsubscriptionRequest_t *ricSubsReq;
+   RICaction_ToBeSetup_ItemIEs_t *actionItem;
+   E2apMsgDb ricReqDb;
+  
+   DU_LOG("\nE2AP : Ric Subscription request received"); 
+   ricSubsReq = &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionRequest;
+
+   for(idx=0; idx<ricSubsReq->protocolIEs.list.count; idx++)
+   {
+      switch(ricSubsReq->protocolIEs.list.array[idx]->id)
+      {
+         case ProtocolIE_IDE2_id_RICrequestID:
+         {
+            ricReqDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID;
+            ricReqDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID;
+            break;
+         }
+         case ProtocolIE_IDE2_id_RANfunctionID:
+         {
+            ricReqDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RANfunctionID; 
+            break;
+         }
+         case ProtocolIE_IDE2_id_RICsubscriptionDetails:
+         {
+            U32 recvBufLen;             
+            memset(&ricReqDb.ricEventTrigger, 0, sizeof(RICeventTriggerDefinition_t));
+
+            recvBufLen = sizeof(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition);
+
+            aper_decode(0, &asn_DEF_RICeventTriggerDefinition, (void **)&ricReqDb.ricEventTrigger, &(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition), recvBufLen, 0, 0);
+            //xer_fprint(stdout, &asn_DEF_RICeventTriggerDefinition, &ricReqDb.ricEventTrigger);
+
+            actionItem = *ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.list.array;
+            
+            for(ied = 0; ied < ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
+                                RICsubscriptionDetails.ricAction_ToBeSetup_List.list.count; ied++)
+            {
+               switch(actionItem->id)
+               {
+                  case ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item:
+                  {
+                     ricReqDb.ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
+                     ricReqDb.ricActionType = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType;
+                     break;
+                  }
+                  default:
+                     DU_LOG("\nE2AP : Invalid IE received in RicSetupLst:%ld",actionItem->id);
+                  break;
+               }
+            }
+ 
+            break;
+         }
+
+         default:
+            DU_LOG("\nE2AP : Invalid IE received in Ric SubsReq:%ld",
+                  ricSubsReq->protocolIEs.list.array[idx]->id);
+            break;
+      }
+   }
+   ret = BuildAndSendRicSubscriptionRsp();
+
+   RETVALUE(ret);
+}
+
+/******************************************************************
+*
 * @brief Processes F1 Setup Response sent by CU
 *
 * @details
@@ -183,7 +324,8 @@ S16 procF1SetupRsp(F1AP_PDU_t *f1apMsg)
 #endif
  
    /* Build and send Mac Cell Cfg Paramaters */
-   ret = duBuildAndSendMacCellCfg();
+   //ret = duBuildAndSendMacCellCfg();
+   ret = BuildAndSendDUConfigUpdate();
 
    return ret;
 }

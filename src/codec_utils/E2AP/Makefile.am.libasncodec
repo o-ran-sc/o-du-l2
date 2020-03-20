@@ -1,0 +1,288 @@
+ASN_MODULE_SRCS=	\
+	./out/E2AP-PDU.c	\
+	./out/InitiatingMessageE2.c	\
+	./out/SuccessfulOutcomeE2.c	\
+	./out/UnsuccessfulOutcomeE2.c	\
+	./out/RICsubscriptionRequest.c	\
+	./out/RICsubscriptionDetails.c	\
+	./out/RICactions-ToBeSetup-List.c	\
+	./out/RICaction-ToBeSetup-Item.c	\
+	./out/RICsubscriptionResponse.c	\
+	./out/RICaction-Admitted-List.c	\
+	./out/RICaction-Admitted-Item.c	\
+	./out/RICaction-NotAdmitted-List.c	\
+	./out/RICaction-NotAdmitted-Item.c	\
+	./out/RICsubscriptionFailure.c	\
+	./out/RICsubscriptionDeleteRequest.c	\
+	./out/RICsubscriptionDeleteResponse.c	\
+	./out/RICsubscriptionDeleteFailure.c	\
+	./out/RICindication.c	\
+	./out/RICcontrolRequest.c	\
+	./out/RICcontrolAcknowledge.c	\
+	./out/RICcontrolFailure.c	\
+	./out/ErrorIndicationE2.c	\
+	./out/E2setupRequest.c	\
+	./out/E2setupResponse.c	\
+	./out/E2setupFailure.c	\
+	./out/ResetRequest.c	\
+	./out/ResetResponse.c	\
+	./out/RICserviceUpdate.c	\
+	./out/RANfunctions-List.c	\
+	./out/RANfunction-Item.c	\
+	./out/RANfunctionsID-List.c	\
+	./out/RANfunctionID-Item.c	\
+	./out/RICserviceUpdateAcknowledge.c	\
+	./out/RANfunctionsIDcause-List.c	\
+	./out/RANfunctionIDcause-Item.c	\
+	./out/RICserviceUpdateFailure.c	\
+	./out/RICserviceQuery.c	\
+	./out/CauseE2.c	\
+	./out/CauseMisc.c	\
+	./out/CauseProtocol.c	\
+	./out/CauseRIC.c	\
+	./out/CauseRICservice.c	\
+	./out/CauseTransport.c	\
+	./out/CriticalityDiagnosticsE2.c	\
+	./out/CriticalityDiagnostics-IE-ListE2.c	\
+	./out/CriticalityDiagnostics-IE-ItemE2.c	\
+	./out/ENB-ID.c	\
+	./out/ENB-ID-Choice.c	\
+	./out/ENGNB-ID.c	\
+	./out/GlobalE2node-ID.c	\
+	./out/GlobalE2node-en-gNB-ID.c	\
+	./out/GlobalE2node-eNB-ID.c	\
+	./out/GlobalE2node-gNB-ID.c	\
+	./out/GlobalE2node-ng-eNB-ID.c	\
+	./out/GlobalENB-ID.c	\
+	./out/GlobalenGNB-ID.c	\
+	./out/GlobalgNB-ID.c	\
+	./out/GlobalngeNB-ID.c	\
+	./out/GlobalRIC-ID.c	\
+	./out/GNB-CU-UP-ID.c	\
+	./out/GNB-DU-IDE2.c	\
+	./out/GNB-ID-Choice.c	\
+	./out/PLMN-IdentityE2.c	\
+	./out/RANfunctionDefinition.c	\
+	./out/RANfunctionID.c	\
+	./out/RANfunctionRevision.c	\
+	./out/RICactionDefinition.c	\
+	./out/RICactionID.c	\
+	./out/RICactionType.c	\
+	./out/RICcallProcessID.c	\
+	./out/RICcontrolAckRequest.c	\
+	./out/RICcontrolHeader.c	\
+	./out/RICcontrolMessage.c	\
+	./out/RICcontrolOutcome.c	\
+	./out/RICcontrolStatus.c	\
+	./out/RICeventTriggerDefinition.c	\
+	./out/RICindicationHeader.c	\
+	./out/RICindicationMessage.c	\
+	./out/RICindicationSN.c	\
+	./out/RICindicationType.c	\
+	./out/RICrequestID.c	\
+	./out/RICsubsequentAction.c	\
+	./out/RICsubsequentActionType.c	\
+	./out/RICtimeToWait.c	\
+	./out/TimeToWaitE2.c	\
+	./out/TypeOfErrorE2.c	\
+	./out/CriticalityE2.c	\
+	./out/PresenceE2.c	\
+	./out/ProcedureCodeE2.c	\
+	./out/ProtocolIE-IDE2.c	\
+	./out/TriggeringMessageE2.c	\
+	./out/ProtocolIE-ContainerE2.c	\
+	./out/ProtocolIE-SingleContainerE2.c	\
+	./out/ProtocolIE-FieldE2.c	\
+	./out/ProtocolIE-ContainerPairE2.c	\
+	./out/ProtocolIE-FieldPairE2.c	\
+	./out/ProtocolIE-ContainerList.c	\
+	./out/ProtocolIE-ContainerPairList.c
+
+ASN_MODULE_HDRS=	\
+	./out/E2AP-PDU.h	\
+	./out/InitiatingMessageE2.h	\
+	./out/SuccessfulOutcomeE2.h	\
+	./out/UnsuccessfulOutcomeE2.h	\
+	./out/RICsubscriptionRequest.h	\
+	./out/RICsubscriptionDetails.h	\
+	./out/RICactions-ToBeSetup-List.h	\
+	./out/RICaction-ToBeSetup-Item.h	\
+	./out/RICsubscriptionResponse.h	\
+	./out/RICaction-Admitted-List.h	\
+	./out/RICaction-Admitted-Item.h	\
+	./out/RICaction-NotAdmitted-List.h	\
+	./out/RICaction-NotAdmitted-Item.h	\
+	./out/RICsubscriptionFailure.h	\
+	./out/RICsubscriptionDeleteRequest.h	\
+	./out/RICsubscriptionDeleteResponse.h	\
+	./out/RICsubscriptionDeleteFailure.h	\
+	./out/RICindication.h	\
+	./out/RICcontrolRequest.h	\
+	./out/RICcontrolAcknowledge.h	\
+	./out/RICcontrolFailure.h	\
+	./out/ErrorIndicationE2.h	\
+	./out/E2setupRequest.h	\
+	./out/E2setupResponse.h	\
+	./out/E2setupFailure.h	\
+	./out/ResetRequest.h	\
+	./out/ResetResponse.h	\
+	./out/RICserviceUpdate.h	\
+	./out/RANfunctions-List.h	\
+	./out/RANfunction-Item.h	\
+	./out/RANfunctionsID-List.h	\
+	./out/RANfunctionID-Item.h	\
+	./out/RICserviceUpdateAcknowledge.h	\
+	./out/RANfunctionsIDcause-List.h	\
+	./out/RANfunctionIDcause-Item.h	\
+	./out/RICserviceUpdateFailure.h	\
+	./out/RICserviceQuery.h	\
+	./out/CauseE2.h	\
+	./out/CauseMisc.h	\
+	./out/CauseProtocol.h	\
+	./out/CauseRIC.h	\
+	./out/CauseRICservice.h	\
+	./out/CauseTransport.h	\
+	./out/CriticalityDiagnosticsE2.h	\
+	./out/CriticalityDiagnostics-IE-ListE2.h	\
+	./out/CriticalityDiagnostics-IE-ItemE2.h	\
+	./out/ENB-ID.h	\
+	./out/ENB-ID-Choice.h	\
+	./out/ENGNB-ID.h	\
+	./out/GlobalE2node-ID.h	\
+	./out/GlobalE2node-en-gNB-ID.h	\
+	./out/GlobalE2node-eNB-ID.h	\
+	./out/GlobalE2node-gNB-ID.h	\
+	./out/GlobalE2node-ng-eNB-ID.h	\
+	./out/GlobalENB-ID.h	\
+	./out/GlobalenGNB-ID.h	\
+	./out/GlobalgNB-ID.h	\
+	./out/GlobalngeNB-ID.h	\
+	./out/GlobalRIC-ID.h	\
+	./out/GNB-CU-UP-ID.h	\
+	./out/GNB-DU-IDE2.h	\
+	./out/GNB-ID-Choice.h	\
+	./out/PLMN-IdentityE2.h	\
+	./out/RANfunctionDefinition.h	\
+	./out/RANfunctionID.h	\
+	./out/RANfunctionRevision.h	\
+	./out/RICactionDefinition.h	\
+	./out/RICactionID.h	\
+	./out/RICactionType.h	\
+	./out/RICcallProcessID.h	\
+	./out/RICcontrolAckRequest.h	\
+	./out/RICcontrolHeader.h	\
+	./out/RICcontrolMessage.h	\
+	./out/RICcontrolOutcome.h	\
+	./out/RICcontrolStatus.h	\
+	./out/RICeventTriggerDefinition.h	\
+	./out/RICindicationHeader.h	\
+	./out/RICindicationMessage.h	\
+	./out/RICindicationSN.h	\
+	./out/RICindicationType.h	\
+	./out/RICrequestID.h	\
+	./out/RICsubsequentAction.h	\
+	./out/RICsubsequentActionType.h	\
+	./out/RICtimeToWait.h	\
+	./out/TimeToWaitE2.h	\
+	./out/TypeOfErrorE2.h	\
+	./out/CriticalityE2.h	\
+	./out/PresenceE2.h	\
+	./out/ProcedureCodeE2.h	\
+	./out/ProtocolIE-IDE2.h	\
+	./out/TriggeringMessageE2.h	\
+	./out/ProtocolIE-ContainerE2.h	\
+	./out/ProtocolIE-SingleContainerE2.h	\
+	./out/ProtocolIE-FieldE2.h	\
+	./out/ProtocolIE-ContainerPairE2.h	\
+	./out/ProtocolIE-FieldPairE2.h	\
+	./out/ProtocolIE-ContainerList.h	\
+	./out/ProtocolIE-ContainerPairList.h
+
+ASN_MODULE_HDRS+=./out/ANY.h
+ASN_MODULE_SRCS+=./out/ANY.c
+ASN_MODULE_HDRS+=./out/OCTET_STRING.h
+ASN_MODULE_HDRS+=./out/OPEN_TYPE.h
+ASN_MODULE_SRCS+=./out/OPEN_TYPE.c
+ASN_MODULE_HDRS+=./out/constr_CHOICE.h
+ASN_MODULE_HDRS+=./out/INTEGER.h
+ASN_MODULE_SRCS+=./out/INTEGER.c
+ASN_MODULE_HDRS+=./out/NativeEnumerated.h
+ASN_MODULE_SRCS+=./out/NativeEnumerated.c
+ASN_MODULE_HDRS+=./out/NativeInteger.h
+ASN_MODULE_SRCS+=./out/NativeInteger.c
+ASN_MODULE_HDRS+=./out/asn_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=./out/asn_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=./out/asn_SET_OF.h
+ASN_MODULE_SRCS+=./out/asn_SET_OF.c
+ASN_MODULE_SRCS+=./out/constr_CHOICE.c
+ASN_MODULE_HDRS+=./out/constr_SEQUENCE.h
+ASN_MODULE_SRCS+=./out/constr_SEQUENCE.c
+ASN_MODULE_HDRS+=./out/constr_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=./out/constr_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=./out/constr_SET_OF.h
+ASN_MODULE_SRCS+=./out/constr_SET_OF.c
+ASN_MODULE_HDRS+=./out/asn_application.h
+ASN_MODULE_SRCS+=./out/asn_application.c
+ASN_MODULE_HDRS+=./out/asn_ioc.h
+ASN_MODULE_HDRS+=./out/asn_system.h
+ASN_MODULE_HDRS+=./out/asn_codecs.h
+ASN_MODULE_HDRS+=./out/asn_internal.h
+ASN_MODULE_SRCS+=./out/asn_internal.c
+ASN_MODULE_HDRS+=./out/asn_random_fill.h
+ASN_MODULE_SRCS+=./out/asn_random_fill.c
+ASN_MODULE_HDRS+=./out/asn_bit_data.h
+ASN_MODULE_SRCS+=./out/asn_bit_data.c
+ASN_MODULE_SRCS+=./out/OCTET_STRING.c
+ASN_MODULE_HDRS+=./out/BIT_STRING.h
+ASN_MODULE_SRCS+=./out/BIT_STRING.c
+ASN_MODULE_SRCS+=./out/asn_codecs_prim.c
+ASN_MODULE_HDRS+=./out/asn_codecs_prim.h
+ASN_MODULE_HDRS+=./out/ber_tlv_length.h
+ASN_MODULE_SRCS+=./out/ber_tlv_length.c
+ASN_MODULE_HDRS+=./out/ber_tlv_tag.h
+ASN_MODULE_SRCS+=./out/ber_tlv_tag.c
+ASN_MODULE_HDRS+=./out/ber_decoder.h
+ASN_MODULE_SRCS+=./out/ber_decoder.c
+ASN_MODULE_HDRS+=./out/der_encoder.h
+ASN_MODULE_SRCS+=./out/der_encoder.c
+ASN_MODULE_HDRS+=./out/constr_TYPE.h
+ASN_MODULE_SRCS+=./out/constr_TYPE.c
+ASN_MODULE_HDRS+=./out/constraints.h
+ASN_MODULE_SRCS+=./out/constraints.c
+ASN_MODULE_HDRS+=./out/xer_support.h
+ASN_MODULE_SRCS+=./out/xer_support.c
+ASN_MODULE_HDRS+=./out/xer_decoder.h
+ASN_MODULE_SRCS+=./out/xer_decoder.c
+ASN_MODULE_HDRS+=./out/xer_encoder.h
+ASN_MODULE_SRCS+=./out/xer_encoder.c
+ASN_MODULE_HDRS+=./out/per_support.h
+ASN_MODULE_SRCS+=./out/per_support.c
+ASN_MODULE_HDRS+=./out/per_decoder.h
+ASN_MODULE_SRCS+=./out/per_decoder.c
+ASN_MODULE_HDRS+=./out/per_encoder.h
+ASN_MODULE_SRCS+=./out/per_encoder.c
+ASN_MODULE_HDRS+=./out/per_opentype.h
+ASN_MODULE_SRCS+=./out/per_opentype.c
+ASN_MODULE_HDRS+=./out/oer_decoder.h
+ASN_MODULE_HDRS+=./out/oer_encoder.h
+ASN_MODULE_HDRS+=./out/oer_support.h
+ASN_MODULE_SRCS+=./out/oer_decoder.c
+ASN_MODULE_SRCS+=./out/oer_encoder.c
+ASN_MODULE_SRCS+=./out/oer_support.c
+ASN_MODULE_SRCS+=./out/OPEN_TYPE_oer.c
+ASN_MODULE_SRCS+=./out/INTEGER_oer.c
+ASN_MODULE_SRCS+=./out/BIT_STRING_oer.c
+ASN_MODULE_SRCS+=./out/OCTET_STRING_oer.c
+ASN_MODULE_SRCS+=./out/NativeInteger_oer.c
+ASN_MODULE_SRCS+=./out/NativeEnumerated_oer.c
+ASN_MODULE_SRCS+=./out/constr_CHOICE_oer.c
+ASN_MODULE_SRCS+=./out/constr_SEQUENCE_oer.c
+ASN_MODULE_SRCS+=./out/constr_SET_OF_oer.c
+
+ASN_MODULE_CFLAGS=
+
+lib_LTLIBRARIES+=libasncodec.la
+libasncodec_la_SOURCES=$(ASN_MODULE_SRCS) $(ASN_MODULE_HDRS)
+libasncodec_la_CPPFLAGS=-I$(top_srcdir)/./out/
+libasncodec_la_CFLAGS=$(ASN_MODULE_CFLAGS)
+libasncodec_la_LDFLAGS=-lm

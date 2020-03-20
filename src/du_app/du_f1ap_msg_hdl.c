@@ -994,7 +994,7 @@ S16 SendF1APMsg(Region region, Pool pool)
       {
          SPrntMsg(mBuf, 0,0);
  
-         if(sctpSend(mBuf) != ROK)
+         if(sctpSend(mBuf, duCfgParam.sctpParams.itfType.f1Itf) != ROK)
          {
             DU_LOG("\nF1AP : SCTP Send failed");
             SPutMsg(mBuf);

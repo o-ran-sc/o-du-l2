@@ -31,8 +31,7 @@ U8 numRlcMacSaps = 0;
 U8 macCfg = 0;
 U8 macCfgInst = 0;
 
-extern DuCfgParams duCfgParam;;
-
+extern DuCfgParams duCfgParam;
 extern S16 cmPkLkwCfgReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLkwCntrlReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
@@ -893,42 +892,6 @@ S16 duBindUnbindRlcToMacSap(U8 inst, U8 action)
 }
 /*******************************************************************
  *
- * @brief  Function to start SCTP
- *
- * @details
- *
- *    Function : duSctpStartReq
- *
- *    Functionality:
- *       Function to start SCTP
- *
- * @params[in] 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-S16 duSctpStartReq()
-{
-   Pst pst;
-
-   cmMemset((U8 *)&(pst), 0, sizeof(Pst));
-   pst.srcEnt = (Ent)ENTDUAPP;
-   pst.srcInst = (Inst)DU_INST;
-   pst.srcProcId = DU_PROC;
-   pst.dstEnt = (Ent)ENTSCTP;
-   pst.dstInst = (Inst)SCTP_INST;
-   pst.dstProcId = pst.srcProcId;
-   pst.event = EVTSCTPSTRT;
-   pst.selector = DU_SELECTOR_LC;
-   pst.pool= DU_POOL;
-
-   cmPkSctpAssocReq(&pst, duCfgParam.sctpParams);
-
-   RETVALUE(ROK);
-}
-
-/*******************************************************************
- *
  * @brief Handles SCTP notifications
  *
  * @details
@@ -957,7 +920,7 @@ S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
                {
                   DU_LOG("\nDU_APP : SCTP communication UP");
                   //Setup F1-C
-                  if(!duCb.f1Status)
+                  if(ntfy->u.assocChange.assocId == f1Params.assocId & (!duCb.f1Status))
                   {
                      /* Build and send F1 Setup response */
                      if(BuildAndSendF1SetupReq() != ROK)
@@ -965,11 +928,16 @@ S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
                         RETVALUE(RFAILED);
                      }
                   }
-                  else
+                  //Setup E2
+                  if(ntfy->u.assocChange.assocId == ricParams.assocId & (!duCb.e2Status))
                   {
-                     //Only SCTP is down, when SCTP comes up again, no need to
-                     //start from setting up F1 link
+                     /* Build and send F1 Setup response */
+                     if(BuildAndSendE2SetupReq() != ROK)
+                     {
+                        RETVALUE(RFAILED);
+                     }
                   }
+
                   break;
                }
          }
@@ -1430,6 +1398,79 @@ S16 duSendSchCfg()
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Checks the status of the received information
+ *
+ * @details
+ *
+ *    Function : duCheckReqStatus
+ *
+ *    Functionality:
+ *       Checks the status of the received information
+ *
+ * @params[in] Confirm status
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+S16 duCheckReqStatus(CmStatus *cfm)
+{
+   S16 ret = ROK;
+   if(cfm->status != LCM_PRIM_OK)
+   {
+      DU_LOG("\nDU_APP : Failed to process the request successfully");
+      ret = RFAILED;
+   }
+   RETVALUE(ret); 
+}
+
+/**************************************************************************
+ * @brief Function to configure SCTP params and 
+ *  responsible for F1 and E2 interfaces
+ *
+ * @details
+ *
+ *      Function : duLayerConfigComplete
+ * 
+ *      Functionality:
+ *           Configures SCTP Params and responsible for handling
+ *           F1 and E2 interface.
+ *     
+ * @param[in]  void
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+S16 duLayerConfigComplete()
+{
+   S16 ret = ROK;
+   CmStatus cfm;
+
+   DU_LOG("\nDU_APP : Configuring all Layer is complete");
+
+   duSctpCfgReq(duCfgParam.sctpParams, &cfm);
+   if((ret = duCheckReqStatus(&cfm)) != ROK)
+   {
+      DU_LOG("\nDU_APP : Failed configuring Sctp Params");
+      ret = RFAILED;
+   }
+   duSctpAssocReq(duCfgParam.sctpParams.itfType.f1Itf, &cfm);
+   if((ret = duCheckReqStatus(&cfm)) != ROK)
+   {
+      DU_LOG("\nDU_APP : Failed to send AssocReq F1");
+      ret = RFAILED;
+   }
+   duSctpAssocReq(duCfgParam.sctpParams.itfType.e2Itf, &cfm);
+   if((ret = duCheckReqStatus(&cfm)) != ROK)
+   {
+      DU_LOG("\nDU_APP : Failed to send AssocReq E2");
+      ret = RFAILED;
+   }
+
+   RETVALUE(ret); 
+} 
+
 /**************************************************************************
  * @brief Function to handle  SCH Config Confirm from MAC
  *
@@ -1461,8 +1502,7 @@ S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
             break;
       }
    }
-   duSctpStartReq();
-
+   duLayerConfigComplete();
    duBuildEgtpCfgReq();
    return ROK;
 }

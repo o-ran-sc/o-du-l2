@@ -184,6 +184,14 @@ S16 readMacCfg()
 
    RETVALUE(ROK);
 }
+S16 fillDuPort(U16 *duPort)
+{
+   duPort[F1_INTERFACE]   = DU_PORT;     /* DU Port idx  0 38472 */
+   duPort[E2_INTERFACE]   = RIC_PORT;    /* RIC Port idx 1 38482 */
+
+   RETVALUE(ROK);
+}
+
 /*******************************************************************
  *
  * @brief Configures the DU Parameters
@@ -205,22 +213,27 @@ S16 readMacCfg()
 S16 readCfg()
 {
    U8 i,j,k;
-   U32 ipv4_du, ipv4_cu;
+   U32 ipv4_du, ipv4_cu, ipv4_ric;
 	MibParams mib;
    Sib1Params sib1;	
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
+   cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
+   fillDuPort(duCfgParam.sctpParams.duPort);
 
    /* F1 DU IP Address and Port*/
-   duCfgParam.sctpParams.duIpAddr.ipV4Pres = TRUE;
    duCfgParam.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
-   duCfgParam.sctpParams.duPort = DU_PORT;
 
    /* F1 CU IP Address and Port*/
-   duCfgParam.sctpParams.cuIpAddr.ipV4Pres = TRUE;
    duCfgParam.sctpParams.cuIpAddr.ipV4Addr = ipv4_cu;
    duCfgParam.sctpParams.cuPort = CU_PORT;
+   duCfgParam.sctpParams.itfType.f1Itf     = F1_INTERFACE;
+
+   /* Fill RIC Params */
+   duCfgParam.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
+   duCfgParam.sctpParams.ricPort            = RIC_PORT;
+   duCfgParam.sctpParams.itfType.e2Itf      = E2_INTERFACE;
 
 
    /* EGTP Parameters */

@@ -20,87 +20,6 @@
 
 #include "du_sctp.h"
 
-/*******************************************************************
- *
- * @brief Packs SCTP configuration 
- *
- * @details
- *
- *    Function : cmPkSctpAssocReq
- *
- *    Functionality:
- *       Packs SCTP configuration
- *
- * @params[in] Notification 
- * @return ROK     - success
- *         RFAILED - failure
- *
- ******************************************************************/
-S16 cmPkSctpAssocReq(Pst *pst, F1SctpParams sctpCfgParam)
-{
-   Buffer *mBuf;
-
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
-   {
-      printf("\nDU_APP : Failed to allocate memory");
-      RETVALUE(RFAILED);
-   }
-  
-   if(sctpCfgParam.duIpAddr.ipV4Pres)
-   {
-      SPkU32(sctpCfgParam.duIpAddr.ipV4Addr, mBuf);
-   }
-   cmPkBool(sctpCfgParam.duIpAddr.ipV4Pres, mBuf);
-   SPkU16(sctpCfgParam.duPort, mBuf);
-
-   if(sctpCfgParam.cuIpAddr.ipV4Pres)
-   {
-      SPkU32(sctpCfgParam.cuIpAddr.ipV4Addr, mBuf);
-   }
-   cmPkBool(sctpCfgParam.cuIpAddr.ipV4Pres, mBuf);
-   SPkU16(sctpCfgParam.cuPort, mBuf);
-
-   SPstTsk(pst, mBuf);
-
-   RETVALUE(ROK);
-}
-
-/*******************************************************************
- *
- * @brief Unpacks SCTP configuration 
- *
- * @details
- *
- *    Function : cmUnpkSctpAssocReq
- *
- *    Functionality:
- *       Unpacks SCTP configuration
- *
- * @params[in] Notification 
- * @return ROK     - success
- *         RFAILED - failure
- *
- ******************************************************************/
-S16 cmUnpkSctpAssocReq(Buffer *mBuf) 
-{
-   cmMemset((U8*)&sctpCfg, 0, sizeof(F1SctpParams));  
-
-   SUnpkU16(&(sctpCfg.cuPort), mBuf);
-   cmUnpkBool(&(sctpCfg.cuIpAddr.ipV4Pres), mBuf);
-   if(sctpCfg.cuIpAddr.ipV4Pres)
-   {
-      SUnpkU32(&(sctpCfg.cuIpAddr.ipV4Addr), mBuf);
-   }
-   
-   SUnpkU16(&(sctpCfg.duPort), mBuf);
-   cmUnpkBool(&(sctpCfg.duIpAddr.ipV4Pres), mBuf);
-   if(sctpCfg.duIpAddr.ipV4Pres)
-   {
-      SUnpkU32(&(sctpCfg.duIpAddr.ipV4Addr), mBuf);
-   }
-
-   RETVALUE(ROK);
-}
 
 /*******************************************************************
  *
@@ -132,6 +51,7 @@ S16 cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
    if(ntfy->header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
       SPkU16(ntfy->u.assocChange.state, mBuf);
+      SPkU16(ntfy->u.assocChange.assocId, mBuf);
    }
    SPkU16(ntfy->header.nType, mBuf);
 
@@ -169,6 +89,7 @@ S16 cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf)
    SUnpkU16(&(ntfy.header.nType), mBuf);
    if(ntfy.header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
+      SUnpkU16(&(ntfy.u.assocChange.assocId), mBuf);
       SUnpkU16(&(ntfy.u.assocChange.state), mBuf);
    }
 
