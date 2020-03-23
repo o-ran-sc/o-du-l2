@@ -1,0 +1,548 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b0df515b_9ca33c91",
+        "filename": "build/common/e2ap.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Correction needed in file description since this makefile is for E2AP",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa967155_9b91663e",
+        "filename": "build/common/ric_stub.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Correction needed in file description since this makefile is for ric_stub",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64b02c52_5a078c8e",
+        "filename": "docs/README",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "This comment can be changed as follows to remove any ambiguity:\n\"CU stub and RIC stub must be run (in no particular sequence) before ODU\"",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82a8bfe1_41c8763a",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "since this function is not related to cell management, it can be moved to du_e2ap_hdl.c",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb81fd91_146506bb",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "since this function is not related to cell management, it can be moved to du_e2ap_hdl.c",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25e15294_d828e4b1",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Add function descriptor for fillDuPort",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86df518b_b9b29451",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "itfType param not needed in SCTP Param",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1ef2bd5_9ad8beda",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "itfType param not needed in SCTP Param",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4d99523_8b8f86d3",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "At any point of time the interface type will be either F1 or E2. So both parameters are not needed together. Thus this structure is not needed.",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff8d73dc_3f92ac4e",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Do we absolutely need this interfaces list to be stored?",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4d55d38_660ef806",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Add a file descriptor here",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "907fda1c_8e6269b6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "move this declaration to du_e2ap_msg_hdl.c",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8cf5ec8_07df6da8",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Remove code enclosed in #if 0 , if not needed",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e04ae7a_a1aed9b9",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "if this function is needed, add function descriptor",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1186be9b_6a25bf35",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "if this function is needed, add function descriptor",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8bf3827c_be6506a7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 753,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Use macro E2_INTERFACE here",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4496b7c6_5f43b7c5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Add \"end of file\" footer here.",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96d3e828_8c8bce1f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Correction needed in file descriptor",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1d4a710_66708fde",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Use macro F1_INTERFACE here",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ad241c5_83bda03a",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Correct the comment for e2Status param",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a0f132d_dcda5199",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 923,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "can we not make this comparison in du_sctp.c itself before sending notify to du_app. Once the interface is known, SCTP can send Interface type along this ntfy in duSctpNtfyHdl()",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83c34b37_5fdd7f6d",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 924,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Mark duCb.f1Status as UP since COMM_UP is received for the same",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f74b720b_cbf03ef4",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 932,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "can we not make this comparison in du_sctp.c itself before sending notify to du_app. Once the interface is known, SCTP can send Interface type along this ntfy in duSctpNtfyHdl()",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cdfa352_0f4f43fb",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "Mark duCb.e2Status as UP since COMM_UP is received for the same",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "985973da_538b3f78",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1458,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "F1_INTERFACE macro can be directly used here and the itfType param can be removed from SCTP Pramas",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a3dd06c_47eb63f0",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "E2_INTERFACE macro can be directly used here and the itfType param can be removed from SCTP Pramas",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f79bc24c_5863fdeb",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "lets not use directly the numbers 0,1 etc in the code. Use F1_INTERFACE macro as index for duPort[] since the same index was used while filling this array",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66cbd9a6_441e5cb1",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "lets not use directly the numbers 0,1 etc in the code. Use E2_INTERFACE macro as index for duPort[] since the same index was used while filling this array",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c329afc5_c76390ee",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "connUp parameter was used in old code to check if SCTP connection is up. In this code, for each destination there is itfState parameter for the same purpose. so connUp should be replaced accordingly",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b76ff40d_89a74aa4",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "F1 interface state should be used here instead of connUp",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b42182ca_91acfe19",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "E2 interface state should be used here instead of connUp",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2569a4be_0f73b97c",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-03-23T07:57:44Z",
+      "side": 1,
+      "message": "the event type should be more readable like EVTRICDATA and EVTCUDATA",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
