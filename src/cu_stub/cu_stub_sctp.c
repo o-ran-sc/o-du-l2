@@ -351,6 +351,7 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy)
       case CM_INET_SCTP_SHUTDOWN_EVENT : /* peer socket gracefully closed */
          DU_LOG("\nSCTP : Shutdown Event notification received\n");
          connUp = FALSE;
+			exit(1);//Exit process on shutdown indication
          break;
       case CM_INET_SCTP_ADAPTATION_INDICATION :
          DU_LOG("\nSCTP : Adaptation Indication received\n");
@@ -482,7 +483,7 @@ S16 sctpSockPoll()
  *    Functionality:
  *        Send message on SCTP socket
  *
- * @params[in] 
+ * @params[in] Buffer pointer 
  * @return ROK     - success
  *         RFAILED - failure
  *
