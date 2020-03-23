@@ -121,7 +121,7 @@ help:
 		@echo -e "$(RULE)clean_all - cleanup everything$(NORM)"
 		@echo -e "$(OPTS)  options: $(NORM)"
 		@echo -e "$(OPTS)    MACHINE=BIT64/BIT32  - Default is BIT32$(NORM)"
-		@echo -e "$(OPTS)    NODE=CU_STUB         - Mandatory option for cu_stub$(NORM)"
+		@echo -e "$(OPTS)    NODE=TEST_STUB         - Mandatory option for cu_stub/ric_stub$(NORM)"
 		@echo -e "$(OPTS)    MODE=TDD             - If not specified, MODE=FDD$(NORM)"
 		@echo -e "******************************************************************"
 

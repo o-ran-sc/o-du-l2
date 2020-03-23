@@ -5,6 +5,5 @@ WORKDIR /opt/o-du-l2
 
 RUN apt-get update && apt-get install -y libpcap-dev
 
-RUN cd build/odu && make clean_cu cu_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
+RUN cd build/odu && make clean_ric ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
-#CMD /opt/o-du-l2/bin/cu_stub/cu_stub -f ../config/ssi_mem
