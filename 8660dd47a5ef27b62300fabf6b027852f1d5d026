@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "f2f57bf8_6cb4e0b1",
+        "filename": "build/common/asn_e2ap.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "LOG, DB, BAK can be removed",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4ca87c9_0232377e",
+        "filename": "build/common/asn_e2ap.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "footer is missing",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5296484_b68009b5",
+        "filename": "build/common/e2ap.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "is this file required??",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b0df515b_9ca33c91",
         "filename": "build/common/e2ap.mak",
         "patchSetId": 1
@@ -36,6 +87,40 @@
     },
     {
       "key": {
+        "uuid": "93f145e7_a7eed3ba",
+        "filename": "build/common/ric_stub.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "footer missing",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc5c5fab_589f1763",
+        "filename": "build/odu/makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "why is sysinfo needed for ric???",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "64b02c52_5a078c8e",
         "filename": "docs/README",
         "patchSetId": 1
@@ -47,6 +132,125 @@
       "writtenOn": "2020-03-23T07:57:44Z",
       "side": 1,
       "message": "This comment can be changed as follows to remove any ambiguity:\n\"CU stub and RIC stub must be run (in no particular sequence) before ODU\"",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e80114d_0fad6482",
+        "filename": "src/codec_utils/E2AP/ANY.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "many files are a copy of what are already there inn codec_utils/common. Remove duplicates",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "114a7d3b_6d86de53",
+        "filename": "src/codec_utils/common/asn_internal.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "ASN_DEBUG must be disabled by default",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "850ab1aa_e8d87e5a",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "i dont think we need an entire structure for this. we can have 1 variable which will determine the state up/down for both interfaces. try using bitmask",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4900f787_e3125df5",
+        "filename": "src/cu_stub/cu_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "replace with memset",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c126b7ab_d1abb29a",
+        "filename": "src/cu_stub/cu_stub_sctp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "how do we know SCTP towards which interface??",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "980fb861_bc1fd9ec",
+        "filename": "src/cu_stub/cu_stub_sctp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "rename to CuSctpParams",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "397c31f5_b6b2b507",
+        "filename": "src/cu_stub/cu_stub_sctp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "remove using these ssi types in new code",
       "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -70,6 +274,41 @@
     },
     {
       "key": {
+        "uuid": "b42aabc9_17c19014",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "Also..make appropriate changes in the corresponding header file",
+      "parentUuid": "82a8bfe1_41c8763a",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99b85b18_9663f34a",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "is this line tested?",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bb81fd91_146506bb",
         "filename": "src/du_app/du_cell_mgr.c",
         "patchSetId": 1
@@ -81,6 +320,75 @@
       "writtenOn": "2020-03-23T07:57:44Z",
       "side": 1,
       "message": "since this function is not related to cell management, it can be moved to du_e2ap_hdl.c",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3acb5fa5_7d5ffdaa",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bb81fd91_146506bb",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "890bdfae_825ce4a1",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "80 characters per line",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "986e5a2f_d7b394a4",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "put this in a function",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02eb8b37_f2624c9d",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "its better to keep xer_print",
       "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -132,6 +440,40 @@
       "writtenOn": "2020-03-23T07:57:44Z",
       "side": 1,
       "message": "itfType param not needed in SCTP Param",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1676012_8f16d33f",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "this could be an enum instead",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4290f12f_fe70b7b7",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 840,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "as mentioned in corresponding CU stub file..this can be manipulated using bitmasks/enum. Structure is not needed",
       "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -206,6 +548,57 @@
     },
     {
       "key": {
+        "uuid": "dab2925b_6dbe774a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "this function is already present in a common place. no need to redefine",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "477714e9_fb3baf8b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "there is a similar function in F1AP. Eliminate duplicates",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d3e101a_ae1274db",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "BuildGlobalgNbID",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c8cf5ec8_07df6da8",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 1
@@ -257,6 +650,74 @@
     },
     {
       "key": {
+        "uuid": "8495a790_0788daf0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "all DU_FREE\u0027s need not be added like this. It makes code heavy and ugly. They can all be freed in the end of the function.",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f1064c1_73dd2b1c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "dont return here. Instead set a ret value and have single return.\nYou could also choose any other alternate method to optimize the code.",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e625803_eb13aa9b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "dont use hard coded values. Read from config.",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c630fb4_1494ec74",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "why is index of array always 0?Use macro as needed",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8bf3827c_be6506a7",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 1
@@ -268,6 +729,23 @@
       "writtenOn": "2020-03-23T07:57:44Z",
       "side": 1,
       "message": "Use macro E2_INTERFACE here",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05027dfc_18d81650",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "enclose this within flags too. This is not the correct trigger point",
       "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -336,6 +814,23 @@
       "writtenOn": "2020-03-23T07:57:44Z",
       "side": 1,
       "message": "Correct the comment for e2Status param",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "352cdd69_b5f7fcf5",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "E2 and F1AP are both SCTP messages. F1AP cannot be names SCTP data and E2 as RIC data",
       "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -444,6 +939,23 @@
     },
     {
       "key": {
+        "uuid": "9e29789d_df319b8d",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "is this STARTPOLL? rename the right way",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f79bc24c_5863fdeb",
         "filename": "src/du_app/du_sctp.c",
         "patchSetId": 1
@@ -540,6 +1052,244 @@
       "writtenOn": "2020-03-23T07:57:44Z",
       "side": 1,
       "message": "the event type should be more readable like EVTRICDATA and EVTCUDATA",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ea6869a_6947ac37",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "dont use \"_\". Use camelCase",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "072b9318_397c4769",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "use DU APP",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7cfc7cd1_9962c778",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "has this code been tested? Try establishing E2 before F1 and test to check accuracy.",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30edefd9_0631256d",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "its not F1AP",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb383c8c_b6949e9f",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "why do we need so many copies of same functions to build PLMN? Put it in a common place.",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "617615a2_b3156e12",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "eliminate duplicate functions",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54c600f0_efd0a53e",
+        "filename": "src/ric_stub/ric_stub.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "RRC_VERSION on E2??",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e75a3655_4bb9bc7e",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "wrong macro",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b030216_cfb6fd89",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "why do we need this structure here???",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b865e3ca_943c46d7",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "cuCfgParams here??",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba128f30_c0aec632",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "what is the use of this function?",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dc466cc_71090525",
+        "filename": "src/ric_stub/ric_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "use of this function?",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3643a7ed_608cbe47",
+        "filename": "src/ric_stub/ric_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "failed at CU?",
+      "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18ab563c_e2a6ee83",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-23T11:26:24Z",
+      "side": 1,
+      "message": "rename to numFd",
       "revId": "8660dd47a5ef27b62300fabf6b027852f1d5d026",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
