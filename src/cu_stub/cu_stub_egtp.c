@@ -636,7 +636,7 @@ S16 cuEgtpDatReq()
    BuildEgtpMsg(&egtpMsg);
 
    /* Send Message to peer */
-   while(cnt < 20)
+   while(cnt < 1)
    {
       DU_LOG("\nEGTP : Sending message[%d]", cnt+1);
       cuEgtpSendMsg(egtpMsg.msg);

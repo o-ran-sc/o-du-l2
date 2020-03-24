@@ -85,6 +85,10 @@ static int RLOG_FILE_ID=238;
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
 
+#ifdef EGTP_TEST
+#include "mac_stub.h"
+#endif /* EGTP_TEST */
+
 #ifndef LCKWLIRGU
 #define PTKWRGU
 #endif
@@ -149,6 +153,11 @@ PUBLIC RguBndReq kwLiRguUbndReqMt[] =
 
 PUBLIC RguDDatReq rlcMacSendDlDataOpts[] =
 {
+#ifdef EGTP_TEST
+   macStubSendDlData,
+   macStubSendDlData,
+   macStubSendDlData,
+#else /* EGTP_TEST */
 #ifdef LCKWLIRGU
    packDlData,            /* 0 - loosely coupled */
 #endif /* LCRGUIRGU */
@@ -158,6 +167,7 @@ PUBLIC RguDDatReq rlcMacSendDlDataOpts[] =
 #ifdef LCKWLIRGU
    packDlData,            /* 0 - loosely coupled */
 #endif /* LCRGUIRGU */
+#endif /* EGTP_TEST */
 };
 
 
@@ -165,6 +175,11 @@ PUBLIC RguDDatReq rlcMacSendDlDataOpts[] =
 
 PUBLIC RguDStaRsp rlcMacSendBOStatusOpts[] =
 {
+#ifdef EGTP_TEST
+   macStubBOStatus,
+   macStubBOStatus,
+   macStubBOStatus,
+#else /* EGTP_TEST */
 #ifdef LCKWLIRGU
    packBOStatus,            /* 0 - loosely coupled */
 #endif /* LCRGUIRGU */
@@ -174,6 +189,7 @@ PUBLIC RguDStaRsp rlcMacSendBOStatusOpts[] =
 #ifdef LCKWLIRGU
    packBOStatus,            /* 0 - LWLC loosely coupled */
 #endif /* LCRGUIRGU */
+#endif /* EGTP_TEST */
 };
 
 /* kw005.201 added support for L2 Measurement */

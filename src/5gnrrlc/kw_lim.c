@@ -234,8 +234,8 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
    U8              numDLch = 0;             /* Number of dedicated logical channel */
    Bool            dLchPduPres;             /* PDU received on dedicated logical channel */
    RguLchDatInd    dLchData[RGU_MAX_LC];  /* PDU info on dedicated logical channel */
-   RguDDatIndInfo  dLchUlDat;               /* UL data on dedicated logical channel */
-   RguCDatIndInfo  cLchUlDat;               /* UL data on common logical channel */
+   RguDDatIndInfo  *dLchUlDat;               /* UL data on dedicated logical channel */
+   RguCDatIndInfo  *cLchUlDat;               /* UL data on common logical channel */
 
    /* Initializing dedicated logical channel Database */
    for(idx = 0; idx < RGU_MAX_LC; idx++)
@@ -252,19 +252,21 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
    {
       if(ulData->pduInfo[idx].commCh)
       {
-         cmMemset((U8*)&cLchUlDat, (U8)0, sizeof(RguCDatIndInfo));
+         KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, cLchUlDat, sizeof(RguCDatIndInfo));
+         cmMemset((U8*)cLchUlDat, (U8)0, sizeof(RguCDatIndInfo));
        
-         cLchUlDat.cellId = ulData->cellId;
-         cLchUlDat.rnti   = ulData->rnti;
-         cLchUlDat.lcId   = ulData->pduInfo[idx].lcId;
-         cLchUlDat.pdu    = ulData->pduInfo[idx].pduBuf;
+         cLchUlDat->cellId = ulData->cellId;
+         cLchUlDat->rnti   = ulData->rnti;
+         cLchUlDat->lcId   = ulData->pduInfo[idx].lcId;
+         cLchUlDat->pdu    = ulData->pduInfo[idx].pduBuf;
          
-         KwLiRguCDatInd(pst, suId, &cLchUlDat);
+         KwLiRguCDatInd(pst, suId, cLchUlDat);
       } 
       else
       {
          if(!dLchPduPres)
          {
+            KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, dLchUlDat, sizeof(RguDDatIndInfo));
             dLchPduPres = TRUE;
          }
 
@@ -278,21 +280,23 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
     * and call its handler */ 
    if(dLchPduPres)
    {
-      dLchUlDat.cellId = ulData->cellId;
-      dLchUlDat.rnti   = ulData->rnti;
+      dLchUlDat->cellId = ulData->cellId;
+      dLchUlDat->rnti   = ulData->rnti;
 
       for(idx = 0; idx < RGU_MAX_LC; idx++)
       {
          if(dLchData[idx].pdu.numPdu)
          {
-            cmMemcpy((U8 *)&dLchUlDat.lchData[numDLch], (U8 *)&dLchData[idx], sizeof(RguLchDatInd));
+            cmMemcpy((U8 *)&dLchUlDat->lchData[numDLch], (U8 *)&dLchData[idx], sizeof(RguLchDatInd));
             numDLch++;      
          }
       }
-      dLchUlDat.numLch = numDLch;
-      KwLiRguDDatInd(pst, suId, &dLchUlDat);
+      dLchUlDat->numLch = numDLch;
+      KwLiRguDDatInd(pst, suId, dLchUlDat);
    }
+    
 
+   KW_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcMacData));
    RETVALUE(ROK);
    
 }/* End of RlcMacProcUlData */
@@ -469,12 +473,14 @@ RguDDatIndInfo   *datInd;
  *         RFAILED - failure
  *
  * ****************************************************************/
-PUBLIC S16 RlcMacProcSchedRep(Pst *pst, SuId suId,RlcMacSchedRep *schRep)
+PUBLIC S16 RlcMacProcSchedRep(Pst *pst, SuId suId, RlcMacSchedRep *schRep)
 {
    U8 idx;                     /* Iterator */
    U8 nmbDLch = 0;                 /* Number of dedicated logical channles */
-   RguCStaIndInfo   cLchSchInfo;    /* Common logical channel scheduling result */
-   RguDStaIndInfo   dLchSchInfo;  /* Dedicated logical channel scheduling result */
+   RguCStaIndInfo   *cLchSchInfo;    /* Common logical channel scheduling result */
+   RguDStaIndInfo   *dLchSchInfo;  /* Dedicated logical channel scheduling result */
+
+   DU_LOG("\nRLC : Received scheduling report from MAC");
 
    for(idx=0; idx < schRep->nmbLch; idx++)
    {
@@ -482,14 +488,15 @@ PUBLIC S16 RlcMacProcSchedRep(Pst *pst, SuId suId,RlcMacSchedRep *schRep)
         * and trigger the handler for each common lch separately */
        if(schRep->lchSta[idx].commCh)
        {
-          cmMemset((U8*)&cLchSchInfo, (U8)0, sizeof(RguCStaIndInfo)); 
+          KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, cLchSchInfo, sizeof(RguCStaIndInfo));
+          cmMemset((U8*)cLchSchInfo, (U8)0, sizeof(RguCStaIndInfo)); 
 
-          cLchSchInfo.cellId  = schRep->cellId;
-          cLchSchInfo.lcId    = schRep->lchSta[idx].lchStaInd.lcId;
-          //cLchSchInfo.transId = schRep->timeToTx;  /* TODO : fill transId suing timeToTx */
-          cLchSchInfo.rnti    = schRep->rnti;
+          cLchSchInfo->cellId  = schRep->cellId;
+          cLchSchInfo->lcId    = schRep->lchSta[idx].lchStaInd.lcId;
+          //cLchSchInfo->transId = schRep->timeToTx;  /* TODO : fill transId suing timeToTx */
+          cLchSchInfo->rnti    = schRep->rnti;
 
-          KwLiRguCStaInd(pst, suId, &cLchSchInfo);
+          KwLiRguCStaInd(pst, suId, cLchSchInfo);
           
        }
        else
@@ -498,16 +505,18 @@ PUBLIC S16 RlcMacProcSchedRep(Pst *pst, SuId suId,RlcMacSchedRep *schRep)
            * scheduling report is received */
           if(nmbDLch == 0)
           {
-             dLchSchInfo.cellId = schRep->cellId;
-             dLchSchInfo.nmbOfUeGrantPerTti = 1;
-             dLchSchInfo.staInd[0].rnti = schRep->rnti;
-             //dLchSchInfo.staInd[0].transId = schRep->timeToTx;  /* TODO : fill transId suing timeToTx */
-             dLchSchInfo.staInd[0].nmbOfTbs = 1;
-             //dLchSchInfo.staInd[0].fillCrlPdu = /* TODO : Check the value needed to be filled */
+             KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, dLchSchInfo, sizeof(RguDStaIndInfo));
+
+             dLchSchInfo->cellId = schRep->cellId;
+             dLchSchInfo->nmbOfUeGrantPerTti = 1;
+             dLchSchInfo->staInd[0].rnti = schRep->rnti;
+             //dLchSchInfo->staInd[0].transId = schRep->timeToTx;  /* TODO : fill transId suing timeToTx */
+             dLchSchInfo->staInd[0].nmbOfTbs = 1;
+             //dLchSchInfo->staInd[0].fillCrlPdu = /* TODO : Check the value needed to be filled */
           }
 
           /* Fill logical channel scheduling info */
-          cmMemcpy((U8 *)&dLchSchInfo.staInd[0].staIndTb[0].lchStaInd[nmbDLch], (U8 *)&schRep->lchSta[idx].lchStaInd, sizeof(RguLchStaInd));
+          cmMemcpy((U8 *)&dLchSchInfo->staInd[0].staIndTb[0].lchStaInd[nmbDLch], (U8 *)&schRep->lchSta[idx].lchStaInd, sizeof(RguLchStaInd));
           nmbDLch++;
 
        }
@@ -517,9 +526,11 @@ PUBLIC S16 RlcMacProcSchedRep(Pst *pst, SuId suId,RlcMacSchedRep *schRep)
    /* Calling handler for all dedicated channels scheduling*/
    if(nmbDLch)
    {
-      dLchSchInfo.staInd[0].staIndTb[0].nmbLch = nmbDLch;
-      KwLiRguDStaInd(pst, suId, &dLchSchInfo);
+      dLchSchInfo->staInd[0].staIndTb[0].nmbLch = nmbDLch;
+      KwLiRguDStaInd(pst, suId, dLchSchInfo);
    }
+   
+   KW_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRep));
 
    RETVALUE(ROK);
 }

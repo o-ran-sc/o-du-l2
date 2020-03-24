@@ -234,7 +234,8 @@ S16 duSendEgtpSrvOpenReq();
 S16 duHdlEgtpSrvOpenComplete(CmStatus cfm);
 S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid);
 S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm);
-S16 duSendEgtpDatInd();
+S16 duSendEgtpTestData();
+S16 duSendEgtpDatInd(Buffer *mBuf);
 S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 
 #endif

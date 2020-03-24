@@ -300,6 +300,14 @@ Buffer *mBuf;           /* message buffer */
                   }
                   /* kw005.201 added support for L2 Measurement */
 #endif  /* LCLKW */
+
+#ifdef LCKWU
+               case KWU_EVT_DAT_REQ:              /* Data request */
+                  {
+                     ret = cmUnpkKwuDatReq(KwUiKwuDatReq, pst, mBuf);
+                     break;
+                  }
+#endif /* LCKWU */
                default:
                   SPutMsg(mBuf);
                   if (pst->dstInst < KW_MAX_RLC_INSTANCES)

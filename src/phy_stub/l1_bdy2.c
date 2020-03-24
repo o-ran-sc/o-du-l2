@@ -8,7 +8,7 @@ void *GenerateTicks(void *arg)
 {
    while(1)
    {
-      sleep(10);
+      sleep(1);
       printf("\nTTI indication");
       /* Send TTI indication to CL */
       duSendEgtpTTIInd();

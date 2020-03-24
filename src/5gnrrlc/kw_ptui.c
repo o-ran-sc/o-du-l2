@@ -341,14 +341,12 @@ U8   status;                    /* Status */
 PUBLIC S16 KwUiKwuDatInd
 (
 Pst               *pst,
-SuId              suId,
 KwuDatIndInfo     *datInd,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 KwUiKwuDatInd(pst, suId, datInd, mBuf)
+PUBLIC S16 KwUiKwuDatInd(pst, datInd, mBuf)
 Pst               *pst;
-SuId              suId;
 KwuDatIndInfo     *datInd;
 Buffer            *mBuf;
 #endif
@@ -356,7 +354,7 @@ Buffer            *mBuf;
    TRC3(KwUiKwuDatInd)
 
    /* jump to specific primitive depending on configured selector */
-   (*kwUiKwuDatIndMt[pst->selector])(pst, suId, datInd, mBuf);
+   (*kwUiKwuDatIndMt[pst->selector])(pst, datInd, mBuf);
 
    RETVALUE(ROK);
 

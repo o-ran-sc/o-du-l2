@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include "du_egtp.h"
+#include "du_ue_mgr.h"
 
 /* Global variable declaration */
 EgtpGlobalCb egtpCb;
@@ -587,13 +588,13 @@ S16 egtpHdlDatInd(EgtpMsg egtpMsg)
       teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 1] &= ~(EGTP_MASK_BIT2);
    }
 
-   DU_LOG("\nEGTP : Data buffer before encoding header");
+   DU_LOG("\nEGTP : UL Data buffer before encoding header");
    SPrntMsg(egtpMsg.msg, 0, 0);
 
    SAddPreMsgMult(&teidCb->preEncodedHdr.hdr[hdrLen], (EGTP_MAX_HDR_LEN - hdrLen), egtpMsg.msg);
 
 
-   DU_LOG("\nEGTP : Data buffer after encoding header");
+   DU_LOG("\nEGTP : UL Data buffer after encoding header");
    SPrntMsg(egtpMsg.msg, 0, 0);
 
    /* Send over UDP */
@@ -820,7 +821,7 @@ S16 egtpRecvMsg()
       ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &fromAddr, &memInfo, &recvBuf, &bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {  
-         DU_LOG("\nEGTP : Received Message[%d]\n", nMsg+1);
+         DU_LOG("\nEGTP : Received DL Message[%d]\n", nMsg+1);
          SPrntMsg(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
       }
@@ -838,6 +839,7 @@ S16 egtpHdlRecvData(Buffer *mBuf)
    egtpDecodeHdr(mBuf, &egtpMsg);
 
    /* TODO : Send received message to RLC */
+   duHdlEgtpDlData(&egtpMsg);
 
    RETVALUE(ROK);
 }
@@ -994,8 +996,10 @@ S16 egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    {
       SRemPreMsg(&extHdrType, mBuf);
    }
- 
-   DU_LOG("\nEGTP : Data Buffer after decoding header ");
+
+   egtpMsg->msg = mBuf;
+
+   DU_LOG("\nEGTP : DL Data Buffer after decoding header ");
    SPrntMsg(mBuf, 0, 0);
 
    /* Forward the data to duApp/RLC */

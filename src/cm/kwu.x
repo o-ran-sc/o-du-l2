@@ -125,9 +125,8 @@ typedef S16 (*KwuBndReq)      ARGS((Pst *pst, SuId suId,  SpId spId));
 typedef S16 (*KwuBndCfm)      ARGS((Pst *pst, SuId suId, U8 status));
 typedef S16 (*KwuUbndReq)     ARGS((Pst *pst, SuId suId, Reason reason));
 
-typedef S16 (*KwuDatReq)      ARGS((Pst *pst, SpId spId, KwuDatReqInfo* datReq,
-         Buffer *mBuf));
-typedef S16 (*KwuDatInd)      ARGS((Pst *pst, SuId suId, KwuDatIndInfo* datInd,
+typedef S16 (*KwuDatReq)      ARGS((Pst *pst, KwuDatReqInfo* datReq, Buffer *mBuf));
+typedef S16 (*KwuDatInd)      ARGS((Pst *pst, KwuDatIndInfo* datInd,
          Buffer *mBuf));
 typedef S16 (*KwuDatCfm)      ARGS((Pst *pst, SuId suId, KwuDatCfmInfo* datCfm));
 typedef S16 (*KwuDiscSduReq)  ARGS((Pst *pst, SpId spId, KwuDiscSduInfo* discSdu));
@@ -216,7 +215,6 @@ EXTERN S16 KwUiKwuUbndReq ARGS((Pst *pst,
  *   -# RFAILED
  */
 EXTERN S16 KwUiKwuDatReq ARGS((Pst *pst,
-         SpId spId,
          KwuDatReqInfo* datReq,
          Buffer *buf));
 
@@ -234,7 +232,6 @@ EXTERN S16 KwUiKwuDatReq ARGS((Pst *pst,
  *   -# RFAILED
  */
 EXTERN S16 KwUiKwuDatInd ARGS((Pst *pst,
-         SuId suId,
          KwuDatIndInfo* datInd,
          Buffer *mBuf));
 
@@ -359,7 +356,6 @@ EXTERN S16 NhLiKwuDatReq ARGS((Pst *pst,
          Buffer *buf));
 
 EXTERN S16 NhLiKwuDatInd ARGS((Pst *pst,
-         SuId suId,
          KwuDatIndInfo* datInd,
          Buffer *buf));
 #endif /* NH */
@@ -413,7 +409,6 @@ EXTERN S16 PjLiKwuDatReq ARGS((Pst *pst,
          Buffer *buf));
 
 EXTERN S16 PjLiKwuDatInd ARGS((Pst *pst,
-         SuId suId,
          KwuDatIndInfo* datInd,
          Buffer *buf));
 
@@ -495,14 +490,12 @@ U8 status
 
 EXTERN S16 cmPkKwuDatReq ARGS ((
 Pst * pst,
-SpId spId,
 KwuDatReqInfo* datReq,
 Buffer * mBuf
 ));
 
 EXTERN S16 cmPkKwuDatInd ARGS ((
 Pst * pst,
-SuId suId,
 KwuDatIndInfo* datInd,
 Buffer * mBuf
 ));

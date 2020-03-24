@@ -24,6 +24,9 @@
 #include "lsctp.h"
 #include "legtp.h"
 #include "du_app_mac_inf.h"
+#include "du_ue_mgr.h"
+
+#include "kwu.x"
 
 extern S16 cmUnpkLkwCfgCfm(LkwCfgCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
@@ -158,6 +161,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                case LKW_EVT_STA_IND:
                   {
+                     break;
+                  }
+               case KWU_EVT_DAT_IND:
+                  {
+                     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
                      break;
                   }
                default:

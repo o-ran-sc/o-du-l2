@@ -849,29 +849,26 @@ Reason   reason;
 PUBLIC S16 KwUiKwuDatReq
 (
 Pst             *pst,   
-SpId            spId,  
 KwuDatReqInfo   *datReq, 
 Buffer          *mBuf   
 )
 #else
-PUBLIC S16 KwUiKwuDatReq(pst, spId, datReq, mBuf)
+PUBLIC S16 KwUiKwuDatReq(pst, datReq, mBuf)
 Pst             *pst;  
-SpId            spId; 
 KwuDatReqInfo   *datReq; 
 Buffer          *mBuf;  
 #endif
 {
    S16          ret = ROK;   /* Return Value */
    KwDlRbCb     *rbCb;       /* RB Control Block */
-   KwKwuSapCb   *kwuSap;     /* SAP Config Block */
    KwCb         *tKwCb;
 
    TRC3(KwUiKwuDatReq)
 
+   DU_LOG("\nRLC : Received DL Data");
+
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if ((pst->dstInst >= KW_MAX_RLC_INSTANCES) ||
-       (spId >= (S16) kwCb[pst->dstInst]->genCfg.maxKwuSaps) ||
-       (spId < 0))
+   if(pst->dstInst >= KW_MAX_RLC_INSTANCES)
    {
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -879,17 +876,6 @@ Buffer          *mBuf;
 #endif
 
    tKwCb = KW_GET_KWCB(pst->dstInst);
-
-   /* Get Sap control block */
-   kwuSap = tKwCb->u.dlCb->kwuDlSap + spId;
-
-   /* Validate SAP ID under ERRORCLS */
-   KW_VALDATE_SAP(tKwCb,spId, kwuSap, ret);
-   if (ret != ROK)
-   {
-      KW_FREE_BUF(mBuf);
-      RETVALUE(RFAILED);
-   }
 
    /* Fetch the RbCb */
    kwDbmFetchDlRbCbByRbId(tKwCb, &datReq->rlcId, &rbCb);
@@ -902,8 +888,6 @@ Buffer          *mBuf;
       RETVALUE(RFAILED);
    }
 
-   /* kw005.201 update the spId received in datReq to update statistics */
-   rbCb->kwuSapId = spId;
    /* Dispatch according to mode of the rbCb */
    switch (rbCb->mode)
    {
@@ -921,23 +905,17 @@ Buffer          *mBuf;
          }
 
          kwTmmQSdu(tKwCb,rbCb, datReq, mBuf);
-         /* kw005.201 ccpu00117318, updated statistics */
-         kwuSap->sts.sduRx++;
          break;
       }
       case CM_LTE_MODE_UM:
       {
          kwUmmQSdu(tKwCb,rbCb, datReq, mBuf);
 
-         /* kw005.201 ccpu00117318, updated statistics */
-         kwuSap->sts.sduRx++;
          break;
       }
       case CM_LTE_MODE_AM:
       {
          kwAmmQSdu(tKwCb,rbCb, mBuf, datReq);
-         /* kw005.201 ccpu00117318, updated statistics */
-         kwuSap->sts.sduRx++;
          break;
       }
       default:

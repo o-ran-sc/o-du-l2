@@ -19,6 +19,10 @@
 #include "du_ue_mgr.h"
 #include "du_cfg.h"
 
+#ifdef EGTP_TEST
+U32 sduId = 0;
+#endif
+
 /******************************************************************
  *
  * @brief Send UE configuration to RLC
@@ -37,23 +41,30 @@ S16 duSendUeCreateReqToRlc()
 {
    U8  idx;
    Pst pst;
-   CkwCfgInfo ueCfg;
+   CkwCfgInfo *ueCfg;
    
    DU_SET_ZERO(&ueCfg, sizeof(ueCfg));
    DU_SET_ZERO(&pst, sizeof(Pst));
 
-   ueCfg.ueId = 1;
-   ueCfg.cellId = NR_CELL_ID;
-   ueCfg.numEnt = 1;
-   
-   for(idx = 0; idx < ueCfg.numEnt; idx++)
-   {
-      ueCfg.entCfg[idx].rbId = 1;
-      ueCfg.entCfg[idx].rbType = CM_LTE_DRB;
-      ueCfg.entCfg[idx].entMode = CM_LTE_MODE_UM;
-      ueCfg.entCfg[idx].dir = CKW_CFG_DIR_BOTH;
+   DU_ALLOC(ueCfg, sizeof(CkwCfgInfo));
 
-      switch(ueCfg.entCfg[idx].entMode)
+#ifdef EGTP_TEST
+   ueCfg->ueId = UE_ID;
+#endif
+   ueCfg->cellId = NR_CELL_ID;
+   ueCfg->numEnt = 1;
+   
+   for(idx = 0; idx < ueCfg->numEnt; idx++)
+   {
+#ifdef EGTP_TEST
+      ueCfg->entCfg[idx].rbId           = RB_ID;
+      ueCfg->entCfg[idx].rbType         = CM_LTE_DRB;
+      ueCfg->entCfg[idx].lCh[0].lChId   = LC_ID;
+      ueCfg->entCfg[idx].lCh[0].type    = CM_LTE_LCH_DTCH;
+#endif
+      ueCfg->entCfg[idx].entMode        = CM_LTE_MODE_UM;
+      ueCfg->entCfg[idx].dir            = CKW_CFG_DIR_BOTH;
+      switch(ueCfg->entCfg[idx].entMode)
       {
          case CM_LTE_MODE_TM:
          {
@@ -62,9 +73,9 @@ S16 duSendUeCreateReqToRlc()
 
          case CM_LTE_MODE_UM:
          {
-            ueCfg.entCfg[idx].m.umInfo.dl.snLen = 1;      /* For 12 bit SN */
-            ueCfg.entCfg[idx].m.umInfo.ul.snLen = 1;      /* For 12 bit SN */
-            ueCfg.entCfg[idx].m.umInfo.ul.reOrdTmr = 10;  /* in msec */
+            ueCfg->entCfg[idx].m.umInfo.dl.snLen = 1;      /* For 12 bit SN */
+            ueCfg->entCfg[idx].m.umInfo.ul.snLen = 1;      /* For 12 bit SN */
+            ueCfg->entCfg[idx].m.umInfo.ul.reOrdTmr = 10;  /* in msec */
             break;
          }
 
@@ -88,10 +99,86 @@ S16 duSendUeCreateReqToRlc()
    pst.region    = duCb.init.region;
 
    /* Sending to RLC */
-   packUeCreateReq(&pst, &ueCfg);
+   packUeCreateReq(&pst, ueCfg);
 
    RETVALUE(ROK); 
 } /* End of duSendUeCreateReqToRlc */
+
+/*******************************************************************
+ *
+ * @brief Handles EGTP data from CU 
+ *
+ * @details
+ *
+ *    Function : duHdlEgtpData
+ *
+ *    Functionality: 
+ *      Processes EGTP header and sends data to RLC
+ *
+ * @params[in]  Pointer to EGTP Message 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 duHdlEgtpDlData(EgtpMsg  *egtpMsg)
+{
+   /* TODO : Extract RbId/UeID/CellID/SduId from database
+      using tunnel id in egtp header */
+   
+   DU_LOG("\nDU_APP : Processing DL data");
+   
+   Pst pst;
+   KwuDatReqInfo datReqInfo;
+
+#ifdef EGTP_TEST
+   datReqInfo.rlcId.rbId = RB_ID;
+   datReqInfo.rlcId.rbType = CM_LTE_DRB;
+   datReqInfo.rlcId.ueId = UE_ID;
+   datReqInfo.rlcId.cellId = NR_CELL_ID;
+   
+   datReqInfo.sduId = ++sduId;
+   datReqInfo.lcType = CM_LTE_LCH_DTCH;
+#endif
+   /* Filling pst and Sending to RLC DL */
+   pst.selector  = DU_SELECTOR_LWLC;
+   pst.srcEnt    = ENTDUAPP;
+   pst.dstEnt    = ENTKW;
+   pst.dstInst   = RLC_DL_INST;
+   pst.dstProcId = DU_PROC;
+   pst.srcProcId = DU_PROC;
+   pst.region    = duCb.init.region;
+
+   cmPkKwuDatReq(&pst, &datReqInfo, egtpMsg->msg);
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Handles UL data and send to CU
+ *
+ * @details
+ *
+ *    Function : duHdlRlcUlData
+ *
+ *    Functionality: 
+ *     Processes UL Data from RLC and sends to CU
+ * 
+ *  @params[in]  Pointer to EGTP Message 
+ *  @return ROK     - success
+ *          RFAILED - failure
+ * 
+ *****************************************************************/
+
+PUBLIC S16 duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
+{
+   DU_LOG("\nDU_APP : Received UL Data at DU_APP");
+ 
+   /* Send UL data to CU via EGTP */
+   duSendEgtpDatInd(mBuf);
+   SPutMsg(mBuf);
+
+   return ROK;
+}
 
 /**********************************************************************
          End of file

@@ -244,14 +244,12 @@ Buffer *mBuf;
 PUBLIC S16 cmPkKwuDatReq
 (
 Pst * pst,
-SpId spId,
 KwuDatReqInfo* datReq,
 Buffer * mBuf
 )
 #else
-PUBLIC S16 cmPkKwuDatReq(pst, spId, datReq, mBuf)
+PUBLIC S16 cmPkKwuDatReq(pst, datReq, mBuf)
 Pst * pst;
-SpId spId;
 KwuDatReqInfo* datReq;
 Buffer * mBuf;
 #endif
@@ -270,7 +268,7 @@ Buffer * mBuf;
    {
      case KWU_SEL_LWLC:
         {
-           if(pst->srcEnt == ENTPJ)
+           if(pst->srcEnt == ENTDUAPP)
            {
              /* When the Selector is LWLC, we need to allocate memory, copy
               * the contents and pass the pointer of the allocated memory. The
@@ -334,7 +332,6 @@ Buffer * mBuf;
           RETVALUE(RFAILED);
    }
 
-    CMCHKPKLOG(SPkS16, spId, mBuf, EKWU011, pst);
 #ifdef L2_L3_SPLIT
     if(datReq->rlcId.rbType == CM_LTE_SRB)
     {
@@ -446,14 +443,12 @@ Buffer *mBuf;
 PUBLIC S16 cmPkKwuDatInd
 (
 Pst * pst,
-SuId suId,
 KwuDatIndInfo* datInd,
 Buffer * mBuf
 )
 #else
-PUBLIC S16 cmPkKwuDatInd(pst, suId, datInd, mBuf)
+PUBLIC S16 cmPkKwuDatInd(pst, datInd, mBuf)
 Pst * pst;
-SuId suId;
 KwuDatIndInfo* datInd;
 Buffer * mBuf;
 #endif
@@ -531,7 +526,6 @@ Buffer * mBuf;
           RETVALUE(RFAILED);
     }
 
-    CMCHKPKLOG(SPkS16, suId, mBuf, EKWU013, pst);
     pst->event = (Event) KWU_EVT_DAT_IND;
 
     RETVALUE(SPstTsk(pst,mBuf));
@@ -1271,9 +1265,6 @@ Buffer *mBuf;
 
    TRC3(cmUnpkKwuDatReq)
 
-
-      CMCHKUNPK(SUnpkS16, &(spId), mBuf);
-
    switch(pst->selector)
    {
       case KWU_SEL_LWLC:
@@ -1312,7 +1303,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
    }
 
-   retVal = (*func)(pst, spId, datReq, mBuf);
+   retVal = (*func)(pst, datReq, mBuf);
    /* If LWLC is configured, we need to
     * free the memory here. */
    if(pst->selector == KWU_SEL_LWLC)
@@ -1363,14 +1354,11 @@ Buffer *mBuf;
 #endif
 {
     S16 ret1 = ROK, retVal;
-    SuId          suId = 0;
     KwuDatIndInfo *datInd = NULLP;
     KwuDatIndInfo datIndTmp;
     
     TRC3(cmUnpkKwuDatInd)
 
-    CMCHKUNPK(SUnpkS16, &(suId), mBuf);
-    
     switch(pst->selector)
     {
       case KWU_SEL_LWLC:
@@ -1423,7 +1411,7 @@ Buffer *mBuf;
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
          RETVALUE(RFAILED);
     }
-    retVal = (*func)(pst, suId, datInd, mBuf);
+    retVal = (*func)(pst, datInd, mBuf);
     /* If LWLC is configured and the destination entity is PDCP, we need to
      * free the memory here. */
     if((pst->selector == KWU_SEL_LWLC) && (pst->dstEnt == ENTPJ))

@@ -303,11 +303,11 @@ RguDDatReqInfo    *datReqInfo;
    } /* For Data per UE */
 
    /* Check if to be freed here */
-   /*
-   SPutSBuf(post->region, 
+   
+   KW_FREE_SHRABL_BUF(post->region, 
             post->pool, 
-            (Data *)datReqInfo, sizeof(RguDDatReqInfo));
-   */
+            datReqInfo, sizeof(RguDDatReqInfo));
+   
    RETVALUE(ROK);
 }/* End of KwLiRguDDatReq */
 

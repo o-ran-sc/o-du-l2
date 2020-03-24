@@ -133,6 +133,11 @@
 #define DU_RANAC 1
 #define CELL_IDENTITY 1
 
+#ifdef EGTP_TEST
+#define UE_ID 1
+#define RB_ID 1
+#define LC_ID 1
+#endif
 
 typedef enum
 {

@@ -35,7 +35,7 @@
 #define __KWH__
 #include "rl_interface.h"
 #include "rl_common.h"
-
+#include "du_log.h"
  
 #define KWLAYERNAME   "LTE RLC"     /* Layer Name */
 

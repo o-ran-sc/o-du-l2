@@ -147,7 +147,7 @@ U8 rrcUeCapabilityInfo[] =
 
    RLOG1(L_INFO,"Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
    printf("Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
-   KwUiKwuDatInd(&ulPst1, 1, datIndInfo, pdu);
+   KwUiKwuDatInd(&ulPst1, datIndInfo, pdu);
  }
  else if(2 == rrcMsgType)
  {
@@ -330,7 +330,7 @@ Buffer     *pdu;
       kwLmmSendTrc(gCb,KWU_EVT_DAT_IND, pdu);
    }
    KwUiKwuDatInd( &gCb->u.ulCb->kwuUlSap->pst, 
-                  gCb->u.ulCb->kwuUlSap->suId, 
+                  //gCb->u.ulCb->kwuUlSap->suId, 
                   datIndInfo, pdu);
    
    RETVOID;

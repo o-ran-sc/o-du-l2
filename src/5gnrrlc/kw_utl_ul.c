@@ -289,7 +289,7 @@ Buffer     *sdu;
    }
 #ifndef KW_PDCP
 
-   KwUiKwuDatInd(&kwKwSap->pst, kwKwSap->suId, datIndInfo, sdu);
+   KwUiKwuDatInd(&gCb->genCfg.lmPst, datIndInfo, sdu);
 #endif   
    RETVALUE(ROK);
 } /* kwUtlSndDatInd */

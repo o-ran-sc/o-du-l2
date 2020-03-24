@@ -298,18 +298,6 @@ CkwCfgInfo   *cfg;
 
    pstUdxCfm = &(tKwCb->u.dlCb->udxDlSap[spId].pst);
    KWDBGP_BRIEF(tKwCb,"spId(%d)\n", spId);
-
-   /* Validate SAP ID under ERRORCLS */
-   KW_VALDATE_SAP(tKwCb,spId, 
-                  (&tKwCb->u.dlCb->udxDlSap[spId]), 
-                  ret);
-   if (ret != ROK)
-   {
-      /* kw002.201 Freeing from proper region */
-      /* only RLC UL will free it KW_PST_FREE(pst->region, pst->pool, cfg, sizeof(CkwCfgInfo)); */
-      RETVALUE(RFAILED);
-   }
-
    /* Allocate memory and memset to 0 for cfmInfo */
    KW_ALLOC_SHRABL_BUF_WC(pstUdxCfm->region,
                           pstUdxCfm->pool,

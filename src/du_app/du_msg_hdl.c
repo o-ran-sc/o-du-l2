@@ -1175,7 +1175,9 @@ S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
       DU_LOG("\nDU_APP : Tunnel management confirm OK");
 
 #ifdef EGTP_TEST
-      duSendEgtpDatInd();
+      duSendUeCreateReqToRlc();
+
+      duSendEgtpTestData();
       
       /* For testing purpose. TTI thread should actually be in L1 */
       duStartTtiThread();
@@ -1190,38 +1192,52 @@ S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
    RETVALUE(ret);
 }
 
+S16 duSendEgtpDatInd(Buffer *mBuf)
+{
+   EgtpMsg  egtpMsg;
+
+   /* Fill EGTP header */
+   egtpMsg.msgHdr.msgType = EGTPU_MSG_GPDU;
+   egtpMsg.msgHdr.nPdu.pres = FALSE;
+   egtpMsg.msgHdr.seqNum.pres = FALSE;
+   egtpMsg.msgHdr.extHdr.udpPort.pres = FALSE;
+   egtpMsg.msgHdr.extHdr.pdcpNmb.pres = FALSE;
+   egtpMsg.msgHdr.teId = 1;
+   egtpMsg.msg = mBuf;
+   
+   egtpHdlDatInd(egtpMsg);
+
+   return ROK;
+
+}
+
 #ifdef EGTP_TEST
 /*******************************************************************
  *
- * @brief Simulate RLC to EGTP data indication 
+ * @brief Simulate UL Data for intial test
  *
  * @details
  *
- *    Function : duSendEgtpDatInd
+ *    Function : duSendEgtpTestData
  *
  *    Functionality:
- *      Simulate RLC to EGTP data indication
+ *      Simulate UL data for initial test
  *
  * @params[in] 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duSendEgtpDatInd()
+S16 duSendEgtpTestData()
 {
    char data[30] = "This is EGTP data from DU";
    int datSize = 30;
 
    Buffer   *mBuf;
-   EgtpMsg  egtpMsg;
 
    if(SGetMsg(DU_APP_MEM_REGION, DU_POOL, &mBuf) == ROK)
    {
-      if(SAddPstMsgMult((Data *)data, datSize, mBuf) == ROK)
-      {
-         SPrntMsg(mBuf, 0,0);
-      }
-      else
+      if(SAddPstMsgMult((Data *)data, datSize, mBuf) != ROK)
       {
          DU_LOG("\nDU_APP : SAddPstMsgMult failed");
          SPutMsg(mBuf);
@@ -1302,19 +1318,8 @@ S16 duSendEgtpDatInd()
 
    /* this function automatically reverses revPkArray */
    ret = SAddPreMsgMult(revPkArray, (MsgLen)cnt, mBuf);
-
-
-   egtpMsg.msgHdr.msgType = EGTPU_MSG_GPDU;
-   egtpMsg.msgHdr.nPdu.pres = FALSE;
-   egtpMsg.msgHdr.seqNum.pres = FALSE;
-   egtpMsg.msgHdr.extHdr.udpPort.pres = FALSE;
-   egtpMsg.msgHdr.extHdr.pdcpNmb.pres = FALSE;
-   egtpMsg.msgHdr.teId = 1;
-   egtpMsg.msg = mBuf;
-
-   SPrntMsg(mBuf, 0, 0);
-
-   egtpHdlDatInd(egtpMsg);
+    
+   duSendEgtpDatInd(mBuf);
  
    RETVALUE(ROK);
 }

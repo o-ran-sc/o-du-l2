@@ -45,7 +45,7 @@ EXTERN "C" {
 /* CKW Interface Hash Defines */
 /* selector(coupling) values */
 #define KWU_SEL_LC              0
-#define KWU_SEL_LWLC            3
+#define KWU_SEL_LWLC            2
 
 /***********************************************************************
         Defines for  KWU Interface Events

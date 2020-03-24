@@ -256,7 +256,7 @@ that are configured below.
 #define MT_BKT_3_DSIZE     4224      /* Fill in this value as required */
 #define MT_BKT_3_NUMBLKS   5248 /*10496 */       /* Fill in this value as required */
 #else
-#define MT_BKT_3_DSIZE     8196      /* Fill in this value as required */
+#define MT_BKT_3_DSIZE     12000      /* Fill in this value as required */
 #define MT_BKT_3_NUMBLKS   1000 /*10496 */       /* Fill in this value as required */
 #endif
 #endif
