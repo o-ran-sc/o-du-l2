@@ -14,7 +14,7 @@
 #   limitations under the License.                                             #
 ################################################################################
 
-# This is makefile for DU APP
+# This is makefile for E2 APP
 
 include ../common/rsys_fancy.mak
 include ../common/env.mak

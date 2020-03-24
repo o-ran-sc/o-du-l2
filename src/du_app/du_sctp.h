@@ -32,6 +32,7 @@
 
 #define DU_SCTP_DOWN 0
 #define DU_SCTP_UP 1
+#define DU_SCTP_CONNECTING 2
 #define MAX_RETRY 5
 
 /* Global variable declaration */
@@ -79,11 +80,11 @@ void sctpAssocReq();
 void sendToDuApp(Buffer *mBuf, Event event);
 S16 sctpSend(Buffer *mBuf, U8 itfType);
 typedef S16 (*SctpNtfy) ARGS((Buffer *mBuf, CmInetSctpNotification *ntfy));
-S16 duSctpCfgReq(SctpParams sctpCfg, CmStatus *cfm);
+S16 duSctpCfgReq(SctpParams sctpCfg);
 S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr);
 S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr);
 S16 establishReq(DuSctpDestCb *paramPtr);
-S16 duSctpAssocReq(U8 itfType, CmStatus *cfm);
+S16 duSctpAssocReq(U8 itfType);
 S16 duFillSctpPst(Pst *pst, Event event);
 S16 sctpSetSockOpts(CmInetFd *sock_Fd);
 S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo, Bool recvMsgSet);

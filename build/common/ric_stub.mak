@@ -14,7 +14,7 @@
 #   limitations under the License.                                             #
 ################################################################################
 
-# This is makefile for CU STUB
+# This is makefile for RIC STUB
 
 include ../common/rsys_fancy.mak
 include ../common/env.mak

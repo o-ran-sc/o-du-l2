@@ -78,4 +78,4 @@ How to execute:
 5. Run ODU binary:
       ./odu
 
-PS: CU stub and RIC stub must be run first
+PS: CU stub and RIC stub must be run (in no particular sequence) before ODU

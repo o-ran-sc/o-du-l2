@@ -31,6 +31,7 @@
 #define MAX_RETRY 5
 #define DU_SCTP_DOWN 0
 #define DU_SCTP_UP 1
+#define DU_SCTP_CONNECTING 2
 
 /* Global variable declaration */
 U8   socket_type;      /* Socket type */

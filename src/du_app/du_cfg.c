@@ -184,6 +184,24 @@ S16 readMacCfg()
 
    RETVALUE(ROK);
 }
+
+/*******************************************************************
+ *
+ * @brief Configures the DU Parameters
+ *
+ * @details
+ *
+ *    Function : fillDuPort
+ *
+ *    Functionality:
+ *       - fills the DU Ports.  
+ *
+ * @params[in] duPort array to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
 S16 fillDuPort(U16 *duPort)
 {
    duPort[F1_INTERFACE]   = DU_PORT;     /* DU Port idx  0 38472 */
@@ -228,12 +246,10 @@ S16 readCfg()
    /* F1 CU IP Address and Port*/
    duCfgParam.sctpParams.cuIpAddr.ipV4Addr = ipv4_cu;
    duCfgParam.sctpParams.cuPort = CU_PORT;
-   duCfgParam.sctpParams.itfType.f1Itf     = F1_INTERFACE;
 
    /* Fill RIC Params */
    duCfgParam.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
    duCfgParam.sctpParams.ricPort            = RIC_PORT;
-   duCfgParam.sctpParams.itfType.e2Itf      = E2_INTERFACE;
 
 
    /* EGTP Parameters */

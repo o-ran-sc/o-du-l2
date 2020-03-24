@@ -837,12 +837,6 @@ typedef struct f1Ipaddr
  U32  ipV4Addr; 
 }F1IpAddr;
 
-typedef struct
-{
-   U8 f1Itf;
-   U8 e2Itf;
-}ItfType;
-
 typedef struct sctpParams
 {
    F1IpAddr  duIpAddr;
@@ -851,7 +845,6 @@ typedef struct sctpParams
    U16       cuPort;
    F1IpAddr  ricIpAddr;
    U16       ricPort;
-   ItfType   itfType;
 }SctpParams;
 
 typedef struct f1EgtpParams

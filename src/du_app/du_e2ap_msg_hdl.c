@@ -27,9 +27,6 @@ DuCfgParams duCfgParam;
 char encBuf[ENC_BUF_MAX_LEN];
 int  encBufSize;
 
-S16 SendE2APMsg(Region , Pool );
-
-
 /*******************************************************************
  *
  * @brief Writes the encoded chunks into a buffer
@@ -165,49 +162,6 @@ S16 BuildGlobalgNB(GlobalE2node_gNB_ID_t *gNbId)
    }
    RETVALUE(ROK);   
 }
-
-#if 0
-RANfunction_ItemIEs_t* BuildRanFuncItems(RANfunction_ItemIEs_t *items)
-{
-   U8 byteSize;
-   U8 tmp;
-   byteSize = 3;
-
-   items->id = ProtocolIE_IDE2_id_RANfunctionID;   
-   items->criticality = CriticalityE2_ignore;   
-   items->value.present = RANfunction_ItemIEs__value_PR_RANfunction_Item;
-
-   items->value.choice.RANfunction_Item.ranFunctionID = 1;
-   BuildPlmn(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, &items->value.choice.RANfunction_Item.ranFunctionDefinition);
-   items->value.choice.RANfunction_Item.ranFunctionRevision = 4; 
-
-   RETVALUE(items);
-}
-
-S16 BuildRANList(RANfunctions_List_t *ranFuncList)
-{
-   U8 elementCnt;
-   U8 eleidx;
-   S16 ret;
-   RANfunction_ItemIEs_t *funcItems;
-
-   elementCnt = 1; 
-   ranFuncList->list.count = elementCnt;
-   ranFuncList->list.size = elementCnt * sizeof(RANfunction_ItemIEs_t);
-   DU_ALLOC(ranFuncList->list.array, \
-             ranFuncList->list.size);
-   if(ranFuncList->list.array == NULLP)
-   {
-      DU_LOG("\nE2AP : Memory allocation for RAN Function List failed");
-      RETVALUE(RFAILED);
-   }
-   /* Fill RAN function Params */
-   DU_ALLOC(ranFuncList->list.array[0], sizeof(RANfunction_ItemIEs_t));
-   BuildRanFuncItems(ranFuncList->list.array[0]);
-
-   RETVALUE(ROK);
-}
-#endif
 
 /*******************************************************************
  *
@@ -557,6 +511,145 @@ S16 BuildAndSendRicSubscriptionRsp()
    
    RETVALUE(ROK);
 }
+/******************************************************************
+*
+* @brief Processes E2 Setup Response sent by RIC
+*
+* @details
+*
+*    Function : procE2SetupRsp
+*
+*    Functionality: Processes E2 Setup Response sent by RIC
+*
+* @params[in] E2AP_PDU_t ASN decoded E2AP message
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+S16 procE2SetupRsp(E2AP_PDU_t *e2apMsg)
+{
+   E2setupResponse_t *e2SetRspMsg;
+   E2apMsgDb e2SetupRspDb;
+   U8 idx; 
+
+   DU_LOG("\nE2AP : E2 Setup Response received"); 
+   duCb.e2Status = TRUE; //Set E2 status as true
+   e2SetRspMsg = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
+
+   for(idx=0; idx<e2SetRspMsg->protocolIEs.list.count; idx++)
+   {
+      switch(e2SetRspMsg->protocolIEs.list.array[idx]->id)
+      {
+         case ProtocolIE_IDE2_id_GlobalRIC_ID:
+         {
+            /* To store the Ric Id Params */
+            U32 recvBufLen;             
+            memset(&e2SetupRspDb.plmn, 0, sizeof(PLMN_IdentityE2_t));
+
+            recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity);
+
+            bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, &e2SetupRspDb.ricId);
+            
+            aper_decode(0, &asn_DEF_PLMN_IdentityE2, (void **)&e2SetupRspDb.plmn, &e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity, recvBufLen, 0, 0);
+            //xer_fprint(stdout, &asn_DEF_PLMN_IdentityE2, &e2SetupRspDb.plmn);
+
+            break;
+         }
+         default:
+            DU_LOG("\nE2AP : Invalid IE received in E2SetupRsp:%ld",
+                  e2SetRspMsg->protocolIEs.list.array[idx]->id);
+            break;
+      }
+   }
+   RETVALUE(ROK);
+}
+
+/******************************************************************
+*
+* @brief Processes RIC Subscription Req sent by RIC
+*
+* @details
+*
+*    Function : procRicSubsReq
+*
+*    Functionality: Processes E2 Setup Response sent by CU
+*
+* @params[in] E2AP_PDU_t ASN decoded E2AP message
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+S16 procRicSubsReq(E2AP_PDU_t *e2apMsg)
+{
+   S16 ret = ROK;
+   U8 idx; 
+   U8 ied; 
+   RICsubscriptionRequest_t *ricSubsReq;
+   RICaction_ToBeSetup_ItemIEs_t *actionItem;
+   E2apMsgDb ricReqDb;
+  
+   DU_LOG("\nE2AP : Ric Subscription request received"); 
+   ricSubsReq = &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionRequest;
+
+   for(idx=0; idx<ricSubsReq->protocolIEs.list.count; idx++)
+   {
+      switch(ricSubsReq->protocolIEs.list.array[idx]->id)
+      {
+         case ProtocolIE_IDE2_id_RICrequestID:
+         {
+            ricReqDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID;
+            ricReqDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID;
+            break;
+         }
+         case ProtocolIE_IDE2_id_RANfunctionID:
+         {
+            ricReqDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RANfunctionID; 
+            break;
+         }
+         case ProtocolIE_IDE2_id_RICsubscriptionDetails:
+         {
+            U32 recvBufLen;             
+            memset(&ricReqDb.ricEventTrigger, 0, sizeof(RICeventTriggerDefinition_t));
+
+            recvBufLen = sizeof(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition);
+
+            aper_decode(0, &asn_DEF_RICeventTriggerDefinition, (void **)&ricReqDb.ricEventTrigger, &(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition), recvBufLen, 0, 0);
+            //xer_fprint(stdout, &asn_DEF_RICeventTriggerDefinition, &ricReqDb.ricEventTrigger);
+
+            actionItem = *ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.list.array;
+            
+            for(ied = 0; ied < ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
+                                RICsubscriptionDetails.ricAction_ToBeSetup_List.list.count; ied++)
+            {
+               switch(actionItem->id)
+               {
+                  case ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item:
+                  {
+                     ricReqDb.ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
+                     ricReqDb.ricActionType = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType;
+                     break;
+                  }
+                  default:
+                     DU_LOG("\nE2AP : Invalid IE received in RicSetupLst:%ld",actionItem->id);
+                  break;
+               }
+            }
+ 
+            break;
+         }
+
+         default:
+            DU_LOG("\nE2AP : Invalid IE received in Ric SubsReq:%ld",
+                  ricSubsReq->protocolIEs.list.array[idx]->id);
+            break;
+      }
+   }
+   ret = BuildAndSendRicSubscriptionRsp();
+
+   RETVALUE(ret);
+}
+
 
 /*******************************************************************
  *
@@ -750,7 +843,7 @@ S16 SendE2APMsg(Region region, Pool pool)
       {
          SPrntMsg(mBuf, 0,0);
  
-         if(sctpSend(mBuf, duCfgParam.sctpParams.itfType.e2Itf) != ROK)
+         if(sctpSend(mBuf, E2_INTERFACE) != ROK)
          {
             DU_LOG("\nE2AP : SCTP Send for E2  failed");
             SPutMsg(mBuf);
@@ -759,7 +852,7 @@ S16 SendE2APMsg(Region region, Pool pool)
       }
       else
       {
-         DU_LOG("\nF1AP : SAddPstMsgMult failed");
+         DU_LOG("\nE2AP : SAddPstMsgMult failed");
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
@@ -767,7 +860,7 @@ S16 SendE2APMsg(Region region, Pool pool)
    }
    else
    {
-      DU_LOG("\nF1AP : Failed to allocate memory");
+      DU_LOG("\nE2AP : Failed to allocate memory");
       RETVALUE(RFAILED);
    }
  
@@ -890,3 +983,7 @@ void E2APMsgHdlr(Buffer *mBuf)
    }/* End of switch(e2apMsg->present) */
  
 } /* End of E2APMsgHdlr */
+
+/**********************************************************************
+         End of file
+**********************************************************************/

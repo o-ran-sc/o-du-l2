@@ -920,7 +920,7 @@ S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
                {
                   DU_LOG("\nDU_APP : SCTP communication UP");
                   //Setup F1-C
-                  if(ntfy->u.assocChange.assocId == f1Params.assocId & (!duCb.f1Status))
+                  if(ntfy->u.assocChange.assocId == f1Params.assocId)
                   {
                      /* Build and send F1 Setup response */
                      if(BuildAndSendF1SetupReq() != ROK)
@@ -929,7 +929,7 @@ S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
                      }
                   }
                   //Setup E2
-                  if(ntfy->u.assocChange.assocId == ricParams.assocId & (!duCb.e2Status))
+                  if(ntfy->u.assocChange.assocId == ricParams.assocId)
                   {
                      /* Build and send F1 Setup response */
                      if(BuildAndSendE2SetupReq() != ROK)
@@ -1398,32 +1398,6 @@ S16 duSendSchCfg()
    return ROK;
 }
 
-/*******************************************************************
- *
- * @brief Checks the status of the received information
- *
- * @details
- *
- *    Function : duCheckReqStatus
- *
- *    Functionality:
- *       Checks the status of the received information
- *
- * @params[in] Confirm status
- * @return ROK     - success
- *         RFAILED - failure
- *
- ******************************************************************/
-S16 duCheckReqStatus(CmStatus *cfm)
-{
-   S16 ret = ROK;
-   if(cfm->status != LCM_PRIM_OK)
-   {
-      DU_LOG("\nDU_APP : Failed to process the request successfully");
-      ret = RFAILED;
-   }
-   RETVALUE(ret); 
-}
 
 /**************************************************************************
  * @brief Function to configure SCTP params and 
@@ -1445,24 +1419,20 @@ S16 duCheckReqStatus(CmStatus *cfm)
 S16 duLayerConfigComplete()
 {
    S16 ret = ROK;
-   CmStatus cfm;
 
    DU_LOG("\nDU_APP : Configuring all Layer is complete");
 
-   duSctpCfgReq(duCfgParam.sctpParams, &cfm);
-   if((ret = duCheckReqStatus(&cfm)) != ROK)
+   if((ret = duSctpCfgReq(duCfgParam.sctpParams)) != ROK)
    {
       DU_LOG("\nDU_APP : Failed configuring Sctp Params");
       ret = RFAILED;
    }
-   duSctpAssocReq(duCfgParam.sctpParams.itfType.f1Itf, &cfm);
-   if((ret = duCheckReqStatus(&cfm)) != ROK)
+	if((ret = duSctpAssocReq(F1_INTERFACE)) != ROK)
    {
       DU_LOG("\nDU_APP : Failed to send AssocReq F1");
       ret = RFAILED;
    }
-   duSctpAssocReq(duCfgParam.sctpParams.itfType.e2Itf, &cfm);
-   if((ret = duCheckReqStatus(&cfm)) != ROK)
+   if((ret = duSctpAssocReq(E2_INTERFACE)) != ROK)
    {
       DU_LOG("\nDU_APP : Failed to send AssocReq E2");
       ret = RFAILED;

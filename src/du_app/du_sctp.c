@@ -82,7 +82,7 @@ S16 sctpActvTsk(Pst *pst, Buffer *mBuf)
          {
             switch(pst->event)
             {
-               case EVTSTRTPOLL:
+               case EVTSTARTPOLL:
                {
                   sctpSockPoll();
                   break;
@@ -93,6 +93,32 @@ S16 sctpActvTsk(Pst *pst, Buffer *mBuf)
    }
    SExitTsk();
    return ROK;
+}
+/*******************************************************************
+ *
+ * @brief Checks the status of the received information
+ *
+ * @details
+ *
+ *    Function : duCheckReqStatus
+ *
+ *    Functionality:
+ *       Checks the status of the received information
+ *
+ * @params[in] Confirm status
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+S16 duCheckReqStatus(CmStatus *cfm)
+{
+   S16 ret = ROK;
+   if(cfm->status != LCM_PRIM_OK)
+   {
+      DU_LOG("\nDU_APP : Failed to process the request successfully");
+      ret = RFAILED;
+   }
+   RETVALUE(ret); 
 }
 
 /**************************************************************************
@@ -114,15 +140,18 @@ S16 sctpActvTsk(Pst *pst, Buffer *mBuf)
  *
  ***************************************************************************/
 
-S16 duSctpCfgReq(SctpParams sctpCfg, CmStatus *cfm)
+S16 duSctpCfgReq(SctpParams sctpCfg)
 {
+   S16 ret = ROK;
+	CmStatus cfm;
+
 /* Fill F1 Params */
    f1Params.destIpAddr.ipV4Pres  = sctpCfg.cuIpAddr.ipV4Pres;
    f1Params.destIpAddr.ipV4Addr  = sctpCfg.cuIpAddr.ipV4Addr;
    f1Params.destPort             = sctpCfg.cuPort;
    f1Params.itfState             = DU_SCTP_DOWN;
-   f1Params.srcPort              = sctpCfg.duPort[0];
-   f1Params.recvMsgSet          = ROK;
+   f1Params.srcPort              = sctpCfg.duPort[F1_INTERFACE];
+   f1Params.recvMsgSet           = ROK;
    cmMemset ((U8 *)&f1Params.sockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&f1Params.destIpNetAddr, &f1Params.destIpAddr);
    fillAddrLst(&f1Params.destAddrLst, &f1Params.destIpAddr);
@@ -132,8 +161,8 @@ S16 duSctpCfgReq(SctpParams sctpCfg, CmStatus *cfm)
    ricParams.destIpAddr.ipV4Addr = sctpCfg.ricIpAddr.ipV4Addr;
    ricParams.destPort            = sctpCfg.ricPort;
    ricParams.itfState            = DU_SCTP_DOWN;
-   ricParams.srcPort             = sctpCfg.duPort[1];
-   ricParams.recvMsgSet         = ROK;
+   ricParams.srcPort             = sctpCfg.duPort[E2_INTERFACE];
+   ricParams.recvMsgSet          = ROK;
    cmMemset ((U8 *)&ricParams.sockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&ricParams.destIpNetAddr, &ricParams.destIpAddr);
    fillAddrLst(&ricParams.destAddrLst, &ricParams.destIpAddr);
@@ -145,10 +174,12 @@ S16 duSctpCfgReq(SctpParams sctpCfg, CmStatus *cfm)
    pollingState = FALSE;  
 
 /* Fill Cfm Status */
-   cfm->status = LCM_PRIM_OK;
-   cfm->reason = LCM_REASON_NOT_APPL;
+   cfm.status = LCM_PRIM_OK;
+   cfm.reason = LCM_REASON_NOT_APPL;
 
-   RETVALUE(ROK);
+   ret = duCheckReqStatus(&cfm);
+
+   RETVALUE(ret);
 }
 
 /*******************************************************************
@@ -263,11 +294,11 @@ S16 establishReq(DuSctpDestCb *paramPtr)
       paramPtr->itfState = DU_SCTP_UP;
    }
 
-   /* Post the EVTSTRTPOLL Msg */
+   /* Post the EVTSTARTPOLL Msg */
    if(!pollingState)
    {
       pollingState = TRUE;
-      duFillSctpPst(&pst, EVTSTRTPOLL);
+      duFillSctpPst(&pst, EVTSTARTPOLL);
    }
    
    RETVALUE(ret);
@@ -292,10 +323,12 @@ S16 establishReq(DuSctpDestCb *paramPtr)
  *
  *******************************************************************************/
 
-S16 duSctpAssocReq(U8 itfType, CmStatus *cfm)
+S16 duSctpAssocReq(U8 itfType)
 {
    S16 ret = ROK;
+	CmStatus cfm;
    DuSctpDestCb *paramPtr = NULLP;
+
    if(SGetSBuf(DU_APP_MEM_REGION, DU_POOL, (Data **)&paramPtr, (Size)sizeof(DuSctpDestCb)) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
@@ -324,14 +357,15 @@ S16 duSctpAssocReq(U8 itfType, CmStatus *cfm)
    if(ret != ROK)
    { 
       DU_LOG("\nSCTP : ASSOC Req Failed.");
-      cfm->status = LCM_PRIM_NOK;
-      cfm->reason = LCM_REASON_NOT_APPL;
+      cfm.status = LCM_PRIM_NOK;
+      cfm.reason = LCM_REASON_NOT_APPL;
    }
    else
    {
-      cfm->status = LCM_PRIM_OK;
-      cfm->reason = LCM_REASON_NOT_APPL;
+      cfm.status = LCM_PRIM_OK;
+      cfm.reason = LCM_REASON_NOT_APPL;
    }
+   ret = duCheckReqStatus(&cfm);
 
    RETVALUE(ret);
 }

@@ -16,7 +16,7 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains all F1AP message handler related functionality */
+/* This file contains all E2AP message handler related functionality */
 #include<stdio.h>
 #include<sys/types.h>
 #include<string.h>
@@ -57,6 +57,7 @@ typedef struct e2apDb
 }E2apMsgDb;
 
 S16 BuildAndSendE2SetupReq();
+S16 SendE2APMsg(Region , Pool );
 void E2APMsgHdlr(Buffer *mBuf);
 
 /**********************************************************************
