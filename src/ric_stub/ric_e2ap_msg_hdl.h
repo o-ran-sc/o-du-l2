@@ -20,7 +20,7 @@
 #include<stdio.h>
 #include<sys/types.h>
 #include<string.h>
-#include<ProtocolIE-FieldE2.h>
+#include "ProtocolIE-FieldE2.h"
 #include "E2AP-PDU.h"
 
 #include "envopt.h"        /* Environment options */
@@ -73,11 +73,9 @@
 
 
 
-extern char encBuf[ENC_BUF_MAX_LEN];
-int  encBufSize;
-
 void E2APMsgHdlr(Buffer *mBuf);
 S16 BuildAndSendE2SetupReq();
+S16 SendE2APMsg(Region , Pool );
 
 /**********************************************************************
          End of file

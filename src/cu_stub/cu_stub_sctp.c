@@ -103,14 +103,11 @@ S16 sctpCfgReq()
    f1Params.destPort             = sctpCfg.duPort;
    f1Params.srcPort              = sctpCfg.cuPort;
    f1Params.bReadFdSet           = ROK;
-   cmMemset ((U8 *)&f1Params.sockFd, -1, sizeof(CmInetFd));
-   cmMemset ((U8 *)&f1Params.lstnSockFd, -1, sizeof(CmInetFd));
+   memset(&f1Params.sockFd, -1, sizeof(CmInetFd));
+   memset(&f1Params.lstnSockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&f1Params.destIpNetAddr, &sctpCfg.duIpAddr);
 
-/* Set polling to FALSE */
-   pollingState = FALSE;  
-
- RETVALUE(ROK);
+   RETVALUE(ROK);
 }
 
 
@@ -225,7 +222,7 @@ S16 sctpStartReq()
  * ****************************************************************/
 S16 sctpSetSockOpts(CmInetFd *sock_Fd)
 {
-   S16  ret = ROK;
+   S16 ret = ROK;
    CmSctpEvent sctpEvent;
   
    sctpEvent.dataIoEvent          = TRUE;
@@ -265,6 +262,7 @@ S16 sctpSetSockOpts(CmInetFd *sock_Fd)
 S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd)
 {
    U8  ret;
+
    ret = cmInetListen(lstnSock_Fd, 1);
    if (ret != ROK)
    {
@@ -470,12 +468,12 @@ S16 sctpSockPoll()
  *         RFAILED - failure
  *
  * ****************************************************************/
-  
+
 S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo)
 {
    U16 ret = ROK;
    CM_INET_FD_SET(sockFd, &pollParams->readFd);
-   ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFds);
+   ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFd);
    if(CM_INET_FD_ISSET(sockFd, &pollParams->readFd))
    {
       CM_INET_FD_CLR(sockFd, &pollParams->readFd);

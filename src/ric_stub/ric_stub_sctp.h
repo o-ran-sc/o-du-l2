@@ -21,6 +21,7 @@
 #ifndef __RIC_SCTP_H__
 #define __RIC_SCTP_H__
 
+#include "stdbool.h"
 #include "ric_stub.h"
 #include "cm_inet.h"
 #include "cm_tpt.h"
@@ -29,41 +30,38 @@
 #include "cm_tpt.x"
 
 #define MAX_RETRY 5
-#define DU_SCTP_UP 1
-#define DU_SCTP_DOWN 0
 
 /* Global variable declaration */
 U8   socket_type;      /* Socket type */
-Bool nonblocking;      /* Blocking/Non-blocking socket */
-Bool connUp;           /* Is connection up */
+bool nonblocking;      /* Blocking/Non-blocking socket */
+bool connUp;           /* Is connection up */
 int  assocId;          /* Assoc Id of connected assoc */
   
-SctpParamsRic sctpCfg;            /* SCTP configurations at DU */
+RicSctpParams sctpCfg;            /* SCTP configurations at DU */
 typedef struct
 {
-   S16           numFds;
-   U16           port;   
-   U32           flag;
-   Buffer        *mBuf;
-   MsgLen        bufLen; 
-   CmInetNetAddr addr;
-   CmInetFdSet      readFd;
+   uint16_t           numFd;
+   uint16_t           port;   
+   uint32_t           flag;
+   Buffer            *mBuf;
+   MsgLen             bufLen; 
+   CmInetNetAddr      addr;
+   CmInetFdSet        readFd;
    CmInetSctpSndRcvInfo   info;
    CmInetSctpNotification ntfy;
 }sctpSockPollParams;
 
 typedef struct
 {
-   U8               itfState;
-   U16              destPort;         /* DU PORTS */
-   U16              srcPort;
-   Bool             bReadFdSet;
-   CmInetFd         sockFd;           /* Socket file descriptor */
-   CmInetAddr       peerAddr;
-   CmInetFd         lstnSockFd;       /* Listening Socket file descriptor */
-   CmInetNetAddrLst destAddrLst;      /* DU Ip address */
-   CmInetNetAddrLst localAddrLst;
-   CmInetNetAddr    destIpNetAddr;    /* DU Ip address */ 
+   uint16_t              destPort;         /* DU PORTS */
+   uint16_t              srcPort;
+   bool                  bReadFdSet;
+   CmInetFd              sockFd;           /* Socket file descriptor */
+   CmInetAddr            peerAddr;
+   CmInetFd              lstnSockFd;       /* Listening Socket file descriptor */
+   CmInetNetAddrLst      destAddrLst;      /* DU Ip address */
+   CmInetNetAddrLst      localAddrLst;
+   CmInetNetAddr         destIpNetAddr;    /* DU Ip address */ 
 }CuSctpDestCb;
 
 EXTERN S16 sctpActvInit();
