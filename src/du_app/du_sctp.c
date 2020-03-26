@@ -291,7 +291,7 @@ S16 establishReq(DuSctpDestCb *paramPtr)
    }
    if((ret == ROK) & (paramPtr->itfState == DU_SCTP_DOWN))
    {
-      paramPtr->itfState = DU_SCTP_UP;
+      paramPtr->itfState = DU_SCTP_CONNECTING;
    }
 
    /* Post the EVTSTARTPOLL Msg */
@@ -505,7 +505,7 @@ void sendToDuApp(Buffer *mBuf, Event event)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy)
+S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
 {
    Pst pst;
 
@@ -517,23 +517,23 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy)
          {
             case CM_INET_SCTP_COMM_UP:
                DU_LOG("Event : COMMUNICATION UP");
-               connUp = TRUE;
+               *itfState = DU_SCTP_UP;
                break;
             case CM_INET_SCTP_COMM_LOST:
                DU_LOG("Event : COMMUNICATION LOST");
-               connUp = FALSE;
+               *itfState = DU_SCTP_DOWN;
                break;
             case CM_INET_SCTP_RESTART:
                DU_LOG("Event : SCTP RESTART");
-               connUp = FALSE;
+               *itfState = DU_SCTP_DOWN;
                break;
             case CM_INET_SCTP_SHUTDOWN_COMP: /* association gracefully shutdown */
                DU_LOG("Event : SHUTDOWN COMPLETE");
-               connUp = FALSE;
+               *itfState = DU_SCTP_DOWN;
                break;
             case CM_INET_SCTP_CANT_STR_ASSOC:
                DU_LOG("Event : CANT START ASSOC");
-               connUp = FALSE;
+               *itfState = DU_SCTP_DOWN;
                break;
             default:
                DU_LOG("\nInvalid event");
@@ -552,7 +552,7 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy)
          break;
       case CM_INET_SCTP_SHUTDOWN_EVENT : /* peer socket gracefully closed */
          DU_LOG("\nSCTP : Shutdown Event notification received\n");
-         connUp = FALSE;
+         *itfState = DU_SCTP_DOWN;
          exit(0);
          break;
       case CM_INET_SCTP_ADAPTATION_INDICATION :
@@ -616,13 +616,13 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
 {
    U16 ret = ROK;
    CM_INET_FD_SET(sockFd, &pollParams->readFd);
-   ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFds);
+   ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFd);
    if(CM_INET_FD_ISSET(sockFd, &pollParams->readFd))
    {
       CM_INET_FD_CLR(sockFd, &pollParams->readFd);
       ret = cmInetSctpRecvMsg(sockFd, &pollParams->addr, &pollParams->port, memInfo, &(pollParams->mBuf), &pollParams->bufLen, &pollParams->info, &pollParams->flag, &pollParams->ntfy);
         
-      if(connUp && ret != ROK)
+      if(ret != ROK)
       {
          DU_LOG("\n SCTP: Failed to receive sctp msg for sockFd[%d]\n", sockFd->fd);
          recvMsgSet = RFAILED;
@@ -635,27 +635,29 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
             {
                f1Params.assocId = pollParams->ntfy.u.assocChange.assocId;
                DU_LOG("\nSCTP : AssocId assigned to F1Params from PollParams [%d]\n", f1Params.assocId);
+               ret = sctpNtfyHdlr(&pollParams->ntfy, &f1Params.itfState);
             }
             else if(pollParams->port == ricParams.destPort)
             {
                ricParams.assocId = pollParams->ntfy.u.assocChange.assocId;
                DU_LOG("\nSCTP : AssocId assigned to ricParams from PollParams [%d]\n", ricParams.assocId);
+               ret = sctpNtfyHdlr(&pollParams->ntfy, &ricParams.itfState);
             }
             else
             {
                DU_LOG("\nSCTP : Failed to fill AssocId\n");
-            }  
-            ret = sctpNtfyHdlr(&pollParams->ntfy);
+               RETVALUE(RFAILED);
+            }
             if(ret != ROK)
             {
                DU_LOG("\nSCTP : Failed to process sctp notify msg\n");
             }
          }
-         else if(connUp & (pollParams->port == f1Params.destPort))
+         else if(f1Params.itfState & (pollParams->port == f1Params.destPort))
          {  
-            sendToDuApp(pollParams->mBuf, EVTSCTPDATA);
+            sendToDuApp(pollParams->mBuf, EVTCUDATA);
          }
-         else if(connUp & (pollParams->port == ricParams.destPort))
+         else if(ricParams.itfState & (pollParams->port == ricParams.destPort))
          {  
             sendToDuApp(pollParams->mBuf, EVTRICDATA);
          }
