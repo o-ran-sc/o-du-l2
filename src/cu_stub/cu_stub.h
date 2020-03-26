@@ -47,6 +47,7 @@
 #include "cm_inet.x"
 #include "cm_llist.x"      /* Common link list  defines  */
 #include "cm_hash.x"       /* Common hashlist  defines */
+#include "odu_common_codec.h"
 
 #include "du_log.h"
 #define MAX_IPV6_LEN 16
@@ -89,12 +90,6 @@ typedef struct RrcVersion
   U32   extRrcVer;  /* Latest RRC version extended */
 }RrcVersion;
 
-typedef struct
-{
-   U8 f1Itf;
-   U8 e2Itf;
-}ItfType;
-
 typedef struct egtpParams
 {
    SctpIpAddr  localIp;
@@ -105,28 +100,20 @@ typedef struct egtpParams
    U32       maxTunnelId;
 }EgtpParams;
 
-typedef struct sctpParamsCu
+typedef struct CuSctpParams
 {
    SctpIpAddr  duIpAddr;
    U16         duPort;
    SctpIpAddr  cuIpAddr;
    U16         cuPort;
-   ItfType     itfType;
-}SctpParamsCu;
-
-typedef struct fPLMN
-{
-   U8 mcc[3];
-   U8 mnc[3];
-}Plmn;
-
+}CuSctpParams;
 
 typedef struct cuCfgParams
 {
    U32              cuId;
    char             cuName[CU_DU_NAME_LEN_MAX];
-   SctpParamsCu     sctpParams;
-   Plmn            plmn;
+   CuSctpParams     sctpParams;
+   Plmn             plmn;
    EgtpParams       egtpParams;
    RrcVersion       rrcVersion;
 }CuCfgParams;

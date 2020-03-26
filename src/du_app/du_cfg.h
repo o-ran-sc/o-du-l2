@@ -22,7 +22,7 @@
 #include "stdbool.h"
 #include "du_app_mac_inf.h"
 #include "du_log.h"
-#include "BIT_STRING.h"
+#include "odu_common_codec.h"
 
 /* MACROS */
 #define DU_INST 0
@@ -47,6 +47,7 @@
 #define PLMN_MNC0 4
 #define PLMN_MNC1 8
 #define PLMN_MNC2 0
+#define PLMN_SIZE 3
 #define NR_ARFCN  2079427
 #define SUL_ARFCN 100
 #define NR_FREQ_BAND 257
@@ -393,15 +394,9 @@ typedef struct f1ResetType
    }type;
 }F1ResetType;
 
-typedef struct f1PLMN
-{
-  uint8_t mcc[3];
-  uint8_t mnc[3];
-}PlmnId;
-
 typedef struct nrEcgi
 {
-  PlmnId  plmn;
+  Plmn  plmn;
   uint16_t     cellId;
 }NrEcgi;
 
@@ -505,14 +500,14 @@ typedef struct f1TaiSliceSuppLst
 
 typedef struct f1SrvdPlmn
 {
-   PlmnId              plmn;
+   Plmn              plmn;
    F1TaiSliceSuppLst   taiSliceSuppLst;
 }F1SrvdPlmn;
 
 typedef struct f1BrdcstPlmnInfo
 {
-   PlmnId   plmn[MAX_PLMN];     /* PLMN id list */
-   PlmnId   extPlmn[MAX_PLMN];   /* Extended PLMN id list */
+   Plmn   plmn[MAX_PLMN];     /* PLMN id list */
+   Plmn   extPlmn[MAX_PLMN];   /* Extended PLMN id list */
    uint16_t      tac;                     /* 5GS-TAC */
    uint32_t      nrCellId;                /* NR Cell id */
    uint8_t       ranac;                   /* RAN Area code */
@@ -522,8 +517,8 @@ typedef struct f1CellInfo
 {
    NrEcgi   nrCgi;                   /* Cell global Identity */
    uint32_t      nrPci;                   /* Physical Cell Identity */
-   PlmnId   plmn[MAX_PLMN];     /* Available PLMN list */
-   PlmnId   extPlmn[MAX_PLMN];  /* Extended available PLMN list */
+   Plmn   plmn[MAX_PLMN];     /* Available PLMN list */
+   Plmn   extPlmn[MAX_PLMN];  /* Extended available PLMN list */
 }F1CellInfo;
 
 typedef struct f1DuCellInfo
@@ -666,7 +661,7 @@ typedef struct f1UacType
 /* Unified Access Class Assistance Information */
 typedef struct f1UacAssistInfo
 {
-   PlmnId      plmn[MAXNUMOFUACPLMN];        /* UAC PLMN list */
+   Plmn      plmn[MAXNUMOFUACPLMN];        /* UAC PLMN list */
    F1UacType   uacType[MAXNUMOFUACPERPLMN];  /* UAC Type list */
 }F1UacAssistInfo;
 
@@ -889,7 +884,7 @@ typedef struct mibParams
 
 typedef struct sib1Params
 {
-	PlmnId    plmn;
+	Plmn    plmn;
 	uint8_t   tac;
 	long      ranac;
 	uint8_t   cellIdentity;
@@ -898,18 +893,17 @@ typedef struct sib1Params
 
 typedef struct duCfgParams
 {
-   SctpParams         sctpParams;                    /* SCTP Params */
-   F1EgtpParams       egtpParams;                    /* EGTP Params */
+   SctpParams         sctpParams;                  /* SCTP Params */
+   F1EgtpParams       egtpParams;                  /* EGTP Params */
    uint32_t           maxUe;
    uint32_t           duId;
    uint8_t            duName[CU_DU_NAME_LEN_MAX];
    SchedulerCfg       schedCfg;
-   F1DuSrvdCellInfo   srvdCellLst[DU_MAX_CELLS];   /* Serving cell list *///TODO: this must be removed eventually
-   F1RrcVersion       rrcVersion;                    /* RRC version */
-
-   MacCellCfg	      macCellCfg;	/* MAC cell configuration */
-   MibParams          mibParams;                     /* MIB Params */
-	Sib1Params         sib1Params;                    /* SIB1 Params */
+   F1DuSrvdCellInfo   srvdCellLst[DU_MAX_CELLS];  /* Serving cell list *///TODO: this must be removed eventually
+   F1RrcVersion       rrcVersion;                 /* RRC version */
+   MacCellCfg	       macCellCfg;	              /* MAC cell configuration */
+   MibParams          mibParams;                  /* MIB Params */
+   Sib1Params         sib1Params;                 /* SIB1 Params */
 }DuCfgParams;
 
 /*function declarations */

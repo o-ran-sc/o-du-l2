@@ -23,112 +23,6 @@
 
 /* Global variable */
 DuCfgParams duCfgParam;
-char encBuf[ENC_BUF_MAX_LEN];
-int  encBufSize;
-
-/*******************************************************************
- *
- * @brief Writes the encoded chunks into a buffer
- *
- * @details
- *
- *    Function : PrepFinalEncBuf
- *
- *    Functionality:Fills the encoded buffer
- *
- * @params[in] void *buffer,initial encoded data
- * @params[in] size_t size,size of buffer
- * @params[in] void *encodedBuf,final buffer
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-static int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
-{
-   memcpy(encodedBuf + encBufSize, buffer, size);
-   encBufSize += size;
-   return 0;
-} /* PrepFinalEncBuf */
-
-/*******************************************************************
- *
- * @brief Builds PLMN ID 
- *
- * @details
- *
- *    Function : BuildPlmnId
- *
- *    Functionality: Building the PLMN ID
- *
- * @params[in] PLMNID plmn
- *             OCTET_STRING_t *plmnid
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 BuildPlmnId(PlmnId plmn, OCTET_STRING_t *plmnid)
-{
-   U8 mncCnt;
-   plmnid->size = 3;
-   DU_ALLOC(plmnid->buf,  plmnid->size * sizeof(U8));
-   if(plmnid->buf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
-   mncCnt = 2;
-   plmnid->buf[0] = ((plmn.mcc[1] << 4) | (plmn.mcc[0]));
-   if(mncCnt == 2)
-   {
-      plmnid->buf[1]  = ((0xf0) | (plmn.mcc[2]));
-      plmnid->buf[2] = ((plmn.mnc[1] << 4) | (plmn.mnc[0]));
-   }
-   else
-   {
-      plmnid->buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
-      plmnid->buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
-   }
-  RETVALUE(ROK);
-}
-
-/*******************************************************************
- *
- * @brief Builds NodeB Id
- *
- * @details
- *
- *    Function : BuildNodeBId
- *
- *    Functionality: Building the NodeBId
- *
- * @params[in] BIT_STRING_t *nbid,
- *             U8 unusedBits
- *             U8 byteSize
- *             U8 val
- *
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 BuildNodeBId(BIT_STRING_t *nbid, U8 unusedBits, U8 byteSize, U8 val)
-{
-   U8 tmp;
-   nbid->size = byteSize;
-   DU_ALLOC(nbid->buf, nbid->size * sizeof(U8));
-   if(nbid->buf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
-
-   for (tmp = 0 ; tmp < ((nbid->size)-1); tmp++)
-   {
-      nbid->buf[tmp] = 0;
-   }
-   nbid->buf[byteSize-1] = val; 
-   nbid->bits_unused = unusedBits;
-   RETVALUE(ROK);
-}
 
 /*******************************************************************
  *
@@ -153,13 +47,20 @@ S16 BuildGlobalgNB(GlobalE2node_gNB_ID_t *gNbId)
    U8 val = 1;
    if(gNbId != NULLP)
    {
-      BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
+      /* Allocate Buffer size */ 
+      gNbId->global_gNB_ID.plmn_id.size = 3 * sizeof(U8);
+      DU_ALLOC(gNbId->global_gNB_ID.plmn_id.buf , gNbId->global_gNB_ID.plmn_id.size);
+      buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
        &gNbId->global_gNB_ID.plmn_id); 
+
       /* fill gND Id */
-      gNbId->global_gNB_ID.gnb_id.present = GNB_ID_Choice_PR_gnb_ID; 
-      BuildNodeBId(&gNbId->global_gNB_ID.gnb_id.choice.gnb_ID, unused, byteSize, val);
+      gNbId->global_gNB_ID.gnb_id.present = GNB_ID_Choice_PR_gnb_ID;
+      /* Allocate Buffer size */ 
+      gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size = byteSize * sizeof(U8);
+      DU_ALLOC(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf, gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size);
+      fillBitString(&gNbId->global_gNB_ID.gnb_id.choice.gnb_ID, unused, byteSize, val);
    }
-   RETVALUE(ROK);   
+   return ROK;   
 }
 
 /*******************************************************************
@@ -193,7 +94,7 @@ S16 BuildAndSendE2SetupReq()
    if(e2apMsg == NULLP)
    {
       DU_LOG("\nE2AP : Memory allocation for E2AP-PDU failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
@@ -202,7 +103,7 @@ S16 BuildAndSendE2SetupReq()
    {
       DU_LOG("\nE2AP : Memory allocation for E2AP-PDU failed");
       DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
    e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_E2setup;
@@ -224,7 +125,7 @@ S16 BuildAndSendE2SetupReq()
       DU_LOG("\nE2AP : Memory allocation for E2RequestIEs failed");
       DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       DU_FREE(e2apMsg, (Size)sizeof(E2AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    for(idx=0; idx<elementCnt; idx++)
@@ -243,7 +144,7 @@ S16 BuildAndSendE2SetupReq()
          DU_FREE(e2apMsg->choice.initiatingMessage, \
                sizeof(InitiatingMessageE2_t));
          DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -273,7 +174,7 @@ S16 BuildAndSendE2SetupReq()
    {
 	   DU_LOG("\nE2AP : Could not encode E2SetupRequest structure (at %s)\n",\
 			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	   RETVALUE(RFAILED);
+	   return RFAILED;
    }
    else
    {
@@ -287,10 +188,10 @@ S16 BuildAndSendE2SetupReq()
    if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
    {
 	   DU_LOG("\nE2AP : Sending E2 Setup request failed");
-	   RETVALUE(RFAILED);
+	   return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }/* End of BuildAndSendE2SetupReq */
 
 /*******************************************************************
@@ -316,7 +217,7 @@ S16 BuildRicRequestId(RICrequestID_t *ricReqId)
       ricReqId->ricRequestorID = 1;
       ricReqId->ricInstanceID  = 1;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -345,7 +246,7 @@ S16 fillRicAdmitList(RICaction_Admitted_ItemIEs_t *ricAdmitItems)
       ricAdmitItems->value.present = RICaction_Admitted_ItemIEs__value_PR_RICaction_Admitted_Item;
       ricAdmitItems->value.choice.RICaction_Admitted_Item.ricActionID = 1; 
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 /*******************************************************************
  *
@@ -374,12 +275,12 @@ S16 BuildRicAdmitList(RICaction_Admitted_List_t *admitListPtr)
    if(admitListPtr->list.array == NULLP)
    {
       DU_LOG("\nE2AP : Memory allocation for RIC Admit List failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    DU_ALLOC(admitListPtr->list.array[0], sizeof(RICaction_Admitted_ItemIEs_t));
    fillRicAdmitList(admitListPtr->list.array[0]);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -413,7 +314,7 @@ S16 BuildAndSendRicSubscriptionRsp()
    if(e2apRicMsg == NULLP)
    {
       DU_LOG("\nE2AP : Memory allocation for E2AP-PDU failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    e2apRicMsg->present =  E2AP_PDU_PR_successfulOutcome;
    DU_ALLOC(e2apRicMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
@@ -421,7 +322,7 @@ S16 BuildAndSendRicSubscriptionRsp()
    {
       DU_LOG("\nE2AP : Memory allocation for Ric subscription Response failed");
       DU_FREE(e2apRicMsg, sizeof(RICsubscriptionResponse_t));
-      RETVALUE(RFAILED);  
+      return RFAILED;  
    }
 
    e2apRicMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscription;
@@ -441,7 +342,7 @@ S16 BuildAndSendRicSubscriptionRsp()
       DU_LOG("\nE2AP : Memory allocation for RICsubscriptionResponseIE failed");
       DU_FREE(e2apRicMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       DU_FREE(e2apRicMsg, sizeof(E2AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for(idx=0; idx<elementCnt; idx++)
@@ -455,7 +356,7 @@ S16 BuildAndSendRicSubscriptionRsp()
          DU_FREE(e2apRicMsg->choice.successfulOutcome, \
                sizeof(SuccessfulOutcomeE2_t));
          DU_FREE(e2apRicMsg, sizeof(E2AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }    
    }
    idx = 0;
@@ -491,7 +392,7 @@ S16 BuildAndSendRicSubscriptionRsp()
    {
 	   DU_LOG("\nE2AP : Could not encode RIC Subscription Response structure (at %s)\n",\
 			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	   RETVALUE(RFAILED);
+	   return RFAILED;
    }
    else
    {
@@ -505,10 +406,10 @@ S16 BuildAndSendRicSubscriptionRsp()
    if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
    {
       DU_LOG("\nE2AP : Sending RIC Subscription Response failed");      
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
-   RETVALUE(ROK);
+   return ROK;
 }
 /******************************************************************
 *
@@ -548,10 +449,10 @@ S16 procE2SetupRsp(E2AP_PDU_t *e2apMsg)
             recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity);
 
             bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, &e2SetupRspDb.ricId);
-            
-            aper_decode(0, &asn_DEF_PLMN_IdentityE2, (void **)&e2SetupRspDb.plmn, &e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity, recvBufLen, 0, 0);
-            //xer_fprint(stdout, &asn_DEF_PLMN_IdentityE2, &e2SetupRspDb.plmn);
+            aper_decode(0, &asn_DEF_PLMN_IdentityE2, (void **)&e2SetupRspDb.plmn, \
+              &e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity, recvBufLen, 0, 0);
 
+            xer_fprint(stdout, &asn_DEF_PLMN_IdentityE2, &e2SetupRspDb.plmn);
             break;
          }
          default:
@@ -560,7 +461,7 @@ S16 procE2SetupRsp(E2AP_PDU_t *e2apMsg)
             break;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /******************************************************************
@@ -597,13 +498,16 @@ S16 procRicSubsReq(E2AP_PDU_t *e2apMsg)
       {
          case ProtocolIE_IDE2_id_RICrequestID:
          {
-            ricReqDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID;
-            ricReqDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID;
+            ricReqDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->\
+                                   value.choice.RICrequestID.ricRequestorID;
+            ricReqDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]-> \
+                                       value.choice.RICrequestID.ricInstanceID;
             break;
          }
          case ProtocolIE_IDE2_id_RANfunctionID:
          {
-            ricReqDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RANfunctionID; 
+            ricReqDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]-> \
+                                   value.choice.RANfunctionID; 
             break;
          }
          case ProtocolIE_IDE2_id_RICsubscriptionDetails:
@@ -614,7 +518,7 @@ S16 procRicSubsReq(E2AP_PDU_t *e2apMsg)
             recvBufLen = sizeof(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition);
 
             aper_decode(0, &asn_DEF_RICeventTriggerDefinition, (void **)&ricReqDb.ricEventTrigger, &(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition), recvBufLen, 0, 0);
-            //xer_fprint(stdout, &asn_DEF_RICeventTriggerDefinition, &ricReqDb.ricEventTrigger);
+            xer_fprint(stdout, &asn_DEF_RICeventTriggerDefinition, &ricReqDb.ricEventTrigger);
 
             actionItem = *ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.list.array;
             
@@ -682,7 +586,7 @@ S16 BuildAndSendRicIndication()
    if(e2apMsg == NULLP)
    {
       DU_LOG("\nE2AP : Memory allocation for E2AP-PDU failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
@@ -691,7 +595,7 @@ S16 BuildAndSendRicIndication()
    {
       DU_LOG("\nE2AP : Memory allocation for E2AP-PDU failed");
       DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_RICindication;
    e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
@@ -713,7 +617,7 @@ S16 BuildAndSendRicIndication()
       DU_LOG("\nE2AP : Memory allocation for RICindicationIEs failed");
       DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       DU_FREE(e2apMsg, (Size)sizeof(E2AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    for(idx=0; idx<elementCnt; idx++)
@@ -732,7 +636,7 @@ S16 BuildAndSendRicIndication()
          DU_FREE(e2apMsg->choice.initiatingMessage, \
                sizeof(InitiatingMessageE2_t));
          DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    idx = 0;
@@ -772,17 +676,23 @@ S16 BuildAndSendRicIndication()
    ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
    ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
                                    RICindication_IEs__value_PR_RICindicationHeader;
-   BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size = 3 * sizeof(U8);
+   DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf ,\
+     ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size);
+   buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
                 &ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader);
 
    /* TO BE CHANGED: RIC INDICATION DATA */
-   /* Foe now filling a dummy octect data, need to tested with PRBs*/ 
+   /* For now filling a dummy octect data, need to tested with PRBs*/ 
    idx++;
    ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationMessage;
    ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
    ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
                                   RICindication_IEs__value_PR_RICindicationMessage;
-   BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size = 3 * sizeof(U8);
+   DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf ,\
+     ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size);
+   buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
                 &ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage);
   
    /* Prints the Msg formed */
@@ -796,7 +706,7 @@ S16 BuildAndSendRicIndication()
    {
 	   DU_LOG("\nE2AP : Could not encode RIC Indication Message (at %s)\n",\
 			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	   RETVALUE(RFAILED);
+	   return RFAILED;
    }
    else
    {
@@ -810,9 +720,9 @@ S16 BuildAndSendRicIndication()
    if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
    {
       DU_LOG("\nE2AP : Sending RIC Indication Message");      
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -846,24 +756,24 @@ S16 SendE2APMsg(Region region, Pool pool)
          {
             DU_LOG("\nE2AP : SCTP Send for E2  failed");
             SPutMsg(mBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
       else
       {
          DU_LOG("\nE2AP : SAddPstMsgMult failed");
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       SPutMsg(mBuf);
    }
    else
    {
       DU_LOG("\nE2AP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
-   RETVALUE(ROK);
+   return ROK;
 } /* SendE2APMsg */
 
 /*******************************************************************

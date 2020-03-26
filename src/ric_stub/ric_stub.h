@@ -16,8 +16,8 @@
 ################################################################################
 *******************************************************************************/
 
-#ifndef __CU_MGR_MAIN_H__
-#define __CU_MGR_MAIN_H__
+#ifndef __RIC_MGR_MAIN_H__
+#define __RIC_MGR_MAIN_H__
 
 
 #include "stdio.h"
@@ -47,6 +47,7 @@
 #include "cm_inet.x"
 #include "cm_llist.x"      /* Common link list  defines  */
 #include "cm_hash.x"       /* Common hashlist  defines */
+#include "odu_common_codec.h"
 
 #include "du_log.h"
 #define MAX_IPV6_LEN 16
@@ -62,7 +63,7 @@
    _ret = SGetSBuf(RIC_APP_MEM_REG, RIC_POOL,                  \
                      (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
+      cmMemset((uint8_t*)_datPtr, 0, _size);                         \
    else                                                         \
       _datPtr = NULLP;                                          \
 }
@@ -74,42 +75,28 @@
 
 typedef struct ipAddr
 {
- Bool ipV4Pres;
- U32  ipV4Addr;
- Bool ipV6Pres;
- U8   ipV6Addr[MAX_IPV6_LEN];
+ bool ipV4Pres;
+ uint32_t  ipV4Addr;
+ bool ipV6Pres;
+ uint8_t   ipV6Addr[MAX_IPV6_LEN];
 }SctpIpAddr;
 
-typedef struct RrcVersion
-{
-  U8    rrcVer;     /* Latest RRC Version */
-  U32   extRrcVer;  /* Latest RRC version extended */
-}RrcVersion;
-
-typedef struct sctpParamsRic
+typedef struct RicSctpParams
 {
    SctpIpAddr  duIpAddr;
-   U16         duPort;
+   uint16_t         duPort;
    SctpIpAddr  ricIpAddr;
-   U16         ricPort;
-}SctpParamsRic;
+   uint16_t         ricPort;
+}RicSctpParams;
 
-typedef struct fPLMN
+typedef struct ricCfgParams
 {
-   U8 mcc[3];
-   U8 mnc[3];
-}Plmn;
-
-
-typedef struct cuCfgParams
-{
-   U32             cuId;
-   char            cuName[RIC_DU_NAME_LEN_MAX];
-   SctpParamsRic   sctpParams;
+   uint32_t             ricId;
+   char            ricName[RIC_DU_NAME_LEN_MAX];
+   RicSctpParams   sctpParams;
    Plmn            plmn;
-   RrcVersion      rrcVersion;
-}CuCfgParams;
-CuCfgParams cuCfgParams; //global variable to hold all configs
+}RicCfgParams;
+RicCfgParams ricCfgParams; //global variable to hold all configs
 
 void readRicCfg();
 void cuAppInmsgHdlr(Buffer *mBuf);

@@ -69,15 +69,15 @@
 /* Events */
 #define EVTCFG 0
 #define EVTSCTPSTRT  1
-#define EVTSCTPDATA  2
-#define EVTSCTPNTFY  3
+#define EVENT_CU_DATA  2
+#define EVENT_SCTP_NTFY  3
 #define EVTSRVOPENREQ  4
 #define EVTSRVOPENCFM  5
 #define EVTTNLMGMTREQ  6
 #define EVTTNLMGMTCFM  7
 #define EVTTTIIND    8
 #define EVTSTARTPOLL  9
-#define EVTRICDATA  10
+#define EVENT_RIC_DATA  10
 
 /* Selector */
 #define DU_SELECTOR_LC   0
@@ -152,7 +152,7 @@ typedef struct cellCfgParams
    NrEcgi      nrEcgi;         /* ECGI */
    U16         nrPci;          /* PCI */
    U16         fiveGsTac;         /* 5gSTac */
-   PlmnId      plmn[MAX_PLMN]; /* List of serving PLMN IDs */
+   Plmn      plmn[MAX_PLMN]; /* List of serving PLMN IDs */
    U32         maxUe;          /* max UE per slot */
 }CellCfgParams;
 

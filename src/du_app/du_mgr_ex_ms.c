@@ -202,22 +202,21 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
          {
             switch(pst->event)
             {
-               case EVTSCTPDATA:
+               case EVENT_CU_DATA:
                {
                   F1APMsgHdlr(mBuf);
                   break;
                }
-               case EVTSCTPNTFY:
+               case EVENT_SCTP_NTFY:
                {
                   ret = cmUnpkSctpNtfy(duSctpNtfyHdl, pst, mBuf);
                   break;
                }
-               case EVTRICDATA:
+               case EVENT_RIC_DATA:
                {
                   E2APMsgHdlr(mBuf);
                   break;
                }
-
                default:
                {
                   DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTSCTP");

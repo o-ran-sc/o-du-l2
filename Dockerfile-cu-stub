@@ -1,4 +1,4 @@
-FROM nexus3.o-ran-sc.org:10004/bldr-ubuntu16-c-go:3-u16.04-nng as ubuntu
+FROM nexus3.o-ran-sc.org:10004/bldr-ubuntu18-c-go:6-u18.04-nng as ubuntu
 
 ADD . /opt/o-du-l2
 WORKDIR /opt/o-du-l2
