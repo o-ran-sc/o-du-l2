@@ -24,112 +24,6 @@
 
 /* Global variable */
 DuCfgParams duCfgParam;
-char encBuf[ENC_BUF_MAX_LEN];
-int  encBufSize;
-
-/*******************************************************************
- *
- * @brief Writes the encoded chunks into a buffer
- *
- * @details
- *
- *    Function : PrepFinalEncBuf
- *
- *    Functionality:Fills the encoded buffer
- *
- * @params[in] void *buffer,initial encoded data
- * @params[in] size_t size,size of buffer
- * @params[in] void *encodedBuf,final buffer
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-static int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
-{
-   memcpy(encodedBuf + encBufSize, buffer, size);
-   encBufSize += size;
-   return 0;
-} /* PrepFinalEncBuf */
-
-/*******************************************************************
- *
- * @brief Builds PLMN ID 
- *
- * @details
- *
- *    Function : BuildPlmnId
- *
- *    Functionality: Building the PLMN ID
- *
- * @params[in] PLMNID plmn
- *             OCTET_STRING_t *plmnid
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 BuildPlmnId(PlmnId plmn, OCTET_STRING_t *plmnid)
-{
-   U8 mncCnt;
-   plmnid->size = 3;
-   DU_ALLOC(plmnid->buf,  plmnid->size * sizeof(U8));
-   if(plmnid->buf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
-   mncCnt = 2;
-   plmnid->buf[0] = ((plmn.mcc[1] << 4) | (plmn.mcc[0]));
-   if(mncCnt == 2)
-   {
-      plmnid->buf[1]  = ((0xf0) | (plmn.mcc[2]));
-      plmnid->buf[2] = ((plmn.mnc[1] << 4) | (plmn.mnc[0]));
-   }
-   else
-   {
-      plmnid->buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
-      plmnid->buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
-   }
-  RETVALUE(ROK);
-}
-
-/*******************************************************************
- *
- * @brief Builds NodeB Id
- *
- * @details
- *
- *    Function : BuildNodeBId
- *
- *    Functionality: Building the NodeBId
- *
- * @params[in] BIT_STRING_t *nbid,
- *             U8 unusedBits
- *             U8 byteSize
- *             U8 val
- *
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 BuildNodeBId(BIT_STRING_t *nbid, U8 unusedBits, U8 byteSize, U8 val)
-{
-   U8 tmp;
-   nbid->size = byteSize;
-   DU_ALLOC(nbid->buf, nbid->size * sizeof(U8));
-   if(nbid->buf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
-
-   for (tmp = 0 ; tmp < ((nbid->size)-1); tmp++)
-   {
-      nbid->buf[tmp] = 0;
-   }
-   nbid->buf[byteSize-1] = val; 
-   nbid->bits_unused = unusedBits;
-   RETVALUE(ROK);
-}
 
 /*******************************************************************
  *
@@ -154,11 +48,18 @@ S16 BuildGlobalgNB(GlobalE2node_gNB_ID_t *gNbId)
    U8 val = 1;
    if(gNbId != NULLP)
    {
+      /* Allocate Buffer size */ 
+      gNbId->global_gNB_ID.plmn_id.size = 3 * sizeof(U8);
+      DU_ALLOC(gNbId->global_gNB_ID.plmn_id.buf , gNbId->global_gNB_ID.plmn_id.size);
       BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
        &gNbId->global_gNB_ID.plmn_id); 
+
       /* fill gND Id */
-      gNbId->global_gNB_ID.gnb_id.present = GNB_ID_Choice_PR_gnb_ID; 
-      BuildNodeBId(&gNbId->global_gNB_ID.gnb_id.choice.gnb_ID, unused, byteSize, val);
+      gNbId->global_gNB_ID.gnb_id.present = GNB_ID_Choice_PR_gnb_ID;
+      /* Allocate Buffer size */ 
+      gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size = byteSize * sizeof(U8);
+      DU_ALLOC(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf, gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size);
+      FillBitString(&gNbId->global_gNB_ID.gnb_id.choice.gnb_ID, unused, byteSize, val);
    }
    RETVALUE(ROK);   
 }
@@ -549,10 +450,10 @@ S16 procE2SetupRsp(E2AP_PDU_t *e2apMsg)
             recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity);
 
             bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, &e2SetupRspDb.ricId);
-            
-            aper_decode(0, &asn_DEF_PLMN_IdentityE2, (void **)&e2SetupRspDb.plmn, &e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity, recvBufLen, 0, 0);
-            //xer_fprint(stdout, &asn_DEF_PLMN_IdentityE2, &e2SetupRspDb.plmn);
+            aper_decode(0, &asn_DEF_PLMN_IdentityE2, (void **)&e2SetupRspDb.plmn, \
+              &e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity, recvBufLen, 0, 0);
 
+            xer_fprint(stdout, &asn_DEF_PLMN_IdentityE2, &e2SetupRspDb.plmn);
             break;
          }
          default:
@@ -598,13 +499,16 @@ S16 procRicSubsReq(E2AP_PDU_t *e2apMsg)
       {
          case ProtocolIE_IDE2_id_RICrequestID:
          {
-            ricReqDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID;
-            ricReqDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID;
+            ricReqDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->\
+                                   value.choice.RICrequestID.ricRequestorID;
+            ricReqDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]-> \
+                                       value.choice.RICrequestID.ricInstanceID;
             break;
          }
          case ProtocolIE_IDE2_id_RANfunctionID:
          {
-            ricReqDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RANfunctionID; 
+            ricReqDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]-> \
+                                   value.choice.RANfunctionID; 
             break;
          }
          case ProtocolIE_IDE2_id_RICsubscriptionDetails:
@@ -615,7 +519,7 @@ S16 procRicSubsReq(E2AP_PDU_t *e2apMsg)
             recvBufLen = sizeof(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition);
 
             aper_decode(0, &asn_DEF_RICeventTriggerDefinition, (void **)&ricReqDb.ricEventTrigger, &(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition), recvBufLen, 0, 0);
-            //xer_fprint(stdout, &asn_DEF_RICeventTriggerDefinition, &ricReqDb.ricEventTrigger);
+            xer_fprint(stdout, &asn_DEF_RICeventTriggerDefinition, &ricReqDb.ricEventTrigger);
 
             actionItem = *ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.list.array;
             
@@ -773,16 +677,22 @@ S16 BuildAndSendRicIndication()
    ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
    ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
                                    RICindication_IEs__value_PR_RICindicationHeader;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size = 3 * sizeof(U8);
+   DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf ,\
+     ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size);
    BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
                 &ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader);
 
    /* TO BE CHANGED: RIC INDICATION DATA */
-   /* Foe now filling a dummy octect data, need to tested with PRBs*/ 
+   /* For now filling a dummy octect data, need to tested with PRBs*/ 
    idx++;
    ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationMessage;
    ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
    ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
                                   RICindication_IEs__value_PR_RICindicationMessage;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size = 3 * sizeof(U8);
+   DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf ,\
+     ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size);
    BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
                 &ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage);
   

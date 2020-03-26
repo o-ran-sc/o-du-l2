@@ -24,36 +24,6 @@
 
 CuSctpDestCb ricParams;
 
-/**************************************************************************
- * @brief Task Initiation callback function. 
- *
- * @details
- *
- *     Function : sctpActvInit 
- *    
- *     Functionality:
- *             This function is supplied as one of parameters during SCTP's 
- *             task registration. SSI will invoke this function once, after
- *             it creates and attaches this TAPA Task to a system task.
- *     
- * @param[in]  Ent entity, the entity ID of this task.     
- * @param[in]  Inst inst, the instance ID of this task.
- * @param[in]  Region region, the region ID registered for memory 
- *              usage of this task.
- * @param[in]  Reason reason.
- * @return ROK     - success
- *         RFAILED - failure
- ***************************************************************************/
-S16 sctpActvInit()
-{
-   DU_LOG("\n\nSCTP : Initializing");
-   connUp = FALSE;
-   assocId = 0;
-   nonblocking = FALSE;
-   sctpCfg = cuCfgParams.sctpParams;
-   return ROK;
-
-}
 
 /**************************************************************************
  * @brief Task Activation callback function. 
@@ -97,13 +67,15 @@ S16 sctpActvTsk(Pst *pst, Buffer *mBuf)
 
 S16 sctpCfgReq()
 {
+   connUp = FALSE;
+   sctpCfg = ricCfgParams.sctpParams;
 
 /* Fill F1 Params */
    ricParams.destPort             = sctpCfg.duPort;
    ricParams.srcPort              = sctpCfg.ricPort;
    ricParams.bReadFdSet           = ROK;
-   cmMemset ((U8 *)&ricParams.sockFd, -1, sizeof(CmInetFd));
-   cmMemset ((U8 *)&ricParams.lstnSockFd, -1, sizeof(CmInetFd));
+   memset(&ricParams.sockFd, -1, sizeof(CmInetFd));
+   memset(&ricParams.lstnSockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&ricParams.destIpNetAddr, &sctpCfg.duIpAddr);
 
    RETVALUE(ROK);
@@ -190,11 +162,11 @@ S16 sctpStartReq()
    } 
    else if((ret = cmInetSctpBindx(&ricParams.lstnSockFd, &ricParams.localAddrLst, ricParams.srcPort)) != ROK)
    {
-      DU_LOG("\nSCTP: Binding failed at CU");
+      DU_LOG("\nSCTP: Binding failed at RIC");
    }
    else if((ret = sctpAccept(&ricParams.lstnSockFd, &ricParams.peerAddr, &ricParams.sockFd)) != ROK)
    {
-      DU_LOG("\nSCTP: Unable to accept the connection at CU");
+      DU_LOG("\nSCTP: Unable to accept the connection at RIC");
    }
    else if(sctpSockPoll() != ROK)
    {
@@ -260,8 +232,8 @@ S16 sctpSetSockOpts(CmInetFd *sock_Fd)
 S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd)
 {
    U8  ret;
-   
-   ret = cmInetListen(lstnSock_Fd, 1);;
+
+   ret = cmInetListen(lstnSock_Fd, 1);
    if (ret != ROK)
    {
       DU_LOG("\nSCTP : Listening on socket failed");
@@ -423,7 +395,7 @@ S16 sctpSockPoll()
    {
       if((ret = processPolling(&e2PollParams, &ricParams.sockFd, timeoutPtr, &memInfo)) != ROK)
       {
-         DU_LOG("\nSCTP : Failed to RecvMsg for E2 at CU \n");
+         DU_LOG("\nSCTP : Failed to RecvMsg for E2 at RIC \n");
       }
    };
    RETVALUE(ret);
@@ -457,7 +429,7 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
 {
    U16 ret = ROK;
    CM_INET_FD_SET(sockFd, &pollParams->readFd);
-   ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFds);
+   ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFd);
    if(CM_INET_FD_ISSET(sockFd, &pollParams->readFd))
    {
       CM_INET_FD_CLR(sockFd, &pollParams->readFd);

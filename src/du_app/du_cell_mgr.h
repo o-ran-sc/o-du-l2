@@ -29,7 +29,6 @@
 
 S16 procF1SetupRsp(F1AP_PDU_t *f1apMsg);
 S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToBeActivated);
-S16 procE2SetupRsp(E2AP_PDU_t *e2apMsg);
 S16 duSendSchGnbCfg();
 S16 duSendSchGnbCfgToMac(RgrCfgReqInfo *cfgReq, U32 trans_id);
 #endif

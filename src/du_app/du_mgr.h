@@ -67,7 +67,7 @@
 /* Events */
 #define EVTCFG 0
 #define EVTSCTPSTRT  1
-#define EVTSCTPDATA  2
+#define EVTCUDATA  2
 #define EVTSCTPNTFY  3
 #define EVTSRVOPENREQ  4
 #define EVTSRVOPENCFM  5

@@ -60,18 +60,18 @@ void sctpNtfyInd(CmInetSctpNotification *ntfy)
 
 void init_log()
 {
-	openlog("CU_STUB",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
+	openlog("RIC_STUB",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
 }
 /*******************************************************************
  *
- * @brief Main function of CU APP
+ * @brief Main function of E2 APP
  *
  * @details
  *
  *    Function : main
  *
  *    Functionality:
- *         - Reads CU related configurations
+ *         - Reads RIC related configurations
  *         - Initialize SCTP Parameters
  *         - Start SCTP receiver thread
  *
@@ -86,13 +86,10 @@ S16 tst()
    init_log();   
  
    DU_LOG("\nStarting RIC_STUB");
-   /* Read CU configurations */
+   /* Read RIC configurations */
    readRicCfg();
 
-   /* Initializing SCTP global parameters */
-   sctpActvInit();
- 
-   /* Start CU-SCTP to listen on incoming connection */
+   /* Start RIC-SCTP to listen on incoming connection */
    sctpCfgReq();
    sctpStartReq();
 
@@ -124,30 +121,26 @@ void readRicCfg()
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
  
-   cuCfgParams.cuId = RIC_ID;
-   strcpy(cuCfgParams.cuName, RIC_NAME);
+   ricCfgParams.ricId = RIC_ID;
+   strcpy(ricCfgParams.ricName, RIC_NAME);
  
    /* DU IP Address and Port*/
-   cuCfgParams.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
-   cuCfgParams.sctpParams.duIpAddr.ipV6Pres = false;
-   cuCfgParams.sctpParams.duPort = DU_PORT;
+   ricCfgParams.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
+   ricCfgParams.sctpParams.duIpAddr.ipV6Pres = false;
+   ricCfgParams.sctpParams.duPort = DU_PORT;
 
    /* RIC IP Address and Port*/
-   cuCfgParams.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
-   cuCfgParams.sctpParams.ricIpAddr.ipV6Pres = false;
-   cuCfgParams.sctpParams.ricPort = RIC_PORT;
+   ricCfgParams.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
+   ricCfgParams.sctpParams.ricIpAddr.ipV6Pres = false;
+   ricCfgParams.sctpParams.ricPort = RIC_PORT;
 
    /*PLMN*/
-   cuCfgParams.plmn.mcc[0] = PLMN_MCC0;
-   cuCfgParams.plmn.mcc[1] = PLMN_MCC1;
-   cuCfgParams.plmn.mcc[2] = PLMN_MCC2;
-   cuCfgParams.plmn.mnc[0] = PLMN_MNC0;
-   cuCfgParams.plmn.mnc[1] = PLMN_MNC1;
-   cuCfgParams.plmn.mnc[2] = PLMN_MNC2;
-
-   /*RRC Version*/
-   cuCfgParams.rrcVersion.rrcVer = RRC_VER;
-   cuCfgParams.rrcVersion.extRrcVer = EXT_RRC_VER;
+   ricCfgParams.plmn.mcc[0] = PLMN_MCC0;
+   ricCfgParams.plmn.mcc[1] = PLMN_MCC1;
+   ricCfgParams.plmn.mcc[2] = PLMN_MCC2;
+   ricCfgParams.plmn.mnc[0] = PLMN_MNC0;
+   ricCfgParams.plmn.mnc[1] = PLMN_MNC1;
+   ricCfgParams.plmn.mnc[2] = PLMN_MNC2;
   
 } /* End of readCuCfg */
 /**********************************************************************

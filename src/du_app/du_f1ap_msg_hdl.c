@@ -107,79 +107,7 @@ S16 BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
       dlnrfreq->freqBandListNr.list.array[idx]->supportedSULBandList.list.count = SUL_BAND_COUNT;
    RETVALUE(ROK);
 }
-/*******************************************************************
- *
- * @brief Builds PLMN ID 
- *
- * @details
- *
- *    Function : BuildPlmn
- *
- *    Functionality: Building the PLMN ID
- *
- * @params[in] PLMNID plmn
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
 
-S16 BuildPlmn(PlmnId plmn, OCTET_STRING_t *plmnid)
-{
-   U8 mncCnt;
-   plmnid->size = 3;
-   DU_ALLOC(plmnid->buf,  plmnid->size * sizeof(U8));
-   if(plmnid->buf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
-   mncCnt = 2;
-   plmnid->buf[0] = ((plmn.mcc[1] << 4) | (plmn.mcc[0]));
-   if(mncCnt == 2)
-   {
-      plmnid->buf[1]  = ((0xf0) | (plmn.mcc[2]));
-      plmnid->buf[2] = ((plmn.mnc[1] << 4) | (plmn.mnc[0]));
-   }
-   else
-   {
-      plmnid->buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
-      plmnid->buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
-   }
-  RETVALUE(ROK);
-}
-/*******************************************************************
- *
- * @brief Builds NRCell ID 
- *
- * @details
- *
- *    Function : BuildNrCellId
- *
- *    Functionality: Building the NR Cell ID
- *
- * @params[in] BIT_STRING_t *nrcell
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 BuildNrCellId(BIT_STRING_t *nrcell)
-{
-   U8 tmp;
-   nrcell->size = 5;
-   DU_ALLOC(nrcell->buf, nrcell->size * sizeof(U8));
-   if(nrcell->buf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
-
-   for (tmp = 0 ; tmp < nrcell->size-1; tmp++)
-   {
-      nrcell->buf[tmp] = 0;
-   }
-   nrcell->buf[4]   = 16;//change this 
-   nrcell->bits_unused = 4;
-   RETVALUE(ROK);
-}
 /*******************************************************************
  *
  * @brief Builds Nrcgi 
@@ -198,15 +126,26 @@ S16 BuildNrCellId(BIT_STRING_t *nrcell)
 S16 BuildNrcgi(NRCGI_t *nrcgi)
 {
    S16 ret;
+   U8 unused = 4;
+   U8 byteSize = 5;
+   U8 val = 16;
+
    GNB_DU_Served_Cells_Item_t *srvCellItem;
-   ret = BuildPlmn(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
+   /* Allocate Buffer Memory */
+   nrcgi->pLMN_Identity.size = PLMN_SIZE * sizeof(U8);
+   DU_ALLOC(nrcgi->pLMN_Identity.buf, nrcgi->pLMN_Identity.size);
+   ret = BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
          &nrcgi->pLMN_Identity); // Building PLMN function 
    if(ret != ROK)
    {
       RETVALUE(RFAILED);
    }
    /*nrCellIdentity*/
-   ret = BuildNrCellId(&nrcgi->nRCellIdentity);
+   //ret = BuildNrCellId(&nrcgi->nRCellIdentity);
+   nrcgi->nRCellIdentity.size = byteSize * sizeof(U8);
+   DU_ALLOC(nrcgi->nRCellIdentity.buf, nrcgi->nRCellIdentity.size); 
+   ret = FillBitString(&nrcgi->nRCellIdentity, unused, byteSize, val);
+
    if(ret != ROK)
    {
       DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -552,7 +491,10 @@ S16  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
          RETVALUE(RFAILED);
       }
    }
-   ret = BuildPlmn(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
+   /* Allocate Memory to Buffer */
+   srvplmn->list.array[0]->pLMN_Identity.size = PLMN_SIZE * sizeof(U8);
+   DU_ALLOC(srvplmn->list.array[0]->pLMN_Identity.buf, srvplmn->list.array[0]->pLMN_Identity.size);
+   ret = BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
          &srvplmn->list.array[0]->pLMN_Identity);
    if(ret!= ROK)
    {
@@ -1433,40 +1375,6 @@ S16 BuildAndSendF1SetupReq()
 
 /*******************************************************************
  *
- * @brief Builds the PLMN Id 
- *
- * @details
- *
- *    Function : plmnBuild
- *
- *    Functionality: Builds the PLMN Id 
- *
- * @params[in] PlmnId plmn
- * @params[in] OCTET_STRING_t *octe
- * 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-void plmnBuild(PlmnId plmn, OCTET_STRING_t *octe)
-{
-   U8 mncCnt;
-   mncCnt = 2;
-   octe->buf[0] = ((plmn.mcc[1] << 4) | (plmn.mcc[0]));
-   if(mncCnt == 2)
-   {
-      octe->buf[1]  = ((0xf0) | (plmn.mcc[2]));
-      octe->buf[2] = ((plmn.mnc[1] << 4) | (plmn.mnc[0]));
-   }
-   else
-   {
-      octe->buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
-      octe->buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
-   }
-}
-
-/*******************************************************************
- *
  * @brief Builds and sends the DUConfigUpdate
  *
  * @details
@@ -1643,7 +1551,7 @@ S16 BuildAndSendDUConfigUpdate()
          RETVALUE(RFAILED);
       }
    }
-   plmnBuild(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
+   BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
          &modifyItem->oldNRCGI.pLMN_Identity);
    /*nRCellIdentity*/
    modifyItem->oldNRCGI.nRCellIdentity.size = 5;
@@ -1700,7 +1608,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
    }
-   plmnBuild(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
+   BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
          &modifyItem->served_Cell_Information.nRCGI.pLMN_Identity);
    modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.size = 5;
    DU_ALLOC(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
@@ -1841,7 +1749,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
    }
-   plmnBuild(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.plmn[0],\
+   BuildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.plmn[0],\
          &modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->pLMN_Identity);
    DU_ALLOC(modifyItem->served_Cell_Information.servedPLMNs.list.\
        array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));

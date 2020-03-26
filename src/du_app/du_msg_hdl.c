@@ -911,38 +911,21 @@ S16 duBindUnbindRlcToMacSap(U8 inst, U8 action)
 
 S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
 {
-   switch(ntfy->header.nType)
+   if(f1Params.assocId == ntfy->u.assocChange.assocId)
    {
-      case CM_INET_SCTP_ASSOC_CHANGE:
-         switch(ntfy->u.assocChange.state)
-         {
-            case CM_INET_SCTP_COMM_UP:
-               {
-                  DU_LOG("\nDU_APP : SCTP communication UP");
-                  //Setup F1-C
-                  if(ntfy->u.assocChange.assocId == f1Params.assocId)
-                  {
-                     /* Build and send F1 Setup response */
-                     if(BuildAndSendF1SetupReq() != ROK)
-                     {
-                        RETVALUE(RFAILED);
-                     }
-                  }
-                  //Setup E2
-                  if(ntfy->u.assocChange.assocId == ricParams.assocId)
-                  {
-                     /* Build and send F1 Setup response */
-                     if(BuildAndSendE2SetupReq() != ROK)
-                     {
-                        RETVALUE(RFAILED);
-                     }
-                  }
-
-                  break;
-               }
-         }
-         break;
+      if(BuildAndSendF1SetupReq() != ROK)
+      {
+         RETVALUE(RFAILED);
+      }
    }
+   if(ricParams.assocId == ntfy->u.assocChange.assocId)
+   {
+      if(BuildAndSendE2SetupReq() != ROK)
+      {
+         RETVALUE(RFAILED);
+      }
+   }
+
    RETVALUE(ROK);
 }
 
@@ -1432,7 +1415,7 @@ S16 duLayerConfigComplete()
       DU_LOG("\nDU_APP : Failed configuring Sctp Params");
       ret = RFAILED;
    }
-	if((ret = duSctpAssocReq(F1_INTERFACE)) != ROK)
+   if((ret = duSctpAssocReq(F1_INTERFACE)) != ROK)
    {
       DU_LOG("\nDU_APP : Failed to send AssocReq F1");
       ret = RFAILED;

@@ -29,8 +29,6 @@
 #include "cm_tpt.x"
 
 #define MAX_RETRY 5
-#define DU_SCTP_UP 1
-#define DU_SCTP_DOWN 0
 
 /* Global variable declaration */
 U8   socket_type;      /* Socket type */
@@ -38,10 +36,10 @@ Bool nonblocking;      /* Blocking/Non-blocking socket */
 Bool connUp;           /* Is connection up */
 int  assocId;          /* Assoc Id of connected assoc */
   
-SctpParamsRic sctpCfg;            /* SCTP configurations at DU */
+RicSctpParams sctpCfg;            /* SCTP configurations at DU */
 typedef struct
 {
-   S16           numFds;
+   S16           numFd;
    U16           port;   
    U32           flag;
    Buffer        *mBuf;
@@ -54,7 +52,6 @@ typedef struct
 
 typedef struct
 {
-   U8               itfState;
    U16              destPort;         /* DU PORTS */
    U16              srcPort;
    Bool             bReadFdSet;

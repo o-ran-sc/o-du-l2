@@ -21,32 +21,6 @@
 #include "cu_stub_sctp.h"
 #include "cu_f1ap_msg_hdl.h"
 
-char encBuf[ENC_BUF_MAX_LEN];
-
-/*******************************************************************
- *
- * @brief Writes the encoded chunks into a buffer
- *
- * @details
- *
- *    Function : PrepFinalEncBuf 
- *
- *    Functionality:Fills the encoded buffer
- *
- * @params[in] void *buffer,initial encoded data
- * @params[in] size_t size,size of buffer
- * @params[in] void *encodedBuf,final buffer
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-static int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
-{
-   memcpy(encodedBuf + encBufSize, buffer, size);
-   encBufSize += size;
-   return 0;
-} /* PrepFinalEncBuf */
-
 /*******************************************************************
 *
 * @brief Sends F1 msg over SCTP
@@ -97,23 +71,6 @@ S16 SendF1APMsg(Region region, Pool pool)
    RETVALUE(ROK);
 } /* SendF1APMsg */
 
-
-void plmnBuildCU(Plmn plmn, OCTET_STRING_t *octe)
-{
-   U8 mncCnt;
-   mncCnt = 2;
-   octe->buf[0] = ((plmn.mcc[1] << 4) | (plmn.mcc[0]));
-   if(mncCnt == 2)
-   {
-      octe->buf[1]  = ((0xf0) | (plmn.mcc[2]));
-      octe->buf[2] = ((plmn.mnc[1] << 4) | (plmn.mnc[0]));
-   }
-   else
-   {
-      octe->buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
-      octe->buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
-   }
-}
 /*******************************************************************
  *
  * @brief Builds and sends the F1SetupResponse
@@ -317,7 +274,7 @@ S16 BuildAndSendF1SetupRsp()
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
    }
-    plmnBuildCU(cuCfgParams.plmn , &cellToActivate->list.array[0]->value.choice.\
+    BuildPlmnId(cuCfgParams.plmn , &cellToActivate->list.array[0]->value.choice.\
          Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity);
    cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.\
       nRCGI.nRCellIdentity.size = 5*sizeof(uint8_t);
@@ -1033,7 +990,7 @@ void F1APMsgHdlr(Buffer *mBuf)
             {
                DU_LOG("\nF1AP : F1 setup request received");
                BuildAndSendF1SetupRsp();
-				  break;
+	       break;
             }
 
             case InitiatingMessage__value_PR_GNBDUConfigurationUpdate:

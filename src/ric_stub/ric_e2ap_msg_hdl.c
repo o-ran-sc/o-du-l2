@@ -21,34 +21,9 @@
 #include "ric_stub_sctp.h"
 #include "ric_e2ap_msg_hdl.h"
 #include "GlobalE2node-gNB-ID.h"
+#include "odu_common_codec.h"
 
-char encBuf[ENC_BUF_MAX_LEN];
 Bool ricSubsStatus;
-S16 SendE2APMsg(Region , Pool );
-
-/*******************************************************************
- *
- * @brief Writes the encoded chunks into a buffer
- *
- * @details
- *
- *    Function : PrepFinalEncBuf
- *
- *    Functionality:Fills the encoded buffer
- *
- * @params[in] void *buffer,initial encoded data
- * @params[in] size_t size,size of buffer
- * @params[in] void *encodedBuf,final buffer
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-static int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
-{
-   memcpy(encodedBuf + encBufSize, buffer, size);
-   encBufSize += size;
-   return 0;
-} /* PrepFinalEncBuf */
 
 /*******************************************************************
 *
@@ -79,14 +54,14 @@ S16 SendE2APMsg(Region region, Pool pool)
  
          if(sctpSend(mBuf) != ROK)
          {
-            DU_LOG("\nF1AP : SCTP Send for E2  failed");
+            DU_LOG("\nE2AP : SCTP Send for E2  failed");
             SPutMsg(mBuf);
             RETVALUE(RFAILED);
          }
       }
       else
       {
-         DU_LOG("\nF1AP : SAddPstMsgMult failed");
+         DU_LOG("\nE2AP : SAddPstMsgMult failed");
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
@@ -94,91 +69,12 @@ S16 SendE2APMsg(Region region, Pool pool)
    }
    else
    {
-      DU_LOG("\nF1AP : Failed to allocate memory");
+      DU_LOG("\nE2AP : Failed to allocate memory");
       RETVALUE(RFAILED);
    }
  
    RETVALUE(ROK);
 } /* SendE2APMsg */
-
-/*******************************************************************
- *
- * @brief Builds PLMN ID 
- *
- * @details
- *
- *    Function : plmnBuildRic
- *
- *    Functionality: Building the PLMN ID
- *
- * @params[in] PLMNID plmn
- *             OCTET_STRING_t *octe
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-void plmnBuildRic(Plmn plmn, OCTET_STRING_t *octe)
-{
-   U8 mncCnt;
-   octe->size = 3;
-   RIC_ALLOC(octe->buf,  octe->size * sizeof(U8));
-   if(octe->buf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
-   mncCnt = 2;
-   octe->buf[0] = ((plmn.mcc[1] << 4) | (plmn.mcc[0]));
-   if(mncCnt == 2)
-   {
-      octe->buf[1]  = ((0xf0) | (plmn.mcc[2]));
-      octe->buf[2] = ((plmn.mnc[1] << 4) | (plmn.mnc[0]));
-   }
-   else
-   {
-      octe->buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
-      octe->buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
-   }
-}
-
-/*******************************************************************
- *
- * @brief Fills the RicId
- *
- * @details
- *
- *    Function : FillRicId
- *
- *    Functionality: Fills the RicId
- *
- * @params[in] BIT_STRING_t *nbid,
- *             U8 unusedBits
- *             U8 byteSize
- *             U8 val
- *
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 FillRicId(BIT_STRING_t *id, U8 unusedBits, U8 byteSize, U8 val)
-{
-   U8 tmp;
-   id->size = byteSize;
-   RIC_ALLOC(id->buf, id->size * sizeof(U8));
-   if(id->buf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
-
-   for (tmp = 0 ; tmp < (byteSize-1); tmp++)
-   {
-      id->buf[tmp] = tmp;
-   }
-   id->buf[byteSize-1]   = val;  //change this 
-   id->bits_unused = unusedBits;
-   RETVALUE(ROK);
-}
 
 /*******************************************************************
  *
@@ -203,45 +99,16 @@ S16 BuildGlobalRicId(GlobalRIC_ID_t *ricId)
    U8 val = 1;
    if(ricId != NULLP)
    {
-      plmnBuildRic(cuCfgParams.plmn , &ricId->pLMN_Identity);
+      ricId->pLMN_Identity.size = byteSize * sizeof(U8);
+      RIC_ALLOC(ricId->pLMN_Identity.buf,  ricId->pLMN_Identity.size);
+      BuildPlmnId(ricCfgParams.plmn , &ricId->pLMN_Identity);
       /* fill ric Id */
-      FillRicId(&ricId->ric_ID, unused, byteSize, val);
+      ricId->ric_ID.size = byteSize * sizeof(U8);
+      RIC_ALLOC(ricId->ric_ID.buf, ricId->ric_ID.size);
+      FillBitString(&ricId->ric_ID, unused, byteSize, val);
    }
    RETVALUE(ROK);   
 }
-#if 0
-RANfunctionID_ItemIEs_t* FillRanFuncItems(RANfunctionID_ItemIEs_t *items)
-{
-  if(items != NULLP)
-  {
-     items->id = ProtocolIE_IDE2_id_RANfunction_Item;
-     items->criticality = CriticalityE2_reject;
-     items->value.present = RANfunctionID_ItemIEs__value_PR_RANfunctionID_Item; 
-     items->value.choice.RANfunctionID_Item.ranFunctionID = 1;
-     items->value.choice.RANfunctionID_Item.ranFunctionRevision = 4;
-  }
-  RETVALUE(items);
-}
-
-S16 BuildRANfuncIdList(RANfunctionsID_List_t *funcIdList)
-{
-   U8 elementCnt;
-   RANfunctionID_ItemIEs_t *funcIdItems;
-
-   elementCnt = 1; 
-   funcIdList->list.count = elementCnt;
-   funcIdList->list.size  = elementCnt * sizeof(RANfunctionID_ItemIEs_t);
-   RIC_ALLOC(funcIdList->list.array, funcIdList->list.size);
-   if(funcIdList->list.array == NULLP)
-   {
-      DU_LOG("\nE2AP : Memory allocation for RAN Function List failed");
-      RETVALUE(RFAILED);
-   }
-   RIC_ALLOC(funcIdList->list.array[0], sizeof(RANfunctionID_ItemIEs_t));
-   FillRanFuncItems(funcIdList->list.array[0]);
-   RETVALUE(ROK);
-}
-#endif
 
 /*******************************************************************
  *
@@ -354,7 +221,7 @@ S16 BuildAndSendE2SetupRsp()
 
    if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL) != ROK)
    {
-      DU_LOG("\nF1AP : Sending E2 Setup Response failed");      
+      DU_LOG("\nE2AP : Sending E2 Setup Response failed");      
       RETVALUE(RFAILED);
    }
 
@@ -465,8 +332,12 @@ S16 BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
 
    if(subsDetails != NULLP)
    {
-      /* Plmn is not called */
-      plmnBuildRic(cuCfgParams.plmn, &subsDetails->ricEventTriggerDefinition);
+      /* Octet string to be build here */
+      /* Sending PLMN as Octect string */
+      U8 byteSize = 3;
+      subsDetails->ricEventTriggerDefinition.size = byteSize * sizeof(U8);
+      RIC_ALLOC(subsDetails->ricEventTriggerDefinition.buf,  subsDetails->ricEventTriggerDefinition.size);
+      BuildPlmnId(ricCfgParams.plmn, &subsDetails->ricEventTriggerDefinition);
       elementCnt = 1;
       subsDetails->ricAction_ToBeSetup_List.list.count = elementCnt;
       subsDetails->ricAction_ToBeSetup_List.list.size = \
@@ -683,7 +554,7 @@ void E2APMsgHdlr(Buffer *mBuf)
         printf("%x",recvBuf[i]);
    }
 
-   /* Decoding flat buffer into F1AP messsage */
+   /* Decoding flat buffer into E2AP messsage */
    e2apMsg = &e2apasnmsg;
    memset(e2apMsg, 0, sizeof(E2AP_PDU_t));
 

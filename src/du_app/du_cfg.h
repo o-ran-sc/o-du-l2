@@ -22,7 +22,7 @@
 #include "du_mgr.h"
 #include "du_app_mac_inf.h"
 #include "du_log.h"
-#include "BIT_STRING.h"
+#include "odu_common_codec.h"
 
 /* MACROS */
 #define DU_INST 0
@@ -47,6 +47,7 @@
 #define PLMN_MNC0 4
 #define PLMN_MNC1 8
 #define PLMN_MNC2 0
+#define PLMN_SIZE 3
 #define NR_ARFCN  2079427
 #define SUL_ARFCN 100
 #define NR_FREQ_BAND 257
@@ -392,15 +393,9 @@ typedef struct f1ResetType
    }type;
 }F1ResetType;
 
-typedef struct f1PLMN
-{
-  U8 mcc[3];
-  U8 mnc[3];
-}PlmnId;
-
 typedef struct nrEcgi
 {
-  PlmnId  plmn;
+  Plmn  plmn;
   U16     cellId;
 }NrEcgi;
 
@@ -504,14 +499,14 @@ typedef struct f1TaiSliceSuppLst
 
 typedef struct f1SrvdPlmn
 {
-   PlmnId              plmn;
+   Plmn              plmn;
    F1TaiSliceSuppLst   taiSliceSuppLst;
 }F1SrvdPlmn;
 
 typedef struct f1BrdcstPlmnInfo
 {
-   PlmnId   plmn[MAX_PLMN];     /* PLMN id list */
-   PlmnId   extPlmn[MAX_PLMN];   /* Extended PLMN id list */
+   Plmn   plmn[MAX_PLMN];     /* PLMN id list */
+   Plmn   extPlmn[MAX_PLMN];   /* Extended PLMN id list */
    U16      tac;                     /* 5GS-TAC */
    U32      nrCellId;                /* NR Cell id */
    U8       ranac;                   /* RAN Area code */
@@ -521,8 +516,8 @@ typedef struct f1CellInfo
 {
    NrEcgi   nrCgi;                   /* Cell global Identity */
    U32      nrPci;                   /* Physical Cell Identity */
-   PlmnId   plmn[MAX_PLMN];     /* Available PLMN list */
-   PlmnId   extPlmn[MAX_PLMN];  /* Extended available PLMN list */
+   Plmn   plmn[MAX_PLMN];     /* Available PLMN list */
+   Plmn   extPlmn[MAX_PLMN];  /* Extended available PLMN list */
 }F1CellInfo;
 
 typedef struct f1DuCellInfo
@@ -665,7 +660,7 @@ typedef struct f1UacType
 /* Unified Access Class Assistance Information */
 typedef struct f1UacAssistInfo
 {
-   PlmnId      plmn[MAXNUMOFUACPLMN];        /* UAC PLMN list */
+   Plmn      plmn[MAXNUMOFUACPLMN];        /* UAC PLMN list */
    F1UacType   uacType[MAXNUMOFUACPERPLMN];  /* UAC Type list */
 }F1UacAssistInfo;
 
@@ -867,7 +862,7 @@ typedef struct cellCfgParams
    NrEcgi      nrEcgi;         /* ECGI */
    U16         nrPci;          /* PCI */
    U16         fiveGsTac;         /* 5gSTac */
-   PlmnId      plmn[MAX_PLMN]; /* List of serving PLMN IDs */
+   Plmn      plmn[MAX_PLMN]; /* List of serving PLMN IDs */
    U8          ranac;          /* RAN Area Code */
    U32         maxUe;          /* max UE per slot */
 }CellCfgParams;
@@ -898,7 +893,7 @@ typedef struct mibParams
 
 typedef struct sib1Params
 {
-	PlmnId    plmn;
+	Plmn    plmn;
 	uint8_t   tac;
 	long      ranac;
 	U8        cellIdentity;

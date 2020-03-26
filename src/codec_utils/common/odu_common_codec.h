@@ -19,10 +19,28 @@
 #ifndef __ODU_COMMON_CODEC_H__
 #define __ODU_COMMON_CODEC_H__
 
+#include "envopt.h"        /* Environment options */
+#include "envdep.h"        /* Environment dependent */
+#include "envind.h"        /* Environment independent */
+
+#include "gen.h"           /* General */
+#include "gen.x"           /* General */
+#include "ssi.h"
+#include "OCTET_STRING.h"
+#include "BIT_STRING.h"
 #include "asn_codecs.h"
 
 #define ENC_BUF_MAX_LEN 200
 #define ENCODE_FAIL -1
+
+typedef struct PlmnIdentity 
+{
+   U8 mcc[3];
+   U8 mnc[3];
+}Plmn;
+
+S16 BuildPlmnId(Plmn plmn, OCTET_STRING_t *octe);
+S16 FillBitString(BIT_STRING_t *id, U8 unusedBits, U8 byteSize, U8 val);
 
 char encBuf[ENC_BUF_MAX_LEN];
 int  encBufSize;

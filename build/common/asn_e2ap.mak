@@ -23,9 +23,6 @@ COLOR=$(COLOR_RED)
 SRC_DIR=$(ROOT_DIR)/src/codec_utils/E2AP
 C_SRCS=$(wildcard $(SRC_DIR)/*.c)
 C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
-LOG_FILES=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.i,$(C_SRCS))
-BAK_FILES=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.i.bak,$(C_SRCS))
-DB_FILES =$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.i.db,$(C_SRCS))
 
 lib: $(LIB_DIR)/libasn_e2ap.a
 include $(COM_BUILD_DIR)/compile.mak

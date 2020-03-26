@@ -75,9 +75,6 @@
 
 
 
-extern char encBuf[ENC_BUF_MAX_LEN];
-int  encBufSize;
-
 void F1APMsgHdlr(Buffer *mBuf);
 
 /**********************************************************************
