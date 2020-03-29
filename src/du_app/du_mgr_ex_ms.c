@@ -70,27 +70,8 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
    duCb.f1Status     = FALSE;
    duCb.e2Status     = FALSE;
 
-   if(ROK != cmHashListInit(&(duCb.cellLst), 
-            (U16) DU_MAX_CELLS,
-            (U16) 0,
-            (Bool) FALSE, 
-            (U16) CM_HASH_KEYTYPE_CONID,
-            0,   
-            0))
-   {
-      DU_LOG("\nDU_APP : cellLst Initialization Failed");
-   }
-
-   if(ROK != cmHashListInit(&(duCb.actvCellLst), 
-            (U16) DU_MAX_CELLS,
-            (U16) 0,
-            (Bool) FALSE, 
-            (U16) CM_HASH_KEYTYPE_CONID,
-            0,   
-            0))
-   {
-      DU_LOG("\nDU_APP : ActvCellLst Initialization Failed");
-   }
+   memset(duCb.cfgCellLst, '\0', sizeof(duCb.cfgCellLst));
+   memset(duCb.actvCellLst, '\0', sizeof(duCb.actvCellLst));
 
    SSetProcId(DU_PROC);
 

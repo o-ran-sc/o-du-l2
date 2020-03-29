@@ -17,7 +17,6 @@
 *******************************************************************************/
 
 #include "du_mgr.h"
-#include "du_cfg.h"
 #include "du_log.h"
 #include "odu_common_codec.h"
 

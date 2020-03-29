@@ -18,6 +18,7 @@
 
 /* This file contains message handling functionality for DU cell management */
 
+#include "du_mgr.h"
 #include "du_sctp.h"
 #include "du_f1ap_msg_hdl.h"
 #include "lsctp.h"
@@ -290,7 +291,7 @@ S16 duProcCfgComplete()
    S16 ret = ROK;
    static U16 cellId = 0;
    U16 idx;
-   for(idx=0; idx< DEFAULT_CELLS; idx++) //TODO: the length of this loop must be determined
+   for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
       DuCellCb *cell;
       DU_ALLOC(cell, sizeof(DuCellCb))
@@ -301,25 +302,35 @@ S16 duProcCfgComplete()
       }
       else
       {
-         U16 nci;
-
+         U32 nci;
+			U8 idx;
+         
+			memset(cell, 0, sizeof(DuCellCb));
          cell->cellId = cellId++;
-         memcpy((void*)&cell->cellInfo, (void*)&duCfgParam.cellCfg[idx],\
-               sizeof(CellCfgParams));
-         cell->cellStatus = OOS;
-         nci = cell->cellInfo.nrEcgi.cellId;
-         ret = cmHashListInsert(&(duCb.cellLst), (PTR)(cell), 
-                     (U8 *)&(nci), (U16) sizeof(nci));
+			cell->cellInfo.nrEcgi.plmn.mcc[0] = PLMN_MCC0;
+			cell->cellInfo.nrEcgi.plmn.mcc[1] = PLMN_MCC1;
+			cell->cellInfo.nrEcgi.plmn.mcc[2] = PLMN_MCC2;
+			cell->cellInfo.nrEcgi.plmn.mnc[0] = PLMN_MNC0;
+			cell->cellInfo.nrEcgi.plmn.mnc[1] = PLMN_MNC1;
+			cell->cellInfo.nrEcgi.plmn.mnc[2] = PLMN_MNC2;
+			cell->cellInfo.nrEcgi.cellId = NR_CELL_ID;
 
-         if(ret != ROK)
-         {
-            DU_LOG("\nDU_APP : HashListInsert into cellLst failed for [%d]", nci);
-            break;
-         }
-         else
-         {
-            DU_LOG("\nDU_APP : HashListInsert into cellLst successful for [%d]", nci);
-         }
+			cell->cellInfo.nrPci = NR_PCI; 
+			cell->cellInfo.fiveGsTac = DU_TAC;
+         for(idx=0; idx<MAX_PLMN; idx++)
+			{
+				cell->cellInfo.plmn[idx].mcc[0] = PLMN_MCC0;
+				cell->cellInfo.plmn[idx].mcc[1] = PLMN_MCC1;
+				cell->cellInfo.plmn[idx].mcc[2] = PLMN_MCC2;
+				cell->cellInfo.plmn[idx].mnc[0] = PLMN_MNC0;
+				cell->cellInfo.plmn[idx].mnc[1] = PLMN_MNC1;
+				cell->cellInfo.plmn[idx].mnc[2] = PLMN_MNC2;
+			}
+         cell->cellInfo.maxUe = duCfgParam.maxUe;
+         cell->cellStatus = OOS;
+         nci = (U16)cell->cellInfo.nrEcgi.cellId;
+         
+         duCb.cfgCellLst[nci-1] = cell;
       }
    }
    if(ret != RFAILED)

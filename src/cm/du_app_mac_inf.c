@@ -24,7 +24,6 @@
 #include "ss_queue.h"
 #include "ss_task.h"
 #include "ss_msg.h"
-#include "du_cfg.h"
 
 #include "gen.x"           /* general */
 #include "ssi.x"           /* system services */
@@ -34,6 +33,7 @@
 #include "cm_hash.x"       /* Common Hash List Definitions */
 #include "cm_lte.x"        /* Common LTE Defines */
 
+#include "du_cfg.h"
 #include "du_app_mac_inf.h"
 
 /**************************************************************************

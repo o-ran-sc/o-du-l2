@@ -114,7 +114,37 @@ void plmnBuildCU(Plmn plmn, OCTET_STRING_t *octe)
       octe->buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
    }
 }
+
 /*******************************************************************
+*
+* @brief Builds NRCell ID 
+*
+* @details
+*
+*    Function : BuildNrCellId
+*
+*    Functionality: Building the NR Cell ID
+*
+* @params[in] BIT_STRING_t *nrcell
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+ 
+S16 BuildNrCellId(BIT_STRING_t *nrcell)
+{
+   U8 tmp;
+   for (tmp = 0 ; tmp < nrcell->size-1; tmp++)
+   {
+      nrcell->buf[tmp] = 0;
+   }
+   nrcell->buf[4]   = 16;//change this 
+   nrcell->bits_unused = 4;
+   nrcell->size = 5 * sizeof(uint8_t);
+   RETVALUE(ROK);
+}
+
+/********************************************************************
  *
  * @brief Builds and sends the F1SetupResponse
  *
@@ -320,7 +350,7 @@ S16 BuildAndSendF1SetupRsp()
     plmnBuildCU(cuCfgParams.plmn , &cellToActivate->list.array[0]->value.choice.\
          Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity);
    cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.\
-      nRCGI.nRCellIdentity.size = 5*sizeof(uint8_t);
+      nRCGI.nRCellIdentity.size = 5;
    CU_ALLOC(cellToActivate->list.array[0]->value.choice.\
          Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf,\
          5*sizeof(uint8_t));
@@ -351,6 +381,7 @@ S16 BuildAndSendF1SetupRsp()
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
    }
+#if 0
    for (int tmp = 0 ; tmp < cellToActivate->list.array[0]->value.\
          choice.Cells_to_be_Activated_List_Item.\
          nRCGI.nRCellIdentity.size-1; tmp++)
@@ -360,9 +391,8 @@ S16 BuildAndSendF1SetupRsp()
    }
    cellToActivate->list.array[0]->value.choice.\
       Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf[4] = 16;
-   cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.\
-      nRCGI.nRCellIdentity.bits_unused = 4;
-
+#endif
+   BuildNrCellId(&(cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity));
    /* RRC Version */
    idx++;
    f1SetupRsp->protocolIEs.list.array[idx]->id = \

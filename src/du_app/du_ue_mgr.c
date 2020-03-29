@@ -17,7 +17,6 @@
 *******************************************************************************/
  /* This file contains UE management handling functionality for DU APP */
 #include "du_ue_mgr.h"
-#include "du_cfg.h"
 
 #ifdef EGTP_TEST
 U32 sduId = 0;

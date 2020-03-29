@@ -17,7 +17,6 @@
 *******************************************************************************/
 #include "du_e2ap_msg_hdl.h"
 #include "du_mgr_main.h"
-#include "du_cfg.h"
 #include "GlobalE2node-gNB-ID.h"
 
 #define ENC_BUF_MAX_LEN 100
