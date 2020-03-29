@@ -18,6 +18,7 @@
 
 /* This file contains DU APP and SCTP interface functions */
 
+#include "du_mgr.h"
 #include "du_sctp.h"
 
 

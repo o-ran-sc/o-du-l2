@@ -19,7 +19,7 @@
 #ifndef __DU_CONFIG_H_
 #define __DU_CONFIG_H__
 
-#include "du_mgr.h"
+#include "stdbool.h"
 #include "du_app_mac_inf.h"
 #include "du_log.h"
 #include "BIT_STRING.h"
@@ -108,19 +108,20 @@
 /* Macro definitions for F1 procedures */
 #define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 #define MAX_F1_CONNECTIONS 65536    /* Max num of F1 connections */
-#define DU_MAX_CELLS       512      /* Max num of cells served by gNB-DU */
+#define DU_MAX_CELLS       1      /* Max num of cells served by gNB-DU */
 #define MAX_PLMN           6        /* Max num of broadcast PLMN ids */
 #define MAXNRARFCN         3279165  /* Maximum values of NRAFCN */
 #define MAXNRCELLBANDS     2       /* Maximum number of frequency bands */
-#define MAXNUMOFSLICEITEMS 1024     /* Maximum number of signalled slice support items */
+#define MAX_NUM_OF_SLICE_ITEMS 1024     /* Maximum number of signalled slice support items */
 #define MAXBPLMNNRMINUS1   1       /* Maximum number of PLMN Ids broadcast in an NR cell minus 1 */
 #define MAXNUMOFSIBTYPES   32       /* Maximum number of SIB types */
 #define MAX_UEID           512      /* Maximum number of UE Ids */
 #define MAX_TNL_ASSOC      32       /* Max num of TNL Assoc between CU and DU */
 #define MAXCELLINENB       256      /* Max num of cells served by eNB */
-#define MAXNUMOFUEID       65536    /* Max num of UEs served by DU */
+#define MAX_NUM_OF_UE_ID       65536    /* Max num of UEs served by DU */
 #define MAXNUMOFUACPLMN    12       /* Maximum number of PLMN ids*/
 #define MAXNUMOFUACPERPLMN 64       /* Maximum number of signalled categories per PLMN */
+#define NR_RANAC           150      /* RANAC */
 #define DEFAULT_CELLS      1        /* Max num of broadcast PLMN ids */
 
 
@@ -131,7 +132,7 @@
 #define CORESET_ZERO 1
 #define SEARCH_SPACE_ZERO 8
 #define DU_RANAC 1
-#define CELL_IDENTITY 1
+#define CELL_IDENTITY 32
 
 #ifdef EGTP_TEST
 #define UE_ID 1
@@ -320,7 +321,7 @@ typedef enum
 typedef struct f1RrcVersion
 {
    char    rrcVer[30];     /* Latest RRC Version */
-   U32   extRrcVer;  /* Latest RRC version extended */
+   uint32_t   extRrcVer;  /* Latest RRC version extended */
 }F1RrcVersion;
 
 typedef struct f1FailCause
@@ -336,51 +337,51 @@ typedef struct f1FailCause
 
 typedef struct f1ProcCode
 {
-   Bool   pres;
-   U8     value;
+   bool   pres;
+   uint8_t     value;
 }F1ProcCode;
 
 typedef struct f1TriggMsg
 {
-   Bool   pres;
+   bool   pres;
    F1TriggMsgVal   value;
 }F1TriggMsg;
 
 typedef struct f1ProcCrit
 {
-   Bool   pres;
+   bool   pres;
    F1ProcCritVal   value;
 }F1ProcCrit;
 
 typedef struct f1CritDignosIE
 {
    F1ProcCritVal   ieCritVal;
-   U16             ieId;
+   uint16_t             ieId;
    F1ErrorType       type;
 }F1CritDignosIE;
 
 typedef struct f1CritDiagnostic
 {
-   Bool         pres;
+   bool         pres;
    F1ProcCode   procCode;      /* Procedure Code */
    F1TriggMsg   triggeringMsg; /* Triggering Message */
    F1ProcCrit   procCrit;      /* Criticality of Triggering msg/proc */
-   U32          transId;
+   uint32_t          transId;
    F1CritDignosIE diagnosIE;
 }F1CritDiagnostic;
 
 typedef struct f1FailureIE
 {
-   U32                transId;        /* Uniquely identify transaction */
+   uint32_t                transId;        /* Uniquely identify transaction */
    F1FailCause        cause;          /* Failure cause */
-   U8                 timeToWait;     /* Seconds to be waited before retry */
+   uint8_t                 timeToWait;     /* Seconds to be waited before retry */
    F1CritDiagnostic   critDiagnostic; /* Critical diagnostics */
 }F1FailureIE;
 
 typedef struct f1LogicalConnUeAssoc
 {
-   U32   gnbCuUeF1apId;
-   U32   gnbDuUeF1apId;
+   uint32_t   gnbCuUeF1apId;
+   uint32_t   gnbDuUeF1apId;
 }F1LogicalConnUeAssoc;
 
 typedef struct f1ResetType
@@ -394,21 +395,21 @@ typedef struct f1ResetType
 
 typedef struct f1PLMN
 {
-  U8 mcc[3];
-  U8 mnc[3];
+  uint8_t mcc[3];
+  uint8_t mnc[3];
 }PlmnId;
 
 typedef struct nrEcgi
 {
   PlmnId  plmn;
-  U16     cellId;
+  uint16_t     cellId;
 }NrEcgi;
 
 typedef struct f1SibType
 {
-   U8   sibType;
-   U8   sibMsg;
-   U8   value;
+   uint8_t   sibType;
+   uint8_t   sibMsg;
+   uint8_t   value;
 }F1SibType;
 
 typedef struct f1TxBw
@@ -419,19 +420,19 @@ typedef struct f1TxBw
 
 typedef struct f1SulInfo
 {
-   U32      sulArfcn; /* SUL ARFCN */
+   uint32_t      sulArfcn; /* SUL ARFCN */
    F1TxBw   sulTxBw;  /* SUL transmission bandwidth */ 
 }F1SulInfo;
 
 typedef struct f1FreqBand
 {
-  U16   nrFreqBand;
-  U16   sulBand[MAXNRCELLBANDS];
+  uint16_t   nrFreqBand;
+  uint16_t   sulBand[MAXNRCELLBANDS];
 }F1FreqBand;
 
 typedef struct f1NrFreqInfo
 {
-   U32        nrArfcn;
+   uint32_t        nrArfcn;
    F1SulInfo  sulInfo;
    F1FreqBand freqBand[MAXNRCELLBANDS];
 }F1NrFreqInfo;
@@ -461,13 +462,13 @@ typedef struct f1NrModeInfo
 
 typedef struct f1EutraFddInfo
 {
-   U16   ulOffset;   /* UL offset to Point A */
-   U16   dlOffset;   /* DL offset to Point A */
+   uint16_t   ulOffset;   /* UL offset to Point A */
+   uint16_t   dlOffset;   /* DL offset to Point A */
 }F1EutraFDDInfo;
 
 typedef struct f1EutraTddInfo
 {
-   U16   tddOffset;  /* Offset to Point A */
+   uint16_t   tddOffset;  /* Offset to Point A */
 }F1EutraTDDInfo;
 
 typedef struct f1EutraModeInfo
@@ -481,8 +482,8 @@ typedef struct f1EutraModeInfo
 
 typedef struct f1Snsaai
 {
-   U8   sst;
-   U32  sd;
+   uint8_t   sst;
+   uint32_t  sd;
 }F1Snsaai;
 
 typedef struct epIpAddr
@@ -498,8 +499,8 @@ typedef struct epIpAddrPort
 
 typedef struct f1TaiSliceSuppLst
 {
-   Bool       pres;
-   F1Snsaai   snssai[MAXNUMOFSLICEITEMS];   
+   bool       pres;
+   F1Snsaai   snssai[MAX_NUM_OF_SLICE_ITEMS];   
 }F1TaiSliceSuppLst;
 
 typedef struct f1SrvdPlmn
@@ -512,15 +513,15 @@ typedef struct f1BrdcstPlmnInfo
 {
    PlmnId   plmn[MAX_PLMN];     /* PLMN id list */
    PlmnId   extPlmn[MAX_PLMN];   /* Extended PLMN id list */
-   U16      tac;                     /* 5GS-TAC */
-   U32      nrCellId;                /* NR Cell id */
-   U8       ranac;                   /* RAN Area code */
+   uint16_t      tac;                     /* 5GS-TAC */
+   uint32_t      nrCellId;                /* NR Cell id */
+   uint8_t       ranac;                   /* RAN Area code */
 }F1BrdcstPlmnInfo;
 
 typedef struct f1CellInfo
 {
    NrEcgi   nrCgi;                   /* Cell global Identity */
-   U32      nrPci;                   /* Physical Cell Identity */
+   uint32_t      nrPci;                   /* Physical Cell Identity */
    PlmnId   plmn[MAX_PLMN];     /* Available PLMN list */
    PlmnId   extPlmn[MAX_PLMN];  /* Extended available PLMN list */
 }F1CellInfo;
@@ -528,10 +529,10 @@ typedef struct f1CellInfo
 typedef struct f1DuCellInfo
 {
    F1CellInfo         cellInfo;     /* cell info */
-   U16                tac;          /* tracking area code */
-   U16                epsTac;       /* Configured EPS TAC */
+   uint16_t                tac;          /* tracking area code */
+   uint16_t                epsTac;       /* Configured EPS TAC */
    NrModeInfo         f1Mode;       /* NR mode info : FDD/TDD */
-   U8                 measTimeCfg;  /* Measurement timing configuration */
+   uint8_t                 measTimeCfg;  /* Measurement timing configuration */
    F1CellDir          cellDir;      /* Cell Direction */
    F1CellType         cellType;     /* Cell Type */
    F1BrdcstPlmnInfo   brdcstPlmnInfo[MAXBPLMNNRMINUS1]; /* Broadcast PLMN Identity Info List */
@@ -539,8 +540,8 @@ typedef struct f1DuCellInfo
 
 typedef struct f1DuSysInfo
 {
-   U8   *mibMsg;   /* MIB message */
-   U8   *sib1Msg;  /* SIB1 message */
+   uint8_t   *mibMsg;   /* MIB message */
+   uint8_t   *sib1Msg;  /* SIB1 message */
 }F1DuSysInfo;
 
 typedef struct f1CuSysInfo
@@ -575,7 +576,7 @@ typedef struct f1ActCellFail
 typedef struct srvStatus
 {
   SrvState    state;
-  Bool        switchOffOngoing;
+  bool        switchOffOngoing;
 }SrvStatus;
 
 typedef struct f1CellStatus
@@ -586,20 +587,20 @@ typedef struct f1CellStatus
 
 typedef struct f1DedSIDelUE
 {
-   U32      gnbCuUeF1apId;
+   uint32_t      gnbCuUeF1apId;
    NrEcgi   nrEcgi;
 }F1DedSIDelUE;
 
 typedef struct tnlAssocInfo
 {
-   Bool           pres;
+   bool           pres;
    EpIpAddr       epIpAddr;      /* Endpoint-IP Address */
    EpIpAddrPort   epIpAddrport;  /* Endpoint-IP Address and Port */
 }F1TnlAssocAddr;
 
 typedef struct f1TnlAssocUsage
 {
-    Bool           pres;
+    bool           pres;
     F1AssocUsage   usage;
 }F1TnlAssocUsage;
 
@@ -630,21 +631,21 @@ typedef struct f1CellBarred
 
 typedef struct f1EutraCell
 {
-   U32                eutraCellId; /* EUTRA cell id */
+   uint32_t                eutraCellId; /* EUTRA cell id */
    F1EutraModeInfo    mode;        /* EUTRA mode info : FDD/TDD */
-   U8                 rsrcInd;     /* Protected EUTRA resource Indication */
+   uint8_t                 rsrcInd;     /* Protected EUTRA resource Indication */
 }F1EutraCell;
 
 typedef struct f1ProtectEUTRARsrc
 {
-   U32           specShareGrpId;               /* Spectrum sharing group id */
+   uint32_t           specShareGrpId;               /* Spectrum sharing group id */
    F1EutraCell   eutraCellList[MAXCELLINENB];  /* EUTRA cells list */
 }F1ProtectEUTRARsrc;
 
 typedef struct f1UacOperatorDefined
 {
-   U8   accessCategory;
-   U8   accessId; 
+   uint8_t   accessCategory;
+   uint8_t   accessId; 
 }F1UacOperatorDefined;
 
 typedef struct f1UacCategoryType
@@ -658,7 +659,7 @@ typedef struct f1UacCategoryType
 
 typedef struct f1UacType
 {
-   U8                  uacReducInd;     /* Value 0 means no access rate reduction. Value 100 means full access rate reduction */
+   uint8_t                  uacReducInd;     /* Value 0 means no access rate reduction. Value 100 means full access rate reduction */
    F1UacCategoryType   uacCategoryType; /* UAC Category type */
 }F1UacType;
 
@@ -673,8 +674,8 @@ typedef struct f1UacAssistInfo
 
 typedef struct f1SetupReq
 {
-  U32                transId;                       /* Uniquely identify transaction */
-  U32                duId;                          /* DU ID */ 
+  uint32_t                transId;                       /* Uniquely identify transaction */
+  uint32_t                duId;                          /* DU ID */ 
   char               duName[CU_DU_NAME_LEN_MAX];    /* DU name */
   F1DuSrvdCellInfo   srvdCellLst[DU_MAX_CELLS];   /* Serving cell list */
   F1RrcVersion       rrcVersion;                    /* RRC version */
@@ -682,7 +683,7 @@ typedef struct f1SetupReq
 
 typedef struct f1setupRsp
 {
-  U32               transId;                      /* Uniquely identify transaction */
+  uint32_t               transId;                      /* Uniquely identify transaction */
   char              cuName[CU_DU_NAME_LEN_MAX];   /* CU Name */
   F1CuActCellInfo   actCellInfo;                  /* cells to be activated */
   F1RrcVersion      rrcVersion;                   /* RRC version */
@@ -698,7 +699,7 @@ typedef struct f1SetupFail
  * the RESET message and remove the indicated UE contexts including F1AP ID. */
 typedef struct f1Reset
 {
-  U32              transId;   /* Uniquely identify transaction */
+  uint32_t              transId;   /* Uniquely identify transaction */
   F1FailCause      cause;     /* Failure cause */
   F1ResetType      resetType; /* type of reset */
 }F1Reset;
@@ -708,37 +709,37 @@ typedef struct f1Reset
  *  the gNB-CU shall respond with the RESET ACKNOWLEDGE message. */
 typedef struct f1ResetAck
 {
-  U32                    transId;         /* Uniquely identify transaction */
+  uint32_t                    transId;         /* Uniquely identify transaction */
   F1LogicalConnUeAssoc   ueAssocLogicalConn[MAX_F1_CONNECTIONS]; /* UE associated logical F1-connection list */
   F1CritDiagnostic       critDiagnostic;  /* Critical diagnostics */
 }F1ResetAck;
 
 typedef struct f1ErrorInd
 {
-  U32                transId;         /* Uniquely identify transaction */
+  uint32_t                transId;         /* Uniquely identify transaction */
   F1Entity           errorOrigin;     /* Specifies if error is originated at DU or CU */
   F1FailCause        cause;           /* Failure cause */
 /* If failure is due to Ue related message. */
-  U32                gnbCuUeF1apId;   /* gNB-CU UE F1AP Id */
-  U32                gnbDuUeF1apId;   /* gNB-DU UE F1AP Id */
+  uint32_t                gnbCuUeF1apId;   /* gNB-CU UE F1AP Id */
+  uint32_t                gnbDuUeF1apId;   /* gNB-DU UE F1AP Id */
   F1CritDiagnostic   critDiagnostic;  /* Critical diagnostics */
 }F1ErrorInd;
 
 typedef struct f1GnbDuCfgUpd
 {
-  U32                 transId;                             /* Uniquely identify transaction */
+  uint32_t                 transId;                             /* Uniquely identify transaction */
   F1DuSrvdCellInfo    srvdCellLstAdd[DU_MAX_CELLS];      /* Served cell list to be added */
   F1DuSrvdCellToDel   srvdCellLstMod[DU_MAX_CELLS];      /* Served cell list to be modified */
   NrEcgi              srvdCellLstDel[DU_MAX_CELLS];      /* Served cell list to be deleted */
   F1CellStatus        cellStatus[DU_MAX_CELLS];          /* Cell status */
   F1DedSIDelUE        ueLst[MAX_UEID];                     /* Ue list that requires dedicated SI delivery */
-  U32                 gnbDuId;
+  uint32_t            gnbDuId;
   F1TnlAssocToRmv     gnbDuTnlAssocRmv[MAX_TNL_ASSOC];  /* TNL Assoc list to remove */ 
 }F1GnbDuCfgUpd;
 
 typedef struct f1GnbDuCfgUpdAck
 {
-   U32                transId;                      /* Uniquely identify transaction */
+   uint32_t           transId;                      /* Uniquely identify transaction */
    F1CuActCellInfo    cellLstAct[DU_MAX_CELLS];    /* List of cells to be activated */   
    F1CritDiagnostic   critDiagnostic;               /* Critical diagnostics */
    NrEcgi             cellLstDeact[DU_MAX_CELLS]; /* List of cells to be deactivated */
@@ -752,7 +753,7 @@ typedef struct f1GnbDuCfgUpdFail
 /* Sent by the gNB-CU to transfer updated information associated to an F1-C interface instance */
 typedef struct f1GnbCuCfgUpd
 {
-    U32                 transId;                            /* Uniquely identifies transaction */
+    uint32_t            transId;                            /* Uniquely identifies transaction */
     F1CuActCellInfo     cellLstAct[DU_MAX_CELLS];         /* List of cells to be activated */
     NrEcgi              cellLstDeact[DU_MAX_CELLS];       /* List of cells to be deactivated */
     F1TnlAssoc          assocLstAdd[MAX_TNL_ASSOC];     /* List of TNL assocs to be added */
@@ -766,12 +767,12 @@ typedef struct f1GnbCuCfgUpd
  * associated to an F1-C interface instance */
 typedef struct f1GnbCuCfgUpdAck
 {
-    U32                   transId;                              /* Uniquely identify transaction */
+    uint32_t              transId;                              /* Uniquely identify transaction */
     F1ActCellFail         actCellFailList[DU_MAX_CELLS];      /* Cells failed to be activated list */
     F1CritDiagnostic      critDiagnostic;                       /* Critical diagnostics */
     F1TnlAssocAddr        assocSetupList[MAX_TNL_ASSOC];     /* TNL Assoc Setup list */
     F1TnlAssocSetupFail   assocSetupFailList[MAX_TNL_ASSOC]; /* TNL Assoc Setup fail list */
-    F1DedSIDelUE          dedSiDelUelist[MAXNUMOFUEID];          /* Dedicated SI delivery needed UE list */
+    F1DedSIDelUE          dedSiDelUelist[MAX_NUM_OF_UE_ID];          /* Dedicated SI delivery needed UE list */
 }F1GnbCuCfgUpdAck;
 
 typedef struct f1GnbCuCfgUpdFail
@@ -783,9 +784,9 @@ typedef struct f1GnbCuCfgUpdFail
  * a gNB-DU. Coordination request is sent by CU to DU */
 typedef struct f1GnbDuRsrcCoordReq
 {
-   U32           transId;              /* Uniquely identifies transaction */
+   uint32_t      transId;              /* Uniquely identifies transaction */
    F1ReqType     reqType;              /* Request type */
-   U8            cellResCoordReqCont;  /* Container for X2AP E-UTRA - NR cell resource coordination request */
+   uint8_t       cellResCoordReqCont;  /* Container for X2AP E-UTRA - NR cell resource coordination request */
    F1IgnoreReq   ignoreReq;            /* Ignore coordination request */
 }F1GnbDuRsrcCoordReq;
 
@@ -793,14 +794,14 @@ typedef struct f1GnbDuRsrcCoordReq
  * for data traffic, as a response to the GNB-DU RESOURCE COORDINATION REQUEST. */
 typedef struct f1GnbDuRsrcCoordRsp
 {
-    U32   transId;               /* Uniquely identifies transaction */
-    U8    cellResCoordRspCont;   /* Container for X2AP E-UTRA - NR cell resource coordination response */
+    uint32_t   transId;               /* Uniquely identifies transaction */
+    uint8_t    cellResCoordRspCont;   /* Container for X2AP E-UTRA - NR cell resource coordination response */
 }F1GnbDuRsrcCoordRsp;
 
 /* This message is sent by the gNB-DU to indicate to the gNB-CU its status of overload */
 typedef struct f1GnbDuStatusInd
 {
-   U32                  transId;      /* Uniquely identifies transaction */
+   uint32_t                  transId;      /* Uniquely identifies transaction */
    F1GnbDuOvrloadInfo   ovrloadInfo;  /* gNB-DU overloaded information */
 }F1GnbDuStatusInd;
 
@@ -808,14 +809,14 @@ typedef struct f1GnbDuStatusInd
  * of the interface instance and the related resources */
 typedef struct f1RmvReq
 {
-   U32   transId; /* Uniquely identifies transaction */
+   uint32_t   transId; /* Uniquely identifies transaction */
 }F1RmvReq;
 
 /* This message acknowledges the initiation of removal of the interface
  * instance and the related resources */
 typedef struct f1RmvRsp
 {
-   U32                transId;     /* Uniquely identifies transaction */
+   uint32_t           transId;     /* Uniquely identifies transaction */
    F1CritDiagnostic   critDiagnos; /* Crititcality diagnostics */
 }F1RmvRsp;
 
@@ -823,7 +824,7 @@ typedef struct f1RmvRsp
  * resources cannot be accepted */
 typedef struct f1RmvFail
 {
-   U32                transId;         /* Uniquely identifies transaction */
+   uint32_t           transId;         /* Uniquely identifies transaction */
    F1FailCause        cause;          /* Failure cause */
    F1CritDiagnostic   critDiagnostic; /* Criticality diagnostics */
 }F1RmvFail;
@@ -832,14 +833,14 @@ typedef struct f1RmvFail
  * the rate at which UEs access the network. */
 typedef struct f1NwkAccessRateRed
 {
-   U32               transId;        /* Uniquely identifies transaction */
+   uint32_t          transId;        /* Uniquely identifies transaction */
    F1UacAssistInfo   uacAssistInfo;  /* UAC Assistance Information */
 }F1NwkAccessRateRed;
 
 typedef struct f1Ipaddr
 {
- Bool ipV4Pres;
- U32  ipV4Addr; 
+ bool ipV4Pres;
+ uint32_t  ipV4Addr; 
 }F1IpAddr;
 
 typedef struct sctpParams
@@ -855,33 +856,23 @@ typedef struct sctpParams
 typedef struct f1EgtpParams
 {
    F1IpAddr  localIp;      /* Ip address of local node */
-   U16       localPort;    /* Sender Port at local node */
+   uint16_t  localPort;    /* Sender Port at local node */
    F1IpAddr  destIp;       /* Ip address of peer node */
-   U16       destPort;     /* Sender port at peer node */
-   U32       minTunnelId;
-   U32       maxTunnelId;
+   uint16_t  destPort;     /* Sender port at peer node */
+   uint32_t  minTunnelId;
+   uint32_t  maxTunnelId;
 }F1EgtpParams;
-
-typedef struct cellCfgParams
-{
-   NrEcgi      nrEcgi;         /* ECGI */
-   U16         nrPci;          /* PCI */
-   U16         fiveGsTac;         /* 5gSTac */
-   PlmnId      plmn[MAX_PLMN]; /* List of serving PLMN IDs */
-   U8          ranac;          /* RAN Area Code */
-   U32         maxUe;          /* max UE per slot */
-}CellCfgParams;
 
 typedef struct schedulerCfg
 {
-   U8         numTxAntPorts;    /*!< Number of Tx antenna ports */
-   U8         ulSchdType;     /*!< Indicates which UL scheduler to use, range
+   uint8_t         numTxAntPorts;    /*!< Number of Tx antenna ports */
+   uint8_t         ulSchdType;     /*!< Indicates which UL scheduler to use, range
                                * is 0..(number of schedulers - 1) */
-   U8         dlSchdType;     /*!< Indicates which DL scheduler to use, range
+   uint8_t         dlSchdType;     /*!< Indicates which DL scheduler to use, range
                                * is 0..(number of schedulers - 1) */
-   U8         numCells;       /*!< Max number of cells */
-   U8         maxUlUePerTti;  /*!< Max number of UE in UL per TTI */
-   U8         maxDlUePerTti;  /*!< Max number of UE in DL per TTI */
+   uint8_t         numCells;       /*!< Max number of cells */
+   uint8_t         maxUlUePerTti;  /*!< Max number of UE in UL per TTI */
+   uint8_t         maxDlUePerTti;  /*!< Max number of UE in DL per TTI */
 }SchedulerCfg;
 
 typedef struct mibParams
@@ -901,7 +892,7 @@ typedef struct sib1Params
 	PlmnId    plmn;
 	uint8_t   tac;
 	long      ranac;
-	U8        cellIdentity;
+	uint8_t   cellIdentity;
 	long      cellResvdForOpUse;
 }Sib1Params;
 
@@ -909,11 +900,10 @@ typedef struct duCfgParams
 {
    SctpParams         sctpParams;                    /* SCTP Params */
    F1EgtpParams       egtpParams;                    /* EGTP Params */
-   U32                maxUe;
-   U32                duId;
-   U8                 duName[CU_DU_NAME_LEN_MAX];
+   uint32_t           maxUe;
+   uint32_t           duId;
+   uint8_t            duName[CU_DU_NAME_LEN_MAX];
    SchedulerCfg       schedCfg;
-   CellCfgParams      cellCfg[DU_MAX_CELLS];  /* Cell info config*/
    F1DuSrvdCellInfo   srvdCellLst[DU_MAX_CELLS];   /* Serving cell list *///TODO: this must be removed eventually
    F1RrcVersion       rrcVersion;                    /* RRC version */
 
@@ -922,19 +912,12 @@ typedef struct duCfgParams
 	Sib1Params         sib1Params;                    /* SIB1 Params */
 }DuCfgParams;
 
-typedef struct duCellCb
-{
-   U32            cellId;      /* Internal cell Id */
-   CellCfgParams  cellInfo;    /* Cell info */
-   CellStatus     cellStatus;  /*Cell status */
-}DuCellCb;
-
 /*function declarations */
 void FillSlotConfig();
 S16 readClCfg();
 S16 readCfg();
 S16 duReadCfg(); 
-S16 bitStringToInt(BIT_STRING_t *bitString, U16 *val);
+S16 bitStringToInt(BIT_STRING_t *bitString, uint16_t *val);
 
 #endif /* __DU_CONFIG_H__ */
 

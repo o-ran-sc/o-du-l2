@@ -19,10 +19,14 @@
 /* This file contains all utility functions for MAC CL */
 
 #include "stdio.h"
+#include "envopt.h"
 #include "envdep.h"
+#include "envind.h"
 #include "gen.h"
-#include "gen.x"
+#include "ssi.h"
 #include "cm_hash.h"
+#include "gen.x"
+#include "ssi.x"
 #include "cm_hash.x"
 #include "lwr_mac.h"
 

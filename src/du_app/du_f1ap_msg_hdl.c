@@ -18,8 +18,8 @@
 
 /* This file contains F1AP message handler functions */
 
+#include "du_mgr.h"
 #include "du_mgr_main.h"
-#include "du_cfg.h"
 #include "du_cell_mgr.h"
 #include "du_f1ap_msg_hdl.h"
 #include "GNB-DU-System-Information.h"

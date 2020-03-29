@@ -18,7 +18,6 @@
 
 /* This file contains message handling functionality for DU APP */
 #include "du_cell_mgr.h"
-#include "du_cfg.h"
 
 extern DuCfgParams duCfgParam;
 
@@ -50,7 +49,7 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 
    for(idx=0; idx<cellsToActivate.list.count; idx++)
    {
-      U16 nci;
+      U16 nci = 0;
       U16 pci;
       DuCellCb *cellCb = NULLP;
 
@@ -58,41 +57,30 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
           value.choice.Cells_to_be_Activated_List_Item;
 
       bitStringToInt(&cell.nRCGI.nRCellIdentity, &nci);
+      if(nci <= 0 || nci > DU_MAX_CELLS)
+      {
+         DU_LOG("\nDU APP : Invalid NCI %d", nci);
+         return RFAILED;
+      }
+
       if(cell.nRPCI)
       {
          pci = *cell.nRPCI;
       }
-      if(ROK != (cmHashListFind(&(duCb.cellLst), (U8*) &nci, sizeof(nci),
-                  0, (PTR*)cellCb)))
-      {
-         return RFAILED;
-      }
+
+      cellCb = duCb.cfgCellLst[nci-1];
+
       if(!cellCb)
       {
-			DU_LOG("\nDU_APP : HashList Find failed for nci [%d]", nci);
+         DU_LOG("\nDU APP : No Cell found for NCI %d", nci);
          return RFAILED;
       }
       cellCb->cellStatus = ACTIVATION_IN_PROGRESS; 
       cellCb->cellInfo.nrPci = pci;
 
       /* Now remove this cell from configured list and move to active list */
-      ret = cmHashListDelete(&(duCb.actvCellLst), (PTR)(cellCb)); 
-      if(ret != ROK)
-      {
-         DU_LOG("\nDU_APP : HashListInsert into ActvCellLst failed for [%d]", nci);
-      }
-      ret = cmHashListInsert(&(duCb.actvCellLst), (PTR)(cellCb), 
-            (U8 *)&(nci), (U16) sizeof(nci));
-
-      if(ret != ROK)
-      {
-         DU_LOG("\nDU_APP : HashListInsert into ActvCellLst failed for [%d]", nci);
-         break;
-      }
-      else
-      {
-         DU_LOG("\nDU_APP : HashListInsert into ActvCellLst successful for [%d]", nci);
-      }
+      duCb.cfgCellLst[nci-1] = NULLP;
+      duCb.actvCellLst[nci-1] = cellCb;
    }
 
    /* Start sending scheduler config */

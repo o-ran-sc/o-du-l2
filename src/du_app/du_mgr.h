@@ -53,6 +53,8 @@
 #include "lkw.x"
 #include "lrg.x"
 
+#include "du_cfg.h"
+
 #define DU_PROC  0
 /* Memory related configs */
 #define DU_APP_MEM_REGION    0
@@ -98,8 +100,6 @@
 #define DU_ZERO_VAL 0
 
 /* Macros */
-#define DEFAULT_CELLS    1
-#define NR_RANAC 150
 
 #define ADD 0
 #define DEL 1
@@ -141,20 +141,28 @@
 
 typedef enum
 {
-   OOS,
+   CELL_OUT_OF_SERVICE,
    ACTIVATION_IN_PROGRESS,
    ACTIVATED,
    DELETION_IN_PROGRESS
 }CellStatus;
 
-#if 0
+typedef struct cellCfgParams
+{
+   NrEcgi      nrEcgi;         /* ECGI */
+   U16         nrPci;          /* PCI */
+   U16         fiveGsTac;         /* 5gSTac */
+   PlmnId      plmn[MAX_PLMN]; /* List of serving PLMN IDs */
+   U32         maxUe;          /* max UE per slot */
+}CellCfgParams;
+
+
 typedef struct duCellCb
 {
    U32            cellId;      /* Internal cell Id */
    CellCfgParams  cellInfo;    /* Cell info */
    CellStatus     cellStatus;  /*Cell status */
 }DuCellCb;
-#endif
 
 typedef struct duLSapCb
 {
@@ -164,9 +172,9 @@ typedef struct duLSapCb
    State       sapState;
    Mem         mem;
    CmTimer     timer;
-   U8                        bndRetryCnt;
-   U8                        maxBndRetry;
-   TmrCfg                    bndTmr;
+   U8          bndRetryCnt;
+   U8          maxBndRetry;
+   TmrCfg      bndTmr;
 }DuLSapCb;
 
 /* DU APP DB */
@@ -177,8 +185,8 @@ typedef struct duCb
    //DuLSapCb      **macSap;  /* MAC SAP */
    Bool          f1Status; /* Status of F1 connection */
    Bool          e2Status; /* Status of E2 connection */
-   CmHashListCp  cellLst;     /* List of cells at DU APP of type DuCellCb */
-   CmHashListCp  actvCellLst; /* List of cells activated/to be activated of type DuCellCb */
+   DuCellCb*     cfgCellLst[DU_MAX_CELLS];     /* List of cells at DU APP of type DuCellCb */
+   DuCellCb*     actvCellLst[DU_MAX_CELLS];    /* List of cells activated/to be activated of type DuCellCb */
    /* pointer to store the address of macCellCfg params used to send du-app to MAC */
    MacCellCfg     *duMacCellCfg;     /* pointer to store params while sending DU-APP to MAC */
 }DuCb;

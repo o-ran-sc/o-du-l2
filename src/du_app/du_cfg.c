@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /* This file contains all utility functions */
-#include "du_cfg.h"
+#include "du_mgr.h"
 #include "MIB.h"
 #include "PLMN-IdentityInfo.h"
 #include "odu_common_codec.h"
@@ -538,15 +538,14 @@ S16 bitStringToInt(BIT_STRING_t *bitString, U16 *val)
       return RFAILED;
    }
 
-   numOctets = (bitString->size + 7 )/8;
-   for(idx=0; idx< numOctets; idx++)
+   for(idx=0; idx<bitString->size-1; idx++)
    {
       *val |= bitString->buf[idx];
       *val <<= 8;
    }
 
-   *val |= bitString->buf[numOctets -1];
-   *val >>= ((numOctets * 8) - bitString->size);
+   *val |= bitString->buf[idx];
+   *val >>= bitString->bits_unused;
 
    return ROK;
 }
