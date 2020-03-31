@@ -36,6 +36,40 @@
     },
     {
       "key": {
+        "uuid": "d9e9e3e3_d33b9f26",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-03-31T09:58:24Z",
+      "side": 1,
+      "message": "if nci\u003d0, then the value will go to negative.",
+      "revId": "76f495ccef7a899a6af90e83e4fc7d4c5d505b1d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43c91799_608e9c0d",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-03-31T09:58:24Z",
+      "side": 1,
+      "message": "if nci\u003d0, then the value will go to negative",
+      "revId": "76f495ccef7a899a6af90e83e4fc7d4c5d505b1d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a2fe61c3_8d0b0d33",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 1
@@ -53,6 +87,23 @@
     },
     {
       "key": {
+        "uuid": "28715b9d_f2c3a934",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-03-31T09:58:24Z",
+      "side": 1,
+      "message": "what if the size was 0, then it will go to a negative number",
+      "revId": "76f495ccef7a899a6af90e83e4fc7d4c5d505b1d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0575b31a_cccaca43",
         "filename": "src/du_app/du_cfg.h",
         "patchSetId": 1
@@ -64,6 +115,40 @@
       "writtenOn": "2020-03-31T09:41:29Z",
       "side": 1,
       "message": "we can move such standard libraries into 1 file which can in turn be included in all files",
+      "revId": "76f495ccef7a899a6af90e83e4fc7d4c5d505b1d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d48b972c_68db9776",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-03-31T09:58:24Z",
+      "side": 1,
+      "message": "can we have underscore in between MAXNUMOFSLICEITEMS",
+      "revId": "76f495ccef7a899a6af90e83e4fc7d4c5d505b1d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aea76c62_64d8a855",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-03-31T09:58:24Z",
+      "side": 1,
+      "message": "can we underscore in this macro MAXNUMOFUEID",
       "revId": "76f495ccef7a899a6af90e83e4fc7d4c5d505b1d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
