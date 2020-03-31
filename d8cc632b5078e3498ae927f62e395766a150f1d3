@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f1dcfd11_562d41a6",
+        "filename": "build/common/asn_e2ap.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-31T10:12:47Z",
+      "side": 1,
+      "message": "have header and footer been added to this file?",
+      "revId": "d8cc632b5078e3498ae927f62e395766a150f1d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e726913_4f38c2bc",
+        "filename": "src/codec_utils/common/asn_internal.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-31T10:12:47Z",
+      "side": 1,
+      "message": "we should not be modifying this file since it is generated. SO reset it to as it was before starting E2AP",
+      "revId": "d8cc632b5078e3498ae927f62e395766a150f1d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "186e3315_9b5d7fea",
+        "filename": "src/codec_utils/common/odu_common_codec.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-31T10:12:47Z",
+      "side": 1,
+      "message": "only interface function names must begin in caps",
+      "revId": "d8cc632b5078e3498ae927f62e395766a150f1d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "954f61b9_41c71e27",
+        "filename": "src/cu_stub/cu_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-31T10:12:47Z",
+      "side": 1,
+      "message": "dont use RETVALUE macro",
+      "revId": "d8cc632b5078e3498ae927f62e395766a150f1d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1ca35bf_8aef7436",
+        "filename": "src/ric_stub/ric_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-03-31T10:12:47Z",
+      "side": 1,
+      "message": "update func name",
+      "revId": "d8cc632b5078e3498ae927f62e395766a150f1d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
