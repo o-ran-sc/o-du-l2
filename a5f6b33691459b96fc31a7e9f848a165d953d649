@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01941ce6_4ac565ab",
+        "filename": "src/5gnrmac/rg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-04T14:52:37Z",
+      "side": 1,
+      "message": "lets have a MAC_FREE macro as well",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
