@@ -186,14 +186,14 @@ ClCellCb   *cellCb
 
    /* Filling SSB configuration */
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SS_PBCH_PWR, sizeof(U16), cellCfg.ssbCfg.ssbPbchPwr, &msgLen);
-   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_BCH_PAYLOAD, sizeof(U16), cellCfg.ssbCfg.bchPayloadOption, &msgLen);
+   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_BCH_PAYLOAD, sizeof(U16), cellCfg.ssbCfg.bchPayloadFlag, &msgLen);
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SCS_COMM, sizeof(U16), cellCfg.ssbCfg.scsCmn, &msgLen);
-   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SSB_OFFS_POINT_A, sizeof(U16), cellCfg.ssbCfg.ssbPrbOffset, &msgLen);
+   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SSB_OFFS_POINT_A, sizeof(U16), cellCfg.ssbCfg.ssbOffsetPointA, &msgLen);
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_BETA_PSS, sizeof(U16), cellCfg.ssbCfg.betaPss, &msgLen);
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SSB_PERIOD, sizeof(U16), cellCfg.ssbCfg.ssbPeriod, &msgLen);
-   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SSB_SUBC_OFFS, sizeof(U16), cellCfg.ssbCfg.ssbSubcOffset, &msgLen);
+   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SSB_SUBC_OFFS, sizeof(U16), cellCfg.ssbCfg.ssbScOffset, &msgLen);
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_MIB, sizeof(U16), cellCfg.ssbCfg.mibPdu, &msgLen);
-   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SSB_MASK, sizeof(U16), cellCfg.ssbCfg.nSSBMask[0], &msgLen);
+   fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SSB_MASK, sizeof(U16), cellCfg.ssbCfg.ssbMask[0], &msgLen);
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_SS_PBCH_MULT_CARR_BAND, sizeof(U16), cellCfg.ssbCfg.multCarrBand, &msgLen);
    fillConfigTLV(nextTlv, configTlvs, CFG_TAG_MULT_CELL_SS_PBCH_CARR, sizeof(U16), cellCfg.ssbCfg.multCellCarr, &msgLen);
 

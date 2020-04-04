@@ -60,7 +60,7 @@
 #define SSB_PBCH_PWR 0
 #define BCH_PAYLOAD MAC_GEN_FULL_PBCH_PAYLD
 #define SUBCARRIER_SPACING 3
-#define PRB_OFFSET 0
+#define OFFSET_TO_POINT_A 0
 #define BETA_PSS BETA_PSS_0DB
 #define SSB_PERIODICITTY SSB_PRDCTY_MS_20
 #define SSB_SUBCARRIER_OFFSET 0
@@ -536,7 +536,9 @@ typedef struct f1DuCellInfo
 typedef struct f1DuSysInfo
 {
    uint8_t   *mibMsg;   /* MIB message */
+   uint16_t  mibLen;
    uint8_t   *sib1Msg;  /* SIB1 message */
+   uint16_t  sib1Len;
 }F1DuSysInfo;
 
 typedef struct f1CuSysInfo

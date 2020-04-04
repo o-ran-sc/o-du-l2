@@ -244,6 +244,26 @@ U32 macHeader[2];
 #define RG_MAX_DL_HARQ_NUM   8 
 #endif
 
+#define MAC_MEM_REGION     4
+#define MAC_POOL 1
+/* allocate and zero out a MAC static buffer */
+#define MAC_ALLOC(_datPtr, _size)                            \
+{                                                            \
+   S16 _ret;                                                 \
+   _ret = SGetSBuf(MAC_MEM_REGION, MAC_POOL,                 \
+                    (Data **)&_datPtr, _size);               \
+   if(_ret == ROK)                                           \
+      cmMemset((U8*)_datPtr, 0, _size);                      \
+   else                                                      \
+      _datPtr = NULLP;                                       \
+}
+
+/* free a static buffer */
+#define MAC_FREE(_datPtr, _size)                             \
+   if(_datPtr)                                               \
+      SPutSBuf(MAC_MEM_REGION, MAC_POOL,                     \
+         (Data *)_datPtr, _size);
+
 #define RG_LCG_ISCFGD(lcg) ((lcg)->lcgId != RG_INVALID_LCG_ID)
 /* Corrected the check for dlCcchId */
 #define RG_DLCCCH_ISCFGD(cell) ((cell)->dlCcchId != RG_INVALID_LC_ID)

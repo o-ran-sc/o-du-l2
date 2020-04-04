@@ -44,13 +44,13 @@ extern S16 duBuildAndSendMacCellCfg();
  * ****************************************************************/
 S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 {
-   U16 idx;
-   S16 ret;
+   U16 idx = 0;
+   S16 ret = ROK;
 
    for(idx=0; idx<cellsToActivate.list.count; idx++)
    {
       U16 nci = 0;
-      U16 pci;
+      U16 pci = 0;
       DuCellCb *cellCb = NULLP;
 
       Cells_to_be_Activated_List_Item_t cell = cellsToActivate.list.array[idx]->\
@@ -81,15 +81,17 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
       /* Now remove this cell from configured list and move to active list */
       duCb.cfgCellLst[nci-1] = NULLP;
       duCb.actvCellLst[nci-1] = cellCb;
+
+      /* Build and send Mac Cell Cfg for the number of active cells */
+      ret = duBuildAndSendMacCellCfg();
+      if(ret != ROK)
+      {
+         DU_LOG("\nDU APP : macCellCfg build and send failed");
+         return RFAILED;
+      }
    }
 
-   /* Start sending scheduler config */
-   if(ret == ROK)
-   {
-      //TODO: uncomment later duSendSchGnbCfg(); 
-   }
-
-   return ROK;
+   return ret;
 }
 
 /******************************************************************
@@ -170,10 +172,6 @@ S16 procF1SetupRsp(F1AP_PDU_t *f1apMsg)
    SPutSBuf(DU_APP_MEM_REGION, DU_POOL,(Data *)&f1apMsg,(Size)sizeof(F1AP_PDU_t));
 #endif
  
-   /* Build and send Mac Cell Cfg Paramaters */
-   //ret = duBuildAndSendMacCellCfg();
-   ret = BuildAndSendDUConfigUpdate();
-
    return ret;
 }
 

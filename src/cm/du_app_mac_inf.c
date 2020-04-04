@@ -53,7 +53,7 @@
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
+U16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
 {
    if(pst->selector == DU_SELECTOR_LC)
    {
@@ -72,6 +72,7 @@ S16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
       /* pack the address of the structure */
       CMCHKPK(cmPkPtr,(PTR)macCellCfg, mBuf);
 
+      DU_LOG("\nDU-APP : MAC CELL config sent");
       RETVALUE(SPstTsk(pst,mBuf));
    } 
 }
@@ -123,7 +124,7 @@ void unpackDuMacCellCfg(
  *
  * @details
  *
- *      Function : cmPackMacCellCfgCfm
+ *      Function : packMacCellCfgCfm
  *
  *      Functionality:
  *           packs the transaction ID  
@@ -134,7 +135,7 @@ void unpackDuMacCellCfg(
  *         RFAILED - failure
  *
  ***************************************************************************/
-U16 cmPackMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
+U16 packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 {
    if(pst->selector == DU_SELECTOR_LC)
    {
@@ -154,6 +155,7 @@ U16 cmPackMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
       /* only LC is supported */
       return RFAILED;
    }
+   return ROK;
 }
 
 /**************************************************************************
@@ -173,7 +175,7 @@ U16 cmPackMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 unpackMacCellCfgCfm(
+U16 unpackMacCellCfgCfm(
    DuMacCellCfgCfm func, 
    Pst *pst,
    Buffer *mBuf)
@@ -191,6 +193,7 @@ S16 unpackMacCellCfgCfm(
    {
       /* only loose coupling is suported */
    }
+   return ROK;
 }
 
 /**********************************************************************

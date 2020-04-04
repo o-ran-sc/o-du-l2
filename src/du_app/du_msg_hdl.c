@@ -1580,6 +1580,8 @@ S16 duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm)
       /* free the memory allocated during sending macCellCfg request */
       DU_FREE(duCb.duMacCellCfg,sizeof(MacCellCfg));
       duCb.duMacCellCfg = NULLP;
+      DU_LOG("\nDU-APP : MAC CELL config confirm recieved\n");
+
 
       /* Build and send GNB-DU config update */
       ret = BuildAndSendDUConfigUpdate();

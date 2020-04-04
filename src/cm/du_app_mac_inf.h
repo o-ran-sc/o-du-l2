@@ -26,6 +26,11 @@
 
 #define NUM_SSB		1	/* max value is 64 */
 #define SSB_MASK_SIZE	1	/* SSB mask size is 32bit for sub6 */
+#define SIB1_NEW_TX_PERIOD      160
+#define SIB1_REPETITION_PERIOD   20
+#define CORESET_0_INDEX      0
+#define SEARCHSPACE_0_INDEX   0
+#define SIB1_MCS  4
 
 
 /* Event IDs */
@@ -112,16 +117,16 @@ typedef struct carrierCfg
 
 typedef struct ssbCfg
 {
-   U32         ssbPbchPwr;       /* SSB block power */
-   BchPduOpt   bchPayloadOption;       /* Options for generation of payload */
-   U8          scsCmn;           /* subcarrier spacing for common */
-   U16         ssbPrbOffset;     /* SSB PRB offset from point A */
+   uint32_t    ssbPbchPwr;       /* SSB block power */
+   BchPduOpt   bchPayloadFlag;   /* Options for generation of payload */
+   uint8_t     scsCmn;           /* subcarrier spacing for common */
+   uint16_t    ssbOffsetPointA;  /* SSB subcarrier offset from point A */
    BetaPss     betaPss;
    SSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
-   U8          ssbSubcOffset;    /* Subcarrier Offset */
-   U32         mibPdu;           /* MIB payload */
-   U32         nSSBMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
-   U8          beamId[NUM_SSB];
+   uint8_t     ssbScOffset;       /* Subcarrier Offset */
+   uint8_t     mibPdu[3];           /* MIB payload */
+   uint32_t    ssbMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
+   uint8_t     beamId[NUM_SSB];
    Bool        multCarrBand;     /* Multiple carriers in a band */
    Bool        multCellCarr;     /* Multiple cells in single carrier */
 }SsbCfg;
@@ -155,6 +160,17 @@ typedef struct tddCfg
    SlotConfig         slotCfg[MAXIMUM_TDD_PERIODICITY][MAX_SYMB_PER_SLOT]; 
 }TDDCfg;
 
+typedef struct sib1CellCfg
+{
+   uint8_t  *sib1Pdu;
+   uint16_t sib1PduLen;
+   uint16_t sib1NewTxPeriod;
+   uint16_t sib1RepetitionPeriod;
+   uint8_t coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
+   uint8_t searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */
+   uint16_t sib1Mcs;
+} Sib1CellCfg; 
+
 typedef struct macCellCfg
 {
    U16            transId;
@@ -170,6 +186,7 @@ typedef struct macCellCfg
    PrachCfg       prachCfg;   /* PRACH Configuration */
    TDDCfg         tddCfg;     /* TDD periodicity and slot configuration */
    RSSIMeasUnit   rssiUnit;   /* RSSI measurement unit */
+   Sib1CellCfg    sib1Cfg;
 }MacCellCfg;
 
 typedef struct macCellCfgCfm
@@ -178,12 +195,12 @@ typedef struct macCellCfgCfm
 }MacCellCfgCfm;
 
 /* function pointers for packing macCellCfg Request */
-typedef S16 (*packMacCellCfgReq) ARGS((
+typedef U16 (*packMacCellCfgReq) ARGS((
    Pst           *pst,
    MacCellCfg    *macCellCfg
 ));
 
-typedef S16 (*packMacCellCfgCfm) ARGS((
+typedef S16 (*packMacCellCfgConfirm) ARGS((
    Pst              *pst,
    MacCellCfgCfm    *macCellCfgCfm
 ));
@@ -197,7 +214,7 @@ typedef S16 (*DuMacCellCfgCfm)     ARGS((
         MacCellCfgCfm *macCellCfgCfm         /* Config Structure */
      ));
 
-S16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
+U16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
 
 EXTERN S16 MacHdlCellCfgReq
 (
@@ -210,7 +227,7 @@ void cmUnpackLwLcMacCellCfg(
    Pst *pst,
    Buffer *mBuf);
 
-S16 unpackMacCellCfgCfm(
+U16 unpackMacCellCfgCfm(
    DuMacCellCfgCfm func,
    Pst *pst,
    Buffer *mBuf);
