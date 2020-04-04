@@ -86,7 +86,8 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
    /* Start sending scheduler config */
    if(ret == ROK)
    {
-      //TODO: uncomment later duSendSchGnbCfg(); 
+      /* Build and send Mac Cell Cfg Paramaters */
+      ret = duBuildAndSendMacCellCfg();
    }
 
    return ROK;
@@ -170,10 +171,6 @@ S16 procF1SetupRsp(F1AP_PDU_t *f1apMsg)
    SPutSBuf(DU_APP_MEM_REGION, DU_POOL,(Data *)&f1apMsg,(Size)sizeof(F1AP_PDU_t));
 #endif
  
-   /* Build and send Mac Cell Cfg Paramaters */
-   //ret = duBuildAndSendMacCellCfg();
-   ret = BuildAndSendDUConfigUpdate();
-
    return ret;
 }
 

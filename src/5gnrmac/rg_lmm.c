@@ -2133,6 +2133,8 @@ S16 MacHdlCellCfgReq
    Inst inst = pst->dstInst;
 
    cellCb = rgCb[inst].cell;
+   MAC_ALLOC(cellCb,sizeof(RgCellCb));
+
    memcpy(&cellCb->macCellCfg,macCellCfg,sizeof(MacCellCfg));
 
    macCellCfgFillCfmPst(pst,&cnfPst);

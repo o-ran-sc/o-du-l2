@@ -26,6 +26,7 @@
 
 #define NUM_SSB		1	/* max value is 64 */
 #define SSB_MASK_SIZE	1	/* SSB mask size is 32bit for sub6 */
+#define SIB1_LENGTH    95
 
 
 /* Event IDs */
@@ -113,14 +114,14 @@ typedef struct carrierCfg
 typedef struct ssbCfg
 {
    U32         ssbPbchPwr;       /* SSB block power */
-   BchPduOpt   bchPayloadOption;       /* Options for generation of payload */
+   BchPduOpt   bchPayloadFlag;       /* Options for generation of payload */
    U8          scsCmn;           /* subcarrier spacing for common */
-   U16         ssbPrbOffset;     /* SSB PRB offset from point A */
+   U16         ssbOffsetPointA;     /* SSB PRB offset from point A */
    BetaPss     betaPss;
    SSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
-   U8          ssbSubcOffset;    /* Subcarrier Offset */
-   U32         mibPdu;           /* MIB payload */
-   U32         nSSBMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
+   U8          ssbScOffset;    /* Subcarrier Offset */
+   U8          mibPdu[3];           /* MIB payload */
+   U32         ssbMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
    U8          beamId[NUM_SSB];
    Bool        multCarrBand;     /* Multiple carriers in a band */
    Bool        multCellCarr;     /* Multiple cells in single carrier */
@@ -155,6 +156,17 @@ typedef struct tddCfg
    SlotConfig         slotCfg[MAXIMUM_TDD_PERIODICITY][MAX_SYMB_PER_SLOT]; 
 }TDDCfg;
 
+typedef struct sib1CellCfg
+{
+   uint8_t  sib1Pdu[SIB1_LENGTH];
+   uint16_t sib1PduLen;
+   uint16_t sib1NewTxPeriod;
+   uint16_t sib1RepetitionPeriod;
+   uint8_t coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
+   uint8_t searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */
+   uint16_t sib1Mcs;
+} Sib1CellCfg; 
+
 typedef struct macCellCfg
 {
    U16            transId;
@@ -170,6 +182,7 @@ typedef struct macCellCfg
    PrachCfg       prachCfg;   /* PRACH Configuration */
    TDDCfg         tddCfg;     /* TDD periodicity and slot configuration */
    RSSIMeasUnit   rssiUnit;   /* RSSI measurement unit */
+   Sib1CellCfg    sib1Cfg;
 }MacCellCfg;
 
 typedef struct macCellCfgCfm
