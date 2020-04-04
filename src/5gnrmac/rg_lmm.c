@@ -57,6 +57,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rgr.h"           /* LRG Interface defines */
 #include "rg.h"            /* MAC defines */
 #include "rg_err.h"        /* MAC error defines */
+#include "du_log.h"
 
 /* header/extern include files (.x) */
 #include "gen.x"           /* general */
@@ -2133,6 +2134,14 @@ S16 MacHdlCellCfgReq
    Inst inst = pst->dstInst;
 
    cellCb = rgCb[inst].cell;
+   MAC_ALLOC(cellCb,sizeof(RgCellCb));
+
+   if(cellCb == NULLP)
+   {
+      DU_LOG("\nMAC : cellCb is NULL at handling of macCellCfg\n");
+      return RFAILED;
+   }
+
    memcpy(&cellCb->macCellCfg,macCellCfg,sizeof(MacCellCfg));
 
    macCellCfgFillCfmPst(pst,&cnfPst);

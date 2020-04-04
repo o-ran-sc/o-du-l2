@@ -72,6 +72,7 @@ S16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
       /* pack the address of the structure */
       CMCHKPK(cmPkPtr,(PTR)macCellCfg, mBuf);
 
+      DU_LOG("\nDU-APP : MAC CELL config sent");
       RETVALUE(SPstTsk(pst,mBuf));
    } 
 }

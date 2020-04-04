@@ -136,15 +136,17 @@ S16 readMacCfg()
 
    /* SSB configuration */
    duCfgParam.macCellCfg.ssbCfg.ssbPbchPwr = SSB_PBCH_PWR;
-   duCfgParam.macCellCfg.ssbCfg.bchPayloadOption = BCH_PAYLOAD;
+   duCfgParam.macCellCfg.ssbCfg.bchPayloadFlag = BCH_PAYLOAD;
    duCfgParam.macCellCfg.ssbCfg.scsCmn = SUBCARRIER_SPACING;
-   duCfgParam.macCellCfg.ssbCfg.ssbPrbOffset = PRB_OFFSET;
+   duCfgParam.macCellCfg.ssbCfg.ssbOffsetPointA = POINT_A;
    duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
    duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITTY;
-   duCfgParam.macCellCfg.ssbCfg.ssbSubcOffset = SSB_SUBCARRIER_OFFSET;
-   duCfgParam.macCellCfg.ssbCfg.mibPdu = 104;
-   duCfgParam.macCellCfg.ssbCfg.nSSBMask[0] = 2162721;
-   duCfgParam.macCellCfg.ssbCfg.nSSBMask[1] = 0;
+   duCfgParam.macCellCfg.ssbCfg.ssbScOffset = SSB_SUBCARRIER_OFFSET;
+   duCfgParam.macCellCfg.ssbCfg.mibPdu[0] = 0x01;
+   duCfgParam.macCellCfg.ssbCfg.mibPdu[1] = 0x01;
+   duCfgParam.macCellCfg.ssbCfg.mibPdu[2] = 0x84;
+   duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = 1; /* only one SSB is transmitted */
+   duCfgParam.macCellCfg.ssbCfg.ssbMask[1] = 0;
    duCfgParam.macCellCfg.ssbCfg.multCarrBand = SSB_MULT_CARRIER_BAND;
    duCfgParam.macCellCfg.ssbCfg.multCellCarr = MULT_CELL_CARRIER;
 
@@ -177,6 +179,14 @@ S16 readMacCfg()
 
    /* RSSI Measurement configuration */
    duCfgParam.macCellCfg.rssiUnit = RSS_MEASUREMENT_UNIT;
+
+   /* fill SIB1 configuration */
+   duCfgParam.macCellCfg.sib1Cfg.sib1PduLen = SIB1_LENGTH;
+   duCfgParam.macCellCfg.sib1Cfg.sib1NewTxPeriod = SIB1_NEW_TX_PERIOD;
+   duCfgParam.macCellCfg.sib1Cfg.sib1RepetitionPeriod = SIB1_REPETITION_PERIOD;
+   duCfgParam.macCellCfg.sib1Cfg.coresetZeroIndex = CORESET_0_INDEX;
+   duCfgParam.macCellCfg.sib1Cfg.searchSpaceZeroIndex = SEARCHSPACE_0_INDEX;
+   duCfgParam.macCellCfg.sib1Cfg.sib1Mcs = SIB1_MCS;
 
    /* This should be calculated based on
       (number of mandatory parameters) + (number of otional parameters being filled) */
