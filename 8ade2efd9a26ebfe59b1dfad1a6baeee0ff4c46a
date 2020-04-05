@@ -36,6 +36,23 @@
     },
     {
       "key": {
+        "uuid": "a07ef440_d03c6723",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-05T13:30:49Z",
+      "side": 1,
+      "message": "we are bot checking value of ret",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "575df5ff_27f668bc",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 2
@@ -47,6 +64,40 @@
       "writtenOn": "2020-04-05T11:33:26Z",
       "side": 1,
       "message": "Should we fill these mibPdu and ssbMask directly or through defined macros?",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53f0df74_41b541ae",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-05T13:30:49Z",
+      "side": 1,
+      "message": "isnt it better to take it as string? rather than byte by byte?This comment is open for discussion",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac2cd411_31e97af3",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-05T13:30:49Z",
+      "side": 1,
+      "message": "lets not use macro to determine SIB1_LENGTH. Lets find the length after encoding",
       "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
