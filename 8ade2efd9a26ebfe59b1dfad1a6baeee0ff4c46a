@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6860045_e3c2829c",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-05T11:33:26Z",
+      "side": 1,
+      "message": "We should not use \"cm\" prefix. Rename this to packMacCellCfgCm",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a46d62d5_af069329",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-05T11:33:26Z",
+      "side": 1,
+      "message": "Are we supporting loose coupling here? \nIf not, then for LWLC, allocate memory for macCellCfgCfm in MacHdlCellCfgReq and pack its pointer",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "575df5ff_27f668bc",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-05T11:33:26Z",
+      "side": 1,
+      "message": "Should we fill these mibPdu and ssbMask directly or through defined macros?",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aea752e7_605f5372",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-05T11:33:26Z",
+      "side": 1,
+      "message": "Can be renamed to OFFSET_TO_POINT_A. Will be more readable",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42a5d934_c5d0e9f1",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1574,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-05T11:33:26Z",
+      "side": 1,
+      "message": "If LWLC is used while packing MacCellCfgCfm, then free memory for macCellCfgCfm after processing in this function.",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
