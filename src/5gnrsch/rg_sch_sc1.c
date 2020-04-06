@@ -632,7 +632,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
          ue = hqP->hqE->ue;
 
 #ifndef LTE_TDD
-         if((0 == schdTime.subframe) || (5 == schdTime.subframe))
+         if((0 == schdTime.slot) || (5 == schdTime.slot))
          {
             Bool reTxAllw;
             rgSCHCmnChkRetxAllowDtx(cell, ue, hqP, &reTxAllw);

@@ -270,14 +270,14 @@ U32 macHeader[2];
 #define RG_ULCCCH_ISCFGD(cell) ((cell)->ulCcchId != RG_INVALID_LC_ID)
 /* After merging from 2.1 to 2.2 */
 #define RG_CALC_SF_DIFF(_time1, _time2)\
-   (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.subframe) < (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.subframe)?\
-     ((_time1.sfn+RG_MAX_SFN)*RG_NUM_SUB_FRAMES_5G+_time1.subframe) -\
-       (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.subframe) : \
-     (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.subframe) - (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.subframe)
+   (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) < (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)?\
+     ((_time1.sfn+RG_MAX_SFN)*RG_NUM_SUB_FRAMES_5G+_time1.slot) -\
+       (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot) : \
+     (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) - (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)
 /*LTE_L2_MEAS_PHASE2*/
 #define RG_CALC_SFN_SF_DIFF(_time1,_sfnCycle, _time2)\
-(((_time1.sfn+RG_MAX_SFN * _sfnCycle)*RG_NUM_SUB_FRAMES_5G) + _time1.subframe -\
-(_time2.sfn*RG_NUM_SUB_FRAMES_5G + _time2.subframe))
+(((_time1.sfn+RG_MAX_SFN * _sfnCycle)*RG_NUM_SUB_FRAMES_5G) + _time1.slot -\
+(_time2.sfn*RG_NUM_SUB_FRAMES_5G + _time2.slot))
 
 #define RG_EXT_LCID(_lcId, _byte) {\
       (_lcId) = (_byte) & RG_LCID_MASK; \
@@ -331,26 +331,21 @@ U32 macHeader[2];
 }
 
 #define RGADDTOCRNTTIME(crntTime, toFill, incr)          \
-   if ((crntTime.subframe + incr) > (RG_NUM_SUB_FRAMES_5G - 1))   \
+   if ((crntTime.slot + incr) > (RG_NUM_SUB_FRAMES_5G - 1))   \
       toFill.sfn = (crntTime.sfn + 1);      \
    else                                                  \
       toFill.sfn = crntTime.sfn;                              \
-   toFill.subframe = (crntTime.subframe + incr) % RG_NUM_SUB_FRAMES_5G; \
+   toFill.slot = (crntTime.slot + incr) % RG_NUM_SUB_FRAMES_5G; \
    if (toFill.sfn >= RG_MAX_SFN) \
    { \
-      toFill.hSfn = (crntTime.hSfn + 1)%RG_MAX_SFN; \
       toFill.sfn%=RG_MAX_SFN; \
    } \
-   else \
-   { \
-      toFill.hSfn = crntTime.hSfn; \
-   }
 
 #define RGSUBFRMCRNTTIME(crntTime, toFill, dcr)    \
 {                                                  \
    if (crntTime.sfn == 0)                          \
 {                                                  \
-   if ((crntTime.subframe - (dcr)) < 0)              \
+   if ((crntTime.slot - (dcr)) < 0)              \
    {                                               \
       toFill.sfn = RG_MAX_SFN - 1;                 \
    }                                               \
@@ -361,21 +356,20 @@ U32 macHeader[2];
 }                                                  \
 else                                               \
 {                                                  \
-   if ((crntTime.subframe - (dcr)) < 0)              \
+   if ((crntTime.slot - (dcr)) < 0)              \
    {                                               \
    toFill.sfn = crntTime.sfn - 1;                  \
    }                                               \
    else                                            \
    toFill.sfn = crntTime.sfn;                      \
 }                                                  \
-toFill.subframe = (RG_NUM_SUB_FRAMES_5G + crntTime.subframe - (dcr)) % (RG_NUM_SUB_FRAMES_5G);                                   \
+toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAMES_5G);                                   \
 }
 
 #define RGCPYTIMEINFO(src, dst)  \
-   dst.hSfn        = src.hSfn;     \
-   dst.sfn        = src.sfn;     \
-   dst.subframe   = src.subframe;
-#define RG_TIMEINFO_SAME(x, y) ((x.sfn == y.sfn) && (x.subframe == y.subframe))
+   dst.sfn    = src.sfn;     \
+   dst.slot   = src.slot;
+#define RG_TIMEINFO_SAME(x, y) ((x.sfn == y.sfn) && (x.slot == y.slot))
 
 
 #define rgPBuf(_inst)  rgCb[_inst].rgInit.prntBuf
@@ -627,15 +621,15 @@ toFill.subframe = (RG_NUM_SUB_FRAMES_5G + crntTime.subframe - (dcr)) % (RG_NUM_S
 #endif
 
 #define RG_CALC_SF_DIFF(_time1, _time2)\
-      (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.subframe) < (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.subframe)?\
-     ((_time1.sfn+RG_MAX_SFN)*RG_NUM_SUB_FRAMES_5G+_time1.subframe) -\
-       (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.subframe) : \
-     (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.subframe) - (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.subframe)
+      (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) < (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)?\
+     ((_time1.sfn+RG_MAX_SFN)*RG_NUM_SUB_FRAMES_5G+_time1.slot) -\
+       (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot) : \
+     (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) - (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)
 
 #define RG_TTI_CYCLE_INVLD                0xFFFFFFFF     
 #define RG_CALC_TTI_CNT(_cellCb, _ttiCnt)\
      _ttiCnt = (RG_NUM_SUB_FRAMES_5G * (_cellCb->crntTime.sfn + (_cellCb->ttiCycle * 1024)) )+\
-               _cellCb->crntTime.subframe;
+               _cellCb->crntTime.slot;
 #endif /* LTE_L2_MEAS */
 
 /* Tuned according to TDD Cfg Mode2 and 2UE/TTI.

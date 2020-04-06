@@ -172,7 +172,7 @@ U8                   cqi;
    if (hqProc == NULLP)
    {
       printf("UE[%d] failed to find UL HqProc for [%d:%d]\n",
-		      ue->ueId, frm.sfn, frm.subframe);
+		      ue->ueId, frm.sfn, frm.slot);
       RETVOID;
    }
    hqProc->rcvdCrcInd = TRUE;
@@ -347,7 +347,7 @@ U8                   cqi;
    if (hqProc == NULLP)
    {
       printf("UE[%d] failed to find UL HqProc for [%d:%d]\n",
-		      ue->ueId, frm.sfn, frm.subframe);
+		      ue->ueId, frm.sfn, frm.slot);
       RETVOID;
    }
 #ifdef UL_LA
@@ -550,7 +550,7 @@ RgSchCellCb      *cell;
 #endif
    hqProc->alloc = NULLP;
    hqProc->ulSfIdx = RGSCH_INVALID_INFO;
-   /*ccpu00116293 - Correcting relation between UL subframe and DL subframe based on RG_UL_DELTA*/
+   /*ccpu00116293 - Correcting relation between UL slot and DL slot based on RG_UL_DELTA*/
    hqProc->isRetx  = FALSE;
    hqProc->remTx = 0; /*Reseting the remTx value to 0*/
 #ifdef EMTC_ENABLE
@@ -1015,7 +1015,7 @@ RgSchUlHqProcCb       **hqP;
    cmLListAdd2Tail(&hqE->inUse, &tmpHqProc->lnk);
 
 #ifdef UL_ADPT_DBG 
-         printf("rgSCHUhmGetAvlHqProc cellId %d  free %ld inUse %ld ue %d time (%d %d)\n",cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId,cellUl->schdTime.sfn,cellUl->schdTime.subframe);
+         printf("rgSCHUhmGetAvlHqProc cellId %d  free %ld inUse %ld ue %d time (%d %d)\n",cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId,cellUl->schdTime.sfn,cellUl->schdTime.slot);
 #endif         
    tmpHqProc->schdTime = cellUl->schdTime;
 
@@ -1067,10 +1067,10 @@ CmLteTimingInfo  frm;
    {
       proc = (RgSchUlHqProcCb *)(lnk->node);
       lnk = lnk->next;
-      //   printf("compare rgSCHUhmGetUlProcByTime time (%d %d) CRC time (%d %d) proc->procId %d \n",proc->schdTime.sfn,proc->schdTime.subframe,frm.sfn,frm.subframe ,proc->procId);
+      //   printf("compare rgSCHUhmGetUlProcByTime time (%d %d) CRC time (%d %d) proc->procId %d \n",proc->schdTime.sfn,proc->schdTime.slot,frm.sfn,frm.slot ,proc->procId);
       if (RGSCH_TIMEINFO_SAME(proc->schdTime, frm))
       {
-        // printf("Harq timing Matched rgSCHUhmGetUlProcByTime time (%d %d) proc->procId %d \n",proc->schdTime.sfn,proc->schdTime.subframe, proc->procId);
+        // printf("Harq timing Matched rgSCHUhmGetUlProcByTime time (%d %d) proc->procId %d \n",proc->schdTime.sfn,proc->schdTime.slot, proc->procId);
          RETVALUE(proc);
       }
    }

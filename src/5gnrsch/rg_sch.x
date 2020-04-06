@@ -46,6 +46,7 @@
 #include "rg_sch_emtc.x"
 #endif
 
+
 typedef struct rgSchHistNode
 {
    U32 line;
@@ -2839,9 +2840,9 @@ UE */
 #else
 #ifdef RG_5GTF 
    /* 5GTF TODO : Hard setting number of CCs to 3 */
-   RgSchDlHqInfo dlSfHqInfo[MAX_5GTF_CELL][RGSCH_NUM_DL_SUBFRAMES];
+   RgSchDlHqInfo dlSfHqInfo[MAX_5GTF_CELL][RGSCH_NUM_DL_slotS];
 #else
-   RgSchDlHqInfo dlSfHqInfo[RGSCH_NUM_DL_SUBFRAMES];
+   RgSchDlHqInfo dlSfHqInfo[RGSCH_NUM_DL_slotS];
 #endif
 #endif  
    /* Moved from rgSchCmnDlUe to Here, as this shouldn't be present per cell*/
@@ -3757,7 +3758,7 @@ struct rgSchCellCb
    CmLListCp         n1ResUsedLst[RGSCH_NUM_SUB_FRAMES]; /*!< For storing the used
                                             N1 resources for scell in case of F1B CS */
 #else
-   RgSchDlSf          *subFrms[RGSCH_NUM_DL_SUBFRAMES];
+   RgSchDlSf          *subFrms[RGSCH_NUM_DL_slotS];
    U16             nCce;
 #endif
    RgSchDynCfiCb         dynCfiCb;        /*!< Dynamic CFI control block */  
@@ -4305,10 +4306,6 @@ EXTERN S16 rgSCHTomDoaInd ARGS((
 EXTERN S16 rgSCHTomCrcInd ARGS((
          RgSchCellCb       *cell,
          TfuCrcIndInfo *crcInd));
-
-EXTERN Void rgSCHTomTtiInd ARGS((
-         TfuTtiIndInfo *ttiInd,
-         Inst inst));
 
 EXTERN S16 rgSCHTomHarqAckInd ARGS((
          RgSchCellCb       *cell,

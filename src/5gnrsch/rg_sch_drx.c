@@ -294,10 +294,10 @@ RgUeUlHqCb   *hqE
  *         - Processing is divided into respective timer handling. 
  *         - Calculate the DL and UL indices as follows 
  *         @code
- *             dlIndex = (cell->crntTime.sfn * 10 + cell->crntTime.subframe +
+ *             dlIndex = (cell->crntTime.sfn * 10 + cell->crntTime.slot +
  *                   RG_SCH_DRX_DL_DELTA) % RG_SCH_MAX_DRXQ_SIZE;
  *
- *             ulIndex = (cell->crntTime.sfn * 10 + cell->crntTime.subframe +
+ *             ulIndex = (cell->crntTime.sfn * 10 + cell->crntTime.slot +
  *                   RG_SCH_DRX_UL_DELTA) % RG_SCH_MAX_DRXQ_SIZE;
  *         @endcode
  *         - Call rgSCHDrxTtiHdlOnDur to handle onDurationTimer handling
@@ -335,10 +335,10 @@ RgSchCellCb  *cell;
    TRC2(rgSCHDrxTtiInd );
 
 
-   dlIndex = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe +
+   dlIndex = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot +
          RG_SCH_DRX_DL_DELTA) % RG_SCH_MAX_DRXQ_SIZE;
 
-   ulIndex = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe +
+   ulIndex = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot +
          RG_SCH_DRX_UL_DELTA) % RG_SCH_MAX_DRXQ_SIZE; 
 
 #ifdef LTEMAC_R9
@@ -886,7 +886,7 @@ U8            direction;
    {
 #ifndef LTE_TDD
       curTimeInSf = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G) +
-         (cell->crntTime.subframe) +RG_SCH_DRX_UL_DELTA;
+         (cell->crntTime.slot) +RG_SCH_DRX_UL_DELTA;
 #endif
 
 #ifdef LTE_TDD
@@ -897,7 +897,7 @@ U8            direction;
    {
 #ifndef LTE_TDD
       curTimeInSf = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G) +
-         (cell->crntTime.subframe) + RG_SCH_DRX_DL_DELTA; 
+         (cell->crntTime.slot) + RG_SCH_DRX_DL_DELTA; 
 #endif
 
 #ifdef LTE_TDD
@@ -1089,7 +1089,7 @@ U8                      tbCnt;
     * so that UE is scheduled for retransmission in the next subframe*/
    /* ccpu00134196-[Add]-DRX retx timer changes */
    harqRTTExpIndx = ((hqP->tbInfo[tbCnt].timingInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G) +
-         hqP->tbInfo[tbCnt].timingInfo.subframe + RG_SCH_MIN_HARQ_RTT)
+         hqP->tbInfo[tbCnt].timingInfo.slot + RG_SCH_MIN_HARQ_RTT)
       % RG_SCH_MAX_DRXQ_SIZE;
 
    fdbkDelta = RGSCH_CALC_SF_DIFF(cell->crntTime,  hqP->tbInfo[tbCnt].timingInfo);
@@ -1276,9 +1276,9 @@ PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
    rgSCHDrxGetNxtOnDur (cell, ueDrxCb, &nxtOnDur,RG_SCH_NO_DELTA);
 
 
-   nxtOnDurTime = ((nxtOnDur.sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur.subframe);
+   nxtOnDurTime = ((nxtOnDur.sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur.slot);
    curTime      = ((cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G) +
-                     cell->crntTime.subframe);
+                     cell->crntTime.slot);
 
    onDurIndx         = nxtOnDurTime % RG_SCH_MAX_DRXQ_SIZE;
    
@@ -1388,7 +1388,7 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
       cycleLen = drxCb->shortDrxCycle;
    }
 
-   curTime = ((cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G) + cell->crntTime.subframe); 
+   curTime = ((cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G) + cell->crntTime.slot); 
 
    curTime  += delta;  /*TODO: see if we need to take care of wrap arounds */
 
@@ -1396,8 +1396,8 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
    {
       /* offset is the nextOnDur */
       nxtOnDur->sfn = drxCb->drxStartOffset / RGSCH_NUM_SUB_FRAMES_5G;
-      nxtOnDur->subframe = (U8)(drxCb->drxStartOffset % RGSCH_NUM_SUB_FRAMES_5G);
-      nxtDist = ((nxtOnDur->sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur->subframe); 
+      nxtOnDur->slot = (U8)(drxCb->drxStartOffset % RGSCH_NUM_SUB_FRAMES_5G);
+      nxtDist = ((nxtOnDur->sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur->slot); 
    }
    else
    {
@@ -1410,8 +1410,8 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
          /* Perfect match pick up the current time */
          /*nxtOnDur should be set to equal to currentTime + DELTA */
          nxtOnDur->sfn      = (U16)curTime / RGSCH_NUM_SUB_FRAMES_5G;
-         nxtOnDur->subframe = (U16)curTime % RGSCH_NUM_SUB_FRAMES_5G;
-         nxtDist = ((nxtOnDur->sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur->subframe); 
+         nxtOnDur->slot = (U16)curTime % RGSCH_NUM_SUB_FRAMES_5G;
+         nxtDist = ((nxtOnDur->sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur->slot); 
 
       }
       else
@@ -1419,7 +1419,7 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
          nxtDist            = drxCb->drxStartOffset + (numOfCycles + 1) * 
                               cycleLen;
          nxtOnDur->sfn      = (U16)nxtDist / RGSCH_NUM_SUB_FRAMES_5G;
-         nxtOnDur->subframe = (U16)nxtDist % RGSCH_NUM_SUB_FRAMES_5G;
+         nxtOnDur->slot = (U16)nxtDist % RGSCH_NUM_SUB_FRAMES_5G;
 
       }
    }
@@ -1430,7 +1430,7 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
    {
       nxtDist = nxtDist + cycleLen;
       nxtOnDur->sfn      = (U16)nxtDist / RGSCH_NUM_SUB_FRAMES_5G;
-      nxtOnDur->subframe = (U16)nxtDist % RGSCH_NUM_SUB_FRAMES_5G;
+      nxtOnDur->slot = (U16)nxtDist % RGSCH_NUM_SUB_FRAMES_5G;
    }
    RETVALUE(ROK);
 } /* end of rgSCHDrxGetNxtOnDur */ 
@@ -1667,9 +1667,9 @@ PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
       }
 
 
-      nxtOnDurTime = (nxtOnDur.sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur.subframe;
+      nxtOnDurTime = (nxtOnDur.sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur.slot;
       curTime = ((cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G) +
-                   cell->crntTime.subframe);
+                   cell->crntTime.slot);
 
       /* If Onduration timer of old configuration is already running then waiting till it expires */
       if((ueDrxCb->onDurExpIndx != DRX_INVALID) && (ueDrxCb->onDurExpDistance != DRX_TMR_EXPRD))
@@ -2232,10 +2232,10 @@ Bool              calcFrmOffst;
       rgSCHDrxGetNxtOnDur(cell,drxUe,&nxtOnDur,(U8)idx);
       
       nxtOnDurInSf = ((nxtOnDur.sfn * RGSCH_NUM_SUB_FRAMES_5G) + 
-                         nxtOnDur.subframe);
+                         nxtOnDur.slot);
       
       curTime = ((cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G) +
-            cell->crntTime.subframe);
+            cell->crntTime.slot);
 
       nxtOnDurIndex   = nxtOnDurInSf % RG_SCH_MAX_DRXQ_SIZE;
       drxUe->distance = (nxtOnDurInSf-curTime) / RG_SCH_MAX_DRXQ_SIZE;
@@ -2339,14 +2339,14 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
 
    tddCfgMode        = cell->ulDlCfgIdx;
    crntTime.sfn      = curTime / RGSCH_NUM_SUB_FRAMES_5G;
-   crntTime.subframe = curTime % RGSCH_NUM_SUB_FRAMES_5G; 
+   crntTime.slot = curTime % RGSCH_NUM_SUB_FRAMES_5G; 
 
 
 
    /* First calculate the number of DL subframes till next SFN */
 
    dlSfTillNxtSFN = rgSchDrxDLSfTillNxtSFN[isDwPtsCnted][tddCfgMode]
-      [(crntTime.subframe % RGSCH_NUM_SUB_FRAMES)];
+      [(crntTime.slot % RGSCH_NUM_SUB_FRAMES)];
 
 
    if ( dlSfTillNxtSFN >= duration )
@@ -2476,7 +2476,7 @@ PRIVATE Void rgSCHDrxCalcNxtTmrExpry (cell,ue,delta,tmrLen,distance,idx)
    TRC2(rgSCHDrxCalcNxtTmrExpry)
    
    curTimeInSf = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G +
-                   cell->crntTime.subframe;
+                   cell->crntTime.slot;
 
    /* add delta to curTime */
    curTimeInSf += delta;
@@ -2779,7 +2779,7 @@ U16           dlIndex;
    drxCell     = (cell->drxCb);
    
    delInUlScan = drxCell->delInUlScan;
-   //printf("CELL  Timer  [SFN : %d],[SF : %d]\n",cell->crntTime.sfn,cell->crntTime.subframe);
+   //printf("CELL  Timer  [SFN : %d],[SF : %d]\n",cell->crntTime.sfn,cell->crntTime.slot);
    
    node = drxCell->drxQ[dlIndex].onDurationQ.first;
 
@@ -2843,11 +2843,11 @@ U16           dlIndex;
 
       cmLListAdd2Tail(&(drxCell->drxQ[expiryIndex].onDurationExpQ),
             &(drxUe->onDurationExpEnt));
-      //printf("DRXOnDuration Timer Started at [SFN : %d],[SF : %d]\n",cell->crntTime.sfn,cell->crntTime.subframe);
+      //printf("DRXOnDuration Timer Started at [SFN : %d],[SF : %d]\n",cell->crntTime.sfn,cell->crntTime.slot);
       drxUe->onDurationExpEnt.node = (PTR)ue;
       drxUe->onDurExpIndx          = expiryIndex;
 
-      //printf("DRxOnDuration will Expire = [%d]\n",(cell->crntTime.sfn*10+cell->crntTime.subframe+drxUe->onDurTmrLen));
+      //printf("DRxOnDuration will Expire = [%d]\n",(cell->crntTime.sfn*10+cell->crntTime.slot+drxUe->onDurTmrLen));
 
       if ( delInUlScan == FALSE )
       {

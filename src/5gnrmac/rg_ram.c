@@ -292,7 +292,7 @@ RgErrInfo           *err;
       RETVALUE(RFAILED);
    }
 
-   idx = (timingInfo.subframe % RG_NUM_SUB_FRAMES);
+   idx = (timingInfo.slot % RG_NUM_SUB_FRAMES);
    dlSf = &cell->subFrms[idx];
 
    /* Create RAR PDUs for all the allocated RA-RNTIs */

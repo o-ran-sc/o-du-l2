@@ -1880,8 +1880,8 @@ RgSchDlSf            *sf;
     * 10 subframes, which would have otherwise caused
     * the check to succeed for a possibly older process.
     */
-   if ((proc->tbInfo[0].timingInfo.subframe == sf->sfNum) ||
-       (proc->tbInfo[1].timingInfo.subframe == sf->sfNum))
+   if ((proc->tbInfo[0].timingInfo.slot == sf->sfNum) ||
+       (proc->tbInfo[1].timingInfo.slot == sf->sfNum))
    {
       /*
        * Later, if a proc can be scheduled without having an

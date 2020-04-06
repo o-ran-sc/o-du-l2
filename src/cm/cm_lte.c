@@ -181,9 +181,9 @@ Buffer *mBuf;
 
    TRC3(cmPkLteTimingInfo);
 
-   CMCHKPK(SPkU8, param->subframe, mBuf);
+   CMCHKPK(SPkU16, param->slot, mBuf);
    CMCHKPK(SPkU16, param->sfn, mBuf);
-   CMCHKPK(SPkU16, param->hSfn, mBuf);
+   //CMCHKPK(SPkU16, param->hSfn, mBuf);
    RETVALUE(ROK);
 }
 
@@ -219,9 +219,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkLteTimingInfo);
 
-   CMCHKUNPK(SUnpkU16, &param->hSfn, mBuf);
+   //CMCHKUNPK(SUnpkU16, &param->hSfn, mBuf);
    CMCHKUNPK(SUnpkU16, &param->sfn, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->subframe, mBuf);
+   CMCHKUNPK(SUnpkU8, &param->slot, mBuf);
    RETVALUE(ROK);
 }
 

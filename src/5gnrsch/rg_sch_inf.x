@@ -1438,8 +1438,6 @@ EXTERN S16 RgSchMacSpsLcDereg ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
 EXTERN S16 RgMacSchSpsRel ARGS((Pst *pst, RgInfSpsRelInfo* relInfo));
 #endif
 EXTERN S16 RgMacSchUeDel ARGS((Pst* pst, RgInfUeDelInd*  ueDelInd));
-EXTERN S16 schActvInit ARGS((Ent entity, Inst inst, Region
-       region, Reason reason));
 #ifdef __cplusplus
 }
 #endif

@@ -113,7 +113,7 @@ extern "C" {
  ((RgSchCmnCell *)(_ue->cell->sc.sch))->ul.schdHqProcIdx])->alloc) &&\
 ((&RG_SCH_CMN_GET_UL_UE(_ue, _ue->cell)->hqEnt.hqProcCb[\
  ((RgSchCmnCell *)(_ue->cell->sc.sch))->ul.schdHqProcIdx])->alloc->rnti == _ue->spsRnti) ? TRUE:FALSE)) || \
-  (_ue->ul.relPdcchSchdTime.sfn == _cell->crntTime.sfn && _ue->ul.relPdcchSchdTime.subframe == _cell->crntTime.subframe))
+  (_ue->ul.relPdcchSchdTime.sfn == _cell->crntTime.sfn && _ue->ul.relPdcchSchdTime.slot == _cell->crntTime.slot))
 #endif /* LTEMAC_SPS */
 
 /* RRM_SP1_START */
@@ -425,11 +425,10 @@ extern "C" {
 #define RGSCHCMNADDTOCRNTTIME(crntTime, toFill, incr) \
 {\
    U32 absoluteTime;\
-   absoluteTime = crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + crntTime.subframe;\
+   absoluteTime = crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + crntTime.slot;\
    absoluteTime += incr;\
    toFill.sfn = (absoluteTime /RGSCH_NUM_SUB_FRAMES_5G)% 1024;\
-   toFill.subframe = absoluteTime % RGSCH_NUM_SUB_FRAMES_5G;\
-   toFill.hSfn = 0;\
+   toFill.slot = absoluteTime % RGSCH_NUM_SUB_FRAMES_5G;\
 }
 
 #define RG_SCH_CMN_PWR_USE_CFG_MAX_PWR    (-128)
@@ -541,7 +540,7 @@ extern "C" {
 #define RG_SCH_CMN_SPS_DL_IS_SPS_TX_HQP(hqP) (((RgSchCmnDlHqProc *)((hqP)->sch))->isSpsActv)
 #define RG_SCH_CMN_IS_UE_SPS_SCHDLD(_ue, _cell,  _schdTime)\
    ((((_ue)->cellInfo[(_ue->cellIdToCellIdxMap[RG_SCH_CELLINDEX(_cell)])])->dlAllocCb.spsSchdTime.sfn == _schdTime.sfn) &&\
-    (((_ue)->cellInfo[(_ue->cellIdToCellIdxMap[RG_SCH_CELLINDEX(_cell)])])->dlAllocCb.spsSchdTime.subframe == _schdTime.subframe))
+    (((_ue)->cellInfo[(_ue->cellIdToCellIdxMap[RG_SCH_CELLINDEX(_cell)])])->dlAllocCb.spsSchdTime.slot == _schdTime.slot))
 
 #define RG_SCH_CMN_DL_COUNT_ONES(_bitMask, _size, _numOnes)\
 {\

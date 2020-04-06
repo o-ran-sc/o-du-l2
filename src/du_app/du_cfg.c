@@ -18,6 +18,7 @@
 
 /* This file contains all utility functions */
 #include "du_mgr.h"
+#include "du_sys_info_hdl.h"
 #include "MIB.h"
 #include "PLMN-IdentityInfo.h"
 #include "odu_common_codec.h"
@@ -142,11 +143,20 @@ S16 readMacCfg()
    duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
    duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITTY;
    duCfgParam.macCellCfg.ssbCfg.ssbScOffset = SSB_SUBCARRIER_OFFSET;
-   duCfgParam.macCellCfg.ssbCfg.mibPdu[0] = 0x01;
-   duCfgParam.macCellCfg.ssbCfg.mibPdu[1] = 0x01;
-   duCfgParam.macCellCfg.ssbCfg.mibPdu[2] = 0x84;
    duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = 1; /* only one SSB is transmitted */
    duCfgParam.macCellCfg.ssbCfg.ssbMask[1] = 0;
+   if(BuildMibPdu() != ROK)
+	{
+		DU_LOG("\nFailed to build MIB PDU");
+		memset(&duCfgParam.macCellCfg.ssbCfg.mibPdu, 0, 3*sizeof(uint8_t));
+   }
+	else
+	{
+	   for(uint8_t idx=0; idx<encBufSize; idx++)
+		{
+			duCfgParam.macCellCfg.ssbCfg.mibPdu[idx]=encBuf[idx];
+		}
+	}
    duCfgParam.macCellCfg.ssbCfg.multCarrBand = SSB_MULT_CARRIER_BAND;
    duCfgParam.macCellCfg.ssbCfg.multCellCarr = MULT_CELL_CARRIER;
 
@@ -199,29 +209,30 @@ S16 readMacCfg()
 }
 
 /*******************************************************************
- *
- * @brief Configures the DU Parameters
- *
- * @details
- *
- *    Function : fillDuPort
- *
- *    Functionality:
- *       - fills the DU Ports.  
- *
- * @params[in] duPort array to be filled
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
+*
+* @brief Configures the DU Parameters
+*
+* @details
+*
+*    Function : fillDuPort
+*
+*    Functionality:
+*       - fills the DU Ports.  
+*
+* @params[in] duPort array to be filled
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
 S16 fillDuPort(U16 *duPort)
 {
-   duPort[F1_INTERFACE]   = DU_PORT;     /* DU Port idx  0 38472 */
-   duPort[E2_INTERFACE]   = RIC_PORT;    /* RIC Port idx 1 38482 */
+	duPort[F1_INTERFACE]   = DU_PORT;     /* DU Port idx  0 38472 */
+	duPort[E2_INTERFACE]   = RIC_PORT;    /* RIC Port idx 1 38482 */
 
-   RETVALUE(ROK);
+	RETVALUE(ROK);
 }
+
+
 
 /*******************************************************************
  *
@@ -250,8 +261,8 @@ S16 readCfg()
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
-   cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
-   fillDuPort(duCfgParam.sctpParams.duPort);
+	cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
+	fillDuPort(duCfgParam.sctpParams.duPort);
 
    /* F1 DU IP Address and Port*/
    duCfgParam.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
@@ -260,11 +271,9 @@ S16 readCfg()
    duCfgParam.sctpParams.cuIpAddr.ipV4Addr = ipv4_cu;
    duCfgParam.sctpParams.cuPort = CU_PORT;
 
-   /* Fill RIC Params */
-   duCfgParam.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
-   duCfgParam.sctpParams.ricPort            = RIC_PORT;
-
-
+	/* Fill RIC Params */
+	duCfgParam.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
+	duCfgParam.sctpParams.ricPort            = RIC_PORT;
    /* EGTP Parameters */
    duCfgParam.egtpParams.localIp.ipV4Pres = TRUE;
    duCfgParam.egtpParams.localIp.ipV4Addr = ipv4_du;
@@ -302,7 +311,7 @@ S16 readCfg()
 	sib1.tac = DU_TAC;
 	sib1.ranac = DU_RANAC;
 	sib1.cellIdentity = CELL_IDENTITY;
-	sib1.cellResvdForOpUse =\ 
+	sib1.cellResvdForOpUse = 
 		PLMN_IdentityInfo__cellReservedForOperatorUse_notReserved;
 	duCfgParam.sib1Params = sib1;
 
@@ -543,21 +552,21 @@ S16 duReadCfg()
  * ****************************************************************/
 S16 bitStringToInt(BIT_STRING_t *bitString, U16 *val)
 {
-   U16 numOctets, idx;
+   U16 idx;
    if(bitString->buf == NULL || bitString->size <= 0)
    {
       DU_LOG("\nDU_APP : Bit string is empty");
       return RFAILED;
    }
 
-   for(idx=0; idx<bitString->size-1; idx++)
+   for(idx=0; idx< bitString->size-1; idx++)
    {
       *val |= bitString->buf[idx];
       *val <<= 8;
    }
 
    *val |= bitString->buf[idx];
-   *val >>= bitString->bits_unused;
+	*val >>= bitString->bits_unused;
 
    return ROK;
 }

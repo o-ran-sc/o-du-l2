@@ -554,15 +554,15 @@ RgErrInfo       *err;
                 "macCell(sfn sf): (%d %d) tbTimingInfo(sfn sf): (%d %d)\n"
                 "dlSf %p dlSf->tbs.count %d hqp %p tb %p\n",
                              hqP->tbInfo[i].pdcch.rnti,
-                             dlSf->schdTime.sfn, dlSf->schdTime.subframe,
-                             cellCb->crntTime.sfn, cellCb->crntTime.subframe,
+                             dlSf->schdTime.sfn, dlSf->schdTime.slot,
+                             cellCb->crntTime.sfn, cellCb->crntTime.slot,
                              hqP->tbInfo[i].timingInfo.sfn, 
-                             hqP->tbInfo[i].timingInfo.subframe,
+                             hqP->tbInfo[i].timingInfo.slot,
                              (Void *)dlSf, dlSf->tbs.count,
                              (Void *)hqP,
                              (Void *)hqP->tbInfo[i].tb);*/
       /* Mukesh :: in case of rpepetiton this is not rerd*/
-      if (hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sf == dlSf)
+      if (hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf)
       {
          /* Check if data from RLC had been received and got muxed. */
 #ifndef L2_OPTMZ
@@ -583,7 +583,7 @@ RgErrInfo       *err;
                /* Data not received but ta needs to be sent. */
                /* MUX TA and send it */
                bldPdu.datReq    =  NULLP;
-               bldPdu.reqType   =  EVTTFUTTIIND;
+               bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
                bldPdu.schdTbSz  =  hqP->tbInfo[i].tbSz;
                bldPdu.ta        =  hqP->tbInfo[i].schdTa;
 #ifdef LTE_ADV
@@ -596,7 +596,7 @@ RgErrInfo       *err;
                   RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst);
                   RLOG4(L_ERROR, "MUXing failed for:  time: %d/%d\
                   procId %d ueId %d", hqP->tbInfo[i].timingInfo.sfn,
-                  hqP->tbInfo[i].timingInfo.subframe, hqP->procId, 
+                  hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
                   hqP->tbInfo[i].pdcch.rnti);
 
                   RETVALUE(RFAILED);
@@ -607,7 +607,7 @@ RgErrInfo       *err;
 #ifdef LTEMAC_RGU_PAD
                /* Data not received from RLC. Padding at MAC */
                bldPdu.datReq    =  NULLP;
-               bldPdu.reqType   =  EVTTFUTTIIND;
+               bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
                bldPdu.schdTbSz  =  hqP->tbInfo[i].tbSz;
                bldPdu.ta        =  hqP->tbInfo[i].schdTa;
 #ifdef LTE_ADV
@@ -621,7 +621,7 @@ RgErrInfo       *err;
                   RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst);
                   RLOG4(L_ERROR, "MUXing failed for:  time: %d/%d\
                   procId %d ueId %d", hqP->tbInfo[i].timingInfo.sfn,
-                  hqP->tbInfo[i].timingInfo.subframe, hqP->procId, 
+                  hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
                   hqP->tbInfo[i].pdcch.rnti);
                   
                   RETVALUE(RFAILED);
@@ -669,13 +669,13 @@ RgErrInfo       *err;
    /* MS_WORKAROUND for ccpu00122894 */
    for(i=0;i< RG_MAX_TB_PER_UE;i++)
    {
-      if (hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sf == dlSf)
+      if (hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf)
       {
-         cmLListDelFrm(&dlSf->tbs, &(hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sfLnk));
-         hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sfLnk.node = NULLP;
+         cmLListDelFrm(&dlSf->tbs, &(hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk));
+         hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk.node = NULLP;
          
         
-        hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sf = NULLP;
+        hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf = NULLP;
       }
    }
    cmLListAdd2Tail(&datInfo->pdus, &(datReq->lnk));
@@ -761,7 +761,7 @@ RgErrInfo      *err;
       {
           continue;
       }
-      if (hqProc->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sfLnk.node == NULLP)
+      if (hqProc->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk.node == NULLP)
       {
          /* release corresponding TBs from SF tbs List */
          for(j=0;j<datReq->nmbOfTbs;j++)
@@ -809,7 +809,7 @@ RgErrInfo      *err;
          RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst);
          RLOG4(L_ERROR, "MUXing failed for:  time: %d/%d\
                procId %d ueId %d", hqProc->tbInfo[i].timingInfo.sfn,
-               hqProc->tbInfo[i].timingInfo.subframe, hqProc->procId, 
+               hqProc->tbInfo[i].timingInfo.slot, hqProc->procId, 
                hqProc->tbInfo[i].pdcch.rnti);
 
          /* release corresponding TBs from SF tbs List */
@@ -900,7 +900,7 @@ RgErrInfo      *err;
       RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst); 
       RLOG4(L_ERROR, "MUXing failed for: time: %d/%d\
                procId %d ueId %d", hqProc->tbInfo[0].timingInfo.sfn,
-            hqProc->tbInfo[0].timingInfo.subframe, hqProc->procId, 
+            hqProc->tbInfo[0].timingInfo.slot, hqProc->procId, 
             hqProc->tbInfo[0].pdcch.rnti);
 
       RG_FREE_MSG(datReq->pdu);
@@ -954,7 +954,7 @@ RgErrInfo       *err;
    U8              ueIdx;
    U8              lcIdx;
    U8              tbIndex=0,idx1;
-   RgDlSf          *dlSf = &cell->subFrms[(timingInfo.subframe % RG_NUM_SUB_FRAMES)];
+   RgDlSf          *dlSf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
    Inst            inst = cell->macInst - RG_INST_START;
 //   Bool            isDStaReqrd = FALSE;
    RgRguDedStaInd  *dStaInd[rgCb[inst].numRguSaps] ;
@@ -1042,9 +1042,9 @@ RgErrInfo       *err;
 #endif
 
          hqP->numOfTBs =  allocInfo->nmbOfTBs;
-         hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.subframe % 2].sfLnk.node = (PTR)hqP;
-         hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.subframe % 2].sf = dlSf;
-         cmLListAdd2Tail(&dlSf->tbs,&(hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.subframe % 2].sfLnk));
+         hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk.node = (PTR)hqP;
+         hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.slot % 2].sf = dlSf;
+         cmLListAdd2Tail(&dlSf->tbs,&(hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk));
          /* Changes as part of performance testing*/
          /*   hqP->numOfTBs++;*/
          hqP->tbInfo[idx].doa = allocInfo->doa;
@@ -1152,7 +1152,7 @@ RgErrInfo       *err;
             cStaInd->rnti      = allocInfo->rnti;
             cStaInd->lcId      = cell->dlCcchId;
             cStaInd->transId   = (timingInfo.sfn << 16) | 
-                                 (timingInfo.subframe << 8) | idx1;
+                                 (timingInfo.slot << 8) | idx1;
                /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
             dlSf->remDatReqCnt++;
@@ -1245,10 +1245,10 @@ RgErrInfo       *err;
          dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].rnti    = allocInfo->rnti;
          /*
             dStaInd->transId = (hqP->timingInfo.sfn << 16) | 
-            (hqP->timingInfo.subframe << 8) | hqP->procId;
+            (hqP->timingInfo.slot << 8) | hqP->procId;
           */
          dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].transId = (timingInfo.sfn << 16) | 
-            (timingInfo.subframe << 8) | idx1;
+            (timingInfo.slot << 8) | idx1;
          dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].nmbOfTbs = hqP->numOfTBs;
 #ifdef LTE_ADV
          dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].fillCtrlPdu = allocInfo->fillCtrlPdu;
@@ -1352,10 +1352,10 @@ RgTfuDatReqPduInfo *datReq;
    for(i=0;i<RG_MAX_TB_PER_UE;i++)
    {
 #ifndef L2_OPTMZ
-      if ((hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sf == dlSf) &&
+      if ((hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf) &&
           (hqP->tbInfo[i].tb != NULLP))
 #else
-      if ((hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sf == dlSf) &&
+      if ((hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf) &&
            RgUtlIsTbMuxed(&(hqP->tbInfo[i].tb)))
 #endif
       {
@@ -1406,10 +1406,10 @@ RgTfuDatReqPduInfo *datReq;
                if(dbgBufLen == 0)
                {              
                   RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,
-			                  "RNTI:%d SFN:%d subframe:%d tbIdx:%d Sdu Length 0 ",
+			                  "RNTI:%d SFN:%d slot:%d tbIdx:%d Sdu Length 0 ",
                     	      datReq->rnti,
             			      hqP->tbInfo[i].timingInfo.sfn,
-			                  hqP->tbInfo[i].timingInfo.subframe,i);
+			                  hqP->tbInfo[i].timingInfo.slot,i);
                   RLOG_ARG3(L_ERROR,DBG_CELLID,cellCb->cellId,
                    	      "taPres [%d] numOfTbs [%d] format[%d]",
                    	      datReq->isTApres, 
@@ -1634,7 +1634,7 @@ U32 gSaveVal;
  *     Function : RgSchMacRlsHqReq
  *     
  *     This function shall be invoked whenever scheduler is done with the
- *     allocations of random access responses for a subframe.
+ *     allocations of random access responses for a slot.
  *     This shall invoke RAM to create ueCbs for all the rapIds allocated and 
  *     shall invoke MUX to create RAR PDUs for raRntis allocated.
  *     

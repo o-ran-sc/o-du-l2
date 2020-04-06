@@ -58,6 +58,9 @@
 #include "cm_mblk.x"        /* Common LTE Defines */
 #include "tfu.x"           /* RGU Interface includes */
 
+#include "du_app_mac_inf.h"
+//#include "mac_sch_interface.h"
+
 #if (defined(LCTFU))
 
 
@@ -3387,14 +3390,14 @@ TfuTtiIndInfo * ttiInd;
       }
    }
 
-   pst->event = (Event) EVTTFUTTIIND;
+   pst->event = (Event) EVENT_SLOT_IND_TO_MAC;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
 
 /***********************************************************
 *
-*     Func : cmUnpkTfuTtiInd
+*     Func : cmUnpackSlotInd
 *
 *
 *     Desc : This API is the TTI indication from PHY to MAC . 
@@ -3413,24 +3416,17 @@ TfuTtiIndInfo * ttiInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmUnpkTfuTtiInd
+PUBLIC S16 cmUnpackSlotInd
 (
 TfuTtiInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-PUBLIC S16 cmUnpkTfuTtiInd(func, pst, mBuf)
-TfuTtiInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
-   TfuTtiIndInfo *ttiInd;
+   SlotIndInfo *slotInd;
    
-   TRC3(cmUnpkTfuTtiInd)
+   TRC3(cmUnpackSlotInd)
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
       TFU_FREE_MSG(mBuf);
@@ -3442,7 +3438,7 @@ Buffer *mBuf;
       RETVALUE(RFAILED);
    }
    if (pst->selector != TFU_SEL_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&ttiInd,             sizeof(TfuTtiIndInfo))) != ROK) {
+      if ((SGetSBuf(pst->region, pst->pool, (Data **)&slotInd, sizeof(SlotIndInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -3455,8 +3451,8 @@ Buffer *mBuf;
 
    if (pst->selector == TFU_SEL_LC) 
    {
-      if (cmUnpkTfuTtiIndInfo(ttiInd, mBuf) != ROK) {
-         SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
+      if (cmUnpackSlotIndInfo(slotInd, mBuf) != ROK) {
+         SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
          TFU_FREE_MSG(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3468,24 +3464,21 @@ Buffer *mBuf;
    }
    else if(pst->selector == TFU_SEL_LWLC)
    {
-      if (cmUnpkPtr((PTR *)&ttiInd, mBuf) != ROK)
+      if (cmUnpkPtr((PTR *)&slotInd, mBuf) != ROK)
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ETFUXXX, (ErrVal)0, "LWLC un-Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
+         SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
          TFU_FREE_MSG(mBuf);
          RETVALUE(RFAILED);
       }
    }
    TFU_FREE_MSG(mBuf);
-   /* [ccpu00141698]-MOD- MAC/SCH does not free the TTI ind anymore */
-   (*func)(pst, suId, ttiInd);
-   SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
 
-   RETVALUE((*func)(pst, suId, ttiInd));
+   RETVALUE((*func)(pst, slotInd));
 }
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
@@ -3595,7 +3588,7 @@ Buffer *mBuf;
 
 /***********************************************************
 *
-*     Func : cmPkTfuSchTtiInd
+*     Func : cmUnpackMacSchSlotInd
 *
 *
 *     Desc : This API is the TTI indication from PHY to scheduler. 
@@ -3614,124 +3607,18 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmPkTfuSchTtiInd
+PUBLIC S16 cmUnpackMacSchSlotInd
 (
-Pst * pst,
-SuId suId,
-TfuTtiIndInfo * ttiInd
-)
-#else
-PUBLIC S16 cmPkTfuSchTtiInd(pst, suId, ttiInd)
-Pst * pst;
-SuId suId;
-TfuTtiIndInfo * ttiInd;
-#endif
-{
-   Buffer *mBuf = NULLP;
-   TRC3(cmPkTfuSchTtiInd)
-
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ETFU112, (ErrVal)0, "Packing failed");
-#endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
-      RETVALUE(RFAILED);
-   }
-   if (pst->selector == TFU_SEL_LC) {
-      if (cmPkTfuTtiIndInfo(ttiInd, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ETFU113, (ErrVal)0, "Packing failed");
-#endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
-         TFU_FREE_MSG(mBuf);
-         RETVALUE(RFAILED);
-      }
-   }
-   else if(pst->selector == TFU_SEL_LWLC)
-   {
-      if (cmPkPtr((PTR)ttiInd, mBuf) != ROK)
-      {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ETFUXXX, (ErrVal)0, "LWLC Packing failed");
-#endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
-         TFU_FREE_MSG(mBuf);
-         RETVALUE(RFAILED);
-      }
-   }
-
-   if (SPkS16(suId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ETFU114, (ErrVal)0, "Packing failed");
-#endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
-      TFU_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
-   }
-   if (pst->selector != TFU_SEL_LWLC) {
-      if (SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo)) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ETFU115, (ErrVal)0, "Packing failed");
-#endif
-         TFU_FREE_MSG(mBuf);
-         RETVALUE(RFAILED);
-      }
-   }
-   pst->event = (Event) EVTTFUSCHTTIIND;
-   RETVALUE(SPstTsk(pst,mBuf));
-}
-
-
-/***********************************************************
-*
-*     Func : cmUnpkTfuSchTtiInd
-*
-*
-*     Desc : This API is the TTI indication from PHY to scheduler. 
- * @details This primitive provides the timing information (SFN and subframe)
- * which is currently running on the physical layer. 
- * @param pst Pointer to the post structure.
- * @param suId SAP ID of the service user.
- * @param ttiInd Pointer to the TfuTtiIndInfo.
- * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmUnpkTfuSchTtiInd
-(
-TfuSchTtiInd func,
+MacSchSlotIndFunc func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-PUBLIC S16 cmUnpkTfuSchTtiInd(func, pst, mBuf)
-TfuSchTtiInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
+#if 0
    SuId suId;
-   TfuTtiIndInfo *ttiInd;
+   SlotIndInfo *slotInd;
    
-   TRC3(cmUnpkTfuSchTtiInd)
+   TRC3(cmUnpackMacSchSlotInd)
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
       TFU_FREE_MSG(mBuf);
@@ -3743,7 +3630,7 @@ Buffer *mBuf;
       RETVALUE(RFAILED);
    }
    if (pst->selector != TFU_SEL_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&ttiInd,             sizeof(TfuTtiIndInfo))) != ROK) {
+      if ((SGetSBuf(pst->region, pst->pool, (Data **)&slotInd, sizeof(SlotIndInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -3756,8 +3643,8 @@ Buffer *mBuf;
 
    if (pst->selector == TFU_SEL_LC) 
    {
-      if (cmUnpkTfuTtiIndInfo(ttiInd, mBuf) != ROK) {
-         SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
+      if (cmUnpackSlotIndInfo(slotInd, mBuf) != ROK) {
+         SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
          TFU_FREE_MSG(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3769,24 +3656,25 @@ Buffer *mBuf;
    }
    else if(pst->selector == TFU_SEL_LWLC)
    {
-      if (cmUnpkPtr((PTR *)&ttiInd, mBuf) != ROK)
+      if (cmUnpkPtr((PTR *)&slotInd, mBuf) != ROK)
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ETFUXXX, (ErrVal)0, "LWLC un-Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
+         SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
          TFU_FREE_MSG(mBuf);
          RETVALUE(RFAILED);
       }
    }
    TFU_FREE_MSG(mBuf);
    /* [ccpu00141698]-MOD- MAC/SCH does not free the TTI ind anymore */
-   (*func)(pst, suId, ttiInd);
-   SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
- 
+//   (*func)(pst, suId, slotInd);
+   (*func)(pst, slotInd);
+   SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
    RETVALUE(ROK);
+#endif
 }
 
 
@@ -12103,10 +11991,10 @@ Buffer *mBuf;
 
 /***********************************************************
 *
-*     Func : cmUnpkTfuTtiIndInfo
+*     Func : cmUnpackSlotIndInfo
 *
 *
-*     Desc : This structure contains information that is passed as a part of the TTI
+*     Desc : This structure contains information that is passed as a part of the Slot
  * indication sent from PHY to MAC.
 *
 *
@@ -12117,28 +12005,15 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmUnpkTfuTtiIndInfo
+PUBLIC S16 cmUnpackSlotIndInfo
 (
-TfuTtiIndInfo *param,
+SlotIndInfo *param,
 Buffer *mBuf
 )
-#else
-PUBLIC S16 cmUnpkTfuTtiIndInfo(param, mBuf)
-TfuTtiIndInfo *param;
-Buffer *mBuf;
-#endif
 {
+   CMCHKUNPK(SUnpkU16, &param->sfn, mBuf);
+   CMCHKUNPK(SUnpkU16, &param->slot, mBuf);
 
-   S32 i;
-   TRC3(cmUnpkTfuTtiIndInfo)
-
-   /* CA dev Start */
-   CMCHKUNPK(SUnpkU8, &param->numCells, mBuf);
-   for (i=0; i<(param->numCells); i++) {
-      CMCHKUNPK(cmUnpkTfuTtiCellInfo, &param->cells[i], mBuf);
-   }
-   /* CA dev End */
    RETVALUE(ROK);
 }
 
