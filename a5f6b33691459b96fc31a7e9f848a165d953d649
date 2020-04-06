@@ -37,6 +37,23 @@
     },
     {
       "key": {
+        "uuid": "c35b8f69_29fc10f5",
+        "filename": "src/5gnrmac/rg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-06T08:15:45Z",
+      "side": 1,
+      "message": "we can define a corresponding MAC_FREE function as well.",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4948200c_824e06e4",
         "filename": "src/5gnrmac/rg_lmm.c",
         "patchSetId": 1
