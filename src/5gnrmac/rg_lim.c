@@ -54,7 +54,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_sch_inf.h"           /* layer management defines for LTE-MAC */
 #include "rg_env.h"        /* customisable defines and macros for MAC */
 #include "rg.h"            /* defines and macros for MAC */
-
+#include "du_log.h"
 
 /* header/extern include files (.x) */
 #include "gen.x"           /* general layer typedefs */
@@ -75,6 +75,7 @@ static int RLOG_MODULE_ID=4096;
 #include "du_app_mac_inf.h"
 #include "rg.x"            /* typedefs for MAC */
 
+#include "mac_sch_interface.h"
 /* local defines */
 
 /* local typedefs */
@@ -83,6 +84,17 @@ static int RLOG_MODULE_ID=4096;
 PRIVATE S16  rgLIMValidateSap ARGS((Inst inst,SuId suId));
 PRIVATE Void rgLIMUtlFreeDatIndEvnt ARGS((TfuDatIndInfo *datInd,
                                           Bool error));
+
+/* function pointers for packing slot ind from mac to sch */
+//S16 packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
+
+MacSchSlotIndFunc macSchSlotIndOpts[] =
+{
+   packMacSchSlotInd,  
+   macSchSlotInd,                                             
+   packMacSchSlotInd
+}; 
+
 #ifdef RG_UNUSED
 PRIVATE Void rgLIMUtlFreeDatReqEvnt ARGS((TfuDatReqInfo *datReq,
                                           Bool error));
@@ -593,59 +605,87 @@ TfuDelDatReqInfo *delDatReq;
  *
  * @details
  *
- *     Function : RgLiTfuTtiInd 
+ *     Function : sendSlotIndMacToSch
+ * 
+ *      This API is invoked by MAC to send slot ind to scheduler.
+ *           
+ *  @param[in]  SlotIndInfo    *slotInd
+ *  @return  S16
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+int sendSlotIndMacToSch(SlotIndInfo *slotInd)
+{
+   int ret = ROK;
+   /* fill Pst structure to send to lwr_mac to MAC */
+   Pst pst;
+   pst.srcProcId = 0;
+   pst.dstProcId = 0;
+   pst.srcEnt = ENTRG;
+   pst.dstEnt = ENTRG;
+   pst.srcInst = 0;
+   pst.dstInst = 1;
+   pst.event = EVENT_SLOT_IND_TO_SCH;
+   pst.region = 0;
+   pst.pool =  0;
+   pst.selector = MAC_SELECTOR_TC;
+
+   return(*macSchSlotIndOpts[pst.selector])(&pst,slotInd);
+}
+
+/**
+ * @brief Transmission time interval indication from PHY.
+ *
+ * @details
+ *
+ *     Function : fapiMacSlotInd 
  *      
  *      This API is invoked by PHY to indicate TTI indication to MAC for a cell.
  *           
  *  @param[in]  Pst            *pst
  *  @param[in]  SuId           suId 
- *  @param[in]  TfuTtiIndInfo  *ttiInd
+ *  @param[in]  SlotIndInfo    *slotInd
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgLiTfuTtiInd 
+PUBLIC S16 fapiMacSlotInd 
 (
 Pst                 *pst, 
-SuId                suId, 
-TfuTtiIndInfo       *ttiInd
+SlotIndInfo         *slotInd
 )
-#else
-PUBLIC S16 RgLiTfuTtiInd(pst, suId, ttiInd)
-Pst                 *pst; 
-SuId                suId; 
-TfuTtiIndInfo       *ttiInd;
-#endif
 {
    S16              ret;
    VOLATILE U32     startTime=0;
    Inst             inst;
-
-   TRC3(RgLiTfuTtiInd);
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /*starting Task*/
    SStartTask(&startTime, PID_MAC_TTI_IND);
 
-#ifdef NO_ERRCLS
-   if ((ret = rgLIMValidateSap (pst->dstInst - RG_INST_START,suId)) != ROK)
+   /* send slot indication to scheduler */
+   ret = sendSlotIndMacToSch(slotInd);
+   if(ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,ttiInd->cells[0].cellId,"SAP Validation failed");
+      DU_LOG("\nsending of slot ind msg from MAC to SCH failed");
       RETVALUE(ret);
    }
-#endif
 
    /* Now call the TOM (Tfu ownership module) primitive to process further */
-   ret = rgTOMTtiInd(inst,ttiInd);
+   ret = macProcessSlotInd(inst,*slotInd);
+   if(ret != ROK)
+   {
+      DU_LOG("\nmacProcessSlotInd failed");
+      RETVALUE(ret);
+   }
 
 
    /*stoping Task*/
    SStopTask(startTime, PID_MAC_TTI_IND);
 
    RETVALUE(ret);
-}  /* RgLiTfuTtiInd */
+}  /* fapiMacSlotInd */
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
  /**

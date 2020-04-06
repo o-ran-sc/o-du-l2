@@ -514,7 +514,7 @@ RgSchCellCb       *cell;
    RGSCH_INCR_SUB_FRAME(frm, RG_SCH_CMN_DL_DELTA);
    sf = rgSCHUtlSubFrmGet(cell, frm);
 #ifdef LTE_TDD
-   idx = (cell->crntTime.subframe + RG_SCH_CMN_DL_DELTA) % 
+   idx = (cell->crntTime.slot + RG_SCH_CMN_DL_DELTA) % 
                   RGSCH_NUM_SUB_FRAMES;
    if(RG_SCH_CMN_CHK_DL_DATA_ALLOWED(cell, idx)) 
    {
@@ -762,7 +762,7 @@ U8 isCalrCrcInd
    {
       measCb = (RgSchL2MeasCb *)node->node;
       node = node->next;
-      if(cell->crntTime.sfn == 1023 && cell->crntTime.subframe == 9)  
+      if(cell->crntTime.sfn == 1023 && cell->crntTime.slot == 9)  
       {
          /*calculates diff between crnt time and start time*/
          meas = RGSCH_CALC_SFN_SF_DIFF(cell->crntTime, 
@@ -784,7 +784,7 @@ U8 isCalrCrcInd
          numDlSf = (meas / RGSCH_NUM_SUB_FRAMES) * rgSchTddNumDlSubfrmTbl[cell->ulDlCfgIdx][RGSCH_NUM_SUB_FRAMES-1];
          numUlSf = (meas / RGSCH_NUM_SUB_FRAMES) * rgSchTddNumUlSubfrmTbl[cell->ulDlCfgIdx][RGSCH_NUM_SUB_FRAMES-1];
 
-         sfIdx = (measCb->startTime.subframe + 1) % RGSCH_NUM_SUB_FRAMES;
+         sfIdx = (measCb->startTime.slot + 1) % RGSCH_NUM_SUB_FRAMES;
 
          while(rem)
          {

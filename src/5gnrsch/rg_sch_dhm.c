@@ -1203,7 +1203,7 @@ CmLteTimingInfo         timingInfo;
       RETVALUE(NULLP);
    }
 
-   idx = ((timingInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G + timingInfo.subframe)/
+   idx = ((timingInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G + timingInfo.slot)/
          ue->dl.dlSpsCfg.dlSpsPrdctyEnum) % ue->dl.dlSpsCfg.numSpsHqProc;
 
 
@@ -1445,7 +1445,7 @@ RgSchCellCb             *cell;
           RETVALUE(ROK);
       }
    }
-   ascIdx = rgSchTddDlAscSetIdxKTbl[cell->ulDlCfgIdx][timeInfo.subframe];
+   ascIdx = rgSchTddDlAscSetIdxKTbl[cell->ulDlCfgIdx][timeInfo.slot];
    noFdbks = ascIdx.numFdbkSubfrms;
 
    for(idx=0; idx<noFdbks; idx++)
@@ -2019,7 +2019,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
          statsCnt = statsCnt % 10000;
          dlHqStats[statsCnt].cellId = hqP->hqE->cell->cellId;
          dlHqStats[statsCnt].sfn = hqP->tbInfo[tbIdx].timingInfo.sfn; 
-         dlHqStats[statsCnt].sf = hqP->tbInfo[tbIdx].timingInfo.subframe; 
+         dlHqStats[statsCnt].sf = hqP->tbInfo[tbIdx].timingInfo.slot; 
          dlHqStats[statsCnt].ack = *isAck;
          dlHqStats[statsCnt].fdbkIdx = fdbkIdx;
          dlHqStats[statsCnt].ue = hqP->hqE->ue->ueId;;
@@ -2177,7 +2177,7 @@ RgSchErrInfo            *err;
    }
    
 #if ((defined LTEMAC_SPS_AN_MUX) || (defined LTE_ADV))
-   ascIdx = rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][timeInfo.subframe];
+   ascIdx = rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][timeInfo.slot];
    noFdbks = ascIdx.numFdbkSubfrms;
 #endif
 #ifdef LTEMAC_SPS_AN_MUX
@@ -2647,7 +2647,7 @@ RgSchErrInfo            *err;
          ulDlCfgIdx  = cellCb->ulDlCfgIdx;
 
          maxFdbks = rgSchTddDlAscSetIdxKTbl[ulDlCfgIdx]
-            [timeInfo.subframe].
+            [timeInfo.slot].
             numFdbkSubfrms;
 
          for(itr=0; itr< maxFdbks; itr++)
@@ -2659,12 +2659,12 @@ RgSchErrInfo            *err;
             if(ue->uciFrmtTyp == RG_SCH_UCI_FORMAT1B_CS)
             {/* Using the sorted K table */
                RGSCHDECRFRMCRNTTIME (timeInfo, txTime, 
-                     rgSchTddDlHqPucchResCalTbl[ulDlCfgIdx][timeInfo.subframe].subfrmNum[itr]);
+                     rgSchTddDlHqPucchResCalTbl[ulDlCfgIdx][timeInfo.slot].subfrmNum[itr]);
             }else
 #endif
             {
                RGSCHDECRFRMCRNTTIME (timeInfo, txTime, 
-                     rgSchTddDlAscSetIdxKTbl[ulDlCfgIdx][timeInfo.subframe].subfrmNum[itr]);
+                     rgSchTddDlAscSetIdxKTbl[ulDlCfgIdx][timeInfo.slot].subfrmNum[itr]);
             }
 
             if (RGSCH_TIMEINFO_SAME (txTime, ue->relPdcchTxTime))
@@ -2719,8 +2719,8 @@ RgSchErrInfo            *err;
          {
          RGSCH_NULL_CHECK(cellCb->instIdx, ue);
          RLOG_ARG3(L_ERROR,DBG_CELLID,cellCb->cellId,"CRNTI:%d"
-         " NO HARQ proc available for feedback:timeInfo:snf %d,subframe %d",
-         ue->ueId,timeInfo.sfn, timeInfo.subframe);
+         " NO HARQ proc available for feedback:timeInfo:snf %d,slot %d",
+         ue->ueId,timeInfo.sfn, timeInfo.slot);
          err->errType   = RGSCHERR_DHM_FDBK_IND;
          err->errCause  = RGSCHERR_DHM_FDBK_IND_INVALID_CB;
          RETVALUE(RFAILED);
@@ -3529,8 +3529,8 @@ RgSchErrInfo            *err;
             {
                RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId, 
                   "CRNTI:%d NO HARQ proc available for feedback: TimingInfo: "
-                  "sfn %d subframe %d", ue->ueId, timingInfo.sfn,
-                  timingInfo.subframe);
+                  "sfn %d slot %d", ue->ueId, timingInfo.sfn,
+                  timingInfo.slot);
                RETVALUE(RFAILED);
             }
 
@@ -4108,7 +4108,7 @@ CmLteTimingInfo      uciTimingInfo;
    TRC2(rgSCHDhmTddRlsSubFrm)
 
    ascIdx = 
-      rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][uciTimingInfo.subframe];
+      rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][uciTimingInfo.slot];
    noFdbks = ascIdx.numFdbkSubfrms;
    for(i=0; i < noFdbks; i++)
    {
@@ -4176,7 +4176,7 @@ CmLteTimingInfo      uciTimingInfo;
    TRC2(rgSCHDhmRlsDlsfHqProc)
 
    ascIdx = 
-      rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][uciTimingInfo.subframe];
+      rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][uciTimingInfo.slot];
    noFdbks = ascIdx.numFdbkSubfrms;
    for(i=0; i < noFdbks; i++)
    {
@@ -4277,9 +4277,9 @@ CmLteTimingInfo      uciTimingInfo;
                      if(anInfo == NULLP)
                      {
                         RGSCHDBGERR(cellCb->instIdx, (rgSchPBuf(cellCb->instIdx), 
-                                 "Ack/Nack Info is NULL, Processing %dth feedback subframe for DTX" 
+                                 "Ack/Nack Info is NULL, Processing %dth feedback slot for DTX" 
                                  "received on SFN [%d] and SF [%d]\n",i, uciTimingInfo.sfn, 
-                                 uciTimingInfo.subframe));
+                                 uciTimingInfo.slot));
                      }
                      else  if (tbCb->fbkRepCntr == 0)
                      {

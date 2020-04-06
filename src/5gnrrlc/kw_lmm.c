@@ -280,6 +280,7 @@ KwGenCfg   *cfg;
          RLOG0(L_FATAL,"RLC DL Initialization failed");   
          RETVALUE(LCM_REASON_MEM_NOAVAIL);
       }
+#if 0
       /* Register the timer */
 /*Pradeep: changing the SRegTmrMt() to SRegTmr()*/
       if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (U16)cfg->timeRes,
@@ -292,7 +293,7 @@ KwGenCfg   *cfg;
 
          RETVALUE(LCM_REASON_REGTMR_FAIL);
       }
-
+#endif
       /* initializations for background processing of freeing memory */
       kwUtlInitToBeFreed(gCb, &(gCb->u.dlCb->toBeFreed));
       kwUtlInitializeSelfPst(gCb);
@@ -383,7 +384,7 @@ KwGenCfg   *cfg;
       }
 
       /* Register the timer */
-
+#if 0
       if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (U16)cfg->timeRes,
               kwActvTmr) != ROK)
       {
@@ -394,6 +395,7 @@ KwGenCfg   *cfg;
 
          RETVALUE(LCM_REASON_REGTMR_FAIL);
       }
+#endif
 #ifdef LTE_L2_MEAS
       kwUtlL2MeasUlInit(gCb);
 #endif

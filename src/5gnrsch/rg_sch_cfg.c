@@ -3206,7 +3206,7 @@ RgSchErrInfo *errInfo;
      /*ccpu00117778- Initialize Transmission Indices upon UE CB creation */
 #ifdef LA
    ue->lastRprdAckNackTime.sfn = cell->crntTime.sfn;
-   ue->lastRprdAckNackTime.subframe = cell->crntTime.subframe;
+   ue->lastRprdAckNackTime.subframe = cell->crntTime.slot;
    ue->ueIdle = FALSE; 
 #endif
 
@@ -3337,7 +3337,7 @@ RgSchErrInfo *errInfo;
            (Data **)&ue->dl.dlSfHqInfo, sizeof(RgSchDlHqInfo) * (ue->dl.numHqDlSfInfo));
 
 #else
-     ue->dl.numHqDlSfInfo = RGSCH_NUM_DL_SUBFRAMES;
+     ue->dl.numHqDlSfInfo = RGSCH_NUM_DL_slotS;
 #endif
 #ifndef RG_5GTF 
      for (idx =0;idx < ue->dl.numHqDlSfInfo; idx++)
@@ -3771,7 +3771,7 @@ RgSchErrInfo  *errInfo;
          /* dsfr_pal_fixes ** 21-March-2013 ** SKS */
          if (cellRecfg->rgrLteAdvCfg.sfrCfg.status == RGR_ENABLE)
          {
-            for(i = 0; i < RGSCH_NUM_DL_SUBFRAMES; i++)
+            for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
             {
                /*initialise the pools of CC and CE*/
                if(rgSchSFRTotalPoolInit(cell, cell->subFrms[i]))
@@ -3782,7 +3782,7 @@ RgSchErrInfo  *errInfo;
          }
          else
          {
-            for(i = 0; i < RGSCH_NUM_DL_SUBFRAMES; i++)
+            for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
             {
                /*initialise the pools of CC and CE*/
                rgSchSFRTotalPoolFree(&cell->subFrms[i]->sfrTotalPoolInfo, cell);
@@ -3791,7 +3791,7 @@ RgSchErrInfo  *errInfo;
             if (cell->lteAdvCb.dsfrCfg.status == RGR_ENABLE)
             {
                /* releasing rntp info val from each subframe */ 
-               for(i = 0; i < RGSCH_NUM_DL_SUBFRAMES; i++)
+               for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
                {
                   rgSchDSFRRntpInfoFree(&cell->subFrms[i]->rntpInfo, cell, cell->bwCfg.dlTotalBw);
                }
@@ -3810,7 +3810,7 @@ RgSchErrInfo  *errInfo;
             cellRecfg->rgrLteAdvCfg.dsfrCfg;
          if (cell->lteAdvCb.dsfrCfg.status == RGR_ENABLE)
          {
-            for(i = 0; i < RGSCH_NUM_DL_SUBFRAMES; i++)
+            for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
             {
                /*initialise the pools of CC and CE*/
                if(rgSchDSFRRntpInfoInit(&cell->subFrms[i]->rntpInfo,cell,cell->bwCfg.dlTotalBw))
@@ -3837,7 +3837,7 @@ RgSchErrInfo  *errInfo;
          else
          {
             /* releasing rntp info val from each subframe */ 
-            for(i = 0; i < RGSCH_NUM_DL_SUBFRAMES; i++)
+            for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
             {
                rgSchDSFRRntpInfoFree(&cell->subFrms[i]->rntpInfo, cell, cell->bwCfg.dlTotalBw);
             }
@@ -8339,7 +8339,7 @@ PUBLIC S16 rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
    TRC3(rgSCHCfgPCqiUeCfg);
 
    crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)+
-                  (cellCb->crntTime.subframe);
+                  (cellCb->crntTime.slot);
    cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
    cqiCb->servCellInfo = ueCb->cellInfo[0];
    /* Periodic CQI is setup  */
@@ -8384,7 +8384,7 @@ PUBLIC S16 rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
       cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx % (RGSCH_MAX_SFN * RGSCH_NUM_SUB_FRAMES_5G);
 
       timingInfo.sfn =  cqiCb->nCqiTrIdx/RGSCH_NUM_SUB_FRAMES_5G;
-      timingInfo.subframe =  cqiCb->nCqiTrIdx % RGSCH_NUM_SUB_FRAMES_5G;
+      timingInfo.slot =  cqiCb->nCqiTrIdx % RGSCH_NUM_SUB_FRAMES_5G;
 
       cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx
            %RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
@@ -8515,7 +8515,7 @@ PUBLIC S16 rgSCHCfgRiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
 
 
    crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
-      +(cellCb->crntTime.subframe);
+      +(cellCb->crntTime.slot);
    cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
    /* 1. Rank Indicator is enabled  */
    if(cqiCfg->cqiSetup.riEna)
@@ -8695,7 +8695,7 @@ PUBLIC S16 rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg)
 
 
    crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
-      +(cellCb->crntTime.subframe);
+      +(cellCb->crntTime.slot);
 
    if(RGR_SCH_SRS_SETUP == srsCfg->type) 
    {
@@ -8844,7 +8844,7 @@ PUBLIC S16 rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg)
 
 
    crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
-      +(cellCb->crntTime.subframe);
+      +(cellCb->crntTime.slot);
    if(srCfg->type == RGR_SCH_SR_SETUP) 
    {
       /*  1. Copy the Received Cfg parameters to local cb  */

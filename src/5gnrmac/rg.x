@@ -736,9 +736,9 @@ EXTERN S16 rgTOMDatInd ARGS((
          Inst          inst,
          TfuDatIndInfo *datInd));
 
-EXTERN S16 rgTOMTtiInd ARGS((
+EXTERN S16 macProcessSlotInd ARGS((
          Inst          inst,
-         TfuTtiIndInfo *ttiInd));
+         SlotIndInfo slotInd));
 EXTERN Void rgTOMRlsSf ARGS((Inst inst,RgDlSf *dlSf));
 
 EXTERN S16 rgSchMacSfAllocReq ARGS((Pst *pst, RgInfSfAlloc *sfInfo));

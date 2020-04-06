@@ -97,7 +97,7 @@ RgUeCb            *prevUeCb,
 RgCellCb          *cellCb,
 TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
-U8                subframe
+U16               slot
 ));
 
 PRIVATE S16 rgTOMProcCCCHSduInDatInd ARGS((
@@ -106,7 +106,7 @@ RgUeCb            *prevUeCb,
 RgCellCb          *cellCb,
 TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
-U8                subframe
+U16               slot
 ));
 
 PUBLIC S16 rgHndlFlowCntrl
@@ -445,9 +445,9 @@ PUBLIC S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
       RGADDTOCRNTTIME(dlSf->schdTime, datInfo->timingInfo, TFU_DLDATA_DLDELTA);
 #endif
       datInfo->cellId = cellCb->cellId;
-      if((0 == (datInfo->timingInfo.sfn % 30)) && (0 == datInfo->timingInfo.subframe))
+      if((0 == (datInfo->timingInfo.sfn % 30)) && (0 == datInfo->timingInfo.slot))
       {
-	 //printf("5GTF_CHECK rgTOMUtlProcDlSf dat (%d : %d)\n", datInfo->timingInfo.sfn, datInfo->timingInfo.subframe);
+	 //printf("5GTF_CHECK rgTOMUtlProcDlSf dat (%d : %d)\n", datInfo->timingInfo.sfn, datInfo->timingInfo.slot);
       }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
       datInfo->bchDat.pres = 0;
@@ -500,12 +500,12 @@ U32  rgMacGT;
  *
  * @details
  *
- *     Function: rgTOMTtiInd
+ *     Function: macProcessSlotInd
  *
- *     Handler for processing TTI indication recieved from PHY
+ *     Handler for processing slot indication recieved from PHY
  *     for a cell.
  *
- *     Invoked by: RgLiTfuTtiInd
+ *     Invoked by: macProcessSlotInd
  *
  *     Processing Steps:
  *     - Get cell and update the cell's current time with the timing value given
@@ -529,7 +529,7 @@ U32  rgMacGT;
  *     - Invoke COM's TTI handler rgCOMTtiHndlr
  *           
  *  @param[in]  Inst        inst
- *  @param[in] TfuTtiIndInfo *ttiInd
+ *  @param[in] SlotIndInfo slotInd
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
@@ -537,17 +537,11 @@ U32  rgMacGT;
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
 pthread_t gMacTId = 0;
 #endif
-#ifdef ANSI
-PUBLIC S16 rgTOMTtiInd
+PUBLIC S16 macProcessSlotInd
 (
 Inst          inst,
-TfuTtiIndInfo *ttiInfo
+SlotIndInfo slotInd
 )
-#else
-PUBLIC S16 rgTOMTtiInd(inst, ttiInfo)
-Inst               inst;
-TfuTtiIndInfo      *ttiInfo;
-#endif
 {
    RgCellCb             *cellCb;
    RgErrInfo            err;
@@ -557,35 +551,30 @@ TfuTtiIndInfo      *ttiInfo;
    RgDlSf               *prevDlSf;
    CmLteTimingInfo       prevTmInfo;  
 #endif
-   TfuTtiCellInfo       *ttiInd = &ttiInfo->cells[0];
+   //SlotIndInfo *slotInd = &ttiInfo->cells[0];
 
-   TRC2(rgTOMTtiInd);
+   TRC2(macProcessSlotInd);
 
 #ifdef MAC_FREE_RING_BUF
    gMacTId = pthread_self();
 #endif
+
    cellCb = rgCb[inst].cell;
-   if ((cellCb == NULLP)
-      ||(cellCb->cellId != ttiInd->cellId))
+   if (cellCb == NULLP)
    {
-      
-      RLOG_ARG0(L_ERROR,DBG_CELLID,ttiInd->cellId, 
-		"Unable to get the cellCb for cell");
       err.errType = RGERR_TOM_TTIIND;
       err.errCause = RGERR_TOM_INV_CELL_ID;
       RETVALUE(RFAILED);
    }
-   RGCPYTIMEINFO(ttiInd->timingInfo, cellCb->crntTime);
-   if((0 == (ttiInd->timingInfo.sfn % 30)) && (0 == ttiInd->timingInfo.sfn))
-   {
-      //printf("5GTF_CHECK rgTOMTtiInd (%d : %d)\n", ttiInd->timingInfo.sfn, ttiInd->timingInfo.subframe);
-   }
-   rgMacGT = (ttiInd->timingInfo.sfn * RG_NUM_SUB_FRAMES_5G) + ttiInd->timingInfo.subframe;
+
+   RGCPYTIMEINFO(slotInd, cellCb->crntTime);
+
+   rgMacGT = (slotInd.sfn * RG_NUM_SUB_FRAMES_5G) + slotInd.slot;
 #ifdef LTE_L2_MEAS
    rgL2Meas(cellCb);
    /*Included to track the number of 10240 cycles completed */
 
-  if((cellCb->crntTime.sfn == 0) && (cellCb->crntTime.subframe==0))
+  if((cellCb->crntTime.sfn == 0) && (cellCb->crntTime.slot==0))
   {
      cellCb->ttiCycle += 1;
   }
@@ -597,8 +586,8 @@ TfuTtiIndInfo      *ttiInfo;
      and thus we would not have transmitted previous DL SF yet.*/
 /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-   RGSUBFRMCRNTTIME(ttiInd->timingInfo, prevTmInfo, 1);
-   prevDlSf = &cellCb->subFrms[(prevTmInfo.subframe % RG_NUM_SUB_FRAMES)];
+   RGSUBFRMCRNTTIME(slotInd, prevTmInfo, 1);
+   prevDlSf = &cellCb->subFrms[(prevTmInfo.slot % RG_NUM_SUB_FRAMES)];
    if(FALSE == prevDlSf->txDone)
    {
       if (ROK != rgTOMUtlProcDlSf (prevDlSf, cellCb, &err))
@@ -622,10 +611,10 @@ TfuTtiIndInfo      *ttiInfo;
       }
    }
 #endif
-   dlSf = &cellCb->subFrms[(ttiInd->timingInfo.subframe % RG_NUM_SUB_FRAMES)];
+   dlSf = &cellCb->subFrms[(slotInd.slot % RG_NUM_SUB_FRAMES)];
 
    if((dlSf->txDone == TRUE) ||
-      (!RG_TIMEINFO_SAME(ttiInd->timingInfo,dlSf->schdTime)))
+      (!RG_TIMEINFO_SAME(slotInd,dlSf->schdTime)))
    {
    /* MS_WORKAROUND */
 #ifndef LTEMAC_DLUE_TMGOPTMZ
@@ -637,7 +626,7 @@ TfuTtiIndInfo      *ttiInfo;
          RGADDTOCRNTTIME(cellCb->crntTime, timingInfo, TFU_DELTA);
 #endif
      /* Fill Data Request from MAC for BCH  */
-     if ((timingInfo.sfn % 4 == 0) && (timingInfo.subframe == 0))
+     if ((timingInfo.sfn % 4 == 0) && (timingInfo.slot == 0))
      {
          if (ROK != rgAllocEventMem(inst,(Ptr *)&datInfo, 
                             sizeof(TfuDatReqInfo)))
@@ -688,17 +677,17 @@ TfuTtiIndInfo      *ttiInfo;
 #endif
 
 #ifdef XEON_SPECIFIC_CHANGES
-   CM_MEAS_TIME((ttiInd->timingInfo.subframe % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_DL_BR_PRC);
+   CM_MEAS_TIME((slotInd.slot % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_DL_BR_PRC);
 #endif
 
    if (ROK != rgTOMUtlProcDlSf (dlSf, cellCb, &err))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,ttiInd->cellId,
-		      "Unable to process downlink subframe for cell");
+      //RLOG_ARG0(L_ERROR,DBG_CELLID,slotInd->cellId,
+      // 	      "Unable to process downlink subframe for cell");
       err.errType = RGERR_TOM_TTIIND;
    }
 #ifdef XEON_SPECIFIC_CHANGES
-   CM_MEAS_TIME((ttiInd->timingInfo.subframe % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_DL_AFTER_PRC);
+   CM_MEAS_TIME((slotInd->slot % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_DL_AFTER_PRC);
 #endif
 
    /* Mark this frame as sent */
@@ -710,7 +699,7 @@ TfuTtiIndInfo      *ttiInfo;
    rgDHMFreeTbBufs(inst);
 #endif 
    RETVALUE(ROK);
-}  /* rgTOMTtiInd */
+}  /* macProcessSlotInd */
 
 /** @brief This function allocates the RgMacPdu that will be populated by DEMUX
  * with the SubHeaders list and the values of the Control elements.
@@ -962,7 +951,7 @@ PRIVATE S16 rgTomUtlPrepareL2MUlThrpInfo(cellCb,ueCb,dDatInd)
    }
 
    RETVALUE(ROK);
-}  /* rgTOMTtiInd */
+}
 
 #endif
 
@@ -1006,18 +995,18 @@ PRIVATE S16 rgTOMUtlProcMsg
  Bool          isSpsRnti,
  Bool          *spsToBeActvtd,
  U16           *sduSize,
- U8            subframe,
+ U16           slot,
  U32           *lcgBytes
  )
 #else
-PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, isSpsRnti,spsToBeActvtd,sduSize, subframe, lcgBytes)
+PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, isSpsRnti,spsToBeActvtd,sduSize, slot, lcgBytes)
    RgCellCb      *cellCb; 
    RgUeCb        *ueCb;
    RgMacPdu      *pdu;
    Bool          isSpsRnti;
    Bool          *spsToBeActvtd;
    U16           *sduSize;
-   U8            subframe;
+   U16           slot;
    U32           *lcgBytes;
 #endif   
 #else /* LTEMAC_SPS */
@@ -1027,15 +1016,15 @@ PRIVATE S16 rgTOMUtlProcMsg
  RgCellCb      *cellCb, 
  RgUeCb        *ueCb,
  RgMacPdu      *pdu,
- U8            subframe,
+ U16           slot,
  U32           *lcgBytes
  )
 #else
-PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, subframe, lcgBytes)
+PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
    RgCellCb      *cellCb; 
    RgUeCb        *ueCb;
    RgMacPdu      *pdu;
-   U8            subframe;
+   U16           slot;
    U32           *lcgByes;
 #endif  
 #endif
@@ -1088,7 +1077,7 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, subframe, lcgBytes)
    TRC2(rgTOMUtlProcMsg)
 
 #ifndef LTE_L2_MEAS      
-      UNUSED(subframe);
+      UNUSED(slot);
 #endif
 
    if(pdu->sduLst.first)
@@ -1118,7 +1107,7 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, subframe, lcgBytes)
                         &cpySz);
          }
 #ifdef XEON_SPECIFIC_CHANGES
-         CM_LOG_DEBUG(CM_LOG_ID_MAC, "CCCH SDU of size(%d) received for UE(%d) CRES[0x%x 0x%x 0x%x 0x%x 0x%x 0x%x] Time[%d %d]\n",  ((S16)ccchSz), ueCb->ueId,ueCb->contResId.resId[0], ueCb->contResId.resId[1], ueCb->contResId.resId[2], ueCb->contResId.resId[3], ueCb->contResId.resId[4], ueCb->contResId.resId[5], cellCb->crntTime.sfn,  cellCb->crntTime.subframe);
+         CM_LOG_DEBUG(CM_LOG_ID_MAC, "CCCH SDU of size(%d) received for UE(%d) CRES[0x%x 0x%x 0x%x 0x%x 0x%x 0x%x] Time[%d %d]\n",  ((S16)ccchSz), ueCb->ueId,ueCb->contResId.resId[0], ueCb->contResId.resId[1], ueCb->contResId.resId[2], ueCb->contResId.resId[3], ueCb->contResId.resId[4], ueCb->contResId.resId[5], cellCb->crntTime.sfn,  cellCb->crntTime.slot);
 #endif
          sdu->mBuf = NULLP;
          rgUIMSndCmnDatInd(inst,cellCb->rguUlSap,cDatInd);
@@ -1144,7 +1133,7 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, subframe, lcgBytes)
       dDatInd->numLch   = 0;
    }
 #ifdef LTE_L2_MEAS
-   ulSf = &cellCb->ulSf[(subframe % RG_NUM_SUB_FRAMES)];
+   ulSf = &cellCb->ulSf[(slot % RG_NUM_SUB_FRAMES)];
    if(ulSf->ueUlAllocInfo != NULLP)
    {
      for(idx1 = 0; idx1 < ulSf->numUe; idx1++)
@@ -1511,7 +1500,7 @@ Inst             inst;
    CmLList           *node;
    TfuDatInfo        *datInfo;
    RgLowSapCb        *tfuSap;
-   U8                subframe;
+   U16               slot;
 #ifdef LTEMAC_SPS
    Bool              isSpsRnti=FALSE;
    Pst               schPst1;  
@@ -1566,7 +1555,7 @@ Inst             inst;
    cmLListInit(&sfInfo->ueLst);
    sfInfo->cellId = datInd->cellId;
    sfInfo->timingInfo = datInd->timingInfo;
-   subframe = datInd->timingInfo.subframe;
+   slot = datInd->timingInfo.slot;
 
    node =  datInd->datIndLst.first;
    for (;node; node=node->next)
@@ -1622,7 +1611,7 @@ Inst             inst;
       if (ceInfo.bitMask & RG_CCCH_SDU_PRSNT)
       {
         ret = rgTOMProcCCCHSduInDatInd(pdu, prevUeCb, \
-                cellCb, datInfo, &ceInfo, subframe);
+                cellCb, datInfo, &ceInfo, slot);
         if (ret == RFAILED)
         {
             rgTOMUtlFreePduEvnt (pdu, TRUE);
@@ -1635,7 +1624,7 @@ Inst             inst;
       else if (ceInfo.bitMask & RG_CRNTI_CE_PRSNT)
       {
         ret = rgTOMProcCrntiCEInDatInd(pdu, prevUeCb, \
-                cellCb, datInfo, &ceInfo, subframe);
+                cellCb, datInfo, &ceInfo, slot);
         if (ret == RFAILED)
         {
             rgTOMUtlFreePduEvnt (pdu, TRUE);
@@ -1697,9 +1686,9 @@ Inst             inst;
      rgTOML2MCompileActiveLCs (cellCb, ueCb, pdu, &ceInfo);
 #endif
 #ifdef LTEMAC_SPS
-         if ((ret = rgTOMUtlProcMsg(cellCb, ueCb, pdu, isSpsRnti,&spsToBeActvtd,&sduSize, subframe, (U32 *)&lcgBytes)) != ROK)
+         if ((ret = rgTOMUtlProcMsg(cellCb, ueCb, pdu, isSpsRnti,&spsToBeActvtd,&sduSize, slot, (U32 *)&lcgBytes)) != ROK)
 #else
-         if ((ret = rgTOMUtlProcMsg (cellCb, ueCb, pdu, subframe, (U32 *)&lcgBytes)) != ROK)
+         if ((ret = rgTOMUtlProcMsg (cellCb, ueCb, pdu, slot, (U32 *)&lcgBytes)) != ROK)
 #endif /* LTEMAC_SPS */
          {
             rgTOMUtlFreePduEvnt (pdu, TRUE);
@@ -1728,12 +1717,12 @@ Inst             inst;
    }
    /* Free the allocated memory for ueUlAllocInfo here */
 #ifdef LTE_L2_MEAS
-   if(cellCb->ulSf[(subframe % RG_NUM_SUB_FRAMES)].ueUlAllocInfo != NULLP)
+   if(cellCb->ulSf[(slot % RG_NUM_SUB_FRAMES)].ueUlAllocInfo != NULLP)
    {
       /*ccpu00117052 - MOD - Passing double for proper NULLP
                              assignment */
-      rgFreeSBuf(inst,(Data **)&(cellCb->ulSf[(subframe % RG_NUM_SUB_FRAMES)].ueUlAllocInfo), 
-      ((cellCb->ulSf[(subframe % RG_NUM_SUB_FRAMES)].numUe) * sizeof(RgUeUlAlloc)));
+      rgFreeSBuf(inst,(Data **)&(cellCb->ulSf[(slot % RG_NUM_SUB_FRAMES)].ueUlAllocInfo), 
+      ((cellCb->ulSf[(slot % RG_NUM_SUB_FRAMES)].numUe) * sizeof(RgUeUlAlloc)));
    }
 #endif
    /* RRM_RBC_X */
@@ -1811,7 +1800,7 @@ RgErrInfo           *err;
 
    TRC2(rgHndlCmnChnl)
 
-   dlSf = &cell->subFrms[(timingInfo.subframe % RG_NUM_SUB_FRAMES)];
+   dlSf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
    if(cmnLcInfo->bitMask & RGINF_BCH_INFO)
    {
@@ -1835,7 +1824,7 @@ RgErrInfo           *err;
       staInd->cellId = cell->cellId;
       staInd->rnti   = RG_INVALID_RNTI;
       staInd->lcId   = cmnLcInfo->bchInfo.lcId;
-      staInd->transId = (timingInfo.sfn << 8) | (timingInfo.subframe);
+      staInd->transId = (timingInfo.sfn << 8) | (timingInfo.slot);
 /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
       dlSf->remDatReqCnt++;
@@ -1879,7 +1868,7 @@ RgErrInfo           *err;
       staInd->cellId = cell->cellId;
       staInd->rnti   = RG_INVALID_RNTI;
       staInd->lcId   = cmnLcInfo->pcchInfo.lcId;
-      staInd->transId = (timingInfo.sfn << 8) | (timingInfo.subframe);
+      staInd->transId = (timingInfo.sfn << 8) | (timingInfo.slot);
 /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
       dlSf->remDatReqCnt++;
@@ -1921,7 +1910,7 @@ RgErrInfo           *err;
          staInd->cellId = cell->cellId;
          staInd->rnti   = RG_INVALID_RNTI;
          staInd->lcId   = cmnLcInfo->bcchInfo.lcId;
-         staInd->transId = (timingInfo.sfn << 8) | (timingInfo.subframe);
+         staInd->transId = (timingInfo.sfn << 8) | (timingInfo.slot);
 /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
          dlSf->remDatReqCnt++;
@@ -2038,7 +2027,7 @@ RgInfUlUeInfo       *ueInfo;
 
    TRC2(rgHndlUlUeInfo)
    
-   ulSf = &cell->ulSf[(timingInfo.subframe % RGSCH_NUM_SUB_FRAMES)];
+   ulSf = &cell->ulSf[(timingInfo.slot % RGSCH_NUM_SUB_FRAMES)];
 
    /* rg003.301-MOD- Corrected the purifier memory leak */
    if (ulSf->numUe != ueInfo->numUes)
@@ -2050,22 +2039,22 @@ RgInfUlUeInfo       *ueInfo;
       }
    }
 #ifdef XEON_SPECIFIC_CHANGES
-   CM_MEAS_TIME((cell->crntTime.subframe % RGSCH_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MEAS_FREE);
-   CM_ADD_INFO((cell->crntTime.subframe % RGSCH_NUM_SUB_FRAMES),  CM_DBG_MEAS_FREE, ulSf->numUe);
+   CM_MEAS_TIME((cell->crntTime.slot % RGSCH_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MEAS_FREE);
+   CM_ADD_INFO((cell->crntTime.slot % RGSCH_NUM_SUB_FRAMES),  CM_DBG_MEAS_FREE, ulSf->numUe);
 #endif
    ulSf->numUe         = ueInfo->numUes;
    if((ulSf->ueUlAllocInfo == NULLP) && (ueInfo->numUes > 0))
    {
        /* Allocate memory for ulAllocInfo */
-       if((ret = rgAllocSBuf(inst,(Data**)&(cell->ulSf[(timingInfo.subframe % RGSCH_NUM_SUB_FRAMES)].
+       if((ret = rgAllocSBuf(inst,(Data**)&(cell->ulSf[(timingInfo.slot % RGSCH_NUM_SUB_FRAMES)].
                  ueUlAllocInfo), ueInfo->numUes *  sizeof(RgUeUlAlloc))) != ROK)
        {
           RETVALUE(ret);
        }
    }
 #ifdef XEON_SPECIFIC_CHANGES
-   CM_MEAS_TIME((cell->crntTime.subframe % RGSCH_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MEAS_ALLOC);
-   CM_ADD_INFO((cell->crntTime.subframe % RGSCH_NUM_SUB_FRAMES), CM_DBG_MEAS_ALLOC, ueInfo->numUes);
+   CM_MEAS_TIME((cell->crntTime.slot % RGSCH_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MEAS_ALLOC);
+   CM_ADD_INFO((cell->crntTime.slot % RGSCH_NUM_SUB_FRAMES), CM_DBG_MEAS_ALLOC, ueInfo->numUes);
 #endif
    if (ulSf->ueUlAllocInfo != NULLP)
    {
@@ -2162,13 +2151,13 @@ RgDlSf              *dlSf;
           {
 		     for(i=0;i< RG_MAX_TB_PER_UE;i++)
 		     {
-				    if (hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sf == dlSf)
+				    if (hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf)
 				    {
-					     cmLListDelFrm(&dlSf->tbs, &(hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sfLnk));
-					     hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sfLnk.node = NULLP;
+					     cmLListDelFrm(&dlSf->tbs, &(hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk));
+					     hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk.node = NULLP;
                     printf("\n rgTOMRlsSf:: hqP %p \n", (Void *)hqP);
 				    }
-				    hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.subframe % 2].sf = NULLP;
+				    hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf = NULLP;
 			   }
 			}
 	 }
@@ -2302,7 +2291,7 @@ RgInfSfAlloc        *sfInfo;
       RETVALUE(RFAILED);
    }
 
-   dlSf = &cell->subFrms[(sfInfo->timingInfo.subframe % RG_NUM_SUB_FRAMES)];
+   dlSf = &cell->subFrms[(sfInfo->timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
    rgTOMRlsSf(inst,dlSf);
    dlSf->schdTime = sfInfo->timingInfo;
@@ -2325,11 +2314,11 @@ RgInfSfAlloc        *sfInfo;
 
 #ifdef LTE_ADV
 #ifdef XEON_SPECIFIC_CHANGES
-   CM_MEAS_TIME((cell->crntTime.subframe % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_B4_UE_SCHD);
+   CM_MEAS_TIME((cell->crntTime.slot % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_B4_UE_SCHD);
 #endif
    rgHndlSchdUe(cell, sfInfo->timingInfo, &sfInfo->ueInfo, &err);
 #ifdef XEON_SPECIFIC_CHANGES
-   CM_MEAS_TIME((cell->crntTime.subframe % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_UE_SCHD);
+   CM_MEAS_TIME((cell->crntTime.slot % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_UE_SCHD);
 #endif
    rgLaaChkAndReqTbs(dlSf,cell, inst);
 
@@ -2345,7 +2334,7 @@ RgInfSfAlloc        *sfInfo;
    }
 #endif
 #ifdef XEON_SPECIFIC_CHANGES
-   CM_MEAS_TIME((cell->crntTime.subframe % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_MEAS);
+   CM_MEAS_TIME((cell->crntTime.slot % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_MEAS);
 #endif
    /* Fix[ccpu00126310]: Tracks Data Requests from RLC for both loosely and tight coupled 
       RLC-MAC */
@@ -2421,16 +2410,16 @@ RgUeCb            *prevUeCb,
 RgCellCb          *cellCb,
 TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
-U8                subframe
+U16               slot
 )
 #else
-PRIVATE S16 rgTOMProcCrntiCEInDatInd( pdu, prevUeCb, cellCb, datInfo, ceInfo, subframe)
+PRIVATE S16 rgTOMProcCrntiCEInDatInd( pdu, prevUeCb, cellCb, datInfo, ceInfo, slot)
 RgMacPdu          *pdu;
 RgUeCb            *prevUeCb;
 RgCellCb          *cellCb;
 TfuDatInfo        *datInfo;
 RgInfCeInfo       *ceInfo;
-U8                subframe;
+U16               slot;
 #endif
 {
    RgUeCb *ueCb = NULLP;
@@ -2445,7 +2434,7 @@ U8                subframe;
    TRC2(rgTOMProcCrntiCEInDatInd)
 
 #ifndef LTE_L2_MEAS      
-      UNUSED(subframe);
+      UNUSED(slot);
 #endif
 
    ueCb = rgDBMGetUeCbFromRachLst (cellCb, datInfo->rnti);
@@ -2471,9 +2460,9 @@ U8                subframe;
    rgRAMFreeUeCb(inst,ueCb);
    ueCb = prevUeCb;
 #ifdef LTEMAC_SPS
-   if ((rgTOMUtlProcMsg(cellCb, ueCb, pdu, FALSE,&spsToBeActvtd,&sduSize, subframe, NULLP)) != ROK)
+   if ((rgTOMUtlProcMsg(cellCb, ueCb, pdu, FALSE,&spsToBeActvtd,&sduSize, slot, NULLP)) != ROK)
 #else
-   if ((rgTOMUtlProcMsg (cellCb, ueCb, pdu, subframe, NULLP)) != ROK)
+   if ((rgTOMUtlProcMsg (cellCb, ueCb, pdu, slot, NULLP)) != ROK)
 #endif /* LTEMAC_SPS */
    {
        RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
@@ -2523,16 +2512,16 @@ RgUeCb            *prevUeCb,
 RgCellCb          *cellCb,
 TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
-U8                subframe 
+U16               slot 
 )
 #else
-PRIVATE S16 rgTOMProcCCCHSduInDatInd( pdu, prevUeCb, cellCb, datInfo, ceInfo, subframe)
+PRIVATE S16 rgTOMProcCCCHSduInDatInd( pdu, prevUeCb, cellCb, datInfo, ceInfo, slot)
 RgMacPdu          *pdu;
 RgUeCb            *prevUeCb;
 RgCellCb          *cellCb;
 TfuDatInfo        *datInfo;
 RgInfCeInfo       *ceInfo;
-U8                subframe;
+U16               slot;
 #endif
 {
    RgUeCb *ueCb = NULLP;
@@ -2547,7 +2536,7 @@ U8                subframe;
    TRC2(rgTOMProcCCCHSduInDatInd)
 
 #ifndef LTE_L2_MEAS      
-      UNUSED(subframe);
+      UNUSED(slot);
 #endif
 
    if (ceInfo->bitMask & RG_CRNTI_CE_PRSNT)
@@ -2584,9 +2573,9 @@ U8                subframe;
     RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,
              "CCCH SDU received through tmpCrnti(%d)",datInfo->rnti);
 #ifdef LTEMAC_SPS
-   if ((rgTOMUtlProcMsg(cellCb, ueCb, pdu, FALSE,&spsToBeActvtd,&sduSize, subframe, NULLP)) != ROK)
+   if ((rgTOMUtlProcMsg(cellCb, ueCb, pdu, FALSE,&spsToBeActvtd,&sduSize, slot, NULLP)) != ROK)
 #else
-   if ((rgTOMUtlProcMsg (cellCb, ueCb, pdu, subframe, NULLP)) != ROK)
+   if ((rgTOMUtlProcMsg (cellCb, ueCb, pdu, slot, NULLP)) != ROK)
 #endif /* LTEMAC_SPS */
    {
        RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"RNTI:%d Processing for MSG3 failed", 

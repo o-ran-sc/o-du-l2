@@ -183,15 +183,15 @@ RgRguDedDatReq *datReq;
    for(idx = 0; idx < datReq->nmbOfUeGrantPerTti; idx++)
    {
 
-      timingInfo.subframe = (U8)((datReq->datReq[idx].transId >> 8) & 0XFF);
+      timingInfo.slot = (U8)((datReq->datReq[idx].transId >> 8) & 0XFF);
       timingInfo.sfn = (U16)((datReq->datReq[idx].transId >> 16) & 0xFFFF);
-      sf = &cell->subFrms[(timingInfo.subframe % RG_NUM_SUB_FRAMES)];
+      sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
       if( (sf->txDone == TRUE) ||
             (!RG_TIMEINFO_SAME(sf->schdTime,timingInfo)))
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         /* Transmission is already done for this subframe. This is a delayed
+         /* Transmission is already done for this slot. This is a delayed
           * datReq. So discard */
          rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM);
          rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
@@ -400,7 +400,7 @@ RgRguCmnDatReq *datReq;
       /*Get the timing Info*/
       /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-      timingInfo.subframe = (U8)((datReq->transId >> 8) & 0XFF);
+      timingInfo.slot = (U8)((datReq->transId >> 8) & 0XFF);
       timingInfo.sfn = (U16)((datReq->transId >> 16) & 0xFFFF);
 #endif
    } 
@@ -411,7 +411,7 @@ RgRguCmnDatReq *datReq;
       /*Get the timing Info*/
       /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-      timingInfo.subframe = (U8)(datReq->transId & 0XFF);
+      timingInfo.slot = (U8)(datReq->transId & 0XFF);
       timingInfo.sfn = (U16)((datReq->transId >> 8) & 0xFFFF);
 #endif
    }
@@ -429,8 +429,8 @@ RgRguCmnDatReq *datReq;
 
    /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-   RG_ARRAY_BOUND_CHECK(0, cell->subFrms, (timingInfo.subframe % RG_NUM_SUB_FRAMES));
-   sf = &cell->subFrms[(timingInfo.subframe % RG_NUM_SUB_FRAMES)];
+   RG_ARRAY_BOUND_CHECK(0, cell->subFrms, (timingInfo.slot % RG_NUM_SUB_FRAMES));
+   sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
    ret = rgROMUpdDlSfRemDataCnt(cell, sf);
    /*Added check for RFAILED as above function can return RFAILED*/
@@ -500,15 +500,15 @@ RgErrInfo      *err;
       }
    }
 
-   timingInfo.subframe = (U8)((datReq->transId >> 8) & 0XFF);
+   timingInfo.slot = (U8)((datReq->transId >> 8) & 0XFF);
    timingInfo.sfn = (U16)((datReq->transId >> 16) & 0xFFFF);
-   sf = &cell->subFrms[(timingInfo.subframe % RG_NUM_SUB_FRAMES)];
+   sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
    if( (sf->txDone == TRUE) ||
        (!RG_TIMEINFO_SAME(sf->schdTime,timingInfo)))
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      /* Transmission is already done for this subframe. This is a delayed
+      /* Transmission is already done for this slot. This is a delayed
        * datReq. So discard */
       rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM);
       rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
@@ -588,15 +588,15 @@ RgErrInfo      *err;
    TRC2(rgROMHndlBcchPcchDatReq);
 
 
-   timingInfo.subframe = (U8)(datReq->transId & 0XFF);
+   timingInfo.slot = (U8)(datReq->transId & 0XFF);
    timingInfo.sfn = (U16)((datReq->transId >> 8) & 0xFFFF);
-   sf = &cell->subFrms[(timingInfo.subframe % RG_NUM_SUB_FRAMES)];
+   sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
    if( (sf->txDone == TRUE) ||
        (!RG_TIMEINFO_SAME(sf->schdTime,timingInfo)))
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      /* Transmission is already done for this subframe. This is a delayed
+      /* Transmission is already done for this slot. This is a delayed
        * datReq. So discard */
       rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM);
       rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
@@ -610,7 +610,7 @@ RgErrInfo      *err;
    bcch = rgDBMGetBcchOnDlsch(cell,datReq->lcId);
    if (bcch )
    {
-      /* Store BCCH-DLSCH data received in Scheduled subframe */
+      /* Store BCCH-DLSCH data received in Scheduled slot */
       sf->bcch.tb = datReq->pdu;
 
       SCpyMsgMsg(datReq->pdu, RG_GET_MEM_REGION(rgCb[inst]),
@@ -622,7 +622,7 @@ RgErrInfo      *err;
    bch = rgDBMGetBcchOnBch(cell);
    if ((bch) && (bch->lcId == datReq->lcId))
    {
-      /* Store BCH data received in Scheduled subframe */
+      /* Store BCH data received in Scheduled slot */
       sf->bch.tb = datReq->pdu;
       RETVALUE(ROK);
    }
@@ -631,7 +631,7 @@ RgErrInfo      *err;
    pcch = rgDBMGetPcch(cell);
    if ((pcch) && (pcch->lcId == datReq->lcId))
    {
-      /* Store PCCH-DLSCH data received in Scheduled subframe */
+      /* Store PCCH-DLSCH data received in Scheduled slot */
       sf->pcch.tb = datReq->pdu;
       RETVALUE(ROK);
    }
@@ -966,7 +966,7 @@ RgErrInfo      *err;
 
       nextBchSfn = (cell->crntTime.sfn + 4 - (cell->crntTime.sfn%4)) % RG_MAX_SFN;
       if ((staRsp->u.timeToTx.sfn != nextBchSfn) ||
-         ((staRsp->u.timeToTx.sfn == cell->crntTime.sfn) && (cell->crntTime.subframe >= 7)))
+         ((staRsp->u.timeToTx.sfn == cell->crntTime.sfn) && (cell->crntTime.slot >= 7)))
       {
         RETVALUE(ROK);
       }
@@ -1053,7 +1053,7 @@ RgDlSf         *dlSf;
       if (ROK != rgTOMUtlProcDlSf (dlSf, cellCb, &err))
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
-               "Unable to process downlink subframe for cell");
+               "Unable to process downlink slot for cell");
          err.errType = RGERR_ROM_DEDDATREQ;
       }
 

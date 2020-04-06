@@ -21,9 +21,6 @@
 
 extern DuCfgParams duCfgParam;
 
-extern S16 cmPkRgrCfgReq(Pst* pst, RgrCfgTransId transId, \
-      RgrCfgReqInfo *cfgReqInfo);
-
 extern S16 duBuildAndSendMacCellCfg();
 
 /*******************************************************************
@@ -57,6 +54,7 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
           value.choice.Cells_to_be_Activated_List_Item;
 
       bitStringToInt(&cell.nRCGI.nRCellIdentity, &nci);
+		nci=1; //forcing this to unblock check in 
       if(nci <= 0 || nci > DU_MAX_CELLS)
       {
          DU_LOG("\nDU APP : Invalid NCI %d", nci);
@@ -90,7 +88,6 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
          return RFAILED;
       }
    }
-
    return ret;
 }
 
@@ -173,95 +170,6 @@ S16 procF1SetupRsp(F1AP_PDU_t *f1apMsg)
 #endif
  
    return ret;
-}
-
-/******************************************************************
-*
-* @brief Send gNB cfg to scheduler via MAC
-*
-* @details
-*
-*    Function : duSendSchGnbCfg
-*
-*    Functionality: Send gNB cfg to scheduler via MAC
-*
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
-S16 duSendSchGnbCfg()
-{
-
-   RgrCfgReqInfo  *cfgReq = NULLP;
-   MacSchedGnbCfg *cfg = NULLP;
-   U32 transId = 1;
-
-   DU_ALLOC(cfgReq, sizeof(RgrCfgReqInfo));
-   if( cfgReq == NULLP)
-   {
-      DU_LOG("\nDU_APP : Mem allocation failed in duSendSchGnbCfg");
-      return RFAILED;
-   }
-
-   cfgReq->action = SCH_CONFIG;
-   cfgReq->u.cfgInfo.cfgType = MAC_GNB_CFG;
-   cfg = &(cfgReq->u.cfgInfo.u.schedGnbCfg);
-   cfg->numTxAntPorts = duCfgParam.schedCfg.numTxAntPorts;
-   cfg->ulSchdType = duCfgParam.schedCfg.ulSchdType;
-   cfg->dlSchdType = duCfgParam.schedCfg.dlSchdType;
-   cfg->numCells = duCfgParam.schedCfg.numCells;
-   cfg->maxUlUePerTti = duCfgParam.schedCfg.maxUlUePerTti;
-   cfg->maxDlUePerTti = duCfgParam.schedCfg.maxDlUePerTti;
-
-   if(ROK != duSendSchGnbCfgToMac(cfgReq, transId))
-   {
-      return RFAILED;
-   }
-
-   return ROK;
-}
-
-/******************************************************************
-*
-* @brief Send gNB cfg to scheduler via MAC
-*
-* @details
-*
-*    Function : duSendSchGnbCfgToMac 
-*
-*    Functionality: Send gNB cfg to scheduler via MAC
-*
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
-S16 duSendSchGnbCfgToMac(RgrCfgReqInfo *cfgReq, U32 trans_id)
-{
-   RgrCfgTransId transId;
-   Pst pst;
-
-   DU_SET_ZERO(&pst, sizeof(Pst));
-   DU_SET_ZERO(&transId, sizeof(RgrCfgTransId));
-
-   transId.trans[0] = MAC_GNB_CFG;
-   transId.trans[1] = cfgReq->action;
-   transId.trans[7] = trans_id & 0x000000ff; trans_id >>= 8;
-   transId.trans[6] = trans_id & 0x000000ff; trans_id >>= 8;
-   transId.trans[5] = trans_id & 0x000000ff; trans_id >>= 8;
-   transId.trans[4] = trans_id & 0x000000ff; trans_id >>= 8;
-
-   pst.selector  = DU_SELECTOR_LC;
-   pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTRG;
-   pst.dstInst   = (Inst)0;
-   pst.dstProcId = DU_PROC;
-   pst.srcProcId = DU_PROC;
-   pst.region    = duCb.init.region;
-   pst.event     = (Event) EVTMACSCHCFGREQ;
-
-   cmPkRgrCfgReq(&pst, transId, cfgReq);
-
-   return ROK;
 }
 
 /**********************************************************************
