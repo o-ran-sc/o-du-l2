@@ -371,7 +371,7 @@ RgSchUeCellInfo  *sCellInfo
 #ifdef TFU_UPGRADE
    /* Start receiving CQI for this SCell for this UE */
    crntTime = (ueCb->cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)+
-                  (ueCb->cell->crntTime.subframe);
+                  (ueCb->cell->crntTime.slot);
 
    cqiCb = &sCellInfo->cqiCb;
    cqiCfg = &cqiCb->cqiCfg;
@@ -389,7 +389,7 @@ RgSchUeCellInfo  *sCellInfo
       }
 
       timingInfo.sfn =  cqiCb->nCqiTrIdx/RGSCH_NUM_SUB_FRAMES_5G;
-      timingInfo.subframe =  cqiCb->nCqiTrIdx%RGSCH_NUM_SUB_FRAMES_5G;
+      timingInfo.slot =  cqiCb->nCqiTrIdx%RGSCH_NUM_SUB_FRAMES_5G;
       if(cqiCb->cqiCfg.cqiSetup.cqiRepType == RGR_UE_PCQI_SB_REP)
       {
          rgSCHTomUtlPcqiSbCalcBpIdx(timingInfo,ueCb,cqiCb); 

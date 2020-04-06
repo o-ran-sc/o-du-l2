@@ -2776,6 +2776,13 @@ typedef S16 (*RgrCfgReq) ARGS((
    Pst*                 pst,
    RgrCfgTransId        transId,
    RgrCfgReqInfo *      cfgReqInfo));
+
+EXTERN S16 cmPkRgrCfgCfm ARGS((
+   Pst*                 pst,
+   RgrCfgTransId        transId,
+   U8                   status
+));
+
 /** @brief Configuration confirm from MAC to RRM. 
  * 
  * @details This API confirms the RGR User about the status of the Configuration.
@@ -3206,24 +3213,6 @@ EXTERN S16 RgUiRgrUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
-));
-
-/** @brief Configuration request from RRM to MAC for configuring Cell/UE/LC.
- *
- * @details This API is invoked by RRM towards MAC to configure MAC. 
- *     These API validates the Pst, spId, suId and transfers the config request 
- *     specific information to corresponding ownership module (GOM) API. 
- *  
- *  @param[in] pst        Pointer to a post structure.
- *  @param[in] spId       SAP Id of the Service Provider.
- *  @param[in] transId    MAC to RRM Transaction Id.
- *  @param[in] cfgReqInfo Basic RGR configuration/reconfiguration info at RRM. 
- *  @return  ROK/RFAILED
- */
-EXTERN S16 HandleSchCfgReq ARGS((
-   Pst*                 pst,
-   RgrCfgTransId        transId,
-   RgrCfgReqInfo *      cfgReqInfo
 ));
 
 /** @brief Configuration Confirm from MAC to RRM.  
@@ -3770,12 +3759,6 @@ EXTERN S16 cmUnpkRgrCfgReq ARGS((
    RgrCfgReq            func,
    Pst*                 pst,
    Buffer               *mBuf
-));
-
-EXTERN S16 cmPkRgrCfgCfm ARGS((
-   Pst*                 pst,
-   RgrCfgTransId        transId,
-   U8                   status
 ));
 
 EXTERN S16 cmUnpkRgrCfgCfm ARGS((
@@ -4644,8 +4627,6 @@ RgrCellCntrlCmdCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 MacSchCfgReq ARGS((Pst *pst, RgrCfgTransId transId, 
-       RgrCfgReqInfo *cfgReqInfo));
 #ifdef RLC_MAC_DAT_REQ_RBUF
 EXTERN S16 rgDlDatReqBatchProc ARGS((
 Void));

@@ -263,6 +263,9 @@ PUBLIC S16 rgSCHTomUtlFillDatSrsRecpReq ARGS(
  Bool              hqPres
  ));
 
+PUBLIC void schFillCrntTime(
+   SlotIndInfo slotInd,
+   Inst        schInst);
 
 #ifdef CA_DBG
 EXTERN U32 delayedApiCnt;
@@ -1579,7 +1582,7 @@ PRIVATE S16 rgSCHTomUtlMovePriNxtOccasion(cell, ue, riCb)
 
    TRC2(rgSCHTomUtlMovePriNxtOccasion);
    crntTime = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
-      +(cell->crntTime.subframe);
+      +(cell->crntTime.slot);
 #ifdef XEON_SPECIFIC_CHANGES
    RGSCHCPYTIMEINFO(cell->crntTime, ue->riRecpTime);
 #endif
@@ -1755,7 +1758,7 @@ PRIVATE S16 rgSCHTomUtlMoveSrsNxtOccasion(cell, ue)
 
    TRC2(rgSCHTomUtlMoveSrsNxtOccasion);
    crntTime = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
-      +(cell->crntTime.subframe);
+      +(cell->crntTime.slot);
 
    /* Compute Next Transmission Instance */ 
    tempIdx = ue->srsCb.peri + ue->srsCb.nSrsTrIdx;
@@ -1881,7 +1884,7 @@ PUBLIC S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
       if (rawCqiInfo->numBits >= 5)
          printf("cellId [%d] crnti [%d] numBits [%d]  uciPayload [0x%08x] sfn/sf [%d:%d]\n", 
                 cell->cellId, rawCqiInfo->crnti, rawCqiInfo->numBits, rawCqiInfo->uciPayload, 
-                rawCqiInd->timingInfo.sfn, rawCqiInd->timingInfo.subframe);
+                rawCqiInd->timingInfo.sfn, rawCqiInd->timingInfo.slot);
       */
       if (rawCqiInfo->numBits == 1)
       {
@@ -1939,7 +1942,7 @@ PUBLIC S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
          }
          /*
          printf("rawCqiInfo->numBits [%d]  uciPayload [0x%08x] sfn/sf [%d:%d]\n", rawCqiInfo->numBits,
-                rawCqiInfo->uciPayload, rawCqiInd->timingInfo.sfn, rawCqiInd->timingInfo.subframe);
+                rawCqiInfo->uciPayload, rawCqiInd->timingInfo.sfn, rawCqiInd->timingInfo.slot);
          */
       }
       else if (rawCqiInfo->numBits == 5)
@@ -1972,7 +1975,7 @@ PUBLIC S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
       }
       else if (rawCqiInfo->numBits == 6)
       {
-         RgInfRlsHqInfo  *rlsHqBufs = &(cell->rlsHqArr[cell->crntHqIdx]);
+         rlsHqBufs = &(cell->rlsHqArr[cell->crntHqIdx]);
          TfuHqFdbk fdbk = TFU_HQFDB_NACK;
          /* Process both HARQ and CQI-RI Ind*/
          ri = (rawCqiInfo->uciPayload >> 26) & 0x1;
@@ -2275,7 +2278,7 @@ TfuCrcIndInfo *crcInd;
          /*Removed the WA to drop 2nd CRC*/
          RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"Recieved CRC "
             "twice per TTI @(%u,%u)", cell->crntTime.sfn,
-            cell->crntTime.subframe);
+            cell->crntTime.slot);
       }
       lastCrc = crntCrc;
    }
@@ -2329,7 +2332,7 @@ TfuCrcIndInfo *crcInd;
 #ifdef LTE_TDD
             /*ccpu00128820 - MOD - Msg3 alloc double delete issue*/
             hqProc = &(raCb->msg3HqProc);
-            RGSCH_UPD_PHICH(cell->ulDlCfgIdx, crcInd->timingInfo.subframe,
+            RGSCH_UPD_PHICH(cell->ulDlCfgIdx, crcInd->timingInfo.slot,
                     hqProc);
 #endif
             raCb = NULLP;
@@ -2533,7 +2536,7 @@ TfuTimingAdvIndInfo *timingAdvInd;
  *
  *     Function: rgSCHTomTtiInd
  *
- *     Handler for processing TTI indication recieved from PHY
+ *     Handler for processing slot indication recieved from MAC
  *     for a cell. This is split into the below Steps. 
  *     
  *     1: Complete the Uplink and Common Channel Scheduling for each Cell
@@ -2542,19 +2545,19 @@ TfuTimingAdvIndInfo *timingAdvInd;
  *     4: Fill the Tfu structures for DL and UL Config requests  
  *     5: Handle the RGR Config messages per Cell
  *
- *  @param[in] TfuTtiIndInfo *ttiInd
+ *  @param[in] SlotIndInfo    *slotInd
  *  @param[in] Inst           schInst
  *  @return  Void
  **/
 #ifdef ANSI
 PUBLIC Void rgSCHTomTtiInd
 (
-TfuTtiIndInfo      *ttiInd,
+SlotIndInfo        *slotInd,
 Inst               schInst
 )
 #else
-PUBLIC Void rgSCHTomTtiInd(ttiInd, schInst)
-TfuTtiIndInfo      *ttiInd;
+PUBLIC Void rgSCHTomTtiInd(slotInd, schInst)
+SlotIndInfo        *slotInd;
 Inst               schInst;
 #endif
 {
@@ -2572,7 +2575,9 @@ Inst               schInst;
    glblTtiCnt++;
 #endif
 
-   rgSchTomFillCellTtiInfo(ttiInd, schInst, &nCell, &cell[0]);
+   //rgSchTomFillCellTtiInfo(slotInd, schInst, &nCell, &cell[0]);
+
+   schFillCrntTime(*slotInd,schInst);
    for (i = 0; i < nCell; i++)
    {
       /* Perform UL and DL Common Channel scheduling */
@@ -2975,7 +2980,7 @@ RgSchErrInfo       *err;
 
    /*ccpu00130768  */ 
    if(cell->srsCfg.isSrsCfgPres && 
-      rgSchTddCellSpSrsSubfrmTbl[cell->srsCfg.srsSubFrameCfg][recpReqInfo->timingInfo.subframe])
+      rgSchTddCellSpSrsSubfrmTbl[cell->srsCfg.srsSubFrameCfg][recpReqInfo->timingInfo.slot])
    {
       recpReqInfo->srsPres = TRUE;
    }
@@ -3054,7 +3059,7 @@ RgSchErrInfo         *err;
       cntrlInfo->dlTiming = cell->dlDciTime;
       cntrlInfo->cellId   = cell->cellId;
       cntrlInfo->ulTiming = cell->hiDci0Time;
-      if((0 == (cntrlInfo->dlTiming.sfn % 30)) && (0 == cntrlInfo->dlTiming.subframe))
+      if((0 == (cntrlInfo->dlTiming.sfn % 30)) && (0 == cntrlInfo->dlTiming.slot))
       {
 	 //printf("5GTF_CHECK rgSCHTomUtlProcDlSf Cntrl dl (%d : %d) ul (%d : %d)\n", cntrlInfo->dlTiming.sfn, cntrlInfo->dlTiming.subframe, cntrlInfo->ulTiming.sfn, cntrlInfo->ulTiming.subframe);
       }
@@ -5212,9 +5217,9 @@ PRIVATE S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, validIdx, err)
 
    TRC2(rgSCHTomUtlFillDatRecpReq);
 
-   if((0 == (recpReqInfo->timingInfo.sfn % 30)) && (0 == recpReqInfo->timingInfo.subframe))
+   if((0 == (recpReqInfo->timingInfo.sfn % 30)) && (0 == recpReqInfo->timingInfo.slot))
    {
-      //printf("5GTF_CHECK rgSCHTomUtlFillDatRecpReq (%d : %d)\n", recpReqInfo->timingInfo.sfn, recpReqInfo->timingInfo.subframe);
+      //printf("5GTF_CHECK rgSCHTomUtlFillDatRecpReq (%d : %d)\n", recpReqInfo->timingInfo.sfn, recpReqInfo->timingInfo.slot);
    }
    /* processing steps are 
     * - Run through the UL allocations going out in this subframe.
@@ -5252,7 +5257,7 @@ PRIVATE S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, validIdx, err)
          {
             RGSCHDECRFRMCRNTTIME(cell->crntTime,dci0Time,(RGSCH_ULCTRL_RECP_DIST));
             
-            idx = (dci0Time.sfn * RGSCH_NUM_SUB_FRAMES_5G + dci0Time.subframe)%
+            idx = (dci0Time.sfn * RGSCH_NUM_SUB_FRAMES_5G + dci0Time.slot)%
                      RGSCH_ULCTRL_RECP_DIST; 
             UNUSED(idx);
             datRecpInfo->t.puschRecpReq.rcpInfo = TFU_PUSCH_DATA;
@@ -5552,7 +5557,7 @@ PUBLIC S16 rgSCHTomUtlPcqiSbCalcBpIdx(crntTimInfo, ueCb, cqiCb)
    RgSchUePCqiCb   *cqiCb;
 #endif
 {
-   U16 tti = (crntTimInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G + crntTimInfo.subframe);
+   U16 tti = (crntTimInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G + crntTimInfo.slot);
    U16  prdNum = tti/cqiCb->cqiPeri;
 
    TRC2(rgSCHTomUtlPcqiSbCalcBpIdx);
@@ -8252,7 +8257,7 @@ RgSchCellCb          *cell;
    /* Added support for period = 0 to disable tick to RRM */
    if ((cell->rrmTtiIndPrd != 0) && 
          ((cell->crntTime.sfn % cell->rrmTtiIndPrd) == 0) && 
-         (cell->crntTime.subframe == 0))
+         (cell->crntTime.slot == 0))
    {
       /* Allocate a TTI indication structure and send to RRM over RGR interface */
       if (rgSCHUtlAllocSBuf (cell->instIdx,
@@ -8264,7 +8269,7 @@ RgSchCellCb          *cell;
          RETVOID;
       }
       rgrTtiInd->cellId = cell->cellId;
-      rgrTtiInd->hSfn = cell->crntTime.hSfn;
+      //rgrTtiInd->hSfn = cell->crntTime.hSfn;
       rgrTtiInd->sfn    = cell->crntTime.sfn;
 
       if (rgSCHUtlRgrTtiInd (cell, rgrTtiInd) != ROK)
@@ -8403,9 +8408,9 @@ RgSchCellCb        *cells[];
       {
          cell->stopDlSch = TRUE;
       }
-      if((0 == (cellInfo->timingInfo.sfn % 30)) && (0 == cellInfo->timingInfo.subframe))
+      if((0 == (cellInfo->timingInfo.sfn % 30)) && (0 == cellInfo->timingInfo.slot))
       {
-	 //printf("5GTF_CHECK rgSCHTOMTtiInd (%d : %d)\n", cellInfo->timingInfo.sfn, cellInfo->timingInfo.subframe);
+	 //printf("5GTF_CHECK rgSCHTOMTtiInd (%d : %d)\n", cellInfo->timingInfo.sfn, cellInfo->timingInfo.slot);
       }
 #ifndef EMTC_ENABLE 
       RGSCHCPYTIMEINFO(cellInfo->timingInfo, cell->crntTime);
@@ -8448,13 +8453,13 @@ RgSchCellCb        *cells[];
       cell->totalTime++;
 #endif
 #ifdef LTE_TDD
-      U8 idx = (cell->crntTime.subframe + RG_SCH_CMN_DL_DELTA) %
+      U8 idx = (cell->crntTime.slot + RG_SCH_CMN_DL_DELTA) %
          RGSCH_NUM_SUB_FRAMES_5G;       
       
       cell->isDlDataAllwd = RG_SCH_CMN_CHK_DL_DATA_ALLOWED(cell, idx);
       
       /*ccpu00130639 -ADD - used in UL HARQ proc id calculation*/
-      if((cell->crntTime.sfn == 0) && (cell->crntTime.subframe == 0))
+      if((cell->crntTime.sfn == 0) && (cell->crntTime.slot == 0))
       {
          /* sfn Cycle used for Tdd UL Harq Proc Determination. 
             This sfn Cycle will have values from 0 to numUl Harq-1. */
@@ -8469,6 +8474,36 @@ RgSchCellCb        *cells[];
       }
 #endif
    } 
+}
+
+void schFillCrntTime(
+   SlotIndInfo slotInd,
+   Inst        schInst)
+{
+   U8 cellCount = 0;
+   for(cellCount = 0; cellCount < CM_LTE_MAX_CELLS; cellCount++)
+   {
+      RgSchCellCb    *cell;
+      cell = rgSchCb[schInst].cells[cellCount];
+
+      RGSCHCPYTIMEINFO(slotInd, cell->crntTime);
+
+      RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, cell->hiDci0Time, 
+                           TFU_ULCNTRL_DLDELTA);
+      RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, cell->dlDciTime, 
+                           TFU_DLCNTRL_DLDELTA);
+      RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, cell->rcpReqTime, 
+                           TFU_RECPREQ_DLDELTA);
+      RGSCHDECRFRMCRNTTIME(cell->crntTime, cell->hqRlsTime, 
+                           TFU_HQFBKIND_ULDELTA); 
+      RGSCHDECRFRMCRNTTIME(cell->crntTime, cell->dlSfRlsTime, 
+                           RGSCH_RLS_SF_IDX);
+
+      RGSCH_INCR_SUB_FRAME(cell->crntTime, RG_SCH_CMN_DL_DELTA);
+
+      RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
+      cellSch->dl.time = cell->crntTime; 
+   }
 }
 
 /** @brief This function prepares the TTI for scheduling and 

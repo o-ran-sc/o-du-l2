@@ -659,8 +659,8 @@ RgSchPdcch                 *pdcch;
  *
  *     Function: rgSCHUtlPdcchInit
  *     Purpose:  This function initializes PDCCH information for
- *               a subframe. It removes the list of PDCCHs allocated
- *               in the prior use of this subframe structure.
+ *               a slot. It removes the list of PDCCHs allocated
+ *               in the prior use of this slot structure.
  *
  *     Invoked by: rgSCHUtlSubFrmPut
  *
@@ -1048,7 +1048,7 @@ PRIVATE Void rgSchDSFRRntpInfoInit(rntpPtr, cell, bw)
 }
 
 /**
- * @brief This function release RNTP pattern from subFrame and Cell 
+ * @brief This function release RNTP pattern from slot and Cell 
  * @details
  *
  *     Function:   rgSchDSFRRntpInfoFree 
@@ -1137,7 +1137,7 @@ PRIVATE Void rgSchSFRResetPoolVariables(cell, pool)
  * @details
  *
  *     Function: rgSCHSFRUtlTotalPooReset
- *     Purpose:  Update the dynamic variables in each pool as they will be modified in each subframe.
+ *     Purpose:  Update the dynamic variables in each pool as they will be modified in each slot.
  *                    Dont modify the static variables like startRB, endRB, BW
  *     Invoked by: rgSCHUtlSubFrmPut
  *
@@ -1206,7 +1206,7 @@ PRIVATE Void rgSCHSFRUtlTotalPoolReset(cell, subFrm)
  *
  *     Function: rgSCHUtlAddPhich
  *     Purpose:  This function appends PHICH information for
- *               a subframe.
+ *               a slot.
  *
  *     Invoked by: TOM
  *
@@ -1292,8 +1292,8 @@ Bool                    isForMsg3;
  *
  *     Function: rgSCHUtlPhichReset
  *     Purpose:  This function initializes PHICH information for
- *               a subframe. It removes the list of PHICHs allocated
- *               in the prior use of this subframe structure.
+ *               a slot. It removes the list of PHICHs allocated
+ *               in the prior use of this slot structure.
  *
  *     Invoked by: rgSCHUtlSubFrmPut
  *
@@ -1334,13 +1334,13 @@ RgSchDlSf                  *subFrm;
 
 
 /**
- * @brief This function returns subframe data structure for a cell
+ * @brief This function returns slot data structure for a cell
  *
  * @details
  *
  *     Function: rgSCHUtlSubFrmGet
- *     Purpose:  This function resets the subframe data structure
- *               when the subframe is released
+ *     Purpose:  This function resets the slot data structure
+ *               when the slot is released
  *
  *     Invoked by: scheduler
  *
@@ -1371,8 +1371,8 @@ CmLteTimingInfo        frm;
    sf = cell->subFrms[dlIdx];
 #else
    /* Changing the idexing
-      so that proper subframe is selected */
-   dlIdx = (((frm.sfn & 1) * RGSCH_NUM_SUB_FRAMES) + (frm.subframe % RGSCH_NUM_SUB_FRAMES));
+      so that proper slot is selected */
+   dlIdx = (((frm.sfn & 1) * RGSCH_NUM_SUB_FRAMES) + (frm.slot % RGSCH_NUM_SUB_FRAMES));
    RGSCH_ARRAY_BOUND_CHECK(cell->instIdx, cell->subFrms, dlIdx);
    sf = cell->subFrms[dlIdx];
 #endif
@@ -1384,13 +1384,13 @@ CmLteTimingInfo        frm;
 
 
 /**
- * @brief This function returns subframe data structure for a cell
+ * @brief This function returns slot data structure for a cell
  *
  * @details
  *
  *     Function: rgSCHUtlSubFrmPut
- *     Purpose:  This function resets the subframe data structure
- *               when the subframe is released
+ *     Purpose:  This function resets the slot data structure
+ *               when the slot is released
  *
  *     Invoked by: scheduler
  *
@@ -2194,12 +2194,12 @@ TfuUeUlSchRecpInfo      *recpReq;
 
 #ifdef LTE_TDD
 /**
- * @brief This function initialises the PRACH subframe occasions
+ * @brief This function initialises the PRACH slot occasions
  *
  * @details
  *
  *     Function: rgSCHUtlUpdPrachOcc
- *     Purpose:  This function updates the PRACH subframes based on
+ *     Purpose:  This function updates the PRACH slots based on
  *               RGR configuration.
  *
  *     Invoked by: Scheduler
@@ -2244,12 +2244,12 @@ RgrTddPrachInfo   *cellCfg;
    for(idx = startIdx; idx < endIdx; idx++)
    {
       if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][idx]
-            == RG_SCH_TDD_UL_SUBFRAME)
+            == RG_SCH_TDD_UL_slot)
       {
          if(cellCfg->ulStartSfIdx == count)
          {
             size = cell->rachCfg.raOccasion.size;
-            cell->rachCfg.raOccasion.subFrameNum[size] = idx;
+            cell->rachCfg.raOccasion.slotNum[size] = idx;
             cell->rachCfg.raOccasion.size++;
             break;
          }
@@ -2305,7 +2305,7 @@ RgrCellCfg        *cellCfg;
 
    cell->rachCfg.raOccasion.size = 0;
 
-   /* Update subframe occasions */
+   /* Update slot occasions */
    for(idx = 0; idx < cellCfg->prachRscInfo.numRsc; idx++)
    {
       if(cellCfg->prachRscInfo.prachInfo[idx].freqIdx == 0)
@@ -2322,7 +2322,7 @@ RgrCellCfg        *cellCfg;
                                                 RGR_TDD_SPL_UL_IDX)
          {
             subfrmIdx = cell->rachCfg.raOccasion.size;
-            cell->rachCfg.raOccasion.subFrameNum[subfrmIdx] = splFrm;
+            cell->rachCfg.raOccasion.slotNum[subfrmIdx] = splFrm;
             cell->rachCfg.raOccasion.size++;
          }
          else
@@ -2342,7 +2342,7 @@ RgrCellCfg        *cellCfg;
  *
  *     Function: rgSCHUtlRgrCellCfg
  *     Purpose:  This function initialises the cell with RGR configuration
- *               and subframe related initialization.
+ *               and slot related initialization.
  *
  *     Invoked by: Scheduler
  *
@@ -2372,8 +2372,8 @@ RgSchErrInfo      *errInfo;
    RgSchDlSf       *sf;
    CmLteTimingInfo frm;
    U8              ulDlCfgIdx = cellCfg->ulDlCfgIdx;
-   U8              maxSubframes ;
-   U8              maxDlSubframes;
+   U8              maxslots ;
+   U8              maxDlslots;
    S16             ret = ROK;
    U16             bw;         /*!< Number of RBs in the cell */
    
@@ -2382,9 +2382,9 @@ RgSchErrInfo      *errInfo;
    cmMemset((U8 *)&frm,0,sizeof(CmLteTimingInfo));
 
    /* ccpu00132657-MOD- Determining DLSF array size independent of DELTAS */
-   maxDlSubframes = rgSchTddNumDlSubfrmTbl[ulDlCfgIdx][RGSCH_NUM_SUB_FRAMES-1];
-   maxSubframes = 2 * maxDlSubframes;
-   cell->numDlSubfrms = maxSubframes;
+   maxDlslots = rgSchTddNumDlSubfrmTbl[ulDlCfgIdx][RGSCH_NUM_SUB_FRAMES-1];
+   maxslots = 2 * maxDlslots;
+   cell->numDlSubfrms = maxslots;
 /* ACC-TDD <ccpu00130639> */
    cell->tddHqSfnCycle = -1;
    cell->ulDlCfgIdx = ulDlCfgIdx;
@@ -2417,17 +2417,17 @@ RgSchErrInfo      *errInfo;
    bw    = cell->bwCfg.dlTotalBw;
 
    rgSCHUtlAllocSBuf(cell->instIdx,
-               (Data **)&cell->subFrms, sizeof(RgSchDlSf *) * maxSubframes);
+               (Data **)&cell->subFrms, sizeof(RgSchDlSf *) * maxslots);
    if (cell->subFrms == NULLP)
    {
       RETVALUE(RFAILED);
    }
 
    /* Create memory for each frame. */
-   for(i = 0; i < maxSubframes; i++)
+   for(i = 0; i < maxslots; i++)
    {
       while(rgSchTddUlDlSubfrmTbl[ulDlCfgIdx][sfNum] ==
-            RG_SCH_TDD_UL_SUBFRAME)
+            RG_SCH_TDD_UL_slot)
       {
          sfNum = (sfNum+1) % RGSCH_NUM_SUB_FRAMES;
       }
@@ -2465,7 +2465,7 @@ RgSchErrInfo      *errInfo;
       cell->subFrms[i] = sf;
       sfNum = (sfNum+1) % RGSCH_NUM_SUB_FRAMES;
    }
-   if (i != maxSubframes)
+   if (i != maxslots)
    {
       for (; i > 0; i--)
       {
@@ -2480,7 +2480,7 @@ RgSchErrInfo      *errInfo;
       /* ccpu00117052 - MOD - Passing double pointer
       for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(cell->instIdx,
-            (Data **)(&(cell->subFrms)), sizeof(RgSchDlSf *) * maxSubframes);
+            (Data **)(&(cell->subFrms)), sizeof(RgSchDlSf *) * maxslots);
 
       RETVALUE(RFAILED);
    }
@@ -2499,15 +2499,15 @@ RgSchErrInfo      *errInfo;
       RETVALUE(ret);
    }
 
-   /* Release the subframes and thereby perform the initialization */
-   for (i = 0; i < maxSubframes; i++)
+   /* Release the slots and thereby perform the initialization */
+   for (i = 0; i < maxslots; i++)
    {
-     if((i > 0) && (i%maxDlSubframes == 0))
+     if((i > 0) && (i%maxDlslots == 0))
      {
       sfn++;
      }
      frm.sfn = sfn;
-     frm.subframe = cell->subFrms[i]->sfNum;
+     frm.slot = cell->subFrms[i]->sfNum;
      rgSCHUtlDlRlsSubFrm(cell, frm);
    }
 
@@ -2522,7 +2522,7 @@ RgSchErrInfo      *errInfo;
  * @details
  *
  *     Function: rgSCHUtlRgrCellCfg
- *     Purpose:  This function creates the subframes needed for the
+ *     Purpose:  This function creates the slots needed for the
  *               cell. It then peforms init of the scheduler by calling
  *               scheduler specific cell init function.
  *
@@ -2582,8 +2582,8 @@ RgSchErrInfo      *errInfo;
    cell->noOfRbgs = RGSCH_CEIL(cell->bwCfg.dlTotalBw, cell->rbgSize);
    /* Create memory for each frame. */
    /* Changing loop limit from
-      RGSCH_NUM_SUB_FRAMES to RGSCH_NUM_DL_SUBFRAMES */
-   for(i = 0; i < RGSCH_NUM_DL_SUBFRAMES; i++)
+      RGSCH_NUM_SUB_FRAMES to RGSCH_NUM_DL_slotS */
+   for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
    {
       rgSCHUtlAllocSBuf(inst, (Data **)&sf, sizeof(RgSchDlSf));
       if (sf == NULLP)
@@ -2643,8 +2643,8 @@ RgSchErrInfo      *errInfo;
    /* LTE_ADV_FLAG_REMOVED_END */
 
    /* Changing loop limit from
-      RGSCH_NUM_SUB_FRAMES to RGSCH_NUM_DL_SUBFRAMES */
-   if (i != RGSCH_NUM_DL_SUBFRAMES)
+      RGSCH_NUM_SUB_FRAMES to RGSCH_NUM_DL_slotS */
+   if (i != RGSCH_NUM_DL_slotS)
    {
       for (; i > 0; i--)
       {
@@ -2664,8 +2664,8 @@ RgSchErrInfo      *errInfo;
       cell->sc.apis = &rgSchCmnApis;
    }
 
-   /* Release the subframes and thereby perform the initialization */
-   for (i = 0; i < RGSCH_NUM_DL_SUBFRAMES; i++)
+   /* Release the slots and thereby perform the initialization */
+   for (i = 0; i < RGSCH_NUM_DL_slotS; i++)
    {
       if (i >= RGSCH_NUM_SUB_FRAMES)
       {
@@ -2674,7 +2674,7 @@ RgSchErrInfo      *errInfo;
           it to one */
          frm.sfn = 1;
       }
-      frm.subframe = i % RGSCH_NUM_SUB_FRAMES;
+      frm.slot = i % RGSCH_NUM_SUB_FRAMES;
       rgSCHUtlDlRlsSubFrm(cell, frm);
    }
 
@@ -2750,7 +2750,7 @@ RgSchErrInfo      *err;
  *     Function: rgSCHUtlFreeCell
  *     Purpose:  This function updates the value of Y stored in the
  *               UE control block. It uses the previously computed
- *               value for computing for this subframe.
+ *               value for computing for this slot.
  *
  *     Invoked by: Scheduler
  *
@@ -2775,7 +2775,7 @@ RgSchCellCb          *cell;
    RgSchPhichInfo   *phichInfo;
    RgSchPhich       *phich;
    Inst             inst = cell->instIdx;
-   U8               maxSubframes;
+   U8               maxslots;
 #ifdef LTE_TDD
    RgSchRaReqInfo *raReqInfo;
    U8                idx;
@@ -2783,17 +2783,17 @@ RgSchCellCb          *cell;
    TRC2(rgSCHUtlFreeCell);
 
 #ifdef LTE_TDD
-   maxSubframes = cell->numDlSubfrms;
+   maxslots = cell->numDlSubfrms;
 #else
-   maxSubframes = RGSCH_NUM_DL_SUBFRAMES;
+   maxslots = RGSCH_NUM_DL_slotS;
 #endif
 
 
    /* Invoke the index for scheduler, cell deletion */
    cell->sc.apis->rgSCHFreeCell(cell);
 
-   /* Release the subframes allocated               */
-   for (i = 0; i < maxSubframes; i++)
+   /* Release the slots allocated               */
+   for (i = 0; i < maxslots; i++)
    {
 #ifdef LTE_ADV
       rgSCHLaaDeInitDlSfCb(cell, cell->subFrms[i]);
@@ -2834,11 +2834,11 @@ RgSchCellCb          *cell;
       rgSCHUtlFreeSBuf(inst, (Data **)(&(cell->subFrms[i])), sizeof(RgSchDlSf));
    }
 #ifdef LTE_TDD
-   /* Release the subframe pointers */
+   /* Release the slot pointers */
    /* ccpu00117052 - MOD - Passing double pointer
    for proper NULLP assignment*/
    rgSCHUtlFreeSBuf(inst,
-         (Data **) (&(cell->subFrms)), sizeof(RgSchDlSf *) * maxSubframes);
+         (Data **) (&(cell->subFrms)), sizeof(RgSchDlSf *) * maxslots);
 
    for(idx=0; idx < cell->raInfo.lstSize; idx++)
    {
@@ -3637,7 +3637,7 @@ RgSchDlHqProcCb            *hqP;
  * @details
  *
  *     Function: rgSCHUtlDlHqPTbAddToTx
- *     Purpose:  This function a HarqProcess TB to the subframe
+ *     Purpose:  This function a HarqProcess TB to the slot
  *               list.
  *
  *     Invoked by: Scheduler
@@ -3730,7 +3730,7 @@ U8                         tbIdx;
  * @details
  *
  *     Function: rgSCHUtlDlHqPTbRmvFrmTx
- *     Purpose:  This function removes a HarqProcess TB to the subframe
+ *     Purpose:  This function removes a HarqProcess TB to the slot
  *               list.
  *
  *     Invoked by: Scheduler
@@ -4594,7 +4594,7 @@ RgSchUeCb            *ue;
  *
  *     Function: rgSCHUtlUlHqProcForUe
  *     Purpose:  This function returns the harq process for
- *               which data is expected in the current subframe.
+ *               which data is expected in the current slot.
  *               It does not validate if the HARQ process
  *               has an allocation.
  *
@@ -4638,7 +4638,7 @@ RgSchUlHqProcCb     **procRef;
  *
  *     Function: rgSCHUtlFirstRcptnReq(cell)
  *     Purpose:  This function returns the first uplink allocation
- *               (or NULLP if there is none) in the subframe
+ *               (or NULLP if there is none) in the slot
  *               in which is expected to prepare and send reception
  *               request to PHY.
  *
@@ -4669,7 +4669,7 @@ RgSchCellCb      *cell;
  *
  *     Function: rgSCHUtlNextRcptnReq(cell)
  *     Purpose:  This function returns the next uplink allocation
- *               (or NULLP if there is none) in the subframe
+ *               (or NULLP if there is none) in the slot
  *               in which is expected to prepare and send reception
  *               request to PHY.
  *
@@ -4702,7 +4702,7 @@ RgSchUlAlloc     *alloc;
  *
  *     Function: rgSCHUtlFirstHqFdbkAlloc
  *     Purpose:  This function returns the first uplink allocation
- *               (or NULLP if there is none) in the subframe
+ *               (or NULLP if there is none) in the slot
  *               in which it is expected to prepare and send HARQ
  *               feedback to PHY.
  *
@@ -4736,7 +4736,7 @@ U8               idx;
  *
  *     Function: rgSCHUtlNextHqFdbkAlloc(cell)
  *     Purpose:  This function returns the next uplink allocation
- *               (or NULLP if there is none) in the subframe
+ *               (or NULLP if there is none) in the slot
  *               for which HARQ feedback needs to be sent.
  *
  *     Invoked by: TOM
@@ -4861,7 +4861,7 @@ Reason  reason;
  *
  *     Func : rgSCHUtlResetSfAlloc
  *
- *     Desc : Utility Function to Reset subframe allocation information.
+ *     Desc : Utility Function to Reset slot allocation information.
  *
  *
  *     Ret  : ROK
@@ -4908,7 +4908,7 @@ Bool         restAlloc;
  *
  *     Func : rgSCHUtlGetRlsHqAlloc
  *
- *     Desc : Utility Function to Allocate subframe allocation information.
+ *     Desc : Utility Function to Allocate slot allocation information.
  *
  *
  *     Ret  : ROK
@@ -4957,7 +4957,7 @@ RgSchCellCb *cell;
  *
  *     Func : rgSCHUtlPutRlsHqAlloc
  *
- *     Desc : Utility Function to deallocate subframe allocation information.
+ *     Desc : Utility Function to deallocate slot allocation information.
  *
  *
  *     Ret  : ROK
@@ -5005,7 +5005,7 @@ RgSchCellCb *cell;
  *
  *     Func : rgSCHUtlGetSfAlloc
  *
- *     Desc : Utility Function to Allocate subframe allocation information.
+ *     Desc : Utility Function to Allocate slot allocation information.
  *
  *
  *     Ret  : ROK
@@ -5087,7 +5087,7 @@ RgSchCellCb *cell;
  *
  *     Func : rgSCHUtlPutSfAlloc
  *
- *     Desc : Utility Function to deallocate subframe allocation information.
+ *     Desc : Utility Function to deallocate slot allocation information.
  *
  *
  *     Ret  : ROK
@@ -5889,7 +5889,7 @@ RgSchCellCb     *cell;
 
 /** @brief This function fills in the pdsch data related allocation Info
  *         from the pdcch DCI info.
- * subframe
+ * slot
  *
  * @details
  *
@@ -6076,7 +6076,7 @@ RgSchCellCb     *cell;
 
    CmLteTimingInfo        frm;
 
-   /* Get Downlink Subframe */
+   /* Get Downlink slot */
    frm   = cell->crntTime;
    RGSCH_INCR_SUB_FRAME(frm, RG_SCH_CMN_DL_DELTA);
    sf = rgSCHUtlSubFrmGet(cell, frm);
@@ -6944,7 +6944,7 @@ RgInfCmnBoRpt  *boUpdt;
    {
       /* Added for dropping paging Message*/	  
 	  /*suman*/
-      if ((rgSCHChkBoUpdate(cell,boUpdt))== ROK)  /* Checking if received BO falls within the window of 5120 subframes*/
+      if ((rgSCHChkBoUpdate(cell,boUpdt))== ROK)  /* Checking if received BO falls within the window of 5120 slots*/
       {
          if (rgSCHUtlGetAllwdCchTbSz(boUpdt->bo*8, &nPrb, &mcs) 
                != (boUpdt->bo*8))
@@ -7863,7 +7863,7 @@ RgSchTddANInfo       *anFdInfo;
    TRC2(rgSCHUtlInitUeANFdbkInfo);
 
    anFdInfo->sfn = RGSCH_MAX_SFN+1; /* defensively setting invalid sfn */
-   anFdInfo->subframe = 0;
+   anFdInfo->slot = 0;
    anFdInfo->ulDai = RG_SCH_INVALID_DAI_VAL;
    anFdInfo->dlDai = RG_SCH_INVALID_DAI_VAL;
    anFdInfo->latestMIdx = RG_SCH_INVALID_M_VAL;
@@ -7879,7 +7879,7 @@ RgSchTddANInfo       *anFdInfo;
  *     Function : rgSCHUtlGetUeANFdbkInfo
  *
  *   It gets the UE related ACK NACK information based on
- *   SFN and subframe number.
+ *   SFN and slot number.
  *
  *  @param[in]  RgSchUeCb        *ueCb
  *  @param[in]  CmLteTimingInfo  *time
@@ -7906,7 +7906,7 @@ U8                servCellIdx;
    for (idx = 0; idx < ueCb->cell->ackNackFdbkArrSize; ++idx)
    {
        if( (timeInfo->sfn == ueCb->cellInfo[servCellIdx]->anInfo[idx].sfn) &&
-               (timeInfo->subframe == ueCb->cellInfo[servCellIdx]->anInfo[idx].subframe))
+               (timeInfo->slot == ueCb->cellInfo[servCellIdx]->anInfo[idx].slot))
        {
             RETVALUE(&ueCb->cellInfo[servCellIdx]->anInfo[idx]);
        }
@@ -7916,12 +7916,12 @@ U8                servCellIdx;
 } /* rgSCHUtlGetUeANFdbkInfo */
 
 /**
- * @brief To get downlink subframe index
+ * @brief To get downlink slot index
  *
  * @details
  *
  *     Function: rgSCHUtlGetDlSfIdx
- *     Purpose:  Gets downlink subframe index based on SFN and subframe no
+ *     Purpose:  Gets downlink slot index based on SFN and slot no
  *
  *  @param[in]  CmLteTimingInfo  *timeInfo
  *  @param[in]  RgSchCellCb         *cell
@@ -7946,19 +7946,19 @@ CmLteTimingInfo *timeInfo;
    idx = RGSCH_NUM_SUB_FRAMES - \
          rgSchTddNumUlSubfrmTbl[cell->ulDlCfgIdx][RGSCH_NUM_SUB_FRAMES-1];
    idx = ((idx * timeInfo->sfn) + \
-         rgSchTddNumDlSubfrmTbl[cell->ulDlCfgIdx][timeInfo->subframe]) - 1;
+         rgSchTddNumDlSubfrmTbl[cell->ulDlCfgIdx][timeInfo->slot]) - 1;
    idx = idx % cell->numDlSubfrms;
 
    RETVALUE((U8)idx);
 }
 
 /**
- * @brief To get the next downlink subframe
+ * @brief To get the next downlink slot
  *
  * @details
  *
  *     Function: rgSCHUtlGetNxtDlSfInfo
- *     Purpose:  Gets next downlink subframe based on current DL subframe
+ *     Purpose:  Gets next downlink slot based on current DL slot
  *
  *  @param[in]  CmLteTimingInfo  curDlTime
  *  @param[in]  RgSchCellCb      *cell
@@ -7986,7 +7986,7 @@ RgSchDlSf         **nxtDlsf;
 CmLteTimingInfo   *nxtDlTime;
 #endif
 {
-   U16  idx = curDlTime.subframe;
+   U16  idx = curDlTime.slot;
    U8   count = 0;
    TRC2(rgSCHUtlGetNxtDlSfInfo);
 
@@ -7997,10 +7997,10 @@ CmLteTimingInfo   *nxtDlTime;
          idx = (idx + 1) % RGSCH_NUM_SUB_FRAMES;
          count++;
       }while(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][idx]
-                                       != RG_SCH_TDD_DL_SUBFRAME);
+                                       != RG_SCH_TDD_DL_slot);
       RG_SCH_ADD_TO_CRNT_TIME(curDlTime, (*nxtDlTime), count);
       *nxtDlsf = rgSCHUtlSubFrmGet(cell, *nxtDlTime);
-      if(dlSf->dlFdbkInfo.subframe != (*nxtDlsf)->dlFdbkInfo.subframe)
+      if(dlSf->dlFdbkInfo.slot != (*nxtDlsf)->dlFdbkInfo.slot)
       {
          break;
       }
@@ -8009,12 +8009,12 @@ CmLteTimingInfo   *nxtDlTime;
 }
 
 /**
- * @brief To get the previous downlink subframe
+ * @brief To get the previous downlink slot
  *
  * @details
  *
  *     Function: rgSCHUtlGetPrevDlSfInfo
- *     Purpose:  Gets previous downlink subframe based on current DL subframe
+ *     Purpose:  Gets previous downlink slot based on current DL slot
  *
  *  @param[in]  RgSchCellCb      *cell
  *  @param[in]  CmLteTimingInfo  curDlTime
@@ -8039,7 +8039,7 @@ CmLteTimingInfo   *prevDlTime;
 U8                *numSubfrm;
 #endif
 {
-   S16 idx = curDlTime.subframe;
+   S16 idx = curDlTime.slot;
    U8  count = 0;
    TRC2(rgSCHUtlGetPrevDlSfInfo);
 
@@ -8052,7 +8052,7 @@ U8                *numSubfrm;
       }
       count++;
    }while(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][idx]
-         !=  RG_SCH_TDD_DL_SUBFRAME);
+         !=  RG_SCH_TDD_DL_slot);
    *numSubfrm = count;
    RGSCHDECRFRMCRNTTIME(curDlTime, (*prevDlTime), count);
    RETVOID;
@@ -8065,7 +8065,7 @@ U8                *numSubfrm;
  *
  *     Func : rgSCHUtlUlSfInit
  *
- *     Desc : UL subframe init.
+ *     Desc : UL slot init.
  *
  *     Ret  : S16
  *
@@ -8101,7 +8101,7 @@ U8           maxUePerSf;
 #ifdef LTE_TDD   
    if(cell->ulDlCfgIdx == 0)
    {
-      /* Store the Uplink subframe number corresponding to the idx */
+      /* Store the Uplink slot number corresponding to the idx */
       sf->ulSfIdx = rgSchTddCfg0UlSfTbl[idx%6]; 
    }
 #endif   
@@ -8172,7 +8172,7 @@ U8           maxUePerSf;
  *
  *     Func : rgSCHUtlUlSfDeinit
  *
- *     Desc : Deinitialises a subframe
+ *     Desc : Deinitialises a slot
  *
  *     Ret  : Void
  *
@@ -8544,7 +8544,7 @@ RgSchUlHole *hole;
  *
  *     Func : rgSCHUtlUlAllocFirst
  *
- *     Desc : Get first alloc in subframe
+ *     Desc : Get first alloc in slot
  *
  *     Ret  : RgSchUlAlloc *
  *
@@ -10289,9 +10289,9 @@ CmLListCp       *ulInActvLst;
       {
          /*Stop the DRX retransmission timer as UE scheduled for retx. Here
           * we stop the timer and inactivate the UE for both UL and DL.
-          * This may result in loss of one subframe for UL but this trade
+          * This may result in loss of one slot for UL but this trade
           * off is taken to avoid the overhead of maintaining a list of UEs
-          * to be inactivated in the next subframe.*/
+          * to be inactivated in the next slot.*/
          drxHq = RG_SCH_DRX_GET_DL_HQ(dlHq);
          drxUe = RG_SCH_DRX_GET_UE(ueCb);
          if(drxHq->reTxIndx != DRX_INVALID)
@@ -10808,7 +10808,7 @@ RgSchCellCb       *cell;
   
    if(cell->prbUsage.rprtPeriod >= RGSCH_NUM_SUB_FRAMES)
    {
-      /* Get the total number of DL and UL subframes within the reporting period*/
+      /* Get the total number of DL and UL slots within the reporting period*/
       numDlSf = (cell->prbUsage.rprtPeriod * 
             rgSchTddNumDlSubfrmTbl[cell->ulDlCfgIdx][RGSCH_NUM_SUB_FRAMES-1])
          / RGSCH_NUM_SUB_FRAMES;
@@ -10818,9 +10818,9 @@ RgSchCellCb       *cell;
    }
    else
    {
-      /* Get the total number of DL and UL subframes < 10 ms interval */
-      numDlSf = rgSchTddNumDlSubfrmTbl[cell->ulDlCfgIdx][frm.subframe];
-      numUlSf = rgSchTddNumUlSubfrmTbl[cell->ulDlCfgIdx][frm.subframe];
+      /* Get the total number of DL and UL slots < 10 ms interval */
+      numDlSf = rgSchTddNumDlSubfrmTbl[cell->ulDlCfgIdx][frm.slot];
+      numUlSf = rgSchTddNumUlSubfrmTbl[cell->ulDlCfgIdx][frm.slot];
    }
 #else
      numDlSf = cell->prbUsage.rprtPeriod;
@@ -10974,10 +10974,10 @@ RgInfCmnBoRpt  *boUpdt;
    U32 distance = 0;
    TRC2(rgSCHChkBoUpdate);
 
-   crntTimeInSubFrms = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G) +  cell->crntTime.subframe +
+   crntTimeInSubFrms = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G) +  cell->crntTime.slot +
 	   RG_SCH_CMN_DL_DELTA + 2;  /* As bo received will scheduled in next TTI
 					so incrementing with +1 more */
-   boUpdTimeInSubFrms = (boUpdt->u.timeToTx.sfn * RGSCH_NUM_SUB_FRAMES_5G)+ boUpdt->u.timeToTx.subframe;
+   boUpdTimeInSubFrms = (boUpdt->u.timeToTx.sfn * RGSCH_NUM_SUB_FRAMES_5G)+ boUpdt->u.timeToTx.slot;
 
 
    distance = boUpdTimeInSubFrms > crntTimeInSubFrms ? \
@@ -11039,7 +11039,7 @@ U8              hqFdbkIdx;
    {
      iPhich = 1;  
    }
-   if(phichTime.subframe == 0 || phichTime.subframe == 5)
+   if(phichTime.slot == 0 || phichTime.slot == 5)
    {    
       if(iPhich == 0)
       {
@@ -11050,15 +11050,15 @@ U8              hqFdbkIdx;
       {
          /* Retx will happen at n+7 */
          RGSCHCMNADDTOCRNTTIME(phichTime, phichTime, 7);
-         /* Fetch the corresponding  UL subframe Idx in UL sf array */ 
+         /* Fetch the corresponding  UL slot Idx in UL sf array */ 
          reTxIdx = rgSCHCmnGetUlSfIdx(&phichTime, cell);
       }   
    }
-   else if(phichTime.subframe == 1 || phichTime.subframe == 6) 
+   else if(phichTime.slot == 1 || phichTime.slot == 6) 
    { 
       /* Retx will happen at n+7 */
       RGSCHCMNADDTOCRNTTIME(phichTime, phichTime, 7);
-      /* Fetch the corresponding  UL subframe Idx in UL sf array */ 
+      /* Fetch the corresponding  UL slot Idx in UL sf array */ 
       reTxIdx = rgSCHCmnGetUlSfIdx(&phichTime, cell);
    }
    RETVALUE(reTxIdx);
@@ -12311,7 +12311,7 @@ PRIVATE S16 rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(cell, crntCpuOvrLdIns)
    RgSchCmnCell            *cellSch;
    U8                       maxUeNewDlTxPerTti;
    U8                       maxUeNewUlTxPerTti;
-   U8                       tmpSubFrame        = 0;
+   U8                       tmpslot        = 0;
 #ifdef CPU_OL_DBG_PRINTS 
    U8                       idx = 0;
 #endif
@@ -12333,11 +12333,11 @@ PRIVATE S16 rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(cell, crntCpuOvrLdIns)
       /* Decrement till 90% of maxUeNewDlTxPerTti */
       if ( cpuInstr->dlNxtIndxDecNumUeTti < maxDlDecCnt )
       {
-         tmpSubFrame = (cpuInstr->dlNxtIndxDecNumUeTti) % 10;
+         tmpslot = (cpuInstr->dlNxtIndxDecNumUeTti) % 10;
          cpuInstr->dlNxtIndxDecNumUeTti++;
-         if ( cpuInstr->maxUeNewTxPerTti[tmpSubFrame] > 1 )
+         if ( cpuInstr->maxUeNewTxPerTti[tmpslot] > 1 )
          {
-            cpuInstr->maxUeNewTxPerTti[tmpSubFrame]--;
+            cpuInstr->maxUeNewTxPerTti[tmpslot]--;
          }
          else
          {
@@ -12358,10 +12358,10 @@ PRIVATE S16 rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(cell, crntCpuOvrLdIns)
       if ( cpuInstr->dlNxtIndxDecNumUeTti >  0) 
       {
          cpuInstr->dlNxtIndxDecNumUeTti--;
-         tmpSubFrame = (cpuInstr->dlNxtIndxDecNumUeTti) % 10;
-         if ( cpuInstr->maxUeNewTxPerTti[tmpSubFrame] < maxUeNewDlTxPerTti )
+         tmpslot = (cpuInstr->dlNxtIndxDecNumUeTti) % 10;
+         if ( cpuInstr->maxUeNewTxPerTti[tmpslot] < maxUeNewDlTxPerTti )
          {
-            cpuInstr->maxUeNewTxPerTti[tmpSubFrame]++;
+            cpuInstr->maxUeNewTxPerTti[tmpslot]++;
          }
          else
          {
@@ -12383,11 +12383,11 @@ PRIVATE S16 rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(cell, crntCpuOvrLdIns)
       /* Decrement till 90% of maxUeNewDlTxPerTti */
       if ( cpuInstr->ulNxtIndxDecNumUeTti < maxUlDecCnt )
       {
-         tmpSubFrame = (cpuInstr->ulNxtIndxDecNumUeTti) % 10;
+         tmpslot = (cpuInstr->ulNxtIndxDecNumUeTti) % 10;
          cpuInstr->ulNxtIndxDecNumUeTti++;
-         if ( cpuInstr->maxUeNewRxPerTti[tmpSubFrame] > 1 )
+         if ( cpuInstr->maxUeNewRxPerTti[tmpslot] > 1 )
          {
-            cpuInstr->maxUeNewRxPerTti[tmpSubFrame]--;
+            cpuInstr->maxUeNewRxPerTti[tmpslot]--;
          }
          else
          {
@@ -12408,10 +12408,10 @@ PRIVATE S16 rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(cell, crntCpuOvrLdIns)
       if ( cpuInstr->ulNxtIndxDecNumUeTti >  0) 
       {
          cpuInstr->ulNxtIndxDecNumUeTti--;
-         tmpSubFrame = (cpuInstr->ulNxtIndxDecNumUeTti) % 10;
-         if ( cpuInstr->maxUeNewRxPerTti[tmpSubFrame] < maxUeNewUlTxPerTti )
+         tmpslot = (cpuInstr->ulNxtIndxDecNumUeTti) % 10;
+         if ( cpuInstr->maxUeNewRxPerTti[tmpslot] < maxUeNewUlTxPerTti )
          {
-            cpuInstr->maxUeNewRxPerTti[tmpSubFrame]++;
+            cpuInstr->maxUeNewRxPerTti[tmpslot]++;
          }
          else
          {

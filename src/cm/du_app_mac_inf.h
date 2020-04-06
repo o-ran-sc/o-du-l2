@@ -192,6 +192,7 @@ typedef struct macCellCfg
 typedef struct macCellCfgCfm
 {
    U16            transId;
+	uint8_t        rsp; 
 }MacCellCfgCfm;
 
 /* function pointers for packing macCellCfg Request */
@@ -216,7 +217,7 @@ typedef S16 (*DuMacCellCfgCfm)     ARGS((
 
 U16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
 
-EXTERN S16 MacHdlCellCfgReq
+EXTERN int MacHdlCellCfgReq
 (
  Pst           *pst,
  MacCellCfg    *macCellCfg

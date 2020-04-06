@@ -98,7 +98,7 @@ typedef struct kwSdu
       struct   _t 
       {
          U16         sfn;        /*!< Sub frame number for BCCH/PCCH */
-         U8          subframe;   /*!< Subframe number */
+         U16         slot;   /*!< Subframe number */
          CmLteRnti   rnti;       /*!< RNTI for CCCH */
 #ifdef EMTC_ENABLE
          U8          emtcDiReason; /*!< DI reason */

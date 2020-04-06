@@ -18,6 +18,7 @@
 
 /* This file contains all utility functions */
 #include "du_mgr.h"
+#include "du_sys_info_hdl.h"
 #include "MIB.h"
 #include "PLMN-IdentityInfo.h"
 #include "odu_common_codec.h"
@@ -142,11 +143,20 @@ S16 readMacCfg()
    duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
    duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITTY;
    duCfgParam.macCellCfg.ssbCfg.ssbScOffset = SSB_SUBCARRIER_OFFSET;
-   duCfgParam.macCellCfg.ssbCfg.mibPdu[0] = 0x01;
-   duCfgParam.macCellCfg.ssbCfg.mibPdu[1] = 0x01;
-   duCfgParam.macCellCfg.ssbCfg.mibPdu[2] = 0x84;
    duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = 1; /* only one SSB is transmitted */
    duCfgParam.macCellCfg.ssbCfg.ssbMask[1] = 0;
+   if(BuildMibPdu() != ROK)
+	{
+		DU_LOG("\nFailed to build MIB PDU");
+		memset(&duCfgParam.macCellCfg.ssbCfg.mibPdu, 0, 3*sizeof(uint8_t));
+   }
+	else
+	{
+	   for(uint8_t idx=0; idx<encBufSize; idx++)
+		{
+			duCfgParam.macCellCfg.ssbCfg.mibPdu[idx]=encBuf[idx];
+		}
+	}
    duCfgParam.macCellCfg.ssbCfg.multCarrBand = SSB_MULT_CARRIER_BAND;
    duCfgParam.macCellCfg.ssbCfg.multCellCarr = MULT_CELL_CARRIER;
 
@@ -197,32 +207,6 @@ S16 readMacCfg()
 
    RETVALUE(ROK);
 }
-
-/*******************************************************************
- *
- * @brief Configures the DU Parameters
- *
- * @details
- *
- *    Function : fillDuPort
- *
- *    Functionality:
- *       - fills the DU Ports.  
- *
- * @params[in] duPort array to be filled
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 fillDuPort(U16 *duPort)
-{
-   duPort[F1_INTERFACE]   = DU_PORT;     /* DU Port idx  0 38472 */
-   duPort[E2_INTERFACE]   = RIC_PORT;    /* RIC Port idx 1 38482 */
-
-   RETVALUE(ROK);
-}
-
 /*******************************************************************
  *
  * @brief Configures the DU Parameters
@@ -244,25 +228,22 @@ S16 fillDuPort(U16 *duPort)
 S16 readCfg()
 {
    U8 i,j,k;
-   U32 ipv4_du, ipv4_cu, ipv4_ric;
+   U32 ipv4_du, ipv4_cu;
 	MibParams mib;
    Sib1Params sib1;	
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
-   cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
-   fillDuPort(duCfgParam.sctpParams.duPort);
 
    /* F1 DU IP Address and Port*/
+   duCfgParam.sctpParams.duIpAddr.ipV4Pres = TRUE;
    duCfgParam.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
+   duCfgParam.sctpParams.duPort[0] = DU_PORT;
 
    /* F1 CU IP Address and Port*/
+   duCfgParam.sctpParams.cuIpAddr.ipV4Pres = TRUE;
    duCfgParam.sctpParams.cuIpAddr.ipV4Addr = ipv4_cu;
    duCfgParam.sctpParams.cuPort = CU_PORT;
-
-   /* Fill RIC Params */
-   duCfgParam.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
-   duCfgParam.sctpParams.ricPort            = RIC_PORT;
 
 
    /* EGTP Parameters */
@@ -302,7 +283,7 @@ S16 readCfg()
 	sib1.tac = DU_TAC;
 	sib1.ranac = DU_RANAC;
 	sib1.cellIdentity = CELL_IDENTITY;
-	sib1.cellResvdForOpUse =\ 
+	sib1.cellResvdForOpUse = 
 		PLMN_IdentityInfo__cellReservedForOperatorUse_notReserved;
 	duCfgParam.sib1Params = sib1;
 
@@ -550,14 +531,15 @@ S16 bitStringToInt(BIT_STRING_t *bitString, U16 *val)
       return RFAILED;
    }
 
-   for(idx=0; idx<bitString->size-1; idx++)
+   numOctets = (bitString->size + 7 )/8;
+   for(idx=0; idx< numOctets; idx++)
    {
       *val |= bitString->buf[idx];
       *val <<= 8;
    }
 
-   *val |= bitString->buf[idx];
-   *val >>= bitString->bits_unused;
+   *val |= bitString->buf[numOctets -1];
+   *val >>= ((numOctets * 8) - bitString->size);
 
    return ROK;
 }

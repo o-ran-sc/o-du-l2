@@ -97,99 +97,6 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
 #endif
 /* local defines */
 /************** LRG Interface ****************/
-/**
- * @brief Layer Manager Configuration request handler. 
- *
- * @details
- *
- *     Function : HandleSchGenCfgReq
- *     
- *     This function handles the configuration
- *     request received at scheduler instance from the Layer Manager.
- *     -# Based on the cfg->hdr.elmId.elmnt value it invokes one of the
- *        functions rgHdlGenCfg() or rgHdlSapCfg().
- *     -# Invokes RgMiLrgSchCfgCfm() to send back the confirmation to the LM.
- *     
- *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  RgMngmt *cfg, the configuration parameter's structure
- *  @return  S16
- *      -# ROK
- **/
-#ifdef ANSI
-PUBLIC S16 HandleSchGenCfgReq
-(
-Pst      *pst,    /* post structure  */
-RgMngmt  *cfg     /* config structure  */
-)
-#else
-PUBLIC S16 HandleSchGenCfgReq(pst, cfg)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfg;    /* config structure  */
-#endif    
-{
-   U16       ret = LCM_PRIM_OK;
-   U16       reason = LCM_REASON_NOT_APPL;
-   RgMngmt   cfm;
-   Pst       cfmPst;
-#ifdef DEBUGP
-   Inst      inst = (pst->dstInst  - SCH_INST_START);
-#endif
-
-   TRC3(HandleSchGenCfgReq)
-   
-
-   if(pst->dstInst < SCH_INST_START)
-   {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "Invalid inst ID");
-      RLOG_ARG2(L_DEBUG,DBG_INSTID,inst, "HandleSchGenCfgReq(): "
-                        "pst->dstInst=%d SCH_INST_START=%d", pst->dstInst,SCH_INST_START); 
-      RETVALUE(ROK);
-   }
-   printf("\nReceived scheduler gen config");
-   /* Fill the post structure for sending the confirmation */
-   SchFillCfmPst(pst, &cfmPst, cfg);
-
-   /* Initialize the cfg cfm structure 
-   if (SGetSBuf(cfmPst.region, cfmPst.pool, (Data **)&cfm, sizeof(RgMngmt))
-      != ROK)
-   {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "Memory Unavailable for Confirmation");
-      RETVALUE(ROK);
-   } */
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
-
-#ifdef LMINT3
-   cfm.hdr.transId =
-      cfg->hdr.transId;
-#endif
-
-   cfm.hdr.elmId.elmnt = cfg->hdr.elmId.elmnt;
-   switch(cfg->hdr.elmId.elmnt)
-   {
-      case STSCHINST:
-         reason = SchInstCfg(&cfg->t.cfg,pst->dstInst );
-         break;
-      default:
-         ret = LCM_PRIM_NOK;
-         reason = LCM_REASON_INVALID_ELMNT;
-         RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "Invalid Elmnt=%d", cfg->hdr.elmId.elmnt);
-         break;
-   }
-
-   if (reason != LCM_REASON_NOT_APPL)
-   {
-      ret = LCM_PRIM_NOK;
-   }
-
-   cfm.cfm.status = ret;
-   cfm.cfm.reason = reason;
-
-   SchSendCfgCfm(&cfmPst, &cfm);
-   /*   SPutSBuf(pst->region, pst->pool, (Data *)cfg, sizeof(RgMngmt)); */
-   
-   RETVALUE(ROK);
-}/*-- HandleSchGenCfgReq --*/
-
 
 /**
  * @brief Layer Manager Control request handler. 
@@ -732,103 +639,6 @@ PUBLIC S16 RgUiRgrUbndReq(pst, spId, reason)
    }
    RETVALUE(ROK);
 }  /* RgUiRgrUbndReq */
-
-/**
- * @brief API for configuration request from RRM towards MAC. 
- *
- * @details
- *
- *     Function: HandleSchCfgReq 
- *     
- *     This API is invoked by RRM towards MAC to configure MAC. 
- *     These API validates the Pst, spId, suId and transfers the config request 
- *     specific information to corresponding ownership module (GOM) API.
- *
- *           
- *  @param[in]  Pst           *pst
- *  @param[in]  RgrCfgTransId transId
- *  @param[in]  RgrCfgReqInfo *cfgReqInfo
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED 
- **/
-#ifdef ANSI
-PUBLIC S16 HandleSchCfgReq
-(
- Pst           *pst, 
- RgrCfgTransId transId,
- RgrCfgReqInfo *cfgReqInfo
- )
-#else
-PUBLIC S16 HandleSchCfgReq(pst, transId, cfgReqInfo)
-   Pst           *pst; 
-   RgrCfgTransId transId;
-   RgrCfgReqInfo *cfgReqInfo;
-#endif
-{
-
-   SpId      spId = 0;
-   S16       ret       = ROK;
-   U8        cfmStatus = 0x00ff;
-   U8        prntTrans[RGR_CFG_TRANSID_SIZE+1];
-   Inst      instId = pst->dstInst-SCH_INST_START;
-
-   TRC3(HandleSchCfgReq);
-
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, RGR_CFG_TRANSID_SIZE);
-   prntTrans[RGR_CFG_TRANSID_SIZE] = '\0';
-
-
-   if (cfgReqInfo == NULLP)
-   {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"Input Message Buffer is NULL");
-      schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus);
-      RETVALUE(RFAILED);
-   }
-#if 0
-   if (spId < rgSchCb[instId].numSaps)
-   {
-      switch(rgSchCb[instId].rgrSap[spId].sapSta.sapState)
-      {
-         case LRG_BND: /* SAP is already bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
-            break;
-         default: /* Should never reach here */
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-            RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG005, 
-                  (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
-                  "Invalid SAP State: HandleSchCfgReq failed\n");
-#endif
-            SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo,
-                  (Size)sizeof(*cfgReqInfo));
-            schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
-            RETVALUE(RFAILED);
-      }
-   }
-   else
-   {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG006,
-            (ErrVal)rgSchCb[instId].rgrSap[spId].sapCfg.spId,
-            "Invalid SAP Id:HandleSchCfgReq failed\n");
-#endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo,
-            (Size)sizeof(*cfgReqInfo));
-      schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
-      RETVALUE(RFAILED);
-   }
-#endif
-   /* Handle configuration */
-   ret = rgSCHGomHndlCfg(pst, &rgSchCb[instId], 
-         transId, cfgReqInfo);
-   if (ret != ROK)
-   {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"Configuration Request Handling Failed");
-      RETVALUE(RFAILED);
-   }
-
-   RETVALUE(ROK);
-}  /* HandleSchCfgReq */
 
 #ifdef RGR_SI_SCH
 /**
@@ -2729,60 +2539,40 @@ TfuTimingAdvIndInfo  *timingAdvInd;
    RETVALUE(ret);
 }  /* RgLiTfuTimingAdvInd */
 
-
+#if 0
 /**
- * @brief Transmission time interval indication from PHY.
+ * @brief slot indication from MAC to SCH.
  *
  * @details
  *
- *     Function : RgLiTfuSchTtiInd 
+ *     Function : macSchSlotInd 
  *      
  *      This API is invoked by PHY to indicate TTI indication to Scheduler for
  *      a cell.
  *           
  *  @param[in]  Pst            *pst
- *  @param[in]  SuId           suId 
- *  @param[in]  TfuTtiIndInfo  *ttiInd
+ *  @param[in]  SlotIndInfo    *slotInd
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgLiTfuSchTtiInd 
+PUBLIC int macSchSlotInd 
 (
 Pst                 *pst, 
-SuId                suId, 
-TfuTtiIndInfo       *ttiInd
+SlotIndInfo         *slotInd
 )
-#else
-PUBLIC S16 RgLiTfuSchTtiInd(pst, suId, ttiInd)
-Pst                 *pst; 
-SuId                suId; 
-TfuTtiIndInfo       *ttiInd;
-#endif
 {
    S16   ret = ROK;
    Inst  inst = pst->dstInst-SCH_INST_START;
 
-   TRC3(RgLiTfuSchTtiInd);
-
-   
-   /* Removing the validation with every TTI - for optimization */
-#ifndef NO_ERRCLS 
-   if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
-   {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"SAP Validation failed");
-      RETVALUE(ret);
-   }
-#endif
-   /* Moved check for cell outside ERRCLS*/
+   TRC3(macSchSlotInd);
 
    /* Now call the TOM (Tfu ownership module) primitive to process further */
-   rgSCHTomTtiInd(ttiInd, inst);
+   schProcessSlotInd(slotInd, inst);
 
    RETVALUE(ret);
-}  /* RgLiTfuSchTtiInd */
-
+}  /* macSchSlotInd */
+#endif
 /************* RGM  Interface ****************/
 /**
  * @brief API for bind request from RRM towards MAC. 
