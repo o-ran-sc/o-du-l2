@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2c3b49e6_0e9b7295",
+        "filename": "src/5gnrmac/rg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01941ce6_4ac565ab",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4948200c_824e06e4",
         "filename": "src/5gnrmac/rg_lmm.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e41773ca_53e83ce2",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2136,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4948200c_824e06e4",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "757a2d5f_69b661c1",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "I am sending this parameter as well",
+      "parentUuid": "f48e3617_f3774523",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bbff90bf_b4df984e",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "facf28fd_515f43ef",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bbff90bf_b4df984e",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "4febff8a_38c4c74e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1a798139_0f811e52",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "23ab33e5_88904257",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "222eef66_da1005ee",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "since its only 3 bytes, can we use it as array?",
+      "parentUuid": "23ab33e5_88904257",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "8f804e28_cd2d8da6",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f262ee8_d83057bb",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8014c5c6_7bfe6b6d",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 1
@@ -135,6 +261,24 @@
       "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcb1580c_c27a3631",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8014c5c6_7bfe6b6d",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "f3c44671_035dd6ac",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "changed to 1, as we are supporting only one SSB.",
+      "parentUuid": "ffd3cdeb_99cda041",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a428ed1f_29077dd2",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 1
@@ -169,6 +331,24 @@
       "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb8a7005_63a24432",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a428ed1f_29077dd2",
+      "revId": "a5f6b33691459b96fc31a7e9f848a165d953d649",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }

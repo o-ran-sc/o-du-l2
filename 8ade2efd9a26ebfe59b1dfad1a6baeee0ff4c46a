@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "623f8abd_cc805aea",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6860045_e3c2829c",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a46d62d5_af069329",
         "filename": "src/cm/du_app_mac_inf.c",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "4c5c53dc_e4fdcaee",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "we are supporting only loose coupling.",
+      "parentUuid": "a46d62d5_af069329",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a07ef440_d03c6723",
         "filename": "src/du_app/du_cell_mgr.c",
         "patchSetId": 2
@@ -50,6 +86,24 @@
       "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d3e2c5a_8c379e3d",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a07ef440_d03c6723",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +141,42 @@
     },
     {
       "key": {
+        "uuid": "42ff4252_0320fdb2",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "string is also same as array, as we know the length, we can use array.",
+      "parentUuid": "53f0df74_41b541ae",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ea1ee21_bc1f082e",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "The MIB PDU need to be taken from the asn encoded output. as of now the code is hardcoded.",
+      "parentUuid": "575df5ff_27f668bc",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ac2cd411_31e97af3",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 2
@@ -101,6 +191,24 @@
       "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9aa749a1_7e9c2d1b",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "SIB1_LENGTH is used as of now, once coding of SIB1 encoding is done, we can take the string and the consider the length.",
+      "parentUuid": "ac2cd411_31e97af3",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "05862140_363946ae",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aea752e7_605f5372",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "42a5d934_c5d0e9f1",
         "filename": "src/du_app/du_msg_hdl.c",
         "patchSetId": 2
@@ -135,6 +261,24 @@
       "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a24bfc32_6d67d338",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1574,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-06T06:57:20Z",
+      "side": 1,
+      "message": "only loose coupling is implemented.",
+      "parentUuid": "42a5d934_c5d0e9f1",
+      "revId": "8ade2efd9a26ebfe59b1dfad1a6baeee0ff4c46a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
