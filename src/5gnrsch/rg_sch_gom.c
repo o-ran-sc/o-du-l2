@@ -442,12 +442,12 @@ RgrCfgReqInfo *rgrCfgReq;
 
       /* Check if the activation time is valid */
       if (actvTime.sfn >= RGSCH_MAX_SFN 
-            || actvTime.subframe >= RGSCH_NUM_SUB_FRAMES_5G)
+            || actvTime.slot >= RGSCH_NUM_SUB_FRAMES_5G)
       {
          RLOG_ARG4(L_ERROR,DBG_CELLID,cell->cellId, "Invalid activation time for RGR "
-           "config request: activation sfn %d activation subframe %d current "
-           "sfn %d current subframe %d", actvTime.sfn, actvTime.subframe, 
-           cell->crntTime.sfn, cell->crntTime.subframe);
+           "config request: activation sfn %d activation slot %d current "
+           "sfn %d current slot %d", actvTime.sfn, actvTime.slot, 
+           cell->crntTime.sfn, cell->crntTime.slot);
          /* ccpu00117052 - MOD - Passing double pointer
          for proper NULLP assignment*/
          rgSCHUtlFreeSBuf(inst, (Data **)&rgrCfgElem, sizeof(*rgrCfgElem));
@@ -459,9 +459,9 @@ RgrCfgReqInfo *rgrCfgReq;
       if (sfDiff > (RGR_ACTV_WIN_SIZE * RGSCH_NUM_SUB_FRAMES_5G))
       {
          RLOG_ARG4(L_ERROR,DBG_CELLID,cell->cellId,"Invalid activation time for RGR"
-              " config request: activation sfn %d activation subframe %d "
-              "current sfn %d current subframe %d", actvTime.sfn,
-              actvTime.subframe, cell->crntTime.sfn, cell->crntTime.subframe);
+              " config request: activation sfn %d activation slot %d "
+              "current sfn %d current slot %d", actvTime.sfn,
+              actvTime.slot, cell->crntTime.sfn, cell->crntTime.slot);
          /* ccpu00117052 - MOD - Passing double pointer
          for proper NULLP assignment*/
          rgSCHUtlFreeSBuf(inst, (Data **)&rgrCfgElem, sizeof(*rgrCfgElem));
@@ -1849,7 +1849,7 @@ PUBLIC S16 rgSCHGomHndlLoadInf(reg, pool, instCb, spId, transId, loadInfReq)
    }
    /* Update the RNTP info rcvd in the respective cell centre pool so that Phigh can be
       sent for the UEs scheduled in that particular RB range*/
-   for(i = 0; i < RGSCH_NUM_DL_SUBFRAMES; i++)
+   for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
    {
       if((rgSchUpdtRNTPInfo(cell, cell->subFrms[i], loadInfReq) != ROK))
       {

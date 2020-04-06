@@ -111,9 +111,11 @@ typedef struct cmLteRlcId
 /** @brief LTE Timing Info */
 typedef struct cmLteTimingInfo
 {
+#if 0
    U16 hSfn;                 /*!< Hyper System Frame Number */
+#endif
    U16 sfn;                  /*!< System Frame Number */
-   U8  subframe;             /*!< Subframe number */
+   U16 slot;             /*!< Subframe number */
 } CmLteTimingInfo;
 
 /** @brief PDCP ID */

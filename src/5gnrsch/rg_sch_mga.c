@@ -657,10 +657,10 @@ RgSchCellCb *cell;
    /* 40ms offset */
    /* Introduced timing delta for DL control in FDD */
 #ifdef LTE_TDD
-   offset = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe + TFU_DELTA) % 
+   offset = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + TFU_DELTA) % 
       RG_MEAS_GAPPRD_40;
 #else
-   offset = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe + TFU_DLCNTRL_DLDELTA) % 
+   offset = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + TFU_DLCNTRL_DLDELTA) % 
       RG_MEAS_GAPPRD_40;
 #endif
    queue = &(cell->measGapCb.gapPrd40Q[offset]);
@@ -668,10 +668,10 @@ RgSchCellCb *cell;
    /* 80ms offset */
    /* Introduced timing delta for DL control in FDD */
 #ifdef LTE_TDD
-   offset = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe + TFU_DELTA) % 
+   offset = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + TFU_DELTA) % 
       RG_MEAS_GAPPRD_80;
 #else
-   offset = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe + TFU_DLCNTRL_DLDELTA) % 
+   offset = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + TFU_DLCNTRL_DLDELTA) % 
       RG_MEAS_GAPPRD_80;
 #endif
    queue = &(cell->measGapCb.gapPrd80Q[offset]);
@@ -679,7 +679,7 @@ RgSchCellCb *cell;
 
    /* for ACK NACK repetition starts at offset - however at MAC we are 
     * concerned with subframe - TFU_DELTA */
-   /* offset = ((cell->crntTime.sfn * 10) + cell->crntTime.subframe) % 
+   /* offset = ((cell->crntTime.sfn * 10) + cell->crntTime.slot) % 
     * RG_MAX_NUM_DLSF; */
    /* We wish to get the subframe whose HARQ Reception request would go out in
     * this subframe. HARQ_RTT - TFU_DELTA
@@ -868,7 +868,7 @@ CmLListCp   *dlInactvUeLst;
 
    TRC2(rgSCHMeasGapANRepGetDlInactvUe);
 
-   schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe + RG_DL_DELTA; 
+   schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + RG_DL_DELTA; 
 
 #ifdef LTE_TDD
    RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, ackNakTime, RG_DL_DELTA);
@@ -931,7 +931,7 @@ CmLListCp   *dlInactvUeLst;
 
    /* Calc offset for ACK NACK repetition */
    /*offset = (cell->crntTime.sfn * 10 + 
-     cell->crntTime.subframe + RG_DL_DELTA + RG_SCH_CMN_HARQ_INTERVAL - 1) 
+     cell->crntTime.slot + RG_DL_DELTA + RG_SCH_CMN_HARQ_INTERVAL - 1) 
      % RG_MAX_NUM_DLSF;*/
    /* The ackNakRepQ resides in each dlSf corresponding to the repStart */
    /* Must pick up the subframe that was scheduled in the last TTI */
@@ -1078,7 +1078,7 @@ CmLListCp   *ulInactvUeLst;
    TRC2(rgSCHMeasGapANRepGetUlInactvUe);
 
    /*ccpu00139481- Meas Gap should be monitored in UL with TFU_ULCNTRL_DLDELTA*/
-   schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe + \
+   schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + \
                TFU_ULCNTRL_DLDELTA;
 #ifndef LTE_TDD
    pdcchToPuschGap = RGSCH_PDCCH_PUSCH_DELTA;
@@ -1136,7 +1136,7 @@ CmLListCp   *ulInactvUeLst;
    }
    /* Calc offset for ACK NACK repetition */
    /*offset = (cell->crntTime.sfn * 10 + 
-     cell->crntTime.subframe + RG_UL_SCHED_DELTA + 
+     cell->crntTime.slot + RG_UL_SCHED_DELTA + 
      RG_SCH_CMN_HARQ_INTERVAL ) % RG_MAX_NUM_DLSF;*/
 
    /* Must get the DLSF that is scheduled at TFU_DELTA Away */

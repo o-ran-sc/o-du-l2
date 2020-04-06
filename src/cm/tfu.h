@@ -87,6 +87,11 @@
 #define TFU_MAX_HARQ_FDBKS       TFU_MAX_TB /*For Rel8/Rel9 UE*/
 #endif/*LTE_ADV*/
 
+/* Selector */
+#define MAC_SELECTOR_LC   0
+#define MAC_SELECTOR_TC   1
+#define MAC_SELECTOR_LWLC 2
+
 /* Event corresponding to each primitive at this interface */
 #define EVTTFUBNDREQ            1     /*!< Bind Request */
 #define EVTTFUBNDCFM            2     /*!< Bind Confirm */
@@ -104,8 +109,8 @@
 #define EVTTFUCRCIND            14    /*!< CRC indication. */
 #define EVTTFUTIMINGADVIND      15    /*!< Timing advance indication.*/
 #define EVTTFUDATREQ            16    /*!< Data Request.*/
-#define EVTTFUTTIIND            17    /*!< TTI indication.*/
-#define EVTTFUSCHTTIIND         18    /*!< TTI indication for scheduler.*/
+#define EVENT_SLOT_IND_TO_MAC   17    /*!< TTI indication.*/
+#define EVENT_SLOT_IND_TO_SCH   18    /*!< TTI indication for scheduler.*/
 #define EVTTFUCNTRLREQ          19    /*!< Control Request.*/
 #define EVTTFUPUCCHDELPWR       20    /*!< PUCCH Delta power. */
 #define EVTTFUDOAIND            21    /*!< PUCCH Delta power. */
@@ -118,6 +123,7 @@
 #define EVTTFUNONRTIND          24    /*!< Non-RT indication.*/
 #endif
 #define EVTTFUERRIND            25    /*!< TFU Error Indication */
+#define EVENT_DL_BRDCST_ALLOC   26    /*!< DL BROADCAST ALLOCATION */
 /** @} */
 
 /* selector(coupling) values */

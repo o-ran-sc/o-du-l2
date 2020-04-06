@@ -77,6 +77,7 @@ static int RLOG_MODULE_ID=4096;
 #include "lrg.x"           /* LRG Interface includes */
 #include "rgr.x"           /* LRG Interface includes */
 #include "du_app_mac_inf.h"
+#include "mac_sch_interface.h"
 #include "rg.x"            /* MAC includes */
 #ifdef SS_DIAG
 #include "ss_diag.h"        /* Common log file */
@@ -139,6 +140,14 @@ packMacCellCfgConfirm packMacCellCfmOpts[] =
    duHandleMacCellCfgCfm,      /* packing for tightly coupled */
    packMacCellCfgCfm,    /* packing for light weight loosly coupled */
 };
+
+SchCellCfgFunc SchCellCfgOpts[] = 
+{
+   packSchCellCfg,   /* packing for loosely coupled */
+	SchHdlCellCfgReq, /* packing for tightly coupled */
+   packSchCellCfg    /* packing for light weight loosly coupled */
+};
+
 
 /**
  * @brief Task Initiation callback function. 
@@ -961,6 +970,7 @@ RgCfg *cfg;            /* Configuaration information */
    /* Initialize the timer control point */
    cmMemset((U8 *)&rgCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
    rgCb[inst].tmrTqCp.tmrLen = RG_TQ_SIZE;
+#if 0
    /* Timer Registration request to SSI */
    if (SRegTmrMt(rgCb[inst].rgInit.ent, rgCb[inst].rgInit.inst,
             (S16)rgCb[inst].genCfg.tmrRes, rgActvTmr) != ROK)
@@ -975,6 +985,7 @@ RgCfg *cfg;            /* Configuaration information */
 
       RETVALUE(LCM_REASON_MEM_NOAVAIL);
    }
+#endif
    /* Set Config done in TskInit */
    rgCb[inst].rgInit.cfgDone = TRUE;
 
@@ -2016,49 +2027,14 @@ RgMngmt  *cfm;    /* config confirm structure  */
 #endif    
 {
    printf("\nSending Scheduler config confirm to DU APP");
+	pst->dstEnt = ENTDUAPP;
+	pst->dstInst = 0;
+	pst->srcInst = 0;
+	pst->selector = MAC_SCH_LC_SELECTOR; 
    RgMiLrgSchCfgCfm(pst, cfm);
    
    RETVALUE(ROK);
 }
-
-/**
- * @brief Layer Manager Configuration request handler. 
- *
- * @details
- *
- *     Function : MacSchCfgReq 
- *     
- *     This function handles the gNB and cell configuration
- *     request received from DU APP.
- *     This API unapcks and forwards the config towards SCH
- *     
- *  @param[in]  Pst           *pst
- *  @param[in]  RgrCfgTransId transId
- *  @param[in]  RgrCfgReqInfo *cfgReqInfo
- *  @return  S16
- *      -# ROK
- **/
-#ifdef ANSI
-PUBLIC S16 MacSchCfgReq 
-(
- Pst           *pst,
- RgrCfgTransId transId,
- RgrCfgReqInfo *cfgReqInfo
-)
-#else
-PUBLIC S16 MacSchCfgReq(pst, transId, cfgReqInfo)
- Pst           *pst; 
- RgrCfgTransId transId;
- RgrCfgReqInfo *cfgReqInfo;
-#endif    
-{
-   printf("\nReceived Scheduler config at MAC");
-   pst->dstInst = DEFAULT_CELLS + 1;
-   HandleSchCfgReq(pst, transId, cfgReqInfo);
-
-   RETVALUE(ROK);
- 
-} /* end of MacSchCfgReq*/
 
 
 /***********************************************************
@@ -2088,19 +2064,16 @@ Pst           *cfmPst
    cfmPst->srcInst   = rgCb[inst].rgInit.inst;
    cfmPst->srcProcId = rgCb[inst].rgInit.procId;
 
-   cfmPst->srcEnt    = reqPst->dstEnt;
-   cfmPst->dstEnt    = reqPst->srcEnt;
-   cfmPst->srcInst   = reqPst->dstInst;
-   cfmPst->dstInst   = reqPst->srcInst;
-   cfmPst->srcProcId = reqPst->dstProcId;
-   cfmPst->dstProcId = reqPst->srcProcId;
+   cfmPst->dstEnt    = ENTDUAPP;
+   cfmPst->dstInst   = 0;
+   cfmPst->dstProcId = cfmPst->srcProcId;
 
    cfmPst->selector  = LRG_SEL_LC;
    cfmPst->prior     = reqPst->prior;
    cfmPst->route     = reqPst->route;
    cfmPst->region    = reqPst->region;
    cfmPst->pool      = reqPst->pool;
-   cfmPst->event = EVENT_MAC_CELL_CONFIG_CFM;
+   cfmPst->event     = EVENT_MAC_CELL_CONFIG_CFM;
 
    RETVOID;
 }
@@ -2121,19 +2094,18 @@ Pst           *cfmPst
  *  @return  S16
  *      -# ROK
  **/
-S16 MacHdlCellCfgReq
+int MacHdlCellCfgReq
 (
  Pst           *pst,
  MacCellCfg    *macCellCfg
 )
 {
-   U16 ret = ROK;
-   MacCellCfgCfm macCellCfgCfm;
+   Pst cfmPst;
+   int ret = ROK;
    RgCellCb      *cellCb;
-   Pst cnfPst;
    Inst inst = pst->dstInst;
 
-   cellCb = rgCb[inst].cell;
+   cmMemset((U8 *)&cfmPst, 0, sizeof(Pst));
    MAC_ALLOC(cellCb,sizeof(RgCellCb));
 
    if(cellCb == NULLP)
@@ -2143,16 +2115,112 @@ S16 MacHdlCellCfgReq
    }
 
    memcpy(&cellCb->macCellCfg,macCellCfg,sizeof(MacCellCfg));
+   rgCb[inst].cell = cellCb;
 
-   macCellCfgFillCfmPst(pst,&cnfPst);
-
-   macCellCfgCfm.transId = macCellCfg->transId;
-
-   ret = (*packMacCellCfmOpts[cnfPst.selector])(&cnfPst,&macCellCfgCfm);
+   /* Send cell cfg to scheduler */
+   ret = MacSchCellCfgReq(pst, macCellCfg);
+	if(ret != ROK)
+	{
+		MacCellCfgCfm macCellCfgCfm;
+		macCellCfgCfm.rsp = RSP_NOK;
+		macCellCfgCfm.transId = macCellCfg->transId;
+		macCellCfgFillCfmPst(pst,&cfmPst);
+		ret = (*packMacCellCfmOpts[cfmPst.selector])(&cfmPst,&macCellCfgCfm);
+	}
    return ret;
 } /* end of MacHdlCellCfgReq */
 
-
+/**
+ * @brief Layer Manager Configuration request handler. 
+ *
+ * @details
+ *
+ *     Function : MacSchCellCfgReq 
+ *     
+ *     This function sends cell configuration to SCH
+ *     
+ *  @param[in]  Pst           *pst
+ *  @param[in]  MacCellCfg    *macCellCfg 
+ *  @return  S16
+ *      -# ROK
+ **/
+int MacSchCellCfgReq
+(
+ Pst           *pst,
+ MacCellCfg    *macCellCfg
+)
+{
+   SchCellCfg schCellCfg;
+	Pst        cfgPst;
+	int ret;
+
+   cmMemset((U8 *)&cfgPst, 0, sizeof(Pst));
+	schCellCfg.cellId = macCellCfg->cellId;
+	schCellCfg.phyCellId = macCellCfg->phyCellId;
+	schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;
+	schCellCfg.dupMode = macCellCfg->dupType;
+	schCellCfg.ssbPbchPwr = macCellCfg->ssbCfg.ssbPbchPwr;
+	schCellCfg.scsCommon = macCellCfg->ssbCfg.scsCmn;
+	schCellCfg.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
+	schCellCfg.ssbPeriod = macCellCfg->ssbCfg.ssbPeriod;
+	schCellCfg.ssbSubcOffset = macCellCfg->ssbCfg.ssbScOffset;
+	for(uint8_t idx=0; idx<SSB_MASK_SIZE; idx++)
+	{
+      schCellCfg.nSSBMask[idx] = macCellCfg->ssbCfg.ssbMask[idx]; 
+	}
+   cfgPst.srcProcId = pst->dstProcId;
+	cfgPst.dstProcId = pst->srcProcId;
+	cfgPst.srcEnt    = ENTRG;
+	cfgPst.srcInst   = 0;
+	cfgPst.dstEnt    = ENTRG;
+	cfgPst.dstInst   = 1;
+	cfgPst.selector  = MAC_SCH_TC_SELECTOR;
+	cfgPst.event     = EVENT_SCH_CELL_CFG;
+
+	ret = (*SchCellCfgOpts[cfgPst.selector])(&cfgPst, &schCellCfg);
+	return ret;
+} /* end of MacSchCellCfgReq */
+
+/**
+ * @brief Layer Manager Configuration response handler. 
+ *
+ * @details
+ *
+ *     Function : MacProcSchCellCfgCfm
+ *     
+ *     This function processes cell configuration to SCH
+ *     
+ *  @param[in]  Pst           *pst
+ *  @param[in]  SchCellCfgCfm *schCellCfgCfm
+ *  @return  int
+ *      -# ROK
+ **/
+int MacProcSchCellCfgCfm 
+(
+ Pst           *pst,
+ SchCellCfgCfm *schCellCfgCfm
+)
+{
+   Pst cfmPst;
+   int ret;
+   RgCellCb      *cellCb;
+   MacCellCfgCfm macCellCfgCfm;
+
+   cmMemset((U8 *)&cfmPst, 0, sizeof(Pst));
+	cellCb = rgCb[pst->dstInst].cell;
+	macCellCfgCfm.transId = cellCb->macCellCfg.transId;
+	if(schCellCfgCfm->rsp == RSP_OK)
+	{
+      macCellCfgCfm.rsp = RSP_OK;
+	}
+	else
+	{
+		macCellCfgCfm.rsp = RSP_NOK;
+	}
+	macCellCfgFillCfmPst(pst,&cfmPst);
+	ret = (*packMacCellCfmOpts[cfmPst.selector])(&cfmPst,&macCellCfgCfm);
+	
+}
 /**********************************************************************
  
          End of file

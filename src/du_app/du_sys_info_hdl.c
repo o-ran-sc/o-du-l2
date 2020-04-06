@@ -18,17 +18,140 @@
 
 /* This file contains ASN codec for MIB and SIB1 msgs */
 
-#include "du_sys_info_hdl.h"
+#include "du_mgr.h"
+#include "du_log.h"
+#include "BCCH-BCH-Message.h"
 #include "MIB.h"
 #include "SIB1.h"
 #include "PLMN-IdentityInfo.h"
 #include "PLMN-IdentitY.h"
 #include "MCC.h"
+#include "du_sys_info_hdl.h"
 
 extern char encBuf[ENC_BUF_MAX_LEN];
 
 extern DuCfgParams duCfgParam;
 
+/*******************************************************************
+ *
+ * @brief Builds MIB
+ *
+ * @details
+ *
+ *    Function : BuildMib
+ *
+ *    Functionality: Building MIB
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int BuildMib(MIB_t *mib)
+{
+   mib->systemFrameNumber.size = sizeof(uint8_t);
+	DU_ALLOC(mib->systemFrameNumber.buf, 
+			mib->systemFrameNumber.size);
+	if(!(mib->systemFrameNumber.buf))
+	{
+		DU_LOG("DU APP: MIB msg memory allocation failure");
+		return RFAILED;
+	}
+
+	*(mib->systemFrameNumber.buf) =
+		duCfgParam.mibParams.sysFrmNum;
+	mib->systemFrameNumber.bits_unused = ODU_VALUE_TWO;
+
+	mib->subCarrierSpacingCommon =\
+		duCfgParam.mibParams.subCarrierSpacingCommon;
+	mib->ssb_SubcarrierOffset =\
+	   duCfgParam.mibParams.ssb_SubcarrierOffset;
+	mib->dmrs_TypeA_Position =\
+		duCfgParam.mibParams.dmrs_TypeA_Position;
+	mib->pdcch_ConfigSIB1.controlResourceSetZero = \
+	   duCfgParam.mibParams.controlResourceSetZero;
+	mib->pdcch_ConfigSIB1.searchSpaceZero = \
+	   duCfgParam.mibParams.searchSpaceZero;
+	mib->cellBarred = duCfgParam.mibParams.cellBarred;
+	mib->intraFreqReselection =
+		duCfgParam.mibParams.intraFreqReselection;
+	mib->spare.size = sizeof(uint8_t);
+	DU_ALLOC(mib->spare.buf,sizeof(uint8_t));
+	if(!mib->spare.buf)
+	{
+		DU_LOG("DU APP: MIB msg memory allocation failure");
+		return RFAILED;
+	}
+	*(mib->spare.buf) = SPARE;
+	mib->spare.bits_unused = ODU_VALUE_SEVEN;
+   return ROK;
+}
+/*******************************************************************
+ *
+ * @brief Builds MIB PDU for broadcast
+ *
+ * @details
+ *
+ *    Function : BuildMibPdu
+ *
+ *    Functionality: Building MIB PDU for system broadcast
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int BuildMibPdu()
+{
+   BCCH_BCH_Message_t *bcchMsg;
+	asn_enc_rval_t encRetVal;        /* Encoder return value */
+
+   DU_ALLOC(bcchMsg, sizeof(BCCH_BCH_Message_t));
+   if(!bcchMsg)
+   {
+      DU_LOG("\nMemory allocation failure in BuildMibPdu");
+      return RFAILED;
+   }
+
+   bcchMsg->message.present = BCCH_BCH_MessageType_PR_mib;
+   DU_ALLOC(bcchMsg->message.choice.mib, sizeof(MIB_t));
+   if(!bcchMsg->message.choice.mib)
+   {
+      DU_LOG("\nMemory allocation failure in BuildMibPdu");
+      return RFAILED;
+   }
+   BuildMib(bcchMsg->message.choice.mib);
+	xer_fprint(stdout, &asn_DEF_BCCH_BCH_Message, bcchMsg);
+	cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+	encBufSize = 0;
+	encRetVal = aper_encode(&asn_DEF_BCCH_BCH_Message, 0,
+				   bcchMsg, PrepFinalEncBuf, encBuf);
+	printf("\nencbufSize:%d\n", encBufSize);
+	if(encRetVal.encoded	== -1) 
+	{   
+		DU_LOG("\nDU APP: Could not encode BCCH BCH Message Type structure(at %s)\n", 
+				encRetVal.failed_type?\
+				encRetVal.failed_type->name
+				:"unknown");
+		return RFAILED;
+	}  
+
+	/* Print encoded buffer */
+	for(int i=0; i< encBufSize; i++)
+	{
+		printf("%x\t",encBuf[i]);
+	} 
+	printf("\n");
+
+	/* Free allocated memory */
+	DU_FREE(bcchMsg->message.choice.mib->systemFrameNumber.buf,
+			bcchMsg->message.choice.mib->systemFrameNumber.size);
+	DU_FREE(bcchMsg->message.choice.mib->spare.buf, 
+         bcchMsg->message.choice.mib->spare.size);
+   DU_FREE(bcchMsg->message.choice.mib, sizeof(MIB_t));
+   DU_FREE(bcchMsg, sizeof(BCCH_BCH_MessageType_t));
+
+   return ROK;
+
+}
 /*******************************************************************
  *
  * @brief Builds MIB message in Served Cell Info
@@ -39,12 +162,11 @@ extern DuCfgParams duCfgParam;
  *
  *    Functionality: Building MIB message in Served Cell Info
  *
- * @params[in] GNB_DU_System_Information *gnbDuSysInfo
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildMibMsg()
+int BuildMibMsg()
 {
 	MIB_t          *mibMsg;
 	asn_enc_rval_t encRetVal;        /* Encoder return value */
@@ -55,41 +177,7 @@ S16 BuildMibMsg()
 		DU_LOG("DU APP: MIB msg memory allocation failure");
 		return RFAILED;
 	}
-	mibMsg->systemFrameNumber.size = sizeof(uint8_t);
-	DU_ALLOC(mibMsg->systemFrameNumber.buf, 
-			mibMsg->systemFrameNumber.size);
-	if(!(mibMsg->systemFrameNumber.buf))
-	{
-		DU_LOG("DU APP: MIB msg memory allocation failure");
-		return RFAILED;
-	}
-
-	*(mibMsg->systemFrameNumber.buf) =
-		duCfgParam.mibParams.sysFrmNum;
-	mibMsg->systemFrameNumber.bits_unused = ODU_VALUE_TWO;
-
-	mibMsg->subCarrierSpacingCommon =\
-		duCfgParam.mibParams.subCarrierSpacingCommon;
-	mibMsg->ssb_SubcarrierOffset =\
-	   duCfgParam.mibParams.ssb_SubcarrierOffset;
-	mibMsg->dmrs_TypeA_Position =\
-		duCfgParam.mibParams.dmrs_TypeA_Position;
-	mibMsg->pdcch_ConfigSIB1.controlResourceSetZero = \
-	   duCfgParam.mibParams.controlResourceSetZero;
-	mibMsg->pdcch_ConfigSIB1.searchSpaceZero = \
-	   duCfgParam.mibParams.searchSpaceZero;
-	mibMsg->cellBarred = duCfgParam.mibParams.cellBarred;
-	mibMsg->intraFreqReselection =
-		duCfgParam.mibParams.intraFreqReselection;
-	mibMsg->spare.size = sizeof(uint8_t);
-	DU_ALLOC(mibMsg->spare.buf,sizeof(uint8_t));
-	if(!mibMsg->spare.buf)
-	{
-		DU_LOG("DU APP: MIB msg memory allocation failure");
-		return RFAILED;
-	}
-	*(mibMsg->spare.buf) = SPARE;
-	mibMsg->spare.bits_unused = ODU_VALUE_SEVEN;
+	BuildMib(mibMsg);
 
 	xer_fprint(stdout, &asn_DEF_MIB, mibMsg);
 	cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
@@ -138,7 +226,7 @@ S16 BuildMibMsg()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildCellIdentity(CellIdentity_t  *cellIdentity)
+int BuildCellIdentity(CellIdentity_t  *cellIdentity)
 {
    cellIdentity->size = ODU_VALUE_FIVE*sizeof(uint8_t);
 	cellIdentity->bits_unused = ODU_VALUE_FOUR;
@@ -168,7 +256,7 @@ S16 BuildCellIdentity(CellIdentity_t  *cellIdentity)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildRanac(RAN_AreaCode_t **ranAreaCode)
+int BuildRanac(RAN_AreaCode_t **ranAreaCode)
 {
    RAN_AreaCode_t *ranac;
    DU_ALLOC(ranac, sizeof(RAN_AreaCode_t));
@@ -196,7 +284,7 @@ S16 BuildRanac(RAN_AreaCode_t **ranAreaCode)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildTac(TrackingAreaCode_t **trackAreaCode)
+int BuildTac(TrackingAreaCode_t **trackAreaCode)
 {
    TrackingAreaCode_t *tac;
   
@@ -237,7 +325,7 @@ S16 BuildTac(TrackingAreaCode_t **trackAreaCode)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
+int BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 {
    U8                 idx, idx1, idx2;
 	U8                 elementCnt;
@@ -378,12 +466,11 @@ S16 BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
  *
  *    Functionality: Building SIB message in Served Cell Info
  *
- * @params[in] GNB_DU_System_Information *gnbDuSysInfo
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildSib1Msg()
+int BuildSib1Msg()
 {
 	SIB1_t                   *sib1Msg;
 	CellAccessRelatedInfo_t  *cellAccessInfo;

@@ -1621,7 +1621,7 @@ CmLteTimingInfo   key;
    while(tmpNode)
    {
       if((((RgSchCfgElem *)tmpNode->node)->actvTime.sfn == key.sfn) &&
-            (((RgSchCfgElem *)tmpNode->node)->actvTime.subframe == key.subframe))
+            (((RgSchCfgElem *)tmpNode->node)->actvTime.slot == key.slot))
       {
          RETVALUE((RgSchCfgElem *)(tmpNode->node));
       }

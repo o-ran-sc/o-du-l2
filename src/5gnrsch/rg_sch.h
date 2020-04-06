@@ -373,12 +373,12 @@ rgSchCb[_inst].rgSchUlDelta    = TFU_ENV_HQFBKIND_ULDELTA + delta;\
 (_time2.sfn*10 + _time2.subframe))*/
 
 #define RG_SCH_ADD_TO_CRNT_TIME_EMTC(crntTime, toFill, incr)          \
-   if ((crntTime.subframe + (incr)) >= RGSCH_NUM_SUB_FRAMES)   \
+   if ((crntTime.slot + (incr)) >= RGSCH_NUM_SUB_FRAMES)   \
       toFill.sfn = (crntTime.sfn + \
-            (crntTime.subframe + (incr)) / RGSCH_NUM_SUB_FRAMES); \
+            (crntTime.slot + (incr)) / RGSCH_NUM_SUB_FRAMES); \
    else                                                  \
       toFill.sfn = crntTime.sfn;                              \
-   toFill.subframe = (crntTime.subframe + (incr)) % RGSCH_NUM_SUB_FRAMES; \
+   toFill.subframe = (crntTime.slot + (incr)) % RGSCH_NUM_SUB_FRAMES; \
    if (toFill.sfn >= RGSCH_MAX_SFN) \
    { \
       toFill.hSfn = (crntTime.hSfn + 1) % RGSCH_MAX_SFN; \
@@ -459,28 +459,28 @@ do \
 
 #else
 
-#define RGSCH_SUBFRAME_INDEX(x) ( ( ((x).sfn) * RGSCH_NUM_SUB_FRAMES_5G ) + (x).subframe )
+#define RGSCH_SUBFRAME_INDEX(x) ( ( ((x).sfn) * RGSCH_NUM_SUB_FRAMES_5G ) + (x).slot )
 #endif
 /* Note: In RGSCH_CALC_SF_DIFF, _time1 should be the latest */
 #define RGSCH_CALC_SF_DIFF(_time1, _time2)\
-   (_time1.sfn*RGSCH_NUM_SUB_FRAMES_5G+_time1.subframe) < (_time2.sfn*RGSCH_NUM_SUB_FRAMES_5G +_time2.subframe)?\
-     (_time1.sfn*RGSCH_NUM_SUB_FRAMES_5G+_time1.subframe) -\
-       (_time2.sfn*RGSCH_NUM_SUB_FRAMES_5G+_time2.subframe) : \
-     (_time1.sfn*RGSCH_NUM_SUB_FRAMES_5G+_time1.subframe) - (_time2.sfn*RGSCH_NUM_SUB_FRAMES_5G +_time2.subframe)\
+   (_time1.sfn*RGSCH_NUM_SUB_FRAMES_5G+_time1.slot) < (_time2.sfn*RGSCH_NUM_SUB_FRAMES_5G +_time2.slot)?\
+     (_time1.sfn*RGSCH_NUM_SUB_FRAMES_5G+_time1.slot) -\
+       (_time2.sfn*RGSCH_NUM_SUB_FRAMES_5G+_time2.slot) : \
+     (_time1.sfn*RGSCH_NUM_SUB_FRAMES_5G+_time1.slot) - (_time2.sfn*RGSCH_NUM_SUB_FRAMES_5G +_time2.slot)\
 
 /*Addef for L2Meas*/
 /*LTE_L2_MEAS_PHASE2*/
 #define RGSCH_CALC_SFN_SF_DIFF(_time1,_sfnCycle, _time2)\
-(((_time1.sfn+RGSCH_MAX_SFN * _sfnCycle)*RGSCH_NUM_SUB_FRAMES_5G) + _time1.subframe -\
-(_time2.sfn*RGSCH_NUM_SUB_FRAMES_5G + _time2.subframe))
+(((_time1.sfn+RGSCH_MAX_SFN * _sfnCycle)*RGSCH_NUM_SUB_FRAMES_5G) + _time1.slot -\
+(_time2.sfn*RGSCH_NUM_SUB_FRAMES_5G + _time2.slot))
 
 #define RG_SCH_ADD_TO_CRNT_TIME(crntTime, toFill, incr)          \
-   if ((crntTime.subframe + (incr)) >= RGSCH_NUM_SUB_FRAMES_5G)   \
+   if ((crntTime.slot + (incr)) >= RGSCH_NUM_SUB_FRAMES_5G)   \
       toFill.sfn = (crntTime.sfn + \
-            (crntTime.subframe + (incr)) / RGSCH_NUM_SUB_FRAMES_5G); \
+            (crntTime.slot + (incr)) / RGSCH_NUM_SUB_FRAMES_5G); \
    else                                                  \
       toFill.sfn = crntTime.sfn;                              \
-   toFill.subframe = (crntTime.subframe + (incr)) % RGSCH_NUM_SUB_FRAMES_5G; \
+   toFill.slot = (crntTime.slot + (incr)) % RGSCH_NUM_SUB_FRAMES_5G; \
    if (toFill.sfn >= RGSCH_MAX_SFN) \
    { \
       toFill.sfn = toFill.sfn % RGSCH_MAX_SFN; \
@@ -490,7 +490,7 @@ do \
 do \
 {                                                  \
    S32  _subframe;\
-   _subframe = _crntDl.sfn * RGSCH_NUM_SUB_FRAMES_5G + _crntDl.subframe; \
+   _subframe = _crntDl.sfn * RGSCH_NUM_SUB_FRAMES_5G + _crntDl.slot; \
    _subframe = _subframe - decr; \
    if(_subframe < 0) \
    { \
@@ -498,7 +498,7 @@ do \
    } \
    _subframe = _subframe % RGSCH_MAX_SUBFRM_5G; \
    _prevDl.sfn = _subframe / RGSCH_NUM_SUB_FRAMES_5G; \
-   _prevDl.subframe = _subframe % RGSCH_NUM_SUB_FRAMES_5G; \
+   _prevDl.slot = _subframe % RGSCH_NUM_SUB_FRAMES_5G; \
 } while(0)
 
 /* ccpu00133109: Removed RGSCHSUBFRMCRNTTIME as it is not giving proper output 
@@ -507,10 +507,10 @@ do \
 
 #define RGSCHCPYTIMEINFO(src, dst)  \
    dst.sfn        = src.sfn;     \
-   dst.subframe   = src.subframe; \
+   dst.slot       = src.slot; \
 
 
-#define RGSCH_TIMEINFO_SAME(x, y) (((x).sfn == (y).sfn) && ((x).subframe == (y).subframe))
+#define RGSCH_TIMEINFO_SAME(x, y) (((x).sfn == (y).sfn) && ((x).slot == (y).slot))
 
 /* Added support for SPS*/
 #ifdef LTEMAC_SPS
@@ -526,7 +526,7 @@ do \
    {*_ret = -1; }\
    else if ((_x).sfn == (_y).sfn)\
    {\
-      if ((_x).subframe > (_y).subframe)\
+      if ((_x).slot > (_y).slot)\
       { *_ret = 1; }\
       else\
       {*_ret = -1; }\
@@ -536,8 +536,8 @@ do \
 }
 
 #define RGSCH_INCR_SUB_FRAME(x,y) do { \
-   if ((x.subframe += y) > (RGSCH_NUM_SUB_FRAMES_5G - 1)) {\
-      x.sfn += (x.subframe/RGSCH_NUM_SUB_FRAMES_5G); x.subframe = (x.subframe%RGSCH_NUM_SUB_FRAMES_5G);\
+   if ((x.slot += y) > (RGSCH_NUM_SUB_FRAMES_5G - 1)) {\
+      x.sfn += (x.slot/RGSCH_NUM_SUB_FRAMES_5G); x.slot = (x.slot%RGSCH_NUM_SUB_FRAMES_5G);\
       if (x.sfn  >= RGSCH_MAX_SFN) \
       { \
          x.sfn %= RGSCH_MAX_SFN; \
@@ -717,7 +717,7 @@ do \
    (_tbInfo)->m = 0;   \
    (_tbInfo)->fdbkTime.sfn = (_timingInfo.sfn + \
          _dlSf->dlFdbkInfo.sfnOffset) % RGSCH_MAX_SFN; \
-   (_tbInfo)->fdbkTime.subframe = _dlSf->dlFdbkInfo.subframe; \
+   (_tbInfo)->fdbkTime.slot = _dlSf->dlFdbkInfo.slot; \
    (_tbInfo)->timingInfo = _timingInfo; \
 } while(0) 
 
@@ -725,7 +725,7 @@ do \
 do \
 {  \
    _anInfo->sfn = (_tbInfo)->fdbkTime.sfn; \
-   _anInfo->subframe = (_tbInfo)->fdbkTime.subframe; \
+   _anInfo->slot = (_tbInfo)->fdbkTime.slot; \
    _anInfo->latestMIdx = (_tbInfo)->m; \
 } while(0) 
 /* Support for iPhich=1 for TDD*/
@@ -775,7 +775,7 @@ do \
 #define RGSCH_SF_ALLOC_SIZE                4
 
 /* Defining new MACRO for DL subframes */
-#define RGSCH_NUM_DL_SUBFRAMES            20
+#define RGSCH_NUM_DL_slotS 20
 /* Define for the block size for memory allocation */
 #define RGSCH_BLKSZ                       2048
 
@@ -1255,7 +1255,7 @@ do\
 /* To Get the Idx to pCqiSrsSrLst in RgSchCellCb*/
 #define RG_SCH_GET_IDX_PCQISRSSR(_time, _indexId)\
 {\
-   (_indexId) = (_time.sfn)* RGSCH_NUM_SUB_FRAMES_5G + (_time.subframe); \
+   (_indexId) = (_time.sfn)* RGSCH_NUM_SUB_FRAMES_5G + (_time.slot); \
    (_indexId) = (_indexId)%RG_SCH_PCQI_SRS_SR_TRINS_SIZE;\
 } 
 

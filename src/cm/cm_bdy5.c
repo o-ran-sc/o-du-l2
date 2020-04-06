@@ -213,6 +213,7 @@ PFV      func;           /* function */
  
    ++tqCp->nxtEnt;
    expire = tqCp->nxtEnt;
+	tqCp->tmrLen = 1;
    entry = (U32) (expire % (U32)(tqCp->tmrLen));
   
    tqCp->tmp = (tqEnt = &tq[entry])->first;

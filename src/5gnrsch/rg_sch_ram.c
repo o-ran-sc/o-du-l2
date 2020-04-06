@@ -1134,7 +1134,7 @@ RgSchCellCb  *cell;
    winGap = (rgRaPrmblToRaFrmTbl[cell->rachCfg.preambleFormat]-1)+ 
       (cell->rachCfg.raWinSize -1 ) + RGSCH_RARSP_WAIT_PERIOD;   
  
-   raIdx = (((crntSfn & 1) * RGSCH_MAX_RA_RNTI+ cell->crntTime.subframe 
+   raIdx = (((crntSfn & 1) * RGSCH_MAX_RA_RNTI+ cell->crntTime.slot 
             + RG_SCH_CMN_DL_DELTA - winGap)+ RGSCH_RAREQ_ARRAY_SIZE ) 
            % RGSCH_RAREQ_ARRAY_SIZE;
 
@@ -1154,10 +1154,10 @@ RgSchCellCb  *cell;
    /* Fixes for RACH handling: Added deletion of queued RaReq */
    frm   = cell->crntTime;
    RGSCH_INCR_SUB_FRAME(frm, RG_SCH_CMN_DL_DELTA);
-   if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][frm.subframe] !=
+   if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][frm.slot] !=
                      RG_SCH_TDD_UL_SUBFRAME)
    {
-      raIdx = rgSchTddNumDlSubfrmTbl[cell->ulDlCfgIdx][frm.subframe]-1;
+      raIdx = rgSchTddNumDlSubfrmTbl[cell->ulDlCfgIdx][frm.slot]-1;
       rgSCHRamDelRaReq(cell, cell->crntTime, raIdx);
    }
 #endif
@@ -1166,7 +1166,7 @@ RgSchCellCb  *cell;
    /* ccpu00132536:MOD- racb timeout will be verified in each SFN such that 
     * the RACB whose processing is not completed in RG_MAX_RA_PRC_FRM
     * will be deleted*/
-   if (cell->crntTime.subframe == 0)
+   if (cell->crntTime.slot == 0)
    {
       maxCnt = cell->raInfo.raCbLst.count;
       for (idx = 0; idx < maxCnt; idx++)

@@ -632,7 +632,7 @@ RgErrInfo      *err;
          }
          break;
 
-      case EVTTFUTTIIND:
+      case EVENT_SLOT_IND_TO_MAC:
          break;
       default:
          break;
@@ -931,7 +931,7 @@ RgErrInfo           *err;
          }
          break;
 
-      case EVTTFUTTIIND:
+      case EVENT_SLOT_IND_TO_MAC:
          break;
       default:
          break;

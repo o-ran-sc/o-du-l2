@@ -148,7 +148,7 @@ Buffer          *mBuf;
         rbCb->lch.lChType == CM_LTE_LCH_PCCH )
    {
       sdu->mode.tm.sfn = datReqInfo->tm.tmg.sfn;
-      sdu->mode.tm.subframe = datReqInfo->tm.tmg.subframe;
+      sdu->mode.tm.slot = datReqInfo->tm.tmg.slot;
 #ifdef EMTC_ENABLE
      if(rbCb->lch.lChType == CM_LTE_LCH_PCCH)
      {
@@ -216,35 +216,35 @@ RguCStaIndInfo   *staInd;
    CM_LLIST_FIRST_NODE(&(rbCb->m.tm.sduQ), 
                        node);
 
-   /* (Sfn,subframe) at which the message should be transmitted is 
-    * validated with alloted (sfn,subframe)in the MAC layer */
+   /* (Sfn,slot) at which the message should be transmitted is 
+    * validated with alloted (sfn,slot)in the MAC layer */
    while (node != NULLP)
    {
       sdu = (KwSdu *)(node->node);
       if ( rbCb->lch.lChType == CM_LTE_LCH_BCCH ||
             rbCb->lch.lChType == CM_LTE_LCH_PCCH )
       {
-         U16 sfn, subframe;
+         U16 sfn, slot;
          /* MS_FIX: syed sfn is of 10 bytes rather than 8 */
 #ifdef EMTC_ENABLE
-         /* As part of CATM feature cross subframe scheduling is implemented , so there is some delta(currently 2)
+         /* As part of CATM feature cross slot scheduling is implemented , so there is some delta(currently 2)
             between MPDCCH and PDSCH,RLC expects cell crntTime of transmission of control dlsf, so one extra 
-            information is provided in staInd, so that sfn,subframe should calculate from paging Timing information 
+            information is provided in staInd, so that sfn,slot should calculate from paging Timing information 
             in case of EMTC paging, instead of transId */
          if(staInd->isEmtcPaging)
          {
             sfn      = staInd->pagingTimingInfo.sfn;
-            subframe = staInd->pagingTimingInfo.subframe;
+            slot = staInd->pagingTimingInfo.slot;
          }
          else
 #endif
          {
             sfn = (staInd->transId >> 8) & 0x3FF;
-            subframe = staInd->transId & 0xFF;
+            slot = staInd->transId & 0xFF;
          }
 
          /* Table
-          * tm.subframe - current subframe 
+          * tm.slot - current slot 
           * 0,sfn        7,sfn-1
           * 4,sfn        1,sfn
           * 5,sfn        2,sfn
@@ -254,13 +254,13 @@ RguCStaIndInfo   *staInd;
           * Take care of SFN wraparound. TODO: It is better for RLC
           * not to be aware of SCH DELTAs. So we should look for 
           * sending actual transmission time to RLC. */
-         if ((subframe + TFU_DELTA) >= 10)
+         if ((slot + TFU_DELTA) >= 10)
          {
             sfn = (sfn + 1)%1024;
          }
 
          if ((sdu->mode.tm.sfn != sfn) ||
-               (sdu->mode.tm.subframe != ((subframe+TFU_DELTA)%10)))
+               (sdu->mode.tm.slot != ((slot+TFU_DELTA)%10)))
          {
             node = node->next;
             RLOG_ARG4(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
@@ -270,9 +270,9 @@ RguCStaIndInfo   *staInd;
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);   
             RLOG_ARG4(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                  "sfn %d subframe %d  UEID:%d CELLID:%d",
+                  "sfn %d slot %d  UEID:%d CELLID:%d",
                   sfn, 
-                  subframe,
+                  slot,
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
@@ -389,7 +389,7 @@ RguCStaIndInfo   *staInd;
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
    dlData->timeToTx.sfn = sdu->mode.tm.sfn;
-   dlData->timeToTx.subframe = sdu->mode.tm.subframe;
+   dlData->timeToTx.slot = sdu->mode.tm.slot;
    dlData->cellId = rbCb->rlcId.cellId;
    dlData->rnti = sdu->mode.tm.rnti;
    dlData->nmbPdu = 1;

@@ -44,8 +44,10 @@ typedef enum
 /* Events in Lower Mac */
 typedef enum{
   PARAM_REQ,
-  CONFIG_REQ = 2,
-  START_REQ = 4,
+  PARAM_RSP,
+  CONFIG_REQ,
+  CONFIG_RSP,
+  START_REQ,
   STOP_REQ,
   MAX_EVENT
 }EventState;
