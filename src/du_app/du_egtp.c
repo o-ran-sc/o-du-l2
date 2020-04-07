@@ -838,7 +838,7 @@ S16 egtpHdlRecvData(Buffer *mBuf)
    /* Decode EGTP header */
    egtpDecodeHdr(mBuf, &egtpMsg);
 
-   /* TODO : Send received message to RLC */
+   /* Send received message to DU APP */
    duHdlEgtpDlData(&egtpMsg);
 
    RETVALUE(ROK);

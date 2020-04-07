@@ -28,9 +28,7 @@ PUBLIC S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
   Pst rspPst;
   RlcMacSchedRep *schRep;
 
-  DU_LOG("\nMAC_STUB : Received BO status from RLC");
-
-//  SGetSBuf(pst->region, pst->pool, (Data **)&rspPst, sizeof(Pst));
+  DU_LOG("\nMAC : Received BO status from RLC");
 
   rspPst.selector  = RGU_SEL_TC;
   rspPst.srcEnt    = pst->dstEnt;
@@ -51,7 +49,7 @@ PUBLIC S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
   schRep->lchSta[0].lchStaInd.lcId = boSta->lcId;
   schRep->lchSta[0].lchStaInd.totBufSize = boSta->bo + 5; /* Extra buffer space including RLC and MAC Header size */
 
-  DU_LOG("\nMAC_STUB : Sending scheduling report to RLC");
+  DU_LOG("\nMAC : Sending scheduling report to RLC");
   
   RlcMacProcSchedRep(&rspPst, 1, schRep);
 
@@ -72,17 +70,6 @@ PUBLIC S16 macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
    SPutMsg(dlData->pduInfo[0].pduBuf);
    dlData->pduInfo[0].pduBuf = NULL;
 
-#if 0
-   KW_FREE_SHRABL_BUF(pst->region, pst->pool,
-                        dlData, sizeof(RlcMacData));
-{
-   KW_ALLOC_SHRABL_BUF(pst->region, pst->pool,
-                          ulData, sizeof(RlcMacData));
-
-   SRegInfoShow(2, &availmem);
-   cmMemcpy((U8 *)ulData, (U8 *)dlData, sizeof(RlcMacData));
-#endif
-   
    ulData = dlData;
    SGetMsg(pst->region, pst->pool, &mBuf);
    macStubBuildUlData(mBuf);

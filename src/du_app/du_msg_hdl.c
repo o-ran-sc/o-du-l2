@@ -1575,24 +1575,29 @@ S16 duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm)
 {
    S16 ret = ROK;
 
-   if(macCellCfgCfm->transId == duCb.duMacCellCfg->transId)
-   {
-      /* free the memory allocated during sending macCellCfg request */
-      DU_FREE(duCb.duMacCellCfg,sizeof(MacCellCfg));
-      duCb.duMacCellCfg = NULLP;
-      DU_LOG("\nDU-APP : MAC CELL config confirm recieved\n");
+   if(macCellCfgCfm->rsp == ROK)  
+	{
+		if(macCellCfgCfm->transId == duCb.duMacCellCfg->transId)
+		{
+			/* free the memory allocated during sending macCellCfg request */
+			DU_FREE(duCb.duMacCellCfg,sizeof(MacCellCfg));
+			duCb.duMacCellCfg = NULLP;
 
-
-      /* Build and send GNB-DU config update */
-      ret = BuildAndSendDUConfigUpdate();
-   }
-   else
-   {
-      /* transaction ID missmatch */
-      DU_LOG("\n transaction ID mismatch in macCellCfg");
-      ret = RFAILED;
-   }
-
+			/* Build and send GNB-DU config update */
+			ret = BuildAndSendDUConfigUpdate();
+		}
+		else
+		{
+			/* transaction ID missmatch */
+			DU_LOG("\n transaction ID mismatch in macCellCfg");
+			ret = RFAILED;
+		}
+	}
+	else
+	{
+		DU_LOG("\nMac cell cfg failed");
+		ret = RFAILED;
+	}
    return ret;
 }
 

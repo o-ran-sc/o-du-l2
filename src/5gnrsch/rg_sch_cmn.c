@@ -3504,13 +3504,13 @@ CmLteTimingInfo   end;
    if (end.sfn > start.sfn)
    {
       if (frm.sfn > start.sfn
-            || (frm.sfn == start.sfn && frm.subframe >= start.subframe))
+            || (frm.sfn == start.sfn && frm.slot >= start.slot))
       {
          if (frm.sfn < end.sfn
 #ifdef EMTC_ENABLE
-               || (frm.sfn == end.sfn && frm.subframe <= end.subframe))
+               || (frm.sfn == end.sfn && frm.slot <= end.slot))
 #else
-               || (frm.sfn == end.sfn && frm.subframe <= start.subframe))
+               || (frm.sfn == end.sfn && frm.slot <= start.slot))
 #endif
          {
             inWin = TRUE;
@@ -3521,14 +3521,14 @@ CmLteTimingInfo   end;
    else if (end.sfn < start.sfn)
    {
       if (frm.sfn > start.sfn
-            || (frm.sfn == start.sfn && frm.subframe >= start.subframe))
+            || (frm.sfn == start.sfn && frm.slot >= start.slot))
       {
          inWin = TRUE;
       }
       else
       {
          if (frm.sfn < end.sfn
-               || (frm.sfn == end.sfn && frm.subframe <= end.subframe))
+               || (frm.sfn == end.sfn && frm.slot <= end.slot))
          {
             inWin = TRUE;
          }
@@ -3537,8 +3537,8 @@ CmLteTimingInfo   end;
    else  /* start.sfn == end.sfn */
    {
       if (frm.sfn == start.sfn
-            && (frm.subframe >= start.subframe
-               && frm.subframe <= end.subframe))
+            && (frm.slot >= start.slot
+               && frm.slot <= end.slot))
       {
          inWin = TRUE;
       }
@@ -4501,7 +4501,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
    RGSCHDECRFRMCRNTTIME(frm, winStartFrm, winGap);
 
 	//5G_TODO TIMING update. Need to check
-   winStartIdx = (winStartFrm.sfn & 1) * RGSCH_MAX_RA_RNTI+ winStartFrm.subframe;
+   winStartIdx = (winStartFrm.sfn & 1) * RGSCH_MAX_RA_RNTI+ winStartFrm.slot;
 
    for(i = 0; ((i < cell->rachCfg.raWinSize) && (noRaRnti < RG_SCH_CMN_MAX_CMN_PDCCH)); i++)
    {
@@ -6117,7 +6117,7 @@ RgSchDlHqProcCb            *hqP;
          addedForScell,
          addedForScell1,
          cell->crntTime.sfn,
-         cell->crntTime.subframe);
+         cell->crntTime.slot);
          */
       }
 #endif
@@ -6163,7 +6163,7 @@ RgSchDlHqProcCb            *hqP;
          /*
          printf ("add DL TPT is %lu  sfn:sf %d:%d \n", hqP->hqE->ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(hqP->hqE->cell)].dlTpt ,
          cell->crntTime.sfn,
-         cell->crntTime.subframe);
+         cell->crntTime.slot);
          */
       }
 #endif
@@ -6974,10 +6974,10 @@ RgSchCellCb *cell;
 
    TRC2(rgSCHCmnUpdVars);
 
-   idx = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe);
+   idx = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot);
    cellUl->idx     = ((idx) % (RG_SCH_CMN_UL_NUM_SF));
 #ifdef UL_ADPT_DBG     
-   printf("idx %d cellUl->idx  %d RGSCH_NUM_SUB_FRAMES_5G %d  time(%d %d) \n",idx,cellUl->idx ,RGSCH_NUM_SUB_FRAMES_5G,cell->crntTime.sfn,cell->crntTime.subframe);
+   printf("idx %d cellUl->idx  %d RGSCH_NUM_SUB_FRAMES_5G %d  time(%d %d) \n",idx,cellUl->idx ,RGSCH_NUM_SUB_FRAMES_5G,cell->crntTime.sfn,cell->crntTime.slot);
 #endif    
    /* Need to scheduler for after SCHED_DELTA */
    /* UL allocation has been advanced by 1 subframe
@@ -7163,7 +7163,7 @@ RgSchCellCb *cell;
    U32           numUlSf;
   
 #ifndef LTE_TDD
-   numUlSf  = (timeInfo->sfn * RGSCH_NUM_SUB_FRAMES_5G + timeInfo->subframe);
+   numUlSf  = (timeInfo->sfn * RGSCH_NUM_SUB_FRAMES_5G + timeInfo->slot);
    procId   = numUlSf % RGSCH_NUM_UL_HQ_PROC;
 #else
    U8            ulDlCfgIdx = cell->ulDlCfgIdx;
@@ -7192,7 +7192,7 @@ RgSchCellCb *cell;
    /* Calculate the total number of UL sf */
    /*  -1 is done since uplink sf are counted from 0 */
    numUlSf = numUlSfInSfn *  (timeInfo->sfn + (sfnCycle*1024)) +
-                  rgSchTddNumUlSubfrmTbl[ulDlCfgIdx][timeInfo->subframe] - 1;
+                  rgSchTddNumUlSubfrmTbl[ulDlCfgIdx][timeInfo->slot] - 1;
 
    procId = numUlSf % numUlHarq;   
 #endif
@@ -8510,7 +8510,7 @@ U32                *waitPer;
    TRC2(rgSCHCmnGetRefreshPer);     
 
    refreshPer = RG_SCH_CMN_REFRESH_TIME * RG_SCH_CMN_REFRESH_TIMERES;
-   crntSubFrm = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.subframe;
+   crntSubFrm = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot;
    /* Fix: syed align multiple UEs to refresh at same time */
    *waitPer = refreshPer - (crntSubFrm % refreshPer);
    *waitPer = RGSCH_CEIL(*waitPer, RG_SCH_CMN_REFRESH_TIMERES);
@@ -8866,7 +8866,7 @@ RgrUeCfg    *cfg;
    ue->ue5gtfCb.cqiRiPer = 100;
    /* 5gtf TODO: CQIs to start from (10,0)*/
    ue->ue5gtfCb.nxtCqiRiOccn.sfn = 10;
-   ue->ue5gtfCb.nxtCqiRiOccn.subframe = 0;
+   ue->ue5gtfCb.nxtCqiRiOccn.slot = 0;
    ue->ue5gtfCb.rank = 1;
 
    printf("\nschd cfg at mac,%u,%u,%u,%u,%u\n",ue->ue5gtfCb.grpId,ue->ue5gtfCb.BeamId,ue->ue5gtfCb.numCC,
@@ -11130,10 +11130,10 @@ U8            *bwAvailRef;
    {
 #ifndef ALIGN_64BIT
 	   printf("CA_DBG:: puschRbStart:n1Rb:mixedRb:n1PerRb:totalCce:n1Max:n1RbPart:n2Rb::[%d:%d] [%d:%d:%ld:%d:%d:%d:%d:%d]\n",
-        cell->crntTime.sfn, cell->crntTime.subframe, puschRbStart, n1Rb, mixedRb,n1PerRb, totalCce, n1Max, n1RbPart, n2Rb);
+        cell->crntTime.sfn, cell->crntTime.slot, puschRbStart, n1Rb, mixedRb,n1PerRb, totalCce, n1Max, n1RbPart, n2Rb);
 #else
 	   printf("CA_DBG:: puschRbStart:n1Rb:mixedRb:n1PerRb:totalCce:n1Max:n1RbPart:n2Rb::[%d:%d] [%d:%d:%d:%d:%d:%d:%d:%d]\n",
-        cell->crntTime.sfn, cell->crntTime.subframe, puschRbStart, n1Rb, mixedRb,n1PerRb, totalCce, n1Max, n1RbPart, n2Rb);
+        cell->crntTime.sfn, cell->crntTime.slot, puschRbStart, n1Rb, mixedRb,n1PerRb, totalCce, n1Max, n1RbPart, n2Rb);
 #endif
    }
 
@@ -13148,7 +13148,7 @@ RgSchCmnDlRbAllocInfo *allocInfo;
             raCb->msg3AllocTime = cell->crntTime;
             RGSCH_INCR_SUB_FRAME(raCb->msg3AllocTime, RG_SCH_CMN_MIN_MSG3_RECP_INTRVL);
 #else
-            msg3SchdIdx = (cell->crntTime.subframe+RG_SCH_CMN_DL_DELTA) % 
+            msg3SchdIdx = (cell->crntTime.slot+RG_SCH_CMN_DL_DELTA) % 
                                  RGSCH_NUM_SUB_FRAMES;
             /*[ccpu00134666]-MOD-Modify the check to schedule the RAR in
               special subframe */                       
@@ -13158,7 +13158,7 @@ RgSchCmnDlRbAllocInfo *allocInfo;
                RGSCHCMNADDTOCRNTTIME(cell->crntTime,raCb->msg3AllocTime,
                                        RG_SCH_CMN_DL_DELTA)
                msg3Subfrm = rgSchTddMsg3SubfrmTbl[ulDlCfgIdx][
-                                       raCb->msg3AllocTime.subframe];
+                                       raCb->msg3AllocTime.slot];
                RGSCHCMNADDTOCRNTTIME(raCb->msg3AllocTime, raCb->msg3AllocTime, 
                                  msg3Subfrm);
             }
@@ -13225,7 +13225,7 @@ RgSchCmnDlRbAllocInfo *allocInfo;
             "RNTI:%d Scheduled RAR @ (%u,%u) ",
             raRspAlloc->rnti, 
             cell->crntTime.sfn,
-            cell->crntTime.subframe);
+            cell->crntTime.slot);
    }
    RETVOID;
 }
@@ -14989,7 +14989,7 @@ RgSchCellCb *cell;
      to available scope for optimization */
    TRC2(rgSCHCmnTmrProc);
 
-   if ((cell->crntTime.subframe % RGSCH_NUM_SUB_FRAMES_5G) == 0)
+   if ((cell->crntTime.slot % RGSCH_NUM_SUB_FRAMES_5G) == 0)
    {
       /* Reset the counters periodically */
       if ((cell->crntTime.sfn % RG_SCH_CMN_CSG_REFRESH_TIME) == 0)
@@ -15070,7 +15070,7 @@ U8              delta;
 #ifdef LTE_TDD
       dlIdx = rgSCHUtlGetDlSfIdx(cell, &pdsch);
 #else
-      dlIdx = (((pdsch.sfn & 1) * RGSCH_NUM_SUB_FRAMES) + (pdsch.subframe % RGSCH_NUM_SUB_FRAMES));
+      dlIdx = (((pdsch.sfn & 1) * RGSCH_NUM_SUB_FRAMES) + (pdsch.slot % RGSCH_NUM_SUB_FRAMES));
       RGSCH_ARRAY_BOUND_CHECK(cell->instIdx, cell->subFrms, dlIdx);
 #endif  
       /* If current downlink subframe index is same as pdcch SF index,
@@ -15190,7 +15190,7 @@ U8              dlIdx;
       rgSchTddPdcchSfIncTbl[cell->ulDlCfgIdx][sfNum]) % cell->numDlSubfrms;
 #else
    cell->dynCfiCb.pdcchSfIdx = (dlIdx + RG_SCH_CFI_APPLY_DELTA) % \
-        RGSCH_NUM_DL_SUBFRAMES;
+        RGSCH_NUM_DL_slotS;
 #endif
 }
 
@@ -15247,7 +15247,7 @@ U8              delta;
 #else
    /* Changing the idexing
       so that proper subframe is selected */
-   dlIdx = (((frm.sfn & 1) * RGSCH_NUM_SUB_FRAMES) + (frm.subframe % RGSCH_NUM_SUB_FRAMES));
+   dlIdx = (((frm.sfn & 1) * RGSCH_NUM_SUB_FRAMES) + (frm.slot % RGSCH_NUM_SUB_FRAMES));
    RGSCH_ARRAY_BOUND_CHECK(cell->instIdx, cell->subFrms, dlIdx);
    dlSf = cell->subFrms[dlIdx];
 #endif 
@@ -17057,7 +17057,7 @@ PUBLIC Void rgSCHCmnSrsInd(cell, ue, srsRpt, timingInfo)
     U32 recReqTime; /*Received Time in TTI*/
     TRC2(rgSCHCmnSrsInd);
 
-    recReqTime = (timingInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G) + timingInfo.subframe;
+    recReqTime = (timingInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G) + timingInfo.slot;
     ue->srsCb.selectedAnt = (recReqTime/ue->srsCb.peri)%2;
     if(srsRpt->wideCqiPres)
     {
@@ -20016,7 +20016,7 @@ RgSchCellCb *cell;
    /* ccpu00132654-ADD- Initializing all the indices in every subframe*/ 
    rgSCHCmnInitVars(cell);
 
-   idx = (cell->crntTime.subframe + TFU_ULCNTRL_DLDELTA) % RGSCH_NUM_SUB_FRAMES;
+   idx = (cell->crntTime.slot + TFU_ULCNTRL_DLDELTA) % RGSCH_NUM_SUB_FRAMES;
    /* Calculate the UL scheduling subframe idx based on the 
       Pusch k table */
    if(rgSchTddPuschTxKTbl[ulDlCfgIdx][idx] != 0)
@@ -20064,13 +20064,13 @@ RgSchCellCb *cell;
       }
    }
 
-   idx = (cell->crntTime.subframe + TFU_RECPREQ_DLDELTA) % RGSCH_NUM_SUB_FRAMES;
+   idx = (cell->crntTime.slot + TFU_RECPREQ_DLDELTA) % RGSCH_NUM_SUB_FRAMES;
    if (rgSchTddUlDlSubfrmTbl[ulDlCfgIdx][idx] == RG_SCH_TDD_UL_SUBFRAME)
    {
       RGSCHCMNADDTOCRNTTIME(cell->crntTime, timeInfo, TFU_RECPREQ_DLDELTA)
       cellUl->rcpReqIdx   = rgSCHCmnGetUlSfIdx(&timeInfo, cell);
    }
-   idx = (cell->crntTime.subframe+RG_SCH_CMN_DL_DELTA) % RGSCH_NUM_SUB_FRAMES;
+   idx = (cell->crntTime.slot+RG_SCH_CMN_DL_DELTA) % RGSCH_NUM_SUB_FRAMES;
    
    /*[ccpu00134666]-MOD-Modify the check to schedule the RAR in
      special subframe */                       
@@ -20383,7 +20383,7 @@ RgSchCellCb   *cell;
    {
       while (cellSch->rachCfg.prachMskIndx < cell->rachCfg.raOccasion.size)
       {
-         if (cell->crntTime.subframe <\
+         if (cell->crntTime.slot <\
                cell->rachCfg.raOccasion.subFrameNum[cellSch->rachCfg.prachMskIndx])
          {
             break;
@@ -20404,12 +20404,12 @@ RgSchCellCb   *cell;
          }
          cellSch->rachCfg.prachMskIndx = 0;
       }
-      cellSch->rachCfg.applFrm.subframe = \
+      cellSch->rachCfg.applFrm.slot = \
                                           cell->rachCfg.raOccasion.subFrameNum[cellSch->rachCfg.prachMskIndx];
    }
    else
    {
-      cellSch->rachCfg.applFrm.subframe = \
+      cellSch->rachCfg.applFrm.slot = \
                                           cell->rachCfg.raOccasion.subFrameNum[cellSch->rachCfg.prachMskIndx];
    }
 
@@ -20469,7 +20469,7 @@ RgSchCellCb  *cell;
          cellSch->rachCfg.applFrm.sfn = (cellSch->rachCfg.applFrm.sfn+2) % \
                                         RGSCH_MAX_SFN;
       }
-      cellSch->rachCfg.applFrm.subframe = cell->rachCfg.raOccasion.\
+      cellSch->rachCfg.applFrm.slot = cell->rachCfg.raOccasion.\
                                           subFrameNum[0];
    }
    else /* applFrm.sfn is still valid */
@@ -20477,7 +20477,7 @@ RgSchCellCb  *cell;
       cellSch->rachCfg.prachMskIndx += 1;
       if ( cellSch->rachCfg.prachMskIndx < RGR_MAX_SUBFRAME_NUM )
       {
-         cellSch->rachCfg.applFrm.subframe = \
+         cellSch->rachCfg.applFrm.slot = \
                                           cell->rachCfg.raOccasion.subFrameNum[cellSch->rachCfg.prachMskIndx];
       }
    }
@@ -21911,7 +21911,7 @@ RgSchUlSf      *sf;
    {
       nxtAlloc = rgSCHUtlUlAllocNxt(sf, alloc);
 #ifdef UL_ADPT_DBG      
-      printf("rgSCHCmnUlRmvCmpltdAllocs:time(%d %d) alloc->hqProc->remTx %d hqProcId(%d) \n",cell->crntTime.sfn,cell->crntTime.subframe,alloc->hqProc->remTx, alloc->grnt.hqProcId);
+      printf("rgSCHCmnUlRmvCmpltdAllocs:time(%d %d) alloc->hqProc->remTx %d hqProcId(%d) \n",cell->crntTime.sfn,cell->crntTime.slot,alloc->hqProc->remTx, alloc->grnt.hqProcId);
 #endif
       alloc->hqProc->rcvdCrcInd = TRUE;
       if ((alloc->hqProc->rcvdCrcInd) || (alloc->hqProc->remTx == 0))
@@ -30872,7 +30872,7 @@ RgSchCellCb             *cell;
     * from application. No need to wait for next modification period.
     */
    if((pdSchTmInfo.sfn % RGSCH_SIB1_RPT_PERIODICITY == 0)
-         && (RGSCH_SIB1_TX_SF_NUM == (pdSchTmInfo.subframe % RGSCH_NUM_SUB_FRAMES)))
+         && (RGSCH_SIB1_TX_SF_NUM == (pdSchTmInfo.slot % RGSCH_NUM_SUB_FRAMES)))
    {   
       /*Check whether SIB1 with PWS has been updated*/
       if(cell->siCb.siBitMask & RGSCH_SI_SIB1_PWS_UPD)
@@ -30893,9 +30893,9 @@ RgSchCellCb             *cell;
      period. If current SFN,SF No doesn't marks the start of next
      modification period, then return. */
    if(!((pdSchTmInfo.sfn % cell->siCfg.modPrd == 0)
-            && (0 == pdSchTmInfo.subframe)))
+            && (0 == pdSchTmInfo.slot)))
    /*if(!((((pdSchTmInfo.hSfn * 1024) + pdSchTmInfo.sfn) % cell->siCfg.modPrd == 0)
-            && (0 == pdSchTmInfo.subframe)))*/
+            && (0 == pdSchTmInfo.slot)))*/
    {
       RETVOID;
    }
@@ -31042,7 +31042,7 @@ RgSchCellCb             *cell;
    if(cell->siCb.inWindow)
    {
       if ((crntTmInfo.sfn % cell->siCfg.minPeriodicity) == 0 && 
-          crntTmInfo.subframe == 0)
+          crntTmInfo.slot == 0)
       {
          /* Reinit inWindow at the beginning of every SI window */
          cell->siCb.inWindow = siWinSize - 1;
@@ -31065,13 +31065,13 @@ RgSchCellCb             *cell;
       cell->siCb.inWindow = siWinSize - 1;
    }
 
-   x = rgSCHCmnGetSiSetId(crntTmInfo.sfn, crntTmInfo.subframe, 
+   x = rgSCHCmnGetSiSetId(crntTmInfo.sfn, crntTmInfo.slot, 
                                   cell->siCfg.minPeriodicity); 
 
    /* Window Id within a SI set. This window Id directly maps to a
     * unique SI Id */
    windowId = (((crntTmInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G) + 
-            crntTmInfo.subframe) - (x * (cell->siCfg.minPeriodicity * 10))) 
+            crntTmInfo.slot) - (x * (cell->siCfg.minPeriodicity * 10))) 
                                                                / siWinSize;
 
    if(windowId >= RGR_MAX_NUM_SI)
@@ -31094,7 +31094,7 @@ RgSchCellCb             *cell;
          cell->siCb.siCtx.warningSiFlag = cell->siCb.siArray[windowId].
                                                            isWarningSi;
          cell->siCb.siCtx.timeToTx.sfn = crntTmInfo.sfn;
-         cell->siCb.siCtx.timeToTx.subframe = crntTmInfo.subframe;
+         cell->siCb.siCtx.timeToTx.slot = crntTmInfo.slot;
 
          RG_SCH_ADD_TO_CRNT_TIME(cell->siCb.siCtx.timeToTx,
                cell->siCb.siCtx.maxTimeToTx, (siWinSize - 1))
@@ -31179,7 +31179,7 @@ RgInfSfAlloc            *subfrmAlloc;
    {
 #endif
    if((crntTimInfo.sfn % RGSCH_MIB_PERIODICITY == 0)
-         && (RGSCH_MIB_TX_SF_NUM == crntTimInfo.subframe))
+         && (RGSCH_MIB_TX_SF_NUM == crntTimInfo.slot))
    {
       MsgLen  mibLen = 0;
       U8      sfnOctet, mibOct2 = 0;
@@ -31242,7 +31242,7 @@ RgInfSfAlloc            *subfrmAlloc;
      is not required here since the below check takes care
      of SFNs applicable for this one too.*/
    if((crntTimInfo.sfn % RGSCH_SIB1_RPT_PERIODICITY == 0)
-         && (RGSCH_SIB1_TX_SF_NUM == crntTimInfo.subframe))
+         && (RGSCH_SIB1_TX_SF_NUM == crntTimInfo.slot))
    {
       /*If SIB1 has not been yet setup by Application, return*/
       if(NULLP == (cell->siCb.crntSiInfo.sib1Info.sib1))
@@ -31306,7 +31306,7 @@ RgInfSfAlloc            *subfrmAlloc;
          {
             /* Determine next scheduling subframe is ABS or not */
             if(RG_SCH_ABS_ENABLED_ABS_SF == (RgSchAbsSfEnum)(cell->lteAdvCb.absCfg.absPattern
-                  [((crntTimInfo.sfn*RGSCH_NUM_SUB_FRAMES) + crntTimInfo.subframe) % RGR_ABS_PATTERN_LEN]))
+                  [((crntTimInfo.sfn*RGSCH_NUM_SUB_FRAMES) + crntTimInfo.slot) % RGR_ABS_PATTERN_LEN]))
             {
                /* Skip the SI scheduling to next tti */
                RETVOID;
@@ -31867,7 +31867,7 @@ RgSchCellCb        *cell;
    if(RGR_ENABLE == cell->lteAdvCb.absCfg.status)
    {
       cell->lteAdvCb.absPatternDlIdx = 
-         ((frm.sfn*RGSCH_NUM_SUB_FRAMES_5G) + frm.subframe) % RGR_ABS_PATTERN_LEN;
+         ((frm.sfn*RGSCH_NUM_SUB_FRAMES_5G) + frm.slot) % RGR_ABS_PATTERN_LEN;
       cell->lteAdvCb.absDlSfInfo = (RgSchAbsSfEnum)(cell->lteAdvCb.absCfg.absPattern[
             cell->lteAdvCb.absPatternDlIdx]);
 
@@ -32435,7 +32435,7 @@ PUBLIC Void rgSCHCmnDlSch (cell)
             /*
 		      printf("ul5gtfsidDlAlreadyMarkUl: %d, [sfn:sf] [%04d:%02d]\n", 
                     ul5gtfsidDlAlreadyMarkUl, cellSch->dl.time.sfn, 
-                    cellSch->dl.time.subframe);
+                    cellSch->dl.time.slot);
             */
          }
 		   RETVOID;

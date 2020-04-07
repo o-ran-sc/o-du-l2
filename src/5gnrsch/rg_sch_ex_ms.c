@@ -209,9 +209,6 @@ Buffer  *mBuf;                      /* message buffer       */
             case EVTTFUTIMINGADVIND:
                cmUnpkTfuTimingAdvInd(RgLiTfuTimingAdvInd, pst, mBuf);
                break;
-            case EVTTFUSCHTTIIND:
-               cmUnpkTfuSchTtiInd(RgLiTfuSchTtiInd, pst, mBuf);
-               break;
             case EVTTFUPUCCHDELPWR:
                cmUnpkTfuPucchDeltaPwr(RgLiTfuPucchDeltaPwrInd, pst, mBuf);
                break;
@@ -263,6 +260,9 @@ Buffer  *mBuf;                      /* message buffer       */
                break;
 #endif
 #endif            
+            case EVENT_SLOT_IND_TO_SCH:
+               cmUnpackMacSchSlotInd(macSchSlotInd, pst, mBuf);
+               break;
             default:
                RGSCH_FREE_MSG(mBuf);
                break;

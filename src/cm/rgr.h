@@ -253,7 +253,6 @@
 #define EVTRGRBNDREQ    1     /*!< Bind Request */
 #define EVTRGRBNDCFM    2     /*!< Bind Confirm */
 #define EVTRGRUBNDREQ   3     /*!< Unbind Request */
-#define EVTMACSCHCFGREQ    4     /*!< Configuration Request */
 #define EVTMACSCHCFGCFM    5     /*!< Configuration Confirm */
 /* rgr_h_001.main_2: Added TTI indication from MAC to RGR user */
 /** @name RGR_RRM_TICK */

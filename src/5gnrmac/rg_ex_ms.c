@@ -116,9 +116,6 @@ Buffer  *mBuf;                      /* message buffer       */
          /* Process a config. request */
          cmUnpkLrgSchCfgReq(MacSchGenCfgReq, pst, mBuf);
          break;
-      case EVTMACSCHCFGREQ: 
-         cmUnpkRgrCfgReq(MacSchCfgReq, pst, mBuf);
-         break;
       case EVTLRGCNTRLREQ:
          /* Process a control request */
          cmUnpkLrgCntrlReq(RgMiLrgCntrlReq, pst, mBuf);
@@ -284,8 +281,8 @@ Buffer  *mBuf;                      /* message buffer       */
       case EVTTFUDATIND:
          cmUnpkTfuDatInd(RgLiTfuDatInd, pst, mBuf);
          break;
-      case EVTTFUTTIIND:
-         cmUnpkTfuTtiInd(RgLiTfuTtiInd, pst, mBuf);
+      case EVENT_SLOT_IND_TO_MAC:
+         cmUnpackSlotInd(fapiMacSlotInd, pst, mBuf);
          break;
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
       case EVTTFUNONRTIND:

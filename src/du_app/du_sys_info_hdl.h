@@ -16,8 +16,6 @@
 ################################################################################
 *******************************************************************************/
 
-#include "du_mgr.h"
-#include "du_log.h"
 #include "odu_common_codec.h"
 
 /* Macros */
@@ -28,10 +26,15 @@
 #define ODU_VALUE_FOUR 4
 #define ODU_VALUE_FIVE 5
 #define ODU_VALUE_SEVEN 7
+#define ODU_VALUE_EIGHT 8
+#define ODU_VALUE_NINE  9 
+#define ODU_VALUE_TEN  10
+
 
 /* Function declarations */
-S16 BuildMibMsg();
-S16 BuildSib1Msg();
+int BuildMibPdu();
+int BuildMibMsg();
+int BuildSib1Msg();
 
 /**********************************************************************
          End of file

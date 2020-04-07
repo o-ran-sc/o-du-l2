@@ -622,7 +622,7 @@ RgCellCb  *cell;
       node = node->next;
       crntTime = cell->crntTime;
 
-      if(cell->crntTime.sfn == 0 && (cell->crntTime.subframe % RG_NUM_SUB_FRAMES) == 0)
+      if(cell->crntTime.sfn == 0 && (cell->crntTime.slot % RG_NUM_SUB_FRAMES) == 0)
       {
          measCb->sfnCycle++;
       }

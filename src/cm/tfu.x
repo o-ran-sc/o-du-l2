@@ -2503,6 +2503,11 @@ typedef struct tfuDelDatReqInfo
 } TfuDelDatReqInfo;
 #endif
 
+typedef struct slotIndInfo
+{
+   U16 sfn;
+   U16 slot;
+}SlotIndInfo;
 
 typedef S16 (*TfuBndReq) ARGS((
    Pst*                 pst,
@@ -2615,8 +2620,7 @@ typedef S16 (*TfuTtiCell) ARGS((
 /* CA dev End */
 typedef S16 (*TfuTtiInd) ARGS((
    Pst *                pst,
-   SuId                 suId,
-   TfuTtiIndInfo *      ttiInd));
+   SlotIndInfo *      slotInd));
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
 typedef S16 (*TfuNonRtInd) ARGS((
@@ -2626,8 +2630,8 @@ typedef S16 (*TfuNonRtInd) ARGS((
 
 typedef S16 (*TfuSchTtiInd) ARGS((
    Pst *                pst,
-   SuId                 suId,
-   TfuTtiIndInfo *      ttiInd));
+//   SuId                 suId,
+   SlotIndInfo*         slotInd));
 
 typedef S16 (*TfuPucchDeltaPwrInd) ARGS((
    Pst *                pst,
@@ -3061,6 +3065,12 @@ EXTERN S16 RgLiTfuDatInd ARGS((
    TfuDatIndInfo *      datInd
 ));
 
+EXTERN S16 fapiMacSlotInd 
+(
+Pst                 *pst, 
+SlotIndInfo         *slotInd
+);
+
 EXTERN S16 RgLiTfuCrcInd ARGS((
    Pst *                pst,
    SuId                 suId,
@@ -3091,10 +3101,9 @@ EXTERN S16 RgLiTfuTtiInd ARGS((
    TfuTtiIndInfo *      ttiInd
 ));
 
-EXTERN S16 RgLiTfuSchTtiInd ARGS((
+EXTERN int macSchSlotInd ARGS((
    Pst *                pst,
-   SuId                 suId,
-   TfuTtiIndInfo *      ttiInd
+   SlotIndInfo *        slotInd
 ));
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
@@ -3463,10 +3472,15 @@ EXTERN S16 cmPkTfuTtiInd ARGS((
 ));
 /** @brief This API is the TTI indication from PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuTtiInd ARGS((
+EXTERN S16 cmUnpackSlotInd ARGS((
    TfuTtiInd            func,
    Pst *                pst,
    Buffer               *mBuf
+));
+
+typedef int (*MacSchSlotIndFunc)     ARGS((                     
+   Pst         *pst,        /* Post Structure */                         
+   SlotIndInfo *slotInd     /* slot ind Info */                      
 ));
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
@@ -3495,8 +3509,8 @@ EXTERN S16 cmPkTfuSchTtiInd ARGS((
 ));
 /** @brief This API is the TTI indication from PHY to SCH.
  */
-EXTERN S16 cmUnpkTfuSchTtiInd ARGS((
-   TfuSchTtiInd         func,
+EXTERN S16 cmUnpackMacSchSlotInd ARGS((
+   MacSchSlotIndFunc    func,
    Pst *                pst,
    Buffer               *mBuf
 ));
@@ -4198,8 +4212,8 @@ EXTERN S16 cmPkTfuTtiIndInfo ARGS((
    TfuTtiIndInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuTtiIndInfo ARGS((
-   TfuTtiIndInfo        *param,
+EXTERN S16 cmUnpackSlotIndInfo ARGS((
+   SlotIndInfo          *param,
    Buffer               *mBuf
 ));
 EXTERN S16 cmPkTfuRaReqInfo ARGS((
@@ -4473,7 +4487,6 @@ EXTERN S16 cmPkTfuDciFormat61aInfo ARGS((
          ));
 
 #endif
-
 
 #endif
 
