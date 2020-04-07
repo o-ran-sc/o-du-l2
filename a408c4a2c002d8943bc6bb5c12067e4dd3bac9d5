@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9bdb2257_f3e7a611",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-07T17:41:25Z",
+      "side": 1,
+      "message": "I think we can rename the two functions for F1 and MAC as BuildMibForMac and BuildMibForF1\nit may help for new person to understand.",
+      "revId": "a408c4a2c002d8943bc6bb5c12067e4dd3bac9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
