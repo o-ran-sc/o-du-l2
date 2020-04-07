@@ -51,35 +51,77 @@
 #define NR_ARFCN  2079427
 #define SUL_ARFCN 100
 #define NR_FREQ_BAND 257
+#define NR_FREQ_BAND_IND 78
 #define SUL_BAND 2
 #define TIME_CFG 0
 #define CARRIER_IDX 1
 #define NUM_TX_ANT 2
 #define NUM_RX_ANT 2
 #define FREQ_SHIFT_7P5KHZ FALSE
-#define SSB_PBCH_PWR 0
+#define SSB_PBCH_PWR -5
 #define BCH_PAYLOAD MAC_GEN_FULL_PBCH_PAYLD
-#define SUBCARRIER_SPACING 3
-#define OFFSET_TO_POINT_A 0
-#define BETA_PSS BETA_PSS_0DB
-#define SSB_PERIODICITTY SSB_PRDCTY_MS_20
-#define SSB_SUBCARRIER_OFFSET 0
+#define SUBCARRIER_SPACING 1
+#define SCS_CARRIER_BANDWIDTH 273         /* Subcarrier spacing- carrier bandwidth */
+#define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
+#define BETA_PSS BETA_PSS_0DB  
+#define SSB_PERIODICITY 2
+#define SSB_SUBCARRIER_OFFSET 0               
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE
+#define FREQ_LOC_BW  1099              /* DL frequency location and bandwidth */
+#define UL_P_MAX  23
 
+/* MACRO defines for PRACH Configuration */
+#define PRACH_CONFIG_IDX   147
+#define PRACH_FREQ_START   0
 #define PRACH_SEQ_LEN SHORT_SEQUENCE
-#define PRACH_SUBCARRIER_SPACING 3
-#define PRACH_RESTRICTED_SET_CFG UNRESTRICTED
+#define PRACH_SUBCARRIER_SPACING 1
+#define PRACH_RESTRICTED_SET_CFG 0
 #define NUM_PRACH_FDM 1
 #define ROOT_SEQ_IDX 0
 #define NUM_ROOT_SEQ 1
-#define ZERO_CORRELATION_ZONE_CFG 2
+#define ZERO_CORRELATION_ZONE_CFG 6
 #define NUM_UNUSED_ROOT_SEQ 1
 #define UNUSED_ROOT_SEQ 1
-#define SSB_PER_RACH 3
+#define SSB_PER_RACH 0
 #define PRACH_MULT_CARRIER_BAND FALSE
+#define PRACH_PREAMBLE_RCVD_TGT_PWR  -74   
+#define NUM_RA_PREAMBLE  63
+#define RSRP_THRESHOLD_SSB   31
 #define TDD_PERIODICITY TX_PRDCTY_MS_2P5
 #define RSS_MEASUREMENT_UNIT DONT_REPORT_RSSI
+
+
+/* MACRCO Ddefine for PDCCH Configuration */
+#define PDCCH_CTRL_RSRC_SET_ZERO   13   /* Control resouce set zero */
+#define PDCCH_SEARCH_SPACE_ZERO    0    /* Search space zero */
+#define PDCCH_SEARCH_SPACE_ID      1    /* Common search space id */
+#define PDCCH_CTRL_RSRC_SET_ID     0    /* Control resource set id */
+#define PDCCH_SEARCH_SPACE_ID_SIB1 0    /* Search space id for sib1 */
+#define PDCCH_SEARCH_SPACE_ID_PAGING 1  /* Search space id for paging */
+#define PDCCH_SEARCH_SPACE_ID_RA   1    /* Search spaced id for random access */
+#define PDCCH_SERACH_SPACE_DCI_FORMAT 0
+#define SIB1_VALUE_TAG 10
+
+/* MACRCO Ddefine for PDSCH Configuration */
+#define PDSCH_K0  0
+#define PDSCH_START_SYMB_AND_LEN 53    
+
+/* MACRO Define for PUSCH Configuration */
+#define PUSCH_K0  3
+#define PUSCH_START_SYMB_AND_LEN 55
+#define PUSCH_MSG3_DELTA_PREAMBLE 0
+#define PUSCH_P0_NOMINAL_WITH_GRANT -70
+
+/* Macro define for PUCCH Configuration */
+#define PUCCH_RSRC_COMMON  0
+#define PUCCH_P0_NOMINAL   -74
+
+/* MACRO defines for TDD DL-UL Configuration */
+#define NUM_DL_SLOTS 3
+#define NUM_DL_SYMBOLS 12
+#define NUM_UL_SLOTS 1
+#define NUM_UL_SYMBOLS 0
 
 #define DU_PROC  0
 #define DU_INST 0
@@ -884,6 +926,149 @@ typedef struct mibParams
 	long    intraFreqReselection;
 }MibParams;
 
+typedef struct siSchedInfo
+{
+   long     winLen;         /* SI Window Length */
+   long     broadcastSta;   /* Broadcast status */
+   long     preiodicity;    /* si periodicity */
+   long     sibType;
+   long     sibValTag;      /* Value tag */
+}SiSchedInfo;
+
+typedef struct pdcchCfgCommon
+{
+   uint8_t  present;
+   long     ctrlRsrcSetZero;  /* Control resource set zero */
+   long     searchSpcZero;    /* Search space zero */
+   long     searchSpcId;      /* Search space id */
+   long     ctrlRsrcSetId;    /* Control resource set id */
+   uint8_t  monitorSlotPrdAndOffPresent;
+   long     monitorSlotPrdAndOff;     /* Monitoring slot periodicity and offset */
+   uint8_t  monitorSymbolsInSlot[2];  /* Monitoring symbols within slot */
+   long     numCandAggLvl1;        /* Number of candiates at aggregation level 1 */
+   long     numCandAggLvl2;        /* Number of candiates at aggregation level 2 */
+   long     numCandAggLvl4;        /* Number of candiates at aggregation level 4 */
+   long     numCandAggLvl8;        /* Number of candiates at aggregation level 8 */
+   long     numCandAggLvl16;       /* Number of candiates at aggregation level 16 */
+   uint8_t  searchSpcType;        /*  Search Space type */
+   uint8_t  commSrchSpcDciFrmt;    /* DCI format of common search space type */
+   long     searchSpcSib1;         /* Id of serch space for SIB1 */
+   long     pagingSearchSpc;       /* Id of search space for paging */
+   long     raSearchSpc;           /* Id of search space for Random Access proc */
+}PdcchCfgCommon;
+
+typedef struct pdschCfgCommon
+{
+   uint8_t  present;
+   long   k0;
+   long   mapType;              /* Mapping Type */
+   long   startSymbAndLen;      /* Start Symbol and Length */
+}PdschCfgCommon;
+
+typedef struct bcchCfg
+{
+   long   modPrdCoeff;          /* Modification period co-efficient */
+}BcchCfg;
+
+typedef struct pcchCfg
+{
+   long   dfltPagingCycle;      /* Default paging cycle */
+   long   nAndPagingFrmOffPresent;
+   long   nAndPagingFrmOff;     /* n and Paging Frame offset */
+   long   numPagingOcc;         /* Number of paging occassions in paging frame */
+}PcchCfg;
+
+typedef struct scsSpecCarrier
+{
+    long   scsOffset;    /* Offset to point A considering subcarrier spacing */
+    long   scs;          /* subcarrier spacing */
+    long   scsBw;        /* Carrier bandwidth considering subcarrier spacing */
+
+}ScsSpecCarrier;
+
+typedef struct dlCfgCommon
+{
+   long   freqBandInd;  /* Downlink frequency band indicator */
+   long   offset;       /* DL ofset to point A */
+   long   locAndBw;     /* Frequency location and bandwidth */
+   ScsSpecCarrier   dlScsCarrier;  /* SCS Specific carrier */
+   PdcchCfgCommon   pdcchCfg;
+   PdschCfgCommon   pdschCfg;
+   BcchCfg          bcchCfg;
+   PcchCfg          pcchCfg;
+}DlCfgCommon;
+
+typedef struct rachCfgCommon
+{
+   uint8_t present;
+   long   prachCfgIdx;       /* PRACH configuration index */
+   long   msg1Fdm;           /* Num of PRACH transmission occassions */
+   long   msg1FreqStart;     /* Offset of lowest msg1 transmission occassion */
+   long   zeroCorrZoneCfg;   /* Zero correlation zone configuration */
+   long   preambleRcvdTgtPwr; /* Traget power level */
+   long   preambleTransMax;  /* Max num of preamble transmission */
+   long   pwrRampingStep;    /* Power ramping steps for PRACH */
+   long   raRspWindow;       /* RA response window */
+   long   numRaPreamble;     /* Total num of preamble used in random access */
+   uint8_t ssbPerRachOccPresent;
+   long   numSsbPerRachOcc;  /* Numer of SSBs per RACH Occassion */
+   long   contResTimer;      /* Contention resolution timer */
+   long   rsrpThreshSsb;
+   uint8_t rootSeqIdxPresent;
+   long   rootSeqIdx;        /* PRACH root sequence index */
+   long   msg1Scs;           /* Msg1 subcarrier spacing */
+   long   restrictedSetCfg;  /* Restricted set configuration */
+}RachCfgCommon;
+
+typedef struct  puschCfgCommon
+{
+   uint8_t present;
+   long   k2;
+   long   mapType;
+   long   startSymbAndLen;
+   long   msg3DeltaPreamble;
+   long   p0NominalWithGrant;
+}PuschCfgCommon;
+
+typedef struct pucchCfgCommon
+{
+   uint8_t present;
+   long   rsrcComm;
+   long   grpHop;
+   long   p0Nominal;
+}PucchCfgCommon;
+
+typedef struct ulCfgCommon
+{
+   long   pMax;         /* Max UL transmission power that UE applies */
+   long   locAndBw;     /* Frequency location and bandwidth */
+   ScsSpecCarrier   ulScsCarrier; /* SCS Specific carrier */
+   RachCfgCommon    rachCfg;
+   PuschCfgCommon   puschCfg;
+   PucchCfgCommon   pucchCfg;
+   long   timeAlignTimerComm;
+}UlCfgCommon;
+
+typedef struct tddUlDlCfgCommon
+{
+   long   refScs;     /* Reference subcarrier spacing */
+   long   txPrd;      /* Transmission periodicity */
+   long   numDlSlots;
+   long   numDlSymbols;
+   long   numUlSlots;
+   long   numUlSymbols;
+}TddUlDlCfgCommon;
+
+typedef struct srvCellCfgCommSib
+{ 
+   DlCfgCommon        dlCfg;
+   UlCfgCommon        ulCfg;
+   uint8_t            ssbPosInBurst;
+   long               ssbPrdServingCell;
+   TddUlDlCfgCommon   tddCfg;
+   long               ssPbchBlockPwr;
+}SrvCellCfgCommSib;
+
 typedef struct sib1Params
 {
 	Plmn    plmn;
@@ -891,6 +1076,10 @@ typedef struct sib1Params
 	long      ranac;
 	uint8_t   cellIdentity;
 	long      cellResvdForOpUse;
+   long      connEstFailCnt;
+   long      connEstFailOffValidity;
+   SiSchedInfo           siSchedInfo;
+   SrvCellCfgCommSib     srvCellCfgCommSib;
 }Sib1Params;
 
 typedef struct duCfgParams
