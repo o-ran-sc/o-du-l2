@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2d21c229_bd613f13",
+        "filename": "src/5gnrsch/rg_sch_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3340,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-07T11:56:47Z",
+      "side": 1,
+      "message": "this should be RGSCH_NUM_DL_SLOTS",
+      "range": {
+        "startLine": 3340,
+        "startChar": 28,
+        "endLine": 3340,
+        "endChar": 46
+      },
+      "revId": "7798b4d168667ce25e6bb2d79518d9410d201138",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
