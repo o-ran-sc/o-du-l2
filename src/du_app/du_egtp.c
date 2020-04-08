@@ -52,7 +52,7 @@ S16 egtpActvInit(Ent entity, Inst inst, Region region, Reason reason)
   cmMemset ((U8 *)&egtpCb, 0, sizeof(EgtpGlobalCb));
   protType = CM_INET_PROTO_UDP;
 
-  RETVALUE(ROK);
+  return ROK;
 }
 
 
@@ -87,22 +87,22 @@ S16 egtpActvTsk(Pst *pst, Buffer *mBuf)
          {
             case EVTCFGREQ:
             {
-               ret = cmUnpkEgtpCfgReq(egtpCfgReq, pst, mBuf);
+               ret = unpackEgtpCfgReq(egtpCfgReq, pst, mBuf);
                break;
             }
             case EVTSRVOPENREQ:
             {
-               ret = cmUnpkEgtpSrvOpenReq(egtpSrvOpenReq, pst, mBuf);
+               ret = unpackEgtpSrvOpenReq(egtpSrvOpenReq, pst, mBuf);
                break;
             }
             case EVTTNLMGMTREQ:
             {
-               ret = cmUnpkEgtpTnlMgmtReq(egtpTnlMgmtReq, pst, mBuf);
+               ret = unpackEgtpTnlMgmtReq(egtpTnlMgmtReq, pst, mBuf);
                break;
             }
-            case EVTTTIIND:
+            case EVTSLOTIND:
             {
-               ret = cmUnpkEgtpTTIInd(egtpTTIInd, pst, mBuf);
+               ret = unpackEgtpSlotInd(egtpSlotInd, pst, mBuf);
                SPutMsg(mBuf);
                break;
             }
@@ -139,7 +139,7 @@ S16 egtpActvTsk(Pst *pst, Buffer *mBuf)
       }
    }
    SExitTsk();
-   RETVALUE(ret);
+   return ret;
 }
 
 /**************************************************************************
@@ -192,9 +192,9 @@ S16 egtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
    egtpFillRspPst(pst, &rspPst);
    rspPst.event = EVTCFGCFM;
 
-   cmPkEgtpCfgCfm(&rspPst, cfgCfm);
+   packEgtpCfgCfm(&rspPst, cfgCfm);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**************************************************************************
@@ -225,7 +225,7 @@ S16 egtpFillRspPst(Pst *pst, Pst *rspPst)
    rspPst->selector = DU_SELECTOR_LC;
    rspPst->pool= DU_POOL;
     
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**************************************************************************
@@ -261,14 +261,14 @@ S16 egtpSrvOpenReq(Pst *pst)
    if(ret = egtpSrvOpenPrc(sockType, &(egtpCb.recvTptSrvr)) != ROK)
    {
       DU_LOG("\nEGTP : Failed while opening receiver transport server");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Opening and Binding sender socket */
    if(ret = egtpSrvOpenPrc(sockType, &(egtpCb.dstCb.sendTptSrvr)) != ROK)
    {
       DU_LOG("\nEGTP : Failed while opening sender transport server");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    DU_LOG("\nEGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd, egtpCb.dstCb.sendTptSrvr.sockFd.fd);
@@ -279,9 +279,9 @@ S16 egtpSrvOpenReq(Pst *pst)
 
    egtpFillRspPst(pst, &rspPst);
    rspPst.event = EVTSRVOPENCFM;
-   cmPkEgtpSrvOpenCfm(&rspPst, cfm);
+   packEgtpSrvOpenCfm(&rspPst, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -308,16 +308,16 @@ S16 egtpSrvOpenPrc(U8 sockType, EgtpTptSrvr *server)
    if(ret = (cmInetSocket(sockType, &(server->sockFd), protType)) != ROK)
    {  
       DU_LOG("\nEGTP : Failed to open UDP socket");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
       
    if(ret = cmInetBind(&(server->sockFd), &(server->addr)) != ROK)
    {  
       DU_LOG("\nEGTP : Failed to bind socket");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**************************************************************************
@@ -381,9 +381,9 @@ S16 egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
    DU_LOG("\nEGTP : Sending Tunnel management confirmation");
    egtpFillRspPst(pst, &rspPst);
    rspPst.event = EVTTNLMGMTCFM;
-   cmPkEgtpTnlMgmtCfm(&rspPst, tnlEvt);
+   packEgtpTnlMgmtCfm(&rspPst, tnlEvt);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**************************************************************************
@@ -413,7 +413,7 @@ S16 egtpTnlAdd(EgtpTnlEvt tnlEvt)
    if(ret != ROK)
    {
       DU_LOG("\nEGTP : Memory allocation failed");
-      RETVALUE(LCM_REASON_MEM_NOAVAIL);
+      return LCM_REASON_MEM_NOAVAIL;
    }
 
    cmMemset((U8 *)teidCb, 0, sizeof(EgtpTeIdCb));
@@ -425,7 +425,7 @@ S16 egtpTnlAdd(EgtpTnlEvt tnlEvt)
    {
       DU_LOG("\nEGTP : Failed to insert in hash list");
       SPutSBuf(DU_APP_MEM_REGION, DU_POOL, (Data *)teidCb, (Size)sizeof(EgtpTeIdCb));
-      RETVALUE(LCM_REASON_HASHING_FAILED);
+      return LCM_REASON_HASHING_FAILED;
    }
    egtpCb.dstCb.numTunn++;
 
@@ -439,7 +439,7 @@ S16 egtpTnlAdd(EgtpTnlEvt tnlEvt)
   
    egtpEncodeHdr((U8 *)teidCb->preEncodedHdr.hdr, &preDefHdr, &(teidCb->preEncodedHdr.cnt));
 
-   RETVALUE(ROK);
+   return ROK;
 } /* egtpTnlAdd */
 
 /**************************************************************************
@@ -475,7 +475,7 @@ S16 egtpTnlMod(EgtpTnlEvt tnlEvt)
    teidCb->teId = tnlEvt.lclTeid;
    teidCb->remTeId = tnlEvt.remTeid;
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**************************************************************************
@@ -503,14 +503,14 @@ S16 egtpTnlDel(EgtpTnlEvt tnlEvt)
    if(teidCb == NULLP)
    {
       DU_LOG("\nEGTP : Tunnel id[%d] not configured", tnlEvt.lclTeid);
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return LCM_REASON_INVALID_PAR_VAL;
    } 
 
    cmHashListDelete(&(egtpCb.dstCb.teIdLst), (PTR)teidCb);
    SPutSBuf(DU_APP_MEM_REGION, DU_POOL, (Data *)teidCb, (Size)sizeof(EgtpTeIdCb));
    egtpCb.dstCb.numTunn--;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -544,7 +544,7 @@ S16 egtpHdlDatInd(EgtpMsg egtpMsg)
    if(teidCb == NULLP)
    {
       DU_LOG("\nEGTP : Tunnel id[%d] not configured", egtpMsg.msgHdr.teId);
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return LCM_REASON_INVALID_PAR_VAL;
    }
    
    msgHdr = &(egtpMsg.msgHdr);
@@ -601,7 +601,7 @@ S16 egtpHdlDatInd(EgtpMsg egtpMsg)
    egtpSendMsg(egtpMsg.msg);
    SPutMsg(egtpMsg.msg);
 
-   RETVALUE(ROK);
+   return ROK;
 }/* EgtpHdlDatInd */
 
 /*******************************************************************
@@ -713,7 +713,7 @@ S16 egtpEncodeHdr(U8 *preEncodedHdr, EgtpMsgHdr *preDefHdr, U8 *hdrIdx)
    }
 
    *hdrIdx = cnt;
-   RETVALUE(ROK);
+   return ROK;
 } /* egtpEncodeHdr */
 
 /*******************************************************************
@@ -749,21 +749,21 @@ S16 egtpSendMsg(Buffer *mBuf)
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("\nEGTP : Failed sending the message");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    DU_LOG("\nEGTP : Message Sent");
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
  *
- * @brief Handles TTI Indication from PHY
+ * @brief Handles Slot Indication from PHY
  *
  * @details
  *
- *    Function : egtpTTIInd
+ *    Function : egtpSlotInd
  *
  *    Functionality:
  *       Handles TTI Indication from PHY
@@ -773,10 +773,10 @@ S16 egtpSendMsg(Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 egtpTTIInd()
+S16 egtpSlotInd()
 {
    egtpRecvMsg();
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -806,7 +806,7 @@ S16 egtpRecvMsg()
    CmInetMemInfo  memInfo;       /* Buffer allocation info */
 
 
-   DU_LOG("\nEGTP : Received TTI Indication");
+   DU_LOG("\nEGTP : Received Slot Indication");
 
    nMsg = 0;
    memInfo.region = DU_APP_MEM_REGION;
@@ -828,7 +828,7 @@ S16 egtpRecvMsg()
       nMsg++;
    }
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 S16 egtpHdlRecvData(Buffer *mBuf)
@@ -841,7 +841,7 @@ S16 egtpHdlRecvData(Buffer *mBuf)
    /* TODO : Send received message to RLC */
    duHdlEgtpDlData(&egtpMsg);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 S16 egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
@@ -1004,6 +1004,6 @@ S16 egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
 
    /* Forward the data to duApp/RLC */
  
-   RETVALUE(ROK);
+   return ROK;
 
 }

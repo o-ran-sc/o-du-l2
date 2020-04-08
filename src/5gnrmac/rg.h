@@ -264,6 +264,12 @@ U32 macHeader[2];
       SPutSBuf(MAC_MEM_REGION, MAC_POOL,                     \
          (Data *)_datPtr, _size);
 
+/* Free shared memory, received through LWLC */
+#define MAC_FREE_MEM(_region, _pool, _datPtr, _size)         \
+   if(_datPtr)                                               \
+       SPutSBuf(_region, _pool,(Data *)_datPtr, _size);      \
+   _datPtr = NULL;
+
 #define RG_LCG_ISCFGD(lcg) ((lcg)->lcgId != RG_INVALID_LCG_ID)
 /* Corrected the check for dlCcchId */
 #define RG_DLCCCH_ISCFGD(cell) ((cell)->dlCcchId != RG_INVALID_LC_ID)

@@ -94,21 +94,21 @@ typedef S16 (*EgtpSrvOpenReq) ARGS(());
 typedef S16 (*EgtpSrvOpenCfm) ARGS((CmStatus cfm));
 typedef S16 (*EgtpTnlMgmtReq) ARGS((Pst *pst, EgtpTnlEvt tnlEvt));
 typedef S16 (*EgtpTnlMgmtCfm) ARGS((EgtpTnlEvt tnlEvt));
-typedef S16 (*EgtpTTIInd) ARGS(());
+typedef S16 (*EgtpSlotInd) ARGS(());
   
-S16 cmPkEgtpCfgReq(Pst *pst, EgtpConfig  egtpCfg);
-S16 cmUnpkEgtpCfgReq(EgtpCfgReq func , Pst *pst, Buffer *mBuf);
-S16 cmPkEgtpCfgCfm(Pst *pst, CmStatus cfm);
-S16 cmUnpkEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf);
-S16 cmPkEgtpSrvOpenReq(Pst *pst);
-S16 cmUnpkEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
-S16 cmPkEgtpSrvOpenCfm(Pst *pst, CmStatus cfm);
-S16 cmUnpkEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf);
-S16 cmPkEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
-S16 cmUnpkEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf);
-S16 cmPkEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt);
-S16 cmUnpkEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf);
-S16 cmPkEgtpTTIInd(Pst *pst);
-S16 cmUnpkEgtpTTIInd(EgtpTTIInd func, Pst *pst, Buffer *mBuf);
+S16 packEgtpCfgReq(Pst *pst, EgtpConfig  egtpCfg);
+S16 unpackEgtpCfgReq(EgtpCfgReq func , Pst *pst, Buffer *mBuf);
+S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm);
+S16 unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf);
+S16 packEgtpSrvOpenReq(Pst *pst);
+S16 unpackkEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
+S16 packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm);
+S16 unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf);
+S16 packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
+S16 unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf);
+S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt);
+S16 unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf);
+S16 packEgtpSlotInd(Pst *pst);
+S16 unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf);
 
 #endif

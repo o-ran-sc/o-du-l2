@@ -54,6 +54,8 @@ extern S16 cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
  ***************************************************************************/
 S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 {
+   uint8_t id;
+
    duCb.init.procId  = SFndProcId();
    duCb.init.ent     = entity;
    duCb.init.inst    = inst;
@@ -70,8 +72,11 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
    duCb.f1Status     = FALSE;
    duCb.e2Status     = FALSE;
 
-   memset(duCb.cfgCellLst, '\0', DU_MAX_CELLS * sizeof(duCb.cfgCellLst));
-   memset(duCb.actvCellLst, '\0',DU_MAX_CELLS * sizeof(duCb.actvCellLst));
+   for(id = 0; id < DU_MAX_CELLS; id ++)
+   {
+	   duCb.cfgCellLst[id] = NULL;
+      duCb.actvCellLst[id] = NULL;
+   }
 
    SSetProcId(DU_PROC);
 
@@ -188,6 +193,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackMacCellCfgCfm(duHandleMacCellCfgCfm, pst, mBuf);
                      break;
                   }
+               case EVENT_MAC_SLOT_IND:
+                  {
+                     ret = unpackMacSlotInd(duHandleSlotInd, pst, mBuf);
+                     break;
+                  }
                default:
                   {
                      DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");
@@ -233,17 +243,17 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
             {
                case EVTCFGCFM:
                {
-                  cmUnpkEgtpCfgCfm(duHdlEgtpCfgComplete, mBuf);
+                  unpackEgtpCfgCfm(duHdlEgtpCfgComplete, mBuf);
                   break;
                }
                case EVTSRVOPENCFM:
                {
-                  cmUnpkEgtpSrvOpenCfm(duHdlEgtpSrvOpenComplete, mBuf);
+                  unpackEgtpSrvOpenCfm(duHdlEgtpSrvOpenComplete, mBuf);
                   break;
                }
                case EVTTNLMGMTCFM:
                {
-                  cmUnpkEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
+                  unpackEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
                   break;
                }
                default:

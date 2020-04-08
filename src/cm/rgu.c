@@ -2702,7 +2702,7 @@ Buffer *mBuf;
 
    for (i=param->nmbPdu-1; i >= 0; i--)
    {
-      MsgLen msgLen = 0;
+      msgLen = 0;
       if (SFndLenMsg(param->pduInfo[i].pduBuf, &msgLen) != ROK)
          RETVALUE(RFAILED);
       if (SCatMsg(mBuf, param->pduInfo[i].pduBuf, M1M2) != ROK)
@@ -2762,7 +2762,7 @@ Buffer *mBuf;
 
       CMCHKUNPK(cmUnpkBool, &param->pduInfo[i].commCh, mBuf);
       CMCHKUNPK(cmUnpkLteLcId, &param->pduInfo[i].lcId, mBuf);
-      CMCHKUNPK(cmPkMsgLen, &param->pduInfo[i].pduLen, mBuf);
+      CMCHKUNPK(cmUnpkMsgLen, &param->pduInfo[i].pduLen, mBuf);
       if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)
          RETVALUE(RFAILED);
       if (SSegMsg(mBuf, totalMsgLen-param->pduInfo[i].pduLen, &param->pduInfo[i].pduBuf) != ROK)
@@ -3155,7 +3155,6 @@ RlcMacSchedRep *param;
 Buffer *mBuf;
 #endif
 {
-   S32 i;
    S32 idx;
 
    TRC3(packSchedRepInfo);
@@ -3203,7 +3202,6 @@ RlcMacSchedRep *param;
 Buffer *mBuf;
 #endif
 {
-   S32 i;
    S32 idx;
 
    TRC3(unpackSchedRepInfo);
