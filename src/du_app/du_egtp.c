@@ -87,22 +87,22 @@ S16 egtpActvTsk(Pst *pst, Buffer *mBuf)
          {
             case EVTCFGREQ:
             {
-               ret = cmUnpkEgtpCfgReq(egtpCfgReq, pst, mBuf);
+               ret = unpackEgtpCfgReq(egtpCfgReq, pst, mBuf);
                break;
             }
             case EVTSRVOPENREQ:
             {
-               ret = cmUnpkEgtpSrvOpenReq(egtpSrvOpenReq, pst, mBuf);
+               ret = unpackEgtpSrvOpenReq(egtpSrvOpenReq, pst, mBuf);
                break;
             }
             case EVTTNLMGMTREQ:
             {
-               ret = cmUnpkEgtpTnlMgmtReq(egtpTnlMgmtReq, pst, mBuf);
+               ret = unpackEgtpTnlMgmtReq(egtpTnlMgmtReq, pst, mBuf);
                break;
             }
-            case EVTTTIIND:
+            case EVTSLOTIND:
             {
-               ret = cmUnpkEgtpTTIInd(egtpTTIInd, pst, mBuf);
+               ret = unpackEgtpSlotInd(egtpSlotInd, pst, mBuf);
                SPutMsg(mBuf);
                break;
             }
@@ -192,7 +192,7 @@ S16 egtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
    egtpFillRspPst(pst, &rspPst);
    rspPst.event = EVTCFGCFM;
 
-   cmPkEgtpCfgCfm(&rspPst, cfgCfm);
+   packEgtpCfgCfm(&rspPst, cfgCfm);
 
    RETVALUE(ROK);
 }
@@ -279,7 +279,7 @@ S16 egtpSrvOpenReq(Pst *pst)
 
    egtpFillRspPst(pst, &rspPst);
    rspPst.event = EVTSRVOPENCFM;
-   cmPkEgtpSrvOpenCfm(&rspPst, cfm);
+   packEgtpSrvOpenCfm(&rspPst, cfm);
 
    RETVALUE(ROK);
 }
@@ -381,7 +381,7 @@ S16 egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
    DU_LOG("\nEGTP : Sending Tunnel management confirmation");
    egtpFillRspPst(pst, &rspPst);
    rspPst.event = EVTTNLMGMTCFM;
-   cmPkEgtpTnlMgmtCfm(&rspPst, tnlEvt);
+   packEgtpTnlMgmtCfm(&rspPst, tnlEvt);
 
    RETVALUE(ROK);
 }
@@ -759,11 +759,11 @@ S16 egtpSendMsg(Buffer *mBuf)
 
 /*******************************************************************
  *
- * @brief Handles TTI Indication from PHY
+ * @brief Handles Slot Indication from PHY
  *
  * @details
  *
- *    Function : egtpTTIInd
+ *    Function : egtpSlotInd
  *
  *    Functionality:
  *       Handles TTI Indication from PHY
@@ -773,7 +773,7 @@ S16 egtpSendMsg(Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 egtpTTIInd()
+S16 egtpSlotInd()
 {
    egtpRecvMsg();
    RETVALUE(ROK);
@@ -806,7 +806,7 @@ S16 egtpRecvMsg()
    CmInetMemInfo  memInfo;       /* Buffer allocation info */
 
 
-   DU_LOG("\nEGTP : Received TTI Indication");
+   DU_LOG("\nEGTP : Received Slot Indication");
 
    nMsg = 0;
    memInfo.region = DU_APP_MEM_REGION;

@@ -9,9 +9,11 @@ void *GenerateTicks(void *arg)
    while(1)
    {
       sleep(1);
-      printf("\nTTI indication");
-      /* Send TTI indication to CL */
-      duSendEgtpTTIInd();
+      printf("\nPHY STUB : Slot indication");
+
+      /* Send Slot indication indication to lower mac */
+      //buildAndSendSlotIndication();
+      duSendEgtpSlotInd();
    }
 }
 

@@ -188,6 +188,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackMacCellCfgCfm(duHandleMacCellCfgCfm, pst, mBuf);
                      break;
                   }
+               case EVENT_MAC_SLOT_IND:
+                  {
+                     ret = unpackMacSlotInd(duHandleSlotInd, pst, mBuf);
+                     break;
+                  }
                default:
                   {
                      DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");
@@ -233,17 +238,17 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
             {
                case EVTCFGCFM:
                {
-                  cmUnpkEgtpCfgCfm(duHdlEgtpCfgComplete, mBuf);
+                  unpackEgtpCfgCfm(duHdlEgtpCfgComplete, mBuf);
                   break;
                }
                case EVTSRVOPENCFM:
                {
-                  cmUnpkEgtpSrvOpenCfm(duHdlEgtpSrvOpenComplete, mBuf);
+                  unpackEgtpSrvOpenCfm(duHdlEgtpSrvOpenComplete, mBuf);
                   break;
                }
                case EVTTNLMGMTCFM:
                {
-                  cmUnpkEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
+                  unpackEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
                   break;
                }
                default:

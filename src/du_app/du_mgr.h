@@ -75,7 +75,7 @@
 #define EVTSRVOPENCFM  5
 #define EVTTNLMGMTREQ  6
 #define EVTTNLMGMTCFM  7
-#define EVTTTIIND    8
+#define EVTSLOTIND    8
 #define EVTSTARTPOLL  9
 #define EVENT_RIC_DATA  10
 
@@ -245,6 +245,8 @@ S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm);
 S16 duSendEgtpTestData();
 S16 duSendEgtpDatInd(Buffer *mBuf);
 S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
+S16 duHandleSlotInd(Pst *pst, SlotInfo *slotInfo);
+S16 duBuildAndSendMacCellStartReq();
 
 #endif
 

@@ -76,10 +76,8 @@ static int RLOG_MODULE_ID=4096;
 #include "rg.x"            /* typedefs for MAC */
 
 #include "mac_sch_interface.h"
-/* local defines */
+#include "mac_upr_inf_api.h"
 
-/* local typedefs */
- 
 /* local externs */
 PRIVATE S16  rgLIMValidateSap ARGS((Inst inst,SuId suId));
 PRIVATE Void rgLIMUtlFreeDatIndEvnt ARGS((TfuDatIndInfo *datInd,
@@ -633,6 +631,56 @@ int sendSlotIndMacToSch(SlotIndInfo *slotInd)
    return(*macSchSlotIndOpts[pst.selector])(&pst,slotInd);
 }
 
+
+/*******************************************************************
+ *
+ * @brief Send slot indication to DU APP
+ *
+ * @details
+ *
+ *    Function : sendSlotIndMacToDuApp
+ *
+ *    Functionality:
+ *       Send slot indication to DU APP
+ *
+ * @params[in] Slot indication info 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
+{
+   Pst pst;
+   SlotInfo  *slotInfo;
+  
+   /* Send Slot Indication to DU APP */
+   SGetSBuf(rgCb[0].rgInit.region, rgCb[0].rgInit.pool, \
+      (Data **)&slotInfo, sizeof(SlotInfo));
+   if(!slotInfo)
+   {
+      DU_LOG("\nMAC : Slot Indication memory allocation failed");
+      return RFAILED;
+   }
+
+   /* Fill Pst */
+   pst.selector  = DU_MAC_LWLC;
+   pst.srcEnt    = ENTRG;
+   pst.dstEnt    = ENTDUAPP;
+   pst.dstInst   = 0;
+   pst.srcInst   = 0;
+   pst.dstProcId = rgCb[pst.srcInst].rgInit.procId;
+   pst.srcProcId = rgCb[pst.srcInst].rgInit.procId;
+   pst.region = rgCb[pst.srcInst].rgInit.region;
+   pst.pool = rgCb[pst.srcInst].rgInit.pool;
+   pst.event = EVENT_MAC_SLOT_IND;
+   pst.route = 0;
+   pst.prior = 0;
+   pst.intfVer = 0;
+ 
+   return MacDuAppSendSlotInd(&pst, slotInfo);
+  
+}
+
 /**
  * @brief Transmission time interval indication from PHY.
  *
@@ -659,6 +707,8 @@ SlotIndInfo         *slotInd
    VOLATILE U32     startTime=0;
    Inst             inst;
 
+   DU_LOG("\nMAC : Slot Indication received");
+   
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /*starting Task*/
@@ -668,7 +718,7 @@ SlotIndInfo         *slotInd
    ret = sendSlotIndMacToSch(slotInd);
    if(ret != ROK)
    {
-      DU_LOG("\nsending of slot ind msg from MAC to SCH failed");
+      DU_LOG("\nMAC : Sending of slot ind msg from MAC to SCH failed");
       RETVALUE(ret);
    }
 
@@ -676,10 +726,17 @@ SlotIndInfo         *slotInd
    ret = macProcessSlotInd(inst,*slotInd);
    if(ret != ROK)
    {
-      DU_LOG("\nmacProcessSlotInd failed");
+      DU_LOG("\nMAC : macProcessSlotInd failed");
       RETVALUE(ret);
    }
 
+   /* send slot indication to du app */
+   ret = sendSlotIndMacToDuApp(slotInd);
+   if(ret != ROK)
+   {
+      DU_LOG("\nMAC :Sending of slot ind msg from MAC to DU APP failed");
+      RETVALUE(ret);
+   }
 
    /*stoping Task*/
    SStopTask(startTime, PID_MAC_TTI_IND);

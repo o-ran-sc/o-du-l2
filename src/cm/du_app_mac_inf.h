@@ -32,10 +32,17 @@
 #define SEARCHSPACE_0_INDEX   0
 #define SIB1_MCS  4
 
+/* Macros for coupling */
+#define DU_MAC_LC  0
+#define DU_MAC_TC  1
+#define DU_MAC_LWLC  2
 
 /* Event IDs */
 #define EVENT_MAC_CELL_CONFIG_REQ    200
 #define EVENT_MAC_CELL_CONFIG_CFM    201
+#define EVENT_MAC_CELL_START_REQ     202
+#define EVENT_MAC_CELL_STOP_REQ      203
+#define EVENT_MAC_SLOT_IND           204
 
 typedef enum
 {
@@ -195,48 +202,70 @@ typedef struct macCellCfgCfm
    U16            transId;
 }MacCellCfgCfm;
 
-/* function pointers for packing macCellCfg Request */
-typedef U16 (*packMacCellCfgReq) ARGS((
+typedef struct slotInfo
+{
+   uint16_t sfn;
+   uint16_t slot;
+}SlotInfo;
+
+typedef struct macCellStartInfo
+{
+   uint16_t cellId;
+}MacCellStartInfo;
+
+typedef struct macCellStopInfo
+{
+   uint16_t cellId;
+}MacCellStopInfo;
+
+/* Functions for slot Ind from MAC to DU APP*/
+typedef S16 (*DuMacSlotInd) ARGS((
+   Pst       *pst,
+   SlotInfo  *slotInfo ));
+
+extern S16 packMacSlotInd(Pst *pst, SlotInfo *slotInfo );
+extern S16 unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
+extern S16 duHandleSlotInd(Pst *pst, SlotInfo *slotInfo);
+
+/* Functions for mac cell start req */
+typedef S16 (*DuMacCellStartReq) ARGS((
+   Pst               *pst, 
+   MacCellStartInfo  *cellStartInfo ));
+
+extern S16 packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo);
+extern S16 unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf);
+extern S16 MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo);
+
+/* Functions for mac cell stop request */
+typedef S16 (*DuMacCellStopReq) ARGS((
+   Pst               *pst,
+   MacCellStopInfo  *cellStopInfo ));
+ 
+extern S16 packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo);
+extern S16 unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf);
+extern S16 MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo);
+
+/* Function pointers for packing macCellCfg Request and Confirm */
+typedef S16 (*packMacCellCfgReq) ARGS((
    Pst           *pst,
-   MacCellCfg    *macCellCfg
-));
+   MacCellCfg    *macCellCfg ));
 
 typedef S16 (*packMacCellCfgConfirm) ARGS((
    Pst              *pst,
-   MacCellCfgCfm    *macCellCfgCfm
-));
+   MacCellCfgCfm    *macCellCfgCfm ));
 
-typedef S16 (*DuMacCellCfgReq)     ARGS((
-        Pst        *pst,               /* Post Structure */
-        MacCellCfg *macCellCfg         /* Config Structure */
-     ));
+typedef S16 (*DuMacCellCfgReq) ARGS((
+   Pst        *pst,        
+   MacCellCfg *macCellCfg));
 
-typedef S16 (*DuMacCellCfgCfm)     ARGS((
-        MacCellCfgCfm *macCellCfgCfm         /* Config Structure */
-     ));
+typedef S16 (*DuMacCellCfgCfm) ARGS((
+   MacCellCfgCfm *macCellCfgCfm ));
 
-U16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
-
-EXTERN int MacHdlCellCfgReq
-(
- Pst           *pst,
- MacCellCfg    *macCellCfg
-);
-
-void cmUnpackLwLcMacCellCfg(
-   DuMacCellCfgReq func,
-   Pst *pst,
-   Buffer *mBuf);
-
-U16 unpackMacCellCfgCfm(
-   DuMacCellCfgCfm func,
-   Pst *pst,
-   Buffer *mBuf);
-
-EXTERN S16 duHandleMacCellCfgCfm
-(
- MacCellCfgCfm    *macCellCfgCfm
-);
+extern U16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
+extern int MacHdlCellCfgReq(Pst *pst, MacCellCfg *macCellCfg);
+extern void cmUnpackLwLcMacCellCfg(DuMacCellCfgReq func, Pst *pst, Buffer *mBuf);
+extern U16 unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf);
+extern S16 duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm);
 
 #endif
 

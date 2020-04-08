@@ -16,7 +16,7 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains message handling functionality for DU cell management */
+/* This file contains message handling functionality for DU APP */
 
 #include "du_mgr.h"
 #include "du_sctp.h"
@@ -42,6 +42,20 @@ packMacCellCfgReq packMacCellCfgOpts[] =
    packMacCellCfg, /* packing for loosely coupled */
    MacHdlCellCfgReq, /* packing for tightly coupled */
    packMacCellCfg, /* packing for light weight loosly coupled */
+};
+
+DuMacCellStartReq packMacCellStartReqOpts[] =
+{
+   packMacCellStartReq,   /* Loose coupling */
+   MacHdlCellStartReq,    /* TIght coupling */
+   packMacCellStartReq    /* Light weight-loose coupling */
+};
+
+DuMacCellStopReq packMacCellStopReqOpts[] =
+{
+   packMacCellStopReq,   /* Loose coupling */
+   MacHdlCellStopReq,    /* TIght coupling */
+   packMacCellStopReq    /* Light weight-loose coupling */
 };
 
 /**************************************************************************
@@ -1004,7 +1018,7 @@ S16 duBuildEgtpCfgReq()
     cmMemcpy((U8 *)&egtpCfg, (U8 *)&duCfgParam.egtpParams, (PTR)sizeof(EgtpConfig));
     
     duFillEgtpPst(&pst, EVTCFGREQ);
-    cmPkEgtpCfgReq(&pst, egtpCfg);
+    packEgtpCfgReq(&pst, egtpCfg);
  
     RETVALUE(ROK);
 }
@@ -1069,7 +1083,7 @@ S16 duSendEgtpSrvOpenReq()
    DU_LOG("\nDU_APP : Sending EGTP server open request");
 
    duFillEgtpPst(&pst, EVTSRVOPENREQ);
-   cmPkEgtpSrvOpenReq(&pst);
+   packEgtpSrvOpenReq(&pst);
 
    RETVALUE(ROK);
 }
@@ -1142,7 +1156,7 @@ S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid)
    DU_LOG("\nDU_APP : Sending EGTP tunnel management request");
     
    duFillEgtpPst(&pst, EVTTNLMGMTREQ);
-   cmPkEgtpTnlMgmtReq(&pst, tnlEvt);
+   packEgtpTnlMgmtReq(&pst, tnlEvt);
     
    RETVALUE(ROK);
 }
@@ -1481,26 +1495,26 @@ S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
 
 /*******************************************************************
  *
- * @brief Handles TTI indication 
+ * @brief Sends Slot indication to EGTP
  *
  * @details
  *
- *    Function : duSendEgtpTTIInd
+ *    Function : duSendEgtpSlotInd
  *
  *    Functionality:
- *     Handles TTI indication received from PHY
+ *     Sends Slot indication to EGTP
  *
  * @params[in] 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duSendEgtpTTIInd()
+S16 duSendEgtpSlotInd()
 {
    Pst pst;
 
-   duFillEgtpPst(&pst, EVTTTIIND);
-   cmPkEgtpTTIInd(&pst);
+   duFillEgtpPst(&pst, EVTSLOTIND);
+   packEgtpSlotInd(&pst);
    
    RETVALUE(ROK);
    
@@ -1585,6 +1599,9 @@ S16 duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm)
 
 			/* Build and send GNB-DU config update */
 			ret = BuildAndSendDUConfigUpdate();
+
+         /* Build and Send Cell start request to MAC */
+         duBuildAndSendMacCellStartReq();
 		}
 		else
 		{
@@ -1600,6 +1617,131 @@ S16 duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm)
 	}
    return ret;
 }
+
+/*******************************************************************
+ *
+ * @brief Handles slot indication from MAC
+ *
+ * @details
+ *
+ *    Function : duHandleSlotInd
+ *
+ *    Functionality:
+ *      Handles slot indication from MAC
+ *
+ * @params[in] Post structure pointer
+ *             Slot Info pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 duHandleSlotInd(Pst *pst, SlotInfo *slotInfo)
+{
+   
+   DU_LOG("\nDU APP : Slot Indication received");
+
+   /* TODO : Slot Indication to be moved out of EGTP_TEST when
+    * data path is established */
+#ifdef EGTP_TEST
+   duSendEgtpSlotInd();    
+#endif
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds and sends cell start request to MAC
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendMacCellStartReq
+ *
+ *    Functionality:
+ *       Builds and sends cell start request to MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 duBuildAndSendMacCellStartReq()
+{
+   Pst pst;
+   MacCellStartInfo *cellStartInfo = NULL;
+
+   DU_LOG("\nDU APP : Building and Sending cell start request to MAC");
+
+   /* Send Cell Start Request to MAC */
+   DU_ALLOC(cellStartInfo, sizeof(MacCellStartInfo));
+   if(!cellStartInfo)
+   {
+      DU_LOG("\nDU APP : Memory alloc failed while building cell start request");
+      return RFAILED;
+   }
+   cellStartInfo->cellId = duCb.actvCellLst[0]->cellId;
+ 
+   /* Fill Pst */
+   pst.selector  = DU_MAC_LWLC;
+   pst.srcEnt    = ENTDUAPP;
+   pst.dstEnt    = ENTRG;
+   pst.dstInst   = 0;
+   pst.srcInst   = 0;
+   pst.dstProcId = DU_PROC;
+   pst.srcProcId = DU_PROC;
+   pst.region = DU_APP_MEM_REGION;
+   pst.pool = DU_POOL;
+   pst.event = EVENT_MAC_CELL_START_REQ;
+ 
+   return (*packMacCellStartReqOpts[pst.selector])(&pst, cellStartInfo);
+}
+
+/*******************************************************************
+ *
+ * @brief Builds and sends cell stop request to MAC
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendMacCellStopReq 
+ *
+ *    Functionality:
+ *       Builds and sends cell stop request to MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 duBuildAndSendMacCellStopReq()
+{
+   Pst pst;
+   MacCellStopInfo *cellStopInfo = NULL;
+ 
+   DU_LOG("\nDU APP : Building and Sending cell stop request to MAC");
+
+   /* Send Cell Stop Request to MAC */
+   DU_ALLOC(cellStopInfo, sizeof(MacCellStopInfo));
+   if(!cellStopInfo)
+   {
+      DU_LOG("\nDU APP : Memory alloc failed while building cell stop request");
+      return RFAILED;
+   }
+   cellStopInfo->cellId = duCb.actvCellLst[0]->cellId;
+ 
+   /* Fill Pst */
+   pst.selector  = DU_MAC_LWLC;
+   pst.srcEnt    = ENTDUAPP;
+   pst.dstEnt    = ENTRG;
+   pst.dstInst   = 0;
+   pst.srcInst   = 0;
+   pst.dstProcId = DU_PROC;
+   pst.srcProcId = DU_PROC;
+   pst.region = DU_APP_MEM_REGION;
+   pst.pool = DU_POOL;
+   pst.event = EVENT_MAC_CELL_STOP_REQ;
+ 
+   return (*packMacCellStopReqOpts[pst.selector])(&pst, cellStopInfo);
+}
+
 
 /**********************************************************************
   End of file
