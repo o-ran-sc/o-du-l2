@@ -96,7 +96,7 @@ S16 egtpTnlDel(EgtpTnlEvt tnlEvt);
 S16 egtpHdlDatInd(EgtpMsg msg);
 S16 egtpEncodeHdr(U8 *preEncodedHdr, EgtpMsgHdr *preDefHdr, U8 *hdrIdx);
 S16 egtpSendMsg(Buffer *mBuf);
-S16 egtpTTIInd();
+S16 egtpSlotInd();
 S16 egtpRecvMsg();
 S16 egtpHdlRecvData(Buffer *mBuf);
 S16 egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg);

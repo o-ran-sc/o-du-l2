@@ -27,7 +27,7 @@
  *
  * @details
  *
- *    Function : cmPkEgtpCfmStatus
+ *    Function : packEgtpCfmStatus
  *
  *    Functionality:
  *       Packs EGTP confirm status
@@ -38,7 +38,7 @@
  *         RFAILED - failure
  *
  ******************************************************************/
-S16 cmPkEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
+S16 packEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
 {
    SPkU16(cfm.status, mBuf);
    SPkU16(cfm.reason, mBuf);
@@ -52,7 +52,7 @@ S16 cmPkEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
  *
  * @details
  *
- *    Function : cmUnpkEgtpCfmStatus
+ *    Function : unpackEgtpCfmStatus
  *
  *    Functionality:
  *       Packs EGTP confirm status
@@ -64,7 +64,7 @@ S16 cmPkEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
  *
  ******************************************************************/
 
-S16 cmUnpkEgtpCfmStatus(CmStatus *cfm, Buffer *mBuf)
+S16 unpackEgtpCfmStatus(CmStatus *cfm, Buffer *mBuf)
 {
    SUnpkU16(&(cfm->reason), mBuf);
    SUnpkU16(&(cfm->status), mBuf);
@@ -78,7 +78,7 @@ S16 cmUnpkEgtpCfmStatus(CmStatus *cfm, Buffer *mBuf)
  *
  * @details
  *
- *    Function : cmPkEgtpCfgReq 
+ *    Function : packEgtpCfgReq 
  *
  *    Functionality:
  *       Packs EGTP configuration
@@ -89,7 +89,7 @@ S16 cmUnpkEgtpCfmStatus(CmStatus *cfm, Buffer *mBuf)
  *         RFAILED - failure
  *
  ******************************************************************/
-S16 cmPkEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
+S16 packEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 {
    Buffer *mBuf;
 
@@ -126,7 +126,7 @@ S16 cmPkEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
  *
  * @details
  *
- *    Function : cmUnpkEgtpCfgReq
+ *    Function : unpackEgtpCfgReq
  *
  *    Functionality:
  *       Unpacks EGTP configuration
@@ -138,7 +138,7 @@ S16 cmPkEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 cmUnpkEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
+S16 unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
 {
    EgtpConfig egtpCfg;
 
@@ -173,7 +173,7 @@ S16 cmUnpkEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
  *
  * @details
  *
- *    Function : cmPkEgtpCfgCfm
+ *    Function : packEgtpCfgCfm
  *
  *    Functionality:
  *       Packs EGTP configuration result
@@ -185,7 +185,7 @@ S16 cmUnpkEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
  *
  ******************************************************************/
 
-S16 cmPkEgtpCfgCfm(Pst *pst, CmStatus cfm)
+S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
   
@@ -195,7 +195,7 @@ S16 cmPkEgtpCfgCfm(Pst *pst, CmStatus cfm)
       RETVALUE(RFAILED);
    }
  
-   cmPkEgtpCfmStatus(cfm, mBuf); 
+   packEgtpCfmStatus(cfm, mBuf); 
    SPstTsk(pst, mBuf); 
    RETVALUE(ROK); 
 }
@@ -206,7 +206,7 @@ S16 cmPkEgtpCfgCfm(Pst *pst, CmStatus cfm)
  *
  * @details
  *
- *    Function : cmUnpkEgtpCfgCfm
+ *    Function : unpackEgtpCfgCfm
  *
  *    Functionality:
  *       Unpacks EGTP configuration result
@@ -218,12 +218,12 @@ S16 cmPkEgtpCfgCfm(Pst *pst, CmStatus cfm)
  *
  ******************************************************************/
  
-S16 cmUnpkEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
+S16 unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
 {
    CmStatus cfm;
    
    cmMemset((U8 *)&cfm, 0, sizeof(CmStatus));
-   cmUnpkEgtpCfmStatus(&cfm, mBuf);
+   unpackEgtpCfmStatus(&cfm, mBuf);
 
    RETVALUE((*func)(cfm));
 }
@@ -234,7 +234,7 @@ S16 cmUnpkEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
  *
  * @details
  *
- *    Function : cmPkEgtpSrvOpenReq
+ *    Function : packEgtpSrvOpenReq
  *
  *    Functionality:
  *       Packs EGTP server open request
@@ -244,7 +244,7 @@ S16 cmUnpkEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
  *         RFAILED - failure
  *
   *******************************************************************/ 
-S16 cmPkEgtpSrvOpenReq(Pst *pst)
+S16 packEgtpSrvOpenReq(Pst *pst)
 {
    Buffer *mBuf;
  
@@ -264,7 +264,7 @@ S16 cmPkEgtpSrvOpenReq(Pst *pst)
  *
  * @details
  *
- *    Function : cmUnpkEgtpSrvOpenReq
+ *    Function : unpackEgtpSrvOpenReq
  *
  *    Functionality:
  *       Unpacks EGTP server open req
@@ -275,7 +275,7 @@ S16 cmPkEgtpSrvOpenReq(Pst *pst)
  *         RFAILED - failure
  *
  ******************************************************************/
-S16 cmUnpkEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf)
+S16 unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf)
 {
     RETVALUE((*func)(pst));
 }
@@ -287,7 +287,7 @@ S16 cmUnpkEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf)
  *
  * @details
  *
- *    Function : cmPkEgtpSrvOpenCfm
+ *    Function : packEgtpSrvOpenCfm
  *
  *    Functionality:
  *       Packs EGTP server open confirm
@@ -297,7 +297,7 @@ S16 cmUnpkEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  *******************************************************************/
-S16 cmPkEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
+S16 packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
  
@@ -307,7 +307,7 @@ S16 cmPkEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
       RETVALUE(RFAILED);
    }
  
-   cmPkEgtpCfmStatus(cfm, mBuf); 
+   packEgtpCfmStatus(cfm, mBuf); 
    SPstTsk(pst, mBuf);
    RETVALUE(ROK);
 
@@ -319,7 +319,7 @@ S16 cmPkEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
  *
  * @details
  *
- *    Function : cmUnpkEgtpSrvOpenCfm
+ *    Function : unpackEgtpSrvOpenCfm
  *
  *    Functionality:
  *       Unpacks EGTP server open confirm
@@ -330,12 +330,12 @@ S16 cmPkEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
  *         RFAILED - failure
  *
  *******************************************************************/
-S16 cmUnpkEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf)
+S16 unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf)
 {
    CmStatus cfm;
     
    cmMemset((U8 *)&cfm, 0, sizeof(CmStatus));
-   cmUnpkEgtpCfmStatus(&cfm, mBuf);
+   unpackEgtpCfmStatus(&cfm, mBuf);
 
    RETVALUE((*func)(cfm));
 }
@@ -346,7 +346,7 @@ S16 cmUnpkEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf)
  *
  * @details
  *
- *    Function : cmPkEgtpTnlMgmtReq
+ *    Function : packEgtpTnlMgmtReq
  *
  *    Functionality:
  *       Packs EGTP tunnel management request
@@ -359,7 +359,7 @@ S16 cmUnpkEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf)
  *         RFAILED - failure
  *
  *******************************************************************/
-S16 cmPkEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
+S16 packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    Buffer *mBuf;
 
@@ -384,7 +384,7 @@ S16 cmPkEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
  *
  * @details
  *
- *    Function : cmUnpkEgtpTnlMgmtReq
+ *    Function : unpackEgtpTnlMgmtReq
  *
  *    Functionality:
  *       Unpacks EGTP tunnel management request
@@ -396,7 +396,7 @@ S16 cmPkEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
  *         RFAILED - failure
  * 
  * *******************************************************************/
-S16 cmUnpkEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
+S16 unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
 {
    EgtpTnlEvt tnlEvt;
 
@@ -416,7 +416,7 @@ S16 cmUnpkEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
  *
  * @details
  *
- *    Function : cmPkEgtpTnlMgmtCfm
+ *    Function : packEgtpTnlMgmtCfm
  *
  *    Functionality:
  *      Packs EGTP tunnel management cfm
@@ -429,7 +429,7 @@ S16 cmUnpkEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
  *
  ********************************************************************/
 
-S16 cmPkEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
+S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    Buffer *mBuf;
 
@@ -443,7 +443,7 @@ S16 cmPkEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
    SPkU32(tnlEvt.lclTeid, mBuf);
    SPkU32(tnlEvt.remTeid, mBuf);
    
-   cmPkEgtpCfmStatus(tnlEvt.cfmStatus, mBuf);
+   packEgtpCfmStatus(tnlEvt.cfmStatus, mBuf);
     
    SPstTsk(pst, mBuf);
    RETVALUE(ROK);
@@ -456,7 +456,7 @@ S16 cmPkEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
  *
  * @details
  *
- *    Function : cmUnpkEgtpTnlMgmtCfm
+ *    Function : unpackEgtpTnlMgmtCfm
  *
  *    Functionality:
  *       Unpacks EGTP tunnel management confirm
@@ -468,13 +468,13 @@ S16 cmPkEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
  *         RFAILED - failure
  * 
  * *******************************************************************/
-S16 cmUnpkEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
+S16 unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
 {
    EgtpTnlEvt tnlEvt;
  
    cmMemset((U8 *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
-   cmUnpkEgtpCfmStatus(&(tnlEvt.cfmStatus), mBuf); 
+   unpackEgtpCfmStatus(&(tnlEvt.cfmStatus), mBuf); 
    SUnpkU32(&(tnlEvt.remTeid), mBuf);
    SUnpkU32(&(tnlEvt.lclTeid), mBuf);
    SUnpkU8(&(tnlEvt.action), mBuf);
@@ -485,21 +485,21 @@ S16 cmUnpkEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
 
 /*******************************************************************
  *
- * @brief Packs TTI indication and sends to EGTP
+ * @brief Packs Slot indication and sends to EGTP
  *
  * @details
  *
- *    Function : cmPkEgtpTTIInd
+ *    Function : packEgtpSlotInd
  *
  *    Functionality:
- *       Packs TTI indication and sends tp EGTP
+ *       Packs slot indication and sends tp EGTP
  *
  * @params[in] Post structure
  * @return ROK     - success
  *         RFAILED - failure
  *
  *******************************************************************/
-S16 cmPkEgtpTTIInd(Pst *pst)
+S16 packEgtpSlotInd(Pst *pst)
 {
    Buffer *mBuf;
 
@@ -516,21 +516,21 @@ S16 cmPkEgtpTTIInd(Pst *pst)
 
 /*******************************************************************
  *
- * @brief Unpacks TTI indication
+ * @brief Unpacks slot indication
  *
  * @details
  *
- *    Function : cmUnpkEgtpTTIInd
+ *    Function : unpackEgtpSlotInd
  *
  *    Functionality:
- *       Unpacks TTI indication
+ *       Unpacks slot indication
  *
  * @params[in]
  * @return ROK     - success
  *         RFAILED - failure
  *
 ******************************************************************/
-S16 cmUnpkEgtpTTIInd(EgtpTTIInd func, Pst *pst, Buffer *mBuf)
+S16 unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf)
 {
     RETVALUE((*func)());
 }

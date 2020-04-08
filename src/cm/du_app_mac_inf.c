@@ -53,7 +53,7 @@
  *         RFAILED - failure
  *
  ***************************************************************************/
-U16 packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
+uint16_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
 {
    if(pst->selector == DU_SELECTOR_LC)
    {
@@ -135,7 +135,7 @@ void unpackDuMacCellCfg(
  *         RFAILED - failure
  *
  ***************************************************************************/
-U16 packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
+uint16_t packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 {
    if(pst->selector == DU_SELECTOR_LC)
    {
@@ -176,7 +176,7 @@ U16 packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
  *         RFAILED - failure
  *
  ***************************************************************************/
-U16 unpackMacCellCfgCfm(
+uint16_t unpackMacCellCfgCfm(
    DuMacCellCfgCfm func, 
    Pst *pst,
    Buffer *mBuf)
@@ -194,6 +194,244 @@ U16 unpackMacCellCfgCfm(
    else
    {
       /* only loose coupling is suported */
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Send Cell Start Request to MAC
+ *
+ * @details
+ *
+ *    Function : packMacCellStartReq
+ *
+ *    Functionality:
+ *      Packs and Sends Cell Start Request to MAC
+ *
+ * @params[in] Post structure pointer
+ *             MacCellStartInfo pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
+{
+   if(pst->selector == DU_SELECTOR_LC)
+   {
+      /* Loose coupling not supported */
+      return RFAILED;
+   }
+   else if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      Buffer *mBuf = NULLP;
+
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nDU APP : Memory allocation failed for cell start req pack");
+         RETVALUE(RFAILED);
+      }
+
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)cellStartInfo, mBuf);
+
+      return SPstTsk(pst,mBuf);
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks MAC Cell Start Request from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMaCellStartReq
+ *
+ *    Functionality:
+ *      Unpacks MAC Cell Start Request from DU APP
+ *
+ * @params[in] Function pointer of cell start request handler
+ *             Post structure pointer
+ *             Cell Start Request Info Pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf)
+{
+   MacCellStartInfo  *cellStartInfo;
+ 
+   if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      /* unpack the address of the structure */
+      CMCHKUNPK(cmUnpkPtr, (PTR *)&cellStartInfo, mBuf);
+      SPutMsg(mBuf); 
+      return (*func)(pst, cellStartInfo);
+   }
+   else
+   {
+      /* Nothing to do for loose coupling */
+      SPutMsg(mBuf);
+      return ROK;
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Send cell stop request to MAC
+ *
+ * @details
+ *
+ *    Function : packMacCellStopReq
+ *
+ *    Functionality:
+ *       Packs and Send cell stop request to MAC
+ *
+ * @params[in] Post structure pointer
+ *             Cell stop info structure 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
+{
+   if(pst->selector == DU_SELECTOR_LC)
+   {
+      /* Loose coupling not supported */
+      return RFAILED;
+   }
+   else if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      Buffer *mBuf = NULLP;
+ 
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nDU APP : Memory allocation failed for cell stop req pack");
+         RETVALUE(RFAILED);
+      }
+ 
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)cellStopInfo, mBuf);
+
+      return SPstTsk(pst,mBuf);
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks cell stop request from DU APP 
+ *
+ * @details
+ *
+ *    Function : unpackMaCellStopReq 
+ *
+ *    Functionality:
+ *       Unpacks cell stop request from DU APP 
+ *
+ * @params[in] Handler function pointer
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf)
+{
+   MacCellStopInfo  *cellStopInfo;
+  
+   if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      /* unpack the address of the structure */
+      CMCHKUNPK(cmUnpkPtr, (PTR *)&cellStopInfo, mBuf);
+      SPutMsg(mBuf);
+      return (*func)(pst, cellStopInfo);
+   }
+   else
+   {
+      /* Nothing to do for loose coupling */
+      SPutMsg(mBuf);
+      return ROK;
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends slot ind from MAC to DUAPP
+ *
+ * @details
+ *
+ *    Function : packMacSlotInd
+ *
+ *    Functionality:
+ *       Packs and Sends slot ind from MAC to DUAPP
+ *
+ * @params[in] Post structure pointer
+ *             Slot Info pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo )
+{
+   if(pst->selector == DU_SELECTOR_LC || pst->selector == DU_SELECTOR_TC)
+   {
+      /* Loose coupling not supported */
+      DU_LOG("\nDU APP : Only LWLC supported");
+      return RFAILED;
+   }
+   else if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      Buffer *mBuf = NULLP;
+
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nDU APP : Memory allocation failed for cell start req pack");
+         RETVALUE(RFAILED);
+      }
+ 
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)slotInfo, mBuf);
+
+      return SPstTsk(pst,mBuf);
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks slot indication from MAC
+ *
+ * @details
+ *
+ *    Function : unpackMacSlotInd
+ *
+ *    Functionality:
+ *         Unpacks slot indication from MAC
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
+{
+   SlotInfo *slotInfo;
+  
+   if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      /* unpack the address of the structure */
+      CMCHKUNPK(cmUnpkPtr, (PTR *)&slotInfo, mBuf);
+      SPutMsg(mBuf);
+      return (*func)(pst, slotInfo);
+   }
+   else
+   {
+      /* Nothing to do for loose coupling */
+      SPutMsg(mBuf);
+      return ROK;
    }
    return ROK;
 }
