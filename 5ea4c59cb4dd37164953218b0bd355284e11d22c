@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7960d006_ca5f31f8",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-08T08:49:39Z",
+      "side": 1,
+      "message": "One System Frame is 10ms, hence SFN need to be checked for modulo 8 (SCH_MIB_TRANS is 8)\nAlso, slot value needs to be checked for 0.\n\nor, (SFN*10)+slot can be checked for modulo 80",
+      "revId": "5ea4c59cb4dd37164953218b0bd355284e11d22c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1539ece3_9422dcd9",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-08T08:49:39Z",
+      "side": 1,
+      "message": "(SFN*10)+slot can be checked for ssb_rep",
+      "revId": "5ea4c59cb4dd37164953218b0bd355284e11d22c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
