@@ -26,6 +26,10 @@
 #define ODU_VALUE_FOUR 4
 #define ODU_VALUE_FIVE 5
 #define ODU_VALUE_SEVEN 7
+#define ODU_VALUE_EIGHT 8
+#define ODU_VALUE_NINE  9 
+#define ODU_VALUE_TEN  10
+
 
 /* Function declarations */
 int BuildMibPdu();
