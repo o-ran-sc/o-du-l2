@@ -16,7 +16,7 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains message handling functionality for DU APP */
+/* This file contains message handling functionality for DU cell management */
 #include "du_cell_mgr.h"
 
 extern DuCfgParams duCfgParam;
@@ -76,7 +76,7 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
       cellCb->cellInfo.nrPci = pci;
 
       /* Now remove this cell from configured list and move to active list */
-      duCb.cfgCellLst[nci-1] = NULLP;
+      duCb.cfgCellLst[nci-1] = NULL;
       duCb.actvCellLst[nci-1] = cellCb;
 
       /* Build and send Mac Cell Cfg for the number of active cells */

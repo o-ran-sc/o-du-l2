@@ -16,26 +16,14 @@
 ################################################################################
 *******************************************************************************/
 
-#include "odu_common_codec.h"
+/* This file contains the definitions for Upper Interface APIs that are
+ * invoked from MAC */
 
-/* Macros */
-#define ODU_VALUE_ZERO 0
-#define ODU_VALUE_ONE 1
-#define ODU_VALUE_TWO 2
-#define ODU_VALUE_THREE 3
-#define ODU_VALUE_FOUR 4
-#define ODU_VALUE_FIVE 5
-#define ODU_VALUE_SEVEN 7
-#define ODU_VALUE_EIGHT 8
-#define ODU_VALUE_NINE  9 
-#define ODU_VALUE_TEN  10
+#include "mac_main.h"
 
-
-/* Function declarations */
-int BuildMibPdu();
-int BuildMibMsg();
-int BuildSib1Msg();
+uint16_t MacDuAppSlotInd(Pst *pst, SlotInfo *slotInfo);
 
 /**********************************************************************
          End of file
 **********************************************************************/
+

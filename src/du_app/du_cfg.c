@@ -20,8 +20,26 @@
 #include "du_mgr.h"
 #include "du_sys_info_hdl.h"
 #include "MIB.h"
+#include "SearchSpace.h"
+#include "SIB-TypeInfo.h"
+#include "SchedulingInfo.h"
+#include "SI-SchedulingInfo.h"
+#include "ConnEstFailureControl.h"
 #include "PLMN-IdentityInfo.h"
 #include "odu_common_codec.h"
+#include "PDSCH-TimeDomainResourceAllocation.h"
+#include "BCCH-Config.h"
+#include "PagingCycle.h"
+#include "PCCH-Config.h"
+#include "TimeAlignmentTimer.h"
+#include "RACH-ConfigGeneric.h"
+#include "PUSCH-TimeDomainResourceAllocation.h"
+#include "PUCCH-ConfigCommon.h"
+#include "SubcarrierSpacing.h"
+#include "TDD-UL-DL-Pattern.h"
+#include "RACH-ConfigCommon.h"
+#include "BWP-DownlinkCommon.h"
+#include "BWP-UplinkCommon.h"
 
 extern DuCfgParams duCfgParam;
 extern char encBuf[ENC_BUF_MAX_LEN];
@@ -141,7 +159,7 @@ S16 readMacCfg()
    duCfgParam.macCellCfg.ssbCfg.scsCmn = SUBCARRIER_SPACING;
    duCfgParam.macCellCfg.ssbCfg.ssbOffsetPointA = OFFSET_TO_POINT_A;
    duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
-   duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITTY;
+   duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITY;
    duCfgParam.macCellCfg.ssbCfg.ssbScOffset = SSB_SUBCARRIER_OFFSET;
    duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = 1; /* only one SSB is transmitted */
    duCfgParam.macCellCfg.ssbCfg.ssbMask[1] = 0;
@@ -236,6 +254,145 @@ S16 fillDuPort(U16 *duPort)
 
 /*******************************************************************
  *
+ * @brief Configures serving cell config common in sib1
+ *
+ * @details
+ *
+ *    Function : fillServCellCfgCommSib
+ *
+ *    Functionality:
+ *       - fills Serving cell config common for SIB1
+ *
+ * @params[in] SrvCellCfgCommSib pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ * 
+ ** ****************************************************************/
+S16 fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
+{
+   PdcchCfgCommon   pdcchCfg;
+   PdschCfgCommon   pdschCfg;
+   PcchCfg          pcchCfg;
+   RachCfgCommon    rachCfg;
+   PuschCfgCommon   puschCfg;
+   PucchCfgCommon   pucchCfg;
+   TddUlDlCfgCommon   tddCfg;
+
+   /* Configuring DL Config Common for SIB1*/
+   srvCellCfgComm->dlCfg.freqBandInd = NR_FREQ_BAND_IND; 
+   srvCellCfgComm->dlCfg.offsetToPointA = OFFSET_TO_POINT_A;
+   srvCellCfgComm->dlCfg.dlScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
+   srvCellCfgComm->dlCfg.dlScsCarrier.scs = SUBCARRIER_SPACING;
+   srvCellCfgComm->dlCfg.dlScsCarrier.scsBw = SCS_CARRIER_BANDWIDTH;
+   srvCellCfgComm->dlCfg.locAndBw = FREQ_LOC_BW;
+   
+   /* Configuring PDCCH Config Common For SIB1 */
+   pdcchCfg.present = BWP_DownlinkCommon__pdcch_ConfigCommon_PR_setup;
+   pdcchCfg.ctrlRsrcSetZero = PDCCH_CTRL_RSRC_SET_ZERO;
+   pdcchCfg.searchSpcZero = PDCCH_SEARCH_SPACE_ZERO;
+   pdcchCfg.searchSpcId = PDCCH_SEARCH_SPACE_ID;
+   pdcchCfg.ctrlRsrcSetId = PDCCH_CTRL_RSRC_SET_ID;
+   pdcchCfg.monitorSlotPrdAndOffPresent = \
+      SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
+   //pdcchCfg.monitorSlotPrdAndOff = \
+      SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
+   pdcchCfg.monitorSymbolsInSlot[0] = 128;
+   pdcchCfg.monitorSymbolsInSlot[1] = 0;
+   pdcchCfg.numCandAggLvl1 = SearchSpace__nrofCandidates__aggregationLevel1_n8;
+   pdcchCfg.numCandAggLvl2 = SearchSpace__nrofCandidates__aggregationLevel2_n4;
+   pdcchCfg.numCandAggLvl4 = SearchSpace__nrofCandidates__aggregationLevel4_n2;
+   pdcchCfg.numCandAggLvl8 = SearchSpace__nrofCandidates__aggregationLevel8_n1;
+   pdcchCfg.numCandAggLvl16 = SearchSpace__nrofCandidates__aggregationLevel16_n0;
+   pdcchCfg.searchSpcType = SearchSpace__searchSpaceType_PR_common;
+   pdcchCfg.commSrchSpcDciFrmt = PDCCH_SERACH_SPACE_DCI_FORMAT;
+   pdcchCfg.searchSpcSib1 = PDCCH_SEARCH_SPACE_ID_SIB1;
+   pdcchCfg.pagingSearchSpc = PDCCH_SEARCH_SPACE_ID_PAGING;
+   pdcchCfg.raSearchSpc = PDCCH_SEARCH_SPACE_ID_PAGING;
+   srvCellCfgComm->dlCfg.pdcchCfg = pdcchCfg;
+
+   /* Configuring PDSCH Config Common For SIB1 */
+   pdschCfg.present = BWP_DownlinkCommon__pdsch_ConfigCommon_PR_setup;
+   pdschCfg.k0 = PDSCH_K0;
+   pdschCfg.mapType = \
+      PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
+   pdschCfg.startSymbAndLen = PDSCH_START_SYMB_AND_LEN;
+   srvCellCfgComm->dlCfg.pdschCfg = pdschCfg;
+
+   /* Configuring BCCH Config for SIB1 */
+   srvCellCfgComm->dlCfg.bcchCfg.modPrdCoeff = \
+      BCCH_Config__modificationPeriodCoeff_n16;
+
+   /* Configuring PCCH Config for SIB1 */
+   pcchCfg.dfltPagingCycle = PagingCycle_rf64;
+   pcchCfg.nAndPagingFrmOffPresent = PCCH_Config__nAndPagingFrameOffset_PR_oneT;
+   pcchCfg.numPagingOcc = PCCH_Config__ns_four;
+   srvCellCfgComm->dlCfg.pcchCfg = pcchCfg;
+
+
+   /* Configuring UL Config Common */
+   srvCellCfgComm->ulCfg.ulScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
+   srvCellCfgComm->ulCfg.ulScsCarrier.scs = SUBCARRIER_SPACING;
+   srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = SCS_CARRIER_BANDWIDTH;
+   srvCellCfgComm->ulCfg.pMax = UL_P_MAX;
+   srvCellCfgComm->ulCfg.locAndBw = FREQ_LOC_BW;
+   srvCellCfgComm->ulCfg.timeAlignTimerComm = TimeAlignmentTimer_infinity;
+
+   /* Configuring RACH Config Common for SIB1 */
+   rachCfg.present = BWP_UplinkCommon__rach_ConfigCommon_PR_setup;
+   rachCfg.prachCfgIdx = PRACH_CONFIG_IDX;
+   rachCfg.msg1Fdm = RACH_ConfigGeneric__msg1_FDM_one;
+   rachCfg.msg1FreqStart = PRACH_FREQ_START;
+   rachCfg.zeroCorrZoneCfg = ZERO_CORRELATION_ZONE_CFG;
+   rachCfg.preambleRcvdTgtPwr = PRACH_PREAMBLE_RCVD_TGT_PWR;
+   rachCfg.preambleTransMax = RACH_ConfigGeneric__preambleTransMax_n200;
+   rachCfg.pwrRampingStep = RACH_ConfigGeneric__powerRampingStep_dB2;
+   rachCfg.raRspWindow = RACH_ConfigGeneric__ra_ResponseWindow_sl20;
+   rachCfg.numRaPreamble = NUM_RA_PREAMBLE;
+   rachCfg.ssbPerRachOccPresent = \
+      RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one;
+   rachCfg.numSsbPerRachOcc = SSB_PER_RACH;
+   rachCfg.contResTimer = RACH_ConfigCommon__ra_ContentionResolutionTimer_sf64;
+   rachCfg.rsrpThreshSsb = RSRP_THRESHOLD_SSB;
+   rachCfg.rootSeqIdxPresent = RACH_ConfigCommon__prach_RootSequenceIndex_PR_l139;
+   rachCfg.rootSeqIdx = ROOT_SEQ_IDX;
+   rachCfg.msg1Scs = PRACH_SUBCARRIER_SPACING ;
+   rachCfg.restrictedSetCfg = PRACH_RESTRICTED_SET_CFG;
+   srvCellCfgComm->ulCfg.rachCfg = rachCfg;
+
+   /* Configuring PUSCH Config Common for SIB1 */
+   puschCfg.present = BWP_UplinkCommon__pusch_ConfigCommon_PR_setup;
+   puschCfg.k2 = PUSCH_K0;
+   puschCfg.mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeA;
+   puschCfg.startSymbAndLen = PUSCH_START_SYMB_AND_LEN;
+   puschCfg.msg3DeltaPreamble = PUSCH_MSG3_DELTA_PREAMBLE;
+   puschCfg.p0NominalWithGrant = PUSCH_P0_NOMINAL_WITH_GRANT;
+   srvCellCfgComm->ulCfg.puschCfg = puschCfg;
+
+   /* Configuring PUCCH Config Common for SIB1 */
+   pucchCfg.present = BWP_UplinkCommon__pucch_ConfigCommon_PR_setup;
+   pucchCfg.rsrcComm = PUCCH_RSRC_COMMON;
+   pucchCfg.grpHop = PUCCH_ConfigCommon__pucch_GroupHopping_neither;
+   pucchCfg.p0Nominal = PUCCH_P0_NOMINAL;
+   srvCellCfgComm->ulCfg.pucchCfg = pucchCfg;
+
+   /* Configuring TDD UL DL config common */
+   tddCfg.refScs = SubcarrierSpacing_kHz30;
+   tddCfg.txPrd = TDD_UL_DL_Pattern__dl_UL_TransmissionPeriodicity_ms2p5;
+   tddCfg.numDlSlots = NUM_DL_SLOTS;
+   tddCfg.numDlSymbols = NUM_DL_SYMBOLS;
+   tddCfg.numUlSlots = NUM_UL_SLOTS;
+   tddCfg.numUlSymbols = NUM_UL_SYMBOLS;
+   srvCellCfgComm->tddCfg = tddCfg;
+
+   srvCellCfgComm->ssbPosInBurst = 192;
+   srvCellCfgComm->ssbPrdServingCell = SSB_PERIODICITY;
+   srvCellCfgComm->ssPbchBlockPwr = SSB_PBCH_PWR;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Configures the DU Parameters
  *
  * @details
@@ -311,8 +468,20 @@ S16 readCfg()
 	sib1.tac = DU_TAC;
 	sib1.ranac = DU_RANAC;
 	sib1.cellIdentity = CELL_IDENTITY;
-	sib1.cellResvdForOpUse = 
+	sib1.cellResvdForOpUse =\
 		PLMN_IdentityInfo__cellReservedForOperatorUse_notReserved;
+   sib1.connEstFailCnt = ConnEstFailureControl__connEstFailCount_n3;
+   sib1.connEstFailOffValidity =\
+      ConnEstFailureControl__connEstFailOffsetValidity_s120;
+   sib1.siSchedInfo.winLen = SI_SchedulingInfo__si_WindowLength_s5;
+   sib1.siSchedInfo.broadcastSta = \
+      SchedulingInfo__si_BroadcastStatus_broadcasting;
+   sib1.siSchedInfo.preiodicity = SchedulingInfo__si_Periodicity_rf8;
+   sib1.siSchedInfo.sibType = SIB_TypeInfo__type_sibType2;
+   sib1.siSchedInfo.sibValTag = SIB1_VALUE_TAG;
+
+   fillServCellCfgCommSib(&sib1.srvCellCfgCommSib);
+
 	duCfgParam.sib1Params = sib1;
 
    for(i=0; i<DEFAULT_CELLS; i++)
