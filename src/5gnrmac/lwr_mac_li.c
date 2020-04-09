@@ -33,7 +33,7 @@
 #include "fapi.h"
 /*#include "wls_lib.h"*/
 
-EXTERN S16 sendToPhy ARGS((U16 msgType, U32 msgLen, void *msg));
+EXTERN void sendToPhy ARGS((U16 msgType, U32 msgLen, void *msg));
 
 /*******************************************************************
   *

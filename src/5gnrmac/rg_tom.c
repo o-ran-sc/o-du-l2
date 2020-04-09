@@ -76,6 +76,7 @@ invoked by PHY towards MAC
 #include "rgm.x"           /* layer management typedefs for MAC */
 #include "rgm.h"           /* layer management typedefs for MAC */
 #include "du_app_mac_inf.h"
+#include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
 
 #ifdef MAC_RLC_UL_RBUF
@@ -611,6 +612,12 @@ SlotIndInfo slotInd
       }
    }
 #endif
+
+/* Trigger for DL TTI REQ */
+   CmLteTimingInfo   dlTtiReqtimingInfo;
+   RGADDTOCRNTTIME(cellCb->crntTime, dlTtiReqtimingInfo, TFU_DELTA);
+   handleDlTtiReq(&dlTtiReqtimingInfo);
+
    dlSf = &cellCb->subFrms[(slotInd.slot % RG_NUM_SUB_FRAMES)];
 
    if((dlSf->txDone == TRUE) ||

@@ -43,12 +43,11 @@ typedef enum
 
 /* Events in Lower Mac */
 typedef enum{
-  PARAM_REQ,
-  PARAM_RSP,
-  CONFIG_REQ,
-  CONFIG_RSP,
-  START_REQ,
-  STOP_REQ,
+  FAPI_PARAM_REQUEST,
+  FAPI_PARAM_RESPONSE,
+  FAPI_CONFIG_REQUEST,
+  FAPI_CONFIG_RESPONSE,
+  FAPI_START_REQUEST,
   MAX_EVENT
 }EventState;
 
@@ -265,7 +264,6 @@ typedef struct clCellParam
    FdOccPerSlot          maxPrachFdOccasionsInASlot;
    RssiMeasurement       rssiMeasurementSupport;
 }ClCellParam;
-
 
 EXTERN ClCb clGlobalCp; 
 EXTERN ClCellCb * rgClUtlGetCellCb ARGS((U16 cellId));

@@ -27,7 +27,6 @@
 
 
 EXTERN S16 rgClHndlCfgReq ARGS((void *msg));
-EXTERN void macToPhy ARGS((U16 msgType, U32 msgLen, void *msg));
 EXTERN void processRequest ARGS((U16 msgType, U32 msgLen, void *msg));
 /******************************************************************
  *
@@ -78,9 +77,9 @@ void phyToMac(U16 msgType, U32 msgLen,void *msg)
  *
 ******************************************************************/
 
-PUBLIC S16 sendToPhy(U16 msgType, U32 msgLen, void *msg)
+PUBLIC void sendToPhy(U16 msgType, U32 msgLen, void *msg)
 {
-#if 0
+#ifdef WLS_MEM
    S8 ret;
    void *pMsg;
 
@@ -92,9 +91,11 @@ PUBLIC S16 sendToPhy(U16 msgType, U32 msgLen, void *msg)
       printf("\nFailure in sending message to PHY");
       RETVALUE(RFAILED);
    }
-#endif
+#else
 
    processRequest(msgType, msgLen, msg);
+
+#endif
 }
 
 /**********************************************************************
