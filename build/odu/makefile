@@ -70,7 +70,7 @@ endif
 # macro for output file name and makefile name
 #
 
-PLTFRM_FLAGS= -UMSPD -DODU #-DEGTP_TEST
+PLTFRM_FLAGS= -UMSPD -DODU #-DEGTP_TEST -DWLS_MEM
 
 ifeq ($(MODE),TDD)
    PLTFRM_FLAGS += -DMODE=TDD

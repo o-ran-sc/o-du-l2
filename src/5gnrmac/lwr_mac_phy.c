@@ -17,8 +17,9 @@
 *******************************************************************************/
 
 /* This file contains APIs to send/receive messages from PHY */
+#include <stdio.h>
+#include <stdint.h>
 
-#include "stdio.h"
 #include "envdep.h"
 #include "ssi.h"
 
@@ -27,37 +28,7 @@
 
 
 EXTERN S16 rgClHndlCfgReq ARGS((void *msg));
-EXTERN void macToPhy ARGS((U16 msgType, U32 msgLen, void *msg));
-EXTERN void processRequest ARGS((U16 msgType, U32 msgLen, void *msg));
-/******************************************************************
- *
- * @brief Receives message to PHY
- *
- * @details
- *
- *    Function : phyToMac
- *
- *    Functionality:
- *         -Receives Msg from PHY
- *
- * @params[in] Message Pointer
- *
- * @return void
- *
- ******************************************************************/
-
-void phyToMac(U16 msgType, U32 msgLen,void *msg)
-{
-   switch(msgType)
-   {
-      case MSG_TYPE_CONFIG_RSP:
-         rgClHndlCfgReq(msg);
-         break;
-
-      default:
-         printf("\nInvalid message type[%x] from PHY", msgType);
-   }
-}
+EXTERN void processFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
 
 /*******************************************************************
  *
@@ -78,9 +49,9 @@ void phyToMac(U16 msgType, U32 msgLen,void *msg)
  *
 ******************************************************************/
 
-PUBLIC S16 sendToPhy(U16 msgType, U32 msgLen, void *msg)
+PUBLIC void sendToPhy(uint8_t msgType, uint32_t msgLen, void *msg)
 {
-#if 0
+#ifdef WLS_MEM
    S8 ret;
    void *pMsg;
 
@@ -92,9 +63,11 @@ PUBLIC S16 sendToPhy(U16 msgType, U32 msgLen, void *msg)
       printf("\nFailure in sending message to PHY");
       RETVALUE(RFAILED);
    }
-#endif
+#else
 
-   processRequest(msgType, msgLen, msg);
+   processFapiRequest(msgType, msgLen, msg);
+
+#endif
 }
 
 /**********************************************************************

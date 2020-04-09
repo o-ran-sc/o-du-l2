@@ -10,4 +10,5 @@
 #include "ssi.x"   /* System services */
 
 void duStartTtiThread();
-S16 duSendEgtpTTIInd();
+//S16 duSendEgtpTTIInd();
+void buildAndSendSlotIndication();
