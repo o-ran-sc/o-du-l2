@@ -305,6 +305,7 @@ U32 gUlCrcPassCounter = 0;
 
 #ifdef RG_5GTF
 EXTERN U32 gUl5gtfPdcchSend;
+#ifdef UNUSE_FUN
 PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq ARGS(
 (
  TfuRecpReqInfo       *recpReqInfo,
@@ -312,6 +313,7 @@ PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq ARGS(
  U16                  validIdx, 
  RgSchErrInfo         *err
  ));
+#endif
 #endif
 
 
@@ -389,7 +391,7 @@ PUBLIC S16 rgSCHTomFillOnlySrsRecpReq ARGS
  RgSchUlAlloc      *alloc,
  TfuUeRecpReqInfo  *datRecpInfo
  ));
-
+#ifdef UNUSE_FUN
 PRIVATE S16 rgSCHTomUtlFillCqiSrsWithSr ARGS
 ((
  RgSchCellCb       *cell,
@@ -398,7 +400,7 @@ PRIVATE S16 rgSCHTomUtlFillCqiSrsWithSr ARGS
  TfuUeRecpReqInfo  *pucchRecpInfo,
  U16               validIdx
  ));
-
+#endif
 PRIVATE S16 rgSCHTomUtlFillCqiSrSrsWithHq ARGS
 ((
  RgSchCellCb         *cell,
@@ -461,7 +463,7 @@ PRIVATE S16 rgSCHTomUtlMoveSrsNxtOccasion ARGS
 RgSchCellCb     *cell,
 RgSchUeCb       *ue
 ));
-
+#ifdef UNUSE_FUN
 PRIVATE Bool rgSCHTomUtlFillDatHarqRecpReq ARGS
 ((
  RgSchCellCb       *cell,
@@ -469,42 +471,46 @@ PRIVATE Bool rgSCHTomUtlFillDatHarqRecpReq ARGS
  TfuUeRecpReqInfo  *datRecpInfo,
  TfuRecpReqInfo    *recpReqInfo
  ));
-
+#endif
+#ifdef UNUSE_FUN
 PRIVATE S16 rgSCHTomUtlFillSrRecpReq ARGS((
          TfuRecpReqInfo   *recpReq,
          RgSchCellCb      *cell,
          U16              validIdx,
          RgSchErrInfo     *err));
-
+#endif
 PRIVATE S16 rgSCHTomUtlWillUeRprtCqiRi ARGS((
          RgSchUeCb        *ue,
          Bool             *willueRprtCqiRii));
-
+#ifdef UNUSE_FUN
 PRIVATE S16 rgSCHTomUtlFillRiRecpReq ARGS((
          TfuRecpReqInfo   *recpReq,
          RgSchCellCb      *cell,
          U16              validIdx,
          RgSchErrInfo     *err));
-
+#endif
+#ifdef UNUSE_FUN
 PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq ARGS((
          TfuRecpReqInfo   *recpReq,
          RgSchCellCb      *cell,
          U16              validIdx,
          RgSchErrInfo     *err));
-
+#endif
+#ifdef UNUSE_FUN
 PRIVATE S16 rgSCHTomUtlFillSrsRecpReq ARGS((
          TfuRecpReqInfo   *recpReq,
          RgSchCellCb      *cell,
          U16              validIdx,
          RgSchErrInfo     *err));
-         
+#endif
+#ifdef UNUSE_FUN         
 PRIVATE S16 rgSCHTomUtlGenIndices ARGS((
          U32      label,
          U8        posM,
          U8        valN,
          U8        valK,
          TfuSubbandInfo*    sbInfo));
-
+#endif
 #endif 
 #ifdef TFU_UPGRADE
 PRIVATE S16 rgSCHTomUtlFillDatRecpReq ARGS((
@@ -591,6 +597,7 @@ PRIVATE S16 rgSCHTomUtlFillSfHqFdbkForOneUe ARGS((
 #ifdef LTEMAC_SPS
 EXTERN PUBLIC Void rgSCHCmnDlSpsSch (RgSchCellCb *cell);
 #ifndef LTE_TDD
+#ifdef UNUSE_FUN
 #ifdef TFU_UPGRADE
 PRIVATE S16 rgSCHTomCnsdrRelPdcch ARGS
 ((
@@ -608,6 +615,7 @@ PRIVATE S16 rgSCHTomCnsdrRelPdcch ARGS
  TfuRecpReqInfo          *recpReqInfo,
  RgSchErrInfo    *err
  ));
+#endif
 #endif
 #endif
 #endif
@@ -644,7 +652,7 @@ PRIVATE Void rgSCHTomUtlSendSfnTick ARGS
 RgSchCellCb  *cell
 ));
 #endif
-
+#ifdef UNUSE_FUN
 PRIVATE Void rgSchTomFillCellTtiInfo ARGS
 ((
 TfuTtiIndInfo      *ttiInd,
@@ -652,6 +660,7 @@ Inst               schInst,
 U8                 *nCell,
 RgSchCellCb        *cells[]
 ));
+#endif
 #ifdef LTE_TDD
 PRIVATE Void rgSchTomUtlTddRlsSfAndHarq ARGS
 ((
@@ -1100,7 +1109,7 @@ TfuHqIndInfo    *harqAckInd;
    TfuHqInfo       *hqInfo;
    Pst             pst;
 #ifdef TFU_UPGRADE
-   U8              tbCnt;
+  // U8              tbCnt;
 #endif 
 
    RgInfRlsHqInfo  *rlsHqBufs = &(cell->rlsHqArr[cell->crntHqIdx]);
@@ -2159,6 +2168,7 @@ PUBLIC S16 rgSCHTomSrsInd(cell, srsInd)
 *       File:  rg_sch_utl.c
 *
 */
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHTomUtlGenIndices
 (
@@ -2200,6 +2210,7 @@ PRIVATE S16 rgSCHTomUtlGenIndices(label, posM, valN, valK, sbInfo)
    }
    RETVALUE(ROK);
 } /* end of rgSCHTomUtlGenIndices*/
+#endif
 #endif 
 /**
  * @brief Handler for processing decode failure indication recieved from 
@@ -4503,6 +4514,7 @@ RgSchErrInfo            *err;
  *      -# ROK 
  *      -# RFAILED 
  */
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHTomUtlFillSrRecpReq
 (
@@ -4591,8 +4603,8 @@ PRIVATE S16 rgSCHTomUtlFillSrRecpReq (recpReqInfo, cell, validIdx, err)
    }
    RETVALUE(ROK);
 }/* end of rgSCHTomUtlFillSrRecpReq */
-
-
+#endif
+#endif
 /** @brief This function tells will the UE has a periodic CQI/PMI/RI 
  *  reporting
  *
@@ -4670,6 +4682,7 @@ PRIVATE S16 rgSCHTomUtlWillUeRprtCqiRi ( ue, willueRprtCqiRi)
  *      -# ROK 
  *      -# RFAILED 
  */
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHTomUtlFillRiRecpReq
 (
@@ -4773,7 +4786,7 @@ PRIVATE S16 rgSCHTomUtlFillRiRecpReq (recpReqInfo, cell, validIdx, err)
    }
    RETVALUE(ROK);
 }/* end of rgSCHTomUtlFillRiRecpReq */
-
+#endif
 #ifdef RG_5GTF
 /** @brief This function handles filling of 5GTF CQI-RI reception request to
  * PHY.
@@ -4792,6 +4805,8 @@ PRIVATE S16 rgSCHTomUtlFillRiRecpReq (recpReqInfo, cell, validIdx, err)
  *      -# ROK 
  *      -# RFAILED 
  */
+
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq
 (
@@ -4845,7 +4860,7 @@ PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq (recpReqInfo, cell, validIdx, err)
    RETVALUE(ROK);
 }/* end of rgSCHTomUtlFillCqiRiRecpReq */
 #endif
-
+#endif
 /** @brief This function handles filling of PCQI reception request to
  * PHY.
  *
@@ -4863,6 +4878,7 @@ PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq (recpReqInfo, cell, validIdx, err)
  *      -# ROK 
  *      -# RFAILED 
  */
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq
 (
@@ -4960,7 +4976,7 @@ PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq (recpReqInfo, cell, validIdx, err)
    }
    RETVALUE(ROK);
 }/* end of rgSCHTomUtlFillPcqiRecpReq */
-
+#endif
 /** @brief This function handles filling of SRS reception request to
  * PHY.
  *
@@ -4978,6 +4994,7 @@ PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq (recpReqInfo, cell, validIdx, err)
  *      -# ROK 
  *      -# RFAILED 
  */
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHTomUtlFillSrsRecpReq
 (
@@ -6656,6 +6673,7 @@ Bool              isDatPresOnSecCell;
  *      -# ROK 
  *      -# RFAILED 
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHTomUtlFillCqiSrsWithSr
 (
@@ -6816,7 +6834,7 @@ U16               validIdx;
 }  /* rgSCHTomUtlFillCqiSrsWithSr */
 
 #endif 
-
+#endif
 
 #ifdef LTE_TDD
 /** @brief This function handles filling of HARQ feedback repetition
@@ -8297,6 +8315,7 @@ RgSchCellCb          *cell;
  *  @param[in]  Inst   schInst
  *  @RETVALUE   None
  */
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHDynTDDMrkCrntSfIdx
 (
@@ -8320,7 +8339,7 @@ Inst   schInst;
 
    RETVOID;
 }
-
+#endif
 #endif
 /** @brief This function fills the TTI timinig info for each cell  
  *
@@ -8336,6 +8355,7 @@ Inst   schInst;
  * Returns: Void  
  *  
  */
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSchTomFillCellTtiInfo
 (
@@ -8475,7 +8495,7 @@ RgSchCellCb        *cells[];
 #endif
    } 
 }
-
+#endif
 void schFillCrntTime(
    SlotIndInfo slotInd,
    Inst        schInst)

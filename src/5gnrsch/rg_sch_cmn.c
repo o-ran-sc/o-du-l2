@@ -158,6 +158,7 @@ PRIVATE Void rgSCHSelectSi ARGS((RgSchCellCb *cell));
 #endif /*RGR_SI_SCH*/
 /* LTE_ADV_FLAG_REMOVED_START */
 #ifndef LTE_TDD
+#ifdef UNUSE_FUN
 PRIVATE S16 rgSCHCmnNonDlfsUpdDSFRTyp2Alloc
 (
 RgSchCellCb        *cell,
@@ -166,6 +167,8 @@ RgSchDlSf          *dlSf,
 U8                 rbStrt,
 U8                 numRb
 );
+#endif
+#ifdef UNUSE_FUN
 PRIVATE S16 rgSCHCmnBuildRntpInfo (
 RgSchCellCb        *cell,
 U8                 *rntpPtr,
@@ -173,6 +176,7 @@ U8                  startRb,
 U8                  nmbRb,
 U16                 bw
 );
+#endif
 #endif
 
 PUBLIC Void rgSCHCmnDlSpsSch
@@ -277,6 +281,7 @@ U8              cfi
 ));
 
 #endif
+#ifdef UNUSE_FUN
 PRIVATE Void rgSCHCmnNonDlfsType0Alloc
 (
 RgSchCellCb        *cell,
@@ -284,6 +289,7 @@ RgSchDlSf          *dlSf,
 RgSchDlRbAlloc     *allocInfo,
 RgSchUeCb          *ue
 );
+#endif
 PRIVATE Void  rgSCHCmnInitRbAlloc ARGS 
 ((
 RgSchCellCb        *cell
@@ -319,7 +325,7 @@ RgSchUeCb *ue, U32 bo, U32 *effBo, RgSchDlHqProcCb *proc,
 RgSchCmnDlRbAllocInfo *cellWdAllocInfo));
 typedef U8 (*RgSchCmnDlGetPrecInfFunc) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, 
       U8 numLyrs, Bool bothCwEnbld));
-
+#ifdef UNUSE_FUN
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt1 ARGS((
 RgSchCellCb                *cell,
 RgSchDlRbAlloc             *rbAllocInfo,
@@ -327,6 +333,8 @@ RgSchDlHqProcCb            *hqP,
 RgSchPdcch                 *pdcch,
 U8                         tpc
 ));
+#endif
+#ifdef UNUSE_FUN
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt1A ARGS((
 RgSchCellCb                *cell,
 RgSchDlRbAlloc             *rbAllocInfo,
@@ -334,6 +342,8 @@ RgSchDlHqProcCb            *hqP,
 RgSchPdcch                 *pdcch,
 U8                         tpc
 ));
+#endif
+#ifdef UNUSE_FUN
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt1B ARGS((
 RgSchCellCb                *cell,
 RgSchDlRbAlloc             *rbAllocInfo,
@@ -341,6 +351,8 @@ RgSchDlHqProcCb            *hqP,
 RgSchPdcch                 *pdcch,
 U8                         tpc
 ));
+#endif
+#ifdef UNUSE_FUN
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt2 ARGS((
 RgSchCellCb                *cell,
 RgSchDlRbAlloc             *rbAllocInfo,
@@ -348,6 +360,8 @@ RgSchDlHqProcCb            *hqP,
 RgSchPdcch                 *pdcch,
 U8                         tpc
 ));
+#endif
+#ifdef UNUSE_FUN
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt2A ARGS((
 RgSchCellCb                *cell,
 RgSchDlRbAlloc             *rbAllocInfo,
@@ -355,6 +369,7 @@ RgSchDlHqProcCb            *hqP,
 RgSchPdcch                 *pdcch,
 U8                         tpc
 ));
+#endif
 PRIVATE Void rgSCHCmnDlAllocTxRbTM1 ARGS((
 RgSchCellCb                *cell,
 RgSchDlSf                  *subFrm,
@@ -711,6 +726,7 @@ U16    minPeriodicity
 ));
 
 #ifdef TFU_UPGRADE
+#ifdef UNUSE_FUN
 PRIVATE S16 rgSCHCmnUlMdfyGrntForCqi ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
@@ -721,6 +737,7 @@ U32          hqSz,
 U32          stepDownItbs,
 U32          effTgt
 ));
+#endif
 #endif
 
 #ifdef RG_5GTF
@@ -1243,9 +1260,9 @@ PRIVATE U32 rgSchCmnExtBsrTbl[64] = {
    867737, 1067031, 1312097, 1613447, 1984009, 2439678, 3000000, 3100000
 };
 
-
+#ifdef UNUSE_FUN
 PRIVATE U8 rgSchCmnUlRvIdxToIMcsTbl[4] = {32, 30, 31, 29};
-
+#endif
 PUBLIC U8 rgSchCmnUlCqiToTbsTbl[RG_SCH_CMN_MAX_CP][RG_SCH_CMN_UL_NUM_CQI];
 
 PUBLIC RgSchTbSzTbl rgTbSzTbl = {
@@ -1585,12 +1602,13 @@ PRIVATE Void rgSCHCmnMsg3GrntReq ARGS((
          RgSchUlAlloc    **ulAllocRef,
          U8              *hqProcIdRef
          ));
+#ifdef UNUSE_FUN
 PRIVATE Void rgSCHCmnUlNonadapRetx ARGS((
          RgSchCmnUlCell  *cellUl,
          RgSchUlAlloc    *alloc,
          U8               idx
          ));
-
+#endif
 PRIVATE Void rgSCHCmnDlCcchRarAlloc ARGS((
 RgSchCellCb             *cell
 ));
@@ -1679,11 +1697,12 @@ RgSchCellCb *cell,
 RgSchUlSf   *sf
 ));
 /* Fix: syed Adaptive Msg3 Retx crash. */
+#ifdef UNUSE_FUN
 PRIVATE Void rgSCHCmnUlSfRlsRetxProcs ARGS((
 RgSchCellCb *cell,
 RgSchUlSf   *sf
 ));
-
+#endif
 #ifdef TFU_UPGRADE
 PRIVATE Void rgSCHCmnDlHdlTxModeRecfg ARGS
 ((
@@ -1748,12 +1767,14 @@ RgSchDlSf             *dlSf,
 RgSchDlRbAlloc        *allocInfo
 ));
 #ifdef DEBUGP
+#ifdef UNUSE_FUN
 PRIVATE Void rgSCHCmnFindCodeRate ARGS((
 RgSchCellCb           *cell,
 RgSchDlSf             *dlSf,
 RgSchDlRbAlloc        *allocInfo,
 U8                    idx
 ));
+#endif
 #endif
 #endif
 PRIVATE Void rgSCHCmnNonDlfsMsg4Alloc ARGS((
@@ -3346,7 +3367,7 @@ RgInfSfAlloc            *subfrmAlloc;
       + RG_SCH_CMN_HARQ_INTERVAL (7) subframes ahead */
    RGSCH_INCR_SUB_FRAME(frm, RG_SCH_CMN_DL_DELTA + RG_SCH_CMN_HARQ_INTERVAL);
 #else
-   RGSCH_SUBFRAME_INDEX(frm);
+  // RGSCH_SUBFRAME_INDEX(frm);
    //RGSCH_INCR_SUB_FRAME(frm, RG_SCH_CMN_DL_DELTA);
 #endif
 
@@ -6214,6 +6235,7 @@ RgSchDlHqProcCb            *hqP;
  *  @return  Void
  *
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt1
 (
@@ -6330,6 +6352,7 @@ U8                         tpc;
 
        RETVOID;
 }
+#endif
 /**
  * @brief This function fills the PDCCH DCI format 1A information from dlProc.
  *
@@ -6352,6 +6375,7 @@ U8                         tpc;
  *  @return  Void
  *
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt1A
 (
@@ -6463,6 +6487,7 @@ U8                         tpc;
  
     RETVOID;
 }
+#endif	
 /**
  * @brief This function fills the PDCCH DCI format 1B information from dlProc.
  *
@@ -6485,6 +6510,7 @@ U8                         tpc;
  *  @return  Void
  *
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt1B
 (
@@ -6585,6 +6611,7 @@ U8                         tpc;
     RETVOID;
 
 }
+#endif
 /**
  * @brief This function fills the PDCCH DCI format 2 information from dlProc.
  *
@@ -6607,6 +6634,7 @@ U8                         tpc;
  *  @return  Void
  *
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt2
 (
@@ -6742,6 +6770,7 @@ U8                         tpc;
 
      RETVOID;
 }
+#endif
 /**
  * @brief This function fills the PDCCH DCI format 2A information from dlProc.
  *
@@ -6764,6 +6793,7 @@ U8                         tpc;
  *  @return  Void
  *
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnFillHqPPdcchDciFrmt2A
 (
@@ -6900,7 +6930,7 @@ U8                         tpc;
 
     RETVOID;
 }
-
+#endif
 /**
  * @brief init of Sch vars.
  *
@@ -13802,6 +13832,7 @@ Bool                  isNewTx;
  *     File :
  *
  **********************************************************/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHCmnUlMdfyGrntForCqi
 (
@@ -13911,6 +13942,7 @@ U32          effTgt;
 
    RETVALUE(ROK);
 }
+#endif
 #endif
 /***********************************************************
  *
@@ -21410,6 +21442,7 @@ RgSchRaReqInfo        *raReq;
  * @return  Void
  *
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnUlNonadapRetx
 (
@@ -21443,7 +21476,7 @@ U8              idx;
    alloc->pdcch = NULLP;
    RETVOID;
 }
-
+#endif
 /**
  * @brief Check if 2 allocs overlap
  *
@@ -21457,6 +21490,7 @@ U8              idx;
  *  @param[in]  RgSchUlAlloc  *alloc2
  *  @return  Bool
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Bool rgSCHCmnUlAllocsOvrLap
 (
@@ -21481,7 +21515,7 @@ RgSchUlAlloc    *alloc2;
    }
    RETVALUE(FALSE);
 }
-
+#endif
 /**
  * @brief Copy allocation Info from src to dst.
  *
@@ -21495,6 +21529,7 @@ RgSchUlAlloc    *alloc2;
  *  @param[in]  RgSchUlAlloc  *dstAlloc
  *  @return  Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnUlCpyAllocInfo
 (
@@ -21551,7 +21586,7 @@ RgSchUlAlloc    *dstAlloc;
 
    RETVOID;
 }
-
+#endif
 
 /**
  * @brief Update TX and RETX subframe's allocation
@@ -21573,6 +21608,7 @@ RgSchUlAlloc    *dstAlloc;
  *  @param[in]  RgSchUlAlloc  *srcAlloc
  *  @return  Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnUlInsAllocFrmNewSf2OldSf
 (
@@ -21667,7 +21703,7 @@ RgSchUlAlloc    *srcAlloc;
    dstAlloc->mrgdNewTxAlloc = TRUE;
    RETVOID;
 }
-
+#endif
 /**
  * @brief Merge all allocations of newSf to oldSf.
  *
@@ -21686,6 +21722,7 @@ RgSchUlAlloc    *srcAlloc;
  *  @param[in]  RgSchUlSf    *newSf
  *  @return  Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnUlMergeSfAllocs
 (
@@ -21717,7 +21754,7 @@ RgSchUlSf    *newSf;
    }
    RETVOID;
 }
-
+#endif
 /**
  * @brief Swap Hole/Alloc DB context of newSf and oldSf.
  *
@@ -21732,6 +21769,7 @@ RgSchUlSf    *newSf;
  *  @param[in]  RgSchUlSf    *newSf
  *  @return  Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnUlSwapSfAllocs
 (
@@ -21766,7 +21804,7 @@ RgSchUlSf    *newSf;
    oldSf->allocCountRef = &oldSf->allocDb->count;
    RETVOID;
 }
-
+#endif
 /**
  * @brief Perform non-adaptive RETX for non-colliding allocs.
  *
@@ -21781,6 +21819,7 @@ RgSchUlSf    *newSf;
  *  @param[in]  U8           idx
  *  @return  Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnUlPrcNonAdptRetx
 (
@@ -21819,7 +21858,7 @@ U8           idx;
    }
    RETVOID;
 }
-
+#endif
 /**
  * @brief Update TX and RETX subframe's allocation
  *        markings.
@@ -21842,6 +21881,7 @@ U8           idx;
  *  @param[in]  U8           idx 
  *  @return  Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnUlPrfmSfMerge
 (
@@ -21870,7 +21910,7 @@ U8           idx;
    
    RETVOID;
 }
-
+#endif
 /**
  * @brief Update TX and RETX subframe's allocation
  *        markings.
@@ -22273,6 +22313,7 @@ RgSchUlHole       *hole;
  *  @param[in]  RgSchUlSf   *sf
  *  @return  U8
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnUlSfRlsRetxProcs
 (
@@ -22304,7 +22345,7 @@ RgSchUlSf   *sf;
    }
    RETVOID;
 }
-   
+#endif   
 
 /**
  * @brief Attempts allocation for UEs for which retransmissions
@@ -23368,6 +23409,7 @@ Bool        isPartialAlloc;
  *  @param[in,out]  RgSchDlRbAlloc  *allocInfo
  *  @return  void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnFindCodeRate
 (
@@ -23851,7 +23893,7 @@ Bool             isBcchPcch;
    RETVOID;
 } /* end of rgSCHCmnNonDlfsPbchRbAllocAdj */
 #endif
-
+#endif
 /**
  * @brief Performs RB allocation for frequency non-selective cell.
  *
@@ -24197,6 +24239,7 @@ PRIVATE S16 rgSCHCmnNonDlfsCmnRbAlloc(cell, allocInfo)
  *      -# TRUE
  *      -# FALSE
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Bool rgSCHCmnNonDlfsSFRBwAvlbl
 (
@@ -24574,6 +24617,7 @@ Bool               isUeCellEdge;
    } 
    RETVALUE(FALSE);
 }
+#endif
 #endif /* end of ifndef LTE_TDD*/
 /* LTE_ADV_FLAG_REMOVED_END */
 
@@ -24595,6 +24639,7 @@ Bool               isUeCellEdge;
  *      -# TRUE
  *      -# FALSE
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Bool rgSCHCmnNonDlfsBwAvlbl
 (
@@ -24777,6 +24822,7 @@ RgSchDlRbAlloc     *allocInfo;
    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"FAILED for CRNTI:%d",allocInfo->rnti);
    RETVALUE(FALSE);
 }
+#endif
 /* LTE_ADV_FLAG_REMOVED_START */
 #ifndef LTE_TDD
 /**
@@ -24875,6 +24921,7 @@ U8                 numRb;
  *
  *  @return Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHCmnNonDlfsUpdDSFRTyp2Alloc
 (
@@ -24966,7 +25013,9 @@ U8                 numRb;
    dlSf->type2Start += numRb;
 #endif
    RETVALUE(ROK);
+
 }
+#endif
 #endif /* end of ifndef LTE_TDD*/
 /* LTE_ADV_FLAG_REMOVED_END */
 /**
@@ -25031,6 +25080,7 @@ U8                 numRb;
  *
  *  @return Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnNonDlfsType0Alloc
 (
@@ -25190,6 +25240,7 @@ RgSchUeCb          *ue;
    dlSf->lstRbgDfct = 0;
    RETVOID;
 }
+#endif
 #ifndef LTE_TDD
 
 /**
@@ -25207,6 +25258,7 @@ RgSchUeCb          *ue;
  *
  *  @return Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHCmnBuildRntpInfo
 (
@@ -25273,7 +25325,7 @@ U16                 bw;
 
    RETVALUE(ROK);
 }
-
+#endif
 
 /**
  * @brief To update non-DLFS alloc'n parameters after TYPE2 Allocation.
@@ -25291,6 +25343,7 @@ U16                 bw;
  *
  *  @return Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHCmnNonDlfsUpdSFRPoolTyp2Alloc
 (
@@ -25361,7 +25414,7 @@ U8                 numRb;
 
    RETVALUE(ROK);
 }
-
+#endif
 /**
  * @brief To do DL allocation using TYPE0 RA.
  *
@@ -25380,6 +25433,7 @@ U8                 numRb;
  *
  *  @return Void
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE Void rgSCHCmnNonDlfsSFRPoolType0Alloc
 (
@@ -25489,7 +25543,7 @@ RgSchDlRbAlloc     *allocInfo;
    dlSf->lstRbgDfct = 0;
    RETVOID;
 }
-
+#endif
 /**
  * @brief Computes RNTP Info for a subframe.
  *
@@ -25593,6 +25647,7 @@ RgSchDlSf          *dlSf;
  *      -# ROK
  *      -# RFAILED
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE S16 rgSCHCmnSFRNonDlfsUeRbAlloc
 (
@@ -25693,6 +25748,7 @@ U8                 *isDlBwAvail;
 
    RETVALUE(ROK);
 }
+#endif
 /* LTE_ADV_FLAG_REMOVED_END */
 #endif /* LTE_TDD */
 

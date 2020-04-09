@@ -236,12 +236,14 @@ PRIVATE S16 rgSCHChkBoUpdate ARGS((
          RgSchCellCb    *cell,
          RgInfCmnBoRpt  *boUpdt
          ));
+#ifdef UNUSE_FUN
 #ifdef TFU_UPGRADE
 PRIVATE U8 rgSCHUtlFetchPcqiBitSz ARGS((
  RgSchCellCb    *cell,
  RgSchUeCb    *ueCb, 
  U8           numTxAnt
  ));
+#endif
 #endif
 /* sorted in ascending order of tbSz */
 CONSTANT struct rgSchUtlBcchPcchTbSz
@@ -11240,6 +11242,7 @@ U32           *prbReqrd;
 
    RETVOID;
 } /* rgSchUtlCalcTotalPrbReq */
+#ifdef UNUSE_FUN
 #ifdef TFU_UPGRADE
 /***********************************************************
  *
@@ -11396,6 +11399,7 @@ U8            numTxAnt;
    
    RETVALUE(pcqiSz);
 }
+#endif
 #endif
 /**
  * @brief  Utility function to returns the number of subbands based on the 
