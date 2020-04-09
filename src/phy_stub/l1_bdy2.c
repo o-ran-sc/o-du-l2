@@ -1,17 +1,19 @@
 /* This file handles TTI genertion */
-
 #include <stdio.h>
+#include <unistd.h>
 #include <pthread.h>
 #include "lphy_stub.h"
 
 void *GenerateTicks(void *arg)
 {
-   while(1)
+   uint8_t counter = 2;
+   while(counter)
    {
       sleep(1);
-      printf("\nTTI indication");
-      /* Send TTI indication to CL */
-      duSendEgtpTTIInd();
+      printf("\nPHY_STUB: SLOT indication");
+      //duSendEgtpTTIInd();
+      buildAndSendSlotIndication();
+      counter--;
    }
 }
 
@@ -23,7 +25,7 @@ void duStartTtiThread()
    ret = pthread_create(&ttiThread, NULL, GenerateTicks, NULL);
    if(ret)
    {
-      printf("\nUnable to create thread");
+      printf("\nPHY_STUB: Unable to create thread");
    }
 }
 
