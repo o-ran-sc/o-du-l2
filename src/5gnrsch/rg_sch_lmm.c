@@ -87,14 +87,14 @@ PUBLIC Void rgSCHCmnInit ARGS((Void));
 #endif 
 /* forward references */
 
-
+#ifdef UNUSE_FUN
 PRIVATE U16 rgSCHLmmSapCfg ARGS((
    Inst           inst,
    RgCfg          *cfg,
    U8             sapIdx,
    Elmnt          sapType
 ));
-
+#endif
 PRIVATE Void rgSCHLmmShutdown ARGS((
    Inst inst
 ));
@@ -135,6 +135,7 @@ PUBLIC void printSchCellInfo(void)
  *      -# LCM_REASON_INVALID_SAP
  *      -# LCM_REASON_NOT_APPL
  **/
+#ifdef UNUSE_FUN
 #ifdef ANSI
 PRIVATE U16 rgSCHLmmSapCfg
 (
@@ -276,6 +277,7 @@ Elmnt sapType;            /* SAP Type */
    }
    RETVALUE(ret);
 }
+#endif
 
 /***********************************************************
  *
