@@ -19,6 +19,108 @@
     },
     {
       "key": {
+        "uuid": "93baccb6_ab9f43fd",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "The function return type is S16, while here the value returned is U16. Will this not lead to issues?",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72d4a149_920657b6",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1268,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "The function return type is S16, while here the value returned is U32. Will this not lead to issues?",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c53c9ed7_ea2f3cf1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1298,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "Move this above \"msgLen \u003d 0\". For clean code, we define all variables at beginning of the function and then start processing.",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d3fdd7b_65655f86",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1311,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "Should we use this macro or RFAILED itself? Needs discussion.",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13d36a93_9611a92c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1355,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "In case getParamValue is unable to fetch one of the tlv value, should fetching of further values continue ?",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f17fe42b_47e8bc59",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1372,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "RFAILED is defined as 1. what if the encodedVal is also 1. Here, getParamValue didnt return RFAILED but this if condition will fail and else part will get executed.\n\nCheck for all the tlvs, if possible tlv value can be same as RFAILED.",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "94e5cb32_00e29d77",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -50,6 +152,24 @@
       "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "768ae024_c6f79640",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "Ack.  We must use standard data types.",
+      "parentUuid": "acad8d06_ef3679f0",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +207,23 @@
     },
     {
       "key": {
+        "uuid": "7e6e6b11_a32d16d3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2066,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "Print the reason of failure here",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a679ee79_f7ff213e",
         "filename": "src/5gnrmac/lwr_mac_fsm.h",
         "patchSetId": 1
@@ -98,6 +235,92 @@
       "writtenOn": "2020-04-09T15:40:20Z",
       "side": 1,
       "message": "after phy running state, no need of event handling",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f557cc3_5096a419",
+        "filename": "src/5gnrmac/lwr_mac_fsm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "Since the original API name is \"slot indication\", this handler can be called lwr_mac_handleSlotIndEvt",
+      "parentUuid": "a679ee79_f7ff213e",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "668d5532_04bd83d7",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "These are phy_stub functions. Hence the names should start with phy/phyStub/l1. Applicable to all functions defined in phy stub.",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dccabc2_f01774f5",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "lets follow our logging convention for phy stub as well i.e.\n\"\\n\u003cModuleName\u003e : \u003cLog print\u003e\"\n\nApplicable to all Phy stub prints",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec648850_c8f7268f",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "Are we planning to validate the TLVs in stub? If not, this function can be removed.",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2346599_829b9722",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:51:19Z",
+      "side": 1,
+      "message": "Correct the indentation at all places marked with arrows same as here",
       "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
