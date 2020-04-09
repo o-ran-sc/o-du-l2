@@ -48,7 +48,7 @@ typedef enum{
   CONFIG_REQ,
   CONFIG_RSP,
   START_REQ,
-  STOP_REQ,
+  SLOT_INDICATION,
   MAX_EVENT
 }EventState;
 
@@ -266,6 +266,11 @@ typedef struct clCellParam
    RssiMeasurement       rssiMeasurementSupport;
 }ClCellParam;
 
+typedef struct slotIndication
+{
+  uint16_t sfn;
+  uint16_t slot;
+}SlotIndication;
 
 EXTERN ClCb clGlobalCp; 
 EXTERN ClCellCb * rgClUtlGetCellCb ARGS((U16 cellId));

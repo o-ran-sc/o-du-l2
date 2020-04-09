@@ -33,6 +33,8 @@ S16 lwr_mac_handleConfigReqEvt(void *msg);
 S16 lwr_mac_handleConfigRspEvt(fapi_config_resp_t *);
 S16 lwr_mac_handleStartReqEvt(void *msg);
 S16 lwr_mac_handleStopReqEvt(void *msg);
+S16 lwr_mac_handleSlotIndReqEvt(fapi_slot_ind_t *);
+S16 sendToLowerMac(U16, U32, void *);
 
 typedef S16 (*lwrMacFsmHdlr)(void *);
 #endif

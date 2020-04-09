@@ -6,12 +6,15 @@
 
 void *GenerateTicks(void *arg)
 {
-   while(1)
+   uint8_t counter = 1;
+   while(counter)
    {
       sleep(1);
       printf("\nTTI indication");
       /* Send TTI indication to CL */
-      duSendEgtpTTIInd();
+      //duSendEgtpTTIInd();
+      buildAndSendSlotIndication();
+		counter--;
    }
 }
 

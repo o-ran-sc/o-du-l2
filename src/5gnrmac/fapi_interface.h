@@ -742,7 +742,7 @@ typedef struct {
      fapi_dl_pdsch_pdu_t        pdsch_pdu;
      fapi_dl_csi_rs_pdu_t       csi_rs_pdu;
      fapi_dl_ssb_pdu_t          ssb_pdu;
-    };
+    }u;
 } fapi_dl_tti_req_pdu_t;
 
 // Updated per 5G FAPI

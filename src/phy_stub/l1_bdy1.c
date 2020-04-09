@@ -28,7 +28,7 @@
 #include "rg_cl_phy.h"
 #include "lwr_mac.h"
 #include "fapi.h"
-
+#include "lphy_stub.h"
 
 EXTERN void phyToMac ARGS((U16 msgType, U32 msgLen,void *msg));
 EXTERN void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, U16 tag, U16 length, U16 value, U16 *msgLen));
@@ -51,19 +51,11 @@ EXTERN S16 sendToLowerMac ARGS((U16 msgType, U32 msgLen,void *msg));
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 lwrMacBldAndSndParamRsp(void *msg)
+S16 lwrMacBldAndSndParamRsp(fapi_param_resp_t *fapiParamRsp)
 {
-   S16 index = 0;
-   U16 msgLen = 0;
-   fapi_param_resp_t *fapiParamRsp;
-   fapiParamRsp = (fapi_param_resp_t *)msg;
-#if 0
-   if(SGetSBuf(0, 0, (Data **)&fapiParamRsp, sizeof(fapi_param_resp_t)) != ROK)
-   {
-       printf("\nMemory allocation failed for PHY Config Response");
-       RETVALUE(RFAILED);
-   }
-#endif
+   uint8_t index = 0;
+   uint32_t msgLen = 0;
+
   /* Cell Params */
   fillTlvs(&fapiParamRsp->tlvs[index++],  FAPI_RELEASE_CAPABILITY_TAG,			        sizeof(U16), 1, &msgLen);
   fillTlvs(&fapiParamRsp->tlvs[index++],  FAPI_PHY_STATE_TAG,				        sizeof(U16), 0, &msgLen);
@@ -139,12 +131,9 @@ S16 lwrMacBldAndSndParamRsp(void *msg)
 
   fillMsgHeader(&fapiParamRsp->header, FAPI_PARAM_RESPONSE, msgLen);
   fapiParamRsp->error_code = MSG_OK;
-  if(sendToLowerMac(fapiParamRsp->header.message_type_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp) != ROK)
-  {
-     RETVALUE(RFAILED);
-  }
-  printf("\n Filled the Param Response successfully");
-  RETVALUE(ROK);
+  printf("\nSending Param Request to Lower Mac");
+  sendToLowerMac(fapiParamRsp->header.message_type_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp);
+  return ROK;
 }
 
 /*******************************************************************
@@ -153,7 +142,7 @@ S16 lwrMacBldAndSndParamRsp(void *msg)
  *
  * @details
  *
- *    Function : l1BldAndSndCfgRsp
+ *    Function : lwrMacBldAndSndConfigRsp
  *
  *    Functionality:
  *          - Builds and sends config response to MAC
@@ -164,39 +153,23 @@ S16 lwrMacBldAndSndParamRsp(void *msg)
  *
  * ****************************************************************/
 
-S16 l1BldAndSndCfgRsp(void *msg)
+S16 lwrMacBldAndSndConfigRsp(fapi_config_resp_t *fapiConfigRsp)
 {
-   L1L2ConfigReq *FAPIConfigReq;
-   L1L2ConfigRsp *FAPIConfigRsp;
-   U8 cci;
+   uint8_t index = 0;
+   uint32_t msgLen = 0;
 
-   FAPIConfigReq = (L1L2ConfigReq *)msg;
-   cci = FAPIConfigReq->carrierId;
-   SPutSBuf(0, 0, (Data *)msg, FAPIConfigReq->hdr.msgLen);
-
-   if(SGetSBuf(0, 0, (Data **)&FAPIConfigRsp, sizeof(L1L2ConfigRsp)) != ROK)
+   if(fapiConfigRsp != NULL)
    {
-       printf("\nMemory allocation failed for PHY Config Response");
-       RETVALUE(RFAILED);
+      fapiConfigRsp->number_of_invalid_tlvs = NULLP;
+      fapiConfigRsp->number_of_inv_tlvs_idle_only = NULLP;
+      fapiConfigRsp->number_of_missing_tlvs = NULLP;
+      fapiConfigRsp->error_code = MSG_OK;
+      msgLen += sizeof(fapi_config_resp_t);
+      fillMsgHeader(&fapiConfigRsp->header, FAPI_CONFIG_RESPONSE, msgLen);
+      printf("\nSending Config Response to Lower Mac");
+      sendToLowerMac(fapiConfigRsp->header.message_type_id, sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
+      return ROK;
    }
-
-   FAPIConfigRsp->hdr.nMsg = 1;
-   FAPIConfigRsp->hdr.msgType = MSG_TYPE_CONFIG_RSP;
-   FAPIConfigRsp->hdr.msgLen = sizeof(L1L2ConfigRsp);
-
-   FAPIConfigRsp->carrierId = cci;
-   FAPIConfigRsp->status = MSG_OK;
-   FAPIConfigRsp->numUnsuppTlv = 0;
-   FAPIConfigRsp->unsuppTlvLst = NULLP;
-   FAPIConfigRsp->numInvTlvForPhySta = 0;
-   FAPIConfigRsp->phyIdleCfgTlvLst = NULLP;
-   FAPIConfigRsp->phyRunCfgTlvLst = NULLP;
-   FAPIConfigRsp->numMissingTlv = 0;
-   FAPIConfigRsp->missingTlvLst = NULLP;
-
-   phyToMac(MSG_TYPE_CONFIG_RSP, sizeof(L1L2ConfigRsp), FAPIConfigRsp);
-
-   RETVALUE(ROK);
 }
 
 /*******************************************************************
@@ -222,11 +195,6 @@ void l1HndlConfigReq(U16 msgLen, void *msg)
     printf("\nReceived configuration request");
 
     /* TO DO : validate all received TLVs and send back any unsupported/missing TLV */
-
-    if(l1BldAndSndCfgRsp(msg) != ROK)
-    {
-       printf("\nFailed Sending config response");
-    }
 }
 
 /*******************************************************************
@@ -257,6 +225,106 @@ PUBLIC void lwrMacHdlParamReq(U16 msgLen, void *msg)
       printf("\n Failed Sending Param Response");
    }
 } 
+
+/*******************************************************************
+ *
+ * @brief Handles config request received from MAC
+ *
+ * @details
+ *
+ *    Function : lwrMacHdlConfigReq
+ *
+ *    Functionality:
+ *          -Handles config request received from MAC
+ *
+ * @params[in]   Message length
+ *               config request message pointer
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+PUBLIC void lwrMacHdlConfigReq(U16 msgLen, void *msg)
+{
+   printf("\n Received Config Request in PHY");
+
+   /* Handling CONFIG RESPONSE */
+   if(lwrMacBldAndSndConfigRsp(msg)!= ROK)
+   {
+      printf("\n Failed Sending config Response");
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Builds and Send the Slot Indication message to MAC
+ *
+ * @details
+ *
+ *    Function : buildAndSendSlotIndication
+ *
+ *    Functionality:
+ *          -Send the Slot indication Message to MAC
+ *
+ * @params[in]   Message length
+ *               config request message pointer
+ *
+ * @return void
+ *
+ * ****************************************************************/
+PUBLIC void buildAndSendSlotIndication()
+{
+   fapi_slot_ind_t *slotIndMsg;
+   if(SGetSBuf(0, 0, (Data **)&slotIndMsg, sizeof(slotIndMsg)) != ROK)
+   {
+       printf("\nMemory allocation failed for slot Indication Message");
+       return RFAILED;
+   }
+   else
+   {
+      slotIndMsg->sfn = 2;
+      slotIndMsg->slot = 4;
+      fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
+      printf("\n Sending Slot Indication Msg to Lower Mac");
+      sendToLowerMac(SLOT_INDICATION, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
+		SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
+		return ROK;
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Handles start request received from MAC
+ *
+ * @details
+ *
+ *    Function : lwrMacHdlStartReq
+ *
+ *    Functionality:
+ *          -Handles start request received from MAC
+ *
+ * @params[in]   Message length
+ *               config request message pointer
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+PUBLIC void lwrMacHdlStartReq(U16 msgLen, void *msg)
+{
+
+   if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
+   {
+      duStartTtiThread();
+		SPutSBuf(0, 0, (Data *)msg, sizeof(fapi_start_req_t));
+		return ROK;
+   }
+   else
+   {
+     printf("\n Received Start Req in PHY State", clGlobalCp.phyState);
+	  return RFAILED;
+   }
+}
 
 /*******************************************************************
  *
@@ -314,6 +382,15 @@ void processRequest(U16 msgType, U32 msgLen, void *msg)
    {
       case FAPI_PARAM_REQUEST:
          lwrMacHdlParamReq(msgLen, msg);
+         break;
+      case FAPI_CONFIG_REQUEST:
+         lwrMacHdlConfigReq(msgLen, msg);
+         break;
+      case FAPI_START_REQUEST:
+         lwrMacHdlStartReq(msgLen, msg);
+         break;
+      case FAPI_DL_TTI_REQUEST:
+         //lwrMacHdlDlTtiReq(msgLen, msg);
          break;
       default:
          printf("\n Invalid message type[%x] received at PHY", msgType);
