@@ -77,7 +77,6 @@ static int RLOG_MODULE_ID=4096;
 #include "lrg.x"           /* LRG Interface includes */
 #include "rgr.x"           /* LRG Interface includes */
 #include "du_app_mac_inf.h"
-#include "mac_sch_interface.h"
 #include "rg.x"            /* MAC includes */
 #ifdef SS_DIAG
 #include "ss_diag.h"        /* Common log file */
@@ -86,7 +85,7 @@ static int RLOG_MODULE_ID=4096;
 #include "ss_rbuf.x"
 
 #include "lwr_mac.h"         /* MAC CL defines */
-
+#include "mac.h"
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -2103,6 +2102,7 @@ int MacHdlCellCfgReq
    Pst cfmPst;
    int ret = ROK;
    RgCellCb      *cellCb;
+	MacCellCb     *macCellCb;
    Inst inst = pst->dstInst;
 
    cmMemset((U8 *)&cfmPst, 0, sizeof(Pst));
@@ -2117,6 +2117,13 @@ int MacHdlCellCfgReq
    memcpy(&cellCb->macCellCfg,macCellCfg,sizeof(MacCellCfg));
    rgCb[inst].cell = cellCb;
 
+   MAC_ALLOC(macCellCb,sizeof(MacCellCb));
+	if(macCellCb == NULLP)
+	{
+      DU_LOG("\nMAC : macCellCb is NULL at handling of macCellCfg\n");
+      return RFAILED;
+   }
+   macCb.macCell = macCellCb;
    /* Send cell cfg to scheduler */
    ret = MacSchCellCfgReq(pst, macCellCfg);
 	if(ret != ROK)

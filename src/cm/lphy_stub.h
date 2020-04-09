@@ -9,5 +9,6 @@
 #include "gen.x"           /* General */
 #include "ssi.x"   /* System services */
 
-void duStartTtiThread();
+void duStartSlotIndicaion();
+void buildAndSendSlotIndication();
 S16 duSendEgtpSlotInd();

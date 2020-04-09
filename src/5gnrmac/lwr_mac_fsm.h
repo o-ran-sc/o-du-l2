@@ -28,11 +28,12 @@
 
 S16 lwr_mac_handleInvalidEvt(void *msg);
 S16 lwr_mac_handleParamReqEvt(void *msg);
-S16 lwr_mac_handleParamRspEvt(fapi_param_resp_t *);
+S16 lwr_mac_handleParamRspEvt(void *msg);
 S16 lwr_mac_handleConfigReqEvt(void *msg);
-S16 lwr_mac_handleConfigRspEvt(fapi_config_resp_t *);
+S16 lwr_mac_handleConfigRspEvt(void *msg);
 S16 lwr_mac_handleStartReqEvt(void *msg);
 S16 lwr_mac_handleStopReqEvt(void *msg);
+void sendToLowerMac(U16, U32, void *);
 
 typedef S16 (*lwrMacFsmHdlr)(void *);
 #endif

@@ -1591,6 +1591,7 @@ uint16_t duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm)
 		if(macCellCfgCfm->transId == duCb.duMacCellCfg->transId)
 		{
 			/* free the memory allocated during sending macCellCfg request */
+			DU_FREE(duCb.duMacCellCfg->sib1Cfg.sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
 			DU_FREE(duCb.duMacCellCfg,sizeof(MacCellCfg));
 			duCb.duMacCellCfg = NULLP;
 

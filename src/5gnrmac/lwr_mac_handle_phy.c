@@ -32,18 +32,18 @@ typedef S16 (*packSlotIndMsg) ARGS((
    fapi_slot_ind_t *slotInd
 ));
 
-S16 packLcSlotInd (Pst *pst, fapi_slot_ind_t *slotInd);
+S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd);
 S16 packTcSlotInd (Pst *pst, fapi_slot_ind_t *slotInd);
 S16 packLwlcSlotInd (Pst *pst, fapi_slot_ind_t *slotInd);
 
-packSlotIndMsg packSlotIndMt[] =
+packSlotIndMsg packSlotIndOpts[] =
 {
    packLcSlotInd, /* packing for loosely coupled */
    fapiMacSlotInd, /* packing for tightly coupled */
    packLwlcSlotInd, /* packing for light weight loosly coupled */
 };
 
-S16 packLcSlotInd (Pst *pst, fapi_slot_ind_t *slotInd)
+S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
 {
    Buffer *mBuf = NULLP;
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
@@ -68,7 +68,7 @@ S16 packLwlcSlotInd (Pst *pst, fapi_slot_ind_t *slotInd)
    return ROK;
 }
 
-void handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
+U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
 {
    /* fill Pst structure to send to lwr_mac to MAC */
    Pst pst;
@@ -88,10 +88,10 @@ void handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
    slotInd.sfn = fapiSlotInd->sfn;
    slotInd.slot = fapiSlotInd->slot;
 
-   return (*packSlotIndMt[pst.selector])(&pst, &slotInd);
+   return (*packSlotIndOpts[pst.selector])(&pst, &slotInd);
 }
 
-void handlePhyMessages(U8 *msg)
+void handlePhyMessages(void *msg)
 {
    /* extract the header */
    fapi_msg_t *header;
