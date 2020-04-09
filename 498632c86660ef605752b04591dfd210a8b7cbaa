@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "5ae4f8ac_495291ff",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:58:25Z",
+      "side": 1,
+      "message": "Macros for message type are defined in fapi_interface.h file. Can we directly use those macro instead of redefining.",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d0738953_e8dcae2b",
         "filename": "src/5gnrmac/lwr_mac.h",
         "patchSetId": 1
@@ -16,6 +33,24 @@
       "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5fe75f2b_82191dfb",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-09T17:58:25Z",
+      "side": 1,
+      "message": "Ack. The structure is present in tfu.x. Can be reused here.",
+      "parentUuid": "d0738953_e8dcae2b",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
