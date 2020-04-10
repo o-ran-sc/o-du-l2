@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c757b0b7_eb6d39b6",
+        "filename": "src/5gnrmac/mac_main.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "looks like all c files are including these header files anyway. we could discuss necessity of this file.",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a667f9cb_53537c72",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "from du app",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69a46af7_78aedb42",
+        "filename": "src/5gnrmac/mac_upr_inf_api.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "\"Send\" can be dropped",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca999a83_4326be84",
+        "filename": "src/5gnrmac/rg_lim.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "there is a macro, MAC_ALLOC. that can be used",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e9516ec_cfcd45a9",
+        "filename": "src/5gnrmac/rg_lim.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "Since we are using LWLC, where is the allocated pointer being freed?",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b35c6ca_0a783029",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "this structure is already present in another file. No need to redefine",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e06da427_ff23524e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "remove the ssi types and replace with uint8_t,int, etc",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2d909ca_e88aa8ab",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "naming this offsetToPointA increases readability",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8eceda2f_67a082ae",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "avoid using RETVALUE() in new code",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fb0d4b6_40b57ec4",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1604,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "its better to not check-in this line since its not the right place.",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a21cf6ee_93232540",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1681,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "cell start must be sent to all cells on receiving cell cfg complete. So, cellId is not always picked from index 0.",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b9242c9_31b1cbd4",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1684,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "since we are using lwlc, when are we freeing the allocated pointer?",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a08f6d4_5e59fb46",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1731,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "since we are using lwlc, when are we freeing the allocated pointer?",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a353ca20_8c0efa8f",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "should we still call this egtpSlotInd?",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2126dca_457aa2a9",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-10T12:10:55Z",
+      "side": 1,
+      "message": "tti thread?",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
