@@ -21,6 +21,7 @@
 #define SCH_MAX_CELLS 1
 #define SCH_MAX_INST 1
 #define SCH_NUM_SLOTS 10 /*forcing this to 10 */
+#define MAX_NUM_RB 106 /* value for numerology 0 15Khz */
 #define SCH_MIB_TRANS 80 
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
 #define SCH_MAX_SSB_BEAM 4 /* since we are supporting only SCS=15KHz */
@@ -120,8 +121,8 @@ typedef struct schCb
 SchCb schCb[SCH_MAX_INST];
 
 /* function declarations */
-int schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc);
-int schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
+uint8_t schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc);
+uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
 
 
 
