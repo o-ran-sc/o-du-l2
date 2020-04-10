@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "c891f44b_de4846e1",
+        "filename": "src/5gnrmac/rg_lim.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-10T15:40:14Z",
+      "side": 1,
+      "message": "change name of this macro. Eg: UNUSED_FUNC or REF_CODE",
+      "revId": "4cb15fba2285d3181cf3f5f50b3ca86420db6b69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e9a225d9_bc937c39",
         "filename": "src/5gnrmac/rg_rom.c",
         "patchSetId": 2
@@ -13,6 +30,91 @@
       "writtenOn": "2020-04-10T11:03:08Z",
       "side": 1,
       "message": "move the commented code inside a UNUSE_FUN\nApplicable for commented code in all other files as well",
+      "revId": "4cb15fba2285d3181cf3f5f50b3ca86420db6b69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aee64813_df8e6c2c",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-10T15:40:14Z",
+      "side": 1,
+      "message": "move it to above TFU_UPGRADE since this is the only function under that flag as well",
+      "revId": "4cb15fba2285d3181cf3f5f50b3ca86420db6b69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1a9a4a8_702fd62b",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1691,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-10T15:40:14Z",
+      "side": 1,
+      "message": "best to move all these unused functions together so that one \"#ifdef\" will be sufficient per file.",
+      "revId": "4cb15fba2285d3181cf3f5f50b3ca86420db6b69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77e8a287_49be2d04",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 23878,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-10T15:40:14Z",
+      "side": 1,
+      "message": "below function, there is check again for same macro. Why not club them?",
+      "revId": "4cb15fba2285d3181cf3f5f50b3ca86420db6b69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7e88ed2_4960f978",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 25328,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-10T15:40:14Z",
+      "side": 1,
+      "message": "no need to add it per function. All functions are one below the other anyway!!!",
+      "revId": "4cb15fba2285d3181cf3f5f50b3ca86420db6b69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9e91025_c01fdbe9",
+        "filename": "src/5gnrsch/rg_sch_tom.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-10T15:40:14Z",
+      "side": 1,
+      "message": "check if this flag can be disabled(check impact on disabling)",
       "revId": "4cb15fba2285d3181cf3f5f50b3ca86420db6b69",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
