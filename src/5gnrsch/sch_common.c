@@ -122,9 +122,9 @@ int schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc)
 	dlAlloc = cell->dlAlloc[cell->slotInfo.slot];
 	if(dlBrdcstAlloc->ssbTrans)
 	{
-		scs = cell->cellCfg.scsCommon;
+		scs = cell->cellCfg.ssbSchCfg.scsCommon;
 		ssbStartPrb = \
-		   ((cell->cellCfg.ssbSubcOffset)-(cell->cellCfg.ssbOffsetPointA))/SCH_NUM_SC_PRB;
+		   ((cell->cellCfg.ssbSchCfg.ssbSubcOffset)-(cell->cellCfg.ssbSchCfg.ssbOffsetPointA))/SCH_NUM_SC_PRB;
 
 		memset(ssbStartSymbArr, 0, SCH_MAX_SSB_BEAM);
 		ssbDlTdAlloc(scs, ssbStartSymbArr);
@@ -149,6 +149,13 @@ int schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc)
 			dlAlloc->assignedPrb[idx] = SCH_SSB_PRB_DURATION; 
 		}
 
+	}
+
+	/* SIB1 allocation */
+	if(dlBrdcstAlloc->sib1Trans)
+	{
+	   dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg = cell->cellCfg.sib1SchCfg.sib1PdcchCfg; 
+	   dlBrdcstAlloc->sib1Alloc.sib1PdschCfg = cell->cellCfg.sib1SchCfg.sib1PdschCfg; 
 	}
 	return ROK;
 }

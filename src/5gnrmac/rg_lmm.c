@@ -2159,15 +2159,26 @@ int MacSchCellCfgReq
 	schCellCfg.phyCellId = macCellCfg->phyCellId;
 	schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;
 	schCellCfg.dupMode = macCellCfg->dupType;
-	schCellCfg.ssbPbchPwr = macCellCfg->ssbCfg.ssbPbchPwr;
-	schCellCfg.scsCommon = macCellCfg->ssbCfg.scsCmn;
-	schCellCfg.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
-	schCellCfg.ssbPeriod = macCellCfg->ssbCfg.ssbPeriod;
-	schCellCfg.ssbSubcOffset = macCellCfg->ssbCfg.ssbScOffset;
+
+	/* fill ssb scheduler parameters */
+	schCellCfg.ssbSchCfg.ssbPbchPwr = macCellCfg->ssbCfg.ssbPbchPwr;
+	schCellCfg.ssbSchCfg.scsCommon = macCellCfg->ssbCfg.scsCmn;
+	schCellCfg.ssbSchCfg.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
+	schCellCfg.ssbSchCfg.ssbPeriod = macCellCfg->ssbCfg.ssbPeriod;
+	schCellCfg.ssbSchCfg.ssbSubcOffset = macCellCfg->ssbCfg.ssbScOffset;
 	for(uint8_t idx=0; idx<SSB_MASK_SIZE; idx++)
 	{
-      schCellCfg.nSSBMask[idx] = macCellCfg->ssbCfg.ssbMask[idx]; 
+      schCellCfg.ssbSchCfg.nSSBMask[idx] = macCellCfg->ssbCfg.ssbMask[idx]; 
 	}
+
+	/* fill SIB1 scheduler parameters */
+	schCellCfg.sib1SchCfg.sib1PduLen = macCellCfg->sib1Cfg.sib1PduLen; 
+	schCellCfg.sib1SchCfg.sib1NewTxPeriod = macCellCfg->sib1Cfg.sib1NewTxPeriod; 
+	schCellCfg.sib1SchCfg.sib1RepetitionPeriod = macCellCfg->sib1Cfg.sib1RepetitionPeriod; 
+	schCellCfg.sib1SchCfg.coresetZeroIndex = macCellCfg->sib1Cfg.coresetZeroIndex; 
+	schCellCfg.sib1SchCfg.searchSpaceZeroIndex = macCellCfg->sib1Cfg.searchSpaceZeroIndex; 
+	schCellCfg.sib1SchCfg.sib1Mcs = macCellCfg->sib1Cfg.sib1Mcs; 
+
    cfgPst.srcProcId = pst->dstProcId;
 	cfgPst.dstProcId = pst->srcProcId;
 	cfgPst.srcEnt    = ENTRG;
