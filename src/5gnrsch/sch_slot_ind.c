@@ -114,12 +114,13 @@ int sendDlBrdcstAllocToMac(DlBrdcstAlloc *dlBrdcstAlloc, Inst inst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-int schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
+uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 {
    int ret = ROK;
 	uint8_t ssb_rep;
 	DlBrdcstAlloc dlBrdcstAlloc;
 	dlBrdcstAlloc.ssbTrans = NO_SSB;
+   dlBrdcstAlloc.sib1Trans = NO_SIB1;
 	SchCellCb *cell;
 
 #ifdef LTE_L2_MEAS
@@ -127,26 +128,52 @@ int schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 #endif
   
 	cell = schCb[schInst].cells[schInst];
-	ssb_rep = cell->cellCfg.ssbPeriod;
+	ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
 	memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
    memcpy(&dlBrdcstAlloc.slotIndInfo, slotInd, sizeof(SlotIndInfo));
 	dlBrdcstAlloc.cellId = cell->cellId;
 	dlBrdcstAlloc.ssbIdxSupported = 1;
 
+   uint16_t sfnSlot = (slotInd->sfn * 10) + slotInd->slot;
+
 	/* Identify SSB ocassion*/
-	if ((slotInd->sfn % SCH_MIB_TRANS == 0))// && (slotInd.slot == 0))
+	if (sfnSlot % SCH_MIB_TRANS == 0)
 	{
 		dlBrdcstAlloc.ssbTrans = SSB_TRANSMISSION;
 	}
-	else if ((slotInd->sfn % ssb_rep == 0))// && (slotInd.slot == 0))
+	else if (sfnSlot % ssb_rep == 0)
 	{
 		dlBrdcstAlloc.ssbTrans = SSB_REPEAT;
 	}
 	else
 	{
-         ;
+	   /* not SSB occassion */
 	}
-	schCmnDlAlloc(cell, &dlBrdcstAlloc);
+
+   /* Identify SIB1 occasions */
+   if(sfnSlot % cell->cellCfg.sib1SchCfg.sib1NewTxPeriod == 0)
+	{
+	   dlBrdcstAlloc.sib1Trans = SIB1_TRANSMISSION;
+	}
+	else if (sfnSlot % cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod == 0)
+	{
+	   dlBrdcstAlloc.sib1Trans = SIB1_REPITITION;
+	}
+	else
+	{
+	   /* not SIB1 occassion */
+	}
+
+	if(dlBrdcstAlloc.ssbTrans || dlBrdcstAlloc.sib1Trans)
+	{
+	   ret = schCmnDlAlloc(cell, &dlBrdcstAlloc);
+      if(ret != ROK)
+      {
+         DU_LOG("\nschCmnDlAlloc failed");
+         RETVALUE(ret);
+      }
+   }
+
 	//send msg to MAC
    ret = sendDlBrdcstAllocToMac(&dlBrdcstAlloc, schInst);
    if(ret != ROK)
@@ -154,6 +181,7 @@ int schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       DU_LOG("\nSending DL Broadcast allocation from SCH to MAC failed");
       RETVALUE(ret);
    }
+
 	return ret;
 }
 
