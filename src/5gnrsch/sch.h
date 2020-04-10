@@ -31,6 +31,9 @@
 #define SCH_MEM_REGION     4
 #define SCH_POOL           1
 
+#define MAX_CORESET_INDEX      16
+#define MAX_SEARCH_SPACE_INDEX 16
+
 /* allocate and zero out a static buffer */
 #define SCH_ALLOC(_datPtr, _size)                                \
 {                                                               \

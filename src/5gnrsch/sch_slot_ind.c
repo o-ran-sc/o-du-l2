@@ -120,6 +120,7 @@ int schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 	uint8_t ssb_rep;
 	DlBrdcstAlloc dlBrdcstAlloc;
 	dlBrdcstAlloc.ssbTrans = NO_SSB;
+   dlBrdcstAlloc.sib1Trans = NO_SIB1;
 	SchCellCb *cell;
 
 #ifdef LTE_L2_MEAS
@@ -127,25 +128,34 @@ int schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 #endif
   
 	cell = schCb[schInst].cells[schInst];
-	ssb_rep = cell->cellCfg.ssbPeriod;
+	ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
 	memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
    memcpy(&dlBrdcstAlloc.slotIndInfo, slotInd, sizeof(SlotIndInfo));
 	dlBrdcstAlloc.cellId = cell->cellId;
 	dlBrdcstAlloc.ssbIdxSupported = 1;
 
+   uint16_t sfnSlot = (slotInd->sfn * 10) + slotInd->slot;
+
 	/* Identify SSB ocassion*/
-	if ((slotInd->sfn % SCH_MIB_TRANS == 0))// && (slotInd.slot == 0))
+	if (sfnSlot % SCH_MIB_TRANS == 0)
 	{
 		dlBrdcstAlloc.ssbTrans = SSB_TRANSMISSION;
 	}
-	else if ((slotInd->sfn % ssb_rep == 0))// && (slotInd.slot == 0))
+	else if (sfnSlot % ssb_rep == 0)
 	{
 		dlBrdcstAlloc.ssbTrans = SSB_REPEAT;
 	}
-	else
+
+   /* Identify SIB1 occasions */
+   if(sfnSlot % cell->cellCfg.sib1SchCfg.sib1NewTxPeriod == 0)
 	{
-         ;
+	   dlBrdcstAlloc.sib1Trans = SIB1_TRANSMISSION;
 	}
+	else if (sfnSlot % cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod == 0)
+	{
+	   dlBrdcstAlloc.sib1Trans = SIB1_REPITITION;
+	}
+
 	schCmnDlAlloc(cell, &dlBrdcstAlloc);
 	//send msg to MAC
    ret = sendDlBrdcstAllocToMac(&dlBrdcstAlloc, schInst);
