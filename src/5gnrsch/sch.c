@@ -63,9 +63,12 @@
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "sch.h"
+#include "sch_utils.h"
 #include "du_log.h"
 
 extern SchCb schCb[SCH_MAX_INST];
+extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
+extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 /* local defines */
 SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
 {
@@ -73,6 +76,7 @@ SchCellCfgCfmFunc SchCellCfgCfmOpts[] =
 	MacProcSchCellCfgCfm,  /* TC */
 	packSchCellCfgCfm      /* LWLC */
 };
+
 
 /**
  * @brief Task Initiation function. 
@@ -329,7 +333,7 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
 
 	cell->cellId = schCellCfg->cellId; 
 	cell->instIdx = inst;
-	switch(schCellCfg->scsCommon)
+	switch(schCellCfg->ssbSchCfg.scsCommon)
 	{
 	   case SCH_SCS_15KHZ:
 		{
@@ -337,7 +341,7 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
 		}
 		break;
 		default:
-		   DU_LOG("\nSCS %d not supported", schCellCfg->scsCommon);
+		   DU_LOG("\nSCS %d not supported", schCellCfg->ssbSchCfg.scsCommon);
 	}
   
    for(uint8_t idx=0; idx<SCH_NUM_SLOTS; idx++)
@@ -350,8 +354,8 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
 			return RFAILED;
 		}
 
-		schDlAlloc->totalPrb = ((schCellCfg->bandwidth *
-				1000)/(schCellCfg->scsCommon))/SCH_NUM_SC_PRB;
+      schDlAlloc->totalPrb = MAX_NUM_RB;
+
 		for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
 		{
 			schDlAlloc->assignedPrb[itr] = 0;
@@ -368,6 +372,130 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
    DU_LOG("\nCell init completed for cellId:%d", cell->cellId);
 
    return ROK;   
+}
+
+void fillSib1SchCfg(
+Inst         schInst,
+Sib1SchCfg   *sib1SchCfg,
+uint8_t      pci,
+uint8_t      offsetPointA
+)
+{
+   uint8_t coreset0Idx = 0;
+   uint8_t searchSpace0Idx = 0;
+   uint8_t ssbMuxPattern = 0;
+   uint8_t numRbs = 0;
+   uint8_t numSymbols = 0;
+   uint8_t offset = 0;
+   uint8_t oValue = 0;
+   uint8_t numSearchSpacePerSlot = 0;
+   uint8_t mValue = 0;
+   uint8_t firstSymbol = 0; /* need to calculate using formula mentioned in 38.213 */
+   uint8_t slotIndex = 0;
+   uint8_t FreqDomainResource[6] = {0};
+
+   Sib1PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
+   Sib1PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
+
+   coreset0Idx     = sib1SchCfg->coresetZeroIndex;
+   searchSpace0Idx = sib1SchCfg->searchSpaceZeroIndex;
+
+   /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
+   ssbMuxPattern = coresetIdxTable[coreset0Idx][0];
+   numRbs        = coresetIdxTable[coreset0Idx][1];
+   numSymbols    = coresetIdxTable[coreset0Idx][2];
+   offset        = coresetIdxTable[coreset0Idx][3];
+
+   /* derive the search space params from table 13-11 spec 38.213 */
+   oValue                = searchSpaceIdxTable[searchSpace0Idx][0];
+   numSearchSpacePerSlot = searchSpaceIdxTable[searchSpace0Idx][1];
+   mValue                = searchSpaceIdxTable[searchSpace0Idx][2];
+   firstSymbol           = searchSpaceIdxTable[searchSpace0Idx][3];
+
+   /* calculate the n0, need to add the formulae, as of now the value is 0 
+    * Need to add the even and odd values of i during configuration 
+    * [(O . 2^u + i . M )  ] mod numSlotsPerSubframe 
+    * assuming u = 0, i = 0, numSlotsPerSubframe = 10
+    * Also, from this configuration, coreset0 is only on even subframe */
+   slotIndex = ((oValue * 1) + (0 * mValue)) % 10; 
+   sib1SchCfg->n0 = slotIndex;
+ 
+   /* calculate the PRBs */
+   freqDomResourceAlloc((offsetPointA-offset),numRbs,FreqDomainResource);
+
+   /* fill the PDCCH PDU */
+   pdcch->sib1PdcchBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
+   pdcch->sib1PdcchBwpCfg.BWPStart = 0;
+   pdcch->subcarrierSpacing = 0;         /* 15Khz */
+   pdcch->cyclicPrefix = 0;              /* normal */
+   pdcch->sib1Coreset0Cfg.startSymbolIndex = firstSymbol;
+   pdcch->sib1Coreset0Cfg.durationSymbols = numSymbols;
+   memcpy(pdcch->sib1Coreset0Cfg.freqDomainResource,FreqDomainResource,6);
+   pdcch->sib1Coreset0Cfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   pdcch->sib1Coreset0Cfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->sib1Coreset0Cfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->sib1Coreset0Cfg.coreSetType = 0;
+   pdcch->sib1Coreset0Cfg.shiftIndex = pci;
+   pdcch->sib1Coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
+   pdcch->numDlDci = 1;
+   pdcch->sib1DlDci.rnti = 0xFFFF; /* SI-RNTI */
+   pdcch->sib1DlDci.scramblingId = pci;
+   pdcch->sib1DlDci.scramblingRnti = 0;
+   pdcch->sib1DlDci.cceIndex = 0;
+   pdcch->sib1DlDci.aggregLevel = 4;
+   pdcch->sib1DlDci.beamPdcchInfo.numPrgs = 1;
+   pdcch->sib1DlDci.beamPdcchInfo.prgSize = 1;
+   pdcch->sib1DlDci.beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->sib1DlDci.beamPdcchInfo.prg[0].pmIdx = 0;
+   pdcch->sib1DlDci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
+   pdcch->sib1DlDci.txPdcchPower.powerValue = 0;
+   pdcch->sib1DlDci.txPdcchPower.powerControlOffsetSS = 0;
+
+   /* fill the PDSCH PDU */
+	uint8_t cwCount = 0;
+   pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
+   pdsch->rnti = 0xFFFF; /* SI-RNTI */
+   pdsch->pduIndex = 0;
+   pdsch->sib1PdschBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
+   pdsch->sib1PdschBwpCfg.BWPStart = 0;
+   pdsch->numCodewords = 1;
+	for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
+	{
+      pdsch->codeword[cwCount].targetCodeRate = 308;
+      pdsch->codeword[cwCount].qamModOrder = 2;
+      pdsch->codeword[cwCount].mcsIndex = sib1SchCfg->sib1Mcs;
+      pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
+      pdsch->codeword[cwCount].rvIndex = 0;
+      pdsch->codeword[cwCount].tbSize = 768;
+   }
+   pdsch->dataScramblingId = pci;
+   pdsch->numLayers = 1;
+   pdsch->transmissionScheme = 0;
+   pdsch->refPoint = 0;
+   pdsch->dmrs.dlDmrsSymbPos = 2;
+   pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
+   pdsch->dmrs.dlDmrsScramblingId = pci;
+   pdsch->dmrs.scid = 0;
+   pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
+   pdsch->dmrs.dmrsPorts = 0;
+   pdsch->sib1FreqAlloc.resourceAlloc = 1; /* RAT type-1 RIV format */
+   pdsch->sib1FreqAlloc.rbStart = offset + SCH_SSB_PRB_DURATION; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
+	/* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
+	 * Ninfo = Nre . R . Qm . v                                       *
+	 * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                       *
+	 * Nre = min(156,Nre') . nPrb                                     */
+   pdsch->sib1FreqAlloc.rbSize = 10; /* This value is calculated from above formulae */
+   pdsch->sib1FreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+   pdsch->sib1TimeAlloc.startSymbolIndex = 2; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->sib1TimeAlloc.numSymbols = 12;
+   pdsch->beamPdschInfo.numPrgs = 1;
+   pdsch->beamPdschInfo.prgSize = 1;
+   pdsch->beamPdschInfo.digBfInterfaces = 0;
+   pdsch->beamPdschInfo.prg[0].pmIdx = 0;
+   pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;
+   pdsch->txPdschPower.powerControlOffset = 0;
+   pdsch->txPdschPower.powerControlOffsetSS = 0;
+
 }
 
 /**
@@ -398,9 +526,16 @@ SchCellCfg          *schCellCfg
 	Inst inst = pst->dstInst-1; 
 
 	InitSchCellCb(inst, schCellCfg);
-	cellCb = schCb[inst].cells[inst];
+	cellCb = schCb[inst].cells[inst]; //cells is of MAX_CELLS, why inst
    cellCb->macInst = pst->srcInst;
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
+
+   /* derive the SIB1 config parameters */
+	fillSib1SchCfg(
+	   inst,
+	   &(schCellCfg->sib1SchCfg),
+		schCellCfg->phyCellId,
+		schCellCfg->ssbSchCfg.ssbOffsetPointA);
 
    memset(&rspPst, 0, sizeof(Pst));
    SCH_FILL_RSP_PST(rspPst, inst);
