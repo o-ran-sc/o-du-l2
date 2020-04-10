@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "228f551b_c09ac506",
+        "filename": "src/5gnrmac/rg_rom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-10T03:59:14Z",
+      "side": 1,
+      "message": "Is this commented code required ?\nIf this has to be kept commented better keep it inside a UNUSE_FUN MACRO",
+      "revId": "7260029fcef38c9baba80f3ff286fe1e5722849e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8b134e7_ba3518e2",
+        "filename": "src/5gnrmac/rg_rom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-10T03:59:14Z",
+      "side": 1,
+      "message": "Move the commented code inside a MACRO",
+      "revId": "7260029fcef38c9baba80f3ff286fe1e5722849e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f256b5a_aacb48b4",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-10T03:59:14Z",
+      "side": 1,
+      "message": "If both the definitions has to be moved under UNUSE_FUN.It can de defined\nunder a UNUSE_FUN macro at once.",
+      "revId": "7260029fcef38c9baba80f3ff286fe1e5722849e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b185aa0_ce3704eb",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-10T03:59:14Z",
+      "side": 1,
+      "message": "Any specific reason to declare this macro individually for for every definition ?\nCan all these definition be moved into a macro at once.",
+      "revId": "7260029fcef38c9baba80f3ff286fe1e5722849e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
