@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ab905463_b12c94be",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Agreed",
+      "parentUuid": "5ae4f8ac_495291ff",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d0738953_e8dcae2b",
         "filename": "src/5gnrmac/lwr_mac.h",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "side": 1,
       "message": "Ack. The structure is present in tfu.x. Can be reused here.",
       "parentUuid": "d0738953_e8dcae2b",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b47d3d1_8fb8c355",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "agreed and done the code changes accordingly",
+      "parentUuid": "5fe75f2b_82191dfb",
       "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": false
@@ -208,6 +244,24 @@
     },
     {
       "key": {
+        "uuid": "3a75ddf0_95b15929",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "768ae024_c6f79640",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67783642_60ad1e3e",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -222,6 +276,24 @@
       "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2a55af4_facd80a4",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2016,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67783642_60ad1e3e",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -242,6 +314,24 @@
     },
     {
       "key": {
+        "uuid": "7fc00d54_8788ad35",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2045,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd46df84_b414e2f6",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7e6e6b11_a32d16d3",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -256,6 +346,24 @@
       "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7343e319_fb76e28c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2066,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e6e6b11_a32d16d3",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -294,6 +402,24 @@
     },
     {
       "key": {
+        "uuid": "c9ba1996_e1402d85",
+        "filename": "src/5gnrmac/lwr_mac_fsm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Agreed with Shuaib comments.And addressed the changes in BuildandSendSlotIndication()",
+      "parentUuid": "2f557cc3_5096a419",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "668d5532_04bd83d7",
         "filename": "src/phy_stub/l1_bdy1.c",
         "patchSetId": 1
@@ -308,6 +434,24 @@
       "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e056d7a_868cb120",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "668d5532_04bd83d7",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -328,6 +472,24 @@
     },
     {
       "key": {
+        "uuid": "56310b9a_02a52125",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dccabc2_f01774f5",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ec648850_c8f7268f",
         "filename": "src/phy_stub/l1_bdy1.c",
         "patchSetId": 1
@@ -342,6 +504,24 @@
       "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "985809e0_cfb08f10",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "This function is not required, so removed it",
+      "parentUuid": "ec648850_c8f7268f",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -362,6 +542,24 @@
     },
     {
       "key": {
+        "uuid": "d2143b09_3b3239da",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2346599_829b9722",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fb6ffada_5124630b",
         "filename": "src/phy_stub/l1_bdy2.c",
         "patchSetId": 1
@@ -373,6 +571,24 @@
       "writtenOn": "2020-04-09T15:40:20Z",
       "side": 1,
       "message": "sleep required or not?",
+      "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3883b1f9_9e732b37",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-11T16:24:33Z",
+      "side": 1,
+      "message": "Here since the Counter is 1, the SLOT indication will be sent only once and sleep may not be useful.\nAfter integratation of code, say if SLOT indication has to be sent after 1sec or 2 sec.\nThen sleep is required.",
+      "parentUuid": "fb6ffada_5124630b",
       "revId": "498632c86660ef605752b04591dfd210a8b7cbaa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
