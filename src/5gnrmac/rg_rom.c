@@ -686,17 +686,19 @@ RgRguDedStaRsp *staRsp;
    if(((cell = rgCb[inst].cell) != NULLP)
       && (cell->cellId == staRsp->cellId))
    {
-            //RgInfDedBoRpt boRpt;
             Pst        schPst;
-            /*boRpt.cellSapId  = cell->schInstMap.cellSapId;
-            boRpt.cellId  = staRsp->cellId;
-            boRpt.rnti    = staRsp->rnti; 
-            boRpt.lcId    = staRsp->lcId; 
-            boRpt.bo      = staRsp->boReport.bo;
-            boRpt.oldestSduArrTime = staRsp->boReport.oldestSduArrTime;
-            boRpt.staPduBo = staRsp->boReport.staPduBo;
-            boRpt.oldestSduArrTime = staRsp->boReport.oldestSduArrTime;*/
-            rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
+#ifdef UNUSED_VAR
+    RgInfDedBoRpt boRpt
+	 boRpt.cellSapId  = cell->schInstMap.cellSapId;
+    boRpt.cellId  = staRsp->cellId;
+	 boRpt.rnti    = staRsp->rnti; 
+    boRpt.lcId    = staRsp->lcId; 
+	 boRpt.bo      = staRsp->boReport.bo;
+    boRpt.oldestSduArrTime = staRsp->boReport.oldestSduArrTime;
+    boRpt.staPduBo = staRsp->boReport.staPduBo;
+    boRpt.oldestSduArrTime = staRsp->boReport.oldestSduArrTime;
+#endif
+				rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
             schPst.event = 0;
             //TODO: commented for compilation without SCH RgMacSchDedBoUpdt(&schPst, &boRpt);
             RETVALUE(ROK);
@@ -715,18 +717,21 @@ CmLteLcId lcId,
 S32 bo 
 )
 {
-  //RgInfDedBoRpt  boRpt;
+
   RgCellCb   *cell;
   //if ((cell = rgDBMGetCellCb(cellId)) != NULLP)
   if (((cell = rgCb[inst].cell) != NULLP) &&
         (cell->cellId == cellId))
-  {
+ {
      Pst        schPst;
-    /* boRpt.cellSapId  = cell->schInstMap.cellSapId;
-     boRpt.cellId     = cellId;
-     boRpt.rnti       = rnti; 
-     boRpt.lcId       = lcId; 
-     boRpt.bo         = bo;*/
+#ifdef UNUSED_VAR
+    RgInfDedBoRpt  boRpt;
+    boRpt.cellSapId  = cell->schInstMap.cellSapId;
+    boRpt.cellId     = cellId;
+    boRpt.rnti       = rnti; 
+    boRpt.lcId       = lcId; 
+    boRpt.bo         = bo;
+#endif
      rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
      schPst.event = 0;
      //TODO: commented for compilation without SCH RgMacSchDedBoUpdtReq (&schPst,&boRpt);
@@ -898,15 +903,15 @@ RgErrInfo      *err;
    //RgInfCmnBoRpt boRpt;
 
    TRC2(rgROMHndlCcchStaRsp);
-
-/*
+#ifdef UNUSED_VAR
+   RgInfCmnBoRpt boRpt;
    boRpt.cellSapId  = cell->schInstMap.cellSapId;
    boRpt.cellId  = staRsp->cellId;
    boRpt.u.rnti    = staRsp->u.rnti; 
    boRpt.lcId    = staRsp->lcId; 
    boRpt.lcType  = staRsp->lcType; 
    boRpt.bo      = staRsp->bo;
-  */
+#endif
    rgGetPstToInst(&schPst,macInst, cell->schInstMap.schInst);
    //TODO: commented for compilation without SCH RgMacSchCmnBoUpdt(&schPst, &boRpt);
 
