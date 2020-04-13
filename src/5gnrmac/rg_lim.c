@@ -81,7 +81,7 @@ static int RLOG_MODULE_ID=4096;
 /* local typedefs */
  
 /* local externs */
-#ifdef UNUSE_FUN
+#ifdef UNUSED_FUNC
 PRIVATE S16  rgLIMValidateSap ARGS((Inst inst,SuId suId));
 #endif
 PRIVATE Void rgLIMUtlFreeDatIndEvnt ARGS((TfuDatIndInfo *datInd,
@@ -266,7 +266,7 @@ U8      status;
   *   -# ROK
   *   -# RFAILED
   */
-#ifdef UNUSE_FUN
+#ifdef UNUSED_FUNC
 #ifdef ANSI
 PRIVATE S16 rgLIMValidateSap
 (

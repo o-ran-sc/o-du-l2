@@ -316,6 +316,58 @@ PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq ARGS(
 #endif
 #endif
 
+#ifdef UNUSE_FUN
+#ifdef TFU_UPGRADE
+PRIVATE S16 rgSCHTomUtlFillCqiSrsWithSr ARGS
+((
+RgSchCellCb       *cell,
+RgSchUeCb         *ue,
+TfuRecpReqInfo    *recpReqInfo,
+TfuUeRecpReqInfo  *pucchRecpInfo,
+U16               validIdx
+));
+PRIVATE Bool rgSCHTomUtlFillDatHarqRecpReq ARGS
+((
+RgSchCellCb       *cell,
+RgSchUlAlloc      *alloc,
+TfuUeRecpReqInfo  *datRecpInfo,
+TfuRecpReqInfo    *recpReqInfo
+));
+PRIVATE S16 rgSCHTomUtlFillSrRecpReq ARGS((
+TfuRecpReqInfo   *recpReq,
+RgSchCellCb      *cell,
+U16              validIdx,
+RgSchErrInfo     *err));
+PRIVATE S16 rgSCHTomUtlFillRiRecpReq ARGS((
+TfuRecpReqInfo   *recpReq,
+RgSchCellCb      *cell,
+U16              validIdx,
+RgSchErrInfo     *err));
+PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq ARGS((
+TfuRecpReqInfo   *recpReq,
+RgSchCellCb      *cell,
+U16              validIdx,
+RgSchErrInfo     *err));
+PRIVATE S16 rgSCHTomUtlFillSrsRecpReq ARGS((
+TfuRecpReqInfo   *recpReq,
+RgSchCellCb      *cell,
+U16              validIdx,
+RgSchErrInfo     *err));
+PRIVATE S16 rgSCHTomUtlGenIndices ARGS((
+U32      label,
+U8        posM,
+U8        valN,
+U8        valK,
+TfuSubbandInfo*    sbInfo));
+#endif
+PRIVATE Void rgSchTomFillCellTtiInfo ARGS
+((
+TfuTtiIndInfo      *ttiInd,
+Inst               schInst,
+U8                 *nCell,
+RgSchCellCb        *cells[]
+));
+#endif
 
 /* local typedefs */
 PUBLIC U32 rgBwAlloInfo[RGSCH_NUM_SUB_FRAMES]; /* Num of Rbs Allocated in each SF */ 
@@ -391,16 +443,6 @@ PUBLIC S16 rgSCHTomFillOnlySrsRecpReq ARGS
  RgSchUlAlloc      *alloc,
  TfuUeRecpReqInfo  *datRecpInfo
  ));
-#ifdef UNUSE_FUN
-PRIVATE S16 rgSCHTomUtlFillCqiSrsWithSr ARGS
-((
- RgSchCellCb       *cell,
- RgSchUeCb         *ue, 
- TfuRecpReqInfo    *recpReqInfo,
- TfuUeRecpReqInfo  *pucchRecpInfo,
- U16               validIdx
- ));
-#endif
 PRIVATE S16 rgSCHTomUtlFillCqiSrSrsWithHq ARGS
 ((
  RgSchCellCb         *cell,
@@ -463,46 +505,9 @@ PRIVATE S16 rgSCHTomUtlMoveSrsNxtOccasion ARGS
 RgSchCellCb     *cell,
 RgSchUeCb       *ue
 ));
-#ifdef UNUSE_FUN
-PRIVATE Bool rgSCHTomUtlFillDatHarqRecpReq ARGS
-((
- RgSchCellCb       *cell,
- RgSchUlAlloc      *alloc,
- TfuUeRecpReqInfo  *datRecpInfo,
- TfuRecpReqInfo    *recpReqInfo
- ));
-PRIVATE S16 rgSCHTomUtlFillSrRecpReq ARGS((
-         TfuRecpReqInfo   *recpReq,
-         RgSchCellCb      *cell,
-         U16              validIdx,
-         RgSchErrInfo     *err));
-#endif
 PRIVATE S16 rgSCHTomUtlWillUeRprtCqiRi ARGS((
          RgSchUeCb        *ue,
          Bool             *willueRprtCqiRii));
-#ifdef UNUSE_FUN
-PRIVATE S16 rgSCHTomUtlFillRiRecpReq ARGS((
-         TfuRecpReqInfo   *recpReq,
-         RgSchCellCb      *cell,
-         U16              validIdx,
-         RgSchErrInfo     *err));
-PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq ARGS((
-         TfuRecpReqInfo   *recpReq,
-         RgSchCellCb      *cell,
-         U16              validIdx,
-         RgSchErrInfo     *err));
-PRIVATE S16 rgSCHTomUtlFillSrsRecpReq ARGS((
-         TfuRecpReqInfo   *recpReq,
-         RgSchCellCb      *cell,
-         U16              validIdx,
-         RgSchErrInfo     *err));         
-PRIVATE S16 rgSCHTomUtlGenIndices ARGS((
-         U32      label,
-         U8        posM,
-         U8        valN,
-         U8        valK,
-         TfuSubbandInfo*    sbInfo));
-#endif
 #endif 
 #ifdef TFU_UPGRADE
 PRIVATE S16 rgSCHTomUtlFillDatRecpReq ARGS((
@@ -589,7 +594,7 @@ PRIVATE S16 rgSCHTomUtlFillSfHqFdbkForOneUe ARGS((
 #ifdef LTEMAC_SPS
 EXTERN PUBLIC Void rgSCHCmnDlSpsSch (RgSchCellCb *cell);
 #ifndef LTE_TDD
-#ifdef UNUSE_FUN
+#ifdef UNUSED_FUNC
 #ifdef TFU_UPGRADE
 PRIVATE S16 rgSCHTomCnsdrRelPdcch ARGS
 ((
@@ -642,15 +647,6 @@ RgTfuCntrlReqInfo  *cntrlInfo
 PRIVATE Void rgSCHTomUtlSendSfnTick ARGS
 ((
 RgSchCellCb  *cell
-));
-#endif
-#ifdef UNUSE_FUN
-PRIVATE Void rgSchTomFillCellTtiInfo ARGS
-((
-TfuTtiIndInfo      *ttiInd,
-Inst               schInst,
-U8                 *nCell,
-RgSchCellCb        *cells[]
 ));
 #endif
 #ifdef LTE_TDD
@@ -1100,9 +1096,7 @@ TfuHqIndInfo    *harqAckInd;
    CmLList         *node;
    TfuHqInfo       *hqInfo;
    Pst             pst;
-#ifdef TFU_UPGRADE
   // U8              tbCnt;
-#endif 
 
    RgInfRlsHqInfo  *rlsHqBufs = &(cell->rlsHqArr[cell->crntHqIdx]);
    U32            cellIdx;
