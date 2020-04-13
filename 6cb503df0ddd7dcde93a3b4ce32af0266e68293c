@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "21be207e_147ec7e5",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-13T15:09:32Z",
+      "side": 1,
+      "message": "MAC_FREE_MEM is better?",
+      "revId": "6cb503df0ddd7dcde93a3b4ce32af0266e68293c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c6dbdec_3f946efa",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-13T15:09:32Z",
+      "side": 1,
+      "message": "move this line also into macro",
+      "revId": "6cb503df0ddd7dcde93a3b4ce32af0266e68293c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48249c84_4a891247",
+        "filename": "src/5gnrmac/rg.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-13T15:09:32Z",
+      "side": 1,
+      "message": "its better not to call it shared memory",
+      "revId": "6cb503df0ddd7dcde93a3b4ce32af0266e68293c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95deaea6_235277f6",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1601,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-13T15:09:32Z",
+      "side": 1,
+      "message": "update comment to state that cell start and gnb du cfg update must be triggered after receiving cell up indication. \nPS: no need to comment BuildAndSendDUConfigUpdate()",
+      "revId": "6cb503df0ddd7dcde93a3b4ce32af0266e68293c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
