@@ -16,6 +16,125 @@
       "revId": "c1cedfaaa7bafaad7f1851615a1557bc94029a10",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3413d09e_d3c8b9c8",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-13T11:08:27Z",
+      "side": 1,
+      "message": "check the sequence of macros,\npreviously, it was ifndef LTE_TDD",
+      "revId": "c1cedfaaa7bafaad7f1851615a1557bc94029a10",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d9411f8_380e3e81",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1750,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-13T11:08:27Z",
+      "side": 1,
+      "message": "where is the #endif for this macro.",
+      "revId": "c1cedfaaa7bafaad7f1851615a1557bc94029a10",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07af96b4_257679c2",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6185,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-13T11:08:27Z",
+      "side": 1,
+      "message": "correct indentation in all places",
+      "revId": "c1cedfaaa7bafaad7f1851615a1557bc94029a10",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1295bc1a_d65283a9",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6195,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-13T11:08:27Z",
+      "side": 1,
+      "message": "Without closing previous defintion of marco, you cannot have this check here",
+      "revId": "c1cedfaaa7bafaad7f1851615a1557bc94029a10",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19f6f3a3_50a31d56",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 13807,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-13T11:08:27Z",
+      "side": 1,
+      "message": "Proper enclosure of ifdef and endif is required",
+      "revId": "c1cedfaaa7bafaad7f1851615a1557bc94029a10",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcb1e797_d5474f57",
+        "filename": "src/5gnrsch/rg_sch_tom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-13T11:08:27Z",
+      "side": 1,
+      "message": "change macro name to UNUSED_FUNC",
+      "revId": "c1cedfaaa7bafaad7f1851615a1557bc94029a10",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0292334b_72a09912",
+        "filename": "src/5gnrsch/rg_sch_tom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-13T11:08:27Z",
+      "side": 1,
+      "message": "move this UNUSED_FUNC chunk to above",
+      "revId": "c1cedfaaa7bafaad7f1851615a1557bc94029a10",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
