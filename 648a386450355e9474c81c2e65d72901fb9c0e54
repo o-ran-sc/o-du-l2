@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a439b313_5b4916cf",
+        "filename": "src/5gnrmac/fapi_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-13T08:16:16Z",
+      "side": 1,
+      "message": "union name is required or not, where you able to access it without the name?",
+      "revId": "648a386450355e9474c81c2e65d72901fb9c0e54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10d1c519_17753121",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-13T08:16:16Z",
+      "side": 1,
+      "message": "CAPITAL letter FC",
+      "revId": "648a386450355e9474c81c2e65d72901fb9c0e54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4817a65_aa385f50",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2075,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-13T08:16:16Z",
+      "side": 1,
+      "message": "how were you able to access bchPayload.",
+      "revId": "648a386450355e9474c81c2e65d72901fb9c0e54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48ff1414_8ca21660",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2143,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-13T08:16:16Z",
+      "side": 1,
+      "message": "free for dlTtiReq should come outside ssbTrans check. if ssbTrans check was false, then dlTtiReq will not be free-ed",
+      "revId": "648a386450355e9474c81c2e65d72901fb9c0e54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0f9c386_54173aee",
+        "filename": "src/5gnrmac/lwr_mac_li.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-13T08:16:16Z",
+      "side": 1,
+      "message": "U16 can be uint16_t",
+      "revId": "648a386450355e9474c81c2e65d72901fb9c0e54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e832a55_7cc0fbd7",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-13T08:16:16Z",
+      "side": 1,
+      "message": "can this be processFapiRequest",
+      "revId": "648a386450355e9474c81c2e65d72901fb9c0e54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0ca4b2f_a2e442ad",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-13T08:16:16Z",
+      "side": 1,
+      "message": "can this be made to 50, same like the one present in rgCb, later we can change it to our design.",
+      "revId": "648a386450355e9474c81c2e65d72901fb9c0e54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "607d1154_c9589e2a",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-13T08:16:16Z",
+      "side": 1,
+      "message": "only macCb, no need to mention Global",
+      "revId": "648a386450355e9474c81c2e65d72901fb9c0e54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47a2c4a1_1fb72546",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-13T08:16:16Z",
+      "side": 1,
+      "message": "can this be incremented every time you send slot ind msg rather then having a fixed value.",
+      "revId": "648a386450355e9474c81c2e65d72901fb9c0e54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
