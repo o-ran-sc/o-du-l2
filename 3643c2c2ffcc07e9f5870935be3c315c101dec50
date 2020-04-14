@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "741653e5_5c35ee1b",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-14T10:07:30Z",
+      "side": 1,
+      "message": "we can move it to utility file. This file doesnt look appropriate.",
+      "parentUuid": "bb5a708e_00871775",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "49f5d079_da2c24e7",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "This is a generic function which we can used it for both pdcch and pdsch freq allocation.",
       "parentUuid": "49f5d079_da2c24e7",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b8f510b_2b0665f9",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-14T10:07:30Z",
+      "side": 1,
+      "message": "okay, we could perhaps update the name as CalcNumPrb or anything more appropriate",
+      "parentUuid": "ce295f3d_97418dad",
       "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -136,6 +172,24 @@
       "side": 1,
       "message": "for SIB1, we thought we will create the whole pdu at config stage as all the parameters are fixed.",
       "parentUuid": "9c2e211e_476d32e0",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a4dce84_2deec603",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-14T10:07:30Z",
+      "side": 1,
+      "message": "parameters which are derived from scheduler(if not now, even in future), must be taken from scheduler. Rest of the parameters are independent of scheduler",
+      "parentUuid": "1044ed83_f62ba4ed",
       "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -311,6 +365,24 @@
       "side": 1,
       "message": "testing is not done for the whole code.",
       "parentUuid": "4f9cfc85_464f89cd",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f73f81a8_980bf38d",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-14T10:07:30Z",
+      "side": 1,
+      "message": "testing of functionality",
+      "parentUuid": "92e3edca_76afc6ca",
       "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
