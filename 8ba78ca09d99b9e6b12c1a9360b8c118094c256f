@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "894caa4f_51ccb03f",
+        "filename": "src/5gnrmac/mac_main.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-14T04:20:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c757b0b7_eb6d39b6",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a667f9cb_53537c72",
         "filename": "src/5gnrmac/mac_msg_hdl.c",
         "patchSetId": 2
@@ -173,6 +191,24 @@
       "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4c9ccb4_1e877140",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-14T04:20:53Z",
+      "side": 1,
+      "message": "The slotIndInfo structure is present in MAC-CL interface. Whereas this part of code refers to DU_APP-MAC interface. Hence, a new structure was created.",
+      "parentUuid": "4b35c6ca_0a783029",
+      "revId": "8ba78ca09d99b9e6b12c1a9360b8c118094c256f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
