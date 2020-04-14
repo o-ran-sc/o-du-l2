@@ -9,18 +9,19 @@ void *GenerateTicks(void *arg)
    while(1)
    {
       sleep(1);
-      printf("\nTTI indication");
-      /* Send TTI indication to CL */
-      duSendEgtpTTIInd();
+      printf("\nPHY STUB : Slot indication");
+
+      /* Send Slot indication indication to lower mac */
+      //buildAndSendSlotIndication();
    }
 }
 
-void duStartTtiThread()
+void duStartSlotIndicaion()
 {
-   pthread_t ttiThread;
+   pthread_t thread;
    int ret;
 
-   ret = pthread_create(&ttiThread, NULL, GenerateTicks, NULL);
+   ret = pthread_create(&thread, NULL, GenerateTicks, NULL);
    if(ret)
    {
       printf("\nUnable to create thread");
