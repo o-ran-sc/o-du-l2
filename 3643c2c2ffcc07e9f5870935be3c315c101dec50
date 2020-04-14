@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bb5a708e_00871775",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T06:48:28Z",
+      "side": 1,
+      "message": "usually Tables are defined in c file. This table is only used in this c file itself. we can discuss regarding this.",
+      "parentUuid": "9379fd9b_e7bd8645",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "49f5d079_da2c24e7",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2020-04-13T03:38:17Z",
       "side": 1,
       "message": "this is freqDomainAllocForPDCCH right?",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce295f3d_97418dad",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T06:48:28Z",
+      "side": 1,
+      "message": "This is a generic function which we can used it for both pdcch and pdsch freq allocation.",
+      "parentUuid": "49f5d079_da2c24e7",
       "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "90cd77a7_e7a50de0",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T06:48:28Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a0c56ac7_f6447467",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9c2e211e_476d32e0",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -64,6 +118,24 @@
       "writtenOn": "2020-04-13T03:38:17Z",
       "side": 1,
       "message": "should we be forming whole of this PDU here, at SCH?",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1044ed83_f62ba4ed",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T06:48:28Z",
+      "side": 1,
+      "message": "for SIB1, we thought we will create the whole pdu at config stage as all the parameters are fixed.",
+      "parentUuid": "9c2e211e_476d32e0",
       "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "6abd38fa_4f9586d6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T06:48:28Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3a76b109_bd661cbc",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a8d31784_bb7a3a72",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -101,6 +191,24 @@
       "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71f270aa_4ef5e357",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T06:48:28Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a8d31784_bb7a3a72",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "e50ad6a5_d95aefd7",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T06:48:28Z",
+      "side": 1,
+      "message": "will make a macro of 106",
+      "parentUuid": "17b18c61_4548c43b",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1afd537c_b40d187c",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -138,6 +264,24 @@
     },
     {
       "key": {
+        "uuid": "2c448b9d_1d7ae797",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T06:48:28Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1afd537c_b40d187c",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4f9cfc85_464f89cd",
         "filename": "src/5gnrsch/sch_common.c",
         "patchSetId": 2
@@ -149,6 +293,24 @@
       "writtenOn": "2020-04-13T03:38:17Z",
       "side": 1,
       "message": "using memcpy is better. Also, is this code functionality tested?",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92e3edca_76afc6ca",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T06:48:28Z",
+      "side": 1,
+      "message": "testing is not done for the whole code.",
+      "parentUuid": "4f9cfc85_464f89cd",
       "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
