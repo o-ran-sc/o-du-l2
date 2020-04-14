@@ -108,6 +108,24 @@
     },
     {
       "key": {
+        "uuid": "4e9aebdb_41196e4a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T11:59:35Z",
+      "side": 1,
+      "message": "named it as freqDomResourceAlloc",
+      "parentUuid": "0b8f510b_2b0665f9",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a0c56ac7_f6447467",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -190,6 +208,24 @@
       "side": 1,
       "message": "parameters which are derived from scheduler(if not now, even in future), must be taken from scheduler. Rest of the parameters are independent of scheduler",
       "parentUuid": "1044ed83_f62ba4ed",
+      "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb813534_b9c33439",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-14T11:59:35Z",
+      "side": 1,
+      "message": "This function is only for SIB1 parameters filling. Other DL messages will not be configured like SIB1.",
+      "parentUuid": "3a4dce84_2deec603",
       "revId": "3643c2c2ffcc07e9f5870935be3c315c101dec50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
