@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c3f200cf_1f106395",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-15T11:51:24Z",
+      "side": 1,
+      "message": "caller of this function need not be flag protected. Content of this function could be",
+      "revId": "9b908f2d51b09853ecdabddcfb896c6b86880ffa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa6c4bf5_2bb6ff3f",
+        "filename": "src/5gnrmac/rg_tom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-15T11:51:24Z",
+      "side": 1,
+      "message": "same as before, calling this function need not be flag protected",
+      "revId": "9b908f2d51b09853ecdabddcfb896c6b86880ffa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "051629d6_930acc00",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-15T11:51:24Z",
+      "side": 1,
+      "message": "what FAPI related structures are used in this file?",
+      "revId": "9b908f2d51b09853ecdabddcfb896c6b86880ffa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8698c53_fb4c1029",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-15T11:51:24Z",
+      "side": 1,
+      "message": "this file need not be in this flag. This only to generate flags and is not using the fapi files",
+      "revId": "9b908f2d51b09853ecdabddcfb896c6b86880ffa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
