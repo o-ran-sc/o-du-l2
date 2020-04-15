@@ -15,6 +15,8 @@
  #   limitations under the License.                                             #
  ################################################################################
  *******************************************************************************/
+
+#ifdef FAPI
 #include <stdlib.h>
 #include <stdint.h>
 
@@ -2205,7 +2207,7 @@ void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg)
    clGlobalCp.event = msgType;
    fapiEvtHdlr[clGlobalCp.phyState][clGlobalCp.event](msg);
 }
-
+#endif
 /**********************************************************************
          End of file
 **********************************************************************/

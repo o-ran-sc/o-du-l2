@@ -55,7 +55,6 @@
 #include "rg_prg.x"
 #include "du_app_mac_inf.h"
 #include "rg.x"
-#include "fapi_interface.h"
 
 /* This file contains message handling functionality for MAC */
 
@@ -79,7 +78,9 @@
 uint16_t MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 {
    DU_LOG("\nMAC : Handling cell start request");
+#ifdef FAPI
    //sendToLowerMac(START_REQ, 0, cellStartInfo);
+#endif
 
    MAC_FREE_MEM(pst->region, pst->pool, cellStartInfo, \
 	   sizeof(MacCellStartInfo));
@@ -107,7 +108,9 @@ uint16_t MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
 {
    DU_LOG("\nMAC : Handling cell start request");
+#ifdef FAPI
    //sendToLowerMac(STOP_REQ, 0, cellStopInfo);
+#endif
 
    MAC_FREE_MEM(pst->region, pst->pool, cellStopInfo, \
 	   sizeof(MacCellStopInfo));

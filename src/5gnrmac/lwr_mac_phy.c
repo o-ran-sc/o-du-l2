@@ -17,6 +17,9 @@
 *******************************************************************************/
 
 /* This file contains APIs to send/receive messages from PHY */
+
+#ifdef FAPI
+
 #include <stdio.h>
 #include <stdint.h>
 
@@ -25,7 +28,6 @@
 
 #include "rg_cl_phy.h"
 #include "fapi.h"
-
 
 EXTERN S16 rgClHndlCfgReq ARGS((void *msg));
 EXTERN void processFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
@@ -70,6 +72,7 @@ PUBLIC void sendToPhy(uint8_t msgType, uint32_t msgLen, void *msg)
 #endif
 }
 
+#endif
 /**********************************************************************
          End of file
 **********************************************************************/

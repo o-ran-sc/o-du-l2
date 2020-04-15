@@ -78,7 +78,9 @@ invoked by PHY towards MAC
 #include "du_app_mac_inf.h"
 #include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
-
+#ifdef FAPI
+#include "lwr_mac_fsm.h"
+#endif
 #ifdef MAC_RLC_UL_RBUF
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
@@ -616,7 +618,10 @@ SlotIndInfo slotInd
 /* Trigger for DL TTI REQ */
    CmLteTimingInfo   dlTtiReqtimingInfo;
    RGADDTOCRNTTIME(cellCb->crntTime, dlTtiReqtimingInfo, TFU_DELTA);
+
+#ifdef FAPI
    handleDlTtiReq(&dlTtiReqtimingInfo);
+#endif
 
    dlSf = &cellCb->subFrms[(slotInd.slot % RG_NUM_SUB_FRAMES)];
 

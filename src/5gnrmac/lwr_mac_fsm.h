@@ -15,8 +15,11 @@
  #   limitations under the License.                                             #
  ################################################################################
  *******************************************************************************/
+
+#ifdef FAPI
 #ifndef _LWR_MAC_FSM_H_
 #define _LWR_MAC_FSM_H_
+
 #define FAPI_UINT_8   1
 #define FAPI_UINT_16  2
 #define FAPI_UINT_32  4
@@ -25,7 +28,6 @@
 #include "lwr_mac.h"
 #include "rg_cl_phy.h"
 #include "fapi.h"
-
 S16 lwr_mac_handleInvalidEvt(void *msg);
 S16 lwr_mac_handleParamReqEvt(void *msg);
 S16 lwr_mac_handleParamRspEvt(void *msg);
@@ -34,8 +36,10 @@ S16 lwr_mac_handleConfigRspEvt(void *msg);
 S16 lwr_mac_handleStartReqEvt(void *msg);
 S16 lwr_mac_handleStopReqEvt(void *msg);
 void sendToLowerMac(U16, U32, void *);
+S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo);
 
 typedef S16 (*lwrMacFsmHdlr)(void *);
+#endif
 #endif
 
 /**********************************************************************

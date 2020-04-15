@@ -17,6 +17,8 @@
 *******************************************************************************/
 
 /*This file contains stub for PHY to handle messages to/from MAC CL */
+
+#ifdef FAPI
 #include <stdint.h>
 
 #include "envdep.h"
@@ -397,6 +399,7 @@ void processFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
          break;
    }
 }
+#endif
 /**********************************************************************
          End of file
 **********************************************************************/
