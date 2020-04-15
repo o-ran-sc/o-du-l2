@@ -15,6 +15,7 @@
  #   limitations under the License.                                             #
  ################################################################################
  *******************************************************************************/
+
 #include <stdlib.h>
 #include <stdint.h>
 
@@ -91,6 +92,7 @@ S16 lwr_mac_handleInvalidEvt(void *msg)
   RETVALUE(ROK);
 }
 
+#ifdef FAPI
 /*******************************************************************
   *
   * @brief Fills FAPI message header
@@ -1272,6 +1274,7 @@ uint32_t getParamValue(fapi_uint16_tlv_t *tlv, uint16_t type)
       return RFAILED;
     }
 }
+#endif /* FAPI */
  /*******************************************************************
   *
   * @brief Sends FAPI Param req to PHY
@@ -1291,6 +1294,7 @@ uint32_t getParamValue(fapi_uint16_tlv_t *tlv, uint16_t type)
 
 S16 lwr_mac_handleParamReqEvt(void *msg)
 {
+#ifdef FAPI
    /* startGuardTimer(); */
    uint32_t msgLen;      //Length of message Body
    msgLen = 0;
@@ -1309,6 +1313,9 @@ S16 lwr_mac_handleParamReqEvt(void *msg)
       DU_LOG("\nLOWER MAC: Failed to allocate memory for Param Request");
       return RFAILED;
    }
+#else
+   return ROK;
+#endif
 }
 
  /*******************************************************************
@@ -1330,6 +1337,7 @@ S16 lwr_mac_handleParamReqEvt(void *msg)
 
 S16 lwr_mac_handleParamRspEvt(void *msg)
 {
+#ifdef FAPI
   /* stopGuardTimer(); */
    uint8_t index;
    uint32_t encodedVal;
@@ -1841,6 +1849,9 @@ S16 lwr_mac_handleParamRspEvt(void *msg)
        DU_LOG("\nLOWER MAC:  Param Response received from PHY is NULL");
        return RFAILED;
    }
+#else
+   return ROK;
+#endif
 }
 
  /*******************************************************************
@@ -1862,6 +1873,7 @@ S16 lwr_mac_handleParamRspEvt(void *msg)
 
 S16 lwr_mac_handleConfigReqEvt(void *msg)
 {
+#ifdef FAPI
    uint8_t index = 0;
    uint32_t msgLen = 0;
    uint32_t configReqSize;
@@ -1952,10 +1964,14 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
       DU_LOG("\nLOWER_MAC: Failed to allocate memory for config Request");
       return RFAILED;
    }
+#else
+   return ROK;
+#endif
 }
 
 S16 lwr_mac_handleConfigRspEvt(void *msg)
 {
+#ifdef FAPI
    fapi_config_resp_t *configRsp;
 	configRsp = (fapi_config_resp_t *)msg;
    DU_LOG("\nLOWER MAC: Received EVENT[%d] at STATE[%d]", clGlobalCp.event, clGlobalCp.phyState);
@@ -1981,10 +1997,14 @@ S16 lwr_mac_handleConfigRspEvt(void *msg)
       DU_LOG("\nLOWER_MAC: Config Response received from PHY is NULL");
       return RFAILED;
    }
+#else
+   return ROK;
+#endif
 }
 
 S16 lwr_mac_handleStartReqEvt(void *msg)
 {
+#ifdef FAPi
    uint32_t msgLen = 0;
    fapi_start_req_t *startReq;
    MAC_ALLOC(startReq, sizeof(fapi_start_req_t));
@@ -2002,13 +2022,19 @@ S16 lwr_mac_handleStartReqEvt(void *msg)
       DU_LOG("\nLOWER MAC: Failed to allocate memory for Start Request");
       return RFAILED;
    }
+#else
+   return ROK;
+#endif
 }
 
 S16 lwr_mac_handleStopReqEvt(void *msg)
 {
+#ifdef FAPI
    /* stop TX and RX operation return PHy to configured State
       send stop.indication to l2/l3 */
+#else
    RETVALUE(ROK);
+#endif
 }
 
 /*******************************************************************
@@ -2034,6 +2060,7 @@ PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val)
     DU_LOG("\nLOWER MAC: value filled %x", *val);
 }
 
+#ifdef FAPI
 /*******************************************************************
  *
  * @brief fills SSB PDU required for DL TTI info in MAC
@@ -2085,7 +2112,7 @@ uint32_t *msgLen)
        return RFAILED;
     }
 }
-
+#endif
 /*******************************************************************
  *
  * @brief Sends DL TTI Request to PHY
@@ -2104,6 +2131,7 @@ uint32_t *msgLen)
  * ****************************************************************/
 S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 {
+#ifdef FAPI
    uint32_t msgLen;
    fapi_dl_tti_req_t *dlTtiReq;
    fapi_dl_tti_req_pdu_t *dlTtiReqPdu;
@@ -2152,6 +2180,9 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 	   DU_LOG("\nLOWER MAC: Current TTI Info is NULL");
       return RFAILED;
    }
+#else
+   return ROK;
+#endif
 }
 
 lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
@@ -2205,7 +2236,6 @@ void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg)
    clGlobalCp.event = msgType;
    fapiEvtHdlr[clGlobalCp.phyState][clGlobalCp.event](msg);
 }
-
 /**********************************************************************
          End of file
 **********************************************************************/

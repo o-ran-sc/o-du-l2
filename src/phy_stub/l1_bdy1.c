@@ -17,6 +17,7 @@
 *******************************************************************************/
 
 /*This file contains stub for PHY to handle messages to/from MAC CL */
+
 #include <stdint.h>
 
 #include "envdep.h"
@@ -28,7 +29,9 @@
 
 #include "rg_cl_phy.h"
 #include "lwr_mac.h"
+#ifdef FAPI
 #include "fapi.h"
+#endif
 #include "lphy_stub.h"
 
 #define MAX_SLOT_VALUE   9
@@ -37,11 +40,14 @@
 uint16_t sfnValue = 0;
 uint16_t slotValue = 0;
 EXTERN void phyToMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
+#ifdef FAPI
 EXTERN void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, uint16_t tag, uint16_t
 length, uint16_t value, uint32_t *msgLen));
 EXTERN void fillMsgHeader ARGS((fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen));
+#endif
 EXTERN void sendToLowerMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
 EXTERN void handlePhyMessages ARGS((void *msg));
+
 /*******************************************************************
  *
  * @brief Builds and sends param response to MAC CL
@@ -58,10 +64,12 @@ EXTERN void handlePhyMessages ARGS((void *msg));
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 l1BldAndSndParamRsp(fapi_param_resp_t *fapiParamRsp)
+S16 l1BldAndSndParamRsp(void *msg)
 {
+#ifdef FAPI
    uint8_t index = 0;
    uint32_t msgLen = 0;
+	fapi_param_resp_t *fapiParamRsp = (fapi_param_resp_t *)msg;
 
   /* Cell Params */
   fillTlvs(&fapiParamRsp->tlvs[index++],  FAPI_RELEASE_CAPABILITY_TAG,			        sizeof(uint16_t), 1, &msgLen);
@@ -140,6 +148,7 @@ S16 l1BldAndSndParamRsp(fapi_param_resp_t *fapiParamRsp)
   fapiParamRsp->error_code = MSG_OK;
   printf("\nPHY_STUB: Sending Param Request to Lower Mac");
   sendToLowerMac(fapiParamRsp->header.message_type_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp);
+#endif
   return ROK;
 }
 
@@ -160,10 +169,12 @@ S16 l1BldAndSndParamRsp(fapi_param_resp_t *fapiParamRsp)
  *
  * ****************************************************************/
 
-S16 l1BldAndSndConfigRsp(fapi_config_resp_t *fapiConfigRsp)
+S16 l1BldAndSndConfigRsp(void *msg)
 {
+#ifdef FAPI
    uint8_t index = 0;
    uint32_t msgLen = 0;
+	fapi_config_resp_t *fapiConfigRsp = (fapi_config_resp_t *)msg;
 
    if(fapiConfigRsp != NULL)
    {
@@ -177,8 +188,10 @@ S16 l1BldAndSndConfigRsp(fapi_config_resp_t *fapiConfigRsp)
       sendToLowerMac(fapiConfigRsp->header.message_type_id, sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
       return ROK;
    }
+#else
+   return ROK;
+#endif
 }
-
 /*******************************************************************
  *
  * @brief Handles param request received from MAC
@@ -200,7 +213,6 @@ S16 l1BldAndSndConfigRsp(fapi_config_resp_t *fapiConfigRsp)
 PUBLIC void l1HdlParamReq(uint32_t msgLen, void *msg)
 {
    printf("\nPHY_STUB: Received Param Request in PHY");
-
    /* Handling PARAM RESPONSE */
    if(l1BldAndSndParamRsp(msg)!= ROK)
    {
@@ -256,6 +268,7 @@ PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
  * ****************************************************************/
 PUBLIC void buildAndSendSlotIndication()
 {
+#ifdef FAPI
    fapi_slot_ind_t *slotIndMsg;
    if(SGetSBuf(0, 0, (Data **)&slotIndMsg, sizeof(slotIndMsg)) != ROK)
    {
@@ -282,6 +295,7 @@ PUBLIC void buildAndSendSlotIndication()
       handlePhyMessages((void*)slotIndMsg);
       SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
    }
+#endif
 }
 
 /*******************************************************************
@@ -307,8 +321,9 @@ PUBLIC void l1HdlStartReq(uint32_t msgLen, void *msg)
    if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
    {
       duStartSlotIndicaion();
+#ifdef FAPI
       SPutSBuf(0, 0, (Data *)msg, sizeof(fapi_start_req_t));
-
+#endif
       return ROK;
    }
    else
@@ -338,6 +353,7 @@ PUBLIC void l1HdlStartReq(uint32_t msgLen, void *msg)
 
 PUBLIC void l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 {
+#ifdef FAPI
    fapi_dl_tti_req_t *dlTtiReq;
    dlTtiReq = (fapi_dl_tti_req_t *)msg;
    printf("\nPHY_STUB:  Received DL TTI Request in PHY");
@@ -355,6 +371,7 @@ PUBLIC void l1HdlDlTtiReq(uint16_t msgLen, void *msg)
    printf("\nPHY_STUB: bchPayload          %x",	dlTtiReq->pdus->u.ssb_pdu.bchPayload);
 
    SPutSBuf(0, 0, (Data *)dlTtiReq, sizeof(fapi_dl_tti_req_t));
+#endif
    return ROK;
 }
 /*******************************************************************
@@ -380,6 +397,7 @@ void processFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
 {
    switch(msgType)
    {
+#ifdef FAPI
       case FAPI_PARAM_REQUEST:
          l1HdlParamReq(msgLen, msg);
          break;
@@ -395,6 +413,7 @@ void processFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
       default:
          printf("\nPHY_STUB: Invalid message type[%x] received at PHY", msgType);
          break;
+#endif
    }
 }
 /**********************************************************************

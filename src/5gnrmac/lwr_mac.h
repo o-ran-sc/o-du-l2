@@ -26,10 +26,12 @@
 #include "gen.h"
 #include "ssi.h"
 #include "cm_hash.h"
+#include "cm_lte.h"
 
 #include "gen.x"
 #include "ssi.x"
 #include "cm_hash.x"
+#include "cm_lte.x"
 #include "cm_lib.x"
 #include "du_app_mac_inf.h"
 
@@ -48,6 +50,7 @@ typedef enum{
   FAPI_CONFIG_REQUEST,
   FAPI_CONFIG_RESPONSE,
   FAPI_START_REQUEST,
+  FAPI_STOP_REQUEST,
   MAX_EVENT
 }EventState;
 
