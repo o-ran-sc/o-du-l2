@@ -78,7 +78,7 @@ invoked by PHY towards MAC
 #include "du_app_mac_inf.h"
 #include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
-
+#include "lwr_mac_fsm.h"
 #ifdef MAC_RLC_UL_RBUF
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"

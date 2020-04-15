@@ -1,3 +1,20 @@
+/*******************************************************************************
+################################################################################
+#   Copyright (c) [2017-2019] [Radisys]                                        #
+#                                                                              #
+#   Licensed under the Apache License, Version 2.0 (the "License");            #
+#   you may not use this file except in compliance with the License.           #
+#   You may obtain a copy of the License at                                    #
+#                                                                              #
+#       http://www.apache.org/licenses/LICENSE-2.0                             #
+#                                                                              #
+#   Unless required by applicable law or agreed to in writing, software        #
+#   distributed under the License is distributed on an "AS IS" BASIS,          #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   #
+#   See the License for the specific language governing permissions and        #
+#   limitations under the License.                                             #
+################################################################################
+*******************************************************************************/
 
 /* header include files (.h) */
 #include "envopt.h"        /* environment options */
@@ -12,7 +29,9 @@
 #include "cm_mblk.h"        /* Common LTE Defines */
 #include "tfu.h"           /* RGU Interface defines */
 //#include "rg.h"
+#ifdef FAPI
 #include "fapi.h"
+#endif
 
 /* header/extern include files (.x) */
 #include "gen.x"           /* general */
@@ -26,6 +45,7 @@
 #include "tfu.x"           /* RGU Interface includes */
 //#include "rg.x"
 
+#ifdef FAPI
 /* function pointers for packing macCellCfg Request */
 typedef S16 (*packSlotIndMsg) ARGS((
    Pst           *pst,
@@ -90,9 +110,11 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
 
    return (*packSlotIndOpts[pst.selector])(&pst, &slotInd);
 }
+#endif
 
 void handlePhyMessages(void *msg)
 {
+#ifdef FAPI
    /* extract the header */
    fapi_msg_t *header;
    header = (fapi_msg_t *)msg;
@@ -131,4 +153,9 @@ void handlePhyMessages(void *msg)
          break;
       }  
    }
+#endif
 }
+
+/**********************************************************************
+         End of file
+**********************************************************************/
