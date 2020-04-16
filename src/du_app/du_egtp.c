@@ -256,19 +256,19 @@ S16 egtpSrvOpenReq(Pst *pst)
    DU_LOG("\nEGTP : Received EGTP open server request");
  
    sockType = CM_INET_DGRAM;
-  
-   /* Opening and Binding receiver socket */
-   if(ret = egtpSrvOpenPrc(sockType, &(egtpCb.recvTptSrvr)) != ROK)
+   ret = egtpSrvOpenPrc(sockType, &(egtpCb.recvTptSrvr));
+	/* Opening and Binding receiver socket */
+   if(ret != ROK)
    {
       DU_LOG("\nEGTP : Failed while opening receiver transport server");
-      return RFAILED;
+      return ROK;
    }
-
    /* Opening and Binding sender socket */
-   if(ret = egtpSrvOpenPrc(sockType, &(egtpCb.dstCb.sendTptSrvr)) != ROK)
+	ret = egtpSrvOpenPrc(sockType, &(egtpCb.dstCb.sendTptSrvr));
+   if(ret != ROK)
    {
       DU_LOG("\nEGTP : Failed while opening sender transport server");
-      return RFAILED;
+      return ROK;
    }
 
    DU_LOG("\nEGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd, egtpCb.dstCb.sendTptSrvr.sockFd.fd);
@@ -303,18 +303,18 @@ S16 egtpSrvOpenReq(Pst *pst)
 
 S16 egtpSrvOpenPrc(U8 sockType, EgtpTptSrvr *server)
 {
-   S8 ret;
-
-   if(ret = (cmInetSocket(sockType, &(server->sockFd), protType)) != ROK)
+   S8 ret=ROK;
+   ret = cmInetSocket(sockType, &(server->sockFd), protType); 
+	if(ret != ROK)
    {  
       DU_LOG("\nEGTP : Failed to open UDP socket");
-      return RFAILED;
+      return ROK;
    }
-      
-   if(ret = cmInetBind(&(server->sockFd), &(server->addr)) != ROK)
+   ret = cmInetBind(&(server->sockFd), &(server->addr));  
+   if(ret != ROK)
    {  
       DU_LOG("\nEGTP : Failed to bind socket");
-      return RFAILED;
+      return ROK;
    }
    
    return ROK;
