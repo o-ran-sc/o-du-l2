@@ -317,8 +317,7 @@ S16 duProcCfgComplete()
       else
       {
          U32 nci;
-         U8 idx;
-         
+         U8 idx1; 
          memset(cell, 0, sizeof(DuCellCb));
          cell->cellId = cellId++;
          cell->cellInfo.nrEcgi.plmn.mcc[0] = PLMN_MCC0;
@@ -330,7 +329,7 @@ S16 duProcCfgComplete()
          cell->cellInfo.nrEcgi.cellId = NR_CELL_ID;
          cell->cellInfo.nrPci = NR_PCI; 
          cell->cellInfo.fiveGsTac = DU_TAC;
-         for(idx=0; idx<MAX_PLMN; idx++)
+         for(idx1=0; idx1<MAX_PLMN; idx1++)
          {
             cell->cellInfo.plmn[idx].mcc[0] = PLMN_MCC0;
             cell->cellInfo.plmn[idx].mcc[1] = PLMN_MCC1;

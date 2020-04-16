@@ -83,7 +83,7 @@ S16 duSendUeCreateReqToRlc()
             break;
          }
          
-         defualt:
+         default:
             break;
       } /* End of switch(entMode) */
    } /* End of entity configuration for loop */

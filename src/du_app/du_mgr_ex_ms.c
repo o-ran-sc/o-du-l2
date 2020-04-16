@@ -25,7 +25,7 @@
 #include "legtp.h"
 #include "du_app_mac_inf.h"
 #include "du_ue_mgr.h"
-
+#include "lrg.x"
 #include "kwu.x"
 
 extern S16 cmUnpkLkwCfgCfm(LkwCfgCfm func,Pst *pst, Buffer *mBuf);

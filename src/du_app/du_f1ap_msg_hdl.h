@@ -56,7 +56,7 @@
 void F1APMsgHdlr(Buffer *mBuf);
 S16 BuildAndSendF1SetupReq();
 S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
-
+S16 BuildAndSendDUConfigUpdate();
 /**********************************************************************
          End of file
 **********************************************************************/
