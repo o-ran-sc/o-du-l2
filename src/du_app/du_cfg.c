@@ -618,8 +618,8 @@ S16 readCfg()
          DU_LOG("\nDU_APP: Memory allocation failure");
 			return RFAILED;
 		}
-		strcpy(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBuf);
-                duCfgParam.srvdCellLst[i].duSysInfo.mibLen = encBufSize;
+      strcpy((char *)duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBuf);
+      duCfgParam.srvdCellLst[i].duSysInfo.mibLen = encBufSize;
 
       /*gnb DU System Info mib msg*/
       BuildSib1Msg();
