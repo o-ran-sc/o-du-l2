@@ -56,7 +56,7 @@ typedef struct
    SSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
    uint8_t     ssbSubcOffset;    /* Subcarrier Offset(Kssb) */
    uint32_t    nSSBMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
-} SsbSchCfg;
+}SchSsbCfg;
 
 /* SIB1 interface structure */
 typedef struct bwpCfg
@@ -203,16 +203,35 @@ typedef struct
 	uint8_t n0;
    Sib1PdcchCfg sib1PdcchCfg;
    Sib1PdschCfg sib1PdschCfg;
-} Sib1SchCfg;
+}SchSib1Cfg;
+
+typedef struct schRachCfg
+{
+   uint8_t      prachCfgIdx; /* PRACH config idx */
+   uint8_t      prachSubcSpacing; /* Subcarrier spacing of RACH */
+   uint8_t      prachSeqLen;  /* Support for PRACH long/short format */
+   uint8_t      prachRestrictedSet; /* Support for PRACH restricted set */
+	uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
+	uint8_t      msg1Fdm;             /* PRACH FDM (1,2,4,8) */
+   uint8_t      maxPrachOcassionsInSlot; /* Number of PRACH ocassions per slot */
+   uint8_t      numPrachFdOccasions; /*Number of PRACH ocassions in freq domain */
+   uint16_t     rootSeqIdx;        /* Root sequence index */
+   uint8_t      numRootSeq;        /* Number of root sequences required for FD */
+   uint16_t     k1;                /* Frequency Offset for each FD */
+   uint8_t      zeroCorrZoneCfg;   /* Zero correlation zone cofig */
+   uint8_t      ssbPerRach;          /* SSB per RACH occassion */
+   uint8_t      prachMultCarrBand;    /* Presence of Multiple carriers in Band */
+}SchRachCfg;
 
 typedef struct schCellCfg
 {
-   U16         cellId;     /* Cell Id */
-   U16         phyCellId;  /* Physical cell id */
-	U8          bandwidth;  /* Supported B/W */
+   uint16_t    cellId;     /* Cell Id */
+   uint16_t    phyCellId;  /* Physical cell id */
+	uint8_t     bandwidth;  /* Supported B/W */
    DuplexMode  dupMode;    /* Duplex type: TDD/FDD */
-	SsbSchCfg   ssbSchCfg;
-	Sib1SchCfg  sib1SchCfg;
+	SchSsbCfg   ssbSchCfg;  /* SSB config */
+	SchSib1Cfg  sib1SchCfg; /* SIB1 config */
+   SchRachCfg  schRachCfg; /* PRACH config */
 }SchCellCfg;
 
 typedef struct schCellCfgCfm

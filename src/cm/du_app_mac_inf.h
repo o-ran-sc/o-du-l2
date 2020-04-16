@@ -146,17 +146,19 @@ typedef struct fdmInfo
    U8    zeroCorrZoneCfg;   /* Zero correlation zone cofig */
    U8    numUnusedRootSeq;  /* Number of unused root sequence */
    U8    *unsuedRootSeq;     /* Unused root sequence per FD */
-}FdmInfo;
+}PrachFdmInfo;
 
 typedef struct prachCfg
 {
    Bool          pres;
+	uint8_t       prachCfgIdx;         /* PRACH Cfg Index */
    PrachSeqLen   prachSeqLen;         /* RACH Sequence length: Long/short */
-   U8            prachSubcSpacing;    /* Subcarrier spacing of RACH */
+   uint8_t       prachSubcSpacing;    /* Subcarrier spacing of RACH */
    RstSetCfg     prachRstSetCfg;      /* PRACH restricted set config */
-   U8            prachFdm;            /* PRACH FDM (1,2,4,8) */
-   FdmInfo       fdm[8];
-   U8            ssbPerRach;          /* SSB per RACH occassion */
+	uint16_t      msg1FreqStart;       /* Msg1-FrequencyStart */
+   uint8_t       msg1Fdm;             /* PRACH FDM (1,2,4,8) */
+   PrachFdmInfo  fdm[8];              /* FDM info */
+   uint8_t       ssbPerRach;          /* SSB per RACH occassion */
    Bool          prachMultCarrBand;    /* Multiple carriers in Band */
 }PrachCfg;
 
