@@ -27,7 +27,7 @@
 extern char encBuf[ENC_BUF_MAX_LEN];
 
 extern DuCfgParams duCfgParam;
-
+S16 sctpSend(Buffer *mBuf, U8 itfType);
 /*******************************************************************
  *
  * @brief Builds Uplink Info for NR 
@@ -66,7 +66,7 @@ S16 BuildULNRInfo(NRFreqInfo_t *ulnrfreq)
       duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.\
       freqBand[0].nrFreqBand;
       ulnrfreq->freqBandListNr.list.array[idx]->supportedSULBandList.list.count = SUL_BAND_COUNT;
-   RETVALUE(ROK);
+   return ROK;
 }
 /*******************************************************************
  *
@@ -85,7 +85,7 @@ S16 BuildULNRInfo(NRFreqInfo_t *ulnrfreq)
  * ****************************************************************/
 S16 BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
 {
-   U8 idx;
+   U8 idx=0;
    dlnrfreq->nRARFCN = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.\
                        fdd.dlNrFreqInfo.nrArfcn;
    dlnrfreq->freqBandListNr.list.count = 1;
@@ -101,11 +101,11 @@ S16 BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
       DU_FREE(dlnrfreq->freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
       RETVALUE(RFAILED);
    }
-      dlnrfreq->freqBandListNr.list.array[idx]->freqBandIndicatorNr = \
-      duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.\
-      freqBand[0].nrFreqBand;
-      dlnrfreq->freqBandListNr.list.array[idx]->supportedSULBandList.list.count = SUL_BAND_COUNT;
-   RETVALUE(ROK);
+   dlnrfreq->freqBandListNr.list.array[idx]->freqBandIndicatorNr = \
+   duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.\
+   freqBand[0].nrFreqBand;
+   dlnrfreq->freqBandListNr.list.array[idx]->supportedSULBandList.list.count = SUL_BAND_COUNT;
+   return ROK;
 }
 
 /*******************************************************************
@@ -130,7 +130,6 @@ S16 BuildNrcgi(NRCGI_t *nrcgi)
    U8 byteSize = 5;
    U8 val = 16;
 
-   GNB_DU_Served_Cells_Item_t *srvCellItem;
    /* Allocate Buffer Memory */
    nrcgi->pLMN_Identity.size = PLMN_SIZE * sizeof(U8);
    DU_ALLOC(nrcgi->pLMN_Identity.buf, nrcgi->pLMN_Identity.size);
@@ -138,23 +137,25 @@ S16 BuildNrcgi(NRCGI_t *nrcgi)
          &nrcgi->pLMN_Identity); // Building PLMN function 
    if(ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return ret
    }
    /*nrCellIdentity*/
    //ret = BuildNrCellId(&nrcgi->nRCellIdentity);
    nrcgi->nRCellIdentity.size = byteSize * sizeof(U8);
    DU_ALLOC(nrcgi->nRCellIdentity.buf, nrcgi->nRCellIdentity.size); 
+	if(nrcgi->nRCellIdentity.buf == NULLP)
+   {
+	    return RFAILED;
+   }
    ret = fillBitString(&nrcgi->nRCellIdentity, unused, byteSize, val);
 
    if(ret != ROK)
    {
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
-                  srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size * sizeof(U8));
-      RETVALUE(RFAILED);
+      DU_FREE(nrcgi->nRCellIdentity.buf, nrcgi->nRCellIdentity.size);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);   
-
+   return ROK;
 }
 /*******************************************************************
  *
@@ -189,7 +190,7 @@ S16 BuildFiveGSTac(Served_Cell_Information_t *servcell)
    servcell->fiveGS_TAC->buf[0] = 0;
    servcell->fiveGS_TAC->buf[1] = 0;
    servcell->fiveGS_TAC->buf[2] = duCfgParam.srvdCellLst[0].duCellInfo.tac;
- RETVALUE(ROK);  
+   return ROK;  
 }
 /*******************************************************************
  *
@@ -209,7 +210,6 @@ S16 BuildFiveGSTac(Served_Cell_Information_t *servcell)
 S16 BuildNrMode(NR_Mode_Info_t *mode)
 {
    S16 ret;
-   GNB_DU_Served_Cells_Item_t *srvCellItem;
    /* FDD Mode */
    mode->present = NR_Mode_Info_PR_fDD;
    if(mode->present == NR_Mode_Info_PR_fDD)
@@ -232,11 +232,9 @@ S16 BuildNrMode(NR_Mode_Info_t *mode)
       {
          DU_FREE(mode->choice.fDD,\
                sizeof(FDD_Info_t));
-         DU_FREE(srvCellItem->served_Cell_Information.\
-               nR_Mode_Info.choice.fDD->uL_NRFreqInfo.\
+         DU_FREE(mode->choice.fDD->uL_NRFreqInfo.\
                freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-         DU_FREE(srvCellItem->served_Cell_Information.\
-               nR_Mode_Info.choice.fDD->uL_NRFreqInfo.\
+         DU_FREE(mode->choice.fDD->uL_NRFreqInfo.\
                freqBandListNr.list.array[0],sizeof(struct FreqBandNrItem));
          RETVALUE(RFAILED);
       }
@@ -254,7 +252,7 @@ S16 BuildNrMode(NR_Mode_Info_t *mode)
    mode->choice.fDD->dL_Transmission_Bandwidth.nRNRB = \
                                     duCfgParam.srvdCellLst[0].duCellInfo.\
                                     f1Mode.mode.fdd.dlTxBw.nrb;
-   RETVALUE(ROK);
+   return ROK;
 }
 /*******************************************************************
  *
@@ -275,7 +273,7 @@ S16 BuildExtensions(struct ProtocolExtensionContainer_4624P3 **ieExtend)
 {
    U8 idx;
    U8 plmnidx;
-   U8 extensionCnt;
+   U8 extensionCnt=1;
    U8 extensionId;
    U8 sliceId;
    U8 sdId;
@@ -285,7 +283,6 @@ S16 BuildExtensions(struct ProtocolExtensionContainer_4624P3 **ieExtend)
    {
       RETVALUE(RFAILED);
    }
-   extensionCnt=1;
    (*ieExtend)->list.count = extensionCnt;
    (*ieExtend)->list.size = \
                             extensionCnt * sizeof(struct ServedPLMNs_ItemExtIEs *);
@@ -440,7 +437,7 @@ S16 BuildExtensions(struct ProtocolExtensionContainer_4624P3 **ieExtend)
       sdId++;
       (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
          list.array[sliceId]->sNSSAI.sD->buf[sdId] = 9;
-      RETVALUE(ROK);
+       return ROK;
 }
 /*******************************************************************
  *
@@ -462,9 +459,7 @@ S16  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
    S16 ret;
    U8  plmnidx;
    U8  servPlmnid;
-   U8  servPlmnCnt;
-   GNB_DU_Served_Cells_Item_t *srvCellItem;
-   servPlmnCnt = 1;
+   U8  servPlmnCnt=1;
    srvplmn->list.count = servPlmnCnt;
    srvplmn->list.size = \
                       servPlmnCnt*sizeof(struct ServedPLMNs_Item *);
@@ -512,7 +507,7 @@ S16  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
    {
       DU_FREE(srvplmn->list.\
             array[0]->pLMN_Identity.buf,(Size)\
-            srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size * sizeof(U8));
+            srvplmn->list.array[0]->pLMN_Identity.size * sizeof(U8));
       for(plmnidx=0; plmnidx<servPlmnCnt; plmnidx++)
       {
          DU_FREE(srvplmn->list.array[plmnidx],\
@@ -522,7 +517,7 @@ S16  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
             sizeof(struct ServedPLMNs_Item *));
       RETVALUE(RFAILED);
    }
-RETVALUE(ROK);
+   return ROK;
 }
 /*******************************************************************
  *
@@ -546,15 +541,14 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    U8  idx;
    U8  plmnidx;
    U8  plmnId;
-   U8  plmnCnt;
-   U8  servPlmnCnt;
-   U8  extensionCnt;
+   U8  plmnCnt=1;
+   U8  servPlmnCnt=1;
+   U8  extensionCnt=1;
    U8  sliceId;
    U8  servId;
    U8  ieId;
    GNB_DU_Served_Cells_Item_t *srvCellItem;
 
-   plmnCnt = 1;
    duServedCell->list.size = plmnCnt * sizeof(GNB_DU_Served_Cells_ItemIEs_t *);
    duServedCell->list.count = plmnCnt; 
    DU_ALLOC(duServedCell->list.array, plmnCnt * sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
@@ -792,7 +786,7 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
 	}
 	/* MIB */
 	srvCellItem->gNB_DU_System_Information->mIB_message.size =\
-	      strlen(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
+	      strlen(( char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
 	DU_ALLOC(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
 	      srvCellItem->gNB_DU_System_Information->mIB_message.size);
    if(!srvCellItem->gNB_DU_System_Information->mIB_message.buf)
@@ -800,8 +794,8 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
       DU_LOG("\nF1AP: Memory allocation failure for mIB message");
 		return RFAILED;
 	}
-   strcpy(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
-			duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
+   strcpy((char *)srvCellItem->gNB_DU_System_Information->mIB_message.buf,
+			(char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
 
    /* SIB1 */
 	srvCellItem->gNB_DU_System_Information->sIB1_message.size =\
@@ -822,8 +816,8 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
 	DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, 
 			srvCellItem->gNB_DU_System_Information->sIB1_message.size);
 	DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg, 
-			strlen(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg));
-   RETVALUE(ROK);
+			strlen((char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg));
+   return ROK;
 }
 /*******************************************************************
  *
@@ -909,7 +903,7 @@ S16 BuildRrcVer(RRC_Version_t *rrcVer)
    rrcLatest++;
    rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.choice.\
       Latest_RRC_Version_Enhanced.buf[rrcLatest] = 0;
-   RETVALUE(ROK);
+   return ROK;
 }
 /*******************************************************************
 *
@@ -957,8 +951,7 @@ S16 SendF1APMsg(Region region, Pool pool)
       DU_LOG("\nF1AP : Failed to allocate memory");
       RETVALUE(RFAILED);
    }
- 
-   RETVALUE(ROK);
+   return ROK; 
 } /* SendF1APMsg */
 
 
@@ -985,16 +978,15 @@ S16 BuildAndSendF1SetupReq()
    U8   servId;
    U8   sliceId;
    U8   elementCnt;
-   U8   plmnCnt;
-   U8   servPlmnCnt;
-   U8   extensionCnt;
+   U8   plmnCnt=1;
+   U8   servPlmnCnt=1;
+   U8   extensionCnt=1;
    F1AP_PDU_t                 *f1apMsg = NULL;
    F1SetupRequest_t           *f1SetupReq;
    GNB_DU_Served_Cells_List_t *duServedCell;
    GNB_DU_Served_Cells_Item_t *srvCellItem;
    RRC_Version_t              *rrcVer;
    asn_enc_rval_t             encRetVal;        /* Encoder return value */
-   
    DU_LOG("\nF1AP : Building F1 Setup Request\n");
 
    DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
@@ -1020,7 +1012,7 @@ S16 BuildAndSendF1SetupReq()
 
    f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
 
-   elementCnt = (duCfgParam.duName[0] != NULL) ? 5 : 4;
+   elementCnt = (duCfgParam.duName != NULL) ? 5 : 4;
 
    f1SetupReq->protocolIEs.list.count = elementCnt;
    f1SetupReq->protocolIEs.list.size = elementCnt * sizeof(F1SetupRequestIEs_t *);
@@ -1096,7 +1088,7 @@ S16 BuildAndSendF1SetupReq()
                                                              duCfgParam.duId;
 
    /*DU Name*/
-   if(duCfgParam.duName[0] != NULL)
+   if(duCfgParam.duName != NULL)
    {
       idx++;
       f1SetupReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_gNB_DU_Name ;
@@ -1141,7 +1133,8 @@ S16 BuildAndSendF1SetupReq()
    duServedCell = &f1SetupReq->protocolIEs.list.\
                   array[idx]->value.choice.GNB_DU_Served_Cells_List;
    ret = BuildServedCellList(duServedCell);
-   
+   srvCellItem =  &duServedCell->list.array[idx]->value. \
+	               choice.GNB_DU_Served_Cells_Item;   
    if(ret != ROK)
    {
       DU_FREE(f1SetupReq->protocolIEs.list.array[--idx]->value.\
@@ -1338,7 +1331,7 @@ S16 BuildAndSendF1SetupReq()
             plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
 
 #endif
-   if(duCfgParam.duName[0] != NULL)
+   if(duCfgParam.duName != NULL)
    {
       DU_FREE(f1SetupReq->protocolIEs.list.array[idx]->value.choice.\
             GNB_DU_Name.buf, sizeof(duCfgParam.duName));
@@ -1374,8 +1367,7 @@ S16 BuildAndSendF1SetupReq()
 	   DU_LOG("\nF1AP : Sending F1 Setup request failed");
 	   RETVALUE(RFAILED);
    }
-
-   RETVALUE(ROK);
+   return ROK;
 }/* End of BuildAndSendF1SetupReq */
 
 /*******************************************************************
@@ -1534,7 +1526,7 @@ S16 BuildAndSendDUConfigUpdate()
 
    /*pLMN_Identity*/
    modifyItem->oldNRCGI.pLMN_Identity.size = 3;
-   DU_ALLOC(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
+   DU_ALLOC(modifyItem->oldNRCGI.pLMN_Identity.buf, 3*sizeof(uint8_t));
    if(modifyItem->oldNRCGI.pLMN_Identity.buf == NULLP)
    {
       for(idy=0; idy<modifyCnt ;idy++)
@@ -2806,8 +2798,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_LOG("\nF1AP : Sending GND-DU Config Update failed");
       RETVALUE(RFAILED);
    }
-
-   RETVALUE(ROK);
+   return ROK;
 }/* End of BuildAndSendDUConfigUpdate */
 
 /*******************************************************************
@@ -2829,7 +2820,7 @@ S16 BuildAndSendDUConfigUpdate()
  * ****************************************************************/
 S16 BuildAndSendULRRCMessageTransfer()
 {
-	S16  ret;
+
 	U8   elementCnt;
 	U8   ieId;
 	U8   idx;
@@ -2960,8 +2951,7 @@ S16 BuildAndSendULRRCMessageTransfer()
 		DU_LOG("\n F1AP : Sending	UL RRC Message Transfer Failed");
 		RETVALUE(RFAILED);
 	}
-
-	RETVALUE(ROK);
+   return ROK;
 }/* End of BuildAndSendULRRCMessageTransfer*/
 
 /*******************************************************************
@@ -3077,7 +3067,7 @@ S16 BuildAndSendRRCSetupReq()
 		DU_FREE(initULRRCMsg->protocolIEs.list.array[idx]->value.choice.NRCGI.\
 					nRCellIdentity.buf,initULRRCMsg->protocolIEs.list.array[idx]->\
 					value.choice.NRCGI.nRCellIdentity.size);
-		DU_FREE(initULRRCMsg->protocolIEs.list.array[idx]->value.choice.NRCGI.\	
+		DU_FREE(initULRRCMsg->protocolIEs.list.array[idx]->value.choice.NRCGI.\
 					pLMN_Identity.buf,initULRRCMsg->protocolIEs.list.array[idx]->\
 					value.choice.NRCGI.pLMN_Identity.size);
 		for(idx=0; idx<elementCnt; idx++)
@@ -3139,8 +3129,7 @@ S16 BuildAndSendRRCSetupReq()
 		DU_LOG("\n F1AP : Sending	Initial UL RRC Message Transfer Failed");
 		RETVALUE(RFAILED);
 	}
-
-	RETVALUE(ROK);
+   return ROK;
 }/* End of BuildAndSendRRCSetupReq*/
 
 /*******************************************************************
@@ -3189,7 +3178,7 @@ S16 BuildSplCellList(SCell_ToBeSetup_List_t *spCellLst)
 	idx = 0;
 	spCellLst->list.array[idx]->id = ProtocolIE_ID_id_SCell_ToBeSetup_Item;
 	spCellLst->list.array[idx]->criticality = Criticality_ignore;
-	spCellLst->list.array[idx]->value.present = \ 
+	spCellLst->list.array[idx]->value.present =\
 		SCell_ToBeSetup_ItemIEs__value_PR_SCell_ToBeSetup_Item;
 	/* Special Cell ID -NRCGI */
 	ret = BuildNrcgi(&spCellLst->list.array[idx]->value.choice.SCell_ToBeSetup_Item.sCell_ID);
@@ -3205,8 +3194,7 @@ S16 BuildSplCellList(SCell_ToBeSetup_List_t *spCellLst)
 	}
 	/*Special Cell Index*/
 	spCellLst->list.array[idx]->value.choice.SCell_ToBeSetup_Item.sCellIndex = 1;
-	
-	RETVALUE(ROK);
+  return ROK;	
 }/* End of BuildSplCellList*/
 
 /*******************************************************************
@@ -3256,7 +3244,7 @@ S16 BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
 	srbSet->list.array[idx]->value.present = \
 			SRBs_ToBeSetup_ItemIEs__value_PR_SRBs_ToBeSetup_Item;
    srbSet->list.array[idx]->value.choice.SRBs_ToBeSetup_Item.sRBID = 2;
-	RETVALUE(ROK);
+   return ROK;
 }/* End of BuildSRBSetup*/
 
 /*******************************************************************
@@ -3320,7 +3308,7 @@ S16 BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
 								Pre_emptionVulnerability_not_pre_emptable;
 
 	/* TO DO: GBR_QoSFlowInformation */
-	RETVALUE(ROK);
+        return ROK;
 }/*End of BuildQOSInfo*/
 
 /*******************************************************************
@@ -3368,8 +3356,7 @@ S16 BuildSNSSAI(SNSSAI_t *snssai)
 		snssai->sD->buf[0] = 3;
 		snssai->sD->buf[1] = 6;
 		snssai->sD->buf[2] = 9;
-
-		RETVALUE(ROK);
+   return ROK;
 }/*End of BuildSNSSAI*/
 
 /*******************************************************************
@@ -3437,7 +3424,7 @@ S16 BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
 		DU_FREE(flowMap->list.array,flowMap->list.size);
 		RETVALUE(RFAILED);
 	}
-	RETVALUE(ROK);
+   return ROK;
 }/*End of BuildFlowsMap*/
 
 /*******************************************************************
@@ -3458,7 +3445,6 @@ S16 BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
  * ****************************************************************/
 S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 {
-	S16 ret;
 	U8 idx;
 	U8 ulidx;
 	U8 ulCnt;
@@ -3561,7 +3547,7 @@ S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 	ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
 		gTP_TEID.buf[3] = 1;
 
-	RETVALUE(ROK);
+   return ROK;
 }/*End of BuildULTnlInfo*/
 
 /*******************************************************************
@@ -3833,8 +3819,7 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 		RETVALUE(RFAILED);
 	}
 	drbSetItem->uLConfiguration->uLUEConfiguration = ULUEConfiguration_no_data;
-
-	RETVALUE(ROK);
+        return ROK;
 }/* End of BuildDRBSetup*/
 
 /*******************************************************************
@@ -3872,7 +3857,6 @@ S16 BuildAndSendUESetReq()
 	U8   ulCnt;
 	F1AP_PDU_t      					*f1apMsg = NULL;
    UEContextSetupRequest_t			*ueSetReq;
-	SCell_ToBeSetup_List_t			*spCellLst;
 	asn_enc_rval_t  					encRetVal;        /* Encoder return value */
 
 	DU_LOG("\n F1AP : Building UE Context Setup Request\n");
@@ -3968,7 +3952,7 @@ S16 BuildAndSendUESetReq()
 	BuildNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);
 	if(ret != ROK)
 	{
-		//idx =2
+		idx =2;
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI.\
 			nRCellIdentity.buf,sizeof(ueSetReq->protocolIEs.list.array[idx]->value.\
 			choice.NRCGI.nRCellIdentity.size));
@@ -4029,7 +4013,7 @@ S16 BuildAndSendUESetReq()
 	ret = BuildSplCellList(&ueSetReq->protocolIEs.\
 					list.array[idx]->value.choice.SCell_ToBeSetup_List);
 	if(ret != ROK)
-	{  //idx=6
+	{  idx=6;
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array[0]->value.choice.\
 				SCell_ToBeSetup_Item.sCell_ID.nRCellIdentity.buf,\
@@ -4051,7 +4035,7 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
 				array[idx]->value.choice.SCell_ToBeSetup_List.list.size);
-		//idx =2
+		idx =2;
 		idx=idx-4;
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI.\
 				nRCellIdentity.buf,sizeof(ueSetReq->protocolIEs.list.array[idx]->value.\
@@ -4082,7 +4066,8 @@ S16 BuildAndSendUESetReq()
 	ret =	BuildSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.\
 															choice.SRBs_ToBeSetup_List);
 	if(ret != ROK)
-	{//idx =7
+	{        
+                idx =7;
 		for(srbId=0; srbId<srbCnt; srbId++)
 		{
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
@@ -4092,30 +4077,29 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SRBs_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
 				array[idx]->value.choice.SRBs_ToBeSetup_List.list.size);
-		//idx=6
-		DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+		idx=6;
+		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array[0]->value.choice.\
 				SCell_ToBeSetup_Item.sCell_ID.nRCellIdentity.buf,\
-				ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+				ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array[0]->value.choice.\
 				SCell_ToBeSetup_Item.sCell_ID.nRCellIdentity.size);
-		DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array[0]->value.choice.\
 				SCell_ToBeSetup_Item.sCell_ID.pLMN_Identity.buf,\
-				ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+				ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array[0]->value.choice.\
 				SCell_ToBeSetup_Item.sCell_ID.pLMN_Identity.size);
 		for(spId=0; spId<cellCnt; spId++)
 		{
-			DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+			DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 					SCell_ToBeSetup_List.list.array[spId],sizeof(struct
 						SCell_ToBeSetup_ItemIEs));
 		}
-		DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
-				array[--idx]->value.choice.SCell_ToBeSetup_List.list.size);
-		//idx=2
-		idx=idx-4;
+				array[idx]->value.choice.SCell_ToBeSetup_List.list.size);
+		idx=2;
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI.\
 			nRCellIdentity.buf,sizeof(ueSetReq->protocolIEs.list.array[idx]->value.\
 			choice.NRCGI.nRCellIdentity.size));
@@ -4147,7 +4131,7 @@ S16 BuildAndSendUESetReq()
 	ret = BuildDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.\
 															choice.DRBs_ToBeSetup_List);
 	if(ret != ROK)
-	{	//idx=8
+	{	idx=8;
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				DRBs_ToBeSetup_List.list.array[0]->value.choice.\
 				DRBs_ToBeSetup_Item.uLConfiguration,\
@@ -4259,40 +4243,39 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				DRBs_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
 				array[idx]->value.choice.DRBs_ToBeSetup_List.list.size);
-		//idx=7
+		idx=7;
 		for(srbId=0; srbId<srbCnt; srbId++)
 		{
-		DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SRBs_ToBeSetup_List.list.array[srbId],\
 				sizeof(struct SRBs_ToBeSetup_ItemIEs));
 		}
-		DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SRBs_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
-				array[--idx]->value.choice.SRBs_ToBeSetup_List.list.size);
-		//idx=6
-		DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+				array[idx]->value.choice.SRBs_ToBeSetup_List.list.size);
+		idx=6;
+		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array[0]->value.choice.\
 				SCell_ToBeSetup_Item.sCell_ID.nRCellIdentity.buf,\
-				ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+				ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array[0]->value.choice.\
 				SCell_ToBeSetup_Item.sCell_ID.nRCellIdentity.size);
-		DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array[0]->value.choice.\
 				SCell_ToBeSetup_Item.sCell_ID.pLMN_Identity.buf,\
-				ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+				ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array[0]->value.choice.\
 				SCell_ToBeSetup_Item.sCell_ID.pLMN_Identity.size);
 		for(spId=0; spId<cellCnt; spId++)
 		{
-			DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+			DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 					SCell_ToBeSetup_List.list.array[spId],sizeof(struct
 						SCell_ToBeSetup_ItemIEs));
 		}
-		DU_FREE(ueSetReq->protocolIEs.list.array[--idx]->value.choice.\
+		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
-				array[--idx]->value.choice.SCell_ToBeSetup_List.list.size);
-		//idx =2
-		idx = idx-4;
+				array[idx]->value.choice.SCell_ToBeSetup_List.list.size);
+		idx =2;
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI.\
 			nRCellIdentity.buf,sizeof(ueSetReq->protocolIEs.list.array[idx]->value.\
 			choice.NRCGI.nRCellIdentity.size));
@@ -4341,8 +4324,7 @@ S16 BuildAndSendUESetReq()
 		DU_LOG("\n F1AP : Sending	UE Context Setup Request Failed");
 		RETVALUE(RFAILED);
 	}
-
-	RETVALUE(ROK);
+        return ROK;
 }/* End of BuildAndSendUESetReq*/
 
 /*******************************************************************
@@ -4465,15 +4447,10 @@ void F1APMsgHdlr(Buffer *mBuf)
 
 S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
 {
-   F1GnbDuCfgUpdAck duCfgUpdAckDb;
-   GNBDUConfigurationUpdateAcknowledge_t *gnbDuCfgUpdAckMsg;
   
 
    DU_LOG("\nF1AP : GNB-DU config update acknowledgment received");
 
-   /* Store the received info in local database */
-   gnbDuCfgUpdAckMsg = &f1apMsg->choice.successfulOutcome->value.choice.GNBDUConfigurationUpdateAcknowledge;
-   duCfgUpdAckDb.transId = gnbDuCfgUpdAckMsg->protocolIEs.list.array[0]->value.choice.TransactionID;
     
    /* TODO :Check the deallocation */
 #if 0
@@ -4483,8 +4460,7 @@ S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
            (Size)sizeof(SuccessfulOutcome_t));
    SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data *)&f1apMsg,(Size)sizeof(F1AP_PDU_t));
 #endif
-
-   RETVALUE(ROK);
+    return ROK;
 }
 
 /**********************************************************************
