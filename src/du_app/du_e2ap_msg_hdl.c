@@ -85,7 +85,6 @@ S16 BuildAndSendE2SetupReq()
    U8   elementCnt;
    U8   idx;
    U8   ieId;
-   S16  ret; 
    asn_enc_rval_t             encRetVal;        /* Encoder return value */
 
    DU_LOG("\nE2AP : Building E2 Setup Request\n");
@@ -577,7 +576,6 @@ S16 BuildAndSendRicIndication()
    U8   elementCnt;
    U8   idx;
    U8   ieId;
-   S16  ret; 
    asn_enc_rval_t             encRetVal;        /* Encoder return value */
 
    DU_LOG("\nE2AP : Building Ric Indication Message\n");
