@@ -180,22 +180,28 @@ S16 readMacCfg()
 
    /* PRACH configuration */
    duCfgParam.macCellCfg.prachCfg.pres = TRUE;
+	duCfgParam.macCellCfg.prachCfg.prachCfgIdx = PRACH_CONFIG_IDX;
    duCfgParam.macCellCfg.prachCfg.prachSeqLen = PRACH_SEQ_LEN;
    duCfgParam.macCellCfg.prachCfg.prachSubcSpacing = PRACH_SUBCARRIER_SPACING;
    duCfgParam.macCellCfg.prachCfg.prachRstSetCfg = PRACH_RESTRICTED_SET_CFG;
-   duCfgParam.macCellCfg.prachCfg.prachFdm = NUM_PRACH_FDM;
+   duCfgParam.macCellCfg.prachCfg.msg1Fdm = NUM_PRACH_FDM;
+	duCfgParam.macCellCfg.prachCfg.msg1FreqStart = PRACH_FREQ_START;
    duCfgParam.macCellCfg.prachCfg.fdm[0].rootSeqIdx = ROOT_SEQ_IDX;
    duCfgParam.macCellCfg.prachCfg.fdm[0].numRootSeq = NUM_ROOT_SEQ;
    duCfgParam.macCellCfg.prachCfg.fdm[0].k1 = 1;
    duCfgParam.macCellCfg.prachCfg.fdm[0].zeroCorrZoneCfg = ZERO_CORRELATION_ZONE_CFG;
    duCfgParam.macCellCfg.prachCfg.fdm[0].numUnusedRootSeq = NUM_UNUSED_ROOT_SEQ;
-   DU_ALLOC(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq, NUM_UNUSED_ROOT_SEQ * sizeof(U8));
-   if(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq == NULLP)
-   {
-      DU_LOG("\nDU_APP : Memory allocation failed");
-      RETVALUE(RFAILED);
-   }
-   *(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq) = UNUSED_ROOT_SEQ;
+	if(duCfgParam.macCellCfg.prachCfg.fdm[0].numUnusedRootSeq != 0)
+	{
+		DU_ALLOC(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq, 
+				NUM_UNUSED_ROOT_SEQ * sizeof(U8));
+		if(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq == NULLP)
+		{
+			DU_LOG("\nDU_APP : Memory allocation failed");
+			RETVALUE(RFAILED);
+		}
+		*(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq) = UNUSED_ROOT_SEQ;
+	}
    duCfgParam.macCellCfg.prachCfg.ssbPerRach = SSB_PER_RACH;
    duCfgParam.macCellCfg.prachCfg.prachMultCarrBand = PRACH_MULT_CARRIER_BAND;
 
