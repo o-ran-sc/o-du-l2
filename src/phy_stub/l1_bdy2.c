@@ -25,7 +25,7 @@
 
 void *GenerateTicks(void *arg)
 {
-   uint8_t counter = 2;
+   uint8_t counter = 100;
    while(counter)
    {
       sleep(1);

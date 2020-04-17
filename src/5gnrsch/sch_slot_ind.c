@@ -118,6 +118,9 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 {
    int ret = ROK;
 	uint8_t ssb_rep;
+	uint16_t sfn  = slotInd->sfn;
+	uint16_t slot = slotInd->slot;
+	uint16_t sfnSlot = 0;
 	DlBrdcstAlloc dlBrdcstAlloc;
 	dlBrdcstAlloc.ssbTrans = NO_SSB;
    dlBrdcstAlloc.sib1Trans = NO_SIB1;
@@ -130,11 +133,18 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 	cell = schCb[schInst].cells[schInst];
 	ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
 	memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
-   memcpy(&dlBrdcstAlloc.slotIndInfo, slotInd, sizeof(SlotIndInfo));
 	dlBrdcstAlloc.cellId = cell->cellId;
 	dlBrdcstAlloc.ssbIdxSupported = 1;
 
-   uint16_t sfnSlot = (slotInd->sfn * 10) + slotInd->slot;
+   if((slot + SCHED_DELTA) >= 10)
+	{
+      sfn++;   
+	}
+	slot = ((slot + SCHED_DELTA) % 10 );
+   sfnSlot = ((sfn * 10) + slot);
+
+	dlBrdcstAlloc.slotIndInfo.sfn = sfn;
+	dlBrdcstAlloc.slotIndInfo.slot = slot;
 
 	/* Identify SSB ocassion*/
 	if (sfnSlot % SCH_MIB_TRANS == 0)

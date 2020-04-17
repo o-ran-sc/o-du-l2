@@ -124,7 +124,7 @@ uint8_t schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc)
 	{
 		scs = cell->cellCfg.ssbSchCfg.scsCommon;
 		ssbStartPrb = \
-		   ((cell->cellCfg.ssbSchCfg.ssbSubcOffset)-(cell->cellCfg.ssbSchCfg.ssbOffsetPointA))/SCH_NUM_SC_PRB;
+		   (cell->cellCfg.ssbSchCfg.ssbOffsetPointA)/SCH_NUM_SC_PRB;
 
 		memset(ssbStartSymbArr, 0, SCH_MAX_SSB_BEAM);
 		ssbDlTdAlloc(scs, ssbStartSymbArr);
@@ -146,7 +146,7 @@ uint8_t schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc)
 		dlAlloc->ssbIdxSupported = dlBrdcstAlloc->ssbIdxSupported;
 		for(idx=ssbStartSymb; idx<ssbStartSymb+SCH_SSB_SYMB_DURATION; idx++)
 		{
-			dlAlloc->assignedPrb[idx] = SCH_SSB_PRB_DURATION; 
+			dlAlloc->assignedPrb[idx] = SCH_SSB_PRB_DURATION + 1; /* +1 for kSsb */
 		}
 
 	}

@@ -46,7 +46,9 @@ int MacProcDlBrdcstAlloc(Pst *pst, DlBrdcstAlloc *dlBrdcstAlloc)
 {
    if(dlBrdcstAlloc != NULLP)
    {
-      memcpy(&macCb.macCell->dlSlot[0].cellBroadcastInfo, dlBrdcstAlloc, sizeof(DlBrdcstAlloc)); 
+		MacDlSlot *currDlSlot =
+		&macCb.macCell->dlSlot[dlBrdcstAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
+      memcpy(&currDlSlot->cellBroadcastInfo, dlBrdcstAlloc, sizeof(DlBrdcstAlloc)); 
    }
    return ROK;
 }

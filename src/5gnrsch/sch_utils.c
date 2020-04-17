@@ -93,7 +93,7 @@ int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4] = {
  **/
 void freqDomResourceAlloc(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
 {
-   uint8_t remBits = prbSize/6; /* each bit represents 6 PRBs */
+   uint8_t remBits = prbSize; /* each bit represents 6 PRBs */
    uint8_t firstByte = 1;
    uint8_t numBits,startBit,byteCount = 0;
 

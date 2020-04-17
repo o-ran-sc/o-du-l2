@@ -48,7 +48,7 @@
 #include "tfu.x"           /* RGU Interface includes */
 #include "lrg.x"
 
-#define MAX_SLOT_SUPPORTED 50
+#define MAX_SLOT_SUPPORTED 10 /* numerology 0 15Khz */
 
 typedef struct macDlSlot
 {

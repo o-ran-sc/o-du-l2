@@ -174,7 +174,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
 #ifdef FAPI
    uint8_t index = 0;
    uint32_t msgLen = 0;
-	fapi_config_resp_t *fapiConfigRsp = (fapi_config_resp_t *)msg;
+   fapi_config_resp_t *fapiConfigRsp = (fapi_config_resp_t *)msg;
 
    if(fapiConfigRsp != NULL)
    {
@@ -266,7 +266,7 @@ PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
  * @return void
  *
  * ****************************************************************/
-PUBLIC void buildAndSendSlotIndication()
+PUBLIC S16 buildAndSendSlotIndication()
 {
 #ifdef FAPI
    fapi_slot_ind_t *slotIndMsg;
@@ -278,12 +278,12 @@ PUBLIC void buildAndSendSlotIndication()
    else
    {
       slotValue++;
-      if(sfnValue >= MAX_SFN_VALUE && slotValue >= MAX_SLOT_VALUE)
+      if(sfnValue > MAX_SFN_VALUE && slotValue > MAX_SLOT_VALUE)
       {
          sfnValue = 0;
          slotValue = 0;
       }
-      else if(slotValue >= MAX_SLOT_VALUE)
+      else if(slotValue > MAX_SLOT_VALUE)
       {
          sfnValue++;
          slotValue = 0;
@@ -291,11 +291,12 @@ PUBLIC void buildAndSendSlotIndication()
       slotIndMsg->sfn = sfnValue;
       slotIndMsg->slot = slotValue;
       fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
-      printf("\nPHY_STUB: Sending Slot Indication Msg to Lower Mac");
+      printf("\nPHY_STUB [%d:%d] ",sfnValue,slotValue);
       handlePhyMessages((void*)slotIndMsg);
       SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
    }
 #endif
+   return ROK;
 }
 
 /*******************************************************************
@@ -316,10 +317,11 @@ PUBLIC void buildAndSendSlotIndication()
  *
  * ****************************************************************/
 
-PUBLIC void l1HdlStartReq(uint32_t msgLen, void *msg)
+PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
 {
    if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
    {
+      clGlobalCp.phyState = PHY_STATE_RUNNING; 
       duStartSlotIndicaion();
 #ifdef FAPI
       SPutSBuf(0, 0, (Data *)msg, sizeof(fapi_start_req_t));
@@ -351,11 +353,12 @@ PUBLIC void l1HdlStartReq(uint32_t msgLen, void *msg)
 *
 * ****************************************************************/
 
-PUBLIC void l1HdlDlTtiReq(uint16_t msgLen, void *msg)
+PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef FAPI
    fapi_dl_tti_req_t *dlTtiReq;
    dlTtiReq = (fapi_dl_tti_req_t *)msg;
+#if 0
    printf("\nPHY_STUB:  Received DL TTI Request in PHY");
    printf("\nPHY_STUB:  SFN     %d", dlTtiReq->sfn);
    printf("\nPHY_STUB:  SLOT    %d", dlTtiReq->slot);
@@ -369,6 +372,23 @@ PUBLIC void l1HdlDlTtiReq(uint16_t msgLen, void *msg)
    printf("\nPHY_STUB: ssbOffsetPointA     %d",	dlTtiReq->pdus->u.ssb_pdu.ssbOffsetPointA);
    printf("\nPHY_STUB: bchPayloadFlag      %d",	dlTtiReq->pdus->u.ssb_pdu.bchPayloadFlag);
    printf("\nPHY_STUB: bchPayload          %x",	dlTtiReq->pdus->u.ssb_pdu.bchPayload);
+#endif
+   uint8_t numPdus = dlTtiReq->nPdus;
+	if(numPdus == 0)
+	{
+		printf("no  PDU \n");
+   }
+	while(numPdus)
+	{
+		if(dlTtiReq->pdus->pduType == 3) //SSB_PDU_TYPE
+			printf("SSB PDU\n");
+		else if(dlTtiReq->pdus->pduType == 0)
+			printf("SIB1 PDCCH PDU\n");
+		else if(dlTtiReq->pdus->pduType == 1)
+			printf("SIB1 PDSCH PDU\n");
+
+		numPdus--;
+	}
 
    SPutSBuf(0, 0, (Data *)dlTtiReq, sizeof(fapi_dl_tti_req_t));
 #endif

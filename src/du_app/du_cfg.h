@@ -60,11 +60,11 @@
 #define FREQ_SHIFT_7P5KHZ FALSE
 #define SSB_PBCH_PWR -5
 #define BCH_PAYLOAD MAC_GEN_FULL_PBCH_PAYLD
-#define SUBCARRIER_SPACING 1
+#define SUBCARRIER_SPACING 0
 #define SCS_CARRIER_BANDWIDTH 273         /* Subcarrier spacing- carrier bandwidth */
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
 #define BETA_PSS BETA_PSS_0DB  
-#define SSB_PERIODICITY 2
+#define SSB_PERIODICITY 5
 #define SSB_SUBCARRIER_OFFSET 0               
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE
