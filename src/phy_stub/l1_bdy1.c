@@ -174,7 +174,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
 #ifdef FAPI
    uint8_t index = 0;
    uint32_t msgLen = 0;
-	fapi_config_resp_t *fapiConfigRsp = (fapi_config_resp_t *)msg;
+   fapi_config_resp_t *fapiConfigRsp = (fapi_config_resp_t *)msg;
 
    if(fapiConfigRsp != NULL)
    {
@@ -266,7 +266,7 @@ PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
  * @return void
  *
  * ****************************************************************/
-PUBLIC void buildAndSendSlotIndication()
+PUBLIC S16 buildAndSendSlotIndication()
 {
 #ifdef FAPI
    fapi_slot_ind_t *slotIndMsg;
@@ -296,6 +296,7 @@ PUBLIC void buildAndSendSlotIndication()
       SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
    }
 #endif
+   return ROK;
 }
 
 /*******************************************************************
@@ -316,10 +317,11 @@ PUBLIC void buildAndSendSlotIndication()
  *
  * ****************************************************************/
 
-PUBLIC void l1HdlStartReq(uint32_t msgLen, void *msg)
+PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
 {
    if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
    {
+      clGlobalCp.phyState = PHY_STATE_RUNNING; 
       duStartSlotIndicaion();
 #ifdef FAPI
       SPutSBuf(0, 0, (Data *)msg, sizeof(fapi_start_req_t));
@@ -351,7 +353,7 @@ PUBLIC void l1HdlStartReq(uint32_t msgLen, void *msg)
 *
 * ****************************************************************/
 
-PUBLIC void l1HdlDlTtiReq(uint16_t msgLen, void *msg)
+PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef FAPI
    fapi_dl_tti_req_t *dlTtiReq;
@@ -368,7 +370,7 @@ PUBLIC void l1HdlDlTtiReq(uint16_t msgLen, void *msg)
    printf("\nPHY_STUB: ssbSubCarrierOffset %d",	dlTtiReq->pdus->u.ssb_pdu.ssbSubCarrierOffset);
    printf("\nPHY_STUB: ssbOffsetPointA     %d",	dlTtiReq->pdus->u.ssb_pdu.ssbOffsetPointA);
    printf("\nPHY_STUB: bchPayloadFlag      %d",	dlTtiReq->pdus->u.ssb_pdu.bchPayloadFlag);
-   printf("\nPHY_STUB: bchPayload          %x",	dlTtiReq->pdus->u.ssb_pdu.bchPayload);
+   printf("\nPHY_STUB: bchPayload          %d",	dlTtiReq->pdus->u.ssb_pdu.bchPayload.v.bchPayload);
 
    SPutSBuf(0, 0, (Data *)dlTtiReq, sizeof(fapi_dl_tti_req_t));
 #endif

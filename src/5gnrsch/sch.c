@@ -426,8 +426,8 @@ uint8_t      offsetPointA
    /* fill the PDCCH PDU */
    pdcch->sib1PdcchBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
    pdcch->sib1PdcchBwpCfg.BWPStart = 0;
-   pdcch->subcarrierSpacing = 0;         /* 15Khz */
-   pdcch->cyclicPrefix = 0;              /* normal */
+   pdcch->sib1CmCfg.subcarrierSpacing = 0;         /* 15Khz */
+   pdcch->sib1CmCfg.cyclicPrefix = 0;              /* normal */
    pdcch->sib1Coreset0Cfg.startSymbolIndex = firstSymbol;
    pdcch->sib1Coreset0Cfg.durationSymbols = numSymbols;
    memcpy(pdcch->sib1Coreset0Cfg.freqDomainResource,FreqDomainResource,6);

@@ -111,10 +111,16 @@ typedef struct dlDCI
    TxPowerPdcchInfo txPdcchPower;
 } DlDCI;
 
+typedef struct sib1CmCfg
+{
+   uint8_t subcarrierSpacing;
+   uint8_t cyclicPrefix;
+}CmCfg;
+
 typedef struct sib1PdcchCfg
 {
    BwpCfg sib1PdcchBwpCfg;
-
+   CmCfg sib1CmCfg;
    uint8_t subcarrierSpacing;
    uint8_t cyclicPrefix;
 
@@ -175,6 +181,7 @@ typedef struct sib1PdschCfg
    uint16_t rnti;
    uint16_t pduIndex;
    BwpCfg sib1PdschBwpCfg;
+   CmCfg  sib1CmCfg;
    uint8_t numCodewords;
    CodewordInfo codeword[MAX_CODEWORDS];
    uint16_t dataScramblingId;
