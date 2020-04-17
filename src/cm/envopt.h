@@ -801,9 +801,9 @@
 #endif
 
 #if defined(DLHQ_RTT_OPT) && defined(LOWLATENCY)
-#define TFU_DELTA 2
+#define TFU_DELTA 0
 #else
-#define TFU_DELTA 2
+#define TFU_DELTA 0
 #endif
 #define TFU_RECPREQ_DLDELTA   2
 

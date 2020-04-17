@@ -63,6 +63,8 @@
 #include "rg.x"            /* typedefs for MAC */
 
 #define MIB_SFN_BITMASK 0xFC
+#define PDCCH_PDU_TYPE 0
+#define PDSCH_PDU_TYPE 1
 #define SSB_PDU_TYPE 3
 #define SETLENGTH(x, size) x += size
 
@@ -1247,9 +1249,9 @@ PUBLIC void fillRssiMeas(uint8_t value, ClCellParam **cellPtr)
 
 uint32_t getParamValue(fapi_uint16_tlv_t *tlv, uint16_t type)
 {
-    uint16_t valueLen;
+    //uint16_t valueLen;
     void *posPtr;
-    valueLen = tlv->tl.length;
+    //valueLen = tlv->tl.length;
     posPtr   = &tlv->tl.tag;
     posPtr   += sizeof(tlv->tl.tag);
     posPtr   += sizeof(tlv->tl.length);
@@ -2081,7 +2083,8 @@ PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val)
  ******************************************************************/
 
 S16 fillSsbPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, MacCellCfg *macCellCfg,
-uint32_t *msgLen)
+	MacDlSlot *currDlSlot,
+	uint32_t *msgLen, uint8_t ssbIdxCount) 
 {
    uint32_t mibPayload = 0;
    if(dlTtiReqPdu != NULL)
@@ -2089,7 +2092,7 @@ uint32_t *msgLen)
       dlTtiReqPdu->pduType = SSB_PDU_TYPE;     /* SSB PDU */
       dlTtiReqPdu->u.ssb_pdu.physCellId = macCellCfg->phyCellId;
       dlTtiReqPdu->u.ssb_pdu.betaPss = macCellCfg->ssbCfg.betaPss;
-      dlTtiReqPdu->u.ssb_pdu.ssbBlockIndex = macCb.macCell->dlSlot[0].cellBroadcastInfo.ssbIdxSupported;
+      dlTtiReqPdu->u.ssb_pdu.ssbBlockIndex = currDlSlot->cellBroadcastInfo.ssbInfo[ssbIdxCount].ssbIdx;
       dlTtiReqPdu->u.ssb_pdu.ssbSubCarrierOffset = macCellCfg->ssbCfg.ssbScOffset;
       /* ssbOfPdufstA to be filled in ssbCfg */
       dlTtiReqPdu->u.ssb_pdu.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
@@ -2112,7 +2115,206 @@ uint32_t *msgLen)
        return RFAILED;
     }
 }
+
+/*******************************************************************
+ *
+ * @brief fills Dl DCI PDU required for DL TTI info in MAC
+ *
+ * @details
+ *
+ *    Function : fillDlDciPdu
+ *
+ *    Functionality:
+ *         -Fills the Dl DCI PDU
+ *
+ * @params[in] Pointer to fapi_dl_dci_t
+ *             Pointer to Sib1PdcchCfg
+ * @return ROK
+ *
+ ******************************************************************/
+
+void fillDlDciPdu(fapi_dl_dci_t *dlDciPtr, Sib1PdcchCfg *sib1PdcchInfo)
+{
+   if(dlDciPtr != NULLP)
+   {
+      dlDciPtr->rnti = sib1PdcchInfo->sib1DlDci.rnti;
+      dlDciPtr->scramblingId = sib1PdcchInfo->sib1DlDci.scramblingId;    
+      dlDciPtr->scramblingRnti = sib1PdcchInfo->sib1DlDci.scramblingRnti;
+      dlDciPtr->cceIndex = sib1PdcchInfo->sib1DlDci.cceIndex;
+      dlDciPtr->aggregationLevel = sib1PdcchInfo->sib1DlDci.aggregLevel;
+      dlDciPtr->pc_and_bform.numPrgs = sib1PdcchInfo->sib1DlDci.beamPdcchInfo.numPrgs;
+      dlDciPtr->pc_and_bform.prgSize = sib1PdcchInfo->sib1DlDci.beamPdcchInfo.prgSize;
+      dlDciPtr->pc_and_bform.digBfInterfaces = sib1PdcchInfo->sib1DlDci.beamPdcchInfo.digBfInterfaces;
+      dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = sib1PdcchInfo->sib1DlDci.beamPdcchInfo.prg[0].pmIdx;
+      dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = sib1PdcchInfo->sib1DlDci.beamPdcchInfo.prg[0].beamIdx[0];
+      dlDciPtr->beta_pdcch_1_0 = sib1PdcchInfo->sib1DlDci.txPdcchPower.powerValue;           
+      dlDciPtr->powerControlOfssetSS = sib1PdcchInfo->sib1DlDci.txPdcchPower.powerControlOffsetSS;
+      //dlDciPtr->payloadSizeBits;
+      //dlDciPtr->payload[DCI_PAYLOAD_BYTE_LEN];
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief fills PDCCH PDU required for DL TTI info in MAC
+ *
+ * @details
+ *
+ *    Function : fillPdcchPdu
+ *
+ *    Functionality:
+ *         -Fills the Pdcch PDU info
+ *          stored in MAC
+ *
+ * @params[in] Pointer to FAPI DL TTI Req
+ *             Pointer to Sib1PdcchCfg
+ *             Pointer to msgLen of DL TTI Info
+ * @return ROK
+ *
+ ******************************************************************/
+
+S16 fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, Sib1PdcchCfg *sib1PdcchInfo,
+uint32_t *msgLen)
+{
+    if(dlTtiReqPdu != NULLP)
+    {
+       dlTtiReqPdu->pduType = PDCCH_PDU_TYPE;
+       dlTtiReqPdu->u.pdcch_pdu.bwpSize = sib1PdcchInfo->sib1PdcchBwpCfg.BWPSize;
+       dlTtiReqPdu->u.pdcch_pdu.bwpPart = sib1PdcchInfo->sib1PdcchBwpCfg.BWPStart;
+       dlTtiReqPdu->u.pdcch_pdu.subCarrierSpacing = sib1PdcchInfo->sib1PdcchBwpCfg.subcarrierSpacing; 
+       dlTtiReqPdu->u.pdcch_pdu.cyclicPrefix = sib1PdcchInfo->sib1PdcchBwpCfg.cyclicPrefix; 
+       dlTtiReqPdu->u.pdcch_pdu.startSymbolIndex = sib1PdcchInfo->sib1Coreset0Cfg.startSymbolIndex;
+       dlTtiReqPdu->u.pdcch_pdu.durationSymbols = sib1PdcchInfo->sib1Coreset0Cfg.durationSymbols;
+       memcpy(dlTtiReqPdu->u.pdcch_pdu.freqDomainResource, sib1PdcchInfo->sib1Coreset0Cfg.freqDomainResource, 6);
+       dlTtiReqPdu->u.pdcch_pdu.cceRegMappingType = sib1PdcchInfo->sib1Coreset0Cfg.cceRegMappingType;
+       dlTtiReqPdu->u.pdcch_pdu.regBundleSize = sib1PdcchInfo->sib1Coreset0Cfg.regBundleSize;
+       dlTtiReqPdu->u.pdcch_pdu.interleaverSize = sib1PdcchInfo->sib1Coreset0Cfg.interleaverSize;
+       dlTtiReqPdu->u.pdcch_pdu.coreSetSize = sib1PdcchInfo->sib1Coreset0Cfg.coreSetType;
+       dlTtiReqPdu->u.pdcch_pdu.shiftIndex =  sib1PdcchInfo->sib1Coreset0Cfg.shiftIndex;
+       dlTtiReqPdu->u.pdcch_pdu.precoderGranularity = sib1PdcchInfo->sib1Coreset0Cfg.precoderGranularity;
+       dlTtiReqPdu->u.pdcch_pdu.numDlDci = sib1PdcchInfo->numDlDci;
+       MAC_ALLOC(dlTtiReqPdu->u.pdcch_pdu.dlDci, sizeof(fapi_dl_dci_t));
+       fillDlDciPdu(dlTtiReqPdu->u.pdcch_pdu.dlDci, sib1PdcchInfo);
+       dlTtiReqPdu->pduSize = sizeof(fapi_dl_pdcch_pdu_t);
+       SETLENGTH(*msgLen, sizeof(fapi_dl_pdcch_pdu_t));
+
+    }
+    return ROK;
+
+}
+
+/*******************************************************************
+ *
+ * @brief fills PDSCH PDU required for DL TTI info in MAC
+ *
+ * @details
+ *
+ *    Function : fillPdschPdu
+ *
+ *    Functionality:
+ *         -Fills the Pdsch PDU info
+ *          stored in MAC
+ *
+ * @params[in] Pointer to FAPI DL TTI Req
+ *             Pointer to Sib1PdschCfg
+ *             Pointer to msgLen of DL TTI Info
+ * @return ROK
+ *
+ ******************************************************************/
+
+void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, Sib1PdschCfg *sib1PdschInfo,
+uint32_t *msgLen)
+{
+    uint8_t idx;
+
+    if(dlTtiReqPdu != NULLP)
+    {
+       dlTtiReqPdu->pduType = PDSCH_PDU_TYPE;
+       dlTtiReqPdu->u.pdsch_pdu.pduBitMap = sib1PdschInfo->pduBitmap;
+       dlTtiReqPdu->u.pdsch_pdu.rnti = sib1PdschInfo->rnti;         
+       dlTtiReqPdu->u.pdsch_pdu.pduIndex = sib1PdschInfo->pduIndex;
+       dlTtiReqPdu->u.pdsch_pdu.bwpSize = sib1PdschInfo->sib1PdschBwpCfg.BWPSize;       
+       dlTtiReqPdu->u.pdsch_pdu.bwpStart = sib1PdschInfo->sib1PdschBwpCfg.BWPStart;
+       dlTtiReqPdu->u.pdsch_pdu.subCarrierSpacing = sib1PdschInfo->sib1PdschBwpCfg.subcarrierSpacing;
+       dlTtiReqPdu->u.pdsch_pdu.cyclicPrefix = sib1PdschInfo->sib1PdschBwpCfg.cyclicPrefix;
+       dlTtiReqPdu->u.pdsch_pdu.nrOfCodeWords = sib1PdschInfo->numCodewords;
+       for(idx = 0; idx < MAX_CODEWORDS ; idx++)
+       { 
+          dlTtiReqPdu->u.pdsch_pdu.cwInfo[idx].targetCodeRate = sib1PdschInfo->codeword[idx].targetCodeRate;
+          dlTtiReqPdu->u.pdsch_pdu.cwInfo[idx].qamModOrder = sib1PdschInfo->codeword[idx].qamModOrder;
+          dlTtiReqPdu->u.pdsch_pdu.cwInfo[idx].mcsIndex = sib1PdschInfo->codeword[idx].mcsIndex;
+          dlTtiReqPdu->u.pdsch_pdu.cwInfo[idx].mcsTable = sib1PdschInfo->codeword[idx].mcsTable;
+          dlTtiReqPdu->u.pdsch_pdu.cwInfo[idx].rvIndex = sib1PdschInfo->codeword[idx].rvIndex;
+          dlTtiReqPdu->u.pdsch_pdu.cwInfo[idx].tbSize = sib1PdschInfo->codeword[idx].tbSize;
+       }
+       dlTtiReqPdu->u.pdsch_pdu.dataScramblingId = sib1PdschInfo->dataScramblingId;       
+       dlTtiReqPdu->u.pdsch_pdu.nrOfLayers = sib1PdschInfo->numLayers;
+       dlTtiReqPdu->u.pdsch_pdu.transmissionScheme = sib1PdschInfo->transmissionScheme;
+       dlTtiReqPdu->u.pdsch_pdu.refPoint = sib1PdschInfo->refPoint;
+       dlTtiReqPdu->u.pdsch_pdu.dlDmrsSymbPos = sib1PdschInfo->dmrs.dlDmrsSymbPos;
+       dlTtiReqPdu->u.pdsch_pdu.dmrsConfigType = sib1PdschInfo->dmrs.dmrsConfigType;
+       dlTtiReqPdu->u.pdsch_pdu.dlDmrsScramblingId = sib1PdschInfo->dmrs.dlDmrsScramblingId;
+       dlTtiReqPdu->u.pdsch_pdu.scid = sib1PdschInfo->dmrs.scid;
+       dlTtiReqPdu->u.pdsch_pdu.numDmrsCdmGrpsNoData = sib1PdschInfo->dmrs.numDmrsCdmGrpsNoData;
+       dlTtiReqPdu->u.pdsch_pdu.dmrsPorts = sib1PdschInfo->dmrs.dmrsPorts;
+       dlTtiReqPdu->u.pdsch_pdu.resourceAlloc = sib1PdschInfo->sib1FreqAlloc.resourceAlloc;
+       /* since we are using type-1, hence rbBitmap excluded */
+       dlTtiReqPdu->u.pdsch_pdu.rbStart = sib1PdschInfo->sib1FreqAlloc.rbStart;
+       dlTtiReqPdu->u.pdsch_pdu.rbSize = sib1PdschInfo->sib1FreqAlloc.rbSize;
+       dlTtiReqPdu->u.pdsch_pdu.vrbToPrbMapping = sib1PdschInfo->sib1FreqAlloc.vrbPrbMapping;
+       dlTtiReqPdu->u.pdsch_pdu.startSymbIndex = sib1PdschInfo->sib1TimeAlloc.startSymbolIndex;
+       dlTtiReqPdu->u.pdsch_pdu.nrOfSymbols = sib1PdschInfo->sib1TimeAlloc.numSymbols;
+       dlTtiReqPdu->u.pdsch_pdu.preCodingAndBeamforming.numPrgs = sib1PdschInfo->beamPdschInfo.numPrgs;
+       dlTtiReqPdu->u.pdsch_pdu.preCodingAndBeamforming.prgSize = sib1PdschInfo->beamPdschInfo.prgSize;
+       dlTtiReqPdu->u.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = sib1PdschInfo->beamPdschInfo.digBfInterfaces;
+       dlTtiReqPdu->u.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0]. \
+          pmIdx = sib1PdschInfo->beamPdschInfo.prg[0].pmIdx;
+       dlTtiReqPdu->u.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0]. \
+          beamIdx[0].beamidx = sib1PdschInfo->beamPdschInfo.prg[0].beamIdx[0];
+       dlTtiReqPdu->u.pdsch_pdu.powerControlOffset = sib1PdschInfo->txPdschPower.powerControlOffset;  
+       dlTtiReqPdu->u.pdsch_pdu.powerControlOffsetSS = sib1PdschInfo->txPdschPower.powerControlOffsetSS;
+       dlTtiReqPdu->pduSize = sizeof(fapi_dl_pdsch_pdu_t);
+       SETLENGTH(*msgLen, sizeof(fapi_dl_pdsch_pdu_t));
+
+    }
+
+}
+
+/***********************************************************************
+ *
+ * @brief calculates the total size to be allocated for DL TTI Req
+ *
+ * @details
+ *
+ *    Function : calculatePduCount
+ *
+ *    Functionality:
+ *         -calculates the total pdu count to be allocated for DL TTI Req
+ *
+ * @params[in]    DlBrdcstAlloc *cellBroadcastInfo
+ * @return count
+ *
+ * ********************************************************************/
+uint8_t calculatePduCount(DlBrdcstAlloc *cellBroadcastInfo)
+{
+   uint8_t count = 0;
+   uint8_t idx = 0;
+   if(cellBroadcastInfo->ssbTrans)
+   {
+      for(idx = 0; idx < cellBroadcastInfo->ssbIdxSupported; idx++)
+      {
+         count++;
+      }
+   }
+   if(cellBroadcastInfo->sib1Trans)
+   {
+      count += 2;
+   }
+   return count;
+}
+
 #endif
+
 /*******************************************************************
  *
  * @brief Sends DL TTI Request to PHY
@@ -2132,53 +2334,93 @@ uint32_t *msgLen)
 S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 {
 #ifdef FAPI
-   uint32_t msgLen;
-   fapi_dl_tti_req_t *dlTtiReq;
-   fapi_dl_tti_req_pdu_t *dlTtiReqPdu;
-   RgCellCb  *cellCbParams;
+   uint8_t idx;
+   uint32_t msgLen = 0;
+   fapi_dl_tti_req_t *dlTtiReq = NULLP;
+   fapi_dl_tti_req_pdu_t *dlTtiReqPdu = NULLP;
+   RgCellCb  *cellCbParams = NULLP;
+	MacDlSlot *currDlSlot = NULLP;
    MacCellCfg macCellCfg;
+	cmMemset((U8 *)&macCellCfg, 0, sizeof(MacCellCfg));
    Inst inst = 0;
 
-   cellCbParams = rgCb[inst].cell;
-   if(dlTtiReqtimingInfo != NULLP)
+   if(clGlobalCp.phyState == PHY_STATE_RUNNING)
    {
-      MAC_ALLOC(dlTtiReq, sizeof(fapi_dl_tti_req_t));
-      if(dlTtiReq != NULLP)
-      {
-         /* fill the SFN and slot value from crntTime */
-         dlTtiReq->sfn = dlTtiReqtimingInfo->sfn;
-         dlTtiReq->slot = dlTtiReqtimingInfo->slot;
-         dlTtiReq->nPdus = 0;
-         dlTtiReq->nGroup = 0;
-         if(macCb.macCell->dlSlot[0].cellBroadcastInfo.ssbTrans)
-         {
-            macCellCfg = cellCbParams->macCellCfg;
+      cellCbParams = rgCb[inst].cell;
+      macCellCfg = cellCbParams->macCellCfg;
 
-            MAC_ALLOC(dlTtiReqPdu, sizeof(fapi_dl_tti_req_pdu_t));
-            if(dlTtiReqPdu != NULLP)
-            {
-               fillSsbPdu(dlTtiReqPdu, &macCellCfg, &msgLen);
-               dlTtiReq->pdus = dlTtiReqPdu;
-            }
-            (dlTtiReq->nPdus)++;
-            msgLen = sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
-            fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
-            sendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
-            MAC_FREE(dlTtiReqPdu, sizeof(fapi_dl_tti_req_pdu_t));
-         }
-         MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
-         return ROK;
-      }
-		else
+      if(dlTtiReqtimingInfo != NULLP)
       {
-         DU_LOG("\nLOWER MAC: Failed to allocate memory for DL TTI Request");
+         MAC_ALLOC(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+         if(dlTtiReq != NULLP)
+         {
+            dlTtiReq->sfn = dlTtiReqtimingInfo->sfn;
+            dlTtiReq->slot = dlTtiReqtimingInfo->slot;
+				currDlSlot = &macCb.macCell->dlSlot[dlTtiReq->slot % MAX_SLOT_SUPPORTED];
+				dlTtiReq->nPdus = calculatePduCount(&currDlSlot->cellBroadcastInfo);  /* get total Pdus */
+            dlTtiReq->nGroup = 0;
+            if(dlTtiReq->nPdus > 0)
+            {
+               MAC_ALLOC(dlTtiReqPdu, (dlTtiReq->nPdus * sizeof(fapi_dl_tti_req_pdu_t)));
+               if(currDlSlot->cellBroadcastInfo.ssbTrans)
+               {
+                 if(dlTtiReqPdu != NULLP)
+                 {
+                    for(idx = 0; idx < currDlSlot->cellBroadcastInfo.ssbIdxSupported; idx++)
+                    {
+						  	  if(idx > 0)
+                       dlTtiReq->pdus++;
+                       fillSsbPdu(dlTtiReqPdu, &macCellCfg, currDlSlot, &msgLen, idx);
+                       dlTtiReq->pdus = dlTtiReqPdu;
+                    }
+                 }
+               }
+               if(currDlSlot->cellBroadcastInfo.sib1Trans)
+               {
+                  /* Filling SIB1 param */
+                  if(dlTtiReqPdu != NULLP)
+                  {
+                     dlTtiReq->pdus++;
+                     fillPdcchPdu(dlTtiReqPdu, &currDlSlot->cellBroadcastInfo.sib1Alloc.sib1PdcchCfg, &msgLen);
+                     dlTtiReq->pdus = dlTtiReqPdu;
+                     dlTtiReq->pdus++;
+                     fillPdschPdu(dlTtiReqPdu, &currDlSlot->cellBroadcastInfo.sib1Alloc.sib1PdschCfg, &msgLen);
+                     dlTtiReq->pdus = dlTtiReqPdu;
+                  }
+               }
+               msgLen += sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
+               fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
+               sendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
+					if(currDlSlot->cellBroadcastInfo.sib1Trans)
+					{
+                  MAC_FREE(dlTtiReq->pdus->u.pdcch_pdu.dlDci, sizeof(fapi_dl_dci_t));
+				   }
+               MAC_FREE(dlTtiReqPdu, (dlTtiReq->nPdus * sizeof(fapi_dl_tti_req_pdu_t)));
+             }
+             else
+             {
+                msgLen = sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
+                fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
+                sendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
+             }
+             MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+             return ROK;
+         }
+         else
+         {
+            DU_LOG("\nLOWER MAC: Failed to allocate memory for DL TTI Request");
+            return RFAILED;
+         }
+      }
+      else
+      {
+         DU_LOG("\nLOWER MAC: Current TTI Info is NULL");
          return RFAILED;
       }
    }
-	else
-	{
-	   DU_LOG("\nLOWER MAC: Current TTI Info is NULL");
-      return RFAILED;
+   else
+   {
+       lwr_mac_handleInvalidEvt(dlTtiReqtimingInfo);
    }
 #else
    return ROK;

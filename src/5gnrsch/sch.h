@@ -25,12 +25,13 @@
 #define SCH_MIB_TRANS 80 
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
 #define SCH_MAX_SSB_BEAM 4 /* since we are supporting only SCS=15KHz */
-#define SCH_SCS_15KHZ 15
+#define SCH_SCS_15KHZ 0 /* numerology 0 and 15Khz */
 #define SCH_SYMBOL_PER_SLOT 14
 #define SCH_SSB_SYMB_DURATION 4
 #define SCH_SSB_PRB_DURATION 20
 #define SCH_MEM_REGION     4
 #define SCH_POOL           1
+#define SCHED_DELTA 1
 
 /* allocate and zero out a static buffer */
 #define SCH_ALLOC(_datPtr, _size)                                \

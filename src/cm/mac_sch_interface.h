@@ -61,6 +61,8 @@ typedef struct
 /* SIB1 interface structure */
 typedef struct bwpCfg
 {
+   uint8_t subcarrierSpacing;
+   uint8_t cyclicPrefix;
    uint16_t BWPSize;
    uint16_t BWPStart;
 }BwpCfg;
@@ -114,10 +116,6 @@ typedef struct dlDCI
 typedef struct sib1PdcchCfg
 {
    BwpCfg sib1PdcchBwpCfg;
-
-   uint8_t subcarrierSpacing;
-   uint8_t cyclicPrefix;
-
    /* coreset-0 configuration */
    CoresetCfg sib1Coreset0Cfg;
 

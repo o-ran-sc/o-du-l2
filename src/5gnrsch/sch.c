@@ -421,13 +421,13 @@ uint8_t      offsetPointA
    sib1SchCfg->n0 = slotIndex;
  
    /* calculate the PRBs */
-   freqDomResourceAlloc((offsetPointA-offset),numRbs,FreqDomainResource);
+   freqDomResourceAlloc( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill the PDCCH PDU */
    pdcch->sib1PdcchBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
    pdcch->sib1PdcchBwpCfg.BWPStart = 0;
-   pdcch->subcarrierSpacing = 0;         /* 15Khz */
-   pdcch->cyclicPrefix = 0;              /* normal */
+   pdcch->sib1PdcchBwpCfg.subcarrierSpacing = 0;         /* 15Khz */
+   pdcch->sib1PdcchBwpCfg.cyclicPrefix = 0;              /* normal */
    pdcch->sib1Coreset0Cfg.startSymbolIndex = firstSymbol;
    pdcch->sib1Coreset0Cfg.durationSymbols = numSymbols;
    memcpy(pdcch->sib1Coreset0Cfg.freqDomainResource,FreqDomainResource,6);

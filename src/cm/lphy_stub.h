@@ -10,5 +10,5 @@
 #include "ssi.x"   /* System services */
 
 void duStartSlotIndicaion();
-void buildAndSendSlotIndication();
+S16 buildAndSendSlotIndication();
 S16 duSendEgtpSlotInd();
