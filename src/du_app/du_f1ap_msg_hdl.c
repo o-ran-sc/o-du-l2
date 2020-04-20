@@ -805,7 +805,7 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
 
    /* SIB1 */
 	srvCellItem->gNB_DU_System_Information->sIB1_message.size =\
-	      encBufSize;
+	      duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
 	DU_ALLOC(srvCellItem->gNB_DU_System_Information->sIB1_message.buf,
 	      srvCellItem->gNB_DU_System_Information->sIB1_message.size);
    if(!srvCellItem->gNB_DU_System_Information->sIB1_message.buf)
@@ -819,7 +819,8 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
       duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg[x];
    }
    /* Free memory */
-	DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, encBufSize);
+	DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, 
+			srvCellItem->gNB_DU_System_Information->sIB1_message.size);
 	DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg, 
 			strlen(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg));
    RETVALUE(ROK);
@@ -1264,6 +1265,10 @@ S16 BuildAndSendF1SetupReq()
          encBuf);
    /* Clean up */
 #if 0 
+      DU_FREE(srvCellItem->gNB_DU_System_Information->sIB1_message.buf,
+		   srvCellItem->gNB_DU_System_Information->sIB1_message.size);
+      DU_FREE(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
+		   srvCellItem->gNB_DU_System_Information->mIB_message.size);
       DU_FREE(srvCellItem->served_Cell_Information.\
             measurementTimingConfiguration.buf,sizeof(U8));
       DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\

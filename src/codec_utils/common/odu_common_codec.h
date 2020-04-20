@@ -30,7 +30,7 @@
 #include "BIT_STRING.h"
 #include "asn_codecs.h"
 
-#define ENC_BUF_MAX_LEN 200
+#define ENC_BUF_MAX_LEN 400
 #define ENCODE_FAIL -1
 
 typedef struct PlmnIdentity 
