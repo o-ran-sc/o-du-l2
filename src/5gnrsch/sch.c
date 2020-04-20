@@ -65,10 +65,10 @@
 #include "sch.h"
 #include "sch_utils.h"
 #include "du_log.h"
-
 extern SchCb schCb[SCH_MAX_INST];
 extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
 extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
+void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
 /* local defines */
 SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
 {

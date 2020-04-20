@@ -25,7 +25,6 @@
 #include "GNB-DU-System-Information.h"
 
 extern char encBuf[ENC_BUF_MAX_LEN];
-
 extern DuCfgParams duCfgParam;
 S16 sctpSend(Buffer *mBuf, U8 itfType);
 /*******************************************************************
@@ -2820,7 +2819,6 @@ S16 BuildAndSendDUConfigUpdate()
  * ****************************************************************/
 S16 BuildAndSendULRRCMessageTransfer()
 {
-
 	U8   elementCnt;
 	U8   ieId;
 	U8   idx;

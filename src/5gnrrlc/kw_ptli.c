@@ -27,9 +27,7 @@
         File:    kw_ptli.c
   
 *********************************************************************21*/
-static const char* RLOG_MODULE_NAME="LIM";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=238;
+
 /** @file kw_ptli.c 
 @brief RLC Lower Interface
 */

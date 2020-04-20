@@ -257,7 +257,6 @@ RguDDatReqInfo    *datReqInfo;
    RguDDatReqPerUe  datPerUe;   /* DL data info per UE */
    RguDatReqTb      datPerTb;   /* DL data info per TB */
    RguLchDatReq     datPerLch;  /* DL data info per Lch */
-   RguPduInfo       pduInfo;    /* DL RLC PDU infor */
    RlcMacData       *dlData;    /* DL data to be sent to MAC */
 
    TRC3(KwLiRguDDatReq)
