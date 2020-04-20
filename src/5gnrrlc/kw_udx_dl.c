@@ -281,7 +281,6 @@ CkwCfgInfo   *cfg;
 {
    CkwCfgCfmInfo   *cfgCfm; 
    U8              idx;    
-   S16             ret = ROK;
    KwCb            *tKwCb;
    Pst             *pstUdxCfm;
 

@@ -616,8 +616,7 @@ TfuDelDatReqInfo *delDatReq;
  *      -# RFAILED 
  **/
 int sendSlotIndMacToSch(SlotIndInfo *slotInd)
-{
-   int ret = ROK;
+{ 
    /* fill Pst structure to send to lwr_mac to MAC */
    Pst pst;
    pst.srcProcId = 0;

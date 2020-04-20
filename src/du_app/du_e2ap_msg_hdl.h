@@ -41,7 +41,7 @@
 #include "ss_msg.x"
 
 #include "du_log.h"
-
+S16 sctpSend(Buffer *mBuf, U8 itfType);
 #define ENCODE_FAIL -1
 
 typedef struct e2apDb

@@ -56,7 +56,7 @@
 #include "rg_prg.x"
 #include "du_app_mac_inf.h"
 #include "rg.x"
-
+extern void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg);
 /* This file contains message handling functionality for MAC */
 
 /*******************************************************************

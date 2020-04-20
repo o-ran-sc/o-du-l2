@@ -65,7 +65,7 @@
 #include "sch.h"
 #include "sch_utils.h"
 #include "du_log.h"
-
+void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
 extern SchCb schCb[SCH_MAX_INST];
 extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
 extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
