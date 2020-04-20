@@ -1,0 +1,395 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6bc6f7d8_549e3c15",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "follow the comments given below",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75690291_c01c2fed",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "when ret is used to capture ROK/RFAILED, then always do return ret.\nand make sure ret is not overwritten by mistake",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "551a1f4f_bae21dbb",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "initialize ret \u003d ROK;",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7a19933_dc475977",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "Both the ret storing and comparison to ROK can be done single statement.\nRestore it to previous and the necessary paranthesis",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c104dfd_d462c549",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "return ret",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bda31dd6_c779202a",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "return ret",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6a9a3ab_fd3ca8f5",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "return ret",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30723c29_1aac8d39",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "In DU_FREE, nrcgi-\u003enRCellIdentity.size is enough as it already holds the total size to be freed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b2c1588_fa285ed4",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3965,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "this check can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76c681de_45198221",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4026,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "this can be removed. It overwrites the existing idx value to 6",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d9e73dc_d6415715",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4048,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c0530a7_f27423c3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4080,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "898963fe_be5a55ba",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4090,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81c5a56f_a5fac4dd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4112,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9602b89e_3ee8a2f6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4113,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "why is it commented. check the logic from the previous code",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c132deb0_d7e9e9f7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4145,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64404127_9e22006b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4257,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5492428f_57d28c7f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4267,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f688c21e_1db8350d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4289,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdf604df_65f6e729",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4290,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "check logic with previous code",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "abbe5172_2cc7f7dd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4463,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "everything under this function is commented. If not needed can it be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab770cdb_13e88f69",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "Why is this header required ?",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2831ca36_fb5ef67c",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-20T06:34:28Z",
+      "side": 1,
+      "message": "Here the idx to be replaced as idx1.\nElse what the use of using idx1.",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
