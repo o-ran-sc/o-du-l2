@@ -1259,7 +1259,6 @@ Buffer *mBuf;
    S16 ret1 = ROK; 
 #endif
    S16 retVal;
-   SpId          spId = 0;
    KwuDatReqInfo *datReq = NULLP;
    KwuDatReqInfo datReqTmp;
 

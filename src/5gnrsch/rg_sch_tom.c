@@ -81,6 +81,8 @@ static int RLOG_MODULE_ID=4096;
 #ifdef EMTC_ENABLE
 #include "rg_sch_emtc_ext.x"
 #endif 
+U8 rgSCHCmnCalcPcqiBitSz(RgSchUeCb    *ueCb,U8 numTxAnt);
+PUBLIC S16 rgSCHDhm5gtfHqFdbkInd(RgSchUeCb *ue,RgSchCellCb *cell,CmLteTimingInfo timingInfo,TfuHqFdbk fdbk,RgSchErrInfo *err);
 /* local defines */
 #ifdef EMTC_ENABLE
 EXTERN  Bool rgSCHEmtcChkEmtcUe ARGS(

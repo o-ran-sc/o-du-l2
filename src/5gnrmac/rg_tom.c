@@ -1511,8 +1511,8 @@ Inst             inst;
 #ifdef LTEMAC_SPS
    Bool              isSpsRnti=FALSE;
    Pst               schPst1;  
-   RgInfSpsRelInfo   relInfo;
-   Bool              spsToBeActvtd = FALSE;
+  // RgInfSpsRelInfo   relInfo;
+	Bool              spsToBeActvtd = FALSE;
    U16               sduSize = 0;
 #endif
    U32               lcgBytes[RGINF_MAX_LCG_PER_UE];
@@ -1664,10 +1664,12 @@ Inst             inst;
 
                      ueCb->ul.implRelCntr = 0;
                      ueCb->ul.explRelCntr = 0;
-                     relInfo.cellSapId = cellCb->schInstMap.cellSapId;
+#if 0                     
+							relInfo.cellSapId = cellCb->schInstMap.cellSapId;
                      relInfo.cRnti = ueCb->ueId;
-                     relInfo.isExplRel = FALSE;
+							relInfo.isExplRel= FALSE;
                      //TODO: commented for compilation without SCH RgMacSchSpsRel(&schPst1, &relInfo);
+#endif  
                   }
                }
                else

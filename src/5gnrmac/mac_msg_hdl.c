@@ -57,8 +57,9 @@
 #include "du_app_mac_inf.h"
 #include "rg.x"
 #include "lwr_mac_fsm.h"
-
 /* This file contains message handling functionality for MAC */
+
+extern void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg);
 
 /*******************************************************************
  *

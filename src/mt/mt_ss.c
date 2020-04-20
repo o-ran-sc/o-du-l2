@@ -1402,7 +1402,6 @@ Region reg;
 {
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
-   U8                    blkCnt;
    U8 bktIdx= reg;
  TRC3(isMemThreshReached)
 
