@@ -78,6 +78,8 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_sch_inf.x"    /* typedefs for Scheduler */
 #include "rg_sch.x"        /* typedefs for MAC */
 #include "rg_sch_cmn.x"    /* typedefs for MAC */
+U8 rgSCHCmnCalcPcqiBitSz(RgSchUeCb    *ueCb,U8 numTxAnt);
+PUBLIC S16 rgSCHDhm5gtfHqFdbkInd(RgSchUeCb *ue,RgSchCellCb *cell,CmLteTimingInfo timingInfo,TfuHqFdbk fdbk,RgSchErrInfo *err);
 #ifdef EMTC_ENABLE
 #include "rg_sch_emtc_ext.x"
 #endif 
