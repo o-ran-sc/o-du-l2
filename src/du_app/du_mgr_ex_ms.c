@@ -31,7 +31,8 @@
 extern S16 cmUnpkLkwCfgCfm(LkwCfgCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
-
+extern S16 cmUnpkKwuDatInd(KwuDatInd func,Pst *pst, Buffer *mBuf);
+extern S16 cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *

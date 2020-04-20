@@ -83,7 +83,6 @@ static int RLOG_MODULE_ID=4096;
 #endif
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
-
 #include "lwr_mac.h"         /* MAC CL defines */
 #include "mac.h"
 #ifdef __cplusplus
@@ -93,7 +92,7 @@ EXTERN Void rgGetSId ARGS((SystemId *s));
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
-
+int MacSchCellCfgReq(Pst *pst,MacCellCfg *macCellCfg);
 /* Public variable declaration */
 ClCb   clGlobalCp;
 
