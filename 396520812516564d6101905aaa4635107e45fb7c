@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ede00f9_43cf2286",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2197,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-20T06:01:52Z",
+      "side": 1,
+      "message": "its not sizeof fapi_dl_pdcch_pdu_t, it is fapi_dl_pddch_pdu_t",
+      "revId": "396520812516564d6101905aaa4635107e45fb7c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3b5285c_cbd65552",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2338,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-20T06:01:52Z",
+      "side": 1,
+      "message": "intiliaze all the pointers to NULL\ninitialize idx and msgLen to 0",
+      "revId": "396520812516564d6101905aaa4635107e45fb7c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44b5332c_26f04667",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2386,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-20T06:01:52Z",
+      "side": 1,
+      "message": "msgLen +\u003d ...",
+      "revId": "396520812516564d6101905aaa4635107e45fb7c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce68599c_7e03948b",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2389,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-20T06:01:52Z",
+      "side": 1,
+      "message": "If SIB1 is not transmitted, then too free for dlDci is done",
+      "revId": "396520812516564d6101905aaa4635107e45fb7c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12ea118b_68f16ea6",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-20T06:01:52Z",
+      "side": 1,
+      "message": "sib1CmCfg, can we define it outside pdcch and pdsch structures as it is commoon.\nalso, name of sib1CmCfg can be sib1BwpCfg",
+      "revId": "396520812516564d6101905aaa4635107e45fb7c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
