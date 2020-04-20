@@ -2824,7 +2824,6 @@ S16 BuildAndSendDUConfigUpdate()
  * ****************************************************************/
 S16 BuildAndSendULRRCMessageTransfer()
 {
-	S16  ret;
 	U8   elementCnt;
 	U8   ieId;
 	U8   idx;
@@ -3453,7 +3452,6 @@ S16 BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
  * ****************************************************************/
 S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 {
-	S16 ret;
 	U8 idx;
 	U8 ulidx;
 	U8 ulCnt;
@@ -3867,7 +3865,6 @@ S16 BuildAndSendUESetReq()
 	U8   ulCnt;
 	F1AP_PDU_t      					*f1apMsg = NULL;
    UEContextSetupRequest_t			*ueSetReq;
-	SCell_ToBeSetup_List_t			*spCellLst;
 	asn_enc_rval_t  					encRetVal;        /* Encoder return value */
 
 	DU_LOG("\n F1AP : Building UE Context Setup Request\n");

@@ -31,7 +31,8 @@
 
 S16 duHdlEgtpDlData(EgtpMsg  *egtpMsg);
 S16 duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf);
-
+extern S16 packUeCreateReq(Pst *pst,CkwCfgInfo *cfgInfo);
+extern S16 cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf);
 #endif
 
 /**********************************************************************

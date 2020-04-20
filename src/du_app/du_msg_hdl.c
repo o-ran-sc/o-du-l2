@@ -24,7 +24,11 @@
 #include "lsctp.h"
 #include "legtp.h"
 #include "lphy_stub.h"
-
+extern S16 BuildAndSendE2SetupReq();
+extern S16 egtpHdlDatInd(EgtpMsg egtpMsg);
+extern S16 BuildAndSendDUConfigUpdate();
+extern U16 getTransId();
+extern S16 cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
 U8 rlcDlCfg = 0;
 U8 numRlcDlSaps = 0;
 U8 rlcUlCfg = 0;
