@@ -374,9 +374,9 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
    return ROK;   
 }
 
-void fillSib1SchCfg(
+void fillSchSib1Cfg(
 Inst         schInst,
-Sib1SchCfg   *sib1SchCfg,
+SchSib1Cfg   *sib1SchCfg,
 uint8_t      pci,
 uint8_t      offsetPointA
 )
@@ -531,7 +531,7 @@ SchCellCfg          *schCellCfg
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
 
    /* derive the SIB1 config parameters */
-	fillSib1SchCfg(
+	fillSchSib1Cfg(
 	   inst,
 	   &(schCellCfg->sib1SchCfg),
 		schCellCfg->phyCellId,

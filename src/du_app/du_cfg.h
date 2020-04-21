@@ -73,24 +73,27 @@
 #define BANDWIDTH 20
 
 /* MACRO defines for PRACH Configuration */
-#define PRACH_CONFIG_IDX   147
+#define PRACH_CONFIG_IDX   27
 #define PRACH_FREQ_START   0
 #define PRACH_SEQ_LEN SHORT_SEQUENCE
 #define PRACH_SUBCARRIER_SPACING 1
 #define PRACH_RESTRICTED_SET_CFG 0
 #define NUM_PRACH_FDM 1
-#define ROOT_SEQ_IDX 0
+#define ROOT_SEQ_IDX 139
 #define NUM_ROOT_SEQ 1
 #define ZERO_CORRELATION_ZONE_CFG 6
-#define NUM_UNUSED_ROOT_SEQ 1
+#define NUM_UNUSED_ROOT_SEQ 0
 #define UNUSED_ROOT_SEQ 1
-#define SSB_PER_RACH 0
+#define SSB_PER_RACH 1
 #define PRACH_MULT_CARRIER_BAND FALSE
 #define PRACH_PREAMBLE_RCVD_TGT_PWR  -74   
 #define NUM_RA_PREAMBLE  63
 #define RSRP_THRESHOLD_SSB   31
 #define TDD_PERIODICITY TX_PRDCTY_MS_2P5
 #define RSS_MEASUREMENT_UNIT DONT_REPORT_RSSI
+#define RA_CONT_RES_TIMER 64
+#define RA_RSP_WINDOW 180
+#define PRACH_RESTRICTED_SET 0 /* Unrestricted */
 
 
 /* MACRCO Ddefine for PDCCH Configuration */
@@ -559,7 +562,7 @@ typedef struct f1BrdcstPlmnInfo
 typedef struct f1CellInfo
 {
    NrEcgi   nrCgi;                   /* Cell global Identity */
-   uint32_t      nrPci;                   /* Physical Cell Identity */
+   uint32_t nrPci;                   /* Physical Cell Identity */
    Plmn   plmn[MAX_PLMN];     /* Available PLMN list */
    Plmn   extPlmn[MAX_PLMN];  /* Extended available PLMN list */
 }F1CellInfo;
@@ -567,10 +570,10 @@ typedef struct f1CellInfo
 typedef struct f1DuCellInfo
 {
    F1CellInfo         cellInfo;     /* cell info */
-   uint16_t                tac;          /* tracking area code */
-   uint16_t                epsTac;       /* Configured EPS TAC */
+   uint16_t           tac;          /* tracking area code */
+   uint16_t           epsTac;       /* Configured EPS TAC */
    NrModeInfo         f1Mode;       /* NR mode info : FDD/TDD */
-   uint8_t                 measTimeCfg;  /* Measurement timing configuration */
+   uint8_t            measTimeCfg;  /* Measurement timing configuration */
    F1CellDir          cellDir;      /* Cell Direction */
    F1CellType         cellType;     /* Cell Type */
    F1BrdcstPlmnInfo   brdcstPlmnInfo[MAXBPLMNNRMINUS1]; /* Broadcast PLMN Identity Info List */
@@ -905,14 +908,14 @@ typedef struct f1EgtpParams
 
 typedef struct schedulerCfg
 {
-   uint8_t         numTxAntPorts;    /*!< Number of Tx antenna ports */
-   uint8_t         ulSchdType;     /*!< Indicates which UL scheduler to use, range
-                               * is 0..(number of schedulers - 1) */
-   uint8_t         dlSchdType;     /*!< Indicates which DL scheduler to use, range
-                               * is 0..(number of schedulers - 1) */
-   uint8_t         numCells;       /*!< Max number of cells */
-   uint8_t         maxUlUePerTti;  /*!< Max number of UE in UL per TTI */
-   uint8_t         maxDlUePerTti;  /*!< Max number of UE in DL per TTI */
+   uint8_t   numTxAntPorts;    /*!< Number of Tx antenna ports */
+   uint8_t   ulSchdType;     /*!< Indicates which UL scheduler to use, range
+                         * is 0..(number of schedulers - 1) */
+   uint8_t   dlSchdType;     /*!< Indicates which DL scheduler to use, range
+                         * is 0..(number of schedulers - 1) */
+   uint8_t   numCells;       /*!< Max number of cells */
+   uint8_t   maxUlUePerTti;  /*!< Max number of UE in UL per TTI */
+   uint8_t   maxDlUePerTti;  /*!< Max number of UE in DL per TTI */
 }SchedulerCfg;
 
 typedef struct mibParams
