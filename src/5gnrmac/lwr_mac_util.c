@@ -64,6 +64,88 @@ PUBLIC ClCellCb * rgClUtlGetCellCb
    RETVALUE(cellCb);
 }
 
+/*******************************************************************
+ *
+ * @brief Reverses bits in a number
+ *
+ * @details
+ *
+ *    Function : reverseBits
+ *
+ *    Functionality:
+ *      Reverses bits in a number
+ *
+ * @params[in] Number to be reversed
+ *             Number of bits to be reversed
+ * @return Reversed number
+ *
+ * ****************************************************************/
+uint32_t reverseBits(uint32_t num, uint8_t numBits)
+{
+   uint32_t reverse_num = 0;
+   int i;
+   for (i = 0; i < numBits; i++)
+   {
+      if((num & (1 << i)))
+         reverse_num |= 1 << ((numBits - 1) - i);
+   }
+   return reverse_num;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills DL DCI payload byte by byte
+ *
+ * @details
+ *
+ *    Function : fillDlDciPayloadByte
+ *
+ *    Functionality:
+ *      Fills DL DCI payload byte by byte
+ *
+ * @params[in] Payload buffer pointer
+ *             Current Byte position in buffer
+ *             Current Bit Position in current byte
+ *             Value to be filled
+ *             Number of bits in value
+ * @return void
+ *
+ * ****************************************************************/
+
+void fillDlDciPayloadByte(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
+   uint32_t val, uint8_t valSize)
+{
+   uint8_t temp;
+   uint8_t bytePart1;
+   uint32_t bytePart2;
+   uint8_t bytePart1Size;
+   uint8_t bytePart2Size;
+
+   if(*bitPos + valSize <= 8)
+   {
+      bytePart1 = (uint8_t)val;
+      bytePart1 = (~((~0) << valSize)) & bytePart1;
+      buf[*bytePos] |= bytePart1;
+      *bitPos += valSize;
+   }
+   else if(*bitPos + valSize > 8)
+   {
+      temp = (uint8_t)val;
+      bytePart1Size = 8 - *bitPos;
+      bytePart2Size = valSize - bytePart1Size;
+
+      bytePart1 = ((~((~0) << bytePart1Size)) & temp) << *bitPos;
+      bytePart2 = val >> bytePart1Size;
+
+      buf[*bytePos] |= bytePart1;
+      (*bytePos)--;
+      *bitPos = 0;
+      fillDlDciPayloadByte(buf, bytePos, bitPos, bytePart2, bytePart2Size);
+   }
+}
+
+
+
 /**********************************************************************
          End of file
 **********************************************************************/
