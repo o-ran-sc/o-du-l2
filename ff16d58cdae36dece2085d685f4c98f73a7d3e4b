@@ -247,6 +247,23 @@
     },
     {
       "key": {
+        "uuid": "4ce6f39d_706fbef0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-21T08:28:28Z",
+      "side": 1,
+      "message": "add check for memory allocation failure.",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "30723c29_1aac8d39",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -258,6 +275,74 @@
       "writtenOn": "2020-04-20T06:34:28Z",
       "side": 1,
       "message": "In DU_FREE, nrcgi-\u003enRCellIdentity.size is enough as it already holds the total size to be freed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "807ae4df_98a2d2a8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-21T08:28:28Z",
+      "side": 1,
+      "message": "dont use RETVALUE macro",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17eca888_732ad3cc",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-21T08:28:28Z",
+      "side": 1,
+      "message": "declaration and initialization can be clubbed into one line.",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8fdef63_64f77cb8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-21T08:28:28Z",
+      "side": 1,
+      "message": "is const required?",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a0bd791_1dde75d7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3869,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-21T08:28:28Z",
+      "side": 1,
+      "message": "remove commented lines if not required",
       "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -343,6 +428,24 @@
       "writtenOn": "2020-04-20T06:34:28Z",
       "side": 1,
       "message": "can be removed",
+      "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a030e5f_1645d9df",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4090,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-21T08:28:28Z",
+      "side": 1,
+      "message": "why?",
+      "parentUuid": "898963fe_be5a55ba",
       "revId": "ff16d58cdae36dece2085d685f4c98f73a7d3e4b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
