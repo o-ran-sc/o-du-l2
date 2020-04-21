@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03075280_14e4550a",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-21T13:19:56Z",
+      "side": 1,
+      "message": "Move this after the directives are declared",
+      "revId": "f82bcea3d2192ef79156933d761d6ae3f7bf8b5c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a8a81da_ce04c55c",
+        "filename": "src/5gnrmac/rg_tom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1513,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-21T13:19:56Z",
+      "side": 1,
+      "message": "restore the changes of RgInfSpsRelInfo   relInfo",
+      "revId": "f82bcea3d2192ef79156933d761d6ae3f7bf8b5c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e4014994_b3e8a249",
+        "filename": "src/5gnrrlc/kw_ptli.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-21T13:19:56Z",
+      "side": 1,
+      "message": "restore the changes here.\nMODULE_NAME, ID, and FILE_ID changes are required",
+      "revId": "f82bcea3d2192ef79156933d761d6ae3f7bf8b5c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b86d6d4_a55d7772",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-21T13:19:56Z",
+      "side": 1,
+      "message": "move this after the extern variables are declared",
+      "revId": "f82bcea3d2192ef79156933d761d6ae3f7bf8b5c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e2e8b9c_c3ca5b40",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-21T13:19:56Z",
+      "side": 1,
+      "message": "leave line after the directives",
+      "revId": "f82bcea3d2192ef79156933d761d6ae3f7bf8b5c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d27e8dd4_7426c948",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-21T13:19:56Z",
+      "side": 1,
+      "message": "leave a line after externs are declared",
+      "revId": "f82bcea3d2192ef79156933d761d6ae3f7bf8b5c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
