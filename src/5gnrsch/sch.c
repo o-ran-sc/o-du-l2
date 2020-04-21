@@ -428,6 +428,7 @@ uint8_t      offsetPointA
    pdcch->sib1PdcchBwpCfg.BWPStart = 0;
    pdcch->sib1PdcchBwpCfg.subcarrierSpacing = 0;         /* 15Khz */
    pdcch->sib1PdcchBwpCfg.cyclicPrefix = 0;              /* normal */
+   pdcch->sib1Coreset0Cfg.coreSet0Size = numRbs;
    pdcch->sib1Coreset0Cfg.startSymbolIndex = firstSymbol;
    pdcch->sib1Coreset0Cfg.durationSymbols = numSymbols;
    memcpy(pdcch->sib1Coreset0Cfg.freqDomainResource,FreqDomainResource,6);
@@ -450,6 +451,7 @@ uint8_t      offsetPointA
    pdcch->sib1DlDci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->sib1DlDci.txPdcchPower.powerValue = 0;
    pdcch->sib1DlDci.txPdcchPower.powerControlOffsetSS = 0;
+   pdcch->sib1DlDci.pdschCfg = pdsch; 
 
    /* fill the PDSCH PDU */
 	uint8_t cwCount = 0;
@@ -486,6 +488,7 @@ uint8_t      offsetPointA
 	 * Nre = min(156,Nre') . nPrb                                     */
    pdsch->sib1FreqAlloc.rbSize = 10; /* This value is calculated from above formulae */
    pdsch->sib1FreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+   pdsch->sib1TimeAlloc.rowIndex = 1;
    pdsch->sib1TimeAlloc.startSymbolIndex = 2; /* spec-38.214, Table 5.1.2.1-1 */
    pdsch->sib1TimeAlloc.numSymbols = 12;
    pdsch->beamPdschInfo.numPrgs = 1;
@@ -536,6 +539,7 @@ SchCellCfg          *schCellCfg
 	   &(schCellCfg->sib1SchCfg),
 		schCellCfg->phyCellId,
 		schCellCfg->ssbSchCfg.ssbOffsetPointA);
+   memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
 
    memset(&rspPst, 0, sizeof(Pst));
    SCH_FILL_RSP_PST(rspPst, inst);

@@ -64,6 +64,19 @@ PUBLIC ClCellCb * rgClUtlGetCellCb
    RETVALUE(cellCb);
 }
 
+uint32_t reverseBits(uint32_t num, uint32_t numBits)
+{
+   uint32_t reverse_num = 0;
+   int i;
+   for (i = 0; i < numBits; i++)
+   {
+      if((num & (1 << i)))
+         reverse_num |= 1 << ((numBits - 1) - i);
+   }
+   return reverse_num;
+}
+
+
 /**********************************************************************
          End of file
 **********************************************************************/

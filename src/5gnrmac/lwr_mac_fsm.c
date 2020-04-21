@@ -2119,6 +2119,58 @@ S16 fillSsbPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, MacCellCfg *macCellCfg,
 
 /*******************************************************************
  *
+ * @brief Fills DL DCI payload byte by byte
+ *
+ * @details
+ *
+ *    Function : fillDlDciPayloadByte
+ *
+ *    Functionality:
+ *      Fills DL DCI payload byte by byte
+ *
+ * @params[in] Payload buffer pointer
+ *             Current Byte position in buffer
+ *             Current Bit Position in current byte
+ *             Value to be filled
+ *             Number of bits in value
+ * @return void
+ *
+ * ****************************************************************/
+
+void fillDlDciPayloadByte(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
+   uint32_t val, uint8_t valSize)
+{
+   uint8_t temp;
+   uint8_t bytePart1;
+   uint32_t bytePart2;
+   uint8_t bytePart1Size;
+   uint8_t bytePart2Size;
+
+   if(*bitPos + valSize <= 8)
+   {
+      bytePart1 = (uint8_t)val;
+      bytePart1 = (~((~0) << valSize)) & bytePart1;
+      buf[*bytePos] |= bytePart1;
+      *bitPos += valSize;
+   }
+   else if(*bitPos + valSize > 8)
+   {
+      temp = (uint8_t)val;
+      bytePart1Size = 8 - *bitPos;
+      bytePart2Size = valSize - bytePart1Size;
+
+      bytePart1 = ((~((~0) << bytePart1Size)) & temp) << *bitPos;
+      bytePart2 = val >> bytePart1Size;
+
+      buf[*bytePos] |= bytePart1;
+      (*bytePos)--;
+      *bitPos = 0;
+      fillDlDciPayloadByte(buf, bytePos, bitPos, bytePart2, bytePart2Size);
+   }
+}
+
+/*******************************************************************
+ *
  * @brief fills Dl DCI PDU required for DL TTI info in MAC
  *
  * @details
@@ -2138,6 +2190,29 @@ void fillDlDciPdu(fapi_dl_dci_t *dlDciPtr, Sib1PdcchCfg *sib1PdcchInfo)
 {
    if(dlDciPtr != NULLP)
    {
+      uint8_t numBytes;
+      uint8_t bytePos;
+      uint8_t bitPos;
+      
+      uint16_t cSet0Size;
+      uint16_t rbStart;
+      uint16_t rbLen;
+      uint32_t freqDomResAssign;
+      uint32_t timeDomResAssign;
+      uint32_t VRB2PRBMap;
+      uint32_t modNCodScheme;
+      uint32_t redundancyVer;
+      uint32_t sysInfoInd;
+      uint32_t reserved;
+
+      uint8_t freqDomResAssignSize;
+      uint8_t timeDomResAssignSize = 4;
+      uint8_t VRB2PRBMapSize       = 1;
+      uint8_t modNCodSchemeSize    = 5;
+      uint8_t redundancyVerSize    = 2;
+      uint8_t sysInfoIndSize       = 1;
+      uint8_t reservedSize         = 15;
+
       dlDciPtr->rnti = sib1PdcchInfo->sib1DlDci.rnti;
       dlDciPtr->scramblingId = sib1PdcchInfo->sib1DlDci.scramblingId;    
       dlDciPtr->scramblingRnti = sib1PdcchInfo->sib1DlDci.scramblingRnti;
@@ -2150,10 +2225,92 @@ void fillDlDciPdu(fapi_dl_dci_t *dlDciPtr, Sib1PdcchCfg *sib1PdcchInfo)
       dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = sib1PdcchInfo->sib1DlDci.beamPdcchInfo.prg[0].beamIdx[0];
       dlDciPtr->beta_pdcch_1_0 = sib1PdcchInfo->sib1DlDci.txPdcchPower.powerValue;           
       dlDciPtr->powerControlOfssetSS = sib1PdcchInfo->sib1DlDci.txPdcchPower.powerControlOffsetSS;
-      //dlDciPtr->payloadSizeBits;
-      //dlDciPtr->payload[DCI_PAYLOAD_BYTE_LEN];
+
+      /* Calculating freq domain resource allocation field value and size
+       * CSet0Size = Size of coreset 0
+       * RBStart = Starting Virtual Rsource block
+       * RBLen = length of contiguously allocted RBs
+       * Spec 38.214 Sec 5.1.2.2.2
+       */
+      cSet0Size = sib1PdcchInfo->sib1Coreset0Cfg.coreSet0Size;
+      rbStart = sib1PdcchInfo->sib1DlDci.pdschCfg->sib1FreqAlloc.rbStart;
+      rbLen = sib1PdcchInfo->sib1DlDci.pdschCfg->sib1FreqAlloc.rbSize;
+
+      if((rbLen >=1) && (rbLen <= cSet0Size - rbStart))
+      {
+         if((rbLen - 1) <= floor(cSet0Size / 2))
+            freqDomResAssign = (cSet0Size * (rbLen-1)) + rbStart;
+         else
+            freqDomResAssign = (cSet0Size * (cSet0Size - rbLen + 1)) \
+               + (cSet0Size - 1 - rbStart);
+
+         freqDomResAssignSize = ceil(log2(cSet0Size * (cSet0Size + 1) / 2));
+      }
+      else
+      {
+         freqDomResAssign = 0;
+         freqDomResAssignSize = 1;
+      }
+
+      /* Fetching DCI field values */
+      timeDomResAssign = sib1PdcchInfo->sib1DlDci.pdschCfg->sib1TimeAlloc.
+                         rowIndex -1;
+      VRB2PRBMap       = sib1PdcchInfo->sib1DlDci.pdschCfg->sib1FreqAlloc.\
+                         vrbPrbMapping;
+      modNCodScheme    = sib1PdcchInfo->sib1DlDci.pdschCfg->codeword[0].mcsIndex;
+      redundancyVer    = sib1PdcchInfo->sib1DlDci.pdschCfg->codeword[0].rvIndex;
+      sysInfoInd       = 0;
+      reserved         = 0;
+
+      /* Reversing bits in each DCI field */
+      freqDomResAssign = reverseBits(freqDomResAssign, freqDomResAssignSize);
+      timeDomResAssign = reverseBits(timeDomResAssign, timeDomResAssignSize);
+      VRB2PRBMap       = reverseBits(VRB2PRBMap, VRB2PRBMapSize);
+      modNCodScheme    = reverseBits(modNCodScheme, modNCodSchemeSize);
+      redundancyVer    = reverseBits(redundancyVer, redundancyVerSize);
+      sysInfoInd       = reverseBits(sysInfoInd, sysInfoIndSize);
+      reserved         = reverseBits(reserved, reservedSize);
+
+     /* Calulating total number of bytes in buffer */
+     dlDciPtr->payloadSizeBits = freqDomResAssignSize + timeDomResAssignSize\
+              + VRB2PRBMapSize + modNCodSchemeSize + redundancyVerSize\
+              + sysInfoIndSize + reservedSize;
+
+     numBytes = dlDciPtr->payloadSizeBits / 8;
+     if(dlDciPtr->payloadSizeBits % 8)
+        numBytes += 1;
+
+     if(numBytes > DCI_PAYLOAD_BYTE_LEN)
+     {
+        DU_LOG("\nLOWER MAC : Total bytes more than expected");
+        return;
+     }
+
+     /* Initialize buffer */
+     for(bytePos = 0; bytePos < numBytes; bytePos++)
+        dlDciPtr->payload[bytePos] = 0;
+
+     bytePos = numBytes - 1;
+     bitPos = 0;
+
+     /* Packing DCI format fields */
+     fillDlDciPayloadByte(dlDciPtr->payload, &bytePos, &bitPos,\
+        freqDomResAssign, freqDomResAssignSize);
+     fillDlDciPayloadByte(dlDciPtr->payload, &bytePos, &bitPos,\
+        timeDomResAssign, timeDomResAssignSize);
+     fillDlDciPayloadByte(dlDciPtr->payload, &bytePos, &bitPos,\
+        VRB2PRBMap, VRB2PRBMapSize);
+     fillDlDciPayloadByte(dlDciPtr->payload, &bytePos, &bitPos,\
+        modNCodScheme, modNCodSchemeSize);
+     fillDlDciPayloadByte(dlDciPtr->payload, &bytePos, &bitPos,\
+        redundancyVer, redundancyVerSize);
+     fillDlDciPayloadByte(dlDciPtr->payload, &bytePos, &bitPos,\
+        sysInfoInd, sysInfoIndSize);
+     fillDlDciPayloadByte(dlDciPtr->payload, &bytePos, &bitPos,\
+        reserved, reservedSize);
+
    }
-}
+} /* fillDlDciPdu */
 
 /*******************************************************************
  *
