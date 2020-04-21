@@ -1926,7 +1926,8 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
       fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SEQUENCE_LENGTH_TAG,      sizeof(uint8_t), macCfgParams.prachCfg.prachSeqLen, &msgLen);
       fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SUBC_SPACING_TAG,         sizeof(uint8_t), macCfgParams.prachCfg.prachSubcSpacing, &msgLen);
       fillTlvs(&configReq->tlvs[index++], FAPI_RESTRICTED_SET_CONFIG_TAG,      sizeof(uint8_t), macCfgParams.prachCfg.prachRstSetCfg, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_NUM_PRACH_FD_OCCASIONS_TAG,     sizeof(uint8_t), macCfgParams.prachCfg.prachFdm, &msgLen);
+      fillTlvs(&configReq->tlvs[index++], FAPI_NUM_PRACH_FD_OCCASIONS_TAG,
+				sizeof(uint8_t), macCfgParams.prachCfg.msg1Fdm, &msgLen);
       fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ROOT_SEQUENCE_INDEX_TAG,  sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].rootSeqIdx, &msgLen);
       fillTlvs(&configReq->tlvs[index++], FAPI_NUM_ROOT_SEQUENCES_TAG,         sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numRootSeq, &msgLen);
       fillTlvs(&configReq->tlvs[index++], FAPI_K1_TAG,                         sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].k1, &msgLen);
