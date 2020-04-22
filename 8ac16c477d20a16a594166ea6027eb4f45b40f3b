@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d80aea54_055a14a7",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2140,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-22T05:41:32Z",
+      "side": 1,
+      "message": "can we not move this function to utils file?",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "893e67eb_ac197b7c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2168,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-22T05:41:32Z",
+      "side": 1,
+      "message": "same function call, can we avoid this, lets discuss",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1865ae02_4c9f3f56",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2197,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-22T05:41:32Z",
+      "side": 1,
+      "message": "you can rename this to cSet0Size to coreset0Size",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22749db1_1d4580cd",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2202,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-22T05:41:32Z",
+      "side": 1,
+      "message": "uint8 for vrb2prbmapping and RV value is enough",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75261d5c_17d2320e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2262,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-22T05:41:32Z",
+      "side": 1,
+      "message": "comments telling 0 is for SIB1",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f158b262_db28db94",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-22T05:41:32Z",
+      "side": 1,
+      "message": "a comment to mention why are we storing the pointer here.",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "32568a90_eb371bf4",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-22T05:41:32Z",
+      "side": 1,
+      "message": "why is this moved?",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
