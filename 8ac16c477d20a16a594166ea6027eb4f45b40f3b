@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "b2662a1f_16f0a8b8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2168,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "This is a recursive function call required when filling of bits from one DCI field gets spilled over to next payload byte.",
+      "parentUuid": "893e67eb_ac197b7c",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1865ae02_4c9f3f56",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -67,6 +85,24 @@
       "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78fcaeb5_9d592bcf",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2197,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1865ae02_4c9f3f56",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +123,24 @@
     },
     {
       "key": {
+        "uuid": "d0ec5fb7_6195017b",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2202,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22749db1_1d4580cd",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a0d5eb59_7b789600",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -101,6 +155,24 @@
       "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d765fb91_870e8b62",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2209,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0d5eb59_7b789600",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +193,24 @@
     },
     {
       "key": {
+        "uuid": "8dae2688_c854a733",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2262,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75261d5c_17d2320e",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8655edf1_82b2041f",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -135,6 +225,24 @@
       "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5d1c83b_94f0804e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2285,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8655edf1_82b2041f",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +263,24 @@
     },
     {
       "key": {
+        "uuid": "a6a6a55b_27bfce11",
+        "filename": "src/5gnrmac/lwr_mac_util.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d20b531_8e058ef4",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f158b262_db28db94",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 1
@@ -169,6 +295,24 @@
       "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7e62994_685602ca",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f158b262_db28db94",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +333,24 @@
     },
     {
       "key": {
+        "uuid": "67227f4f_7dfc8e79",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55913b3d_cbab988a",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "32568a90_eb371bf4",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 1
@@ -203,6 +365,24 @@
       "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e59972c4_c0aea47f",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-22T07:36:29Z",
+      "side": 1,
+      "message": "Because pointer to pdschcfg is added to pdcchCfg. Hence, pdsch structure should be defined before pdcch. To avoid copilation issue. Hence pdcch was moved after pdsch",
+      "parentUuid": "32568a90_eb371bf4",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
