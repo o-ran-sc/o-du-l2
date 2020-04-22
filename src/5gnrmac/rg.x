@@ -1018,6 +1018,7 @@ EXTERN S16 rgAllocShrablSBuf ARGS((Inst inst,Data **pData, Size size));
 EXTERN Void rgPrintfSubFrameInfo ARGS((RgDlSf *dlSf));
 EXTERN Void printMacCellInfo ARGS((Void));
 EXTERN Void rgFreeSharableSBuf ARGS((Inst inst,Data **data, Size size)); 
+EXTERN void MacSendCellCfgCfm(uint8_t response);
 
 
 EXTERN Void rgDHMFreeAllTbBufs ARGS

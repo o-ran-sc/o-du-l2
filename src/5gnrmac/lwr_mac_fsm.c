@@ -61,6 +61,8 @@
 #include "du_app_mac_inf.h"
 #include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
+#include "lwr_mac_phy.h"
+#include "math.h"
 
 #define MIB_SFN_BITMASK 0xFC
 #define PDCCH_PDU_TYPE 0
@@ -68,9 +70,24 @@
 #define SSB_PDU_TYPE 3
 #define SETLENGTH(x, size) x += size
 
+extern void fapiMacConfigRsp();
+/* Global variables */
+SlotIndInfo slotIndInfo;
+uint8_t slotIndIdx;
 
-EXTERN void sendToPhy ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
-SlotIndInfo slotIndInfo;   //global variable
+void lwrMacInit()
+{
+#ifdef INTEL_WLS
+   uint8_t  idx;
+
+   /* Initializing WLS free mem list */
+   slotIndIdx = 1;
+   for(idx = 0; idx < WLS_MEM_FREE_PRD; idx++)
+   {
+      cmLListInit(&wlsBlockToFreeList[idx]);
+   }
+#endif
+}
 
  /*******************************************************************
   *
@@ -1301,12 +1318,17 @@ S16 lwr_mac_handleParamReqEvt(void *msg)
    uint32_t msgLen;      //Length of message Body
    msgLen = 0;
    fapi_param_req_t *paramReq;
+#ifdef INTEL_WLS
+   WLS_MEM_ALLOC(paramReq, sizeof(fapi_param_req_t));
+#else
    MAC_ALLOC(paramReq, sizeof(fapi_param_req_t));
+#endif
+ 
    if(paramReq != NULLP)
    {
       fillMsgHeader(&paramReq->header, FAPI_PARAM_REQUEST, msgLen);
       DU_LOG("\nLOWER MAC: sending param Req to Phy");
-      sendToPhy(paramReq->header.message_type_id, sizeof(fapi_param_req_t), (void *)paramReq);
+      LwrMacSendToPhy(paramReq->header.message_type_id, sizeof(fapi_param_req_t), (void *)paramReq);
       MAC_FREE(paramReq, sizeof(fapi_param_req_t));
       return ROK;
    }
@@ -1891,7 +1913,11 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
    cellParams = rgCb[inst].cell;
    macCfgParams = cellParams->macCellCfg;
    configReqSize = sizeof(fapi_config_req_t) + (macCfgParams.numTlv * sizeof(fapi_uint16_tlv_t));
+#ifdef INTEL_WLS
+   WLS_MEM_ALLOC(configReq, configReqSize);
+#else
    MAC_ALLOC(configReq, configReqSize);
+#endif
 
    if(configReq != NULL)
    {
@@ -1963,7 +1989,8 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
 
       fillMsgHeader(&configReq->header, FAPI_CONFIG_REQUEST, msgLen);
       DU_LOG("\nLOWER_MAC: Sending Config Request to Phy");
-      sendToPhy(configReq->header.message_type_id, msgLen, (void *)configReq);
+      /* TODO : Recheck the size / msglen to be sent to WLS_Put*/
+      LwrMacSendToPhy(configReq->header.message_type_id, msgLen, (void *)configReq);
       MAC_FREE(configReq, configReqSize);
       return ROK;
    }
@@ -2020,13 +2047,17 @@ S16 lwr_mac_handleStartReqEvt(void *msg)
 #ifdef FAPI
    uint32_t msgLen = 0;
    fapi_start_req_t *startReq;
+#ifdef INTEL_WLS
+   WLS_MEM_ALLOC(startReq, sizeof(fapi_start_req_t));
+#else
    MAC_ALLOC(startReq, sizeof(fapi_start_req_t));
+#endif
 
    if(startReq != NULL)
    {
       fillMsgHeader(&startReq->header, FAPI_START_REQUEST, msgLen);
       DU_LOG("\nLOWER MAC: Sending Start Request to PHY");
-      sendToPhy(startReq->header.message_type_id, sizeof(fapi_start_req_t), (void *)startReq);
+      LwrMacSendToPhy(startReq->header.message_type_id, sizeof(fapi_start_req_t), (void *)startReq);
       MAC_FREE(startReq, sizeof(fapi_start_req_t));
       return ROK;
    }
@@ -2045,9 +2076,8 @@ S16 lwr_mac_handleStopReqEvt(void *msg)
 #ifdef FAPI
    /* stop TX and RX operation return PHy to configured State
       send stop.indication to l2/l3 */
-#else
-   RETVALUE(ROK);
 #endif
+   return ROK;
 }
 
 /*******************************************************************
@@ -2307,7 +2337,11 @@ uint32_t *msgLen)
        dlTtiReqPdu->u.pdcch_pdu.shiftIndex =  sib1PdcchInfo->sib1Coreset0Cfg.shiftIndex;
        dlTtiReqPdu->u.pdcch_pdu.precoderGranularity = sib1PdcchInfo->sib1Coreset0Cfg.precoderGranularity;
        dlTtiReqPdu->u.pdcch_pdu.numDlDci = sib1PdcchInfo->numDlDci;
+#ifdef INTEL_WLS       
+       WLS_MEM_ALLOC(dlTtiReqPdu->u.pdcch_pdu.dlDci, sizeof(fapi_dl_dci_t));
+#else
        MAC_ALLOC(dlTtiReqPdu->u.pdcch_pdu.dlDci, sizeof(fapi_dl_dci_t));
+#endif
        fillDlDciPdu(dlTtiReqPdu->u.pdcch_pdu.dlDci, sib1PdcchInfo);
        dlTtiReqPdu->pduSize = sizeof(fapi_dl_pdcch_pdu_t);
        SETLENGTH(*msgLen, sizeof(fapi_dl_pdcch_pdu_t));
@@ -2465,7 +2499,11 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 
       if(dlTtiReqtimingInfo != NULLP)
       {
+#ifdef INTEL_WLS
+         WLS_MEM_ALLOC(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+#else
          MAC_ALLOC(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+#endif
          if(dlTtiReq != NULLP)
          {
             dlTtiReq->sfn = dlTtiReqtimingInfo->sfn;
@@ -2475,7 +2513,11 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
             dlTtiReq->nGroup = 0;
             if(dlTtiReq->nPdus > 0)
             {
+#ifdef INTEL_WLS
+               WLS_MEM_ALLOC(dlTtiReqPdu, (dlTtiReq->nPdus * sizeof(fapi_dl_tti_req_pdu_t)));
+#else
                MAC_ALLOC(dlTtiReqPdu, (dlTtiReq->nPdus * sizeof(fapi_dl_tti_req_pdu_t)));
+#endif
                if(currDlSlot->cellBroadcastInfo.ssbTrans)
                {
                  if(dlTtiReqPdu != NULLP)
@@ -2504,7 +2546,8 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
                }
                msgLen += sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
                fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
-               sendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
+               /* TODO : Recheck the size / msglen to be sent to WLS_Put*/
+               LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
 					if(currDlSlot->cellBroadcastInfo.sib1Trans)
 					{
                   MAC_FREE(dlTtiReq->pdus->u.pdcch_pdu.dlDci, sizeof(fapi_dl_dci_t));
@@ -2515,7 +2558,8 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
              {
                 msgLen = sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
                 fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
-                sendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
+                /* TODO : Recheck the size / msglen to be sent to WLS_Put*/
+                LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
              }
              MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
              return ROK;
@@ -2536,9 +2580,8 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
    {
        lwr_mac_handleInvalidEvt(dlTtiReqtimingInfo);
    }
-#else
-   return ROK;
 #endif
+   return ROK;
 }
 
 lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =

@@ -1103,7 +1103,9 @@ Size size                       /* size requested */
 #endif
 {
     S16   ret;
+#ifndef SS_LOCKLESS_MEMORY
     U32   flags = 0;
+#endif
 
 #ifdef SS_LOCKLESS_MEMORY
     region = SS_GET_THREAD_MEM_REGION();

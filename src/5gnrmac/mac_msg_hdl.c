@@ -56,6 +56,7 @@
 #include "rg_prg.x"
 #include "du_app_mac_inf.h"
 #include "rg.x"
+#include "lwr_mac_fsm.h"
 
 /* This file contains message handling functionality for MAC */
 

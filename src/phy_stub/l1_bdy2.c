@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include "lphy_stub.h"
+#include "du_log.h"
 
 void *GenerateTicks(void *arg)
 {
@@ -29,7 +30,7 @@ void *GenerateTicks(void *arg)
    while(counter)
    {
       sleep(1);
-      printf("\nPHY_STUB: SLOT indication");
+      DU_LOG("\nPHY_STUB: SLOT indication");
       /* Send Slot indication indication to lower mac */
       buildAndSendSlotIndication();
       counter--;
@@ -44,7 +45,7 @@ void duStartSlotIndicaion()
    ret = pthread_create(&thread, NULL, GenerateTicks, NULL);
    if(ret)
    {
-      printf("\nPHY_STUB: Unable to create thread");
+      DU_LOG("\nPHY_STUB: Unable to create thread");
    }
 }
 

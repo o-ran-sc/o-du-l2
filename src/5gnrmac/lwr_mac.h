@@ -270,6 +270,10 @@ typedef struct clCellParam
 
 EXTERN ClCb clGlobalCp; 
 EXTERN ClCellCb * rgClUtlGetCellCb ARGS((U16 cellId));
+EXTERN uint32_t reverseBits(uint32_t num, uint8_t numBits);
+EXTERN void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
+   uint32_t val, uint8_t valSize);
+EXTERN void lwrMacInit();
 
 #endif
 
