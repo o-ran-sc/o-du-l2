@@ -16,6 +16,24 @@
       "revId": "f0b84210cf40de8549587c92d86ed3a3c8732a8e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cf948c4_1e0ea982",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-22T08:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "192f6afa_9f257836",
+      "revId": "f0b84210cf40de8549587c92d86ed3a3c8732a8e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
