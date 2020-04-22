@@ -36,6 +36,23 @@
     },
     {
       "key": {
+        "uuid": "23b89783_59f26c02",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2168,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-22T06:19:54Z",
+      "side": 1,
+      "message": "if this is meant to be recursive, lets implement it like a recursive function itself. Also, change the function name",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1865ae02_4c9f3f56",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -70,6 +87,23 @@
     },
     {
       "key": {
+        "uuid": "a0d5eb59_7b789600",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2209,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-22T06:19:54Z",
+      "side": 1,
+      "message": "Add a comment as to our thoughts behind hardcoding these values",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "75261d5c_17d2320e",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -87,6 +121,40 @@
     },
     {
       "key": {
+        "uuid": "8655edf1_82b2041f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2285,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-22T06:19:54Z",
+      "side": 1,
+      "message": "total bytes for DCI",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d20b531_8e058ef4",
+        "filename": "src/5gnrmac/lwr_mac_util.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-22T06:19:54Z",
+      "side": 1,
+      "message": "does numBits require u32?",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f158b262_db28db94",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 1
@@ -98,6 +166,23 @@
       "writtenOn": "2020-04-22T05:41:32Z",
       "side": 1,
       "message": "a comment to mention why are we storing the pointer here.",
+      "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55913b3d_cbab988a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-22T06:19:54Z",
+      "side": 1,
+      "message": "same line of code in line #534",
       "revId": "8ac16c477d20a16a594166ea6027eb4f45b40f3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
