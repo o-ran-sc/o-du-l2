@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "192f6afa_9f257836",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-22T07:16:25Z",
+      "side": 1,
+      "message": "rewrite this as-\nif((ret \u003d egtpSrvOpenPrc(sockType, \u0026(egtpCb.recvTptSrvr))) !\u003d ROK)\n\nFollow this format for the below modified if as well",
+      "revId": "f0b84210cf40de8549587c92d86ed3a3c8732a8e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
