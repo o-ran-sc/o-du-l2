@@ -27,8 +27,8 @@
 #include "gen.x"
 #include "ssi.x"
 
-#include "rg_cl_phy.h"
 #include "lwr_mac.h"
+#include "lwr_mac_phy.h"
 #ifdef FAPI
 #include "fapi.h"
 #endif
@@ -45,8 +45,7 @@ EXTERN void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, uint16_t tag, uint16_t
 length, uint16_t value, uint32_t *msgLen));
 EXTERN void fillMsgHeader ARGS((fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen));
 #endif
-EXTERN void sendToLowerMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
-EXTERN void handlePhyMessages ARGS((void *msg));
+EXTERN void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 
 /*******************************************************************
  *
@@ -147,7 +146,7 @@ S16 l1BldAndSndParamRsp(void *msg)
   fillMsgHeader(&fapiParamRsp->header, FAPI_PARAM_RESPONSE, msgLen);
   fapiParamRsp->error_code = MSG_OK;
   printf("\nPHY_STUB: Sending Param Request to Lower Mac");
-  sendToLowerMac(fapiParamRsp->header.message_type_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp);
+  handlePhyMessages(fapiParamRsp->header.message_type_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp);
 #endif
   return ROK;
 }
@@ -172,7 +171,6 @@ S16 l1BldAndSndParamRsp(void *msg)
 S16 l1BldAndSndConfigRsp(void *msg)
 {
 #ifdef FAPI
-   uint8_t index = 0;
    uint32_t msgLen = 0;
    fapi_config_resp_t *fapiConfigRsp = (fapi_config_resp_t *)msg;
 
@@ -185,7 +183,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
       msgLen += sizeof(fapi_config_resp_t);
       fillMsgHeader(&fapiConfigRsp->header, FAPI_CONFIG_RESPONSE, msgLen);
       printf("\nPHY_STUB: Sending Config Response to Lower Mac");
-      sendToLowerMac(fapiConfigRsp->header.message_type_id, sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
+      handlePhyMessages(fapiConfigRsp->header.message_type_id, sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
       return ROK;
    }
 #else
@@ -292,7 +290,7 @@ PUBLIC S16 buildAndSendSlotIndication()
       slotIndMsg->slot = slotValue;
       fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
       printf("\nPHY_STUB [%d:%d] ",sfnValue,slotValue);
-      handlePhyMessages((void*)slotIndMsg);
+      handlePhyMessages(slotIndMsg->header.message_type_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
       SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
    }
 #endif
@@ -330,7 +328,7 @@ PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
    }
    else
    {
-      printf("\n PHY_STUB: Received Start Req in PHY State", clGlobalCp.phyState);
+      printf("\n PHY_STUB: Received Start Req in PHY State %d", clGlobalCp.phyState);
       return RFAILED;
    }
 }

@@ -28,7 +28,6 @@
 #include "cm_lte.h"        /* Common LTE Defines */
 #include "cm_mblk.h"        /* Common LTE Defines */
 #include "tfu.h"           /* RGU Interface defines */
-//#include "rg.h"
 #ifdef FAPI
 #include "fapi.h"
 #endif
@@ -43,18 +42,22 @@
 #include "cm_lte.x"        /* Common LTE Defines */
 #include "cm_mblk.x"        /* Common LTE Defines */
 #include "tfu.x"           /* RGU Interface includes */
-//#include "rg.x"
+//#include "lwr_mac_fsm.h"
+#include "lwr_mac_phy.h"
 
 #ifdef FAPI
+
+void sendToLowerMac(U16, U32, void *);
+
 /* function pointers for packing macCellCfg Request */
 typedef S16 (*packSlotIndMsg) ARGS((
    Pst           *pst,
-   fapi_slot_ind_t *slotInd
+   SlotIndInfo   *slotInd
 ));
 
 S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd);
-S16 packTcSlotInd (Pst *pst, fapi_slot_ind_t *slotInd);
-S16 packLwlcSlotInd (Pst *pst, fapi_slot_ind_t *slotInd);
+S16 packTcSlotInd (Pst *pst, SlotIndInfo *slotInd);
+S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd);
 
 packSlotIndMsg packSlotIndOpts[] =
 {
@@ -78,12 +81,12 @@ S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
-S16 packTcSlotInd (Pst *pst, fapi_slot_ind_t *slotInd)
+S16 packTcSlotInd (Pst *pst, SlotIndInfo *slotInd)
 {
    return ROK;
 }
 
-S16 packLwlcSlotInd (Pst *pst, fapi_slot_ind_t *slotInd)
+S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
 {
    return ROK;
 }
@@ -92,6 +95,7 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
 {
    /* fill Pst structure to send to lwr_mac to MAC */
    Pst pst;
+   uint16_t ret;
    SlotIndInfo slotInd;
 
    pst.srcProcId = 0;
@@ -108,11 +112,22 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
    slotInd.sfn = fapiSlotInd->sfn;
    slotInd.slot = fapiSlotInd->slot;
 
-   return (*packSlotIndOpts[pst.selector])(&pst, &slotInd);
+   ret = (*packSlotIndOpts[pst.selector])(&pst, &slotInd);
+
+#ifdef INTEL_WLS
+   slotIndIdx++;
+   if(slotIndIdx > WLS_MEM_FREE_PRD)
+   {
+      slotIndIdx = 1;
+   }
+   freeWlsBlockList(slotIndIdx - 1);
+#endif
+
+   return ret;
 }
 #endif
 
-void handlePhyMessages(void *msg)
+void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 {
 #ifdef FAPI
    /* extract the header */
@@ -121,6 +136,12 @@ void handlePhyMessages(void *msg)
 
    switch(header->message_type_id)
    {
+      case FAPI_PARAM_RESPONSE:
+      case FAPI_CONFIG_RESPONSE:
+      {
+         sendToLowerMac(msgType, msgSize, msg);
+         break;
+      }
       case FAPI_SLOT_INDICATION:
       {
          fapi_slot_ind_t *slotInd;
@@ -153,6 +174,9 @@ void handlePhyMessages(void *msg)
          break;
       }  
    }
+#ifdef INTEL_WLS
+   WLS_MEM_FREE(msg, LWR_MAC_WLS_BUF_SIZE); 
+#endif
 #endif
 }
 

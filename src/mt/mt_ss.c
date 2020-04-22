@@ -161,9 +161,13 @@
 #include "sys/syscall.h"
 #endif
 
-#ifdef RGL_SPECIFIC_CHANGES
+#if defined(RGL_SPECIFIC_CHANGES) || defined(INTEL_WLS)
 #include <wls_lib.h>
 #include <hugetlbfs.h>
+#endif
+
+#ifdef INTEL_WLS
+EXTERN void LwrMacRecvPhyMsg();
 #endif
 
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
@@ -773,7 +777,7 @@ PRIVATE int SOpenWlsIntf()
    hdl = WLS_Open(WLS_DEVICE_NAME, 1);
 #endif
 #else
-   hdl = WLS_Open(WLS_DEVICE_NAME, 0);
+   hdl = WLS_Open(WLS_DEVICE_NAME, WLS_MASTER_CLIENT, (512 *1024 * 1024));
 #endif
 
    osCp.wls.intf = hdl;
@@ -1510,7 +1514,7 @@ PUBLIC S16 SPartitionWlsMemory()
    for (i = 0; i < 1; i++)
    {
       mtRegMemSz[i].startAddr = regMemStrtAddr;
-      CM_LOG_DEBUG(CM_LOG_ID_MT, "Global Region-->Bkt[%d] Addr:%p\n", i, mtRegMemSz[i].startAddr);
+      //CM_LOG_DEBUG(CM_LOG_ID_MT, "Global Region-->Bkt[%d] Addr:%p\n", i, mtRegMemSz[i].startAddr);
 
       numHugePg = DIV_ROUND_OFFSET(mtRegMemSz[i].reqdSz, hugePageSize);
       reqdSz    = numHugePg * hugePageSize;
@@ -4905,6 +4909,11 @@ Ptr tskPtr;                     /* pointer to task entry */
 #endif   
    while (1)
    {
+#ifndef ODU_TEST_STUB
+#ifdef INTEL_WLS
+      LwrMacRecvPhyMsg();
+#endif
+#endif
       /* Wait for a message from the demand queue */
 #ifdef SS_CDMNDQ_SUPPORT
       ret = ssCDmndQWait(&sTsk->dQ);
