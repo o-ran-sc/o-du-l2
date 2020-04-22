@@ -86,6 +86,7 @@ static int RLOG_MODULE_ID=4096;
 
 #include "lwr_mac.h"         /* MAC CL defines */
 #include "mac.h"
+#include "lwr_mac_phy.h"
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -245,6 +246,9 @@ Reason reason;         /* reason */
 
    /* Initialize Scheduler as well */
    schActvInit(ENTRG, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
+
+   /* Initialize lower mac */
+   lwrMacInit();
 
    RETVALUE(ROK);
 
@@ -2139,6 +2143,9 @@ int MacHdlCellCfgReq
 		macCellCfgFillCfmPst(pst,&cfmPst);
 		ret = (*packMacCellCfmOpts[cfmPst.selector])(&cfmPst,&macCellCfgCfm);
 	}
+#ifdef INTEL_WLS
+   LwrMacEnqueueWlsBlock();
+#endif
    return ret;
 } /* end of MacHdlCellCfgReq */
 

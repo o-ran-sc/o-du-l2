@@ -270,6 +270,7 @@ typedef struct clCellParam
 
 EXTERN ClCb clGlobalCp; 
 EXTERN ClCellCb * rgClUtlGetCellCb ARGS((U16 cellId));
+EXTERN void lwrMacInit();
 
 #endif
 
