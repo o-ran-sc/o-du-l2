@@ -58,7 +58,6 @@ typedef struct
    uint32_t    nSSBMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
 }SchSsbCfg;
 
-/* SIB1 interface structure */
 typedef struct bwpCfg
 {
    uint8_t subcarrierSpacing;
@@ -66,21 +65,6 @@ typedef struct bwpCfg
    uint16_t BWPSize;
    uint16_t BWPStart;
 }BwpCfg;
-
-typedef struct coresetCfg
-{
-   uint8_t startSymbolIndex;
-   uint8_t durationSymbols;
-   uint8_t freqDomainResource[6];
-   uint8_t cceRegMappingType;
-   uint8_t regBundleSize;
-   uint8_t interleaverSize;
-   uint8_t coreSetType;
-   uint16_t shiftIndex;
-   uint8_t precoderGranularity;
-   uint8_t cceIndex;
-   uint8_t aggregationLevel;
-} CoresetCfg;
 
 typedef struct prg
 {
@@ -95,34 +79,6 @@ typedef struct beamformingInfo
    uint8_t  digBfInterfaces;
    Prg  prg[MAX_NUM_PRG];
 } BeamformingInfo;
-
-typedef struct txPowerPdcchInfo
-{
-   uint8_t powerValue;
-   uint8_t powerControlOffsetSS;
-} TxPowerPdcchInfo;
-
-typedef struct dlDCI
-{
-   uint16_t rnti;
-   uint16_t scramblingId;
-   uint16_t scramblingRnti;
-   uint8_t cceIndex;
-   uint8_t aggregLevel;
-   BeamformingInfo beamPdcchInfo;
-   TxPowerPdcchInfo txPdcchPower;
-} DlDCI;
-
-typedef struct sib1PdcchCfg
-{
-   BwpCfg sib1PdcchBwpCfg;
-   /* coreset-0 configuration */
-   CoresetCfg sib1Coreset0Cfg;
-
-   uint16_t numDlDci;
-   DlDCI    sib1DlDci; /* as of now its only one DCI, later it will be numDlCi */
-} Sib1PdcchCfg;
-/* end of SIB1 PDCCH structures */
 
 /* SIB1 PDSCH structures */
 
@@ -157,6 +113,7 @@ typedef struct pdschFreqAlloc
 
 typedef struct pdschTimeAlloc
 {
+   uint8_t rowIndex;
    uint8_t startSymbolIndex;
    uint8_t numSymbols;
 } PdschTimeAlloc;
@@ -186,6 +143,53 @@ typedef struct sib1PdschCfg
    TxPowerPdschInfo txPdschPower;
 } Sib1PdschCfg;
 /* SIB1 PDSCH structures end */
+
+/* SIB1 interface structure */
+
+typedef struct coresetCfg
+{
+   uint8_t coreSet0Size;
+   uint8_t startSymbolIndex;
+   uint8_t durationSymbols;
+   uint8_t freqDomainResource[6];
+   uint8_t cceRegMappingType;
+   uint8_t regBundleSize;
+   uint8_t interleaverSize;
+   uint8_t coreSetType;
+   uint16_t shiftIndex;
+   uint8_t precoderGranularity;
+   uint8_t cceIndex;
+   uint8_t aggregationLevel;
+} CoresetCfg;
+
+typedef struct txPowerPdcchInfo
+{
+   uint8_t powerValue;
+   uint8_t powerControlOffsetSS;
+} TxPowerPdcchInfo;
+
+typedef struct dlDCI
+{
+   uint16_t rnti;
+   uint16_t scramblingId;
+   uint16_t scramblingRnti;
+   uint8_t cceIndex;
+   uint8_t aggregLevel;
+   BeamformingInfo beamPdcchInfo;
+   TxPowerPdcchInfo txPdcchPower;
+   Sib1PdschCfg     *pdschCfg;
+} DlDCI;
+
+typedef struct sib1PdcchCfg
+{
+   BwpCfg sib1PdcchBwpCfg;
+   /* coreset-0 configuration */
+   CoresetCfg sib1Coreset0Cfg;
+
+   uint16_t numDlDci;
+   DlDCI    sib1DlDci; /* as of now its only one DCI, later it will be numDlCi */
+} Sib1PdcchCfg;
+/* end of SIB1 PDCCH structures */
 
 typedef struct
 {
