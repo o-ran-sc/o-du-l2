@@ -45,12 +45,12 @@ typedef enum
 
 /* Events in Lower Mac */
 typedef enum{
-  FAPI_PARAM_REQUEST,
-  FAPI_PARAM_RESPONSE,
-  FAPI_CONFIG_REQUEST,
-  FAPI_CONFIG_RESPONSE,
-  FAPI_START_REQUEST,
-  FAPI_STOP_REQUEST,
+  PARAM_REQUEST,
+  PARAM_RESPONSE,
+  CONFIG_REQUEST,
+  CONFIG_RESPONSE,
+  START_REQUEST,
+  STOP_REQUEST,
   MAX_EVENT
 }EventState;
 
@@ -74,7 +74,7 @@ typedef struct cellCb
 
 typedef enum
 {
-   RELEASE_15
+   FAPI_RELEASE_15
 }ReleaseCapab;
 
 typedef enum

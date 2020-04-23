@@ -79,7 +79,7 @@
 uint16_t MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 {
    DU_LOG("\nMAC : Handling cell start request");
-   sendToLowerMac(FAPI_START_REQUEST, 0, cellStartInfo);
+   sendToLowerMac(START_REQUEST, 0, cellStartInfo);
 
    MAC_FREE_MEM(pst->region, pst->pool, cellStartInfo, \
 	   sizeof(MacCellStartInfo));
@@ -106,8 +106,8 @@ uint16_t MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
  * ****************************************************************/
 uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
 {
-   DU_LOG("\nMAC : Handling cell start request");
-   sendToLowerMac(FAPI_STOP_REQUEST, 0, cellStopInfo);
+   DU_LOG("\nMAC : Handling cell stop request");
+   sendToLowerMac(STOP_REQUEST, 0, cellStopInfo);
 
    MAC_FREE_MEM(pst->region, pst->pool, cellStopInfo, \
 	   sizeof(MacCellStopInfo));

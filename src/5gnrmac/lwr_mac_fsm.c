@@ -1832,6 +1832,8 @@ S16 lwr_mac_handleParamRspEvt(void *msg)
            }
            MAC_FREE(cellParam, sizeof(ClCellParam));
            MAC_FREE(paramRsp, sizeof(fapi_param_resp_t));
+             
+           sendToLowerMac(FAPI_CONFIG_REQUEST, 0, (void *)NULL);
            return ROK;
          }
          else
@@ -1933,8 +1935,11 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
       fillTlvs(&configReq->tlvs[index++], FAPI_K1_TAG,                         sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].k1, &msgLen);
       fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ZERO_CORR_CONF_TAG ,      sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].zeroCorrZoneCfg, &msgLen);
       fillTlvs(&configReq->tlvs[index++], FAPI_NUM_UNUSED_ROOT_SEQUENCES_TAG,  sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numUnusedRootSeq, &msgLen);
+      //MAC_ALLOC(macCfgParams.prachCfg.fdm[0].unsuedRootSeq, \
+         sizeof(uint8_t)*macCfgParams.prachCfg.fdm[0].numUnusedRootSeq);
+      macCfgParams.prachCfg.fdm[0].unsuedRootSeq = (uint8_t *)malloc(sizeof(uint8_t)*macCfgParams.prachCfg.fdm[0].numUnusedRootSeq);
       fillTlvs(&configReq->tlvs[index++], FAPI_UNUSED_ROOT_SEQUENCES_TAG,
-		sizeof(uint8_t), *(macCfgParams.prachCfg.fdm[0].unsuedRootSeq), &msgLen);
+		   sizeof(uint8_t), *(macCfgParams.prachCfg.fdm[0].unsuedRootSeq), &msgLen);
       fillTlvs(&configReq->tlvs[index++], FAPI_SSB_PER_RACH_TAG,               sizeof(uint8_t), macCfgParams.prachCfg.ssbPerRach, &msgLen);
       fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_MULTIPLE_CARRIERS_IN_A_BAND_TAG,  sizeof(uint8_t), macCfgParams.prachCfg.prachMultCarrBand, &msgLen);
 
@@ -1985,6 +1990,11 @@ S16 lwr_mac_handleConfigRspEvt(void *msg)
       {
          DU_LOG("\nLOWER MAC: PHY has moved to Conigured state \n");
          clGlobalCp.phyState = PHY_STATE_CONFIGURED;
+         /* TODO : 
+          * Store config response into an intermediate struture and send to MAC
+          * Support LC and LWLC for sending config rsp to MAC 
+          */
+         fapiMacConfigRsp();
          MAC_FREE(configRsp, sizeof(fapi_config_resp_t));
          return ROK;
       }
@@ -2007,7 +2017,7 @@ S16 lwr_mac_handleConfigRspEvt(void *msg)
 
 S16 lwr_mac_handleStartReqEvt(void *msg)
 {
-#ifdef FAPi
+#ifdef FAPI
    uint32_t msgLen = 0;
    fapi_start_req_t *startReq;
    MAC_ALLOC(startReq, sizeof(fapi_start_req_t));

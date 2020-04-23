@@ -167,6 +167,7 @@ typedef struct duCellCb
 {
    U32            cellId;      /* Internal cell Id */
    CellCfgParams  cellInfo;    /* Cell info */
+   Bool           firstSlotIndRcvd;
    CellStatus     cellStatus;  /*Cell status */
 }DuCellCb;
 

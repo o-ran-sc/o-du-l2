@@ -75,8 +75,8 @@ static int RLOG_MODULE_ID=4096;
 #include "du_app_mac_inf.h"
 #include "rg.x"            /* typedefs for MAC */
 
-#include "mac_sch_interface.h"
 #include "mac_upr_inf_api.h"
+#include "mac.h"
 
 /* local externs */
 #ifdef UNUSED_FUNC
@@ -601,6 +601,14 @@ TfuDelDatReqInfo *delDatReq;
 }  /* rgLIMTfuDatReq*/
 #endif /*L2_OPTMZ */
 
+void fapiMacConfigRsp()
+{
+   /* TODO : Processing of conig response from PHY */
+
+   /* Send cell config cfm to DU APP */
+   MacSendCellCfgCfm(RSP_OK);
+}
+
 /**
  * @brief Transmission time interval indication from PHY.
  *
@@ -664,12 +672,16 @@ int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
       return RFAILED;
    }
 
+   slotInfo->cellId = macCb.macCell->cellId;
+   slotInfo->sfn = slotInd->sfn;
+   slotInfo->slot = slotInd->slot;
+
    /* Fill Pst */
    pst.selector  = DU_MAC_LWLC;
    pst.srcEnt    = ENTRG;
    pst.dstEnt    = ENTDUAPP;
    pst.dstInst   = 0;
-   pst.srcInst   = 0;
+   pst.srcInst   = macCb.macInst;
    pst.dstProcId = rgCb[pst.srcInst].rgInit.procId;
    pst.srcProcId = rgCb[pst.srcInst].rgInit.procId;
    pst.region = MAC_MEM_REGION;

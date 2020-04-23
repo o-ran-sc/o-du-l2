@@ -321,7 +321,6 @@ PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
 {
    if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
    {
-      clGlobalCp.phyState = PHY_STATE_RUNNING; 
       duStartSlotIndicaion();
 #ifdef FAPI
       SPutSBuf(0, 0, (Data *)msg, sizeof(fapi_start_req_t));

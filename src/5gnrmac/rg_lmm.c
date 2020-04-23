@@ -96,6 +96,7 @@ EXTERN Void rgGetSId ARGS((SystemId *s));
 
 /* Public variable declaration */
 ClCb   clGlobalCp;
+MacCb  macCb;
 
 /* forward references */
 PRIVATE U16 rgLMMGenCfg ARGS((
@@ -936,6 +937,9 @@ RgCfg *cfg;            /* Configuaration information */
    rgCb[inst].rgInit.region = cfg->s.genCfg.mem.region;
    rgCb[inst].rgInit.pool = cfg->s.genCfg.mem.pool;
    rgCb[inst].genCfg.tmrRes = cfg->s.genCfg.tmrRes;
+
+   macCb.macInst = rgCb[inst].rgInit.inst;
+
    /* Initialize SAP States */
    rgCb[inst].crgSap.sapSta.sapState = LRG_NOT_CFG;
 
@@ -2124,6 +2128,7 @@ int MacHdlCellCfgReq
       return RFAILED;
    }
    macCb.macCell = macCellCb;
+   macCb.macCell->cellId = macCellCfg->cellId;
    /* Send cell cfg to scheduler */
    ret = MacSchCellCfgReq(pst, macCellCfg);
 	if(ret != ROK)
@@ -2199,6 +2204,40 @@ int MacSchCellCfgReq
 	return ret;
 } /* end of MacSchCellCfgReq */
 
+
+/*******************************************************************
+ *
+ * @brief Sends Cell config confirm to DU APP
+ *
+ * @details
+ *
+ *    Function : MacSendCellCfgCfm 
+ *
+ *    Functionality:
+ *      Sends Cell config confirm to DU APP
+ *
+ * @params[in] Response status
+ * @return void
+ *
+ * ****************************************************************/
+void MacSendCellCfgCfm(uint8_t response)
+{
+   Pst pst;
+   RgCellCb      *cellCb;
+   MacCellCfgCfm macCellCfgCfm;
+ 
+   cmMemset((U8 *)&pst, 0, sizeof(Pst));
+   cellCb = rgCb[macCb.macInst].cell;
+ 
+   macCellCfgCfm.transId = cellCb->macCellCfg.transId;
+   macCellCfgCfm.rsp = response;
+
+   memcpy((void *)&pst, (void *)&rgCb[macCb.macInst].rgInit.lmPst, sizeof(Pst));
+   pst.event = EVENT_MAC_CELL_CONFIG_CFM;
+   (*packMacCellCfmOpts[pst.selector])(&pst,&macCellCfgCfm);
+}
+
+
 /**
  * @brief Layer Manager Configuration response handler. 
  *
@@ -2219,26 +2258,17 @@ int MacProcSchCellCfgCfm
  SchCellCfgCfm *schCellCfgCfm
 )
 {
-   Pst cfmPst;
-   int ret;
-   RgCellCb      *cellCb;
-   MacCellCfgCfm macCellCfgCfm;
-
-   cmMemset((U8 *)&cfmPst, 0, sizeof(Pst));
-	cellCb = rgCb[pst->dstInst].cell;
-	macCellCfgCfm.transId = cellCb->macCellCfg.transId;
 	if(schCellCfgCfm->rsp == RSP_OK)
 	{
-      macCellCfgCfm.rsp = RSP_OK;
+      sendToLowerMac(PARAM_REQUEST, 0, (void *)NULL);
 	}
 	else
 	{
-		macCellCfgCfm.rsp = RSP_NOK;
+      MacSendCellCfgCfm(RSP_NOK);
 	}
-	macCellCfgFillCfmPst(pst,&cfmPst);
-	ret = (*packMacCellCfmOpts[cfmPst.selector])(&cfmPst,&macCellCfgCfm);
-	
+   return ROK;	
 }
+
 /**********************************************************************
  
          End of file

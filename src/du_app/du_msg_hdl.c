@@ -1599,7 +1599,7 @@ uint16_t duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm)
 
          /* TODO: Trigger cell start req once cell up slot ind is received*/
 			/* Build and Send Cell Start Req to MAC */
-			//ret = duBuildAndSendMacCellStartReq();
+			ret = duBuildAndSendMacCellStartReq();
 
 		}
 		else
@@ -1638,6 +1638,23 @@ uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo)
 {
    
    DU_LOG("\nDU APP : Slot Indication received");
+
+   if(slotInfo->cellId <=0 || slotInfo->cellId > DU_MAX_CELLS)
+   {
+      DU_LOG("\nDU APP : Invalid Cell Id %d", slotInfo->cellId);
+   }
+   if(!duCb.actvCellLst[slotInfo->cellId-1]->firstSlotIndRcvd)
+   {
+      duCb.actvCellLst[slotInfo->cellId-1]->firstSlotIndRcvd = true;
+      if((duCb.actvCellLst[slotInfo->cellId-1] != NULL) && \
+         (duCb.actvCellLst[slotInfo->cellId-1]->cellStatus == \
+         ACTIVATION_IN_PROGRESS))
+      {
+         DU_LOG("\nDU APP : Cell Id %d is ACTIVE", slotInfo->cellId);
+         duCb.actvCellLst[slotInfo->cellId-1]->cellStatus = ACTIVATED;
+      }
+      
+   }
 
    /* TODO : Slot Indication to be moved out of EGTP_TEST when
     * data path is established */
@@ -1683,6 +1700,7 @@ uint16_t duBuildAndSendMacCellStartReq()
    {
       if(duCb.actvCellLst[id])
       {
+         duCb.actvCellLst[id]->firstSlotIndRcvd = FALSE;
          cellStartInfo->cellId = duCb.actvCellLst[id]->cellInfo.nrEcgi.cellId;
  
          /* Fill Pst */
