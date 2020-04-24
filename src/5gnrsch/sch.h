@@ -94,6 +94,17 @@ typedef struct schDlAlloc
 
 /**
   * @brief
+  * scheduler allocationsfor UL per cell.
+  */
+typedef struct schUlAlloc
+{
+	uint16_t    totalPrb;  /*!< Number of RBs in the cell */
+	uint16_t    assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
+	uint8_t     prachStartSymb; /*!< Start symbol for PRACH */
+}SchUlAlloc;
+
+/**
+  * @brief
   * Cell Control block per cell.
   */
 typedef struct schCellCb
@@ -104,6 +115,7 @@ typedef struct schCellCb
 	uint8_t       numSlots;         /*!< Number of slots in current frame */
    SlotIndInfo   slotInfo;         /*!< SFN, Slot info being processed*/
    SchDlAlloc    *dlAlloc[SCH_NUM_SLOTS]; /*!< SCH resource allocations in DL */
+   SchUlAlloc    *ulAlloc[SCH_NUM_SLOTS]; /*!< SCH resource allocations in UL */
 	SchCellCfg    cellCfg;                /*!< Cell ocnfiguration */
 }SchCellCb;
 
@@ -123,7 +135,8 @@ SchCb schCb[SCH_MAX_INST];
 
 /* function declarations */
 uint8_t schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc);
-uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
+int     schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
+int schUlResAlloc(SchCellCb *cell, Inst schInst);
 
 
 

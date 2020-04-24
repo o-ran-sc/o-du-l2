@@ -17,8 +17,10 @@
 *******************************************************************************/
 
 /* events */
-#define EVENT_SCH_CELL_CFG 1
-#define EVENT_SCH_CELL_CFG_CFM 2
+#define EVENT_SCH_CELL_CFG      1
+#define EVENT_SCH_CELL_CFG_CFM  2
+#define EVENT_DL_BRDCST_ALLOC   3 
+#define EVENT_UL_SCH_INFO       4 
 
 /* selector */
 #define MAC_SCH_LC_SELECTOR 0
@@ -38,6 +40,13 @@
 #define MAX_NUM_PRG     1 /* max value should be later 275 */
 #define MAX_DIG_BF_INTERFACES 0 /* max value should be later 255 */
 #define MAX_CODEWORDS  1  /* max should be 2 */
+
+/* Datatype in UL SCH Info */
+#define SCH_DATATYPE_PUSCH 1
+#define SCH_DATATYPE_PUSCH_UCI 2
+#define SCH_DATATYPE_UCI 4
+#define SCH_DATATYPE_SRS 8
+#define SCH_DATATYPE_PRACH 16
 
 /*structures*/
 
@@ -211,11 +220,8 @@ typedef struct schRachCfg
 {
    uint8_t      prachCfgIdx; /* PRACH config idx */
    uint8_t      prachSubcSpacing; /* Subcarrier spacing of RACH */
-   uint8_t      prachSeqLen;  /* Support for PRACH long/short format */
 	uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
 	uint8_t      msg1Fdm;             /* PRACH FDM (1,2,4,8) */
-   uint8_t      maxPrachOcassionsInSlot; /* Number of PRACH ocassions per slot */
-   uint8_t      numPrachFdOccasions; /*Number of PRACH ocassions in freq domain */
    uint16_t     rootSeqIdx;        /* Root sequence index */
    uint8_t      numRootSeq;        /* Number of root sequences required for FD */
    uint16_t     k1;                /* Frequency Offset for each FD */
@@ -268,6 +274,14 @@ typedef struct sib1AllocInfo
    Sib1PdschCfg sib1PdschCfg;
 } Sib1AllocInfo;
 
+typedef struct prachSchInfo
+{
+	uint8_t  numPrachOcas;   /* Num Prach Ocassions */
+   uint8_t  prachFormat;    /* PRACH Format */
+   uint8_t  numRa;          /* Freq domain ocassion */
+   uint8_t  prachStartSymb; /* Freq domain ocassion */
+}PrachSchInfo;
+
 /* Interface structure signifying DL broadcast allocation for SSB, SIB1 */
 typedef struct dlBrdcstAlloc
 {
@@ -288,12 +302,16 @@ typedef struct dlBrdcstAlloc
 	Sib1AllocInfo sib1Alloc;
 }DlBrdcstAlloc;
 
-/* function pointers */
+/* Interface structure signifying DL broadcast allocation for SSB, SIB1 */
+typedef struct ulSchInfo
+{
+   uint16_t      cellId;         /* Cell Id */
+	SlotIndInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
+	uint8_t       dataType;       /* Type of info being scheduled */
+	PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
+}UlSchInfo;
 
-typedef int (*SchMacDlBrdcstAllocFunc)     ARGS((                     
-   Pst            *pst,           /* Post Structure */                         
-   DlBrdcstAlloc  *dlBrdcstAlloc    /* slot ind Info */                      
-));
+/* function pointers */
 
 typedef int (*SchCellCfgCfmFunc)    ARGS((
    Pst            *pst,           /* Post Structure */                         
@@ -304,9 +322,21 @@ typedef int (*SchCellCfgFunc)    ARGS((
    Pst            *pst,           /* Post Structure */                         
    SchCellCfg  *schCellCfg     /* Cell Cfg  */
 ));
+
+typedef int (*SchMacDlBrdcstAllocFunc)     ARGS((                     
+   Pst            *pst,           /* Post Structure */                         
+   DlBrdcstAlloc  *dlBrdcstAlloc    /* DL Broadcast Info */                      
+));
+
+typedef int (*SchMacUlSchInfoFunc)     ARGS((                     
+   Pst            *pst,           /* Post Structure */                         
+   UlSchInfo      *ulSchInfo    /* UL Sch  Info */                      
+));
+
 /* function declarations */
 int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
 int packSchMacDlBrdcstAlloc(Pst *pst, DlBrdcstAlloc  *dlBrdcstAlloc);
+int packSchMacUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo);
 EXTERN int packSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg);
 EXTERN int packSchCellCfgCfm(Pst *pst, SchCellCfgCfm  *schCellCfgCfm);
 
@@ -316,6 +346,7 @@ EXTERN int MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm  *schCellCfgCfm);
 EXTERN int SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg);
 EXTERN int schActvInit(Ent entity, Inst instId, Region region, Reason reason);
 EXTERN S16 SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
+EXTERN int MacProcUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo);
 
 /**********************************************************************
   End of file
