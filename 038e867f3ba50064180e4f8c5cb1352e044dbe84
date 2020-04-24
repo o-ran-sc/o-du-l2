@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "85ee5e5a_239b9489",
+        "filename": "build/odu/makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-24T06:15:17Z",
+      "side": 1,
+      "message": "It was used in old code. Now only INTEL_WLS is used. Hence removing WLS_MEM",
+      "parentUuid": "01ba1489_0b89df3c",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b2432873_2071ab87",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b87703d8_f62c9701",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1320,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-24T06:15:17Z",
+      "side": 1,
+      "message": "yes. After param req us sent, this memory block is added into free-list and it is freed after 10 TTIs",
+      "parentUuid": "b2432873_2071ab87",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "a429f506_31557084",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2068,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-24T06:15:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd0af4d0_e4b99e8f",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "988ced79_cd10ea3e",
         "filename": "src/5gnrmac/lwr_mac_phy.c",
         "patchSetId": 1
@@ -104,6 +158,24 @@
     },
     {
       "key": {
+        "uuid": "a3a12a6e_123aee13",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-24T06:15:17Z",
+      "side": 1,
+      "message": "Yes. WLS_VA2PA return unsigned long long and WLS_Put takes this unsigned long long as 2nd parameter.",
+      "parentUuid": "98401698_6e2b4bba",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f0c02cd6_cb2d2e6c",
         "filename": "src/5gnrmac/lwr_mac_phy.h",
         "patchSetId": 1
@@ -118,6 +190,24 @@
       "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba9ba808_ca438b9e",
+        "filename": "src/5gnrmac/lwr_mac_phy.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-24T06:15:17Z",
+      "side": 1,
+      "message": "Its in mt_ss.c. Was already defined as part of seed code.",
+      "parentUuid": "f0c02cd6_cb2d2e6c",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -138,6 +228,24 @@
     },
     {
       "key": {
+        "uuid": "83415715_26775205",
+        "filename": "src/cm/gen.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 1708,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-24T06:15:17Z",
+      "side": 1,
+      "message": "Yes.",
+      "parentUuid": "acc91eec_2a663a0e",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0b6688e8_efc4bebf",
         "filename": "src/mt/mt_ss.c",
         "patchSetId": 1
@@ -155,6 +263,24 @@
     },
     {
       "key": {
+        "uuid": "539dc2a3_57fc6e26",
+        "filename": "src/mt/mt_ss.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-24T06:15:17Z",
+      "side": 1,
+      "message": "Yes, this complete function is under INTEL_WLS flag along with some other functions. \"#ifdef INTLE_WLS\" condition is checked at line 743.",
+      "parentUuid": "0b6688e8_efc4bebf",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cc8d86b9_bc688917",
         "filename": "src/phy_stub/l1_bdy1.c",
         "patchSetId": 1
@@ -169,6 +295,24 @@
       "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7643eb5_081bb11f",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-24T06:15:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc8d86b9_bc688917",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
