@@ -123,7 +123,6 @@
 #define EVTTFUNONRTIND          24    /*!< Non-RT indication.*/
 #endif
 #define EVTTFUERRIND            25    /*!< TFU Error Indication */
-#define EVENT_DL_BRDCST_ALLOC   26    /*!< DL BROADCAST ALLOCATION */
 /** @} */
 
 /* selector(coupling) values */

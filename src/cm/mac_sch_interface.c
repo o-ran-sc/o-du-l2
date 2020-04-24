@@ -77,6 +77,25 @@ int packSchMacDlBrdcstAlloc(Pst *pst, DlBrdcstAlloc  *dlBrdcstAlloc)
 }
 
 /**
+ * @brief function to pack UL Sch Info  message 
+ *        from SCH to MAC
+ *
+ * @details
+ *
+ *     Function : packSchMacUlSchInfo 
+ *     
+ *     
+ *  @param[in]  Pst *pst, the post structure     
+ *  @param[in]  *ulSchInfo, UlSchInfo
+ *  @return  S16
+ *      -# ROK
+ **/
+int packSchMacUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo)
+{
+	return ROK;
+}
+
+/**
  * @brief function to pack cell cfg from MAC to SCH
  *
  * @details

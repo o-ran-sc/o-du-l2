@@ -73,7 +73,7 @@
 #define BANDWIDTH 20
 
 /* MACRO defines for PRACH Configuration */
-#define PRACH_CONFIG_IDX   27
+#define PRACH_CONFIG_IDX   105
 #define PRACH_FREQ_START   0
 #define PRACH_SEQ_LEN SHORT_SEQUENCE
 #define PRACH_SUBCARRIER_SPACING 1

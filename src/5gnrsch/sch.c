@@ -347,6 +347,9 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
    for(uint8_t idx=0; idx<SCH_NUM_SLOTS; idx++)
 	{
 		SchDlAlloc *schDlAlloc;
+		SchUlAlloc *schUlAlloc;
+
+      /* DL Alloc */
 		SCH_ALLOC(schDlAlloc, sizeof(SchDlAlloc));
 		if(!schDlAlloc)
 		{
@@ -354,20 +357,32 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
 			return RFAILED;
 		}
 
-      schDlAlloc->totalPrb = MAX_NUM_RB;
+      /* UL Alloc */
+		SCH_ALLOC(schUlAlloc, sizeof(SchUlAlloc));
+		if(!schUlAlloc)
+		{
+			DU_LOG("\nMemory allocation failed in InitSchCellCb");
+			return RFAILED;
+		}
 
-		for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
+      schDlAlloc->totalPrb = schUlAlloc->totalPrb = MAX_NUM_RB;
+
+		for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
 		{
 			schDlAlloc->assignedPrb[itr] = 0;
+			schUlAlloc->assignedPrb[itr] = 0;
 		}
+
 		for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
 		{
 			memset(&schDlAlloc->ssbInfo[itr], 0, sizeof(SsbInfo));
 		}
 
 		cell->dlAlloc[idx] = schDlAlloc;
+		cell->ulAlloc[idx] = schUlAlloc;
+
 	}
-	schCb[inst].cells[inst] = cell; //Sphoorthi TODO: check if this works
+	schCb[inst].cells[inst] = cell;
 
    DU_LOG("\nCell init completed for cellId:%d", cell->cellId);
 

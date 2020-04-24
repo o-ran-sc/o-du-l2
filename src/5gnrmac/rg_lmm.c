@@ -2199,6 +2199,23 @@ int MacSchCellCfgReq
 	schCellCfg.sib1SchCfg.searchSpaceZeroIndex = macCellCfg->sib1Cfg.searchSpaceZeroIndex; 
 	schCellCfg.sib1SchCfg.sib1Mcs = macCellCfg->sib1Cfg.sib1Mcs; 
 
+	/* fill RACH config params */
+	schCellCfg.schRachCfg.prachCfgIdx = macCellCfg->prachCfg.prachCfgIdx;
+	schCellCfg.schRachCfg.prachSubcSpacing = \
+	   macCellCfg->prachCfg.prachSubcSpacing;
+	schCellCfg.schRachCfg.msg1FreqStart = macCellCfg->prachCfg.msg1FreqStart;
+	schCellCfg.schRachCfg.msg1Fdm       = macCellCfg->prachCfg.msg1Fdm;
+	schCellCfg.schRachCfg.rootSeqIdx    = macCellCfg->prachCfg.fdm[0].rootSeqIdx;
+	schCellCfg.schRachCfg.numRootSeq    = macCellCfg->prachCfg.fdm[0].numRootSeq;
+	schCellCfg.schRachCfg.k1            = macCellCfg->prachCfg.fdm[0].k1;
+	schCellCfg.schRachCfg.ssbPerRach    = macCellCfg->prachCfg.ssbPerRach;
+	schCellCfg.schRachCfg.prachMultCarrBand = \
+	   macCellCfg->prachCfg.prachMultCarrBand;
+	schCellCfg.schRachCfg.raContResTmr  = macCellCfg->prachCfg.raContResTmr;
+	schCellCfg.schRachCfg.rsrpThreshSsb = macCellCfg->prachCfg.rsrpThreshSsb;
+	schCellCfg.schRachCfg.raRspWindow   = macCellCfg->prachCfg.raRspWindow;
+
+
    cfgPst.srcProcId = pst->dstProcId;
 	cfgPst.dstProcId = pst->srcProcId;
 	cfgPst.srcEnt    = ENTRG;

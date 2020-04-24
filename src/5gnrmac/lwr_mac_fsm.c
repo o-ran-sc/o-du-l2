@@ -2483,6 +2483,7 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 {
 #ifdef FAPI
    uint8_t idx;
+	uint8_t nPdu = 0;
    uint32_t msgLen = 0;
    fapi_dl_tti_req_t *dlTtiReq = NULLP;
    fapi_dl_tti_req_pdu_t *dlTtiReqPdu = NULLP;
@@ -2510,13 +2511,14 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
             dlTtiReq->slot = dlTtiReqtimingInfo->slot;
 				currDlSlot = &macCb.macCell->dlSlot[dlTtiReq->slot % MAX_SLOT_SUPPORTED];
 				dlTtiReq->nPdus = calculatePduCount(&currDlSlot->cellBroadcastInfo);  /* get total Pdus */
+				nPdu = dlTtiReq->nPdus;
             dlTtiReq->nGroup = 0;
             if(dlTtiReq->nPdus > 0)
             {
 #ifdef INTEL_WLS
-               WLS_MEM_ALLOC(dlTtiReqPdu, (dlTtiReq->nPdus * sizeof(fapi_dl_tti_req_pdu_t)));
+               WLS_MEM_ALLOC(dlTtiReqPdu, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
 #else
-               MAC_ALLOC(dlTtiReqPdu, (dlTtiReq->nPdus * sizeof(fapi_dl_tti_req_pdu_t)));
+               MAC_ALLOC(dlTtiReqPdu, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
 #endif
                if(currDlSlot->cellBroadcastInfo.ssbTrans)
                {
@@ -2550,9 +2552,9 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
                LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
 					if(currDlSlot->cellBroadcastInfo.sib1Trans)
 					{
-                  MAC_FREE(dlTtiReq->pdus->u.pdcch_pdu.dlDci, sizeof(fapi_dl_dci_t));
+                  MAC_FREE(dlTtiReqPdu->u.pdcch_pdu.dlDci, sizeof(fapi_dl_dci_t));
 				   }
-               MAC_FREE(dlTtiReqPdu, (dlTtiReq->nPdus * sizeof(fapi_dl_tti_req_pdu_t)));
+               MAC_FREE(dlTtiReqPdu, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
              }
              else
              {

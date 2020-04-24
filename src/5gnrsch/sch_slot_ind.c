@@ -114,7 +114,7 @@ int sendDlBrdcstAllocToMac(DlBrdcstAlloc *dlBrdcstAlloc, Inst inst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
+int schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 {
    int ret = ROK;
 	uint8_t ssb_rep;
@@ -131,6 +131,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 #endif
   
 	cell = schCb[schInst].cells[schInst];
+//   schDlResAlloc(cell, slotInd);
+
 	ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
 	memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
 	dlBrdcstAlloc.cellId = cell->cellId;
@@ -183,7 +185,6 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
          RETVALUE(ret);
       }
    }
-
 	//send msg to MAC
    ret = sendDlBrdcstAllocToMac(&dlBrdcstAlloc, schInst);
    if(ret != ROK)
@@ -191,6 +192,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       DU_LOG("\nSending DL Broadcast allocation from SCH to MAC failed");
       RETVALUE(ret);
    }
+    
+	schUlResAlloc(cell, schInst);
 
 	return ret;
 }
