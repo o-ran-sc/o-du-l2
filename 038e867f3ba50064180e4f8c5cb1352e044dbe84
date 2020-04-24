@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01ba1489_0b89df3c",
+        "filename": "build/odu/makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "what is WLS_MEM used for?",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2432873_2071ab87",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1320,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "we make sure this memory is freed right?",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce89f6f1_c4b03494",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1985,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "how can we check this?",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd0af4d0_e4b99e8f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2068,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "avoid using RETVALUE macro in new code",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "988ced79_cd10ea3e",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "why are we using MAC_ALLOC here? We can discuss",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98401698_6e2b4bba",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "is using long long a requirement?",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0c02cd6_cb2d2e6c",
+        "filename": "src/5gnrmac/lwr_mac_phy.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "definition of this SGetSBufWls is in?",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acc91eec_2a663a0e",
+        "filename": "src/cm/gen.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 1708,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "i hope this is compiled with and without the INTEL_WLS flag",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b6688e8_efc4bebf",
+        "filename": "src/mt/mt_ss.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "does this not require INTEL_WLS flag?",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc8d86b9_bc688917",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-24T04:48:06Z",
+      "side": 1,
+      "message": "change to DU_LOG",
+      "revId": "038e867f3ba50064180e4f8c5cb1352e044dbe84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
