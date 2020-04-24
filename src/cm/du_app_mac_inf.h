@@ -210,6 +210,7 @@ typedef struct macCellCfgCfm
 
 typedef struct slotInfo
 {
+   uint16_t cellId;
    uint16_t sfn;
    uint16_t slot;
 }SlotInfo;

@@ -44,6 +44,8 @@
 #include "cm_mblk.x"        /* Common LTE Defines */
 #include "tfu.x"           /* RGU Interface includes */
 //#include "rg.x"
+#include "lwr_mac.h"
+#include "du_log.h"
 
 #ifdef FAPI
 /* function pointers for packing macCellCfg Request */
@@ -123,6 +125,12 @@ void handlePhyMessages(void *msg)
    {
       case FAPI_SLOT_INDICATION:
       {
+         if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
+         {
+            DU_LOG("\nLOWER MAC: PHY has moved to running state \n");
+            clGlobalCp.phyState = PHY_STATE_RUNNING;
+         }
+
          fapi_slot_ind_t *slotInd;
          slotInd  = (fapi_slot_ind_t *)msg;
          handleSlotInd(slotInd);

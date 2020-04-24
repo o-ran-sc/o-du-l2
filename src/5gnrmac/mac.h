@@ -58,16 +58,18 @@ typedef struct macDlSlot
 
 typedef struct macCellCb
 {
+   uint16_t   cellId;
    MacDlSlot  dlSlot[MAX_SLOT_SUPPORTED];
 }MacCellCb;
 
 typedef struct macCb
 {
+   Inst       macInst;
    MacCellCb  *macCell;
 }MacCb;
 
 /* global variable */
-MacCb macCb;
+EXTERN MacCb macCb;
 
 #endif
 /**********************************************************************
