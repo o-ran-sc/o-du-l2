@@ -614,9 +614,10 @@ SlotIndInfo slotInd
 #endif
 
 /* Trigger for DL TTI REQ */
-   CmLteTimingInfo   dlTtiReqtimingInfo;
-   RGADDTOCRNTTIME(cellCb->crntTime, dlTtiReqtimingInfo, TFU_DELTA);
-   handleDlTtiReq(&dlTtiReqtimingInfo);
+   CmLteTimingInfo   timingInfo;
+   RGADDTOCRNTTIME(cellCb->crntTime, timingInfo, TFU_DELTA);
+   handleDlTtiReq(&timingInfo);
+   handleUlTtiReq(&timingInfo);
 
    dlSf = &cellCb->subFrms[(slotInd.slot % RG_NUM_SUB_FRAMES)];
 

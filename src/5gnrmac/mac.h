@@ -57,10 +57,16 @@ typedef struct macDlSlot
 
 }MacDlSlot;
 
+typedef struct macUlSlot
+{
+   UlSchInfo    ulCellInfo;
+}MacUlSlot;
+
 typedef struct macCellCb
 {
    uint16_t   cellId;
    MacDlSlot  dlSlot[MAX_SLOT_SUPPORTED];
+   MacUlSlot  ulSlot[MAX_SLOT_SUPPORTED];
 }MacCellCb;
 
 typedef struct macCb
