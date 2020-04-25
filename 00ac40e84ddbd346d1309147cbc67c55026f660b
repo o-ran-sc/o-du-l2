@@ -33,6 +33,24 @@
       "revId": "00ac40e84ddbd346d1309147cbc67c55026f660b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d17390e_0168550f",
+        "filename": "src/5gnrmac/mac_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-04-25T06:16:56Z",
+      "side": 1,
+      "message": "for restricted, we will have to add restrictedSetA and B. So, we can take it up once we address them",
+      "parentUuid": "5416349d_4a18d179",
+      "revId": "00ac40e84ddbd346d1309147cbc67c55026f660b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
