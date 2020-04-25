@@ -49,7 +49,12 @@ uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX] =
 
 int MacProcUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo)
 {
-
+   if(ulSchInfo != NULLP)
+	{
+      MacUlSlot *currUlSlot = 
+	   &macCb.macCell->ulSlot[ulSchInfo->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
+      memcpy(&currUlSlot->ulCellInfo, ulSchInfo, sizeof(UlSchInfo)); 
+   }
    return ROK;
 }
 

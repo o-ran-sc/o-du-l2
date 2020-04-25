@@ -68,9 +68,13 @@
 #define PDCCH_PDU_TYPE 0
 #define PDSCH_PDU_TYPE 1
 #define SSB_PDU_TYPE 3
+#define PRACH_PDU_TYPE 0
+#define PDU_PRESENT 1
 #define SETLENGTH(x, size) x += size
 
 extern void fapiMacConfigRsp();
+extern uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX];
+
 /* Global variables */
 SlotIndInfo slotIndInfo;
 uint8_t slotIndIdx;
@@ -2490,7 +2494,7 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
    RgCellCb  *cellCbParams = NULLP;
 	MacDlSlot *currDlSlot = NULLP;
    MacCellCfg macCellCfg;
-	cmMemset((U8 *)&macCellCfg, 0, sizeof(MacCellCfg));
+	memset(&macCellCfg, 0, sizeof(MacCellCfg));
    Inst inst = 0;
 
    if(clGlobalCp.phyState == PHY_STATE_RUNNING)
@@ -2581,6 +2585,218 @@ S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
    else
    {
        lwr_mac_handleInvalidEvt(dlTtiReqtimingInfo);
+   }
+#endif
+   return ROK;
+}
+
+/***********************************************************************
+ *
+ * @brief calculates the total size to be allocated for UL TTI Req
+ *
+ * @details
+ *
+ *    Function : getnPdus
+ *
+ *    Functionality:
+ *         -calculates the total pdu count to be allocated for UL TTI Req
+ *
+ * @params[in] Pointer to fapi Ul TTI Req
+ *             Pointer to CurrUlSlot
+ * @return count
+ * ********************************************************************/
+#ifdef FAPI
+uint8_t getnPdus(fapi_ul_tti_req_t *ulTtiReq, MacUlSlot *currUlSlot)
+{
+	uint8_t pduCount = 0;
+
+	if(currUlSlot != NULLP)
+   {
+	   if(currUlSlot->ulCellInfo.dataType & SCH_DATATYPE_PRACH)
+	   {
+	      pduCount++;
+	      ulTtiReq->rachPresent = PDU_PRESENT;
+		}
+		if(currUlSlot->ulCellInfo.dataType & SCH_DATATYPE_PUSCH_UCI)
+		{
+		   pduCount++;
+			ulTtiReq->nUlsch = PDU_PRESENT;
+		}
+		if(currUlSlot->ulCellInfo.dataType & SCH_DATATYPE_UCI)
+		{
+		   pduCount++;
+			ulTtiReq->nUlcch = PDU_PRESENT;
+		}
+		if(currUlSlot->ulCellInfo.dataType & SCH_DATATYPE_SRS)
+		{
+		   pduCount++;
+		}
+   }
+	return pduCount;
+} 
+#endif	
+
+/***********************************************************************
+ *
+ * @brief Set the value of zero correlation config in PRACH PDU
+ *
+ * @details
+ *
+ *    Function : setNumCs
+ *
+ *    Functionality:
+ *         -Set the value of zero correlation config in PRACH PDU
+ *
+ * @params[in] Pointer to zero correlation config
+ *             Pointer to MacCellCfg
+ * ********************************************************************/
+
+void setNumCs(uint8_t *numCs, MacCellCfg *macCellCfg)
+{
+#ifdef FAPI
+   uint8_t idx;
+	if(macCellCfg != NULLP)
+	{
+	   idx = macCellCfg->prachCfg.fdm[0].zeroCorrZoneCfg; 
+	   *numCs = UnrestrictedSetNcsTable[idx];
+	}
+#endif
+}
+
+/***********************************************************************
+ *
+ * @brief Fills the PRACH PDU in UL TTI Request
+ *
+ * @details
+ *
+ *    Function : fillPrachPdu
+ *
+ *    Functionality:
+ *         -Fills the PRACH PDU in UL TTI Request
+ *
+ * @params[in] Pointer to Prach Pdu
+ *             Pointer to CurrUlSlot
+ *             Pointer to macCellCfg
+ *             Pointer to msgLen
+ * ********************************************************************/
+
+#ifdef FAPI
+void fillPrachPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, MacUlSlot *currUlSlot, uint32_t *msgLen)
+{
+   if(ulTtiReqPdu != NULLP)
+   {
+      ulTtiReqPdu->pduType = PRACH_PDU_TYPE; 
+      ulTtiReqPdu->u.prach_pdu.physCellId = macCellCfg->phyCellId;
+      ulTtiReqPdu->u.prach_pdu.numPrachOcas = currUlSlot->ulCellInfo.prachSchInfo.numPrachOcas;
+      ulTtiReqPdu->u.prach_pdu.prachFormat = \
+		currUlSlot->ulCellInfo.prachSchInfo.prachFormat;
+      ulTtiReqPdu->u.prach_pdu.numRa = currUlSlot->ulCellInfo.prachSchInfo.numRa;
+      ulTtiReqPdu->u.prach_pdu.prachStartSymbol = \
+		currUlSlot->ulCellInfo.prachSchInfo.prachStartSymb;
+      setNumCs(&ulTtiReqPdu->u.prach_pdu.numCs, macCellCfg);
+      ulTtiReqPdu->u.prach_pdu.beamforming.numPrgs = 0;
+      ulTtiReqPdu->u.prach_pdu.beamforming.prgSize = 0;
+      ulTtiReqPdu->u.prach_pdu.beamforming.digBfInterfaces = 0;
+      ulTtiReqPdu->u.prach_pdu.beamforming.pmi_bfi[0].pmIdx = 0;
+      ulTtiReqPdu->u.prach_pdu.beamforming.pmi_bfi[0].beamIdx[0].beamidx = 0;
+      ulTtiReqPdu->pduSize = sizeof(fapi_ul_prach_pdu_t); 
+      SETLENGTH(*msgLen, sizeof(fapi_dl_pdsch_pdu_t));
+   }
+}
+#endif
+
+/*******************************************************************
+ *
+ * @brief Sends UL TTI Request to PHY
+ *
+ * @details
+ *
+ *    Function : handleUlTtiReq
+ *
+ *    Functionality:
+ *         -Sends FAPI Param req to PHY
+ *
+ * @params[in]  Pointer to CmLteTimingInfo
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+S16 handleUlTtiReq(CmLteTimingInfo *currTimingInfo)
+{
+#ifdef FAPI
+   uint32_t msgLen = 0;
+   fapi_ul_tti_req_t *ulTtiReq = NULLP;
+   fapi_ul_tti_req_pdu_t *ulTtiReqPdu = NULLP;
+   RgCellCb  *cellCbParams = NULLP;
+   MacUlSlot *currUlSlot = NULLP;
+   MacCellCfg macCellCfg;
+	memset(&macCellCfg, 0, sizeof(MacCellCfg));
+   Inst inst = 0;
+
+   if(clGlobalCp.phyState == PHY_STATE_RUNNING)
+   {
+      cellCbParams = rgCb[inst].cell;
+      macCellCfg = cellCbParams->macCellCfg;
+
+      if(currTimingInfo != NULLP)
+      {
+#ifdef INTEL_WLS
+         WLS_MEM_ALLOC(ulTtiReq, sizeof(fapi_ul_tti_req_t));
+#else
+         MAC_ALLOC(ulTtiReq, sizeof(fapi_ul_tti_req_t));
+#endif
+         if(ulTtiReq != NULLP)
+         {
+            ulTtiReq->sfn = currTimingInfo->sfn;
+            ulTtiReq->slot = currTimingInfo->slot;
+            currUlSlot = &macCb.macCell->ulSlot[ulTtiReq->slot % MAX_SLOT_SUPPORTED];
+	         ulTtiReq->nPdus = getnPdus(ulTtiReq, currUlSlot);
+            ulTtiReq->nGroup = 0;
+            if(ulTtiReq->nPdus > 0)
+            {
+#ifdef INTEL_WLS
+               WLS_MEM_ALLOC(ulTtiReqPdu, (ulTtiReq->nPdus * sizeof(fapi_ul_tti_req_pdu_t)));
+#else
+               MAC_ALLOC(ulTtiReqPdu, (ulTtiReq->nPdus * sizeof(fapi_ul_tti_req_pdu_t)));
+#endif
+               /* Fill Prach Pdu */
+               if(ulTtiReq->rachPresent)
+               {
+                 if(ulTtiReqPdu != NULLP)
+                 {
+                    fillPrachPdu(ulTtiReqPdu, &macCellCfg, currUlSlot, &msgLen);
+                    ulTtiReq->pdus = ulTtiReqPdu;
+                 }
+                 msgLen = sizeof(fapi_ul_tti_req_t) - sizeof(fapi_msg_t);
+                 fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
+                 LwrMacSendToPhy(ulTtiReq->header.message_type_id, msgLen, (void *)ulTtiReq);
+					  MAC_FREE(ulTtiReqPdu, (ulTtiReq->nPdus * sizeof(fapi_ul_tti_req_pdu_t)));
+               }
+            } 
+            else
+            {
+                msgLen = sizeof(fapi_ul_tti_req_t) - sizeof(fapi_msg_t);
+                fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
+                LwrMacSendToPhy(ulTtiReq->header.message_type_id, msgLen, (void *)ulTtiReq);
+            }
+				MAC_FREE(ulTtiReq, sizeof(fapi_ul_tti_req_t));
+				return ROK;
+         }
+	      else
+	      {
+	         DU_LOG("\nLOWER MAC: Failed to allocate memory for UL TTI Request");
+            return RFAILED;
+         }
+      }
+      else
+      {
+         DU_LOG("\nLOWER MAC: Current TTI Info in UL is NULL");
+         return RFAILED;
+      }
+   }
+   else
+   {
+       lwr_mac_handleInvalidEvt(currTimingInfo);
    }
 #endif
    return ROK;

@@ -34,6 +34,7 @@
 #endif
 #include "lphy_stub.h"
 #include "du_log.h"
+#include "rg.h"
 
 #define MAX_SLOT_VALUE   9
 #define MAX_SFN_VALUE    1023
@@ -387,11 +388,50 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 
 		numPdus--;
 	}
-
-   SPutSBuf(0, 0, (Data *)dlTtiReq, sizeof(fapi_dl_tti_req_t));
+   MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
 #endif
    return ROK;
 }
+
+/*******************************************************************
+*
+* @brief Handles Ul Tti request received from MAC
+*
+* @details
+*
+*    Function : l1HdlUlTtiReq
+*
+*    Functionality:
+*          -Handles Ul Tti request received from MAC
+*
+* @params[in]   Message length
+*               Ul Tti request message pointer
+*
+* @return void
+*
+* ****************************************************************/
+
+PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
+{
+#ifdef FAPI
+   fapi_ul_tti_req_t *ulTtiReq;
+   ulTtiReq = (fapi_ul_tti_req_t *)msg;
+   uint8_t numPdus = ulTtiReq->nPdus;
+	if(numPdus == 0)
+	{
+		DU_LOG("\nPHY STUB: No PDU in UL TTI \n");
+   }
+	while(numPdus)
+	{
+		if(ulTtiReq->pdus->pduType == 0)
+			DU_LOG("\n PHY STUB: PRACH PDU\n");
+		numPdus--;
+	}
+	MAC_FREE(ulTtiReq, sizeof(fapi_ul_tti_req_t));
+#endif
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Receives message from MAC
@@ -427,6 +467,9 @@ void processFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
          break;
       case FAPI_DL_TTI_REQUEST:
          l1HdlDlTtiReq(msgLen, msg);
+         break;
+      case FAPI_UL_TTI_REQUEST:
+         l1HdlUlTtiReq(msgLen, msg);
          break;
       default:
          DU_LOG("\nPHY_STUB: Invalid message type[%x] received at PHY", msgType);
