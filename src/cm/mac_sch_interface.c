@@ -57,6 +57,18 @@ int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
+int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
+{
+   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
 /**
  * @brief function to pack DL Broadcast allocation message 
  *        from MAC to SCH

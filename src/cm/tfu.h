@@ -123,7 +123,12 @@
 #define EVTTFUNONRTIND          24    /*!< Non-RT indication.*/
 #endif
 #define EVTTFUERRIND            25    /*!< TFU Error Indication */
+#define EVENT_RACH_IND_TO_MAC   26
+#define EVENT_RACH_IND_TO_SCH   27
 /** @} */
+
+#define MAX_PREAM_PER_SLOT      1    /* Max number of preamble per slot */
+#define MAC_RACH_PDU_PER_SLOT   1    /* Max number of rach pdu per slot */
 
 /* selector(coupling) values */
 #define TFU_SEL_TC              1    /*!< Selector for Tight coupling. */

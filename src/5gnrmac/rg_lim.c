@@ -601,9 +601,55 @@ TfuDelDatReqInfo *delDatReq;
 }  /* rgLIMTfuDatReq*/
 #endif /*L2_OPTMZ */
 
+/*******************************************************************
+ *
+ * @brief Fills post structure
+ *
+ * @details
+ *
+ *    Function : fillMacToSchPst
+ *
+ *    Functionality:
+ *      Fills post structure to be used when sending msg from 
+ *      MAC to SCH
+ *
+ * @params[in] Post structure pointer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillMacToSchPst(Pst *pst)
+{
+   pst->srcProcId = 0;
+   pst->dstProcId = 0;
+   pst->srcEnt = ENTRG;
+   pst->dstEnt = ENTRG;
+   pst->srcInst = 0;
+   pst->dstInst = 1;
+   pst->region = 0;
+   pst->pool =  0;
+   pst->selector = MAC_SELECTOR_TC;
+}
+
+/*******************************************************************
+ *
+ * @brief MAC handler for config response from PHY
+ *
+ * @details
+ *
+ *    Function : fapiMacConfigRsp
+ *
+ *    Functionality:
+ *     Processes config response from PHY and sends cell config
+ *     confirm to DU APP
+ *
+ * @params[in] 
+ * @return void
+ *
+ * ****************************************************************/
 void fapiMacConfigRsp()
 {
-   /* TODO : Processing of conig response from PHY */
+   /* TODO : Processing of config response from PHY */
 
    /* Send cell config cfm to DU APP */
    MacSendCellCfgCfm(RSP_OK);
@@ -627,16 +673,9 @@ int sendSlotIndMacToSch(SlotIndInfo *slotInd)
 {
    /* fill Pst structure to send to lwr_mac to MAC */
    Pst pst;
-   pst.srcProcId = 0;
-   pst.dstProcId = 0;
-   pst.srcEnt = ENTRG;
-   pst.dstEnt = ENTRG;
-   pst.srcInst = 0;
-   pst.dstInst = 1;
+
+   fillMacToSchPst(&pst);
    pst.event = EVENT_SLOT_IND_TO_SCH;
-   pst.region = 0;
-   pst.pool =  0;
-   pst.selector = MAC_SELECTOR_TC;
 
    return(*macSchSlotIndOpts[pst.selector])(&pst,slotInd);
 }

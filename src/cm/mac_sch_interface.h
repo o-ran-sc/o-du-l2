@@ -311,6 +311,18 @@ typedef struct ulSchInfo
 	PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
 }UlSchInfo;
 
+typedef struct rachIndInfo
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   SlotIndInfo timingInfo;
+   uint8_t     slotIdx;
+   uint8_t     symbolIdx;
+   uint8_t     frequencyIdx;
+   uint8_t     preambleIdx;
+   uint16_t    timingAdv;
+}RachIndInfo;
+
 /* function pointers */
 
 typedef int (*SchCellCfgCfmFunc)    ARGS((
@@ -347,6 +359,9 @@ EXTERN int SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg);
 EXTERN int schActvInit(Ent entity, Inst instId, Region region, Reason reason);
 EXTERN S16 SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 EXTERN int MacProcUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo);
+typedef int (*MacSchRachIndFunc)(Pst *pst, RachIndInfo *rachInd);
+int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd);
+int macSchRachInd(Pst *pst, RachIndInfo *rachInd);
 
 /**********************************************************************
   End of file

@@ -1,0 +1,106 @@
+/*******************************************************************************
+################################################################################
+#   Copyright (c) [2017-2019] [Radisys]                                        #
+#                                                                              #
+#   Licensed under the Apache License, Version 2.0 (the "License");            #
+#   you may not use this file except in compliance with the License.           #
+#   You may obtain a copy of the License at                                    #
+#                                                                              #
+#       http://www.apache.org/licenses/LICENSE-2.0                             #
+#                                                                              #
+#   Unless required by applicable law or agreed to in writing, software        #
+#   distributed under the License is distributed on an "AS IS" BASIS,          #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   #
+#   See the License for the specific language governing permissions and        #
+#   limitations under the License.                                             #
+################################################################################
+*******************************************************************************/
+
+#include "lwr_mac_upr_inf.h"
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends RACH Ind to MAC
+ *
+ * @details
+ *
+ *    Function : packRachInd
+ *
+ *    Functionality:
+ *         Packs and Sends RACH Ind to MAC
+ *
+ * @params[in] Post structure pointer
+ *             RACH indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packRachInd(Pst *pst, RachInd *rachInd)
+{
+   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   {
+      return ROK;
+   }
+   else
+   {
+      return RFAILED;
+   }
+}
+ 
+/*******************************************************************
+ *
+ * @brief Loose coupled packing of slot indication
+ *
+ * @details
+ *
+ *    Function : packLcSlotInd
+ *
+ *    Functionality:
+ *        Loose coupled packing of slot indication
+ *
+ * @params[in] Post structure
+ *             Slot indication info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
+{
+   Buffer *mBuf = NULLP;
+   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+   {
+      RETVALUE(RFAILED);
+   }
+ 
+   /* pack SFN and slot value */
+   CMCHKPK(SPkU16,slotInd->sfn, mBuf);
+   CMCHKPK(SPkU16,slotInd->slot, mBuf);
+ 
+   RETVALUE(SPstTsk(pst,mBuf));
+}
+ 
+/*******************************************************************
+ *
+ * @brief Light weight loose coupled packing of slot indication
+ *
+ * @details
+ *
+ *    Function : packLwlcSlotInd
+ *
+ *    Functionality:
+ *       Light weight loose coupled packing of slot indication
+ *
+ * @params[in] Post structure
+ *             Slot indication info 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
+{
+   return ROK;
+}
+
+/**********************************************************************
+         End of file
+**********************************************************************/

@@ -33,14 +33,18 @@
 #include "fapi.h"
 #endif
 #include "lphy_stub.h"
+#include "stdbool.h"
 #include "du_log.h"
 #include "rg.h"
 
 #define MAX_SLOT_VALUE   9
 #define MAX_SFN_VALUE    1023
+#define NR_PCI            1
 
 uint16_t sfnValue = 0;
 uint16_t slotValue = 0;
+bool     rachIndSent = false;
+
 EXTERN void phyToMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
 #ifdef FAPI
 EXTERN void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, uint16_t tag, uint16_t
@@ -249,13 +253,74 @@ PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
    }
 }
 
+
+/*******************************************************************
+ *
+ * @brief Builds and Sends RACH indication to MAC 
+ *
+ * @details
+ *
+ *    Function : l1BuildAndSendRachInd 
+ *
+ *    Functionality:
+ *      Builds and Sends RACH indication to MAC
+ *
+ * @params[in] SFN value 
+ *             slot value
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
+{
+#ifdef FAPI
+   uint8_t   rachPduIdx = 0; 
+   uint8_t   preamIdx = 0;
+   fapi_rach_pdu_t  *rachPdu;
+   fapi_rach_indication_t  *rachInd;
+
+   /* Building RACH indication */
+   if(SGetSBuf(0, 0, (Data **)&rachInd, sizeof(fapi_rach_indication_t)) != ROK)
+   {
+      printf("\nPHY_STUB: Memory allocation failed for Rach Indication Message");
+      return RFAILED;
+   }
+   
+   rachInd->sfn = sfn;
+   rachInd->slot = slot;
+   rachInd->numPdus = 1;
+
+   rachPdu = &rachInd->rachPdu[rachPduIdx];
+   rachPdu->physCellId = NR_PCI;
+   rachPdu->symbolIndex = 0;
+   rachPdu->slotIndex = slot;
+   rachPdu->freqIndex = 0;
+   rachPdu->avgRssi = 0;
+   rachPdu->avgSnr = 0;
+   rachPdu->numPreamble = 1;
+
+   rachPdu->preambleInfo[preamIdx].preambleIndex = 3;
+   rachPdu->preambleInfo[preamIdx].timingAdvance = 0;
+   rachPdu->preambleInfo[preamIdx].premblePwr = 0;
+   
+   fillMsgHeader(&rachInd->header, FAPI_RACH_INDICATION, \
+      sizeof(fapi_rach_indication_t));
+
+   /* Sending RACH indication to MAC */
+   DU_LOG("\nPHY STUB: Sending RACH Indication to MAC");
+   handlePhyMessages(rachInd->header.message_type_id, sizeof(fapi_rach_indication_t), (void *)rachInd);
+   SPutSBuf(0, 0, (Data *)rachInd, sizeof(fapi_rach_indication_t));
+#endif
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Builds and Send the Slot Indication message to MAC
  *
  * @details
  *
- *    Function : buildAndSendSlotIndication
+ *    Function : l1BuildAndSendSlotIndication
  *
  *    Functionality:
  *          -Send the Slot indication Message to MAC
@@ -266,7 +331,7 @@ PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
  * @return void
  *
  * ****************************************************************/
-PUBLIC S16 buildAndSendSlotIndication()
+PUBLIC uint16_t l1BuildAndSendSlotIndication()
 {
 #ifdef FAPI
    fapi_slot_ind_t *slotIndMsg;
@@ -291,7 +356,7 @@ PUBLIC S16 buildAndSendSlotIndication()
       slotIndMsg->sfn = sfnValue;
       slotIndMsg->slot = slotValue;
       fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
-      DU_LOG("\nPHY_STUB [%d:%d] ",sfnValue,slotValue);
+      DU_LOG("\nPHY_STUB: [%d:%d] ",sfnValue,slotValue);
       handlePhyMessages(slotIndMsg->header.message_type_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
       SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
    }
@@ -329,7 +394,7 @@ PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
    }
    else
    {
-      DU_LOG("\n PHY_STUB: Received Start Req in PHY State %d", clGlobalCp.phyState);
+      DU_LOG("\nPHY_STUB: Received Start Req in PHY State %d", clGlobalCp.phyState);
       return RFAILED;
    }
 }
@@ -357,8 +422,9 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 #ifdef FAPI
    fapi_dl_tti_req_t *dlTtiReq;
    dlTtiReq = (fapi_dl_tti_req_t *)msg;
+
+   printf("\nPHY STUB: Received DL TTI Request");
 #if 0
-   printf("\nPHY_STUB:  Received DL TTI Request in PHY");
    printf("\nPHY_STUB:  SFN     %d", dlTtiReq->sfn);
    printf("\nPHY_STUB:  SLOT    %d", dlTtiReq->slot);
    printf("\nPHY_STUB:  nPdus   %d", dlTtiReq->nPdus);
@@ -375,16 +441,16 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
    uint8_t numPdus = dlTtiReq->nPdus;
 	if(numPdus == 0)
 	{
-		DU_LOG("\nNo PDU \n");
+		DU_LOG("\nPHY_STUB: No PDU in DL TTI Request");
    }
 	while(numPdus)
 	{
 		if(dlTtiReq->pdus->pduType == 3) //SSB_PDU_TYPE
-			DU_LOG("\nSSB PDU\n");
+			DU_LOG("\nPHY_STUB: SSB PDU");
 		else if(dlTtiReq->pdus->pduType == 0)
-			DU_LOG("\nSIB1 PDCCH PDU\n");
+			DU_LOG("\nPHY_STUB: SIB1 PDCCH PDU");
 		else if(dlTtiReq->pdus->pduType == 1)
-		   DU_LOG("\nSIB1 PDSCH PDU\n");
+		   DU_LOG("\nPHY_STUB: SIB1 PDSCH PDU");
 
 		numPdus--;
 	}
@@ -415,18 +481,28 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef FAPI
    fapi_ul_tti_req_t *ulTtiReq;
+
+   DU_LOG("\nPHY STUB: Received UL TTI Request");
+
    ulTtiReq = (fapi_ul_tti_req_t *)msg;
    uint8_t numPdus = ulTtiReq->nPdus;
+    
 	if(numPdus == 0)
 	{
-		DU_LOG("\nPHY STUB: No PDU in UL TTI \n");
+		DU_LOG("\nPHY STUB: No PDU in UL TTI");
    }
 	while(numPdus)
 	{
 		if(ulTtiReq->pdus->pduType == 0)
-			DU_LOG("\n PHY STUB: PRACH PDU\n");
+			DU_LOG("\nPHY STUB: PRACH PDU");
 		numPdus--;
 	}
+   if(rachIndSent == false && ulTtiReq->slot == 8)
+   {
+      rachIndSent = true;
+      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
+   }
+
 	MAC_FREE(ulTtiReq, sizeof(fapi_ul_tti_req_t));
 #endif
    return ROK;
@@ -438,7 +514,7 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
  *
  * @details
  *
- *    Function : processFapiRequest
+ *    Function :  l1ProcessFapiRequest
  *
  *    Functionality:
  *       - Receives message from MAC and calls handler
@@ -451,7 +527,7 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
  *
  * ****************************************************************/
 
-void processFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
+void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
 {
    switch(msgType)
    {

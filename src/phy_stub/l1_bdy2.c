@@ -24,15 +24,17 @@
 #include "lphy_stub.h"
 #include "du_log.h"
 
+uint16_t l1BuildAndSendSlotIndication();
+
 void *GenerateTicks(void *arg)
 {
    uint8_t counter = 100;
    while(counter)
    {
       sleep(1);
-      DU_LOG("\nPHY_STUB: SLOT indication");
+      DU_LOG("\n\nPHY_STUB: SLOT indication");
       /* Send Slot indication indication to lower mac */
-      buildAndSendSlotIndication();
+      l1BuildAndSendSlotIndication();
       counter--;
    }
 }

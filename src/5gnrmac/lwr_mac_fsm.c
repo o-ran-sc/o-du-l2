@@ -1331,7 +1331,7 @@ S16 lwr_mac_handleParamReqEvt(void *msg)
    if(paramReq != NULLP)
    {
       fillMsgHeader(&paramReq->header, FAPI_PARAM_REQUEST, msgLen);
-      DU_LOG("\nLOWER MAC: sending param Req to Phy");
+      DU_LOG("\nLOWER MAC: Sending Param Request to Phy");
       LwrMacSendToPhy(paramReq->header.message_type_id, sizeof(fapi_param_req_t), (void *)paramReq);
       MAC_FREE(paramReq, sizeof(fapi_param_req_t));
       return ROK;
@@ -2792,6 +2792,7 @@ S16 handleUlTtiReq(CmLteTimingInfo *currTimingInfo)
                  }
                  msgLen = sizeof(fapi_ul_tti_req_t) - sizeof(fapi_msg_t);
                  fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
+                 DU_LOG("\nLOWER MAC: Sending UL TTI Request");
                  LwrMacSendToPhy(ulTtiReq->header.message_type_id, msgLen, (void *)ulTtiReq);
 					  MAC_FREE(ulTtiReqPdu, (ulTtiReq->nPdus * sizeof(fapi_ul_tti_req_pdu_t)));
                }
@@ -2800,6 +2801,7 @@ S16 handleUlTtiReq(CmLteTimingInfo *currTimingInfo)
             {
                 msgLen = sizeof(fapi_ul_tti_req_t) - sizeof(fapi_msg_t);
                 fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
+                DU_LOG("\nLOWER MAC: Sending UL TTI Request");
                 LwrMacSendToPhy(ulTtiReq->header.message_type_id, msgLen, (void *)ulTtiReq);
             }
 				MAC_FREE(ulTtiReq, sizeof(fapi_ul_tti_req_t));

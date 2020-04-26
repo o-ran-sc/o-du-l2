@@ -45,51 +45,71 @@
 #include "du_log.h"
 #include "lwr_mac_fsm.h"
 #include "lwr_mac_phy.h"
+#include "lwr_mac_upr_inf.h"
 
 #ifdef FAPI
-
-/* function pointers for packing macCellCfg Request */
-typedef S16 (*packSlotIndMsg) ARGS((
-   Pst           *pst,
-   SlotIndInfo   *slotInd
-));
-
-S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd);
-S16 packTcSlotInd (Pst *pst, SlotIndInfo *slotInd);
-S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd);
-
+/* Function pointer for slot indication from lower mac to mac */
 packSlotIndMsg packSlotIndOpts[] =
 {
-   packLcSlotInd, /* packing for loosely coupled */
+   packLcSlotInd,  /* packing for loosely coupled */
    fapiMacSlotInd, /* packing for tightly coupled */
-   packLwlcSlotInd, /* packing for light weight loosly coupled */
+   packLwlcSlotInd /* packing for light weight loosly coupled */
 };
 
-S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
+/* Function pointer for rach indication from lower mac to mac */ 
+packRachIndMsg sendRachIndOpts[] =
 {
-   Buffer *mBuf = NULLP;
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
+   packRachInd,
+   fapiMacRachInd,
+   packRachInd
+};
 
-   /* pack SFN and slot value */
-   CMCHKPK(SPkU16,slotInd->sfn, mBuf);
-   CMCHKPK(SPkU16,slotInd->slot, mBuf);
-
-   RETVALUE(SPstTsk(pst,mBuf));
+/*******************************************************************
+ *
+ * @brief Fills post structure
+ *
+ * @details
+ *
+ *    Function : fillLwrMacToMacPst
+ *
+ *    Functionality:
+ *     Fills post structure used to send message from lower MAC
+ *     to MAC
+ *
+ * @params[in] Pst pointer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillLwrMacToMacPst(Pst *pst)
+{
+   pst->srcProcId = 0;
+   pst->dstProcId = 0;
+   pst->srcEnt = ENTTF;
+   pst->dstEnt = ENTRG;
+   pst->srcInst = 0;
+   pst->dstInst = 0;
+   pst->region = 0;
+   pst->pool =  0; 
+   pst->selector = MAC_SELECTOR_TC;
 }
 
-S16 packTcSlotInd (Pst *pst, SlotIndInfo *slotInd)
-{
-   return ROK;
-}
-
-S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
-{
-   return ROK;
-}
-
+/*******************************************************************
+ *
+ * @brief Processes Slot Indication from PHY and sends to MAC
+ *
+ * @details
+ *
+ *    Function : handleSlotInd
+ *
+ *    Functionality:
+ *     Processes Slot Indication from PHY and sends to MAC
+ *
+ * @params[in] fapi_slot_ind_t pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
 {
    /* fill Pst structure to send to lwr_mac to MAC */
@@ -97,16 +117,8 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
    uint16_t ret;
    SlotIndInfo slotInd;
 
-   pst.srcProcId = 0;
-   pst.dstProcId = 0;
-   pst.srcEnt = ENTTF;
-   pst.dstEnt = ENTRG;
-   pst.srcInst = 0;
-   pst.dstInst = 0;
+   fillLwrMacToMacPst(&pst);
    pst.event = EVENT_SLOT_IND_TO_MAC;
-   pst.region = 0;
-   pst.pool =  0;
-   pst.selector = MAC_SELECTOR_TC;
 
    slotInd.sfn = fapiSlotInd->sfn;
    slotInd.slot = fapiSlotInd->slot;
@@ -124,7 +136,60 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
 
    return ret;
 }
-#endif
+
+
+/*******************************************************************
+ *
+ * @brief Processes Rach Indication from PHY and sends to MAC
+ *
+ * @details
+ *
+ *    Function : handleRachInd
+ *
+ *    Functionality:
+ *         Processes Rach Indication from PHY and sends to MAC
+ *
+ * @params[in] fapi_rach_indication_t pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t handleRachInd(fapi_rach_indication_t  *fapiRachInd)
+{
+   Pst          pst;
+   uint8_t      pduIdx;
+   uint8_t      prmbleIdx;
+   RachPduInfo  *rachPdu;
+   RachInd      rachInd;
+
+   rachInd.timingInfo.sfn = fapiRachInd->sfn;
+   rachInd.timingInfo.slot = fapiRachInd->slot;
+   rachInd.numPdu = fapiRachInd->numPdus;
+   for(pduIdx=0; pduIdx < rachInd.numPdu; pduIdx++)
+   {
+      rachPdu = &rachInd.rachPdu[pduIdx];
+      rachPdu->pci = fapiRachInd->rachPdu[pduIdx].physCellId;
+      rachPdu->symbolIdx = fapiRachInd->rachPdu[pduIdx].symbolIndex;
+      rachPdu->slotIdx = fapiRachInd->rachPdu[pduIdx].slotIndex;
+      rachPdu->freqIdx = fapiRachInd->rachPdu[pduIdx].freqIndex;
+      rachPdu->numPream = fapiRachInd->rachPdu[pduIdx].numPreamble; 
+      for(prmbleIdx=0; prmbleIdx<rachPdu->numPream; prmbleIdx++)
+      {
+         rachPdu->preamInfo[prmbleIdx].preamIdx = \
+            fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].preambleIndex;
+         rachPdu->preamInfo[prmbleIdx].timingAdv = \
+            fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance;
+      }
+   }
+   fillLwrMacToMacPst(&pst);
+   pst.event = EVENT_RACH_IND_TO_MAC;
+
+   (*sendRachIndOpts[pst.selector])(&pst, &rachInd);
+	return ROK;
+
+}/* handleRachInd */
+
+#endif /* FAPI */
 
 void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 {
@@ -145,7 +210,7 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
       {
          if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
          {
-            DU_LOG("\nLOWER MAC: PHY has moved to running state \n");
+            DU_LOG("\nLOWER MAC: PHY has moved to running state");
             clGlobalCp.phyState = PHY_STATE_RUNNING;
          }
 
@@ -176,6 +241,9 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
       }  
       case FAPI_RACH_INDICATION:
       {
+         fapi_rach_indication_t  *rachInd;
+         rachInd = (fapi_rach_indication_t *)msg;
+         handleRachInd(rachInd);
          break;
       }  
    }

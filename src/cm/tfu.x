@@ -2509,6 +2509,29 @@ typedef struct slotIndInfo
    U16 slot;
 }SlotIndInfo;
 
+typedef struct rachPreamInfo
+{
+   uint8_t   preamIdx;
+   uint16_t  timingAdv;
+}RachPreamInfo;
+
+typedef struct rachPduInfo
+{
+   uint16_t   pci;
+   uint8_t    symbolIdx;
+   uint8_t    slotIdx;
+   uint8_t    freqIdx;
+   uint8_t    numPream;
+   RachPreamInfo   preamInfo[MAX_PREAM_PER_SLOT];
+}RachPduInfo;
+
+typedef struct rachInd
+{
+  SlotIndInfo   timingInfo;
+  uint8_t       numPdu;
+  RachPduInfo   rachPdu[MAC_RACH_PDU_PER_SLOT];
+}RachInd;
+
 typedef S16 (*TfuBndReq) ARGS((
    Pst*                 pst,
    SuId                 suId,

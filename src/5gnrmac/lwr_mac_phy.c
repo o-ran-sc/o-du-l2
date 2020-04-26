@@ -34,7 +34,7 @@
 #endif
 
 EXTERN S16 rgClHndlCfgReq ARGS((void *msg));
-EXTERN void processFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
+EXTERN void l1ProcessFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
 
 #ifdef INTEL_WLS
 
@@ -263,7 +263,7 @@ PUBLIC uint16_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg)
       addWlsBlockToFree(msg, msgLen, (slotIndIdx-1));
    }
 #else
-   processFapiRequest(msgType, msgLen, msg);
+   l1ProcessFapiRequest(msgType, msgLen, msg);
 #endif
    return ROK;
 } /* LwrMacSendToPhy */

@@ -65,6 +65,7 @@ typedef struct macUlSlot
 typedef struct macCellCb
 {
    uint16_t   cellId;
+   RachIndInfo raCb;
    MacDlSlot  dlSlot[MAX_SLOT_SUPPORTED];
    MacUlSlot  ulSlot[MAX_SLOT_SUPPORTED];
 }MacCellCb;
@@ -77,6 +78,7 @@ typedef struct macCb
 
 /* global variable */
 EXTERN MacCb macCb;
+void fillMacToSchPst(Pst *pst);
 
 #endif
 /**********************************************************************

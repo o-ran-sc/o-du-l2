@@ -306,6 +306,28 @@ SlotIndInfo         *slotInd
    RETVALUE(ROK);
 }  /* macSchSlotInd */
 
+/*******************************************************************
+ *
+ * @brief Processes Rach indication from MAC 
+ *
+ * @details
+ *
+ *    Function : macSchRachInd
+ *
+ *    Functionality:
+ *      Processes Rach indication from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int macSchRachInd(Pst *pst, RachIndInfo *rachInd)
+{
+   DU_LOG("\nSCH : Received Rach indication");
+   return ROK;
+}
+
 /**
  * @brief inti cellCb based on cellCfg
  *
