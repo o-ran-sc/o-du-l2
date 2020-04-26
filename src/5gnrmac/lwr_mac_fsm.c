@@ -2486,96 +2486,119 @@ uint8_t calculatePduCount(DlBrdcstAlloc *cellBroadcastInfo)
 S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 {
 #ifdef FAPI
-   uint8_t idx;
+	uint8_t idx;
 	uint8_t nPdu = 0;
-   uint32_t msgLen = 0;
-   fapi_dl_tti_req_t *dlTtiReq = NULLP;
-   fapi_dl_tti_req_pdu_t *dlTtiReqPdu = NULLP;
-   RgCellCb  *cellCbParams = NULLP;
+	uint8_t numPduEncoded = 0;
+	uint32_t msgLen = 0;
+	fapi_dl_tti_req_t *dlTtiReq = NULLP;
+	fapi_dl_tti_req_pdu_t *dlTtiReqPdu = NULLP;
+	RgCellCb  *cellCbParams = NULLP;
 	MacDlSlot *currDlSlot = NULLP;
-   MacCellCfg macCellCfg;
+	MacCellCfg macCellCfg;
 	memset(&macCellCfg, 0, sizeof(MacCellCfg));
-   Inst inst = 0;
+	Inst inst = 0;
 
-   if(clGlobalCp.phyState == PHY_STATE_RUNNING)
-   {
-      cellCbParams = rgCb[inst].cell;
-      macCellCfg = cellCbParams->macCellCfg;
+	if(clGlobalCp.phyState == PHY_STATE_RUNNING)
+	{
+		cellCbParams = rgCb[inst].cell;
+		macCellCfg = cellCbParams->macCellCfg;
 
-      if(dlTtiReqtimingInfo != NULLP)
-      {
+		if(dlTtiReqtimingInfo != NULLP)
+		{
 #ifdef INTEL_WLS
-         WLS_MEM_ALLOC(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+			WLS_MEM_ALLOC(dlTtiReq, sizeof(fapi_dl_tti_req_t));
 #else
-         MAC_ALLOC(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+			MAC_ALLOC(dlTtiReq, sizeof(fapi_dl_tti_req_t));
 #endif
-         if(dlTtiReq != NULLP)
-         {
-            dlTtiReq->sfn = dlTtiReqtimingInfo->sfn;
-            dlTtiReq->slot = dlTtiReqtimingInfo->slot;
+			if(dlTtiReq != NULLP)
+			{
+				dlTtiReq->sfn = dlTtiReqtimingInfo->sfn;
+				dlTtiReq->slot = dlTtiReqtimingInfo->slot;
 				currDlSlot = &macCb.macCell->dlSlot[dlTtiReq->slot % MAX_SLOT_SUPPORTED];
 				dlTtiReq->nPdus = calculatePduCount(&currDlSlot->cellBroadcastInfo);  /* get total Pdus */
 				nPdu = dlTtiReq->nPdus;
-            dlTtiReq->nGroup = 0;
-            if(dlTtiReq->nPdus > 0)
-            {
+				dlTtiReq->nGroup = 0;
+				if(dlTtiReq->nPdus > 0)
+				{
 #ifdef INTEL_WLS
-               WLS_MEM_ALLOC(dlTtiReqPdu, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
+					WLS_MEM_ALLOC(dlTtiReqPdu, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
 #else
-               MAC_ALLOC(dlTtiReqPdu, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
+					MAC_ALLOC(dlTtiReqPdu, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
 #endif
-               if(currDlSlot->cellBroadcastInfo.ssbTrans)
-               {
-                 if(dlTtiReqPdu != NULLP)
-                 {
-                    for(idx = 0; idx < currDlSlot->cellBroadcastInfo.ssbIdxSupported; idx++)
-                    {
-						  	  if(idx > 0)
-                       dlTtiReq->pdus++;
-                       fillSsbPdu(dlTtiReqPdu, &macCellCfg, currDlSlot, &msgLen, idx);
-                       dlTtiReq->pdus = dlTtiReqPdu;
-                    }
-                 }
-               }
-               if(currDlSlot->cellBroadcastInfo.sib1Trans)
-               {
-                  /* Filling SIB1 param */
-                  if(dlTtiReqPdu != NULLP)
-                  {
-                     dlTtiReq->pdus++;
-                     fillPdcchPdu(dlTtiReqPdu, &currDlSlot->cellBroadcastInfo.sib1Alloc.sib1PdcchCfg, &msgLen);
-                     dlTtiReq->pdus = dlTtiReqPdu;
-                     dlTtiReq->pdus++;
-                     fillPdschPdu(dlTtiReqPdu, &currDlSlot->cellBroadcastInfo.sib1Alloc.sib1PdschCfg, &msgLen);
-                     dlTtiReq->pdus = dlTtiReqPdu;
-                  }
-               }
-               msgLen += sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
-               fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
-               /* TODO : Recheck the size / msglen to be sent to WLS_Put*/
-               LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
+					if(currDlSlot->cellBroadcastInfo.ssbTrans)
+					{
+						if(dlTtiReqPdu != NULLP)
+						{
+							for(idx = 0; idx < currDlSlot->cellBroadcastInfo.ssbIdxSupported; idx++)
+							{
+								if(idx > 0)
+									dlTtiReq->pdus++;
+								fillSsbPdu(dlTtiReqPdu, &macCellCfg, currDlSlot, &msgLen, idx);
+								dlTtiReq->pdus = dlTtiReqPdu;
+								numPduEncoded++;
+							}
+						}
+					}
 					if(currDlSlot->cellBroadcastInfo.sib1Trans)
 					{
-                  MAC_FREE(dlTtiReqPdu->u.pdcch_pdu.dlDci, sizeof(fapi_dl_dci_t));
-				   }
-               MAC_FREE(dlTtiReqPdu, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
-             }
-             else
-             {
-                msgLen = sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
-                fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
-                /* TODO : Recheck the size / msglen to be sent to WLS_Put*/
-                LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
-             }
-             MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
-             return ROK;
-         }
-         else
-         {
-            DU_LOG("\nLOWER MAC: Failed to allocate memory for DL TTI Request");
-            return RFAILED;
-         }
-      }
+						/* Filling SIB1 param */
+						if(dlTtiReqPdu != NULLP)
+						{
+							if(numPduEncoded != nPdu)
+							{
+								dlTtiReq->pdus++;
+								dlTtiReqPdu = dlTtiReq->pdus;
+								fillPdcchPdu(dlTtiReqPdu, &currDlSlot->cellBroadcastInfo.\
+										sib1Alloc.sib1PdcchCfg, &msgLen);
+								dlTtiReq->pdus = dlTtiReqPdu;
+								numPduEncoded++;
+								dlTtiReq->pdus++;
+								dlTtiReqPdu = dlTtiReq->pdus;
+								fillPdschPdu(dlTtiReqPdu,&currDlSlot->cellBroadcastInfo.\
+										sib1Alloc.sib1PdschCfg, &msgLen);
+								dlTtiReq->pdus = dlTtiReqPdu;
+								numPduEncoded++;
+							}
+						}
+					}
+					msgLen += sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
+					fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
+					/* TODO : Recheck the size / msglen to be sent to WLS_Put*/
+					LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
+					if(currDlSlot->cellBroadcastInfo.sib1Trans)
+					{
+						if(currDlSlot->cellBroadcastInfo.ssbTrans)
+						{
+
+							MAC_FREE(dlTtiReq->pdus[1].u.pdcch_pdu.dlDci, 
+									sizeof(fapi_dl_dci_t));
+						}
+						else
+						{
+
+							MAC_FREE(dlTtiReq->pdus[0].u.pdcch_pdu.dlDci, 
+									sizeof(fapi_dl_dci_t));
+						}
+					}
+
+					MAC_FREE(dlTtiReqPdu, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
+				}
+				else
+				{
+					msgLen = sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
+					fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
+					/* TODO : Recheck the size / msglen to be sent to WLS_Put*/
+					LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
+				}
+				MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+				return ROK;
+			}
+			else
+			{
+				DU_LOG("\nLOWER MAC: Failed to allocate memory for DL TTI Request");
+				return RFAILED;
+			}
+		}
       else
       {
          DU_LOG("\nLOWER MAC: Current TTI Info is NULL");

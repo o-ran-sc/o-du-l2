@@ -213,11 +213,11 @@ int sendUlSchInfoToMac(UlSchInfo *ulSchInfo, Inst inst)
  **/
 int schPrachResAlloc(SchCellCb *cell, UlSchInfo *ulSchInfo)
 {
-   uint8_t  numPrachRb;
-	uint8_t  numRa;
-	uint8_t  freqStart;
-	uint16_t sfn;
-	uint16_t slot;
+   uint8_t  numPrachRb = 0;
+	uint8_t  numRa = 0;
+	uint8_t  freqStart = 0;
+	uint16_t sfn = 0;
+	uint16_t slot = 0;
 	uint8_t  prachCfgIdx = 0;
 	uint8_t  prachFormat = 0;
 	uint8_t  x = 0;
@@ -265,6 +265,7 @@ int schPrachResAlloc(SchCellCb *cell, UlSchInfo *ulSchInfo)
 			   break;
 		}
 		numPrachRb = numRbForPrachTable[idx][3];
+		dataType |= SCH_DATATYPE_PRACH;
 		/* Considering first slot in the frame for PRACH */
 		idx = 0;
 		ulAlloc->assignedPrb[idx] = freqStart+numPrachRb;
@@ -274,7 +275,7 @@ int schPrachResAlloc(SchCellCb *cell, UlSchInfo *ulSchInfo)
 	ulSchInfo->cellId = cell->cellId;
 	ulSchInfo->slotIndInfo.sfn = sfn;
    ulSchInfo->slotIndInfo.slot = slot;
-	ulSchInfo->dataType = dataType | SCH_DATATYPE_PRACH;
+	ulSchInfo->dataType = dataType;
 	/* prach info */
 	ulSchInfo->prachSchInfo.numPrachOcas   = prachOcas;
 	ulSchInfo->prachSchInfo.prachFormat    = prachFormat;
