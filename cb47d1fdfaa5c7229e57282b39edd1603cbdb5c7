@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6730d1c9_3d6bc24b",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2656,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T12:24:10Z",
+      "side": 1,
+      "message": "fapi flag not required here",
+      "revId": "cb47d1fdfaa5c7229e57282b39edd1603cbdb5c7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
