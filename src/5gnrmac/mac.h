@@ -50,10 +50,12 @@
 
 #define MAX_SLOT_SUPPORTED    10 /* numerology 0 15Khz */
 #define MAX_ZERO_CORR_CFG_IDX 16 /* max zero correlation config index */
+#define SI_RNTI 0xFFFF
+#define P-RNTI  0xFFFE
 
 typedef struct macDlSlot
 {
-   DlBrdcstAlloc cellBroadcastInfo;
+   DlAlloc dlInfo;
 
 }MacDlSlot;
 

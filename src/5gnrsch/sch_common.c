@@ -82,8 +82,7 @@ SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
  *     
  *     This function handles common scheduling for DL
  *     
- *  @param[in]  schCellCb *cell, cell cb
- *  @param[in]  DlBrdcstAlloc *dlBrdcstAlloc, DL brdcst allocation
+ *  @param[in]  uint8_t scs, uint8_t *ssbStartSym
  *  @return  void
  **/
 void ssbDlTdAlloc(uint8_t scs, uint8_t *ssbStartSymb)
@@ -114,7 +113,7 @@ void ssbDlTdAlloc(uint8_t scs, uint8_t *ssbStartSymb)
  *
  * @details
  *
- *     Function : schCmnDlAlloc
+ *     Function : schBroadcastAlloc
  *     
  *     This function handles common scheduling for DL
  *     
@@ -122,7 +121,8 @@ void ssbDlTdAlloc(uint8_t scs, uint8_t *ssbStartSymb)
  *  @param[in]  DlBrdcstAlloc *dlBrdcstAlloc, DL brdcst allocation
  *  @return  void
  **/
-uint8_t schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc)
+uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
+        uint16_t slot)
 {
 	/* schedule SSB */
 	uint8_t scs, ssbStartPrb, ssbStartSymb, idx;
@@ -130,12 +130,11 @@ uint8_t schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc)
 	SchDlAlloc *dlAlloc;
 	SsbInfo ssbInfo;
 
-	dlAlloc = cell->dlAlloc[cell->slotInfo.slot];
+	dlAlloc = cell->dlAlloc[slot];
 	if(dlBrdcstAlloc->ssbTrans)
 	{
 		scs = cell->cellCfg.ssbSchCfg.scsCommon;
-		ssbStartPrb = \
-		   (cell->cellCfg.ssbSchCfg.ssbOffsetPointA)/SCH_NUM_SC_PRB;
+		ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
 
 		memset(ssbStartSymbArr, 0, SCH_MAX_SSB_BEAM);
 		ssbDlTdAlloc(scs, ssbStartSymbArr);
@@ -157,7 +156,7 @@ uint8_t schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc)
 		dlAlloc->ssbIdxSupported = dlBrdcstAlloc->ssbIdxSupported;
 		for(idx=ssbStartSymb; idx<ssbStartSymb+SCH_SSB_SYMB_DURATION; idx++)
 		{
-			dlAlloc->assignedPrb[idx] = SCH_SSB_PRB_DURATION + 1; /* +1 for kSsb */
+			dlAlloc->assignedPrb[idx] = ssbStartPrb + SCH_SSB_PRB_DURATION + 1; /* +1 for kSsb */
 		}
 
 	}
@@ -165,8 +164,13 @@ uint8_t schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc)
 	/* SIB1 allocation */
 	if(dlBrdcstAlloc->sib1Trans)
 	{
-	   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(Sib1PdcchCfg)); 
-	   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(Sib1PdschCfg)); 
+		dlAlloc->sib1Pres = true;
+		for(idx=0; idx<SCH_SYMBOL_PER_SLOT; idx++)
+		{
+			dlAlloc->assignedPrb[idx] = ssbStartPrb + SCH_SSB_PRB_DURATION + 1 + 10; /* 10 PRBs for sib1 */
+		}
+	   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
+	   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(PdschCfg)); 
 	}
 	return ROK;
 }
@@ -297,7 +301,7 @@ int schPrachResAlloc(SchCellCb *cell, UlSchInfo *ulSchInfo)
  *  @param[in]  SchCellCb *cell, cellCb
  *  @return  void
  **/
-int schUlResAlloc(SchCellCb *cell, Inst schInst)
+uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 {
    int ret = ROK;
    UlSchInfo ulSchInfo;

@@ -356,7 +356,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
       slotIndMsg->sfn = sfnValue;
       slotIndMsg->slot = slotValue;
       fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
-      DU_LOG("\nPHY_STUB: [%d:%d] ",sfnValue,slotValue);
+      DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
       handlePhyMessages(slotIndMsg->header.message_type_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
       SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
    }
@@ -438,27 +438,52 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
    printf("\nPHY_STUB: bchPayloadFlag      %d",	dlTtiReq->pdus->u.ssb_pdu.bchPayloadFlag);
    printf("\nPHY_STUB: bchPayload          %x",	dlTtiReq->pdus->u.ssb_pdu.bchPayload);
 #endif
-   uint8_t numPdus = dlTtiReq->nPdus;
-	if(numPdus == 0)
+	uint8_t pduCount = 0;
+	if(dlTtiReq->nPdus == 0)
 	{
 		DU_LOG("\nPHY_STUB: No PDU in DL TTI Request");
    }
-	while(numPdus)
+	for(pduCount=0; pduCount<dlTtiReq->nPdus; pduCount++)
 	{
-		if(dlTtiReq->pdus->pduType == 3) //SSB_PDU_TYPE
+		if(dlTtiReq->pdus[pduCount].pduType == 3) //SSB_PDU_TYPE
 			DU_LOG("\nPHY_STUB: SSB PDU");
-		else if(dlTtiReq->pdus->pduType == 0)
-			DU_LOG("\nPHY_STUB: SIB1 PDCCH PDU");
-		else if(dlTtiReq->pdus->pduType == 1)
-		   DU_LOG("\nPHY_STUB: SIB1 PDSCH PDU");
-
-		numPdus--;
+		else if(dlTtiReq->pdus[pduCount].pduType == 0)
+			DU_LOG("\nPHY_STUB: PDCCH PDU");
+		else if(dlTtiReq->pdus[pduCount].pduType == 1)
+		   DU_LOG("\nPHY_STUB: PDSCH PDU");
 	}
-   MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
 #endif
    return ROK;
 }
 
+/*******************************************************************
+*
+* @brief Handles tx_data request received from MAC
+*
+* @details
+*
+*    Function : l1HdlTxDataReq
+*
+*    Functionality:
+*          -Handles tx_data request received from MAC
+*
+* @params[in]   Message length
+*               tx_data request message pointer
+*
+* @return void
+*
+* ****************************************************************/
+
+PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
+{
+#ifdef FAPI
+   DU_LOG("\nPHY STUB: Received TX DATA Request");
+
+   fapi_tx_data_req_t *txDataReq;
+   txDataReq = (fapi_dl_tti_req_t *)msg;
+#endif
+   return ROK;
+}
 /*******************************************************************
 *
 * @brief Handles Ul Tti request received from MAC
@@ -503,7 +528,6 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
    }
 
-	MAC_FREE(ulTtiReq, sizeof(fapi_ul_tti_req_t));
 #endif
    return ROK;
 }
@@ -543,6 +567,9 @@ void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
          break;
       case FAPI_DL_TTI_REQUEST:
          l1HdlDlTtiReq(msgLen, msg);
+         break;
+      case FAPI_TX_DATA_REQUEST:
+         l1HdlTxDataReq(msgLen, msg);
          break;
       case FAPI_UL_TTI_REQUEST:
          l1HdlUlTtiReq(msgLen, msg);

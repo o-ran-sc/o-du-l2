@@ -115,7 +115,7 @@ uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    rachIndInfo->timingInfo.slot = rachInd->timingInfo.slot;
    rachIndInfo->slotIdx = rachInd->rachPdu[pduIdx].slotIdx;
    rachIndInfo->symbolIdx = rachInd->rachPdu[pduIdx].symbolIdx;
-   rachIndInfo->frequencyIdx = rachInd->rachPdu[pduIdx].freqIdx;
+   rachIndInfo->freqIdx = rachInd->rachPdu[pduIdx].freqIdx;
    rachIndInfo->preambleIdx = \
       rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
    rachIndInfo->timingAdv = \

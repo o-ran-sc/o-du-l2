@@ -21,6 +21,7 @@
 #define SCH_MAX_CELLS 1
 #define SCH_MAX_INST 1
 #define SCH_NUM_SLOTS 10 /*forcing this to 10 */
+#define SCH_MAX_SFN 1024
 #define MAX_NUM_RB 106 /* value for numerology 0 15Khz */
 #define SCH_MIB_TRANS 80 
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
@@ -32,6 +33,9 @@
 #define SCH_MEM_REGION     4
 #define SCH_POOL           1
 #define SCHED_DELTA 1
+#define SCH_MAX_UE 512
+#define SI_RNTI 0xFFFF
+#define P_RNIT  0xFFFE
 
 /* allocate and zero out a static buffer */
 #define SCH_ALLOC(_datPtr, _size)                                \
@@ -90,7 +94,15 @@ typedef struct schDlAlloc
    bool        ssbPres;    /*!< Flag to determine if SSB is present in this slot */
    uint8_t     ssbIdxSupported;  /*!< Max SSB index */
 	SsbInfo     ssbInfo[MAX_SSB_IDX]; /*!< SSB info */
+	bool        sib1Pres;
+	bool        rarPres;
+	RarInfo     rarInfo;
 }SchDlAlloc;
+
+typedef struct schRaCb
+{
+   uint16_t tcrnti;
+}SchRaCb;
 
 /**
   * @brief
@@ -117,6 +129,7 @@ typedef struct schCellCb
    SchDlAlloc    *dlAlloc[SCH_NUM_SLOTS]; /*!< SCH resource allocations in DL */
    SchUlAlloc    *ulAlloc[SCH_NUM_SLOTS]; /*!< SCH resource allocations in UL */
 	SchCellCfg    cellCfg;                /*!< Cell ocnfiguration */
+	SchRaCb       raCb[SCH_MAX_UE];
 }SchCellCb;
 
 /**
@@ -134,9 +147,9 @@ typedef struct schCb
 SchCb schCb[SCH_MAX_INST];
 
 /* function declarations */
-uint8_t schCmnDlAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc);
-int     schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
-int schUlResAlloc(SchCellCb *cell, Inst schInst);
+uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
+uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
+uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 
 
 

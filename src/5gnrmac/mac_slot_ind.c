@@ -42,13 +42,13 @@
 #include "du_app_mac_inf.h"
 #include "mac.h"
 
-int MacProcDlBrdcstAlloc(Pst *pst, DlBrdcstAlloc *dlBrdcstAlloc)
+int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
 {
-   if(dlBrdcstAlloc != NULLP)
+   if(dlAlloc != NULLP)
    {
 		MacDlSlot *currDlSlot =
-		&macCb.macCell->dlSlot[dlBrdcstAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
-      memcpy(&currDlSlot->cellBroadcastInfo, dlBrdcstAlloc, sizeof(DlBrdcstAlloc)); 
+		&macCb.macCell->dlSlot[dlAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
+      memcpy(&currDlSlot->dlInfo, dlAlloc, sizeof(DlAlloc)); 
    }
    return ROK;
 }

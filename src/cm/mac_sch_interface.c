@@ -75,15 +75,15 @@ int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
  *
  * @details
  *
- *     Function : packSchMaccDlBrdcstAlloc 
+ *     Function : packSchMaccDlAlloc 
  *     
  *     
  *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  *dlBrdcstAlloc, dlBroadcastAlloc
+ *  @param[in]  DlAlloc  *dlAlloc
  *  @return  S16
  *      -# ROK
  **/
-int packSchMacDlBrdcstAlloc(Pst *pst, DlBrdcstAlloc  *dlBrdcstAlloc)
+int packSchMacDlAlloc(Pst *pst, DlAlloc  *dlAlloc)
 {
 	return ROK;
 }

@@ -32,7 +32,6 @@ void *GenerateTicks(void *arg)
    while(counter)
    {
       sleep(1);
-      DU_LOG("\n\nPHY_STUB: SLOT indication");
       /* Send Slot indication indication to lower mac */
       l1BuildAndSendSlotIndication();
       counter--;

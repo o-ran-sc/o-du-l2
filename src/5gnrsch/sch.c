@@ -324,7 +324,9 @@ SlotIndInfo         *slotInd
  * ****************************************************************/
 int macSchRachInd(Pst *pst, RachIndInfo *rachInd)
 {
+   Inst  inst = pst->dstInst-SCH_INST_START;
    DU_LOG("\nSCH : Received Rach indication");
+   schProcessRachInd(rachInd, inst);
    return ROK;
 }
 
@@ -414,38 +416,38 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
 void fillSchSib1Cfg(
 Inst         schInst,
 SchSib1Cfg   *sib1SchCfg,
-uint8_t      pci,
+uint16_t     pci,
 uint8_t      offsetPointA
 )
 {
    uint8_t coreset0Idx = 0;
    uint8_t searchSpace0Idx = 0;
-   uint8_t ssbMuxPattern = 0;
+   //uint8_t ssbMuxPattern = 0;
    uint8_t numRbs = 0;
    uint8_t numSymbols = 0;
    uint8_t offset = 0;
    uint8_t oValue = 0;
-   uint8_t numSearchSpacePerSlot = 0;
+   //uint8_t numSearchSpacePerSlot = 0;
    uint8_t mValue = 0;
    uint8_t firstSymbol = 0; /* need to calculate using formula mentioned in 38.213 */
    uint8_t slotIndex = 0;
    uint8_t FreqDomainResource[6] = {0};
 
-   Sib1PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
-   Sib1PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
+   PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
+   PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
 
    coreset0Idx     = sib1SchCfg->coresetZeroIndex;
    searchSpace0Idx = sib1SchCfg->searchSpaceZeroIndex;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
-   ssbMuxPattern = coresetIdxTable[coreset0Idx][0];
+   //ssbMuxPattern = coresetIdxTable[coreset0Idx][0];
    numRbs        = coresetIdxTable[coreset0Idx][1];
    numSymbols    = coresetIdxTable[coreset0Idx][2];
    offset        = coresetIdxTable[coreset0Idx][3];
 
    /* derive the search space params from table 13-11 spec 38.213 */
    oValue                = searchSpaceIdxTable[searchSpace0Idx][0];
-   numSearchSpacePerSlot = searchSpaceIdxTable[searchSpace0Idx][1];
+   //numSearchSpacePerSlot = searchSpaceIdxTable[searchSpace0Idx][1];
    mValue                = searchSpaceIdxTable[searchSpace0Idx][2];
    firstSymbol           = searchSpaceIdxTable[searchSpace0Idx][3];
 
@@ -461,44 +463,44 @@ uint8_t      offsetPointA
    freqDomResourceAlloc( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill the PDCCH PDU */
-   pdcch->sib1PdcchBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
-   pdcch->sib1PdcchBwpCfg.BWPStart = 0;
-   pdcch->sib1PdcchBwpCfg.subcarrierSpacing = 0;         /* 15Khz */
-   pdcch->sib1PdcchBwpCfg.cyclicPrefix = 0;              /* normal */
-   pdcch->sib1Coreset0Cfg.coreSet0Size = numRbs;
-   pdcch->sib1Coreset0Cfg.startSymbolIndex = firstSymbol;
-   pdcch->sib1Coreset0Cfg.durationSymbols = numSymbols;
-   memcpy(pdcch->sib1Coreset0Cfg.freqDomainResource,FreqDomainResource,6);
-   pdcch->sib1Coreset0Cfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
-   pdcch->sib1Coreset0Cfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
-   pdcch->sib1Coreset0Cfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
-   pdcch->sib1Coreset0Cfg.coreSetType = 0;
-   pdcch->sib1Coreset0Cfg.shiftIndex = pci;
-   pdcch->sib1Coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
+   pdcch->pdcchBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
+   pdcch->pdcchBwpCfg.BWPStart = 0;
+   pdcch->pdcchBwpCfg.subcarrierSpacing = 0;         /* 15Khz */
+   pdcch->pdcchBwpCfg.cyclicPrefix = 0;              /* normal */
+   pdcch->coreset0Cfg.coreSet0Size = numRbs;
+   pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
+   pdcch->coreset0Cfg.durationSymbols = numSymbols;
+   memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
+   pdcch->coreset0Cfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   pdcch->coreset0Cfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coreset0Cfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coreset0Cfg.coreSetType = 0;
+   pdcch->coreset0Cfg.shiftIndex = pci;
+   pdcch->coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
-   pdcch->sib1DlDci.rnti = 0xFFFF; /* SI-RNTI */
-   pdcch->sib1DlDci.scramblingId = pci;
-   pdcch->sib1DlDci.scramblingRnti = 0;
-   pdcch->sib1DlDci.cceIndex = 0;
-   pdcch->sib1DlDci.aggregLevel = 4;
-   pdcch->sib1DlDci.beamPdcchInfo.numPrgs = 1;
-   pdcch->sib1DlDci.beamPdcchInfo.prgSize = 1;
-   pdcch->sib1DlDci.beamPdcchInfo.digBfInterfaces = 0;
-   pdcch->sib1DlDci.beamPdcchInfo.prg[0].pmIdx = 0;
-   pdcch->sib1DlDci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
-   pdcch->sib1DlDci.txPdcchPower.powerValue = 0;
-   pdcch->sib1DlDci.txPdcchPower.powerControlOffsetSS = 0;
+   pdcch->dci.rnti = SI_RNTI;
+   pdcch->dci.scramblingId = pci;
+   pdcch->dci.scramblingRnti = 0;
+   pdcch->dci.cceIndex = 0;
+   pdcch->dci.aggregLevel = 4;
+   pdcch->dci.beamPdcchInfo.numPrgs = 1;
+   pdcch->dci.beamPdcchInfo.prgSize = 1;
+   pdcch->dci.beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci.beamPdcchInfo.prg[0].pmIdx = 0;
+   pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
+   pdcch->dci.txPdcchPower.powerValue = 0;
+   pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
 	/* Storing pdschCfg pointer here. Required to access pdsch config while
 	fillig up pdcch pdu */
-   pdcch->sib1DlDci.pdschCfg = pdsch; 
+   pdcch->dci.pdschCfg = pdsch; 
 
    /* fill the PDSCH PDU */
 	uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
    pdsch->rnti = 0xFFFF; /* SI-RNTI */
    pdsch->pduIndex = 0;
-   pdsch->sib1PdschBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
-   pdsch->sib1PdschBwpCfg.BWPStart = 0;
+   pdsch->pdschBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
+   pdsch->pdschBwpCfg.BWPStart = 0;
    pdsch->numCodewords = 1;
 	for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
 	{
@@ -519,17 +521,17 @@ uint8_t      offsetPointA
    pdsch->dmrs.scid = 0;
    pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
    pdsch->dmrs.dmrsPorts = 0;
-   pdsch->sib1FreqAlloc.resourceAlloc = 1; /* RAT type-1 RIV format */
-   pdsch->sib1FreqAlloc.rbStart = offset + SCH_SSB_PRB_DURATION; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
+   pdsch->freqAlloc.resourceAlloc = 1; /* RAT type-1 RIV format */
+   pdsch->freqAlloc.rbStart = offset + SCH_SSB_PRB_DURATION; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
 	/* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
 	 * Ninfo = Nre . R . Qm . v                                       *
 	 * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                       *
 	 * Nre = min(156,Nre') . nPrb                                     */
-   pdsch->sib1FreqAlloc.rbSize = 10; /* This value is calculated from above formulae */
-   pdsch->sib1FreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
-   pdsch->sib1TimeAlloc.rowIndex = 1;
-   pdsch->sib1TimeAlloc.startSymbolIndex = 2; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->sib1TimeAlloc.numSymbols = 12;
+   pdsch->freqAlloc.rbSize = 10; /* This value is calculated from above formulae */
+   pdsch->freqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+   pdsch->timeAlloc.rowIndex = 1;
+   pdsch->timeAlloc.startSymbolIndex = 2; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->timeAlloc.numSymbols = 12;
    pdsch->beamPdschInfo.numPrgs = 1;
    pdsch->beamPdschInfo.prgSize = 1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;

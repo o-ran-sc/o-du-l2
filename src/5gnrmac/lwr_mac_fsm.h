@@ -38,7 +38,7 @@ S16 lwr_mac_handleConfigRspEvt(void *msg);
 S16 lwr_mac_handleStartReqEvt(void *msg);
 S16 lwr_mac_handleStopReqEvt(void *msg);
 void sendToLowerMac(U16, U32, void *);
-S16 handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo);
+uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo);
 void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 
 typedef S16 (*lwrMacFsmHdlr)(void *);
