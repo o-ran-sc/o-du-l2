@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9b8333fb_e22fecbf",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2592,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T05:39:55Z",
+      "side": 1,
+      "message": "only those functions which access FAPI files must be in this flag. Also, if the function prototype as such doesnt take FAPI files, this flag must be there inside the function",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3438d37_0f3864c0",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2610,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T05:39:55Z",
+      "side": 1,
+      "message": "why do we need this variable? Can we not just set the presence flag???",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b772f16_556734eb",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2666,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T05:39:55Z",
+      "side": 1,
+      "message": "this loop runs multiple times and at the last index all values get overwritten??",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc8689c1_4f729b88",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2739,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T05:39:55Z",
+      "side": 1,
+      "message": "use memset()",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "042ef528_9eee1ece",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2752,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T05:39:55Z",
+      "side": 1,
+      "message": "sizeof(fapi_ul_tti_req_t) must be used",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0b772a7_6e62eadf",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2773,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T05:39:55Z",
+      "side": 1,
+      "message": "this will not work. We can discuss.",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31c3b164_44acd961",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2780,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T05:39:55Z",
+      "side": 1,
+      "message": "what about WLS_FREE??",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a6e2b73_4d1434de",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2789,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T05:39:55Z",
+      "side": 1,
+      "message": "what if WLS memory was sued for allocation?",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64eec851_e424f873",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-26T05:39:55Z",
+      "side": 1,
+      "message": "this si wrong. ulTtiReq was assigned from MAC region and memory. But we are freeing from DU aPP region(0,0)",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
