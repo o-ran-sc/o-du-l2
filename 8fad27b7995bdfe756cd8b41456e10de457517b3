@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e612de8a_eb64f2e7",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2592,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-26T07:36:03Z",
+      "side": 1,
+      "message": "agreed to move a flag inside the function",
+      "parentUuid": "9b8333fb_e22fecbf",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e3438d37_0f3864c0",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2020-04-26T05:39:55Z",
       "side": 1,
       "message": "why do we need this variable? Can we not just set the presence flag???",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bd7a9fc_bb453745",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2610,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-26T07:36:03Z",
+      "side": 1,
+      "message": "to be discussed",
+      "parentUuid": "e3438d37_0f3864c0",
       "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "ea2fd0ab_489dfb98",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2666,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-26T07:36:03Z",
+      "side": 1,
+      "message": "No. After copying the value of UnrestrictedSetNcsTable[0] to *numCs. Break statement executes.\nSo only for idx\u003d0, for loop executes.",
+      "parentUuid": "4b772f16_556734eb",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fc8689c1_4f729b88",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 2
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "63271814_1567ab86",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2739,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-26T07:36:03Z",
+      "side": 1,
+      "message": "agreed",
+      "parentUuid": "fc8689c1_4f729b88",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "042ef528_9eee1ece",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 2
@@ -84,6 +156,24 @@
       "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0aaa4310_3bee9fe8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2752,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-26T07:36:03Z",
+      "side": 1,
+      "message": "agreed",
+      "parentUuid": "042ef528_9eee1ece",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "bac79dcc_886a138c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2780,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-26T07:36:03Z",
+      "side": 1,
+      "message": "Agreed. added a Flag of WLS_MEM_FREE",
+      "parentUuid": "31c3b164_44acd961",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6a6e2b73_4d1434de",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 2
@@ -138,6 +246,24 @@
     },
     {
       "key": {
+        "uuid": "e1d6c31c_0e33db38",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2789,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-26T07:36:03Z",
+      "side": 1,
+      "message": "Agreed. Added a flag for WLS_MEM_FREE",
+      "parentUuid": "6a6e2b73_4d1434de",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "64eec851_e424f873",
         "filename": "src/phy_stub/l1_bdy1.c",
         "patchSetId": 2
@@ -152,6 +278,24 @@
       "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38b473e9_c91a5a79",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-26T07:36:03Z",
+      "side": 1,
+      "message": "ok. Freeing it using MAC_FREE now",
+      "parentUuid": "64eec851_e424f873",
+      "revId": "8fad27b7995bdfe756cd8b41456e10de457517b3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
