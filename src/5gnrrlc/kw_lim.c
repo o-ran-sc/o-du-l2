@@ -473,7 +473,7 @@ RguDDatIndInfo   *datInd;
  *         RFAILED - failure
  *
  * ****************************************************************/
-PUBLIC S16 RlcMacProcSchedRep(Pst *pst, SuId suId, RlcMacSchedRep *schRep)
+PUBLIC uint16_t RlcMacProcSchedRep(Pst *pst, SuId suId, RlcMacSchedRepInfo *schRep)
 {
    U8 idx;                     /* Iterator */
    U8 nmbDLch = 0;                 /* Number of dedicated logical channles */
@@ -530,7 +530,7 @@ PUBLIC S16 RlcMacProcSchedRep(Pst *pst, SuId suId, RlcMacSchedRep *schRep)
       KwLiRguDStaInd(pst, suId, dLchSchInfo);
    }
    
-   KW_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRep));
+   KW_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRepInfo));
 
    RETVALUE(ROK);
 }

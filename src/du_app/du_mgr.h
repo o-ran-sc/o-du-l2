@@ -60,7 +60,7 @@
 #define DU_APP_MEM_REGION    0
 #define RLC_UL_MEM_REGION     1
 #define RLC_DL_MEM_REGION     4
-#define RG_MEM_REGION     4
+#define MAC_MEM_REGION     4
 
 #define DU_POOL  1
 #define RLC_POOL  1

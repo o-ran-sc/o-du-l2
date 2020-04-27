@@ -149,7 +149,7 @@ PUBLIC RguBndReq kwLiRguUbndReqMt[] =
 
 /* RGU Dedicated Channel Data Request primitive */
 
-PUBLIC RguDDatReq rlcMacSendDlDataOpts[] =
+PUBLIC RlcMacDlData rlcMacSendDlDataOpts[] =
 {
 #ifdef EGTP_TEST
    macStubSendDlData,
@@ -160,7 +160,7 @@ PUBLIC RguDDatReq rlcMacSendDlDataOpts[] =
    packDlData,            /* 0 - loosely coupled */
 #endif /* LCRGUIRGU */
 #ifdef RG 
-   RgUiRguDDatReq,            /* 1 - tightly coupled, MAC  */
+   MacRlcProcDlData,      /* 1 - tightly coupled, MAC  */
 #endif /* RG */
 #ifdef LCKWLIRGU
    packDlData,            /* 0 - loosely coupled */
@@ -171,7 +171,7 @@ PUBLIC RguDDatReq rlcMacSendDlDataOpts[] =
 
 /* RLC logical Channel Status primitive */
 
-PUBLIC RguDStaRsp rlcMacSendBOStatusOpts[] =
+PUBLIC RlcMacBoStatus rlcMacSendBOStatusOpts[] =
 {
 #ifdef EGTP_TEST
    macStubBOStatus,
@@ -182,7 +182,7 @@ PUBLIC RguDStaRsp rlcMacSendBOStatusOpts[] =
    packBOStatus,            /* 0 - loosely coupled */
 #endif /* LCRGUIRGU */
 #ifdef RG 
-   RgUiRguDStaRsp,            /* 1 - tightly coupled, MAC  */
+   MacRlcProcBOStatus,            /* 1 - tightly coupled, MAC  */
 #endif /* RG */
 #ifdef LCKWLIRGU
    packBOStatus,            /* 0 - LWLC loosely coupled */
