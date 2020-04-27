@@ -26,7 +26,7 @@ uint64_t ulDatNum = 0;
 PUBLIC S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
 {
   Pst rspPst;
-  RlcMacSchedRep *schRep;
+  RlcMacSchedRepInfo *schRep;
 
   DU_LOG("\nMAC : Received BO status from RLC");
 
@@ -42,7 +42,7 @@ PUBLIC S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
   rspPst.pool    = pst->pool;
 
   /* Filling Scheduling Report */
-  KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRep));
+  KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRepInfo));
    
   schRep->cellId = boSta->cellId;
   schRep->rnti   = boSta->rnti;

@@ -147,10 +147,10 @@ S16 l1BldAndSndParamRsp(void *msg)
   fillTlvs(&fapiParamRsp->tlvs[index++],  FAPI_RSSI_MEASUREMENT_SUPPORT_TAG,                    sizeof(uint8_t), 0, &msgLen);
 
   fapiParamRsp->number_of_tlvs = index;
-  msgLen = msgLen + sizeof(fapi_param_resp_t);
-
+  msgLen += sizeof(fapi_param_resp_t) - sizeof(fapi_msg_t);
   fillMsgHeader(&fapiParamRsp->header, FAPI_PARAM_RESPONSE, msgLen);
   fapiParamRsp->error_code = MSG_OK;
+
   DU_LOG("\nPHY_STUB: Sending Param Request to Lower Mac");
   handlePhyMessages(fapiParamRsp->header.message_type_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp);
 #endif
@@ -186,8 +186,9 @@ S16 l1BldAndSndConfigRsp(void *msg)
       fapiConfigRsp->number_of_inv_tlvs_idle_only = NULLP;
       fapiConfigRsp->number_of_missing_tlvs = NULLP;
       fapiConfigRsp->error_code = MSG_OK;
-      msgLen += sizeof(fapi_config_resp_t);
+		msgLen += sizeof(fapi_param_resp_t) - sizeof(fapi_msg_t);
       fillMsgHeader(&fapiConfigRsp->header, FAPI_CONFIG_RESPONSE, msgLen);
+
       DU_LOG("\nPHY_STUB: Sending Config Response to Lower Mac");
       handlePhyMessages(fapiConfigRsp->header.message_type_id, sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
       return ROK;
@@ -334,7 +335,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
 {
 #ifdef FAPI
    fapi_slot_ind_t *slotIndMsg;
-   if(SGetSBuf(0, 0, (Data **)&slotIndMsg, sizeof(slotIndMsg)) != ROK)
+   if(SGetSBuf(0, 0, (Data **)&slotIndMsg, sizeof(fapi_slot_ind_t)) != ROK)
    {
        DU_LOG("\nPHY_STUB: Memory allocation failed for slot Indication Message");
        return RFAILED;
@@ -357,7 +358,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
       fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
       DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
       handlePhyMessages(slotIndMsg->header.message_type_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
-      SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
+      SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(fapi_slot_ind_t));
    }
 #endif
    return ROK;
