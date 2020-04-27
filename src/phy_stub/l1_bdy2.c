@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <time.h>
 #include "lphy_stub.h"
 #include "du_log.h"
 
@@ -28,13 +29,20 @@ uint16_t l1BuildAndSendSlotIndication();
 
 void *GenerateTicks(void *arg)
 {
-   uint8_t counter = 100;
-   while(counter)
+   int     milisec = 1;        /* 1ms */
+   //uint8_t counter = 100;      /* 100 slots */
+   struct timespec req = {0};
+
+   req.tv_sec = 0;
+   req.tv_nsec = milisec * 1000000L;
+
+   while(1)
    {
-      sleep(1);
+      nanosleep(&req, (struct timespec *)NULL);
+      
       /* Send Slot indication indication to lower mac */
       l1BuildAndSendSlotIndication();
-      counter--;
+      //counter--;
    }
 }
 

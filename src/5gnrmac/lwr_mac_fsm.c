@@ -1333,7 +1333,9 @@ S16 lwr_mac_handleParamReqEvt(void *msg)
       fillMsgHeader(&paramReq->header, FAPI_PARAM_REQUEST, msgLen);
       DU_LOG("\nLOWER MAC: Sending Param Request to Phy");
       LwrMacSendToPhy(paramReq->header.message_type_id, sizeof(fapi_param_req_t), (void *)paramReq);
+#ifndef INTEL_WLS
       MAC_FREE(paramReq, sizeof(fapi_param_req_t));
+#endif
       return ROK;
    }
    else
@@ -1857,8 +1859,9 @@ S16 lwr_mac_handleParamRspEvt(void *msg)
               }
            }
            MAC_FREE(cellParam, sizeof(ClCellParam));
+#ifndef INTEL_WLS           
            MAC_FREE(paramRsp, sizeof(fapi_param_resp_t));
-             
+#endif
            sendToLowerMac(FAPI_CONFIG_REQUEST, 0, (void *)NULL);
            return ROK;
          }
@@ -1995,7 +1998,9 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
       DU_LOG("\nLOWER_MAC: Sending Config Request to Phy");
       /* TODO : Recheck the size / msglen to be sent to WLS_Put*/
       LwrMacSendToPhy(configReq->header.message_type_id, msgLen, (void *)configReq);
+#ifndef INTEL_WLS
       MAC_FREE(configReq, configReqSize);
+#endif
       return ROK;
    }
    else
@@ -2026,7 +2031,9 @@ S16 lwr_mac_handleConfigRspEvt(void *msg)
           * Support LC and LWLC for sending config rsp to MAC 
           */
          fapiMacConfigRsp();
+#ifndef INTEL_WLS         
          MAC_FREE(configRsp, sizeof(fapi_config_resp_t));
+#endif
          return ROK;
       }
       else
@@ -2062,7 +2069,9 @@ S16 lwr_mac_handleStartReqEvt(void *msg)
       fillMsgHeader(&startReq->header, FAPI_START_REQUEST, msgLen);
       DU_LOG("\nLOWER MAC: Sending Start Request to PHY");
       LwrMacSendToPhy(startReq->header.message_type_id, sizeof(fapi_start_req_t), (void *)startReq);
+#ifndef INTEL_WLS
       MAC_FREE(startReq, sizeof(fapi_start_req_t));
+#endif 
       return ROK;
    }
    else
@@ -2658,7 +2667,9 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc,MacCellCfg *macCellCfg,
 
 	/* TODO: The pointer value which was stored, needs to be free-ed at PHY *
 	 * But since we did not implement WLS, this has to be done here */
+#ifndef INTEL_WLS   
 	 MAC_FREE(sib1TxdataValue,macCellCfg->sib1Cfg.sib1PduLen);
+#endif
 
 	return ROK;
 }
@@ -2710,7 +2721,9 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, RarInfo *rarInfo,
 
 	/* TODO: The pointer value which was stored, needs to be free-ed at PHY *
 	 * But since we did not implement WLS, this has to be done here */
+#ifndef INTEL_WLS   
 	 MAC_FREE(rarTxdataValue,rarInfo->rarPduLen);
+#endif
 
 	return ROK;
 }
@@ -2775,6 +2788,12 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 #else
 					MAC_ALLOC(dlTtiReq->pdus, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
 #endif
+               if(!dlTtiReq->pdus)
+               {
+                  DU_LOG("\nLOWER MAC: Memory allocation failed");
+                  return RFAILED;
+               }
+          
 					if(currDlSlot->dlInfo.isBroadcastPres)
 					{
 						if(currDlSlot->dlInfo.brdcstAlloc.ssbTrans)
@@ -2820,7 +2839,7 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 					fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
 					/* TODO : Recheck the size / msglen to be sent to WLS_Put*/
 					LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
-
+#ifndef INTEL_WLS
 					/* FREE the allocated memories */
 					if(currDlSlot->dlInfo.brdcstAlloc.sib1Trans)
 					{
@@ -2850,7 +2869,7 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 					}
 
 					MAC_FREE(dlTtiReq->pdus, (nPdu * sizeof(fapi_dl_tti_req_pdu_t)));
-
+#endif
                /* send TX_Data request message */
                if(currDlSlot->dlInfo.brdcstAlloc.sib1Trans)
                {
@@ -2867,7 +2886,9 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
                   msgLen += sizeof(fapi_tx_data_req_t) - sizeof(fapi_msg_t);
                   fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, msgLen);
                   LwrMacSendToPhy(txDataReq->header.message_type_id, msgLen,(void *)txDataReq);
+#ifndef INTEL_WLS                  
 						MAC_FREE(txDataReq,sizeof(fapi_tx_data_req_t));
+#endif
                }
                if(currDlSlot->dlInfo.isRarPres)
                {
@@ -2886,7 +2907,9 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
                         &msgLen);
                   fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, msgLen);
                   LwrMacSendToPhy(txDataReq->header.message_type_id, msgLen,(void *)txDataReq);
+#ifndef INTEL_WLS
 						MAC_FREE(txDataReq,sizeof(fapi_tx_data_req_t));
+#endif
                }
 				}
 				else
@@ -2896,7 +2919,9 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 					/* TODO : Recheck the size / msglen to be sent to WLS_Put*/
 					LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
 				}
+#ifndef INTEL_WLS            
 				MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+#endif
 				return ROK;
 			}
 			else
@@ -3100,7 +3125,9 @@ S16 handleUlTtiReq(CmLteTimingInfo *currTimingInfo)
                  fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
                  DU_LOG("\nLOWER MAC: Sending UL TTI Request");
                  LwrMacSendToPhy(ulTtiReq->header.message_type_id, msgLen, (void *)ulTtiReq);
+#ifndef INTEL_WLS                 
 					  MAC_FREE(ulTtiReqPdu, (ulTtiReq->nPdus * sizeof(fapi_ul_tti_req_pdu_t)));
+#endif
                }
             } 
             else
@@ -3110,7 +3137,9 @@ S16 handleUlTtiReq(CmLteTimingInfo *currTimingInfo)
                 DU_LOG("\nLOWER MAC: Sending UL TTI Request");
                 LwrMacSendToPhy(ulTtiReq->header.message_type_id, msgLen, (void *)ulTtiReq);
             }
+#ifndef INTEL_WLS            
 				MAC_FREE(ulTtiReq, sizeof(fapi_ul_tti_req_t));
+#endif
 				return ROK;
          }
 	      else
