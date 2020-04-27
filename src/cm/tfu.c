@@ -3673,8 +3673,8 @@ Buffer *mBuf
 //   (*func)(pst, suId, slotInd);
    (*func)(pst, slotInd);
    SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
-   RETVALUE(ROK);
 #endif
+   return ROK;
 }
 
 

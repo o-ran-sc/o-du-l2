@@ -192,9 +192,8 @@ S16 l1BldAndSndConfigRsp(void *msg)
       handlePhyMessages(fapiConfigRsp->header.message_type_id, sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
       return ROK;
    }
-#else
-   return ROK;
 #endif
+   return ROK;
 }
 /*******************************************************************
  *

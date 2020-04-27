@@ -484,7 +484,7 @@ typedef S16 (*RguCDatInd) ARGS((
 typedef S16 (*RguDDatInd) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   RguDDatIndInfo  *    datInd));
+   RlcMacData     *    datInd));
 /** @brief Status Response from RLC to MAC to 
  * inform the BO report for common channels */
 typedef S16 (*RguCStaRsp) ARGS((
@@ -508,7 +508,7 @@ typedef S16 (*RguCStaInd) ARGS((
 typedef S16 (*RguDStaInd) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   RguDStaIndInfo  *    staInd));
+   RlcMacSchedRep  *    staInd));
 
 typedef S16 (*RguFlowCntrlIndInfo) ARGS((
    Pst                  *pst,
@@ -861,7 +861,7 @@ EXTERN S16 packRcvdUlData ARGS((
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
 EXTERN S16 unpackRcvdUlData ARGS((
-   RguDDatInd           func,
+   RguDDatInd          func,
    Pst*                 pst,
    Buffer               *mBuf
 ));

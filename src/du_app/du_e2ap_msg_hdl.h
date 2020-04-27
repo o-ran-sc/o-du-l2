@@ -24,6 +24,7 @@
 #include "E2AP-PDU.h"
 #include "PLMN-IdentityE2.h"
 #include "RICeventTriggerDefinition.h"
+#include "odu_common_codec.h"
 
 #include "envopt.h"        /* Environment options */
 #include "envdep.h"        /* Environment dependent */
@@ -41,6 +42,7 @@
 #include "ss_msg.x"
 
 #include "du_log.h"
+
 #define ENCODE_FAIL -1
 
 S16 sctpSend(Buffer *mBuf, U8 itfType);

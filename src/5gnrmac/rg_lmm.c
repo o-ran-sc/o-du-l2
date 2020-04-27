@@ -136,7 +136,7 @@ RgMngmt       *cfm,
 Pst           *cfmPst
 ));
 
-extern U16 packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
+extern int packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 
 packMacCellCfgConfirm packMacCellCfmOpts[] =
 {
@@ -1991,13 +1991,13 @@ Inst    inst;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 MacSchGenCfgReq
+PUBLIC int MacSchGenCfgReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfg     /* config structure  */
 )
 #else
-PUBLIC S16 MacSchGenCfgReq(pst, cfg)
+PUBLIC int MacSchGenCfgReq(pst, cfg)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cfg;    /* config structure  */
 #endif    
@@ -2111,7 +2111,7 @@ int MacHdlCellCfgReq
 )
 {
    Pst cfmPst;
-   int ret = ROK;
+   uint16_t ret = ROK;
    RgCellCb      *cellCb;
 	MacCellCb     *macCellCb;
    Inst inst = pst->dstInst;

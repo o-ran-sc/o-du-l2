@@ -1586,7 +1586,7 @@ S16 duBuildAndSendMacCellCfg()
  *         RFAILED - failure
  *
  ***************************************************************************/
-uint16_t duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm)
+int  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 {
    S16 ret = ROK;
 

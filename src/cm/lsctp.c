@@ -52,7 +52,7 @@ S16 cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
    if(ntfy->header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
       SPkU16(ntfy->u.assocChange.state, mBuf);
-      SPkU16(ntfy->u.assocChange.assocId, mBuf);
+      SPkU32(ntfy->u.assocChange.assocId, mBuf);
    }
    SPkU16(ntfy->header.nType, mBuf);
 
@@ -90,7 +90,7 @@ S16 cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf)
    SUnpkU16(&(ntfy.header.nType), mBuf);
    if(ntfy.header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
-      SUnpkU16(&(ntfy.u.assocChange.assocId), mBuf);
+      SUnpkU32(&(ntfy.u.assocChange.assocId), mBuf);
       SUnpkU16(&(ntfy.u.assocChange.state), mBuf);
    }
 

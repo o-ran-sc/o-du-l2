@@ -249,7 +249,6 @@ Buffer     *sdu;
 #endif
 {
 #ifndef KW_PDCP
-   KwKwuSapCb      *kwKwSap;     /* KWU SAP Information */
    KwuDatIndInfo   *datIndInfo;   /* Data Indication Information */
    KwuDatIndInfo datIndInfoTmp;
 #endif
@@ -258,7 +257,6 @@ Buffer     *sdu;
 
 
 #ifndef KW_PDCP
-   kwKwSap = gCb->u.ulCb->kwuUlSap + KW_UI_PDCP;
    /* Creating static memory for KwuDatIndInfo. #else will be 
     * removed once the testing is done on all platforms */
    datIndInfo = &datIndInfoTmp;

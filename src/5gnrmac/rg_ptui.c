@@ -240,8 +240,6 @@ PRIVATE CONSTANT RgrCfgCfm RgUiRgrCfgCfmMt[RG_MAX_RGR_USR] =
 #endif
 #ifdef NX
    NxLiRgrCfgCfm,
-#else
-   PtUiRgrCfgCfm,
 #endif
 };
 

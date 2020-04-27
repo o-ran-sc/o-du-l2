@@ -80,7 +80,7 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
 	schCb[schInst].cells[schInst]->raCb[0].tcrnti = tcrnti;
 }
 
-uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
+int schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
 {
    SchCellCb *cell = schCb[schInst].cells[schInst];
 
@@ -132,7 +132,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    return ROK;
 }
 
-uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA)
+int  schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA)
 {
    uint8_t coreset0Idx = 0;
    uint8_t searchSpace0Idx = 0;

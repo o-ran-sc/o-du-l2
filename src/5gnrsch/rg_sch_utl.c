@@ -617,7 +617,7 @@ RgSchPdcch                 *pdcch;
 {
    U8                   *byte;
    U8                   offset;
-   U8                   mask;
+   uint16_t             mask;
 
    TRC2(rgSCHUtlPdcchPut);
 
@@ -7128,7 +7128,7 @@ U8            status;
 #endif
 {
    Pst cfmPst;
-   Inst inst;
+   Inst inst = 0;
 
    TRC2(schSendCfgCfm)
    cmMemset((U8 *)(&cfmPst), 0, sizeof(Pst));
@@ -7145,7 +7145,7 @@ U8            status;
 
    if(RgUiRgrCfgCfm(&cfmPst,transId, status) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"schSendCfgCfm: RgUiRgrCfgCfm Failed ");
+      RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"schSendCfgCfm: RgUiRgrCfgCfm Failed");
       printf("\nschSendCfgCfm: RgUiRgrCfgCfm Failed ");
       RETVALUE(RFAILED);
    }

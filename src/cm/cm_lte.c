@@ -221,7 +221,7 @@ Buffer *mBuf;
 
    //CMCHKUNPK(SUnpkU16, &param->hSfn, mBuf);
    CMCHKUNPK(SUnpkU16, &param->sfn, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->slot, mBuf);
+   CMCHKUNPK(SUnpkU16,&param->slot, mBuf);
    RETVALUE(ROK);
 }
 

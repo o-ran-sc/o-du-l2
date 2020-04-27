@@ -75,7 +75,7 @@ registered with SSI during the LTE MAC Task initialization.
 #include "rg_prg.x"        /*PRG interface includes*/
 #include "du_app_mac_inf.h"
 #include "rg.x"            /* typedefs for MAC */
-void unpackDuMacCellCfg(DuMacCellCfgReq func,Pst *pst,Buffer *mBuf);
+int unpackDuMacCellCfg(DuMacCellCfgReq func,Pst *pst,Buffer *mBuf);
 
 /**
  * @brief Task Activation callback function Entity SM. 

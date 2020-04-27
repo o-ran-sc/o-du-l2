@@ -808,7 +808,7 @@ RgSchUeCb       **ue;
       *ue = rgSCHCmnGetPoUe(cell, rapId, timingInfo);
       printf("     ==== inding UE from PDCCH Order Mapping\n");
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief Handler for processing Random Access request indication 
@@ -862,7 +862,7 @@ TfuRaReqIndInfo *raReqInd;
       RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId, 
          "rgSCHTomRaReqInd(): No cell found with raReq cellId = (%d) errorType (%d)"
          " errorCause(%d)",raReqInd->cellId, err.errType, err.errCause);
-      RETVALUE(RFAILED);
+      return RFAILED;
    } 
    
    for (raRntiCnt = 0; raRntiCnt < raReqInd->nmbOfRaRnti; raRntiCnt++)
@@ -908,7 +908,7 @@ TfuRaReqIndInfo *raReqInd;
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomRaReqInd */
 
 
@@ -956,7 +956,7 @@ TfuUlCqiIndInfo *ulCqiInd;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
          "rgSCHTomUlCqiInd() Unable to get the ulCqiInd cell with id(%d)", 
          ulCqiInd->cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for (;node; node=node->next)
@@ -984,7 +984,7 @@ TfuUlCqiIndInfo *ulCqiInd;
       /* wideband cqi is directly reported now. and also isTxPort0 */
       rgSCHUtlUlCqiInd(cell, ue, ulCqiInfo);
    }
-   RETVALUE(ROK);
+       return ROK;
 }  /* rgSCHTomUlCqiInd */
 
 /**
@@ -1032,7 +1032,7 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
          "rgSCHTomPucchDeltaPwrInd() Unable to get the pucchDeltaPwr cell with id(%d)", 
          pucchDeltaPwr->cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    node =  pucchDeltaPwr->pucchDeltaPwrLst.first;
@@ -1053,7 +1053,7 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
       }
       rgSCHUtlPucchDeltaPwrInd(cell, ue, ueElem->pucchDeltaPwr);
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomPucchDeltaPwrInd */
 
 /**
@@ -1110,8 +1110,8 @@ TfuHqIndInfo    *harqAckInd;
          " the cell for cellId (%d)", harqAckInd->cellId);
       err.errType = RGSCHERR_TOM_HARQACKIND;
       err.errCause = RGSCHERR_TOM_INV_CELL_ID;
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
 #ifdef RG_5GTF   
    node =  harqAckInd->hqIndLst.first;
    for (;node; node=node->next)
@@ -1245,7 +1245,7 @@ TfuHqIndInfo    *harqAckInd;
       }
    }
 #endif 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomHarqAckInd */
 
 
@@ -1297,8 +1297,8 @@ TfuSrIndInfo    *srInd;
          ":%d ", srInd->cellId);
       err.errType = RGSCHERR_TOM_SRIND;
       err.errCause = RGSCHERR_TOM_INV_CELL_ID;
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
 
 
    node =  srInd->srLst.first;
@@ -1329,7 +1329,7 @@ TfuSrIndInfo    *srInd;
          continue;
       }
    }
-   RETVALUE(ret);
+   return ROK;
 }  /* end of rgSCHTomSrInd */
 
 /**
@@ -1375,8 +1375,8 @@ TfuDoaIndInfo   *doaInd;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for doaInd cellId"
          ":%d", doaInd->cellId);
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
 
 
    node =  doaInd->doaRpt.first;
@@ -1392,7 +1392,7 @@ TfuDoaIndInfo   *doaInd;
       }
       rgSCHUtlDoaInd(cell, ue, doaInfo);
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomDoaInd */
 /**
  * @brief Handler for processing downlink CQI indication recieved from 
@@ -1437,8 +1437,8 @@ TfuDlCqiIndInfo *dlCqiInd;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
          ":%d", dlCqiInd->cellId);
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
 
 
    node =  dlCqiInd->dlCqiRptsLst.first;
@@ -1455,7 +1455,7 @@ TfuDlCqiIndInfo *dlCqiInd;
       rgSCHUtlDlCqiInd(cell, ue, dlCqiInfo, dlCqiInd->timingInfo);
       rgSCHUtlHdlUlTransInd(cell, ue, dlCqiInd->timingInfo);
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomDlCqiInd */
 
 /**
@@ -1528,7 +1528,7 @@ PRIVATE S16 rgSCHTomUtlMovePcqiNxtOccasion(cell, ue, cqiCb)
    rgSCHUtlSCellHndlCqiCollsn(cqiCb);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlMovePcqiNxtOccasion */
 
 /**
@@ -1651,7 +1651,7 @@ PRIVATE S16 rgSCHTomUtlMovePriNxtOccasion(cell, ue, riCb)
 #ifdef LTE_ADV
    rgSCHUtlSCellHndlRiCollsn(riCb);
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlMovePriNxtOccasion */
 
 /**
@@ -1707,7 +1707,7 @@ PRIVATE S16 rgSCHTomUtlMoveSrNxtOccasion(cell, ue)
    cmLListAdd2Tail(&cell->pCqiSrsSrLst[ue->srCb.nSrTrIdx].srLst, 
          &ue->srCb.srLstEnt);
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlMoveSrNxtOccasion */
 
 /**
@@ -1793,8 +1793,7 @@ PRIVATE S16 rgSCHTomUtlMoveSrsNxtOccasion(cell, ue)
    }   
    ue->srsCb.nSrsTrIdx = srsIdx;
    ue->srsCb.srsDist = srsDist; 
-
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlMoveSrsNxtOccasion */
 
 
@@ -1856,8 +1855,8 @@ PUBLIC S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
             ":%d", rawCqiInd->cellId);
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
 
 
    node =  rawCqiInd->rawCqiRpt.first;
@@ -2070,7 +2069,7 @@ PUBLIC S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
          rlsHqBufs->numUes = 0;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomRawCqiInd */
 
 /**
@@ -2117,8 +2116,8 @@ PUBLIC S16 rgSCHTomSrsInd(cell, srsInd)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
          ":%d", srsInd->cellId);
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
 
    node =  srsInd->srsRpt.first;
    for (;node; node=node->next)
@@ -2134,7 +2133,7 @@ PUBLIC S16 rgSCHTomSrsInd(cell, srsInd)
       rgSCHUtlSrsInd(cell, ue, srsInfo, srsInd->timingInfo);
       rgSCHUtlHdlUlTransInd(cell, ue, srsInd->timingInfo);
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomSrsInd */
 
 /*
@@ -2194,7 +2193,7 @@ PRIVATE S16 rgSCHTomUtlGenIndices(label, posM, valN, valK, sbInfo)
       xmin = idx+1;
       label = label-binCoe;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHTomUtlGenIndices*/
 #endif
 #endif 
@@ -2263,8 +2262,8 @@ TfuCrcIndInfo *crcInd;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
          ":%d", crcInd->cellId);
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
 #ifdef RG_ULSCHED_AT_CRC
 #ifndef LTE_ADV
    {
@@ -2440,7 +2439,7 @@ TfuCrcIndInfo *crcInd;
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate TfuCntrlReqInfo "
                "for cell");
-         RETVALUE(ret);
+         return ret;
       }
       rgSCHCmnUlSch(cell);
 #ifdef LTE_L2_MEAS
@@ -2454,10 +2453,10 @@ TfuCrcIndInfo *crcInd;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomCrcInd() Unable to process"
                   " downlink subframe for cellId %d", crcInd->cellId);
          err.errType = RGSCHERR_TOM_TTIIND;
-         RETVALUE(RFAILED);
-      }
+         return RFAILED;
+		}
 #endif /* RG_ULSCHED_AT_CRC */
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomCrcInd */
 
 /**
@@ -2505,8 +2504,8 @@ TfuTimingAdvIndInfo *timingAdvInd;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
          "=(%d)", timingAdvInd->cellId);
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
 
 
    node =  timingAdvInd->timingAdvLst.first;
@@ -2522,7 +2521,7 @@ TfuTimingAdvIndInfo *timingAdvInd;
       }
       rgSCHDhmUpdTa (cell, ue, timingAdvInfo->timingAdv);
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomTimingAdvInd */
 
 /**
@@ -2885,7 +2884,7 @@ RgSchErrInfo       *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate TfuRecpReqInfo "
          "for cell");
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-      RETVALUE(ret);
+      return ret;
    }    
    recpReqInfo->cellId = cell->cellId;
    cmLListInit(&recpReqInfo->ueRecpReqLst);
@@ -2902,7 +2901,7 @@ RgSchErrInfo       *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to fill Data recption "
          "requests for cell");
       RGSCH_FREE_MEM(recpReqInfo);
-      RETVALUE(ret);
+      return ret;
    } 
    /* Filling HARQ Reception requests */
    ret = rgSCHTomUtlFillHqFdbkRecpReq (recpReqInfo, cell, validIdx,err);
@@ -2911,14 +2910,14 @@ RgSchErrInfo       *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to fill Harq Feedback "
          "reception requests for cell");
       RGSCH_FREE_MEM(recpReqInfo);
-      RETVALUE(ret);
+      return ret;
    }
    /* sending the RecpReq to Phy */
    if (rgSCHUtlTfuRecpReq(inst, cell->tfuSap->sapCfg.suId, recpReqInfo) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send Cntrl info for cell");
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHTomUtlProcUlSf */ 
 
 #ifdef LTE_TDD
@@ -2966,7 +2965,7 @@ RgSchErrInfo       *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomUtlPrcUlTddSpclSf() Unable to "
                "Allocate TfuRecpReqInfo for cell");
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-      RETVALUE(ret);
+      return ret;
    }    
    recpReqInfo->cellId = cell->cellId;
    cmLListInit(&recpReqInfo->ueRecpReqLst);
@@ -2993,7 +2992,7 @@ RgSchErrInfo       *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomUtlPrcUlTddSpclSf() Unable to fill"
             " SRS recption requests for cell");;
       RGSCH_FREE_MEM(recpReqInfo);
-      RETVALUE(ret);
+      return ret;
    }
    /* sending the RecpReq to Phy */
    if (rgSCHUtlTfuRecpReq(inst, cell->tfuSap->sapCfg.suId, recpReqInfo) != ROK)
@@ -3001,7 +3000,7 @@ RgSchErrInfo       *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomUtlPrcUlTddSpclSf() Unable to send "
                                "Cntrl info for cell");
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHTomUtlPrcUlTddSpclSf */ 
 #endif
 #endif
@@ -3084,7 +3083,7 @@ RgSchErrInfo         *err;
             RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to send PHICH info "
                      "for cellId (%d)\n", cell->cellId));
             RGSCH_FREE_MEM(cntrlInfo);
-            RETVALUE(ret);
+            return ret;
          }
          if ((ret = rgSCHTomUtlFillUlPdcch (cell, cntrlInfo, ulSf, err)) != 
                         ROK)
@@ -3092,7 +3091,7 @@ RgSchErrInfo         *err;
             RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to send PDCCH info "
                      "for cellId (%d)\n", cell->cellId));
             RGSCH_FREE_MEM(cntrlInfo);
-            RETVALUE(ret);
+            return ret;
          }
       }
 #ifdef EMTC_ENABLE
@@ -3114,7 +3113,7 @@ RgSchErrInfo         *err;
             RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to send PDCCH info "
                      "for cellId (%d)\n", cell->cellId));
             RGSCH_FREE_MEM(cntrlInfo);
-            RETVALUE(ret);
+            return ret;
          }
          rgBwAlloInfo[dlSf->sfNum] += dlSf->bwAssigned;
          rgBwAlcnt[dlSf->sfNum] ++;
@@ -3139,8 +3138,8 @@ if(0 == cntrlInfo->dlMpdcchLst.count)
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send Cntrl info "
             "for cell");
       }
+   return ROK;
 
-   RETVALUE(ROK);
 } 
 
 
@@ -3197,7 +3196,7 @@ RgSchErrInfo       *err;
                                 &(cntrlInfo->memCp))) != ROK)
       {
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-         RETVALUE(ret);
+         return ret;
       }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
       harqAck->txPower = 0;
@@ -3220,7 +3219,7 @@ RgSchErrInfo       *err;
       harqAck->lnk.node = (PTR)harqAck;
       node = node->next;
    } /* end of while */
-   RETVALUE(ret);
+   return ret;
 } /* end of */ 
 
 
@@ -3369,7 +3368,7 @@ RgSchErrInfo    *err;
                                 &(cntrlInfo->memCp))) != ROK)
       {
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-         RETVALUE(ret);
+         return ret;
       }
 #ifdef LTEMAC_SPS
       tfuPdcch->crnti       = pdcch->crnti;
@@ -3413,7 +3412,7 @@ RgSchErrInfo    *err;
          gDlNumUePerTti[numUePerTti-1]++;
       }
    }
-   RETVALUE(ret);
+   return ret;
 } /* end of rgSCHTomUtlFillDlPdcch*/ 
 
 #ifdef RGSCH_SPS_STATS
@@ -3506,7 +3505,7 @@ RgSchErrInfo    *err;
                   &(cntrlInfo->memCp))) != ROK)
       {
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-         RETVALUE(ret);
+         return ret;
       }
       tfuPdcch->rnti       = pdcch->rnti;
 #ifdef LTE_ADV
@@ -3538,7 +3537,7 @@ RgSchErrInfo    *err;
      //   abort();
    }
 #endif
-   RETVALUE(ret);
+   return ret;
 } /* end of rgSCHTomUtlFillUlPdcch*/ 
 
 /** @brief This function does the processing for Timing adjustment.
@@ -3605,8 +3604,7 @@ RgSchCellCb    *cell;
          ue->dl.taCb.numRemSf--;
       }
    } /* end of taUeLst */
-
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHTomUtlProcTA */ 
 
 /** @brief This function handles filling of Hq reception request to
@@ -3719,7 +3717,7 @@ RgSchErrInfo            *err;
                RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
                         "TfuUeRecpReqInfo for cell");
                err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-               RETVALUE(ret);
+               return ret;
             }
             pucchRecpInfo->type = TFU_RECP_REQ_PUCCH;
             if ((hqCb->hqE->ue != NULLP) /*&& 
@@ -3818,7 +3816,7 @@ RgSchErrInfo            *err;
          break;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgSCHTomUtlFillHqFdbkInfo */
 
 #ifdef RG_5GTF 
@@ -3869,17 +3867,15 @@ PRIVATE S16 rgSCHTomUtlFillHqFdbkFor5gtf (recpReqInfo, cell, validIdx, hqCb, dlS
    Inst                 inst = cell->instIdx;
 #endif
    S16                  ret;
-   CmLList              *hqPNode;
    RgSchUeCb            *ue;
    TfuUePucchRecpReq    *pucchReqInfo = NULLP;
 
-   hqPNode = dlSfHqInfo->hqPLst.first;
    ue = (RgSchUeCb*)dlSfHqInfo->dlSfUeLnk.node;
    
    if (ue == NULLP)
    {
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
    ret = rgSCHUtlGetEventMem((Ptr *)&pucchRecpInfo,
          sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp));
    if (ret != ROK)
@@ -3887,7 +3883,7 @@ PRIVATE S16 rgSCHTomUtlFillHqFdbkFor5gtf (recpReqInfo, cell, validIdx, hqCb, dlS
       RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to Allocate "
                "TfuUeRecpReqInfo for cellId=%d \n", cell->cellId));
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-      RETVALUE(ret);
+      return ret;
    }
    pucchRecpInfo->type = TFU_RECP_REQ_PUCCH;
    pucchRecpInfo->rnti = ue->ueId; /* Even for Rel pdcch also setting CRNTI
@@ -3912,7 +3908,7 @@ PRIVATE S16 rgSCHTomUtlFillHqFdbkFor5gtf (recpReqInfo, cell, validIdx, hqCb, dlS
    
    cmLListAdd2Tail(&recpReqInfo->ueRecpReqLst, &(pucchRecpInfo->lnk));
    pucchRecpInfo->lnk.node = (PTR)pucchRecpInfo;
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgSCHTomUtlFillHqFdbkForFrmt1B */
 #endif
 
@@ -3999,8 +3995,8 @@ RgSchErrInfo            *err;
    
    if (ue == NULLP)
    {
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
    ret = rgSCHUtlGetEventMem((Ptr *)&pucchRecpInfo,
          sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp));
    if (ret != ROK)
@@ -4008,7 +4004,7 @@ RgSchErrInfo            *err;
       RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to Allocate "
                "TfuUeRecpReqInfo for cellId=%d \n", cell->cellId));
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-      RETVALUE(ret);
+      return ret;
    }
    pucchRecpInfo->type = TFU_RECP_REQ_PUCCH;
    pucchRecpInfo->rnti = ue->ueId; /* Even for Rel pdcch also setting CRNTI
@@ -4245,7 +4241,7 @@ RgSchErrInfo            *err;
 #endif/*TFU_UPGRADE*/
    cmLListAdd2Tail(&recpReqInfo->ueRecpReqLst, &(pucchRecpInfo->lnk));
    pucchRecpInfo->lnk.node = (PTR)pucchRecpInfo;
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgSCHTomUtlFillHqFdbkForFrmt1B */
 /** @brief This function handles filling of Hq reception request to
  *   Per Hq Proc.
@@ -4326,8 +4322,8 @@ RgSchErrInfo            *err;
    
    if (ue == NULLP)
    {
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
    ret = rgSCHUtlGetEventMem((Ptr *)&pucchRecpInfo,
          sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp));
    if (ret != ROK)
@@ -4335,7 +4331,7 @@ RgSchErrInfo            *err;
       RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to Allocate "
                "TfuUeRecpReqInfo for cellId=%d \n", cell->cellId));
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-      RETVALUE(ret);
+      return ret;
    }
    pucchRecpInfo->type = TFU_RECP_REQ_PUCCH;
    pucchRecpInfo->rnti = ue->ueId; /* Even for Rel pdcch also setting CRNTI
@@ -4366,7 +4362,7 @@ RgSchErrInfo            *err;
 #endif/*TFU_UPGRADE*/
    cmLListAdd2Tail(&recpReqInfo->ueRecpReqLst, &(pucchRecpInfo->lnk));
    pucchRecpInfo->lnk.node = (PTR)pucchRecpInfo;
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgSCHTomUtlFillHqFdbkForFrmt3 */
 
 #endif/*LTE_ADV*/
@@ -4481,7 +4477,7 @@ RgSchErrInfo            *err;
 
    /* Check with TDD Code */
    /* FOR ACK NACK REP */
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHTomUtlFillHqFdbkRecpReq */ 
 #ifdef TFU_UPGRADE 
 /** @brief This function handles filling of SR reception request to
@@ -4548,7 +4544,7 @@ PRIVATE S16 rgSCHTomUtlFillSrRecpReq (recpReqInfo, cell, validIdx, err)
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
             "TfuUeRecpReqInfo for cell RNTI:%d",ue->ueId);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-         RETVALUE(ret);
+         return ret;
       }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
      cmMemset((U8 *)&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
@@ -4587,7 +4583,7 @@ PRIVATE S16 rgSCHTomUtlFillSrRecpReq (recpReqInfo, cell, validIdx, err)
       }
       pucchRecpInfo->lnk.node = (PTR)pucchRecpInfo;
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgSCHTomUtlFillSrRecpReq */
 #endif
 #endif
@@ -4635,8 +4631,8 @@ PRIVATE S16 rgSCHTomUtlWillUeRprtCqiRi ( ue, willueRprtCqiRi)
          {/*onDuration NOT running, do not expect cqi/pmi/ri*/
             *willueRprtCqiRi = FALSE;
          }
-         RETVALUE(ROK);
-      }
+         return ROK;
+		}
 #endif /*end of LTEMAC_R9*/
       /* ccpu00134258: Fix for CQI DRX issue*/
       if(ue->drxCb->onDurTmrLen > 2)
@@ -4647,8 +4643,7 @@ PRIVATE S16 rgSCHTomUtlWillUeRprtCqiRi ( ue, willueRprtCqiRi)
          }
       }
    }/*ue->isDrxEnabled*/
-   
-   RETVALUE(ROK);
+   return ROK; 
 } /*End of rgSCHTomUtlWillUeRprtCqiRi*/
 
 /** @brief This function handles filling of RI reception request to
@@ -4735,7 +4730,7 @@ PRIVATE S16 rgSCHTomUtlFillRiRecpReq (recpReqInfo, cell, validIdx, err)
             RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
                "TfuUeRecpReqInfo for cell RNTI:%d",ue->ueId);
             err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-            RETVALUE(ret);
+            return ret;
          }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
          cmMemset((U8 *)&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
@@ -4770,7 +4765,7 @@ PRIVATE S16 rgSCHTomUtlFillRiRecpReq (recpReqInfo, cell, validIdx, err)
          riCb->riDist--; 
       }     
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgSCHTomUtlFillRiRecpReq */
 #endif
 #ifdef RG_5GTF
@@ -4825,7 +4820,7 @@ PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq (recpReqInfo, cell, validIdx, err)
             RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
                "TfuUeRecpReqInfo for cell RNTI:%d ", ue->ueId);
             err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-            RETVALUE(ret);
+            return ret;
          }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
          cmMemset((U8 *)&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
@@ -4842,8 +4837,7 @@ PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq (recpReqInfo, cell, validIdx, err)
          pucchRecpInfo->lnk.node = (PTR)pucchRecpInfo;
       }
    }
-
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgSCHTomUtlFillCqiRiRecpReq */
 #endif
 #endif
@@ -4933,7 +4927,7 @@ PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq (recpReqInfo, cell, validIdx, err)
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
             "TfuUeRecpReqInfo for cell RNTI:%d ", ue->ueId);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-         RETVALUE(ret);
+         return ret;
       }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
       cmMemset((U8 *)&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
@@ -4960,7 +4954,7 @@ PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq (recpReqInfo, cell, validIdx, err)
       }
       pucchRecpInfo->lnk.node = (PTR)pucchRecpInfo;
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgSCHTomUtlFillPcqiRecpReq */
 /** @brief This function handles filling of SRS reception request to
  * PHY.
@@ -5026,7 +5020,7 @@ PRIVATE S16 rgSCHTomUtlFillSrsRecpReq (recpReqInfo, cell, validIdx, err)
             RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
                "TfuUeRecpReqInfo for RNTI:%d ",ue->ueId);
             err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-            RETVALUE(ret);
+            return ret;
          }
 
 #ifdef TFU_ALLOC_EVENT_NO_INIT
@@ -5058,7 +5052,7 @@ PRIVATE S16 rgSCHTomUtlFillSrsRecpReq (recpReqInfo, cell, validIdx, err)
          ue->srsCb.srsDist--; 
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgSCHTomUtlFillSrsRecpReq */
 #endif 
 #ifndef TFU_UPGRADE
@@ -5124,7 +5118,7 @@ RgSchErrInfo         *err;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
             "TfuUeRecpReqInfo for RNTI:%d ", alloc->ue->ueId);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-         RETVALUE(ret);
+         return ret;
       }
       if (!alloc->forMsg3)
       {
@@ -5169,7 +5163,7 @@ RgSchErrInfo         *err;
       
       alloc = rgSCHUtlNextRcptnReq (cell, alloc);
    } /* end of while */
-   RETVALUE(ROK); 
+   return ROK;
 } /* end of rgSCHTomUtlFillDatRecpReq */
 
 #else
@@ -5212,7 +5206,6 @@ PRIVATE S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, validIdx, err)
    RgSchUlAlloc      *alloc;
    TfuUeRecpReqInfo  *datRecpInfo;
 
-   Bool              hqPres;   /*Set when HARQ Rec Req is present*/
    Bool              isAperiodic = FALSE; /*Set when Aperiodic CQI is expected */
    U8                numUePerTti = 0;
 
@@ -5238,15 +5231,13 @@ PRIVATE S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, validIdx, err)
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
             "TfuUeRecpReqInfo for RNTI:%d ", alloc->rnti);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-         RETVALUE(ret);
+         return ret;
       }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
       datRecpInfo->t.puschRecpReq.initialNSrs.pres = FALSE;
       datRecpInfo->t.puschRecpReq.initialNumRbs.pres = FALSE;
 #endif
       datRecpInfo->type = TFU_RECP_REQ_PUSCH;
-      /* ccpu00131944 - Intializing hqPres in each iteration*/
-      hqPres = FALSE;
       /* Check if this if for MSG3 - no scope for feedback along with it. */
       if ((FALSE == alloc->forMsg3))
       {
@@ -5306,7 +5297,7 @@ PRIVATE S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, validIdx, err)
       cell->ulNumUeSchedPerTti[numUePerTti-1]++;
       gUlNumUePerTti[numUePerTti - 1]++;
    }
-   RETVALUE(ROK); 
+   return ROK;
 } /* end of rgSCHTomUtlFillDatRecpReq */
 #endif
 /* rg009.201. Added changes of TFU_UPGRADE */
@@ -5342,8 +5333,8 @@ PUBLIC S16 rgSCHTomUtlFillRiBitWidthInfo(ueCb)
    if (ueCb->mimoInfo.txMode != RGR_UE_TM_3 &&
              ueCb->mimoInfo.txMode != RGR_UE_TM_4)
    {
-      RETVALUE(RFAILED);
-   }
+      return RFAILED;
+	}
 
    ueCb->rawCqiBitW[ueCb->cqiRiWritIdx].type = TFU_RECP_REQ_PUCCH;
    ueCb->rawCqiBitW[ueCb->cqiRiWritIdx].u.pucch.pucchRawCqiInfo.mode= 
@@ -5375,7 +5366,7 @@ PUBLIC S16 rgSCHTomUtlFillRiBitWidthInfo(ueCb)
    }
    
    RG_SCH_INCR_CQIRI_INDEX(ueCb->cqiRiWritIdx);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -5525,7 +5516,7 @@ PUBLIC U8 rgSCHTomUtlFetchPcqiBitSz(ueCb, numTxAnt, ri)
    }
    
    RG_SCH_INCR_CQIRI_INDEX(ueCb->cqiRiWritIdx);
-   RETVALUE(pcqiSz);
+   return pcqiSz;
 }
 
 
@@ -5577,7 +5568,7 @@ PUBLIC S16 rgSCHTomUtlPcqiSbCalcBpIdx(crntTimInfo, ueCb, cqiCb)
       cqiCb->prioLvl = RG_SCH_CQI_PRIO_LVL_0;
 #endif
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -5676,7 +5667,7 @@ PUBLIC S16 rgSCHTomUtlMoveNxtOccasion(cell, ue, validIdx)
    {
       rgSCHTomUtlMoveSrNxtOccasion(cell, ue); 
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlMoveNxtOccasion */
 
 
@@ -5971,7 +5962,7 @@ PUBLIC S16 rgSCHTomUtlFillDatAperRecpReq(cell, cqiReq, alloc, datRecpInfo, timeI
    datRecpInfo->rnti = alloc->rnti;
    rgSCHUtlAllocRcptInfo (cell, alloc, timeInfo,
             &datRecpInfo->t.puschRecpReq.ulSchInfo);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlFillDatAperRecpReq */
 
 
@@ -6067,7 +6058,7 @@ hqPres, validIdx)
    datRecpInfo->rnti = alloc->rnti;
    rgSCHUtlAllocRcptInfo (cell, alloc, timeInfo,
          &datRecpInfo->t.puschRecpReq.ulSchInfo);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlFillDatPriRecpReq */
 
 
@@ -6137,7 +6128,7 @@ PUBLIC S16 rgSCHTomUtlFillDatPCqiRecpReq(cell, alloc, datRecpInfo,
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Fill "
          "CqiPmi size RNTI:%d",alloc->rnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Fill only the first RI index since Periodic can come 
@@ -6184,7 +6175,7 @@ PUBLIC S16 rgSCHTomUtlFillDatPCqiRecpReq(cell, alloc, datRecpInfo,
    datRecpInfo->rnti = alloc->rnti;
    rgSCHUtlAllocRcptInfo (cell, alloc, timeInfo,
             &datRecpInfo->t.puschRecpReq.ulSchInfo);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlFillDatPCqiRecpReq */
 
 /**
@@ -6246,7 +6237,7 @@ PUBLIC S16 rgSCHTomUtlFillDatSrsRecpReq(cell, alloc, datRecpInfo, timeInfo,
    datRecpInfo->rnti = alloc->rnti;
    rgSCHUtlAllocRcptInfo (cell, alloc, timeInfo, 
             &datRecpInfo->t.puschRecpReq.ulSchInfo);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlFillDatSrsRecpReq */
 
 /**
@@ -6302,7 +6293,7 @@ PUBLIC S16 rgSCHTomFillOnlySrsRecpReq(cell, alloc, datRecpInfo)
     * Refer Section 5.2.2.6 of TS 36.212 V8.5.0*/
    datRecpInfo->t.puschRecpReq.ulSchInfo.nSrs = 1;
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomFillOnlySrsRecpReq */
 
 /**
@@ -6541,7 +6532,7 @@ Bool              isDatPresOnSecCell;
             {
                RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d "
                   "Unable to Fill CqiPmi size", ue->ueId);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             if(pucchRecpInfo->t.pucchRecpReq.uciInfo == TFU_PUCCH_HARQ_SR)
             {
@@ -6625,7 +6616,7 @@ Bool              isDatPresOnSecCell;
       }
    }            
    UNUSED(dropCqi);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlFillCqiSrSrsWithHq */
 
 /**
@@ -6752,8 +6743,8 @@ U16               validIdx;
             {
                RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d"
                   " Unable to Fill CqiPmi size", ue->ueId);
-               RETVALUE(RFAILED);
-            }
+               return RFAILED;
+				}
 
             pucchRecpInfo->t.pucchRecpReq.uciInfo = TFU_PUCCH_SR_CQI;
          }
@@ -6814,7 +6805,7 @@ U16               validIdx;
 
          }
       }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHTomUtlFillCqiSrsWithSr */
 
 #endif 
@@ -6950,7 +6941,7 @@ noFdbks, memCp, elemIdx, nxtDlsf)
             RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"Unable to"
                "Allocate TfuUeRecpReqInfo for RNTI:%d ", ueCb->ueId);
             err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-            RETVALUE(ret);
+            return ret;
          }
          pucchRecpInfo->rnti    =  ueCb->ueId;
 #ifndef TFU_UPGRADE
@@ -7000,8 +6991,7 @@ noFdbks, memCp, elemIdx, nxtDlsf)
       /* Go to the next node */
       node = node->next;
    }
-
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /** @brief This function handles filling of HARQ feedback recption request
@@ -7135,8 +7125,8 @@ RgSchDlHqProcCb         *prvHqCb;
                if((anInfo == NULLP) || 
                      (anInfo->latestMIdx != dlSf->dlFdbkInfo.m))
                {
-                  RETVALUE(ROK);
-               }
+					   return ROK; 
+					}
             }
             else
             {
@@ -7158,7 +7148,7 @@ RgSchDlHqProcCb         *prvHqCb;
          }
          else
          {
-            RETVALUE(ROK);
+			   return ROK;
          }
 
          /* Do not proceed if PUSCH
@@ -7197,7 +7187,7 @@ RgSchDlHqProcCb         *prvHqCb;
                   n1PucchTkn, &alloc, hqSz);
             if (ret != ROK)
             {
-               RETVALUE(ret);
+               return ret;
             }
             /* TODO:: In case of F1BCS and CSI in same subframe
              * UE shall drop the CSI if there was at least one 
@@ -7277,7 +7267,7 @@ RgSchDlHqProcCb         *prvHqCb;
          prvHqCb = hqCb;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef LTE_ADV
@@ -7796,7 +7786,7 @@ PRIVATE S16 rgSCHTomUtlFillSfHqFdbkForFrmt1BCS(hqCb,hqRecpReq,noFdbks,dlSf,pdcch
       default:
          break;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -7883,7 +7873,7 @@ U8                      hqSz;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"Unable to "
             "Allocate TfuUeRecpReqInfo for cell RNTI:%d",rnti);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-         RETVALUE(ret);
+         return ret;
       }
       alloc = TRUE;
 #ifdef TFU_ALLOC_EVENT_NO_INIT
@@ -7898,7 +7888,7 @@ U8                      hqSz;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"Unable to "
             "Allocate TfuUeRecpReqInfo for cell RNTI:%d",rnti);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
-         RETVALUE(ret);
+         return ret;
       }
       cmMemset((U8 *)pucchInfo->pucchRecpInfo->t.pucchRecpReq.hqInfo.hqRes,0xff,sizeof(U16)*TFU_MAX_HQ_RES);
 #ifdef TFU_ALLOC_EVENT_NO_INIT
@@ -7963,8 +7953,7 @@ U8                      hqSz;
                     because of kworks*/
                    RGSCHDBGERRNEW(cellCb->instIdx,(rgSchPBuf(cellCb->instIdx),
                             "ANInfo should not be NULL for cellId=%d \n", cellCb->cellId));
-                   RETVALUE(RFAILED);
-
+                   return RFAILED;
                 }
 #endif
              }
@@ -7973,7 +7962,7 @@ U8                      hqSz;
        {/* This needs to be revisited while
            adding support for PUCCH format 3 */
           RGSCHDBGERRNEW(cellCb->instIdx,(rgSchPBuf(cellCb->instIdx),"Invalid Pucch format configured.."));
-          RETVALUE(RFAILED);
+          return RFAILED;
        }
     }
     else
@@ -8125,7 +8114,7 @@ U8                      hqSz;
 
    *pucchInfoRef = pucchInfo;
    *allocRef     = alloc;
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -8190,7 +8179,7 @@ RgSchErrInfo         *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send PHICH info for "
             "cell");
       RGSCH_FREE_MEM(cntrlInfo);
-      RETVALUE(ret);
+      return ret;
    }
 
    /* Fill UL Pdcch */
@@ -8199,7 +8188,7 @@ RgSchErrInfo         *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send PDCCH info for "
             "cell");
       RGSCH_FREE_MEM(cntrlInfo);
-      RETVALUE(ret);
+      return ret;
    }
    
 #ifdef EMTC_ENABLE
@@ -8226,8 +8215,7 @@ RgSchErrInfo         *err;
    {
       RGSCH_FREE_MEM(cntrlInfo);
    }
-
-   RETVALUE(ROK);
+   return ROK;
 } /* end of */ 
 #endif /* #ifdef RG_ULSCHED_AT_CRC*/
 
