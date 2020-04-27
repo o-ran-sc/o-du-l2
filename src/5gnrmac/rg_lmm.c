@@ -2287,7 +2287,7 @@ int MacProcSchCellCfgCfm
 {
 	if(schCellCfgCfm->rsp == RSP_OK)
 	{
-      sendToLowerMac(PARAM_REQUEST, 0, (void *)NULL);
+      sendToLowerMac(CONFIG_REQUEST, 0, (void *)NULL);
 	}
 	else
 	{

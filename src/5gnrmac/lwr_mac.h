@@ -35,6 +35,12 @@
 #include "cm_lib.x"
 #include "du_app_mac_inf.h"
 
+#ifdef INTEL_WLS
+#define LWR_MAC_ALLOC(_datPtr, _size)   WLS_MEM_ALLOC(_datPtr, _size);
+#else                                     
+#define LWR_MAC_ALLOC(_datPtr, _size)   MAC_ALLOC(_datPtr, _size);
+#endif                                    
+
 typedef enum
 {
    PHY_STATE_IDLE,

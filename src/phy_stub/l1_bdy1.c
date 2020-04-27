@@ -74,7 +74,14 @@ S16 l1BldAndSndParamRsp(void *msg)
 #ifdef FAPI
    uint8_t index = 0;
    uint32_t msgLen = 0;
-	fapi_param_resp_t *fapiParamRsp = (fapi_param_resp_t *)msg;
+	fapi_param_resp_t *fapiParamRsp;
+	
+	MAC_ALLOC(fapiParamRsp, sizeof(fapi_param_resp_t));
+	if(!fapiParamRsp)
+	{
+	   DU_LOG("PHY STUB: Memory allocation failed");
+		return RFAILED;
+	}
 
   /* Cell Params */
   fillTlvs(&fapiParamRsp->tlvs[index++],  FAPI_RELEASE_CAPABILITY_TAG,			        sizeof(uint16_t), 1, &msgLen);
@@ -147,12 +154,13 @@ S16 l1BldAndSndParamRsp(void *msg)
   fillTlvs(&fapiParamRsp->tlvs[index++],  FAPI_RSSI_MEASUREMENT_SUPPORT_TAG,                    sizeof(uint8_t), 0, &msgLen);
 
   fapiParamRsp->number_of_tlvs = index;
-  msgLen = msgLen + sizeof(fapi_param_resp_t);
-
+  msgLen += sizeof(fapi_param_resp_t) - sizeof(fapi_msg_t);
   fillMsgHeader(&fapiParamRsp->header, FAPI_PARAM_RESPONSE, msgLen);
   fapiParamRsp->error_code = MSG_OK;
+
   DU_LOG("\nPHY_STUB: Sending Param Request to Lower Mac");
   handlePhyMessages(fapiParamRsp->header.message_type_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp);
+  MAC_FREE(fapiParamRsp, sizeof(fapi_param_resp_t));
 #endif
   return ROK;
 }
@@ -178,20 +186,26 @@ S16 l1BldAndSndConfigRsp(void *msg)
 {
 #ifdef FAPI
    uint32_t msgLen = 0;
-   fapi_config_resp_t *fapiConfigRsp = (fapi_config_resp_t *)msg;
+   fapi_config_resp_t *fapiConfigRsp;
 
-   if(fapiConfigRsp != NULL)
+   MAC_ALLOC(fapiConfigRsp, sizeof(fapi_config_resp_t));
+   if(!fapiConfigRsp)
    {
-      fapiConfigRsp->number_of_invalid_tlvs = NULLP;
-      fapiConfigRsp->number_of_inv_tlvs_idle_only = NULLP;
-      fapiConfigRsp->number_of_missing_tlvs = NULLP;
-      fapiConfigRsp->error_code = MSG_OK;
-      msgLen += sizeof(fapi_config_resp_t);
-      fillMsgHeader(&fapiConfigRsp->header, FAPI_CONFIG_RESPONSE, msgLen);
-      DU_LOG("\nPHY_STUB: Sending Config Response to Lower Mac");
-      handlePhyMessages(fapiConfigRsp->header.message_type_id, sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
-      return ROK;
+      DU_LOG("PHY STUB: Memory allocation failed");
+      return RFAILED;
    }
+
+   fapiConfigRsp->number_of_invalid_tlvs = NULLP;
+   fapiConfigRsp->number_of_inv_tlvs_idle_only = NULLP;
+   fapiConfigRsp->number_of_missing_tlvs = NULLP;
+   fapiConfigRsp->error_code = MSG_OK;
+	msgLen += sizeof(fapi_param_resp_t) - sizeof(fapi_msg_t);
+   fillMsgHeader(&fapiConfigRsp->header, FAPI_CONFIG_RESPONSE, msgLen);
+
+   DU_LOG("\nPHY_STUB: Sending Config Response to Lower Mac");
+   handlePhyMessages(fapiConfigRsp->header.message_type_id, \
+	   sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
+   MAC_FREE(fapiConfigRsp, sizeof(fapi_config_resp_t));
 #endif
    return ROK;
 }
@@ -215,12 +229,16 @@ S16 l1BldAndSndConfigRsp(void *msg)
 
 PUBLIC void l1HdlParamReq(uint32_t msgLen, void *msg)
 {
+#ifdef FAPI
    DU_LOG("\nPHY_STUB: Received Param Request in PHY");
-   /* Handling PARAM RESPONSE */
+ 
+   /* Build and send PARAM RESPONSE */
    if(l1BldAndSndParamRsp(msg)!= ROK)
    {
       DU_LOG("\nPHY_STUB: Failed Sending Param Response");
    }
+	MAC_FREE(msg, sizeof(fapi_param_req_t));
+#endif
 } 
 
 /*******************************************************************
@@ -243,6 +261,10 @@ PUBLIC void l1HdlParamReq(uint32_t msgLen, void *msg)
 
 PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
 {
+#ifdef FAPI
+   int idx = 0;
+	fapi_config_req_t *configReq = (fapi_config_req_t *)msg;
+
    DU_LOG("\nPHY_STUB: Received Config Request in PHY");
 
    /* Handling CONFIG RESPONSE */
@@ -250,6 +272,24 @@ PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
    {
       printf("\nPHY_STUB: Failed Sending config Response");
    }
+   
+	while(idx < MAX_NUM_TLVS_CONFIG)
+	{
+	   if(configReq->tlvs[idx].tl.tag == FAPI_NUM_UNUSED_ROOT_SEQUENCES_TAG)
+		{
+		   if(configReq->tlvs[idx].value)
+			{
+			   idx++;
+			   MAC_FREE(configReq->tlvs[idx].value , \
+				   sizeof(uint8_t) * configReq->tlvs[idx-1].value);
+            break;
+			}
+		}
+		idx++;
+	}
+	MAC_FREE(configReq, sizeof(fapi_config_req_t));
+#endif
+
 }
 
 
@@ -279,7 +319,8 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
    fapi_rach_indication_t  *rachInd;
 
    /* Building RACH indication */
-   if(SGetSBuf(0, 0, (Data **)&rachInd, sizeof(fapi_rach_indication_t)) != ROK)
+	MAC_ALLOC(rachInd, sizeof(fapi_rach_indication_t));
+   if(!rachInd)
    {
       printf("\nPHY_STUB: Memory allocation failed for Rach Indication Message");
       return RFAILED;
@@ -308,7 +349,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
    /* Sending RACH indication to MAC */
    DU_LOG("\nPHY STUB: Sending RACH Indication to MAC");
    handlePhyMessages(rachInd->header.message_type_id, sizeof(fapi_rach_indication_t), (void *)rachInd);
-   SPutSBuf(0, 0, (Data *)rachInd, sizeof(fapi_rach_indication_t));
+   MAC_FREE(rachInd, sizeof(fapi_rach_indication_t));
 #endif
    return ROK;
 }
@@ -334,7 +375,9 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
 {
 #ifdef FAPI
    fapi_slot_ind_t *slotIndMsg;
-   if(SGetSBuf(0, 0, (Data **)&slotIndMsg, sizeof(slotIndMsg)) != ROK)
+
+   MAC_ALLOC(slotIndMsg, sizeof(fapi_slot_ind_t));
+	if(!slotIndMsg)
    {
        DU_LOG("\nPHY_STUB: Memory allocation failed for slot Indication Message");
        return RFAILED;
@@ -357,7 +400,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
       fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
       DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
       handlePhyMessages(slotIndMsg->header.message_type_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
-      SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
+      MAC_FREE(slotIndMsg, sizeof(fapi_slot_ind_t));
    }
 #endif
    return ROK;
@@ -383,19 +426,21 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
 
 PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
 {
+#ifdef FAPI
+   fapi_start_req_t *startReq = (fapi_start_req_t *)msg;
+
    if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
    {
       duStartSlotIndicaion();
-#ifdef FAPI
-      SPutSBuf(0, 0, (Data *)msg, sizeof(fapi_start_req_t));
-#endif
-      return ROK;
+		MAC_FREE(startReq, sizeof(fapi_start_req_t));
    }
    else
    {
       DU_LOG("\nPHY_STUB: Received Start Req in PHY State %d", clGlobalCp.phyState);
       return RFAILED;
    }
+#endif
+   return ROK;
 }
 
 /*******************************************************************
@@ -451,6 +496,19 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 		else if(dlTtiReq->pdus[pduCount].pduType == 1)
 		   DU_LOG("\nPHY_STUB: PDSCH PDU");
 	}
+
+	/* Free FAPI message */
+   for(pduCount = 0; pduCount < dlTtiReq->nPdus; pduCount++)
+	{
+	   if(dlTtiReq->pdus[pduCount].pduType == FAPI_DL_TTI_REQ_PDCCH_PDU_TYPE)
+		{
+         MAC_FREE(dlTtiReq->pdus[pduCount].u.pdcch_pdu.dlDci,\
+			   sizeof(fapi_dl_dci_t));
+	   }
+   }
+	MAC_FREE(dlTtiReq->pdus, (dlTtiReq->nPdus * sizeof(fapi_dl_tti_req_pdu_t)));
+	MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+
 #endif
    return ROK;
 }
@@ -476,10 +534,24 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 {
 #ifdef FAPI
+   uint8_t pduCount;
+
    DU_LOG("\nPHY STUB: Received TX DATA Request");
 
    fapi_tx_data_req_t *txDataReq;
-   txDataReq = (fapi_dl_tti_req_t *)msg;
+   txDataReq = (fapi_tx_data_req_t *)msg;
+
+#if 0
+   for(pduCount = 0; pduCount< txDataReq->numPdus; pduCount++)
+	{
+      if(txDataReq->pduDesc[pduCount].tlvs[0].value)
+	      MAC_FREE((uint32_t *)txDataReq->pduDesc[pduCount].tlvs[0].value,\
+		      txDataReq->pduDesc[pduCount].tlvs[0].tl.length);
+	}
+#endif
+	MAC_FREE(txDataReq->pduDesc, (txDataReq->numPdus * \
+	   sizeof(fapi_tx_pdu_desc_t)));
+	MAC_FREE(txDataReq, sizeof(fapi_tx_data_req_t));
 #endif
    return ROK;
 }
@@ -521,6 +593,10 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 			DU_LOG("\nPHY STUB: PRACH PDU");
 		numPdus--;
 	}
+
+   MAC_FREE(ulTtiReq->pdus, (ulTtiReq->nPdus * sizeof(fapi_ul_tti_req_pdu_t)));
+	MAC_FREE(ulTtiReq, sizeof(fapi_ul_tti_req_t));
+
    if(rachIndSent == false && ulTtiReq->slot == 8)
    {
       rachIndSent = true;

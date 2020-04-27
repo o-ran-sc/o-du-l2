@@ -686,7 +686,7 @@ S16 duBuildMacGenCfg()
    genCfg   = &(rgMngmt.t.cfg.s.genCfg);
    
    /*----------- Fill General Configuration Parameters ---------*/
-   genCfg->mem.region = RG_MEM_REGION;
+   genCfg->mem.region = MAC_MEM_REGION;
    genCfg->mem.pool   = RG_POOL;
    genCfg->tmrRes     = 10;
    genCfg->numRguSaps = 2;
@@ -699,7 +699,7 @@ S16 duBuildMacGenCfg()
    genCfg->lmPst.srcInst   = macCfgInst;
    genCfg->lmPst.prior     = PRIOR0;
    genCfg->lmPst.route     = RTESPEC;
-   genCfg->lmPst.region    = RG_MEM_REGION;
+   genCfg->lmPst.region    = MAC_MEM_REGION;
    genCfg->lmPst.pool      = RG_POOL;
    genCfg->lmPst.selector  = DU_SELECTOR_LC;
 
@@ -715,7 +715,7 @@ S16 duBuildMacGenCfg()
 
    rgMngmt.hdr.response.prior      = PRIOR0;
    rgMngmt.hdr.response.route      = RTESPEC;
-   rgMngmt.hdr.response.mem.region = RG_MEM_REGION;
+   rgMngmt.hdr.response.mem.region = MAC_MEM_REGION;
    rgMngmt.hdr.response.mem.pool   = RG_POOL;
    rgMngmt.hdr.response.selector   = DU_SELECTOR_LC;
 
@@ -762,7 +762,7 @@ S16 duBuildMacUsapCfg(SpId sapId)
 
    uSap   = &(rgMngmt.t.cfg.s.rguSap);
 
-   uSap->mem.region = RG_MEM_REGION;
+   uSap->mem.region = MAC_MEM_REGION;
    uSap->mem.pool   = RG_POOL;
    uSap->suId       = 0;
    uSap->spId       = sapId;
@@ -778,7 +778,7 @@ S16 duBuildMacUsapCfg(SpId sapId)
    rgMngmt.hdr.entId.ent           = ENTRG;
    rgMngmt.hdr.entId.inst          = (Inst)0;
    rgMngmt.hdr.elmId.elmnt         = STRGUSAP;
-   rgMngmt.hdr.response.mem.region = RG_MEM_REGION;
+   rgMngmt.hdr.response.mem.region = MAC_MEM_REGION;
    rgMngmt.hdr.response.mem.pool   = RG_POOL;
    
    /* fill pst */
@@ -1367,7 +1367,7 @@ S16 duSendSchCfg()
    /* Filling of Instance Id */
    cfg->instId = DEFAULT_CELLS + 1;
    /* Filling of Gen config */
-   cfg->genCfg.mem.region = RG_MEM_REGION;
+   cfg->genCfg.mem.region = MAC_MEM_REGION;
    cfg->genCfg.mem.pool = RG_POOL;
    cfg->genCfg.tmrRes = 10;
 
@@ -1384,7 +1384,7 @@ S16 duSendSchCfg()
    cfg->genCfg.lmPst.srcInst   = DEFAULT_CELLS + 1;
    cfg->genCfg.lmPst.prior     = PRIOR0;
    cfg->genCfg.lmPst.route     = RTESPEC;
-   cfg->genCfg.lmPst.region    = RG_MEM_REGION;
+   cfg->genCfg.lmPst.region    = MAC_MEM_REGION;
    cfg->genCfg.lmPst.pool      = RG_POOL;
    cfg->genCfg.lmPst.selector  = DU_SELECTOR_LC;
 
@@ -1393,7 +1393,7 @@ S16 duSendSchCfg()
    rgMngmt.hdr.entId.ent           = ENTRG;
    rgMngmt.hdr.entId.inst          = DU_INST;
    rgMngmt.hdr.elmId.elmnt         = STSCHINST;
-   rgMngmt.hdr.response.mem.region = RG_MEM_REGION;
+   rgMngmt.hdr.response.mem.region = MAC_MEM_REGION;
    rgMngmt.hdr.response.mem.pool   = RG_POOL;
 
    /* Fill Pst */
@@ -1666,7 +1666,7 @@ uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo)
 #ifdef EGTP_TEST
    duSendEgtpSlotInd();    
 #endif
-   DU_FREE_MEM(pst->region, pst->pool, slotInfo, sizeof(SlotInfo));
+   DU_FREE_MEM(MAC_MEM_REGION, pst->pool, slotInfo, sizeof(SlotInfo));
    return ROK;
 }
 
