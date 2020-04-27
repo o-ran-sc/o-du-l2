@@ -428,19 +428,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 packDlData
+PUBLIC uint16_t packDlData
 (
 Pst* pst,
 SpId spId,
 RlcMacData  *dlData
 )
-#else
-PUBLIC S16 packDlData(pst, spId, dlData)
-Pst* pst;
-SpId spId;
-RlcMacData  dlData;
-#endif
 {
    Buffer *mBuf = NULLP;
    TRC3(packDlData)
@@ -524,22 +517,14 @@ RlcMacData  dlData;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 PUBLIC S16 unpackDlData
 (
-RguDDatReq func,
+RlcMacDlData func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-PUBLIC S16 unpackDlData(func, pst, mBuf)
-RguDDatReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
-//   RguDDatReqInfo *datReq;
    RlcMacData *dlData;
    
    TRC3(unpackDlData)
@@ -693,19 +678,12 @@ RlcMacData  *ulData;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 PUBLIC S16 unpackRcvdUlData
 (
-RguDDatInd func,
+RlcMacUlData func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-PUBLIC S16 unpackRcvdUlData(func, pst, mBuf)
-RguDDatInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    RlcMacData *ulData;
@@ -1029,19 +1007,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 packBOStatus
+PUBLIC uint16_t packBOStatus
 (
 Pst* pst,
 SpId spId,
 RlcMacBOStatus  *boStatus
 )
-#else
-PUBLIC S16 packBOStatus(pst, spId, staRsp)
-Pst* pst;
-SpId spId;
-RlcMacBOStatus  *boStatus;
-#endif
 {
    RlcMacBOStatus  *boStaInfo = NULL;
    Buffer *mBuf = NULLP;
@@ -1123,19 +1094,12 @@ RlcMacBOStatus  *boStatus;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 unpackBOStatus
+PUBLIC uint16_t unpackBOStatus
 (
-RguDStaRsp func,
+RlcMacBoStatus func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-PUBLIC S16 unpackBOStatus(func, pst, mBuf)
-RguDStaRsp func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    RlcMacBOStatus *boSta;
@@ -1419,19 +1383,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 PUBLIC S16 packSchedRep
 (
 Pst* pst,
 SuId suId,
-RlcMacSchedRep  * schRep
+RlcMacSchedRepInfo  * schRep
 )
-#else
-PUBLIC S16 packSchedRep(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RlcMacSchedRep  * schRep;
-#endif
 {
    Buffer *mBuf = NULLP;
    TRC3(packSchedRep)
@@ -1442,7 +1399,7 @@ RlcMacSchedRep  * schRep;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU076, (ErrVal)0, "Packing failed");
 #endif      
-      SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRep));
+      SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRepInfo));
       RETVALUE(RFAILED);
    }
    if (pst->selector == RGU_SEL_LWLC)
@@ -1458,12 +1415,12 @@ RlcMacSchedRep  * schRep;
                (ErrVal)ERGU077, (ErrVal)0, "Packing failed");
 #endif      
         SPutSBuf(pst->region, pst->pool, (Data *)schRep, 
-                                         sizeof(RlcMacSchedRep));
+                                         sizeof(RlcMacSchedRepInfo));
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       } 
       if (SPutSBuf(pst->region, pst->pool, (Data *)schRep,
-                                  sizeof(RlcMacSchedRep)) != ROK) {
+                                  sizeof(RlcMacSchedRepInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -1482,7 +1439,7 @@ RlcMacSchedRep  * schRep;
 #endif      
       if (schRep != NULLP)
       {
-         SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRep));
+         SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRepInfo));
       }
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -1509,23 +1466,15 @@ RlcMacSchedRep  * schRep;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 PUBLIC S16 unpackSchedRep
 (
-RguDStaInd func,
+RlcMacSchedRep func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-PUBLIC S16 unpackSchedRep(func, pst, mBuf)
-RguDStaInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
-//   RguDStaIndInfo *staInd;
-   RlcMacSchedRep *schRep;
+   RlcMacSchedRepInfo *schRep;
    
    TRC3(unpackSchedRep)
 
@@ -1544,7 +1493,7 @@ Buffer *mBuf;
    }
    else 
    {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&schRep, sizeof(RlcMacSchedRep))) != ROK) {
+      if ((SGetSBuf(pst->region, pst->pool, (Data **)&schRep, sizeof(RlcMacSchedRepInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -1560,7 +1509,7 @@ Buffer *mBuf;
              (ErrVal)ERGU082, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRep));
+         SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRepInfo));
          RETVALUE(RFAILED);
       }
    }
@@ -3143,17 +3092,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 PUBLIC S16 packSchedRepInfo
 (
-RlcMacSchedRep *param,
+RlcMacSchedRepInfo *param,
 Buffer *mBuf
 )
-#else
-PUBLIC S16 packSchedRepInfo(param, mBuf)
-RlcMacSchedRep *param;
-Buffer *mBuf;
-#endif
 {
    S32 idx;
 
@@ -3190,17 +3133,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 PUBLIC S16 unpackSchedRepInfo
 (
-RlcMacSchedRep *param,
+RlcMacSchedRepInfo *param,
 Buffer *mBuf
 )
-#else
-PUBLIC S16 unpackSchedRepInfo(param, mBuf)
-RlcMacSchedRep *param;
-Buffer *mBuf;
-#endif
 {
    S32 idx;
 

@@ -421,7 +421,7 @@ typedef struct rlcMacSchedRep
    CmLteRnti    rnti;         /*!< Temporary CRNTI */
    U8           nmbLch;       /*!< Number of logical channels scheduled */
    RlcMacLchSta lchSta[RGU_MAX_LC];  /*!< Scheduled info of logical channels */
-}RlcMacSchedRep;
+}RlcMacSchedRepInfo;
 
 /* UL Data i.e. RLC PDU info from RLC to MAC */
 typedef struct rlcMacPduInfo
@@ -472,7 +472,12 @@ typedef S16 (*RguCDatReq) ARGS((
 typedef S16 (*RguDDatReq) ARGS((
    Pst*                 pst,
    SpId                 spId,
-   RguDDatReqInfo  *    datReq));
+   RguDDatReqInfo       *datReq));
+
+typedef uint16_t (*RlcMacDlData) ARGS((
+   Pst*                 pst,
+   SpId                 spId,
+   RlcMacData           *dlData));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels */
 typedef S16 (*RguCDatInd) ARGS((
@@ -484,7 +489,12 @@ typedef S16 (*RguCDatInd) ARGS((
 typedef S16 (*RguDDatInd) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   RguDDatIndInfo  *    datInd));
+   RguDDatIndInfo       *datInd));
+
+typedef S16 (*RlcMacUlData) ARGS((
+   Pst*                 pst,
+   SuId                 suId,
+   RlcMacData           *ulData));
 /** @brief Status Response from RLC to MAC to 
  * inform the BO report for common channels */
 typedef S16 (*RguCStaRsp) ARGS((
@@ -497,6 +507,12 @@ typedef S16 (*RguDStaRsp) ARGS((
    Pst*                 pst,
    SpId                 spId,
    RguDStaRspInfo  *    staRsp));
+
+typedef uint16_t (*RlcMacBoStatus) ARGS((
+   Pst*                 pst,
+   SpId                 spId,
+   RlcMacBOStatus       *boStatus));
+
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC */
 typedef S16 (*RguCStaInd) ARGS((
@@ -509,6 +525,11 @@ typedef S16 (*RguDStaInd) ARGS((
    Pst*                 pst,
    SuId                 suId,
    RguDStaIndInfo  *    staInd));
+
+typedef uint16_t (*RlcMacSchedRep) ARGS((
+   Pst*                 pst,
+   SuId                 suId,
+   RlcMacSchedRepInfo       *schRep));
 
 typedef S16 (*RguFlowCntrlIndInfo) ARGS((
    Pst                  *pst,
@@ -572,6 +593,9 @@ EXTERN S16 RgUiRguCDatReq ARGS((Pst* pst,SpId spId,RguCDatReqInfo *datReq));
  * @return ROK/RFAILED
 */
 EXTERN S16 RgUiRguDDatReq ARGS((Pst* pst,SpId spId,RguDDatReqInfo  *datReq));
+
+EXTERN uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData);
+
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels
  * @param pst Pointer to the post structure.
@@ -604,6 +628,9 @@ EXTERN S16 RgUiRguCStaRsp ARGS((Pst* pst,SpId spId,RguCStaRspInfo  *staRsp));
  * @return ROK/RFAILED
 */
 EXTERN S16 RgUiRguDStaRsp ARGS((Pst* pst,SpId spId,RguDStaRspInfo  *staRsp));
+
+EXTERN uint16_t MacRlcProcBOStatus(Pst* pst, SpId spId, RlcMacBOStatus* boStatus);
+
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * @param pst Pointer to the post structure.
@@ -718,10 +745,10 @@ EXTERN S16 RlcMacSendBOStatus ARGS((
 
 /**@brief Primitive invoked from MAC to RLC to
  * inform scheduling result for logical channels */
-EXTERN S16 RlcMacProcSchedRep ARGS((
+EXTERN uint16_t RlcMacProcSchedRep ARGS((
    Pst*                 pst,
    SuId                 suId,
-   RlcMacSchedRep       *schRep
+   RlcMacSchedRepInfo       *schRep
 ));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
@@ -825,7 +852,7 @@ EXTERN S16 cmUnpkRguCDatReq ARGS((
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission */
-EXTERN S16 packDlData ARGS((
+EXTERN uint16_t packDlData ARGS((
    Pst*                 pst,
    SpId                 spId,
    RlcMacData      *    datReq
@@ -833,7 +860,7 @@ EXTERN S16 packDlData ARGS((
 /** @brief Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission */
 EXTERN S16 unpackDlData ARGS((
-   RguDDatReq           func,
+   RlcMacDlData         func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
@@ -861,7 +888,7 @@ EXTERN S16 packRcvdUlData ARGS((
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
 EXTERN S16 unpackRcvdUlData ARGS((
-   RguDDatInd           func,
+   RlcMacUlData         func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
@@ -881,15 +908,15 @@ EXTERN S16 cmUnpkRguCStaRsp ARGS((
 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for dedicated channels*/
-EXTERN S16 packBOStatus ARGS((
+EXTERN uint16_t packBOStatus ARGS((
    Pst*                 pst,
    SpId                 spId,
    RlcMacBOStatus*      boStatus
 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for dedicated channels*/
-EXTERN S16 unpackBOStatus ARGS((
-   RguDStaRsp           func,
+EXTERN uint16_t unpackBOStatus ARGS((
+   RlcMacBoStatus       func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
@@ -918,7 +945,7 @@ EXTERN S16 cmUnpkRguCStaInd ARGS((
 EXTERN S16 packSchedRep ARGS((
    Pst*                 pst,
    SuId                 suId,
-   RlcMacSchedRep  *    staInd
+   RlcMacSchedRepInfo   *staInd
 ));
 EXTERN S16 cmPkRguFlowCntrlInfo ARGS((
 RguFlowCntrlInd *param, 
@@ -949,7 +976,7 @@ Buffer           *mBuf
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels. */
 EXTERN S16 unpackSchedRep ARGS((
-   RguDStaInd           func,
+   RlcMacSchedRep       func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
@@ -1087,11 +1114,11 @@ EXTERN S16 cmUnpkRguLchStaInd ARGS((
    Buffer               *mBuf
 ));
 EXTERN S16 packSchedRepInfo ARGS((
-   RlcMacSchedRep       *param,
+   RlcMacSchedRepInfo   *param,
    Buffer               *mBuf
 ));
 EXTERN S16 unpackSchedRepInfo ARGS((
-   RlcMacSchedRep       *param,
+   RlcMacSchedRepInfo   *param,
    Buffer               *mBuf
 ));
   

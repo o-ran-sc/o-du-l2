@@ -1666,7 +1666,7 @@ uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo)
 #ifdef EGTP_TEST
    duSendEgtpSlotInd();    
 #endif
-   DU_FREE_MEM(pst->region, pst->pool, slotInfo, sizeof(SlotInfo));
+   DU_FREE_MEM(RG_MEM_REGION, pst->pool, slotInfo, sizeof(SlotInfo));
    return ROK;
 }
 
