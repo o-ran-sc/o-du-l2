@@ -66,7 +66,7 @@
    _rspPst.dstInst   = 0;\
 	_rspPst.selector  = MAC_SELECTOR_TC;\
 }	
-
+extern uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
 /**
   * @brief
   * Structure holding LTE MAC's General Configuration information.

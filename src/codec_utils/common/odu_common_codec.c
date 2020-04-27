@@ -2,6 +2,30 @@
 
 /*******************************************************************
  *
+ * @brief Writes the encoded chunks into a buffer
+ *
+ * @details
+ *
+ *    Function : PrepFinalEncBuf
+ *
+ *    Functionality:Fills the encoded buffer
+ *
+ * @params[in] void *buffer,initial encoded data
+ * @params[in] size_t size,size of buffer
+ * @params[in] void *encodedBuf,final buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
+{
+   memcpy(encodedBuf + encBufSize, buffer, size);
+   encBufSize += size;
+   return 0;
+} /* PrepFinalEncBuf */
+
+/*******************************************************************
+ *
  * @brief Builds PLMN ID 
  *
  * @details

@@ -7145,7 +7145,7 @@ U8            status;
 
    if(RgUiRgrCfgCfm(&cfmPst,transId, status) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"schSendCfgCfm: RgUiRgrCfgCfm Failed ");
+      RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"schSendCfgCfm: RgUiRgrCfgCfm Failed");
       printf("\nschSendCfgCfm: RgUiRgrCfgCfm Failed ");
       RETVALUE(RFAILED);
    }

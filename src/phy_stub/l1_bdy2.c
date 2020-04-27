@@ -36,6 +36,7 @@ void *GenerateTicks(void *arg)
       l1BuildAndSendSlotIndication();
       counter--;
    }
+   return((void *)NULLP);
 }
 
 void duStartSlotIndicaion()

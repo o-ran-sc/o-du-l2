@@ -19,8 +19,6 @@
 #include "du_mgr_main.h"
 #include "GlobalE2node-gNB-ID.h"
 
-#define ENC_BUF_MAX_LEN 100
-
 /* Global variable */
 DuCfgParams duCfgParam;
 
@@ -277,7 +275,7 @@ S16 BuildRicAdmitList(RICaction_Admitted_List_t *admitListPtr)
       return RFAILED;
    }
    DU_ALLOC(admitListPtr->list.array[0], sizeof(RICaction_Admitted_ItemIEs_t));
-   fillRicAdmitList(admitListPtr->list.array[0]);
+   fillRicAdmitList((RICaction_Admitted_ItemIEs_t *)admitListPtr->list.array[0]);
 
    return ROK;
 }
@@ -519,7 +517,7 @@ S16 procRicSubsReq(E2AP_PDU_t *e2apMsg)
             aper_decode(0, &asn_DEF_RICeventTriggerDefinition, (void **)&ricReqDb.ricEventTrigger, &(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition), recvBufLen, 0, 0);
             xer_fprint(stdout, &asn_DEF_RICeventTriggerDefinition, &ricReqDb.ricEventTrigger);
 
-            actionItem = *ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.list.array;
+            actionItem =(RICaction_ToBeSetup_ItemIEs_t *) ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.list.array[0];
             
             for(ied = 0; ied < ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
                                 RICsubscriptionDetails.ricAction_ToBeSetup_List.list.count; ied++)

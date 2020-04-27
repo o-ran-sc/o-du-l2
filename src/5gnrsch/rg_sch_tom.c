@@ -3869,11 +3869,9 @@ PRIVATE S16 rgSCHTomUtlFillHqFdbkFor5gtf (recpReqInfo, cell, validIdx, hqCb, dlS
    Inst                 inst = cell->instIdx;
 #endif
    S16                  ret;
-   CmLList              *hqPNode;
    RgSchUeCb            *ue;
    TfuUePucchRecpReq    *pucchReqInfo = NULLP;
 
-   hqPNode = dlSfHqInfo->hqPLst.first;
    ue = (RgSchUeCb*)dlSfHqInfo->dlSfUeLnk.node;
    
    if (ue == NULLP)

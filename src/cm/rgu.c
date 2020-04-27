@@ -696,13 +696,13 @@ RlcMacData  *ulData;
 #ifdef ANSI
 PUBLIC S16 unpackRcvdUlData
 (
-RguDDatInd func,
+RguDDatInd            func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
 PUBLIC S16 unpackRcvdUlData(func, pst, mBuf)
-RguDDatInd func;
+RguDDatInd      func;
 Pst *pst;
 Buffer *mBuf;
 #endif

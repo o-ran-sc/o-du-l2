@@ -253,26 +253,27 @@ extern uint16_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mB
 extern uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo);
 
 /* Function pointers for packing macCellCfg Request and Confirm */
-typedef uint16_t (*packMacCellCfgReq) ARGS((
+typedef int (*packMacCellCfgReq) ARGS((
    Pst           *pst,
    MacCellCfg    *macCellCfg ));
 
-typedef uint16_t (*packMacCellCfgConfirm) ARGS((
+typedef int (*packMacCellCfgConfirm) ARGS((
    Pst              *pst,
    MacCellCfgCfm    *macCellCfgCfm ));
 
-typedef uint16_t (*DuMacCellCfgReq) ARGS((
+typedef int (*DuMacCellCfgReq) ARGS((
    Pst        *pst,        
    MacCellCfg *macCellCfg));
 
-typedef uint16_t (*DuMacCellCfgCfm) ARGS((
+typedef int (*DuMacCellCfgCfm) ARGS((
+   Pst        *pst,        
    MacCellCfgCfm *macCellCfgCfm ));
 
-extern uint16_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
+extern int  packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
 extern int MacHdlCellCfgReq(Pst *pst, MacCellCfg *macCellCfg);
 extern void cmUnpackLwLcMacCellCfg(DuMacCellCfgReq func, Pst *pst, Buffer *mBuf);
-extern uint16_t unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf);
-extern uint16_t duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm);
+extern int unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf);
+extern int duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 
 #endif
 

@@ -4871,7 +4871,7 @@ U8              *hqProcIdRef;
          rgSCHUhmNewTx(hqProc, (U8)(cell->rachCfg.maxMsg3Tx - 1), alloc);
          //RLOG_ARG4(L_DEBUG,DBG_CELLID,cell->cellId,
          printf(
-               "\nRNTI:%d MSG3 ALLOC proc(%p)procId(%d)schdIdx(%d)\n",
+               "\nRNTI:%d MSG3 ALLOC proc(%lu)procId(%d)schdIdx(%d)\n",
                alloc->rnti,
                ((PTR)alloc->hqProc),
                alloc->hqProc->procId,

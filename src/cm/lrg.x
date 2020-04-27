@@ -653,7 +653,7 @@ EXTERN S16 RgMiLrgCfgReq ARGS((Pst *pst, RgMngmt *cfg));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 MacSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+EXTERN int MacSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
 
  /** @brief This primitive carries the Confirmation for a Configuration Request
   * sent from the layer manager to MAC.
