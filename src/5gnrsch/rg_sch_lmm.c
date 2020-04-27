@@ -86,7 +86,7 @@ static int RLOG_FILE_ID=167;
 PUBLIC Void rgSCHCmnInit ARGS((Void));
 #endif 
 /* forward references */
-
+EXTERN int schActvInit(Ent entity, Inst instId, Region region, Reason reason);
 #ifdef UNUSE_FUN
 PRIVATE U16 rgSCHLmmSapCfg ARGS((
    Inst           inst,

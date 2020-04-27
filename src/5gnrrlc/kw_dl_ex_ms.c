@@ -516,7 +516,7 @@ Buffer *mBuf;           /* message buffer */
                   }
                case EVTSCHREP:    /* Dedicated Channel Status Response */
                   {
-                     ret = unpackSchedRep(RlcMacProcSchedRep, pst, mBuf);
+                     ret = unpackSchedRep((RguDStaInd)RlcMacProcSchedRep, pst, mBuf);
                      break;
                   }
                   /* kw005.201 added support for L2 Measurement */

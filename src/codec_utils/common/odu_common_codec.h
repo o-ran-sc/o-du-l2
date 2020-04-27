@@ -39,36 +39,12 @@ typedef struct PlmnIdentity
    uint8_t mnc[3];
 }Plmn;
 
+int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf);
 S16 buildPlmnId(Plmn plmn, OCTET_STRING_t *octe);
 S16 fillBitString(BIT_STRING_t *id, U8 unusedBits, U8 byteSize, U8 val);
 
 char encBuf[ENC_BUF_MAX_LEN];
 int  encBufSize;
-
-
-/*******************************************************************
- *
- * @brief Writes the encoded chunks into a buffer
- *
- * @details
- *
- *    Function : PrepFinalEncBuf
- *
- *    Functionality:Fills the encoded buffer
- *
- * @params[in] void *buffer,initial encoded data
- * @params[in] size_t size,size of buffer
- * @params[in] void *encodedBuf,final buffer
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-static int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
-{
-   memcpy(encodedBuf + encBufSize, buffer, size);
-   encBufSize += size;
-   return 0;
-} /* PrepFinalEncBuf */
 
 #endif
 

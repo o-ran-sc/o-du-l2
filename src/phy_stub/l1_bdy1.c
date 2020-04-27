@@ -195,6 +195,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
 #else
    return ROK;
 #endif
+   return ROK;
 }
 /*******************************************************************
  *

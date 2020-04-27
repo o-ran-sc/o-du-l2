@@ -2104,14 +2104,14 @@ Pst           *cfmPst
  *  @return  S16
  *      -# ROK
  **/
-int MacHdlCellCfgReq
+uint16_t MacHdlCellCfgReq
 (
  Pst           *pst,
  MacCellCfg    *macCellCfg
 )
 {
    Pst cfmPst;
-   int ret = ROK;
+   uint16_t ret = ROK;
    RgCellCb      *cellCb;
 	MacCellCb     *macCellCb;
    Inst inst = pst->dstInst;

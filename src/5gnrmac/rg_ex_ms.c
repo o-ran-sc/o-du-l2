@@ -114,7 +114,7 @@ Buffer  *mBuf;                      /* message buffer       */
          break;
       case EVTMACSCHGENCFGREQ:
          /* Process a config. request */
-         cmUnpkLrgSchCfgReq(MacSchGenCfgReq, pst, mBuf);
+         cmUnpkLrgSchCfgReq((LrgSchCfgReq)MacSchGenCfgReq, pst, mBuf);
          break;
       case EVTLRGCNTRLREQ:
          /* Process a control request */
@@ -131,7 +131,7 @@ Buffer  *mBuf;                      /* message buffer       */
 #endif /* LCRGMILRG */
       case EVENT_MAC_CELL_CONFIG_REQ:
          /* Process MAC cell config */
-         unpackDuMacCellCfg(MacHdlCellCfgReq, pst, mBuf);
+         unpackDuMacCellCfg((DuMacCellCfgReq)MacHdlCellCfgReq, pst, mBuf);
          break;
       case EVENT_MAC_CELL_START_REQ:
          /* Process MAC cell start request */

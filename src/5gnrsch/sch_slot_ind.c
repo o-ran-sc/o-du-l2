@@ -69,7 +69,8 @@ SchMacDlAllocFunc schMacDlAllocOpts[] =
 };
 
 extern SchCb schCb[SCH_MAX_INST];
-
+extern uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t
+offsetPointA);
 
 /*******************************************************************
  *

@@ -266,13 +266,14 @@ typedef uint16_t (*DuMacCellCfgReq) ARGS((
    MacCellCfg *macCellCfg));
 
 typedef uint16_t (*DuMacCellCfgCfm) ARGS((
+   Pst        *pst,        
    MacCellCfgCfm *macCellCfgCfm ));
 
 extern uint16_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
-extern int MacHdlCellCfgReq(Pst *pst, MacCellCfg *macCellCfg);
+extern uint16_t MacHdlCellCfgReq(Pst *pst, MacCellCfg *macCellCfg);
 extern void cmUnpackLwLcMacCellCfg(DuMacCellCfgReq func, Pst *pst, Buffer *mBuf);
 extern uint16_t unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf);
-extern uint16_t duHandleMacCellCfgCfm(MacCellCfgCfm *macCellCfgCfm);
+extern uint16_t duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 
 #endif
 
