@@ -63,6 +63,51 @@ extern void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg);
 
 /*******************************************************************
  *
+ * @brief Processes DL data from RLC
+ *
+ * @details
+ *
+ *    Function : MacRlcProcDlData 
+ *
+ *    Functionality:
+ *      Processes DL data from RLC
+ *
+ * @params[in] Post structure
+ *             DL data
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData)
+{
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes BO status from RLC
+ *
+ * @details
+ *
+ *    Function : MacRlcProcBOStatus
+ *
+ *    Functionality:
+ *      Processes BO status from RLC
+ *
+ * @params[in] Post structure
+ *             BO status
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t MacRlcProcBOStatus(Pst* pst, SpId spId, RlcMacBOStatus*      boStatus)
+{
+   return ROK;
+}
+
+
+/*******************************************************************
+ *
  * @brief Handles cell start reuqest from DU APP
  *
  * @details

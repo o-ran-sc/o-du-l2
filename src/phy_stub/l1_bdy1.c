@@ -334,7 +334,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
 {
 #ifdef FAPI
    fapi_slot_ind_t *slotIndMsg;
-   if(SGetSBuf(0, 0, (Data **)&slotIndMsg, sizeof(slotIndMsg)) != ROK)
+   if(SGetSBuf(0, 0, (Data **)&slotIndMsg, sizeof(fapi_slot_ind_t)) != ROK)
    {
        DU_LOG("\nPHY_STUB: Memory allocation failed for slot Indication Message");
        return RFAILED;
@@ -357,7 +357,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
       fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
       DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
       handlePhyMessages(slotIndMsg->header.message_type_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
-      SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(slotIndMsg));
+      SPutSBuf(0, 0, (Data *)slotIndMsg, sizeof(fapi_slot_ind_t));
    }
 #endif
    return ROK;
