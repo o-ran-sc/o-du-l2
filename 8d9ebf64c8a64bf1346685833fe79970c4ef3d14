@@ -1,0 +1,344 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "84e49c01_0e795184",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2231,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "if rbStart is to be assigned 0 always for SIB1, then the commented line can be removed.\nElse we can remove hardcoding and uncomment this line and assign \"sib1PdcchInfo-\u003edci.pdschCfg-\u003efreqAlloc.rbStart\" to 0",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6757f5cb_b5b6d407",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2369,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Remove comment since this is for RAR and not SIB1",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0de4f889_35fc3831",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2370,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Instead of hardcoding rbStart to 0, rbStart be filling using this line itself where \"rarPdcchInfo-\u003edci.pdschCfg-\u003efreqAlloc.rbStart\" is 0",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e048e118_ab2e381a",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2644,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Should this not be allocated from WLS memory?",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35862724_03fa79bd",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2647,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Memory allocation failed error print",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "508fa67f_5d6cd640",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2697,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Should this not be allocated from WLS memory? Since any memory that PHY is supposed to access should be assigned from WLS",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "839a716e_c9f49655",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2822,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Add Print before sending \"LOWER MAC: Sending DL TTI Request\"",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1aecd7d7_080df06c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2869,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Add Print before sending \"LOWER MAC: Sending Tx Data Request\"",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1106e194_9bf06647",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2888,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Add Print before sending \"LOWER MAC: Sending Tx Data Request\"",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "887cbe13_084f9802",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2897,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Add Print before sending \"LOWER MAC: Sending DL TTI Request\"",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0dc9c89_7c067def",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "We have a mac_sch_interface.h in cm. Do we need another file rg_sch_in.h for MAC-SCH interaction?",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6987b895_34c11413",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Add function description",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85d87456_82d119f7",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Add function description",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "132f691a_c5c9c125",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "fapiMacSlotInd() handler can be moved from rg_lim.c to here",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82ced699_7b87a6eb",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Add function description",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "378345c6_506a0ed5",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Add function description",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "991a607a_4c4f69b8",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Can we not implement the formula itself so as to make it generic for future pusposes. Can be done later.",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e77df1a9_395c8874",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Add function description for all functions in this file",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6bfae76_710c9cb2",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Remove commented line",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ea699c9_643ce89a",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-27T08:18:33Z",
+      "side": 1,
+      "message": "Can we not implement the formula itself so as to make it generic for future pusposes. Can be done later.",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
