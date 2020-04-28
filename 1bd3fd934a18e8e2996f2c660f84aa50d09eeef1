@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd0b5cc7_8fbb9977",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1377,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-28T11:53:24Z",
+      "side": 1,
+      "message": "MAC_ALLOC can be replaced with LWR_MAC_ALLOC",
+      "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4fe1cf59_e5e6bd74",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1962,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-28T11:53:24Z",
+      "side": 1,
+      "message": "why LWR_MAC_ALLOC cant be used here ?",
+      "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cc9382c_70dde404",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-28T11:53:24Z",
+      "side": 1,
+      "message": "msgLen +\u003d sizeof(fapi_param_resp_t) - sizeof(fapi_msg_t);",
+      "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05654fca_3128ce3e",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-28T11:53:24Z",
+      "side": 1,
+      "message": "msgLen +\u003d sizeof(fapi_param_resp_t) - sizeof(fap_msg_t)",
+      "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
