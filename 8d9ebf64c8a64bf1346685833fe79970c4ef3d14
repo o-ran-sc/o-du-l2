@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "092a1ecd_6afe29ed",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2140,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "80 characters per line",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f774ffa_7b328d57",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2217,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "since the beam values are not sent by SCH for now, we can remove from the interface and fill it as we do in RACH",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "84e49c01_0e795184",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -13,6 +47,40 @@
       "writtenOn": "2020-04-27T08:18:33Z",
       "side": 1,
       "message": "if rbStart is to be assigned 0 always for SIB1, then the commented line can be removed.\nElse we can remove hardcoding and uncomment this line and assign \"sib1PdcchInfo-\u003edci.pdschCfg-\u003efreqAlloc.rbStart\" to 0",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "efa5c334_62c2a0d8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2231,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "why is this line commented? doesn\u0027t scheduler update this value even if it is 0?",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3cc0677_2dbd6069",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2325,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "better initialize all these to 0",
       "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -53,6 +121,57 @@
     },
     {
       "key": {
+        "uuid": "0b53a762_c767efb1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2370,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "why is this line commenteD?",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01c75485_de65e2f7",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2602,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "we can add a comment saying this is for PDCCH and PDSCH and hence 2",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54a1909c_c189adf0",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2606,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "if we are not sending sib1 and rach together, why are we updating counter for both occurrences?",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e048e118_ab2e381a",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -87,6 +206,40 @@
     },
     {
       "key": {
+        "uuid": "45174ca8_22cd40de",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2654,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "we can have a macro for Length and index and numTLV value to arrive at this",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b379c728_1b767a46",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2661,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "WLS has been implemented. Therefore free of this must be in phy stub",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "508fa67f_5d6cd640",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -104,6 +257,23 @@
     },
     {
       "key": {
+        "uuid": "9ced5bbf_6de9cc91",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2777,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "we can have an immediate check for NULL here and avoid having more checks down in this function",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "839a716e_c9f49655",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -115,6 +285,23 @@
       "writtenOn": "2020-04-27T08:18:33Z",
       "side": 1,
       "message": "Add Print before sending \"LOWER MAC: Sending DL TTI Request\"",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e87b08d_d5336439",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2858,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "add null check for assigned memory and add support for WLS",
       "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -166,6 +353,40 @@
       "writtenOn": "2020-04-27T08:18:33Z",
       "side": 1,
       "message": "Add Print before sending \"LOWER MAC: Sending DL TTI Request\"",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ee536bb_fa345479",
+        "filename": "src/5gnrmac/lwr_mac_fsm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "since we return ROK/RFAILED from this function. This has to be int",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3d57c02_61436fee",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "better to use _ instead of -. This has been fixed as part of warnings",
       "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -291,6 +512,91 @@
     },
     {
       "key": {
+        "uuid": "9a44723e_a989a078",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "make this to 1 for now",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fef6abfd_3d4095d9",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "typo for P_RNTI?",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b27ff098_340a9aab",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "change to int since RFAILED is a valid return type",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "180cc785_6588759f",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "can we not avoid hardcoding?",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "132aff91_f8be797f",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "must be int",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e77df1a9_395c8874",
         "filename": "src/5gnrsch/sch_rach.c",
         "patchSetId": 1
@@ -302,6 +608,23 @@
       "writtenOn": "2020-04-27T08:18:33Z",
       "side": 1,
       "message": "Add function description for all functions in this file",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "453a40e3_34ae75f2",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "we can take instance of raCb as input instead of hardcoding to 0",
       "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -336,6 +659,23 @@
       "writtenOn": "2020-04-27T08:18:33Z",
       "side": 1,
       "message": "Can we not implement the formula itself so as to make it generic for future pusposes. Can be done later.",
+      "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "240222b0_c8fc37cc",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-28T09:12:25Z",
+      "side": 1,
+      "message": "change to int",
       "revId": "8d9ebf64c8a64bf1346685833fe79970c4ef3d14",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
