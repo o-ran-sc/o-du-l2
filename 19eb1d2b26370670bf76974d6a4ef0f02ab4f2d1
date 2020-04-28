@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b8b5a05a_b79a6791",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-28T10:24:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c61beaf_ddbfa613",
+      "revId": "19eb1d2b26370670bf76974d6a4ef0f02ab4f2d1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ca3242c3_27f0f7df",
         "filename": "src/5gnrsch/sch_slot_ind.c",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "19eb1d2b26370670bf76974d6a4ef0f02ab4f2d1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "befe32e1_b8c43491",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-28T10:24:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca3242c3_27f0f7df",
+      "revId": "19eb1d2b26370670bf76974d6a4ef0f02ab4f2d1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "83fcfb2a_2e0e1872",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-28T10:24:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebe02164_cce95496",
+      "revId": "19eb1d2b26370670bf76974d6a4ef0f02ab4f2d1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b9ab997e_2392f737",
         "filename": "src/cm/du_app_mac_inf.c",
         "patchSetId": 2
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "0f4bfcda_a5158661",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-28T10:24:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9ab997e_2392f737",
+      "revId": "19eb1d2b26370670bf76974d6a4ef0f02ab4f2d1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "09952b33_1355c078",
         "filename": "src/phy_stub/l1_bdy2.c",
         "patchSetId": 2
@@ -81,6 +153,24 @@
       "writtenOn": "2020-04-28T06:45:35Z",
       "side": 1,
       "message": "this is a void function. Why should we return?",
+      "revId": "19eb1d2b26370670bf76974d6a4ef0f02ab4f2d1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe76da6f_13a8eb29",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-04-28T10:24:23Z",
+      "side": 1,
+      "message": "this func called inside pthread_create , and it need to void * rather then void .\nso thats why it is returning void *",
+      "parentUuid": "09952b33_1355c078",
       "revId": "19eb1d2b26370670bf76974d6a4ef0f02ab4f2d1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
