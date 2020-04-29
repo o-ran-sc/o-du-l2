@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "876348a2_3150458e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1962,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-04-29T07:42:04Z",
+      "side": 1,
+      "message": "unsuedRootSeq is allocated memory twice. Also, malloc we thought we will not use.",
+      "revId": "92d4fb76c608f1d9c37e4b40d4f9c9c1b3ca9f33",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
