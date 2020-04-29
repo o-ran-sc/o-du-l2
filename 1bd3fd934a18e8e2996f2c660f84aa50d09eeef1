@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d3f3ca63_e4ff4051",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1377,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-29T06:38:43Z",
+      "side": 1,
+      "message": "cellParam is an internal structure and not a member of FAPI message, thats why MAC_ALLOC was used.\n\nLWR_MAC_ALLOC macro will only be used at places where we are currently assigning MAC  memory but later we will have to use WLS memory",
+      "parentUuid": "bd0b5cc7_8fbb9977",
+      "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4fe1cf59_e5e6bd74",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4455044_bda7e3ab",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1962,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-29T06:38:43Z",
+      "side": 1,
+      "message": "This is a temporary change to avoid seg fault.",
+      "parentUuid": "4fe1cf59_e5e6bd74",
+      "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "f74e548a_98687421",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-29T06:38:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cc9382c_70dde404",
+      "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "05654fca_3128ce3e",
         "filename": "src/phy_stub/l1_bdy1.c",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1e3bf0e_873352ee",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-04-29T06:38:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05654fca_3128ce3e",
+      "revId": "1bd3fd934a18e8e2996f2c660f84aa50d09eeef1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
