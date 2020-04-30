@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c8396df5_8d6637f6",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1332,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-30T08:08:41Z",
+      "side": 1,
+      "message": "should we be freeing this here or at phy stub??? Similar comments to all the messages we are sending to phy stub and not using wls",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4000a4c3_f7980608",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-30T08:08:41Z",
+      "side": 1,
+      "message": "we must change this to int. This is because when the function gets implemented, there is a possibility to return RFAILED which is -1. So, update to int",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c80a44c2_0c23e8c9",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-30T08:08:41Z",
+      "side": 1,
+      "message": "change to int",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98f90b61_df7e4f14",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-30T08:08:41Z",
+      "side": 1,
+      "message": "change to int",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcf55ede_c6b2281c",
+        "filename": "src/cm/rgu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-30T08:08:41Z",
+      "side": 1,
+      "message": "change to int",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4022c50d_36dded46",
+        "filename": "src/cm/rgu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-30T08:08:41Z",
+      "side": 1,
+      "message": "common comment to all return types. it cannot be unsigned int",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d90b7bc_b8be146f",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1669,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-30T08:08:41Z",
+      "side": 1,
+      "message": "can we change RG_MEM_REGION to MAC_MEM_REGION?",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ef5f6dd_a8bf0981",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-04-30T08:08:41Z",
+      "side": 1,
+      "message": "lets use a macro instead of using SPutSBuf/ SGetSBuf",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
