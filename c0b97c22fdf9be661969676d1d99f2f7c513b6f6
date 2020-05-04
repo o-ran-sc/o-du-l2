@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2222731b_0e0e00bd",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1332,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-04T08:52:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8396df5_8d6637f6",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4000a4c3_f7980608",
         "filename": "src/5gnrmac/mac_msg_hdl.c",
         "patchSetId": 5
@@ -33,6 +51,24 @@
       "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "265e4487_23403449",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-04T08:52:03Z",
+      "side": 1,
+      "message": "RFAILED is defined to 1 and ROK to 0. so unsigned integer should not cause issue.",
+      "parentUuid": "4000a4c3_f7980608",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "3cd3c32d_da116591",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-04T08:52:03Z",
+      "side": 1,
+      "message": "RFAILED is defined to 1 and ROK to 0. so unsigned integer should not cause issue.",
+      "parentUuid": "c80a44c2_0c23e8c9",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "98f90b61_df7e4f14",
         "filename": "src/5gnrrlc/kw_lim.c",
         "patchSetId": 5
@@ -67,6 +121,24 @@
       "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4faa70ac_27016add",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-04T08:52:03Z",
+      "side": 1,
+      "message": "RFAILED is defined to 1 and ROK to 0. so unsigned integer should not cause issue.",
+      "parentUuid": "98f90b61_df7e4f14",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "153df321_025cd04f",
+        "filename": "src/cm/rgu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-04T08:52:03Z",
+      "side": 1,
+      "message": "RFAILED is defined to 1 and ROK to 0. so unsigned integer should not cause issue.",
+      "parentUuid": "bcf55ede_c6b2281c",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4022c50d_36dded46",
         "filename": "src/cm/rgu.c",
         "patchSetId": 5
@@ -101,6 +191,24 @@
       "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b21a92e3_3136baea",
+        "filename": "src/cm/rgu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-04T08:52:03Z",
+      "side": 1,
+      "message": "RFAILED is defined to 1 and ROK to 0. so unsigned integer should not cause issue.",
+      "parentUuid": "4022c50d_36dded46",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "6f8d8a8c_75557027",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1669,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-04T08:52:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d90b7bc_b8be146f",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ef5f6dd_a8bf0981",
         "filename": "src/phy_stub/l1_bdy1.c",
         "patchSetId": 5
@@ -135,6 +261,24 @@
       "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7cfae52a_88eb853d",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-04T08:52:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ef5f6dd_a8bf0981",
+      "revId": "c0b97c22fdf9be661969676d1d99f2f7c513b6f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
