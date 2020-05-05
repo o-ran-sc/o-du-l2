@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e72aec1_89c15f1b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 976,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "initializing these variables to 0",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fb9443a_1d83c636",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "intialize these pointers to NULLP",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b04b86f9_a31dc643",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 990,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "you can use do-while loop",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afd4411f_61957873",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1013,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "sizeof ( F1SetupRequestIEs_t * ) \nit should be  sizeof ( F1SetupRequestIEs_t )",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84fdbd8a_6fb23a2e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1078,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "char* is requiered is it? \nAlso, we can fix this in 2 lines",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71f132b9_3419fab2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1134,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "some compilers does not accept int i declaration inside for loop",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08b19ff8_3d72be01",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1197,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "* should be I guess in sizeof(SliceSupportItem_t *)",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3af23c5a_5233dc3a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "replace by typedef defination",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e123a8b4_83a13aca",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1215,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "we can replace (struct ServedPLMNs_Item *) to (ServedPLMNs_Item_t)",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e09ba231_8f116ed7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1234,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-05T09:43:56Z",
+      "side": 1,
+      "message": "* should not be at sizeof(GNB_DU_Served_Cells_ItemIEs_t *)",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
