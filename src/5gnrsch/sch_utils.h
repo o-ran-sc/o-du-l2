@@ -22,7 +22,7 @@
 #define MAX_CORESET_INDEX      16
 #define MAX_SEARCH_SPACE_INDEX 16
 #define MAX_RACH_NUM_RB_IDX    16
-#define MAX_PRACH_CONFIG_IDX   255
+#define MAX_PRACH_CONFIG_IDX   256
 
 #define SET_BITS(_startBit, _numBits, _byte)                                \
 {                                                            \
