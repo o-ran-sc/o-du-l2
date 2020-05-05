@@ -59,6 +59,7 @@ typedef struct e2apDb
   U32     ricActionType;
 }E2apMsgDb;
 
+E2apMsgDb e2apMsgDb;
 S16 BuildAndSendE2SetupReq();
 S16 SendE2APMsg(Region , Pool );
 void E2APMsgHdlr(Buffer *mBuf);

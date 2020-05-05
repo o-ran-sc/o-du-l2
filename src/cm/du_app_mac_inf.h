@@ -17,8 +17,8 @@
 *******************************************************************************/
 
 /* Defines APIs exchanged between du_app and cl module of MAC */
-#ifndef __MACINT_H__
-#define __MACINT_H__
+#ifndef __DU_APP_MAC_INF_H__
+#define __DU_APP_MAC_INF_H__
 
 #define NUM_NUMEROLOGY 5  /* Number of numerology */
 #define MAXIMUM_TDD_PERIODICITY 5
@@ -274,7 +274,8 @@ extern int MacHdlCellCfgReq(Pst *pst, MacCellCfg *macCellCfg);
 extern void cmUnpackLwLcMacCellCfg(DuMacCellCfgReq func, Pst *pst, Buffer *mBuf);
 extern int unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf);
 extern int duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
-
+extern S16 BuildAndSendRicIndication();
+extern Bool ricIndFlag;
 #endif
 
 /**********************************************************************
