@@ -74,7 +74,7 @@ S16 l1BldAndSndParamRsp(void *msg)
 #ifdef FAPI
    uint8_t index = 0;
    uint32_t msgLen = 0;
-	fapi_param_resp_t *fapiParamRsp;
+	fapi_param_resp_t *fapiParamRsp = NULLP;
 	
 	MAC_ALLOC(fapiParamRsp, sizeof(fapi_param_resp_t));
 	if(!fapiParamRsp)
@@ -186,7 +186,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
 {
 #ifdef FAPI
    uint32_t msgLen = 0;
-   fapi_config_resp_t *fapiConfigRsp;
+   fapi_config_resp_t *fapiConfigRsp = NULLP;
 
    MAC_ALLOC(fapiConfigRsp, sizeof(fapi_config_resp_t));
    if(!fapiConfigRsp)
@@ -315,8 +315,8 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
 #ifdef FAPI
    uint8_t   rachPduIdx = 0; 
    uint8_t   preamIdx = 0;
-   fapi_rach_pdu_t  *rachPdu;
-   fapi_rach_indication_t  *rachInd;
+   fapi_rach_pdu_t  *rachPdu = NULLP;
+   fapi_rach_indication_t  *rachInd = NULLP;
 
    /* Building RACH indication */
 	MAC_ALLOC(rachInd, sizeof(fapi_rach_indication_t));
@@ -374,7 +374,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
 PUBLIC uint16_t l1BuildAndSendSlotIndication()
 {
 #ifdef FAPI
-   fapi_slot_ind_t *slotIndMsg;
+   fapi_slot_ind_t *slotIndMsg = NULLP;
 
    MAC_ALLOC(slotIndMsg, sizeof(fapi_slot_ind_t));
 	if(!slotIndMsg)

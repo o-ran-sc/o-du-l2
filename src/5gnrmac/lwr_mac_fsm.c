@@ -74,9 +74,8 @@
 
 extern void fapiMacConfigRsp();
 extern uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX];
-
+extern void fillRarPdu(RarInfo *rarInfo);
 /* Global variables */
-SlotIndInfo slotIndInfo;
 uint8_t slotIndIdx;
 
 void lwrMacInit()
@@ -1898,6 +1897,7 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
 #ifdef FAPI
    uint8_t index = 0;
    uint32_t msgLen = 0;
+   uint32_t totalSize = 0;
    uint32_t configReqSize;
    RgCellCb  *cellParams;
    MacCellCfg macCfgParams;
@@ -1986,9 +1986,10 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
       fillTlvs(&configReq->tlvs[index++], FAPI_RSSI_MESUREMENT_TAG,            sizeof(uint8_t), macCfgParams.rssiUnit, &msgLen);
 
       fillMsgHeader(&configReq->header, FAPI_CONFIG_REQUEST, msgLen);
+      totalSize = msgLen + configReqSize;
       DU_LOG("\nLOWER_MAC: Sending Config Request to Phy");
       /* TODO : Recheck the size / msglen to be sent to WLS_Put*/
-      LwrMacSendToPhy(configReq->header.message_type_id, msgLen, (void *)configReq);
+      LwrMacSendToPhy(configReq->header.message_type_id, totalSize, (void *)configReq);
       return ROK;
    }
    else
@@ -2087,9 +2088,9 @@ S16 lwr_mac_handleStopReqEvt(void *msg)
  *             pointer to modified value
  ******************************************************************/
 
-PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val)
+PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
 {
-   *mibPdu |= (((uint8_t)(slotIndInfo.sfn >> 2)) & MIB_SFN_BITMASK);
+   *mibPdu |= (((uint8_t)(sfn >> 2)) & MIB_SFN_BITMASK);
    *val = (mibPdu[0] << 24 | mibPdu[1] << 16 | mibPdu[2] << 8);
     DU_LOG("\nLOWER MAC: value filled %x", *val);
 }
@@ -2115,8 +2116,7 @@ PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val)
  ******************************************************************/
 
 S16 fillSsbPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, MacCellCfg *macCellCfg,
-	MacDlSlot *currDlSlot,
-	uint32_t *msgLen, uint8_t ssbIdxCount) 
+ MacDlSlot *currDlSlot, uint32_t *msgLen, uint8_t ssbIdxCount, uint16_t sfn) 
 {
    uint32_t mibPayload = 0;
    if(dlTtiReqPdu != NULL)
@@ -2130,7 +2130,7 @@ S16 fillSsbPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, MacCellCfg *macCellCfg,
       dlTtiReqPdu->u.ssb_pdu.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
       dlTtiReqPdu->u.ssb_pdu.bchPayloadFlag = macCellCfg->ssbCfg.bchPayloadFlag;
       /* Bit manipulation for SFN */
-      setMibPdu(macCellCfg->ssbCfg.mibPdu, &mibPayload);
+      setMibPdu(macCellCfg->ssbCfg.mibPdu, &mibPayload, sfn);
       dlTtiReqPdu->u.ssb_pdu.bchPayload.v.bchPayload = mibPayload;
       dlTtiReqPdu->u.ssb_pdu.preCodingAndBeamforming.numPrgs = 0;
       dlTtiReqPdu->u.ssb_pdu.preCodingAndBeamforming.prgSize = 0;
@@ -2727,6 +2727,7 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 	uint8_t nPdu = 0;
 	uint8_t numPduEncoded = 0;
 	uint32_t msgLen = 0;
+	uint32_t totalSize = 0;
 	fapi_dl_tti_req_t *dlTtiReq = NULLP;
 	fapi_tx_data_req_t *txDataReq = NULLP;
 	RgCellCb  *cellCbParams = NULLP;
@@ -2770,7 +2771,7 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 								{
 									if(idx > 0)
 										dlTtiReq->pdus++;
-									fillSsbPdu(&dlTtiReq->pdus[numPduEncoded], &macCellCfg, currDlSlot, &msgLen, idx);
+									fillSsbPdu(&dlTtiReq->pdus[numPduEncoded], &macCellCfg, currDlSlot, &msgLen, idx, dlTtiReq->sfn);
 									numPduEncoded++;
 								}
 							}
@@ -2802,14 +2803,16 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
 					}
 
 					msgLen += sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
+                                        totalSize = msgLen + sizeof(fapi_msg_t);
 					fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
 					/* TODO : Recheck the size / msglen to be sent to WLS_Put*/
-					LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
+					LwrMacSendToPhy(dlTtiReq->header.message_type_id, totalSize, (void *)dlTtiReq);
 
                /* send TX_Data request message */
                if(currDlSlot->dlInfo.brdcstAlloc.sib1Trans)
                {
                   msgLen = 0;
+                  totalSize = 0;
                   LWR_MAC_ALLOC(txDataReq,sizeof(fapi_tx_data_req_t));
                   txDataReq->sfn = dlTtiReqtimingInfo->sfn;
                   txDataReq->slot = dlTtiReqtimingInfo->slot;
@@ -2822,12 +2825,14 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
                         currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg.pduIndex,
                         &msgLen);
                   msgLen += sizeof(fapi_tx_data_req_t) - sizeof(fapi_msg_t);
+                  totalSize = msgLen + sizeof(fapi_msg_t);
                   fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, msgLen);
-                  LwrMacSendToPhy(txDataReq->header.message_type_id, msgLen,(void *)txDataReq);
+                  LwrMacSendToPhy(txDataReq->header.message_type_id, totalSize,(void *)txDataReq);
                }
                if(currDlSlot->dlInfo.isRarPres)
                {
                   msgLen = 0;
+                  totalSize = 0;
 						/* mux and form RAR pdu */
 						fillRarPdu(&currDlSlot->dlInfo.rarAlloc.rarInfo);
                   LWR_MAC_ALLOC(txDataReq,sizeof(fapi_tx_data_req_t));
@@ -2841,16 +2846,19 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *dlTtiReqtimingInfo)
                         &currDlSlot->dlInfo.rarAlloc.rarInfo,
                         currDlSlot->dlInfo.rarAlloc.rarPdschCfg.pduIndex,
                         &msgLen);
+                  msgLen += sizeof(fapi_tx_data_req_t) - sizeof(fapi_msg_t);
+                  totalSize = msgLen + sizeof(fapi_msg_t);
                   fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, msgLen);
-                  LwrMacSendToPhy(txDataReq->header.message_type_id, msgLen,(void *)txDataReq);
+                  LwrMacSendToPhy(txDataReq->header.message_type_id, totalSize,(void *)txDataReq);
                }
 				}
 				else
 				{
 					msgLen = sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
+                                        totalSize = msgLen + sizeof(fapi_msg_t);
 					fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
 					/* TODO : Recheck the size / msglen to be sent to WLS_Put*/
-					LwrMacSendToPhy(dlTtiReq->header.message_type_id, msgLen, (void *)dlTtiReq);
+					LwrMacSendToPhy(dlTtiReq->header.message_type_id, totalSize, (void *)dlTtiReq);
 				}
 				return ROK;
 			}
@@ -3005,10 +3013,11 @@ void fillPrachPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, Ma
  *         RFAILED - failure
  *
  ******************************************************************/
-S16 handleUlTtiReq(CmLteTimingInfo *currTimingInfo)
+uint16_t handleUlTtiReq(CmLteTimingInfo *currTimingInfo)
 {
 #ifdef FAPI
    uint32_t msgLen = 0;
+   uint32_t totalSize = 0;
    fapi_ul_tti_req_t *ulTtiReq = NULLP;
    fapi_ul_tti_req_pdu_t *ulTtiReqPdu = NULLP;
    RgCellCb  *cellCbParams = NULLP;
@@ -3045,17 +3054,19 @@ S16 handleUlTtiReq(CmLteTimingInfo *currTimingInfo)
                     ulTtiReq->pdus = ulTtiReqPdu;
                  }
                  msgLen = sizeof(fapi_ul_tti_req_t) - sizeof(fapi_msg_t);
+                 totalSize = msgLen + sizeof(fapi_msg_t);
                  fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
                  DU_LOG("\nLOWER MAC: Sending UL TTI Request");
-                 LwrMacSendToPhy(ulTtiReq->header.message_type_id, msgLen, (void *)ulTtiReq);
+                 LwrMacSendToPhy(ulTtiReq->header.message_type_id, totalSize, (void *)ulTtiReq);
                }
             } 
             else
             {
                 msgLen = sizeof(fapi_ul_tti_req_t) - sizeof(fapi_msg_t);
+                totalSize = msgLen + sizeof(fapi_msg_t);
                 fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
                 DU_LOG("\nLOWER MAC: Sending UL TTI Request");
-                LwrMacSendToPhy(ulTtiReq->header.message_type_id, msgLen, (void *)ulTtiReq);
+                LwrMacSendToPhy(ulTtiReq->header.message_type_id, totalSize, (void *)ulTtiReq);
             }
 				return ROK;
          }
