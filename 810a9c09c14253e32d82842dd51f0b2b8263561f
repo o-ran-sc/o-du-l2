@@ -70,6 +70,40 @@
     },
     {
       "key": {
+        "uuid": "fa01f8db_9296f89e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-05T10:16:34Z",
+      "side": 1,
+      "message": "elementCnt * sizeof(F1SetupRequestIEs_t *) can be replaced with\nf1SetupReq-\u003eprotocolIEs.list.size",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f47145c6_7aef4744",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-05T10:16:34Z",
+      "side": 1,
+      "message": "f1SetupReq-\u003eprotocolIEs.list.array[idx2]-\u003evalue.choice.GNB_DU_ID.size\nto be used in place of \"sizeof(U8)\"",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "84fdbd8a_6fb23a2e",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 3
@@ -81,6 +115,23 @@
       "writtenOn": "2020-05-05T09:43:56Z",
       "side": 1,
       "message": "char* is requiered is it? \nAlso, we can fix this in 2 lines",
+      "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78b063dc_8e9f45cf",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1093,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-05T10:16:34Z",
+      "side": 1,
+      "message": "if(ret !\u003d ROK) check can be moved here\nto ensure BuildServedCellList() is successful",
       "revId": "810a9c09c14253e32d82842dd51f0b2b8263561f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
