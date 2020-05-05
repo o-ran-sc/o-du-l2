@@ -729,8 +729,13 @@ int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
    pst.prior = 0;
    pst.intfVer = 0;
  
-   return MacDuAppSlotInd(&pst, slotInfo);
-  
+  if(MacDuAppSlotInd(&pst, slotInfo) != ROK)
+  {
+     MAC_FREE(slotInfo, sizeof(SlotInfo));
+     return RFAILED;
+  }
+  else
+    return ROK;
 }
 
 /**
