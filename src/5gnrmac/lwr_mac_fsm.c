@@ -76,9 +76,7 @@ extern void fapiMacConfigRsp();
 extern uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX];
 
 /* Global variables */
-SlotIndInfo slotIndInfo;
 uint8_t slotIndIdx;
-
 uint16_t sendTxDataReq(CmLteTimingInfo *currTimingInfo, DlAlloc *dlInfo);
 
 void lwrMacInit()
@@ -2192,9 +2190,9 @@ S16 lwr_mac_handleStopReqEvt(void *msg)
  *             pointer to modified value
  ******************************************************************/
 
-PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val)
+PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
 {
-   *mibPdu |= (((uint8_t)(slotIndInfo.sfn >> 2)) & MIB_SFN_BITMASK);
+   *mibPdu |= (((uint8_t)(sfn >> 2)) & MIB_SFN_BITMASK);
    *val = (mibPdu[0] << 24 | mibPdu[1] << 16 | mibPdu[2] << 8);
     DU_LOG("\nLWR_MAC: MIB PDU %x", *val);
 }
@@ -2220,8 +2218,7 @@ PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val)
  ******************************************************************/
 
 S16 fillSsbPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, MacCellCfg *macCellCfg,
-	MacDlSlot *currDlSlot,
-	uint32_t *msgLen, uint8_t ssbIdxCount) 
+	MacDlSlot *currDlSlot, uint32_t *msgLen, uint8_t ssbIdxCount, uint16_t sfn)
 {
    uint32_t mibPayload = 0;
    if(dlTtiReqPdu != NULL)
@@ -2235,7 +2232,7 @@ S16 fillSsbPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, MacCellCfg *macCellCfg,
       dlTtiReqPdu->u.ssb_pdu.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
       dlTtiReqPdu->u.ssb_pdu.bchPayloadFlag = macCellCfg->ssbCfg.bchPayloadFlag;
       /* Bit manipulation for SFN */
-      setMibPdu(macCellCfg->ssbCfg.mibPdu, &mibPayload);
+      setMibPdu(macCellCfg->ssbCfg.mibPdu, &mibPayload, sfn);
       dlTtiReqPdu->u.ssb_pdu.bchPayload.v.bchPayload = mibPayload;
       dlTtiReqPdu->u.ssb_pdu.preCodingAndBeamforming.numPrgs = 0;
       dlTtiReqPdu->u.ssb_pdu.preCodingAndBeamforming.prgSize = 0;
@@ -2932,7 +2929,8 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *currTimingInfo)
 							{
 								for(idx = 0; idx < currDlSlot->dlInfo.brdcstAlloc.ssbIdxSupported; idx++)
 								{
-									fillSsbPdu(&dlTtiReq->pdus[numPduEncoded], &macCellCfg, currDlSlot, &msgLen, idx);
+									fillSsbPdu(&dlTtiReq->pdus[numPduEncoded], &macCellCfg,\
+									   currDlSlot, &msgLen, idx, dlTtiReq->sfn);
 									numPduEncoded++;
 								}
 							}
