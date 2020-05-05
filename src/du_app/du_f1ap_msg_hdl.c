@@ -44,28 +44,29 @@ S16 sctpSend(Buffer *mBuf, U8 itfType);
  * ****************************************************************/
 S16 BuildULNRInfo(NRFreqInfo_t *ulnrfreq)
 {
-   U8 idx;
-   idx = 0;
+   U8 idx=0;
    ulnrfreq->nRARFCN = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.\
                        fdd.ulNrFreqInfo.nrArfcn;
    ulnrfreq->freqBandListNr.list.count = 1;
-   ulnrfreq->freqBandListNr.list.size = sizeof(struct FreqBandNrItem *);
-   DU_ALLOC(ulnrfreq->freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
+   ulnrfreq->freqBandListNr.list.size = sizeof(FreqBandNrItem_t *);
+	DU_ALLOC(ulnrfreq->freqBandListNr.list.array,ulnrfreq->freqBandListNr.list.size);
    if(ulnrfreq->freqBandListNr.list.array == NULLP)
    {
-      RETVALUE(RFAILED);
+       return RFAILED;
    }
-   DU_ALLOC(ulnrfreq->freqBandListNr.list.array[idx],sizeof(struct FreqBandNrItem));
-   if(ulnrfreq->freqBandListNr.list.array[idx] == NULLP)
+   for(idx=0;idx<ulnrfreq->freqBandListNr.list.count;idx++)
    {
-      DU_FREE(ulnrfreq->freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-      RETVALUE(RFAILED);
+       DU_ALLOC(ulnrfreq->freqBandListNr.list.array[idx],sizeof(FreqBandNrItem_t));
+       if(ulnrfreq->freqBandListNr.list.array[idx] == NULLP)
+      {
+         return RFAILED;
+	   }
    }
-      ulnrfreq->freqBandListNr.list.array[idx]->freqBandIndicatorNr = \
-      duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.\
-      freqBand[0].nrFreqBand;
-      ulnrfreq->freqBandListNr.list.array[idx]->supportedSULBandList.list.count = SUL_BAND_COUNT;
-   return ROK;
+   ulnrfreq->freqBandListNr.list.array[0]->freqBandIndicatorNr = \
+   duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.\
+   freqBand[0].nrFreqBand;
+   ulnrfreq->freqBandListNr.list.array[0]->supportedSULBandList.list.count = SUL_BAND_COUNT;
+	return ROK;
 }
 /*******************************************************************
  *
@@ -85,26 +86,29 @@ S16 BuildULNRInfo(NRFreqInfo_t *ulnrfreq)
 S16 BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
 {
    U8 idx=0;
-   dlnrfreq->nRARFCN = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.\
+	dlnrfreq->nRARFCN = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.\
                        fdd.dlNrFreqInfo.nrArfcn;
    dlnrfreq->freqBandListNr.list.count = 1;
-   dlnrfreq->freqBandListNr.list.size = sizeof(struct FreqBandNrItem *);
-   DU_ALLOC(dlnrfreq->freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
+   dlnrfreq->freqBandListNr.list.size = sizeof(FreqBandNrItem_t *);
+   DU_ALLOC(dlnrfreq->freqBandListNr.list.array,dlnrfreq->freqBandListNr.list.size);
    if(dlnrfreq->freqBandListNr.list.array == NULLP)
    {
-      RETVALUE(RFAILED);
-   }
-   DU_ALLOC(dlnrfreq->freqBandListNr.list.array[idx],sizeof(struct FreqBandNrItem));
-   if(dlnrfreq->freqBandListNr.list.array[idx] == NULLP)
-   {
-      DU_FREE(dlnrfreq->freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-      RETVALUE(RFAILED);
-   }
-   dlnrfreq->freqBandListNr.list.array[idx]->freqBandIndicatorNr = \
+      return RFAILED;   
+	}
+   for(idx=0;idx< dlnrfreq->freqBandListNr.list.count;idx++)
+	{
+	   DU_ALLOC(dlnrfreq->freqBandListNr.list.array[idx],sizeof(FreqBandNrItem_t));
+      if(dlnrfreq->freqBandListNr.list.array[idx] == NULLP)
+      {
+         return RFAILED;
+		}
+   }   
+   dlnrfreq->freqBandListNr.list.array[0]->freqBandIndicatorNr = \
    duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.\
-   freqBand[0].nrFreqBand;
-   dlnrfreq->freqBandListNr.list.array[idx]->supportedSULBandList.list.count = SUL_BAND_COUNT;
-   return ROK;
+      freqBand[0].nrFreqBand;
+   dlnrfreq->freqBandListNr.list.array[0]->supportedSULBandList.list.count = SUL_BAND_COUNT;
+      
+     return ROK;
 }
 
 /*******************************************************************
@@ -128,7 +132,6 @@ S16 BuildNrcgi(NRCGI_t *nrcgi)
    U8 unused = 4;
    U8 byteSize = 5;
    U8 val = 16;
-
    /* Allocate Buffer Memory */
    nrcgi->pLMN_Identity.size = PLMN_SIZE * sizeof(U8);
    DU_ALLOC(nrcgi->pLMN_Identity.buf, nrcgi->pLMN_Identity.size);
@@ -136,24 +139,21 @@ S16 BuildNrcgi(NRCGI_t *nrcgi)
          &nrcgi->pLMN_Identity); // Building PLMN function 
    if(ret != ROK)
    {
-      return ret;
+	   return RFAILED;
    }
    /*nrCellIdentity*/
    //ret = BuildNrCellId(&nrcgi->nRCellIdentity);
    nrcgi->nRCellIdentity.size = byteSize * sizeof(U8);
    DU_ALLOC(nrcgi->nRCellIdentity.buf, nrcgi->nRCellIdentity.size); 
-	if(nrcgi->nRCellIdentity.buf == NULLP)
+   if(nrcgi->nRCellIdentity.buf == NULLP)
    {
-	    return RFAILED;
+	   return RFAILED;
    }
    ret = fillBitString(&nrcgi->nRCellIdentity, unused, byteSize, val);
-
    if(ret != ROK)
    {
-      DU_FREE(nrcgi->nRCellIdentity.buf, nrcgi->nRCellIdentity.size);
-      return ret;
+		return RFAILED;
    }
-
    return ROK;
 }
 /*******************************************************************
@@ -176,15 +176,14 @@ S16 BuildFiveGSTac(Served_Cell_Information_t *servcell)
    DU_ALLOC(servcell->fiveGS_TAC,sizeof(FiveGS_TAC_t));
    if(servcell->fiveGS_TAC == NULLP)
    {
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    servcell->fiveGS_TAC->size = 3 * sizeof(U8);
    DU_ALLOC(servcell->fiveGS_TAC->buf,\
          sizeof(servcell->fiveGS_TAC->size));
    if(servcell->fiveGS_TAC->buf == NULLP)
    {
-      DU_FREE(servcell->fiveGS_TAC,sizeof(FiveGS_TAC_t));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    servcell->fiveGS_TAC->buf[0] = 0;
    servcell->fiveGS_TAC->buf[1] = 0;
@@ -208,50 +207,41 @@ S16 BuildFiveGSTac(Served_Cell_Information_t *servcell)
  * ****************************************************************/
 S16 BuildNrMode(NR_Mode_Info_t *mode)
 {
-   S16 ret;
+   S16 BuildDLNRInforet=0;
+	S16 BuildULNRInforet=0; 
    /* FDD Mode */
-   mode->present = NR_Mode_Info_PR_fDD;
+	mode->present = NR_Mode_Info_PR_fDD;
    if(mode->present == NR_Mode_Info_PR_fDD)
    {
-      DU_ALLOC(mode->choice.fDD,\
-            sizeof(FDD_Info_t));
+      DU_ALLOC(mode->choice.fDD,sizeof(FDD_Info_t));
       if(mode->choice.fDD == NULLP)
       {
-         RETVALUE(RFAILED);
+		   return RFAILED;
       }
-      ret = BuildULNRInfo(&mode->choice.fDD->uL_NRFreqInfo);
-      if(ret != ROK)
+      BuildULNRInforet = BuildULNRInfo(&mode->choice.fDD->uL_NRFreqInfo);
+      if(BuildULNRInforet != ROK)
       {
-         DU_FREE(mode->choice.fDD,\
-               sizeof(FDD_Info_t));
-         RETVALUE(RFAILED);
-      }
-      ret = BuildDLNRInfo(&mode->choice.fDD->dL_NRFreqInfo);
-      if(ret != ROK)
+          return RFAILED;    
+	   }
+	   BuildDLNRInforet = BuildDLNRInfo(&mode->choice.fDD->dL_NRFreqInfo);
+      if(BuildDLNRInforet != ROK)
       {
-         DU_FREE(mode->choice.fDD,\
-               sizeof(FDD_Info_t));
-         DU_FREE(mode->choice.fDD->uL_NRFreqInfo.\
-               freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-         DU_FREE(mode->choice.fDD->uL_NRFreqInfo.\
-               freqBandListNr.list.array[0],sizeof(struct FreqBandNrItem));
-         RETVALUE(RFAILED);
+		   return RFAILED;
       }
-   }
+	}
    mode->choice.fDD->uL_Transmission_Bandwidth.nRSCS = \
                                     duCfgParam.srvdCellLst[0].duCellInfo.\
                                     f1Mode.mode.fdd.ulTxBw.nrScs;
    mode->choice.fDD->uL_Transmission_Bandwidth.nRNRB = \
                                     duCfgParam.srvdCellLst[0].duCellInfo.\
                                     f1Mode.mode.fdd.ulTxBw.nrb;
-
    mode->choice.fDD->dL_Transmission_Bandwidth.nRSCS = \
                                     duCfgParam.srvdCellLst[0].duCellInfo.\
                                     f1Mode.mode.fdd.dlTxBw.nrScs;
    mode->choice.fDD->dL_Transmission_Bandwidth.nRNRB = \
                                     duCfgParam.srvdCellLst[0].duCellInfo.\
                                     f1Mode.mode.fdd.dlTxBw.nrb;
-   return ROK;
+	return ROK;
 }
 /*******************************************************************
  *
@@ -268,175 +258,98 @@ S16 BuildNrMode(NR_Mode_Info_t *mode)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildExtensions(struct ProtocolExtensionContainer_4624P3 **ieExtend)
+S16 BuildExtensions(ProtocolExtensionContainer_4624P3_t **ieExtend)
 {
    U8 idx;
    U8 plmnidx;
    U8 extensionCnt=1;
-   U8 extensionId;
-   U8 sliceId;
+   U8 sliceId=0;
    U8 sdId;
-   DU_ALLOC(*ieExtend,\
-         sizeof(struct ProtocolExtensionContainer_4624P3));
+   DU_ALLOC(*ieExtend,sizeof(ProtocolExtensionContainer_4624P3_t));
    if((*ieExtend) == NULLP)
    {
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    (*ieExtend)->list.count = extensionCnt;
    (*ieExtend)->list.size = \
-                            extensionCnt * sizeof(struct ServedPLMNs_ItemExtIEs *);
-   DU_ALLOC((*ieExtend)->list.array,\
-         extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *)); 
+                            extensionCnt * sizeof(ServedPLMNs_ItemExtIEs_t *);
+   DU_ALLOC((*ieExtend)->list.array,(*ieExtend)->list.size);
    if((*ieExtend)->list.array == NULLP)
    {
-      DU_FREE((*ieExtend),sizeof(struct ProtocolExtensionContainer_4624P3));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
    {
       DU_ALLOC((*ieExtend)->list.array[plmnidx],\
-            sizeof(struct ServedPLMNs_ItemExtIEs));
+            sizeof(ServedPLMNs_ItemExtIEs_t));
       if((*ieExtend)->list.array[plmnidx] == NULLP)
       {
-         for(extensionId=0 ; extensionId<plmnidx; extensionId++)
-         {
-            DU_FREE((*ieExtend)->list.array[extensionId],\
-                  sizeof(struct ServedPLMNs_ItemExtIEs));
-         }
-         DU_FREE((*ieExtend)->list.array,\
-               extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *)); 
-         DU_FREE((*ieExtend),sizeof(struct ProtocolExtensionContainer_4624P3));
-         RETVALUE(RFAILED);
-      }
+		   return RFAILED;
+	   }
    }
-      idx = 0;
-      (*ieExtend)->list.array[idx]->id = ProtocolIE_ID_id_TAISliceSupportList;
-      (*ieExtend)->list.array[idx]->criticality = Criticality_ignore;
-      (*ieExtend)->list.array[idx]->extensionValue.present = \
+   idx = 0;
+   (*ieExtend)->list.array[idx]->id = ProtocolIE_ID_id_TAISliceSupportList;
+   (*ieExtend)->list.array[idx]->criticality = Criticality_ignore;
+   (*ieExtend)->list.array[idx]->extensionValue.present = \
                  ServedPLMNs_ItemExtIEs__extensionValue_PR_SliceSupportList;
-      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
       list.count = 1;
-      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
                  list.size = sizeof(SliceSupportItem_t *);
-      DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+    DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
             list.array,sizeof(SliceSupportItem_t *));
-      if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+    if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
             list.array == NULLP)
-      {
-         for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
-         {
-            DU_FREE((*ieExtend)->list.array[plmnidx],\
-                  sizeof(struct ServedPLMNs_ItemExtIEs));
-         }
-            DU_FREE((*ieExtend)->list.array,\
-                  extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *)); 
-            DU_FREE((*ieExtend),sizeof(struct ProtocolExtensionContainer_4624P3));
-            RETVALUE(RFAILED);
-         
-      }
-      sliceId = 0;
-      DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+    {
+	    return RFAILED;
+    }
+    DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
             list.array[sliceId],sizeof(SliceSupportItem_t));
-      if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+    if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
             list.array[sliceId] == NULLP) 
-      {
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-               list.array,sizeof(SliceSupportItem_t *));
-         for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
-         {
-            DU_FREE((*ieExtend)->list.array[plmnidx],\
-                  sizeof(struct ServedPLMNs_ItemExtIEs));
-         }
-         DU_FREE((*ieExtend)->list.array,\
-               extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *)); 
-         DU_FREE((*ieExtend),sizeof(struct ProtocolExtensionContainer_4624P3));
-         RETVALUE(RFAILED);
-      }
-     
-      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+    {
+	     return RFAILED;
+    }
+   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
          list.array[sliceId]->sNSSAI.sST.size = sizeof(U8);
-      DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
+    DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
             .list.array[sliceId]->sNSSAI.sST.buf,(*ieExtend)->list.array[idx]->\
             extensionValue.choice.SliceSupportList.\
             list.array[sliceId]->sNSSAI.sST.size);
-      if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
+   if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
             .list.array[sliceId]->sNSSAI.sST.buf == NULLP)
-      {
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-               list.array[sliceId],sizeof(SliceSupportItem_t));
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-               list.array,sizeof(SliceSupportItem_t *));
-         for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
-         {
-            DU_FREE((*ieExtend)->list.array[plmnidx],\
-                  sizeof(struct ServedPLMNs_ItemExtIEs));
-         }
-         DU_FREE((*ieExtend)->list.array,\
-               extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *)); 
-         DU_FREE((*ieExtend),sizeof(struct ProtocolExtensionContainer_4624P3));
-         RETVALUE(RFAILED);
-      }
-      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   {
+	   return RFAILED;
+   }
+  (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
          list.array[sliceId]->sNSSAI.sST.buf[0] = 3;
-      DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
             list.array[sliceId]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-      if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
             list.array[sliceId]->sNSSAI.sD == NULLP)
-      {
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
-               .list.array[sliceId]->sNSSAI.sST.buf,(*ieExtend)->list.array[idx]->\
-               extensionValue.choice.SliceSupportList.list.array[sliceId]->sNSSAI.sST.size);
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-               list.array[sliceId],sizeof(SliceSupportItem_t));
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-               list.array,sizeof(SliceSupportItem_t *));
-         for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
-         {
-            DU_FREE((*ieExtend)->list.array[plmnidx],\
-                  sizeof(struct ServedPLMNs_ItemExtIEs));
-         }
-         DU_FREE((*ieExtend)->list.array,\
-               extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *)); 
-         DU_FREE((*ieExtend),sizeof(struct ProtocolExtensionContainer_4624P3));
-         RETVALUE(RFAILED);
-      }
-      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   {
+	   return RFAILED;
+   }
+   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
          list.array[sliceId]->sNSSAI.sD->size = 3*sizeof(U8);
-      DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
             list.array[sliceId]->sNSSAI.sD->buf,(*ieExtend)->list.array[idx]->extensionValue.choice.\
             SliceSupportList.list.array[sliceId]->sNSSAI.sD->size);
-      if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
             list.array[sliceId]->sNSSAI.sD->buf == NULLP)
-      {
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-               list.array[sliceId]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
-               .list.array[sliceId]->sNSSAI.sST.buf,(*ieExtend)->list.array[idx]->extensionValue.\
-               choice.SliceSupportList.list.array[sliceId]->sNSSAI.sST.size);
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-               list.array[sliceId],sizeof(SliceSupportItem_t));
-         DU_FREE((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-               list.array,sizeof(SliceSupportItem_t *));
-         for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
-         {
-            DU_FREE((*ieExtend)->list.array[plmnidx],\
-                  sizeof(struct ServedPLMNs_ItemExtIEs));
-         }
-         DU_FREE((*ieExtend)->list.array,\
-               extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *)); 
-         DU_FREE((*ieExtend),sizeof(struct ProtocolExtensionContainer_4624P3));
-         RETVALUE(RFAILED);
-      }
-      sdId = 0;
-      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   {
+       return RFAILED;
+	}
+   sdId = 0;
+   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
          list.array[sliceId]->sNSSAI.sD->buf[sdId] = 3;
       sdId++;
-      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
          list.array[sliceId]->sNSSAI.sD->buf[sdId] = 6;
       sdId++;
-      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
          list.array[sliceId]->sNSSAI.sD->buf[sdId] = 9;
-       return ROK;
+    return ROK;
 }
 /*******************************************************************
  *
@@ -455,66 +368,39 @@ S16 BuildExtensions(struct ProtocolExtensionContainer_4624P3 **ieExtend)
  * ****************************************************************/
 S16  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
 {  
-   S16 ret;
    U8  plmnidx;
-   U8  servPlmnid;
    U8  servPlmnCnt=1;
+	S16 buildPlmnIdret=0;
+	S16 BuildExtensionsret=0;
    srvplmn->list.count = servPlmnCnt;
    srvplmn->list.size = \
-                      servPlmnCnt*sizeof(struct ServedPLMNs_Item *);
-   DU_ALLOC(srvplmn->list.array,\
-         servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+                      servPlmnCnt*sizeof(ServedPLMNs_Item_t *);
+	DU_ALLOC(srvplmn->list.array,srvplmn->list.size);
    if(srvplmn->list.array == NULLP)
    {
-      RETVALUE(RFAILED);
+       return RFAILED;
    }
-
    for(plmnidx=0; plmnidx<servPlmnCnt; plmnidx++)
-   {
+   {   
       DU_ALLOC(srvplmn->list.array[plmnidx],\
-            sizeof(struct ServedPLMNs_Item));
+            sizeof(ServedPLMNs_Item_t));
       if(srvplmn->list.array[plmnidx] == NULLP)
       {
-         for(servPlmnid=0; servPlmnid<plmnidx;servPlmnid++)
-         {
-            DU_FREE(srvplmn->list.array[servPlmnid],\
-                  sizeof(struct ServedPLMNs_Item));
-         }
-         DU_FREE(srvplmn->list.array,\
-               sizeof(struct ServedPLMNs_Item *));
-         RETVALUE(RFAILED);
-      }
+		   return RFAILED;
+      }  
    }
-   /* Allocate Memory to Buffer */
-   srvplmn->list.array[0]->pLMN_Identity.size = PLMN_SIZE * sizeof(U8);
+	srvplmn->list.array[0]->pLMN_Identity.size = PLMN_SIZE * sizeof(U8);
    DU_ALLOC(srvplmn->list.array[0]->pLMN_Identity.buf, srvplmn->list.array[0]->pLMN_Identity.size);
-   ret = buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
+   buildPlmnIdret = buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
          &srvplmn->list.array[0]->pLMN_Identity);
-   if(ret!= ROK)
+   if(buildPlmnIdret!= ROK)
    {
-      for(plmnidx=0; plmnidx<servPlmnCnt; plmnidx++)
-      {
-         DU_FREE(srvplmn->list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_Item *));
-      }
-      DU_FREE(srvplmn->list.array,\
-            sizeof(struct ServedPLMNs_Item *));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
-   ret = BuildExtensions(&srvplmn->list.array[0]->iE_Extensions);
-   if(ret != ROK)
+   BuildExtensionsret = BuildExtensions(&srvplmn->list.array[0]->iE_Extensions);
+   if(BuildExtensionsret!= ROK)
    {
-      DU_FREE(srvplmn->list.\
-            array[0]->pLMN_Identity.buf,(Size)\
-            srvplmn->list.array[0]->pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0; plmnidx<servPlmnCnt; plmnidx++)
-      {
-         DU_FREE(srvplmn->list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_Item *));
-      }
-      DU_FREE(srvplmn->list.array,\
-            sizeof(struct ServedPLMNs_Item *));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    return ROK;
 }
@@ -536,38 +422,29 @@ S16  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
 
 S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
 {
-   S16 ret;
+   S16 BuildNrcgiret=0;
+   S16 BuildFiveGSTacret=0;
+	S16 BuildServedPlmnret=0;
+	S16 BuildNrModeret=0;
    U8  idx;
    U8  plmnidx;
-   U8  plmnId;
    U8  plmnCnt=1;
-   U8  servPlmnCnt=1;
-   U8  extensionCnt=1;
-   U8  sliceId;
-   U8  servId;
-   U8  ieId;
    GNB_DU_Served_Cells_Item_t *srvCellItem;
-
    duServedCell->list.size = plmnCnt * sizeof(GNB_DU_Served_Cells_ItemIEs_t *);
-   duServedCell->list.count = plmnCnt; 
-   DU_ALLOC(duServedCell->list.array, plmnCnt * sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
+   duServedCell->list.count = plmnCnt;
+ 
+   DU_ALLOC(duServedCell->list.array, duServedCell->list.size);
    if(duServedCell->list.array == NULLP)
    {
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    for(plmnidx=0; plmnidx<plmnCnt; plmnidx++)
    {
       DU_ALLOC(duServedCell->list.array[plmnidx],\
-            sizeof(GNB_DU_Served_Cells_ItemIEs_t));
+             sizeof(GNB_DU_Served_Cells_ItemIEs_t));
       if(duServedCell->list.array[plmnidx] == NULLP)
       {
-         for(plmnId=0; plmnId<plmnidx ; plmnId++)
-         {
-            DU_FREE(duServedCell->list.array[plmnId],sizeof(GNB_DU_Served_Cells_ItemIEs_t));
-         }
-         DU_FREE(duServedCell->list.array,\
-               plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
-         RETVALUE(RFAILED);
+		   return RFAILED;
       }
    }
    idx = 0;
@@ -578,246 +455,82 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    srvCellItem = \
            &duServedCell->list.array[idx]->value.choice.GNB_DU_Served_Cells_Item;
    /*nRCGI*/
-   ret = BuildNrcgi(&srvCellItem->served_Cell_Information.nRCGI);
-   if(ret != ROK)
+   BuildNrcgiret = BuildNrcgi(&srvCellItem->served_Cell_Information.nRCGI);
+   if(BuildNrcgiret != ROK)
    {
-      for(plmnidx=0; plmnidx<plmnCnt; plmnidx++)
-      {
-         DU_FREE(duServedCell->list.array[plmnidx],\
-               sizeof(GNB_DU_Served_Cells_ItemIEs_t));
-      }   
-      DU_FREE(duServedCell->list.array,\
-            plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
-   
-   /*nRPCI*/
+      /*nRPCI*/
    srvCellItem->served_Cell_Information.nRPCI = \
                          duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrPci;
 
    /*fiveGS_TAC*/
-   ret = BuildFiveGSTac(&srvCellItem->served_Cell_Information);
-   if(ret != ROK)
+   BuildFiveGSTacret = BuildFiveGSTac(&srvCellItem->served_Cell_Information);
+   if(BuildFiveGSTacret != ROK)
    {
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.size * sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0; plmnidx<plmnCnt; plmnidx++)
-      {
-         DU_FREE(duServedCell->list.array[plmnidx],\
-               sizeof(GNB_DU_Served_Cells_ItemIEs_t));
-      }   
-      DU_FREE(duServedCell->list.array,\
-            plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    /*Served PLMNs*/
-   ret = BuildServedPlmn(&srvCellItem->served_Cell_Information.servedPLMNs);
-   if(ret !=ROK)
+   BuildServedPlmnret = BuildServedPlmn(&srvCellItem->served_Cell_Information.servedPLMNs);
+   if(BuildServedPlmnret !=ROK)
    {
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC->buf,\
-            sizeof(srvCellItem->served_Cell_Information.fiveGS_TAC->size));
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC,\
-            sizeof(FiveGS_TAC_t));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.size * sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size  * sizeof(U8));
-      for(plmnidx=0; plmnidx<plmnCnt; plmnidx++)
-      {
-         DU_FREE(duServedCell->list.array[plmnidx],\
-               sizeof(GNB_DU_Served_Cells_ItemIEs_t));
-      }   
-      DU_FREE(duServedCell->list.array,\
-            plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
-      RETVALUE(RFAILED);
+	    return RFAILED;
    }
    /*nR Mode Info with FDD*/
-   ret = BuildNrMode(&srvCellItem->served_Cell_Information.nR_Mode_Info);
-   sliceId = 0;
-   ieId = 0;
-   servId = 0;
-   if(ret != ROK)
+   BuildNrModeret = BuildNrMode(&srvCellItem->served_Cell_Information.nR_Mode_Info);
+   if(BuildNrModeret != ROK)
    {
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-         iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-         list.array[sliceId]->sNSSAI.sD->buf, srvCellItem->served_Cell_Information.servedPLMNs.\
-         list.array[servId]->iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-         list.array[sliceId]->sNSSAI.sD->size);
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-          iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-          list.array[sliceId]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-           iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList\
-           .list.array[sliceId]->sNSSAI.sST.buf,sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-          iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-          list.array[sliceId],sizeof(SliceSupportItem_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array,sizeof(SliceSupportItem_t *));
-      for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
-      {
-         DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-               array[servId]->iE_Extensions->list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_ItemExtIEs));
-      }
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->iE_Extensions->list.array,\
-            extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->pLMN_Identity.buf,srvCellItem->served_Cell_Information.\
-            servedPLMNs.list.array[servId]->pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0; plmnidx<servPlmnCnt; plmnidx++)
-      {
-         DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_Item *));
-      }
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array,\
-            sizeof(struct ServedPLMNs_Item *));
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC->buf,\
-            sizeof(srvCellItem->served_Cell_Information.fiveGS_TAC->size));
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC,\
-            sizeof(FiveGS_TAC_t));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.size * sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0; plmnidx<plmnCnt; plmnidx++)
-      {
-         DU_FREE(duServedCell->list.array[plmnidx],\
-               sizeof(GNB_DU_Served_Cells_ItemIEs_t));
-      }   
-      DU_FREE(duServedCell->list.array,\
-            plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
-   
-
    /*Measurement timing Config*/
    srvCellItem->served_Cell_Information.measurementTimingConfiguration.\
       size = sizeof(U8);
    DU_ALLOC(srvCellItem->served_Cell_Information.\
-         measurementTimingConfiguration.buf,sizeof(U8));
+         measurementTimingConfiguration.buf,srvCellItem->served_Cell_Information.measurementTimingConfiguration.size);
    if(srvCellItem->served_Cell_Information.\
          measurementTimingConfiguration.buf == NULLP)
    {
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
-         dL_NRFreqInfo.freqBandListNr.list.array[0],\
-         sizeof(struct FreqBandNrItem));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
-            dL_NRFreqInfo.freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.\
-            fDD->uL_NRFreqInfo.freqBandListNr.list.array[0],\
-            sizeof(struct FreqBandNrItem));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
-            uL_NRFreqInfo.freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD,\
-            sizeof(FDD_Info_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-         iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-         list.array[sliceId]->sNSSAI.sD->buf,srvCellItem->served_Cell_Information.servedPLMNs.\
-         list.array[servId]->iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-         list.array[sliceId]->sNSSAI.sD->size);
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array[sliceId]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-           iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList\
-           .list.array[sliceId]->sNSSAI.sST.buf,sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-          iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-          list.array[sliceId],sizeof(SliceSupportItem_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array,sizeof(SliceSupportItem_t *));
-      for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
-      {
-         DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-               array[servId]->iE_Extensions->list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_ItemExtIEs));
-      }
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->iE_Extensions->list.array,\
-            extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->pLMN_Identity.buf,srvCellItem->served_Cell_Information.\
-            servedPLMNs.list.array[servId]->pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0; plmnidx<servPlmnCnt; plmnidx++)
-      {
-         DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_Item *));
-      }
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array,\
-            sizeof(struct ServedPLMNs_Item *));
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC->buf,\
-            sizeof(srvCellItem->served_Cell_Information.fiveGS_TAC->size));
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC,\
-            sizeof(FiveGS_TAC_t));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.size * sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0; plmnidx<plmnCnt; plmnidx++)
-      {
-         DU_FREE(duServedCell->list.array[plmnidx],\
-               sizeof(GNB_DU_Served_Cells_ItemIEs_t));
-      }   
-      DU_FREE(duServedCell->list.array,\
-            plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
-      RETVALUE(RFAILED);
+	    return RFAILED;
    }
    srvCellItem->served_Cell_Information.measurementTimingConfiguration.buf[0] = \
              duCfgParam.srvdCellLst[0].duCellInfo.measTimeCfg;
 
    /* GNB DU System Information */
    DU_ALLOC(srvCellItem->gNB_DU_System_Information,
-			sizeof(GNB_DU_System_Information_t));
+                        sizeof(GNB_DU_System_Information_t));
    if(!srvCellItem->gNB_DU_System_Information)
-	{
-      DU_LOG("\nF1AP: Memory allocation failure for GNB_DU_System_Information");
-		return RFAILED;
-	}
-	/* MIB */
-	srvCellItem->gNB_DU_System_Information->mIB_message.size =\
-	      strlen(( char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
-	DU_ALLOC(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
-	      srvCellItem->gNB_DU_System_Information->mIB_message.size);
-   if(!srvCellItem->gNB_DU_System_Information->mIB_message.buf)
-	{
-      DU_LOG("\nF1AP: Memory allocation failure for mIB message");
-		return RFAILED;
-	}
-   strcpy((char *)srvCellItem->gNB_DU_System_Information->mIB_message.buf,
-			(char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
-
-   /* SIB1 */
-	srvCellItem->gNB_DU_System_Information->sIB1_message.size =\
-	      duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
-	DU_ALLOC(srvCellItem->gNB_DU_System_Information->sIB1_message.buf,
-	      srvCellItem->gNB_DU_System_Information->sIB1_message.size);
-   if(!srvCellItem->gNB_DU_System_Information->sIB1_message.buf)
-	{
-      DU_LOG("\nF1AP: Memory allocation failure for SIB1 message");
-		return RFAILED;
-	}
-	for(int x=0; x<srvCellItem->gNB_DU_System_Information->sIB1_message.size; x++)
-	{
-	   srvCellItem->gNB_DU_System_Information->sIB1_message.buf[x]=\
-      duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg[x];
+   {
+	   return RFAILED;
    }
-   /* Free memory */
-	DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, 
-			srvCellItem->gNB_DU_System_Information->sIB1_message.size);
-	DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg, 
-			strlen((char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg));
-   return ROK;
-}
+   /* MIB */
+   srvCellItem->gNB_DU_System_Information->mIB_message.size =\
+              strlen(( char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
+   DU_ALLOC(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
+              srvCellItem->gNB_DU_System_Information->mIB_message.size);
+   if(!srvCellItem->gNB_DU_System_Information->mIB_message.buf)
+   {
+	   return RFAILED;
+   }
+   strcpy((char *)srvCellItem->gNB_DU_System_Information->mIB_message.buf,
+                        (char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
+
+    /* SIB1 */
+   srvCellItem->gNB_DU_System_Information->sIB1_message.size =\
+              duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
+
+   DU_ALLOC(srvCellItem->gNB_DU_System_Information->sIB1_message.buf,
+              srvCellItem->gNB_DU_System_Information->sIB1_message.size);
+   if(!srvCellItem->gNB_DU_System_Information->sIB1_message.buf)
+   {
+	    return RFAILED;
+   }
+   for(int x=0; x<srvCellItem->gNB_DU_System_Information->sIB1_message.size; x++)
+   {
+         srvCellItem->gNB_DU_System_Information->sIB1_message.buf[x]=\
+           duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg[x];
+   }
+  return ROK; 
+}                                                                                                                  
 /*******************************************************************
  *
  * @brief Builds RRC Version 
@@ -841,36 +554,28 @@ S16 BuildRrcVer(RRC_Version_t *rrcVer)
    DU_ALLOC(rrcVer->latest_RRC_Version.buf,sizeof(U8));
    if(rrcVer->latest_RRC_Version.buf == NULLP)
    {
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    rrcVer->latest_RRC_Version.buf[0] = 0;
    rrcVer->latest_RRC_Version.bits_unused = 5;
    DU_ALLOC(rrcVer->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P81_t));
    if(rrcVer->iE_Extensions == NULLP)
-   {
-      DU_FREE(rrcVer->latest_RRC_Version.buf,sizeof(U8));
-      RETVALUE(RFAILED);
+   {  
+	   return RFAILED;
    }
    rrcVer->iE_Extensions->list.count = 1;
-   rrcVer->iE_Extensions->list.size = sizeof(struct RRC_Version_ExtIEs *);
-   DU_ALLOC(rrcVer->iE_Extensions->list.array,\
-         sizeof(struct RRC_Version_ExtIEs *));
+   rrcVer->iE_Extensions->list.size = sizeof(RRC_Version_ExtIEs_t *);
+   DU_ALLOC(rrcVer->iE_Extensions->list.array,rrcVer->iE_Extensions->list.size);
    if(rrcVer->iE_Extensions->list.array == NULLP)
    {
-      DU_FREE(rrcVer->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P81_t));
-      DU_FREE(rrcVer->latest_RRC_Version.buf,sizeof(U8));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    rrcExt = 0;
    DU_ALLOC(rrcVer->iE_Extensions->list.array[0],\
-         sizeof(struct RRC_Version_ExtIEs));
+         sizeof(RRC_Version_ExtIEs_t));
    if(rrcVer->iE_Extensions->list.array[0] == NULLP)
    {
-      DU_FREE(rrcVer->iE_Extensions->list.array,\
-            sizeof(struct RRC_Version_ExtIEs *));
-      DU_FREE(rrcVer->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P81_t));
-      DU_FREE(rrcVer->latest_RRC_Version.buf,sizeof(U8));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    rrcVer->iE_Extensions->list.array[rrcExt]->id = \
                              ProtocolIE_ID_id_latest_RRC_Version_Enhanced;
@@ -880,28 +585,22 @@ S16 BuildRrcVer(RRC_Version_t *rrcVer)
    rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.choice\
              .Latest_RRC_Version_Enhanced.size = 3*sizeof(U8);
    DU_ALLOC(rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.choice\
-         .Latest_RRC_Version_Enhanced.buf,rrcVer->iE_Extensions->list.\
+        .Latest_RRC_Version_Enhanced.buf,rrcVer->iE_Extensions->list.\
          array[rrcExt]->extensionValue.choice.Latest_RRC_Version_Enhanced.size);
    if(rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.choice\
           .Latest_RRC_Version_Enhanced.buf == NULLP)
    {
-      DU_FREE(rrcVer->iE_Extensions->list.array[rrcExt],\
-            sizeof(struct RRC_Version_ExtIEs));
-      DU_FREE(rrcVer->iE_Extensions->list.array,\
-            sizeof(struct RRC_Version_ExtIEs *));
-      DU_FREE(rrcVer->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P81_t));
-      DU_FREE(rrcVer->latest_RRC_Version.buf,sizeof(U8));
-      RETVALUE(RFAILED);
+	   return RFAILED;
    }
    rrcLatest = 0;
    rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.choice.\
-      Latest_RRC_Version_Enhanced.buf[rrcLatest] = 15;
+   Latest_RRC_Version_Enhanced.buf[rrcLatest] = 15;
    rrcLatest++;
    rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.choice.\
-      Latest_RRC_Version_Enhanced.buf[rrcLatest] = 5;
+   Latest_RRC_Version_Enhanced.buf[rrcLatest] = 5;
    rrcLatest++;
    rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.choice.\
-      Latest_RRC_Version_Enhanced.buf[rrcLatest] = 0;
+   Latest_RRC_Version_Enhanced.buf[rrcLatest] = 0;
    return ROK;
 }
 /*******************************************************************
@@ -934,26 +633,239 @@ S16 SendF1APMsg(Region region, Pool pool)
          {
             DU_LOG("\nF1AP : SCTP Send failed");
             SPutMsg(mBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
       else
       {
          DU_LOG("\nF1AP : SAddPstMsgMult failed");
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       SPutMsg(mBuf);
    }
    else
    {
       DU_LOG("\nF1AP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    return ROK; 
 } /* SendF1APMsg */
 
+/*******************************************************************
+*
+* @brief  deallocating the memory of function BuildAndSendF1SetupReq()
+*
+* @details
+*
+*    Function :  FreeRrcVer
+*
+*    Functionality: deallocating the memory of function BuildRrcVer
+*
+* @params[in] RRC_Version_t *rrcVer
+* 
+* @return void
+*
+*****************************************************************/
+void FreeRrcVer(RRC_Version_t *rrcVer)
+{
+   if(rrcVer->latest_RRC_Version.buf != NULLP)
+	{
+	   if(rrcVer->iE_Extensions != NULLP)
+		{
+		   if(rrcVer->iE_Extensions->list.array != NULLP)
+			{
+			   if(rrcVer->iE_Extensions->list.array[0] != NULLP)
+				{
+				   if(rrcVer->iE_Extensions->list.array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.buf
+					!= NULLP)
+					{
+					   DU_FREE(rrcVer->iE_Extensions->list.array[0]->extensionValue.choice\
+						.Latest_RRC_Version_Enhanced.buf,rrcVer->iE_Extensions->list.\
+						array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.size);
+					}
+					DU_FREE(rrcVer->iE_Extensions->list.array[0],sizeof(RRC_Version_ExtIEs_t));
+				}
+				DU_FREE(rrcVer->iE_Extensions->list.array,sizeof(RRC_Version_ExtIEs_t*));
+			}
+			DU_FREE(rrcVer->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P81_t));
+		}
+		DU_FREE(rrcVer->latest_RRC_Version.buf,rrcVer->latest_RRC_Version.size);
+	}
+}
+/*******************************************************************
+*
+* @brief  deallocating the memory of function BuildAndSendF1SetupReq()
+*
+* @details
+*
+*    Function :  FreeServedCellList
+*
+*    Functionality:  deallocating the memory of function BuildServedCellList
 
+*
+* @params[in] GNB_DU_Served_Cells_List_t *duServedCell
+*
+* @return void
+*
+* ****************************************************************/
+void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
+{
+   U8   plmnCnt=1;
+   U8  servId=0;
+	U8 sliceId=0;
+	U8  ieId=0;
+	U8   extensionCnt=1;
+	U8 plmnidx=0;
+   GNB_DU_Served_Cells_Item_t *srvCellItem= &duServedCell->list.array[0]->value.choice.GNB_DU_Served_Cells_Item;
+   if(duServedCell->list.array!=NULLP)
+   {
+     if(duServedCell->list.array[0]!=NULLP)
+	  {
+	     if(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf!=NULLP)
+	     {
+		     if(srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.buf !=NULLP)
+			  {
+			     if(srvCellItem->served_Cell_Information.fiveGS_TAC!=NULLP)
+				  {
+				     if(srvCellItem->served_Cell_Information.fiveGS_TAC->buf!=NULLP)
+					  {
+					     if(srvCellItem->served_Cell_Information.servedPLMNs.list.array!=NULLP)
+						  {
+						     if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[0]!=NULLP)
+							  {
+							     if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->pLMN_Identity.buf!=NULLP)
+								  {
+								     if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions!=NULLP)
+									  {
+									     if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->list.array!=NULLP)
+										  {
+										     if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->list.array[0]!=NULLP)
+											  {
+											    if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->list.array[0]->\
+												 extensionValue.choice.SliceSupportList.list.array!=NULLP)
+												 {
+												    if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->list.array[0]->\
+													 extensionValue.choice.SliceSupportList.list.array[sliceId]!= NULLP)
+													 {
+											           if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->list.array[0]->\
+												        extensionValue.choice.SliceSupportList.list.array[sliceId]->sNSSAI.sST.buf!=NULLP)
+												        {
+												           if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->list.array[0]->\
+													        extensionValue.choice.SliceSupportList.list.array[sliceId]->sNSSAI.sD!=NULLP)
+													        {
+													           if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->\
+														        list.array[0]->extensionValue.choice.SliceSupportList.list.array[sliceId]->sNSSAI.sD->buf!=NULLP)
+													           {
+                                                     if(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD!=NULLP)
+															        {
+															           if(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->uL_NRFreqInfo.\
+																        freqBandListNr.list.array!=NULLP)
+																        {
+																            if(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->uL_NRFreqInfo.\
+																	         freqBandListNr.list.array[0]!=NULLP)
+																	         {
+																	            if(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->dL_NRFreqInfo.\
+																		         freqBandListNr.list.array)
+																		         {
+																		            if(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->dL_NRFreqInfo.\
+																		            freqBandListNr.list.array[0]!=NULLP)
+																			         {
+																			            if(srvCellItem->served_Cell_Information.measurementTimingConfiguration.buf!=NULLP)
+																				         {
+																				            if(!srvCellItem->gNB_DU_System_Information)
+																					         {
+																					            if(srvCellItem->gNB_DU_System_Information->mIB_message.buf!=NULLP)
+																						         {
+																							          if(srvCellItem->gNB_DU_System_Information->sIB1_message.buf!=NULLP)
+																							          { 
+																							             DU_FREE(srvCellItem->gNB_DU_System_Information->sIB1_message.buf,\
+																							              srvCellItem->gNB_DU_System_Information->sIB1_message.size);
+																											 DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg,\
+																											  srvCellItem->gNB_DU_System_Information->sIB1_message.size);
+																							          }
+																						             DU_FREE(srvCellItem->gNB_DU_System_Information->mIB_message.buf,\
+																						             srvCellItem->gNB_DU_System_Information->mIB_message.size);
+																										 DU_FREE(duCfgParam.srvdCellLst[0].duSysInfo.mibMsg,\
+																										 strlen((char*)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg));
+																					             }
+																					             DU_FREE(srvCellItem->gNB_DU_System_Information,sizeof(GNB_DU_System_Information_t));
+																					          }
+																				             DU_FREE(srvCellItem->served_Cell_Information.measurementTimingConfiguration.buf,\
+																					          srvCellItem->served_Cell_Information.measurementTimingConfiguration.size);
+																				         }
+																			            DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->dL_NRFreqInfo.\
+																				         freqBandListNr.list.array[0],sizeof(FreqBandNrItem_t));
+																			         }
+																		            DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->dL_NRFreqInfo.\
+																			         freqBandListNr.list.array,sizeof(FreqBandNrItem_t *));
+																		        }
+																	           DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->uL_NRFreqInfo.freqBandListNr.\
+																				  list.array[0],sizeof(FreqBandNrItem_t));
+																	        }
+																           DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->uL_NRFreqInfo.freqBandListNr.\
+																			  list.array,sizeof(FreqBandNrItem_t*));
+																        }
+															           DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD,sizeof(FDD_Info_t));
+															        }
+														           DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
+															        iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.list.array[sliceId]->\
+																	  sNSSAI.sD->buf,srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->
+																	 list.array[ieId]->extensionValue.choice.SliceSupportList.list.array[sliceId]->sNSSAI.sD->size);
+																 }
+													          DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
+														       iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
+														        list.array[sliceId]->sNSSAI.sD,sizeof(OCTET_STRING_t));
+													       }
+												          DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
+													       iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.list.array[sliceId]->\
+															 sNSSAI.sST.buf,sizeof(U8));
+													    }
+														 DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->list.array[0]->\
+                                           extensionValue.choice.SliceSupportList.list.array[sliceId],sizeof(SliceSupportItem_t));
+												    }
+                                        DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->list.array[0]->\
+													  extensionValue.choice.SliceSupportList.list.array,sizeof(SliceSupportItem_t*));
+                                     }
+											    DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
+												 array[servId]->iE_Extensions->list.array[plmnidx],sizeof(ServedPLMNs_ItemExtIEs_t));
+											  }
+										     DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
+											  array[servId]->iE_Extensions->list.array,\
+											  extensionCnt*sizeof(ServedPLMNs_ItemExtIEs_t*));
+										  }
+									     DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
+										  array[servId]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
+									  }
+								     DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
+									  array[servId]->pLMN_Identity.buf,srvCellItem->served_Cell_Information.\
+									  servedPLMNs.list.array[servId]->pLMN_Identity.size
+									  * sizeof(U8));
+								  }
+							     DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnidx],\
+								  sizeof(ServedPLMNs_Item_t *));
+							  }
+						     DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array,\
+							  sizeof(ServedPLMNs_Item_t *));
+						  }
+					     DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC->buf,\
+						  sizeof(srvCellItem->served_Cell_Information.fiveGS_TAC->size));
+					  }
+				     DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC,sizeof(FiveGS_TAC_t));
+				  }
+			     DU_FREE(srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
+				  srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.size *
+				  sizeof(U8));
+			  }
+		     DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
+			  srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size *
+			  sizeof(U8));
+		  }
+	     DU_FREE(duServedCell->list.array[plmnidx],sizeof(GNB_DU_Served_Cells_ItemIEs_t));
+	  }
+     DU_FREE(duServedCell->list.array,plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t*));
+  }
+}
 /*******************************************************************
  *
  * @brief Builds and Send the F1SetupRequest
@@ -970,403 +882,223 @@ S16 SendF1APMsg(Region region, Pool pool)
  ******************************************************************/
 S16 BuildAndSendF1SetupReq()
 {
-   S16  ret;
-   U8   idx;
-   U8   ieId;
-   U8   plmnidx;
-   U8   servId;
-   U8   sliceId;
-   U8   elementCnt;
-   U8   plmnCnt=1;
-   U8   servPlmnCnt=1;
-   U8   extensionCnt=1;
-   F1AP_PDU_t                 *f1apMsg = NULL;
-   F1SetupRequest_t           *f1SetupReq;
-   GNB_DU_Served_Cells_List_t *duServedCell;
-   GNB_DU_Served_Cells_Item_t *srvCellItem;
-   RRC_Version_t              *rrcVer;
+   S16  BuildServedCellListreturn=0;
+	S16  BuildRrcVerreturn=0; 
+   U8   idx=0,idx2=0,i=0;
+   U8   ieId=0;
+   U8   elementCnt=0;
+   F1AP_PDU_t                 *f1apMsg = NULLP;
+   F1SetupRequest_t           *f1SetupReq=NULLP;
+   GNB_DU_Served_Cells_List_t *duServedCell=NULLP;
+   RRC_Version_t              *rrcVer=NULLP;
    asn_enc_rval_t             encRetVal;        /* Encoder return value */
+	bool ret=true;
    DU_LOG("\nF1AP : Building F1 Setup Request\n");
-
-   DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
-   if(f1apMsg == NULLP)
+   do
    {
-      DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
-      RETVALUE(RFAILED);
-   }
-
-   f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
-   DU_ALLOC(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
-   if(f1apMsg->choice.initiatingMessage == NULLP)
-   {
-      DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
-      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
-   }
-
-   f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_F1Setup;
-   f1apMsg->choice.initiatingMessage->criticality = Criticality_reject;
-   f1apMsg->choice.initiatingMessage->value.present = \
+      DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+      if(f1apMsg == NULLP)
+      {
+         break;
+      }
+      f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
+      DU_ALLOC(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+      if(f1apMsg->choice.initiatingMessage == NULLP)
+      {
+         break;
+      }
+      f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_F1Setup;
+      f1apMsg->choice.initiatingMessage->criticality = Criticality_reject;
+      f1apMsg->choice.initiatingMessage->value.present = \
                                     InitiatingMessage__value_PR_F1SetupRequest;
 
-   f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
+      f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
 
-   elementCnt = (duCfgParam.duName != NULL) ? 5 : 4;
+      elementCnt = (duCfgParam.duName != NULL) ? 5 : 4;
 
-   f1SetupReq->protocolIEs.list.count = elementCnt;
-   f1SetupReq->protocolIEs.list.size = elementCnt * sizeof(F1SetupRequestIEs_t *);
+      f1SetupReq->protocolIEs.list.count = elementCnt;
+      f1SetupReq->protocolIEs.list.size = elementCnt * sizeof(F1SetupRequestIEs_t );
 
-   /* Initialize the F1Setup members */
-   DU_ALLOC(f1SetupReq->protocolIEs.list.array, \
-         elementCnt * sizeof(F1SetupRequestIEs_t *));
-   if(f1SetupReq->protocolIEs.list.array == NULLP)
-   {
-      DU_LOG("\nF1AP : Memory allocation for F1RequestIEs failed");
-      DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
-      DU_FREE(f1apMsg, (Size)sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
-   }
-
-   for(idx=0; idx<elementCnt; idx++)
-   {
-      DU_ALLOC(f1SetupReq->protocolIEs.list.array[idx],\
-            sizeof(F1SetupRequestIEs_t));
-      if(f1SetupReq->protocolIEs.list.array[idx] == NULLP)
+      /* Initialize the F1Setup members */
+      DU_ALLOC(f1SetupReq->protocolIEs.list.array,f1SetupReq->protocolIEs.list.size);
+      if(f1SetupReq->protocolIEs.list.array == NULLP)
       {
-         for(ieId=0 ; ieId<idx ;ieId++)
-         {
-            DU_FREE(f1SetupReq->protocolIEs.list.array[ieId],\
-                  sizeof(F1SetupRequestIEs_t));
-         }
-         DU_FREE(f1SetupReq->protocolIEs.list.array,\
-               elementCnt * sizeof(F1SetupRequestIEs_t *));
-         DU_FREE(f1apMsg->choice.initiatingMessage, \
-               sizeof(InitiatingMessage_t));
-         DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         break;
       }
-   }
+      for(idx=0; idx<elementCnt; idx++)
+      {
+         DU_ALLOC(f1SetupReq->protocolIEs.list.array[idx],\
+            sizeof(F1SetupRequestIEs_t));
+         if(f1SetupReq->protocolIEs.list.array[idx] == NULLP)
+         {
+            break;
+         }
+      }
+      idx2 = 0;
 
-   idx = 0;
-
-   /*TransactionID*/
-   f1SetupReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_TransactionID;
-   f1SetupReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
-   f1SetupReq->protocolIEs.list.array[idx]->value.present =\
+      /*TransactionID*/
+      f1SetupReq->protocolIEs.list.array[idx2]->id = ProtocolIE_ID_id_TransactionID;
+      f1SetupReq->protocolIEs.list.array[idx2]->criticality = Criticality_reject;
+      f1SetupReq->protocolIEs.list.array[idx2]->value.present =\
                                     F1SetupRequestIEs__value_PR_TransactionID;
-   f1SetupReq->protocolIEs.list.array[idx]->value.choice.TransactionID = \
+      f1SetupReq->protocolIEs.list.array[idx2]->value.choice.TransactionID = \
                                                                    TRANS_ID;
 
-   /*DU ID*/
-   idx++;
-   f1SetupReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_gNB_DU_ID;
-   f1SetupReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
-   f1SetupReq->protocolIEs.list.array[idx]->value.present = \
+      /*DU ID*/
+      idx2++;
+      f1SetupReq->protocolIEs.list.array[idx2]->id = ProtocolIE_ID_id_gNB_DU_ID;
+      f1SetupReq->protocolIEs.list.array[idx2]->criticality = Criticality_reject;
+      f1SetupReq->protocolIEs.list.array[idx2]->value.present = \
          F1SetupRequestIEs__value_PR_GNB_DU_ID;
-   f1SetupReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_ID.size =\
+      f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_ID.size =\
                                                                     sizeof(U8);
 
-   DU_ALLOC(f1SetupReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_ID.buf,\
-           sizeof(U8));
-   if(f1SetupReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_ID.buf == \
+      DU_ALLOC(f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_ID.buf,\
+           f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_ID.size);
+      if(f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_ID.buf == \
          NULLP)
-   {
-      for(plmnidx=0; plmnidx<elementCnt; plmnidx++)
       {
-         DU_FREE(f1SetupReq->protocolIEs.list.array[plmnidx], \
-               sizeof(F1SetupRequestIEs_t));
-      }  
-      DU_FREE(f1SetupReq->protocolIEs.list.array, \
-            elementCnt * sizeof(F1SetupRequestIEs_t *));
-      DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
-      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
-   }
-
-   f1SetupReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_ID.buf[0] =\
+         break;
+      }
+                       
+      f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_ID.buf[0] =\
                                                              duCfgParam.duId;
 
-   /*DU Name*/
-   if(duCfgParam.duName != NULL)
-   {
-      idx++;
-      f1SetupReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_gNB_DU_Name ;
-      f1SetupReq->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
-      f1SetupReq->protocolIEs.list.array[idx]->value.present = \
-                                          F1SetupRequestIEs__value_PR_GNB_DU_Name;
-      f1SetupReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_Name.size =\
-                                                        sizeof(duCfgParam.duName);
-
-      DU_ALLOC(f1SetupReq->protocolIEs.list.array[idx]->value.choice.\
-            GNB_DU_Name.buf, sizeof(duCfgParam.duName));
-      if(f1SetupReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_Name.\
-            buf == NULLP)
+      /*DU Name*/
+      if(duCfgParam.duName != NULL)
       {
-         DU_FREE(f1SetupReq->protocolIEs.list.array[--idx]->value.choice.\
-               GNB_DU_ID.buf, sizeof(U8));
-         for(plmnidx=0; plmnidx<elementCnt; plmnidx++)
+         idx2++;
+         f1SetupReq->protocolIEs.list.array[idx2]->id = ProtocolIE_ID_id_gNB_DU_Name ;
+         f1SetupReq->protocolIEs.list.array[idx2]->criticality = Criticality_ignore;
+         f1SetupReq->protocolIEs.list.array[idx2]->value.present = F1SetupRequestIEs__value_PR_GNB_DU_Name;
+         f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_Name.size =\
+                                                        strlen((char *)duCfgParam.duName);
+         DU_ALLOC(f1SetupReq->protocolIEs.list.array[idx2]->value.choice.\
+            GNB_DU_Name.buf, strlen((char *)duCfgParam.duName));
+         if(f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_Name.\
+            buf == NULLP)
          {
-            DU_FREE(f1SetupReq->protocolIEs.list.array[plmnidx], \
-                  sizeof(F1SetupRequestIEs_t));
-         }  
-         DU_FREE(f1SetupReq->protocolIEs.list.array,\
-               elementCnt * sizeof(F1SetupRequestIEs_t *));
-         DU_FREE(f1apMsg->choice.initiatingMessage, \
-               sizeof(InitiatingMessage_t));
-         DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
-      }
-
-      strcpy((char*)f1SetupReq->protocolIEs.list.array[idx]->value.\
+            break;
+         }
+         strcpy((char*)f1SetupReq->protocolIEs.list.array[idx2]->value.\
             choice.GNB_DU_Name.buf,
          (char*)&duCfgParam.duName);
-   }
-   
-   /*Served Cell list */
-   idx++;
-   f1SetupReq->protocolIEs.list.array[idx]->id = \
+
+      }
+
+       /*Served Cell list */
+      idx2++;
+      f1SetupReq->protocolIEs.list.array[idx2]->id = \
                                  ProtocolIE_ID_id_gNB_DU_Served_Cells_List;
-   f1SetupReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
-   f1SetupReq->protocolIEs.list.array[idx]->value.present = \
+      f1SetupReq->protocolIEs.list.array[idx2]->criticality = Criticality_reject;
+      f1SetupReq->protocolIEs.list.array[idx2]->value.present = \
                             F1SetupRequestIEs__value_PR_GNB_DU_Served_Cells_List;
-   duServedCell = &f1SetupReq->protocolIEs.list.\
-                  array[idx]->value.choice.GNB_DU_Served_Cells_List;
-   ret = BuildServedCellList(duServedCell);
-   srvCellItem =  &duServedCell->list.array[idx]->value. \
-	               choice.GNB_DU_Served_Cells_Item;   
-   if(ret != ROK)
-   {
-      DU_FREE(f1SetupReq->protocolIEs.list.array[--idx]->value.\
-            choice.GNB_DU_Name.buf, sizeof(duCfgParam.duName)); 
-      DU_FREE(f1SetupReq->protocolIEs.list.array[--idx]->value.\
-            choice.GNB_DU_ID.buf, sizeof(U8));
-      for(plmnidx=0; plmnidx<elementCnt; idx++)
+      duServedCell = &f1SetupReq->protocolIEs.list.\
+                  array[idx2]->value.choice.GNB_DU_Served_Cells_List;
+      BuildServedCellListreturn = BuildServedCellList(duServedCell);
+      if(BuildServedCellListreturn != ROK)
       {
-         DU_FREE(f1SetupReq->protocolIEs.list.array[plmnidx],\
-               sizeof(F1SetupRequestIEs_t));
-      }  
-      DU_FREE(f1SetupReq->protocolIEs.list.array, \
-            elementCnt * sizeof(F1SetupRequestIEs_t *));
-      DU_FREE(f1apMsg->choice.initiatingMessage,\
-            sizeof(InitiatingMessage_t));
-      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-   }
-   /*RRC Version*/
-   idx++;
-   f1SetupReq->protocolIEs.list.array[idx]->id = \
+         break;
+      }
+
+      /*RRC Version*/
+      idx2++;
+      f1SetupReq->protocolIEs.list.array[idx2]->id = \
                                   ProtocolIE_ID_id_GNB_DU_RRC_Version ;
-   f1SetupReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
-   f1SetupReq->protocolIEs.list.array[idx]->value.present = \
+      f1SetupReq->protocolIEs.list.array[idx2]->criticality = Criticality_reject;
+      f1SetupReq->protocolIEs.list.array[idx2]->value.present = \
                                     F1SetupRequestIEs__value_PR_RRC_Version;
-   rrcVer = &f1SetupReq->protocolIEs.list.array[idx]->value.choice.RRC_Version;
-   ret = BuildRrcVer(rrcVer);
-   ieId = 0;
-   sliceId = 0;
-   servId = 0;
-   if(ret != ROK)
-   {
-      DU_FREE(srvCellItem->served_Cell_Information.\
-            measurementTimingConfiguration.buf,sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
-         dL_NRFreqInfo.freqBandListNr.list.array[0],\
-         sizeof(struct FreqBandNrItem));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
-            dL_NRFreqInfo.freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.\
-            fDD->uL_NRFreqInfo.freqBandListNr.list.array[0],\
-            sizeof(struct FreqBandNrItem));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
-            uL_NRFreqInfo.freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD,\
-            sizeof(FDD_Info_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array[sliceId]->sNSSAI.sD->buf,srvCellItem->served_Cell_Information.servedPLMNs.\
-            list.array[servId]->iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array[sliceId]->sNSSAI.sD->size);
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array[sliceId]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList\
-            .list.array[sliceId]->sNSSAI.sST.buf,sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array[sliceId],sizeof(SliceSupportItem_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array,sizeof(SliceSupportItem_t *));
-      for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
+      rrcVer = &f1SetupReq->protocolIEs.list.array[idx2]->value.choice.RRC_Version;
+      BuildRrcVerreturn = BuildRrcVer(rrcVer);
+      ieId = 0;
+      if(BuildRrcVerreturn != ROK)
       {
-         DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-               array[servId]->iE_Extensions->list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_ItemExtIEs));
+			break;
       }
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->iE_Extensions->list.array,\
-            extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->pLMN_Identity.buf,srvCellItem->served_Cell_Information.\
-            servedPLMNs.list.array[servId]->pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0;plmnidx<servPlmnCnt; plmnidx++)
-      {
-         DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_Item *));
-      }
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array,\
-            sizeof(struct ServedPLMNs_Item *));
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC->buf,\
-            sizeof(srvCellItem->served_Cell_Information.fiveGS_TAC->size));
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC,\
-            sizeof(FiveGS_TAC_t));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.size * sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0; plmnidx<plmnCnt;plmnidx++)
-      {
-         DU_FREE(duServedCell->list.array[plmnidx],\
-               sizeof(GNB_DU_Served_Cells_ItemIEs_t));
-      }   
-      DU_FREE(duServedCell->list.array,\
-            plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
-      DU_FREE(f1SetupReq->protocolIEs.list.array[--idx]->value.\
-            choice.GNB_DU_Name.buf, sizeof(duCfgParam.duName)); 
-      DU_FREE(f1SetupReq->protocolIEs.list.array[--idx]->value.\
-            choice.GNB_DU_ID.buf, sizeof(U8));
-      for(plmnidx=0; plmnidx<elementCnt; plmnidx++)
-      {
-         DU_FREE(f1SetupReq->protocolIEs.list.array[plmnidx],\
-               sizeof(F1SetupRequestIEs_t));
-      }  
-      DU_FREE(f1SetupReq->protocolIEs.list.array,\
-            elementCnt * sizeof(F1SetupRequestIEs_t *));
-      DU_FREE(f1apMsg->choice.initiatingMessage,\
-            sizeof(InitiatingMessage_t));
-      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
-   }
-   xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
+      xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
-   /* Encode the F1SetupRequest type as APER */
-   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
-   encBufSize = 0;
-   encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
+      /* Encode the F1SetupRequest type as APER */
+      cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
          encBuf);
-   /* Clean up */
-#if 0 
-      DU_FREE(srvCellItem->gNB_DU_System_Information->sIB1_message.buf,
-		   srvCellItem->gNB_DU_System_Information->sIB1_message.size);
-      DU_FREE(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
-		   srvCellItem->gNB_DU_System_Information->mIB_message.size);
-      DU_FREE(srvCellItem->served_Cell_Information.\
-            measurementTimingConfiguration.buf,sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
-         dL_NRFreqInfo.freqBandListNr.list.array[0],\
-         sizeof(struct FreqBandNrItem));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
-            dL_NRFreqInfo.freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.\
-            fDD->uL_NRFreqInfo.freqBandListNr.list.array[0],\
-            sizeof(struct FreqBandNrItem));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
-            uL_NRFreqInfo.freqBandListNr.list.array,sizeof(struct FreqBandNrItem *));
-      DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD,\
-            sizeof(FDD_Info_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array[sliceId]->sNSSAI.sD->buf,srvCellItem->served_Cell_Information.servedPLMNs.\
-            list.array[servId]->iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array[sliceId]->sNSSAI.sD->size);
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array[sliceId]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList\
-            .list.array[sliceId]->sNSSAI.sST.buf,sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array[sliceId],sizeof(SliceSupportItem_t));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
-            iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.\
-            list.array,sizeof(SliceSupportItem_t *));
-      for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
-      {
-         DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-               array[servId]->iE_Extensions->list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_ItemExtIEs));
-      }
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->iE_Extensions->list.array,\
-            extensionCnt*sizeof(struct ServedPLMNs_ItemExtIEs *));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
-            array[servId]->pLMN_Identity.buf,srvCellItem->served_Cell_Information.\
-            servedPLMNs.list.array[servId]->pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0;plmnidx<servPlmnCnt; plmnidx++)
-      {
-         DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnidx],\
-               sizeof(struct ServedPLMNs_Item *));
-      }
-      DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array,\
-            sizeof(struct ServedPLMNs_Item *));
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC->buf,\
-            sizeof(srvCellItem->served_Cell_Information.fiveGS_TAC->size));
-      DU_FREE(srvCellItem->served_Cell_Information.fiveGS_TAC,\
-            sizeof(FiveGS_TAC_t));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.size * sizeof(U8));
-      DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
-            srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size * sizeof(U8));
-      for(plmnidx=0; plmnidx<plmnCnt;plmnidx++)
-      {
-         DU_FREE(duServedCell->list.array[plmnidx],\
-               sizeof(GNB_DU_Served_Cells_ItemIEs_t));
-      }   
-      DU_FREE(duServedCell->list.array,\
-            plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t *));
 
-#endif
-   if(duCfgParam.duName != NULL)
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+           DU_LOG("\nF1AP : Could not encode F1SetupRequest structure (at %s)\n",\
+                           encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+			  break;
+      }
+      else
+      {
+           DU_LOG("\nF1AP : Created APER encoded buffer for F1SetupRequest\n");
+           for(i=0; i< encBufSize; i++)
+           {
+                   printf("%x",encBuf[i]);
+           }
+      }
+
+      /* Sending msg */
+      if(SendF1APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
+       {
+           DU_LOG("\nF1AP : Sending F1 Setup request failed");
+			  break;
+      }
+		ret=false;
+      break;
+   }while(1);
+
+   if(f1apMsg != NULLP)
    {
-      DU_FREE(f1SetupReq->protocolIEs.list.array[idx]->value.choice.\
-            GNB_DU_Name.buf, sizeof(duCfgParam.duName));
-   }
-   DU_FREE(f1SetupReq->protocolIEs.list.array[--idx]->value.choice.GNB_DU_ID.\
-         buf, sizeof(U8));
-   for(idx=0; idx<elementCnt; idx++)
-   {
-      DU_FREE(f1SetupReq->protocolIEs.list.array[idx], sizeof(F1SetupRequestIEs_t));
-   }
-   DU_FREE(f1SetupReq->protocolIEs.list.array, elementCnt * sizeof(F1SetupRequestIEs_t *));
-   DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
-   DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-   /* Encode results */
-   if(encRetVal.encoded == ENCODE_FAIL)
-   {
-	   DU_LOG("\nF1AP : Could not encode F1SetupRequest structure (at %s)\n",\
-			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	   RETVALUE(RFAILED);
-   }
-   else
-   {
-	   DU_LOG("\nF1AP : Created APER encoded buffer for F1SetupRequest\n");
-	   for(int i=0; i< encBufSize; i++)
-	   {
-		   printf("%x",encBuf[i]);
-	   } 
+
+      if(f1apMsg->choice.initiatingMessage != NULLP)
+      {
+         if(f1SetupReq->protocolIEs.list.array != NULLP)
+         {
+            if(idx == elementCnt-1)
+            {
+               if(f1SetupReq->protocolIEs.list.array[1]->value.choice.GNB_DU_ID.buf !=  NULLP)
+               {
+                   if(f1SetupReq->protocolIEs.list.array[2]->value.choice.GNB_DU_Name.buf != NULLP)
+                   {
+						     if(BuildServedCellListreturn == ROK)
+							  {   
+							      FreeRrcVer(rrcVer);
+							  }
+							  FreeServedCellList(duServedCell);
+							  DU_FREE(f1SetupReq->protocolIEs.list.array[2]->value.choice.GNB_DU_Name.buf, strlen((char *)duCfgParam.duName));
+                   }
+                   DU_FREE(f1SetupReq->protocolIEs.list.array[1]->value.choice.GNB_DU_ID.buf, sizeof(U8));
+                }
+		          for(idx=0; idx<elementCnt; idx++)
+                {
+                    DU_FREE(f1SetupReq->protocolIEs.list.array[idx],sizeof(F1SetupRequestIEs_t));
+                }
+            }
+            else
+            {
+                for(ieId=0 ; ieId<idx ;ieId++)
+                {
+					    if(f1SetupReq->protocolIEs.list.array[ieId]!=NULLP)
+                   {
+						     DU_FREE(f1SetupReq->protocolIEs.list.array[ieId],\
+                       sizeof(F1SetupRequestIEs_t));
+						 }
+                }
+            }
+            DU_FREE(f1SetupReq->protocolIEs.list.array,\
+               elementCnt * sizeof(F1SetupRequestIEs_t *));
+         }
+         DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+      }
+      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
    }
 
-   /* Sending msg */
-   if(SendF1APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
-   {
-	   DU_LOG("\nF1AP : Sending F1 Setup request failed");
-	   RETVALUE(RFAILED);
-   }
-   return ROK;
+	if(ret==false)
+   return ROK;  
+	else
+	return RFAILED;
 }/* End of BuildAndSendF1SetupReq */
 
 /*******************************************************************
@@ -1403,7 +1135,7 @@ S16 BuildAndSendDUConfigUpdate()
    if(f1apDuCfg == NULLP)
    {
 	   DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
-	   RETVALUE(RFAILED);
+	   return RFAILED;
    }
  
    f1apDuCfg->present = F1AP_PDU_PR_initiatingMessage;
@@ -1412,7 +1144,7 @@ S16 BuildAndSendDUConfigUpdate()
    {
       DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");  
       DU_FREE(f1apDuCfg, (Size)sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    f1apDuCfg->choice.initiatingMessage->procedureCode = \
@@ -1436,7 +1168,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_LOG("F1AP : Memory allocation for F1RequestIEs failed");
       DU_FREE(f1apDuCfg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for(idx=0;idx<elementCnt;idx++)
@@ -1450,7 +1182,7 @@ S16 BuildAndSendDUConfigUpdate()
          DU_FREE(f1apDuCfg->choice.initiatingMessage,\
                (Size)sizeof(InitiatingMessage_t));
          DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -1476,9 +1208,9 @@ S16 BuildAndSendDUConfigUpdate()
    modifyCnt = 1;
    cellsToModify->list.count = modifyCnt;
    cellsToModify->list.size = \
-                      modifyCnt*sizeof(struct Served_Cells_To_Modify_ItemIEs *);
+                      modifyCnt*sizeof(Served_Cells_To_Modify_ItemIEs_t *);
    DU_ALLOC(cellsToModify->list.array,modifyCnt*\
-         sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+         sizeof(Served_Cells_To_Modify_ItemIEs_t *));
    if(cellsToModify->list.array == NULLP)
    {
       for(idy=0;idy<elementCnt;idy++)
@@ -1491,17 +1223,17 @@ S16 BuildAndSendDUConfigUpdate()
          DU_FREE(f1apDuCfg->choice.initiatingMessage,\
                (Size)sizeof(InitiatingMessage_t));
          DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       
    }
    for(idy=0; idy<modifyCnt ;idy++)
    {
       DU_ALLOC(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       if(cellsToModify->list.array[idy] == NULLP)
       {
          DU_FREE(cellsToModify->list.array,modifyCnt*\
-               sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+               sizeof(Served_Cells_To_Modify_ItemIEs_t *));
          for(idy=0;idy<elementCnt;idy++)
          {
             DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1512,7 +1244,7 @@ S16 BuildAndSendDUConfigUpdate()
          DU_FREE(f1apDuCfg->choice.initiatingMessage,\
                (Size)sizeof(InitiatingMessage_t));
          DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    cellsToModify->list.array[0]->id = \
@@ -1531,9 +1263,9 @@ S16 BuildAndSendDUConfigUpdate()
       for(idy=0; idy<modifyCnt ;idy++)
       {
          DU_FREE(cellsToModify->list.array[idy],\
-               sizeof(struct Served_Cells_To_Modify_ItemIEs));
+               sizeof(Served_Cells_To_Modify_ItemIEs_t));
          DU_FREE(cellsToModify->list.array,modifyCnt*\
-               sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+               sizeof(Served_Cells_To_Modify_ItemIEs_t *));
          for(idy=0;idy<elementCnt;idy++)
          {
             DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1544,7 +1276,7 @@ S16 BuildAndSendDUConfigUpdate()
          DU_FREE(f1apDuCfg->choice.initiatingMessage,\
                (Size)sizeof(InitiatingMessage_t));
          DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
@@ -1557,9 +1289,9 @@ S16 BuildAndSendDUConfigUpdate()
    {
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1570,7 +1302,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    for (int tmp = 0 ; tmp < modifyItem->oldNRCGI.nRCellIdentity.size-1 ; tmp++)
    {
@@ -1589,9 +1321,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1602,7 +1334,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
          &modifyItem->served_Cell_Information.nRCGI.pLMN_Identity);
@@ -1617,9 +1349,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1630,7 +1362,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    for (int tmp = 0 ; tmp < modifyItem->served_Cell_Information.\
          nRCGI.nRCellIdentity.size-1 ; tmp++)
@@ -1648,9 +1380,9 @@ S16 BuildAndSendDUConfigUpdate()
    servPlmnCnt = 1;
    modifyItem->served_Cell_Information.servedPLMNs.list.count = servPlmnCnt;
    modifyItem->served_Cell_Information.servedPLMNs.list.size = \
-                                servPlmnCnt*sizeof(struct ServedPLMNs_Item *);
+                                servPlmnCnt*sizeof(ServedPLMNs_Item_t *);
    DU_ALLOC(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-         servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+         servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
    if(modifyItem->served_Cell_Information.servedPLMNs.list.array == NULLP)
    {
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
@@ -1661,9 +1393,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1674,16 +1406,16 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    for(idy=0;idy<servPlmnCnt;idy++)
    {
       DU_ALLOC(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy] == NULLP)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
          DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
                5*sizeof(uint8_t));
          DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -1692,9 +1424,9 @@ S16 BuildAndSendDUConfigUpdate()
                modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
          DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
          DU_FREE(cellsToModify->list.array[idy],\
-               sizeof(struct Served_Cells_To_Modify_ItemIEs));
+               sizeof(Served_Cells_To_Modify_ItemIEs_t));
          DU_FREE(cellsToModify->list.array,modifyCnt*\
-               sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+               sizeof(Served_Cells_To_Modify_ItemIEs_t *));
          for(idy=0;idy<elementCnt;idy++)
          {
             DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1705,7 +1437,7 @@ S16 BuildAndSendDUConfigUpdate()
          DU_FREE(f1apDuCfg->choice.initiatingMessage,\
                (Size)sizeof(InitiatingMessage_t));
          DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    modifyItem->served_Cell_Information.servedPLMNs.list.\
@@ -1718,10 +1450,10 @@ S16 BuildAndSendDUConfigUpdate()
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -1730,9 +1462,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1743,12 +1475,12 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.plmn[0],\
          &modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->pLMN_Identity);
    DU_ALLOC(modifyItem->served_Cell_Information.servedPLMNs.list.\
-       array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
+       array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
    if(modifyItem->served_Cell_Information.servedPLMNs.list.\
          array[0]->iE_Extensions == NULLP)
    {
@@ -1757,10 +1489,10 @@ S16 BuildAndSendDUConfigUpdate()
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -1769,9 +1501,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1782,31 +1514,31 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    extensionCnt=1;
    modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
       iE_Extensions->list.count = extensionCnt;
    modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
       iE_Extensions->list.size = extensionCnt * \
-      sizeof(struct ServedPLMNs_ItemExtIEs *);
+      sizeof(ServedPLMNs_ItemExtIEs_t *);
    DU_ALLOC(modifyItem->served_Cell_Information.servedPLMNs.list.\
          array[0]->iE_Extensions->list.array,extensionCnt*\
-         sizeof(struct ServedPLMNs_ItemExtIEs *));
+         sizeof(ServedPLMNs_ItemExtIEs_t *));
    if(modifyItem->served_Cell_Information.servedPLMNs.list.\
          array[0]->iE_Extensions->list.array == NULLP)
    {
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-            array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
+            array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -1815,9 +1547,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1828,30 +1560,30 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    for(idy=0;idy<extensionCnt;idy++)
    {
       DU_ALLOC(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array[idy],\
-            sizeof(struct ServedPLMNs_ItemExtIEs)); 
+            sizeof(ServedPLMNs_ItemExtIEs_t)); 
       if(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array[idy] == NULLP)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array,extensionCnt*\
-               sizeof(struct ServedPLMNs_ItemExtIEs *));
+               sizeof(ServedPLMNs_ItemExtIEs_t *));
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-               array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
+               array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
          for(idy=0;idy<servPlmnCnt;idy++)
          {
             DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-                  servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+                  servPlmnCnt*sizeof(ServedPLMNs_Item_t));
          }
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
          DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
                5*sizeof(uint8_t));
          DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -1860,9 +1592,9 @@ S16 BuildAndSendDUConfigUpdate()
                modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
          DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
          DU_FREE(cellsToModify->list.array[idy],\
-               sizeof(struct Served_Cells_To_Modify_ItemIEs));
+               sizeof(Served_Cells_To_Modify_ItemIEs_t));
          DU_FREE(cellsToModify->list.array,modifyCnt*\
-               sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+               sizeof(Served_Cells_To_Modify_ItemIEs_t *));
          for(idy=0;idy<elementCnt;idy++)
          {
             DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1873,7 +1605,7 @@ S16 BuildAndSendDUConfigUpdate()
          DU_FREE(f1apDuCfg->choice.initiatingMessage,\
                (Size)sizeof(InitiatingMessage_t));
          DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
@@ -1900,22 +1632,22 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-            array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
+            array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -1924,9 +1656,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1937,7 +1669,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    DU_ALLOC(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
          iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
@@ -1953,22 +1685,22 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-            array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
+            array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -1977,9 +1709,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -1990,7 +1722,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
       iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
@@ -2012,22 +1744,22 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-            array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
+            array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2036,9 +1768,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2049,7 +1781,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
       iE_Extensions->list.array[0]->extensionValue. choice.SliceSupportList.\
@@ -2074,22 +1806,22 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-            array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
+            array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2098,9 +1830,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2111,7 +1843,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
       iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
@@ -2139,22 +1871,22 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-            array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
+            array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2163,9 +1895,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2176,7 +1908,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
       iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
@@ -2214,22 +1946,22 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-            array[0]->iE_Extensions,sizeof(struct ProtocolExtensionContainer_4624P3));
+            array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2238,9 +1970,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2251,7 +1983,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
       uL_NRFreqInfo.nRARFCN = duCfgParam.srvdCellLst[0].duCellInfo.\
@@ -2260,10 +1992,10 @@ S16 BuildAndSendDUConfigUpdate()
       uL_NRFreqInfo.freqBandListNr.list.count = 1;
    modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
       uL_NRFreqInfo.freqBandListNr.list.size = \
-      sizeof(struct FreqBandNrItem *);
+      sizeof(FreqBandNrItem_t *);
    DU_ALLOC(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
          fDD->uL_NRFreqInfo.freqBandListNr.list.\
-         array,sizeof(struct FreqBandNrItem *));
+         array,sizeof(FreqBandNrItem_t *));
    if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
          fDD->uL_NRFreqInfo.freqBandListNr.list.array == NULLP)
    {
@@ -2288,23 +2020,23 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions,\
-            sizeof(struct ProtocolExtensionContainer_4624P3));
+            sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2313,9 +2045,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2326,18 +2058,18 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    DU_ALLOC(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
          uL_NRFreqInfo.freqBandListNr.list.\
-         array[0],sizeof(struct FreqBandNrItem));
+         array[0],sizeof(FreqBandNrItem_t));
    if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
          uL_NRFreqInfo.freqBandListNr.list.\
          array[0] == NULLP)
    {
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
             fDD->uL_NRFreqInfo.freqBandListNr.list.\
-            array,sizeof(struct FreqBandNrItem *));
+            array,sizeof(FreqBandNrItem_t *));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD,\
             sizeof(FDD_Info_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
@@ -2359,23 +2091,23 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions,\
-            sizeof(struct ProtocolExtensionContainer_4624P3));
+            sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2384,9 +2116,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2397,7 +2129,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->uL_NRFreqInfo.\
       freqBandListNr.list.array[0]->freqBandIndicatorNr = \
@@ -2411,19 +2143,19 @@ S16 BuildAndSendDUConfigUpdate()
    modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->dL_NRFreqInfo.\
       freqBandListNr.list.count = 1;
    modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->dL_NRFreqInfo.\
-      freqBandListNr.list.size = sizeof(struct FreqBandNrItem *);
+      freqBandListNr.list.size = sizeof(FreqBandNrItem_t *);
    DU_ALLOC(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
          dL_NRFreqInfo.freqBandListNr.list.array,\
-         sizeof(struct FreqBandNrItem *));
+         sizeof(FreqBandNrItem_t *));
    if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
          dL_NRFreqInfo.freqBandListNr.list.array == NULLP)
    {
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
             uL_NRFreqInfo.freqBandListNr.list.\
-            array[0],sizeof(struct FreqBandNrItem));
+            array[0],sizeof(FreqBandNrItem_t));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
             fDD->uL_NRFreqInfo.freqBandListNr.list.\
-            array,sizeof(struct FreqBandNrItem *));
+            array,sizeof(FreqBandNrItem_t *));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD,\
             sizeof(FDD_Info_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
@@ -2445,23 +2177,23 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions,\
-            sizeof(struct ProtocolExtensionContainer_4624P3));
+            sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2470,9 +2202,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2483,23 +2215,23 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    DU_ALLOC(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
          dL_NRFreqInfo.freqBandListNr.list.array[0],\
-         sizeof(struct FreqBandNrItem));
+         sizeof(FreqBandNrItem_t));
    if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
          dL_NRFreqInfo.freqBandListNr.list.array[0] == NULLP)
    {
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
             dL_NRFreqInfo.freqBandListNr.list.array,\
-            sizeof(struct FreqBandNrItem *));
+            sizeof(FreqBandNrItem_t *));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
             uL_NRFreqInfo.freqBandListNr.list.\
-            array[0],sizeof(struct FreqBandNrItem));
+            array[0],sizeof(FreqBandNrItem_t));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
             fDD->uL_NRFreqInfo.freqBandListNr.list.\
-            array,sizeof(struct FreqBandNrItem *));
+            array,sizeof(FreqBandNrItem_t *));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD,\
             sizeof(FDD_Info_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
@@ -2521,23 +2253,23 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions,\
-            sizeof(struct ProtocolExtensionContainer_4624P3));
+            sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2546,9 +2278,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2559,7 +2291,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->dL_NRFreqInfo.\
       freqBandListNr.list.array[0]->freqBandIndicatorNr = \
@@ -2592,16 +2324,16 @@ S16 BuildAndSendDUConfigUpdate()
    {
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
             dL_NRFreqInfo.freqBandListNr.list.array[0],\
-            sizeof(struct FreqBandNrItem));
+            sizeof(FreqBandNrItem_t));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
             dL_NRFreqInfo.freqBandListNr.list.array,\
-            sizeof(struct FreqBandNrItem *));
+            sizeof(FreqBandNrItem_t *));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
             uL_NRFreqInfo.freqBandListNr.list.\
-            array[0],sizeof(struct FreqBandNrItem));
+            array[0],sizeof(FreqBandNrItem_t));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
             fDD->uL_NRFreqInfo.freqBandListNr.list.\
-            array,sizeof(struct FreqBandNrItem *));
+            array,sizeof(FreqBandNrItem_t *));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD,\
             sizeof(FDD_Info_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
@@ -2623,23 +2355,23 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions,\
-            sizeof(struct ProtocolExtensionContainer_4624P3));
+            sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2648,9 +2380,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2661,7 +2393,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    modifyItem->served_Cell_Information.measurementTimingConfiguration.\
       buf[0] = duCfgParam.srvdCellLst[0].duCellInfo.measTimeCfg;
@@ -2683,16 +2415,16 @@ S16 BuildAndSendDUConfigUpdate()
             buf,sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
             dL_NRFreqInfo.freqBandListNr.list.array[0],\
-            sizeof(struct FreqBandNrItem));
+            sizeof(FreqBandNrItem_t));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
             dL_NRFreqInfo.freqBandListNr.list.array,\
-            sizeof(struct FreqBandNrItem *));
+            sizeof(FreqBandNrItem_t *));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
             uL_NRFreqInfo.freqBandListNr.list.\
-            array[0],sizeof(struct FreqBandNrItem));
+            array[0],sizeof(FreqBandNrItem_t));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
             fDD->uL_NRFreqInfo.freqBandListNr.list.\
-            array,sizeof(struct FreqBandNrItem *));
+            array,sizeof(FreqBandNrItem_t *));
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD,\
             sizeof(FDD_Info_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
@@ -2714,23 +2446,23 @@ S16 BuildAndSendDUConfigUpdate()
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
                array[0]->iE_Extensions->list.array[idy],\
-               sizeof(struct ServedPLMNs_ItemExtIEs)); 
+               sizeof(ServedPLMNs_ItemExtIEs_t)); 
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions->list.array,extensionCnt*\
-            sizeof(struct ServedPLMNs_ItemExtIEs *));
+            sizeof(ServedPLMNs_ItemExtIEs_t *));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->iE_Extensions,\
-            sizeof(struct ProtocolExtensionContainer_4624P3));
+            sizeof(ProtocolExtensionContainer_4624P3_t));
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
             array[0]->pLMN_Identity.buf,3*sizeof(uint8_t));
       for(idy=0;idy<servPlmnCnt;idy++)
       {
          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idy],\
-               servPlmnCnt*sizeof(struct ServedPLMNs_Item));
+               servPlmnCnt*sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            servPlmnCnt*sizeof(struct ServedPLMNs_Item *));
+            servPlmnCnt*sizeof(ServedPLMNs_Item_t *));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
             5*sizeof(uint8_t));
       DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
@@ -2739,9 +2471,9 @@ S16 BuildAndSendDUConfigUpdate()
             modifyItem->oldNRCGI.nRCellIdentity.size*sizeof(uint8_t));
       DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,3*sizeof(uint8_t));
       DU_FREE(cellsToModify->list.array[idy],\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t));
       DU_FREE(cellsToModify->list.array,modifyCnt*\
-            sizeof(struct Served_Cells_To_Modify_ItemIEs *));
+            sizeof(Served_Cells_To_Modify_ItemIEs_t *));
       for(idy=0;idy<elementCnt;idy++)
       {
          DU_FREE(duCfgUpdate->protocolIEs.list.array[idy], \
@@ -2752,7 +2484,7 @@ S16 BuildAndSendDUConfigUpdate()
       DU_FREE(f1apDuCfg->choice.initiatingMessage,\
             (Size)sizeof(InitiatingMessage_t));
       DU_FREE(f1apDuCfg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    duCfgUpdate->protocolIEs.list.array[2]->value.choice.GNB_DU_ID.buf[0] = \
                                                               duCfgParam.duId;
@@ -2780,7 +2512,7 @@ S16 BuildAndSendDUConfigUpdate()
    if(encRetVal.encoded == ENCODE_FAIL) 
    {
       DU_LOG("F1AP : Could not encode DUConfigUpdate structure (at %s)\n",encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-      RETVALUE(RFAILED);
+      return RFAILED;
    } 
    else 
    {
@@ -2795,7 +2527,7 @@ S16 BuildAndSendDUConfigUpdate()
    if(SendF1APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
    {
       DU_LOG("\nF1AP : Sending GND-DU Config Update failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    return ROK;
 }/* End of BuildAndSendDUConfigUpdate */
@@ -2832,7 +2564,7 @@ S16 BuildAndSendULRRCMessageTransfer()
 	if(f1apMsg == NULLP)
 	{
 		DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
@@ -2842,7 +2574,7 @@ S16 BuildAndSendULRRCMessageTransfer()
 	{
 		DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
 		DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	f1apMsg->choice.initiatingMessage->procedureCode = \
@@ -2866,7 +2598,7 @@ S16 BuildAndSendULRRCMessageTransfer()
 		DU_FREE(f1apMsg->choice.initiatingMessage,
 				sizeof(InitiatingMessage_t));
 		DU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	for(idx=0; idx<elementCnt; idx++)
@@ -2885,7 +2617,7 @@ S16 BuildAndSendULRRCMessageTransfer()
 			DU_FREE(f1apMsg->choice.initiatingMessage,\
 												sizeof(InitiatingMessage_t));
 			DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-			RETVALUE(RFAILED);
+			return RFAILED;
 		}
 	}
 
@@ -2932,7 +2664,7 @@ S16 BuildAndSendULRRCMessageTransfer()
 	{
 		DU_LOG( "\n F1AP : Could not encode ULRRCMessageTransfer structure (at %s)\n",\
 				encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	else
 	{
@@ -2947,7 +2679,7 @@ S16 BuildAndSendULRRCMessageTransfer()
 	if(SendF1APMsg(DU_APP_MEM_REGION,DU_POOL)	!=	ROK)
 	{
 		DU_LOG("\n F1AP : Sending	UL RRC Message Transfer Failed");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
    return ROK;
 }/* End of BuildAndSendULRRCMessageTransfer*/
@@ -2985,7 +2717,7 @@ S16 BuildAndSendRRCSetupReq()
 	if(f1apMsg == NULLP)
 	{
 		DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
@@ -2994,7 +2726,7 @@ S16 BuildAndSendRRCSetupReq()
 	{
 		DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
 		DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	f1apMsg->choice.initiatingMessage->procedureCode = \
@@ -3018,7 +2750,7 @@ S16 BuildAndSendRRCSetupReq()
 		DU_FREE(f1apMsg->choice.initiatingMessage,
 				sizeof(InitiatingMessage_t));
 		DU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	for(idx=0; idx<elementCnt; idx++)
@@ -3037,7 +2769,7 @@ S16 BuildAndSendRRCSetupReq()
 			DU_FREE(f1apMsg->choice.initiatingMessage,\
 												sizeof(InitiatingMessage_t));
 			DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-			RETVALUE(RFAILED);
+			return RFAILED;
 		}
 	}
 
@@ -3078,7 +2810,7 @@ S16 BuildAndSendRRCSetupReq()
 		DU_FREE(f1apMsg->choice.initiatingMessage,\
 				sizeof(InitiatingMessage_t));
 		DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 
 	}
 
@@ -3110,7 +2842,7 @@ S16 BuildAndSendRRCSetupReq()
 	{
 		DU_LOG( "\n F1AP : Could not encode Initial UL RRC Message Transfer structure (at %s)\n",\
 				encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	else
 	{
@@ -3125,7 +2857,7 @@ S16 BuildAndSendRRCSetupReq()
 	if(SendF1APMsg(DU_APP_MEM_REGION,DU_POOL)	!=	ROK)
 	{
 		DU_LOG("\n F1AP : Sending	Initial UL RRC Message Transfer Failed");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
    return ROK;
 }/* End of BuildAndSendRRCSetupReq*/
@@ -3154,23 +2886,23 @@ S16 BuildSplCellList(SCell_ToBeSetup_List_t *spCellLst)
 	S16 ret;
 	cellCnt = 1;
 	spCellLst->list.count = cellCnt;
-	spCellLst->list.size = cellCnt * sizeof(struct SCell_ToBeSetup_ItemIEs *);
+	spCellLst->list.size = cellCnt * sizeof(SCell_ToBeSetup_ItemIEs_t *);
 	DU_ALLOC(spCellLst->list.array,spCellLst->list.size);
 	if(spCellLst->list.array == NULLP)
 	{
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	for(idx=0; idx<cellCnt; idx++)
 	{
-		DU_ALLOC(spCellLst->list.array[idx],sizeof(struct SCell_ToBeSetup_ItemIEs));
+		DU_ALLOC(spCellLst->list.array[idx],sizeof(SCell_ToBeSetup_ItemIEs_t));
 		if(spCellLst->list.array[idx] == NULLP)
 		{
 			for(cellidx=0; cellidx<idx; cellidx++)
 			{
-				DU_FREE(spCellLst->list.array[cellidx],sizeof(struct SCell_ToBeSetup_ItemIEs));
+				DU_FREE(spCellLst->list.array[cellidx],sizeof(SCell_ToBeSetup_ItemIEs_t));
 			}
 			DU_FREE(spCellLst->list.array,spCellLst->list.size);
-			RETVALUE(RFAILED);
+			return RFAILED;
 		}
 	}
 	idx = 0;
@@ -3184,11 +2916,11 @@ S16 BuildSplCellList(SCell_ToBeSetup_List_t *spCellLst)
 	{
 		for(cellidx=0; cellidx<cellCnt; cellidx++)
 		{
-			DU_FREE(spCellLst->list.array[cellidx],sizeof(struct
-			SCell_ToBeSetup_ItemIEs));
+			DU_FREE(spCellLst->list.array[cellidx],sizeof(
+			SCell_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(spCellLst->list.array,spCellLst->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	/*Special Cell Index*/
 	spCellLst->list.array[idx]->value.choice.SCell_ToBeSetup_Item.sCellIndex = 1;
@@ -3218,20 +2950,20 @@ S16 BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
 	U8 srbCnt;
 	srbCnt = 1;
 	srbSet->list.count = srbCnt;
-	srbSet->list.size = srbCnt*sizeof(struct SRBs_ToBeSetup_ItemIEs *);
+	srbSet->list.size = srbCnt*sizeof(SRBs_ToBeSetup_ItemIEs_t *);
 	DU_ALLOC(srbSet->list.array,srbSet->list.size);
 	if(srbSet->list.array == NULLP)
 	{
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	for(idx=0; idx<srbCnt; idx++)
 	{
-		DU_ALLOC(srbSet->list.array[idx],sizeof(struct SRBs_ToBeSetup_ItemIEs));
+		DU_ALLOC(srbSet->list.array[idx],sizeof(SRBs_ToBeSetup_ItemIEs_t));
 		if(srbSet->list.array[idx] == NULLP)
 		{
 			for(srbidx=0; srbidx<idx; srbidx++)
 			{
-				DU_FREE(srbSet->list.array[srbidx],sizeof(struct SRBs_ToBeSetup_ItemIEs));
+				DU_FREE(srbSet->list.array[srbidx],sizeof(SRBs_ToBeSetup_ItemIEs_t));
 			}
 			DU_FREE(srbSet->list.array,srbSet->list.size);
 		}
@@ -3268,7 +3000,7 @@ S16 BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
 	DU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI,sizeof(NonDynamic5QIDescriptor_t));
 	if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI == NULLP)
 	{
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	/*FiveQI*/
  	drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = 0;
@@ -3280,7 +3012,7 @@ S16 BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
 	{
 		DU_FREE(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI,\
 						sizeof(NonDynamic5QIDescriptor_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	*(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow) = 0;
 	/*MaxDataBurstVolume*/
@@ -3293,7 +3025,7 @@ S16 BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
 												sizeof(AveragingWindow_t));
 		DU_FREE(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI,\
 						sizeof(NonDynamic5QIDescriptor_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	*(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume) = 0;
 
@@ -3333,7 +3065,7 @@ S16 BuildSNSSAI(SNSSAI_t *snssai)
 	DU_ALLOC(snssai->sST.buf,snssai->sST.size);
 	if(snssai->sST.buf == NULLP)
 	{
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	snssai->sST.buf[0] = 3;
 	  /*sD*/
@@ -3341,7 +3073,7 @@ S16 BuildSNSSAI(SNSSAI_t *snssai)
 	if(snssai->sD == NULLP)
 	{
 		DU_FREE(snssai->sST.buf,snssai->sST.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	snssai->sD->size = 3*sizeof(U8);
 	DU_ALLOC(snssai->sD->buf,snssai->sD->size);
@@ -3349,7 +3081,7 @@ S16 BuildSNSSAI(SNSSAI_t *snssai)
 	{
 		DU_FREE(snssai->sD,sizeof(OCTET_STRING_t));
 		DU_FREE(snssai->sST.buf,snssai->sST.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 		snssai->sD->buf[0] = 3;
 		snssai->sD->buf[1] = 6;
@@ -3381,21 +3113,21 @@ S16 BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
 	U8 flowCnt;
 	flowCnt = 1;
 	flowMap->list.count = flowCnt;
-	flowMap->list.size = flowCnt * sizeof(struct Flows_Mapped_To_DRB_Item *);
+	flowMap->list.size = flowCnt * sizeof(Flows_Mapped_To_DRB_Item_t *);
 	DU_ALLOC(flowMap->list.array,flowMap->list.size);
 	if(flowMap->list.array == NULLP)
 	{
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	for(idx=0; idx<flowCnt; idx++)
 	{
-		DU_ALLOC(flowMap->list.array[idx],sizeof(struct Flows_Mapped_To_DRB_Item));
+		DU_ALLOC(flowMap->list.array[idx],sizeof(Flows_Mapped_To_DRB_Item_t));
 		if(flowMap->list.array[idx] == NULLP)
 		{
 			for(flowidx=0; flowidx<idx; flowidx++)
 			{
-				DU_FREE(flowMap->list.array[flowidx],sizeof(struct \
-							Flows_Mapped_To_DRB_Item));
+				DU_FREE(flowMap->list.array[flowidx],sizeof( \
+							Flows_Mapped_To_DRB_Item_t));
 			}
 
 			DU_FREE(flowMap->list.array,flowMap->list.size);
@@ -3417,10 +3149,10 @@ S16 BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
 			sizeof(NonDynamic5QIDescriptor_t));
 		for(idx=0; idx<flowCnt; idx++)
 		{
-			DU_FREE(flowMap->list.array[idx],sizeof(struct Flows_Mapped_To_DRB_Item));
+			DU_FREE(flowMap->list.array[idx],sizeof(Flows_Mapped_To_DRB_Item_t));
 		}
 		DU_FREE(flowMap->list.array,flowMap->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
    return ROK;
 }/*End of BuildFlowsMap*/
@@ -3448,26 +3180,23 @@ S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 	U8 ulCnt;
 	ulCnt = 1;
 	ulInfo->list.count = ulCnt;
-	ulInfo->list.size = ulCnt * sizeof(struct \
-				ULUPTNLInformation_ToBeSetup_Item *);
+	ulInfo->list.size = ulCnt * sizeof(ULUPTNLInformation_ToBeSetup_Item_t *);
 	DU_ALLOC(ulInfo->list.array,ulInfo->list.size);
 	if(ulInfo->list.array == NULLP)
 	{
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	for(idx=0; idx<ulCnt; idx++)
 	{
-		DU_ALLOC(ulInfo->list.array[idx],sizeof(struct \
-					ULUPTNLInformation_ToBeSetup_Item));
+		DU_ALLOC(ulInfo->list.array[idx],sizeof(ULUPTNLInformation_ToBeSetup_Item_t));
 		if(ulInfo->list.array[idx] == NULLP)
 		{
 			for(ulidx=0; ulidx<idx; ulidx++)
 			{
-				DU_FREE(ulInfo->list.array[ulidx],sizeof(struct \
-							ULUPTNLInformation_ToBeSetup_Item));
+				DU_FREE(ulInfo->list.array[ulidx],sizeof(ULUPTNLInformation_ToBeSetup_Item_t));
 			}
 			DU_FREE(ulInfo->list.array,ulInfo->list.size);
-			RETVALUE(RFAILED);
+			return RFAILED;
 		}
 	}
 	idx = 0;
@@ -3475,16 +3204,15 @@ S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 								UPTransportLayerInformation_PR_gTPTunnel;
 	/*GTP TUNNEL*/
 	DU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel,\
-				sizeof(struct GTPTunnel));
+				sizeof(GTPTunnel_t));
 	if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel == NULLP)
 	{
 		for(idx=0; idx<ulCnt; idx++)
 		{
-			DU_FREE(ulInfo->list.array[idx],sizeof(struct \
-						ULUPTNLInformation_ToBeSetup_Item));
+			DU_FREE(ulInfo->list.array[idx],sizeof(ULUPTNLInformation_ToBeSetup_Item_t));
 		}
 		DU_FREE(ulInfo->list.array,ulInfo->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
 		transportLayerAddress.size	= 4*sizeof(U8);
@@ -3495,14 +3223,13 @@ S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 		transportLayerAddress.buf == NULLP)
 	{
 		DU_FREE(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel,\
-				sizeof(struct GTPTunnel));
+				sizeof(GTPTunnel_t));
 		for(idx=0; idx<ulCnt; idx++)
 		{
-			DU_FREE(ulInfo->list.array[idx],sizeof(struct \
-						ULUPTNLInformation_ToBeSetup_Item));
+			DU_FREE(ulInfo->list.array[idx],sizeof(ULUPTNLInformation_ToBeSetup_Item_t));
 		}
 		DU_FREE(ulInfo->list.array,ulInfo->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
 		transportLayerAddress.buf[0] = 4;
@@ -3527,14 +3254,13 @@ S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 				transportLayerAddress.buf,ulInfo->list.array[idx]->\
 				uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.size);
 		DU_FREE(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel,\
-				sizeof(struct GTPTunnel));
+				sizeof(GTPTunnel_t));
 		for(idx=0; idx<ulCnt; idx++)
 		{
-			DU_FREE(ulInfo->list.array[idx],sizeof(struct \
-						ULUPTNLInformation_ToBeSetup_Item));
+			DU_FREE(ulInfo->list.array[idx],sizeof(ULUPTNLInformation_ToBeSetup_Item_t));
 		}
 		DU_FREE(ulInfo->list.array,ulInfo->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
 		gTP_TEID.buf[0] = 11;
@@ -3577,23 +3303,23 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 	DRBs_ToBeSetup_Item_t *drbSetItem;
 	drbCnt = 1;
 	drbSet->list.count = drbCnt;
-	drbSet->list.size = drbCnt*sizeof(struct DRBs_ToBeSetup_ItemIEs *);
+	drbSet->list.size = drbCnt*sizeof(DRBs_ToBeSetup_ItemIEs_t *);
 	DU_ALLOC(drbSet->list.array,drbSet->list.size);
 	if(drbSet->list.array == NULLP)
 	{
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	for(idx=0; idx<drbCnt; idx++)
 	{
-		DU_ALLOC(drbSet->list.array[idx],sizeof(struct DRBs_ToBeSetup_ItemIEs));
+		DU_ALLOC(drbSet->list.array[idx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
 		if(drbSet->list.array[idx] == NULLP)
 		{
 			for(drbidx=0; drbidx<idx; drbidx++)
 			{
-				DU_FREE(drbSet->list.array[drbidx],sizeof(struct DRBs_ToBeSetup_ItemIEs));
+				DU_FREE(drbSet->list.array[drbidx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
 			}
 			DU_FREE(drbSet->list.array,drbSet->list.size);
-			RETVALUE(RFAILED);
+			return RFAILED;
 		}
 	}
 	idx = 0;
@@ -3606,16 +3332,15 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 	drbSetItem->dRBID = 1;	
 	/*qoSInformation*/
 	drbSetItem->qoSInformation.present = QoSInformation_PR_choice_extension;
-	DU_ALLOC(drbSetItem->qoSInformation.choice.choice_extension,sizeof(struct\
-					QoSInformation_ExtIEs));
+	DU_ALLOC(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
 	if(drbSetItem->qoSInformation.choice.choice_extension == NULLP)
 	{	
 		for(idx=0; idx<drbCnt; idx++)
 		{
-			DU_FREE(drbSet->list.array[idx],sizeof(struct DRBs_ToBeSetup_ItemIEs));
+			DU_FREE(drbSet->list.array[idx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(drbSet->list.array,drbSet->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	drbSetItem->qoSInformation.choice.choice_extension->id = \
 							ProtocolIE_ID_id_DRB_Information;
@@ -3627,14 +3352,13 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 							choice_extension->value.choice.DRB_Information.dRB_QoS);
 	if(ret != ROK)
 	{
-		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(struct\
-					QoSInformation_ExtIEs));
+		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
 		for(drbidx=0; drbidx<drbCnt; drbidx++)
 		{
-			DU_FREE(drbSet->list.array[drbidx],sizeof(struct DRBs_ToBeSetup_ItemIEs));
+			DU_FREE(drbSet->list.array[drbidx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(drbSet->list.array,drbSet->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	/*SNSSAI*/
  	ret = BuildSNSSAI(&drbSetItem->qoSInformation.choice.\
@@ -3647,14 +3371,13 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.\
 				choice.DRB_Information.dRB_QoS.qoS_Characteristics.choice.\
 				non_Dynamic_5QI->maxDataBurstVolume,sizeof(MaxDataBurstVolume_t));
-		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(struct\
-					QoSInformation_ExtIEs));
+		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
 		for(drbidx=0; drbidx<drbCnt; drbidx++)
 		{
-			DU_FREE(drbSet->list.array[drbidx],sizeof(struct DRBs_ToBeSetup_ItemIEs));
+			DU_FREE(drbSet->list.array[drbidx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(drbSet->list.array,drbSet->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	/*Flows mapped to DRB List*/
 	ret = BuildFlowsMap(&drbSetItem->qoSInformation.choice.\
@@ -3677,14 +3400,13 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.\
 				choice.DRB_Information.dRB_QoS.qoS_Characteristics.choice.\
 				non_Dynamic_5QI->maxDataBurstVolume,sizeof(MaxDataBurstVolume_t));
-		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(struct\
-					QoSInformation_ExtIEs));
+		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
 		for(drbidx=0; drbidx<drbCnt; drbidx++)
 		{
-			DU_FREE(drbSet->list.array[drbidx],sizeof(struct DRBs_ToBeSetup_ItemIEs));
+			DU_FREE(drbSet->list.array[drbidx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(drbSet->list.array,drbSet->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	/*ULUPTNLInformation To Be Setup List*/
    ret = BuildULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
@@ -3713,7 +3435,7 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 		{
 			DU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.\
 					choice.DRB_Information.flows_Mapped_To_DRB_List.list.\
-					array[flowidx],sizeof(struct Flows_Mapped_To_DRB_Item));
+					array[flowidx],sizeof(Flows_Mapped_To_DRB_Item_t));
 		}
 		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.\
 				choice.DRB_Information.sNSSAI.sD,sizeof(OCTET_STRING_t));
@@ -3731,21 +3453,20 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.\
 				choice.DRB_Information.dRB_QoS.qoS_Characteristics.choice.\
 				non_Dynamic_5QI->maxDataBurstVolume,sizeof(MaxDataBurstVolume_t));
-		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(struct\
-					QoSInformation_ExtIEs));
+		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
 		for(drbidx=0; drbidx<drbCnt; drbidx++)
 		{
-			DU_FREE(drbSet->list.array[drbidx],sizeof(struct DRBs_ToBeSetup_ItemIEs));
+			DU_FREE(drbSet->list.array[drbidx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(drbSet->list.array,drbSet->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	/*RLCMode*/
 	drbSetItem->rLCMode = RLCMode_rlc_um_bidirectional;
 
 	/*UL Configuration*/
 	ulCnt = 1;
-	DU_ALLOC(drbSetItem->uLConfiguration,sizeof(struct ULConfiguration));
+	DU_ALLOC(drbSetItem->uLConfiguration,sizeof(ULConfiguration_t));
 	if(drbSetItem->uLConfiguration == NULLP)
 	{
 		ulidx=0;
@@ -3758,13 +3479,13 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 				drbSetItem->uLUPTNLInformation_ToBeSetup_List.list.array[ulidx]->\
 				uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.size);
 		DU_FREE(drbSetItem->uLUPTNLInformation_ToBeSetup_List.list.array[ulidx]->\
-				uLUPTNLInformation.choice.gTPTunnel,sizeof(struct GTPTunnel));
+				uLUPTNLInformation.choice.gTPTunnel,sizeof(GTPTunnel_t));
 		DU_FREE(drbSetItem->uLUPTNLInformation_ToBeSetup_List.list.array,\
 				drbSetItem->uLUPTNLInformation_ToBeSetup_List.list.size);
 		for(ulidx=0; ulidx<ulCnt; ulidx++)
 		{
 			DU_FREE(drbSetItem->uLUPTNLInformation_ToBeSetup_List.list.array[ulidx],\
-					sizeof(struct ULUPTNLInformation_ToBeSetup_Item));
+					sizeof(ULUPTNLInformation_ToBeSetup_Item_t));
 		}
 		flowidx=0;
 		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.\
@@ -3789,7 +3510,7 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 		{
 			DU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.\
 					choice.DRB_Information.flows_Mapped_To_DRB_List.list.\
-					array[flowidx],sizeof(struct Flows_Mapped_To_DRB_Item));
+					array[flowidx],sizeof(Flows_Mapped_To_DRB_Item_t));
 		}
 		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.\
 				choice.DRB_Information.sNSSAI.sD,sizeof(OCTET_STRING_t));
@@ -3807,14 +3528,13 @@ S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.\
 				choice.DRB_Information.dRB_QoS.qoS_Characteristics.choice.\
 				non_Dynamic_5QI->maxDataBurstVolume,sizeof(MaxDataBurstVolume_t));
-		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(struct\
-					QoSInformation_ExtIEs));
+		DU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
 		for(drbidx=0; drbidx<drbCnt; drbidx++)
 		{
-			DU_FREE(drbSet->list.array[drbidx],sizeof(struct DRBs_ToBeSetup_ItemIEs));
+			DU_FREE(drbSet->list.array[drbidx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(drbSet->list.array,drbSet->list.size);
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	drbSetItem->uLConfiguration->uLUEConfiguration = ULUEConfiguration_no_data;
         return ROK;
@@ -3863,7 +3583,7 @@ S16 BuildAndSendUESetReq()
 	if(f1apMsg == NULLP)
 	{
 		DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
@@ -3873,7 +3593,7 @@ S16 BuildAndSendUESetReq()
 	{
 		DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
 		DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	f1apMsg->choice.initiatingMessage->procedureCode = \
@@ -3897,7 +3617,7 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(f1apMsg->choice.initiatingMessage,
 				sizeof(InitiatingMessage_t));
 		DU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	for(idx=0; idx<elementCnt; idx++)
@@ -3916,7 +3636,7 @@ S16 BuildAndSendUESetReq()
 			DU_FREE(f1apMsg->choice.initiatingMessage,\
 												sizeof(InitiatingMessage_t));
 			DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-			RETVALUE(RFAILED);
+			return RFAILED;
 		}
 	}
 
@@ -3967,7 +3687,7 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(f1apMsg->choice.initiatingMessage,\
 				sizeof(InitiatingMessage_t));
 		DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 
 	}
 
@@ -4027,8 +3747,8 @@ S16 BuildAndSendUESetReq()
 		for(spId=0; spId<cellCnt; spId++)
 		{
 			DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
-					SCell_ToBeSetup_List.list.array[spId],sizeof(struct
-						SCell_ToBeSetup_ItemIEs));
+					SCell_ToBeSetup_List.list.array[spId],sizeof(
+						SCell_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
@@ -4051,7 +3771,7 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(f1apMsg->choice.initiatingMessage,\
 				sizeof(InitiatingMessage_t));
 		DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	/*SRBs To Be Setup List*/
  	idx++;
@@ -4070,7 +3790,7 @@ S16 BuildAndSendUESetReq()
 		{
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SRBs_ToBeSetup_List.list.array[srbId],\
-				sizeof(struct SRBs_ToBeSetup_ItemIEs));
+				sizeof(SRBs_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SRBs_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
@@ -4091,8 +3811,8 @@ S16 BuildAndSendUESetReq()
 		for(spId=0; spId<cellCnt; spId++)
 		{
 			DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
-					SCell_ToBeSetup_List.list.array[spId],sizeof(struct
-						SCell_ToBeSetup_ItemIEs));
+					SCell_ToBeSetup_List.list.array[spId],sizeof(\
+						SCell_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
@@ -4114,7 +3834,7 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(f1apMsg->choice.initiatingMessage,\
 				sizeof(InitiatingMessage_t));
 		DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	/*DRBs to Be Setup List*/
 	idx++;
@@ -4133,13 +3853,13 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				DRBs_ToBeSetup_List.list.array[0]->value.choice.\
 				DRBs_ToBeSetup_Item.uLConfiguration,\
-				sizeof(struct ULConfiguration));
+				sizeof(ULConfiguration_t));
 		ulidx=0;		
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				DRBs_ToBeSetup_List.list.array[0]->value.choice.\
 				DRBs_ToBeSetup_Item.uLUPTNLInformation_ToBeSetup_List.list.\
 				array[ulidx]->uLUPTNLInformation.choice.gTPTunnel,\
-				sizeof(struct GTPTunnel));
+				sizeof(GTPTunnel_t));
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				DRBs_ToBeSetup_List.list.array[0]->value.choice.\
 				DRBs_ToBeSetup_Item.uLUPTNLInformation_ToBeSetup_List.list.\
@@ -4151,7 +3871,7 @@ S16 BuildAndSendUESetReq()
 			DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 					DRBs_ToBeSetup_List.list.array[0]->value.choice.\
 					DRBs_ToBeSetup_Item.uLUPTNLInformation_ToBeSetup_List.list.\
-					array[ulidx],sizeof(struct ULUPTNLInformation_ToBeSetup_Item));
+					array[ulidx],sizeof(ULUPTNLInformation_ToBeSetup_Item_t));
 		}
 		flowidx = 0;	
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
@@ -4184,8 +3904,8 @@ S16 BuildAndSendUESetReq()
 					DRBs_ToBeSetup_List.list.array[0]->value.choice.\
 					DRBs_ToBeSetup_Item.qoSInformation.choice.\
 					choice_extension->value.choice.DRB_Information.\
-					flows_Mapped_To_DRB_List.list.array[flowidx],sizeof(struct
-					Flows_Mapped_To_DRB_Item));
+					flows_Mapped_To_DRB_List.list.array[flowidx],sizeof(
+					Flows_Mapped_To_DRB_Item_t));
 		}
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				DRBs_ToBeSetup_List.list.array[0]->value.choice.\
@@ -4231,12 +3951,12 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				DRBs_ToBeSetup_List.list.array[0]->value.choice.\
 				DRBs_ToBeSetup_Item.qoSInformation.choice.\
-				choice_extension,sizeof(struct QoSInformation_ExtIEs));
+				choice_extension,sizeof(QoSInformation_ExtIEs_t));
 		for(drbId=0; drbId<drbCnt; drbId++)
 		{
 			DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 					DRBs_ToBeSetup_List.list.array[drbId],\
-					sizeof(struct DRBs_ToBeSetup_ItemIEs));
+					sizeof(DRBs_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				DRBs_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
@@ -4246,7 +3966,7 @@ S16 BuildAndSendUESetReq()
 		{
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SRBs_ToBeSetup_List.list.array[srbId],\
-				sizeof(struct SRBs_ToBeSetup_ItemIEs));
+				sizeof(SRBs_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SRBs_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
@@ -4267,8 +3987,8 @@ S16 BuildAndSendUESetReq()
 		for(spId=0; spId<cellCnt; spId++)
 		{
 			DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
-					SCell_ToBeSetup_List.list.array[spId],sizeof(struct
-						SCell_ToBeSetup_ItemIEs));
+					SCell_ToBeSetup_List.list.array[spId],sizeof(\
+						SCell_ToBeSetup_ItemIEs_t));
 		}
 		DU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.\
 				SCell_ToBeSetup_List.list.array,ueSetReq->protocolIEs.list.\
@@ -4290,7 +4010,7 @@ S16 BuildAndSendUESetReq()
 		DU_FREE(f1apMsg->choice.initiatingMessage,\
 				sizeof(InitiatingMessage_t));
 		DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
@@ -4305,7 +4025,7 @@ S16 BuildAndSendUESetReq()
 	{
 		DU_LOG( "\n F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
 				encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	else
 	{
@@ -4320,7 +4040,7 @@ S16 BuildAndSendUESetReq()
 	if(SendF1APMsg(DU_APP_MEM_REGION,DU_POOL)	!=	ROK)
 	{
 		DU_LOG("\n F1AP : Sending	UE Context Setup Request Failed");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
         return ROK;
 }/* End of BuildAndSendUESetReq*/
