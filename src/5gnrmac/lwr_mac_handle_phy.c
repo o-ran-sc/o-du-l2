@@ -243,7 +243,13 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
       {
          fapi_rach_indication_t  *rachInd;
          rachInd = (fapi_rach_indication_t *)msg;
-         handleRachInd(rachInd);
+         if((handleRachInd(rachInd)) == ROK)
+         {
+            if(ricIndFlag)
+            {
+               BuildAndSendRicIndication();
+            }
+         }
          break;
       }  
    }

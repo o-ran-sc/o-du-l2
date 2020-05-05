@@ -21,7 +21,7 @@
 
 /* Global variable */
 DuCfgParams duCfgParam;
-
+Bool ricIndFlag = FALSE;
 /*******************************************************************
  *
  * @brief Builds Global gNodeB Params
@@ -121,7 +121,7 @@ S16 BuildAndSendE2SetupReq()
    {
       DU_LOG("\nE2AP : Memory allocation for E2RequestIEs failed");
       DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
-      DU_FREE(e2apMsg, (Size)sizeof(E2AP_PDU_t));
+      DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
       return RFAILED;
    }
    
@@ -299,7 +299,7 @@ S16 BuildAndSendRicSubscriptionRsp()
 {
 
    E2AP_PDU_t         *e2apRicMsg = NULLP;
-   RICsubscriptionResponse_t  *ricSubscriptionRsp;
+   RICsubscriptionResponse_t  *ricSubscriptionRsp = NULLP;
    asn_enc_rval_t     encRetVal; 
    U8 idx;
    U8 elementCnt;
@@ -318,7 +318,7 @@ S16 BuildAndSendRicSubscriptionRsp()
    if(e2apRicMsg->choice.successfulOutcome == NULLP)
    {
       DU_LOG("\nE2AP : Memory allocation for Ric subscription Response failed");
-      DU_FREE(e2apRicMsg, sizeof(RICsubscriptionResponse_t));
+      DU_FREE(e2apRicMsg, sizeof(E2AP_PDU_t));
       return RFAILED;  
    }
 
@@ -326,6 +326,8 @@ S16 BuildAndSendRicSubscriptionRsp()
    e2apRicMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
    e2apRicMsg->choice.successfulOutcome->value.present = \
          SuccessfulOutcomeE2__value_PR_RICsubscriptionResponse;
+
+   DU_ALLOC(ricSubscriptionRsp, sizeof(RICsubscriptionResponse_t));
    ricSubscriptionRsp = &e2apRicMsg->choice.successfulOutcome->value.choice.RICsubscriptionResponse;
 
    elementCnt = 3;
@@ -426,7 +428,6 @@ S16 BuildAndSendRicSubscriptionRsp()
 S16 procE2SetupRsp(E2AP_PDU_t *e2apMsg)
 {
    E2setupResponse_t *e2SetRspMsg;
-   E2apMsgDb e2SetupRspDb;
    U8 idx; 
 
    DU_LOG("\nE2AP : E2 Setup Response received"); 
@@ -441,15 +442,15 @@ S16 procE2SetupRsp(E2AP_PDU_t *e2apMsg)
          {
             /* To store the Ric Id Params */
             U32 recvBufLen;             
-            memset(&e2SetupRspDb.plmn, 0, sizeof(PLMN_IdentityE2_t));
+            memset(&e2apMsgDb.plmn, 0, sizeof(PLMN_IdentityE2_t));
 
             recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity);
 
-            bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, &e2SetupRspDb.ricId);
-            aper_decode(0, &asn_DEF_PLMN_IdentityE2, (void **)&e2SetupRspDb.plmn, \
+            bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, &e2apMsgDb.ricId);
+            aper_decode(0, &asn_DEF_PLMN_IdentityE2, (void **)&e2apMsgDb.plmn, \
               &e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.pLMN_Identity, recvBufLen, 0, 0);
 
-            xer_fprint(stdout, &asn_DEF_PLMN_IdentityE2, &e2SetupRspDb.plmn);
+            xer_fprint(stdout, &asn_DEF_PLMN_IdentityE2, &e2apMsgDb.plmn);
             break;
          }
          default:
@@ -484,7 +485,6 @@ S16 procRicSubsReq(E2AP_PDU_t *e2apMsg)
    U8 ied; 
    RICsubscriptionRequest_t *ricSubsReq;
    RICaction_ToBeSetup_ItemIEs_t *actionItem;
-   E2apMsgDb ricReqDb;
   
    DU_LOG("\nE2AP : Ric Subscription request received"); 
    ricSubsReq = &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionRequest;
@@ -495,39 +495,43 @@ S16 procRicSubsReq(E2AP_PDU_t *e2apMsg)
       {
          case ProtocolIE_IDE2_id_RICrequestID:
          {
-            ricReqDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->\
+            e2apMsgDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->\
                                    value.choice.RICrequestID.ricRequestorID;
-            ricReqDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]-> \
+            e2apMsgDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]-> \
                                        value.choice.RICrequestID.ricInstanceID;
             break;
          }
          case ProtocolIE_IDE2_id_RANfunctionID:
          {
-            ricReqDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]-> \
+            e2apMsgDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]-> \
                                    value.choice.RANfunctionID; 
             break;
          }
          case ProtocolIE_IDE2_id_RICsubscriptionDetails:
          {
             U32 recvBufLen;             
-            memset(&ricReqDb.ricEventTrigger, 0, sizeof(RICeventTriggerDefinition_t));
+            memset(&e2apMsgDb.ricEventTrigger, 0, sizeof(RICeventTriggerDefinition_t));
 
             recvBufLen = sizeof(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition);
 
-            aper_decode(0, &asn_DEF_RICeventTriggerDefinition, (void **)&ricReqDb.ricEventTrigger, &(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition), recvBufLen, 0, 0);
-            xer_fprint(stdout, &asn_DEF_RICeventTriggerDefinition, &ricReqDb.ricEventTrigger);
+            aper_decode(0, &asn_DEF_RICeventTriggerDefinition, \
+               (void **)&e2apMsgDb.ricEventTrigger, &(ricSubsReq->protocolIEs.\
+                list.array[idx]->value.choice.RICsubscriptionDetails.\
+                ricEventTriggerDefinition), recvBufLen, 0, 0);
+            xer_fprint(stdout, &asn_DEF_RICeventTriggerDefinition, &e2apMsgDb.ricEventTrigger);
 
-            actionItem =(RICaction_ToBeSetup_ItemIEs_t *) ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.list.array[0];
+            actionItem =(RICaction_ToBeSetup_ItemIEs_t *)ricSubsReq->protocolIEs.list.array[idx]->\
+            value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.list.array[0];
             
             for(ied = 0; ied < ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
-                                RICsubscriptionDetails.ricAction_ToBeSetup_List.list.count; ied++)
+                   RICsubscriptionDetails.ricAction_ToBeSetup_List.list.count; ied++)
             {
                switch(actionItem->id)
                {
                   case ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item:
                   {
-                     ricReqDb.ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
-                     ricReqDb.ricActionType = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType;
+                     e2apMsgDb.ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
+                     e2apMsgDb.ricActionType = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType;
                      break;
                   }
                   default:
@@ -570,7 +574,6 @@ S16 BuildAndSendRicIndication()
 {
    E2AP_PDU_t                 *e2apMsg = NULLP;
    RICindication_t            *ricIndicationMsg;
-   E2apMsgDb                   e2apMsgDb;
    U8   elementCnt;
    U8   idx;
    U8   ieId;
@@ -865,9 +868,9 @@ void E2APMsgHdlr(Buffer *mBuf)
             case InitiatingMessageE2__value_PR_RICsubscriptionRequest: 
             {
                DU_LOG("\nE2AP : Calling RIC Subscription Response");
-	       if(procRicSubsReq(e2apMsg) == ROK)
+	            if(procRicSubsReq(e2apMsg) == ROK)
                {
-                  BuildAndSendRicIndication();
+                  ricIndFlag = TRUE;
                }
                break;
             }
