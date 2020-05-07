@@ -376,28 +376,34 @@ uint16_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf)
  * ****************************************************************/
 uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo )
 {
-   if(pst->selector == DU_SELECTOR_LC || pst->selector == DU_SELECTOR_TC)
+   Buffer *mBuf = NULLP;
+ 
+   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
    {
-      /* Loose coupling not supported */
-      DU_LOG("\nDU APP : Only LWLC supported");
+      DU_LOG("\nDU APP : Memory allocation failed for cell start req pack");
       return RFAILED;
+   }
+ 
+   if(pst->selector == DU_SELECTOR_LC)
+   {
+      CMCHKPK(SPkU16, slotInfo->cellId, mBuf);
+      CMCHKPK(SPkU16, slotInfo->sfn, mBuf);
+      CMCHKPK(SPkU16, slotInfo->slot, mBuf);
+
+		SPutStaticBuffer(pst->region, pst->pool, slotInfo, sizeof(SlotInfo), 0);
+		slotInfo = NULL;
    }
    else if(pst->selector == DU_SELECTOR_LWLC)
    {
-      Buffer *mBuf = NULLP;
-
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
-      {
-         DU_LOG("\nDU APP : Memory allocation failed for cell start req pack");
-         return RFAILED;
-      }
- 
       /* pack the address of the structure */
       CMCHKPK(cmPkPtr,(PTR)slotInfo, mBuf);
-
-      return SPstTsk(pst,mBuf);
    }
-   return ROK;
+   else
+   {
+      SPutMsg(mBuf);
+   }
+
+   return SPstTsk(pst,mBuf);
 }
 
 /*******************************************************************
@@ -420,14 +426,26 @@ uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo )
  * ****************************************************************/
 uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
 {
-   SlotInfo *slotInfo;
-  
    if(pst->selector == DU_SELECTOR_LWLC)
    {
+      SlotInfo *slotInfo;
+
       /* unpack the address of the structure */
       CMCHKUNPK(cmUnpkPtr, (PTR *)&slotInfo, mBuf);
       SPutMsg(mBuf);
       return (*func)(pst, slotInfo);
+   }
+   else if(pst->selector == DU_SELECTOR_LC)
+   {
+      SlotInfo slotInfo;
+
+      CMCHKUNPK(SUnpkU16, &(slotInfo.slot), mBuf);
+      CMCHKUNPK(SUnpkU16, &(slotInfo.sfn), mBuf);
+      CMCHKUNPK(SUnpkU16, &(slotInfo.cellId), mBuf);
+
+      SPutMsg(mBuf);
+      return (*func)(pst, &slotInfo);
+
    }
    else
    {

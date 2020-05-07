@@ -58,9 +58,9 @@
 #define DU_PROC  0
 /* Memory related configs */
 #define DU_APP_MEM_REGION    0
-#define RLC_UL_MEM_REGION     1
-#define RLC_DL_MEM_REGION     4
-#define MAC_MEM_REGION     4
+#define RLC_UL_MEM_REGION    1
+#define RLC_DL_MEM_REGION    4
+#define MAC_MEM_REGION       4
 
 #define DU_POOL  1
 #define RLC_POOL  1
@@ -140,10 +140,16 @@
          (Data *)_datPtr, _size);
 
 /* Free shared memory, received through LWLC */
-#define DU_FREE_MEM(_region, _pool, _datPtr, _size)             \
-   if(_datPtr)                                                  \
-	   SPutSBuf(_region, _pool,(Data *)_datPtr, _size);          \
-   _datPtr = NULL;
+#define DU_FREE_SHRABL_BUF(_region, _pool,_buf, _size)          \
+{                                                               \
+   if (_buf != NULLP)                                           \
+   {                                                            \
+      (Void) SPutStaticBuffer(_region, _pool,                   \
+           (Data *) _buf, (Size) _size, 0);                     \
+       _buf = NULLP;                                            \
+   }                                                            \
+}
+
 
 typedef enum
 {

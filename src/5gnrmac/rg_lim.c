@@ -700,10 +700,11 @@ int sendSlotIndMacToSch(SlotIndInfo *slotInd)
 int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
 {
    Pst pst;
+   uint16_t ret;
    SlotInfo  *slotInfo;
-  
-   /* Send Slot Indication to DU APP */
-   MAC_ALLOC(slotInfo, sizeof(SlotInfo));
+
+   /*  Allocate sharable memory */
+   MAC_ALLOC_SHRABL_BUF(slotInfo, sizeof(SlotInfo));
    if(!slotInfo)
    {
       DU_LOG("\nMAC : Slot Indication memory allocation failed");
@@ -729,8 +730,14 @@ int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
    pst.prior = 0;
    pst.intfVer = 0;
  
-   return MacDuAppSlotInd(&pst, slotInfo);
-  
+   ret = MacDuAppSlotInd(&pst, slotInfo);
+   if(ret != ROK)
+   {
+	   DU_LOG("\nMAC: Failed to send slot indication to DU APP");
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, slotInfo, sizeof(SlotInfo));
+   }
+   
+   return ret;
 }
 
 /**
