@@ -2617,13 +2617,13 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc,MacCellCfg *macCellCfg,
    uint32_t pduLen = 0;
 	uint32_t *sib1TxdataValue = NULLP;
 
-	pduDesc->pduIndex = pduIndex;
-	pduDesc->numTlvs = 1;
+	pduDesc[pduIndex].pduIndex = pduIndex;
+	pduDesc[pduIndex].numTlvs = 1;
 
 	/* fill the TLV */
 	/* as of now, memory is allocated from SSI, later WLS memory needs to be taken */
-	pduDesc->tlvs[0].tl.tag = 1; /* pointer to be sent */
-	pduDesc->tlvs[0].tl.length = macCellCfg->sib1Cfg.sib1PduLen;
+	pduDesc[pduIndex].tlvs[0].tl.tag = 1; /* pointer to be sent */
+	pduDesc[pduIndex].tlvs[0].tl.length = macCellCfg->sib1Cfg.sib1PduLen;
 	LWR_MAC_ALLOC(sib1TxdataValue,macCellCfg->sib1Cfg.sib1PduLen);
 	if(sib1TxdataValue == NULLP)
 	{
@@ -2631,12 +2631,12 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc,MacCellCfg *macCellCfg,
 	}
 	memcpy(sib1TxdataValue,macCellCfg->sib1Cfg.sib1Pdu,
 	   macCellCfg->sib1Cfg.sib1PduLen);
-	pduDesc->tlvs[0].value = sib1TxdataValue;
+	pduDesc[pduIndex].tlvs[0].value = sib1TxdataValue;
 
    /* The total length of the PDU description and	PDU data */
 	pduLen += 8; /* size of PDU length 2 bytes, PDU index 2 bytes, numTLV 4 bytes */
 	pduLen += sizeof(fapi_uint32_tlv_t); /* only 1 TLV is present */
-   pduDesc->pduLength = pduLen; 
+   pduDesc[pduIndex].pduLength = pduLen; 
 	msgLen += pduLen;
 
 #ifndef INTEL_WLS   
