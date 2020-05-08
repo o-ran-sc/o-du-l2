@@ -245,6 +245,12 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
          rachInd = (fapi_rach_indication_t *)msg;
          handleRachInd(rachInd);
          break;
+      }
+      case FAPI_STOP_INDICATION:
+      {
+         DU_LOG("\nLOWER MAC: Received Stop Indication in PHY State\
+                  %d", clGlobalCp.phyState);
+         break;
       }  
    }
 #ifdef INTEL_WLS

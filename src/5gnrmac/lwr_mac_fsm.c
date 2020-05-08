@@ -2065,10 +2065,24 @@ S16 lwr_mac_handleStartReqEvt(void *msg)
 S16 lwr_mac_handleStopReqEvt(void *msg)
 {
 #ifdef FAPI
-   /* stop TX and RX operation return PHy to configured State
-      send stop.indication to l2/l3 */
-#endif
+   uint32_t msgLen = 0;
+   fapi_stop_req_t *stopReq = NULLP;
+   LWR_MAC_ALLOC(stopReq, sizeof(fapi_stop_req_t));
+   if(stopReq != NULLP)
+   {
+      fillMsgHeader(&stopReq->header, FAPI_STOP_REQUEST, msgLen);
+      DU_LOG("\nLOWER MAC: Sending Stop Request to PHY");
+      LwrMacSendToPhy(stopReq->header.message_type_id, sizeof(fapi_stop_req_t), (void *)stopReq);
+      return ROK;
+   }
+   else
+   {
+      DU_LOG("\nLOWER MAC: Failed to allocate memory for Stop Request");
+      return RFAILED;
+   }
+#else
    return ROK;
+#endif
 }
 
 /*******************************************************************
@@ -3088,6 +3102,7 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
        lwr_mac_handleConfigReqEvt,
        lwr_mac_handleConfigRspEvt,
        lwr_mac_handleInvalidEvt,
+       lwr_mac_handleInvalidEvt,
    },
    {
        /* PHY_STATE_CONFIGURED */
@@ -3096,6 +3111,7 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
        lwr_mac_handleConfigReqEvt,
        lwr_mac_handleConfigRspEvt,
        lwr_mac_handleStartReqEvt,
+       lwr_mac_handleInvalidEvt,
    },
    {
        /* PHY_STATE_RUNNING */
@@ -3104,6 +3120,7 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
        lwr_mac_handleConfigReqEvt,
        lwr_mac_handleConfigRspEvt,
        lwr_mac_handleInvalidEvt,
+       lwr_mac_handleStopReqEvt,
    }
 };
 
