@@ -160,6 +160,34 @@ S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Packs and Sends Stop Ind to MAC
+ *
+ * @details
+ *
+ *    Function : packStopInd
+ *
+ *    Functionality:
+ *         Packs and Sends Stop Ind to MAC
+ *
+ * @params[in] Post structure pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packStopInd(Pst *pst)
+{
+   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   {
+      return ROK;
+   }
+   else
+   {
+      return RFAILED;
+   }
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

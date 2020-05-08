@@ -740,6 +740,61 @@ int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
    return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Send stop indication to DU APP
+ *
+ * @details
+ *
+ *    Function : sendStopIndMacToDuApp
+ *
+ *    Functionality:
+ *       Send stop indication to DU APP
+ *
+ * @params[in] Pst info 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendStopIndMacToDuApp()
+{
+   Pst pst;
+   uint8_t ret = ROK;
+
+   MacCellStopInfo *cellStopId; 
+  
+   /*  Allocate sharable memory */
+   MAC_ALLOC_SHRABL_BUF(cellStopId, sizeof(MacCellStopInfo));
+   if(!cellStopId)
+   {
+      DU_LOG("\nMAC : Stop Indication memory allocation failed");
+      return RFAILED;
+   }
+   cellStopId->cellId = macCb.macCell->cellId;
+
+   /* Fill Pst */
+   pst.selector  = DU_MAC_LWLC;
+   pst.srcEnt    = ENTRG;
+   pst.dstEnt    = ENTDUAPP;
+   pst.dstInst   = 0;
+   pst.srcInst   = macCb.macInst;
+   pst.dstProcId = rgCb[pst.srcInst].rgInit.procId;
+   pst.srcProcId = rgCb[pst.srcInst].rgInit.procId;
+   pst.region = MAC_MEM_REGION;
+   pst.pool = MAC_POOL;
+   pst.event = EVENT_MAC_STOP_IND;
+   pst.route = 0;
+   pst.prior = 0;
+   pst.intfVer = 0;
+
+   ret = MacDuAppStopInd(&pst, cellStopId);
+   if(ret != ROK)
+   {
+      DU_LOG("\nMAC: Failed to send stop indication to DU APP");
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, cellStopId, sizeof(MacCellStopInfo));
+   }
+   return ROK;
+}
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
  /**
  * @brief Transmission of non-rt indication from CL.

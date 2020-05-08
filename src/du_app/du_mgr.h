@@ -139,6 +139,21 @@
       SPutSBuf(DU_APP_MEM_REGION, DU_POOL,                      \
          (Data *)_datPtr, _size);
 
+/* Allocate shared memory to be used for LWLC 
+ * during inter-layer communication */
+#define DU_ALLOC_SHRABL_BUF(_buf, _size)                     \
+{                                                            \
+   if(SGetStaticBuffer(DU_APP_MEM_REGION, DU_POOL,           \
+      (Data **)&_buf, (Size) _size, 0) == ROK)               \
+   {                                                         \
+      cmMemset((U8 *)(_buf), 0, _size);                      \
+   }                                                         \
+   else                                                      \
+   {                                                         \
+      (_buf) = NULLP;                                        \
+   }                                                         \
+}
+
 /* Free shared memory, received through LWLC */
 #define DU_FREE_SHRABL_BUF(_region, _pool,_buf, _size)          \
 {                                                               \
@@ -259,6 +274,7 @@ S16 duSendEgtpTestData();
 S16 duSendEgtpDatInd(Buffer *mBuf);
 S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint16_t duBuildAndSendMacCellStartReq();
+uint16_t duBuildAndSendMacCellStopReq();
 
 #endif
 

@@ -46,6 +46,7 @@
 #define EVENT_MAC_CELL_START_REQ     202
 #define EVENT_MAC_CELL_STOP_REQ      203
 #define EVENT_MAC_SLOT_IND           204
+#define EVENT_MAC_STOP_IND           205
 
 typedef enum
 {
@@ -276,6 +277,15 @@ extern uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo );
 extern uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
 extern uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo);
 
+/* Functions for stop Ind from MAC to DU APP*/
+typedef uint16_t (*DuMacStopInd) ARGS((
+   Pst       *pst,
+   MacCellStopInfo  *cellId ));
+
+extern uint16_t packMacStopInd(Pst *pst, MacCellStopInfo *cellId);
+extern uint16_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf);
+extern uint16_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellId);
+
 /* Functions for mac cell start req */
 typedef uint16_t (*DuMacCellStartReq) ARGS((
    Pst               *pst, 
@@ -316,7 +326,7 @@ extern int MacHdlCellCfgReq(Pst *pst, MacCellCfg *macCellCfg);
 extern void cmUnpackLwLcMacCellCfg(DuMacCellCfgReq func, Pst *pst, Buffer *mBuf);
 extern int unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf);
 extern int duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
-
+uint8_t sendStopIndMacToDuApp();
 #endif
 
 /**********************************************************************

@@ -54,7 +54,6 @@ typedef uint16_t (*packRachIndMsg)(Pst *pst, RachInd *rachInd);
 uint16_t packRachInd(Pst *pst, RachInd *rachInd);
 uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd);
 
-
 typedef uint16_t (*packCrcIndMsg)(Pst *pst, CrcInd *crcInd);
 uint16_t packCrcInd(Pst *pst, CrcInd *crcInd);
 uint16_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd);
@@ -64,6 +63,9 @@ typedef uint16_t (*packRxDataIndMsg)(Pst *pst, RxDataInd *rxDataInd);
 uint16_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd);
 uint16_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd);
 
+typedef uint16_t (*packStopIndMsg)(Pst *pst);
+uint16_t packStopInd(Pst *pst);
+uint16_t fapiMacStopInd(Pst *pst);
 #endif
 /**********************************************************************
          End of file

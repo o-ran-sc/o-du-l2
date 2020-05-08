@@ -198,6 +198,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackMacSlotInd(duHandleSlotInd, pst, mBuf);
                      break;
                   }
+               case EVENT_MAC_STOP_IND:
+                  {
+                     ret = unpackMacStopInd(duHandleStopInd, pst, mBuf);
+                     break;
+                  }
                default:
                   {
                      DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");

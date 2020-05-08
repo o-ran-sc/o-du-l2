@@ -80,7 +80,13 @@ packRxDataIndMsg sendRxDataIndOpts[] =
    packRxDataInd
 };
  
-
+/* Function pointer for stop indication from lower mac to mac */ 
+packStopIndMsg sendStopIndOpts[] =
+{
+   packStopInd,
+   fapiMacStopInd,
+   packStopInd
+};
 /*******************************************************************
  *
  * @brief Fills post structure
@@ -154,7 +160,35 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
    return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Handles stop indication recived from PHY
+ *
+ * @details
+ *
+ *    Function : handleStopInd
+ *
+ *    Functionality:
+ *         Handles Stop Indication received from PHY
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t handleStopInd()
+{
+   uint8_t ret;
+   Pst pst;
 
+   clGlobalCp.phyState = PHY_STATE_CONFIGURED;
+   DU_LOG("\nLWR_MAC: PHY has moved to configured state");
+
+   fillLwrMacToMacPst(&pst);
+   pst.event = EVENT_STOP_IND_TO_MAC;
+
+   ret = (*sendStopIndOpts[pst.selector])(&pst);
+   return ret;
+}
 /*******************************************************************
  *
  * @brief Processes Rach Indication from PHY and sends to MAC
@@ -371,6 +405,12 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
          fapi_rach_indication_t  *rachInd;
          rachInd = (fapi_rach_indication_t *)msg;
          handleRachInd(rachInd);
+         break;
+      }
+      case FAPI_STOP_INDICATION:
+      {
+         DU_LOG("\nLWR_MAC: Handling Stop Indication");
+         handleStopInd();
          break;
       }  
    }
