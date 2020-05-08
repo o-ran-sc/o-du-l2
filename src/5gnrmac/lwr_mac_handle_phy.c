@@ -137,7 +137,27 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
    return ret;
 }
 
-
+/*******************************************************************
+ *
+ * @brief Handles stop indication recived from PHY
+ *
+ * @details
+ *
+ *    Function : handleStopInd
+ *
+ *    Functionality:
+ *         Handles Stop Indication received from PHY
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t handleStopInd()
+{
+   clGlobalCp.phyState = PHY_STATE_CONFIGURED;
+   DU_LOG("\nLWR_MAC: PHY has moved to configured state");
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Processes Rach Indication from PHY and sends to MAC
@@ -244,6 +264,12 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
          fapi_rach_indication_t  *rachInd;
          rachInd = (fapi_rach_indication_t *)msg;
          handleRachInd(rachInd);
+         break;
+      }
+      case FAPI_STOP_INDICATION:
+      {
+         DU_LOG("\nLWR_MAC: Handling Stop Indication");
+         handleStopInd();
          break;
       }  
    }

@@ -19,12 +19,14 @@
 /* This file handles slot indication */
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <time.h>
 #include "lphy_stub.h"
 #include "du_log.h"
 
+extern bool stopSlotInd;
 uint16_t l1BuildAndSendSlotIndication();
 
 void *GenerateTicks(void *arg)
@@ -45,15 +47,26 @@ void *GenerateTicks(void *arg)
    return((void *)NULLP);
 }
 
-void duStartSlotIndicaion()
+void duHandleSlotIndicaion()
 {
-   pthread_t thread;
+   pthread_t thread = 0;
    int ret;
 
-   ret = pthread_create(&thread, NULL, GenerateTicks, NULL);
-   if(ret)
+   if(!stopSlotInd)
    {
-      DU_LOG("\nPHY_STUB: Unable to create thread");
+      ret = pthread_create(&thread, NULL, GenerateTicks, NULL);
+      if(ret)
+      {
+        DU_LOG("\nPHY_STUB: Unable to create thread");
+      }
+   }
+   else
+   {
+      ret = pthread_cancel(thread);
+      if(ret)
+      {
+        DU_LOG("\nPHY_STUB: Unable to stop thread");
+      }
    }
 }
 
