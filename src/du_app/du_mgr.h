@@ -259,6 +259,7 @@ S16 duSendEgtpTestData();
 S16 duSendEgtpDatInd(Buffer *mBuf);
 S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint16_t duBuildAndSendMacCellStartReq();
+uint16_t duBuildAndSendMacCellStopReq();
 
 #endif
 

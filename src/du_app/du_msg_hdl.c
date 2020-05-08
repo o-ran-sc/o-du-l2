@@ -1745,7 +1745,7 @@ uint16_t duBuildAndSendMacCellStartReq()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duBuildAndSendMacCellStopReq()
+uint16_t duBuildAndSendMacCellStopReq()
 {
    Pst pst;
    MacCellStopInfo *cellStopInfo = NULL;
@@ -1776,7 +1776,45 @@ S16 duBuildAndSendMacCellStopReq()
    return (*packMacCellStopReqOpts[pst.selector])(&pst, cellStopInfo);
 }
 
+/*******************************************************************
+ *
+ * @brief Handles stop indication from MAC
+ *
+ * @details
+ *
+ *    Function : duHandleStopInd
+ *
+ *    Functionality:
+ *      Handles stop indication from MAC
+ *
+ * @params[in] Post structure pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
+{
+   if(cellStopId->cellId <=0 || cellStopId->cellId > DU_MAX_CELLS)
+   {
+      DU_LOG("\nDU APP : Invalid Cell Id %d", cellStopId->cellId);
+   }
+   if(duCb.actvCellLst[cellStopId->cellId-1]->firstSlotIndRcvd)
+   {
+      duCb.actvCellLst[cellStopId->cellId-1]->firstSlotIndRcvd = false;
+      if((duCb.actvCellLst[cellStopId->cellId-1] != NULL) && \
+         (duCb.actvCellLst[cellStopId->cellId-1]->cellStatus == \
+         ACTIVATED))
+      {
+         DU_LOG("\nDU APP : 5G-NR Cell %d is DOWN", cellStopId->cellId);
+         duCb.actvCellLst[cellStopId->cellId-1]->cellStatus = DELETION_IN_PROGRESS;
+      }
+   }
 
+   if((pst->selector == DU_SELECTOR_LWLC) || (pst->selector == DU_SELECTOR_LC))
+      DU_FREE_SHRABL_BUF(MAC_MEM_REGION, pst->pool, cellStopId, sizeof(MacCellStopInfo));
+
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

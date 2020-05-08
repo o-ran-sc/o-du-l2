@@ -457,6 +457,98 @@ uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Packs and Sends stop ind from MAC to DUAPP
+ *
+ * @details
+ *
+ *    Function : packMacStopInd
+ *
+ *    Functionality:
+ *       Packs and Sends stop ind from MAC to DUAPP
+ *
+ * @params[in] Post structure pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packMacStopInd(Pst *pst, MacCellStopInfo *cellStopId)
+{
+   Buffer *mBuf = NULLP;
+
+   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+   {
+      DU_LOG("\nDU APP : Memory allocation failed for stop Ind pack");
+      return RFAILED;
+   }
+
+   if(pst->selector == DU_SELECTOR_LC)
+   {
+      /*pack the payload here*/
+      DU_LOG("\nDU APP : Packed CellId");
+      CMCHKPK(SPkU16, cellStopId->cellId, mBuf);
+      SPutStaticBuffer(pst->region, pst->pool, cellStopId, sizeof(MacCellStopInfo), 0);
+      cellStopId = NULL;
+   }
+   else if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)cellStopId, mBuf);
+   }
+   else
+   {
+      SPutMsg(mBuf);
+   }
+
+   return SPstTsk(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks stop indication from MAC
+ *
+ * @details
+ *
+ *    Function : unpackMacStopInd
+ *
+ *    Functionality:
+ *         Unpacks stop indication from MAC
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      MacCellStopInfo *cellStopId;
+      /* unpack the address of the structure */
+      CMCHKUNPK(cmUnpkPtr, (PTR *)&cellStopId, mBuf);
+      SPutMsg(mBuf);
+      return (*func)(pst, cellStopId);
+   }
+   else if(pst->selector == DU_SELECTOR_LC)
+   {
+      MacCellStopInfo cellStopId;
+      CMCHKUNPK(SUnpkU16, &(cellStopId.cellId), mBuf);
+
+      SPutMsg(mBuf);
+      return (*func)(pst, &cellStopId);
+
+   }
+   else
+   {
+      /* Nothing to do for loose coupling */
+      SPutMsg(mBuf);
+      return ROK;
+   }
+   return ROK;
+}
 /**********************************************************************
          End of file
 **********************************************************************/

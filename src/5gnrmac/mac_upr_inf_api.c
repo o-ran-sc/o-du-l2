@@ -28,6 +28,13 @@ DuMacSlotInd packMacSlotIndOpts[] =
    duHandleSlotInd,
    packMacSlotInd
 };
+/* Funtion pointer options for stop indication */
+DuMacStopInd packMacStopIndOpts[] =
+{
+   packMacStopInd,
+   duHandleStopInd,
+   packMacStopInd
+};
 
 /*******************************************************************
  *
@@ -50,6 +57,27 @@ DuMacSlotInd packMacSlotIndOpts[] =
 uint16_t MacDuAppSlotInd(Pst *pst, SlotInfo *slotInfo)
 {
    return (*packMacSlotIndOpts[pst->selector])(pst, slotInfo);
+}
+
+/*******************************************************************
+ *
+ * @brief Send stop indication to MAC
+ *
+ * @details
+ *
+ *    Function : MacDuAppStopInd
+ *
+ *    Functionality:
+ *       Sends Stop Indication to MAC
+ *
+ * @params[in]  Post structure pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
+{
+   return (*packMacStopIndOpts[pst->selector])(pst, cellStopId);
 }
 
 /**********************************************************************
