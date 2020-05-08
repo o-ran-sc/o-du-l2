@@ -609,6 +609,81 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 
 /*******************************************************************
  *
+ * @brief Builds and Send the stop Indication message to MAC
+ *
+ * @details
+ *
+ *    Function : l1BuildAndSendStopInd
+ *
+ *    Functionality:
+ *          -Send the Stop indication Message to MAC
+ *
+ *
+ * @return void
+ *
+ * ****************************************************************/
+PUBLIC uint16_t l1BuildAndSendStopInd()
+{
+#ifdef FAPI
+   fapi_stop_ind_t *stopIndMsg = NULLP;
+   uint32_t msgLen = 0;
+
+   MAC_ALLOC(stopIndMsg, sizeof(fapi_stop_ind_t));
+   if(!stopIndMsg)
+   {
+       DU_LOG("\nPHY_STUB: Memory allocation failed for stop Indication Message");
+       return RFAILED;
+   }
+   else
+   {
+      fillMsgHeader(&stopIndMsg->header, FAPI_STOP_INDICATION, msgLen);
+      DU_LOG("\n\nPHY_STUB: Processing Stop indication to MAC");
+      handlePhyMessages(stopIndMsg->header.message_type_id, sizeof(fapi_stop_ind_t), (void*)stopIndMsg);
+      MAC_FREE(stopIndMsg, sizeof(fapi_stop_ind_t));
+   }
+#endif
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Handles stop request received from MAC
+ *
+ * @details
+ *
+ *    Function : l1HdlStopReq
+ *
+ *    Functionality:
+ *          -Handles stop request received from MAC
+ *
+ * @params[in]   Message length
+ *               stop request message pointer
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+PUBLIC S16 l1HdlStopReq(uint32_t msgLen, void *msg)
+{
+#ifdef FAPI
+   fapi_stop_req_t *stopReq = (fapi_stop_req_t *)msg;
+
+   if(clGlobalCp.phyState == PHY_STATE_RUNNING)
+   {
+      l1BuildAndSendStopInd();
+      MAC_FREE(stopReq, msgLen);
+   }
+   else
+   {
+      DU_LOG("\nPHY_STUB: Received Stop Req in PHY State %d", clGlobalCp.phyState);
+      return RFAILED;
+   }
+#endif
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Receives message from MAC
  *
  * @details
@@ -648,6 +723,9 @@ void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
          break;
       case FAPI_UL_TTI_REQUEST:
          l1HdlUlTtiReq(msgLen, msg);
+         break;
+      case FAPI_STOP_REQUEST:
+         l1HdlStopReq(msgLen, msg);
          break;
       default:
          DU_LOG("\nPHY_STUB: Invalid message type[%x] received at PHY", msgType);
