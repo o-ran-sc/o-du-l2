@@ -46,7 +46,7 @@
 
 
 uint16_t MacDuAppSlotInd(Pst *pst, SlotInfo *slotInfo);
-
+uint16_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId);
 /**********************************************************************
          End of file
 **********************************************************************/
