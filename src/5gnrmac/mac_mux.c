@@ -61,6 +61,21 @@
 #include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
 
+/*******************************************************************
+ *
+ * @brief pack the bits
+ *
+ * @details
+ *
+ *    Function : packBytes
+ *
+ *    Functionality:
+ *     pack the bits in the corresponding byte
+ *
+ * @params[in] buffer pointer, byte and bit position, value and its size
+ * @return void
+ *
+ * ****************************************************************/
 void packBytes(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos, uint32_t val, uint8_t valSize)
 {
    uint32_t  temp;
@@ -98,29 +113,48 @@ void packBytes(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos, uint32_t val, ui
    }  
 }
 
+/*******************************************************************
+ *
+ * @brief fill the RAR PDU
+ *
+ * @details
+ *
+ *    Function : fillRarPdu
+ *
+ *    Functionality:
+ *     The RAR PDU will be MUXed and formed
+ *
+ * @params[in] RAR info
+ * @return void
+ *
+ * ****************************************************************/
 void fillRarPdu(RarInfo *rarInfo)
 {
    uint8_t   *rarPdu = rarInfo->rarPdu;
-   uint16_t  totalBits;
-   uint8_t   numBytes;
-   uint8_t   bytePos;
-   uint8_t   bitPos;
+   uint16_t  totalBits = 0;
+   uint8_t   numBytes = 0;
+   uint8_t   bytePos= 0;
+   uint8_t   bitPos = 0;
 
    /* RAR subheader fields */
-   uint8_t   EBit;
-   uint8_t   TBit;
-   uint8_t   rapId;
+   uint8_t   EBit = 0;
+   uint8_t   TBit = 0;
+   uint8_t   rapId = 0;
 
    /* RAR payload fields */
-   uint8_t   RBit;
-   uint16_t  timeAdv;
-   uint32_t  ulGrant;
-   uint16_t  tmpCrnti; 
+   uint8_t   RBit = 0;
+   uint16_t  timeAdv = 0;
+   uint32_t  ulGrant = 0;
+   uint16_t  tmpCrnti = 0; 
+	uint8_t   paddingLcid = 63;
 
    /* Size(in bits) of RAR subheader files */
    uint8_t   EBitSize = 1;
    uint8_t   TBitSize = 1;
    uint8_t   rapidSize = 6;
+	uint8_t   paddingLcidSize = 6;
+	uint8_t   paddingSize = 8;
+
 
    /* Size(in bits) of RAR payload fields */
    uint8_t   RBitSize = 1;
@@ -141,6 +175,9 @@ void fillRarPdu(RarInfo *rarInfo)
    /* Calulating total number of bytes in buffer */
    totalBits = EBitSize + TBitSize + rapidSize + RBitSize + timeAdvSize \
      + ulGrantSize + tmpCrntiSize;
+
+   /* add padding size */
+	totalBits += RBitSize*2 + paddingLcidSize + paddingSize;
    
    /* Calulating total number of bytes in buffer */
    numBytes = totalBits/8;
@@ -164,6 +201,12 @@ void fillRarPdu(RarInfo *rarInfo)
    packBytes(rarPdu, &bytePos, &bitPos, timeAdv, timeAdvSize);
    packBytes(rarPdu, &bytePos, &bitPos, ulGrant, ulGrantSize);
    packBytes(rarPdu, &bytePos, &bitPos, tmpCrnti, tmpCrntiSize);
+
+	/* padding of 2 bytes */
+   packBytes(rarPdu, &bytePos, &bitPos, RBit, RBitSize*2);
+   packBytes(rarPdu, &bytePos, &bitPos, paddingLcid, paddingLcidSize);
+   packBytes(rarPdu, &bytePos, &bitPos, 0, paddingSize);
+	
 }
 
 /**********************************************************************

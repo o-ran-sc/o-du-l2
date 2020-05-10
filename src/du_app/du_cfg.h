@@ -60,7 +60,9 @@
 #define FREQ_SHIFT_7P5KHZ FALSE
 #define SSB_PBCH_PWR -5
 #define BCH_PAYLOAD MAC_GEN_FULL_PBCH_PAYLD
+#define TOTAL_PRB_BW 106
 #define SUBCARRIER_SPACING 0
+#define NORMAL_CYCLIC_PREFIX 0
 #define SCS_CARRIER_BANDWIDTH 273         /* Subcarrier spacing- carrier bandwidth */
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
 #define BETA_PSS BETA_PSS_0DB  

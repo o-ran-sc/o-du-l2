@@ -41,7 +41,23 @@
 #include "lrg.x"
 #include "du_app_mac_inf.h"
 #include "mac.h"
+#include "du_log.h"
 
+/**
+ * @brief process DL allocation from scheduler
+ *
+ * @details
+ *
+ *     Function : MacProcDlAlloc 
+ *      
+ *      This function copied dl sch info in the mac slot info
+ *           
+ *  @param[in]  Pst            *pst
+ *  @param[in]  DL allocation from scheduler
+ *  @return  S16
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
 int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
 {
    if(dlAlloc != NULLP)
@@ -52,6 +68,67 @@ int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
    }
    return ROK;
 }
+
+/**
+ * @brief Transmission time interval indication from PHY.
+ *
+ * @details
+ *
+ *     Function : fapiMacSlotInd 
+ *      
+ *      This API is invoked by PHY to indicate TTI indication to MAC for a cell.
+ *           
+ *  @param[in]  Pst            *pst
+ *  @param[in]  SuId           suId 
+ *  @param[in]  SlotIndInfo    *slotInd
+ *  @return  S16
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+PUBLIC S16 fapiMacSlotInd 
+(
+Pst                 *pst, 
+SlotIndInfo         *slotInd
+)
+{
+   S16              ret;
+   VOLATILE U32     startTime=0;
+   Inst             inst;
+
+   DU_LOG("\nMAC : Slot Indication received");
+   
+   inst = pst->dstInst;
+   /*starting Task*/
+   SStartTask(&startTime, PID_MAC_TTI_IND);
+
+   /* send slot indication to scheduler */
+   ret = sendSlotIndMacToSch(slotInd);
+   if(ret != ROK)
+   {
+      DU_LOG("\nMAC : Sending of slot ind msg from MAC to SCH failed");
+      RETVALUE(ret);
+   }
+
+   ret = macProcessSlotInd(inst,*slotInd);
+   if(ret != ROK)
+   {
+      DU_LOG("\nMAC : macProcessSlotInd failed");
+      RETVALUE(ret);
+   }
+
+   /* send slot indication to du app */
+   ret = sendSlotIndMacToDuApp(slotInd);
+   if(ret != ROK)
+   {
+      DU_LOG("\nMAC :Sending of slot ind msg from MAC to DU APP failed");
+      RETVALUE(ret);
+   }
+
+   /*stoping Task*/
+   SStopTask(startTime, PID_MAC_TTI_IND);
+
+   RETVALUE(ret);
+}  /* fapiMacSlotInd */
 
 /**********************************************************************
   End of file

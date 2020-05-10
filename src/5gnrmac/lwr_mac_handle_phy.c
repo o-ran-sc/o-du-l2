@@ -210,7 +210,7 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
       {
          if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
          {
-            DU_LOG("\nLOWER MAC: PHY has moved to running state");
+            DU_LOG("\nLWR_MAC: PHY has moved to running state");
             clGlobalCp.phyState = PHY_STATE_RUNNING;
          }
 

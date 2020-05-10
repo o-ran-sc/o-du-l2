@@ -232,6 +232,44 @@ typedef struct schRachCfg
    uint8_t      raRspWindow;         /* RA Response Window */
 }SchRachCfg;
 
+typedef struct schBwpParams
+{
+   uint16_t firstPrb;
+   uint16_t numPrb;
+	uint8_t  scs;
+	uint8_t  cyclicPrefix;
+}SchBwpParams;
+
+typedef struct schCandidatesInfo
+{
+   uint8_t aggLevel1;
+   uint8_t aggLevel2;
+   uint8_t aggLevel4;
+   uint8_t aggLevel8;
+   uint8_t aggLevel16;
+}SchCandidatesInfo;
+
+typedef struct schSearchSpaceCfg
+{
+   uint8_t searchSpaceId;
+	uint8_t coresetId;
+	uint16_t monitoringSlot;
+	uint16_t duration;
+	uint16_t monitoringSymbol;
+	SchCandidatesInfo candidate;
+}SchSearchSpaceCfg;
+
+typedef struct schPdcchCfgCmn
+{
+   SchSearchSpaceCfg raSearchSpace;
+}SchPdcchCfgCmn;
+
+typedef struct schBwpDlCfg
+{
+   SchBwpParams   bwp;
+	SchPdcchCfgCmn pdcchCommon;
+}SchBwpDlCfg;
+
 typedef struct schCellCfg
 {
    uint16_t    cellId;     /* Cell Id */
@@ -241,6 +279,7 @@ typedef struct schCellCfg
 	SchSsbCfg   ssbSchCfg;  /* SSB config */
 	SchSib1Cfg  sib1SchCfg; /* SIB1 config */
    SchRachCfg  schRachCfg; /* PRACH config */
+	SchBwpDlCfg    schInitialBwp;
 }SchCellCfg;
 
 typedef struct schCellCfgCfm
