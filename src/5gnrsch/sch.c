@@ -509,7 +509,8 @@ uint8_t      offsetPointA
       pdsch->codeword[cwCount].mcsIndex = sib1SchCfg->sib1Mcs;
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      pdsch->codeword[cwCount].tbSize = 768;
+      pdsch->codeword[cwCount].tbSize = 768/8; /* 38.214: Table 5.1.3.2-1,
+		   devided by 8 to get the value in bytes */
    }
    pdsch->dataScramblingId = pci;
    pdsch->numLayers = 1;

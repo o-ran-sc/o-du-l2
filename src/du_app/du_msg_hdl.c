@@ -1655,7 +1655,7 @@ uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo)
          (duCb.actvCellLst[slotInfo->cellId-1]->cellStatus == \
          ACTIVATION_IN_PROGRESS))
       {
-         DU_LOG("\nDU APP : Cell Id %d is ACTIVE", slotInfo->cellId);
+         DU_LOG("\nDU APP : 5G-NR Cell %d is UP", slotInfo->cellId);
          duCb.actvCellLst[slotInfo->cellId-1]->cellStatus = ACTIVATED;
       }
       

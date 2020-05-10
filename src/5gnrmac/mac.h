@@ -56,7 +56,6 @@
 typedef struct macDlSlot
 {
    DlAlloc dlInfo;
-
 }MacDlSlot;
 
 typedef struct macUlSlot
@@ -81,6 +80,7 @@ typedef struct macCb
 /* global variable */
 EXTERN MacCb macCb;
 void fillMacToSchPst(Pst *pst);
+void fillRarPdu(RarInfo *rarInfo);
 
 #endif
 /**********************************************************************
