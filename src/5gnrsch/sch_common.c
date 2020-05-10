@@ -226,7 +226,7 @@ int schPrachResAlloc(SchCellCb *cell, UlSchInfo *ulSchInfo)
 	uint8_t  prachFormat = 0;
 	uint8_t  x = 0;
 	uint8_t  y = 0;
-	uint8_t  prachSubframe = 0;
+	uint16_t  prachSubframe = 0;
 	uint8_t  prachStartSymbol = 0;
 	uint8_t  prachOcas = 0;
 	uint8_t  dataType = 0;

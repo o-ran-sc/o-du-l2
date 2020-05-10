@@ -384,8 +384,13 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
    }
    else
    {
+      slotIndMsg->sfn = sfnValue;
+      slotIndMsg->slot = slotValue;
+      DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
+
+		/* increment for the next TTI */
       slotValue++;
-      if(sfnValue > MAX_SFN_VALUE && slotValue > MAX_SLOT_VALUE)
+      if(sfnValue >= MAX_SFN_VALUE && slotValue > MAX_SLOT_VALUE)
       {
          sfnValue = 0;
          slotValue = 0;
@@ -395,10 +400,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
          sfnValue++;
          slotValue = 0;
       }
-      slotIndMsg->sfn = sfnValue;
-      slotIndMsg->slot = slotValue;
       fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
-      DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
       handlePhyMessages(slotIndMsg->header.message_type_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
       MAC_FREE(slotIndMsg, sizeof(fapi_slot_ind_t));
    }
@@ -534,7 +536,7 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 {
 #ifdef FAPI
-   uint8_t pduCount;
+   //uint8_t pduCount;
 
    DU_LOG("\nPHY STUB: Received TX DATA Request");
 
@@ -597,7 +599,7 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
    MAC_FREE(ulTtiReq->pdus, (ulTtiReq->nPdus * sizeof(fapi_ul_tti_req_pdu_t)));
 	MAC_FREE(ulTtiReq, sizeof(fapi_ul_tti_req_t));
 
-   if(rachIndSent == false && ulTtiReq->slot == 8)
+   if(rachIndSent == false && ulTtiReq->sfn == 2 && ulTtiReq->slot == 6)
    {
       rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);

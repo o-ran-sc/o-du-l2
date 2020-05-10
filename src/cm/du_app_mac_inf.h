@@ -184,6 +184,44 @@ typedef struct sib1CellCfg
    uint16_t sib1Mcs;
 } Sib1CellCfg; 
 
+typedef struct bwpParams
+{
+   uint16_t firstPrb;
+   uint16_t numPrb;
+	uint8_t  scs;
+	uint8_t  cyclicPrefix;
+}BwpParams;
+
+typedef struct candidatesInfo
+{
+   uint8_t aggLevel1;
+   uint8_t aggLevel2;
+   uint8_t aggLevel4;
+   uint8_t aggLevel8;
+   uint8_t aggLevel16;
+}CandidatesInfo;
+
+typedef struct searchSpaceCfg
+{
+   uint8_t searchSpaceId;
+	uint8_t coresetId;
+	uint16_t monitoringSlot;
+	uint16_t duration;
+	uint16_t monitoringSymbol;
+	CandidatesInfo candidate;
+}SearchSpaceCfg;
+
+typedef struct pdcchConfigCommon
+{
+   SearchSpaceCfg raSearchSpace;
+}PdcchConfigCommon;
+
+typedef struct bwpDlConfig
+{
+   BwpParams      bwp;
+	PdcchConfigCommon pdcchCommon;
+}BwpDlConfig;
+
 typedef struct macCellCfg
 {
    U16            transId;
@@ -200,6 +238,7 @@ typedef struct macCellCfg
    TDDCfg         tddCfg;     /* TDD periodicity and slot configuration */
    RSSIMeasUnit   rssiUnit;   /* RSSI measurement unit */
    Sib1CellCfg    sib1Cfg;
+	BwpDlConfig    initialBwp;
 }MacCellCfg;
 
 typedef struct macCellCfgCfm

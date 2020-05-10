@@ -228,6 +228,28 @@ S16 readMacCfg()
    duCfgParam.macCellCfg.sib1Cfg.searchSpaceZeroIndex = SEARCHSPACE_0_INDEX;
    duCfgParam.macCellCfg.sib1Cfg.sib1Mcs = SIB1_MCS;
 
+
+   /* fill Intial DL BWP */
+   duCfgParam.macCellCfg.initialBwp.bwp.firstPrb = 0;
+   duCfgParam.macCellCfg.initialBwp.bwp.numPrb = 106; /* configured to total BW */
+   duCfgParam.macCellCfg.initialBwp.bwp.scs = SUBCARRIER_SPACING; /* numerology is 0, 15Khz */
+   duCfgParam.macCellCfg.initialBwp.bwp.cyclicPrefix = 0;
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.searchSpaceId = 1;
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.coresetId = 0;
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.monitoringSlot = 0; /* sl1 */
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.duration = 0;
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.monitoringSymbol = 0;
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+	   candidate.aggLevel1	= 8;
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+	   candidate.aggLevel2	= 4;
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+	   candidate.aggLevel4	= 2;
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+	   candidate.aggLevel8	= 1;
+   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+	   candidate.aggLevel16	= 0;
+
    /* This should be calculated based on
       (number of mandatory parameters) + (number of otional parameters being filled) */
    duCfgParam.macCellCfg.numTlv = 39;

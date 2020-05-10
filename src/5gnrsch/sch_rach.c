@@ -80,42 +80,19 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
 	schCb[schInst].cells[schInst]->raCb[0].tcrnti = tcrnti;
 }
 
-int schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
+uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
 {
    SchCellCb *cell = schCb[schInst].cells[schInst];
+	uint16_t raRnti = 0;
 
-	uint16_t sfn  = rachInd->timingInfo.sfn;  /* get the current timing info */
-	uint16_t slot = rachInd->timingInfo.slot;
-	uint16_t sfnSlot = ((sfn * 10) + slot + 1); /* scheduled in the next slot */
-	uint8_t rarDelay = 0;
-
-	if(sfnSlot % cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod == 0)
-	{
-	   /* the next slot has SIB1 occasion, so send it after 2 slot */
-	   rarDelay = 2;
-	}
-	else
-	{
-	   /* send RAR in the next slot */
-	   //rarDelay = 1;
-		rarDelay = 2;
-	}
-
-	if((slot+rarDelay) % SCH_NUM_SLOTS == 0)
-	{
-	   sfn = (sfn+1) % SCH_MAX_SFN;
-   }
-
-	slot = ((slot + rarDelay) % SCH_NUM_SLOTS);
-
-   SchDlAlloc *dlAlloc = cell->dlAlloc[slot]; /* RAR will sent in the next slot */
+   SchDlAlloc *dlAlloc =
+	   cell->dlAlloc[(rachInd->timingInfo.slot+SCHED_DELTA+RAR_DELAY)%SCH_NUM_SLOTS]; /* RAR will sent in the next slot */
 	RarInfo *rarInfo = &(dlAlloc->rarInfo);
 
    /* rar message presense in next slot ind and will be scheduled */
    dlAlloc->rarPres = true;
 
    /* calculate the ra-rnti value */
-	uint16_t raRnti = 0;
 	raRnti = calculateRaRnti(rachInd->symbolIdx,rachInd->slotIdx,rachInd->freqIdx);
    
 	/* create raCb at SCH */
@@ -132,46 +109,46 @@ int schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    return ROK;
 }
 
-int  schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA)
+uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA)
 {
+   Inst inst = 0;
    uint8_t coreset0Idx = 0;
-   uint8_t searchSpace0Idx = 0;
-   //uint8_t ssbMuxPattern = 0;
    uint8_t numRbs = 0;
+	uint8_t firstSymbol = 0;
    uint8_t numSymbols = 0;
    uint8_t offset = 0;
-   //uint8_t oValue = 0;
-   //uint8_t numSearchSpacePerSlot = 0;
-   //uint8_t mValue = 0;
-   uint8_t firstSymbol = 0; /* need to calculate using formula mentioned in 38.213 */
    uint8_t FreqDomainResource[6] = {0};
+   SchBwpDlCfg *initialBwp = &schCb[inst].cells[inst]->cellCfg.schInitialBwp;
 
 	PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
 	PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
 
-   coreset0Idx     = 0;
-   searchSpace0Idx = 0;
+   coreset0Idx     = initialBwp->pdcchCommon.raSearchSpace.coresetId;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
-   //ssbMuxPattern = coresetIdxTable[coreset0Idx][0];
    numRbs        = coresetIdxTable[coreset0Idx][1];
    numSymbols    = coresetIdxTable[coreset0Idx][2];
    offset        = coresetIdxTable[coreset0Idx][3];
 
-   /* derive the search space params from table 13-11 spec 38.213 */
-   //oValue                = searchSpaceIdxTable[searchSpace0Idx][0];
-   //numSearchSpacePerSlot = searchSpaceIdxTable[searchSpace0Idx][1];
-   //mValue                = searchSpaceIdxTable[searchSpace0Idx][2];
-   firstSymbol           = searchSpaceIdxTable[searchSpace0Idx][3];
+   /* calculate time domain parameters */
+	// note: since slot value is made sl1, RAR can be sent at all slots
+	uint16_t mask = 0x2000;
+	for(firstSymbol=0; firstSymbol<14;firstSymbol++)
+	{
+	   if(initialBwp->pdcchCommon.raSearchSpace.monitoringSymbol & mask)
+		   break;
+		else
+		   mask = mask>>1;
+   }
 
    /* calculate the PRBs */
    freqDomResourceAlloc( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill the PDCCH PDU */
-   pdcch->pdcchBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
-   pdcch->pdcchBwpCfg.BWPStart = 0;
-   pdcch->pdcchBwpCfg.subcarrierSpacing = 0;         /* 15Khz */
-   pdcch->pdcchBwpCfg.cyclicPrefix = 0;              /* normal */
+   pdcch->pdcchBwpCfg.BWPSize = initialBwp->bwp.numPrb;
+   pdcch->pdcchBwpCfg.BWPStart = initialBwp->bwp.firstPrb;
+   pdcch->pdcchBwpCfg.subcarrierSpacing = initialBwp->bwp.scs;
+   pdcch->pdcchBwpCfg.cyclicPrefix = initialBwp->bwp.cyclicPrefix;
    pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
    pdcch->coreset0Cfg.durationSymbols = numSymbols;
    memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
@@ -185,7 +162,7 @@ int  schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offse
    pdcch->dci.rnti = raRnti; /* RA-RNTI */
    pdcch->dci.scramblingId = pci;
    pdcch->dci.scramblingRnti = 0;
-   pdcch->dci.cceIndex = 0;
+   pdcch->dci.cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
    pdcch->dci.aggregLevel = 4;
    pdcch->dci.beamPdcchInfo.numPrgs = 1;
    pdcch->dci.beamPdcchInfo.prgSize = 1;
@@ -201,17 +178,17 @@ int  schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offse
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
    pdsch->rnti = raRnti; /* RA-RNTI */
    pdsch->pduIndex = 0;
-   pdsch->pdschBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
-   pdsch->pdschBwpCfg.BWPStart = 0;
+   pdsch->pdschBwpCfg.BWPSize = initialBwp->bwp.numPrb;
+   pdsch->pdschBwpCfg.BWPStart = initialBwp->bwp.firstPrb;
    pdsch->numCodewords = 1;
 	for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
 	{
       pdsch->codeword[cwCount].targetCodeRate = 308;
       pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = 4; /* msc configured to 4 */
+      pdsch->codeword[cwCount].mcsIndex = 4; /* mcs configured to 4 */
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      pdsch->codeword[cwCount].tbSize = 768;
+      pdsch->codeword[cwCount].tbSize = 80/8; /* taken from mcs table */
    }
    pdsch->dataScramblingId = pci;
    pdsch->numLayers = 1;

@@ -733,69 +733,6 @@ int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
   
 }
 
-/**
- * @brief Transmission time interval indication from PHY.
- *
- * @details
- *
- *     Function : fapiMacSlotInd 
- *      
- *      This API is invoked by PHY to indicate TTI indication to MAC for a cell.
- *           
- *  @param[in]  Pst            *pst
- *  @param[in]  SuId           suId 
- *  @param[in]  SlotIndInfo    *slotInd
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED 
- **/
-PUBLIC S16 fapiMacSlotInd 
-(
-Pst                 *pst, 
-SlotIndInfo         *slotInd
-)
-{
-   S16              ret;
-   VOLATILE U32     startTime=0;
-   Inst             inst;
-
-   DU_LOG("\nMAC : Slot Indication received");
-   
-   RG_IS_INST_VALID(pst->dstInst);
-   inst = pst->dstInst - RG_INST_START;
-   /*starting Task*/
-   SStartTask(&startTime, PID_MAC_TTI_IND);
-
-   /* send slot indication to scheduler */
-   ret = sendSlotIndMacToSch(slotInd);
-   if(ret != ROK)
-   {
-      DU_LOG("\nMAC : Sending of slot ind msg from MAC to SCH failed");
-      RETVALUE(ret);
-   }
-
-   /* Now call the TOM (Tfu ownership module) primitive to process further */
-   ret = macProcessSlotInd(inst,*slotInd);
-   if(ret != ROK)
-   {
-      DU_LOG("\nMAC : macProcessSlotInd failed");
-      RETVALUE(ret);
-   }
-
-   /* send slot indication to du app */
-   ret = sendSlotIndMacToDuApp(slotInd);
-   if(ret != ROK)
-   {
-      DU_LOG("\nMAC :Sending of slot ind msg from MAC to DU APP failed");
-      RETVALUE(ret);
-   }
-
-   /*stoping Task*/
-   SStopTask(startTime, PID_MAC_TTI_IND);
-
-   RETVALUE(ret);
-}  /* fapiMacSlotInd */
-
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
  /**
  * @brief Transmission of non-rt indication from CL.

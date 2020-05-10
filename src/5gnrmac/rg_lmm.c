@@ -2217,6 +2217,21 @@ int MacSchCellCfgReq
 	schCellCfg.schRachCfg.rsrpThreshSsb = macCellCfg->prachCfg.rsrpThreshSsb;
 	schCellCfg.schRachCfg.raRspWindow   = macCellCfg->prachCfg.raRspWindow;
 
+   /* fill initial DL BWP */
+   schCellCfg.schInitialBwp.bwp.firstPrb = macCellCfg->initialBwp.bwp.firstPrb;
+   schCellCfg.schInitialBwp.bwp.numPrb = macCellCfg->initialBwp.bwp.numPrb;
+   schCellCfg.schInitialBwp.bwp.scs = macCellCfg->initialBwp.bwp.scs;
+   schCellCfg.schInitialBwp.bwp.cyclicPrefix = macCellCfg->initialBwp.bwp.cyclicPrefix;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.searchSpaceId = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.searchSpaceId;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.coresetId = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.coresetId;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.monitoringSlot = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.monitoringSlot;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.duration = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.duration;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.monitoringSymbol = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.monitoringSymbol;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel1 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel1;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel2 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel2;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel4 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel4;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel8 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel8;
+   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel16 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel16;
 
    cfgPst.srcProcId = pst->dstProcId;
 	cfgPst.dstProcId = pst->srcProcId;

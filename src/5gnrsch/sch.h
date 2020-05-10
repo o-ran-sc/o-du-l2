@@ -33,9 +33,10 @@
 #define SCH_MEM_REGION     4
 #define SCH_POOL           1
 #define SCHED_DELTA 1
-#define SCH_MAX_UE 512
+#define RAR_DELAY   1
+#define SCH_MAX_UE  1
 #define SI_RNTI 0xFFFF
-#define P_RNIT  0xFFFE
+#define P_RNTI  0xFFFE
 
 /* allocate and zero out a static buffer */
 #define SCH_ALLOC(_datPtr, _size)                                \
@@ -66,7 +67,7 @@
    _rspPst.dstInst   = 0;\
 	_rspPst.selector  = MAC_SELECTOR_TC;\
 }	
-extern int schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
+extern uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
 /**
   * @brief
   * Structure holding LTE MAC's General Configuration information.
