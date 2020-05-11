@@ -104,6 +104,40 @@
     },
     {
       "key": {
+        "uuid": "7d92fed2_f7becff3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2935,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-11T13:55:35Z",
+      "side": 1,
+      "message": "Instead of passing pduIndex, we can directly pass \u0026txDataReq-\u003epduDesc[pduIndex]. The same way as done in dl tti req",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3561974a_0d6da266",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2943,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-11T13:55:35Z",
+      "side": 1,
+      "message": "Same comment as line 2935",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8c4be100_abd9f218",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -172,6 +206,23 @@
     },
     {
       "key": {
+        "uuid": "7076780a_a3216c74",
+        "filename": "src/5gnrmac/rg_tom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-11T13:55:35Z",
+      "side": 1,
+      "message": "Since this is new code we are writing, the old code snippet that are unused in this function can be removed.",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7e984dbd_59c8988c",
         "filename": "src/5gnrmac/rg_tom.c",
         "patchSetId": 1
@@ -200,6 +251,23 @@
       "writtenOn": "2020-05-11T12:41:20Z",
       "side": 1,
       "message": "add a comment stating that tbSize of in bytes.\nAlso, we can add notes to why we are hardcoding so many values",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85df0cdf_8f82a687",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-11T13:55:35Z",
+      "side": 1,
+      "message": "Below parameters can be filled using macros(existing/new)?",
       "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
