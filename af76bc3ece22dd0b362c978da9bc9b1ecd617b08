@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "288eb51e_06cd2067",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2617,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae2e3290_df69f24e",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "422bdb21_a3b55649",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb65d8a2_43096bcc",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2810,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "422bdb21_a3b55649",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "3f72942d_19e374b2",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2824,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "pduIndex only goes in PDSCH, hence a separate variable is required.\nnumPduEncoded will for both PDCCH PDSCH PBCH pdus",
+      "parentUuid": "92eb6554_f2743fab",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db3ebba2_95012864",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2501c8e8_ba515084",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2901,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "pduIndex in FAPI PDSCH pdu is uint16_t as per FAPI spec.",
+      "parentUuid": "db3ebba2_95012864",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "789c4f77_ac0c28fa",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2910,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "LWR_MAC_ALLOC macro is considered now.",
+      "parentUuid": "c13d8e36_a36cf2d2",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "93be1e0c_2f9e37d3",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a32323d_bffa43c4",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2922,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93be1e0c_2f9e37d3",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "5de9642e_8e21980d",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2935,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "pduIndex is FAPI parameter which needs to be filled in tx-data req message, hence we need to pass it from here.",
+      "parentUuid": "7d92fed2_f7becff3",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3561974a_0d6da266",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -138,6 +264,24 @@
     },
     {
       "key": {
+        "uuid": "2c7270c0_b6efc88b",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2943,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3561974a_0d6da266",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8c4be100_abd9f218",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -152,6 +296,24 @@
       "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27492c67_25519dab",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3088,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "we can discuss on this, I guess return type need not be negative value.\nAlso in future, there might be more than 127 return types.",
+      "parentUuid": "8c4be100_abd9f218",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +351,24 @@
     },
     {
       "key": {
+        "uuid": "6f04b6c7_644c8fdb",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "this code was taken from seed code, do we need to start this task, also it stops just after this function ends.",
+      "parentUuid": "4c56006e_1d83abf0",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3239f89c_80518e16",
         "filename": "src/5gnrmac/mac_slot_ind.c",
         "patchSetId": 1
@@ -203,6 +383,24 @@
       "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d724205_89250d92",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-11T21:12:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3239f89c_80518e16",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
