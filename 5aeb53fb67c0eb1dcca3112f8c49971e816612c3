@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6450c56c_7d9b627c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-12T12:39:09Z",
+      "side": 1,
+      "message": "club all variables together. Then give function declaration. Even better if declaration can be moved to header file",
+      "revId": "5aeb53fb67c0eb1dcca3112f8c49971e816612c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e483d296_d056f910",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2836,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-12T12:39:09Z",
+      "side": 1,
+      "message": "why do we need this variable now that we have pduIndex",
+      "revId": "5aeb53fb67c0eb1dcca3112f8c49971e816612c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08aef5f0_90e31887",
+        "filename": "src/5gnrmac/lwr_mac_fsm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-12T12:39:09Z",
+      "side": 1,
+      "message": "this must be ulTtiReqTimingInfo right?",
+      "revId": "5aeb53fb67c0eb1dcca3112f8c49971e816612c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
