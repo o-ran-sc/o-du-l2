@@ -438,6 +438,24 @@
     },
     {
       "key": {
+        "uuid": "3c9f0ff1_e7b4e79d",
+        "filename": "src/5gnrmac/rg_tom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-12T10:18:19Z",
+      "side": 1,
+      "message": "this function was from seed code and modified by adding handle dl and ul tti req",
+      "parentUuid": "7e984dbd_59c8988c",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fe5f65de_a7497112",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 1
@@ -452,6 +470,24 @@
       "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce7f882c_efe62dc8",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-12T10:18:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe5f65de_a7497112",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -472,6 +508,24 @@
     },
     {
       "key": {
+        "uuid": "5bdaf0e6_650af740",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-12T10:18:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79d77af8_2654368c",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "86d22e2d_14161d6a",
         "filename": "src/5gnrsch/sch_rach.c",
         "patchSetId": 1
@@ -486,6 +540,24 @@
       "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8650c540_4bb5de1c",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-12T10:18:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86d22e2d_14161d6a",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -506,6 +578,24 @@
     },
     {
       "key": {
+        "uuid": "e9a59ccf_09a5a26b",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-12T10:18:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85df0cdf_8f82a687",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "72a5063c_0a3f5571",
         "filename": "src/phy_stub/l1_bdy1.c",
         "patchSetId": 1
@@ -520,6 +610,24 @@
       "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb5521a2_d2cffe19",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-12T10:18:19Z",
+      "side": 1,
+      "message": "The first if cond is for boundary check.\nsecond one is for every slot.",
+      "parentUuid": "72a5063c_0a3f5571",
+      "revId": "af76bc3ece22dd0b362c978da9bc9b1ecd617b08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
