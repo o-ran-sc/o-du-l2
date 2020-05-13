@@ -390,7 +390,8 @@ uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo )
       CMCHKPK(SPkU16, slotInfo->sfn, mBuf);
       CMCHKPK(SPkU16, slotInfo->slot, mBuf);
 
-		SPutStaticBuffer(pst->region, pst->pool, slotInfo, sizeof(SlotInfo), 0);
+		SPutStaticBuffer(pst->region, pst->pool, (Data *)slotInfo, \
+		   sizeof(SlotInfo), 0);
 		slotInfo = NULL;
    }
    else if(pst->selector == DU_SELECTOR_LWLC)
