@@ -262,7 +262,6 @@ PUBLIC void l1HdlParamReq(uint32_t msgLen, void *msg)
 PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
 {
 #ifdef FAPI
-   int idx = 0;
 	fapi_config_req_t *configReq = (fapi_config_req_t *)msg;
 
    DU_LOG("\nPHY_STUB: Received Config Request in PHY");
@@ -273,21 +272,7 @@ PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
       printf("\nPHY_STUB: Failed Sending config Response");
    }
    
-	while(idx < MAX_NUM_TLVS_CONFIG)
-	{
-	   if(configReq->tlvs[idx].tl.tag == FAPI_NUM_UNUSED_ROOT_SEQUENCES_TAG)
-		{
-		   if(configReq->tlvs[idx].value)
-			{
-			   idx++;
-			   MAC_FREE(configReq->tlvs[idx].value , \
-				   sizeof(uint8_t) * configReq->tlvs[idx-1].value);
-            break;
-			}
-		}
-		idx++;
-	}
-	MAC_FREE(configReq, sizeof(fapi_config_req_t));
+	MAC_FREE(configReq, msgLen);
 #endif
 
 }
@@ -434,7 +419,7 @@ PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
    if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
    {
       duStartSlotIndicaion();
-		MAC_FREE(startReq, sizeof(fapi_start_req_t));
+		MAC_FREE(startReq, msgLen);
    }
    else
    {
@@ -500,16 +485,7 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 	}
 
 	/* Free FAPI message */
-   for(pduCount = 0; pduCount < dlTtiReq->nPdus; pduCount++)
-	{
-	   if(dlTtiReq->pdus[pduCount].pduType == FAPI_DL_TTI_REQ_PDCCH_PDU_TYPE)
-		{
-         MAC_FREE(dlTtiReq->pdus[pduCount].u.pdcch_pdu.dlDci,\
-			   sizeof(fapi_dl_dci_t));
-	   }
-   }
-	MAC_FREE(dlTtiReq->pdus, (dlTtiReq->nPdus * sizeof(fapi_dl_tti_req_pdu_t)));
-	MAC_FREE(dlTtiReq, sizeof(fapi_dl_tti_req_t));
+   MAC_FREE(dlTtiReq, msgLen);
 
 #endif
    return ROK;
@@ -536,24 +512,12 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 {
 #ifdef FAPI
-   //uint8_t pduCount;
-
-   DU_LOG("\nPHY STUB: Received TX DATA Request");
-
    fapi_tx_data_req_t *txDataReq;
    txDataReq = (fapi_tx_data_req_t *)msg;
 
-#if 0
-   for(pduCount = 0; pduCount< txDataReq->numPdus; pduCount++)
-	{
-      if(txDataReq->pduDesc[pduCount].tlvs[0].value)
-	      MAC_FREE((uint32_t *)txDataReq->pduDesc[pduCount].tlvs[0].value,\
-		      txDataReq->pduDesc[pduCount].tlvs[0].tl.length);
-	}
-#endif
-	MAC_FREE(txDataReq->pduDesc, (txDataReq->numPdus * \
-	   sizeof(fapi_tx_pdu_desc_t)));
-	MAC_FREE(txDataReq, sizeof(fapi_tx_data_req_t));
+   DU_LOG("\nPHY STUB: Received TX DATA Request");
+
+	MAC_FREE(txDataReq, msgLen);
 #endif
    return ROK;
 }
@@ -591,20 +555,18 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
    }
 	while(numPdus)
 	{
-		if(ulTtiReq->pdus->pduType == 0)
+		if(ulTtiReq->pdus[numPdus-1].pduType == 0)
 			DU_LOG("\nPHY STUB: PRACH PDU");
 		numPdus--;
 	}
-
-   MAC_FREE(ulTtiReq->pdus, (ulTtiReq->nPdus * sizeof(fapi_ul_tti_req_pdu_t)));
-	MAC_FREE(ulTtiReq, sizeof(fapi_ul_tti_req_t));
 
    if(rachIndSent == false && ulTtiReq->sfn == 2 && ulTtiReq->slot == 6)
    {
       rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
    }
-
+   
+   MAC_FREE(ulTtiReq, msgLen);
 #endif
    return ROK;
 }

@@ -35,6 +35,7 @@
 
 #include "du_cfg.h"
 #include "du_app_mac_inf.h"
+#include "cm.h"
 
 /**************************************************************************
  * @brief Function to pack Loose Coupled 
@@ -390,7 +391,7 @@ uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo )
       CMCHKPK(SPkU16, slotInfo->sfn, mBuf);
       CMCHKPK(SPkU16, slotInfo->slot, mBuf);
 
-		SPutStaticBuffer(pst->region, pst->pool, slotInfo, sizeof(SlotInfo), 0);
+      CM_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotInfo));
 		slotInfo = NULL;
    }
    else if(pst->selector == DU_SELECTOR_LWLC)
