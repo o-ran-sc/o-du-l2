@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c920bb6_507fd848",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2006,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T05:27:37Z",
+      "side": 1,
+      "message": "config rsp is coming from phy to lower mac",
+      "revId": "d834941358d7450efaf956160d222cee1fa9697c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4f1fd49_58be42cb",
+        "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T05:27:37Z",
+      "side": 1,
+      "message": "As stated earlier, move above 2 lines inside stop ind handler function due to 2 reasons:\n1. later on we might need to enhance the handling of stop ind.\n2. For modular code, this switch case shouldn\u0027t contain handling of msgs. Let it contain only the calls to corresponding handler.",
+      "revId": "d834941358d7450efaf956160d222cee1fa9697c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "148d153f_26ecd0dc",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T05:27:37Z",
+      "side": 1,
+      "message": "no line should have more than 80 characters. Break this into 2 lines.",
+      "revId": "d834941358d7450efaf956160d222cee1fa9697c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
