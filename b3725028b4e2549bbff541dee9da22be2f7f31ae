@@ -1,0 +1,446 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2383d372_6a436546",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Common comments for this complete file:\n1. Replace all RETVALUE with return\n2. Replace all SSI data types (S8, S16, U8, U16 etc) with standard data types",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5e47860_8ba06061",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "DU_FREE still present in this function. Make changes for all alloc failure.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c756e7a_e1b9c1c8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "use \"ulnrfreq-\u003efreqBandListNr.list.size\" as size of memory to be allocated",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b2f98c2_f250d7ef",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Use a for loop to allocate memory for \"ulnrfreq-\u003efreqBandListNr.list.count\" no. of elements.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c40a2d8d_20a1cc91",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "DU_FREE still present in this function. Make changes for all alloc failure.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05a3ae52_1eab6fe8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "use \"dlnrfreq-\u003efreqBandListNr.list.size\" as size of memory to be allocated",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0188045_9d1afb91",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Use a for loop to allocated memory for \"dlnrfreq-\u003efreqBandListNr.list.count\" no. of elements.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a1d6f2d_ee59c0ac",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Null check missing",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7634146a_d8e95664",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "This check is not needed since buildPlmnId always returns ROK",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "222d61d3_c6ae41cf",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "fillBitString will return rfailed only if \"nrcgi-\u003enRCellIdentity.buf\" is NULL. So DU_FREE of a NULL parameter should not be done. Remove DU_FREE",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec010122_8cf27dca",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "DU_FREE still present in this function. Make changes for all alloc failure.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1e13b30_2f5e71cd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "use servcell-\u003efiveGS_TAC-\u003esize for size to be allocated\nsizeof(servcell-\u003efiveGS_TAC-\u003esize) is incorrect",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6337032_dc9b05fb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "DU_FREE still present in this function. Make changes for all alloc failure.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bbd81280_03446752",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "DU_FREE still present in this function. Make changes for all alloc failure",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0debb7c4_3b77f911",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "DU_FREE still present in this function. Make changes for all alloc failure",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17132894_d25d90c6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "use \"srvplmn-\u003elist.size\" directly instead of \"servPlmnCnt*sizeof(ServedPLMNs_Item_t *)\"",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b37e98d3_eae443f6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "use \"return\" instead of RETVALUE. Check this at all places. Replace all RETVALUE with return",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16704911_e5714043",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Each variable must be declared in separate lines.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b9c9115_327e0d1a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "used duServedCell-\u003elist.size directly instead of plmnCnt * sizeof(GNB_DU_Served_Cells_ItemIEs_t *)",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a3ec5b71_c148c9d9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Instead of checking so many conditions for return ROK, just declare a new parameter called \"bool done\u003dfalse\". Once everything is done properly in while loop, mark bool \u003d true and break out of while. Outside while loop, check if done is true, return ROK.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24448718_ba20150d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Why is free being done here?. All these free should be at the end of BuildAndSendF1SetupRequest where all other parameters are being freed",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68d203a1_c0649bc6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Instead of checking so many conditions for return ROK, just declare a new parameter called \"bool done\u003dfalse\". Once everything is done properly in while loop, mark bool \u003d true and break out of while. Outside while loop, check if done is true, return ROK.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "633849ee_63b56019",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Why is free being done here?. All these free should be at the end of BuildAndSendF1SetupRequest where all other parameters are being freed",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c063b97f_cfd74ee1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Replace all SSI data types such as S8,S16, U8, U16 etc with standard data types. Do so for all functions you are working on",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d85555cc_a404be95",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "Each variable must be declared in separate lines.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94206985_bd3c2f18",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1122,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-13T08:33:39Z",
+      "side": 1,
+      "message": "The complete section below can be moved into a separate function called \"DuFreeF1SetupReq\". And it can be called here.",
+      "revId": "b3725028b4e2549bbff541dee9da22be2f7f31ae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
