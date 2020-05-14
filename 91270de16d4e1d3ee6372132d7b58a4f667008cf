@@ -36,6 +36,23 @@
     },
     {
       "key": {
+        "uuid": "b1f41931_77012096",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T08:10:28Z",
+      "side": 1,
+      "message": "ricSubscriptionRsp memory is allocated at line 330 but here the address gets overwritten. Is this correct?",
+      "revId": "91270de16d4e1d3ee6372132d7b58a4f667008cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0b44b6dd_f97f2b4a",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 6
