@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a8b208ff_69fb1cca",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2065,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-14T10:17:27Z",
+      "side": 0,
+      "message": "when are you triggering the stop req ?",
+      "revId": "069ae37558afd5aee2d1072bbf5b517cf665bdd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
