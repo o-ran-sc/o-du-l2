@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1af4b033_703b2e78",
+        "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T07:58:11Z",
+      "side": 1,
+      "message": "Is it ok access a du_app\u0027s global parameter in lwr mac?\nMAC and DU APP are separate TAPA tasks and are attached to separate system tasks also",
+      "revId": "91270de16d4e1d3ee6372132d7b58a4f667008cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0043fe07_91e7567b",
+        "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T07:58:11Z",
+      "side": 1,
+      "message": "Should we directly call Build and Send RIC ind from here ? \n\nAnother method is to notify DUAPP that it can now send RIC ind. At DU APP, ricIndFlag flag could be checked and  BuildAndSendRicIndication() can be called if  ricIndFlag  is TRUE",
+      "revId": "91270de16d4e1d3ee6372132d7b58a4f667008cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b44b6dd_f97f2b4a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T07:58:11Z",
+      "side": 1,
+      "message": "Free previously allocated array[idx] as well",
+      "revId": "91270de16d4e1d3ee6372132d7b58a4f667008cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fec61f39_2b1c56c7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T07:58:11Z",
+      "side": 1,
+      "message": "Should this not be filled using \"e2apMsgDb.ranFuncId\" stored during Subscription req processing?\n\nIf not, then use a macro/config parameter to fill.",
+      "revId": "91270de16d4e1d3ee6372132d7b58a4f667008cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
