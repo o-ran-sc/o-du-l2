@@ -16,6 +16,24 @@
       "revId": "069ae37558afd5aee2d1072bbf5b517cf665bdd8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6b3f3c0_44e4ca61",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2065,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-14T13:05:14Z",
+      "side": 0,
+      "message": "A trigger for stop request has to be decided.\nFor now the functionality test is performed successfully\nby triggering it after UL tti req",
+      "parentUuid": "a8b208ff_69fb1cca",
+      "revId": "069ae37558afd5aee2d1072bbf5b517cf665bdd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
