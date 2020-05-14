@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a6a57fc4_b3fc4204",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-14T18:35:34Z",
+      "side": 1,
+      "message": "typo - duHandleSlotIndication\nAlso, why du as a prefix?",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbefc27e_8e251d43",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-14T18:35:34Z",
+      "side": 1,
+      "message": "ru sure that you will get the same thread_id when you come here when stop ind?",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
