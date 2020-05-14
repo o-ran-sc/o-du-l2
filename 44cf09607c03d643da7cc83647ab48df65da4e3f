@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e88b621e_fcdd5efc",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1988,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T06:20:03Z",
+      "side": 1,
+      "message": "This line can also be removed to avoid merge conflict. This is taken care in my commit.",
+      "revId": "44cf09607c03d643da7cc83647ab48df65da4e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f1c63b9_4450f74f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2806,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T06:20:03Z",
+      "side": 1,
+      "message": "This change can be reverted to avoid merge conflict. This is taken care in my commit.",
+      "revId": "44cf09607c03d643da7cc83647ab48df65da4e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a3f567f_90d2e467",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2825,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T06:20:03Z",
+      "side": 1,
+      "message": "This change can be reverted to avoid merge conflict. This is taken care in my commit.",
+      "revId": "44cf09607c03d643da7cc83647ab48df65da4e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec45b307_60dec2ab",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2844,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T06:20:03Z",
+      "side": 1,
+      "message": "This change can be reverted to avoid merge conflict. This is taken care in my commit.",
+      "revId": "44cf09607c03d643da7cc83647ab48df65da4e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9474ae44_8102574e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2852,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T06:20:03Z",
+      "side": 1,
+      "message": "This change can be reverted to avoid merge conflict. This is taken care in my commit.",
+      "revId": "44cf09607c03d643da7cc83647ab48df65da4e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a33d5aba_ceb30882",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3049,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T06:20:03Z",
+      "side": 1,
+      "message": "This change can be reverted to avoid merge conflict. This is taken care in my commit.",
+      "revId": "44cf09607c03d643da7cc83647ab48df65da4e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a67e3cf_56dc17a8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3057,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T06:20:03Z",
+      "side": 1,
+      "message": "This change can be reverted to avoid merge conflict. This is taken care in my commit.",
+      "revId": "44cf09607c03d643da7cc83647ab48df65da4e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a30f782c_e7b3945a",
+        "filename": "src/5gnrmac/rg_lim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-14T06:20:03Z",
+      "side": 1,
+      "message": "In case of negative scenario here, memory will be freed from shared memory using MAC_FREE_SHRABL_BUF. \n\nThis change is already merged as part of commit 3614. \nYou might get merge conflict. Please revert this changes to avoid the same.",
+      "revId": "44cf09607c03d643da7cc83647ab48df65da4e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
