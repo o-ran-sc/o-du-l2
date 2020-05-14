@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "2fd45399_a29332df",
+        "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-14T12:11:27Z",
+      "side": 1,
+      "message": "this function should not be called here. RIC related msgs must be known to DU APP only",
+      "revId": "91270de16d4e1d3ee6372132d7b58a4f667008cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1af4b033_703b2e78",
         "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
         "patchSetId": 6
@@ -30,6 +47,40 @@
       "writtenOn": "2020-05-14T07:58:11Z",
       "side": 1,
       "message": "Should we directly call Build and Send RIC ind from here ? \n\nAnother method is to notify DUAPP that it can now send RIC ind. At DU APP, ricIndFlag flag could be checked and  BuildAndSendRicIndication() can be called if  ricIndFlag  is TRUE",
+      "revId": "91270de16d4e1d3ee6372132d7b58a4f667008cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "985e058b_fa845074",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-14T12:11:27Z",
+      "side": 1,
+      "message": "these must not be referenced here",
+      "revId": "91270de16d4e1d3ee6372132d7b58a4f667008cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4c0ccb5_f6ed5887",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-14T12:11:27Z",
+      "side": 1,
+      "message": "is DU_ALLOC needed here?",
       "revId": "91270de16d4e1d3ee6372132d7b58a4f667008cf",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
