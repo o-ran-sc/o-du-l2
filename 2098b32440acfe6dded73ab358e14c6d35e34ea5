@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d83f0f6f_bc0fbce9",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T07:16:42Z",
+      "side": 1,
+      "message": "All free part could be done in  E2SetupReq() itself. So there is no need of \"do.. while\" here.\nIf a any DU_ALLOC fails, return RFAILED from there itself.\nIf everything works fine, just return ROK at the end of function.",
+      "revId": "2098b32440acfe6dded73ab358e14c6d35e34ea5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f48cadbc_bb153052",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T07:16:42Z",
+      "side": 1,
+      "message": "No need of checking these condition for return ROK. \"do..while\" can be removed as mentioned above",
+      "revId": "2098b32440acfe6dded73ab358e14c6d35e34ea5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c79e631e_f211dd52",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T07:16:42Z",
+      "side": 1,
+      "message": "The free part can be completely removed from this function.\nThe NULL checks at the end of E2SetupReq() should take care of both positive and negative conditions.",
+      "revId": "2098b32440acfe6dded73ab358e14c6d35e34ea5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2437635e_93d4977f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T07:16:42Z",
+      "side": 1,
+      "message": "Declare each parameter in new line.\nLets replace data type to standard data types .",
+      "revId": "2098b32440acfe6dded73ab358e14c6d35e34ea5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16599a57_8f05f1b7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T07:16:42Z",
+      "side": 1,
+      "message": "For modular code and better readibility, can the dealloc part be enclosed into a separate function.",
+      "revId": "2098b32440acfe6dded73ab358e14c6d35e34ea5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8d98155_12d17a16",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T07:16:42Z",
+      "side": 1,
+      "message": "Use e2SetupReq-\u003eprotocolIEs.list.count instead of elementCnt",
+      "revId": "2098b32440acfe6dded73ab358e14c6d35e34ea5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "509aebb9_04e3683b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T07:16:42Z",
+      "side": 1,
+      "message": "All array indices must be free, not only (idx-1).\n\nAdd a for loop for idx \u003d 0 to element, check if(e2SetupReq-\u003eprotocolIEs.list.array[idx] !\u003d NULL) and then free GNB memory.",
+      "revId": "2098b32440acfe6dded73ab358e14c6d35e34ea5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9014d47e_9e551d74",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T07:16:42Z",
+      "side": 1,
+      "message": "If aper_encode() or SendE2APMsg() fails, ret is set to RFAILED. \nIn this case, if(ret \u003d\u003d ROK) will be false, GNB memory free will get skipped.\n\nRemove this condition. NULL checks should be sufficient enough to handle both positive and negative result of BuildGlobalgNB.",
+      "revId": "2098b32440acfe6dded73ab358e14c6d35e34ea5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "766cf091_d8b67e0e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T07:16:42Z",
+      "side": 1,
+      "message": "Free e2SetupReq-\u003eprotocolIEs.list.array[idx] was well once GNB at this idx is freed",
+      "revId": "2098b32440acfe6dded73ab358e14c6d35e34ea5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
