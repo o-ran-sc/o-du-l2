@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a5148228_6dbcf053",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1320,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T12:53:44Z",
+      "side": 1,
+      "message": "Done as part of previous commit",
+      "parentUuid": "e21acea9_504fcec1",
+      "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a3e71c2b_1a8db502",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6698d707_c8d0783c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1920,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T12:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3e71c2b_1a8db502",
+      "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "9b4d0833_47aec717",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2070,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T12:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03d6e9df_c7bb85c9",
+      "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a8bce748_e7b2042c",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9caa7758_07b3344d",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2218,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T12:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8bce748_e7b2042c",
+      "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "33f6279d_a3ee5935",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2553,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T12:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be86dd70_6e56a3c8",
+      "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "562e66e4_e98c274b",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02f6fda6_20f7f878",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2890,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T12:53:44Z",
+      "side": 1,
+      "message": "PDU length was taken into consideration when WLS memory allocation was done. \nHere only offset is calculated.",
+      "parentUuid": "562e66e4_e98c274b",
+      "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "9a4b6724_226abe0e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3215,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T12:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "175cadb2_ff86bb26",
+      "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fbffd84e_67c515fc",
         "filename": "src/cm/du_app_mac_inf.c",
         "patchSetId": 1
@@ -135,6 +261,24 @@
       "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58b13e99_ba4bc3c4",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T12:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbffd84e_67c515fc",
+      "revId": "af5ba2cbd7e55baf2a487b9784fe698da996ae69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
