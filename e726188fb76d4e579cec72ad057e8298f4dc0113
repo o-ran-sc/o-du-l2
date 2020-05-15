@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f32cff47_7d951949",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-15T20:51:27Z",
+      "side": 1,
+      "message": "can we have a macro named CRC_PASSED and CRC_FAILED. and then check for the same.",
+      "revId": "e726188fb76d4e579cec72ad057e8298f4dc0113",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "110e347d_9db938f9",
+        "filename": "src/cm/tfu.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 2551,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-15T20:51:27Z",
+      "side": 1,
+      "message": "numCrcs can be only numCrc",
+      "revId": "e726188fb76d4e579cec72ad057e8298f4dc0113",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9e31130_9ddd96b1",
+        "filename": "src/cm/tfu.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 2564,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-15T20:51:27Z",
+      "side": 1,
+      "message": "pduData can be uint8_t*... but you can keep it null.",
+      "revId": "e726188fb76d4e579cec72ad057e8298f4dc0113",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
