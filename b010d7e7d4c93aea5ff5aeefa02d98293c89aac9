@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "f6e2c872_ee024d24",
+        "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T06:02:54Z",
+      "side": 1,
+      "message": "When PHY moves back to configured state, DU aPP must be notified because cell is not UP anymore. If not notified, then lower mac and du_app will be out of sync wrt to PHY state.\n\nDiscuss with team if this has to be done now?",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6eca350_c8fa359a",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T06:02:54Z",
+      "side": 1,
+      "message": "Instead of global parameter, TRUE/FALSE could be passed as a parameter to duHandleSlotIndicaion().",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a6a57fc4_b3fc4204",
         "filename": "src/phy_stub/l1_bdy2.c",
         "patchSetId": 3
@@ -30,6 +64,41 @@
       "writtenOn": "2020-05-14T18:35:34Z",
       "side": 1,
       "message": "ru sure that you will get the same thread_id when you come here when stop ind?",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f67ea391_69b2bbd5",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T06:02:54Z",
+      "side": 1,
+      "message": "Keep thread parameter as Global to access the correct value.",
+      "parentUuid": "dbefc27e_8e251d43",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e01c5572_b339cbbe",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-15T06:02:54Z",
+      "side": 1,
+      "message": "stopSlotInd should be set to false again if thread has stopped successfully else thread wouldn\u0027t start when start req is received again.\n\nTo avoid such mistakes, instead of checking a global parameter, TRUE/FALSE could be passed as a parameter to duHandleSlotIndicaion() itslef.",
       "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
