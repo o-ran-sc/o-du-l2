@@ -950,6 +950,7 @@ S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
    {
       if(BuildAndSendE2SetupReq() != ROK)
       {
+         DU_LOG("\nDU_APP: E2 setup request failed");
          return RFAILED;
       }
    }
