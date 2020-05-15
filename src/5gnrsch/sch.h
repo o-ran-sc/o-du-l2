@@ -38,6 +38,9 @@
 #define SI_RNTI 0xFFFF
 #define P_RNTI  0xFFFE
 
+#define CRC_FAILED 0
+#define CRC_PASSED 1
+
 /* allocate and zero out a static buffer */
 #define SCH_ALLOC(_datPtr, _size)                                \
 {                                                               \

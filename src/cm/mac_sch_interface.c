@@ -57,6 +57,22 @@ int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and Send Rach Ind from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchRachInd
+ *
+ *    Functionality:
+ *      Pack and Send Rach Ind from MAC to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
 {
    if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
@@ -69,6 +85,36 @@ int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
    }
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Pack and Send Crc Ind from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchCrcInd
+ *
+ *    Functionality:
+ *       Pack and Send Crc Ind from MAC to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
+{
+   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
 /**
  * @brief function to pack DL Broadcast allocation message 
  *        from MAC to SCH

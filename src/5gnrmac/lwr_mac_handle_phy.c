@@ -64,6 +64,23 @@ packRachIndMsg sendRachIndOpts[] =
    packRachInd
 };
 
+/* Function pointer for crc indication from lower mac to mac */
+packCrcIndMsg sendCrcIndOpts[] =
+{
+   packCrcInd,
+   fapiMacCrcInd,
+   packCrcInd
+};
+
+/* Function pointer for Rx Data indication from lower mac to mac */
+packRxDataIndMsg sendRxDataIndOpts[] =
+{
+   packRxDataInd,
+   fapiMacRxDataInd,
+   packRxDataInd
+};
+ 
+
 /*******************************************************************
  *
  * @brief Fills post structure
@@ -189,6 +206,110 @@ uint8_t handleRachInd(fapi_rach_indication_t  *fapiRachInd)
 
 }/* handleRachInd */
 
+/*******************************************************************
+ *
+ * @brief Handles CRC indication from PHY and sends to MAC
+ *
+ * @details
+ *
+ *    Function : handleCrcInd
+ *
+ *    Functionality:
+ *      Handles CRC indication from PHY and sends to MAC
+ *
+ * @params[in] fapi_crc_ind_t message pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t handleCrcInd(fapi_crc_ind_t  *fapiCrcInd)
+{
+   Pst          pst;
+   uint8_t      crcInfoIdx;
+   uint8_t      crcStatusIdx;
+   CrcInfo      *crcIndInfo;
+   CrcInd       crcInd;
+
+   crcInd.timingInfo.sfn = fapiCrcInd->sfn;
+   crcInd.timingInfo.slot = fapiCrcInd->slot;
+   crcInd.numCrc = fapiCrcInd->numCrcs;
+
+   for(crcInfoIdx = 0; crcInfoIdx < crcInd.numCrc; crcInfoIdx++)
+   {
+      crcIndInfo = &crcInd.crcInfo[crcInfoIdx];
+      crcIndInfo->handle      = fapiCrcInd->crc[crcInfoIdx].handle;
+      crcIndInfo->rnti        = fapiCrcInd->crc[crcInfoIdx].rnti;
+      crcIndInfo->harqId      = fapiCrcInd->crc[crcInfoIdx].harqId;
+      crcIndInfo->tbCrcStatus = fapiCrcInd->crc[crcInfoIdx].tbCrcStatus;
+      crcIndInfo->numCb       = fapiCrcInd->crc[crcInfoIdx].numCb;
+      for(crcStatusIdx = 0; crcStatusIdx < crcIndInfo->numCb; crcStatusIdx++)
+      {
+         crcIndInfo->cbCrcStatus[crcStatusIdx] = \
+            fapiCrcInd->crc[crcInfoIdx].cbCrcStatus[crcStatusIdx];
+      }
+      crcIndInfo->ul_cqi  = fapiCrcInd->crc[crcInfoIdx].ul_cqi;
+      crcIndInfo->timingAdvance = fapiCrcInd->crc[crcInfoIdx].timingAdvance;
+      crcIndInfo->rssi = fapiCrcInd->crc[crcInfoIdx].rssi;
+   }
+
+   fillLwrMacToMacPst(&pst);
+   pst.event = EVENT_CRC_IND_TO_MAC;
+   
+   (*sendCrcIndOpts[pst.selector])(&pst, &crcInd);
+   return ROK;
+
+} /* handleCrcInd */
+
+/*******************************************************************
+ *
+ * @brief Handles Rx Data indication from PHY and sends to MAC
+ *
+ * @details
+ *
+ *    Function : handleRxDataInd
+ *
+ *    Functionality:
+ *      Handles Rx Data indication from PHY and sends to MAC
+ *
+ * @params[in] fapi_rx_data_indication_t message pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+ 
+uint8_t handleRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
+{
+   Pst           pst;
+   uint8_t       pduIdx;
+   RxDataInd     rxDataInd;
+   RxDataIndPdu  *pdu;   
+
+   rxDataInd.timingInfo.sfn = fapiRxDataInd->sfn; 
+   rxDataInd.timingInfo.slot = fapiRxDataInd->slot;
+   rxDataInd.numPdus = fapiRxDataInd->numPdus;
+
+   for(pduIdx = 0; pduIdx < rxDataInd.numPdus; pduIdx++)
+   {
+      pdu = &rxDataInd.pdus[pduIdx];
+      pdu->handle = fapiRxDataInd->pdus[pduIdx].handle;
+      pdu->rnti = fapiRxDataInd->pdus[pduIdx].rnti;
+      pdu->harqId = fapiRxDataInd->pdus[pduIdx].harqId;
+      pdu->pduLength = fapiRxDataInd->pdus[pduIdx].pduLength;
+      pdu->ul_cqi = fapiRxDataInd->pdus[pduIdx].ul_cqi;
+      pdu->timingAdvance = fapiRxDataInd->pdus[pduIdx].timingAdvance;
+      pdu->rssi = fapiRxDataInd->pdus[pduIdx].rssi;
+      /* TODO : Copy pdu from FAPI msg to MAC structure*/
+      //pdu->pduData;
+   }
+
+   fillLwrMacToMacPst(&pst);
+   pst.event = EVENT_RX_DATA_IND_TO_MAC;
+ 
+   (*sendRxDataIndOpts[pst.selector])(&pst, &rxDataInd);
+   return ROK;
+}
+
 #endif /* FAPI */
 
 void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
@@ -225,16 +346,22 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
       }
       case FAPI_RX_DATA_INDICATION:
       {
+         fapi_rx_data_indication_t *rxDataInd;
+         rxDataInd = (fapi_rx_data_indication_t *)msg;
+         handleRxDataInd(rxDataInd);
          break;
       }  
       case FAPI_CRC_INDICATION:
       {
+         fapi_crc_ind_t  *crcInd;
+         crcInd = (fapi_crc_ind_t *)msg;
+         handleCrcInd(crcInd);
          break;
       }  
       case FAPI_UCI_INDICATION:
       {
          break;
-      }  
+      }
       case FAPI_SRS_INDICATION:
       {
          break;
