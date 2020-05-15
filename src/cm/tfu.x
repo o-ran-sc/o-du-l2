@@ -2529,8 +2529,48 @@ typedef struct rachInd
 {
   SlotIndInfo   timingInfo;
   uint8_t       numPdu;
-  RachPduInfo   rachPdu[MAC_RACH_PDU_PER_SLOT];
+  RachPduInfo   rachPdu[MAX_RACH_PDU_PER_SLOT];
 }RachInd;
+
+typedef struct crcInfo
+{
+    uint32_t   handle;
+    uint16_t   rnti;
+    uint8_t    harqId;
+    uint8_t    tbCrcStatus;
+    uint16_t   numCb;
+    uint8_t    cbCrcStatus[MAX_CB_PER_TTI_IN_BYTES];
+    uint8_t    ul_cqi;
+    uint16_t   timingAdvance;
+    uint16_t   rssi;
+}CrcInfo;
+
+typedef struct crcInd
+{
+   SlotIndInfo   timingInfo;
+   uint16_t      numCrc;
+   CrcInfo       crcInfo[MAX_CRCS_PER_SLOT];
+}CrcInd;
+
+typedef struct 
+{
+   uint32_t      handle;
+   uint16_t      rnti;
+   uint8_t       harqId;
+   uint16_t      pduLength;
+   uint8_t       ul_cqi;
+   uint16_t      timingAdvance;
+   uint16_t      rssi;
+   uint8_t       *pduData;
+}RxDataIndPdu;
+ 
+typedef struct 
+{
+   SlotIndInfo   timingInfo;
+   uint16_t      numPdus;
+   RxDataIndPdu  pdus[MAX_ULSCH_PDUS_PER_TTI];
+}RxDataInd;
+
 
 typedef S16 (*TfuBndReq) ARGS((
    Pst*                 pst,

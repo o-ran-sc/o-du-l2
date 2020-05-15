@@ -48,6 +48,8 @@
 #define SCH_DATATYPE_SRS 8
 #define SCH_DATATYPE_PRACH 16
 
+#define MAX_NUMBER_OF_CRC_IND_BITS 1
+
 /*structures*/
 
 
@@ -391,6 +393,17 @@ typedef struct rachIndInfo
    uint16_t    timingAdv;
 }RachIndInfo;
 
+
+typedef struct crcIndInfo
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   SlotIndInfo timingInfo;
+   uint16_t    numCrcInd;
+   uint8_t     crcInd[MAX_NUMBER_OF_CRC_IND_BITS];
+}CrcIndInfo;
+
+
 /* function pointers */
 
 typedef int (*SchCellCfgCfmFunc)    ARGS((
@@ -430,6 +443,9 @@ EXTERN int MacProcUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo);
 typedef int (*MacSchRachIndFunc)(Pst *pst, RachIndInfo *rachInd);
 int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd);
 int macSchRachInd(Pst *pst, RachIndInfo *rachInd);
+typedef int (*MacSchCrcIndFunc)(Pst *pst, CrcIndInfo *crcInd);
+int packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
+int macSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
 
 /**********************************************************************
   End of file

@@ -277,6 +277,120 @@ PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
 
 }
 
+/*******************************************************************
+ *
+ * @brief Build and Send CRC Indication
+ *
+ * @details
+ *
+ *    Function : l1BuildAndSendCrcInd
+ *
+ *    Functionality:
+ *      Build and Send CRC Indication
+ *
+ * @params[in] Slot
+ *             SFN 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
+{
+#ifdef FAPI
+   uint8_t idx = 0;
+   fapi_crc_ind_t  *crcInd;
+   
+   MAC_ALLOC(crcInd, sizeof(fapi_crc_ind_t));
+   if(!crcInd)
+   {
+      printf("\nPHY_STUB: Memory allocation failed for CRC Indication Message");
+      return RFAILED;
+   }
+
+   /* TODO: Fill the required values. As of now only 1 CRC status PASS is filled */
+   crcInd->sfn = sfn;
+   crcInd->slot = slot;
+   crcInd->numCrcs = 1;
+
+   crcInd->crc[idx].handle = 0;
+   crcInd->crc[idx].rnti = 0;
+   crcInd->crc[idx].harqId = 0;
+   crcInd->crc[idx].tbCrcStatus = 0;
+   crcInd->crc[idx].numCb = 1;
+   crcInd->crc[idx].cbCrcStatus[0] = 0;
+   crcInd->crc[idx].ul_cqi = 0;
+   crcInd->crc[idx].timingAdvance = 0;
+   crcInd->crc[idx].rssi = 0;
+
+   fillMsgHeader(&crcInd->header, FAPI_CRC_INDICATION, \
+      sizeof(fapi_crc_ind_t));
+
+   /* Sending RACH indication to MAC */
+   DU_LOG("\nPHY STUB: Sending CRC Indication to MAC");
+   handlePhyMessages(crcInd->header.message_type_id, sizeof(fapi_crc_ind_t), (void *)crcInd);
+   MAC_FREE(crcInd, sizeof(fapi_crc_ind_t));
+#endif
+   return ROK;
+} /* l1BuildAndSendCrcInd */
+
+
+/*******************************************************************
+ *
+ * @brief Build and send Rx data indication
+ *
+ * @details
+ *
+ *    Function : l1BuildAndSendRxDataInd
+ *
+ *    Functionality:
+ *       Build and send Rx data indication
+ *
+ * @params[in] SFN
+ *             Slot
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn)
+{
+#ifdef FAPI
+   uint8_t idx = 0;
+   fapi_rx_data_indication_t *rxDataInd;
+   fapi_pdu_ind_info_t       *pduInfo;
+ 
+   MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
+   if(!rxDataInd)
+   {
+      printf("\nPHY_STUB: Memory allocation failed for Rx Data Indication");
+      return RFAILED;
+   }
+
+   /* TODO: Fill the required values */
+   rxDataInd->sfn = sfn;
+   rxDataInd->slot = slot;
+   rxDataInd->numPdus = 1;
+
+   pduInfo = &rxDataInd->pdus[idx];
+   pduInfo->handle = 0;
+   pduInfo->rnti = 0;
+   pduInfo->harqId = 0;
+   pduInfo->pduLength = 0;
+   pduInfo->ul_cqi = 0;
+   pduInfo->timingAdvance = 0;
+   pduInfo->rssi = 0;
+   pduInfo->pduData = NULL;
+
+   fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, \
+    sizeof(fapi_rx_data_indication_t));
+
+   /* Sending Rx data indication to MAC */
+   DU_LOG("\nPHY STUB: Sending Rx data Indication to MAC");
+   handlePhyMessages(rxDataInd->header.message_type_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
+   MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
+#endif
+   return ROK;
+}
+
 
 /*******************************************************************
  *
