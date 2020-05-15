@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "a76ec159_efddb35f",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-15T08:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6eca350_c8fa359a",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a6a57fc4_b3fc4204",
         "filename": "src/phy_stub/l1_bdy2.c",
         "patchSetId": 3
@@ -50,6 +68,24 @@
       "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edc490c2_8d090b78",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-15T08:09:16Z",
+      "side": 1,
+      "message": "agreed.Changed to l1HdlSlotIndication()",
+      "parentUuid": "a6a57fc4_b3fc4204",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -88,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "d62004ba_91b495c7",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-15T08:09:16Z",
+      "side": 1,
+      "message": "yes the same thread_id is killed here.I was sure after the functional testing.\nHowever now the thread parameter is moved to a global param.",
+      "parentUuid": "f67ea391_69b2bbd5",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e01c5572_b339cbbe",
         "filename": "src/phy_stub/l1_bdy2.c",
         "patchSetId": 3
@@ -102,6 +156,24 @@
       "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "efc9c66a_57c20f2c",
+        "filename": "src/phy_stub/l1_bdy2.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-15T08:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e01c5572_b339cbbe",
+      "revId": "b010d7e7d4c93aea5ff5aeefa02d98293c89aac9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
