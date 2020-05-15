@@ -330,6 +330,33 @@ int macSchRachInd(Pst *pst, RachIndInfo *rachInd)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Processes CRC indication from MAC 
+ *
+ * @details
+ *
+ *    Function : macSchCrcInd
+ *
+ *    Functionality:
+ *      Processes CRC indication from MAC
+ *
+ * @params[in] Post structure
+ *             Crc Indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int macSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
+{
+   if(crcInd->crcInd[0])
+      DU_LOG("\nSCH : Received CRC indication. CRC Status [FAILURE]");
+   else
+      DU_LOG("\nSCH : Received CRC indication. CRC Status [PASS]");
+   return ROK;
+}
+
+
 /**
  * @brief inti cellCb based on cellCfg
  *

@@ -125,10 +125,16 @@
 #define EVTTFUERRIND            25    /*!< TFU Error Indication */
 #define EVENT_RACH_IND_TO_MAC   26
 #define EVENT_RACH_IND_TO_SCH   27
+#define EVENT_CRC_IND_TO_MAC    28
+#define EVENT_CRC_IND_TO_SCH    29
+#define EVENT_RX_DATA_IND_TO_MAC 30
 /** @} */
 
 #define MAX_PREAM_PER_SLOT      1    /* Max number of preamble per slot */
-#define MAC_RACH_PDU_PER_SLOT   1    /* Max number of rach pdu per slot */
+#define MAX_RACH_PDU_PER_SLOT   1    /* Max number of rach pdu per slot */
+#define MAX_CRCS_PER_SLOT       1
+#define MAX_CB_PER_TTI_IN_BYTES 1
+#define MAX_ULSCH_PDUS_PER_TTI  1
 
 /* selector(coupling) values */
 #define TFU_SEL_TC              1    /*!< Selector for Tight coupling. */

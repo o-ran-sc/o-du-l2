@@ -20,6 +20,65 @@
 
 /*******************************************************************
  *
+ * @brief Packs and Sends CRC Ind to MAC
+ *
+ * @details
+ *
+ *    Function : packCrcInd
+ *
+ *    Functionality:
+ *      Packs and Sends CRC Ind to MAC
+ *
+ * @params[in] Post structure pointer
+ *             CRC indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packCrcInd(Pst *pst, CrcInd *crcInd)
+{
+   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   {
+      return ROK;
+   }
+   else
+   {
+      return RFAILED;
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends Rx Data Ind to MAC
+ *
+ * @details
+ *
+ *    Function : packRxDataInd
+ *
+ *    Functionality:
+ *      Packs and Sends Rx data Ind to MAC
+ *
+ * @params[in] Post structure pointer
+ *             Rx Data indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd)
+{
+   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   {
+      return ROK;
+   }
+   else
+   {
+      return RFAILED;
+   }
+}
+
+
+/*******************************************************************
+ *
  * @brief Packs and Sends RACH Ind to MAC
  *
  * @details
