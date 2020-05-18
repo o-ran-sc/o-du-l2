@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "64694806_32833845",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1794,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-18T06:51:12Z",
+      "side": 1,
+      "message": "use standard data types, uint32_t",
+      "revId": "267ac518f084620bbd3599ccced359f37eb1f7f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04c11df6_9fc2db3d",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1799,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-18T06:51:12Z",
+      "side": 1,
+      "message": "We can keep it under the IPV6_SUPPORTED Flag,\nbecause for now we are not supporting Ipv6, for future use this can be secured inside a flag",
+      "revId": "267ac518f084620bbd3599ccced359f37eb1f7f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "524c57e1_d2fd7877",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1804,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-18T06:51:12Z",
+      "side": 1,
+      "message": "if i have both ipv4 and ipv6, then this address_array will be overwritten by the last modified value. Please check the possible cases and proceed accordingly",
+      "revId": "267ac518f084620bbd3599ccced359f37eb1f7f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
