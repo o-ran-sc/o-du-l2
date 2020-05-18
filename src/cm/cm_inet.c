@@ -1857,6 +1857,8 @@ U16                port;         /* port number */
 #else
    /* linux */
    ret = sctp_bindx(sockFd->fd, (struct sockaddr*)address_array, addrLst->count, SCTP_BINDX_ADD_ADDR); 
+	UNUSED(sockAddrPtr);
+	UNUSED(sockAddrLen);
 #endif
    if (ret == INET_ERR)
    {
