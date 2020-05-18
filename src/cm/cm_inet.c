@@ -1656,8 +1656,6 @@ U16                port;         /* port number */
    U32    ipv6_array_size = 0;
    struct sockaddr_in6 addrs6[CM_INET_NUM_NET_ADDR];
 #endif /* IPV6_SUPPORTED */
-   struct sockaddr *sockAddrPtr = NULLP;
-   U32    sockAddrLen = 0;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* error check on parameters */
@@ -1781,16 +1779,9 @@ U16                port;         /* port number */
 
    if(ipv4_array_size > 0)
    {
-       sockAddrPtr = (struct sockaddr*)address_array;
-      sockAddrLen = sizeof(struct sockaddr_in);
       cmMemcpy((U8*)address_array, (U8*)addrs, ipv4_array_size); 
    }
 #ifdef IPV6_SUPPORTED
-   else
-   {
-       sockAddrPtr = (struct sockaddr*)address_array;
-      sockAddrLen = sizeof(struct sockaddr_in6);
-   }
 
    if(ipv6_array_size > 0)
    {
@@ -1800,7 +1791,17 @@ U16                port;         /* port number */
 
 
 #ifdef SUN_KSCTP
-   ret = bind(sockFd->fd, sockAddrPtr, sockAddrLen); 
+   U32    sockAddrLen = 0
+	if(ipv4_array_size > 0)
+	{
+	   sockAddrLen = sizeof(struct sockaddr_in);   
+	}
+   else
+	{
+	   sockAddrLen = sizeof(struct sockaddr_in6);
+	}
+   
+   ret = bind(sockFd->fd,(struct sockaddr*)address_array, sockAddrLen); 
    if (ret == INET_ERR)
    {
 
