@@ -219,11 +219,37 @@ typedef struct pdcchConfigCommon
    SearchSpaceCfg raSearchSpace;
 }PdcchConfigCommon;
 
+typedef struct pdschConfigCommon
+{
+   uint8_t k0;
+	uint8_t mappingType;
+	uint8_t startSymbol;
+	uint8_t lengthSymbol;
+}PdschConfigCommon;
+
+typedef struct puschConfigCommon
+{
+   /* PUSCH-TimeDomainResourceAllocation info */
+   uint8_t k2;
+	uint8_t mappingType;
+	uint8_t startSymbol;
+	uint8_t lengthSymbol;
+}PuschConfigCommon;
+
 typedef struct bwpDlConfig
 {
    BwpParams      bwp;
 	PdcchConfigCommon pdcchCommon;
+	PdschConfigCommon pdschCommon;
 }BwpDlConfig;
+
+typedef struct bwpUlConfig
+{
+   BwpParams      bwp;
+	// rach config common sent in PrachCfg
+	// pucch info not required
+	PuschConfigCommon puschCommon;
+}BwpUlConfig;
 
 typedef struct macCellCfg
 {
@@ -241,7 +267,8 @@ typedef struct macCellCfg
    TDDCfg         tddCfg;     /* TDD periodicity and slot configuration */
    RSSIMeasUnit   rssiUnit;   /* RSSI measurement unit */
    Sib1CellCfg    sib1Cfg;
-	BwpDlConfig    initialBwp;
+	BwpDlConfig    initialDlBwp;
+	BwpUlConfig    initialUlBwp;
 }MacCellCfg;
 
 typedef struct macCellCfgCfm

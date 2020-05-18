@@ -40,6 +40,8 @@
 #define MAX_NUM_PRG     1 /* max value should be later 275 */
 #define MAX_DIG_BF_INTERFACES 0 /* max value should be later 255 */
 #define MAX_CODEWORDS  1  /* max should be 2 */
+#define SCH_HARQ_PROC_ID 1 /* harq proc id */
+#define SCH_ALLOC_TYPE_1 1 /*sch res alloc type */
 
 /* Datatype in UL SCH Info */
 #define SCH_DATATYPE_PUSCH 1
@@ -264,11 +266,34 @@ typedef struct schPdcchCfgCmn
    SchSearchSpaceCfg raSearchSpace;
 }SchPdcchCfgCmn;
 
+typedef struct schPdschCfgCmn
+{
+   uint8_t k0;
+   uint8_t mappingType;
+   uint8_t startSymbol;
+   uint8_t lengthSymbol;
+}SchPdschCfgCmn;
+
+typedef struct schPuschCfgCmn
+{
+   uint8_t k2;
+   uint8_t mappingType;
+   uint8_t startSymbol;
+   uint8_t lengthSymbol;
+}SchPuschCfgCmn;
+
 typedef struct schBwpDlCfg
 {
    SchBwpParams   bwp;
 	SchPdcchCfgCmn pdcchCommon;
+	SchPdschCfgCmn pdschCommon;
 }SchBwpDlCfg;
+
+typedef struct schBwpUlCfg
+{
+   SchBwpParams   bwp;
+	SchPuschCfgCmn puschCommon;
+}SchBwpUlCfg;
 
 typedef struct schCellCfg
 {
@@ -279,7 +304,9 @@ typedef struct schCellCfg
 	SchSsbCfg   ssbSchCfg;  /* SSB config */
 	SchSib1Cfg  sib1SchCfg; /* SIB1 config */
    SchRachCfg  schRachCfg; /* PRACH config */
-	SchBwpDlCfg    schInitialBwp;
+	SchBwpDlCfg schInitialDlBwp; /* Initial DL BWP */
+	SchBwpUlCfg schInitialUlBwp; /* Initial UL BWP */
+	uint8_t     puschMu;         /* PUSCH MU */
 }SchCellCfg;
 
 typedef struct schCellCfgCfm
@@ -290,14 +317,14 @@ typedef struct schCellCfgCfm
 
 typedef struct timeDomainAlloc
 {
-   uint16_t ssbStartSymbIdx;
-	uint16_t ssbSymbolDuration;
+   uint16_t startSymb;
+	uint16_t numSymb;
 }TimeDomainAlloc;
 
 typedef struct freqDomainAlloc
 {
-   uint16_t ssbStartPrbIdx;
-   uint16_t ssbPrbDuration;
+   uint16_t startPrb;
+   uint16_t numPrb;
 }FreqDomainAlloc;
 
 typedef struct ssbInfo
@@ -347,8 +374,8 @@ typedef struct rarInfo
 	uint16_t msg3StartRb;
 	uint8_t  msg3NumRb;
 	uint16_t tcrnti;
-	uint8_t rarPdu[8];
-	uint8_t rarPduLen;
+	uint8_t  rarPdu[8];
+	uint8_t  rarPduLen;
 }RarInfo;
 
 typedef struct rarAlloc
@@ -371,12 +398,32 @@ typedef struct dlAlloc
 	uint8_t isRarPres;
 	RarAlloc rarAlloc;
 }DlAlloc;
+
+typedef struct tbInfo
+{
+   uint8_t  mcs;    /* MCS */
+   uint8_t  ndi;    /* NDI */
+   uint8_t  rv;     /* Redundancy Version */
+   uint16_t tbSize; /* TB Size */
+}TbInfo;
+
+typedef struct schPuschInfo
+{
+   uint8_t          harqProcId;   /* HARQ Process ID */
+   uint8_t          resAllocType; /* Resource allocation type */
+   FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
+   TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
+   TbInfo           tbInfo;       /* TB info */
+}SchPuschInfo;
+
+
 typedef struct ulSchInfo
 {
    uint16_t      cellId;         /* Cell Id */
 	SlotIndInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
 	uint8_t       dataType;       /* Type of info being scheduled */
 	PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
+	SchPuschInfo  schPuschInfo;   /* Pusch scheduling info */
 }UlSchInfo;
 
 typedef struct rachIndInfo
