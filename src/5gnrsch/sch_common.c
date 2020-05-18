@@ -143,10 +143,10 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
 		for(idx=0; idx<dlBrdcstAlloc->ssbIdxSupported; idx++)
 		{
 			ssbInfo.ssbIdx = idx;
-			ssbInfo.fdAlloc.ssbStartPrbIdx = ssbStartPrb;
-			ssbInfo.fdAlloc.ssbPrbDuration = SCH_SSB_PRB_DURATION;
-			ssbInfo.tdAlloc.ssbStartSymbIdx = ssbStartSymb;
-			ssbInfo.tdAlloc.ssbSymbolDuration = SCH_SSB_SYMB_DURATION;
+			ssbInfo.fdAlloc.startPrb  = ssbStartPrb;
+			ssbInfo.fdAlloc.numPrb    = SCH_SSB_PRB_DURATION;
+			ssbInfo.tdAlloc.startSymb = ssbStartSymb;
+			ssbInfo.tdAlloc.numSymb   = SCH_SSB_SYMB_DURATION;
 			dlBrdcstAlloc->ssbInfo[idx] = ssbInfo;
 			dlAlloc->ssbInfo[idx] = ssbInfo;
 
@@ -305,8 +305,21 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 {
    int ret = ROK;
    UlSchInfo ulSchInfo;
+	SchUlAlloc *ulAlloc;
+
    /* Schedule resources for PRACH */
 	schPrachResAlloc(cell, &ulSchInfo);
+
+	ulAlloc = cell->ulAlloc[cell->slotInfo.slot]; 
+	
+	if(ulAlloc->schPuschInfo)
+	{
+		ulSchInfo.dataType |= SCH_DATATYPE_PUSCH;
+		memcpy(&ulSchInfo.schPuschInfo, ulAlloc->schPuschInfo,
+				sizeof(SchPuschInfo));
+		SCH_FREE(ulAlloc->schPuschInfo, sizeof(SchPuschInfo));
+	}
+
 	//send msg to MAC
    ret = sendUlSchInfoToMac(&ulSchInfo, schInst);
    if(ret != ROK)
