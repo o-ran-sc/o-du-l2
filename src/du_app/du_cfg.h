@@ -111,11 +111,15 @@
 
 /* MACRCO Ddefine for PDSCH Configuration */
 #define PDSCH_K0  0
-#define PDSCH_START_SYMB_AND_LEN 53    
+#define PDSCH_START_SYMBOL  2
+#define PDSCH_LENGTH_SYMBOL 12
+
 
 /* MACRO Define for PUSCH Configuration */
-#define PUSCH_K0  3
-#define PUSCH_START_SYMB_AND_LEN 55
+#define PUSCH_K2  3
+#define PUSCH_START_SYMBOL  0
+#define PUSCH_LENGTH_SYMBOL 14
+
 #define PUSCH_MSG3_DELTA_PREAMBLE 0
 #define PUSCH_P0_NOMINAL_WITH_GRANT -70
 
@@ -366,6 +370,19 @@ typedef enum
    PERMIT_EMERG_SESSION_AND_MOBILE_TERM_SERVICE,
    PERMIT_HIGH_PRIOR_SESSION_AND_MOBILE_TERM_SERVICE
 }F1UacStandardAction;
+
+typedef enum
+{
+   PDSCH_MAPPING_TYPE_A,
+   PDSCH_MAPPING_TYPE_B,
+}pdschMappingType;
+
+typedef enum
+{
+   PUSCH_MAPPING_TYPE_A,
+   PUSCH_MAPPING_TYPE_B,
+}puschMappingType;
+
 
 typedef struct f1RrcVersion
 {
@@ -966,9 +983,9 @@ typedef struct pdcchCfgCommon
 typedef struct pdschCfgCommon
 {
    uint8_t  present;
-   long   k0;
-   long   mapType;              /* Mapping Type */
-   long   startSymbAndLen;      /* Start Symbol and Length */
+   long     k0;
+   long     mapType;              /* Mapping Type */
+	uint16_t sliv;  
 }PdschCfgCommon;
 
 typedef struct bcchCfg
@@ -1028,12 +1045,12 @@ typedef struct rachCfgCommon
 
 typedef struct  puschCfgCommon
 {
-   uint8_t present;
-   long   k2;
-   long   mapType;
-   long   startSymbAndLen;
-   long   msg3DeltaPreamble;
-   long   p0NominalWithGrant;
+   uint8_t  present;
+   long     k2;
+   long     mapType;
+	uint16_t sliv;
+   long     msg3DeltaPreamble;
+   long     p0NominalWithGrant;
 }PuschCfgCommon;
 
 typedef struct pucchCfgCommon

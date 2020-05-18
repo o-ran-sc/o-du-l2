@@ -1095,7 +1095,7 @@ S16 BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdschCfg)
          *timeDomRsrcAllocInfo->k0 = duPdschCfg.k0;
   
          timeDomRsrcAllocInfo->mappingType = duPdschCfg.mapType;
-         timeDomRsrcAllocInfo->startSymbolAndLength = duPdschCfg.startSymbAndLen;
+         timeDomRsrcAllocInfo->startSymbolAndLength = duPdschCfg.sliv;
 
          break;
       }
@@ -1742,7 +1742,7 @@ S16 BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCfg)
          *timeDomRsrcAllocInfo->k2 = duPuschCfg.k2;
 
          timeDomRsrcAllocInfo->mappingType = duPuschCfg.mapType;
-         timeDomRsrcAllocInfo->startSymbolAndLength = duPuschCfg.startSymbAndLen;
+         timeDomRsrcAllocInfo->startSymbolAndLength = duPuschCfg.sliv;
          
          /* Msg3 Delta Preamble */
          DU_ALLOC(setup->msg3_DeltaPreamble, sizeof(long));
