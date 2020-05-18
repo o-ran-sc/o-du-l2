@@ -66,6 +66,7 @@
 extern SchCb schCb[SCH_MAX_INST];
 extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
 extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
+extern uint8_t puschDeltaTable[MAX_MU_PUSCH];
 
 /**
  * @brief calculate ra-rnti function. 
@@ -108,6 +109,90 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
 }
 
 /**
+ * @brief resource allocation for msg3 PUSCH
+ *
+ * @details
+ *
+ *     Function : schAllocMsg3Pusch 
+ *     
+ *     This function handles msg3 PUSCH allocation
+ *     
+ *  @param[in]  Inst schInst, SCH instance
+ *  @param[in]  slot, current slot
+ *  @param[out]  msg3StartRb
+ *  @param[out]  msg3NumRb
+ *  @return  void
+ **/
+uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t *msg3StartRb,
+uint8_t *msg3NumRb)
+{
+	SchCellCb  *cell         = NULLP;
+	SchUlAlloc *ulAlloc      = NULLP;
+	uint8_t    puschMu       = 0;
+	uint8_t    msg3SlotAlloc = 0;
+	uint8_t    delta         = 0;
+	uint8_t    k2            = 0; 
+	uint8_t    startSymb     = 0;
+	uint8_t    symbLen       = 0; 
+	uint8_t    startRb       = 0;
+	uint8_t    numRb         = 0;
+	uint8_t    idx           = 0;
+
+
+   cell = schCb[schInst].cells[schInst];
+	puschMu = cell->cellCfg.puschMu;
+	delta = puschDeltaTable[puschMu];
+	k2 = cell->cellCfg.schInitialUlBwp.puschCommon.k2;
+	startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.startSymbol;
+	symbLen = cell->cellCfg.schInitialUlBwp.puschCommon.lengthSymbol;
+
+	/* Slot allocation for msg3 based on 38.214 section 6.1.2.1 */
+	msg3SlotAlloc = slot + k2 + delta;
+	msg3SlotAlloc = msg3SlotAlloc % SCH_NUM_SLOTS; 
+
+	startRb = PUSCH_START_RB;
+
+	/* formula used for calculation of rbSize, 38.214 section 6.1.4.2 
+	 * Ninfo = S.Nre.R.Qm.v
+	 * Nre'  = Nsc.NsymPdsch-NdmrsSymb-Noh
+	 * Nre   = min(156,Nre').nPrb */
+	numRb = 1; /* based on above calculation */
+
+	/* allocating 1 extra RB for now */
+	numRb++;
+
+	for(idx=startSymb; idx<symbLen; idx++)
+	{
+		cell->ulAlloc[msg3SlotAlloc]->assignedPrb[idx] = startRb + numRb;
+	}
+	ulAlloc = cell->ulAlloc[msg3SlotAlloc];
+
+   SCH_ALLOC(ulAlloc->schPuschInfo, sizeof(SchPuschInfo));
+	if(!ulAlloc->schPuschInfo)
+	{
+      DU_LOG("SCH: Memory allocation failed in schAllocMsg3Pusch");
+		return RFAILED;
+	}
+	ulAlloc->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
+	ulAlloc->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
+	ulAlloc->schPuschInfo->fdAlloc.startPrb  = startRb;
+	ulAlloc->schPuschInfo->fdAlloc.numPrb    = numRb;
+	ulAlloc->schPuschInfo->tdAlloc.startSymb = startSymb;
+	ulAlloc->schPuschInfo->tdAlloc.numSymb   = symbLen;
+	ulAlloc->schPuschInfo->tbInfo.mcs	     = 4;
+	ulAlloc->schPuschInfo->tbInfo.ndi        = 1; /* new transmission */
+	ulAlloc->schPuschInfo->tbInfo.rv	        = 0;
+	ulAlloc->schPuschInfo->tbInfo.tbSize     = 24; /*Considering 2 PRBs */
+
+	*msg3StartRb = startRb;
+	*msg3NumRb   = numRb;
+
+	return ROK;
+}
+
+
+
+/**
  * @brief process rach indication function. 
  *
  * @details
@@ -124,9 +209,14 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
 {
    SchCellCb *cell = schCb[schInst].cells[schInst];
 	uint16_t raRnti = 0;
+	uint16_t slot;
+	uint16_t msg3StartRb;
+	uint8_t  msg3NumRb;
+   uint8_t  ret = ROK;
+   /* RAR will sent in the next slot */
+	slot = (rachInd->timingInfo.slot+SCHED_DELTA+RAR_DELAY)%SCH_NUM_SLOTS;
 
-   SchDlAlloc *dlAlloc =
-	   cell->dlAlloc[(rachInd->timingInfo.slot+SCHED_DELTA+RAR_DELAY)%SCH_NUM_SLOTS]; /* RAR will sent in the next slot */
+   SchDlAlloc *dlAlloc =  cell->dlAlloc[slot];
 	RarInfo *rarInfo = &(dlAlloc->rarInfo);
 
    /* rar message presense in next slot ind and will be scheduled */
@@ -138,15 +228,20 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
 	/* create raCb at SCH */
 	createSchRaCb(rachInd->crnti,schInst);
 
-	/* fill RAR info */
-	rarInfo->raRnti = raRnti;
-	rarInfo->tcrnti = rachInd->crnti;
-	rarInfo->RAPID = rachInd->preambleIdx;
-	rarInfo->ta = rachInd->timingAdv;
-	rarInfo->msg3StartRb = 0; /* will be set during implementation of msg3 */
-	rarInfo->msg3NumRb = 0; /* will be set during implementation of msg3 */
+	/* allocate resources for msg3 */
+	ret = schAllocMsg3Pusch(schInst, slot, &msg3StartRb, &msg3NumRb);
+	if(ret == ROK)
+	{
 
-   return ROK;
+		/* fill RAR info */
+		rarInfo->raRnti      = raRnti;
+		rarInfo->tcrnti      = rachInd->crnti;
+		rarInfo->RAPID       = rachInd->preambleIdx;
+		rarInfo->ta          = rachInd->timingAdv;
+		rarInfo->msg3StartRb = msg3StartRb;
+		rarInfo->msg3NumRb   = msg3NumRb;
+	}
+   return ret;
 }
 
 /**
@@ -173,7 +268,7 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    uint8_t numSymbols = 0;
    uint8_t offset = 0;
    uint8_t FreqDomainResource[6] = {0};
-   SchBwpDlCfg *initialBwp = &schCb[inst].cells[inst]->cellCfg.schInitialBwp;
+   SchBwpDlCfg *initialBwp = &schCb[inst].cells[inst]->cellCfg.schInitialDlBwp;
 
 	PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
 	PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
@@ -264,8 +359,8 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
 	 * Nre = min(156,Nre') . nPrb                                     */
    pdsch->freqAlloc.rbSize = 1; /* This value is calculated from above formulae */
    pdsch->freqAlloc.vrbPrbMapping = 0; /* non-interleaved */
-   pdsch->timeAlloc.startSymbolIndex = 2; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->timeAlloc.numSymbols = 12;
+   pdsch->timeAlloc.startSymbolIndex = initialBwp->pdschCommon.startSymbol;
+   pdsch->timeAlloc.numSymbols = initialBwp->pdschCommon.lengthSymbol;
    pdsch->beamPdschInfo.numPrgs = 1;
    pdsch->beamPdschInfo.prgSize = 1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;

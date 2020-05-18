@@ -379,6 +379,8 @@ uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8] = {
 {10,  1,  0,  682,  0,  2,  2,  6 }  /* index 255  */
 };
 
+/* Defintion of delta value Table 6.1.2.1.1-5 spec 38.214 */
+uint8_t puschDeltaTable[MAX_MU_PUSCH] = { 2, 3, 4, 6 };
 
 /**
  * @brief frequency domain allocation function. 

@@ -2218,20 +2218,51 @@ int MacSchCellCfgReq
 	schCellCfg.schRachCfg.raRspWindow   = macCellCfg->prachCfg.raRspWindow;
 
    /* fill initial DL BWP */
-   schCellCfg.schInitialBwp.bwp.firstPrb = macCellCfg->initialBwp.bwp.firstPrb;
-   schCellCfg.schInitialBwp.bwp.numPrb = macCellCfg->initialBwp.bwp.numPrb;
-   schCellCfg.schInitialBwp.bwp.scs = macCellCfg->initialBwp.bwp.scs;
-   schCellCfg.schInitialBwp.bwp.cyclicPrefix = macCellCfg->initialBwp.bwp.cyclicPrefix;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.searchSpaceId = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.searchSpaceId;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.coresetId = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.coresetId;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.monitoringSlot = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.monitoringSlot;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.duration = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.duration;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.monitoringSymbol = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.monitoringSymbol;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel1 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel1;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel2 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel2;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel4 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel4;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel8 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel8;
-   schCellCfg.schInitialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel16 = macCellCfg->initialBwp.pdcchCommon.raSearchSpace.candidate.aggLevel16;
+   schCellCfg.schInitialDlBwp.bwp.firstPrb = macCellCfg->initialDlBwp.bwp.firstPrb;
+   schCellCfg.schInitialDlBwp.bwp.numPrb = macCellCfg->initialDlBwp.bwp.numPrb;
+   schCellCfg.schInitialDlBwp.bwp.scs = macCellCfg->initialDlBwp.bwp.scs;
+   schCellCfg.schInitialDlBwp.bwp.cyclicPrefix = macCellCfg->initialDlBwp.bwp.cyclicPrefix;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.searchSpaceId =
+	   macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.searchSpaceId;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.coresetId =
+      macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.coresetId;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.monitoringSlot =
+      macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.monitoringSlot;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.duration =
+      macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.duration;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.monitoringSymbol =
+      macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.monitoringSymbol;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel1 =
+      macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel1;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel2 =
+      macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel2;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel4 =
+      macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel4;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel8 =
+      macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel8;
+   schCellCfg.schInitialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel16 =
+      macCellCfg->initialDlBwp.pdcchCommon.raSearchSpace.candidate.aggLevel16;
+   schCellCfg.schInitialDlBwp.pdschCommon.k0 = macCellCfg->initialDlBwp.pdschCommon.k0;
+   schCellCfg.schInitialDlBwp.pdschCommon.mappingType =
+      macCellCfg->initialDlBwp.pdschCommon.mappingType;
+   schCellCfg.schInitialDlBwp.pdschCommon.startSymbol =
+      macCellCfg->initialDlBwp.pdschCommon.startSymbol;
+   schCellCfg.schInitialDlBwp.pdschCommon.lengthSymbol =
+      macCellCfg->initialDlBwp.pdschCommon.lengthSymbol;
+
+   /* fill initial DL BWP */
+   schCellCfg.schInitialUlBwp.bwp.firstPrb = macCellCfg->initialUlBwp.bwp.firstPrb;
+   schCellCfg.schInitialUlBwp.bwp.numPrb = macCellCfg->initialUlBwp.bwp.numPrb;
+   schCellCfg.schInitialUlBwp.bwp.scs = macCellCfg->initialUlBwp.bwp.scs;
+   schCellCfg.schInitialUlBwp.bwp.cyclicPrefix = macCellCfg->initialUlBwp.bwp.cyclicPrefix;
+   schCellCfg.schInitialUlBwp.puschCommon.k2 = macCellCfg->initialUlBwp.puschCommon.k2;
+   schCellCfg.schInitialUlBwp.puschCommon.mappingType =
+      macCellCfg->initialUlBwp.puschCommon.mappingType;
+   schCellCfg.schInitialUlBwp.puschCommon.startSymbol =
+      macCellCfg->initialUlBwp.puschCommon.startSymbol;
+   schCellCfg.schInitialUlBwp.puschCommon.lengthSymbol =
+      macCellCfg->initialUlBwp.puschCommon.lengthSymbol;
+
 
    cfgPst.srcProcId = pst->dstProcId;
 	cfgPst.dstProcId = pst->srcProcId;
