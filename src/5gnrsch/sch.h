@@ -20,7 +20,7 @@
 #define SCH_INST_START 1
 #define SCH_MAX_CELLS 1
 #define SCH_MAX_INST 1
-#define SCH_NUM_SLOTS 10 /*forcing this to 10 */
+#define SCH_NUM_SLOTS 20 /*forcing this to 20 */
 #define SCH_MAX_SFN 1024
 #define MAX_NUM_RB 106 /* value for numerology 0 15Khz */
 #define SCH_MIB_TRANS 80 
@@ -35,6 +35,7 @@
 #define SCHED_DELTA 1
 #define RAR_DELAY   1
 #define SCH_MAX_UE  1
+#define PUSCH_START_RB 15
 #define SI_RNTI 0xFFFF
 #define P_RNTI  0xFFFE
 
@@ -111,9 +112,10 @@ typedef struct schRaCb
   */
 typedef struct schUlAlloc
 {
-	uint16_t    totalPrb;  /*!< Number of RBs in the cell */
-	uint16_t    assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
-	uint8_t     prachStartSymb; /*!< Start symbol for PRACH */
+	uint16_t     totalPrb;  /*!< Number of RBs in the cell */
+	uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
+	bool         puschPres; /*!< PUSCH presence field */
+	SchPuschInfo schPuschInfo; /*!< PUSCH info */
 }SchUlAlloc;
 
 /**

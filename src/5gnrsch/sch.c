@@ -396,6 +396,7 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
 			schDlAlloc->assignedPrb[itr] = 0;
 			schUlAlloc->assignedPrb[itr] = 0;
 		}
+      schUlAlloc->puschPres = false;
 
 		for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
 		{

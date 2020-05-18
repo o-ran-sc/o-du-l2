@@ -230,27 +230,48 @@ S16 readMacCfg()
 
 
    /* fill Intial DL BWP */
-   duCfgParam.macCellCfg.initialBwp.bwp.firstPrb = 0;
-   duCfgParam.macCellCfg.initialBwp.bwp.numPrb = TOTAL_PRB_BW; /* configured to total BW */
-   duCfgParam.macCellCfg.initialBwp.bwp.scs = SUBCARRIER_SPACING; /* numerology is 0, 15Khz */
-   duCfgParam.macCellCfg.initialBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.searchSpaceId = SEARCHSPACE_1_INDEX;
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.coresetId = CORESET_0_INDEX;
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.monitoringSlot =
+   duCfgParam.macCellCfg.initialDlBwp.bwp.firstPrb = 0;
+   duCfgParam.macCellCfg.initialDlBwp.bwp.numPrb = TOTAL_PRB_BW; /* configured to total BW */
+   duCfgParam.macCellCfg.initialDlBwp.bwp.scs = SUBCARRIER_SPACING; /* numerology is 0, 15Khz */
+   duCfgParam.macCellCfg.initialDlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.searchSpaceId = SEARCHSPACE_1_INDEX;
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.coresetId = CORESET_0_INDEX;
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.monitoringSlot =
 	   SS_MONITORING_SLOT_SL1; /* sl1 - all slots */
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.duration = 0;
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.monitoringSymbol =
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.duration = 0;
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.monitoringSymbol =
 	   SS_MONITORING_SYMBOL;
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
 	   candidate.aggLevel1	= 8;
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
 	   candidate.aggLevel2	= 4;
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
 	   candidate.aggLevel4	= 2;
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
 	   candidate.aggLevel8	= 1;
-   duCfgParam.macCellCfg.initialBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
 	   candidate.aggLevel16	= 0;
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.k0 = PDSCH_K0;
+	duCfgParam.macCellCfg.initialDlBwp.pdschCommon.mappingType = 
+	   PDSCH_MAPPING_TYPE_A;
+	duCfgParam.macCellCfg.initialDlBwp.pdschCommon.startSymbol = 
+	   PDSCH_START_SYMBOL;
+	duCfgParam.macCellCfg.initialDlBwp.pdschCommon.lengthSymbol =
+	   PDSCH_LENGTH_SYMBOL;
+
+   /* fill Intial DL BWP */
+   duCfgParam.macCellCfg.initialUlBwp.bwp.firstPrb = 0;
+   duCfgParam.macCellCfg.initialUlBwp.bwp.numPrb = TOTAL_PRB_BW; /* configured to total BW */
+   duCfgParam.macCellCfg.initialUlBwp.bwp.scs = SUBCARRIER_SPACING; /* numerology is 0, 15Khz */
+   duCfgParam.macCellCfg.initialUlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.k2 = PUSCH_K2;
+	duCfgParam.macCellCfg.initialUlBwp.puschCommon.mappingType = 
+	   PUSCH_MAPPING_TYPE_A;
+	duCfgParam.macCellCfg.initialUlBwp.puschCommon.startSymbol = 
+	   PUSCH_START_SYMBOL;
+	duCfgParam.macCellCfg.initialUlBwp.puschCommon.lengthSymbol =
+	   PUSCH_LENGTH_SYMBOL;
+
 
    /* This should be calculated based on
       (number of mandatory parameters) + (number of otional parameters being filled) */
@@ -283,6 +304,35 @@ S16 fillDuPort(U16 *duPort)
 	RETVALUE(ROK);
 }
 
+/*******************************************************************
+*
+* @brief Configures the DU Parameters
+*
+* @details
+*
+*    Function : calcSliv
+*
+*    Functionality:
+*       - calculate SLIV value from start and length field
+*
+* @params[in] start symbol
+* @params[in] length of symbols
+* @return SLIV value
+*
+* ****************************************************************/
+uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol)
+{
+   uint16_t sliv = 0;
+	if((lengthSymbol-1) <= 7)
+	{
+	   sliv = 14 * (lengthSymbol-1) + startSymbol;
+	}
+	else
+	{
+	   sliv = 14 * (14-lengthSymbol+1) + (14-1-startSymbol);
+	}
+	return sliv;
+}
 
 
 /*******************************************************************
@@ -348,7 +398,7 @@ S16 fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    pdschCfg.k0 = PDSCH_K0;
    pdschCfg.mapType = \
       PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   pdschCfg.startSymbAndLen = PDSCH_START_SYMB_AND_LEN;
+   pdschCfg.sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
    srvCellCfgComm->dlCfg.pdschCfg = pdschCfg;
 
    /* Configuring BCCH Config for SIB1 */
@@ -394,9 +444,9 @@ S16 fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
    /* Configuring PUSCH Config Common for SIB1 */
    puschCfg.present = BWP_UplinkCommon__pusch_ConfigCommon_PR_setup;
-   puschCfg.k2 = PUSCH_K0;
+   puschCfg.k2 = PUSCH_K2;
    puschCfg.mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   puschCfg.startSymbAndLen = PUSCH_START_SYMB_AND_LEN;
+   puschCfg.sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
    puschCfg.msg3DeltaPreamble = PUSCH_MSG3_DELTA_PREAMBLE;
    puschCfg.p0NominalWithGrant = PUSCH_P0_NOMINAL_WITH_GRANT;
    srvCellCfgComm->ulCfg.puschCfg = puschCfg;
