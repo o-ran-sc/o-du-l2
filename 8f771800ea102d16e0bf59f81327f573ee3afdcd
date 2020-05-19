@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3f6a7e34_51ee4f22",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-19T13:10:54Z",
+      "side": 1,
+      "message": "we can assign the memory to be allocated to NULLP before DU_ALLOC.\nThis is a general comment",
+      "revId": "8f771800ea102d16e0bf59f81327f573ee3afdcd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d268a4b4_87d89576",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-19T13:10:54Z",
+      "side": 1,
+      "message": "this function appears to be long. We can modularize it further",
+      "revId": "8f771800ea102d16e0bf59f81327f573ee3afdcd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ff8b44e_cbe0269d",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-19T13:10:54Z",
+      "side": 1,
+      "message": "shouldn this be BuildGlobalgNBId???",
+      "revId": "8f771800ea102d16e0bf59f81327f573ee3afdcd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
