@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "004a7dd9_01e16197",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "same comment as line 161",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "199a2a57_a1f91fc4",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "Shareable memory should be allocated by du app fro stop req. So use MAC_FREE_SHRABL_BUF to free",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0291d99_db3077ac",
+        "filename": "src/5gnrmac/mac_stop_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "There is already a function \"packStopInd\" defined to handle packing for LC and LWLC. Then why is this function needed?",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eccf85af_feeef12f",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "We should not use SGetMsg directly. Lets create a macro for this as well.",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c387ab27_66475901",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "use macro CM_FREE_SHRABL_BUF",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "231d2262_55ea7ff5",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "comment is wrong. LC is already handled above",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98a60e45_8a4e9a05",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1700,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "Same comment as mentioned in line 1756",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52da4745_013c0b60",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1756,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "This must be a shareable memory since it is used for communication between 2 layers.\n\nDefine a macro DU_ALLOC_SHRABL_BUF in du_mgr.h to allocated shareable memory.\nYou can refer to MAC_ALLOC_SHRABL_BUF in 5gnrmac/rg.h",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ffae288_06850cfd",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1801,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "Null check at line 1804 should happen before accessing firstSltIndRcvd.",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e0c190d_c18712bd",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1813,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T07:05:47Z",
+      "side": 1,
+      "message": "Memory free should happen in case of LWLC and TC... not for LC",
+      "revId": "1ec943c3dfa0062aa32af5dd6a13452c6bd56c2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
