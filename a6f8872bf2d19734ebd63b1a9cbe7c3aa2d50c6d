@@ -1,0 +1,429 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98bee8fc_10c7f1c8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "use (*ieExtend)-\u003elist.size as size for allocating memory",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4aa00a6f_53689754",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Use srvplmn-\u003elist.size as size for allocating memory",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b419eea1_a4860fd2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "No need of using do..while in the internal functions. Just return RFAILED as soon as a NULL check is true",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "353c6277_7e9a718c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "In case of any failure, return RFAILED there itself. checkVar is not needed.\nApplicable to all failure conditions in this function",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a5781d3_0a1512ee",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "use the size parameter instead of sizeof(U8)",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15b81e22_8710db1a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "No need to check this condition. If control has reached to end of function, it means there is no failure. just return ROK.",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "910825f0_a3b98db2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "use rrcVer-\u003eiE_Extensions-\u003elist.size as size for allocating memory",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35a6082d_b927d46c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Use the standard function descriptor",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8b333b3_03fa71ed",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Rename function to FreeRrcVer",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52e79197_aa6edaf1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Here, array[0] should be checked.",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fecdf5e_3e5a3acc",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "use rrcVer-\u003elatest_RRC_Version.size instead of sizeof(U8)",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c15fb3f_c489f67b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Use the standard function descriptor",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7960d8b_ede6d5f1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Rename function to FreeServedCellList",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b8fba07_4b631a94",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "why accessing array index 3? Shouldn\u0027t this be 0? Check and confirm",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd0b37bb_cb67b344",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Before accessing sNSAAI, following NULL checks and corresponding free are missing:\n\nif (srvCellItem-\u003eserved_Cell_Information.servedPLMNs.list.array[servId]-\u003eiE_Extensions-\u003elist.array[0]-\u003eextensionValue.choice.SliceSupportList.list.array ! \u003d NULL)\n\nAND\n\nif(srvCellItem-\u003eserved_Cell_Information.servedPLMNs.list.array[servId]-\u003eiE_Extensions-\u003elist.array[0]-\u003eextensionValue.choice.SliceSupportList.list.array[sliceId] ! \u003d NULL)",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09505716_4c6b6b4a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Check if(srvCellItem-\u003egNB_DU_System_Information-\u003emIB_message.buf !\u003d NULL) instead of duCfgParam.srvdCellLst[0].duSysInfo.mibMsg",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "157f42d8_ab71dbf5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Check if(srvCellItem-\u003egNB_DU_System_Information-\u003esIB1_message.buf !\u003d NULL) instead of duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2d68d97_eb5a8094",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Free srvCellItem-\u003egNB_DU_System_Information-\u003esIB1_message.buf as well",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "934a60a3_11bc15b6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 873,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Free srvCellItem-\u003egNB_DU_System_Information-\u003emIB_message.buf as well",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1aaccee6_77ecf639",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 877,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "use  srvCellItem-\u003eserved_Cell_Information.measurementTimingConfiguration.size instead of sizeof(u8)",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a9d719a_fa2fb92c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1135,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "if idx \u003d\u003d elementCnt-1 , it means that idx \u003d 4.\nGNB_DU_ID is stored at index 1. But here GNB_DU_ID is getting accessed from array[idx] i.e. index 4.",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c69886f8_54ffe0f2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Same comment as above",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "345b4d3b_d996f61c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Call FREEBuildRrcVer() only if BuildServedCellListreturn \u003d\u003d ROK.",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1730a186_ae0f0f08",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1149,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "Before coming out of if(idx \u003d\u003d elementCnt-1){}, all array[idx] must be freed",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcb49ec1_7513161e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1167,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-20T08:34:32Z",
+      "side": 1,
+      "message": "This will return RFAILED in success scenario as well. Remove this.",
+      "revId": "a6f8872bf2d19734ebd63b1a9cbe7c3aa2d50c6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
