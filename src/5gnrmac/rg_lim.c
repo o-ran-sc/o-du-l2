@@ -84,17 +84,6 @@ PRIVATE S16  rgLIMValidateSap ARGS((Inst inst,SuId suId));
 #endif
 PRIVATE Void rgLIMUtlFreeDatIndEvnt ARGS((TfuDatIndInfo *datInd,
                                           Bool error));
-
-/* function pointers for packing slot ind from mac to sch */
-//S16 packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
-
-MacSchSlotIndFunc macSchSlotIndOpts[] =
-{
-   packMacSchSlotInd,  
-   macSchSlotInd,                                             
-   packMacSchSlotInd
-}; 
-
 #ifdef RG_UNUSED
 PRIVATE Void rgLIMUtlFreeDatReqEvnt ARGS((TfuDatReqInfo *datReq,
                                           Bool error));
@@ -653,91 +642,6 @@ void fapiMacConfigRsp()
 
    /* Send cell config cfm to DU APP */
    MacSendCellCfgCfm(RSP_OK);
-}
-
-/**
- * @brief Transmission time interval indication from PHY.
- *
- * @details
- *
- *     Function : sendSlotIndMacToSch
- * 
- *      This API is invoked by MAC to send slot ind to scheduler.
- *           
- *  @param[in]  SlotIndInfo    *slotInd
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED 
- **/
-int sendSlotIndMacToSch(SlotIndInfo *slotInd)
-{
-   /* fill Pst structure to send to lwr_mac to MAC */
-   Pst pst;
-
-   fillMacToSchPst(&pst);
-   pst.event = EVENT_SLOT_IND_TO_SCH;
-
-   return(*macSchSlotIndOpts[pst.selector])(&pst,slotInd);
-}
-
-
-/*******************************************************************
- *
- * @brief Send slot indication to DU APP
- *
- * @details
- *
- *    Function : sendSlotIndMacToDuApp
- *
- *    Functionality:
- *       Send slot indication to DU APP
- *
- * @params[in] Slot indication info 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
-{
-   Pst pst;
-   uint16_t ret;
-   SlotInfo  *slotInfo;
-
-   /*  Allocate sharable memory */
-   MAC_ALLOC_SHRABL_BUF(slotInfo, sizeof(SlotInfo));
-   if(!slotInfo)
-   {
-      DU_LOG("\nMAC : Slot Indication memory allocation failed");
-      return RFAILED;
-   }
-
-   slotInfo->cellId = macCb.macCell->cellId;
-   slotInfo->sfn = slotInd->sfn;
-   slotInfo->slot = slotInd->slot;
-
-   /* Fill Pst */
-   pst.selector  = DU_MAC_LWLC;
-   pst.srcEnt    = ENTRG;
-   pst.dstEnt    = ENTDUAPP;
-   pst.dstInst   = 0;
-   pst.srcInst   = macCb.macInst;
-   pst.dstProcId = rgCb[pst.srcInst].rgInit.procId;
-   pst.srcProcId = rgCb[pst.srcInst].rgInit.procId;
-   pst.region = MAC_MEM_REGION;
-   pst.pool = MAC_POOL;
-   pst.event = EVENT_MAC_SLOT_IND;
-   pst.route = 0;
-   pst.prior = 0;
-   pst.intfVer = 0;
- 
-   ret = MacDuAppSlotInd(&pst, slotInfo);
-   if(ret != ROK)
-   {
-	   DU_LOG("\nMAC: Failed to send slot indication to DU APP");
-      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, slotInfo, sizeof(SlotInfo));
-   }
-   
-   return ret;
 }
 
 /*******************************************************************

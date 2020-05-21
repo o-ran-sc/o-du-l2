@@ -26,8 +26,14 @@
 #include "cm_hash.h"       /* Common Hash List Defines */
 #include "cm_mblk.h"       /* common memory link list library */
 #include "cm_lte.h"        /* Common LTE Defines */
+#include "rgu.h"
 #include "tfu.h"           /* RGU Interface includes */
 #include "lrg.h"
+#include "crg.h"           /* layer management defines for LTE-MAC */
+#include "rg_sch_inf.h"           /* layer management defines for LTE-MAC */
+#include "rg_env.h"   
+#include "rg.h"
+
 #include "gen.x"           /* general */
 #include "ssi.x"           /* system services */
 #include "cm5.x"           /* system services */
@@ -37,11 +43,25 @@
 #include "cm_hash.x"       /* Common Hash List Definitions */
 #include "cm_mblk.x"       /* common memory link list library */
 #include "cm_lte.x"        /* Common LTE Defines */
+#include "rgu.x"
 #include "tfu.x"           /* RGU Interface includes */
 #include "lrg.x"
+#include "crg.x"           /* layer management typedefs for MAC */
+#include "rg_sch_inf.x"    /* SCH interface typedefs */
+#include "rg_prg.x"
 #include "du_app_mac_inf.h"
 #include "mac.h"
 #include "du_log.h"
+#include "rg.x"
+#include "mac_upr_inf_api.h"
+
+/* function pointers for packing slot ind from mac to sch */
+MacSchSlotIndFunc macSchSlotIndOpts[] =
+{
+   packMacSchSlotInd,
+   macSchSlotInd,
+   packMacSchSlotInd
+};
 
 /**
  * @brief process DL allocation from scheduler
@@ -68,6 +88,91 @@ int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
    }
    return ROK;
 }
+
+/**
+ * @brief Transmission time interval indication from PHY.
+ *
+ * @details
+ *
+ *     Function : sendSlotIndMacToSch
+ * 
+ *      This API is invoked by MAC to send slot ind to scheduler.
+ *           
+ *  @param[in]  SlotIndInfo    *slotInd
+ *  @return  S16
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+int sendSlotIndMacToSch(SlotIndInfo *slotInd)
+{
+   /* fill Pst structure to send to lwr_mac to MAC */
+   Pst pst;
+
+   fillMacToSchPst(&pst);
+   pst.event = EVENT_SLOT_IND_TO_SCH;
+
+   return(*macSchSlotIndOpts[pst.selector])(&pst,slotInd);
+}
+
+/*******************************************************************
+ *
+ * @brief Send slot indication to DU APP
+ *
+ * @details
+ *
+ *    Function : sendSlotIndMacToDuApp
+ *
+ *    Functionality:
+ *       Send slot indication to DU APP
+ *
+ * @params[in] Slot indication info 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
+{
+   Pst pst;
+   uint16_t ret;
+   SlotInfo  *slotInfo;
+ 
+   /*  Allocate sharable memory */
+   MAC_ALLOC_SHRABL_BUF(slotInfo, sizeof(SlotInfo));
+   if(!slotInfo)
+   {
+      DU_LOG("\nMAC : Slot Indication memory allocation failed");
+      return RFAILED;
+  }
+ 
+  slotInfo->cellId = macCb.macCell->cellId;
+  slotInfo->sfn = slotInd->sfn;
+  slotInfo->slot = slotInd->slot;
+ 
+  /* Fill Pst */
+  pst.selector  = DU_MAC_LWLC;
+  pst.srcEnt    = ENTRG;
+  pst.dstEnt    = ENTDUAPP;
+  pst.dstInst   = 0;
+  pst.srcInst   = macCb.macInst;
+  pst.dstProcId = rgCb[pst.srcInst].rgInit.procId;
+  pst.srcProcId = rgCb[pst.srcInst].rgInit.procId;
+  pst.region = MAC_MEM_REGION;
+  pst.pool = MAC_POOL;
+  pst.event = EVENT_MAC_SLOT_IND;
+  pst.route = 0;
+  pst.prior = 0;
+  pst.intfVer = 0;
+ 
+  ret = MacDuAppSlotInd(&pst, slotInfo);
+  if(ret != ROK)
+  {
+     DU_LOG("\nMAC: Failed to send slot indication to DU APP");
+     MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, slotInfo, sizeof(SlotInfo));
+  }
+ 
+  return ret;
+} /* sendSlotIndMacToDuApp */
+
 
 /**
  * @brief Transmission time interval indication from PHY.
