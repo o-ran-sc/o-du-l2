@@ -28,6 +28,7 @@
 #include "cm_lte.h"        /* Common LTE Defines */
 #include "tfu.h"           /* RGU Interface includes */
 #include "lrg.h"
+
 #include "gen.x"           /* general */
 #include "ssi.x"           /* system services */
 #include "cm5.x"           /* system services */
@@ -227,8 +228,13 @@ int MacProcUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo)
  * ****************************************************************/
 uint16_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
+   uint16_t pduIdx;
+
    DU_LOG("\nMAC : Received Rx Data indication");
-   /* TODO : Demuxing */
+   for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
+   {
+      unpackRxData(rxDataInd->timingInfo, &rxDataInd->pdus[pduIdx]);
+   }
    return ROK;
 }
 

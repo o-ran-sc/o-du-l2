@@ -357,6 +357,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn)
    uint8_t idx = 0;
    fapi_rx_data_indication_t *rxDataInd;
    fapi_pdu_ind_info_t       *pduInfo;
+   uint8_t  *pdu;
  
    MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
    if(!rxDataInd)
@@ -374,11 +375,29 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn)
    pduInfo->handle = 0;
    pduInfo->rnti = 0;
    pduInfo->harqId = 0;
-   pduInfo->pduLength = 0;
+   pduInfo->pduLength = 8;
    pduInfo->ul_cqi = 0;
    pduInfo->timingAdvance = 0;
    pduInfo->rssi = 0;
+
+   /* Filling pdu with random values for testing */
    pduInfo->pduData = NULL;
+   MAC_ALLOC(pduInfo->pduData, pduInfo->pduLength);
+   if(!pduInfo->pduData)
+   {
+      printf("\nPHY_STUB: Memory allocation failed for Rx Data Pdu");
+      return RFAILED;
+   }
+  
+   pdu = (uint8_t *)pduInfo->pduData;
+   pdu[0] = 0;
+   pdu[1] = 6;
+   pdu[2] = 27;
+   pdu[3] = 86;
+   pdu[4] = 49;
+   pdu[5] = 74;
+   pdu[6] = 168;
+   pdu[7] = 70;
 
    fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, \
     sizeof(fapi_rx_data_indication_t));
@@ -386,6 +405,9 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn)
    /* Sending Rx data indication to MAC */
    DU_LOG("\nPHY STUB: Sending Rx data Indication to MAC");
    handlePhyMessages(rxDataInd->header.message_type_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
+
+   if(pduInfo->pduLength)
+      MAC_FREE(pduInfo->pduData, pduInfo->pduLength);
    MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
 #endif
    return ROK;

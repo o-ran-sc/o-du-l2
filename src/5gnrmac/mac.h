@@ -53,6 +53,24 @@
 #define SI_RNTI 0xFFFF
 #define P_RNTI 0xFFFE
 
+#define MAC_UL_LCID_CCCH1             0
+#define MAC_UL_LCID_MIN               1
+#define MAC_UL_LCID_MAX               32
+#define MAC_UL_LCID_RESERVED_MIN      33
+#define MAC_UL_LCID_RESERVED_MAX      51
+#define MAC_UL_LCID_CCCH              52
+#define MAC_UL_LCID_BIT_RATE_QUERY    53
+#define MAC_UL_LCID_MULT_PHR_FOUR_OCT 54
+#define MAC_UL_LCID_CFG_GRANT_CFM     55
+#define MAC_UL_LCID_MULT_PHR_ONE_OCT  56
+#define MAC_UL_LCID_SINGLE_PHR        57
+#define MAC_UL_LCID_CRNTI             58
+#define MAC_UL_LCID_SHIRT_TRUNC_BSR   59
+#define MAC_UL_LCID_LONG_TRUNC_BSR    60
+#define MAC_UL_LCID_SHORT_BSR         61
+#define MAC_UL_LCID_LONG_BSR          62
+#define MAC_UL_LCID_PADDING           63
+
 typedef struct macDlSlot
 {
    DlAlloc dlInfo;
@@ -81,6 +99,7 @@ typedef struct macCb
 EXTERN MacCb macCb;
 void fillMacToSchPst(Pst *pst);
 void fillRarPdu(RarInfo *rarInfo);
+int unpackRxData(SlotIndInfo timingInfo, RxDataIndPdu *rxDataIndPdu);
 
 #endif
 /**********************************************************************

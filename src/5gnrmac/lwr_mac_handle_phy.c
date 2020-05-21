@@ -46,6 +46,7 @@
 #include "lwr_mac_fsm.h"
 #include "lwr_mac_phy.h"
 #include "lwr_mac_upr_inf.h"
+#include "rg.h"
 
 #ifdef FAPI
 /* Function pointer for slot indication from lower mac to mac */
@@ -333,8 +334,9 @@ uint8_t handleRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
       pdu->ul_cqi = fapiRxDataInd->pdus[pduIdx].ul_cqi;
       pdu->timingAdvance = fapiRxDataInd->pdus[pduIdx].timingAdvance;
       pdu->rssi = fapiRxDataInd->pdus[pduIdx].rssi;
-      /* TODO : Copy pdu from FAPI msg to MAC structure*/
-      //pdu->pduData;
+
+      MAC_ALLOC(pdu->pduData, pdu->pduLength);
+      memcpy(pdu->pduData, fapiRxDataInd->pdus[pduIdx].pduData, pdu->pduLength);
    }
 
    fillLwrMacToMacPst(&pst);
