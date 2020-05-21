@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a589a9ae_a0c00463",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-21T05:35:20Z",
+      "side": 1,
+      "message": "numslots \u003d 20, This will be for higher nmrlgy.",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c8fea2c_fce1c03e",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-21T05:35:20Z",
+      "side": 1,
+      "message": "Making schPuschInfo as pointer will be helpful for multiple UEs. Also we can remove the puschPres flag.",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdd83988_026270a0",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-21T05:35:20Z",
+      "side": 1,
+      "message": "puschMu should be initialized to 0, Also all the other variables can also be initialized to 0.",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2e25545_b06bcfbd",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-21T05:35:20Z",
+      "side": 1,
+      "message": "can mcs value be passed from du-app as a default uplink MCS",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "890941ee_fa242aff",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-21T05:35:20Z",
+      "side": 1,
+      "message": "adding 2 bytes of sub-header will make it 8 bytes.",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
