@@ -28,6 +28,7 @@
 #include "cm_lte.h"        /* Common LTE Defines */
 #include "tfu.h"           /* RGU Interface includes */
 #include "lrg.h"
+
 #include "gen.x"           /* general */
 #include "ssi.x"           /* system services */
 #include "cm5.x"           /* system services */
@@ -49,14 +50,6 @@ MacSchRachIndFunc macSchRachIndOpts[]=
    packMacSchRachInd,
    macSchRachInd,
    packMacSchRachInd
-};
-
-/* Function pointer for sending crc ind from MAC to SCH */
-MacSchCrcIndFunc macSchCrcIndOpts[]=
-{
-   packMacSchCrcInd,
-   macSchCrcInd,
-   packMacSchCrcInd
 };
 
 /*******************************************************************
@@ -85,33 +78,6 @@ int sendRachIndMacToSch(RachIndInfo *rachInd)
    return(*macSchRachIndOpts[pst.selector])(&pst, rachInd); 
 }
 
-/*******************************************************************
- *
- * @brief Sends CRC Indication to SCH
- *
- * @details
- *
- *    Function : sendCrcIndMacToSch 
- *
- *    Functionality:
- *       Sends CRC Indication to SCH
- *
- * @params[in] 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-int sendCrcIndMacToSch(CrcIndInfo *crcInd)
-{
-   Pst pst;
-  
-   fillMacToSchPst(&pst);
-   pst.event = EVENT_CRC_IND_TO_SCH;
- 
-   return(*macSchCrcIndOpts[pst.selector])(&pst, crcInd);
-}
-
- 
 /*******************************************************************
  *
  * @brief Processes RACH indication from PHY
@@ -158,41 +124,6 @@ uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    return(sendRachIndMacToSch(rachIndInfo));
 }
 
-/*******************************************************************
- *
- * @brief Processes CRC Indication from PHY
- *
- * @details
- *
- *    Function : fapiMacCrcInd
- *
- *    Functionality:
- *       Processes CRC Indication from PHY
- *
- * @params[in] Post Structure Pointer
- *             Crc Indication Pointer
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint16_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
-{
-   CrcIndInfo   crcIndInfo;
-
-   DU_LOG("\nMAC : Received CRC indication");
-   /* Considering one pdu and one preamble */
-   
-   crcIndInfo.cellId = macCb.macCell->cellId;;
-   crcIndInfo.crnti = crcInd->crcInfo[0].rnti;
-   crcIndInfo.timingInfo.sfn = crcInd->timingInfo.sfn;
-   crcIndInfo.timingInfo.slot = crcInd->timingInfo.slot;
-   crcIndInfo.numCrcInd = crcInd->crcInfo[0].numCb;
-   crcIndInfo.crcInd[0] = crcInd->crcInfo[0].cbCrcStatus[0];
-   
-   return(sendCrcIndMacToSch(&crcIndInfo));
-}
-
- 
 /* spec-38.211 Table 6.3.3.1-7 */
 uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX] = 
 {0, 2, 4, 6, 8, 10, 12, 13, 15, 17, 19, 23, 27, 34, 46, 69};
@@ -207,31 +138,6 @@ int MacProcUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo)
    }
    return ROK;
 }
-
-/*******************************************************************
- *
- * @brief Process Rx Data Ind at MAC
- *
- * @details
- *
- *    Function : fapiMacRxDataInd
- *
- *    Functionality:
- *       Process Rx Data Ind at MAC
- *
- * @params[in] Post structure
- *             Rx Data Indication
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint16_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
-{
-   DU_LOG("\nMAC : Received Rx Data indication");
-   /* TODO : Demuxing */
-   return ROK;
-}
-
 
 /**********************************************************************
   End of file
