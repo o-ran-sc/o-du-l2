@@ -36,6 +36,40 @@
     },
     {
       "key": {
+        "uuid": "a475987f_1b3879e4",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-21T15:08:09Z",
+      "side": 1,
+      "message": "after puschPres, should we reset here?",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ade62a76_a322e6e6",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-21T15:08:09Z",
+      "side": 1,
+      "message": "we can rename deltaValueTable as rardeltaTable.",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fdd83988_026270a0",
         "filename": "src/5gnrsch/sch_rach.c",
         "patchSetId": 2
@@ -47,6 +81,23 @@
       "writtenOn": "2020-05-21T05:35:20Z",
       "side": 1,
       "message": "puschMu should be initialized to 0, Also all the other variables can also be initialized to 0.",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3f2f098_5ce7d529",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-21T15:08:09Z",
+      "side": 1,
+      "message": "need to check msg3SlotAlloc is more than max_sot_value, modulo needs to be done.",
       "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
