@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b2cf474_81b7d553",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1197,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-22T08:27:53Z",
+      "side": 1,
+      "message": "Remove #if 1.. endif",
+      "revId": "36b04f1c555b3d4703bd33c7951fd935bed96e97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1ce1834_95d48995",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1205,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-22T08:27:53Z",
+      "side": 1,
+      "message": "use idx1 instead of 1 as array index",
+      "revId": "36b04f1c555b3d4703bd33c7951fd935bed96e97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b3a9199_fc642eee",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1525,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-22T08:27:53Z",
+      "side": 1,
+      "message": "instead of hardcoding array index 2, do an idx1++ and then use idx1 to access array",
+      "revId": "36b04f1c555b3d4703bd33c7951fd935bed96e97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b2134f1_aa066ccd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1726,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-22T08:27:53Z",
+      "side": 1,
+      "message": "Sieze parameter must be \"modifyItem-\u003eserved_Cell_Information.servedPLMNs.list.array[0]-\u003eiE_Extensions-\u003elist.size\"",
+      "revId": "36b04f1c555b3d4703bd33c7951fd935bed96e97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0eba120e_f0320a06",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1738,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-22T08:27:53Z",
+      "side": 1,
+      "message": "Size parameter should be sizeof(ServedPLMNs_Item_t)",
+      "revId": "36b04f1c555b3d4703bd33c7951fd935bed96e97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc37199d_f09e293b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1746,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-22T08:27:53Z",
+      "side": 1,
+      "message": "Size parameter should be sizeof(ServedPLMNs_Item_t)",
+      "revId": "36b04f1c555b3d4703bd33c7951fd935bed96e97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a34ea26_089df75b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1801,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-22T08:27:53Z",
+      "side": 1,
+      "message": "Incorrect indentation.",
+      "revId": "36b04f1c555b3d4703bd33c7951fd935bed96e97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a114aed7_2dbb940a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1803,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-22T08:27:53Z",
+      "side": 1,
+      "message": "Incorrect indentation",
+      "revId": "36b04f1c555b3d4703bd33c7951fd935bed96e97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
