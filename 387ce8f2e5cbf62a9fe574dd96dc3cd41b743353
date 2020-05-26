@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2de85bcc_d221f19c",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-26T11:49:26Z",
+      "side": 1,
+      "message": "like how we had a function to packBytes, same we can implement for unpack.\nwe can do this later.....",
+      "revId": "387ce8f2e5cbf62a9fe574dd96dc3cd41b743353",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9c401eb_3c5dfc60",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-26T11:49:26Z",
+      "side": 1,
+      "message": "b5 63 14 aa 84 60\nthis is the 6 bytes of msg3. note: it is hex value.",
+      "revId": "387ce8f2e5cbf62a9fe574dd96dc3cd41b743353",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
