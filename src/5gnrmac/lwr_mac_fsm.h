@@ -30,6 +30,12 @@
 #include "fapi.h"
 #endif
 
+typedef enum{
+   SI_RNTI_TYPE,
+   RA_RNTI_TYPE,
+   TC_RNTI_TYPE
+}RntiType;
+
 S16 lwr_mac_handleInvalidEvt(void *msg);
 S16 lwr_mac_handleParamReqEvt(void *msg);
 S16 lwr_mac_handleParamRspEvt(void *msg);
