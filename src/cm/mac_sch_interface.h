@@ -387,6 +387,20 @@ typedef struct rarAlloc
    PdschCfg rarPdschCfg;
 }RarAlloc;
 
+typedef struct msg4Info
+{
+   uint16_t crnti;
+   uint8_t  *msg4Pdu;
+   uint8_t  pduLen;
+}Msg4Info;
+
+typedef struct msg4Alloc
+{
+   Msg4Info msg4Info;
+   PdcchCfg msg4PdcchCfg;
+   PdschCfg msg4PdschCfg;
+}Msg4Alloc;
+
 typedef struct dlAlloc
 {
    uint16_t cellId;  /* Cell Id */
@@ -399,6 +413,8 @@ typedef struct dlAlloc
 	/* Allocation for RAR message */
 	uint8_t isRarPres;
 	RarAlloc rarAlloc;
+	uint8_t isMsg4Pres;
+        Msg4Alloc msg4Alloc;
 }DlAlloc;
 
 typedef struct tbInfo
