@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da353d9b_a6a95471",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-27T06:09:56Z",
+      "side": 1,
+      "message": "tbSize should be in terms of bit or bytes?",
+      "revId": "f8c301036af89453072998fed9882e372e2efe0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff23bd40_c01b4ea8",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-27T06:09:56Z",
+      "side": 1,
+      "message": "since this is not single bit, can be renamed to \"length\" or \"lenField\"",
+      "revId": "f8c301036af89453072998fed9882e372e2efe0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01e1531f_400433cd",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-27T06:09:56Z",
+      "side": 1,
+      "message": "Can be moved inside if condition at line 257.\nIf pduLen\u003e255, size of length field will be 16bits else 8 bits.",
+      "revId": "f8c301036af89453072998fed9882e372e2efe0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f586cb63_de3efdd3",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-27T06:09:56Z",
+      "side": 1,
+      "message": "length field(lBit) is not being filled anywhere but used for packBytes",
+      "revId": "f8c301036af89453072998fed9882e372e2efe0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "078c3c8e_4be39d71",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-27T06:09:56Z",
+      "side": 1,
+      "message": "if a field is bigger than one byte, packBytes() function will fill the remaining bits in next byte. Calling of packBytes is not needed twice for length field. \nIn such cases, LBitSize should be 16 bits",
+      "revId": "f8c301036af89453072998fed9882e372e2efe0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a4a53d9_997d7bcd",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-27T06:09:56Z",
+      "side": 1,
+      "message": "Since the packing of 5 fields is common in both if{line 262-268} and else{line 275-280}, these can be moved outside if..else to reduce code redundancy",
+      "revId": "f8c301036af89453072998fed9882e372e2efe0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2098ec6c_bba2ebf8",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-27T06:09:56Z",
+      "side": 1,
+      "message": "paddingSize should be (TBSIZE - sum of all MAC PDU including subheader length for each PDU) - (2 bytes of sub-header of padding pdu)",
+      "revId": "f8c301036af89453072998fed9882e372e2efe0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d152a9ea_b54de302",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-27T06:09:56Z",
+      "side": 1,
+      "message": "MAC PDU for padding also requires a MAC sub header with lcId \u003d 63. (Refer fillRarPdu())",
+      "revId": "f8c301036af89453072998fed9882e372e2efe0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87ce94bb_6e9fb306",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-27T06:09:56Z",
+      "side": 1,
+      "message": "There will be only one MAC PDU for padding, that too at the end i.e. after all other MAC PDUs are packed. So, the padding code can be outside for loop",
+      "revId": "f8c301036af89453072998fed9882e372e2efe0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
