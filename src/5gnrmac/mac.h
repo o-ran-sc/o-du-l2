@@ -31,7 +31,8 @@
 #include "cm_hash.h"       /* Common Hash List Defines */
 #include "cm_lte.h"        /* Common LTE Defines */
 #include "cm_mblk.h"        /* Common LTE Defines */
-#include "tfu.h"           /* RGU Interface defines */
+#include "rgu.h"           /* RGU interface includes*/
+#include "tfu.h"           /* TFU Interface defines */
 #include "lrg.h"
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
@@ -45,6 +46,7 @@
 #include "cm_hash.x"       /* Common Hash List Definitions */
 #include "cm_lte.x"        /* Common LTE Defines */
 #include "cm_mblk.x"        /* Common LTE Defines */
+#include "rgu.x"           
 #include "tfu.x"           /* RGU Interface includes */
 #include "lrg.x"
 
@@ -52,6 +54,9 @@
 #define MAX_ZERO_CORR_CFG_IDX 16 /* max zero correlation config index */
 #define SI_RNTI 0xFFFF
 #define P_RNTI 0xFFFE
+#define MAX_MAC_CE 6
+#define MAX_UE 1
+#define MAX_CRI_SIZE 6
 
 #define MAC_LCID_CCCH              0
 #define MAC_DEDLC_MIN_LCID         1
@@ -69,6 +74,7 @@
 #define MAC_LCID_LONG_TRUNC_BSR    60
 #define MAC_LCID_SHORT_BSR         61
 #define MAC_LCID_LONG_BSR          62
+#define MAC_LCID_CRI               62
 #define MAC_LCID_PADDING           63
 
 typedef struct macDlSlot
@@ -81,12 +87,35 @@ typedef struct macUlSlot
    UlSchInfo    ulCellInfo;
 }MacUlSlot;
 
+typedef struct macCbInfo
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   uint8_t     msg3Pdu[6];  /* used as CRI value during muxing */
+   uint8_t     *msg4Pdu;    /* storing DL-CCCH Ind Pdu */
+   uint16_t    msg4PduLen;  /* storing DL-CCCH Ind Pdu Len */
+   uint8_t     *msg4TxPdu;  /* muxed Pdu used for re-transmission */
+   uint16_t    msg4TbSize;  /* size required for msg4TxPdu */
+}MacRaCbInfo;
+
+typedef struct macCe
+{
+   uint16_t macCeLcid;
+   uint8_t  macCeValue[6];
+}MacCe;
+
+typedef struct macCeInfo
+{
+   uint16_t numCes;
+   MacCe macCe[MAX_MAC_CE];
+}MacCeInfo;
+
 typedef struct macCellCb
 {
-   uint16_t   cellId;
-   RachIndInfo raCb;
-   MacDlSlot  dlSlot[MAX_SLOT_SUPPORTED];
-   MacUlSlot  ulSlot[MAX_SLOT_SUPPORTED];
+   uint16_t    cellId;
+   MacRaCbInfo macRaCb[MAX_UE];
+   MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];
+   MacUlSlot   ulSlot[MAX_SLOT_SUPPORTED];
 }MacCellCb;
 
 typedef struct macCb
@@ -99,6 +128,10 @@ typedef struct macCb
 MacCb macCb;
 void fillMacToSchPst(Pst *pst);
 void fillRarPdu(RarInfo *rarInfo);
+void createMacRaCb(uint16_t cellId, uint16_t crnti);
+void fillMsg4DlData(RlcMacData *dlData);
+void fillMacCe(MacCeInfo  *macCeData);
+void macMuxPdu(RlcMacData *dlData, MacCeInfo *macCeData, uint16_t tbSize);
 int unpackRxData(SlotIndInfo timingInfo, RxDataIndPdu *rxDataIndPdu);
 
 #endif

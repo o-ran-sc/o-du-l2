@@ -30,6 +30,12 @@
 #include "fapi.h"
 #endif
 
+typedef enum{
+   SIB1,
+   RAR,
+   MSG4
+}PdcchDci;
+
 S16 lwr_mac_handleInvalidEvt(void *msg);
 S16 lwr_mac_handleParamReqEvt(void *msg);
 S16 lwr_mac_handleParamRspEvt(void *msg);

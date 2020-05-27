@@ -82,9 +82,53 @@ int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
 {
    if(dlAlloc != NULLP)
    {
-		MacDlSlot *currDlSlot =
-		&macCb.macCell->dlSlot[dlAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
-      memcpy(&currDlSlot->dlInfo, dlAlloc, sizeof(DlAlloc)); 
+      MacDlSlot *currDlSlot =
+      &macCb.macCell->dlSlot[dlAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
+      memcpy(&currDlSlot->dlInfo, dlAlloc, sizeof(DlAlloc));
+    
+      if(dlAlloc->isMsg4Pres)
+      {
+         RlcMacData msg4DlData;
+         MacCeInfo  macCeData;
+         memset(&msg4DlData, 0, sizeof(RlcMacData));
+         memset(&macCeData, 0, sizeof(MacCeInfo));
+
+         /* TODO: After DL-CCCH indicatation is done, below hardcoding has to be removed */
+         macCb.macCell->macRaCb[0].msg4PduLen = 263;
+         macCb.macCell->macRaCb[0].msg4TbSize = \
+            dlAlloc->msg4Alloc.msg4PdschCfg.codeword[0].tbSize;
+ 
+         MAC_ALLOC(macCb.macCell->macRaCb[0].msg4Pdu,\
+            macCb.macCell->macRaCb[0].msg4PduLen);
+
+         if(macCb.macCell->macRaCb[0].msg4Pdu != NULLP)
+         {
+            MAC_ALLOC(msg4DlData.pduInfo[0].pduBuf, \
+              macCb.macCell->macRaCb[0].msg4PduLen);
+            if(msg4DlData.pduInfo[0].pduBuf != NULLP)
+            {
+               fillMsg4DlData(&msg4DlData);
+            }
+         }
+         fillMacCe(&macCeData);
+         macMuxPdu(&msg4DlData, &macCeData, macCb.macCell->macRaCb[0].msg4TbSize);
+      
+         /* storing msg4 Pdu in dlAlloc */
+         MAC_ALLOC(dlAlloc->msg4Alloc.msg4Info.msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen);
+         if(dlAlloc->msg4Alloc.msg4Info.msg4Pdu != NULLP)
+         {  
+            dlAlloc->msg4Alloc.msg4Info.msg4Pdu = macCb.macCell->macRaCb[0].msg4Pdu;
+            dlAlloc->msg4Alloc.msg4Info.pduLen = macCb.macCell->macRaCb[0].msg4PduLen;
+         }
+         /* TODO: Free all allocated memory, after the usage */
+         /* MAC_FREE(macCb.macCell->macRaCb[0].msg4TxPdu, \
+              macCb.macCell->macRaCb[0].msg4TbSize); // TODO: To be freed after re-transmission is successful.
+            MAC_FREE(dlAlloc->msg4Alloc.msg4Info.msg4Pdu,\
+              macCb.macCell->macRaCb[0].msg4PduLen); //TODO: To be freed after lower-mac is succesfull
+            MAC_FREE(msg4DlData.pduInfo[0].pduBuf, macCb.macCell->macRaCb[0].msg4PduLen);
+            MAC_FREE(macCb.macCell->macRaCb[0].msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen); */
+           
+      }
    }
    return ROK;
 }
