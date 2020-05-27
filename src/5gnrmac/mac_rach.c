@@ -99,29 +99,30 @@ uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 {
    uint8_t      pduIdx;
    uint8_t      preambleIdx;
-   RachIndInfo  *rachIndInfo;
+   RachIndInfo  rachIndInfo;
 
    DU_LOG("\nMAC : Received RACH indication");
    /* Considering one pdu and one preamble */
    pduIdx = 0;
    preambleIdx = 0;
 
-   rachIndInfo = &macCb.macCell->raCb;
-
-   rachIndInfo->cellId = rachInd->rachPdu[pduIdx].pci;
-   /* TODO : Allocate unique crnti for each ue */
-   rachIndInfo->crnti = 100;
-   rachIndInfo->timingInfo.sfn = rachInd->timingInfo.sfn;
-   rachIndInfo->timingInfo.slot = rachInd->timingInfo.slot;
-   rachIndInfo->slotIdx = rachInd->rachPdu[pduIdx].slotIdx;
-   rachIndInfo->symbolIdx = rachInd->rachPdu[pduIdx].symbolIdx;
-   rachIndInfo->freqIdx = rachInd->rachPdu[pduIdx].freqIdx;
-   rachIndInfo->preambleIdx = \
+   rachIndInfo.cellId = rachInd->rachPdu[pduIdx].pci;
+   /* TODO : A.ocate unique crnti for each ue */
+   rachIndInfo.crnti = 100;
+   rachIndInfo.timingInfo.sfn = rachInd->timingInfo.sfn;
+   rachIndInfo.timingInfo.slot = rachInd->timingInfo.slot;
+   rachIndInfo.slotIdx = rachInd->rachPdu[pduIdx].slotIdx;
+   rachIndInfo.symbolIdx = rachInd->rachPdu[pduIdx].symbolIdx;
+   rachIndInfo.freqIdx = rachInd->rachPdu[pduIdx].freqIdx;
+   rachIndInfo.preambleIdx = \
       rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
-   rachIndInfo->timingAdv = \
+   rachIndInfo.timingAdv = \
       rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
 
-   return(sendRachIndMacToSch(rachIndInfo));
+   /* storing the value in macRaCb */
+   createMacRaCb(rachIndInfo.cellId, rachIndInfo.crnti);
+
+   return(sendRachIndMacToSch(&rachIndInfo));
 }
 
 /* spec-38.211 Table 6.3.3.1-7 */
