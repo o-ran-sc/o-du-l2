@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "06fd69fc_84b4e30b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T05:31:28Z",
+      "side": 1,
+      "message": "if return is used what is use of else?",
+      "revId": "2374f0ccd383150a3a4bdaf48d1e8ac863c2af6e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}

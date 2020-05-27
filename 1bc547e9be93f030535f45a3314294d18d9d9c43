@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bee124f8_9af2c24d",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T05:31:28Z",
+      "side": 1,
+      "message": "e2apMsg is not sent here anymore",
+      "revId": "1bc547e9be93f030535f45a3314294d18d9d9c43",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e148b6c3_593fba79",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T05:31:28Z",
+      "side": 1,
+      "message": "add a parint saying passed e2setup is NULL",
+      "revId": "1bc547e9be93f030535f45a3314294d18d9d9c43",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0357ced6_edac9112",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T05:31:28Z",
+      "side": 1,
+      "message": "this check is nit required. If ret!\u003dROK, we have already used a \"break\" above",
+      "revId": "1bc547e9be93f030535f45a3314294d18d9d9c43",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4c4363e_6f17ff92",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T05:31:28Z",
+      "side": 1,
+      "message": "this break is also not required. Once this if condition is ended, we are anyway using a break",
+      "revId": "1bc547e9be93f030535f45a3314294d18d9d9c43",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
