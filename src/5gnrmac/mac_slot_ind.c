@@ -82,9 +82,39 @@ int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
 {
    if(dlAlloc != NULLP)
    {
-		MacDlSlot *currDlSlot =
-		&macCb.macCell->dlSlot[dlAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
-      memcpy(&currDlSlot->dlInfo, dlAlloc, sizeof(DlAlloc)); 
+      MacDlSlot *currDlSlot =
+      &macCb.macCell->dlSlot[dlAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
+      memcpy(&currDlSlot->dlInfo, dlAlloc, sizeof(DlAlloc));
+    
+      if(dlAlloc->isMsg4Pres)
+      {
+         RlcMacData msg4DlData;
+         MacCeInfo  macCeData;
+         memset(&msg4DlData, 0, sizeof(RlcMacData));
+         memset(&macCeData, 0, sizeof(MacCeInfo));
+
+         /* TODO: After DL-CCCH indicatation is done, below hardcoding has to be removed */
+         macCb.macCell->macRaCb[0].msg4PduLen = 263;
+         dlAlloc->msg4Alloc.msg4PdschCfg.codeword[0].tbSize = 10;  /* tbsize to be filled by SCH */
+         macCb.macCell->macRaCb[0].msg4TbSize = dlAlloc->msg4Alloc.msg4PdschCfg.codeword[0].tbSize;
+ 
+         MAC_ALLOC(macCb.macCell->macRaCb[0].msg4Pdu,\
+            macCb.macCell->macRaCb[0].msg4PduLen);
+
+         if(macCb.macCell->macRaCb[0].msg4Pdu != NULLP)
+         {
+            fillMsg4DlData(&msg4DlData);
+         }
+         fillMacCe(&macCeData);
+         macMuxPdu(&msg4DlData, &macCeData);
+
+         MAC_ALLOC(dlAlloc->msg4Alloc.msg4Info.msg4Pdu, macCb.macCell->macRaCb[0].msg4TbSize);
+         if(dlAlloc->msg4Alloc.msg4Info.msg4Pdu != NULLP)
+         {  
+            dlAlloc->msg4Alloc.msg4Info.msg4Pdu = macCb.macCell->macRaCb[0].msg4TxPdu;
+            dlAlloc->msg4Alloc.msg4Info.pduLen = macCb.macCell->macRaCb[0].msg4TbSize;
+         }
+      }
    }
    return ROK;
 }
