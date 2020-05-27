@@ -65,6 +65,7 @@
 extern MacCb  macCb;
 
 extern void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg);
+uint16_t buildMacPdu(RlcMacData *dlData);
 
 /* Function pointer for sending crc ind from MAC to SCH */
 MacSchCrcIndFunc macSchCrcIndOpts[]=
@@ -322,28 +323,38 @@ uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
    DlRlcBOInfo  dlBoInfo;
 
    DU_LOG("\nMAC : Handling DL CCCH IND");
+   
+   /* TODO : Fill DL RLC Buffer status info */
+   dlBoInfo.cellId = dlCcchIndInfo->cellId;
+   dlBoInfo.crnti = dlCcchIndInfo->crnti;
+   dlBoInfo.numLc = 0;
+   
+   if(dlCcchIndInfo->msgType == RRC_SETUP)
+   {
+      dlBoInfo.numLc++;
+      dlBoInfo.boInfo[dlBoInfo.numLc].lcId = 0;    // SRB 0 for msg4
+      dlBoInfo.boInfo[dlBoInfo.numLc].dataVolume = \
+      strlen((const char*)dlCcchIndInfo->dlCcchMsg);
 
-	/* TODO : Fill DL RLC Buffer status info */
-	dlBoInfo.cellId = dlCcchIndInfo->cellId;
-	dlBoInfo.crnti = dlCcchIndInfo->crnti;
-	dlBoInfo.numLc = 0;
-
-	if(dlCcchIndInfo->msgType == RRC_SETUP)
-	{
-	   dlBoInfo.numLc++;
-	   dlBoInfo.boInfo[dlBoInfo.numLc].lcId = 0;    // SRB 0 for msg4
-	   dlBoInfo.boInfo[dlBoInfo.numLc].dataVolume = \
-		   strlen((const char*)dlCcchIndInfo->dlCcchMsg);
+      /* storing Msg4 Pdu in raCb */
+      if(macCb.macCell->macRaCb[0].crnti == dlCcchIndInfo->crnti)
+      {
+         macCb.macCell->macRaCb[0].msg4PduLen = strlen((const char*)dlCcchIndInfo\
+         ->dlCcchMsg);
+         MAC_ALLOC(macCb.macCell->macRaCb[0].msg4Pdu, macCb.macCell->macRaCb[0]\
+         .msg4PduLen);
+         if(macCb.macCell->macRaCb[0].msg4Pdu)
+         {
+            memcpy(macCb.macCell->macRaCb[0].msg4Pdu, dlCcchIndInfo->dlCcchMsg,\
+            macCb.macCell->macRaCb[0].msg4PduLen);
+         }
+      }
    }
-
-   /* TODO: Store dlCcchMsg in raCb */
-	 
-	sendDlRlcBoInfoMacToSch(&dlBoInfo);
-
-
-	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo->dlCcchMsg, \
-	   strlen((const char*)dlCcchIndInfo->dlCcchMsg));
-	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo, sizeof(DlCcchIndInfo));
+   sendDlRlcBoInfoMacToSch(&dlBoInfo);
+   
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo->dlCcchMsg, \
+      strlen((const char*)dlCcchIndInfo->dlCcchMsg));
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo, sizeof(DlCcchIndInfo));
    return ROK;
 
 }

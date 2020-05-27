@@ -209,6 +209,185 @@ void fillRarPdu(RarInfo *rarInfo)
 	
 }
 
+/*******************************************************************
+ *
+ * @brief Database required to form MAC PDU
+ *
+ * @details
+ *
+ *    Function : createMacRaCb
+ *
+ *    Functionality:
+ *     stores the required params for muxing
+ *
+ * @params[in] Pointer to cellId,
+ *                        crnti
+ * @return void
+ *
+ * ****************************************************************/
+void createMacRaCb(uint16_t cellId, uint16_t crnti)
+{
+   uint8_t idx = 0; /* supporting 1 UE */
+   macCb.macCell->macRaCb[idx].cellId = cellId;
+   macCb.macCell->macRaCb[idx].crnti = crnti;
+}
+
+/*************************************************
+ * @brief fill RLC DL Data
+ *
+ * @details
+ *
+ * Function : fillMsg4DlData
+ *      This function is a stub which sends Dl Data
+ *      to form MAC SDUs
+ *           
+ * @param[in]  MacDlData *dlData
+ ************************************************/
+
+void fillMsg4DlData(MacDlData *dlData)
+{
+   uint8_t idx = 0;
+   dlData->numPdu = 1;
+   dlData->pduInfo[idx].lcId = MAC_LCID_CCCH;
+   dlData->pduInfo[idx].pduLen = macCb.macCell->macRaCb[0].msg4PduLen;
+   memcpy(dlData->pduInfo[idx].dlPdu, macCb.macCell->macRaCb[0].msg4Pdu,\
+    macCb.macCell->macRaCb[0].msg4PduLen);
+}
+
+/*************************************************
+ * @brief fill Mac Ce Info
+ *
+ * @details
+ *
+ * Function : fillMacCe
+ *      This function fills Mac ce identities
+ *           
+ * @param[in]  RlcMacData *dlData
+ ************************************************/
+
+void fillMacCe(MacCeInfo *macCeInfo)
+{
+   uint8_t idx;
+   macCeInfo->numCes = 1;
+   for(idx = 0; idx < macCeInfo->numCes; idx++)
+   {
+      macCeInfo->macCe[idx].macCeLcid = MAC_LCID_CRI;
+      memcpy(&macCeInfo->macCe[idx].macCeValue, \
+         &macCb.macCell->macRaCb[idx].msg3Pdu, MAX_CRI_SIZE);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Forms MAC PDU
+ *
+ * @details
+ *
+ *    Function : buildMacPdu
+ *
+ *    Functionality:
+ *     The MAC PDU will be MUXed and formed
+ *
+ * @params[in] MacDlData *, MacCeInfo *, tbSize
+ * @return void
+ *
+ * ****************************************************************/
+
+void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
+{
+   uint8_t bytePos = 0;
+   uint8_t bitPos = 7;
+   uint8_t idx = 0;
+   uint8_t macPdu[tbSize];
+   memset(macPdu, 0, (tbSize * sizeof(uint8_t)));
+
+   /* subheader fields */
+   uint8_t RBit = 0;              /* Reserved bit */
+   uint8_t FBit;                  /* Format Indicator */
+   uint8_t lcid;                  /* LCID */
+   uint8_t lenField = 0;          /* Length field */
+
+   /* subheader field size (in bits) */
+   uint8_t RBitSize = 1;
+   uint8_t FBitSize = 1;
+   uint8_t lcidSize = 6;
+   uint8_t lenFieldSize = 0;          /* 8-bit or 16-bit L field  */
+   uint8_t criSize = 8;
+
+   /* PACK ALL MAC CE */
+   for(idx = 0; idx < macCeData->numCes; idx++)
+   {
+      lcid = macCeData->macCe[idx].macCeLcid;
+      switch(lcid)
+      {
+         case MAC_LCID_CRI:
+	 {
+            /* Packing fields into MAC PDU R/R/LCID */
+            packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+            packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+            packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+            memcpy(&macPdu[bytePos], macCeData->macCe[idx].macCeValue,\
+            MAX_CRI_SIZE);
+            break;
+         }
+         default:
+            DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
+            break;
+      }
+   }
+
+   /* PACK ALL MAC SDUs */
+   for(idx = 0; idx < dlData->numPdu; idx++)
+   {
+      lcid = dlData->pduInfo[idx].lcId;
+      lenField = dlData->pduInfo[idx].pduLen;
+      switch(lcid)
+      {
+         case MAC_LCID_CCCH:
+	 {
+            if(dlData->pduInfo[idx].pduLen > 255)
+            {
+               FBit = 1;
+               lenFieldSize = 16;
+
+            }
+            else
+            {
+               FBit = 0;
+               lenFieldSize = 8;
+            }
+            /* Packing fields into MAC PDU R/F/LCID/L */
+            packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+            packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
+            packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+            packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
+            memcpy(&macPdu[bytePos], dlData->pduInfo[idx].dlPdu, lenField);
+            break;
+	 }
+
+         default:
+            DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
+            break;
+      }
+
+   }
+   if(bytePos < tbSize && (tbSize-bytePos >= 1))
+   {
+      /* padding remaining bytes */
+      RBitSize = 2;
+      lcid = MAC_LCID_PADDING;
+      packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+      packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+   }
+
+   MAC_ALLOC(macCb.macCell->macRaCb[0].msg4TxPdu, macCb.macCell->macRaCb[0].msg4TbSize);
+   if(macCb.macCell->macRaCb[0].msg4TxPdu != NULLP)
+   {
+      memcpy(macCb.macCell->macRaCb[0].msg4TxPdu, macPdu,\
+         macCb.macCell->macRaCb[0].msg4TbSize);
+   }
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
