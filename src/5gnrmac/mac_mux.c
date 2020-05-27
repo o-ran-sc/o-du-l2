@@ -209,6 +209,82 @@ void fillRarPdu(RarInfo *rarInfo)
 	
 }
 
+/*******************************************************************
+ *
+ * @brief Forms MAC PDU
+ *
+ * @details
+ *
+ *    Function : buildMacPdu
+ *
+ *    Functionality:
+ *     The MAC PDU will be MUXed and formed
+ *
+ * @params[in] RAR info
+ * @return void
+ *
+ * ****************************************************************/
+
+uint16_t buildMacPdu(RlcMacData *dlData)
+{
+   uint8_t bytePos = 0;
+   uint8_t bitPos = 0;
+   uint8_t idx = 0;
+   uint8_t tbSize = 50;
+   uint8_t macPdu[tbSize];   /* TO DO: to extract tbsize populated in ulschAlloc */
+
+   /* subheader fields */
+   uint8_t RBit;              /* Reserved bit */
+   uint8_t FBit;              /* Format Indicator */
+   uint8_t lcid;              /* LCID */
+   uint8_t LBit;              /* Length field */
+
+   /* subheader field size (in bits) */
+   uint8_t RBitSize = 1;
+   uint8_t FBitSize = 1;
+   uint8_t lcidSize = 6;
+   uint8_t LBitSize = 8;          /* 8-bit or 16-bit L field  */
+   uint8_t paddingSize;
+
+   for(idx = 0; idx < dlData->nmbPdu; idx++)
+   {
+      /* To make Octect aligned */
+      bytePos = 0;
+      bitPos = 7;
+      paddingSize = 0;
+
+      lcid = dlData->pduInfo[idx].lcId;
+      if(dlData->pduInfo[idx].pduLen > 255)
+      {
+         FBit = 1;
+
+         /* Packing fields into MAC PDU R/F/LCID/L/L */
+         packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+         packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
+         packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+         packBytes(macPdu, &bytePos, &bitPos, LBit, LBitSize);
+         packBytes(macPdu, &bytePos, &bitPos, LBit, LBitSize);
+         packBytes(macPdu, &bytePos, &bitPos, dlData->pduInfo[idx].pduBuf,\
+                    dlData->pduInfo[idx].pduLen);
+      }
+      else
+      {
+         FBit = 0;
+
+         /* Packing fields into MAC PDU R/F/LCID/L */
+         packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+         packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
+         packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+         packBytes(macPdu, &bytePos, &bitPos, LBit, LBitSize);
+         packBytes(macPdu, &bytePos, &bitPos, dlData->pduInfo[idx].pduBuf,\
+                    dlData->pduInfo[idx].pduLen);
+      }
+      paddingSize = ((tbSize - dlData->pduInfo[idx].pduLen) * 8); /* total size in bits */
+      packBytes(macPdu, &bytePos, &bitPos, 0, paddingSize);
+   }
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

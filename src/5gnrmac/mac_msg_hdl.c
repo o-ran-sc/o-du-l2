@@ -80,6 +80,11 @@ extern void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg);
  * ****************************************************************/
 uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData)
 {
+   DU_LOG("\nMAC : Handling DL Data request");
+   buildMacPdu(dlData);
+
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlData, \
+	   sizeof(RlcMacData));
    return ROK;
 }
 
