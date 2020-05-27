@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "23b1014d_65a6bc8e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T13:11:08Z",
+      "side": 1,
+      "message": "why do we have to check e2SetupReq for NULL? we have not allocated memory for it",
+      "revId": "9566522a04475671376e91634ab6c8a0a00c993a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81f771fc_bd6e0cc5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T13:11:08Z",
+      "side": 1,
+      "message": "any given NULL check under if condition is to check if we can access memory, the rest of it must not be in else",
+      "revId": "9566522a04475671376e91634ab6c8a0a00c993a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55eefece_f3850f1c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T13:11:08Z",
+      "side": 1,
+      "message": "this else must not be there. We should free the below either way as far as they are not NULL!!!",
+      "revId": "9566522a04475671376e91634ab6c8a0a00c993a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "494800e2_1e6cc962",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T13:11:08Z",
+      "side": 1,
+      "message": "this must not be under else. e2apMsg must be freed irrespective of e2apMsg-\u003echoice.initiatingMessage being NULL.\nRemove else",
+      "revId": "9566522a04475671376e91634ab6c8a0a00c993a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
