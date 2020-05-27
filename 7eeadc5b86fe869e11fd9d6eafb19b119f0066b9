@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "39f89e6e_a595c857",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T12:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a589a9ae_a0c00463",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6c8fea2c_fce1c03e",
         "filename": "src/5gnrsch/sch.h",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "9712ce08_b78b21af",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T12:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c8fea2c_fce1c03e",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a475987f_1b3879e4",
         "filename": "src/5gnrsch/sch_common.c",
         "patchSetId": 2
@@ -50,6 +86,24 @@
       "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "589f1e2f_ee4afa1d",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T12:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a475987f_1b3879e4",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "e59f9c93_140e18b2",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T12:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdd83988_026270a0",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c3f2f098_5ce7d529",
         "filename": "src/5gnrsch/sch_rach.c",
         "patchSetId": 2
@@ -101,6 +173,24 @@
       "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5f448db_e689722a",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T12:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3f2f098_5ce7d529",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "a64edf84_3b347319",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T12:24:43Z",
+      "side": 1,
+      "message": "we can discuss and make a common approach for UL and DL",
+      "parentUuid": "f2e25545_b06bcfbd",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "890941ee_fa242aff",
         "filename": "src/5gnrsch/sch_rach.c",
         "patchSetId": 2
@@ -135,6 +243,24 @@
       "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d6bfa3e_02e42bfa",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-27T12:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "890941ee_fa242aff",
+      "revId": "7eeadc5b86fe869e11fd9d6eafb19b119f0066b9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
