@@ -209,6 +209,96 @@ void fillRarPdu(RarInfo *rarInfo)
 	
 }
 
+/*******************************************************************
+ *
+ * @brief Forms MAC PDU
+ *
+ * @details
+ *
+ *    Function : buildMacPdu
+ *
+ *    Functionality:
+ *     The MAC PDU will be MUXed and formed
+ *
+ * @params[in] RlcMacData*
+ * @return void
+ *
+ * ****************************************************************/
+
+uint16_t buildMacPdu(RlcMacData *dlData) /* TO DO: DL-CCCH to be used */
+{
+   uint8_t bytePos = 0;
+   uint8_t bitPos = 7;
+   uint8_t idx = 0;
+   uint8_t tbSize = 50;      /* in bytes */
+   uint8_t macPdu[tbSize];   /* TO DO: to extract tbsize populated in ulschAlloc */
+
+   /* subheader fields */
+   uint8_t RBit = 0;              /* Reserved bit */
+   uint8_t FBit;                  /* Format Indicator */
+   uint8_t lcid;                  /* LCID */
+	uint8_t lenField = 0;          /* Length field */
+
+   /* subheader field size (in bits) */
+   uint8_t RBitSize = 1;
+   uint8_t FBitSize = 1;
+   uint8_t lcidSize = 6;
+   uint8_t lenFieldSize = 0;          /* 8-bit or 16-bit L field  */
+
+   /* Padding fields */
+   uint8_t paddingSize = 0;
+   uint8_t totalBits = 0;
+   uint8_t numBytes = 0;
+
+   for(idx = 0; idx < dlData->nmbPdu; idx++)
+   {
+      lcid = dlData->pduInfo[idx].lcId;
+      switch(lcid)
+      {
+         case MAC_LCID_CCCH:
+            if(dlData->pduInfo[idx].pduLen > 255)
+            {
+               FBit = 1;
+               lenFieldSize = 16;
+
+            }
+            else
+            {
+               FBit = 0;
+               lenFieldSize = 8;
+            }
+            /* Packing fields into MAC PDU R/F/LCID/L */
+            packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+            packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
+            packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+            packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
+            /* TO DO: pack pduBuffer from DL-CCCH struct
+				   and include pduLen in totalBits
+            packBytes(macPdu, &bytePos, &bitPos, (uint32_t)(*(dlData->pduInfo[idx].pduBuf)),\
+                       (uint8_t )dlData->pduInfo[idx].pduLen); */
+            totalBits = RBitSize + FBitSize + lcidSize + lenFieldSize ;
+            break;
+         default:
+            DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
+            break;
+      }
+
+   }
+   /* padding remaining bytes */
+   RBitSize = 2;
+   lcid = MAC_LCID_PADDING;
+   numBytes = totalBits/8;
+   if(totalBits % 8)
+      numBytes += 1;
+
+   paddingSize = ((tbSize - numBytes - 1) * 8); /* total size in bits */
+   packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+   packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+   packBytes(macPdu, &bytePos, &bitPos, 0, paddingSize);
+
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
