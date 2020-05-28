@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7e2e5ceb_885722c5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-28T10:18:08Z",
+      "side": 1,
+      "message": "this will be useful, if we plan to add more IEs in future.",
+      "parentUuid": "21f336f8_b1287485",
+      "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c0f6fc01_6f83c23c",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 7
@@ -33,6 +51,24 @@
       "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5441a0a8_f9b0c4f8",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-28T10:18:08Z",
+      "side": 1,
+      "message": "since the allocated memory is already freed in switch case.\nI have removed the else part.",
+      "parentUuid": "c0f6fc01_6f83c23c",
+      "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "f98ab184_7fdba707",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-28T10:18:08Z",
+      "side": 1,
+      "message": "yeah not requried",
+      "parentUuid": "c64e0754_83535119",
+      "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a1a9b7d9_ab61dfe3",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 7
@@ -67,6 +121,24 @@
       "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d53bfc9c_a1ed793e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-05-28T10:18:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1a9b7d9_ab61dfe3",
+      "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
