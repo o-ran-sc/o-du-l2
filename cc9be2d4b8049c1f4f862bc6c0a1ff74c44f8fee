@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47468c16_dd8844f9",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:03:57Z",
+      "side": 1,
+      "message": "lenField has value zero. Incorrect.",
+      "revId": "cc9be2d4b8049c1f4f862bc6c0a1ff74c44f8fee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7235bbc_0a64c1f2",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:03:57Z",
+      "side": 1,
+      "message": "Total bits should also include the size of sdu",
+      "revId": "cc9be2d4b8049c1f4f862bc6c0a1ff74c44f8fee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
