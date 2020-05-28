@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ee2eaa6c_ebffffb4",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T08:55:05Z",
+      "side": 1,
+      "message": "If buf is NULL, buildPlmnId() shouldnt be called at all.",
+      "revId": "6e44403bc77681f25256a75aee856a9ce1906fcb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
