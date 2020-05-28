@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8e6e1c66_8a366d38",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:57:11Z",
+      "side": 1,
+      "message": "NULL check missing for nrcgi-\u003epLMN_Identity.buf",
+      "revId": "74366ce8de228a6eabde57fc23f10e57273820c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72e88c84_1ebddb2d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1862,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:57:11Z",
+      "side": 1,
+      "message": "Use \"ulRRCMsg-\u003eprotocolIEs.list.size\"",
+      "revId": "74366ce8de228a6eabde57fc23f10e57273820c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a070c40_14bcf87b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1947,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:57:11Z",
+      "side": 1,
+      "message": "loop should iterate for \"idx1\u003cidx\"... this will cover both failure and success scnearios",
+      "revId": "74366ce8de228a6eabde57fc23f10e57273820c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22f9d023_68ffb941",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1954,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:57:11Z",
+      "side": 1,
+      "message": "Use \"ulRRCMsg-\u003eprotocolIEs.list.size\"",
+      "revId": "74366ce8de228a6eabde57fc23f10e57273820c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cc21713_e87685f2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1989,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:57:11Z",
+      "side": 1,
+      "message": "As per our coding convention, define each variable in a newline",
+      "revId": "74366ce8de228a6eabde57fc23f10e57273820c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b4b0f03_fbc587da",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2020,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:57:11Z",
+      "side": 1,
+      "message": "Use \"initULRRCMsg-\u003eprotocolIEs.list.size\"",
+      "revId": "74366ce8de228a6eabde57fc23f10e57273820c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52657772_9570fc4c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2104,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:57:11Z",
+      "side": 1,
+      "message": "Move this inside \"if(idx \u003d\u003d elementCnt)\"",
+      "revId": "74366ce8de228a6eabde57fc23f10e57273820c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "caf2facc_a1c4e505",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2109,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:57:11Z",
+      "side": 1,
+      "message": "NULL check for \"initULRRCMsg-\u003eprotocolIEs.list.array\" missing",
+      "revId": "74366ce8de228a6eabde57fc23f10e57273820c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7c37b71_ccc211e1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2132,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-28T07:57:11Z",
+      "side": 1,
+      "message": "Memory free for \"initULRRCMsg-\u003eprotocolIEs.list.array\" missing",
+      "revId": "74366ce8de228a6eabde57fc23f10e57273820c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
