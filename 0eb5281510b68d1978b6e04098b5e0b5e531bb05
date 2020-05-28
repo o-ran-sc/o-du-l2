@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "21f336f8_b1287485",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-28T05:26:38Z",
+      "side": 1,
+      "message": "why switch case? there is only 1 IE in the switch case",
+      "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0f6fc01_6f83c23c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-28T05:26:38Z",
+      "side": 1,
+      "message": "unable to understand the else part",
+      "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c64e0754_83535119",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-28T05:26:38Z",
+      "side": 1,
+      "message": "should we return RFAILED?",
+      "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1a9b7d9_ab61dfe3",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-05-28T05:26:38Z",
+      "side": 1,
+      "message": "lets avoid multiple returns from this function",
+      "revId": "0eb5281510b68d1978b6e04098b5e0b5e531bb05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
