@@ -152,6 +152,7 @@ extern "C" {
 #ifdef NTL_LIB
 #include "ntl_lib.h"
 #endif 
+#include "du_log.h"
 
   
 /* local defines */
@@ -2296,10 +2297,8 @@ U16                port;         /* port number */
             " sockFd->fd(%ld)\n", INET_ERR_CODE, port, sockFd->fd);
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET010, 0, prntBuf);
 #else
-      /* cm_inet_c_001.main_62:Warning fix */
-      snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "CmInetSctpConnectx() Failed : error(%d), port(0x%1x),"
-            " sockFd->fd(%d)\n", INET_ERR_CODE, port, sockFd->fd);
-      CMINETLOGERROR(ERRCLS_DEBUG, ECMINET010, 0, prntBuf);
+      DU_LOG("\nCmInetSctpConnectx() Failed : error(%d), port(0x%1x),\
+		   sockFd->fd(%d)\n", INET_ERR_CODE, port, sockFd->fd);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
@@ -2778,10 +2777,8 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
             " sockFd->fd(%ld)\n", INET_ERR_CODE, sockFd->fd);
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET014, 0, prntBuf);
 #else
-      /* cm_inet_c_001.main_62:Warning fix */
-      snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetSctpRecvMsg() Failed : error(%d),"
-            " sockFd->fd(%d)\n",  INET_ERR_CODE, sockFd->fd);
-      CMINETLOGERROR(ERRCLS_DEBUG, ECMINET014, 0, prntBuf);
+      DU_LOG("\ncmInetSctpRecvMsg() Failed : error(%d), sockFd->fd(%d)", \
+         INET_ERR_CODE, sockFd->fd);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
