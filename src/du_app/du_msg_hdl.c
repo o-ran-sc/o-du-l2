@@ -1444,17 +1444,20 @@ S16 duLayerConfigComplete()
       DU_LOG("\nDU_APP : Failed configuring Sctp Params");
       ret = RFAILED;
    }
+   #ifdef SCTP_REQ_CU
    if((ret = duSctpAssocReq(F1_INTERFACE)) != ROK)
    {
       DU_LOG("\nDU_APP : Failed to send AssocReq F1");
       ret = RFAILED;
    }
+   #endif
+   #ifdef SCTP_REQ_RIC
    if((ret = duSctpAssocReq(E2_INTERFACE)) != ROK)
    {
       DU_LOG("\nDU_APP : Failed to send AssocReq E2");
       ret = RFAILED;
    }
-
+   #endif
    RETVALUE(ret); 
 } 
 
