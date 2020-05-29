@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98e43970_9e03021f",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-29T07:58:30Z",
+      "side": 1,
+      "message": "padding bytes can packed in a simple way rather than using packBytes function.",
+      "revId": "d42c86720a22dc888ffd6564986cbc4e4a500fe1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21c7aca8_962f8747",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-29T07:58:30Z",
+      "side": 1,
+      "message": "tbSize need to be sent to this function.",
+      "revId": "d42c86720a22dc888ffd6564986cbc4e4a500fe1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64ea9f39_ed83c2e0",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-29T07:58:30Z",
+      "side": 1,
+      "message": "rather than using totalbits, we can use in terms of bytes.",
+      "revId": "d42c86720a22dc888ffd6564986cbc4e4a500fe1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc0cce67_a0271df1",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-05-29T07:58:30Z",
+      "side": 1,
+      "message": "why do you need to pack 0. packBytes function can be replaced by a simple for loop or memset.",
+      "revId": "d42c86720a22dc888ffd6564986cbc4e4a500fe1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
