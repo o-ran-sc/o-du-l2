@@ -1,0 +1,395 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "261555a1_42e3989e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2609,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Both the above size params were already filled in BuildNrcgi. Why do we need to calculate it here again?",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a92606d2_2a20cdde",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2638,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Do not hardcoude count since it may change in future",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0518efb_4e5c3595",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2639,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "This size was already calculated in BuildSplCellList. Why is this calculated here again?",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "273cd376_2f19bced",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2642,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Use spCellLst-\u003elist.count instead of hard coding cell count",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdbc623e_273d142f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2675,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Do not hard code the count while freeing of array. The Cnt may change in future",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e912d6e_50d07aae",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2676,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "size of list is already calculted in BuildSRBSetup",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95127024_5801d4f2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2679,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Use srbSet-\u003elist.count instead of srbCnt",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95327466_a2317e98",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2741,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Do not hard code ulcnt",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e4d3577_acd736a7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2742,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "size was already calculated in BuildUlTnlInfo",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "161fafdd_a58b4ca9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2745,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "use list.count",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25dcd165_c6c9faab",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2798,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Do not hard code flowCnt",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bd1e344_05e8c366",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2800,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Do not hard code DRB count",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5de3aee_8378175a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2803,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "use drbSet-\u003elist.count",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba2823f9_3ec0e5ac",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2829,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "use flows_Mapped_To_DRB_List.list.count",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f275ef9e_e4587a62",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2846,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Check if BuildFlowsMapret \u003d\u003d ROK before the condition at 2846. \nIf(BuildFlowsMapret \u003d\u003d ROK) { FreeULTnlInfo() }",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "909910e0_f5af23ce",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2877,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Use sD-\u003esize",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a32d66c_cdafaf46",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2883,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "use sST.size param here instead of sizeof(U8)",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "351efbe4_679204ce",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2926,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Define each variable in new line",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f940516f_a2568ee3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3119,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "NRCGI is filled at idx 2. so check if idx \u003d\u003d\u003d 2",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e77a2fd5_a557a9f1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3121,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Since array[6] is freed inside this if{}, add NULL check for array[6]",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07beb78b_91520447",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3123,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Since array[7] is freed inside this if{}, add NULL check for array[7]",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dabddb1c_13c1be94",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3125,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Since array[8] is freed inside this if{}, add NULL check for array[8]",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eff9e166_3585c0f2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-05-29T11:40:28Z",
+      "side": 1,
+      "message": "Free ueSetReq-\u003eprotocolIEs.list.array[idx] and not InitiatingMessage",
+      "revId": "9566df2db71879a4d727be197633f6bad480a916",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
