@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8b2ae7ec_4bd4f2f9",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-01T16:18:38Z",
+      "side": 1,
+      "message": "No, we are not clear on num Rbs PUCCH would take, this is currently taken as a macro.",
+      "parentUuid": "358f08f5_18b75c0d",
+      "revId": "d38c46f53ffef0f64343abb0740865686939d9e6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bfb4329c_4b95af7e",
         "filename": "src/5gnrsch/sch_rach.c",
         "patchSetId": 5
