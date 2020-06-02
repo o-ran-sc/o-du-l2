@@ -66,8 +66,6 @@
 #include "sch_utils.h"
 #include "du_log.h"
 extern SchCb schCb[SCH_MAX_INST];
-extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
-extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
 /* local defines */
 SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
@@ -496,7 +494,7 @@ uint8_t      offsetPointA
    sib1SchCfg->n0 = slotIndex;
  
    /* calculate the PRBs */
-   freqDomResourceAlloc( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   calculatePRB( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill the PDCCH PDU */
    pdcch->pdcchBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
@@ -627,6 +625,57 @@ SchCellCfg          *schCellCfg
 
    return ret;
 
+}
+
+/*******************************************************************
+ *
+ * @brief Processes DL RLC BO info from MAC
+ *
+ * @details
+ *
+ *    Function : macSchDlRlcBoInfo
+ *
+ *    Functionality:
+ *       Processes DL RLC BO info from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
+{
+   uint16_t  lcIdx;
+   Inst  inst = pst->dstInst-SCH_INST_START;
+   DU_LOG("\nSCH : Received RLC BO Status indication");
+
+   SchCellCb *cell = schCb[inst].cells[inst];
+   SchDlAlloc *dlAlloc = \
+      cell->dlAlloc[(cell->slotInfo.slot + SCHED_DELTA) % SCH_NUM_SLOTS]; 
+  
+   for(lcIdx = 0; lcIdx < dlBoInfo->numLc; lcIdx++)
+	{
+	   if(dlBoInfo->boInfo[lcIdx].lcId == CCCH_LCID)
+		{
+	      SCH_ALLOC(dlAlloc->msg4Info, sizeof(Msg4Info));
+	      if(!dlAlloc->msg4Info)
+	      {
+	         DU_LOG("\nSCH : Memory allocation failed for msg4Info");
+		      dlAlloc = NULL;
+		      return RFAILED;
+	      }
+         dlAlloc->msg4Info->crnti = dlBoInfo->crnti;
+			dlAlloc->msg4Info->ndi = 1;
+			dlAlloc->msg4Info->harqProcNum = 0;
+			dlAlloc->msg4Info->dlAssignIdx = 0;
+			dlAlloc->msg4Info->pucchTpc = 0;
+			dlAlloc->msg4Info->pucchResInd = 0;
+			dlAlloc->msg4Info->harqFeedbackInd = 0;
+			dlAlloc->msg4Info->dciFormatId = 1;
+	   }
+   }
+
+   return ROK;
 }
 
 /**********************************************************************

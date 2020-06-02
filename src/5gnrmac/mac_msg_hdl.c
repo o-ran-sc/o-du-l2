@@ -74,6 +74,40 @@ MacSchCrcIndFunc macSchCrcIndOpts[]=
    packMacSchCrcInd
 };
 
+/* Function pointer for sending DL RLC BO Info from MAC to SCH */
+MacSchDlRlcBoInfoFunc macSchDlRlcBoInfoOpts[]=
+{
+   packMacSchDlRlcBoInfo,
+   macSchDlRlcBoInfo,
+   packMacSchDlRlcBoInfo
+};
+
+/*******************************************************************
+ *
+ * @brief Sends DL BO Info to SCH
+ *
+ * @details
+ *
+ *    Function : sendDlRlcBoInfoMacToSch
+ *
+ *    Functionality:
+ *       Sends DL BO Info to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+int sendDlRlcBoInfoMacToSch(DlRlcBOInfo *dlBoInfo)
+{
+   Pst pst;
+ 
+   fillMacToSchPst(&pst);
+   pst.event = EVENT_DL_RLC_BO_INFO_TO_SCH;
+ 
+   return(*macSchDlRlcBoInfoOpts[pst.selector])(&pst, dlBoInfo);
+}
+
 /*******************************************************************
  *
  * @brief Sends CRC Indication to SCH
@@ -285,9 +319,30 @@ uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  * ****************************************************************/
 uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 {
+   DlRlcBOInfo  dlBoInfo;
+
    DU_LOG("\nMAC : Handling DL CCCH IND");
 
-	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo->dlCcchMsg, strlen((const char*)dlCcchIndInfo->dlCcchMsg));
+	/* TODO : Fill DL RLC Buffer status info */
+	dlBoInfo.cellId = dlCcchIndInfo->cellId;
+	dlBoInfo.crnti = dlCcchIndInfo->crnti;
+	dlBoInfo.numLc = 0;
+
+	if(dlCcchIndInfo->msgType == RRC_SETUP)
+	{
+	   dlBoInfo.numLc++;
+	   dlBoInfo.boInfo[dlBoInfo.numLc].lcId = 0;    // SRB 0 for msg4
+	   dlBoInfo.boInfo[dlBoInfo.numLc].dataVolume = \
+		   strlen((const char*)dlCcchIndInfo->dlCcchMsg);
+   }
+
+   /* TODO: Store dlCcchMsg in raCb */
+	 
+	sendDlRlcBoInfoMacToSch(&dlBoInfo);
+
+
+	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo->dlCcchMsg, \
+	   strlen((const char*)dlCcchIndInfo->dlCcchMsg));
 	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo, sizeof(DlCcchIndInfo));
    return ROK;
 
@@ -352,9 +407,6 @@ uint16_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti
 	}
 	return ret;
 }
-
-
-
 
 /**********************************************************************
          End of file
