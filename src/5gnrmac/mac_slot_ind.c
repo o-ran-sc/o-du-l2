@@ -85,6 +85,15 @@ int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
 		MacDlSlot *currDlSlot =
 		&macCb.macCell->dlSlot[dlAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
       memcpy(&currDlSlot->dlInfo, dlAlloc, sizeof(DlAlloc)); 
+
+      if(currDlSlot->dlInfo.msg4Alloc)
+      {
+         /* TODO: 
+          * Step1 : Fetch msg4 from raCb that was filled in MacHdlDlCcchInd() 
+          * Step2 : Mux msg4
+          * Step3 : Store the pdu in raCb
+          */
+      }
    }
    return ROK;
 }

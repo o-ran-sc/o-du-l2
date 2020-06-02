@@ -60,6 +60,32 @@
       SPutSBuf(SCH_MEM_REGION, SCH_POOL,                      \
          (Data *)_datPtr, _size);
 
+/* Allocate shared memory to be used for LWLC 
+ * during inter-layer communication */
+#define SCH_ALLOC_SHRABL_BUF(_buf, _size)                    \
+{                                                            \
+   if(SGetStaticBuffer(SCH_MEM_REGION, SCH_POOL,             \
+     (Data **)&_buf, (Size) _size, 0) == ROK)               \
+   {                                                         \
+      cmMemset((U8 *)(_buf), 0, _size);                      \
+   }                                                         \
+   else                                                      \
+   {                                                         \
+      (_buf) = NULLP;                                        \
+   }                                                         \
+}
+ 
+/* Free shared memory, received through LWLC */
+#define SCH_FREE_SHRABL_BUF(_region, _pool,_buf, _size)       \
+{                                                            \
+   if (_buf != NULLP)                                        \
+   {                                                         \
+      (Void) SPutStaticBuffer(_region, _pool,                \
+             (Data *) _buf, (Size) _size, 0);                 \
+       _buf = NULLP;                                         \
+   }                                                         \
+}
+
 
 #define SCH_FILL_RSP_PST(_rspPst, _inst)\
 {                                  \
@@ -102,6 +128,7 @@ typedef struct schDlAlloc
 	bool        sib1Pres;
 	bool        rarPres;
 	RarInfo     rarInfo;
+   Msg4Info    *msg4Info;
 }SchDlAlloc;
 
 typedef struct schRaCb
