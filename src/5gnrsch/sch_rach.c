@@ -64,8 +64,6 @@
 #include "sch_utils.h"
 
 extern SchCb schCb[SCH_MAX_INST];
-extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
-extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 extern uint8_t puschDeltaTable[MAX_MU_PUSCH];
 
 /**
@@ -292,7 +290,7 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    }
 
    /* calculate the PRBs */
-   freqDomResourceAlloc( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   calculatePRB( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill the PDCCH PDU */
    pdcch->pdcchBwpCfg.BWPSize = initialBwp->bwp.numPrb;
