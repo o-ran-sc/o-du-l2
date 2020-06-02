@@ -129,6 +129,7 @@
 #define EVENT_CRC_IND_TO_SCH    29
 #define EVENT_RX_DATA_IND_TO_MAC 30
 #define EVENT_STOP_IND_TO_MAC   31
+#define EVENT_DL_RLC_BO_INFO_TO_SCH  32
 /** @} */
 
 #define MAX_PREAM_PER_SLOT      1    /* Max number of preamble per slot */

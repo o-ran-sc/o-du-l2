@@ -102,6 +102,8 @@ typedef struct schDlAlloc
 	bool        sib1Pres;
 	bool        rarPres;
 	RarInfo     rarInfo;
+   bool        msg4Pres;
+   Msg4Info    msg4Info;
 }SchDlAlloc;
 
 typedef struct schRaCb
