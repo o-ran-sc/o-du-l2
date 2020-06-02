@@ -329,6 +329,141 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
     
 	return ret;
 }
+
+/*******************************************************************
+ *
+ * @brief Fills pdcch and pdsch info for msg4
+ *
+ * @details
+ *
+ *    Function : schDlRsrcAllocMsg4
+ *
+ *    Functionality:
+ *       Fills pdcch and pdsch info for msg4
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
+{
+   uint8_t coreset0Idx = 0;
+   uint8_t numRbs = 0;
+   uint8_t firstSymbol = 0;
+   uint8_t numSymbols = 0;
+   uint8_t offset = 0;
+   uint8_t offsetPointA;
+   uint8_t FreqDomainResource[6] = {0};
+   SchBwpDlCfg *initialBwp;
+
+   PdcchCfg *pdcch = &msg4Alloc->msg4PdcchCfg;
+   PdschCfg *pdsch = &msg4Alloc->msg4PdschCfg;
+
+   initialBwp   = &cell->cellCfg.schInitialDlBwp;
+   offsetPointA = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+   coreset0Idx  = initialBwp->pdcchCommon.raSearchSpace.coresetId;
+
+   /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
+   numRbs        = coresetIdxTable[coreset0Idx][1];
+   numSymbols    = coresetIdxTable[coreset0Idx][2];
+   offset        = coresetIdxTable[coreset0Idx][3];
+
+   /* calculate time domain parameters */
+   uint16_t mask = 0x2000;
+   for(firstSymbol=0; firstSymbol<14;firstSymbol++)
+   {
+      if(initialBwp->pdcchCommon.raSearchSpace.monitoringSymbol & mask)
+         break;
+      else
+         mask = mask>>1;
+   }
+
+   /* calculate the PRBs */
+   calculatePRB( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+
+   /* fill the PDCCH PDU */
+   pdcch->pdcchBwpCfg.BWPSize = initialBwp->bwp.numPrb;
+   pdcch->pdcchBwpCfg.BWPStart = initialBwp->bwp.firstPrb;
+   pdcch->pdcchBwpCfg.subcarrierSpacing = initialBwp->bwp.scs;
+   pdcch->pdcchBwpCfg.cyclicPrefix = initialBwp->bwp.cyclicPrefix;
+   pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
+   pdcch->coreset0Cfg.durationSymbols = numSymbols;
+   memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
+   pdcch->coreset0Cfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   pdcch->coreset0Cfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coreset0Cfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coreset0Cfg.coreSetType = 0;
+   pdcch->coreset0Cfg.coreSet0Size = numRbs;
+   pdcch->coreset0Cfg.shiftIndex = cell->cellCfg.phyCellId;
+   pdcch->coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
+   pdcch->numDlDci = 1;
+   pdcch->dci.rnti = cell->dlAlloc[slot]->msg4Info->crnti;
+   pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
+   pdcch->dci.scramblingRnti = 0;
+   pdcch->dci.cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
+   pdcch->dci.aggregLevel = 4;
+   pdcch->dci.beamPdcchInfo.numPrgs = 1;
+   pdcch->dci.beamPdcchInfo.prgSize = 1;
+   pdcch->dci.beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci.beamPdcchInfo.prg[0].pmIdx = 0;
+   pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
+   pdcch->dci.txPdcchPower.powerValue = 0;
+   pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
+
+   /* fill the PDSCH PDU */
+   uint8_t cwCount = 0;
+   pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
+   pdsch->rnti = cell->dlAlloc[slot]->msg4Info->crnti;
+   pdsch->pduIndex = 0;
+   pdsch->pdschBwpCfg.BWPSize = initialBwp->bwp.numPrb;
+   pdsch->pdschBwpCfg.BWPStart = initialBwp->bwp.firstPrb;
+   pdsch->numCodewords = 1;
+   for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
+   {
+      pdsch->codeword[cwCount].targetCodeRate = 308;
+      pdsch->codeword[cwCount].qamModOrder = 2;
+      pdsch->codeword[cwCount].mcsIndex = 4; /* mcs configured to 4 */
+      pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
+      pdsch->codeword[cwCount].rvIndex = 0;
+      /* 38.214: Table 5.1.3.2-1,  divided by 8 to get the value in bytes */
+      /* TODO : Calculate tbSize based of DL CCCH msg size */
+      pdsch->codeword[cwCount].tbSize = 2664/8;
+   }
+   pdsch->dataScramblingId = cell->cellCfg.phyCellId;
+   pdsch->numLayers = 1;
+   pdsch->transmissionScheme = 0;
+   pdsch->refPoint = 0;
+   pdsch->dmrs.dlDmrsSymbPos = 2;
+   pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
+   pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
+   pdsch->dmrs.scid = 0;
+   pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
+   pdsch->dmrs.dmrsPorts = 0;
+   pdsch->freqAlloc.resourceAlloc = 1; /* RAT type-1 RIV format */
+   /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
+   pdsch->freqAlloc.rbStart = offset + SCH_SSB_PRB_DURATION;
+   /* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
+    * Ninfo = S . Nre . R . Qm . v                                   *
+    * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                       *
+    * Nre = min(156,Nre') . nPrb                                     */
+   /* TODO : Calculate rbSize based on tbSize calculated */
+   pdsch->freqAlloc.rbSize = 34;
+   pdsch->freqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+   pdsch->timeAlloc.startSymbolIndex = 2; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->timeAlloc.numSymbols = 12;
+   pdsch->beamPdschInfo.numPrgs = 1;
+   pdsch->beamPdschInfo.prgSize = 1;
+   pdsch->beamPdschInfo.digBfInterfaces = 0;
+   pdsch->beamPdschInfo.prg[0].pmIdx = 0;
+   pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;
+   pdsch->txPdschPower.powerControlOffset = 0;
+   pdsch->txPdschPower.powerControlOffsetSS = 0;
+ 
+   pdcch->dci.pdschCfg = pdsch;
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

@@ -60,6 +60,7 @@ File:     sch_slot_ind.c
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "sch.h"
+#include "sch_utils.h"
 
 SchMacDlAllocFunc schMacDlAllocOpts[] =
 {
@@ -99,6 +100,7 @@ int sendDlAllocToMac(DlAlloc *dlAlloc, Inst inst)
 	return(*schMacDlAllocOpts[pst.selector])(&pst, dlAlloc);
 
 }
+
 /*******************************************************************
  *
  * @brief Handles slot indication at SCH 
@@ -126,6 +128,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 	memset(&dlAlloc,0,sizeof(DlAlloc));
    DlBrdcstAlloc *dlBrdcstAlloc = &dlAlloc.brdcstAlloc;
 	RarAlloc *rarAlloc = &dlAlloc.rarAlloc;
+   Msg4Alloc *msg4Alloc;
 	dlBrdcstAlloc->ssbTrans = NO_SSB;
    dlBrdcstAlloc->sib1Trans = NO_SIB1;
 	
@@ -207,6 +210,29 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 
      cell->dlAlloc[slot]->rarPres = false;
    }
+
+   /* check for MSG4 */
+   if(cell->dlAlloc[slot]->msg4Info)
+   {
+	    SCH_ALLOC(msg4Alloc, sizeof(Msg4Alloc));
+		 if(!msg4Alloc)
+		 {
+		    DU_LOG("\nMAC: Memory Allocation failed for msg4 alloc");
+			 return RFAILED;
+		 }
+		 
+		 dlAlloc.msg4Alloc = msg4Alloc;
+
+       /* Msg4 info is copied, this was earlier filled in macSchDlRlcBoInfo */
+       memcpy(&msg4Alloc->msg4Info, cell->dlAlloc[slot]->msg4Info, \
+          sizeof(Msg4Info));
+             
+       /* pdcch and pdsch data is filled */
+       schDlRsrcAllocMsg4(msg4Alloc, cell, slot); 
+		 SCH_FREE(cell->dlAlloc[slot]->msg4Info, sizeof(Msg4Info));
+		 cell->dlAlloc[slot]->msg4Info = NULL;
+   }
+
 
 	/* send msg to MAC */
    ret = sendDlAllocToMac(&dlAlloc, schInst);

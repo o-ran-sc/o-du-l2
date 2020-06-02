@@ -123,12 +123,6 @@
 #define EVTTFUNONRTIND          24    /*!< Non-RT indication.*/
 #endif
 #define EVTTFUERRIND            25    /*!< TFU Error Indication */
-#define EVENT_RACH_IND_TO_MAC   26
-#define EVENT_RACH_IND_TO_SCH   27
-#define EVENT_CRC_IND_TO_MAC    28
-#define EVENT_CRC_IND_TO_SCH    29
-#define EVENT_RX_DATA_IND_TO_MAC 30
-#define EVENT_STOP_IND_TO_MAC   31
 /** @} */
 
 #define MAX_PREAM_PER_SLOT      1    /* Max number of preamble per slot */
