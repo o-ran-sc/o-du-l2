@@ -33,6 +33,9 @@
 /* functions declarations */
 void freqDomResourceAlloc(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 
+extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
+extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
+
 /**********************************************************************
          End of file
 **********************************************************************/

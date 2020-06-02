@@ -71,6 +71,40 @@ MacSchCrcIndFunc macSchCrcIndOpts[]=
    packMacSchCrcInd
 };
 
+/* Function pointer for sending DL RLC BO Info from MAC to SCH */
+MacSchDlRlcBoInfoFunc macSchDlRlcBoInfoOpts[]=
+{
+   packMacSchDlRlcBoInfo,
+   macSchDlRlcBoInfo,
+   packMacSchDlRlcBoInfo
+};
+
+/*******************************************************************
+ *
+ * @brief Sends DL BO Info to SCH
+ *
+ * @details
+ *
+ *    Function : sendDlRlcBoInfoMacToSch
+ *
+ *    Functionality:
+ *       Sends DL BO Info to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+int sendDlRlcBoInfoMacToSch(DlRlcBOInfo *dlBoInfo)
+{
+   Pst pst;
+ 
+   fillMacToSchPst(&pst);
+   pst.event = EVENT_DL_RLC_BO_INFO_TO_SCH;
+ 
+   return(*macSchDlRlcBoInfoOpts[pst.selector])(&pst, dlBoInfo);
+}
+
 /*******************************************************************
  *
  * @brief Sends CRC Indication to SCH
@@ -262,6 +296,25 @@ uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  
    return ROK;
 }
+
+uint16_t MacHdlDlCcchInd()
+{
+   DlRlcBOInfo  dlBoInfo;
+
+   /* TODO : Fill DL RLC Buffer status info */
+   /* dlBoInfo.cellId = dlCchInd->cellId;
+    * dlBoInfo.crnti = dlCchInd->crnti;
+    * dlBoInfo.numLc = 1;
+    * dlBoInfo.boInfo[0].lcId = 0;    // SRB 0 for msg4
+    * dlBoInfo.boInfo[0].dataVolume = strlen(dlCchInd->dlCcchMsg);
+    */
+
+   /* TODO: Store dlCcchMsg in raCb */
+
+   return(sendDlRlcBoInfoMacToSch(&dlBoInfo));
+   
+}
+
 
 /**********************************************************************
          End of file

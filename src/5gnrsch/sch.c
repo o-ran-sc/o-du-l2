@@ -66,8 +66,6 @@
 #include "sch_utils.h"
 #include "du_log.h"
 extern SchCb schCb[SCH_MAX_INST];
-extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
-extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
 /* local defines */
 SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
@@ -627,6 +625,37 @@ SchCellCfg          *schCellCfg
 
    return ret;
 
+}
+
+/*******************************************************************
+ *
+ * @brief Processes DL RLC BO info from MAC
+ *
+ * @details
+ *
+ *    Function : macSchDlRlcBoInfo
+ *
+ *    Functionality:
+ *       Processes DL RLC BO info from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
+{
+   Inst  inst = pst->dstInst-SCH_INST_START;
+   DU_LOG("\nSCH : Received RLC BO Status indication");
+
+   SchCellCb *cell = schCb[inst].cells[inst];
+   SchDlAlloc *dlAlloc = \
+      cell->dlAlloc[(cell->slotInfo.slot + SCHED_DELTA) % SCH_NUM_SLOTS]; 
+   
+   dlAlloc->msg4Pres = true;
+   dlAlloc->msg4Info.crnti = dlBoInfo->crnti;
+
+   return ROK;
 }
 
 /**********************************************************************
