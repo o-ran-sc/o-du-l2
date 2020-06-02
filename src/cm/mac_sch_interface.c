@@ -115,6 +115,35 @@ int packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and Send DL RLC BO Info from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchDlRlcBoInfo
+ *
+ *    Functionality:
+ *       Pack and Send L RLC BO Info from MAC to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
+{
+   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
 /**
  * @brief function to pack DL Broadcast allocation message 
  *        from MAC to SCH

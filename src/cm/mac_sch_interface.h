@@ -51,6 +51,7 @@
 #define SCH_DATATYPE_PRACH 16
 
 #define MAX_NUMBER_OF_CRC_IND_BITS 1
+#define MAX_NUM_LOGICAL_CHANNELS   1
 
 /*structures*/
 
@@ -387,6 +388,20 @@ typedef struct rarAlloc
    PdschCfg rarPdschCfg;
 }RarAlloc;
 
+typedef struct msg4Info
+{
+   uint16_t crnti;
+   uint8_t  *msg4Pdu;
+   uint8_t  pduLen;
+}Msg4Info;
+
+typedef struct msg4Alloc
+{
+   Msg4Info msg4Info;
+   PdcchCfg msg4PdcchCfg;
+   PdschCfg msg4PdschCfg;
+}Msg4Alloc;
+
 typedef struct dlAlloc
 {
    uint16_t cellId;  /* Cell Id */
@@ -399,6 +414,10 @@ typedef struct dlAlloc
 	/* Allocation for RAR message */
 	uint8_t isRarPres;
 	RarAlloc rarAlloc;
+
+   /* Allocation from MSG4 */
+   uint8_t isMsg4Pres;
+   Msg4Alloc msg4Alloc;
 }DlAlloc;
 
 typedef struct tbInfo
@@ -450,6 +469,20 @@ typedef struct crcIndInfo
    uint8_t     crcInd[MAX_NUMBER_OF_CRC_IND_BITS];
 }CrcIndInfo;
 
+typedef struct boInfo
+{
+   uint8_t   lcId;
+   uint32_t  dataVolume;
+}BOInfo;
+
+typedef struct dlRlcBOInfo
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   uint16_t    numLc;
+   BOInfo      boInfo[MAX_NUM_LOGICAL_CHANNELS];
+}DlRlcBOInfo;
+
 
 /* function pointers */
 
@@ -493,6 +526,10 @@ int macSchRachInd(Pst *pst, RachIndInfo *rachInd);
 typedef int (*MacSchCrcIndFunc)(Pst *pst, CrcIndInfo *crcInd);
 int packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
 int macSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
+typedef int (*MacSchDlRlcBoInfoFunc)(Pst *pst, DlRlcBOInfo *dlBoInfo);
+int packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
+int macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
+
 
 /**********************************************************************
   End of file
