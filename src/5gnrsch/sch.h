@@ -60,7 +60,6 @@
       SPutSBuf(SCH_MEM_REGION, SCH_POOL,                      \
          (Data *)_datPtr, _size);
 
-
 #define SCH_FILL_RSP_PST(_rspPst, _inst)\
 {                                  \
    _rspPst.srcProcId = SFndProcId(); \
@@ -102,6 +101,7 @@ typedef struct schDlAlloc
 	bool        sib1Pres;
 	bool        rarPres;
 	RarInfo     rarInfo;
+   Msg4Info    *msg4Info;
 }SchDlAlloc;
 
 typedef struct schRaCb
@@ -156,7 +156,7 @@ SchCb schCb[SCH_MAX_INST];
 uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
 uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
-
+uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot);
 
 
 /**********************************************************************

@@ -46,6 +46,12 @@
 #include "cm_lte.x"        /* common tokens */
 #include "tfu.x"
 
+/* events */
+#define EVENT_RACH_IND_TO_MAC 0
+#define EVENT_CRC_IND_TO_MAC  1
+#define EVENT_RX_DATA_IND_TO_MAC 2
+#define EVENT_STOP_IND_TO_MAC 3
+
 typedef S16 (*packSlotIndMsg)(Pst *pst, SlotIndInfo *slotInd);
 S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd);
 S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd);

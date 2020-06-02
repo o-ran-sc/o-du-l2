@@ -387,7 +387,7 @@ uint8_t puschDeltaTable[MAX_MU_PUSCH] = { 2, 3, 4, 6 };
  *
  * @details
  *
- *     Function : freqDomResourceAlloc
+ *     Function: canclulatePRB
  *     
  *     This function does allocation in frequency domain resource. using 
  *     bitwise operator, the bits are set for the PRBs.
@@ -397,7 +397,7 @@ uint8_t puschDeltaTable[MAX_MU_PUSCH] = { 2, 3, 4, 6 };
  *  @param[in]  freqDomain - 6 bytes of info, each bit represents a group of 6 PRB.
  *  @return   void
  **/
-void freqDomResourceAlloc(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
+void calculatePRB(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
 {
    uint8_t remBits = prbSize; /* each bit represents 6 PRBs */
    uint8_t firstByte = 1;
