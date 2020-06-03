@@ -55,8 +55,12 @@
 
 void F1APMsgHdlr(Buffer *mBuf);
 S16 BuildAndSendF1SetupReq();
-S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
 S16 BuildAndSendDUConfigUpdate();
+S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
+uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
+uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);
+
+
 /**********************************************************************
          End of file
 **********************************************************************/

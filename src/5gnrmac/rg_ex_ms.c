@@ -137,10 +137,14 @@ Buffer  *mBuf;                      /* message buffer       */
          /* Process MAC cell start request */
          unpackMacCellStartReq(MacHdlCellStartReq, pst, mBuf);
          break;
-      case EVENT_MAC_CELL_STOP_REQ:
-         /* Process MAC cell stop request */
-         unpackMacCellStopReq(MacHdlCellStopReq, pst, mBuf);
-         break;
+		case EVENT_MAC_CELL_STOP_REQ:
+			/* Process MAC cell stop request */
+			unpackMacCellStopReq(MacHdlCellStopReq, pst, mBuf);
+			break;
+		case EVENT_MAC_DL_CCCH_IND:
+			/* Process DL CCCH Ind */
+			unpackMacDlCcchInd(MacHdlDlCcchInd, pst, mBuf);
+			break;
       default:
          RG_FREE_MSG(mBuf);
          break;

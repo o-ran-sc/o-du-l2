@@ -162,13 +162,13 @@
 #define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 #define MAX_F1_CONNECTIONS 65536    /* Max num of F1 connections */
 #define DU_MAX_CELLS       1      /* Max num of cells served by gNB-DU */
+#define DU_MAX_UE          1      /* Maximum number of UE Ids */
 #define MAX_PLMN           6        /* Max num of broadcast PLMN ids */
 #define MAXNRARFCN         3279165  /* Maximum values of NRAFCN */
 #define MAXNRCELLBANDS     2       /* Maximum number of frequency bands */
 #define MAX_NUM_OF_SLICE_ITEMS 1024     /* Maximum number of signalled slice support items */
 #define MAXBPLMNNRMINUS1   1       /* Maximum number of PLMN Ids broadcast in an NR cell minus 1 */
 #define MAXNUMOFSIBTYPES   32       /* Maximum number of SIB types */
-#define MAX_UEID           512      /* Maximum number of UE Ids */
 #define MAX_TNL_ASSOC      32       /* Max num of TNL Assoc between CU and DU */
 #define MAXCELLINENB       256      /* Max num of cells served by eNB */
 #define MAX_NUM_OF_UE_ID       65536    /* Max num of UEs served by DU */
@@ -186,6 +186,38 @@
 #define SEARCH_SPACE_ZERO 8
 #define DU_RANAC 1
 #define CELL_IDENTITY 32
+
+/* Macro definitions for DUtoCuRrcContainer */
+#define CELL_GRP_ID 1
+#define SCH_REQ_ID  0
+#define SR_PROHIBIT_TMR 5
+#define SR_TRANS_MAX 2
+#define PERIODIC_BSR_TMR 2
+#define RETX_BSR_TMR     5
+#define TAG_ID 0
+#define TIME_ALIGNMENT_TMR 7
+#define PHR_PERIODIC_TMR 7
+#define PHR_PROHIBHIT_TMR 0
+#define PHR_PWR_FACTOR_CHANGE 3
+#define PHR_MODE_OTHER_CG 0
+#define RLC_LCID 1 
+#define SRB_ID_1 1
+#define SN_FIELD_LEN 0
+#define T_POLL_RETRANSMIT 8 
+#define POLL_PDU 0
+#define POLL_BYTE 43
+#define MAX_RETX_THRESHOLD 5
+#define T_REASSEMBLY 8
+#define T_STATUS_PROHIBHIT 7
+#define MAC_LC_PRIORITY 1
+#define PRIORTISIED_BIT_RATE 15
+#define BUCKET_SIZE_DURATION 5
+#define LC_GRP 0
+#define P_NR_FR1 0
+#define PDSCH_HARQ_ACK_CODEBOOK 1
+#define SERV_CELL_IDX 0
+#define RLM_SYNC_OUT_SYNC_THRESHOLD 0
+#define ACTIVE_DL_BWP_ID 0
 
 #ifdef EGTP_TEST
 #define UE_ID 1
@@ -794,7 +826,7 @@ typedef struct f1GnbDuCfgUpd
   F1DuSrvdCellToDel   srvdCellLstMod[DU_MAX_CELLS];      /* Served cell list to be modified */
   NrEcgi              srvdCellLstDel[DU_MAX_CELLS];      /* Served cell list to be deleted */
   F1CellStatus        cellStatus[DU_MAX_CELLS];          /* Cell status */
-  F1DedSIDelUE        ueLst[MAX_UEID];                     /* Ue list that requires dedicated SI delivery */
+  F1DedSIDelUE        ueLst[DU_MAX_UE];                     /* Ue list that requires dedicated SI delivery */
   uint32_t            gnbDuId;
   F1TnlAssocToRmv     gnbDuTnlAssocRmv[MAX_TNL_ASSOC];  /* TNL Assoc list to remove */ 
 }F1GnbDuCfgUpd;

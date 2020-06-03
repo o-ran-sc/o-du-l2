@@ -171,6 +171,37 @@ S16 procF1SetupRsp(F1AP_PDU_t *f1apMsg)
    return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Processes GNB DU config update ack
+ *
+ * @details
+ *
+ *    Function : procGNBDUCfgUpdAck
+ *
+ *    Functionality: Processes GNB DU config update ack
+ *
+ * @params[in] F1AP_PDU_t ASN decoded F1AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
+{
+   DU_LOG("\nF1AP : GNB-DU config update acknowledgment received");
+/* TODO :Check the deallocation */
+#if 0
+   SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data*)&(gNBDuCfgAck->protocolIEs.list.array),\
+           (Size)elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t
+));
+   SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data*)&(f1apMsg->choice.successfulOutcome),\
+           (Size)sizeof(SuccessfulOutcome_t));
+   SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data*)&f1apMsg,(Size)sizeof(F1AP_PDU_t));
+#endif
+    return ROK;
+}
+
+
 /**********************************************************************
   End of file
  **********************************************************************/
