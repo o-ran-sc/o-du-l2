@@ -55,11 +55,14 @@
 #include "crg.x"
 #include "rg_prg.x"
 #include "du_app_mac_inf.h"
+#include "mac_upr_inf_api.h"
 #include "rg.x"
 #include "lwr_mac_fsm.h"
 #include "mac.h"
 
 /* This file contains message handling functionality for MAC */
+
+extern MacCb  macCb;
 
 extern void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg);
 
@@ -262,6 +265,96 @@ uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Handles DL CCCH Ind from DU APP
+ *
+ * @details
+ *
+ *    Function : MacHdlDlCcchInd 
+ *
+ *    Functionality:
+ *      Handles DL CCCH Ind from DU APP
+ *
+ * @params[in] Post structure pointer
+ *             DL CCCH Ind pointer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
+{
+   DU_LOG("\nMAC : Handling DL CCCH IND");
+
+	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo->dlCcchMsg, strlen((const char*)dlCcchIndInfo->dlCcchMsg));
+	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo, sizeof(DlCcchIndInfo));
+   return ROK;
+
+}
+
+/*******************************************************************
+ *
+ * @brief Sends UL CCCH Ind to DU APP
+ *
+ * @details
+ *
+ *    Function : macSendUlCcchInd
+ *
+ *    Functionality:
+ *        MAC sends UL CCCH Ind to DU APP
+ *
+ * @params[in] Post structure pointer
+ *            
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
+{
+   Pst pst;
+	uint8_t ret = ROK;
+   UlCcchIndInfo *ulCcchIndInfo = NULLP;
+
+   MAC_ALLOC_SHRABL_BUF(ulCcchIndInfo, sizeof(UlCcchIndInfo));
+   if(!ulCcchIndInfo)
+   {
+		DU_LOG("\nMAC: Memory failed in macSendUlCcchInd");
+		return RFAILED;
+	}
+
+	ulCcchIndInfo->cellId = cellId;
+	ulCcchIndInfo->crnti  = crnti;
+	ulCcchIndInfo->ulCcchMsg = rrcContainer;
+
+	/* Fill Pst */
+	pst.selector  = DU_MAC_LWLC;
+	pst.srcEnt    = ENTRG;
+	pst.dstEnt    = ENTDUAPP;
+	pst.dstInst   = 0;
+	pst.srcInst   = macCb.macInst;
+	pst.dstProcId = rgCb[pst.srcInst].rgInit.procId;
+	pst.srcProcId = rgCb[pst.srcInst].rgInit.procId;
+	pst.region    = MAC_MEM_REGION;
+	pst.pool      = MAC_POOL;
+	pst.event     = EVENT_MAC_UL_CCCH_IND;
+	pst.route     = 0;
+	pst.prior     = 0;
+	pst.intfVer   = 0;
+
+	if(MacDuAppUlCcchInd(&pst, ulCcchIndInfo) != ROK)
+	{
+		DU_LOG("\nMAC: Failed to send UL CCCH Ind to DU APP");
+		MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulCcchIndInfo->ulCcchMsg,
+				strlen((const char*)ulCcchIndInfo->ulCcchMsg));
+		MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulCcchIndInfo, sizeof(UlCcchIndInfo));
+		ret = RFAILED;
+	}
+	return ret;
+}
+
+
+
 
 /**********************************************************************
          End of file

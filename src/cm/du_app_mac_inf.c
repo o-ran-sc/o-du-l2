@@ -219,6 +219,8 @@ int unpackMacCellCfgCfm(
  * ****************************************************************/
 uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 {
+	Buffer *mBuf = NULLP;
+
    if(pst->selector == DU_SELECTOR_LC)
    {
       /* Loose coupling not supported */
@@ -226,7 +228,6 @@ uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
    }
    else if(pst->selector == DU_SELECTOR_LWLC)
    {
-      Buffer *mBuf = NULLP;
 
       if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
       {
@@ -237,9 +238,8 @@ uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
       /* pack the address of the structure */
       CMCHKPK(cmPkPtr,(PTR)cellStartInfo, mBuf);
 
-      return SPstTsk(pst,mBuf);
    }
-   return ROK;
+	return SPstTsk(pst,mBuf);
 }
 
 /*******************************************************************
@@ -549,6 +549,167 @@ uint16_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf)
    }
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends UL CCCH Ind from MAC to DUAPP
+ *
+ * @details
+ *
+ *    Function : packMacUlCcchInd
+ *
+ *    Functionality:
+ *       Packs and Sends UL CCCH Ind from MAC to DUAPP
+ *
+ * @params[in] Post structure pointer
+ *             UL CCCH Ind pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packMacUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
+{
+   Buffer *mBuf = NULLP;
+ 
+	if(pst->selector == DU_SELECTOR_LWLC)
+	{
+		if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+		{
+			DU_LOG("\nMAC : Memory allocation failed at packMacUlCcchInd");
+			return RFAILED;
+		}
+		/* pack the address of the structure */
+		CMCHKPK(cmPkPtr,(PTR)ulCcchIndInfo, mBuf);
+	}
+	else
+	{
+		DU_LOG("\nMAC: Only LWLC supported for UL CCCH Ind ");
+		return RFAILED;
+	}
+
+	return SPstTsk(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks UL CCCH indication from MAC
+ *
+ * @details
+ *
+ *    Function : unpackMacUlCcchInd
+ *
+ *    Functionality:
+ *         Unpacks UL CCCH indication from MAC
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t unpackMacUlCcchInd(DuMacUlCcchInd func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      UlCcchIndInfo *ulCcchIndInfo;
+
+      /* unpack the address of the structure */
+		CMCHKUNPK(cmUnpkPtr, (PTR *)&ulCcchIndInfo, mBuf);
+		SPutMsg(mBuf);
+		return (*func)(pst, ulCcchIndInfo);
+	}
+	else
+	{
+		/* Nothing to do for other selectors */
+		DU_LOG("\n Only LWLC supported for UL CCCH Ind ");
+		SPutMsg(mBuf);
+	}
+	return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends DL CCCH Ind from DUAPP to MAC
+ *
+ * @details
+ *
+ *    Function : packMacDlCcchInd
+ *
+ *    Functionality:
+ *       Packs and Sends DL CCCH Ind from DUAPP to MAC
+ *
+ *
+ * @params[in] Post structure pointer
+ *             DL CCCH Ind pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
+{
+	Buffer *mBuf = NULLP;
+
+	if(pst->selector == DU_SELECTOR_LWLC)
+	{
+		if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+		{
+			DU_LOG("\nMAC : Memory allocation failed at packMacDlCcchInd");
+			return RFAILED;
+		}
+		/* pack the address of the structure */
+		CMCHKPK(cmPkPtr,(PTR)dlCcchIndInfo, mBuf);
+	}
+	else
+	{
+		DU_LOG("\nDU APP: Only LWLC supported for DL CCCH Ind ");
+		return RFAILED;
+	}
+
+	return SPstTsk(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks DL CCCH indication from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacDlCcchInd
+ *
+ *    Functionality:
+ *         Unpacks DL CCCH indication from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
+{
+	if(pst->selector == DU_SELECTOR_LWLC)
+	{
+		DlCcchIndInfo *dlCcchIndInfo;
+
+		/* unpack the address of the structure */
+		CMCHKUNPK(cmUnpkPtr, (PTR *)&dlCcchIndInfo, mBuf);
+		SPutMsg(mBuf);
+		return (*func)(pst, dlCcchIndInfo);
+	}
+	else
+	{
+		/* Nothing to do for other selectors */
+		DU_LOG("\n Only LWLC supported for DL CCCH Ind ");
+		SPutMsg(mBuf);
+	}
+
+	return RFAILED;
+}
+
+
+
 /**********************************************************************
          End of file
 **********************************************************************/
