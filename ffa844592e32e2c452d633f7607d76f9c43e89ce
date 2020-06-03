@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "475a025e_0ae27a2e",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-03T14:40:27Z",
+      "side": 1,
+      "message": "check for lcid \u003d\u003d CCCH_LCID which is 0 and then fill msg4 info.\nAlso, loop for numLcs though we will have only one LC here...",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e984afc_cf7990db",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-03T14:40:27Z",
+      "side": 1,
+      "message": "MAX_NUM_LOGICAL_CHANNELS can be 11.\nwe have numLc while msg4 as 1.",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
