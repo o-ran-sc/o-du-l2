@@ -96,7 +96,7 @@ typedef struct macCb
 }MacCb;
 
 /* global variable */
-EXTERN MacCb macCb;
+MacCb macCb;
 void fillMacToSchPst(Pst *pst);
 void fillRarPdu(RarInfo *rarInfo);
 int unpackRxData(SlotIndInfo timingInfo, RxDataIndPdu *rxDataIndPdu);

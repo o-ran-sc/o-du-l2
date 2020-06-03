@@ -98,7 +98,7 @@ EXTERN Void rgGetSId ARGS((SystemId *s));
 
 /* Public variable declaration */
 ClCb   clGlobalCp;
-MacCb  macCb;
+extern MacCb  macCb;
 
 int MacSchCellCfgReq(Pst *pst,MacCellCfg *macCellCfg);
 

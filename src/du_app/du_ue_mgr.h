@@ -23,6 +23,7 @@
 
 #include "du_mgr.h"
 #include "du_log.h"
+#include "du_f1ap_msg_hdl.h"
 #include "ckw.h"
 #include "kwu.h"
 
@@ -33,6 +34,7 @@ S16 duHdlEgtpDlData(EgtpMsg  *egtpMsg);
 S16 duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf);
 S16 packUeCreateReq(Pst *pst,CkwCfgInfo *cfgInfo);
 S16 cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf);
+uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo);
 #endif
 
 /**********************************************************************

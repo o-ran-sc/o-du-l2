@@ -77,6 +77,8 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 	   duCb.cfgCellLst[id] = NULL;
       duCb.actvCellLst[id] = NULL;
    }
+   duCb.numUe = 0;
+	memset(duCb.ueCcchCtxt, 0, DU_MAX_UE * sizeof(UeCcchCtxt));
 
    SSetProcId(DU_PROC);
 
@@ -203,6 +205,12 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackMacStopInd(duHandleStopInd, pst, mBuf);
                      break;
                   }
+					case EVENT_MAC_UL_CCCH_IND:
+						{
+							ret = unpackMacUlCcchInd(duHandleUlCcchInd, pst, mBuf);
+							break;
+						}
+
                default:
                   {
                      DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");
