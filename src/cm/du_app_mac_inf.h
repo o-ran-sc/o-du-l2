@@ -47,6 +47,8 @@
 #define EVENT_MAC_CELL_STOP_REQ      203
 #define EVENT_MAC_SLOT_IND           204
 #define EVENT_MAC_STOP_IND           205
+#define EVENT_MAC_UL_CCCH_IND        206
+#define EVENT_MAC_DL_CCCH_IND        206
 
 typedef enum
 {
@@ -115,6 +117,12 @@ typedef enum
    SSB_PRDCTY_MS_80,
    SSB_PRDCTY_MS_160
 }SSBPeriod;
+
+typedef enum
+{
+   RRC_REJECT,
+   RRC_SETUP
+}DlCcchMsgType;
 
 typedef struct carrierCfg
 {
@@ -295,42 +303,42 @@ typedef struct macCellStopInfo
    uint16_t cellId;
 }MacCellStopInfo;
 
+typedef struct ulCcchInd
+{
+   uint16_t cellId;
+   uint16_t crnti;
+   uint8_t  *ulCcchMsg;
+}UlCcchInd;
+
+typedef struct dlCcchInd
+{
+   uint16_t      cellId;
+   uint16_t      crnti;
+   DlCcchMsgType msgType;
+   uint8_t       *dlCcchMsg;
+}DlCcchInd;
+
+
 /* Functions for slot Ind from MAC to DU APP*/
 typedef uint16_t (*DuMacSlotInd) ARGS((
    Pst       *pst,
    SlotInfo  *slotInfo ));
-
-extern uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo );
-extern uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
-extern uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo);
 
 /* Functions for stop Ind from MAC to DU APP*/
 typedef uint16_t (*DuMacStopInd) ARGS((
    Pst       *pst,
    MacCellStopInfo  *cellId ));
 
-extern uint16_t packMacStopInd(Pst *pst, MacCellStopInfo *cellId);
-extern uint16_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf);
-extern uint16_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellId);
-
 /* Functions for mac cell start req */
 typedef uint16_t (*DuMacCellStartReq) ARGS((
    Pst               *pst, 
    MacCellStartInfo  *cellStartInfo ));
-
-extern uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo);
-extern uint16_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf);
-extern uint16_t MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo);
 
 /* Functions for mac cell stop request */
 typedef uint16_t (*DuMacCellStopReq) ARGS((
    Pst               *pst,
    MacCellStopInfo  *cellStopInfo ));
  
-extern uint16_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo);
-extern uint16_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf);
-extern uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo);
-
 /* Function pointers for packing macCellCfg Request and Confirm */
 typedef int (*packMacCellCfgReq) ARGS((
    Pst           *pst,
@@ -348,11 +356,39 @@ typedef int (*DuMacCellCfgCfm) ARGS((
    Pst        *pst,        
    MacCellCfgCfm *macCellCfgCfm ));
 
+/* Functions for UL CCCH Ind from MAC to DU APP*/
+typedef uint16_t (*DuMacUlCcchInd) ARGS((
+   Pst       *pst,
+   UlCcchInd *ulCcchInd ));
+
+/* Functions for DL CCCH Ind from DU APP to MAC*/
+typedef uint16_t (*DuMacDlCcchInd) ARGS((
+   Pst       *pst,
+   DlCcchInd *dlCcchInd ));
+
+extern uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo );
+extern uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
+extern uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo);
+extern uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo *cellStartInfo);
+extern uint16_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf);
+extern uint16_t MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo);
+extern uint16_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo);
+extern uint16_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf);
+extern uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo);
 extern int  packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
 extern int MacHdlCellCfgReq(Pst *pst, MacCellCfg *macCellCfg);
 extern void cmUnpackLwLcMacCellCfg(DuMacCellCfgReq func, Pst *pst, Buffer *mBuf);
 extern int unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf);
 extern int duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
+extern uint16_t packMacStopInd(Pst *pst, MacCellStopInfo *cellId);
+extern uint16_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf);
+extern uint16_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellId);
+extern uint16_t packMacUlCcchInd(Pst *pst, UlCcchInd *ulCcchInd);
+extern uint16_t unpackMacUlCcchInd(DuMacUlCcchInd func, Pst *pst, Buffer *mBuf);
+extern uint16_t duHandleUlCcchInd(Pst *pst, UlCcchInd *ulCcchInd);
+extern uint16_t packMacDlCcchInd(Pst *pst, DlCcchInd *dlCcchInd);
+extern uint16_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf);
+extern uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchInd *dlCcchInd);
 uint8_t sendStopIndMacToDuApp();
 #endif
 

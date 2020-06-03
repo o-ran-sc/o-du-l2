@@ -22,6 +22,13 @@
 U32 sduId = 0;
 #endif
 
+DuMacDlCcchInd packMacDlCcchIndOpts[] =
+{
+   packMacDlCcchInd,   /* Loose coupling */
+   MacHdlDlCcchInd,    /* TIght coupling */
+   packMacDlCcchInd    /* Light weight-loose coupling */
+};
+
 /******************************************************************
  *
  * @brief Send UE configuration to RLC
@@ -178,6 +185,189 @@ PUBLIC S16 duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
 
    return ROK;
 }
+
+/******************************************************************
+*
+* @brief Builds and Sends DL CCCH Ind to MAC
+*
+* @details
+*
+*    Function : duBuildAndSendDlCcchInd 
+*
+*    Functionality: Builds and sends DL CCCH Ind Msg to MAC
+*
+* @params[in] dlCcchMsg - uint8_t*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t duBuildAndSendDlCcchInd(uint8_t *dlCcchMsg, uint16_t crnti, uint16_t cellId)
+{
+   Pst pst;
+   DlCcchInd *dlCcchInd = NULLP;
+
+   DU_LOG("\nDU APP : Building and Sending DL CCCH Ind to MAC");
+
+   DU_ALLOC(dlCcchInd, sizeof(DlCcchInd));
+   if(!dlCcchInd)
+   {
+		DU_LOG("\nDU APP : Memory alloc failed while building DL CCCH Ind");
+		return RFAILED;
+	}
+
+	dlCcchInd->cellId = cellId;
+	dlCcchInd->crnti = crnti;
+	dlCcchInd->msgType = RRC_SETUP;
+	memcpy(dlCcchInd->dlCcchMsg, dlCcchMsg, strlen((const char*)dlCcchMsg));
+
+	/* Fill Pst */
+	pst.selector  = DU_MAC_LWLC;
+	pst.srcEnt    = ENTDUAPP;
+	pst.dstEnt    = ENTRG;
+	pst.dstInst   = 0;
+	pst.srcInst   = 0;
+	pst.dstProcId = DU_PROC;
+	pst.srcProcId = DU_PROC;
+	pst.region    = DU_APP_MEM_REGION;
+	pst.pool      = DU_POOL;
+	pst.event     = EVENT_MAC_DL_CCCH_IND;
+
+	return (*packMacDlCcchIndOpts[pst.selector])(&pst, dlCcchInd);
+
+}
+
+/******************************************************************
+*
+* @brief Processes DL RRC Message Transfer  sent by CU
+*
+* @details
+*
+*    Function : procDlRrcMsgTrans 
+*
+*    Functionality: Processes DL RRC Message Transfer sent by CU
+*
+* @params[in] F1AP_PDU_t ASN decoded F1AP message
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
+{
+	DLRRCMessageTransfer_t *dlRrcMsg = NULLP;
+	uint8_t                *dlCcchMsg = NULLP;
+	uint8_t                srbId, idx, ret;
+	uint16_t               crnti, cellId;
+	uint32_t               gnbCuUeF1apId, gnbDuUeF1apId;
+
+
+	DU_LOG("\nDU_APP : DL RRC message transfer Recevied");
+	dlRrcMsg = &f1apMsg->choice.initiatingMessage->value.choice.DLRRCMessageTransfer;
+
+	ret = ROK;
+
+	for(idx=0; idx<dlRrcMsg->protocolIEs.list.count; idx++)
+	{
+		switch(dlRrcMsg->protocolIEs.list.array[idx]->id)
+		{
+			case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+				{
+					gnbCuUeF1apId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID;
+					UNUSED(gnbCuUeF1apId); //This is currently not used
+					break;
+				}
+			case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+				{
+					gnbDuUeF1apId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
+					break;
+				}
+			case ProtocolIE_ID_id_SRBID:
+				{
+					srbId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.SRBID;
+					break;
+				}
+			case ProtocolIE_ID_id_RRCContainer:
+				{
+					memcpy(dlCcchMsg,
+							dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,
+							dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
+					break;
+				}
+
+			default:
+				DU_LOG("\nDU_APP : Invalid IE received in DL RRC Msg Transfer:%ld",
+						dlRrcMsg->protocolIEs.list.array[idx]->id);
+		}
+	}
+   
+   for(idx=0; idx<duCb.numUe; idx++)
+	{
+      if(gnbDuUeF1apId == duCb.ueCcchCtxt[idx].gnbDuUeF1apId)
+		{
+		   crnti  = duCb.ueCcchCtxt[idx].crnti;
+			cellId = duCb.ueCcchCtxt[idx].cellId;
+		}
+	}
+	if(srbId == 0) //RRC connection setup
+	{
+		ret = duBuildAndSendDlCcchInd(dlCcchMsg, crnti, cellId);
+	}
+	return ret;
+}
+
+/******************************************************************
+ *
+ * @brief Generates GNB DU Ue F1AP ID
+ *
+ * @details
+ *
+ *    Function : genGnbDuUeF1apId
+ *
+ *    Functionality: Generates GNB DU Ue F1AP ID
+ *
+ * @params[in] void
+ * @return gnbDuF1apId
+ *
+ * ****************************************************************/
+uint32_t genGnbDuUeF1apId()
+{
+	static uint32_t gnbDuUeF1apId = 0;
+
+	return ++gnbDuUeF1apId;
+}
+/******************************************************************
+ *
+ * @brief Processes UL CCCH Ind recvd from MAC
+ *
+ * @details
+ *
+ *    Function : duProcUlCcchInd
+ *
+ *    Functionality: Processes UL CCCH Ind recvd from MAC
+ *
+ * @params[in] UlCcchInd *ulCcchInd
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t duProcUlCcchInd(UlCcchInd *ulCcchInd)
+{
+
+	uint32_t gnbDuUeF1apId = 0;
+
+	gnbDuUeF1apId = genGnbDuUeF1apId();
+
+	/* Store Ue mapping */
+	duCb.ueCcchCtxt[duCb.numUe].gnbDuUeF1apId = gnbDuUeF1apId;
+	duCb.ueCcchCtxt[duCb.numUe].crnti         = ulCcchInd->crnti;
+	duCb.ueCcchCtxt[duCb.numUe].cellId        = ulCcchInd->cellId;
+
+	duCb.numUe++;
+
+	return (BuildAndSendInitialRrcMsgTransfer(gnbDuUeF1apId, ulCcchInd->crnti,
+				ulCcchInd->ulCcchMsg));
+
+}
+
 
 /**********************************************************************
          End of file

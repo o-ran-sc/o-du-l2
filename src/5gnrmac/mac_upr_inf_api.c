@@ -36,6 +36,14 @@ DuMacStopInd packMacStopIndOpts[] =
    packMacStopInd
 };
 
+/* Funtion pointer options for UL CCCH indication */
+DuMacUlCcchInd packMacUlCcchIndOpts[] =
+{
+   packMacUlCcchInd,
+   duHandleUlCcchInd,
+   packMacUlCcchInd
+};
+
 /*******************************************************************
  *
  * @brief Send slot indication to MAC
@@ -79,6 +87,30 @@ uint16_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
 {
    return (*packMacStopIndOpts[pst->selector])(pst, cellStopId);
 }
+
+/*******************************************************************
+ *
+ * @brief Send UL CCCH Ind to DU APP
+ *
+ * @details
+ *
+ *    Function :MacDuAppUlCcchInd 
+ *
+ *    Functionality:
+ *       Select appropriate function using selector value and
+ *       send to DU APP
+ *
+ * @params[in]  Post structure pointer
+ *              UlCcchInd pointer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t MacDuAppUlCcchInd(Pst *pst, UlCcchInd *ulCcchInd)
+{
+   return (*packMacUlCcchIndOpts[pst->selector])(pst, ulCcchInd);
+}
+
 
 /**********************************************************************
          End of file

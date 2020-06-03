@@ -21,6 +21,7 @@
 #include "du_mgr.h"
 #include "du_sctp.h"
 #include "du_f1ap_msg_hdl.h"
+#include "du_ue_mgr.h"
 #include "lsctp.h"
 #include "legtp.h"
 #include "lphy_stub.h"
@@ -1816,6 +1817,33 @@ uint16_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
 
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Handles slot indication from MAC
+ *
+ * @details
+ *
+ *    Function : duHandleUlCcchInd
+ *
+ *    Functionality:
+ *      Handles UL CCCH indication from MAC
+ *
+ * @params[in] Post structure pointer
+ *             UL CCCH Ind pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t duHandleUlCcchInd(Pst *pst, UlCcchInd *ulCcchInd)
+{
+   
+   DU_LOG("\nDU APP : UL CCCH Indication received");
+
+   return (duProcUlCcchInd(ulCcchInd));
+}
+
+
 /**********************************************************************
   End of file
  **********************************************************************/
