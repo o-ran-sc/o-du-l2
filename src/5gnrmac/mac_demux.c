@@ -78,7 +78,7 @@
  *         RFAILED
  *
  * ****************************************************************/
-int unpackRxData(SlotIndInfo timingInfo, RxDataIndPdu *rxDataIndPdu)
+int unpackRxData(RxDataIndPdu *rxDataIndPdu)
 {
    uint8_t   lcId;
    uint8_t   idx = 0;
@@ -116,9 +116,8 @@ int unpackRxData(SlotIndInfo timingInfo, RxDataIndPdu *rxDataIndPdu)
             pduLen -= length;
             idx = idx + length;
 
-            /* TODO:
-             * Fill and send UL-CCCH Indication to DU APP 
-             */
+            /* Send UL-CCCH Indication to DU APP */
+				macSendUlCcchInd(pdu, macCb.macCell->cellId, rxDataIndPdu->rnti); 
             break;
          }
          
