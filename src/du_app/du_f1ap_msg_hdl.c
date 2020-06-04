@@ -2012,6 +2012,7 @@ uint8_t BuildTagConfig(struct TAG_Config *tagConfig)
 	struct TAG_Config__tag_ToAddModList *tagList;
    uint8_t                     idx, elementCnt;
 
+   tagConfig->tag_ToReleaseList = NULLP;
    tagConfig->tag_ToAddModList = NULLP;
    DU_ALLOC(tagConfig->tag_ToAddModList, sizeof(struct TAG_Config__tag_ToAddModList));
 	if(!tagConfig->tag_ToAddModList)
@@ -2023,7 +2024,7 @@ uint8_t BuildTagConfig(struct TAG_Config *tagConfig)
 	elementCnt = 1; //ODU_VALUE_ONE;
 	tagList = tagConfig->tag_ToAddModList;
 	tagList->list.count = elementCnt;
-	tagList->list.size  =  elementCnt * sizeof(struct TAG);
+	tagList->list.size  =  elementCnt * sizeof(struct TAG *);
 
    tagList->list.array = NULLP;
 	DU_ALLOC(tagList->list.array, tagList->list.size);
@@ -2110,6 +2111,7 @@ uint8_t BuildBsrConfig(struct BSR_Config *bsrConfig)
 {
    bsrConfig->periodicBSR_Timer = PERIODIC_BSR_TMR;
 	bsrConfig->retxBSR_Timer     = RETX_BSR_TMR;
+	bsrConfig->logicalChannelSR_DelayTimer = NULLP;
 
    return ROK;
 }
@@ -2147,7 +2149,7 @@ uint8_t BuildSchedulingReqConfig(struct SchedulingRequestConfig *schedulingReque
 	elementCnt = 1; //ODU_VALUE_ONE;
 	schReqList = schedulingRequestConfig->schedulingRequestToAddModList;
 	schReqList->list.count = elementCnt;
-	schReqList->list.size  =  elementCnt * sizeof(SchedulingRequestId_t);
+   schReqList->list.size  = elementCnt * sizeof(struct SchedulingRequestToAddMod *);
 
    schReqList->list.array = NULLP;
    DU_ALLOC(schReqList->list.array, schReqList->list.size);
@@ -2160,7 +2162,7 @@ uint8_t BuildSchedulingReqConfig(struct SchedulingRequestConfig *schedulingReque
    for(idx=0;idx<schReqList->list.count; idx++)
 	{
 	   schReqList->list.array[idx] = NULLP;
-      DU_ALLOC(schReqList->list.array[idx], sizeof(SchedulingRequestId_t));
+		DU_ALLOC(schReqList->list.array[idx], sizeof(struct SchedulingRequestToAddMod));
 		if(!schReqList->list.array[idx])
 		{
 			DU_LOG("\nF1AP : Memory allocation failure in BuildSchedulingReqConfig");
@@ -2179,8 +2181,8 @@ uint8_t BuildSchedulingReqConfig(struct SchedulingRequestConfig *schedulingReque
 		return RFAILED;
 	}
    *(schReqList->list.array[idx]->sr_ProhibitTimer) = SR_PROHIBIT_TMR;
-
 	schReqList->list.array[idx]->sr_TransMax = SR_TRANS_MAX;
+	schedulingRequestConfig->schedulingRequestToReleaseList = NULLP;
 
 	return ROK;
 }
@@ -2229,7 +2231,7 @@ uint8_t BuildRlcConfig(struct RLC_Config *rlcConfig)
 	rlcConfig->choice.am->ul_AM_RLC.maxRetxThreshold  = MAX_RETX_THRESHOLD;
 
    /* DL */
-	rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength = NULLP;
+   rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength = NULLP;
    DU_ALLOC(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
 	if(!rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength)
 	{
@@ -2239,7 +2241,7 @@ uint8_t BuildRlcConfig(struct RLC_Config *rlcConfig)
 	*(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
    rlcConfig->choice.am->dl_AM_RLC.t_Reassembly      = T_REASSEMBLY;
 	rlcConfig->choice.am->dl_AM_RLC.t_StatusProhibit  = T_STATUS_PROHIBHIT;
-
+	
    return ROK;
 }
 
@@ -2273,6 +2275,10 @@ uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
    macLcConfig->ul_SpecificParameters->priority = MAC_LC_PRIORITY;
 	macLcConfig->ul_SpecificParameters->prioritisedBitRate =	PRIORTISIED_BIT_RATE;
 	macLcConfig->ul_SpecificParameters->bucketSizeDuration =	BUCKET_SIZE_DURATION;
+   macLcConfig->ul_SpecificParameters->allowedServingCells = NULLP;
+	macLcConfig->ul_SpecificParameters->allowedSCS_List = NULLP;
+	macLcConfig->ul_SpecificParameters->maxPUSCH_Duration = NULLP;
+   macLcConfig->ul_SpecificParameters->configuredGrantType1Allowed = NULLP;
 
    macLcConfig->ul_SpecificParameters->logicalChannelGroup = NULLP;
    DU_ALLOC(macLcConfig->ul_SpecificParameters->logicalChannelGroup,	sizeof(long));
@@ -2294,6 +2300,7 @@ uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
 
 	macLcConfig->ul_SpecificParameters->logicalChannelSR_Mask = false;
 	macLcConfig->ul_SpecificParameters->logicalChannelSR_DelayTimerApplied = false;
+	macLcConfig->ul_SpecificParameters->bitRateQueryProhibitTimer = NULLP;
 
    return ROK;
 }
@@ -2320,7 +2327,7 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
 
    elementCnt = 1;
    rlcBearerList->list.count = elementCnt;
-	rlcBearerList->list.size  = elementCnt * sizeof(struct RLC_BearerConfig);
+	rlcBearerList->list.size  = elementCnt * sizeof(struct RLC_BearerConfig *);
 
    rlcBearerList->list.array = NULLP;
 	DU_ALLOC(rlcBearerList->list.array, rlcBearerList->list.size);
@@ -2354,6 +2361,7 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
 	rlcBearerList->list.array[idx]->servedRadioBearer->present = RLC_BearerConfig__servedRadioBearer_PR_srb_Identity;
    rlcBearerList->list.array[idx]->servedRadioBearer->choice.srb_Identity = SRB_ID_1;
 
+   rlcBearerList->list.array[idx]->reestablishRLC = NULLP;
    rlcBearerList->list.array[idx]->rlc_Config = NULLP;
    DU_ALLOC(rlcBearerList->list.array[idx]->rlc_Config, sizeof(struct RLC_Config));
 	if(!rlcBearerList->list.array[idx]->rlc_Config)
@@ -2486,7 +2494,7 @@ uint8_t BuildCsiMeasCfg(struct ServingCellConfig__csi_MeasConfig *csiMeasCfg)
  * ****************************************************************/
 uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
 {
-
+#if 0
    srvCellCfg->initialDownlinkBWP = NULLP;
    DU_ALLOC(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
 	if(!srvCellCfg->initialDownlinkBWP)
@@ -2500,7 +2508,7 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
 		DU_LOG("\nF1AP : BuildInitialDlBWP failed");
 		return RFAILED;
 	}
-
+#endif
    srvCellCfg->firstActiveDownlinkBWP_Id = NULLP;
 	DU_ALLOC(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
 	if(!srvCellCfg->firstActiveDownlinkBWP_Id)
@@ -2518,7 +2526,7 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
 		return RFAILED;
 	}
 	*(srvCellCfg->defaultDownlinkBWP_Id) = ACTIVE_DL_BWP_ID;
-
+#if 0
    srvCellCfg->uplinkConfig = NULLP;
    DU_ALLOC(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));
 	if(!srvCellCfg->uplinkConfig)
@@ -2560,7 +2568,7 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
 		DU_LOG("\nF1AP : BuildCsiMeasCfg failed");
 		return RFAILED;
 	}
-
+#endif
 	srvCellCfg->tag_Id = TAG_ID;
 
 	return ROK;
@@ -2609,13 +2617,11 @@ uint8_t BuildSpCellCfg(SpCellConfig_t *spCellCfg)
 		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfg");
 		return RFAILED;
 	}
-
    if(BuildSpCellCfgDed(spCellCfg->spCellConfigDedicated) != ROK)
 	{
 		DU_LOG("\nF1AP : BuildSpCellCfgDed failed");
 		return RFAILED;
 	}
-
 	return ROK;
 }
 /*******************************************************************
@@ -2636,6 +2642,9 @@ uint8_t BuildSpCellCfg(SpCellConfig_t *spCellCfg)
 * ****************************************************************/
 uint8_t BuildPhyCellGrpCfg(PhysicalCellGroupConfig_t *phyCellGrpCfg)
 {
+   phyCellGrpCfg->harq_ACK_SpatialBundlingPUCCH = NULLP;
+	phyCellGrpCfg->harq_ACK_SpatialBundlingPUSCH = NULLP;
+
    phyCellGrpCfg->p_NR_FR1 = NULLP;
 	DU_ALLOC(phyCellGrpCfg->p_NR_FR1, sizeof(long));
 	if(!phyCellGrpCfg->p_NR_FR1)
@@ -2645,6 +2654,13 @@ uint8_t BuildPhyCellGrpCfg(PhysicalCellGroupConfig_t *phyCellGrpCfg)
 	}
    *(phyCellGrpCfg->p_NR_FR1)             = P_NR_FR1;
 	phyCellGrpCfg->pdsch_HARQ_ACK_Codebook = PDSCH_HARQ_ACK_CODEBOOK;
+	phyCellGrpCfg->tpc_SRS_RNTI = NULLP;
+	phyCellGrpCfg->tpc_PUCCH_RNTI = NULLP;
+	phyCellGrpCfg->tpc_PUSCH_RNTI = NULLP;
+	phyCellGrpCfg->sp_CSI_RNTI = NULLP;
+	phyCellGrpCfg->cs_RNTI = NULLP;
+	phyCellGrpCfg->ext1 = NULLP;
+	phyCellGrpCfg->ext2 = NULLP;
 
 	return ROK;
 }
@@ -2666,7 +2682,7 @@ uint8_t BuildPhyCellGrpCfg(PhysicalCellGroupConfig_t *phyCellGrpCfg)
 * ****************************************************************/
 uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
 {
-
+   macCellGrpCfg->drx_Config = NULLP;
    macCellGrpCfg->schedulingRequestConfig = NULLP;
 	DU_ALLOC(macCellGrpCfg->schedulingRequestConfig, sizeof(struct SchedulingRequestConfig));
 	if(!macCellGrpCfg->schedulingRequestConfig)
@@ -2724,6 +2740,7 @@ uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
    }
 
    macCellGrpCfg->skipUplinkTxDynamic = false;
+	macCellGrpCfg->ext1 = NULLP;
 
 	return ROK;
 }
@@ -2769,15 +2786,27 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
 			{
 				rlcConfig   = rlcBearerList->list.array[idx]->rlc_Config;
 				macLcConfig = rlcBearerList->list.array[idx]->mac_LogicalChannelConfig;
-				DU_FREE(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
-				DU_FREE(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
-				DU_FREE(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
-				DU_FREE(rlcConfig, sizeof(struct RLC_Config));
+				if(rlcConfig)
+				{
+				   if(rlcConfig->choice.am)
+					{
+				      DU_FREE(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
+				      DU_FREE(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
+				      DU_FREE(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
+					}
+				   DU_FREE(rlcConfig, sizeof(struct RLC_Config));
+				}
 				DU_FREE(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
-				DU_FREE(macLcConfig->ul_SpecificParameters->schedulingRequestID,	sizeof(SchedulingRequestId_t));
-				DU_FREE(macLcConfig->ul_SpecificParameters->logicalChannelGroup,	sizeof(long));
-				DU_FREE(macLcConfig->ul_SpecificParameters, sizeof(struct LogicalChannelConfig__ul_SpecificParameters));
-				DU_FREE(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
+				if(macLcConfig)
+				{
+				   if(macLcConfig->ul_SpecificParameters)
+					{
+				      DU_FREE(macLcConfig->ul_SpecificParameters->schedulingRequestID,	sizeof(SchedulingRequestId_t));
+				      DU_FREE(macLcConfig->ul_SpecificParameters->logicalChannelGroup,	sizeof(long));
+				      DU_FREE(macLcConfig->ul_SpecificParameters, sizeof(struct LogicalChannelConfig__ul_SpecificParameters));
+				   }
+				   DU_FREE(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
+				}
 				DU_FREE(rlcBearerList->list.array[idx], sizeof(struct RLC_BearerConfig));
 			}
 			DU_FREE(rlcBearerList->list.array, rlcBearerList->list.size);
@@ -2791,31 +2820,57 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
 		schedulingRequestConfig = macCellGrpCfg->schedulingRequestConfig; 
 		schReqList = schedulingRequestConfig->schedulingRequestToAddModList;
 
-		for(idx=0;idx<schReqList->list.count; idx++)
+      if(schedulingRequestConfig)
 		{
-			DU_FREE(schReqList->list.array[idx]->sr_ProhibitTimer, sizeof(long));
-			DU_FREE(schReqList->list.array[idx], sizeof(SchedulingRequestId_t));
+		   if(schReqList)
+			{
+			   if(schReqList->list.array)
+				{
+		         for(idx=0;idx<schReqList->list.count; idx++)
+		         {
+					   if(schReqList->list.array[idx])
+						{
+			            DU_FREE(schReqList->list.array[idx]->sr_ProhibitTimer, sizeof(long));
+			            DU_FREE(schReqList->list.array[idx], sizeof(struct SchedulingRequestToAddMod));
+		            }
+					}
+		         DU_FREE(schReqList->list.array, schReqList->list.size);
+				}
+		      DU_FREE(schedulingRequestConfig->schedulingRequestToAddModList,\
+				sizeof(struct SchedulingRequestConfig__schedulingRequestToAddModList));    }
+		   DU_FREE(macCellGrpCfg->schedulingRequestConfig, sizeof(struct SchedulingRequestConfig));
+      }
+      
+		if(macCellGrpCfg->bsr_Config)
+		{
+		   DU_FREE(macCellGrpCfg->bsr_Config, sizeof(struct BSR_Config));
 		}
-		DU_FREE(schReqList->list.array, schReqList->list.size);
-		DU_FREE(schedulingRequestConfig->schedulingRequestToAddModList,\
-				sizeof(struct SchedulingRequestConfig__schedulingRequestToAddModList));
-		DU_FREE(macCellGrpCfg->schedulingRequestConfig, sizeof(struct SchedulingRequestConfig));
-
-		DU_FREE(macCellGrpCfg->bsr_Config, sizeof(struct BSR_Config));
 
 		tagConfig = macCellGrpCfg->tag_Config;
 		tagList = tagConfig->tag_ToAddModList;
-		for(idx=0; idx<tagList->list.count; idx++)
+		if(tagConfig)
 		{
-			DU_FREE(tagList->list.array[idx], sizeof(struct TAG));
-		}
-		DU_FREE(tagList->list.array, tagList->list.size);
-		DU_FREE(tagConfig->tag_ToAddModList, sizeof(struct TAG_Config__tag_ToAddModList));
+		   if(tagList)
+			{
+			   if(tagList->list.array)
+				{
+		         for(idx=0; idx<tagList->list.count; idx++)
+		         {
+             	   DU_FREE(tagList->list.array[idx], sizeof(struct TAG));
+					}
+		         DU_FREE(tagList->list.array, tagList->list.size);
+            }
+		      DU_FREE(tagConfig->tag_ToAddModList, sizeof(struct TAG_Config__tag_ToAddModList));
+			}
 		DU_FREE(tagConfig, sizeof(struct TAG_Config));
+		}
 
 		phrConfig = macCellGrpCfg->phr_Config;
-		DU_FREE(phrConfig->choice.setup, sizeof(struct PHR_Config));
-		DU_FREE(phrConfig, sizeof(struct MAC_CellGroupConfig__phr_Config));
+		if(phrConfig)
+		{
+		   DU_FREE(phrConfig->choice.setup, sizeof(struct PHR_Config));
+		   DU_FREE(phrConfig, sizeof(struct MAC_CellGroupConfig__phr_Config));
+      }
 
 		DU_FREE(macCellGrpCfg, sizeof(MAC_CellGroupConfig_t));
 	}
@@ -2825,35 +2880,27 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
 	{
 		DU_FREE(phyCellGrpCfg->p_NR_FR1, sizeof(long));
 		DU_FREE(phyCellGrpCfg, sizeof(PhysicalCellGroupConfig_t));
-
 	}
 
 	spCellCfg = cellGrpCfg->spCellConfig;
 	if(spCellCfg)
 	{
 		DU_FREE(spCellCfg->servCellIndex, sizeof(long));
-		DU_FREE(spCellCfg->rlmInSyncOutOfSyncThreshold, sizeof(long));
+      DU_FREE(spCellCfg->rlmInSyncOutOfSyncThreshold, sizeof(long));
 
 		srvCellCfg = spCellCfg->spCellConfigDedicated;
-
-		DU_FREE(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
-
-		DU_FREE(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
-		DU_FREE(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
-
-
-		DU_FREE(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));
-
-
-		DU_FREE(srvCellCfg->pdsch_ServingCellConfig, sizeof(struct	ServingCellConfig__pdsch_ServingCellConfig));
-
-
-		DU_FREE(srvCellCfg->csi_MeasConfig, sizeof(struct ServingCellConfig__csi_MeasConfig));
-
-		DU_FREE(spCellCfg->spCellConfigDedicated, sizeof(ServingCellConfig_t));
+      if(srvCellCfg)
+		{
+		   DU_FREE(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
+		   DU_FREE(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
+		   DU_FREE(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
+		   DU_FREE(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));
+		   DU_FREE(srvCellCfg->pdsch_ServingCellConfig, sizeof(struct	ServingCellConfig__pdsch_ServingCellConfig));
+		   DU_FREE(srvCellCfg->csi_MeasConfig, sizeof(struct ServingCellConfig__csi_MeasConfig));
+		   DU_FREE(spCellCfg->spCellConfigDedicated, sizeof(ServingCellConfig_t));
+		}
 		DU_FREE(spCellCfg, sizeof(SpCellConfig_t));
 	}
-
 	return ROK;
 }
 /*******************************************************************
@@ -2877,11 +2924,10 @@ uint8_t BuildDuToCuRrcContainer(DUtoCURRCContainer_t *duToCuRrcContainer)
 {
 	CellGroupConfigRrc_t  cellGrpCfg;
 	asn_enc_rval_t        encRetVal;
-
+	uint8_t               ret = RFAILED;
 
 	while(1)
 	{
-		duToCuRrcContainer     = NULLP;
 		cellGrpCfg.cellGroupId = CELL_GRP_ID;
 
 		cellGrpCfg.rlc_BearerToAddModList = NULLP;
@@ -2897,7 +2943,7 @@ uint8_t BuildDuToCuRrcContainer(DUtoCURRCContainer_t *duToCuRrcContainer)
 			break;
 		}
 
-       cellGrpCfg.rlc_BearerToReleaseList = NULLP;
+      cellGrpCfg.rlc_BearerToReleaseList = NULLP;
 		cellGrpCfg.mac_CellGroupConfig = NULLP;
 		DU_ALLOC(cellGrpCfg.mac_CellGroupConfig, sizeof(MAC_CellGroupConfig_t));
 		if(!cellGrpCfg.mac_CellGroupConfig)
@@ -2938,6 +2984,10 @@ uint8_t BuildDuToCuRrcContainer(DUtoCURRCContainer_t *duToCuRrcContainer)
 			break;
 		}
 
+      cellGrpCfg.sCellToAddModList = NULLP;
+		cellGrpCfg.sCellToReleaseList = NULLP;
+		cellGrpCfg.ext1 = NULLP;
+
 		/* encode cellGrpCfg into duToCuRrcContainer */
 		xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, &cellGrpCfg);
 		cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
@@ -2959,11 +3009,19 @@ uint8_t BuildDuToCuRrcContainer(DUtoCURRCContainer_t *duToCuRrcContainer)
 			}
 		}
 
-		memcpy(duToCuRrcContainer, encBuf, encBufSize);
+	   duToCuRrcContainer->size = encBufSize;
+		DU_ALLOC(duToCuRrcContainer->buf, duToCuRrcContainer->size);
+		if(!duToCuRrcContainer->buf)
+		{
+         DU_LOG("\nF1AP : Memory allocation failed in BuildDuToCuRrcContainer");
+			break;
+		}
+		memcpy(duToCuRrcContainer->buf, encBuf, duToCuRrcContainer->size);
+		ret = ROK;
 		break;
 	}
-	FreeMemDuToCuRrcCont(&cellGrpCfg);
-	return ROK;
+   FreeMemDuToCuRrcCont(&cellGrpCfg);
+	return ret;
 }
 
 /*******************************************************************
@@ -3018,7 +3076,7 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
 		         InitiatingMessage__value_PR_InitialULRRCMessageTransfer;
 		  initULRRCMsg =\
 		         &f1apMsg->choice.initiatingMessage->value.choice.InitialULRRCMessageTransfer;
-        elementCnt = 3;
+        elementCnt = 5;
 		  initULRRCMsg->protocolIEs.list.count = elementCnt;
 		  initULRRCMsg->protocolIEs.list.size = \
 		         elementCnt * sizeof(InitialULRRCMessageTransferIEs_t *);
@@ -3103,7 +3161,11 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
 			initULRRCMsg->protocolIEs.list.array[idx1]->value.present =\
 		       	         InitialULRRCMessageTransferIEs__value_PR_DUtoCURRCContainer;
 
-			BuildDuToCuRrcContainer(&initULRRCMsg->protocolIEs.list.array[idx1]->value.choice.DUtoCURRCContainer);
+			ret = BuildDuToCuRrcContainer(&initULRRCMsg->protocolIEs.list.array[idx1]->value.choice.DUtoCURRCContainer);
+         if(ret != ROK)
+			{
+			   break;
+			}
 
 			xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 			/* Encode the F1SetupRequest type as APER */
@@ -3162,6 +3224,13 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
 						  {
 							  DU_FREE(initULRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf,
 									  initULRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size)
+						  }
+
+						  idx1 = 4;
+						  if(initULRRCMsg->protocolIEs.list.array[idx1]->value.choice.DUtoCURRCContainer.buf)
+						  {
+						     DU_FREE(initULRRCMsg->protocolIEs.list.array[idx1]->value.choice.DUtoCURRCContainer.buf,
+							  initULRRCMsg->protocolIEs.list.array[idx1]->value.choice.DUtoCURRCContainer.size);
 						  }
 				        for(ieId=0; ieId<elementCnt; ieId++)
 				        {
