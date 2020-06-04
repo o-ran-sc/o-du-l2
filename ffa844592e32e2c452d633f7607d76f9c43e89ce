@@ -19,6 +19,125 @@
     },
     {
       "key": {
+        "uuid": "b9fe1e53_84f57566",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-04T14:05:36Z",
+      "side": 1,
+      "message": "make this apointer to support multi UEs. The msg4Pres flag can then be removed",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27a2206a_be644431",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-04T14:05:36Z",
+      "side": 1,
+      "message": "1. why is offsetPointA needed here as a paramter? it is available in schCellCfg\n2. change name of function to specify msg4 resource allocation",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e71075ac_70157a8c",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-04T14:05:36Z",
+      "side": 1,
+      "message": "inst will not always be 0. We must not use it like this.",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15ee3707_596c9458",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-04T14:05:36Z",
+      "side": 1,
+      "message": "change name to calcRb or something more suitable",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "369322a7_07a631b9",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-04T14:05:36Z",
+      "side": 1,
+      "message": "this assignment must be done after pdsch is filled.",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5694317b_d106b452",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-04T14:05:36Z",
+      "side": 1,
+      "message": "we can send cellCb instead? of sending last 3 parameters.\nWe cannot derive \"inst\"everywhere. Hence we must send cellCb",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8af6d2b9_32a03b44",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-04T14:05:36Z",
+      "side": 1,
+      "message": "as mentioned earlier, make this a pointer and eliminate isMsg4Pres variable",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8e984afc_cf7990db",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 3
@@ -30,6 +149,40 @@
       "writtenOn": "2020-06-03T14:40:27Z",
       "side": 1,
       "message": "MAX_NUM_LOGICAL_CHANNELS can be 11.\nwe have numLc while msg4 as 1.",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7f9bd0b_5c700dd9",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-04T14:05:36Z",
+      "side": 1,
+      "message": "change return type to unit8_t",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33fc9548_96eb2de5",
+        "filename": "src/cm/tfu.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-04T14:05:36Z",
+      "side": 1,
+      "message": "is this the right file to add these events???",
       "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
