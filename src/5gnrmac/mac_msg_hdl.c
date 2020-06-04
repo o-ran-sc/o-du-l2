@@ -191,9 +191,13 @@ uint16_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
    uint16_t pduIdx;
  
    DU_LOG("\nMAC : Received Rx Data indication");
+  
+   /* TODO : compare the handle received in RxDataInd with handle send in PUSCH
+	 * PDU, which is stored in raCb */
+
    for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
    {
-      unpackRxData(rxDataInd->timingInfo, &rxDataInd->pdus[pduIdx]);
+      unpackRxData(&rxDataInd->pdus[pduIdx]);
    }
    return ROK;
 }

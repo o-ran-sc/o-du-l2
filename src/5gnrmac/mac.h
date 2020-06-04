@@ -146,7 +146,7 @@ void createMacRaCb(uint16_t cellId, uint16_t crnti);
 void fillMsg4DlData(MacDlData *dlData);
 void fillMacCe(MacCeInfo  *macCeData);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize);
-int unpackRxData(SlotIndInfo timingInfo, RxDataIndPdu *rxDataIndPdu);
+int unpackRxData(RxDataIndPdu *rxDataIndPdu);
 
 #endif
 /**********************************************************************
