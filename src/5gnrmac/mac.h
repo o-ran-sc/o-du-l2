@@ -99,7 +99,7 @@ typedef struct macCb
 MacCb macCb;
 void fillMacToSchPst(Pst *pst);
 void fillRarPdu(RarInfo *rarInfo);
-int unpackRxData(SlotIndInfo timingInfo, RxDataIndPdu *rxDataIndPdu);
+int unpackRxData(RxDataIndPdu *rxDataIndPdu);
 
 #endif
 /**********************************************************************

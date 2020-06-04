@@ -422,6 +422,7 @@ typedef struct schPuschInfo
 typedef struct ulSchInfo
 {
    uint16_t      cellId;         /* Cell Id */
+	uint16_t      crnti;          /* CRNI */
 	SlotIndInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
 	uint8_t       dataType;       /* Type of info being scheduled */
 	PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
