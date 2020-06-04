@@ -351,7 +351,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn)
+uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
 {
 #ifdef FAPI
    uint8_t idx = 0;
@@ -373,10 +373,10 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn)
    rxDataInd->numPdus = 1;
 
    pduInfo = &rxDataInd->pdus[idx];
-   pduInfo->handle = 0;
-   pduInfo->rnti = 0;
-   pduInfo->harqId = 0;
-   pduInfo->pduLength = 24;
+   pduInfo->handle = puschPdu.handle;
+   pduInfo->rnti = puschPdu.rnti;
+   pduInfo->harqId = puschPdu.puschData.harqProcessId;
+   pduInfo->pduLength = puschPdu.puschData.tbSize;
    pduInfo->ul_cqi = 0;
    pduInfo->timingAdvance = 0;
    pduInfo->rssi = 0;
@@ -700,6 +700,12 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 	{
 		if(ulTtiReq->pdus[numPdus-1].pduType == 0)
 			DU_LOG("\nPHY STUB: PRACH PDU");
+      if(ulTtiReq->pdus[numPdus-1].pduType == 1)
+      {
+         DU_LOG("\nPHY STUB: PUSCH PDU");
+         l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
+			   ulTtiReq->pdus[numPdus-1].u.pusch_pdu); 
+      }
 		numPdus--;
 	}
 

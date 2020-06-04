@@ -314,10 +314,12 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 	
 	if(ulAlloc->schPuschInfo)
 	{
+	   ulSchInfo.crnti = schCb[schInst].cells[schInst]->raCb[0].tcrnti;
 		ulSchInfo.dataType |= SCH_DATATYPE_PUSCH;
 		memcpy(&ulSchInfo.schPuschInfo, ulAlloc->schPuschInfo,
 				sizeof(SchPuschInfo));
 		SCH_FREE(ulAlloc->schPuschInfo, sizeof(SchPuschInfo));
+		ulAlloc->schPuschInfo = NULL;
 	}
 
 	//send msg to MAC
