@@ -87,6 +87,23 @@
     },
     {
       "key": {
+        "uuid": "d2f5a30c_b7ef67dc",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-05T07:25:23Z",
+      "side": 1,
+      "message": "If filling coreSet0Size missed here ?",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "369322a7_07a631b9",
         "filename": "src/5gnrsch/sch_slot_ind.c",
         "patchSetId": 3
@@ -115,6 +132,23 @@
       "writtenOn": "2020-06-04T14:05:36Z",
       "side": 1,
       "message": "we can send cellCb instead? of sending last 3 parameters.\nWe cannot derive \"inst\"everywhere. Hence we must send cellCb",
+      "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c43fbb8e_87fd4851",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-05T07:25:23Z",
+      "side": 1,
+      "message": "To follow the consistency, this can be renamed as msg4PduLen\nas define in struct RarInfo.",
       "revId": "ffa844592e32e2c452d633f7607d76f9c43e89ce",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
