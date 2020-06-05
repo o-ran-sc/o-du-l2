@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2d2c7d2a_19bf7ee9",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-05T08:01:57Z",
+      "side": 1,
+      "message": "use CCCH_LCID macro  for lcId \u003d 0",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2164c859_6d2a25ce",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-05T08:01:57Z",
+      "side": 1,
+      "message": "where is memory allocated to pduBuf?",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae95683a_24955364",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-05T08:01:57Z",
+      "side": 1,
+      "message": "pass tbSize from outside of this function so that it will be generic.",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72a7f106_3f2d5b21",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-05T08:01:57Z",
+      "side": 1,
+      "message": "if bytePos is lesser than tbSize, then only we need pad. add this check.",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f0e4085_e0f2229e",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-05T08:01:57Z",
+      "side": 1,
+      "message": "what if only one byte padding needs to be done, then only padding header needs to be muxed.",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d9db1c7_8b1f3d63",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-05T08:01:57Z",
+      "side": 1,
+      "message": "there is size parameter for padding.\nAlso, add memset for the remaining bytes telling that it is padding bytes for clear understanding.",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06d9de28_d76a290e",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-05T08:01:57Z",
+      "side": 1,
+      "message": "why is this brackets?",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d3e1cb2_fcfbfaff",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-05T08:01:57Z",
+      "side": 1,
+      "message": "msg4TxPdu is the pdu which is after muxing. there is another pdu named msg4Pdu. That one has to be copied at this time.",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
