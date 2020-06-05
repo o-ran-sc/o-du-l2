@@ -1,0 +1,327 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "594da4d7_d7f29f41",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Wouldnt removing extern from here lead to including \"extern MacCb macCb\" in all .c file?",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbb9177b_b650de99",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "free of shared memory allocated for dlCcchInd and dlCcchInd-\u003edlCcchMsg. (Can be added later)",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb86470c_c530a9b0",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Can be triggerred from unpackRxData() in mac_demux.c",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1a9eaca_f16035a5",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Memory allocated for rrcContainer in unpackRxData is a shareable memory. So address in rrcContainer pointer can be directly assigned to ulCcchMsg",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc4e9ad3_a67f3282",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Incorrect message",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef559d9a_73e737ac",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Free for ulCcchInd-\u003eulCcchMsg",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22ef24c0_8b58b54f",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "return RFAILED",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "886af5c3_e456cb77",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Both events defined to same value",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adf0ebd5_e74d4f86",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Can we rename this as \"UlCcchInfo/UlCcchIndInfo\" since UlCcchInd is a primitive name",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a8eadcd_88a4b8c0",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Similarly, can be renamed to \"DlCcchInfo\"",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d473aafb_1e4698ff",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2876,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Is idx needed?",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7310be3_7e08400e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4290,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Invalid value for initiating message should be printed here",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f29cb523_37a97863",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "To be allocated from Shared memory",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9fcbd98a_98d64b53",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "msgType can be received as a param in this func to support other types as well in future implementations",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4fcd3d67_515560a4",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Shared memory to be allocated for dlCcchInd-\u003edlCcchMsg before memcpy\ndlCcchMsg to be freed after memcpy",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28df1a55_66e7d109",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Free shared memory if \"packMacDlCcchIndOpts\" returns failure",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b475d9d6_ccf118f7",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Memory to be allocated for dlCcchMsg before memcpy",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ecf58c7_84df5896",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "RRC_SETUP can be passed as a param",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "639e7802_2ae4c8c2",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-05T08:22:50Z",
+      "side": 1,
+      "message": "Free of shared memory for ulCcchInd and ulCcchInd-\u003eulCcchMsg",
+      "revId": "cbb6c8f07c67158a1f95e4353dd625e4e3512647",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
