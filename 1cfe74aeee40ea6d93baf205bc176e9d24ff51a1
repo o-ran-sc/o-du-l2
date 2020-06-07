@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "32e6ee08_f5148c34",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-07T15:01:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d2c7d2a_19bf7ee9",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2164c859_6d2a25ce",
         "filename": "src/5gnrmac/mac_mux.c",
         "patchSetId": 8
@@ -33,6 +51,24 @@
       "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b4bfe0f_96c78c94",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-07T15:01:41Z",
+      "side": 1,
+      "message": "yes. Now Ihave allocated in MacProcDlAlloc()",
+      "parentUuid": "2164c859_6d2a25ce",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "750f0ae9_a2afa2f8",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-07T15:01:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae95683a_24955364",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "72a7f106_3f2d5b21",
         "filename": "src/5gnrmac/mac_mux.c",
         "patchSetId": 8
@@ -67,6 +121,24 @@
       "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3e27b24_7bb0d87d",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-07T15:01:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72a7f106_3f2d5b21",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "58adebbd_6a377945",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-07T15:01:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f0e4085_e0f2229e",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1d9db1c7_8b1f3d63",
         "filename": "src/5gnrmac/mac_mux.c",
         "patchSetId": 8
@@ -101,6 +191,24 @@
       "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b65c462c_1ee83040",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-07T15:01:41Z",
+      "side": 1,
+      "message": "memset the macPdu[tb] to zero, is already done above.",
+      "parentUuid": "1d9db1c7_8b1f3d63",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "c0fede40_e04bc10a",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-07T15:01:41Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "06d9de28_d76a290e",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7d3e1cb2_fcfbfaff",
         "filename": "src/5gnrmac/mac_slot_ind.c",
         "patchSetId": 8
@@ -135,6 +261,24 @@
       "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3511c48_4ad8104d",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-07T15:01:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d3e1cb2_fcfbfaff",
+      "revId": "1cfe74aeee40ea6d93baf205bc176e9d24ff51a1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
