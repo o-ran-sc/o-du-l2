@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "007105ef_c1babad9",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3335,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-08T16:16:12Z",
+      "side": 1,
+      "message": "pduIdx is uint8_t and value assigned during initialization is -1.\nwe can make it 0, and increment after fillPuschPdu.",
+      "revId": "b60c6ccc0986394531ed9a6fc504941fef832c97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
