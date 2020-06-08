@@ -30,11 +30,12 @@
 #define ODU_VALUE_NINE  9 
 #define ODU_VALUE_TEN  10
 
-
 /* Function declarations */
 int BuildMibPdu();
 int BuildMibMsg();
 int BuildSib1Msg();
+extern char encBuf[ENC_BUF_MAX_LEN];
+extern DuCfgParams duCfgParam;
 
 /**********************************************************************
          End of file
