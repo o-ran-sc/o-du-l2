@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e25c2d38_b7aa8768",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2617,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-08T13:17:08Z",
+      "side": 1,
+      "message": "you have copied from RAR, but there are some changes in msg4 DCI encoding. Pls do consider them.",
+      "revId": "c434ce9c6afe809c68d0e6050e45566039e2fa54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88700a9e_9ce562b8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2676,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-08T13:17:08Z",
+      "side": 1,
+      "message": "can pass RNTI-type instead of dciValue",
+      "revId": "c434ce9c6afe809c68d0e6050e45566039e2fa54",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}

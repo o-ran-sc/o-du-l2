@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb3c6e77_aa7d4b49",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 2629,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-08T13:17:08Z",
+      "side": 1,
+      "message": "all the new parameters are hardcoded to 0 in this function, we need to take these parameters values from scheduler.",
+      "revId": "bc0eeebffaf53f5a67fcfd82019d8d441b2d7297",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
