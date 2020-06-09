@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "be2c3a27_3fe14beb",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-09T12:12:25Z",
+      "side": 1,
+      "message": "which message is this used for? SCH must interact with MAC only which we have currently decided as TC",
+      "revId": "78ba584f30ea11d0a493b8345364ea47b2922e7d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3afc7417_5faa689d",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-09T12:12:25Z",
+      "side": 1,
+      "message": "lets move this function to sch_common.c",
+      "revId": "78ba584f30ea11d0a493b8345364ea47b2922e7d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db4e7859_13a37b39",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-09T12:12:25Z",
+      "side": 1,
+      "message": "cellCb has been sent as param. This can be used directly to derive cellCfg",
+      "revId": "78ba584f30ea11d0a493b8345364ea47b2922e7d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65b6ae6b_b063e5e5",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-09T12:12:25Z",
+      "side": 1,
+      "message": "change to SCH ALLOC. Or we may not allocate memory!! while sending to MAC, we may directly send address using \u0026 operator since MAC and SCH are tightly coupled. (similar to using pst)",
+      "revId": "78ba584f30ea11d0a493b8345364ea47b2922e7d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1626112a_8424663d",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-09T12:12:25Z",
+      "side": 1,
+      "message": "better to club all events together. Move these to line 24",
+      "revId": "78ba584f30ea11d0a493b8345364ea47b2922e7d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
