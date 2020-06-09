@@ -1,0 +1,531 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e509b41_b88a4cd2",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "Move all of the above global parameters and function declaration to du_sys_info_hdl.h",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1aa5963b_353bda7a",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "While loop missing here. \nMIB clean up starts from this function",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55da83c9_ca9e8c56",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "Mib Clean up not done as per while loop",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2e15e29_6b7c6be5",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED from here if BuildTac returns RFAILED",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0300899f_de2d5a29",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED from here if BuildRanac returns RFAILED",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44a4b65c_307b52c7",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED from here if BuildCellIndentity returns RFAILED",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d696ac9_564c7fdc",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED from here if BuildSibMapInfoList !\u003d ROK",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68aca3e0_c4a9a2c5",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1af4162_229eaae3",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbc6c701_2cefd992",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1332,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0698d9e3_147e9238",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1357,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if BuildFreqInfoDl !\u003d ROK",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f958a4a_1a630efe",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1361,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if BuildBwpDlCommon!\u003d ROK",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8863ca3b_02b59231",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1364,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8fe888cb_96a27dcf",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1367,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d7611a4_2bc8157f",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1451,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fad8aaf3_ec0d91bc",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1897,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13580b60_8bad46b2",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1908,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2724937_7f8e1f14",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1919,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "efa96fa2_ab172dfc",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1944,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "979763b6_183b3a4d",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1947,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFAILED if this function\u0027s return value !\u003d ROk",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f254809a_56246029",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2032,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFIALED if BuildDlCfgCommSib !\u003d ROK",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f93f9636_d1acb7e2",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2042,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFIALED if BuildUlCfgCommSib !\u003d ROK",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "efcce7ea_215a4a53",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2052,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "return RFIALED if BuildTddUlDlCfgComm !\u003d ROK",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e13c8c6_b4333367",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2097,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "break if BuildPlmnList returns RFAILED",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cac45f24_da609d63",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2122,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "break from here if BuildSiSchedInfoList returns RFAILED",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d36f4e5_421ec96b",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2132,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "break from here if BuildServCellCfgCommonSib returns RFAILED",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8a3212f_79b8a93d",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2262,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "searchSpace-\u003esearchSpaceType-\u003epresent  \nWhy is this parameter set here again?",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fc0f736_99fba979",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2371,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "Null check before free",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "636a7d92_d8a8c479",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2487,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "These present parameters were already filled earlier in its corresponding build function.\nwhy then is the value being picked from duCfg?",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db4d15c8_1171154d",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2724,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "idx1 and idx2 is unused. This should have come up in the warning.\nPlease check that there are no warnings due to this commit changes",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "364a4bb1_3e3486a3",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2793,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-09T10:16:13Z",
+      "side": 1,
+      "message": "This should free trackingAreaCode. \ntrackingAreCode-\u003ebuf is already freed above",
+      "revId": "d34ce4f65ec756a07f4f55ecf831f5c17763d368",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
