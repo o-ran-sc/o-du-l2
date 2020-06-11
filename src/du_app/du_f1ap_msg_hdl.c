@@ -45,11 +45,12 @@
 
 extern char encBuf[ENC_BUF_MAX_LEN];
 extern DuCfgParams duCfgParam;
-static S16 BuildULTnlInforet=RFAILED;
-
+uint8_t BuildULTnlInforet=RFAILED;
+uint8_t ServedCellListreturn=RFAILED;
 S16 sctpSend(Buffer *mBuf, U8 itfType);
-
-
+uint8_t Nrcgiret=RFAILED;
+uint8_t SplCellListret=RFAILED;
+uint8_t SRBSetupret=RFAILED;
 /*******************************************************************
  *
  * @brief Builds Uplink Info for NR 
@@ -65,9 +66,9 @@ S16 sctpSend(Buffer *mBuf, U8 itfType);
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildULNRInfo(NRFreqInfo_t *ulnrfreq)
+int16_t BuildULNRInfo(NRFreqInfo_t *ulnrfreq)
 {
-   U8 idx=0;
+   uint8_t idx=0;
    ulnrfreq->nRARFCN = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.\
                        fdd.ulNrFreqInfo.nrArfcn;
    ulnrfreq->freqBandListNr.list.count = 1;
@@ -106,9 +107,9 @@ S16 BuildULNRInfo(NRFreqInfo_t *ulnrfreq)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
+int16_t BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
 {
-   U8 idx=0;
+   uint8_t idx=0;
 	dlnrfreq->nRARFCN = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.\
                        fdd.dlNrFreqInfo.nrArfcn;
    dlnrfreq->freqBandListNr.list.count = 1;
@@ -149,14 +150,14 @@ S16 BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildNrcgi(NRCGI_t *nrcgi)
+int16_t BuildNrcgi(NRCGI_t *nrcgi)
 {
-   S16 ret;
-   U8 unused = 4;
-   U8 byteSize = 5;
-   U8 val = 16;
+   int16_t ret;
+   uint8_t unused = 4;
+   uint8_t byteSize = 5;
+   uint8_t val = 16;
    /* Allocate Buffer Memory */
-   nrcgi->pLMN_Identity.size = PLMN_SIZE * sizeof(U8);
+   nrcgi->pLMN_Identity.size = PLMN_SIZE * sizeof(uint8_t);
    DU_ALLOC(nrcgi->pLMN_Identity.buf, nrcgi->pLMN_Identity.size);
    if(nrcgi->pLMN_Identity.buf == NULLP)
 	{
@@ -170,7 +171,7 @@ S16 BuildNrcgi(NRCGI_t *nrcgi)
    }
    /*nrCellIdentity*/
    //ret = BuildNrCellId(&nrcgi->nRCellIdentity);
-   nrcgi->nRCellIdentity.size = byteSize * sizeof(U8);
+   nrcgi->nRCellIdentity.size = byteSize * sizeof(uint8_t);
    DU_ALLOC(nrcgi->nRCellIdentity.buf, nrcgi->nRCellIdentity.size); 
    if(nrcgi->nRCellIdentity.buf == NULLP)
    {
@@ -198,14 +199,14 @@ S16 BuildNrcgi(NRCGI_t *nrcgi)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildFiveGSTac(Served_Cell_Information_t *servcell)
+int16_t BuildFiveGSTac(Served_Cell_Information_t *servcell)
 {
    DU_ALLOC(servcell->fiveGS_TAC,sizeof(FiveGS_TAC_t));
    if(servcell->fiveGS_TAC == NULLP)
    {
 	   return RFAILED;
    }
-   servcell->fiveGS_TAC->size = 3 * sizeof(U8);
+   servcell->fiveGS_TAC->size = 3 * sizeof(uint8_t);
    DU_ALLOC(servcell->fiveGS_TAC->buf,\
          sizeof(servcell->fiveGS_TAC->size));
    if(servcell->fiveGS_TAC->buf == NULLP)
@@ -232,10 +233,10 @@ S16 BuildFiveGSTac(Served_Cell_Information_t *servcell)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildNrMode(NR_Mode_Info_t *mode)
+int16_t BuildNrMode(NR_Mode_Info_t *mode)
 {
-   S16 BuildDLNRInforet=0;
-	S16 BuildULNRInforet=0; 
+   int16_t BuildDLNRInforet=0;
+	int16_t BuildULNRInforet=0; 
    /* FDD Mode */
 	mode->present = NR_Mode_Info_PR_fDD;
    if(mode->present == NR_Mode_Info_PR_fDD)
@@ -285,13 +286,13 @@ S16 BuildNrMode(NR_Mode_Info_t *mode)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildExtensions(ProtocolExtensionContainer_4624P3_t **ieExtend)
+int16_t BuildExtensions(ProtocolExtensionContainer_4624P3_t **ieExtend)
 {
-   U8 idx;
-   U8 plmnidx;
-   U8 extensionCnt=1;
-   U8 sliceId=0;
-   U8 sdId;
+   uint8_t idx;
+   uint8_t plmnidx;
+   uint8_t extensionCnt=1;
+   uint8_t sliceId=0;
+   uint8_t sdId;
    DU_ALLOC(*ieExtend,sizeof(ProtocolExtensionContainer_4624P3_t));
    if((*ieExtend) == NULLP)
    {
@@ -338,7 +339,7 @@ S16 BuildExtensions(ProtocolExtensionContainer_4624P3_t **ieExtend)
 	     return RFAILED;
     }
    (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-         list.array[sliceId]->sNSSAI.sST.size = sizeof(U8);
+         list.array[sliceId]->sNSSAI.sST.size = sizeof(uint8_t);
     DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
             .list.array[sliceId]->sNSSAI.sST.buf,(*ieExtend)->list.array[idx]->\
             extensionValue.choice.SliceSupportList.\
@@ -358,7 +359,7 @@ S16 BuildExtensions(ProtocolExtensionContainer_4624P3_t **ieExtend)
 	   return RFAILED;
    }
    (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-         list.array[sliceId]->sNSSAI.sD->size = 3*sizeof(U8);
+         list.array[sliceId]->sNSSAI.sD->size = 3*sizeof(uint8_t);
    DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
             list.array[sliceId]->sNSSAI.sD->buf,(*ieExtend)->list.array[idx]->extensionValue.choice.\
             SliceSupportList.list.array[sliceId]->sNSSAI.sD->size);
@@ -393,12 +394,12 @@ S16 BuildExtensions(ProtocolExtensionContainer_4624P3_t **ieExtend)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
+int16_t  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
 {  
-   U8  plmnidx;
-   U8  servPlmnCnt=1;
-	S16 buildPlmnIdret=0;
-	S16 BuildExtensionsret=0;
+   uint8_t  plmnidx;
+   uint8_t  servPlmnCnt=1;
+	int16_t buildPlmnIdret=0;
+	int16_t BuildExtensionsret=0;
    srvplmn->list.count = servPlmnCnt;
    srvplmn->list.size = \
                       servPlmnCnt*sizeof(ServedPLMNs_Item_t *);
@@ -416,7 +417,7 @@ S16  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
 		   return RFAILED;
       }  
    }
-	srvplmn->list.array[0]->pLMN_Identity.size = PLMN_SIZE * sizeof(U8);
+	srvplmn->list.array[0]->pLMN_Identity.size = PLMN_SIZE * sizeof(uint8_t);
    DU_ALLOC(srvplmn->list.array[0]->pLMN_Identity.buf, srvplmn->list.array[0]->pLMN_Identity.size);
    buildPlmnIdret = buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
          &srvplmn->list.array[0]->pLMN_Identity);
@@ -447,15 +448,15 @@ S16  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
  *
  * ****************************************************************/
 
-S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
+int16_t BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
 {
-   S16 BuildNrcgiret=0;
-   S16 BuildFiveGSTacret=0;
-	S16 BuildServedPlmnret=0;
-	S16 BuildNrModeret=0;
-   U8  idx;
-   U8  plmnidx;
-   U8  plmnCnt=1;
+   int16_t BuildNrcgiret=0;
+   int16_t BuildFiveGSTacret=0;
+	int16_t BuildServedPlmnret=0;
+	int16_t BuildNrModeret=0;
+   uint8_t  idx;
+   uint8_t  plmnidx;
+   uint8_t  plmnCnt=1;
    GNB_DU_Served_Cells_Item_t *srvCellItem;
    duServedCell->list.size = plmnCnt * sizeof(GNB_DU_Served_Cells_ItemIEs_t *);
    duServedCell->list.count = plmnCnt;
@@ -511,7 +512,7 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    }
    /*Measurement timing Config*/
    srvCellItem->served_Cell_Information.measurementTimingConfiguration.\
-      size = sizeof(U8);
+      size = sizeof(uint8_t);
    DU_ALLOC(srvCellItem->served_Cell_Information.\
          measurementTimingConfiguration.buf,srvCellItem->served_Cell_Information.measurementTimingConfiguration.size);
    if(srvCellItem->served_Cell_Information.\
@@ -573,12 +574,12 @@ S16 BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildRrcVer(RRC_Version_t *rrcVer)
+int16_t BuildRrcVer(RRC_Version_t *rrcVer)
 {
-   U8 rrcExt;
-   U8 rrcLatest;
-   rrcVer->latest_RRC_Version.size = sizeof(U8);
-   DU_ALLOC(rrcVer->latest_RRC_Version.buf,sizeof(U8));
+   uint8_t rrcExt;
+   uint8_t rrcLatest;
+   rrcVer->latest_RRC_Version.size = sizeof(uint8_t);
+   DU_ALLOC(rrcVer->latest_RRC_Version.buf,sizeof(uint8_t));
    if(rrcVer->latest_RRC_Version.buf == NULLP)
    {
 	   return RFAILED;
@@ -610,7 +611,7 @@ S16 BuildRrcVer(RRC_Version_t *rrcVer)
    rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.present =\
               RRC_Version_ExtIEs__extensionValue_PR_Latest_RRC_Version_Enhanced;
    rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.choice\
-             .Latest_RRC_Version_Enhanced.size = 3*sizeof(U8);
+             .Latest_RRC_Version_Enhanced.size = 3*sizeof(uint8_t);
    DU_ALLOC(rrcVer->iE_Extensions->list.array[rrcExt]->extensionValue.choice\
         .Latest_RRC_Version_Enhanced.buf,rrcVer->iE_Extensions->list.\
          array[rrcExt]->extensionValue.choice.Latest_RRC_Version_Enhanced.size);
@@ -646,7 +647,7 @@ S16 BuildRrcVer(RRC_Version_t *rrcVer)
 *         RFAILED - failure
 *
 * ****************************************************************/
-S16 SendF1APMsg(Region region, Pool pool)
+int16_t SendF1APMsg(Region region, Pool pool)
 {
    Buffer *mBuf;
 
@@ -738,12 +739,12 @@ void FreeRrcVer(RRC_Version_t *rrcVer)
 * ****************************************************************/
 void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
 {
-   U8   plmnCnt=1;
-   U8  servId=0;
-	U8 sliceId=0;
-	U8  ieId=0;
-	U8   extensionCnt=1;
-	U8 plmnidx=0;
+   uint8_t   plmnCnt=1;
+   uint8_t  servId=0;
+	uint8_t sliceId=0;
+	uint8_t  ieId=0;
+	uint8_t   extensionCnt=1;
+	uint8_t plmnidx=0;
    GNB_DU_Served_Cells_Item_t *srvCellItem= &duServedCell->list.array[0]->value.choice.GNB_DU_Served_Cells_Item;
    if(duServedCell->list.array!=NULLP)
    {
@@ -846,7 +847,7 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
 													       }
 												          DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->\
 													       iE_Extensions->list.array[ieId]->extensionValue.choice.SliceSupportList.list.array[sliceId]->\
-															 sNSSAI.sST.buf,sizeof(U8));
+															 sNSSAI.sST.buf,sizeof(uint8_t));
 													    }
 														 DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[servId]->iE_Extensions->list.array[0]->\
                                            extensionValue.choice.SliceSupportList.list.array[sliceId],sizeof(SliceSupportItem_t));
@@ -867,7 +868,7 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
 								     DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.\
 									  array[servId]->pLMN_Identity.buf,srvCellItem->served_Cell_Information.\
 									  servedPLMNs.list.array[servId]->pLMN_Identity.size
-									  * sizeof(U8));
+									  * sizeof(uint8_t));
 								  }
 							     DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnidx],\
 								  sizeof(ServedPLMNs_Item_t *));
@@ -882,16 +883,84 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
 				  }
 			     DU_FREE(srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
 				  srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity.size *
-				  sizeof(U8));
+				  sizeof(uint8_t));
 			  }
 		     DU_FREE(srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
 			  srvCellItem->served_Cell_Information.nRCGI.pLMN_Identity.size *
-			  sizeof(U8));
+			  sizeof(uint8_t));
 		  }
 	     DU_FREE(duServedCell->list.array[plmnidx],sizeof(GNB_DU_Served_Cells_ItemIEs_t));
 	  }
      DU_FREE(duServedCell->list.array,plmnCnt*sizeof(GNB_DU_Served_Cells_ItemIEs_t*));
   }
+}
+/*******************************************************************
+ *
+ * @brief  deallocating the memory of function BuildAndSendF1SetupReq()
+ *
+ * @details
+ *
+ *    Function :  FreeF1SetupReq
+ *
+ *    Functionality:  deallocating the memory of function BuildAndSendF1SetupReq
+ *
+ * @params[in] F1AP_PDU_t *f1apMsg
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeF1SetupReq(F1AP_PDU_t *f1apMsg)
+{
+    uint8_t idx =0;
+	 uint8_t idx1=1;
+	 F1SetupRequest_t           *f1SetupReq=NULLP;
+	
+	
+    if(f1apMsg != NULLP)
+    {
+         if(f1apMsg->choice.initiatingMessage != NULLP)
+         {
+			     f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
+              if(f1SetupReq->protocolIEs.list.array != NULLP)
+	           {
+				       if(f1SetupReq->protocolIEs.list.array[idx1]!=NULLP)
+						 {
+	                     if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf !=  NULLP)
+	                     {
+	                         idx1++;
+	                         if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf != NULLP)
+	                         {
+	                              idx1=4;
+											if(ServedCellListreturn == ROK)
+	                              {
+	                                  FreeRrcVer(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.RRC_Version);
+	                              }
+											idx1--;
+	                              FreeServedCellList(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Served_Cells_List);
+	                              idx1--;
+											DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf,
+	                              strlen((char *)duCfgParam.duName));
+	                         }
+	                         idx1--;
+	                         DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf,\
+	                         f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.size);
+							   }
+	                }
+	                for(idx=0; idx<f1SetupReq->protocolIEs.list.count; idx++)
+	                {
+	                     if(f1SetupReq->protocolIEs.list.array[idx]!=NULLP)
+	                     {
+	                          DU_FREE(f1SetupReq->protocolIEs.list.array[idx],sizeof(F1SetupRequestIEs_t));
+	                      }
+	    				 }
+	                DU_FREE(f1SetupReq->protocolIEs.list.array,\
+		             f1SetupReq->protocolIEs.list.size);
+		        }
+		        DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+		   }
+		   DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+   	}
+
 }
 /*******************************************************************
  *
@@ -907,19 +976,20 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
  *         RFAILED - failure
  *
  ******************************************************************/
-S16 BuildAndSendF1SetupReq()
+int16_t BuildAndSendF1SetupReq()
 {
-   S16  BuildServedCellListreturn=0;
-	S16  BuildRrcVerreturn=0; 
-   U8   idx=0,idx2=0,i=0;
-   U8   ieId=0;
-   U8   elementCnt=0;
+   uint8_t   idx=0;
+	uint8_t   idx2=0;
+	uint8_t   i=0;
+   uint8_t   elementCnt=0;
    F1AP_PDU_t                 *f1apMsg = NULLP;
    F1SetupRequest_t           *f1SetupReq=NULLP;
    GNB_DU_Served_Cells_List_t *duServedCell=NULLP;
    RRC_Version_t              *rrcVer=NULLP;
    asn_enc_rval_t             encRetVal;        /* Encoder return value */
-	bool ret=false;
+	uint8_t  ret= RFAILED;
+	uint8_t  BuildRrcVerreturn=0;
+	
    DU_LOG("\nF1AP : Building F1 Setup Request\n");
    do
    {
@@ -978,7 +1048,7 @@ S16 BuildAndSendF1SetupReq()
       f1SetupReq->protocolIEs.list.array[idx2]->value.present = \
          F1SetupRequestIEs__value_PR_GNB_DU_ID;
       f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_ID.size =\
-                                                                    sizeof(U8);
+                                                                    sizeof(uint8_t);
 
       DU_ALLOC(f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_ID.buf,\
            f1SetupReq->protocolIEs.list.array[idx2]->value.choice.GNB_DU_ID.size);
@@ -1022,12 +1092,11 @@ S16 BuildAndSendF1SetupReq()
                             F1SetupRequestIEs__value_PR_GNB_DU_Served_Cells_List;
       duServedCell = &f1SetupReq->protocolIEs.list.\
                   array[idx2]->value.choice.GNB_DU_Served_Cells_List;
-      BuildServedCellListreturn = BuildServedCellList(duServedCell);
-      if(BuildServedCellListreturn != ROK)
+      ServedCellListreturn = BuildServedCellList(duServedCell);
+      if(ServedCellListreturn != ROK)
       {
          break;
       }
-
       /*RRC Version*/
       idx2++;
       f1SetupReq->protocolIEs.list.array[idx2]->id = \
@@ -1037,7 +1106,6 @@ S16 BuildAndSendF1SetupReq()
                                     F1SetupRequestIEs__value_PR_RRC_Version;
       rrcVer = &f1SetupReq->protocolIEs.list.array[idx2]->value.choice.RRC_Version;
       BuildRrcVerreturn = BuildRrcVer(rrcVer);
-      ieId = 0;
       if(BuildRrcVerreturn != ROK)
       {
 			break;
@@ -1045,7 +1113,7 @@ S16 BuildAndSendF1SetupReq()
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */
-      cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
          encBuf);
@@ -1072,60 +1140,14 @@ S16 BuildAndSendF1SetupReq()
            DU_LOG("\nF1AP : Sending F1 Setup request failed");
 			  break;
       }
-		ret=true;
+
+		ret=ROK;
       break;
    }while(1);
 
-   if(f1apMsg != NULLP)
-   {
-
-      if(f1apMsg->choice.initiatingMessage != NULLP)
-      {
-         if(f1SetupReq->protocolIEs.list.array != NULLP)
-         {
-            if(idx == elementCnt-1)
-            {
-               if(f1SetupReq->protocolIEs.list.array[1]->value.choice.GNB_DU_ID.buf !=  NULLP)
-               {
-                   if(f1SetupReq->protocolIEs.list.array[2]->value.choice.GNB_DU_Name.buf != NULLP)
-                   {
-						     if(BuildServedCellListreturn == ROK)
-							  {   
-							      FreeRrcVer(rrcVer);
-							  }
-							  FreeServedCellList(duServedCell);
-							  DU_FREE(f1SetupReq->protocolIEs.list.array[2]->value.choice.GNB_DU_Name.buf, strlen((char *)duCfgParam.duName));
-                   }
-                   DU_FREE(f1SetupReq->protocolIEs.list.array[1]->value.choice.GNB_DU_ID.buf, sizeof(U8));
-                }
-		          for(idx=0; idx<elementCnt; idx++)
-                {
-                    DU_FREE(f1SetupReq->protocolIEs.list.array[idx],sizeof(F1SetupRequestIEs_t));
-                }
-            }
-            else
-            {
-                for(ieId=0 ; ieId<idx ;ieId++)
-                {
-					    if(f1SetupReq->protocolIEs.list.array[ieId]!=NULLP)
-                   {
-						     DU_FREE(f1SetupReq->protocolIEs.list.array[ieId],\
-                       sizeof(F1SetupRequestIEs_t));
-						 }
-                }
-            }
-            DU_FREE(f1SetupReq->protocolIEs.list.array,\
-               elementCnt * sizeof(F1SetupRequestIEs_t *));
-         }
-         DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
-      }
-      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-   }
-
-	if(ret==true)
-   return ROK;  
-	else
-	return RFAILED;
+	FreeF1SetupReq(f1apMsg);
+	
+	return ret;
 }/* End of BuildAndSendF1SetupReq */
 
 /*******************************************************************
@@ -1146,24 +1168,24 @@ S16 BuildAndSendF1SetupReq()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildAndSendDUConfigUpdate()
+int16_t BuildAndSendDUConfigUpdate()
 {
-   U8 idx;
-	U8 idy;
-	U8 idx1;
-	U8 idy1;
-	U8 idy2;
-   U8 elementCnt;
-	U8 modifyCnt;
-	U8 servPlmnCnt;
-	U8 extensionCnt;
+   uint8_t idx;
+	uint8_t idy;
+	uint8_t idx1;
+	uint8_t idy1;
+	uint8_t idy2;
+   uint8_t elementCnt;
+	uint8_t modifyCnt;
+	uint8_t servPlmnCnt;
+	uint8_t extensionCnt;
    asn_enc_rval_t encRetVal;      /* Encoder return value */
    F1AP_PDU_t *f1apDuCfg = NULL;
    GNBDUConfigurationUpdate_t *duCfgUpdate;
    Served_Cells_To_Modify_List_t  *cellsToModify;
    Served_Cells_To_Modify_Item_t *modifyItem;
-   bool checkvar=false;
-   U8 i;
+   uint8_t ret= RFAILED;
+   uint8_t i;
 
 	while(1)
 	{
@@ -1567,7 +1589,7 @@ S16 BuildAndSendDUConfigUpdate()
        xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apDuCfg);
    
        /* Encode the DU Config Update type as APER */
-       cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
        encBufSize = 0;
        encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apDuCfg, PrepFinalEncBuf, encBuf);
 
@@ -1591,65 +1613,102 @@ S16 BuildAndSendDUConfigUpdate()
           DU_LOG("\nF1AP : Sending GND-DU Config Update failed");
 			 break;
        }
-		 checkvar=true;
+		 
+		 ret = ROK;
 		 break;
-	}
+	 }
+	 FreeDUConfigUpdate(f1apDuCfg);
+    
+	 return ret;
+}
+ /*******************************************************************
+ *
+ * @brief Deallocating memory of BuildAndSendDUConfigUpdate
+ *
+ * @details
+ *
+ *    Function : FreeDUConfigUpdate
+ *
+ *    Functionality: Deallocating memory of variables allocated in
+ *                    BuildAndSendDUConfigUpdate function
+ *
+ * @params[in]  F1AP_PDU_t *f1apDuCfg
+ *
+ * @return ROK     - void
+ *
+ * ****************************************************************/
+void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg)
+{
+   uint8_t  i;
+	uint8_t  idx;
+   GNBDUConfigurationUpdate_t *duCfgUpdate;
+   Served_Cells_To_Modify_List_t  *cellsToModify;
+   Served_Cells_To_Modify_Item_t *modifyItem;
+   idx=0;
+   i=1;
    if(f1apDuCfg != NULLP)
 	{
 	    if(f1apDuCfg->choice.initiatingMessage != NULLP)
 		 {
+		     duCfgUpdate = &f1apDuCfg->choice.initiatingMessage->\
+			  value.choice.GNBDUConfigurationUpdate;
 		     if(duCfgUpdate->protocolIEs.list.array != NULLP)
 			  {
-			      if(idx==elementCnt)
-					{
-					    if(cellsToModify->list.array != NULLP)
-						 {
-						     if(idy==modifyCnt)
-							  {
-							      if(modifyItem->oldNRCGI.pLMN_Identity.buf != NULLP)
-                           {
+				    if(duCfgUpdate->protocolIEs.list.array[i] != NULLP)
+					 {
+					      cellsToModify = &duCfgUpdate->protocolIEs.list.array[i]->\
+							value.choice.Served_Cells_To_Modify_List;
+					      if(cellsToModify->list.array != NULLP)
+					      {
+							   if(cellsToModify->list.array[idx] != NULLP)
+								{
+								  	 modifyItem=&cellsToModify->list.array[idx]->value.choice.\
+									 Served_Cells_To_Modify_Item;
+									 if(modifyItem->oldNRCGI.pLMN_Identity.buf != NULLP)
+                            {
 									    if(modifyItem->oldNRCGI.nRCellIdentity.buf != NULLP)
-										 {
+									    {
 										      if(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf != NULLP)
-												{
-												     if(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf
-													  != NULLP)
+											   {
+											 	     if(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf
+												     != NULLP)
 													  { 
 													      if(modifyItem->served_Cell_Information.servedPLMNs.list.array\
 															!= NULLP)
 															 {
-															     if(idy1==servPlmnCnt)
+															     if(!modifyItem->served_Cell_Information.servedPLMNs.list.array[idx])
 																  {
-																      if(modifyItem->served_Cell_Information.servedPLMNs.list.\
-																	    array[0]->pLMN_Identity.buf != NULLP)
-                                                      {
+																       if(modifyItem->served_Cell_Information.servedPLMNs.list.\
+																	    array[idx]->pLMN_Identity.buf != NULLP)
+                                                       {
                                                            if(modifyItem->served_Cell_Information.servedPLMNs.list.\
-																			    array[0]->iE_Extensions!= NULLP)
+																			    array[idx]->iE_Extensions!= NULLP)
 																				 {
 																				     if(modifyItem->served_Cell_Information.servedPLMNs.list.\
-                                                                 array[0]->iE_Extensions->list.array != NULLP)
+                                                                 array[idx]->iE_Extensions->list.array != NULLP)
 																					  {
-																					      if(idy2==extensionCnt)
-																							{
-																							   if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																								iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																								list.array !=NULLP)
+																							   if(modifyItem->served_Cell_Information.servedPLMNs.list.\
+																								array[idx]->iE_Extensions->list.array[idx])
 																								{
-																								   if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																									 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																									 list.array[0]!=NULLP)
-																									 {   
-																									     if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																										  iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																										  list.array[0]->sNSSAI.sST.buf!=NULLP)
-																										  {
-																										     if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																											  iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																											  list.array[0]->sNSSAI.sD != NULLP)
-																											  {
-																											       if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																													 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																													  list.array[0]->sNSSAI.sD->buf!=NULLP)
+																								   if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
+																								   iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
+																								   list.array !=NULLP)
+																								   {
+																								      if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
+																									   iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
+																									   list.array[idx]!=NULLP)
+																									   {   
+																									      if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
+																										   iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
+																										   list.array[idx]->sNSSAI.sST.buf!=NULLP)
+																										   {
+																										      if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
+																											   iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
+																											   list.array[idx]->sNSSAI.sD != NULLP)
+																											   { 
+																											       if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
+																													 iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
+																													  list.array[idx]->sNSSAI.sD->buf!=NULLP)
 																													 {
 																													     if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD
 																														  !=NULLP)
@@ -1658,26 +1717,28 @@ S16 BuildAndSendDUConfigUpdate()
 																															  fDD->uL_NRFreqInfo.freqBandListNr.list.array!=NULLP)
 																														     {
 																															      if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-																																	fDD->uL_NRFreqInfo.freqBandListNr.list.array[0]!=NULLP)
+																																	fDD->uL_NRFreqInfo.freqBandListNr.list.array[idx]!=NULLP)
 																																	{
 																																	    if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
 																																		 fDD->dL_NRFreqInfo.freqBandListNr.list.array !=NULLP)
 																																	    {
 																																		    if(modifyItem->served_Cell_Information.nR_Mode_Info.\
 																																			 choice.fDD->dL_NRFreqInfo.freqBandListNr.list.\
-																																			 array[0]!= NULLP)
+																																			 array[idx]!= NULLP)
 																																			 {
 																																			    if(modifyItem->served_Cell_Information.\
 																																				 measurementTimingConfiguration.buf !=NULLP)
 																																				 {
-																																				   if(duCfgUpdate->protocolIEs.list.array[2]->value.\
+																																				   idx=2;
+																																				   if(duCfgUpdate->protocolIEs.list.array[idx]->value.\
 																																					choice.GNB_DU_ID.buf!=NULLP)
                                                                                                                {
 																																					    DU_FREE(duCfgUpdate->protocolIEs.list.\
-																																						 array[2]->value.choice.GNB_DU_ID.buf,\
-																																					 	 duCfgUpdate->protocolIEs.list.array[2]->\
+																																						 array[idx]->value.choice.GNB_DU_ID.buf,\
+																																					 	 duCfgUpdate->protocolIEs.list.array[idx]->\
 																																						 value.choice.GNB_DU_ID.size);
 																																					}
+																																					idx=0;
 																																				   DU_FREE(modifyItem->served_Cell_Information.\
 																																					measurementTimingConfiguration.\
 																																					buf,modifyItem->served_Cell_Information.\
@@ -1685,7 +1746,7 @@ S16 BuildAndSendDUConfigUpdate()
 																																				 }
 																																			    DU_FREE(modifyItem->served_Cell_Information.\
 																																				nR_Mode_Info.choice.fDD->dL_NRFreqInfo.freqBandListNr.\
-																																			   list.array[0],sizeof(FreqBandNrItem_t));
+																																			   list.array[idx],sizeof(FreqBandNrItem_t));
 																																			 }
 																																			 DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info\
 																																			 .choice.fDD->dL_NRFreqInfo.freqBandListNr.list.array,\
@@ -1694,141 +1755,161 @@ S16 BuildAndSendDUConfigUpdate()
 																																		 }
 																																		 DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.\
 																																		 choice.fDD->uL_NRFreqInfo.freqBandListNr.list.\
-																																		 array[0],sizeof(FreqBandNrItem_t));
+																																		 array[idx],sizeof(FreqBandNrItem_t));
 																																	}
-																															     DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-																																  fDD->uL_NRFreqInfo.freqBandListNr.list.\
-																																  array,modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-																																  fDD->uL_NRFreqInfo.freqBandListNr.list.size);
-																															  }
-																														     DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-																															  fDD,sizeof(FDD_Info_t));
-																														  }
-																													    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																														 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																														  list.array[0]->sNSSAI.sD->buf,modifyItem->served_Cell_Information.\
-																														 servedPLMNs.list.array[0]->iE_Extensions->list.array[0]->\
-																														 extensionValue.choice.SliceSupportList.list.array[0]->sNSSAI.sD->size);
+																															      DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.\
+																																	choice.\
+																																   fDD->uL_NRFreqInfo.freqBandListNr.list.\
+																																   array,modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
+																																   fDD->uL_NRFreqInfo.freqBandListNr.list.size);
+																															   }
+																														      DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
+																															   fDD,sizeof(FDD_Info_t));
+																														   }
+																													      DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+																															array[idx]->iE_Extensions->list.array[idx]->extensionValue.choice.\
+																															SliceSupportList.\
+																														   list.array[idx]->sNSSAI.sD->buf,modifyItem->served_Cell_Information.\
+																														   servedPLMNs.list.array[idx]->iE_Extensions->list.array[idx]->\
+																														   extensionValue.choice.SliceSupportList.list.array[idx]->\
+																															sNSSAI.sD->size);
 
-																													 }
-																											      DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																													iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																													list.array[0]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-																											  }
-																										     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																											  iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																											  list.array[0]->sNSSAI.sST.buf,modifyItem->served_Cell_Information.servedPLMNs.\
-																											  list.array[0]->iE_Extensions->list.array[0]->extensionValue.choice.\
-																											  SliceSupportList.list.array[0]->sNSSAI.sST.size);
-																										  }
-																									     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																										  iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																										  list.array[0],sizeof(SliceSupportItem_t));
-																									 }
-																								   DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																									iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																								    list.array,\
-																									 modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																									 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.list.size);
-																								}
-																							   for(i=0;i<extensionCnt;i++)
-																								{
-																								    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-																									 array[0]->iE_Extensions->list.array[i],\
-																									 sizeof(ServedPLMNs_ItemExtIEs_t ));
-																								}
-																							}
-																							else
-																							{
-																							    for(i=0;i<idy2;i++)
-																								 {
-																								    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-																									  array[0]->iE_Extensions->list.array[i],\
-																									  sizeof(ServedPLMNs_ItemExtIEs_t));
+																													   }
+																											         DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+																														array[idx]->\
+																													   iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
+																													   list.array[idx]->sNSSAI.sD,sizeof(OCTET_STRING_t));
+																											     }
+																										        DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
+																											     iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
+																											     list.array[idx]->sNSSAI.sST.buf,modifyItem->served_Cell_Information.\
+																												  servedPLMNs.\
+																											     list.array[idx]->iE_Extensions->list.array[idx]->extensionValue.choice.\
+																											     SliceSupportList.list.array[idx]->sNSSAI.sST.size);
+																										    }
+																									       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
+																										    iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
+																										    list.array[idx],sizeof(SliceSupportItem_t));
+																								      }
+																								      DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
+																								      iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
+																								      list.array,\
+																								      modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
+																								      iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.list.size);
 																								 }
 																							}
+																							for(i=0;i<modifyItem->served_Cell_Information.servedPLMNs.list.\
+																							array[idx]->iE_Extensions->list.count;i++)
+																							{
+																								    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+																									 array[idx]->iE_Extensions->list.array[i],\
+																									 sizeof(ServedPLMNs_ItemExtIEs_t ));
+																							}
 																					      DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-																						   array[0]->iE_Extensions->list.array,modifyItem->served_Cell_Information.servedPLMNs.
-																							list.array[0]->iE_Extensions->list.size);
+																						   array[idx]->iE_Extensions->list.array,modifyItem->served_Cell_Information.servedPLMNs.
+																							list.array[idx]->iE_Extensions->list.size);
 																					  }
 																				     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-																					    array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
+																					    array[idx]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
 																				 }
 																	       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-																		    array[0]->pLMN_Identity.buf,
-																			 modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->pLMN_Identity.size);
-																		}
-                                                      for(i=0;i<idy1;i++)
-																		{
-																		   DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[i],\
-																			sizeof(ServedPLMNs_Item_t));
-																		}
-																  }
-																  else
-																  {
-																     for(i=0;i<idy1;i++)
-																	  {
-																	     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[i],\
-																		  sizeof(ServedPLMNs_Item_t));
-																	  }
-																  }
-															     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-																  modifyItem->served_Cell_Information.servedPLMNs.list.size);
-															 }
-													       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
+																		    array[idx]->pLMN_Identity.buf,
+																			 modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->pLMN_Identity.size);
+																		 }
+                                                    }
+                                                    for(i=0;i<modifyItem->served_Cell_Information.servedPLMNs.list.count;i++)
+																	 {
+																		    if(modifyItem->served_Cell_Information.servedPLMNs.list.array[i]
+																			 != NULLP)
+																		    {
+																			     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[i],\
+																			     sizeof(ServedPLMNs_Item_t));
+																			 }
+																	 }
+															       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
+																    modifyItem->served_Cell_Information.servedPLMNs.list.size);
+															  }
+													        DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
 															  modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.size);		
 													  }
 												    DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
 													  modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.size);
 												}
-										     DU_FREE(modifyItem->oldNRCGI.nRCellIdentity.buf,\
+										      DU_FREE(modifyItem->oldNRCGI.nRCellIdentity.buf,\
 											     modifyItem->oldNRCGI.nRCellIdentity.size);
-                               }
-									    DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,\
-										  modifyItem->oldNRCGI.pLMN_Identity.size);
-									}
-									 for(int iy=0; iy<modifyCnt ;iy++)
-									 {
-									    DU_FREE(cellsToModify->list.array[iy],\
-										  sizeof(Served_Cells_To_Modify_ItemIEs_t));
-									 }
-							  }
-							  else
-							  {
-							     for(int iy=0; iy<idy ;iy++)
+                                 }
+									      DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,\
+										   modifyItem->oldNRCGI.pLMN_Identity.size);
+								      }
+                          }
+								  for(i=0; i<cellsToModify->list.count ;i++)
 								  {
-								     DU_FREE(cellsToModify->list.array[iy],\
-									   sizeof(Served_Cells_To_Modify_ItemIEs_t));
-								  }	
-							  }
-						     DU_FREE(cellsToModify->list.array,cellsToModify->list.size);
+									    if(cellsToModify->list.array[i] != NULLP)
+										 {
+										    DU_FREE(cellsToModify->list.array[i],\
+										    sizeof(Served_Cells_To_Modify_ItemIEs_t));
+										 } 
+								  }
+						        DU_FREE(cellsToModify->list.array,cellsToModify->list.size);
+						     }
 						 }
-					    for(i=0;i<elementCnt;i++)
+					    for(i=0;i<duCfgUpdate->protocolIEs.list.count;i++)
 						 {
-					       DU_FREE(duCfgUpdate->protocolIEs.list.array[i],\
-							   sizeof(GNBDUConfigurationUpdateIEs_t));
+						      if(duCfgUpdate->protocolIEs.list.array[i] !=NULLP)
+								{
+					             DU_FREE(duCfgUpdate->protocolIEs.list.array[i],\
+							       sizeof(GNBDUConfigurationUpdateIEs_t));
+								}
 						 }
-					}
-					else
-					{
-					   for(i=0;i<idx;i++)
-						{
-						   DU_FREE(duCfgUpdate->protocolIEs.list.array[i],\
-							 sizeof(GNBDUConfigurationUpdateIEs_t));
-						}
-					}
-               DU_FREE(duCfgUpdate->protocolIEs.list.array,duCfgUpdate->protocolIEs.list.size);
-			  }
-			   DU_FREE(f1apDuCfg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
-		 }
+                   DU_FREE(duCfgUpdate->protocolIEs.list.array,duCfgUpdate->protocolIEs.list.size);
+			    }
+			    DU_FREE(f1apDuCfg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+		  }
 		  DU_FREE(f1apDuCfg, (Size)sizeof(F1AP_PDU_t));
 	}
-   if(checkvar==true)
-      return ROK;
-	else 
-	   return RFAILED;
-}/* End of BuildAndSendDUConfigUpdate */
+}
+ /*******************************************************************
+ *
+ * @brief free the ULRRCMessageTransfer
+ *
+ * @details
+ *
+ *    Function : FreeULRRCMessageTransfer
+ *
+ *    Functionality: Deallocating the memory of variable allocated in
+ *                      FreeULRRCMessageTransfer
+ *
+ * @params[in]
+ *
+ * @return ROK     - void
+ *
+ ******************************************************************/
+void FreeULRRCMessageTransfer( F1AP_PDU_t *f1apMsg)
+{
+     uint8_t idx1;
+     ULRRCMessageTransfer_t  *ulRRCMsg;
 
+     if(f1apMsg != NULLP)
+     { 
+         if(f1apMsg->choice.initiatingMessage != NULLP)
+         {
+             ulRRCMsg = &f1apMsg->choice.initiatingMessage->value.choice.ULRRCMessageTransfer;
+				 if(ulRRCMsg->protocolIEs.list.array != NULLP)
+             {
+                 for(idx1=0;idx1<ulRRCMsg->protocolIEs.list.count;idx1++)
+                 {
+                     if(ulRRCMsg->protocolIEs.list.array[idx1] != NULLP)
+                     {
+                         DU_FREE(ulRRCMsg->protocolIEs.list.array[idx1],sizeof(ULRRCMessageTransferIEs_t));
+                     }
+                 }
+                 DU_FREE(ulRRCMsg->protocolIEs.list.array,ulRRCMsg->protocolIEs.list.size );
+             }
+             DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+         }
+         DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
+      }
+}
 /*******************************************************************
  *
  * @brief Builds and sends the ULRRCMessageTransfer 
@@ -1846,15 +1927,15 @@ S16 BuildAndSendDUConfigUpdate()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildAndSendULRRCMessageTransfer()
+int16_t BuildAndSendULRRCMessageTransfer()
 {
-	U8   elementCnt;
-	U8   idx1;
-	U8   idx;
+	uint8_t   elementCnt;
+	uint8_t   idx1;
+	uint8_t   idx;
 	F1AP_PDU_t      			*f1apMsg = NULL;
    ULRRCMessageTransfer_t	*ulRRCMsg;
 	asn_enc_rval_t  			encRetVal;        /* Encoder return value */
-   bool checkvar=false;
+   uint8_t ret =RFAILED;
 	while(1)
 	{
 	   DU_LOG("\n F1AP : Building UL RRC Message Transfer Message\n");
@@ -1935,7 +2016,7 @@ S16 BuildAndSendULRRCMessageTransfer()
 	   xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
 	   /* Encode the F1SetupRequest type as APER */
-	   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+	   cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 	   encBufSize = 0;
 	   encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
 			encBuf);
@@ -1961,34 +2042,12 @@ S16 BuildAndSendULRRCMessageTransfer()
 		    DU_LOG("\n F1AP : Sending	UL RRC Message Transfer Failed");
 			 break;
 		}
-      checkvar=true;
+      ret = ROK;
 		break;
 	}
+   FreeULRRCMessageTransfer(f1apMsg);
 
-	if(f1apMsg != NULLP)
-	{
-	   if(f1apMsg->choice.initiatingMessage != NULLP) 
-	   {
-		   if(ulRRCMsg->protocolIEs.list.array != NULLP)
-			{
-				 for(idx1=0;idx1<idx;idx1++)
-				 {
-				      if(ulRRCMsg->protocolIEs.list.array[idx1] != NULLP)
-					  {
-						  DU_FREE(ulRRCMsg->protocolIEs.list.array[idx1],sizeof(ULRRCMessageTransferIEs_t));
-					  }
-				 }
-			    DU_FREE(ulRRCMsg->protocolIEs.list.array,ulRRCMsg->protocolIEs.list.size ); 
-			}
-		   DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
-		}
-	   DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-	}
-
-	if(checkvar==true)
-      return ROK;
-	else
-	   return RFAILED;
+	return ret;
 }/* End of BuildAndSendULRRCMessageTransfer*/
 
 /*******************************************************************
@@ -2990,7 +3049,7 @@ uint8_t BuildDuToCuRrcContainer(DUtoCURRCContainer_t *duToCuRrcContainer)
 
 		/* encode cellGrpCfg into duToCuRrcContainer */
 		xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, &cellGrpCfg);
-		cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+		cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 		encBufSize = 0;
 		encRetVal = aper_encode(&asn_DEF_CellGroupConfigRrc, 0, &cellGrpCfg, PrepFinalEncBuf, encBuf);
 		/* Encode results */
@@ -3044,11 +3103,11 @@ uint8_t BuildDuToCuRrcContainer(DUtoCURRCContainer_t *duToCuRrcContainer)
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti,
 		uint8_t *rrcContainer)
 {
-   S16  ret;
-	U8   elementCnt;
-   U8   ieId;
-	U8   idx;
-	U8   idx1;
+   int16_t  ret;
+	uint8_t   elementCnt;
+   uint8_t   ieId;
+	uint8_t  idx;
+	uint8_t   idx1;
 	F1AP_PDU_t  *f1apMsg = NULLP;
 	InitialULRRCMessageTransfer_t *initULRRCMsg=NULLP;
    asn_enc_rval_t                encRetVal;
@@ -3170,7 +3229,7 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
 			xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
 			/* Encode the F1SetupRequest type as APER */
-			cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+			cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 			encBufSize = 0;
 			encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf, encBuf);
 			/* Encode results */
@@ -3250,7 +3309,7 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
 			 }
 			 DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
 		 }
-		 DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+		 DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
 	}
 	if(checkvar==true)
 	   return ROK;
@@ -3274,11 +3333,11 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildSplCellList(SCell_ToBeSetup_List_t *spCellLst)
+int16_t BuildSplCellList(SCell_ToBeSetup_List_t *spCellLst)
 {
-	U8  cellCnt;
-	U8  idx;
-	S16 ret;
+	uint8_t  cellCnt;
+	uint8_t  idx;
+	int16_t ret;
 	cellCnt = 1;
 	spCellLst->list.count = cellCnt;
 	spCellLst->list.size = cellCnt * sizeof(SCell_ToBeSetup_ItemIEs_t *);
@@ -3327,10 +3386,10 @@ S16 BuildSplCellList(SCell_ToBeSetup_List_t *spCellLst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
+int16_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
 {
-	U8 idx;
-	U8 srbCnt;
+	uint8_t idx;
+	uint8_t srbCnt;
 	srbCnt = 1;
 	srbSet->list.count = srbCnt;
 	srbSet->list.size = srbCnt*sizeof(SRBs_ToBeSetup_ItemIEs_t *);
@@ -3372,7 +3431,7 @@ S16 BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
+int16_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
 {
 	/* NonDynamic5QIDescriptor */
 	drbQos->qoS_Characteristics.present = QoS_Characteristics_PR_non_Dynamic_5QI;
@@ -3430,11 +3489,11 @@ S16 BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildSNSSAI(SNSSAI_t *snssai)
+int16_t BuildSNSSAI(SNSSAI_t *snssai)
 {
 	/*SNSSAI*/
 	  /*ssT*/
-	snssai->sST.size = sizeof(U8);
+	snssai->sST.size = sizeof(uint8_t);
 	DU_ALLOC(snssai->sST.buf,snssai->sST.size);
 	if(snssai->sST.buf == NULLP)
 	{
@@ -3447,7 +3506,7 @@ S16 BuildSNSSAI(SNSSAI_t *snssai)
 	{
 		return RFAILED;
 	}
-	snssai->sD->size = 3*sizeof(U8);
+	snssai->sD->size = 3*sizeof(uint8_t);
 	DU_ALLOC(snssai->sD->buf,snssai->sD->size);
 	if(snssai->sD->buf == NULLP)
 	{
@@ -3475,11 +3534,11 @@ S16 BuildSNSSAI(SNSSAI_t *snssai)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
+int16_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
 {
-	S16 ret;
-	U8  idx;
-	U8 flowCnt;
+	int16_t ret;
+	uint8_t  idx;
+	uint8_t flowCnt;
 	flowCnt = 1;
 	flowMap->list.count = flowCnt;
 	flowMap->list.size = flowCnt * sizeof(Flows_Mapped_To_DRB_Item_t *);
@@ -3522,10 +3581,10 @@ S16 BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
+int16_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 {
-	U8 idx;
-	U8 ulCnt;
+	uint8_t idx;
+	uint8_t ulCnt;
 	ulCnt = 1;
 	ulInfo->list.count = ulCnt;
 	ulInfo->list.size = ulCnt * sizeof(ULUPTNLInformation_ToBeSetup_Item_t *);
@@ -3553,7 +3612,7 @@ S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 		return RFAILED;
 	}
 	ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-		transportLayerAddress.size	= 4*sizeof(U8);
+		transportLayerAddress.size	= 4*sizeof(uint8_t);
    DU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
 		transportLayerAddress.buf,ulInfo->list.array[idx]->\
 		uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.size);
@@ -3574,7 +3633,7 @@ S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 		transportLayerAddress.bits_unused = 0;
 	/*GTP TEID*/
 	ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.size\
-					= 4 * sizeof(U8);
+					= 4 * sizeof(uint8_t);
 	DU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
 				gTP_TEID.buf,ulInfo->list.array[idx]->uLUPTNLInformation.choice.\
 				gTPTunnel->gTP_TEID.size);
@@ -3611,13 +3670,13 @@ S16 BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
+int16_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 {
-	S16 BuildQOSInforet;
-	S16 BuildSNSSAIret;
-	S16 BuildFlowsMapret;
-	U8	 idx;
-	U8  drbCnt;
+	int16_t BuildQOSInforet;
+	int16_t BuildSNSSAIret;
+	int16_t BuildFlowsMapret;
+	uint8_t	 idx;
+	uint8_t  drbCnt;
 	DRBs_ToBeSetup_Item_t *drbSetItem;
 	drbCnt = 1;
 	drbSet->list.count = drbCnt;
@@ -3738,7 +3797,7 @@ void FreeNrcgi(NRCGI_t *nrcgi)
 * *****************************************************************/
 void FreeSplCellList(SCell_ToBeSetup_List_t *spCellLst)
 {
-    U8  cellidx;
+    uint8_t  cellidx;
     if(spCellLst->list.array != NULLP)
 	 {
 	      for(cellidx=0; cellidx<spCellLst->list.count; cellidx++)
@@ -3773,7 +3832,7 @@ void FreeSplCellList(SCell_ToBeSetup_List_t *spCellLst)
  * ******************************************************************/
 void FreeSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
 {
-    U8 srbidx;
+    uint8_t srbidx;
 	 if(srbSet->list.array != NULLP)
 	 {
 	     for(srbidx=0; srbidx<srbSet->list.count; srbidx++)
@@ -3837,7 +3896,7 @@ void FreeQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
  * ****************************************************************/
 void FreeULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 {
-    U8 ulidx=0;
+    uint8_t ulidx=0;
 	 if(ulInfo->list.array != NULLP)
 	 {
 	     for(ulidx=0; ulidx<ulInfo->list.count; ulidx++)
@@ -3890,8 +3949,8 @@ void FreeULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 void FreeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 {
     DRBs_ToBeSetup_Item_t *drbSetItem;
-	 U8  flowidx;
-	 U8  drbidx;
+	 uint8_t  flowidx;
+	 uint8_t  drbidx;
     if(drbSet->list.array == NULLP)
 	 {
 	     for(drbidx=0; drbidx<drbSet->list.count; drbidx++)
@@ -3998,6 +4057,78 @@ void FreeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 }
 /*******************************************************************
  *
+ * @brief Free the UE Setup Request
+ *
+ * @details
+ *
+ *    Function : FreeUESetReq
+ *
+ *    Functionality: Deallocate the memory of BuildUESetReq
+ *
+ * @params[in]  F1AP_PDU_t  *f1apMsg
+ *
+ * @return void
+ *
+ *
+ * ****************************************************************/
+ void FreeUESetReq(F1AP_PDU_t  *f1apMsg)
+{
+    uint8_t idx=2;
+    uint8_t ieId;
+    UEContextSetupRequest_t       *ueSetReq;
+ 
+    if(f1apMsg != NULLP)
+    {
+	       if(f1apMsg->choice.initiatingMessage != NULLP)
+          {
+			     ueSetReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
+	           if(ueSetReq->protocolIEs.list.array != NULLP)
+              {
+                 if(ueSetReq->protocolIEs.list.array[idx])
+					  {
+					       if(Nrcgiret==ROK )
+                      {
+							      idx=6;
+							      if(ueSetReq->protocolIEs.list.array[idx])
+									{
+                                if(SplCellListret==ROK)
+                                {
+										      idx++;
+                                    if(ueSetReq->protocolIEs.list.array[idx])
+												{
+											       if(SRBSetupret == ROK)
+                                        {
+                                           idx=8;
+									   	          FreeDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
+                                        }   
+                                        idx--;
+                                        FreeSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
+												}	 
+							           }
+                                idx--;
+                                FreeSplCellList(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
+									}
+                      }
+                      idx=2;
+                      FreeNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);
+						}
+                  for(ieId=0; ieId<ueSetReq->protocolIEs.list.count; ieId++)
+                  {
+                      if(ueSetReq->protocolIEs.list.array[ieId] != NULLP)
+                      {
+                           DU_FREE(ueSetReq->protocolIEs.list.array[ieId],sizeof(UEContextSetupRequestIEs_t));
+                       }
+                  }
+                   DU_FREE(ueSetReq->protocolIEs.list.array,ueSetReq->protocolIEs.list.size);
+              }
+              DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+        }
+        DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+     }
+ }
+
+/*******************************************************************
+ *
  * @brief Builds and sends the UE Setup Request 
  *
  * @details
@@ -4013,20 +4144,17 @@ void FreeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildAndSendUESetReq()
+int16_t BuildAndSendUESetReq()
 {
-	S16  ret;
-	U8   elementCnt;
-	S16  BuildNrcgiret;
-	S16  BuildSplCellListret;
-	S16  BuildSRBSetupret;
-	U8   idx;
-	U8   idx1;
-	U8   ieId;
+	
+	uint8_t  elementCnt;
+	uint8_t   idx;
+	uint8_t   idx1;
 	F1AP_PDU_t      					*f1apMsg = NULL;
    UEContextSetupRequest_t			*ueSetReq;
 	asn_enc_rval_t  					encRetVal;        /* Encoder return value */
-   bool checkvar=false;
+   uint8_t ret= RFAILED;
+	uint8_t ret1;
 	while(1)
 	{
 	    DU_LOG("\n F1AP : Building UE Context Setup Request\n");
@@ -4102,8 +4230,8 @@ S16 BuildAndSendUESetReq()
 	    ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
 	    ueSetReq->protocolIEs.list.array[idx]->value.present = \
 				                    		UEContextSetupRequestIEs__value_PR_NRCGI;
- 	    BuildNrcgiret = BuildNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);
-	    if(BuildNrcgiret != ROK)
+ 	    Nrcgiret = BuildNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);
+	    if(Nrcgiret != ROK)
 	    {
 		    break;
 	    }
@@ -4144,8 +4272,8 @@ S16 BuildAndSendUESetReq()
 	     ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
 	     ueSetReq->protocolIEs.list.array[idx]->value.present = \
 		                    		UEContextSetupRequestIEs__value_PR_SCell_ToBeSetup_List;
-	     BuildSplCellListret = BuildSplCellList(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
-	     if(BuildSplCellListret != ROK)
+	     SplCellListret = BuildSplCellList(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
+	     if(SplCellListret != ROK)
 	     {  
 		     break;
 	     }
@@ -4156,8 +4284,8 @@ S16 BuildAndSendUESetReq()
 	     ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
 	     ueSetReq->protocolIEs.list.array[idx]->value.present = \
 	              				UEContextSetupRequestIEs__value_PR_SRBs_ToBeSetup_List;
- 	     BuildSRBSetupret =	BuildSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
-	     if(BuildSRBSetupret != ROK)
+ 	     SRBSetupret =	BuildSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
+	     if(SRBSetupret != ROK)
 	     {        
 		     break;
 	     }
@@ -4168,8 +4296,8 @@ S16 BuildAndSendUESetReq()
 	     ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
 	     ueSetReq->protocolIEs.list.array[idx]->value.present = \
 	              				UEContextSetupRequestIEs__value_PR_DRBs_ToBeSetup_List;
-	     ret = BuildDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
-	     if(ret != ROK)
+	     ret1 = BuildDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
+	     if(ret1 != ROK)
 	     {	
 		     break;
 	     }
@@ -4177,7 +4305,7 @@ S16 BuildAndSendUESetReq()
 	     xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
 	     /* Encode the F1SetupRequest type as APER */
-	     cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+	     cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 	     encBufSize = 0;
 	     encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
 			encBuf);
@@ -4203,56 +4331,12 @@ S16 BuildAndSendUESetReq()
 	      	DU_LOG("\n F1AP : Sending	UE Context Setup Request Failed");
 		      break;
 	    }
-		 checkvar=true;
+		 ret = ROK;
 		 break;
    }
-   if(f1apMsg != NULLP)
-	{
-	    if(f1apMsg->choice.initiatingMessage != NULLP)
-		 {
-		      if(ueSetReq->protocolIEs.list.array != NULLP)
-				{
-			       if(idx1==elementCnt)
-					 {
-						  if(BuildNrcgiret==ROK)
-						  {
-								 if(BuildSplCellListret==ROK)
-								 {
-									   if(BuildSRBSetupret == ROK)
-										{
-										   FreeDRBSetup(&ueSetReq->protocolIEs.list.array[idx--]->value.choice.DRBs_ToBeSetup_List); 
-										}
-										FreeSRBSetup(&ueSetReq->protocolIEs.list.array[idx--]->value.choice.SRBs_ToBeSetup_List);
-								 }    
-								 FreeSplCellList(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List); 
-						  }
-						  idx=2;
-						  FreeNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);   
-						  for(ieId=0; ieId<idx1; ieId++)
-						  {
-						      DU_FREE(ueSetReq->protocolIEs.list.array[ieId],sizeof(UEContextSetupRequestIEs_t));
-						  }
-					 }
-					 else
-					 {
-					     for(ieId=0; ieId<idx; ieId++)
-						  {
-						      if(ueSetReq->protocolIEs.list.array[ieId] != NULLP)
-								{
-						          DU_FREE(ueSetReq->protocolIEs.list.array[ieId],sizeof(UEContextSetupRequestIEs_t));
-								}
-						  }
-					 }
-					 DU_FREE(ueSetReq->protocolIEs.list.array,ueSetReq->protocolIEs.list.size);	   
-				}
-		      DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
-		 }
-	    DU_FREE(f1apMsg, sizeof(F1AP_PDU_t)); 
-	}
-	if(checkvar==true)
-        return ROK;
-	else
-	     return RFAILED;
+	FreeUESetReq(f1apMsg);
+
+	return ret;
 }/* End of BuildAndSendUESetReq*/
 
 /*******************************************************************
