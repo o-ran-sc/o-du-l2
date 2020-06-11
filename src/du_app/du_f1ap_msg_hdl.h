@@ -59,8 +59,7 @@ S16 BuildAndSendDUConfigUpdate();
 S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);
-
-
+void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg);
 /**********************************************************************
          End of file
 **********************************************************************/

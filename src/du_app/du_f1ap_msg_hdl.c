@@ -45,11 +45,12 @@
 
 extern char encBuf[ENC_BUF_MAX_LEN];
 extern DuCfgParams duCfgParam;
-static S16 BuildULTnlInforet=RFAILED;
-
+uint8_t BuildULTnlInforet=RFAILED;
+uint8_t ServedCellListreturn=RFAILED;
 S16 sctpSend(Buffer *mBuf, U8 itfType);
-
-
+uint8_t Nrcgiret=RFAILED;
+uint8_t SplCellListret=RFAILED;
+uint8_t SRBSetupret=RFAILED;
 /*******************************************************************
  *
  * @brief Builds Uplink Info for NR 
@@ -895,6 +896,74 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
 }
 /*******************************************************************
  *
+ * @brief  deallocating the memory of function BuildAndSendF1SetupReq()
+ *
+ * @details
+ *
+ *    Function :  FreeF1SetupReq
+ *
+ *    Functionality:  deallocating the memory of function BuildAndSendF1SetupReq
+ *
+ * @params[in] F1AP_PDU_t *f1apMsg
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeF1SetupReq(F1AP_PDU_t *f1apMsg)
+{
+    U8 idx =0;
+	 U8 idx1=1;
+	 F1SetupRequest_t           *f1SetupReq=NULLP;
+	
+	
+    if(f1apMsg != NULLP)
+    {
+         if(f1apMsg->choice.initiatingMessage != NULLP)
+         {
+			     f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
+              if(f1SetupReq->protocolIEs.list.array != NULLP)
+	           {
+				       if(f1SetupReq->protocolIEs.list.array[idx1]!=NULLP)
+						 {
+	                     if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf !=  NULLP)
+	                     {
+	                         idx1++;
+	                         if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf != NULLP)
+	                         {
+	                              idx1=4;
+											if(ServedCellListreturn == ROK)
+	                              {
+	                                  FreeRrcVer(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.RRC_Version);
+	                              }
+											idx1--;
+	                              FreeServedCellList(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Served_Cells_List);
+	                              idx1--;
+											DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf,
+	                              strlen((char *)duCfgParam.duName));
+	                         }
+	                         idx1--;
+	                         DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf,\
+	                         f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.size);
+							   }
+	                }
+	                for(idx=0; idx<f1SetupReq->protocolIEs.list.count; idx++)
+	                {
+	                     if(f1SetupReq->protocolIEs.list.array[idx]!=NULLP)
+	                     {
+	                          DU_FREE(f1SetupReq->protocolIEs.list.array[idx],sizeof(F1SetupRequestIEs_t));
+	                      }
+	    				 }
+	                DU_FREE(f1SetupReq->protocolIEs.list.array,\
+		             f1SetupReq->protocolIEs.list.size);
+		        }
+		        DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+		   }
+		   DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+   	}
+
+}
+/*******************************************************************
+ *
  * @brief Builds and Send the F1SetupRequest
  *
  * @details
@@ -909,17 +978,18 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
  ******************************************************************/
 S16 BuildAndSendF1SetupReq()
 {
-   S16  BuildServedCellListreturn=0;
-	S16  BuildRrcVerreturn=0; 
-   U8   idx=0,idx2=0,i=0;
-   U8   ieId=0;
+   U8   idx=0;
+	U8   idx2=0;
+	U8   i=0;
    U8   elementCnt=0;
    F1AP_PDU_t                 *f1apMsg = NULLP;
    F1SetupRequest_t           *f1SetupReq=NULLP;
    GNB_DU_Served_Cells_List_t *duServedCell=NULLP;
    RRC_Version_t              *rrcVer=NULLP;
    asn_enc_rval_t             encRetVal;        /* Encoder return value */
-	bool ret=false;
+	uint8_t  ret= RFAILED;
+	uint8_t  BuildRrcVerreturn=0;
+	
    DU_LOG("\nF1AP : Building F1 Setup Request\n");
    do
    {
@@ -1022,12 +1092,11 @@ S16 BuildAndSendF1SetupReq()
                             F1SetupRequestIEs__value_PR_GNB_DU_Served_Cells_List;
       duServedCell = &f1SetupReq->protocolIEs.list.\
                   array[idx2]->value.choice.GNB_DU_Served_Cells_List;
-      BuildServedCellListreturn = BuildServedCellList(duServedCell);
-      if(BuildServedCellListreturn != ROK)
+      ServedCellListreturn = BuildServedCellList(duServedCell);
+      if(ServedCellListreturn != ROK)
       {
          break;
       }
-
       /*RRC Version*/
       idx2++;
       f1SetupReq->protocolIEs.list.array[idx2]->id = \
@@ -1037,7 +1106,6 @@ S16 BuildAndSendF1SetupReq()
                                     F1SetupRequestIEs__value_PR_RRC_Version;
       rrcVer = &f1SetupReq->protocolIEs.list.array[idx2]->value.choice.RRC_Version;
       BuildRrcVerreturn = BuildRrcVer(rrcVer);
-      ieId = 0;
       if(BuildRrcVerreturn != ROK)
       {
 			break;
@@ -1072,60 +1140,14 @@ S16 BuildAndSendF1SetupReq()
            DU_LOG("\nF1AP : Sending F1 Setup request failed");
 			  break;
       }
-		ret=true;
+
+		ret=ROK;
       break;
    }while(1);
 
-   if(f1apMsg != NULLP)
-   {
-
-      if(f1apMsg->choice.initiatingMessage != NULLP)
-      {
-         if(f1SetupReq->protocolIEs.list.array != NULLP)
-         {
-            if(idx == elementCnt-1)
-            {
-               if(f1SetupReq->protocolIEs.list.array[1]->value.choice.GNB_DU_ID.buf !=  NULLP)
-               {
-                   if(f1SetupReq->protocolIEs.list.array[2]->value.choice.GNB_DU_Name.buf != NULLP)
-                   {
-						     if(BuildServedCellListreturn == ROK)
-							  {   
-							      FreeRrcVer(rrcVer);
-							  }
-							  FreeServedCellList(duServedCell);
-							  DU_FREE(f1SetupReq->protocolIEs.list.array[2]->value.choice.GNB_DU_Name.buf, strlen((char *)duCfgParam.duName));
-                   }
-                   DU_FREE(f1SetupReq->protocolIEs.list.array[1]->value.choice.GNB_DU_ID.buf, sizeof(U8));
-                }
-		          for(idx=0; idx<elementCnt; idx++)
-                {
-                    DU_FREE(f1SetupReq->protocolIEs.list.array[idx],sizeof(F1SetupRequestIEs_t));
-                }
-            }
-            else
-            {
-                for(ieId=0 ; ieId<idx ;ieId++)
-                {
-					    if(f1SetupReq->protocolIEs.list.array[ieId]!=NULLP)
-                   {
-						     DU_FREE(f1SetupReq->protocolIEs.list.array[ieId],\
-                       sizeof(F1SetupRequestIEs_t));
-						 }
-                }
-            }
-            DU_FREE(f1SetupReq->protocolIEs.list.array,\
-               elementCnt * sizeof(F1SetupRequestIEs_t *));
-         }
-         DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
-      }
-      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-   }
-
-	if(ret==true)
-   return ROK;  
-	else
-	return RFAILED;
+	FreeF1SetupReq(f1apMsg);
+	
+	return ret;
 }/* End of BuildAndSendF1SetupReq */
 
 /*******************************************************************
@@ -1162,7 +1184,7 @@ S16 BuildAndSendDUConfigUpdate()
    GNBDUConfigurationUpdate_t *duCfgUpdate;
    Served_Cells_To_Modify_List_t  *cellsToModify;
    Served_Cells_To_Modify_Item_t *modifyItem;
-   bool checkvar=false;
+   uint8_t ret= RFAILED;
    U8 i;
 
 	while(1)
@@ -1591,62 +1613,97 @@ S16 BuildAndSendDUConfigUpdate()
           DU_LOG("\nF1AP : Sending GND-DU Config Update failed");
 			 break;
        }
-		 checkvar=true;
+		 
+		 ret = ROK;
 		 break;
-	}
+	 }
+	 FreeDUConfigUpdate(f1apDuCfg);
+    
+	 return ret;
+}
+ /*******************************************************************
+ *
+ * @brief Deallocating memory of BuildAndSendDUConfigUpdate
+ *
+ * @details
+ *
+ *    Function : FreeDUConfigUpdate
+ *
+ *    Functionality: Deallocating memory of variables allocated in
+ *                    BuildAndSendDUConfigUpdate function
+ *
+ * @params[in]  F1AP_PDU_t *f1apDuCfg
+ *
+ * @return ROK     - void
+ *
+ * ****************************************************************/
+void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg)
+{
+   U8  i;
+   GNBDUConfigurationUpdate_t *duCfgUpdate;
+   Served_Cells_To_Modify_List_t  *cellsToModify;
+   Served_Cells_To_Modify_Item_t *modifyItem;
+
    if(f1apDuCfg != NULLP)
 	{
 	    if(f1apDuCfg->choice.initiatingMessage != NULLP)
 		 {
+		     duCfgUpdate = &f1apDuCfg->choice.initiatingMessage->\
+			  value.choice.GNBDUConfigurationUpdate;
 		     if(duCfgUpdate->protocolIEs.list.array != NULLP)
 			  {
-			      if(idx==elementCnt)
-					{
-					    if(cellsToModify->list.array != NULLP)
-						 {
-						     if(idy==modifyCnt)
-							  {
-							      if(modifyItem->oldNRCGI.pLMN_Identity.buf != NULLP)
-                           {
+				    if(duCfgUpdate->protocolIEs.list.array[1] != NULLP)
+					 {
+					      cellsToModify = &duCfgUpdate->protocolIEs.list.array[1]->\
+							value.choice.Served_Cells_To_Modify_List;
+					      if(cellsToModify->list.array != NULLP)
+					      {
+							   if(cellsToModify->list.array[0] != NULLP)
+								{
+								  	 modifyItem=&cellsToModify->list.array[0]->value.choice.\
+									 Served_Cells_To_Modify_Item;
+									 if(modifyItem->oldNRCGI.pLMN_Identity.buf != NULLP)
+                            {
 									    if(modifyItem->oldNRCGI.nRCellIdentity.buf != NULLP)
-										 {
+									    {
 										      if(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf != NULLP)
-												{
-												     if(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf
-													  != NULLP)
+											   {
+											 	     if(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf
+												     != NULLP)
 													  { 
 													      if(modifyItem->served_Cell_Information.servedPLMNs.list.array\
 															!= NULLP)
 															 {
-															     if(idy1==servPlmnCnt)
+															     if(!modifyItem->served_Cell_Information.servedPLMNs.list.array[0])
 																  {
-																      if(modifyItem->served_Cell_Information.servedPLMNs.list.\
+																       if(modifyItem->served_Cell_Information.servedPLMNs.list.\
 																	    array[0]->pLMN_Identity.buf != NULLP)
-                                                      {
+                                                       {
                                                            if(modifyItem->served_Cell_Information.servedPLMNs.list.\
 																			    array[0]->iE_Extensions!= NULLP)
 																				 {
 																				     if(modifyItem->served_Cell_Information.servedPLMNs.list.\
                                                                  array[0]->iE_Extensions->list.array != NULLP)
 																					  {
-																					      if(idy2==extensionCnt)
-																							{
-																							   if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																								iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																								list.array !=NULLP)
+																							   if(modifyItem->served_Cell_Information.servedPLMNs.list.\
+																								array[0]->iE_Extensions->list.array[0])
 																								{
 																								   if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																									 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																									 list.array[0]!=NULLP)
-																									 {   
-																									     if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																										  iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																										  list.array[0]->sNSSAI.sST.buf!=NULLP)
-																										  {
-																										     if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																											  iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																											  list.array[0]->sNSSAI.sD != NULLP)
-																											  {
+																								   iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
+																								   list.array !=NULLP)
+																								   {
+																								      if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
+																									   iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
+																									   list.array[0]!=NULLP)
+																									   {   
+																									      if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
+																										   iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
+																										   list.array[0]->sNSSAI.sST.buf!=NULLP)
+																										   {
+																										      if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
+																											   iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
+																											   list.array[0]->sNSSAI.sD != NULLP)
+																											   { 
 																											       if(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
 																													 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
 																													  list.array[0]->sNSSAI.sD->buf!=NULLP)
@@ -1696,56 +1753,52 @@ S16 BuildAndSendDUConfigUpdate()
 																																		 choice.fDD->uL_NRFreqInfo.freqBandListNr.list.\
 																																		 array[0],sizeof(FreqBandNrItem_t));
 																																	}
-																															     DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-																																  fDD->uL_NRFreqInfo.freqBandListNr.list.\
-																																  array,modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-																																  fDD->uL_NRFreqInfo.freqBandListNr.list.size);
-																															  }
-																														     DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-																															  fDD,sizeof(FDD_Info_t));
-																														  }
-																													    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																														 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																														  list.array[0]->sNSSAI.sD->buf,modifyItem->served_Cell_Information.\
-																														 servedPLMNs.list.array[0]->iE_Extensions->list.array[0]->\
-																														 extensionValue.choice.SliceSupportList.list.array[0]->sNSSAI.sD->size);
+																															      DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.\
+																																	choice.\
+																																   fDD->uL_NRFreqInfo.freqBandListNr.list.\
+																																   array,modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
+																																   fDD->uL_NRFreqInfo.freqBandListNr.list.size);
+																															   }
+																														      DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
+																															   fDD,sizeof(FDD_Info_t));
+																														   }
+																													      DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+																															array[0]->\
+																														   iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
+																														   list.array[0]->sNSSAI.sD->buf,modifyItem->served_Cell_Information.\
+																														   servedPLMNs.list.array[0]->iE_Extensions->list.array[0]->\
+																														   extensionValue.choice.SliceSupportList.list.array[0]->\
+																															sNSSAI.sD->size);
 
-																													 }
-																											      DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																													iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																													list.array[0]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-																											  }
-																										     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																											  iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																											  list.array[0]->sNSSAI.sST.buf,modifyItem->served_Cell_Information.servedPLMNs.\
-																											  list.array[0]->iE_Extensions->list.array[0]->extensionValue.choice.\
-																											  SliceSupportList.list.array[0]->sNSSAI.sST.size);
-																										  }
-																									     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																										  iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																										  list.array[0],sizeof(SliceSupportItem_t));
-																									 }
-																								   DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																									iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-																								    list.array,\
-																									 modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
-																									 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.list.size);
-																								}
-																							   for(i=0;i<extensionCnt;i++)
-																								{
+																													   }
+																											         DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
+																													   iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
+																													   list.array[0]->sNSSAI.sD,sizeof(OCTET_STRING_t));
+																											     }
+																										        DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
+																											     iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
+																											     list.array[0]->sNSSAI.sST.buf,modifyItem->served_Cell_Information.\
+																												  servedPLMNs.\
+																											     list.array[0]->iE_Extensions->list.array[0]->extensionValue.choice.\
+																											     SliceSupportList.list.array[0]->sNSSAI.sST.size);
+																										    }
+																									       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
+																										    iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
+																										    list.array[0],sizeof(SliceSupportItem_t));
+																								      }
+																								      DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
+																								      iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
+																								      list.array,\
+																								      modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->\
+																								      iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.list.size);
+																								 }
+																							}
+																							for(i=0;i<modifyItem->served_Cell_Information.servedPLMNs.list.\
+																							array[0]->iE_Extensions->list.count;i++)
+																							{
 																								    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
 																									 array[0]->iE_Extensions->list.array[i],\
 																									 sizeof(ServedPLMNs_ItemExtIEs_t ));
-																								}
-																							}
-																							else
-																							{
-																							    for(i=0;i<idy2;i++)
-																								 {
-																								    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-																									  array[0]->iE_Extensions->list.array[i],\
-																									  sizeof(ServedPLMNs_ItemExtIEs_t));
-																								 }
 																							}
 																					      DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
 																						   array[0]->iE_Extensions->list.array,modifyItem->served_Cell_Information.servedPLMNs.
@@ -1757,78 +1810,101 @@ S16 BuildAndSendDUConfigUpdate()
 																	       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
 																		    array[0]->pLMN_Identity.buf,
 																			 modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->pLMN_Identity.size);
-																		}
-                                                      for(i=0;i<idy1;i++)
-																		{
-																		   DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[i],\
-																			sizeof(ServedPLMNs_Item_t));
-																		}
-																  }
-																  else
-																  {
-																     for(i=0;i<idy1;i++)
-																	  {
-																	     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[i],\
-																		  sizeof(ServedPLMNs_Item_t));
-																	  }
-																  }
-															     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-																  modifyItem->served_Cell_Information.servedPLMNs.list.size);
-															 }
-													       DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
+																		 }
+                                                    }
+                                                    for(i=0;i<modifyItem->served_Cell_Information.servedPLMNs.list.count;i++)
+																	 {
+																		    if(modifyItem->served_Cell_Information.servedPLMNs.list.array[i]
+																			 != NULLP)
+																		    {
+																			     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[i],\
+																			     sizeof(ServedPLMNs_Item_t));
+																			 }
+																	 }
+															       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
+																    modifyItem->served_Cell_Information.servedPLMNs.list.size);
+															  }
+													        DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
 															  modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.size);		
 													  }
 												    DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
 													  modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.size);
 												}
-										     DU_FREE(modifyItem->oldNRCGI.nRCellIdentity.buf,\
+										      DU_FREE(modifyItem->oldNRCGI.nRCellIdentity.buf,\
 											     modifyItem->oldNRCGI.nRCellIdentity.size);
-                               }
-									    DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,\
-										  modifyItem->oldNRCGI.pLMN_Identity.size);
-									}
-									 for(int iy=0; iy<modifyCnt ;iy++)
-									 {
-									    DU_FREE(cellsToModify->list.array[iy],\
-										  sizeof(Served_Cells_To_Modify_ItemIEs_t));
-									 }
-							  }
-							  else
-							  {
-							     for(int iy=0; iy<idy ;iy++)
+                                 }
+									      DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,\
+										   modifyItem->oldNRCGI.pLMN_Identity.size);
+								      }
+                          }
+								  for(int iy=0; iy<cellsToModify->list.count ;iy++)
 								  {
-								     DU_FREE(cellsToModify->list.array[iy],\
-									   sizeof(Served_Cells_To_Modify_ItemIEs_t));
-								  }	
-							  }
-						     DU_FREE(cellsToModify->list.array,cellsToModify->list.size);
+									    if(cellsToModify->list.array[iy] != NULLP)
+										 {
+										    DU_FREE(cellsToModify->list.array[iy],\
+										    sizeof(Served_Cells_To_Modify_ItemIEs_t));
+										 } 
+								  }
+						        DU_FREE(cellsToModify->list.array,cellsToModify->list.size);
+						     }
 						 }
-					    for(i=0;i<elementCnt;i++)
+					    for(i=0;i<duCfgUpdate->protocolIEs.list.count;i++)
 						 {
-					       DU_FREE(duCfgUpdate->protocolIEs.list.array[i],\
-							   sizeof(GNBDUConfigurationUpdateIEs_t));
+						      if(duCfgUpdate->protocolIEs.list.array[i] !=NULLP)
+								{
+					             DU_FREE(duCfgUpdate->protocolIEs.list.array[i],\
+							       sizeof(GNBDUConfigurationUpdateIEs_t));
+								}
 						 }
-					}
-					else
-					{
-					   for(i=0;i<idx;i++)
-						{
-						   DU_FREE(duCfgUpdate->protocolIEs.list.array[i],\
-							 sizeof(GNBDUConfigurationUpdateIEs_t));
-						}
-					}
-               DU_FREE(duCfgUpdate->protocolIEs.list.array,duCfgUpdate->protocolIEs.list.size);
-			  }
-			   DU_FREE(f1apDuCfg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
-		 }
+                   DU_FREE(duCfgUpdate->protocolIEs.list.array,duCfgUpdate->protocolIEs.list.size);
+			    }
+			    DU_FREE(f1apDuCfg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+		  }
 		  DU_FREE(f1apDuCfg, (Size)sizeof(F1AP_PDU_t));
 	}
-   if(checkvar==true)
-      return ROK;
-	else 
-	   return RFAILED;
-}/* End of BuildAndSendDUConfigUpdate */
+}
+ /*******************************************************************
+ *
+ * @brief free the ULRRCMessageTransfer
+ *
+ * @details
+ *
+ *    Function : FreeULRRCMessageTransfer
+ *
+ *    Functionality: Deallocating the memory of variable allocated in
+ *                      FreeULRRCMessageTransfer
+ *
+ * @params[in]
+ *
+ * @return ROK     - void
+ *
+ ******************************************************************/
+void FreeULRRCMessageTransfer( F1AP_PDU_t *f1apMsg)
+{
+     U8 idx1;
+     ULRRCMessageTransfer_t  *ulRRCMsg;
 
+     if(f1apMsg != NULLP)
+     { 
+         if(f1apMsg->choice.initiatingMessage != NULLP)
+         {
+             ulRRCMsg = &f1apMsg->choice.initiatingMessage->value.choice.ULRRCMessageTransfer;
+				 if(ulRRCMsg->protocolIEs.list.array != NULLP)
+             {
+                 for(idx1=0;idx1<ulRRCMsg->protocolIEs.list.count;idx1++)
+                 {
+                     if(ulRRCMsg->protocolIEs.list.array[idx1] != NULLP)
+                     {
+                         DU_FREE(ulRRCMsg->protocolIEs.list.array[idx1],sizeof(ULRRCMessageTransferIEs_t));
+                     }
+                 }
+                 DU_FREE(ulRRCMsg->protocolIEs.list.array,ulRRCMsg->protocolIEs.list.size );
+             }
+             DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+         }
+         DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
+      }
+}
 /*******************************************************************
  *
  * @brief Builds and sends the ULRRCMessageTransfer 
@@ -1854,7 +1930,7 @@ S16 BuildAndSendULRRCMessageTransfer()
 	F1AP_PDU_t      			*f1apMsg = NULL;
    ULRRCMessageTransfer_t	*ulRRCMsg;
 	asn_enc_rval_t  			encRetVal;        /* Encoder return value */
-   bool checkvar=false;
+   uint8_t ret =RFAILED;
 	while(1)
 	{
 	   DU_LOG("\n F1AP : Building UL RRC Message Transfer Message\n");
@@ -1961,34 +2037,12 @@ S16 BuildAndSendULRRCMessageTransfer()
 		    DU_LOG("\n F1AP : Sending	UL RRC Message Transfer Failed");
 			 break;
 		}
-      checkvar=true;
+      ret = ROK;
 		break;
 	}
+   FreeULRRCMessageTransfer(f1apMsg);
 
-	if(f1apMsg != NULLP)
-	{
-	   if(f1apMsg->choice.initiatingMessage != NULLP) 
-	   {
-		   if(ulRRCMsg->protocolIEs.list.array != NULLP)
-			{
-				 for(idx1=0;idx1<idx;idx1++)
-				 {
-				      if(ulRRCMsg->protocolIEs.list.array[idx1] != NULLP)
-					  {
-						  DU_FREE(ulRRCMsg->protocolIEs.list.array[idx1],sizeof(ULRRCMessageTransferIEs_t));
-					  }
-				 }
-			    DU_FREE(ulRRCMsg->protocolIEs.list.array,ulRRCMsg->protocolIEs.list.size ); 
-			}
-		   DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
-		}
-	   DU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-	}
-
-	if(checkvar==true)
-      return ROK;
-	else
-	   return RFAILED;
+	return ret;
 }/* End of BuildAndSendULRRCMessageTransfer*/
 
 /*******************************************************************
@@ -3250,7 +3304,7 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
 			 }
 			 DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
 		 }
-		 DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+		 DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
 	}
 	if(checkvar==true)
 	   return ROK;
@@ -3998,6 +4052,78 @@ void FreeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 }
 /*******************************************************************
  *
+ * @brief Free the UE Setup Request
+ *
+ * @details
+ *
+ *    Function : FreeUESetReq
+ *
+ *    Functionality: Deallocate the memory of BuildUESetReq
+ *
+ * @params[in]  F1AP_PDU_t  *f1apMsg
+ *
+ * @return void
+ *
+ *
+ * ****************************************************************/
+ void FreeUESetReq(F1AP_PDU_t  *f1apMsg)
+{
+    U8 idx=2;
+    U8 ieId;
+    UEContextSetupRequest_t       *ueSetReq;
+ 
+    if(f1apMsg != NULLP)
+    {
+	       if(f1apMsg->choice.initiatingMessage != NULLP)
+          {
+			     ueSetReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
+	           if(ueSetReq->protocolIEs.list.array != NULLP)
+              {
+                 if(ueSetReq->protocolIEs.list.array[idx])
+					  {
+					       if(Nrcgiret==ROK )
+                      {
+							      idx=6;
+							      if(ueSetReq->protocolIEs.list.array[idx])
+									{
+                                if(SplCellListret==ROK)
+                                {
+										      idx++;
+                                    if(ueSetReq->protocolIEs.list.array[idx])
+												{
+											       if(SRBSetupret == ROK)
+                                        {
+                                           idx=8;
+									   	          FreeDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
+                                        }   
+                                        idx--;
+                                        FreeSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
+												}	 
+							           }
+                                idx--;
+                                FreeSplCellList(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
+									}
+                      }
+                      idx=2;
+                      FreeNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);
+						}
+                  for(ieId=0; ieId<ueSetReq->protocolIEs.list.count; ieId++)
+                  {
+                      if(ueSetReq->protocolIEs.list.array[ieId] != NULLP)
+                      {
+                           DU_FREE(ueSetReq->protocolIEs.list.array[ieId],sizeof(UEContextSetupRequestIEs_t));
+                       }
+                  }
+                   DU_FREE(ueSetReq->protocolIEs.list.array,ueSetReq->protocolIEs.list.size);
+              }
+              DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+        }
+        DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+     }
+ }
+
+/*******************************************************************
+ *
  * @brief Builds and sends the UE Setup Request 
  *
  * @details
@@ -4015,18 +4141,15 @@ void FreeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
  * ****************************************************************/
 S16 BuildAndSendUESetReq()
 {
-	S16  ret;
+	
 	U8   elementCnt;
-	S16  BuildNrcgiret;
-	S16  BuildSplCellListret;
-	S16  BuildSRBSetupret;
 	U8   idx;
 	U8   idx1;
-	U8   ieId;
 	F1AP_PDU_t      					*f1apMsg = NULL;
    UEContextSetupRequest_t			*ueSetReq;
 	asn_enc_rval_t  					encRetVal;        /* Encoder return value */
-   bool checkvar=false;
+   uint8_t ret= RFAILED;
+	uint8_t ret1;
 	while(1)
 	{
 	    DU_LOG("\n F1AP : Building UE Context Setup Request\n");
@@ -4102,8 +4225,8 @@ S16 BuildAndSendUESetReq()
 	    ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
 	    ueSetReq->protocolIEs.list.array[idx]->value.present = \
 				                    		UEContextSetupRequestIEs__value_PR_NRCGI;
- 	    BuildNrcgiret = BuildNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);
-	    if(BuildNrcgiret != ROK)
+ 	    Nrcgiret = BuildNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);
+	    if(Nrcgiret != ROK)
 	    {
 		    break;
 	    }
@@ -4144,8 +4267,8 @@ S16 BuildAndSendUESetReq()
 	     ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
 	     ueSetReq->protocolIEs.list.array[idx]->value.present = \
 		                    		UEContextSetupRequestIEs__value_PR_SCell_ToBeSetup_List;
-	     BuildSplCellListret = BuildSplCellList(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
-	     if(BuildSplCellListret != ROK)
+	     SplCellListret = BuildSplCellList(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
+	     if(SplCellListret != ROK)
 	     {  
 		     break;
 	     }
@@ -4156,8 +4279,8 @@ S16 BuildAndSendUESetReq()
 	     ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
 	     ueSetReq->protocolIEs.list.array[idx]->value.present = \
 	              				UEContextSetupRequestIEs__value_PR_SRBs_ToBeSetup_List;
- 	     BuildSRBSetupret =	BuildSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
-	     if(BuildSRBSetupret != ROK)
+ 	     SRBSetupret =	BuildSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
+	     if(SRBSetupret != ROK)
 	     {        
 		     break;
 	     }
@@ -4168,8 +4291,8 @@ S16 BuildAndSendUESetReq()
 	     ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
 	     ueSetReq->protocolIEs.list.array[idx]->value.present = \
 	              				UEContextSetupRequestIEs__value_PR_DRBs_ToBeSetup_List;
-	     ret = BuildDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
-	     if(ret != ROK)
+	     ret1 = BuildDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
+	     if(ret1 != ROK)
 	     {	
 		     break;
 	     }
@@ -4203,56 +4326,12 @@ S16 BuildAndSendUESetReq()
 	      	DU_LOG("\n F1AP : Sending	UE Context Setup Request Failed");
 		      break;
 	    }
-		 checkvar=true;
+		 ret = ROK;
 		 break;
    }
-   if(f1apMsg != NULLP)
-	{
-	    if(f1apMsg->choice.initiatingMessage != NULLP)
-		 {
-		      if(ueSetReq->protocolIEs.list.array != NULLP)
-				{
-			       if(idx1==elementCnt)
-					 {
-						  if(BuildNrcgiret==ROK)
-						  {
-								 if(BuildSplCellListret==ROK)
-								 {
-									   if(BuildSRBSetupret == ROK)
-										{
-										   FreeDRBSetup(&ueSetReq->protocolIEs.list.array[idx--]->value.choice.DRBs_ToBeSetup_List); 
-										}
-										FreeSRBSetup(&ueSetReq->protocolIEs.list.array[idx--]->value.choice.SRBs_ToBeSetup_List);
-								 }    
-								 FreeSplCellList(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List); 
-						  }
-						  idx=2;
-						  FreeNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);   
-						  for(ieId=0; ieId<idx1; ieId++)
-						  {
-						      DU_FREE(ueSetReq->protocolIEs.list.array[ieId],sizeof(UEContextSetupRequestIEs_t));
-						  }
-					 }
-					 else
-					 {
-					     for(ieId=0; ieId<idx; ieId++)
-						  {
-						      if(ueSetReq->protocolIEs.list.array[ieId] != NULLP)
-								{
-						          DU_FREE(ueSetReq->protocolIEs.list.array[ieId],sizeof(UEContextSetupRequestIEs_t));
-								}
-						  }
-					 }
-					 DU_FREE(ueSetReq->protocolIEs.list.array,ueSetReq->protocolIEs.list.size);	   
-				}
-		      DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
-		 }
-	    DU_FREE(f1apMsg, sizeof(F1AP_PDU_t)); 
-	}
-	if(checkvar==true)
-        return ROK;
-	else
-	     return RFAILED;
+	FreeUESetReq(f1apMsg);
+
+	return ret;
 }/* End of BuildAndSendUESetReq*/
 
 /*******************************************************************
