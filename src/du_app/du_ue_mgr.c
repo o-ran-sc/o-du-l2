@@ -304,6 +304,9 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 					srbId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.SRBID;
 					break;
 				}
+        case ProtocolIE_ID_id_ExecuteDuplication:
+					break;
+
 			case ProtocolIE_ID_id_RRCContainer:
 				{
 				   DU_ALLOC(dlCcchMsg, dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
