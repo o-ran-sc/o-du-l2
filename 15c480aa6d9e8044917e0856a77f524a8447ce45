@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e00a8280_47237a0d",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3125,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-12T07:10:58Z",
+      "side": 1,
+      "message": "i hope this is initialized to 0",
+      "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7807762b_1629d719",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3127,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-12T07:10:58Z",
+      "side": 1,
+      "message": "are we sending UCI data as well presently?",
+      "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06601a44_37307934",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2817,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-12T07:10:58Z",
+      "side": 1,
+      "message": "is this null check required for every free? isnt this already present in DU_FREE macro?",
+      "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f64463b_eb99a7c9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3071,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-12T07:10:58Z",
+      "side": 1,
+      "message": "use variable ret which can be assigned RFAILED/ROK. that way, just return \"ret\". avoid below if",
+      "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
