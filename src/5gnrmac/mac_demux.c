@@ -117,7 +117,7 @@ int unpackRxData(RxDataIndPdu *rxDataIndPdu)
             idx = idx + length;
 
             /* store msg3 pdu in macRaCb for CRI value */
-            memcpy(&macCb.macCell->macRaCb[0].msg3Pdu, pdu, length);
+            memcpy(macCb.macCell->macRaCb[0].msg3Pdu, pdu, length);
 
             /* Send UL-CCCH Indication to DU APP */
 				macSendUlCcchInd(pdu, macCb.macCell->cellId, rxDataIndPdu->rnti); 

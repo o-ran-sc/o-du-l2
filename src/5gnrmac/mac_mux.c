@@ -248,11 +248,15 @@ void createMacRaCb(uint16_t cellId, uint16_t crnti)
 void fillMsg4DlData(MacDlData *dlData)
 {
    uint8_t idx = 0;
+   uint16_t idx2;
    dlData->numPdu = 1;
    dlData->pduInfo[idx].lcId = MAC_LCID_CCCH;
-   dlData->pduInfo[idx].pduLen = macCb.macCell->macRaCb[0].msg4PduLen;
-   memcpy(dlData->pduInfo[idx].dlPdu, macCb.macCell->macRaCb[0].msg4Pdu,\
-    macCb.macCell->macRaCb[0].msg4PduLen);
+   dlData->pduInfo[idx].pduLen = macCb.macCell->macRaCb[idx].msg4PduLen;
+   for(idx2 = 0; idx2 <  dlData->pduInfo[idx].pduLen; idx2++)
+	{
+      dlData->pduInfo[idx].dlPdu[idx2] = \
+		  macCb.macCell->macRaCb[idx].msg4Pdu[idx2];
+	}
 }
 
 /*************************************************
@@ -273,8 +277,8 @@ void fillMacCe(MacCeInfo *macCeInfo)
    for(idx = 0; idx < macCeInfo->numCes; idx++)
    {
       macCeInfo->macCe[idx].macCeLcid = MAC_LCID_CRI;
-      memcpy(&macCeInfo->macCe[idx].macCeValue, \
-         &macCb.macCell->macRaCb[idx].msg3Pdu, MAX_CRI_SIZE);
+      memcpy(macCeInfo->macCe[idx].macCeValue, \
+         macCb.macCell->macRaCb[idx].msg3Pdu, MAX_CRI_SIZE);
    }
 }
 
@@ -284,7 +288,7 @@ void fillMacCe(MacCeInfo *macCeInfo)
  *
  * @details
  *
- *    Function : buildMacPdu
+ *    Function : macMuxPdu
  *
  *    Functionality:
  *     The MAC PDU will be MUXed and formed
@@ -306,13 +310,13 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
    uint8_t RBit = 0;              /* Reserved bit */
    uint8_t FBit;                  /* Format Indicator */
    uint8_t lcid;                  /* LCID */
-   uint8_t lenField = 0;          /* Length field */
+   uint16_t lenField = 0;         /* Length field */
 
    /* subheader field size (in bits) */
    uint8_t RBitSize = 1;
    uint8_t FBitSize = 1;
    uint8_t lcidSize = 6;
-   uint8_t lenFieldSize = 0;          /* 8-bit or 16-bit L field  */
+   uint8_t lenFieldSize = 0;      /* 8-bit or 16-bit L field  */
 
    /* PACK ALL MAC CE */
    for(idx = 0; idx < macCeData->numCes; idx++)
@@ -323,11 +327,11 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
          case MAC_LCID_CRI:
 	 {
             /* Packing fields into MAC PDU R/R/LCID */
-            packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
-            packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+            packBytes(macPdu, &bytePos, &bitPos, RBit, (RBitSize * 2));
             packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
             memcpy(&macPdu[bytePos], macCeData->macCe[idx].macCeValue,\
             MAX_CRI_SIZE);
+				bytePos += MAX_CRI_SIZE;
             break;
          }
          default:
@@ -340,11 +344,11 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
    for(idx = 0; idx < dlData->numPdu; idx++)
    {
       lcid = dlData->pduInfo[idx].lcId;
-      lenField = dlData->pduInfo[idx].pduLen;
       switch(lcid)
       {
          case MAC_LCID_CCCH:
 	 {
+            lenField = dlData->pduInfo[idx].pduLen;
             if(dlData->pduInfo[idx].pduLen > 255)
             {
                FBit = 1;
@@ -361,7 +365,8 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
             packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
             packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
             packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
-            memcpy(&macPdu[bytePos], dlData->pduInfo[idx].dlPdu, lenField);
+				memcpy(&macPdu[bytePos], dlData->pduInfo[idx].dlPdu, lenField);
+				bytePos += lenField;
             break;
 	 }
 
@@ -380,11 +385,13 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
       packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
    }
 
+	/*Storing the muxed pdu in macRaCb */
+	macCb.macCell->macRaCb[0].msg4TxPdu = NULLP;
    MAC_ALLOC(macCb.macCell->macRaCb[0].msg4TxPdu, macCb.macCell->macRaCb[0].msg4TbSize);
    if(macCb.macCell->macRaCb[0].msg4TxPdu != NULLP)
    {
-      memcpy(macCb.macCell->macRaCb[0].msg4TxPdu, macPdu,\
-         macCb.macCell->macRaCb[0].msg4TbSize);
+	   memcpy(macCb.macCell->macRaCb[0].msg4TxPdu, macPdu,\
+		  macCb.macCell->macRaCb[0].msg4TbSize);
    }
 }
 

@@ -201,12 +201,15 @@ PUBLIC S16 duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t duBuildAndSendDlCcchInd(uint8_t *dlCcchMsg, uint16_t crnti, uint16_t cellId, DlCcchMsgType msgType)
+uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
+  DlCcchMsgType msgType, uint8_t *dlCcchMsg, uint16_t dlCcchMsgSize)
 {
-   Pst pst;
 	uint8_t ret                  = ROK;
+	uint16_t idx2;
    DlCcchIndInfo *dlCcchIndInfo = NULLP;
-
+   Pst pst;
+   
+	memset(&pst, 0, sizeof(Pst));
    DU_LOG("\nDU APP : Building and Sending DL CCCH Ind to MAC");
 
 	DU_ALLOC_SHRABL_BUF(dlCcchIndInfo, sizeof(DlCcchIndInfo));
@@ -220,15 +223,20 @@ uint8_t duBuildAndSendDlCcchInd(uint8_t *dlCcchMsg, uint16_t crnti, uint16_t cel
 	dlCcchIndInfo->cellId = cellId;
 	dlCcchIndInfo->crnti = crnti;
 	dlCcchIndInfo->msgType = msgType;
-	DU_ALLOC_SHRABL_BUF(dlCcchIndInfo->dlCcchMsg, strlen((const char*)dlCcchMsg));
+	dlCcchIndInfo->dlCcchMsgLen = dlCcchMsgSize;
+
+	DU_ALLOC_SHRABL_BUF(dlCcchIndInfo->dlCcchMsg, dlCcchIndInfo->dlCcchMsgLen);
 	if(!dlCcchIndInfo->dlCcchMsg)
    {
 		DU_LOG("\nDU APP : Memory alloc failed while building DL CCCH Ind");
 		DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlCcchIndInfo, sizeof(DlCcchIndInfo));
 		return RFAILED;
 	}
-	memcpy(dlCcchIndInfo->dlCcchMsg, dlCcchMsg, strlen((const char*)dlCcchMsg));
-	DU_FREE(dlCcchMsg, strlen((const char*)dlCcchMsg));
+	for(idx2 = 0; idx2 < dlCcchIndInfo->dlCcchMsgLen; idx2++)
+	{
+	   dlCcchIndInfo->dlCcchMsg[idx2] = dlCcchMsg[idx2];
+	}
+	DU_FREE(dlCcchMsg, dlCcchMsgSize);
 
 	/* Fill Pst */
 	pst.selector  = DU_MAC_LWLC;
@@ -246,8 +254,10 @@ uint8_t duBuildAndSendDlCcchInd(uint8_t *dlCcchMsg, uint16_t crnti, uint16_t cel
 	if(ret != ROK)
 	{
       DU_LOG("\nDU_APP : Failure in sending DL CCCH to MAC");
-		DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlCcchIndInfo->dlCcchMsg, strlen((const char*)dlCcchMsg));
-		DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlCcchIndInfo, sizeof(DlCcchIndInfo));
+		DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlCcchIndInfo->dlCcchMsg,\
+		  dlCcchIndInfo->dlCcchMsgLen);
+		DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlCcchIndInfo, \
+		  sizeof(DlCcchIndInfo));
       ret = RFAILED; 
 	}
 
@@ -274,8 +284,8 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 {
 	DLRRCMessageTransfer_t *dlRrcMsg = NULLP;
 	uint8_t                *dlCcchMsg = NULLP;
-	uint8_t                srbId, idx, ret;
-	uint16_t               crnti, cellId;
+	uint8_t                idx, ret, srbId;
+	uint16_t               idx2, crnti, cellId, dlCcchMsgSize;
 	uint32_t               gnbCuUeF1apId, gnbDuUeF1apId;
 
 
@@ -304,12 +314,26 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 					srbId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.SRBID;
 					break;
 				}
+        case ProtocolIE_ID_id_ExecuteDuplication:
+					break;
+
 			case ProtocolIE_ID_id_RRCContainer:
 				{
-				   DU_ALLOC(dlCcchMsg, dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
-					memcpy(dlCcchMsg,
-							dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,
-							dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
+				   if(dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size > 0)
+					{
+				      dlCcchMsgSize = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size;
+				      DU_ALLOC(dlCcchMsg, dlCcchMsgSize);
+					   for(idx2 = 0; idx2 < dlCcchMsgSize; idx2++)
+					   {
+					      dlCcchMsg[idx2] = \
+					   	 dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf[idx2];
+					   }
+					}
+					else
+					{
+				      DU_LOG("\nDU_APP : RRC Container Size is invalid:%d",\
+						 dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
+					}
 					break;
 				}
 
@@ -327,9 +351,9 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 			cellId = duCb.ueCcchCtxt[idx].cellId;
 		}
 	}
-	if(srbId == 0) //RRC connection setup
+	if(srbId == SRB_ID_1) //RRC connection setup
 	{
-		ret = duBuildAndSendDlCcchInd(dlCcchMsg, crnti, cellId, RRC_SETUP);
+		ret = duBuildAndSendDlCcchInd(cellId, crnti, RRC_SETUP, dlCcchMsg, dlCcchMsgSize);
 	}
 	return ret;
 }
