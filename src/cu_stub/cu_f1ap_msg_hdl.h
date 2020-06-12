@@ -24,6 +24,11 @@
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
 #include "Cells-to-be-Activated-List.h"
+#include "DL-CCCH-Message.h"
+#include "SRB-ToAddModList.h"
+#include "SRB-ToAddMod.h"
+#include "RRCSetup-IEs.h"
+#include "RRCSetup.h"
 
 #include "envopt.h"        /* Environment options */
 #include "envdep.h"        /* Environment dependent */
@@ -53,7 +58,7 @@
 #define CU_ID           1
 #define CRNTI           17017
 #define CELL_INDEX      0
-
+#define SRB1 1
 
 /* allocate and zero out a static buffer */
 #define CU_ALLOC(_datPtr, _size)                                \
@@ -74,7 +79,12 @@
          (Data *)_datPtr, _size);
 
 
-
+typedef struct f1apDb
+{
+   OCTET_STRING_t duToCuContainer;
+}F1apMsgDb;
+  
+F1apMsgDb f1apMsgDb;
 void F1APMsgHdlr(Buffer *mBuf);
 
 /**********************************************************************
