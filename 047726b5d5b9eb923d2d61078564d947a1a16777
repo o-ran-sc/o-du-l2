@@ -16,6 +16,227 @@
       "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "220785d7_9c815ae6",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "In all the new code that we write, only standard datatype must be used.\nChange above S16 to unit8_t. The variables need not be static since its global",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44c67803_e5106563",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "use uint8_t",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3152add_96806999",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "use \"unit8_t ret \u003d RFAILED;\" istead of checkvar",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f6704c7_e36a92b5",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "mark ret \u003d ROK",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f72c173_48532eb5",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "instead of above if..else, just return ret\nSame changes to be done for all other functions",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8762552d_241ea9be",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "use uint8_t\nSame change for all other functions",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed48e5dd_308d1deb",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ad05bf0_875b6870",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c40b9a23_59c54cce",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "882ccdd7_3237f438",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2852c4f6_1de673b9",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "use uint8_t for all",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09a7a8ca_614cbfae",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2539,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "Null check missing for list.array[idx]\nMust be checked before accessing array[idx]-\u003ek0",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4172d1ed_2becb368",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2901,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T08:51:20Z",
+      "side": 1,
+      "message": "use uint8_t\nalso idx1 and idx2 unused",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
