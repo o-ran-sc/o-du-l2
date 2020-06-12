@@ -35,6 +35,7 @@
 #define SCHED_DELTA 1
 #define BO_DELTA 1
 #define RAR_DELAY   2
+#define MSG4_DELAY  1
 #define SCH_MAX_UE  1
 #define PUSCH_START_RB 15
 #define SI_RNTI 0xFFFF

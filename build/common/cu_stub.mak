@@ -40,6 +40,7 @@ include $(COM_BUILD_DIR)/compile.mak
 I_OPTS+=-I$(ROOT_DIR)/src/mt
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
+I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/RRC
 
 #-------------------------------------------------------------#
 #Linker macros
