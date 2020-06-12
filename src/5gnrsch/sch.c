@@ -653,7 +653,7 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
    SchDlAlloc *dlAlloc = \
       cell->dlAlloc[(cell->slotInfo.slot + SCHED_DELTA) % SCH_NUM_SLOTS]; 
   
-   for(lcIdx = 0; lcIdx < dlBoInfo->numLc; lcIdx++)
+   for(lcIdx = 0; lcIdx <= dlBoInfo->numLc; lcIdx++)
 	{
 	   if(dlBoInfo->boInfo[lcIdx].lcId == CCCH_LCID)
 		{
