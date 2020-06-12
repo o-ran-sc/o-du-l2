@@ -324,11 +324,11 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
          case MAC_LCID_CRI:
 	 {
             /* Packing fields into MAC PDU R/R/LCID */
-            packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
-            packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+            packBytes(macPdu, &bytePos, &bitPos, RBit, (RBitSize * 2));
             packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
             memcpy(&macPdu[bytePos], macCeData->macCe[idx].macCeValue,\
             MAX_CRI_SIZE);
+				bytePos += MAX_CRI_SIZE;
             break;
          }
          default:
@@ -363,6 +363,7 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
             packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
             packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
             memcpy(&macPdu[bytePos], dlData->pduInfo[idx].dlPdu, lenField);
+				bytePos += lenField;
             break;
 	 }
 

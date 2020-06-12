@@ -674,7 +674,7 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 			schDlSlotInfo->msg4Info->harqFeedbackInd = 0;
 			schDlSlotInfo->msg4Info->dciFormatId = 1;
 	   }
-   }
+	}
 
    return ROK;
 }

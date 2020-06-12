@@ -326,6 +326,7 @@ uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
 uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 {
    DlRlcBOInfo  dlBoInfo;
+	memset(&dlBoInfo, 0, sizeof(DlRlcBOInfo));
 
    DU_LOG("\nMAC : Handling DL CCCH IND");
    
@@ -336,10 +337,10 @@ uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
    
    if(dlCcchIndInfo->msgType == RRC_SETUP)
    {
-      dlBoInfo.numLc++;
-      dlBoInfo.boInfo[dlBoInfo.numLc].lcId = 0;    // SRB 0 for msg4
+      dlBoInfo.boInfo[dlBoInfo.numLc].lcId = 0;    // SRB 1 for msg4
       dlBoInfo.boInfo[dlBoInfo.numLc].dataVolume = \
       strlen((const char*)dlCcchIndInfo->dlCcchMsg);
+      dlBoInfo.numLc++;
 
       /* storing Msg4 Pdu in raCb */
       if(macCb.macCell->macRaCb[0].crnti == dlCcchIndInfo->crnti)
