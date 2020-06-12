@@ -42,6 +42,8 @@
 #define SS_MONITORING_SYMBOL     0x2000; /* symbol-0, set 14th bit */
 #define SIB1_MCS  4
 
+#define SRB_ID_0 0
+#define SRB_ID_1 1
 /* Macros for coupling */
 #define DU_MAC_LC  0
 #define DU_MAC_TC  1
@@ -326,6 +328,7 @@ typedef struct dlCcchInd
    uint16_t      cellId;
    uint16_t      crnti;
    DlCcchMsgType msgType;
+   uint16_t      dlCcchMsgLen;
    uint8_t       *dlCcchMsg;
 }DlCcchIndInfo;
 
