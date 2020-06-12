@@ -3252,6 +3252,7 @@ uint16_t handleDlTtiReq(CmLteTimingInfo *currTimingInfo)
                
                /* send Tx-DATA req message */
                sendTxDataReq(currTimingInfo, &currDlSlot->dlInfo);
+					MAC_FREE(currDlSlot->dlInfo.msg4Alloc, sizeof(Msg4Alloc));
             }
             else
             {
