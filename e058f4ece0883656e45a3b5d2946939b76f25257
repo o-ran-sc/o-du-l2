@@ -1,0 +1,214 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac3f4e84_e0646f3a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "Move this function declaration to du_f1ap_msg_hdl.c",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c67bb64_0203120f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "this can be accessed only if f1apMsg !\u003d NULL and initaimessages is also !\u003d NULL. so move this inside the if condition \"f1apMsg-\u003echoice.initiatingMessage\"",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce306ffc_30dc932a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "this assignment should happen only if \"f1SetupReq-\u003eprotocolIEs.list.array[3]\" !\u003d NULLP. Move this in appropriate if()",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4bd4238b_5d36ed62",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 923,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "Similar to above",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12c980c8_70c11763",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "Change this to \"uint8_t ret \u003d RFAILED;\"",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81ff0531_f57e478c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "why is both BuildServedCellListreturn  and ServedCellListreturn needed? one is sufficient",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d62e826_ed012316",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1143,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "Assign ret \u003d ROK here",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "408b8a79_41c67943",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "Instead of above if{}..else{}, just \"return ret;\"\nThis change is applicable to all f1ap msgs",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1aa560af_6e8ebeca",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1653,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "As explained in FreeF1SetupReq, above assignments should be moved into their approriate if conditions",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2284f3bd_ad8d840c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1871,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "As explained in FreeF1SetupReq, above assignments should be moved into their appropriate if conditions",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52ba844b_9aef267f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3028,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "Remove the free function for now, to avoid merge conflict",
+      "range": {
+        "startLine": 3028,
+        "startChar": 5,
+        "endLine": 3028,
+        "endChar": 30
+      },
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "010b5458_426ce684",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4009,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:50:08Z",
+      "side": 1,
+      "message": "As explained in FreeF1SetupReq, above assignments should be moved into their appropriate if conditions",
+      "revId": "e058f4ece0883656e45a3b5d2946939b76f25257",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
