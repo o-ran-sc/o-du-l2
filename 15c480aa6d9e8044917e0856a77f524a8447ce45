@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "10ccc021_ba3c8b75",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3125,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T10:13:52Z",
+      "side": 1,
+      "message": "doing memset of ulTtiReq to 0",
+      "parentUuid": "e00a8280_47237a0d",
+      "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7807762b_1629d719",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a29921ea_15e67327",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3127,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T10:13:52Z",
+      "side": 1,
+      "message": "No",
+      "parentUuid": "7807762b_1629d719",
+      "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "265818eb_1ec441c2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2817,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T10:13:52Z",
+      "side": 1,
+      "message": "Correct. Removed NULL check for those pointers inside which there are no further pointer to be freed",
+      "parentUuid": "06601a44_37307934",
+      "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2f64463b_eb99a7c9",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 4
@@ -67,6 +121,24 @@
       "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "827ed3da_84f9ce1a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3071,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T10:13:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f64463b_eb99a7c9",
+      "revId": "15c480aa6d9e8044917e0856a77f524a8447ce45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
