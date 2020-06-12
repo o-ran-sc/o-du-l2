@@ -131,13 +131,21 @@ int MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
          macMuxPdu(&msg4DlData, &macCeData, macCb.macCell->macRaCb[0].msg4TbSize);
       
          /* storing msg4 Pdu in macDlSlot */
-         MAC_ALLOC(msg4Alloc->msg4Info.msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen);
-         if(msg4Alloc->msg4Info.msg4Pdu != NULLP)
-         {  
-            msg4Alloc->msg4Info.msg4Pdu = macCb.macCell->macRaCb[0].msg4Pdu;
-            msg4Alloc->msg4Info.msg4PduLen = macCb.macCell->macRaCb[0].msg4PduLen;
-         }
-
+			if(macCb.macCell->macRaCb[0].msg4TxPdu)
+			{
+            msg4Alloc->msg4Info.msg4PduLen = macCb.macCell->macRaCb[0].msg4TbSize;
+            MAC_ALLOC(msg4Alloc->msg4Info.msg4Pdu, msg4Alloc->msg4Info.msg4PduLen);
+            if(msg4Alloc->msg4Info.msg4Pdu != NULLP)
+            {
+				   memcpy(msg4Alloc->msg4Info.msg4Pdu, macCb.macCell->macRaCb[0].msg4TxPdu, \
+				        msg4Alloc->msg4Info.msg4PduLen);
+            }
+			}
+			else
+			{
+            DU_LOG("\nMAC: Failed at macMuxPdu()");
+				return RFAILED;
+			}
          /* TODO: Free all allocated memory, after the usage */
          /* MAC_FREE(macCb.macCell->macRaCb[0].msg4TxPdu, \
               macCb.macCell->macRaCb[0].msg4TbSize); // TODO: To be freed after re-transmission is successful.
