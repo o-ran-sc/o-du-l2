@@ -418,7 +418,7 @@ typedef struct msg4Info
 	uint8_t  dciFormatId;
    uint16_t crnti;
    uint8_t  *msg4Pdu;
-   uint8_t  msg4PduLen;
+   uint16_t  msg4PduLen;
 }Msg4Info;
 
 typedef struct msg4Alloc

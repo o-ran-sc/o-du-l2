@@ -81,6 +81,7 @@ MacSchSlotIndFunc macSchSlotIndOpts[] =
  **/
 int MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 {
+   uint16_t idx;
    MacDlSlot *currDlSlot = NULLP;
 
    if(dlSchedInfo != NULLP)
@@ -134,8 +135,11 @@ int MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
          MAC_ALLOC(msg4Alloc->msg4Info.msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen);
          if(msg4Alloc->msg4Info.msg4Pdu != NULLP)
          {  
-            msg4Alloc->msg4Info.msg4Pdu = macCb.macCell->macRaCb[0].msg4Pdu;
             msg4Alloc->msg4Info.msg4PduLen = macCb.macCell->macRaCb[0].msg4PduLen;
+            for(idx = 0; idx < msg4Alloc->msg4Info.msg4PduLen; idx++)
+				{
+				   msg4Alloc->msg4Info.msg4Pdu[idx] = macCb.macCell->macRaCb[0].msg4Pdu[idx];
+				}
          }
 
          /* TODO: Free all allocated memory, after the usage */
