@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "36fb02e9_08570432",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-12T07:52:36Z",
+      "side": 1,
+      "message": "Move this function declaration to du_f1ap_msg_hdl.h",
+      "revId": "047726b5d5b9eb923d2d61078564d947a1a16777",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
