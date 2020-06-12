@@ -325,7 +325,9 @@ uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  * ****************************************************************/
 uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 {
+   uint16_t idx;
    DlRlcBOInfo  dlBoInfo;
+	memset(&dlBoInfo, 0, sizeof(DlRlcBOInfo));
 
    DU_LOG("\nMAC : Handling DL CCCH IND");
    
@@ -336,29 +338,31 @@ uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
    
    if(dlCcchIndInfo->msgType == RRC_SETUP)
    {
+      dlBoInfo.boInfo[dlBoInfo.numLc].lcId = SRB_ID_0;    // SRB ID 0 for msg4
+      dlBoInfo.boInfo[SRB_ID_0].dataVolume = \
+        dlCcchIndInfo->dlCcchMsgLen;
       dlBoInfo.numLc++;
-      dlBoInfo.boInfo[dlBoInfo.numLc].lcId = 0;    // SRB 0 for msg4
-      dlBoInfo.boInfo[dlBoInfo.numLc].dataVolume = \
-      strlen((const char*)dlCcchIndInfo->dlCcchMsg);
 
       /* storing Msg4 Pdu in raCb */
       if(macCb.macCell->macRaCb[0].crnti == dlCcchIndInfo->crnti)
       {
-         macCb.macCell->macRaCb[0].msg4PduLen = strlen((const char*)dlCcchIndInfo\
-         ->dlCcchMsg);
+         macCb.macCell->macRaCb[0].msg4PduLen = dlCcchIndInfo->dlCcchMsgLen;
          MAC_ALLOC(macCb.macCell->macRaCb[0].msg4Pdu, macCb.macCell->macRaCb[0]\
          .msg4PduLen);
          if(macCb.macCell->macRaCb[0].msg4Pdu)
          {
-            memcpy(macCb.macCell->macRaCb[0].msg4Pdu, dlCcchIndInfo->dlCcchMsg,\
-            macCb.macCell->macRaCb[0].msg4PduLen);
+			   for(idx = 0; idx < dlCcchIndInfo->dlCcchMsgLen; idx++)
+				{
+               macCb.macCell->macRaCb[0].msg4Pdu[idx] =\
+					  dlCcchIndInfo->dlCcchMsg[idx];
+			   }
          }
       }
    }
    sendDlRlcBoInfoMacToSch(&dlBoInfo);
    
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo->dlCcchMsg, \
-      strlen((const char*)dlCcchIndInfo->dlCcchMsg));
+      dlCcchIndInfo->dlCcchMsgLen);
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo, sizeof(DlCcchIndInfo));
    return ROK;
 

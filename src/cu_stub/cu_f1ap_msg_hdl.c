@@ -39,7 +39,7 @@
 * ****************************************************************/
 S16 SendF1APMsg(Region region, Pool pool)
 {
-   Buffer *mBuf;
+   Buffer *mBuf = NULLP;
 
    if(SGetMsg(region, pool, &mBuf) == ROK)
    {
@@ -637,6 +637,253 @@ S16 BuildAndSendDUUpdateAck()
 
 /*******************************************************************
  *
+ * @brief Fills Radio Bearer Config 
+ *
+ * @details
+ *
+ *    Function : fillRadioBearerConfig
+ *
+ *    Functionality: Fills Radio Bearer Config
+ *
+ * @params[in] SRB_ToAddModList *
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillRadioBearerConfig(SRB_ToAddModList_t *bearerCfg)
+{
+   uint8_t elementCnt;
+   uint8_t idx;
+   uint8_t ied;
+   if(bearerCfg != NULLP)
+   {
+      elementCnt = 1;
+      bearerCfg->list.count = elementCnt;
+      bearerCfg->list.size =\
+           elementCnt * sizeof(SRB_ToAddMod_t *);
+      CU_ALLOC(bearerCfg->list.array, bearerCfg->list.size);
+      if(bearerCfg->list.array != NULLP)
+      {
+         for(idx = 0; idx < elementCnt; idx++)
+         {
+            CU_ALLOC(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
+            if(bearerCfg->list.array[idx] == NULLP)
+            {
+               for(ied = 0; ied < idx; ied++)
+               {
+                  CU_FREE(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
+               }
+               CU_FREE(bearerCfg->list.array, bearerCfg->list.size);
+               return RFAILED;
+            }
+         }
+      }
+		else
+		{
+		   return RFAILED;
+		}
+      idx = 0;
+      bearerCfg->list.array[idx]->srb_Identity = SRB1;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills Master CellGroup Info 
+ *
+ * @details
+ *
+ *    Function : fillMasterCellGroup
+ *
+ *    Functionality: Fills Master Cell Group IE
+ *
+ * @params[in] RRCSetup_IEs_t *
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillMasterCellGroup(OCTET_STRING_t *masterCellGroup)
+{
+   uint8_t ret = ROK;
+   masterCellGroup->buf = NULLP;
+	if(f1apMsgDb.duToCuContainer.buf)
+	{
+      masterCellGroup->size = f1apMsgDb.duToCuContainer.size;
+      CU_ALLOC(masterCellGroup->buf, masterCellGroup->size);
+      if(masterCellGroup->buf != NULLP)
+      {
+         memcpy(masterCellGroup->buf, f1apMsgDb.duToCuContainer.buf,\
+			  masterCellGroup->size);
+      }
+	   else
+	   {
+	      ret = RFAILED;
+	   }
+	}
+	else
+	{
+	   ret =  RFAILED;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills RRC setup IE 
+ *
+ * @details
+ *
+ *    Function : fillRRCSetupIE
+ *
+ *    Functionality: Fills RRC Setup IE
+ *
+ * @params[in] RRCSetup_IEs_t *
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillRRCSetupIE(RRCSetup_IEs_t *rrcSetupIE)
+{
+   uint8_t ret = ROK;
+   if(rrcSetupIE)
+   {
+      CU_ALLOC(rrcSetupIE->radioBearerConfig.srb_ToAddModList, sizeof(SRB_ToAddModList_t));
+		if(rrcSetupIE->radioBearerConfig.srb_ToAddModList != NULLP)
+		{
+         ret = fillRadioBearerConfig(rrcSetupIE->radioBearerConfig.srb_ToAddModList);
+	   }		
+      if(!ret)
+      {
+         ret = fillMasterCellGroup(&rrcSetupIE->masterCellGroup);
+      }
+		else
+		{
+		   CU_FREE(rrcSetupIE->radioBearerConfig.srb_ToAddModList, sizeof(SRB_ToAddModList_t));
+			ret = RFAILED;
+	   }
+   }
+   return ret;
+}
+/*******************************************************************
+ *
+ * @brief Builds RRC Container IE required for DLRRCMessageTransfer
+ *
+ * @details
+ *
+ *    Function : BuildDLRRCContainer
+ *
+ *    Functionality: Builds RRC Container IE required for 
+ *                   DLRRCMessageTransfer
+ *
+ * @params[in] 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t	BuildDLRRCContainer(RRCContainer_t *rrcContainer)
+{
+   uint8_t ret = ROK;
+	uint16_t idx2;
+   DL_CCCH_Message_t dl_CCCH_Msg;
+   asn_enc_rval_t        encRetVal;
+
+   if(rrcContainer != NULLP)
+   {
+      dl_CCCH_Msg.message.present = DL_CCCH_MessageType_PR_c1;
+
+      CU_ALLOC(dl_CCCH_Msg.message.choice.c1 , sizeof(DL_CCCH_MessageType_t));
+      if(dl_CCCH_Msg.message.choice.c1 != NULLP)
+      {
+         dl_CCCH_Msg.message.choice.c1->present = DL_CCCH_MessageType__c1_PR_rrcSetup;
+         CU_ALLOC(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup, sizeof(RRCSetup_t));
+         if(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup != NULLP)
+         {
+            dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->rrc_TransactionIdentifier = 0;
+            dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->criticalExtensions.\
+              present = RRCSetup__criticalExtensions_PR_rrcSetup;
+				/* Fill RRC Setup IE */
+            CU_ALLOC(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->\
+              criticalExtensions.choice.rrcSetup, sizeof(RRCSetup_IEs_t));
+            if(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->\
+                criticalExtensions.choice.rrcSetup != NULLP)
+            {
+               ret = fillRRCSetupIE(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->\
+               criticalExtensions.choice.rrcSetup);
+
+               if(!ret)
+					{
+                  /* encode DL-CCCH message into RRC Container */
+                  xer_fprint(stdout, &asn_DEF_DL_CCCH_MessageType, &dl_CCCH_Msg);
+                  cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+                  encBufSize = 0;
+                  encRetVal = aper_encode(&asn_DEF_DL_CCCH_MessageType, 0, &dl_CCCH_Msg, PrepFinalEncBuf, encBuf);
+                  /* Encode results */
+                  if(encRetVal.encoded == ENCODE_FAIL)
+                  {
+                     DU_LOG( "\n F1AP : Could not encode RRCContainer (at %s)\n",\
+                  	  encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+                  	  return RFAILED;
+                  }
+                  else
+                  {
+                     DU_LOG("\n F1AP : Created APER encoded buffer for RRCContainer\n");
+                  	for(int i = 0; i< encBufSize; i++)
+                  	{
+                  	   printf("%x",encBuf[i]);
+                  	}
+                     rrcContainer->size = encBufSize;
+                     CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+                     if(rrcContainer->buf != NULLP)
+                     {
+                        memset(rrcContainer->buf, 0, encBufSize);
+	                     for(idx2 = 0; idx2 < encBufSize; idx2++)
+	                     {
+	                        rrcContainer->buf[idx2] =	encBuf[idx2];
+                        }
+                     }
+						}
+					}
+					else
+					{
+					   ret = RFAILED;
+					}
+            }
+				else
+				{
+	            DU_LOG("\nF1AP: Memory Alloc failed for RRC Setup Msg");
+               ret = RFAILED;
+				}
+         }
+			else
+			{
+	          DU_LOG("\nF1AP: Memory Alloc failed for RRC Msg");
+             ret = RFAILED;
+			}
+      }
+		else
+		{
+	      DU_LOG("\nF1AP: Memory Alloc failed for DL Ccch Msg choice");
+         ret = RFAILED;
+		}
+   }
+	else
+	{
+	   DU_LOG("\nF1AP: Memory Alloc failed for DlCcch Msg");
+      ret = RFAILED;
+	}
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Builds and sends the DLRRCMessageTransfer 
  *
  * @details
@@ -654,139 +901,136 @@ S16 BuildAndSendDUUpdateAck()
  * ****************************************************************/
 S16 BuildAndSendDLRRCMessageTransfer()
 {
-	S16  ret;
-	U8   elementCnt;
-	U8   ieId;
-	U8   idx;
-	F1AP_PDU_t      			*f1apMsg = NULL;
-   DLRRCMessageTransfer_t	*dlRRCMsg;
-	asn_enc_rval_t  			encRetVal;        /* Encoder return value */
+   uint8_t ret = ROK ;
+   uint8_t   elementCnt = 0;
+   uint8_t  ieId;
+   uint8_t  idx;
+	uint16_t idx2;
+   F1AP_PDU_t  *f1apMsg = NULLP;
+   DLRRCMessageTransfer_t  *dlRRCMsg = NULLP;
+   asn_enc_rval_t   encRetVal;        /* Encoder return value */
 
-	DU_LOG("\n F1AP : Building DL RRC Message Transfer Message\n");
+   DU_LOG("\n F1AP : Building DL RRC Message Transfer Message\n");
 
-	CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
-	if(f1apMsg == NULLP)
-	{
-		DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
-		RETVALUE(RFAILED);
-	}
+   CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+   if(f1apMsg == NULLP)
+   {
+      DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
+      return RFAILED;
+   }
 
-	f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
-	CU_ALLOC(f1apMsg->choice.initiatingMessage,
-			sizeof(InitiatingMessage_t));
-	if(f1apMsg->choice.initiatingMessage == NULLP)
-	{
-		DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
-		CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
-	}
+   f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
+   CU_ALLOC(f1apMsg->choice.initiatingMessage,
+      sizeof(InitiatingMessage_t));
+   if(f1apMsg->choice.initiatingMessage == NULLP)
+   {
+      DU_LOG(" F1AP : Memory allocation for  F1AP-PDU failed");
+      CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+      return RFAILED;
+   }
 
-	f1apMsg->choice.initiatingMessage->procedureCode = \
-												ProcedureCode_id_DLRRCMessageTransfer;
-	f1apMsg->choice.initiatingMessage->criticality = Criticality_ignore;
-	f1apMsg->choice.initiatingMessage->value.present = \
-								InitiatingMessage__value_PR_DLRRCMessageTransfer;
-	dlRRCMsg =
-		&f1apMsg->choice.initiatingMessage->value.choice.DLRRCMessageTransfer;
-	elementCnt = 3;
-	dlRRCMsg->protocolIEs.list.count = elementCnt;
-	dlRRCMsg->protocolIEs.list.size = \
-									elementCnt * sizeof(DLRRCMessageTransferIEs_t *);
+   f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_DLRRCMessageTransfer;
+   f1apMsg->choice.initiatingMessage->criticality = Criticality_ignore;
+   f1apMsg->choice.initiatingMessage->value.present = InitiatingMessage__value_PR_DLRRCMessageTransfer;
+   dlRRCMsg = &f1apMsg->choice.initiatingMessage->value.choice.DLRRCMessageTransfer;
 
-	/* Initialize the F1Setup members */
-	CU_ALLOC(dlRRCMsg->protocolIEs.list.array, \
-			elementCnt * sizeof(DLRRCMessageTransferIEs_t *));
-	if(dlRRCMsg->protocolIEs.list.array == NULLP)
-	{
-		DU_LOG(" F1AP : Memory allocation for DL RRC MessageTransferIEs failed");
-		CU_FREE(f1apMsg->choice.initiatingMessage,
-				sizeof(InitiatingMessage_t));
-		CU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
-	}
+   elementCnt = 4;
+   dlRRCMsg->protocolIEs.list.count = elementCnt;
+   dlRRCMsg->protocolIEs.list.size = elementCnt * sizeof(DLRRCMessageTransferIEs_t *);
 
-	for(idx=0; idx<elementCnt; idx++)
-	{
-		CU_ALLOC(dlRRCMsg->protocolIEs.list.array[idx],\
-										sizeof(DLRRCMessageTransferIEs_t));
-		if(dlRRCMsg->protocolIEs.list.array[idx] == NULLP)
-		{
-			for(ieId=0; ieId<idx; ieId++)
-			{
-				CU_FREE(dlRRCMsg->protocolIEs.list.array[ieId],\
-						sizeof(DLRRCMessageTransferIEs_t));
-			}
-			CU_FREE(dlRRCMsg->protocolIEs.list.array,\
-					elementCnt * sizeof(DLRRCMessageTransferIEs_t *));
-			CU_FREE(f1apMsg->choice.initiatingMessage,\
-												sizeof(InitiatingMessage_t));
-			CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-			RETVALUE(RFAILED);
-		}
-	}
+   /* Initialize the F1Setup members */
+   CU_ALLOC(dlRRCMsg->protocolIEs.list.array, dlRRCMsg->protocolIEs.list.size);
+   if(dlRRCMsg->protocolIEs.list.array == NULLP)
+   {
+      DU_LOG(" F1AP : Memory allocation for DL RRC MessageTransferIEs failed");
+      CU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+      CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+      return RFAILED;
+   }
 
-	idx = 0;
+   for(idx=0; idx<elementCnt; idx++)
+   {
+      CU_ALLOC(dlRRCMsg->protocolIEs.list.array[idx], sizeof(DLRRCMessageTransferIEs_t));
+      if(dlRRCMsg->protocolIEs.list.array[idx] == NULLP)
+      {
+         for(ieId=0; ieId<idx; ieId++)
+         {
+             CU_FREE(dlRRCMsg->protocolIEs.list.array[ieId],\
+                       sizeof(DLRRCMessageTransferIEs_t));
+         }
+         CU_FREE(dlRRCMsg->protocolIEs.list.array,\
+           dlRRCMsg->protocolIEs.list.size);
+         CU_FREE(f1apMsg->choice.initiatingMessage,\
+           sizeof(InitiatingMessage_t));
+         CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
+         return RFAILED;
+      }
+   }
 
-	/*GNB CU UE F1AP ID*/
-	dlRRCMsg->protocolIEs.list.array[idx]->id	= \
-					 			                 ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
-	dlRRCMsg->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
-	dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
-                    		DLRRCMessageTransferIEs__value_PR_GNB_CU_UE_F1AP_ID;
-	dlRRCMsg->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = CU_ID;
-
-	/*GNB DU UE F1AP ID*/
-	idx++;
-	dlRRCMsg->protocolIEs.list.array[idx]->id	= \
-					 			                 ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
-	dlRRCMsg->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
-	dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
-                    		DLRRCMessageTransferIEs__value_PR_GNB_DU_UE_F1AP_ID;
-	dlRRCMsg->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = DU_ID;
-
-	/*SRBID*/
-	idx++;
-	dlRRCMsg->protocolIEs.list.array[idx]->id	= \
-									 			                 ProtocolIE_ID_id_SRBID;
-	dlRRCMsg->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
-	dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
-				                    		DLRRCMessageTransferIEs__value_PR_SRBID;
-	dlRRCMsg->protocolIEs.list.array[idx]->value.choice.SRBID = DL_SRBID;
-
-	/*RRCContainer*/
-	//YET TO FILL
-
-	xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
-
-	/* Encode the F1SetupRequest type as APER */
-	cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
-	encBufSize = 0;
-	encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
-			encBuf);
-	/* Encode results */
-	if(encRetVal.encoded == ENCODE_FAIL)
-	{
-		DU_LOG( "\n F1AP : Could not encode DL RRC Message Transfer structure (at %s)\n",\
-				encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-		RETVALUE(RFAILED);
-	}
-	else
-	{
-		DU_LOG("\n F1AP : Created APER encoded buffer for DL RRC Message transfer\n");
-		for(int i=0; i< encBufSize; i++)
-		{
-			printf("%x",encBuf[i]);
-		}
-	}
-
-	/* Sending  msg  */
-	if(SendF1APMsg(CU_APP_MEM_REG,CU_POOL)	!=	ROK)
-	{
-		DU_LOG("\n F1AP : Sending	DL RRC Message Transfer Failed");
-		RETVALUE(RFAILED);
-	}
-
-	RETVALUE(ROK);
+   /* GNB CU UE F1AP ID */
+   idx = 0;
+   dlRRCMsg->protocolIEs.list.array[idx]->id  = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
+   dlRRCMsg->protocolIEs.list.array[idx]->criticality  =   Criticality_reject;
+   dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
+                         DLRRCMessageTransferIEs__value_PR_GNB_CU_UE_F1AP_ID;
+   dlRRCMsg->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = CU_ID;
+ 
+   /* GNB DU UE F1AP ID */
+   idx++;
+   dlRRCMsg->protocolIEs.list.array[idx]->id  = \
+                                   ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+   dlRRCMsg->protocolIEs.list.array[idx]->criticality  =   Criticality_reject;
+   dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
+                         DLRRCMessageTransferIEs__value_PR_GNB_DU_UE_F1AP_ID;
+   dlRRCMsg->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = DU_ID;
+ 
+   /* SRBID */
+   idx++;
+   dlRRCMsg->protocolIEs.list.array[idx]->id  = ProtocolIE_ID_id_SRBID;
+   dlRRCMsg->protocolIEs.list.array[idx]->criticality  =   Criticality_reject;
+   dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
+                                 DLRRCMessageTransferIEs__value_PR_SRBID;
+   dlRRCMsg->protocolIEs.list.array[idx]->value.choice.SRBID = SRB1;
+         
+   /* RRCContainer */
+   idx++;
+   dlRRCMsg->protocolIEs.list.array[idx]->id  = ProtocolIE_ID_id_RRCContainer;
+   dlRRCMsg->protocolIEs.list.array[idx]->criticality   = Criticality_reject;
+   dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
+	                             DLRRCMessageTransferIEs__value_PR_RRCContainer;
+	BuildDLRRCContainer(&dlRRCMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer);
+ 
+   xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
+ 
+   /* Encode the F1SetupRequest type as APER */
+   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+   encBufSize = 0;
+   encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
+       encBuf);
+   /* Encode results */
+   if(encRetVal.encoded == ENCODE_FAIL)
+   {
+     DU_LOG( "\n F1AP : Could not encode DL RRC Message Transfer structure (at %s)\n",\
+         encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+     RETVALUE(RFAILED);
+   }
+   else
+   {
+     DU_LOG("\n F1AP : Created APER encoded buffer for DL RRC Message transfer\n");
+     for(int i=0; i< encBufSize; i++)
+     {
+       printf("%x",encBuf[i]);
+     }
+   }
+ 
+   /* Sending  msg  */
+   if(SendF1APMsg(CU_APP_MEM_REG,CU_POOL)  !=  ROK)
+   {
+     DU_LOG("\n F1AP : Sending  DL RRC Message Transfer Failed");
+     return RFAILED;
+   }
+ 
+   return ROK;
 }/* End of BuildAndSendDLRRCMessageTransfer */
 
 
@@ -935,6 +1179,63 @@ S16 BuildAndSendUESetRsp()
 
 	RETVALUE(ROK);
 }/* End of BuildAndSendUESetRsp */
+
+
+uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t idx;
+   uint8_t ret =ROK;
+   InitialULRRCMessageTransfer_t *initULRRCMsg = NULLP;
+   DU_LOG("\n filling the required values in DB in procInitULRRCMsg");
+
+   initULRRCMsg = &f1apMsg->choice.initiatingMessage->value.choice.InitialULRRCMessageTransfer;
+
+   for(idx=0; idx < initULRRCMsg->protocolIEs.list.count; idx++)
+   {
+      switch(initULRRCMsg->protocolIEs.list.array[idx]->id)
+      {
+         case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+         break;
+         case ProtocolIE_ID_id_NRCGI:
+         break;
+         case ProtocolIE_ID_id_C_RNTI:
+         break;
+         case ProtocolIE_ID_id_RRCContainer:
+         break;
+         case ProtocolIE_ID_id_DUtoCURRCContainer:
+			   {
+				   if((initULRRCMsg->protocolIEs.list.array[idx]->value.choice\
+					   .DUtoCURRCContainer.size > 0) && (initULRRCMsg->protocolIEs\
+						.list.array[idx]->value.choice.DUtoCURRCContainer.buf != NULLP))
+               {
+                  DU_LOG("\n Received Du to Cu RRC Container ");
+                  f1apMsgDb.duToCuContainer.size = initULRRCMsg->protocolIEs\
+                   .list.array[idx]->value.choice.DUtoCURRCContainer.size;
+                  CU_ALLOC(f1apMsgDb.duToCuContainer.buf, \
+						 f1apMsgDb.duToCuContainer.size);
+                  if(f1apMsgDb.duToCuContainer.buf != NULLP)
+                  { 
+                     memcpy(f1apMsgDb.duToCuContainer.buf, initULRRCMsg->protocolIEs\
+                      .list.array[idx]->value.choice.DUtoCURRCContainer.buf, f1apMsgDb\
+                      .duToCuContainer.size);
+                  }
+               }
+				   else
+				   {
+                  DU_LOG("\n Failed to receive Du to Cu RRC Container ");
+				   	ret = RFAILED;
+			      }
+               break;
+			   }
+         default:
+            DU_LOG("\n Invalid Event %ld", initULRRCMsg->protocolIEs.list.array[idx]->id);
+            break;
+      }
+   }
+	if(!ret)
+	   ret = BuildAndSendDLRRCMessageTransfer();
+   return ret;
+}
 /*******************************************************************
 *
 * @brief Handles received F1AP message and sends back response  
@@ -958,7 +1259,7 @@ void F1APMsgHdlr(Buffer *mBuf)
    char *recvBuf;
    MsgLen copyCnt;
    MsgLen recvBufLen;
-   F1AP_PDU_t *f1apMsg;
+   F1AP_PDU_t *f1apMsg = NULLP;
    asn_dec_rval_t rval; /* Decoder return value */
    F1AP_PDU_t f1apasnmsg ;
  
@@ -1017,7 +1318,12 @@ void F1APMsgHdlr(Buffer *mBuf)
                BuildAndSendDUUpdateAck();
                break;
             }
-
+            case InitiatingMessage__value_PR_InitialULRRCMessageTransfer:
+            {
+               DU_LOG("\nF1AP : Received InitialULRRCMessageTransfer");
+               procInitULRRCMsg(f1apMsg);
+               break;
+            }
             default:
             {
                DU_LOG("\nF1AP : Invalid type of intiating message [%d]",f1apMsg->choice.initiatingMessage->value.present);
