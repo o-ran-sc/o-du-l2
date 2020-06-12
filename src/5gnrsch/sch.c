@@ -701,7 +701,7 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 
    SchCellCb *cell = schCb[inst].cells[inst];
    SchDlSlotInfo *schDlSlotInfo = \
-      cell->schDlSlotInfo[(cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA) % SCH_NUM_SLOTS]; 
+      cell->schDlSlotInfo[(cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + BO_DELTA) % SCH_NUM_SLOTS];
   
    for(lcIdx = 0; lcIdx < dlBoInfo->numLc; lcIdx++)
 	{
@@ -723,7 +723,7 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 			schDlSlotInfo->msg4Info->harqFeedbackInd = 0;
 			schDlSlotInfo->msg4Info->dciFormatId = 1;
 	   }
-   }
+	}
 
    return ROK;
 }
