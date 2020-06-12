@@ -139,7 +139,7 @@ uint8_t *msg3NumRb)
 
 
    cell = schCb[schInst].cells[schInst];
-	puschMu = cell->cellCfg.puschMu;
+//	puschMu = cell->cellCfg.puschMu;
 	delta = puschDeltaTable[puschMu];
 	k2 = cell->cellCfg.schInitialUlBwp.puschCommon.k2;
 	startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.startSymbol;

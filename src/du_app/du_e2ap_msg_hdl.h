@@ -50,19 +50,20 @@ S16 sctpSend(Buffer *mBuf, U8 itfType);
 typedef struct e2apDb
 {
   U16     ricId;                    
-  PLMN_IdentityE2_t plmn;
+  uint8_t *plmn;
   U32     ricReqId;
   U32     ricInstanceId;
   U32     ranFuncId;
-  RICeventTriggerDefinition_t ricEventTrigger;
+  uint8_t *ricEventTrigger;
   U32     ricActionId;
   U32     ricActionType;
 }E2apMsgDb;
 
-S16 BuildAndSendE2SetupReq();
-uint16_t deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg, \
+E2apMsgDb e2apMsgDb;
+uint8_t BuildAndSendE2SetupReq();
+uint8_t deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg, \
   E2setupRequest_t *e2SetupReq, uint8_t idx);
-S16 SendE2APMsg(Region , Pool );
+uint8_t SendE2APMsg(Region , Pool );
 void E2APMsgHdlr(Buffer *mBuf);
 
 /**********************************************************************
