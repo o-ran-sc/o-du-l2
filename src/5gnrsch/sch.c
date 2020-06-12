@@ -645,7 +645,7 @@ SchCellCfg          *schCellCfg
  * ****************************************************************/
 uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 {
-   uint16_t  lcIdx;
+   uint16_t  lcIdx = 0;
    Inst  inst = pst->dstInst-SCH_INST_START;
    DU_LOG("\nSCH : Received RLC BO Status indication");
 
@@ -653,27 +653,24 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
    SchDlAlloc *dlAlloc = \
       cell->dlAlloc[(cell->slotInfo.slot + SCHED_DELTA) % SCH_NUM_SLOTS]; 
   
-   for(lcIdx = 0; lcIdx < dlBoInfo->numLc; lcIdx++)
+	if(dlBoInfo->boInfo[lcIdx].lcId == CCCH_LCID)
 	{
-	   if(dlBoInfo->boInfo[lcIdx].lcId == CCCH_LCID)
-		{
-	      SCH_ALLOC(dlAlloc->msg4Info, sizeof(Msg4Info));
-	      if(!dlAlloc->msg4Info)
-	      {
-	         DU_LOG("\nSCH : Memory allocation failed for msg4Info");
-		      dlAlloc = NULL;
-		      return RFAILED;
-	      }
-         dlAlloc->msg4Info->crnti = dlBoInfo->crnti;
-			dlAlloc->msg4Info->ndi = 1;
-			dlAlloc->msg4Info->harqProcNum = 0;
-			dlAlloc->msg4Info->dlAssignIdx = 0;
-			dlAlloc->msg4Info->pucchTpc = 0;
-			dlAlloc->msg4Info->pucchResInd = 0;
-			dlAlloc->msg4Info->harqFeedbackInd = 0;
-			dlAlloc->msg4Info->dciFormatId = 1;
+	   SCH_ALLOC(dlAlloc->msg4Info, sizeof(Msg4Info));
+	   if(dlAlloc->msg4Info == NULLP)
+	   {
+	      DU_LOG("\nSCH : Memory allocation failed for msg4Info");
+	      dlAlloc = NULL;
+	      return RFAILED;
 	   }
-   }
+      dlAlloc->msg4Info->crnti = dlBoInfo->crnti;
+		dlAlloc->msg4Info->ndi = 1;
+		dlAlloc->msg4Info->harqProcNum = 0;
+		dlAlloc->msg4Info->dlAssignIdx = 0;
+		dlAlloc->msg4Info->pucchTpc = 0;
+		dlAlloc->msg4Info->pucchResInd = 0;
+		dlAlloc->msg4Info->harqFeedbackInd = 0;
+		dlAlloc->msg4Info->dciFormatId = 1;
+	}
 
    return ROK;
 }
