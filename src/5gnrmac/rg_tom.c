@@ -36,6 +36,7 @@ static int RLOG_MODULE_ID=4096;
 invoked by PHY towards MAC
 */
 /* header include files -- defines (.h) */
+#include <stdbool.h>
 #include "envopt.h"        /* environment options */
 #include "envdep.h"        /* environment dependent */
 #include "envind.h"        /* environment independent */
@@ -613,14 +614,12 @@ SlotIndInfo slotInd
    }
 #endif
 
-   CmLteTimingInfo   timingInfo;
-   RGADDTOCRNTTIME(cellCb->crntTime, timingInfo, TFU_DELTA);
 
    /* Trigger for DL TTI REQ */
-   handleDlTtiReq(&timingInfo);
+   handleDlTtiReq(slotInd);
 
    /* Trigger for UL TTI REQ */
-   handleUlTtiReq(&timingInfo);
+   handleUlTtiReq(slotInd);
 
    dlSf = &cellCb->subFrms[(slotInd.slot % RG_NUM_SUB_FRAMES)];
 

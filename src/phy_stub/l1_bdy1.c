@@ -595,7 +595,7 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
    fapi_dl_tti_req_t *dlTtiReq;
    dlTtiReq = (fapi_dl_tti_req_t *)msg;
 
-   printf("\nPHY STUB: Received DL TTI Request");
+   printf("\nPHY STUB: Received DL TTI Request at [%d:%d]",dlTtiReq->sfn,dlTtiReq->slot);
 #if 0
    printf("\nPHY_STUB:  SFN     %d", dlTtiReq->sfn);
    printf("\nPHY_STUB:  SLOT    %d", dlTtiReq->slot);
@@ -656,7 +656,7 @@ PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
    fapi_tx_data_req_t *txDataReq;
    txDataReq = (fapi_tx_data_req_t *)msg;
 
-   DU_LOG("\nPHY STUB: Received TX DATA Request");
+   DU_LOG("\nPHY STUB: Received TX DATA Request at [%d:%d]",txDataReq->sfn,txDataReq->slot);
 
 	MAC_FREE(txDataReq, msgLen);
 #endif

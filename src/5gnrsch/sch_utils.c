@@ -382,12 +382,58 @@ uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8] = {
 /* Defintion of delta value Table 6.1.2.1.1-5 spec 38.214 */
 uint8_t puschDeltaTable[MAX_MU_PUSCH] = { 2, 3, 4, 6 };
 
+uint16_t tbSizeTable[TOTAL_TBSIZE_VALUES] = {
+         24,    32,    40,    48,    56,    64,    72,    80,    88,    96, \
+        104,   112,   120,   128,   136,   144,   152,   160,   168,   176, \
+        184,   192,   208,   224,   240,   256,   272,   288,   304,   320, \
+        336,   352,   368,   384,   408,   432,   456,   480,   504,   528, \
+        552,   576,   608,   640,   672,   704,   736,   768,   808,   848, \
+        888,   928,   984,  1032,  1064,  1128,  1160,  1192,  1224,  1256, \
+       1288,  1320,  1352,  1416,  1480,  1544,  1608,  1672,  1736,  1800, \
+       1864,  1928,  2024,  2088,  2152,  2216,  2280,  2408,  2472,  2536, \
+       2600,  2664,  2728,  2792,  2856,  2976,  3104,  3240,  3368,  3496, \
+       3624,  3752,  3824 };
+
+uint16_t mcsTable[32][3] = {
+      {   0,   2,   120},   /* mcs index  0 */ 
+      {   1,   2,   157},   /* mcs index  1 */ 
+      {   2,   2,   193},   /* mcs index  2 */ 
+      {   3,   2,   251},   /* mcs index  3 */ 
+      {   4,   2,   308},   /* mcs index  4 */ 
+      {   5,   2,   379},   /* mcs index  5 */ 
+      {   6,   2,   449},   /* mcs index  6 */ 
+      {   7,   2,   526},   /* mcs index  7 */ 
+      {   8,   2,   602},   /* mcs index  8 */ 
+      {   9,   2,   679},   /* mcs index  9 */ 
+      {  10,   4,   340},   /* mcs index 10 */ 
+      {  11,   4,   378},   /* mcs index 11 */ 
+      {  12,   4,   434},   /* mcs index 12 */ 
+      {  13,   4,   490},   /* mcs index 13 */ 
+      {  14,   4,   553},   /* mcs index 14 */ 
+      {  15,   4,   616},   /* mcs index 15 */
+      {  16,   4,   658},   /* mcs index 16 */
+      {  17,   6,   438},   /* mcs index 17 */
+      {  18,   6,   466},   /* mcs index 18 */
+      {  19,   6,   517},   /* mcs index 19 */
+      {  20,   6,   567},   /* mcs index 20 */
+      {  21,   6,   616},   /* mcs index 21 */
+      {  22,   6,   666},   /* mcs index 22 */
+      {  23,   6,   719},   /* mcs index 23 */
+      {  24,   6,   772},   /* mcs index 24 */
+      {  25,   6,   822},   /* mcs index 25 */
+      {  26,   6,   873},   /* mcs index 26 */
+      {  27,   6,   910},   /* mcs index 27 */
+      {  28,   6,   948},   /* mcs index 28 */
+      {  29,   2,     0},   /* mcs index 29 */
+      {  30,   4,     0},   /* mcs index 30 */
+      {  31,   6,     0}};  /* mcs index 31 */
+
 /**
  * @brief frequency domain allocation function. 
  *
  * @details
  *
- *     Function: canclulatePRB
+ *     Function: calculatePRB
  *     
  *     This function does allocation in frequency domain resource. using 
  *     bitwise operator, the bits are set for the PRBs.
@@ -437,6 +483,70 @@ void calculatePRB(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
       remBits -= numBits;
       byteCount++;
    }
+}
+
+/**
+ * @brief frequency domain allocation function. 
+ *
+ * @details
+ *
+ *     Function: schCalcTbSize
+ *     
+ *     This function finds the TBSize from table Table 5.1.3.2-1 spec 38.214
+ *     
+ *  @param[in]  payLoadSize - size of payload
+ *  @return     TBsize from the Table
+ **/
+uint16_t schCalcTbSize(uint16_t payLoadSize)
+{
+   uint8_t tbsIndex = 0;
+	payLoadSize = payLoadSize*8;
+
+	while(payLoadSize > tbSizeTable[tbsIndex])
+	{
+	   tbsIndex++;
+	}
+	return tbSizeTable[tbsIndex];
+}
+
+/**
+ * @brief frequency domain allocation function. 
+ *
+ * @details
+ *
+ *     Function: schCalcNumPrb
+ *     
+ *     This function calculates the number of PRbs 
+ *     
+ *  @param[in]  tbSize
+ *  @param[in]  mcs
+ *  @param[in]  number of symbols
+ *  @return   number PRBs
+ **/
+uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
+{
+   uint16_t numPrb = 0;
+   uint16_t nre = 0;
+	uint16_t nreDash = 0;
+	uint8_t  qm     = mcsTable[mcs][1];
+	uint16_t rValue = mcsTable[mcs][2];
+	uint8_t  numLayer = 1;       /* v value */
+	uint8_t numDmrsSymbols = 12; /* considering whole of one symbols with 12 SCs for DMRS */
+
+   /* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
+    * Ninfo = Nre . R . Qm . v                                       *
+    * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                       *
+    * Nre = min(156,Nre') . nPrb                                     */
+
+	nre = ceil( (float)tbSize * 1024 / (qm * rValue * numLayer));
+
+	nreDash = ceil( (12 * numSymbols) - numDmrsSymbols - 0);
+
+	if (nreDash > 156)
+	   nre = 156;
+
+   numPrb = ceil((float)nre / nreDash);   
+	return numPrb;
 }
 
 /**********************************************************************

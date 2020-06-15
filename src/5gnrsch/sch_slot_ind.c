@@ -61,6 +61,7 @@ File:     sch_slot_ind.c
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
+#include "common_def.h"
 
 SchMacDlAllocFunc schMacDlAllocOpts[] =
 {
@@ -89,7 +90,7 @@ offsetPointA);
  *         RFAILED - failure
  *
  * ****************************************************************/
-int sendDlAllocToMac(DlAlloc *dlAlloc, Inst inst)
+int sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
 {
 	Pst pst;
 
@@ -97,8 +98,47 @@ int sendDlAllocToMac(DlAlloc *dlAlloc, Inst inst)
    SCH_FILL_RSP_PST(pst, inst);
 	pst.event = EVENT_DL_ALLOC;
 
-	return(*schMacDlAllocOpts[pst.selector])(&pst, dlAlloc);
+	return(*schMacDlAllocOpts[pst.selector])(&pst, dlSchedInfo);
 
+}
+
+
+/*******************************************************************
+ *
+ * @brief Handles slot indication at SCH 
+ *
+ * @details
+ *
+ *    Function : schCalcSlotValues
+ *
+ *    Functionality:
+ *     Handles TTI indication received from PHY
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void schCalcSlotValues(SlotIndInfo slotInd, SchSlotValue *schSlotValue)
+{
+   /****************************************************************
+    * PHY_DELTA - the physical layer delta                         * 
+    * SCHED_DELTA - scheduler schedules one slot ahead             *
+    * BO_DELTA - this delay is considered for BO response and      *
+    *            RLC buffer packet to received at MAC              *
+    * lower-mac (FAPI filling) will be working on PHY_DELTA        *
+    * brdcast scheduler will working on PHY_DELTA + SCHED_DELTA    *
+    * RAR scheduler will working on PHY_DELTA + SCHED_DELTA        *
+    * msg4 scheduler will working on PHY_DELTA + SCHED_DELTA       *
+    * dedicated DL msg scheduler will working                      *
+    *        on PHY_DELTA + SCHED_DELTA + BO_DELTA                 *
+    ****************************************************************/
+
+   ADD_DELTA_TO_TIME(slotInd,schSlotValue->currentTime,PHY_DELTA);
+   ADD_DELTA_TO_TIME(slotInd,schSlotValue->broadcastTime,PHY_DELTA+SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd,schSlotValue->rarTime,PHY_DELTA+SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd,schSlotValue->msg4Time,PHY_DELTA+SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd,schSlotValue->dlMsgTime,PHY_DELTA+SCHED_DELTA+BO_DELTA);
 }
 
 /*******************************************************************
@@ -121,40 +161,27 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 {
    int ret = ROK;
 	uint8_t ssb_rep;
-	uint16_t sfn  = slotInd->sfn;
-	uint16_t slot = slotInd->slot;
 	uint16_t sfnSlot = 0;
-	DlAlloc dlAlloc;
-	memset(&dlAlloc,0,sizeof(DlAlloc));
-   DlBrdcstAlloc *dlBrdcstAlloc = &dlAlloc.brdcstAlloc;
-	RarAlloc *rarAlloc = &dlAlloc.rarAlloc;
+	DlSchedInfo dlSchedInfo;
+	memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
+   DlBrdcstAlloc *dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
+	RarAlloc  *rarAlloc;
    Msg4Alloc *msg4Alloc;
 	dlBrdcstAlloc->ssbTrans = NO_SSB;
    dlBrdcstAlloc->sib1Trans = NO_SIB1;
 	
-
 	SchCellCb *cell = schCb[schInst].cells[schInst];
 
-#ifdef LTE_L2_MEAS
-   glblTtiCnt++;
-#endif
-  
-//   schDlResAlloc(cell, slotInd);
+   schCalcSlotValues(*slotInd, &dlSchedInfo.schSlotValue);
 
 	ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
 	memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
 	dlBrdcstAlloc->ssbIdxSupported = 1;
 
-   if((slot + SCHED_DELTA) >= SCH_NUM_SLOTS)
-	{
-      sfn = (sfn+1)%SCH_MAX_SFN;
-	}
-	slot = ((slot + SCHED_DELTA) % SCH_NUM_SLOTS);
-   sfnSlot = ((sfn * 10) + slot);
+   sfnSlot = ((dlSchedInfo.schSlotValue.broadcastTime.sfn * 10) +
+	            dlSchedInfo.schSlotValue.broadcastTime.slot);
 
-	dlAlloc.slotIndInfo.sfn = sfn;
-	dlAlloc.slotIndInfo.slot = slot;
-	dlAlloc.cellId = cell->cellId;
+	dlSchedInfo.cellId = cell->cellId;
 
 	/* Identify SSB ocassion*/
 	if (sfnSlot % SCH_MIB_TRANS == 0)
@@ -186,8 +213,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 
 	if(dlBrdcstAlloc->ssbTrans || dlBrdcstAlloc->sib1Trans)
 	{
-	   dlAlloc.isBroadcastPres = true;
-	   ret = schBroadcastAlloc(cell, dlBrdcstAlloc,slot);
+	   dlSchedInfo.isBroadcastPres = true;
+	   ret = schBroadcastAlloc(cell,dlBrdcstAlloc,dlSchedInfo.schSlotValue.broadcastTime.slot);
       if(ret != ROK)
       {
          DU_LOG("\nschBroadcastAlloc failed");
@@ -196,23 +223,33 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    }
 
    /* check for RAR */
-	if(cell->dlAlloc[slot]->rarPres == true)
+	if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo != NULLP)
 	{
-	   dlAlloc.isRarPres = true;
+      SCH_ALLOC(rarAlloc, sizeof(RarAlloc));
+      if(!rarAlloc)
+      {
+		   DU_LOG("\nMAC: Memory Allocation failed for RAR alloc");
+		   return RFAILED;
+      }
+		 
+      dlSchedInfo.rarAlloc = rarAlloc;
+
 	   /* RAR info is copied, this was earlier filled in schProcessRachInd */
-	   memcpy(&rarAlloc->rarInfo, &cell->dlAlloc[slot]->rarInfo, sizeof(RarInfo));
+      memcpy(&rarAlloc->rarInfo,cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo, \
+	      sizeof(RarAlloc));
 
-		/* pdcch and pdsch data is filled */
-      schFillRar(rarAlloc,
-		   cell->dlAlloc[slot]->rarInfo.raRnti,
-		   cell->cellCfg.phyCellId,
-		   cell->cellCfg.ssbSchCfg.ssbOffsetPointA);
+      SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo,sizeof(RarAlloc));
+	   cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo = NULLP;
 
-     cell->dlAlloc[slot]->rarPres = false;
+		 /* pdcch and pdsch data is filled */
+       schFillRar(rarAlloc,
+		    cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo->raRnti,
+		    cell->cellCfg.phyCellId,
+		    cell->cellCfg.ssbSchCfg.ssbOffsetPointA);
    }
 
    /* check for MSG4 */
-   if(cell->dlAlloc[slot]->msg4Info)
+   if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info != NULLP)
    {
 	    SCH_ALLOC(msg4Alloc, sizeof(Msg4Alloc));
 		 if(!msg4Alloc)
@@ -221,21 +258,21 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 			 return RFAILED;
 		 }
 		 
-		 dlAlloc.msg4Alloc = msg4Alloc;
+		 dlSchedInfo.msg4Alloc = msg4Alloc;
 
        /* Msg4 info is copied, this was earlier filled in macSchDlRlcBoInfo */
-       memcpy(&msg4Alloc->msg4Info, cell->dlAlloc[slot]->msg4Info, \
+       memcpy(&msg4Alloc->msg4Info, cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, \
           sizeof(Msg4Info));
              
        /* pdcch and pdsch data is filled */
-       schDlRsrcAllocMsg4(msg4Alloc, cell, slot); 
-		 SCH_FREE(cell->dlAlloc[slot]->msg4Info, sizeof(Msg4Info));
-		 cell->dlAlloc[slot]->msg4Info = NULL;
+       schDlRsrcAllocMsg4(msg4Alloc, cell, dlSchedInfo.schSlotValue.msg4Time.slot); 
+		 SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, sizeof(Msg4Info));
+		 cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
    }
 
 
 	/* send msg to MAC */
-   ret = sendDlAllocToMac(&dlAlloc, schInst);
+   ret = sendDlAllocToMac(&dlSchedInfo, schInst);
    if(ret != ROK)
    {
       DU_LOG("\nSending DL Broadcast allocation from SCH to MAC failed");

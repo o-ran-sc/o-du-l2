@@ -17,6 +17,7 @@
 *******************************************************************************/
 
 /* header include files -- defines (.h)  */
+#include <stdbool.h>
 #include "envopt.h"        /* environment options */
 #include "envdep.h"        /* environment dependent */
 #include "envind.h"        /* environment independent */

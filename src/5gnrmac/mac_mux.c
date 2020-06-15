@@ -18,6 +18,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 /* header include files -- defines (.h) */
 #include "envopt.h"        /* environment options */
