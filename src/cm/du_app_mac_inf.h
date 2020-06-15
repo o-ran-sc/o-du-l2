@@ -29,8 +29,15 @@
 #define SIB1_NEW_TX_PERIOD      160
 #define SIB1_REPETITION_PERIOD   20
 #define CORESET_0_INDEX      0
+#define CORESET_1_INDEX      1
+#define CORESET_2_INDEX      2
+#define CORESET_3_INDEX      3
+#define CORESET_4_INDEX      4
 #define SEARCHSPACE_0_INDEX   0
 #define SEARCHSPACE_1_INDEX   1
+#define SEARCHSPACE_2_INDEX   2
+#define SEARCHSPACE_3_INDEX   3
+#define SEARCHSPACE_4_INDEX   4
 #define SS_MONITORING_SLOT_SL1   0 /* all slots */
 #define SS_MONITORING_SYMBOL     0x2000; /* symbol-0, set 14th bit */
 #define SIB1_MCS  4
@@ -225,7 +232,9 @@ typedef struct searchSpaceCfg
 
 typedef struct pdcchConfigCommon
 {
-   SearchSpaceCfg raSearchSpace;
+   /* only one search space is configured during SIB1 */
+   SearchSpaceCfg commonSearchSpace;
+   uint8_t raSearchSpaceId;
 }PdcchConfigCommon;
 
 typedef struct pdschConfigCommon

@@ -62,6 +62,7 @@
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
+#include "common_def.h"
 
 extern SchCb schCb[SCH_MAX_INST];
 extern uint8_t puschDeltaTable[MAX_MU_PUSCH];
@@ -124,8 +125,8 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
 uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t *msg3StartRb,
 uint8_t *msg3NumRb)
 {
-	SchCellCb  *cell         = NULLP;
-	SchUlAlloc *ulAlloc      = NULLP;
+	SchCellCb      *cell         = NULLP;
+	SchUlSlotInfo  *schUlSlotInfo    = NULLP;
 	uint8_t    puschMu       = 0;
 	uint8_t    msg3SlotAlloc = 0;
 	uint8_t    delta         = 0;
@@ -161,26 +162,26 @@ uint8_t *msg3NumRb)
 
 	for(idx=startSymb; idx<symbLen; idx++)
 	{
-		cell->ulAlloc[msg3SlotAlloc]->assignedPrb[idx] = startRb + numRb;
+		cell->schUlSlotInfo[msg3SlotAlloc]->assignedPrb[idx] = startRb + numRb;
 	}
-	ulAlloc = cell->ulAlloc[msg3SlotAlloc];
+	schUlSlotInfo = cell->schUlSlotInfo[msg3SlotAlloc];
 
-   SCH_ALLOC(ulAlloc->schPuschInfo, sizeof(SchPuschInfo));
-	if(!ulAlloc->schPuschInfo)
+   SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
+	if(!schUlSlotInfo->schPuschInfo)
 	{
       DU_LOG("SCH: Memory allocation failed in schAllocMsg3Pusch");
 		return RFAILED;
 	}
-	ulAlloc->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
-	ulAlloc->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
-	ulAlloc->schPuschInfo->fdAlloc.startPrb  = startRb;
-	ulAlloc->schPuschInfo->fdAlloc.numPrb    = numRb;
-	ulAlloc->schPuschInfo->tdAlloc.startSymb = startSymb;
-	ulAlloc->schPuschInfo->tdAlloc.numSymb   = symbLen;
-	ulAlloc->schPuschInfo->tbInfo.mcs	     = 4;
-	ulAlloc->schPuschInfo->tbInfo.ndi        = 1; /* new transmission */
-	ulAlloc->schPuschInfo->tbInfo.rv	        = 0;
-	ulAlloc->schPuschInfo->tbInfo.tbSize     = 24; /*Considering 2 PRBs */
+	schUlSlotInfo->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
+	schUlSlotInfo->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
+	schUlSlotInfo->schPuschInfo->fdAlloc.startPrb  = startRb;
+	schUlSlotInfo->schPuschInfo->fdAlloc.numPrb    = numRb;
+	schUlSlotInfo->schPuschInfo->tdAlloc.startSymb = startSymb;
+	schUlSlotInfo->schPuschInfo->tdAlloc.numSymb   = symbLen;
+	schUlSlotInfo->schPuschInfo->tbInfo.mcs	     = 4;
+	schUlSlotInfo->schPuschInfo->tbInfo.ndi        = 1; /* new transmission */
+	schUlSlotInfo->schPuschInfo->tbInfo.rv	        = 0;
+	schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = 24; /*Considering 2 PRBs */
 
 	*msg3StartRb = startRb;
 	*msg3NumRb   = numRb;
@@ -206,20 +207,28 @@ uint8_t *msg3NumRb)
 uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
 {
    SchCellCb *cell = schCb[schInst].cells[schInst];
+	RarInfo *rarInfo = NULLP;
 	uint16_t raRnti = 0;
-	uint16_t slot;
+	uint16_t rarSlot = 0;
 	uint16_t msg3StartRb;
 	uint8_t  msg3NumRb;
    uint8_t  ret = ROK;
-   /* RAR will sent in the next slot */
-	slot = (rachInd->timingInfo.slot+SCHED_DELTA+RAR_DELAY)%SCH_NUM_SLOTS;
 
-   SchDlAlloc *dlAlloc =  cell->dlAlloc[slot];
-	RarInfo *rarInfo = &(dlAlloc->rarInfo);
+   /* RAR will sent with a delay of RAR_DELAY */
+   rarSlot = (rachInd->timingInfo.slot+RAR_DELAY+PHY_DELTA)%SCH_NUM_SLOTS;
 
-   /* rar message presense in next slot ind and will be scheduled */
-   dlAlloc->rarPres = true;
+   SchDlSlotInfo *schDlSlotInfo = cell->schDlSlotInfo[rarSlot]; /* RAR will sent in the next slot */
 
+   /* Allocate the rarInfo, this pointer will be checked at schProcessSlotInd function */
+	SCH_ALLOC(rarInfo, sizeof(RarInfo));
+	if(rarInfo == NULLP)
+	{
+      DU_LOG("\nMAC: Memory Allocation failed for rarInfo");
+      return RFAILED;
+	}
+
+	schDlSlotInfo->rarInfo = rarInfo;
+   
    /* calculate the ra-rnti value */
 	raRnti = calculateRaRnti(rachInd->symbolIdx,rachInd->slotIdx,rachInd->freqIdx);
    
@@ -227,10 +236,9 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
 	createSchRaCb(rachInd->crnti,schInst);
 
 	/* allocate resources for msg3 */
-	ret = schAllocMsg3Pusch(schInst, slot, &msg3StartRb, &msg3NumRb);
+	ret = schAllocMsg3Pusch(schInst, rarSlot, &msg3StartRb, &msg3NumRb);
 	if(ret == ROK)
 	{
-
 		/* fill RAR info */
 		rarInfo->raRnti      = raRnti;
 		rarInfo->tcrnti      = rachInd->crnti;
@@ -266,12 +274,17 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    uint8_t numSymbols = 0;
    uint8_t offset = 0;
    uint8_t FreqDomainResource[6] = {0};
+   uint16_t tbSize = 0;
+	uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
+   uint8_t mcs = 4;  /* MCS fixed to 4 */
+
    SchBwpDlCfg *initialBwp = &schCb[inst].cells[inst]->cellCfg.schInitialDlBwp;
 
 	PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
 	PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
+   BwpCfg *bwp = &rarAlloc->bwp;
 
-   coreset0Idx     = initialBwp->pdcchCommon.raSearchSpace.coresetId;
+   coreset0Idx     = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
    numRbs        = coresetIdxTable[coreset0Idx][1];
@@ -283,7 +296,7 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
 	uint16_t mask = 0x2000;
 	for(firstSymbol=0; firstSymbol<14;firstSymbol++)
 	{
-	   if(initialBwp->pdcchCommon.raSearchSpace.monitoringSymbol & mask)
+	   if(initialBwp->pdcchCommon.commonSearchSpace.monitoringSymbol & mask)
 		   break;
 		else
 		   mask = mask>>1;
@@ -292,11 +305,13 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    /* calculate the PRBs */
    calculatePRB( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
+   /* fill BWP */
+   bwp->BWPSize = initialBwp->bwp.numPrb;
+   bwp->BWPStart = initialBwp->bwp.firstPrb;
+   bwp->subcarrierSpacing = initialBwp->bwp.scs;
+   bwp->cyclicPrefix = initialBwp->bwp.cyclicPrefix;
+
    /* fill the PDCCH PDU */
-   pdcch->pdcchBwpCfg.BWPSize = initialBwp->bwp.numPrb;
-   pdcch->pdcchBwpCfg.BWPStart = initialBwp->bwp.firstPrb;
-   pdcch->pdcchBwpCfg.subcarrierSpacing = initialBwp->bwp.scs;
-   pdcch->pdcchBwpCfg.cyclicPrefix = initialBwp->bwp.cyclicPrefix;
    pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
    pdcch->coreset0Cfg.durationSymbols = numSymbols;
    memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
@@ -326,18 +341,16 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
    pdsch->rnti = raRnti; /* RA-RNTI */
    pdsch->pduIndex = 0;
-   pdsch->pdschBwpCfg.BWPSize = initialBwp->bwp.numPrb;
-   pdsch->pdschBwpCfg.BWPStart = initialBwp->bwp.firstPrb;
    pdsch->numCodewords = 1;
 	for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
 	{
       pdsch->codeword[cwCount].targetCodeRate = 308;
       pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = 4; /* mcs configured to 4 */
-      pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
+      pdsch->codeword[cwCount].mcsIndex = mcs; /* mcs configured to 4 */
+      pdsch->codeword[cwCount].mcsTable = 0;   /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      pdsch->codeword[cwCount].tbSize = 80/8; /* 38.214: Table 5.1.3.2-1,
-		   devided by 8 to get the value in bytes */
+		tbSize = schCalcTbSize(10); /* 8 bytes RAR and 2 bytes padding */
+      pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = pci;
    pdsch->numLayers = 1;
@@ -351,11 +364,7 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    pdsch->dmrs.dmrsPorts = 0;
    pdsch->freqAlloc.resourceAlloc = 1; /* RAT type-1 RIV format */
    pdsch->freqAlloc.rbStart = offset + SCH_SSB_PRB_DURATION; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
-	/* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
-	 * Ninfo = S . Nre . R . Qm . v                                   *
-	 * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                       *
-	 * Nre = min(156,Nre') . nPrb                                     */
-   pdsch->freqAlloc.rbSize = 1; /* This value is calculated from above formulae */
+   pdsch->freqAlloc.rbSize = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
    pdsch->freqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->timeAlloc.startSymbolIndex = initialBwp->pdschCommon.startSymbol;
    pdsch->timeAlloc.numSymbols = initialBwp->pdschCommon.lengthSymbol;

@@ -80,12 +80,12 @@
 
 typedef struct macDlSlot
 {
-   DlAlloc dlInfo;
+   DlSchedInfo dlInfo;
 }MacDlSlot;
 
 typedef struct macUlSlot
 {
-   UlSchInfo    ulCellInfo;
+   UlSchedInfo  ulInfo;
 }MacUlSlot;
 
 typedef struct macCbInfo

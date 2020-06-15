@@ -33,7 +33,8 @@
 #define SCH_MEM_REGION     4
 #define SCH_POOL           1
 #define SCHED_DELTA 1
-#define RAR_DELAY   1
+#define BO_DELTA 1
+#define RAR_DELAY   2
 #define SCH_MAX_UE  1
 #define PUSCH_START_RB 15
 #define SI_RNTI 0xFFFF
@@ -91,7 +92,7 @@ typedef struct schGenCb
   * @brief
   * scheduler allocationsfor DL per cell.
   */
-typedef struct schDlAlloc
+typedef struct schDlSlotInfo
 {
 	uint16_t    totalPrb;  /*!< Number of RBs in the cell */
 	uint16_t    assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
@@ -99,10 +100,10 @@ typedef struct schDlAlloc
    uint8_t     ssbIdxSupported;  /*!< Max SSB index */
 	SsbInfo     ssbInfo[MAX_SSB_IDX]; /*!< SSB info */
 	bool        sib1Pres;
-	bool        rarPres;
-	RarInfo     rarInfo;
+	//bool        rarPres;
+	RarInfo     *rarInfo;
    Msg4Info    *msg4Info;
-}SchDlAlloc;
+}SchDlSlotInfo;
 
 typedef struct schRaCb
 {
@@ -113,13 +114,13 @@ typedef struct schRaCb
   * @brief
   * scheduler allocationsfor UL per cell.
   */
-typedef struct schUlAlloc
+typedef struct schUlSlotInfo
 {
 	uint16_t     totalPrb;  /*!< Number of RBs in the cell */
 	uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
 	bool         puschPres; /*!< PUSCH presence field */
 	SchPuschInfo *schPuschInfo; /*!< PUSCH info */
-}SchUlAlloc;
+}SchUlSlotInfo;
 
 /**
   * @brief
@@ -132,8 +133,8 @@ typedef struct schCellCb
    Inst          macInst;          /*!< Index of the MAC instance */
 	uint8_t       numSlots;         /*!< Number of slots in current frame */
    SlotIndInfo   slotInfo;         /*!< SFN, Slot info being processed*/
-   SchDlAlloc    *dlAlloc[SCH_NUM_SLOTS]; /*!< SCH resource allocations in DL */
-   SchUlAlloc    *ulAlloc[SCH_NUM_SLOTS]; /*!< SCH resource allocations in UL */
+   SchDlSlotInfo *schDlSlotInfo[SCH_NUM_SLOTS]; /*!< SCH resource allocations in DL */
+   SchUlSlotInfo *schUlSlotInfo[SCH_NUM_SLOTS]; /*!< SCH resource allocations in UL */
 	SchCellCfg    cellCfg;                /*!< Cell ocnfiguration */
 	SchRaCb       raCb[SCH_MAX_UE];
 }SchCellCb;
