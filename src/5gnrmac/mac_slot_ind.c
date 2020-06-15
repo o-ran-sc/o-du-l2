@@ -78,13 +78,13 @@ MacSchSlotIndFunc macSchSlotIndOpts[] =
  *      -# ROK 
  *      -# RFAILED 
  **/
-int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
+int MacProcDlAlloc(Pst *pst, SchDlAlloc *schDlAlloc)
 {
-   if(dlAlloc != NULLP)
+   if(schDlAlloc != NULLP)
    {
       MacDlSlot *currDlSlot =
-      &macCb.macCell->dlSlot[dlAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
-      memcpy(&currDlSlot->dlInfo, dlAlloc, sizeof(DlAlloc)); 
+      &macCb.macCell->dlSlot[schDlAlloc->schSlotValue.broadcastTime.slot % MAX_SLOT_SUPPORTED];
+      memcpy(&currDlSlot->dlInfo, schDlAlloc, sizeof(SchDlAlloc)); 
       
       if(currDlSlot->dlInfo.msg4Alloc)
       {
@@ -94,7 +94,7 @@ int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
          memset(&macCeData, 0, sizeof(MacCeInfo));
 
          macCb.macCell->macRaCb[0].msg4TbSize = \
-          dlAlloc->msg4Alloc->msg4PdschCfg.codeword[0].tbSize;
+          schDlAlloc->msg4Alloc->msg4PdschCfg.codeword[0].tbSize;
  
          if(macCb.macCell->macRaCb[0].msg4Pdu != NULLP)
          {
@@ -108,17 +108,17 @@ int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
          fillMacCe(&macCeData);
          macMuxPdu(&msg4DlData, &macCeData, macCb.macCell->macRaCb[0].msg4TbSize);
       
-         /* storing msg4 Pdu in dlAlloc */
-         MAC_ALLOC(dlAlloc->msg4Alloc->msg4Info.msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen);
-         if(dlAlloc->msg4Alloc->msg4Info.msg4Pdu != NULLP)
+         /* storing msg4 Pdu in schDlAlloc */
+         MAC_ALLOC(schDlAlloc->msg4Alloc->msg4Info.msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen);
+         if(schDlAlloc->msg4Alloc->msg4Info.msg4Pdu != NULLP)
          {  
-            dlAlloc->msg4Alloc->msg4Info.msg4Pdu = macCb.macCell->macRaCb[0].msg4Pdu;
-            dlAlloc->msg4Alloc->msg4Info.msg4PduLen = macCb.macCell->macRaCb[0].msg4PduLen;
+            schDlAlloc->msg4Alloc->msg4Info.msg4Pdu = macCb.macCell->macRaCb[0].msg4Pdu;
+            schDlAlloc->msg4Alloc->msg4Info.msg4PduLen = macCb.macCell->macRaCb[0].msg4PduLen;
          }
          /* TODO: Free all allocated memory, after the usage */
          /* MAC_FREE(macCb.macCell->macRaCb[0].msg4TxPdu, \
               macCb.macCell->macRaCb[0].msg4TbSize); // TODO: To be freed after re-transmission is successful.
-            MAC_FREE(dlAlloc->msg4Alloc->msg4Info.msg4Pdu,\
+            MAC_FREE(schDlAlloc->msg4Alloc->msg4Info.msg4Pdu,\
               macCb.macCell->macRaCb[0].msg4PduLen); //TODO: To be freed after lower-mac is succesfull
             MAC_FREE(msg4DlData.pduInfo[0].dlPdu, macCb.macCell->macRaCb[0].msg4PduLen);
             MAC_FREE(macCb.macCell->macRaCb[0].msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen); */

@@ -234,22 +234,22 @@ S16 readMacCfg()
    duCfgParam.macCellCfg.initialDlBwp.bwp.numPrb = TOTAL_PRB_BW; /* configured to total BW */
    duCfgParam.macCellCfg.initialDlBwp.bwp.scs = SUBCARRIER_SPACING; /* numerology is 0, 15Khz */
    duCfgParam.macCellCfg.initialDlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.searchSpaceId = SEARCHSPACE_1_INDEX;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.coresetId = CORESET_0_INDEX;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.monitoringSlot =
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId = SEARCHSPACE_1_INDEX;
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.coresetId = CORESET_0_INDEX;
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSlot =
 	   SS_MONITORING_SLOT_SL1; /* sl1 - all slots */
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.duration = 0;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.monitoringSymbol =
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.duration = 0;
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSymbol =
 	   SS_MONITORING_SYMBOL;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
 	   candidate.aggLevel1	= 8;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
 	   candidate.aggLevel2	= 4;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
 	   candidate.aggLevel4	= 2;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
 	   candidate.aggLevel8	= 1;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpace.
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
 	   candidate.aggLevel16	= 0;
    duCfgParam.macCellCfg.initialDlBwp.pdschCommon.k0 = PDSCH_K0;
 	duCfgParam.macCellCfg.initialDlBwp.pdschCommon.mappingType = 
@@ -258,8 +258,9 @@ S16 readMacCfg()
 	   PDSCH_START_SYMBOL;
 	duCfgParam.macCellCfg.initialDlBwp.pdschCommon.lengthSymbol =
 	   PDSCH_LENGTH_SYMBOL;
-
-   /* fill Intial DL BWP */
+	/* ra-searchSpace ID is set to 1 */
+   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpaceId = SEARCHSPACE_1_INDEX;
+   /* fill Intial UL BWP */
    duCfgParam.macCellCfg.initialUlBwp.bwp.firstPrb = 0;
    duCfgParam.macCellCfg.initialUlBwp.bwp.numPrb = TOTAL_PRB_BW; /* configured to total BW */
    duCfgParam.macCellCfg.initialUlBwp.bwp.scs = SUBCARRIER_SPACING; /* numerology is 0, 15Khz */

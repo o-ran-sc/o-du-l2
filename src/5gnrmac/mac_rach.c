@@ -129,13 +129,13 @@ uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX] = 
 {0, 2, 4, 6, 8, 10, 12, 13, 15, 17, 19, 23, 27, 34, 46, 69};
 
-int MacProcUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo)
+int MacProcUlSchInfo(Pst *pst, SchUlAlloc *schUlAlloc)
 {
-   if(ulSchInfo != NULLP)
+   if(schUlAlloc != NULLP)
 	{
       MacUlSlot *currUlSlot = 
-	   &macCb.macCell->ulSlot[ulSchInfo->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
-      memcpy(&currUlSlot->ulCellInfo, ulSchInfo, sizeof(UlSchInfo)); 
+	   &macCb.macCell->ulSlot[schUlAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
+      memcpy(&currUlSlot->ulCellInfo, schUlAlloc, sizeof(SchUlAlloc)); 
    }
    return ROK;
 }

@@ -24,7 +24,7 @@
 #define MAX_RACH_NUM_RB_IDX    16
 #define MAX_PRACH_CONFIG_IDX   256
 #define MAX_MU_PUSCH           4
-
+#define TOTAL_TBSIZE_VALUES    93
 #define SET_BITS(_startBit, _numBits, _byte)                                \
 {                                                            \
    _byte = (((~((~0)<<_numBits))<<_startBit));               \

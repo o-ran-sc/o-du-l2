@@ -91,7 +91,7 @@ typedef struct schGenCb
   * @brief
   * scheduler allocationsfor DL per cell.
   */
-typedef struct schDlAlloc
+typedef struct dlSchInfo
 {
 	uint16_t    totalPrb;  /*!< Number of RBs in the cell */
 	uint16_t    assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
@@ -102,7 +102,7 @@ typedef struct schDlAlloc
 	bool        rarPres;
 	RarInfo     rarInfo;
    Msg4Info    *msg4Info;
-}SchDlAlloc;
+}DlSchInfo;
 
 typedef struct schRaCb
 {
@@ -113,13 +113,13 @@ typedef struct schRaCb
   * @brief
   * scheduler allocationsfor UL per cell.
   */
-typedef struct schUlAlloc
+typedef struct ulSchInfo
 {
 	uint16_t     totalPrb;  /*!< Number of RBs in the cell */
 	uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
 	bool         puschPres; /*!< PUSCH presence field */
 	SchPuschInfo *schPuschInfo; /*!< PUSCH info */
-}SchUlAlloc;
+}UlSchInfo;
 
 /**
   * @brief
@@ -132,8 +132,8 @@ typedef struct schCellCb
    Inst          macInst;          /*!< Index of the MAC instance */
 	uint8_t       numSlots;         /*!< Number of slots in current frame */
    SlotIndInfo   slotInfo;         /*!< SFN, Slot info being processed*/
-   SchDlAlloc    *dlAlloc[SCH_NUM_SLOTS]; /*!< SCH resource allocations in DL */
-   SchUlAlloc    *ulAlloc[SCH_NUM_SLOTS]; /*!< SCH resource allocations in UL */
+   DlSchInfo     *dlSchInfo[SCH_NUM_SLOTS]; /*!< SCH resource allocations in DL */
+   UlSchInfo     *ulSchInfo[SCH_NUM_SLOTS]; /*!< SCH resource allocations in UL */
 	SchCellCfg    cellCfg;                /*!< Cell ocnfiguration */
 	SchRaCb       raCb[SCH_MAX_UE];
 }SchCellCb;

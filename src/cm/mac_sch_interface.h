@@ -55,8 +55,20 @@
 
 #define MAX_NUMBER_OF_CRC_IND_BITS 1
 #define MAX_NUM_LOGICAL_CHANNELS   11
-
+/* can we have a common numslot numscs between mac sch */
+#define MAX_SLOTS 10
+#define MAX_SFN   1024
 #define CCCH_LCID  0
+#define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
+   if ((crntTime.slot + incr) > (MAX_SLOTS - 1))   \
+      toFill.sfn = (crntTime.sfn + 1);      \
+   else                                                  \
+      toFill.sfn = crntTime.sfn;                              \
+   toFill.slot = (crntTime.slot + incr) % MAX_SLOTS; \
+   if (toFill.sfn >= MAX_SFN) \
+   { \
+      toFill.sfn%=MAX_SFN; \
+   } \
 
 /*structures*/
 
@@ -148,7 +160,6 @@ typedef struct pdschCfg
    uint16_t pduBitmap;
    uint16_t rnti;
    uint16_t pduIndex;
-   BwpCfg pdschBwpCfg;
    uint8_t numCodewords;
    CodewordInfo codeword[MAX_CODEWORDS];
    uint16_t dataScramblingId;
@@ -201,7 +212,6 @@ typedef struct dlDCI
 
 typedef struct pdcchCfg
 {
-   BwpCfg pdcchBwpCfg;
    /* coreset-0 configuration */
    CoresetCfg coreset0Cfg;
 
@@ -222,6 +232,7 @@ typedef struct
 	
 	/* parameters derived in scheduler */
 	uint8_t n0;
+   BwpCfg bwp;
    PdcchCfg sib1PdcchCfg;
    PdschCfg sib1PdschCfg;
 }SchSib1Cfg;
@@ -271,7 +282,8 @@ typedef struct schSearchSpaceCfg
 
 typedef struct schPdcchCfgCmn
 {
-   SchSearchSpaceCfg raSearchSpace;
+   SchSearchSpaceCfg commonSearchSpace;
+   uint8_t raSearchSpaceId;
 }SchPdcchCfgCmn;
 
 typedef struct schPdschCfgCmn
@@ -344,6 +356,7 @@ typedef struct ssbInfo
 
 typedef struct sib1AllocInfo
 {
+   BwpCfg bwp;
    PdcchCfg sib1PdcchCfg;
    PdschCfg sib1PdschCfg;
 } Sib1AllocInfo;
@@ -389,6 +402,7 @@ typedef struct rarInfo
 typedef struct rarAlloc
 {
    RarInfo rarInfo;
+   BwpCfg  bwp;
    PdcchCfg rarPdcchCfg;
    PdschCfg rarPdschCfg;
 }RarAlloc;
@@ -410,14 +424,24 @@ typedef struct msg4Info
 typedef struct msg4Alloc
 {
    Msg4Info msg4Info;
+   BwpCfg bwp;
    PdcchCfg msg4PdcchCfg;
    PdschCfg msg4PdschCfg;
 }Msg4Alloc;
 
-typedef struct dlAlloc
+typedef struct schSlotValue
+{
+	SlotIndInfo currentTime;
+	SlotIndInfo broadcastTime;
+	SlotIndInfo rarTime;
+	SlotIndInfo msg4Time;
+	SlotIndInfo dlMsgTime;
+}SchSlotValue;
+
+typedef struct schDlAlloc
 {
    uint16_t cellId;  /* Cell Id */
-	SlotIndInfo slotIndInfo; /* Slot Info: sfn, slot number */
+	SchSlotValue schSlotValue;
 
 	/* Allocation for broadcast messages */
    uint8_t isBroadcastPres;
@@ -429,7 +453,7 @@ typedef struct dlAlloc
 
    /* Allocation from MSG4 */
    Msg4Alloc *msg4Alloc;
-}DlAlloc;
+}SchDlAlloc;
 
 typedef struct tbInfo
 {
@@ -449,7 +473,7 @@ typedef struct schPuschInfo
 }SchPuschInfo;
 
 
-typedef struct ulSchInfo
+typedef struct schUlAlloc
 {
    uint16_t      cellId;         /* Cell Id */
 	uint16_t      crnti;          /* CRNI */
@@ -457,7 +481,7 @@ typedef struct ulSchInfo
 	uint8_t       dataType;       /* Type of info being scheduled */
 	PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
 	SchPuschInfo  schPuschInfo;   /* Pusch scheduling info */
-}UlSchInfo;
+}SchUlAlloc;
 
 typedef struct rachIndInfo
 {
@@ -510,28 +534,28 @@ typedef int (*SchCellCfgFunc)    ARGS((
 
 typedef int (*SchMacDlAllocFunc)     ARGS((                     
    Pst            *pst,       /* Post Structure */                         
-   DlAlloc        *dlAlloc    /* dl allocation Info */                      
+   SchDlAlloc     *schDlAlloc    /* dl allocation Info */                      
 ));
 
 typedef int (*SchMacUlSchInfoFunc)     ARGS((                     
    Pst            *pst,           /* Post Structure */                         
-   UlSchInfo      *ulSchInfo    /* UL Sch  Info */                      
+   SchUlAlloc *schUlAlloc         /* UL Alloc Sch  Info */                      
 ));
 
 /* function declarations */
 int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
-int packSchMacDlAlloc(Pst *pst, DlAlloc  *dlAlloc);
-int packSchMacUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo);
+int packSchMacDlAlloc(Pst *pst, SchDlAlloc  *schDlAlloc);
+int packSchMacUlSchInfo(Pst *pst, SchUlAlloc *schUlAlloc);
 EXTERN int packSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg);
 EXTERN int packSchCellCfgCfm(Pst *pst, SchCellCfgCfm  *schCellCfgCfm);
 
-EXTERN int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc);
+EXTERN int MacProcDlAlloc(Pst *pst, SchDlAlloc *schDlAlloc);
 EXTERN int MacProcSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg);
 EXTERN int MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm  *schCellCfgCfm);
 EXTERN int SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg);
 EXTERN int schActvInit(Ent entity, Inst instId, Region region, Reason reason);
 EXTERN S16 SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
-EXTERN int MacProcUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo);
+EXTERN int MacProcUlSchInfo(Pst *pst, SchUlAlloc *schUlAlloc);
 typedef int (*MacSchRachIndFunc)(Pst *pst, RachIndInfo *rachInd);
 int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd);
 int macSchRachInd(Pst *pst, RachIndInfo *rachInd);

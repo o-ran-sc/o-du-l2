@@ -154,11 +154,11 @@ uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
  *     
  *     
  *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  DlAlloc  *dlAlloc
+ *  @param[in]  SchDlAlloc  *schDlAlloc
  *  @return  S16
  *      -# ROK
  **/
-int packSchMacDlAlloc(Pst *pst, DlAlloc  *dlAlloc)
+int packSchMacDlAlloc(Pst *pst, SchDlAlloc  *schDlAlloc)
 {
 	return ROK;
 }
@@ -173,11 +173,11 @@ int packSchMacDlAlloc(Pst *pst, DlAlloc  *dlAlloc)
  *     
  *     
  *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  *ulSchInfo, UlSchInfo
+ *  @param[in]  SchUlAlloc *schUlAlloc
  *  @return  S16
  *      -# ROK
  **/
-int packSchMacUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo)
+int packSchMacUlSchInfo(Pst *pst, SchUlAlloc *schUlAlloc)
 {
 	return ROK;
 }
