@@ -65,6 +65,8 @@
 #include "sch.h"
 #include "sch_utils.h"
 #include "du_log.h"
+#include "common_def.h"
+
 extern SchCb schCb[SCH_MAX_INST];
 void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
 /* local defines */
@@ -403,41 +405,41 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
   
    for(uint8_t idx=0; idx<SCH_NUM_SLOTS; idx++)
 	{
-		SchDlAlloc *schDlAlloc;
-		SchUlAlloc *schUlAlloc;
+		SchDlSlotInfo *schDlSlotInfo;
+		SchUlSlotInfo *schUlSlotInfo;
 
       /* DL Alloc */
-		SCH_ALLOC(schDlAlloc, sizeof(SchDlAlloc));
-		if(!schDlAlloc)
+		SCH_ALLOC(schDlSlotInfo, sizeof(SchDlSlotInfo));
+		if(!schDlSlotInfo)
 		{
 			DU_LOG("\nMemory allocation failed in InitSchCellCb");
 			return RFAILED;
 		}
 
       /* UL Alloc */
-		SCH_ALLOC(schUlAlloc, sizeof(SchUlAlloc));
-		if(!schUlAlloc)
+		SCH_ALLOC(schUlSlotInfo, sizeof(SchUlSlotInfo));
+		if(!schUlSlotInfo)
 		{
 			DU_LOG("\nMemory allocation failed in InitSchCellCb");
 			return RFAILED;
 		}
 
-      schDlAlloc->totalPrb = schUlAlloc->totalPrb = MAX_NUM_RB;
+      schDlSlotInfo->totalPrb = schUlSlotInfo->totalPrb = MAX_NUM_RB;
 
 		for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
 		{
-			schDlAlloc->assignedPrb[itr] = 0;
-			schUlAlloc->assignedPrb[itr] = 0;
+			schDlSlotInfo->assignedPrb[itr] = 0;
+			schUlSlotInfo->assignedPrb[itr] = 0;
 		}
-		schUlAlloc->schPuschInfo = NULLP;
+		schUlSlotInfo->schPuschInfo = NULLP;
 
 		for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
 		{
-			memset(&schDlAlloc->ssbInfo[itr], 0, sizeof(SsbInfo));
+			memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
 		}
 
-		cell->dlAlloc[idx] = schDlAlloc;
-		cell->ulAlloc[idx] = schUlAlloc;
+		cell->schDlSlotInfo[idx] = schDlSlotInfo;
+		cell->schUlSlotInfo[idx] = schUlSlotInfo;
 
 	}
 	schCb[inst].cells[inst] = cell;
@@ -466,9 +468,12 @@ uint8_t      offsetPointA
    uint8_t firstSymbol = 0; /* need to calculate using formula mentioned in 38.213 */
    uint8_t slotIndex = 0;
    uint8_t FreqDomainResource[6] = {0};
+   uint16_t tbSize = 0;
+	uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
 
    PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
    PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
+   BwpCfg *bwp = &(sib1SchCfg->bwp);
 
    coreset0Idx     = sib1SchCfg->coresetZeroIndex;
    searchSpace0Idx = sib1SchCfg->searchSpaceZeroIndex;
@@ -496,11 +501,13 @@ uint8_t      offsetPointA
    /* calculate the PRBs */
    calculatePRB( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
+   /* fill BWP */
+   bwp->BWPSize = MAX_NUM_RB; /* whole of BW */
+   bwp->BWPStart = 0;
+   bwp->subcarrierSpacing = 0;         /* 15Khz */
+   bwp->cyclicPrefix = 0;              /* normal */
+
    /* fill the PDCCH PDU */
-   pdcch->pdcchBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
-   pdcch->pdcchBwpCfg.BWPStart = 0;
-   pdcch->pdcchBwpCfg.subcarrierSpacing = 0;         /* 15Khz */
-   pdcch->pdcchBwpCfg.cyclicPrefix = 0;              /* normal */
    pdcch->coreset0Cfg.coreSet0Size = numRbs;
    pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
    pdcch->coreset0Cfg.durationSymbols = numSymbols;
@@ -533,8 +540,6 @@ uint8_t      offsetPointA
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
    pdsch->rnti = 0xFFFF; /* SI-RNTI */
    pdsch->pduIndex = 0;
-   pdsch->pdschBwpCfg.BWPSize = MAX_NUM_RB; /* whole of BW */
-   pdsch->pdschBwpCfg.BWPStart = 0;
    pdsch->numCodewords = 1;
 	for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
 	{
@@ -543,8 +548,8 @@ uint8_t      offsetPointA
       pdsch->codeword[cwCount].mcsIndex = sib1SchCfg->sib1Mcs;
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      pdsch->codeword[cwCount].tbSize = 768/8; /* 38.214: Table 5.1.3.2-1,
-		   devided by 8 to get the value in bytes */
+      tbSize = schCalcTbSize(sib1SchCfg->sib1PduLen);
+      pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = pci;
    pdsch->numLayers = 1;
@@ -558,15 +563,11 @@ uint8_t      offsetPointA
    pdsch->dmrs.dmrsPorts = 0;
    pdsch->freqAlloc.resourceAlloc = 1; /* RAT type-1 RIV format */
    pdsch->freqAlloc.rbStart = offset + SCH_SSB_PRB_DURATION; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
-	/* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
-	 * Ninfo = Nre . R . Qm . v                                       *
-	 * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                       *
-	 * Nre = min(156,Nre') . nPrb                                     */
-   pdsch->freqAlloc.rbSize = 10; /* This value is calculated from above formulae */
+   pdsch->freqAlloc.rbSize = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
    pdsch->freqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->timeAlloc.rowIndex = 1;
    pdsch->timeAlloc.startSymbolIndex = 2; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->timeAlloc.numSymbols = 12;
+   pdsch->timeAlloc.numSymbols = numPdschSymbols;
    pdsch->beamPdschInfo.numPrgs = 1;
    pdsch->beamPdschInfo.prgSize = 1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;
@@ -650,28 +651,28 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
    DU_LOG("\nSCH : Received RLC BO Status indication");
 
    SchCellCb *cell = schCb[inst].cells[inst];
-   SchDlAlloc *dlAlloc = \
-      cell->dlAlloc[(cell->slotInfo.slot + SCHED_DELTA) % SCH_NUM_SLOTS]; 
+   SchDlSlotInfo *schDlSlotInfo = \
+      cell->schDlSlotInfo[(cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA) % SCH_NUM_SLOTS]; 
   
    for(lcIdx = 0; lcIdx < dlBoInfo->numLc; lcIdx++)
 	{
 	   if(dlBoInfo->boInfo[lcIdx].lcId == CCCH_LCID)
 		{
-	      SCH_ALLOC(dlAlloc->msg4Info, sizeof(Msg4Info));
-	      if(!dlAlloc->msg4Info)
+	      SCH_ALLOC(schDlSlotInfo->msg4Info, sizeof(Msg4Info));
+	      if(!schDlSlotInfo->msg4Info)
 	      {
 	         DU_LOG("\nSCH : Memory allocation failed for msg4Info");
-		      dlAlloc = NULL;
+		      schDlSlotInfo = NULL;
 		      return RFAILED;
 	      }
-         dlAlloc->msg4Info->crnti = dlBoInfo->crnti;
-			dlAlloc->msg4Info->ndi = 1;
-			dlAlloc->msg4Info->harqProcNum = 0;
-			dlAlloc->msg4Info->dlAssignIdx = 0;
-			dlAlloc->msg4Info->pucchTpc = 0;
-			dlAlloc->msg4Info->pucchResInd = 0;
-			dlAlloc->msg4Info->harqFeedbackInd = 0;
-			dlAlloc->msg4Info->dciFormatId = 1;
+         schDlSlotInfo->msg4Info->crnti = dlBoInfo->crnti;
+			schDlSlotInfo->msg4Info->ndi = 1;
+			schDlSlotInfo->msg4Info->harqProcNum = 0;
+			schDlSlotInfo->msg4Info->dlAssignIdx = 0;
+			schDlSlotInfo->msg4Info->pucchTpc = 0;
+			schDlSlotInfo->msg4Info->pucchResInd = 0;
+			schDlSlotInfo->msg4Info->harqFeedbackInd = 0;
+			schDlSlotInfo->msg4Info->dciFormatId = 1;
 	   }
    }
 

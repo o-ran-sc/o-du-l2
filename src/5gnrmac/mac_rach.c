@@ -16,6 +16,7 @@
 ################################################################################
  *******************************************************************************/
 /* header include files (.h) */
+#include <stdbool.h>
 #include "envopt.h"        /* environment options */
 #include "envdep.h"        /* environment dependent */
 #include "envind.h"        /* environment independent */
@@ -129,13 +130,13 @@ uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX] = 
 {0, 2, 4, 6, 8, 10, 12, 13, 15, 17, 19, 23, 27, 34, 46, 69};
 
-int MacProcUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo)
+int MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
 {
-   if(ulSchInfo != NULLP)
+   if(ulSchedInfo != NULLP)
 	{
       MacUlSlot *currUlSlot = 
-	   &macCb.macCell->ulSlot[ulSchInfo->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
-      memcpy(&currUlSlot->ulCellInfo, ulSchInfo, sizeof(UlSchInfo)); 
+	   &macCb.macCell->ulSlot[ulSchedInfo->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
+      memcpy(&currUlSlot->ulInfo, ulSchedInfo, sizeof(ulSchedInfo)); 
    }
    return ROK;
 }

@@ -16,6 +16,7 @@
 ################################################################################
  *******************************************************************************/
 /* header include files (.h) */
+#include "stdbool.h"
 #include "envopt.h"        /* environment options */
 #include "envdep.h"        /* environment dependent */
 #include "envind.h"        /* environment independent */
@@ -78,23 +79,42 @@ MacSchSlotIndFunc macSchSlotIndOpts[] =
  *      -# ROK 
  *      -# RFAILED 
  **/
-int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
+int MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 {
-   if(dlAlloc != NULLP)
+   MacDlSlot *currDlSlot = NULLP;
+
+   if(dlSchedInfo != NULLP)
    {
-      MacDlSlot *currDlSlot =
-      &macCb.macCell->dlSlot[dlAlloc->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
-      memcpy(&currDlSlot->dlInfo, dlAlloc, sizeof(DlAlloc)); 
-      
-      if(currDlSlot->dlInfo.msg4Alloc)
+		if(dlSchedInfo->isBroadcastPres)
+		{
+		   currDlSlot = &macCb.macCell->dlSlot[dlSchedInfo->schSlotValue.broadcastTime.slot];
+		   currDlSlot->dlInfo.isBroadcastPres = true;
+			memcpy(&currDlSlot->dlInfo.brdcstAlloc, &dlSchedInfo->brdcstAlloc, sizeof(DlBrdcstAlloc));
+		}
+
+		if(dlSchedInfo->rarAlloc != NULLP)
+		{
+		   currDlSlot = &macCb.macCell->dlSlot[dlSchedInfo->schSlotValue.rarTime.slot];
+			currDlSlot->dlInfo.rarAlloc = dlSchedInfo->rarAlloc;
+
+         /* MUXing of RAR */
+			fillRarPdu(&currDlSlot->dlInfo.rarAlloc->rarInfo);
+		}
+
+		if(dlSchedInfo->msg4Alloc != NULLP)
       {
+         Msg4Alloc *msg4Alloc = NULLP;
          MacDlData msg4DlData;
          MacCeInfo  macCeData;
+
+		   currDlSlot = &macCb.macCell->dlSlot[dlSchedInfo->schSlotValue.msg4Time.slot];
+			currDlSlot->dlInfo.msg4Alloc = dlSchedInfo->msg4Alloc; /* copy msg4 alloc pointer in MAC slot info */
+			msg4Alloc = dlSchedInfo->msg4Alloc;
+
          memset(&msg4DlData, 0, sizeof(MacDlData));
          memset(&macCeData, 0, sizeof(MacCeInfo));
 
-         macCb.macCell->macRaCb[0].msg4TbSize = \
-          dlAlloc->msg4Alloc->msg4PdschCfg.codeword[0].tbSize;
+         macCb.macCell->macRaCb[0].msg4TbSize = msg4Alloc->msg4PdschCfg.codeword[0].tbSize;
  
          if(macCb.macCell->macRaCb[0].msg4Pdu != NULLP)
          {
@@ -105,20 +125,23 @@ int MacProcDlAlloc(Pst *pst, DlAlloc *dlAlloc)
                fillMsg4DlData(&msg4DlData);
             }
          }
+
+         /* MUXing for msg4 */
          fillMacCe(&macCeData);
          macMuxPdu(&msg4DlData, &macCeData, macCb.macCell->macRaCb[0].msg4TbSize);
       
-         /* storing msg4 Pdu in dlAlloc */
-         MAC_ALLOC(dlAlloc->msg4Alloc->msg4Info.msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen);
-         if(dlAlloc->msg4Alloc->msg4Info.msg4Pdu != NULLP)
+         /* storing msg4 Pdu in macDlSlot */
+         MAC_ALLOC(msg4Alloc->msg4Info.msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen);
+         if(msg4Alloc->msg4Info.msg4Pdu != NULLP)
          {  
-            dlAlloc->msg4Alloc->msg4Info.msg4Pdu = macCb.macCell->macRaCb[0].msg4Pdu;
-            dlAlloc->msg4Alloc->msg4Info.msg4PduLen = macCb.macCell->macRaCb[0].msg4PduLen;
+            msg4Alloc->msg4Info.msg4Pdu = macCb.macCell->macRaCb[0].msg4Pdu;
+            msg4Alloc->msg4Info.msg4PduLen = macCb.macCell->macRaCb[0].msg4PduLen;
          }
+
          /* TODO: Free all allocated memory, after the usage */
          /* MAC_FREE(macCb.macCell->macRaCb[0].msg4TxPdu, \
               macCb.macCell->macRaCb[0].msg4TbSize); // TODO: To be freed after re-transmission is successful.
-            MAC_FREE(dlAlloc->msg4Alloc->msg4Info.msg4Pdu,\
+            MAC_FREE(dlSchedInfo->msg4Alloc->msg4Info.msg4Pdu,\
               macCb.macCell->macRaCb[0].msg4PduLen); //TODO: To be freed after lower-mac is succesfull
             MAC_FREE(msg4DlData.pduInfo[0].dlPdu, macCb.macCell->macRaCb[0].msg4PduLen);
             MAC_FREE(macCb.macCell->macRaCb[0].msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen); */

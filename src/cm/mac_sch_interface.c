@@ -1,4 +1,5 @@
 /* header include files (.h) */
+#include "stdbool.h"
 #include "envopt.h"        /* environment options */
 #include "envdep.h"        /* environment dependent */
 #include "envind.h"        /* environment independent */
@@ -154,11 +155,11 @@ uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
  *     
  *     
  *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  DlAlloc  *dlAlloc
+ *  @param[in]  DlSchedInfo  *dlSchedInfo
  *  @return  S16
  *      -# ROK
  **/
-int packSchMacDlAlloc(Pst *pst, DlAlloc  *dlAlloc)
+int packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo)
 {
 	return ROK;
 }
@@ -173,11 +174,11 @@ int packSchMacDlAlloc(Pst *pst, DlAlloc  *dlAlloc)
  *     
  *     
  *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  *ulSchInfo, UlSchInfo
+ *  @param[in]  UlSchedInfo *ulSchedInfo
  *  @return  S16
  *      -# ROK
  **/
-int packSchMacUlSchInfo(Pst *pst, UlSchInfo *ulSchInfo)
+int packSchMacUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
 {
 	return ROK;
 }

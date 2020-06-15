@@ -36,6 +36,7 @@ static const char* RLOG_MODULE_NAME="MAC";
 static int RLOG_FILE_ID=182;
 static int RLOG_MODULE_ID=4096;
 /* header include files -- defines (.h) */
+#include <stdbool.h>
 #include "envopt.h"        /* environment options */
 #include "envdep.h"        /* environment dependent */
 #include "envind.h"        /* environment independent */

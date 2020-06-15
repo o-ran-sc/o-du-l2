@@ -16,26 +16,5 @@
 ################################################################################
 *******************************************************************************/
 
-#include <stdint.h>
-
-/* macros */
-#define MAX_CORESET_INDEX      16
-#define MAX_SEARCH_SPACE_INDEX 16
-#define MAX_RACH_NUM_RB_IDX    16
-#define MAX_PRACH_CONFIG_IDX   256
-#define MAX_MU_PUSCH           4
-#define TOTAL_TBSIZE_VALUES    93
-#define SET_BITS(_startBit, _numBits, _byte)                                \
-{                                                            \
-   _byte = (((~((~0)<<_numBits))<<_startBit));               \
-}
-
-/* functions declarations */
-void calculatePRB(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
-
-extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
-extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
-
-/**********************************************************************
-         End of file
-**********************************************************************/
+/* 5G ORAN phy delay */
+#define PHY_DELTA 2
