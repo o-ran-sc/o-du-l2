@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8eeeaa21_0751db19",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "proceed only if the admitListPtr not NULL, else it should return a failure",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7edcb62f_ee4b373a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "instead of allocation memory directly to array[0],\nit must be handled by for loop",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4433b70b_31bb0202",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "initialize pointers to NULLP before filling",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "32d65f11_4be371a7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "follow the standardized data types. Change it to uint8_t",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "131c9faa_7996211e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "why hardcoded ?? variable can only be initialized to zero",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7252de5_c20528c4",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "correct the indexing, so many tab spaces",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d995368_62558e2a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "before checking the list.array, ideally you should check the list.count,\niterate the count with help for for loop and then check the array idx if filled or not\nand de allocate memory accordingly\nRefer to deAllocE2SetupReq()",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a3ab9580_08501737",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "what if we have to more than one idx supported ??\nswitch case/forloop based on array[idx]-\u003eid to be implemented here",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f8e1891_cfb46130",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "initially ret to be set as ROK",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "057c502c_ea0c1d7f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-15T11:16:17Z",
+      "side": 1,
+      "message": "this function seems so long,\ninstead create a func call here and pass the ric subscription Response pointer and\nfill the IE accordingly",
+      "revId": "4347bb762e1b2d0b3c63f9f82a3e49ffcc4650f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
