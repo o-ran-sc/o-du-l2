@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7fd86c1_e41dd5ca",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-16T13:20:52Z",
+      "side": 1,
+      "message": "We must not use U8 in any new code. Change to uint8_t",
+      "revId": "20a20742fd90f945e392ce431284afd75c3927b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "718b97ac_1c121525",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1642,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-16T13:20:52Z",
+      "side": 1,
+      "message": "use uint8_t",
+      "revId": "20a20742fd90f945e392ce431284afd75c3927b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0613edb1_dff7f3bd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1655,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-16T13:20:52Z",
+      "side": 1,
+      "message": "instead of using numbers as index, use idx parameters\nApplicable for all array index in this function",
+      "revId": "20a20742fd90f945e392ce431284afd75c3927b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34a7e34f_06d3107d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1884,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-16T13:20:52Z",
+      "side": 1,
+      "message": "use uint8_t",
+      "revId": "20a20742fd90f945e392ce431284afd75c3927b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a68f7483_9dbb04c1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4072,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-16T13:20:52Z",
+      "side": 1,
+      "message": "use uint8_t for all of above",
+      "revId": "20a20742fd90f945e392ce431284afd75c3927b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
