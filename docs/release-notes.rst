@@ -175,6 +175,8 @@ System Limitations
 
 - System runs on preconfigured values due to absence of O1 interface.
 
+- O-DU High has not been integrated with O-DU Low and O-CU.
+
 
 Known Issues
 ^^^^^^^^^^^^
