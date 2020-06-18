@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b407f4a5_966f35a8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T12:55:13Z",
+      "side": 1,
+      "message": "make return type uint8_t for all functions that return ROK/RFAILED as their return value.",
+      "revId": "6fc48dee2104aeeff836bdcbbae3a2ee19b05b60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47a54d93_2fbd9935",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T12:55:13Z",
+      "side": 1,
+      "message": "uint8_t should be sufficient for ret",
+      "revId": "6fc48dee2104aeeff836bdcbbae3a2ee19b05b60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c60ed45_b22c1dc1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T12:55:13Z",
+      "side": 1,
+      "message": "uint8_t should be sufficient for these ret params",
+      "revId": "6fc48dee2104aeeff836bdcbbae3a2ee19b05b60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "836a10bf_2198bc0d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T12:55:13Z",
+      "side": 1,
+      "message": "uint8_t should be sufficient for above ret parames",
+      "revId": "6fc48dee2104aeeff836bdcbbae3a2ee19b05b60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd4791c2_d2e4fd83",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T12:55:13Z",
+      "side": 1,
+      "message": "uint8_t should be sufficient for ret params",
+      "revId": "6fc48dee2104aeeff836bdcbbae3a2ee19b05b60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2efa7ba_dd183432",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3106,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T12:55:13Z",
+      "side": 1,
+      "message": "uint8_t should be sufficient for ret params",
+      "revId": "6fc48dee2104aeeff836bdcbbae3a2ee19b05b60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a866b7f_1888de4d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3340,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T12:55:13Z",
+      "side": 1,
+      "message": "uint8_t should be sufficient for ret params",
+      "revId": "6fc48dee2104aeeff836bdcbbae3a2ee19b05b60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f46f8ade_f57bcd79",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3539,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T12:55:13Z",
+      "side": 1,
+      "message": "uint8_t should be sufficient for ret params",
+      "revId": "6fc48dee2104aeeff836bdcbbae3a2ee19b05b60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bda3c95_d6b737c7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3677,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T12:55:13Z",
+      "side": 1,
+      "message": "uint8_t should be sufficient for ret params",
+      "revId": "6fc48dee2104aeeff836bdcbbae3a2ee19b05b60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
