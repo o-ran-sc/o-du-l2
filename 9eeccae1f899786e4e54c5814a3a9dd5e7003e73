@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "61d9f6b5_56d3464b",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2797,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-18T07:14:49Z",
+      "side": 1,
+      "message": "is it not better to make BwpCfg part of macCellCb?",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c16f099_07c2c8d3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3141,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-18T07:14:49Z",
+      "side": 1,
+      "message": "arent we using macCb? then why rgCb?",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d85ae02e_ba094399",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3224,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-18T07:14:49Z",
+      "side": 1,
+      "message": "should we use isRarPres, now that rarInfo is also a pointer?",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "393dd062_0ad69e4e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-18T07:14:49Z",
+      "side": 1,
+      "message": "if not required we can remove these lines",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b196c0f_f92d3516",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-18T07:14:49Z",
+      "side": 1,
+      "message": "is it not better to use a macro here?",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d61c56e_af73d0dd",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-18T07:14:49Z",
+      "side": 1,
+      "message": "i think its better to write the complete formula in the beginning itself.",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
