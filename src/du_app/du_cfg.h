@@ -107,13 +107,28 @@
 #define PDCCH_SEARCH_SPACE_ID_PAGING 1  /* Search space id for paging */
 #define PDCCH_SEARCH_SPACE_ID_RA   1    /* Search spaced id for random access */
 #define PDCCH_SERACH_SPACE_DCI_FORMAT 0
+#define PDCCH_CTRL_RSRC_SET_ONE_ID  1
+#define PDCCH_CTRL_RSRC_SET_ONE_DURATION 2  /* Duration for control resource set id i */
+#define PDCCH_CTRL_RSRC_SET_ONE_PRECOD_GRANULARITY 1   /* Precoded granularity */
+#define PDCCH_SRCH_SPC_TWO_ID 2
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL1_CANDIDATE 7   /* Num of candidate at aggregation level 1 */
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL2_CANDIDATE 7   /* Num of candidate at aggregation level 2 */
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL4_CANDIDATE 4   /* Num of candidate at aggregation level 4 */
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL8_CANDIDATE 2   /* Num of candidate at aggregation level 8 */
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL16_CANDIDATE 1  /* Num of candidate at aggregation level 16 */
+#define PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT  0  /* format 0-0 and 1-0 */
+
+
 #define SIB1_VALUE_TAG 10
 
 /* MACRCO Ddefine for PDSCH Configuration */
 #define PDSCH_K0  0
 #define PDSCH_START_SYMBOL  2
 #define PDSCH_LENGTH_SYMBOL 12
-
+#define PDSCH_RES_ALLOC_TYPE       1          /* Resource allocation type */
+#define PDSCH_MAX_CODEWORD_SCH_BY_DCI 0       /* Max num of codewords scheduled by DCI */
+#define PDSCH_RBG_SIZE   0                    /* 0: config1 */
+#define PDSCH_NUM_HARQ_PROC 5
 
 /* MACRO Define for PUSCH Configuration */
 #define PUSCH_K2  3
@@ -122,6 +137,9 @@
 
 #define PUSCH_MSG3_DELTA_PREAMBLE 0
 #define PUSCH_P0_NOMINAL_WITH_GRANT -70
+#define PUSCH_TRANSFORM_PRECODER    1      /* 1: Disabled */
+#define PUSCH_MAX_MIMO_LAYERS       1
+#define PUSCH_PROCESS_TYPE2_ENABLED false
 
 /* Macro define for PUCCH Configuration */
 #define PUCCH_RSRC_COMMON  0
@@ -218,6 +236,10 @@
 #define SERV_CELL_IDX 0
 #define RLM_SYNC_OUT_SYNC_THRESHOLD 0
 #define ACTIVE_DL_BWP_ID 0
+#define ACTIVE_UL_BWP_ID 0
+#define SCRAMBLING_ID  NR_PCI
+#define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
+#define RES_ALLOC_TYPE       1          /* Resource allocation type */
 
 #ifdef EGTP_TEST
 #define UE_ID 1
@@ -1158,6 +1180,7 @@ S16 readClCfg();
 S16 readCfg();
 S16 duReadCfg(); 
 S16 bitStringToInt(BIT_STRING_t *bitString, uint16_t *val);
+uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
 
 #endif /* __DU_CONFIG_H__ */
 
