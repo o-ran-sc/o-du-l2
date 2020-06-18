@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b84539a_2835da49",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-18T06:23:13Z",
+      "side": 1,
+      "message": "macSchDlRlcBoInfo() will also be used for BO info from RLC which will contain info for multiple LCs. for loop can be retained.",
+      "revId": "5fa0415bed31679048ff0fc1540f41b167196960",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d52fccb6_6fd51f6b",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 857,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-18T06:23:13Z",
+      "side": 1,
+      "message": "memory clean up to be done",
+      "revId": "5fa0415bed31679048ff0fc1540f41b167196960",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d6c8a35_56a5fb59",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-18T06:23:13Z",
+      "side": 1,
+      "message": "memory clean up to be done",
+      "revId": "5fa0415bed31679048ff0fc1540f41b167196960",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
