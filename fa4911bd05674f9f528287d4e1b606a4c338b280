@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31cafe7e_b50cf1f8",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-18T15:39:03Z",
+      "side": 1,
+      "message": "remove from here and add the definition in du_f1ap_msg_hdl.h",
+      "revId": "fa4911bd05674f9f528287d4e1b606a4c338b280",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
