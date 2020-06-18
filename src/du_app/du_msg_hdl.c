@@ -39,7 +39,7 @@ extern S16 cmPkLkwCntrlReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
 extern S16 BuildAndSendE2SetupReq();
 extern S16 egtpHdlDatInd(EgtpMsg egtpMsg);
-extern S16 BuildAndSendDUConfigUpdate();
+extern uint8_t BuildAndSendDUConfigUpdate();
 extern U16 getTransId();
 extern S16 cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
 

@@ -54,13 +54,12 @@
 #define CELL_INDEX      0
 
 void F1APMsgHdlr(Buffer *mBuf);
-S16 BuildAndSendF1SetupReq();
-S16 BuildAndSendDUConfigUpdate();
+uint8_t BuildAndSendF1SetupReq();
+uint8_t BuildAndSendDUConfigUpdate();
 S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);
-
-
+void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg);
 /**********************************************************************
          End of file
 **********************************************************************/
