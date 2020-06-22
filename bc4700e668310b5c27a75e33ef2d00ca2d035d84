@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "858903c0_be24f3da",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-22T15:05:43Z",
+      "side": 1,
+      "message": "this must be sizeof(SRB_ToAddMod_T*). Update this for all lists.",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74589485_0cdc1541",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-22T15:05:43Z",
+      "side": 1,
+      "message": "sizeof(SRB_ToAddMod_T*)",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1efe7d89_0104f759",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-22T15:05:43Z",
+      "side": 1,
+      "message": "we could eliminate multi returns using ret variable in this function",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8b303d2_8e0acb77",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-22T15:05:43Z",
+      "side": 1,
+      "message": "should this be 0?  is there no macro available for it in asn gen code?",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d95ec60f_9c118668",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 961,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-22T15:05:43Z",
+      "side": 1,
+      "message": "this must be taken from the initial ul direct transfer msg",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58a7fd2a_cd3e1b5d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 979,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-22T15:05:43Z",
+      "side": 1,
+      "message": "remove this hardcoding since the copying of rrc container is working",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
