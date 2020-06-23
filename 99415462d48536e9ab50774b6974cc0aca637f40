@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f6326373_88a7873e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2889,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28ad5e8b_6e96a725",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cc51c012_82a3a8f1",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2020-06-23T06:26:25Z",
       "side": 1,
       "message": "can we not club this and above function and return tx pdu count and dl tti pdu count? and in caller, store the count on returning",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d86c254_f5cf8e05",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2919,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "The two functions are called at different places. better to have two different functions.",
+      "parentUuid": "cc51c012_82a3a8f1",
       "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "0e6fab2d_cc9cffff",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "ulCellInfo is now changed to ulInfo",
+      "parentUuid": "40715554_692cb9a0",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6448d6bc_74020419",
         "filename": "src/5gnrmac/mac_mux.c",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d83c29b3_9d806882",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "we can take this as a separate task.",
+      "parentUuid": "6448d6bc_74020419",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "f5d15261_08f5c5c1",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e83f9cac_97e35c4f",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "59400ebd_074c2467",
         "filename": "src/5gnrsch/sch_rach.c",
         "patchSetId": 2
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "3987bf7f_f5d211db",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59400ebd_074c2467",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea6c850f_b8531347",
         "filename": "src/5gnrsch/sch_rach.c",
         "patchSetId": 2
@@ -118,6 +226,24 @@
       "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4be6d84_3a437ca4",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea6c850f_b8531347",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }

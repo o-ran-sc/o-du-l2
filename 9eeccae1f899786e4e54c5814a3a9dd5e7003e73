@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fdb88696_fcb13cff",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2797,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "scheduler is the owner of BWP considering multiple bwp\u0027s.",
+      "parentUuid": "61d9f6b5_56d3464b",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c16f099_07c2c8d3",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "533b0670_5940168c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3141,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "we can take task separately",
+      "parentUuid": "5c16f099_07c2c8d3",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "c094b6fa_765516c9",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3224,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "RAR info is a pointer now.",
+      "parentUuid": "d85ae02e_ba094399",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "393dd062_0ad69e4e",
         "filename": "src/5gnrmac/lwr_mac_fsm.h",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "37b9c629_b2f2a44f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "393dd062_0ad69e4e",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b196c0f_f92d3516",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2020-06-18T07:14:49Z",
       "side": 1,
       "message": "is it not better to use a macro here?",
+      "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd4a7564_c665a7fe",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-06-23T21:37:23Z",
+      "side": 1,
+      "message": "for DL messages other than SIB1, we need to take it from BWP. making it macro may confuse while implementing other messages. we can discuss on this.",
+      "parentUuid": "8b196c0f_f92d3516",
       "revId": "9eeccae1f899786e4e54c5814a3a9dd5e7003e73",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
