@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c0a22598_bd227e03",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-23T13:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "858903c0_be24f3da",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "74589485_0cdc1541",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ba40018_499682c3",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-23T13:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74589485_0cdc1541",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "be2f0c72_c18758ba",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-23T13:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1efe7d89_0104f759",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f8b303d2_8e0acb77",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 4
@@ -64,6 +118,24 @@
       "writtenOn": "2020-06-22T15:05:43Z",
       "side": 1,
       "message": "should this be 0?  is there no macro available for it in asn gen code?",
+      "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9787648d_2eaccea0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-23T13:50:08Z",
+      "side": 1,
+      "message": "from the spec values of rrcTransaction Identifier can be (0...3). And no macro available for same.",
+      "parentUuid": "f8b303d2_8e0acb77",
       "revId": "bc4700e668310b5c27a75e33ef2d00ca2d035d84",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
