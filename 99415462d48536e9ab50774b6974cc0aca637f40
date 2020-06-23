@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "28ad5e8b_6e96a725",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2889,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-23T06:26:25Z",
+      "side": 1,
+      "message": "we can add a comment as to what are the PDUs that must be filled",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc51c012_82a3a8f1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2919,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-23T06:26:25Z",
+      "side": 1,
+      "message": "can we not club this and above function and return tx pdu count and dl tti pdu count? and in caller, store the count on returning",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40715554_692cb9a0",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-23T06:26:25Z",
+      "side": 1,
+      "message": "why is this ulCellInfo and in DL its just dlInfo?",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6448d6bc_74020419",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-23T06:26:25Z",
+      "side": 1,
+      "message": "can we not move such standard library functions into 1 files in cm and include that wherever required rather than having it in every file",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e83f9cac_97e35c4f",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-23T06:26:25Z",
+      "side": 1,
+      "message": "make the calculation after declaration",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59400ebd_074c2467",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-23T06:26:25Z",
+      "side": 1,
+      "message": "null check missing",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea6c850f_b8531347",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-23T06:26:25Z",
+      "side": 1,
+      "message": "we can perhaps use a variable for mcs and assign 4 to it",
+      "revId": "99415462d48536e9ab50774b6974cc0aca637f40",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
