@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ecbc5e62_b2f223af",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2558,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-23T07:14:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de5343b4_149f0cbf",
+      "revId": "085264c933a75d7d3daaa42762340154e29c3a76",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2ebc867e_a6676dd2",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "085264c933a75d7d3daaa42762340154e29c3a76",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5fa7cda2_c7367e7b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2576,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-23T07:14:28Z",
+      "side": 1,
+      "message": "Commented as per our discussion to not include tci_states configuration for now.",
+      "parentUuid": "2ebc867e_a6676dd2",
+      "revId": "085264c933a75d7d3daaa42762340154e29c3a76",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "537b1de6_b2e048d4",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2713,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-23T07:14:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98618369_d60ec86a",
+      "revId": "085264c933a75d7d3daaa42762340154e29c3a76",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7cc8e594_71091b33",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "df5bb450_b24c8fd6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2788,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-23T07:14:28Z",
+      "side": 1,
+      "message": "As we discussed, the value for monitoringSymbolWithinSlot was taken from pcap log.\nValue in log : 80 00 i.e. first byte is binary 128 and second is 0.\nHence filled accordingly",
+      "parentUuid": "7cc8e594_71091b33",
+      "revId": "085264c933a75d7d3daaa42762340154e29c3a76",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da8e0e47_1153ea96",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -84,6 +156,24 @@
       "revId": "085264c933a75d7d3daaa42762340154e29c3a76",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adbed67d_67e86f7b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3970,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-23T07:14:28Z",
+      "side": 1,
+      "message": "As discussed, csi measurement configuration are not needed currently hence haven\u0027t filled this",
+      "parentUuid": "da8e0e47_1153ea96",
+      "revId": "085264c933a75d7d3daaa42762340154e29c3a76",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
