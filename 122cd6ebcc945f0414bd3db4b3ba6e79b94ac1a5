@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "5e78c994_cd1d6d59",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3255,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-24T09:40:22Z",
+      "side": 1,
+      "message": "since msg4Alloc is being used inside sendTxDataReq(), free can be done at line 3364.\nShould be freed only if(dlInfo-\u003emsg4Alloc) is true.",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88c85c13_3b1ac056",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-24T09:40:22Z",
+      "side": 1,
+      "message": "SRB ID 0 can also be a macro. We will be able to reuse this macro all over MAC",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2894465a_5915dd42",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-24T09:40:22Z",
+      "side": 1,
+      "message": "we saw in du_ue_mgr.c that \"strlen((const char*)dlCcchIndInfo-\u003edlCcchMsg)\" was giving incorrect msg length. Recheck here as well.",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fc7f3994_db4ce1a4",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 5
