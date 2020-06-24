@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb8df99b_826ca344",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-24T08:57:58Z",
+      "side": 1,
+      "message": "Do we really need to first assign ROK and then RFAILED? Can it not be directly initialized to RFAILED?",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5b62029_f7fe6183",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1044,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-24T08:57:58Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
