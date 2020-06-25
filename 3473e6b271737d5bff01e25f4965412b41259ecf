@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "307f4226_c24f2851",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3249,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-25T09:43:40Z",
+      "side": 1,
+      "message": "previous check also meant the same right?",
+      "revId": "3473e6b271737d5bff01e25f4965412b41259ecf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00c2f429_3257a495",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-25T09:43:40Z",
+      "side": 1,
+      "message": "we could call incr delta itself?",
+      "revId": "3473e6b271737d5bff01e25f4965412b41259ecf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
