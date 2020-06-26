@@ -25,11 +25,11 @@
 #define MAX_NUM_RB 106 /* value for numerology 0 15Khz */
 #define SCH_MIB_TRANS 80 
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
-#define SCH_MAX_SSB_BEAM 4 /* since we are supporting only SCS=15KHz */
 #define SCH_SCS_15KHZ 0 /* numerology 0 and 15Khz */
 #define SCH_SYMBOL_PER_SLOT 14
-#define SCH_SSB_SYMB_DURATION 4
-#define SCH_SSB_PRB_DURATION 20
+#define SCH_SSB_NUM_SYMB 4
+#define SCH_SSB_NUM_PRB 20
+#define SCH_MAX_SSB_BEAM 4 /* since we are supporting only SCS=15KHz */
 #define SCH_MEM_REGION     4
 #define SCH_POOL           1
 #define SCHED_DELTA 1
@@ -94,15 +94,14 @@ typedef struct schGenCb
   */
 typedef struct schDlSlotInfo
 {
-	uint16_t    totalPrb;  /*!< Number of RBs in the cell */
-	uint16_t    assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
-   bool        ssbPres;    /*!< Flag to determine if SSB is present in this slot */
-   uint8_t     ssbIdxSupported;  /*!< Max SSB index */
-	SsbInfo     ssbInfo[MAX_SSB_IDX]; /*!< SSB info */
-	bool        sib1Pres;
-	//bool        rarPres;
-	RarInfo     *rarInfo;
-   Msg4Info    *msg4Info;
+	uint16_t  totalPrb;                          /*!< Number of RBs in the cell */
+	uint16_t  assignedPrb[SCH_SYMBOL_PER_SLOT];  /*!< Num RBs and corresponding symbols allocated */
+   bool      ssbPres;                           /*!< Flag to determine if SSB is present in this slot */
+   uint8_t   ssbIdxSupported;                   /*!< Max SSB index */
+	SsbInfo   ssbInfo[MAX_SSB_IDX];              /*!< SSB info */
+	bool      sib1Pres;                          /*!< Flag to determine if SIB1 is present in this slot */
+	RarInfo   *rarInfo;                          /*!< RAR info */
+   Msg4Info  *msg4Info;                         /*!< msg4 info */
 }SchDlSlotInfo;
 
 typedef struct schRaCb
@@ -128,15 +127,16 @@ typedef struct schUlSlotInfo
   */
 typedef struct schCellCb
 {
-   uint16_t      cellId;           /*!< Cell ID */
-   Inst          instIdx;          /*!< Index of the scheduler instance */
-   Inst          macInst;          /*!< Index of the MAC instance */
-	uint8_t       numSlots;         /*!< Number of slots in current frame */
-   SlotIndInfo   slotInfo;         /*!< SFN, Slot info being processed*/
-   SchDlSlotInfo *schDlSlotInfo[SCH_NUM_SLOTS]; /*!< SCH resource allocations in DL */
-   SchUlSlotInfo *schUlSlotInfo[SCH_NUM_SLOTS]; /*!< SCH resource allocations in UL */
-	SchCellCfg    cellCfg;                /*!< Cell ocnfiguration */
-	SchRaCb       raCb[SCH_MAX_UE];
+   uint16_t      cellId;                            /*!< Cell ID */
+   Inst          instIdx;                           /*!< Index of the scheduler instance */
+   Inst          macInst;                           /*!< Index of the MAC instance */
+	uint8_t       numSlots;                          /*!< Number of slots in current frame */
+   SlotIndInfo   slotInfo;                          /*!< SFN, Slot info being processed*/
+   SchDlSlotInfo *schDlSlotInfo[SCH_NUM_SLOTS];     /*!< SCH resource allocations in DL */
+   SchUlSlotInfo *schUlSlotInfo[SCH_NUM_SLOTS];     /*!< SCH resource allocations in UL */
+	SchCellCfg    cellCfg;                           /*!< Cell ocnfiguration */
+	uint8_t       ssbStartSymbArr[SCH_MAX_SSB_BEAM]; /*!<start symbol per SSB beam */
+	SchRaCb       raCb[SCH_MAX_UE];                  /*!< Rach Cb */
 }SchCellCb;
 
 /**
