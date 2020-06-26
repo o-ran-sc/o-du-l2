@@ -117,6 +117,8 @@
 #define PDCCH_SRCH_SPC_TWO_AGG_LVL8_CANDIDATE 2   /* Num of candidate at aggregation level 8 */
 #define PDCCH_SRCH_SPC_TWO_AGG_LVL16_CANDIDATE 1  /* Num of candidate at aggregation level 16 */
 #define PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT  0  /* format 0-0 and 1-0 */
+#define PDCCH_FREQ_DOM_RSRC 255          /* Frequency domain Resource Value */
+#define PDCCH_SYMBOL_WITHIN_SLOT 128     /* Symbol within Slot Value */
 
 
 #define SIB1_VALUE_TAG 10

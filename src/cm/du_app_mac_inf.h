@@ -20,6 +20,8 @@
 #ifndef __MACINT_H__
 #define __MACINT_H__
 
+#include <stdbool.h>
+
 #define NUM_NUMEROLOGY 5  /* Number of numerology */
 #define MAXIMUM_TDD_PERIODICITY 5
 #define MAX_SYMB_PER_SLOT 14 
@@ -42,6 +44,22 @@
 #define SS_MONITORING_SYMBOL     0x2000; /* symbol-0, set 14th bit */
 #define SIB1_MCS  4
 
+/* Macro for Ue Context */
+#define MAX_NUM_LOGICAL_CHANNELS 11
+#define MAX_NUM_SR_CFG_PER_CELL_GRP 8   /* Max number of scheduling request config per cell group */
+#define MAC_NUM_TAGS 4                  /* Max number of timing advance groups */
+#define MAX_NUM_BWP  4                  /* Max number of BWP per serving cell */
+#define MAX_NUM_CRSET  3                /* Max number of control resource set in add/modify/release list */
+#define MAX_NUM_SEARCH_SPC  10          /* Max number of search space in add/modify/release list */
+#define FREQ_DOM_RSRC_SIZE  6           /* i.e. 6 bytes because Size of frequency domain resource is 45 bits */
+#define MONITORING_SYMB_WITHIN_SLOT_SIZE 2  /* i.e. 2 bytes because size of monitoring symbols within slot is 14 bits */
+#define MAX_NUM_DL_ALLOC 16             /* Max number of pdsch time domain downlink allocation */
+#define MAX_NUM_UL_ALLOC 16             /* Max number of pusch time domain uplink allocation */
+#define SD_SIZE   3
+#define PDSCH_START_SYMBOL_LEN 53
+#define PUSCH_START_SYMBOL_LEN 41
+#define SRB_ID_1 1
+
 /* Macros for coupling */
 #define DU_MAC_LC  0
 #define DU_MAC_TC  1
@@ -56,6 +74,7 @@
 #define EVENT_MAC_STOP_IND           205
 #define EVENT_MAC_UL_CCCH_IND        206
 #define EVENT_MAC_DL_CCCH_IND        207
+#define EVENT_MAC_UE_CREATE_REQ      208
 
 typedef enum
 {
@@ -130,6 +149,206 @@ typedef enum
    RRC_REJECT,
    RRC_SETUP
 }DlCcchMsgType;
+
+/* Enums for Ue Create Request */
+
+/* SR PROHIBIT TIMER */
+typedef enum
+{
+   SR_PROHIBIT_MS_1,
+   SR_PROHIBIT_MS_2,
+   SR_PROHIBIT_MS_4,
+   SR_PROHIBIT_MS_8,
+   SR_PROHIBIT_MS_16,
+   SR_PROHIBIT_MS_32,
+   SR_PROHIBIT_MS_64,
+   SR_PROHIBIT_MS_128
+}SrProhibitTimer;
+
+typedef enum
+{
+   SR_TRANS_MAX_N_4,
+   SR_TRANS_MAX_N_8,
+   SR_TRANS_MAX_N_16,
+   SR_TRANS_MAX_N_32,
+   SR_TRANS_MAX_N_64,
+   SR_TRANS_MAX_spare3,
+   SR_TRANS_MAX_spare2,
+   SR_TRANS_MAX_spare1
+}SrTransMax;
+
+typedef enum
+{
+   TIME_ALIGNMENT_TIMER_MS_500,
+   TIME_ALIGNMENT_TIMER_MS_750,
+   TIME_ALIGNMENT_TIMER_MS_1280,
+   TIME_ALIGNMENT_TIMER_MS_1920,
+   TIME_ALIGNMENT_TIMER_MS_2560,
+   TIME_ALIGNMENT_TIMER_MS_5120,
+   TIME_ALIGNMENT_TIMER_MS_10240,
+   TIME_ALIGNMENT_TIMER_INFINITY
+}TimeAlignmentTimer;
+
+typedef enum
+{
+   PHR_PERIODIC_TIMER_SF_10,
+   PHR_PERIODIC_TIMER_SF_20,
+   PHR_PERIODIC_TIMER_SF_50,
+   PHR_PERIODIC_TIMER_SF_100,
+   PHR_PERIODIC_TIMER_SF_200,
+   PHR_PERIODIC_TIMER_SF_500,
+   PHR_PERIODIC_TIMER_SF_1000,
+   PHR_PERIODIC_TIMER_INFINITY
+}PhrPeriodicTimer;
+
+typedef enum
+{
+   PHR_PROHIBIT_TIMER_SF_0,
+   PHR_PROHIBIT_TIMER_SF_10,
+   PHR_PROHIBIT_TIMER_SF_20,
+   PHR_PROHIBIT_TIMER_SF_50,
+   PHR_PROHIBIT_TIMER_SF_100,
+   PHR_PROHIBIT_TIMER_SF_200,
+   PHR_PROHIBIT_TIMER_SF_500,
+   PHR_PROHIBIT_TIMER_SF_1000
+}PhrProhibitTimer;
+
+typedef enum
+{
+   PHR_TX_PWR_FACTOR_CHANGE_DB_1,
+   PHR_TX_PWR_FACTOR_CHANGE_DB_3,
+   PHR_TX_PWR_FACTOR_CHANGE_DB_6,
+   PHR_TX_PWR_FACTOR_CHANGE_INFINITY
+}PhrTxPwrFactorChange;
+
+typedef enum
+{
+   PHR_MODE_OTHER_CG_REAL,
+   PHR_MODE_OTHER_CG_VIRTUAL
+}PhrModeOtherCG;
+
+typedef enum
+{
+   PDSCH_HARQ_ACK_CODEBOOK_SEMISTATIC,
+   PDSCH_HARQ_ACK_CODEBOOK_DYNAMIC
+}PdschHarqAckCodebook;
+
+typedef enum
+{
+   NUM_HARQ_PROC_FOR_PDSCH_N_2,
+   NUM_HARQ_PROC_FOR_PDSCH_N_4,
+   NUM_HARQ_PROC_FOR_PDSCH_N_6,
+   NUM_HARQ_PROC_FOR_PDSCH_N_10,
+   NUM_HARQ_PROC_FOR_PDSCH_N_16
+}NumHarqProcForPdsch;
+
+typedef enum
+{
+   MAX_CODE_BLOCK_GROUP_PER_TB_N_2,
+   MAX_CODE_BLOCK_GROUP_PER_TB_N_4,
+   MAX_CODE_BLOCK_GROUP_PER_TB_N_6,
+   MAX_CODE_BLOCK_GROUP_PER_TB_N_8
+}MaxCodeBlkGrpPerTB;
+
+typedef enum
+{
+   PDSCH_X_OVERHEAD_6,
+	PDSCH_X_OVERHEAD_12,
+	PDSCH_X_OVERHEAD_18
+}PdschXOverhead;
+
+typedef enum
+{
+   TRANSFORM_PRECODER_ENABLED,
+   TRANSFORM_PRECODER_DISABLED
+}TransformPrecoder;
+
+typedef enum 
+{
+   CCE_REG_MAPPINGTYPE_PR_INTERLEAVED,
+   CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED
+}REGMappingType;
+
+typedef enum
+{
+   SLOTPERIODICITYANDOFFSET_PR_SL1,
+   SLOTPERIODICITYANDOFFSET_PR_SL2,
+   SLOTPERIODICITYANDOFFSET_PR_SL4,
+   SLOTPERIODICITYANDOFFSET_PR_SL5,
+   SLOTPERIODICITYANDOFFSET_PR_SL8,
+   SLOTPERIODICITYANDOFFSET_PR_SL10,
+   SLOTPERIODICITYANDOFFSET_PR_SL16,
+   SLOTPERIODICITYANDOFFSET_PR_SL20,
+   SLOTPERIODICITYANDOFFSET_PR_SL40,
+   SLOTPERIODICITYANDOFFSET_PR_SL80,
+   SLOTPERIODICITYANDOFFSET_PR_SL160,
+   SLOTPERIODICITYANDOFFSET_PR_SL320,
+   SLOTPERIODICITYANDOFFSET_PR_SL640,
+   SLOTPERIODICITYANDOFFSET_PR_SL1280,
+   SLOTPERIODICITYANDOFFSET_PR_SL2560
+}MSlotPeriodAndOffset;
+
+typedef enum
+{
+  SAMEASREG_BUNDLE,
+  ALL_CONTIGUOUS_RBS
+}PrecoderGranul;
+
+typedef enum
+{
+   SEARCHSPACETYPE_PR_COMMON,
+   SEARCHSPACETYPE_PR_UE_SPECIFIC
+}SearchSpaceType;
+
+typedef enum
+{
+   AGGREGATIONLEVEL_N0	= 0,  
+   AGGREGATIONLEVEL_N1	= 1,
+   AGGREGATIONLEVEL_N2	= 2,
+   AGGREGATIONLEVEL_N3	= 3,
+   AGGREGATIONLEVEL_N4	= 4,
+   AGGREGATIONLEVEL_N5	= 5,
+   AGGREGATIONLEVEL_N6	= 6,
+   AGGREGATIONLEVEL_N8	= 7
+}AggrLevel;
+
+typedef enum
+{
+   ADDITIONALPOSITION_POS0,
+   ADDITIONALPOSITION_POS1,
+   ADDITIONALPOSITION_POS3
+}AddPosType;
+
+typedef enum
+{
+   MAPPING_TYPEA,
+   MAPPING_TYPEB
+}CommonMappingType;
+
+typedef enum
+{
+   RESOURCEALLOCATION_TYPE0,
+   RESOURCEALLOCATION_TYPE1,
+   RESOURCEALLOCATION_DYNAMICSWITCH
+}ResAllocType;
+
+typedef enum
+{
+   RBG_SIZE_CONFIG1,
+   RBG_SIZE_CONFIG2
+}RBGSize;
+
+typedef enum
+{
+   CODEWORDS_SCHED_BY_DCI_N1,
+   CODEWORDS_SCHED_BY_DCI_N2
+}CodeWordsSchedDci;
+
+typedef enum
+{
+   TYPE_STATIC_BUNDLING,
+   TYPE_DYNAMIC_BUNDLING
+}BundlingType;
 
 typedef struct carrierCfg
 {
@@ -328,6 +547,334 @@ typedef struct dlCcchInd
    uint8_t       *dlCcchMsg;
 }DlCcchIndInfo;
 
+typedef struct bsrCfg
+{
+   uint8_t periodicTimer;
+   uint8_t retxTimer;
+   uint8_t srDelayTimer;
+}BsrCfg;
+
+
+/* Info of Scheduling Request to Add/Modify */
+typedef struct schedReqInfo
+{
+   uint8_t         schedReqId;
+   SrProhibitTimer srProhibitTmr;
+   SrTransMax      srTransMax;
+}SchedReqInfo;
+
+/* Scheduling Request Configuration */
+typedef struct schedReqCfg
+{
+   uint8_t       addModListCount;
+   SchedReqInfo  addModList[MAX_NUM_SR_CFG_PER_CELL_GRP];   /* List of Scheduling req to be added/modified */
+   uint8_t       relListCount;
+   uint8_t       relList[MAX_NUM_SR_CFG_PER_CELL_GRP];      /* list of scheduling request Id to be deleted */
+}SchedReqCfg;
+
+typedef struct tagInfo
+{
+   uint8_t tagId;
+   TimeAlignmentTimer timeAlignTimer;
+}TagInfo;
+
+typedef struct tagCfg
+{
+   uint8_t      addModListCount;
+   TagInfo      addModList[MAC_NUM_TAGS];  /* List of Tag to Add/Modify */
+   uint8_t      relListCount;
+   uint8_t      relList[MAC_NUM_TAGS];     /* list of Tag Id to release */
+}TagCfg;
+
+typedef struct phrCfg
+{
+   PhrPeriodicTimer periodicTimer;
+   PhrProhibitTimer prohibitTimer; 
+   PhrTxPwrFactorChange txPowerFactor;
+   bool     multiplePHR;       
+   bool     dummy;
+   bool     phrType2OtherCell;
+   PhrModeOtherCG phrOtherCG;
+}PhrCfg;
+
+typedef struct macCellGrpCfg
+{
+   SchedReqCfg schReqCfg;
+   TagCfg tagCfg;
+   //BsrCfg bsrCfg;
+   bool   phrCfgSetupPres;   /* true/false: phrCfgSetup/phrCfgRelease */
+   PhrCfg phrCfg;
+}MacCellGrpCfg;
+
+typedef struct phyCellGrpCfg
+{
+   PdschHarqAckCodebook  pdschHarqAckCodebook;
+   uint8_t    pNrFr1;
+}PhyCellGrpCfg;
+
+/* Control resource set info */
+typedef struct controlRsrcSet
+{
+   uint8_t     cRSetId;                /* Control resource set id */
+   uint8_t     freqDomainRsrc[FREQ_DOM_RSRC_SIZE];  /* Frequency domain resource */
+   uint8_t     duration;
+   REGMappingType cceRegMappingType;
+   PrecoderGranul precoderGranularity;
+   uint16_t    dmrsScramblingId;
+}ControlRsrcSet;
+
+/* Search Space info */
+typedef struct searchSpace
+{
+   uint8_t     searchSpaceId;
+   uint8_t     cRSetId;
+   MSlotPeriodAndOffset  mSlotPeriodicityAndOffset;
+   uint8_t     mSymbolsWithinSlot[MONITORING_SYMB_WITHIN_SLOT_SIZE];
+   AggrLevel   numCandidatesAggLevel1;      /* Number of candidates for aggregation level 1 */
+   AggrLevel   numCandidatesAggLevel2;      /* Number of candidates for aggregation level 2 */
+   AggrLevel   numCandidatesAggLevel4;      /* Number of candidates for aggregation level 4 */
+   AggrLevel   numCandidatesAggLevel8;      /* Number of candidates for aggregation level 8 */
+   AggrLevel   numCandidatesAggLevel16;     /* Number of candidates for aggregation level 16 */
+   SearchSpaceType searchSpaceType;
+   uint8_t     ueSpecificDciFormat;
+}SearchSpace;
+
+/* PDCCH cofniguration */
+typedef struct pdcchConfig
+{
+   uint8_t           numCRsetToAddMod;
+   ControlRsrcSet    cRSetToAddModList[MAX_NUM_CRSET];           /* List of control resource set to add/modify */
+   uint8_t           numCRsetToRel;
+   uint8_t           cRSetToRelList[MAX_NUM_CRSET];              /* List of control resource set to release */
+   uint8_t           numSearchSpcToAddMod;
+   SearchSpace       searchSpcToAddModList[MAX_NUM_SEARCH_SPC];  /* List of search space to add/modify */
+   uint8_t           numSearchSpcToRel;
+   uint8_t           searchSpcToRelList[MAX_NUM_SEARCH_SPC];     /* List of search space to release */
+}PdcchConfig;
+
+/* PDSCH time domain resource allocation */
+typedef struct pdschTimeDomRsrcAlloc
+{
+   CommonMappingType mappingType;
+   uint8_t           startSymbolAndLength;
+}PdschTimeDomRsrcAlloc;
+
+/* DMRS downlink configuration */
+typedef struct dmrsDlCfg
+{
+   AddPosType  addPos;       /* DMRS additional position */
+}DmrsDlCfg;
+
+/* PDSCH Configuration */
+typedef struct pdschConfig
+{
+   DmrsDlCfg               dmrsDlCfgForPdschMapTypeA;
+   ResAllocType            resourceAllocType;
+   uint8_t                 numTimeDomRsrcAlloc;
+   PdschTimeDomRsrcAlloc   timeDomRsrcAllociList[MAX_NUM_DL_ALLOC]; /* PDSCH time domain DL resource allocation list */
+   RBGSize                 rbgSize;
+   CodeWordsSchedDci       numCodeWordsSchByDci;                    /* Number of code words scheduled by DCI */
+   BundlingType            bundlingType;
+}PdschConfig;
+
+/* Initial Downlink BWP */
+typedef struct initialDlBwp
+{
+   PdcchConfig   pdcchCfg;
+   PdschConfig   pdschCfg;
+}InitialDlBwp;
+
+/* BWP Downlink common */
+typedef struct bwpDlCommon
+{
+}BwpDlCommon;
+
+/* Downlink BWP information */
+typedef struct dlBwpInfo
+{
+   uint8_t          bwpId;
+}DlBwpInfo;
+
+/* PDCCH Serving Cell configuration */
+typedef struct pdschServCellCfg
+{
+   uint8_t              *maxMimoLayers;           
+   NumHarqProcForPdsch  numHarqProcForPdsch;
+   MaxCodeBlkGrpPerTB   *maxCodeBlkGrpPerTb;
+   bool                 *codeBlkGrpFlushInd;
+   PdschXOverhead       *xOverhead;
+}PdschServCellCfg;
+
+/* PUCCH Configuration */
+typedef struct pucchCfg
+{
+  /* TODO : Not used currently */ 
+}PucchCfg;
+
+/* Transform precoding disabled */
+typedef struct transPrecodDisabled
+{
+   uint16_t   scramblingId0;
+}TransPrecodDisabled;
+
+/* DMRS Uplink configuration */
+typedef struct dmrsUlCfg
+{
+   AddPosType            addPos;               /* DMRS additional position */
+   TransPrecodDisabled   transPrecodDisabled;  /* Transform precoding disabled */
+}DmrsUlCfg;
+
+/* PUSCH Time Domain Resource Allocation */
+typedef struct puschTimeDomRsrcAlloc
+{
+   uint8_t   k2;
+   CommonMappingType   mappingType;
+   uint8_t   startSymbolAndLength;
+}PuschTimeDomRsrcAlloc;
+
+/* PUSCH Configuration */
+typedef struct puschCfg
+{
+   DmrsUlCfg               dmrsUlCfgForPuschMapTypeA;
+   ResAllocType            resourceAllocType;
+   uint8_t                 numTimeDomRsrcAlloc;
+   PuschTimeDomRsrcAlloc   timeDomRsrcAllocList[MAX_NUM_UL_ALLOC]; /* PUSCH time domain UL resource allocation list */
+   TransformPrecoder       transformPrecoder;
+}PuschCfg;
+
+/* Initial Uplink BWP */
+typedef struct initialUlBwp
+{
+   PucchCfg   *pucchCfg; 
+   PuschCfg   puschCfg;
+}InitialUlBwp;
+
+/* Uplink BWP information */
+typedef struct ulBwpInfo
+{
+   uint8_t        bwpId;
+}UlBwpInfo;
+
+/* Serving cell configuration */
+typedef struct servCellCfgInfo
+{
+   InitialDlBwp       initDlBwp;
+   uint8_t            numDlBwpToAdd;
+   DlBwpInfo          DlBwpToAddList[MAX_NUM_BWP];
+   uint8_t            firstActvDlBwpId;
+   uint8_t            defaultDlBwpId;
+   uint8_t            *bwpInactivityTmr;
+   PdschServCellCfg   pdschServCellCfg;
+   InitialUlBwp       initUlBwp;
+   uint8_t            numUlBwpToAdd;
+   UlBwpInfo          UlBwpToAddList[MAX_NUM_BWP];
+   uint8_t            firstActvUlBwpId;
+}ServCellCfgInfo;
+
+/* Special cell configuration */
+typedef struct spCellCfg
+{
+   uint8_t           servCellIdx;
+   ServCellCfgInfo   servCellCfg;
+}SpCellCfg;
+
+typedef struct maxAggrBitRate
+{
+   uint32_t ulBits;
+   uint32_t dlBits;
+}MaxAggrBitRate;
+
+typedef struct snssai
+{
+   uint8_t sst; 
+   uint8_t sd[SD_SIZE];
+}Snssai;
+
+typedef struct nonDynFiveQi
+{
+   uint16_t   fiveQi;
+   uint8_t    priorLevel;
+   uint16_t   avgWindow;
+   uint16_t   maxDataBurstVol;
+}NonDynFiveQi;
+
+typedef struct dynFiveQi
+{
+   uint8_t    priorLevel;
+   uint16_t   packetDelayBudget;
+   uint8_t    packetErrRateScalar;
+   uint8_t    packetErrRateExp;
+   uint16_t   fiveQi;
+   uint8_t    delayCritical;
+   uint16_t   avgWindow;
+   uint16_t   maxDataBurstVol;
+}DynFiveQi;
+
+typedef struct ngRanAllocAndRetPri
+{
+  uint8_t priorityLevel;
+  uint8_t preEmptionCap;
+  uint8_t preEmptionVul;
+}NgRanAllocAndRetPri;
+
+typedef struct grbQosInfo
+{
+  uint32_t maxFlowBitRateDl;
+  uint32_t maxFlowBitRateUl;
+  uint32_t guarFlowBitRateDl;
+  uint32_t guarFlowBitRateUl;
+}GrbQosInfo;
+
+typedef struct drbQos
+{
+   uint8_t  fiveQiType;   /* Dynamic or non-dynamic */ 
+   union
+   {
+      NonDynFiveQi   nonDyn5Qi;
+      DynFiveQi      dyn5Qi;
+   }u;
+   NgRanAllocAndRetPri ngRanRetPri;
+   GrbQosInfo grbQosInfo;
+   uint16_t             pduSessionId;
+   uint32_t             ulPduSessAggMaxBitRate;
+}DrbQosInfo;
+
+typedef struct ulLcCfg
+{
+   uint8_t priority;
+   uint8_t lcGroup;
+   uint8_t schReqId;
+   uint8_t pbr;        // prioritisedBitRate
+   uint8_t bsd;        // bucketSizeDuration
+}UlLcCfg;
+
+typedef struct duLcCfg
+{
+   uint8_t lcp;      // logical Channel Prioritization
+}DlLcCfg;
+
+typedef struct lcCfg
+{
+   uint8_t lcId;
+   DrbQosInfo *drbQos; 
+   Snssai  *snssai;
+   UlLcCfg *ulLcCfg;
+   DlLcCfg *dlLcCfg;
+
+}LcCfg;
+
+typedef struct duUeCb
+{
+   uint16_t cellIdx;
+   uint16_t ueIdx;
+   uint16_t crnti;
+   MacCellGrpCfg macCellGrpCfg;
+   PhyCellGrpCfg phyCellGrpCfg;
+   SpCellCfg spCellCfg;
+   MaxAggrBitRate *maxAggrBitRate;
+   uint8_t numLcs;
+   LcCfg lcCfgList[MAX_NUM_LOGICAL_CHANNELS];
+}MacUeCfg;
 
 /* Functions for slot Ind from MAC to DU APP*/
 typedef uint16_t (*DuMacSlotInd) ARGS((
@@ -376,6 +923,11 @@ typedef uint16_t (*DuMacDlCcchInd) ARGS((
    Pst           *pst,
    DlCcchIndInfo *dlCcchIndInfo ));
 
+/* UE create Request from DU APP to MAC*/
+typedef uint8_t (*DuMacUeCreateReq) ARGS((
+   Pst           *pst,
+   MacUeCfg      *ueCfg ));
+
 extern uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo );
 extern uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
 extern uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo);
@@ -399,6 +951,9 @@ extern uint16_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
 extern uint16_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo);
 extern uint16_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf);
 extern uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo);
+extern uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
+extern uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf);
+extern uint8_t MacHdlUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
 uint8_t sendStopIndMacToDuApp();
 #endif
 
