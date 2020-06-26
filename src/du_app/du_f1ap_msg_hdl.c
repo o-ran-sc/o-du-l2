@@ -65,6 +65,13 @@ S16 sctpSend(Buffer *mBuf, U8 itfType);
 uint8_t Nrcgiret=RFAILED;
 uint8_t SplCellListret=RFAILED;
 uint8_t SRBSetupret=RFAILED;
+uint8_t BuildInitialDlBWPret=ROK;
+uint8_t BuildUlCfgret=ROK;
+uint8_t BuildInitialUlBWPret=ROK;
+uint8_t BuildPuschTimeDomAllocListret=ROK;
+uint8_t BuildDMRSULPuschMapTypeAret=ROK;
+uint8_t BuildDMRSDLPdschMapTypeAret=ROK;
+uint8_t BuildPdschTimeDomAllocListret=ROK;
 uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp);
 
 /*******************************************************************
@@ -3039,6 +3046,7 @@ uint8_t BuildBWPDlDedPdschCfg(struct PDSCH_Config *pdschCfg)
    {
       return RFAILED;
    }
+   BuildDMRSDLPdschMapTypeAret=ROK;
 
    pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeB = NULLP;
    pdschCfg->tci_StatesToAddModList = NULLP;
@@ -3072,6 +3080,7 @@ uint8_t BuildBWPDlDedPdschCfg(struct PDSCH_Config *pdschCfg)
 	{
 	   return RFAILED;
 	}
+   BuildPdschTimeDomAllocListret = ROK;
 
    pdschCfg->pdsch_AggregationFactor = NULLP;
 	pdschCfg->rateMatchPatternToAddModList = NULLP;
@@ -3354,6 +3363,7 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
    {
       return RFAILED;
    }
+   BuildDMRSULPuschMapTypeAret=ROK;
 
    puschCfg->dmrs_UplinkForPUSCH_MappingTypeB = NULLP;
 	puschCfg->pusch_PowerControl = NULLP;
@@ -3374,6 +3384,7 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
    {
       return RFAILED;
    }
+   BuildPuschTimeDomAllocListret=ROK;
 
    puschCfg->pusch_AggregationFactor = NULLP;
 	puschCfg->mcs_Table = NULLP;
@@ -3530,6 +3541,7 @@ uint8_t BuildUlCfg(UplinkConfig_t *ulCfg)
 	{
 	   return RFAILED;
 	}
+   BuildInitialUlBWPret=ROK;
 
    ulCfg->uplinkBWP_ToReleaseList = NULLP;
 	ulCfg->uplinkBWP_ToAddModList = NULLP;
@@ -3656,7 +3668,7 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
 		DU_LOG("\nF1AP : BuildInitialDlBWP failed");
 		return RFAILED;
 	}
-
+   BuildInitialDlBWPret = ROK;
    srvCellCfg->downlinkBWP_ToReleaseList = NULLP;
 	srvCellCfg->downlinkBWP_ToAddModList = NULLP;
 
@@ -3693,7 +3705,7 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
 		DU_LOG("\nF1AP : BuildUlCfg failed");
 		return RFAILED;
 	}
-
+   BuildUlCfgret = ROK;
 	srvCellCfg->supplementaryUplink = NULLP;
 	srvCellCfg->pdcch_ServingCellConfig = NULLP;
 
@@ -3918,7 +3930,7 @@ uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
  *
  *    Function : FreeMemDuToCuRrcCont
  *
- *    Functionality: Builds DuToCuRrcContainer
+ *    Functionality: Deallocating memory of DuToCuRrcContainer
  *
  * @params[in] DuToCuRRCContainer, DuToCuRRCContainer
  *
@@ -3928,19 +3940,38 @@ uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
 * ****************************************************************/
 uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
 {
-   uint8_t idx;
+   uint8_t idx=0;
+	uint8_t idx1=0;
+	uint8_t idx2=0;
+	UplinkConfig_t *ulCfg;
+	PUSCH_Config_t *puschCfg;
+	SpCellConfig_t *spCellCfg;
+	BWP_UplinkDedicated_t *ulBwp;
+	ServingCellConfig_t *srvCellCfg;
+	BWP_DownlinkDedicated_t *dlBwp;
+	MAC_CellGroupConfig_t *macCellGrpCfg;
+	PhysicalCellGroupConfig_t *phyCellGrpCfg;
+	struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList;
 	struct CellGroupConfigRrc__rlc_BearerToAddModList *rlcBearerList;
 	struct RLC_Config *rlcConfig;
 	struct LogicalChannelConfig *macLcConfig;
-	MAC_CellGroupConfig_t *macCellGrpCfg;
 	struct SchedulingRequestConfig *schedulingRequestConfig;
 	struct SchedulingRequestConfig__schedulingRequestToAddModList *schReqList;
 	struct TAG_Config *tagConfig;
+	struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA *dmrsUlCfg;
 	struct TAG_Config__tag_ToAddModList *tagList;
 	struct MAC_CellGroupConfig__phr_Config *phrConfig;
-	PhysicalCellGroupConfig_t *phyCellGrpCfg;
-	SpCellConfig_t *spCellCfg;
-	ServingCellConfig_t *srvCellCfg;
+	struct PDCCH_Config *pdcchCfg;
+	struct ServingCellConfig__pdsch_ServingCellConfig *pdschCfg;
+	struct PDSCH_Config *pdschCfg_t;
+	struct SearchSpace *searchSpc;
+	struct PDSCH_Config__prb_BundlingType *prbBndlType;
+	struct UplinkConfig__pusch_ServingCellConfig *puschCfg_l;
+	struct PUSCH_Config__pusch_TimeDomainAllocationList *timeDomAllocList_t;
+	struct ControlResourceSet *controlRSet;
+	struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA *dmrsDlCfg;
+	struct PDCCH_Config__searchSpacesToAddModList *searchSpcList;
+	struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList;
 
 	rlcBearerList = cellGrpCfg->rlc_BearerToAddModList;
 	if(rlcBearerList)
@@ -3949,30 +3980,33 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
 		{
 			for(idx=0; idx<rlcBearerList->list.count; idx++)
 			{
-				rlcConfig   = rlcBearerList->list.array[idx]->rlc_Config;
-				macLcConfig = rlcBearerList->list.array[idx]->mac_LogicalChannelConfig;
-				if(rlcConfig)
-				{
-				   if(rlcConfig->choice.am)
-					{
-				      DU_FREE(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
-				      DU_FREE(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
-				      DU_FREE(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
-					}
-				   DU_FREE(rlcConfig, sizeof(struct RLC_Config));
-				}
-				DU_FREE(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
-				if(macLcConfig)
-				{
-				   if(macLcConfig->ul_SpecificParameters)
-					{
-				      DU_FREE(macLcConfig->ul_SpecificParameters->schedulingRequestID,	sizeof(SchedulingRequestId_t));
-				      DU_FREE(macLcConfig->ul_SpecificParameters->logicalChannelGroup,	sizeof(long));
-				      DU_FREE(macLcConfig->ul_SpecificParameters, sizeof(struct LogicalChannelConfig__ul_SpecificParameters));
+				if(rlcBearerList->list.array[idx])
+				{  
+				   rlcConfig   = rlcBearerList->list.array[idx]->rlc_Config;
+				   macLcConfig = rlcBearerList->list.array[idx]->mac_LogicalChannelConfig;
+				   if(rlcConfig)
+				   {
+				      if(rlcConfig->choice.am)
+					   {
+				         DU_FREE(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
+				         DU_FREE(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
+				         DU_FREE(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
+						}	
+				      DU_FREE(rlcConfig, sizeof(struct RLC_Config));
+               }
+				   DU_FREE(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
+			    	if(macLcConfig)
+				   {
+				      if(macLcConfig->ul_SpecificParameters)
+					   {
+				         DU_FREE(macLcConfig->ul_SpecificParameters->schedulingRequestID,	sizeof(SchedulingRequestId_t));
+				         DU_FREE(macLcConfig->ul_SpecificParameters->logicalChannelGroup,	sizeof(long));
+				         DU_FREE(macLcConfig->ul_SpecificParameters, sizeof(struct LogicalChannelConfig__ul_SpecificParameters));
+				      }
+				      DU_FREE(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
 				   }
-				   DU_FREE(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
-				}
-				DU_FREE(rlcBearerList->list.array[idx], sizeof(struct RLC_BearerConfig));
+				   DU_FREE(rlcBearerList->list.array[idx], sizeof(struct RLC_BearerConfig));
+				}	
 			}
 			DU_FREE(rlcBearerList->list.array, rlcBearerList->list.size);
 		}
@@ -3983,11 +4017,10 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
 	if(macCellGrpCfg)
 	{
 		schedulingRequestConfig = macCellGrpCfg->schedulingRequestConfig; 
-		schReqList = schedulingRequestConfig->schedulingRequestToAddModList;
-
       if(schedulingRequestConfig)
 		{
-		   if(schReqList)
+		   schReqList = schedulingRequestConfig->schedulingRequestToAddModList;
+			if(schReqList)
 			{
 			   if(schReqList->list.array)
 				{
@@ -4012,10 +4045,10 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
 		}
 
 		tagConfig = macCellGrpCfg->tag_Config;
-		tagList = tagConfig->tag_ToAddModList;
 		if(tagConfig)
 		{
-		   if(tagList)
+		   tagList = tagConfig->tag_ToAddModList;
+			if(tagList)
 			{
 			   if(tagList->list.array)
 				{
@@ -4050,21 +4083,297 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
 	spCellCfg = cellGrpCfg->spCellConfig;
 	if(spCellCfg)
 	{
-		DU_FREE(spCellCfg->servCellIndex, sizeof(long));
-      DU_FREE(spCellCfg->rlmInSyncOutOfSyncThreshold, sizeof(long));
-
-		srvCellCfg = spCellCfg->spCellConfigDedicated;
-      if(srvCellCfg)
+	   if(spCellCfg->servCellIndex)
 		{
-		   DU_FREE(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
-		   DU_FREE(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
-		   DU_FREE(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
-		   DU_FREE(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));
-		   DU_FREE(srvCellCfg->pdsch_ServingCellConfig, sizeof(struct	ServingCellConfig__pdsch_ServingCellConfig));
-		   DU_FREE(srvCellCfg->csi_MeasConfig, sizeof(struct ServingCellConfig__csi_MeasConfig));
-		   DU_FREE(spCellCfg->spCellConfigDedicated, sizeof(ServingCellConfig_t));
-		}
-		DU_FREE(spCellCfg, sizeof(SpCellConfig_t));
+		   if(spCellCfg->rlmInSyncOutOfSyncThreshold)
+			{
+			   if(spCellCfg->spCellConfigDedicated)
+				{
+				   srvCellCfg = spCellCfg->spCellConfigDedicated;
+               if(srvCellCfg->initialDownlinkBWP)
+					{
+					   dlBwp = srvCellCfg->initialDownlinkBWP;
+
+					   if(BuildInitialDlBWPret == ROK)
+					   {
+					      if(srvCellCfg->firstActiveDownlinkBWP_Id)
+						   {
+						      if(srvCellCfg->defaultDownlinkBWP_Id)
+							   {
+							      if(srvCellCfg->uplinkConfig)
+								   {
+								      ulCfg=srvCellCfg->uplinkConfig;
+									   if(ulCfg->initialUplinkBWP)
+									   {
+									      ulBwp=ulCfg->initialUplinkBWP;
+											if(BuildInitialUlBWPret == ROK)
+										   {
+										      if(ulCfg->firstActiveUplinkBWP_Id)
+											   {
+											      if(ulCfg->pusch_ServingCellConfig)
+												   {
+												      puschCfg_l=ulCfg->pusch_ServingCellConfig;
+														if(BuildUlCfgret == ROK)
+													   {
+													      if(srvCellCfg->pdsch_ServingCellConfig)
+														   {
+														      pdschCfg= srvCellCfg->pdsch_ServingCellConfig;
+															   if(pdschCfg->choice.setup)
+															   {
+															      DU_FREE(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH,
+															      sizeof(long));
+															      DU_FREE(pdschCfg->choice.setup, sizeof( struct
+															      PDSCH_ServingCellConfig));
+															   }
+														   }
+													   }
+											         if(puschCfg_l->choice.setup)
+														{
+														   if(puschCfg_l->choice.setup->ext1)
+														   {
+														      DU_FREE(puschCfg_l->choice.setup->ext1->processingType2Enabled,sizeof(BOOLEAN_t));
+													   	   DU_FREE(puschCfg_l->choice.setup->ext1->maxMIMO_Layers,
+														   	sizeof(long));
+														      DU_FREE(puschCfg_l->choice.setup->ext1, sizeof(struct
+											   			   PUSCH_ServingCellConfig__ext1));
+														    }
+													       DU_FREE(puschCfg_l->choice.setup, sizeof(struct
+														    PUSCH_ServingCellConfig));
+													    }
+													    DU_FREE(ulCfg->pusch_ServingCellConfig, \
+												   	 sizeof(struct UplinkConfig__pusch_ServingCellConfig));
+												    }
+											       DU_FREE(ulCfg->firstActiveUplinkBWP_Id, sizeof(BWP_Id_t));
+											   }
+										 }
+										 if(ulBwp->pusch_Config)
+										 {
+											  if(ulBwp->pusch_Config->choice.setup)
+										 	  {
+												    puschCfg=ulBwp->pusch_Config->choice.setup;
+													 if(puschCfg->dataScramblingIdentityPUSCH)
+													 {
+												 	     if(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA)
+														  {
+															   dmrsUlCfg=puschCfg->dmrs_UplinkForPUSCH_MappingTypeA;
+															 	if(BuildDMRSULPuschMapTypeAret == ROK)
+																{
+																    if(puschCfg->pusch_TimeDomainAllocationList)
+																	 {
+																	    timeDomAllocList_t=puschCfg->pusch_TimeDomainAllocationList;
+																		 if(BuildPuschTimeDomAllocListret == ROK)
+																		 {
+																		    DU_FREE(puschCfg->transformPrecoder, sizeof(long));
+																		 }
+																		 if(timeDomAllocList_t->choice.setup)
+																		 {
+																		     if(timeDomAllocList_t->choice.setup->list.array)
+																		 	  {
+																				    if(timeDomAllocList_t->choice.setup->list.array[idx2])
+																					 {
+																					    DU_FREE(timeDomAllocList_t->choice.setup->list.array[idx2]->k2, sizeof(long));
+																					 }
+																					 for(idx1 = 0; idx1 <timeDomAllocList_t->choice.setup->list.count; idx1++)
+																					 {
+																				 	    DU_FREE(timeDomAllocList_t->choice.setup->list.array[idx1],\
+																						 sizeof(PUSCH_TimeDomainResourceAllocation_t));
+																					 }
+																					 DU_FREE(timeDomAllocList_t->choice.setup->list.array, \
+																				 	 timeDomAllocList_t->choice.setup->list.size);
+																				}
+																				DU_FREE(timeDomAllocList_t->choice.setup, \
+																				 sizeof(struct PUSCH_TimeDomainResourceAllocationList));
+																		  }
+																	     DU_FREE(puschCfg->pusch_TimeDomainAllocationList, \
+																		  sizeof(struct PUSCH_Config__pusch_TimeDomainAllocationList));
+																	 }
+																}
+																if(dmrsUlCfg->choice.setup)
+															   {
+																	 if(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition)
+																	 {
+																		  if(dmrsUlCfg->choice.setup->transformPrecodingDisabled)
+																		  {
+																			   DU_FREE(dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0,\
+																				sizeof(long));
+																				DU_FREE(dmrsUlCfg->choice.setup->transformPrecodingDisabled,
+																				sizeof(struct DMRS_UplinkConfig__transformPrecodingDisabled));
+																			}
+																		   DU_FREE(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition,
+																				sizeof(long));
+																		}
+																	   DU_FREE(dmrsUlCfg->choice.setup, sizeof(DMRS_UplinkConfig_t));
+																  }
+                                                  DU_FREE(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA, \
+																  sizeof(struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA));
+															 }
+														    DU_FREE(puschCfg->dataScramblingIdentityPUSCH, sizeof(long));
+														 }
+													    DU_FREE(ulBwp->pusch_Config->choice.setup, sizeof(PUSCH_Config_t));
+													 }
+										          DU_FREE(ulBwp->pusch_Config, sizeof(struct BWP_UplinkDedicated__pusch_Config));
+										     }
+									        DU_FREE(ulCfg->initialUplinkBWP, sizeof(BWP_UplinkDedicated_t));
+									   }
+								      DU_FREE(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));
+								  }
+							     DU_FREE(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
+							}
+						   DU_FREE(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
+						}
+					}
+               if(dlBwp->pdcch_Config)
+					{
+						if(dlBwp->pdsch_Config)
+						{
+						    if(dlBwp->pdsch_Config->choice.setup)
+						    {
+				 			     pdschCfg_t=dlBwp->pdsch_Config->choice.setup;
+								  if(pdschCfg_t->dmrs_DownlinkForPDSCH_MappingTypeA)
+                          {
+									    if(BuildDMRSDLPdschMapTypeAret==ROK)
+										 {
+										     if(pdschCfg_t->pdsch_TimeDomainAllocationList)
+											  {
+											      timeDomAllocList=pdschCfg_t->pdsch_TimeDomainAllocationList;
+												   if(BuildPdschTimeDomAllocListret==ROK)
+													{
+														  if(pdschCfg_t->maxNrofCodeWordsScheduledByDCI)
+														  {
+													 	      prbBndlType=&pdschCfg_t->prb_BundlingType;
+														      DU_FREE(prbBndlType->choice.staticBundling,\
+																sizeof(struct PDSCH_Config__prb_BundlingType__staticBundling));
+																DU_FREE(pdschCfg_t->maxNrofCodeWordsScheduledByDCI, sizeof(long));
+														  }
+													  }
+													
+													    if(timeDomAllocList->choice.setup)
+													    {
+													       if(timeDomAllocList->choice.setup->list.array)
+													 	    {
+															     for(idx1 = 0; idx1 < timeDomAllocList->choice.setup->list.count ; idx1++)
+															     {
+																	   DU_FREE(timeDomAllocList->choice.setup->list.array[idx1],
+																 	   sizeof(struct PDSCH_TimeDomainResourceAllocation));
+																  }
+																  DU_FREE(timeDomAllocList->choice.setup->list.array, \
+																  timeDomAllocList->choice.setup->list.size);
+															  }
+															  DU_FREE(timeDomAllocList->choice.setup,\
+															  sizeof(struct PDSCH_TimeDomainResourceAllocationList));
+														 }
+														 DU_FREE(pdschCfg_t->pdsch_TimeDomainAllocationList, \
+													    sizeof(struct PDSCH_Config__pdsch_TimeDomainAllocationList));
+												    }
+												 }
+												 dmrsDlCfg=pdschCfg_t->dmrs_DownlinkForPDSCH_MappingTypeA;
+												 if(dmrsDlCfg->choice.setup)
+											    {
+													  DU_FREE(dmrsDlCfg->choice.setup->dmrs_AdditionalPosition,
+													  sizeof(long));
+													  DU_FREE(dmrsDlCfg->choice.setup, sizeof(struct DMRS_DownlinkConfig));
+												 }
+											    DU_FREE(pdschCfg_t->dmrs_DownlinkForPDSCH_MappingTypeA, \
+												 sizeof(struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA));
+                                  }
+										    DU_FREE(dlBwp->pdsch_Config->choice.setup, sizeof(struct PDSCH_Config));
+										 }
+							          DU_FREE(dlBwp->pdsch_Config, sizeof(struct BWP_DownlinkDedicated__pdsch_Config));
+							     }
+								  if(dlBwp->pdcch_Config->choice.setup)
+								  {
+									   pdcchCfg=dlBwp->pdcch_Config->choice.setup;
+							         if(pdcchCfg->controlResourceSetToAddModList)
+									   {
+										    controlRSetList = pdcchCfg->controlResourceSetToAddModList;
+										    if(controlRSetList->list.array)
+										    {
+									  	        controlRSet = controlRSetList->list.array[idx2];
+												  if(controlRSet)
+												  {
+											         if(controlRSet->frequencyDomainResources.buf)
+													   {
+													      if(controlRSet->pdcch_DMRS_ScramblingID)
+														   {
+														      if(pdcchCfg->searchSpacesToAddModList)
+															   {
+															      searchSpcList=pdcchCfg->searchSpacesToAddModList;
+																   if(searchSpcList->list.array)
+																   { 
+																	   if(searchSpcList->list.array[idx2])
+																	   {
+																         searchSpc = searchSpcList->list.array[idx2];
+																         if(searchSpc->controlResourceSetId)
+																	      {
+																	          if(searchSpc->monitoringSlotPeriodicityAndOffset)
+																		       {
+																		           if(searchSpc->monitoringSymbolsWithinSlot)
+																			        {
+																			   	     if(searchSpc->monitoringSymbolsWithinSlot->buf)
+																					     {
+																				   	     if(searchSpc->nrofCandidates)
+																					 	     {
+																					    	     if(searchSpc->searchSpaceType)
+																						 	     {
+																									   DU_FREE(searchSpc->searchSpaceType->choice.ue_Specific,\
+																									   sizeof(struct SearchSpace__searchSpaceType__ue_Specific));
+																						            DU_FREE(searchSpc->searchSpaceType, sizeof(struct
+																							         SearchSpace__searchSpaceType));
+																						        }
+																					           DU_FREE(searchSpc->nrofCandidates, sizeof(struct
+																						        SearchSpace__nrofCandidates));
+																					        }
+																				           DU_FREE(searchSpc->monitoringSymbolsWithinSlot->buf, \
+																					        searchSpc->monitoringSymbolsWithinSlot->size);
+																				        }
+																			           DU_FREE(searchSpc->monitoringSymbolsWithinSlot,
+																			           sizeof(BIT_STRING_t));
+																			        }
+																		           DU_FREE(searchSpc->monitoringSlotPeriodicityAndOffset, \
+																			        sizeof(struct SearchSpace__monitoringSlotPeriodicityAndOffset));
+																		       }
+																	          DU_FREE(searchSpc->controlResourceSetId,
+																		       sizeof(ControlResourceSetId_t));
+																	       }
+																       }     
+																       for(idx1 = 0; idx1 < searchSpcList->list.count; idx1++)
+																       {
+																          DU_FREE(searchSpcList->list.array[idx1], sizeof(struct
+																	       SearchSpace));
+																       }
+														             DU_FREE(searchSpcList->list.array, searchSpcList->list.size);
+																    }
+															       DU_FREE(pdcchCfg->searchSpacesToAddModList, \
+																    sizeof(struct PDCCH_Config__searchSpacesToAddModList));
+															    }
+  														       DU_FREE(controlRSet->pdcch_DMRS_ScramblingID, sizeof(long));
+														   }
+													      DU_FREE(controlRSet->frequencyDomainResources.buf, \
+														   controlRSet->frequencyDomainResources.size);
+													   }
+													}	
+											      for(idx1 = 0; idx1 <controlRSetList->list.count; idx1++)
+													{
+													   DU_FREE(controlRSetList->list.array[idx1], sizeof(struct
+														ControlResourceSet));
+													}
+											      DU_FREE(controlRSetList->list.array, controlRSetList->list.size);
+											  }
+										     DU_FREE(pdcchCfg->controlResourceSetToAddModList, \
+											  sizeof(struct PDCCH_Config__controlResourceSetToAddModList));
+										 }
+										 DU_FREE(dlBwp->pdcch_Config->choice.setup, sizeof(struct PDCCH_Config));	
+								   }	
+						     	   DU_FREE(dlBwp->pdcch_Config, sizeof(struct BWP_DownlinkDedicated__pdcch_Config));
+						     }
+						     DU_FREE(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
+					    }
+				   	 DU_FREE(spCellCfg->spCellConfigDedicated, sizeof(ServingCellConfig_t));
+				  }
+			     DU_FREE(spCellCfg->rlmInSyncOutOfSyncThreshold, sizeof(long));
+			 }
+		    DU_FREE(spCellCfg->servCellIndex, sizeof(long));
+      }
 	}
 	return ROK;
 }
