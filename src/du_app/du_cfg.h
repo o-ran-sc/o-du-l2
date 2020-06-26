@@ -96,7 +96,7 @@
 #define RA_CONT_RES_TIMER 64
 #define RA_RSP_WINDOW 180
 #define PRACH_RESTRICTED_SET 0 /* Unrestricted */
-
+#define ROOT_SEQ_LEN 139
 
 /* MACRCO Ddefine for PDCCH Configuration */
 #define PDCCH_CTRL_RSRC_SET_ZERO   13   /* Control resouce set zero */

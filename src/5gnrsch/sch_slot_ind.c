@@ -161,7 +161,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 {
    int ret = ROK;
 	uint8_t ssb_rep;
-	uint16_t sfnSlot = 0;
+	uint16_t slot, sfnSlot = 0;
 	DlSchedInfo dlSchedInfo;
 	memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
    DlBrdcstAlloc *dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
@@ -180,6 +180,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 
    sfnSlot = ((dlSchedInfo.schSlotValue.broadcastTime.sfn * 10) +
 	            dlSchedInfo.schSlotValue.broadcastTime.slot);
+
+	slot = dlSchedInfo.schSlotValue.currentTime.slot;
 
 	dlSchedInfo.cellId = cell->cellId;
 
@@ -214,7 +216,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 	if(dlBrdcstAlloc->ssbTrans || dlBrdcstAlloc->sib1Trans)
 	{
 	   dlSchedInfo.isBroadcastPres = true;
-	   ret = schBroadcastAlloc(cell,dlBrdcstAlloc,dlSchedInfo.schSlotValue.broadcastTime.slot);
+		slot = dlSchedInfo.schSlotValue.broadcastTime.slot;
+	   ret = schBroadcastAlloc(cell,dlBrdcstAlloc,slot);
       if(ret != ROK)
       {
          DU_LOG("\nschBroadcastAlloc failed");
@@ -225,6 +228,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    /* check for RAR */
 	if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo != NULLP)
 	{
+	   slot = dlSchedInfo.schSlotValue.rarTime.slot;
       SCH_ALLOC(rarAlloc, sizeof(RarAlloc));
       if(!rarAlloc)
       {
@@ -235,22 +239,22 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       dlSchedInfo.rarAlloc = rarAlloc;
 
 	   /* RAR info is copied, this was earlier filled in schProcessRachInd */
-      memcpy(&rarAlloc->rarInfo,cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo, \
-	      sizeof(RarInfo));
+      memcpy(&rarAlloc->rarInfo,cell->schDlSlotInfo[slot]->rarInfo, sizeof(RarInfo));
 
 		 /* pdcch and pdsch data is filled */
        schFillRar(rarAlloc,
-		    cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo->raRnti,
+		    cell->schDlSlotInfo[slot]->rarInfo->raRnti,
 		    cell->cellCfg.phyCellId,
 		    cell->cellCfg.ssbSchCfg.ssbOffsetPointA);
 
-      SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo,sizeof(RarAlloc));
-	   cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo = NULLP;
+      SCH_FREE(cell->schDlSlotInfo[slot]->rarInfo,sizeof(RarAlloc));
+	   cell->schDlSlotInfo[slot]->rarInfo = NULLP;
    }
 
    /* check for MSG4 */
    if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info != NULLP)
    {
+	    slot = dlSchedInfo.schSlotValue.msg4Time.slot;
 	    SCH_ALLOC(msg4Alloc, sizeof(Msg4Alloc));
 		 if(!msg4Alloc)
 		 {
@@ -261,13 +265,13 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 		 dlSchedInfo.msg4Alloc = msg4Alloc;
 
        /* Msg4 info is copied, this was earlier filled in macSchDlRlcBoInfo */
-       memcpy(&msg4Alloc->msg4Info, cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, \
+       memcpy(&msg4Alloc->msg4Info, cell->schDlSlotInfo[slot]->msg4Info, \
           sizeof(Msg4Info));
              
        /* pdcch and pdsch data is filled */
-       schDlRsrcAllocMsg4(msg4Alloc, cell, dlSchedInfo.schSlotValue.msg4Time.slot); 
-		 SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, sizeof(Msg4Info));
-		 cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
+       schDlRsrcAllocMsg4(msg4Alloc, cell, slot); 
+		 SCH_FREE(cell->schDlSlotInfo[slot]->msg4Info, sizeof(Msg4Info));
+		 cell->schDlSlotInfo[slot]->msg4Info = NULL;
    }
 
 
@@ -280,6 +284,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    }
     
 	schUlResAlloc(cell, schInst);
+
+	memset(cell->schDlSlotInfo[slot], 0, sizeof(SchDlSlotInfo));
 
 	return ret;
 }

@@ -2322,8 +2322,8 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
        */
       coreset0Size= sib1PdcchInfo->coreset0Cfg.coreSet0Size;
       rbStart = 0;              /* For SIB1 */
-      //rbStart = sib1PdcchInfo->dci.pdschCfg->freqAlloc.rbStart;
-      rbLen = sib1PdcchInfo->dci.pdschCfg->freqAlloc.rbSize;
+      //rbStart = sib1PdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.startPrb;
+      rbLen = sib1PdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
 
       if((rbLen >=1) && (rbLen <= coreset0Size - rbStart))
       {
@@ -2337,9 +2337,9 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
       }
 
       /* Fetching DCI field values */
-      timeDomResAssign = sib1PdcchInfo->dci.pdschCfg->timeAlloc.
+      timeDomResAssign = sib1PdcchInfo->dci.pdschCfg->pdschTimeAlloc.
                          rowIndex -1;
-      VRB2PRBMap       = sib1PdcchInfo->dci.pdschCfg->freqAlloc.\
+      VRB2PRBMap       = sib1PdcchInfo->dci.pdschCfg->pdschFreqAlloc.\
                          vrbPrbMapping;
       modNCodScheme    = sib1PdcchInfo->dci.pdschCfg->codeword[0].mcsIndex;
       redundancyVer    = sib1PdcchInfo->dci.pdschCfg->codeword[0].rvIndex;
@@ -2462,7 +2462,7 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       coreset0Size= rarPdcchInfo->coreset0Cfg.coreSet0Size;
       rbStart = 0;              /* For SIB1 */
       //rbStart = rarPdcchInfo->dci.pdschCfg->freqAlloc.rbStart;
-      rbLen = rarPdcchInfo->dci.pdschCfg->freqAlloc.rbSize;
+      rbLen = rarPdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
 
       if((rbLen >=1) && (rbLen <= coreset0Size - rbStart))
       {
@@ -2476,8 +2476,8 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       }
 
       /* Fetching DCI field values */
-      timeDomResAssign = rarPdcchInfo->dci.pdschCfg->timeAlloc.rowIndex -1;
-      VRB2PRBMap       = rarPdcchInfo->dci.pdschCfg->freqAlloc.vrbPrbMapping;
+      timeDomResAssign = rarPdcchInfo->dci.pdschCfg->pdschTimeAlloc.rowIndex -1;
+      VRB2PRBMap       = rarPdcchInfo->dci.pdschCfg->pdschFreqAlloc.vrbPrbMapping;
       modNCodScheme    = rarPdcchInfo->dci.pdschCfg->codeword[0].mcsIndex;
       tbScaling        = 0; /* configured to 0 scaling */
       reserved         = 0;
@@ -2604,7 +2604,7 @@ Msg4Info *msg4Info)
       /* TODO: Fill values of coreset0Size, rbStart and rbLen */
       coreset0Size = msg4PdcchInfo->coreset0Cfg.coreSet0Size;
       //rbStart = msg4PdcchInfo->dci.pdschCfg->freqAlloc.rbStart;
-      rbLen = msg4PdcchInfo->dci.pdschCfg->freqAlloc.rbSize;
+      rbLen = msg4PdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
 
       if((rbLen >=1) && (rbLen <= coreset0Size - rbStart))
       {
@@ -2619,8 +2619,8 @@ Msg4Info *msg4Info)
 
       /* Fetching DCI field values */
       dciFormatId      = msg4Info->dciFormatId; /* DCI indentifier for DL */
-      timeDomResAssign = msg4PdcchInfo->dci.pdschCfg->timeAlloc.rowIndex -1;
-      VRB2PRBMap       = msg4PdcchInfo->dci.pdschCfg->freqAlloc.vrbPrbMapping;
+      timeDomResAssign = msg4PdcchInfo->dci.pdschCfg->pdschTimeAlloc.rowIndex -1;
+      VRB2PRBMap       = msg4PdcchInfo->dci.pdschCfg->pdschFreqAlloc.vrbPrbMapping;
       modNCodScheme    = msg4PdcchInfo->dci.pdschCfg->codeword[0].mcsIndex;
       ndi              = msg4Info->ndi;      
       redundancyVer    = msg4PdcchInfo->dci.pdschCfg->codeword[0].rvIndex;
@@ -2752,8 +2752,8 @@ S16 fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, DlSchedInfo *dlInfo, uint32
          return RFAILED;;
       }
       dlTtiReqPdu->pduType = PDCCH_PDU_TYPE;
-      dlTtiReqPdu->u.pdcch_pdu.bwpSize = bwp->BWPSize;
-      dlTtiReqPdu->u.pdcch_pdu.bwpPart = bwp->BWPStart;
+      dlTtiReqPdu->u.pdcch_pdu.bwpSize = bwp->freqAlloc.numPrb;
+      dlTtiReqPdu->u.pdcch_pdu.bwpPart = bwp->freqAlloc.startPrb;
       dlTtiReqPdu->u.pdcch_pdu.subCarrierSpacing = bwp->subcarrierSpacing; 
       dlTtiReqPdu->u.pdcch_pdu.cyclicPrefix = bwp->cyclicPrefix; 
       dlTtiReqPdu->u.pdcch_pdu.startSymbolIndex = pdcchInfo->coreset0Cfg.startSymbolIndex;
@@ -2807,8 +2807,8 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, PdschCfg *pdschInfo,
        dlTtiReqPdu->u.pdsch_pdu.pduBitMap = pdschInfo->pduBitmap;
        dlTtiReqPdu->u.pdsch_pdu.rnti = pdschInfo->rnti;         
        dlTtiReqPdu->u.pdsch_pdu.pduIndex = pduIndex;
-       dlTtiReqPdu->u.pdsch_pdu.bwpSize = bwp.BWPSize;       
-       dlTtiReqPdu->u.pdsch_pdu.bwpStart = bwp.BWPStart;
+       dlTtiReqPdu->u.pdsch_pdu.bwpSize = bwp.freqAlloc.numPrb;       
+       dlTtiReqPdu->u.pdsch_pdu.bwpStart = bwp.freqAlloc.startPrb;
        dlTtiReqPdu->u.pdsch_pdu.subCarrierSpacing = bwp.subcarrierSpacing;
        dlTtiReqPdu->u.pdsch_pdu.cyclicPrefix = bwp.cyclicPrefix;
        dlTtiReqPdu->u.pdsch_pdu.nrOfCodeWords = pdschInfo->numCodewords;
@@ -2831,13 +2831,13 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, PdschCfg *pdschInfo,
        dlTtiReqPdu->u.pdsch_pdu.scid = pdschInfo->dmrs.scid;
        dlTtiReqPdu->u.pdsch_pdu.numDmrsCdmGrpsNoData = pdschInfo->dmrs.numDmrsCdmGrpsNoData;
        dlTtiReqPdu->u.pdsch_pdu.dmrsPorts = pdschInfo->dmrs.dmrsPorts;
-       dlTtiReqPdu->u.pdsch_pdu.resourceAlloc = pdschInfo->freqAlloc.resourceAlloc;
+       dlTtiReqPdu->u.pdsch_pdu.resourceAlloc = pdschInfo->pdschFreqAlloc.resourceAllocType;
        /* since we are using type-1, hence rbBitmap excluded */
-       dlTtiReqPdu->u.pdsch_pdu.rbStart = pdschInfo->freqAlloc.rbStart;
-       dlTtiReqPdu->u.pdsch_pdu.rbSize = pdschInfo->freqAlloc.rbSize;
-       dlTtiReqPdu->u.pdsch_pdu.vrbToPrbMapping = pdschInfo->freqAlloc.vrbPrbMapping;
-       dlTtiReqPdu->u.pdsch_pdu.startSymbIndex = pdschInfo->timeAlloc.startSymbolIndex;
-       dlTtiReqPdu->u.pdsch_pdu.nrOfSymbols = pdschInfo->timeAlloc.numSymbols;
+       dlTtiReqPdu->u.pdsch_pdu.rbStart = pdschInfo->pdschFreqAlloc.freqAlloc.startPrb;
+       dlTtiReqPdu->u.pdsch_pdu.rbSize = pdschInfo->pdschFreqAlloc.freqAlloc.numPrb;
+       dlTtiReqPdu->u.pdsch_pdu.vrbToPrbMapping = pdschInfo->pdschFreqAlloc.vrbPrbMapping;
+       dlTtiReqPdu->u.pdsch_pdu.startSymbIndex = pdschInfo->pdschTimeAlloc.timeAlloc.startSymb;
+       dlTtiReqPdu->u.pdsch_pdu.nrOfSymbols = pdschInfo->pdschTimeAlloc.timeAlloc.numSymb;
        dlTtiReqPdu->u.pdsch_pdu.preCodingAndBeamforming.numPrgs = pdschInfo->beamPdschInfo.numPrgs;
        dlTtiReqPdu->u.pdsch_pdu.preCodingAndBeamforming.prgSize = pdschInfo->beamPdschInfo.prgSize;
        dlTtiReqPdu->u.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = pdschInfo->beamPdschInfo.digBfInterfaces;
@@ -3408,37 +3408,36 @@ uint8_t getnPdus(fapi_ul_tti_req_t *ulTtiReq, MacUlSlot *currUlSlot)
 {
    uint8_t pduCount = 0;
 
-   if(currUlSlot != NULLP)
-   {
-      if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_PRACH)
-      {
-         pduCount++;
-         if(ulTtiReq)
-            ulTtiReq->rachPresent = PDU_PRESENT;
-      }
-		if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_PUSCH)
+   if(ulTtiReq)
+	{
+		if(currUlSlot)
 		{
-		   pduCount++;
-         if(ulTtiReq)
-            ulTtiReq->nUlsch++;
+			if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_PRACH)
+			{
+				pduCount++;
+				ulTtiReq->rachPresent = PDU_PRESENT;
+			}
+			if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_PUSCH)
+			{
+				pduCount++;
+				ulTtiReq->nUlsch++;
+			}
+			if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_PUSCH_UCI)
+			{
+				pduCount++;
+				ulTtiReq->nUlsch = PDU_PRESENT;
+			}
+			if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_UCI)
+			{
+				pduCount++;
+				ulTtiReq->nUlcch = PDU_PRESENT;
+			}
+			if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_SRS)
+			{
+				pduCount++;
+			}
 		}
-		if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_PUSCH_UCI)
-		{
-		   pduCount++;
-         if(ulTtiReq)
-            ulTtiReq->nUlsch = PDU_PRESENT;
-      }
-      if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_UCI)
-      {
-         pduCount++;
-         if(ulTtiReq)
-            ulTtiReq->nUlcch = PDU_PRESENT;
-      }
-      if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_SRS)
-      {
-         pduCount++;
-      }
-   }
+	}
    return pduCount;
 }
 #endif

@@ -2208,6 +2208,7 @@ int MacSchCellCfgReq
 	   macCellCfg->prachCfg.prachSubcSpacing;
 	schCellCfg.schRachCfg.msg1FreqStart = macCellCfg->prachCfg.msg1FreqStart;
 	schCellCfg.schRachCfg.msg1Fdm       = macCellCfg->prachCfg.msg1Fdm;
+	schCellCfg.schRachCfg.rootSeqLen    = macCellCfg->prachCfg.rootSeqLen;
 	schCellCfg.schRachCfg.rootSeqIdx    = macCellCfg->prachCfg.fdm[0].rootSeqIdx;
 	schCellCfg.schRachCfg.numRootSeq    = macCellCfg->prachCfg.fdm[0].numRootSeq;
 	schCellCfg.schRachCfg.k1            = macCellCfg->prachCfg.fdm[0].k1;
@@ -2219,8 +2220,8 @@ int MacSchCellCfgReq
 	schCellCfg.schRachCfg.raRspWindow   = macCellCfg->prachCfg.raRspWindow;
 
    /* fill initial DL BWP */
-   schCellCfg.schInitialDlBwp.bwp.firstPrb = macCellCfg->initialDlBwp.bwp.firstPrb;
-   schCellCfg.schInitialDlBwp.bwp.numPrb = macCellCfg->initialDlBwp.bwp.numPrb;
+	schCellCfg.schInitialDlBwp.bwp.freqAlloc.startPrb = macCellCfg->initialDlBwp.bwp.firstPrb;
+	schCellCfg.schInitialDlBwp.bwp.freqAlloc.numPrb = macCellCfg->initialDlBwp.bwp.numPrb;
    schCellCfg.schInitialDlBwp.bwp.scs = macCellCfg->initialDlBwp.bwp.scs;
    schCellCfg.schInitialDlBwp.bwp.cyclicPrefix = macCellCfg->initialDlBwp.bwp.cyclicPrefix;
    schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId =
@@ -2251,9 +2252,9 @@ int MacSchCellCfgReq
    schCellCfg.schInitialDlBwp.pdschCommon.lengthSymbol =
       macCellCfg->initialDlBwp.pdschCommon.lengthSymbol;
 
-   /* fill initial DL BWP */
-   schCellCfg.schInitialUlBwp.bwp.firstPrb = macCellCfg->initialUlBwp.bwp.firstPrb;
-   schCellCfg.schInitialUlBwp.bwp.numPrb = macCellCfg->initialUlBwp.bwp.numPrb;
+   /* fill initial UL BWP */
+	schCellCfg.schInitialUlBwp.bwp.freqAlloc.startPrb = macCellCfg->initialUlBwp.bwp.firstPrb;
+	schCellCfg.schInitialUlBwp.bwp.freqAlloc.numPrb = macCellCfg->initialUlBwp.bwp.numPrb;
    schCellCfg.schInitialUlBwp.bwp.scs = macCellCfg->initialUlBwp.bwp.scs;
    schCellCfg.schInitialUlBwp.bwp.cyclicPrefix = macCellCfg->initialUlBwp.bwp.cyclicPrefix;
    schCellCfg.schInitialUlBwp.puschCommon.k2 = macCellCfg->initialUlBwp.puschCommon.k2;
@@ -2264,6 +2265,7 @@ int MacSchCellCfgReq
    schCellCfg.schInitialUlBwp.puschCommon.lengthSymbol =
       macCellCfg->initialUlBwp.puschCommon.lengthSymbol;
 
+   schCellCfg.puschSubcSpacing = macCellCfg->puschSubcSpacing;
 
    cfgPst.srcProcId = pst->dstProcId;
 	cfgPst.dstProcId = pst->srcProcId;
