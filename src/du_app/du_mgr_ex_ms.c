@@ -55,6 +55,8 @@ extern S16 cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
 S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 {
    uint8_t id;
+  
+   memset(&duCb, 0, sizeof(DuCb));
 
    duCb.init.procId  = SFndProcId();
    duCb.init.ent     = entity;
