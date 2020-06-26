@@ -29,6 +29,13 @@ DuMacDlCcchInd packMacDlCcchIndOpts[] =
    packMacDlCcchInd    /* Light weight-loose coupling */
 };
 
+DuMacUeCreateReq packMacUeCreateReqOpts[] =
+{
+   packDuMacUeCreateReq,       /* Loose coupling */
+   MacHdlUeCreateReq,          /* TIght coupling */
+   packDuMacUeCreateReq,       /* Light weight-loose coupling */
+};
+
 /******************************************************************
  *
  * @brief Send UE configuration to RLC
@@ -327,9 +334,19 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 			cellId = duCb.ueCcchCtxt[idx].cellId;
 		}
 	}
-	if(srbId == 0) //RRC connection setup
+	if(srbId == SRB_ID_1) //RRC connection setup
 	{
 		ret = duBuildAndSendDlCcchInd(dlCcchMsg, crnti, cellId, RRC_SETUP);
+      if(ret)
+      {
+         DU_LOG("\nDU_APP: Falied at duBuildAndSendDlCcchInd()");
+      }
+      else
+      {
+         DU_LOG("\nDU_APP: Sending Ue create Req to MAC");
+         ret = duBuildAndSendUeCreateReqToMac();
+      }
+               
 	}
 	return ret;
 }
@@ -398,6 +415,405 @@ uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
 
 }
 
+/******************************************************************
+ *
+ * @brief Fills Initial DL Bandwidth Part
+ *
+ * @details
+ *
+ *    Function : fillInitDlBwp
+ *
+ *    Functionality: Fills Initial DL Bandwidth Part
+ *
+ *
+ *****************************************************************/
+void fillInitDlBwp(InitialDlBwp *initDlBwp)
+{
+   uint8_t idx = 0;
+
+   if(initDlBwp)
+   {
+      /* Filling PDCCH Config */
+      initDlBwp->pdcchCfg.numCRsetToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
+      memset(initDlBwp->pdcchCfg.cRSetToAddModList, 0, MAX_NUM_CRSET);
+      if(initDlBwp->pdcchCfg.numCRsetToAddMod <= MAX_NUM_CRSET)
+      {
+         initDlBwp->pdcchCfg.cRSetToAddModList[idx].cRSetId = \
+          PDCCH_CTRL_RSRC_SET_ONE_ID;
+         memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
+          FREQ_DOM_RSRC_SIZE); 
+         initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc[idx] =\
+          PDCCH_FREQ_DOM_RSRC;
+         initDlBwp->pdcchCfg.cRSetToAddModList[idx].duration = \
+          PDCCH_CTRL_RSRC_SET_ONE_DURATION;
+         initDlBwp->pdcchCfg.cRSetToAddModList[idx].cceRegMappingType = \
+          CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED;
+         initDlBwp->pdcchCfg.cRSetToAddModList[idx].precoderGranularity = \
+          ALL_CONTIGUOUS_RBS;
+         initDlBwp->pdcchCfg.cRSetToAddModList[idx].dmrsScramblingId = \
+          SCRAMBLING_ID;
+      }
+      initDlBwp->pdcchCfg.numCRsetToRel = 0;
+      /* Filling Serach Space */
+      initDlBwp->pdcchCfg.numSearchSpcToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
+      memset(initDlBwp->pdcchCfg.searchSpcToAddModList, 0, MAX_NUM_CRSET);
+      if(initDlBwp->pdcchCfg.numSearchSpcToAddMod <= MAX_NUM_CRSET)
+      {
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceId =\
+          PDCCH_SRCH_SPC_TWO_ID;
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].cRSetId = \
+          PDCCH_CTRL_RSRC_SET_ONE_ID;
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].\
+          mSlotPeriodicityAndOffset = SLOTPERIODICITYANDOFFSET_PR_SL1;
+         memset(initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, 0,\
+           MONITORING_SYMB_WITHIN_SLOT_SIZE);
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot[idx] =\
+           PDCCH_SYMBOL_WITHIN_SLOT;
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1 =\
+          AGGREGATIONLEVEL_N8; 
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel2 =\
+          AGGREGATIONLEVEL_N8; 
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel4 =\
+          AGGREGATIONLEVEL_N4; 
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel8 =\
+          AGGREGATIONLEVEL_N2; 
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel16 =\
+          AGGREGATIONLEVEL_N1;
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceType = \
+          SEARCHSPACETYPE_PR_UE_SPECIFIC;
+         initDlBwp->pdcchCfg.searchSpcToAddModList[idx].ueSpecificDciFormat =\
+          PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT;
+
+         initDlBwp->pdcchCfg.numSearchSpcToRel = 0;
+
+      } 
+      /* Filling PDSCH Config */
+      initDlBwp->pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos = ADDITIONALPOSITION_POS0;
+      initDlBwp->pdschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
+      initDlBwp->pdschCfg.numTimeDomRsrcAlloc = 1;
+      initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = \
+       MAPPING_TYPEA;
+      initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = \
+       PDSCH_START_SYMBOL_LEN;
+      initDlBwp->pdschCfg.rbgSize = RBG_SIZE_CONFIG1;
+      initDlBwp->pdschCfg.numCodeWordsSchByDci = CODEWORDS_SCHED_BY_DCI_N1;
+      initDlBwp->pdschCfg.bundlingType = TYPE_STATIC_BUNDLING;
+   }
+
+}
+
+/******************************************************************
+ *
+ * @brief Fills Initial UL Bandwidth Part
+ *
+ * @details
+ *
+ *    Function : fillInitUlBwp
+ *
+ *    Functionality: Fills Initial UL Bandwidth Part
+ *
+ *
+ *****************************************************************/
+void fillInitUlBwp(InitialUlBwp *initUlBwp)
+{
+   uint8_t idx;
+   if(initUlBwp)
+   {
+      initUlBwp->pucchCfg = NULLP;
+
+      /*Filling PUSCH Config */
+      initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.addPos = ADDITIONALPOSITION_POS0; 
+      initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.transPrecodDisabled. \
+        scramblingId0 = SCRAMBLING_ID; 
+      initUlBwp->puschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
+      initUlBwp->puschCfg.numTimeDomRsrcAlloc = 1;
+      idx = 0;
+      if(initUlBwp->puschCfg.numTimeDomRsrcAlloc <= MAX_NUM_UL_ALLOC)
+      {
+         initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2;
+         initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType =\
+           MAPPING_TYPEA;
+         initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
+           PUSCH_START_SYMBOL_LEN;
+      }
+      initUlBwp->puschCfg.transformPrecoder = TRANSFORM_PRECODER_DISABLED;
+   }
+   else
+   {
+      DU_LOG("\n DUAPP: Memory is NULL of InitalUlBwp");
+   }
+
+}
+/******************************************************************
+ *
+ * @brief Fills SpCell Group Info
+ *
+ * @details
+ *
+ *    Function : fillSpCellGrpInfo
+ *
+ *    Functionality: Fills Sp Cell Group Info
+ *
+ *
+ *****************************************************************/
+void fillSpCellGrpInfo(SpCellCfg *spCell)
+{
+   if(spCell)
+   {
+      spCell->servCellIdx = SERV_CELL_IDX;
+      /* Filling Initial Dl Bwp */
+      fillInitDlBwp(&spCell->servCellCfg.initDlBwp);
+
+      spCell->servCellCfg.numDlBwpToAdd    = 0; 
+      spCell->servCellCfg.firstActvDlBwpId = ACTIVE_DL_BWP_ID;
+      spCell->servCellCfg.defaultDlBwpId   = ACTIVE_DL_BWP_ID;
+      spCell->servCellCfg.bwpInactivityTmr = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.maxMimoLayers = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.maxCodeBlkGrpPerTb = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.codeBlkGrpFlushInd = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.xOverhead = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.numHarqProcForPdsch =\
+           NUM_HARQ_PROC_FOR_PDSCH_N_16;
+      /* Filling Initial UL Bwp*/
+      fillInitUlBwp(&spCell->servCellCfg.initUlBwp);
+      spCell->servCellCfg.numUlBwpToAdd     = 0; 
+      spCell->servCellCfg.firstActvUlBwpId  = ACTIVE_DL_BWP_ID; 
+   }
+   else
+   {
+      DU_LOG("\n DU_APP: Memory is NULL for SpCellGrp");
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Fills Physical Cell Group Info
+ *
+ * @details
+ *
+ *    Function : fillPhyCellGrpInfo
+ *
+ *    Functionality: Fills Physical Cell Group Info
+ *
+ *
+ *****************************************************************/
+void fillPhyCellGrpInfo(PhyCellGrpCfg *cellGrp)
+{
+   if(cellGrp)
+   {
+      cellGrp->pdschHarqAckCodebook = PDSCH_HARQ_ACK_CODEBOOK_DYNAMIC;
+      cellGrp->pNrFr1 = P_NR_FR1;
+   }
+   else
+   {
+      DU_LOG("\nDUAPP: Memory is NULL for Physical Cell Group");
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Fills Mac Cell Group Info
+ *
+ * @details
+ *
+ *    Function : fillMacCellGrpInfo
+ *
+ *    Functionality: Fills Mac Cell Group Info
+ *
+ *
+ *****************************************************************/
+void fillMacCellGrpInfo(MacCellGrpCfg *cellGrp)
+{
+   uint8_t idx;
+
+   if(cellGrp)
+   {
+      /* Filling Scheduling Request Config */
+      cellGrp->schReqCfg.addModListCount = 1;
+      if(cellGrp->schReqCfg.addModListCount <= MAX_NUM_SR_CFG_PER_CELL_GRP)
+      {
+         for(idx = 0; idx < cellGrp->schReqCfg.addModListCount; idx++)
+         {
+            cellGrp->schReqCfg.addModList[idx].schedReqId    = SCH_REQ_ID;
+            cellGrp->schReqCfg.addModList[idx].srProhibitTmr = SR_PROHIBIT_MS_32;
+            cellGrp->schReqCfg.addModList[idx].srTransMax    = SR_TRANS_MAX_N_16;
+         }
+      }
+      cellGrp->schReqCfg.relListCount = 0;
+
+      /* Filling Tag config */
+      cellGrp->tagCfg.addModListCount = 1;
+      if(cellGrp->tagCfg.addModListCount <= MAC_NUM_TAGS)
+      {
+         for(idx = 0; idx < cellGrp->tagCfg.addModListCount; idx++)
+         {
+            cellGrp->tagCfg.addModList[idx].tagId = TAG_ID;
+            cellGrp->tagCfg.addModList[idx].timeAlignTimer = TIME_ALIGNMENT_TIMER_INFINITY;
+         }
+      }
+      cellGrp->tagCfg.relListCount = 0;
+      
+      /* Filling PHR config */
+      cellGrp->phrCfgSetupPres = true;
+      cellGrp->phrCfg.periodicTimer = PHR_PERIODIC_TIMER_INFINITY;
+      cellGrp->phrCfg.prohibitTimer = PHR_PROHIBIT_TIMER_SF_0;
+      cellGrp->phrCfg.txPowerFactor = PHR_TX_PWR_FACTOR_CHANGE_INFINITY;
+      cellGrp->phrCfg.multiplePHR   = false;
+      cellGrp->phrCfg.dummy         = false;
+      cellGrp->phrCfg.phrType2OtherCell = false;
+      cellGrp->phrCfg.phrOtherCG = PHR_MODE_OTHER_CG_REAL;  
+
+   }
+   else
+   {
+      DU_LOG("\nDUAPP: Memory is NULL for Master Cell Group");
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Fills Logical Channel Config List
+ *
+ * @details
+ *
+ *    Function : fillLcCfgList
+ *
+ *    Functionality: Fills Logical channel Config List
+ *
+ *
+ *****************************************************************/
+void fillLcCfgList(LcCfg *lcCfgInfo)
+{
+   if(lcCfgInfo)
+   {
+      lcCfgInfo->lcId = SRB_ID_1;
+      lcCfgInfo->drbQos = NULLP;
+      lcCfgInfo->snssai = NULLP;
+      lcCfgInfo->ulLcCfg = NULLP;
+      lcCfgInfo->dlLcCfg = NULLP;
+      
+      #if 0
+      /* TODO: To be filled on receving UE CONTEXT SETUP from CU */
+      /* Filling Qos characteristics */
+      lcCfgInfo->drbQos.fiveQiType = QoS_Characteristics_PR_non_Dynamic_5QI;
+      lcCfgInfo->drbQos.u.nonDyn5Qi.fiveQi = 0;
+      lcCfgInfo->drbQos.u.nonDyn5Qi.priorLevel = 0;
+      lcCfgInfo->drbQos.u.nonDyn5Qi.avgWindow = 0;
+      lcCfgInfo->drbQos.u.nonDyn5Qi.maxDataBurstVol = 0;
+
+      /* Filling NgRAN */
+      lcCfgInfo->drbQos.ngRanRetPri.priorityLevel = PriorityLevel_highest;
+      lcCfgInfo->drbQos.ngRanRetPri.preEmptionCap = \
+       Pre_emptionCapability_may_trigger_pre_emption;
+      lcCfgInfo->drbQos.ngRanRetPri.preEmptionVul = \
+       Pre_emptionVulnerability_not_pre_emptable;
+
+      /* Filling Grb Qos */
+      lcCfgInfo->drbQos.grbQosInfo.maxFlowBitRateDl  = 0;
+      lcCfgInfo->drbQos.grbQosInfo.maxFlowBitRateUl  = 0;
+      lcCfgInfo->drbQos.grbQosInfo.guarFlowBitRateDl = 0;
+      lcCfgInfo->drbQos.grbQosInfo.guarFlowBitRateUl = 0;
+      
+      /* Filling S-NSSAI */
+      /* TODO :To be filled when UE Context Setup Request is sent from CU */
+      /* Filling UL Logical Channel Config */
+      lcCfgInfo->ulLcCfg.priority = 0;
+      lcCfgInfo->ulLcCfg.lcGroup  = 0;
+      lcCfgInfo->ulLcCfg.schReqId = 0;
+      lcCfgInfo->ulLcCfg.pbr = 0;
+      lcCfgInfo->ulLcCfg.bsd = 0;
+        
+      /* Filling DL Logical Channel Config */
+      lcCfgInfo->dlLcCfg.lcp = 0;
+      #endif
+   }
+   else
+   {
+      DU_LOG("\n Memory is null for LcCfgList");
+   }
+}
+/******************************************************************
+ *
+ * @brief Builds and Send UE Create Request to MAC
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendUeCreateReqToMac
+ *
+ *    Functionality: Builds and Send UE Create Request to MAC
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duBuildAndSendUeCreateReqToMac()
+{
+   uint8_t idx2;
+   uint32_t idx;
+   MacUeCfg *ueCfg = NULLP;
+   Pst pst;
+
+   memset(&pst, 0, sizeof(Pst));
+
+   for(idx = 0; idx < duCb.numUe; idx++)
+   {
+      /* If there are many UE, what condition to be checked */
+      duCb.ueCb[idx].ueIdx   = idx;
+      duCb.ueCb[idx].crnti   = duCb.ueCcchCtxt[idx].crnti;
+      duCb.ueCb[idx].cellIdx = duCb.ueCcchCtxt[idx].cellId;
+
+      memset(&duCb.ueCb[idx].macCellGrpCfg, 0, sizeof(MacCellGrpCfg)); 
+      fillMacCellGrpInfo(&duCb.ueCb[idx].macCellGrpCfg);
+
+      memset(&duCb.ueCb[idx].phyCellGrpCfg, 0, sizeof(PhyCellGrpCfg)); 
+      fillPhyCellGrpInfo(&duCb.ueCb[idx].phyCellGrpCfg);
+
+      memset(&duCb.ueCb[idx].spCellCfg, 0, sizeof(SpCellCfg)); 
+      fillSpCellGrpInfo(&duCb.ueCb[idx].spCellCfg);
+
+      /* Filling UE MAX AGGREGATE BIT RATE */ 
+      duCb.ueCb[idx].maxAggrBitRate = NULLP;
+      /* Filling LC Context */
+      duCb.ueCb[idx].numLcs = 1;
+      if(duCb.ueCb[idx].numLcs < MAX_NUM_LOGICAL_CHANNELS)
+      {
+         for(idx2 = 0; idx2 < duCb.ueCb[idx].numLcs; idx++)
+         {   
+            fillLcCfgList(&duCb.ueCb[idx].lcCfgList[idx2]);
+         }
+      }
+   }
+
+   /* Fill Pst */
+   pst.selector  = DU_MAC_LWLC;
+   pst.srcEnt    = ENTDUAPP;
+   pst.srcInst   = DU_INST;
+   pst.dstEnt    = ENTRG;
+   pst.dstInst   = 0;
+   pst.dstProcId = DU_PROC;
+   pst.srcProcId = DU_PROC;
+   pst.region    = DU_APP_MEM_REGION;
+   pst.pool      = DU_POOL;
+   pst.event     = EVENT_MAC_UE_CREATE_REQ;
+
+   /* Copying ueCb to a sharable buffer */
+   DU_ALLOC_SHRABL_BUF(ueCfg, sizeof(MacUeCfg));
+	memset(ueCfg, 0, sizeof(MacUeCfg));
+	if(ueCfg)
+	{
+      memcpy(ueCfg, &duCb.ueCb[0], sizeof(MacUeCfg));
+      /* Processing one Ue at a time to MAC */
+      packDuMacUeCreateReq(&pst, &duCb.ueCb[0]);
+      return ROK;
+	}
+	else
+	{
+	   DU_LOG("\n DU_APP: Memory alloc failed at \
+	     duBuildAndSendUeCreateReqToMac()");
+	   return RFAILED;
+	}
+}
 
 /**********************************************************************
          End of file
