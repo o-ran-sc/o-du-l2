@@ -240,6 +240,24 @@
     },
     {
       "key": {
+        "uuid": "fb348a59_7ec80db5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1044,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-26T09:30:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5b62029_f7fe6183",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "60f526b1_65ce511e",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 2
