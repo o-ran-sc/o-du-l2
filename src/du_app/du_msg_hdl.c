@@ -313,7 +313,7 @@ S16 duProcCfgComplete()
    U16 idx;
    for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
-      DuCellCb *cell;
+      DuCellCb *cell = NULLP;
       DU_ALLOC(cell, sizeof(DuCellCb))
       if(cell == NULLP)
       {
@@ -325,7 +325,7 @@ S16 duProcCfgComplete()
          U32 nci;
          U8 idx1; 
          memset(cell, 0, sizeof(DuCellCb));
-         cell->cellId = cellId++;
+         cell->cellId = ++cellId;
          cell->cellInfo.nrEcgi.plmn.mcc[0] = PLMN_MCC0;
          cell->cellInfo.nrEcgi.plmn.mcc[1] = PLMN_MCC1;
          cell->cellInfo.nrEcgi.plmn.mcc[2] = PLMN_MCC2;
@@ -346,6 +346,7 @@ S16 duProcCfgComplete()
 	 }
          cell->cellInfo.maxUe = duCfgParam.maxUe;
          cell->cellStatus = CELL_OUT_OF_SERVICE;
+			cell->ueCb[idx].macUeCfg.ueIdx = DU_MAX_UE;
          nci = (U16)cell->cellInfo.nrEcgi.cellId;
          
          duCb.cfgCellLst[nci-1] = cell;

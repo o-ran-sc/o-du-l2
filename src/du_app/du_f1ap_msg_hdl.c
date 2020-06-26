@@ -2548,7 +2548,7 @@ struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
 		return RFAILED;
    }
    byteIdx = 0;
-	controlRSet->frequencyDomainResources.buf[byteIdx] = 255; /* setting 8 MSBs i.e. ff */
+	controlRSet->frequencyDomainResources.buf[byteIdx] = PDCCH_FREQ_DOM_RSRC; /* setting 8 MSBs i.e. ff */
    for(byteIdx = 1; byteIdx < numBytes; byteIdx++)
 	{
 	   controlRSet->frequencyDomainResources.buf[byteIdx] = 0;
@@ -2724,7 +2724,8 @@ struct PDCCH_Config__searchSpacesToAddModList *searchSpcList
 	}
 
 	byteIdx = 0;
-	searchSpc->monitoringSymbolsWithinSlot->buf[byteIdx++] = 128 /* setting MSB to 128 i.e. 0x80 */;
+	searchSpc->monitoringSymbolsWithinSlot->buf[byteIdx++] = \
+	 PDCCH_SYMBOL_WITHIN_SLOT /* setting MSB to 128 i.e. 0x80 */;
 	searchSpc->monitoringSymbolsWithinSlot->buf[byteIdx++] = 0;
 	searchSpc->monitoringSymbolsWithinSlot->bits_unused = bitsUnused;
 
