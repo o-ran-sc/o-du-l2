@@ -34,6 +34,7 @@
 
 /* header files */
 #include "sch_utils.h"
+#include "math.h"
 
 /* spec-38.213 Table 13-1 */
 int8_t coresetIdxTable[MAX_CORESET_INDEX][4] = {
@@ -433,17 +434,17 @@ uint16_t mcsTable[32][3] = {
  *
  * @details
  *
- *     Function: calculatePRB
+ *     Function: schAllocFreqDomRscType0
  *     
- *     This function does allocation in frequency domain resource. using 
- *     bitwise operator, the bits are set for the PRBs.
+ *     This function does allocation in frequency domain resource.
+ *     This is a bitmap defining  non-overlapping groups of 6 PRBs in ascending order.
  *     
  *  @param[in]  startPrb - start PRB from where the freq alloc starts.  
  *  @param[in]  prbSize - number of PRBs to be allocted.
  *  @param[in]  freqDomain - 6 bytes of info, each bit represents a group of 6 PRB.
  *  @return   void
  **/
-void calculatePRB(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
+void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
 {
    uint8_t remBits = prbSize; /* each bit represents 6 PRBs */
    uint8_t firstByte = 1;

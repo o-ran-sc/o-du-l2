@@ -240,12 +240,12 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
 	if(ret == ROK)
 	{
 		/* fill RAR info */
-		rarInfo->raRnti      = raRnti;
-		rarInfo->tcrnti      = rachInd->crnti;
-		rarInfo->RAPID       = rachInd->preambleIdx;
-		rarInfo->ta          = rachInd->timingAdv;
-		rarInfo->msg3StartRb = msg3StartRb;
-		rarInfo->msg3NumRb   = msg3NumRb;
+		rarInfo->raRnti                 = raRnti;
+		rarInfo->tcrnti                 = rachInd->crnti;
+		rarInfo->RAPID                  = rachInd->preambleIdx;
+		rarInfo->ta                     = rachInd->timingAdv;
+		rarInfo->msg3FreqAlloc.startPrb = msg3StartRb;
+		rarInfo->msg3FreqAlloc.numPrb   = msg3NumRb;
 	}
    return ret;
 }
@@ -303,13 +303,13 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    }
 
    /* calculate the PRBs */
-   calculatePRB( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   schAllocFreqDomRscType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill BWP */
-   bwp->BWPSize = initialBwp->bwp.numPrb;
-   bwp->BWPStart = initialBwp->bwp.firstPrb;
-   bwp->subcarrierSpacing = initialBwp->bwp.scs;
-   bwp->cyclicPrefix = initialBwp->bwp.cyclicPrefix;
+   bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;
+   bwp->freqAlloc.startPrb = initialBwp->bwp.freqAlloc.startPrb;
+   bwp->subcarrierSpacing  = initialBwp->bwp.scs;
+   bwp->cyclicPrefix       = initialBwp->bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
    pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
@@ -362,12 +362,12 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    pdsch->dmrs.scid = 0;
    pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
    pdsch->dmrs.dmrsPorts = 0;
-   pdsch->freqAlloc.resourceAlloc = 1; /* RAT type-1 RIV format */
-   pdsch->freqAlloc.rbStart = offset + SCH_SSB_PRB_DURATION; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
-   pdsch->freqAlloc.rbSize = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
-   pdsch->freqAlloc.vrbPrbMapping = 0; /* non-interleaved */
-   pdsch->timeAlloc.startSymbolIndex = initialBwp->pdschCommon.startSymbol;
-   pdsch->timeAlloc.numSymbols = initialBwp->pdschCommon.lengthSymbol;
+   pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = offset + SCH_SSB_NUM_PRB; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
+   pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+   pdsch->pdschTimeAlloc.timeAlloc.startSymb = initialBwp->pdschCommon.startSymbol;
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb = initialBwp->pdschCommon.lengthSymbol;
    pdsch->beamPdschInfo.numPrgs = 1;
    pdsch->beamPdschInfo.prgSize = 1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;

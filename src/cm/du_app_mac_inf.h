@@ -176,6 +176,7 @@ typedef struct prachCfg
    RstSetCfg     prachRstSetCfg;      /* PRACH restricted set config */
 	uint16_t      msg1FreqStart;       /* Msg1-FrequencyStart */
    uint8_t       msg1Fdm;             /* PRACH FDM (1,2,4,8) */
+	uint8_t       rootSeqLen;          /* Root sequence length */
    PrachFdmInfo  fdm[8];              /* FDM info */
    uint8_t       ssbPerRach;          /* SSB per RACH occassion */
    Bool          prachMultCarrBand;   /* Multiple carriers in Band */
@@ -271,22 +272,22 @@ typedef struct bwpUlConfig
 
 typedef struct macCellCfg
 {
-   U16            transId;
-   U16            cellId;     /* Cell Id */
-   U8             numTlv;     /* Number of configuration TLVs */
-   U8             carrierId;  /* Carrired Index */
-   U16            phyCellId;  /* Physical cell id */
-   DuplexMode     dupType;    /* Duplex type: TDD/FDD */
-   CarrierCfg     dlCarrCfg;  /* DL Carrier configuration */
-   CarrierCfg     ulCarrCfg;  /* UL Carrier configuration */
-   Bool           freqShft;   /* Indicates presence of 7.5kHz frequency shift */
-   SsbCfg         ssbCfg;     /* SSB configuration */          
-   PrachCfg       prachCfg;   /* PRACH Configuration */
-   TDDCfg         tddCfg;     /* TDD periodicity and slot configuration */
-   RSSIMeasUnit   rssiUnit;   /* RSSI measurement unit */
-   Sib1CellCfg    sib1Cfg;
-	BwpDlConfig    initialDlBwp;
-	BwpUlConfig    initialUlBwp;
+	U16            transId;          /* Trans Id */
+	U16            cellId;           /* Cell Id */
+	U8             numTlv;           /* Number of configuration TLVs */
+	U8             carrierId;        /* Carrired Index */
+	U16            phyCellId;        /* Physical cell id */
+	DuplexMode     dupType;          /* Duplex type: TDD/FDD */
+	CarrierCfg     dlCarrCfg;        /* DL Carrier configuration */
+	CarrierCfg     ulCarrCfg;        /* UL Carrier configuration */
+	Bool           freqShft;         /* Indicates presence of 7.5kHz frequency shift */
+   SsbCfg         ssbCfg;           /* SSB configuration */          
+   PrachCfg       prachCfg;         /* PRACH Configuration */
+   TDDCfg         tddCfg;           /* TDD periodicity and slot configuration */
+   RSSIMeasUnit   rssiUnit;         /* RSSI measurement unit */
+   Sib1CellCfg    sib1Cfg;          /* SIB1 config */
+	BwpDlConfig    initialDlBwp;     /* Initial DL BWP */
+	BwpUlConfig    initialUlBwp;     /* Initial UL BWP */
 }MacCellCfg;
 
 typedef struct macCellCfgCfm

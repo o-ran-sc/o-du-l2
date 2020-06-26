@@ -186,6 +186,7 @@ S16 readMacCfg()
    duCfgParam.macCellCfg.prachCfg.prachRstSetCfg = PRACH_RESTRICTED_SET_CFG;
    duCfgParam.macCellCfg.prachCfg.msg1Fdm = NUM_PRACH_FDM;
 	duCfgParam.macCellCfg.prachCfg.msg1FreqStart = PRACH_FREQ_START;
+	duCfgParam.macCellCfg.prachCfg.rootSeqLen    = ROOT_SEQ_LEN;
    duCfgParam.macCellCfg.prachCfg.fdm[0].rootSeqIdx = ROOT_SEQ_IDX;
    duCfgParam.macCellCfg.prachCfg.fdm[0].numRootSeq = NUM_ROOT_SEQ;
    duCfgParam.macCellCfg.prachCfg.fdm[0].k1 = 1;
@@ -272,7 +273,6 @@ S16 readMacCfg()
 	   PUSCH_START_SYMBOL;
 	duCfgParam.macCellCfg.initialUlBwp.puschCommon.lengthSymbol =
 	   PUSCH_LENGTH_SYMBOL;
-
 
    /* This should be calculated based on
       (number of mandatory parameters) + (number of otional parameters being filled) */

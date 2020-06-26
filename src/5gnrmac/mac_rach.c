@@ -136,7 +136,7 @@ int MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
 	{
       MacUlSlot *currUlSlot = 
 	   &macCb.macCell->ulSlot[ulSchedInfo->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
-      memcpy(&currUlSlot->ulInfo, ulSchedInfo, sizeof(ulSchedInfo)); 
+      memcpy(&currUlSlot->ulInfo, ulSchedInfo, sizeof(UlSchedInfo)); 
    }
    return ROK;
 }
