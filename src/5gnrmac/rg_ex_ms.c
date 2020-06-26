@@ -145,6 +145,10 @@ Buffer  *mBuf;                      /* message buffer       */
 			/* Process DL CCCH Ind */
 			unpackMacDlCcchInd(MacHdlDlCcchInd, pst, mBuf);
 			break;
+		case EVENT_MAC_UE_CREATE_REQ:
+		   /* Process Ue Create Request */
+			unpackMacUeCreateReq(MacHdlUeCreateReq, pst, mBuf);
+			break;
       default:
          RG_FREE_MSG(mBuf);
          break;

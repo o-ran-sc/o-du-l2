@@ -708,8 +708,85 @@ uint16_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
 	return RFAILED;
 }
 
+/*******************************************************************
+ *
+ * @brief Packs and Sends UE create Request from DUAPP to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacUeCreateReq
+ *
+ *    Functionality:
+ *       Packs and Sends UE Create Request from DUAPP to MAC
+ *
+ *
+ * @params[in] Post structure pointer
+ *             DuUeCb pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacUeCreateReq(Pst *pst, DuUeCb *ueCfg)
+{
+   Buffer *mBuf = NULLP;
+ 
+   if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	      DU_LOG("\nMAC : Memory allocation failed at packDuMacUeCreateReq");
+	      return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)ueCfg, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nMAC: Only LWLC supported for packDuMacUeCreateReq");
+      return RFAILED;
+   }
 
+    return SPstTsk(pst,mBuf);
+}
 
+/*******************************************************************
+ *
+ * @brief Unpacks UE Create Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacUeCreateReq
+ *
+ *    Functionality:
+ *         Unpacks UE Create Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
+{
+	if(pst->selector == DU_SELECTOR_LWLC)
+	{
+		DuUeCb *ueCfg;
+
+		/* unpack the address of the structure */
+		CMCHKUNPK(cmUnpkPtr, (PTR *)&ueCfg, mBuf);
+		SPutMsg(mBuf);
+		return (*func)(pst, ueCfg);
+	}
+	else
+	{
+		/* Nothing to do for other selectors */
+		DU_LOG("\n Only LWLC supported for UE Create Request ");
+		SPutMsg(mBuf);
+	}
+
+	return RFAILED;
+}
 /**********************************************************************
          End of file
 **********************************************************************/
