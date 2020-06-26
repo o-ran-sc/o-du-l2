@@ -27,12 +27,12 @@
 /* MACROS */
 #define DU_INST 0
 #define DU_ID 1
-#define DU_IP_V4_ADDR "192.168.130.81"
+#define DU_IP_V4_ADDR "10.0.2.20"
 #define CU_IP_V4_ADDR "10.0.2.25"
-#define RIC_IP_V4_ADDR "192.168.130.80"
+#define RIC_IP_V4_ADDR "10.0.2.30"
 #define DU_PORT 38472
 #define CU_PORT 38472
-#define RIC_PORT 36422
+#define RIC_PORT 38482
 #define DU_EGTP_PORT  39001
 #define CU_EGTP_PORT  39002
 #define NR_PCI 1
@@ -96,7 +96,7 @@
 #define RA_CONT_RES_TIMER 64
 #define RA_RSP_WINDOW 180
 #define PRACH_RESTRICTED_SET 0 /* Unrestricted */
-
+#define ROOT_SEQ_LEN 139
 
 /* MACRCO Ddefine for PDCCH Configuration */
 #define PDCCH_CTRL_RSRC_SET_ZERO   13   /* Control resouce set zero */

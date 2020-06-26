@@ -313,7 +313,6 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
    uint8_t FBitSize = 1;
    uint8_t lcidSize = 6;
    uint8_t lenFieldSize = 0;          /* 8-bit or 16-bit L field  */
-   uint8_t criSize = 8;
 
    /* PACK ALL MAC CE */
    for(idx = 0; idx < macCeData->numCes; idx++)

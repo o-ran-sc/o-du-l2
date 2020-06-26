@@ -31,7 +31,9 @@
 }
 
 /* functions declarations */
-void calculatePRB(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
+void schAllocFreqDomRsc(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
+uint16_t schCalcTbSize(uint16_t payLoadSize);
+uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
 
 extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
 extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];

@@ -79,6 +79,19 @@ typedef enum
 	RSP_NOK
 }schMacRsp;
 
+typedef struct timeDomainAlloc
+{
+   uint16_t startSymb;
+       uint16_t numSymb;
+}TimeDomainAlloc;
+
+typedef struct freqDomainAlloc
+{
+   uint16_t startPrb;
+   uint16_t numPrb;
+}FreqDomainAlloc;
+
+
 typedef struct
 {
    uint32_t    ssbPbchPwr;       /* SSB block power */
@@ -91,10 +104,9 @@ typedef struct
 
 typedef struct bwpCfg
 {
-   uint8_t subcarrierSpacing;
-   uint8_t cyclicPrefix;
-   uint16_t BWPSize;
-   uint16_t BWPStart;
+   uint8_t         subcarrierSpacing;
+   uint8_t         cyclicPrefix;
+   FreqDomainAlloc freqAlloc;	
 }BwpCfg;
 
 typedef struct prg
@@ -135,18 +147,16 @@ typedef struct dmrsInfo
 
 typedef struct pdschFreqAlloc
 {
-   uint8_t  resourceAlloc;
+   uint8_t  resourceAllocType;
    /* since we are using type-1, hence rbBitmap excluded */
-   uint16_t rbStart;
-   uint16_t rbSize;
+	FreqDomainAlloc freqAlloc;
    uint8_t  vrbPrbMapping;
 } PdschFreqAlloc;
 
 typedef struct pdschTimeAlloc
 {
-   uint8_t rowIndex;
-   uint8_t startSymbolIndex;
-   uint8_t numSymbols;
+   uint8_t         rowIndex;
+	TimeDomainAlloc timeAlloc;
 } PdschTimeAlloc;
 
 typedef struct txPowerPdschInfo
@@ -157,19 +167,19 @@ typedef struct txPowerPdschInfo
 
 typedef struct pdschCfg
 {
-   uint16_t pduBitmap;
-   uint16_t rnti;
-   uint16_t pduIndex;
-   uint8_t numCodewords;
-   CodewordInfo codeword[MAX_CODEWORDS];
-   uint16_t dataScramblingId;
-   uint8_t  numLayers;
-   uint8_t  transmissionScheme;
-   uint8_t  refPoint;
-   DmrsInfo dmrs;
-   PdschFreqAlloc freqAlloc;
-   PdschTimeAlloc timeAlloc;
-   BeamformingInfo beamPdschInfo;
+   uint16_t         pduBitmap;
+   uint16_t         rnti;
+   uint16_t         pduIndex;
+   uint8_t          numCodewords;
+   CodewordInfo     codeword[MAX_CODEWORDS];
+   uint16_t         dataScramblingId;
+   uint8_t          numLayers;
+   uint8_t          transmissionScheme;
+   uint8_t          refPoint;
+   DmrsInfo         dmrs;
+   PdschFreqAlloc   pdschFreqAlloc;
+   PdschTimeAlloc   pdschTimeAlloc;
+   BeamformingInfo  beamPdschInfo;
    TxPowerPdschInfo txPdschPower;
 } PdschCfg;
 /* SIB1 PDSCH structures end */
@@ -239,26 +249,26 @@ typedef struct
 
 typedef struct schRachCfg
 {
-   uint8_t      prachCfgIdx; /* PRACH config idx */
-   uint8_t      prachSubcSpacing; /* Subcarrier spacing of RACH */
+   uint8_t      prachCfgIdx;       /* PRACH config idx */
+   uint8_t      prachSubcSpacing;  /* Subcarrier spacing of RACH */
 	uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
-	uint8_t      msg1Fdm;             /* PRACH FDM (1,2,4,8) */
+	uint8_t      msg1Fdm;           /* PRACH FDM (1,2,4,8) */
+	uint8_t      rootSeqLen;        /* root sequence length */
    uint16_t     rootSeqIdx;        /* Root sequence index */
    uint8_t      numRootSeq;        /* Number of root sequences required for FD */
    uint16_t     k1;                /* Frequency Offset for each FD */
-   uint8_t      ssbPerRach;          /* SSB per RACH occassion */
-   uint8_t      prachMultCarrBand;    /* Presence of Multiple carriers in Band */
-	uint8_t      raContResTmr;        /* RA Contention Resoultion Timer */
-	uint8_t      rsrpThreshSsb;       /* RSRP Threshold SSB */
-   uint8_t      raRspWindow;         /* RA Response Window */
+   uint8_t      ssbPerRach;        /* SSB per RACH occassion */
+   uint8_t      prachMultCarrBand; /* Presence of Multiple carriers in Band */
+	uint8_t      raContResTmr;      /* RA Contention Resoultion Timer */
+	uint8_t      rsrpThreshSsb;     /* RSRP Threshold SSB */
+   uint8_t      raRspWindow;       /* RA Response Window */
 }SchRachCfg;
 
 typedef struct schBwpParams
 {
-   uint16_t firstPrb;
-   uint16_t numPrb;
-	uint8_t  scs;
-	uint8_t  cyclicPrefix;
+   FreqDomainAlloc freqAlloc;
+	uint8_t         scs;
+	uint8_t         cyclicPrefix;
 }SchBwpParams;
 
 typedef struct schCandidatesInfo
@@ -317,16 +327,16 @@ typedef struct schBwpUlCfg
 
 typedef struct schCellCfg
 {
-   uint16_t    cellId;     /* Cell Id */
-   uint16_t    phyCellId;  /* Physical cell id */
-	uint8_t     bandwidth;  /* Supported B/W */
-   DuplexMode  dupMode;    /* Duplex type: TDD/FDD */
-	SchSsbCfg   ssbSchCfg;  /* SSB config */
-	SchSib1Cfg  sib1SchCfg; /* SIB1 config */
-   SchRachCfg  schRachCfg; /* PRACH config */
-	SchBwpDlCfg schInitialDlBwp; /* Initial DL BWP */
-	SchBwpUlCfg schInitialUlBwp; /* Initial UL BWP */
-	uint8_t     puschMu;         /* PUSCH MU */
+   uint16_t    cellId;           /* Cell Id */
+   uint16_t    phyCellId;        /* Physical cell id */
+	uint8_t     bandwidth;        /* Supported B/W */
+   DuplexMode  dupMode;          /* Duplex type: TDD/FDD */
+	SchSsbCfg   ssbSchCfg;        /* SSB config */
+	SchSib1Cfg  sib1SchCfg;       /* SIB1 config */
+   SchRachCfg  schRachCfg;       /* PRACH config */
+	SchBwpDlCfg schInitialDlBwp;  /* Initial DL BWP */
+	SchBwpUlCfg schInitialUlBwp;  /* Initial UL BWP */
+	uint8_t     puschMu;          /* PUSCH MU */
 }SchCellCfg;
 
 typedef struct schCellCfgCfm
@@ -335,21 +345,9 @@ typedef struct schCellCfgCfm
    schMacRsp   rsp;   
 }SchCellCfgCfm;
 
-typedef struct timeDomainAlloc
-{
-   uint16_t startSymb;
-	uint16_t numSymb;
-}TimeDomainAlloc;
-
-typedef struct freqDomainAlloc
-{
-   uint16_t startPrb;
-   uint16_t numPrb;
-}FreqDomainAlloc;
-
 typedef struct ssbInfo
 {
-   uint8_t ssbIdx;          /* SSB Index */
+   uint8_t         ssbIdx;          /* SSB Index */
 	TimeDomainAlloc tdAlloc; /* Time domain allocation */
 	FreqDomainAlloc fdAlloc; /* Freq domain allocation */
 }SsbInfo;
@@ -389,14 +387,13 @@ typedef struct dlBrdcstAlloc
 
 typedef struct rarInfo
 {
-   uint16_t raRnti;
-	uint8_t  RAPID;
-	uint16_t ta;
-	uint16_t msg3StartRb;
-	uint8_t  msg3NumRb;
-	uint16_t tcrnti;
-	uint8_t  rarPdu[8];
-	uint8_t  rarPduLen;
+   uint16_t        raRnti;
+	uint8_t         RAPID;
+	uint16_t        ta;
+	FreqDomainAlloc msg3FreqAlloc;
+	uint16_t        tcrnti;
+	uint8_t         rarPdu[8];
+	uint8_t         rarPduLen;
 }RarInfo;
 
 typedef struct rarAlloc

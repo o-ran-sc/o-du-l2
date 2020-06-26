@@ -75,41 +75,6 @@ SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
 };
 
 /**
- * @brief Time domain allocation for SSB
- *
- * @details
- *
- *     Function : ssbDlTdAlloc 
- *     
- *     This function handles common scheduling for DL
- *     
- *  @param[in]  uint8_t scs, uint8_t *ssbStartSym
- *  @return  void
- **/
-void ssbDlTdAlloc(uint8_t scs, uint8_t *ssbStartSymb)
-{
-   uint8_t n;
-	/* Determine value of "n" based on Section 4.1 of 3GPP TS 38.213 */
-	switch(scs)
-	{
-		case SCH_SCS_15KHZ:
-			{
-			   uint8_t symbIdx=0;
-			   n = 2;/* n = 0, 1 for SCS = 15KHz */
-				for(uint8_t idx=0; idx<n; idx++)
-				{
-               /* start symbol determined using {2, 8} + 14n */
-					ssbStartSymb[symbIdx++] = 2 + SCH_SYMBOL_PER_SLOT*idx;
-					ssbStartSymb[symbIdx++] = 8 + SCH_SYMBOL_PER_SLOT*idx;
-				}
-			}
-			break;
-		default:
-			DU_LOG("\nSCS %d is currently not supported", scs);
-	}
-}
-
-/**
  * @brief common resource allocation for SSB
  *
  * @details
@@ -126,37 +91,34 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
         uint16_t slot)
 {
 	/* schedule SSB */
-	uint8_t scs, ssbStartPrb, ssbStartSymb, idx;
-	uint8_t ssbStartSymbArr[SCH_MAX_SSB_BEAM];
+	uint8_t ssbStartPrb, ssbStartSymb, idx;
 	SchDlSlotInfo *schDlSlotInfo;
 	SsbInfo ssbInfo;
 
 	schDlSlotInfo = cell->schDlSlotInfo[slot];
 	if(dlBrdcstAlloc->ssbTrans)
 	{
-		scs = cell->cellCfg.ssbSchCfg.scsCommon;
 		ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+      ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are
+		supporting only 1 ssb beam */
 
-		memset(ssbStartSymbArr, 0, SCH_MAX_SSB_BEAM);
-		ssbDlTdAlloc(scs, ssbStartSymbArr);
-		ssbStartSymb = ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are supporting only 1 ssb beam */
 		/* Assign interface structure */
 		for(idx=0; idx<dlBrdcstAlloc->ssbIdxSupported; idx++)
 		{
-			ssbInfo.ssbIdx = idx;
-			ssbInfo.fdAlloc.startPrb  = ssbStartPrb;
-			ssbInfo.fdAlloc.numPrb    = SCH_SSB_PRB_DURATION;
-			ssbInfo.tdAlloc.startSymb = ssbStartSymb;
-			ssbInfo.tdAlloc.numSymb   = SCH_SSB_SYMB_DURATION;
+			ssbInfo.ssbIdx              = idx;
+			ssbInfo.fdAlloc.startPrb    = ssbStartPrb;
+			ssbInfo.fdAlloc.numPrb      = SCH_SSB_NUM_PRB;
+			ssbInfo.tdAlloc.startSymb   = ssbStartSymb;
+			ssbInfo.tdAlloc.numSymb     = SCH_SSB_NUM_SYMB;
 			dlBrdcstAlloc->ssbInfo[idx] = ssbInfo;
 			schDlSlotInfo->ssbInfo[idx] = ssbInfo;
 		}
 
 		schDlSlotInfo->ssbPres = true;
 		schDlSlotInfo->ssbIdxSupported = dlBrdcstAlloc->ssbIdxSupported;
-		for(idx=ssbStartSymb; idx<ssbStartSymb+SCH_SSB_SYMB_DURATION; idx++)
+		for(idx=ssbStartSymb; idx<ssbStartSymb+SCH_SSB_NUM_SYMB; idx++)
 		{
-			schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_PRB_DURATION + 1; /* +1 for kSsb */
+			schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1; /* +1 for kSsb */
 		}
 	}
 
@@ -166,7 +128,7 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
 		schDlSlotInfo->sib1Pres = true;
 		for(idx=0; idx<SCH_SYMBOL_PER_SLOT; idx++)
 		{
-			schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_PRB_DURATION + 1 + 10; /* 10 PRBs for sib1 */
+			schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + 10; /* 10 PRBs for sib1 */
 		}
 	   memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
 	   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
@@ -216,6 +178,7 @@ int sendUlSchInfoToMac(UlSchedInfo *ulSchedInfo, Inst inst)
  **/
 int schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo prachOccasionTimingInfo)
 {
+   uint8_t  puschScs;
    uint8_t  numPrachRb = 0;
 	uint8_t  numRa = 0;
 	uint8_t  freqStart = 0;
@@ -230,8 +193,9 @@ int schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo prac
 	uint8_t  idx = 0;
 	SchUlSlotInfo *schUlSlotInfo = NULLP;
 
+   puschScs      = cell->cellCfg.schInitialUlBwp.bwp.scs;
 	schUlSlotInfo = cell->schUlSlotInfo[prachOccasionTimingInfo.slot];
-	prachCfgIdx = cell->cellCfg.schRachCfg.prachCfgIdx;
+	prachCfgIdx   = cell->cellCfg.schRachCfg.prachCfgIdx;
 
     /* derive the prachCfgIdx table paramters */
 	x                = prachCfgIdxTable[prachCfgIdx][1];
@@ -260,9 +224,19 @@ int schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo prac
 		numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
 		for(idx=0; idx<MAX_RACH_NUM_RB_IDX; idx++)
 		{
-         if(numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqIdx)
-			   break;
+			if(numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqLen)
+			{
+				if(numRbForPrachTable[idx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing)
+				{
+					if(numRbForPrachTable[idx][2] == puschScs)
+					{
+						break;
+					}
+				}
+			}
+
 		}
+
 		numPrachRb = numRbForPrachTable[idx][3];
 		dataType |= SCH_DATATYPE_PRACH;
 		/* Considering first slot in the frame for PRACH */
@@ -328,6 +302,8 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
       DU_LOG("\nSending UL Sch info from SCH to MAC failed");
    }
     
+	memset(cell->schUlSlotInfo[ulTimingInfo.slot], 0, sizeof(SchUlSlotInfo));
+
 	return ret;
 }
 
@@ -356,6 +332,9 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    uint8_t offset = 0;
    uint8_t offsetPointA;
    uint8_t FreqDomainResource[6] = {0};
+   uint16_t tbSize = 0;
+	uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
+   uint8_t mcs = 4;  /* MCS fixed to 4 */
    SchBwpDlCfg *initialBwp;
 
    PdcchCfg *pdcch = &msg4Alloc->msg4PdcchCfg;
@@ -382,13 +361,13 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    }
 
    /* calculate the PRBs */
-   calculatePRB( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   schAllocFreqDomRsc( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill BWP */
-   bwp->BWPSize = initialBwp->bwp.numPrb;
-   bwp->BWPStart = initialBwp->bwp.firstPrb;
-   bwp->subcarrierSpacing = initialBwp->bwp.scs;
-   bwp->cyclicPrefix = initialBwp->bwp.cyclicPrefix;
+   bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;
+   bwp->freqAlloc.startPrb = initialBwp->bwp.freqAlloc.startPrb;
+   bwp->subcarrierSpacing  = initialBwp->bwp.scs;
+   bwp->cyclicPrefix       = initialBwp->bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
    pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
@@ -425,12 +404,13 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    {
       pdsch->codeword[cwCount].targetCodeRate = 308;
       pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = 4; /* mcs configured to 4 */
+      pdsch->codeword[cwCount].mcsIndex = mcs; /* mcs configured to 4 */
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
       /* 38.214: Table 5.1.3.2-1,  divided by 8 to get the value in bytes */
       /* TODO : Calculate tbSize based of DL CCCH msg size */
-      pdsch->codeword[cwCount].tbSize = 2664/8;
+		tbSize = schCalcTbSize(2664/8); /* send this value to the func in bytes when considering msg4 size */
+      pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;
    pdsch->numLayers = 1;
@@ -442,18 +422,13 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    pdsch->dmrs.scid = 0;
    pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
    pdsch->dmrs.dmrsPorts = 0;
-   pdsch->freqAlloc.resourceAlloc = 1; /* RAT type-1 RIV format */
+   pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
-   pdsch->freqAlloc.rbStart = offset + SCH_SSB_PRB_DURATION;
-   /* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
-    * Ninfo = S . Nre . R . Qm . v                                   *
-    * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                       *
-    * Nre = min(156,Nre') . nPrb                                     */
-   /* TODO : Calculate rbSize based on tbSize calculated */
-   pdsch->freqAlloc.rbSize = 34;
-   pdsch->freqAlloc.vrbPrbMapping = 0; /* non-interleaved */
-   pdsch->timeAlloc.startSymbolIndex = 2; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->timeAlloc.numSymbols = 12;
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = offset + SCH_SSB_NUM_PRB;
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
+   pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+   pdsch->pdschTimeAlloc.timeAlloc.startSymb = 2; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb = 12;
    pdsch->beamPdschInfo.numPrgs = 1;
    pdsch->beamPdschInfo.prgSize = 1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;

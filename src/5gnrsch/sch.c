@@ -424,6 +424,9 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
 			return RFAILED;
 		}
 
+      memset(schDlSlotInfo, 0, sizeof(SchDlSlotInfo));
+		memset(schUlSlotInfo, 0, sizeof(SchUlSlotInfo));
+
       schDlSlotInfo->totalPrb = schUlSlotInfo->totalPrb = MAX_NUM_RB;
 
 		for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
@@ -499,13 +502,13 @@ uint8_t      offsetPointA
    sib1SchCfg->n0 = slotIndex;
  
    /* calculate the PRBs */
-   calculatePRB( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   schAllocFreqDomRsc( ((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill BWP */
-   bwp->BWPSize = MAX_NUM_RB; /* whole of BW */
-   bwp->BWPStart = 0;
-   bwp->subcarrierSpacing = 0;         /* 15Khz */
-   bwp->cyclicPrefix = 0;              /* normal */
+   bwp->freqAlloc.numPrb   = MAX_NUM_RB; /* whole of BW */
+   bwp->freqAlloc.startPrb = 0;
+   bwp->subcarrierSpacing  = 0;         /* 15Khz */
+   bwp->cyclicPrefix       = 0;              /* normal */
 
    /* fill the PDCCH PDU */
    pdcch->coreset0Cfg.coreSet0Size = numRbs;
@@ -551,30 +554,76 @@ uint8_t      offsetPointA
       tbSize = schCalcTbSize(sib1SchCfg->sib1PduLen);
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
-   pdsch->dataScramblingId = pci;
-   pdsch->numLayers = 1;
-   pdsch->transmissionScheme = 0;
-   pdsch->refPoint = 0;
-   pdsch->dmrs.dlDmrsSymbPos = 2;
-   pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
-   pdsch->dmrs.dlDmrsScramblingId = pci;
-   pdsch->dmrs.scid = 0;
-   pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
-   pdsch->dmrs.dmrsPorts = 0;
-   pdsch->freqAlloc.resourceAlloc = 1; /* RAT type-1 RIV format */
-   pdsch->freqAlloc.rbStart = offset + SCH_SSB_PRB_DURATION; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
-   pdsch->freqAlloc.rbSize = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
-   pdsch->freqAlloc.vrbPrbMapping = 0; /* non-interleaved */
-   pdsch->timeAlloc.rowIndex = 1;
-   pdsch->timeAlloc.startSymbolIndex = 2; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->timeAlloc.numSymbols = numPdschSymbols;
-   pdsch->beamPdschInfo.numPrgs = 1;
-   pdsch->beamPdschInfo.prgSize = 1;
-   pdsch->beamPdschInfo.digBfInterfaces = 0;
-   pdsch->beamPdschInfo.prg[0].pmIdx = 0;
-   pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;
-   pdsch->txPdschPower.powerControlOffset = 0;
-   pdsch->txPdschPower.powerControlOffsetSS = 0;
+   pdsch->dataScramblingId                   = pci;
+   pdsch->numLayers                          = 1;
+   pdsch->transmissionScheme                 = 0;
+   pdsch->refPoint                           = 0;
+   pdsch->dmrs.dlDmrsSymbPos                 = 2;
+   pdsch->dmrs.dmrsConfigType                = 0; /* type-1 */
+   pdsch->dmrs.dlDmrsScramblingId            = pci;
+   pdsch->dmrs.scid                          = 0;
+   pdsch->dmrs.numDmrsCdmGrpsNoData          = 1;
+   pdsch->dmrs.dmrsPorts                     = 0;
+   pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
+	pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offset + SCH_SSB_NUM_PRB; /* the RB numbering starts from coreset0,
+	and PDSCH is always above SSB */
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
+   pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
+   pdsch->pdschTimeAlloc.rowIndex            = 1;
+   pdsch->pdschTimeAlloc.timeAlloc.startSymb = 2; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb   = numPdschSymbols;
+   pdsch->beamPdschInfo.numPrgs              = 1;
+   pdsch->beamPdschInfo.prgSize              = 1;
+   pdsch->beamPdschInfo.digBfInterfaces      = 0;
+   pdsch->beamPdschInfo.prg[0].pmIdx         = 0;
+   pdsch->beamPdschInfo.prg[0].beamIdx[0]    = 0;
+   pdsch->txPdschPower.powerControlOffset    = 0;
+   pdsch->txPdschPower.powerControlOffsetSS  = 0;
+
+}
+
+/**
+ * @brief Fill SSB start symbol
+ *
+ * @details
+ *
+ *     Function : fillSsbStartSymb 
+ *      
+ *      This API stores SSB start index per beam
+ *           
+ *  @param[in]  SchCellCb     *cellCb
+ *  @return  int
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+void fillSsbStartSymb(SchCellCb *cellCb)
+{
+	uint8_t cnt, scs;
+
+	scs = cellCb->cellCfg.ssbSchCfg.scsCommon;
+	uint8_t ssbStartSymbArr[SCH_MAX_SSB_BEAM];
+
+   memset(ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
+	/* Determine value of "n" based on Section 4.1 of 3GPP TS 38.213 */
+	switch(scs)
+	{
+		case SCH_SCS_15KHZ:
+			{
+				uint8_t symbIdx=0;
+				cnt = 2;/* n = 0, 1 for SCS = 15KHz */
+				for(uint8_t idx=0; idx<cnt; idx++)
+				{
+					/* start symbol determined using {2, 8} + 14n */
+					ssbStartSymbArr[symbIdx++] = 2 +	SCH_SYMBOL_PER_SLOT*idx;
+					ssbStartSymbArr[symbIdx++]	= 8 +	SCH_SYMBOL_PER_SLOT*idx;
+				}
+			}
+			break;
+		default:
+			DU_LOG("\nSCS %d is currently not supported", scs);
+	}
+   memset(cellCb->ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
+   memcpy(cellCb->ssbStartSymbArr, ssbStartSymbArr, SCH_MAX_SSB_BEAM);
 
 }
 
