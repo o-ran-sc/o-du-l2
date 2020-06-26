@@ -34,6 +34,7 @@ S16 duHdlEgtpDlData(EgtpMsg  *egtpMsg);
 S16 duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf);
 S16 packUeCreateReq(Pst *pst,CkwCfgInfo *cfgInfo);
 S16 cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf);
+uint8_t duBuildAndSendUeCreateReq();
 uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo);
 #endif
 
