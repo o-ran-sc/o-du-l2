@@ -424,6 +424,30 @@ uint16_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti
 	return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Handles Ue Create Request from DU APP
+ *
+ * @details
+ *
+ *    Function : MacHdlUeCreateReq
+ *
+ *    Functionality:
+ *      Handles Ue create Request from DU APP
+ *
+ * @params[in] Post structure pointer
+ *             MacUeCfg pointer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t MacHdlUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
+{
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg->spCellCfg.\
+     servCellCfg.pdschServCellCfg, sizeof(PdschServCellCfg));
+   return ROK;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

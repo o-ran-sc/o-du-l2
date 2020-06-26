@@ -708,6 +708,46 @@ uint16_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
 	return RFAILED;
 }
 
+/*******************************************************************
+ *
+ * @brief Packs and Sends UE create Request from DUAPP to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacUeCreateReq
+ *
+ *    Functionality:
+ *       Packs and Sends UE Create Request from DUAPP to MAC
+ *
+ *
+ * @params[in] Post structure pointer
+ *             MacUeCfg pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
+{
+   Buffer *mBuf = NULLP;
+ 
+   if(pst->selector == DU_SELECTOR_LWLC)
+   {
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	  DU_LOG("\nMAC : Memory allocation failed at packDuMacUeCreateReq");
+	  return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)ueCfg, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nMAC: Only LWLC supported for packDuMacUeCreateReq");
+      return RFAILED;
+   }
+
+    return SPstTsk(pst,mBuf);
+}
 
 
 /**********************************************************************
