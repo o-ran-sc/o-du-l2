@@ -313,7 +313,7 @@ S16 duProcCfgComplete()
    U16 idx;
    for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
-      DuCellCb *cell;
+      DuCellCb *cell = NULLP;
       DU_ALLOC(cell, sizeof(DuCellCb))
       if(cell == NULLP)
       {

@@ -99,8 +99,11 @@
 
 #define DU_ZERO_VAL 0
 
-/* Macros */
+/* Ue State */
+#define UE_INACTIVE 0
+#define UE_ACTIVE   1
 
+/* Macros */
 #define ADD 0
 #define DEL 1
 
@@ -183,13 +186,27 @@ typedef struct cellCfgParams
    U32         maxUe;          /* max UE per slot */
 }CellCfgParams;
 
+typedef struct duUeCb
+{
+   int      ueIdx;
+   bool     ueState;
+   uint16_t cellIdx;
+   uint16_t crnti;
+   uint32_t gnbDuUeF1apId; /* GNB DU UE F1AP ID */
+   uint32_t gnbCuUeF1apId; /* GNB CU UE F1AP ID */
+   MacUeCfg macUeCfg;
+   //RlcUeCfg rlcUeCfg;    /* TODO: Ue request for RLC */
+}DuUeCb;
 
 typedef struct duCellCb
 {
-   U32            cellId;      /* Internal cell Id */
-   CellCfgParams  cellInfo;    /* Cell info */
+	uint8_t        ueBitMap;         /* Used to track the idx of the active Ue*/
+   uint16_t       cellId;           /* Internal cell Id */
+	uint32_t       numActvUes;       /* Total Active UEs */
+   CellCfgParams  cellInfo;         /* Cell info */
    Bool           firstSlotIndRcvd;
-   CellStatus     cellStatus;  /*Cell status */
+   CellStatus     cellStatus;       /* Cell status */
+   DuUeCb         ueCb[DU_MAX_UE];  /* UE CONTEXT */
 }DuCellCb;
 
 typedef struct duLSapCb
@@ -208,6 +225,7 @@ typedef struct duLSapCb
 typedef struct ueCcchCtxt
 {
    uint32_t gnbDuUeF1apId; /* GNB DU UE F1AP ID */
+   uint32_t gnbCuUeF1apId; /* GNB CU UE F1AP ID */
    uint16_t crnti;         /* CRNTI */
    uint16_t cellId;        /* Cell Id */
 }UeCcchCtxt;
@@ -224,9 +242,9 @@ typedef struct duCb
    DuCellCb*     cfgCellLst[DU_MAX_CELLS];     /* List of cells at DU APP of type DuCellCb */
    DuCellCb*     actvCellLst[DU_MAX_CELLS];    /* List of cells activated/to be activated of type DuCellCb */
    /* pointer to store the address of macCellCfg params used to send du-app to MAC */
-   MacCellCfg     *duMacCellCfg;     /* pointer to store params while sending DU-APP to MAC */
-	uint32_t      numUe;              /* current number of UEs */
-	UeCcchCtxt    ueCcchCtxt[DU_MAX_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
+   MacCellCfg    *duMacCellCfg;         /* pointer to store params while sending DU-APP to MAC */
+   uint32_t       numUe;            /* current number of UEs */
+   UeCcchCtxt     ueCcchCtxt[DU_MAX_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
 }DuCb;
 
 
