@@ -2,6 +2,125 @@
   "comments": [
     {
       "key": {
+        "uuid": "1f887f70_c16e55f8",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "check and change the function name",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bbe12c2c_25e73f82",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "multiple returns can be handled by ret",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a92422ce_96a5b502",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "multiple returns to be handled by ret",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0235fecf_b5f9af09",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "use ret",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afd1f173_786d9dd0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "no harcoding !!\nchange it to idx",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "488e8e79_3f0e1650",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "just check in gdb, if this case hits and memory is released for allocated variables.",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a991294_ce224881",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "For loop can be removed, and idx can be assigned to 0 , 1, 2 directly. As that will also serve the same purpose",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "eb8df99b_826ca344",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 2
@@ -19,6 +138,91 @@
     },
     {
       "key": {
+        "uuid": "9b2e19d6_5cf62948",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "Above 3 lines can be moved to FillRicSubscriptionRsp function itself",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f859f92_8730dcf3",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "add a comment here. /*TODO : e2apMsgDb.plmn memory to be deallocated after the usage */",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7138891_5b95fb21",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 796,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "add a comment here. /*TODO : e2apMsgDb.ricEventTrigger memory to be deallocated after the usage */",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b8e44d9_fb914145",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "using gdb, set a breakpoint and check if the memory is released for these two cases.",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8999abf1_90288a0b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 936,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "multiple returns to be handled by ret.",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b5b62029_f7fe6183",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 2
@@ -30,6 +234,23 @@
       "writtenOn": "2020-06-24T08:57:58Z",
       "side": 1,
       "message": "same comment as above",
+      "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60f526b1_65ce511e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1130,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-06-26T07:42:33Z",
+      "side": 1,
+      "message": "initialize it to NULLP",
       "revId": "072ba1245aad212d3b6d052b9e2827bb04e4bc75",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
