@@ -99,8 +99,9 @@
 
 #define DU_ZERO_VAL 0
 
-/* Macros */
+#define DU_UE_START_CRNTI 100
 
+/* Macros */
 #define ADD 0
 #define DEL 1
 
@@ -174,6 +175,12 @@ typedef enum
    DELETION_IN_PROGRESS
 }CellStatus;
 
+typedef enum
+{
+   UE_INACTIVE,
+	UE_ACTIVE
+}UeState;
+
 typedef struct cellCfgParams
 {
    NrEcgi      nrEcgi;         /* ECGI */
@@ -183,13 +190,22 @@ typedef struct cellCfgParams
    U32         maxUe;          /* max UE per slot */
 }CellCfgParams;
 
+typedef struct duUeCb
+{
+   uint32_t gnbDuUeF1apId; /* GNB DU UE F1AP ID */
+   uint32_t gnbCuUeF1apId; /* GNB CU UE F1AP ID */
+   UeState  ueState;
+   MacUeCfg macUeCfg;
+}DuUeCb;
 
 typedef struct duCellCb
 {
-   U32            cellId;      /* Internal cell Id */
-   CellCfgParams  cellInfo;    /* Cell info */
+   uint16_t       cellId;           /* Internal cell Id */
+   CellCfgParams  cellInfo;         /* Cell info */
    Bool           firstSlotIndRcvd;
-   CellStatus     cellStatus;  /*Cell status */
+   CellStatus     cellStatus;       /* Cell status */
+	uint32_t       numActvUes;       /* Total Active UEs */
+   DuUeCb         ueCb[DU_MAX_UE];  /* UE CONTEXT */
 }DuCellCb;
 
 typedef struct duLSapCb
@@ -224,9 +240,9 @@ typedef struct duCb
    DuCellCb*     cfgCellLst[DU_MAX_CELLS];     /* List of cells at DU APP of type DuCellCb */
    DuCellCb*     actvCellLst[DU_MAX_CELLS];    /* List of cells activated/to be activated of type DuCellCb */
    /* pointer to store the address of macCellCfg params used to send du-app to MAC */
-   MacCellCfg     *duMacCellCfg;     /* pointer to store params while sending DU-APP to MAC */
-	uint32_t      numUe;              /* current number of UEs */
-	UeCcchCtxt    ueCcchCtxt[DU_MAX_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
+   MacCellCfg    *duMacCellCfg;         /* pointer to store params while sending DU-APP to MAC */
+   uint32_t       numUe;            /* current number of UEs */
+   UeCcchCtxt     ueCcchCtxt[DU_MAX_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
 }DuCb;
 
 
