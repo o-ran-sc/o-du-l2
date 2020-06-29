@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6a8ccd8e_632cf97e",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "unpack function definition and calling in rgActvTsk() missing",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ea9ad82_deb0c7d2",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "Since only numHarqProcForPdsch has been filled, rest all parameters are optional and can be made as pointers",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88681274_1c09f79e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "spelling mistake in InitialDlBwp",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d05625f_0909cfd5",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "This need not be a pointer since we are filling at least one member of this structure",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b77f9ca0_2fd9bb8e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "since SST_SIZE is 1 byte, we need not make sst as array",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94c509d8_c8ff6ce4",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "since this is not being used anywhere, can it be removed?",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff31c804_fc864a47",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 963,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "since return values we support so far is only ROK/RFAILED, uint8_t should be sufficient",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8fd5194_814f6544",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "macro can be used, something like SRB_ID_1",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f25e181_3d4cc5ef",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "pdschServCellCfg need not be a pointer since we are filling at least one parameter inside it.",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f49bfbc_f6e38514",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "Other params in pdschServCellCfg will get initialized to zero. Zero is also a valid value for those params. \nThe expected behaviour in this scnerario is that these parameters should not be filled at all (not even with 0). So, They should be made to pointer and set to null",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be5a783f_428423f3",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "lets rename to duBuildAndSendUeCreateReqToMac since Ue create req goes to Rlc as well",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d2519fc_144b9b57",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "Can ueIdx be 0?",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf9856bc_a34f5285",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 798,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-29T13:06:53Z",
+      "side": 1,
+      "message": "set route, prior and intfVer to 0 in pst structure",
+      "revId": "fed916849ea93cc662f350c4052d1353e3efb18f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
