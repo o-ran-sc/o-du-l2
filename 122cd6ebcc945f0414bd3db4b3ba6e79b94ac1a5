@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c55b3e61_8b9cff51",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3255,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e78c994_cd1d6d59",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "88c85c13_3b1ac056",
         "filename": "src/5gnrmac/mac_msg_hdl.c",
         "patchSetId": 5
@@ -33,6 +51,24 @@
       "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf634ed5_91ca983e",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88c85c13_3b1ac056",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "a3f6748c_696f2d3f",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2894465a_5915dd42",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fc7f3994_db4ce1a4",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 5
@@ -67,6 +121,24 @@
       "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d4040f0_45a5221d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc7f3994_db4ce1a4",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "5db3a67e_e168e23b",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c29d446_d6875ed5",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fbf00054_df77ca64",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 5
@@ -101,6 +191,24 @@
       "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90233d06_32b5cbfe",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbf00054_df77ca64",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "de82975c_185c9371",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 798,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfe4a321_24f7cabd",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "755958d0_467ebdc1",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 5
@@ -135,6 +261,24 @@
       "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dfb498d8_96fdcbeb",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "755958d0_467ebdc1",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "f6fb5569_065b3d0f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83ed3a82_975e5a93",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "20aa2ee3_38ae3eae",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 5
@@ -172,6 +334,24 @@
     },
     {
       "key": {
+        "uuid": "cc2ea6fe_5c5d420e",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20aa2ee3_38ae3eae",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bfa5c73d_27c55736",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 5
@@ -183,6 +363,24 @@
       "writtenOn": "2020-06-24T09:32:28Z",
       "side": 1,
       "message": "All allocated memory must be freed after encoding. Skipping the free part shouldn\u0027t cause problem now but as our cu stub grows we may start running out of memory",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d5467ec_3f928210",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Due to the time crunch i am keeping freeing of cu part a lowest priority.\nWill do once other prior tasks are completed",
+      "parentUuid": "bfa5c73d_27c55736",
       "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -206,6 +404,24 @@
     },
     {
       "key": {
+        "uuid": "d5ab3396_809b15fe",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 936,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "134913d5_051e7cc4",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "186e978f_c9236441",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 5
@@ -217,6 +433,24 @@
       "writtenOn": "2020-06-24T09:32:28Z",
       "side": 1,
       "message": "all the allocated Memory must be freed after encoding",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56160a02_dae6b3b7",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Setting this to lowest priority. Will take up once the prior tasks are completed for UE attach",
+      "parentUuid": "186e978f_c9236441",
       "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -240,6 +474,24 @@
     },
     {
       "key": {
+        "uuid": "17b3d777_066d354c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "684638cc_b54542c7",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d7bb3bba_4673210e",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 5
@@ -257,6 +509,24 @@
     },
     {
       "key": {
+        "uuid": "ffd3daff_174caa5f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7bb3bba_4673210e",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ceff58ae_33396714",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 5
@@ -271,6 +541,24 @@
       "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58e5da9d_d8fafb54",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-06-29T09:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ceff58ae_33396714",
+      "revId": "122cd6ebcc945f0414bd3db4b3ba6e79b94ac1a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
