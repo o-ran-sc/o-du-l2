@@ -245,6 +245,12 @@ typedef struct pdschConfigCommon
 	uint8_t lengthSymbol;
 }PdschConfigCommon;
 
+typedef struct pucchConfigCommon
+{
+   uint8_t pucchResourceCommon;
+	uint8_t pucchGroupHopping;
+}PucchConfigCommon;
+
 typedef struct puschConfigCommon
 {
    /* PUSCH-TimeDomainResourceAllocation info */
@@ -265,7 +271,7 @@ typedef struct bwpUlConfig
 {
    BwpParams      bwp;
 	// rach config common sent in PrachCfg
-	// pucch info not required
+	PucchConfigCommon pucchCommon;
 	PuschConfigCommon puschCommon;
 }BwpUlConfig;
 

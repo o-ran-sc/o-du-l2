@@ -52,6 +52,7 @@
 #define SCH_DATATYPE_UCI 4
 #define SCH_DATATYPE_SRS 8
 #define SCH_DATATYPE_PRACH 16
+#define SCH_DATATYPE_PUCCH 1
 
 #define MAX_NUMBER_OF_CRC_IND_BITS 1
 #define MAX_NUM_LOGICAL_CHANNELS   11
@@ -294,6 +295,12 @@ typedef struct schPdschCfgCmn
    uint8_t lengthSymbol;
 }SchPdschCfgCmn;
 
+typedef struct schPucchCfgCmn
+{
+   uint8_t pucchResourceCommon;
+   uint8_t pucchGroupHopping;
+}SchPucchCfgCmn;
+
 typedef struct schPuschCfgCmn
 {
    uint8_t k2;
@@ -312,6 +319,7 @@ typedef struct schBwpDlCfg
 typedef struct schBwpUlCfg
 {
    SchBwpParams   bwp;
+	SchPucchCfgCmn pucchCommon;
 	SchPuschCfgCmn puschCommon;
 }SchBwpUlCfg;
 
@@ -409,6 +417,7 @@ typedef struct rarAlloc
 
 typedef struct msg4Info
 {
+   uint16_t crnti;
 	uint8_t  ndi;
 	uint8_t  harqProcNum;
 	uint8_t  dlAssignIdx;
@@ -416,7 +425,6 @@ typedef struct msg4Info
 	uint8_t  pucchResInd;
 	uint8_t  harqFeedbackInd;
 	uint8_t  dciFormatId;
-   uint16_t crnti;
    uint8_t  *msg4Pdu;
    uint8_t  msg4PduLen;
 }Msg4Info;
@@ -472,6 +480,18 @@ typedef struct schPuschInfo
    TbInfo           tbInfo;       /* TB info */
 }SchPuschInfo;
 
+typedef struct schPucchInfo
+{
+   uint16_t         rnti;
+   uint8_t          pucchFormat;
+   FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
+   TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
+	uint8_t          srFlag;
+	uint8_t          harqFlag;
+	uint8_t          numHarqBits;
+	uint8_t          uciFlag;
+	uint8_t          numUciBits;
+}SchPucchInfo;
 
 typedef struct ulSchedInfo
 {
@@ -481,6 +501,7 @@ typedef struct ulSchedInfo
 	uint8_t       dataType;       /* Type of info being scheduled */
 	PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
 	SchPuschInfo  schPuschInfo;   /* Pusch scheduling info */
+	SchPucchInfo  schPucchInfo;   /* Pusch scheduling info */
 }UlSchedInfo;
 
 typedef struct rachIndInfo

@@ -260,6 +260,7 @@ S16 readMacCfg()
 	   PDSCH_LENGTH_SYMBOL;
 	/* ra-searchSpace ID is set to 1 */
    duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpaceId = SEARCHSPACE_1_INDEX;
+
    /* fill Intial UL BWP */
    duCfgParam.macCellCfg.initialUlBwp.bwp.firstPrb = 0;
    duCfgParam.macCellCfg.initialUlBwp.bwp.numPrb = TOTAL_PRB_BW; /* configured to total BW */
@@ -273,6 +274,9 @@ S16 readMacCfg()
 	duCfgParam.macCellCfg.initialUlBwp.puschCommon.lengthSymbol =
 	   PUSCH_LENGTH_SYMBOL;
 
+   /* fill PUCCH config common */
+   duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
+   duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
 
    /* This should be calculated based on
       (number of mandatory parameters) + (number of otional parameters being filled) */
