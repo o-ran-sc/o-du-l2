@@ -17,11 +17,13 @@
 *******************************************************************************/
 
 #include <stdint.h>
+#include <math.h>
 
 /* macros */
 #define MAX_CORESET_INDEX      16
 #define MAX_SEARCH_SPACE_INDEX 16
 #define MAX_RACH_NUM_RB_IDX    16
+#define MAX_PUCCH_RES_SET_IDX  16
 #define MAX_PRACH_CONFIG_IDX   256
 #define MAX_MU_PUSCH           4
 #define TOTAL_TBSIZE_VALUES    93
