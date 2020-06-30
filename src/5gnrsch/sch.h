@@ -38,6 +38,7 @@
 #define MSG4_DELAY  1
 #define SCH_MAX_UE  1
 #define PUSCH_START_RB 15
+#define PUCCH_NUM_PRB 1  /* number of PRBs in Pucch Freq domain */
 #define SI_RNTI 0xFFFF
 #define P_RNTI  0xFFFE
 
@@ -120,6 +121,8 @@ typedef struct schUlSlotInfo
 	uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
 	bool         puschPres; /*!< PUSCH presence field */
 	SchPuschInfo *schPuschInfo; /*!< PUSCH info */
+	bool         pucchPres; /*!< PUCCH presence field */
+	SchPucchInfo schPucchInfo; /*!< PUCCH info */
 }SchUlSlotInfo;
 
 /**
@@ -159,8 +162,9 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t
 uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot);
-
-
+uint16_t schCalcTbSize(uint16_t payLoadSize);
+uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
+uint16_t setPucchRnti(SchCellCb *cell, uint16_t crnti, uint16_t slot);
 /**********************************************************************
          End of file
 **********************************************************************/

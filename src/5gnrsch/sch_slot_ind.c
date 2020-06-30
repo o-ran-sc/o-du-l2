@@ -269,9 +269,13 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
           sizeof(Msg4Info));
              
        /* pdcch and pdsch data is filled */
-       schDlRsrcAllocMsg4(msg4Alloc, cell, slot); 
-		 SCH_FREE(cell->schDlSlotInfo[slot]->msg4Info, sizeof(Msg4Info));
-		 cell->schDlSlotInfo[slot]->msg4Info = NULL;
+       schDlRsrcAllocMsg4(msg4Alloc, cell, dlSchedInfo.schSlotValue.msg4Time.slot); 
+
+		 /* PUCCH resource */
+       setPucchRnti(cell, msg4Alloc->msg4Info.crnti, dlSchedInfo.schSlotValue.msg4Time.slot);
+
+		 SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, sizeof(Msg4Info));
+		 cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
    }
 
 

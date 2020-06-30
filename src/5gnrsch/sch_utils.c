@@ -429,6 +429,27 @@ uint16_t mcsTable[32][3] = {
       {  30,   4,     0},   /* mcs index 30 */
       {  31,   6,     0}};  /* mcs index 31 */
 
+/* PUCCH resource sets before dedicated PUCCH resource configuration */
+/* Table 9.2.1-1 spec 38.213      */ 
+uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
+{ 0,  12,  2,  0 }, /* index  0 */
+{ 0,  12,  2,  0 }, /* index  1 */
+{ 0,  12,  2,  3 }, /* index  2 */
+{ 1,  10,  4,  0 }, /* index  3 */
+{ 1,  10,  4,  0 }, /* index  4 */
+{ 1,  10,  4,  2 }, /* index  5 */
+{ 1,  10,  4,  4 }, /* index  6 */
+{ 1,   4, 10,  0 }, /* index  7 */
+{ 1,   4, 10,  0 }, /* index  8 */
+{ 1,   4, 10,  2 }, /* index  9 */
+{ 1,   4, 10,  4 }, /* index 10 */
+{ 1,   0, 14,  0 }, /* index 11 */
+{ 1,   0, 14,  0 }, /* index 12 */
+{ 1,   0, 14,  2 }, /* index 13 */
+{ 1,   0, 14,  4 }, /* index 14 */
+{ 1,   0, 14,  0 }, /* index 15 */
+};
+
 /**
  * @brief frequency domain allocation function. 
  *

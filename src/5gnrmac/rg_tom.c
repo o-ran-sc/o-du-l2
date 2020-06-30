@@ -85,6 +85,9 @@ invoked by PHY towards MAC
 #include "ss_rbuf.x"
 #endif
 
+uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo);
+uint16_t handleUlTtiReq(SlotIndInfo currTimingInfo);
+
 /* ADD Changes for Downlink UE Timing Optimization */
 #ifndef LTEMAC_DLUE_TMGOPTMZ 
 PRIVATE S16 rgTOMUtlProcDlSf ARGS(( RgDlSf *dlSf, RgCellCb   *cellCb,
