@@ -72,6 +72,7 @@
 #define SSB_PDU_TYPE 3
 #define PRACH_PDU_TYPE 0
 #define PUSCH_PDU_TYPE 1
+#define PUCCH_PDU_TYPE 2
 #define PDU_PRESENT 1
 #define SET_MSG_LEN(x, size) x += size
 
@@ -3428,20 +3429,21 @@ uint8_t getnPdus(fapi_ul_tti_req_t *ulTtiReq, MacUlSlot *currUlSlot)
 		}
 		if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_PUSCH_UCI)
 		{
-			pduCount++;
-			ulTtiReq->nUlsch++;
-			ulTtiReq->nUlsch = PDU_PRESENT;
-		}
-		if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_UCI)
-		{
-			pduCount++;
-			ulTtiReq->nUlcch = PDU_PRESENT;
-		}
-		if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_SRS)
-		{
-			pduCount++;
-		}
-	}
+		   pduCount++;
+         if(ulTtiReq)
+            ulTtiReq->nUlsch = PDU_PRESENT;
+      }
+      if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_UCI)
+      {
+         pduCount++;
+         if(ulTtiReq)
+            ulTtiReq->nUlcch = PDU_PRESENT;
+      }
+      if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_SRS)
+      {
+         pduCount++;
+      }
+   }
    return pduCount;
 }
 #endif
@@ -3576,6 +3578,56 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, Ma
          sizeof(ulTtiReqPdu->pduSize) + sizeof(fapi_ul_pusch_pdu_t)));
    }
 }
+
+void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg,\
+  MacUlSlot *currUlSlot, uint32_t *msgLen)
+{
+   if(ulTtiReqPdu != NULLP)
+   {
+	   ulTtiReqPdu->pduType                  = PUCCH_PDU_TYPE;
+	   ulTtiReqPdu->u.pucch_pdu.rnti         = currUlSlot->ulInfo.schPucchInfo.rnti;
+		/* TODO : Fill handle in raCb when scheduling pucch and access here */
+	   ulTtiReqPdu->u.pucch_pdu.handle       = 100;
+	   ulTtiReqPdu->u.pucch_pdu.bwpSize      = macCellCfg->initialUlBwp.bwp.numPrb;
+	   ulTtiReqPdu->u.pucch_pdu.bwpStart     = macCellCfg->initialUlBwp.bwp.firstPrb;
+	   ulTtiReqPdu->u.pucch_pdu.subCarrierSpacing = macCellCfg->initialUlBwp.bwp.scs;
+	   ulTtiReqPdu->u.pucch_pdu.cyclicPrefix = macCellCfg->initialUlBwp.bwp.cyclicPrefix;
+	   ulTtiReqPdu->u.pucch_pdu.formatType   = currUlSlot->ulInfo.schPucchInfo.pucchFormat; /* Format 0 */
+	   ulTtiReqPdu->u.pucch_pdu.multiSlotTxIndicator = 0; /* No Multi Slot transmission */
+	   ulTtiReqPdu->u.pucch_pdu.pi2Bpsk              = 0; /* Disabled */
+	   ulTtiReqPdu->u.pucch_pdu.prbStart     = currUlSlot->ulInfo.schPucchInfo.fdAlloc.startPrb;
+	   ulTtiReqPdu->u.pucch_pdu.prbSize      = currUlSlot->ulInfo.schPucchInfo.fdAlloc.numPrb;
+	   ulTtiReqPdu->u.pucch_pdu.startSymbolIndex = currUlSlot->ulInfo.schPucchInfo.tdAlloc.startSymb;
+	   ulTtiReqPdu->u.pucch_pdu.nrOfSymbols  = currUlSlot->ulInfo.schPucchInfo.tdAlloc.numSymb;
+	   ulTtiReqPdu->u.pucch_pdu.freqHopFlag  = 0; /* Disabled */
+	   ulTtiReqPdu->u.pucch_pdu.secondHopPrb = 0;
+	   ulTtiReqPdu->u.pucch_pdu.groupHopFlag = 0;     
+	   ulTtiReqPdu->u.pucch_pdu.sequenceHopFlag = 0;
+	   ulTtiReqPdu->u.pucch_pdu.hoppingId    = 0;
+	   ulTtiReqPdu->u.pucch_pdu.initialCyclicShift = 0;
+	   ulTtiReqPdu->u.pucch_pdu.dataScramblingId = 0; /* Valid for Format 2, 3, 4 */
+	   ulTtiReqPdu->u.pucch_pdu.timeDomainOccIdx = 0; /* Valid for Format 1 */
+	   ulTtiReqPdu->u.pucch_pdu.preDftOccIdx     = 0; /* Valid for Format 4 */
+	   ulTtiReqPdu->u.pucch_pdu.preDftOccLen     = 0; /* Valid for Format 4 */
+	   ulTtiReqPdu->u.pucch_pdu.addDmrsFlag      = 0; /* Valid for Format 3, 4 */
+	   ulTtiReqPdu->u.pucch_pdu.dmrsScramblingId = 0; /* Valid for Format 2 */
+	   ulTtiReqPdu->u.pucch_pdu.dmrsCyclicShift  = 0; /* Valid for Format 4 */
+	   ulTtiReqPdu->u.pucch_pdu.srFlag           = currUlSlot->ulInfo.schPucchInfo.srFlag;
+	   ulTtiReqPdu->u.pucch_pdu.bitLenHarq       = currUlSlot->ulInfo.schPucchInfo.numHarqBits;
+	   ulTtiReqPdu->u.pucch_pdu.bitLenCsiPart1   = 0; /* Valid for Format 2, 3, 4 */
+	   ulTtiReqPdu->u.pucch_pdu.bitLenCsiPart2   = 0; /* Valid for Format 2, 3, 4 */
+      ulTtiReqPdu->u.pucch_pdu.beamforming.numPrgs = 0; /* Not Supported */
+      ulTtiReqPdu->u.pucch_pdu.beamforming.prgSize = 0;
+      ulTtiReqPdu->u.pucch_pdu.beamforming.digBfInterfaces = 0;
+      ulTtiReqPdu->u.pucch_pdu.beamforming.pmi_bfi[0].pmIdx = 0;
+      ulTtiReqPdu->u.pucch_pdu.beamforming.pmi_bfi[0].beamIdx[0].beamidx = 0;
+
+      ulTtiReqPdu->pduSize = sizeof(fapi_ul_pucch_pdu_t);
+      SET_MSG_LEN(*msgLen, (sizeof(ulTtiReqPdu->pduType) + \
+         sizeof(ulTtiReqPdu->pduSize) + sizeof(fapi_ul_pucch_pdu_t)));
+	}
+}
+
 #endif
 
 /*******************************************************************
@@ -3626,8 +3678,8 @@ uint16_t handleUlTtiReq(SlotIndInfo currTimingInfo)
 		if(ulTtiReq != NULLP)
 		{
 			memset(ulTtiReq, 0, msgSize);
-			ulTtiReq->sfn  = currTimingInfo.sfn;
-			ulTtiReq->slot = currTimingInfo.slot;
+			ulTtiReq->sfn  = ulTtiReqTimingInfo.sfn;
+			ulTtiReq->slot = ulTtiReqTimingInfo.slot;
 			ulTtiReq->nPdus = getnPdus(ulTtiReq, currUlSlot);
 			ulTtiReq->nGroup = 0;
 			if(ulTtiReq->nPdus > 0)
@@ -3647,9 +3699,15 @@ uint16_t handleUlTtiReq(SlotIndInfo currTimingInfo)
 					pduIdx++;
 					fillPuschPdu(&ulTtiReq->pdus[pduIdx], &macCellCfg, currUlSlot, &msgLen);
 				}
-
+				/* Fill PUCCH PDU */
+            if(currUlSlot->ulInfo.dataType & SCH_DATATYPE_UCI)
+				{
+					pduIdx++;
+					fillPucchPdu(&ulTtiReq->pdus[pduIdx], &macCellCfg, currUlSlot, &msgLen);
+				}
 				if((currUlSlot->ulInfo.dataType & SCH_DATATYPE_PRACH) || \
-						(currUlSlot->ulInfo.dataType & SCH_DATATYPE_PUSCH))
+						(currUlSlot->ulInfo.dataType & SCH_DATATYPE_PUSCH)|| \
+						(currUlSlot->ulInfo.dataType & SCH_DATATYPE_UCI))
 				{
 					msgLen += (sizeof(fapi_ul_tti_req_t) - sizeof(fapi_msg_t));
 					fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
@@ -3666,13 +3724,13 @@ uint16_t handleUlTtiReq(SlotIndInfo currTimingInfo)
 				DU_LOG("\nLWR_MAC: Sending UL TTI Request");
 				LwrMacSendToPhy(ulTtiReq->header.message_type_id, msgSize, (void *)ulTtiReq);
 			}
-			memset(&currUlSlot, 0, sizeof(MacUlSlot));
+			memset(currUlSlot, 0, sizeof(MacUlSlot));
 			return ROK;
 		}
 		else
 		{
 			DU_LOG("\nLWR_MAC: Failed to allocate memory for UL TTI Request");
-			memset(&currUlSlot, 0, sizeof(MacUlSlot));
+			memset(currUlSlot, 0, sizeof(MacUlSlot));
 			return RFAILED;
 		}
 	}
