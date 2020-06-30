@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac6de320_82527fef",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3933,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "Comment incorrect",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e83242d5_f37d8eac",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3983,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "Check rlcBearerList-\u003elist.array[idx] is not NULL before accessing",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ae25ff7_9eb82b27",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4017,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "schedulingRequestConfig-\u003eschedulingRequestToAddModList should be accessed only if schedulingRequestConfig  is not null",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db6108c6_3177c98d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4046,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "AddModList should be accessed only if tagConfig is not null",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df2b7c29_5e906215",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4132,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "this check not needed. The null check in DU_FREE should be sufficient since we are not accessing any parameter inside of maxMIMO_Layers",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e05fcb2_ba57a596",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4167,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "Null check not needed",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b248a8c7_2b814b51",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4182,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "Null check not needed",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb1b386b_27e6e1b5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4204,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "this null check not needed",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5c1314c_82918cb2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4266,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "this check can be removed",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68d7b3ef_f7a31ca4",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4354,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "this check can be removed",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ae55759_b60b26a1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4373,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "This check can be removed",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d833efeb_4abe7db6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4397,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "spCellCfg-\u003espCellConfigDedicated is already free at line 4390",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8af56a77_e7c83f0c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4401,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-06-30T14:41:05Z",
+      "side": 1,
+      "message": "free for csi measconfig can be removed as of now since it is not being filled",
+      "revId": "ab70737c1d9ea736fb4dce17e02ee7af752a4e28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
