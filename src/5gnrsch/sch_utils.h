@@ -17,6 +17,7 @@
 *******************************************************************************/
 
 #include <stdint.h>
+#include <math.h>
 
 /* macros */
 #define MAX_CORESET_INDEX      16

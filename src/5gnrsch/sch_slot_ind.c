@@ -266,6 +266,10 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
              
        /* pdcch and pdsch data is filled */
        schDlRsrcAllocMsg4(msg4Alloc, cell, dlSchedInfo.schSlotValue.msg4Time.slot); 
+
+		 /* PUCCH resource */
+       schAllocatePucchForDlHarq(cell, msg4Alloc->msg4Info.crnti, dlSchedInfo.schSlotValue.msg4Time.slot);
+
 		 SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, sizeof(Msg4Info));
 		 cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
    }
