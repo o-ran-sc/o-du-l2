@@ -697,13 +697,19 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 	while(numPdus)
 	{
 		if(ulTtiReq->pdus[numPdus-1].pduType == 0)
+		{
 			DU_LOG("\nPHY STUB: PRACH PDU");
+		}
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
          DU_LOG("\nPHY STUB: PUSCH PDU");			
          l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
 			   ulTtiReq->pdus[numPdus-1].u.pusch_pdu); 
       }
+		if(ulTtiReq->pdus[numPdus-1].pduType == 2)
+	   {
+		   DU_LOG("\nPHY STUB: PUCCH PDU");
+		}
 		numPdus--;
 	}
 
