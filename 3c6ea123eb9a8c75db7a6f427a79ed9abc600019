@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70d03ae4_830c80fe",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-30T15:01:33Z",
+      "side": 1,
+      "message": "change comment. this must be srb0 itself",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28b8912c_5c6d688a",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-30T15:01:33Z",
+      "side": 1,
+      "message": "numLc?shouldnt this be for that given LC? though using numLc may work in this case",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3806340c_17f28e70",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-30T15:01:33Z",
+      "side": 1,
+      "message": "directly use macRaCb[\"0\"]?",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1da68e9_a76e62ca",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-30T15:01:33Z",
+      "side": 1,
+      "message": "do we have to use for loop everywhere?",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a628ec1e_a5f64d39",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-30T15:01:33Z",
+      "side": 1,
+      "message": "maintain uniformity in naming these macros",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a421b1b2_e14ad2de",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-30T15:01:33Z",
+      "side": 1,
+      "message": "remove this buffer",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1ec7ebc_9b641173",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-06-30T15:01:33Z",
+      "side": 1,
+      "message": "change name of \"size\" to dlCcchMsgSize and make it second param to function duBuildAndSendDlCcchInd",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
