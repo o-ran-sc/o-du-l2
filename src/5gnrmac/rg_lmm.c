@@ -2114,7 +2114,7 @@ int MacHdlCellCfgReq
    Pst cfmPst;
    uint16_t ret = ROK;
    RgCellCb      *cellCb;
-	MacCellCb     *macCellCb;
+	MacCellCb     *macCellCb = NULLP;
    Inst inst = pst->dstInst;
 
    cmMemset((U8 *)&cfmPst, 0, sizeof(Pst));
@@ -2135,6 +2135,7 @@ int MacHdlCellCfgReq
       DU_LOG("\nMAC : macCellCb is NULL at handling of macCellCfg\n");
       return RFAILED;
    }
+	memset(macCellCb, 0, sizeof(MacCellCb));
    macCb.macCell = macCellCb;
    macCb.macCell->cellId = macCellCfg->cellId;
    /* Send cell cfg to scheduler */

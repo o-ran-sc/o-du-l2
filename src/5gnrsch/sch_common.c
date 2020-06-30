@@ -66,6 +66,7 @@ File:     sch_common.c
 extern SchCb schCb[SCH_MAX_INST];
 extern uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
 extern uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
+extern uint8_t pucchResourceSet[16][4];
 
 SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
 {
@@ -246,6 +247,31 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo pra
 	}
 }
 
+uint16_t schAllocPucchResource(SchPucchInfo *schPucchInfo, Inst inst)
+{
+   /* derive pucchResourceSet from schCellCfg */
+   SchCellCb  *cell = schCb[inst].cells[inst];
+   SchPucchCfgCmn *pucchCfg = &cell->cellCfg.schInitialUlBwp.pucchCommon;
+	uint8_t pucchIdx = pucchCfg->pucchResourceCommon;
+	SchBwpParams *ulBwp = &cell->cellCfg.schInitialUlBwp.bwp;
+
+   schPucchInfo->fdAlloc.startPrb = ulBwp->freqAlloc.startPrb + pucchResourceSet[pucchIdx][3];
+   schPucchInfo->fdAlloc.numPrb = 1;
+   schPucchInfo->tdAlloc.startSymb = pucchResourceSet[pucchIdx][1];
+   schPucchInfo->tdAlloc.numSymb = pucchResourceSet[pucchIdx][2];
+	schPucchInfo->pucchFormat = pucchResourceSet[pucchIdx][0];
+
+   /* set HARQ flag to true */
+   schPucchInfo->harqFlag = true;
+   schPucchInfo->numHarqBits = 1; /* 1 bit for HARQ */
+
+   /* set SR and UCI flag to false */
+   schPucchInfo->srFlag  = false;
+   schPucchInfo->uciFlag = false;
+
+   return ROK;
+}
+
 /**
  * @brief resource allocation for UL
  *
@@ -262,8 +288,9 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 {
    int ret = ROK;
 	UlSchedInfo ulSchedInfo;
-   SchUlSlotInfo  *schUlSlotInfo;
+   SchUlSlotInfo  *schUlSlotInfo = NULLP;
    SlotIndInfo ulTimingInfo;
+	memset(&ulSchedInfo, 0, sizeof(UlSchedInfo));
 
    /* add PHY delta */
    ADD_DELTA_TO_TIME(cell->slotInfo,ulTimingInfo,PHY_DELTA+SCHED_DELTA);
@@ -276,7 +303,6 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 	schPrachResAlloc(cell, &ulSchedInfo, ulTimingInfo);
 
 	schUlSlotInfo = cell->schUlSlotInfo[ulTimingInfo.slot]; 
-	
 	if(schUlSlotInfo->schPuschInfo)
 	{
       ulSchedInfo.crnti = cell->raCb[0].tcrnti;
@@ -287,13 +313,21 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 		schUlSlotInfo->schPuschInfo = NULL;
 	}
 
+	if(schUlSlotInfo->pucchPres)
+	{
+		ulSchedInfo.dataType |= SCH_DATATYPE_UCI;
+		schAllocPucchResource(&schUlSlotInfo->schPucchInfo, schInst);
+		memcpy(&ulSchedInfo.schPucchInfo, &schUlSlotInfo->schPucchInfo,
+				sizeof(SchPucchInfo));
+		memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
+	}
+
 	//send msg to MAC
    ret = sendUlSchInfoToMac(&ulSchedInfo, schInst);
    if(ret != ROK)
    {
       DU_LOG("\nSending UL Sch info from SCH to MAC failed");
    }
-    
 	memset(cell->schUlSlotInfo[ulTimingInfo.slot], 0, sizeof(SchUlSlotInfo));
 
 	return ret;
@@ -430,6 +464,21 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    pdsch->txPdschPower.powerControlOffsetSS = 0;
  
    pdcch->dci.pdschCfg = pdsch;
+   return ROK;
+}
+
+uint16_t schAllocatePucch(SchCellCb *cell,uint16_t crnti, uint16_t slot)
+{
+   uint8_t k1 = 1; /* dl-DataToUL-ACK RRC parameter will received from DU-APP msg4-pucch config */
+   uint16_t pucchSlot = (slot + k1)  % SCH_NUM_SLOTS;
+	SchUlSlotInfo  *schUlSlotInfo = NULLP;
+   
+	schUlSlotInfo = cell->schUlSlotInfo[pucchSlot];
+	memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
+
+	schUlSlotInfo->pucchPres = true;
+	schUlSlotInfo->schPucchInfo.rnti = crnti;
+
    return ROK;
 }
 
