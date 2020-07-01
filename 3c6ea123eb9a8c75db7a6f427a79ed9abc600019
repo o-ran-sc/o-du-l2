@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f45d549b_c51e3db8",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-01T08:34:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70d03ae4_830c80fe",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "28b8912c_5c6d688a",
         "filename": "src/5gnrmac/mac_msg_hdl.c",
         "patchSetId": 7
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "18e88af0_597a3649",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-01T08:34:04Z",
+      "side": 1,
+      "message": "Agreed. I have replaced numLc with SRB_ID_0 macro here",
+      "parentUuid": "28b8912c_5c6d688a",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3806340c_17f28e70",
         "filename": "src/5gnrmac/mac_msg_hdl.c",
         "patchSetId": 7
@@ -47,6 +83,24 @@
       "writtenOn": "2020-06-30T15:01:33Z",
       "side": 1,
       "message": "directly use macRaCb[\"0\"]?",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81b4fdea_6808ed61",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-01T08:34:04Z",
+      "side": 1,
+      "message": "yes since we have one instance, i am directly referring 0 here.",
+      "parentUuid": "3806340c_17f28e70",
       "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "7c2a335a_ea058f05",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-01T08:34:04Z",
+      "side": 1,
+      "message": "I have used memcpy and printed the result. It worked fine.So replacing to mempcy",
+      "parentUuid": "c1da68e9_a76e62ca",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a628ec1e_a5f64d39",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 7
@@ -84,6 +156,24 @@
       "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab91bd05_9bd90f29",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-01T08:34:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a628ec1e_a5f64d39",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "572af5bd_e477b44b",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-01T08:34:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a421b1b2_e14ad2de",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f1ec7ebc_9b641173",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 7
@@ -118,6 +226,24 @@
       "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1c97253_64db40b6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-01T08:34:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1ec7ebc_9b641173",
+      "revId": "3c6ea123eb9a8c75db7a6f427a79ed9abc600019",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
