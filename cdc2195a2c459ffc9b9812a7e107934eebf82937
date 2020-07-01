@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62d2188d_8e754efb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3941,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-01T05:56:37Z",
+      "side": 1,
+      "message": "This function has grown too big. Lets make it modular for better readability",
+      "revId": "cdc2195a2c459ffc9b9812a7e107934eebf82937",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76ea53c1_54c37aec",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4377,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-01T05:56:37Z",
+      "side": 1,
+      "message": "Free for spCellCfg missing",
+      "revId": "cdc2195a2c459ffc9b9812a7e107934eebf82937",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
