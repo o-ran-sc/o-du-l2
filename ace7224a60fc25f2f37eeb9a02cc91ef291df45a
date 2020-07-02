@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c33aab2_533b8e9f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-02T09:20:05Z",
+      "side": 1,
+      "message": "is numUe getting incremented to 1 anywhere?",
+      "revId": "ace7224a60fc25f2f37eeb9a02cc91ef291df45a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4abbd4c_a8ea0549",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-02T09:20:05Z",
+      "side": 1,
+      "message": "The loop is not needed, since DL RRC msg transfer will be received for one UE at a time and the UE create req is also sent for only 1 UE i.e ueCb[0], so this loop can be removed",
+      "revId": "ace7224a60fc25f2f37eeb9a02cc91ef291df45a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f6613a8_8a580045",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-02T09:20:05Z",
+      "side": 1,
+      "message": "1. send ueCfg in ue create req\n2. If packDuMacUeCreateReq returns failure, free shared memory",
+      "revId": "ace7224a60fc25f2f37eeb9a02cc91ef291df45a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
