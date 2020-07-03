@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd8e25ef_6fb16a74",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-03T13:57:05Z",
+      "side": 1,
+      "message": "we can just make this if(prachOccasionTimingInfo.sfn%x) \u003d\u003d y) and proceed to further checks",
+      "revId": "f10837f0e631e83f0dbbaba477aff4cae5abc530",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
