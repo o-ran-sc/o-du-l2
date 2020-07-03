@@ -2031,6 +2031,10 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
       fillTlvs(&configReq->tlvs[index++], FAPI_RSSI_MESUREMENT_TAG,           \
          sizeof(uint8_t), macCfgParams.rssiUnit, &msgLen);
 
+      /* fill DMRS Type A Pos */
+		fillTlvs(&configReq->tlvs[index++], FAPI_DMRS_TYPE_A_POS_TAG,           \
+		   sizeof(uint8_t), macCfgParams.dmrsTypeAPos, &msgLen);
+
       fillMsgHeader(&configReq->header, FAPI_CONFIG_REQUEST, msgLen);
 
       DU_LOG("\nLWR_MAC: Sending Config Request to Phy");

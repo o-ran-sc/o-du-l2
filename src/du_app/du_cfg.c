@@ -274,9 +274,11 @@ S16 readMacCfg()
 	duCfgParam.macCellCfg.initialUlBwp.puschCommon.lengthSymbol =
 	   PUSCH_LENGTH_SYMBOL;
 
+	duCfgParam.macCellCfg.dmrsTypeAPos = DMRS_TYPE_A_POS; 
+
    /* This should be calculated based on
       (number of mandatory parameters) + (number of otional parameters being filled) */
-   duCfgParam.macCellCfg.numTlv = 39;
+   duCfgParam.macCellCfg.numTlv = 40;
 
    RETVALUE(ROK);
 }

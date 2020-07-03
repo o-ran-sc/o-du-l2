@@ -288,6 +288,7 @@ typedef struct macCellCfg
    Sib1CellCfg    sib1Cfg;          /* SIB1 config */
 	BwpDlConfig    initialDlBwp;     /* Initial DL BWP */
 	BwpUlConfig    initialUlBwp;     /* Initial UL BWP */
+	uint8_t        dmrsTypeAPos;     /* DMRS Type A position */
 }MacCellCfg;
 
 typedef struct macCellCfgCfm
