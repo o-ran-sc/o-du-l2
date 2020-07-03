@@ -66,7 +66,7 @@
 #define SCS_CARRIER_BANDWIDTH 273         /* Subcarrier spacing- carrier bandwidth */
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
 #define BETA_PSS BETA_PSS_0DB  
-#define SSB_PERIODICITY 5
+#define SSB_PERIODICITY 20
 #define SSB_SUBCARRIER_OFFSET 0               
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE
@@ -75,7 +75,7 @@
 #define BANDWIDTH 20
 
 /* MACRO defines for PRACH Configuration */
-#define PRACH_CONFIG_IDX   105
+#define PRACH_CONFIG_IDX   88
 #define PRACH_FREQ_START   0
 #define PRACH_SEQ_LEN SHORT_SEQUENCE
 #define PRACH_SUBCARRIER_SPACING 1
