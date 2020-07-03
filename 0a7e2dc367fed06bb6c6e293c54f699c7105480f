@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "04187edc_969e5202",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-03T05:16:01Z",
+      "side": 1,
+      "message": "cellid, crnti, msgType, msg, msgSize.\nLooks like this order will be better",
+      "revId": "0a7e2dc367fed06bb6c6e293c54f699c7105480f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
