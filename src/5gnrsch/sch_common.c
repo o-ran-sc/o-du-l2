@@ -205,7 +205,6 @@ int schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo prac
 	if((prachOccasionTimingInfo.sfn%x) != y)
 	{
 	   /* prach occasion does not lie in this SFN */
-		DU_LOG("\nPRACH ocassion doesn't lie in this SFN");
 	   return RFAILED;
 	}
 	/* check for subFrame number */
