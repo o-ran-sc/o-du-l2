@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "9d593e7d_6fd91d75",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-07T07:34:18Z",
+      "side": 1,
+      "message": "As discussed during MAC/SCH review, PDSCH and PDCCH cfg are optional in RRC container, so \"present\" param is needed to check presence of pdsch/pdcch",
+      "revId": "3189ac2ec67d7bb0899db6e58dbc1ba04e377e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a09bc11_c57e3f3e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-07T07:34:18Z",
+      "side": 1,
+      "message": "As discussed during MAC/SCH review, PUSCH and PUCCH cfg are optional in RRC container, so \"present\" param is needed to check presence of pusch/pucch",
+      "revId": "3189ac2ec67d7bb0899db6e58dbc1ba04e377e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fe33a669_dd1ab275",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 5
