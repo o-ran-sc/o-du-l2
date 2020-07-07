@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe33a669_dd1ab275",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 873,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-07T05:54:36Z",
+      "side": 1,
+      "message": "The F1apId params are part of DuUeCb and not of MacUeCfg",
+      "revId": "3189ac2ec67d7bb0899db6e58dbc1ba04e377e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4b6e11b_94ae5fec",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-07T05:54:36Z",
+      "side": 1,
+      "message": "This interface structure should remain MacUeCfg. \nThe DuUeCb should be created in DU APP and not at DUAPP-MAC interface because DuUeCb will store MAC as well as RLC UE cfg info and any other UE related info needed internally at DUAPP such as gnbDuUeF1apId and gnbCuUeF1apId",
+      "revId": "3189ac2ec67d7bb0899db6e58dbc1ba04e377e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2883223_db36f806",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-07T05:54:36Z",
+      "side": 1,
+      "message": "1. Add parameter to store number of Active UEs. \nA new UE Cb must be created only if numActvUe \u003c DU_MAX_UE.\n\n2. At MAC and SCH, it was suggested to store state of UE in UeCb i.e. inactive(0)/active(1). Lets discuss if this is needed at DU APP as well.",
+      "revId": "3189ac2ec67d7bb0899db6e58dbc1ba04e377e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "add60d30_e6edf55a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-07T05:54:36Z",
+      "side": 1,
+      "message": "DuUeCb shouldnt be sent to MAC. Only MAC UE Cfg is sufficient",
+      "revId": "3189ac2ec67d7bb0899db6e58dbc1ba04e377e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02528e38_a46860d4",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-07T05:54:36Z",
+      "side": 1,
+      "message": "ueIdx can be initialized to -1. Hence if there are no free ueIdx to be assigned, the return value -1 will be considered a failure scenario",
+      "revId": "3189ac2ec67d7bb0899db6e58dbc1ba04e377e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a3d9f3f_a1495fbb",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-07T05:54:36Z",
+      "side": 1,
+      "message": "Check if a valid ueIdx is assigned only then proceed further, else accessing array with invalid index in lead to crash",
+      "revId": "3189ac2ec67d7bb0899db6e58dbc1ba04e377e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d54b0271_c51c1174",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-07T05:54:36Z",
+      "side": 1,
+      "message": "before accessing ueCb in duCellCb, duCellCb should be set to duCb.actvCellLst[cellIdx]",
+      "revId": "3189ac2ec67d7bb0899db6e58dbc1ba04e377e73",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
