@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6facdc1_83563328",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-09T04:42:19Z",
+      "side": 1,
+      "message": "better to use more meaningful names for iterators",
+      "revId": "b00472035910325d1ad4a9e8222488f8bbb529b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d7715e7_432ecc40",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-09T04:42:19Z",
+      "side": 1,
+      "message": "use better names for iterators",
+      "revId": "b00472035910325d1ad4a9e8222488f8bbb529b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
