@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "50768757_1f6e709a",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-09T07:00:10Z",
+      "side": 1,
+      "message": "pucch can be used for other purpose too. should we still name this \"fordLHarq\"?",
+      "revId": "6bf179d30124a04770c1b1c0d3cbd0d8f27af017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c024b39_556dd92a",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-09T07:00:10Z",
+      "side": 1,
+      "message": "we can replace 16 with a macro",
+      "revId": "6bf179d30124a04770c1b1c0d3cbd0d8f27af017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b923ddc0_7268e79a",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-09T07:00:10Z",
+      "side": 1,
+      "message": "PUSCH and PUCCH are both 1? we can check in AAD what value must be assigned",
+      "revId": "6bf179d30124a04770c1b1c0d3cbd0d8f27af017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
