@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b43eb44_8eb29cf6",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-10T12:17:18Z",
+      "side": 1,
+      "message": "this can be an enum \"UeState\" with members as UE_INACTIVE and UE_ACTIVE",
+      "revId": "b946242fc96222cca1da910d865e769404cd7c57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99cbcb14_2ec26617",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-10T12:17:18Z",
+      "side": 1,
+      "message": "This idx was fetched for ueCcchCtxt. Hence, must not be used for accessing actvCellLst",
+      "revId": "b946242fc96222cca1da910d865e769404cd7c57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69c4c96b_4ed0171d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-10T12:17:18Z",
+      "side": 1,
+      "message": "Since UE CB is not to be modified in duBuildAndSendUeCreateReqToMac, ueCb can be passed directly instead of pointer to ueCb.\nIn such scenarios we can avoid using pointers to reduce the probability of any memory management issues.",
+      "revId": "b946242fc96222cca1da910d865e769404cd7c57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4b30f05_d3d6874c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-10T12:17:18Z",
+      "side": 1,
+      "message": "Should the priority always be filled with the LC ID value?",
+      "revId": "b946242fc96222cca1da910d865e769404cd7c57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbfa5284_44d78dab",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-10T12:17:18Z",
+      "side": 1,
+      "message": "duCb.actvCellLst[cellIdx] can be directly assigned to duCellCb since its not a pointer",
+      "revId": "b946242fc96222cca1da910d865e769404cd7c57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e606345b_f84b4658",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-10T12:17:18Z",
+      "side": 1,
+      "message": "Is numActvUes initialized to 0 when duCellCb was created?",
+      "range": {
+        "startLine": 882,
+        "startChar": 17,
+        "endLine": 882,
+        "endChar": 27
+      },
+      "revId": "b946242fc96222cca1da910d865e769404cd7c57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e36bd7cf_578e41cb",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-10T12:17:18Z",
+      "side": 1,
+      "message": "this can be moved at the end of the function",
+      "revId": "b946242fc96222cca1da910d865e769404cd7c57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29617644_0890b244",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 957,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-10T12:17:18Z",
+      "side": 1,
+      "message": "this can be moved at the end of the function",
+      "revId": "b946242fc96222cca1da910d865e769404cd7c57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
