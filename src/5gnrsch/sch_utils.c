@@ -448,7 +448,7 @@ void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqD
 {
    uint8_t remBits = prbSize; /* each bit represents 6 PRBs */
    uint8_t firstByte = 1;
-   uint8_t numBits,startBit,byteCount = 0;
+   uint8_t numBits,startBit,byteCount = 5;
 
    while(remBits)
    {
@@ -456,7 +456,7 @@ void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqD
       if(startPrb/8)
       {
          startPrb -= 8;
-         byteCount++;
+         byteCount--;
          continue;
       }
 
@@ -477,12 +477,12 @@ void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqD
          numBits = 8 - startBit;
 
       /* bit operation to set the bits */
-		SET_BITS((startBit % 8),numBits,freqDomain[byteCount])
+		SET_BITS_MSB((startBit % 8),numBits,freqDomain[byteCount])
       firstByte = 0;
 
       /* the ramaining bits should be subtracted with the numBits set in this byte */
       remBits -= numBits;
-      byteCount++;
+      byteCount--;
    }
 }
 
