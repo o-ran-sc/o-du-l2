@@ -78,9 +78,6 @@
 /* Activation time limit in terms of number of frames */
 #define CRG_ACTV_WIN_SIZE 20 /*!< Macro for Size of activation time window
                                 (in terms of number of frames) */
-/* selector(coupling) values */
-#define CRG_SEL_TC 1     /*!< Macro for Tight Coupling */
-#define CRG_SEL_LC 0     /*!< Macro for Light Coupling */
 
 /* pack unpack error code */
 #define ECRGXXX 0  /* reserved */

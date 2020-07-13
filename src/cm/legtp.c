@@ -17,9 +17,13 @@
 *******************************************************************************/
  
 /* This file contains DU APP and EGTP interface functions */
-
-#include "du_egtp.h"
+#include "common_def.h"
+#include "lrg.h"
 #include "legtp.h"
+#include "lkw.x"
+#include "lrg.x"
+#include "du_cfg.h"
+#include "du_egtp.h"
 
 /*******************************************************************
  *

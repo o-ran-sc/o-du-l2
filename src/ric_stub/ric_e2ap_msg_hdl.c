@@ -17,11 +17,15 @@
 *******************************************************************************/
 
 /* This file contains E2AP message handler functions */
-
+#include "common_def.h"
+#include "odu_common_codec.h"
+#include "ric_stub.h"
 #include "ric_stub_sctp.h"
 #include "ric_e2ap_msg_hdl.h"
 #include "GlobalE2node-gNB-ID.h"
-#include "odu_common_codec.h"
+#include "ProtocolIE-FieldE2.h"
+#include "E2AP-PDU.h"
+#include "du_log.h"
 
 Bool ricSubsStatus;
 

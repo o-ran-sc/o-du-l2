@@ -87,10 +87,6 @@
 #define TFU_MAX_HARQ_FDBKS       TFU_MAX_TB /*For Rel8/Rel9 UE*/
 #endif/*LTE_ADV*/
 
-/* Selector */
-#define MAC_SELECTOR_LC   0
-#define MAC_SELECTOR_TC   1
-#define MAC_SELECTOR_LWLC 2
 
 /* Event corresponding to each primitive at this interface */
 #define EVTTFUBNDREQ            1     /*!< Bind Request */
@@ -132,9 +128,6 @@
 #define MAX_ULSCH_PDUS_PER_TTI  1
 
 /* selector(coupling) values */
-#define TFU_SEL_TC              1    /*!< Selector for Tight coupling. */
-#define TFU_SEL_LC              0    /*!< Selector for Loose coupling. */
-#define TFU_SEL_LWLC            2    /*!< Selector for Light-weight loose coupling. */
 #define TFU_MAX_ALLOC_BYTES     4
 /* pack unpack error code */
 #define ETFUXXX                 0

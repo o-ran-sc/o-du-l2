@@ -17,7 +17,14 @@
 *******************************************************************************/
 
 /* This file contains message handling functionality for DU APP */
-
+#include "common_def.h"
+#include "lrg.h"
+#include "legtp.h"
+#include "lkw.h"
+#include "lrg.x"
+#include "lkw.x"
+#include "du_cfg.h"
+#include "E2AP-PDU.h"
 #include "du_sctp.h"
 #include "du_f1ap_msg_hdl.h"
 #include "du_e2ap_msg_hdl.h"

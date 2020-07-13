@@ -31,29 +31,9 @@ File:     sch_slot_ind.c
 /** @file sch_slot_ind.c
   @brief This module processes slot indications
  */
-#include "stdbool.h"
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system service interface */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_mblk.h"       /* common memory link list library */
-#include "cm_lte.h"        /* Common LTE Defines */
+#include "common_def.h"
 #include "tfu.h"
 #include "lrg.h"
-
-#include "gen.x"           /* general layer typedefs */
-#include "ssi.x"           /* system services typedefs */
-#include "cm5.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_mblk.x"       /* common memory link list library */
-#include "cm_lte.x"        /* Common LTE Defines */
 #include "tfu.x"
 #include "lrg.x"
 #include "du_log.h"
@@ -61,7 +41,6 @@ File:     sch_slot_ind.c
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
-#include "common_def.h"
 
 SchMacDlAllocFunc schMacDlAllocOpts[] =
 {
