@@ -1,31 +1,13 @@
 /* header include files (.h) */
-#include "stdbool.h"
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_lte.h"        /* Common LTE Defines */
-#include "cm_mblk.h"        /* Common LTE Defines */
+#include "common_def.h"
 #include "tfu.h"           /* RGU Interface defines */
 #include "lrg.h"
+
 //#include "fapi.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_lte.x"        /* Common LTE Defines */
-#include "cm_mblk.x"        /* Common LTE Defines */
 #include "tfu.x"           /* RGU Interface includes */
 #include "lrg.x"
-
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 
@@ -76,7 +58,7 @@ int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
  * ****************************************************************/
 int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
 {
-   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
       /* TODO */
    }
@@ -105,7 +87,7 @@ int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
  * ****************************************************************/
 int packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
-   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
       /* TODO */
    }
@@ -134,7 +116,7 @@ int packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
  * ****************************************************************/
 uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 {
-   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
       /* TODO */
    }

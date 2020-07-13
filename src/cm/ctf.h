@@ -177,10 +177,6 @@
 
 #define CTF_CFG_TRANSID_SIZE 9  /*!< Macro for Transaction ID size */
 
-/* selector(coupling) values */
-#define CTF_SEL_LC     0     /*!< Macro for Light Coupling */
-#define CTF_SEL_TC     1     /*!< Macro for Tight Coupling */
-#define CTF_SEL_LWLC   2     /*!< Macro for Light Weight Loose Coupling */
 
 /* Amit */
 #define CTF_MAX_SCELL_PER_UE         7

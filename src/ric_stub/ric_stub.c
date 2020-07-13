@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /* This functions contains main() for ric_app */
-
+#include "common_def.h"
 #include "ric_stub.h"
 #include "ric_stub_sctp.h"
 

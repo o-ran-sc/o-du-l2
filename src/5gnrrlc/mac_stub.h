@@ -21,34 +21,10 @@
 #ifndef __MAC_STUB_H__
 #define __MAC_STUB_H__
 
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
- 
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm5.h"           /* common timer defines */
-#include "cm_tkns.h"       /* common tokens defines */
-#include "cm_mblk.h"       /* common memory allocation library defines */
-#include "cm_llist.h"      /* common link list  defines  */
-#include "cm_hash.h"       /* common hash list  defines */
-#include "cm_lte.h"        /* common LTE defines */
-#include "cm_tpt.h"
-#include "cm_inet.h"
 #include "du_log.h" 
 #include "rgu.h"
 #include "kw.h"
 
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm5.x"           /* common timer library */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_mblk.x"       /* common memory allocation */
-#include "cm_llist.x"      /* common link list */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_lte.x"        /* common LTE includes */
-#include "cm_tpt.x"
-#include "cm_inet.x"
 #include "rgu.x"
 
 

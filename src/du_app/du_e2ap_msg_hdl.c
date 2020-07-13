@@ -15,6 +15,7 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+#include "common_def.h"
 #include "du_e2ap_msg_hdl.h"
 #include "du_mgr_main.h"
 #include "GlobalE2node-gNB-ID.h"

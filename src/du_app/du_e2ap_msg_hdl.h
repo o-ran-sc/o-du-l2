@@ -17,26 +17,17 @@
 *******************************************************************************/
 
 /* This file contains all E2AP message handler related functionality */
-#include<stdio.h>
 #include<sys/types.h>
-#include<string.h>
 #include<ProtocolIE-FieldE2.h>
 #include "E2AP-PDU.h"
 #include "PLMN-IdentityE2.h"
 #include "RICeventTriggerDefinition.h"
 #include "odu_common_codec.h"
 
-#include "envopt.h"        /* Environment options */
-#include "envdep.h"        /* Environment dependent */
-#include "envind.h"        /* Environment independent */
-#include "gen.h"           /* General */
-#include "ssi.h"           /* System services */
 #include "ss_queue.h"
 #include "ss_task.h"
 #include "ss_msg.h"
 
-#include "gen.x"           /* General */
-#include "ssi.x"   /* System services */
 #include "ss_queue.x"
 #include "ss_task.x"
 #include "ss_msg.x"

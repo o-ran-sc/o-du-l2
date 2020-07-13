@@ -19,37 +19,9 @@
 #ifndef __CU_MGR_MAIN_H__
 #define __CU_MGR_MAIN_H__
 
-
-#include "stdio.h"
-#include "stdlib.h"
-#include "string.h"
-#include "stdbool.h"
-#include "ctype.h"
-#include "envopt.h"        /* Environment options */
-#include "envdep.h"        /* Environment dependent */
-#include "envind.h"        /* Environment independent */
-
-#include "gen.h"           /* General */
-#include "ssi.h"           /* System services */
-#include "ss_queue.h"
-#include "ss_task.h"
-#include "ss_msg.h"
-#include "cm_inet.h"
-#include "cm_llist.h"      /* Common link list  defines  */
-#include "cm_hash.h"       /* Common hashlist  defines */
-
-#include "gen.x"           /* General */
-#include "ssi.x"   /* System services */
-#include "ss_queue.x"
-#include "ss_task.x"
-#include "ss_msg.x"
-#include "cm_lib.x"
-#include "cm_inet.x"
-#include "cm_llist.x"      /* Common link list  defines  */
-#include "cm_hash.x"       /* Common hashlist  defines */
 #include "odu_common_codec.h"
-
 #include "du_log.h"
+
 #define MAX_IPV6_LEN 16
 #define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 

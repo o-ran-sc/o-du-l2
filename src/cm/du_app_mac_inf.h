@@ -44,10 +44,6 @@
 
 #define SRB_ID_0 0
 #define SRB_ID_1 1
-/* Macros for coupling */
-#define DU_MAC_LC  0
-#define DU_MAC_TC  1
-#define DU_MAC_LWLC  2
 
 /* Event IDs */
 #define EVENT_MAC_CELL_CONFIG_REQ    200

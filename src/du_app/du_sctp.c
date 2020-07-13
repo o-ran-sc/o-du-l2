@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /* This file contains all SCTP related functionality */
-
+#include "common_def.h"
 #include <stdio.h> 
 #include "du_sctp.h"
 #include "lsctp.h"
@@ -401,7 +401,7 @@ S16 duFillSctpPst(Pst *pst, Event event)
    pst->dstInst = (Inst)SCTP_INST;
    pst->dstProcId = pst->srcProcId;
    pst->event = event;
-   pst->selector = DU_SELECTOR_LC;
+   pst->selector = ODU_SELECTOR_LC;
    pst->pool= DU_POOL;
    SPstTsk(pst, mBuf); 
 
@@ -479,7 +479,7 @@ void sendToDuApp(Buffer *mBuf, Event event)
    pst.dstInst = (Inst)DU_INST;
    pst.dstProcId = pst.srcProcId;
    pst.event = event;
-   pst.selector = DU_SELECTOR_LC;
+   pst.selector = ODU_SELECTOR_LC;
    pst.pool= DU_POOL;
    pst.region = DFLT_REGION;
 
@@ -577,7 +577,7 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
    pst.dstInst = (Inst)DU_INST;
    pst.dstProcId = pst.srcProcId;
    pst.event = EVENT_SCTP_NTFY;
-   pst.selector = DU_SELECTOR_LC;
+   pst.selector = ODU_SELECTOR_LC;
    pst.pool= DU_POOL;
    pst.region = DFLT_REGION;
    

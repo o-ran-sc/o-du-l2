@@ -17,6 +17,7 @@
 *******************************************************************************/
 
 /* This file contains message handling functionality for DU cell management */
+#include "common_def.h"
 #include "du_cell_mgr.h"
 
 extern DuCfgParams duCfgParam;

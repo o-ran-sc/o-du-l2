@@ -18,7 +18,7 @@
 
 /* This file contains all SCTP related functionality */
 
-#include <stdio.h> 
+#include "common_def.h"
 #include "ric_e2ap_msg_hdl.h"
 #include "ric_stub_sctp.h"
 
