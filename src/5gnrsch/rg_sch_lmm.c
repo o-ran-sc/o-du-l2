@@ -39,16 +39,7 @@ static int RLOG_MODULE_ID=4096;
 static int RLOG_FILE_ID=167;
 
 /* header include files (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_mblk.h"       /* common memory link list library */
-#include "cm_lte.h"        /* Common LTE Defines */
+#include "common_def.h"
 #include "rg_env.h"        /* MAC Environment Defines */
 #include "rgr.h"           /* RGR Interface defines */
 #include "tfu.h"           /* RGU Interface defines */
@@ -64,15 +55,6 @@ static int RLOG_FILE_ID=167;
 #include "rl_common.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm5.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_mblk.x"       /* common memory link list library */
-#include "cm_lte.x"        /* Common LTE Defines */
 #include "rgr.x"           /* RGR Interface includes */
 #include "rgm.x"           /* RGM Interface includes */
 #include "tfu.x"           /* RGU Interface includes */
@@ -165,8 +147,8 @@ Elmnt sapType;            /* SAP Type */
    {   
       case STRGRSAP:
 #ifndef CL_MAC_LWLC
-         if ((cfg->s.schInstCfg.rgrSap[sapIdx].selector != RGR_SEL_TC) &&
-             (cfg->s.schInstCfg.rgrSap[sapIdx].selector != RGR_SEL_LC))
+         if ((cfg->s.schInstCfg.rgrSap[sapIdx].selector != SELECTOR_TC) &&
+             (cfg->s.schInstCfg.rgrSap[sapIdx].selector != SELECTOR_LC))
          {
             ret = LCM_REASON_INVALID_PAR_VAL;
             RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "rgSCHLmmSapCfg(): unsupported"
@@ -199,8 +181,8 @@ Elmnt sapType;            /* SAP Type */
          break;
       case STTFUSAP:
 #ifndef CL_MAC_LWLC
-         if ((cfg->s.schInstCfg.tfuSap[sapIdx].selector != TFU_SEL_TC) &&
-             (cfg->s.schInstCfg.tfuSap[sapIdx].selector != TFU_SEL_LC))
+         if ((cfg->s.schInstCfg.tfuSap[sapIdx].selector != SELECTOR_TC) &&
+             (cfg->s.schInstCfg.tfuSap[sapIdx].selector != SELECTOR_LC))
          {
             ret = LCM_REASON_INVALID_PAR_VAL;
             RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "rgSCHLmmSapCfg(): unsupported"

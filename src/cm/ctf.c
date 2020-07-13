@@ -30,26 +30,10 @@
 *********************************************************************21*/
 
 /* header include files (.h) */
-#include "envopt.h"        /* Environment options             */
-#include "envdep.h"        /* Environment dependent options   */
-#include "envind.h"        /* Environment independent options */
-#include "gen.h"           /* General layer                   */
-#include "ssi.h"           /* System service interface        */
-#include "cm5.h"           /* Common timer library            */
-#include "cm_llist.h"      /* Common linked list library      */
-#include "cm_hash.h"       /* Common hash library             */
-#include "cm_tkns.h"       /* Common tokens                   */
-#include "cm_lte.h"        /* Common LTE Defines              */
+#include "common_def.h"
 #include "ctf.h"           /* CTF interface defines           */
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* General layer                   */
-#include "ssi.x"           /* System services interface       */
-#include "cm_lib.x"        /* Common linrary function         */
-#include "cm_llist.x"      /* Common link list library        */
-#include "cm_hash.x"       /* Common hash list library        */
-#include "cm_tkns.x"       /* Common tokens                   */
-#include "cm_lte.x"        /* Common LTE library              */
 #ifdef TENB_AS_SECURITY
 #include "cm_mblk.x"
 #endif
@@ -713,7 +697,7 @@ CtfKdfReqInfo* kdfReqInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfKdfReqInfo(kdfReqInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -726,7 +710,7 @@ CtfKdfReqInfo* kdfReqInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
    }
    if (cmPkCtfCfgTransId(&transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -750,7 +734,7 @@ CtfKdfReqInfo* kdfReqInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if (SPutSBuf(pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -971,7 +955,7 @@ CtfCnmCellSyncReq * cfgReqInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfCtfCnmCellSyncReq(cfgReqInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -984,7 +968,7 @@ CtfCnmCellSyncReq * cfgReqInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
 
    if (cmPkPtr((PTR)cfgReqInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1021,7 +1005,7 @@ CtfCnmCellSyncReq * cfgReqInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
    }
    pst->event = (Event)EVTCTFCNMSYNCREQ;
@@ -1082,7 +1066,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&SyncReqMsg, sizeof(CtfCnmCellSyncReq))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1094,13 +1078,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if (cmUnpkPtr((PTR *)&SyncReqMsg, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-  else if (pst->selector == CTF_SEL_LC)
+  else if (pst->selector == SELECTOR_LC)
       if (cmUnpkCtfCtfCnmCellSyncReq(SyncReqMsg, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)SyncReqMsg, sizeof(CtfCnmCellSyncReq));
       SPutMsg(mBuf);
@@ -1164,7 +1148,7 @@ CtfCnmInitSyncReq * cfgReqInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfcfgReqInfo(cfgReqInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1177,7 +1161,7 @@ CtfCnmInitSyncReq * cfgReqInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
 
    if (cmPkPtr((PTR)cfgReqInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1214,7 +1198,7 @@ CtfCnmInitSyncReq * cfgReqInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
    }
    pst->event = (Event)EVTCTFCNMINITSYNCREQ;
@@ -1277,7 +1261,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&syncReqInfo, sizeof(CtfCnmInitSyncReq))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1289,13 +1273,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if (cmUnpkPtr((PTR *)&syncReqInfo, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-  else if (pst->selector == CTF_SEL_LC)
+  else if (pst->selector == SELECTOR_LC)
       if (cmUnpkCtfsyncReqInfo(syncReqInfo, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)syncReqInfo, sizeof(CtfCnmInitSyncReq));
       SPutMsg(mBuf);
@@ -1433,7 +1417,7 @@ CtfCnmInitSyncRsp * cfgRspInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfcfgRspInfo(cfgRspInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1446,7 +1430,7 @@ CtfCnmInitSyncRsp * cfgRspInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
 
    if (cmPkPtr((PTR)cfgRspInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1483,7 +1467,7 @@ CtfCnmInitSyncRsp * cfgRspInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
    }
    pst->event = (Event)EVTCTFCNMINITSYNCRSP;
@@ -1620,7 +1604,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if((SGetSBuf(pst->region, pst->pool, (Data **)&syncRspInfo, sizeof(CtfCnmInitSyncRsp))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1632,13 +1616,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if(cmUnpkPtr((PTR *)&syncRspInfo, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-  else if (pst->selector == CTF_SEL_LC)
+  else if (pst->selector == SELECTOR_LC)
       if(cmUnpkCtfCnmInitSyncRspMsg(syncRspInfo, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)syncRspInfo, sizeof(CtfCnmInitSyncRsp));
       SPutMsg(mBuf);
@@ -1720,7 +1704,7 @@ CtfCnmCellSyncRsp * cfgRspInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfCellSyncRsp(cfgRspInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1733,7 +1717,7 @@ CtfCnmCellSyncRsp * cfgRspInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
 
    if (cmPkPtr((PTR)cfgRspInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1770,7 +1754,7 @@ CtfCnmCellSyncRsp * cfgRspInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
    }
    pst->event = (Event)EVTCTFCNMSYNCRSP;
@@ -1853,7 +1837,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&syncRspMsg, sizeof(CtfCnmCellSyncRsp))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1865,13 +1849,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if (cmUnpkPtr((PTR *)&syncRspMsg, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-  else if (pst->selector == CTF_SEL_LC)
+  else if (pst->selector == SELECTOR_LC)
       if (cmUnpkCtfCnmSyncRspMsg(syncRspMsg, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)syncRspMsg, sizeof(CtfCnmCellSyncRsp));
       SPutMsg(mBuf);
@@ -1954,7 +1938,7 @@ CtfCnmCellSyncInd * cfgIndInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfcfgIndInfo(cfgIndInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1967,7 +1951,7 @@ CtfCnmCellSyncInd * cfgIndInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
 
    if (cmPkPtr((PTR)cfgIndInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -2004,7 +1988,7 @@ CtfCnmCellSyncInd * cfgIndInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       SPutSBuf(pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
    }
    pst->event = (Event)EVTCTFCNMSYNCIND;
@@ -2088,7 +2072,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&syncIndMsg, sizeof(CtfCnmCellSyncInd))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -2100,13 +2084,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if (cmUnpkPtr((PTR *)&syncIndMsg, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-  else if (pst->selector == CTF_SEL_LC)
+  else if (pst->selector == SELECTOR_LC)
       if (cmUnpkCtfCnmSyncIndMsg(syncIndMsg, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)syncIndMsg, sizeof(CtfCnmCellSyncInd));
       SPutMsg(mBuf);
@@ -2174,7 +2158,7 @@ CtfCfgReqInfo* cfgReqInfo;
       cmRelCtfCfgReq(pst, cfgReqInfo);     
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -2187,7 +2171,7 @@ CtfCfgReqInfo* cfgReqInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
       if (cmPkPtr((PTR)cfgReqInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -2222,7 +2206,7 @@ CtfCfgReqInfo* cfgReqInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
          cmRelCtfCfgReq(pst, cfgReqInfo); 
    }
    pst->event = (Event) EVTCTFCFGREQ;
@@ -2471,7 +2455,7 @@ Buffer *mBuf;
       RETVALUE(RFAILED);
    }
    
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&kdfReqInfo, sizeof(CtfKdfReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -2485,13 +2469,13 @@ Buffer *mBuf;
 	  
    }
    
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       /*if (cmUnpkPtr((PTR *)&cfgReqInfo, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }*/
    }
-   else if (pst->selector == CTF_SEL_LC) 
+   else if (pst->selector == SELECTOR_LC) 
       if (cmUnpkCtfKdfReqInfo(kdfReqInfo, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
       SPutMsg(mBuf);
@@ -2565,7 +2549,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&cfgReqInfo, sizeof(CtfCfgReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -2577,13 +2561,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if (cmUnpkPtr((PTR *)&cfgReqInfo, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LC) 
+   else if (pst->selector == SELECTOR_LC) 
       if (cmUnpkCtfCfgReqInfo(pst,cfgReqInfo, mBuf) != ROK) {
       cmRelCtfCfgReq(pst, cfgReqInfo);
       SPutMsg(mBuf);
@@ -3476,7 +3460,7 @@ CtfUeInfo * newUeInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfUeInfo(newUeInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3490,7 +3474,7 @@ CtfUeInfo * newUeInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
       if (cmPkPtr((PTR)newUeInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3504,7 +3488,7 @@ CtfUeInfo * newUeInfo;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfUeInfo(ueInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3518,7 +3502,7 @@ CtfUeInfo * newUeInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
       if (cmPkPtr((PTR)ueInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3556,7 +3540,7 @@ CtfUeInfo * newUeInfo;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3639,7 +3623,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo, sizeof(CtfUeInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3651,13 +3635,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if (cmUnpkPtr((PTR *)&ueInfo, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LC) 
+   else if (pst->selector == SELECTOR_LC) 
       if (cmUnpkCtfUeInfo(ueInfo, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
@@ -3669,7 +3653,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&newUeInfo, sizeof(CtfUeInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3682,13 +3666,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if (cmUnpkPtr((PTR *)&newUeInfo, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LC) 
+   else if (pst->selector == SELECTOR_LC) 
       if (cmUnpkCtfUeInfo(newUeInfo, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
@@ -3763,7 +3747,7 @@ CmStatus status;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfUeInfo(ueInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3776,7 +3760,7 @@ CmStatus status;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
       if (cmPkPtr((PTR)ueInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3811,7 +3795,7 @@ CmStatus status;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3884,7 +3868,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo, sizeof(CtfUeInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3896,13 +3880,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if (cmUnpkPtr((PTR *)&ueInfo, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LC) 
+   else if (pst->selector == SELECTOR_LC) 
       if (cmUnpkCtfUeInfo(ueInfo, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
@@ -8117,7 +8101,7 @@ CtfPeriodicRemCellSearchRsp *CellCfgRsp;
             sizeof(CtfPeriodicRemCellSearchRsp));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == CTF_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkCtfPeriodicCellSearchRsp(CellCfgRsp, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -8131,7 +8115,7 @@ CtfPeriodicRemCellSearchRsp *CellCfgRsp;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == CTF_SEL_LWLC) {
+   else if (pst->selector == SELECTOR_LWLC) {
 
    if (cmPkPtr((PTR)CellCfgRsp, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -8171,7 +8155,7 @@ CtfPeriodicRemCellSearchRsp *CellCfgRsp;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       SPutSBuf(pst->region, pst->pool, (Data *)CellCfgRsp,
             sizeof(CtfPeriodicRemCellSearchRsp));
    }
@@ -8276,7 +8260,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != CTF_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&CellSrchRsp,
                   sizeof(CtfPeriodicRemCellSearchRsp))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -8289,13 +8273,13 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   if (pst->selector == CTF_SEL_LWLC) {
+   if (pst->selector == SELECTOR_LWLC) {
       if (cmUnpkPtr((PTR *)&CellSrchRsp, mBuf) != ROK) {
          SPutMsg(mBuf);
          RETVALUE(RFAILED);
       }
    }
-  else if (pst->selector == CTF_SEL_LC)
+  else if (pst->selector == SELECTOR_LC)
       if (cmUnpkCtfPerRemCellSrch(CellSrchRsp, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)CellSrchRsp,
             sizeof(CtfPeriodicRemCellSearchRsp));

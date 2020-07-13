@@ -21,13 +21,8 @@
 #ifndef __RIC_SCTP_H__
 #define __RIC_SCTP_H__
 
-#include "stdbool.h"
+#include "common_def.h"
 #include "ric_stub.h"
-#include "cm_inet.h"
-#include "cm_tpt.h"
-
-#include "cm_inet.x"
-#include "cm_tpt.x"
 
 #define MAX_RETRY 5
 

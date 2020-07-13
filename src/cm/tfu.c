@@ -35,27 +35,10 @@
 */
 
 /* header include files (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_lte.h"        /* Common LTE Defines */
-#include "cm_mblk.h"        /* Common LTE Defines */
+#include "common_def.h" 
 #include "tfu.h"           /* RGU Interface defines */
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_lte.x"        /* Common LTE Defines */
-#include "cm_mblk.x"        /* Common LTE Defines */
 #include "tfu.x"           /* RGU Interface includes */
 
 #include "du_app_mac_inf.h"
@@ -881,7 +864,7 @@ TfuRaReqIndInfo * raReqInd;
       TFU_FREE_MEM(raReqInd);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuRaReqIndInfo(raReqInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -893,7 +876,7 @@ TfuRaReqIndInfo * raReqInd;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)raReqInd, mBuf) != ROK)
       {
@@ -918,7 +901,7 @@ TfuRaReqIndInfo * raReqInd;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(raReqInd);
    }
 
@@ -978,7 +961,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -994,7 +977,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuRaReqIndInfo(raReqInd, mBuf) != ROK) {
          TFU_FREE_MEM(raReqInd);
@@ -1007,7 +990,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&raReqInd, mBuf) != ROK)
       {
@@ -1085,7 +1068,7 @@ TfuRecpReqInfo * recpReq;
       TFU_FREE_MEM(recpReq);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuRecpReqInfo(recpReq, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1097,7 +1080,7 @@ TfuRecpReqInfo * recpReq;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)recpReq, mBuf) != ROK)
       {
@@ -1123,7 +1106,7 @@ TfuRecpReqInfo * recpReq;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(recpReq);
    }
 
@@ -1193,7 +1176,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -1207,7 +1190,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&recpReq, mBuf) != ROK)
       {
@@ -1222,7 +1205,7 @@ Buffer *mBuf;
       }
    }
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuRecpReqInfo(recpReq, (Ptr)&recpReq->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(recpReq);
@@ -1235,7 +1218,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR*)&recpReq, mBuf) != ROK)
       {
@@ -1305,7 +1288,7 @@ TfuUlCqiIndInfo * ulCqiInd;
       TFU_FREE_MEM(ulCqiInd);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuUlCqiIndInfo(ulCqiInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1317,7 +1300,7 @@ TfuUlCqiIndInfo * ulCqiInd;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)ulCqiInd, mBuf) != ROK)
       {
@@ -1342,7 +1325,7 @@ TfuUlCqiIndInfo * ulCqiInd;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(ulCqiInd);
    }
 
@@ -1403,7 +1386,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -1419,7 +1402,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuUlCqiIndInfo(ulCqiInd, (Ptr)&ulCqiInd->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(ulCqiInd);
@@ -1432,7 +1415,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&ulCqiInd, mBuf) != ROK)
       {
@@ -1500,7 +1483,7 @@ TfuHqIndInfo * hqInd;
       TFU_FREE_MEM(hqInd);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuHqIndInfo(hqInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1512,7 +1495,7 @@ TfuHqIndInfo * hqInd;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)hqInd, mBuf) != ROK)
       {
@@ -1537,7 +1520,7 @@ TfuHqIndInfo * hqInd;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(hqInd);
    }
 
@@ -1597,7 +1580,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -1613,7 +1596,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuHqIndInfo(hqInd, (Ptr)&hqInd->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(hqInd);
@@ -1626,7 +1609,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&hqInd, mBuf) != ROK)
       {
@@ -1693,7 +1676,7 @@ TfuSrIndInfo * srInd;
       TFU_FREE_MEM(srInd);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuSrIndInfo(srInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1705,7 +1688,7 @@ TfuSrIndInfo * srInd;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)srInd, mBuf) != ROK)
       {
@@ -1730,7 +1713,7 @@ TfuSrIndInfo * srInd;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(srInd);
    }
 
@@ -1789,7 +1772,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -1805,7 +1788,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuSrIndInfo(srInd, (Ptr)&srInd->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(srInd);
@@ -1818,7 +1801,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&srInd, mBuf) != ROK)
       {
@@ -1883,7 +1866,7 @@ TfuDlCqiIndInfo * dlCqiInd;
       TFU_FREE_MEM(dlCqiInd);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuDlCqiIndInfo(dlCqiInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1895,7 +1878,7 @@ TfuDlCqiIndInfo * dlCqiInd;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)dlCqiInd, mBuf) != ROK)
       {
@@ -1920,7 +1903,7 @@ TfuDlCqiIndInfo * dlCqiInd;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(dlCqiInd);
    }
    pst->event = (Event) EVTTFUDLCQIIND;
@@ -1976,7 +1959,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -1992,7 +1975,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuDlCqiIndInfo(dlCqiInd, (Ptr)&dlCqiInd->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(dlCqiInd);
@@ -2005,7 +1988,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&dlCqiInd, mBuf) != ROK)
       {
@@ -2353,7 +2336,7 @@ TfuDatIndInfo * datInd;
       TFU_FREE_MEM(datInd);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuDatIndInfo(datInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2365,7 +2348,7 @@ TfuDatIndInfo * datInd;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if(cmPkPtr((PTR)datInd, mBuf) != ROK)
       {
@@ -2390,7 +2373,7 @@ TfuDatIndInfo * datInd;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(datInd);
    }
 
@@ -2449,7 +2432,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -2465,7 +2448,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuDatIndInfo(datInd, (Ptr)&datInd->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(datInd);
@@ -2478,7 +2461,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if(cmUnpkPtr((PTR *)&datInd, mBuf) != ROK)
       {
@@ -2549,7 +2532,7 @@ TfuCrcIndInfo * crcIndInfo;
       TFU_FREE_MEM(crcIndInfo);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuCrcIndInfo(crcIndInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2561,7 +2544,7 @@ TfuCrcIndInfo * crcIndInfo;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)crcIndInfo, mBuf) != ROK)
       {
@@ -2587,7 +2570,7 @@ TfuCrcIndInfo * crcIndInfo;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(crcIndInfo);
    }
 
@@ -2650,7 +2633,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -2666,7 +2649,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuCrcIndInfo(crcIndInfo, (Ptr)&crcIndInfo->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(crcIndInfo);
@@ -2679,7 +2662,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&crcIndInfo, mBuf) != ROK)
       {
@@ -2747,7 +2730,7 @@ TfuTimingAdvIndInfo * timingAdvInd;
       TFU_FREE_MEM(timingAdvInd);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuTimingAdvIndInfo(timingAdvInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2759,7 +2742,7 @@ TfuTimingAdvIndInfo * timingAdvInd;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)timingAdvInd, mBuf) != ROK)
       {
@@ -2784,7 +2767,7 @@ TfuTimingAdvIndInfo * timingAdvInd;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(timingAdvInd);
    }
 
@@ -2844,7 +2827,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -2860,7 +2843,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuTimingAdvIndInfo(timingAdvInd, (Ptr)&timingAdvInd->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(timingAdvInd);
@@ -2873,7 +2856,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&timingAdvInd, mBuf) != ROK)
       {
@@ -2943,7 +2926,7 @@ TfuDatReqInfo * datReq;
       TFU_FREE_MEM(datReq);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuDatReqInfo(datReq, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2955,7 +2938,7 @@ TfuDatReqInfo * datReq;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if(cmPkPtr((PTR)datReq, mBuf) != ROK)
       {
@@ -2980,7 +2963,7 @@ TfuDatReqInfo * datReq;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(datReq);
    }
 
@@ -3042,7 +3025,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -3058,7 +3041,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuDatReqInfo(datReq, (Ptr)&datReq->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(datReq);
@@ -3071,7 +3054,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if (pst->selector == TFU_SEL_LWLC)
+   else if (pst->selector == SELECTOR_LWLC)
    {
       if(cmUnpkPtr((PTR *)&datReq, mBuf) != ROK)
       {
@@ -3142,7 +3125,7 @@ TfuCntrlReqInfo * cntrlReq;
       TFU_FREE_MEM(cntrlReq);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuCntrlReqInfo(cntrlReq, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3154,7 +3137,7 @@ TfuCntrlReqInfo * cntrlReq;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)cntrlReq, mBuf) != ROK)
       {
@@ -3180,7 +3163,7 @@ TfuCntrlReqInfo * cntrlReq;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(cntrlReq);
    }
 
@@ -3243,7 +3226,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -3259,7 +3242,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuCntrlReqInfo(cntrlReq, (Ptr)&cntrlReq->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(cntrlReq);
@@ -3272,7 +3255,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&cntrlReq, mBuf) != ROK)
       {
@@ -3339,7 +3322,7 @@ TfuTtiIndInfo * ttiInd;
       SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuTtiIndInfo(ttiInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3351,7 +3334,7 @@ TfuTtiIndInfo * ttiInd;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)ttiInd, mBuf) != ROK)
       {
@@ -3378,7 +3361,7 @@ TfuTtiIndInfo * ttiInd;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if (SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(TfuTtiIndInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3437,7 +3420,7 @@ Buffer *mBuf
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&slotInd, sizeof(SlotIndInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3449,7 +3432,7 @@ Buffer *mBuf
       }
    }
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpackSlotIndInfo(slotInd, mBuf) != ROK) {
          SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
@@ -3462,7 +3445,7 @@ Buffer *mBuf
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&slotInd, mBuf) != ROK)
       {
@@ -3629,7 +3612,7 @@ Buffer *mBuf
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&slotInd, sizeof(SlotIndInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3641,7 +3624,7 @@ Buffer *mBuf
       }
    }
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpackSlotIndInfo(slotInd, mBuf) != ROK) {
          SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
@@ -3654,7 +3637,7 @@ Buffer *mBuf
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&slotInd, mBuf) != ROK)
       {
@@ -3725,7 +3708,7 @@ TfuPucchDeltaPwrIndInfo * pucchDeltaPwr;
       SPutSBuf(pst->region, pst->pool, (Data *)pucchDeltaPwr, sizeof(TfuPucchDeltaPwrIndInfo));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuPucchDeltaPwrIndInfo(pucchDeltaPwr, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3737,7 +3720,7 @@ TfuPucchDeltaPwrIndInfo * pucchDeltaPwr;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)pucchDeltaPwr, mBuf) != ROK)
       {
@@ -3762,7 +3745,7 @@ TfuPucchDeltaPwrIndInfo * pucchDeltaPwr;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       TFU_FREE_MEM(pucchDeltaPwr);
    }
    pst->event = (Event) EVTTFUPUCCHDELPWR;
@@ -3819,7 +3802,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       Mem   sMem;
       sMem.region = pst->region;
       sMem.pool = pst->pool;
@@ -3834,7 +3817,7 @@ Buffer *mBuf;
       }
    }
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuPucchDeltaPwrIndInfo(pucchDeltaPwr, (Ptr)&pucchDeltaPwr->memCp, mBuf) != ROK) {
          TFU_FREE_MEM(pucchDeltaPwr);
@@ -3847,7 +3830,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&pucchDeltaPwr, mBuf) != ROK)
       {
@@ -15342,7 +15325,7 @@ TfuErrIndInfo * errInd;
       SPutSBuf(pst->region, pst->pool, (Data *)errInd, sizeof(TfuErrIndInfo));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == TFU_SEL_LC) {
+   if (pst->selector == SELECTOR_LC) {
       if (cmPkTfuErrIndInfo(errInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -15354,7 +15337,7 @@ TfuErrIndInfo * errInd;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmPkPtr((PTR)errInd, mBuf) != ROK)
       {
@@ -15381,7 +15364,7 @@ TfuErrIndInfo * errInd;
       TFU_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if (SPutSBuf(pst->region, pst->pool, (Data *)errInd, sizeof(TfuErrIndInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -15449,7 +15432,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector != TFU_SEL_LWLC) {
+   if (pst->selector != SELECTOR_LWLC) {
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&errInd, sizeof(TfuErrIndInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -15461,7 +15444,7 @@ Buffer *mBuf;
       }
    }
 
-   if (pst->selector == TFU_SEL_LC) 
+   if (pst->selector == SELECTOR_LC) 
    {
       if (cmUnpkTfuErrIndInfo(errInd, mBuf) != ROK) {
          SPutSBuf(pst->region, pst->pool, (Data *)errInd, sizeof(TfuErrIndInfo));
@@ -15474,7 +15457,7 @@ Buffer *mBuf;
          RETVALUE(RFAILED);
       }
    }
-   else if(pst->selector == TFU_SEL_LWLC)
+   else if(pst->selector == SELECTOR_LWLC)
    {
       if (cmUnpkPtr((PTR *)&errInd, mBuf) != ROK)
       {

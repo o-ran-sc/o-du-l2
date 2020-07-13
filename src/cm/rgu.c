@@ -35,25 +35,10 @@
 */
 
 /* header include files (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_lte.h"        /* Common LTE Defines */
+#include "common_def.h"
 #include "rgu.h"           /* RGU Interface defines */
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_lte.x"        /* Common LTE Defines */
 #include "rgu.x"           /* RGU Interface includes */
 
 #ifdef SS_RBUF
@@ -448,7 +433,7 @@ RlcMacData  *dlData
       RETVALUE(RFAILED);
    }
 
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKPK(cmPkPtr,(PTR) dlData, mBuf);
    }
@@ -534,7 +519,7 @@ Buffer *mBuf
       RETVALUE(RFAILED);
    }
 
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKUNPK(cmUnpkPtr,(PTR *) &dlData, mBuf);
    }
@@ -619,7 +604,7 @@ RlcMacData  *ulData;
       RETVALUE(RFAILED);
    }
 
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKPK(cmPkPtr,(PTR)ulData, mBuf);
    }
@@ -700,7 +685,7 @@ Buffer *mBuf
       RETVALUE(RFAILED);
    }
 
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKUNPK(cmUnpkPtr,(PTR *) &ulData, mBuf);
    }
@@ -863,7 +848,7 @@ RguL2MUlThrpMeasReqInfo* measReq;
       SPutSBuf(pst->region, pst->pool, (Data *)measReq, sizeof(RguL2MUlThrpMeasReqInfo));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKPK(cmPkPtr,(PTR) measReq, mBuf);
    }
@@ -956,7 +941,7 @@ Buffer *mBuf;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKUNPK(cmUnpkPtr,(PTR *) &measReq, mBuf);
    }
@@ -1044,7 +1029,7 @@ RlcMacBOStatus  *boStatus
 
       RETVALUE(RFAILED);
    }
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKPK(cmPkPtr,(PTR) boStaInfo, mBuf);
    }
@@ -1116,7 +1101,7 @@ Buffer *mBuf
       RETVALUE(RFAILED);
    }
 
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKUNPK(cmUnpkPtr,(PTR *) &boSta, mBuf);
    }
@@ -1217,7 +1202,7 @@ RguHarqStatusInd  *harqStatusInd;
       RETVALUE(RFAILED);
    }
 
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKPK(cmPkPtr,(PTR) harqStaInd, mBuf); 
    }
@@ -1254,7 +1239,7 @@ RguHarqStatusInd  *harqStatusInd;
    if (SPutSBuf(pst->region, pst->pool, (Data *)harqStaInd,
             sizeof(RguHarqStatusInd)) != ROK) {
 #else   
-   if (pst->selector != RGU_SEL_LWLC)
+   if (pst->selector != SELECTOR_LWLC)
    {
       if(SPutStaticBuffer(pst->region, pst->pool, (Data *)harqStaInd, 
                sizeof(RguHarqStatusInd), 0) != ROK)
@@ -1323,7 +1308,7 @@ Buffer *mBuf;
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&hqStaInd, 
         sizeof(RguHarqStatusInd))) != ROK) {
 #else   
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKUNPK(cmUnpkPtr,(PTR *) &hqStaInd, mBuf);
    }  
@@ -1402,7 +1387,7 @@ RlcMacSchedRepInfo  * schRep
       SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRepInfo));
       RETVALUE(RFAILED);
    }
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKPK(cmPkPtr,(PTR) schRep, mBuf);
    }
@@ -1487,7 +1472,7 @@ Buffer *mBuf
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKUNPK(cmUnpkPtr,(PTR *) &schRep, mBuf);
    }
@@ -1627,7 +1612,7 @@ RguFlowCntrlInd   *flowCntrlInd;
 #endif      
       RETVALUE(RFAILED);
    }
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKPK(cmPkPtr,(PTR) flowCntrlInd, mBuf);
    }
@@ -1768,7 +1753,7 @@ Buffer *mBuf;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == RGU_SEL_LWLC)
+   if (pst->selector == SELECTOR_LWLC)
    {
       CMCHKUNPK(cmUnpkPtr,(PTR *) &flowCntrlInd, mBuf);
    }
