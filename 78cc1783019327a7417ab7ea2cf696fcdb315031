@@ -1,0 +1,412 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1160a6f0_79dff4ee",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "can you check if these 2 files are really needed here?",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e716977_7ab2adb6",
+        "filename": "src/5gnrmac/rg_com.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "better to keep all rg related file declarations together",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "259dfe07_3979667e",
+        "filename": "src/5gnrmac/rg_dbm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "check if this file is really required",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba0c5c1a_065204d7",
+        "filename": "src/5gnrmac/rg_dhm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "are we using this flag in our codebase?",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e1c900d_d2245272",
+        "filename": "src/5gnrmac/rg_ptmi.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "this file must be declared first",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d56ce63e_f006a271",
+        "filename": "src/5gnrmac/rg_tom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "all rg and mac files must be clubbed together",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2dcc4a5_57e2c0d1",
+        "filename": "src/5gnrrlc/kw_udx.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "this must be removed",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "182451a5_62e7ed04",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "same file defined again here? How did this code compile? have you tested?",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5a884cf_8f0d1872",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "multiple definition",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bfe3e8a5_d61a46ae",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "multiple definition",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa64ba96_b7b3bfff",
+        "filename": "src/cm/cm_bdy5.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "390a8d9b_5f86781b",
+        "filename": "src/cm/cm_gen.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbd3dee4_fdbb4c6e",
+        "filename": "src/cm/cm_hash.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce5ca3e9_425ee17d",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73074e06_960f9eb1",
+        "filename": "src/cm/cm_lib.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31dd0242_47af3a03",
+        "filename": "src/cm/cm_llist.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b16be32_f8b45666",
+        "filename": "src/cm/cm_lte.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6873e501_357f96cd",
+        "filename": "src/cm/cm_math.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0009e85_e499f5d3",
+        "filename": "src/cm/cm_mblk.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16c19634_355b71a5",
+        "filename": "src/cm/cm_tenb_stats.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c9e7f4f_e0bac5a2",
+        "filename": "src/cm/cm_tkns.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48f95eeb_f1f256c8",
+        "filename": "src/cm/cm_tpt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "dont make this change in this file. Let the old version remain",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4b15c62_df04a142",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "have you checked all .h files if these common files are included? if not, please do and remove the common file declarations from there.",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f80dccb_c8cc5fd6",
+        "filename": "src/cm/lphy_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 1,
+      "message": "this may not be required here. Check the .c files where this file is included, you may have already included common_def.h in those files",
+      "revId": "78cc1783019327a7417ab7ea2cf696fcdb315031",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c8d1bf1b_e51cfe6c",
+        "filename": "src/5gnrrlc/kw_dbm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-13T15:59:45Z",
+      "side": 0,
+      "message": "is this file also part of common_defs? in another files, this file or .x version of it was included explicitly.",
+      "revId": "4ddb1fd0352946fad68e3abfd780f7ebc51dd552",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
