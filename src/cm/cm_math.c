@@ -33,19 +33,8 @@
 
 
 /* header include files (.h) */
-#include "envopt.h"             /* environment options */
-#include "envdep.h"             /* environment dependent */
-#include "envind.h"             /* environment independent */
-#include "gen.h"                /* general */
-#include "ssi.h"                /* system services interface */
 
-#include "cm_math.h"
-#include "cm_math.x"
-
-#include <stdlib.h>
-
-#include <math.h>
-
+#include "common_def.h"
 
 #ifdef SS_FLOAT
 /*

@@ -41,25 +41,9 @@
 *
 */
 /* header include files (.h) */
-  
-#include "envopt.h"             /* Environment options */  
-#include "envdep.h"             /* Environment dependent */
-#include "envind.h"             /* Environment independent */
-#include "gen.h"                /* General */
-#include "ssi.h"                /* System services interface */
-#include "cm_lte.h"             /* Common LTE header file */
-#include "cm_llist.h"           /* Linked list header file */
-#include "cm_tkns.h"            /* Common tokens header file */
-
+#include "common_def.h"  
 
 /* header/extern include files (.x) */
-
-#include "gen.x"                /* General */
-#include "ssi.x"                /* System services interface */
-#include "cm_lib.x"             /* Common lib header file */
-#include "cm_llist.x"           /* Linked list header file */
-#include "cm_tkns.x"            /* Common tokens header file */
-#include "cm_lte.x"             /* Common LTE header file */
 
 #include "ss_queue.h"
 #include "ss_queue.x"

@@ -29,18 +29,9 @@
 **********************************************************************/
 
 /* header include files (.h) */
-
-#include "envopt.h"             /* environment options */  
-#include "envdep.h"             /* environment dependent */
-#include "envind.h"             /* environment independent */
-
+#include "common_def.h"
 /* header/extern include files (.x) */
 
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
-#include "cm_lte.h"             /* common lte header file */
-#include "cm5.h"           /* common timers */
-#include "mt_ss.h"         /* MTSS specific */
 #include "mt_err.h"        /* MTSS error defines */
 #include "ss_queue.h"      /* queues */
 #include "ss_task.h"       /* tasking */
@@ -50,13 +41,8 @@
 /* mt003.301 Additions - Task deregistration */
 #include "ss_err.h"        /* error */
 
-
 /* header/extern include files (.x) */
 
-#include "gen.x"           /* general layer */
-#include "ssi.x"           /* system services */
-#include "cm_lte.x"             /* common lte header file */
-#include "cm5.x"           /* common timers */
 #include "mt_ss.x"         /* MTSS specific */
 #include "ss_queue.x"      /* queues */
 #include "ss_task.x"       /* tasking */
@@ -67,7 +53,6 @@
 #include "ss_mem.x"        /* memory management interface */
 #include "ss_drvr.x"       /* driver tasks */
 #include "ss_gen.x"        /* general */
-
 
 /* public variable declarations */
 PUBLIC U32 cmLteTime;

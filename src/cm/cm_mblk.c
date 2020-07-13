@@ -30,18 +30,7 @@
 
 
 /* header include files (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
-#include "cm_mblk.h"       /* Header file */
-
-/* header/extern include files (.x) */
-#include "gen.x"           /* general layer */
-#include "ssi.x"           /* system services */
-#include "cm_lib.x"        /* Common library */
-#include "cm_mblk.x"       /* Typedef file */
+#include "common_def.h"       /* Header file */
 
 #ifdef SS_LOCKLESS_MEMORY
 EXTERN pthread_t tmpRegTidMap[20];

@@ -117,16 +117,9 @@
  ************************************************************************/
 
 /*cm_lib_c_001.main_13 - Moved env files inclusion to the top*/
-#include "envopt.h"        /* environment options */
-#include "envind.h"        /* environment options */
-#include "envdep.h"        /* environment options */
 
 #ifndef DONT_USE_SYS_LIB
-
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
+#include "common_def.h"
 #define MEMCPY_AVAIL   1
 #define MEMCMP_AVAIL   1
 #define MEMSET_AVAIL   1
@@ -143,16 +136,8 @@
 #define STRLEN_AVAIL   0
 #endif /* not DONT_USE_SYS_LIB */
 
-
- 
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
-
 /* header/extern include files (.x) */
  
-#include "gen.x"           /* general layer */
-#include "ssi.x"           /* system services */
-#include "cm_lib.x"        /* prototypes of primitives in this file */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
 

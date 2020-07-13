@@ -18,15 +18,7 @@
 
 /*This file contains stub for PHY to handle messages to/from MAC CL */
 
-#include <stdint.h>
-
-#include "envdep.h"
-#include "gen.h"
-#include "ssi.h"
-
-#include "gen.x"
-#include "ssi.x"
-
+#include "common_def.h"
 #include "lwr_mac.h"
 #include "lwr_mac_phy.h"
 #ifdef FAPI

@@ -36,20 +36,10 @@ static const char* RLOG_MODULE_NAME="MAC";
 static int RLOG_FILE_ID=279;
 static int RLOG_MODULE_ID=4096;
 /* header include files -- defines (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system service interface */
+#include "common_def.h"
 #ifdef L2_OPTMZ
 #include "ss_strm.h"
 #endif
-#include "cm5.h"           /* common timers */
-#include "cm_hash.h"       /* common hash list */
-#include "cm_mblk.h"       /* common memory link list library */
-#include "cm_llist.h"      /* common linked list library */
-#include "cm_err.h"        /* common error */
-#include "cm_lte.h"        /* common LTE */
 #include "lrg.h"
 #include "crg.h"
 #include "rgu.h"
@@ -60,18 +50,9 @@ static int RLOG_MODULE_ID=4096;
 #include "rg.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general layer */
-#include "ssi.x"           /* system service interface */
 #ifdef L2_OPTMZ
 #include "ss_strm.x"
 #endif
-#include "cm5.x"           /* common timers */
-#include "cm_lib.x"        /* common library */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_llist.x"      /* common linked list library */
-#include "cm_mblk.x"       /* memory management */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_lte.x"        /* common LTE */
 #include "lrg.x"
 #include "crg.x"
 #include "rgu.x"

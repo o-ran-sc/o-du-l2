@@ -82,22 +82,7 @@
   
   
 /* header include files -- defines (.h) */
-
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm_hash.h"       /* common hash functions */
-#include "cm_err.h"        /* common functions error */
-
-/* header include -- typedef structs (.x) */
-
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm_lib.x"        /* common library functions */
-#include "cm_hash.x"       /* common hash functions */
+#include "common_def.h"
 
 
 /* local defines */

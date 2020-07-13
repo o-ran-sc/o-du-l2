@@ -16,21 +16,9 @@
  ################################################################################
  *******************************************************************************/
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
 
 /* header include files -- defines (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system service interface */
-#include "cm_hash.h"       /* common hash list */
-#include "cm_mblk.h"       /* common memory link list library */
-#include "cm_llist.h"      /* common linked list library */
-#include "cm_err.h"        /* common error */
-#include "cm_lte.h"        /* common LTE */
+#include "common_def.h"
 #include "lrg.h"           /* Layer manager interface includes*/
 #include "crg.h"           /* CRG interface includes*/
 #include "rgu.h"           /* RGU interface includes*/
@@ -44,15 +32,6 @@
 #include "lwr_mac_fsm.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general layer typedefs */
-#include "ssi.x"           /* system services typedefs */
-#include "cm5.x"           /* common timers */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_lib.x"        /* common library */
-#include "cm_llist.x"      /* common linked list */
-#include "cm_mblk.x"       /* memory management */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_lte.x"       /* common tokens */
 #include "rgu.x"           /* RGU types */
 #include "tfu.x"           /* RGU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
@@ -63,7 +42,6 @@
 #include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
 #include "lwr_mac_phy.h"
-#include "common_def.h"
 #include "math.h"
 
 #define MIB_SFN_BITMASK 0xFC
