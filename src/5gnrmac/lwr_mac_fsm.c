@@ -16,21 +16,9 @@
  ################################################################################
  *******************************************************************************/
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
 
 /* header include files -- defines (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system service interface */
-#include "cm_hash.h"       /* common hash list */
-#include "cm_mblk.h"       /* common memory link list library */
-#include "cm_llist.h"      /* common linked list library */
-#include "cm_err.h"        /* common error */
-#include "cm_lte.h"        /* common LTE */
+#include "common_def.h"
 #include "lrg.h"           /* Layer manager interface includes*/
 #include "crg.h"           /* CRG interface includes*/
 #include "rgu.h"           /* RGU interface includes*/
@@ -44,15 +32,6 @@
 #include "lwr_mac_fsm.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general layer typedefs */
-#include "ssi.x"           /* system services typedefs */
-#include "cm5.x"           /* common timers */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_lib.x"        /* common library */
-#include "cm_llist.x"      /* common linked list */
-#include "cm_mblk.x"       /* memory management */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_lte.x"       /* common tokens */
 #include "rgu.x"           /* RGU types */
 #include "tfu.x"           /* RGU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
@@ -63,8 +42,6 @@
 #include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
 #include "lwr_mac_phy.h"
-#include "common_def.h"
-#include "math.h"
 
 #define MIB_SFN_BITMASK 0xFC
 #define PDCCH_PDU_TYPE 0
@@ -119,7 +96,7 @@ S16 lwr_mac_handleInvalidEvt(void *msg)
    RETVALUE(ROK);
 }
 
-#ifdef FAPI
+#ifdef INTEL_FAPI
 /*******************************************************************
   *
   * @brief Fills FAPI message header
@@ -1321,7 +1298,7 @@ uint32_t getParamValue(fapi_uint16_tlv_t *tlv, uint16_t type)
 
 S16 lwr_mac_handleParamReqEvt(void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    /* startGuardTimer(); */
    uint32_t msgLen = 0;             //Length of message Body
    fapi_param_req_t *paramReq = NULL;
@@ -1363,7 +1340,7 @@ S16 lwr_mac_handleParamReqEvt(void *msg)
 
 S16 lwr_mac_handleParamRspEvt(void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
   /* stopGuardTimer(); */
    uint8_t index;
    uint32_t encodedVal;
@@ -1900,7 +1877,7 @@ S16 lwr_mac_handleParamRspEvt(void *msg)
 
 S16 lwr_mac_handleConfigReqEvt(void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    Inst inst = 0;
    uint8_t idx = 0;
    uint8_t index = 0;
@@ -2070,7 +2047,7 @@ S16 lwr_mac_handleConfigReqEvt(void *msg)
 
 S16 lwr_mac_handleConfigRspEvt(void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    fapi_config_resp_t *configRsp;
    configRsp = (fapi_config_resp_t *)msg;
 
@@ -2123,7 +2100,7 @@ S16 lwr_mac_handleConfigRspEvt(void *msg)
  * ****************************************************************/
 S16 lwr_mac_handleStartReqEvt(void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint32_t msgLen = 0;
    fapi_start_req_t *startReq;
 
@@ -2164,7 +2141,7 @@ S16 lwr_mac_handleStartReqEvt(void *msg)
 
 S16 lwr_mac_handleStopReqEvt(void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint32_t msgLen = 0;
    fapi_stop_req_t *stopReq = NULLP;
    LWR_MAC_ALLOC(stopReq, sizeof(fapi_stop_req_t));
@@ -2206,7 +2183,7 @@ PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
     DU_LOG("\nLWR_MAC: MIB PDU %x", *val);
 }
 
-#ifdef FAPI
+#ifdef INTEL_FAPI
 /*******************************************************************
  *
  * @brief fills SSB PDU required for DL TTI info in MAC
@@ -3127,7 +3104,7 @@ uint8_t fillMsg4TxDataReq(fapi_tx_pdu_desc_t *pduDesc, Msg4Info *msg4Info,
  * ****************************************************************/
 uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint8_t idx;
    uint8_t nPdu = 0;
    uint8_t numPduEncoded = 0;
@@ -3320,7 +3297,7 @@ uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo)
  * ****************************************************************/
 uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint8_t nPdu = 0;
    uint32_t msgLen = 0;
    uint16_t pduIndex = 0;
@@ -3410,7 +3387,7 @@ uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo)
  *             Pointer to CurrUlSlot
  * @return count
  * ********************************************************************/
-#ifdef FAPI
+#ifdef INTEL_FAPI
 uint8_t getnPdus(fapi_ul_tti_req_t *ulTtiReq, MacUlSlot *currUlSlot)
 {
    uint8_t pduCount = 0;
@@ -3463,7 +3440,7 @@ uint8_t getnPdus(fapi_ul_tti_req_t *ulTtiReq, MacUlSlot *currUlSlot)
 
 void setNumCs(uint8_t *numCs, MacCellCfg *macCellCfg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint8_t idx;
    if(macCellCfg != NULLP)
    {
@@ -3490,7 +3467,7 @@ void setNumCs(uint8_t *numCs, MacCellCfg *macCellCfg)
  *             Pointer to msgLen
  * ********************************************************************/
 
-#ifdef FAPI
+#ifdef INTEL_FAPI
 void fillPrachPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, MacUlSlot *currUlSlot, uint32_t *msgLen)
 {
    if(ulTtiReqPdu != NULLP)
@@ -3646,7 +3623,7 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg,\
  ******************************************************************/
 uint16_t handleUlTtiReq(SlotIndInfo currTimingInfo)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint8_t    pduIdx = -1;
    uint8_t    numPdu = 0;
    uint32_t   msgLen = 0;

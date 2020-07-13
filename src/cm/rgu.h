@@ -88,10 +88,6 @@ extern "C" {
 #else
 #define RGU_MAX_NUM_UE_PER_TTI  8  /*!< Max UEs Per Tti */ 
 #endif   
-/* selector(coupling) values */
-#define RGU_SEL_TC              1
-#define RGU_SEL_LC              0
-#define RGU_SEL_LWLC            2
 
 /* pack unpack error code */
 #define ERGUXXX                 0

@@ -18,13 +18,17 @@
 
 /* This file contains all SCTP related functionality */
 
-#include <stdio.h> 
+#include "common_def.h"
 #include "ric_e2ap_msg_hdl.h"
 #include "ric_stub_sctp.h"
+#include "ric_stub.h"
+#include "E2AP-PDU.h"
+#include "du_log.h"
 
 CuSctpDestCb ricParams;
-
-
+RicSctpParams sctpCfg;
+S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr);
+S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr);
 /**************************************************************************
  * @brief Function to configure the Sctp Params during config Request
  *

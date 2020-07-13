@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /* This file contains message handling functionality for DU APP */
-
+#include "common_def.h"
 #include "du_sctp.h"
 #include "du_f1ap_msg_hdl.h"
 #include "du_e2ap_msg_hdl.h"

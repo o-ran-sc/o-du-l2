@@ -33,31 +33,9 @@
 @brief This file contains the packing/unpacking code for the RGR interface 
        primitives.
 */
-/* header include files (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_lte.h"        /* Common LTE Defines */
-/* LTE_ADV_FLAG_REMOVED_START */
-#include "cm_mblk.h"
 /* LTE_ADV_FLAG_REMOVED_END */
+#include "common_def.h"
 #include "rgr.h"           /* RGR Interface defines */
-
-/* header/extern include files (.x) */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_lte.x"        /* Common LTE Defines */
-/* LTE_ADV_FLAG_REMOVED_START */
-#include "cm_mblk.x"
 /* LTE_ADV_FLAG_REMOVED_END */
 #include "rgr.x"           /* RGR Interface includes */
 
@@ -491,7 +469,7 @@ Buffer *mBuf;
       RETVALUE(RFAILED);
    }
    cmMemset((U8 *)cfgReqInfo, 0, sizeof(RgrCfgReqInfo));
-   if (pst->selector == RGR_SEL_LC) 
+   if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkRgrCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
          SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(RgrCfgReqInfo));
          SPutMsg(mBuf);
@@ -9366,7 +9344,7 @@ Buffer *mBuf;
       RETVALUE(RFAILED);
    }
    cmMemset((U8 *)cfgReqInfo, 0, sizeof(RgrSiCfgReqInfo));
-   if (pst->selector == RGR_SEL_LC) 
+   if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkRgrSiCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
          SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
                           sizeof(RgrSiCfgReqInfo));
@@ -9677,7 +9655,7 @@ Buffer *mBuf;
    }
 
 
-   if (pst->selector == RGR_SEL_LC)
+   if (pst->selector == ODU_SELECTOR_LC)
    {
       if (cmUnpkRgrWarningSiCfgReqInfo(pst, warningSiCfgReqInfo, mBuf) != ROK) 
       {
@@ -10322,7 +10300,7 @@ Buffer *mBuf;
 
    cmMemset((U8 *)loadInfReq, 0, sizeof(RgrLoadInfReqInfo));
 
-   if (pst->selector == RGR_SEL_LC) 
+   if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkRgrLoadInfReqInfo(loadInfReq, mBuf) != ROK) {
          SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
                           sizeof(RgrLoadInfReqInfo));

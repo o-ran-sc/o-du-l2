@@ -35,25 +35,9 @@
 */
 
 /* header include files (.h) */
-#include "envopt.h"        /* Environment options */
-#include "envdep.h"        /* Environment dependent */
-#include "envind.h"        /* Environment independent */
-#include "gen.h"           /* General */
-#include "ssi.h"           /* System Services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_lte.h"        /* Common LTE Defines */
+#include "common_def.h"
 #include "lrg.h"           /* LRG Interface Defines */
-
 /* header/extern include files (.x) */
-#include "gen.x"           /* General */
-#include "ssi.x"           /* System Services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_lte.x"        /* Common LTE Defines */
 #include "lrg.x"           /* LRG Interface includes */
 
 #if (defined(LCLRG))
@@ -95,7 +79,7 @@ RgMngmt * cfg;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, cfg, EVTLRGCFGREQ, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -193,7 +177,7 @@ RgMngmt * cfg;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, cfg, EVTMACSCHGENCFGREQ, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -291,7 +275,7 @@ RgMngmt * cfm;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, cfm, EVTLRGCFGCFM, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -389,7 +373,7 @@ RgMngmt * cfg;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, cfg, EVTMACSCHGENCFGCFM, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -487,7 +471,7 @@ RgMngmt * sts;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, sts, EVTLRGSTSREQ, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -585,7 +569,7 @@ RgMngmt * cfm;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, cfm, EVTLRGSTSCFM, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -877,7 +861,7 @@ RgMngmt * usta;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, usta, EVTLRGUSTAIND, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -975,7 +959,7 @@ RgMngmt * sta;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, sta, EVTLRGSCHSTAIND, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1073,7 +1057,7 @@ RgMngmt * cntrl;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, cntrl, EVTLRGCNTRLREQ, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1171,7 +1155,7 @@ RgMngmt * cntrl;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, cntrl, EVTLRGSCHCNTRLREQ, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1269,7 +1253,7 @@ RgMngmt * cfm;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, cfm, EVTLRGCNTRLCFM, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1367,7 +1351,7 @@ RgMngmt * cntrl;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       if (cmPkRgMngmt(pst, cntrl, EVTLRGSCHCNTRLCFM, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1469,7 +1453,7 @@ Buffer * trcBuf;
       SPutMsg(trcBuf);
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       MsgLen msgLen;
       if (SFndLenMsg(trcBuf, &msgLen) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1551,7 +1535,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (pst->selector == LRG_SEL_LC) {
+   if (pst->selector == ODU_SELECTOR_LC) {
       MsgLen msgLen, totalMsgLen;
       CMCHKUNPK(cmUnpkMsgLen, &msgLen, mBuf);
       if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)

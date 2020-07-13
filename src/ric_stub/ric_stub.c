@@ -17,10 +17,10 @@
 *******************************************************************************/
 
 /* This functions contains main() for ric_app */
-
+#include "common_def.h"
 #include "ric_stub.h"
 #include "ric_stub_sctp.h"
-
+#include "du_log.h"
 #define RIC_ID 1
 #define RIC_NAME "ORAN_OAM_RIC"
 #define DU_IP_V4_ADDR "10.0.2.20"

@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /* This file contains F1AP message handler functions */
-
+#include "common_def.h"
 #include "du_mgr.h"
 #include "du_mgr_main.h"
 #include "du_cell_mgr.h"
@@ -60,7 +60,13 @@
 #include "UplinkConfig.h"
 #include "PDSCH-ServingCellConfig.h"
 #include "DUtoCURRCContainer.h"
+#include<ProtocolIE-Field.h>
+#include "ProtocolExtensionField.h"
+#include "F1AP-PDU.h"
 
+S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
+uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
+void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg);
 extern char encBuf[ENC_BUF_MAX_LEN];
 extern DuCfgParams duCfgParam;
 uint8_t BuildULTnlInforet=RFAILED;

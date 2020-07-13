@@ -15,13 +15,17 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+#include "common_def.h"
 #include "du_e2ap_msg_hdl.h"
 #include "du_mgr_main.h"
 #include "GlobalE2node-gNB-ID.h"
+#include "odu_common_codec.h"
+#include<ProtocolIE-FieldE2.h>
+#include "E2AP-PDU.h"
 
 /* Global variable */
 DuCfgParams duCfgParam;
-
+ uint8_t deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg,  E2setupRequest_t *e2SetupReq, uint8_t idx);
 /*******************************************************************
  *
  * @brief Builds Global gNodeB Params

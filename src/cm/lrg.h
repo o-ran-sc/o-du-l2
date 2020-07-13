@@ -98,9 +98,6 @@
 
 #define LRG_USTA_DGNVAL_MEM      1
 #define LRG_USTA_DGNVAL_HARQ     2
-/* selector(coupling) values */
-#define LRG_SEL_TC              1
-#define LRG_SEL_LC              0
 
 /* TRACE Macros */
 #define LRG_NO_TRACE            0

@@ -71,7 +71,7 @@
    _rspPst.dstEnt    = ENTRG;\
    _rspPst.srcInst   = 1;\
    _rspPst.dstInst   = 0;\
-	_rspPst.selector  = MAC_SELECTOR_TC;\
+	_rspPst.selector  = ODU_SELECTOR_TC;\
 }	
 extern uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
 /**

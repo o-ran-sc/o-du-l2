@@ -20,15 +20,6 @@
 
 #ifndef __RIC_SCTP_H__
 #define __RIC_SCTP_H__
-
-#include "stdbool.h"
-#include "ric_stub.h"
-#include "cm_inet.h"
-#include "cm_tpt.h"
-
-#include "cm_inet.x"
-#include "cm_tpt.x"
-
 #define MAX_RETRY 5
 
 /* Global variable declaration */
@@ -37,7 +28,6 @@ bool nonblocking;      /* Blocking/Non-blocking socket */
 bool connUp;           /* Is connection up */
 int  assocId;          /* Assoc Id of connected assoc */
   
-RicSctpParams sctpCfg;            /* SCTP configurations at DU */
 typedef struct
 {
    uint16_t           numFd;
@@ -68,8 +58,6 @@ EXTERN S16 sctpActvInit();
 EXTERN S16 sctpSend(Buffer *mBuf);
 S16 sctpCfgReq();
 S16 sctpStartReq();
-S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr);
-S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr);
 S16 sctpSetSockOpts(CmInetFd *sock_Fd);
 S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd);
 S16 sctpSockPoll();
