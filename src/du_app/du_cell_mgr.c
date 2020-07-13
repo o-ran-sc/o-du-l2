@@ -17,10 +17,18 @@
 *******************************************************************************/
 
 /* This file contains message handling functionality for DU cell management */
+#include "common_def.h"
+#include "lrg.h"
+#include "legtp.h"
+#include "lrg.x"
+#include "lkw.x"
+#include "du_cfg.h"
+#include "E2AP-PDU.h"
 #include "du_cell_mgr.h"
+#include<ProtocolIE-Field.h>
+#include "F1AP-PDU.h"
 
 extern DuCfgParams duCfgParam;
-
 extern S16 duBuildAndSendMacCellCfg();
 
 /*******************************************************************

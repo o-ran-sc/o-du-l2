@@ -17,31 +17,6 @@
 *******************************************************************************/
 
 /* This file contains all F1AP message handler related functionality */
-#include<stdio.h>
-#include<sys/types.h>
-#include<string.h>
-#include<ProtocolIE-Field.h>
-#include "ProtocolExtensionField.h"
-#include "F1AP-PDU.h"
-#include "Cells-to-be-Activated-List.h"
-
-#include "envopt.h"        /* Environment options */
-#include "envdep.h"        /* Environment dependent */
-#include "envind.h"        /* Environment independent */
-#include "gen.h"           /* General */
-#include "ssi.h"           /* System services */
-#include "ss_queue.h"
-#include "ss_task.h"
-#include "ss_msg.h"
-
-#include "gen.x"           /* General */
-#include "ssi.x"   /* System services */
-#include "ss_queue.x"
-#include "ss_task.x"
-#include "ss_msg.x"
-
-#include "du_log.h"
-#include "odu_common_codec.h"
 
 #define TRANS_ID 1
 #define RRC_SIZE 1
@@ -56,10 +31,7 @@
 void F1APMsgHdlr(Buffer *mBuf);
 uint8_t BuildAndSendF1SetupReq();
 uint8_t BuildAndSendDUConfigUpdate();
-S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
-uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);
-void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg);
 /**********************************************************************
          End of file
 **********************************************************************/

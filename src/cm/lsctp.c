@@ -17,7 +17,12 @@
 *******************************************************************************/
 
 /* This file contains DU APP and SCTP interface functions */
-
+#include "common_def.h"
+#include "lrg.h"
+#include "legtp.h"
+#include "du_cfg.h"
+#include "lkw.x"
+#include "lrg.x"
 #include "du_mgr.h"
 #include "du_sctp.h"
 

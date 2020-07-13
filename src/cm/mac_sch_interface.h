@@ -25,10 +25,6 @@
 #define EVENT_CRC_IND_TO_SCH         6
 #define EVENT_DL_RLC_BO_INFO_TO_SCH  7
 
-/* selector */
-#define MAC_SCH_LC_SELECTOR 0
-#define MAC_SCH_TC_SELECTOR 1
-#define MAC_SCH_LWLC_SELECTOR 2
 
 /*macros*/
 #define NO_SSB 0

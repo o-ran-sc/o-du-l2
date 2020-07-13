@@ -46,6 +46,7 @@
 
 #define SRB_ID_0 0
 #define SRB_ID_1 1
+
 /* Macro for Ue Context */
 #define MAX_NUM_LOGICAL_CHANNELS 11
 #define MAX_NUM_SR_CFG_PER_CELL_GRP 8   /* Max number of scheduling request config per cell group */
@@ -60,11 +61,6 @@
 #define SD_SIZE   3                     /* Max size of Slice Differentiator in S-NSSAI */
 #define PDSCH_START_SYMBOL_LEN 53
 #define PUSCH_START_SYMBOL_LEN 41
-
-/* Macros for coupling */
-#define DU_MAC_LC  0
-#define DU_MAC_TC  1
-#define DU_MAC_LWLC  2
 
 /* Event IDs */
 #define EVENT_MAC_CELL_CONFIG_REQ    200

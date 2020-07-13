@@ -17,7 +17,12 @@
 *******************************************************************************/
 
 /* This file contains ASN codec for MIB and SIB1 msgs */
-
+#include "common_def.h"
+#include "lrg.h"
+#include "lkw.x"
+#include "lrg.x"
+#include "legtp.h"
+#include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_log.h"
 #include "BCCH-BCH-Message.h"
@@ -49,6 +54,7 @@
 #include "MCC.h"
 #include "SIB1.h"
 #include "du_sys_info_hdl.h"
+
 void FreeSib1Msg(SIB1_t *sib1Msg);
 uint8_t FreqInfoUlret = RFAILED;
 uint8_t RachCfgCommonret = RFAILED;
@@ -57,6 +63,7 @@ uint8_t UlCfgCommSibret = RFAILED;
 uint8_t FreqInfoDlret = RFAILED;
 uint8_t DlCfgCommSibret = RFAILED;
 uint8_t CommonSerachSpaceListret = RFAILED;
+
 /*******************************************************************
  *
  * @brief Builds MIB

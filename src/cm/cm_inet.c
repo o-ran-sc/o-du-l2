@@ -3365,12 +3365,14 @@ Ptr       value;                /* option value */
          if (status.sstat_primary.spinfo_state == SCTP_ACTIVE)
              pSctpStatus->primary.isActive = TRUE;
          else
+			{
              pSctpStatus->primary.isActive = FALSE;
              pSctpStatus->primary.cwnd = status.sstat_primary.spinfo_cwnd;
              pSctpStatus->primary.srtt = status.sstat_primary.spinfo_srtt;
              pSctpStatus->primary.rto  = status.sstat_primary.spinfo_rto;
              pSctpStatus->primary.mtu  = status.sstat_primary.spinfo_mtu;
-         break;
+         }
+			break;
 
       case CM_INET_OPT_SCTP_GET_PADDR_INFO:
          pPeerAddrInfo = (CmInetSctpPeerAddrInfo*)value;

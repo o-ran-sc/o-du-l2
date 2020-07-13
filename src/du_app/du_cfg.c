@@ -17,6 +17,12 @@
 *******************************************************************************/
 
 /* This file contains all utility functions */
+#include "common_def.h"
+#include "legtp.h"
+#include "lrg.h"
+#include "lkw.x"
+#include "lrg.x"
+#include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_sys_info_hdl.h"
 #include "MIB.h"
@@ -774,7 +780,7 @@ S16 duReadCfg()
    pst.dstInst = pst.srcInst;
    pst.dstProcId = pst.srcProcId;
    pst.event = EVTCFG;
-   pst.selector = DU_SELECTOR_TC;
+   pst.selector = ODU_SELECTOR_TC;
    pst.pool= DU_POOL;
 
 

@@ -37,17 +37,7 @@ static int RLOG_FILE_ID=228;
 static int RLOG_MODULE_ID=4096;
 
 /* header include files -- defines (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
-#include "cm5.h"           /* common timers defines */
-#include "cm_hash.h"       /* common hash list defines */
-#include "cm_llist.h"      /* common linked list defines */
-#include "cm_mblk.h"       /* memory management */
-#include "cm_tkns.h"       /* common tokens */
-#include "cm_lte.h"       /* common tokens */
+#include "common_def.h"
 #include "tfu.h"           /* RGU defines */
 #include "lrg.h"           /* layer management defines for LTE-MAC */
 #include "rgr.h"           /* layer management defines for LTE-MAC */
@@ -62,15 +52,6 @@ static int RLOG_MODULE_ID=4096;
 
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general layer typedefs */
-#include "ssi.x"           /* system services typedefs */
-#include "cm5.x"           /* common timers */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_lib.x"        /* common library */
-#include "cm_llist.x"      /* common linked list */
-#include "cm_mblk.x"       /* memory management */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_lte.x"       /* common tokens */
 #include "tfu.x"           /* RGU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
 #include "rgr.x"           /* layer management typedefs for MAC */
@@ -700,9 +681,9 @@ U32 rgSch5gtfCqi2Mcs[15] =
 /*HARQ Feedback interpretation in accordance with Femto Forum.
 Note: There is no value as '0' in Femto Forum Spec but in order to retain
 the existing usage in MAC (and its Acceptance), its being considered*/
-CONSTANT PRIVATE U8 rgSchTomHqFbkMap[8] = {0,1,0,0,4,4,4,4};
+//CONSTANT PRIVATE U8 rgSchTomHqFbkMap[8] = {0,1,0,0,4,4,4,4};
 /*added #defines instead of magic numbers*/
-CONSTANT PRIVATE U32 rgSCHTomBinCoe[RG_SCH_MAX_NUM_UE_SEL_SUBBANDS][RG_SCH_MAX_TOT_NUM_SUBBANDS]={
+/*CONSTANT PRIVATE U32 rgSCHTomBinCoe[RG_SCH_MAX_NUM_UE_SEL_SUBBANDS][RG_SCH_MAX_TOT_NUM_SUBBANDS]={
 {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28},
 {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210,231,253,276,300,325,351,378},
 {0,0,1,4,10,20,35,56,84,120,165,220,286,364,455,560,680,816,969,1140,1330,1540,1771,2024,2300,2600,2925,3276},
@@ -710,7 +691,7 @@ CONSTANT PRIVATE U32 rgSCHTomBinCoe[RG_SCH_MAX_NUM_UE_SEL_SUBBANDS][RG_SCH_MAX_T
 {0,0,0,0,1,6,21,56,126,252,462,792,1287,2002,3003,4368,6188,8568,11628,15504,20349,26334,33649,42504,53130,65780,80730,98280},
 {0,0,0,0,0,1,7,28,84,210,462,924,1716,3003,5005,8008,12376,18564,27132,38760,54264,74613,100947,134596,177100,230230,296010,376740}
 };
-
+*/
 
 /*ccpu00116923 - ADD - SRS present support*/
 /*Tables Derived from 3GPP TS 36.211 Section 5.5.3.3 */

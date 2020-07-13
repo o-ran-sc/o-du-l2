@@ -42,11 +42,6 @@ EXTERN "C" {
  
 /* CKW Interface Hash Defines */
 
-/* Loose Coupling define */
-#define CKW_SEL_LC            0     /*!< Loose Coupling Option */
-#define CKW_SEL_TC            1     /*!< Tight Coupling Option */
-#define CKW_SEL_LWLC          2     /*!< Light Weight Loose Coupling */
-
 /* CKW Interface defines */
 #define CKW_MAX_ENT_CFG       24    /*!< Maximum number of entities to configure */
 /* ckw_h_001.main_3 added support for L2 Measurement */   

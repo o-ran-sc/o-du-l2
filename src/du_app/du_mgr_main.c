@@ -17,7 +17,12 @@
 *******************************************************************************/
 
 /* This file is the entry point for DU APP */
-
+#include "common_def.h"
+#include "lrg.h"
+#include "legtp.h"
+#include "lrg.x"
+#include "lkw.x"
+#include "du_cfg.h"
 #include "du_mgr_main.h"
 #include "du_sctp.h"
 #include "du_egtp.h"

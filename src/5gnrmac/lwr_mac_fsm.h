@@ -26,7 +26,7 @@
 
 #include "lwr_mac.h"
 
-#ifdef FAPI
+#ifdef INTEL_FAPI
 #include "fapi.h"
 #endif
 
