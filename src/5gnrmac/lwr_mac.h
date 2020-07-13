@@ -22,17 +22,6 @@
 
 #define MAX_NUM_CELL_SUPP 1
 
-#include "envdep.h"
-#include "gen.h"
-#include "ssi.h"
-#include "cm_hash.h"
-#include "cm_lte.h"
-
-#include "gen.x"
-#include "ssi.x"
-#include "cm_hash.x"
-#include "cm_lte.x"
-#include "cm_lib.x"
 #include "du_app_mac_inf.h"
 
 #ifdef INTEL_WLS

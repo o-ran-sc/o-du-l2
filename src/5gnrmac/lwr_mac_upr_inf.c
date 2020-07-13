@@ -15,7 +15,7 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
-
+#include "common_def.h"
 #include "lwr_mac_upr_inf.h"
 
 /*******************************************************************
@@ -37,14 +37,11 @@
  * ****************************************************************/
 uint16_t packCrcInd(Pst *pst, CrcInd *crcInd)
 {
-   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
       return ROK;
    }
-   else
-   {
-      return RFAILED;
-   }
+   return RFAILED;
 }
 
 /*******************************************************************
@@ -66,7 +63,7 @@ uint16_t packCrcInd(Pst *pst, CrcInd *crcInd)
  * ****************************************************************/
 uint16_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
-   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
       return ROK;
    }
@@ -96,14 +93,11 @@ uint16_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  * ****************************************************************/
 uint16_t packRachInd(Pst *pst, RachInd *rachInd)
 {
-   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
       return ROK;
    }
-   else
-   {
-      return RFAILED;
-   }
+   return RFAILED;
 }
  
 /*******************************************************************
@@ -178,7 +172,7 @@ S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
  * ****************************************************************/
 uint16_t packStopInd(Pst *pst)
 {
-   if((pst->selector == MAC_SELECTOR_LC) || (pst->selector == MAC_SELECTOR_LWLC))
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
       return ROK;
    }

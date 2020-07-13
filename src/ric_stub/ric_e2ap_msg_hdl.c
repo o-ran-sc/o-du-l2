@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /* This file contains E2AP message handler functions */
-
+#include "common_def.h"
 #include "ric_stub_sctp.h"
 #include "ric_e2ap_msg_hdl.h"
 #include "GlobalE2node-gNB-ID.h"

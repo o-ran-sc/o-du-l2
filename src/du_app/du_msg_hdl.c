@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /* This file contains message handling functionality for DU APP */
-
+#include "common_def.h"
 #include "du_mgr.h"
 #include "du_sctp.h"
 #include "du_f1ap_msg_hdl.h"
@@ -112,7 +112,7 @@ S16 duBuildRlcCfg(Inst inst)
    genCfg->lmPst.region    = (inst == RLC_UL_INST) ?
       RLC_UL_MEM_REGION:RLC_DL_MEM_REGION;
    genCfg->lmPst.pool      = RLC_POOL;
-   genCfg->lmPst.selector  = DU_SELECTOR_LC;
+   genCfg->lmPst.selector  = ODU_SELECTOR_LC;
 
     /* Fill Header */
    kwMngmt.hdr.msgType             = TCFG;
@@ -128,10 +128,10 @@ S16 duBuildRlcCfg(Inst inst)
    kwMngmt.hdr.response.mem.region = (inst == RLC_UL_INST) ?
       RLC_UL_MEM_REGION:RLC_DL_MEM_REGION;
    kwMngmt.hdr.response.mem.pool   = DU_POOL;
-   kwMngmt.hdr.response.selector   = DU_SELECTOR_LC;
+   kwMngmt.hdr.response.selector   = ODU_SELECTOR_LC;
 
    /* Fill Pst */
-   pst.selector  = DU_SELECTOR_LC;
+   pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTKW;
    pst.dstInst   = inst;
@@ -181,7 +181,7 @@ S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst)
    kwMngmt.hdr.response.mem.pool   = RLC_POOL;
 
    /* Fill Pst */
-   pst.selector  = DU_SELECTOR_LC;
+   pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTKW;
    pst.dstProcId = DU_PROC;
@@ -203,7 +203,7 @@ S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst)
       lSap->ent         = ENTRG;
       lSap->inst        = lsapInst;
       lSap->sapId       = lsapInst;      /* SapId will be stored as suId in MAC */
-      lSap->selector    = (inst == RLC_UL_INST) ? DU_SELECTOR_LWLC : DU_SELECTOR_TC;
+      lSap->selector    = (inst == RLC_UL_INST) ? ODU_SELECTOR_LWLC : ODU_SELECTOR_TC;
       kwMngmt.hdr.elmId.elmnt  = STRGUSAP;
       DU_LOG("\nDU_APP : RLC MAC Lower Sap Cfg Req sent for inst %d", inst);
 
@@ -215,7 +215,7 @@ S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst)
       lSap->inst      = (inst == RLC_UL_INST) ?
          RLC_DL_INST : RLC_UL_INST;
       lSap->sapId       = 0;
-      lSap->selector = DU_SELECTOR_LC;
+      lSap->selector = ODU_SELECTOR_LC;
       kwMngmt.hdr.elmId.elmnt  = STUDXSAP;
       DU_LOG("\nDU_APP : RLC DL/UL Lower Sap Cfg Req sent for inst %d", inst);
    }
@@ -250,7 +250,7 @@ S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst)
 
    uSap   = &(kwMngmt.t.cfg.s.sap);
 
-   uSap->selector   = DU_SELECTOR_LC;
+   uSap->selector   = ODU_SELECTOR_LC;
    uSap->mem.region = (inst == RLC_UL_INST) ?
       RLC_UL_MEM_REGION:RLC_DL_MEM_REGION;
    uSap->mem.pool = RLC_POOL;
@@ -276,7 +276,7 @@ S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst)
    kwMngmt.hdr.response.mem.pool   = RLC_POOL;
 
    /* Fill Pst */
-   pst.selector  = DU_SELECTOR_LC;
+   pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTKW;
    pst.dstProcId = DU_PROC;
@@ -702,7 +702,7 @@ S16 duBuildMacGenCfg()
    genCfg->lmPst.route     = RTESPEC;
    genCfg->lmPst.region    = MAC_MEM_REGION;
    genCfg->lmPst.pool      = RG_POOL;
-   genCfg->lmPst.selector  = DU_SELECTOR_LC;
+   genCfg->lmPst.selector  = ODU_SELECTOR_LC;
 
     /* Fill Header */
    rgMngmt.hdr.msgType             = TCFG;
@@ -718,10 +718,10 @@ S16 duBuildMacGenCfg()
    rgMngmt.hdr.response.route      = RTESPEC;
    rgMngmt.hdr.response.mem.region = MAC_MEM_REGION;
    rgMngmt.hdr.response.mem.pool   = RG_POOL;
-   rgMngmt.hdr.response.selector   = DU_SELECTOR_LC;
+   rgMngmt.hdr.response.selector   = ODU_SELECTOR_LC;
 
    /* Fill Pst */
-   pst.selector  = DU_SELECTOR_LC;
+   pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTRG;
    pst.dstInst   = macCfgInst;
@@ -772,7 +772,7 @@ S16 duBuildMacUsapCfg(SpId sapId)
    uSap->inst       = sapId;
    uSap->prior      = PRIOR0;
    uSap->route      = RTESPEC;
-   uSap->selector   = DU_SELECTOR_LC ;
+   uSap->selector   = ODU_SELECTOR_LC ;
 
    /* fill header */
    rgMngmt.hdr.msgType             = TCFG;
@@ -783,7 +783,7 @@ S16 duBuildMacUsapCfg(SpId sapId)
    rgMngmt.hdr.response.mem.pool   = RG_POOL;
    
    /* fill pst */
-   pst.selector  = DU_SELECTOR_LC;
+   pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTRG;
    pst.dstInst   = macCfgInst;
@@ -907,7 +907,7 @@ S16 duBindUnbindRlcToMacSap(U8 inst, U8 action)
    kwMngmt.hdr.response.mem.pool   = RLC_POOL;
 
    /* Fill pst */
-   pst.selector  = DU_SELECTOR_LC;
+   pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTKW;
    pst.dstProcId = DU_PROC;
@@ -988,7 +988,7 @@ S16 duFillEgtpPst(Pst *pst, Event event)
    pst->dstInst = (Inst)EGTP_INST;
    pst->dstProcId = pst->srcProcId;
    pst->event = event;
-   pst->selector = DU_SELECTOR_LC;
+   pst->selector = ODU_SELECTOR_LC;
    pst->pool= DU_POOL;
   
    RETVALUE(ROK);
@@ -1387,7 +1387,7 @@ S16 duSendSchCfg()
    cfg->genCfg.lmPst.route     = RTESPEC;
    cfg->genCfg.lmPst.region    = MAC_MEM_REGION;
    cfg->genCfg.lmPst.pool      = RG_POOL;
-   cfg->genCfg.lmPst.selector  = DU_SELECTOR_LC;
+   cfg->genCfg.lmPst.selector  = ODU_SELECTOR_LC;
 
    /* Fill Header */
    rgMngmt.hdr.msgType             = TCFG;
@@ -1398,7 +1398,7 @@ S16 duSendSchCfg()
    rgMngmt.hdr.response.mem.pool   = RG_POOL;
 
    /* Fill Pst */
-   pst.selector  = DU_SELECTOR_LC;
+   pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTRG;
    pst.dstProcId = DU_PROC;
@@ -1558,7 +1558,7 @@ S16 duBuildAndSendMacCellCfg()
    duMacCellCfg->transId = getTransId(); /* transaction ID */
    
    /* Fill Pst */
-   pst.selector  = DU_SELECTOR_LWLC;
+   pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTRG;
    pst.dstInst   = 0;
@@ -1668,7 +1668,7 @@ uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo)
    duSendEgtpSlotInd();    
 #endif
 
-   if((pst->selector == DU_SELECTOR_LWLC) || (pst->selector == DU_SELECTOR_TC)) 
+   if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC)) 
       DU_FREE_SHRABL_BUF(MAC_MEM_REGION, pst->pool, slotInfo, sizeof(SlotInfo));
 
    return ROK;
@@ -1713,7 +1713,7 @@ uint16_t duBuildAndSendMacCellStartReq()
          cellStartInfo->cellId = duCb.actvCellLst[id]->cellInfo.nrEcgi.cellId;
  
          /* Fill Pst */
-         pst.selector  = DU_MAC_LWLC;
+         pst.selector  = ODU_SELECTOR_LWLC;
          pst.srcEnt    = ENTDUAPP;
          pst.dstEnt    = ENTRG;
          pst.dstInst   = 0;
@@ -1763,7 +1763,7 @@ uint16_t duBuildAndSendMacCellStopReq()
    cellStopInfo->cellId = duCb.actvCellLst[0]->cellId;
  
    /* Fill Pst */
-   pst.selector  = DU_MAC_LWLC;
+   pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTRG;
    pst.dstInst   = 0;
@@ -1812,7 +1812,7 @@ uint16_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
          }
       }
 	}
-   if((pst->selector == DU_SELECTOR_LWLC) || (pst->selector == DU_SELECTOR_TC))
+   if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC))
       DU_FREE_SHRABL_BUF(MAC_MEM_REGION, pst->pool, cellStopId, sizeof(MacCellStopInfo));
 
    return ROK;

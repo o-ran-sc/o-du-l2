@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /* This file contains ASN codec for MIB and SIB1 msgs */
-
+#include "common_def.h"
 #include "du_mgr.h"
 #include "du_log.h"
 #include "BCCH-BCH-Message.h"

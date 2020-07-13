@@ -38,17 +38,7 @@ static int RLOG_FILE_ID=220;
 static int RLOG_MODULE_ID=4096;
 
 /* header include files (.h) */
-#include "stdbool.h"
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_mblk.h"       /* common memory link list library */
-#include "cm_lte.h"        /* Common LTE Defines */
+#include "common_def.h"
 #include "rg_env.h"        /* MAC Environment Defines */
 #include "crg.h"           /* CRG Interface defines */
 #include "rgu.h"           /* RGU Interface defines */
@@ -61,15 +51,6 @@ static int RLOG_MODULE_ID=4096;
 #include "du_log.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm5.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_mblk.x"       /* common memory link list library */
-#include "cm_lte.x"        /* Common LTE Defines */
 #include "crg.x"           /* CRG Interface includes */
 #include "rgu.x"           /* RGU Interface includes */
 #include "tfu.x"           /* RGU Interface includes */
@@ -787,8 +768,8 @@ Elmnt sapType;            /* Sap Type */
    {   
       case STRGUSAP:
          if ((cfg->s.rguSap.spId > LRG_MAX_RGU_SAPS) &&
-             (cfg->s.rguSap.selector != RGU_SEL_TC) &&
-             (cfg->s.rguSap.selector != RGU_SEL_LC))
+             (cfg->s.rguSap.selector != ODU_SELECTOR_TC) &&
+             (cfg->s.rguSap.selector != ODU_SELECTOR_LC))
          {
             ret = LCM_REASON_INVALID_PAR_VAL;
             RLOG0(L_ERROR, "unsupported Selector value for RGU");
@@ -818,8 +799,8 @@ Elmnt sapType;            /* Sap Type */
           * there is cfg request with sap is 1*/
          break;
       case STCRGSAP:
-         if ((cfg->s.crgSap.selector != CRG_SEL_TC) &&
-             (cfg->s.crgSap.selector != CRG_SEL_LC))
+         if ((cfg->s.crgSap.selector != ODU_SELECTOR_TC) &&
+             (cfg->s.crgSap.selector != ODU_SELECTOR_LC))
          {
             ret = LCM_REASON_INVALID_PAR_VAL;
             RLOG0(L_ERROR, "unsupported Selector value for CRG");
@@ -848,8 +829,8 @@ Elmnt sapType;            /* Sap Type */
          break;
       case STTFUSAP:
 #ifndef CL_MAC_LWLC 
-         if ((cfg->s.tfuSap.selector != TFU_SEL_TC) &&
-             (cfg->s.tfuSap.selector != TFU_SEL_LC))
+         if ((cfg->s.tfuSap.selector != ODU_SELECTOR_TC) &&
+             (cfg->s.tfuSap.selector != ODU_SELECTOR_LC))
          {
             ret = LCM_REASON_INVALID_PAR_VAL;
             RLOG0(L_ERROR, "unsupported Selector value for TFU");
@@ -927,8 +908,8 @@ RgCfg *cfg;            /* Configuaration information */
    {
       RETVALUE(LCM_REASON_INVALID_MSGTYPE);
    }
-   if ((cfg->s.genCfg.lmPst.selector != LRG_SEL_TC) &&
-       (cfg->s.genCfg.lmPst.selector != LRG_SEL_LC))
+   if ((cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_TC) &&
+       (cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_LC))
    {
       RLOG0(L_ERROR, "unsupported Selector value for RGU");
       RETVALUE(LCM_REASON_INVALID_PAR_VAL);
@@ -2041,7 +2022,7 @@ RgMngmt  *cfm;    /* config confirm structure  */
 	pst->dstEnt = ENTDUAPP;
 	pst->dstInst = 0;
 	pst->srcInst = 0;
-	pst->selector = MAC_SCH_LC_SELECTOR; 
+	pst->selector = ODU_SELECTOR_LC; 
    RgMiLrgSchCfgCfm(pst, cfm);
    
    RETVALUE(ROK);
@@ -2079,7 +2060,7 @@ Pst           *cfmPst
    cfmPst->dstInst   = 0;
    cfmPst->dstProcId = cfmPst->srcProcId;
 
-   cfmPst->selector  = LRG_SEL_LC;
+   cfmPst->selector  = ODU_SELECTOR_LC;
    cfmPst->prior     = reqPst->prior;
    cfmPst->route     = reqPst->route;
    cfmPst->region    = reqPst->region;
@@ -2272,7 +2253,7 @@ int MacSchCellCfgReq
 	cfgPst.srcInst   = 0;
 	cfgPst.dstEnt    = ENTRG;
 	cfgPst.dstInst   = 1;
-	cfgPst.selector  = MAC_SCH_TC_SELECTOR;
+	cfgPst.selector  = ODU_SELECTOR_TC;
 	cfgPst.event     = EVENT_SCH_CELL_CFG;
 
 	ret = (*SchCellCfgOpts[cfgPst.selector])(&cfgPst, &schCellCfg);

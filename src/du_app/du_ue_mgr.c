@@ -16,6 +16,7 @@
 ################################################################################
 *******************************************************************************/
  /* This file contains UE management handling functionality for DU APP */
+#include "common_def.h"
 #include "du_ue_mgr.h"
 
 #ifdef EGTP_TEST
@@ -96,7 +97,7 @@ S16 duSendUeCreateReqToRlc()
    } /* End of entity configuration for loop */
 
    /* Fill Pst */
-   pst.selector  = DU_SELECTOR_LWLC;
+   pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTKW;
    pst.dstInst   = RLC_UL_INST;
@@ -146,7 +147,7 @@ S16 duHdlEgtpDlData(EgtpMsg  *egtpMsg)
    datReqInfo.lcType = CM_LTE_LCH_DTCH;
 #endif
    /* Filling pst and Sending to RLC DL */
-   pst.selector  = DU_SELECTOR_LWLC;
+   pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
    pst.dstEnt    = ENTKW;
    pst.dstInst   = RLC_DL_INST;
@@ -239,7 +240,7 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
 	DU_FREE(dlCcchMsg, dlCcchMsgSize);
 
 	/* Fill Pst */
-	pst.selector  = DU_MAC_LWLC;
+	pst.selector  = ODU_SELECTOR_LWLC;
 	pst.srcEnt    = ENTDUAPP;
 	pst.dstEnt    = ENTRG;
 	pst.dstInst   = 0;

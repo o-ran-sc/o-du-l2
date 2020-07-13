@@ -17,8 +17,7 @@
 *******************************************************************************/
  
 /* This file contains all EGTP related functionality */
-
-#include <stdio.h>
+#include "common_def.h"
 #include "du_egtp.h"
 #include "du_ue_mgr.h"
 
@@ -222,7 +221,7 @@ S16 egtpFillRspPst(Pst *pst, Pst *rspPst)
    rspPst->dstEnt = pst->srcEnt;
    rspPst->dstInst = pst->srcInst;
    rspPst->dstProcId = pst->srcProcId;
-   rspPst->selector = DU_SELECTOR_LC;
+   rspPst->selector = ODU_SELECTOR_LC;
    rspPst->pool= DU_POOL;
     
    return ROK;
