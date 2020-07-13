@@ -3282,11 +3282,13 @@ uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo)
 				fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
 				LwrMacSendToPhy(dlTtiReq->header.message_type_id, dlTtiReqMsgSize, (void *)dlTtiReq);
 			}
+			memset(currDlSlot, 0, sizeof(MacDlSlot));
 			return ROK;
 		}
 		else
 		{
 			DU_LOG("\nLWR_MAC: Failed to allocate memory for DL TTI Request");
+			memset(currDlSlot, 0, sizeof(MacDlSlot));
 			return RFAILED;
 		}
 	}

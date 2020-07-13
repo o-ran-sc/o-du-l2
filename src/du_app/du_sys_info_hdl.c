@@ -2175,7 +2175,34 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
    ssbPosInBurst->buf[0] = duSrvCellCfg.ssbPosInBurst;  
    ssbPosInBurst->bits_unused = 0;
 
-   srvCellCfg->ssb_PeriodicityServingCell = duSrvCellCfg.ssbPrdServingCell;
+	switch(duSrvCellCfg.ssbPrdServingCell)
+	{
+	   case SSB_PERIODICITY_5MS:
+		   srvCellCfg->ssb_PeriodicityServingCell = \
+			   ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms5;
+			break;
+	   case SSB_PERIODICITY_10MS:
+		   srvCellCfg->ssb_PeriodicityServingCell = \
+			   ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms10;
+			break;
+		case SSB_PERIODICITY_20MS:
+		   srvCellCfg->ssb_PeriodicityServingCell = \
+			   ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms20;
+			break;
+		case SSB_PERIODICITY_40MS:
+		   srvCellCfg->ssb_PeriodicityServingCell = \
+			   ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms40;
+			break;
+		case SSB_PERIODICITY_80MS:
+		   srvCellCfg->ssb_PeriodicityServingCell = \
+			   ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms80;
+			break;
+		case SSB_PERIODICITY_160MS:
+		   srvCellCfg->ssb_PeriodicityServingCell = \
+			   ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms160;
+			break;
+	}
+
    srvCellCfg->ss_PBCH_BlockPower = duSrvCellCfg.ssPbchBlockPwr;
 
    /* Downlink config common */

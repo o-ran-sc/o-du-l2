@@ -66,7 +66,12 @@
 #define SCS_CARRIER_BANDWIDTH 273         /* Subcarrier spacing- carrier bandwidth */
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
 #define BETA_PSS BETA_PSS_0DB  
-#define SSB_PERIODICITY 2
+#define SSB_PERIODICITY_5MS   5
+#define SSB_PERIODICITY_10MS  10
+#define SSB_PERIODICITY_20MS  20
+#define SSB_PERIODICITY_40MS  40
+#define SSB_PERIODICITY_80MS  80
+#define SSB_PERIODICITY_160MS 160
 #define SSB_SUBCARRIER_OFFSET 0               
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE

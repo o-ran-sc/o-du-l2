@@ -159,7 +159,7 @@ S16 readMacCfg()
    duCfgParam.macCellCfg.ssbCfg.scsCmn = SUBCARRIER_SPACING;
    duCfgParam.macCellCfg.ssbCfg.ssbOffsetPointA = OFFSET_TO_POINT_A;
    duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
-   duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITY;
+   duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITY_20MS;
    duCfgParam.macCellCfg.ssbCfg.ssbScOffset = SSB_SUBCARRIER_OFFSET;
    duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = 1; /* only one SSB is transmitted */
    duCfgParam.macCellCfg.ssbCfg.ssbMask[1] = 0;
@@ -471,7 +471,7 @@ S16 fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    srvCellCfgComm->tddCfg = tddCfg;
 
    srvCellCfgComm->ssbPosInBurst = 192;
-   srvCellCfgComm->ssbPrdServingCell = SSB_PERIODICITY;
+   srvCellCfgComm->ssbPrdServingCell = SSB_PERIODICITY_20MS;
    srvCellCfgComm->ssPbchBlockPwr = SSB_PBCH_PWR;
 
    return ROK;
