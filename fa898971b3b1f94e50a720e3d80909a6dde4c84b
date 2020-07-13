@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "890a969a_71b5f3d5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3929,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-07-13T12:41:45Z",
+      "side": 1,
+      "message": "Initialize all pointers to null",
+      "revId": "fa898971b3b1f94e50a720e3d80909a6dde4c84b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d76277bd_89bed447",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4031,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-07-13T12:41:45Z",
+      "side": 1,
+      "message": "Initialize all pointers to null",
+      "revId": "fa898971b3b1f94e50a720e3d80909a6dde4c84b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3bcba2d_4c2b32f7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4076,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-07-13T12:41:45Z",
+      "side": 1,
+      "message": "Initialize all pointers to null",
+      "revId": "fa898971b3b1f94e50a720e3d80909a6dde4c84b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4d7b157_8f8bb225",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4134,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-07-13T12:41:45Z",
+      "side": 1,
+      "message": "Our convention do not use underscore in variable names. Can it not be named just puschCfg",
+      "revId": "fa898971b3b1f94e50a720e3d80909a6dde4c84b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ffb407d5_424d9207",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4135,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-07-13T12:41:45Z",
+      "side": 1,
+      "message": "Initialize all pointers to null",
+      "revId": "fa898971b3b1f94e50a720e3d80909a6dde4c84b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fffb41e_a9af6134",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4183,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-07-13T12:41:45Z",
+      "side": 1,
+      "message": "Our convention do not use underscore in variable names. Rename this to pdschCfg",
+      "revId": "fa898971b3b1f94e50a720e3d80909a6dde4c84b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e89dc1bb_69cb39ca",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4187,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-07-13T12:41:45Z",
+      "side": 1,
+      "message": "Initialize all pointers to null",
+      "revId": "fa898971b3b1f94e50a720e3d80909a6dde4c84b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56523bc3_bef07dba",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4243,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-07-13T12:41:45Z",
+      "side": 1,
+      "message": "Initialize all pointers to null",
+      "revId": "fa898971b3b1f94e50a720e3d80909a6dde4c84b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dcade2a6_9215a04e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4316,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2020-07-13T12:41:45Z",
+      "side": 1,
+      "message": "Initialize all pointers to null",
+      "revId": "fa898971b3b1f94e50a720e3d80909a6dde4c84b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
