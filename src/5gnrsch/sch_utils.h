@@ -25,9 +25,10 @@
 #define MAX_PRACH_CONFIG_IDX   256
 #define MAX_MU_PUSCH           4
 #define TOTAL_TBSIZE_VALUES    93
-#define SET_BITS(_startBit, _numBits, _byte)                                \
+#define BIT_MASK_FREQ_DOMAIN   255
+#define SET_BITS_MSB(_startBit, _numBits, _byte)                                \
 {                                                            \
-   _byte = (((~((~0)<<_numBits))<<_startBit));               \
+   _byte = (((~((BIT_MASK_FREQ_DOMAIN)>>_numBits))>>_startBit));               \
 }
 
 /* functions declarations */
