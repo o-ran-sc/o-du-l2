@@ -35,25 +35,9 @@
 */
 
 /* header include files (.h) */
-#include "envopt.h"        /* Environment options */
-#include "envdep.h"        /* Environment dependent */
-#include "envind.h"        /* Environment independent */
-#include "gen.h"           /* General */
-#include "ssi.h"           /* System Services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_lte.h"        /* Common LTE Defines */
 #include "lrg.h"           /* LRG Interface Defines */
-
+#include "common_def.h"
 /* header/extern include files (.x) */
-#include "gen.x"           /* General */
-#include "ssi.x"           /* System Services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_lte.x"        /* Common LTE Defines */
 #include "lrg.x"           /* LRG Interface includes */
 
 #if (defined(LCLRG))

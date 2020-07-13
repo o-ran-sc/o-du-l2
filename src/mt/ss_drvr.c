@@ -33,29 +33,17 @@
 
 /* header include files (.h) */
 
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-  
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
-
+#include "common_def.h"  
 #include "ss_err.h"        /* errors */
 #include "ss_dep.h"        /* implementation-specific */
 #include "ss_queue.h"      /* queues */
 #include "ss_msg.h"        /* messaging */
 #include "ss_mem.h"        /* memory management interface */
 #include "ss_gen.h"        /* general */
-#include "cm_mem.h"        /* memory management */
 
 
 
 /* header/extern include files (.x) */
-
-#include "gen.x"           /* general layer */
-#include "ssi.x"           /* system services */
-
-
 #include "ss_dep.x"        /* implementation-specific */
 #include "ss_queue.x"      /* queues */
 #include "ss_task.x"       /* tasking */

@@ -36,16 +36,7 @@ static const char* RLOG_MODULE_NAME="MAC";
 static int RLOG_MODULE_ID=4096;
 static int RLOG_FILE_ID=188;
 /* header include files -- defines (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system service interface */
-#include "cm_hash.h"       /* common hash list */
-#include "cm_llist.h"      /* common linked list library */
-#include "cm_err.h"        /* common error */
-#include "cm_lte.h"        /* common LTE */
-#include "cm_math.h"       /* common MATH functions */
+#include "common_def.h"
 #include "lrg.h"
 #include "rgr.h"
 #include "rgm.h"
@@ -57,16 +48,6 @@ static int RLOG_FILE_ID=188;
 #include "rg_sch_cmn.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general layer typedefs */
-#include "ssi.x"           /* system services typedefs */
-#include "cm5.x"           /* common timers */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_lib.x"        /* common library */
-#include "cm_llist.x"      /* common linked list */
-#include "cm_mblk.x"       /* memory management */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_lte.x"        /* common tokens */
-#include "cm_math.x"       /* common MATH functions */
 #include "tfu.x"           /* RGU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
 #include "rgr.x"           /* layer management typedefs for MAC */

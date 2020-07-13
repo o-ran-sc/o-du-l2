@@ -18,14 +18,7 @@
 #ifndef _LWR_MAC_PHY_H_
 #define _LWR_MAC_PHY_H_
 
-#include "envdep.h"
-#include "gen.h"
-#include "ssi.h"
-#include "cm_llist.h"
-
-#include "gen.x"
-#include "ssi.x"
-#include "cm_llist.x"
+#include "common_def.h"
 
 typedef enum
 {

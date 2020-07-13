@@ -28,12 +28,9 @@
  @ description: This is source file which has implementaion of logging 
  framework.
 ************************************************************************/
-
-#include "envopt.h"
-#include "envdep.h"
+#include "common_def.h"
 #include "rl_interface.h"
 
-#include <stdio.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -51,20 +48,13 @@
 #include <pthread.h>
 #include "rl_rlog.h"
 #include "rl_platform.h"
-#include "gen.h"
-#include "ssi.h"
 #include "ss_msg.h"
 #include "ss_task.h"
-
-#include "gen.x"
-#include "ssi.x"
 
 #include "ss_queue.h"
 #include "ss_queue.x"
 #include "ss_task.x"
 #include "ss_msg.x"
-#include "cm_inet.h"
-#include "cm_inet.x"
 
 #include "rl_interface.h"
 #include "rl_soc.h"
