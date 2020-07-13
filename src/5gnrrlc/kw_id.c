@@ -32,17 +32,7 @@
   
 /* header include files (.h) */
   
-#include "envopt.h"             /* environment options */  
-#include "envdep.h"             /* environment dependent */
-#include "envind.h"             /* environment independent */
-
-#include "gen.h"                /* general */
-#include "ssi.h"                /* system services interface */
-
-/* header/extern include files (.x) */
-
-#include "gen.x"                /* general */
-#include "ssi.x"                /* system services interface */
+#include "common_def.h"
 
   
 /* local defines */

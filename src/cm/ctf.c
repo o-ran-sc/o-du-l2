@@ -30,26 +30,10 @@
 *********************************************************************21*/
 
 /* header include files (.h) */
-#include "envopt.h"        /* Environment options             */
-#include "envdep.h"        /* Environment dependent options   */
-#include "envind.h"        /* Environment independent options */
-#include "gen.h"           /* General layer                   */
-#include "ssi.h"           /* System service interface        */
-#include "cm5.h"           /* Common timer library            */
-#include "cm_llist.h"      /* Common linked list library      */
-#include "cm_hash.h"       /* Common hash library             */
-#include "cm_tkns.h"       /* Common tokens                   */
-#include "cm_lte.h"        /* Common LTE Defines              */
+#include "common_def.h"
 #include "ctf.h"           /* CTF interface defines           */
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* General layer                   */
-#include "ssi.x"           /* System services interface       */
-#include "cm_lib.x"        /* Common linrary function         */
-#include "cm_llist.x"      /* Common link list library        */
-#include "cm_hash.x"       /* Common hash list library        */
-#include "cm_tkns.x"       /* Common tokens                   */
-#include "cm_lte.x"        /* Common LTE library              */
 #ifdef TENB_AS_SECURITY
 #include "cm_mblk.x"
 #endif

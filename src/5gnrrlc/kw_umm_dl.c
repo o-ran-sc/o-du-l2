@@ -43,16 +43,7 @@ static int RLOG_FILE_ID=239;
 */
 
 /* header (.h) include files */
-#include "envopt.h"             /* environment options */
-#include "envdep.h"             /* environment dependent */
-#include "envind.h"             /* environment independent */
-
-#include "gen.h"                /* general */
-#include "ssi.h"                /* system services interface */
-#include "cm5.h"                /* Timer Functions */
-#include "cm_lte.h"             /* common umts header file */
-#include "cm_hash.h"            /* common hash module  file */
-#include "cm_llist.h"           /* common list header file */
+#include "common_def.h"
 #include "ckw.h"                /* RRC layer */
 #include "lkw.h"                /* RRC layer */
 #include "kwu.h"                /* RLC service user */
@@ -68,13 +59,6 @@ static int RLOG_FILE_ID=239;
 
 /* header/extern include files (.x) */
 
-#include "gen.x"                /* general */
-#include "ssi.x"                /* system services interface */
-#include "cm_lib.x"             /* common library */
-#include "cm5.x"                /* Timer Functions */
-#include "cm_hash.x"            /* common hash module */
-#include "cm_lte.x"             /* common umts file */
-#include "cm_llist.x"           /* common list header file */
 #include "ckw.x"                /* RRC layer */
 #include "kwu.x"                /* RLC service user */
 #include "lkw.x"                /* LM Interface */
