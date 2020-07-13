@@ -36,18 +36,8 @@ static int RLOG_MODULE_ID=4096;
 invoked by PHY towards MAC
 */
 /* header include files -- defines (.h) */
-#include <stdbool.h>
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
-#include "cm5.h"           /* common timers defines */
-#include "cm_hash.h"       /* common hash list defines */
-#include "cm_llist.h"      /* common linked list defines */
-#include "cm_mblk.h"       /* memory management */
-#include "cm_tkns.h"       /* common tokens */
-#include "cm_lte.h"       /* common tokens */
+#include "common_def.h"
+#include "du_app_mac_inf.h"
 #include "rgu.h"           /* RGU defines */
 #include "tfu.h"           /* RGU defines */
 #include "lrg.h"           /* layer management defines for LTE-MAC */
@@ -56,29 +46,18 @@ invoked by PHY towards MAC
 #include "rg.h"            /* defines and macros for MAC */
 #include "rg_env.h"            /* defines and macros for MAC */
 #include "rg_err.h"            /* defines and macros for MAC */
-
+#include "rgm.h"           /* layer management typedefs for MAC */
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general layer typedefs */
-#include "ssi.x"           /* system services typedefs */
-#include "cm5.x"           /* common timers */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_lib.x"        /* common library */
-#include "cm_llist.x"      /* common linked list */
-#include "cm_mblk.x"       /* memory management */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_lte.x"       /* common tokens */
+#include "crg.x"           /* CRG interface typedefs */
 #include "rgu.x"           /* RGU types */
 #include "tfu.x"           /* RGU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
-#include "crg.x"           /* CRG interface typedefs */
 #include "rg_sch_inf.x"    /* SCH interface typedefs */
 #include "rg_prg.x"        /* PRG interface typedefs */
 #include "rgm.x"           /* layer management typedefs for MAC */
-#include "rgm.h"           /* layer management typedefs for MAC */
-#include "du_app_mac_inf.h"
-#include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
+#include "mac.h"
 #include "lwr_mac_fsm.h"
 #ifdef MAC_RLC_UL_RBUF
 #include "ss_rbuf.h"

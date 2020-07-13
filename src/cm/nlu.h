@@ -31,10 +31,6 @@
 #ifndef __NLUH__
 #define __NLUH__
 
-#define NLU_SEL_LC                             0
-#define NLU_SEL_TC                             1
-#define NLU_SEL_LWLC                           2 
-
 #define EVTNLUBNDREQ                           1
 #define EVTNLUBNDCFM                           2
 #define EVTNLUNHBRREQ                          3

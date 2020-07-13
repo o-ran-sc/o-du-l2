@@ -17,18 +17,7 @@
 *******************************************************************************/
 
 /* header include files -- defines (.h)  */
-#include <stdbool.h>
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
-#include "cm5.h"           /* common timers defines */
-#include "cm_hash.h"       /* common hash list defines */
-#include "cm_llist.h"      /* common linked list defines */
-#include "cm_mblk.h"       /* memory management */
-#include "cm_tkns.h"       /* common tokens */
-#include "cm_lte.h"        /* common tokens */
+#include "common_def.h"
 #include "rgu.h"
 #include "tfu.h"
 #include "rg_sch_inf.h"
@@ -40,15 +29,6 @@
 #include "lwr_mac.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general layer typedefs */
-#include "ssi.x"           /* system services typedefs */
-#include "cm5.x"           /* common timers */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_lib.x"        /* common library */
-#include "cm_llist.x"      /* common linked list */
-#include "cm_mblk.x"       /* memory management */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_lte.x"        /* common tokens */
 #include "rgu.x"
 #include "tfu.x"
 #include "rg_sch_inf.x"
@@ -295,7 +275,7 @@ uint16_t MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
  * ****************************************************************/
 uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
 {
-   #ifdef FAPI
+   #ifdef INTEL_FAPI
    DU_LOG("\nMAC : Sending cell stop request to Lower Mac");
    sendToLowerMac(FAPI_STOP_REQUEST, 0, cellStopInfo);
    #endif
@@ -403,7 +383,7 @@ uint16_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti
 	ulCcchIndInfo->ulCcchMsg = rrcContainer;
 
 	/* Fill Pst */
-	pst.selector  = DU_MAC_LWLC;
+	pst.selector  = ODU_SELECTOR_LWLC;
 	pst.srcEnt    = ENTRG;
 	pst.dstEnt    = ENTDUAPP;
 	pst.dstInst   = 0;

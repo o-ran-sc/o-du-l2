@@ -324,9 +324,6 @@
 #endif
 #define RGR_MAX_DL_CQI_SUBBAND   13 /*!< Maximum number of Sub-Bands */
 /** @} */
-/* Selector(coupling) values */
-#define RGR_SEL_TC              1   /*!< For Tight Coupling */
-#define RGR_SEL_LC              0   /*!< For Loose coupling */
 
 /* Pack/ Unpack error code */
 #define ERGRXXX                 0

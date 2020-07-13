@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 #ifdef EGTP_TEST
-
+#include "common_def.h"
 #include "mac_stub.h"
 
 uint8_t rlcDatSn = 0;
@@ -32,7 +32,7 @@ PUBLIC S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
 
 //  SGetSBuf(pst->region, pst->pool, (Data **)&rspPst, sizeof(Pst));
 
-  rspPst.selector  = RGU_SEL_TC;
+  rspPst.selector  = ODU_SELECTOR_TC;
   rspPst.srcEnt    = pst->dstEnt;
   rspPst.dstEnt    = pst->srcEnt;
   rspPst.dstInst   = pst->srcInst;
@@ -89,7 +89,7 @@ PUBLIC S16 macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
    ulData->pduInfo[0].pduBuf = mBuf;
 
    /* Fill response post */
-   rspPst.selector  = RGU_SEL_TC;
+   rspPst.selector  = ODU_SELECTOR_TC;
    rspPst.srcEnt    = pst->dstEnt;
    rspPst.dstEnt    = pst->srcEnt;
    rspPst.dstInst   = pst->srcInst;

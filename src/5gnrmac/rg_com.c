@@ -36,44 +36,26 @@ invoked by RRC towards MAC.
 static const char* RLOG_MODULE_NAME="MAC";
 static int RLOG_FILE_ID=181;
 static int RLOG_MODULE_ID=4096;
+
 /* header include files -- defines (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system service interface */
-#include "cm_hash.h"       /* common hash list */
-#include "cm_mblk.h"       /* common memory link list library */
-#include "cm_llist.h"      /* common linked list library */
-#include "cm_err.h"        /* common error */
-#include "cm_lte.h"        /* common LTE */
+#include "common_def.h"
+#include "tfu.h"
+#include "du_app_mac_inf.h"
 #include "lrg.h"
 #include "crg.h"
 #include "rgu.h"
-#include "tfu.h"
 #include "rg_sch_inf.h"
-#include "rg_prg.h"       /* PRG interface includes*/
 #include "rg_env.h"
 #include "rg.h"
 #include "rg_err.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general layer */
-#include "ssi.x"           /* system service interface */
-#include "cm5.x"           /* common timers */
-#include "cm_lib.x"        /* common library */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_mblk.x"       /* common memory link list library */
-#include "cm_llist.x"      /* common linked list library */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_lte.x"        /* common LTE */
+#include "tfu.x"
 #include "lrg.x"
 #include "crg.x"
 #include "rgu.x"
-#include "tfu.x"
 #include "rg_sch_inf.x"
 #include "rg_prg.x"       /* PRG interface typedefs*/
-#include "du_app_mac_inf.h"
 #include "rg.x"
 #ifdef LTE_ADV
 #include "rg_pom_scell.x"

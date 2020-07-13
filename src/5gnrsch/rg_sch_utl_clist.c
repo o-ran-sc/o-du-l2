@@ -29,18 +29,9 @@
 *********************************************************************21*/
   
 /* header include files (.h) */
-
-#include "envopt.h"        /* environment options */  
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
+#include "common_def.h"
 
 /* header/extern include files (.x) */
-  
-#include "gen.x"           /* general layer */
-#include "ssi.x"           /* system services */
 #include "rg_sch_clist.x"      /* common functions */
 
 

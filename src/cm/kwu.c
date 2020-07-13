@@ -30,18 +30,7 @@
 *********************************************************************21*/
 
 /* header include files (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm5.h"           /* common timer defines */
-#include "cm_tkns.h"       /* common tokens defines */
-#include "cm_mblk.h"       /* common memory allocation library defines */
-#include "cm_llist.h"      /* common link list  defines  */
-#include "cm_hash.h"       /* common hash list  defines */
-#include "cm_lte.h"        /* common LTE defines */
+#include "common_def.h"
 #ifdef TENB_SPLIT_ARCH
 #include "ss_queue.h"
 #include "ss_task.h"
@@ -50,16 +39,6 @@
 #include "kwu.h"           /* KWU defines */
 
 /* extern (.x) include files */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-
-#include "cm5.x"           /* common timer library */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_mblk.x"       /* common memory allocation */
-#include "cm_llist.x"      /* common link list */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_lte.x"        /* common LTE includes */
-#include "cm_lib.x"        /* common memory allocation library */
 #ifdef TENB_SPLIT_ARCH
 #include "ss_queue.x"
 #include "ss_task.x"
@@ -266,7 +245,7 @@ Buffer * mBuf;
 #ifndef SS_RBUF
    switch(pst->selector)
    {
-     case KWU_SEL_LWLC:
+     case ODU_SELECTOR_LWLC:
         {
            if(pst->srcEnt == ENTDUAPP)
            {
@@ -296,7 +275,7 @@ Buffer * mBuf;
            }
         }
         break;
-     case KWU_SEL_LC:
+     case ODU_SELECTOR_LC:
         {
 #if (ERRCLASS & ERRCLS_ADD_RES)
            ret1 = cmPkKwuDatReqInfo( (datReq), mBuf);
@@ -375,7 +354,7 @@ Buffer * mBuf;
       switch(pst->selector)
       {
 #ifdef LCKWU
-         case KWU_SEL_LC:
+         case ODU_SELECTOR_LC:
             {
                ret1 = cmPkKwuDatReqInfo( (datReq), mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -390,7 +369,7 @@ Buffer * mBuf;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
             }
             break;
-         case KWU_SEL_LWLC:
+         case ODU_SELECTOR_LWLC:
             {
                CMCHKPK(cmPkPtr,(PTR)datReq, mBuf);
             }
@@ -401,7 +380,7 @@ Buffer * mBuf;
       CMCHKPKLOG(SPkS16, spId, mBuf, EKWU011, pst);
       pst->event = (Event) KWU_EVT_DAT_REQ;
       ret1 = SPstTsk(pst,mBuf);
-      if(pst->selector == KWU_SEL_LC)
+      if(pst->selector == ODU_SELECTOR_LC)
       {
          if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,
                   sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY) != ROK)
@@ -475,7 +454,7 @@ Buffer * mBuf;
 
     switch(pst->selector)
     {
-       case KWU_SEL_LWLC:
+       case ODU_SELECTOR_LWLC:
           {
              /* When the Selector is LWLC, we need to allocate memory, copy
               * the contents and pass the pointer of the allocated memory. The
@@ -499,7 +478,7 @@ Buffer * mBuf;
             CMCHKPK(cmPkPtr,(PTR)datIndInfo, mBuf);
           }
           break;
-       case KWU_SEL_LC:
+       case ODU_SELECTOR_LC:
           {
 #if (ERRCLASS & ERRCLS_ADD_RES)
              ret1 = cmPkKwuDatIndInfo( (datInd), mBuf);
@@ -586,12 +565,12 @@ KwuDatCfmInfo* datCfm;
 
    switch(pst->selector)
    {
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
          {
             CMCHKPK(cmPkPtr,(PTR)datCfm, mBuf);
          }
          break;
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
 #if (ERRCLASS & ERRCLS_ADD_RES)
             ret1 = cmPkKwuDatCfmInfo( (datCfm), mBuf);
@@ -660,7 +639,7 @@ KwuDiscSduInfo* discSdu;
 
    switch(pst->selector)
    {
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
          {
             /* When the Selector is LWLC, we need to allocate memory, copy
              * the contents and pass the pointer of the allocated memory. The
@@ -684,7 +663,7 @@ KwuDiscSduInfo* discSdu;
            CMCHKPK(cmPkPtr,(PTR)discSduInfo, mBuf);
          }
          break;
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
 #if (ERRCLASS & ERRCLS_ADD_RES)
             ret1 = cmPkKwuDiscSduInfo( (discSdu), mBuf);
@@ -807,12 +786,12 @@ KwuStaIndInfo* staInd;
 
     switch(pst->selector)
     {
-       case KWU_SEL_LWLC:
+       case ODU_SELECTOR_LWLC:
           {
              CMCHKPK(cmPkPtr,(PTR) staInd, mBuf);
           }
           break;
-       case KWU_SEL_LC:
+       case ODU_SELECTOR_LC:
           {
 #if (ERRCLASS & ERRCLS_ADD_RES)
              ret1 = cmPkKwuStaIndInfo( (staInd), mBuf);
@@ -884,7 +863,7 @@ CmLteRlcId rlcId;
     switch(pst->selector)
     {
 #ifdef LCKWU
-       case KWU_SEL_LC:
+       case ODU_SELECTOR_LC:
           {
 #if (ERRCLASS & ERRCLS_ADD_RES)
              ret1 = cmPkLteRlcId( &rlcId, mBuf);
@@ -940,12 +919,12 @@ KwuDiscSduInfo *discCfmSdu;
 
    switch(pst->selector)
    {
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
          {
             CMCHKPK(cmPkPtr,(PTR)discCfmSdu, mBuf);
          }
          break;
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
 #if (ERRCLASS & ERRCLS_ADD_RES)
             ret1 = cmPkKwuDiscSduInfo((discCfmSdu), mBuf);
@@ -1015,7 +994,7 @@ KwuFlowCntrlIndInfo *flowCntrlIndInfo;
 #ifdef LCKWU
    switch(pst->selector)
    {
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
       {
          cmPkKwuFlowCntrlIndInfo((flowCntrlIndInfo), mBuf);
 
@@ -1030,7 +1009,7 @@ KwuFlowCntrlIndInfo *flowCntrlIndInfo;
       }
       break;
       
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
       {
          CMCHKPK(cmPkPtr,(PTR) flowCntrlIndInfo, mBuf);
       }
@@ -1266,12 +1245,12 @@ Buffer *mBuf;
 
    switch(pst->selector)
    {
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
          {
             CMCHKUNPK(cmUnpkPtr,(PTR *) &datReq, mBuf);
          }
          break;
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
             /* Allocate the memory statically  as there is no free 
              * in RLC */
@@ -1305,7 +1284,7 @@ Buffer *mBuf;
    retVal = (*func)(pst, datReq, mBuf);
    /* If LWLC is configured, we need to
     * free the memory here. */
-   if(pst->selector == KWU_SEL_LWLC)
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
       retVal = SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,
             sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY);
@@ -1360,12 +1339,12 @@ Buffer *mBuf;
 
     switch(pst->selector)
     {
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
          {
             CMCHKUNPK(cmUnpkPtr,(PTR *) &datInd, mBuf);
          }
          break;
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
             /*SGetStaticBuffer used as RRC has an equivalent free but PDCP
              * doesn't free any memory */
@@ -1413,7 +1392,7 @@ Buffer *mBuf;
     retVal = (*func)(pst, datInd, mBuf);
     /* If LWLC is configured and the destination entity is PDCP, we need to
      * free the memory here. */
-    if((pst->selector == KWU_SEL_LWLC) && (pst->dstEnt == ENTPJ))
+    if((pst->selector == ODU_SELECTOR_LWLC) && (pst->dstEnt == ENTPJ))
     {
        retVal = SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd,
                 sizeof(KwuDatIndInfo),SS_SHARABLE_MEMORY);
@@ -1475,12 +1454,12 @@ Buffer *mBuf;
 
    switch(pst->selector)
    {
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
          {
             CMCHKUNPK(cmUnpkPtr,(PTR *) &datCfm, mBuf);
          }
          break;
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
             if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&datCfm,\
                         sizeof(KwuDatCfmInfo),SS_SHARABLE_MEMORY)) != ROK)
@@ -1548,12 +1527,12 @@ Buffer *mBuf;
    CMCHKUNPK(SUnpkS16, &(spId), mBuf);
    switch(pst->selector)
    {
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
          {
             CMCHKUNPK(cmUnpkPtr,(PTR *) &discSdu, mBuf);
          }
          break;
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
             if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&discSdu,\
                         sizeof(KwuDiscSduInfo),SS_SHARABLE_MEMORY)) != ROK)
@@ -1648,12 +1627,12 @@ Buffer *mBuf;
    
    switch(pst->selector)
    {
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
          {
             CMCHKUNPK(cmUnpkPtr,(PTR *)&staInd, mBuf);
          }
          break;
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
             if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&staInd,\
                         sizeof(KwuStaIndInfo),SS_SHARABLE_MEMORY)) != ROK)
@@ -1727,7 +1706,7 @@ Buffer *mBuf;
    switch(pst->selector)
    {
 #ifdef LCKWU
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
 #if(ERRCLASS & ERRCLS_DEBUG)
             ret1 = cmUnpkLteRlcId( &rlcId, mBuf);
@@ -1776,12 +1755,12 @@ Buffer         *mBuf;
 
    switch(pst->selector)
    {
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
          {
             CMCHKUNPK(cmUnpkPtr,(PTR *) &discSdu, mBuf);
          }
          break;
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
          {
             if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&discSdu,\
                         sizeof(KwuDiscSduInfo),SS_SHARABLE_MEMORY)) != ROK)
@@ -1846,7 +1825,7 @@ Buffer         *mBuf;
    switch(pst->selector)
    {
 #ifdef LCKWU
-      case KWU_SEL_LC:
+      case ODU_SELECTOR_LC:
       {
          if(SGetStaticBuffer(pst->region, 
                      pst->pool, 
@@ -1861,7 +1840,7 @@ Buffer         *mBuf;
       }
       break;
 
-      case KWU_SEL_LWLC:
+      case ODU_SELECTOR_LWLC:
       {
          CMCHKUNPK(cmUnpkPtr,(PTR *) &flowCntrlInfo, mBuf);
       }

@@ -18,8 +18,9 @@
  
 /* This file contains all EGTP related functionality */
 
-#include <stdio.h>
+#include "common_def.h"
 #include "cu_stub_egtp.h"
+#include "du_log.h"
 
 /* Global variable declaration */
 EgtpGlobalCb egtpCb;

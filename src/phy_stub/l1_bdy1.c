@@ -18,18 +18,10 @@
 
 /*This file contains stub for PHY to handle messages to/from MAC CL */
 
-#include <stdint.h>
-
-#include "envdep.h"
-#include "gen.h"
-#include "ssi.h"
-
-#include "gen.x"
-#include "ssi.x"
-
+#include "common_def.h"
 #include "lwr_mac.h"
 #include "lwr_mac_phy.h"
-#ifdef FAPI
+#ifdef INTEL_FAPI
 #include "fapi.h"
 #endif
 #include "lphy_stub.h"
@@ -46,7 +38,7 @@ uint16_t slotValue = 0;
 bool     rachIndSent = false;
 
 EXTERN void phyToMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
-#ifdef FAPI
+#ifdef INTEL_FAPI
 EXTERN void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, uint16_t tag, uint16_t
 length, uint16_t value, uint32_t *msgLen));
 EXTERN void fillMsgHeader ARGS((fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen));
@@ -71,7 +63,7 @@ EXTERN void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
  * ****************************************************************/
 S16 l1BldAndSndParamRsp(void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint8_t index = 0;
    uint32_t msgLen = 0;
 	fapi_param_resp_t *fapiParamRsp;
@@ -184,7 +176,7 @@ S16 l1BldAndSndParamRsp(void *msg)
 
 S16 l1BldAndSndConfigRsp(void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint32_t msgLen = 0;
    fapi_config_resp_t *fapiConfigRsp;
 
@@ -229,7 +221,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
 
 PUBLIC void l1HdlParamReq(uint32_t msgLen, void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    DU_LOG("\nPHY_STUB: Received Param Request in PHY");
  
    /* Build and send PARAM RESPONSE */
@@ -261,7 +253,7 @@ PUBLIC void l1HdlParamReq(uint32_t msgLen, void *msg)
 
 PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
 	fapi_config_req_t *configReq = (fapi_config_req_t *)msg;
 
    DU_LOG("\nPHY_STUB: Received Config Request in PHY");
@@ -296,7 +288,7 @@ PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
  * ****************************************************************/
 uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint8_t idx = 0;
    fapi_crc_ind_t  *crcInd;
    
@@ -333,7 +325,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
    return ROK;
 } /* l1BuildAndSendCrcInd */
 
-#ifdef FAPI
+#ifdef INTEL_FAPI
 /*******************************************************************
  *
  * @brief Build and send Rx data indication
@@ -438,7 +430,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
  * ****************************************************************/
 uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    uint8_t   rachPduIdx = 0; 
    uint8_t   preamIdx = 0;
    fapi_rach_pdu_t  *rachPdu;
@@ -499,7 +491,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
  * ****************************************************************/
 PUBLIC uint16_t l1BuildAndSendSlotIndication()
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    fapi_slot_ind_t *slotIndMsg;
 
    MAC_ALLOC(slotIndMsg, sizeof(fapi_slot_ind_t));
@@ -554,7 +546,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
 
 PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    fapi_start_req_t *startReq = (fapi_start_req_t *)msg;
 
    if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
@@ -591,7 +583,7 @@ PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
 
 PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    fapi_dl_tti_req_t *dlTtiReq;
    dlTtiReq = (fapi_dl_tti_req_t *)msg;
 
@@ -652,7 +644,7 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 
 PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    fapi_tx_data_req_t *txDataReq;
    txDataReq = (fapi_tx_data_req_t *)msg;
 
@@ -682,7 +674,7 @@ PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 
 PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    fapi_ul_tti_req_t *ulTtiReq;
 
    DU_LOG("\nPHY STUB: Received UL TTI Request");
@@ -735,7 +727,7 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
  * ****************************************************************/
 PUBLIC uint16_t l1BuildAndSendStopInd()
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    fapi_stop_ind_t *stopIndMsg = NULLP;
    uint32_t msgLen = 0;
 
@@ -777,7 +769,7 @@ PUBLIC uint16_t l1BuildAndSendStopInd()
 
 PUBLIC S16 l1HdlStopReq(uint32_t msgLen, void *msg)
 {
-#ifdef FAPI
+#ifdef INTEL_FAPI
    fapi_stop_req_t *stopReq = (fapi_stop_req_t *)msg;
 
    if(clGlobalCp.phyState == PHY_STATE_RUNNING)
@@ -819,7 +811,7 @@ void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
 {
    switch(msgType)
    {
-#ifdef FAPI
+#ifdef INTEL_FAPI
       case FAPI_PARAM_REQUEST:
          l1HdlParamReq(msgLen, msg);
          break;

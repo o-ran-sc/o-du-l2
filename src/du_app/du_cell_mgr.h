@@ -19,7 +19,6 @@
 /* This file contains message handling functionality for DU APP */
 #ifndef __DU_CELL_MGR_H__
 #define __DU_CELL_MGR_H__
-
 #include "du_mgr.h"
 #include "du_log.h"
 #include "du_f1ap_msg_hdl.h"
@@ -27,8 +26,6 @@
 #include "rgr.h"
 #include "rgr.x"
 
-S16 procF1SetupRsp(F1AP_PDU_t *f1apMsg);
-S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToBeActivated);
 S16 duSendSchGnbCfg();
 S16 duSendSchGnbCfgToMac(RgrCfgReqInfo *cfgReq, U32 trans_id);
 #endif

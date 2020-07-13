@@ -183,11 +183,6 @@
 /* Events */
 #define EVTCFG 0
 
-/* Selector */
-#define DU_SELECTOR_LC   0
-#define DU_SELECTOR_TC   1
-#define DU_SELECTOR_LWLC 2
-
 #ifdef EGTP_TEST
 /* Macro definitions for EGTP procedures */
 #define EGTP_LCL_TEID 1     /* EGTP local tunnel id */
