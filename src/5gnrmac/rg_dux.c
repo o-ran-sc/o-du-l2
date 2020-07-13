@@ -36,19 +36,8 @@ static const char* RLOG_MODULE_NAME="MAC";
 static int RLOG_FILE_ID=176;
 static int RLOG_MODULE_ID=4096;
 /* header include files -- defines (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
+#include "common_def.h"
   
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-
-#include "cm_lte.h"        /* Common LTE */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_mblk.h"       /* common memory link list library */
-
 #include "rg_env.h"        /* MAC Environment Defines */
 #include "tfu.h"           /* CRG Interface defines */
 #include "crg.h"           /* CRG Interface defines */
@@ -60,16 +49,6 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_err.h"        /* MAC error defines */
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm5.x"           /* common timers */
-#include "cm_lib.x"        /* common library */
-#include "cm_lte.x"        /* Common LTE */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_mblk.x"       /* common memory link list library */
 
 #include "rgu.x"           /* RGU types */
 #include "tfu.x"           /* CRG Interface includes */

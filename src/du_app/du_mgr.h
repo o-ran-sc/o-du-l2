@@ -19,37 +19,13 @@
 /* This file contains message handling functionality for DU cell management */
 #ifndef __DU_MGR_H__
 #define __DU_MGR_H__
-
-#include "stdio.h"
+#include "common_def.h"
 #include "ctype.h"
-#include "envopt.h"        /* Environment options */
-#include "envdep.h"        /* Environment dependent */
-#include "envind.h"        /* Environment independent */
-#include "gen.h"           /* General */
-#include "ssi.h"           /* System services */
-#include "cm5.h"           /* Common timer defines */
-#include "cm_tkns.h"       /* Common tokens defines */
-#include "cm_mblk.h"       /* Common memory allocation library defines */
-#include "cm_llist.h"      /* Common link list  defines  */
-#include "cm_hash.h"       /* Common hashlist  defines */
-#include "cm_lte.h"
-#include "cm_inet.h"
 #include "lkw.h"
 #include "lrg.h"
 #include "legtp.h"
 #include "du_app_mac_inf.h"
 
-#include "gen.x"           /* General */
-#include "ssi.x"           /* System services */
-
-#include "cm5.x"           /* Common timer library */
-#include "cm_tkns.x"       /* Common tokens */
-#include "cm_mblk.x"       /* Common memory allocation */
-#include "cm_llist.x"      /* Common link list */
-#include "cm_hash.x"       /* Common hashlist */
-#include "cm_lte.x"
-#include "cm_inet.x"
-#include "cm_lib.x"
 #include "lkw.x"
 #include "lrg.x"
 

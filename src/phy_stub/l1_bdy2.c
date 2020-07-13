@@ -18,8 +18,7 @@
 
 /* This file handles slot indication */
 
-#include <stdio.h>
-#include <stdbool.h>
+#include "common_def.h"
 #include <unistd.h>
 #include <pthread.h>
 #include <time.h>

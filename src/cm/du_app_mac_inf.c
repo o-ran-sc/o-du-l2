@@ -16,22 +16,11 @@
 ################################################################################
 *******************************************************************************/
 
-#include "envopt.h"        /* Environment options */
-#include "envdep.h"        /* Environment dependent */
-#include "envind.h"        /* Environment independent */
-#include "gen.h"           /* General */
-#include "ssi.h"           /* System services */
+#include "common_def.h"
 #include "ss_queue.h"
 #include "ss_task.h"
 #include "ss_msg.h"
 
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_lte.x"        /* Common LTE Defines */
 
 #include "du_cfg.h"
 #include "du_app_mac_inf.h"

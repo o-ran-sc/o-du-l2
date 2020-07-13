@@ -44,22 +44,10 @@
  
   
 /* header include files (.h) */
-  
-#include "envopt.h"             /* environment options */
-#include "envdep.h"             /* environment dependent */
-#include "envind.h"             /* environment independent */
-
-#include "gen.h"                /* general */
-#include "ssi.h"                /* system services interface */
-#include "cm_lte.h"                /* layer manager */
 #include "lkw.h"                /* Layer manager */
-
+#include "common_def.h"
 /* header/extern include files (.x) */
 
-#include "gen.x"                /* general */
-#include "ssi.x"                /* system services interface */
-#include "cm_lib.x"             /* common library header file */
-#include "cm_lte.x"                /* layer manager */
 #include "lkw.x"                /* layer manager */
 
 #ifdef LCLKW

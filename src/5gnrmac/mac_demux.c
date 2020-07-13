@@ -15,52 +15,29 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/ 
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
 
 /* header include files -- defines (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system service interface */
-#include "cm_hash.h"       /* common hash list */
-#include "cm_mblk.h"       /* common memory link list library */
-#include "cm_llist.h"      /* common linked list library */
-#include "cm_err.h"        /* common error */
-#include "cm_lte.h"        /* common LTE */
+#include "common_def.h"
+#include "du_log.h"
+#include "du_app_mac_inf.h"
 #include "lrg.h"           /* Layer manager interface includes*/
 #include "crg.h"           /* CRG interface includes*/
-#include "rgu.h"           /* RGU interface includes*/
 #include "tfu.h"           /* TFU interface includes */
+#include "rgu.h"           /* RGU interface includes*/
 #include "rg_sch_inf.h"    /* SCH interface includes */
-#include "rg_prg.h"       /* PRG (MAC-MAC) interface includes*/
 #include "rg_env.h"       /* MAC environmental includes*/
 #include "rg.h"           /* MAC includes*/
 #include "rg_err.h"       /* MAC error includes*/
-#include "du_log.h"
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general layer typedefs */
-#include "ssi.x"           /* system services typedefs */
-#include "cm5.x"           /* common timers */
-#include "cm_hash.x"       /* common hash list */
-#include "cm_lib.x"        /* common library */
-#include "cm_llist.x"      /* common linked list */
-#include "cm_mblk.x"       /* memory management */
-#include "cm_tkns.x"       /* common tokens */
-#include "cm_lte.x"       /* common tokens */
-#include "rgu.x"           /* RGU types */
 #include "tfu.x"           /* RGU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
 #include "crg.x"           /* CRG interface includes */
+#include "mac.h"
+#include "rgu.x"           /* RGU types */
 #include "rg_sch_inf.x"    /* SCH interface typedefs */
 #include "rg_prg.x"        /* PRG (MAC-MAC) Interface typedefs */
-#include "du_app_mac_inf.h"
-#include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
-
 /*******************************************************************
  *
  * @brief De-mux of MAC-Sub PDUs from Rx Data Ind Pdu

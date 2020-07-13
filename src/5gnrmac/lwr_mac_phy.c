@@ -18,13 +18,7 @@
 
 /* This file contains APIs to send/receive messages from PHY */
 
-#include <stdio.h>
-#include <stdint.h>
-
-#include "envdep.h"
-#include "gen.h"
-#include "ssi.h"
-#include "gen.x"
+#include "common_def.h"
 #include "rg.h"
 #include "lwr_mac_phy.h"
 #include "lwr_mac_fsm.h"
