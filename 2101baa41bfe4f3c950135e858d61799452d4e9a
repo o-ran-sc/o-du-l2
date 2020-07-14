@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03e85dbd_17cf86ce",
+        "filename": "src/5gnrsch/sch_utils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-14T14:34:48Z",
+      "side": 1,
+      "message": "its better to keep the bitmask in hex and call it 0xff",
+      "revId": "2101baa41bfe4f3c950135e858d61799452d4e9a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
