@@ -159,7 +159,7 @@ S16 l1BldAndSndParamRsp(void *msg)
   fapiParamRsp->error_code = MSG_OK;
 
   DU_LOG("\nPHY_STUB: Sending Param Request to Lower Mac");
-  handlePhyMessages(fapiParamRsp->header.message_type_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp);
+  handlePhyMessages(fapiParamRsp->header.msg_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp);
   MAC_FREE(fapiParamRsp, sizeof(fapi_param_resp_t));
 #endif
   return ROK;
@@ -194,16 +194,16 @@ S16 l1BldAndSndConfigRsp(void *msg)
       DU_LOG("PHY STUB: Memory allocation failed");
       return RFAILED;
    }
-
+   memset(fapiConfigRsp, 0, sizeof(fapi_config_resp_t));
    fapiConfigRsp->number_of_invalid_tlvs = NULLP;
    fapiConfigRsp->number_of_inv_tlvs_idle_only = NULLP;
    fapiConfigRsp->number_of_missing_tlvs = NULLP;
    fapiConfigRsp->error_code = MSG_OK;
-	msgLen += sizeof(fapi_param_resp_t) - sizeof(fapi_msg_t);
+	msgLen = sizeof(fapi_config_resp_t) - sizeof(fapi_msg_t);
    fillMsgHeader(&fapiConfigRsp->header, FAPI_CONFIG_RESPONSE, msgLen);
 
    DU_LOG("\nPHY_STUB: Sending Config Response to Lower Mac");
-   handlePhyMessages(fapiConfigRsp->header.message_type_id, \
+   handlePhyMessages(fapiConfigRsp->header.msg_id, \
 	   sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
    MAC_FREE(fapiConfigRsp, sizeof(fapi_config_resp_t));
 #endif
@@ -306,6 +306,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
       printf("\nPHY_STUB: Memory allocation failed for CRC Indication Message");
       return RFAILED;
    }
+	memset(crcInd, 0, sizeof(fapi_crc_ind_t));
 
    /* TODO: Fill the required values. As of now only 1 CRC status PASS is filled */
    crcInd->sfn = sfn;
@@ -323,11 +324,11 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
    crcInd->crc[idx].rssi = 0;
 
    fillMsgHeader(&crcInd->header, FAPI_CRC_INDICATION, \
-      sizeof(fapi_crc_ind_t));
+      sizeof(fapi_crc_ind_t) - sizeof(fapi_msg_t));
 
    /* Sending RACH indication to MAC */
    DU_LOG("\nPHY STUB: Sending CRC Indication to MAC");
-   handlePhyMessages(crcInd->header.message_type_id, sizeof(fapi_crc_ind_t), (void *)crcInd);
+   handlePhyMessages(crcInd->header.msg_id, sizeof(fapi_crc_ind_t), (void *)crcInd);
    MAC_FREE(crcInd, sizeof(fapi_crc_ind_t));
 #endif
    return ROK;
@@ -358,6 +359,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    fapi_pdu_ind_info_t       *pduInfo;
    uint8_t  *pdu;
 	uint16_t byteIdx = 0;
+	uint32_t msgLen = 0;
  
    MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
    if(!rxDataInd)
@@ -365,8 +367,10 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
       printf("\nPHY_STUB: Memory allocation failed for Rx Data Indication");
       return RFAILED;
    }
+   memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
 
    /* TODO: Fill the required values */
+   msgLen = sizeof(fapi_rx_data_indication_t) - sizeof(fapi_msg_t);
    rxDataInd->sfn = sfn;
    rxDataInd->slot = slot;
    rxDataInd->numPdus = 1;
@@ -375,14 +379,14 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    pduInfo->handle = puschPdu.handle;
    pduInfo->rnti = puschPdu.rnti;
    pduInfo->harqId = puschPdu.puschData.harqProcessId;
-   pduInfo->pduLength = puschPdu.puschData.tbSize;
+   pduInfo->pdu_length = puschPdu.puschData.tbSize;
    pduInfo->ul_cqi = 0;
    pduInfo->timingAdvance = 0;
    pduInfo->rssi = 0;
 
    /* Filling pdu with random values for testing */
    pduInfo->pduData = NULL;
-   MAC_ALLOC(pduInfo->pduData, pduInfo->pduLength);
+   MAC_ALLOC(pduInfo->pduData, pduInfo->pdu_length);
    if(!pduInfo->pduData)
    {
       printf("\nPHY_STUB: Memory allocation failed for Rx Data Pdu");
@@ -402,18 +406,18 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 	/* Harcoding the pad bytes */
 	pdu[byteIdx++] = 63;
 
-	for(; byteIdx < pduInfo->pduLength; byteIdx++)
+	for(; byteIdx < pduInfo->pdu_length; byteIdx++)
 	   pdu[byteIdx] = 0;
+   msgLen += pduInfo->pdu_length;
 
-   fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, \
-    sizeof(fapi_rx_data_indication_t));
+   fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
 
    /* Sending Rx data indication to MAC */
    DU_LOG("\nPHY STUB: Sending Rx data Indication to MAC");
-   handlePhyMessages(rxDataInd->header.message_type_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
+   handlePhyMessages(rxDataInd->header.msg_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
 
-   if(pduInfo->pduLength)
-      MAC_FREE(pduInfo->pduData, pduInfo->pduLength);
+   if(pduInfo->pdu_length)
+      MAC_FREE(pduInfo->pduData, pduInfo->pdu_length);
    MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
    return ROK;
 }
@@ -451,13 +455,13 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
       printf("\nPHY_STUB: Memory allocation failed for Rach Indication Message");
       return RFAILED;
    }
-   
+   memset(rachInd, 0, sizeof(fapi_rach_indication_t)); 
    rachInd->sfn = sfn;
    rachInd->slot = slot;
    rachInd->numPdus = 1;
 
    rachPdu = &rachInd->rachPdu[rachPduIdx];
-   rachPdu->physCellId = NR_PCI;
+   rachPdu->phyCellId = NR_PCI;
    rachPdu->symbolIndex = 0;
    rachPdu->slotIndex = slot;
    rachPdu->freqIndex = 0;
@@ -467,14 +471,14 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
 
    rachPdu->preambleInfo[preamIdx].preambleIndex = 3;
    rachPdu->preambleInfo[preamIdx].timingAdvance = 0;
-   rachPdu->preambleInfo[preamIdx].premblePwr = 0;
+   rachPdu->preambleInfo[preamIdx].preamblePwr = 0;
    
    fillMsgHeader(&rachInd->header, FAPI_RACH_INDICATION, \
-      sizeof(fapi_rach_indication_t));
+      sizeof(fapi_rach_indication_t) - sizeof(fapi_msg_t));
 
    /* Sending RACH indication to MAC */
    DU_LOG("\nPHY STUB: Sending RACH Indication to MAC");
-   handlePhyMessages(rachInd->header.message_type_id, sizeof(fapi_rach_indication_t), (void *)rachInd);
+   handlePhyMessages(rachInd->header.msg_id, sizeof(fapi_rach_indication_t), (void *)rachInd);
    MAC_FREE(rachInd, sizeof(fapi_rach_indication_t));
 #endif
    return ROK;
@@ -510,6 +514,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
    }
    else
    {
+	   memset(slotIndMsg, 0, sizeof(fapi_slot_ind_t));
       slotIndMsg->sfn = sfnValue;
       slotIndMsg->slot = slotValue;
       DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
@@ -526,8 +531,9 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
          sfnValue++;
          slotValue = 0;
       }
-      fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, sizeof(fapi_slot_ind_t));
-      handlePhyMessages(slotIndMsg->header.message_type_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
+      fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, \
+		   sizeof(fapi_slot_ind_t) - sizeof(fapi_msg_t));
+      handlePhyMessages(slotIndMsg->header.msg_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
       MAC_FREE(slotIndMsg, sizeof(fapi_slot_ind_t));
    }
 #endif
@@ -704,7 +710,7 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       {
          DU_LOG("\nPHY STUB: PUSCH PDU");			
          l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
-			   ulTtiReq->pdus[numPdus-1].u.pusch_pdu); 
+			   ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
       }
 		if(ulTtiReq->pdus[numPdus-1].pduType == 2)
 	   {
@@ -755,7 +761,7 @@ PUBLIC uint16_t l1BuildAndSendStopInd()
    {
       fillMsgHeader(&stopIndMsg->header, FAPI_STOP_INDICATION, msgLen);
       DU_LOG("\n\nPHY_STUB: Processing Stop indication to MAC");
-      handlePhyMessages(stopIndMsg->header.message_type_id,\
+      handlePhyMessages(stopIndMsg->header.msg_id,\
 		  sizeof(fapi_stop_ind_t), (void*)stopIndMsg);
       MAC_FREE(stopIndMsg, sizeof(fapi_stop_ind_t));
    }
