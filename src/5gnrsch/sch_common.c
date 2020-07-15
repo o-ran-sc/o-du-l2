@@ -428,6 +428,9 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    pdsch->dmrs.scid = 0;
    pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
    pdsch->dmrs.dmrsPorts = 0;
+	pdsch->dmrs.mappingType      = DMRS_MAP_TYPE_A; /* Setting to Type-A */
+	pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
+	pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
    pdsch->pdschFreqAlloc.freqAlloc.startPrb = offset + SCH_SSB_NUM_PRB;

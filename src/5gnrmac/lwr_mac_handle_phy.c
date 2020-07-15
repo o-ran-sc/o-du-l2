@@ -203,7 +203,7 @@ uint8_t handleRachInd(fapi_rach_indication_t  *fapiRachInd)
    for(pduIdx=0; pduIdx < rachInd.numPdu; pduIdx++)
    {
       rachPdu = &rachInd.rachPdu[pduIdx];
-      rachPdu->pci = fapiRachInd->rachPdu[pduIdx].physCellId;
+      rachPdu->pci = fapiRachInd->rachPdu[pduIdx].phyCellId;
       rachPdu->symbolIdx = fapiRachInd->rachPdu[pduIdx].symbolIndex;
       rachPdu->slotIdx = fapiRachInd->rachPdu[pduIdx].slotIndex;
       rachPdu->freqIdx = fapiRachInd->rachPdu[pduIdx].freqIndex;
@@ -313,7 +313,7 @@ uint8_t handleRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
       pdu->handle = fapiRxDataInd->pdus[pduIdx].handle;
       pdu->rnti = fapiRxDataInd->pdus[pduIdx].rnti;
       pdu->harqId = fapiRxDataInd->pdus[pduIdx].harqId;
-      pdu->pduLength = fapiRxDataInd->pdus[pduIdx].pduLength;
+      pdu->pduLength = fapiRxDataInd->pdus[pduIdx].pdu_length;
       pdu->ul_cqi = fapiRxDataInd->pdus[pduIdx].ul_cqi;
       pdu->timingAdvance = fapiRxDataInd->pdus[pduIdx].timingAdvance;
       pdu->rssi = fapiRxDataInd->pdus[pduIdx].rssi;
@@ -338,7 +338,7 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
    fapi_msg_t *header;
    header = (fapi_msg_t *)msg;
 
-   switch(header->message_type_id)
+   switch(header->msg_id)
    {
       case FAPI_PARAM_RESPONSE:
       case FAPI_CONFIG_RESPONSE:

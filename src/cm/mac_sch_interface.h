@@ -139,6 +139,9 @@ typedef struct dmrsInfo
    uint8_t  scid;
    uint8_t  numDmrsCdmGrpsNoData;
    uint16_t dmrsPorts;
+	uint8_t mappingType;
+	uint8_t nrOfDmrsSymbols;
+	uint8_t dmrsAddPos;
 } DmrsInfo;
 
 typedef struct pdschFreqAlloc
@@ -470,6 +473,9 @@ typedef struct schPuschInfo
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
    TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
    TbInfo           tbInfo;       /* TB info */
+	uint8_t          dmrsMappingType;
+	uint8_t          nrOfDmrsSymbols;
+	uint8_t          dmrsAddPos;
 }SchPuschInfo;
 
 typedef struct schPucchInfo

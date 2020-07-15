@@ -160,6 +160,9 @@ uint8_t *msg3NumRb)
 	schUlSlotInfo->schPuschInfo->tbInfo.ndi        = 1; /* new transmission */
 	schUlSlotInfo->schPuschInfo->tbInfo.rv	        = 0;
 	schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = 24; /*Considering 2 PRBs */
+	schUlSlotInfo->schPuschInfo->dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
+	schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
+	schUlSlotInfo->schPuschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;
 
 	*msg3StartRb = startRb;
 	*msg3NumRb   = numRb;
@@ -340,6 +343,9 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    pdsch->dmrs.scid = 0;
    pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
    pdsch->dmrs.dmrsPorts = 0;
+	pdsch->dmrs.mappingType      = DMRS_MAP_TYPE_A;  /* Type-A */
+	pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
+	pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
    pdsch->pdschFreqAlloc.freqAlloc.startPrb = offset + SCH_SSB_NUM_PRB; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
    pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
