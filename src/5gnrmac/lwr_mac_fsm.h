@@ -24,6 +24,12 @@
 #define FAPI_UINT_32  4
 #define INVALID_VALUE -1
 
+#define CORESET_TYPE0 0
+#define CORESET_TYPE1 1
+#define CORESET_TYPE2 2
+#define CORESET_TYPE3 3
+
+
 #include "lwr_mac.h"
 
 #ifdef INTEL_FAPI
