@@ -33,6 +33,14 @@
 */
 
 /* header files */
+#include "common_def.h"
+#include "du_app_mac_inf.h"
+#include "lrg.h"
+#include "tfu.h"
+#include "tfu.x"           /* TFU types */
+#include "lrg.x"           /* layer management typedefs for MAC */
+#include "mac_sch_interface.h"
+#include "sch.h"
 #include "sch_utils.h"
 #include "math.h"
 
@@ -555,7 +563,6 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
 	uint8_t  qm     = mcsTable[mcs][1];
 	uint16_t rValue = mcsTable[mcs][2];
 	uint8_t  numLayer = 1;       /* v value */
-	uint8_t numDmrsSymbols = 12; /* considering whole of one symbols with 12 SCs for DMRS */
 
    /* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
     * Ninfo = Nre . R . Qm . v                                       *
@@ -564,7 +571,7 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
 
 	nre = ceil( (float)tbSize * 1024 / (qm * rValue * numLayer));
 
-	nreDash = ceil( (12 * numSymbols) - numDmrsSymbols - 0);
+	nreDash = ceil( (12 * numSymbols) - NUM_DMRS_SYMBOLS - 0);
 
 	if (nreDash > 156)
 	   nre = 156;

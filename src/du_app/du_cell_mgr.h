@@ -28,6 +28,7 @@
 
 S16 duSendSchGnbCfg();
 S16 duSendSchGnbCfgToMac(RgrCfgReqInfo *cfgReq, U32 trans_id);
+uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg);
 #endif
 /**********************************************************************
   End of file

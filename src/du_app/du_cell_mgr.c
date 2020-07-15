@@ -24,9 +24,9 @@
 #include "lkw.x"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
-#include "du_cell_mgr.h"
 #include<ProtocolIE-Field.h>
 #include "F1AP-PDU.h"
+#include "du_cell_mgr.h"
 
 extern DuCfgParams duCfgParam;
 extern S16 duBuildAndSendMacCellCfg();
@@ -113,9 +113,9 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 *         RFAILED - failure
 *
 * ****************************************************************/
-S16 procF1SetupRsp(F1AP_PDU_t *f1apMsg)
+uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 
    F1SetupResponse_t *f1SetRspMsg;
    F1SetupRsp    f1SetRspDb;

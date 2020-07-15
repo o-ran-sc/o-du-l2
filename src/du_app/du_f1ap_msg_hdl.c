@@ -26,7 +26,6 @@
 #include "E2AP-PDU.h"
 #include "du_mgr.h"
 #include "du_mgr_main.h"
-#include "du_cell_mgr.h"
 #include "du_f1ap_msg_hdl.h"
 #include "GNB-DU-System-Information.h"
 #include "CellGroupConfigRrc.h"
@@ -69,6 +68,7 @@
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
+#include "du_cell_mgr.h"
 
 S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
