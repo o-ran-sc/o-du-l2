@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ad6f64e_cbeef97e",
+        "filename": "src/5gnrsch/sch_utils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000307
+      },
+      "writtenOn": "2020-07-16T13:02:50Z",
+      "side": 1,
+      "message": "you can keep both the macros by SET_BITS_LSB and SET_BITS_MSB.\nit will be helpful later.",
+      "revId": "a189ec5d1aa309cb14c62bb644a1efdc0886dd75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
