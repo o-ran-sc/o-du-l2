@@ -16,6 +16,24 @@
       "revId": "a189ec5d1aa309cb14c62bb644a1efdc0886dd75",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d236dc2c_a1aa8efc",
+        "filename": "src/5gnrsch/sch_utils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-16T13:04:26Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "7ad6f64e_cbeef97e",
+      "revId": "a189ec5d1aa309cb14c62bb644a1efdc0886dd75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
