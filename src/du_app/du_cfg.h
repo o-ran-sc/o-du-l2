@@ -157,6 +157,19 @@
 #define NUM_UL_SLOTS 1
 #define NUM_UL_SYMBOLS 0
 
+/* MACRO defines for SRC config */
+#define SRS_RSRC_ID  1
+#define SRS_RSET_ID  1
+#define SRS_COMB_OFFSET_N2   0
+#define SRS_CYCLIC_SHIFT_N2  0
+#define SRS_FREQ_DOM_POS     0
+#define SRS_FREQ_DOM_SHIFT   0
+#define C_SRS 0
+#define B_SRS 0
+#define B_HOP 0
+#define SRS_SEQ_ID 0
+#define APERIODIC_SRS_RESRC_TRIGGER 1 
+
 #define DU_PROC  0
 #define DU_INST 0
 #define DU_POOL  1
