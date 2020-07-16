@@ -51,6 +51,10 @@
 #include "PUSCH-TimeDomainResourceAllocationList.h"
 #include "DMRS-UplinkConfig.h"
 #include "PUSCH-Config.h"
+#include "SRS-ResourceId.h"
+#include "SRS-Resource.h"
+#include "SRS-ResourceSet.h"
+#include "SRS-Config.h"
 #include "BWP-UplinkDedicated.h"
 #include "PUSCH-ServingCellConfig.h"
 #include "UplinkConfig.h"
@@ -3398,6 +3402,259 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
 
 /*******************************************************************
  *
+ * @brief Fills SRS resource to add/modify list 
+ *
+ * @details
+ *
+ *    Function : BuildSrsRsrcAddModList
+ *
+ *    Functionality: Fills SRS resource to add/modify list
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *resourceList)
+{
+   uint8_t   elementCnt;
+   uint8_t   rsrcIdx;
+
+   elementCnt = 1;
+   resourceList->list.count = elementCnt;
+   resourceList->list.size = elementCnt * sizeof(SRS_Resource_t *);
+   resourceList->list.array = NULLP;
+   DU_ALLOC(resourceList->list.array, resourceList->list.size);
+   if(!resourceList->list.array)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+      return RFAILED;
+   }
+ 
+   for(rsrcIdx = 0; rsrcIdx < resourceList->list.count; rsrcIdx++)
+   {
+      DU_ALLOC(resourceList->list.array[rsrcIdx], sizeof(SRS_Resource_t));
+      if(!resourceList->list.array[rsrcIdx])
+      {
+         DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+         return RFAILED;
+      }
+   }
+
+   rsrcIdx = 0;
+   resourceList->list.array[rsrcIdx]->srs_ResourceId = SRS_RSRC_ID;
+   resourceList->list.array[rsrcIdx]->nrofSRS_Ports = SRS_Resource__nrofSRS_Ports_port1;
+   resourceList->list.array[rsrcIdx]->transmissionComb.present = SRS_Resource__transmissionComb_PR_n2;
+
+   resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2 = NULLP;
+   DU_ALLOC(resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2, \
+      sizeof(struct SRS_Resource__transmissionComb__n2));
+   if(!resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+      return RFAILED;
+   }
+   resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2->combOffset_n2\
+	   = SRS_COMB_OFFSET_N2;
+   resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2->cyclicShift_n2\
+	   = SRS_CYCLIC_SHIFT_N2;
+
+   resourceList->list.array[rsrcIdx]->resourceMapping.startPosition = \
+	   PUSCH_START_SYMBOL;
+   resourceList->list.array[rsrcIdx]->resourceMapping.nrofSymbols =  \
+      SRS_Resource__resourceMapping__nrofSymbols_n1;
+   resourceList->list.array[rsrcIdx]->resourceMapping.repetitionFactor = \
+      SRS_Resource__resourceMapping__repetitionFactor_n1;
+
+   resourceList->list.array[rsrcIdx]->freqDomainPosition = SRS_FREQ_DOM_POS;
+   resourceList->list.array[rsrcIdx]->freqDomainShift = SRS_FREQ_DOM_SHIFT;
+   resourceList->list.array[rsrcIdx]->freqHopping.c_SRS = C_SRS;
+   resourceList->list.array[rsrcIdx]->freqHopping.b_SRS = B_SRS;
+   resourceList->list.array[rsrcIdx]->freqHopping.b_hop = B_HOP;
+   resourceList->list.array[rsrcIdx]->groupOrSequenceHopping = \
+      SRS_Resource__groupOrSequenceHopping_neither;
+
+   resourceList->list.array[rsrcIdx]->resourceType.present = \
+	   SRS_Resource__resourceType_PR_aperiodic;
+   resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic = NULLP;
+   DU_ALLOC(resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic,
+      sizeof(struct SRS_Resource__resourceType__aperiodic));
+   if(!resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+      return RFAILED;
+   }
+   resourceList->list.array[rsrcIdx]->sequenceId = SRS_SEQ_ID;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Build SRS resource set Add/mod list
+ *
+ * @details
+ *
+ *    Function : BuildSrsRsrcSetAddModList
+ *
+ *    Functionality: Build SRS resource set Add/mod list
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildSrsRsrcSetAddModList
+(
+struct SRS_Config__srs_ResourceSetToAddModList *rsrcSetList
+)
+{
+   uint8_t  elementCnt;
+   uint8_t  rSetIdx;
+	uint8_t  rsrcIdx;
+	struct SRS_ResourceSet__srs_ResourceIdList *rsrcIdList;
+
+   elementCnt = 1;
+   rsrcSetList->list.count = elementCnt;
+   rsrcSetList->list.size = elementCnt * sizeof(SRS_ResourceSet_t *);
+   rsrcSetList->list.array = NULLP;
+   DU_ALLOC(rsrcSetList->list.array, rsrcSetList->list.size);
+   if(!rsrcSetList->list.array)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+      return RFAILED;
+   }
+
+   for(rSetIdx = 0; rSetIdx < rsrcSetList->list.count; rSetIdx++)
+   {
+      DU_ALLOC(rsrcSetList->list.array[rSetIdx], sizeof(SRS_ResourceSet_t));
+      if(!rsrcSetList->list.array[rSetIdx])
+      {
+         DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+         return RFAILED;
+      }
+   }
+
+   rSetIdx = 0;
+   rsrcSetList->list.array[rSetIdx]->srs_ResourceSetId = SRS_RSET_ID;
+
+	/* Fill Resource Id list in resource set */
+	rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList = NULLP;
+	DU_ALLOC(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList,\
+	   sizeof(struct SRS_ResourceSet__srs_ResourceIdList));
+	if(!rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList)
+	{
+	   DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+		return RFAILED;
+	}
+
+	elementCnt = 1;
+	rsrcIdList = rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList;
+	rsrcIdList->list.count = elementCnt;
+	rsrcIdList->list.size = elementCnt * sizeof(SRS_ResourceId_t *);
+	rsrcIdList->list.array = NULLP;
+	DU_ALLOC(rsrcIdList->list.array, rsrcIdList->list.size);
+	if(!rsrcIdList->list.array)
+	{
+	   DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+		return RFAILED;
+	}
+
+	for(rsrcIdx = 0; rsrcIdx < rsrcIdList->list.count; rsrcIdx++)
+	{
+	   DU_ALLOC(rsrcIdList->list.array[rsrcIdx], sizeof(SRS_ResourceId_t));
+		if(!rsrcIdList->list.array[rsrcIdx])
+		{
+		   DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+			return RFAILED;
+		}
+	}
+
+	rsrcIdx = 0;
+	*rsrcIdList->list.array[rsrcIdx] = SRS_RSRC_ID;
+
+	/* Fill resource type */
+   rsrcSetList->list.array[rSetIdx]->resourceType.present = \
+      SRS_ResourceSet__resourceType_PR_aperiodic;
+
+   rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic = NULLP;
+   DU_ALLOC(rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic, \
+      sizeof(struct SRS_ResourceSet__resourceType__aperiodic));
+   if(!rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic)
+   {
+	   DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+		return RFAILED;
+	}
+   rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic->aperiodicSRS_ResourceTrigger \
+	   = APERIODIC_SRS_RESRC_TRIGGER;
+ 	rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic->csi_RS = NULLP;
+   rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic->slotOffset = NULLP;
+  
+
+   rsrcSetList->list.array[rSetIdx]->usage = SRS_ResourceSet__usage_codebook;
+	rsrcSetList->list.array[rSetIdx]->alpha = NULLP;
+	rsrcSetList->list.array[rSetIdx]->p0 = NULLP;
+	rsrcSetList->list.array[rSetIdx]->pathlossReferenceRS = NULLP;
+	rsrcSetList->list.array[rSetIdx]->srs_PowerControlAdjustmentStates = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds BWP UL dedicated SRS Config
+ *
+ * @details
+ *
+ *    Function : BuildBWPUlDedSrsCfg
+ *
+ *    Functionality: Builds BWP UL dedicated SRS Config
+ *
+ * @params[in] SRS Config 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildBWPUlDedSrsCfg(SRS_Config_t *srsCfg)
+{
+   srsCfg->srs_ResourceSetToReleaseList = NULLP;
+   srsCfg->srs_ResourceSetToAddModList = NULLP;
+   DU_ALLOC(srsCfg->srs_ResourceSetToAddModList, \
+      sizeof(struct SRS_Config__srs_ResourceSetToAddModList));
+   if(!srsCfg->srs_ResourceSetToAddModList)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedSrsCfg");
+      return RFAILED;
+   }
+   if(BuildSrsRsrcSetAddModList(srsCfg->srs_ResourceSetToAddModList) != ROK)
+   {
+      return RFAILED;
+   }
+
+   srsCfg->srs_ResourceToReleaseList = NULLP;
+
+   /* Resource to Add/Modify list */
+   srsCfg->srs_ResourceToAddModList = NULLP;
+   DU_ALLOC(srsCfg->srs_ResourceToAddModList, \
+      sizeof(struct SRS_Config__srs_ResourceToAddModList));
+   if(!srsCfg->srs_ResourceToAddModList)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedSrsCfg");
+      return RFAILED;
+   }
+
+   if(BuildSrsRsrcAddModList(srsCfg->srs_ResourceToAddModList) != ROK)
+   {
+      return RFAILED;
+   }
+
+   srsCfg->tpc_Accumulation = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Builds inital UL BWP
  *
  * @details
@@ -3414,6 +3671,8 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
 uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
 {
    ulBwp->pucch_Config = NULLP;
+
+   /* Fill BWP UL dedicated PUSCH config */
 	ulBwp->pusch_Config = NULLP;
    DU_ALLOC(ulBwp->pusch_Config, sizeof(struct BWP_UplinkDedicated__pusch_Config));
    if(!ulBwp->pusch_Config)
@@ -3437,7 +3696,30 @@ uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
    }
 
 	ulBwp->configuredGrantConfig = NULLP;
+
+   /* Fill BPW UL dedicated SRS config */
 	ulBwp->srs_Config = NULLP;
+   DU_ALLOC(ulBwp->srs_Config, sizeof(struct BWP_UplinkDedicated__srs_Config));
+   if(!ulBwp->srs_Config)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      return RFAILED;
+   }
+
+   ulBwp->srs_Config->present = BWP_UplinkDedicated__srs_Config_PR_setup;
+   ulBwp->srs_Config->choice.setup = NULLP;
+   DU_ALLOC(ulBwp->srs_Config->choice.setup, sizeof(SRS_Config_t));
+   if(!ulBwp->srs_Config->choice.setup)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      return RFAILED;
+   }
+
+   if(BuildBWPUlDedSrsCfg(ulBwp->srs_Config->choice.setup) != ROK)
+   {
+      return RFAILED;   
+   }
+
 	ulBwp->beamFailureRecoveryConfig = NULLP;
    
    return ROK;
@@ -4072,8 +4354,13 @@ void FreePuschTimeDomAllocList(PUSCH_Config_t *puschCfg)
  * ****************************************************************/
 void FreeInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
 {
-    PUSCH_Config_t *puschCfg=NULLP;
-    struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA *dmrsUlCfg=NULLP;
+    uint8_t  rSetIdx, rsrcIdx;
+    SRS_Config_t   *srsCfg = NULLP;
+    PUSCH_Config_t *puschCfg = NULLP;
+    struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA *dmrsUlCfg = NULLP;
+	 struct SRS_Config__srs_ResourceSetToAddModList *rsrcSetList = NULLP;
+	 struct SRS_ResourceSet__srs_ResourceIdList *rsrcIdList = NULLP;
+	 struct SRS_Config__srs_ResourceToAddModList *resourceList = NULLP;
 
 	 if(ulBwp->pusch_Config)
     {
@@ -4110,6 +4397,80 @@ void FreeInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
           DU_FREE(ulBwp->pusch_Config->choice.setup, sizeof(PUSCH_Config_t));
 	    }
 		 DU_FREE(ulBwp->pusch_Config, sizeof(struct BWP_UplinkDedicated__pusch_Config));
+
+		 /* Free SRS-Config */
+		 if(ulBwp->srs_Config)
+		 {
+		    if(ulBwp->srs_Config->choice.setup)
+			 {
+			    srsCfg = ulBwp->srs_Config->choice.setup;
+
+				 /* Free Resource Set to add/mod list */
+			    if(srsCfg->srs_ResourceSetToAddModList)
+				 {
+				    rsrcSetList = srsCfg->srs_ResourceSetToAddModList;
+					 if(rsrcSetList->list.array)
+					 {
+					    rSetIdx = 0;
+
+						 /* Free SRS resource Id list in this SRS resource set */
+						 if(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList)
+						 {
+						    rsrcIdList = rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList;
+
+						    if(rsrcIdList->list.array)
+							 {
+							    for(rsrcIdx = 0; rsrcIdx < rsrcIdList->list.count; rsrcIdx++)
+								 {
+								    DU_FREE(rsrcIdList->list.array[rsrcIdx], sizeof(SRS_ResourceId_t));
+							    }
+							    DU_FREE(rsrcIdList->list.array, rsrcIdList->list.size);
+							 }
+						    DU_FREE(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList,\
+							    sizeof(struct SRS_ResourceSet__srs_ResourceIdList));
+						 }
+
+						 /* Free resource type info for this SRS resource set */
+						 DU_FREE(rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic, \
+						    sizeof(struct SRS_ResourceSet__resourceType__aperiodic));
+
+						 /* Free memory for each resource set */
+					    for(rSetIdx = 0; rSetIdx < rsrcSetList->list.count; rSetIdx++)
+						 {
+						    DU_FREE(rsrcSetList->list.array[rSetIdx], sizeof(SRS_ResourceSet_t));
+						 }
+					    DU_FREE(rsrcSetList->list.array, rsrcSetList->list.size); 
+					 }
+				    DU_FREE(srsCfg->srs_ResourceSetToAddModList, \
+					    sizeof(struct SRS_Config__srs_ResourceSetToAddModList));
+				 }
+
+				 /* Free resource to add/modd list */
+				 if(srsCfg->srs_ResourceToAddModList)
+				 {
+				    resourceList = srsCfg->srs_ResourceToAddModList;
+					 if(resourceList->list.array)
+					 {
+					    rsrcIdx = 0;
+						 DU_FREE(resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2,\
+						    sizeof(struct SRS_Resource__transmissionComb__n2));
+					    DU_FREE(resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic,\
+						    sizeof(struct SRS_Resource__resourceType__aperiodic));
+
+					    for(rsrcIdx = 0; rsrcIdx < resourceList->list.count; rsrcIdx++)
+						 {
+						    DU_FREE(resourceList->list.array[rsrcIdx], sizeof(SRS_Resource_t));
+                   }
+					    DU_FREE(resourceList->list.array, resourceList->list.size);
+					 }
+				    DU_FREE(srsCfg->srs_ResourceToAddModList, \
+					    sizeof(struct SRS_Config__srs_ResourceToAddModList));
+				 }
+
+			    DU_FREE(ulBwp->srs_Config->choice.setup, sizeof(SRS_Config_t));
+			 }
+		    DU_FREE(ulBwp->srs_Config, sizeof(struct BWP_UplinkDedicated__srs_Config));
+       }
 	 }
 }	
  /*******************************************************************
