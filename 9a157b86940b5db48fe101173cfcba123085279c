@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1bb245ca_901cc2e5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3477,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T06:37:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ee534b5_1acaf599",
+      "revId": "9a157b86940b5db48fe101173cfcba123085279c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c2526b5_55a05f24",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2020-07-16T13:30:37Z",
       "side": 1,
       "message": "why are we only allocating memory for this IE if we are not working on it?",
+      "revId": "9a157b86940b5db48fe101173cfcba123085279c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f90ad3a_9a6058d3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3482,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T06:37:47Z",
+      "side": 1,
+      "message": "Since resourceType is set to aperiodic, the aperiodic pointer is mandatory parameter.\nEven though no IEs are filled in this, memory must be allocated to avoid encode failure due to missing mandatory param.",
+      "parentUuid": "5c2526b5_55a05f24",
       "revId": "9a157b86940b5db48fe101173cfcba123085279c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -50,6 +86,24 @@
       "revId": "9a157b86940b5db48fe101173cfcba123085279c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c723a7c1_0a613788",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3591,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T06:37:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73e47263_cfdb1904",
+      "revId": "9a157b86940b5db48fe101173cfcba123085279c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
