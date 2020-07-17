@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "ebfcc721_84639215",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "New parameter \"pad\" added to fapi_msg_t. We can memset the hdr to to initialize pad(or any new parameter added in future) to 0.\n\nThis is also applicable to config request, ul tti req, tx data req\nUnder what scenario do we set pad to non-zero value?",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c6665a5_45e98884",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2772,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "New parameter \"coreSetType\" added to pdcch pdu",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ad2cb2a_fafb0eba",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2775,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "dlTtiReqPdu-\u003epduSize \u003d sizeof(fapi_dl_pdcch_pdu_t) since fapi_dl_dci_t is now an array in pdscch pdu, instead of pointer",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "502cb5d9_ca325ed3",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -13,6 +64,24 @@
       "writtenOn": "2020-07-15T14:11:39Z",
       "side": 1,
       "message": "Some new parameters have been added to fapi_dl_pdsc_pdu_t such as:\nuint8_t mappingType;\nuint8_t nrOfDmrsSymbols;\nuint8_t dmrsAddPos;\n\nShould these also be filled?",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6aec2254_0b6a946b",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2853,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "pad1 and pad2 also added recently",
+      "parentUuid": "502cb5d9_ca325ed3",
       "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -64,6 +133,165 @@
       "writtenOn": "2020-07-15T14:11:39Z",
       "side": 1,
       "message": "this could be sizeof(fapi_uint8_ptr_tlv_t)",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6efeb7d_4bb0fe89",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3175,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "fapi_dl_tti_req_pdu_t is now an array in fapi_dl_tti_req_t\nAnd fapi_dl_dci_t is now an array in pdchh pdu.\nHence the above calculations for msg size are not needed.\n\"dlTtiReqMsgSize \u003d sizeof(fapi_dl_tti_req_t)\" should suffice.",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b9699f1_f650e276",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3336,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "Earlier, tx data req stored a pointer to fapi_tx_pdu_desc_t. Now it stores an array of fapi_tx_pdu_desc_t\nSo, \"txDataReqMsgSize \u003d sizeof(fapi_tx_data_req_t);\" should be able to accommodate all pdu desc",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ddc8448_557c3dcf",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3435,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "Even if there are multiple ulsch pdu present, nUlsch will always get reset to 1 here",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af6081b3_a052fb21",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3440,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "Even if there are multiple ulcch pdu present, nUlcch will always get reset to 1 here.",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9bf183c_8ac0eacb",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3574,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "New Parameters added to fapi_ul_pusch_pdu_t\n1. nTpPuschId;\n2. tpPi2Bpsk;\n3. mappingType;\n4. nrOfDmrsSymbols;\n5. dmrsAddPos;\n6. pad;",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7be820f2_4a49cabb",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3624,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "Earlier, ul tti req stored just a pointer to fapi_ul_tti_req_pdu_t. Now it stores an array of fapi_ul_tti_req_pdu_t.\nSo, \"msgSize \u003d sizeof(fapi_ul_tti_req_t);\" should be able to accommodate all pdus",
+      "range": {
+        "startLine": 3624,
+        "startChar": 55,
+        "endLine": 3624,
+        "endChar": 76
+      },
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea72ea20_614d6fc8",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "New parameter \"pad\" added to fapi structure. We can do a memset of fapiConfigRsp to initialize pad(or any new parameter added in future) to 0.\n\nThis is also applicable to CRC Ind, Rach Ind, Rx Data Ind.\nWe also need to understand how the pad parameter is to be processed when received at lwr mac",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bfec52c5_2886c252",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "New parameter added : number_of_inv_tlvs_running_only",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1429e780_61c1a665",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-17T08:41:26Z",
+      "side": 1,
+      "message": "MsgLen should be sizeof(fapi_config_resp_t)",
       "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
