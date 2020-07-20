@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b5155a3b_7ed33d62",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3433,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-20T12:18:46Z",
+      "side": 1,
+      "message": "this check is already covered above",
+      "revId": "42d03496023119c5c6a2d14d5492a395b4f8d40c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b6ff2e2_7623fe50",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3439,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-20T12:18:46Z",
+      "side": 1,
+      "message": "this check is already covered above",
+      "revId": "42d03496023119c5c6a2d14d5492a395b4f8d40c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec23516b_57e24a0f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3609,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-20T12:18:46Z",
+      "side": 1,
+      "message": "add comment with the format we are supporting",
+      "revId": "42d03496023119c5c6a2d14d5492a395b4f8d40c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc1ab48b_5a416c18",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3697,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-20T12:18:46Z",
+      "side": 1,
+      "message": "we can update this to a switch case",
+      "revId": "42d03496023119c5c6a2d14d5492a395b4f8d40c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f58b2ec_ce183d36",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-20T12:18:46Z",
+      "side": 1,
+      "message": "use macros",
+      "revId": "42d03496023119c5c6a2d14d5492a395b4f8d40c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f8b3695_3e3d2674",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-20T12:18:46Z",
+      "side": 1,
+      "message": "why are we hardcoding? better to give spec reference and use a macro as well",
+      "revId": "42d03496023119c5c6a2d14d5492a395b4f8d40c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9122d12_e2de3cc9",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-20T12:18:46Z",
+      "side": 1,
+      "message": "this and above function related to pucch res allocation are very similar. better to update",
+      "revId": "42d03496023119c5c6a2d14d5492a395b4f8d40c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52cd87d7_9055b921",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-20T12:18:46Z",
+      "side": 1,
+      "message": "mention spec number and section of this table",
+      "revId": "42d03496023119c5c6a2d14d5492a395b4f8d40c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
