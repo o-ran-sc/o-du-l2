@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c3f38220_a6a6c4ef",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "why is math.h redefined here?",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8eb26806_50bcae67",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "else is not needed. Just return RFAILED is sufficient",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "975fead0_be51ccba",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d93883b_32d007b6",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "1. add a comment /* SELECTORS */\n2. change name to ODU_SELECTOR_LC, etc",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c8ca581_96cca73b",
+        "filename": "src/cm/legtp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "why is common_def.h needed in this file???",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "071348b4_a6993178",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "dont include this file in header files",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "abb742e1_3a4d7177",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "dont include this file in header files",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c28bd72d_def92b72",
+        "filename": "src/du_app/du_e2ap_msg_hdl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "shouldnt this be the first file to be included?",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b256f815_662968cf",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "avoid including this file in header files",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d41e4ef9_7bcd0b2f",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "dont include this file in header files",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ec69a6d_78d92f9d",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T15:49:14Z",
+      "side": 1,
+      "message": "dont include this file in header files",
+      "revId": "eec8c2d389016ac9ad952be9f3519f21fda0f702",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
