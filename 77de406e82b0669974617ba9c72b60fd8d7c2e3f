@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "85fb41fa_89dc9c04",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T14:48:02Z",
+      "side": 1,
+      "message": "update spec details",
+      "revId": "77de406e82b0669974617ba9c72b60fd8d7c2e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f80dc65a_f6ac69a6",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-22T14:48:02Z",
+      "side": 1,
+      "message": "this is not just a function for allocating rnti. We are scheduling pucch",
+      "revId": "77de406e82b0669974617ba9c72b60fd8d7c2e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
