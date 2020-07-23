@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "79a7bd92_246d835e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "Slice differentiator",
+      "parentUuid": "4600de98_a3de7f81",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ee7d6d5f_c547b235",
         "filename": "src/du_app/du_mgr.h",
         "patchSetId": 10
@@ -33,6 +51,24 @@
       "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61d4b1c2_1a0fe755",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "No not required. Hence removed.",
+      "parentUuid": "ee7d6d5f_c547b235",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "965f9b47_d9b15d05",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2574d94c_8e53e409",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bacba43e_f8c67633",
         "filename": "src/du_app/du_mgr.h",
         "patchSetId": 10
@@ -67,6 +121,24 @@
       "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "952a98b0_f799f09c",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bacba43e_f8c67633",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "81783be7_fabbc8b9",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2165d4db_241218b1",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e6d2c4_48ec0417",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 10
@@ -101,6 +191,24 @@
       "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76047ef1_283ffc90",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67e6d2c4_48ec0417",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "63669ade_c2b3e643",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1dbc34a_dbe09c9f",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dff27766_f55ff39b",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 10
@@ -135,6 +261,24 @@
       "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7dc5b1a_0409e1da",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dff27766_f55ff39b",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "b7b0dea4_bf317590",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 828,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bd32306_2a17ba71",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b790c443_b7f7c29f",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 10
@@ -172,6 +334,24 @@
     },
     {
       "key": {
+        "uuid": "724e09eb_2ef689c4",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "agreed",
+      "parentUuid": "b790c443_b7f7c29f",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "28403ca8_fa7c9c7d",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 10
@@ -186,6 +366,24 @@
       "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a767464_9d3e5b1a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 894,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-07-23T15:40:31Z",
+      "side": 1,
+      "message": "Yes Bitmap is not required anymore. Hence removed the param.",
+      "parentUuid": "28403ca8_fa7c9c7d",
+      "revId": "06dff858aad59d8398c11c61bba87953a32f2807",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
