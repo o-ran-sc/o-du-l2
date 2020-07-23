@@ -76,6 +76,7 @@ invoked by PHY towards MAC
 #include "rg_prg.x"        /* PRG interface typedefs */
 #include "rgm.x"           /* layer management typedefs for MAC */
 #include "rgm.h"           /* layer management typedefs for MAC */
+#include "common_def.h"
 #include "du_app_mac_inf.h"
 #include "mac.h"
 #include "rg.x"            /* typedefs for MAC */
@@ -617,7 +618,17 @@ SlotIndInfo slotInd
    }
 #endif
 
-
+   /* Mux Pdu for Msg4 */
+   SlotIndInfo muxTimingInfo;
+   memset(&muxTimingInfo, 0, sizeof(SlotIndInfo));
+   MacDlSlot *currDlSlot = NULLP;
+   ADD_DELTA_TO_TIME(slotInd, muxTimingInfo, PHY_DELTA);
+   currDlSlot = &macCb.macCell->dlSlot[muxTimingInfo.slot];
+   if(currDlSlot->dlInfo.msg4Alloc)
+	{
+      BuildAndSendMacMuxPdu(currDlSlot->dlInfo.msg4Alloc);
+		currDlSlot = NULLP;
+   }
    /* Trigger for DL TTI REQ */
    handleDlTtiReq(slotInd);
 
