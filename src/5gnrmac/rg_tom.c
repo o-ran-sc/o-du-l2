@@ -596,7 +596,17 @@ SlotIndInfo slotInd
    }
 #endif
 
-
+   /* Mux Pdu for Msg4 */
+   SlotIndInfo muxTimingInfo;
+   memset(&muxTimingInfo, 0, sizeof(SlotIndInfo));
+   MacDlSlot *currDlSlot = NULLP;
+   ADD_DELTA_TO_TIME(slotInd, muxTimingInfo, PHY_DELTA);
+   currDlSlot = &macCb.macCell->dlSlot[muxTimingInfo.slot];
+   if(currDlSlot->dlInfo.msg4Alloc)
+	{
+      BuildAndSendMacMuxPdu(currDlSlot->dlInfo.msg4Alloc);
+		currDlSlot = NULLP;
+   }
    /* Trigger for DL TTI REQ */
    handleDlTtiReq(slotInd);
 
