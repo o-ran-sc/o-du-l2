@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aaf0d367_470a90f0",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:45Z",
+      "side": 1,
+      "message": "dont we have to consider PHY_DELTA here?",
+      "revId": "1931d49496d91723b7c54c63db50ff4ee8ff03b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
