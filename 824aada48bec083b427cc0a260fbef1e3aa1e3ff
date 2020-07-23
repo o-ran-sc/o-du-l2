@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f1b5de96_4e2c7d9e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "none! pad is just used for 32 bit alignment.\nfilling 0.",
+      "parentUuid": "ebfcc721_84639215",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5c6665a5_45e98884",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "e36c1b26_9a3e2c7f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2772,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "added",
+      "parentUuid": "5c6665a5_45e98884",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2ad2cb2a_fafb0eba",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2020-07-17T08:41:26Z",
       "side": 1,
       "message": "dlTtiReqPdu-\u003epduSize \u003d sizeof(fapi_dl_pdcch_pdu_t) since fapi_dl_dci_t is now an array in pdscch pdu, instead of pointer",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dcf659b_7d5b5f28",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2775,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "Done. However, this can be revisited while fixing msgLen",
+      "parentUuid": "2ad2cb2a_fafb0eba",
       "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -82,6 +136,24 @@
       "side": 1,
       "message": "pad1 and pad2 also added recently",
       "parentUuid": "502cb5d9_ca325ed3",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bac8da38_00e1f165",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2853,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "As discussed. Let\u0027s take these up after confirmation from Intel",
+      "parentUuid": "6aec2254_0b6a946b",
       "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -156,6 +228,24 @@
     },
     {
       "key": {
+        "uuid": "22c12d2e_ff0fd38f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3175,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "Updated. But let\u0027s re-see this scenario since we are not always sending max PDUs",
+      "parentUuid": "c6efeb7d_4bb0fe89",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0b9699f1_f650e276",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -167,6 +257,24 @@
       "writtenOn": "2020-07-17T08:41:26Z",
       "side": 1,
       "message": "Earlier, tx data req stored a pointer to fapi_tx_pdu_desc_t. Now it stores an array of fapi_tx_pdu_desc_t\nSo, \"txDataReqMsgSize \u003d sizeof(fapi_tx_data_req_t);\" should be able to accommodate all pdu desc",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6690af89_4c3d4cf4",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3336,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "Updated. But let\u0027s re-see this scenario since we are not always sending max PDUs",
+      "parentUuid": "0b9699f1_f650e276",
       "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -190,6 +298,24 @@
     },
     {
       "key": {
+        "uuid": "721549f6_d7883f2b",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3435,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ddc8448_557c3dcf",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "af6081b3_a052fb21",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -204,6 +330,24 @@
       "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "514676ce_48b6620f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3440,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af6081b3_a052fb21",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -224,6 +368,24 @@
     },
     {
       "key": {
+        "uuid": "2748637a_6c098808",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3574,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "As discussed. Let\u0027s take these up after confirmation from Intel",
+      "parentUuid": "a9bf183c_8ac0eacb",
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7be820f2_4a49cabb",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -235,6 +397,30 @@
       "writtenOn": "2020-07-17T08:41:26Z",
       "side": 1,
       "message": "Earlier, ul tti req stored just a pointer to fapi_ul_tti_req_pdu_t. Now it stores an array of fapi_ul_tti_req_pdu_t.\nSo, \"msgSize \u003d sizeof(fapi_ul_tti_req_t);\" should be able to accommodate all pdus",
+      "range": {
+        "startLine": 3624,
+        "startChar": 55,
+        "endLine": 3624,
+        "endChar": 76
+      },
+      "revId": "824aada48bec083b427cc0a260fbef1e3aa1e3ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2979bee9_e81c8650",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3624,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-23T12:59:35Z",
+      "side": 1,
+      "message": "Updated. But let\u0027s re-see this as well. how about msgLen?",
+      "parentUuid": "7be820f2_4a49cabb",
       "range": {
         "startLine": 3624,
         "startChar": 55,
