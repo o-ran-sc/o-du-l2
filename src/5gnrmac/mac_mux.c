@@ -218,13 +218,14 @@ void createMacRaCb(uint16_t cellId, uint16_t crnti)
  * @details
  *
  * Function : fillMsg4DlData
- *      This function is a stub which sends Dl Data
+ *      This function sends Dl Data
  *      to form MAC SDUs
  *           
  * @param[in]  MacDlData *dlData
+ *             msg4Pdu pointer
  ************************************************/
 
-void fillMsg4DlData(MacDlData *dlData)
+void fillMsg4DlData(MacDlData *dlData, uint8_t *msg4Pdu)
 {
    uint8_t idx = 0;
    uint16_t idx2;
@@ -233,8 +234,7 @@ void fillMsg4DlData(MacDlData *dlData)
    dlData->pduInfo[idx].pduLen = macCb.macCell->macRaCb[idx].msg4PduLen;
    for(idx2 = 0; idx2 <  dlData->pduInfo[idx].pduLen; idx2++)
 	{
-      dlData->pduInfo[idx].dlPdu[idx2] = \
-		  macCb.macCell->macRaCb[idx].msg4Pdu[idx2];
+      dlData->pduInfo[idx].dlPdu[idx2] = msg4Pdu[idx2];
 	}
 }
 
@@ -247,9 +247,10 @@ void fillMsg4DlData(MacDlData *dlData)
  *      This function fills Mac ce identities
  *           
  * @param[in]  RlcMacData *dlData
+ *             Msg3Pdu Data
  ************************************************/
 
-void fillMacCe(MacCeInfo *macCeInfo)
+void fillMacCe(MacCeInfo *macCeInfo, uint8_t *msg3Pdu)
 {
    uint8_t idx;
    macCeInfo->numCes = 1;
@@ -257,7 +258,7 @@ void fillMacCe(MacCeInfo *macCeInfo)
    {
       macCeInfo->macCe[idx].macCeLcid = MAC_LCID_CRI;
       memcpy(macCeInfo->macCe[idx].macCeValue, \
-         macCb.macCell->macRaCb[idx].msg3Pdu, MAX_CRI_SIZE);
+         msg3Pdu, MAX_CRI_SIZE);
    }
 }
 
@@ -272,12 +273,11 @@ void fillMacCe(MacCeInfo *macCeInfo)
  *    Functionality:
  *     The MAC PDU will be MUXed and formed
  *
- * @params[in] MacDlData *, MacCeInfo *, tbSize
+ * @params[in] MacDlData *, MacCeInfo *, msg4TxPdu *, tbSize
  * @return void
- *
  * ****************************************************************/
 
-void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
+void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize)
 {
    uint8_t bytePos = 0;
    uint8_t bitPos = 7;
@@ -365,12 +365,9 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize)
    }
 
 	/*Storing the muxed pdu in macRaCb */
-	macCb.macCell->macRaCb[0].msg4TxPdu = NULLP;
-   MAC_ALLOC(macCb.macCell->macRaCb[0].msg4TxPdu, macCb.macCell->macRaCb[0].msg4TbSize);
-   if(macCb.macCell->macRaCb[0].msg4TxPdu != NULLP)
+   if(msg4TxPdu != NULLP)
    {
-	   memcpy(macCb.macCell->macRaCb[0].msg4TxPdu, macPdu,\
-		  macCb.macCell->macRaCb[0].msg4TbSize);
+	   memcpy(msg4TxPdu, macPdu, tbSize);
    }
 }
 

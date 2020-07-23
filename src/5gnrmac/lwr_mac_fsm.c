@@ -3051,6 +3051,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, RarInfo *rarInfo,
 uint8_t fillMsg4TxDataReq(fapi_tx_pdu_desc_t *pduDesc, Msg4Info *msg4Info,
    uint32_t *msgLen, uint16_t pduIndex)
 {
+   uint16_t idx = 0;
    uint32_t pduLen = 0;
    uint32_t *msg4TxDataValue = NULLP;
 
@@ -3066,7 +3067,10 @@ uint8_t fillMsg4TxDataReq(fapi_tx_pdu_desc_t *pduDesc, Msg4Info *msg4Info,
    {
       return RFAILED;
    }
-   memcpy(msg4TxDataValue, msg4Info->msg4Pdu, msg4Info->msg4PduLen);
+	for(idx = 0; idx < msg4Info->msg4PduLen; idx++)
+	{
+	  msg4TxDataValue[idx] = msg4Info->msg4Pdu[idx]; 
+	}
    pduDesc[pduIndex].tlvs[0].value = (uint32_t)msg4TxDataValue;
 
    /* The total length of the PDU description and PDU data */
@@ -3353,13 +3357,16 @@ uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo)
          MAC_FREE(dlInfo->rarAlloc,sizeof(RarAlloc));
          dlInfo->rarAlloc = NULLP;
       }
-      if(dlInfo->msg4Alloc != NULLP)
+      if(dlInfo->msg4Alloc != NULLP && dlInfo->msg4Alloc->msg4Info.msg4Pdu != NULLP)
       {
          fillMsg4TxDataReq(txDataReq->pduDesc, &dlInfo->msg4Alloc->\
              msg4Info, &msgLen, pduIndex);
          pduIndex++;
          txDataReq->numPdus++;
-
+    
+         MAC_FREE(dlInfo->msg4Alloc->msg4Info.msg4Pdu,\
+             dlInfo->msg4Alloc->msg4Info.msg4PduLen);
+         dlInfo->msg4Alloc->msg4Info.msg4Pdu = NULLP;
          MAC_FREE(dlInfo->msg4Alloc,sizeof(Msg4Alloc));
          dlInfo->msg4Alloc = NULLP;
       }

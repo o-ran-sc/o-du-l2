@@ -143,11 +143,12 @@ MacCb macCb;
 void fillMacToSchPst(Pst *pst);
 void fillRarPdu(RarInfo *rarInfo);
 void createMacRaCb(uint16_t cellId, uint16_t crnti);
-void fillMsg4DlData(MacDlData *dlData);
-void fillMacCe(MacCeInfo  *macCeData);
-void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint16_t tbSize);
+void fillMsg4DlData(MacDlData *dlData, uint8_t *msg4Pdu);
+void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
+void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);
 int unpackRxData(RxDataIndPdu *rxDataIndPdu);
 uint16_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti);
+void BuildAndSendMsg4MuxPdu(Msg4Alloc *msg4Alloc);
 
 #endif
 /**********************************************************************
