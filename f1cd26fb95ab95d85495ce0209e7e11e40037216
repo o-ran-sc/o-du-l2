@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "e782f523_35bde47f",
+        "filename": "src/cm/mac_sch_interface.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-07-23T09:25:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45f06e9f_78b37385",
+      "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fd1316cf_be21489c",
         "filename": "src/cu_stub/cu_stub.h",
         "patchSetId": 6
@@ -50,6 +68,24 @@
       "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44c7d898_d98df93b",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-07-23T09:25:24Z",
+      "side": 1,
+      "message": "cannt move odu_common_codec file in another file, error is coming after moving in another file",
+      "parentUuid": "fd1316cf_be21489c",
+      "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -70,6 +106,42 @@
     },
     {
       "key": {
+        "uuid": "7d68d82e_aff3dd00",
+        "filename": "src/du_app/du_e2ap_msg_hdl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-07-23T09:25:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d46a93e_22399a24",
+      "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "73eda5a3_4cac18b6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-07-23T09:25:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d46a93e_22399a24",
+      "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "49c08d17_1b9d6f2b",
         "filename": "src/du_app/du_sctp.c",
         "patchSetId": 6
@@ -84,6 +156,24 @@
       "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "965e4280_fcf13204",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-07-23T09:25:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49c08d17_1b9d6f2b",
+      "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "55cd8d44_88fe920a",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-07-23T09:25:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "982cc6b6_887b9762",
+      "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "93021e13_20e60273",
         "filename": "src/ric_stub/ric_stub.h",
         "patchSetId": 6
@@ -118,6 +226,24 @@
       "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e6fee2b_9d0afb45",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-07-23T09:25:24Z",
+      "side": 1,
+      "message": "cannt move to other file, giving error after moving into another related files.",
+      "parentUuid": "93021e13_20e60273",
+      "revId": "f1cd26fb95ab95d85495ce0209e7e11e40037216",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
