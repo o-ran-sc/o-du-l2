@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "872e55b3_67f25f07",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T03:55:14Z",
+      "side": 1,
+      "message": "move this also to  c file",
+      "revId": "9881197bda08eac6c86872650c36929bbe9aadaf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fba86e1d_426e3023",
+        "filename": "src/du_app/du_e2ap_msg_hdl.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T03:55:14Z",
+      "side": 1,
+      "message": "move all the header files included here to .c file",
+      "revId": "9881197bda08eac6c86872650c36929bbe9aadaf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72912182_2a55501a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T03:55:14Z",
+      "side": 1,
+      "message": "check if these \"ss_\" files are really required. If not, remove them",
+      "revId": "9881197bda08eac6c86872650c36929bbe9aadaf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "955b8efa_84858aaa",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T03:55:14Z",
+      "side": 1,
+      "message": "move all the included header files to .c file. Also check if \"ss_\" files are required to be included. If not, remove them.",
+      "revId": "9881197bda08eac6c86872650c36929bbe9aadaf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a75a718d_26085d6d",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T03:55:14Z",
+      "side": 1,
+      "message": "check if all these .h files can also be moved to the C files that need them",
+      "revId": "9881197bda08eac6c86872650c36929bbe9aadaf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b892fca_a6d76994",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T03:55:14Z",
+      "side": 1,
+      "message": "check if these can also be moved to C file",
+      "revId": "9881197bda08eac6c86872650c36929bbe9aadaf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbca9491_5cde665d",
+        "filename": "src/ric_stub/ric_stub.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T03:55:14Z",
+      "side": 1,
+      "message": "add a space between #include and #define",
+      "revId": "9881197bda08eac6c86872650c36929bbe9aadaf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1922efc_86832ff4",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T03:55:14Z",
+      "side": 1,
+      "message": "move to c file",
+      "revId": "9881197bda08eac6c86872650c36929bbe9aadaf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
