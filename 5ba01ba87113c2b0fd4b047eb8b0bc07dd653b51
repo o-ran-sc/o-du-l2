@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5d17201f_86efc655",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T04:07:50Z",
+      "side": 1,
+      "message": "we may not really need a new structure..the contents will more or less be present in MacUeCfg structure itself. We can discuss when you implement this.",
+      "revId": "5ba01ba87113c2b0fd4b047eb8b0bc07dd653b51",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f6c09c0_7601e66a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 846,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T04:07:50Z",
+      "side": 1,
+      "message": "change name of mask to DU_UE_START_CRNTI",
+      "revId": "5ba01ba87113c2b0fd4b047eb8b0bc07dd653b51",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4e30d22_a4707878",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T04:07:50Z",
+      "side": 1,
+      "message": "remove this log. Instead add at the beginning of the function saying creating uecb at du app",
+      "revId": "5ba01ba87113c2b0fd4b047eb8b0bc07dd653b51",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
