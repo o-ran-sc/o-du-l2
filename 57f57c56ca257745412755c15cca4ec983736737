@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6492ab69_fef81728",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T06:35:14Z",
+      "side": 1,
+      "message": "state of the UE must be after the IDs",
+      "revId": "57f57c56ca257745412755c15cca4ec983736737",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3d47d45_f84088ae",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 855,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-24T06:35:14Z",
+      "side": 1,
+      "message": "fill cellIdx before UE",
+      "revId": "57f57c56ca257745412755c15cca4ec983736737",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
