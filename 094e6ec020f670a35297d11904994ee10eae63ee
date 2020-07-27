@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "14c64be2_d9177438",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-27T07:26:21Z",
+      "side": 1,
+      "message": "start all #ifdef from 0th column of the line",
+      "revId": "094e6ec020f670a35297d11904994ee10eae63ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58604d57_4bbe0109",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-27T07:26:21Z",
+      "side": 1,
+      "message": "move function declaration to .h file",
+      "revId": "094e6ec020f670a35297d11904994ee10eae63ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cdb12a7_abe7acec",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-27T07:26:21Z",
+      "side": 1,
+      "message": "same comment again. Dont include these files on du_mgr.h. Check the .c files that need them and include there directly",
+      "revId": "094e6ec020f670a35297d11904994ee10eae63ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
