@@ -134,8 +134,8 @@ int  packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
       }
 
       /* pack the transaction ID in CNF structure */
+      CMCHKPK(SPkU16, macCellCfgCfm->cellId, mBuf);
       CMCHKPK(SPkU8, macCellCfgCfm->rsp, mBuf);
-      CMCHKPK(SPkU16, macCellCfgCfm->transId, mBuf);
 
       return SPstTsk(pst,mBuf);
    }
@@ -174,9 +174,8 @@ int unpackMacCellCfgCfm(
    if(pst->selector == ODU_SELECTOR_LC)
    {
       /* unpack the transaction ID in CNF structure */
-      CMCHKUNPK(SUnpkU16, &(macCellCfgCfm.transId), mBuf);
       CMCHKUNPK(SUnpkU8, &(macCellCfgCfm.rsp), mBuf);
-
+      CMCHKUNPK(SUnpkU16, &(macCellCfgCfm.cellId), mBuf);
       return (*func)(pst, &macCellCfgCfm);
    }
    else

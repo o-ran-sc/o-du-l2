@@ -163,7 +163,7 @@ typedef struct duCellCb
    CellCfgParams  cellInfo;         /* Cell info */
    Bool           firstSlotIndRcvd;
    CellStatus     cellStatus;       /* Cell status */
-	uint32_t       numActvUes;       /* Total Active UEs */
+   uint32_t       numActvUes;       /* Total Active UEs */
    DuUeCb         ueCb[DU_MAX_UE];  /* UE CONTEXT */
 }DuCellCb;
 
@@ -196,7 +196,9 @@ typedef struct duCb
    //DuLSapCb      **macSap;  /* MAC SAP */
    Bool          f1Status; /* Status of F1 connection */
    Bool          e2Status; /* Status of E2 connection */
+   uint8_t       numCfgCells; 
    DuCellCb*     cfgCellLst[DU_MAX_CELLS];     /* List of cells at DU APP of type DuCellCb */
+   uint8_t       numActvCells;
    DuCellCb*     actvCellLst[DU_MAX_CELLS];    /* List of cells activated/to be activated of type DuCellCb */
    /* pointer to store the address of macCellCfg params used to send du-app to MAC */
    MacCellCfg    *duMacCellCfg;         /* pointer to store params while sending DU-APP to MAC */

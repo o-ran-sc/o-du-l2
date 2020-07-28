@@ -2119,16 +2119,36 @@ int MacHdlCellCfgReq
 	memset(macCellCb, 0, sizeof(MacCellCb));
    macCb.macCell = macCellCb;
    macCb.macCell->cellId = macCellCfg->cellId;
-   /* Send cell cfg to scheduler */
+   
+	MAC_ALLOC(cellCb->macCellCfg.sib1Cfg.sib1Pdu,  macCellCfg->sib1Cfg.sib1PduLen);
+	if(cellCb->macCellCfg.sib1Cfg.sib1Pdu == NULLP)
+	{
+	   DU_LOG("\nMAC : macCellCb is NULL at handling of sib1Pdu of macCellCfg\n");
+	   return RFAILED;
+	}
+	memcpy(cellCb->macCellCfg.sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1PduLen);
+	
+	/* Send cell cfg to scheduler */
    ret = MacSchCellCfgReq(pst, macCellCfg);
 	if(ret != ROK)
 	{
 		MacCellCfgCfm macCellCfgCfm;
 		macCellCfgCfm.rsp = RSP_NOK;
-		macCellCfgCfm.transId = macCellCfg->transId;
+		macCellCfgCfm.cellId = macCellCfg->cellId;
 		macCellCfgFillCfmPst(pst,&cfmPst);
 		ret = (*packMacCellCfmOpts[cfmPst.selector])(&cfmPst,&macCellCfgCfm);
 	}
+   else
+	{
+	   if(macCellCfg->prachCfg.fdm[0].numUnusedRootSeq != 0)
+	   {
+	       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg->prachCfg.fdm[0].unsuedRootSeq,
+	       macCellCfg->prachCfg.fdm[0].numUnusedRootSeq* sizeof(uint8_t));
+	   }
+	   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg->sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1PduLen);
+	   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg ,sizeof(MacCellCfg));
+	}
+
 #ifdef INTEL_WLS
    LwrMacEnqueueWlsBlock();
 #endif
@@ -2286,7 +2306,7 @@ void MacSendCellCfgCfm(uint8_t response)
    cmMemset((U8 *)&pst, 0, sizeof(Pst));
    cellCb = rgCb[macCb.macInst].cell;
  
-   macCellCfgCfm.transId = cellCb->macCellCfg.transId;
+   macCellCfgCfm.cellId = cellCb->macCellCfg.cellId;
    macCellCfgCfm.rsp = response;
 
    memcpy((void *)&pst, (void *)&rgCb[macCb.macInst].rgInit.lmPst, sizeof(Pst));

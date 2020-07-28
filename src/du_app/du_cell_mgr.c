@@ -86,7 +86,7 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
       /* Now remove this cell from configured list and move to active list */
       duCb.cfgCellLst[nci-1] = NULL;
       duCb.actvCellLst[nci-1] = cellCb;
-
+      duCb.numActvCells++;
       /* Build and send Mac Cell Cfg for the number of active cells */
       ret = duBuildAndSendMacCellCfg();
       if(ret != ROK)
