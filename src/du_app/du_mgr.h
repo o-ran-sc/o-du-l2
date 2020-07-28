@@ -232,6 +232,7 @@ typedef struct ueCcchCtxt
 /* DU APP DB */
 typedef struct duCb
 {
+   uint8_t       macCellCfgTransId;
    Mem           mem;    /* Memory configs */
    TskInit       init;   /* DU Init */
    //DuLSapCb      **macSap;  /* MAC SAP */

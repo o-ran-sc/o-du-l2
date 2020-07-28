@@ -194,8 +194,8 @@ S16 readMacCfg()
    duCfgParam.macCellCfg.prachCfg.fdm[0].numUnusedRootSeq = NUM_UNUSED_ROOT_SEQ;
 	if(duCfgParam.macCellCfg.prachCfg.fdm[0].numUnusedRootSeq != 0)
 	{
-		DU_ALLOC(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq, 
-				NUM_UNUSED_ROOT_SEQ * sizeof(U8));
+		DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq, 
+				NUM_UNUSED_ROOT_SEQ * sizeof(uint8_t));
 		if(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq == NULLP)
 		{
 			DU_LOG("\nDU_APP : Memory allocation failed");
@@ -220,7 +220,7 @@ S16 readMacCfg()
 
    /* fill SIB1 configuration */
    duCfgParam.macCellCfg.sib1Cfg.sib1PduLen = duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
-   DU_ALLOC(duCfgParam.macCellCfg.sib1Cfg.sib1Pdu,duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
+   DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.sib1Cfg.sib1Pdu,duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
    memcpy(duCfgParam.macCellCfg.sib1Cfg.sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, \
           duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
    duCfgParam.macCellCfg.sib1Cfg.sib1NewTxPeriod = SIB1_NEW_TX_PERIOD;
