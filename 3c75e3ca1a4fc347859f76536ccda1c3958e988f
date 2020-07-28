@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d16ee7cf_e14b270f",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-28T08:43:28Z",
+      "side": 1,
+      "message": "check if rgu.h/x are really needed here",
+      "revId": "3c75e3ca1a4fc347859f76536ccda1c3958e988f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00bf94ef_feb06456",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-28T08:43:28Z",
+      "side": 1,
+      "message": "are lrg, lkw files needed here?",
+      "revId": "3c75e3ca1a4fc347859f76536ccda1c3958e988f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6bea59c_32191bb2",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-28T08:43:28Z",
+      "side": 1,
+      "message": "are lrg, lkw files needed here?",
+      "revId": "3c75e3ca1a4fc347859f76536ccda1c3958e988f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ab1ded5_2ef1cfc7",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-28T08:43:28Z",
+      "side": 1,
+      "message": "are lrg, lkw files needed here?",
+      "revId": "3c75e3ca1a4fc347859f76536ccda1c3958e988f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4eb3d5b9_7ff6ebc9",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-28T08:43:28Z",
+      "side": 1,
+      "message": "are these files needed here?",
+      "revId": "3c75e3ca1a4fc347859f76536ccda1c3958e988f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
