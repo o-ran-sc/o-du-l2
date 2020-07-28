@@ -163,7 +163,7 @@ typedef struct duCellCb
    CellCfgParams  cellInfo;         /* Cell info */
    Bool           firstSlotIndRcvd;
    CellStatus     cellStatus;       /* Cell status */
-	uint32_t       numActvUes;       /* Total Active UEs */
+   uint32_t       numActvUes;       /* Total Active UEs */
    DuUeCb         ueCb[DU_MAX_UE];  /* UE CONTEXT */
 }DuCellCb;
 
@@ -191,6 +191,7 @@ typedef struct ueCcchCtxt
 /* DU APP DB */
 typedef struct duCb
 {
+   uint8_t       numActvCells;
    Mem           mem;    /* Memory configs */
    TskInit       init;   /* DU Init */
    //DuLSapCb      **macSap;  /* MAC SAP */

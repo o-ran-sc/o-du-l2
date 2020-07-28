@@ -579,7 +579,6 @@ typedef struct bwpUlConfig
 
 typedef struct macCellCfg
 {
-   U16            transId;          /* Trans Id */
    U16            cellId;           /* Cell Id */
    U8             numTlv;           /* Number of configuration TLVs */
    U8             carrierId;        /* Carrired Index */
@@ -601,7 +600,7 @@ typedef struct macCellCfg
 typedef struct macCellCfgCfm
 {
    uint8_t        rsp; 
-   U16            transId;
+   U16            cellId;
 }MacCellCfgCfm;
 
 typedef struct slotInfo

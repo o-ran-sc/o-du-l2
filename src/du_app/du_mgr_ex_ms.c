@@ -88,7 +88,7 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
    }
    duCb.numUe = 0;
    memset(duCb.ueCcchCtxt, 0, DU_MAX_UE * sizeof(UeCcchCtxt));
-
+   duCb.numActvCells = 0;
    SSetProcId(DU_PROC);
 
    return ROK;

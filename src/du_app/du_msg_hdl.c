@@ -1549,7 +1549,7 @@ S16 duBuildAndSendMacCellCfg()
    DU_SET_ZERO(&pst, sizeof(Pst));
    MacCellCfg *duMacCellCfg = NULLP;
 
-   DU_ALLOC(duMacCellCfg, sizeof(MacCellCfg));
+   DU_ALLOC_SHRABL_BUF(duMacCellCfg, sizeof(MacCellCfg));
    if(duMacCellCfg == NULLP)
    {
       return RFAILED;
@@ -1560,9 +1560,8 @@ S16 duBuildAndSendMacCellCfg()
 
    /* copy the mac config structure from duCfgParams */
    memcpy(duMacCellCfg,&duCfgParam.macCellCfg,sizeof(MacCellCfg));
+   duMacCellCfg->cellId = getTransId(); /* transaction ID */
 
-   duMacCellCfg->transId = getTransId(); /* transaction ID */
-   
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
@@ -1571,8 +1570,9 @@ S16 duBuildAndSendMacCellCfg()
    pst.srcInst   = 0;
    pst.dstProcId = DU_PROC;
    pst.srcProcId = DU_PROC;
-   pst.region = duCb.init.region;
-   pst.event = EVENT_MAC_CELL_CONFIG_REQ;
+   pst.region    = DU_APP_MEM_REGION;
+   pst.pool      = DU_POOL;
+   pst.event     = EVENT_MAC_CELL_CONFIG_REQ;
 
    /* Send MAC cell config to MAC */
    return (*packMacCellCfgOpts[pst.selector])(&pst, duMacCellCfg);
@@ -1595,38 +1595,32 @@ S16 duBuildAndSendMacCellCfg()
  ***************************************************************************/
 int  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 {
-   S16 ret = ROK;
+   uint8_t i = 0;
+   S16     ret = ROK;
 
    if(macCellCfgCfm->rsp == ROK)  
+   {
+	for(i= 0 ; i<duCb.numActvCells ; i++)
 	{
-		if(macCellCfgCfm->transId == duCb.duMacCellCfg->transId)
-		{
-			/* free the memory allocated during sending macCellCfg request */
-			DU_FREE(duCb.duMacCellCfg->sib1Cfg.sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
-			DU_FREE(duCb.duMacCellCfg,sizeof(MacCellCfg));
-			duCb.duMacCellCfg = NULLP;
+	    if(macCellCfgCfm->cellId == duCb.actvCellLst[i]->cellId)
+	    {
+	        duCb.duMacCellCfg = NULLP;
+	        /* Build and send GNB-DU config update */
+	        ret = BuildAndSendDUConfigUpdate();
 
-			/* Build and send GNB-DU config update */
-			ret = BuildAndSendDUConfigUpdate();
+                /* TODO: Trigger cell start req once cell up slot ind is received*/
+	        /* Build and Send Cell Start Req to MAC */
+	        ret = duBuildAndSendMacCellStartReq();
 
-         /* TODO: Trigger cell start req once cell up slot ind is received*/
-			/* Build and Send Cell Start Req to MAC */
-			ret = duBuildAndSendMacCellStartReq();
-
-		}
-		else
-		{
-			/* transaction ID missmatch */
-			DU_LOG("\n transaction ID mismatch in macCellCfg");
-			ret = RFAILED;
-		}
+	    }  
 	}
-	else
-	{
-		DU_LOG("\nMac cell cfg failed");
-		ret = RFAILED;
-	}
-   return ret;
+    }
+    else
+    {
+	DU_LOG("\nMac cell cfg failed");
+	ret = RFAILED;
+    }
+    return ret;
 }
 
 /*******************************************************************
