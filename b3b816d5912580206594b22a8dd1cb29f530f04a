@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c7927f5_a7284175",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-28T08:08:35Z",
+      "side": 1,
+      "message": "1. Function description for fillMsg4DlData() mentions this as stub. Requires correction.\n\n2. fillMsg4DlData() can be reused later for multiple UEs so instead of accessing \"macCb.macCell-\u003emacRaCb[0]\" directly inside this func, lets pass it as one of the parameters",
+      "revId": "b3b816d5912580206594b22a8dd1cb29f530f04a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecce750a_18f7da90",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-28T08:08:35Z",
+      "side": 1,
+      "message": "Same as above, lets pass macCb.macCell-\u003emacRaCb[0] as a parameter",
+      "revId": "b3b816d5912580206594b22a8dd1cb29f530f04a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c20818c9_44d2adfd",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-28T08:08:35Z",
+      "side": 1,
+      "message": "Same as above. Since above function is generic and re-usable, lets pass pointer \"macCb.macCell-\u003emacRaCb[0].msg4TxPdu\" instead of accessing it directly",
+      "revId": "b3b816d5912580206594b22a8dd1cb29f530f04a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4f6d842_2e684d3d",
+        "filename": "src/5gnrmac/rg_tom.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-07-28T08:08:35Z",
+      "side": 1,
+      "message": "Since this function is specific for msg4 muxing and sending, lets rename it accordingly",
+      "revId": "b3b816d5912580206594b22a8dd1cb29f530f04a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
