@@ -1543,7 +1543,7 @@ S16 duBuildAndSendMacCellCfg()
    DU_SET_ZERO(&pst, sizeof(Pst));
    MacCellCfg *duMacCellCfg = NULLP;
 
-   DU_ALLOC(duMacCellCfg, sizeof(MacCellCfg));
+   DU_ALLOC_SHRABL_BUF(duMacCellCfg, sizeof(MacCellCfg));
    if(duMacCellCfg == NULLP)
    {
       return RFAILED;
@@ -1556,7 +1556,8 @@ S16 duBuildAndSendMacCellCfg()
    memcpy(duMacCellCfg,&duCfgParam.macCellCfg,sizeof(MacCellCfg));
 
    duMacCellCfg->transId = getTransId(); /* transaction ID */
-   
+   duCb.macCellCfgTransId =  duMacCellCfg->transId;
+
    /* Fill Pst */
    pst.selector  = DU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
@@ -1565,8 +1566,9 @@ S16 duBuildAndSendMacCellCfg()
    pst.srcInst   = 0;
    pst.dstProcId = DU_PROC;
    pst.srcProcId = DU_PROC;
-   pst.region = duCb.init.region;
-   pst.event = EVENT_MAC_CELL_CONFIG_REQ;
+   pst.region    = DU_APP_MEM_REGION;
+	pst.pool      = DU_POOL;
+   pst.event     = EVENT_MAC_CELL_CONFIG_REQ;
 
    /* Send MAC cell config to MAC */
    return (*packMacCellCfgOpts[pst.selector])(&pst, duMacCellCfg);
@@ -1593,11 +1595,8 @@ int  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 
    if(macCellCfgCfm->rsp == ROK)  
 	{
-		if(macCellCfgCfm->transId == duCb.duMacCellCfg->transId)
+		if(macCellCfgCfm->transId == duCb.macCellCfgTransId)
 		{
-			/* free the memory allocated during sending macCellCfg request */
-			DU_FREE(duCb.duMacCellCfg->sib1Cfg.sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
-			DU_FREE(duCb.duMacCellCfg,sizeof(MacCellCfg));
 			duCb.duMacCellCfg = NULLP;
 
 			/* Build and send GNB-DU config update */
