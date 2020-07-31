@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f75bc7c1_e4e89046",
+        "filename": "src/5gnrsch/rg_sch_tom.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-31T08:45:47Z",
+      "side": 1,
+      "message": "did you run compilation and sanity after this change, with and without INTEL_FAPI flag?",
+      "revId": "105199ef642ffe9736ea24a01d4546578fa25e60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
