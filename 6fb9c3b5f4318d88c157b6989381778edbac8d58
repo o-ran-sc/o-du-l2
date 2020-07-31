@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7877332b_835dfe5a",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2164,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-31T12:49:43Z",
+      "side": 1,
+      "message": "was this allocated as sharable too in du app?",
+      "revId": "6fb9c3b5f4318d88c157b6989381778edbac8d58",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb030306_d7deaa57",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-07-31T12:49:43Z",
+      "side": 1,
+      "message": "why do we need this? was it a part of macCellCfg structure?",
+      "revId": "6fb9c3b5f4318d88c157b6989381778edbac8d58",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
