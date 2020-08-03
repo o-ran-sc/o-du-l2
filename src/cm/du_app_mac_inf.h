@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+ *******************************************************************************/
 
 /* Defines APIs exchanged between du_app and cl module of MAC */
 #ifndef __MACINT_H__
@@ -59,8 +59,10 @@
 #define MAX_NUM_DL_ALLOC 16             /* Max number of pdsch time domain downlink allocation */
 #define MAX_NUM_UL_ALLOC 16             /* Max number of pusch time domain uplink allocation */
 #define SD_SIZE   3                     /* Max size of Slice Differentiator in S-NSSAI */
-#define PDSCH_START_SYMBOL_LEN 53
-#define PUSCH_START_SYMBOL_LEN 41
+
+#define MAX_NUM_SRB    8
+#define MAX_NUM_DRB    64
+#define MAX_NUM_SCELL  32
 
 /* Event IDs */
 #define EVENT_MAC_CELL_CONFIG_REQ    200
@@ -72,6 +74,13 @@
 #define EVENT_MAC_UL_CCCH_IND        206
 #define EVENT_MAC_DL_CCCH_IND        207
 #define EVENT_MAC_UE_CREATE_REQ      208
+#define EVENT_MAC_UE_CREATE_RSP      209
+
+typedef enum
+{
+   MAC_DU_APP_RSP_NOK,
+   MAC_DU_APP_RSP_OK
+}MacRsp;
 
 typedef enum
 {
@@ -250,8 +259,8 @@ typedef enum
 typedef enum
 {
    PDSCH_X_OVERHEAD_6,
-	PDSCH_X_OVERHEAD_12,
-	PDSCH_X_OVERHEAD_18
+   PDSCH_X_OVERHEAD_12,
+   PDSCH_X_OVERHEAD_18
 }PdschXOverhead;
 
 typedef enum
@@ -287,8 +296,8 @@ typedef enum
 
 typedef enum
 {
-  SAMEASREG_BUNDLE,
-  ALL_CONTIGUOUS_RBS
+   SAMEASREG_BUNDLE,
+   ALL_CONTIGUOUS_RBS
 }PrecoderGranul;
 
 typedef enum
@@ -349,10 +358,79 @@ typedef enum
 
 typedef enum
 {
-  LC_PRIORITY_1 = 1,
-  LC_PRIORITY_2,
-  LC_PRIORITY_3
+   LC_PRIORITY_1 = 1,
+   LC_PRIORITY_2,
+   LC_PRIORITY_3
 }LcPriority;
+
+typedef enum
+{
+   RADIO_NW_LAYER_FAIL,
+   TRANSPORT_LAYER_FAIL,
+   PROTOCOL_FAIL,
+   MISCELLANEOUS
+}CauseGrp;
+
+typedef enum
+{
+   UNSPECIFIED_RADIO_NW_CAUSE,
+   RL_FAIL_RLC,
+   UNKNOWN_GNB_CU_UE_F1AP_ID,
+   ALREADY_ALLOCATED_GNB_CU_UE_F1AP_ID,
+   UNKNOWN_GNB_DU_UE_F1AP_ID,
+   ALREADY_ALLOCATED_GNB_DU_UE_F1AP_ID,
+   UNKNOWN_UE_F1AP_ID_PAIR,
+   INCONSISTENT_UE_F1AP_ID_PAIR,
+   INTERACTION_WITH_OTHER_PROCEDURE,
+   UNSUPPORTED_QCI,
+   ACTION_REQUIRED_FOR_RADIO_REASONS,
+   RADIO_RESOURCES_UNAVAILABLE,
+   CANCELLED_PROCEDURE,
+   RELEASE_NORMAL,
+   CELL_UNAVAILABLE,
+   OTHER_RL_FAILURE,
+   UE_REJECTION,
+   RESOURCES_UNAVAILABLE_FOR_SLICE
+}RadioNwLyrCause;
+
+typedef enum
+{
+   UNSPECIFIED_TRANSPORT_LAYER_CAUSE,
+   TRANSPORT_RESOURCE_UNAVAILABLE
+}TransLyrCause;
+
+typedef enum
+{
+   TRANSFER_SYNTAX_ERROR,
+   ABSTRACT_SYNTAX_ERROR_REJECT,
+   ABSTRACT_SYNTAX_ERROR_IGNORE_AND_REJECT,
+   INCOMPATIBLE_MESSAGE_FOR_RECEIVER_STATE,
+   SEMANTIC_ERR,
+   ABSTRAXCT_SYNTAX_ERROR_FALSELY_CONSTRUCTED_MSG,
+   UNSPECIFIED_PROTOCOL_CAUSE
+}ProtCause;
+
+typedef enum
+{
+   CONTROL_PROCESSING_OVERLOAD,
+   NOT_ENOUGH_USER,
+   PLANE_PROCESSING_RESOURCES,
+   HARDWARE_FAIL,
+   INTERVENTION_BY_O_AND_M,
+   UNSPECIFIED_MISC_CAUSE
+}MiscFailCause;
+
+typedef struct failureCause
+{
+   CauseGrp   type;
+   union
+   {
+      RadioNwLyrCause   radioNwCause;
+      TransLyrCause     transportCause;
+      ProtCause         protcolCause;
+      MiscFailCause     miscCause;
+   }u;
+}FailureCause;
 
 typedef struct carrierCfg
 {
@@ -393,19 +471,19 @@ typedef struct fdmInfo
 typedef struct prachCfg
 {
    Bool          pres;
-	uint8_t       prachCfgIdx;         /* PRACH Cfg Index */
+   uint8_t       prachCfgIdx;         /* PRACH Cfg Index */
    PrachSeqLen   prachSeqLen;         /* RACH Sequence length: Long/short */
    uint8_t       prachSubcSpacing;    /* Subcarrier spacing of RACH */
    RstSetCfg     prachRstSetCfg;      /* PRACH restricted set config */
-	uint16_t      msg1FreqStart;       /* Msg1-FrequencyStart */
+   uint16_t      msg1FreqStart;       /* Msg1-FrequencyStart */
    uint8_t       msg1Fdm;             /* PRACH FDM (1,2,4,8) */
-	uint8_t       rootSeqLen;          /* Root sequence length */
+   uint8_t       rootSeqLen;          /* Root sequence length */
    PrachFdmInfo  fdm[8];              /* FDM info */
    uint8_t       ssbPerRach;          /* SSB per RACH occassion */
    Bool          prachMultCarrBand;   /* Multiple carriers in Band */
    uint8_t       prachRestrictedSet; /* Support for PRACH restricted set */
-	uint8_t       raContResTmr;        /* RA Contention Resoultion Timer */
-	uint8_t       rsrpThreshSsb;       /* RSRP Threshold SSB */
+   uint8_t       raContResTmr;        /* RA Contention Resoultion Timer */
+   uint8_t       rsrpThreshSsb;       /* RSRP Threshold SSB */
    uint8_t       raRspWindow;         /* RA Response Window */
 }PrachCfg;
 
@@ -431,8 +509,8 @@ typedef struct bwpParams
 {
    uint16_t firstPrb;
    uint16_t numPrb;
-	uint8_t  scs;
-	uint8_t  cyclicPrefix;
+   uint8_t  scs;
+   uint8_t  cyclicPrefix;
 }BwpParams;
 
 typedef struct candidatesInfo
@@ -447,11 +525,11 @@ typedef struct candidatesInfo
 typedef struct searchSpaceCfg
 {
    uint8_t searchSpaceId;
-	uint8_t coresetId;
-	uint16_t monitoringSlot;
-	uint16_t duration;
-	uint16_t monitoringSymbol;
-	CandidatesInfo candidate;
+   uint8_t coresetId;
+   uint16_t monitoringSlot;
+   uint16_t duration;
+   uint16_t monitoringSymbol;
+   CandidatesInfo candidate;
 }SearchSpaceCfg;
 
 typedef struct pdcchConfigCommon
@@ -464,65 +542,65 @@ typedef struct pdcchConfigCommon
 typedef struct pdschConfigCommon
 {
    uint8_t k0;
-	uint8_t mappingType;
-	uint8_t startSymbol;
-	uint8_t lengthSymbol;
+   uint8_t mappingType;
+   uint8_t startSymbol;
+   uint8_t lengthSymbol;
 }PdschConfigCommon;
 
 typedef struct pucchConfigCommon
 {
    uint8_t pucchResourceCommon;
-	uint8_t pucchGroupHopping;
+   uint8_t pucchGroupHopping;
 }PucchConfigCommon;
 
 typedef struct puschConfigCommon
 {
    /* PUSCH-TimeDomainResourceAllocation info */
    uint8_t k2;
-	uint8_t mappingType;
-	uint8_t startSymbol;
-	uint8_t lengthSymbol;
+   uint8_t mappingType;
+   uint8_t startSymbol;
+   uint8_t lengthSymbol;
 }PuschConfigCommon;
 
 typedef struct bwpDlConfig
 {
    BwpParams      bwp;
-	PdcchConfigCommon pdcchCommon;
-	PdschConfigCommon pdschCommon;
+   PdcchConfigCommon pdcchCommon;
+   PdschConfigCommon pdschCommon;
 }BwpDlConfig;
 
 typedef struct bwpUlConfig
 {
    BwpParams      bwp;
-	// rach config common sent in PrachCfg
-	PucchConfigCommon pucchCommon;
-	PuschConfigCommon puschCommon;
+   // rach config common sent in PrachCfg
+   PucchConfigCommon pucchCommon;
+   PuschConfigCommon puschCommon;
 }BwpUlConfig;
 
 typedef struct macCellCfg
 {
-	U16            transId;          /* Trans Id */
-	U16            cellId;           /* Cell Id */
-	U8             numTlv;           /* Number of configuration TLVs */
-	U8             carrierId;        /* Carrired Index */
-	U16            phyCellId;        /* Physical cell id */
-	DuplexMode     dupType;          /* Duplex type: TDD/FDD */
-	CarrierCfg     dlCarrCfg;        /* DL Carrier configuration */
-	CarrierCfg     ulCarrCfg;        /* UL Carrier configuration */
-	Bool           freqShft;         /* Indicates presence of 7.5kHz frequency shift */
+   U16            transId;          /* Trans Id */
+   U16            cellId;           /* Cell Id */
+   U8             numTlv;           /* Number of configuration TLVs */
+   U8             carrierId;        /* Carrired Index */
+   U16            phyCellId;        /* Physical cell id */
+   DuplexMode     dupType;          /* Duplex type: TDD/FDD */
+   CarrierCfg     dlCarrCfg;        /* DL Carrier configuration */
+   CarrierCfg     ulCarrCfg;        /* UL Carrier configuration */
+   Bool           freqShft;         /* Indicates presence of 7.5kHz frequency shift */
    SsbCfg         ssbCfg;           /* SSB configuration */          
    PrachCfg       prachCfg;         /* PRACH Configuration */
    TDDCfg         tddCfg;           /* TDD periodicity and slot configuration */
    RSSIMeasUnit   rssiUnit;         /* RSSI measurement unit */
    Sib1CellCfg    sib1Cfg;          /* SIB1 config */
-	BwpDlConfig    initialDlBwp;     /* Initial DL BWP */
-	BwpUlConfig    initialUlBwp;     /* Initial UL BWP */
-	uint8_t        dmrsTypeAPos;     /* DMRS Type A position */
+   BwpDlConfig    initialDlBwp;     /* Initial DL BWP */
+   BwpUlConfig    initialUlBwp;     /* Initial UL BWP */
+   uint8_t        dmrsTypeAPos;     /* DMRS Type A position */
 }MacCellCfg;
 
 typedef struct macCellCfgCfm
 {
-	uint8_t        rsp; 
+   uint8_t        rsp; 
    U16            transId;
 }MacCellCfgCfm;
 
@@ -559,12 +637,12 @@ typedef struct dlCcchInd
    uint8_t       *dlCcchMsg;
 }DlCcchIndInfo;
 
-typedef struct bsrCfg
+typedef struct bsrTmrCfg
 {
    uint8_t periodicTimer;
    uint8_t retxTimer;
    uint8_t srDelayTimer;
-}BsrCfg;
+}BsrTmrCfg;
 
 
 /* Info of Scheduling Request to Add/Modify */
@@ -612,10 +690,10 @@ typedef struct phrCfg
 typedef struct macCellGrpCfg
 {
    SchedReqCfg schReqCfg;
-   TagCfg tagCfg;
-   //BsrCfg bsrCfg;
-   bool   phrCfgSetupPres;   /* true/false: phrCfgSetup/phrCfgRelease */
-   PhrCfg phrCfg;
+   TagCfg      tagCfg;
+   BsrTmrCfg   bsrTmrCfg;
+   bool        phrCfgSetupPres;   /* true/false: phrCfgSetup/phrCfgRelease */
+   PhrCfg      phrCfg;
 }MacCellGrpCfg;
 
 typedef struct phyCellGrpCfg
@@ -668,6 +746,8 @@ typedef struct pdcchConfig
 typedef struct pdschTimeDomRsrcAlloc
 {
    CommonMappingType mappingType;
+   uint8_t           startSymbol;
+   uint8_t           symbolLength;
    uint8_t           startSymbolAndLength;
 }PdschTimeDomRsrcAlloc;
 
@@ -722,7 +802,7 @@ typedef struct pdschServCellCfg
 /* PUCCH Configuration */
 typedef struct pucchCfg
 {
-  /* TODO : Not used currently */ 
+   /* TODO : Not used currently */ 
 }PucchCfg;
 
 /* Transform precoding disabled */
@@ -743,6 +823,8 @@ typedef struct puschTimeDomRsrcAlloc
 {
    uint8_t   k2;
    CommonMappingType   mappingType;
+   uint8_t           startSymbol;
+   uint8_t           symbolLength;
    uint8_t   startSymbolAndLength;
 }PuschTimeDomRsrcAlloc;
 
@@ -829,17 +911,17 @@ typedef struct dynFiveQi
 
 typedef struct ngRanAllocAndRetPri
 {
-  uint8_t priorityLevel;
-  uint8_t preEmptionCap;
-  uint8_t preEmptionVul;
+   uint8_t priorityLevel;
+   uint8_t preEmptionCap;
+   uint8_t preEmptionVul;
 }NgRanAllocAndRetPri;
 
 typedef struct grbQosInfo
 {
-  uint32_t maxFlowBitRateDl;
-  uint32_t maxFlowBitRateUl;
-  uint32_t guarFlowBitRateDl;
-  uint32_t guarFlowBitRateUl;
+   uint32_t maxFlowBitRateDl;
+   uint32_t maxFlowBitRateUl;
+   uint32_t guarFlowBitRateDl;
+   uint32_t guarFlowBitRateUl;
 }GrbQosInfo;
 
 typedef struct drbQos
@@ -893,6 +975,49 @@ typedef struct macUeCfg
    LcCfg lcCfgList[MAX_NUM_LOGICAL_CHANNELS];
 }MacUeCfg;
 
+typedef struct plmnId
+{
+   uint8_t mcc[3];
+   uint8_t mnc[3];
+}PlmnIdentity;
+
+typedef struct nrcgi
+{
+   PlmnIdentity  plmn;
+   uint16_t  cellId;
+}Nrcgi;
+
+typedef struct srbFailInfo
+{
+   uint8_t       srbId;
+   FailureCause  cause;
+}SRBFailInfo;
+
+typedef struct drbFailInfo
+{
+   uint8_t       drbId;
+   FailureCause  cause;
+}DRBFailInfo;
+
+typedef struct sCellFailInfo
+{
+   Nrcgi         nrcgi;
+   FailureCause  cause;
+}SCellFailInfo;
+
+typedef struct ueCfgRsp
+{
+   uint16_t       cellIdx;
+   uint16_t       ueIdx;
+   MacRsp         result;
+   uint8_t        numSRBFailed;   /* valid values : 0 to MAX_NUM_SRB */ 
+   SRBFailInfo    *failedSRBlisti;
+   uint8_t        numDRBFailed;   /* valid values : 0 to MAX_NUM_DRB */
+   DRBFailInfo    *failedDRBlist;
+   uint8_t        numSCellFailed; /* valid values : 0 to MAX_NUM_SCELL */
+   SCellFailInfo  *failedSCellList;
+}MacUeCfgRsp;
+
 /* Functions for slot Ind from MAC to DU APP*/
 typedef uint16_t (*DuMacSlotInd) ARGS((
    Pst       *pst,
@@ -912,7 +1037,7 @@ typedef uint16_t (*DuMacCellStartReq) ARGS((
 typedef uint16_t (*DuMacCellStopReq) ARGS((
    Pst               *pst,
    MacCellStopInfo  *cellStopInfo ));
- 
+
 /* Function pointers for packing macCellCfg Request and Confirm */
 typedef int (*packMacCellCfgReq) ARGS((
    Pst           *pst,
@@ -945,6 +1070,11 @@ typedef uint8_t (*DuMacUeCreateReq) ARGS((
    Pst           *pst,
    MacUeCfg      *ueCfg ));
 
+/* UE create Response from MAC to DU APP */
+typedef uint8_t (*DuMacUeCreateRspFunc) ARGS((
+   Pst           *pst, 
+   MacUeCfgRsp   *cfgRsp));
+
 extern uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo );
 extern uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
 extern uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo);
@@ -972,8 +1102,11 @@ extern uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
 extern uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf);
 extern uint8_t MacHdlUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
 uint8_t sendStopIndMacToDuApp();
+extern uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
+extern uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf);
+extern uint8_t duHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

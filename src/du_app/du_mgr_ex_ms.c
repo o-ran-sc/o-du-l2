@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+ *******************************************************************************/
 
 /* This file contains message handling functionality for DU APP */
 #include "common_def.h"
@@ -62,7 +62,7 @@ extern S16 cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
 S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 {
    uint8_t id;
-  
+
    memset(&duCb, 0, sizeof(DuCb));
 
    duCb.init.procId  = SFndProcId();
@@ -83,11 +83,11 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 
    for(id = 0; id < DU_MAX_CELLS; id ++)
    {
-	   duCb.cfgCellLst[id] = NULL;
+      duCb.cfgCellLst[id] = NULL;
       duCb.actvCellLst[id] = NULL;
    }
    duCb.numUe = 0;
-	memset(duCb.ueCcchCtxt, 0, DU_MAX_UE * sizeof(UeCcchCtxt));
+   memset(duCb.ueCcchCtxt, 0, DU_MAX_UE * sizeof(UeCcchCtxt));
 
    SSetProcId(DU_PROC);
 
@@ -122,177 +122,181 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
    switch(pst->srcEnt)
    {
       case ENTDUAPP:
-         {
-            switch(pst->event)
-            {
-               case EVTCFG:
-                  {
-                     DU_LOG("\n****** Received initial configs at DU APP ******\n");
-                     duProcCfgComplete();
-                     SPutMsg(mBuf);
-                     break;
-                  }
-               default:
-                  {
-                     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTDUAPP");
-                     SPutMsg(mBuf);
-                     ret = RFAILED;
-                  }
-            }
+	 {
+	    switch(pst->event)
+	    {
+	       case EVTCFG:
+		  {
+		     DU_LOG("\n****** Received initial configs at DU APP ******\n");
+		     duProcCfgComplete();
+		     SPutMsg(mBuf);
+		     break;
+		  }
+	       default:
+		  {
+		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTDUAPP");
+		     SPutMsg(mBuf);
+		     ret = RFAILED;
+		  }
+	    }
 
-            break;
-         }
+	    break;
+	 }
       case ENTKW:
-         {
-            switch(pst->event)
-            {
-               case LKW_EVT_CFG_CFM:
-                  {
-                     ret = cmUnpkLkwCfgCfm(duHdlRlcCfgComplete, pst, mBuf);
-                     break;
-                  }
-               case LKW_EVT_CNTRL_CFM:
-                  {
-                     ret = cmUnpkLkwCntrlCfm(duHdlRlcCntrlCfgComplete, pst, mBuf);
-                     break;
-                  }
-               case LKW_EVT_STA_IND:
-                  {
-                     break;
-                  }
-               case KWU_EVT_DAT_IND:
-                  {
-                     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
-                     break;
-                  }
-               default:
-                  {
-                     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \
-                           pst->event);
-                     SPutMsg(mBuf);
-                     ret = RFAILED;
-                  }
-            }
-            break;
-         }
+	 {
+	    switch(pst->event)
+	    {
+	       case LKW_EVT_CFG_CFM:
+		  {
+		     ret = cmUnpkLkwCfgCfm(duHdlRlcCfgComplete, pst, mBuf);
+		     break;
+		  }
+	       case LKW_EVT_CNTRL_CFM:
+		  {
+		     ret = cmUnpkLkwCntrlCfm(duHdlRlcCntrlCfgComplete, pst, mBuf);
+		     break;
+		  }
+	       case LKW_EVT_STA_IND:
+		  {
+		     break;
+		  }
+	       case KWU_EVT_DAT_IND:
+		  {
+		     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
+		     break;
+		  }
+	       default:
+		  {
+		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \
+			   pst->event);
+		     SPutMsg(mBuf);
+		     ret = RFAILED;
+		  }
+	    }
+	    break;
+	 }
       case ENTRG:
-         {
-            switch(pst->event)
-            {
-               //Config complete
-               case EVTCFG:
-                  {
-                     SPutMsg(mBuf);
-                     break;
-                  }
-               case EVTLRGCFGCFM:
-                  {
-                     ret = cmUnpkLrgCfgCfm(duHdlMacCfgComplete, pst, mBuf);
-                     break;
-                  }
-               case EVTLRGCNTRLCFM:
-                  {
-                     break;
-                  }
-               case EVTMACSCHGENCFGCFM:
-                  {
-                     ret = cmUnpkLrgSchCfgCfm(duHdlSchCfgComplete, pst, mBuf);
-                     break;
-                  }
-               case EVENT_MAC_CELL_CONFIG_CFM:
-                  {
-                     ret = unpackMacCellCfgCfm(duHandleMacCellCfgCfm, pst, mBuf);
-                     break;
-                  }
-               case EVENT_MAC_SLOT_IND:
-                  {
-                     ret = unpackMacSlotInd(duHandleSlotInd, pst, mBuf);
-                     break;
-                  }
-               case EVENT_MAC_STOP_IND:
-                  {
-                     ret = unpackMacStopInd(duHandleStopInd, pst, mBuf);
-                     break;
-                  }
-					case EVENT_MAC_UL_CCCH_IND:
-						{
-							ret = unpackMacUlCcchInd(duHandleUlCcchInd, pst, mBuf);
-							break;
-						}
+	 {
+	    switch(pst->event)
+	    {
+	       //Config complete
+	       case EVTCFG:
+		  {
+		     SPutMsg(mBuf);
+		     break;
+		  }
+	       case EVTLRGCFGCFM:
+		  {
+		     ret = cmUnpkLrgCfgCfm(duHdlMacCfgComplete, pst, mBuf);
+		     break;
+		  }
+	       case EVTLRGCNTRLCFM:
+		  {
+		     break;
+		  }
+	       case EVTMACSCHGENCFGCFM:
+		  {
+		     ret = cmUnpkLrgSchCfgCfm(duHdlSchCfgComplete, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_MAC_CELL_CONFIG_CFM:
+		  {
+		     ret = unpackMacCellCfgCfm(duHandleMacCellCfgCfm, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_MAC_SLOT_IND:
+		  {
+		     ret = unpackMacSlotInd(duHandleSlotInd, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_MAC_STOP_IND:
+		  {
+		     ret = unpackMacStopInd(duHandleStopInd, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_MAC_UL_CCCH_IND:
+		  {
+		     ret = unpackMacUlCcchInd(duHandleUlCcchInd, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_MAC_UE_CREATE_RSP:
+		  {
+		     ret = unpackDuMacUeCreateRsp(duHandleMacUeCreateRsp, pst, mBuf); 
+		  }
 
-               default:
-                  {
-                     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");
-                     SPutMsg(mBuf);
-                     ret = RFAILED;
-                  }
-            }
+	       default:
+		  {
+		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");
+		     SPutMsg(mBuf);
+		     ret = RFAILED;
+		  }
+	    }
 
-            break;
-         }
+	    break;
+	 }
       case ENTSCTP:
-         {
-            switch(pst->event)
-            {
-               case EVENT_CU_DATA:
-               {
-                  F1APMsgHdlr(mBuf);
-                  break;
-               }
-               case EVENT_SCTP_NTFY:
-               {
-                  ret = cmUnpkSctpNtfy(duSctpNtfyHdl, pst, mBuf);
-                  break;
-               }
-               case EVENT_RIC_DATA:
-               {
-                  E2APMsgHdlr(mBuf);
-                  break;
-               }
-               default:
-               {
-                  DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTSCTP");
-                  ret = RFAILED;
-               }
+	 {
+	    switch(pst->event)
+	    {
+	       case EVENT_CU_DATA:
+		  {
+		     F1APMsgHdlr(mBuf);
+		     break;
+		  }
+	       case EVENT_SCTP_NTFY:
+		  {
+		     ret = cmUnpkSctpNtfy(duSctpNtfyHdl, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_RIC_DATA:
+		  {
+		     E2APMsgHdlr(mBuf);
+		     break;
+		  }
+	       default:
+		  {
+		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTSCTP");
+		     ret = RFAILED;
+		  }
 
-            }
-            SPutMsg(mBuf);
-            break;
-         }
+	    }
+	    SPutMsg(mBuf);
+	    break;
+	 }
       case ENTEGTP:
-         {
-            switch(pst->event)
-            {
-               case EVTCFGCFM:
-               {
-                  unpackEgtpCfgCfm(duHdlEgtpCfgComplete, mBuf);
-                  break;
-               }
-               case EVTSRVOPENCFM:
-               {
-                  unpackEgtpSrvOpenCfm(duHdlEgtpSrvOpenComplete, mBuf);
-                  break;
-               }
-               case EVTTNLMGMTCFM:
-               {
-                  unpackEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
-                  break;
-               }
-               default:
-               {
-                  DU_LOG("\nDU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
-                  ret = RFAILED;
-               }
-            }
-            SPutMsg(mBuf);
-            break;
-         }
+	 {
+	    switch(pst->event)
+	    {
+	       case EVTCFGCFM:
+		  {
+		     unpackEgtpCfgCfm(duHdlEgtpCfgComplete, mBuf);
+		     break;
+		  }
+	       case EVTSRVOPENCFM:
+		  {
+		     unpackEgtpSrvOpenCfm(duHdlEgtpSrvOpenComplete, mBuf);
+		     break;
+		  }
+	       case EVTTNLMGMTCFM:
+		  {
+		     unpackEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
+		     break;
+		  }
+	       default:
+		  {
+		     DU_LOG("\nDU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
+		     ret = RFAILED;
+		  }
+	    }
+	    SPutMsg(mBuf);
+	    break;
+	 }
       default:
-         {
-            DU_LOG("\nDU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
-            SPutMsg(mBuf);
-            ret = RFAILED;
-         }
+	 {
+	    DU_LOG("\nDU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
+	    SPutMsg(mBuf);
+	    ret = RFAILED;
+	 }
 
    }
    SExitTsk();
@@ -300,5 +304,5 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
