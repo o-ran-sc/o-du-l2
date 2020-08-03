@@ -16,13 +16,10 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains message handling functionality for DU APP */
-#ifndef __DU_CELL_MGR_H__
-#define __DU_CELL_MGR_H__
+/* This file stores defines used at RLC interface */
+extern void fillRlcUlUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp);
+uint8_t SendRlcUlUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp);
 
-S16 duSendSchGnbCfg();
-S16 duSendSchGnbCfgToMac(RgrCfgReqInfo *cfgReq, U32 trans_id);
-#endif
 /**********************************************************************
-  End of file
- **********************************************************************/
+         End of file
+**********************************************************************/

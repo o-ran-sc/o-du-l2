@@ -29,6 +29,7 @@
 #define CELL_INDEX      0
 
 void F1APMsgHdlr(Buffer *mBuf);
+uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg);
 uint8_t BuildAndSendF1SetupReq();
 uint8_t BuildAndSendDUConfigUpdate();
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);

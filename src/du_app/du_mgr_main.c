@@ -23,15 +23,17 @@
 #include "lrg.x"
 #include "lkw.x"
 #include "du_app_mac_inf.h"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
+#include "du_mgr.h"
 #include "du_mgr_main.h"
 #include "du_sctp.h"
 #include "du_egtp.h"
 
-extern S16 kwUlActvTsk (Pst *, Buffer *);
-extern S16 kwUlActvInit (Ent, Inst, Region, Reason);
-extern S16 kwDlActvTsk (Pst *, Buffer *);
-extern S16 kwDlActvInit (Ent, Inst, Region, Reason);
+extern S16 rlcUlActvTsk (Pst *, Buffer *);
+extern S16 rlcUlActvInit (Ent, Inst, Region, Reason);
+extern S16 rlcDlActvTsk (Pst *, Buffer *);
+extern S16 rlcDlActvInit (Ent, Inst, Region, Reason);
 extern S16 rgActvTsk (Pst *, Buffer *);
 extern S16 rgActvInit (Ent, Inst, Region, Reason);
 
@@ -165,7 +167,7 @@ S16 rlcDlInit(SSTskId sysTskId)
 {
    /* Register RLC DL TAPA Task */
    if(SRegTTsk((Ent)ENTKW, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
-            kwDlActvInit, (ActvTsk)kwDlActvTsk) != ROK)
+            rlcDlActvInit, (ActvTsk)rlcDlActvTsk) != ROK)
    {
       return RFAILED;
    }
@@ -212,7 +214,7 @@ S16 rlcUlInit(SSTskId sysTskId)
 {
    /* Register RLC UL TAPA Task */
    if(SRegTTsk((Ent)ENTKW, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
-            kwUlActvInit, (ActvTsk)kwUlActvTsk) != ROK)
+            rlcUlActvInit, (ActvTsk)rlcUlActvTsk) != ROK)
    {
       return RFAILED;
    }

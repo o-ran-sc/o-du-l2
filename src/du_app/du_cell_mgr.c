@@ -22,13 +22,19 @@
 #include "legtp.h"
 #include "lrg.x"
 #include "lkw.x"
-#include "du_app_mac_inf.h"
-#include "du_cfg.h"
+#include "rgr.h"
+#include "rgr.x"
 #include "E2AP-PDU.h"
 #include<ProtocolIE-Field.h>
 #include "F1AP-PDU.h"
-#include "du_cell_mgr.h"
+#include "du_f1ap_msg_hdl.h"
+#include "du_e2ap_msg_hdl.h"
+#include "du_app_mac_inf.h"
+#include "du_app_rlc_inf.h"
+#include "du_cfg.h"
+#include "du_mgr.h"
 #include "odu_common_codec.h"
+#include "du_cell_mgr.h"
 
 extern DuCfgParams duCfgParam;
 extern S16 duBuildAndSendMacCellCfg();

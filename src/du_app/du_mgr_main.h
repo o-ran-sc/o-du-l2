@@ -19,9 +19,6 @@
 #ifndef __DU_MGR_MAIN_H__
 #define __DU_MGR_MAIN_H__
 
-#include "du_mgr.h"
-#include "du_log.h"
-
 /* Function declarations */
 S16 duAppInit(SSTskId sysTskId);
 S16 sctpInit(SSTskId sysTskId);

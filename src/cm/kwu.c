@@ -177,13 +177,13 @@ Reason reason;
 } /* cmPkKwuUbndReq */
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDatReqInfo
+uint8_t cmPkKwuDatReqInfo
 (
 KwuDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkKwuDatReqInfo(param, mBuf)
+uint8_t cmPkKwuDatReqInfo(param, mBuf)
 KwuDatReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -220,14 +220,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDatReq
+uint8_t cmPkKwuDatReq
 (
 Pst * pst,
 KwuDatReqInfo* datReq,
 Buffer * mBuf
 )
 #else
-PUBLIC S16 cmPkKwuDatReq(pst, datReq, mBuf)
+uint8_t cmPkKwuDatReq(pst, datReq, mBuf)
 Pst * pst;
 KwuDatReqInfo* datReq;
 Buffer * mBuf;
@@ -396,13 +396,13 @@ Buffer * mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDatIndInfo
+uint8_t cmPkKwuDatIndInfo
 (
 KwuDatIndInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkKwuDatIndInfo(param, mBuf)
+uint8_t cmPkKwuDatIndInfo(param, mBuf)
 KwuDatIndInfo *param;
 Buffer *mBuf;
 #endif
@@ -419,14 +419,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDatInd
+uint8_t cmPkKwuDatInd
 (
 Pst * pst,
 KwuDatIndInfo* datInd,
 Buffer * mBuf
 )
 #else
-PUBLIC S16 cmPkKwuDatInd(pst, datInd, mBuf)
+uint8_t cmPkKwuDatInd(pst, datInd, mBuf)
 Pst * pst;
 KwuDatIndInfo* datInd;
 Buffer * mBuf;
@@ -1294,13 +1294,13 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDatIndInfo
+uint8_t cmUnpkKwuDatIndInfo
 (
 KwuDatIndInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDatIndInfo(param, mBuf)
+uint8_t cmUnpkKwuDatIndInfo(param, mBuf)
 KwuDatIndInfo *param;
 Buffer *mBuf;
 #endif
@@ -1318,14 +1318,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDatInd
+uint8_t cmUnpkKwuDatInd
 (
 KwuDatInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDatInd(func, pst, mBuf)
+uint8_t cmUnpkKwuDatInd(func, pst, mBuf)
 KwuDatInd func;
 Pst *pst;
 Buffer *mBuf;

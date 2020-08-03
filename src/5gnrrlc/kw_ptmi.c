@@ -71,7 +71,7 @@
 #ifdef PTKWLKW
 /* portable functions */
 
-PRIVATE S16 PtMiLkwCfgCfm    ARGS((Pst *pst, KwMngmt *cfm));
+PRIVATE S16 PtMiRlcConfigCfm    ARGS((Pst *pst, KwMngmt *cfm));
 PRIVATE S16 PtMiLkwCntrlCfm  ARGS((Pst *pst, KwMngmt *cfm));
 PRIVATE S16 PtMiLkwStaInd    ARGS((Pst *pst, KwMngmt *usta));
 
@@ -93,17 +93,17 @@ PRIVATE S16 PtMiLkwL2MeasStopCfm   ARGS((Pst *pst, U8 measType,U8 status));
  ********************************************************************/
 /* Configuration confirmation primitive */
 
-PRIVATE LkwCfgCfm kwMiLkwCfgCfmMt[MAXKWMI] =
+PRIVATE RlcConfigCfm kwMiRlcConfigCfmMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW
-   cmPkLkwCfgCfm,            /* 0 - loosely coupled - fc */
+   packRlcConfigCfm,            /* 0 - loosely coupled - fc */
 #else
-   PtMiLkwCfgCfm,            /* 0 - tightly coupled portable */
+   PtMiRlcConfigCfm,            /* 0 - tightly coupled portable */
 #endif /* LCRLMILKW */
 #ifdef SM
-   SmMiLkwCfgCfm,            /* 1 - tightly coupled layer management*/
+   SmMiRlcConfigCfm,            /* 1 - tightly coupled layer management*/
 #else
-   PtMiLkwCfgCfm,            /* 1 - tightly coupled portable */
+   PtMiRlcConfigCfm,            /* 1 - tightly coupled portable */
 #endif /* SM */
 };
 
@@ -222,7 +222,7 @@ PRIVATE CONSTANT LkwL2MeasStopCfm KwMiLkwL2MeasStopCfmMt[] =
  ***************************************************************************/
 /**
    @brief
-   This function is called by the KwMiLkwCfgReq function for responding
+   This function is called by the KwMiRlcConfigReq function for responding
    to configuration requests.The cfm field in the KwMngmt  structure contains
  the response value.
 
@@ -237,21 +237,21 @@ PRIVATE CONSTANT LkwL2MeasStopCfm KwMiLkwL2MeasStopCfmMt[] =
 
 */
 #ifdef ANSI
-PUBLIC S16 KwMiLkwCfgCfm
+PUBLIC S16 KwMiRlcConfigCfm
 (
 Pst        *pst,                /* post structure */
 KwMngmt    *cfm                 /* Layer Management structure */
 )
 #else
-PUBLIC S16 KwMiLkwCfgCfm(pst, cfm)
+PUBLIC S16 KwMiRlcConfigCfm(pst, cfm)
 Pst        *pst;                /* post structure */
 KwMngmt    *cfm;                /* Layer Management structure */
 #endif
 {
-   TRC3(KwMiLkwCfgCfm);
+   TRC3(KwMiRlcConfigCfm);
 
    /* jump to specific primitive depending on configured selector */
-   (*kwMiLkwCfgCfmMt[pst->selector])(pst, cfm);
+   (*kwMiRlcConfigCfmMt[pst->selector])(pst, cfm);
    
    RETVALUE(ROK);
 }
@@ -517,26 +517,26 @@ U8  status;
  */
 
 #ifdef ANSI
-PUBLIC S16 PtMiLkwCfgCfm
+PUBLIC S16 PtMiRlcConfigCfm
 (
 Pst *pst,                    /* post structure */
 KwMngmt *cfm                 /* Layer Management structure */
 )
 #else
-PUBLIC S16 PtMiLkwCfgCfm(pst, cfm)
+PUBLIC S16 PtMiRlcConfigCfm(pst, cfm)
 Pst *pst;                    /* post structure */
 KwMngmt *cfm;                /* Layer Management structure */
 #endif
 {
-   TRC3(PtMiLkwCfgCfm)
+   TRC3(PtMiRlcConfigCfm)
 
    UNUSED(pst);
    UNUSED(cfm);
 
-   TRC2(PtMiLkwCfgCfm() : function is not implemented)
+   TRC2(PtMiRlcConfigCfm() : function is not implemented)
 
    RETVALUE(ROK);
-} /* end of PtMiLkwCfgCfm */
+} /* end of PtMiRlcConfigCfm */
 
 /*
  *

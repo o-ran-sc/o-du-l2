@@ -245,15 +245,15 @@ U8 rrcUeCapabilityInfo[] =
 #ifdef ANSI
 PUBLIC Void kwTmmRcvFrmLi
 (
-KwCb        *gCb,
-KwUlRbCb    *rbCb,  
+RlcCb        *gCb,
+RlcUlRbCb    *rbCb,  
 CmLteRnti   tCrnti,  
 Buffer      *pdu      
 )
 #else
 PUBLIC Void kwTmmRcvFrmLi(gCb,rbCb, tCrnti, pdu)
-KwCb        *gCb;
-KwUlRbCb    *rbCb;  
+RlcCb        *gCb;
+RlcUlRbCb    *rbCb;  
 CmLteRnti   tCrnti; 
 Buffer      *pdu;  
 #endif
@@ -261,14 +261,14 @@ Buffer      *pdu;
 #ifdef ANSI
 PUBLIC Void kwTmmRcvFrmLi
 (
-KwCb       *gCb,
-KwUlRbCb   *rbCb,         
+RlcCb       *gCb,
+RlcUlRbCb   *rbCb,         
 Buffer     *pdu            
 )
 #else
 PUBLIC Void kwTmmRcvFrmLi(gCb,rbCb, pdu)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;         
+RlcCb       *gCb;
+RlcUlRbCb   *rbCb;         
 Buffer     *pdu;         
 #endif
 #endif 
@@ -331,16 +331,16 @@ Buffer     *pdu;
 #ifdef ANSI
 PUBLIC Void kwTmmUlReEstablish
 (
-KwCb        *gCb,
-KwUlRbCb    *rbCb        
+RlcCb        *gCb,
+RlcUlRbCb    *rbCb        
 )
 #else
 PUBLIC Void kwTmmUlReEstablish(rbCb)
-KwCb        *gCb;
+RlcCb        *gCb;
 KwRbCb      *rbCb;          
 #endif
 {
-   TRC2(kwUlTmmReEstablish)
+   TRC2(rlcUlTmmReEstablish)
 
    RLOG_ARG0(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,"do nothing for TMM for ReEstablish");
    RETVOID;

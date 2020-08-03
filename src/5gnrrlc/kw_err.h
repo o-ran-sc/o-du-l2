@@ -44,9 +44,9 @@
    S16 _ret; \
    _ret = RFAILED; \
    _kwuSap = NULLP; \
-   if((_spId < (S16) kwCb.genCfg.maxKwuSaps) && (_spId >= 0)) \
+   if((_spId < (S16) rlcCb.genCfg.maxKwuSaps) && (_spId >= 0)) \
    { \
-      _kwuSap = kwCb.kwuSap + _spId; \
+      _kwuSap = rlcCb.kwuSap + _spId; \
       if((_kwuSap != NULLP) && (_kwuSap->state == KW_SAP_BND)) \
       { \
          _ret = ROK; \
@@ -62,7 +62,7 @@
 }
 #else
 #define KW_GET_AND_VALIDATE_KWUSAP(_spId, _kwuSap, _errCode, _fn) \
-   _kwuSap = kwCb.kwuSap + _spId;
+   _kwuSap = rlcCb.kwuSap + _spId;
 #define KWLOGERROR(cb, errCls, errCode, errVal, errDesc)
 
 #endif
