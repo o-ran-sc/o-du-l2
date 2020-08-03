@@ -708,6 +708,11 @@ void fillMacCellGrpInfo(MacCellGrpCfg *cellGrp)
          }
       }
       cellGrp->tagCfg.relListCount = 0;
+
+		/* Filling BSR config */
+		cellGrp->bsrCfg.periodicTimer = PERIODIC_BSR_TMR;
+		cellGrp->bsrCfg.retxTimer = RETX_BSR_TMR;
+		cellGrp->bsrCfg.srDelayTimer = SR_DELAY_TMR;
       
       /* Filling PHR config */
       cellGrp->phrCfgSetupPres = true;
@@ -934,6 +939,34 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
 		ret = RFAILED;
 	}
 	return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Handle UE create response from MAC
+ *
+ * @details
+ *
+ *    Function : duHandleMacUeCreateRsp
+ *
+ *    Functionality: Handle UE create response from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t duHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+{
+   if(cfgRsp->result == MAC_DU_APP_RSP_OK)
+	{
+	   DU_LOG("\nDU APP : MAC UE Create Response : SUCCESS [UE IDX : %d]", cfgRsp->ueIdx);
+	}
+	else
+	{
+	   DU_LOG("\nDU APP : MAC UE Create Response : FAILURE [UE IDX : %d]", cfgRsp->ueIdx);
+	}
+   return ROK;
 }
 
 /**********************************************************************
