@@ -60,6 +60,9 @@ static int RLOG_FILE_ID=204;
 #include "kw_dl.x"
 #include "kw_ul.x"
 
+#include "rlc.h"
+#include "du_app_rlc_inf.h"
+#include "rlc_inf_api.h"
 
 #define KW_MODULE KW_DBGMASK_UDX
 /* local defines */
@@ -69,8 +72,8 @@ static int RLOG_FILE_ID=204;
 /* forward references */
 
 /* public variable declarations */
-EXTERN S16 kwHdlCkwUlCfgReq ARGS((KwCb  *gCb,KwUlCfgTmpData *cfgTmpData,
-                                  CkwCfgCfmInfo *cfmInfo, CkwCfgCfmInfo *cfgCfm));
+EXTERN S16 kwHdlCrlcUlCfgReq ARGS((RlcCb  *gCb,RlcUlCfgTmpData *cfgTmpData,
+                                  RlcCfgCfmInfo *cfmInfo, RlcCfgCfmInfo *cfgCfm));
 
 /**
   * @brief
@@ -94,14 +97,14 @@ EXTERN S16 kwHdlCkwUlCfgReq ARGS((KwCb  *gCb,KwUlCfgTmpData *cfgTmpData,
  */
 
 #ifdef ANSI
-PUBLIC S16 KwUlUdxBndCfm
+PUBLIC S16 rlcUlUdxBndCfm
 (
 Pst    *pst,  
 SuId   suId, 
 U8     status 
 )
 #else
-PUBLIC S16 KwUlUdxBndCfm (pst, suId, status)
+PUBLIC S16 rlcUlUdxBndCfm (pst, suId, status)
 Pst    *pst; 
 SuId   suId;   
 U8     status; 
@@ -110,26 +113,26 @@ U8     status;
    U16            event;        
    U16            cause;       
    KwUdxUlSapCb   *udxSap;   /* RGU SAP Control Block */
-   KwCb           *tKwCb;
+   RlcCb           *tRlcCb;
 
-   TRC3(KwUlUdxBndCfm)
+   TRC3(rlcUlUdxBndCfm)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
+   if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   KWDBGP_BRIEF(tKwCb, "KwUlUdxBndCfm(post, suId(%d), status(%d)\n", 
+   KWDBGP_BRIEF(tRlcCb, "rlcUlUdxBndCfm(post, suId(%d), status(%d)\n", 
                 suId, status);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (tKwCb->init.cfgDone != TRUE)
+   if (tRlcCb->init.cfgDone != TRUE)
    {
       RLOG0(L_FATAL, "General configuration not done");
-      KW_SEND_SAPID_ALARM(tKwCb,suId, 
+      KW_SEND_SAPID_ALARM(tRlcCb,suId, 
                           LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_STATE);
 
       RETVALUE(RFAILED);
@@ -138,16 +141,16 @@ U8     status;
    if (suId < 0)
    {
       RLOG0(L_ERROR, "Invalid suId");
-      KW_SEND_SAPID_ALARM(tKwCb,suId, 
+      KW_SEND_SAPID_ALARM(tRlcCb,suId, 
                            LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
 
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
-   udxSap = tKwCb->u.ulCb->udxUlSap + suId;
+   udxSap = tRlcCb->u.ulCb->udxUlSap + suId;
 
-   KWDBGP_DETAIL(tKwCb, "KwLiRguBndCfm: For RGU SAP state=%d\n", 
+   KWDBGP_DETAIL(tRlcCb, "KwLiRguBndCfm: For RGU SAP state=%d\n", 
                  udxSap->state);
 
    /* Check rguSap state */
@@ -155,9 +158,9 @@ U8     status;
    {
       case KW_SAP_BINDING:
       {
-         if(TRUE == kwChkTmr(tKwCb,(PTR)udxSap,KW_EVT_WAIT_BNDCFM))
+         if(TRUE == kwChkTmr(tRlcCb,(PTR)udxSap,KW_EVT_WAIT_BNDCFM))
          {
-             kwStopTmr (tKwCb,(PTR)udxSap, KW_EVT_WAIT_BNDCFM);
+             kwStopTmr (tRlcCb,(PTR)udxSap, KW_EVT_WAIT_BNDCFM);
          }
          udxSap->retryCnt = 0;
           
@@ -182,7 +185,7 @@ U8     status;
         break;
    }
    /* Send an alarm with proper event and cause */
-   KW_SEND_SAPID_ALARM(tKwCb,suId, event, cause);
+   KW_SEND_SAPID_ALARM(tRlcCb,suId, event, cause);
 
    RETVALUE(ROK);
 } 
@@ -203,96 +206,98 @@ U8     status;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUlUdxCfgCfm
+PUBLIC S16 rlcUlUdxCfgCfm
 (
 Pst             *pst,  
 SuId            suId, 
-CkwCfgCfmInfo   *cfmInfo  
+RlcCfgCfmInfo   *cfmInfo  
 )
 #else
-PUBLIC S16 KwUlUdxCfgCfm (pst, suId, cfmInfo)
+PUBLIC S16 rlcUlUdxCfgCfm (pst, suId, cfmInfo)
 Pst             *pst;   
 SuId            suId;  
-CkwCfgCfmInfo   *cfmInfo;  
+RlcCfgCfmInfo   *cfmInfo;  
 #endif
 {
-   KwCb             *tKwCb;
-   CkwCfgCfmInfo    *cfgCfm;
-   KwUlCfgTmpData   *cfgTmpData;
+   RlcCb             *tRlcCb;
+   RlcCfgCfmInfo    *cfgCfm;
+   RlcUlCfgTmpData   *cfgTmpData;
+   Pst rspPst;
+   memset(&rspPst, 0, sizeof(Pst));
 
-   TRC3(KwUlUdxCfgCfm)
+   TRC3(rlcUlUdxCfgCfm)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
+   if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
-   KWDBGP_BRIEF(tKwCb, " suId(%d)\n", suId);
+   tRlcCb = RLC_GET_RLCCB(pst->dstInst);
+   KWDBGP_BRIEF(tRlcCb, " suId(%d)\n", suId);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (suId < 0)
    {
       RLOG0(L_ERROR, "Invalid suId");
-      KW_SEND_SAPID_ALARM(tKwCb,suId, 
+      KW_SEND_SAPID_ALARM(tRlcCb,suId, 
                            LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
-   if(ROK != kwDbmFindUlTransaction(tKwCb,cfmInfo->transId, &cfgTmpData))
+   if(ROK != kwDbmFindUlTransaction(tRlcCb,cfmInfo->transId, &cfgTmpData))
    {
       RLOG0(L_ERROR, "Invalid transId");
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
       RETVALUE (RFAILED);
    }
 
-   if(ROK != kwDbmDelUlTransaction(tKwCb, cfgTmpData))
+   if(ROK != kwDbmDelUlTransaction(tRlcCb, cfgTmpData))
    {
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
        RETVALUE(RFAILED);
    }
       /* Allocate memory and memset to 0 for cfmInfo */
-   KW_ALLOC(tKwCb,cfgCfm, sizeof(CkwCfgCfmInfo));
+   RLC_ALLOC(tRlcCb,cfgCfm, sizeof(RlcCfgCfmInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (cfgCfm == NULLP)
    {
       RLOG0(L_FATAL, "Memory Allocation failed.");
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
        RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
-   kwHdlCkwUlCfgReq(tKwCb,cfgTmpData, cfmInfo, cfgCfm);
-   KwUiCkwCfgCfm(&(tKwCb->u.ulCb->ckwSap.pst), 
-                 tKwCb->u.ulCb->ckwSap.suId , cfgCfm);
+   kwHdlCrlcUlCfgReq(tRlcCb,cfgTmpData, cfmInfo, cfgCfm);
+   FILL_PST_RLC_TO_DUAPP(rspPst, tRlcCb->genCfg.lmPst.dstProcId, RLC_UL_INST, EVENT_RLC_UL_UE_CREATE_RSP);
+   SendRlcUlUeCreateRspToDu(&rspPst, cfgCfm);
 
    /* free the memory from DL */
-   KW_FREE_SHRABL_BUF(pst->region,
+   RLC_FREE_SHRABL_BUF(pst->region,
                       pst->pool,
 		      cfmInfo,
-		      sizeof(CkwCfgCfmInfo));
+		      sizeof(RlcCfgCfmInfo));
 
    /* free the cfgInfo that came from LM */
-   KW_PST_FREE(pst->region, pst->pool, cfgTmpData->cfgInfo, sizeof(CkwCfgInfo));
-   KW_FREE(tKwCb,cfgTmpData,sizeof(KwUlCfgTmpData));
+   RLC_PST_FREE(pst->region, pst->pool, cfgTmpData->cfgInfo, sizeof(RlcCfgInfo));
+   RLC_FREE(tRlcCb,cfgTmpData,sizeof(RlcUlCfgTmpData));
    
    RETVALUE(ROK);
 } 
@@ -314,7 +319,7 @@ CkwCfgCfmInfo   *cfmInfo;
  */
 
 #ifdef ANSI
-PUBLIC S16 KwUlUdxUeIdChgCfm
+PUBLIC S16 rlcUlUdxUeIdChgCfm
 (
 Pst        *pst,          
 SuId       suId,           
@@ -322,27 +327,27 @@ U32        transId,
 CmStatus   status
 )
 #else
-PUBLIC S16 KwUlUdxUeIdChgCfm (pst, suId, cfmInfo)
+PUBLIC S16 rlcUlUdxUeIdChgCfm (pst, suId, cfmInfo)
 Pst        *pst;         
 SuId       suId;        
 U32        transId;
 CmStatus   status;
 #endif
 {
-   KwCb             *tKwCb;
-   KwUlCfgTmpData   *cfgTmpData;
+   RlcCb             *tRlcCb;
+   RlcUlCfgTmpData   *cfgTmpData;
 
-   TRC3(KwUlUdxUeIdChgCfm)
+   TRC3(rlcUlUdxUeIdChgCfm)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
+   if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   KWDBGP_BRIEF(tKwCb, " suId(%d) \n", suId);
+   KWDBGP_BRIEF(tRlcCb, " suId(%d) \n", suId);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (suId < 0)
@@ -352,13 +357,13 @@ CmStatus   status;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
-   if(ROK != kwDbmFindUlTransaction(tKwCb, transId, &cfgTmpData))
+   if(ROK != kwDbmFindUlTransaction(tRlcCb, transId, &cfgTmpData))
    {
       RLOG0(L_ERROR, "Invalid transId");
       RETVALUE (RFAILED);
    }
 
-   if(ROK != kwDbmDelUlTransaction(tKwCb, cfgTmpData))
+   if(ROK != kwDbmDelUlTransaction(tRlcCb, cfgTmpData))
    {
       RETVALUE(RFAILED);
    }
@@ -367,16 +372,16 @@ CmStatus   status;
    {
        if(cfgTmpData->ueCb != NULLP) 
        {
-      kwCfgApplyUlUeIdChng(tKwCb, cfgTmpData->ueInfo, cfgTmpData->newUeInfo, cfgTmpData);
+      rlcCfgApplyUlUeIdChng(tRlcCb, cfgTmpData->ueInfo, cfgTmpData->newUeInfo, cfgTmpData);
    }
    }
-   KwUiCkwUeIdChgCfm(&(tKwCb->u.ulCb->ckwSap.pst),
-                     tKwCb->u.ulCb->ckwSap.suId,
+   KwUiCkwUeIdChgCfm(&(tRlcCb->u.ulCb->ckwSap.pst),
+                     tRlcCb->u.ulCb->ckwSap.suId,
                      transId,cfgTmpData->ueInfo,status);
    /* only newUeInfo needs to be freed here, ueInfo would be freed at the 
       interface or by he receipient in case of tight coupling */
-   KW_PST_FREE(pst->region, pst->pool, cfgTmpData->newUeInfo, sizeof(CkwUeInfo));
-   KW_FREE_WC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
+   RLC_PST_FREE(pst->region, pst->pool, cfgTmpData->newUeInfo, sizeof(CkwUeInfo));
+   RLC_FREE_WC(tRlcCb, cfgTmpData, sizeof (RlcUlCfgTmpData));
    RETVALUE(ROK);
 } 
 
@@ -391,25 +396,25 @@ CmStatus   status;
  *      -# ROK 
  *      -# RFAILED
  */
-PUBLIC S16  KwUlUdxStaProhTmrStart
+PUBLIC S16  rlcUlUdxStaProhTmrStart
 (
 Pst*         pst,
 SuId         suId,
 CmLteRlcId   *rlcId
 )
 {
-   KwCb       *tKwCb= NULLP;
-   KwUlRbCb   *rbCb;        
+   RlcCb       *tRlcCb= NULLP;
+   RlcUlRbCb   *rbCb;        
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
+   if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   kwDbmFetchUlRbCbByRbId(tKwCb, rlcId, &rbCb);
+   kwDbmFetchUlRbCbByRbId(tRlcCb, rlcId, &rbCb);
    if (rbCb == NULLP)
    {    
       RLOG_ARG2(L_ERROR, DBG_UEID,rlcId->ueId, "CellId [%u]:RbId[%d] not found",
@@ -418,7 +423,7 @@ CmLteRlcId   *rlcId
    }
 
    /* Start staProhTmr */
-   kwStartTmr(tKwCb,(PTR)rbCb, KW_EVT_AMUL_STA_PROH_TMR);
+   kwStartTmr(tRlcCb,(PTR)rbCb, KW_EVT_AMUL_STA_PROH_TMR);
 
    RETVALUE (ROK);
 } 
@@ -437,22 +442,22 @@ CmLteRlcId   *rlcId
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 kwHdlCkwUlCfgReq
+PUBLIC S16 kwHdlCrlcUlCfgReq
 (
-KwCb             *gCb,
-KwUlCfgTmpData   *cfgTmpData,
-CkwCfgCfmInfo    *cfmInfo,
-CkwCfgCfmInfo    *cfgCfm
+RlcCb             *gCb,
+RlcUlCfgTmpData   *cfgTmpData,
+RlcCfgCfmInfo    *cfmInfo,
+RlcCfgCfmInfo    *cfgCfm
 )
 #else
-PUBLIC S16 kwHdlCkwUlCfgReq(gCb,cfgTmpData,cfmInfo,cfmInfo)
-KwCb             *gCb;
-KwUlCfgTmpData   *cfgTmpData;
-CkwCfgCfmInfo    *cfmInfo;
-CkwCfgCfmInfo    *cfgCfm;
+PUBLIC S16 kwHdlCrlcUlCfgReq(gCb,cfgTmpData,cfmInfo,cfmInfo)
+RlcCb             *gCb;
+RlcUlCfgTmpData   *cfgTmpData;
+RlcCfgCfmInfo    *cfmInfo;
+RlcCfgCfmInfo    *cfgCfm;
 #endif
 {
-   CkwCfgInfo   *cfg;
+   RlcCfgInfo   *cfg;
    U32          idx;
    U32          maxEnt;
    
@@ -461,9 +466,9 @@ CkwCfgCfmInfo    *cfgCfm;
 
    for (idx = 0; idx < maxEnt; idx++)
    {
-      CkwEntCfgCfmInfo   *entCfgCfm;
-      CkwEntCfgCfmInfo   *entDlCfgCfm;
-      CkwEntCfgInfo      *entCfg;
+      RlcEntCfgCfmInfo   *entCfgCfm;
+      RlcEntCfgCfmInfo   *entDlCfgCfm;
+      RlcEntCfgInfo      *entCfg;
 
       entCfg  = &(cfg->entCfg[idx]);
       entCfgCfm   = &(cfgCfm->entCfgCfm[idx]);
@@ -478,29 +483,29 @@ CkwCfgCfmInfo    *cfgCfm;
                {
                   KW_MEM_CPY(entCfgCfm, 
                              &cfgTmpData->cfgEntData[idx].entUlCfgCfm, 
-                             sizeof(CkwEntCfgCfmInfo)); 
+                             sizeof(RlcEntCfgCfmInfo)); 
                }
                else if (entCfg->dir == KW_DIR_DL)
                {
-                  KW_MEM_CPY(entCfgCfm, entDlCfgCfm, sizeof(CkwEntCfgCfmInfo)); 
+                  KW_MEM_CPY(entCfgCfm, entDlCfgCfm, sizeof(RlcEntCfgCfmInfo)); 
                }
                else if(entCfg->dir == KW_DIR_BOTH)
                {
                   if (entDlCfgCfm->status.status != CKW_CFG_CFM_OK)
                   {
-                     kwCfgRollBackUlRb(gCb,
+                     rlcCfgRollBackUlRb(gCb,
                                        cfg->ueId,
                                        &cfg->entCfg[idx], 
                                        &cfgTmpData->cfgEntData[idx]);
                   }
                   else
                   {
-                     kwCfgApplyUlRb(gCb,  
+                     rlcCfgApplyUlRb(gCb,  
                                     &cfg->entCfg[idx], 
                                     &cfgTmpData->cfgEntData[idx],
                                     cfgTmpData);
                   }
-                  KW_MEM_CPY(entCfgCfm, entDlCfgCfm, sizeof(CkwEntCfgCfmInfo)); 
+                  KW_MEM_CPY(entCfgCfm, entDlCfgCfm, sizeof(RlcEntCfgCfmInfo)); 
                }
                else
                {
@@ -518,11 +523,11 @@ CkwCfgCfmInfo    *cfgCfm;
                {
                   KW_MEM_CPY(entCfgCfm, 
                              &cfgTmpData->cfgEntData[idx].entUlCfgCfm, 
-                             sizeof(CkwEntCfgCfmInfo)); 
+                             sizeof(RlcEntCfgCfmInfo)); 
                }
                else if (entCfg->dir == KW_DIR_DL)
                {
-                  KW_MEM_CPY(entCfgCfm, entDlCfgCfm, sizeof(CkwEntCfgCfmInfo)); 
+                  KW_MEM_CPY(entCfgCfm, entDlCfgCfm, sizeof(RlcEntCfgCfmInfo)); 
                }
                else
                {
@@ -531,11 +536,11 @@ CkwCfgCfmInfo    *cfgCfm;
                      /* Reestablish indication is sent from UL Instance only*/
                      if (entDlCfgCfm->status.status == CKW_CFG_CFM_OK)
                      {
-                        kwCfgApplyReEstUlRb (gCb, cfg->ueId, 
+                        rlcCfgApplyReEstUlRb (gCb, cfg->ueId, 
                                              cfg->cellId, TRUE, 
                                              &cfgTmpData->cfgEntData[idx]);
                      }
-                     KW_MEM_CPY(entCfgCfm, entDlCfgCfm, sizeof(CkwEntCfgCfmInfo)); 
+                     KW_MEM_CPY(entCfgCfm, entDlCfgCfm, sizeof(RlcEntCfgCfmInfo)); 
                   }
                }
                break;
@@ -544,15 +549,15 @@ CkwCfgCfmInfo    *cfgCfm;
             {
                if (cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status == CKW_CFG_CFM_OK)
                {
-                  kwCfgApplyDelUlUe(gCb, cfgTmpData);
+                  rlcCfgApplyDelUlUe(gCb, cfgTmpData);
                   KW_MEM_CPY(entCfgCfm, 
                              &cfgTmpData->cfgEntData[idx].entUlCfgCfm, 
-                             sizeof(CkwEntCfgCfmInfo)); 
+                             sizeof(RlcEntCfgCfmInfo)); 
                }
                else
                {
                    KW_MEM_CPY(entCfgCfm, entDlCfgCfm,
-                              sizeof(CkwEntCfgCfmInfo)); 
+                              sizeof(RlcEntCfgCfmInfo)); 
                }
                break;
             }
@@ -560,15 +565,15 @@ CkwCfgCfmInfo    *cfgCfm;
             {
                if (cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status == CKW_CFG_CFM_OK)
                {
-                  kwCfgApplyDelUlCell(gCb, cfgTmpData);
+                  rlcCfgApplyDelUlCell(gCb, cfgTmpData);
                   KW_MEM_CPY(entCfgCfm, 
                              &cfgTmpData->cfgEntData[idx].entUlCfgCfm, 
-                             sizeof(CkwEntCfgCfmInfo)); 
+                             sizeof(RlcEntCfgCfmInfo)); 
                }
                else
                {
                    KW_MEM_CPY(entCfgCfm, entDlCfgCfm,
-                              sizeof(CkwEntCfgCfmInfo)); 
+                              sizeof(RlcEntCfgCfmInfo)); 
                }
                break;
             }

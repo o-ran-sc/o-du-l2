@@ -102,7 +102,7 @@
  ******************************************************************************/
 #ifdef MCCABE_COV
 /* Allocate function */
-#define KW_ALLOC(_cb,_buf, _size)                                   \
+#define RLC_ALLOC(_cb,_buf, _size)                                   \
 {                                                                   \
    SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf,       \
                 (Size) _size);                                     \
@@ -113,17 +113,17 @@
 {                                                     \
    SPutMsg(_sdu->mBuf);                               \
    cmLListDelFrm(_sduQ,&_sdu->lstEnt);                \
-   KW_FREE_WC(_cb,_sdu, sizeof(KwSdu));               \
+   RLC_FREE_WC(_cb,_sdu, sizeof(KwSdu));               \
 }
 
-#define KW_FREE(_cb,_buf, _size)                          \
+#define RLC_FREE(_cb,_buf, _size)                          \
 {                                                         \
       (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
             (Data *) _buf, (Size) _size);                 \
       _buf = NULLP;                                       \
 }
 
-#define KW_FREE_BUF(_buf)           \
+#define RLC_FREE_BUF(_buf)           \
 {                                   \
       SPutMsg(_buf);                \
       _buf = NULLP;                 \
@@ -131,7 +131,7 @@
 
 #else
 
-#define KW_FREE_SHRABL_BUF(_region, _pool,_buf, _size)    \
+#define RLC_FREE_SHRABL_BUF(_region, _pool,_buf, _size)    \
 {                                                         \
    if (_buf != NULLP)                                     \
    {                                                      \
@@ -141,20 +141,20 @@
    }                                                      \
 }
 
-#define KW_FREE_SHRABL_BUF_WC(_region, _pool,_buf, _size) \
+#define RLC_FREE_SHRABL_BUF_WC(_region, _pool,_buf, _size) \
 {                                                         \
   (Void) SPutStaticBuffer(_region, _pool,                 \
         (Data *) _buf, (Size) _size, 0);                 \
   _buf = NULLP;                                       \
 }
 
-#define KW_ALLOC_SHRABL_BUF_WC(_region, _pool,_buf, _size)           \
+#define RLC_ALLOC_SHRABL_BUF_WC(_region, _pool,_buf, _size)           \
 {                                                                    \
  SGetStaticBuffer(_region, _pool, (Data **)&_buf,                    \
                 (Size) _size, 0);                                    \
 }
 
-#define KW_ALLOC_SHRABL_BUF(_region, _pool,_buf, _size)              \
+#define RLC_ALLOC_SHRABL_BUF(_region, _pool,_buf, _size)              \
 {                                                                    \
  if (SGetStaticBuffer(_region, _pool, (Data **)&_buf,                \
                 (Size) _size, 0) == ROK)                                \
@@ -167,7 +167,7 @@
    }                                                                 \
 }
 /* Allocate function */
-#define KW_ALLOC(_cb,_buf, _size)                                    \
+#define RLC_ALLOC(_cb,_buf, _size)                                    \
 {                                                                    \
  if (SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf,      \
                 (Size) _size) == ROK)                                \
@@ -180,7 +180,7 @@
    }                                                                 \
 }
 
-#define KW_ALLOC_WC(_cb,_buf, _size)  \
+#define RLC_ALLOC_WC(_cb,_buf, _size)  \
            SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf, (Size) _size)     
 
 #define KW_RMV_SDU(_cb,_sduQ,_sdu)              \
@@ -190,10 +190,10 @@
       SPutMsg(_sdu->mBuf);    \
    }                                            \
    cmLListDelFrm(_sduQ,&_sdu->lstEnt);          \
-   KW_FREE(_cb,_sdu, sizeof(KwSdu));            \
+   RLC_FREE(_cb,_sdu, sizeof(KwSdu));            \
 }
 
-#define KW_FREE(_cb,_buf, _size)                          \
+#define RLC_FREE(_cb,_buf, _size)                          \
 {                                                         \
    if (_buf != NULLP)                                     \
    {                                                      \
@@ -203,7 +203,7 @@
    }                                                      \
 }
 
-#define KW_FREE_BUF(_buf)           \
+#define RLC_FREE_BUF(_buf)           \
 {                                   \
    if (_buf != NULLP)               \
    {                                \
@@ -216,7 +216,7 @@
 
 
 
-#define KW_FREE_WC(_cb,_buf, _size)                       \
+#define RLC_FREE_WC(_cb,_buf, _size)                       \
 {                                                         \
       (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
             (Data *) _buf, (Size) _size);                 \
@@ -224,7 +224,7 @@
 }
 
 /* kw002.201 Freeing from region of pst */
-#define KW_PST_FREE(_region, _pool, _buf, _size)          \
+#define RLC_PST_FREE(_region, _pool, _buf, _size)          \
 {                                                         \
    if (_buf != NULLP)                                     \
    {                                                      \
@@ -236,7 +236,7 @@
 
 #ifdef XEON_SPECIFIC_CHANGES
 #ifdef SS_LOCKLESS_MEMORY
-#define KW_SHRABL_STATIC_BUF_FREE(_region, _pool, _buf, _size)     \
+#define RLC_SHRABL_STATIC_BUF_FREE(_region, _pool, _buf, _size)     \
 {                                                                  \
    if (_buf != NULLP)                                              \
    {                                                               \
@@ -246,7 +246,7 @@
    }                                                               \
 }
 
-#define KW_SHRABL_STATIC_BUF_ALLOC(_region, _pool, _buf, _size)     \
+#define RLC_SHRABL_STATIC_BUF_ALLOC(_region, _pool, _buf, _size)     \
 {                                                                        \
  SGetStaticBuffer(_region, _pool, (Data **)&_buf,      \
                 (Size) _size, 0);                                        \
@@ -254,7 +254,7 @@
 
 #else
 
-#define KW_SHRABL_STATIC_BUF_FREE(_region, _pool, _buf, _size)     \
+#define RLC_SHRABL_STATIC_BUF_FREE(_region, _pool, _buf, _size)     \
 {                                                                  \
    if (_buf != NULLP)                                              \
    {                                                               \
@@ -264,7 +264,7 @@
    }                                                               \
 }
 
-#define KW_SHRABL_STATIC_BUF_ALLOC(_region, _pool, _buf, _size)     \
+#define RLC_SHRABL_STATIC_BUF_ALLOC(_region, _pool, _buf, _size)     \
 {                                                                        \
  SGetSBuf(_region, _pool, (Data **)&_buf,      \
                 (Size) _size);                                        \
@@ -273,7 +273,7 @@
 
 #else 
 
-#define KW_SHRABL_STATIC_BUF_FREE(_region, _pool, _buf, _size)     \
+#define RLC_SHRABL_STATIC_BUF_FREE(_region, _pool, _buf, _size)     \
 {                                                                  \
    if (_buf != NULLP)                                              \
    {                                                               \
@@ -283,14 +283,14 @@
    }                                                               \
 }
 
-#define KW_SHRABL_STATIC_BUF_ALLOC(_region, _pool, _buf, _size)     \
+#define RLC_SHRABL_STATIC_BUF_ALLOC(_region, _pool, _buf, _size)     \
 {                                                                        \
  SGetStaticBuffer(_region, _pool, (Data **)&_buf,      \
                 (Size) _size, 0);                                        \
 }
 #endif
 
-#define KW_FREE_BUF_WC(_buf)    SPutMsg((_buf));
+#define RLC_FREE_BUF_WC(_buf)    SPutMsg((_buf));
 
 #define KW_MEM_CPY(_dst, _src, _size)  cmMemcpy((U8*)_dst, (U8 *)_src, _size); 
 
@@ -303,7 +303,7 @@
 #define KW_GET_MEM_POOL_ADDRESS(_cb) (&_cb->init.pool)
 
 /* Memset to value */
-#define KW_MEM_SET(_arg, _val, _size) cmMemset((U8 *)_arg, (U8)_val, _size); 
+#define RLC_MEM_SET(_arg, _val, _size) cmMemset((U8 *)_arg, (U8)_val, _size); 
 
 /* Alarms */
 /* Send an alarm for sapId events */
@@ -373,14 +373,14 @@
 #define KW_MIN(x,y) (x) < (y) ? (x) : (y)
 
 /**
- * @def KW_GET_KWCB
+ * @def RLC_GET_RLCCB
  *
  *    Macro to the RLC instance
  *
  * @param[in] _inst    Instance Id
  *
 */
-#define KW_GET_KWCB(_inst) kwCb[_inst]                              
+#define RLC_GET_RLCCB(_inst) rlcCb[_inst]                              
 
 #define KW_ADD_SDU            1     /*!< Add SDU. */
 #define KW_DEL_SDU            2     /*!< Delete SDU. */
@@ -389,15 +389,15 @@
 #define KW_CFM_OK             1     /*!< Send DatCfm */
 
 /* Set the unsolictated Status flag */
-#define KW_SET_USTA_FLAG(_kwCb, _value) \
+#define KW_SET_USTA_FLAG(_rlcCb, _value) \
 { \
-   _kwCb->init.usta = _value; \
+   _rlcCb->init.usta = _value; \
 }
 
 /* Macros to get the init parameters */
-#define KW_GET_DBG_MASK(_kwCb) (_kwCb->init.dbgMask)
-#define KW_GET_LMPST_MEM_POOL(_kwCb) (_kwCb->init.lmPst.pool)
-#define KW_GET_LMPST_MEM_REGION(_kwCb) (_kwCb->init.lmPst.region)
+#define KW_GET_DBG_MASK(_rlcCb) (_rlcCb->init.dbgMask)
+#define KW_GET_LMPST_MEM_POOL(_rlcCb) (_rlcCb->init.lmPst.pool)
+#define KW_GET_LMPST_MEM_REGION(_rlcCb) (_rlcCb->init.lmPst.region)
 
 /* Macros for configuration module */
 #define KW_CFG_FILL_CFG_CFM(_entCfm, _rbId, _rbType, _status, _reason)  \
@@ -758,7 +758,7 @@
    while (_seg)                                            \
    {                                                       \
       cmLListDelFrm(&_recBuf->segLst, &_seg->lstEnt);      \
-      KW_FREE(_seg, sizeof(KwSeg));                        \
+      RLC_FREE(_seg, sizeof(KwSeg));                        \
       KW_LLIST_NEXT_SEG(_recBuf->segLst, _seg);            \
    }                                                       \
 }

@@ -23,6 +23,7 @@
 #include "lrg.x"
 #include "lkw.x"
 #include "du_app_mac_inf.h"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include<ProtocolIE-Field.h>

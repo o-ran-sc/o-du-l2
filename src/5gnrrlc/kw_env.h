@@ -37,7 +37,7 @@
 #ifndef __KWENVH__
 #define __KWENVH__
 
-#define KW_MAX_RLC_INSTANCES            2
+#define MAX_RLC_INSTANCES            2
 #define KW_MAX_LI                       KWU_MAX_STA_IND_SDU
 
 #define KW_MAX_DL_LI                   28 

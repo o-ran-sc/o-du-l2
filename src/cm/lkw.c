@@ -26,16 +26,16 @@
                   for RLC Layer Manager Interfaces.  It contains the 
                   following function definitions
 
-                     -- cmPkLkwCfgReq
+                     -- cmPkLrlcCfgReq
                      -- cmPkLkwCntrlReq
                      -- cmPkLkwCntrlCfm 
-                     -- cmPkLkwCfgCfm
+                     -- cmPkLrlcCfgCfm
                      -- cmPkLkwStaInd
 
-                     -- cmUnpkLkwCfgReq 
+                     -- cmUnpkLrlcCfgReq 
                      -- cmUnpkLkwCntrlReq
                      -- cmUnpkLkwCntrlCfm
-                     -- cmUnpkLkwCfgCfm 
+                     -- cmUnpkLrlcCfgCfm 
                      -- cmUnpkLkwStaInd
  
         File:     lkw.c
@@ -60,7 +60,7 @@ Txt ptNmb[LKW_PART_NUM_STR_LEN];         /* Part number */
 
 PRIVATE S16 cmPkKwMngmt ARGS ((KwMngmt *param ,Event eventType, 
                                Buffer *mBuf));
-PRIVATE S16 cmPkKwCfg ARGS ((KwMngmt *param ,Elmnt elmnt, Buffer *mBuf));
+PRIVATE S16 cmPkRlcCfg ARGS ((KwMngmt *param ,Elmnt elmnt, Buffer *mBuf));
 PRIVATE S16 cmPkKwCntrl ARGS ((KwMngmt *cntrl, Elmnt elmnt, Buffer *mBuf));
 PRIVATE S16 cmPkKwUsta ARGS ((KwMngmt *usta, Elmnt elmnt, Buffer *mBuf));
 PRIVATE S16 cmPkKwSsta ARGS ((KwMngmt *ssta, Elmnt etmnt, Event eventType,
@@ -76,7 +76,7 @@ PRIVATE S16 cmPkKwTrc ARGS ((KwMngmt *trc, Buffer *mBuf));
 
 PRIVATE S16 cmUnpkKwMngmt ARGS ((KwMngmt *param, Event eventType,
                                  Buffer * mBuf));
-PRIVATE S16 cmUnpkKwCfg ARGS ((KwMngmt *cfg, Elmnt elmnt, Buffer *mBuf));
+PRIVATE S16 cmUnpkRlcCfg ARGS ((KwMngmt *cfg, Elmnt elmnt, Buffer *mBuf));
 PRIVATE S16 cmUnpkKwCntrl ARGS ((KwMngmt *param, Elmnt elmnt, Buffer *mBuf));
 PRIVATE S16 cmUnpkKwUsta ARGS ((KwMngmt *usta, Elmnt elmnt, Buffer *mBuf));
 PRIVATE S16 cmUnpkKwSsta ARGS ((KwMngmt *ssta, Elmnt elmnt, Event eventType,
@@ -112,13 +112,13 @@ PRIVATE S16 cmUnpkRguSapSta ARGS ((KwRguSapSta *mkSap, Buffer *mBuf));
  */
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwCfgReq
+PUBLIC S16 cmPkLrlcCfgReq
 (
 Pst *pst,                    /* post structure */
 KwMngmt *cfg                 /* RLC LM structure */
 )
 #else
-PUBLIC S16 cmPkLkwCfgReq(pst, cfg)
+PUBLIC S16 cmPkLrlcCfgReq(pst, cfg)
 Pst *pst;                    /* post structure */
 KwMngmt *cfg;                /* RLC LM structure */
 #endif
@@ -126,7 +126,7 @@ KwMngmt *cfg;                /* RLC LM structure */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(cmPkLkwCfgReq)
+   TRC3(cmPkLrlcCfgReq)
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -161,7 +161,7 @@ KwMngmt *cfg;                /* RLC LM structure */
 
    RETVALUE(ROK);
 
-}  /* end of cmPkLkwCfgReq */
+}  /* end of cmPkLrlcCfgReq */
 
 /**
  * @brief
@@ -176,15 +176,15 @@ KwMngmt *cfg;                /* RLC LM structure */
  */
  
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwCfgReq
+PUBLIC S16 cmUnpkLrlcCfgReq
 (
-LkwCfgReq func,              /* primitive to call */
+LrlcCfgReq func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwCfgReq(func, pst, mBuf)
-LkwCfgReq func;              /* primitive to call */
+PUBLIC S16 cmUnpkLrlcCfgReq(func, pst, mBuf)
+LrlcCfgReq func;              /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
 #endif
@@ -192,7 +192,7 @@ Buffer *mBuf;                /* message buffer */
    S16 ret1;                 /* Return value */
    KwMngmt cfg;              /* RLC LM structure */
 
-   TRC3(cmUnpkLkwCfgReq)
+   TRC3(cmUnpkLrlcCfgReq)
 
    cmMemset((U8 *) &cfg, (U8) 0, (S16) sizeof(KwMngmt));
    ret1 = cmUnpkKwMngmt(&cfg, LKW_EVT_CFG_REQ, mBuf);
@@ -214,7 +214,7 @@ Buffer *mBuf;                /* message buffer */
 
    RETVALUE(ROK);
 
-} /* end of cmUnpkLkwCfgReq */
+} /* end of cmUnpkLrlcCfgReq */
 
 
 
@@ -511,13 +511,13 @@ Buffer *mBuf;                /* message buffer */
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwCfgCfm
+PUBLIC S16 cmPkLrlcCfgCfm
 (
 Pst *pst,                    /* post structure */
 KwMngmt *cfm                 /* RLC LM structure */
 )
 #else
-PUBLIC S16 cmPkLkwCfgCfm(pst,cfm)
+PUBLIC S16 cmPkLrlcCfgCfm(pst,cfm)
 Pst *pst;                    /* post structure */
 KwMngmt *cfm;                /* RLC LM structure */
 #endif
@@ -525,7 +525,7 @@ KwMngmt *cfm;                /* RLC LM structure */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(cmPkLkwCfgCfm)
+   TRC3(cmPkLrlcCfgCfm)
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -560,7 +560,7 @@ KwMngmt *cfm;                /* RLC LM structure */
 
    RETVALUE(ROK);
 
-}  /* end of cmPkLkwCfgCfm */
+}  /* end of cmPkLrlcCfgCfm */
 
 
 /**
@@ -575,15 +575,15 @@ KwMngmt *cfm;                /* RLC LM structure */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwCfgCfm
+PUBLIC S16 cmUnpkLrlcCfgCfm
 (
-LkwCfgCfm func,              /* primitive to call */
+LrlcCfgCfm func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwCfgCfm(func, pst, mBuf)
-LkwCfgCfm func;              /* primitive to call */
+PUBLIC S16 cmUnpkLrlcCfgCfm(func, pst, mBuf)
+LrlcCfgCfm func;              /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
 #endif
@@ -591,7 +591,7 @@ Buffer *mBuf;                /* message buffer */
    S16 ret1;                 /* return value */
    KwMngmt cfm;              /* RLC LM structure */
 
-   TRC3(cmUnpkLkwCfgCfm)
+   TRC3(cmUnpkLrlcCfgCfm)
 
    ret1 = cmUnpkKwMngmt(&cfm, LKW_EVT_CFG_CFM, mBuf);
 
@@ -611,7 +611,7 @@ Buffer *mBuf;                /* message buffer */
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, &cfm));
 
-} /* end of cmUnpkLkwCfgCfm */
+} /* end of cmUnpkLrlcCfgCfm */
 
 
 
@@ -1500,7 +1500,7 @@ Buffer *mBuf;                /* Message Buffer */
     switch( eventType )
     {
        case LKW_EVT_CFG_REQ:
-          ret1 = cmPkKwCfg(param, param->hdr.elmId.elmnt ,mBuf);
+          ret1 = cmPkRlcCfg(param, param->hdr.elmId.elmnt ,mBuf);
           if (ret1 != ROK)
           {
              RETVALUE(RFAILED);
@@ -1570,20 +1570,20 @@ Buffer *mBuf;                /* Message Buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkKwCfg
+PRIVATE S16 cmPkRlcCfg
 (
 KwMngmt *cfg,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkKwCfg(cfg, elmnt, mBuf)
+PRIVATE S16 cmPkRlcCfg(cfg, elmnt, mBuf)
 KwMngmt *cfg;
 Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-    TRC3(cmPkKwCfg)
+    TRC3(cmPkRlcCfg)
 
     switch( elmnt )
     {
@@ -1620,7 +1620,7 @@ Buffer *mBuf;
           RETVALUE(RFAILED);
     }
     RETVALUE(ROK);
-} /*end of function cmPkKwCfg*/
+} /*end of function cmPkRlcCfg*/
 
 
 /**
@@ -2043,7 +2043,7 @@ Buffer *mBuf;
     switch( eventType )
     {
        case  LKW_EVT_CFG_REQ:
-          ret1 = cmUnpkKwCfg(param, param->hdr.elmId.elmnt ,mBuf);
+          ret1 = cmUnpkRlcCfg(param, param->hdr.elmId.elmnt ,mBuf);
           if (ret1 != ROK)
           {
              RETVALUE(RFAILED);
@@ -2113,20 +2113,20 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkKwCfg
+PRIVATE S16 cmUnpkRlcCfg
 (
 KwMngmt *cfg,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkKwCfg(cfg ,elmnt, mBuf)
+PRIVATE S16 cmUnpkRlcCfg(cfg ,elmnt, mBuf)
 KwMngmt *cfg;
 Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmUnpkKwCfg)
+   TRC3(cmUnpkRlcCfg)
 
    switch(elmnt)
    {
@@ -2164,7 +2164,7 @@ Buffer *mBuf;
    } /* end of switch */     
 
    RETVALUE(ROK);
-} /* end of cmUnpkKwCfg */
+} /* end of cmUnpkRlcCfg */
 
 /**
  * @brief

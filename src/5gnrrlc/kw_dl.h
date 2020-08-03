@@ -89,69 +89,69 @@
 #define KW_MEAS_IS_DL_UU_LOSS_MEAS_ON_FOR_RB(_gCb, _rbCb)  \
      ((_rbCb->rlcId.rbType == CM_LTE_DRB) && \
             (_gCb->u.dlCb->kwL2Cb.measOn[_rbCb->qci] & LKW_L2MEAS_UU_LOSS))
-#define KW_UPD_PDCP_L2_DLDELAY_STS(_kwCb, _kwRbCb, _delay)                     \
+#define KW_UPD_PDCP_L2_DLDELAY_STS(_rlcCb, _kwRbCb, _delay)                     \
 {                                                                              \
    if(((_kwRbCb)->rlcId.rbType == CM_LTE_DRB) &&                               \
-      ((_kwCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_DL_DELAY))    \
+      ((_rlcCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_DL_DELAY))    \
    {                                                                           \
       (_kwRbCb)->rbL2Cb.l2Sts[KW_L2MEAS_DL_DELAY]->dlPjSduDelay.sduDelay += _delay; \
       (_kwRbCb)->rbL2Cb.l2Sts[KW_L2MEAS_DL_DELAY]->dlPjSduDelay.numSdus++; \
    }                                                                    \
 }
 
-#define KW_UPD_L2_UU_LOSS_PKTS(_kwCb, _kwRbCb, _val)                         \
+#define KW_UPD_L2_UU_LOSS_PKTS(_rlcCb, _kwRbCb, _val)                         \
 {                                                                 \
    if(((_kwRbCb)->rlcId.rbType == CM_LTE_DRB) &&                              \
-      ((_kwCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_UU_LOSS))              \
+      ((_rlcCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_UU_LOSS))              \
    {                                                              \
       (_kwRbCb)->rbL2Cb.l2Sts[KW_L2MEAS_UU_LOSS]->uuLoss.dLoss += _val;     \
    }                                                              \
 }
-#define KW_UPD_L2_UU_LOSS_POS_PKTS(_kwCb,_kwRbCb,_val)                         \
+#define KW_UPD_L2_UU_LOSS_POS_PKTS(_rlcCb,_kwRbCb,_val)                         \
 {                                                                 \
    if(((_kwRbCb)->rlcId.rbType == CM_LTE_DRB) &&                              \
-      ((_kwCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_UU_LOSS))              \
+      ((_rlcCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_UU_LOSS))              \
    {                                                              \
       (_kwRbCb)->rbL2Cb.l2Sts[KW_L2MEAS_UU_LOSS]->uuLoss.posPkts += _val;     \
    }                                                              \
 }
 /* Discard new changes starts */
-#define KW_UPD_L2_DL_DISC_SDU_STS(_kwCb,_kwRbCb)                         \
+#define KW_UPD_L2_DL_DISC_SDU_STS(_rlcCb,_kwRbCb)                         \
 {                                                                 \
    if(((_kwRbCb)->rlcId.rbType == CM_LTE_DRB) &&                              \
-      ((_kwCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_DL_DISC))              \
+      ((_rlcCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_DL_DISC))              \
    {                                                              \
       (_kwRbCb)->rbL2Cb.l2Sts[KW_L2MEAS_DL_DISC]->dlDisc.discSdus++;     \
    }                                                              \
 }                                              
 
-#define KW_UPD_L2_DL_TOT_SDU_STS(_kwCb,_kwRbCb)                             \
+#define KW_UPD_L2_DL_TOT_SDU_STS(_rlcCb,_kwRbCb)                             \
 {                                                                 \
    if(((_kwRbCb)->rlcId.rbType == CM_LTE_DRB) &&                              \
-      ((_kwCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_DL_DISC))   \
+      ((_rlcCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_DL_DISC))   \
    {                                                              \
       (_kwRbCb)->rbL2Cb.l2Sts[KW_L2MEAS_DL_DISC]->dlDisc.totSdus++;      \
    }                                                              \
 }
 
-#define KW_UPD_L2_DECR_NONIP_PER_QCI_RB_COUNT(_kwCb, _kwRbCb)                 \
+#define KW_UPD_L2_DECR_NONIP_PER_QCI_RB_COUNT(_rlcCb, _kwRbCb)                 \
 {                                                                 \
    if(((_kwRbCb)->rlcId.rbType == CM_LTE_DRB) &&                    \
-      ((_kwCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_DL_DISC))   \
+      ((_rlcCb)->u.dlCb->kwL2Cb.measOn[_kwRbCb->qci] & LKW_L2MEAS_DL_DISC))   \
    {                                                              \
       U32 idx1;                                                    \
       for (idx1 = 0; idx1 < LKW_MAX_L2MEAS; idx1++)                  \
       {                                                           \
-         if(_kwCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.measType & LKW_L2MEAS_DL_DISC)                 \
+         if(_rlcCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.measType & LKW_L2MEAS_DL_DISC)                 \
          {                                                        \
-            if(_kwCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci].totDrbsPerQci > 0) \
+            if(_rlcCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci].totDrbsPerQci > 0) \
             {                                                                                               \
-               _kwCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci].totDrbsPerQci--;   \
-               if (_kwCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci].totDrbsPerQci == 0) \
+               _rlcCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci].totDrbsPerQci--;   \
+               if (_rlcCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci].totDrbsPerQci == 0) \
                {                                                                                                 \
-                  _kwCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.qci[(_kwRbCb)->qci] = 0;                      \
-                  cmMemset((U8 *)&_kwCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci], 0,  \
-                     sizeof(_kwCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci]));            \
+                  _rlcCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.qci[(_kwRbCb)->qci] = 0;                      \
+                  cmMemset((U8 *)&_rlcCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci], 0,  \
+                     sizeof(_rlcCb->u.dlCb->kwL2Cb.kwL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_kwRbCb)->qci]));            \
                }                                                                                                 \
             }                                                                                                    \
          }                                                                                                       \
@@ -159,12 +159,12 @@
    }                                                                                                             \
 }
 #else
-#define KW_UPD_PDCP_L2_DLDELAY_STS(_kwCb, _kwRbCb, _delay)
+#define KW_UPD_PDCP_L2_DLDELAY_STS(_rlcCb, _kwRbCb, _delay)
 #define KW_MEAS_IS_DL_IP_MEAS_ON_FOR_RB(_gCb, _rbCb)
 #define KW_MEAS_IS_DL_DELAY_MEAS_ON_FOR_RB(_gCb, _rbCb)
-#define KW_UPD_L2_DL_DISC_SDU_STS(_kwCb,_kwRbCb)
-#define KW_UPD_L2_DL_TOT_SDU_STS(_kwCb, _kwRbCb)
-#define KW_UPD_L2_DECR_NONIP_PER_QCI_RB_COUNT(_kwCb, _kwRbCb)
+#define KW_UPD_L2_DL_DISC_SDU_STS(_rlcCb,_kwRbCb)
+#define KW_UPD_L2_DL_TOT_SDU_STS(_rlcCb, _kwRbCb)
+#define KW_UPD_L2_DECR_NONIP_PER_QCI_RB_COUNT(_rlcCb, _kwRbCb)
 #endif
 
 

@@ -100,6 +100,7 @@ typedef struct duUeCb
    uint32_t gnbCuUeF1apId; /* GNB CU UE F1AP ID */
    UeState  ueState;
    MacUeCfg macUeCfg;
+   RlcUeCfg rlcUeCfg;
 }DuUeCb;
 
 typedef struct duCellCb
@@ -207,7 +208,6 @@ S16 duSendEgtpDatInd(Buffer *mBuf);
 S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint8_t duBuildAndSendMacCellStartReq();
 uint8_t duBuildAndSendMacCellStopReq();
-
 #endif
 
 /**********************************************************************
