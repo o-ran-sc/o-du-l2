@@ -88,7 +88,7 @@ PUBLIC S16 kwLiRguDatReqRbuf(Pst *Post,SpId spId,Void *datReq);
 PUBLIC S16 kwLiRguStaRspRbuf(Pst *Post,SpId spId,Void  *staRsp);
 #endif
 #if defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS)
-EXTERN S16 KwDlHarqStaBatchProc (Void);
+EXTERN S16 RlcDlHarqStaBatchProc (Void);
 #endif
 
 
@@ -540,7 +540,7 @@ PUBLIC Void kwUtlFreeUlRBuf()
          {
             if(datInd->lchData[numLch].pdu.mBuf[numPdu])
             {
-               KW_FREE_BUF_WC(datInd->lchData[numLch].pdu.mBuf[numPdu]);
+               RLC_FREE_BUF_WC(datInd->lchData[numLch].pdu.mBuf[numPdu]);
             }
          }
       }

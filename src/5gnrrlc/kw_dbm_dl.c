@@ -229,13 +229,13 @@ PUBLIC Void kwDbmFetchDlRbCbByRbId
 (
 KwCb         *gCb,
 CmLteRlcId   *rlcId,
-KwDlRbCb     **rbCb
+RlcDlRbCb     **rbCb
 )
 #else
 PUBLIC Void kwDbmFetchDlRbCbByRbId(gCb, rlcId, rbCb)
 KwCb         *gCb;
 CmLteRlcId   *rlcId;
-KwDlRbCb     **rbCb;
+RlcDlRbCb     **rbCb;
 #endif
 {
    TRC3(kwDbmFetchDlRbCbByRbId)
@@ -245,7 +245,7 @@ KwDlRbCb     **rbCb;
    /* Check for UE CB or CELL CB */
    if (rlcId->ueId == 0)
    {
-      KwDlCellCb *cellCb;
+      RlcDlCellCb *cellCb;
       
       if(rlcId->rbId >= KW_MAX_RB_PER_CELL)
       {
@@ -271,7 +271,7 @@ KwDlRbCb     **rbCb;
    }
    else
    {
-      KwDlUeCb *ueCb;
+      RlcDlUeCb *ueCb;
       if (!(KW_VALIDATE_UE_RBID(rlcId->rbType, rlcId->rbId)))
       {
          RLOG_ARG3(L_ERROR,DBG_RBID, rlcId->rbId,
@@ -321,7 +321,7 @@ KwCb          *gCb,
 CmLteRnti     ueId,  
 CmLteCellId   cellId,
 CmLteLcId     lcId,  
-KwDlRbCb      **rbCb
+RlcDlRbCb      **rbCb
 )
 #else
 PUBLIC Void kwDbmFetchDlRbCbFromLchId(gCb, ueId, cellId, lcId, rbCb)
@@ -329,10 +329,10 @@ KwCb          *gCb;
 CmLteRnti     ueId;  
 CmLteCellId   cellId;
 CmLteLcId     lcId; 
-KwDlRbCb      **rbCb; 
+RlcDlRbCb      **rbCb; 
 #endif
 {
-   KwDlUeCb *ueCb;
+   RlcDlUeCb *ueCb;
    
    TRC3(kwDbmFetchDlRbCbFromLchId)
 
@@ -340,7 +340,7 @@ KwDlRbCb      **rbCb;
    /* Check for UE CB or CELL CB */
    if (ueId == 0)
    {
-      KwDlCellCb *cellCb;
+      RlcDlCellCb *cellCb;
       
       kwDbmFetchDlCellCb(gCb, cellId, &cellCb);
       if(!cellCb)
@@ -382,13 +382,13 @@ KwDlRbCb      **rbCb;
 PUBLIC Void kwDbmDelAllDlRb
 (
 KwCb       *gCb,
-KwDlRbCb   **rbCbLst,
+RlcDlRbCb   **rbCbLst,
 U8         numRbCb 
 )
 #else
 PUBLIC Void kwDbmDelAllDlRb(gCb, rbCbLst, numRbCb)
 KwCb       *gCb;
-KwDlRbCb   **rbCbLst;
+RlcDlRbCb   **rbCbLst;
 U8         numRbCb;   
 #endif
 {
@@ -408,7 +408,7 @@ U8         numRbCb;
          {
             kwUmmFreeDlRbCb(gCb,rbCbLst[idx]);
 
-            KW_FREE (gCb,rbCbLst[idx], sizeof (KwDlRbCb));       
+            RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcDlRbCb));       
          }
          else if( CM_LTE_MODE_AM == rbCbLst[idx]->mode)
          {
@@ -418,7 +418,7 @@ U8         numRbCb;
          else if(CM_LTE_MODE_TM == rbCbLst[idx]->mode)
          {
             cmLListCatLList(&(gCb->u.dlCb->toBeFreed.sduLst),&(rbCbLst[idx]->m.tm.sduQ));
-            KW_FREE (gCb,rbCbLst[idx], sizeof (KwDlRbCb));       
+            RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcDlRbCb));       
          }
 
       }
@@ -452,22 +452,22 @@ PUBLIC S16 kwDbmCreateDlUeCb
 KwCb          *gCb,
 CmLteRnti     ueId,  
 CmLteCellId   cellId,
-KwDlUeCb      **ueCb 
+RlcDlUeCb      **ueCb 
 )
 #else
 PUBLIC S16 kwDbmCreateDlUeCb(gCb,ueId, cellId, ueCb)
 KwCb          *gCb;
 CmLteRnti     ueId;
 CmLteCellId   cellId;
-KwDlUeCb      **ueCb;
+RlcDlUeCb      **ueCb;
 #endif
 {
-   KwDlUeCb *tUeCb;        
+   RlcDlUeCb *tUeCb;        
 
    TRC3(kwDbmCreateDlUeCb)
 
 
-   KW_ALLOC(gCb,*ueCb, sizeof(KwDlUeCb));
+   RLC_ALLOC(gCb,*ueCb, sizeof(RlcDlUeCb));
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (*ueCb == NULLP)
@@ -523,14 +523,14 @@ PUBLIC S16 kwDbmFetchDlUeCb
 KwCb          *gCb,
 CmLteRnti     ueId, 
 CmLteCellId   cellId,
-KwDlUeCb      **ueCb
+RlcDlUeCb      **ueCb
 )
 #else
 PUBLIC S16 kwDbmFetchDlUeCb(gCb,ueId, cellId, ueCb)
 KwCb          *gCb;
 CmLteRnti     ueId;  
 CmLteCellId   cellId;
-KwDlUeCb      **ueCb;
+RlcDlUeCb      **ueCb;
 #endif
 {
 
@@ -564,13 +564,13 @@ KwDlUeCb      **ueCb;
 PUBLIC Void kwDbmDelDlUeCb
 (
 KwCb       *gCb,
-KwDlUeCb   *ueCb,   
+RlcDlUeCb   *ueCb,   
 Bool       abortFlag 
 )
 #else
 PUBLIC Void kwDbmDelDlUeCb(gCb,eCb, abortFlag)
 KwCb       *gCb;
-KwDlUeCb   *ueCb; 
+RlcDlUeCb   *ueCb; 
 Bool       abortFlag;
 #endif
 {
@@ -583,7 +583,7 @@ Bool       abortFlag;
           defined(PJ_CMP_ASYNC)))*/
 
    /* Delete all logical channels */
-   KW_MEM_ZERO(ueCb->lCh,sizeof(KwDlLch) * KW_MAX_LCH_PER_UE);
+   KW_MEM_ZERO(ueCb->lCh,sizeof(RlcDlLch) * KW_MAX_LCH_PER_UE);
 
    /* Delete all SRB RbCbs in UeCb */
    kwDbmDelAllDlRb(gCb,ueCb->srbCb, KW_MAX_SRB_PER_UE);
@@ -602,7 +602,7 @@ Bool       abortFlag;
    gCb->genSts.numUe--;
    
    /* Deallocate ueCb */
-   KW_FREE(gCb,ueCb, sizeof(KwDlUeCb));
+   RLC_FREE(gCb,ueCb, sizeof(RlcDlUeCb));
 
    RETVOID;
 } /* kwDbmDelUeCb */
@@ -629,7 +629,7 @@ PUBLIC Void kwDbmDelAllDlUe(gCb)
 KwCb  *gCb;
 #endif
 {
-   KwDlUeCb *ueCb = NULLP; 
+   RlcDlUeCb *ueCb = NULLP; 
 
    TRC3(kwDbmDelAllDlUe)
 
@@ -654,12 +654,12 @@ KwCb  *gCb;
 PUBLIC Void kwDbmDelAllDlL2MeasTbFrmUe
 (
 KwCb      *gCb,
-KwDlUeCb  *ueCb
+RlcDlUeCb  *ueCb
 )
 #else
 PUBLIC Void kwDbmDelAllDlL2MeasTbFrmUe(gCb,ueCb)
 KwCb      *gCb;
-KwDlUeCb  *ueCb;
+RlcDlUeCb  *ueCb;
 #endif
 {
    U8           tbIdx;
@@ -669,7 +669,7 @@ KwDlUeCb  *ueCb;
        l2MeasTb = ueCb->l2MeasTbCb[tbIdx];
        if(l2MeasTb != NULLP)
        {
-          KW_FREE(gCb,l2MeasTb, sizeof(KwL2MeasTb));
+          RLC_FREE(gCb,l2MeasTb, sizeof(KwL2MeasTb));
           ueCb->l2MeasTbCb[tbIdx] = NULLP;
        }       
    }  
@@ -697,20 +697,20 @@ PUBLIC S16 kwDbmCreateDlCellCb
 (
 KwCb          *gCb,
 CmLteCellId   cellId, 
-KwDlCellCb    **cellCb 
+RlcDlCellCb    **cellCb 
 )
 #else
 PUBLIC S16 kwDbmCreateDlCellCb(gCb,cellId, cellCb)
 KwCb          *gCb;
 CmLteCellId   cellId;   
-KwDlCellCb    **cellCb;
+RlcDlCellCb    **cellCb;
 #endif
 {
-   KwDlCellCb *tCellCb; 
+   RlcDlCellCb *tCellCb; 
    
    TRC3(kwDbmCreateDlCellCb)
 
-   KW_ALLOC(gCb,*cellCb, sizeof(KwDlCellCb));
+   RLC_ALLOC(gCb,*cellCb, sizeof(RlcDlCellCb));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (*cellCb == NULLP)
    {
@@ -756,13 +756,13 @@ PUBLIC S16 kwDbmFetchDlCellCb
 (
 KwCb          *gCb,
 CmLteCellId   cellId, 
-KwDlCellCb    **cellCb
+RlcDlCellCb    **cellCb
 )
 #else
 PUBLIC S16 kwDbmFetchDlCellCb(gCb,cellId, cellCb)
 KwCb          *gCb;
 CmLteCellId   cellId;  
-KwDlCellCb    **cellCb;
+RlcDlCellCb    **cellCb;
 #endif
 {
    TRC3(kwDbmFetchDlCellCb)
@@ -800,12 +800,12 @@ KwDlCellCb    **cellCb;
 PUBLIC Void kwDbmDelDlCellCb
 (
 KwCb         *gCb,
-KwDlCellCb   *cellCb  
+RlcDlCellCb   *cellCb  
 )
 #else
 PUBLIC Void kwDbmDelDlCellCb(gCb,cellCb)
 KwCb         *gCb;
-KwDlCellCb   *cellCb;
+RlcDlCellCb   *cellCb;
 #endif
 {
    TRC3(kwDbmDelDlCellCb)
@@ -821,7 +821,7 @@ KwDlCellCb   *cellCb;
    }
 
    /* Deallocate cellCb */
-   KW_FREE(gCb, cellCb, sizeof(KwDlCellCb));
+   RLC_FREE(gCb, cellCb, sizeof(RlcDlCellCb));
 
    RETVOID;
 } /* kwDbmDelCellCb */
@@ -847,7 +847,7 @@ PUBLIC Void kwDbmDelAllDlCell(gCb)
 KwCb *gCb;
 #endif
 {
-   KwDlCellCb *cellCb = NULLP;
+   RlcDlCellCb *cellCb = NULLP;
 
    TRC3(kwDbmDelAllDlCell)
 

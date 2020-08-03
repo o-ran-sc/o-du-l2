@@ -23,6 +23,9 @@
 #include "lkw.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "ckw.h"
+#include "ckw.x"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include "du_sctp.h"
@@ -164,6 +167,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 	       case KWU_EVT_DAT_IND:
 		  {
 		     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_RLC_UL_UE_CREATE_RSP:
+		  {
+		     ret = unpackRlcUlUeCreateRsp(duProcRlcUlUeCreateRsp, pst, mBuf);
 		     break;
 		  }
 	       default:

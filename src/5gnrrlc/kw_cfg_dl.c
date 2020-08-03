@@ -160,7 +160,7 @@ PRIVATE S16 kwDelFrmDlL2Meas(KwCb *gCb, U8 cellId,U8 ueId)
 }
 
 
-PRIVATE S16 kwAddToDlL2Meas(KwCb *gCb, KwDlRbCb *kwRbCb,U8 cellId,U8 ueId)
+PRIVATE S16 kwAddToDlL2Meas(KwCb *gCb, RlcDlRbCb *kwRbCb,U8 cellId,U8 ueId)
 {
    KwL2MeasEvtCb *measEvtCb = NULLP;
    KwL2MeasCb    *measCb    = NULLP;
@@ -319,15 +319,15 @@ PRIVATE S16 kwAddToDlL2Meas(KwCb *gCb, KwDlRbCb *kwRbCb,U8 cellId,U8 ueId)
 PRIVATE S16 kwCfgFillDlRbCb
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,
-KwDlUeCb        *ueCb,
+RlcDlRbCb        *rbCb,
+RlcDlUeCb        *ueCb,
 CkwEntCfgInfo   *entCfg
 )
 #else
 PRIVATE S16 kwCfgFillDlRbCb(gCb,rbCb,entCfg)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;
-KwDlUeCb        *ueCb;
+RlcDlRbCb        *rbCb;
+RlcDlUeCb        *ueCb;
 CkwEntCfgInfo   *entCfg;
 #endif
 {
@@ -394,7 +394,7 @@ CkwEntCfgInfo   *entCfg;
        
 #ifndef LTE_TDD 
              U32 hashIndex;
-              KW_ALLOC(gCb,
+              RLC_ALLOC(gCb,
                     rbCb->m.amDl.txBufLst,
                     (KW_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
               for(hashIndex = 0; hashIndex < KW_TX_BUF_BIN_SIZE; hashIndex++)
@@ -436,14 +436,14 @@ CkwEntCfgInfo   *entCfg;
 PRIVATE S16 kwCfgUpdateDlRb
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,
+RlcDlRbCb        *rbCb,
 void            *ptr,
 CkwEntCfgInfo   *entCfg
 )
 #else
 PRIVATE S16 kwCfgUpdateDlRb(gCb,rbCb, ptr, entCfg)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;
+RlcDlRbCb        *rbCb;
 void            *ptr;
 CkwEntCfgInfo   *entCfg;
 #endif
@@ -465,7 +465,7 @@ CkwEntCfgInfo   *entCfg;
    {
       case CM_LTE_MODE_TM:
       {
-         KwDlCellCb *cellCb = (KwDlCellCb *)ptr;
+         RlcDlCellCb *cellCb = (RlcDlCellCb *)ptr;
 
          rbCb->dir = entCfg->dir;
          rbCb->lch.lChId = entCfg->lCh[0].lChId;
@@ -477,7 +477,7 @@ CkwEntCfgInfo   *entCfg;
 
       case CM_LTE_MODE_UM:
       {
-         KwDlUeCb *ueCb = (KwDlUeCb *)ptr;
+         RlcDlUeCb *ueCb = (RlcDlUeCb *)ptr;
 
          if (entCfg->lCh[0].type == CM_LTE_LCH_DCCH)
          {
@@ -494,7 +494,7 @@ CkwEntCfgInfo   *entCfg;
 
       case CM_LTE_MODE_AM:
       {
-         KwDlUeCb *ueCb = (KwDlUeCb *)ptr;
+         RlcDlUeCb *ueCb = (RlcDlUeCb *)ptr;
 
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = NULLP;
          ueCb->lCh[entCfg->lCh[1].lChId - 1].dlRbCb = rbCb;
@@ -566,9 +566,9 @@ CkwEntCfgInfo      *entCfg;
 CkwEntCfgCfmInfo   *entCfm;
 #endif
 {
-   KwDlUeCb     *ueCb = NULLP;   /* UE Control Block */
-   KwDlCellCb   *cellCb;         /* Cell Control Block */
-   KwDlRbCb     *kwRbCb;         /* KW RB Control Block */
+   RlcDlUeCb     *ueCb = NULLP;   /* UE Control Block */
+   RlcDlCellCb   *cellCb;         /* Cell Control Block */
+   RlcDlRbCb     *kwRbCb;         /* KW RB Control Block */
    U8           reason;          /* Rb Identifier */
 
    TRC3(kwCfgAddDlRb)
@@ -669,7 +669,7 @@ CkwEntCfgCfmInfo   *entCfm;
          }                                                            
 
          /* Create RB CB */
-         KW_ALLOC(gCb,kwRbCb, sizeof (KwDlRbCb));
+         RLC_ALLOC(gCb,kwRbCb, sizeof (RlcDlRbCb));
          if (!kwRbCb)
          {
             RLOG_ARG2(L_FATAL,DBG_UEID,ueId,
@@ -762,7 +762,7 @@ CkwEntCfgCfmInfo   *entCfm;
          }                                                            
 
          /* Create RB CB */
-         KW_ALLOC(gCb,kwRbCb, sizeof (KwDlRbCb));
+         RLC_ALLOC(gCb,kwRbCb, sizeof (RlcDlRbCb));
          if (kwRbCb == NULL)
          {
             /* Fill entCfm structure */                           
@@ -820,7 +820,7 @@ CkwEntCfgCfmInfo   *entCfm;
                CKW_CFG_REAS_RB_CREAT_FAIL);
 
       /* Delete RB CB created */
-      KW_FREE(gCb,kwRbCb, sizeof(KwDlRbCb));
+      RLC_FREE(gCb,kwRbCb, sizeof(RlcDlRbCb));
       RLOG_ARG2(L_ERROR,DBG_RBID, entCfg->rbId,
                "Filling of RbCb failed UEID:%d CELLID:%d",
                ueId,
@@ -893,10 +893,10 @@ CkwEntCfgInfo      *entCfg;
 CkwEntCfgCfmInfo   *entCfm;
 #endif
 {
-   KwDlRbCb     *rbCb;     /* RB Control Block */
-   KwDlRbCb     tRbCb;     /* KW RB Control Block */
-   KwDlCellCb   *cellCb;   /* Cell Control Block */
-   KwDlUeCb     *ueCb;     /* Ue Control Block */
+   RlcDlRbCb     *rbCb;     /* RB Control Block */
+   RlcDlRbCb     tRbCb;     /* KW RB Control Block */
+   RlcDlCellCb   *cellCb;   /* Cell Control Block */
+   RlcDlUeCb     *ueCb;     /* Ue Control Block */
    U8           ret;
 
    TRC3(kwCfgReCfgDlRb)
@@ -954,7 +954,7 @@ CkwEntCfgCfmInfo   *entCfm;
       /* Take backup of rbCb before updating.
        * Because in failure case restore original rbCb
        */
-      cmMemcpy((U8 *)&tRbCb, (U8 *)rbCb, sizeof(KwDlRbCb));
+      cmMemcpy((U8 *)&tRbCb, (U8 *)rbCb, sizeof(RlcDlRbCb));
 
       /* Update rbCb */
       ret = kwCfgUpdateDlRb(gCb,rbCb, cellCb,entCfg);
@@ -971,7 +971,7 @@ CkwEntCfgCfmInfo   *entCfm;
                   "CELLID:%u RBID:%d updation failed",
                   cellId,
                   entCfg->rbId);
-         cmMemcpy((U8*)rbCb, (U8 *)&tRbCb, sizeof(KwDlRbCb));
+         cmMemcpy((U8*)rbCb, (U8 *)&tRbCb, sizeof(RlcDlRbCb));
 
          RETVALUE(ret);
       }
@@ -1022,7 +1022,7 @@ CkwEntCfgCfmInfo   *entCfm;
       /* Take backup of rbCb before updating.
        * Because in failure case restore original rbCb
        */
-      cmMemcpy((U8 *)&tRbCb, (U8 *)rbCb, sizeof(KwDlRbCb));
+      cmMemcpy((U8 *)&tRbCb, (U8 *)rbCb, sizeof(RlcDlRbCb));
 
       /* Update rbCb */
       ret = kwCfgUpdateDlRb(gCb,rbCb,ueCb, entCfg);
@@ -1035,7 +1035,7 @@ CkwEntCfgCfmInfo   *entCfm;
                   "CELLID:%d RBID:%d updation failed",
                   cellId,
                   entCfg->rbId);
-         cmMemcpy((U8*)rbCb, (U8 *)&tRbCb, sizeof(KwDlRbCb));
+         cmMemcpy((U8*)rbCb, (U8 *)&tRbCb, sizeof(RlcDlRbCb));
 
          RETVALUE(ret);
       }
@@ -1097,9 +1097,9 @@ CkwEntCfgCfmInfo   *entCfm;
 #endif
 {
    S16          ret;       /* Return Value */
-   KwDlUeCb     *ueCb;     /* UE Control Block */
-   KwDlCellCb   *cellCb;   /* UE Control Block */
-   KwDlRbCb     *kwRbCb;   /* KW RB Control Block */
+   RlcDlUeCb     *ueCb;     /* UE Control Block */
+   RlcDlCellCb   *cellCb;   /* UE Control Block */
+   RlcDlRbCb     *kwRbCb;   /* KW RB Control Block */
 
    TRC3(kwCfgDelDlRb)
 
@@ -1161,7 +1161,7 @@ CkwEntCfgCfmInfo   *entCfm;
       /* Assign NULLP to dlRbCb/ulRbCb.
        * Delete Hashlist allocated for it if any */
       cellCb->lCh[kwRbCb->lch.lChId - 1].dlRbCb = NULLP;
-      KW_FREE(gCb,kwRbCb, sizeof(KwDlRbCb));   /*Vartika: Mem leak fix */  
+      RLC_FREE(gCb,kwRbCb, sizeof(RlcDlRbCb));   /*Vartika: Mem leak fix */  
    }
     /* Get ueCb and delete rbCb from it */
    else
@@ -1218,7 +1218,7 @@ CkwEntCfgCfmInfo   *entCfm;
       {
          kwUmmFreeDlRbCb(gCb,kwRbCb);
          /* Delete RbCb  */
-         KW_FREE(gCb,kwRbCb, sizeof(KwDlRbCb));     
+         RLC_FREE(gCb,kwRbCb, sizeof(RlcDlRbCb));     
       }
       else if( CM_LTE_MODE_AM == kwRbCb->mode)
       {
@@ -1294,7 +1294,7 @@ CkwEntCfgInfo      *entCfg;
 CkwEntCfgCfmInfo   *entCfm;
 #endif
 {
-   KwDlRbCb     *rbCb;   /* RB Control Block */
+   RlcDlRbCb     *rbCb;   /* RB Control Block */
    CmLteRlcId   rlcId;   /* RLC Identifier */
 
    TRC3(kwCfgReEstDlRb)
@@ -1396,7 +1396,7 @@ CkwEntCfgCfmInfo   *entCfm;
 #endif
 {
    S16        ret;     /* Return Value */
-   KwDlUeCb   *ueCb;   /* UE Control Block */
+   RlcDlUeCb   *ueCb;   /* UE Control Block */
 
    TRC3(kwCfgDelUe)
 
@@ -1486,7 +1486,7 @@ CkwEntCfgInfo      *entCfg;
 CkwEntCfgCfmInfo   *entCfm;
 #endif
 {
-   KwDlCellCb   *cellCb;   /* UE Control Block */
+   RlcDlCellCb   *cellCb;   /* UE Control Block */
    U8           rbId;      /* RB Identifier */
 
    TRC3(kwCfgDelCell)
@@ -1572,7 +1572,7 @@ CkwUeInfo   *newUeInfo;
 CmStatus    *status;
 #endif
 {
-   KwDlUeCb *ueCb;
+   RlcDlUeCb *ueCb;
 /*kw004.201 Adding of Missing Trace in LTE RLC PDCP*/
    TRC3(kwCfgUeIdChng)
 

@@ -21,6 +21,7 @@
 
 #include "stdbool.h"
 #include "du_app_mac_inf.h"
+//#include "du_app_rlc_inf.h"
 #include "du_log.h"
 #include "odu_common_codec.h"
 

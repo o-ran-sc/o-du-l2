@@ -40,7 +40,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef struct kwUlUeCb KwUlUeCb;
+typedef struct kwUlUeCb RlcUlUeCb;
 
 /** @defgroup um_uplink UM Uplink Module
 */
@@ -219,7 +219,7 @@ typedef struct _kwUlRbCb
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    KwL2MeasRbCb    rbL2Cb;              /**< RB measurement L2 Cb */
-   KwUlUeCb        *ueCb;              /*!< Pointer to UeCb  */
+   RlcUlUeCb        *ueCb;              /*!< Pointer to UeCb  */
    U8              qci;                 /**< qci of the RB */
    KwL2MeasIpThruput l2MeasIpThruput;   /**< Holds related parameter for
                                              DL/Ul ip throughput>*/
@@ -237,7 +237,7 @@ typedef struct _kwUlRbCb
       KwUmUl   umUl;   /**< UM  mode Ul elements */
       KwAmUl   amUl;   /**< AM mode uplink elements */
    }m;   /**< RLC mode specific Info */
-}KwUlRbCb;
+}RlcUlRbCb;
 
 /** 
  * @brief  Structure to hold mapping between logical channel and Radio Bearer
@@ -247,8 +247,8 @@ typedef struct _kwUlRbCb
 */
 typedef struct kwUlLch
 {
-   KwUlRbCb *ulRbCb;   /**< Pointer to Uplink RbCb */
-}KwUlLch;                                  
+   RlcUlRbCb *ulRbCb;   /**< Pointer to Uplink RbCb */
+}RlcUlLch;                                  
 
 /** 
  * @brief  Structure to hold uplink information about the Cells
@@ -265,10 +265,10 @@ typedef struct kwUlCellCb
 {
    CmHashListEnt   cellHlEnt;                 /**< Hash list entry for CellCb */
    CmLteCellId     cellId;                    /**< Cell Id */
-   KwUlRbCb        *rbCb[KW_MAX_RB_PER_CELL]; /**< RbCbs within a Cell */
-   KwUlLch         lCh[KW_MAX_LCH_PER_CELL];  /**< Logical channels in a cell */
+   RlcUlRbCb        *rbCb[KW_MAX_RB_PER_CELL]; /**< RbCbs within a Cell */
+   RlcUlLch         lCh[KW_MAX_LCH_PER_CELL];  /**< Logical channels in a cell */
    Pst             selfPstUl;
-}KwUlCellCb;
+}RlcUlCellCb;
 
 /** 
  * @brief  Structure to hold uplink information about the UEs
@@ -286,9 +286,9 @@ struct kwUlUeCb
    CmHashListEnt   ueHlEnt;                   /**< Hash list entry for UeCb */
    CmLteRnti     ueId;     /*!< UE Id */
    CmLteCellId   cellId;   /*!< Cell Id */
-   KwUlRbCb        *srbCb[KW_MAX_SRB_PER_UE]; /**< SRB RbCbs within an UE */ 
-   KwUlRbCb        *drbCb[KW_MAX_DRB_PER_UE]; /**< DRB RbCbs within an UE */ 
-   KwUlLch         lCh[KW_MAX_LCH_PER_UE];    /**< Logical channels of an UE*/
+   RlcUlRbCb        *srbCb[KW_MAX_SRB_PER_UE]; /**< SRB RbCbs within an UE */ 
+   RlcUlRbCb        *drbCb[KW_MAX_DRB_PER_UE]; /**< DRB RbCbs within an UE */ 
+   RlcUlLch         lCh[KW_MAX_LCH_PER_UE];    /**< Logical channels of an UE*/
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    U32             firstPacketTTI;            /*!< is first packet of the burst */
@@ -307,8 +307,8 @@ struct kwUlUeCb
 typedef struct kwUlEntTmpData
 {
    CkwEntCfgCfmInfo   entUlCfgCfm; /**< Ul Configuration status*/ 
-   KwUlRbCb           *rbCb;       /**< Rb Block */
-}KwUlEntTmpData;
+   RlcUlRbCb           *rbCb;       /**< Rb Block */
+}RlcUlEntTmpData;
 
 /** 
  * @brief  Structure to hold transaction information in configuration request 
@@ -334,13 +334,13 @@ typedef struct kwUlCfgTmpData
                                                       This is used while sending confirm to the User Layer */
    CmLteCellId      cellId;                      /**< Cell Id */
    CmLteRnti        ueId;                        /**< Ue Id */
-   KwUlUeCb         *ueCb;                       /**< Ue Block */
-   KwUlCellCb       *cellCb;                     /**< Cell Block */
-   CkwCfgInfo       *cfgInfo;                    /**< Config Information*/
+   RlcUlUeCb         *ueCb;                       /**< Ue Block */
+   RlcUlCellCb       *cellCb;                     /**< Cell Block */
+   RlcCfgInfo       *cfgInfo;                    /**< Config Information*/
    CkwUeInfo        *ueInfo;                     /**< Ue Information */
    CkwUeInfo        *newUeInfo;                  /**< New Ue Information */
-   KwUlEntTmpData   cfgEntData[CKW_MAX_ENT_CFG]; /**< Entity Data */
-} KwUlCfgTmpData;
+   RlcUlEntTmpData   cfgEntData[CKW_MAX_ENT_CFG]; /**< Entity Data */
+} RlcUlCfgTmpData;
 /****************************************************************************
  *                      EXTERN Declarations
  ***************************************************************************/
@@ -355,61 +355,61 @@ EXTERN S16 kwValidateRbCfgParams ARGS ((KwCb *gCb,
                                         CmStatus        *status));
 EXTERN S16 kwCfgValidateUlRb ARGS (( KwCb *gCb,
                                     CkwEntCfgInfo *cfgToValidate,
-                                    KwUlEntTmpData *cfgInfo, 
-                                    KwUlCfgTmpData *cfg));
+                                    RlcUlEntTmpData *cfgInfo, 
+                                    RlcUlCfgTmpData *cfg));
 
 EXTERN S16 kwCfgRollBackUlRb ARGS ((KwCb *gCb,
                                     CmLteRnti ueId,
                                     CkwEntCfgInfo *cfgToValidate,
-                                    KwUlEntTmpData *cfgTempData));
+                                    RlcUlEntTmpData *cfgTempData));
 
 EXTERN Void kwCfgApplyUlRb ARGS ((KwCb *gCb,
                                   CkwEntCfgInfo *cfgToAply,
-                                  KwUlEntTmpData *cfgTmpData,
-                                  KwUlCfgTmpData *cfgTmpInfo));
+                                  RlcUlEntTmpData *cfgTmpData,
+                                  RlcUlCfgTmpData *cfgTmpInfo));
 
 EXTERN S16 kwCfgValidateReEstRb ARGS ((KwCb *gCb,
                                        CmLteRnti  ueId,
                                        CmLteCellId cellId,
                                        CkwEntCfgInfo *cfgToValidate,
-                                       KwUlEntTmpData   *cfgTmpData));
+                                       RlcUlEntTmpData   *cfgTmpData));
 
 EXTERN Void kwCfgApplyReEstUlRb ARGS ((KwCb *gCb,
                                       CmLteRnti ueId,
                                       CmLteCellId cellId,
                                       Bool sndReEstInd,
-                                      KwUlEntTmpData *cfgTmpData));
+                                      RlcUlEntTmpData *cfgTmpData));
 
 EXTERN Void kwCfgApplyDelUlCell ARGS ((KwCb *gCb,
-                                      KwUlCfgTmpData *cfgTmpData));
+                                      RlcUlCfgTmpData *cfgTmpData));
 
 EXTERN S16 kwCfgValidateDelUlCell ARGS ((KwCb *gCb,
                                          CmLteCellId cellId,
                                          CkwEntCfgInfo *cfgToValidate,
-                                         KwUlEntTmpData   *cfgTmpData,
-                                         KwUlCfgTmpData *cfgInfo));
+                                         RlcUlEntTmpData   *cfgTmpData,
+                                         RlcUlCfgTmpData *cfgInfo));
 
 EXTERN S16 kwCfgValidateDelUlUe ARGS ((KwCb *gCb,
                                        CkwEntCfgInfo *cfgToValidate,
-                                       KwUlEntTmpData *cfgTmpData,
-                                       KwUlCfgTmpData *cfgInfo));
+                                       RlcUlEntTmpData *cfgTmpData,
+                                       RlcUlCfgTmpData *cfgInfo));
 
 EXTERN Void kwCfgApplyDelUlUe ARGS ((KwCb *gCb,
-                                    KwUlCfgTmpData *cfgTmpData));
+                                    RlcUlCfgTmpData *cfgTmpData));
 
 EXTERN Void kwHdlUiCkwUlCfgReq ARGS ((KwCb *gCb,
-                                     KwUlCfgTmpData *cfgInfo,
-                                     CkwCfgInfo *cfg));
+                                     RlcUlCfgTmpData *cfgInfo,
+                                     RlcCfgInfo *cfg));
 
 EXTERN Void kwCfgApplyUlUeIdChng ARGS ((KwCb *gCb,
                                         CkwUeInfo *ueInfo,
                                         CkwUeInfo *newUeInfo,
-                                        KwUlCfgTmpData *cfgTmpInfo));
+                                        RlcUlCfgTmpData *cfgTmpInfo));
 
 EXTERN S16 kwCfgValidateUeIdChng ARGS ((KwCb *gCb,
                                         CkwUeInfo *ueInfo,
                                         CkwUeInfo *newUeInfo,
-                                        KwUlCfgTmpData *cfgTmpInfo));
+                                        RlcUlCfgTmpData *cfgTmpInfo));
 
 /****************************************************************************
  *                    DBM module Functions 
@@ -421,53 +421,53 @@ EXTERN Void kwDbmUlDeInit ARGS ((KwCb *gCb));
 EXTERN S16 kwDbmAddUlUeCb ARGS ((KwCb *gCb,
                                     CmLteRnti ueId,
                                     CmLteCellId cellId,
-                                    KwUlUeCb *ueCb));
+                                    RlcUlUeCb *ueCb));
 
 EXTERN S16 kwDbmFetchUlUeCb ARGS ((KwCb *gCb,
                                    CmLteRnti ueId,
                                    CmLteCellId cellId,
-                                   KwUlUeCb **ueCb));
+                                   RlcUlUeCb **ueCb));
 
 EXTERN Void kwDbmDelUlUeCb ARGS ((KwCb *gCb,   
-                                  KwUlUeCb *ueCb,
+                                  RlcUlUeCb *ueCb,
                                   Bool abortFlag));
 
 EXTERN Void kwDbmDelAllUlUe ARGS ((KwCb *gCb));
 
 EXTERN S16 kwDbmAddUlCellCb ARGS ((KwCb *gCb,
                                       CmLteCellId cellId,
-                                      KwUlCellCb *cellCb));
+                                      RlcUlCellCb *cellCb));
 
 EXTERN Void kwDbmFetchUlCellCb ARGS ((KwCb *gCb, 
                                       CmLteCellId cellId,
-                                      KwUlCellCb **cellCb));
+                                      RlcUlCellCb **cellCb));
 
 EXTERN Void kwDbmDelUlCellCb ARGS ((KwCb *gCb,  
-                                   KwUlCellCb *cellCb));
+                                   RlcUlCellCb *cellCb));
 
 EXTERN Void kwDbmDelAllUlCell ARGS ((KwCb *gCb));
 
 EXTERN Void kwDbmFetchUlRbCbByRbId ARGS ((KwCb *gCb, 
                                           CmLteRlcId *rlcId, 
-                                          KwUlRbCb **rbCb));
+                                          RlcUlRbCb **rbCb));
 
 EXTERN Void kwDbmFetchUlRbCbFromLchId ARGS ((KwCb *gCb, 
                                              CmLteRnti ueId, 
                                              CmLteCellId cellId, 
                                              CmLteLcId lcId,  
-                                             KwUlRbCb **rbCb));
+                                             RlcUlRbCb **rbCb));
 
 EXTERN Void kwDbmDelAllUlRb ARGS ((KwCb *gCb, 
-                                   KwUlRbCb **rbCbLst, 
+                                   RlcUlRbCb **rbCbLst, 
                                    U8 numRbCb));
 
-EXTERN S16 kwDbmAddUlTransaction ARGS((KwCb *gCb, KwUlCfgTmpData *cfg));
+EXTERN S16 kwDbmAddUlTransaction ARGS((KwCb *gCb, RlcUlCfgTmpData *cfg));
 
 EXTERN S16 kwDbmFindUlTransaction ARGS((KwCb *gCb, 
                                         U32 transId, 
-                                        KwUlCfgTmpData **cfg));
+                                        RlcUlCfgTmpData **cfg));
 
-EXTERN S16 kwDbmDelUlTransaction ARGS((KwCb *gCb, KwUlCfgTmpData *cfg));
+EXTERN S16 kwDbmDelUlTransaction ARGS((KwCb *gCb, RlcUlCfgTmpData *cfg));
 
 EXTERN S16 kwDbmDelAllUlTransactions ARGS((KwCb *gCb));
 
@@ -478,38 +478,38 @@ EXTERN Void kwDbmUlShutdown ARGS ((KwCb *gCb));
  ***************************************************************************/
 #ifdef CCPU_OPT
 EXTERN PUBLIC Void kwTmmRcvFrmLi ARGS ((KwCb *gCb, 
-                                       KwUlRbCb *rbCb,
+                                       RlcUlRbCb *rbCb,
                                        CmLteRnti tCrnti, 
                                        Buffer *pdu));
 #else /* CCPU_OPT */
 EXTERN PUBLIC Void kwTmmRcvFrmLi ARGS ((KwCb *gCb,
-                                       KwUlRbCb *rbCb,
+                                       RlcUlRbCb *rbCb,
                                        Buffer *pdu));
 #endif /* CCPU_OPT */
 
-EXTERN Void kwTmmUlReEstablish ARGS ((KwCb *gCb, KwUlRbCb *rbCb));
+EXTERN Void kwTmmUlReEstablish ARGS ((KwCb *gCb, RlcUlRbCb *rbCb));
 
 /****************************************************************************
  *                    Unacknowledged Mode Functions 
  ***************************************************************************/
 #ifdef LTE_L2_MEAS
 EXTERN Void kwUmmProcessPdus ARGS((KwCb *gCb,
-                                  KwUlRbCb *rbCb, 
+                                  RlcUlRbCb *rbCb, 
                                   KwPduInfo *pduInfo,
                                   U32 ttiCnt));
 #else 
 EXTERN Void kwUmmProcessPdus ARGS ((KwCb *gCb, 
-                                    KwUlRbCb *rbCb,
+                                    RlcUlRbCb *rbCb,
                                     KwPduInfo *pduInfo));
 #endif 
 EXTERN Void kwUmmUlReEstablish ARGS ((KwCb *gCb, 
                                      CmLteRlcId *rlcId, 
-                                     KwUlRbCb *rbCb));
+                                     RlcUlRbCb *rbCb));
 
-EXTERN Void kwUmmReOrdTmrExp ARGS((KwCb *gCb, KwUlRbCb  *rbCb));
+EXTERN Void kwUmmReOrdTmrExp ARGS((KwCb *gCb, RlcUlRbCb  *rbCb));
 
 
-EXTERN Void kwUmmFreeUlRbCb ARGS ((KwCb *gCb, KwUlRbCb *rbCb)); 
+EXTERN Void kwUmmFreeUlRbCb ARGS ((KwCb *gCb, RlcUlRbCb *rbCb)); 
 
 /****************************************************************************
  *                    Acknowledged Mode Functions 
@@ -517,23 +517,23 @@ EXTERN Void kwUmmFreeUlRbCb ARGS ((KwCb *gCb, KwUlRbCb *rbCb));
 EXTERN Void kwAmmUlReEstablish ARGS((KwCb *gCb, 
                                      CmLteRlcId rlcId, 
                                      Bool sndReEst,
-                                     KwUlRbCb *rbCb));
+                                     RlcUlRbCb *rbCb));
 #ifdef LTE_L2_MEAS
 EXTERN Void kwAmmProcessPdus ARGS((KwCb *gCb,
-                                  KwUlRbCb *rbCb, 
+                                  RlcUlRbCb *rbCb, 
                                   KwPduInfo *pduInfo,
                                   U32 ttiCnt));
 #else
 EXTERN Void kwAmmProcessPdus ARGS((KwCb *gCb, 
-                                  KwUlRbCb *rbCb,
+                                  RlcUlRbCb *rbCb,
                                   KwPduInfo *pduInfo));
 #endif 
 
-EXTERN Void kwAmmReOrdTmrExp ARGS((KwCb *gCb, KwUlRbCb *rbCb));
+EXTERN Void kwAmmReOrdTmrExp ARGS((KwCb *gCb, RlcUlRbCb *rbCb));
 
-EXTERN Void kwAmmStaProTmrExp ARGS((KwCb *gCb, KwUlRbCb *rbCb));
+EXTERN Void kwAmmStaProTmrExp ARGS((KwCb *gCb, RlcUlRbCb *rbCb));
 
-EXTERN Void kwAmmFreeUlRbCb ARGS ((KwCb *gCb, KwUlRbCb *rbCb));
+EXTERN Void kwAmmFreeUlRbCb ARGS ((KwCb *gCb, RlcUlRbCb *rbCb));
 
 /****************************************************************************
  *                    Utility Functions 
@@ -552,17 +552,17 @@ EXTERN Void kwUtlDelRecBuf ARGS ((CmLListCp        *recBufLst,
 
 EXTERN S16 kwUtlRcvFrmLi ARGS ((KwCb *gCb, KwDatIndInfo *datIndInfo));
 
-EXTERN S16 kwUtlSndDatInd ARGS ((KwCb *gCb,KwUlRbCb *rbCb, Buffer *sdu));
+EXTERN S16 kwUtlSndDatInd ARGS ((KwCb *gCb,RlcUlRbCb *rbCb, Buffer *sdu));
 
 #ifdef LTE_L2_MEAS
 EXTERN S16 kwUtlHdlL2TmrExp   ARGS (( KwCb *gCb, KwL2MeasEvtCb *measEvtCb));
 
 EXTERN  Void kwUtlCalUlIpThrPutIncTTI ARGS ((KwCb *gCb, 
-                                             KwUlRbCb  *rbCb,
+                                             RlcUlRbCb  *rbCb,
                                              U32 ttiCnt));
 
 EXTERN Void kwUtlCalUlIpThrPut ARGS((KwCb *gCb, 
-                                     KwUlRbCb *rbCb, 
+                                     RlcUlRbCb *rbCb, 
                                      Buffer *pdu, 
                                      U32 ttiCnt));
 

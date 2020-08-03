@@ -82,7 +82,7 @@ U32 kwStatusPduCnt, kwStatusAckCnt, kwStatusNcnt, kwSduSndCnt;
 
 /* forward references */
 EXTERN Void kwAmmDlHndlStatusPdu ARGS ((KwCb  *gCb,
-                                        KwDlRbCb  *rbCb,
+                                        RlcDlRbCb  *rbCb,
                                         KwUdxStaPdu *pStaPdu));
 
 /* public variable declarations */
@@ -96,7 +96,7 @@ EXTERN Void kwAmmDlHndlStatusPdu ARGS ((KwCb  *gCb,
   {\
      Buffer    *_pduInfo; \
      SSegMsg((_retx)->seg, (_retx)->hdrSz, &_pduInfo); \
-     KW_FREE_BUF((_retx)->seg); \
+     RLC_FREE_BUF((_retx)->seg); \
      (_retx)->seg = _pduInfo; \
   }\
   (_rbCb)->m.amDl.estHdrSz -= retx->hdrSz;\
@@ -105,48 +105,48 @@ EXTERN Void kwAmmDlHndlStatusPdu ARGS ((KwCb  *gCb,
 /* private function declarations */
 
 PRIVATE Void  kwResegRetxPdus ARGS ((KwCb *gCb,
-                                     KwDlRbCb *rbCb, 
+                                     RlcDlRbCb *rbCb, 
                                      KwDatReq *kwDatReq));
 
 PRIVATE Void kwRemRetxPdu ARGS ((KwCb *gCb, 
-                                 KwDlRbCb *rbCb, 
+                                 RlcDlRbCb *rbCb, 
                                  KwRetx *retx));
 
 PRIVATE Void kwAmmCreateStatusPdu ARGS ((KwCb *gCb, 
-                                         KwDlRbCb *rbCb,
+                                         RlcDlRbCb *rbCb,
                                          KwDatReq *kwDatReq));
 
 PRIVATE Void kwAmmDlMarkPduForReTx ARGS ((KwCb *gCb,
-                                          KwDlRbCb *rbCb,
+                                          RlcDlRbCb *rbCb,
                                           KwRetx *retx));
 
 PRIVATE Void kwAmmDlProcessSuccessfulTxPdu ARGS((KwCb *gCb, 
-                                                 KwDlRbCb *rbCb,
+                                                 RlcDlRbCb *rbCb,
                                                  KwSn  sn,
                                                  KwuDatCfmInfo **datCfm));
 
 PRIVATE Void kwAmmDlSetTxNextAck ARGS((KwAmDl *amDl, KwSn sn));
 
 PRIVATE Void kwAmmDlCheckAndStopPollTmr ARGS((KwCb *gCb,
-                                              KwDlRbCb *rbCb,
+                                              RlcDlRbCb *rbCb,
                                               KwSn mAckSn));
 
 PRIVATE Void  kwAssembleSdus ARGS ((KwCb *gCb,
-                                    KwDlRbCb *rbCb, 
+                                    RlcDlRbCb *rbCb, 
                                     KwDatReq *kwDatReq));
 
 PRIVATE Bool kwAmmDlCheckAndSetPoll ARGS ((KwCb *gCb,
-                                           KwDlRbCb *rbCb, 
+                                           RlcDlRbCb *rbCb, 
                                            Bool newPdu, 
                                            MsgLen bufSz));
 
 PRIVATE Void kwAmmCreatePdu ARGS ((KwCb *gCb,
-                                   KwDlRbCb *rbCb, 
+                                   RlcDlRbCb *rbCb, 
                                    KwAmHdr *amHdr, 
-                                   KwDlPduInfo *pduInfo,
+                                   RlcDlPduInfo *pduInfo,
                                    Buffer *pdu));
 
-PRIVATE Void kwAmmSndStaInd ARGS ((KwCb *gCb,KwDlRbCb *rbCb, KwRetx *retx));
+PRIVATE Void kwAmmSndStaInd ARGS ((KwCb *gCb,RlcDlRbCb *rbCb, KwRetx *retx));
 
 PRIVATE Void kwGetNxtRetx ARGS ((KwCb *gCb, KwRetx **retx));
 
@@ -156,7 +156,7 @@ PRIVATE Void kwConstructAmHdr ARGS ((KwAmHdr *amHdr,
                                      U16 *idx));
 
 PRIVATE Void kwAmmDlUpdateTxAndReTxBufForAckSn ARGS ((KwCb *gCb,
-                                                      KwDlRbCb *rbCb, 
+                                                      RlcDlRbCb *rbCb, 
                                                       KwSn mAckSn,
                                                       CmLList *retx,
                                                       KwuDatCfmInfo **datCfm));
@@ -167,7 +167,7 @@ PRIVATE Void kwAmmDlMoveFrmTxtoRetxBuffer ARGS ((KwCb *gCb,
                                                  KwSn sn));
  
 PRIVATE Void kwAmmDlCheckIsSDUDelivered ARGS((KwCb *gCb,
-                                              KwDlRbCb *rbCb, 
+                                              RlcDlRbCb *rbCb, 
                                               KwSduMap *sduMap, 
                                               KwuDatCfmInfo **datCfm));
 
@@ -179,13 +179,13 @@ PRIVATE Void kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer ARGS(
 KwCb          *gCb,
 KwAmDl        *amDl,
 KwRetx        **retx,
-KwDlPduInfo   *pduInfo
+RlcDlPduInfo   *pduInfo
 ));
 
 PRIVATE Void kwAmmDlHndlStatus4SduByteSegInTxBuf ARGS(
 (
 KwCb          *gCb,
-KwDlRbCb      *rbCb,
+RlcDlRbCb      *rbCb,
 KwNackInfo    *nackSnInfo,
 KwRetx        **retx,
 KwuDatCfmInfo **datCfm
@@ -194,13 +194,13 @@ KwuDatCfmInfo **datCfm
 PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn ARGS(
 (
  KwCb          *gCb,
- KwDlRbCb      *rbCb,
+ RlcDlRbCb      *rbCb,
  KwNackInfo    *nackSnInfo,
  CmLList       **retxNode,
  KwuDatCfmInfo **datCfm
  ));
 
-PRIVATE Void KwDlAmmGetNackSnInfoFrmNackRangeIdx ARGS(
+PRIVATE Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx ARGS(
 (
 KwAmDl        *amDl,
 KwNackInfo    *nackInfo,
@@ -212,7 +212,7 @@ U8            idx
 PRIVATE Void kwAmmDlUpdTxAndReTxBufForLessThanNackSn ARGS(
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,
+RlcDlRbCb        *rbCb,
 KwSn            sn,
 KwSn            mNackSn,
 CmLList         **retxNode,
@@ -255,13 +255,13 @@ KwuDatCfmInfo   **datCfm
 PUBLIC Void kwAmmSendDStaRsp
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwAmDl     *amDl
 )
 #else
 PUBLIC Void kwAmmSendDStaRsp(gCb, rbCb, amDl)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwAmDl     *amDl;
 #endif
 {
@@ -289,13 +289,13 @@ KwAmDl     *amDl;
 PRIVATE Void kwAmmDlCheckAndStopPollTmr
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwSn       mAckSn
 )
 #else
 PRIVATE Void kwAmmDlCheckAndStopPollTmr(gCb, rbCb, mAckSn)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwSn       mAckSn;
 #endif
 {
@@ -356,14 +356,14 @@ KwSn     sn
 PRIVATE Void kwAmmDlProcessSuccessfulReTx
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,
+RlcDlRbCb        *rbCb,
 KwRetx          *retx,
 KwuDatCfmInfo   **datCfm
 )
 #else
 PRIVATE Void kwAmmDlProcessSuccessfulReTx(gCb, rbCb, retx, datCfm)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;
+RlcDlRbCb        *rbCb;
 KwRetx          *retx;
 KwuDatCfmInfo   **datCfm;
 #endif
@@ -385,7 +385,7 @@ KwuDatCfmInfo   **datCfm;
  * @param[in]KwAmDl *amDl          AM Downlink Control Block 
  * @param[in]KwRetx **retx         node in the reTx buffer to be moved to, allocated by
  *                                 this function
- * @param[in]KwDlPduInfo *pduInfo  TX PDU which needs to be moved
+ * @param[in]RlcDlPduInfo *pduInfo  TX PDU which needs to be moved
  * 
  * @return Void
  *            
@@ -397,20 +397,20 @@ PRIVATE Void kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer
 KwCb          *gCb,
 KwAmDl        *amDl,
 KwRetx        **retx,
-KwDlPduInfo   *pduInfo
+RlcDlPduInfo   *pduInfo
 )
 #else
 PRIVATE Void kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, amDl, retx, pduInfo)
 KwCb          *gCb;
 KwAmDl        *amDl;
 KwRetx        **retx;
-KwDlPduInfo   *pduInfo;
+RlcDlPduInfo   *pduInfo;
 #endif
 {
    TRC2(kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer);
 
 
-   KW_ALLOC_WC(gCb,*retx, sizeof(KwRetx));
+   RLC_ALLOC_WC(gCb,*retx, sizeof(KwRetx));
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (*retx == NULLP)
@@ -457,7 +457,7 @@ KwDlPduInfo   *pduInfo;
  *    This function is used to move the PDU from the txBuf to re-transmit buffer
  *
  * @param[in]KwCb       *gCb          RLC instance control block
- * @param[in]KwDlRbCb   *rbCb         AM Downlink Control Block 
+ * @param[in]RlcDlRbCb   *rbCb         AM Downlink Control Block 
  * @param[in]KwNackInfo *nackSnInfo   Nack Information of a NACK_SN 
  * @param[in]KwRetx     **retx        node in the reTx buffer to be moved to, allocated by
  *                                    this function
@@ -471,7 +471,7 @@ KwDlPduInfo   *pduInfo;
 PRIVATE Void kwAmmDlHndlStatus4SduByteSegInTxBuf
 (
 KwCb          *gCb,
-KwDlRbCb      *rbCb,
+RlcDlRbCb      *rbCb,
 KwNackInfo    *nackSnInfo,
 KwRetx        **retx,
 KwuDatCfmInfo ** datCfm
@@ -480,7 +480,7 @@ KwuDatCfmInfo ** datCfm
 PRIVATE Void kwAmmDlHndlStatus4SduByteSegInTxBuf(gCb, rbCb, nackSnInfo, retx, datCfm)
 (
 KwCb          *gCb;
-KwDlRbCb      *rbCb;
+RlcDlRbCb      *rbCb;
 KwNackInfo    *nackSnInfo;
 KwRetx        **retx;
 KwuDatCfmInfo **datCfm;
@@ -501,7 +501,7 @@ KwuDatCfmInfo **datCfm;
    lnk = txBuf->pduLst.first;
    while(lnk)
    {
-      KwDlPduInfo *pduInfo = (KwDlPduInfo *)(lnk->node);
+      RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(lnk->node);
       KwSn        pduSoEnd = (pduInfo->amHdr.so + pduInfo->sduMap.sduSz - 1);
 
       /* If So of Sdu byte segment(pduInfo/seg) is < status pdu
@@ -530,7 +530,7 @@ KwuDatCfmInfo **datCfm;
       nextLnk = lnk->next;
       /* Delete node from the txBuf Pdu lst */
       cmLListDelFrm(&txBuf->pduLst, lnk);
-      KW_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
+      RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
       lnk = nextLnk;
    }
    if(!txBuf->pduLst.count)
@@ -549,7 +549,7 @@ KwuDatCfmInfo **datCfm;
  *    This function is used to move the PDU from the txBuf to re-transmit buffer
  *
  * @param[in]KwCb   *gCb            RLC instance control block
- * @param[in]KwDlRbCb *rbCb         AM Downlink Control Block 
+ * @param[in]RlcDlRbCb *rbCb         AM Downlink Control Block 
  * @param[in]KwNackInfo *nackSnInfo Nack Information of a NACK_SN
  * @param[in]KwRetx **retx          node in the reTx buffer to be moved to, allocated by
  *                                  this function
@@ -562,7 +562,7 @@ KwuDatCfmInfo **datCfm;
 PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn
 (
  KwCb          *gCb,
- KwDlRbCb      *rbCb,
+ RlcDlRbCb      *rbCb,
  KwNackInfo    *nackSnInfo,
  CmLList        **retxNode,
  KwuDatCfmInfo **datCfm
@@ -571,7 +571,7 @@ PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn
 PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode, datCfm)
 (
  KwCb          *gCb;
- KwDlRbCb      *rbCb;
+ RlcDlRbCb      *rbCb;
  KwNackInfo    *nackSnInfo;
  CmLList       **retxNode;
  KwuDatCfmInfo **datCfm;
@@ -681,7 +681,7 @@ PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode,
  *            
  */
 #ifdef ANSI
-PRIVATE Void KwDlAmmGetNackSnInfoFrmNackRangeIdx
+PRIVATE Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx
 (
 KwAmDl        *amDl,
 KwNackInfo    *nackInfo,
@@ -690,7 +690,7 @@ KwNackInfo    *nackSnInfo,
 U8            idx
 )
 #else
-PRIVATE Void KwDlAmmGetNackSnInfoFrmNackRangeIdx(amDl, nackInfo, retxNode, nackSnInfo, idx)
+PRIVATE Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx(amDl, nackInfo, retxNode, nackSnInfo, idx)
 (
 KwAmDl        *amDl;
 KwNackInfo    *nackInfo;
@@ -704,7 +704,7 @@ U8            idx;
    KwRetx   *retx;
    CmLList  *node;
 
-   TRC2(KwDlAmmGetNackSnInfoFrmNackRangeIdx)
+   TRC2(RlcDlAmmGetNackSnInfoFrmNackRangeIdx)
 
    nackSnInfo->isSegment = FALSE;
 
@@ -720,7 +720,7 @@ U8            idx;
       node = txBuf->pduLst.first;
       while(node)
       {
-         KwDlPduInfo *pduInfo = (KwDlPduInfo *)(node->node);
+         RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(node->node);
          U16         pduSoEnd = pduInfo->amHdr.so + pduInfo->sduMap.sduSz - 1; 
          if((!idx) && (pduInfo->amHdr.so == nackInfo->soStart))
          {
@@ -797,13 +797,13 @@ U8            idx;
 PUBLIC Void kwAmmDlHndlStatusPdu
 (
 KwCb          *gCb,
-KwDlRbCb      *rbCb,
+RlcDlRbCb      *rbCb,
 KwUdxStaPdu   *pStaPdu
 )
 #else
 PUBLIC Void kwAmmDlHndlStatusPdu(gCb, rbCb, pStaPdu)
 KwCb          *gCb;
-KwDlRbCb      *rbCb;
+RlcDlRbCb      *rbCb;
 KwUdxStaPdu   *pStaPdu;
 #endif
 {
@@ -936,7 +936,7 @@ KwUdxStaPdu   *pStaPdu;
              * nack sn*/
             do
             {
-               KwDlAmmGetNackSnInfoFrmNackRangeIdx(&AMDL, &pStaPdu->nackInfo[idx],
+               RlcDlAmmGetNackSnInfoFrmNackRangeIdx(&AMDL, &pStaPdu->nackInfo[idx],
                                                    retxNode, &nackSnInfo, idx1);
                
                kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, &nackSnInfo,
@@ -1087,14 +1087,14 @@ U32 kwRxSdu;
 PUBLIC Void kwAmmQSdu
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,
+RlcDlRbCb        *rbCb,
 Buffer          *mBuf,
 KwuDatReqInfo   *datReq
 )
 #else
 PUBLIC Void kwAmmQSdu(gCb, rbCb, mBuf, datReq)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;
+RlcDlRbCb        *rbCb;
 Buffer          *mBuf;
 KwuDatReqInfo   *datReq;
 #endif
@@ -1110,7 +1110,7 @@ KwuDatReqInfo   *datReq;
    TRC2(kwAmmQSdu)
 
    /* Allocate sdu */
-   KW_ALLOC_WC(gCb,sdu, sizeof(KwSdu)); 
+   RLC_ALLOC_WC(gCb,sdu, sizeof(KwSdu)); 
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (sdu == NULLP)
@@ -1225,13 +1225,13 @@ dlrate_kwu += sdu->sduSz;
 PRIVATE Void kwAmmDlAssembleCntrlInfo 
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwDatReq   *kwDatReq
 )
 #else
 PRIVATE Void kwAmmDlAssembleCntrlInfo(gCb, rbCb, kwDatReq)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
 #endif
 {
@@ -1255,7 +1255,7 @@ KwDatReq   *kwDatReq;
       kwAmmCreateStatusPdu(gCb,rbCb,kwDatReq);
 
       sapCb = KW_GET_DL_SAPCB(gCb, rbCb);
-	   KwDlUdxStaProhTmrStart(&(gCb->u.dlCb->udxDlSap->pst), 
+	   RlcDlUdxStaProhTmrStart(&(gCb->u.dlCb->udxDlSap->pst), 
                              sapCb->suId, &(rbCb->rlcId));
 	  
       /* Update number of pdus in pduInfo */
@@ -1263,7 +1263,7 @@ KwDatReq   *kwDatReq;
       kwDatReq->pduInfo.numPdu++;
       gRlcStats.amRlcStats.numDLStaPduSent++;
 
-      KW_FREE_SHRABL_BUF(gCb->u.dlCb->udxDlSap->pst.region, 
+      RLC_FREE_SHRABL_BUF(gCb->u.dlCb->udxDlSap->pst.region, 
                          gCb->u.dlCb->udxDlSap->pst.pool,
                          AMDL.pStaPdu,
                          sizeof(KwUdxDlStaPdu));
@@ -1307,14 +1307,14 @@ KwDatReq   *kwDatReq;
 PUBLIC Void kwAmmProcessSdus
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwDatReq   *kwDatReq,
 Bool       fillCtrlPdu
 )
 #else
 PUBLIC Void kwAmmProcessSdus(gCb, rbCb, kwDatReq,fillCtrlPdu)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
 Bool       fillCtrlPdu;
 #endif    
@@ -1406,7 +1406,7 @@ Bool       fillCtrlPdu;
 PRIVATE Void kwSplitPdu
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwRetx     *crnt,
 KwRetx     *next,
 U16        size
@@ -1414,7 +1414,7 @@ U16        size
 #else
 PRIVATE Void kwSplitPdu(gCb, rbCb, crnt, next, size)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwRetx     *crnt;
 KwRetx     *next;
 U16        size;
@@ -1528,13 +1528,13 @@ U16        size;
 PRIVATE Void kwResegRetxPdus 
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwDatReq   *kwDatReq
 )
 #else
 PRIVATE Void kwResegRetxPdus(gCb, rbCb, kwDatReq)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
 #endif
 {
@@ -1680,7 +1680,7 @@ KwDatReq   *kwDatReq;
          }
 
          /* Allocate memory for tracking a new segment */
-         KW_ALLOC_WC(gCb,tNode, sizeof(KwRetx)); 
+         RLC_ALLOC_WC(gCb,tNode, sizeof(KwRetx)); 
 #if (ERRCLASS & ERRCLS_ADD_RES)
          if (tNode == NULLP)
          {
@@ -1789,13 +1789,13 @@ KwDatReq   *kwDatReq;
 PRIVATE Void kwAssembleSdus 
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwDatReq   *kwDatReq
 )
 #else
 PRIVATE Void kwAssembleSdus (gCb, rbCb, kwDatReq)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
 #endif
 {
@@ -1835,7 +1835,7 @@ KwDatReq   *kwDatReq;
    U32                  fixedHdrSz;
    U32                  pduSz;
    KwAmHdr              *amHdr = NULLP;
-   KwDlPduInfo          *pduInfo = NULLP;
+   RlcDlPduInfo          *pduInfo = NULLP;
 
    TRC2(kwAssembleSdus)
 
@@ -1985,7 +1985,7 @@ KwDatReq   *kwDatReq;
       if (!sdu->mode.am.isSegmented)
       {
          /* Update txBuf */
-         KW_ALLOC_WC(gCb,txBuf, sizeof(KwTx));
+         RLC_ALLOC_WC(gCb,txBuf, sizeof(KwTx));
 
          cmLListInit(&txBuf->pduLst);
 
@@ -2009,7 +2009,7 @@ KwDatReq   *kwDatReq;
          txBuf = kwUtlGetTxBuf(amDl->txBufLst, amDl->txNext);
       }
 
-      KW_ALLOC_WC(gCb,pduInfo, sizeof(KwDlPduInfo));
+      RLC_ALLOC_WC(gCb,pduInfo, sizeof(RlcDlPduInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (pduInfo == NULLP)
       {
@@ -2312,14 +2312,14 @@ KwDatReq   *kwDatReq;
 PRIVATE Bool kwAmmDlCheckAndSetPoll
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 Bool       newPdu,
 MsgLen     bufSz
 )
 #else
 PRIVATE Bool kwAmmDlCheckAndSetPoll(gCb, rbCb, newPdu, bufSz)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 Bool       newPdu;
 MsgLen     bufSz;
 #endif
@@ -2391,7 +2391,7 @@ MsgLen     bufSz;
  * @param[in]  gCB         RLC instance control block
  * @param[in]  rbCb        Downlink RB control block
  * @param[in]  amHdr       AM header
- * @param[in]  KwDlPduInfo Pointer to PduInfo
+ * @param[in]  RlcDlPduInfo Pointer to PduInfo
  * @param[in]  pdu         PDU buffer 
  *
  *  @return  Void
@@ -2401,17 +2401,17 @@ MsgLen     bufSz;
 PRIVATE Void kwAmmCreatePdu
 (  
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwAmHdr    *amHdr,
-KwDlPduInfo *pduInfo,
+RlcDlPduInfo *pduInfo,
 Buffer     *pdu
 )
 #else
 PRIVATE Void kwAmmCreatePdu(gCb, rbCb, pduInfo, amHdr, pdu)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwAmHdr    *amHdr;
-KwDlPduInfo *pduInfo;
+RlcDlPduInfo *pduInfo;
 Buffer     *pdu;
 #endif
 {
@@ -2487,13 +2487,13 @@ Buffer     *pdu;
 PRIVATE Void kwRemRetxPdu
 (  
 KwCb          *gCb,
-KwDlRbCb      *rbCb,
+RlcDlRbCb      *rbCb,
 KwRetx        *retx
 )
 #else
 PRIVATE Void kwRemRetxPdu(gCb, rbCb, retx)
 KwCb          *gCb;
-KwDlRbCb      *rbCb;
+RlcDlRbCb      *rbCb;
 KwRetx        *retx;
 #endif
 {
@@ -2538,13 +2538,13 @@ KwRetx        *retx;
 PRIVATE Void kwAmmDlMarkPduForReTx
 (
 KwCb          *gCb,
-KwDlRbCb      *rbCb,
+RlcDlRbCb      *rbCb,
 KwRetx        *retx
 )
 #else
 PRIVATE Void kwAmmDlMarkPduForReTx(*gCb, rbCb, retx)
 KwCb          *gCb;
-KwDlRbCb      *rbCb;
+RlcDlRbCb      *rbCb;
 KwRetx        *retx;
 #endif
 {
@@ -2618,14 +2618,14 @@ KwRetx        *retx;
 PRIVATE Void kwAmmDlCheckIsSDUDelivered
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,
+RlcDlRbCb        *rbCb,
 KwSduMap        *sduMap,
 KwuDatCfmInfo   **datCfm
 )
 #else
 PRIVATE Void kwAmmDlCheckIsSDUDelivered(gCb, rbCb, sduMap, datCfm)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;
+RlcDlRbCb        *rbCb;
 KwSduMap        *sduMap;
 KwuDatCfmInfo   **datCfm;
 #endif
@@ -2705,14 +2705,14 @@ KwuDatCfmInfo   **datCfm;
 PRIVATE Void kwAmmDlProcessSuccessfulTxPdu
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,
+RlcDlRbCb        *rbCb,
 KwSn            sn,
 KwuDatCfmInfo   **datCfm
 )
 #else
 PRIVATE Void kwAmmDlProcessSuccessfulTxPdu(gCb, rbCb, sn, datCfm)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;
+RlcDlRbCb        *rbCb;
 KwSn            sn;
 KwuDatCfmInfo   **datCfm;
 #endif
@@ -2729,7 +2729,7 @@ KwuDatCfmInfo   **datCfm;
    pduNode = txBuf->pduLst.first;
    while(pduNode)
    {
-      KwDlPduInfo *pduInfo = (KwDlPduInfo *)(pduNode->node);
+      RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(pduNode->node);
       kwAmmDlCheckIsSDUDelivered(gCb,
                               rbCb,  
                               &(pduInfo->sduMap), 
@@ -2763,13 +2763,13 @@ KwuDatCfmInfo   **datCfm;
 PRIVATE Void kwAmmSndStaInd
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwRetx     *retx
 )
 #else
 PRIVATE Void kwAmmSndStaInd(gCb, rbCb, retx)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwRetx     *retx;
 #endif
 {
@@ -2876,21 +2876,21 @@ PUBLIC Void kwAmmDlReEstablish
 (
 KwCb         *gCb,
 CmLteRlcId   rlcId,
-KwDlRbCb     *rbCb
+RlcDlRbCb     *rbCb
 )
 #else
 PUBLIC Void kwAmmDlReEstablish(gCb, rlcId, rbCb)
 KwCb         *gCb;
 CmLteRlcId   rlcId;
-KwDlRbCb     *rbCb;
+RlcDlRbCb     *rbCb;
 #endif
 {
    /* create a new AM DL RB, reset it and replace in the UeCb*/
-   KwDlUeCb   *ueCb;
-   KwDlRbCb   *resetRb;
+   RlcDlUeCb   *ueCb;
+   RlcDlRbCb   *resetRb;
    KwAmDl* newAmDl;
    KwAmDl* oldAmDl;
-   KW_ALLOC(gCb, resetRb, sizeof(KwDlRbCb));
+   RLC_ALLOC(gCb, resetRb, sizeof(RlcDlRbCb));
    
    /* ccpu00135170 Removing KLOCK warning */
    if(resetRb == NULLP)
@@ -2898,7 +2898,7 @@ KwDlRbCb     *rbCb;
       RETVOID;
    }
 
-   KW_MEM_CPY(resetRb, rbCb, sizeof(KwDlRbCb));
+   KW_MEM_CPY(resetRb, rbCb, sizeof(RlcDlRbCb));
    KW_MEM_SET(&resetRb->m.amDl, 0 , sizeof(KwAmDl));
 
 /* AGHOSH changes start */
@@ -2951,7 +2951,7 @@ KwDlRbCb     *rbCb;
    /* allocate the TX array again */
 #ifndef  LTE_TDD
    U32 hashIndex;
-   KW_ALLOC(gCb,
+   RLC_ALLOC(gCb,
 		   resetRb->m.amDl.txBufLst,
 		   (KW_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
    for(hashIndex = 0; hashIndex < KW_TX_BUF_BIN_SIZE; hashIndex++)
@@ -2998,13 +2998,13 @@ KwDlRbCb     *rbCb;
 PUBLIC S16 kwAmmDiscSdu
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 U32        sduId 
 )
 #else
 PUBLIC S16 kwAmmDiscSdu(gCb, rbCb, sduId)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;  
+RlcDlRbCb   *rbCb;  
 U32        sduId; 
 #endif
 {
@@ -3028,12 +3028,12 @@ U32        sduId;
 PUBLIC Void kwAmmPollRetxTmrExp
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb
+RlcDlRbCb   *rbCb
 )
 #else
 PUBLIC Void kwAmmPollRetxTmrExp(gCb, rbCb)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 #endif
 {
    KwRetx        *retx; 
@@ -3113,7 +3113,7 @@ KwDlRbCb   *rbCb;
 PRIVATE Void kwAmmDlUpdateTxAndReTxBufForAckSn
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,
+RlcDlRbCb        *rbCb,
 KwSn            mAckSn,
 CmLList         *retxNode,
 KwuDatCfmInfo   **datCfm
@@ -3121,7 +3121,7 @@ KwuDatCfmInfo   **datCfm
 #else
 PRIVATE Void kwAmmDlUpdateTxAndReTxBufForAckSn(gCb, rbCb, mAckSn, retxNode, datCfm)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;
+RlcDlRbCb        *rbCb;
 KwSn            mAckSn;
 CmLList         *retxNode;
 KwuDatCfmInfo   **datCfm;
@@ -3195,7 +3195,7 @@ KwuDatCfmInfo   **datCfm;
 PRIVATE Void kwAmmDlUpdTxAndReTxBufForLessThanNackSn
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,
+RlcDlRbCb        *rbCb,
 KwSn            sn,
 KwSn            mNackSn,
 CmLList         **retxNode,
@@ -3204,7 +3204,7 @@ KwuDatCfmInfo   **datCfm
 #else
 PRIVATE Void kwAmmDlUpdTxAndReTxBufForLessThanNackSn(gCb, rbCb, sn, mNackSn, retxNode, datCfm)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;
+RlcDlRbCb        *rbCb;
 KwSn            sn;
 KwSn            mNackSn;
 CmLList         **retxNode;
@@ -3434,8 +3434,8 @@ KwSn          sn;
    }
    while(txBuf->pduLst.first)
    {
-      KwDlPduInfo *pduInfo = (KwDlPduInfo *)(txBuf->pduLst.first->node);
-      KW_ALLOC_WC(gCb,*retx, sizeof(KwRetx));
+      RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(txBuf->pduLst.first->node);
+      RLC_ALLOC_WC(gCb,*retx, sizeof(KwRetx));
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (*retx == NULLP)
@@ -3453,7 +3453,7 @@ KwSn          sn;
       
       /* Delete node from the txBuf Pdu lst */
       cmLListDelFrm(&txBuf->pduLst, txBuf->pduLst.first);
-      KW_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
+      RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
    }
    /* Remove PDU from txBuf */
    kwUtlDelTxBuf(amDl->txBufLst, txBuf,gCb); 
@@ -3480,12 +3480,12 @@ KwSn          sn;
 PUBLIC Void kwAmmFreeDlRbCb
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb
+RlcDlRbCb   *rbCb
 )
 #else
 PUBLIC Void kwAmmFreeDlRbCb(gCb,rbCb)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 #endif
 {
    /* stop the re-transmission timer */
@@ -3523,13 +3523,13 @@ KwDlRbCb   *rbCb;
 PRIVATE Void kwAmmCreateStatusPdu
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 KwDatReq   *kwDatReq
 )
 #else
 PRIVATE Void kwAmmCreateStatusPdu(gCb, rbCb, kwDatReq)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
 #endif
 {
@@ -3927,7 +3927,7 @@ PRIVATE Void rgAmmUlHndlStatusPdu
 Pst        *udxPst,
 SuId       suId,
 KwCb       *gCb,
-KwDlRbCb   *rbCb,
+RlcDlRbCb   *rbCb,
 Buffer     *cntrlPdu,
 U8         *fByte
 )
@@ -3936,7 +3936,7 @@ PRIVATE Void rgAmmUlHndlStatusPdu(udxPst,suId,gCb, rbCb, cntrlPdu, fByte)
 Pst        *udxPst;
 SuId       suId;
 KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcDlRbCb   *rbCb;
 Buffer     *cntrlPdu;
 U8         *fByte;
 #endif
@@ -3968,7 +3968,7 @@ U8         *fByte;
       RETVOID;
    }
 
-   KW_ALLOC_SHRABL_BUF(udxPst->region, 
+   RLC_ALLOC_SHRABL_BUF(udxPst->region, 
                        udxPst->pool, 
                        pStaPdu, 
                        sizeof(KwUdxStaPdu));
@@ -4099,8 +4099,8 @@ U8         *fByte;
 
 
    /* Parse & send Status PDU to RLC-DL */
-   //KwUlUdxStaUpdReq(&(sapCb->pst), sapCb->spId, &rbCb->rlcId, pStaPdu);
-   KwUlUdxStaUpdReq(udxPst, suId, &rbCb->rlcId, pStaPdu);
+   //RlcUlUdxStaUpdReq(&(sapCb->pst), sapCb->spId, &rbCb->rlcId, pStaPdu);
+   RlcUlUdxStaUpdReq(udxPst, suId, &rbCb->rlcId, pStaPdu);
 
    RETVOID;
 }
@@ -4108,15 +4108,15 @@ U8         *fByte;
 PUBLIC S16 kwProcDlStatusPdu(Pst *udxPst,SuId suId,
       CmLteCellId cellId,CmLteRnti rnti,CmLteLcId lcId,Buffer *rlcSdu)
 {
-   KwDlRbCb      *rbCb = NULLP;   
-   KwDlUeCb      *ueCb = NULLP; 
+   RlcDlRbCb      *rbCb = NULLP;   
+   RlcDlUeCb      *ueCb = NULLP; 
    U8        fByte;
    U8        temp;
    S16       retVal = RFAILED;
    KwCb      *gCb;
    Pst       dlRlcPst = *udxPst;
 
-   gCb = KW_GET_KWCB(1); /* DL RLC instance */
+   gCb = RLC_GET_RLCCB(1); /* DL RLC instance */
 
    if( ROK != kwDbmFetchDlUeCb(gCb,rnti,cellId,&(ueCb)))
    {

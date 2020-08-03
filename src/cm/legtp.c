@@ -22,6 +22,7 @@
 #include "legtp.h"
 #include "lkw.x"
 #include "lrg.x"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "du_egtp.h"
 

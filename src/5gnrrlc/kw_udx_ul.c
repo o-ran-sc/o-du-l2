@@ -60,6 +60,8 @@ static int RLOG_FILE_ID=204;
 #include "kw_dl.x"
 #include "kw_ul.x"
 
+#include "rlc.h"
+#include "du_app_rlc_inf.h"
 
 #define KW_MODULE KW_DBGMASK_UDX
 /* local defines */
@@ -69,9 +71,10 @@ static int RLOG_FILE_ID=204;
 /* forward references */
 
 /* public variable declarations */
-EXTERN S16 kwHdlCkwUlCfgReq ARGS((KwCb  *gCb,KwUlCfgTmpData *cfgTmpData,
-                                  CkwCfgCfmInfo *cfmInfo, CkwCfgCfmInfo *cfgCfm));
+EXTERN S16 kwHdlCkwUlCfgReq ARGS((KwCb  *gCb,RlcUlCfgTmpData *cfgTmpData,
+                                  RlcCfgCfmInfo *cfmInfo, RlcCfgCfmInfo *cfgCfm));
 
+extern uint8_t SendRlcUlUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp);
 /**
   * @brief
   * UDX APIs
@@ -94,14 +97,14 @@ EXTERN S16 kwHdlCkwUlCfgReq ARGS((KwCb  *gCb,KwUlCfgTmpData *cfgTmpData,
  */
 
 #ifdef ANSI
-PUBLIC S16 KwUlUdxBndCfm
+PUBLIC S16 RlcUlUdxBndCfm
 (
 Pst    *pst,  
 SuId   suId, 
 U8     status 
 )
 #else
-PUBLIC S16 KwUlUdxBndCfm (pst, suId, status)
+PUBLIC S16 RlcUlUdxBndCfm (pst, suId, status)
 Pst    *pst; 
 SuId   suId;   
 U8     status; 
@@ -112,7 +115,7 @@ U8     status;
    KwUdxUlSapCb   *udxSap;   /* RGU SAP Control Block */
    KwCb           *tKwCb;
 
-   TRC3(KwUlUdxBndCfm)
+   TRC3(RlcUlUdxBndCfm)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
@@ -120,9 +123,9 @@ U8     status;
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
-   KWDBGP_BRIEF(tKwCb, "KwUlUdxBndCfm(post, suId(%d), status(%d)\n", 
+   KWDBGP_BRIEF(tKwCb, "RlcUlUdxBndCfm(post, suId(%d), status(%d)\n", 
                 suId, status);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -203,36 +206,38 @@ U8     status;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUlUdxCfgCfm
+PUBLIC S16 RlcUlUdxCfgCfm
 (
 Pst             *pst,  
 SuId            suId, 
-CkwCfgCfmInfo   *cfmInfo  
+RlcCfgCfmInfo   *cfmInfo  
 )
 #else
-PUBLIC S16 KwUlUdxCfgCfm (pst, suId, cfmInfo)
+PUBLIC S16 RlcUlUdxCfgCfm (pst, suId, cfmInfo)
 Pst             *pst;   
 SuId            suId;  
-CkwCfgCfmInfo   *cfmInfo;  
+RlcCfgCfmInfo   *cfmInfo;  
 #endif
 {
    KwCb             *tKwCb;
-   CkwCfgCfmInfo    *cfgCfm;
-   KwUlCfgTmpData   *cfgTmpData;
+   RlcCfgCfmInfo    *cfgCfm;
+   RlcUlCfgTmpData   *cfgTmpData;
+   Pst rspPst;
+   memset(&rspPst, 0, sizeof(Pst));
 
-   TRC3(KwUlUdxCfgCfm)
+   TRC3(RlcUlUdxCfgCfm)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
    {
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
    KWDBGP_BRIEF(tKwCb, " suId(%d)\n", suId);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -241,10 +246,10 @@ CkwCfgCfmInfo   *cfmInfo;
       RLOG0(L_ERROR, "Invalid suId");
       KW_SEND_SAPID_ALARM(tKwCb,suId, 
                            LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -252,47 +257,47 @@ CkwCfgCfmInfo   *cfmInfo;
    if(ROK != kwDbmFindUlTransaction(tKwCb,cfmInfo->transId, &cfgTmpData))
    {
       RLOG0(L_ERROR, "Invalid transId");
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
       RETVALUE (RFAILED);
    }
 
    if(ROK != kwDbmDelUlTransaction(tKwCb, cfgTmpData))
    {
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
        RETVALUE(RFAILED);
    }
       /* Allocate memory and memset to 0 for cfmInfo */
-   KW_ALLOC(tKwCb,cfgCfm, sizeof(CkwCfgCfmInfo));
+   RLC_ALLOC(tKwCb,cfgCfm, sizeof(RlcCfgCfmInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (cfgCfm == NULLP)
    {
       RLOG0(L_FATAL, "Memory Allocation failed.");
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
-                         sizeof(CkwCfgCfmInfo));
+                         sizeof(RlcCfgCfmInfo));
        RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    kwHdlCkwUlCfgReq(tKwCb,cfgTmpData, cfmInfo, cfgCfm);
-   KwUiCkwCfgCfm(&(tKwCb->u.ulCb->ckwSap.pst), 
-                 tKwCb->u.ulCb->ckwSap.suId , cfgCfm);
+   FILL_PST_RLC_TO_DUAPP(rspPst, tKwCb->genCfg.lmPst.dstProcId, RLC_UL_INST, EVENT_RLC_UL_UE_CREATE_RSP);
+   SendRlcUlUeCreateRspToDu(&rspPst, cfgCfm);
 
    /* free the memory from DL */
-   KW_FREE_SHRABL_BUF(pst->region,
+   RLC_FREE_SHRABL_BUF(pst->region,
                       pst->pool,
 		      cfmInfo,
-		      sizeof(CkwCfgCfmInfo));
+		      sizeof(RlcCfgCfmInfo));
 
    /* free the cfgInfo that came from LM */
-   KW_PST_FREE(pst->region, pst->pool, cfgTmpData->cfgInfo, sizeof(CkwCfgInfo));
-   KW_FREE(tKwCb,cfgTmpData,sizeof(KwUlCfgTmpData));
+   KW_PST_FREE(pst->region, pst->pool, cfgTmpData->cfgInfo, sizeof(RlcCfgInfo));
+   RLC_FREE(tKwCb,cfgTmpData,sizeof(RlcUlCfgTmpData));
    
    RETVALUE(ROK);
 } 
@@ -314,7 +319,7 @@ CkwCfgCfmInfo   *cfmInfo;
  */
 
 #ifdef ANSI
-PUBLIC S16 KwUlUdxUeIdChgCfm
+PUBLIC S16 RlcUlUdxUeIdChgCfm
 (
 Pst        *pst,          
 SuId       suId,           
@@ -322,7 +327,7 @@ U32        transId,
 CmStatus   status
 )
 #else
-PUBLIC S16 KwUlUdxUeIdChgCfm (pst, suId, cfmInfo)
+PUBLIC S16 RlcUlUdxUeIdChgCfm (pst, suId, cfmInfo)
 Pst        *pst;         
 SuId       suId;        
 U32        transId;
@@ -330,9 +335,9 @@ CmStatus   status;
 #endif
 {
    KwCb             *tKwCb;
-   KwUlCfgTmpData   *cfgTmpData;
+   RlcUlCfgTmpData   *cfgTmpData;
 
-   TRC3(KwUlUdxUeIdChgCfm)
+   TRC3(RlcUlUdxUeIdChgCfm)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
@@ -340,7 +345,7 @@ CmStatus   status;
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    KWDBGP_BRIEF(tKwCb, " suId(%d) \n", suId);
 
@@ -376,7 +381,7 @@ CmStatus   status;
    /* only newUeInfo needs to be freed here, ueInfo would be freed at the 
       interface or by he receipient in case of tight coupling */
    KW_PST_FREE(pst->region, pst->pool, cfgTmpData->newUeInfo, sizeof(CkwUeInfo));
-   KW_FREE_WC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
+   RLC_FREE_WC(tKwCb, cfgTmpData, sizeof (RlcUlCfgTmpData));
    RETVALUE(ROK);
 } 
 
@@ -391,7 +396,7 @@ CmStatus   status;
  *      -# ROK 
  *      -# RFAILED
  */
-PUBLIC S16  KwUlUdxStaProhTmrStart
+PUBLIC S16  RlcUlUdxStaProhTmrStart
 (
 Pst*         pst,
 SuId         suId,
@@ -399,7 +404,7 @@ CmLteRlcId   *rlcId
 )
 {
    KwCb       *tKwCb= NULLP;
-   KwUlRbCb   *rbCb;        
+   RlcUlRbCb   *rbCb;        
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
@@ -407,7 +412,7 @@ CmLteRlcId   *rlcId
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    kwDbmFetchUlRbCbByRbId(tKwCb, rlcId, &rbCb);
    if (rbCb == NULLP)
@@ -440,19 +445,19 @@ CmLteRlcId   *rlcId
 PUBLIC S16 kwHdlCkwUlCfgReq
 (
 KwCb             *gCb,
-KwUlCfgTmpData   *cfgTmpData,
-CkwCfgCfmInfo    *cfmInfo,
-CkwCfgCfmInfo    *cfgCfm
+RlcUlCfgTmpData   *cfgTmpData,
+RlcCfgCfmInfo    *cfmInfo,
+RlcCfgCfmInfo    *cfgCfm
 )
 #else
 PUBLIC S16 kwHdlCkwUlCfgReq(gCb,cfgTmpData,cfmInfo,cfmInfo)
 KwCb             *gCb;
-KwUlCfgTmpData   *cfgTmpData;
-CkwCfgCfmInfo    *cfmInfo;
-CkwCfgCfmInfo    *cfgCfm;
+RlcUlCfgTmpData   *cfgTmpData;
+RlcCfgCfmInfo    *cfmInfo;
+RlcCfgCfmInfo    *cfgCfm;
 #endif
 {
-   CkwCfgInfo   *cfg;
+   RlcCfgInfo   *cfg;
    U32          idx;
    U32          maxEnt;
    

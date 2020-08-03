@@ -66,7 +66,7 @@ static int RLOG_FILE_ID=200;
 
 #define KW_MODULE (KW_DBGMASK_TM | KW_DBGMASK_DL)
 
-PRIVATE Void kwTmmSndStaRsp ARGS((KwCb *gCb, KwDlRbCb *rbCb, 
+PRIVATE Void kwTmmSndStaRsp ARGS((KwCb *gCb, RlcDlRbCb *rbCb, 
                                  MsgLen bo, KwuDatReqInfo *datReqInfo));
 extern U32 rgMacGT ;  
 /** @addtogroup tmmode */
@@ -94,14 +94,14 @@ extern U32 rgMacGT ;
 PUBLIC Void kwTmmQSdu
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,      
+RlcDlRbCb        *rbCb,      
 KwuDatReqInfo   *datReqInfo, 
 Buffer          *mBuf       
 )
 #else
 PUBLIC Void kwTmmQSdu(gCb,rbCb,datReqInfo,mBuf)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;       
+RlcDlRbCb        *rbCb;       
 KwuDatReqInfo   *datReqInfo;  
 Buffer          *mBuf;         
 #endif
@@ -111,7 +111,7 @@ Buffer          *mBuf;
    TRC2(kwTmmQSdu) 
 
 
-   KW_ALLOC(gCb,sdu,sizeof(KwSdu));
+   RLC_ALLOC(gCb,sdu,sizeof(KwSdu));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
    {
@@ -172,14 +172,14 @@ PUBLIC Void kwTmmSndToLi
 (
 KwCb             *gCb,
 SuId             suId,
-KwDlRbCb         *rbCb,              
+RlcDlRbCb         *rbCb,              
 RguCStaIndInfo   *staInd
 )
 #else
 PUBLIC Void kwTmmSndToLi(gCb, suId, rbCb, staInd)
 KwCb             *gCb;
 SuId             suId;
-KwDlRbCb         *rbCb;             
+RlcDlRbCb         *rbCb;             
 RguCStaIndInfo   *staInd;
 #endif
 {
@@ -255,8 +255,8 @@ RguCStaIndInfo   *staInd;
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
-            KW_FREE_BUF(sdu->mBuf);
-            KW_FREE(gCb, sdu, sizeof(KwSdu));
+            RLC_FREE_BUF(sdu->mBuf);
+            RLC_FREE(gCb, sdu, sizeof(KwSdu));
          }
          else
          {
@@ -299,8 +299,8 @@ RguCStaIndInfo   *staInd;
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
-            KW_FREE_BUF(sdu->mBuf);
-            KW_FREE(gCb, sdu, sizeof(KwSdu));
+            RLC_FREE_BUF(sdu->mBuf);
+            RLC_FREE(gCb, sdu, sizeof(KwSdu));
             continue;
          }
 
@@ -353,7 +353,7 @@ RguCStaIndInfo   *staInd;
    }
    sdu = (KwSdu *)node->node;
 
-    KW_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[suId].pst.region,
+    RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[suId].pst.region,
                         gCb->u.dlCb->rguDlSap[suId].pst.pool,
                         dlData,(Size)sizeof(RlcMacData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -386,7 +386,7 @@ RguCStaIndInfo   *staInd;
    sdu->mBuf = NULLP;
    cmLListDelFrm(&(rbCb->m.tm.sduQ),
                  &sdu->lstEnt); 
-   KW_FREE(gCb,sdu, sizeof(KwSdu));
+   RLC_FREE(gCb,sdu, sizeof(KwSdu));
 
    /* If trace flag is enabled send the trace indication */
    if(gCb->init.trc == TRUE)
@@ -420,12 +420,12 @@ RguCStaIndInfo   *staInd;
 PUBLIC Void kwDlTmmReEstablish
 (
 KwCb       *gCb,
-KwDlRbCb   *rbCb    
+RlcDlRbCb   *rbCb    
 )
 #else
 PUBLIC Void kwDlTmmReEstablish(gCb,rbCb)
 KwCb       *gCb;
-KwDlRbCb   *rbCb;     
+RlcDlRbCb   *rbCb;     
 #endif
 {
    TRC2(kwDlTmmReEstablish)
@@ -462,14 +462,14 @@ KwDlRbCb   *rbCb;
 PRIVATE Void kwTmmSndStaRsp
 (
 KwCb            *gCb,
-KwDlRbCb        *rbCb,                 
+RlcDlRbCb        *rbCb,                 
 MsgLen          bo,                    
 KwuDatReqInfo   *datReqInfo         
 )
 #else
 PRIVATE Void kwTmmSndStaRsp(rbCb,bo,datReqInfo)
 KwCb            *gCb;
-KwDlRbCb        *rbCb;               
+RlcDlRbCb        *rbCb;               
 MsgLen          bo;                
 KwuDatReqInfo   *datReqInfo;   
 #endif
@@ -483,7 +483,7 @@ KwuDatReqInfo   *datReqInfo;
 
    rguSap = &(gCb->u.dlCb->rguDlSap[rbCb->rguSapId]);
 
-   KW_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.region,
+   RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.region,
                        gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.pool,
                        boStatus, sizeof(RguCStaRspInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)

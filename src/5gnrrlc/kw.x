@@ -513,7 +513,7 @@ typedef struct kwDlDataToBeFreed
    CmLListCp   txLst;     /*!< Stores to be released TX PDUs */
    CmLListCp   reTxLst;   /*!< Stores to be released ReTX PDUs */
    CmLListCp   rbLst;     /*!< List of AM DL RBs to be freed */
-}KwDlDataToBeFreed;
+}RlcDlDataToBeFreed;
 
 /** 
  * @brief  Structure to hold an information about DL RLC instance
@@ -539,7 +539,7 @@ typedef struct _kwDlCb
    KwRguSapCb          *rguDlSap;          /*!< RGU Sap Control Block */
    CmHashListCp        cellLstCp;          /*!< Hashlist of CellCb */
    CmHashListCp        ueLstCp;            /*!< Hashlist of UeCb */
-   KwDlDataToBeFreed   toBeFreed;          /*!< Pointer to data to be freed */        
+   RlcDlDataToBeFreed   toBeFreed;          /*!< Pointer to data to be freed */        
    Pst                 selfPst;            /*!< Pst to post events to self */
    Buffer              *selfPstMBuf;       /*!< Buffer used for self post */
    Bool                shutdownReceived;   /*!< Request for shutdown recevied */
@@ -547,7 +547,7 @@ typedef struct _kwDlCb
 #ifdef LTE_L2_MEAS
    KwL2Cb              kwL2Cb; /*!< Control Block for L2 Measurements in RLC */
 #endif /* LTE_L2_MEAS */
-}KwDlCb;
+}RlcDlCb;
 
 /** 
  * @brief  Structure to hold an information about UL RLC instance
@@ -578,7 +578,7 @@ typedef struct _kwUlCb
 #ifdef LTE_L2_MEAS
    KwL2Cb        kwL2Cb; /*!< Control Block for L2 Measurements in RLC */
 #endif /* LTE_L2_MEAS */
-}KwUlCb;
+}RlcUlCb;
 
 
 /** 
@@ -607,8 +607,8 @@ typedef struct _kwCb
    CmTqCp     kwTqCp;             /*!< Timer queue control point */
    union 
    {
-      KwUlCb   *ulCb;   /*!< Ul Control Block */
-      KwDlCb   *dlCb;   /*!< Dl Control Block */
+      RlcUlCb   *ulCb;   /*!< Ul Control Block */
+      RlcDlCb   *dlCb;   /*!< Dl Control Block */
    } u;
 }KwCb;
 

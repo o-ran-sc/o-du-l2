@@ -20,6 +20,7 @@
 #include "common_def.h"
 #include "lrg.h"
 #include "legtp.h"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "lkw.x"
 #include "lrg.x"

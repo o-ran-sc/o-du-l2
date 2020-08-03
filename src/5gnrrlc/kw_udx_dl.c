@@ -58,7 +58,7 @@ static int RLOG_FILE_ID=203;
 #define KW_MODULE KW_DBGMASK_UDX
 /* local defines */
 
-EXTERN S16 kwDlmHndlStaRsp ARGS (( KwCb  *gCb,KwDlRbCb  *rbCb,
+EXTERN S16 kwDlmHndlStaRsp ARGS (( KwCb  *gCb,RlcDlRbCb  *rbCb,
                 KwUdxStaPdu *pStaPdu, KwUdxBufLst  *rlsPduLst));
 
 
@@ -83,14 +83,14 @@ EXTERN S16 kwDlmHndlStaRsp ARGS (( KwCb  *gCb,KwDlRbCb  *rbCb,
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwDlUdxBndReq 
+PUBLIC S16 RlcDlUdxBndReq 
 (
 Pst    *pst,  
 SuId   suId, 
 SpId   spId 
 )
 #else
-PUBLIC S16 KwDlUdxBndReq (pst, suId, spId)
+PUBLIC S16 RlcDlUdxBndReq (pst, suId, spId)
 Pst    *pst;   
 SuId   suId;  
 SpId   spId; 
@@ -99,7 +99,7 @@ SpId   spId;
    KwUdxDlSapCb   *udxSap;            /* pointer to session SAP */
    KwCb           *tKwCb;
 
-   TRC3(KwDlUdxBndReq);
+   TRC3(RlcDlUdxBndReq);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
@@ -107,9 +107,9 @@ SpId   spId;
       RETVALUE(RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
-   KWDBGP_BRIEF(tKwCb, "KwDlUdxBndReq(spId(%d), suId(%d))\n", 
+   KWDBGP_BRIEF(tKwCb, "RlcDlUdxBndReq(spId(%d), suId(%d))\n", 
                 spId, suId);
 
    udxSap = (tKwCb->u.dlCb->udxDlSap + spId);
@@ -149,7 +149,7 @@ SpId   spId;
                                 LKW_EVENT_UDX_BND_REQ, LCM_CAUSE_INV_PAR_VAL);
 
             RLOG0(L_ERROR, "UDX SAP already Bound");
-            KwDlUdxBndCfm(&(udxSap->pst), udxSap->suId, CM_BND_NOK);
+            RlcDlUdxBndCfm(&(udxSap->pst), udxSap->suId, CM_BND_NOK);
          }
          break;
       }
@@ -161,11 +161,11 @@ SpId   spId;
                              LKW_EVENT_CKW_BND_REQ, LCM_CAUSE_INV_STATE);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
          RLOG0(L_ERROR, "Invalid UDX SAP State in Bind Req");
-         KwDlUdxBndCfm(&(udxSap->pst), udxSap->suId, CM_BND_NOK);
+         RlcDlUdxBndCfm(&(udxSap->pst), udxSap->suId, CM_BND_NOK);
          break;
       }
    }
-   KwDlUdxBndCfm(&(udxSap->pst), udxSap->suId, CM_BND_OK);
+   RlcDlUdxBndCfm(&(udxSap->pst), udxSap->suId, CM_BND_OK);
    RETVALUE(ROK);
 } 
 
@@ -182,14 +182,14 @@ SpId   spId;
  *      -# ROK 
  */
 #ifdef ANSI
-PUBLIC S16 KwDlUdxUbndReq
+PUBLIC S16 RlcDlUdxUbndReq
 (
 Pst      *pst,    
 SpId     spId,   
 Reason   reason 
 )
 #else
-PUBLIC S16 KwDlUdxUbndReq(pst, spId, reason)
+PUBLIC S16 RlcDlUdxUbndReq(pst, spId, reason)
 Pst      *pst;   
 SpId     spId;   
 Reason   reason; 
@@ -198,7 +198,7 @@ Reason   reason;
    KwUdxDlSapCb   *udxSap; 
    KwCb           *tKwCb;
 
-   TRC3(KwDlUdxUbndReq)
+   TRC3(RlcDlUdxUbndReq)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
@@ -207,7 +207,7 @@ Reason   reason;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    RLOG2(L_DEBUG,"Unbind Req for spId[%d], reason[%d]", 
                 spId, reason);
@@ -245,25 +245,25 @@ Reason   reason;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwDlUdxCfgReq
+PUBLIC S16 RlcDlUdxCfgReq
 (
 Pst          *pst,
 SpId         spId,
-CkwCfgInfo   *cfg
+RlcCfgInfo   *cfg
 )
 #else
-PUBLIC S16 KwDlUdxCfgReq(pst, spId, cfg)
+PUBLIC S16 RlcDlUdxCfgReq(pst, spId, cfg)
 Pst          *pst;
 SpId         spId;
-CkwCfgInfo   *cfg;
+RlcCfgInfo   *cfg;
 #endif
 {
-   CkwCfgCfmInfo   *cfgCfm; 
+   RlcCfgCfmInfo   *cfgCfm; 
    U8              idx;    
    KwCb            *tKwCb;
    Pst             *pstUdxCfm;
 
-   TRC3(KwDlUdxCfgReq)
+   TRC3(RlcDlUdxCfgReq)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
@@ -272,22 +272,22 @@ CkwCfgInfo   *cfg;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    pstUdxCfm = &(tKwCb->u.dlCb->udxDlSap[spId].pst);
    KWDBGP_BRIEF(tKwCb,"spId(%d)\n", spId);
    /* Allocate memory and memset to 0 for cfmInfo */
-   KW_ALLOC_SHRABL_BUF_WC(pstUdxCfm->region,
+   RLC_ALLOC_SHRABL_BUF_WC(pstUdxCfm->region,
                           pstUdxCfm->pool,
                           cfgCfm,
-                          sizeof(CkwCfgCfmInfo));
+                          sizeof(RlcCfgCfmInfo));
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (cfgCfm == NULLP)
    {
       RLOG0(L_FATAL,"Memory Allocation Failed.");
       /* kw002.201 Freeing from proper region */
-      /* KW_PST_FREE(pst->region, pst->pool, cfg, sizeof(CkwCfgInfo)); */
+      /* KW_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo)); */
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
@@ -408,9 +408,9 @@ CkwCfgInfo   *cfg;
    cfgCfm->numEnt = cfg->numEnt;
 
    /* kw002.201 Freeing from proper region */
-   /* KW_PST_FREE(pst->region, pst->pool, cfg, sizeof(CkwCfgInfo)); */
+   /* KW_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo)); */
    /* Send Configuration confirm primitive */
-   KwDlUdxCfgCfm(&(tKwCb->u.dlCb->udxDlSap[spId].pst),
+   RlcDlUdxCfgCfm(&(tKwCb->u.dlCb->udxDlSap[spId].pst),
                  tKwCb->u.dlCb->udxDlSap[spId].suId, 
                  cfgCfm);
 
@@ -434,7 +434,7 @@ CkwCfgInfo   *cfg;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwDlUdxUeIdChgReq
+PUBLIC S16 RlcDlUdxUeIdChgReq
 (
 Pst         *pst, 
 SpId        spId, 
@@ -443,7 +443,7 @@ CkwUeInfo   *ueInfo,
 CkwUeInfo   *newUeInfo
 )
 #else
-PUBLIC S16 KwDlUdxUeIdChgReq(pst,spId,transId,ueInfo,newUeInfo)
+PUBLIC S16 RlcDlUdxUeIdChgReq(pst,spId,transId,ueInfo,newUeInfo)
 Pst         *pst;
 SpId        spId;
 U32         transId;
@@ -454,7 +454,7 @@ CkwUeInfo   *newUeInfo;
    CmStatus       status;
    KwCb           *tKwCb;
 
-   TRC3(KwDlUdxUeIdChgReq)
+   TRC3(RlcDlUdxUeIdChgReq)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
@@ -463,7 +463,7 @@ CkwUeInfo   *newUeInfo;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 #ifndef ALIGN_64BIT
    KWDBGP_BRIEF(tKwCb, "(spId(%d), transId(%ld))\n", 
                 spId, transId);
@@ -480,7 +480,7 @@ CkwUeInfo   *newUeInfo;
       RLOG_ARG1(L_ERROR,DBG_CELLID,newUeInfo->cellId,"Failure due to[%d]",
              status.reason);
    }
-   KwDlUdxUeIdChgCfm(&(tKwCb->u.dlCb->udxDlSap[spId].pst),
+   RlcDlUdxUeIdChgCfm(&(tKwCb->u.dlCb->udxDlSap[spId].pst),
                      tKwCb->u.dlCb->udxDlSap[spId].suId, 
                      transId, 
                      status);
@@ -502,7 +502,7 @@ CkwUeInfo   *newUeInfo;
 *    -# RFAILED
 **/
 #ifdef ANSI
-PUBLIC S16  KwDlUdxStaPduReq
+PUBLIC S16  RlcDlUdxStaPduReq
 (
 Pst             *pst,
 SpId            spId,
@@ -510,24 +510,24 @@ CmLteRlcId      *rlcId,
 KwUdxDlStaPdu   *pStaPdu
 )
 #else
-PUBLIC S16  KwDlUdxStaPduReq(pst, spId, rlcId, pStaPdu)
+PUBLIC S16  RlcDlUdxStaPduReq(pst, spId, rlcId, pStaPdu)
 Pst             *pst;
 SpId            spId;
 CmLteRlcId      *rlcId;
 KwUdxDlStaPdu   *pStaPdu;
 #endif
 {
-   KwDlRbCb   *rbCb;
+   RlcDlRbCb   *rbCb;
    KwCb       *tKwCb;
 
-   tKwCb =  KW_GET_KWCB (pst->dstInst);
+   tKwCb =  RLC_GET_RLCCB (pst->dstInst);
 
    kwDbmFetchDlRbCbByRbId(tKwCb, rlcId, &rbCb); /* Fetch DBM RbCb */
    if (!rbCb)
    {
       RLOG_ARG2(L_ERROR, DBG_UEID,rlcId->ueId, "CellId [%u]:RbId[%d] not found",
             rlcId->cellId,rlcId->rbId);
-      KW_FREE_SHRABL_BUF(pst->region, 
+      RLC_FREE_SHRABL_BUF(pst->region, 
 			 pst->pool, 
 			 pStaPdu, 
 			 sizeof(KwUdxDlStaPdu));
@@ -539,7 +539,7 @@ KwUdxDlStaPdu   *pStaPdu;
       into account */
    if(AMDL.pStaPdu)
    {
-      KW_FREE_SHRABL_BUF(pst->region, 
+      RLC_FREE_SHRABL_BUF(pst->region, 
 			 pst->pool, 
 			 AMDL.pStaPdu, 
 			 sizeof(KwUdxDlStaPdu));
@@ -565,7 +565,7 @@ KwUdxDlStaPdu   *pStaPdu;
 *    -# RFAILED
 **/
 #ifdef ANSI
-PUBLIC S16  KwDlUdxStaUpdReq
+PUBLIC S16  RlcDlUdxStaUpdReq
 (
 Pst*          pst,
 SpId          spId,
@@ -573,7 +573,7 @@ CmLteRlcId    *rlcId,
 KwUdxStaPdu   *pStaPdu
 )
 #else
-PUBLIC S16 KwDlUdxStaUpdReq(pst, spId, rlcId,pStaPdu)
+PUBLIC S16 RlcDlUdxStaUpdReq(pst, spId, rlcId,pStaPdu)
 Pst*          pst;
 SpId          spId;
 CmLteRlcId    *rlcId;
@@ -581,9 +581,9 @@ KwUdxStaPdu   *pStaPdu;
 #endif
 {
    KwCb          *tKwCb;
-   KwDlRbCb      *rbCb;
+   RlcDlRbCb      *rbCb;
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    kwDbmFetchDlRbCbByRbId(tKwCb, rlcId, &rbCb);
    if (!rbCb)
@@ -595,7 +595,7 @@ KwUdxStaPdu   *pStaPdu;
 
    kwAmmDlHndlStatusPdu(tKwCb, rbCb, pStaPdu);
 
-   KW_FREE_SHRABL_BUF(pst->region,
+   RLC_FREE_SHRABL_BUF(pst->region,
 		      pst->pool, 
 		      pStaPdu, 
 		      sizeof(KwUdxStaPdu));
@@ -607,13 +607,13 @@ KwUdxStaPdu   *pStaPdu;
 /**
 */
 #ifdef ANSI
-PUBLIC S16 KwDlUdxL2MeasReq 
+PUBLIC S16 RlcDlUdxL2MeasReq 
 (
 Pst            *pst, 
 KwL2MeasReqEvt *measReqEvt 
 )
 #else
-PUBLIC S16 KwDlUdxL2MeasReq (pst, measReqEvt)
+PUBLIC S16 RlcDlUdxL2MeasReq (pst, measReqEvt)
 Pst            *pst; 
 KwL2MeasReqEvt *measReqEvt;
 #endif
@@ -623,12 +623,12 @@ KwL2MeasReqEvt *measReqEvt;
    VOLATILE U32     startTime = 0;
    KwCb     *tKwCb;
 
-   TRC3(KwDlUdxL2MeasReq);
+   TRC3(RlcDlUdxL2MeasReq);
 
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_MEAS_START);
 
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tKwCb =  RLC_GET_RLCCB(pst->dstInst);
 
    /* Initialize measCfmEvt */
 
@@ -668,7 +668,7 @@ KwL2MeasReqEvt *measReqEvt;
    /*stopping Task*/
    SStopTask(startTime, PID_RLC_MEAS_START);
    RETVALUE(ROK);
-} /* KwDlUdxMeasReq */
+} /* RlcDlUdxMeasReq */
 
 /**
 @brief 
@@ -682,13 +682,13 @@ After receving this request, RLC stops L2 Measurement
 */
 
 #ifdef ANSI
-PUBLIC S16 KwDlUdxL2MeasStopReq
+PUBLIC S16 RlcDlUdxL2MeasStopReq
 (
 Pst            *pst,
 U8             measType
 )
 #else
-PUBLIC S16 KwDlUdxL2MeasStopReq (pst, measType)
+PUBLIC S16 RlcDlUdxL2MeasStopReq (pst, measType)
 Pst            *pst;
 U8             measType;
 #endif
@@ -700,12 +700,12 @@ U8             measType;
 /*   KwL2MeasCfmEvt          measCfmEvt;  */
    VOLATILE U32     startTime = 0;
    KwCb     *tKwCb=NULLP;
-   TRC3(KwDlUdxMeasStopReq);
+   TRC3(RlcDlUdxMeasStopReq);
    
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_MEAS_STOP);
 
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tKwCb =  RLC_GET_RLCCB(pst->dstInst);
 /*   cmMemset((U8*)&measCfmEvt, 0, sizeof(KwL2MeasCfmEvt)); */
    /* reset the counters for the measurement type passed */
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
@@ -744,13 +744,13 @@ After receving this request, RLC sends L2 Measurement
 */
 
 #ifdef ANSI
-PUBLIC S16 KwDlUdxL2MeasSendReq
+PUBLIC S16 RlcDlUdxL2MeasSendReq
 (
 Pst            *pst,
 U8             measType
 )
 #else
-PUBLIC S16 KwDlUdxL2MeasSendReq (pst, measType)
+PUBLIC S16 RlcDlUdxL2MeasSendReq (pst, measType)
 Pst            *pst;
 U8             measType;
 #endif
@@ -760,9 +760,9 @@ U8             measType;
    
    VOLATILE U32     startTime = 0;
    KwCb     *tKwCb;
-   TRC3(KwDlUdxMeasSendReq);
+   TRC3(RlcDlUdxMeasSendReq);
 
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tKwCb =  RLC_GET_RLCCB(pst->dstInst);
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
       measEvtCb = &(tKwCb->u.dlCb->kwL2Cb.kwL2EvtCb[cntr]);

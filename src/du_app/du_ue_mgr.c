@@ -21,6 +21,7 @@
 #include "lrg.x"
 #include "lkw.x"
 #include "legtp.h"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "du_ue_mgr.h"
 #include<ProtocolIE-Field.h>
@@ -44,86 +45,12 @@ DuMacUeCreateReq packMacUeCreateReqOpts[] =
    packDuMacUeCreateReq,       /* Light weight-loose coupling */
 };
 
-/******************************************************************
- *
- * @brief Send UE configuration to RLC
- *
- * @details
- *
- *    Function : duSendUeCreateReqToRlc
- *
- *    Functionality: Send UeCreateReqToRlc
- *
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-S16 duSendUeCreateReqToRlc()
+DuRlcUlUeCreateReq packRlcUlUeCreateReqOpts[] =
 {
-   U8  idx;
-   Pst pst;
-   CkwCfgInfo *ueCfg;
-
-   DU_SET_ZERO(&ueCfg, sizeof(ueCfg));
-   DU_SET_ZERO(&pst, sizeof(Pst));
-
-   DU_ALLOC(ueCfg, sizeof(CkwCfgInfo));
-
-#ifdef EGTP_TEST
-   ueCfg->ueId = UE_ID;
-#endif
-   ueCfg->cellId = NR_CELL_ID;
-   ueCfg->numEnt = 1;
-
-   for(idx = 0; idx < ueCfg->numEnt; idx++)
-   {
-#ifdef EGTP_TEST
-      ueCfg->entCfg[idx].rbId           = RB_ID;
-      ueCfg->entCfg[idx].rbType         = CM_LTE_DRB;
-      ueCfg->entCfg[idx].lCh[0].lChId   = LC_ID;
-      ueCfg->entCfg[idx].lCh[0].type    = CM_LTE_LCH_DTCH;
-#endif
-      ueCfg->entCfg[idx].entMode        = CM_LTE_MODE_UM;
-      ueCfg->entCfg[idx].dir            = CKW_CFG_DIR_BOTH;
-      switch(ueCfg->entCfg[idx].entMode)
-      {
-	 case CM_LTE_MODE_TM:
-	    {
-	       break;
-	    }
-
-	 case CM_LTE_MODE_UM:
-	    {
-	       ueCfg->entCfg[idx].m.umInfo.dl.snLen = 1;      /* For 12 bit SN */
-	       ueCfg->entCfg[idx].m.umInfo.ul.snLen = 1;      /* For 12 bit SN */
-	       ueCfg->entCfg[idx].m.umInfo.ul.reOrdTmr = 10;  /* in msec */
-	       break;
-	    }
-
-	 case CM_LTE_MODE_AM:
-	    {
-	       break;
-	    }
-
-	 default:
-	    break;
-      } /* End of switch(entMode) */
-   } /* End of entity configuration for loop */
-
-   /* Fill Pst */
-   pst.selector  = ODU_SELECTOR_LWLC;
-   pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTKW;
-   pst.dstInst   = RLC_UL_INST;
-   pst.dstProcId = DU_PROC;
-   pst.srcProcId = DU_PROC;
-   pst.region    = duCb.init.region;
-
-   /* Sending to RLC */
-   packUeCreateReq(&pst, ueCfg);
-
-   RETVALUE(ROK); 
-} /* End of duSendUeCreateReqToRlc */
+   packDuRlcUlUeCreateReq,       /* Loose coupling */
+   RlcUlProcUeCreateReq,          /* TIght coupling */
+   packDuRlcUlUeCreateReq,       /* Light weight-loose coupling */
+};
 
 /*******************************************************************
  *
@@ -223,8 +150,8 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
    uint16_t idx2;
    DlCcchIndInfo *dlCcchIndInfo = NULLP;
    Pst pst;
-
    memset(&pst, 0, sizeof(Pst));
+
    DU_LOG("\nDU APP : Building and Sending DL CCCH Ind to MAC");
 
    DU_ALLOC_SHRABL_BUF(dlCcchIndInfo, sizeof(DlCcchIndInfo));
@@ -810,10 +737,13 @@ void fillLcCfgList(LcCfg *lcCfgInfo)
  *
  *
  *****************************************************************/
-void fillMacUeCfg(MacUeCfg *ueCfg)
+void fillMacUeCfg(uint16_t cellId, uint8_t ueIdx,\
+  uint16_t crnti, MacUeCfg *ueCfg)
 {
    uint8_t idx;
-
+   ueCfg->cellId       = cellId;
+   ueCfg->ueIdx        = ueIdx;
+   ueCfg->crnti        = crnti;
    /* Filling MacCellGroup Config */ 
    fillMacCellGrpInfo(&ueCfg->macCellGrpCfg);
    /* Filling PhyCellGroup Config */ 
@@ -832,6 +762,143 @@ void fillMacUeCfg(MacUeCfg *ueCfg)
       }
    }
 
+}
+
+/******************************************************************
+ *
+ * @brief Fills Rlc AM Information
+ *
+ * @details
+ *
+ *    Function : fillAmInfo
+ *
+ *    Functionality: Fills Rlc AM Information
+ *
+ *
+ *****************************************************************/
+void fillAmInfo(AmBearerCfg *amCfg)
+{
+   /* DL AM */
+   amCfg->dlAmCfg.snLenDl     = AM_SIZE_12;
+   amCfg->dlAmCfg.pollRetxTmr = POLL_RETX_TMR_45MS;
+   amCfg->dlAmCfg.pollPdu     = POLL_PDU_TMR_INFINITY;
+   amCfg->dlAmCfg.pollByte    = POLL_BYTES_INFINITY;
+   amCfg->dlAmCfg.maxRetxTh   = RETX_TH_8;   
+ 
+   /* UL AM */
+   amCfg->ulAmCfg.snLenUl     = AM_SIZE_12;
+   amCfg->ulAmCfg.reAssemTmr  = RE_ASM_40MS; 
+   amCfg->ulAmCfg.statProhTmr = PROH_35MS;
+
+}
+
+/******************************************************************
+ *
+ * @brief Fills RLC UM Bi Directional Information
+ *
+ * @details
+ *
+ *    Function : fillUmBiDirInfo
+ *
+ *    Functionality: Fills RLC UM Bi Directional Information
+ *
+ *
+ *****************************************************************/
+void fillUmBiDirInfo(UmBiDirBearerCfg *umBiDirCfg)
+{
+   /* UL UM BI DIR INFO */
+   umBiDirCfg->ulUmCfg.snLenUlUm = UM_SIZE_12;
+   umBiDirCfg->ulUmCfg.reAssemTmr = RE_ASM_40MS;
+
+   /* DL UM BI DIR INFO */
+   umBiDirCfg->dlUmCfg.snLenDlUm  = UM_SIZE_12;
+
+}
+
+/******************************************************************
+ *
+ * @brief Fills RLC UM Uni Directional UL Information
+ *
+ * @details
+ *
+ *    Function : fillUmUniDirUlInfo
+ *
+ *    Functionality: Fills RLC UM Uni Directional Info
+ *
+ *
+ *****************************************************************/
+void fillUmUniDirUlInfo(UmUniDirUlBearerCfg *umUniDirUlCfg)
+{
+   umUniDirUlCfg->ulUmCfg.snLenUlUm = UM_SIZE_12;
+   umUniDirUlCfg->ulUmCfg.reAssemTmr = RE_ASM_40MS;
+}
+
+/******************************************************************
+ *
+ * @brief Fills RLC UM Uni Directional DL Information
+ *
+ * @details
+ *
+ *    Function : fillUmUniDirDlInfo
+ *
+ *    Functionality: Fills RLC UM Uni Directional DL Info
+ *
+ *
+ *****************************************************************/
+void fillUmUniDirDlInfo(UmUniDirDlBearerCfg *umUniDirDlCfg)
+{
+   umUniDirDlCfg->dlUmCfg.snLenDlUm  = UM_SIZE_12;
+}
+
+/******************************************************************
+ *
+ * @brief Fills RlcBearerCfg structure
+ *
+ * @details
+ *
+ *    Function : fillRlcBearerCfg
+ *
+ *    Functionality: Fills Rlc Bearer Cfg
+ *
+ *
+ *****************************************************************/
+void fillRlcBearerCfg(uint16_t cellId, uint8_t ueIdx, RlcUeCfg *ueCfg)
+{
+   uint8_t idx;
+   ueCfg->cellId       = cellId;
+   ueCfg->ueIdx        = ueIdx;
+   ueCfg->numLcs       = SRB_ID_1; 
+
+   for(idx = 0; idx < ueCfg->numLcs; idx++)
+   {
+      ueCfg->rlcBearerCfg[idx].rbId         = RB_ID_SRB;
+      ueCfg->rlcBearerCfg[idx].rbType       = RB_TYPE_SRB;
+      ueCfg->rlcBearerCfg[idx].lcId         = SRB_ID_1;
+      ueCfg->rlcBearerCfg[idx].lcType       = LCH_DCCH;
+      ueCfg->rlcBearerCfg[idx].rlcMode      = RLC_AM;
+      switch(ueCfg->rlcBearerCfg[idx].rlcMode)
+      {
+         case RLC_AM:
+	    memset(&ueCfg->rlcBearerCfg[idx].u.amCfg, 0, sizeof(AmBearerCfg));
+            fillAmInfo(&ueCfg->rlcBearerCfg[idx].u.amCfg);
+            break;
+         case RLC_UM_BI_DIRECTIONAL:
+	    memset(&ueCfg->rlcBearerCfg[idx].u.umBiDirCfg, 0, sizeof(UmBiDirBearerCfg));
+            fillUmBiDirInfo(&ueCfg->rlcBearerCfg[idx].u.umBiDirCfg);
+            break;
+         case RLC_UM_UNI_DIRECTIONAL_UL:
+	    memset(&ueCfg->rlcBearerCfg[idx].u.umUniDirUlCfg, 0, sizeof(UmUniDirUlBearerCfg));
+            fillUmUniDirUlInfo(&ueCfg->rlcBearerCfg[idx].u.umUniDirUlCfg);
+            break;
+         case RLC_UM_UNI_DIRECTIONAL_DL:
+	    memset(&ueCfg->rlcBearerCfg[idx].u.umUniDirDlCfg, 0, sizeof(UmUniDirDlBearerCfg));
+            fillUmUniDirDlInfo(&ueCfg->rlcBearerCfg[idx].u.umUniDirDlCfg);
+            break;
+         default :
+            DU_LOG("\nDU_APP: Rlc Mode invalid %d", ueCfg->rlcBearerCfg[idx].rlcMode);
+            break;
+      }
+   }
 }
 
 /******************************************************************
@@ -868,20 +935,22 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 
 	 /* Filling Mac Ue Config */ 
 	 memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg, 0, sizeof(MacUeCfg));
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId       = ueCcchCtxt->cellId;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.ueIdx         = ueIdx;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.crnti         = ueCcchCtxt->crnti;
-	 fillMacUeCfg(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg);
+         ret = duBuildAndSendUeCreateReqToMac(ueCcchCtxt->cellId, ueIdx, ueCcchCtxt->crnti,\
+                &duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg);
+         if(ret)
+            DU_LOG("\nDU_APP: Failed to send UE create request to MAC");
+         
+	 /* Filling Rlc Ue Config */
+         memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg, 0, sizeof(RlcUeCfg));
+         ret = duBuildAndSendUeCreateReqToRlc(ueCcchCtxt->cellId, ueIdx, \
+                &duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg);
+         if(ret)
+            DU_LOG("\nDU_APP: Failed to send UE create request to RLC");
+
 	 duCb.actvCellLst[cellIdx]->numActvUes++;
 	 memset(ueCcchCtxt, 0, sizeof(UeCcchCtxt));
-
-	 /* Send Ue Create Request to MAC */
-	 ret = duBuildAndSendUeCreateReqToMac(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId, ueIdx);
-	 if(ret)
-	    DU_LOG("\nDU_APP: Failed to send UE create request to MAC");
       }
    }
-
    return ret;
 }
 
@@ -902,13 +971,15 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
  *
  * ****************************************************************/
 
-uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
+uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx,\
+   uint16_t crnti, MacUeCfg *duMacUeCfg)
 {
    uint8_t ret = ROK;
    MacUeCfg *macUeCfg = NULLP;
    Pst pst;
-
    memset(&pst, 0, sizeof(Pst));
+
+   fillMacUeCfg(cellId, ueIdx, crnti, duMacUeCfg);
 
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LWLC;
@@ -928,6 +999,7 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
    {
       memset(macUeCfg, 0, sizeof(MacUeCfg));
       memcpy(macUeCfg, &duCb.actvCellLst[cellId - 1]->ueCb[ueIdx].macUeCfg, sizeof(MacUeCfg));
+      DU_LOG("\nDU_APP: Sending UE create request to MAC");
       /* Processing one Ue at a time to MAC */
       ret = (*packMacUeCreateReqOpts[pst.selector])(&pst, macUeCfg);
       if(ret)
@@ -939,7 +1011,7 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
    }
    else
    {
-      DU_LOG("\n DU_APP: Memory alloc failed at duBuildAndSendUeCreateReq()");
+      DU_LOG("\n DU_APP: Memory alloc failed at duBuildAndSendUeCreateReqToMac()");
       ret = RFAILED;
    }
    return ret;
@@ -955,7 +1027,7 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
  *
  *    Functionality: Handle UE create response from MAC
  *
- * @params[in] 
+ * @params[in] Pointer to MacUeCfgRsp and Pst 
  * @return ROK     - success
  *         RFAILED - failure
  *
@@ -973,6 +1045,105 @@ uint8_t duHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Processes UE create Req to RLC UL
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendUeCreateReqToRlc
+ *
+ *    Functionality: 
+ *     Processes UE create Req to RLC UL
+ * 
+ *  @params[in]  cellId,
+ *               ueIdx,
+ *               Pointer to RlcUeCfg
+ *  @return ROK     - success
+ *          RFAILED - failure
+ * 
+ *****************************************************************/
+
+uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t ueIdx, RlcUeCfg *duRlcUeCfg)
+{
+   uint8_t ret = ROK;
+   RlcUeCfg *rlcUeCfg = NULLP;
+   Pst pst;
+   memset(&pst, 0, sizeof(Pst));
+  
+   fillRlcBearerCfg(cellId, ueIdx, duRlcUeCfg);
+   FILL_PST_DUAPP_TO_RLC(pst, RLC_UL_INST, EVENT_RLC_UL_UE_CREATE_REQ);
+
+   /* Copying ueCfg to a sharable buffer */
+   DU_ALLOC_SHRABL_BUF(rlcUeCfg, sizeof(RlcUeCfg));
+   if(rlcUeCfg)
+   {
+      memset(rlcUeCfg, 0, sizeof(RlcUeCfg));
+      memcpy(rlcUeCfg, duRlcUeCfg, sizeof(RlcUeCfg));
+      /* Processing one Ue at a time to RLC */
+      DU_LOG("\nDU_APP: Sending UE create request to RLC UL");
+      ret = (*packRlcUlUeCreateReqOpts[pst.selector])(&pst, rlcUeCfg);
+      if(ret)
+      {
+         DU_LOG("\nDU_APP : Failure in sending Ue Create Req to RLC");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rlcUeCfg, sizeof(RlcUeCfg));
+         ret = RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\n DU_APP: Memory alloc failed at duBuildAndSendUeCreateReqToRlc()");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
+
+
+/*******************************************************************
+ *
+ * @brief Processes UE create Rsp received from RLC UL
+ *
+ * @details
+ *
+ *    Function : duProcRlcUlUeCfgRsp
+ *
+ *    Functionality: 
+ *     Processes UE create Rsp received from RLC UL
+ * 
+ *  @params[in]  Post structure
+ *               Pointer to RlcCfgCfm
+ *  @return ROK     - success
+ *          RFAILED - failure
+ * 
+ *****************************************************************/
+
+uint8_t duProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
+{
+   uint8_t ret = ROK;
+
+   if(cfgRsp)
+   {
+      if(cfgRsp->result == RLC_DU_APP_RSP_OK)
+      {
+         DU_LOG("\nDU_APP: RLC UE Create Response : SUCCESS [UE IDX:%d]", cfgRsp->ueIdx);
+      }
+      else
+      {
+         DU_LOG("\nDU_APP: RLC UE Create Response : FAILED [UE IDX:%d, REASON :%d]",\
+	    cfgRsp->ueIdx, cfgRsp->reason);
+	 ret = RFAILED;
+      }
+      DU_FREE(cfgRsp, sizeof(RlcUeCfgRsp));
+   }
+   else
+   {
+      DU_LOG("\nDU_APP: Received RLC Ue Create Response is NULL");
+      DU_FREE(cfgRsp, sizeof(RlcUeCfgRsp));
+      ret = RFAILED;
+   }
+   return ret;
+}
 /**********************************************************************
   End of file
  ***********************************************************************/

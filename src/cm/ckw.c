@@ -32,6 +32,7 @@
 #include "common_def.h"
 #include "ckw.h"
 #include "ckw.x"
+#include "du_app_rlc_inf.h"
 /* extern (.x) include files */
 
 
@@ -440,9 +441,9 @@ Buffer         *mBuf;
 
 /*
 *
-*    Fun:    cmPkCkwCfgInfo
+*    Fun:    cmPkRlcCfgInfo
 *
-*    Desc:    pack the structure CkwCfgInfo
+*    Desc:    pack the structure RlcCfgInfo
 *
 *    Ret:    ROK  -ok
 *
@@ -452,22 +453,22 @@ Buffer         *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwCfgInfo
+PUBLIC S16 cmPkRlcCfgInfo
 (
-CkwCfgInfo     *param,
+RlcCfgInfo     *param,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmPkCkwCfgInfo(param, pst, mBuf)
-CkwCfgInfo     *param;
+PUBLIC S16 cmPkRlcCfgInfo(param, pst, mBuf)
+RlcCfgInfo     *param;
 Pst            *pst;
 Buffer         *mBuf;
 #endif
 {
    S16 idx;
 
-   TRC3(cmPkCkwCfgInfo)
+   TRC3(cmPkRlcCfgInfo)
 
     for (idx = param->numEnt-1; idx >= 0; idx--)
     {
@@ -480,64 +481,7 @@ Buffer         *mBuf;
     CMCHKPKLOG(SPkU32, param->transId, mBuf, ECKW010, pst);
 
     RETVALUE(ROK);
-} /* cmPkCkwCfgInfo */
-
-
-/*
-*
-*    Fun:    packUeCreateReq
-*
-*    Desc:    pack the primitive UE Create Req
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
-#ifdef ANSI
-PUBLIC S16 packUeCreateReq
-(
-Pst               *pst,
-CkwCfgInfo        *cfgInfo
-)
-#else
-PUBLIC S16 packUeCreateReq(pst, cfgInfo)
-Pst               *pst;
-CkwCfgInfo        *cfgInfo;
-#endif
-{
-    S16 ret1;
-    Buffer *mBuf;
-    mBuf = NULLP;
-    TRC3(packUeCreateReq)
-
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
-    {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW011, (ErrVal)0, "SGetMsg() failed");
-       }
-#endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
-
-    switch(pst->selector)
-    {
-       case ODU_SELECTOR_LWLC:
-          {
-             CMCHKPK(cmPkPtr,(PTR) cfgInfo, mBuf);
-             break;
-          }
-    }
-    pst->event = (Event) RLC_EVT_UE_CREATE_REQ;
-
-    RETVALUE(SPstTsk(pst,mBuf));
-} /* packUeCreateReq */
+} /* cmPkRlcCfgInfo */
 
 
 /*
@@ -577,9 +521,9 @@ Buffer            *mBuf;
 
 /*
 *
-*    Fun:    cmPkCkwCfgCfmInfo
+*    Fun:    cmPkRlcCfgCfmInfo
 *
-*    Desc:    pack the structure CkwCfgCfmInfo
+*    Desc:    pack the structure RlcCfgCfmInfo
 *
 *    Ret:    ROK  -ok
 *
@@ -589,22 +533,22 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwCfgCfmInfo
+PUBLIC S16 cmPkRlcCfgCfmInfo
 (
-CkwCfgCfmInfo  *param,
+RlcCfgCfmInfo  *param,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmPkCkwCfgCfmInfo(param, pst, mBuf)
-CkwCfgCfmInfo  *param;
+PUBLIC S16 cmPkRlcCfgCfmInfo(param, pst, mBuf)
+RlcCfgCfmInfo  *param;
 Pst            *pst;
 Buffer         *mBuf;
 #endif
 {
     S16         idx;
 
-    TRC3(cmPkCkwCfgCfmInfo)
+    TRC3(cmPkRlcCfgCfmInfo)
 
     for (idx = param->numEnt-1; idx >= 0; idx--)
     {
@@ -617,14 +561,14 @@ Buffer         *mBuf;
     CMCHKPKLOG(SPkU32, param->transId, mBuf, ECKW014, pst);
 
     RETVALUE(ROK);
-} /* cmPkCkwCfgCfmInfo */
+} /* cmPkRlcCfgCfmInfo */
 
 
 /*
 *
-*    Fun:    cmPkCkwCfgCfm
+*    Fun:    cmPkRlcCfgCfm
 *
-*    Desc:    pack the primitive KwUiCkwCfgCfm
+*    Desc:    pack the primitive KwUiRlcCfgCfm
 *
 *    Ret:    ROK  -ok
 *
@@ -634,23 +578,23 @@ Buffer         *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwCfgCfm
+PUBLIC S16 cmPkRlcCfgCfm
 (
 Pst               *pst,
 SuId              suId,
-CkwCfgCfmInfo     *cfgCfmInfo
+RlcCfgCfmInfo     *cfgCfmInfo
 )
 #else
-PUBLIC S16 cmPkCkwCfgCfm(pst, suId, cfgCfmInfo)
+PUBLIC S16 cmPkRlcCfgCfm(pst, suId, cfgCfmInfo)
 Pst               *pst;
 SuId              suId;
-CkwCfgCfmInfo     *cfgCfmInfo;
+RlcCfgCfmInfo     *cfgCfmInfo;
 #endif
 {
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkCkwCfgCfm)
+    TRC3(cmPkRlcCfgCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -670,7 +614,7 @@ CkwCfgCfmInfo     *cfgCfmInfo;
 #ifdef LCCKW
        case ODU_SELECTOR_LC:
           {
-             ret1 = cmPkCkwCfgCfmInfo( (cfgCfmInfo), pst, mBuf);
+             ret1 = cmPkRlcCfgCfmInfo( (cfgCfmInfo), pst, mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
              if(ret1 != ROK)
              {
@@ -682,7 +626,7 @@ CkwCfgCfmInfo     *cfgCfmInfo;
              }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
              if (SPutSBuf(pst->region, pst->pool, (Data *)cfgCfmInfo,
-                      sizeof(CkwCfgCfmInfo)) != ROK)
+                      sizeof(RlcCfgCfmInfo)) != ROK)
              {
                 SPutMsg(mBuf);
                 RETVALUE(RFAILED);
@@ -694,10 +638,10 @@ CkwCfgCfmInfo     *cfgCfmInfo;
     }
 
     CMCHKPKLOG(SPkS16, suId, mBuf, ECKW017, pst);
-    pst->event = (Event) CKW_EVT_CFG_CFM;
+    pst->event = (Event) EVENT_RLC_UL_UE_CREATE_RSP;
 
     RETVALUE(SPstTsk(pst,mBuf));
-} /* cmPkCkwCfgCfm */
+} /* cmPkRlcCfgCfm */
 
 /*
 *
@@ -1193,9 +1137,9 @@ Buffer            *mBuf;
 
 /*
 *
-*    Fun:    cmUnpkCkwCfgCfmInfo
+*    Fun:    cmUnpkRlcCfgCfmInfo
 *
-*    Desc:    pack the structure CkwCfgCfmInfo
+*    Desc:    pack the structure RlcCfgCfmInfo
 *
 *    Ret:    ROK  -ok
 *
@@ -1205,22 +1149,22 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwCfgCfmInfo
+PUBLIC S16 cmUnpkRlcCfgCfmInfo
 (
-CkwCfgCfmInfo  *param,
+RlcCfgCfmInfo  *param,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCkwCfgCfmInfo(param, pst, mBuf)
-CkwCfgCfmInfo  *param;
+PUBLIC S16 cmUnpkRlcCfgCfmInfo(param, pst, mBuf)
+RlcCfgCfmInfo  *param;
 Pst            *pst;
 Buffer         *mBuf;
 #endif
 {
     U8         idx;
 
-    TRC3(cmUnpkCkwCfgCfmInfo)
+    TRC3(cmUnpkRlcCfgCfmInfo)
 
     CMCHKUNPKLOG(SUnpkU32, &(param->transId), mBuf, ECKW030, pst);
     CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
@@ -1233,7 +1177,7 @@ Buffer         *mBuf;
     }
 
     RETVALUE(ROK);
-} /* cmUnpkCkwCfgCfmInfo */
+} /* cmUnpkRlcCfgCfmInfo */
 
 
 /*
@@ -1318,9 +1262,9 @@ Buffer         *mBuf;
 
 /*
 *
-*    Fun:    cmUnpkCkwCfgInfo
+*    Fun:    cmUnpkRlcCfgInfo
 *
-*    Desc:    unpack the structure CkwCfgInfo
+*    Desc:    unpack the structure RlcCfgInfo
 *
 *    Ret:    ROK  -ok
 *
@@ -1330,22 +1274,22 @@ Buffer         *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwCfgInfo
+PUBLIC S16 cmUnpkRlcCfgInfo
 (
-CkwCfgInfo     *param,
+RlcCfgInfo     *param,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCkwCfgInfo(param, pst, mBuf)
-CkwCfgInfo     *param;
+PUBLIC S16 cmUnpkRlcCfgInfo(param, pst, mBuf)
+RlcCfgInfo     *param;
 Pst            *pst;
 Buffer         *mBuf;
 #endif
 {
     U8         idx;
 
-    TRC3(cmUnpkCkwCfgInfo)
+    TRC3(cmUnpkRlcCfgInfo)
 
     CMCHKUNPKLOG(SUnpkU32, &(param->transId), mBuf, ECKW031, pst);
     CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
@@ -1358,14 +1302,14 @@ Buffer         *mBuf;
     }
 
     RETVALUE(ROK);
-} /* cmUnpkCkwCfgInfo */
+} /* cmUnpkRlcCfgInfo */
 
 
 /*
 *
-*    Fun:    unpackUeCreateReq
+*    Fun:    cmUnpkRlcCfgCfm
 *
-*    Desc:    unpack the primitive UE create request
+*    Desc:    unpack the primitive KwUiRlcCfgCfm
 *
 *    Ret:    ROK  -ok
 *
@@ -1375,86 +1319,27 @@ Buffer         *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 unpackUeCreateReq
+PUBLIC S16 cmUnpkRlcCfgCfm
 (
-CkwCfgReq         func,
+RlcCfgCfm         func,
 Pst               *pst,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCkwCfgReq(func, pst, mBuf)
-CkwCfgReq         func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
-{
-    S16 ret1;
-    CkwCfgInfo    *cfgInfo = NULLP;
-    
-    TRC3(unpackUeCreateReq)
-
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&cfgInfo,\
-                sizeof(CkwCfgInfo))) != ROK)
-    {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      /*MBUF_FIXX*/
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW033, (ErrVal)0, "SGetMsg() failed");
-      
-#endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
-
-    switch(pst->selector)
-    {
-       case ODU_SELECTOR_LWLC:
-          {
-             CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgInfo, mBuf); 
-             break;
-          }
-    }
-    SPutMsg(mBuf);
-
-    RETVALUE((*func)(pst, cfgInfo));
-} /* cmUnpkCkwCfgReq */
-
-
-/*
-*
-*    Fun:    cmUnpkCkwCfgCfm
-*
-*    Desc:    unpack the primitive KwUiCkwCfgCfm
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
-#ifdef ANSI
-PUBLIC S16 cmUnpkCkwCfgCfm
-(
-CkwCfgCfm         func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkCkwCfgCfm(func, pst, mBuf)
-CkwCfgCfm         func;
+PUBLIC S16 cmUnpkRlcCfgCfm(func, pst, mBuf)
+RlcCfgCfm         func;
 Pst               *pst;
 Buffer            *mBuf;
 #endif
 {
     S16 ret1;
     SuId             suId = 0;
-    CkwCfgCfmInfo    *cfgCfmInfo = NULLP;
+    RlcCfgCfmInfo    *cfgCfmInfo = NULLP;
     
-    TRC3(cmUnpkCkwCfgCfm)
+    TRC3(cmUnpkRlcCfgCfm)
 
     if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&cfgCfmInfo,\
-                sizeof(CkwCfgCfmInfo))) != ROK)
+                sizeof(RlcCfgCfmInfo))) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
@@ -1467,7 +1352,7 @@ Buffer            *mBuf;
        RETVALUE(ret1);
     }
 
-    cmMemset((U8 *)cfgCfmInfo, 0, sizeof(CkwCfgCfmInfo));
+    cmMemset((U8 *)cfgCfmInfo, 0, sizeof(RlcCfgCfmInfo));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
 
@@ -1476,7 +1361,7 @@ Buffer            *mBuf;
 #ifdef LCCKW
        case ODU_SELECTOR_LC:
        {
-          ret1 = cmUnpkCkwCfgCfmInfo( (cfgCfmInfo), pst, mBuf);
+          ret1 = cmUnpkRlcCfgCfmInfo( (cfgCfmInfo), pst, mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
           if(ret1 != ROK)
           {
@@ -1494,7 +1379,7 @@ Buffer            *mBuf;
     SPutMsg(mBuf);
 
     RETVALUE((*func)(pst, suId, cfgCfmInfo));
-} /* cmUnpkCkwCfgCfm */
+} /* cmUnpkRlcCfgCfm */
 
 /*
 *

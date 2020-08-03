@@ -131,7 +131,7 @@ S16   tmrEvnt;
    {
       case KW_EVT_UMUL_REORD_TMR:
       {
-         KwUmUl* umUl = &(((KwUlRbCb *)cb)->m.umUl);
+         KwUmUl* umUl = &(((RlcUlRbCb *)cb)->m.umUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
          KW_TMR_CALCUATE_WAIT(arg.wait, umUl->reOrdTmrInt, gCb->genCfg.timeRes);
 
@@ -141,7 +141,7 @@ S16   tmrEvnt;
       }
       case KW_EVT_AMUL_REORD_TMR:
       {
-         KwAmUl* amUl = &(((KwUlRbCb *)cb)->m.amUl);
+         KwAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
          KW_TMR_CALCUATE_WAIT(arg.wait, amUl->reOrdTmrInt, gCb->genCfg.timeRes);         
 
@@ -151,7 +151,7 @@ S16   tmrEvnt;
       }
       case KW_EVT_AMUL_STA_PROH_TMR:
       {
-         KwAmUl* amUl = &(((KwUlRbCb *)cb)->m.amUl);
+         KwAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
          KW_TMR_CALCUATE_WAIT(arg.wait,
                               amUl->staProhTmrInt,
@@ -163,7 +163,7 @@ S16   tmrEvnt;
       } 
       case KW_EVT_AMDL_POLL_RETX_TMR:
       {
-         KwAmDl* amDl = &(((KwDlRbCb *)cb)->m.amDl);
+         KwAmDl* amDl = &(((RlcDlRbCb *)cb)->m.amDl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
          KW_TMR_CALCUATE_WAIT(arg.wait, 
                               amDl->pollRetxTmrInt, 
@@ -255,25 +255,25 @@ U8     tmrType;
    {
       case KW_EVT_UMUL_REORD_TMR:
       {
-         arg.timers  = &((KwUlRbCb *)cb)->m.umUl.reOrdTmr;
+         arg.timers  = &((RlcUlRbCb *)cb)->m.umUl.reOrdTmr;
          arg.max = KW_MAX_UM_TMR;
          break;
       }
       case KW_EVT_AMUL_REORD_TMR:
       {
-         arg.timers = &((KwUlRbCb *)cb)->m.amUl.reOrdTmr;
+         arg.timers = &((RlcUlRbCb *)cb)->m.amUl.reOrdTmr;
          arg.max = KW_MAX_AM_TMR;
          break;
       }
       case KW_EVT_AMUL_STA_PROH_TMR:
       {
-         arg.timers = &((KwUlRbCb *)cb)->m.amUl.staProhTmr;
+         arg.timers = &((RlcUlRbCb *)cb)->m.amUl.staProhTmr;
          arg.max = KW_MAX_AM_TMR;
          break;
       } 
       case KW_EVT_AMDL_POLL_RETX_TMR:
       {
-         arg.timers = &((KwDlRbCb *)cb)->m.amDl.pollRetxTmr;
+         arg.timers = &((RlcDlRbCb *)cb)->m.amDl.pollRetxTmr;
          arg.max = KW_MAX_AM_TMR;
          break;
       } 
@@ -344,28 +344,28 @@ S16   tmrEvnt;
    {
       case KW_EVT_UMUL_REORD_TMR:
       {
-         KwUlRbCb *ulRbCb = (KwUlRbCb *)cb;
-         kwUmmReOrdTmrExp(KW_GET_KWCB(ulRbCb->inst), ulRbCb);
+         RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
+         kwUmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
          break;
       }
       case KW_EVT_AMUL_REORD_TMR:
       {
-         KwUlRbCb *ulRbCb = (KwUlRbCb *)cb;
-         kwAmmReOrdTmrExp(KW_GET_KWCB(ulRbCb->inst), ulRbCb);
+         RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
+         kwAmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
          break;
       }
       case KW_EVT_AMUL_STA_PROH_TMR:
       {
-         KwUlRbCb *ulRbCb = (KwUlRbCb *)cb;
-         kwAmmStaProTmrExp(KW_GET_KWCB(ulRbCb->inst), ulRbCb);
+         RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
+         kwAmmStaProTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
          break;
       }
       case KW_EVT_AMDL_POLL_RETX_TMR:
       {
-         KwDlRbCb *dlRbCb = (KwDlRbCb *)cb;
-         KwCb *gCb = KW_GET_KWCB(dlRbCb->inst);
+         RlcDlRbCb *dlRbCb = (RlcDlRbCb *)cb;
+         KwCb *gCb = RLC_GET_RLCCB(dlRbCb->inst);
          
          kwAmmPollRetxTmrExp(gCb, dlRbCb);
 
@@ -419,22 +419,22 @@ S16    tmrEvnt;
    {
       case KW_EVT_UMUL_REORD_TMR:
       {
-         return (((KwUlRbCb *)cb)->m.umUl.reOrdTmr.tmrEvnt == 
+         return (((RlcUlRbCb *)cb)->m.umUl.reOrdTmr.tmrEvnt == 
                   KW_EVT_UMUL_REORD_TMR);
       }
       case KW_EVT_AMUL_REORD_TMR:
       {
-         return (((KwUlRbCb *)cb)->m.amUl.reOrdTmr.tmrEvnt == 
+         return (((RlcUlRbCb *)cb)->m.amUl.reOrdTmr.tmrEvnt == 
                   KW_EVT_AMUL_REORD_TMR);
       }
       case KW_EVT_AMUL_STA_PROH_TMR:
       {
-         return (((KwUlRbCb *)cb)->m.amUl.staProhTmr.tmrEvnt == 
+         return (((RlcUlRbCb *)cb)->m.amUl.staProhTmr.tmrEvnt == 
                   KW_EVT_AMUL_STA_PROH_TMR);
       } 
       case KW_EVT_AMDL_POLL_RETX_TMR:
       {
-         return (((KwDlRbCb *)cb)->m.amDl.pollRetxTmr.tmrEvnt == 
+         return (((RlcDlRbCb *)cb)->m.amDl.pollRetxTmr.tmrEvnt == 
                   KW_EVT_AMDL_POLL_RETX_TMR);
       } 
       case KW_EVT_WAIT_BNDCFM:
@@ -483,7 +483,7 @@ PTR cb;
       if (rguSapCb->retryCnt < KW_MAX_SAP_BND_RETRY)
       {
          /* start timer to wait for bind confirm */
-         kwStartTmr(KW_GET_KWCB(rguSapCb->pst.srcInst),
+         kwStartTmr(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                     (PTR)rguSapCb, 
                     KW_EVT_WAIT_BNDCFM);
          
@@ -498,7 +498,7 @@ PTR cb;
 
          /* Send alarm to the layer manager */
 #ifdef LTE_L2_MEAS
-         kwLmmSendAlarm(KW_GET_KWCB(rguSapCb->pst.srcInst),
+         kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                         LCM_CATEGORY_INTERFACE, 
                         LCM_EVENT_BND_FAIL,
                         LCM_CAUSE_TMR_EXPIRED, 
@@ -506,7 +506,7 @@ PTR cb;
                         0, 
                         0);
 #else
-         kwLmmSendAlarm(KW_GET_KWCB(rguSapCb->pst.srcInst),
+         kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                         LCM_CATEGORY_INTERFACE, 
                         LCM_EVENT_BND_FAIL,
                         LCM_CAUSE_TMR_EXPIRED, 
