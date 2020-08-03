@@ -375,7 +375,7 @@ U8         numRbCb;
             kwAmmFreeUlRbCb(gCb,rbCbLst[idx]);
          }
      
-         KW_FREE (gCb,rbCbLst[idx], sizeof (KwUlRbCb));
+         RLC_FREE (gCb,rbCbLst[idx], sizeof (KwUlRbCb));
       }
    }
 
@@ -707,7 +707,7 @@ Bool       abortFlag;
    /* kw005.201 ccpu00117318, updating the statistics */
    gCb->genSts.numUe--;
    /* Deallocate ueCb */
-   KW_FREE(gCb,ueCb, sizeof(KwUlUeCb));
+   RLC_FREE(gCb,ueCb, sizeof(KwUlUeCb));
 
    RETVOID;
 }
@@ -886,7 +886,7 @@ KwUlCellCb   *cellCb;
             "HashList Deletion Failed");
    }
    /* Deallocate cellCb */
-   KW_FREE(gCb, cellCb, sizeof(KwUlCellCb));
+   RLC_FREE(gCb, cellCb, sizeof(KwUlCellCb));
 
    RETVOID;
 } /* kwDbmDelCellCb */

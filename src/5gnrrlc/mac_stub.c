@@ -73,10 +73,10 @@ PUBLIC S16 macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
    dlData->pduInfo[0].pduBuf = NULL;
 
 #if 0
-   KW_FREE_SHRABL_BUF(pst->region, pst->pool,
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool,
                         dlData, sizeof(RlcMacData));
 {
-   KW_ALLOC_SHRABL_BUF(pst->region, pst->pool,
+   RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool,
                           ulData, sizeof(RlcMacData));
 
    SRegInfoShow(2, &availmem);

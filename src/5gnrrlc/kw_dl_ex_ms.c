@@ -365,7 +365,7 @@ Buffer *mBuf;           /* message buffer */
 #endif  /* LCCKW */
                case UDX_EVT_DL_CLEANUP_MEM:
                   {
-                     kwUtlFreeDlMemory(KW_GET_KWCB(pst->dstInst));
+                     kwUtlFreeDlMemory(RLC_GET_RLCCB(pst->dstInst));
                      break;
                   }
                
@@ -583,7 +583,7 @@ Buffer *mBuf;           /* message buffer */
          {
             if (pst->dstInst < KW_MAX_RLC_INSTANCES)
             {
-               /*KwCb *tKwCb = KW_GET_KWCB(pst->dstInst);*/
+               /*KwCb *tKwCb = RLC_GET_RLCCB(pst->dstInst);*/
                RLOG1(L_ERROR, "Received Invalid Source Entity[%d]",
                      pst->event);
             }

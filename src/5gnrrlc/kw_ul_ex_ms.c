@@ -57,6 +57,9 @@ static int RLOG_FILE_ID=206;
 #include "kw.x"
 #include "kw_ul.x"
 #include "kw_udx.x"
+
+#include "du_app_rlc_inf.h"
+
 #ifdef TENB_STATS 
 #include "l2_tenb_stats.x"   
 #endif
@@ -236,9 +239,9 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
                
-               case RLC_EVT_UE_CREATE_REQ:        /* UE Create Request */
+               case EVENT_RLC_UE_CREATE_REQ:        /* UE Create Request */
                   {
-                     ret = unpackUeCreateReq(RlcDuappProcUeCreateReq, pst, mBuf);
+                     ret = unpackRlcUlUeCreateReq(RlcUlHdlUeCreateReq, pst, mBuf);
                      break;
                   }
 
@@ -472,7 +475,7 @@ Buffer *mBuf;           /* message buffer */
                {
                   
                   KwCb *tKwCb;
-                  tKwCb = KW_GET_KWCB(pst->dstInst);
+                  tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
                   TSL2SendStatsToApp(&(tKwCb->genCfg.lmPst), 0);
                   SPutMsg(mBuf);

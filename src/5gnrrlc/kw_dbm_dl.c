@@ -408,7 +408,7 @@ U8         numRbCb;
          {
             kwUmmFreeDlRbCb(gCb,rbCbLst[idx]);
 
-            KW_FREE (gCb,rbCbLst[idx], sizeof (KwDlRbCb));       
+            RLC_FREE (gCb,rbCbLst[idx], sizeof (KwDlRbCb));       
          }
          else if( CM_LTE_MODE_AM == rbCbLst[idx]->mode)
          {
@@ -418,7 +418,7 @@ U8         numRbCb;
          else if(CM_LTE_MODE_TM == rbCbLst[idx]->mode)
          {
             cmLListCatLList(&(gCb->u.dlCb->toBeFreed.sduLst),&(rbCbLst[idx]->m.tm.sduQ));
-            KW_FREE (gCb,rbCbLst[idx], sizeof (KwDlRbCb));       
+            RLC_FREE (gCb,rbCbLst[idx], sizeof (KwDlRbCb));       
          }
 
       }
@@ -467,7 +467,7 @@ KwDlUeCb      **ueCb;
    TRC3(kwDbmCreateDlUeCb)
 
 
-   KW_ALLOC(gCb,*ueCb, sizeof(KwDlUeCb));
+   RLC_ALLOC(gCb,*ueCb, sizeof(KwDlUeCb));
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (*ueCb == NULLP)
@@ -602,7 +602,7 @@ Bool       abortFlag;
    gCb->genSts.numUe--;
    
    /* Deallocate ueCb */
-   KW_FREE(gCb,ueCb, sizeof(KwDlUeCb));
+   RLC_FREE(gCb,ueCb, sizeof(KwDlUeCb));
 
    RETVOID;
 } /* kwDbmDelUeCb */
@@ -669,7 +669,7 @@ KwDlUeCb  *ueCb;
        l2MeasTb = ueCb->l2MeasTbCb[tbIdx];
        if(l2MeasTb != NULLP)
        {
-          KW_FREE(gCb,l2MeasTb, sizeof(KwL2MeasTb));
+          RLC_FREE(gCb,l2MeasTb, sizeof(KwL2MeasTb));
           ueCb->l2MeasTbCb[tbIdx] = NULLP;
        }       
    }  
@@ -710,7 +710,7 @@ KwDlCellCb    **cellCb;
    
    TRC3(kwDbmCreateDlCellCb)
 
-   KW_ALLOC(gCb,*cellCb, sizeof(KwDlCellCb));
+   RLC_ALLOC(gCb,*cellCb, sizeof(KwDlCellCb));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (*cellCb == NULLP)
    {
@@ -821,7 +821,7 @@ KwDlCellCb   *cellCb;
    }
 
    /* Deallocate cellCb */
-   KW_FREE(gCb, cellCb, sizeof(KwDlCellCb));
+   RLC_FREE(gCb, cellCb, sizeof(KwDlCellCb));
 
    RETVOID;
 } /* kwDbmDelCellCb */

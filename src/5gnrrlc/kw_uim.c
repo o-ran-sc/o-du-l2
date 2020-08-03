@@ -123,7 +123,7 @@ SpId   spId;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    RLOG2(L_DEBUG, "spId(%d), suId(%d)", spId, suId);
    ckwSap = &(tKwCb->u.ulCb->ckwSap);
@@ -228,7 +228,7 @@ Reason   reason;
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    RLOG2(L_DEBUG,"spId(%d), reason(%d)", 
                 spId, 
@@ -248,41 +248,6 @@ Reason   reason;
    RETVALUE(ROK);
 } 
 
-/*******************************************************************
- *
- * @brief Handler for UE create request
- *
- * @details
- *
- *    Function : RlcDuappProcUeCreateReq 
- *
- *    Functionality:
- *       Handler for UE create request
- *
- * @params[in] pst - Post Structure
- *             cfg - Configuration information for one or more RLC entities
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-PUBLIC S16 RlcDuappProcUeCreateReq(Pst *pst, CkwCfgInfo *ueCfg)
-{
-   U8 idx;
-   S16 ret=ROK;
-
-   ueCfg->transId = 1;
-
-   for(idx = 0; idx < ueCfg->numEnt; idx++)
-   {
-      ueCfg->entCfg[idx].cfgType = CKW_CFG_ADD; 
-   }
-   
-   ret = KwUiCkwCfgReq(pst, ueCfg);
-   return ret;
-
-} /* RlcDuappUeCreateReq */ 
-
-
 /**
  * @brief  
  *    Handler for configuring RLC entities.
@@ -329,21 +294,21 @@ CkwCfgInfo   *cfg;
       RETVALUE(RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
-   KW_ALLOC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
+   RLC_ALLOC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
 
    if (cfgTmpData == NULLP)
    {
       KW_PST_FREE(pst->region, pst->pool, cfg, sizeof(CkwCfgInfo));
       RETVALUE(RFAILED);
    }
-
-
+   
    cfgTmpData->uprLyrTransId = cfg->transId; /*Save User TransId*/
    cfgTmpData->transId = ++transCount;       /*Generate new TransId*/
    cfg->transId = cfgTmpData->transId;
    cfgTmpData->cfgInfo  = cfg;
+
  
    if (kwDbmAddUlTransaction(tKwCb, cfgTmpData) != ROK)
    {
@@ -354,7 +319,6 @@ CkwCfgInfo   *cfg;
    }
    
    kwHdlUiCkwUlCfgReq(tKwCb, cfgTmpData, cfg);
-   
    KwUlUdxCfgReq(&(KW_GET_UDX_SAP(tKwCb)->pst),KW_GET_UDX_SAP(tKwCb)->spId,cfg); 
 
    RETVALUE(ROK);
@@ -413,7 +377,7 @@ CkwUeInfo   *newUeInfo;
       }
 #endif
 
-      tKwCb = KW_GET_KWCB(pst->dstInst);
+      tKwCb = RLC_GET_RLCCB(pst->dstInst);
 #ifndef ALIGN_64BIT
       RLOG_ARG2(L_DEBUG,DBG_CELLID,newUeInfo->cellId,
                    "KwUiCkwUeIdChgReq(pst, spId(%d), transId(%ld))", 
@@ -426,7 +390,7 @@ CkwUeInfo   *newUeInfo;
                    transId);
 #endif
 
-      KW_ALLOC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
+      RLC_ALLOC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
       if (!cfgTmpData)
       {
          ret = RFAILED;
@@ -456,7 +420,7 @@ CkwUeInfo   *newUeInfo;
 
       if(cfgTmpData)
       {
-         KW_FREE(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
+         RLC_FREE(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
       }
       RETVALUE(RFAILED);
    }
@@ -670,7 +634,7 @@ SpId   spId;
       RETVALUE(RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
    RLOG2(L_DEBUG, "KwUiKwuBndReq(pst, spId(%d), suId(%d))", spId, suId);
 
     /* Validation of input parameters */
@@ -792,7 +756,7 @@ Reason   reason;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    RLOG2(L_DEBUG, "spId(%d), reason(%d)", 
                 spId, 
@@ -854,7 +818,7 @@ Buffer          *mBuf;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    /* Fetch the RbCb */
    kwDbmFetchDlRbCbByRbId(tKwCb, &datReq->rlcId, &rbCb);
@@ -862,7 +826,7 @@ Buffer          *mBuf;
    {
       RLOG_ARG2(L_WARNING, DBG_UEID,datReq->rlcId.ueId, "CellId[%u]:DL RbId [%d] not found",
             datReq->rlcId.cellId,datReq->rlcId.rbId);
-      KW_FREE_BUF(mBuf);
+      RLC_FREE_BUF(mBuf);
 
       RETVALUE(RFAILED);
    }
@@ -878,7 +842,7 @@ Buffer          *mBuf;
             /* kw002.201 Freeing from proper region */
             KW_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datReq, 
                         sizeof(KwuDatReqInfo));
-            KW_FREE_BUF(mBuf);
+            RLC_FREE_BUF(mBuf);
              
             RETVALUE(RFAILED);
          }
