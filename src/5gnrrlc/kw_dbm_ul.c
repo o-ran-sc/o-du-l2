@@ -76,11 +76,11 @@ static int RLOG_FILE_ID=194;
 #ifdef ANSI
 PUBLIC S16 kwDbmUlInit
 (
-KwCb *gCb
+RlcCb *gCb
 )
 #else
 PUBLIC S16 kwDbmUlInit(gCb)
-KwCb *gCb;
+RlcCb *gCb;
 #endif
 {
    TRC3(kwUlDbmInit)
@@ -145,11 +145,11 @@ KwCb *gCb;
 #ifdef ANSI
 PUBLIC Void kwDbmUlDeInit
 (
-KwCb *gCb
+RlcCb *gCb
 )
 #else
 PUBLIC Void kwDbmUlDeInit(gCb)
-KwCb *gCb;
+RlcCb *gCb;
 #endif
 {
    TRC3(kwDbmUlDeInit);
@@ -189,15 +189,15 @@ KwCb *gCb;
 #ifdef ANSI
 PUBLIC Void kwDbmFetchUlRbCbByRbId
 (
-KwCb         *gCb,
+RlcCb         *gCb,
 CmLteRlcId   *rlcId,  
-KwUlRbCb     **rbCb  
+RlcUlRbCb     **rbCb  
 )
 #else
 PUBLIC Void kwDbmFetchUlRbCbByRbId(gCb, rlcId, rbCb)
-KwCb         *gCb;
+RlcCb         *gCb;
 CmLteRlcId   *rlcId;    
-KwUlRbCb     **rbCb;   
+RlcUlRbCb     **rbCb;   
 #endif
 {
    TRC3(kwDbmFetchUlRbCbByRbId)
@@ -207,7 +207,7 @@ KwUlRbCb     **rbCb;
    /* Check for UE CB or CELL CB */
    if (rlcId->ueId == 0)
    {
-      KwUlCellCb *cellCb;
+      RlcUlCellCb *cellCb;
 
       if(rlcId->rbId >= KW_MAX_RB_PER_CELL)
       {
@@ -233,7 +233,7 @@ KwUlRbCb     **rbCb;
    }
    else
    {
-      KwUlUeCb *ueCb;
+      RlcUlUeCb *ueCb;
 
       if (!(KW_VALIDATE_UE_RBID(rlcId->rbType, rlcId->rbId)))
       {
@@ -279,22 +279,22 @@ KwUlRbCb     **rbCb;
 #ifdef ANSI
 PUBLIC Void kwDbmFetchUlRbCbFromLchId
 (
-KwCb          *gCb,
+RlcCb          *gCb,
 CmLteRnti     ueId,      
 CmLteCellId   cellId,   
 CmLteLcId     lcId,    
-KwUlRbCb      **rbCb  
+RlcUlRbCb      **rbCb  
 )
 #else
 PUBLIC Void kwDbmFetchUlRbCbFromLchId(gCb, ueId, cellId, lcId, rbCb)
-KwCb          *gCb;
+RlcCb          *gCb;
 CmLteRnti     ueId;     
 CmLteCellId   cellId;  
 CmLteLcId     lcId;   
-KwUlRbCb      **rbCb;
+RlcUlRbCb      **rbCb;
 #endif
 {
-   KwUlUeCb *ueCb;
+   RlcUlUeCb *ueCb;
 
    TRC3(kwDbmFetchUlRbCbFromLchId)
 
@@ -304,7 +304,7 @@ KwUlRbCb      **rbCb;
    /* Check for UE CB or CELL CB */
    if (ueId == 0)
    {
-      KwUlCellCb *cellCb;
+      RlcUlCellCb *cellCb;
       
       kwDbmFetchUlCellCb(gCb,cellId, &cellCb);
       if(!cellCb)
@@ -345,14 +345,14 @@ KwUlRbCb      **rbCb;
 #ifdef ANSI
 PUBLIC Void kwDbmDelAllUlRb
 (
-KwCb       *gCb,
-KwUlRbCb   **rbCbLst,          
+RlcCb       *gCb,
+RlcUlRbCb   **rbCbLst,          
 U8         numRbCb            
 )
 #else
 PUBLIC Void kwDbmDelAllUlRb(gCb, rbCbLst, numRbCb)
-KwCb       *gCb;
-KwUlRbCb   **rbCbLst;        
+RlcCb       *gCb;
+RlcUlRbCb   **rbCbLst;        
 U8         numRbCb;         
 #endif
 {
@@ -375,7 +375,7 @@ U8         numRbCb;
             kwAmmFreeUlRbCb(gCb,rbCbLst[idx]);
          }
      
-         KW_FREE (gCb,rbCbLst[idx], sizeof (KwUlRbCb));
+         RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcUlRbCb));
       }
    }
 
@@ -388,7 +388,7 @@ U8         numRbCb;
  *
  * @details  
  *    This function is invoked by CFG to create UeCb and insert into the 
- *    Ue hashlist of KwCb.
+ *    Ue hashlist of RlcCb.
  *
  * @param[in] gCb       RLC Instance Control Block
  * @param[in] ueId      UE Identifier 
@@ -403,17 +403,17 @@ U8         numRbCb;
 #ifdef ANSI
 PUBLIC S16 kwDbmAddUlUeCb
 (
-KwCb          *gCb,
+RlcCb          *gCb,
 CmLteRnti     ueId,       
 CmLteCellId   cellId,    
-KwUlUeCb      *ueCb    
+RlcUlUeCb      *ueCb    
 )
 #else
 PUBLIC S16 kwDbmAddUlUeCb(gCb, ueId, cellId, ueCb)
-KwCb          *gCb;
+RlcCb          *gCb;
 CmLteRnti     ueId;    
 CmLteCellId   cellId; 
-KwUlUeCb      *ueCb;
+RlcUlUeCb      *ueCb;
 #endif
 {
    TRC3(kwDbmAddUlUeCb)
@@ -457,13 +457,13 @@ KwUlUeCb      *ueCb;
 #ifdef ANSI
 PUBLIC S16 kwDbmAddUlTransaction 
 (
-KwCb        *gCb,
-KwUlCfgTmpData   *cfg
+RlcCb        *gCb,
+RlcUlCfgTmpData   *cfg
 )
 #else
 PUBLIC S16 kwDbmAddUlTransaction(gCb, cfg)
-KwCb        *gCb;
-KwUlCfgTmpData   *cfg;
+RlcCb        *gCb;
+RlcUlCfgTmpData   *cfg;
 #endif
 {
    TRC3(kwDbmAddUlTransaction)
@@ -500,15 +500,15 @@ KwUlCfgTmpData   *cfg;
 #ifdef ANSI
 PUBLIC S16 kwDbmFindUlTransaction
 (
-KwCb             *gCb,
+RlcCb             *gCb,
 U32              transId,
-KwUlCfgTmpData   **cfg
+RlcUlCfgTmpData   **cfg
 )
 #else
 PUBLIC S16 kwDbmFindUlTransaction(gCb, cfg)
-KwCb             *gCb;
+RlcCb             *gCb;
 U32              transId;
-KwUlCfgTmpData   **cfg;
+RlcUlCfgTmpData   **cfg;
 #endif
 {
    TRC3(kwDbmFindUlTransaction)
@@ -544,13 +544,13 @@ KwUlCfgTmpData   **cfg;
 #ifdef ANSI
 PUBLIC S16 kwDbmDelUlTransaction
 (
-KwCb             *gCb,
-KwUlCfgTmpData   *cfg       
+RlcCb             *gCb,
+RlcUlCfgTmpData   *cfg       
 )
 #else
 PUBLIC S16 kwDbmDelUlTransaction(gCb, cfg)
-KwCb             *gCb;
-KwUlCfgTmpData   *cfg;     
+RlcCb             *gCb;
+RlcUlCfgTmpData   *cfg;     
 #endif
 {
    TRC3(kwDbmDelUlTransaction)
@@ -582,14 +582,14 @@ KwUlCfgTmpData   *cfg;
 #ifdef ANSI
 PUBLIC S16 kwDbmDelAllUlTransactions
 (
-KwCb *gCb
+RlcCb *gCb
 )
 #else
 PUBLIC S16 kwDbmDelAllUlTransactions(gCb)
-KwCb *gCb;
+RlcCb *gCb;
 #endif
 {
-   KwUlCfgTmpData *cfg = NULL;
+   RlcUlCfgTmpData *cfg = NULL;
 
    TRC3(kwDbmDelAllUlTransctions)
 
@@ -615,7 +615,7 @@ KwCb *gCb;
  *
  * @details
  *    This function is invoked by CFG to fetch UeCb from the Ue hashlist 
- *    of KwCb.
+ *    of RlcCb.
  *
  * @param[in]    gCb       RLC Instance Control Block 
  * @param[in]    ueId      UE Identifier 
@@ -629,17 +629,17 @@ KwCb *gCb;
 #ifdef ANSI
 PUBLIC S16 kwDbmFetchUlUeCb
 (
-KwCb          *gCb,
+RlcCb          *gCb,
 CmLteRnti     ueId,  
 CmLteCellId   cellId, 
-KwUlUeCb      **ueCb   
+RlcUlUeCb      **ueCb   
 )
 #else
 PUBLIC S16 kwDbmFetchUlUeCb(gCb,ueId, cellId, ueCb)
-KwCb          *gCb;
+RlcCb          *gCb;
 CmLteRnti     ueId;     
 CmLteCellId   cellId;    
-KwUlUeCb      **ueCb;     
+RlcUlUeCb      **ueCb;     
 #endif
 {
    TRC3(kwDbmFetchUlUeCb)
@@ -657,7 +657,7 @@ KwUlUeCb      **ueCb;
  *
  * @details
  *    This function is invoked by CFG to delete UeCb from the Ue hashlist 
- *    of KwCb.
+ *    of RlcCb.
  *
  *
  * @param[in] gCb      RLC Instance Control Block
@@ -670,14 +670,14 @@ KwUlUeCb      **ueCb;
 #ifdef ANSI
 PUBLIC Void kwDbmDelUlUeCb
 (
-KwCb       *gCb,
-KwUlUeCb   *ueCb,       
+RlcCb       *gCb,
+RlcUlUeCb   *ueCb,       
 Bool       abortFlag   
 )
 #else
 PUBLIC Void kwDbmDelUlUeCb(gCb,eCb, abortFlag)
-KwCb       *gCb;
-KwUlUeCb   *ueCb;      
+RlcCb       *gCb;
+RlcUlUeCb   *ueCb;      
 Bool       abortFlag; 
 #endif
 {
@@ -689,7 +689,7 @@ Bool       abortFlag;
 #endif /* (!defined(KW_PDCP) || ! (defined(PJ_SEC_ASYNC) || defined(PJ_CMP_ASYNC)))*/
 
    /* Delete all logical channels */
-   KW_MEM_ZERO(ueCb->lCh,sizeof(KwUlLch) * KW_MAX_LCH_PER_UE);
+   KW_MEM_ZERO(ueCb->lCh,sizeof(RlcUlLch) * KW_MAX_LCH_PER_UE);
 
    /* Delete all SRB RbCbs in UeCb */
    kwDbmDelAllUlRb(gCb,ueCb->srbCb, KW_MAX_SRB_PER_UE);
@@ -707,7 +707,7 @@ Bool       abortFlag;
    /* kw005.201 ccpu00117318, updating the statistics */
    gCb->genSts.numUe--;
    /* Deallocate ueCb */
-   KW_FREE(gCb,ueCb, sizeof(KwUlUeCb));
+   RLC_FREE(gCb,ueCb, sizeof(RlcUlUeCb));
 
    RETVOID;
 }
@@ -717,7 +717,7 @@ Bool       abortFlag;
  *
  * @details
  *    This function is invoked by CFG to delete all UeCbs from the Ue 
- *    hashlist of KwCb.
+ *    hashlist of RlcCb.
  *
  * @param[in] gCb      RLC Instance Control Block
  *
@@ -726,14 +726,14 @@ Bool       abortFlag;
 #ifdef ANSI
 PUBLIC Void kwDbmDelAllUlUe
 (
-KwCb *gCb
+RlcCb *gCb
 )
 #else
 PUBLIC Void kwDbmDelAllUlUe(gCb)
-KwCb *gCb;
+RlcCb *gCb;
 #endif
 {
-   KwUlUeCb *ueCb = NULLP;  /* UE Control Block */
+   RlcUlUeCb *ueCb = NULLP;  /* UE Control Block */
 
    TRC3(kwDbmDelAllUlUe)
 
@@ -757,7 +757,7 @@ KwCb *gCb;
  *
  * @details
  *    This function is invoked by CFG to create CellCb and insert into
- *    the Cell hashlist of KwCb.
+ *    the Cell hashlist of RlcCb.
  *
  *  @param[in] gCb      RLC Instance Control Block
  *  @param[in] cellId   Cell Identifier 
@@ -770,18 +770,18 @@ KwCb *gCb;
 #ifdef ANSI
 PUBLIC S16 kwDbmAddUlCellCb
 (
-KwCb          *gCb,
+RlcCb          *gCb,
 CmLteCellId   cellId,    
-KwUlCellCb    *cellCb  
+RlcUlCellCb    *cellCb  
 )
 #else
 PUBLIC S16 kwDbmAddUlCellCb(gCb, cellId, cellCb)
-KwCb          *gCb;
+RlcCb          *gCb;
 CmLteCellId   cellId;    
-KwUlCellCb    *cellCb;  
+RlcUlCellCb    *cellCb;  
 #endif
 {
-   KwUlCellCb *tCellCb; 
+   RlcUlCellCb *tCellCb; 
 
    TRC3(kwDbmAddUlCellCb)
 
@@ -809,7 +809,7 @@ KwUlCellCb    *cellCb;
  *       
  * @details
  *    This function is invoked by CFG to fetch UeCb from the Ue hashlist 
- *    of KwCb.
+ *    of RlcCb.
  *
  * @param[in]    gCb      RLC Instance Control Block
  * @param[in]    cellId   Cell Identifier 
@@ -823,15 +823,15 @@ KwUlCellCb    *cellCb;
 #ifdef ANSI
 PUBLIC Void kwDbmFetchUlCellCb
 (
-KwCb          *gCb,
+RlcCb          *gCb,
 CmLteCellId   cellId,     
-KwUlCellCb    **cellCb   
+RlcUlCellCb    **cellCb   
 )
 #else
 PUBLIC Void kwDbmFetchUlCellCb(gCb, cellId, cellCb)
-KwCb          *gCb;
+RlcCb          *gCb;
 CmLteCellId   cellId;    
-KwUlCellCb    **cellCb;  
+RlcUlCellCb    **cellCb;  
 #endif
 {
    TRC3(kwDbmFetchUlCellCb)
@@ -854,7 +854,7 @@ KwUlCellCb    **cellCb;
  *
  * @details
  *    This function is invoked by CFG to delete CellCb from the Cell hashlist 
- *    of KwCb.
+ *    of RlcCb.
  *
  *  @param[in] gCb      RLC Instance Control Block
  *  @param[in] cellCb   Cell Control Block
@@ -864,13 +864,13 @@ KwUlCellCb    **cellCb;
 #ifdef ANSI
 PUBLIC Void kwDbmDelUlCellCb
 (
-KwCb         *gCb,
-KwUlCellCb   *cellCb     
+RlcCb         *gCb,
+RlcUlCellCb   *cellCb     
 )
 #else
 PUBLIC Void kwDbmDelUlCellCb(gCb, cellCb)
-KwCb         *gCb;
-KwUlCellCb   *cellCb;     
+RlcCb         *gCb;
+RlcUlCellCb   *cellCb;     
 #endif
 {
    TRC3(kwDbmDelUlCellCb)
@@ -886,7 +886,7 @@ KwUlCellCb   *cellCb;
             "HashList Deletion Failed");
    }
    /* Deallocate cellCb */
-   KW_FREE(gCb, cellCb, sizeof(KwUlCellCb));
+   RLC_FREE(gCb, cellCb, sizeof(RlcUlCellCb));
 
    RETVOID;
 } /* kwDbmDelCellCb */
@@ -897,7 +897,7 @@ KwUlCellCb   *cellCb;
  *       
  * @details
  *    This function is invoked by CFG to delete all UeCbs from the Ue
- *    hashlist of KwCb.
+ *    hashlist of RlcCb.
  * @param[in] gCb      RLC Instance Control Block
  *
  * @return  Void
@@ -905,14 +905,14 @@ KwUlCellCb   *cellCb;
 #ifdef ANSI
 PUBLIC Void kwDbmDelAllUlCell
 (
-KwCb *gCb
+RlcCb *gCb
 )
 #else
 PUBLIC Void kwDbmDelAllUlCell(gCb)
-KwCb *gCb;
+RlcCb *gCb;
 #endif
 {
-   KwUlCellCb *cellCb = NULLP; /* Cell Control Block */
+   RlcUlCellCb *cellCb = NULLP; /* Cell Control Block */
 
    TRC3(kwDbmDelAllUlCell)
 
@@ -936,7 +936,7 @@ KwCb *gCb;
  *       
  * @details
  *    This function is invoked by LMM to delete all UeCbs from the Ue
- *    hashlist of KwCb and cellCbs from the Cell hashlist of kwCb.
+ *    hashlist of RlcCb and cellCbs from the Cell hashlist of kwCb.
  * 
  * @param[in] gCb      RLC Instance Control Block
  *
@@ -944,11 +944,11 @@ KwCb *gCb;
 #ifdef ANSI
 PUBLIC Void kwDbmUlShutdown
 (
-KwCb *gCb
+RlcCb *gCb
 )
 #else
 PUBLIC Void kwDbmUlShutdown(gCb)
-KwCb *gCb;
+RlcCb *gCb;
 #endif
 {
    TRC3(kwDbmUlShutdown)

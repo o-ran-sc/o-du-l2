@@ -622,13 +622,13 @@ PUBLIC CkwBndCfm kwUiCkwBndCfmMt[] =
 
 /* CKW Configuration confirm primitive */
 
-PUBLIC CkwCfgCfm kwUiCkwCfgCfmMt[] =
+PUBLIC RlcCfgCfm kwUiRlcCfgCfmMt[] =
 {
 #ifdef LCKWUICKW
-   cmPkCkwCfgCfm,            /* 0 - loosely coupled */
+   cmPkRlcCfgCfm,            /* 0 - loosely coupled */
 #endif /* LCKWUICKW */
 #ifdef NH
-   NhLiCkwCfgCfm,            /* 1 - tightly coupled, RRC  */
+   NhLiRlcCfgCfm,            /* 1 - tightly coupled, RRC  */
 #endif /* NH */
 };
 
@@ -711,27 +711,27 @@ U8   status;                    /* Status */
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwUiCkwCfgCfm
+PUBLIC S16 KwUiRlcCfgCfm
 (
 Pst            *pst,                      /* post structure */
 SuId           suId,                      /* Service User Id */
-CkwCfgCfmInfo  *cfmInfo                    /* Configuration Confirm */
+RlcCfgCfmInfo  *cfmInfo                    /* Configuration Confirm */
 )
 #else
-PUBLIC S16 KwUiCkwCfgCfm(pst, suId, cfmInfo)
+PUBLIC S16 KwUiRlcCfgCfm(pst, suId, cfmInfo)
 Pst            *pst;                      /* post structure */
 SuId           suId;                      /* Service User Id */
-CkwCfgCfmInfo  *cfmInfo;                   /* Configuration Confirm */
+RlcCfgCfmInfo  *cfmInfo;                   /* Configuration Confirm */
 #endif
 {
-   TRC3(KwUiCkwCfgCfm)
+   TRC3(KwUiRlcCfgCfm)
 
    /* jump to specific primitive depending on configured selector */
-   (*kwUiCkwCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
+   (*kwUiRlcCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
 
    RETVALUE(ROK);
 
-} /* end of KwUiCkwCfgCfm */
+} /* end of KwUiRlcCfgCfm */
 
 
 /**
@@ -779,7 +779,7 @@ CmStatus       status;
 
    RETVALUE(ROK);
 
-} /* end of KwUiCkwCfgCfm */
+} /* end of KwUiRlcCfgCfm */
 
 
 #if (defined(L2_L3_SPLIT) && defined(ICC_RECV_TSK_RBUF))

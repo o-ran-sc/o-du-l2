@@ -155,7 +155,7 @@ typedef struct ckwCfgInfo
                                                configure */
    CkwEntCfgInfo        entCfg[CKW_MAX_ENT_CFG];  /*!< Array of Entities to be
                                               configure */
-}CkwCfgInfo;
+}RlcCfgInfo;
 
 /** @brief
    Entity Configuration Confirmation Information */
@@ -176,7 +176,7 @@ typedef struct ckwCfgCfmInfo
    U8                   numEnt;              /*!< Number of entities configured */
    CkwEntCfgCfmInfo     entCfgCfm[CKW_MAX_ENT_CFG];   /*!< Array of Entity cfg
                                                          confiramations */
-}CkwCfgCfmInfo;
+}RlcCfgCfmInfo;
 
 /** @brief
      UE Id Information */
@@ -188,9 +188,9 @@ typedef struct ckwUeInfo
 /* Control primitives towards LTE RRC */
 
 /* Pointer functiones for Pack/Unpack */
-//typedef S16 (*CkwCfgReq)     ARGS((Pst *pst, SpId spId, CkwCfgInfo *cfgInfo));
-typedef S16 (*CkwCfgReq)     ARGS((Pst *pst, CkwCfgInfo *cfgInfo));
-typedef S16 (*CkwCfgCfm)     ARGS((Pst *pst, SuId suId, CkwCfgCfmInfo *cfmInfo));
+//typedef S16 (*CkwCfgReq)     ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
+typedef S16 (*CkwCfgReq)     ARGS((Pst *pst, RlcCfgInfo *cfgInfo));
+typedef S16 (*RlcCfgCfm)     ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
 typedef S16 (*CkwUeIdChgReq) ARGS((Pst *pst, SpId spId, U32 transId, 
                                    CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
@@ -274,9 +274,9 @@ EXTERN S16 KwUiCkwUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
  * @param[in] cfgInfo   -  This structure contains the configuration information
  * @return ROK
  */
-//EXTERN S16 KwUiCkwCfgReq ARGS((Pst *pst, SpId spId, CkwCfgInfo *cfgInfo));
-EXTERN S16 KwUiCkwCfgReq ARGS((Pst *pst, CkwCfgInfo *cfgInfo));
-EXTERN S16 RlcDuappProcUeCreateReq ARGS((Pst *pst, CkwCfgInfo *cfgInfo));
+//EXTERN S16 RlcUpprCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
+EXTERN S16 RlcUpprCfgReq ARGS((Pst *pst, RlcCfgInfo *cfgInfo));
+EXTERN S16 RlcDuappProcUeCreateReq ARGS((Pst *pst, RlcCfgInfo *cfgInfo));
 
 /**
  *@details This primitive is used by RLC to confirm the configuration requested
@@ -297,7 +297,7 @@ EXTERN S16 RlcDuappProcUeCreateReq ARGS((Pst *pst, CkwCfgInfo *cfgInfo));
  * information.
  * @return ROK
  */
-EXTERN S16 KwUiCkwCfgCfm ARGS((Pst *pst, SuId suId, CkwCfgCfmInfo *cfmInfo));
+EXTERN S16 KwUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
 /**
  *@details This primitive is used by RRC to change the UeId for the existing UE
@@ -358,11 +358,11 @@ EXTERN S16 NhLiCkwBndCfm ARGS((Pst *pst,
 EXTERN S16 NhLiCkwCfgReq ARGS((
          Pst *pst,
          SpId spId,
-         CkwCfgInfo *cfgInfo));
+         RlcCfgInfo *cfgInfo));
 
-EXTERN S16 NhLiCkwCfgCfm ARGS((Pst *pst,
+EXTERN S16 NhLiRlcCfgCfm ARGS((Pst *pst,
          SuId suId,
-         CkwCfgCfmInfo* cfmInfo));
+         RlcCfgCfmInfo* cfmInfo));
 
 EXTERN S16 NhLiCkwUeIdChgReq ARGS((Pst *pst, 
          SpId spId, U32 transId,
@@ -393,11 +393,11 @@ EXTERN S16 DmUiCkwBndCfm ARGS((Pst *pst,
 EXTERN S16 DmUiCkwCfgReq ARGS((
          Pst *pst,
          SpId spId,
-         CkwCfgInfo *cfgInfo));
+         RlcCfgInfo *cfgInfo));
 
-EXTERN S16 DmUiCkwCfgCfm ARGS((Pst *pst,
+EXTERN S16 DmUiRlcCfgCfm ARGS((Pst *pst,
          SuId suId,
-         CkwCfgCfmInfo* cfmInfo));
+         RlcCfgCfmInfo* cfmInfo));
 
 EXTERN S16 DmUiCkwUeIdChgReq ARGS((Pst *pst, 
          SpId spId, U32 transId,
@@ -439,8 +439,8 @@ CkwEntCfgInfo  *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmPkCkwCfgInfo ARGS ((
-CkwCfgInfo     *param,
+EXTERN S16 cmPkRlcCfgInfo ARGS ((
+RlcCfgInfo     *param,
 Pst            *pst,
 Buffer         *mBuf
 ));
@@ -450,8 +450,8 @@ CkwEntCfgCfmInfo  *param,
 Buffer            *mBuf
 ));
 
-EXTERN S16 cmPkCkwCfgCfmInfo ARGS ((
-CkwCfgCfmInfo  *param,
+EXTERN S16 cmPkRlcCfgCfmInfo ARGS ((
+RlcCfgCfmInfo  *param,
 Pst            *pst,
 Buffer         *mBuf
 ));
@@ -481,13 +481,13 @@ U8 status
 
 EXTERN S16 packUeCreateReq ARGS ((
 Pst               *pst,
-CkwCfgInfo        *cfgInfo
+RlcCfgInfo        *cfgInfo
 ));
 
-EXTERN S16 cmPkCkwCfgCfm ARGS ((
+EXTERN S16 cmPkRlcCfgCfm ARGS ((
 Pst               *pst,
 SuId              suId,
-CkwCfgCfmInfo     *cfgCfmInfo
+RlcCfgCfmInfo     *cfgCfmInfo
 ));
 
 EXTERN S16 cmPkCkwUeIdChgReq ARGS ((
@@ -527,8 +527,8 @@ CkwLChInfo     *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwCfgCfmInfo ARGS ((
-CkwCfgCfmInfo  *param,
+EXTERN S16 cmUnpkRlcCfgCfmInfo ARGS ((
+RlcCfgCfmInfo  *param,
 Pst            *pst,
 Buffer         *mBuf
 ));
@@ -549,8 +549,8 @@ CkwEntCfgInfo  *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwCfgInfo ARGS ((
-CkwCfgInfo     *param,
+EXTERN S16 cmUnpkRlcCfgInfo ARGS ((
+RlcCfgInfo     *param,
 Pst            *pst,
 Buffer         *mBuf
 ));
@@ -560,8 +560,8 @@ CkwUeInfo      *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwCfgCfm ARGS ((
-CkwCfgCfm         func,
+EXTERN S16 cmUnpkRlcCfgCfm ARGS ((
+RlcCfgCfm         func,
 Pst               *pst,
 Buffer            *mBuf
 ));

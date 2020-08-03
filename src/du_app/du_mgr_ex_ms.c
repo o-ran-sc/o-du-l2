@@ -23,6 +23,9 @@
 #include "lkw.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "ckw.h"
+#include "ckw.x"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include "du_sctp.h"
@@ -166,6 +169,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
 		     break;
 		  }
+	       case EVENT_RLC_UL_UE_CREATE_RSP:
+		  {
+		     ret = unpackRlcUlUeCreateRsp(duProcRlcUlUeCreateRsp, pst, mBuf);
+		     break;
+		  }
 	       default:
 		  {
 		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \
@@ -222,7 +230,8 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 	       case EVENT_MAC_UE_CREATE_RSP:
 		  {
-		     ret = unpackDuMacUeCreateRsp(duHandleMacUeCreateRsp, pst, mBuf); 
+		     ret = unpackDuMacUeCreateRsp(duHandleMacUeCreateRsp, pst, mBuf);
+		     break;
 		  }
 
 	       default:

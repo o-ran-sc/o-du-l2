@@ -80,8 +80,8 @@ extern U32 dlrate_kwu;
 
 PRIVATE Void kwUmmEstHdrSz ARGS ((KwUmDl *umUl));
 
-PRIVATE Void kwUmmCreatePdu ARGS ((KwCb *gCb,
-                                  KwDlRbCb *rbCb, 
+PRIVATE Void kwUmmCreatePdu ARGS ((RlcCb *gCb,
+                                  RlcDlRbCb *rbCb, 
                                   Buffer *pdu,
                                   U8 fi,
                                   KwPduInfo *datReqPduInfo));
@@ -109,15 +109,15 @@ PRIVATE Void kwUmmCreatePdu ARGS ((KwCb *gCb,
 #ifdef ANSI
 PUBLIC Void kwUmmQSdu       
 (
-KwCb            *gCb,
-KwDlRbCb        *rbCb, 
+RlcCb            *gCb,
+RlcDlRbCb        *rbCb, 
 KwuDatReqInfo   *datReq,  
 Buffer          *mBuf 
 )
 #else
 PUBLIC Void kwUmmQSdu(gCb,rbCb,datReq,mBuf)
-KwCb            *gCb;
-KwDlRbCb        *rbCb;
+RlcCb            *gCb;
+RlcDlRbCb        *rbCb;
 KwuDatReqInfo   *datReq; 
 Buffer          *mBuf;
 #endif
@@ -129,7 +129,7 @@ Buffer          *mBuf;
 
    KW_UPD_L2_DL_TOT_SDU_STS(gCb,rbCb);
 
-   KW_ALLOC_WC(gCb, sdu, (Size)sizeof(KwSdu));
+   RLC_ALLOC_WC(gCb, sdu, (Size)sizeof(KwSdu));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
    {
@@ -208,14 +208,14 @@ Buffer          *mBuf;
 #ifdef ANSI
 PUBLIC Void kwUmmProcessSdus
 (
-KwCb       *gCb,
-KwDlRbCb   *rbCb,   
+RlcCb       *gCb,
+RlcDlRbCb   *rbCb,   
 KwDatReq   *datReq   
 )
 #else
 PUBLIC Void kwUmmProcessSdus(gCb, rbCb, datReq)
-KwCb       *gCb;
-KwDlRbCb   *rbCb; 
+RlcCb       *gCb;
+RlcDlRbCb   *rbCb; 
 KwDatReq   *datReq;
 #endif
 {
@@ -511,7 +511,7 @@ KwDatReq   *datReq;
          else 
          {
             SCatMsg(pdu, sdu->mBuf, M1M2);
-            KW_FREE_BUF_WC(sdu->mBuf);
+            RLC_FREE_BUF_WC(sdu->mBuf);
          }
 
          sdu->sduSz -= pduSz;
@@ -575,7 +575,7 @@ KwDatReq   *datReq;
       }
       else
       {
-         KW_FREE_BUF_WC(pdu);
+         RLC_FREE_BUF_WC(pdu);
       }
    }
    
@@ -612,17 +612,17 @@ KwDatReq   *datReq;
 #ifdef ANSI
 PUBLIC Void kwDlUmmReEstablish
 (
-KwCb         *gCb,
+RlcCb         *gCb,
 CmLteRlcId   rlcId,
 Bool         sendReEst,
-KwDlRbCb     *rbCb
+RlcDlRbCb     *rbCb
 )
 #else
 PUBLIC Void kwDlUmmReEstablish(gCb, rlcId, rbCb)
-KwCb         *gCb;
+RlcCb         *gCb;
 CmLteRlcId   rlcId;
 Bool         sendReEst;
-KwDlRbCb       *rbCb;
+RlcDlRbCb       *rbCb;
 #endif
 {
    /* The re-establishment indication is sent from the UL only */
@@ -659,16 +659,16 @@ KwDlRbCb       *rbCb;
 #ifdef ANSI
 PRIVATE Void kwUmmCreatePdu
 (
-KwCb        *gCb,
-KwDlRbCb    *rbCb,           
+RlcCb        *gCb,
+RlcDlRbCb    *rbCb,           
 Buffer      *pdu,           
 U8          fi, 
 KwPduInfo   *datReqPduInfo
 )
 #else
 PRIVATE Void kwUmmCreatePdu(gCb, rbCb, pdu, fi, datReqPduInfo)
-KwCb        *gCb;
-KwDlRbCb    *rbCb;          
+RlcCb        *gCb;
+RlcDlRbCb    *rbCb;          
 Buffer      *pdu;           
 U8          fi;
 KwPduInfo   *datReqPduInfo
@@ -831,14 +831,14 @@ KwUmDl *umDl;
 #ifdef ANSI
 PUBLIC Void kwUmmDiscSdu
 (
-KwCb       *gCb,
-KwDlRbCb   *rbCb,                
+RlcCb       *gCb,
+RlcDlRbCb   *rbCb,                
 U32        sduId                
 )
 #else
 PUBLIC Void kwUmmDiscSdu(gCb,rbCb,sduId)
-KwCb       *gCb;
-KwDlRbCb   *rbCb;                
+RlcCb       *gCb;
+RlcDlRbCb   *rbCb;                
 U32        sduId;                
 #endif
 {
@@ -880,13 +880,13 @@ U32        sduId;
 #ifdef ANSI
 PUBLIC Void kwUmmFreeDlRbCb
 (
-KwCb       *gCb,
-KwDlRbCb   *rbCb
+RlcCb       *gCb,
+RlcDlRbCb   *rbCb
 )
 #else
 PUBLIC Void kwUmmFreeDlRbCb(gCb,rbCb)
-KwCb       *gCb;
-KwDlRbCb   *rbCb;
+RlcCb       *gCb;
+RlcDlRbCb   *rbCb;
 #endif
 {
    TRC2(kwUmmFreeDlRbCb)

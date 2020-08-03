@@ -90,39 +90,39 @@ extern U32  isMemThreshReached(Region region);
 
 /* private function declarations */
 
-PRIVATE Void kwAmmUlAssembleCntrlInfo ARGS ((KwCb *gCb, KwUlRbCb *rbCb));
+PRIVATE Void kwAmmUlAssembleCntrlInfo ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
 
-PRIVATE S16 kwAmmExtractHdr ARGS ((KwCb *gCb,
-                                KwUlRbCb   *rbCb,
+PRIVATE S16 kwAmmExtractHdr ARGS ((RlcCb *gCb,
+                                RlcUlRbCb   *rbCb,
                                 Buffer *pdu,
                                 KwAmHdr *amHdr,
                                 U8 *fByte));
 
-PRIVATE Bool kwAmmUlPlacePduInRecBuf ARGS ((KwCb *gCb,
+PRIVATE Bool kwAmmUlPlacePduInRecBuf ARGS ((RlcCb *gCb,
                                             Buffer *pdu,
-                                            KwUlRbCb *rbCb,
+                                            RlcUlRbCb *rbCb,
                                             KwAmHdr *amHdr));
 
-PRIVATE Void kwAmmTriggerStatus ARGS ((KwCb *gCb,
-                                    KwUlRbCb *rbCb,
+PRIVATE Void kwAmmTriggerStatus ARGS ((RlcCb *gCb,
+                                    RlcUlRbCb *rbCb,
                                     KwSn sn,
                                     Bool discFlg));
 
-PRIVATE S16  kwAmmUlReassembleSdus ARGS ((KwCb *gCb,
-                                     KwUlRbCb *rbCb,
+PRIVATE S16  kwAmmUlReassembleSdus ARGS ((RlcCb *gCb,
+                                     RlcUlRbCb *rbCb,
                                      KwAmRecBuf *recBuf));
 
-PRIVATE Void kwAmmProcPduOrSeg ARGS ((KwCb *gCb,
-                                      KwUlRbCb *rbCb,
+PRIVATE Void kwAmmProcPduOrSeg ARGS ((RlcCb *gCb,
+                                      RlcUlRbCb *rbCb,
                                       KwAmHdr *amHdr,
                                       Buffer *pdu));
 
-PRIVATE Void kwAmmUpdExpByteSeg ARGS ((KwCb *gCb,KwAmUl *amUl, KwSeg* newSeg));
+PRIVATE Void kwAmmUpdExpByteSeg ARGS ((RlcCb *gCb,KwAmUl *amUl, KwSeg* newSeg));
 
-PRIVATE Void kwAmmExtractElmnt ARGS ((KwCb *gCb, Buffer *pdu, KwExtHdr *hdrInfo));
+PRIVATE Void kwAmmExtractElmnt ARGS ((RlcCb *gCb, Buffer *pdu, KwExtHdr *hdrInfo));
 
-PRIVATE Void kwAmmUlHndlStatusPdu ARGS ((KwCb *gCb,
-                                         KwUlRbCb *rbCb,
+PRIVATE Void kwAmmUlHndlStatusPdu ARGS ((RlcCb *gCb,
+                                         RlcUlRbCb *rbCb,
                                          Buffer *cntrlPdu,
                                          U8 *fByte));
 
@@ -162,7 +162,7 @@ PRIVATE Void kwAmmUlHndlStatusPdu ARGS ((KwCb *gCb,
 #ifdef ANSI
 PRIVATE S16 kwAmmUlSetNackInfo
 (
-KwUlRbCb      *rbCb,
+RlcUlRbCb      *rbCb,
 KwSn          sn,
 Bool          isSegment,
 U16           soStart,
@@ -172,7 +172,7 @@ KwSn          *prevNackSn
 )
 #else
 PRIVATE S16 kwAmmUlSetNackInfo(rbCb, sn, isSegment, soStart, statusPdu, prevNackSn)
-KwUlRbCb      *rbCb;
+RlcUlRbCb      *rbCb;
 KwSn          sn;
 Bool          isSegment;
 U16           soStart;
@@ -302,13 +302,13 @@ KwSn          *prevNackSn;
 #ifdef ANSI
 PRIVATE Void kwAmmUlAssembleCntrlInfo
 (
-KwCb       *gCb,
-KwUlRbCb   *rbCb
+RlcCb       *gCb,
+RlcUlRbCb   *rbCb
 )
 #else
 PRIVATE Void kwAmmUlAssembleCntrlInfo(gCb, rbCb)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;
+RlcCb       *gCb;
+RlcUlRbCb   *rbCb;
 #endif
 {
    KwUdxDlStaPdu   *pStatusPdu;
@@ -331,7 +331,7 @@ KwUlRbCb   *rbCb;
 
    sapCb = KW_GET_UDX_SAP(gCb);
 
-   KW_ALLOC_SHRABL_BUF(sapCb->pst.region,
+   RLC_ALLOC_SHRABL_BUF(sapCb->pst.region,
                        sapCb->pst.pool,
                        pStatusPdu, 
                        sizeof(KwUdxDlStaPdu)); 
@@ -500,7 +500,7 @@ KwUlRbCb   *rbCb;
    AMUL.gatherStaPduInfo = FALSE;
 
 
-   if (KwUlUdxStaPduReq(&sapCb->pst,
+   if (rlcUlUdxStaPduReq(&sapCb->pst,
                         sapCb->spId,
                         &rbCb->rlcId,
                         pStatusPdu) != ROK)
@@ -509,7 +509,7 @@ KwUlRbCb   *rbCb;
                "Failed to Send Sta Pdu UEID:%d CELLID:%d",
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
-      KW_FREE_SHRABL_BUF_WC(sapCb->pst.region,
+      RLC_FREE_SHRABL_BUF_WC(sapCb->pst.region,
 			    sapCb->pst.pool,
 			    pStatusPdu, 
 			    sizeof(KwUdxDlStaPdu));
@@ -545,15 +545,15 @@ PUBLIC U32 drpRlcDrbPack;
 #ifdef ANSI
 PUBLIC Void kwAmmProcessPdus
 (
-KwCb                    *gCb,
-KwUlRbCb                *rbCb,
+RlcCb                    *gCb,
+RlcUlRbCb                *rbCb,
 KwPduInfo               *pduInfo,
 U32                     ttiCnt
 )
 #else
 PUBLIC Void kwAmmProcessPdus(gCb, rbCb, pduInfo, ulTimeInfo)
-KwCb                    *gCb;
-KwUlRbCb                *rbCb;
+RlcCb                    *gCb;
+RlcUlRbCb                *rbCb;
 KwPduInfo               *pduInfo;
 U32                     ttiCnt;
 #endif
@@ -561,14 +561,14 @@ U32                     ttiCnt;
 #ifdef ANSI
 PUBLIC Void kwAmmProcessPdus
 (
-KwCb        *gCb,
-KwUlRbCb    *rbCb,
+RlcCb        *gCb,
+RlcUlRbCb    *rbCb,
 KwPduInfo   *pduInfo
 )
 #else
 PUBLIC Void kwAmmProcessPdus(gCb, rbCb, pduInfo)
-KwCb        *gCb;
-KwUlRbCb    *rbCb;
+RlcCb        *gCb;
+RlcUlRbCb    *rbCb;
 KwPduInfo   *pduInfo;
 #endif
 #endif
@@ -636,7 +636,7 @@ KwPduInfo   *pduInfo;
                   "Header Extraction Failed UEID:%d CELLID:%d",
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
-         KW_FREE_BUF(pdu);
+         RLC_FREE_BUF(pdu);
          gCb->genSts.errorPdusRecv++;
          continue;
       }
@@ -644,7 +644,7 @@ KwPduInfo   *pduInfo;
       if (amHdr.dc == 0)
       {
          kwAmmUlHndlStatusPdu(gCb, rbCb, pdu, &fByte);
-         KW_FREE_BUF(pdu);
+         RLC_FREE_BUF(pdu);
          continue;
       }
       if((amHdr.si == KW_SI_LAST_SEG) && (!amHdr.so))
@@ -655,7 +655,7 @@ KwPduInfo   *pduInfo;
                amHdr.sn,
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
-         KW_FREE_BUF(pdu);
+         RLC_FREE_BUF(pdu);
          continue;
       }
 #ifndef RGL_SPECIFIC_CHANGES
@@ -668,7 +668,7 @@ KwPduInfo   *pduInfo;
       {
          extern U32 rlculdrop;
 	 rlculdrop++;
-	 KW_FREE_BUF(pdu);
+	 RLC_FREE_BUF(pdu);
 	 continue;
       }
 #endif
@@ -679,7 +679,7 @@ KwPduInfo   *pduInfo;
       {
          extern U32 rlculdrop;
          rlculdrop++;
-         KW_FREE_BUF(pdu);
+         RLC_FREE_BUF(pdu);
          continue;
       }
 #endif
@@ -693,7 +693,7 @@ KwPduInfo   *pduInfo;
       {
          if(rbCb->rlcId.rbType == CM_LTE_DRB)
          {
-            KW_FREE_BUF(pdu);
+            RLC_FREE_BUF(pdu);
             continue;
          }
       }
@@ -873,16 +873,16 @@ KwPduInfo   *pduInfo;
 #ifdef ANSI
 PRIVATE S16 kwAmmExtractHdr
 (
-KwCb       *gCb,
-KwUlRbCb   *rbCb,
+RlcCb       *gCb,
+RlcUlRbCb   *rbCb,
 Buffer     *pdu,
 KwAmHdr    *amHdr,
 U8         *fByte
 )
 #else
 PRIVATE S16 kwAmmExtractHdr(gCb, rbCb, pdu, amHdr, fByte)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;
+RlcCb       *gCb;
+RlcUlRbCb   *rbCb;
 Buffer     *pdu;
 KwAmHdr    *amHdr;
 U8         *fByte;
@@ -966,14 +966,14 @@ U8         *fByte;
 #ifdef ANSI
 PRIVATE S16 kwAmmExtractHdrOld
 (
-KwCb       *gCb,
+RlcCb       *gCb,
 Buffer     *pdu,
 KwAmHdr    *amHdr,
 U8         *fByte
 )
 #else
 PRIVATE S16 kwAmmExtractHdrOld(gCb, pdu, amHdr, fByte)
-KwCb       *gCb;
+RlcCb       *gCb;
 Buffer     *pdu;
 KwAmHdr    *amHdr;
 U8         *fByte;
@@ -1091,15 +1091,15 @@ U8         *fByte;
 #ifdef ANSI
 PRIVATE Void kwAmmUlHndlStatusPdu
 (
-KwCb       *gCb,
-KwUlRbCb   *rbCb,
+RlcCb       *gCb,
+RlcUlRbCb   *rbCb,
 Buffer     *cntrlPdu,
 U8         *fByte
 )
 #else
 PRIVATE Void kwAmmUlHndlStatusPdu(gCb, rbCb, cntrlPdu, fByte)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;
+RlcCb       *gCb;
+RlcUlRbCb   *rbCb;
 Buffer     *cntrlPdu;
 U8         *fByte;
 #endif
@@ -1136,7 +1136,7 @@ U8         *fByte;
 
    sapCb = KW_GET_UDX_SAP(gCb);
 
-   KW_ALLOC_SHRABL_BUF(sapCb->pst.region, 
+   RLC_ALLOC_SHRABL_BUF(sapCb->pst.region, 
                        sapCb->pst.pool, 
                        pStaPdu, 
                        sizeof(KwUdxStaPdu));
@@ -1274,7 +1274,7 @@ U8         *fByte;
 
 
    /* Parse & send Status PDU to RLC-DL */
-   KwUlUdxStaUpdReq(&(sapCb->pst), sapCb->spId, &rbCb->rlcId, pStaPdu);
+   rlcUlUdxStaUpdReq(&(sapCb->pst), sapCb->spId, &rbCb->rlcId, pStaPdu);
 
    RETVOID;
 }
@@ -1295,12 +1295,12 @@ U8         *fByte;
 #ifdef ANSI
 PRIVATE Void kwAmmUlRlsAllSegs
 (
-KwCb         *gCb,
+RlcCb         *gCb,
 KwAmRecBuf   *recBuf
 )
 #else
 PRIVATE Void kwAmmUlRlsAllSegs(gCb,recBuf)
-KwCb         *gCb;
+RlcCb         *gCb;
 KwAmRecBuf   *recBuf;
 #endif
 {
@@ -1311,9 +1311,9 @@ KwAmRecBuf   *recBuf;
    KW_LLIST_FIRST_SEG(recBuf->segLst, seg);
    while (seg != NULLP)
    {
-      KW_FREE_BUF_WC(seg->seg);
+      RLC_FREE_BUF_WC(seg->seg);
       cmLListDelFrm(&(recBuf->segLst),&(seg->lstEnt));
-      KW_FREE_WC(gCb,seg, sizeof(KwSeg));
+      RLC_FREE_WC(gCb,seg, sizeof(KwSeg));
       KW_LLIST_FIRST_SEG(recBuf->segLst, seg);
    }
 
@@ -1343,16 +1343,16 @@ KwAmRecBuf   *recBuf;
 #ifdef ANSI
 PRIVATE Bool kwAmmAddRcvdSeg
 (
-KwCb       *gCb,
-KwUlRbCb   *rbCb,
+RlcCb       *gCb,
+RlcUlRbCb   *rbCb,
 KwAmHdr    *amHdr,
 Buffer     *pdu,
 U16        pduSz
 )
 #else
 PRIVATE Bool kwAmmAddRcvdSeg(gCb, rbCb, amHdr, pdu, pduSz)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;
+RlcCb       *gCb;
+RlcUlRbCb   *rbCb;
 KwAmHdr    *amHdr;
 Buffer     *pdu;
 U16        pduSz;
@@ -1371,7 +1371,7 @@ U16        pduSz;
 
    if (NULLP == recBuf)
    {
-      KW_ALLOC(gCb,recBuf, sizeof(KwAmRecBuf));
+      RLC_ALLOC(gCb,recBuf, sizeof(KwAmRecBuf));
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (recBuf == NULLP)
       {
@@ -1380,7 +1380,7 @@ U16        pduSz;
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
 
-         KW_FREE_BUF(pdu);
+         RLC_FREE_BUF(pdu);
          RETVALUE(FALSE);
       }
 #endif /* ERRCLASS & ERRCLS_RES */
@@ -1390,7 +1390,7 @@ U16        pduSz;
    {
       if (recBuf->allRcvd == TRUE)
       {
-         KW_FREE_BUF(pdu);
+         RLC_FREE_BUF(pdu);
          RETVALUE(FALSE);
       }
    }
@@ -1410,7 +1410,7 @@ U16        pduSz;
    {
       /* This is a duplicate segment */
       gRlcStats.amRlcStats.numRlcAmCellDupPduRx++;
-      KW_FREE_BUF(pdu);
+      RLC_FREE_BUF(pdu);
       RETVALUE(FALSE);
    }
 
@@ -1418,14 +1418,14 @@ U16        pduSz;
    {
       /* This is a duplicate segment */
       gRlcStats.amRlcStats.numRlcAmCellDupPduRx++;
-      KW_FREE_BUF(pdu);
+      RLC_FREE_BUF(pdu);
       RETVALUE(FALSE);
    }
 
    /* If we have come this far, we have to add this segment to the   */
    /* reception buffer as we either have eliminated duplicates or    */
    /* have found none.                                               */
-   KW_ALLOC_WC(gCb,tseg, sizeof(KwSeg));
+   RLC_ALLOC_WC(gCb,tseg, sizeof(KwSeg));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (tseg == NULLP)
    {
@@ -1433,7 +1433,7 @@ U16        pduSz;
                "Memory allocation failed UEID:%d CELLID:%d",
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
-      KW_FREE_BUF(pdu);
+      RLC_FREE_BUF(pdu);
       RETVALUE(FALSE);
    }
 #endif /* ERRCLASS & ERRCLS_RES */
@@ -1480,16 +1480,16 @@ U16        pduSz;
 #ifdef ANSI
 PRIVATE Bool kwAmmUlPlacePduInRecBuf
 (
-KwCb       *gCb,
+RlcCb       *gCb,
 Buffer     *pdu,
-KwUlRbCb   *rbCb,
+RlcUlRbCb   *rbCb,
 KwAmHdr    *amHdr
 )
 #else
 PRIVATE Bool kwAmmUlPlacePduInRecBuf(gCb, pdu, rbCb, amHdr)
-KwCb       *gCb;
+RlcCb       *gCb;
 Buffer     *pdu;
-KwUlRbCb   *rbCb;
+RlcUlRbCb   *rbCb;
 KwAmHdr    *amHdr;
 #endif
 {
@@ -1516,7 +1516,7 @@ KwAmHdr    *amHdr;
                     rbCb->rlcId.cellId);
 
       gCb->genSts.unexpPdusRecv++;
-      KW_FREE_BUF(pdu);
+      RLC_FREE_BUF(pdu);
       RETVALUE(FALSE);
    }
 
@@ -1529,7 +1529,7 @@ KwAmHdr    *amHdr;
       /* store the received PDU in the reception buffer                  */
       if (NULLP == recBuf)
       {
-         KW_ALLOC(gCb, recBuf, sizeof(KwAmRecBuf));
+         RLC_ALLOC(gCb, recBuf, sizeof(KwAmRecBuf));
 #if (ERRCLASS & ERRCLS_ADD_RES)
          if (recBuf == NULLP)
          {
@@ -1537,7 +1537,7 @@ KwAmHdr    *amHdr;
                      "Memory allocation failed UEID:%d CELLID:%d",
                      rbCb->rlcId.ueId,
                      rbCb->rlcId.cellId);
-            KW_FREE_BUF(pdu);
+            RLC_FREE_BUF(pdu);
             RETVALUE(FALSE);
          }
 #endif /* ERRCLASS & ERRCLS_RES */
@@ -1551,7 +1551,7 @@ KwAmHdr    *amHdr;
       {
          gRlcStats.amRlcStats.numRlcAmCellDupPduRx++;
          gCb->genSts.unexpPdusRecv++;
-         KW_FREE_BUF(pdu);
+         RLC_FREE_BUF(pdu);
          RETVALUE(FALSE);
       }
       recBuf->isDelvUpperLayer = FALSE;
@@ -1596,15 +1596,15 @@ KwAmHdr    *amHdr;
 #ifdef ANSI
 PRIVATE Void kwAmmTriggerStatus
 (
-KwCb       *gCb,
-KwUlRbCb   *rbCb,
+RlcCb       *gCb,
+RlcUlRbCb   *rbCb,
 KwSn       sn,
 Bool       discFlg
 )
 #else
 PRIVATE Void kwAmmTriggerStatus(gCb,rbCb, sn, discFlg)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;
+RlcCb       *gCb;
+RlcUlRbCb   *rbCb;
 KwSn       sn;
 Bool       discFlg;
 #endif
@@ -1667,15 +1667,15 @@ Bool       discFlg;
 #ifdef ANSI
 PRIVATE Void kwAmmProcPduOrSeg
 (
-KwCb       *gCb,
-KwUlRbCb   *rbCb,
+RlcCb       *gCb,
+RlcUlRbCb   *rbCb,
 KwAmHdr    *amHdr,
 Buffer     *pdu
 )
 #else
 PRIVATE Void kwAmmProcPduOrSeg(gCb, rbCb, amHdr, pdu)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;
+RlcCb       *gCb;
+RlcUlRbCb   *rbCb;
 KwAmHdr    *amHdr;
 Buffer     *pdu;
 #endif
@@ -1688,7 +1688,7 @@ Buffer     *pdu;
       /* Release the existing partial SDU as we have PDUs or */
       /* segments that are out of sequence                   */
       rbCb->m.amUl.isOutOfSeq = TRUE;
-      KW_FREE_BUF(AMUL.partialSdu);
+      RLC_FREE_BUF(AMUL.partialSdu);
    }
 
    //if (amHdr->fi & KW_FI_FIRST_SEG)
@@ -1696,7 +1696,7 @@ Buffer     *pdu;
    {/* first Segment of the SDU */
       if (AMUL.partialSdu != NULLP)
       { /* Some old SDU may be present */
-         KW_FREE_BUF_WC(AMUL.partialSdu);
+         RLC_FREE_BUF_WC(AMUL.partialSdu);
       }
       AMUL.partialSdu = pdu;
       pdu = NULLP;
@@ -1704,13 +1704,13 @@ Buffer     *pdu;
    else if(amHdr->si == 0x03)
    {/* Middle or last segment of the SUD */
       SCatMsg(AMUL.partialSdu,pdu, M1M2);
-      KW_FREE_BUF_WC(pdu);
+      RLC_FREE_BUF_WC(pdu);
       pdu = NULLP;
    }
    else if (amHdr->si ==  0x02)
    {
       SCatMsg(pdu,AMUL.partialSdu,M2M1);
-      KW_FREE_BUF_WC(AMUL.partialSdu);
+      RLC_FREE_BUF_WC(AMUL.partialSdu);
    }
 
    if (pdu != NULLP)
@@ -1745,14 +1745,14 @@ Buffer     *pdu;
 #ifdef ANSI
 PRIVATE S16 kwAmmUlReassembleSdus
 (
-KwCb         *gCb,
-KwUlRbCb     *rbCb,
+RlcCb         *gCb,
+RlcUlRbCb     *rbCb,
 KwAmRecBuf   *recBuf
 )
 #else
 PRIVATE S16 kwAmmUlReassembleSdus(gCb, rbCb, recBuf)
-KwCb         *gCb;
-KwUlRbCb     *rbCb;
+RlcCb         *gCb;
+RlcUlRbCb     *rbCb;
 KwAmRecBuf   *recBuf;
 #endif
 {
@@ -1781,7 +1781,7 @@ KwAmRecBuf   *recBuf;
          AMUL.expSo = seg->soEnd + 1;
 
          cmLListDelFrm(&(recBuf->segLst),&(seg->lstEnt));
-         KW_FREE_WC(gCb, seg, sizeof(KwSeg));
+         RLC_FREE_WC(gCb, seg, sizeof(KwSeg));
 
          KW_LLIST_FIRST_SEG(recBuf->segLst, seg);
       }
@@ -1806,17 +1806,17 @@ KwAmRecBuf   *recBuf;
 #ifdef ANSI
 PUBLIC Void kwAmmUlReEstablish
 (
-KwCb         *gCb,
+RlcCb         *gCb,
 CmLteRlcId   rlcId,
 Bool         sendReEst,
-KwUlRbCb     *rbCb
+RlcUlRbCb     *rbCb
 )
 #else
 PUBLIC Void kwAmmUlReEstablish(gCb, rlcId, sendReEst, rbCb)
-KwCb         *gCb;
+RlcCb         *gCb;
 CmLteRlcId   rlcId;
 Bool         sendReEst;
-KwUlRbCb     *rbCb;
+RlcUlRbCb     *rbCb;
 #endif
 {
    KwSn   sn;
@@ -1851,7 +1851,7 @@ KwUlRbCb     *rbCb;
             /* Remove PDU and segments */
             if(recBuf->pdu)
             {
-               KW_FREE_BUF_WC(recBuf->pdu);
+               RLC_FREE_BUF_WC(recBuf->pdu);
             }
             /* Release all the segments*/
             kwAmmUlRlsAllSegs(gCb,recBuf);
@@ -1884,7 +1884,7 @@ KwUlRbCb     *rbCb;
    AMUL.expSo = 0;
    if (AMUL.partialSdu != NULLP)
    {
-     KW_FREE_BUF(AMUL.partialSdu);
+     RLC_FREE_BUF(AMUL.partialSdu);
    }
    kwKwSap = gCb->u.ulCb->kwuUlSap + KW_UI_PDCP;
 
@@ -1913,13 +1913,13 @@ KwUlRbCb     *rbCb;
 #ifdef ANSI
 PUBLIC Void kwAmmReOrdTmrExp
 (
-KwCb        *gCb,
-KwUlRbCb    *rbCb
+RlcCb        *gCb,
+RlcUlRbCb    *rbCb
 )
 #else
 PUBLIC Void kwAmmReOrdTmrExp(rbCb)
-KwCb        *gCb;
-KwUlRbCb    *rbCb;
+RlcCb        *gCb;
+RlcUlRbCb    *rbCb;
 #endif
 {
    KwAmUl *amUl = &(rbCb->m.amUl);
@@ -1995,13 +1995,13 @@ KwUlRbCb    *rbCb;
 #ifdef ANSI
 PUBLIC Void kwAmmStaProTmrExp
 (
-KwCb        *gCb,
-KwUlRbCb    *rbCb
+RlcCb        *gCb,
+RlcUlRbCb    *rbCb
 )
 #else
 PUBLIC Void kwAmmStaProTmrExp(gCb, rbCb)
-KwCb        *gCb;
-KwUlRbCb    *rbCb;
+RlcCb        *gCb;
+RlcUlRbCb    *rbCb;
 #endif
 {
    KwAmUl *amUl = &(rbCb->m.amUl);
@@ -2037,13 +2037,13 @@ KwUlRbCb    *rbCb;
 #ifdef ANSI
 PRIVATE Void kwAmmExtractElmnt
 (
-KwCb       *gCb,
+RlcCb       *gCb,
 Buffer     *pdu,
 KwExtHdr   *hdrInfo
 )
 #else
 PRIVATE Void kwAmmExtractElmnt(gCb, pdu, hdrInfo)
-KwCb       *gCb;
+RlcCb       *gCb;
 Buffer     *pdu;
 KwExtHdr   *hdrInfo;
 #endif
@@ -2134,13 +2134,13 @@ KwExtHdr   *hdrInfo;
 #ifdef ANSI
 PRIVATE Void kwAmmUpdExpByteSeg
 (
-KwCb     *gCb,
+RlcCb     *gCb,
 KwAmUl   *amUl,
 KwSeg    *seg
 )
 #else
 PRIVATE Void kwAmmUpdExpByteSeg(gCb, amUl, seg)
-KwCb     *gCb;
+RlcCb     *gCb;
 KwAmUl   *amUl;
 KwSeg    *seg;
 #endif
@@ -2214,13 +2214,13 @@ KwSeg    *seg;
 #ifdef ANSI
 PUBLIC Void kwAmmFreeUlRbCb
 (
-KwCb       *gCb,
-KwUlRbCb   *rbCb
+RlcCb       *gCb,
+RlcUlRbCb   *rbCb
 )
 #else
 PUBLIC Void kwAmmFreeUlRbCb(gCb,rbCb)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;
+RlcCb       *gCb;
+RlcUlRbCb   *rbCb;
 #endif
 {
    KwSn         curSn = 0;           /* Sequence number of PDU */
@@ -2251,7 +2251,7 @@ KwUlRbCb   *rbCb;
       {
          if (recBuf->pdu != NULLP)
          {
-            KW_FREE_BUF_WC(recBuf->pdu);
+            RLC_FREE_BUF_WC(recBuf->pdu);
          }
          /* Release all the segments */
          kwAmmUlRlsAllSegs(gCb,recBuf);
@@ -2261,13 +2261,13 @@ KwUlRbCb   *rbCb;
    }while ( curSn < windSz );
 
 #ifndef LTE_TDD 
-      KW_FREE_WC(gCb,rbCb->m.amUl.recBufLst, (KW_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
+      RLC_FREE_WC(gCb,rbCb->m.amUl.recBufLst, (KW_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
       rbCb->m.amUl.recBufLst = NULLP;
 #endif
 
    if(rbCb->m.amUl.partialSdu != NULLP)
    {
-      KW_FREE_BUF_WC(rbCb->m.amUl.partialSdu);
+      RLC_FREE_BUF_WC(rbCb->m.amUl.partialSdu);
    }
    RETVOID;
 } /* kwAmmFreeUlRbCb */

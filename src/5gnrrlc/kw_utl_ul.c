@@ -98,19 +98,19 @@ PUBLIC KwAmRecBuf* kwUtlGetRecBuf(CmLListCp *recBufLst, KwSn sn);
 #ifdef ANSI
 PUBLIC S16 kwUtlRcvFrmLi
 (
-KwCb           *gCb,                              
+RlcCb           *gCb,                              
 KwDatIndInfo   *datIndInfo                       
 )
 #else
 PUBLIC S16 kwUtlRcvFrmLi(gCb,datIndInfo)  
-KwCb           *gCb;                     
+RlcCb           *gCb;                     
 KwDatIndInfo   *datIndInfo;             
 #endif
 {
    U32         count;      /* Loop Counter */
    KwPduInfo   *pduInfo;   /* PDU Information */
-   KwUlRbCb    *rbCb;      /* RB Control Block */
-   KwUlUeCb    *ueCb;      /* UE Control Block */
+   RlcUlRbCb    *rbCb;      /* RB Control Block */
+   RlcUlUeCb    *ueCb;      /* UE Control Block */
 /* kw005.201 added support for L2 Measurement */
 
    TRC2(kwUtlRcvFrmLi)
@@ -133,7 +133,7 @@ KwDatIndInfo   *datIndInfo;
          {
             if(datIndInfo->lchData[i].pdu.mBuf[j])
             {
-               KW_FREE_BUF_WC(datIndInfo->lchData[i].pdu.mBuf[j]);
+               RLC_FREE_BUF_WC(datIndInfo->lchData[i].pdu.mBuf[j]);
             }
          }
       }
@@ -168,7 +168,7 @@ KwDatIndInfo   *datIndInfo;
          {
             if(pduInfo->mBuf[j])
             {
-               KW_FREE_BUF_WC(pduInfo->mBuf[j]);
+               RLC_FREE_BUF_WC(pduInfo->mBuf[j]);
             }
          }
          continue;
@@ -217,14 +217,14 @@ KwDatIndInfo   *datIndInfo;
 #ifdef ANSI
 PUBLIC S16 kwUtlSndDatInd
 (
-KwCb       *gCb,
-KwUlRbCb   *rbCb,                   
+RlcCb       *gCb,
+RlcUlRbCb   *rbCb,                   
 Buffer     *sdu                    
 )
 #else
 PUBLIC S16 kwUtlSndDatInd(gCb,rbCb,sdu)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;                  
+RlcCb       *gCb;
+RlcUlRbCb   *rbCb;                  
 Buffer     *sdu;                    
 #endif
 {
@@ -248,7 +248,7 @@ Buffer     *sdu;
                "Memory allocation failed UEID:%d CELLID:%d",
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
-      KW_FREE_BUF(sdu);
+      RLC_FREE_BUF(sdu);
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
@@ -273,7 +273,7 @@ Buffer     *sdu;
 } /* kwUtlSndDatInd */
 
 
-PRIVATE Void dumpRLCUlRbInformation(KwUlRbCb* ulRbCb)
+PRIVATE Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
 {
    if(ulRbCb->mode == CM_LTE_MODE_UM)
    {
@@ -324,9 +324,9 @@ PRIVATE Void dumpRLCUlRbInformation(KwUlRbCb* ulRbCb)
 
 Void DumpRLCUlDebugInformation(Void)
 {
-   KwCb* ulInst = kwCb[0]; /* TODO : Check whether UL is 0 or 1 */
-   KwUlCb* ulCb = ulInst->u.ulCb;
-   KwUlUeCb *ueCb = NULLP; 
+   RlcCb* ulInst = kwCb[0]; /* TODO : Check whether UL is 0 or 1 */
+   RlcUlCb* ulCb = ulInst->u.ulCb;
+   RlcUlUeCb *ueCb = NULLP; 
 
    /* Until no more ueCb is ueLstCp hash list get and delete ueCb */
    while (ROK == cmHashListGetNext(&ulCb->ueLstCp, 
@@ -336,7 +336,7 @@ Void DumpRLCUlDebugInformation(Void)
       U32 i;
       for(i = 0; i< KW_MAX_SRB_PER_UE; i++)
       {
-         KwUlRbCb* ulRbCb = ueCb->srbCb[i]; 
+         RlcUlRbCb* ulRbCb = ueCb->srbCb[i]; 
          if(ulRbCb != NULLP)
          {
             dumpRLCUlRbInformation(ulRbCb);
@@ -344,7 +344,7 @@ Void DumpRLCUlDebugInformation(Void)
       }
       for(i = 0; i< KW_MAX_DRB_PER_UE; i++)
       {
-         KwUlRbCb* ulRbCb = ueCb->drbCb[i]; 
+         RlcUlRbCb* ulRbCb = ueCb->drbCb[i]; 
          if(ulRbCb != NULLP)
          {
             dumpRLCUlRbInformation(ulRbCb);
@@ -376,7 +376,7 @@ Void DumpRLCUlDebugInformation(Void)
  * @return  S16
  *      -# ROK 
  */
-S16 kwUtlL2MeasUlInit(KwCb *gCb)
+S16 kwUtlL2MeasUlInit(RlcCb *gCb)
 {
    U16             cntr;
 
@@ -406,14 +406,14 @@ S16 kwUtlL2MeasUlInit(KwCb *gCb)
 #ifdef ANSI
 PUBLIC  Void kwUtlCalUlIpThrPutIncTTI
 (
-KwCb                  *gCb,
-KwUlRbCb              *rbCb,
+RlcCb                  *gCb,
+RlcUlRbCb              *rbCb,
 U32                   ttiCnt
 )
 #else
 PUBLIC Void kwUtlCalUlIpThrPutIncTTI(gCb, rbCb, ttiCnt)
-KwCb                  *gCb;
-KwUlRbCb              *rbCb;
+RlcCb                  *gCb;
+RlcUlRbCb              *rbCb;
 U32                   ttiCnt;
 #endif
 {
@@ -485,15 +485,15 @@ U32                   ttiCnt;
 #ifdef ANSI
 PUBLIC  Void kwUtlCalUlIpThrPut
 (
-KwCb                  *gCb,
-KwUlRbCb              *rbCb,
+RlcCb                  *gCb,
+RlcUlRbCb              *rbCb,
 Buffer                *pdu,
 U32                   ttiCnt
 )
 #else
 PUBLIC Void kwUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt)
-   KwCb                  *gCb;
-   KwUlRbCb              *rbCb;
+   RlcCb                  *gCb;
+   RlcUlRbCb              *rbCb;
    Buffer                *pdu;
    U32                   ttiCnt;
 #endif
@@ -542,12 +542,12 @@ PUBLIC Void kwUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt)
 #ifdef ANSI
 PUBLIC S16 kwUtlHdlL2TmrExp
 (
-KwCb          *gCb,
+RlcCb          *gCb,
 KwL2MeasEvtCb *measEvtCb
 )
 #else
 PUBLIC S16 kwUtlHdlL2TmrExp(measEvtCb)
-KwCb          *gCb;
+RlcCb          *gCb;
 KwL2MeasEvtCb *measEvtCb;
 #endif
 {
@@ -598,12 +598,12 @@ KwL2MeasEvtCb *measEvtCb;
 #ifdef ANSI
 PUBLIC S16 kwUtlSndUlL2MeasCfm
 (
-KwCb                  *gCb,
+RlcCb                  *gCb,
 KwL2MeasEvtCb         *measEvtCb
 )
 #else
 PUBLIC S16 kwUtlSndUlL2MeasCfm(gCb, measEvtCb)
-KwCb                  *gCb;
+RlcCb                  *gCb;
 KwL2MeasEvtCb         *measEvtCb;
 #endif
 {
@@ -706,13 +706,13 @@ KwL2MeasEvtCb         *measEvtCb;
 #ifdef ANSI
 PUBLIC S16 kwUtlSndUlL2MeasNCfm
 (
-KwCb           *gCb,
+RlcCb           *gCb,
 KwL2MeasReqEvt *measReqEvt,
 KwL2MeasCfmEvt *measCfmEvt
 )
 #else
 PUBLIC S16 kwUtlSndUlL2MeasNCfm(gCb, measReqEvt, measCfmEvt)
-KwCb           *gCb;
+RlcCb           *gCb;
 KwL2MeasReqEvt *measReqEvt;
 KwL2MeasCfmEvt *measCfmEvt;
 #endif
@@ -947,13 +947,13 @@ KwL2MeasCfmEvt *measCfmEvt;
 
 PUBLIC Void kwUtlResetUlL2MeasInKwRb
 (
-KwCb       *gCb,
+RlcCb       *gCb,
 KwL2MeasCb *measCb,
 U8             measType
 )
 #else
 PUBLIC Void kwUtlResetUlL2MeasInKwRb(measCb, measType)
-KwCb       *gCb;
+RlcCb       *gCb;
 KwL2MeasCb *measCb;
 U8             measType;
 #endif
@@ -961,7 +961,7 @@ U8             measType;
    U32           rbIdx;
    U32           ueIdx;
    U32           qciIdx;
-   KwUlUeCb         *ueCb = NULL;
+   RlcUlUeCb         *ueCb = NULL;
 
 
 
@@ -1169,13 +1169,13 @@ PUBLIC Void kwUtlDelRecBuf
 (
 CmLListCp        *recBufLst,
 KwAmRecBuf       *recBuf,
-KwCb              *gCb                              
+RlcCb              *gCb                              
 )
 #else
 PUBLIC Void kwUtlDelRecBuf(recBufLst, recBufi, gCb)
 CmLListCp        *recBufLst;
 KwAmRecBuf       *recBuf;
-KwCb             *gCb;                              
+RlcCb             *gCb;                              
 #endif
 {
    U32                 hashKey; 
@@ -1187,7 +1187,7 @@ KwCb             *gCb;
  
    recBufLstCp = &recBufLst[hashKey];
    cmLListDelFrm(recBufLstCp, &recBuf->lnk);
-   KW_FREE_WC(gCb, recBuf, sizeof(KwAmRecBuf));
+   RLC_FREE_WC(gCb, recBuf, sizeof(KwAmRecBuf));
 
    RETVOID;
 } /* kwUtlDelRecBuf */

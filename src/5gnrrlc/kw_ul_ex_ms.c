@@ -57,6 +57,9 @@ static int RLOG_FILE_ID=206;
 #include "kw.x"
 #include "kw_ul.x"
 #include "kw_udx.x"
+
+#include "du_app_rlc_inf.h"
+
 #ifdef TENB_STATS 
 #include "l2_tenb_stats.x"   
 #endif
@@ -135,7 +138,7 @@ Region region;              /* region */
 Reason reason;              /* reason */
 #endif
 {
-   KwCb    *tKwCb;
+   RlcCb    *tRlcCb;
    TRC3(kwDlActvInit)
 
    if (inst >= KW_MAX_RLC_INSTANCES)
@@ -149,35 +152,35 @@ Reason reason;              /* reason */
        RETVALUE (RFAILED);
    }
   
-   if (SGetSBuf(region, 0, (Data **)&tKwCb,
-                (Size)sizeof (KwCb)) != ROK)    
+   if (SGetSBuf(region, 0, (Data **)&tRlcCb,
+                (Size)sizeof (RlcCb)) != ROK)    
    {                     
       RETVALUE(RFAILED);
    }
 
    /* Initialize kwCb */
-   KW_MEM_SET(tKwCb, 0, sizeof(KwCb));
+   KW_MEM_SET(tRlcCb, 0, sizeof(RlcCb));
 
    /* Initialize task configuration parameters */
-   tKwCb->init.ent     = ent;           /* entity */
-   tKwCb->init.inst    = inst;          /* instance */
-   tKwCb->init.region  = region;        /* static region */
-   tKwCb->init.pool    = 0;             /* static pool */
-   tKwCb->init.reason  = reason;        /* reason */
-   tKwCb->init.cfgDone = FALSE;         /* configuration done */
-   tKwCb->init.acnt    = TRUE;          /* enable accounting */
-   tKwCb->init.usta    = TRUE;          /* enable unsolicited status */
-   tKwCb->init.trc     = FALSE;         /* enable trace */
-   tKwCb->init.procId  = SFndProcId();
+   tRlcCb->init.ent     = ent;           /* entity */
+   tRlcCb->init.inst    = inst;          /* instance */
+   tRlcCb->init.region  = region;        /* static region */
+   tRlcCb->init.pool    = 0;             /* static pool */
+   tRlcCb->init.reason  = reason;        /* reason */
+   tRlcCb->init.cfgDone = FALSE;         /* configuration done */
+   tRlcCb->init.acnt    = TRUE;          /* enable accounting */
+   tRlcCb->init.usta    = TRUE;          /* enable unsolicited status */
+   tRlcCb->init.trc     = FALSE;         /* enable trace */
+   tRlcCb->init.procId  = SFndProcId();
 
-   kwCb[inst] = tKwCb;
+   kwCb[inst] = tRlcCb;
 
    /* call external function for intialization */
    /*
    kwInitExt();
    */
 #ifdef TENB_STATS 
-   TSL2AllocStatsMem(tKwCb->init.region, tKwCb->init.pool); 
+   TSL2AllocStatsMem(tRlcCb->init.region, tRlcCb->init.pool); 
 #endif
 
    RETVALUE(ROK);
@@ -236,9 +239,9 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
                
-               case RLC_EVT_UE_CREATE_REQ:        /* UE Create Request */
+               case EVENT_RLC_UL_UE_CREATE_REQ:        /* UE Create Request */
                   {
-                     ret = unpackUeCreateReq(RlcDuappProcUeCreateReq, pst, mBuf);
+                     ret = unpackRlcUlUeCreateReq(RlcUlProcUeCreateReq, pst, mBuf);
                      break;
                   }
 
@@ -295,25 +298,25 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCUDX
                case UDX_EVT_BND_CFM:              /* Bind request */
                   {
-                     ret = cmUnpkUdxBndCfm(KwUlUdxBndCfm, pst, mBuf );
+                     ret = cmUnpkUdxBndCfm(rlcUlUdxBndCfm, pst, mBuf );
                      break;
                   }
 
                case UDX_EVT_CFG_CFM:             /* Unbind request */
                   {
-                     ret = cmUnpkUdxCfgCfm(KwUlUdxCfgCfm, pst, mBuf );
+                     ret = cmUnpkUdxCfgCfm(rlcUlUdxCfgCfm, pst, mBuf );
                      break;
                   }
 
                case UDX_EVT_UEIDCHG_CFM:              /* Configuration request */
                   {
-                     ret = cmUnpkUdxUeIdChgCfm(KwUlUdxUeIdChgCfm, pst, mBuf);
+                     ret = cmUnpkUdxUeIdChgCfm(rlcUlUdxUeIdChgCfm, pst, mBuf);
                      break;
                   }
                
                case UDX_EVT_STA_PHBT_TMR_START:              /* Status Prohibit Timer Start */
                   {
-                     ret = cmUnpkUdxStaProhTmrStart(KwUlUdxStaProhTmrStart, pst, mBuf);
+                     ret = cmUnpkUdxStaProhTmrStart(rlcUlUdxStaProhTmrStart, pst, mBuf);
                      break;
                   }               
 
@@ -471,10 +474,10 @@ Buffer *mBuf;           /* message buffer */
                case TENBSTATSINIT:
                {
                   
-                  KwCb *tKwCb;
-                  tKwCb = KW_GET_KWCB(pst->dstInst);
+                  RlcCb *tRlcCb;
+                  tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-                  TSL2SendStatsToApp(&(tKwCb->genCfg.lmPst), 0);
+                  TSL2SendStatsToApp(&(tRlcCb->genCfg.lmPst), 0);
                   SPutMsg(mBuf);
                   break;
                }

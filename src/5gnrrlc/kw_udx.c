@@ -281,13 +281,13 @@ PUBLIC S16 cmPkUdxCfgReq
 (
 Pst               *pst,
 SpId              spId,
-CkwCfgInfo        *cfgInfo
+RlcCfgInfo        *cfgInfo
 )
 #else
 PUBLIC S16 cmPkUdxCfgReq(pst, spId, cfgInfo)
 Pst               *pst;
 SpId              spId;
-CkwCfgInfo        *cfgInfo;
+RlcCfgInfo        *cfgInfo;
 #endif
 {
     S16 ret1;
@@ -313,7 +313,7 @@ CkwCfgInfo        *cfgInfo;
 #ifdef LCUDX
        case UDX_SEL_LC:
           {
-             cmPkUdxStruct((U8 *)cfgInfo, sizeof(CkwCfgInfo),mBuf);
+             cmPkUdxStruct((U8 *)cfgInfo, sizeof(RlcCfgInfo),mBuf);
              /* Need Not free CfgInfo here as it is stored 
                 in UL */
              break;
@@ -351,13 +351,13 @@ PUBLIC S16 cmPkUdxCfgCfm
 (
 Pst               *pst,
 SuId              suId,
-CkwCfgCfmInfo     *cfgCfmInfo
+RlcCfgCfmInfo     *cfgCfmInfo
 )
 #else
 PUBLIC S16 cmPkUdxCfgCfm(pst, suId, cfgCfmInfo)
 Pst               *pst;
 SuId              suId;
-CkwCfgCfmInfo     *cfgCfmInfo;
+RlcCfgCfmInfo     *cfgCfmInfo;
 #endif
 {
     S16 ret1;
@@ -383,11 +383,11 @@ CkwCfgCfmInfo     *cfgCfmInfo;
 #ifdef LCUDX
        case UDX_SEL_LC:
           {
-             cmPkUdxStruct((U8 *)cfgCfmInfo, sizeof(CkwCfgCfmInfo),mBuf);
+             cmPkUdxStruct((U8 *)cfgCfmInfo, sizeof(RlcCfgCfmInfo),mBuf);
              /* Need to free the cfgCfmInfo here as it is allocated 
                                         buffer call SPutStaticBuffer */
              SPutStaticBuffer(pst->region,pst->pool,(Data *) cfgCfmInfo,
-                          sizeof(CkwCfgCfmInfo),0);
+                          sizeof(RlcCfgCfmInfo),0);
              break;
           }
         case UDX_SEL_LWLC:
@@ -1149,8 +1149,8 @@ Buffer            *mBuf;
     S16           ret1;
 #endif /* ERRCLASS & ERRCLS_DEBUG */
     SpId          spId = 0;
-    CkwCfgInfo     tmpCfgInfo;
-    CkwCfgInfo    *cfgInfo; /*stack Variable because it is not freed */
+    RlcCfgInfo     tmpCfgInfo;
+    RlcCfgInfo    *cfgInfo; /*stack Variable because it is not freed */
     
     TRC3(cmUnpkUdxCfgReq)
 
@@ -1161,7 +1161,7 @@ Buffer            *mBuf;
        case UDX_SEL_LC:
        {
 #if(ERRCLASS & ERRCLS_DEBUG)
-          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpCfgInfo,sizeof(CkwCfgInfo));
+          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpCfgInfo,sizeof(RlcCfgInfo));
           if(ret1 != ROK)
           {
              SPutMsg(mBuf);
@@ -1171,7 +1171,7 @@ Buffer            *mBuf;
              RETVALUE( ret1 );
           }
 #else
-         cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpCfgInfo,sizeof(CkwCfgInfo));
+         cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpCfgInfo,sizeof(RlcCfgInfo));
 #endif /* ERRCLASS & ERRCLS_DEBUG */
           cfgInfo = &tmpCfgInfo;
           break;
@@ -1218,7 +1218,7 @@ Buffer            *mBuf;
 {
     S16 ret1;
     SuId             suId = 0;
-    CkwCfgCfmInfo    *cfgCfmInfo = NULLP;
+    RlcCfgCfmInfo    *cfgCfmInfo = NULLP;
     
     TRC3(cmUnpkUdxCfgCfm)
 
@@ -1230,7 +1230,7 @@ Buffer            *mBuf;
        case UDX_SEL_LC:
        {
            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&cfgCfmInfo,\
-                       sizeof(CkwCfgCfmInfo),0)) != ROK)
+                       sizeof(RlcCfgCfmInfo),0)) != ROK)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
               if(ret1 != ROK)
@@ -1243,7 +1243,7 @@ Buffer            *mBuf;
               RETVALUE(ret1);
            }
 
-          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)cfgCfmInfo, sizeof(CkwCfgCfmInfo));
+          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)cfgCfmInfo, sizeof(RlcCfgCfmInfo));
 #if(ERRCLASS & ERRCLS_DEBUG)
           if(ret1 != ROK)
           {
