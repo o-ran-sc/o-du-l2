@@ -60,8 +60,6 @@
 
 #define DU_ZERO_VAL 0
 
-#define DU_UE_START_CRNTI 100
-
 /* Macros */
 #define ADD 0
 #define DEL 1

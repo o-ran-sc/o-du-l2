@@ -58,3 +58,19 @@
 #define ODU_SELECTOR_TC 1
 #define ODU_SELECTOR_LWLC 2
 
+#define CRNTI_START_RANGE 100
+#define CRNTI_END_RANGE   500
+
+#define GET_UE_IDX( _crnti,_ueIdx)    \
+{                                                  \
+   _ueIdx = _crnti - CRNTI_START_RANGE;            \
+}
+
+#define GET_CRNTI( _crnti,_ueIdx)    \
+{                                                  \
+   _crnti = _ueIdx + CRNTI_START_RANGE;            \
+}
+
+/**********************************************************************
+         End of file
+**********************************************************************/
