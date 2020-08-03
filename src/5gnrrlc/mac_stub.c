@@ -42,7 +42,7 @@ PUBLIC S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
   rspPst.pool    = pst->pool;
 
   /* Filling Scheduling Report */
-  KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRepInfo));
+  RLC_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRepInfo));
    
   schRep->cellId = boSta->cellId;
   schRep->rnti   = boSta->rnti;
@@ -73,10 +73,10 @@ PUBLIC S16 macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
    dlData->pduInfo[0].pduBuf = NULL;
 
 #if 0
-   KW_FREE_SHRABL_BUF(pst->region, pst->pool,
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool,
                         dlData, sizeof(RlcMacData));
 {
-   KW_ALLOC_SHRABL_BUF(pst->region, pst->pool,
+   RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool,
                           ulData, sizeof(RlcMacData));
 
    SRegInfoShow(2, &availmem);

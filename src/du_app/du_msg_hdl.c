@@ -24,6 +24,7 @@
 #include "lrg.x"
 #include "lkw.x"
 #include "du_app_mac_inf.h"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_sctp.h"
@@ -42,7 +43,7 @@ U8 macCfg = 0;
 U8 macCfgInst = 0;
 
 extern DuCfgParams duCfgParam;
-extern S16 cmPkLkwCfgReq(Pst *pst, KwMngmt *cfg);
+extern S16 cmPkLrlcCfgReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLkwCntrlReq(Pst *pst, KwMngmt *cfg);
 extern S16 cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
 extern S16 BuildAndSendE2SetupReq();
@@ -150,7 +151,7 @@ S16 duBuildRlcCfg(Inst inst)
    DU_LOG("\nDU_APP : RLC Gen Cfg Req sent for inst %d", inst);
 
    /* Send the request to RLC */
-   cmPkLkwCfgReq(&pst, &kwMngmt);
+   cmPkLrlcCfgReq(&pst, &kwMngmt);
 
    return ROK;
 }
@@ -228,7 +229,7 @@ S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst)
       DU_LOG("\nDU_APP : RLC DL/UL Lower Sap Cfg Req sent for inst %d", inst);
    }
 
-   cmPkLkwCfgReq(&pst, &kwMngmt);
+   cmPkLrlcCfgReq(&pst, &kwMngmt);
    return ROK;
 }
 
@@ -293,7 +294,7 @@ S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst)
    pst.region = duCb.init.region;
 
    DU_LOG("\nDU_APP : RLC Kwu Upper Sap Cfg Req sent for inst %d", inst);
-   cmPkLkwCfgReq(&pst, &kwMngmt);
+   cmPkLrlcCfgReq(&pst, &kwMngmt);
 
    return ROK;
 }

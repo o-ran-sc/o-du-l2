@@ -57,11 +57,14 @@ static int RLOG_FILE_ID=206;
 #include "kw.x"
 #include "kw_ul.x"
 #include "kw_udx.x"
+
+#include "du_app_rlc_inf.h"
+
 #ifdef TENB_STATS 
 #include "l2_tenb_stats.x"   
 #endif
 
-PUBLIC S16 kwUlInitExt ARGS (( Void ));
+PUBLIC S16 rlcUlInitExt ARGS (( Void ));
 
 /**
  *
@@ -78,14 +81,14 @@ PUBLIC S16 kwUlInitExt ARGS (( Void ));
 */
   
 #ifdef ANSI
-PUBLIC S16 kwUlInitExt 
+PUBLIC S16 rlcUlInitExt 
 (
 )
 #else
-PUBLIC S16 kwUlInitExt()
+PUBLIC S16 rlcUlInitExt()
 #endif
 {
-   TRC2(kwUlInitExt);
+   TRC2(rlcUlInitExt);
 
    RETVALUE(ROK);
 } /* kwInitExt */
@@ -120,7 +123,7 @@ PUBLIC S16 kwUlInitExt()
  *
  */
 #ifdef ANSI
-PUBLIC S16 kwUlActvInit
+PUBLIC S16 rlcUlActvInit
 (
 Ent    ent,                 /* entity */
 Inst   inst,                /* instance */
@@ -128,60 +131,60 @@ Region region,              /* region */
 Reason reason               /* reason */
 )
 #else
-PUBLIC S16 kwUlActvInit(ent, inst, region, reason)
+PUBLIC S16 rlcUlActvInit(ent, inst, region, reason)
 Ent    ent;                 /* entity */
 Inst   inst;                /* instance */
 Region region;              /* region */
 Reason reason;              /* reason */
 #endif
 {
-   KwCb    *tKwCb;
-   TRC3(kwDlActvInit)
+   RlcCb    *tRlcCb;
+   TRC3(rlcUlActvInit)
 
-   if (inst >= KW_MAX_RLC_INSTANCES)
+   if (inst >= MAX_RLC_INSTANCES)
    {
        /* intance greater than MAX instances */ 
        RETVALUE(RFAILED); 
    }
 
-   if (kwCb[inst] != NULLP)
+   if (rlcCb[inst] != NULLP)
    {
        RETVALUE (RFAILED);
    }
   
-   if (SGetSBuf(region, 0, (Data **)&tKwCb,
-                (Size)sizeof (KwCb)) != ROK)    
+   if (SGetSBuf(region, 0, (Data **)&tRlcCb,
+                (Size)sizeof (RlcCb)) != ROK)    
    {                     
       RETVALUE(RFAILED);
    }
 
-   /* Initialize kwCb */
-   KW_MEM_SET(tKwCb, 0, sizeof(KwCb));
+   /* Initialize rlcCb */
+   RLC_MEM_SET(tRlcCb, 0, sizeof(RlcCb));
 
    /* Initialize task configuration parameters */
-   tKwCb->init.ent     = ent;           /* entity */
-   tKwCb->init.inst    = inst;          /* instance */
-   tKwCb->init.region  = region;        /* static region */
-   tKwCb->init.pool    = 0;             /* static pool */
-   tKwCb->init.reason  = reason;        /* reason */
-   tKwCb->init.cfgDone = FALSE;         /* configuration done */
-   tKwCb->init.acnt    = TRUE;          /* enable accounting */
-   tKwCb->init.usta    = TRUE;          /* enable unsolicited status */
-   tKwCb->init.trc     = FALSE;         /* enable trace */
-   tKwCb->init.procId  = SFndProcId();
+   tRlcCb->init.ent     = ent;           /* entity */
+   tRlcCb->init.inst    = inst;          /* instance */
+   tRlcCb->init.region  = region;        /* static region */
+   tRlcCb->init.pool    = 0;             /* static pool */
+   tRlcCb->init.reason  = reason;        /* reason */
+   tRlcCb->init.cfgDone = FALSE;         /* configuration done */
+   tRlcCb->init.acnt    = TRUE;          /* enable accounting */
+   tRlcCb->init.usta    = TRUE;          /* enable unsolicited status */
+   tRlcCb->init.trc     = FALSE;         /* enable trace */
+   tRlcCb->init.procId  = SFndProcId();
 
-   kwCb[inst] = tKwCb;
+   rlcCb[inst] = tRlcCb;
 
    /* call external function for intialization */
    /*
    kwInitExt();
    */
 #ifdef TENB_STATS 
-   TSL2AllocStatsMem(tKwCb->init.region, tKwCb->init.pool); 
+   TSL2AllocStatsMem(tRlcCb->init.region, tRlcCb->init.pool); 
 #endif
 
    RETVALUE(ROK);
-} /* kwActvInit */
+} /* rlcUlActvInit */
 
 
 /**
@@ -202,13 +205,13 @@ Reason reason;              /* reason */
  *
  */
 #ifdef ANSI
-PUBLIC S16 kwUlActvTsk
+PUBLIC S16 rlcUlActvTsk
 (
 Pst *pst,              /* pst structure */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 kwUlActvTsk(pst, mBuf)
+PUBLIC S16 rlcUlActvTsk(pst, mBuf)
 Pst *pst;              /* pst structure */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -226,7 +229,7 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCLKW
                case LKW_EVT_CFG_REQ:
                   {
-                     ret = cmUnpkLkwCfgReq(KwMiLkwCfgReq, pst, mBuf);
+                     ret = cmUnpkLrlcCfgReq(KwMiLrlcCfgReq, pst, mBuf);
                      break;
                   }
 
@@ -236,9 +239,9 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
                
-               case RLC_EVT_UE_CREATE_REQ:        /* UE Create Request */
+               case EVENT_RLC_UL_UE_CREATE_REQ:        /* UE Create Request */
                   {
-                     ret = unpackUeCreateReq(RlcDuappProcUeCreateReq, pst, mBuf);
+                     ret = unpackRlcUlUeCreateReq(RlcUlProcUeCreateReq, pst, mBuf);
                      break;
                   }
 
@@ -276,7 +279,7 @@ Buffer *mBuf;           /* message buffer */
 #endif  /* LCLKW */
                default:
                   SPutMsg(mBuf);
-                  if (pst->dstInst < KW_MAX_RLC_INSTANCES)
+                  if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                      RLOG1(L_FATAL,"Received Invalid Event[%d] from SM",
                             pst->event);
@@ -295,25 +298,25 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCUDX
                case UDX_EVT_BND_CFM:              /* Bind request */
                   {
-                     ret = cmUnpkUdxBndCfm(KwUlUdxBndCfm, pst, mBuf );
+                     ret = cmUnpkUdxBndCfm(rlcUlUdxBndCfm, pst, mBuf );
                      break;
                   }
 
                case UDX_EVT_CFG_CFM:             /* Unbind request */
                   {
-                     ret = cmUnpkUdxCfgCfm(KwUlUdxCfgCfm, pst, mBuf );
+                     ret = cmUnpkUdxCfgCfm(rlcUlUdxCfgCfm, pst, mBuf );
                      break;
                   }
 
                case UDX_EVT_UEIDCHG_CFM:              /* Configuration request */
                   {
-                     ret = cmUnpkUdxUeIdChgCfm(KwUlUdxUeIdChgCfm, pst, mBuf);
+                     ret = cmUnpkUdxUeIdChgCfm(rlcUlUdxUeIdChgCfm, pst, mBuf);
                      break;
                   }
                
                case UDX_EVT_STA_PHBT_TMR_START:              /* Status Prohibit Timer Start */
                   {
-                     ret = cmUnpkUdxStaProhTmrStart(KwUlUdxStaProhTmrStart, pst, mBuf);
+                     ret = cmUnpkUdxStaProhTmrStart(rlcUlUdxStaProhTmrStart, pst, mBuf);
                      break;
                   }               
 
@@ -321,7 +324,7 @@ Buffer *mBuf;           /* message buffer */
 
                default:
                   SPutMsg(mBuf);
-                  if (pst->dstInst < KW_MAX_RLC_INSTANCES)
+                  if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                       RLOG1(L_ERROR,"Received Invalid Event[%d] from RLC UL",
                             pst->event);
@@ -373,7 +376,7 @@ Buffer *mBuf;           /* message buffer */
 #endif  /* LCKWU */
                default:
                   SPutMsg(mBuf);
-                  if (pst->dstInst < KW_MAX_RLC_INSTANCES)
+                  if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                       RLOG1(L_ERROR,"Received Invalid Event[%d] from RRC", 
                             pst->event);
@@ -404,7 +407,7 @@ Buffer *mBuf;           /* message buffer */
 
                default:
                   SPutMsg(mBuf);
-                  if (pst->dstInst < KW_MAX_RLC_INSTANCES)
+                  if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                       RLOG1(L_ERROR,"Received Invalid Event[%d] from PDCP", 
                             pst->event);
@@ -437,7 +440,7 @@ Buffer *mBuf;           /* message buffer */
 
                default:
                   SPutMsg(mBuf);
-                  if (pst->dstInst < KW_MAX_RLC_INSTANCES)
+                  if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                       RLOG1(L_ERROR,"Received Invalid Event[%d] from MAC",
                             pst->event);
@@ -454,7 +457,7 @@ Buffer *mBuf;           /* message buffer */
             {
                case KWU_EVT_TTI_IND:
                   {
-                     kwUlBatchProc();
+                     rlcUlBatchProc();
                      SPutMsg(mBuf);
                      break;
                   }
@@ -471,10 +474,10 @@ Buffer *mBuf;           /* message buffer */
                case TENBSTATSINIT:
                {
                   
-                  KwCb *tKwCb;
-                  tKwCb = KW_GET_KWCB(pst->dstInst);
+                  RlcCb *tRlcCb;
+                  tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-                  TSL2SendStatsToApp(&(tKwCb->genCfg.lmPst), 0);
+                  TSL2SendStatsToApp(&(tRlcCb->genCfg.lmPst), 0);
                   SPutMsg(mBuf);
                   break;
                }
@@ -492,7 +495,7 @@ Buffer *mBuf;           /* message buffer */
 #endif
       default:
          {
-          if (pst->dstInst < KW_MAX_RLC_INSTANCES)
+          if (pst->dstInst < MAX_RLC_INSTANCES)
            {
               RLOG1(L_ERROR, "Received Invalid Source Entity[%d]",pst->event);
            }

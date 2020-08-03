@@ -21,15 +21,6 @@
 #ifndef __DU_EGTP_H__
 #define __DU_EGTP_H__
 
-#include "du_mgr.h"
-#include "du_log.h"
-#include "cm_inet.h"
-#include "cm_tpt.h"
-#include "legtp.h"
- 
-#include "cm_inet.x"
-#include "cm_tpt.x"
-
 #define EGTP_DFLT_PORT 2152
 #define EGTP_MAX_HDR_LEN 40
 #define EGTP_MAX_MSG_RECV 10

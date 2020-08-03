@@ -25,7 +25,6 @@
 #include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
-#include "du_mgr.h"
 #include "du_mgr_main.h"
 #include "du_f1ap_msg_hdl.h"
 #include "du_utils.h"
@@ -70,7 +69,6 @@
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
-#include "du_cell_mgr.h"
 #include "odu_common_codec.h"
 
 S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
