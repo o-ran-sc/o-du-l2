@@ -248,41 +248,6 @@ Reason   reason;
    RETVALUE(ROK);
 } 
 
-/*******************************************************************
- *
- * @brief Handler for UE create request
- *
- * @details
- *
- *    Function : RlcDuappProcUeCreateReq 
- *
- *    Functionality:
- *       Handler for UE create request
- *
- * @params[in] pst - Post Structure
- *             cfg - Configuration information for one or more RLC entities
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-PUBLIC S16 RlcDuappProcUeCreateReq(Pst *pst, CkwCfgInfo *ueCfg)
-{
-   U8 idx;
-   S16 ret=ROK;
-
-   ueCfg->transId = 1;
-
-   for(idx = 0; idx < ueCfg->numEnt; idx++)
-   {
-      ueCfg->entCfg[idx].cfgType = CKW_CFG_ADD; 
-   }
-   
-   ret = KwUiCkwCfgReq(pst, ueCfg);
-   return ret;
-
-} /* RlcDuappUeCreateReq */ 
-
-
 /**
  * @brief  
  *    Handler for configuring RLC entities.
@@ -354,7 +319,6 @@ CkwCfgInfo   *cfg;
    }
    
    kwHdlUiCkwUlCfgReq(tKwCb, cfgTmpData, cfg);
-   
    KwUlUdxCfgReq(&(KW_GET_UDX_SAP(tKwCb)->pst),KW_GET_UDX_SAP(tKwCb)->spId,cfg); 
 
    RETVALUE(ROK);

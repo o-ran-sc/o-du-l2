@@ -110,13 +110,13 @@ typedef union ckwTmInfo
    Entity Configuration Information */
 typedef struct ckwEntCfgInfo
 {
-   U8                   cfgType;             /*!< Type of Configuration - 
+   uint8_t              cfgType;             /*!< Type of Configuration - 
                                              ADD/MODIFY/DELETE/RE-ESTABLISH/
                                              DELTEUE */
-   U8                   rbId;                /* RB ID. The allowed
+   uint8_t              rbId;                /* RB ID. The allowed
                                                 Values are [0..255] */
-   U8                   rbType;              /* Type of the RB - can be SRB or DRB */
-   U8                   qci;                 /*!< qCI value Associated with that RB */
+   uint8_t              rbType;              /* Type of the RB - can be SRB or DRB */
+   uint8_t              qci;                 /*!< qCI value Associated with that RB */
    CkwLChInfo           lCh[CM_LTE_MAX_LOGCH_PER_RB];  /*!< Logical channel
                                                         information
                                                 In case of AM mode: 
@@ -125,13 +125,13 @@ typedef struct ckwEntCfgInfo
                                                 In case of TM/UM idx 0 is only
                                                 applicable */
    CmLteRlcMode         entMode;             /*!< Entity mode: AM, UM or TM */
-   U8                   dir;                 /*!< Direction: It can be either
+   uint8_t              dir;                 /*!< Direction: It can be either
                                                UL / DL for TM mode 
                                                UL / DL or BOTH for UM mode 
                                                and for AM its always for both UL 
                                                and DL. */
    /* Supported by SPLIT Architecture */
-   S16            discardTmr;  /*!< Discard timer. @n The value for this parameter is 
+   uint16_t       discardTmr;  /*!< Discard timer. @n The value for this parameter is 
                                 expected in milli seconds. @n Value of infinity is also
                                 allowed and -1 must be passed for the same.  */
    SpId                 rguSapId;
@@ -148,10 +148,10 @@ typedef struct ckwEntCfgInfo
    Configuration Information from RRC to RLC */
 typedef struct ckwCfgInfo
 {
-   U32                  transId;             /*!< Transaction Id */
-   CmLteRnti            ueId;                /*!< UE ID */
-   CmLteCellId          cellId;              /*!< Cell ID */
-   U8                   numEnt;              /*!< Number of entities to
+   uint32_t           transId;             /*!< Transaction Id */
+   uint8_t            ueId;                /*!< UE ID */
+   uint16_t           cellId;              /*!< Cell ID */
+   uint8_t            numEnt;              /*!< Number of entities to
                                                configure */
    CkwEntCfgInfo        entCfg[CKW_MAX_ENT_CFG];  /*!< Array of Entities to be
                                               configure */
@@ -161,8 +161,8 @@ typedef struct ckwCfgInfo
    Entity Configuration Confirmation Information */
 typedef struct ckwEntCfgCfmInfo
 {
-   U8                   rbId;                /*!< rb ID */
-   U8                   rbType;              /*!< RB type - can be SRB or DRB */
+   uint8_t              rbId;                /*!< rb ID */
+   uint8_t              rbType;              /*!< RB type - can be SRB or DRB */
    CmStatus             status;              /*!< Status of the confirmation */
 }CkwEntCfgCfmInfo;
 
@@ -170,10 +170,10 @@ typedef struct ckwEntCfgCfmInfo
    Configuration Confirmation Informatin RLC to RRC */
 typedef struct ckwCfgCfmInfo
 {
-   U32                  transId;             /*!< Transaction Id */
-   CmLteRnti            ueId;                /*!< UE ID */
-   CmLteCellId          cellId;              /*!< Cell ID */
-   U8                   numEnt;              /*!< Number of entities configured */
+   uint32_t             transId;             /*!< Transaction Id */
+   uint8_t              ueId;                /*!< UE ID */
+   uint16_t             cellId;              /*!< Cell ID */
+   uint8_t              numEnt;              /*!< Number of entities configured */
    CkwEntCfgCfmInfo     entCfgCfm[CKW_MAX_ENT_CFG];   /*!< Array of Entity cfg
                                                          confiramations */
 }CkwCfgCfmInfo;
@@ -297,7 +297,7 @@ EXTERN S16 RlcDuappProcUeCreateReq ARGS((Pst *pst, CkwCfgInfo *cfgInfo));
  * information.
  * @return ROK
  */
-EXTERN S16 KwUiCkwCfgCfm ARGS((Pst *pst, SuId suId, CkwCfgCfmInfo *cfmInfo));
+S16 KwUiCkwCfgCfm ARGS((Pst *pst, SuId suId, CkwCfgCfmInfo *cfmInfo));
 
 /**
  *@details This primitive is used by RRC to change the UeId for the existing UE
@@ -338,7 +338,6 @@ EXTERN S16 KwUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId,
  */
 EXTERN S16 KwUiCkwUeIdChgCfm  ARGS((Pst *pst, SuId suId, U32 transId, 
                                    CkwUeInfo *ueInfo, CmStatus status));
-
 /* RRC Extern declarations */
 #ifdef NH
 EXTERN S16 NhLiCkwBndReq ARGS((

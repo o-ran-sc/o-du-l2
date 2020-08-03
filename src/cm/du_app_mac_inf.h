@@ -882,7 +882,7 @@ typedef struct lcCfg
 
 typedef struct macUeCfg
 {
-   uint16_t cellIdx;
+   uint16_t cellId;
    uint8_t  ueIdx;
    uint16_t crnti;
    MacCellGrpCfg macCellGrpCfg;
