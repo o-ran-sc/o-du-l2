@@ -39,7 +39,7 @@ MacSchUeCreateReqFunc macSchUeCreateReqOpts[] =
 DuMacUeCreateRspFunc DuMacUeCreateRspOpts[] =
 {
    packDuMacUeCreateRsp,     /* packing for loosely coupled */
-   duHandleMacUeCreateRsp,   /* packing for tightly coupled */
+   DuHandleMacUeCreateRsp,   /* packing for tightly coupled */
    packDuMacUeCreateRsp,     /* packing for light weight loosly coupled */
 };
 

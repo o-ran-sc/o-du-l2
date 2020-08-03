@@ -20,25 +20,30 @@
 #include "common_def.h"
 #include "lrg.h"
 #include "legtp.h"
-#include "lkw.h"
-#include "lrg.x"
-#include "lkw.x"
-#include "du_app_mac_inf.h"
-#include "du_cfg.h"
-#include "E2AP-PDU.h"
-#include "du_sctp.h"
-#include "du_f1ap_msg_hdl.h"
-#include "du_e2ap_msg_hdl.h"
 #include "lsctp.h"
 #include "legtp.h"
+#include "lkw.h"
+#include "kwu.h"
+#include "lrg.x"
+#include "lkw.x"
+#include "kwu.x"
+#include "du_app_mac_inf.h"
+#include "du_app_rlc_inf.h"
+#include "du_cfg.h"
+#include "du_mgr.h"
+#include "E2AP-PDU.h"
+#include "du_sctp.h"
+#include "F1AP-PDU.h"
+#include "du_f1ap_msg_hdl.h"
+#include "du_e2ap_msg_hdl.h"
 #include "du_app_mac_inf.h"
 #include "du_ue_mgr.h"
-#include "kwu.x"
+#include "du_utils.h"
 
-extern S16 cmUnpkLkwCfgCfm(LkwCfgCfm func,Pst *pst, Buffer *mBuf);
+extern S16 unpackRlcConfigCfm(RlcConfigCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
-extern S16 cmUnpkKwuDatInd(KwuDatInd func,Pst *pst, Buffer *mBuf);
+extern uint8_t cmUnpkKwuDatInd(KwuDatInd func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -151,7 +156,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 	    {
 	       case LKW_EVT_CFG_CFM:
 		  {
-		     ret = cmUnpkLkwCfgCfm(duHdlRlcCfgComplete, pst, mBuf);
+		     ret = unpackRlcConfigCfm(DuHdlRlcCfgComplete, pst, mBuf);
 		     break;
 		  }
 	       case LKW_EVT_CNTRL_CFM:
@@ -166,6 +171,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 	       case KWU_EVT_DAT_IND:
 		  {
 		     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_RLC_UL_UE_CREATE_RSP:
+		  {
+		     ret = unpackRlcUlUeCreateRsp(DuProcRlcUlUeCreateRsp, pst, mBuf);
 		     break;
 		  }
 	       default:
@@ -224,7 +234,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 	       case EVENT_MAC_UE_CREATE_RSP:
 		  {
-		     ret = unpackDuMacUeCreateRsp(duHandleMacUeCreateRsp, pst, mBuf); 
+		     ret = unpackDuMacUeCreateRsp(DuHandleMacUeCreateRsp, pst, mBuf); 
 		     break;
 		  }
 

@@ -1088,7 +1088,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
 uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf);
-uint8_t duHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
+uint8_t DuHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 uint8_t sendStopIndMacToDuApp(uint16_t cellId);
 #endif
 

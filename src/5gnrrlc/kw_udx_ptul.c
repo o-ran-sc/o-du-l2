@@ -58,7 +58,7 @@
 #ifndef LCKWULUDX
 PRIVATE S16 PtUlUdxBndReq ARGS((Pst* pst, SuId suId,SpId  spId ));
 PRIVATE S16 PtUlUdxUbndReq ARGS((Pst* pst, SuId suId,Reason reason));
-PRIVATE S16 PtUlUdxCfgReq ARGS((Pst *pst, SpId spId, CkwCfgInfo *cfgInfo));
+PRIVATE S16 PtUlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
 PRIVATE S16 PtUlUdxStaUpdReq ARGS((Pst* pst,SpId spId,CmLteRlcId *rlcId,
                                 KwUdxStaPdu         *pStaPdu ));
 PRIVATE S16 PtUlUdxUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId, 
@@ -83,7 +83,7 @@ SpId spId;                    /* Status */
 
    RETVALUE(ROK);
 
-} /* end of KwDlUdxBndReq */
+} /* end of rlcDlUdxBndReq */
 
 /**
  *
@@ -130,20 +130,20 @@ PRIVATE S16 PtUlUdxCfgReq
 (
 Pst *pst,                       /* post structure */
 SpId spId,                      /* Service User Id */
-CkwCfgInfo *cfmInfo             /* Config Info */
+RlcCfgInfo *cfmInfo             /* Config Info */
 )
 #else
 PRIVATE S16 PtUlUdxCfgReq(pst, spId, status)
 Pst *pst;                       /* post structure */
 SpId spId;                      /* Service User Id */
-CkwCfgInfo *cfmInfo;              /* Config Info */
+RlcCfgInfo *cfmInfo;              /* Config Info */
 #endif
 {
    TRC3(PtUlUdxCfgReq)
 
    RETVALUE(ROK);
 
-} /* end of KwDlUdxCfgReq */
+} /* end of rlcDlUdxCfgReq */
 
 #ifdef ANSI
 PRIVATE S16 PtUlUdxUeIdChgReq
@@ -168,7 +168,7 @@ CkwUeInfo *newUeInfo;          /* Config Info */
 
    RETVALUE(ROK);
 
-} /* end of KwDlUdxCfgReq */
+} /* end of rlcDlUdxCfgReq */
 
 
 PRIVATE S16  PtUlUdxStaPduReq
@@ -216,7 +216,7 @@ KwUdxDlStaPdu       *pStaPdu;
    TRC3(PtUlUdxStaUpdReq);
 
    RETVALUE(ROK);
-} /* end of KwUlmDlmStaUpd*/
+} /* end of RlcUlmDlmStaUpd*/
 
 #ifdef LTE_L2_MEAS
 /**
@@ -311,7 +311,7 @@ U8                  status
 #endif
 #endif
 
-PRIVATE UdxBndReq kwUlUdxBndReqMt[] =
+PRIVATE UdxBndReq rlcUlUdxBndReqMt[] =
 {
 #ifdef LCKWULUDX
    cmPkUdxBndReq,            /* 0 - loosely coupled */
@@ -324,13 +324,13 @@ PRIVATE UdxBndReq kwUlUdxBndReqMt[] =
    PtUlUdxBndReq,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwDlUdxBndReq,            /* 2 - tightly coupled, RRC  */
+   rlcDlUdxBndReq,            /* 2 - tightly coupled, RRC  */
 #else
    PtUlUdxBndReq,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
-PRIVATE UdxUbndReq kwUlUdxUbndReqMt[] =
+PRIVATE UdxUbndReq rlcUlUdxUbndReqMt[] =
 {
 #ifdef LCKWULUDX
    cmPkUdxUbndReq,            /* 0 - loosely coupled */
@@ -343,14 +343,14 @@ PRIVATE UdxUbndReq kwUlUdxUbndReqMt[] =
    PtUlUdxUbndReq,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwDlUdxUbndReq,            /* 2 - tightly coupled, RRC  */
+   rlcDlUdxUbndReq,            /* 2 - tightly coupled, RRC  */
 #else
    PtUlUdxUbndReq,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
 
-PRIVATE UdxCfgReq kwUlUdxCfgReqMt[] =
+PRIVATE UdxCfgReq rlcUlUdxCfgReqMt[] =
 {
 #ifdef LCKWULUDX
    cmPkUdxCfgReq,            /* 0 - loosely coupled */
@@ -363,13 +363,13 @@ PRIVATE UdxCfgReq kwUlUdxCfgReqMt[] =
    PtUlUdxCfgReq,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwDlUdxCfgReq,            /* 2 - tightly coupled, RRC  */
+   rlcDlUdxCfgReq,            /* 2 - tightly coupled, RRC  */
 #else
    PtUlUdxCfgReq,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
-PRIVATE UdxUeIdChgReq kwUlUdxUeIdChgReqMt[] =
+PRIVATE UdxUeIdChgReq rlcUlUdxUeIdChgReqMt[] =
 {
 #ifdef LCKWULUDX
    cmPkUdxUeIdChgReq,            /* 0 - loosely coupled */
@@ -382,14 +382,14 @@ PRIVATE UdxUeIdChgReq kwUlUdxUeIdChgReqMt[] =
    PtUlUdxUeIdChgReq,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwDlUdxUeIdChgReq,            /* 2 - tightly coupled, RRC  */
+   rlcDlUdxUeIdChgReq,            /* 2 - tightly coupled, RRC  */
 #else
    PtUlUdxUeIdChgReq,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
 
-PRIVATE CONSTANT UdxStaUpdReq kwUlUdxStaUpdReqMt[KW_MAX_UDX] =
+PRIVATE CONSTANT UdxStaUpdReq rlcUlUdxStaUpdReqMt[KW_MAX_UDX] =
 {
 #ifdef LCKWULUDX
    cmPkUdxStaUpdReq,            /* 0 - loosely coupled */
@@ -402,13 +402,13 @@ PRIVATE CONSTANT UdxStaUpdReq kwUlUdxStaUpdReqMt[KW_MAX_UDX] =
    PtUlUdxStaUpdReq,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwDlUdxStaUpdReq,            /* 2 - tightly coupled, RRC  */
+   rlcDlUdxStaUpdReq,            /* 2 - tightly coupled, RRC  */
 #else
    PtUlUdxStaUpdReq,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
-PRIVATE CONSTANT UdxStaPduReq kwUlUdxStaPduReqMt[KW_MAX_UDX] =
+PRIVATE CONSTANT UdxStaPduReq rlcUlUdxStaPduReqMt[KW_MAX_UDX] =
 {
 #ifdef LCKWULUDX
    cmPkUdxStaPduReq,            /* 0 - loosely coupled */
@@ -421,13 +421,13 @@ PRIVATE CONSTANT UdxStaPduReq kwUlUdxStaPduReqMt[KW_MAX_UDX] =
    PtUlUdxStaPduReq,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwDlUdxStaPduReq,            /* 2 - tightly coupled, RRC  */
+   rlcDlUdxStaPduReq,            /* 2 - tightly coupled, RRC  */
 #else
    PtUlUdxStaPduReq,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 #ifdef LTE_L2_MEAS
-PRIVATE CONSTANT UdxL2MeasReq kwUlUdxL2MeasReqMt[KW_MAX_UDX] =
+PRIVATE CONSTANT UdxL2MeasReq rlcUlUdxL2MeasReqMt[KW_MAX_UDX] =
 {
 #ifdef LCKWULUDX
    cmPkUdxL2MeasReq,            /* 0 - loosely coupled */
@@ -440,13 +440,13 @@ PRIVATE CONSTANT UdxL2MeasReq kwUlUdxL2MeasReqMt[KW_MAX_UDX] =
    PtUlUdxL2MeasReq,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwDlUdxL2MeasReq,            /* 2 - tightly coupled, RRC  */
+   rlcDlUdxL2MeasReq,            /* 2 - tightly coupled, RRC  */
 #else
    PtUlUdxL2MeasReq,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
-PRIVATE CONSTANT UdxL2MeasSendReq kwUlUdxL2MeasSendReqMt[KW_MAX_UDX] =
+PRIVATE CONSTANT UdxL2MeasSendReq rlcUlUdxL2MeasSendReqMt[KW_MAX_UDX] =
 {
 #ifdef LCKWULUDX
    cmPkUdxL2MeasSendReq,            /* 0 - loosely coupled */
@@ -459,13 +459,13 @@ PRIVATE CONSTANT UdxL2MeasSendReq kwUlUdxL2MeasSendReqMt[KW_MAX_UDX] =
    PtUlUdxL2MeasSendReq,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwDlUdxL2MeasSendReq,            /* 2 - tightly coupled, RRC  */
+   rlcDlUdxL2MeasSendReq,            /* 2 - tightly coupled, RRC  */
 #else
    PtUlUdxL2MeasSendReq,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
-PRIVATE CONSTANT UdxL2MeasStopReq kwUlUdxL2MeasStopReqMt[KW_MAX_UDX] =
+PRIVATE CONSTANT UdxL2MeasStopReq rlcUlUdxL2MeasStopReqMt[KW_MAX_UDX] =
 {
 #ifdef LCKWULUDX
    cmPkUdxL2MeasStopReq,            /* 0 - loosely coupled */
@@ -478,7 +478,7 @@ PRIVATE CONSTANT UdxL2MeasStopReq kwUlUdxL2MeasStopReqMt[KW_MAX_UDX] =
    PtUlUdxL2MeasStopReq,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwDlUdxL2MeasStopReq,            /* 2 - tightly coupled, RRC  */
+   rlcDlUdxL2MeasStopReq,            /* 2 - tightly coupled, RRC  */
 #else
    PtUlUdxL2MeasStopReq,            /* 2 - tightly coupled, portable */
 #endif /* KW */
@@ -505,27 +505,27 @@ PRIVATE CONSTANT UdxL2MeasStopReq kwUlUdxL2MeasStopReqMt[KW_MAX_UDX] =
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwUlUdxBndReq
+PUBLIC S16 rlcUlUdxBndReq
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
 SpId spId                     /* Status */
 )
 #else
-PUBLIC S16 KwUlUdxBndReq(pst, suId, status)
+PUBLIC S16 rlcUlUdxBndReq(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId suId;                      /* Service User Id */
 SpId spId;                    /* Status */
 #endif
 {
-   TRC3(KwUlUdxBndReq)
+   TRC3(rlcUlUdxBndReq)
 
    /* jump to specific primitive depending on configured selector */
-   (*kwUlUdxBndReqMt[pst->selector])(pst, suId, spId);
+   (*rlcUlUdxBndReqMt[pst->selector])(pst, suId, spId);
 
    RETVALUE(ROK);
 
-} /* end of KwDlUdxBndReq */
+} /* end of rlcDlUdxBndReq */
 
 /**
  *
@@ -548,53 +548,53 @@ SpId spId;                    /* Status */
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwUlUdxUbndReq
+PUBLIC S16 rlcUlUdxUbndReq
 (
 Pst *pst,                       /* post structure */
 SpId spId,                      /* Service User Id */
 Reason   reason                     /* Status */
 )
 #else
-PUBLIC S16 KwUlUdxUbndReq(pst, suId, status)
+PUBLIC S16 rlcUlUdxUbndReq(pst, suId, status)
 Pst *pst;                       /* post structure */
 SpId spId;                      /* Service User Id */
 Reason Reason;                    /* Status */
 #endif
 {
-   TRC3(KwUlUdxUbndReq)
+   TRC3(rlcUlUdxUbndReq)
 
    /* jump to specific primitive depending on configured selector */
-   (*kwUlUdxUbndReqMt[pst->selector])(pst, spId,reason );
+   (*rlcUlUdxUbndReqMt[pst->selector])(pst, spId,reason );
 
    RETVALUE(ROK);
 
-} /* end of KwDlUdxBndReq */
+} /* end of rlcDlUdxBndReq */
 
 #ifdef ANSI
-PUBLIC S16 KwUlUdxCfgReq
+PUBLIC S16 rlcUlUdxCfgReq
 (
 Pst *pst,                       /* post structure */
 SpId spId,                      /* Service User Id */
-CkwCfgInfo *cfmInfo             /* Config Info */
+RlcCfgInfo *cfmInfo             /* Config Info */
 )
 #else
-PUBLIC S16 KwUlUdxCfgReq(pst, suId, status)
+PUBLIC S16 rlcUlUdxCfgReq(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId spId;                      /* Service User Id */
-CkwCfgInfo *cfmInfo;              /* Config Info */
+RlcCfgInfo *cfmInfo;              /* Config Info */
 #endif
 {
-   TRC3(KwUlUdxCfgReq)
+   TRC3(rlcUlUdxCfgReq)
 
    /* jump to specific primitive depending on configured selector */
-   (*kwUlUdxCfgReqMt[pst->selector])(pst, spId, cfmInfo);
+   (*rlcUlUdxCfgReqMt[pst->selector])(pst, spId, cfmInfo);
 
    RETVALUE(ROK);
 
-} /* end of KwDlUdxCfgReq */
+} /* end of rlcDlUdxCfgReq */
 
 #ifdef ANSI
-PUBLIC S16 KwUlUdxUeIdChgReq
+PUBLIC S16 rlcUlUdxUeIdChgReq
 (
 Pst *pst,                      /* post structure */
 SpId spId,                     /* Service User Id */
@@ -603,7 +603,7 @@ CkwUeInfo *ueInfo,             /* Config Info */
 CkwUeInfo *newUeInfo           /* Config Info */
 )
 #else
-PUBLIC S16 KwUlUdxUeIdChgReq(pst, spId,transId, ueInfo, newUeInfo)
+PUBLIC S16 rlcUlUdxUeIdChgReq(pst, spId,transId, ueInfo, newUeInfo)
 Pst *pst;                      /* post structure */
 SpId spId;                     /* Service User Id */
 U32      transId;              /* transaction Id */
@@ -611,18 +611,18 @@ CkwUeInfo *ueInfo;             /* Config Info */
 CkwUeInfo *newUeInfo;          /* Config Info */
 #endif
 {
-   TRC3(KwUlUdxUeIdChgReq)
+   TRC3(rlcUlUdxUeIdChgReq)
 
    /* jump to specific primitive depending on configured selector */
-   (*kwUlUdxUeIdChgReqMt[pst->selector])(pst, spId,transId,ueInfo,newUeInfo);
+   (*rlcUlUdxUeIdChgReqMt[pst->selector])(pst, spId,transId,ueInfo,newUeInfo);
 
    RETVALUE(ROK);
 
-} /* end of KwDlUdxCfgReq */
+} /* end of rlcDlUdxCfgReq */
 
 
 
-PUBLIC S16  KwUlUdxStaPduReq
+PUBLIC S16  rlcUlUdxStaPduReq
 (
 Pst*                pst,
 SpId                spId,
@@ -630,9 +630,9 @@ CmLteRlcId          *rlcId,
 KwUdxDlStaPdu       *pStaPdu
 )
 {
-   TRC3(KwUlUdxStaPduReq);
+   TRC3(rlcUlUdxStaPduReq);
 
-   RETVALUE((*kwUlUdxStaPduReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
+   RETVALUE((*rlcUlUdxStaPduReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
 }
 
 /**
@@ -648,7 +648,7 @@ KwUdxDlStaPdu       *pStaPdu
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16  KwUlUdxStaUpdReq
+PUBLIC S16  rlcUlUdxStaUpdReq
 (
 Pst*                pst,
 SpId                spId,
@@ -656,7 +656,7 @@ CmLteRlcId          *rlcId,
 KwUdxStaPdu         *pStaPdu
 )
 #else
-PUBLIC S16 KwUlUdxStaUpdReq(pst, rlcId, pStaPdu)
+PUBLIC S16 rlcUlUdxStaUpdReq(pst, rlcId, pStaPdu)
 Pst*                pst;
 SpId                spId;
 CmLteRlcId          *rlcId;
@@ -664,10 +664,10 @@ KwUdxStaPdu         *pStaPdu;
 #endif
 {
 
-   TRC3(KwUlUdxStaUpdReq);
+   TRC3(rlcUlUdxStaUpdReq);
 
-   RETVALUE((*kwUlUdxStaUpdReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
-} /* end of KwUlmDlmStaUpd*/
+   RETVALUE((*rlcUlUdxStaUpdReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
+} /* end of RlcUlmDlmStaUpd*/
 
 #ifdef LTE_L2_MEAS
 /**
@@ -675,7 +675,7 @@ KwUdxStaPdu         *pStaPdu;
 *
 * @details
 *
-*     Function : KwUlUdxL2MeasReq
+*     Function : rlcUlUdxL2MeasReq
 *
 *  @param[in]   Pst*           pst
 
@@ -683,29 +683,29 @@ KwUdxStaPdu         *pStaPdu;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16  KwUlUdxL2MeasReq
+PUBLIC S16  rlcUlUdxL2MeasReq
 (
 Pst*                pst,
 KwL2MeasReqEvt      *measReqEvt 
 )
 #else
-PUBLIC S16 KwUlUdxL2MeasReq(pst,measReqEvt)
+PUBLIC S16 rlcUlUdxL2MeasReq(pst,measReqEvt)
 Pst*                pst;
 KwL2MeasReqEvt      *measReqEvt; 
 #endif
 {
 
-   TRC3(KwUlUdxStaUpdReq);
+   TRC3(rlcUlUdxStaUpdReq);
 
-   RETVALUE((*kwUlUdxL2MeasReqMt[pst->selector])(pst,measReqEvt));
-} /* end of KwUlUdxL2MeasReq*/
+   RETVALUE((*rlcUlUdxL2MeasReqMt[pst->selector])(pst,measReqEvt));
+} /* end of rlcUlUdxL2MeasReq*/
 
 /**
 * @brief Request from ULM to DLM for MeasSendReq 
 *
 * @details
 *
-*     Function : KwUlUdxMeasSendReq
+*     Function : rlcUlUdxMeasSendReq
 *
 *  @param[in]   Pst*           pst
 
@@ -713,29 +713,29 @@ KwL2MeasReqEvt      *measReqEvt;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16  KwUlUdxL2MeasSendReq
+PUBLIC S16  rlcUlUdxL2MeasSendReq
 (
 Pst*                pst,
 U8                  measType
 )
 #else
-PUBLIC S16 KwUlUdxL2MeasSendReq(pst,measReqEvt)
+PUBLIC S16 rlcUlUdxL2MeasSendReq(pst,measReqEvt)
 Pst*                pst;
 U8                  measType;
 #endif
 {
 
-   TRC3(KwUlUdxStaUpdReq);
+   TRC3(rlcUlUdxStaUpdReq);
 
-   RETVALUE((*kwUlUdxL2MeasSendReqMt[pst->selector])(pst,measType));
-} /* end of KwUlUdxMesReq*/
+   RETVALUE((*rlcUlUdxL2MeasSendReqMt[pst->selector])(pst,measType));
+} /* end of rlcUlUdxMesReq*/
 
 /**
 * @brief Request from ULM to DLM for MeasStopReq 
 *
 * @details
 *
-*     Function : KwUlUdxL2MeasStopReq
+*     Function : rlcUlUdxL2MeasStopReq
 *
 *  @param[in]   Pst*           pst
 
@@ -743,22 +743,22 @@ U8                  measType;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16  KwUlUdxL2MeasStopReq
+PUBLIC S16  rlcUlUdxL2MeasStopReq
 (
 Pst*                pst,
 U8                  measType
 )
 #else
-PUBLIC S16 KwUlUdxL2MeasStopReq(pst,measReqEvt)
+PUBLIC S16 rlcUlUdxL2MeasStopReq(pst,measReqEvt)
 Pst*                pst;
 U8                  measType;
 #endif
 {
 
-   TRC3(KwUlUdxStaUpdReq);
+   TRC3(rlcUlUdxStaUpdReq);
 
-   RETVALUE((*kwUlUdxL2MeasStopReqMt[pst->selector])(pst,measType));
-} /* end of KwUlUdxMesReq*/
+   RETVALUE((*rlcUlUdxL2MeasStopReqMt[pst->selector])(pst,measType));
+} /* end of rlcUlUdxMesReq*/
 #endif
 /**********************************************************************
  

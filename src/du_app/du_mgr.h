@@ -21,20 +21,6 @@
 #define __DU_MGR_H__
 #define DU_PROC  0
 
-/* Events */
-#define EVTCFG 0
-#define EVTSCTPSTRT  1
-#define EVENT_CU_DATA  2
-#define EVENT_SCTP_NTFY  3
-#define EVTSRVOPENREQ  4
-#define EVTSRVOPENCFM  5
-#define EVTTNLMGMTREQ  6
-#define EVTTNLMGMTCFM  7
-#define EVTSLOTIND    8
-#define EVTSTARTPOLL  9
-#define EVENT_RIC_DATA  10
-
-
 /* SAP IDs */
 #define DU_MAC_SUID 0
 #define DU_MAC_SPID 0
@@ -100,6 +86,7 @@ typedef struct duUeCb
    uint32_t gnbCuUeF1apId; /* GNB CU UE F1AP ID */
    UeState  ueState;
    MacUeCfg macUeCfg;
+   RlcUeCfg rlcUeCfg;
 }DuUeCb;
 
 typedef struct duCellCb
@@ -182,7 +169,7 @@ S16 duSendRlcDlCfg();
 S16 duBuildRlcCfg(Inst inst);
 S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst);
 S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst);
-S16 duHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm);
+S16 DuHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm);
 S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cfm);
 S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm);
 S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm);
@@ -207,7 +194,6 @@ S16 duSendEgtpDatInd(Buffer *mBuf);
 S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint8_t duBuildAndSendMacCellStartReq();
 uint8_t duBuildAndSendMacCellStopReq();
-
 #endif
 
 /**********************************************************************

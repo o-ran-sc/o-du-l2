@@ -74,14 +74,14 @@ typedef struct kwSapCfg
 /** @brief 
 *   Configuration Structure 
 */
-typedef struct kwCfg
+typedef struct rlcCfg
 {
    union
    {
       KwGenCfg       gen;           /*!< General configuraton. */
       KwSapCfg       sap;           /*!< SAP configuration. */
    }s;
-}KwCfg;
+}RlcCfg;
 
 /** @brief 
     General Statistics Structure */
@@ -242,7 +242,7 @@ typedef struct _kwMngmt
    CmStatus          cfm;           /*!< Status of confirmation. */
    union 
    {
-      KwCfg          cfg;           /*!< General Configuration. */
+      RlcCfg          cfg;           /*!< General Configuration. */
       KwCntrl        cntrl;         /*!< Control Structure. */
       KwSts          sts;           /*!< Statistics. */
       KwSSta         ssta;          /*!< Status. */
@@ -361,8 +361,8 @@ typedef struct kwL2MeasCfmEvt
 
 /* Control primitives towards LTE RLC */
 /* Pointer functions to pack/unpack primitives */
-typedef S16 (*LkwCfgReq)   ARGS((Pst *pst, KwMngmt *cfg));
-typedef S16 (*LkwCfgCfm)   ARGS((Pst *pst, KwMngmt *cfgCfm));
+typedef S16 (*RlcConfigReq)   ARGS((Pst *pst, KwMngmt *cfg));
+typedef S16 (*RlcConfigCfm)   ARGS((Pst *pst, KwMngmt *cfgCfm));
 
 typedef S16 (*LkwCntrlReq) ARGS((Pst *pst, KwMngmt *cntl));
 typedef S16 (*LkwCntrlCfm) ARGS((Pst *pst, KwMngmt *cntlCfm));
@@ -393,16 +393,16 @@ typedef S16 (*LkwL2MeasStopCfm)   ARGS((Pst *pst, U8 measType,U8 status));
 @return ROK if success , RFAILED if failure
 
 */
-EXTERN S16 KwMiLkwCfgReq ARGS((Pst *pst, KwMngmt *cfg));
+EXTERN S16 KwMiRlcConfigReq ARGS((Pst *pst, KwMngmt *cfg));
 
 /**
-@details This function is called by the KwMiLkwCfgReq function for responding to configuration requests.The cfm field in the KwMngmt  structure contains the response value.
+@details This function is called by the KwMiRlcConfigReq function for responding to configuration requests.The cfm field in the KwMngmt  structure contains the response value.
 
 @param[in] pst  - Pointer to post structure
 @param[in] cfm  - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiLkwCfgCfm ARGS((Pst *pst, KwMngmt *cfgCfm));
+EXTERN S16 KwMiRlcConfigCfm ARGS((Pst *pst, KwMngmt *cfgCfm));
 
 /**
 @details
@@ -524,7 +524,7 @@ EXTERN Void kwSendLmAlarm ARGS ((
       U32 ueId));
 
 #ifdef SM
-EXTERN S16 SmMiLkwCfgCfm   ARGS((
+EXTERN S16 SmMiRlcConfigCfm   ARGS((
        Pst *,
        KwMngmt *
        ));
@@ -572,7 +572,7 @@ EXTERN S16 SmMiLkwCntrlReq ARGS((
        KwMngmt *
        ));
 
-EXTERN S16 SmMiLkwCfgReq   ARGS((
+EXTERN S16 SmMiRlcConfigReq   ARGS((
        Pst *,
        KwMngmt *
        ));
@@ -609,12 +609,12 @@ EXTERN S16 smKwActvTsk     ARGS((Pst *pst, Buffer *mBuf));
 
 /* pack/unpack functions */
 #ifdef LCLKW 
-EXTERN S16 cmPkLkwCfgReq     ARGS((
+EXTERN S16 packRlcConfigReq     ARGS((
        Pst *,
        KwMngmt *
        ));
 
-EXTERN S16 cmPkLkwCfgCfm     ARGS((
+EXTERN S16 packRlcConfigCfm     ARGS((
        Pst *,
        KwMngmt *
        ));
@@ -663,26 +663,26 @@ EXTERN S16 cmPkLkwTrcInd     ARGS((
        Buffer *
        ));
 
-EXTERN S16 cmUnpkLkwCfgReq   ARGS((
-       LkwCfgReq,
+EXTERN S16 unpackRlcConfigReq   ARGS((
+       RlcConfigReq,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 cmUnpkLkwCfgCfm   ARGS((
-       LkwCfgCfm,
+EXTERN S16 unpackRlcConfigCfm   ARGS((
+       RlcConfigCfm,
        Pst *,
        Buffer *
        ));
 
 EXTERN S16 cmUnpkLkwCntrlReq ARGS((
-       LkwCfgReq,
+       RlcConfigReq,
        Pst *,
        Buffer *
        ));
 
 EXTERN S16 cmUnpkLkwCntrlCfm ARGS((
-       LkwCfgCfm,
+       RlcConfigCfm,
        Pst *,
        Buffer *
        ));

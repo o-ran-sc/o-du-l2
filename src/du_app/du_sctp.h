@@ -21,14 +21,6 @@
 #ifndef __DU_SCTP_H__
 #define __DU_SCTP_H__
 
-#include "du_mgr.h"
-#include "du_log.h"
-#include "cm_inet.h"
-#include "cm_tpt.h"
-
-#include "cm_inet.x"
-#include "cm_tpt.x"
-
 #define DU_SCTP_DOWN 0
 #define DU_SCTP_UP 1
 #define DU_SCTP_CONNECTING 2

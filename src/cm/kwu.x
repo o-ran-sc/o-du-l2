@@ -126,7 +126,7 @@ typedef S16 (*KwuBndCfm)      ARGS((Pst *pst, SuId suId, U8 status));
 typedef S16 (*KwuUbndReq)     ARGS((Pst *pst, SuId suId, Reason reason));
 
 typedef S16 (*KwuDatReq)      ARGS((Pst *pst, KwuDatReqInfo* datReq, Buffer *mBuf));
-typedef S16 (*KwuDatInd)      ARGS((Pst *pst, KwuDatIndInfo* datInd,
+typedef uint8_t (*KwuDatInd)      ARGS((Pst *pst, KwuDatIndInfo* datInd,
          Buffer *mBuf));
 typedef S16 (*KwuDatCfm)      ARGS((Pst *pst, SuId suId, KwuDatCfmInfo* datCfm));
 typedef S16 (*KwuDiscSduReq)  ARGS((Pst *pst, SpId spId, KwuDiscSduInfo* discSdu));
@@ -450,12 +450,12 @@ EXTERN S16 kwUlBatchProc ARGS((Void));
  ****************************************************************************/
 #ifdef LCKWU
 /* Packing Functions */
-EXTERN S16 cmPkKwuDatReqInfo ARGS ((
+EXTERN uint8_t cmPkKwuDatReqInfo ARGS ((
 KwuDatReqInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkKwuDatIndInfo ARGS ((
+EXTERN uint8_t cmPkKwuDatIndInfo ARGS ((
 KwuDatIndInfo *param,
 Buffer *mBuf
 ));
@@ -488,13 +488,13 @@ SuId suId,
 U8 status
 ));
 
-EXTERN S16 cmPkKwuDatReq ARGS ((
+EXTERN uint8_t cmPkKwuDatReq ARGS ((
 Pst * pst,
 KwuDatReqInfo* datReq,
 Buffer * mBuf
 ));
 
-EXTERN S16 cmPkKwuDatInd ARGS ((
+EXTERN uint8_t cmPkKwuDatInd ARGS ((
 Pst * pst,
 KwuDatIndInfo* datInd,
 Buffer * mBuf
@@ -556,7 +556,7 @@ KwuDatReqInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuDatIndInfo ARGS ((
+EXTERN uint8_t cmUnpkKwuDatIndInfo ARGS ((
 KwuDatIndInfo *param,
 Buffer *mBuf
 ));
@@ -595,7 +595,7 @@ Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuDatInd ARGS ((
+EXTERN uint8_t cmUnpkKwuDatInd ARGS ((
 KwuDatInd func,
 Pst *pst,
 Buffer *mBuf
