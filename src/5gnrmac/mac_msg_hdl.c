@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+ *******************************************************************************/
 
 /* header include files -- defines (.h)  */
 #include "common_def.h"
@@ -51,17 +51,17 @@ uint16_t buildMacPdu(RlcMacData *dlData);
 /* Function pointer for sending crc ind from MAC to SCH */
 MacSchCrcIndFunc macSchCrcIndOpts[]=
 {
-   packMacSchCrcInd,
-   macSchCrcInd,
-   packMacSchCrcInd
+	packMacSchCrcInd,
+	macSchCrcInd,
+	packMacSchCrcInd
 };
 
 /* Function pointer for sending DL RLC BO Info from MAC to SCH */
 MacSchDlRlcBoInfoFunc macSchDlRlcBoInfoOpts[]=
 {
-   packMacSchDlRlcBoInfo,
-   macSchDlRlcBoInfo,
-   packMacSchDlRlcBoInfo
+	packMacSchDlRlcBoInfo,
+	macSchDlRlcBoInfo,
+	packMacSchDlRlcBoInfo
 };
 
 /*******************************************************************
@@ -82,12 +82,12 @@ MacSchDlRlcBoInfoFunc macSchDlRlcBoInfoOpts[]=
  ****************************************************************/
 int sendDlRlcBoInfoMacToSch(DlRlcBOInfo *dlBoInfo)
 {
-   Pst pst;
- 
-   fillMacToSchPst(&pst);
-   pst.event = EVENT_DL_RLC_BO_INFO_TO_SCH;
- 
-   return(*macSchDlRlcBoInfoOpts[pst.selector])(&pst, dlBoInfo);
+	Pst pst;
+
+	fillMacToSchPst(&pst);
+	pst.event = EVENT_DL_RLC_BO_INFO_TO_SCH;
+
+	return(*macSchDlRlcBoInfoOpts[pst.selector])(&pst, dlBoInfo);
 }
 
 /*******************************************************************
@@ -105,17 +105,17 @@ int sendDlRlcBoInfoMacToSch(DlRlcBOInfo *dlBoInfo)
  * @return ROK     - success
  *         RFAILED - failure
  *
-  ****************************************************************/
+ ****************************************************************/
 int sendCrcIndMacToSch(CrcIndInfo *crcInd)
 {
-   Pst pst;
- 
-   fillMacToSchPst(&pst);
-   pst.event = EVENT_CRC_IND_TO_SCH;
- 
-   return(*macSchCrcIndOpts[pst.selector])(&pst, crcInd);
+	Pst pst;
+
+	fillMacToSchPst(&pst);
+	pst.event = EVENT_CRC_IND_TO_SCH;
+
+	return(*macSchCrcIndOpts[pst.selector])(&pst, crcInd);
 }
- 
+
 /*******************************************************************
  *
  * @brief Processes CRC Indication from PHY
@@ -135,21 +135,21 @@ int sendCrcIndMacToSch(CrcIndInfo *crcInd)
  * ****************************************************************/
 uint16_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
 {
-   CrcIndInfo   crcIndInfo;
- 
-   DU_LOG("\nMAC : Received CRC indication");
+	CrcIndInfo   crcIndInfo;
 
-   /* Considering one pdu and one preamble */ 
-   crcIndInfo.cellId = macCb.macCell->cellId;;
-   crcIndInfo.crnti = crcInd->crcInfo[0].rnti;
-   crcIndInfo.timingInfo.sfn = crcInd->timingInfo.sfn;
-   crcIndInfo.timingInfo.slot = crcInd->timingInfo.slot;
-   crcIndInfo.numCrcInd = crcInd->crcInfo[0].numCb;
-   crcIndInfo.crcInd[0] = crcInd->crcInfo[0].cbCrcStatus[0];
- 
-   return(sendCrcIndMacToSch(&crcIndInfo));
+	DU_LOG("\nMAC : Received CRC indication");
+
+	/* Considering one pdu and one preamble */ 
+	crcIndInfo.cellId = macCb.macCell->cellId;;
+	crcIndInfo.crnti = crcInd->crcInfo[0].rnti;
+	crcIndInfo.timingInfo.sfn = crcInd->timingInfo.sfn;
+	crcIndInfo.timingInfo.slot = crcInd->timingInfo.slot;
+	crcIndInfo.numCrcInd = crcInd->crcInfo[0].numCb;
+	crcIndInfo.crcInd[0] = crcInd->crcInfo[0].cbCrcStatus[0];
+
+	return(sendCrcIndMacToSch(&crcIndInfo));
 }
- 
+
 /*******************************************************************
  *
  * @brief Process Rx Data Ind at MAC
@@ -169,18 +169,18 @@ uint16_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
  * ****************************************************************/
 uint16_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
-   uint16_t pduIdx;
- 
-   DU_LOG("\nMAC : Received Rx Data indication");
-  
-   /* TODO : compare the handle received in RxDataInd with handle send in PUSCH
+	uint16_t pduIdx;
+
+	DU_LOG("\nMAC : Received Rx Data indication");
+
+	/* TODO : compare the handle received in RxDataInd with handle send in PUSCH
 	 * PDU, which is stored in raCb */
 
-   for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
-   {
-      unpackRxData(&rxDataInd->pdus[pduIdx]);
-   }
-   return ROK;
+	for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
+	{
+		unpackRxData(&rxDataInd->pdus[pduIdx]);
+	}
+	return ROK;
 }
 
 /*******************************************************************
@@ -202,7 +202,7 @@ uint16_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  * ****************************************************************/
 uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData)
 {
-   return ROK;
+	return ROK;
 }
 
 /*******************************************************************
@@ -224,7 +224,7 @@ uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData)
  * ****************************************************************/
 uint16_t MacRlcProcBOStatus(Pst* pst, SpId spId, RlcMacBOStatus*      boStatus)
 {
-   return ROK;
+	return ROK;
 }
 
 
@@ -247,13 +247,13 @@ uint16_t MacRlcProcBOStatus(Pst* pst, SpId spId, RlcMacBOStatus*      boStatus)
  * ****************************************************************/
 uint16_t MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 {
-   DU_LOG("\nMAC : Handling cell start request");
-   sendToLowerMac(START_REQUEST, 0, cellStartInfo);
+	DU_LOG("\nMAC : Handling cell start request");
+	sendToLowerMac(START_REQUEST, 0, cellStartInfo);
 
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStartInfo, \
-	   sizeof(MacCellStartInfo));
+	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStartInfo, \
+			sizeof(MacCellStartInfo));
 
-   return ROK;
+	return ROK;
 }
 
 /*******************************************************************
@@ -276,14 +276,14 @@ uint16_t MacHdlCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
 {
 #ifdef INTEL_FAPI
-   DU_LOG("\nMAC : Sending cell stop request to Lower Mac");
-   sendToLowerMac(FAPI_STOP_REQUEST, 0, cellStopInfo);
+	DU_LOG("\nMAC : Sending cell stop request to Lower Mac");
+	sendToLowerMac(FAPI_STOP_REQUEST, 0, cellStopInfo);
 #endif
 
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStopInfo, \
-	   sizeof(MacCellStopInfo));
- 
-   return ROK;
+	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStopInfo, \
+			sizeof(MacCellStopInfo));
+
+	return ROK;
 }
 
 /*******************************************************************
@@ -305,46 +305,46 @@ uint16_t MacHdlCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  * ****************************************************************/
 uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 {
-   uint16_t idx;
-   DlRlcBOInfo  dlBoInfo;
+	uint16_t idx;
+	DlRlcBOInfo  dlBoInfo;
 	memset(&dlBoInfo, 0, sizeof(DlRlcBOInfo));
 
-   DU_LOG("\nMAC : Handling DL CCCH IND");
-   
-   /* TODO : Fill DL RLC Buffer status info */
-   dlBoInfo.cellId = dlCcchIndInfo->cellId;
-   dlBoInfo.crnti = dlCcchIndInfo->crnti;
-   dlBoInfo.numLc = 0;
-   
-   if(dlCcchIndInfo->msgType == RRC_SETUP)
-   {
-      dlBoInfo.boInfo[dlBoInfo.numLc].lcId = SRB_ID_0;    // SRB ID 0 for msg4
-      dlBoInfo.boInfo[SRB_ID_0].dataVolume = \
-        dlCcchIndInfo->dlCcchMsgLen;
-      dlBoInfo.numLc++;
+	DU_LOG("\nMAC : Handling DL CCCH IND");
 
-      /* storing Msg4 Pdu in raCb */
-      if(macCb.macCell->macRaCb[0].crnti == dlCcchIndInfo->crnti)
-      {
-         macCb.macCell->macRaCb[0].msg4PduLen = dlCcchIndInfo->dlCcchMsgLen;
-         MAC_ALLOC(macCb.macCell->macRaCb[0].msg4Pdu, macCb.macCell->macRaCb[0]\
-         .msg4PduLen);
-         if(macCb.macCell->macRaCb[0].msg4Pdu)
-         {
-			   for(idx = 0; idx < dlCcchIndInfo->dlCcchMsgLen; idx++)
+	/* TODO : Fill DL RLC Buffer status info */
+	dlBoInfo.cellId = dlCcchIndInfo->cellId;
+	dlBoInfo.crnti = dlCcchIndInfo->crnti;
+	dlBoInfo.numLc = 0;
+
+	if(dlCcchIndInfo->msgType == RRC_SETUP)
+	{
+		dlBoInfo.boInfo[dlBoInfo.numLc].lcId = SRB_ID_0;    // SRB ID 0 for msg4
+		dlBoInfo.boInfo[SRB_ID_0].dataVolume = \
+															dlCcchIndInfo->dlCcchMsgLen;
+		dlBoInfo.numLc++;
+
+		/* storing Msg4 Pdu in raCb */
+		if(macCb.macCell->macRaCb[0].crnti == dlCcchIndInfo->crnti)
+		{
+			macCb.macCell->macRaCb[0].msg4PduLen = dlCcchIndInfo->dlCcchMsgLen;
+			MAC_ALLOC(macCb.macCell->macRaCb[0].msg4Pdu, macCb.macCell->macRaCb[0]\
+					.msg4PduLen);
+			if(macCb.macCell->macRaCb[0].msg4Pdu)
+			{
+				for(idx = 0; idx < dlCcchIndInfo->dlCcchMsgLen; idx++)
 				{
-               macCb.macCell->macRaCb[0].msg4Pdu[idx] =\
-					  dlCcchIndInfo->dlCcchMsg[idx];
-			   }
-         }
-      }
-   }
-   sendDlRlcBoInfoMacToSch(&dlBoInfo);
-   
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo->dlCcchMsg, \
-      dlCcchIndInfo->dlCcchMsgLen);
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo, sizeof(DlCcchIndInfo));
-   return ROK;
+					macCb.macCell->macRaCb[0].msg4Pdu[idx] =\
+																		 dlCcchIndInfo->dlCcchMsg[idx];
+				}
+			}
+		}
+	}
+	sendDlRlcBoInfoMacToSch(&dlBoInfo);
+
+	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo->dlCcchMsg, \
+			dlCcchIndInfo->dlCcchMsgLen);
+	MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo, sizeof(DlCcchIndInfo));
+	return ROK;
 
 }
 
@@ -367,13 +367,13 @@ uint16_t MacHdlDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
  * ****************************************************************/
 uint16_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
 {
-   Pst pst;
+	Pst pst;
 	uint8_t ret = ROK;
-   UlCcchIndInfo *ulCcchIndInfo = NULLP;
+	UlCcchIndInfo *ulCcchIndInfo = NULLP;
 
-   MAC_ALLOC_SHRABL_BUF(ulCcchIndInfo, sizeof(UlCcchIndInfo));
-   if(!ulCcchIndInfo)
-   {
+	MAC_ALLOC_SHRABL_BUF(ulCcchIndInfo, sizeof(UlCcchIndInfo));
+	if(!ulCcchIndInfo)
+	{
 		DU_LOG("\nMAC: Memory failed in macSendUlCcchInd");
 		return RFAILED;
 	}
@@ -408,34 +408,7 @@ uint16_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti
 	return ret;
 }
 
-/*******************************************************************
- *
- * @brief Handles Ue Create Request from DU APP
- *
- * @details
- *
- *    Function : MacHdlUeCreateReq
- *
- *    Functionality:
- *      Handles Ue create Request from DU APP
- *
- * @params[in] Post structure pointer
- *             MacUeCfg pointer 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t MacHdlUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
-{
-   /* TODO : Create MAC UE Context.
-	          Copy Tx Pdu from raCb
-				 Delete RaCb
-				 Send MacUeContext to SCH */
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(MacUeCfg));
-   return ROK;
-}
-
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
 

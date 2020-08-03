@@ -36,6 +36,7 @@
 #include "lrg.h"
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
+#include "rg.h"
 
 /* header/extern include files (.x) */
 #include "gen.x"           /* general */
@@ -58,6 +59,43 @@
 #define MAX_UE 1
 #define MAX_CRI_SIZE 6
 #define MAX_MAC_DL_PDU 10
+#define MAX_NUM_HARQ_PROC  16
+
+#define PERIODIC_BSR_TMR_1MS    1
+#define PERIODIC_BSR_TMR_5MS    5
+#define PERIODIC_BSR_TMR_10MS   10
+#define PERIODIC_BSR_TMR_16MS   16
+#define PERIODIC_BSR_TMR_20MS   20
+#define PERIODIC_BSR_TMR_32MS   32
+#define PERIODIC_BSR_TMR_40MS   40
+#define PERIODIC_BSR_TMR_60MS   60
+#define PERIODIC_BSR_TMR_80MS   80
+#define PERIODIC_BSR_TMR_128MS   128
+#define PERIODIC_BSR_TMR_160MS   160
+#define PERIODIC_BSR_TMR_320MS   320
+#define PERIODIC_BSR_TMR_640MS   640
+#define PERIODIC_BSR_TMR_1280MS  1280
+#define PERIODIC_BSR_TMR_2560MS  2560
+
+#define RETX_BSR_TMR_10MS    10
+#define RETX_BSR_TMR_20MS    20
+#define RETX_BSR_TMR_40MS    40
+#define RETX_BSR_TMR_80MS    80
+#define RETX_BSR_TMR_160MS   160
+#define RETX_BSR_TMR_320MS   320
+#define RETX_BSR_TMR_640MS   640
+#define RETX_BSR_TMR_1280MS   1280
+#define RETX_BSR_TMR_2560MS   2560
+#define RETX_BSR_TMR_5120MS   5120
+#define RETX_BSR_TMR_10240MS  10240
+
+#define SR_DELAY_TMR_20MS     20
+#define SR_DELAY_TMR_40MS     40
+#define SR_DELAY_TMR_64MS     64
+#define SR_DELAY_TMR_128MS    128
+#define SR_DELAY_TMR_512MS    512
+#define SR_DELAY_TMR_1024MS   1024
+#define SR_DELAY_TMR_2560MS   2560
 
 #define MAC_LCID_CCCH              0
 #define MAC_DEDLC_MIN_LCID         1
@@ -78,64 +116,147 @@
 #define MAC_LCID_CRI               62
 #define MAC_LCID_PADDING           63
 
+typedef enum
+{
+	UE_STATE_INACTIVE,
+	UE_STATE_ACTIVE
+}UeState;
+
+typedef enum
+{
+	LC_STATE_INACTIVE,
+	LC_STATE_ACTIVE
+}LcState;
+
+typedef struct macCellCb MacCellCb;
+
 typedef struct macDlSlot
 {
-   DlSchedInfo dlInfo;
+	DlSchedInfo dlInfo;
 }MacDlSlot;
 
 typedef struct macUlSlot
 {
-   UlSchedInfo  ulInfo;
+	UlSchedInfo  ulInfo;
 }MacUlSlot;
 
 typedef struct macCbInfo
 {
-   uint16_t    cellId;
-   uint16_t    crnti;
-   uint8_t     msg3Pdu[6];  /* used as CRI value during muxing */
-   uint8_t     *msg4Pdu;    /* storing DL-CCCH Ind Pdu */
-   uint16_t    msg4PduLen;  /* storing DL-CCCH Ind Pdu Len */
-   uint8_t     *msg4TxPdu;  /* muxed Pdu used for re-transmission */
-   uint16_t    msg4TbSize;  /* size required for msg4TxPdu */
+	uint16_t    cellId;
+	uint16_t    crnti;
+	uint8_t     msg3Pdu[6];  /* used as CRI value during muxing */
+	uint8_t     *msg4Pdu;    /* storing DL-CCCH Ind Pdu */
+	uint16_t    msg4PduLen;  /* storing DL-CCCH Ind Pdu Len */
+	uint8_t     *msg4TxPdu;  /* muxed Pdu used for re-transmission */
+	uint16_t    msg4TbSize;  /* size required for msg4TxPdu */
 }MacRaCbInfo;
 
 typedef struct macCe
 {
-   uint16_t macCeLcid;
-   uint8_t  macCeValue[6];
+	uint16_t macCeLcid;
+	uint8_t  macCeValue[6];
 }MacCe;
 
 typedef struct macCeInfo
 {
-   uint16_t numCes;
-   MacCe macCe[MAX_MAC_CE];
+	uint16_t numCes;
+	MacCe macCe[MAX_MAC_CE];
 }MacCeInfo;
 
 typedef struct macDlInfo
 {
-   uint16_t  lcId;
-   uint16_t  pduLen;
-   uint8_t  *dlPdu;
+	uint16_t  lcId;
+	uint16_t  pduLen;
+	uint8_t  *dlPdu;
 }MacDlInfo;
 
 typedef struct macDlData
 {
-   uint16_t numPdu;
-   MacDlInfo  pduInfo[MAX_MAC_DL_PDU];
+	uint16_t numPdu;
+	MacDlInfo  pduInfo[MAX_MAC_DL_PDU];
 }MacDlData;
 
-typedef struct macCellCb
+/* HARQ Process Info */
+typedef struct dlHarqProcCb
 {
-   uint16_t    cellId;
-   MacRaCbInfo macRaCb[MAX_UE];
-   MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];
-   MacUlSlot   ulSlot[MAX_SLOT_SUPPORTED];
-}MacCellCb;
+	uint8_t   procId;    /* HARQ Process Id */
+}DlHarqProcCb;
+
+/* DL HARQ entity */
+typedef struct dlHarqEnt
+{
+	uint8_t        maxReTx;            /* MAX HARQ retransmission */
+	uint8_t        numHarqProcs;       /* Number of HARQ procs */
+	DlHarqProcCb   harqProcCb[MAX_NUM_HARQ_PROC];
+}DlHarqEnt;
+
+/* Uplink deidcated logical channel info */
+typedef struct ulLcCb
+{
+	uint8_t   lcId;      /* Logical Channel Id */
+	uint8_t   lcGrpId;   /* Logical Channel group */
+	LcState   lcActive;  /* Is LC active ? */
+}UlLcCb;
+
+/* Downlink dedicated logical channel info */
+typedef struct dlLcCb
+{
+	uint8_t   lcId;      /* Logical channel Id */ 
+	LcState   lcState;  /* Is LC active ? */
+}DlLcCb;
+
+/* BSR Information */
+typedef struct bsrTmrCfg
+{
+	uint16_t   periodicTimer;
+	uint16_t   retxTimer;
+	uint16_t   srDelayTimer;
+}BsrTmrCfg;
+
+/* UE specific UL info */
+typedef struct ueUlCb
+{
+	uint8_t    maxReTx;     /* MAX HARQ retransmission */
+	uint8_t    numUlLc;     /* Number of uplink logical channels */       
+	UlLcCb     lcCb[MAX_NUM_LOGICAL_CHANNELS];    /* Uplink dedicated logocal channels */
+}UeUlCb;
+
+/* UE specific DL Info */
+typedef struct ueDlCb
+{
+	DlHarqEnt  dlHarqEnt;      /* DL HARQ entity */
+	uint8_t    numDlLc;        /* Number of downlink logical channels */
+	DlLcCb     lcCb[MAX_NUM_LOGICAL_CHANNELS];  /* Downlink dedicated logical channels */
+}UeDlCb;
+
+/* UE Cb */
+typedef struct macUeCb
+{
+	uint16_t     ueIdx;    /* UE Idx assigned by DU APP */
+	uint16_t     crnti;    /* UE CRNTI */
+	MacCellCb    *cellCb;  /* Pointer to cellCb to whihc this UE belongs */
+	UeState      state;    /* Is UE active ? */
+	MacRaCbInfo  *raCb;    /* RA info */
+	BsrTmrCfg    bsrTmrCfg;  /* BSR Timer Info */
+	UeUlCb       ulInfo;   /* UE specific UL info */
+	UeDlCb       dlInfo;   /* UE specific DL info */
+}MacUeCb;
+
+struct macCellCb
+{
+	uint16_t    cellId;
+	MacRaCbInfo macRaCb[MAX_UE];
+	MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];
+	MacUlSlot   ulSlot[MAX_SLOT_SUPPORTED];
+	uint16_t    numActvUe;
+	MacUeCb     ueCb[MAX_UE];
+};
 
 typedef struct macCb
 {
-   Inst       macInst;
-   MacCellCb  *macCell;
+	Inst       macInst;
+	ProcId     procId;
+	MacCellCb  *macCell;
 }MacCb;
 
 /* global variable */

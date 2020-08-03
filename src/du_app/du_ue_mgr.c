@@ -14,8 +14,8 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
- /* This file contains UE management handling functionality for DU APP */
+ *******************************************************************************/
+/* This file contains UE management handling functionality for DU APP */
 #include "common_def.h"
 #include "lrg.h"
 #include "lrg.x"
@@ -32,16 +32,16 @@ U32 sduId = 0;
 
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
-   packMacDlCcchInd,   /* Loose coupling */
-   MacHdlDlCcchInd,    /* TIght coupling */
-   packMacDlCcchInd    /* Light weight-loose coupling */
+	packMacDlCcchInd,   /* Loose coupling */
+	MacHdlDlCcchInd,    /* TIght coupling */
+	packMacDlCcchInd    /* Light weight-loose coupling */
 };
 
 DuMacUeCreateReq packMacUeCreateReqOpts[] =
 {
-   packDuMacUeCreateReq,       /* Loose coupling */
-   MacHdlUeCreateReq,          /* TIght coupling */
-   packDuMacUeCreateReq,       /* Light weight-loose coupling */
+	packDuMacUeCreateReq,       /* Loose coupling */
+	MacHdlUeCreateReq,          /* TIght coupling */
+	packDuMacUeCreateReq,       /* Light weight-loose coupling */
 };
 
 /******************************************************************
@@ -60,69 +60,69 @@ DuMacUeCreateReq packMacUeCreateReqOpts[] =
  * ****************************************************************/
 S16 duSendUeCreateReqToRlc()
 {
-   U8  idx;
-   Pst pst;
-   CkwCfgInfo *ueCfg;
-   
-   DU_SET_ZERO(&ueCfg, sizeof(ueCfg));
-   DU_SET_ZERO(&pst, sizeof(Pst));
+	U8  idx;
+	Pst pst;
+	CkwCfgInfo *ueCfg;
 
-   DU_ALLOC(ueCfg, sizeof(CkwCfgInfo));
+	DU_SET_ZERO(&ueCfg, sizeof(ueCfg));
+	DU_SET_ZERO(&pst, sizeof(Pst));
+
+	DU_ALLOC(ueCfg, sizeof(CkwCfgInfo));
 
 #ifdef EGTP_TEST
-   ueCfg->ueId = UE_ID;
+	ueCfg->ueId = UE_ID;
 #endif
-   ueCfg->cellId = NR_CELL_ID;
-   ueCfg->numEnt = 1;
-   
-   for(idx = 0; idx < ueCfg->numEnt; idx++)
-   {
+	ueCfg->cellId = NR_CELL_ID;
+	ueCfg->numEnt = 1;
+
+	for(idx = 0; idx < ueCfg->numEnt; idx++)
+	{
 #ifdef EGTP_TEST
-      ueCfg->entCfg[idx].rbId           = RB_ID;
-      ueCfg->entCfg[idx].rbType         = CM_LTE_DRB;
-      ueCfg->entCfg[idx].lCh[0].lChId   = LC_ID;
-      ueCfg->entCfg[idx].lCh[0].type    = CM_LTE_LCH_DTCH;
+		ueCfg->entCfg[idx].rbId           = RB_ID;
+		ueCfg->entCfg[idx].rbType         = CM_LTE_DRB;
+		ueCfg->entCfg[idx].lCh[0].lChId   = LC_ID;
+		ueCfg->entCfg[idx].lCh[0].type    = CM_LTE_LCH_DTCH;
 #endif
-      ueCfg->entCfg[idx].entMode        = CM_LTE_MODE_UM;
-      ueCfg->entCfg[idx].dir            = CKW_CFG_DIR_BOTH;
-      switch(ueCfg->entCfg[idx].entMode)
-      {
-         case CM_LTE_MODE_TM:
-         {
-            break;
-         }
+		ueCfg->entCfg[idx].entMode        = CM_LTE_MODE_UM;
+		ueCfg->entCfg[idx].dir            = CKW_CFG_DIR_BOTH;
+		switch(ueCfg->entCfg[idx].entMode)
+		{
+			case CM_LTE_MODE_TM:
+				{
+					break;
+				}
 
-         case CM_LTE_MODE_UM:
-         {
-            ueCfg->entCfg[idx].m.umInfo.dl.snLen = 1;      /* For 12 bit SN */
-            ueCfg->entCfg[idx].m.umInfo.ul.snLen = 1;      /* For 12 bit SN */
-            ueCfg->entCfg[idx].m.umInfo.ul.reOrdTmr = 10;  /* in msec */
-            break;
-         }
+			case CM_LTE_MODE_UM:
+				{
+					ueCfg->entCfg[idx].m.umInfo.dl.snLen = 1;      /* For 12 bit SN */
+					ueCfg->entCfg[idx].m.umInfo.ul.snLen = 1;      /* For 12 bit SN */
+					ueCfg->entCfg[idx].m.umInfo.ul.reOrdTmr = 10;  /* in msec */
+					break;
+				}
 
-         case CM_LTE_MODE_AM:
-         {
-            break;
-         }
-         
-         default:
-            break;
-      } /* End of switch(entMode) */
-   } /* End of entity configuration for loop */
+			case CM_LTE_MODE_AM:
+				{
+					break;
+				}
 
-   /* Fill Pst */
-   pst.selector  = ODU_SELECTOR_LWLC;
-   pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTKW;
-   pst.dstInst   = RLC_UL_INST;
-   pst.dstProcId = DU_PROC;
-   pst.srcProcId = DU_PROC;
-   pst.region    = duCb.init.region;
+			default:
+				break;
+		} /* End of switch(entMode) */
+	} /* End of entity configuration for loop */
 
-   /* Sending to RLC */
-   packUeCreateReq(&pst, ueCfg);
+	/* Fill Pst */
+	pst.selector  = ODU_SELECTOR_LWLC;
+	pst.srcEnt    = ENTDUAPP;
+	pst.dstEnt    = ENTKW;
+	pst.dstInst   = RLC_UL_INST;
+	pst.dstProcId = DU_PROC;
+	pst.srcProcId = DU_PROC;
+	pst.region    = duCb.init.region;
 
-   RETVALUE(ROK); 
+	/* Sending to RLC */
+	packUeCreateReq(&pst, ueCfg);
+
+	RETVALUE(ROK); 
 } /* End of duSendUeCreateReqToRlc */
 
 /*******************************************************************
@@ -143,34 +143,34 @@ S16 duSendUeCreateReqToRlc()
  * ****************************************************************/
 S16 duHdlEgtpDlData(EgtpMsg  *egtpMsg)
 {
-   /* TODO : Extract RbId/UeID/CellID/SduId from database
-      using tunnel id in egtp header */
-   
-   DU_LOG("\nDU_APP : Processing DL data");
-   
-   Pst pst;
-   KwuDatReqInfo datReqInfo;
+	/* TODO : Extract RbId/UeID/CellID/SduId from database
+		using tunnel id in egtp header */
+
+	DU_LOG("\nDU_APP : Processing DL data");
+
+	Pst pst;
+	KwuDatReqInfo datReqInfo;
 
 #ifdef EGTP_TEST
-   datReqInfo.rlcId.rbId = RB_ID;
-   datReqInfo.rlcId.rbType = CM_LTE_DRB;
-   datReqInfo.rlcId.ueId = UE_ID;
-   datReqInfo.rlcId.cellId = NR_CELL_ID;
-   
-   datReqInfo.sduId = ++sduId;
-   datReqInfo.lcType = CM_LTE_LCH_DTCH;
-#endif
-   /* Filling pst and Sending to RLC DL */
-   pst.selector  = ODU_SELECTOR_LWLC;
-   pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTKW;
-   pst.dstInst   = RLC_DL_INST;
-   pst.dstProcId = DU_PROC;
-   pst.srcProcId = DU_PROC;
-   pst.region    = duCb.init.region;
+	datReqInfo.rlcId.rbId = RB_ID;
+	datReqInfo.rlcId.rbType = CM_LTE_DRB;
+	datReqInfo.rlcId.ueId = UE_ID;
+	datReqInfo.rlcId.cellId = NR_CELL_ID;
 
-   cmPkKwuDatReq(&pst, &datReqInfo, egtpMsg->msg);
-   return ROK;
+	datReqInfo.sduId = ++sduId;
+	datReqInfo.lcType = CM_LTE_LCH_DTCH;
+#endif
+	/* Filling pst and Sending to RLC DL */
+	pst.selector  = ODU_SELECTOR_LWLC;
+	pst.srcEnt    = ENTDUAPP;
+	pst.dstEnt    = ENTKW;
+	pst.dstInst   = RLC_DL_INST;
+	pst.dstProcId = DU_PROC;
+	pst.srcProcId = DU_PROC;
+	pst.region    = duCb.init.region;
+
+	cmPkKwuDatReq(&pst, &datReqInfo, egtpMsg->msg);
+	return ROK;
 }
 
 /*******************************************************************
@@ -192,45 +192,45 @@ S16 duHdlEgtpDlData(EgtpMsg  *egtpMsg)
 
 PUBLIC S16 duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
 {
-   DU_LOG("\nDU_APP : Received UL Data at DU_APP");
- 
-   /* Send UL data to CU via EGTP */
-   duSendEgtpDatInd(mBuf);
-   SPutMsg(mBuf);
+	DU_LOG("\nDU_APP : Received UL Data at DU_APP");
 
-   return ROK;
+	/* Send UL data to CU via EGTP */
+	duSendEgtpDatInd(mBuf);
+	SPutMsg(mBuf);
+
+	return ROK;
 }
 
 /******************************************************************
-*
-* @brief Builds and Sends DL CCCH Ind to MAC
-*
-* @details
-*
-*    Function : duBuildAndSendDlCcchInd 
-*
-*    Functionality: Builds and sends DL CCCH Ind Msg to MAC
-*
-* @params[in] dlCcchMsg - uint8_t*
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
+ *
+ * @brief Builds and Sends DL CCCH Ind to MAC
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendDlCcchInd 
+ *
+ *    Functionality: Builds and sends DL CCCH Ind Msg to MAC
+ *
+ * @params[in] dlCcchMsg - uint8_t*
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
-  DlCcchMsgType msgType, uint8_t *dlCcchMsg, uint16_t dlCcchMsgSize)
+		DlCcchMsgType msgType, uint8_t *dlCcchMsg, uint16_t dlCcchMsgSize)
 {
 	uint8_t ret                  = ROK;
 	uint16_t idx2;
-   DlCcchIndInfo *dlCcchIndInfo = NULLP;
-   Pst pst;
-   
+	DlCcchIndInfo *dlCcchIndInfo = NULLP;
+	Pst pst;
+
 	memset(&pst, 0, sizeof(Pst));
-   DU_LOG("\nDU APP : Building and Sending DL CCCH Ind to MAC");
+	DU_LOG("\nDU APP : Building and Sending DL CCCH Ind to MAC");
 
 	DU_ALLOC_SHRABL_BUF(dlCcchIndInfo, sizeof(DlCcchIndInfo));
 
-   if(!dlCcchIndInfo)
-   {
+	if(!dlCcchIndInfo)
+	{
 		DU_LOG("\nDU APP : Memory alloc failed while building DL CCCH Ind");
 		return RFAILED;
 	}
@@ -242,14 +242,14 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
 
 	DU_ALLOC_SHRABL_BUF(dlCcchIndInfo->dlCcchMsg, dlCcchIndInfo->dlCcchMsgLen);
 	if(!dlCcchIndInfo->dlCcchMsg)
-   {
+	{
 		DU_LOG("\nDU APP : Memory alloc failed while building DL CCCH Ind");
 		DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlCcchIndInfo, sizeof(DlCcchIndInfo));
 		return RFAILED;
 	}
 	for(idx2 = 0; idx2 < dlCcchIndInfo->dlCcchMsgLen; idx2++)
 	{
-	   dlCcchIndInfo->dlCcchMsg[idx2] = dlCcchMsg[idx2];
+		dlCcchIndInfo->dlCcchMsg[idx2] = dlCcchMsg[idx2];
 	}
 	DU_FREE(dlCcchMsg, dlCcchMsgSize);
 
@@ -265,15 +265,15 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
 	pst.pool      = DU_POOL;
 	pst.event     = EVENT_MAC_DL_CCCH_IND;
 
-   ret = (*packMacDlCcchIndOpts[pst.selector])(&pst, dlCcchIndInfo);
+	ret = (*packMacDlCcchIndOpts[pst.selector])(&pst, dlCcchIndInfo);
 	if(ret != ROK)
 	{
-      DU_LOG("\nDU_APP : Failure in sending DL CCCH to MAC");
+		DU_LOG("\nDU_APP : Failure in sending DL CCCH to MAC");
 		DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlCcchIndInfo->dlCcchMsg,\
-		  dlCcchIndInfo->dlCcchMsgLen);
+				dlCcchIndInfo->dlCcchMsgLen);
 		DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlCcchIndInfo, \
-		  sizeof(DlCcchIndInfo));
-      ret = RFAILED; 
+				sizeof(DlCcchIndInfo));
+		ret = RFAILED; 
 	}
 
 	return ret;
@@ -281,20 +281,20 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
 }
 
 /******************************************************************
-*
-* @brief Processes DL RRC Message Transfer  sent by CU
-*
-* @details
-*
-*    Function : procDlRrcMsgTrans 
-*
-*    Functionality: Processes DL RRC Message Transfer sent by CU
-*
-* @params[in] F1AP_PDU_t ASN decoded F1AP message
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
+ *
+ * @brief Processes DL RRC Message Transfer  sent by CU
+ *
+ * @details
+ *
+ *    Function : procDlRrcMsgTrans 
+ *
+ *    Functionality: Processes DL RRC Message Transfer sent by CU
+ *
+ * @params[in] F1AP_PDU_t ASN decoded F1AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 {
 	DLRRCMessageTransfer_t *dlRrcMsg = NULLP;
@@ -328,25 +328,25 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 					srbId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.SRBID;
 					break;
 				}
-        case ProtocolIE_ID_id_ExecuteDuplication:
-					break;
+			case ProtocolIE_ID_id_ExecuteDuplication:
+				break;
 
 			case ProtocolIE_ID_id_RRCContainer:
 				{
-				   if(dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size > 0)
+					if(dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size > 0)
 					{
-				      dlCcchMsgSize = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size;
-				      DU_ALLOC(dlCcchMsg, dlCcchMsgSize);
-					   for(idx2 = 0; idx2 < dlCcchMsgSize; idx2++)
-					   {
-					      dlCcchMsg[idx2] = \
-					   	 dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf[idx2];
-					   }
+						dlCcchMsgSize = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size;
+						DU_ALLOC(dlCcchMsg, dlCcchMsgSize);
+						for(idx2 = 0; idx2 < dlCcchMsgSize; idx2++)
+						{
+							dlCcchMsg[idx2] = \
+													dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf[idx2];
+						}
 					}
 					else
 					{
-				      DU_LOG("\nDU_APP : RRC Container Size is invalid:%ld",\
-						 dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
+						DU_LOG("\nDU_APP : RRC Container Size is invalid:%ld",\
+								dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
 					}
 					break;
 				}
@@ -356,12 +356,12 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 						dlRrcMsg->protocolIEs.list.array[idx]->id);
 		}
 	}
-   
-   for(idx=0; idx<duCb.numUe; idx++)
+
+	for(idx=0; idx<duCb.numUe; idx++)
 	{
-      if(gnbDuUeF1apId == duCb.ueCcchCtxt[idx].gnbDuUeF1apId)
+		if(gnbDuUeF1apId == duCb.ueCcchCtxt[idx].gnbDuUeF1apId)
 		{
-		   crnti  = duCb.ueCcchCtxt[idx].crnti;
+			crnti  = duCb.ueCcchCtxt[idx].crnti;
 			cellId = duCb.ueCcchCtxt[idx].cellId;
 			break;
 		}
@@ -369,28 +369,28 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 	if(srbId == SRB_ID_1) //RRC connection setup
 	{
 		ret = duBuildAndSendDlCcchInd(cellId, crnti, RRC_SETUP, dlCcchMsg, dlCcchMsgSize);
-      if(ret)
-      {
-         DU_LOG("\nDU_APP: Falied at duBuildAndSendDlCcchInd()");
-      }
-      else
-      {
-		   if(duCb.actvCellLst[cellId-1]->numActvUes < DU_MAX_UE)
+		if(ret)
+		{
+			DU_LOG("\nDU_APP: Falied at duBuildAndSendDlCcchInd()");
+		}
+		else
+		{
+			if(duCb.actvCellLst[cellId-1]->numActvUes < DU_MAX_UE)
 			{
-             ret = duCreateUeCb(&duCb.ueCcchCtxt[idx], gnbCuUeF1apId);
-				 if(ret)
-				 {
-                DU_LOG("\nDU_APP: Failed at duCreateUeCb for cellId [%d]", duCb.ueCcchCtxt[idx].cellId);
-				 	 ret = RFAILED;
-				 }
+				ret = duCreateUeCb(&duCb.ueCcchCtxt[idx], gnbCuUeF1apId);
+				if(ret)
+				{
+					DU_LOG("\nDU_APP: Failed at duCreateUeCb for cellId [%d]", duCb.ueCcchCtxt[idx].cellId);
+					ret = RFAILED;
+				}
 			}
 			else
 			{
-            DU_LOG("\nDU_APP: Max Active UEs has reached");
-			   ret = RFAILED;
+				DU_LOG("\nDU_APP: Max Active UEs has reached");
+				ret = RFAILED;
 			}
-      }
-   }            
+		}
+	}            
 	return ret;
 }
 
@@ -433,7 +433,7 @@ uint32_t genGnbDuUeF1apId()
 uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
 {
 
-   uint8_t ret = ROK;
+	uint8_t ret = ROK;
 	uint32_t gnbDuUeF1apId = 0;
 
 	gnbDuUeF1apId = genGnbDuUeF1apId();
@@ -445,15 +445,15 @@ uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
 
 	duCb.numUe++;
 
-   ret = (BuildAndSendInitialRrcMsgTransfer(gnbDuUeF1apId, ulCcchIndInfo->crnti,
+	ret = (BuildAndSendInitialRrcMsgTransfer(gnbDuUeF1apId, ulCcchIndInfo->crnti,
 				ulCcchIndInfo->ulCcchMsg));
 	if(ret != ROK)
 	{
-      DU_LOG("\nDU_APP : BuildAndSendInitialRrcMsgTransfer failed");
+		DU_LOG("\nDU_APP : BuildAndSendInitialRrcMsgTransfer failed");
 	}
 
-   DU_FREE_SHRABL_BUF(MAC_MEM_REGION, RG_POOL, ulCcchIndInfo->ulCcchMsg, strlen((const char*)ulCcchIndInfo->ulCcchMsg));
-   DU_FREE_SHRABL_BUF(MAC_MEM_REGION, RG_POOL, ulCcchIndInfo, sizeof(UlCcchIndInfo));
+	DU_FREE_SHRABL_BUF(MAC_MEM_REGION, RG_POOL, ulCcchIndInfo->ulCcchMsg, strlen((const char*)ulCcchIndInfo->ulCcchMsg));
+	DU_FREE_SHRABL_BUF(MAC_MEM_REGION, RG_POOL, ulCcchIndInfo, sizeof(UlCcchIndInfo));
 
 	return ret;
 
@@ -473,84 +473,86 @@ uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
  *****************************************************************/
 void fillInitDlBwp(InitialDlBwp *initDlBwp)
 {
-   uint8_t idx = 0;
+	uint8_t idx = 0;
 
-   if(initDlBwp)
-   {
-      /* Filling PDCCH Config */
-	   initDlBwp->pdcchPresent = TRUE;
+	if(initDlBwp)
+	{
+		/* Filling PDCCH Config */
+		initDlBwp->pdcchPresent = TRUE;
 		if(initDlBwp->pdcchPresent)
 		{
-         initDlBwp->pdcchCfg.numCRsetToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
-         memset(initDlBwp->pdcchCfg.cRSetToAddModList, 0, MAX_NUM_CRSET);
-         if(initDlBwp->pdcchCfg.numCRsetToAddMod <= MAX_NUM_CRSET)
-         {
-            initDlBwp->pdcchCfg.cRSetToAddModList[idx].cRSetId = \
-             PDCCH_CTRL_RSRC_SET_ONE_ID;
-            memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
-             FREQ_DOM_RSRC_SIZE); 
-            initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc[idx] =\
-             PDCCH_FREQ_DOM_RSRC;
-            initDlBwp->pdcchCfg.cRSetToAddModList[idx].duration = \
-             PDCCH_CTRL_RSRC_SET_ONE_DURATION;
-            initDlBwp->pdcchCfg.cRSetToAddModList[idx].cceRegMappingType = \
-             CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED;
-            initDlBwp->pdcchCfg.cRSetToAddModList[idx].precoderGranularity = \
-             ALL_CONTIGUOUS_RBS;
-            initDlBwp->pdcchCfg.cRSetToAddModList[idx].dmrsScramblingId = \
-             SCRAMBLING_ID;
-         }
-         initDlBwp->pdcchCfg.numCRsetToRel = 0;
-         /* Filling Serach Space */
-         initDlBwp->pdcchCfg.numSearchSpcToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
-         memset(initDlBwp->pdcchCfg.searchSpcToAddModList, 0, MAX_NUM_CRSET);
-         if(initDlBwp->pdcchCfg.numSearchSpcToAddMod <= MAX_NUM_CRSET)
-         {
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceId =\
-             PDCCH_SRCH_SPC_TWO_ID;
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].cRSetId = \
-             PDCCH_CTRL_RSRC_SET_ONE_ID;
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].\
-             mSlotPeriodicityAndOffset = SLOTPERIODICITYANDOFFSET_PR_SL1;
-            memset(initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, 0,\
-              MONITORING_SYMB_WITHIN_SLOT_SIZE);
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot[idx] =\
-              PDCCH_SYMBOL_WITHIN_SLOT;
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1 =\
-             AGGREGATIONLEVEL_N8; 
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel2 =\
-             AGGREGATIONLEVEL_N8; 
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel4 =\
-             AGGREGATIONLEVEL_N4; 
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel8 =\
-             AGGREGATIONLEVEL_N2; 
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel16 =\
-             AGGREGATIONLEVEL_N1;
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceType = \
-             SEARCHSPACETYPE_PR_UE_SPECIFIC;
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].ueSpecificDciFormat =\
-             PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT;
+			initDlBwp->pdcchCfg.numCRsetToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
+			memset(initDlBwp->pdcchCfg.cRSetToAddModList, 0, MAX_NUM_CRSET);
+			if(initDlBwp->pdcchCfg.numCRsetToAddMod <= MAX_NUM_CRSET)
+			{
+				initDlBwp->pdcchCfg.cRSetToAddModList[idx].cRSetId = \
+																					  PDCCH_CTRL_RSRC_SET_ONE_ID;
+				memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
+						FREQ_DOM_RSRC_SIZE); 
+				initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc[idx] =\
+																									 PDCCH_FREQ_DOM_RSRC;
+				initDlBwp->pdcchCfg.cRSetToAddModList[idx].duration = \
+																						PDCCH_CTRL_RSRC_SET_ONE_DURATION;
+				initDlBwp->pdcchCfg.cRSetToAddModList[idx].cceRegMappingType = \
+																									CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED;
+				initDlBwp->pdcchCfg.cRSetToAddModList[idx].precoderGranularity = \
+																									  ALL_CONTIGUOUS_RBS;
+				initDlBwp->pdcchCfg.cRSetToAddModList[idx].dmrsScramblingId = \
+																								  SCRAMBLING_ID;
+			}
+			initDlBwp->pdcchCfg.numCRsetToRel = 0;
+			/* Filling Serach Space */
+			initDlBwp->pdcchCfg.numSearchSpcToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
+			memset(initDlBwp->pdcchCfg.searchSpcToAddModList, 0, MAX_NUM_CRSET);
+			if(initDlBwp->pdcchCfg.numSearchSpcToAddMod <= MAX_NUM_CRSET)
+			{
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceId =\
+																								  PDCCH_SRCH_SPC_TWO_ID;
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].cRSetId = \
+																							PDCCH_CTRL_RSRC_SET_ONE_ID;
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].\
+					mSlotPeriodicityAndOffset = SLOTPERIODICITYANDOFFSET_PR_SL1;
+				memset(initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, 0,\
+						MONITORING_SYMB_WITHIN_SLOT_SIZE);
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot[idx] =\
+																												PDCCH_SYMBOL_WITHIN_SLOT;
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1 =\
+																											  AGGREGATIONLEVEL_N8; 
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel2 =\
+																											  AGGREGATIONLEVEL_N8; 
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel4 =\
+																											  AGGREGATIONLEVEL_N4; 
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel8 =\
+																											  AGGREGATIONLEVEL_N2; 
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel16 =\
+																												AGGREGATIONLEVEL_N1;
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceType = \
+																									  SEARCHSPACETYPE_PR_UE_SPECIFIC;
+				initDlBwp->pdcchCfg.searchSpcToAddModList[idx].ueSpecificDciFormat =\
+																										  PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT;
 
-            initDlBwp->pdcchCfg.numSearchSpcToRel = 0;
+				initDlBwp->pdcchCfg.numSearchSpcToRel = 0;
 
-         }
+			}
 		}
-      /* Filling PDSCH Config */
-	   initDlBwp->pdschPresent = TRUE;
+		/* Filling PDSCH Config */
+		initDlBwp->pdschPresent = TRUE;
 		if(initDlBwp->pdschPresent)
 		{
-         initDlBwp->pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos = ADDITIONALPOSITION_POS0;
-         initDlBwp->pdschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
-         initDlBwp->pdschCfg.numTimeDomRsrcAlloc = 1;
-         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = \
-          MAPPING_TYPEA;
-         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = \
-          PDSCH_START_SYMBOL_LEN;
-         initDlBwp->pdschCfg.rbgSize = RBG_SIZE_CONFIG1;
-         initDlBwp->pdschCfg.numCodeWordsSchByDci = CODEWORDS_SCHED_BY_DCI_N1;
-         initDlBwp->pdschCfg.bundlingType = TYPE_STATIC_BUNDLING;
+			initDlBwp->pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos = ADDITIONALPOSITION_POS0;
+			initDlBwp->pdschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
+			initDlBwp->pdschCfg.numTimeDomRsrcAlloc = 1;
+			initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = \
+																							 MAPPING_TYPEA;
+			initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 
+			initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].symbolLength = PDSCH_LENGTH_SYMBOL;
+			initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = \
+																										 calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
+			initDlBwp->pdschCfg.rbgSize = RBG_SIZE_CONFIG1;
+			initDlBwp->pdschCfg.numCodeWordsSchByDci = CODEWORDS_SCHED_BY_DCI_N1;
+			initDlBwp->pdschCfg.bundlingType = TYPE_STATIC_BUNDLING;
 		}
-   }
+	}
 
 }
 
@@ -568,36 +570,38 @@ void fillInitDlBwp(InitialDlBwp *initDlBwp)
  *****************************************************************/
 void fillInitUlBwp(InitialUlBwp *initUlBwp)
 {
-   uint8_t idx;
-   if(initUlBwp)
-   {
-      initUlBwp->pucchPresent = FALSE;
+	uint8_t idx;
+	if(initUlBwp)
+	{
+		initUlBwp->pucchPresent = FALSE;
 
-      /*Filling PUSCH Config */
-      initUlBwp->puschPresent = TRUE;
+		/*Filling PUSCH Config */
+		initUlBwp->puschPresent = TRUE;
 		if(initUlBwp->puschPresent)
 		{
-         initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.addPos = ADDITIONALPOSITION_POS0; 
-         initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.transPrecodDisabled. \
-           scramblingId0 = SCRAMBLING_ID; 
-         initUlBwp->puschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
-         initUlBwp->puschCfg.numTimeDomRsrcAlloc = 1;
-         idx = 0;
-         if(initUlBwp->puschCfg.numTimeDomRsrcAlloc <= MAX_NUM_UL_ALLOC)
-         {
-            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2;
-            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType =\
-              MAPPING_TYPEA;
-            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
-              PUSCH_START_SYMBOL_LEN;
-         }
-         initUlBwp->puschCfg.transformPrecoder = TRANSFORM_PRECODER_DISABLED;
+			initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.addPos = ADDITIONALPOSITION_POS0; 
+			initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.transPrecodDisabled. \
+				scramblingId0 = SCRAMBLING_ID; 
+			initUlBwp->puschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
+			initUlBwp->puschCfg.numTimeDomRsrcAlloc = 1;
+			idx = 0;
+			if(initUlBwp->puschCfg.numTimeDomRsrcAlloc <= MAX_NUM_UL_ALLOC)
+			{
+				initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2;
+				initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType =\
+																							  MAPPING_TYPEA;
+				initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbol = PUSCH_START_SYMBOL;
+				initUlBwp->puschCfg.timeDomRsrcAllocList[idx].symbolLength = PUSCH_LENGTH_SYMBOL;
+				initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
+																										  calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
+			}
+			initUlBwp->puschCfg.transformPrecoder = TRANSFORM_PRECODER_DISABLED;
 		}
-   }
-   else
-   {
-      DU_LOG("\n DUAPP: Memory is NULL of InitalUlBwp");
-   }
+	}
+	else
+	{
+		DU_LOG("\n DUAPP: Memory is NULL of InitalUlBwp");
+	}
 
 }
 /******************************************************************
@@ -614,31 +618,31 @@ void fillInitUlBwp(InitialUlBwp *initUlBwp)
  *****************************************************************/
 void fillSpCellGrpInfo(SpCellCfg *spCell)
 {
-   if(spCell)
-   {
-      spCell->servCellIdx = SERV_CELL_IDX;
-      /* Filling Initial Dl Bwp */
-      fillInitDlBwp(&spCell->servCellCfg.initDlBwp);
+	if(spCell)
+	{
+		spCell->servCellIdx = SERV_CELL_IDX;
+		/* Filling Initial Dl Bwp */
+		fillInitDlBwp(&spCell->servCellCfg.initDlBwp);
 
-      spCell->servCellCfg.numDlBwpToAdd    = 0; 
-      spCell->servCellCfg.firstActvDlBwpId = ACTIVE_DL_BWP_ID;
-      spCell->servCellCfg.defaultDlBwpId   = ACTIVE_DL_BWP_ID;
-      spCell->servCellCfg.bwpInactivityTmr = NULLP;
-      spCell->servCellCfg.pdschServCellCfg.maxMimoLayers = NULLP;
-      spCell->servCellCfg.pdschServCellCfg.maxCodeBlkGrpPerTb = NULLP;
-      spCell->servCellCfg.pdschServCellCfg.codeBlkGrpFlushInd = NULLP;
-      spCell->servCellCfg.pdschServCellCfg.xOverhead = NULLP;
-      spCell->servCellCfg.pdschServCellCfg.numHarqProcForPdsch =\
-           NUM_HARQ_PROC_FOR_PDSCH_N_16;
-      /* Filling Initial UL Bwp*/
-      fillInitUlBwp(&spCell->servCellCfg.initUlBwp);
-      spCell->servCellCfg.numUlBwpToAdd     = 0; 
-      spCell->servCellCfg.firstActvUlBwpId  = ACTIVE_DL_BWP_ID; 
-   }
-   else
-   {
-      DU_LOG("\n DU_APP: Memory is NULL for SpCellGrp");
-   }
+		spCell->servCellCfg.numDlBwpToAdd    = 0; 
+		spCell->servCellCfg.firstActvDlBwpId = ACTIVE_DL_BWP_ID;
+		spCell->servCellCfg.defaultDlBwpId   = ACTIVE_DL_BWP_ID;
+		spCell->servCellCfg.bwpInactivityTmr = NULLP;
+		spCell->servCellCfg.pdschServCellCfg.maxMimoLayers = NULLP;
+		spCell->servCellCfg.pdschServCellCfg.maxCodeBlkGrpPerTb = NULLP;
+		spCell->servCellCfg.pdschServCellCfg.codeBlkGrpFlushInd = NULLP;
+		spCell->servCellCfg.pdschServCellCfg.xOverhead = NULLP;
+		spCell->servCellCfg.pdschServCellCfg.numHarqProcForPdsch =\
+																					 NUM_HARQ_PROC_FOR_PDSCH_N_16;
+		/* Filling Initial UL Bwp*/
+		fillInitUlBwp(&spCell->servCellCfg.initUlBwp);
+		spCell->servCellCfg.numUlBwpToAdd     = 0; 
+		spCell->servCellCfg.firstActvUlBwpId  = ACTIVE_DL_BWP_ID; 
+	}
+	else
+	{
+		DU_LOG("\n DU_APP: Memory is NULL for SpCellGrp");
+	}
 }
 
 /******************************************************************
@@ -655,15 +659,15 @@ void fillSpCellGrpInfo(SpCellCfg *spCell)
  *****************************************************************/
 void fillPhyCellGrpInfo(PhyCellGrpCfg *cellGrp)
 {
-   if(cellGrp)
-   {
-      cellGrp->pdschHarqAckCodebook = PDSCH_HARQ_ACK_CODEBOOK_DYNAMIC;
-      cellGrp->pNrFr1 = P_NR_FR1;
-   }
-   else
-   {
-      DU_LOG("\nDUAPP: Memory is NULL for Physical Cell Group");
-   }
+	if(cellGrp)
+	{
+		cellGrp->pdschHarqAckCodebook = PDSCH_HARQ_ACK_CODEBOOK_DYNAMIC;
+		cellGrp->pNrFr1 = P_NR_FR1;
+	}
+	else
+	{
+		DU_LOG("\nDUAPP: Memory is NULL for Physical Cell Group");
+	}
 }
 
 /******************************************************************
@@ -680,50 +684,55 @@ void fillPhyCellGrpInfo(PhyCellGrpCfg *cellGrp)
  *****************************************************************/
 void fillMacCellGrpInfo(MacCellGrpCfg *cellGrp)
 {
-   uint8_t idx;
+	uint8_t idx;
 
-   if(cellGrp)
-   {
-      /* Filling Scheduling Request Config */
-      cellGrp->schReqCfg.addModListCount = 1;
-      if(cellGrp->schReqCfg.addModListCount <= MAX_NUM_SR_CFG_PER_CELL_GRP)
-      {
-         for(idx = 0; idx < cellGrp->schReqCfg.addModListCount; idx++)
-         {
-            cellGrp->schReqCfg.addModList[idx].schedReqId    = SCH_REQ_ID;
-            cellGrp->schReqCfg.addModList[idx].srProhibitTmr = SR_PROHIBIT_MS_32;
-            cellGrp->schReqCfg.addModList[idx].srTransMax    = SR_TRANS_MAX_N_16;
-         }
-      }
-      cellGrp->schReqCfg.relListCount = 0;
+	if(cellGrp)
+	{
+		/* Filling Scheduling Request Config */
+		cellGrp->schReqCfg.addModListCount = 1;
+		if(cellGrp->schReqCfg.addModListCount <= MAX_NUM_SR_CFG_PER_CELL_GRP)
+		{
+			for(idx = 0; idx < cellGrp->schReqCfg.addModListCount; idx++)
+			{
+				cellGrp->schReqCfg.addModList[idx].schedReqId    = SCH_REQ_ID;
+				cellGrp->schReqCfg.addModList[idx].srProhibitTmr = SR_PROHIBIT_MS_32;
+				cellGrp->schReqCfg.addModList[idx].srTransMax    = SR_TRANS_MAX_N_16;
+			}
+		}
+		cellGrp->schReqCfg.relListCount = 0;
 
-      /* Filling Tag config */
-      cellGrp->tagCfg.addModListCount = 1;
-      if(cellGrp->tagCfg.addModListCount <= MAC_NUM_TAGS)
-      {
-         for(idx = 0; idx < cellGrp->tagCfg.addModListCount; idx++)
-         {
-            cellGrp->tagCfg.addModList[idx].tagId = TAG_ID;
-            cellGrp->tagCfg.addModList[idx].timeAlignTimer = TIME_ALIGNMENT_TIMER_INFINITY;
-         }
-      }
-      cellGrp->tagCfg.relListCount = 0;
-      
-      /* Filling PHR config */
-      cellGrp->phrCfgSetupPres = true;
-      cellGrp->phrCfg.periodicTimer = PHR_PERIODIC_TIMER_INFINITY;
-      cellGrp->phrCfg.prohibitTimer = PHR_PROHIBIT_TIMER_SF_0;
-      cellGrp->phrCfg.txPowerFactor = PHR_TX_PWR_FACTOR_CHANGE_INFINITY;
-      cellGrp->phrCfg.multiplePHR   = false;
-      cellGrp->phrCfg.dummy         = false;
-      cellGrp->phrCfg.phrType2OtherCell = false;
-      cellGrp->phrCfg.phrOtherCG = PHR_MODE_OTHER_CG_REAL;  
+		/* Filling Tag config */
+		cellGrp->tagCfg.addModListCount = 1;
+		if(cellGrp->tagCfg.addModListCount <= MAC_NUM_TAGS)
+		{
+			for(idx = 0; idx < cellGrp->tagCfg.addModListCount; idx++)
+			{
+				cellGrp->tagCfg.addModList[idx].tagId = TAG_ID;
+				cellGrp->tagCfg.addModList[idx].timeAlignTimer = TIME_ALIGNMENT_TIMER_INFINITY;
+			}
+		}
+		cellGrp->tagCfg.relListCount = 0;
 
-   }
-   else
-   {
-      DU_LOG("\nDUAPP: Memory is NULL for Master Cell Group");
-   }
+		/* Filling BSR config */
+		cellGrp->bsrCfg.periodicTimer = PERIODIC_BSR_TMR;
+		cellGrp->bsrCfg.retxTimer = RETX_BSR_TMR;
+		cellGrp->bsrCfg.srDelayTimer = SR_DELAY_TMR;
+
+		/* Filling PHR config */
+		cellGrp->phrCfgSetupPres = true;
+		cellGrp->phrCfg.periodicTimer = PHR_PERIODIC_TIMER_INFINITY;
+		cellGrp->phrCfg.prohibitTimer = PHR_PROHIBIT_TIMER_SF_0;
+		cellGrp->phrCfg.txPowerFactor = PHR_TX_PWR_FACTOR_CHANGE_INFINITY;
+		cellGrp->phrCfg.multiplePHR   = false;
+		cellGrp->phrCfg.dummy         = false;
+		cellGrp->phrCfg.phrType2OtherCell = false;
+		cellGrp->phrCfg.phrOtherCG = PHR_MODE_OTHER_CG_REAL;  
+
+	}
+	else
+	{
+		DU_LOG("\nDUAPP: Memory is NULL for Master Cell Group");
+	}
 }
 
 /******************************************************************
@@ -740,53 +749,53 @@ void fillMacCellGrpInfo(MacCellGrpCfg *cellGrp)
  *****************************************************************/
 void fillLcCfgList(LcCfg *lcCfgInfo)
 {
-   if(lcCfgInfo)
-   {
-      lcCfgInfo->lcId = SRB_ID_1;
-      lcCfgInfo->drbQos = NULLP;
-      lcCfgInfo->snssai = NULLP;
-      lcCfgInfo->ulLcCfg = NULLP;
-      lcCfgInfo->dlLcCfg.lcp = LC_PRIORITY_1;
-      
+	if(lcCfgInfo)
+	{
+		lcCfgInfo->lcId = SRB_ID_1;
+		lcCfgInfo->drbQos = NULLP;
+		lcCfgInfo->snssai = NULLP;
+		lcCfgInfo->ulLcCfg = NULLP;
+		lcCfgInfo->dlLcCfg.lcp = LC_PRIORITY_1;
+
 #if 0
-      /* TODO: To be filled on receving UE CONTEXT SETUP from CU */
-      /* Filling Qos characteristics */
-      lcCfgInfo->drbQos.fiveQiType = QoS_Characteristics_PR_non_Dynamic_5QI;
-      lcCfgInfo->drbQos.u.nonDyn5Qi.fiveQi = 0;
-      lcCfgInfo->drbQos.u.nonDyn5Qi.priorLevel = 0;
-      lcCfgInfo->drbQos.u.nonDyn5Qi.avgWindow = 0;
-      lcCfgInfo->drbQos.u.nonDyn5Qi.maxDataBurstVol = 0;
+		/* TODO: To be filled on receving UE CONTEXT SETUP from CU */
+		/* Filling Qos characteristics */
+		lcCfgInfo->drbQos.fiveQiType = QoS_Characteristics_PR_non_Dynamic_5QI;
+		lcCfgInfo->drbQos.u.nonDyn5Qi.fiveQi = 0;
+		lcCfgInfo->drbQos.u.nonDyn5Qi.priorLevel = 0;
+		lcCfgInfo->drbQos.u.nonDyn5Qi.avgWindow = 0;
+		lcCfgInfo->drbQos.u.nonDyn5Qi.maxDataBurstVol = 0;
 
-      /* Filling NgRAN */
-      lcCfgInfo->drbQos.ngRanRetPri.priorityLevel = PriorityLevel_highest;
-      lcCfgInfo->drbQos.ngRanRetPri.preEmptionCap = \
-       Pre_emptionCapability_may_trigger_pre_emption;
-      lcCfgInfo->drbQos.ngRanRetPri.preEmptionVul = \
-       Pre_emptionVulnerability_not_pre_emptable;
+		/* Filling NgRAN */
+		lcCfgInfo->drbQos.ngRanRetPri.priorityLevel = PriorityLevel_highest;
+		lcCfgInfo->drbQos.ngRanRetPri.preEmptionCap = \
+																	 Pre_emptionCapability_may_trigger_pre_emption;
+		lcCfgInfo->drbQos.ngRanRetPri.preEmptionVul = \
+																	 Pre_emptionVulnerability_not_pre_emptable;
 
-      /* Filling Grb Qos */
-      lcCfgInfo->drbQos.grbQosInfo.maxFlowBitRateDl  = 0;
-      lcCfgInfo->drbQos.grbQosInfo.maxFlowBitRateUl  = 0;
-      lcCfgInfo->drbQos.grbQosInfo.guarFlowBitRateDl = 0;
-      lcCfgInfo->drbQos.grbQosInfo.guarFlowBitRateUl = 0;
-      
-      /* Filling S-NSSAI */
-      /* TODO :To be filled when UE Context Setup Request is sent from CU */
-      /* Filling UL Logical Channel Config */
-      lcCfgInfo->ulLcCfg.priority = 0;
-      lcCfgInfo->ulLcCfg.lcGroup  = 0;
-      lcCfgInfo->ulLcCfg.schReqId = 0;
-      lcCfgInfo->ulLcCfg.pbr = 0;
-      lcCfgInfo->ulLcCfg.bsd = 0;
-        
-      /* Filling DL Logical Channel Config */
-      lcCfgInfo->dlLcCfg.lcp = 0;
+		/* Filling Grb Qos */
+		lcCfgInfo->drbQos.grbQosInfo.maxFlowBitRateDl  = 0;
+		lcCfgInfo->drbQos.grbQosInfo.maxFlowBitRateUl  = 0;
+		lcCfgInfo->drbQos.grbQosInfo.guarFlowBitRateDl = 0;
+		lcCfgInfo->drbQos.grbQosInfo.guarFlowBitRateUl = 0;
+
+		/* Filling S-NSSAI */
+		/* TODO :To be filled when UE Context Setup Request is sent from CU */
+		/* Filling UL Logical Channel Config */
+		lcCfgInfo->ulLcCfg.priority = 0;
+		lcCfgInfo->ulLcCfg.lcGroup  = 0;
+		lcCfgInfo->ulLcCfg.schReqId = 0;
+		lcCfgInfo->ulLcCfg.pbr = 0;
+		lcCfgInfo->ulLcCfg.bsd = 0;
+
+		/* Filling DL Logical Channel Config */
+		lcCfgInfo->dlLcCfg.lcp = 0;
 #endif
-   }
-   else
-   {
-      DU_LOG("\n Memory is null for LcCfgList");
-   }
+	}
+	else
+	{
+		DU_LOG("\n Memory is null for LcCfgList");
+	}
 }
 
 /******************************************************************
@@ -803,25 +812,25 @@ void fillLcCfgList(LcCfg *lcCfgInfo)
  *****************************************************************/
 void fillMacUeCfg(MacUeCfg *ueCfg)
 {
-   uint8_t idx;
+	uint8_t idx;
 
-   /* Filling MacCellGroup Config */ 
-   fillMacCellGrpInfo(&ueCfg->macCellGrpCfg);
-   /* Filling PhyCellGroup Config */ 
-   fillPhyCellGrpInfo(&ueCfg->phyCellGrpCfg);
-   /* Filling SpCellGroup Config */ 
-   fillSpCellGrpInfo(&ueCfg->spCellCfg);
-   /* Filling AMBR for UL and DL */ 
+	/* Filling MacCellGroup Config */ 
+	fillMacCellGrpInfo(&ueCfg->macCellGrpCfg);
+	/* Filling PhyCellGroup Config */ 
+	fillPhyCellGrpInfo(&ueCfg->phyCellGrpCfg);
+	/* Filling SpCellGroup Config */ 
+	fillSpCellGrpInfo(&ueCfg->spCellCfg);
+	/* Filling AMBR for UL and DL */ 
 	ueCfg->maxAggrBitRate = NULLP;
-   /* Filling LC Context */
-   ueCfg->numLcs = SRB_ID_1;
-   if(ueCfg->numLcs < MAX_NUM_LOGICAL_CHANNELS)
-   {
-      for(idx = 0; idx < ueCfg->numLcs; idx++)
-      {   
-         fillLcCfgList(&ueCfg->lcCfgList[idx]);
-      }
-   }
+	/* Filling LC Context */
+	ueCfg->numLcs = SRB_ID_1;
+	if(ueCfg->numLcs < MAX_NUM_LOGICAL_CHANNELS)
+	{
+		for(idx = 0; idx < ueCfg->numLcs; idx++)
+		{   
+			fillLcCfgList(&ueCfg->lcCfgList[idx]);
+		}
+	}
 
 }
 
@@ -847,31 +856,31 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 	uint8_t ret     = ROK;
 	uint8_t ueIdx;
 
-   for(cellIdx = 0; cellIdx < DU_MAX_CELLS; cellIdx++)
+	for(cellIdx = 0; cellIdx < DU_MAX_CELLS; cellIdx++)
 	{
-	   if(ueCcchCtxt->cellId == duCb.actvCellLst[cellIdx]->cellId)
+		if(ueCcchCtxt->cellId == duCb.actvCellLst[cellIdx]->cellId)
 		{
-		   ueIdx = ueCcchCtxt->crnti % DU_UE_START_CRNTI;
-         DU_LOG("\nDU_APP: Filling UeCb for ueIdx [%d]", ueIdx);
-		   duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId = ueCcchCtxt->gnbDuUeF1apId;
-		   duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId = gnbCuUeF1apId;
-         duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState       = UE_ACTIVE;
-         
+			ueIdx = ueCcchCtxt->crnti % DU_UE_START_CRNTI;
+			DU_LOG("\nDU_APP: Filling UeCb for ueIdx [%d]", ueIdx);
+			duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId = ueCcchCtxt->gnbDuUeF1apId;
+			duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId = gnbCuUeF1apId;
+			duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState       = UE_ACTIVE;
+
 			/* Filling Mac Ue Config */ 
-         memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg, 0, sizeof(MacUeCfg));
-         duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellIdx       = ueCcchCtxt->cellId;
-         duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.ueIdx         = ueIdx;
-         duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.crnti         = ueCcchCtxt->crnti;
-         fillMacUeCfg(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg);
-		   duCb.actvCellLst[cellIdx]->numActvUes++;
+			memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg, 0, sizeof(MacUeCfg));
+			duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellIdx       = ueCcchCtxt->cellId;
+			duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.ueIdx         = ueIdx;
+			duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.crnti         = ueCcchCtxt->crnti;
+			fillMacUeCfg(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg);
+			duCb.actvCellLst[cellIdx]->numActvUes++;
 			memset(ueCcchCtxt, 0, sizeof(UeCcchCtxt));
 
 			/* Send Ue Create Request to MAC */
 			ret = duBuildAndSendUeCreateReqToMac(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellIdx, ueIdx);
 			if(ret)
-			   DU_LOG("\nDU_APP: Failed to send UE create request to MAC");
+				DU_LOG("\nDU_APP: Failed to send UE create request to MAC");
 		}
-   }
+	}
 
 	return ret;
 }
@@ -895,47 +904,75 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 
 uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
 {
-   uint8_t ret = ROK;
-   MacUeCfg *macUeCfg = NULLP;
-   Pst pst;
+	uint8_t ret = ROK;
+	MacUeCfg *macUeCfg = NULLP;
+	Pst pst;
 
-   memset(&pst, 0, sizeof(Pst));
+	memset(&pst, 0, sizeof(Pst));
 
-   /* Fill Pst */
-   pst.selector  = ODU_SELECTOR_LWLC;
-   pst.srcEnt    = ENTDUAPP;
-   pst.srcInst   = DU_INST;
-   pst.dstEnt    = ENTRG;
-   pst.dstInst   = 0;
-   pst.dstProcId = DU_PROC;
-   pst.srcProcId = DU_PROC;
-   pst.region    = DU_APP_MEM_REGION;
-   pst.pool      = DU_POOL;
-   pst.event     = EVENT_MAC_UE_CREATE_REQ;
+	/* Fill Pst */
+	pst.selector  = ODU_SELECTOR_LWLC;
+	pst.srcEnt    = ENTDUAPP;
+	pst.srcInst   = DU_INST;
+	pst.dstEnt    = ENTRG;
+	pst.dstInst   = 0;
+	pst.dstProcId = DU_PROC;
+	pst.srcProcId = DU_PROC;
+	pst.region    = DU_APP_MEM_REGION;
+	pst.pool      = DU_POOL;
+	pst.event     = EVENT_MAC_UE_CREATE_REQ;
 
-   /* Copying ueCb to a sharable buffer */
-   DU_ALLOC_SHRABL_BUF(macUeCfg, sizeof(MacUeCfg));
+	/* Copying ueCb to a sharable buffer */
+	DU_ALLOC_SHRABL_BUF(macUeCfg, sizeof(MacUeCfg));
 	if(macUeCfg)
 	{
 		memset(macUeCfg, 0, sizeof(MacUeCfg));
-      memcpy(macUeCfg, &duCb.actvCellLst[cellId - 1]->ueCb[ueIdx].macUeCfg, sizeof(MacUeCfg));
-      /* Processing one Ue at a time to MAC */
+		memcpy(macUeCfg, &duCb.actvCellLst[cellId - 1]->ueCb[ueIdx].macUeCfg, sizeof(MacUeCfg));
+		/* Processing one Ue at a time to MAC */
 		ret = (*packMacUeCreateReqOpts[pst.selector])(&pst, macUeCfg);
 		if(ret)
 		{
-         DU_LOG("\nDU_APP : Failure in sending Ue Create Req to MAC");
-		   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macUeCfg, sizeof(MacUeCfg));
+			DU_LOG("\nDU_APP : Failure in sending Ue Create Req to MAC");
+			DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macUeCfg, sizeof(MacUeCfg));
 			ret = RFAILED;
 		}
 	}
 	else
 	{
-	   DU_LOG("\n DU_APP: Memory alloc failed at duBuildAndSendUeCreateReq()");
+		DU_LOG("\n DU_APP: Memory alloc failed at duBuildAndSendUeCreateReq()");
 		ret = RFAILED;
 	}
 	return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Handle UE create response from MAC
+ *
+ * @details
+ *
+ *    Function : duHandleMacUeCreateRsp
+ *
+ *    Functionality: Handle UE create response from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t duHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+{
+	if(cfgRsp->result == MAC_DU_APP_RSP_OK)
+	{
+		DU_LOG("\nDU APP : MAC UE Create Response : SUCCESS [UE IDX : %d]", cfgRsp->ueIdx);
+	}
+	else
+	{
+		DU_LOG("\nDU APP : MAC UE Create Response : FAILURE [UE IDX : %d]", cfgRsp->ueIdx);
+	}
+	return ROK;
+}
+
 /**********************************************************************
-         End of file
-***********************************************************************/
+  End of file
+ ***********************************************************************/

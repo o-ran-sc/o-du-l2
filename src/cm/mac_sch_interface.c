@@ -25,17 +25,17 @@
  **/
 int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
-   Buffer *mBuf = NULLP;
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
-   {
-      RETVALUE(RFAILED);
-   }
+	Buffer *mBuf = NULLP;
+	if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+	{
+		RETVALUE(RFAILED);
+	}
 
-   /* pack SFN and slot value */
-   CMCHKPK(SPkU16,slotInd->sfn, mBuf);
-   CMCHKPK(SPkU16,slotInd->slot, mBuf);
+	/* pack SFN and slot value */
+	CMCHKPK(SPkU16,slotInd->sfn, mBuf);
+	CMCHKPK(SPkU16,slotInd->slot, mBuf);
 
-   RETVALUE(SPstTsk(pst,mBuf));
+	RETVALUE(SPstTsk(pst,mBuf));
 }
 
 /*******************************************************************
@@ -56,15 +56,15 @@ int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
  * ****************************************************************/
 int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
 {
-   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
-   {
-      /* TODO */
-   }
-   else
-   {
-      return RFAILED;
-   }
-   return ROK;
+	if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+	{
+		/* TODO */
+	}
+	else
+	{
+		return RFAILED;
+	}
+	return ROK;
 }
 
 /*******************************************************************
@@ -85,15 +85,15 @@ int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
  * ****************************************************************/
 int packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
-   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
-   {
-      /* TODO */
-   }
-   else
-   {
-      return RFAILED;
-   }
-   return ROK;
+	if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+	{
+		/* TODO */
+	}
+	else
+	{
+		return RFAILED;
+	}
+	return ROK;
 }
 
 /*******************************************************************
@@ -114,15 +114,15 @@ int packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
  * ****************************************************************/
 uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 {
-   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
-   {
-      /* TODO */
-   }
-   else
-   {
-      return RFAILED;
-   }
-   return ROK;
+	if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+	{
+		/* TODO */
+	}
+	else
+	{
+		return RFAILED;
+	}
+	return ROK;
 }
 
 /**
@@ -199,6 +199,57 @@ int packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
 	return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and Send UE Create Request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchUeCreateReq
+ *
+ *    Functionality:
+ *       Pack and Send UE Create Request from MAC to SCH
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg  *ueCfg)
+{
+	if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+	{
+		/* TODO */
+	}
+	else
+	{
+		return RFAILED; 
+	}
+	return ROK;
+}
+
+
+/*******************************************************************
+ *
+ * @brief Packs and send UE create response
+ *
+ * @details 
+ *
+ *    Function : packSchUeCfgRsp
+ *
+ *    Functionality:
+ *      Packs and send UE create response
+ *
+ * @params[in] Post structure
+ *             UE config response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp)
+{
+	return ROK;
+}
 
 /**********************************************************************
   End of file
