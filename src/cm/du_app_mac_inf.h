@@ -62,6 +62,10 @@
 #define PDSCH_START_SYMBOL_LEN 53
 #define PUSCH_START_SYMBOL_LEN 41
 
+#define MAX_NUM_SRB    8
+#define MAX_NUM_DRB    64
+#define MAX_NUM_SCELL  32
+
 /* Event IDs */
 #define EVENT_MAC_CELL_CONFIG_REQ    200
 #define EVENT_MAC_CELL_CONFIG_CFM    201
@@ -72,6 +76,13 @@
 #define EVENT_MAC_UL_CCCH_IND        206
 #define EVENT_MAC_DL_CCCH_IND        207
 #define EVENT_MAC_UE_CREATE_REQ      208
+#define EVENT_MAC_UE_CREATE_RSP      209
+
+typedef enum
+{
+   MAC_DU_APP_RSP_NOK,
+   MAC_DU_APP_RSP_OK
+}MacRsp;
 
 typedef enum
 {
@@ -893,6 +904,49 @@ typedef struct macUeCfg
    LcCfg lcCfgList[MAX_NUM_LOGICAL_CHANNELS];
 }MacUeCfg;
 
+typedef struct plmnId
+{
+   uint8_t mcc[3];
+   uint8_t mnc[3];
+}PLMNId;
+
+typedef struct nrcgi
+{
+   PLMNId  plmn;
+   uint16_t  cellId;
+}Nrcgi;
+
+typedef struct srbFailInfo
+{
+   uint8_t   srbId;
+   //TODO : Add Cause
+}SRBFailInfo;
+
+typedef struct drbFailInfo
+{
+   uint8_t   drbId;
+   //TODO : Add cause
+}DRBFailInfo;
+ 
+typedef struct sCellFailInfo
+{
+   Nrcgi   nrcgi;
+   //TODO : Add cause;
+}SCellFailInfo;
+ 
+typedef struct ueCfgRsp
+{
+   uint16_t       cellIdx;
+   uint16_t       ueIdx;
+   MacRsp         result;
+   uint8_t        numSRBFailed;
+   SRBFailInfo    failedSRBlist[MAX_NUM_SRB];
+   uint8_t        numDRBFailed;
+   DRBFailInfo    failedDRBlist[MAX_NUM_DRB];
+   uint8_t        numSCellFailed;
+   SCellFailInfo  failedSCellList[MAX_NUM_SCELL];
+}MacUeCfgRsp;
+
 /* Functions for slot Ind from MAC to DU APP*/
 typedef uint16_t (*DuMacSlotInd) ARGS((
    Pst       *pst,
@@ -972,6 +1026,10 @@ extern uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
 extern uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf);
 extern uint8_t MacHdlUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
 uint8_t sendStopIndMacToDuApp();
+typedef uint8_t (*DuMacUeCreateRspFunc)(Pst *pst, MacUeCfgRsp *cfgRsp);
+extern uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
+extern uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf);
+extern uint8_t duHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 #endif
 
 /**********************************************************************
