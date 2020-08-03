@@ -936,6 +936,26 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
 	return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Handle UE create response from MAC
+ *
+ * @details
+ *
+ *    Function : duHandleMacUeCreateRsp
+ *
+ *    Functionality: Handle UE create response from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t duHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+{
+   return ROK;
+}
+
 /**********************************************************************
          End of file
 ***********************************************************************/
