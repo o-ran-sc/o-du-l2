@@ -133,7 +133,7 @@ KwDatIndInfo   *datIndInfo;
          {
             if(datIndInfo->lchData[i].pdu.mBuf[j])
             {
-               KW_FREE_BUF_WC(datIndInfo->lchData[i].pdu.mBuf[j]);
+               RLC_FREE_BUF_WC(datIndInfo->lchData[i].pdu.mBuf[j]);
             }
          }
       }
@@ -168,7 +168,7 @@ KwDatIndInfo   *datIndInfo;
          {
             if(pduInfo->mBuf[j])
             {
-               KW_FREE_BUF_WC(pduInfo->mBuf[j]);
+               RLC_FREE_BUF_WC(pduInfo->mBuf[j]);
             }
          }
          continue;
@@ -248,7 +248,7 @@ Buffer     *sdu;
                "Memory allocation failed UEID:%d CELLID:%d",
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
-      KW_FREE_BUF(sdu);
+      RLC_FREE_BUF(sdu);
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
@@ -1187,7 +1187,7 @@ KwCb             *gCb;
  
    recBufLstCp = &recBufLst[hashKey];
    cmLListDelFrm(recBufLstCp, &recBuf->lnk);
-   KW_FREE_WC(gCb, recBuf, sizeof(KwAmRecBuf));
+   RLC_FREE_WC(gCb, recBuf, sizeof(KwAmRecBuf));
 
    RETVOID;
 } /* kwUtlDelRecBuf */

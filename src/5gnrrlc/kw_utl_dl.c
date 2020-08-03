@@ -242,7 +242,7 @@ RguDDatReqInfo    *datReqInfo;
    TRC3(KwLiRguDDatReq)
 
    dlData = NULLP;
-   KW_ALLOC_SHRABL_BUF(post->region, post->pool,
+   RLC_ALLOC_SHRABL_BUF(post->region, post->pool,
                        dlData, sizeof(RlcMacData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( datReqInfo == NULLP )
@@ -283,7 +283,7 @@ RguDDatReqInfo    *datReqInfo;
 
    /* Check if to be freed here */
    
-   KW_FREE_SHRABL_BUF(post->region, 
+   RLC_FREE_SHRABL_BUF(post->region, 
             post->pool, 
             datReqInfo, sizeof(RguDDatReqInfo));
    
@@ -351,7 +351,7 @@ KwDStaIndInfo   *staIndInfo;
 
 
    datReqInfo = NULLP;
-   KW_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap->pst.region,
+   RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap->pst.region,
                        gCb->u.dlCb->rguDlSap->pst.pool,
                        datReqInfo,sizeof(RguDDatReqInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -519,8 +519,8 @@ KwDStaIndInfo   *staIndInfo;
 #ifdef LTE_L2_MEAS_LOSS_DELAY
          if(tbSnMap->numSn == 0)
          {
-            KW_FREE(tbSnMap,sizeof(KwTbSnMap));
-            KW_FREE(datReqTb->rguSnInfo,sizeof(RguSnMapInfo));
+            RLC_FREE(tbSnMap,sizeof(KwTbSnMap));
+            RLC_FREE(datReqTb->rguSnInfo,sizeof(RguSnMapInfo));
             datReqTb->rguSnInfo = NULLP;
             kwCb.kwL2Cb.curTbSnMap = NULLP;
             datReqTb->snMapPres = FALSE;
@@ -693,7 +693,7 @@ CmLListCp   *sduQ;
       if(sduSnMap != NULLP)
       {
          cmLListDelFrm(&(rbCb->sduSnMapQ), &(sduSnMap->lstEnt));
-         KW_FREE(sduSnMap, sizeof(KwSduSnMap));
+         RLC_FREE(sduSnMap, sizeof(KwSduSnMap));
          CM_LLIST_FIRST_NODE(sduSnMapQ, firstSduSnMap);
       }
       else
@@ -1182,10 +1182,10 @@ U32        *toBeFreed
          while(txBuf->pduLst.first)
 	 {
 	    KwDlPduInfo *pduInfo = (KwDlPduInfo *)(txBuf->pduLst.first->node);
-	    KW_FREE_BUF(pduInfo->pdu);
+	    RLC_FREE_BUF(pduInfo->pdu);
 	    /* Delete node from the txBuf Pdu lst */
 	    cmLListDelFrm(&txBuf->pduLst, txBuf->pduLst.first);
-	    KW_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
+	    RLC_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
 	 }
          kwUtlDelTxBuf(AMDL.txBufLst, txBuf, gCb);
          if(gCb->u.dlCb->shutdownReceived == 0)
@@ -1202,17 +1202,17 @@ U32        *toBeFreed
    }
    
 #ifndef LTE_TDD 
-      KW_FREE(gCb,AMDL.txBufLst, (KW_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
+      RLC_FREE(gCb,AMDL.txBufLst, (KW_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
 #endif
 
    KW_LLIST_FIRST_RETX(AMDL.retxLst, retx);
    while (retx && (*toBeFreed)) /* Till to be freed becomes 0 */
    {
 
-      KW_FREE_BUF(retx->seg);
+      RLC_FREE_BUF(retx->seg);
 
       cmLListDelFrm(&AMDL.retxLst, &retx->lstEnt);
-      KW_FREE_WC(gCb, retx, sizeof(KwRetx));
+      RLC_FREE_WC(gCb, retx, sizeof(KwRetx));
 
       KW_LLIST_FIRST_RETX(AMDL.retxLst, retx);
       if(gCb->u.dlCb->shutdownReceived == 0)
@@ -1229,7 +1229,7 @@ U32        *toBeFreed
    {
       Pst *udxPst;
       udxPst = &gCb->u.dlCb->udxDlSap->pst;
-      KW_FREE_SHRABL_BUF_WC(udxPst->region,
+      RLC_FREE_SHRABL_BUF_WC(udxPst->region,
 			    udxPst->pool,
 			    AMDL.pStaPdu, 
 			    sizeof(KwUdxDlStaPdu));
@@ -1316,8 +1316,8 @@ KwCb *gCb;
    {
       KwRetx* seg = (KwRetx *)(lst->first->node);
       cmLListDelFrm(lst, lst->first);
-      KW_FREE_BUF_WC(seg->seg);
-      KW_FREE_WC(gCb,seg, sizeof(KwRetx));
+      RLC_FREE_BUF_WC(seg->seg);
+      RLC_FREE_WC(gCb,seg, sizeof(KwRetx));
       toBeFreed--;
    }   
 
@@ -1336,10 +1336,10 @@ KwCb *gCb;
          KwDlPduInfo *pduInfo = (KwDlPduInfo *)(pdu->pduLst.first->node);
          
 	 cmLListDelFrm(&pdu->pduLst, pdu->pduLst.first);
-	 KW_FREE_BUF_WC(pduInfo->pdu);
-	 KW_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
+	 RLC_FREE_BUF_WC(pduInfo->pdu);
+	 RLC_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
       }
-      KW_FREE_WC(gCb,pdu, sizeof(KwTx));
+      RLC_FREE_WC(gCb,pdu, sizeof(KwTx));
       toBeFreed--;
    }
 
@@ -1369,7 +1369,7 @@ KwCb *gCb;
       if(!moreToBeFreed)
       {
          cmLListDelFrm(lst, lst->first);
-         KW_FREE_WC(gCb, rbCb, sizeof(KwDlRbCb));
+         RLC_FREE_WC(gCb, rbCb, sizeof(KwDlRbCb));
       }
    } 
 
@@ -1611,7 +1611,7 @@ KwDlRbCb *rbCb;
       
    if((curL2MeasTb = rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx]) == NULLP)
       {
-         /* Intentionally avoiding the KW_ALLOC macro to avoid  memset */
+         /* Intentionally avoiding the RLC_ALLOC macro to avoid  memset */
          if (SGetSBuf(gCb->init.region,
                   gCb->init.pool,
                   (Data **)&curL2MeasTb,
@@ -1841,7 +1841,7 @@ U8               tbIdx;
       }
    }
    /* Free this tb, deallocate the memory */
-   KW_FREE(gCb, l2MeasTb, sizeof(KwL2MeasTb));
+   RLC_FREE(gCb, l2MeasTb, sizeof(KwL2MeasTb));
    ueCb->l2MeasTbCb[hqStaInd->tbId[tbIdx]] = NULLP;
    
    /*stopping Task*/
@@ -2232,7 +2232,7 @@ void kwUtlFreeDlMem()
 Void;
 #endif
 {
-  kwUtlFreeDlMemory(KW_GET_KWCB(KW_DL_INST));
+  kwUtlFreeDlMemory(RLC_GET_RLCCB(KW_DL_INST));
 }
 
 /**
@@ -2472,7 +2472,7 @@ KwCb             *gCb;
    txBufLstCp = &txBufLst[hashKey];
    //printf("D-sn(%d)\n", txBuf->hdr.sn);
    cmLListDelFrm(txBufLstCp, &txBuf->lnk);
-   KW_FREE_WC(gCb, txBuf, sizeof(KwTx));
+   RLC_FREE_WC(gCb, txBuf, sizeof(KwTx));
    RETVOID;
 } /* kwUtlDelTxBuf */
 

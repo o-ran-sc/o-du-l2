@@ -124,7 +124,7 @@ U8     status;
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    RLOG2(L_DEBUG,"KwLiRguBndCfm(suId(%d), status(%d)", suId, status);
 
@@ -275,7 +275,7 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
    }
     
 
-   KW_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcMacData));
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcMacData));
    RETVALUE(ROK);
    
 }/* End of RlcMacProcUlData */
@@ -326,7 +326,7 @@ RguCDatIndInfo   *datInd;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
 
 #if (ERRCLASS & ERRCLS_DEBUG)
@@ -414,14 +414,14 @@ RguDDatIndInfo   *datInd;
 #endif
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-   if (((KwCb*)KW_GET_KWCB(pst->dstInst))->genCfg.rlcMode == LKW_RLC_MODE_DL)
+   if (((KwCb*)RLC_GET_RLCCB(pst->dstInst))->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
        RLOG1(L_DEBUG,"KwLiRguDDatInd(pst, suId(%d))recieved in DL Inst",suId);
        KW_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguDDatIndInfo));
        RETVALUE(RFAILED);
    }
 #endif
-   kwUtlRcvFrmLi(KW_GET_KWCB(pst->dstInst),datInd);
+   kwUtlRcvFrmLi(RLC_GET_RLCCB(pst->dstInst),datInd);
 #ifndef SS_RBUF 
 #ifdef SS_LOCKLESS_MEMORY
    KW_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguDDatIndInfo));
@@ -559,7 +559,7 @@ RguCStaIndInfo   *staInd;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -673,10 +673,10 @@ RguDStaIndInfo   *staInd;
    }
 #endif
 
-   gCb = KW_GET_KWCB(pst->dstInst);
+   gCb = RLC_GET_RLCCB(pst->dstInst);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (((KwCb*)KW_GET_KWCB(pst->dstInst))->genCfg.rlcMode == LKW_RLC_MODE_UL)
+   if (((KwCb*)RLC_GET_RLCCB(pst->dstInst))->genCfg.rlcMode == LKW_RLC_MODE_UL)
    {
        RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"Received in RLC UL ");
        KW_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguDStaIndInfo));
@@ -736,7 +736,7 @@ RguFlowCntrlInd  *flowCntrlInd;
    U32        idx;
    U32        lcIdx;
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
    for (idx = 0; idx < flowCntrlInd->numUes; idx++)
    {
       for (lcIdx = 0; lcIdx < flowCntrlInd->ueFlowCntrlInfo[idx].numLcs; lcIdx++)  
@@ -822,7 +822,7 @@ RguHarqStatusInd   *staInd;
 
    TRC3(KwLiRguHqStaInd)
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
    ueKey.cellId = staInd->cellId;
    ueKey.ueId   = staInd->ueId;
 

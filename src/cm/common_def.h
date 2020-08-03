@@ -29,6 +29,9 @@
 #include "envind.h"
 #include "gen.h" 
 #include "ssi.h" 
+#include "ss_queue.h"
+#include "ss_task.h"
+#include "ss_msg.h"
 #include "cm5.h"
 #include "cm_tkns.h"
 #include "cm_mblk.h"
@@ -61,14 +64,14 @@
 #define CRNTI_START_RANGE 100
 #define CRNTI_END_RANGE   500
 
-#define GET_UE_IDX( _crnti,_ueIdx)    \
+#define GET_UE_IDX( _crnti,_ueIdx)                 \
 {                                                  \
-   _ueIdx = _crnti - CRNTI_START_RANGE;            \
+   _ueIdx = (_crnti - CRNTI_START_RANGE) + 1;      \
 }
 
-#define GET_CRNTI( _crnti,_ueIdx)    \
+#define GET_CRNTI( _crnti,_ueIdx)                  \
 {                                                  \
-   _crnti = _ueIdx + CRNTI_START_RANGE;            \
+   _crnti = (_ueIdx + CRNTI_START_RANGE) - 1;      \
 }
 
 /**********************************************************************

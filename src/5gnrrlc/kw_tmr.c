@@ -345,27 +345,27 @@ S16   tmrEvnt;
       case KW_EVT_UMUL_REORD_TMR:
       {
          KwUlRbCb *ulRbCb = (KwUlRbCb *)cb;
-         kwUmmReOrdTmrExp(KW_GET_KWCB(ulRbCb->inst), ulRbCb);
+         kwUmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
          break;
       }
       case KW_EVT_AMUL_REORD_TMR:
       {
          KwUlRbCb *ulRbCb = (KwUlRbCb *)cb;
-         kwAmmReOrdTmrExp(KW_GET_KWCB(ulRbCb->inst), ulRbCb);
+         kwAmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
          break;
       }
       case KW_EVT_AMUL_STA_PROH_TMR:
       {
          KwUlRbCb *ulRbCb = (KwUlRbCb *)cb;
-         kwAmmStaProTmrExp(KW_GET_KWCB(ulRbCb->inst), ulRbCb);
+         kwAmmStaProTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
          break;
       }
       case KW_EVT_AMDL_POLL_RETX_TMR:
       {
          KwDlRbCb *dlRbCb = (KwDlRbCb *)cb;
-         KwCb *gCb = KW_GET_KWCB(dlRbCb->inst);
+         KwCb *gCb = RLC_GET_RLCCB(dlRbCb->inst);
          
          kwAmmPollRetxTmrExp(gCb, dlRbCb);
 
@@ -483,7 +483,7 @@ PTR cb;
       if (rguSapCb->retryCnt < KW_MAX_SAP_BND_RETRY)
       {
          /* start timer to wait for bind confirm */
-         kwStartTmr(KW_GET_KWCB(rguSapCb->pst.srcInst),
+         kwStartTmr(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                     (PTR)rguSapCb, 
                     KW_EVT_WAIT_BNDCFM);
          
@@ -498,7 +498,7 @@ PTR cb;
 
          /* Send alarm to the layer manager */
 #ifdef LTE_L2_MEAS
-         kwLmmSendAlarm(KW_GET_KWCB(rguSapCb->pst.srcInst),
+         kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                         LCM_CATEGORY_INTERFACE, 
                         LCM_EVENT_BND_FAIL,
                         LCM_CAUSE_TMR_EXPIRED, 
@@ -506,7 +506,7 @@ PTR cb;
                         0, 
                         0);
 #else
-         kwLmmSendAlarm(KW_GET_KWCB(rguSapCb->pst.srcInst),
+         kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                         LCM_CATEGORY_INTERFACE, 
                         LCM_EVENT_BND_FAIL,
                         LCM_CAUSE_TMR_EXPIRED, 

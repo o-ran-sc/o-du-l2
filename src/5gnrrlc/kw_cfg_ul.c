@@ -661,7 +661,7 @@ KwUlCfgTmpData   *cfgTmpData;
             if(!cfgTmpData->cellCb)
             {
                /* cell cb does not exist we need to create a new one */
-               KW_ALLOC(gCb,cfgTmpData->cellCb, sizeof(KwUlCellCb));
+               RLC_ALLOC(gCb,cfgTmpData->cellCb, sizeof(KwUlCellCb));
                if(!cfgTmpData->cellCb)
                {
                   RLOG_ARG1(L_FATAL,DBG_UEID,cfgTmpData->ueId,
@@ -681,7 +681,7 @@ KwUlCfgTmpData   *cfgTmpData;
                }
             }
 
-            KW_ALLOC(gCb,cfgEntData->rbCb, sizeof (KwUlRbCb));
+            RLC_ALLOC(gCb,cfgEntData->rbCb, sizeof (KwUlRbCb));
             if (!cfgEntData->rbCb)
             {
                cfgEntData->entUlCfgCfm.status.reason = CKW_CFG_REAS_RB_CREAT_FAIL;
@@ -695,7 +695,7 @@ KwUlCfgTmpData   *cfgTmpData;
             kwDbmFetchUlUeCb(gCb,cfgTmpData->ueId, cfgTmpData->cellId, &cfgTmpData->ueCb);
             if(!cfgTmpData->ueCb)
             {
-               KW_ALLOC(gCb,cfgTmpData->ueCb, sizeof(KwUlUeCb));
+               RLC_ALLOC(gCb,cfgTmpData->ueCb, sizeof(KwUlUeCb));
                if(!cfgTmpData->ueCb)
                {
                   RLOG_ARG1(L_FATAL,DBG_UEID,cfgTmpData->ueId,
@@ -718,7 +718,7 @@ KwUlCfgTmpData   *cfgTmpData;
                   RETVALUE(RFAILED);
                }
             }
-            KW_ALLOC(gCb,cfgEntData->rbCb, sizeof (KwUlRbCb));
+            RLC_ALLOC(gCb,cfgEntData->rbCb, sizeof (KwUlRbCb));
             if (!cfgEntData->rbCb)
             {
                cfgEntData->entUlCfgCfm.status.reason = CKW_CFG_REAS_RB_CREAT_FAIL;
@@ -734,7 +734,7 @@ KwUlCfgTmpData   *cfgTmpData;
             cfgEntData->rbCb->m.umUl.umWinSz = KW_POWER(2, 
                   ((cfgToValidate->m.umInfo.ul.snLen *5)-1));
             winLen =  cfgEntData->rbCb->m.umUl.umWinSz << 1;
-            KW_ALLOC(gCb,
+            RLC_ALLOC(gCb,
                      cfgEntData->rbCb->m.umUl.recBuf, 
                      (winLen * sizeof(KwUmRecBuf*)));
          }
@@ -742,7 +742,7 @@ KwUlCfgTmpData   *cfgTmpData;
          {
 #ifndef LTE_TDD 
              U32 hashIndex;
-              KW_ALLOC(gCb,
+              RLC_ALLOC(gCb,
                     cfgEntData->rbCb->m.amUl.recBufLst,
                     (KW_RCV_BUF_BIN_SIZE * sizeof(CmLListCp )));
               for(hashIndex = 0; hashIndex < KW_RCV_BUF_BIN_SIZE; hashIndex++)
@@ -862,17 +862,17 @@ KwUlEntTmpData   *cfgEntData;
    {
       if(CM_LTE_MODE_UM == cfg->entMode)
       {
-         KW_FREE(gCb,
+         RLC_FREE(gCb,
                cfgEntData->rbCb->m.umUl.recBuf, 
                (cfgEntData->rbCb->m.umUl.umWinSz << 1) * sizeof(KwUmRecBuf*));
       }
       else if(CM_LTE_MODE_AM == cfg->entMode)
       {
 #ifndef LTE_TDD 
-      KW_FREE(gCb,cfgEntData->rbCb->m.amUl.recBufLst, (KW_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
+      RLC_FREE(gCb,cfgEntData->rbCb->m.amUl.recBufLst, (KW_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
 #endif
       }
-      KW_FREE(gCb,cfgEntData->rbCb, sizeof(KwUlRbCb));
+      RLC_FREE(gCb,cfgEntData->rbCb, sizeof(KwUlRbCb));
    }
 
    RETVALUE(ROK);
@@ -1012,7 +1012,7 @@ KwUlCfgTmpData   *cfgTmpData;
             }
          }
          /* Delete RbCb  */
-         KW_FREE(gCb,cfgEntData->rbCb, sizeof(KwUlRbCb));
+         RLC_FREE(gCb,cfgEntData->rbCb, sizeof(KwUlRbCb));
 
          KW_LMM_RB_STS_DEC(gCb);
          break;
