@@ -225,7 +225,7 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
 #endif      
 #endif      
       /* create a buffer to be later inserted into the reception buffer */
-      KW_ALLOC_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
+      RLC_ALLOC_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (tmpRecBuf == NULLP)
       {   
@@ -248,8 +248,8 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
      {
         extern U32 rlculdrop;
         rlculdrop++;
-        KW_FREE_BUF(pdu);
-        KW_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
+        RLC_FREE_BUF(pdu);
+        RLC_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
         /*Fix for CR ccpu00144030: If threshhold is hit then also count
          *should be incrmented */
         count++;
@@ -270,7 +270,7 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
          /* Header extraction is a problem. 
           * log an error and free the allocated memory */
          /* ccpu00136940 */
-         KW_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
+         RLC_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
          SPutMsg(pdu);
          count++;
          /* kw005.201 ccpu00117318, updating the statistics */
@@ -294,8 +294,8 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
 
-         KW_FREE_BUF(pdu);
-         KW_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
+         RLC_FREE_BUF(pdu);
+         RLC_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
          count++;
          /* kw005.201 ccpu00117318, updating the statistics */
          gCb->genSts.unexpPdusRecv++;
@@ -341,7 +341,7 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
                if (recBuf[sn])
                {
                   kwUmmReAssembleSdus(gCb,rbCb,recBuf[sn]);
-                  KW_FREE_WC(gCb,recBuf[sn],sizeof(KwUmRecBuf));
+                  RLC_FREE_WC(gCb,recBuf[sn],sizeof(KwUmRecBuf));
                   recBuf[sn] = NULLP;
                }
                sn = (sn + 1) & KW_UMUL.modBitMask;
@@ -363,7 +363,7 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
          while (recBuf[sn] && tSn < tVrUr)
          {
             kwUmmReAssembleSdus(gCb,rbCb,recBuf[sn]);
-            KW_FREE_WC(gCb,recBuf[sn],sizeof(KwUmRecBuf));
+            RLC_FREE_WC(gCb,recBuf[sn],sizeof(KwUmRecBuf));
             recBuf[sn] = NULLP;
             sn = (sn + 1) & KW_UMUL.modBitMask;
             tSn = KW_UM_GET_VALUE(sn, KW_UMUL);
@@ -494,7 +494,7 @@ KwUmRecBuf   *umRecBuf;
                 (sn == ((rbCb->m.umUl.sn + 1) & rbCb->m.umUl.modBitMask)))
             {
                SCatMsg(*partialSdu,sdu,M1M2);
-               KW_FREE_BUF(sdu);
+               RLC_FREE_BUF(sdu);
                if (liCount > 0 || !(fi & 1))
                {
                   kwUtlSndDatInd(gCb,rbCb,*partialSdu);
@@ -506,11 +506,11 @@ KwUmRecBuf   *umRecBuf;
                 /* Partial Sdu stored is not valid now.So free it */
                if (*partialSdu)
                {
-                  KW_FREE_BUF(*partialSdu);
+                  RLC_FREE_BUF(*partialSdu);
                   *partialSdu = NULLP;
                }
                   
-               KW_FREE_BUF(sdu);
+               RLC_FREE_BUF(sdu);
                sdu = NULLP;
             }
          }
@@ -518,7 +518,7 @@ KwUmRecBuf   *umRecBuf;
          {
             if (*partialSdu)
             {
-               KW_FREE_BUF(*partialSdu);  /* RLC mem leak fix */
+               RLC_FREE_BUF(*partialSdu);  /* RLC mem leak fix */
                *partialSdu = NULLP;
             }
             
@@ -616,7 +616,7 @@ KwUlRbCb     *rbCb;
       if ( recBuf[curSn] != NULLP )
       {
          kwUmmReAssembleSdus(gCb,rbCb,recBuf[curSn]);
-         KW_FREE_WC(gCb,recBuf[curSn],sizeof(KwUmRecBuf));
+         RLC_FREE_WC(gCb,recBuf[curSn],sizeof(KwUmRecBuf));
          recBuf[curSn] = NULLP;
       } 
       curSn = (curSn + 1) & rbCb->m.umUl.modBitMask;
@@ -869,9 +869,9 @@ KwUlRbCb   *rbCb;
          kwUmmReAssembleSdus(gCb, rbCb, KW_UMUL.recBuf[prevVrUr]);
          if(KW_UMUL.recBuf[prevVrUr]->pdu != NULLP) /* RLC mem leak fix */
          {
-            KW_FREE_BUF(KW_UMUL.recBuf[prevVrUr]->pdu);
+            RLC_FREE_BUF(KW_UMUL.recBuf[prevVrUr]->pdu);
          }
-         KW_FREE_WC(gCb, KW_UMUL.recBuf[prevVrUr], sizeof(KwUmRecBuf));
+         RLC_FREE_WC(gCb, KW_UMUL.recBuf[prevVrUr], sizeof(KwUmRecBuf));
          KW_UMUL.recBuf[prevVrUr] = NULLP;
       }
 
@@ -931,15 +931,15 @@ KwUlRbCb   *rbCb;
    {
       if (umRecBuf[curSn] != NULLP)
       {
-         KW_FREE_BUF_WC(umRecBuf[curSn]->pdu);
+         RLC_FREE_BUF_WC(umRecBuf[curSn]->pdu);
          umRecBuf[curSn]->pdu = NULLP;
 
-         KW_FREE_WC(gCb, umRecBuf[curSn], sizeof(KwUmRecBuf));
+         RLC_FREE_WC(gCb, umRecBuf[curSn], sizeof(KwUmRecBuf));
          umRecBuf[curSn] = NULLP;
       }
       curSn++;
    }
-   KW_FREE_WC(gCb,rbCb->m.umUl.recBuf, (windSz ) * sizeof(KwUmRecBuf*));
+   RLC_FREE_WC(gCb,rbCb->m.umUl.recBuf, (windSz ) * sizeof(KwUmRecBuf*));
    rbCb->m.umUl.recBuf = NULLP;
    RETVOID;
 } 

@@ -23,6 +23,8 @@
 #include "lkw.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "ckw.h"
+#include "ckw.x"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include "du_sctp.h"
@@ -39,6 +41,9 @@ extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkKwuDatInd(KwuDatInd func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
+extern S16 duProcRlcUlUeCfgRsp(Pst *pst, SuId suId, CkwCfgCfmInfo *rlcCfgRsp);
+extern S16 cmUnpkCkwCfgCfm(CkwCfgCfm func, Pst *pst, Buffer *mBuf);
+
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *
@@ -163,6 +168,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 	       case KWU_EVT_DAT_IND:
 		  {
 		     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_RLC_UE_CREATE_RSP:
+		  {
+		     ret = cmUnpkCkwCfgCfm(duProcRlcUlUeCfgRsp, pst, mBuf);
 		     break;
 		  }
 	       default:

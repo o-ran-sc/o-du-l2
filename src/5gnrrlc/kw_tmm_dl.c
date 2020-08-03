@@ -111,7 +111,7 @@ Buffer          *mBuf;
    TRC2(kwTmmQSdu) 
 
 
-   KW_ALLOC(gCb,sdu,sizeof(KwSdu));
+   RLC_ALLOC(gCb,sdu,sizeof(KwSdu));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
    {
@@ -255,8 +255,8 @@ RguCStaIndInfo   *staInd;
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
-            KW_FREE_BUF(sdu->mBuf);
-            KW_FREE(gCb, sdu, sizeof(KwSdu));
+            RLC_FREE_BUF(sdu->mBuf);
+            RLC_FREE(gCb, sdu, sizeof(KwSdu));
          }
          else
          {
@@ -299,8 +299,8 @@ RguCStaIndInfo   *staInd;
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
-            KW_FREE_BUF(sdu->mBuf);
-            KW_FREE(gCb, sdu, sizeof(KwSdu));
+            RLC_FREE_BUF(sdu->mBuf);
+            RLC_FREE(gCb, sdu, sizeof(KwSdu));
             continue;
          }
 
@@ -353,7 +353,7 @@ RguCStaIndInfo   *staInd;
    }
    sdu = (KwSdu *)node->node;
 
-    KW_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[suId].pst.region,
+    RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[suId].pst.region,
                         gCb->u.dlCb->rguDlSap[suId].pst.pool,
                         dlData,(Size)sizeof(RlcMacData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -386,7 +386,7 @@ RguCStaIndInfo   *staInd;
    sdu->mBuf = NULLP;
    cmLListDelFrm(&(rbCb->m.tm.sduQ),
                  &sdu->lstEnt); 
-   KW_FREE(gCb,sdu, sizeof(KwSdu));
+   RLC_FREE(gCb,sdu, sizeof(KwSdu));
 
    /* If trace flag is enabled send the trace indication */
    if(gCb->init.trc == TRUE)
@@ -483,7 +483,7 @@ KwuDatReqInfo   *datReqInfo;
 
    rguSap = &(gCb->u.dlCb->rguDlSap[rbCb->rguSapId]);
 
-   KW_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.region,
+   RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.region,
                        gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.pool,
                        boStatus, sizeof(RguCStaRspInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)

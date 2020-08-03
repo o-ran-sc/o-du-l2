@@ -129,7 +129,7 @@ Buffer          *mBuf;
 
    KW_UPD_L2_DL_TOT_SDU_STS(gCb,rbCb);
 
-   KW_ALLOC_WC(gCb, sdu, (Size)sizeof(KwSdu));
+   RLC_ALLOC_WC(gCb, sdu, (Size)sizeof(KwSdu));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
    {
@@ -511,7 +511,7 @@ KwDatReq   *datReq;
          else 
          {
             SCatMsg(pdu, sdu->mBuf, M1M2);
-            KW_FREE_BUF_WC(sdu->mBuf);
+            RLC_FREE_BUF_WC(sdu->mBuf);
          }
 
          sdu->sduSz -= pduSz;
@@ -575,7 +575,7 @@ KwDatReq   *datReq;
       }
       else
       {
-         KW_FREE_BUF_WC(pdu);
+         RLC_FREE_BUF_WC(pdu);
       }
    }
    

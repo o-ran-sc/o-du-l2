@@ -394,7 +394,7 @@ CkwEntCfgInfo   *entCfg;
        
 #ifndef LTE_TDD 
              U32 hashIndex;
-              KW_ALLOC(gCb,
+              RLC_ALLOC(gCb,
                     rbCb->m.amDl.txBufLst,
                     (KW_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
               for(hashIndex = 0; hashIndex < KW_TX_BUF_BIN_SIZE; hashIndex++)
@@ -669,7 +669,7 @@ CkwEntCfgCfmInfo   *entCfm;
          }                                                            
 
          /* Create RB CB */
-         KW_ALLOC(gCb,kwRbCb, sizeof (KwDlRbCb));
+         RLC_ALLOC(gCb,kwRbCb, sizeof (KwDlRbCb));
          if (!kwRbCb)
          {
             RLOG_ARG2(L_FATAL,DBG_UEID,ueId,
@@ -762,7 +762,7 @@ CkwEntCfgCfmInfo   *entCfm;
          }                                                            
 
          /* Create RB CB */
-         KW_ALLOC(gCb,kwRbCb, sizeof (KwDlRbCb));
+         RLC_ALLOC(gCb,kwRbCb, sizeof (KwDlRbCb));
          if (kwRbCb == NULL)
          {
             /* Fill entCfm structure */                           
@@ -820,7 +820,7 @@ CkwEntCfgCfmInfo   *entCfm;
                CKW_CFG_REAS_RB_CREAT_FAIL);
 
       /* Delete RB CB created */
-      KW_FREE(gCb,kwRbCb, sizeof(KwDlRbCb));
+      RLC_FREE(gCb,kwRbCb, sizeof(KwDlRbCb));
       RLOG_ARG2(L_ERROR,DBG_RBID, entCfg->rbId,
                "Filling of RbCb failed UEID:%d CELLID:%d",
                ueId,
@@ -1161,7 +1161,7 @@ CkwEntCfgCfmInfo   *entCfm;
       /* Assign NULLP to dlRbCb/ulRbCb.
        * Delete Hashlist allocated for it if any */
       cellCb->lCh[kwRbCb->lch.lChId - 1].dlRbCb = NULLP;
-      KW_FREE(gCb,kwRbCb, sizeof(KwDlRbCb));   /*Vartika: Mem leak fix */  
+      RLC_FREE(gCb,kwRbCb, sizeof(KwDlRbCb));   /*Vartika: Mem leak fix */  
    }
     /* Get ueCb and delete rbCb from it */
    else
@@ -1218,7 +1218,7 @@ CkwEntCfgCfmInfo   *entCfm;
       {
          kwUmmFreeDlRbCb(gCb,kwRbCb);
          /* Delete RbCb  */
-         KW_FREE(gCb,kwRbCb, sizeof(KwDlRbCb));     
+         RLC_FREE(gCb,kwRbCb, sizeof(KwDlRbCb));     
       }
       else if( CM_LTE_MODE_AM == kwRbCb->mode)
       {
