@@ -141,7 +141,7 @@ uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
  **/
 int packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo)
 {
-	return ROK;
+   return ROK;
 }
 
 /**
@@ -160,7 +160,7 @@ int packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo)
  **/
 int packSchMacUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
 {
-	return ROK;
+   return ROK;
 }
 
 /**
@@ -178,7 +178,7 @@ int packSchMacUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
  **/
 int packSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg)
 {
-	return ROK;
+   return ROK;
 }
 
 /**
@@ -196,9 +196,60 @@ int packSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg)
  **/
 int packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
 {
-	return ROK;
+   return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and Send UE Create Request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchUeCreateReq
+ *
+ *    Functionality:
+ *       Pack and Send UE Create Request from MAC to SCH
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg  *ueCfg)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED; 
+   }
+   return ROK;
+}
+
+
+/*******************************************************************
+ *
+ * @brief Packs and send UE create response
+ *
+ * @details 
+ *
+ *    Function : packSchUeCfgRsp
+ *
+ *    Functionality:
+ *      Packs and send UE create response
+ *
+ * @params[in] Post structure
+ *             UE config response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp)
+{
+   return ROK;
+}
 
 /**********************************************************************
   End of file
