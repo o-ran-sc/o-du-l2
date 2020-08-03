@@ -281,7 +281,7 @@ CkwCfgCfmInfo   *cfmInfo;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    kwHdlCkwUlCfgReq(tKwCb,cfgTmpData, cfmInfo, cfgCfm);
-   KwUiCkwCfgCfm(&(tKwCb->u.ulCb->ckwSap.pst), 
+   KwUiCkwCfgCfm(&(tKwCb->genCfg.lmPst), 
                  tKwCb->u.ulCb->ckwSap.suId , cfgCfm);
 
    /* free the memory from DL */

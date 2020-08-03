@@ -23,6 +23,8 @@
 #include "lkw.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "ckw.h"
+#include "ckw.x"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include "du_sctp.h"
@@ -39,6 +41,8 @@ extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkKwuDatInd(KwuDatInd func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
+extern S16 cmUnpkCkwCfgCfm ARGS ((CkwCfgCfm func, Pst *pst, Buffer *mBuf));
+
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *
@@ -165,6 +169,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
                      break;
                   }
+					case EVENT_RLC_UE_CREATE_RSP:
+					   {
+						   ret = cmUnpkCkwCfgCfm(duProcRlcUlUeCfgRsp, pst, mBuf);
+						   break;
+						}
                default:
                   {
                      DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \
