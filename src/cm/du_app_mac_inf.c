@@ -773,6 +773,77 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
 
 	return RFAILED;
 }
+
+/*******************************************************************
+ *
+ * @brief Pack and send UE config response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacUeCreateRsp
+ *
+ *    Functionality:
+ *       Pack and send UE config response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nMAC : Memory allocation failed at packDuMacUeCfgRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)cfgRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nMAC: Only LWLC supported for packDuMacUeCfgRsp");
+      return RFAILED;
+   }
+ 
+   return SPstTsk(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack UE Config Response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : unpackDuMacUeCreateRsp
+ *
+ *    Functionality: Unpack UE Config Response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacUeCfgRsp *cfgRsp;
+ 
+      /* unpack the address of the structure */
+      CMCHKUNPK(cmUnpkPtr, (PTR *)&cfgRsp, mBuf);
+      SPutMsg(mBuf);
+      return (*func)(pst, cfgRsp);
+   }
+ 
+   SPutMsg(mBuf);
+   return RFAILED;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

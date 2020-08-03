@@ -219,6 +219,10 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 							ret = unpackMacUlCcchInd(duHandleUlCcchInd, pst, mBuf);
 							break;
 						}
+					case EVENT_MAC_UE_CREATE_RSP:
+						{
+						   ret = unpackDuMacUeCreateRsp(duHandleMacUeCreateRsp, pst, mBuf); 
+						}
 
                default:
                   {

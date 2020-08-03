@@ -25,11 +25,11 @@
 #define MAX_NUM_RB 106 /* value for numerology 0 15Khz */
 #define SCH_MIB_TRANS 80 
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
+#define SCH_MAX_SSB_BEAM 4 /* since we are supporting only SCS=15KHz */
 #define SCH_SCS_15KHZ 0 /* numerology 0 and 15Khz */
 #define SCH_SYMBOL_PER_SLOT 14
 #define SCH_SSB_NUM_SYMB 4
 #define SCH_SSB_NUM_PRB 20
-#define SCH_MAX_SSB_BEAM 4 /* since we are supporting only SCS=15KHz */
 #define SCH_MEM_REGION     4
 #define SCH_POOL           1
 #define SCHED_DELTA 1
@@ -41,6 +41,7 @@
 #define PUCCH_NUM_PRB_FORMAT_0 1  /* number of PRBs in freq domain, spec 38.213 - 9.2.1 */
 #define SI_RNTI 0xFFFF
 #define P_RNTI  0xFFFE
+#define SCH_UE_START_CRNTI 100
 
 #define CRC_FAILED 0
 #define CRC_PASSED 1
@@ -74,6 +75,13 @@
 	_rspPst.selector  = ODU_SELECTOR_TC;\
 }	
 extern uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
+
+typedef enum
+{
+   SCH_UE_STATE_INACTIVE,
+   SCH_UE_STATE_ACTIVE
+}SchUeState;
+
 /**
   * @brief
   * Structure holding LTE MAC's General Configuration information.
@@ -127,6 +135,18 @@ typedef struct schUlSlotInfo
 
 /**
   * @brief
+  * UE control block
+  */
+typedef struct schUeCb
+{
+   uint16_t  ueIdx;
+   uint16_t  crnti;
+   SchUeCfg  ueCfg;
+   SchUeState  state;
+}SchUeCb;
+
+/**
+  * @brief
   * Cell Control block per cell.
   */
 typedef struct schCellCb
@@ -141,6 +161,8 @@ typedef struct schCellCb
 	SchCellCfg    cellCfg;                           /*!< Cell ocnfiguration */
 	uint8_t       ssbStartSymbArr[SCH_MAX_SSB_BEAM]; /*!<start symbol per SSB beam */
 	SchRaCb       raCb[SCH_MAX_UE];                  /*!< Rach Cb */
+   uint16_t      numActvUe;
+   SchUeCb       ueCb[SCH_MAX_UE];
 }SchCellCb;
 
 /**

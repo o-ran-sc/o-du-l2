@@ -36,6 +36,7 @@
 #include "lrg.h"
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
+#include "rg.h"
 
 /* header/extern include files (.x) */
 #include "gen.x"           /* general */
@@ -58,6 +59,7 @@
 #define MAX_UE 1
 #define MAX_CRI_SIZE 6
 #define MAX_MAC_DL_PDU 10
+#define MAX_NUM_HARQ_PROC  16
 
 #define MAC_LCID_CCCH              0
 #define MAC_DEDLC_MIN_LCID         1
@@ -77,6 +79,18 @@
 #define MAC_LCID_LONG_BSR          62
 #define MAC_LCID_CRI               62
 #define MAC_LCID_PADDING           63
+
+typedef enum
+{
+   UE_STATE_INACTIVE,
+   UE_STATE_ACTIVE
+}UeState;
+
+typedef enum
+{
+   LC_STATE_INACTIVE,
+   LC_STATE_ACTIVE
+}LcState;
 
 typedef struct macDlSlot
 {
@@ -124,17 +138,86 @@ typedef struct macDlData
    MacDlInfo  pduInfo[MAX_MAC_DL_PDU];
 }MacDlData;
 
+/* HARQ Process Info */
+typedef struct dlHarqProcCb
+{
+   uint8_t   procId;    /* HARQ Process Id */
+}DlHarqProcCb;
+
+/* DL HARQ entity */
+typedef struct dlHarqEnt
+{
+   uint8_t        maxReTx;            /* MAX HARQ retransmission */
+   uint8_t        numHarqProcs;       /* Number of HARQ procs */
+	DlHarqProcCb   harqProcCb[MAX_NUM_HARQ_PROC];
+}DlHarqEnt;
+
+/* Uplink deidcated logical channel info */
+typedef struct ulLcCb
+{
+   uint8_t   lcId;      /* Logical Channel Id */
+	uint8_t   lcGrpId;   /* Logical Channel group */
+   LcState   lcActive;  /* Is LC active ? */
+}UlLcCb;
+
+/* Downlink dedicated logical channel info */
+typedef struct dlLcCb
+{
+   uint8_t   lcId;      /* Logical channel Id */ 
+   LcState   lcState;  /* Is LC active ? */
+}DlLcCb;
+
+/* BSR Information */
+typedef struct bsrTxInfo
+{
+   uint8_t periodicTimer;
+   uint8_t retxTimer;
+   uint8_t *srDelayTimer;
+}BsrTxInfo;
+
+/* UE specific UL info */
+typedef struct ueUlCb
+{
+   uint8_t    maxReTx;     /* MAX HARQ retransmission */
+	BsrTxInfo  bsrInfo;
+	uint8_t    numUlLc;     /* Number of uplink logical channels */       
+   UlLcCb     lcCb[MAX_NUM_LOGICAL_CHANNELS];    /* Uplink dedicated logocal channels */
+}UeUlCb;
+
+/* UE specific DL Info */
+typedef struct ueDlCb
+{
+   DlHarqEnt  dlHarqEnt;      /* DL HARQ entity */
+	uint8_t    numDlLc;        /* Number of downlink logical channels */
+	DlLcCb     lcCb[MAX_NUM_LOGICAL_CHANNELS];  /* Downlink dedicated logical channels */
+}UeDlCb;
+
+/* UE Cb */
+typedef struct macUeCb
+{
+  uint16_t     ueIdx;    /* UE Idx assigned by DU APP */
+  uint16_t     crnti;    /* UE CRNTI */
+  uint16_t     cellIdx;  /* Cell to which this UE belongs */
+  UeState      state;    /* Is UE active ? */
+  MacRaCbInfo  raCb;     /* RA info */
+  UeUlCb       ulInfo;   /* UE specific UL info */
+  UeDlCb       dlInfo;   /* UE specific DK info */
+}MacUeCb;
+
 typedef struct macCellCb
 {
    uint16_t    cellId;
    MacRaCbInfo macRaCb[MAX_UE];
    MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];
    MacUlSlot   ulSlot[MAX_SLOT_SUPPORTED];
+	uint16_t    numActvUe;
+	MacUeCb     ueCb[MAX_UE];
 }MacCellCb;
 
 typedef struct macCb
 {
    Inst       macInst;
+   ProcId     procId;
    MacCellCb  *macCell;
 }MacCb;
 
