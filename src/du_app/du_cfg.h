@@ -229,6 +229,7 @@
 #define SR_TRANS_MAX 2
 #define PERIODIC_BSR_TMR 2
 #define RETX_BSR_TMR     5
+#define SR_DELAY_TMR     6
 #define TAG_ID 0
 #define TIME_ALIGNMENT_TMR 7
 #define PHR_PERIODIC_TMR 7

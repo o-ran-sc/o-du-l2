@@ -62,6 +62,10 @@
 #define PDSCH_START_SYMBOL_LEN 53
 #define PUSCH_START_SYMBOL_LEN 41
 
+#define MAX_NUM_SRB    8
+#define MAX_NUM_DRB    64
+#define MAX_NUM_SCELL  32
+
 /* Event IDs */
 #define EVENT_MAC_CELL_CONFIG_REQ    200
 #define EVENT_MAC_CELL_CONFIG_CFM    201
@@ -72,6 +76,13 @@
 #define EVENT_MAC_UL_CCCH_IND        206
 #define EVENT_MAC_DL_CCCH_IND        207
 #define EVENT_MAC_UE_CREATE_REQ      208
+#define EVENT_MAC_UE_CREATE_RSP      209
+
+typedef enum
+{
+   MAC_DU_APP_RSP_NOK,
+   MAC_DU_APP_RSP_OK
+}MacRsp;
 
 typedef enum
 {
@@ -354,6 +365,75 @@ typedef enum
   LC_PRIORITY_3
 }LcPriority;
 
+typedef enum
+{
+   RADIO_NW_LAYER_FAIL,
+	TRANSPORT_LAYER_FAIL,
+	PROTOCOL_FAIL,
+	MISCELLANEOUS
+}CauseGrp;
+
+typedef enum
+{
+   UNSPECIFIED_RADIO_NW_CAUSE,
+	RL_FAIL_RLC,
+	UNKNOWN_GNB_CU_UE_F1AP_ID,
+	ALREADY_ALLOCATED_GNB_CU_UE_F1AP_ID,
+	UNKNOWN_GNB_DU_UE_F1AP_ID,
+	ALREADY_ALLOCATED_GNB_DU_UE_F1AP_ID,
+	UNKNOWN_UE_F1AP_ID_PAIR,
+	INCONSISTENT_UE_F1AP_ID_PAIR,
+	INTERACTION_WITH_OTHER_PROCEDURE,
+	UNSUPPORTED_QCI,
+	ACTION_REQUIRED_FOR_RADIO_REASONS,
+	RADIO_RESOURCES_UNAVAILABLE,
+   CANCELLED_PROCEDURE,
+	RELEASE_NORMAL,
+	CELL_UNAVAILABLE,
+	OTHER_RL_FAILURE,
+	UE_REJECTION,
+   RESOURCES_UNAVAILABLE_FOR_SLICE
+}RadioNwLyrCause;
+
+typedef enum
+{
+   UNSPECIFIED_TRANSPORT_LAYER_CAUSE,
+	TRANSPORT_RESOURCE_UNAVAILABLE
+}TransLyrCause;
+
+typedef enum
+{
+   TRANSFER_SYNTAX_ERROR,
+	ABSTRACT_SYNTAX_ERROR_REJECT,
+   ABSTRACT_SYNTAX_ERROR_IGNORE_AND_REJECT,
+	INCOMPATIBLE_MESSAGE_FOR_RECEIVER_STATE,
+	SEMANTIC_ERR,
+	ABSTRAXCT_SYNTAX_ERROR_FALSELY_CONSTRUCTED_MSG,
+	UNSPECIFIED_PROTOCOL_CAUSE
+}ProtCause;
+
+typedef enum
+{
+   CONTROL_PROCESSING_OVERLOAD,
+	NOT_ENOUGH_USER,
+	PLANE_PROCESSING_RESOURCES,
+	HARDWARE_FAIL,
+	INTERVENTION_BY_O_AND_M,
+	UNSPECIFIED_MISC_CAUSE
+}MiscFailCause;
+
+typedef struct failureCause
+{
+   CauseGrp   type;
+	union
+	{
+	   RadioNwLyrCause   radioNwCause;
+		TransLyrCause     transportCause;
+		ProtCause         protcolCause;
+		MiscFailCause     miscCause;
+   }u;
+}FailureCause;
+
 typedef struct carrierCfg
 {
    Bool  pres;
@@ -613,7 +693,7 @@ typedef struct macCellGrpCfg
 {
    SchedReqCfg schReqCfg;
    TagCfg tagCfg;
-   //BsrCfg bsrCfg;
+   BsrCfg bsrCfg;
    bool   phrCfgSetupPres;   /* true/false: phrCfgSetup/phrCfgRelease */
    PhrCfg phrCfg;
 }MacCellGrpCfg;
@@ -893,6 +973,49 @@ typedef struct macUeCfg
    LcCfg lcCfgList[MAX_NUM_LOGICAL_CHANNELS];
 }MacUeCfg;
 
+typedef struct plmnId
+{
+   uint8_t mcc[3];
+   uint8_t mnc[3];
+}PlmnIdentity;
+
+typedef struct nrcgi
+{
+   PlmnIdentity  plmn;
+   uint16_t  cellId;
+}Nrcgi;
+
+typedef struct srbFailInfo
+{
+   uint8_t       srbId;
+   FailureCause  cause;
+}SRBFailInfo;
+
+typedef struct drbFailInfo
+{
+   uint8_t       drbId;
+   FailureCause  cause;
+}DRBFailInfo;
+ 
+typedef struct sCellFailInfo
+{
+   Nrcgi         nrcgi;
+   FailureCause  cause;
+}SCellFailInfo;
+ 
+typedef struct ueCfgRsp
+{
+   uint16_t       cellIdx;
+   uint16_t       ueIdx;
+   MacRsp         result;
+   uint8_t        numSRBFailed;   /* valid values : 0 to MAX_NUM_SRB */ 
+   SRBFailInfo    *failedSRBlisti;
+   uint8_t        numDRBFailed;   /* valid values : 0 to MAX_NUM_DRB */
+   DRBFailInfo    *failedDRBlist;
+   uint8_t        numSCellFailed; /* valid values : 0 to MAX_NUM_SCELL */
+   SCellFailInfo  *failedSCellList;
+}MacUeCfgRsp;
+
 /* Functions for slot Ind from MAC to DU APP*/
 typedef uint16_t (*DuMacSlotInd) ARGS((
    Pst       *pst,
@@ -945,6 +1068,11 @@ typedef uint8_t (*DuMacUeCreateReq) ARGS((
    Pst           *pst,
    MacUeCfg      *ueCfg ));
 
+/* UE create Response from MAC to DU APP */
+typedef uint8_t (*DuMacUeCreateRspFunc) ARGS((
+   Pst           *pst, 
+	MacUeCfgRsp   *cfgRsp));
+
 extern uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo );
 extern uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
 extern uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo);
@@ -972,6 +1100,9 @@ extern uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
 extern uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf);
 extern uint8_t MacHdlUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
 uint8_t sendStopIndMacToDuApp();
+extern uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
+extern uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf);
+extern uint8_t duHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 #endif
 
 /**********************************************************************
