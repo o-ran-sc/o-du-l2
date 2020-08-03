@@ -32,6 +32,7 @@
 #include "common_def.h"
 #include "ckw.h"
 #include "ckw.x"
+#include "du_app_rlc_inf.h"
 /* extern (.x) include files */
 
 
@@ -485,63 +486,6 @@ Buffer         *mBuf;
 
 /*
 *
-*    Fun:    packUeCreateReq
-*
-*    Desc:    pack the primitive UE Create Req
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
-#ifdef ANSI
-PUBLIC S16 packUeCreateReq
-(
-Pst               *pst,
-CkwCfgInfo        *cfgInfo
-)
-#else
-PUBLIC S16 packUeCreateReq(pst, cfgInfo)
-Pst               *pst;
-CkwCfgInfo        *cfgInfo;
-#endif
-{
-    S16 ret1;
-    Buffer *mBuf;
-    mBuf = NULLP;
-    TRC3(packUeCreateReq)
-
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
-    {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW011, (ErrVal)0, "SGetMsg() failed");
-       }
-#endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
-
-    switch(pst->selector)
-    {
-       case ODU_SELECTOR_LWLC:
-          {
-             CMCHKPK(cmPkPtr,(PTR) cfgInfo, mBuf);
-             break;
-          }
-    }
-    pst->event = (Event) RLC_EVT_UE_CREATE_REQ;
-
-    RETVALUE(SPstTsk(pst,mBuf));
-} /* packUeCreateReq */
-
-
-/*
-*
 *    Fun:    cmPkCkwEntCfgCfmInfo
 *
 *    Desc:    pack the structure CkwEntCfgInfo
@@ -694,7 +638,7 @@ CkwCfgCfmInfo     *cfgCfmInfo;
     }
 
     CMCHKPKLOG(SPkS16, suId, mBuf, ECKW017, pst);
-    pst->event = (Event) CKW_EVT_CFG_CFM;
+    pst->event = (Event) EVENT_RLC_UE_CREATE_RSP;
 
     RETVALUE(SPstTsk(pst,mBuf));
 } /* cmPkCkwCfgCfm */
@@ -1359,65 +1303,6 @@ Buffer         *mBuf;
 
     RETVALUE(ROK);
 } /* cmUnpkCkwCfgInfo */
-
-
-/*
-*
-*    Fun:    unpackUeCreateReq
-*
-*    Desc:    unpack the primitive UE create request
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
-#ifdef ANSI
-PUBLIC S16 unpackUeCreateReq
-(
-CkwCfgReq         func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkCkwCfgReq(func, pst, mBuf)
-CkwCfgReq         func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
-{
-    S16 ret1;
-    CkwCfgInfo    *cfgInfo = NULLP;
-    
-    TRC3(unpackUeCreateReq)
-
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&cfgInfo,\
-                sizeof(CkwCfgInfo))) != ROK)
-    {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      /*MBUF_FIXX*/
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW033, (ErrVal)0, "SGetMsg() failed");
-      
-#endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
-
-    switch(pst->selector)
-    {
-       case ODU_SELECTOR_LWLC:
-          {
-             CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgInfo, mBuf); 
-             break;
-          }
-    }
-    SPutMsg(mBuf);
-
-    RETVALUE((*func)(pst, cfgInfo));
-} /* cmUnpkCkwCfgReq */
 
 
 /*

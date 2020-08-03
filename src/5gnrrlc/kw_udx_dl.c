@@ -107,7 +107,7 @@ SpId   spId;
       RETVALUE(RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    KWDBGP_BRIEF(tKwCb, "KwDlUdxBndReq(spId(%d), suId(%d))\n", 
                 spId, suId);
@@ -207,7 +207,7 @@ Reason   reason;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    RLOG2(L_DEBUG,"Unbind Req for spId[%d], reason[%d]", 
                 spId, reason);
@@ -272,12 +272,12 @@ CkwCfgInfo   *cfg;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    pstUdxCfm = &(tKwCb->u.dlCb->udxDlSap[spId].pst);
    KWDBGP_BRIEF(tKwCb,"spId(%d)\n", spId);
    /* Allocate memory and memset to 0 for cfmInfo */
-   KW_ALLOC_SHRABL_BUF_WC(pstUdxCfm->region,
+   RLC_ALLOC_SHRABL_BUF_WC(pstUdxCfm->region,
                           pstUdxCfm->pool,
                           cfgCfm,
                           sizeof(CkwCfgCfmInfo));
@@ -463,7 +463,7 @@ CkwUeInfo   *newUeInfo;
    }
 #endif
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 #ifndef ALIGN_64BIT
    KWDBGP_BRIEF(tKwCb, "(spId(%d), transId(%ld))\n", 
                 spId, transId);
@@ -520,14 +520,14 @@ KwUdxDlStaPdu   *pStaPdu;
    KwDlRbCb   *rbCb;
    KwCb       *tKwCb;
 
-   tKwCb =  KW_GET_KWCB (pst->dstInst);
+   tKwCb =  RLC_GET_RLCCB (pst->dstInst);
 
    kwDbmFetchDlRbCbByRbId(tKwCb, rlcId, &rbCb); /* Fetch DBM RbCb */
    if (!rbCb)
    {
       RLOG_ARG2(L_ERROR, DBG_UEID,rlcId->ueId, "CellId [%u]:RbId[%d] not found",
             rlcId->cellId,rlcId->rbId);
-      KW_FREE_SHRABL_BUF(pst->region, 
+      RLC_FREE_SHRABL_BUF(pst->region, 
 			 pst->pool, 
 			 pStaPdu, 
 			 sizeof(KwUdxDlStaPdu));
@@ -539,7 +539,7 @@ KwUdxDlStaPdu   *pStaPdu;
       into account */
    if(AMDL.pStaPdu)
    {
-      KW_FREE_SHRABL_BUF(pst->region, 
+      RLC_FREE_SHRABL_BUF(pst->region, 
 			 pst->pool, 
 			 AMDL.pStaPdu, 
 			 sizeof(KwUdxDlStaPdu));
@@ -583,7 +583,7 @@ KwUdxStaPdu   *pStaPdu;
    KwCb          *tKwCb;
    KwDlRbCb      *rbCb;
 
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    kwDbmFetchDlRbCbByRbId(tKwCb, rlcId, &rbCb);
    if (!rbCb)
@@ -595,7 +595,7 @@ KwUdxStaPdu   *pStaPdu;
 
    kwAmmDlHndlStatusPdu(tKwCb, rbCb, pStaPdu);
 
-   KW_FREE_SHRABL_BUF(pst->region,
+   RLC_FREE_SHRABL_BUF(pst->region,
 		      pst->pool, 
 		      pStaPdu, 
 		      sizeof(KwUdxStaPdu));
@@ -628,7 +628,7 @@ KwL2MeasReqEvt *measReqEvt;
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_MEAS_START);
 
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tKwCb =  RLC_GET_RLCCB(pst->dstInst);
 
    /* Initialize measCfmEvt */
 
@@ -705,7 +705,7 @@ U8             measType;
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_MEAS_STOP);
 
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tKwCb =  RLC_GET_RLCCB(pst->dstInst);
 /*   cmMemset((U8*)&measCfmEvt, 0, sizeof(KwL2MeasCfmEvt)); */
    /* reset the counters for the measurement type passed */
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
@@ -762,7 +762,7 @@ U8             measType;
    KwCb     *tKwCb;
    TRC3(KwDlUdxMeasSendReq);
 
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tKwCb =  RLC_GET_RLCCB(pst->dstInst);
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
       measEvtCb = &(tKwCb->u.dlCb->kwL2Cb.kwL2EvtCb[cntr]);

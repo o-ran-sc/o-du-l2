@@ -120,7 +120,7 @@ U8     status;
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    KWDBGP_BRIEF(tKwCb, "KwUlUdxBndCfm(post, suId(%d), status(%d)\n", 
                 suId, status);
@@ -225,14 +225,14 @@ CkwCfgCfmInfo   *cfmInfo;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
    {
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
                          sizeof(CkwCfgCfmInfo));
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
    KWDBGP_BRIEF(tKwCb, " suId(%d)\n", suId);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -241,7 +241,7 @@ CkwCfgCfmInfo   *cfmInfo;
       RLOG0(L_ERROR, "Invalid suId");
       KW_SEND_SAPID_ALARM(tKwCb,suId, 
                            LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
                          sizeof(CkwCfgCfmInfo));
@@ -252,7 +252,7 @@ CkwCfgCfmInfo   *cfmInfo;
    if(ROK != kwDbmFindUlTransaction(tKwCb,cfmInfo->transId, &cfgTmpData))
    {
       RLOG0(L_ERROR, "Invalid transId");
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
                          sizeof(CkwCfgCfmInfo));
@@ -261,19 +261,19 @@ CkwCfgCfmInfo   *cfmInfo;
 
    if(ROK != kwDbmDelUlTransaction(tKwCb, cfgTmpData))
    {
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
                          sizeof(CkwCfgCfmInfo));
        RETVALUE(RFAILED);
    }
       /* Allocate memory and memset to 0 for cfmInfo */
-   KW_ALLOC(tKwCb,cfgCfm, sizeof(CkwCfgCfmInfo));
+   RLC_ALLOC(tKwCb,cfgCfm, sizeof(CkwCfgCfmInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (cfgCfm == NULLP)
    {
       RLOG0(L_FATAL, "Memory Allocation failed.");
-      KW_FREE_SHRABL_BUF(pst->region,
+      RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
                          sizeof(CkwCfgCfmInfo));
@@ -281,18 +281,18 @@ CkwCfgCfmInfo   *cfmInfo;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    kwHdlCkwUlCfgReq(tKwCb,cfgTmpData, cfmInfo, cfgCfm);
-   KwUiCkwCfgCfm(&(tKwCb->u.ulCb->ckwSap.pst), 
+   KwUiCkwCfgCfm(&(tKwCb->genCfg.lmPst), 
                  tKwCb->u.ulCb->ckwSap.suId , cfgCfm);
 
    /* free the memory from DL */
-   KW_FREE_SHRABL_BUF(pst->region,
+   RLC_FREE_SHRABL_BUF(pst->region,
                       pst->pool,
 		      cfmInfo,
 		      sizeof(CkwCfgCfmInfo));
 
    /* free the cfgInfo that came from LM */
    KW_PST_FREE(pst->region, pst->pool, cfgTmpData->cfgInfo, sizeof(CkwCfgInfo));
-   KW_FREE(tKwCb,cfgTmpData,sizeof(KwUlCfgTmpData));
+   RLC_FREE(tKwCb,cfgTmpData,sizeof(KwUlCfgTmpData));
    
    RETVALUE(ROK);
 } 
@@ -340,7 +340,7 @@ CmStatus   status;
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    KWDBGP_BRIEF(tKwCb, " suId(%d) \n", suId);
 
@@ -376,7 +376,7 @@ CmStatus   status;
    /* only newUeInfo needs to be freed here, ueInfo would be freed at the 
       interface or by he receipient in case of tight coupling */
    KW_PST_FREE(pst->region, pst->pool, cfgTmpData->newUeInfo, sizeof(CkwUeInfo));
-   KW_FREE_WC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
+   RLC_FREE_WC(tKwCb, cfgTmpData, sizeof (KwUlCfgTmpData));
    RETVALUE(ROK);
 } 
 
@@ -407,7 +407,7 @@ CmLteRlcId   *rlcId
       RETVALUE (RFAILED);
    }
 #endif
-   tKwCb = KW_GET_KWCB(pst->dstInst);
+   tKwCb = RLC_GET_RLCCB(pst->dstInst);
 
    kwDbmFetchUlRbCbByRbId(tKwCb, rlcId, &rbCb);
    if (rbCb == NULLP)

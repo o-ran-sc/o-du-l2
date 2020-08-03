@@ -96,7 +96,7 @@ EXTERN Void kwAmmDlHndlStatusPdu ARGS ((KwCb  *gCb,
   {\
      Buffer    *_pduInfo; \
      SSegMsg((_retx)->seg, (_retx)->hdrSz, &_pduInfo); \
-     KW_FREE_BUF((_retx)->seg); \
+     RLC_FREE_BUF((_retx)->seg); \
      (_retx)->seg = _pduInfo; \
   }\
   (_rbCb)->m.amDl.estHdrSz -= retx->hdrSz;\
@@ -410,7 +410,7 @@ KwDlPduInfo   *pduInfo;
    TRC2(kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer);
 
 
-   KW_ALLOC_WC(gCb,*retx, sizeof(KwRetx));
+   RLC_ALLOC_WC(gCb,*retx, sizeof(KwRetx));
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (*retx == NULLP)
@@ -530,7 +530,7 @@ KwuDatCfmInfo **datCfm;
       nextLnk = lnk->next;
       /* Delete node from the txBuf Pdu lst */
       cmLListDelFrm(&txBuf->pduLst, lnk);
-      KW_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
+      RLC_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
       lnk = nextLnk;
    }
    if(!txBuf->pduLst.count)
@@ -1110,7 +1110,7 @@ KwuDatReqInfo   *datReq;
    TRC2(kwAmmQSdu)
 
    /* Allocate sdu */
-   KW_ALLOC_WC(gCb,sdu, sizeof(KwSdu)); 
+   RLC_ALLOC_WC(gCb,sdu, sizeof(KwSdu)); 
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (sdu == NULLP)
@@ -1263,7 +1263,7 @@ KwDatReq   *kwDatReq;
       kwDatReq->pduInfo.numPdu++;
       gRlcStats.amRlcStats.numDLStaPduSent++;
 
-      KW_FREE_SHRABL_BUF(gCb->u.dlCb->udxDlSap->pst.region, 
+      RLC_FREE_SHRABL_BUF(gCb->u.dlCb->udxDlSap->pst.region, 
                          gCb->u.dlCb->udxDlSap->pst.pool,
                          AMDL.pStaPdu,
                          sizeof(KwUdxDlStaPdu));
@@ -1680,7 +1680,7 @@ KwDatReq   *kwDatReq;
          }
 
          /* Allocate memory for tracking a new segment */
-         KW_ALLOC_WC(gCb,tNode, sizeof(KwRetx)); 
+         RLC_ALLOC_WC(gCb,tNode, sizeof(KwRetx)); 
 #if (ERRCLASS & ERRCLS_ADD_RES)
          if (tNode == NULLP)
          {
@@ -1985,7 +1985,7 @@ KwDatReq   *kwDatReq;
       if (!sdu->mode.am.isSegmented)
       {
          /* Update txBuf */
-         KW_ALLOC_WC(gCb,txBuf, sizeof(KwTx));
+         RLC_ALLOC_WC(gCb,txBuf, sizeof(KwTx));
 
          cmLListInit(&txBuf->pduLst);
 
@@ -2009,7 +2009,7 @@ KwDatReq   *kwDatReq;
          txBuf = kwUtlGetTxBuf(amDl->txBufLst, amDl->txNext);
       }
 
-      KW_ALLOC_WC(gCb,pduInfo, sizeof(KwDlPduInfo));
+      RLC_ALLOC_WC(gCb,pduInfo, sizeof(KwDlPduInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (pduInfo == NULLP)
       {
@@ -2890,7 +2890,7 @@ KwDlRbCb     *rbCb;
    KwDlRbCb   *resetRb;
    KwAmDl* newAmDl;
    KwAmDl* oldAmDl;
-   KW_ALLOC(gCb, resetRb, sizeof(KwDlRbCb));
+   RLC_ALLOC(gCb, resetRb, sizeof(KwDlRbCb));
    
    /* ccpu00135170 Removing KLOCK warning */
    if(resetRb == NULLP)
@@ -2951,7 +2951,7 @@ KwDlRbCb     *rbCb;
    /* allocate the TX array again */
 #ifndef  LTE_TDD
    U32 hashIndex;
-   KW_ALLOC(gCb,
+   RLC_ALLOC(gCb,
 		   resetRb->m.amDl.txBufLst,
 		   (KW_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
    for(hashIndex = 0; hashIndex < KW_TX_BUF_BIN_SIZE; hashIndex++)
@@ -3435,7 +3435,7 @@ KwSn          sn;
    while(txBuf->pduLst.first)
    {
       KwDlPduInfo *pduInfo = (KwDlPduInfo *)(txBuf->pduLst.first->node);
-      KW_ALLOC_WC(gCb,*retx, sizeof(KwRetx));
+      RLC_ALLOC_WC(gCb,*retx, sizeof(KwRetx));
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (*retx == NULLP)
@@ -3453,7 +3453,7 @@ KwSn          sn;
       
       /* Delete node from the txBuf Pdu lst */
       cmLListDelFrm(&txBuf->pduLst, txBuf->pduLst.first);
-      KW_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
+      RLC_FREE_WC(gCb, pduInfo, sizeof(KwDlPduInfo));
    }
    /* Remove PDU from txBuf */
    kwUtlDelTxBuf(amDl->txBufLst, txBuf,gCb); 
@@ -3968,7 +3968,7 @@ U8         *fByte;
       RETVOID;
    }
 
-   KW_ALLOC_SHRABL_BUF(udxPst->region, 
+   RLC_ALLOC_SHRABL_BUF(udxPst->region, 
                        udxPst->pool, 
                        pStaPdu, 
                        sizeof(KwUdxStaPdu));
@@ -4116,7 +4116,7 @@ PUBLIC S16 kwProcDlStatusPdu(Pst *udxPst,SuId suId,
    KwCb      *gCb;
    Pst       dlRlcPst = *udxPst;
 
-   gCb = KW_GET_KWCB(1); /* DL RLC instance */
+   gCb = RLC_GET_RLCCB(1); /* DL RLC instance */
 
    if( ROK != kwDbmFetchDlUeCb(gCb,rnti,cellId,&(ueCb)))
    {

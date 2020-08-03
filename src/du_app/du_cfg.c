@@ -22,6 +22,7 @@
 #include "lrg.h"
 #include "lkw.x"
 #include "lrg.x"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_sys_info_hdl.h"

@@ -16,91 +16,87 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains DU APP and SCTP interface functions */
 #include "common_def.h"
-#include "lrg.h"
-#include "legtp.h"
-#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
-#include "lkw.x"
-#include "lrg.x"
-#include "du_mgr.h"
-#include "du_sctp.h"
-
+#include "du_app_rlc_inf.h"
 
 /*******************************************************************
  *
- * @brief Packs SCTP notification 
+ * @brief Packs and Sends UE create Request from DUAPP to RLC
  *
  * @details
  *
- *    Function : cmPkSctpNtfy
+ *    Function : packDuRlcUlUeCreateReq
  *
  *    Functionality:
- *       Packs SCTP notification
+ *       Packs and Sends UE Create Request from DUAPP to RLC
  *
- * @params[in] Notification 
+ *
+ * @params[in] Post structure pointer
+ *             RlcUeCfg pointer              
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-
-S16 cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
+uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
 {
-   Buffer *mBuf;
-
-   if(SGetMsg(DU_APP_MEM_REGION, DU_POOL, &mBuf) != ROK)
+   Buffer *mBuf = NULLP;
+ 
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      printf("\nSCTP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nRLC : Memory allocation failed at packDuRlcUeCreateReq");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)ueCfg, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nRLC: Only LWLC supported for packDuRlcUeCreateReq");
+      return RFAILED;
    }
 
-   if(ntfy->header.nType == CM_INET_SCTP_ASSOC_CHANGE)
-   {
-      SPkU16(ntfy->u.assocChange.state, mBuf);
-      SPkU32(ntfy->u.assocChange.assocId, mBuf);
-   }
-   SPkU16(ntfy->header.nType, mBuf);
-
-   if (SPstTsk(pst, mBuf) != ROK)
-   {
-      printf("\nSCTP : SPstTsk failed while sending SCTP notification");
-      RETVALUE(RFAILED);
-   }
-
-   RETVALUE(ROK);
+    return SPstTsk(pst,mBuf);
 }
 
 /*******************************************************************
  *
- * @brief Unpacks SCTP notification 
+ * @brief Unpacks UE Create Request received from DU APP
  *
  * @details
  *
- *    Function : cmUnpkSctpNtfy 
+ *    Function : unpackRlcUlUeCreateReq
  *
  *    Functionality:
- *       Unpacks SCTP notification 
+ *         Unpacks UE Create Request received from DU APP
  *
- * @params[in] 
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-
-S16 cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf)
+uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf)
 {
-   CmInetSctpNotification ntfy;
-   cmMemset((U8*)&ntfy, 0, sizeof(CmInetSctpNotification));
-
-   SUnpkU16(&(ntfy.header.nType), mBuf);
-   if(ntfy.header.nType == CM_INET_SCTP_ASSOC_CHANGE)
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      SUnpkU32(&(ntfy.u.assocChange.assocId), mBuf);
-      SUnpkU16(&(ntfy.u.assocChange.state), mBuf);
+      RlcUeCfg *ueCfg;
+      /* unpack the address of the structure */
+      CMCHKUNPK(cmUnpkPtr, (PTR *)&ueCfg, mBuf);
+      SPutMsg(mBuf);
+      return (*func)(pst, ueCfg);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nRLC: Only LWLC supported for UE Create Request ");
+      SPutMsg(mBuf);
    }
 
-   RETVALUE((*func)(mBuf, &ntfy));
+   return RFAILED;
 }
 
 /**********************************************************************
