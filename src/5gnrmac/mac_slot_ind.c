@@ -94,8 +94,19 @@ int MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
    return ROK;
 }
 
-void BuildAndSendMsg4MuxPdu(Msg4Alloc *msg4Alloc)
-{ 
+/**
+ * @brief Forming anf filling the MUX Pdu
+ * @details
+ *
+ *     Function : fillMsg4Pdu
+ * 
+ *      Forming and filling of Msg4Pdu
+ *           
+ *  @param[in]  Msg4Alloc  *msg4Alloc
+ *  @return  void
+ **/
+void fillMsg4Pdu(Msg4Alloc *msg4Alloc)
+{
    MacDlData msg4DlData;
    MacCeInfo  macCeData;
 
@@ -109,7 +120,7 @@ void BuildAndSendMsg4MuxPdu(Msg4Alloc *msg4Alloc)
       if(msg4DlData.pduInfo[0].dlPdu != NULLP)
       {
          fillMsg4DlData(&msg4DlData, macCb.macCell->macRaCb[0].msg4Pdu);
-         fillMacCe(&macCeData, &macCb.macCell->macRaCb[0].msg3Pdu);
+         fillMacCe(&macCeData, macCb.macCell->macRaCb[0].msg3Pdu);
          /* Forming Mux Pdu */
 			macCb.macCell->macRaCb[0].msg4TxPdu = NULLP;
 			MAC_ALLOC(macCb.macCell->macRaCb[0].msg4TxPdu, macCb.macCell->macRaCb[0].msg4TbSize);
@@ -148,6 +159,34 @@ void BuildAndSendMsg4MuxPdu(Msg4Alloc *msg4Alloc)
    /* MAC_FREE(macCb.macCell->macRaCb[0].msg4TxPdu, \
      macCb.macCell->macRaCb[0].msg4TbSize); // TODO: To be freed after re-transmission is successful.
       MAC_FREE(macCb.macCell->macRaCb[0].msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen); */
+}
+
+/**
+ * @brief Builds and Send the Muxed Pdu to Lower MAC
+ *
+ * @details
+ *
+ *     Function : buildAndSendMuxPdu
+ * 
+ *      Build and Sends the Muxed Pdu to Lower MAC.
+ *           
+ *  @param[in]  SlotIndInfo    *slotInd
+ *  @return  void
+ **/
+
+void buildAndSendMuxPdu(SlotIndInfo currTimingInfo)
+{
+   MacDlSlot *currDlSlot = NULLP;
+   SlotIndInfo muxTimingInfo;
+   memset(&muxTimingInfo, 0, sizeof(SlotIndInfo));
+   
+	ADD_DELTA_TO_TIME(currTimingInfo, muxTimingInfo, PHY_DELTA);
+   currDlSlot = &macCb.macCell->dlSlot[muxTimingInfo.slot];
+   if(currDlSlot->dlInfo.msg4Alloc)
+	{
+      fillMsg4Pdu(currDlSlot->dlInfo.msg4Alloc);
+		currDlSlot = NULLP;
+   }
 }
 
 /**
