@@ -212,6 +212,24 @@
     },
     {
       "key": {
+        "uuid": "6da7be7e_656e17a9",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-06T13:21:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63df7b8f_cb3ba5b7",
+      "revId": "950539fb5d2483a734ea0457c758d3f0dda64a24",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5dbbc318_393e65a9",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 5
