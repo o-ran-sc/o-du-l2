@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "551b43a2_9ed26a1c",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Will be cleaning this up as part of mac-cleanup",
+      "parentUuid": "196f9b2f_60a51a7b",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8cb26a3d_5b5e3ef8",
         "filename": "src/5gnrmac/mac.h",
         "patchSetId": 6
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "bd90f3da_3a497894",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cb26a3d_5b5e3ef8",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c85830a6_3b7dc2e1",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 6
@@ -50,6 +86,24 @@
       "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b79e597_c76f924a",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c85830a6_3b7dc2e1",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "b8813c64_857ec4d2",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37ab3d9b_d277876f",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6472d342_a97d7a19",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 6
@@ -101,6 +173,24 @@
       "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56052138_01899bca",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6472d342_a97d7a19",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "baa0ea8b_55c6b75e",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8971438_504687be",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "29a7f275_88e4db17",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 6
@@ -135,6 +243,24 @@
       "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0f4a2a5_3df0eaf1",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Noted. Will do as part of MAC-clean up",
+      "parentUuid": "29a7f275_88e4db17",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +281,24 @@
     },
     {
       "key": {
+        "uuid": "2a430fd1_02069661",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 993,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db9881a2_7aa450a6",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "71329557_4a74ad7e",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 6
@@ -169,6 +313,24 @@
       "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "469f21e7_e5d844ed",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Both variables now called \"rsp\"",
+      "parentUuid": "71329557_4a74ad7e",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +351,24 @@
     },
     {
       "key": {
+        "uuid": "9f8d58f2_e578dc21",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0db409e6_de216184",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c9d83f22_db62164c",
         "filename": "src/5gnrsch/sch_ue_mgr.c",
         "patchSetId": 6
@@ -203,6 +383,24 @@
       "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44095fed_7234c9a1",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9d83f22_db62164c",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -223,6 +421,24 @@
     },
     {
       "key": {
+        "uuid": "42aa21aa_aae81a2f",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05d6f180_69e8c07e",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "134b9fd7_f46e248c",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 6
@@ -240,6 +456,24 @@
     },
     {
       "key": {
+        "uuid": "775fec2b_ee20cb4b",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "134b9fd7_f46e248c",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "159996ed_54720b86",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 6
@@ -254,6 +488,24 @@
       "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab91cd44_6732704c",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T09:53:15Z",
+      "side": 1,
+      "message": "Cause is optional parameter in AAD for both CellCfg response and UE Cfg response.",
+      "parentUuid": "159996ed_54720b86",
+      "revId": "10d819acfa0bd052fd02fc7712f128186b8d8608",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
