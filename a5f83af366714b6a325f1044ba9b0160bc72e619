@@ -1,0 +1,514 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "75a14eff_c6b93210",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "malloc will be removed from this file, hence stdio.h not needed.\nEven if it is needed, include in common_def.h",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e3af687_9df97ea4",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "tfu is interface between MAC/SCH and Convergence layer. Is it included in RLC due to compilation dependencies?",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f09a330c_75b4f556",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d748778_c34b634b",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "RLC_ALLOC macro (similar to MAC_ALLOC) can be used.",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d418e816_fbe15fe8",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "A static/global variable can be used. It will be incremented and assigned every time a transId is to be filled. Something similar was done in du-app.",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ff6b3ef_fbea3730",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Shouldn\u0027t rbId also be a configurable parameter(i.e. received from du-app)?\nIf not, then it should be assigned in RLC through some logic.\nHardcoding RB-ID here will set all rb_id for all LCs as 1.",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ff59446_7bec0131",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Why is lcId assigned to rbType?",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a18a2d3_ae5ba77b",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "All LCs are getting hard-coded to LCH_DTCH type.\nLC type should be either configurable or assigned in RLC through some logic",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e7d5e8f_104cb337",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "What are the expected values of dir in ckwCfgInfo. By assigning rlcMode to dir, hopefully we are not assigning any invalid value in any circumstance",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27c1da32_3c4d39af",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Since this function a common handler for all UEs and all LCs configurations, there should be no parameter hard-coded here : like rbId, lcType above",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5e72723_5cd20fd2",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "RLC UE create response also to be implemented",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a1e9ee5_034d4294",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "We are no longer including header files inside other header files",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a4aa833_7aaa891d",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "RLC Mode could be an enum",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ff408d0_3f72f04d",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "RLC TM Mode missing",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ee253df_5a967ebb",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "There could be other timer enums which may define 5MS, 10MS like this in future.\nAlso to make it more readable, can we rename these to something like  T_POLL_RETX_TMR_MS_10?",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75352f96_136f90af",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7324f5d_dee7068b",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85c04101_4eb3e71c",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e59a1dff_9a14b0b5",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Since the parameter is already within UL specific struct, we can simply call this as snLen",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34046a02_8c89fea0",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c359f68b_46640c15",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Lets call above structures AmUlCfg and AmDlCfg",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "730c46ee_5627435a",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Lets call above structures UmUlCfg and UmDlCfg",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a03c416_6be3d2ac",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "rename to UmUlCfg",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "579f62b7_668fc327",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Rename to UmDlCfg",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c911f4d_2c4aabfb",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "rlcMode could be of type RLC MODE enum",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7146f90_ea59556a",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "Above structures could be called AmBearerCfg, UmBiDirBearerCfg and so on",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c170a16_41f22986",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "1. No Configuration needed for TM mode? Can be checked in seed code.\n2. RLC Mode configurations are optional in AAD. i.e if rlcMode \u003d AM , then only AM info should get configured. Lets re-discuss this design.",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98ec79ce_9c77ef6b",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "We are no longer including header files inside other header files",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a987701_857f1300",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "lets not use SRB 1 macro to denote number of LCs.",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96749923_b7a05163",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-07T14:59:45Z",
+      "side": 1,
+      "message": "In RLC handler, only one of the above configuration is actually getting stored, then why to fill and send all.",
+      "revId": "a5f83af366714b6a325f1044ba9b0160bc72e619",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
