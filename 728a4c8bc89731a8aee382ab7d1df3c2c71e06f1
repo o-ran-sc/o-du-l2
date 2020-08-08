@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01c376f8_8661a491",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-08T09:34:04Z",
+      "side": 1,
+      "message": "indentation must be set right to 3 spaces",
+      "revId": "728a4c8bc89731a8aee382ab7d1df3c2c71e06f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c879e02e_704ec7f9",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-08T09:34:04Z",
+      "side": 1,
+      "message": "move this before any structre declaration/definition",
+      "revId": "728a4c8bc89731a8aee382ab7d1df3c2c71e06f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fc48b95_3f1fecf4",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-08T09:34:04Z",
+      "side": 1,
+      "message": "indentation must be of 3 spaces",
+      "revId": "728a4c8bc89731a8aee382ab7d1df3c2c71e06f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba12e017_2531d351",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-08T09:34:04Z",
+      "side": 1,
+      "message": "already declared above",
+      "revId": "728a4c8bc89731a8aee382ab7d1df3c2c71e06f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b05cbc8_ca245630",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 889,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-08T09:34:04Z",
+      "side": 1,
+      "message": "after copying raCb to uecb, macRaCb must be deleted",
+      "revId": "728a4c8bc89731a8aee382ab7d1df3c2c71e06f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9e181c4_83614f6e",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-08T09:34:04Z",
+      "side": 1,
+      "message": "add some prints in the function",
+      "revId": "728a4c8bc89731a8aee382ab7d1df3c2c71e06f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "780907ff_9c90ddde",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-08T09:34:04Z",
+      "side": 1,
+      "message": "looks like extra indentation has gotten added",
+      "revId": "728a4c8bc89731a8aee382ab7d1df3c2c71e06f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29814139_72b6fc09",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1098,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-08T09:34:04Z",
+      "side": 1,
+      "message": "FailureCause",
+      "revId": "728a4c8bc89731a8aee382ab7d1df3c2c71e06f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
