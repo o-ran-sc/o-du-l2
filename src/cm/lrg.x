@@ -677,7 +677,7 @@ EXTERN S16 RgMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
   * @param cfg pointer to RgMngmt
   * @return ROK/RFAILED
   */
-EXTERN int HandleSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+EXTERN int SchProcGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
 
  /** @brief This primitive carries the Confirmation for a Configuration Request
   * sent from the layer manager to Scheduler.

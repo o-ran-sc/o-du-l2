@@ -49,6 +49,11 @@
 #include "cm_hash.x"
 #include "cm_lte.x"
 #include "cm_lib.x"
+#include "du_log.h"
+
+/* MAX values */
+#define MAX_NUM_CELL 1
+#define MAX_NUM_UE   1
 
 /* 5G ORAN phy delay */
 #define PHY_DELTA 2
@@ -58,19 +63,32 @@
 #define ODU_SELECTOR_TC 1
 #define ODU_SELECTOR_LWLC 2
 
-#define CRNTI_START_RANGE 100
-#define CRNTI_END_RANGE   500
+#define ODU_START_CRNTI   100
+#define ODU_END_CRNTI     500
 
-#define GET_UE_IDX( _crnti,_ueIdx)    \
-{                                                  \
-   _ueIdx = _crnti - CRNTI_START_RANGE;            \
+#define GET_UE_IDX( _crnti,_ueIdx)         \
+{                                          \
+   _ueIdx = _crnti - ODU_START_CRNTI + 1;  \
 }
 
-#define GET_CRNTI( _crnti,_ueIdx)    \
-{                                                  \
-   _crnti = _ueIdx + CRNTI_START_RANGE;            \
+#define GET_CRNTI( _crnti,_ueIdx)          \
+{                                          \
+   _crnti = _ueIdx + ODU_START_CRTNI - 1;  \
 }
+
+/* Calculates cellIdx from cellId */
+#define GET_CELL_IDX(_cellId, _cellIdx)   \
+{                                         \
+   _cellIdx = _cellId - 1;                \
+}
+
+typedef struct slotIndInfo
+{
+   uint16_t cellId;
+   uint16_t sfn;
+   uint16_t slot;
+}SlotIndInfo;
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+***********************************************************************/

@@ -21,6 +21,8 @@
 #include "lrg.x"
 #include "lkw.x"
 #include "legtp.h"
+#include "du_app_mac_inf.h"
+#include "odu_common_codec.h"
 #include "du_cfg.h"
 #include "du_ue_mgr.h"
 #include<ProtocolIE-Field.h>
@@ -33,14 +35,14 @@ U32 sduId = 0;
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
    packMacDlCcchInd,   /* Loose coupling */
-   MacHdlDlCcchInd,    /* TIght coupling */
+   MacProcDlCcchInd,    /* TIght coupling */
    packMacDlCcchInd    /* Light weight-loose coupling */
 };
 
 DuMacUeCreateReq packMacUeCreateReqOpts[] =
 {
    packDuMacUeCreateReq,       /* Loose coupling */
-   MacHdlUeCreateReq,          /* TIght coupling */
+   MacProcUeCreateReq,          /* TIght coupling */
    packDuMacUeCreateReq,       /* Light weight-loose coupling */
 };
 
@@ -375,7 +377,7 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
       }
       else
       {
-	 if(duCb.actvCellLst[cellId-1]->numActvUes < DU_MAX_UE)
+	 if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
 	 {
 	    ret = duCreateUeCb(&duCb.ueCcchCtxt[idx], gnbCuUeF1apId);
 	    if(ret)
@@ -486,7 +488,7 @@ void fillInitDlBwp(InitialDlBwp *initDlBwp)
 	 if(initDlBwp->pdcchCfg.numCRsetToAddMod <= MAX_NUM_CRSET)
 	 {
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cRSetId = \
-               PDCCH_CTRL_RSRC_SET_ONE_ID;
+	       PDCCH_CTRL_RSRC_SET_ONE_ID;
 	    memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
 	       FREQ_DOM_RSRC_SIZE); 
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc[idx] =\
@@ -856,19 +858,20 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
    uint8_t ret     = ROK;
    uint8_t ueIdx;
 
-   for(cellIdx = 0; cellIdx < DU_MAX_CELLS; cellIdx++)
+   for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
    {
       if(ueCcchCtxt->cellId == duCb.actvCellLst[cellIdx]->cellId)
       {
 	 GET_UE_IDX(ueCcchCtxt->crnti, ueIdx);
 	 DU_LOG("\nDU_APP: Filling UeCb for ueIdx [%d]", ueIdx);
+
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId = ueCcchCtxt->gnbDuUeF1apId;
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId = gnbCuUeF1apId;
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState       = UE_ACTIVE;
 
 	 /* Filling Mac Ue Config */ 
 	 memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg, 0, sizeof(MacUeCfg));
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId       = ueCcchCtxt->cellId;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId        = ueCcchCtxt->cellId;
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.ueIdx         = ueIdx;
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.crnti         = ueCcchCtxt->crnti;
 	 fillMacUeCfg(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg);

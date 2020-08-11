@@ -22,6 +22,8 @@
 #include "legtp.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "du_app_mac_inf.h"
+#include "odu_common_codec.h"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include<ProtocolIE-Field.h>
@@ -62,7 +64,7 @@ S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
           value.choice.Cells_to_be_Activated_List_Item;
 
       bitStringToInt(&cell.nRCGI.nRCellIdentity, &nci);
-      if(nci <= 0 || nci > DU_MAX_CELLS)
+      if(nci <= 0 || nci > MAX_NUM_CELL)
       {
          DU_LOG("\nDU APP : Invalid NCI %d", nci);
          return RFAILED;

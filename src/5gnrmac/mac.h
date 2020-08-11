@@ -18,48 +18,17 @@
 #ifndef _MAC_H_
 #define _MAC_H_
 
-#include <stdio.h>
-
-/* header include files (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_lte.h"        /* Common LTE Defines */
-#include "cm_mblk.h"        /* Common LTE Defines */
-#include "rgu.h"           /* RGU interface includes*/
-#include "tfu.h"           /* TFU Interface defines */
-#include "lrg.h"
-#include "du_app_mac_inf.h"
-#include "mac_sch_interface.h"
-#include "rg.h"
-
-/* header/extern include files (.x) */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_lte.x"        /* Common LTE Defines */
-#include "cm_mblk.x"        /* Common LTE Defines */
-#include "rgu.x"           
-#include "tfu.x"           /* RGU Interface includes */
-#include "lrg.x"
-
-#define MAX_SLOT_SUPPORTED    10 /* numerology 0 15Khz */
-#define MAX_ZERO_CORR_CFG_IDX 16 /* max zero correlation config index */
-#define SI_RNTI 0xFFFF
-#define P_RNTI 0xFFFE
+/* MAX values */
 #define MAX_MAC_CE 6
-#define MAX_UE 1
 #define MAX_CRI_SIZE 6
 #define MAX_MAC_DL_PDU 10
 #define MAX_NUM_HARQ_PROC  16
+#define MAX_SLOT_SUPPORTED    10 /* numerology 0 15Khz */
+#define MAX_ZERO_CORR_CFG_IDX 16 /* max zero correlation config index */
+
+#define DEFAULT_CELLS 1
+#define SI_RNTI 0xFFFF
+#define P_RNTI 0xFFFE
 
 #define PERIODIC_BSR_TMR_1MS    1
 #define PERIODIC_BSR_TMR_5MS    5
@@ -115,6 +84,96 @@
 #define MAC_LCID_LONG_BSR          62
 #define MAC_LCID_CRI               62
 #define MAC_LCID_PADDING           63
+
+#define MAC_MEM_REGION       4
+#define MAC_POOL 1
+/* allocate and zero out a MAC static buffer */
+#define MAC_ALLOC(_datPtr, _size)                            \
+{                                                            \
+   uint8_t _ret;                                             \
+   _ret = SGetSBuf(MAC_MEM_REGION, MAC_POOL,                 \
+	 (Data **)&_datPtr, _size);                          \
+   if(_ret == ROK)                                           \
+   {                                                         \
+      cmMemset((uint8_t *)_datPtr, 0, _size);                \
+   }                                                         \
+   else                                                      \
+   {                                                         \
+      _datPtr = NULLP;                                       \
+   }                                                         \
+}
+
+/* free a static buffer */
+#define MAC_FREE(_datPtr, _size)                             \
+{                                                            \
+   if(_datPtr)                                               \
+   {                                                         \
+      SPutSBuf(MAC_MEM_REGION, MAC_POOL,                     \
+	    (Data *)_datPtr, _size);                         \
+   }                                                         \
+}
+
+/* Allocate shared memory to be used for LWLC
+ * during inter-layer communication */
+#define MAC_ALLOC_SHRABL_BUF(_buf, _size)                    \
+{                                                            \
+   if(SGetStaticBuffer(MAC_MEM_REGION, MAC_POOL,             \
+	    (Data **)&_buf, (Size) _size, 0) == ROK)         \
+   {                                                         \
+      cmMemset((uint8_t *)(_buf), 0, _size);                 \
+   }                                                         \
+   else                                                      \
+   {                                                         \
+      (_buf) = NULLP;                                        \
+   }                                                         \
+}
+
+/* Free shared memory, received through LWLC */
+#define MAC_FREE_SHRABL_BUF(_region, _pool,_buf, _size)      \
+{                                                            \
+   if (_buf != NULLP)                                        \
+   {                                                         \
+      (Void) SPutStaticBuffer(_region, _pool,                \
+	    (Data *) _buf, (Size) _size, 0);                 \
+      _buf = NULLP;                                          \
+   }                                                         \
+}
+
+/* Fill Pst structure for sending msg from MAC to DU APP */
+#define FILL_PST_MAC_TO_DUAPP(_pst, _event)                     \
+{                                                           \
+   _pst.selector  = ODU_SELECTOR_LWLC;                      \
+   _pst.srcEnt    = ENTRG;                                  \
+   _pst.dstEnt    = ENTDUAPP;                               \
+   _pst.dstInst   = 0;                                      \
+   _pst.srcInst   = macCb.macInst;                          \
+   _pst.dstProcId = macCb.procId;                           \
+   _pst.srcProcId = macCb.procId;                           \
+   _pst.region = MAC_MEM_REGION;                            \
+   _pst.pool = MAC_POOL;                                    \
+   _pst.event = _event;                                     \
+   _pst.route = 0;                                          \
+   _pst.prior = 0;                                          \
+   _pst.intfVer = 0;                                        \
+}
+
+/* Fill Pst structure for sending msg from MAC to SCH */
+#define FILL_PST_MAC_TO_SCH(_pst, _event)                       \
+{                                                           \
+   _pst.selector  = ODU_SELECTOR_TC;                        \
+   _pst.srcEnt    = ENTRG;                                  \
+   _pst.dstEnt    = ENTRG;                                  \
+   _pst.dstInst   = 1;                                      \
+   _pst.srcInst   = macCb.macInst;                          \
+   _pst.dstProcId = macCb.procId;                           \
+   _pst.srcProcId = macCb.procId;                           \
+   _pst.region = MAC_MEM_REGION;                            \
+   _pst.pool = MAC_POOL;                                    \
+   _pst.event = _event;                                     \
+   _pst.route = 0;                                          \
+   _pst.prior = 0;                                          \
+   _pst.intfVer = 0;                                        \
+}
 
 typedef struct macCellCb MacCellCb;
 
@@ -245,30 +304,31 @@ typedef struct macUeCb
 struct macCellCb
 {
    uint16_t    cellId;
-   MacRaCbInfo macRaCb[MAX_UE];
+   MacRaCbInfo macRaCb[MAX_NUM_UE];
    MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];
    MacUlSlot   ulSlot[MAX_SLOT_SUPPORTED];
    uint16_t    numActvUe;
-   MacUeCb     ueCb[MAX_UE];
+   MacUeCb     ueCb[MAX_NUM_UE];
+   MacCellCfg  macCellCfg;
+   SlotIndInfo currTime;
 };
 
 typedef struct macCb
 {
    Inst       macInst;
    ProcId     procId;
-   MacCellCb  *macCell;
+   MacCellCb  *macCell[MAX_NUM_CELL];
 }MacCb;
 
 /* global variable */
 MacCb macCb;
-void fillMacToSchPst(Pst *pst);
 void fillRarPdu(RarInfo *rarInfo);
 void createMacRaCb(uint16_t cellId, uint16_t crnti);
-void fillMsg4DlData(MacDlData *dlData, uint8_t *msg4Pdu);
+void fillMsg4DlData(uint16_t cellId, MacDlData *dlData, uint8_t *msg4Pdu);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);
-int unpackRxData(RxDataIndPdu *rxDataIndPdu);
-uint16_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti);
+uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu);
+uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti);
 void fillMg4Pdu(Msg4Alloc *msg4Alloc);
 void buildAndSendMuxPdu(SlotIndInfo currTimingInfo);
 
