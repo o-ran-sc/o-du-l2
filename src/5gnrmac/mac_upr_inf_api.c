@@ -19,6 +19,7 @@
 /* This file contains the definitions for Upper Interface APIs that are
  * invoked from MAC */
 #include "common_def.h"
+#include "du_app_mac_inf.h"
 #include "mac_upr_inf_api.h"
 
 /* Funtion pointer options for slot indication */
@@ -113,6 +114,6 @@ uint16_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
 

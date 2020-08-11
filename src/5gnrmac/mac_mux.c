@@ -20,26 +20,11 @@
 /* header include files -- defines (.h) */
 #include "common_def.h"
 #include "lrg.h"           /* Layer manager interface includes*/
-#include "crg.h"           /* CRG interface includes*/
-#include "rgu.h"           /* RGU interface includes*/
-#include "tfu.h"           /* TFU interface includes */
-#include "rg_sch_inf.h"    /* SCH interface includes */
-#include "rg_prg.h"       /* PRG (MAC-MAC) interface includes*/
-#include "rg_env.h"       /* MAC environmental includes*/
-#include "rg.h"           /* MAC includes*/
-#include "rg_err.h"       /* MAC error includes*/
-#include "du_log.h"
-
-/* header/extern include files (.x) */
-#include "rgu.x"           /* RGU types */
-#include "tfu.x"           /* RGU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
-#include "crg.x"           /* CRG interface includes */
-#include "rg_sch_inf.x"    /* SCH interface typedefs */
-#include "rg_prg.x"        /* PRG (MAC-MAC) Interface typedefs */
 #include "du_app_mac_inf.h"
+#include "mac_sch_interface.h"
+#include "lwr_mac_upr_inf.h"
 #include "mac.h"
-#include "rg.x"            /* typedefs for MAC */
 
 /*******************************************************************
  *
@@ -63,7 +48,7 @@ void packBytes(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos, uint32_t val, ui
    uint32_t  bytePart2;
    uint8_t   bytePart1Size;
    uint32_t  bytePart2Size;
-  
+
    if(*bitPos - valSize + 1 >= 0)
    {
       bytePart1 = (uint8_t)val;
@@ -71,11 +56,11 @@ void packBytes(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos, uint32_t val, ui
       buf[*bytePos] |= bytePart1;
       if(*bitPos - valSize < 0)
       {
-         *bitPos = 7;
-         (*bytePos)++;
+	 *bitPos = 7;
+	 (*bytePos)++;
       }
       else
-         *bitPos -= valSize;
+	 *bitPos -= valSize;
    }
    else
    {
@@ -85,7 +70,7 @@ void packBytes(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos, uint32_t val, ui
 
       bytePart1 = (val >> bytePart2Size) << (*bitPos -bytePart1Size +1);
       bytePart2 =  (~((~temp) << bytePart2Size)) & val;
- 
+
       buf[*bytePos] |= bytePart1;
       (*bytePos)++;
       *bitPos = 7;
@@ -126,14 +111,14 @@ void fillRarPdu(RarInfo *rarInfo)
    uint16_t  timeAdv = 0;
    uint32_t  ulGrant = 0;
    uint16_t  tmpCrnti = 0; 
-	uint8_t   paddingLcid = 63;
+   uint8_t   paddingLcid = 63;
 
    /* Size(in bits) of RAR subheader files */
    uint8_t   EBitSize = 1;
    uint8_t   TBitSize = 1;
    uint8_t   rapidSize = 6;
-	uint8_t   paddingLcidSize = 6;
-	uint8_t   paddingSize = 8;
+   uint8_t   paddingLcidSize = 6;
+   uint8_t   paddingSize = 8;
 
 
    /* Size(in bits) of RAR payload fields */
@@ -146,7 +131,7 @@ void fillRarPdu(RarInfo *rarInfo)
    EBit = 0;
    TBit = 1;
    rapId = rarInfo->RAPID;
-   
+
    RBit = 0;
    timeAdv = rarInfo->ta;
    ulGrant = 0; /* this will be done when implementing msg3 */ 
@@ -154,22 +139,22 @@ void fillRarPdu(RarInfo *rarInfo)
 
    /* Calulating total number of bytes in buffer */
    totalBits = EBitSize + TBitSize + rapidSize + RBitSize + timeAdvSize \
-     + ulGrantSize + tmpCrntiSize;
+	       + ulGrantSize + tmpCrntiSize;
 
    /* add padding size */
-	totalBits += RBitSize*2 + paddingLcidSize + paddingSize;
-   
+   totalBits += RBitSize*2 + paddingLcidSize + paddingSize;
+
    /* Calulating total number of bytes in buffer */
    numBytes = totalBits/8;
    if(totalBits % 8)
       numBytes += 1;
-    
-	rarInfo->rarPduLen = numBytes;
+
+   rarInfo->rarPduLen = numBytes;
 
    /* Initialize buffer */
    for(bytePos = 0; bytePos < numBytes; bytePos++)
       rarPdu[bytePos] = 0;
-   
+
    bytePos = 0;
    bitPos = 7;
 
@@ -182,11 +167,11 @@ void fillRarPdu(RarInfo *rarInfo)
    packBytes(rarPdu, &bytePos, &bitPos, ulGrant, ulGrantSize);
    packBytes(rarPdu, &bytePos, &bitPos, tmpCrnti, tmpCrntiSize);
 
-	/* padding of 2 bytes */
+   /* padding of 2 bytes */
    packBytes(rarPdu, &bytePos, &bitPos, RBit, RBitSize*2);
    packBytes(rarPdu, &bytePos, &bitPos, paddingLcid, paddingLcidSize);
    packBytes(rarPdu, &bytePos, &bitPos, 0, paddingSize);
-	
+
 }
 
 /*******************************************************************
@@ -233,9 +218,9 @@ void fillMsg4DlData(MacDlData *dlData, uint8_t *msg4Pdu)
    dlData->pduInfo[idx].lcId = MAC_LCID_CCCH;
    dlData->pduInfo[idx].pduLen = macCb.macCell->macRaCb[idx].msg4PduLen;
    for(idx2 = 0; idx2 <  dlData->pduInfo[idx].pduLen; idx2++)
-	{
+   {
       dlData->pduInfo[idx].dlPdu[idx2] = msg4Pdu[idx2];
-	}
+   }
 }
 
 /*************************************************
@@ -258,7 +243,7 @@ void fillMacCe(MacCeInfo *macCeInfo, uint8_t *msg3Pdu)
    {
       macCeInfo->macCe[idx].macCeLcid = MAC_LCID_CRI;
       memcpy(macCeInfo->macCe[idx].macCeValue, \
-         msg3Pdu, MAX_CRI_SIZE);
+	    msg3Pdu, MAX_CRI_SIZE);
    }
 }
 
@@ -303,19 +288,19 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint
       lcid = macCeData->macCe[idx].macCeLcid;
       switch(lcid)
       {
-         case MAC_LCID_CRI:
-	 {
-            /* Packing fields into MAC PDU R/R/LCID */
-            packBytes(macPdu, &bytePos, &bitPos, RBit, (RBitSize * 2));
-            packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
-            memcpy(&macPdu[bytePos], macCeData->macCe[idx].macCeValue,\
-            MAX_CRI_SIZE);
-				bytePos += MAX_CRI_SIZE;
-            break;
-         }
-         default:
-            DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
-            break;
+	 case MAC_LCID_CRI:
+	    {
+	       /* Packing fields into MAC PDU R/R/LCID */
+	       packBytes(macPdu, &bytePos, &bitPos, RBit, (RBitSize * 2));
+	       packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+	       memcpy(&macPdu[bytePos], macCeData->macCe[idx].macCeValue,\
+		     MAX_CRI_SIZE);
+	       bytePos += MAX_CRI_SIZE;
+	       break;
+	    }
+	 default:
+	    DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
+	    break;
       }
    }
 
@@ -325,33 +310,33 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint
       lcid = dlData->pduInfo[idx].lcId;
       switch(lcid)
       {
-         case MAC_LCID_CCCH:
-	 {
-            lenField = dlData->pduInfo[idx].pduLen;
-            if(dlData->pduInfo[idx].pduLen > 255)
-            {
-               FBit = 1;
-               lenFieldSize = 16;
+	 case MAC_LCID_CCCH:
+	    {
+	       lenField = dlData->pduInfo[idx].pduLen;
+	       if(dlData->pduInfo[idx].pduLen > 255)
+	       {
+		  FBit = 1;
+		  lenFieldSize = 16;
 
-            }
-            else
-            {
-               FBit = 0;
-               lenFieldSize = 8;
-            }
-            /* Packing fields into MAC PDU R/F/LCID/L */
-            packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
-            packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
-            packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
-            packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
-				memcpy(&macPdu[bytePos], dlData->pduInfo[idx].dlPdu, lenField);
-				bytePos += lenField;
-            break;
-	 }
+	       }
+	       else
+	       {
+		  FBit = 0;
+		  lenFieldSize = 8;
+	       }
+	       /* Packing fields into MAC PDU R/F/LCID/L */
+	       packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+	       packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
+	       packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+	       packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
+	       memcpy(&macPdu[bytePos], dlData->pduInfo[idx].dlPdu, lenField);
+	       bytePos += lenField;
+	       break;
+	    }
 
-         default:
-            DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
-            break;
+	 default:
+	    DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
+	    break;
       }
 
    }
@@ -364,10 +349,10 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint
       packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
    }
 
-	/*Storing the muxed pdu in macRaCb */
+   /*Storing the muxed pdu in macRaCb */
    if(msg4TxPdu != NULLP)
    {
-	   memcpy(msg4TxPdu, macPdu, tbSize);
+      memcpy(msg4TxPdu, macPdu, tbSize);
    }
 }
 

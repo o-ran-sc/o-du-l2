@@ -29,28 +29,21 @@
 #define CORESET_TYPE2 2
 #define CORESET_TYPE3 3
 
-
-#include "lwr_mac.h"
-
-#ifdef INTEL_FAPI
-#include "fapi.h"
-#endif
-
 typedef enum{
    SI_RNTI_TYPE,
    RA_RNTI_TYPE,
    TC_RNTI_TYPE
 }RntiType;
 
-S16 lwr_mac_handleInvalidEvt(void *msg);
-S16 lwr_mac_handleParamReqEvt(void *msg);
-S16 lwr_mac_handleParamRspEvt(void *msg);
-S16 lwr_mac_handleConfigReqEvt(void *msg);
-S16 lwr_mac_handleConfigRspEvt(void *msg);
-S16 lwr_mac_handleStartReqEvt(void *msg);
-S16 lwr_mac_handleStopReqEvt(void *msg);
+S16 lwr_mac_procInvalidEvt(void *msg);
+S16 lwr_mac_procParamReqEvt(void *msg);
+S16 lwr_mac_procParamRspEvt(void *msg);
+S16 lwr_mac_procConfigReqEvt(void *msg);
+S16 lwr_mac_procConfigRspEvt(void *msg);
+S16 lwr_mac_procStartReqEvt(void *msg);
+S16 lwr_mac_procStopReqEvt(void *msg);
 void sendToLowerMac(U16, U32, void *);
-void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
+void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 
 typedef S16 (*lwrMacFsmHdlr)(void *);
 #endif

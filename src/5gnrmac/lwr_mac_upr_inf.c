@@ -99,7 +99,7 @@ uint16_t packRachInd(Pst *pst, RachInd *rachInd)
    }
    return RFAILED;
 }
- 
+
 /*******************************************************************
  *
  * @brief Loose coupled packing of slot indication
@@ -124,14 +124,14 @@ S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
    {
       RETVALUE(RFAILED);
    }
- 
+
    /* pack SFN and slot value */
    CMCHKPK(SPkU16,slotInd->sfn, mBuf);
    CMCHKPK(SPkU16,slotInd->slot, mBuf);
- 
+
    RETVALUE(SPstTsk(pst,mBuf));
 }
- 
+
 /*******************************************************************
  *
  * @brief Light weight loose coupled packing of slot indication
@@ -183,5 +183,5 @@ uint16_t packStopInd(Pst *pst)
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -22,8 +22,6 @@
 
 #define MAX_NUM_CELL_SUPP 1
 
-#include "du_app_mac_inf.h"
-
 #ifdef INTEL_WLS
 #define LWR_MAC_ALLOC(_datPtr, _size)   WLS_MEM_ALLOC(_datPtr, _size);
 #else                                     
@@ -40,13 +38,13 @@ typedef enum
 
 /* Events in Lower Mac */
 typedef enum{
-  PARAM_REQUEST,
-  PARAM_RESPONSE,
-  CONFIG_REQUEST,
-  CONFIG_RESPONSE,
-  START_REQUEST,
-  STOP_REQUEST,
-  MAX_EVENT
+   PARAM_REQUEST,
+   PARAM_RESPONSE,
+   CONFIG_REQUEST,
+   CONFIG_RESPONSE,
+   START_REQUEST,
+   STOP_REQUEST,
+   MAX_EVENT
 }EventState;
 
 typedef struct clCb
@@ -267,11 +265,11 @@ EXTERN ClCb clGlobalCp;
 EXTERN ClCellCb * rgClUtlGetCellCb ARGS((U16 cellId));
 EXTERN uint32_t reverseBits(uint32_t num, uint8_t numBits);
 EXTERN void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
-   uint32_t val, uint8_t valSize);
+      uint32_t val, uint8_t valSize);
 EXTERN void lwrMacInit();
 
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

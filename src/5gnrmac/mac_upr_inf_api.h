@@ -19,9 +19,6 @@
 /* This file contains the definitions for Upper Interface APIs that are
  * invoked from MAC */
 
-#include "du_app_mac_inf.h"
-
-
 uint16_t MacDuAppSlotInd(Pst *pst, SlotInfo *slotInfo);
 uint16_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId);
 uint16_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);

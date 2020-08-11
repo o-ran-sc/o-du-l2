@@ -19,6 +19,7 @@
 /* This file contains all utility functions for MAC CL */
 
 #include "common_def.h"
+#include "du_app_mac_inf.h"
 #include "lwr_mac.h"
 
  /*******************************************************************
@@ -51,7 +52,7 @@ PUBLIC ClCellCb * rgClUtlGetCellCb
    }
 
    cmHashListFind((CmHashListCp *)&clGlobalCp.cellCbLst, (U8 *)&cellId, sizeof(U16), 0, (PTR *)&cellCb);
-   
+
    RETVALUE(cellCb);
 }
 
@@ -78,7 +79,7 @@ uint32_t reverseBits(uint32_t num, uint8_t numBits)
    for (i = 0; i < numBits; i++)
    {
       if((num & (1 << i)))
-         reverse_num |= 1 << ((numBits - 1) - i);
+	 reverse_num |= 1 << ((numBits - 1) - i);
    }
    return reverse_num;
 }
@@ -104,7 +105,7 @@ uint32_t reverseBits(uint32_t num, uint8_t numBits)
  * ****************************************************************/
 
 void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
-   uint32_t val, uint8_t valSize)
+      uint32_t val, uint8_t valSize)
 {
    uint8_t temp;
    uint8_t bytePart1;
@@ -138,5 +139,5 @@ void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
 
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

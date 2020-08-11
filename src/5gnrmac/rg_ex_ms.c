@@ -112,23 +112,23 @@ Buffer  *mBuf;                      /* message buffer       */
 #endif /* LCRGMILRG */
       case EVENT_MAC_CELL_CONFIG_REQ:
          /* Process MAC cell config */
-         unpackDuMacCellCfg(MacHdlCellCfgReq, pst, mBuf);
+         unpackDuMacCellCfg(MacProcCellCfgReq, pst, mBuf);
          break;
       case EVENT_MAC_CELL_START_REQ:
          /* Process MAC cell start request */
-         unpackMacCellStartReq(MacHdlCellStartReq, pst, mBuf);
+         unpackMacCellStartReq(MacProcCellStartReq, pst, mBuf);
          break;
 		case EVENT_MAC_CELL_STOP_REQ:
 			/* Process MAC cell stop request */
-			unpackMacCellStopReq(MacHdlCellStopReq, pst, mBuf);
+			unpackMacCellStopReq(MacProcCellStopReq, pst, mBuf);
 			break;
 		case EVENT_MAC_DL_CCCH_IND:
 			/* Process DL CCCH Ind */
-			unpackMacDlCcchInd(MacHdlDlCcchInd, pst, mBuf);
+			unpackMacDlCcchInd(MacProcDlCcchInd, pst, mBuf);
 			break;
 		case EVENT_MAC_UE_CREATE_REQ:
 		   /* Process Ue Create Request */
-			unpackMacUeCreateReq(MacHdlUeCreateReq, pst, mBuf);
+			unpackMacUeCreateReq(MacProcUeCreateReq, pst, mBuf);
 			break;
       default:
          RG_FREE_MSG(mBuf);
@@ -277,9 +277,6 @@ Buffer  *mBuf;                      /* message buffer       */
          break;
       case EVTTFUDATIND:
          cmUnpkTfuDatInd(RgLiTfuDatInd, pst, mBuf);
-         break;
-      case EVENT_SLOT_IND_TO_MAC:
-         cmUnpackSlotInd(fapiMacSlotInd, pst, mBuf);
          break;
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
       case EVTTFUNONRTIND:
