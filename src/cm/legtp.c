@@ -22,6 +22,8 @@
 #include "legtp.h"
 #include "lkw.x"
 #include "lrg.x"
+#include "du_app_mac_inf.h"
+#include "odu_common_codec.h"
 #include "du_cfg.h"
 #include "du_egtp.h"
 

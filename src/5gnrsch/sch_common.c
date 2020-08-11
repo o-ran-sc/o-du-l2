@@ -276,6 +276,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    ADD_DELTA_TO_TIME(cell->slotInfo,ulTimingInfo,PHY_DELTA+SCHED_DELTA);
 
 	ulSchedInfo.cellId = cell->cellId;
+	ulSchedInfo.slotIndInfo.cellId = ulSchedInfo.cellId;
 	ulSchedInfo.slotIndInfo.sfn = ulTimingInfo.sfn;
    ulSchedInfo.slotIndInfo.slot = ulTimingInfo.slot;
 

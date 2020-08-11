@@ -1,12 +1,9 @@
 /* header include files (.h) */
 #include "common_def.h"
-#include "tfu.h"           /* RGU Interface defines */
 #include "lrg.h"
 
 /* header/extern include files (.x) */
-#include "tfu.x"           /* RGU Interface includes */
 #include "lrg.x"
-#include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 
 /**
@@ -37,6 +34,27 @@ int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 
    RETVALUE(SPstTsk(pst,mBuf));
 }
+
+/**
+ * @brief function to unpack Slot ind message from MAC
+ *        to scheduler with loose coupling
+ *
+ * @details
+ *
+ *     Function : unpackMacSchSlotInd
+ *
+ *
+ *  @param[in]  Pst *pst, the post structure
+ *  @param[in]  Buffer *mBuf, the message buffer
+ *  @return  S16
+ *      -# ROK
+ **/
+int unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf)
+{
+   /* TODO */
+   return ROK;
+}
+
 
 /*******************************************************************
  *

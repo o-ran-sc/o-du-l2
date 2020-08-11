@@ -17,11 +17,9 @@
  *******************************************************************************/
 
 #include "common_def.h"
-#include "ss_queue.h"
-#include "ss_task.h"
-#include "ss_msg.h"
-#include "du_cfg.h"
 #include "du_app_mac_inf.h"
+#include "odu_common_codec.h"
+#include "du_cfg.h"
 
 /**************************************************************************
  * @brief Function to pack Loose Coupled 
@@ -40,7 +38,7 @@
  *         RFAILED - failure
  *
  ***************************************************************************/
-int  packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
+uint8_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
 {
    if(pst->selector == ODU_SELECTOR_LC)
    {
@@ -83,10 +81,7 @@ int  packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
  *         RFAILED - failure
  *
  ***************************************************************************/
-int  unpackDuMacCellCfg(
-      DuMacCellCfgReq func,
-      Pst *pst,
-      Buffer *mBuf)
+uint8_t  unpackDuMacCellCfg(DuMacCellCfgReq func, Pst *pst, Buffer *mBuf)
 {
    U16 ret = ROK;
    MacCellCfg *macCellCfg;
@@ -164,10 +159,7 @@ int  packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
  *         RFAILED - failure
  *
  ***************************************************************************/
-int unpackMacCellCfgCfm(
-      DuMacCellCfgCfm func, 
-      Pst *pst,
-      Buffer *mBuf)
+int unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf)
 {
    MacCellCfgCfm macCellCfgCfm;
 
@@ -202,7 +194,7 @@ int unpackMacCellCfgCfm(
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
+uint8_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 {
    Buffer *mBuf = NULLP;
 
@@ -245,7 +237,7 @@ uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf)
+uint8_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf)
 {
    MacCellStartInfo  *cellStartInfo;
 
@@ -281,7 +273,7 @@ uint16_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
+uint8_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
 {
    if(pst->selector == ODU_SELECTOR_LC)
    {
@@ -324,7 +316,7 @@ uint16_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf)
+uint8_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf)
 {
    MacCellStopInfo  *cellStopInfo;
 
@@ -360,7 +352,7 @@ uint16_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo )
+uint16_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo )
 {
    Buffer *mBuf = NULLP;
 
@@ -376,7 +368,7 @@ uint16_t packMacSlotInd(Pst *pst, SlotInfo *slotInfo )
       CMCHKPK(SPkU16, slotInfo->sfn, mBuf);
       CMCHKPK(SPkU16, slotInfo->slot, mBuf);
 
-      CM_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotInfo));
+      CM_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotIndInfo));
       slotInfo = NULL;
    }
    else if(pst->selector == ODU_SELECTOR_LWLC)
@@ -414,7 +406,7 @@ uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      SlotInfo *slotInfo;
+      SlotIndInfo *slotInfo;
 
       /* unpack the address of the structure */
       CMCHKUNPK(cmUnpkPtr, (PTR *)&slotInfo, mBuf);
@@ -423,7 +415,7 @@ uint16_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
    }
    else if(pst->selector == ODU_SELECTOR_LC)
    {
-      SlotInfo slotInfo;
+      SlotIndInfo slotInfo;
 
       CMCHKUNPK(SUnpkU16, &(slotInfo.slot), mBuf);
       CMCHKUNPK(SUnpkU16, &(slotInfo.sfn), mBuf);
@@ -631,7 +623,7 @@ uint16_t unpackMacUlCcchInd(DuMacUlCcchInd func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
+uint8_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 {
    Buffer *mBuf = NULLP;
 
@@ -672,7 +664,7 @@ uint16_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
+uint8_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {

@@ -17,13 +17,57 @@
  *******************************************************************************/
 /* header include files (.h) */
 #include "common_def.h"
-#include "tfu.h"           /* RGU Interface includes */
 #include "lrg.h"
-#include "tfu.x"           /* RGU Interface includes */
 #include "lrg.x"
 #include "du_app_mac_inf.h"
+#include "mac_sch_interface.h"
+#include "lwr_mac_upr_inf.h"
 #include "mac.h"
-#include "du_log.h"
+#include "mac_upr_inf_api.h"
+#include "mac_utils.h"
+
+/*******************************************************************
+ *
+ * @brief Send stop indication to DU APP
+ *
+ * @details
+ *
+ *    Function : sendStopIndToDuApp
+ *
+ *    Functionality:
+ *       Send stop indication to DU APP
+ *
+ * @params[in] Pst info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendStopIndToDuApp(uint16_t cellId)
+{
+   Pst pst;
+   uint8_t ret = ROK;
+   MacCellStopInfo *cellStopInd;
+
+   /*  Allocate sharable memory */
+   MAC_ALLOC_SHRABL_BUF(cellStopInd, sizeof(MacCellStopInfo));
+   if(!cellStopInd)
+   {
+      DU_LOG("\nMAC : Stop Indication memory allocation failed");
+      return RFAILED;
+   }
+   cellStopInd->cellId = cellId;
+
+   /* Fill Pst */
+   FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STOP_IND);
+
+   ret = MacDuAppStopInd(&pst, cellStopInd);
+   if(ret != ROK)
+   {
+      DU_LOG("\nMAC: Failed to send stop indication to DU APP");
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, cellStopInd, sizeof(MacCellStopInfo));
+   }
+   return ROK;
+}
 
 /*******************************************************************
  * @brief process Stop indication to MAC
@@ -33,13 +77,17 @@
  *     Function : fapiMacStopInd 
  *      
  *  @param[in]  Pst            *pst
- *  @return  S16
+ *  @return 
  *      -# ROK 
  *      -# RFAILED 
  ******************************************************************/
-PUBLIC S16 fapiMacStopInd(Pst *pst) 
+uint8_t fapiMacStopInd(Pst *pst, uint16_t cellId) 
 {
    uint8_t ret = ROK;
-   ret = sendStopIndMacToDuApp();
+   ret = sendStopIndToDuApp(cellId);
    return ret;
 }
+
+/**********************************************************************
+  End of file
+ ***********************************************************************/
