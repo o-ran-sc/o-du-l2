@@ -19,11 +19,6 @@
 #ifndef __DU_CONFIG_H_
 #define __DU_CONFIG_H__
 
-#include "stdbool.h"
-#include "du_app_mac_inf.h"
-#include "du_log.h"
-#include "odu_common_codec.h"
-
 /* MACROS */
 #define DU_INST 0
 #define DU_ID 1

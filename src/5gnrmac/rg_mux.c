@@ -611,8 +611,6 @@ RgErrInfo      *err;
          }
          break;
 
-      case EVENT_SLOT_IND_TO_MAC:
-         break;
       default:
          break;
    } /* End of switch(reqType) */

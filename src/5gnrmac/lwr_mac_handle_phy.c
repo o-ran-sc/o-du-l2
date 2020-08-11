@@ -18,18 +18,20 @@
 
 /* header include files (.h) */
 #include "common_def.h"
-#include "tfu.h"           /* RGU Interface defines */
+#include "lrg.h"
 #ifdef INTEL_FAPI
 #include "fapi.h"
 #endif
 
 /* header/extern include files (.x) */
-#include "tfu.x"           /* RGU Interface includes */
-#include "du_log.h"
+#include "lrg.x"
+#include "du_app_mac_inf.h"
+#include "mac_sch_interface.h"
+#include "lwr_mac.h"
 #include "lwr_mac_fsm.h"
 #include "lwr_mac_phy.h"
 #include "lwr_mac_upr_inf.h"
-#include "rg.h"
+#include "mac.h"
 
 #ifdef INTEL_FAPI
 /* Function pointer for slot indication from lower mac to mac */
@@ -63,7 +65,7 @@ packRxDataIndMsg sendRxDataIndOpts[] =
    fapiMacRxDataInd,
    packRxDataInd
 };
- 
+
 /* Function pointer for stop indication from lower mac to mac */ 
 packStopIndMsg sendStopIndOpts[] =
 {
@@ -107,7 +109,7 @@ void fillLwrMacToMacPst(Pst *pst)
  *
  * @details
  *
- *    Function : handleSlotInd
+ *    Function : procSlotInd
  *
  *    Functionality:
  *     Processes Slot Indication from PHY and sends to MAC
@@ -117,7 +119,7 @@ void fillLwrMacToMacPst(Pst *pst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
+uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
 {
    /* fill Pst structure to send to lwr_mac to MAC */
    Pst pst;
@@ -127,6 +129,7 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
    fillLwrMacToMacPst(&pst);
    pst.event = EVENT_SLOT_IND_TO_MAC;
 
+   slotInd.cellId = lwrMacCb.cellCb[lwrMacCb.numOfCells - 1].cellId; 
    slotInd.sfn = fapiSlotInd->sfn;
    slotInd.slot = fapiSlotInd->slot;
 
@@ -150,7 +153,7 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
  *
  * @details
  *
- *    Function : handleStopInd
+ *    Function : procStopInd
  *
  *    Functionality:
  *         Handles Stop Indication received from PHY
@@ -159,18 +162,20 @@ U16 handleSlotInd(fapi_slot_ind_t *fapiSlotInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t handleStopInd()
+uint8_t procStopInd()
 {
    uint8_t ret;
    Pst pst;
 
-   clGlobalCp.phyState = PHY_STATE_CONFIGURED;
+   lwrMacCb.phyState = PHY_STATE_CONFIGURED;
+   lwrMacCb.cellCb[lwrMacCb.numOfCells - 1].state = PHY_STATE_CONFIGURED;
    DU_LOG("\nLWR_MAC: PHY has moved to configured state");
 
    fillLwrMacToMacPst(&pst);
    pst.event = EVENT_STOP_IND_TO_MAC;
 
-   ret = (*sendStopIndOpts[pst.selector])(&pst);
+   ret = (*sendStopIndOpts[pst.selector])(&pst, \
+      lwrMacCb.cellCb[lwrMacCb.numOfCells - 1].cellId);
    return ret;
 }
 /*******************************************************************
@@ -179,7 +184,7 @@ uint8_t handleStopInd()
  *
  * @details
  *
- *    Function : handleRachInd
+ *    Function : procRachInd
  *
  *    Functionality:
  *         Processes Rach Indication from PHY and sends to MAC
@@ -189,7 +194,7 @@ uint8_t handleStopInd()
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t handleRachInd(fapi_rach_indication_t  *fapiRachInd)
+uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
 {
    Pst          pst;
    uint8_t      pduIdx;
@@ -197,6 +202,7 @@ uint8_t handleRachInd(fapi_rach_indication_t  *fapiRachInd)
    RachPduInfo  *rachPdu;
    RachInd      rachInd;
 
+   rachInd.cellId = lwrMacCb.cellCb[lwrMacCb.numOfCells - 1].cellId;
    rachInd.timingInfo.sfn = fapiRachInd->sfn;
    rachInd.timingInfo.slot = fapiRachInd->slot;
    rachInd.numPdu = fapiRachInd->numPdus;
@@ -210,17 +216,17 @@ uint8_t handleRachInd(fapi_rach_indication_t  *fapiRachInd)
       rachPdu->numPream = fapiRachInd->rachPdu[pduIdx].numPreamble; 
       for(prmbleIdx=0; prmbleIdx<rachPdu->numPream; prmbleIdx++)
       {
-         rachPdu->preamInfo[prmbleIdx].preamIdx = \
-            fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].preambleIndex;
-         rachPdu->preamInfo[prmbleIdx].timingAdv = \
-            fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance;
+	 rachPdu->preamInfo[prmbleIdx].preamIdx = \
+	    fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].preambleIndex;
+	 rachPdu->preamInfo[prmbleIdx].timingAdv = \
+	    fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance;
       }
    }
    fillLwrMacToMacPst(&pst);
    pst.event = EVENT_RACH_IND_TO_MAC;
 
    (*sendRachIndOpts[pst.selector])(&pst, &rachInd);
-	return ROK;
+   return ROK;
 
 }/* handleRachInd */
 
@@ -230,7 +236,7 @@ uint8_t handleRachInd(fapi_rach_indication_t  *fapiRachInd)
  *
  * @details
  *
- *    Function : handleCrcInd
+ *    Function : procCrcInd
  *
  *    Functionality:
  *      Handles CRC indication from PHY and sends to MAC
@@ -241,7 +247,7 @@ uint8_t handleRachInd(fapi_rach_indication_t  *fapiRachInd)
  *
  * ****************************************************************/
 
-uint8_t handleCrcInd(fapi_crc_ind_t  *fapiCrcInd)
+uint8_t procCrcInd(fapi_crc_ind_t  *fapiCrcInd)
 {
    Pst          pst;
    uint8_t      crcInfoIdx;
@@ -249,6 +255,7 @@ uint8_t handleCrcInd(fapi_crc_ind_t  *fapiCrcInd)
    CrcInfo      *crcIndInfo;
    CrcInd       crcInd;
 
+   crcInd.cellId = lwrMacCb.cellCb[lwrMacCb.numOfCells - 1].cellId;
    crcInd.timingInfo.sfn = fapiCrcInd->sfn;
    crcInd.timingInfo.slot = fapiCrcInd->slot;
    crcInd.numCrc = fapiCrcInd->numCrcs;
@@ -263,8 +270,8 @@ uint8_t handleCrcInd(fapi_crc_ind_t  *fapiCrcInd)
       crcIndInfo->numCb       = fapiCrcInd->crc[crcInfoIdx].numCb;
       for(crcStatusIdx = 0; crcStatusIdx < crcIndInfo->numCb; crcStatusIdx++)
       {
-         crcIndInfo->cbCrcStatus[crcStatusIdx] = \
-            fapiCrcInd->crc[crcInfoIdx].cbCrcStatus[crcStatusIdx];
+	 crcIndInfo->cbCrcStatus[crcStatusIdx] = \
+	    fapiCrcInd->crc[crcInfoIdx].cbCrcStatus[crcStatusIdx];
       }
       crcIndInfo->ul_cqi  = fapiCrcInd->crc[crcInfoIdx].ul_cqi;
       crcIndInfo->timingAdvance = fapiCrcInd->crc[crcInfoIdx].timingAdvance;
@@ -273,7 +280,7 @@ uint8_t handleCrcInd(fapi_crc_ind_t  *fapiCrcInd)
 
    fillLwrMacToMacPst(&pst);
    pst.event = EVENT_CRC_IND_TO_MAC;
-   
+
    (*sendCrcIndOpts[pst.selector])(&pst, &crcInd);
    return ROK;
 
@@ -285,7 +292,7 @@ uint8_t handleCrcInd(fapi_crc_ind_t  *fapiCrcInd)
  *
  * @details
  *
- *    Function : handleRxDataInd
+ *    Function : procRxDataInd
  *
  *    Functionality:
  *      Handles Rx Data indication from PHY and sends to MAC
@@ -295,14 +302,15 @@ uint8_t handleCrcInd(fapi_crc_ind_t  *fapiCrcInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
- 
-uint8_t handleRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
+
+uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
 {
    Pst           pst;
    uint8_t       pduIdx;
    RxDataInd     rxDataInd;
    RxDataIndPdu  *pdu;   
 
+   rxDataInd.cellId = lwrMacCb.cellCb[lwrMacCb.numOfCells - 1].cellId;
    rxDataInd.timingInfo.sfn = fapiRxDataInd->sfn; 
    rxDataInd.timingInfo.slot = fapiRxDataInd->slot;
    rxDataInd.numPdus = fapiRxDataInd->numPdus;
@@ -324,14 +332,14 @@ uint8_t handleRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
 
    fillLwrMacToMacPst(&pst);
    pst.event = EVENT_RX_DATA_IND_TO_MAC;
- 
+
    (*sendRxDataIndOpts[pst.selector])(&pst, &rxDataInd);
    return ROK;
 }
 
 #endif /* FAPI */
 
-void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
+void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 {
 #ifdef INTEL_FAPI
    /* extract the header */
@@ -342,62 +350,63 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
    {
       case FAPI_PARAM_RESPONSE:
       case FAPI_CONFIG_RESPONSE:
-      {
-         sendToLowerMac(msgType, msgSize, msg);
-         break;
-      }
+	 {
+	    sendToLowerMac(msgType, msgSize, msg);
+	    break;
+	 }
       case FAPI_SLOT_INDICATION:
-      {
-         if(clGlobalCp.phyState == PHY_STATE_CONFIGURED)
-         {
-            DU_LOG("\nLWR_MAC: PHY has moved to running state");
-            clGlobalCp.phyState = PHY_STATE_RUNNING;
-         }
+	 {
+	    if(lwrMacCb.phyState == PHY_STATE_CONFIGURED)
+	    {
+	       DU_LOG("\nLWR_MAC: PHY has moved to running state");
+	       lwrMacCb.phyState = PHY_STATE_RUNNING;
+	       lwrMacCb.cellCb[lwrMacCb.numOfCells - 1].state = PHY_STATE_RUNNING;
+	    }
 
-         fapi_slot_ind_t *slotInd;
-         slotInd  = (fapi_slot_ind_t *)msg;
-         handleSlotInd(slotInd);
-         break;
-      }
+	    fapi_slot_ind_t *slotInd;
+	    slotInd  = (fapi_slot_ind_t *)msg;
+	    procSlotInd(slotInd);
+	    break;
+	 }
       case FAPI_ERROR_INDICATION:
-      {
-         break;
-      }
+	 {
+	    break;
+	 }
       case FAPI_RX_DATA_INDICATION:
-      {
-         fapi_rx_data_indication_t *rxDataInd;
-         rxDataInd = (fapi_rx_data_indication_t *)msg;
-         handleRxDataInd(rxDataInd);
-         break;
-      }  
+	 {
+	    fapi_rx_data_indication_t *rxDataInd;
+	    rxDataInd = (fapi_rx_data_indication_t *)msg;
+	    procRxDataInd(rxDataInd);
+	    break;
+	 }  
       case FAPI_CRC_INDICATION:
-      {
-         fapi_crc_ind_t  *crcInd;
-         crcInd = (fapi_crc_ind_t *)msg;
-         handleCrcInd(crcInd);
-         break;
-      }  
+	 {
+	    fapi_crc_ind_t  *crcInd;
+	    crcInd = (fapi_crc_ind_t *)msg;
+	    procCrcInd(crcInd);
+	    break;
+	 }  
       case FAPI_UCI_INDICATION:
-      {
-         break;
-      }
+	 {
+	    break;
+	 }
       case FAPI_SRS_INDICATION:
-      {
-         break;
-      }  
+	 {
+	    break;
+	 }  
       case FAPI_RACH_INDICATION:
-      {
-         fapi_rach_indication_t  *rachInd;
-         rachInd = (fapi_rach_indication_t *)msg;
-         handleRachInd(rachInd);
-         break;
-      }
+	 {
+	    fapi_rach_indication_t  *rachInd;
+	    rachInd = (fapi_rach_indication_t *)msg;
+	    procRachInd(rachInd);
+	    break;
+	 }
       case FAPI_STOP_INDICATION:
-      {
-         DU_LOG("\nLWR_MAC: Handling Stop Indication");
-         handleStopInd();
-         break;
-      }  
+	 {
+	    DU_LOG("\nLWR_MAC: Handling Stop Indication");
+	    procStopInd();
+	    break;
+	 }  
    }
 #ifdef INTEL_WLS
    WLS_MEM_FREE(msg, LWR_MAC_WLS_BUF_SIZE); 
@@ -406,5 +415,5 @@ void handlePhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

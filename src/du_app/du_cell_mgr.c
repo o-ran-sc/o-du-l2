@@ -22,6 +22,8 @@
 #include "legtp.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "du_app_mac_inf.h"
+#include "odu_common_codec.h"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include<ProtocolIE-Field.h>

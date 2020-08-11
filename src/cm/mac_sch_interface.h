@@ -26,13 +26,14 @@
 #define EVENT_DL_RLC_BO_INFO_TO_SCH  7
 #define EVENT_UE_CREATE_REQ_TO_SCH   8
 #define EVENT_UE_CREATE_RSP_TO_MAC   9
-
+#define EVENT_SLOT_IND_TO_SCH        10
 
 /*macros*/
 #define NO_SSB 0
 #define SSB_TRANSMISSION 1
 #define SSB_REPEAT 2
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
+#define SCH_SSB_MASK_SIZE   1
 
 #define NO_SIB1 0
 #define SIB1_TRANSMISSION 1
@@ -294,6 +295,22 @@ typedef enum
 
 typedef enum
 {
+   DUPLEX_MODE_FDD,
+   DUPLEX_MODE_TDD
+}SchDuplexMode;
+
+typedef enum
+{
+   SSB_PRDCTY_MS5,
+   SSB_PRDCTY_MS10,
+   SSB_PRDCTY_MS20,
+   SSB_PRDCTY_MS40,
+   SSB_PRDCTY_MS80,
+   SSB_PRDCTY_MS160
+}SchSSBPeriod;
+
+typedef enum
+{
    RSP_OK,
    RSP_NOK
 }SchMacRsp;
@@ -316,9 +333,9 @@ typedef struct
    uint32_t    ssbPbchPwr;       /* SSB block power */
    uint8_t     scsCommon;           /* subcarrier spacing for common [0-3]*/
    uint8_t     ssbOffsetPointA;  /* SSB sub carrier offset from point A */
-   SSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
+   SchSSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
    uint8_t     ssbSubcOffset;    /* Subcarrier Offset(Kssb) */
-   uint32_t    nSSBMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
+   uint32_t    nSSBMask[SCH_SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
 }SchSsbCfg;
 
 typedef struct bwpCfg
@@ -559,7 +576,7 @@ typedef struct schCellCfg
    uint16_t    cellId;           /* Cell Id */
    uint16_t    phyCellId;        /* Physical cell id */
    uint8_t     bandwidth;        /* Supported B/W */
-   DuplexMode  dupMode;          /* Duplex type: TDD/FDD */
+   SchDuplexMode  dupMode;          /* Duplex type: TDD/FDD */
    SchSsbCfg   ssbSchCfg;        /* SSB config */
    SchSib1Cfg  sib1SchCfg;       /* SIB1 config */
    SchRachCfg  schRachCfg;       /* PRACH config */
@@ -764,9 +781,9 @@ typedef struct dlRlcBOInfo
 /* Info of Scheduling Request to Add/Modify */
 typedef struct schSchedReqInfo
 {
-   uint8_t           schedReqId;
-   SrProhibitTimer   srProhibitTmr;
-   SrTransMax        srTransMax;
+   uint8_t              schedReqId;
+   SchSrProhibitTimer   srProhibitTmr;
+   SchSrTransMax        srTransMax;
 }SchSchedReqInfo;
 
 /* Scheduling Request Configuration */
@@ -1146,6 +1163,10 @@ typedef uint8_t (*SchUeCfgRspFunc) ARGS((
 	 Pst         *pst,           /* Post structure */
 	 SchUeCfgRsp *cfgRsp));       /* Scheduler UE Cfg response */
 
+typedef int (*MacSchSlotIndFunc) ARGS((
+         Pst         *pst,          /* Post structure */
+	 SlotIndInfo *slotInd));    /* Slot Info */
+
 /* function declarations */
 int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
 int packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo);
@@ -1158,7 +1179,7 @@ EXTERN int MacProcSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg);
 EXTERN int MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm  *schCellCfgCfm);
 EXTERN int SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg);
 EXTERN int schActvInit(Ent entity, Inst instId, Region region, Reason reason);
-EXTERN S16 SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
+EXTERN uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 EXTERN int MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
 int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd);
 int macSchRachInd(Pst *pst, RachIndInfo *rachInd);
@@ -1170,7 +1191,9 @@ uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t macSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
-
+int macSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
+int packMacSchSlotInd(Pst * pst, SlotIndInfo * slotInd);
+int unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf);
 
 /**********************************************************************
   End of file

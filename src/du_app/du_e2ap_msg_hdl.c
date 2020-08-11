@@ -20,6 +20,8 @@
 #include "lkw.x"
 #include "lrg.x"
 #include "legtp.h"
+#include "odu_common_codec.h"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_mgr_main.h"
 #include "GlobalE2node-gNB-ID.h"
