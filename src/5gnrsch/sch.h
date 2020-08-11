@@ -122,6 +122,7 @@ typedef struct schDlSlotInfo
    bool      sib1Pres;                          /*!< Flag to determine if SIB1 is present in this slot */
    RarInfo   *rarInfo;                          /*!< RAR info */
    Msg4Info  *msg4Info;                         /*!< msg4 info */
+   BsrInfo   *bsrInfo;                          /*!< BSR info */
 }SchDlSlotInfo;
 
 typedef struct schRaCb

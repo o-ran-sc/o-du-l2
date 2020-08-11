@@ -118,6 +118,7 @@ void schCalcSlotValues(SlotIndInfo slotInd, SchSlotValue *schSlotValue)
    ADD_DELTA_TO_TIME(slotInd,schSlotValue->rarTime,PHY_DELTA+SCHED_DELTA);
    ADD_DELTA_TO_TIME(slotInd,schSlotValue->msg4Time,PHY_DELTA+SCHED_DELTA);
    ADD_DELTA_TO_TIME(slotInd,schSlotValue->dlMsgTime,PHY_DELTA+SCHED_DELTA+BO_DELTA);
+   ADD_DELTA_TO_TIME(slotInd,schSlotValue->bsrTime,PHY_DELTA+SCHED_DELTA);
 }
 
 /*******************************************************************
@@ -146,6 +147,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    DlBrdcstAlloc *dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
 	RarAlloc  *rarAlloc;
    Msg4Alloc *msg4Alloc;
+   BsrAlloc *bsrAlloc;
 	dlBrdcstAlloc->ssbTrans = NO_SSB;
    dlBrdcstAlloc->sib1Trans = NO_SIB1;
 	
@@ -257,8 +259,28 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 		 cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
    }
 
+   /* check for BSR */
+   if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.bsrTime.slot]->bsrInfo != NULLP)
+   {
+      slot = dlSchedInfo.schSlotValue.bsrTime.slot;
+      SCH_ALLOC(bsrAlloc, sizeof(BsrAlloc));
+      if(!bsrAlloc)
+      {
+         DU_LOG("\nMAC: Memory Allocation failed for Bsr4 Alloc");
+	 return RFAILED;
+      }
+      dlSchedInfo.bsrAlloc = bsrAlloc;
+      /* copy bsrInfo, that was filled earlier */
+      memcpy(&bsrAlloc->bsrInfo, cell->schDlSlotInfo[slot]->bsrInfo, \
+         sizeof(BsrInfo));
+	 
+      /* TODO: Fill Pdcch for BSR */
 
-	/* send msg to MAC */
+      SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.bsrTime.slot]->bsrInfo, sizeof(BsrInfo));
+      cell->schDlSlotInfo[dlSchedInfo.schSlotValue.bsrTime.slot]->bsrInfo = NULL;
+   }
+
+   /* send msg to MAC */
    ret = sendDlAllocToMac(&dlSchedInfo, schInst);
    if(ret != ROK)
    {
