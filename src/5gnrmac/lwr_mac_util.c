@@ -37,22 +37,22 @@
   *         NULLP - failure
   *
   * ****************************************************************/
-PUBLIC ClCellCb * rgClUtlGetCellCb
+PUBLIC LwrMacCellCb * lwrMacGetCellCb
 (
-   U16 cellId
+   uint16_t cellId
 )
 {
-   ClCellCb *cellCb;
+   LwrMacCellCb *cellCb;
 
-   if(cellId >= MAX_NUM_CELL_SUPP)
+   if(cellId >= MAX_NUM_CELL)
    {
       printf("\n Invalid Cell Id [%d]. rgClUtlGetCellCb failed.", cellId);
-      RETVALUE(NULLP);
+      return NULLP;
    }
-
-   cmHashListFind((CmHashListCp *)&clGlobalCp.cellCbLst, (U8 *)&cellId, sizeof(U16), 0, (PTR *)&cellCb);
    
-   RETVALUE(cellCb);
+   cellCb = &lwrMacCb.cellCb[cellId -1];
+
+   return cellCb;
 }
 
 /*******************************************************************
@@ -78,7 +78,7 @@ uint32_t reverseBits(uint32_t num, uint8_t numBits)
    for (i = 0; i < numBits; i++)
    {
       if((num & (1 << i)))
-         reverse_num |= 1 << ((numBits - 1) - i);
+	 reverse_num |= 1 << ((numBits - 1) - i);
    }
    return reverse_num;
 }
@@ -104,7 +104,7 @@ uint32_t reverseBits(uint32_t num, uint8_t numBits)
  * ****************************************************************/
 
 void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
-   uint32_t val, uint8_t valSize)
+      uint32_t val, uint8_t valSize)
 {
    uint8_t temp;
    uint8_t bytePart1;
@@ -138,5 +138,5 @@ void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
 
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

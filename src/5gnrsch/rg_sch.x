@@ -5548,7 +5548,7 @@ RgSchCellCb   *cell,
 U32           ueCount
 ));
 
-EXTERN S16 SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
+EXTERN uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

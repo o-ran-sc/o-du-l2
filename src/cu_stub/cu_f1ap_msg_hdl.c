@@ -18,6 +18,8 @@
 
 /* This file contains F1AP message handler functions */
 #include "common_def.h"
+#include "OCTET_STRING.h"
+#include "BIT_STRING.h"
 #include "odu_common_codec.h"
 #include "cu_stub_sctp.h"
 #include "cu_f1ap_msg_hdl.h"

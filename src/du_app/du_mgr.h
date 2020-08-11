@@ -21,16 +21,6 @@
 #define __DU_MGR_H__
 #define DU_PROC  0
 
-/* Memory related configs */
-#define DU_APP_MEM_REGION    0
-#define RLC_UL_MEM_REGION    1
-#define RLC_DL_MEM_REGION    4
-#define MAC_MEM_REGION       4
-
-#define DU_POOL  1
-#define RLC_POOL  1
-#define RG_POOL 1
-
 /* Events */
 #define EVTCFG 0
 #define EVTSCTPSTRT  1
@@ -81,51 +71,6 @@
 #define DU_SET_ZERO(_buf, _size)   \
    cmMemset((U8 *)(_buf), 0, _size);
 
-/* allocate and zero out a static buffer */
-#define DU_ALLOC(_datPtr, _size)                                \
-{                                                               \
-   S16 _ret;                                                    \
-   _ret = SGetSBuf(DU_APP_MEM_REGION, DU_POOL,                  \
-                    (Data **)&_datPtr, _size);                  \
-   if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
-   else                                                         \
-      _datPtr = NULLP;                                          \
-}
-
-/* free a static buffer */
-#define DU_FREE(_datPtr, _size)                                 \
-   if(_datPtr)                                                  \
-      SPutSBuf(DU_APP_MEM_REGION, DU_POOL,                      \
-         (Data *)_datPtr, _size);
-
-/* Allocate shared memory to be used for LWLC 
- * during inter-layer communication */
-#define DU_ALLOC_SHRABL_BUF(_buf, _size)                     \
-{                                                            \
-   if(SGetStaticBuffer(DU_APP_MEM_REGION, DU_POOL,           \
-      (Data **)&_buf, (Size) _size, 0) == ROK)               \
-   {                                                         \
-      cmMemset((U8 *)(_buf), 0, _size);                      \
-   }                                                         \
-   else                                                      \
-   {                                                         \
-      (_buf) = NULLP;                                        \
-   }                                                         \
-}
-
-/* Free shared memory, received through LWLC */
-#define DU_FREE_SHRABL_BUF(_region, _pool,_buf, _size)          \
-{                                                               \
-   if (_buf != NULLP)                                           \
-   {                                                            \
-      (Void) SPutStaticBuffer(_region, _pool,                   \
-           (Data *) _buf, (Size) _size, 0);                     \
-       _buf = NULLP;                                            \
-   }                                                            \
-}
-
-
 typedef enum
 {
    CELL_OUT_OF_SERVICE,
@@ -137,7 +82,7 @@ typedef enum
 typedef enum
 {
    UE_INACTIVE,
-	UE_ACTIVE
+   UE_ACTIVE
 }UeState;
 
 typedef struct cellCfgParams
@@ -164,7 +109,7 @@ typedef struct duCellCb
    Bool           firstSlotIndRcvd;
    CellStatus     cellStatus;       /* Cell status */
    uint32_t       numActvUes;       /* Total Active UEs */
-   DuUeCb         ueCb[DU_MAX_UE];  /* UE CONTEXT */
+   DuUeCb         ueCb[MAX_NUM_UE];  /* UE CONTEXT */
 }DuCellCb;
 
 typedef struct duLSapCb
@@ -197,13 +142,13 @@ typedef struct duCb
    Bool          f1Status; /* Status of F1 connection */
    Bool          e2Status; /* Status of E2 connection */
    uint8_t       numCfgCells; 
-   DuCellCb*     cfgCellLst[DU_MAX_CELLS];     /* List of cells at DU APP of type DuCellCb */
+   DuCellCb*     cfgCellLst[MAX_NUM_CELL];     /* List of cells at DU APP of type DuCellCb */
    uint8_t       numActvCells;
-   DuCellCb*     actvCellLst[DU_MAX_CELLS];    /* List of cells activated/to be activated of type DuCellCb */
+   DuCellCb*     actvCellLst[MAX_NUM_CELL];    /* List of cells activated/to be activated of type DuCellCb */
    /* pointer to store the address of macCellCfg params used to send du-app to MAC */
    MacCellCfg    *duMacCellCfg;         /* pointer to store params while sending DU-APP to MAC */
    uint32_t       numUe;            /* current number of UEs */
-   UeCcchCtxt     ueCcchCtxt[DU_MAX_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
+   UeCcchCtxt     ueCcchCtxt[MAX_NUM_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
 }DuCb;
 
 
@@ -260,11 +205,11 @@ S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm);
 S16 duSendEgtpTestData();
 S16 duSendEgtpDatInd(Buffer *mBuf);
 S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
-uint16_t duBuildAndSendMacCellStartReq();
-uint16_t duBuildAndSendMacCellStopReq();
+uint8_t duBuildAndSendMacCellStartReq();
+uint8_t duBuildAndSendMacCellStopReq();
 
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

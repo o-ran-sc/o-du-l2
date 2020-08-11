@@ -21,8 +21,10 @@
 #include "lrg.x"
 #include "lkw.x"
 #include "legtp.h"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_ue_mgr.h"
+#include "du_utils.h"
 #include<ProtocolIE-Field.h>
 #include "F1AP-PDU.h"
 
@@ -33,14 +35,14 @@ U32 sduId = 0;
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
    packMacDlCcchInd,   /* Loose coupling */
-   MacHdlDlCcchInd,    /* TIght coupling */
+   MacProcDlCcchInd,    /* TIght coupling */
    packMacDlCcchInd    /* Light weight-loose coupling */
 };
 
 DuMacUeCreateReq packMacUeCreateReqOpts[] =
 {
    packDuMacUeCreateReq,       /* Loose coupling */
-   MacHdlUeCreateReq,          /* TIght coupling */
+   MacProcUeCreateReq,          /* TIght coupling */
    packDuMacUeCreateReq,       /* Light weight-loose coupling */
 };
 
@@ -254,17 +256,7 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
    DU_FREE(dlCcchMsg, dlCcchMsgSize);
 
    /* Fill Pst */
-   pst.selector  = ODU_SELECTOR_LWLC;
-   pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTRG;
-   pst.dstInst   = 0;
-   pst.srcInst   = 0;
-   pst.dstProcId = DU_PROC;
-   pst.srcProcId = DU_PROC;
-   pst.region    = DU_APP_MEM_REGION;
-   pst.pool      = DU_POOL;
-   pst.event     = EVENT_MAC_DL_CCCH_IND;
-
+   FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_DL_CCCH_IND);
    ret = (*packMacDlCcchIndOpts[pst.selector])(&pst, dlCcchIndInfo);
    if(ret != ROK)
    {
@@ -375,7 +367,7 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
       }
       else
       {
-	 if(duCb.actvCellLst[cellId-1]->numActvUes < DU_MAX_UE)
+	 if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
 	 {
 	    ret = duCreateUeCb(&duCb.ueCcchCtxt[idx], gnbCuUeF1apId);
 	    if(ret)
@@ -452,8 +444,8 @@ uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
       DU_LOG("\nDU_APP : BuildAndSendInitialRrcMsgTransfer failed");
    }
 
-   DU_FREE_SHRABL_BUF(MAC_MEM_REGION, RG_POOL, ulCcchIndInfo->ulCcchMsg, strlen((const char*)ulCcchIndInfo->ulCcchMsg));
-   DU_FREE_SHRABL_BUF(MAC_MEM_REGION, RG_POOL, ulCcchIndInfo, sizeof(UlCcchIndInfo));
+   DU_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulCcchIndInfo->ulCcchMsg, strlen((const char*)ulCcchIndInfo->ulCcchMsg));
+   DU_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulCcchIndInfo, sizeof(UlCcchIndInfo));
 
    return ret;
 
@@ -486,7 +478,7 @@ void fillInitDlBwp(InitialDlBwp *initDlBwp)
 	 if(initDlBwp->pdcchCfg.numCRsetToAddMod <= MAX_NUM_CRSET)
 	 {
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cRSetId = \
-               PDCCH_CTRL_RSRC_SET_ONE_ID;
+	       PDCCH_CTRL_RSRC_SET_ONE_ID;
 	    memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
 	       FREQ_DOM_RSRC_SIZE); 
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc[idx] =\
@@ -856,19 +848,20 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
    uint8_t ret     = ROK;
    uint8_t ueIdx;
 
-   for(cellIdx = 0; cellIdx < DU_MAX_CELLS; cellIdx++)
+   for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
    {
       if(ueCcchCtxt->cellId == duCb.actvCellLst[cellIdx]->cellId)
       {
 	 GET_UE_IDX(ueCcchCtxt->crnti, ueIdx);
 	 DU_LOG("\nDU_APP: Filling UeCb for ueIdx [%d]", ueIdx);
+
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId = ueCcchCtxt->gnbDuUeF1apId;
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId = gnbCuUeF1apId;
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState       = UE_ACTIVE;
 
 	 /* Filling Mac Ue Config */ 
 	 memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg, 0, sizeof(MacUeCfg));
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId       = ueCcchCtxt->cellId;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId        = ueCcchCtxt->cellId;
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.ueIdx         = ueIdx;
 	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.crnti         = ueCcchCtxt->crnti;
 	 fillMacUeCfg(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg);
@@ -911,16 +904,7 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
    memset(&pst, 0, sizeof(Pst));
 
    /* Fill Pst */
-   pst.selector  = ODU_SELECTOR_LWLC;
-   pst.srcEnt    = ENTDUAPP;
-   pst.srcInst   = DU_INST;
-   pst.dstEnt    = ENTRG;
-   pst.dstInst   = 0;
-   pst.dstProcId = DU_PROC;
-   pst.srcProcId = DU_PROC;
-   pst.region    = DU_APP_MEM_REGION;
-   pst.pool      = DU_POOL;
-   pst.event     = EVENT_MAC_UE_CREATE_REQ;
+   FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_UE_CREATE_REQ);
 
    /* Copying ueCb to a sharable buffer */
    DU_ALLOC_SHRABL_BUF(macUeCfg, sizeof(MacUeCfg));

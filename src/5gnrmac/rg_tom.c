@@ -37,7 +37,6 @@ invoked by PHY towards MAC
 */
 /* header include files -- defines (.h) */
 #include "common_def.h"
-#include "du_app_mac_inf.h"
 #include "rgu.h"           /* RGU defines */
 #include "tfu.h"           /* RGU defines */
 #include "lrg.h"           /* layer management defines for LTE-MAC */
@@ -57,15 +56,10 @@ invoked by PHY towards MAC
 #include "rg_prg.x"        /* PRG interface typedefs */
 #include "rgm.x"           /* layer management typedefs for MAC */
 #include "rg.x"            /* typedefs for MAC */
-#include "mac.h"
-#include "lwr_mac_fsm.h"
 #ifdef MAC_RLC_UL_RBUF
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
 #endif
-
-uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo);
-uint16_t handleUlTtiReq(SlotIndInfo currTimingInfo);
 
 /* ADD Changes for Downlink UE Timing Optimization */
 #ifndef LTEMAC_DLUE_TMGOPTMZ 
@@ -477,223 +471,6 @@ PUBLIC S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
 } /* end of */
 
 U32  rgMacGT;
-
-/**
- * @brief Handler for processing TTI indication recieved from 
- * PHY for a cell.
- *
- * @details
- *
- *     Function: macProcessSlotInd
- *
- *     Handler for processing slot indication recieved from PHY
- *     for a cell.
- *
- *     Invoked by: macProcessSlotInd
- *
- *     Processing Steps:
- *     - Get cell and update the cell's current time with the timing value given
- *     by PHY
- *     - Invoke the cmPrcTmr to process the timing queue.
- *     - Append the PHICH information to the downlink subframe that needs to go
- *       out to PHY in this subframe.
- *     - Invoke DHM to release the downlink subframe that occured earlier
- *     rgDHMRlsDlsfHqProc.
- *     - Invoke the TTI handler of scheduler. 
- *     - Invoke the TTI handler of RAM module. 
- *     - Get the downlink subframe that has to go out to PHY in this subframe
- *     rgSCHSubFrmGet.
- *     - Invoke rgTOMUtlProcTA to perform and timing advance processing. 
- *     - Invoke rgTOMUtlProcDlSf to do further processing on the downlink
- *     subframe.
- *     - Get the downlink subframe that would occur after RG_DL_DELTA and 
- *     invoke rgTOMUtlProcDlSfStaInd to send status indications to the higher
- *     layer.
- *     - Invoke GOM's TTI handler rgGOMTtiHndlr
- *     - Invoke COM's TTI handler rgCOMTtiHndlr
- *           
- *  @param[in]  Inst        inst
- *  @param[in] SlotIndInfo slotInd
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED 
- **/
-#if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
-pthread_t gMacTId = 0;
-#endif
-PUBLIC S16 macProcessSlotInd
-(
-Inst          inst,
-SlotIndInfo slotInd
-)
-{
-   RgCellCb             *cellCb;
-   RgErrInfo            err;
-   RgDlSf               *dlSf;
-/* ADD Changes for Downlink UE Timing Optimization */
-#ifdef LTEMAC_DLUE_TMGOPTMZ
-   RgDlSf               *prevDlSf;
-   CmLteTimingInfo       prevTmInfo;  
-#endif
-   //SlotIndInfo *slotInd = &ttiInfo->cells[0];
-
-   TRC2(macProcessSlotInd);
-
-#ifdef MAC_FREE_RING_BUF
-   gMacTId = pthread_self();
-#endif
-
-   cellCb = rgCb[inst].cell;
-   if (cellCb == NULLP)
-   {
-      err.errType = RGERR_TOM_TTIIND;
-      err.errCause = RGERR_TOM_INV_CELL_ID;
-      RETVALUE(RFAILED);
-   }
-
-   RGCPYTIMEINFO(slotInd, cellCb->crntTime);
-
-   rgMacGT = (slotInd.sfn * RG_NUM_SUB_FRAMES_5G) + slotInd.slot;
-#ifdef LTE_L2_MEAS
-   rgL2Meas(cellCb);
-   /*Included to track the number of 10240 cycles completed */
-
-  if((cellCb->crntTime.sfn == 0) && (cellCb->crntTime.slot==0))
-  {
-     cellCb->ttiCycle += 1;
-  }
-
-#endif
-
-   /*Check if we have transmitted the previous DL SF, it could be the
-     case that we haven't received all the DATA from RLC as yet
-     and thus we would not have transmitted previous DL SF yet.*/
-/* ADD Changes for Downlink UE Timing Optimization */
-#ifdef LTEMAC_DLUE_TMGOPTMZ
-   RGSUBFRMCRNTTIME(slotInd, prevTmInfo, 1);
-   prevDlSf = &cellCb->subFrms[(prevTmInfo.slot % RG_NUM_SUB_FRAMES)];
-   if(FALSE == prevDlSf->txDone)
-   {
-      if (ROK != rgTOMUtlProcDlSf (prevDlSf, cellCb, &err))
-      {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,"Unable to process "
-		"previous downlink subframe for cell");
-         err.errType = RGERR_TOM_TTIIND;
-      }
-
-      /* Mark this frame as sent */
-      prevDlSf->txDone = TRUE;
-
-      if(prevDlSf->remDatReqCnt)
-      {
-         /*We have not received 1 or more data requests from RLC, this is
-           error scenario. MAC & SCH need to discard the allocations for
-           which data request hasn't been received as yet. And MAC
-           needs to inform SCH about the list of UEs for which 
-           allocation need to be discarded. */
-         prevDlSf->remDatReqCnt = 0;
-      }
-   }
-#endif
-
-   /* Mux Pdu for Msg4 */
-   buildAndSendMuxPdu(slotInd);
-
-   /* Trigger for DL TTI REQ */
-   handleDlTtiReq(slotInd);
-
-   /* Trigger for UL TTI REQ */
-   handleUlTtiReq(slotInd);
-
-   dlSf = &cellCb->subFrms[(slotInd.slot % RG_NUM_SUB_FRAMES)];
-
-   if((dlSf->txDone == TRUE) ||
-      (!RG_TIMEINFO_SAME(slotInd,dlSf->schdTime)))
-   {
-   /* MS_WORKAROUND */
-#ifndef LTEMAC_DLUE_TMGOPTMZ
-      TfuDatReqInfo     *datInfo;
-     CmLteTimingInfo   timingInfo;
-#ifdef TFU_DL_DELTA_CHANGE
-         RGADDTOCRNTTIME(cellCb->crntTime, timingInfo, TFU_DLDATA_DLDELTA);
-#else
-         RGADDTOCRNTTIME(cellCb->crntTime, timingInfo, TFU_DELTA);
-#endif
-     /* Fill Data Request from MAC for BCH  */
-     if ((timingInfo.sfn % 4 == 0) && (timingInfo.slot == 0))
-     {
-         if (ROK != rgAllocEventMem(inst,(Ptr *)&datInfo, 
-                            sizeof(TfuDatReqInfo)))
-         {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
-		"rgTOMUtlProcDlSf() Unable to Allocate TfuDatReqInfo for cell");
-            RETVALUE(RFAILED);
-         }
-         else
-         {
-            cmLListInit(&datInfo->pdus);
-            datInfo->cellId = cellCb->cellId;
-            datInfo->bchDat.pres = NOTPRSNT;
-            datInfo->timingInfo = timingInfo;
-            
-				   
-          /* sending the dummy data req to Phy */
-            if (rgLIMTfuDatReq(inst,datInfo) != ROK)
-            {
-               RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
-			 "rgTOMUtlProcDlSf() Unable to send data info for cell");
-            }
-         
-         }
-     }      
-#endif
-      /* Freeing as the part of CL Non RT Indication */
-      /* TDOD : Generalize for all SOCs */
-#if !(defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD))
-      rgDHMFreeTbBufs(inst);
-#endif
-      RETVALUE(ROK);
-   }
-
-   /*Return if there is still some data to be received
-     from RLC for this DL SF. */
-/* ADD Changes for Downlink UE Timing Optimization */
-#ifdef LTEMAC_DLUE_TMGOPTMZ
-   if(0 != dlSf->remDatReqCnt) 
-   {
-      /* Freeing as the part of CL Non RT Indication */
-      /* TODO : Generalize for all SOCs and remove this flag */
-#if !(defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD))
-      rgDHMFreeTbBufs(inst);
-#endif
-      RETVALUE(ROK);
-   }
-#endif
-
-#ifdef XEON_SPECIFIC_CHANGES
-   CM_MEAS_TIME((slotInd.slot % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_DL_BR_PRC);
-#endif
-
-   if (ROK != rgTOMUtlProcDlSf (dlSf, cellCb, &err))
-   {
-      //RLOG_ARG0(L_ERROR,DBG_CELLID,slotInd->cellId,
-      // 	      "Unable to process downlink subframe for cell");
-      err.errType = RGERR_TOM_TTIIND;
-   }
-#ifdef XEON_SPECIFIC_CHANGES
-   CM_MEAS_TIME((slotInd->slot % RG_NUM_SUB_FRAMES), CM_DBG_MAC_TTI_IND, CM_DBG_MAC_DL_AFTER_PRC);
-#endif
-
-   /* Mark this frame as sent */
-   dlSf->txDone = TRUE;
-
-   /* Freeing as the part of CL Non RT Indication */
-   /* TODO : Generalize for all SOCs and remove this flag */
-#if !(defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD))
-   rgDHMFreeTbBufs(inst);
-#endif 
-   RETVALUE(ROK);
-}  /* macProcessSlotInd */
 
 /** @brief This function allocates the RgMacPdu that will be populated by DEMUX
  * with the SubHeaders list and the values of the Control elements.

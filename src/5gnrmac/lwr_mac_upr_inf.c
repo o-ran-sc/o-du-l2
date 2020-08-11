@@ -35,7 +35,7 @@
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packCrcInd(Pst *pst, CrcInd *crcInd)
+uint8_t packCrcInd(Pst *pst, CrcInd *crcInd)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -61,16 +61,13 @@ uint16_t packCrcInd(Pst *pst, CrcInd *crcInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd)
+uint8_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
       return ROK;
    }
-   else
-   {
-      return RFAILED;
-   }
+   return RFAILED;
 }
 
 
@@ -91,7 +88,7 @@ uint16_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packRachInd(Pst *pst, RachInd *rachInd)
+uint8_t packRachInd(Pst *pst, RachInd *rachInd)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -99,7 +96,7 @@ uint16_t packRachInd(Pst *pst, RachInd *rachInd)
    }
    return RFAILED;
 }
- 
+
 /*******************************************************************
  *
  * @brief Loose coupled packing of slot indication
@@ -117,21 +114,21 @@ uint16_t packRachInd(Pst *pst, RachInd *rachInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
+uint8_t packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
 {
    Buffer *mBuf = NULLP;
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
- 
+
    /* pack SFN and slot value */
    CMCHKPK(SPkU16,slotInd->sfn, mBuf);
    CMCHKPK(SPkU16,slotInd->slot, mBuf);
- 
-   RETVALUE(SPstTsk(pst,mBuf));
+
+   return SPstTsk(pst,mBuf);
 }
- 
+
 /*******************************************************************
  *
  * @brief Light weight loose coupled packing of slot indication
@@ -149,7 +146,7 @@ S16 packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
+uint8_t packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
 {
    return ROK;
 }
@@ -170,7 +167,7 @@ S16 packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packStopInd(Pst *pst)
+uint8_t packStopInd(Pst *pst, uint16_t cellId)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -183,5 +180,5 @@ uint16_t packStopInd(Pst *pst)
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

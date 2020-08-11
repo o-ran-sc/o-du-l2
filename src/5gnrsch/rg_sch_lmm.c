@@ -106,7 +106,7 @@ PUBLIC void printSchCellInfo(void)
  *
  *     Function : rgSCHLmmSapCfg
  *     
- *     This function in called by HandleSchGenCfgReq(). It handles the
+ *     This function in called by SchProcGenCfgReq(). It handles the
  *     interface SAP configuration of the scheduler instance. It 
  *     initializes the sapState to LRG_UNBND. Returns
  *     reason for success/failure of this function.

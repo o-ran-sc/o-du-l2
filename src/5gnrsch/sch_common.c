@@ -50,9 +50,9 @@ extern uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4];
 
 SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
 {
-	packSchMacUlSchInfo,
-	MacProcUlSchInfo,
-	packSchMacUlSchInfo
+   packSchMacUlSchInfo,
+   MacProcUlSchInfo,
+   packSchMacUlSchInfo
 };
 
 /**
@@ -69,53 +69,53 @@ SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
  *  @return  void
  **/
 uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
-        uint16_t slot)
+      uint16_t slot)
 {
-	/* schedule SSB */
-	uint8_t ssbStartPrb, ssbStartSymb, idx;
-	SchDlSlotInfo *schDlSlotInfo;
-	SsbInfo ssbInfo;
+   /* schedule SSB */
+   uint8_t ssbStartPrb, ssbStartSymb, idx;
+   SchDlSlotInfo *schDlSlotInfo;
+   SsbInfo ssbInfo;
 
-	schDlSlotInfo = cell->schDlSlotInfo[slot];
-	if(dlBrdcstAlloc->ssbTrans)
-	{
-		ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+   schDlSlotInfo = cell->schDlSlotInfo[slot];
+   if(dlBrdcstAlloc->ssbTrans)
+   {
+      ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
       ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are
-		supporting only 1 ssb beam */
+										supporting only 1 ssb beam */
 
-		/* Assign interface structure */
-		for(idx=0; idx<dlBrdcstAlloc->ssbIdxSupported; idx++)
-		{
-			ssbInfo.ssbIdx              = idx;
-			ssbInfo.fdAlloc.startPrb    = ssbStartPrb;
-			ssbInfo.fdAlloc.numPrb      = SCH_SSB_NUM_PRB;
-			ssbInfo.tdAlloc.startSymb   = ssbStartSymb;
-			ssbInfo.tdAlloc.numSymb     = SCH_SSB_NUM_SYMB;
-			dlBrdcstAlloc->ssbInfo[idx] = ssbInfo;
-			schDlSlotInfo->ssbInfo[idx] = ssbInfo;
-		}
+      /* Assign interface structure */
+      for(idx=0; idx<dlBrdcstAlloc->ssbIdxSupported; idx++)
+      {
+	 ssbInfo.ssbIdx              = idx;
+	 ssbInfo.fdAlloc.startPrb    = ssbStartPrb;
+	 ssbInfo.fdAlloc.numPrb      = SCH_SSB_NUM_PRB;
+	 ssbInfo.tdAlloc.startSymb   = ssbStartSymb;
+	 ssbInfo.tdAlloc.numSymb     = SCH_SSB_NUM_SYMB;
+	 dlBrdcstAlloc->ssbInfo[idx] = ssbInfo;
+	 schDlSlotInfo->ssbInfo[idx] = ssbInfo;
+      }
 
-		schDlSlotInfo->ssbPres = true;
-		schDlSlotInfo->ssbIdxSupported = dlBrdcstAlloc->ssbIdxSupported;
-		for(idx=ssbStartSymb; idx<ssbStartSymb+SCH_SSB_NUM_SYMB; idx++)
-		{
-			schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1; /* +1 for kSsb */
-		}
-	}
+      schDlSlotInfo->ssbPres = true;
+      schDlSlotInfo->ssbIdxSupported = dlBrdcstAlloc->ssbIdxSupported;
+      for(idx=ssbStartSymb; idx<ssbStartSymb+SCH_SSB_NUM_SYMB; idx++)
+      {
+	 schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1; /* +1 for kSsb */
+      }
+   }
 
-	/* SIB1 allocation */
-	if(dlBrdcstAlloc->sib1Trans)
-	{
-		schDlSlotInfo->sib1Pres = true;
-		for(idx=0; idx<SCH_SYMBOL_PER_SLOT; idx++)
-		{
-			schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + 10; /* 10 PRBs for sib1 */
-		}
-	   memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
-	   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
-	   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(PdschCfg)); 
-	}
-	return ROK;
+   /* SIB1 allocation */
+   if(dlBrdcstAlloc->sib1Trans)
+   {
+      schDlSlotInfo->sib1Pres = true;
+      for(idx=0; idx<SCH_SYMBOL_PER_SLOT; idx++)
+      {
+	 schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + 10; /* 10 PRBs for sib1 */
+      }
+      memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
+      memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
+      memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(PdschCfg)); 
+   }
+   return ROK;
 }
 
 /*******************************************************************
@@ -136,13 +136,13 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
  * ****************************************************************/
 int sendUlSchInfoToMac(UlSchedInfo *ulSchedInfo, Inst inst)
 {
-	Pst pst;
+   Pst pst;
 
    memset(&pst, 0, sizeof(Pst));
-   SCH_FILL_RSP_PST(pst, inst);
-	pst.event = EVENT_UL_SCH_INFO;
+   FILL_PST_SCH_TO_MAC(pst, inst);
+   pst.event = EVENT_UL_SCH_INFO;
 
-	return(*schMacUlSchInfoOpts[pst.selector])(&pst, ulSchedInfo);
+   return(*schMacUlSchInfoOpts[pst.selector])(&pst, ulSchedInfo);
 }
 /**
  * @brief resource allocation for PRACH
@@ -161,70 +161,70 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo pra
 {
    uint8_t  puschScs;
    uint8_t  numPrachRb = 0;
-	uint8_t  numRa = 0;
-	uint8_t  freqStart = 0;
-	uint8_t  prachCfgIdx = 0;
-	uint8_t  prachFormat = 0;
-	uint8_t  x = 0;
-	uint8_t  y = 0;
-	uint16_t prachSubframe = 0;
-	uint8_t  prachStartSymbol = 0;
-	uint8_t  prachOcas = 0;
-	uint8_t  dataType = 0;
-	uint8_t  idx = 0;
-	SchUlSlotInfo *schUlSlotInfo = NULLP;
+   uint8_t  numRa = 0;
+   uint8_t  freqStart = 0;
+   uint8_t  prachCfgIdx = 0;
+   uint8_t  prachFormat = 0;
+   uint8_t  x = 0;
+   uint8_t  y = 0;
+   uint16_t prachSubframe = 0;
+   uint8_t  prachStartSymbol = 0;
+   uint8_t  prachOcas = 0;
+   uint8_t  dataType = 0;
+   uint8_t  idx = 0;
+   SchUlSlotInfo *schUlSlotInfo = NULLP;
 
    puschScs      = cell->cellCfg.schInitialUlBwp.bwp.scs;
-	schUlSlotInfo = cell->schUlSlotInfo[prachOccasionTimingInfo.slot];
-	prachCfgIdx   = cell->cellCfg.schRachCfg.prachCfgIdx;
+   schUlSlotInfo = cell->schUlSlotInfo[prachOccasionTimingInfo.slot];
+   prachCfgIdx   = cell->cellCfg.schRachCfg.prachCfgIdx;
 
-    /* derive the prachCfgIdx table paramters */
-	x                = prachCfgIdxTable[prachCfgIdx][1];
-	y                = prachCfgIdxTable[prachCfgIdx][2];
-	prachSubframe    = prachCfgIdxTable[prachCfgIdx][3];
-	
-	if((prachOccasionTimingInfo.sfn%x) == y)
-	{
-	   /* check for subFrame number */
-	   if ((1 << prachOccasionTimingInfo.slot) & prachSubframe)
-	   {
-         /* prach ocassion present in this subframe */
+   /* derive the prachCfgIdx table paramters */
+   x                = prachCfgIdxTable[prachCfgIdx][1];
+   y                = prachCfgIdxTable[prachCfgIdx][2];
+   prachSubframe    = prachCfgIdxTable[prachCfgIdx][3];
 
-	   	prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
-	   	prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
-	   	prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
+   if((prachOccasionTimingInfo.sfn%x) == y)
+   {
+      /* check for subFrame number */
+      if ((1 << prachOccasionTimingInfo.slot) & prachSubframe)
+      {
+	 /* prach ocassion present in this subframe */
 
-	   	/* freq domain resource determination for RACH*/
-	   	freqStart = cell->cellCfg.schRachCfg.msg1FreqStart;
-	   	/* numRa determined as 𝑛 belonging {0,1,.., M − 1}, 
-	   	 * where M is given by msg1Fdm */
-	   	numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
-	   	for(idx=0; idx<MAX_RACH_NUM_RB_IDX; idx++)
-	   	{
-	   		if(numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqLen)
-	   		{
-	   			if(numRbForPrachTable[idx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing)
-	   			{
-	   				if(numRbForPrachTable[idx][2] == puschScs)
-	   				{
-	   					break;
-	   				}
-	   			}
-	   		}
-	   	}
-	   	numPrachRb = numRbForPrachTable[idx][3];
-	   	dataType |= SCH_DATATYPE_PRACH;
-	   	/* Considering first slot in the frame for PRACH */
-	   	idx = 0;
-	   	schUlSlotInfo->assignedPrb[idx] = freqStart+numPrachRb;
-	   }
-	   ulSchedInfo->dataType = dataType;
-	   /* prach info */
-	   ulSchedInfo->prachSchInfo.numPrachOcas   = prachOcas;
-	   ulSchedInfo->prachSchInfo.prachFormat    = prachFormat;
-	   ulSchedInfo->prachSchInfo.numRa          = numRa;
-	   ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
-	}
+	 prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
+	 prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
+	 prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
+
+	 /* freq domain resource determination for RACH*/
+	 freqStart = cell->cellCfg.schRachCfg.msg1FreqStart;
+	 /* numRa determined as 𝑛 belonging {0,1,.., M − 1}, 
+	  * where M is given by msg1Fdm */
+	 numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
+	 for(idx=0; idx<MAX_RACH_NUM_RB_IDX; idx++)
+	 {
+	    if(numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqLen)
+	    {
+	       if(numRbForPrachTable[idx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing)
+	       {
+		  if(numRbForPrachTable[idx][2] == puschScs)
+		  {
+		     break;
+		  }
+	       }
+	    }
+	 }
+	 numPrachRb = numRbForPrachTable[idx][3];
+	 dataType |= SCH_DATATYPE_PRACH;
+	 /* Considering first slot in the frame for PRACH */
+	 idx = 0;
+	 schUlSlotInfo->assignedPrb[idx] = freqStart+numPrachRb;
+      }
+      ulSchedInfo->dataType = dataType;
+      /* prach info */
+      ulSchedInfo->prachSchInfo.numPrachOcas   = prachOcas;
+      ulSchedInfo->prachSchInfo.prachFormat    = prachFormat;
+      ulSchedInfo->prachSchInfo.numRa          = numRa;
+      ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
+   }
 }
 
 uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst)
@@ -232,14 +232,14 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst)
    /* derive pucchResourceSet from schCellCfg */
    SchCellCb  *cell = schCb[inst].cells[inst];
    SchPucchCfgCmn *pucchCfg = &cell->cellCfg.schInitialUlBwp.pucchCommon;
-	uint8_t pucchIdx = pucchCfg->pucchResourceCommon;
-	SchBwpParams *ulBwp = &cell->cellCfg.schInitialUlBwp.bwp;
+   uint8_t pucchIdx = pucchCfg->pucchResourceCommon;
+   SchBwpParams *ulBwp = &cell->cellCfg.schInitialUlBwp.bwp;
 
    schPucchInfo->fdAlloc.startPrb = ulBwp->freqAlloc.startPrb + pucchResourceSet[pucchIdx][3];
    schPucchInfo->fdAlloc.numPrb = PUCCH_NUM_PRB_FORMAT_0;
    schPucchInfo->tdAlloc.startSymb = pucchResourceSet[pucchIdx][1];
    schPucchInfo->tdAlloc.numSymb = pucchResourceSet[pucchIdx][2];
-	schPucchInfo->pucchFormat = pucchResourceSet[pucchIdx][0];
+   schPucchInfo->pucchFormat = pucchResourceSet[pucchIdx][0];
 
    /* set HARQ flag to true */
    schPucchInfo->harqFlag = true;
@@ -267,50 +267,51 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst)
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 {
    int ret = ROK;
-	UlSchedInfo ulSchedInfo;
+   UlSchedInfo ulSchedInfo;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
    SlotIndInfo ulTimingInfo;
-	memset(&ulSchedInfo, 0, sizeof(UlSchedInfo));
+   memset(&ulSchedInfo, 0, sizeof(UlSchedInfo));
 
    /* add PHY delta */
    ADD_DELTA_TO_TIME(cell->slotInfo,ulTimingInfo,PHY_DELTA+SCHED_DELTA);
 
-	ulSchedInfo.cellId = cell->cellId;
-	ulSchedInfo.slotIndInfo.sfn = ulTimingInfo.sfn;
+   ulSchedInfo.cellId = cell->cellId;
+   ulSchedInfo.slotIndInfo.cellId = ulSchedInfo.cellId;
+   ulSchedInfo.slotIndInfo.sfn = ulTimingInfo.sfn;
    ulSchedInfo.slotIndInfo.slot = ulTimingInfo.slot;
 
    /* Schedule resources for PRACH */
-	schPrachResAlloc(cell, &ulSchedInfo, ulTimingInfo);
+   schPrachResAlloc(cell, &ulSchedInfo, ulTimingInfo);
 
-	schUlSlotInfo = cell->schUlSlotInfo[ulTimingInfo.slot]; 
-	if(schUlSlotInfo->schPuschInfo)
-	{
+   schUlSlotInfo = cell->schUlSlotInfo[ulTimingInfo.slot]; 
+   if(schUlSlotInfo->schPuschInfo)
+   {
       ulSchedInfo.crnti = cell->raCb[0].tcrnti;
-		ulSchedInfo.dataType |= SCH_DATATYPE_PUSCH;
-		memcpy(&ulSchedInfo.schPuschInfo, schUlSlotInfo->schPuschInfo,
-				sizeof(SchPuschInfo));
-		SCH_FREE(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
-		schUlSlotInfo->schPuschInfo = NULL;
-	}
+      ulSchedInfo.dataType |= SCH_DATATYPE_PUSCH;
+      memcpy(&ulSchedInfo.schPuschInfo, schUlSlotInfo->schPuschInfo,
+	    sizeof(SchPuschInfo));
+      SCH_FREE(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
+      schUlSlotInfo->schPuschInfo = NULL;
+   }
 
-	if(schUlSlotInfo->pucchPres)
-	{
-		ulSchedInfo.dataType |= SCH_DATATYPE_UCI;
-		fillPucchResourceInfo(&schUlSlotInfo->schPucchInfo, schInst);
-		memcpy(&ulSchedInfo.schPucchInfo, &schUlSlotInfo->schPucchInfo,
-				sizeof(SchPucchInfo));
-		memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
-	}
+   if(schUlSlotInfo->pucchPres)
+   {
+      ulSchedInfo.dataType |= SCH_DATATYPE_UCI;
+      fillPucchResourceInfo(&schUlSlotInfo->schPucchInfo, schInst);
+      memcpy(&ulSchedInfo.schPucchInfo, &schUlSlotInfo->schPucchInfo,
+	    sizeof(SchPucchInfo));
+      memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
+   }
 
-	//send msg to MAC
+   //send msg to MAC
    ret = sendUlSchInfoToMac(&ulSchedInfo, schInst);
    if(ret != ROK)
    {
       DU_LOG("\nSending UL Sch info from SCH to MAC failed");
    }
-	memset(cell->schUlSlotInfo[ulTimingInfo.slot], 0, sizeof(SchUlSlotInfo));
+   memset(cell->schUlSlotInfo[ulTimingInfo.slot], 0, sizeof(SchUlSlotInfo));
 
-	return ret;
+   return ret;
 }
 
 /*******************************************************************
@@ -339,7 +340,7 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    uint8_t offsetPointA;
    uint8_t FreqDomainResource[6] = {0};
    uint16_t tbSize = 0;
-	uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
+   uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
    uint8_t mcs = 4;  /* MCS fixed to 4 */
    SchBwpDlCfg *initialBwp;
 
@@ -361,9 +362,9 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    for(firstSymbol=0; firstSymbol<14;firstSymbol++)
    {
       if(initialBwp->pdcchCommon.commonSearchSpace.monitoringSymbol & mask)
-         break;
+	 break;
       else
-         mask = mask>>1;
+	 mask = mask>>1;
    }
 
    /* calculate the PRBs */
@@ -415,7 +416,7 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
       pdsch->codeword[cwCount].rvIndex = 0;
       /* 38.214: Table 5.1.3.2-1,  divided by 8 to get the value in bytes */
       /* TODO : Calculate tbSize based of DL CCCH msg size */
-		tbSize = schCalcTbSize(2664/8); /* send this value to the func in bytes when considering msg4 size */
+      tbSize = schCalcTbSize(2664/8); /* send this value to the func in bytes when considering msg4 size */
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;
@@ -428,9 +429,9 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    pdsch->dmrs.scid = 0;
    pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
    pdsch->dmrs.dmrsPorts = 0;
-	pdsch->dmrs.mappingType      = DMRS_MAP_TYPE_A; /* Setting to Type-A */
-	pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
-	pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
+   pdsch->dmrs.mappingType      = DMRS_MAP_TYPE_A; /* Setting to Type-A */
+   pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
+   pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
    pdsch->pdschFreqAlloc.freqAlloc.startPrb = offset + SCH_SSB_NUM_PRB;
@@ -445,7 +446,7 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;
    pdsch->txPdschPower.powerControlOffset = 0;
    pdsch->txPdschPower.powerControlOffsetSS = 0;
- 
+
    pdcch->dci.pdschCfg = pdsch;
    return ROK;
 }
@@ -454,13 +455,13 @@ uint16_t schAllocPucchResource(SchCellCb *cell,uint16_t crnti, uint16_t slot)
 {
    uint8_t k1 = 1; /* dl-DataToUL-ACK RRC parameter will received from DU-APP msg4-pucch config */
    uint16_t pucchSlot = (slot + k1)  % SCH_NUM_SLOTS;
-	SchUlSlotInfo  *schUlSlotInfo = NULLP;
-   
-	schUlSlotInfo = cell->schUlSlotInfo[pucchSlot];
-	memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
+   SchUlSlotInfo  *schUlSlotInfo = NULLP;
 
-	schUlSlotInfo->pucchPres = true;
-	schUlSlotInfo->schPucchInfo.rnti = crnti;
+   schUlSlotInfo = cell->schUlSlotInfo[pucchSlot];
+   memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
+
+   schUlSlotInfo->pucchPres = true;
+   schUlSlotInfo->schPucchInfo.rnti = crnti;
 
    return ROK;
 }

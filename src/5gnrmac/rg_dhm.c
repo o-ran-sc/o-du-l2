@@ -564,7 +564,7 @@ RgErrInfo       *err;
                /* Data not received but ta needs to be sent. */
                /* MUX TA and send it */
                bldPdu.datReq    =  NULLP;
-               bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
+               //bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
                bldPdu.schdTbSz  =  hqP->tbInfo[i].tbSz;
                bldPdu.ta        =  hqP->tbInfo[i].schdTa;
 #ifdef LTE_ADV
@@ -588,7 +588,7 @@ RgErrInfo       *err;
 #ifdef LTEMAC_RGU_PAD
                /* Data not received from RLC. Padding at MAC */
                bldPdu.datReq    =  NULLP;
-               bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
+               //bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
                bldPdu.schdTbSz  =  hqP->tbInfo[i].tbSz;
                bldPdu.ta        =  hqP->tbInfo[i].schdTa;
 #ifdef LTE_ADV

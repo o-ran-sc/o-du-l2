@@ -22,10 +22,11 @@
 #include "legtp.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_sctp.h"
 #include "lsctp.h"
-
+#include "du_utils.h"
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -333,7 +334,8 @@ S16 duSctpAssocReq(U8 itfType)
 	CmStatus cfm;
    DuSctpDestCb *paramPtr = NULLP;
 
-   if(SGetSBuf(DU_APP_MEM_REGION, DU_POOL, (Data **)&paramPtr, (Size)sizeof(DuSctpDestCb)) != ROK)
+   DU_ALLOC(paramPtr, sizeof(DuSctpDestCb));
+   if(paramPtr == NULLP)
    {
       printf("\nDU_APP : Failed to allocate memory");
       RETVALUE(RFAILED);
@@ -583,7 +585,7 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
    pst.event = EVENT_SCTP_NTFY;
    pst.selector = ODU_SELECTOR_LC;
    pst.pool= DU_POOL;
-   pst.region = DFLT_REGION;
+   pst.region = DU_APP_MEM_REGION;
    
    if(cmPkSctpNtfy(&pst, ntfy) != ROK)
    {
