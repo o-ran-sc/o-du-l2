@@ -261,9 +261,9 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
 
    SchBwpDlCfg *initialBwp = &schCb[inst].cells[inst]->cellCfg.schInitialDlBwp;
 
-	PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
-	PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
-   BwpCfg *bwp = &rarAlloc->bwp;
+	PdcchCfg *pdcch = &rarAlloc->rarDlInfo.pdcchCfg;
+	PdschCfg *pdsch = &rarAlloc->rarDlInfo.pdschCfg;
+   BwpCfg *bwp = &rarAlloc->rarDlInfo.bwp;
 
    coreset0Idx     = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 

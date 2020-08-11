@@ -2707,20 +2707,20 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, DlSchedInfo *dlInfo, \
       memset(&dlTtiReqPdu->pdu.pdcch_pdu, 0, sizeof(fapi_dl_pdcch_pdu_t));
       if(rntiType == SI_RNTI_TYPE)
       {
-         pdcchInfo = &dlInfo->brdcstAlloc.sib1Alloc.sib1PdcchCfg;
+         pdcchInfo = &dlInfo->brdcstAlloc.sib1Alloc.pdcchCfg;
          bwp = &dlInfo->brdcstAlloc.sib1Alloc.bwp;
          fillSib1DlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pdcchInfo);
       }
       else if(rntiType == RA_RNTI_TYPE)
       {
-         pdcchInfo = &dlInfo->rarAlloc->rarPdcchCfg;
-         bwp = &dlInfo->rarAlloc->bwp;
+         pdcchInfo = &dlInfo->rarAlloc->rarDlInfo.pdcchCfg;
+         bwp = &dlInfo->rarAlloc->rarDlInfo.bwp;
          fillRarDlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pdcchInfo);
       }
       else if(rntiType == TC_RNTI_TYPE)
       {
-         pdcchInfo = &dlInfo->msg4Alloc->msg4PdcchCfg;
-         bwp = &dlInfo->msg4Alloc->bwp;
+         pdcchInfo = &dlInfo->msg4Alloc->msg4DlInfo.pdcchCfg;
+         bwp = &dlInfo->msg4Alloc->msg4DlInfo.bwp;
          fillMsg4DlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pdcchInfo,\
             &dlInfo->msg4Alloc->msg4Info);
       }
@@ -3161,7 +3161,7 @@ uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo)
 							   rntiType, CORESET_TYPE0);
 							numPduEncoded++;
 							fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
-									&currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg,
+									&currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.pdschCfg,
 									currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.bwp,
 									pduIndex);
 							pduIndex++;
@@ -3180,8 +3180,8 @@ uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo)
 							&currDlSlot->dlInfo, rntiType, CORESET_TYPE0);
 					numPduEncoded++;
 					fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
-							&currDlSlot->dlInfo.rarAlloc->rarPdschCfg,
-							currDlSlot->dlInfo.rarAlloc->bwp,
+							&currDlSlot->dlInfo.rarAlloc->rarDlInfo.pdschCfg,
+							currDlSlot->dlInfo.rarAlloc->rarDlInfo.bwp,
 							pduIndex);
 					numPduEncoded++;
 					pduIndex++;
@@ -3198,8 +3198,8 @@ uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo)
 							&currDlSlot->dlInfo, rntiType, CORESET_TYPE0);
 					numPduEncoded++;
 					fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
-							&currDlSlot->dlInfo.msg4Alloc->msg4PdschCfg,
-							currDlSlot->dlInfo.msg4Alloc->bwp,
+							&currDlSlot->dlInfo.msg4Alloc->msg4DlInfo.pdschCfg,
+							currDlSlot->dlInfo.msg4Alloc->msg4DlInfo.bwp,
 							pduIndex);
 					numPduEncoded++;
 					pduIndex++;

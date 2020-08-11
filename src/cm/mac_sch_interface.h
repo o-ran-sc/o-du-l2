@@ -229,6 +229,20 @@ typedef struct pdcchCfg
 } PdcchCfg;
 /* end of SIB1 PDCCH structures */
 
+typedef struct dlAllocInfo
+{
+   BwpCfg bwp;
+   PdcchCfg pdcchCfg;
+   PdschCfg pdschCfg;
+}DlAllocInfo;
+
+typedef struct ulGrantInfo
+{
+   BwpCfg bwp;
+   PdcchCfg pdcchCfg;
+   PdschCfg pdschCfg;
+}UlGrantInfo;
+
 typedef struct
 {
    /* parameters recieved from DU-APP */
@@ -241,9 +255,7 @@ typedef struct
 	
 	/* parameters derived in scheduler */
 	uint8_t n0;
-   BwpCfg bwp;
-   PdcchCfg sib1PdcchCfg;
-   PdschCfg sib1PdschCfg;
+   DlAllocInfo sib1Alloc;
 }SchSib1Cfg;
 
 typedef struct schRachCfg
@@ -358,13 +370,6 @@ typedef struct ssbInfo
 	FreqDomainAlloc fdAlloc; /* Freq domain allocation */
 }SsbInfo;
 
-typedef struct sib1AllocInfo
-{
-   BwpCfg bwp;
-   PdcchCfg sib1PdcchCfg;
-   PdschCfg sib1PdschCfg;
-} Sib1AllocInfo;
-
 typedef struct prachSchInfo
 {
 	uint8_t  numPrachOcas;   /* Num Prach Ocassions */
@@ -388,7 +393,7 @@ typedef struct dlBrdcstAlloc
 	 * 1 : SIB1 Transmission
 	 * 2 : SIB1 Repetition */
 	U8 sib1Trans;
-	Sib1AllocInfo sib1Alloc;
+	DlAllocInfo sib1Alloc;
 }DlBrdcstAlloc;
 
 typedef struct rarInfo
@@ -405,9 +410,7 @@ typedef struct rarInfo
 typedef struct rarAlloc
 {
    RarInfo rarInfo;
-   BwpCfg  bwp;
-   PdcchCfg rarPdcchCfg;
-   PdschCfg rarPdschCfg;
+   DlAllocInfo rarDlInfo;
 }RarAlloc;
 
 typedef struct msg4Info
@@ -427,9 +430,7 @@ typedef struct msg4Info
 typedef struct msg4Alloc
 {
    Msg4Info msg4Info;
-   BwpCfg bwp;
-   PdcchCfg msg4PdcchCfg;
-   PdschCfg msg4PdschCfg;
+   DlAllocInfo msg4DlInfo;
 }Msg4Alloc;
 
 typedef struct schSlotValue
@@ -440,6 +441,22 @@ typedef struct schSlotValue
 	SlotIndInfo msg4Time;
 	SlotIndInfo dlMsgTime;
 }SchSlotValue;
+
+typedef struct bsrInfo
+{
+   uint8_t  dciFormatId;
+   uint8_t  harqProcNum;
+   uint8_t  puschTpc;
+   uint8_t  *bsrPdu;
+   uint16_t bsrPduLen;
+}BsrInfo;
+
+typedef struct bsrAlloc
+{
+   BsrInfo bsrInfo;
+   UlGrantInfo bsrUlGrantInfo; 
+  
+}BsrAlloc;
 
 typedef struct dlSchedInfo
 {
@@ -456,6 +473,10 @@ typedef struct dlSchedInfo
 
    /* Allocation from MSG4 */
    Msg4Alloc *msg4Alloc;
+   
+   /* Allocation from BSR */
+   BsrAlloc *bsrAlloc;
+
 }DlSchedInfo;
 
 typedef struct tbInfo

@@ -88,7 +88,7 @@ int MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 		   currDlSlot = &macCb.macCell->dlSlot[dlSchedInfo->schSlotValue.msg4Time.slot];
 			currDlSlot->dlInfo.msg4Alloc = dlSchedInfo->msg4Alloc; /* copy msg4 alloc pointer in MAC slot info */
 			msg4Alloc = dlSchedInfo->msg4Alloc;
-         macCb.macCell->macRaCb[0].msg4TbSize = msg4Alloc->msg4PdschCfg.codeword[0].tbSize;
+         macCb.macCell->macRaCb[0].msg4TbSize = msg4Alloc->msg4DlInfo.pdschCfg.codeword[0].tbSize;
       }
    }
    return ROK;
