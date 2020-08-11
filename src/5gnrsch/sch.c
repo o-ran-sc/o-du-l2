@@ -455,9 +455,9 @@ uint8_t      offsetPointA
    uint16_t tbSize = 0;
 	uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
 
-   PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
-   PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
-   BwpCfg *bwp = &(sib1SchCfg->bwp);
+   PdcchCfg *pdcch = &(sib1SchCfg->sib1Alloc.pdcchCfg);
+   PdschCfg *pdsch = &(sib1SchCfg->sib1Alloc.pdschCfg);
+   BwpCfg *bwp = &(sib1SchCfg->sib1Alloc.bwp);
 
    coreset0Idx     = sib1SchCfg->coresetZeroIndex;
    searchSpace0Idx = sib1SchCfg->searchSpaceZeroIndex;
@@ -492,7 +492,7 @@ uint8_t      offsetPointA
    bwp->cyclicPrefix       = 0;              /* normal */
 
    /* fill the PDCCH PDU */
-   pdcch->coreset0Cfg.coreSet0Size = numRbs;
+   pdcch->coreset0Cfg.coreSetSize = numRbs;
    pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
    pdcch->coreset0Cfg.durationSymbols = numSymbols;
    memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
