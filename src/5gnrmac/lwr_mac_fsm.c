@@ -2707,20 +2707,20 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, DlSchedInfo *dlInfo, \
       memset(&dlTtiReqPdu->pdu.pdcch_pdu, 0, sizeof(fapi_dl_pdcch_pdu_t));
       if(rntiType == SI_RNTI_TYPE)
       {
-         pdcchInfo = &dlInfo->brdcstAlloc.sib1Alloc.sib1PdcchCfg;
+         pdcchInfo = &dlInfo->brdcstAlloc.sib1Alloc.pdcchCfg;
          bwp = &dlInfo->brdcstAlloc.sib1Alloc.bwp;
          fillSib1DlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pdcchInfo);
       }
       else if(rntiType == RA_RNTI_TYPE)
       {
-         pdcchInfo = &dlInfo->rarAlloc->rarPdcchCfg;
-         bwp = &dlInfo->rarAlloc->bwp;
+         pdcchInfo = &dlInfo->rarAlloc->rarDlInfo.pdcchCfg;
+         bwp = &dlInfo->rarAlloc->rarDlInfo.bwp;
          fillRarDlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pdcchInfo);
       }
       else if(rntiType == TC_RNTI_TYPE)
       {
-         pdcchInfo = &dlInfo->msg4Alloc->msg4PdcchCfg;
-         bwp = &dlInfo->msg4Alloc->bwp;
+         pdcchInfo = &dlInfo->msg4Alloc->msg4DlInfo.pdcchCfg;
+         bwp = &dlInfo->msg4Alloc->msg4DlInfo.bwp;
          fillMsg4DlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pdcchInfo,\
             &dlInfo->msg4Alloc->msg4Info);
       }
@@ -3161,7 +3161,7 @@ uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo)
 							   rntiType, CORESET_TYPE0);
 							numPduEncoded++;
 							fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
-									&currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg,
+									&currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.pdschCfg,
 									currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.bwp,
 									pduIndex);
 							pduIndex++;
@@ -3180,8 +3180,8 @@ uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo)
 							&currDlSlot->dlInfo, rntiType, CORESET_TYPE0);
 					numPduEncoded++;
 					fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
-							&currDlSlot->dlInfo.rarAlloc->rarPdschCfg,
-							currDlSlot->dlInfo.rarAlloc->bwp,
+							&currDlSlot->dlInfo.rarAlloc->rarDlInfo.pdschCfg,
+							currDlSlot->dlInfo.rarAlloc->rarDlInfo.bwp,
 							pduIndex);
 					numPduEncoded++;
 					pduIndex++;
@@ -3198,8 +3198,8 @@ uint16_t handleDlTtiReq(SlotIndInfo currTimingInfo)
 							&currDlSlot->dlInfo, rntiType, CORESET_TYPE0);
 					numPduEncoded++;
 					fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
-							&currDlSlot->dlInfo.msg4Alloc->msg4PdschCfg,
-							currDlSlot->dlInfo.msg4Alloc->bwp,
+							&currDlSlot->dlInfo.msg4Alloc->msg4DlInfo.pdschCfg,
+							currDlSlot->dlInfo.msg4Alloc->msg4DlInfo.bwp,
 							pduIndex);
 					numPduEncoded++;
 					pduIndex++;
@@ -3655,6 +3655,309 @@ uint16_t handleUlTtiReq(SlotIndInfo currTimingInfo)
    else
    {
        lwr_mac_handleInvalidEvt(&currTimingInfo);
+   }
+#endif
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief fills bsr Ul DCI PDU required for UL DCI Request to PHY
+ *
+ * @details
+ *
+ *    Function : fillBsrUlDciPdu
+ *
+ *    Functionality:
+ *         -Fills the Bsr Ul DCI PDU, spec Ref:38.212, Table 7.3.1-1
+ *
+ * @params[in] Pointer to fapi_dl_dci_t
+ *             Pointer to PdcchCfg
+ *             Pointer to BsrInfo
+ * @return ROK
+ *
+ ******************************************************************/
+void fillBsrUlDciPdu(fapi_dl_dci_t *ulDciPtr, PdcchCfg *bsrPdcchInfo,\
+BsrInfo *bsrInfo)
+{
+   if(ulDciPtr != NULLP)
+   {
+      uint8_t numBytes;
+      uint8_t bytePos;
+      uint8_t bitPos;
+
+      uint16_t coreset1Size = 0;
+      uint16_t rbStart = 0;
+      uint16_t rbLen = 0;
+      uint8_t  dciFormatId = 0;
+      uint32_t freqDomResAssign;
+      uint8_t  timeDomResAssign;
+      uint8_t  freqHopFlag;
+      uint8_t  modNCodScheme;
+      uint8_t  ndi;
+      uint8_t  redundancyVer = 0;
+      uint8_t  harqProcessNum = 0;
+      uint8_t  puschTpc = 0;
+      uint8_t  ul_SlInd = 0;
+
+      /* Size(in bits) of each field in DCI format 0_0 */
+      uint8_t dciFormatIdSize      = 1;
+      uint8_t freqDomResAssignSize = 4;
+      uint8_t timeDomResAssignSize;
+      uint8_t freqHopFlagSize      = 1;
+      uint8_t modNCodSchemeSize    = 5;
+      uint8_t ndiSize              = 1;
+      uint8_t redundancyVerSize    = 2;
+      uint8_t harqProcessNumSize   = 4;
+      uint8_t puschTpcSize         = 2;
+      uint8_t ul_SlIndSize         = 1;
+
+      ulDciPtr->rnti = bsrPdcchInfo->dci.rnti;
+      ulDciPtr->scramblingId = bsrPdcchInfo->dci.scramblingId;    
+      ulDciPtr->scramblingRnti = bsrPdcchInfo->dci.scramblingRnti;
+      ulDciPtr->cceIndex = bsrPdcchInfo->dci.cceIndex;
+      ulDciPtr->aggregationLevel = bsrPdcchInfo->dci.aggregLevel;
+      ulDciPtr->pc_and_bform.numPrgs = bsrPdcchInfo->dci.beamPdcchInfo.numPrgs;
+      ulDciPtr->pc_and_bform.prgSize = bsrPdcchInfo->dci.beamPdcchInfo.prgSize;
+      ulDciPtr->pc_and_bform.digBfInterfaces = bsrPdcchInfo->dci.beamPdcchInfo.digBfInterfaces;
+      ulDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = bsrPdcchInfo->dci.beamPdcchInfo.prg[0].pmIdx;
+      ulDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = bsrPdcchInfo->dci.beamPdcchInfo.prg[0].beamIdx[0];
+      ulDciPtr->beta_pdcch_1_0 = bsrPdcchInfo->dci.txPdcchPower.powerValue;           
+      ulDciPtr->powerControlOfssetSS = bsrPdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
+
+      /* Calculating freq domain resource allocation field value and size
+       * coreset1Size = Size of coreset 1
+       * RBStart = Starting Virtual Rsource block
+       * RBLen = length of contiguously allocted RBs
+       * Spec 38.214 Sec 5.1.2.2.2
+       */
+
+      /* TODO: Fill values of coreset1Size, rbStart and rbLen */
+#if 0
+      coreset1Size = bsrPdcchInfo->coreset1Cfg.coreSet1Size;
+      //rbStart = bsrPdcchInfo->dci.pdschCfg->freqAlloc.rbStart;
+      rbLen = bsrPdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
+
+      if((rbLen >=1) && (rbLen <= coreset1Size - rbStart))
+      {
+         if((rbLen - 1) <= floor(coreset1Size / 2))
+            freqDomResAssign = (coreset1Size * (rbLen-1)) + rbStart;
+         else
+            freqDomResAssign = (coreset1Size * (coreset1Size - rbLen + 1)) \
+                               + (coreset1Size - 1 - rbStart);
+
+         freqDomResAssignSize = ceil(log2(coreset1Size * (coreset1Size + 1) / 2));
+      }
+#endif
+      /* Fetching DCI field values */
+      dciFormatId      = bsrInfo->dciFormatId; /* DCI indentifier for UL DCI */
+      timeDomResAssign = bsrPdcchInfo->dci.pdschCfg->pdschTimeAlloc.rowIndex -1;
+      freqHopFlag      = bsrInfo->freqHopFlag; 
+      modNCodScheme    = bsrPdcchInfo->dci.pdschCfg->codeword[0].mcsIndex;
+      ndi              = bsrInfo->ndi; 
+      redundancyVer    = bsrPdcchInfo->dci.pdschCfg->codeword[0].rvIndex;
+      harqProcessNum   = bsrInfo->harqProcNum; 
+      puschTpc         = bsrInfo->puschTpc;
+      ul_SlInd         = bsrInfo->ul_SlInd;
+
+      /* Reversing bits in each DCI field */
+      dciFormatId      = reverseBits(dciFormatId, dciFormatIdSize);
+      freqDomResAssign = reverseBits(freqDomResAssign, freqDomResAssignSize);
+      timeDomResAssign = reverseBits(timeDomResAssign, timeDomResAssignSize);
+      modNCodScheme    = reverseBits(modNCodScheme, modNCodSchemeSize);
+      redundancyVer    = reverseBits(redundancyVer, redundancyVerSize);
+      harqProcessNum   = reverseBits(harqProcessNum, harqProcessNumSize);
+      puschTpc         = reverseBits(puschTpc, puschTpcSize);
+      ul_SlInd         = reverseBits(ul_SlInd, ul_SlIndSize);
+
+      /* Calulating total number of bytes in buffer */
+      ulDciPtr->payloadSizeBits = (dciFormatIdSize + freqDomResAssignSize\
+      + timeDomResAssignSize + freqHopFlagSize + modNCodSchemeSize + ndi \
+      + redundancyVerSize + harqProcessNumSize + puschTpcSize + ul_SlIndSize);
+
+      numBytes = ulDciPtr->payloadSizeBits / 8;
+      if(ulDciPtr->payloadSizeBits % 8)
+         numBytes += 1;
+
+      if(numBytes > FAPI_DCI_PAYLOAD_BYTE_LEN)
+      {
+         DU_LOG("\nLWR_MAC : Total bytes for DCI is more than expected");
+         return;
+      }
+
+      /* Initialize buffer */
+      for(bytePos = 0; bytePos < numBytes; bytePos++)
+         ulDciPtr->payload[bytePos] = 0;
+
+      bytePos = numBytes - 1;
+      bitPos = 0;
+
+      /* Packing DCI format fields */
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            dciFormatId, dciFormatIdSize);
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            freqDomResAssign, freqDomResAssignSize);
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            timeDomResAssign, timeDomResAssignSize);
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            freqHopFlag, freqHopFlagSize);
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            modNCodScheme, modNCodSchemeSize);
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            ndi, ndiSize);
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            redundancyVer, redundancyVerSize);
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            harqProcessNum, harqProcessNumSize);
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            puschTpc, puschTpcSize);
+      fillDlDciPayload(ulDciPtr->payload, &bytePos, &bitPos,\
+            ul_SlInd, ul_SlIndSize);
+   }
+} /* fillBsrUlDciPdu */
+
+/*******************************************************************
+ *
+ * @brief fills PDCCH PDU required for UL DCI REQ to PHY
+ *
+ * @details
+ *
+ *    Function : fillUlDciPdcchPdu
+ *
+ *    Functionality:
+ *         -Fills the Pdcch PDU info
+ *          stored in MAC
+ *
+ * @params[in] Pointer to FAPI DL TTI Req
+ *             Pointer to PdcchCfg
+ * @return ROK
+ *
+ ******************************************************************/
+uint8_t fillUlDciPdcchPdu(fapi_dci_pdu_t *ulDciReqPdu, DlSchedInfo *dlInfo, \
+   RntiType rntiType, uint8_t coreSetType)
+{
+   if(ulDciReqPdu != NULLP)
+   {
+      PdcchCfg *pdcchInfo = NULLP;
+      BwpCfg *bwp = NULLP;
+
+      memset(&ulDciReqPdu->pdcchPduConfig, 0, sizeof(fapi_dl_pdcch_pdu_t));
+      if(rntiType == C_RNTI_TYPE)
+      {
+         pdcchInfo = &dlInfo->bsrAlloc->bsrUlGrantInfo.pdcchCfg;
+         bwp = &dlInfo->bsrAlloc->bsrUlGrantInfo.bwp;
+         fillBsrUlDciPdu(ulDciReqPdu->pdcchPduConfig.dlDci, pdcchInfo,\
+            &dlInfo->bsrAlloc->bsrInfo);
+      }
+      else
+      {
+         DU_LOG("\nLWR_MAC: Failed to fill Pdcch Pdu for UL DCI");
+	 return RFAILED;
+      }
+
+      ulDciReqPdu->pduType                          = PDCCH_PDU_TYPE;
+      ulDciReqPdu->pdcchPduConfig.bwpSize           = bwp->freqAlloc.numPrb;
+      ulDciReqPdu->pdcchPduConfig.bwpStart          = bwp->freqAlloc.startPrb;
+      ulDciReqPdu->pdcchPduConfig.subCarrierSpacing = bwp->subcarrierSpacing; 
+      ulDciReqPdu->pdcchPduConfig.cyclicPrefix      = bwp->cyclicPrefix; 
+      ulDciReqPdu->pdcchPduConfig.startSymbolIndex  = pdcchInfo->coreset0Cfg.startSymbolIndex;
+      ulDciReqPdu->pdcchPduConfig.durationSymbols   = pdcchInfo->coreset0Cfg.durationSymbols;
+      /* TODO: coreset 1 configuration to be done */
+      //memcpy(ulDciReqPdu->pdcchPduConfig.freqDomainResource, pdcchInfo->coreset1Cfg.freqDomainResource, 6);
+      //ulDciReqPdu->pdcchPduConfig.cceRegMappingType = pdcchInfo->coreset0Cfg.cceRegMappingType;
+      //ulDciReqPdu->pdcchPduConfig.regBundleSize     = pdcchInfo->coreset0Cfg.regBundleSize;
+      //ulDciReqPdu->pdcchPduConfig.interleaverSize   = pdcchInfo->coreset0Cfg.interleaverSize;
+      //ulDciReqPdu->pdcchPduConfig.coreSetSize       = pdcchInfo->coreset0Cfg.coreSetType;
+      //ulDciReqPdu->pdcchPduConfig.shiftIndex        = pdcchInfo->coreset0Cfg.shiftIndex;
+      //ulDciReqPdu->pdcchPduConfig.precoderGranularity = pdcchInfo->coreset0Cfg.precoderGranularity;
+      //ulDciReqPdu->pdcchPduConfig.numDlDci          = pdcchInfo->numDlDci;
+      //ulDciReqPdu->pdcchPduConfig.coreSetType       = coreSetType;
+
+      /* Calculating PDU length. Considering only one Ul dci pdu for now */
+      ulDciReqPdu->pduSize = sizeof(fapi_dl_pdcch_pdu_t);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Sends UL DCI Request to PHY
+ *
+ * @details
+ *
+ *    Function : handleUlDciTtiReq
+ *
+ *    Functionality:
+ *         -Sends FAPI Ul Dci req to PHY
+ *
+ * @params[in]  Pointer to CmLteTimingInfo
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint16_t handleUlDciReq(SlotIndInfo currTimingInfo)
+{
+#ifdef INTEL_FAPI
+   uint8_t  numPduEncoded = 0;
+   uint32_t msgLen  = 0;
+   uint32_t msgSize = 0;
+
+   fapi_ul_dci_req_t *ulDciReq = NULLP;
+   SlotIndInfo ulDciReqTimingInfo;
+
+   RgCellCb  *cellCbParams = NULLP;
+   MacDlSlot *currDlSlot = NULLP;
+   MacCellCfg macCellCfg;
+   Inst inst = 0;
+   RntiType rntiType;
+
+   if(clGlobalCp.phyState == PHY_STATE_RUNNING)
+   {
+      cellCbParams = rgCb[inst].cell;
+      macCellCfg = cellCbParams->macCellCfg;
+
+      /* add PHY delta */
+      ADD_DELTA_TO_TIME(currTimingInfo, ulDciReqTimingInfo, PHY_DELTA);
+
+      currDlSlot = &macCb.macCell->dlSlot[ulDciReqTimingInfo.slot % MAX_SLOT_SUPPORTED];
+      msgSize = sizeof(fapi_ul_dci_req_t);
+      LWR_MAC_ALLOC(ulDciReq, msgSize);
+
+      if(ulDciReq != NULLP)
+      {
+         memset(ulDciReq, 0, msgSize);
+         ulDciReq->sfn  = ulDciReqTimingInfo.sfn;
+         ulDciReq->slot = ulDciReqTimingInfo.slot;
+         ulDciReq->numPdus = 1;  // No. of PDCCH PDUs
+         if(ulDciReq->numPdus >= 0)
+         {
+            if(currDlSlot->dlInfo.bsrAlloc != NULLP)
+            {
+               rntiType = C_RNTI_TYPE;
+               /* Fill PDCCH configuration Pdu */
+               fillUlDciPdcchPdu(&ulDciReq->pdus[numPduEncoded], &currDlSlot->dlInfo,\
+               rntiType, CORESET_TYPE1);
+               numPduEncoded++;
+            }
+            msgLen = sizeof(fapi_ul_dci_req_t) - sizeof(fapi_msg_t);
+            fillMsgHeader(&ulDciReq->header, FAPI_UL_DCI_REQUEST, msgLen);
+            LwrMacSendToPhy(ulDciReq->header.msg_id, sizeof(fapi_ul_dci_req_t), (void *)ulDciReq);
+         
+         }
+         else
+         {
+            msgLen = sizeof(fapi_ul_dci_req_t) - sizeof(fapi_msg_t);
+            fillMsgHeader(&ulDciReq->header, FAPI_UL_DCI_REQUEST, msgLen);
+            LwrMacSendToPhy(ulDciReq->header.msg_id, sizeof(fapi_ul_dci_req_t), (void *)ulDciReq);
+         }
+         memset(currDlSlot, 0, sizeof(MacDlSlot));
+         return ROK;
+      }
+      else
+      {
+         DU_LOG("\nLWR_MAC: Failed to allocate memory for DL TTI Request");
+         memset(currDlSlot, 0, sizeof(MacDlSlot));
+         return RFAILED;
+      }
    }
 #endif
    return ROK;
