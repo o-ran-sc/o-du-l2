@@ -78,7 +78,6 @@ S16 sctpActvTsk(Pst *pst, Buffer *mBuf);
 void sctpAssocReq();
 void sendToDuApp(Buffer *mBuf, Event event);
 S16 sctpSend(Buffer *mBuf, U8 itfType);
-typedef S16 (*SctpNtfy) ARGS((Buffer *mBuf, CmInetSctpNotification *ntfy));
 S16 duSctpCfgReq(SctpParams sctpCfg);
 S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr);
 S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr);

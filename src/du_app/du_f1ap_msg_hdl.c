@@ -22,6 +22,7 @@
 #include "legtp.h"
 #include "lkw.x"
 #include "lrg.x"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include "du_mgr.h"
@@ -69,6 +70,7 @@
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
 #include "du_cell_mgr.h"
+#include "odu_common_codec.h"
 
 S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);

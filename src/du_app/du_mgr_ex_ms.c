@@ -23,6 +23,7 @@
 #include "lkw.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include "du_sctp.h"
@@ -81,15 +82,16 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
    duCb.f1Status     = FALSE;
    duCb.e2Status     = FALSE;
 
-   for(id = 0; id < DU_MAX_CELLS; id ++)
+   for(id = 0; id < MAX_NUM_CELL; id ++)
    {
       duCb.cfgCellLst[id] = NULL;
       duCb.actvCellLst[id] = NULL;
    }
    duCb.numUe = 0;
-   memset(duCb.ueCcchCtxt, 0, DU_MAX_UE * sizeof(UeCcchCtxt));
+   memset(duCb.ueCcchCtxt, 0, MAX_NUM_UE * sizeof(UeCcchCtxt));
    duCb.numCfgCells  = 0;
    duCb.numActvCells = 0;
+
    SSetProcId(DU_PROC);
 
    return ROK;

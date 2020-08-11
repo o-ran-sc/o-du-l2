@@ -51,7 +51,7 @@ registered with SSI during the LTE MAC Task initialization.
 #include "rgm.x"           /* layer management typedefs for MAC */
 #include "rg_sch_inf.x"        /* typedefs for Scheduler */
 #include "rg_sch.x"        /* typedefs for Scheduler */
-
+#include "mac_sch_interface.h"
 
 
 
@@ -97,7 +97,7 @@ Buffer  *mBuf;                      /* message buffer       */
 #ifdef LCRGMILRG
             case EVTMACSCHGENCFGREQ:
                /* Process a config. request */
-               cmUnpkLrgSchCfgReq(HandleSchGenCfgReq, pst, mBuf);
+               cmUnpkLrgSchCfgReq(SchProcGenCfgReq, pst, mBuf);
                break;
             case EVTLRGSCHCNTRLREQ:
                /* Process a control request */
@@ -242,7 +242,7 @@ Buffer  *mBuf;                      /* message buffer       */
 #endif
 #endif            
             case EVENT_SLOT_IND_TO_SCH:
-               cmUnpackMacSchSlotInd(macSchSlotInd, pst, mBuf);
+               unpackMacSchSlotInd(macSchSlotInd, pst, mBuf);
                break;
             default:
                RGSCH_FREE_MSG(mBuf);

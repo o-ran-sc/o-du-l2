@@ -125,6 +125,23 @@
    }                                                            \
 }
 
+/* Fill Pst structure for sending msg from DU APP to MAC */
+#define FILL_PST_DUAPP_TO_MAC(_pst, _event)                 \
+{                                                           \
+   _pst.selector  = ODU_SELECTOR_LWLC;                      \
+   _pst.srcEnt    = ENTDUAPP;                               \
+   _pst.dstEnt    = ENTRG;                                  \
+   _pst.dstInst   = 0;                                      \
+   _pst.srcInst   = 0;                                      \
+   _pst.dstProcId = DU_PROC;                                \
+   _pst.srcProcId = DU_PROC;                                \
+   _pst.region = DU_APP_MEM_REGION;                         \
+   _pst.pool = DU_POOL;                                     \
+   _pst.event = _event;                                     \
+   _pst.route = 0;                                          \
+   _pst.prior = 0;                                          \
+   _pst.intfVer = 0;                                        \
+}
 
 typedef enum
 {
@@ -164,7 +181,7 @@ typedef struct duCellCb
    Bool           firstSlotIndRcvd;
    CellStatus     cellStatus;       /* Cell status */
    uint32_t       numActvUes;       /* Total Active UEs */
-   DuUeCb         ueCb[DU_MAX_UE];  /* UE CONTEXT */
+   DuUeCb         ueCb[MAX_NUM_UE];  /* UE CONTEXT */
 }DuCellCb;
 
 typedef struct duLSapCb
@@ -197,13 +214,13 @@ typedef struct duCb
    Bool          f1Status; /* Status of F1 connection */
    Bool          e2Status; /* Status of E2 connection */
    uint8_t       numCfgCells; 
-   DuCellCb*     cfgCellLst[DU_MAX_CELLS];     /* List of cells at DU APP of type DuCellCb */
+   DuCellCb*     cfgCellLst[MAX_NUM_CELL];     /* List of cells at DU APP of type DuCellCb */
    uint8_t       numActvCells;
-   DuCellCb*     actvCellLst[DU_MAX_CELLS];    /* List of cells activated/to be activated of type DuCellCb */
+   DuCellCb*     actvCellLst[MAX_NUM_CELL];    /* List of cells activated/to be activated of type DuCellCb */
    /* pointer to store the address of macCellCfg params used to send du-app to MAC */
    MacCellCfg    *duMacCellCfg;         /* pointer to store params while sending DU-APP to MAC */
    uint32_t       numUe;            /* current number of UEs */
-   UeCcchCtxt     ueCcchCtxt[DU_MAX_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
+   UeCcchCtxt     ueCcchCtxt[MAX_NUM_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
 }DuCb;
 
 

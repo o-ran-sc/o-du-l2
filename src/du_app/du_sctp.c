@@ -22,6 +22,7 @@
 #include "legtp.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_sctp.h"
 #include "lsctp.h"
@@ -583,7 +584,7 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
    pst.event = EVENT_SCTP_NTFY;
    pst.selector = ODU_SELECTOR_LC;
    pst.pool= DU_POOL;
-   pst.region = DFLT_REGION;
+   pst.region = DU_APP_MEM_REGION;
    
    if(cmPkSctpNtfy(&pst, ntfy) != ROK)
    {

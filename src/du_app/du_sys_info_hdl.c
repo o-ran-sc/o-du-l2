@@ -22,6 +22,7 @@
 #include "lkw.x"
 #include "lrg.x"
 #include "legtp.h"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_log.h"
@@ -53,6 +54,7 @@
 #include "ServingCellConfigCommonSIB.h"
 #include "MCC.h"
 #include "SIB1.h"
+#include "odu_common_codec.h"
 #include "du_sys_info_hdl.h"
 
 void FreeSib1Msg(SIB1_t *sib1Msg);

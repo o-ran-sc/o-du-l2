@@ -20,13 +20,14 @@
 #include "lkw.x"
 #include "lrg.x"
 #include "legtp.h"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_mgr_main.h"
 #include "GlobalE2node-gNB-ID.h"
-#include "odu_common_codec.h"
 #include<ProtocolIE-FieldE2.h>
 #include "E2AP-PDU.h"
 #include "du_e2ap_msg_hdl.h"
+#include "odu_common_codec.h"
 
 /* Global variable */
 DuCfgParams duCfgParam;

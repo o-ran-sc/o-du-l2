@@ -19,11 +19,6 @@
 #ifndef __DU_CONFIG_H_
 #define __DU_CONFIG_H__
 
-#include "stdbool.h"
-#include "du_app_mac_inf.h"
-#include "du_log.h"
-#include "odu_common_codec.h"
-
 /* MACROS */
 #define DU_INST 0
 #define DU_ID 1
@@ -197,8 +192,6 @@
 /* Macro definitions for F1 procedures */
 #define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 #define MAX_F1_CONNECTIONS 65536    /* Max num of F1 connections */
-#define DU_MAX_CELLS       1      /* Max num of cells served by gNB-DU */
-#define DU_MAX_UE          1      /* Maximum number of UE Ids */
 #define MAX_PLMN           6        /* Max num of broadcast PLMN ids */
 #define MAXNRARFCN         3279165  /* Maximum values of NRAFCN */
 #define MAXNRCELLBANDS     2       /* Maximum number of frequency bands */
@@ -812,7 +805,7 @@ typedef struct f1SetupReq
    uint32_t                transId;                       /* Uniquely identify transaction */
    uint32_t                duId;                          /* DU ID */ 
    char               duName[CU_DU_NAME_LEN_MAX];    /* DU name */
-   F1DuSrvdCellInfo   srvdCellLst[DU_MAX_CELLS];   /* Serving cell list */
+   F1DuSrvdCellInfo   srvdCellLst[MAX_NUM_CELL];   /* Serving cell list */
    F1RrcVersion       rrcVersion;                    /* RRC version */
 }F1SetupReq;
 
@@ -863,11 +856,11 @@ typedef struct f1ErrorInd
 typedef struct f1GnbDuCfgUpd
 {
    uint32_t                 transId;                             /* Uniquely identify transaction */
-   F1DuSrvdCellInfo    srvdCellLstAdd[DU_MAX_CELLS];      /* Served cell list to be added */
-   F1DuSrvdCellToDel   srvdCellLstMod[DU_MAX_CELLS];      /* Served cell list to be modified */
-   NrEcgi              srvdCellLstDel[DU_MAX_CELLS];      /* Served cell list to be deleted */
-   F1CellStatus        cellStatus[DU_MAX_CELLS];          /* Cell status */
-   F1DedSIDelUE        ueLst[DU_MAX_UE];                     /* Ue list that requires dedicated SI delivery */
+   F1DuSrvdCellInfo    srvdCellLstAdd[MAX_NUM_CELL];      /* Served cell list to be added */
+   F1DuSrvdCellToDel   srvdCellLstMod[MAX_NUM_CELL];      /* Served cell list to be modified */
+   NrEcgi              srvdCellLstDel[MAX_NUM_CELL];      /* Served cell list to be deleted */
+   F1CellStatus        cellStatus[MAX_NUM_CELL];          /* Cell status */
+   F1DedSIDelUE        ueLst[MAX_NUM_UE];                     /* Ue list that requires dedicated SI delivery */
    uint32_t            gnbDuId;
    F1TnlAssocToRmv     gnbDuTnlAssocRmv[MAX_TNL_ASSOC];  /* TNL Assoc list to remove */ 
 }F1GnbDuCfgUpd;
@@ -875,9 +868,9 @@ typedef struct f1GnbDuCfgUpd
 typedef struct f1GnbDuCfgUpdAck
 {
    uint32_t           transId;                      /* Uniquely identify transaction */
-   F1CuActCellInfo    cellLstAct[DU_MAX_CELLS];    /* List of cells to be activated */   
+   F1CuActCellInfo    cellLstAct[MAX_NUM_CELL];    /* List of cells to be activated */   
    F1CritDiagnostic   critDiagnostic;               /* Critical diagnostics */
-   NrEcgi             cellLstDeact[DU_MAX_CELLS]; /* List of cells to be deactivated */
+   NrEcgi             cellLstDeact[MAX_NUM_CELL]; /* List of cells to be deactivated */
 }F1GnbDuCfgUpdAck;
 
 typedef struct f1GnbDuCfgUpdFail
@@ -889,12 +882,12 @@ typedef struct f1GnbDuCfgUpdFail
 typedef struct f1GnbCuCfgUpd
 {
    uint32_t            transId;                            /* Uniquely identifies transaction */
-   F1CuActCellInfo     cellLstAct[DU_MAX_CELLS];         /* List of cells to be activated */
-   NrEcgi              cellLstDeact[DU_MAX_CELLS];       /* List of cells to be deactivated */
+   F1CuActCellInfo     cellLstAct[MAX_NUM_CELL];         /* List of cells to be activated */
+   NrEcgi              cellLstDeact[MAX_NUM_CELL];       /* List of cells to be deactivated */
    F1TnlAssoc          assocLstAdd[MAX_TNL_ASSOC];     /* List of TNL assocs to be added */
    F1TnlAssoc          assocLstUpd[MAX_TNL_ASSOC];     /* List of TNL assocs to be updated */
    F1TnlAssocToRmv     assocLstRmv[MAX_TNL_ASSOC];     /* List of TNL assocs to be removed */
-   F1CellBarred        cellToBarList[DU_MAX_CELLS];      /* List of Cells to be barred */
+   F1CellBarred        cellToBarList[MAX_NUM_CELL];      /* List of Cells to be barred */
    F1ProtectEUTRARsrc  protectEutraRsrcList[MAXCELLINENB]; /* List of Protected EUTRA resources */
 }F1GnbCuCfgUpd;
 
@@ -903,7 +896,7 @@ typedef struct f1GnbCuCfgUpd
 typedef struct f1GnbCuCfgUpdAck
 {
    uint32_t              transId;                              /* Uniquely identify transaction */
-   F1ActCellFail         actCellFailList[DU_MAX_CELLS];      /* Cells failed to be activated list */
+   F1ActCellFail         actCellFailList[MAX_NUM_CELL];      /* Cells failed to be activated list */
    F1CritDiagnostic      critDiagnostic;                       /* Critical diagnostics */
    F1TnlAssocAddr        assocSetupList[MAX_TNL_ASSOC];     /* TNL Assoc Setup list */
    F1TnlAssocSetupFail   assocSetupFailList[MAX_TNL_ASSOC]; /* TNL Assoc Setup fail list */
@@ -1186,7 +1179,7 @@ typedef struct duCfgParams
    uint32_t           duId;
    uint8_t            duName[CU_DU_NAME_LEN_MAX];
    SchedulerCfg       schedCfg;
-   F1DuSrvdCellInfo   srvdCellLst[DU_MAX_CELLS];  /* Serving cell list *///TODO: this must be removed eventually
+   F1DuSrvdCellInfo   srvdCellLst[MAX_NUM_CELL];  /* Serving cell list *///TODO: this must be removed eventually
    F1RrcVersion       rrcVersion;                 /* RRC version */
    MacCellCfg	       macCellCfg;	              /* MAC cell configuration */
    MibParams          mibParams;                  /* MIB Params */
@@ -1198,7 +1191,6 @@ void FillSlotConfig();
 S16 readClCfg();
 S16 readCfg();
 S16 duReadCfg(); 
-S16 bitStringToInt(BIT_STRING_t *bitString, uint16_t *val);
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
 
 #endif /* __DU_CONFIG_H__ */
