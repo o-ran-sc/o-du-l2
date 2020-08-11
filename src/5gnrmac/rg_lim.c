@@ -44,7 +44,6 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_sch_inf.h"           /* layer management defines for LTE-MAC */
 #include "rg_env.h"        /* customisable defines and macros for MAC */
 #include "rg.h"            /* defines and macros for MAC */
-#include "du_log.h"
 
 /* header/extern include files (.x) */
 #include "rgu.x"           /* RGU types */
@@ -53,11 +52,7 @@ static int RLOG_MODULE_ID=4096;
 #include "crg.x"           /* layer management typedefs for MAC */
 #include "rg_sch_inf.x"    /* SCH interface typedefs */
 #include "rg_prg.x"    /* PRG interface typedefs */
-#include "du_app_mac_inf.h"
 #include "rg.x"            /* typedefs for MAC */
-
-#include "mac_upr_inf_api.h"
-#include "mac.h"
 
 /* local externs */
 #ifdef UNUSED_FUNC
@@ -571,115 +566,6 @@ TfuDelDatReqInfo *delDatReq;
 }  /* rgLIMTfuDatReq*/
 #endif /*L2_OPTMZ */
 
-/*******************************************************************
- *
- * @brief Fills post structure
- *
- * @details
- *
- *    Function : fillMacToSchPst
- *
- *    Functionality:
- *      Fills post structure to be used when sending msg from 
- *      MAC to SCH
- *
- * @params[in] Post structure pointer 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-void fillMacToSchPst(Pst *pst)
-{
-   pst->srcProcId = 0;
-   pst->dstProcId = 0;
-   pst->srcEnt = ENTRG;
-   pst->dstEnt = ENTRG;
-   pst->srcInst = 0;
-   pst->dstInst = 1;
-   pst->region = 0;
-   pst->pool =  0;
-   pst->selector = ODU_SELECTOR_TC;
-}
-
-/*******************************************************************
- *
- * @brief MAC handler for config response from PHY
- *
- * @details
- *
- *    Function : fapiMacConfigRsp
- *
- *    Functionality:
- *     Processes config response from PHY and sends cell config
- *     confirm to DU APP
- *
- * @params[in] 
- * @return void
- *
- * ****************************************************************/
-void fapiMacConfigRsp()
-{
-   /* TODO : Processing of config response from PHY */
-
-   /* Send cell config cfm to DU APP */
-   MacSendCellCfgCfm(RSP_OK);
-}
-
-/*******************************************************************
- *
- * @brief Send stop indication to DU APP
- *
- * @details
- *
- *    Function : sendStopIndMacToDuApp
- *
- *    Functionality:
- *       Send stop indication to DU APP
- *
- * @params[in] Pst info 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t sendStopIndMacToDuApp()
-{
-   Pst pst;
-   uint8_t ret = ROK;
-
-   MacCellStopInfo *cellStopId; 
-  
-   /*  Allocate sharable memory */
-   MAC_ALLOC_SHRABL_BUF(cellStopId, sizeof(MacCellStopInfo));
-   if(!cellStopId)
-   {
-      DU_LOG("\nMAC : Stop Indication memory allocation failed");
-      return RFAILED;
-   }
-   cellStopId->cellId = macCb.macCell->cellId;
-
-   /* Fill Pst */
-   pst.selector  = ODU_SELECTOR_LWLC;
-   pst.srcEnt    = ENTRG;
-   pst.dstEnt    = ENTDUAPP;
-   pst.dstInst   = 0;
-   pst.srcInst   = macCb.macInst;
-   pst.dstProcId = rgCb[pst.srcInst].rgInit.procId;
-   pst.srcProcId = rgCb[pst.srcInst].rgInit.procId;
-   pst.region = MAC_MEM_REGION;
-   pst.pool = MAC_POOL;
-   pst.event = EVENT_MAC_STOP_IND;
-   pst.route = 0;
-   pst.prior = 0;
-   pst.intfVer = 0;
-
-   ret = MacDuAppStopInd(&pst, cellStopId);
-   if(ret != ROK)
-   {
-      DU_LOG("\nMAC: Failed to send stop indication to DU APP");
-      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, cellStopId, sizeof(MacCellStopInfo));
-   }
-   return ROK;
-}
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
  /**
  * @brief Transmission of non-rt indication from CL.

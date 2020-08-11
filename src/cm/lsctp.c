@@ -20,6 +20,8 @@
 #include "common_def.h"
 #include "lrg.h"
 #include "legtp.h"
+#include "du_app_mac_inf.h"
+#include "odu_common_codec.h"
 #include "du_cfg.h"
 #include "lkw.x"
 #include "lrg.x"

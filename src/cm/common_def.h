@@ -49,6 +49,7 @@
 #include "cm_hash.x"
 #include "cm_lte.x"
 #include "cm_lib.x"
+#include "du_log.h"
 
 /* 5G ORAN phy delay */
 #define PHY_DELTA 2
@@ -58,3 +59,12 @@
 #define ODU_SELECTOR_TC 1
 #define ODU_SELECTOR_LWLC 2
 
+typedef struct slotIndInfo
+{
+   uint16_t sfn;
+   uint16_t slot;
+}SlotIndInfo;
+
+/**********************************************************************
+  End of file
+ ***********************************************************************/

@@ -22,8 +22,6 @@
 
 #define MAX_NUM_CELL_SUPP 1
 
-#include "du_app_mac_inf.h"
-
 #ifdef INTEL_WLS
 #define LWR_MAC_ALLOC(_datPtr, _size)   WLS_MEM_ALLOC(_datPtr, _size);
 #else                                     
@@ -40,31 +38,31 @@ typedef enum
 
 /* Events in Lower Mac */
 typedef enum{
-  PARAM_REQUEST,
-  PARAM_RESPONSE,
-  CONFIG_REQUEST,
-  CONFIG_RESPONSE,
-  START_REQUEST,
-  STOP_REQUEST,
-  MAX_EVENT
+   PARAM_REQUEST,
+   PARAM_RESPONSE,
+   CONFIG_REQUEST,
+   CONFIG_RESPONSE,
+   START_REQUEST,
+   STOP_REQUEST,
+   MAX_EVENT
 }EventState;
 
 typedef struct clCb
 {
    Region          region;
    Pool            pool;
-   Bool            clCfgDone;   /* CL configuration done */
+   bool            clCfgDone;   /* CL configuration done */
    CmHashListCp    cellCbLst;   /* List of Cells configured */
-   U8              numOfCells;  /* Number of Cells configured */
+   uint8_t         numOfCells;  /* Number of Cells configured */
    PhyState        phyState;    /* State of PHY */
    EventState      event;       /* State of Event */
 }ClCb;
 
 typedef struct cellCb
 {
-   U16         cellId;
+   uint16_t     cellId;
    MacCellCfg   cellCfg;
-   PhyState    phyState;
+   PhyState     phyState;
 }ClCellCb;
 
 typedef enum
@@ -222,9 +220,9 @@ typedef struct clCellParam
    ParamSupport          precoderGranularityCoreset;
    ParamSupport          pdcchMuMimo;
    ParamSupport          pdcchPrecoderCycling;
-   U8                    maxPdcchsPerSlot;
+   uint8_t               maxPdcchsPerSlot;
    Formats               pucchFormats;
-   U8                    maxPucchsPerSlot;   
+   uint8_t               maxPucchsPerSlot;   
    MappingType           pdschMappingType;
    AllocationType        pdschAllocationTypes;
    VrbToPrbMap           pdschVrbToPrbMapping;
@@ -232,10 +230,10 @@ typedef struct clCellParam
    DmrsConfigType        pdschDmrsConfigTypes;
    DmrMaxLen             pdschDmrsMaxLength;
    DmrsPos               pdschDmrsAdditionalPos;
-   U8                    maxPdschsTBsPerSlot;
-   U8                    maxNumberMimoLayersPdsch;
+   uint8_t               maxPdschsTBsPerSlot;
+   uint8_t               maxNumberMimoLayersPdsch;
    ModulationOrder       supportedMaxModulationOrderDl;
-   U8                    maxMuMimoUsersDl;
+   uint8_t               maxMuMimoUsersDl;
    ParamSupport          pdschDataInDmrsSymbols;
    ParamSupport          premptionSupport;
    ParamSupport          pdschNonSlotSupport;
@@ -249,11 +247,11 @@ typedef struct clCellParam
    MappingType           puschMappingType;
    AllocationType        puschAllocationTypes;
    VrbToPrbMap           puschVrbToPrbMapping;
-   U8                    puschMaxPtrsPorts;
-   U8                    maxPduschsTBsPerSlot;
-   U8                    maxNumberMimoLayersNonCbPusch;
+   uint8_t               puschMaxPtrsPorts;
+   uint8_t               maxPduschsTBsPerSlot;
+   uint8_t               maxNumberMimoLayersNonCbPusch;
    ModulationOrder       supportedModulationOrderUl;
-   U8                    maxMuMimoUsersUl;
+   uint8_t               maxMuMimoUsersUl;
    ParamSupport          dftsOfdmSupport;
    AggregationFactor     puschAggregationFactor;
    Formats                prachLongFormats;
@@ -264,14 +262,14 @@ typedef struct clCellParam
 }ClCellParam;
 
 EXTERN ClCb clGlobalCp; 
-EXTERN ClCellCb * rgClUtlGetCellCb ARGS((U16 cellId));
+EXTERN ClCellCb * rgClUtlGetCellCb ARGS((uint16_t cellId));
 EXTERN uint32_t reverseBits(uint32_t num, uint8_t numBits);
 EXTERN void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
-   uint32_t val, uint8_t valSize);
+      uint32_t val, uint8_t valSize);
 EXTERN void lwrMacInit();
 
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

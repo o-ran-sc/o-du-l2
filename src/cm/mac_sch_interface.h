@@ -24,6 +24,7 @@
 #define EVENT_RACH_IND_TO_SCH        5
 #define EVENT_CRC_IND_TO_SCH         6
 #define EVENT_DL_RLC_BO_INFO_TO_SCH  7
+#define EVENT_SLOT_IND_TO_SCH        8
 
 
 /*macros*/
@@ -31,6 +32,7 @@
 #define SSB_TRANSMISSION 1
 #define SSB_REPEAT 2
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
+#define SCH_SSB_MASK_SIZE   1
 
 #define NO_SIB1 0
 #define SIB1_TRANSMISSION 1
@@ -66,19 +68,32 @@
       toFill.sfn%=MAX_SFN; \
    } \
 
-/*structures*/
-
+typedef enum
+{
+   DUPLEX_MODE_FDD,
+   DUPLEX_MODE_TDD
+}SchDuplexMode;
 
 typedef enum
 {
-	RSP_OK,
-	RSP_NOK
+   SSB_PRDCTY_MS5,
+   SSB_PRDCTY_MS10,
+   SSB_PRDCTY_MS20,
+   SSB_PRDCTY_MS40,
+   SSB_PRDCTY_MS80,
+   SSB_PRDCTY_MS160
+}SchSSBPeriod;
+
+typedef enum
+{
+   RSP_OK,
+   RSP_NOK
 }schMacRsp;
 
 typedef struct timeDomainAlloc
 {
    uint16_t startSymb;
-       uint16_t numSymb;
+   uint16_t numSymb;
 }TimeDomainAlloc;
 
 typedef struct freqDomainAlloc
@@ -93,9 +108,9 @@ typedef struct
    uint32_t    ssbPbchPwr;       /* SSB block power */
    uint8_t     scsCommon;           /* subcarrier spacing for common [0-3]*/
    uint8_t     ssbOffsetPointA;  /* SSB sub carrier offset from point A */
-   SSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
+   SchSSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
    uint8_t     ssbSubcOffset;    /* Subcarrier Offset(Kssb) */
-   uint32_t    nSSBMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
+   uint32_t    nSSBMask[SCH_SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
 }SchSsbCfg;
 
 typedef struct bwpCfg
@@ -139,23 +154,23 @@ typedef struct dmrsInfo
    uint8_t  scid;
    uint8_t  numDmrsCdmGrpsNoData;
    uint16_t dmrsPorts;
-	uint8_t mappingType;
-	uint8_t nrOfDmrsSymbols;
-	uint8_t dmrsAddPos;
+   uint8_t mappingType;
+   uint8_t nrOfDmrsSymbols;
+   uint8_t dmrsAddPos;
 } DmrsInfo;
 
 typedef struct pdschFreqAlloc
 {
    uint8_t  resourceAllocType;
    /* since we are using type-1, hence rbBitmap excluded */
-	FreqDomainAlloc freqAlloc;
+   FreqDomainAlloc freqAlloc;
    uint8_t  vrbPrbMapping;
 } PdschFreqAlloc;
 
 typedef struct pdschTimeAlloc
 {
    uint8_t         rowIndex;
-	TimeDomainAlloc timeAlloc;
+   TimeDomainAlloc timeAlloc;
 } PdschTimeAlloc;
 
 typedef struct txPowerPdschInfo
@@ -238,9 +253,9 @@ typedef struct
    uint8_t  coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
    uint8_t  searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */
    uint16_t sib1Mcs;
-	
-	/* parameters derived in scheduler */
-	uint8_t n0;
+
+   /* parameters derived in scheduler */
+   uint8_t n0;
    BwpCfg bwp;
    PdcchCfg sib1PdcchCfg;
    PdschCfg sib1PdschCfg;
@@ -250,24 +265,24 @@ typedef struct schRachCfg
 {
    uint8_t      prachCfgIdx;       /* PRACH config idx */
    uint8_t      prachSubcSpacing;  /* Subcarrier spacing of RACH */
-	uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
-	uint8_t      msg1Fdm;           /* PRACH FDM (1,2,4,8) */
-	uint8_t      rootSeqLen;        /* root sequence length */
+   uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
+   uint8_t      msg1Fdm;           /* PRACH FDM (1,2,4,8) */
+   uint8_t      rootSeqLen;        /* root sequence length */
    uint16_t     rootSeqIdx;        /* Root sequence index */
    uint8_t      numRootSeq;        /* Number of root sequences required for FD */
    uint16_t     k1;                /* Frequency Offset for each FD */
    uint8_t      ssbPerRach;        /* SSB per RACH occassion */
    uint8_t      prachMultCarrBand; /* Presence of Multiple carriers in Band */
-	uint8_t      raContResTmr;      /* RA Contention Resoultion Timer */
-	uint8_t      rsrpThreshSsb;     /* RSRP Threshold SSB */
+   uint8_t      raContResTmr;      /* RA Contention Resoultion Timer */
+   uint8_t      rsrpThreshSsb;     /* RSRP Threshold SSB */
    uint8_t      raRspWindow;       /* RA Response Window */
 }SchRachCfg;
 
 typedef struct schBwpParams
 {
    FreqDomainAlloc freqAlloc;
-	uint8_t         scs;
-	uint8_t         cyclicPrefix;
+   uint8_t         scs;
+   uint8_t         cyclicPrefix;
 }SchBwpParams;
 
 typedef struct schCandidatesInfo
@@ -282,11 +297,11 @@ typedef struct schCandidatesInfo
 typedef struct schSearchSpaceCfg
 {
    uint8_t searchSpaceId;
-	uint8_t coresetId;
-	uint16_t monitoringSlot;
-	uint16_t duration;
-	uint16_t monitoringSymbol;
-	SchCandidatesInfo candidate;
+   uint8_t coresetId;
+   uint16_t monitoringSlot;
+   uint16_t duration;
+   uint16_t monitoringSymbol;
+   SchCandidatesInfo candidate;
 }SchSearchSpaceCfg;
 
 typedef struct schPdcchCfgCmn
@@ -320,29 +335,29 @@ typedef struct schPuschCfgCmn
 typedef struct schBwpDlCfg
 {
    SchBwpParams   bwp;
-	SchPdcchCfgCmn pdcchCommon;
-	SchPdschCfgCmn pdschCommon;
+   SchPdcchCfgCmn pdcchCommon;
+   SchPdschCfgCmn pdschCommon;
 }SchBwpDlCfg;
 
 typedef struct schBwpUlCfg
 {
    SchBwpParams   bwp;
-	SchPucchCfgCmn pucchCommon;
-	SchPuschCfgCmn puschCommon;
+   SchPucchCfgCmn pucchCommon;
+   SchPuschCfgCmn puschCommon;
 }SchBwpUlCfg;
 
 typedef struct schCellCfg
 {
    uint16_t    cellId;           /* Cell Id */
    uint16_t    phyCellId;        /* Physical cell id */
-	uint8_t     bandwidth;        /* Supported B/W */
-   DuplexMode  dupMode;          /* Duplex type: TDD/FDD */
-	SchSsbCfg   ssbSchCfg;        /* SSB config */
-	SchSib1Cfg  sib1SchCfg;       /* SIB1 config */
+   uint8_t     bandwidth;        /* Supported B/W */
+   SchDuplexMode  dupMode;          /* Duplex type: TDD/FDD */
+   SchSsbCfg   ssbSchCfg;        /* SSB config */
+   SchSib1Cfg  sib1SchCfg;       /* SIB1 config */
    SchRachCfg  schRachCfg;       /* PRACH config */
-	SchBwpDlCfg schInitialDlBwp;  /* Initial DL BWP */
-	SchBwpUlCfg schInitialUlBwp;  /* Initial UL BWP */
-	uint8_t     puschMu;          /* PUSCH MU */
+   SchBwpDlCfg schInitialDlBwp;  /* Initial DL BWP */
+   SchBwpUlCfg schInitialUlBwp;  /* Initial UL BWP */
+   uint8_t     puschMu;          /* PUSCH MU */
 }SchCellCfg;
 
 typedef struct schCellCfgCfm
@@ -354,8 +369,8 @@ typedef struct schCellCfgCfm
 typedef struct ssbInfo
 {
    uint8_t         ssbIdx;          /* SSB Index */
-	TimeDomainAlloc tdAlloc; /* Time domain allocation */
-	FreqDomainAlloc fdAlloc; /* Freq domain allocation */
+   TimeDomainAlloc tdAlloc; /* Time domain allocation */
+   FreqDomainAlloc fdAlloc; /* Freq domain allocation */
 }SsbInfo;
 
 typedef struct sib1AllocInfo
@@ -367,7 +382,7 @@ typedef struct sib1AllocInfo
 
 typedef struct prachSchInfo
 {
-	uint8_t  numPrachOcas;   /* Num Prach Ocassions */
+   uint8_t  numPrachOcas;   /* Num Prach Ocassions */
    uint8_t  prachFormat;    /* PRACH Format */
    uint8_t  numRa;          /* Freq domain ocassion */
    uint8_t  prachStartSymb; /* Freq domain ocassion */
@@ -376,30 +391,30 @@ typedef struct prachSchInfo
 /* Interface structure signifying DL broadcast allocation for SSB, SIB1 */
 typedef struct dlBrdcstAlloc
 {
-	/* Ssb transmission is determined as follows:
-	 * 0 : No tranamission
-	 * 1 : SSB Transmission
-	 * 2 : SSB Repetition */
-	uint8_t ssbTrans;
-	uint8_t ssbIdxSupported;
-	SsbInfo ssbInfo[MAX_SSB_IDX];
-	/* Sib1 transmission is determined as follows:
-	 * 0 : No tranamission
-	 * 1 : SIB1 Transmission
-	 * 2 : SIB1 Repetition */
-	U8 sib1Trans;
-	Sib1AllocInfo sib1Alloc;
+   /* Ssb transmission is determined as follows:
+    * 0 : No tranamission
+    * 1 : SSB Transmission
+    * 2 : SSB Repetition */
+   uint8_t ssbTrans;
+   uint8_t ssbIdxSupported;
+   SsbInfo ssbInfo[MAX_SSB_IDX];
+   /* Sib1 transmission is determined as follows:
+    * 0 : No tranamission
+    * 1 : SIB1 Transmission
+    * 2 : SIB1 Repetition */
+   U8 sib1Trans;
+   Sib1AllocInfo sib1Alloc;
 }DlBrdcstAlloc;
 
 typedef struct rarInfo
 {
    uint16_t        raRnti;
-	uint8_t         RAPID;
-	uint16_t        ta;
-	FreqDomainAlloc msg3FreqAlloc;
-	uint16_t        tcrnti;
-	uint8_t         rarPdu[8];
-	uint8_t         rarPduLen;
+   uint8_t         RAPID;
+   uint16_t        ta;
+   FreqDomainAlloc msg3FreqAlloc;
+   uint16_t        tcrnti;
+   uint8_t         rarPdu[8];
+   uint8_t         rarPduLen;
 }RarInfo;
 
 typedef struct rarAlloc
@@ -413,13 +428,13 @@ typedef struct rarAlloc
 typedef struct msg4Info
 {
    uint16_t crnti;
-	uint8_t  ndi;
-	uint8_t  harqProcNum;
-	uint8_t  dlAssignIdx;
-	uint8_t  pucchTpc;
-	uint8_t  pucchResInd;
-	uint8_t  harqFeedbackInd;
-	uint8_t  dciFormatId;
+   uint8_t  ndi;
+   uint8_t  harqProcNum;
+   uint8_t  dlAssignIdx;
+   uint8_t  pucchTpc;
+   uint8_t  pucchResInd;
+   uint8_t  harqFeedbackInd;
+   uint8_t  dciFormatId;
    uint8_t  *msg4Pdu;
    uint16_t  msg4PduLen;
 }Msg4Info;
@@ -434,25 +449,25 @@ typedef struct msg4Alloc
 
 typedef struct schSlotValue
 {
-	SlotIndInfo currentTime;
-	SlotIndInfo broadcastTime;
-	SlotIndInfo rarTime;
-	SlotIndInfo msg4Time;
-	SlotIndInfo dlMsgTime;
+   SlotIndInfo currentTime;
+   SlotIndInfo broadcastTime;
+   SlotIndInfo rarTime;
+   SlotIndInfo msg4Time;
+   SlotIndInfo dlMsgTime;
 }SchSlotValue;
 
 typedef struct dlSchedInfo
 {
    uint16_t cellId;  /* Cell Id */
-	SchSlotValue schSlotValue;
+   SchSlotValue schSlotValue;
 
-	/* Allocation for broadcast messages */
+   /* Allocation for broadcast messages */
    bool isBroadcastPres;
-	DlBrdcstAlloc brdcstAlloc;
+   DlBrdcstAlloc brdcstAlloc;
 
-	/* Allocation for RAR message */
-	//uint8_t isRarPres;
-	RarAlloc *rarAlloc;
+   /* Allocation for RAR message */
+   //uint8_t isRarPres;
+   RarAlloc *rarAlloc;
 
    /* Allocation from MSG4 */
    Msg4Alloc *msg4Alloc;
@@ -473,9 +488,9 @@ typedef struct schPuschInfo
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
    TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
    TbInfo           tbInfo;       /* TB info */
-	uint8_t          dmrsMappingType;
-	uint8_t          nrOfDmrsSymbols;
-	uint8_t          dmrsAddPos;
+   uint8_t          dmrsMappingType;
+   uint8_t          nrOfDmrsSymbols;
+   uint8_t          dmrsAddPos;
 }SchPuschInfo;
 
 typedef struct schPucchInfo
@@ -484,22 +499,22 @@ typedef struct schPucchInfo
    uint8_t          pucchFormat;
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
    TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
-	uint8_t          srFlag;
-	uint8_t          harqFlag;
-	uint8_t          numHarqBits;
-	uint8_t          uciFlag;
-	uint8_t          numUciBits;
+   uint8_t          srFlag;
+   uint8_t          harqFlag;
+   uint8_t          numHarqBits;
+   uint8_t          uciFlag;
+   uint8_t          numUciBits;
 }SchPucchInfo;
 
 typedef struct ulSchedInfo
 {
    uint16_t      cellId;         /* Cell Id */
-	uint16_t      crnti;          /* CRNI */
-	SlotIndInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
-	uint8_t       dataType;       /* Type of info being scheduled */
-	PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
-	SchPuschInfo  schPuschInfo;   /* Pusch scheduling info */
-	SchPucchInfo  schPucchInfo;   /* Pusch scheduling info */
+   uint16_t      crnti;          /* CRNI */
+   SlotIndInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
+   uint8_t       dataType;       /* Type of info being scheduled */
+   PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
+   SchPuschInfo  schPuschInfo;   /* Pusch scheduling info */
+   SchPucchInfo  schPucchInfo;   /* Pusch scheduling info */
 }UlSchedInfo;
 
 typedef struct rachIndInfo
@@ -542,24 +557,24 @@ typedef struct dlRlcBOInfo
 /* function pointers */
 
 typedef int (*SchCellCfgCfmFunc)    ARGS((
-   Pst            *pst,           /* Post Structure */                         
-   SchCellCfgCfm  *schCellCfgCfm  /* Cell Cfg Cfm */
-));
+	 Pst            *pst,           /* Post Structure */                         
+	 SchCellCfgCfm  *schCellCfgCfm  /* Cell Cfg Cfm */
+	 ));
 
 typedef int (*SchCellCfgFunc)    ARGS((
-   Pst            *pst,           /* Post Structure */                         
-   SchCellCfg  *schCellCfg     /* Cell Cfg  */
-));
+	 Pst            *pst,           /* Post Structure */                         
+	 SchCellCfg  *schCellCfg     /* Cell Cfg  */
+	 ));
 
 typedef int (*SchMacDlAllocFunc)     ARGS((                     
-   Pst            *pst,       /* Post Structure */                         
-   DlSchedInfo    *dlSchedInfo    /* dl allocation Info */                      
-));
+	 Pst            *pst,       /* Post Structure */                         
+	 DlSchedInfo    *dlSchedInfo    /* dl allocation Info */                      
+	 ));
 
 typedef int (*SchMacUlSchInfoFunc)     ARGS((                     
-   Pst         *pst,           /* Post Structure */                         
-   UlSchedInfo *ulSchedInfo         /* UL Alloc Sch  Info */                      
-));
+	 Pst         *pst,           /* Post Structure */                         
+	 UlSchedInfo *ulSchedInfo         /* UL Alloc Sch  Info */                      
+	 ));
 
 /* function declarations */
 int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
@@ -573,7 +588,7 @@ EXTERN int MacProcSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg);
 EXTERN int MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm  *schCellCfgCfm);
 EXTERN int SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg);
 EXTERN int schActvInit(Ent entity, Inst instId, Region region, Reason reason);
-EXTERN S16 SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
+EXTERN uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 EXTERN int MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
 typedef int (*MacSchRachIndFunc)(Pst *pst, RachIndInfo *rachInd);
 int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd);
@@ -584,7 +599,10 @@ int macSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
 typedef uint8_t (*MacSchDlRlcBoInfoFunc)(Pst *pst, DlRlcBOInfo *dlBoInfo);
 uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
 uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
-
+typedef int (*MacSchSlotIndFunc) ARGS((Pst  *pst, SlotIndInfo *slotInd));
+int macSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
+typedef int (*MacSchSlotIndFunc)(Pst * pst, SlotIndInfo * slotInd);
+int unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf);
 
 /**********************************************************************
   End of file

@@ -23,6 +23,8 @@
 #include "lkw.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "du_app_mac_inf.h"
+#include "odu_common_codec.h"
 #include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_sctp.h"
@@ -52,21 +54,21 @@ extern S16 cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
 packMacCellCfgReq packMacCellCfgOpts[] =
 {
    packMacCellCfg, /* packing for loosely coupled */
-   MacHdlCellCfgReq, /* packing for tightly coupled */
+   MacProcCellCfgReq, /* packing for tightly coupled */
    packMacCellCfg, /* packing for light weight loosly coupled */
 };
 
 DuMacCellStartReq packMacCellStartReqOpts[] =
 {
    packMacCellStartReq,   /* Loose coupling */
-   MacHdlCellStartReq,    /* TIght coupling */
+   MacProcCellStartReq,    /* TIght coupling */
    packMacCellStartReq    /* Light weight-loose coupling */
 };
 
 DuMacCellStopReq packMacCellStopReqOpts[] =
 {
    packMacCellStopReq,   /* Loose coupling */
-   MacHdlCellStopReq,    /* TIght coupling */
+   MacProcCellStopReq,    /* TIght coupling */
    packMacCellStopReq    /* Light weight-loose coupling */
 };
 
@@ -120,7 +122,7 @@ S16 duBuildRlcCfg(Inst inst)
    genCfg->lmPst.pool      = RLC_POOL;
    genCfg->lmPst.selector  = ODU_SELECTOR_LC;
 
-    /* Fill Header */
+   /* Fill Header */
    kwMngmt.hdr.msgType             = TCFG;
    kwMngmt.hdr.msgLen              = 0;
    kwMngmt.hdr.entId.ent           = ENTKW;
@@ -219,7 +221,7 @@ S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst)
       lSap->procId    = DU_PROC;
       lSap->ent       = ENTKW;
       lSap->inst      = (inst == RLC_UL_INST) ?
-         RLC_DL_INST : RLC_UL_INST;
+	 RLC_DL_INST : RLC_UL_INST;
       lSap->sapId       = 0;
       lSap->selector = ODU_SELECTOR_LC;
       kwMngmt.hdr.elmId.elmnt  = STUDXSAP;
@@ -321,41 +323,41 @@ S16 duProcCfgComplete()
    {
       DuCellCb *cell = NULLP;
       DU_ALLOC(cell, sizeof(DuCellCb))
-      if(cell == NULLP)
-      {
-         DU_LOG("\nDU_APP : Memory Allocation failed in duProcCfgComplete");
-         ret = RFAILED;
-      }
-      else
-      {
-         U32 nci;
-         U8 idx1; 
-         memset(cell, 0, sizeof(DuCellCb));
-         cell->cellId = ++cellId;
-         cell->cellInfo.nrEcgi.plmn.mcc[0] = PLMN_MCC0;
-         cell->cellInfo.nrEcgi.plmn.mcc[1] = PLMN_MCC1;
-         cell->cellInfo.nrEcgi.plmn.mcc[2] = PLMN_MCC2;
-         cell->cellInfo.nrEcgi.plmn.mnc[0] = PLMN_MNC0;
-         cell->cellInfo.nrEcgi.plmn.mnc[1] = PLMN_MNC1;
-         cell->cellInfo.nrEcgi.plmn.mnc[2] = PLMN_MNC2;
-         cell->cellInfo.nrEcgi.cellId = NR_CELL_ID;
-         cell->cellInfo.nrPci = NR_PCI; 
-         cell->cellInfo.fiveGsTac = DU_TAC;
-         for(idx1=0; idx1<MAX_PLMN; idx1++)
-         {
-            cell->cellInfo.plmn[idx1].mcc[0] = PLMN_MCC0;
-            cell->cellInfo.plmn[idx1].mcc[1] = PLMN_MCC1;
-            cell->cellInfo.plmn[idx1].mcc[2] = PLMN_MCC2;
-            cell->cellInfo.plmn[idx1].mnc[0] = PLMN_MNC0;
-            cell->cellInfo.plmn[idx1].mnc[1] = PLMN_MNC1;
-            cell->cellInfo.plmn[idx1].mnc[2] = PLMN_MNC2;
+	 if(cell == NULLP)
+	 {
+	    DU_LOG("\nDU_APP : Memory Allocation failed in duProcCfgComplete");
+	    ret = RFAILED;
 	 }
-         cell->cellInfo.maxUe = duCfgParam.maxUe;
-         cell->cellStatus = CELL_OUT_OF_SERVICE;
-         nci = (U16)cell->cellInfo.nrEcgi.cellId;
-         
-         duCb.cfgCellLst[nci-1] = cell;
-      }
+	 else
+	 {
+	    U32 nci;
+	    U8 idx1; 
+	    memset(cell, 0, sizeof(DuCellCb));
+	    cell->cellId = ++cellId;
+	    cell->cellInfo.nrEcgi.plmn.mcc[0] = PLMN_MCC0;
+	    cell->cellInfo.nrEcgi.plmn.mcc[1] = PLMN_MCC1;
+	    cell->cellInfo.nrEcgi.plmn.mcc[2] = PLMN_MCC2;
+	    cell->cellInfo.nrEcgi.plmn.mnc[0] = PLMN_MNC0;
+	    cell->cellInfo.nrEcgi.plmn.mnc[1] = PLMN_MNC1;
+	    cell->cellInfo.nrEcgi.plmn.mnc[2] = PLMN_MNC2;
+	    cell->cellInfo.nrEcgi.cellId = NR_CELL_ID;
+	    cell->cellInfo.nrPci = NR_PCI; 
+	    cell->cellInfo.fiveGsTac = DU_TAC;
+	    for(idx1=0; idx1<MAX_PLMN; idx1++)
+	    {
+	       cell->cellInfo.plmn[idx1].mcc[0] = PLMN_MCC0;
+	       cell->cellInfo.plmn[idx1].mcc[1] = PLMN_MCC1;
+	       cell->cellInfo.plmn[idx1].mcc[2] = PLMN_MCC2;
+	       cell->cellInfo.plmn[idx1].mnc[0] = PLMN_MNC0;
+	       cell->cellInfo.plmn[idx1].mnc[1] = PLMN_MNC1;
+	       cell->cellInfo.plmn[idx1].mnc[2] = PLMN_MNC2;
+	    }
+	    cell->cellInfo.maxUe = duCfgParam.maxUe;
+	    cell->cellStatus = CELL_OUT_OF_SERVICE;
+	    nci = (U16)cell->cellInfo.nrEcgi.cellId;
+
+	    duCb.cfgCellLst[nci-1] = cell;
+	 }
    }
    if(ret != RFAILED)
    {
@@ -389,7 +391,7 @@ S16 duSendRlcUlCfg()
       duBuildRlcLsapCfg(ENTRG, (Inst)RLC_UL_INST, cellIdx);
    }
    duBuildRlcLsapCfg(ENTKW, (Inst)RLC_UL_INST, 0);
-   
+
    return ROK;
 }
 
@@ -418,7 +420,7 @@ S16 duSendRlcDlCfg()
    {
       duBuildRlcLsapCfg(ENTRG, (Inst)RLC_DL_INST, cellIdx);
    }
-   
+
    return ROK;
 }
 /**************************************************************************
@@ -475,37 +477,37 @@ S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cntrl)
    {
       switch (cntrl->hdr.elmId.elmnt)
       {
-         case  STRGUSAP:
-            {
-               if (pst->srcInst == RLC_DL_INST)
-               {
-                  DU_LOG("\nDU_APP : BIND OF RLC DL TO MAC (RGU) SAP SUCCESSFUL");
-                  macCfgInst++;
-                  if(macCfgInst < DEFAULT_CELLS)
-                  {
-                     macCfgInst = 0;
-                     duBindUnbindRlcToMacSap((Inst) RLC_DL_INST, ABND);
-                  }
-                  else
-                  {
-                     duBindUnbindRlcToMacSap((Inst) RLC_UL_INST, ABND);
-                  }
-               }
-               else
-               {
-                  DU_LOG("\nDU_APP : BIND OF RLC UL TO MAC (RGU) SAP SUCCESSFUL");
-                  macCfgInst++;
-                  if(macCfgInst < DEFAULT_CELLS)
-                  {
-                     duBindUnbindRlcToMacSap((Inst) RLC_UL_INST, ABND);
-                  }
-                  else
-                  {
-                     duSendSchCfg();
-                  }
-                  break;
-               }
-            }
+	 case  STRGUSAP:
+	    {
+	       if (pst->srcInst == RLC_DL_INST)
+	       {
+		  DU_LOG("\nDU_APP : BIND OF RLC DL TO MAC (RGU) SAP SUCCESSFUL");
+		  macCfgInst++;
+		  if(macCfgInst < DEFAULT_CELLS)
+		  {
+		     macCfgInst = 0;
+		     duBindUnbindRlcToMacSap((Inst) RLC_DL_INST, ABND);
+		  }
+		  else
+		  {
+		     duBindUnbindRlcToMacSap((Inst) RLC_UL_INST, ABND);
+		  }
+	       }
+	       else
+	       {
+		  DU_LOG("\nDU_APP : BIND OF RLC UL TO MAC (RGU) SAP SUCCESSFUL");
+		  macCfgInst++;
+		  if(macCfgInst < DEFAULT_CELLS)
+		  {
+		     duBindUnbindRlcToMacSap((Inst) RLC_UL_INST, ABND);
+		  }
+		  else
+		  {
+		     duSendSchCfg();
+		  }
+		  break;
+	       }
+	    }
 
       }
    }
@@ -536,37 +538,37 @@ S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
    {
       switch(cfm->hdr.elmId.elmnt)
       {
-         case STGEN:
-            {
-               rlcUlCfg |= RLC_GEN_CFG;
-               break;
-            }
-         case STRGUSAP:
-            {
-               numRlcMacSaps++;
-               if(numRlcMacSaps == DEFAULT_CELLS)
-               {
-                  rlcUlCfg |= RLC_MAC_SAP_CFG;
-                  numRlcMacSaps = 0;
-               }
-               break;
-            }
-         case STUDXSAP:
-            {
-               rlcUlCfg |= RLC_UDX_SAP_CFG;
-               break;
+	 case STGEN:
+	    {
+	       rlcUlCfg |= RLC_GEN_CFG;
+	       break;
+	    }
+	 case STRGUSAP:
+	    {
+	       numRlcMacSaps++;
+	       if(numRlcMacSaps == DEFAULT_CELLS)
+	       {
+		  rlcUlCfg |= RLC_MAC_SAP_CFG;
+		  numRlcMacSaps = 0;
+	       }
+	       break;
+	    }
+	 case STUDXSAP:
+	    {
+	       rlcUlCfg |= RLC_UDX_SAP_CFG;
+	       break;
 
-            }
-         default:
-            break;
+	    }
+	 default:
+	    break;
       }
       DU_LOG("\nDU_APP : RLC UL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
       if(rlcUlCfg == DU_RLC_UL_CONFIGURED)
       {
-          rlcUlCfg = 0;
-          numRlcMacSaps = 0;
-          //Start configuration of RLC DL
-          duSendRlcDlCfg();
+	 rlcUlCfg = 0;
+	 numRlcMacSaps = 0;
+	 //Start configuration of RLC DL
+	 duSendRlcDlCfg();
 
       }
    }
@@ -601,37 +603,37 @@ S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm)
    {
       switch(cfm->hdr.elmId.elmnt)
       {
-         case STGEN:
-            {
-               rlcDlCfg |= RLC_GEN_CFG;
-               break;
-            }
-         case STRGUSAP:
-            {
-               numRlcMacSaps++;
-               if(numRlcMacSaps == DEFAULT_CELLS)
-               {
-                  rlcDlCfg |= RLC_MAC_SAP_CFG;
-                  numRlcMacSaps = 0;
-               }
-               break;
-            }
-         case STUDXSAP:
-            {
-               rlcDlCfg |= RLC_UDX_SAP_CFG;
-               break;
+	 case STGEN:
+	    {
+	       rlcDlCfg |= RLC_GEN_CFG;
+	       break;
+	    }
+	 case STRGUSAP:
+	    {
+	       numRlcMacSaps++;
+	       if(numRlcMacSaps == DEFAULT_CELLS)
+	       {
+		  rlcDlCfg |= RLC_MAC_SAP_CFG;
+		  numRlcMacSaps = 0;
+	       }
+	       break;
+	    }
+	 case STUDXSAP:
+	    {
+	       rlcDlCfg |= RLC_UDX_SAP_CFG;
+	       break;
 
-            }
-         default:
-            break;
+	    }
+	 default:
+	    break;
 
       }
       DU_LOG("\nDU_APP : RLC DL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
       if(rlcDlCfg == DU_RLC_DL_CONFIGURED)
       {
-          rlcDlCfg = 0;
-          //Start configuration of MAC
-          duSendMacCfg();
+	 rlcDlCfg = 0;
+	 //Start configuration of MAC
+	 duSendMacCfg();
 
       }
    }
@@ -691,7 +693,7 @@ S16 duBuildMacGenCfg()
    DU_SET_ZERO(&rgMngmt, sizeof(RgMngmt));
 
    genCfg   = &(rgMngmt.t.cfg.s.genCfg);
-   
+
    /*----------- Fill General Configuration Parameters ---------*/
    genCfg->mem.region = MAC_MEM_REGION;
    genCfg->mem.pool   = RG_POOL;
@@ -710,7 +712,7 @@ S16 duBuildMacGenCfg()
    genCfg->lmPst.pool      = RG_POOL;
    genCfg->lmPst.selector  = ODU_SELECTOR_LC;
 
-    /* Fill Header */
+   /* Fill Header */
    rgMngmt.hdr.msgType             = TCFG;
    rgMngmt.hdr.msgLen              = 0;
    rgMngmt.hdr.entId.ent           = ENTRG;
@@ -787,7 +789,7 @@ S16 duBuildMacUsapCfg(SpId sapId)
    rgMngmt.hdr.elmId.elmnt         = STRGUSAP;
    rgMngmt.hdr.response.mem.region = MAC_MEM_REGION;
    rgMngmt.hdr.response.mem.pool   = RG_POOL;
-   
+
    /* fill pst */
    pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
@@ -829,27 +831,27 @@ S16 duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
    {
       switch (cfm->hdr.elmId.elmnt)
       {
-         case STGEN:
-            {
-               macCfg |= MAC_GEN_CFG;
-               break;
-            }
-         case STRGUSAP:
-            {
-               macCfg |= MAC_SAP_CFG;
-               numRlcMacSaps++;
-               break;
-            }
-         default:
-            break;
+	 case STGEN:
+	    {
+	       macCfg |= MAC_GEN_CFG;
+	       break;
+	    }
+	 case STRGUSAP:
+	    {
+	       macCfg |= MAC_SAP_CFG;
+	       numRlcMacSaps++;
+	       break;
+	    }
+	 default:
+	    break;
       }
       DU_LOG("\nDU_APP : MAC Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
       if(macCfg == MAC_CONFIGURED && numRlcMacSaps == MAX_MAC_SAP)
       {
-         macCfg = 0;
-         DU_LOG("\nDU_APP : Completed sending Configs");
-         macCfgInst = 0;
-         duBindUnbindRlcToMacSap(RLC_DL_INST, ABND);
+	 macCfg = 0;
+	 DU_LOG("\nDU_APP : Completed sending Configs");
+	 macCfgInst = 0;
+	 duBindUnbindRlcToMacSap(RLC_DL_INST, ABND);
       }
 
    }
@@ -885,7 +887,7 @@ S16 duBindUnbindRlcToMacSap(U8 inst, U8 action)
 
    TRC2(smBindKwToRguSap)
 
-   DU_SET_ZERO(&kwMngmt, sizeof(KwMngmt));
+      DU_SET_ZERO(&kwMngmt, sizeof(KwMngmt));
    DU_SET_ZERO(&pst, sizeof(Pst));
 
    if (action == ABND)
@@ -950,21 +952,21 @@ S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
    {
       if(BuildAndSendF1SetupReq() != ROK)
       {
-         return RFAILED;
+	 return RFAILED;
       }
    }
    else if(ricParams.assocId == ntfy->u.assocChange.assocId)
    {
       if(BuildAndSendE2SetupReq() != ROK)
       {
-         return RFAILED;
+	 return RFAILED;
       }
    }
    else
-	{
+   {
       DU_LOG("\nDU_APP : Invalid assocId %d received", ntfy->u.assocChange.assocId);
-		return RFAILED;
-	}
+      return RFAILED;
+   }
    return ROK;
 }
 
@@ -996,7 +998,7 @@ S16 duFillEgtpPst(Pst *pst, Event event)
    pst->event = event;
    pst->selector = ODU_SELECTOR_LC;
    pst->pool= DU_POOL;
-  
+
    RETVALUE(ROK);
 }
 
@@ -1020,18 +1022,18 @@ S16 duFillEgtpPst(Pst *pst, Event event)
 
 S16 duBuildEgtpCfgReq()
 {
-    Pst pst;
-    EgtpConfig egtpCfg;
-    
-    DU_LOG("\nDU_APP : Sending EGTP config request");
+   Pst pst;
+   EgtpConfig egtpCfg;
 
-    cmMemset((U8 *)&egtpCfg, 0, sizeof(EgtpConfig));
-    cmMemcpy((U8 *)&egtpCfg, (U8 *)&duCfgParam.egtpParams, (PTR)sizeof(EgtpConfig));
-    
-    duFillEgtpPst(&pst, EVTCFGREQ);
-    packEgtpCfgReq(&pst, egtpCfg);
- 
-    RETVALUE(ROK);
+   DU_LOG("\nDU_APP : Sending EGTP config request");
+
+   cmMemset((U8 *)&egtpCfg, 0, sizeof(EgtpConfig));
+   cmMemcpy((U8 *)&egtpCfg, (U8 *)&duCfgParam.egtpParams, (PTR)sizeof(EgtpConfig));
+
+   duFillEgtpPst(&pst, EVTCFGREQ);
+   packEgtpCfgReq(&pst, egtpCfg);
+
+   RETVALUE(ROK);
 }
 
 /*******************************************************************
@@ -1086,7 +1088,7 @@ S16 duHdlEgtpCfgComplete(CmStatus cfm)
  *         RFAILED - failure
  *
  * ****************************************************************/
- 
+
 S16 duSendEgtpSrvOpenReq()
 {
    Pst pst;
@@ -1118,22 +1120,22 @@ S16 duSendEgtpSrvOpenReq()
 
 S16 duHdlEgtpSrvOpenComplete(CmStatus cfm)
 {
-    S16 ret = ROK;
- 
-    if(cfm.status == LCM_PRIM_OK)
-    {
-       DU_LOG("\nDU_APP : EGTP server opened successfully");
+   S16 ret = ROK;
+
+   if(cfm.status == LCM_PRIM_OK)
+   {
+      DU_LOG("\nDU_APP : EGTP server opened successfully");
 #ifdef EGTP_TEST
-       duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_ADD, EGTP_LCL_TEID, EGTP_REM_TEID);
+      duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_ADD, EGTP_LCL_TEID, EGTP_REM_TEID);
 #endif
-    }
-    else
-    {
-       DU_LOG("\nDU_APP : EGTP server opening failed");
-       ret = RFAILED;
-    }
- 
-    RETVALUE(ret);
+   }
+   else
+   {
+      DU_LOG("\nDU_APP : EGTP server opening failed");
+      ret = RFAILED;
+   }
+
+   RETVALUE(ret);
 }
 
 /*******************************************************************
@@ -1163,12 +1165,12 @@ S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid)
    tnlEvt.action = action;
    tnlEvt.lclTeid = lclTeid;
    tnlEvt.remTeid = remTeid;
-    
+
    DU_LOG("\nDU_APP : Sending EGTP tunnel management request");
-    
+
    duFillEgtpPst(&pst, EVTTNLMGMTREQ);
    packEgtpTnlMgmtReq(&pst, tnlEvt);
-    
+
    RETVALUE(ROK);
 }
 
@@ -1223,7 +1225,7 @@ S16 duSendEgtpDatInd(Buffer *mBuf)
    egtpMsg.msgHdr.extHdr.pdcpNmb.pres = FALSE;
    egtpMsg.msgHdr.teId = 1;
    egtpMsg.msg = mBuf;
-   
+
    egtpHdlDatInd(egtpMsg);
 
    return ROK;
@@ -1258,9 +1260,9 @@ S16 duSendEgtpTestData()
    {
       if(SAddPstMsgMult((Data *)data, datSize, mBuf) != ROK)
       {
-         DU_LOG("\nDU_APP : SAddPstMsgMult failed");
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+	 DU_LOG("\nDU_APP : SAddPstMsgMult failed");
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
       }
    }
    else
@@ -1287,7 +1289,7 @@ S16 duSendEgtpTestData()
    S16          ret, cnt, idx;
    Data         revPkArray[CM_IPV4_HDRLEN];
    Data         pkArray[CM_IPV4_HDRLEN];
- 
+
    /* initialize locals */
    cnt = 0;
    cmMemset(revPkArray, 0, CM_IPV4_HDRLEN);
@@ -1337,9 +1339,9 @@ S16 duSendEgtpTestData()
 
    /* this function automatically reverses revPkArray */
    ret = SAddPreMsgMult(revPkArray, (MsgLen)cnt, mBuf);
-    
+
    duSendEgtpDatInd(mBuf);
- 
+
    RETVALUE(ROK);
 }
 #endif /* EGTP_TEST */
@@ -1487,13 +1489,13 @@ S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
    {
       switch (cfm->hdr.elmId.elmnt)
       {
-         case STSCHINST:
-            {
-               DU_LOG("\nDU_APP : Received SCH CFG CFM at DU APP");
-               break;
-            }
-         default:
-            break;
+	 case STSCHINST:
+	    {
+	       DU_LOG("\nDU_APP : Received SCH CFG CFM at DU APP");
+	       break;
+	    }
+	 default:
+	    break;
       }
    }
    duLayerConfigComplete();
@@ -1523,9 +1525,9 @@ S16 duSendEgtpSlotInd()
 
    duFillEgtpPst(&pst, EVTSLOTIND);
    packEgtpSlotInd(&pst);
-   
+
    RETVALUE(ROK);
-   
+
 }
 
 /**************************************************************************
@@ -1562,7 +1564,7 @@ S16 duBuildAndSendMacCellCfg()
    memcpy(duMacCellCfg,&duCfgParam.macCellCfg,sizeof(MacCellCfg));
 
    duMacCellCfg->transId = getTransId(); /* transaction ID */
-   
+
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
@@ -1598,34 +1600,34 @@ int  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
    S16 ret = ROK;
 
    if(macCellCfgCfm->rsp == ROK)  
-	{
-		if(macCellCfgCfm->transId == duCb.duMacCellCfg->transId)
-		{
-			/* free the memory allocated during sending macCellCfg request */
-			DU_FREE(duCb.duMacCellCfg->sib1Cfg.sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
-			DU_FREE(duCb.duMacCellCfg,sizeof(MacCellCfg));
-			duCb.duMacCellCfg = NULLP;
+   {
+      if(macCellCfgCfm->transId == duCb.duMacCellCfg->transId)
+      {
+	 /* free the memory allocated during sending macCellCfg request */
+	 DU_FREE(duCb.duMacCellCfg->sib1Cfg.sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
+	 DU_FREE(duCb.duMacCellCfg,sizeof(MacCellCfg));
+	 duCb.duMacCellCfg = NULLP;
 
-			/* Build and send GNB-DU config update */
-			ret = BuildAndSendDUConfigUpdate();
+	 /* Build and send GNB-DU config update */
+	 ret = BuildAndSendDUConfigUpdate();
 
-         /* TODO: Trigger cell start req once cell up slot ind is received*/
-			/* Build and Send Cell Start Req to MAC */
-			ret = duBuildAndSendMacCellStartReq();
+	 /* TODO: Trigger cell start req once cell up slot ind is received*/
+	 /* Build and Send Cell Start Req to MAC */
+	 ret = duBuildAndSendMacCellStartReq();
 
-		}
-		else
-		{
-			/* transaction ID missmatch */
-			DU_LOG("\n transaction ID mismatch in macCellCfg");
-			ret = RFAILED;
-		}
-	}
-	else
-	{
-		DU_LOG("\nMac cell cfg failed");
-		ret = RFAILED;
-	}
+      }
+      else
+      {
+	 /* transaction ID missmatch */
+	 DU_LOG("\n transaction ID mismatch in macCellCfg");
+	 ret = RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\nMac cell cfg failed");
+      ret = RFAILED;
+   }
    return ret;
 }
 
@@ -1648,7 +1650,7 @@ int  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
  * ****************************************************************/
 uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo)
 {
-   
+
    DU_LOG("\nDU APP : Slot Indication received");
 
    if(slotInfo->cellId <=0 || slotInfo->cellId > DU_MAX_CELLS)
@@ -1659,13 +1661,13 @@ uint16_t duHandleSlotInd(Pst *pst, SlotInfo *slotInfo)
    {
       duCb.actvCellLst[slotInfo->cellId-1]->firstSlotIndRcvd = true;
       if((duCb.actvCellLst[slotInfo->cellId-1] != NULL) && \
-         (duCb.actvCellLst[slotInfo->cellId-1]->cellStatus == \
-         ACTIVATION_IN_PROGRESS))
+	    (duCb.actvCellLst[slotInfo->cellId-1]->cellStatus == \
+	     ACTIVATION_IN_PROGRESS))
       {
-         DU_LOG("\nDU APP : 5G-NR Cell %d is UP", slotInfo->cellId);
-         duCb.actvCellLst[slotInfo->cellId-1]->cellStatus = ACTIVATED;
+	 DU_LOG("\nDU APP : 5G-NR Cell %d is UP", slotInfo->cellId);
+	 duCb.actvCellLst[slotInfo->cellId-1]->cellStatus = ACTIVATED;
       }
-      
+
    }
 
    /* TODO : Slot Indication to be moved out of EGTP_TEST when
@@ -1715,22 +1717,22 @@ uint16_t duBuildAndSendMacCellStartReq()
    {
       if(duCb.actvCellLst[id])
       {
-         duCb.actvCellLst[id]->firstSlotIndRcvd = FALSE;
-         cellStartInfo->cellId = duCb.actvCellLst[id]->cellInfo.nrEcgi.cellId;
- 
-         /* Fill Pst */
-         pst.selector  = ODU_SELECTOR_LWLC;
-         pst.srcEnt    = ENTDUAPP;
-         pst.dstEnt    = ENTRG;
-         pst.dstInst   = 0;
-         pst.srcInst   = 0;
-         pst.dstProcId = DU_PROC;
-         pst.srcProcId = DU_PROC;
-         pst.region = DU_APP_MEM_REGION;
-         pst.pool = DU_POOL;
-         pst.event = EVENT_MAC_CELL_START_REQ;
- 
-         return (*packMacCellStartReqOpts[pst.selector])(&pst, cellStartInfo);
+	 duCb.actvCellLst[id]->firstSlotIndRcvd = FALSE;
+	 cellStartInfo->cellId = duCb.actvCellLst[id]->cellInfo.nrEcgi.cellId;
+
+	 /* Fill Pst */
+	 pst.selector  = ODU_SELECTOR_LWLC;
+	 pst.srcEnt    = ENTDUAPP;
+	 pst.dstEnt    = ENTRG;
+	 pst.dstInst   = 0;
+	 pst.srcInst   = 0;
+	 pst.dstProcId = DU_PROC;
+	 pst.srcProcId = DU_PROC;
+	 pst.region = DU_APP_MEM_REGION;
+	 pst.pool = DU_POOL;
+	 pst.event = EVENT_MAC_CELL_START_REQ;
+
+	 return (*packMacCellStartReqOpts[pst.selector])(&pst, cellStartInfo);
       }
    }
    return ROK;
@@ -1756,7 +1758,7 @@ uint16_t duBuildAndSendMacCellStopReq()
 {
    Pst pst;
    MacCellStopInfo *cellStopInfo = NULL;
- 
+
    DU_LOG("\nDU APP : Building and Sending cell stop request to MAC");
 
    /* Send Cell Stop Request to MAC */
@@ -1767,7 +1769,7 @@ uint16_t duBuildAndSendMacCellStopReq()
       return RFAILED;
    }
    cellStopInfo->cellId = duCb.actvCellLst[0]->cellId;
- 
+
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
@@ -1779,7 +1781,7 @@ uint16_t duBuildAndSendMacCellStopReq()
    pst.region = DU_APP_MEM_REGION;
    pst.pool = DU_POOL;
    pst.event = EVENT_MAC_CELL_STOP_REQ;
- 
+
    return (*packMacCellStopReqOpts[pst.selector])(&pst, cellStopInfo);
 }
 
@@ -1805,19 +1807,19 @@ uint16_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
    {
       DU_LOG("\nDU APP : Invalid Cell Id %d", cellStopId->cellId);
    }
-	if(duCb.actvCellLst[cellStopId->cellId-1] != NULL)
-	{
+   if(duCb.actvCellLst[cellStopId->cellId-1] != NULL)
+   {
       if(duCb.actvCellLst[cellStopId->cellId-1]->firstSlotIndRcvd)
       {
-         duCb.actvCellLst[cellStopId->cellId-1]->firstSlotIndRcvd = false;
-         if((duCb.actvCellLst[cellStopId->cellId-1]->cellStatus == \
-             ACTIVATED))
-         {
-            DU_LOG("\nDU APP : 5G-NR Cell %d is DOWN", cellStopId->cellId);
-            duCb.actvCellLst[cellStopId->cellId-1]->cellStatus = DELETION_IN_PROGRESS;
-         }
+	 duCb.actvCellLst[cellStopId->cellId-1]->firstSlotIndRcvd = false;
+	 if((duCb.actvCellLst[cellStopId->cellId-1]->cellStatus == \
+		  ACTIVATED))
+	 {
+	    DU_LOG("\nDU APP : 5G-NR Cell %d is DOWN", cellStopId->cellId);
+	    duCb.actvCellLst[cellStopId->cellId-1]->cellStatus = DELETION_IN_PROGRESS;
+	 }
       }
-	}
+   }
    if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC))
       DU_FREE_SHRABL_BUF(MAC_MEM_REGION, pst->pool, cellStopId, sizeof(MacCellStopInfo));
 
@@ -1843,7 +1845,7 @@ uint16_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
  * ****************************************************************/
 uint16_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 {
-   
+
    DU_LOG("\nDU APP : UL CCCH Indication received");
 
    return (duProcUlCcchInd(ulCcchIndInfo));
