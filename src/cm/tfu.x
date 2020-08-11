@@ -2503,75 +2503,6 @@ typedef struct tfuDelDatReqInfo
 } TfuDelDatReqInfo;
 #endif
 
-typedef struct slotIndInfo
-{
-   U16 sfn;
-   U16 slot;
-}SlotIndInfo;
-
-typedef struct rachPreamInfo
-{
-   uint8_t   preamIdx;
-   uint16_t  timingAdv;
-}RachPreamInfo;
-
-typedef struct rachPduInfo
-{
-   uint16_t   pci;
-   uint8_t    symbolIdx;
-   uint8_t    slotIdx;
-   uint8_t    freqIdx;
-   uint8_t    numPream;
-   RachPreamInfo   preamInfo[MAX_PREAM_PER_SLOT];
-}RachPduInfo;
-
-typedef struct rachInd
-{
-  SlotIndInfo   timingInfo;
-  uint8_t       numPdu;
-  RachPduInfo   rachPdu[MAX_RACH_PDU_PER_SLOT];
-}RachInd;
-
-typedef struct crcInfo
-{
-    uint32_t   handle;
-    uint16_t   rnti;
-    uint8_t    harqId;
-    uint8_t    tbCrcStatus;
-    uint16_t   numCb;
-    uint8_t    cbCrcStatus[MAX_CB_PER_TTI_IN_BYTES];
-    uint8_t    ul_cqi;
-    uint16_t   timingAdvance;
-    uint16_t   rssi;
-}CrcInfo;
-
-typedef struct crcInd
-{
-   SlotIndInfo   timingInfo;
-   uint16_t      numCrc;
-   CrcInfo       crcInfo[MAX_CRCS_PER_SLOT];
-}CrcInd;
-
-typedef struct 
-{
-   uint32_t      handle;
-   uint16_t      rnti;
-   uint8_t       harqId;
-   uint16_t      pduLength;
-   uint8_t       ul_cqi;
-   uint16_t      timingAdvance;
-   uint16_t      rssi;
-   uint8_t       *pduData;
-}RxDataIndPdu;
- 
-typedef struct 
-{
-   SlotIndInfo   timingInfo;
-   uint16_t      numPdus;
-   RxDataIndPdu  pdus[MAX_ULSCH_PDUS_PER_TTI];
-}RxDataInd;
-
-
 typedef S16 (*TfuBndReq) ARGS((
    Pst*                 pst,
    SuId                 suId,
@@ -3128,12 +3059,6 @@ EXTERN S16 RgLiTfuDatInd ARGS((
    TfuDatIndInfo *      datInd
 ));
 
-EXTERN S16 fapiMacSlotInd 
-(
-Pst                 *pst, 
-SlotIndInfo         *slotInd
-);
-
 EXTERN S16 RgLiTfuCrcInd ARGS((
    Pst *                pst,
    SuId                 suId,
@@ -3162,11 +3087,6 @@ EXTERN S16 RgLiTfuTtiInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuTtiIndInfo *      ttiInd
-));
-
-EXTERN int macSchSlotInd ARGS((
-   Pst *                pst,
-   SlotIndInfo *        slotInd
 ));
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
@@ -3541,11 +3461,6 @@ EXTERN S16 cmUnpackSlotInd ARGS((
    Buffer               *mBuf
 ));
 
-typedef int (*MacSchSlotIndFunc)     ARGS((                     
-   Pst         *pst,        /* Post Structure */                         
-   SlotIndInfo *slotInd     /* slot ind Info */                      
-));
-
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
 /** @brief This API is the non-rt indication from PHY to MAC.
   */
@@ -3570,14 +3485,6 @@ EXTERN S16 cmPkTfuSchTtiInd ARGS((
    SuId                 suId,
    TfuTtiIndInfo *      ttiInd
 ));
-/** @brief This API is the TTI indication from PHY to SCH.
- */
-EXTERN S16 cmUnpackMacSchSlotInd ARGS((
-   MacSchSlotIndFunc    func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-
 /** @brief This API is used to convey the PUCCH delta power from PHY to SCH.
  */
 EXTERN S16 cmPkTfuPucchDeltaPwrInd ARGS((

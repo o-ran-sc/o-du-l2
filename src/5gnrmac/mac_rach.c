@@ -17,14 +17,13 @@
  *******************************************************************************/
 /* header include files (.h) */
 #include "common_def.h"
-#include "tfu.h"           /* RGU Interface includes */
 #include "lrg.h"
-
-#include "tfu.x"           /* RGU Interface includes */
 #include "lrg.x"
 #include "du_app_mac_inf.h"
+#include "mac_sch_interface.h"
+#include "lwr_mac_upr_inf.h"
 #include "mac.h"
-#include "du_log.h"
+#include "mac_utils.h"
 
 /* Function pointer for sending rach ind from MAC to SCH */
 MacSchRachIndFunc macSchRachIndOpts[]=
@@ -50,13 +49,11 @@ MacSchRachIndFunc macSchRachIndOpts[]=
  *         RFAILED - failure
  *
  * ****************************************************************/
-int sendRachIndMacToSch(RachIndInfo *rachInd)
+uint8_t sendRachIndMacToSch(RachIndInfo *rachInd)
 {
    Pst pst;
-    
-   fillMacToSchPst(&pst);
-   pst.event = EVENT_RACH_IND_TO_SCH;
-    
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_RACH_IND_TO_SCH);
    return(*macSchRachIndOpts[pst.selector])(&pst, rachInd); 
 }
 
@@ -77,7 +74,7 @@ int sendRachIndMacToSch(RachIndInfo *rachInd)
  *         RFAILED - failure
  *
  * ****************************************************************/ 
-uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
+uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 {
    uint8_t      pduIdx;
    uint8_t      preambleIdx;
@@ -97,9 +94,9 @@ uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    rachIndInfo.symbolIdx = rachInd->rachPdu[pduIdx].symbolIdx;
    rachIndInfo.freqIdx = rachInd->rachPdu[pduIdx].freqIdx;
    rachIndInfo.preambleIdx = \
-      rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
+			     rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
    rachIndInfo.timingAdv = \
-      rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
+			   rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
 
    /* storing the value in macRaCb */
    createMacRaCb(rachIndInfo.cellId, rachIndInfo.crnti);
@@ -111,12 +108,31 @@ uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX] = 
 {0, 2, 4, 6, 8, 10, 12, 13, 15, 17, 19, 23, 27, 34, 46, 69};
 
-int MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
+/*******************************************************************
+ *
+ * @brief Processes UL scheduling info from SCH
+ *
+ * @details
+ *
+ *    Function : MacProcUlSchInfo
+ *
+ *    Functionality: Processes UL scheduling info from SCH
+ *
+ * @params[in] Post structure
+ *             UL scheduling info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
 {
+   uint16_t  cellIdx;
+
+   GET_CELL_IDX(ulSchedInfo->cellId, cellIdx);
    if(ulSchedInfo != NULLP)
-	{
+   {
       MacUlSlot *currUlSlot = 
-	   &macCb.macCell->ulSlot[ulSchedInfo->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
+	 &macCb.macCell[cellIdx]->ulSlot[ulSchedInfo->slotIndInfo.slot % MAX_SLOT_SUPPORTED];
       memcpy(&currUlSlot->ulInfo, ulSchedInfo, sizeof(UlSchedInfo)); 
    }
    return ROK;

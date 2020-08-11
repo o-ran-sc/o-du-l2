@@ -18,7 +18,6 @@
 
 /* macros */
 #define SCH_INST_START 1
-#define SCH_MAX_CELLS 1
 #define SCH_MAX_INST 1
 #define SCH_NUM_SLOTS 10 /*forcing this to 10 */
 #define SCH_MAX_SFN 1024
@@ -30,13 +29,10 @@
 #define SCH_SYMBOL_PER_SLOT 14
 #define SCH_SSB_NUM_SYMB 4
 #define SCH_SSB_NUM_PRB 20
-#define SCH_MEM_REGION     4
-#define SCH_POOL           1
 #define SCHED_DELTA 1
 #define BO_DELTA 1
 #define RAR_DELAY   2
 #define MSG4_DELAY  1
-#define SCH_MAX_UE  1
 #define PUSCH_START_RB 15
 #define PUCCH_NUM_PRB_FORMAT_0 1  /* number of PRBs in freq domain, spec 38.213 - 9.2.1 */
 #define SI_RNTI 0xFFFF
@@ -48,42 +44,6 @@
 #define CRC_FAILED 0
 #define CRC_PASSED 1
 
-/* allocate and zero out a static buffer */
-#define SCH_ALLOC(_datPtr, _size)                               \
-{                                                               \
-   S16 _ret;                                                    \
-   _ret = SGetSBuf(SCH_MEM_REGION, SCH_POOL,                    \
-	 (Data **)&_datPtr, _size);                             \
-   if(_ret == ROK)                                              \
-   {                                                            \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
-   }                                                            \
-   else                                                         \
-   {                                                            \
-      _datPtr = NULLP;                                          \
-   }                                                            \
-}
-
-/* free a static buffer */
-#define SCH_FREE(_datPtr, _size)                                \
-{                                                               \
-   if(_datPtr)                                                  \
-   {                                                            \
-      SPutSBuf(SCH_MEM_REGION, SCH_POOL,                        \
-	    (Data *)_datPtr, _size);                            \
-   }                                                            \
-}
-
-#define SCH_FILL_RSP_PST(_rspPst, _inst)\
-{                                  \
-   _rspPst.srcProcId = SFndProcId(); \
-   _rspPst.dstProcId = SFndProcId();\
-   _rspPst.srcEnt    = ENTRG;\
-   _rspPst.dstEnt    = ENTRG;\
-   _rspPst.srcInst   = 1;\
-   _rspPst.dstInst   = 0;\
-   _rspPst.selector  = ODU_SELECTOR_TC;\
-}	
 extern uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
 
 typedef enum
@@ -170,9 +130,9 @@ typedef struct schCellCb
    SchUlSlotInfo *schUlSlotInfo[SCH_NUM_SLOTS];     /*!< SCH resource allocations in UL */
    SchCellCfg    cellCfg;                           /*!< Cell ocnfiguration */
    uint8_t       ssbStartSymbArr[SCH_MAX_SSB_BEAM]; /*!<start symbol per SSB beam */
-   SchRaCb       raCb[SCH_MAX_UE];                  /*!< Rach Cb */
+   SchRaCb       raCb[MAX_NUM_UE];                  /*!< Rach Cb */
    uint16_t      numActvUe;
-   SchUeCb       ueCb[SCH_MAX_UE];
+   SchUeCb       ueCb[MAX_NUM_UE];
 }SchCellCb;
 
 /**
@@ -183,7 +143,7 @@ typedef struct schCb
 {
    TskInit       schInit;              /*!< Task Init info */
    SchGenCb      genCfg;                 /*!< General Config info */
-   SchCellCb     *cells[SCH_MAX_CELLS];  /* Array to store cellCb ptr */  
+   SchCellCb     *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */  
 }SchCb;
 
 /* Declaration for scheduler control blocks */

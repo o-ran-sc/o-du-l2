@@ -20,15 +20,13 @@
 
 /* header include files (.h) */
 #include "common_def.h"
-#include "tfu.h"
 #include "lrg.h"
-
-#include "tfu.x"
 #include "lrg.x"
-
 #include "du_app_mac_inf.h"
+#include "mac_sch_interface.h"
+#include "lwr_mac_upr_inf.h"
 #include "mac.h"
-#include "du_log.h"
+#include "mac_utils.h"
 
 /* function pointers for packing slot ind from mac to sch */
 MacSchUeCreateReqFunc macSchUeCreateReqOpts[] =
@@ -680,9 +678,8 @@ uint8_t sendAddUeCreateReqToSch(MacUeCfg *ueCfg)
       }
    }
 
-   fillMacToSchPst(&pst);
-   pst.event = EVENT_UE_CREATE_REQ_TO_SCH;
-
+   /* Fill event and send UE create request to SCH */
+   FILL_PST_MAC_TO_SCH(pst, EVENT_UE_CREATE_REQ_TO_SCH);
    return(*macSchUeCreateReqOpts[pst.selector])(&pst, &schUeCfg);
 }
 
@@ -703,25 +700,27 @@ uint8_t sendAddUeCreateReqToSch(MacUeCfg *ueCfg)
  * ****************************************************************/
 uint8_t createUeCb(MacUeCfg *ueCfg)
 {
-   uint16_t  ueIdx, lcIdx;
+   uint16_t  ueIdx, lcIdx, cellIdx;
    MacUeCb   *ueCb;
 
+   GET_CELL_IDX(ueCfg->cellId, cellIdx);
+
    /* Validate cell id */
-   if(macCb.macCell->cellId != ueCfg->cellId)
+   if(macCb.macCell[cellIdx]->cellId != ueCfg->cellId)
    {
       DU_LOG("\nMAC : Cell Id %d not configured", ueCfg->cellId);
       return RFAILED;
    }
 
    /* Check if max number of UE configured */
-   if(macCb.macCell->numActvUe > MAX_UE)
+   if(macCb.macCell[cellIdx]->numActvUe > MAX_NUM_UE)
    {
-      DU_LOG("MAC : Max number of UE [%d] already configured", MAX_UE);
+      DU_LOG("MAC : Max number of UE [%d] already configured", MAX_NUM_UE);
       return RFAILED;
    }
 
    /* Check if UE already configured */
-   ueCb = &macCb.macCell->ueCb[ueCfg->ueIdx];
+   ueCb = &macCb.macCell[cellIdx]->ueCb[ueCfg->ueIdx];
    if(ueCb)
    {
       if((ueCb->ueIdx == ueCfg->ueIdx) && (ueCb->crnti == ueCfg->crnti) &&\
@@ -736,7 +735,7 @@ uint8_t createUeCb(MacUeCfg *ueCfg)
    memset(ueCb, 0, sizeof(MacUeCb));
 
    ueCb->crnti = ueCfg->crnti;
-   ueCb->cellCb = macCb.macCell;
+   ueCb->cellCb = macCb.macCell[cellIdx];
    ueCb->dlInfo.dlHarqEnt.numHarqProcs = \
       ueCfg->spCellCfg.servCellCfg.pdschServCellCfg.numHarqProcForPdsch; 
    ueCb->state = UE_STATE_ACTIVE;
@@ -878,16 +877,16 @@ uint8_t createUeCb(MacUeCfg *ueCfg)
    }
 
    /* Copy RA Cb */
-   for(ueIdx = 0; ueIdx < MAX_UE; ueIdx++)
+   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
    {
-      if(macCb.macCell->macRaCb[ueIdx].crnti == ueCb->crnti)
+      if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == ueCb->crnti)
       {
-	 ueCb->raCb = &macCb.macCell->macRaCb[ueIdx];
+	 ueCb->raCb = &macCb.macCell[cellIdx]->macRaCb[ueIdx];
 	 break;
       }
    }
 
-   macCb.macCell->numActvUe++;
+   macCb.macCell[cellIdx]->numActvUe++;
 
    return ROK;
 }
@@ -898,7 +897,7 @@ uint8_t createUeCb(MacUeCfg *ueCfg)
  *
  * @details
  *
- *    Function : MacHdlUeCreateReq
+ *    Function : MacProcUeCreateReq
  *
  *    Functionality: Handles UE create requst from DU APP
  *
@@ -907,7 +906,7 @@ uint8_t createUeCb(MacUeCfg *ueCfg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacHdlUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
+uint8_t MacProcUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
 {
    uint8_t ret;
 
@@ -940,6 +939,22 @@ uint8_t MacHdlUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
    return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Fill and Send UE create response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : MacSendUeCreateRsp
+ *
+ *    Functionality: Fill and Send UE create response from MAC to DUAPP
+ *
+ * @params[in] MAC UE create result
+ *             SCH UE create response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t MacSendUeCreateRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
 {
    MacUeCfgRsp   *cfgRsp;
@@ -958,19 +973,9 @@ uint8_t MacSendUeCreateRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    cfgRsp->ueIdx = schCfgRsp->ueIdx;
    cfgRsp->result = result;
 
-   /* Filling Post structure */
+   /* Fill Post structure and send UE Create response*/
    memset(&rspPst, 0, sizeof(Pst));
-   rspPst.selector  = ODU_SELECTOR_LWLC;
-   rspPst.srcEnt    = ENTRG;
-   rspPst.dstEnt    = ENTDUAPP;
-   rspPst.dstInst   = 0;
-   rspPst.srcInst   = macCb.macInst;
-   rspPst.dstProcId = macCb.procId;
-   rspPst.srcProcId = macCb.procId;
-   rspPst.region = MAC_MEM_REGION;
-   rspPst.pool = MAC_POOL;
-   rspPst.event = EVENT_MAC_UE_CREATE_RSP;
-
+   FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_UE_CREATE_RSP);
    return DuMacUeCreateRspOpts[rspPst.selector](&rspPst, cfgRsp); 
 
 }
@@ -998,12 +1003,15 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
 {
    uint8_t result = MAC_DU_APP_RSP_NOK;
    uint8_t ret = ROK;
+   uint16_t cellIdx;
+
+   GET_CELL_IDX(schCfgRsp->cellId, cellIdx);
 
    if(schCfgRsp->rsp == RSP_NOK)
    {
       DU_LOG("\nMAC : SCH UE Create Response : FAILURE [CRNTI %d]", schCfgRsp->crnti);
-      memset(&macCb.macCell->ueCb[schCfgRsp->ueIdx], 0, sizeof(MacUeCb));
-      macCb.macCell->numActvUe--;
+      memset(&macCb.macCell[cellIdx]->ueCb[schCfgRsp->ueIdx], 0, sizeof(MacUeCb));
+      macCb.macCell[cellIdx]->numActvUe--;
       result = MAC_DU_APP_RSP_NOK;
    }
    else

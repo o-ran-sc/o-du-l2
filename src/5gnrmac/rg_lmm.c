@@ -48,7 +48,6 @@ static int RLOG_MODULE_ID=4096;
 #include "rgr.h"           /* LRG Interface defines */
 #include "rg.h"            /* MAC defines */
 #include "rg_err.h"        /* MAC error defines */
-#include "du_log.h"
 
 /* header/extern include files (.x) */
 #include "crg.x"           /* CRG Interface includes */
@@ -66,6 +65,8 @@ static int RLOG_MODULE_ID=4096;
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
 #include "lwr_mac.h"         /* MAC CL defines */
+#include "mac_sch_interface.h"
+#include "lwr_mac_upr_inf.h"
 #include "mac.h"
 #include "lwr_mac_phy.h"
 #include "lwr_mac_fsm.h"
@@ -79,10 +80,8 @@ EXTERN Void rgGetSId ARGS((SystemId *s));
 #endif /* __cplusplus */
 
 /* Public variable declaration */
-ClCb   clGlobalCp;
+LwrMacCb   lwrMacCb;
 extern MacCb  macCb;
-
-int MacSchCellCfgReq(Pst *pst,MacCellCfg *macCellCfg);
 
 /* forward references */
 PRIVATE U16 rgLMMGenCfg ARGS((
@@ -117,22 +116,6 @@ RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 ));
-
-extern int packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
-
-packMacCellCfgConfirm packMacCellCfmOpts[] =
-{
-   packMacCellCfgCfm,      /* packing for loosely coupled */
-   duHandleMacCellCfgCfm,      /* packing for tightly coupled */
-   packMacCellCfgCfm,    /* packing for light weight loosly coupled */
-};
-
-SchCellCfgFunc SchCellCfgOpts[] = 
-{
-   packSchCellCfg,   /* packing for loosely coupled */
-	SchHdlCellCfgReq, /* packing for tightly coupled */
-   packSchCellCfg    /* packing for light weight loosly coupled */
-};
 
 
 /**
@@ -216,18 +199,12 @@ Reason reason;         /* reason */
 #endif
 
    /* Initializing CL control block */
-   clGlobalCp.region = region;
-   clGlobalCp.pool = 0;
-   clGlobalCp.clCfgDone = FALSE;
-   clGlobalCp.numOfCells = 0;
-   clGlobalCp.phyState = PHY_STATE_IDLE; 
-
-   if( cmHashListInit(&clGlobalCp.cellCbLst, MAX_NUM_CELL_SUPP, 0x0, FALSE, 
-                  CM_HASH_KEYTYPE_DEF, clGlobalCp.region, clGlobalCp.pool ) != ROK )
-   {
-      printf("\n Cellcb hash list initialization failed for MAC CL");
-      RETVALUE(RFAILED);
-   }
+   memset(&lwrMacCb, 0, sizeof(LwrMacCb));
+   lwrMacCb.region = region;
+   lwrMacCb.pool = 0;
+   lwrMacCb.clCfgDone = TRUE;
+   lwrMacCb.numCell = 0;
+   lwrMacCb.phyState = PHY_STATE_IDLE; 
 
    /* Initialize Scheduler as well */
    schActvInit(ENTRG, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
@@ -928,6 +905,7 @@ RgCfg *cfg;            /* Configuaration information */
    rgCb[inst].genCfg.tmrRes = cfg->s.genCfg.tmrRes;
 
    macCb.macInst = rgCb[inst].rgInit.inst;
+   macCb.procId = rgCb[inst].rgInit.procId;
 
    /* Initialize SAP States */
    rgCb[inst].crgSap.sapSta.sapState = LRG_NOT_CFG;
@@ -1956,395 +1934,6 @@ Inst    inst;
    RETVALUE(ROK);
  
 } /* end of rgActvTmr */
-
-/**
- * @brief Layer Manager  Configuration request handler for Scheduler
- *
- * @details
- *
- *     Function : MacSchGenCfgReq
- *     
- *     This function receives general configurations for Scheduler
- *     from DU APP and forwards to Scheduler.
- *     
- *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  RgMngmt *cfg, the configuration parameter's structure
- *  @return  S16
- *      -# ROK
- **/
-#ifdef ANSI
-PUBLIC int MacSchGenCfgReq
-(
-Pst      *pst,    /* post structure  */
-RgMngmt  *cfg     /* config structure  */
-)
-#else
-PUBLIC int MacSchGenCfgReq(pst, cfg)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfg;    /* config structure  */
-#endif    
-{
-   printf("\nReceived Scheduler gen config at MAC");
-   pst->dstInst = DEFAULT_CELLS + 1;
-   HandleSchGenCfgReq(pst, cfg);
-
-   return ROK;
-}
-
-/**
- * @brief Layer Manager Configuration response from Scheduler
- *
- * @details
- *
- *     Function : SchSendCfgCfm
- *     
- *     This function sends general configurations response from
- *     Scheduler to DU APP.
- *     
- *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  RgMngmt *cfm, the configuration confirm structure
- *  @return  S16
- *      -# ROK
- **/
-#ifdef ANSI
-PUBLIC S16 SchSendCfgCfm 
-(
-Pst      *pst,    /* post structure  */
-RgMngmt  *cfm     /* config confirm structure  */
-)
-#else
-PUBLIC S16 SchSendCfgCfm(pst, cfm)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfm;    /* config confirm structure  */
-#endif    
-{
-   printf("\nSending Scheduler config confirm to DU APP");
-	pst->dstEnt = ENTDUAPP;
-	pst->dstInst = 0;
-	pst->srcInst = 0;
-	pst->selector = ODU_SELECTOR_LC; 
-   RgMiLrgSchCfgCfm(pst, cfm);
-   
-   RETVALUE(ROK);
-}
-
-
-/***********************************************************
- *
- *     Func : macCellCfgFillCfmPst 
- *        
- *
- *     Desc : Fills the Confirmation Post Structure cfmPst 
- *
- *     Ret  : Void
- *
- *     Notes: 
- *
- *     File : rg_lmm.c 
- *
- **********************************************************/
-Void macCellCfgFillCfmPst
-(
-Pst           *reqPst,
-Pst           *cfmPst
-)
-{
-   Inst inst;
-   inst = reqPst->dstInst;
-
-   cfmPst->srcEnt    = rgCb[inst].rgInit.ent;
-   cfmPst->srcInst   = rgCb[inst].rgInit.inst;
-   cfmPst->srcProcId = rgCb[inst].rgInit.procId;
-
-   cfmPst->dstEnt    = ENTDUAPP;
-   cfmPst->dstInst   = 0;
-   cfmPst->dstProcId = cfmPst->srcProcId;
-
-   cfmPst->selector  = ODU_SELECTOR_LC;
-   cfmPst->prior     = reqPst->prior;
-   cfmPst->route     = reqPst->route;
-   cfmPst->region    = reqPst->region;
-   cfmPst->pool      = reqPst->pool;
-   cfmPst->event     = EVENT_MAC_CELL_CONFIG_CFM;
-
-   RETVOID;
-}
-
-/**
- * @brief Layer Manager Configuration request handler. 
- *
- * @details
- *
- *     Function : MacHdlCellCfgReq 
- *     
- *     This function handles the gNB and cell configuration
- *     request received from DU APP.
- *     This API unapcks and forwards the config towards SCH
- *     
- *  @param[in]  Pst           *pst
- *  @param[in]  MacCellCfg    *macCellCfg 
- *  @return  S16
- *      -# ROK
- **/
-int MacHdlCellCfgReq
-(
- Pst           *pst,
- MacCellCfg    *macCellCfg
-)
-{
-   Pst cfmPst;
-   uint16_t ret = ROK;
-   RgCellCb      *cellCb;
-	MacCellCb     *macCellCb = NULLP;
-   Inst inst = pst->dstInst;
-
-   cmMemset((U8 *)&cfmPst, 0, sizeof(Pst));
-   MAC_ALLOC(cellCb,sizeof(RgCellCb));
-
-   if(cellCb == NULLP)
-   {
-      DU_LOG("\nMAC : cellCb is NULL at handling of macCellCfg\n");
-      return RFAILED;
-   }
-
-   memcpy(&cellCb->macCellCfg,macCellCfg,sizeof(MacCellCfg));
-   rgCb[inst].cell = cellCb;
-
-   MAC_ALLOC(macCellCb,sizeof(MacCellCb));
-	if(macCellCb == NULLP)
-	{
-      DU_LOG("\nMAC : macCellCb is NULL at handling of macCellCfg\n");
-      return RFAILED;
-   }
-	memset(macCellCb, 0, sizeof(MacCellCb));
-   macCb.macCell = macCellCb;
-   macCb.macCell->cellId = macCellCfg->cellId;
-   
-	MAC_ALLOC(cellCb->macCellCfg.sib1Cfg.sib1Pdu,  macCellCfg->sib1Cfg.sib1PduLen);
-	if(cellCb->macCellCfg.sib1Cfg.sib1Pdu == NULLP)
-	{
-	   DU_LOG("\nMAC : macCellCb is NULL at handling of sib1Pdu of macCellCfg\n");
-	   return RFAILED;
-	}
-	memcpy(cellCb->macCellCfg.sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1PduLen);
-	
-	/* Send cell cfg to scheduler */
-   ret = MacSchCellCfgReq(pst, macCellCfg);
-	if(ret != ROK)
-	{
-		MacCellCfgCfm macCellCfgCfm;
-		macCellCfgCfm.rsp = RSP_NOK;
-		macCellCfgCfm.cellId = macCellCfg->cellId;
-		macCellCfgFillCfmPst(pst,&cfmPst);
-		ret = (*packMacCellCfmOpts[cfmPst.selector])(&cfmPst,&macCellCfgCfm);
-	}
-   else
-	{
-	   if(macCellCfg->prachCfg.fdm[0].numUnusedRootSeq != 0)
-	   {
-	       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg->prachCfg.fdm[0].unsuedRootSeq,
-	       macCellCfg->prachCfg.fdm[0].numUnusedRootSeq* sizeof(uint8_t));
-	   }
-	   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg->sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1PduLen);
-	   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg ,sizeof(MacCellCfg));
-	}
-
-#ifdef INTEL_WLS
-   LwrMacEnqueueWlsBlock();
-#endif
-   return ret;
-} /* end of MacHdlCellCfgReq */
-
-/**
- * @brief Layer Manager Configuration request handler. 
- *
- * @details
- *
- *     Function : MacSchCellCfgReq 
- *     
- *     This function sends cell configuration to SCH
- *     
- *  @param[in]  Pst           *pst
- *  @param[in]  MacCellCfg    *macCellCfg 
- *  @return  S16
- *      -# ROK
- **/
-int MacSchCellCfgReq
-(
- Pst           *pst,
- MacCellCfg    *macCellCfg
-)
-{
-   SchCellCfg schCellCfg;
-	Pst        cfgPst;
-	int ret;
-
-   cmMemset((U8 *)&cfgPst, 0, sizeof(Pst));
-	schCellCfg.cellId = macCellCfg->cellId;
-	schCellCfg.phyCellId = macCellCfg->phyCellId;
-	schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;
-	schCellCfg.dupMode = macCellCfg->dupType;
-
-	/* fill ssb scheduler parameters */
-	schCellCfg.ssbSchCfg.ssbPbchPwr = macCellCfg->ssbCfg.ssbPbchPwr;
-	schCellCfg.ssbSchCfg.scsCommon = macCellCfg->ssbCfg.scsCmn;
-	schCellCfg.ssbSchCfg.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
-	schCellCfg.ssbSchCfg.ssbPeriod = macCellCfg->ssbCfg.ssbPeriod;
-	schCellCfg.ssbSchCfg.ssbSubcOffset = macCellCfg->ssbCfg.ssbScOffset;
-	for(uint8_t idx=0; idx<SSB_MASK_SIZE; idx++)
-	{
-      schCellCfg.ssbSchCfg.nSSBMask[idx] = macCellCfg->ssbCfg.ssbMask[idx]; 
-	}
-
-	/* fill SIB1 scheduler parameters */
-	schCellCfg.sib1SchCfg.sib1PduLen = macCellCfg->sib1Cfg.sib1PduLen; 
-	schCellCfg.sib1SchCfg.sib1NewTxPeriod = macCellCfg->sib1Cfg.sib1NewTxPeriod; 
-	schCellCfg.sib1SchCfg.sib1RepetitionPeriod = macCellCfg->sib1Cfg.sib1RepetitionPeriod; 
-	schCellCfg.sib1SchCfg.coresetZeroIndex = macCellCfg->sib1Cfg.coresetZeroIndex; 
-	schCellCfg.sib1SchCfg.searchSpaceZeroIndex = macCellCfg->sib1Cfg.searchSpaceZeroIndex; 
-	schCellCfg.sib1SchCfg.sib1Mcs = macCellCfg->sib1Cfg.sib1Mcs; 
-
-	/* fill RACH config params */
-	schCellCfg.schRachCfg.prachCfgIdx = macCellCfg->prachCfg.prachCfgIdx;
-	schCellCfg.schRachCfg.prachSubcSpacing = \
-	   macCellCfg->prachCfg.prachSubcSpacing;
-	schCellCfg.schRachCfg.msg1FreqStart = macCellCfg->prachCfg.msg1FreqStart;
-	schCellCfg.schRachCfg.msg1Fdm       = macCellCfg->prachCfg.msg1Fdm;
-	schCellCfg.schRachCfg.rootSeqLen    = macCellCfg->prachCfg.rootSeqLen;
-	schCellCfg.schRachCfg.rootSeqIdx    = macCellCfg->prachCfg.fdm[0].rootSeqIdx;
-	schCellCfg.schRachCfg.numRootSeq    = macCellCfg->prachCfg.fdm[0].numRootSeq;
-	schCellCfg.schRachCfg.k1            = macCellCfg->prachCfg.fdm[0].k1;
-	schCellCfg.schRachCfg.ssbPerRach    = macCellCfg->prachCfg.ssbPerRach;
-	schCellCfg.schRachCfg.prachMultCarrBand = \
-	   macCellCfg->prachCfg.prachMultCarrBand;
-	schCellCfg.schRachCfg.raContResTmr  = macCellCfg->prachCfg.raContResTmr;
-	schCellCfg.schRachCfg.rsrpThreshSsb = macCellCfg->prachCfg.rsrpThreshSsb;
-	schCellCfg.schRachCfg.raRspWindow   = macCellCfg->prachCfg.raRspWindow;
-
-   /* fill initial DL BWP */
-	schCellCfg.schInitialDlBwp.bwp.freqAlloc.startPrb = macCellCfg->initialDlBwp.bwp.firstPrb;
-	schCellCfg.schInitialDlBwp.bwp.freqAlloc.numPrb = macCellCfg->initialDlBwp.bwp.numPrb;
-   schCellCfg.schInitialDlBwp.bwp.scs = macCellCfg->initialDlBwp.bwp.scs;
-   schCellCfg.schInitialDlBwp.bwp.cyclicPrefix = macCellCfg->initialDlBwp.bwp.cyclicPrefix;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId =
-	   macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.coresetId =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.coresetId;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.monitoringSlot =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSlot;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.duration =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.duration;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.monitoringSymbol =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSymbol;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel1 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel1;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel2 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel2;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel4 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel4;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel8 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel8;
-   schCellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel16 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel16;
-   schCellCfg.schInitialDlBwp.pdschCommon.k0 = macCellCfg->initialDlBwp.pdschCommon.k0;
-   schCellCfg.schInitialDlBwp.pdschCommon.mappingType =
-      macCellCfg->initialDlBwp.pdschCommon.mappingType;
-   schCellCfg.schInitialDlBwp.pdschCommon.startSymbol =
-      macCellCfg->initialDlBwp.pdschCommon.startSymbol;
-   schCellCfg.schInitialDlBwp.pdschCommon.lengthSymbol =
-      macCellCfg->initialDlBwp.pdschCommon.lengthSymbol;
-
-   /* fill initial UL BWP */
-	schCellCfg.schInitialUlBwp.bwp.freqAlloc.startPrb = macCellCfg->initialUlBwp.bwp.firstPrb;
-	schCellCfg.schInitialUlBwp.bwp.freqAlloc.numPrb = macCellCfg->initialUlBwp.bwp.numPrb;
-   schCellCfg.schInitialUlBwp.bwp.scs = macCellCfg->initialUlBwp.bwp.scs;
-   schCellCfg.schInitialUlBwp.bwp.cyclicPrefix = macCellCfg->initialUlBwp.bwp.cyclicPrefix;
-   schCellCfg.schInitialUlBwp.puschCommon.k2 = macCellCfg->initialUlBwp.puschCommon.k2;
-   schCellCfg.schInitialUlBwp.puschCommon.mappingType =
-      macCellCfg->initialUlBwp.puschCommon.mappingType;
-   schCellCfg.schInitialUlBwp.puschCommon.startSymbol =
-      macCellCfg->initialUlBwp.puschCommon.startSymbol;
-   schCellCfg.schInitialUlBwp.puschCommon.lengthSymbol =
-      macCellCfg->initialUlBwp.puschCommon.lengthSymbol;
-
-
-   cfgPst.srcProcId = pst->dstProcId;
-	cfgPst.dstProcId = pst->srcProcId;
-	cfgPst.srcEnt    = ENTRG;
-	cfgPst.srcInst   = 0;
-	cfgPst.dstEnt    = ENTRG;
-	cfgPst.dstInst   = 1;
-	cfgPst.selector  = ODU_SELECTOR_TC;
-	cfgPst.event     = EVENT_SCH_CELL_CFG;
-
-	ret = (*SchCellCfgOpts[cfgPst.selector])(&cfgPst, &schCellCfg);
-	return ret;
-} /* end of MacSchCellCfgReq */
-
-
-/*******************************************************************
- *
- * @brief Sends Cell config confirm to DU APP
- *
- * @details
- *
- *    Function : MacSendCellCfgCfm 
- *
- *    Functionality:
- *      Sends Cell config confirm to DU APP
- *
- * @params[in] Response status
- * @return void
- *
- * ****************************************************************/
-void MacSendCellCfgCfm(uint8_t response)
-{
-   Pst pst;
-   RgCellCb      *cellCb;
-   MacCellCfgCfm macCellCfgCfm;
- 
-   cmMemset((U8 *)&pst, 0, sizeof(Pst));
-   cellCb = rgCb[macCb.macInst].cell;
- 
-   macCellCfgCfm.cellId = cellCb->macCellCfg.cellId;
-   macCellCfgCfm.rsp = response;
-
-   memcpy((void *)&pst, (void *)&rgCb[macCb.macInst].rgInit.lmPst, sizeof(Pst));
-   pst.event = EVENT_MAC_CELL_CONFIG_CFM;
-   (*packMacCellCfmOpts[pst.selector])(&pst,&macCellCfgCfm);
-}
-
-
-/**
- * @brief Layer Manager Configuration response handler. 
- *
- * @details
- *
- *     Function : MacProcSchCellCfgCfm
- *     
- *     This function processes cell configuration to SCH
- *     
- *  @param[in]  Pst           *pst
- *  @param[in]  SchCellCfgCfm *schCellCfgCfm
- *  @return  int
- *      -# ROK
- **/
-int MacProcSchCellCfgCfm 
-(
- Pst           *pst,
- SchCellCfgCfm *schCellCfgCfm
-)
-{
-	if(schCellCfgCfm->rsp == RSP_OK)
-	{
-      sendToLowerMac(CONFIG_REQUEST, 0, (void *)NULL);
-	}
-	else
-	{
-      MacSendCellCfgCfm(RSP_NOK);
-	}
-   return ROK;	
-}
 
 /**********************************************************************
  

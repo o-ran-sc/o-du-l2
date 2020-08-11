@@ -105,8 +105,6 @@
 #define EVTTFUCRCIND            14    /*!< CRC indication. */
 #define EVTTFUTIMINGADVIND      15    /*!< Timing advance indication.*/
 #define EVTTFUDATREQ            16    /*!< Data Request.*/
-#define EVENT_SLOT_IND_TO_MAC   17    /*!< TTI indication.*/
-#define EVENT_SLOT_IND_TO_SCH   18    /*!< TTI indication for scheduler.*/
 #define EVTTFUCNTRLREQ          19    /*!< Control Request.*/
 #define EVTTFUPUCCHDELPWR       20    /*!< PUCCH Delta power. */
 #define EVTTFUDOAIND            21    /*!< PUCCH Delta power. */
@@ -120,12 +118,6 @@
 #endif
 #define EVTTFUERRIND            25    /*!< TFU Error Indication */
 /** @} */
-
-#define MAX_PREAM_PER_SLOT      1    /* Max number of preamble per slot */
-#define MAX_RACH_PDU_PER_SLOT   1    /* Max number of rach pdu per slot */
-#define MAX_CRCS_PER_SLOT       1
-#define MAX_CB_PER_TTI_IN_BYTES 1
-#define MAX_ULSCH_PDUS_PER_TTI  1
 
 /* selector(coupling) values */
 #define TFU_MAX_ALLOC_BYTES     4

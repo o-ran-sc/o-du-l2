@@ -18,7 +18,6 @@
 
 /* This functions contains main() for cu_app */
 #include "common_def.h"
-#include "odu_common_codec.h"
 #include "cu_stub.h"
 #include "cu_stub_sctp.h"
 #include "cu_stub_egtp.h"

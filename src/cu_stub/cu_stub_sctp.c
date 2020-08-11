@@ -19,7 +19,6 @@
 /* This file contains all SCTP related functionality */
 
 #include "common_def.h" 
-#include "odu_common_codec.h"
 #include "cu_f1ap_msg_hdl.h"
 #include "cu_stub_sctp.h"
 #include "cu_stub_egtp.h"

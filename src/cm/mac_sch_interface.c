@@ -1,12 +1,9 @@
 /* header include files (.h) */
 #include "common_def.h"
-#include "tfu.h"           /* RGU Interface defines */
 #include "lrg.h"
 
 /* header/extern include files (.x) */
-#include "tfu.x"           /* RGU Interface includes */
 #include "lrg.x"
-#include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 
 /**
@@ -23,20 +20,41 @@
  *  @return  S16
  *      -# ROK
  **/
-int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
+uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    Buffer *mBuf = NULLP;
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* pack SFN and slot value */
    CMCHKPK(SPkU16,slotInd->sfn, mBuf);
    CMCHKPK(SPkU16,slotInd->slot, mBuf);
 
-   RETVALUE(SPstTsk(pst,mBuf));
+   return SPstTsk(pst,mBuf);
 }
+
+/**
+ * @brief function to unpack Slot ind message from MAC
+ *        to scheduler with loose coupling
+ *
+ * @details
+ *
+ *     Function : unpackMacSchSlotInd
+ *
+ *
+ *  @param[in]  Pst *pst, the post structure
+ *  @param[in]  Buffer *mBuf, the message buffer
+ *  @return  S16
+ *      -# ROK
+ **/
+uint8_t unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf)
+{
+   /* TODO */
+   return ROK;
+}
+
 
 /*******************************************************************
  *
@@ -54,7 +72,7 @@ int packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
+uint8_t packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -83,7 +101,7 @@ int packMacSchRachInd(Pst *pst, RachIndInfo *rachInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-int packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
+uint8_t packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -139,7 +157,7 @@ uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
  *  @return  S16
  *      -# ROK
  **/
-int packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo)
+uint8_t packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo)
 {
    return ROK;
 }
@@ -158,7 +176,7 @@ int packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo)
  *  @return  S16
  *      -# ROK
  **/
-int packSchMacUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
+uint8_t packSchMacUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
 {
    return ROK;
 }
@@ -176,7 +194,7 @@ int packSchMacUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
  *  @return  S16
  *      -# ROK
  **/
-int packSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg)
+uint8_t packSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg)
 {
    return ROK;
 }
@@ -194,7 +212,7 @@ int packSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg)
  *  @return  S16
  *      -# ROK
  **/
-int packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
+uint8_t packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
 {
    return ROK;
 }

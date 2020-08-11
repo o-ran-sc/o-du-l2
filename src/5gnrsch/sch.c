@@ -53,9 +53,9 @@ void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
 /* local defines */
 SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
 {
-	packSchCellCfgCfm,     /* LC */
-	MacProcSchCellCfgCfm,  /* TC */
-	packSchCellCfgCfm      /* LWLC */
+   packSchCellCfgCfm,     /* LC */
+   MacProcSchCellCfgCfm,  /* TC */
+   packSchCellCfgCfm      /* LWLC */
 };
 
 
@@ -78,13 +78,7 @@ SchCellCfgCfmFunc SchCellCfgCfmOpts[] =
  *  @return  int
  *      -# ROK
  **/
-int schActvInit
-(
-Ent    entity,            /* entity */
-Inst   instId,             /* instance */
-Region region,         /* region */
-Reason reason          /* reason */
-)
+uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
 {
    Inst inst = (instId  - SCH_INST_START);
 
@@ -103,7 +97,7 @@ Reason reason          /* reason */
    schCb[inst].schInit.trc = FALSE;
    schCb[inst].schInit.procId = SFndProcId();
 
-   RETVALUE(ROK);
+   return ROK;
 } /* schActvInit */
 
 /**
@@ -113,7 +107,7 @@ Reason reason          /* reason */
  *
  *     Function : SchInstCfg
  *     
- *     This function in called by HandleSchGenCfgReq(). It handles the
+ *     This function in called by SchProcGenCfgReq(). It handles the
  *     general configurations of the scheduler instance. Returns
  *     reason for success/failure of this function.
  *     
@@ -123,11 +117,7 @@ Reason reason          /* reason */
  *      -# LCM_REASON_INVALID_MSGTYPE
  *      -# LCM_REASON_MEM_NOAVAIL
  **/
-PUBLIC U16 SchInstCfg
-(
-RgCfg *cfg,            /* Configuaration information */
-Inst  dInst
-)
+PUBLIC U16 SchInstCfg(RgCfg *cfg, Inst  dInst)
 {
    uint16_t ret = LCM_REASON_NOT_APPL;
    Inst     inst = (dInst - SCH_INST_START);
@@ -136,18 +126,18 @@ Inst  dInst
    /* Check if Instance Configuration is done already */
    if (schCb[inst].schInit.cfgDone == TRUE)
    {
-      RETVALUE(LCM_REASON_INVALID_MSGTYPE);
+      return LCM_REASON_INVALID_MSGTYPE;
    }
    /* Update the Pst structure for LM interface */
    cmMemcpy((U8 *)&schCb[inst].schInit.lmPst,
-            (U8 *)&cfg->s.schInstCfg.genCfg.lmPst,
-             sizeof(Pst));
-   
+	 (U8 *)&cfg->s.schInstCfg.genCfg.lmPst,
+	 sizeof(Pst));
+
    schCb[inst].schInit.inst = inst;
    schCb[inst].schInit.lmPst.srcProcId = schCb[inst].schInit.procId;
    schCb[inst].schInit.lmPst.srcEnt = schCb[inst].schInit.ent;
    schCb[inst].schInit.lmPst.srcInst = schCb[inst].schInit.inst +
-   SCH_INST_START;
+      SCH_INST_START;
    schCb[inst].schInit.lmPst.event = EVTNONE;
 
    schCb[inst].schInit.region = cfg->s.schInstCfg.genCfg.mem.region;
@@ -168,18 +158,18 @@ Inst  dInst
    /* SS_MT_TMR needs to be enabled as schActvTmr needs instance information */
    /* Timer Registration request to SSI */
    if (SRegTmrMt(schCb[inst].schInit.ent, dInst,
-      (S16)schCb[inst].genCfg.tmrRes, schActvTmr) != ROK)
+	    (S16)schCb[inst].genCfg.tmrRes, schActvTmr) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "SchInstCfg(): Failed to "
-             "register timer.");
+	    "register timer.");
       RETVALUE(LCM_REASON_MEM_NOAVAIL);
    }   
 #endif               
    /* Set Config done in TskInit */
    schCb[inst].schInit.cfgDone = TRUE;
    printf("\nScheduler gen config done");
-   
-   RETVALUE(ret);
+
+   return ret;
 }
 
 /**
@@ -187,7 +177,7 @@ Inst  dInst
  *
  * @details
  *
- *     Function : HandleSchGenCfgReq
+ *     Function : SchProcGenCfgReq
  *     
  *     This function handles the configuration
  *     request received at scheduler instance from the Layer Manager.
@@ -200,11 +190,7 @@ Inst  dInst
  *  @return  S16
  *      -# ROK
  **/
-int HandleSchGenCfgReq
-(
-Pst      *pst,    /* post structure  */
-RgMngmt  *cfg     /* config structure  */
-)
+int SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
 {
    uint16_t       ret = LCM_PRIM_OK;
    uint16_t       reason = LCM_REASON_NOT_APPL;
@@ -214,13 +200,13 @@ RgMngmt  *cfg     /* config structure  */
    if(pst->dstInst < SCH_INST_START)
    {
       DU_LOG("\nInvalid inst ID");
-      DU_LOG("\nHandleSchGenCfgReq(): "
-                "pst->dstInst=%d SCH_INST_START=%d", pst->dstInst,SCH_INST_START); 
-      RETVALUE(ROK);
+      DU_LOG("\nSchProcGenCfgReq(): "
+	    "pst->dstInst=%d SCH_INST_START=%d", pst->dstInst,SCH_INST_START); 
+      return ROK;
    }
    printf("\nReceived scheduler gen config");
    /* Fill the post structure for sending the confirmation */
-	memset(&cfmPst, 0 , sizeof(Pst));
+   memset(&cfmPst, 0 , sizeof(Pst));
    SchFillCfmPst(pst, &cfmPst, cfg);
 
    cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
@@ -234,13 +220,13 @@ RgMngmt  *cfg     /* config structure  */
    switch(cfg->hdr.elmId.elmnt)
    {
       case STSCHINST:
-         reason = SchInstCfg(&cfg->t.cfg,pst->dstInst );
-         break;
+	 reason = SchInstCfg(&cfg->t.cfg,pst->dstInst );
+	 break;
       default:
-         ret = LCM_PRIM_NOK;
-         reason = LCM_REASON_INVALID_ELMNT;
-         DU_LOG("\nInvalid Elmnt=%d", cfg->hdr.elmId.elmnt);
-         break;
+	 ret = LCM_PRIM_NOK;
+	 reason = LCM_REASON_INVALID_ELMNT;
+	 DU_LOG("\nInvalid Elmnt=%d", cfg->hdr.elmId.elmnt);
+	 break;
    }
 
    if (reason != LCM_REASON_NOT_APPL)
@@ -253,9 +239,9 @@ RgMngmt  *cfg     /* config structure  */
 
    SchSendCfgCfm(&cfmPst, &cfm);
    /*   SPutSBuf(pst->region, pst->pool, (Data *)cfg, sizeof(RgMngmt)); */
-   
-   RETVALUE(ROK);
-}/*-- HandleSchGenCfgReq --*/
+
+   return ROK;
+}/*-- SchProcGenCfgReq --*/
 
 /**
  * @brief slot indication from MAC to SCH.
@@ -273,18 +259,14 @@ RgMngmt  *cfg     /* config structure  */
  *      -# ROK 
  *      -# RFAILED 
  **/
-int macSchSlotInd 
-(
-Pst                 *pst, 
-SlotIndInfo         *slotInd
-)
+uint8_t macSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
 
    /* Now call the TOM (Tfu ownership module) primitive to process further */
    schProcessSlotInd(slotInd, inst);
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* macSchSlotInd */
 
 /*******************************************************************
@@ -303,7 +285,7 @@ SlotIndInfo         *slotInd
  *         RFAILED - failure
  *
  * ****************************************************************/
-int macSchRachInd(Pst *pst, RachIndInfo *rachInd)
+uint8_t macSchRachInd(Pst *pst, RachIndInfo *rachInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
    DU_LOG("\nSCH : Received Rach indication");
@@ -328,20 +310,20 @@ int macSchRachInd(Pst *pst, RachIndInfo *rachInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-int macSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
+uint8_t macSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
    switch(crcInd->crcInd[0])
-	{
+   {
       case CRC_FAILED:
-         DU_LOG("\nSCH : Received CRC indication. CRC Status [FAILURE]");
-			break;
+	 DU_LOG("\nSCH : Received CRC indication. CRC Status [FAILURE]");
+	 break;
       case CRC_PASSED:
-         DU_LOG("\nSCH : Received CRC indication. CRC Status [PASS]");
-			break;
-	   default:
-			DU_LOG("\nSCH : Invalid CRC state %d", crcInd->crcInd[0]);
-			return RFAILED;
-	}
+	 DU_LOG("\nSCH : Received CRC indication. CRC Status [PASS]");
+	 break;
+      default:
+	 DU_LOG("\nSCH : Invalid CRC state %d", crcInd->crcInd[0]);
+	 return RFAILED;
+   }
    return ROK;
 }
 
@@ -365,80 +347,91 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
 {
    SchCellCb *cell;
    SCH_ALLOC(cell, sizeof(SchCellCb));
-	if(!cell)
-	{
+   if(!cell)
+   {
       DU_LOG("\nMemory allocation failed in InitSchCellCb");
-		return RFAILED;
-	}
+      return RFAILED;
+   }
 
-	cell->cellId = schCellCfg->cellId; 
-	cell->instIdx = inst;
-	switch(schCellCfg->ssbSchCfg.scsCommon)
-	{
-	   case SCH_SCS_15KHZ:
-		{
-			cell->numSlots = SCH_NUM_SLOTS;
-		}
-		break;
-		default:
-		   DU_LOG("\nSCS %d not supported", schCellCfg->ssbSchCfg.scsCommon);
-	}
-  
+   cell->cellId = schCellCfg->cellId; 
+   cell->instIdx = inst;
+   switch(schCellCfg->ssbSchCfg.scsCommon)
+   {
+      case SCH_SCS_15KHZ:
+	 {
+	    cell->numSlots = SCH_NUM_SLOTS;
+	 }
+	 break;
+      default:
+	 DU_LOG("\nSCS %d not supported", schCellCfg->ssbSchCfg.scsCommon);
+   }
+
    for(uint8_t idx=0; idx<SCH_NUM_SLOTS; idx++)
-	{
-		SchDlSlotInfo *schDlSlotInfo;
-		SchUlSlotInfo *schUlSlotInfo;
+   {
+      SchDlSlotInfo *schDlSlotInfo;
+      SchUlSlotInfo *schUlSlotInfo;
 
       /* DL Alloc */
-		SCH_ALLOC(schDlSlotInfo, sizeof(SchDlSlotInfo));
-		if(!schDlSlotInfo)
-		{
-			DU_LOG("\nMemory allocation failed in InitSchCellCb");
-			return RFAILED;
-		}
+      SCH_ALLOC(schDlSlotInfo, sizeof(SchDlSlotInfo));
+      if(!schDlSlotInfo)
+      {
+	 DU_LOG("\nMemory allocation failed in InitSchCellCb");
+	 return RFAILED;
+      }
 
       /* UL Alloc */
-		SCH_ALLOC(schUlSlotInfo, sizeof(SchUlSlotInfo));
-		if(!schUlSlotInfo)
-		{
-			DU_LOG("\nMemory allocation failed in InitSchCellCb");
-			return RFAILED;
-		}
+      SCH_ALLOC(schUlSlotInfo, sizeof(SchUlSlotInfo));
+      if(!schUlSlotInfo)
+      {
+	 DU_LOG("\nMemory allocation failed in InitSchCellCb");
+	 return RFAILED;
+      }
 
       memset(schDlSlotInfo, 0, sizeof(SchDlSlotInfo));
-		memset(schUlSlotInfo, 0, sizeof(SchUlSlotInfo));
+      memset(schUlSlotInfo, 0, sizeof(SchUlSlotInfo));
 
       schDlSlotInfo->totalPrb = schUlSlotInfo->totalPrb = MAX_NUM_RB;
 
-		for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
-		{
-			schDlSlotInfo->assignedPrb[itr] = 0;
-			schUlSlotInfo->assignedPrb[itr] = 0;
-		}
-		schUlSlotInfo->schPuschInfo = NULLP;
+      for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
+      {
+	 schDlSlotInfo->assignedPrb[itr] = 0;
+	 schUlSlotInfo->assignedPrb[itr] = 0;
+      }
+      schUlSlotInfo->schPuschInfo = NULLP;
 
-		for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
-		{
-			memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
-		}
+      for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
+      {
+	 memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
+      }
 
-		cell->schDlSlotInfo[idx] = schDlSlotInfo;
-		cell->schUlSlotInfo[idx] = schUlSlotInfo;
+      cell->schDlSlotInfo[idx] = schDlSlotInfo;
+      cell->schUlSlotInfo[idx] = schUlSlotInfo;
 
-	}
-	schCb[inst].cells[inst] = cell;
+   }
+   schCb[inst].cells[inst] = cell;
 
    DU_LOG("\nCell init completed for cellId:%d", cell->cellId);
 
    return ROK;   
 }
 
-void fillSchSib1Cfg(
-Inst         schInst,
-SchSib1Cfg   *sib1SchCfg,
-uint16_t     pci,
-uint8_t      offsetPointA
-)
+/**
+ * @brief Fill SIB1 configuration
+ *
+ * @details
+ *
+ *     Function : fillSchSib1Cfg
+ *
+ *     Fill SIB1 configuration
+ *
+ *  @param[in]  Inst schInst : scheduler instance
+ *              SchSib1Cfg *sib1SchCfg : cfg to be filled
+ *              uint16_t pci : physical cell Id
+ *              uint8_t offsetPointA : offset
+ *  @return  void
+ **/
+void fillSchSib1Cfg(Inst schInst, SchSib1Cfg *sib1SchCfg, uint16_t pci, \
+   uint8_t offsetPointA)
 {
    uint8_t coreset0Idx = 0;
    uint8_t searchSpace0Idx = 0;
@@ -453,7 +446,7 @@ uint8_t      offsetPointA
    uint8_t slotIndex = 0;
    uint8_t FreqDomainResource[6] = {0};
    uint16_t tbSize = 0;
-	uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
+   uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
 
    PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
    PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
@@ -481,7 +474,7 @@ uint8_t      offsetPointA
     * Also, from this configuration, coreset0 is only on even subframe */
    slotIndex = ((oValue * 1) + (0 * mValue)) % 10; 
    sib1SchCfg->n0 = slotIndex;
- 
+
    /* calculate the PRBs */
    schAllocFreqDomRscType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
@@ -515,18 +508,18 @@ uint8_t      offsetPointA
    pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci.txPdcchPower.powerValue = 0;
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
-	/* Storing pdschCfg pointer here. Required to access pdsch config while
-	fillig up pdcch pdu */
+   /* Storing pdschCfg pointer here. Required to access pdsch config while
+      fillig up pdcch pdu */
    pdcch->dci.pdschCfg = pdsch; 
 
    /* fill the PDSCH PDU */
-	uint8_t cwCount = 0;
+   uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
    pdsch->rnti = 0xFFFF; /* SI-RNTI */
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
-	for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
-	{
+   for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
+   {
       pdsch->codeword[cwCount].targetCodeRate = 308;
       pdsch->codeword[cwCount].qamModOrder = 2;
       pdsch->codeword[cwCount].mcsIndex = sib1SchCfg->sib1Mcs;
@@ -545,13 +538,13 @@ uint8_t      offsetPointA
    pdsch->dmrs.scid                          = 0;
    pdsch->dmrs.numDmrsCdmGrpsNoData          = 1;
    pdsch->dmrs.dmrsPorts                     = 0;
-	pdsch->dmrs.mappingType                   = DMRS_MAP_TYPE_A; /* Type-A */
-	pdsch->dmrs.nrOfDmrsSymbols               = NUM_DMRS_SYMBOLS;
-	pdsch->dmrs.dmrsAddPos                    = DMRS_ADDITIONAL_POS;
+   pdsch->dmrs.mappingType                   = DMRS_MAP_TYPE_A; /* Type-A */
+   pdsch->dmrs.nrOfDmrsSymbols               = NUM_DMRS_SYMBOLS;
+   pdsch->dmrs.dmrsAddPos                    = DMRS_ADDITIONAL_POS;
 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
-	pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offset + SCH_SSB_NUM_PRB; /* the RB numbering starts from coreset0,
-	and PDSCH is always above SSB */
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offset + SCH_SSB_NUM_PRB; /* the RB numbering starts from coreset0,
+									    and PDSCH is always above SSB */
    pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
@@ -583,30 +576,30 @@ uint8_t      offsetPointA
  **/
 void fillSsbStartSymb(SchCellCb *cellCb)
 {
-	uint8_t cnt, scs;
+   uint8_t cnt, scs;
 
-	scs = cellCb->cellCfg.ssbSchCfg.scsCommon;
-	uint8_t ssbStartSymbArr[SCH_MAX_SSB_BEAM];
+   scs = cellCb->cellCfg.ssbSchCfg.scsCommon;
+   uint8_t ssbStartSymbArr[SCH_MAX_SSB_BEAM];
 
    memset(ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
-	/* Determine value of "n" based on Section 4.1 of 3GPP TS 38.213 */
-	switch(scs)
-	{
-		case SCH_SCS_15KHZ:
-			{
-				uint8_t symbIdx=0;
-				cnt = 2;/* n = 0, 1 for SCS = 15KHz */
-				for(uint8_t idx=0; idx<cnt; idx++)
-				{
-					/* start symbol determined using {2, 8} + 14n */
-					ssbStartSymbArr[symbIdx++] = 2 +	SCH_SYMBOL_PER_SLOT*idx;
-					ssbStartSymbArr[symbIdx++]	= 8 +	SCH_SYMBOL_PER_SLOT*idx;
-				}
-			}
-			break;
-		default:
-			DU_LOG("\nSCS %d is currently not supported", scs);
-	}
+   /* Determine value of "n" based on Section 4.1 of 3GPP TS 38.213 */
+   switch(scs)
+   {
+      case SCH_SCS_15KHZ:
+	 {
+	    uint8_t symbIdx=0;
+	    cnt = 2;/* n = 0, 1 for SCS = 15KHz */
+	    for(uint8_t idx=0; idx<cnt; idx++)
+	    {
+	       /* start symbol determined using {2, 8} + 14n */
+	       ssbStartSymbArr[symbIdx++] = 2 +	SCH_SYMBOL_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++]	= 8 +	SCH_SYMBOL_PER_SLOT*idx;
+	    }
+	 }
+	 break;
+      default:
+	 DU_LOG("\nSCS %d is currently not supported", scs);
+   }
    memset(cellCb->ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
    memcpy(cellCb->ssbStartSymbArr, ssbStartSymbArr, SCH_MAX_SSB_BEAM);
 
@@ -627,35 +620,34 @@ void fillSsbStartSymb(SchCellCb *cellCb)
  *      -# ROK 
  *      -# RFAILED 
  **/
-int SchHdlCellCfgReq
-(
-Pst                 *pst, 
-SchCellCfg          *schCellCfg
-)
+uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
 {
-   int ret = ROK;
+   uint8_t ret = ROK;
    SchCellCb *cellCb;
-	SchCellCfgCfm schCellCfgCfm;
-	Pst rspPst;
-	Inst inst = pst->dstInst-1; 
+   SchCellCfgCfm schCellCfgCfm;
+   Pst rspPst;
+   Inst inst = pst->dstInst-1; 
 
-	InitSchCellCb(inst, schCellCfg);
-	cellCb = schCb[inst].cells[inst]; //cells is of MAX_CELLS, why inst
+   InitSchCellCb(inst, schCellCfg);
+   cellCb = schCb[inst].cells[inst]; //cells is of MAX_CELLS, why inst
    cellCb->macInst = pst->srcInst;
 
    /* derive the SIB1 config parameters */
-	fillSchSib1Cfg(
-	   inst,
-	   &(schCellCfg->sib1SchCfg),
-		schCellCfg->phyCellId,
-		schCellCfg->ssbSchCfg.ssbOffsetPointA);
+   fillSchSib1Cfg(
+	 inst,
+	 &(schCellCfg->sib1SchCfg),
+	 schCellCfg->phyCellId,
+	 schCellCfg->ssbSchCfg.ssbOffsetPointA);
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
 
+   /* Fill and send Cell config confirm */
    memset(&rspPst, 0, sizeof(Pst));
-   SCH_FILL_RSP_PST(rspPst, inst);
-	rspPst.event = EVENT_SCH_CELL_CFG_CFM;
-	schCellCfgCfm.rsp = RSP_OK;
-  
+   FILL_PST_SCH_TO_MAC(rspPst, pst->dstInst);
+   rspPst.event = EVENT_SCH_CELL_CFG_CFM;
+
+   schCellCfgCfm.cellId = schCellCfg->cellId; 
+   schCellCfgCfm.rsp = RSP_OK;
+
    ret = (*SchCellCfgCfmOpts[rspPst.selector])(&rspPst, &schCellCfgCfm);
 
    return ret;
@@ -686,33 +678,33 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 
    SchCellCb *cell = schCb[inst].cells[inst];
    SchDlSlotInfo *schDlSlotInfo = \
-      cell->schDlSlotInfo[(cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + MSG4_DELAY) % SCH_NUM_SLOTS];
-  
+				  cell->schDlSlotInfo[(cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + MSG4_DELAY) % SCH_NUM_SLOTS];
+
    for(lcIdx = 0; lcIdx < dlBoInfo->numLc; lcIdx++)
-	{
-	   if(dlBoInfo->boInfo[lcIdx].lcId == CCCH_LCID)
-		{
-	      SCH_ALLOC(schDlSlotInfo->msg4Info, sizeof(Msg4Info));
-	      if(!schDlSlotInfo->msg4Info)
-	      {
-	         DU_LOG("\nSCH : Memory allocation failed for msg4Info");
-		      schDlSlotInfo = NULL;
-		      return RFAILED;
-	      }
-         schDlSlotInfo->msg4Info->crnti = dlBoInfo->crnti;
-			schDlSlotInfo->msg4Info->ndi = 1;
-			schDlSlotInfo->msg4Info->harqProcNum = 0;
-			schDlSlotInfo->msg4Info->dlAssignIdx = 0;
-			schDlSlotInfo->msg4Info->pucchTpc = 0;
-			schDlSlotInfo->msg4Info->pucchResInd = 0;
-			schDlSlotInfo->msg4Info->harqFeedbackInd = 0;
-			schDlSlotInfo->msg4Info->dciFormatId = 1;
-	   }
-	}
+   {
+      if(dlBoInfo->boInfo[lcIdx].lcId == CCCH_LCID)
+      {
+	 SCH_ALLOC(schDlSlotInfo->msg4Info, sizeof(Msg4Info));
+	 if(!schDlSlotInfo->msg4Info)
+	 {
+	    DU_LOG("\nSCH : Memory allocation failed for msg4Info");
+	    schDlSlotInfo = NULL;
+	    return RFAILED;
+	 }
+	 schDlSlotInfo->msg4Info->crnti = dlBoInfo->crnti;
+	 schDlSlotInfo->msg4Info->ndi = 1;
+	 schDlSlotInfo->msg4Info->harqProcNum = 0;
+	 schDlSlotInfo->msg4Info->dlAssignIdx = 0;
+	 schDlSlotInfo->msg4Info->pucchTpc = 0;
+	 schDlSlotInfo->msg4Info->pucchResInd = 0;
+	 schDlSlotInfo->msg4Info->harqFeedbackInd = 0;
+	 schDlSlotInfo->msg4Info->dciFormatId = 1;
+      }
+   }
 
    return ROK;
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
