@@ -40,7 +40,7 @@
  *         RFAILED - failure
  *
  ***************************************************************************/
-int  packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
+uint8_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
 {
    if(pst->selector == ODU_SELECTOR_LC)
    {
@@ -203,7 +203,7 @@ int unpackMacCellCfgCfm(
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
+uint8_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 {
 	Buffer *mBuf = NULLP;
 
@@ -246,7 +246,7 @@ uint16_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf)
+uint8_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf)
 {
    MacCellStartInfo  *cellStartInfo;
  
@@ -282,7 +282,7 @@ uint16_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
+uint8_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
 {
    if(pst->selector == ODU_SELECTOR_LC)
    {
@@ -325,7 +325,7 @@ uint16_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf)
+uint8_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf)
 {
    MacCellStopInfo  *cellStopInfo;
   
@@ -632,7 +632,7 @@ uint16_t unpackMacUlCcchInd(DuMacUlCcchInd func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
+uint8_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 {
 	Buffer *mBuf = NULLP;
 
@@ -673,7 +673,7 @@ uint16_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
+uint8_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
 {
 	if(pst->selector == ODU_SELECTOR_LWLC)
 	{

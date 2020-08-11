@@ -3373,95 +3373,8 @@ TfuTtiIndInfo * ttiInd;
       }
    }
 
-   pst->event = (Event) EVENT_SLOT_IND_TO_MAC;
+   //pst->event = (Event) EVENT_SLOT_IND_TO_MAC;
    RETVALUE(SPstTsk(pst,mBuf));
-}
-
-
-/***********************************************************
-*
-*     Func : cmUnpackSlotInd
-*
-*
-*     Desc : This API is the TTI indication from PHY to MAC . 
- * @details This primitive provides the timing information (SFN and subframe)
- * which is currently running on the physical layer. 
- * @param pst Pointer to the post structure.
- * @param suId SAP ID of the service user.
- * @param ttiInd Pointer to the TfuTtiIndInfo.
- * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
-PUBLIC S16 cmUnpackSlotInd
-(
-TfuTtiInd func,
-Pst *pst,
-Buffer *mBuf
-)
-{
-   SuId suId;
-   SlotIndInfo *slotInd;
-   
-   TRC3(cmUnpackSlotInd)
-
-   if (SUnpkS16(&suId, mBuf) != ROK) {
-      TFU_FREE_MSG(mBuf);
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ETFU109, (ErrVal)0, "Packing failed");
-#endif
-      RETVALUE(RFAILED);
-   }
-   if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&slotInd, sizeof(SlotIndInfo))) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ETFU110, (ErrVal)0, "Packing failed");
-#endif
-         TFU_FREE_MSG(mBuf);
-         RETVALUE(RFAILED);
-      }
-   }
-
-   if (pst->selector == ODU_SELECTOR_LC) 
-   {
-      if (cmUnpackSlotIndInfo(slotInd, mBuf) != ROK) {
-         SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
-         TFU_FREE_MSG(mBuf);
-#if (ERRCLASS & ERRCLS_ADD_RES)
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-               __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ETFU111, (ErrVal)0, "Packing failed");
-#endif
-         RETVALUE(RFAILED);
-      }
-   }
-   else if(pst->selector == ODU_SELECTOR_LWLC)
-   {
-      if (cmUnpkPtr((PTR *)&slotInd, mBuf) != ROK)
-      {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ETFUXXX, (ErrVal)0, "LWLC un-Packing failed");
-#endif
-         SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
-         TFU_FREE_MSG(mBuf);
-         RETVALUE(RFAILED);
-      }
-   }
-   TFU_FREE_MSG(mBuf);
-
-   RETVALUE((*func)(pst, slotInd));
 }
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
@@ -3568,97 +3481,6 @@ Buffer *mBuf;
 }
 
 #endif
-
-/***********************************************************
-*
-*     Func : cmUnpackMacSchSlotInd
-*
-*
-*     Desc : This API is the TTI indication from PHY to scheduler. 
- * @details This primitive provides the timing information (SFN and subframe)
- * which is currently running on the physical layer. 
- * @param pst Pointer to the post structure.
- * @param suId SAP ID of the service user.
- * @param ttiInd Pointer to the TfuTtiIndInfo.
- * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
-PUBLIC S16 cmUnpackMacSchSlotInd
-(
-MacSchSlotIndFunc func,
-Pst *pst,
-Buffer *mBuf
-)
-{
-#if 0
-   SuId suId;
-   SlotIndInfo *slotInd;
-   
-   TRC3(cmUnpackMacSchSlotInd)
-
-   if (SUnpkS16(&suId, mBuf) != ROK) {
-      TFU_FREE_MSG(mBuf);
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ETFU116, (ErrVal)0, "Packing failed");
-#endif
-      RETVALUE(RFAILED);
-   }
-   if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&slotInd, sizeof(SlotIndInfo))) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ETFU117, (ErrVal)0, "Packing failed");
-#endif
-         TFU_FREE_MSG(mBuf);
-         RETVALUE(RFAILED);
-      }
-   }
-
-   if (pst->selector == ODU_SELECTOR_LC) 
-   {
-      if (cmUnpackSlotIndInfo(slotInd, mBuf) != ROK) {
-         SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
-         TFU_FREE_MSG(mBuf);
-#if (ERRCLASS & ERRCLS_ADD_RES)
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-               __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ETFU118, (ErrVal)0, "Packing failed");
-#endif
-         RETVALUE(RFAILED);
-      }
-   }
-   else if(pst->selector == ODU_SELECTOR_LWLC)
-   {
-      if (cmUnpkPtr((PTR *)&slotInd, mBuf) != ROK)
-      {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-         SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ETFUXXX, (ErrVal)0, "LWLC un-Packing failed");
-#endif
-         SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
-         TFU_FREE_MSG(mBuf);
-         RETVALUE(RFAILED);
-      }
-   }
-   TFU_FREE_MSG(mBuf);
-   /* [ccpu00141698]-MOD- MAC/SCH does not free the TTI ind anymore */
-//   (*func)(pst, suId, slotInd);
-   (*func)(pst, slotInd);
-   SPutSBuf(pst->region, pst->pool, (Data *)slotInd, sizeof(SlotIndInfo));
-#endif
-   return ROK;
-}
 
 
 /***********************************************************
@@ -11970,36 +11792,6 @@ Buffer *mBuf;
    RETVALUE(ROK);
 }
 /* CA dev End */
-
-
-/***********************************************************
-*
-*     Func : cmUnpackSlotIndInfo
-*
-*
-*     Desc : This structure contains information that is passed as a part of the Slot
- * indication sent from PHY to MAC.
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
-PUBLIC S16 cmUnpackSlotIndInfo
-(
-SlotIndInfo *param,
-Buffer *mBuf
-)
-{
-   CMCHKUNPK(SUnpkU16, &param->sfn, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->slot, mBuf);
-
-   RETVALUE(ROK);
-}
-
 
 
 /***********************************************************
