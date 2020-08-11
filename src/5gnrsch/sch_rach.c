@@ -261,9 +261,9 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
 
    SchBwpDlCfg *initialBwp = &schCb[inst].cells[inst]->cellCfg.schInitialDlBwp;
 
-	PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
-	PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
-   BwpCfg *bwp = &rarAlloc->bwp;
+	PdcchCfg *pdcch = &rarAlloc->rarDlInfo.pdcchCfg;
+	PdschCfg *pdsch = &rarAlloc->rarDlInfo.pdschCfg;
+   BwpCfg *bwp = &rarAlloc->rarDlInfo.bwp;
 
    coreset0Idx     = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
@@ -293,15 +293,15 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    bwp->cyclicPrefix       = initialBwp->bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
-   pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
-   pdcch->coreset0Cfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
-   pdcch->coreset0Cfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
-   pdcch->coreset0Cfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coreset0Cfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coreset0Cfg.coreSetType = 0;
-   pdcch->coreset0Cfg.shiftIndex = pci;
-   pdcch->coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
+   pdcch->coresetCfg.startSymbolIndex = firstSymbol;
+   pdcch->coresetCfg.durationSymbols = numSymbols;
+   memcpy(pdcch->coresetCfg.freqDomainResource,FreqDomainResource,6);
+   pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.coreSetType = 0;
+   pdcch->coresetCfg.shiftIndex = pci;
+   pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
    pdcch->dci.rnti = raRnti; /* RA-RNTI */
    pdcch->dci.scramblingId = pci;

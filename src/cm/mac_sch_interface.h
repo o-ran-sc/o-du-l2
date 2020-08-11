@@ -410,7 +410,7 @@ typedef struct pdschCfg
 
 typedef struct coresetCfg
 {
-   uint8_t coreSet0Size;
+   uint8_t coreSetSize;
    uint8_t startSymbolIndex;
    uint8_t durationSymbols;
    uint8_t freqDomainResource[6];
@@ -444,13 +444,27 @@ typedef struct dlDCI
 
 typedef struct pdcchCfg
 {
-   /* coreset-0 configuration */
-   CoresetCfg coreset0Cfg;
+   /* coreset configuration */
+   CoresetCfg coresetCfg;
 
    uint16_t numDlDci;
    DlDCI    dci; /* as of now its only one DCI, later it will be numDlCi */
 } PdcchCfg;
 /* end of SIB1 PDCCH structures */
+
+typedef struct dlAllocInfo
+{
+   BwpCfg bwp;
+   PdcchCfg pdcchCfg;
+   PdschCfg pdschCfg;
+}DlAllocInfo;
+
+typedef struct ulGrantInfo
+{
+   BwpCfg bwp;
+   PdcchCfg pdcchCfg;
+   PdschCfg pdschCfg;
+}UlGrantInfo;
 
 typedef struct
 {
@@ -461,12 +475,9 @@ typedef struct
    uint8_t  coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
    uint8_t  searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */
    uint16_t sib1Mcs;
-
    /* parameters derived in scheduler */
    uint8_t n0;
-   BwpCfg bwp;
-   PdcchCfg sib1PdcchCfg;
-   PdschCfg sib1PdschCfg;
+   DlAllocInfo sib1Alloc;
 }SchSib1Cfg;
 
 typedef struct schRachCfg
@@ -581,13 +592,6 @@ typedef struct ssbInfo
    FreqDomainAlloc fdAlloc; /* Freq domain allocation */
 }SsbInfo;
 
-typedef struct sib1AllocInfo
-{
-   BwpCfg bwp;
-   PdcchCfg sib1PdcchCfg;
-   PdschCfg sib1PdschCfg;
-} Sib1AllocInfo;
-
 typedef struct prachSchInfo
 {
    uint8_t  numPrachOcas;   /* Num Prach Ocassions */
@@ -611,7 +615,7 @@ typedef struct dlBrdcstAlloc
     * 1 : SIB1 Transmission
     * 2 : SIB1 Repetition */
    U8 sib1Trans;
-   Sib1AllocInfo sib1Alloc;
+   DlAllocInfo sib1Alloc;
 }DlBrdcstAlloc;
 
 typedef struct rarInfo
@@ -628,9 +632,7 @@ typedef struct rarInfo
 typedef struct rarAlloc
 {
    RarInfo rarInfo;
-   BwpCfg  bwp;
-   PdcchCfg rarPdcchCfg;
-   PdschCfg rarPdschCfg;
+   DlAllocInfo rarDlInfo;
 }RarAlloc;
 
 typedef struct msg4Info
@@ -650,9 +652,7 @@ typedef struct msg4Info
 typedef struct msg4Alloc
 {
    Msg4Info msg4Info;
-   BwpCfg bwp;
-   PdcchCfg msg4PdcchCfg;
-   PdschCfg msg4PdschCfg;
+   DlAllocInfo msg4DlInfo;
 }Msg4Alloc;
 
 typedef struct schSlotValue
@@ -662,7 +662,27 @@ typedef struct schSlotValue
    SlotIndInfo rarTime;
    SlotIndInfo msg4Time;
    SlotIndInfo dlMsgTime;
+   SlotIndInfo bsrTime;
 }SchSlotValue;
+
+typedef struct bsrInfo
+{
+   uint8_t  dciFormatId;
+   uint8_t  freqHopFlag;
+   uint8_t  ndi;
+   uint8_t  harqProcNum;
+   uint8_t  puschTpc;
+   uint8_t  ul_SlInd;
+   uint8_t  *bsrPdu;
+   uint16_t bsrPduLen;
+}BsrInfo;
+
+typedef struct bsrAlloc
+{
+   BsrInfo bsrInfo;
+   UlGrantInfo bsrUlGrantInfo; 
+  
+}BsrAlloc;
 
 typedef struct dlSchedInfo
 {
@@ -679,6 +699,10 @@ typedef struct dlSchedInfo
 
    /* Allocation from MSG4 */
    Msg4Alloc *msg4Alloc;
+   
+   /* Allocation from BSR */
+   BsrAlloc *bsrAlloc;
+
 }DlSchedInfo;
 
 typedef struct tbInfo

@@ -455,9 +455,9 @@ uint8_t      offsetPointA
    uint16_t tbSize = 0;
 	uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
 
-   PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
-   PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
-   BwpCfg *bwp = &(sib1SchCfg->bwp);
+   PdcchCfg *pdcch = &(sib1SchCfg->sib1Alloc.pdcchCfg);
+   PdschCfg *pdsch = &(sib1SchCfg->sib1Alloc.pdschCfg);
+   BwpCfg *bwp = &(sib1SchCfg->sib1Alloc.bwp);
 
    coreset0Idx     = sib1SchCfg->coresetZeroIndex;
    searchSpace0Idx = sib1SchCfg->searchSpaceZeroIndex;
@@ -492,16 +492,16 @@ uint8_t      offsetPointA
    bwp->cyclicPrefix       = 0;              /* normal */
 
    /* fill the PDCCH PDU */
-   pdcch->coreset0Cfg.coreSet0Size = numRbs;
-   pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
-   pdcch->coreset0Cfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
-   pdcch->coreset0Cfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
-   pdcch->coreset0Cfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coreset0Cfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coreset0Cfg.coreSetType = 0;
-   pdcch->coreset0Cfg.shiftIndex = pci;
-   pdcch->coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
+   pdcch->coresetCfg.coreSetSize = numRbs;
+   pdcch->coresetCfg.startSymbolIndex = firstSymbol;
+   pdcch->coresetCfg.durationSymbols = numSymbols;
+   memcpy(pdcch->coresetCfg.freqDomainResource,FreqDomainResource,6);
+   pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.coreSetType = 0;
+   pdcch->coresetCfg.shiftIndex = pci;
+   pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
    pdcch->dci.rnti = SI_RNTI;
    pdcch->dci.scramblingId = pci;

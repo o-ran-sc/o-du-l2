@@ -111,9 +111,9 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
 		{
 			schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + 10; /* 10 PRBs for sib1 */
 		}
-	   memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
-	   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
-	   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(PdschCfg)); 
+	   memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.sib1Alloc.bwp, sizeof(BwpCfg)); 
+	   memcpy(&dlBrdcstAlloc->sib1Alloc.pdcchCfg, &cell->cellCfg.sib1SchCfg.sib1Alloc.pdcchCfg, sizeof(PdcchCfg)); 
+	   memcpy(&dlBrdcstAlloc->sib1Alloc.pdschCfg, &cell->cellCfg.sib1SchCfg.sib1Alloc.pdschCfg, sizeof(PdschCfg)); 
 	}
 	return ROK;
 }
@@ -343,9 +343,9 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    uint8_t mcs = 4;  /* MCS fixed to 4 */
    SchBwpDlCfg *initialBwp;
 
-   PdcchCfg *pdcch = &msg4Alloc->msg4PdcchCfg;
-   PdschCfg *pdsch = &msg4Alloc->msg4PdschCfg;
-   BwpCfg *bwp = &msg4Alloc->bwp;
+   PdcchCfg *pdcch = &msg4Alloc->msg4DlInfo.pdcchCfg;
+   PdschCfg *pdsch = &msg4Alloc->msg4DlInfo.pdschCfg;
+   BwpCfg *bwp = &msg4Alloc->msg4DlInfo.bwp;
 
    initialBwp   = &cell->cellCfg.schInitialDlBwp;
    offsetPointA = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
@@ -376,16 +376,16 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    bwp->cyclicPrefix       = initialBwp->bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
-   pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
-   pdcch->coreset0Cfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
-   pdcch->coreset0Cfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
-   pdcch->coreset0Cfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coreset0Cfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coreset0Cfg.coreSetType = 0;
-   pdcch->coreset0Cfg.coreSet0Size = numRbs;
-   pdcch->coreset0Cfg.shiftIndex = cell->cellCfg.phyCellId;
-   pdcch->coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
+   pdcch->coresetCfg.startSymbolIndex = firstSymbol;
+   pdcch->coresetCfg.durationSymbols = numSymbols;
+   memcpy(pdcch->coresetCfg.freqDomainResource,FreqDomainResource,6);
+   pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.coreSetType = 0;
+   pdcch->coresetCfg.coreSetSize = numRbs;
+   pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
+   pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
    pdcch->dci.rnti = cell->schDlSlotInfo[slot]->msg4Info->crnti;
    pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
