@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "202972ac_b2e87cf4",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-12T15:28:17Z",
+      "side": 1,
+      "message": "Removed the check",
+      "parentUuid": "8c6eeca6_de03577e",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d5b2a336_618f9e17",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 10
@@ -33,6 +51,24 @@
       "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0ea29da_494b2e21",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-12T15:28:17Z",
+      "side": 1,
+      "message": "Since the UE is already configured, ideally it is a case of duplication and not failure. Hence returned ROk.",
+      "parentUuid": "d5b2a336_618f9e17",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1aa2c326_0c6c2fa6",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 944,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-12T15:28:17Z",
+      "side": 1,
+      "message": "Those ueCfg members have been made pointer which are optional and are not filled currently. Hence no pointers to be freed as of now.",
+      "parentUuid": "142077e5_e331fb2a",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed35e31_7a56b68b",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 10
@@ -67,6 +121,24 @@
       "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e819028d_c5c27757",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-12T15:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed35e31_7a56b68b",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "a25dc2e1_7d9935a3",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-12T15:28:17Z",
+      "side": 1,
+      "message": "This is optional. It wasnt filled in DU to CU RRC container as well.",
+      "parentUuid": "079a6f6f_8377a7d1",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8742c98a_d947bbe2",
         "filename": "src/du_app/du_cfg.h",
         "patchSetId": 10
@@ -101,6 +191,24 @@
       "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f44f2962_e5c1d648",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-12T15:28:17Z",
+      "side": 1,
+      "message": "Will do as part of MAC clean up",
+      "parentUuid": "8742c98a_d947bbe2",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
