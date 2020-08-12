@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8c6eeca6_de03577e",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-12T15:12:03Z",
+      "side": 1,
+      "message": "this is being checked in the caller of this function too",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5b2a336_618f9e17",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-12T15:12:03Z",
+      "side": 1,
+      "message": "why not rfailed?",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "142077e5_e331fb2a",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 944,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-12T15:12:03Z",
+      "side": 1,
+      "message": "are there no pointers within uecfg that require freeing?",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ed35e31_7a56b68b",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-12T15:12:03Z",
+      "side": 1,
+      "message": "this must be BsrTmrCfg",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "079a6f6f_8377a7d1",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-12T15:12:03Z",
+      "side": 1,
+      "message": "why?",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8742c98a_d947bbe2",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-12T15:12:03Z",
+      "side": 1,
+      "message": "this file requires a cleanup. We must take this as one of our activities",
+      "revId": "12bc01e178b3de64a29726c6b49e7148485af2b5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
