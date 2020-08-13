@@ -16,6 +16,24 @@
       "revId": "4e803fe4bcf3a446b7082675d25d35ad102f16f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1de9e84b_5aa438e0",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-13T15:49:46Z",
+      "side": 1,
+      "message": "Will be done as part of mac clean-up",
+      "parentUuid": "00ac6de6_7bf827e8",
+      "revId": "4e803fe4bcf3a446b7082675d25d35ad102f16f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
