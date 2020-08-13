@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "00ac6de6_7bf827e8",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-13T15:47:01Z",
+      "side": 1,
+      "message": "ODU_START_RNTI",
+      "revId": "4e803fe4bcf3a446b7082675d25d35ad102f16f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
