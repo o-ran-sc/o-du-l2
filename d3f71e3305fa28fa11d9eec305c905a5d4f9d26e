@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78cd7c65_e67dee60",
+        "filename": "src/5gnrrlc/kw_ul_ex_ms.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-14T09:51:49Z",
+      "side": 1,
+      "message": "We are using \"proc\" keyword going forward in all MAC function names. Lets try using the same in RLC as well for consistency i.e rename to RlcUlProcUeCreateReq",
+      "revId": "d3f71e3305fa28fa11d9eec305c905a5d4f9d26e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07890fcc_c3dc4eb3",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-14T09:51:49Z",
+      "side": 1,
+      "message": "lets use lchIdx for filling lch[]. Can be initialized to 0 and increment before filling a new lch",
+      "revId": "d3f71e3305fa28fa11d9eec305c905a5d4f9d26e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8bc5db1b_93f2ea4b",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-14T09:51:49Z",
+      "side": 1,
+      "message": "For any idx(lets say idx \u003d 0), same rlcBearerCfg[idx].lcId config is getting filled for entCfg[idx].lCh[0] (at line 122) and for entCfg[idx].lCh[1] here",
+      "revId": "d3f71e3305fa28fa11d9eec305c905a5d4f9d26e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2afb023b_bbcd3ced",
+        "filename": "src/cm/ckw.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-14T09:51:49Z",
+      "side": 1,
+      "message": "Move to du_app_rlc_inf.h",
+      "revId": "d3f71e3305fa28fa11d9eec305c905a5d4f9d26e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08afad8a_a98d333d",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-14T09:51:49Z",
+      "side": 1,
+      "message": "ss* header files can be included in common_def.h (if not already present)",
+      "revId": "d3f71e3305fa28fa11d9eec305c905a5d4f9d26e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a90bbf16_1ea10818",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-14T09:51:49Z",
+      "side": 1,
+      "message": "a header file should not be included within another header file",
+      "revId": "d3f71e3305fa28fa11d9eec305c905a5d4f9d26e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b672798_fc2ed3a4",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1081,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-14T09:51:49Z",
+      "side": 1,
+      "message": "Can we have a macro called something like \"FILL_PST_TO_RLC(_pst, _event)\"\nThis macro can be used to fill post structure everytime a msg is to be sent to RLC.\nFor reference, check \"FILL_PST_TO_DUAPP\" in mac.h in MAC clean up commit.",
+      "revId": "d3f71e3305fa28fa11d9eec305c905a5d4f9d26e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95f7e0e0_92f8025b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1125,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-14T09:51:49Z",
+      "side": 1,
+      "message": "Should we not create a new structure at du_app_rlc_inf for rlcUeCfgRsp which compiles to AAD spec requirement as we have done for rlcUeCfg.",
+      "revId": "d3f71e3305fa28fa11d9eec305c905a5d4f9d26e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
