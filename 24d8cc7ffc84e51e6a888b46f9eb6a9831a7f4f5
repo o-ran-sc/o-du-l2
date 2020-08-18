@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1e16f727_81cb8e01",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-08-18T13:52:20Z",
+      "side": 1,
+      "message": "Previously in rg_tom.c, buildAndSendMuxPdu(slotInd) was handled here.\nWhere is it handled now ?",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46c283c2_186c6b6f",
+        "filename": "src/5gnrmac/rg_tom.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-08-18T13:52:20Z",
+      "side": 1,
+      "message": "below 2 lines can be removed.",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
