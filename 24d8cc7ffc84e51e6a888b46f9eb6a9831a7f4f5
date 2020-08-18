@@ -2,6 +2,193 @@
   "comments": [
     {
       "key": {
+        "uuid": "5b1f8b41_3835314f",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "we can add MAX_CELL macro to common_def",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e34c764a_439f03de",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "numCells",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ed03798_c1e4dbb1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "since this is cleanup, lets change these file names also..whatever is being used from lrg/rgr files can be moved to new du_app/mac interface files",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60f24787_4a794faf",
+        "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "this must be per cell. numCells-1 will work for single cell only",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e129ce5a_149cd4a3",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "dont use RETVALUE. use \"return\"",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb166742_2622a79e",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "use PREAMBLE and not PREAM",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a2b77b5_5a776db1",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "these selectors must not be used. Use the one in commn_def.h",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0c9b8d3_8eb3b880",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "club all func pointers together",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78c57fff_d342446a",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "MAX must be first",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d5a4f82_396b1db9",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "should this be handle or proc?",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7547a3f2_4f14df9b",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "specify its PST from MAC to SCH",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1e16f727_81cb8e01",
         "filename": "src/5gnrmac/mac_slot_ind.c",
         "patchSetId": 4
@@ -19,6 +206,23 @@
     },
     {
       "key": {
+        "uuid": "b1d1f5fe_fdc3ac14",
+        "filename": "src/5gnrmac/mac_stop_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "cellStopId?",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "46c283c2_186c6b6f",
         "filename": "src/5gnrmac/rg_tom.c",
         "patchSetId": 4
@@ -30,6 +234,108 @@
       "writtenOn": "2020-08-18T13:52:20Z",
       "side": 1,
       "message": "below 2 lines can be removed.",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "869ebfeb_c06449a7",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "are these ss files needed?",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "350de1be_b8899095",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "why is this needed in this file??",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4643360_3f930955",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "why is this required here? we are not using asn codec in this files",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71346e43_0ecdbf44",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "why is this required here? we are not using asn codec in this files",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37e01c7a_736fae23",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "why is this required here? we are not using asn codec in this files",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6942701_70466034",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-18T15:00:20Z",
+      "side": 1,
+      "message": "why is this required here? we are not using asn codec in this files",
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
