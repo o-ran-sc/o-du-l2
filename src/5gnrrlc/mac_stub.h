@@ -28,8 +28,8 @@
 #include "rgu.x"
 
 
-#define DU_IP_V4_ADDR "10.0.2.20"
-#define CU_IP_V4_ADDR "10.0.2.25"
+#define DU_IP_V4_ADDR "192.168.130.81"
+#define CU_IP_V4_ADDR "192.168.130.82"
 
 S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta);
 S16 macStubSendDlData(Pst *post, SpId spId, RlcMacData *dlData);

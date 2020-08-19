@@ -56,9 +56,9 @@ How to Clean and Build:
 How to execute:
 ---------------
 1. Assign virtual IP addresses as follows:
-      ifconfig <interface name>:ODU "10.0.2.20"
-      ifconfig <interface name>:CU_STUB "10.0.2.25"
-      ifconfig <interface name>:RIC_STUB "10.0.2.30"
+      ifconfig <interface name>:ODU "192.168.130.81"
+      ifconfig <interface name>:CU_STUB "192.168.130.82"
+      ifconfig <interface name>:RIC_STUB "192.168.130.80"
 
 2. CU execution folder:
       cd l2/bin/cu_stub
