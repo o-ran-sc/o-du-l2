@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "075a3b00_ea7726b4",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-19T12:29:26Z",
+      "side": 1,
+      "message": "pack cellId first",
+      "revId": "0ad3afe722402c5370e2193cb041cd8779ed4dd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afbca92d_a13367e5",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-19T12:29:26Z",
+      "side": 1,
+      "message": "when cellId is packed first, it must be the last to be unpacked",
+      "revId": "0ad3afe722402c5370e2193cb041cd8779ed4dd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5343759e_d6e74fa9",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-19T12:29:26Z",
+      "side": 1,
+      "message": "cellId must be the first param in this structure",
+      "revId": "0ad3afe722402c5370e2193cb041cd8779ed4dd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7c30cd2_546dd695",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-19T12:29:26Z",
+      "side": 1,
+      "message": "move this to just above actvCellLst array",
+      "revId": "0ad3afe722402c5370e2193cb041cd8779ed4dd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e36622b_2b0b80dd",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1563,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-19T12:29:26Z",
+      "side": 1,
+      "message": "CellId must be filled here. not TransId.\nAlso, remove getTransId() function if not used anywhere",
+      "revId": "0ad3afe722402c5370e2193cb041cd8779ed4dd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5599016_7d0a1b54",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1598,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-19T12:29:26Z",
+      "side": 1,
+      "message": "use a better name for iterator than \"i\"",
+      "revId": "0ad3afe722402c5370e2193cb041cd8779ed4dd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
