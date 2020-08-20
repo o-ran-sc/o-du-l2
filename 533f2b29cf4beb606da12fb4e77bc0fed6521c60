@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0347c90_b9b7df2b",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-20T09:11:29Z",
+      "side": 1,
+      "message": "add numCfgCells as well",
+      "revId": "533f2b29cf4beb606da12fb4e77bc0fed6521c60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af84560a_c3ae4a9a",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1597,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-20T09:11:29Z",
+      "side": 1,
+      "message": "use actvCellIdx instead of idx",
+      "revId": "533f2b29cf4beb606da12fb4e77bc0fed6521c60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
