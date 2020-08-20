@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2aa5154e_7c7d1da8",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done. Added MAX_NUM_CELL and MAX_NUM_UE to common_def.h",
+      "parentUuid": "5b1f8b41_3835314f",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e34c764a_439f03de",
         "filename": "src/5gnrmac/lwr_mac.h",
         "patchSetId": 4
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "f7840450_e9576b14",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e34c764a_439f03de",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4ed03798_c1e4dbb1",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 4
@@ -47,6 +83,24 @@
       "writtenOn": "2020-08-18T15:00:20Z",
       "side": 1,
       "message": "since this is cleanup, lets change these file names also..whatever is being used from lrg/rgr files can be moved to new du_app/mac interface files",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a53ea1da_6d874b3f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "We require lrg file for RgMngmt structures.\n\nMethod 1:\nMoving out RgMngmt structure to du-app/mac interface would required moving structures used inside it such as RgCfg, RgSts, RgSsta, RgUsta, RgTrc, RgCntrl and further inclusion of their internal structures. We are using only RgCfg in RgMngmt but so much code will have to be moved.\n\nMethod 2:\nIn case we decide on writing new interface structures for gen/sap cfg at MAC/SCH, this would fail since we are using seed code itself for MAC/SCH cfg and the seed code requires RgMngmt structures.\n\nHence not removing dependency on lrg as of now. Looking for a more feasible solution.\nDependency on rgu interface has been removed as part of RLC BO code.",
+      "parentUuid": "4ed03798_c1e4dbb1",
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "81eb232c_febb624a",
+        "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done. Using index 0 instead.",
+      "parentUuid": "60f24787_4a794faf",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e129ce5a_149cd4a3",
         "filename": "src/5gnrmac/lwr_mac_upr_inf.c",
         "patchSetId": 4
@@ -84,6 +156,24 @@
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4d638b2_e26cb87b",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e129ce5a_149cd4a3",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "e529f3f8_97d36c48",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb166742_2622a79e",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3a2b77b5_5a776db1",
         "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
         "patchSetId": 4
@@ -118,6 +226,24 @@
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "889baa27_7f04752e",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a2b77b5_5a776db1",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -138,6 +264,24 @@
     },
     {
       "key": {
+        "uuid": "b0f8412c_c70adf7f",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0c9b8d3_8eb3b880",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "78c57fff_d342446a",
         "filename": "src/5gnrmac/mac.h",
         "patchSetId": 4
@@ -152,6 +296,24 @@
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd56e768_dd9c0d25",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78c57fff_d342446a",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -172,6 +334,24 @@
     },
     {
       "key": {
+        "uuid": "783ea357_0447c18e",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d5a4f82_396b1db9",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7547a3f2_4f14df9b",
         "filename": "src/5gnrmac/mac_msg_hdl.c",
         "patchSetId": 4
@@ -186,6 +366,24 @@
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "016ac21f_2703bb42",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done. Renamed macros to FILL_PST_MAC_TO_SCH and FILL_PST_MAC_TO_DU_APP",
+      "parentUuid": "7547a3f2_4f14df9b",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -206,6 +404,24 @@
     },
     {
       "key": {
+        "uuid": "399c93d9_523e0b4e",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Added here",
+      "parentUuid": "1e16f727_81cb8e01",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b1d1f5fe_fdc3ac14",
         "filename": "src/5gnrmac/mac_stop_ind.c",
         "patchSetId": 4
@@ -220,6 +436,24 @@
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eed3400a_5b1dd2cf",
+        "filename": "src/5gnrmac/mac_stop_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done. Renamed to cellStopInd",
+      "parentUuid": "b1d1f5fe_fdc3ac14",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -240,6 +474,24 @@
     },
     {
       "key": {
+        "uuid": "04830b15_097e9499",
+        "filename": "src/5gnrmac/rg_tom.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46c283c2_186c6b6f",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "869ebfeb_c06449a7",
         "filename": "src/cm/du_app_mac_inf.c",
         "patchSetId": 4
@@ -254,6 +506,24 @@
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "966820eb_08114a7b",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "Done. Not needed. Files Removed",
+      "parentUuid": "869ebfeb_c06449a7",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -274,6 +544,24 @@
     },
     {
       "key": {
+        "uuid": "dde95f43_7b551d7f",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "du_cfg.h (included here) uses structures defined in odu_common_code.h",
+      "parentUuid": "350de1be_b8899095",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c4643360_3f930955",
         "filename": "src/du_app/du_mgr_ex_ms.c",
         "patchSetId": 4
@@ -288,6 +576,24 @@
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ef019f8_09f8a6fd",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "du_cfg.h (included here) uses structures defined in odu_common_code.h",
+      "parentUuid": "c4643360_3f930955",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -308,6 +614,24 @@
     },
     {
       "key": {
+        "uuid": "57e61130_4b315f1b",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "du_cfg.h (included here) uses structures defined in odu_common_code.h",
+      "parentUuid": "71346e43_0ecdbf44",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "37e01c7a_736fae23",
         "filename": "src/du_app/du_msg_hdl.c",
         "patchSetId": 4
@@ -325,6 +649,24 @@
     },
     {
       "key": {
+        "uuid": "bbcaafcd_12767698",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "du_cfg.h (included here) uses structures defined in odu_common_code.h",
+      "parentUuid": "37e01c7a_736fae23",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f6942701_70466034",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 4
@@ -339,6 +681,24 @@
       "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3729e71_0bc3464b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-20T10:12:42Z",
+      "side": 1,
+      "message": "du_cfg.h (included here) uses structures defined in odu_common_code.h",
+      "parentUuid": "f6942701_70466034",
+      "revId": "24d8cc7ffc84e51e6a888b46f9eb6a9831a7f4f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
