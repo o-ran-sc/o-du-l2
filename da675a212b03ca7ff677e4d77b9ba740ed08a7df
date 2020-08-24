@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "78ead14b_eec52b0e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1883,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88bbdbba_2c2faaf3",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "856442f8_4573802b",
         "filename": "src/5gnrmac/lwr_mac_phy.c",
         "patchSetId": 5
@@ -33,6 +51,24 @@
       "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16b45a54_3bfca21f",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Yes, the node and block parameters are used only in MAC to store WLS memory sent to phy i.e block-\u003eptr.\nOnce the use of this ptr is over at phy, all of them are freed above.",
+      "parentUuid": "856442f8_4573802b",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "0d1d5a9e_8fcefa65",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfa7160f_20d14962",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ece1353a_1c7351a1",
         "filename": "src/5gnrmac/lwr_mac_util.c",
         "patchSetId": 5
@@ -67,6 +121,24 @@
       "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "020a03d5_c0c46842",
+        "filename": "src/5gnrmac/lwr_mac_util.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "ece1353a_1c7351a1",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "4c6be257_04116c33",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abb6cceb_03409d76",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3a52bd5c_e1107248",
         "filename": "src/5gnrmac/mac_slot_ind.c",
         "patchSetId": 5
@@ -101,6 +191,24 @@
       "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0877ddf0_52c7316b",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Renamed both procDlTtiReq and procUlTtiReq",
+      "parentUuid": "3a52bd5c_e1107248",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "7ae54049_4179557b",
+        "filename": "src/5gnrmac/mac_stop_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "038dd612_475b0026",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d7412c8a_e5c1938a",
         "filename": "src/5gnrmac/rg_lmm.c",
         "patchSetId": 5
@@ -135,6 +261,24 @@
       "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dc8f845_f64d37af",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Needed because we are initializing macCb and lwrMacCb in rgActvInit",
+      "parentUuid": "d7412c8a_e5c1938a",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "2926d414_e0e7065a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06fd225a_58f5bad8",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "babddddd_4777de66",
         "filename": "src/du_app/du_mgr.h",
         "patchSetId": 5
@@ -169,6 +331,24 @@
       "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f9cc91d_fb4ae48d",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Yes. In macCellCfg changes also, *duMacCellCfg remains part of duCb",
+      "parentUuid": "babddddd_4777de66",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "628cc367_d3e70a9a",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1260,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "DU_ALLOC is used to allocate memory using SGetSBuf.",
+      "parentUuid": "5806483d_fbee929e",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "75f56429_0e417225",
         "filename": "src/du_app/du_msg_hdl.c",
         "patchSetId": 5
@@ -203,6 +401,24 @@
       "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57025e02_dc5d9785",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1718,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-24T09:35:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75f56429_0e417225",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
