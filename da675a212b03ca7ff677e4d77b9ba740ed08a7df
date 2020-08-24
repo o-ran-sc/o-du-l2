@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "88bbdbba_2c2faaf3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1883,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "test this multiple time, with different values of cell_id.",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "856442f8_4573802b",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "should these be done together? WLS_MEM_FREE and MAC_FREE?",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dfa7160f_20d14962",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "remove else. Just return RFAILED",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ece1353a_1c7351a1",
+        "filename": "src/5gnrmac/lwr_mac_util.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "why is this includeD?what is the dependency?",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "abb6cceb_03409d76",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "can be moved to mac_utils",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a52bd5c_e1107248",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "shouldnt this be fillDlTtiReq??",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "038dd612_475b0026",
+        "filename": "src/5gnrmac/mac_stop_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "sendStopIndToDuApp is a better name",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7412c8a_e5c1938a",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "is still needed here in this file?",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06fd225a_58f5bad8",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "babddddd_4777de66",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "after macCellCfg update changes, should this variable still be a part of duCb?",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5806483d_fbee929e",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1260,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "why are we not using DU_ALLOC?",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75f56429_0e417225",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1718,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-24T07:28:52Z",
+      "side": 1,
+      "message": "a macro to fill PST is better",
+      "revId": "da675a212b03ca7ff677e4d77b9ba740ed08a7df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
