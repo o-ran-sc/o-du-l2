@@ -40,9 +40,13 @@
 #define DMRS_MAP_TYPE_A 1
 #define NUM_DMRS_SYMBOLS 12
 #define DMRS_ADDITIONAL_POS 2
+#define MAX_LCID 11
 
 #define CRC_FAILED 0
 #define CRC_PASSED 1
+
+#define RLC_HDR_SIZE  3   /* 3 bytes of RLC Header size */
+#define MAC_HDR_SIZE  3   /* 3 bytes of MAC Header */
 
 extern uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
 
@@ -51,6 +55,12 @@ typedef enum
    SCH_UE_STATE_INACTIVE,
    SCH_UE_STATE_ACTIVE
 }SchUeState;
+
+typedef enum
+{
+   SCH_LC_STATE_INACTIVE,
+   SCH_LC_STATE_ACTIVE
+}SchLcState;
 
 /**
  * @brief
@@ -103,6 +113,25 @@ typedef struct schUlSlotInfo
    SchPucchInfo schPucchInfo; /*!< PUCCH info */
 }SchUlSlotInfo;
 
+typedef struct schLcCtxt
+{
+   uint8_t lcId;
+   uint8_t lcp;      // logical Channel Prioritization
+   SchLcState lcState;
+   uint16_t bo;
+}SchDlLcCtxt;
+
+typedef struct schUlLcCtxt
+{
+   uint8_t lcId;
+   SchLcState lcState;
+   uint8_t priority;
+   uint8_t lcGroup;
+   uint8_t schReqId;
+   uint8_t pbr;        // prioritisedBitRate
+   uint8_t bsd;        // bucketSizeDuration
+}SchUlLcCtxt;
+
 /**
  * @brief
  * UE control block
@@ -112,7 +141,11 @@ typedef struct schUeCb
    uint16_t  ueIdx;
    uint16_t  crnti;
    SchUeCfg  ueCfg;
-   SchUeState  state;
+   SchUeState    state;
+   uint8_t       numUlLc;
+   SchUlLcCtxt   ulLcCtxt[MAX_LCID];
+   uint8_t       numDlLc;
+   SchDlLcCtxt   dlLcCtxt[MAX_LCID];
 }SchUeCb;
 
 /**
@@ -157,6 +190,10 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
 uint16_t schCalcTbSize(uint16_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
 uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
+uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t crnti,
+   uint16_t accumalatedSize, uint16_t slot);
+uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
 /**********************************************************************
   End of file
- **********************************************************************/
+**********************************************************************/
+

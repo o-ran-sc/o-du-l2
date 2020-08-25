@@ -62,10 +62,6 @@
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
 
-#ifdef EGTP_TEST
-#include "mac_stub.h"
-#endif /* EGTP_TEST */
-
 #ifndef LCKWLIRGU
 #define PTKWRGU
 #endif
@@ -124,49 +120,6 @@ PUBLIC RguBndReq kwLiRguUbndReqMt[] =
 #ifdef LCKWLIRGU
    cmPkRguUbndReq,            /* 0 - loosely coupled */
 #endif /* LCRGUIRGU */
-};
-
-/* RGU Dedicated Channel Data Request primitive */
-
-PUBLIC RlcMacDlData rlcMacSendDlDataOpts[] =
-{
-#ifdef EGTP_TEST
-   macStubSendDlData,
-   macStubSendDlData,
-   macStubSendDlData,
-#else /* EGTP_TEST */
-#ifdef LCKWLIRGU
-   packDlData,            /* 0 - loosely coupled */
-#endif /* LCRGUIRGU */
-#ifdef RG 
-   MacRlcProcDlData,      /* 1 - tightly coupled, MAC  */
-#endif /* RG */
-#ifdef LCKWLIRGU
-   packDlData,            /* 0 - loosely coupled */
-#endif /* LCRGUIRGU */
-#endif /* EGTP_TEST */
-};
-
-
-/* RLC logical Channel Status primitive */
-
-PUBLIC RlcMacBoStatus rlcMacSendBOStatusOpts[] =
-{
-#ifdef EGTP_TEST
-   macStubBOStatus,
-   macStubBOStatus,
-   macStubBOStatus,
-#else /* EGTP_TEST */
-#ifdef LCKWLIRGU
-   packBOStatus,            /* 0 - loosely coupled */
-#endif /* LCRGUIRGU */
-#ifdef RG 
-   MacRlcProcBOStatus,            /* 1 - tightly coupled, MAC  */
-#endif /* RG */
-#ifdef LCKWLIRGU
-   packBOStatus,            /* 0 - LWLC loosely coupled */
-#endif /* LCRGUIRGU */
-#endif /* EGTP_TEST */
 };
 
 /* kw005.201 added support for L2 Measurement */
@@ -275,113 +228,6 @@ Reason      reason;
    RETVALUE(ROK);
 
 } /* end of KwLiRguUbndReq */
-
-  
-/**
- *
- * @brief 
- *
- *        Handler for sending PDU(s) from RLC to MAC for dedicated logical channels. 
- *
- * @b Description:
- *
- *        This function sends PDU(s) to MAC via one or more dedicated 
- *        logical channels along with the Buffer Occupancy of these
- *        channels.
- *
- *  @param[in] post         Post structure  
- *  @param[in] spId        Service Provider ID
- *  @param[in] datIndInfo  Data Request Information 
- *
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED
- *
- */
-#ifdef ANSI
-PUBLIC S16 RlcMacSendDlData
-(
-Pst               *post,
-SpId              spId,
-RlcMacData       *dlData
-)
-#else
-PUBLIC S16 RlcMacSendDlData(post, spId, dlData)
-Pst               *post;
-SpId              spId;
-RlcMacData        *dlData;
-#endif
-{
-   TRC3(RlcMacSendDlData)
-#ifdef RLC_MAC_DAT_REQ_RBUF
-        post->event=EVTRGUDDATREQ;
-      if((kwLiRguDatReqRbuf(post, spId, datReq)) != ROK)
-      {
-
-      SPutStaticBuffer(post->region, post->pool,                      
-                      (Data *) datReq, sizeof(RguDDatReqInfo), 0);             
-         RETVALUE(RFAILED);
-      }
-#else
-   /* jump to specific primitive depending on configured selector */
-   (*rlcMacSendDlDataOpts[post->selector])(post, spId, dlData);
-#endif 
-   RETVALUE(ROK);
-
-} /* end of KwLiRguDDatReq */
-
-
-  
-/**
- *
- * @brief  
- *
- *        Handler for reporting the Buffer Occupancy to MAC 
- *        for logical channels.
- *
- * @b Description:
- *
- *        This function reports the Buffer Occupancy of one or more
- *         logical channels to MAC. 
- *
- *  @param[in] post         Post structure  
- *  @param[in] spId        Service Provider ID
- *  @param[in] boSta       BO Status Information 
- *
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED
- *
- */
-#ifdef ANSI
-PUBLIC S16 RlcMacSendBOStatus
-(
-Pst               *post,
-SpId              spId,
-RlcMacBOStatus    *boSta
-)
-#else
-PUBLIC S16 RlcMacSendBOStatus(post, spId, staRsp)
-Pst               *post;
-SpId              spId;
-RlcMacBOStatus    *boSta;
-#endif
-{
-   TRC3(RlcMacSendBOStatus)
-#if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-       post->event= EVTRGUDSTARSP;
-      if((kwLiRguStaRspRbuf(post, spId, staRsp)) != ROK)
-      {
-         RETVALUE(RFAILED);
-      }
-#endif 
-   /* jump to specific primitive depending on configured selector */
-   (*rlcMacSendBOStatusOpts[post->selector])(post, spId, boSta);
-
-   RETVALUE(ROK);
-
-} /* end of RlcMacSendBOStatus */
-
 
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS

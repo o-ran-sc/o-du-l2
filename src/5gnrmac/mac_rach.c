@@ -85,9 +85,7 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    pduIdx = 0;
    preambleIdx = 0;
 
-   rachIndInfo.cellId = rachInd->rachPdu[pduIdx].pci;
-   /* TODO : A.ocate unique crnti for each ue */
-   rachIndInfo.crnti = 100;
+   rachIndInfo.cellId = rachInd->cellId;
    rachIndInfo.timingInfo.sfn = rachInd->timingInfo.sfn;
    rachIndInfo.timingInfo.slot = rachInd->timingInfo.slot;
    rachIndInfo.slotIdx = rachInd->rachPdu[pduIdx].slotIdx;
@@ -99,7 +97,7 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 			   rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
 
    /* storing the value in macRaCb */
-   createMacRaCb(rachIndInfo.cellId, rachIndInfo.crnti);
+   createMacRaCb(&rachIndInfo);
 
    return(sendRachIndMacToSch(&rachIndInfo));
 }

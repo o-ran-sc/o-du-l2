@@ -73,6 +73,9 @@ static int RLOG_FILE_ID=209;
 
 #include "ss_rbuf.h"
 #include "ss_rbuf.x" 
+#include "rlc_mac_inf.h"
+#include "rlc_lwr_inf_api.h"
+#include "rlc.h"
 
 EXTERN SsRngBufCnt rngCb;
 
@@ -237,15 +240,18 @@ RguDDatReqInfo    *datReqInfo;
    RguDDatReqPerUe  datPerUe;   /* DL data info per UE */
    RguDatReqTb      datPerTb;   /* DL data info per TB */
    RguLchDatReq     datPerLch;  /* DL data info per Lch */
-   RlcMacData       *dlData;    /* DL data to be sent to MAC */
+   RlcData          *dlData;    /* DL data to be sent to MAC */
+   Pst              pst;        /* Post structure */
+   uint16_t         pduLen;     /* PDU length */
+   uint16_t         copyLen;    /* Number of bytes copied */
 
    TRC3(KwLiRguDDatReq)
 
    dlData = NULLP;
-   KW_ALLOC_SHRABL_BUF(post->region, post->pool,
-                       dlData, sizeof(RlcMacData));
+   KW_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+      dlData, sizeof(RlcData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
-   if ( datReqInfo == NULLP )
+   if (dlData == NULLP )
    {
       RLOG0(L_FATAL,"Memory allocation failed");
       RETVALUE(RFAILED);
@@ -256,12 +262,13 @@ RguDDatReqInfo    *datReqInfo;
    {
       datPerUe = datReqInfo->datReq[ueIdx];
 
-      cmMemset((U8 *)dlData, 0, sizeof(RlcMacData));
+      cmMemset((U8 *)dlData, 0, sizeof(RlcData));
 
       dlData->cellId = datReqInfo->cellId;
-      dlData->rnti = datPerUe.rnti;
-      //dlData->timeToTx = datPerUe.transId; /* Derive timing info from transId */
-      dlData->nmbPdu = 0;
+      GET_CRNTI(dlData->rnti, datPerUe.rnti);
+      dlData->slotInfo.sfn = datPerUe.transId >> 16;
+      dlData->slotInfo.slot = datPerUe.transId & 0xffff;
+      dlData->numPdu = 0;
 
       for(tbIdx = 0; tbIdx < datPerUe.nmbOfTbs; tbIdx++)
       {
@@ -271,20 +278,45 @@ RguDDatReqInfo    *datReqInfo;
             datPerLch = datPerTb.lchData[lchIdx];
             for(pduIdx = 0; pduIdx < datPerLch.pdu.numPdu; pduIdx++)
             {
-               dlData->pduInfo[dlData->nmbPdu].commCh = FALSE;
-               dlData->pduInfo[dlData->nmbPdu].lcId = datPerLch.lcId;
-               dlData->pduInfo[dlData->nmbPdu].pduBuf = datPerLch.pdu.mBuf[pduIdx];
-               dlData->nmbPdu++;
+               dlData->pduInfo[dlData->numPdu].commCh = FALSE;
+               dlData->pduInfo[dlData->numPdu].lcId = datPerLch.lcId;
+
+               /* Copy Message to fixed buffer to send */
+	       SFndLenMsg(datPerLch.pdu.mBuf[pduIdx], (MsgLen *)&pduLen);
+	       KW_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+	          dlData->pduInfo[dlData->numPdu].pduBuf, pduLen);
+	       if (dlData->pduInfo[dlData->numPdu].pduBuf == NULLP )
+	       {
+	          DU_LOG("Memory allocation failed");
+		  RETVALUE(RFAILED);
+	       }
+               SCpyMsgFix(datPerLch.pdu.mBuf[pduIdx], 0, pduLen, \
+	          dlData->pduInfo[dlData->numPdu].pduBuf, (MsgLen *)&copyLen);
+	       dlData->pduInfo[dlData->numPdu].pduLen = pduLen;
+
+               /* Free message */
+	       SPutMsg(datPerLch.pdu.mBuf[pduIdx]);
+
+               dlData->numPdu++;
             }/* For per PDU */
          }/* For Data per Lch */
       }/* For Data per Tb */
-      RlcMacSendDlData(post, spId, dlData);
+
+      /* Sending DL Data per UE to MAC */
+      memset(&pst, 0, sizeof(Pst));
+      FILL_PST_RLC_TO_MAC(pst, post->dstProcId, RLC_DL_INST, EVENT_DL_DATA_TO_MAC);
+      if(RlcMacSendDlData(&pst, dlData) != ROK)
+      {
+         for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
+	 {
+	    KW_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
+	       dlData->pduInfo[pduIdx].pduLen);
+	 }
+         KW_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+      }
    } /* For Data per UE */
 
-   /* Check if to be freed here */
-   
-   KW_FREE_SHRABL_BUF(post->region, 
-            post->pool, 
+   KW_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, \
             datReqInfo, sizeof(RguDDatReqInfo));
    
    RETVALUE(ROK);
@@ -351,8 +383,7 @@ KwDStaIndInfo   *staIndInfo;
 
 
    datReqInfo = NULLP;
-   KW_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap->pst.region,
-                       gCb->u.dlCb->rguDlSap->pst.pool,
+   KW_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
                        datReqInfo,sizeof(RguDDatReqInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if ( datReqInfo == NULLP )
@@ -543,7 +574,7 @@ KwDStaIndInfo   *staIndInfo;
    if(TRUE == gCb->init.trc )
    {
       /* Populate the trace params */
-      kwLmmSendTrc(gCb,EVTRGUDDATREQ, NULLP);
+      kwLmmSendTrc(gCb, EVENT_BO_STATUS_TO_MAC, NULLP);
    }
 
    rguSap = &(gCb->u.dlCb->rguDlSap[suId]);
@@ -592,7 +623,8 @@ Bool       staPduPrsnt;
 U32        staPduBo;
 #endif
 {
-   RlcMacBOStatus   boStatus;      /* Buffer occupancy status information */
+   Pst           pst;            /* Post structure */
+   RlcBOStatus   *boStatus;      /* Buffer occupancy status information */
    KwRguSapCb       *rguSap;       /* MAC SAP Information */
    TRC3(kwUtlSndDStaRsp)
 #ifndef TENB_ACC
@@ -608,22 +640,29 @@ U32        staPduBo;
 
    rbCb->boUnRprtdCnt = (U32)0;
    rbCb->lastRprtdBoToMac = (U32)bo;
+   
+   KW_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, \
+      boStatus, sizeof(RlcBOStatus));
 
-   boStatus.cellId = rbCb->rlcId.cellId;
-   boStatus.rnti = rbCb->rlcId.ueId;
-   boStatus.commCh = FALSE; 
-   boStatus.lcId = rbCb->lch.lChId;
-   boStatus.bo = bo;
+   boStatus->cellId = rbCb->rlcId.cellId;
+   boStatus->ueIdx = rbCb->rlcId.ueId;
+   boStatus->commCh = FALSE; 
+   boStatus->lcId = rbCb->lch.lChId;
+   boStatus->bo = bo;
 
    /* If trace flag is enabled send the trace indication */
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      kwLmmSendTrc(gCb, EVTRLCBOSTA, NULLP);
+      kwLmmSendTrc(gCb, EVENT_BO_STATUS_TO_MAC, NULLP);
    }
-   /* Send Status Response to MAC layer */
-   RlcMacSendBOStatus(&rguSap->pst,rguSap->spId,&boStatus);
 
+   FILL_PST_RLC_TO_MAC(pst, rguSap->pst.dstProcId, RLC_DL_INST, EVENT_BO_STATUS_TO_MAC);
+   /* Send Status Response to MAC layer */
+   if(RlcMacSendBOStatus(&pst, boStatus) != ROK)
+   {
+      KW_FREE_SHRABL_BUF(pst.region, pst.pool, boStatus, sizeof(RlcBOStatus));
+   }
 
    RETVALUE(ROK);
 }

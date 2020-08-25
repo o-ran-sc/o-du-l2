@@ -47,6 +47,7 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 {
    uint8_t   lcId;
    uint8_t   idx = 0;
+   uint8_t   ueIdx = 0;
    uint16_t  length;
    uint8_t   *pdu;
    uint16_t  pduLen;
@@ -84,7 +85,8 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 	       idx = idx + length;
 
 	       /* store msg3 pdu in macRaCb for CRI value */
-	       memcpy(macCb.macCell[cellIdx]->macRaCb[0].msg3Pdu, pdu, length);
+	       GET_UE_IDX(rxDataIndPdu->rnti, ueIdx);
+	       memcpy(macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg3Pdu, pdu, length);
 
 	       /* Send UL-CCCH Indication to DU APP */
 	       macSendUlCcchInd(pdu, macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti); 

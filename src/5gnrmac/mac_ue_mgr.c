@@ -720,7 +720,7 @@ uint8_t createUeCb(MacUeCfg *ueCfg)
    }
 
    /* Check if UE already configured */
-   ueCb = &macCb.macCell[cellIdx]->ueCb[ueCfg->ueIdx];
+   ueCb = &macCb.macCell[cellIdx]->ueCb[ueCfg->ueIdx -1];
    if(ueCb)
    {
       if((ueCb->ueIdx == ueCfg->ueIdx) && (ueCb->crnti == ueCfg->crnti) &&\
@@ -872,16 +872,16 @@ uint8_t createUeCb(MacUeCfg *ueCfg)
    for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
    {
       ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcId = ueCfg->lcCfgList[lcIdx].lcId;
-      ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcState = LC_STATE_ACTIVE;
+      ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcState = MAC_LC_STATE_ACTIVE;
       ueCb->dlInfo.numDlLc++;
    }
 
    /* Copy RA Cb */
    for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
    {
-      if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == ueCb->crnti)
+      if(macCb.macCell[cellIdx]->macRaCb[ueIdx-1].crnti == ueCb->crnti)
       {
-	 ueCb->raCb = &macCb.macCell[cellIdx]->macRaCb[ueIdx];
+	 ueCb->raCb = &macCb.macCell[cellIdx]->macRaCb[ueIdx-1];
 	 break;
       }
    }
@@ -1010,7 +1010,7 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
    if(schCfgRsp->rsp == RSP_NOK)
    {
       DU_LOG("\nMAC : SCH UE Create Response : FAILURE [CRNTI %d]", schCfgRsp->crnti);
-      memset(&macCb.macCell[cellIdx]->ueCb[schCfgRsp->ueIdx], 0, sizeof(MacUeCb));
+      memset(&macCb.macCell[cellIdx]->ueCb[schCfgRsp->ueIdx -1], 0, sizeof(MacUeCb));
       macCb.macCell[cellIdx]->numActvUe--;
       result = MAC_DU_APP_RSP_NOK;
    }

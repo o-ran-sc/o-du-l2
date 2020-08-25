@@ -18,97 +18,16 @@
 
 #ifdef EGTP_TEST
 #include "common_def.h"
-#include "mac_stub.h"
+
+#define DU_IP_V4_ADDR "192.168.130.81"
+#define CU_IP_V4_ADDR "192.168.130.82"
 
 uint8_t rlcDatSn = 0;
-uint64_t ulDatNum = 0;
-
-PUBLIC S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
-{
-  Pst rspPst;
-  RlcMacSchedRepInfo *schRep;
-
-  DU_LOG("\nMAC : Received BO status from RLC");
-
-//  SGetSBuf(pst->region, pst->pool, (Data **)&rspPst, sizeof(Pst));
-
-  rspPst.selector  = ODU_SELECTOR_TC;
-  rspPst.srcEnt    = pst->dstEnt;
-  rspPst.dstEnt    = pst->srcEnt;
-  rspPst.dstInst   = pst->srcInst;
-  rspPst.dstProcId = pst->srcProcId;
-  rspPst.srcProcId = pst->dstProcId;
-  rspPst.region    = pst->region; 
-  rspPst.pool    = pst->pool;
-
-  /* Filling Scheduling Report */
-  KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRepInfo));
-   
-  schRep->cellId = boSta->cellId;
-  schRep->rnti   = boSta->rnti;
-  schRep->nmbLch = 1;
-  schRep->lchSta[0].commCh = boSta->commCh;
-  schRep->lchSta[0].lchStaInd.lcId = boSta->lcId;
-  schRep->lchSta[0].lchStaInd.totBufSize = boSta->bo + 5; /* Extra buffer space including RLC and MAC Header size */
-
-  DU_LOG("\nMAC : Sending scheduling report to RLC");
-  
-  RlcMacProcSchedRep(&rspPst, 1, schRep);
-
-  return ROK;
-
-}
-
-PUBLIC S16 macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
-{
-   U32 availmem;
-
-   Pst rspPst;
-   Buffer *mBuf;
-   RlcMacData *ulData;
-
-   DU_LOG("\nMAC_STUB : Received DL data from RLC to be sent to PHY"); 
-
-   SPutMsg(dlData->pduInfo[0].pduBuf);
-   dlData->pduInfo[0].pduBuf = NULL;
-
-#if 0
-   KW_FREE_SHRABL_BUF(pst->region, pst->pool,
-                        dlData, sizeof(RlcMacData));
-{
-   KW_ALLOC_SHRABL_BUF(pst->region, pst->pool,
-                          ulData, sizeof(RlcMacData));
-
-   SRegInfoShow(2, &availmem);
-   cmMemcpy((U8 *)ulData, (U8 *)dlData, sizeof(RlcMacData));
-#endif
-   
-   ulData = dlData;
-   SGetMsg(pst->region, pst->pool, &mBuf);
-   macStubBuildUlData(mBuf);
-   ulData->pduInfo[0].pduBuf = mBuf;
-
-   /* Fill response post */
-   rspPst.selector  = ODU_SELECTOR_TC;
-   rspPst.srcEnt    = pst->dstEnt;
-   rspPst.dstEnt    = pst->srcEnt;
-   rspPst.dstInst   = pst->srcInst;
-   rspPst.dstProcId = pst->srcProcId;
-   rspPst.srcProcId = pst->dstProcId;
-   rspPst.region    = pst->region;
-   rspPst.pool      = pst->pool;
-
-   ulDatNum++;
-   DU_LOG("\nMAC_STUB : UL data number %d", ulDatNum);
-   RlcMacProcUlData(&rspPst, 1, ulData);
-   return ROK;
-}
 
 void macStubBuildUlData(Buffer *mBuf)
 {
    char data[30] = "This is EGTP data from DU";
    int datSize = 30;
-   U32 availmem;
 
    SAddPstMsgMult((Data *)data, datSize, mBuf);
 
@@ -131,7 +50,7 @@ void macStubBuildUlData(Buffer *mBuf)
    ipv4Hdr.destAddr = CM_INET_NTOH_U32(ipv4_cu);
   
    /* Packing IPv4 header into buffer */
-   S16          ret, cnt, idx;
+   S16          cnt, idx;
    Data         revPkArray[CM_IPV4_HDRLEN];
    Data         pkArray[CM_IPV4_HDRLEN];
   
@@ -183,18 +102,10 @@ void macStubBuildUlData(Buffer *mBuf)
         revPkArray[idx] = pkArray[CM_IPV4_HDRLEN - idx -1];
     
    /* this function automatically reverses revPkArray */
-   ret = SAddPreMsgMult(revPkArray, (MsgLen)cnt, mBuf);
+   SAddPreMsgMult(revPkArray, (MsgLen)cnt, mBuf);
 
    SAddPreMsgMult((Data *)&rlcDatSn, sizeof(uint8_t), mBuf);
-#if 0
-   SRegInfoShow(0, &availmem);
-   SRegInfoShow(1, &availmem);
-   SRegInfoShow(2, &availmem);
-   SRegInfoShow(3, &availmem);
-   SRegInfoShow(4, &availmem);
-#endif
-   //rlcDatSn++;
-   //
+
    if(rlcDatSn++ >15 )
       rlcDatSn = 0;
 

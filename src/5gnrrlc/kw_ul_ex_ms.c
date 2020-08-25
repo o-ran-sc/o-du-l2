@@ -60,6 +60,7 @@ static int RLOG_FILE_ID=206;
 #ifdef TENB_STATS 
 #include "l2_tenb_stats.x"   
 #endif
+#include "rlc_mac_inf.h"
 
 PUBLIC S16 kwUlInitExt ARGS (( Void ));
 
@@ -427,9 +428,9 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
 
-               case EVTRLCULDAT:    /* Dedicated Channel Data request */
+               case EVENT_UL_DATA_TO_RLC:    /* Dedicated Channel Data request */
                   {
-                     ret = unpackRcvdUlData(RlcMacProcUlData, pst, mBuf);
+                     ret = unpackRlcUlData(RlcMacProcUlData, pst, mBuf);
                      break;
                   }
 

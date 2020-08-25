@@ -91,6 +91,8 @@ void SchSendUeCfgRspToMac(SchUeCfg *ueCfg, Inst inst,\
 uint8_t macSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
 {
    uint8_t      idx;
+   uint8_t      lcId;
+   uint8_t      lcIdx;
    uint16_t     ueIdx;
    SchCellCb    *cellCb;
    SchUeCb      *ueCb;
@@ -131,7 +133,7 @@ uint8_t macSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
 
    /* Search if UE already configured */
    GET_UE_IDX(ueCfg->crnti, ueIdx);
-   ueCb = &cellCb->ueCb[ueIdx];
+   ueCb = &cellCb->ueCb[ueIdx-1];
    if(ueCb)
    {
       if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
@@ -144,12 +146,29 @@ uint8_t macSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
 
    /* Fill received Ue Configuration in UeCb */
    memset(ueCb, 0, sizeof(SchUeCb));
-
-   GET_UE_IDX(ueCfg->crnti, ueCb->ueIdx);
+   ueCb->ueIdx = ueIdx;
    ueCb->crnti = ueCfg->crnti;
    memcpy(&ueCb->ueCfg, ueCfg, sizeof(SchUeCfg));
    ueCb->state = SCH_UE_STATE_ACTIVE;
+
+   /* Fill SRB1 info */
+   for(lcIdx = 0; lcIdx < ueCfg->numLc; lcIdx++)
+   {
+       lcId = ueCfg->lcCfgList[lcIdx].lcId;
+       ueCb->dlLcCtxt[lcId].lcId = ueCfg->lcCfgList[lcIdx].lcId;
+       ueCb->dlLcCtxt[lcId].lcp = ueCfg->lcCfgList[lcIdx].dlLcCfg.lcp;
+       ueCb->dlLcCtxt[lcId].lcState = SCH_LC_STATE_ACTIVE;
+       ueCb->dlLcCtxt[lcId].bo = 0;
+       ueCb->numDlLc++;
+       
+       if(ueCfg->lcCfgList[lcIdx].ulLcCfg)
+       {
+          /* TODO : Fill UL LC Cfg. As of now for SRB1, it is null */
+       }
+   }
+
    cellCb->numActvUe++;
+   SET_ONE_BIT(ueCb->ueIdx, gActvUeBitMap);
 
    SchSendUeCfgRspToMac(ueCfg, inst, RSP_OK, &cfgRsp);
    return ROK;

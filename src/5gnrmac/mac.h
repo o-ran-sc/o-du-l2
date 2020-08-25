@@ -95,9 +95,9 @@ typedef enum
 
 typedef enum
 {
-   LC_STATE_INACTIVE,
-   LC_STATE_ACTIVE
-}LcState;
+   MAC_LC_STATE_INACTIVE,
+   MAC_LC_STATE_ACTIVE
+}MacLcState;
 
 typedef struct macDlSlot
 {
@@ -164,14 +164,14 @@ typedef struct ulLcCb
 {
    uint8_t   lcId;      /* Logical Channel Id */
    uint8_t   lcGrpId;   /* Logical Channel group */
-   LcState   lcActive;  /* Is LC active ? */
+   MacLcState lcActive;  /* Is LC active ? */
 }UlLcCb;
 
 /* Downlink dedicated logical channel info */
 typedef struct dlLcCb
 {
    uint8_t   lcId;      /* Logical channel Id */ 
-   LcState   lcState;  /* Is LC active ? */
+   MacLcState   lcState;  /* Is LC active ? */
 }DlLcCb;
 
 /* BSR Information */
@@ -233,14 +233,15 @@ typedef struct macCb
 /* global variable */
 MacCb macCb;
 void fillRarPdu(RarInfo *rarInfo);
-void createMacRaCb(uint16_t cellId, uint16_t crnti);
-void fillMsg4DlData(uint16_t cellId, MacDlData *dlData, uint8_t *msg4Pdu);
+void createMacRaCb(RachIndInfo *rachIndInfo);
+void fillMsg4DlData(MacDlData *dlData, uint8_t *msg4Pdu, uint16_t msg4PduLen);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);
 uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu);
 uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti);
 void fillMg4Pdu(Msg4Alloc *msg4Alloc);
 void buildAndSendMuxPdu(SlotIndInfo currTimingInfo);
+uint8_t sendSchResultRepToRlc(DlSchedInfo dlInfo, SlotIndInfo slotInfo);
 
 #endif
 /**********************************************************************

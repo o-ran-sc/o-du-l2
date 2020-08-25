@@ -109,6 +109,24 @@
    _pst.intfVer = 0;                                        \
 }
 
+/* Fills Pst to send msg to RLC */
+#define FILL_PST_MAC_TO_RLC(_pst, _dstInst, _event)        \
+{                                                       \
+   _pst.selector  = ODU_SELECTOR_LWLC;                  \
+   _pst.srcEnt    = ENTRG;                              \
+   _pst.dstEnt    = ENTKW;                              \
+   _pst.dstInst   = _dstInst;                           \
+   _pst.srcInst   = macCb.macInst;                      \
+   _pst.dstProcId = macCb.procId;                       \
+   _pst.srcProcId = macCb.procId;                       \
+   _pst.region    = MAC_MEM_REGION;                     \
+   _pst.pool      = MAC_POOL;                           \
+   _pst.event     = _event;                             \
+   _pst.route     = 0;                                  \
+   _pst.prior     = 0;                                  \
+   _pst.intfVer   = 0;                                  \
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

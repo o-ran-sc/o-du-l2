@@ -1198,12 +1198,6 @@ S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
    if(tnlEvtCfm.cfmStatus.status == LCM_PRIM_OK)
    {
       DU_LOG("\nDU_APP : Tunnel management confirm OK");
-
-#ifdef EGTP_TEST
-      duSendUeCreateReqToRlc();
-
-      duSendEgtpTestData();
-#endif      
    }
    else
    {
@@ -1342,8 +1336,7 @@ S16 duSendEgtpTestData()
    ret = SAddPreMsgMult(revPkArray, (MsgLen)cnt, mBuf);
 
    duSendEgtpDatInd(mBuf);
-
-   RETVALUE(ROK);
+   return ret;
 }
 #endif /* EGTP_TEST */
 

@@ -20,6 +20,7 @@
  * invoked from MAC */
 #include "common_def.h"
 #include "du_app_mac_inf.h"
+#include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 
 /* Funtion pointer options for slot indication */
@@ -43,6 +44,21 @@ DuMacUlCcchInd packMacUlCcchIndOpts[] =
    packMacUlCcchInd,
    duHandleUlCcchInd,
    packMacUlCcchInd
+};
+
+/* Funtion pointer options for schedule result reporting */
+RlcMacSchResultRptFunc rlcMacSchResultRptOpts[] =
+{
+   packRlcSchResultRpt,
+   RlcMacProcSchResultRpt,
+   packRlcSchResultRpt
+};
+
+RlcMacUlDataFunc rlcMacSendUlDataOpts[] =
+{
+   packRlcUlData,
+   RlcMacProcUlData,
+   packRlcUlData
 };
 
 /*******************************************************************
@@ -112,6 +128,46 @@ uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
    return (*packMacUlCcchIndOpts[pst->selector])(pst, ulCcchIndInfo);
 }
 
+/*******************************************************************
+ *
+ * @brief Send Schedule result report to RLC
+ *
+ * @details
+ *
+ *    Function : MacSendSchResultRptToRlc
+ *
+ *    Functionality: Send Schedule result report to RLC
+ *
+ * @params[in] Post structure
+ *             Schedule result report
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSendSchResultRptToRlc(Pst *pst, RlcSchResultRpt *schRep)
+{
+   return (*rlcMacSchResultRptOpts[pst->selector])(pst, schRep);
+}
+
+/*******************************************************************
+ *
+ * @brief Send UL data to RLC
+ *
+ * @details
+ *
+ *    Function : MacSendUlDataToRlc
+ *
+ *    Functionality: Send UL data to RLC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSendUlDataToRlc(Pst *pst, RlcData *ulData)
+{
+   return (*rlcMacSendUlDataOpts[pst->selector])(pst, ulData);
+}
 
 /**********************************************************************
   End of file

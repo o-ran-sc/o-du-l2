@@ -113,11 +113,11 @@ void schCalcSlotValues(SlotIndInfo slotInd, SchSlotValue *schSlotValue)
     *        on PHY_DELTA + SCHED_DELTA + BO_DELTA                 *
     ****************************************************************/
 
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->currentTime,PHY_DELTA);
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->broadcastTime,PHY_DELTA+SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->rarTime,PHY_DELTA+SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->msg4Time,PHY_DELTA+SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->dlMsgTime,PHY_DELTA+SCHED_DELTA+BO_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->currentTime, PHY_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, PHY_DELTA + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, PHY_DELTA + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->msg4Time, PHY_DELTA + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, PHY_DELTA + SCHED_DELTA + BO_DELTA);
 }
 
 /*******************************************************************
@@ -140,12 +140,15 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 {
    int ret = ROK;
    uint8_t ssb_rep;
+   uint8_t lcIdx;
    uint16_t slot, sfnSlot = 0;
    DlSchedInfo dlSchedInfo;
    memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
    DlBrdcstAlloc *dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
    RarAlloc  *rarAlloc;
    Msg4Alloc *msg4Alloc;
+   DlMsgAlloc *dlMsgAlloc;
+
    dlBrdcstAlloc->ssbTrans = NO_SSB;
    dlBrdcstAlloc->sib1Trans = NO_SIB1;
 
@@ -257,6 +260,52 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
    }
 
+   /* check BO for dedicated LC */
+   while(gBoIndBitMap)
+   {
+      slot = dlSchedInfo.schSlotValue.dlMsgTime.slot;
+      uint16_t ueIdx = 0;
+      uint16_t crnti = 0;
+      uint16_t accumalatedSize = 0;
+      SchUeCb *ueCb = NULLP;
+
+      GET_RIGHT_MOST_SET_BIT(gBoIndBitMap,ueIdx);
+      GET_CRNTI(crnti,ueIdx);
+      ueCb = &cell->ueCb[ueIdx-1];
+
+      /* allocate PDCCH and PDSCH resources for the ue */
+      SCH_ALLOC(dlMsgAlloc, sizeof(DlMsgAlloc));
+      if(!dlMsgAlloc)
+      {
+	 DU_LOG("\nMAC: Memory Allocation failed for ded DL msg alloc");
+	 return RFAILED;
+      }
+      dlSchedInfo.dlMsgAlloc = dlMsgAlloc;
+      dlMsgAlloc->crnti = crnti;
+
+      /* scheduled LC data fill */
+      dlMsgAlloc->numLc = 0;
+      for(lcIdx = 0; lcIdx < MAX_LCID; lcIdx++)
+      {
+	 if(ueCb->dlLcCtxt[lcIdx].bo)
+	 {
+	    dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].lcId = ueCb->dlLcCtxt[lcIdx].lcId;
+
+	    /* calculation for BO includse RLC and MAC header size */
+	    dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes = ueCb->dlLcCtxt[lcIdx].bo \
+	       + RLC_HDR_SIZE + MAC_HDR_SIZE;
+	    accumalatedSize += dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes;
+	    dlMsgAlloc->numLc++;
+	 }
+	 ueCb->dlLcCtxt[lcIdx].bo = 0;
+      }
+
+      /* pdcch and pdsch data is filled */
+      schDlRsrcAllocDlMsg(dlMsgAlloc, cell, crnti, accumalatedSize, slot);
+
+      /* after allocation is done, unset the bo bit for that ue */
+      UNSET_ONE_BIT(ueIdx,gBoIndBitMap);
+   }
 
    /* send msg to MAC */
    ret = sendDlAllocToMac(&dlSchedInfo, schInst);

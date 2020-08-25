@@ -66,6 +66,12 @@
 #define ODU_START_CRNTI   100
 #define ODU_END_CRNTI     500
 
+#define GET_NEW_CRNTI(_crnti)         \
+{                                     \
+   _crnti =  gCrntiCount;             \
+   gCrntiCount++;                     \
+}
+
 #define GET_UE_IDX( _crnti,_ueIdx)         \
 {                                          \
    _ueIdx = _crnti - ODU_START_CRNTI + 1;  \
@@ -73,13 +79,33 @@
 
 #define GET_CRNTI( _crnti,_ueIdx)          \
 {                                          \
-   _crnti = _ueIdx + ODU_START_CRTNI - 1;  \
+   _crnti = _ueIdx + ODU_START_CRNTI - 1;  \
 }
 
 /* Calculates cellIdx from cellId */
 #define GET_CELL_IDX(_cellId, _cellIdx)   \
 {                                         \
    _cellIdx = _cellId - 1;                \
+}
+
+/* BIT wise operation MACRO */
+
+/* this MACRO set 1 bit at the bit position */
+#define SET_ONE_BIT(_bitPos, _out)            \
+{                                             \
+   _out = ((1<<_bitPos) | _out);              \
+}
+
+/* this MACRO un-set 1 bit at the bit position */
+#define UNSET_ONE_BIT(_bitPos, _out)            \
+{                                               \
+   _out = (~(1<<_bitPos) & _out);               \
+}
+
+/* this MACRO finds the index of the rightmost set bit */
+#define GET_RIGHT_MOST_SET_BIT( _in,_bitPos)        \
+{                                                \
+   _bitPos = __builtin_ctz(_in);                 \
 }
 
 typedef struct slotIndInfo
@@ -95,6 +121,11 @@ typedef struct PlmnIdentity
    uint8_t mnc[3];
 }Plmn;
 
+/* ue bit map */
+extern uint32_t gActvUeBitMap;
+extern uint32_t gBoIndBitMap;
+extern uint16_t gCrntiCount;
+
 /**********************************************************************
   End of file
-***********************************************************************/
+ **********************************************************************/

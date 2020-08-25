@@ -23,6 +23,7 @@
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
+#include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
@@ -89,6 +90,19 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 	 msg4Alloc = dlSchedInfo->msg4Alloc;
 	 macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize = msg4Alloc->msg4PdschCfg.codeword[0].tbSize;
       }
+
+      if(dlSchedInfo->dlMsgAlloc != NULLP)
+      {
+	 currDlSlot = &macCb.macCell[cellIdx]->\
+	    dlSlot[dlSchedInfo->schSlotValue.dlMsgTime.slot];
+	 currDlSlot->dlInfo.cellId = dlSchedInfo->cellId;
+	 memcpy(&currDlSlot->dlInfo.schSlotValue, &dlSchedInfo->schSlotValue, sizeof(SchSlotValue));
+	 currDlSlot->dlInfo.dlMsgAlloc = dlSchedInfo->dlMsgAlloc;
+
+	 /* Send LC schedule result to RLC */
+	 sendSchResultRepToRlc(currDlSlot->dlInfo, dlSchedInfo->schSlotValue.dlMsgTime);
+      }
+
    }
    return ROK;
 }
@@ -107,7 +121,8 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 void fillMsg4Pdu(uint16_t cellId, Msg4Alloc *msg4Alloc)
 {
    uint16_t  cellIdx;
-   MacDlData msg4DlData;
+   uint8_t    ueIdx = 0;
+   MacDlData  msg4DlData;
    MacCeInfo  macCeData;
 
    GET_CELL_IDX(cellId, cellIdx);
@@ -115,43 +130,44 @@ void fillMsg4Pdu(uint16_t cellId, Msg4Alloc *msg4Alloc)
    memset(&msg4DlData, 0, sizeof(MacDlData));
    memset(&macCeData, 0, sizeof(MacCeInfo));
 
-   if(macCb.macCell[cellIdx]->macRaCb[0].msg4Pdu != NULLP)
+   GET_UE_IDX(msg4Alloc->msg4Info.crnti, ueIdx);
+   if(macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4Pdu != NULLP)
    {
       MAC_ALLOC(msg4DlData.pduInfo[0].dlPdu, \
-	    macCb.macCell[cellIdx]->macRaCb[0].msg4PduLen);
+	    macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4PduLen);
       if(msg4DlData.pduInfo[0].dlPdu != NULLP)
       {
-	 fillMsg4DlData(cellId, &msg4DlData, macCb.macCell[cellIdx]->macRaCb[0].msg4Pdu);
-	 fillMacCe(&macCeData, macCb.macCell[cellIdx]->macRaCb[0].msg3Pdu);
+	 fillMsg4DlData(&msg4DlData, macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4Pdu, \
+	    macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4PduLen);
+	 fillMacCe(&macCeData, macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg3Pdu);
 	 /* Forming Mux Pdu */
-	 macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu = NULLP;
-	 MAC_ALLOC(macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu, \
-	    macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize);
-	 if(macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu != NULLP)
+	 macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TxPdu = NULLP;
+	 MAC_ALLOC(macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TxPdu, \
+	    macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TbSize);
+	 if(macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TxPdu != NULLP)
 	 {
-	    memset(macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu, 0, \
-	       macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize);
-	    macMuxPdu(&msg4DlData, &macCeData, macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu,\
-		  macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize);
-
+	    memset(macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TxPdu, 0, \
+	       macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TbSize);
+	    macMuxPdu(&msg4DlData, &macCeData, macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TxPdu,\
+		  macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TbSize);
 	 }
 	 else
 	 {
 	    DU_LOG("\nMAC: Failed allocating memory for msg4TxPdu");
 	 }
 	 /* Free memory allocated */
-	 MAC_FREE(msg4DlData.pduInfo[0].dlPdu, macCb.macCell[cellIdx]->macRaCb[0].msg4PduLen);
+	 MAC_FREE(msg4DlData.pduInfo[0].dlPdu, macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4PduLen);
       }
    }
 
    /* storing msg4 Pdu in macDlSlot */
-   if(macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu)
+   if(macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TxPdu)
    {
-      msg4Alloc->msg4Info.msg4PduLen = macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize;
+      msg4Alloc->msg4Info.msg4PduLen = macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TbSize;
       MAC_ALLOC(msg4Alloc->msg4Info.msg4Pdu, msg4Alloc->msg4Info.msg4PduLen);
       if(msg4Alloc->msg4Info.msg4Pdu != NULLP)
       {
-	 memcpy(msg4Alloc->msg4Info.msg4Pdu, macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu, \
+	 memcpy(msg4Alloc->msg4Info.msg4Pdu, macCb.macCell[cellIdx]->macRaCb[ueIdx-1].msg4TxPdu, \
 	       msg4Alloc->msg4Info.msg4PduLen);
       }
    }
@@ -160,9 +176,10 @@ void fillMsg4Pdu(uint16_t cellId, Msg4Alloc *msg4Alloc)
       DU_LOG("\nMAC: Failed at macMuxPdu()");
    }
    /* TODO: Free all allocated memory, after the usage */
-   /* MAC_FREE(macCb.macCell->macRaCb[0].msg4TxPdu, \
-      macCb.macCell->macRaCb[0].msg4TbSize); // TODO: To be freed after re-transmission is successful.
-      MAC_FREE(macCb.macCell->macRaCb[0].msg4Pdu, macCb.macCell->macRaCb[0].msg4PduLen); */
+   /* MAC_FREE(macCb.macCell->macRaCb[ueIdx-1].msg4TxPdu, \
+         macCb.macCell->macRaCb[ueIdx-1].msg4TbSize); // TODO: To be freed after re-transmission is successful.
+      MAC_FREE(macCb.macCell->macRaCb[ueIdx-1].msg4Pdu, \
+        macCb.macCell->macRaCb[ueIdx-1].msg4PduLen); */
 }
 
 /**
@@ -255,7 +272,6 @@ int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
 
    /* Fill Pst */
    FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_SLOT_IND);
-
    ret = MacDuAppSlotInd(&pst, slotInfo);
    if(ret != ROK)
    {

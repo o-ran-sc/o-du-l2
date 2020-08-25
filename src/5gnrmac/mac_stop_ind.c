@@ -23,6 +23,7 @@
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
+#include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 #include "mac_utils.h"
 
