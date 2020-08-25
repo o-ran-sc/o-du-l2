@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9805b587_ed180489",
+        "filename": "src/5gnrmac/lwr_mac_util.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-25T12:53:24Z",
+      "side": 1,
+      "message": "using numCell-1 is very misleading. we have a cellId as a parameter to the function",
+      "revId": "de429d0a974690019ecf8eea7c876a984b047d86",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42b17cad_35b3eefa",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-25T12:53:24Z",
+      "side": 1,
+      "message": "alloc/free macros can be moved to utils file",
+      "revId": "de429d0a974690019ecf8eea7c876a984b047d86",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd84b533_db70ffa0",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-25T12:53:24Z",
+      "side": 1,
+      "message": "why not uint8_t?",
+      "revId": "de429d0a974690019ecf8eea7c876a984b047d86",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "580b8e98_babb202f",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-25T12:53:24Z",
+      "side": 1,
+      "message": "why are these uint16_t?",
+      "revId": "de429d0a974690019ecf8eea7c876a984b047d86",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3b08eb1_a13ee5c9",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1138,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-25T12:53:24Z",
+      "side": 1,
+      "message": "remove RETVALUE",
+      "revId": "de429d0a974690019ecf8eea7c876a984b047d86",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
