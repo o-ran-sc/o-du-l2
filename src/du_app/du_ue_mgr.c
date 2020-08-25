@@ -67,7 +67,11 @@ S16 duSendUeCreateReqToRlc()
    DU_SET_ZERO(&ueCfg, sizeof(ueCfg));
    DU_SET_ZERO(&pst, sizeof(Pst));
 
-   DU_ALLOC(ueCfg, sizeof(CkwCfgInfo));
+   DU_ALLOC_SHRABL_BUF(ueCfg, sizeof(CkwCfgInfo));
+   if(!ueCfg)
+   {
+      return RFAILED;
+   }
 
 #ifdef EGTP_TEST
    ueCfg->ueId = UE_ID;
@@ -113,11 +117,16 @@ S16 duSendUeCreateReqToRlc()
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
+   pst.srcInst   = DU_INST;
    pst.dstEnt    = ENTKW;
    pst.dstInst   = RLC_UL_INST;
    pst.dstProcId = DU_PROC;
    pst.srcProcId = DU_PROC;
-   pst.region    = duCb.init.region;
+   pst.region    = DU_APP_MEM_REGION;
+   pst.pool      = DU_POOL;
+   pst.route     = 0;
+   pst.prior     = 0;
+   pst.intfVer   = 0;
 
    /* Sending to RLC */
    packUeCreateReq(&pst, ueCfg);
@@ -163,11 +172,16 @@ S16 duHdlEgtpDlData(EgtpMsg  *egtpMsg)
    /* Filling pst and Sending to RLC DL */
    pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
+   pst.srcInst   = DU_INST;
    pst.dstEnt    = ENTKW;
    pst.dstInst   = RLC_DL_INST;
    pst.dstProcId = DU_PROC;
    pst.srcProcId = DU_PROC;
-   pst.region    = duCb.init.region;
+   pst.region    = DU_APP_MEM_REGION;
+   pst.pool      = DU_POOL;
+   pst.route     = 0;
+   pst.prior     = 0;
+   pst.intfVer   = 0;
 
    cmPkKwuDatReq(&pst, &datReqInfo, egtpMsg->msg);
    return ROK;
@@ -965,6 +979,10 @@ uint8_t duHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
    if(cfgRsp->result == MAC_DU_APP_RSP_OK)
    {
       DU_LOG("\nDU APP : MAC UE Create Response : SUCCESS [UE IDX : %d]", cfgRsp->ueIdx);
+#ifdef EGTP_TEST
+      duSendUeCreateReqToRlc();
+      duSendEgtpTestData();
+#endif
    }
    else
    {

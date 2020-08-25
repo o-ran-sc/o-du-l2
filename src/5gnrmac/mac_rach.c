@@ -82,15 +82,14 @@ uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    uint8_t      pduIdx;
    uint8_t      preambleIdx;
    RachIndInfo  rachIndInfo;
+   uint8_t      cellId = 1;
 
    DU_LOG("\nMAC : Received RACH indication");
    /* Considering one pdu and one preamble */
    pduIdx = 0;
    preambleIdx = 0;
 
-   rachIndInfo.cellId = rachInd->rachPdu[pduIdx].pci;
-   /* TODO : A.ocate unique crnti for each ue */
-   rachIndInfo.crnti = 100;
+   rachIndInfo.cellId = cellId;
    rachIndInfo.timingInfo.sfn = rachInd->timingInfo.sfn;
    rachIndInfo.timingInfo.slot = rachInd->timingInfo.slot;
    rachIndInfo.slotIdx = rachInd->rachPdu[pduIdx].slotIdx;
@@ -102,7 +101,7 @@ uint16_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
       rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
 
    /* storing the value in macRaCb */
-   createMacRaCb(rachIndInfo.cellId, rachIndInfo.crnti);
+   createMacRaCb(&rachIndInfo,cellId);
 
    return(sendRachIndMacToSch(&rachIndInfo));
 }

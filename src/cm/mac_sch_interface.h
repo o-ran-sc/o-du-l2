@@ -68,6 +68,11 @@
 
 #define SD_SIZE   3
 #define CCCH_LCID  0
+#define SRB1_LCID  1
+#define SRB2_LCID  2
+#define MIN_DRB_LCID 3
+#define MAX_DRB_LCID 10
+
 
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
@@ -655,6 +660,22 @@ typedef struct msg4Alloc
    PdschCfg msg4PdschCfg;
 }Msg4Alloc;
 
+typedef struct lcSchInfo
+{
+   uint8_t   lcId;
+   uint16_t  schBytes; /* Number of scheduled bytes */
+}LcSchInfo;
+
+typedef struct dlMsgAlloc
+{
+   uint16_t   crnti;
+   uint8_t    numLc;
+   LcSchInfo  lcSchInfo[MAX_NUM_LOGICAL_CHANNELS]; /* Scheduled LC info */
+   BwpCfg    bwp;
+   PdcchCfg  dlMsgPdcchCfg;
+   PdschCfg  dlMsgPdschCfg;
+}DlMsgAlloc;
+
 typedef struct schSlotValue
 {
    SlotIndInfo currentTime;
@@ -679,6 +700,9 @@ typedef struct dlSchedInfo
 
    /* Allocation from MSG4 */
    Msg4Alloc *msg4Alloc;
+
+   /* Allocation from dedicated DL msg */
+   DlMsgAlloc *dlMsgAlloc;
 }DlSchedInfo;
 
 typedef struct tbInfo
@@ -691,6 +715,7 @@ typedef struct tbInfo
 
 typedef struct schPuschInfo
 {
+   uint16_t         crnti;
    uint8_t          harqProcId;   /* HARQ Process ID */
    uint8_t          resAllocType; /* Resource allocation type */
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
@@ -747,18 +772,12 @@ typedef struct crcIndInfo
    uint8_t     crcInd[MAX_NUMBER_OF_CRC_IND_BITS];
 }CrcIndInfo;
 
-typedef struct boInfo
-{
-   uint8_t   lcId;
-   uint32_t  dataVolume;
-}BOInfo;
-
 typedef struct dlRlcBOInfo
 {
    uint16_t    cellId;
    uint16_t    crnti;
-   uint16_t    numLc;
-   BOInfo      boInfo[MAX_NUM_LOGICAL_CHANNELS];
+   uint8_t     lcId;
+   uint32_t    dataVolume;
 }DlRlcBOInfo;
 
 /* Info of Scheduling Request to Add/Modify */

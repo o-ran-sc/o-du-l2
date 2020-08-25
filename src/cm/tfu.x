@@ -2503,12 +2503,6 @@ typedef struct tfuDelDatReqInfo
 } TfuDelDatReqInfo;
 #endif
 
-typedef struct slotIndInfo
-{
-   U16 sfn;
-   U16 slot;
-}SlotIndInfo;
-
 typedef struct rachPreamInfo
 {
    uint8_t   preamIdx;

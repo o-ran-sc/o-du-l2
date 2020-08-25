@@ -19,6 +19,8 @@
 /* This file contains the definitions for Upper Interface APIs that are
  * invoked from MAC */
 #include "common_def.h"
+#include "du_app_mac_inf.h"
+#include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 
 /* Funtion pointer options for slot indication */
@@ -44,6 +46,21 @@ DuMacUlCcchInd packMacUlCcchIndOpts[] =
    packMacUlCcchInd
 };
 
+/* Funtion pointer options for schedule result reporting */
+RlcMacSchResultRepFunc rlcMacSchResultRepOpts[] =
+{
+   packRlcSchResultRep,
+   RlcMacProcSchResultRep,
+   packRlcSchResultRep
+};
+
+RlcMacUlDataFunc rlcMacSendUlDataOpts[] =
+{
+   packRlcUlData,
+   RlcMacProcUlData,
+   packRlcUlData
+};
+
 /*******************************************************************
  *
  * @brief Send slot indication to MAC
@@ -62,7 +79,7 @@ DuMacUlCcchInd packMacUlCcchIndOpts[] =
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t MacDuAppSlotInd(Pst *pst, SlotInfo *slotInfo)
+uint8_t MacDuAppSlotInd(Pst *pst, SlotInfo *slotInfo)
 {
    return (*packMacSlotIndOpts[pst->selector])(pst, slotInfo);
 }
@@ -83,7 +100,7 @@ uint16_t MacDuAppSlotInd(Pst *pst, SlotInfo *slotInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
+uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
 {
    return (*packMacStopIndOpts[pst->selector])(pst, cellStopId);
 }
@@ -106,11 +123,51 @@ uint16_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
+uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 {
    return (*packMacUlCcchIndOpts[pst->selector])(pst, ulCcchIndInfo);
 }
 
+/*******************************************************************
+ *
+ * @brief Send Schedule result report to RLC
+ *
+ * @details
+ *
+ *    Function : MacRlcSendSchResultRep
+ *
+ *    Functionality: Send Schedule result report to RLC
+ *
+ * @params[in] Post structure
+ *             Schedule result report
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacRlcSendSchResultRep(Pst *pst, RlcSchResultRep *schRep)
+{
+   return (*rlcMacSchResultRepOpts[pst->selector])(pst, schRep);
+}
+
+/*******************************************************************
+ *
+ * @brief Send UL data to RLC
+ *
+ * @details
+ *
+ *    Function : MacRlcSendUlData
+ *
+ *    Functionality: Send UL data to RLC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacRlcSendUlData(Pst *pst, RlcData *ulData)
+{
+   return (*rlcMacSendUlDataOpts[pst->selector])(pst, ulData);
+}
 
 /**********************************************************************
          End of file

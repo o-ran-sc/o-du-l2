@@ -44,14 +44,14 @@ File:     sch_slot_ind.c
 
 SchMacDlAllocFunc schMacDlAllocOpts[] =
 {
-	packSchMacDlAlloc,
-	MacProcDlAlloc,
-	packSchMacDlAlloc
+   packSchMacDlAlloc,
+   MacProcDlAlloc,
+   packSchMacDlAlloc
 };
 
 extern SchCb schCb[SCH_MAX_INST];
 extern int schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t
-offsetPointA);
+      offsetPointA);
 
 /*******************************************************************
  *
@@ -71,13 +71,13 @@ offsetPointA);
  * ****************************************************************/
 int sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
 {
-	Pst pst;
+   Pst pst;
 
    memset(&pst, 0, sizeof(Pst));
    SCH_FILL_RSP_PST(pst, inst);
-	pst.event = EVENT_DL_ALLOC;
+   pst.event = EVENT_DL_ALLOC;
 
-	return(*schMacDlAllocOpts[pst.selector])(&pst, dlSchedInfo);
+   return(*schMacDlAllocOpts[pst.selector])(&pst, dlSchedInfo);
 
 }
 
@@ -113,11 +113,11 @@ void schCalcSlotValues(SlotIndInfo slotInd, SchSlotValue *schSlotValue)
     *        on PHY_DELTA + SCHED_DELTA + BO_DELTA                 *
     ****************************************************************/
 
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->currentTime,PHY_DELTA);
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->broadcastTime,PHY_DELTA+SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->rarTime,PHY_DELTA+SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->msg4Time,PHY_DELTA+SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd,schSlotValue->dlMsgTime,PHY_DELTA+SCHED_DELTA+BO_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->currentTime, PHY_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, PHY_DELTA + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, PHY_DELTA + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->msg4Time, PHY_DELTA + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, PHY_DELTA + SCHED_DELTA + BO_DELTA);
 }
 
 /*******************************************************************
@@ -139,138 +139,198 @@ void schCalcSlotValues(SlotIndInfo slotInd, SchSlotValue *schSlotValue)
 uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 {
    int ret = ROK;
-	uint8_t ssb_rep;
-	uint16_t slot, sfnSlot = 0;
-	DlSchedInfo dlSchedInfo;
-	memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
+   uint8_t ssb_rep;
+   uint8_t lcIdx;
+   uint16_t slot, sfnSlot = 0;
+   DlSchedInfo dlSchedInfo;
+   memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
    DlBrdcstAlloc *dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
-	RarAlloc  *rarAlloc;
+   RarAlloc  *rarAlloc;
    Msg4Alloc *msg4Alloc;
-	dlBrdcstAlloc->ssbTrans = NO_SSB;
+   DlMsgAlloc *dlMsgAlloc;
+
+   dlBrdcstAlloc->ssbTrans = NO_SSB;
    dlBrdcstAlloc->sib1Trans = NO_SIB1;
-	
-	SchCellCb *cell = schCb[schInst].cells[schInst];
+
+   SchCellCb *cell = schCb[schInst].cells[schInst];
 
    schCalcSlotValues(*slotInd, &dlSchedInfo.schSlotValue);
 
-	ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
-	memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
-	dlBrdcstAlloc->ssbIdxSupported = 1;
+   ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
+   memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
+   dlBrdcstAlloc->ssbIdxSupported = 1;
 
    sfnSlot = ((dlSchedInfo.schSlotValue.broadcastTime.sfn * 10) +
-	            dlSchedInfo.schSlotValue.broadcastTime.slot);
+	 dlSchedInfo.schSlotValue.broadcastTime.slot);
 
-	slot = dlSchedInfo.schSlotValue.currentTime.slot;
+   slot = dlSchedInfo.schSlotValue.currentTime.slot;
 
-	dlSchedInfo.cellId = cell->cellId;
+   dlSchedInfo.cellId = cell->cellId;
 
-	/* Identify SSB ocassion*/
-	if (sfnSlot % SCH_MIB_TRANS == 0)
-	{
-		dlBrdcstAlloc->ssbTrans = SSB_TRANSMISSION;
-	}
-	else if (sfnSlot % ssb_rep == 0)
-	{
-		dlBrdcstAlloc->ssbTrans = SSB_REPEAT;
-	}
-	else
-	{
-	   /* not SSB occassion */
-	}
+   /* Identify SSB ocassion*/
+   if (sfnSlot % SCH_MIB_TRANS == 0)
+   {
+      dlBrdcstAlloc->ssbTrans = SSB_TRANSMISSION;
+   }
+   else if (sfnSlot % ssb_rep == 0)
+   {
+      dlBrdcstAlloc->ssbTrans = SSB_REPEAT;
+   }
+   else
+   {
+      /* not SSB occassion */
+   }
 
    /* Identify SIB1 occasions */
    if(sfnSlot % cell->cellCfg.sib1SchCfg.sib1NewTxPeriod == 0)
-	{
-	   dlBrdcstAlloc->sib1Trans = SIB1_TRANSMISSION;
-	}
-	else if (sfnSlot % cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod == 0)
-	{
-	   dlBrdcstAlloc->sib1Trans = SIB1_REPITITION;
-	}
-	else
-	{
-	   /* not SIB1 occassion */
-	}
+   {
+      dlBrdcstAlloc->sib1Trans = SIB1_TRANSMISSION;
+   }
+   else if (sfnSlot % cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod == 0)
+   {
+      dlBrdcstAlloc->sib1Trans = SIB1_REPITITION;
+   }
+   else
+   {
+      /* not SIB1 occassion */
+   }
 
-	if(dlBrdcstAlloc->ssbTrans || dlBrdcstAlloc->sib1Trans)
-	{
-	   dlSchedInfo.isBroadcastPres = true;
-		slot = dlSchedInfo.schSlotValue.broadcastTime.slot;
-	   ret = schBroadcastAlloc(cell,dlBrdcstAlloc,slot);
+   if(dlBrdcstAlloc->ssbTrans || dlBrdcstAlloc->sib1Trans)
+   {
+      dlSchedInfo.isBroadcastPres = true;
+      slot = dlSchedInfo.schSlotValue.broadcastTime.slot;
+      ret = schBroadcastAlloc(cell,dlBrdcstAlloc,slot);
       if(ret != ROK)
       {
-         DU_LOG("\nschBroadcastAlloc failed");
-         RETVALUE(ret);
+	 DU_LOG("\nschBroadcastAlloc failed");
+	 RETVALUE(ret);
       }
    }
 
    /* check for RAR */
-	if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo != NULLP)
-	{
-	   slot = dlSchedInfo.schSlotValue.rarTime.slot;
+   if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo != NULLP)
+   {
+      slot = dlSchedInfo.schSlotValue.rarTime.slot;
       SCH_ALLOC(rarAlloc, sizeof(RarAlloc));
       if(!rarAlloc)
       {
-		   DU_LOG("\nMAC: Memory Allocation failed for RAR alloc");
-		   return RFAILED;
+	 DU_LOG("\nMAC: Memory Allocation failed for RAR alloc");
+	 return RFAILED;
       }
-		 
+
       dlSchedInfo.rarAlloc = rarAlloc;
 
-	   /* RAR info is copied, this was earlier filled in schProcessRachInd */
+      /* RAR info is copied, this was earlier filled in schProcessRachInd */
       memcpy(&rarAlloc->rarInfo,cell->schDlSlotInfo[slot]->rarInfo, sizeof(RarInfo));
 
-		 /* pdcch and pdsch data is filled */
-       schFillRar(rarAlloc,
-		    cell->schDlSlotInfo[slot]->rarInfo->raRnti,
-		    cell->cellCfg.phyCellId,
-		    cell->cellCfg.ssbSchCfg.ssbOffsetPointA);
+      /* pdcch and pdsch data is filled */
+      schFillRar(rarAlloc,
+	    cell->schDlSlotInfo[slot]->rarInfo->raRnti,
+	    cell->cellCfg.phyCellId,
+	    cell->cellCfg.ssbSchCfg.ssbOffsetPointA);
 
       SCH_FREE(cell->schDlSlotInfo[slot]->rarInfo,sizeof(RarAlloc));
-	   cell->schDlSlotInfo[slot]->rarInfo = NULLP;
+      cell->schDlSlotInfo[slot]->rarInfo = NULLP;
    }
 
    /* check for MSG4 */
    if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info != NULLP)
    {
-	    slot = dlSchedInfo.schSlotValue.msg4Time.slot;
-	    SCH_ALLOC(msg4Alloc, sizeof(Msg4Alloc));
-		 if(!msg4Alloc)
-		 {
-		    DU_LOG("\nMAC: Memory Allocation failed for msg4 alloc");
-			 return RFAILED;
-		 }
-		 
-		 dlSchedInfo.msg4Alloc = msg4Alloc;
+      slot = dlSchedInfo.schSlotValue.msg4Time.slot;
+      SCH_ALLOC(msg4Alloc, sizeof(Msg4Alloc));
+      if(!msg4Alloc)
+      {
+	 DU_LOG("\nMAC: Memory Allocation failed for msg4 alloc");
+	 return RFAILED;
+      }
 
-       /* Msg4 info is copied, this was earlier filled in macSchDlRlcBoInfo */
-       memcpy(&msg4Alloc->msg4Info, cell->schDlSlotInfo[slot]->msg4Info, \
-          sizeof(Msg4Info));
-             
-       /* pdcch and pdsch data is filled */
-       schDlRsrcAllocMsg4(msg4Alloc, cell, dlSchedInfo.schSlotValue.msg4Time.slot); 
+      dlSchedInfo.msg4Alloc = msg4Alloc;
 
-		 /* PUCCH resource */
-       schAllocPucchResource(cell, msg4Alloc->msg4Info.crnti, dlSchedInfo.schSlotValue.msg4Time.slot);
+      /* Msg4 info is copied, this was earlier filled in macSchDlRlcBoInfo */
+      memcpy(&msg4Alloc->msg4Info, cell->schDlSlotInfo[slot]->msg4Info, \
+	    sizeof(Msg4Info));
 
-		 SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, sizeof(Msg4Info));
-		 cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
+      /* pdcch and pdsch data is filled */
+      schDlRsrcAllocMsg4(msg4Alloc, cell, dlSchedInfo.schSlotValue.msg4Time.slot); 
+
+      /* PUCCH resource */
+      schAllocPucchResource(cell, msg4Alloc->msg4Info.crnti, dlSchedInfo.schSlotValue.msg4Time.slot);
+
+      SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, sizeof(Msg4Info));
+      cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
    }
 
+   /* check BO for dedicated LC */
+   if(gBoIndBitMap)
+   {
+      slot = dlSchedInfo.schSlotValue.dlMsgTime.slot;
+      uint16_t ueIdx = 0;
+      uint16_t crnti = 0;
+      uint16_t accumalatedSize = 0;
+      SchUeCb *ueCb = NULLP;
 
-	/* send msg to MAC */
+      FIND_RIGHT_MOST_BIT(gBoIndBitMap,ueIdx);
+      GET_CRNTI(crnti,ueIdx);
+      ueCb = &cell->ueCb[ueIdx-1];
+
+      /* allocate PDCCH and PDSCH resources for the ue */
+      SCH_ALLOC(dlMsgAlloc, sizeof(DlMsgAlloc));
+      if(!dlMsgAlloc)
+      {
+	 DU_LOG("\nMAC: Memory Allocation failed for ded DL msg alloc");
+	 return RFAILED;
+      }
+      dlSchedInfo.dlMsgAlloc = dlMsgAlloc;
+      dlMsgAlloc->crnti = crnti;
+
+      /* add the BO size of all the LC for the UE */
+      accumalatedSize = schAccumalateLcBoSize(cell, ueIdx);
+
+      /* pdcch and pdsch data is filled */
+      schDlRsrcAllocDlMsg(dlMsgAlloc, cell, crnti, accumalatedSize, slot); 
+
+      /* scheduled LC data fill */
+      dlMsgAlloc->numLc = 0;
+      for(lcIdx = 0; lcIdx < MAX_LCID; lcIdx++)
+      {
+	 if(ueCb->dlLcCtxt[lcIdx].bo)
+	 {
+	    dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].lcId = ueCb->dlLcCtxt[lcIdx].lcId;
+
+	    /* calculation for BO includse RLC and MAC header size */
+	    dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes = ueCb->dlLcCtxt[lcIdx].bo + RLC_HDR_SIZE;
+	    if(dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes <= 255)
+	    {
+	       /* if PDU length is less than 255bytes, MAC header size is 2 bytes */
+	       dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes += MAC_PDU_SHORT_HDR_SIZE;
+	    }
+	    else
+	    {
+	       /* if PDU length is more than 255 bytes, MAC header size is 3 bytes */
+	       dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes += MAC_PDU_LONG_HDR_SIZE;
+	    }
+	    dlMsgAlloc->numLc++;
+	 }
+	 ueCb->dlLcCtxt[lcIdx].bo = 0;
+      }
+
+      /* after allocation is done, unset the bo bit for that ue */
+      UNSET_ONE_BIT(ueIdx,gBoIndBitMap);
+   }
+
+   /* send msg to MAC */
    ret = sendDlAllocToMac(&dlSchedInfo, schInst);
    if(ret != ROK)
    {
       DU_LOG("\nSending DL Broadcast allocation from SCH to MAC failed");
       RETVALUE(ret);
    }
-    
-	schUlResAlloc(cell, schInst);
 
-	memset(cell->schDlSlotInfo[slot], 0, sizeof(SchDlSlotInfo));
+   schUlResAlloc(cell, schInst);
 
-	return ret;
+   memset(cell->schDlSlotInfo[slot], 0, sizeof(SchDlSlotInfo));
+
+   return ret;
 }
 
 /**********************************************************************

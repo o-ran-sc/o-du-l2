@@ -58,6 +58,7 @@ static int RLOG_FILE_ID=195;
 #include "kw.x"
 #include "kw_udx.x"
 #include "kw_dl.x"
+#include "rlc_mac_inf.h"
 
 #include "ctf.h"
 PUBLIC S16 kwUtlDlBatchProcPkts(Void);
@@ -493,9 +494,9 @@ Buffer *mBuf;           /* message buffer */
                      ret = cmUnpkRguBndCfm(KwLiRguBndCfm, pst, mBuf );
                      break;
                   }
-               case EVTSCHREP:    /* Dedicated Channel Status Response */
+               case EVENT_SCH_RESULT_TO_RLC:    /* Dedicated Channel Status Response */
                   {
-                     ret = unpackSchedRep(RlcMacProcSchedRep, pst, mBuf);
+                     ret = unpackSchResultRep(RlcMacProcSchResultRep, pst, mBuf);
                      break;
                   }
                   /* kw005.201 added support for L2 Measurement */

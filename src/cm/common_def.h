@@ -49,6 +49,7 @@
 #include "cm_hash.x"
 #include "cm_lte.x"
 #include "cm_lib.x"
+#include "du_log.h"
 
 /* 5G ORAN phy delay */
 #define PHY_DELTA 2
@@ -61,16 +62,53 @@
 #define CRNTI_START_RANGE 100
 #define CRNTI_END_RANGE   500
 
-#define GET_UE_IDX( _crnti,_ueIdx)    \
-{                                                  \
-   _ueIdx = _crnti - CRNTI_START_RANGE;            \
+/* ue bit map */
+extern uint64_t gActvUeBitMap;
+extern uint64_t gBoIndBitMap;
+extern uint16_t gCrntiCount;
+
+/* BIT wise operation MACRO */
+
+/* this MACRO set 1 bit at the bit position */
+#define SET_ONE_BIT(_bitPos, _out)            \
+{                                             \
+   _out = ((1<<_bitPos) | _out);              \
 }
 
-#define GET_CRNTI( _crnti,_ueIdx)    \
-{                                                  \
-   _crnti = _ueIdx + CRNTI_START_RANGE;            \
+/* this MACRO un-set 1 bit at the bit position */
+#define UNSET_ONE_BIT(_bitPos, _out)            \
+{                                               \
+   _out = (~(1<<_bitPos) & _out);               \
 }
+
+/* this MACRO finds the index of the rightmost set bit */
+#define FIND_RIGHT_MOST_BIT( _in,_bitPos)        \
+{                                                \
+   _bitPos = __builtin_ctz(_in);                 \
+}
+
+#define GET_UE_IDX( _crnti,_ueIdx)               \
+{                                                \
+   _ueIdx = _crnti - CRNTI_START_RANGE + 1;      \
+}
+
+#define GET_CRNTI( _crnti,_ueIdx)                \
+{                                                \
+   _crnti = _ueIdx + CRNTI_START_RANGE - 1;      \
+}
+
+#define GET_NEW_CRNTI(_crnti)         \
+{                                     \
+   _crnti =  gCrntiCount;             \
+   gCrntiCount++;                     \
+}
+
+typedef struct slotIndInfo
+{
+   uint16_t   sfn;
+   uint16_t   slot;
+}SlotIndInfo;
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

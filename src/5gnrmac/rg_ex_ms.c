@@ -56,6 +56,8 @@ registered with SSI during the LTE MAC Task initialization.
 #include "rg_prg.x"        /*PRG interface includes*/
 #include "du_app_mac_inf.h"
 #include "rg.x"            /* typedefs for MAC */
+#include "rlc_mac_inf.h"
+
 int unpackDuMacCellCfg(DuMacCellCfgReq func,Pst *pst,Buffer *mBuf);
 
 /**
@@ -221,11 +223,11 @@ Buffer  *mBuf;                      /* message buffer       */
       case EVTRGUUBNDREQ:
          cmUnpkRguUbndReq(RgUiRguUbndReq, pst, mBuf);
          break;
-      case EVTRLCDLDAT:
-         unpackDlData(MacRlcProcDlData, pst, mBuf);
+      case EVENT_DL_DATA_TO_MAC:
+         unpackRlcDlData(MacProcRlcDlData, pst, mBuf);
          break;
-      case EVTRLCBOSTA:
-         unpackBOStatus(MacRlcProcBOStatus, pst, mBuf);
+      case EVENT_BO_STATUS_TO_MAC:
+         unpackRlcBOStatus(MacProcRlcBOStatus, pst, mBuf);
          break;
 #ifdef LTE_L2_MEAS
 
