@@ -1,0 +1,310 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16d81964_6438b11e",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "rename struct name. Applicable to all other modified structures too such as kwDlCb, kwUlCb etc",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1406eeb_29ad979c",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "rename kwCb to rlcCb",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3107c32a_57b12116",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Rename structure. applicable other modified structures too",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e2cc55b_52160e37",
+        "filename": "src/5gnrrlc/kw_dl_ex_ms.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Rename to RlcDlActvInit",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3543b34a_eae6d9c7",
+        "filename": "src/5gnrrlc/kw_udx_ul.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "include rlc_inf_api.h since it already has the function definition",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "267aeefd_7c8ce7f1",
+        "filename": "src/5gnrrlc/kw_ul.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "rename kwUlUeCb",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "936b1ce0_a2e3773c",
+        "filename": "src/5gnrrlc/kw_ul_ex_ms.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Rename to kwDlActvInit",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b81fe9e7_365d4d57",
+        "filename": "src/5gnrrlc/rlc.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "make sure to use above region and pool for any memory allocation/de-allocation during UE creation in RLC.",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be8bf227_56397e60",
+        "filename": "src/5gnrrlc/rlc_inf_api.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "This file should be used only for mapping to opts[]. Hence move this function to rlc_msg_hdl.c",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cf6f1be_72c0c1fb",
+        "filename": "src/5gnrrlc/rlc_inf_api.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Free ueCreateRsp if return is failure",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bf90cc0_b17cc120",
+        "filename": "src/cm/ckw.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Is this file needed here?",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "402f46ec_92c26b0f",
+        "filename": "src/cm/ckw.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Revert this since this function is not being used anymore",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa46afaa_d538737c",
+        "filename": "src/cm/ckw.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Rename struct. applicable to all",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d5a93f8_0e5f3b76",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Interface file is a common file for 2 layers. It should not have dependency on a layer specific file",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adb55080_751a55b5",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Since new unpack function is used now for ue create rsp, do we still need to include ckw files?",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2c014a1_fa56c41b",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Since this is an interface API, it should start with capital letter. We have missed doing this in code written so far. Lets follow this going forward",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78d17267_c7f1857f",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4dabb12f_40c17abd",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1142,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-26T12:32:38Z",
+      "side": 1,
+      "message": "Invalid free since cfgRsp is NULL",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
