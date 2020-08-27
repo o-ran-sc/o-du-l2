@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17d14c94_b56c72c5",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T13:22:57Z",
+      "side": 1,
+      "message": "these have not been changed to uint8_t",
+      "revId": "45d134510deb6902b870b4a0fb574b6075fba601",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cace394d_4809f298",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1589,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T13:22:57Z",
+      "side": 1,
+      "message": "all functions in this file are not returning uint8_t",
+      "revId": "45d134510deb6902b870b4a0fb574b6075fba601",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
