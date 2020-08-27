@@ -404,6 +404,23 @@
     },
     {
       "key": {
+        "uuid": "05ea1d57_81a3789b",
+        "filename": "src/cm/ckw.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "why 11?",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "aa46afaa_d538737c",
         "filename": "src/cm/ckw.x",
         "patchSetId": 11
@@ -439,6 +456,74 @@
     },
     {
       "key": {
+        "uuid": "f40ef083_38f82b6b",
+        "filename": "src/cm/ckw.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "remove commented line",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "962717d4_cf403915",
+        "filename": "src/cm/ckw.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "remove commented line",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f488feb_59641943",
+        "filename": "src/cm/ckw.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "what do we mean by upper cfg?",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbb4854a_1336e75a",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "these ss files are not needed as a \"common\"def\" please remove. we mus include them in only those files that need them",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9d5a93f8_0e5f3b76",
         "filename": "src/cm/du_app_rlc_inf.c",
         "patchSetId": 11
@@ -471,6 +556,74 @@
       "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c756e41d_5089a088",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "club all function pointer together",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15a1837c_abe2bff8",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "why is it needed here?rlc interface is coming into picture only from ue mgr",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5733f207_7fd10b8e",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "remove if not required",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2ddb762_cbd46366",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "dont add header files just as a shortcut solve some other compilation issue!!!",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     },
     {
       "key": {
@@ -611,6 +764,23 @@
       "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "99a92d32_71ead8c6",
+        "filename": "src/du_app/du_ue_mgr.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T16:08:01Z",
+      "side": 1,
+      "message": "move header file inclusion to .c file",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
