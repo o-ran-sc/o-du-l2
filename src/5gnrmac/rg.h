@@ -244,52 +244,6 @@ U32 macHeader[2];
 #define RG_MAX_DL_HARQ_NUM   8 
 #endif
 
-#define MAC_MEM_REGION       4
-#define MAC_POOL 1
-/* allocate and zero out a MAC static buffer */
-#define MAC_ALLOC(_datPtr, _size)                            \
-{                                                            \
-   S16 _ret;                                                 \
-   _ret = SGetSBuf(MAC_MEM_REGION, MAC_POOL,                 \
-                    (Data **)&_datPtr, _size);               \
-   if(_ret == ROK)                                           \
-      cmMemset((U8*)_datPtr, 0, _size);                      \
-   else                                                      \
-      _datPtr = NULLP;                                       \
-}
-
-/* free a static buffer */
-#define MAC_FREE(_datPtr, _size)                             \
-   if(_datPtr)                                               \
-      SPutSBuf(MAC_MEM_REGION, MAC_POOL,                     \
-         (Data *)_datPtr, _size);
-
-/* Allocate shared memory to be used for LWLC 
- * during inter-layer communication */
-#define MAC_ALLOC_SHRABL_BUF(_buf, _size)                    \
-{                                                            \
-   if(SGetStaticBuffer(MAC_MEM_REGION, MAC_POOL,             \
-      (Data **)&_buf, (Size) _size, 0) == ROK)               \
-   {                                                         \
-      cmMemset((U8 *)(_buf), 0, _size);                      \
-   }                                                         \
-   else                                                      \
-   {                                                         \
-      (_buf) = NULLP;                                        \
-   }                                                         \
-}
-
-/* Free shared memory, received through LWLC */
-#define MAC_FREE_SHRABL_BUF(_region, _pool,_buf, _size)       \
-{                                                            \
-   if (_buf != NULLP)                                        \
-   {                                                         \
-      (Void) SPutStaticBuffer(_region, _pool,                \
-            (Data *) _buf, (Size) _size, 0);                 \
-       _buf = NULLP;                                         \
-   }                                                         \
-}
-
 /* Free shared memory, received through LWLC */
 #define MAC_FREE_MEM(_region, _pool, _datPtr, _size)         \
    if(_datPtr)                                               \
@@ -800,7 +754,6 @@ typedef enum
 {                                                              \
 }
 #endif
-#define DEFAULT_CELLS 1
 #endif /* __RGH__ */
 
 /**********************************************************************

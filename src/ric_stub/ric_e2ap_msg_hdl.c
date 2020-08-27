@@ -18,6 +18,8 @@
 
 /* This file contains E2AP message handler functions */
 #include "common_def.h"
+#include "OCTET_STRING.h"
+#include "BIT_STRING.h"
 #include "odu_common_codec.h"
 #include "ric_stub.h"
 #include "ric_stub_sctp.h"

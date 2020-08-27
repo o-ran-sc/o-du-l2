@@ -19,7 +19,6 @@
 /* This file contains all EGTP related functionality */
 
 #include "common_def.h"
-#include "odu_common_codec.h"
 #include "cu_stub_egtp.h"
 #include "du_log.h"
 

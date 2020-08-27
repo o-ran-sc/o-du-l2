@@ -19,6 +19,7 @@
 /* This file contains the definitions for Upper Interface APIs that are
  * invoked from MAC */
 #include "common_def.h"
+#include "du_app_mac_inf.h"
 #include "mac_upr_inf_api.h"
 
 /* Funtion pointer options for slot indication */
@@ -62,7 +63,7 @@ DuMacUlCcchInd packMacUlCcchIndOpts[] =
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t MacDuAppSlotInd(Pst *pst, SlotInfo *slotInfo)
+uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo)
 {
    return (*packMacSlotIndOpts[pst->selector])(pst, slotInfo);
 }
@@ -83,7 +84,7 @@ uint16_t MacDuAppSlotInd(Pst *pst, SlotInfo *slotInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
+uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
 {
    return (*packMacStopIndOpts[pst->selector])(pst, cellStopId);
 }
@@ -106,13 +107,13 @@ uint16_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
+uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 {
    return (*packMacUlCcchIndOpts[pst->selector])(pst, ulCcchIndInfo);
 }
 
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
 

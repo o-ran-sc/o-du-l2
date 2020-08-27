@@ -27,6 +27,7 @@
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "sch.h"
+#include "sch_utils.h"
 
 /* local defines */
 SchUeCfgRspFunc SchUeCfgRspOpts[] =
@@ -66,7 +67,7 @@ void SchSendUeCfgRspToMac(SchUeCfg *ueCfg, Inst inst,\
 
    /* Filling response post */
    memset(&rspPst, 0, sizeof(Pst));
-   SCH_FILL_RSP_PST(rspPst, inst);
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
    rspPst.event = EVENT_UE_CREATE_RSP_TO_MAC;
 
    SchUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp);
@@ -107,13 +108,13 @@ uint8_t macSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
    }
 
    /* Search of cell cb */
-   for(idx = 0; idx < SCH_MAX_CELLS; idx++)
+   for(idx = 0; idx < MAX_NUM_CELL; idx++)
    {
       cellCb = schCb[inst].cells[idx];
       if(cellCb->cellId == ueCfg->cellId)
 	 break;
    }
-   if(idx == SCH_MAX_CELLS)
+   if(idx == MAX_NUM_CELL)
    {
       DU_LOG("\nSCH : Ue create request failed. Invalid cell id %d", ueCfg->cellId);
       SchSendUeCfgRspToMac(ueCfg, inst, RSP_NOK, &cfgRsp);
@@ -121,9 +122,9 @@ uint8_t macSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
    }
 
    /* Check if max number of UE configured */
-   if(cellCb->numActvUe > SCH_MAX_UE)
+   if(cellCb->numActvUe > MAX_NUM_UE)
    {
-      DU_LOG("SCH : Max number of UE [%d] already configured", SCH_MAX_UE);
+      DU_LOG("SCH : Max number of UE [%d] already configured", MAX_NUM_UE);
       SchSendUeCfgRspToMac(ueCfg, inst, RSP_NOK, &cfgRsp);
       return ROK;
    }

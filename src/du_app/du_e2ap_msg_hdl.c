@@ -20,13 +20,15 @@
 #include "lkw.x"
 #include "lrg.x"
 #include "legtp.h"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_mgr_main.h"
+#include "du_utils.h"
 #include "GlobalE2node-gNB-ID.h"
-#include "odu_common_codec.h"
 #include<ProtocolIE-FieldE2.h>
 #include "E2AP-PDU.h"
 #include "du_e2ap_msg_hdl.h"
+#include "odu_common_codec.h"
 
 /* Global variable */
 DuCfgParams duCfgParam;
@@ -1072,7 +1074,6 @@ uint8_t BuildAndSendRicIndication()
 {
    E2AP_PDU_t                 *e2apMsg = NULLP;
    RICindication_t            *ricIndicationMsg=NULLP;
-   uint8_t   elementCnt=0;
    asn_enc_rval_t             encRetVal;        /* Encoder return value */
    uint8_t ret = RFAILED; 
 	uint8_t FillRicIndicationret = ROK;

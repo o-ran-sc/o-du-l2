@@ -19,7 +19,6 @@
 /* This file contains all SCTP related functionality */
 
 #include "common_def.h"
-#include "odu_common_codec.h"
 #include "ric_e2ap_msg_hdl.h"
 #include "ric_stub_sctp.h"
 #include "ric_stub.h"

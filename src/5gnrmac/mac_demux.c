@@ -18,26 +18,14 @@
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
-#include "du_log.h"
-#include "du_app_mac_inf.h"
 #include "lrg.h"           /* Layer manager interface includes*/
-#include "crg.h"           /* CRG interface includes*/
-#include "tfu.h"           /* TFU interface includes */
-#include "rgu.h"           /* RGU interface includes*/
-#include "rg_sch_inf.h"    /* SCH interface includes */
-#include "rg_env.h"       /* MAC environmental includes*/
-#include "rg.h"           /* MAC includes*/
-#include "rg_err.h"       /* MAC error includes*/
-
-/* header/extern include files (.x) */
-#include "tfu.x"           /* RGU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
-#include "crg.x"           /* CRG interface includes */
+#include "du_app_mac_inf.h"
+#include "mac_sch_interface.h"
+#include "lwr_mac_upr_inf.h"
 #include "mac.h"
-#include "rgu.x"           /* RGU types */
-#include "rg_sch_inf.x"    /* SCH interface typedefs */
-#include "rg_prg.x"        /* PRG (MAC-MAC) Interface typedefs */
-#include "rg.x"            /* typedefs for MAC */
+#include "mac_utils.h"
+
 /*******************************************************************
  *
  * @brief De-mux of MAC-Sub PDUs from Rx Data Ind Pdu
@@ -55,7 +43,7 @@
  *         RFAILED
  *
  * ****************************************************************/
-int unpackRxData(RxDataIndPdu *rxDataIndPdu)
+uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 {
    uint8_t   lcId;
    uint8_t   idx = 0;
@@ -63,7 +51,9 @@ int unpackRxData(RxDataIndPdu *rxDataIndPdu)
    uint8_t   *pdu;
    uint16_t  pduLen;
    uint8_t   *rxDataPdu;
+   uint16_t  cellIdx;
 
+   GET_CELL_IDX(cellId, cellIdx);
    pduLen = rxDataIndPdu->pduLength;
    rxDataPdu = rxDataIndPdu->pduData;
 
@@ -74,86 +64,86 @@ int unpackRxData(RxDataIndPdu *rxDataIndPdu)
 
       switch(lcId)
       {
-         case MAC_LCID_CCCH :
-         {
-			   pduLen--;
+	 case MAC_LCID_CCCH :
+	    {
+	       pduLen--;
 
-			    /* for UL CCCH,fixed length of MAC SDU */
-			   length = 6;
-            
-            /*  Allocating sharable memory to send ul ccch msg to du app*/
-            MAC_ALLOC_SHRABL_BUF(pdu, length);
-            if(!pdu)
-            {
-               DU_LOG("\nMAC : UL CCCH PDU memory allocation failed");
-               return RFAILED;
-            }  
-            idx++;
-            memcpy(pdu, &rxDataPdu[idx], length);
-            pduLen -= length;
-            idx = idx + length;
+	       /* for UL CCCH,fixed length of MAC SDU */
+	       length = 6;
 
-            /* store msg3 pdu in macRaCb for CRI value */
-            memcpy(macCb.macCell->macRaCb[0].msg3Pdu, pdu, length);
+	       /*  Allocating sharable memory to send ul ccch msg to du app*/
+	       MAC_ALLOC_SHRABL_BUF(pdu, length);
+	       if(!pdu)
+	       {
+		  DU_LOG("\nMAC : UL CCCH PDU memory allocation failed");
+		  return RFAILED;
+	       }  
+	       idx++;
+	       memcpy(pdu, &rxDataPdu[idx], length);
+	       pduLen -= length;
+	       idx = idx + length;
 
-            /* Send UL-CCCH Indication to DU APP */
-				macSendUlCcchInd(pdu, macCb.macCell->cellId, rxDataIndPdu->rnti); 
-            break;
-         }
-         
-         case MAC_DEDLC_MIN_LCID ... MAC_DEDLC_MAX_LCID :
-            break;
+	       /* store msg3 pdu in macRaCb for CRI value */
+	       memcpy(macCb.macCell[cellIdx]->macRaCb[0].msg3Pdu, pdu, length);
 
-         case MAC_LCID_RESERVED_MIN ... MAC_LCID_RESERVED_MAX :
-            break;
+	       /* Send UL-CCCH Indication to DU APP */
+	       macSendUlCcchInd(pdu, macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti); 
+	       break;
+	    }
 
-         case MAC_LCID_CCCH_48BIT :
-            break;
+	 case MAC_DEDLC_MIN_LCID ... MAC_DEDLC_MAX_LCID :
+	    break;
 
-         case MAC_LCID_BIT_RATE_QUERY :
-            break;
+	 case MAC_LCID_RESERVED_MIN ... MAC_LCID_RESERVED_MAX :
+	    break;
 
-         case MAC_LCID_MULT_PHR_FOUR_OCT :
-            break;
+	 case MAC_LCID_CCCH_48BIT :
+	    break;
 
-         case MAC_LCID_CFG_GRANT_CFM :
-            break;
+	 case MAC_LCID_BIT_RATE_QUERY :
+	    break;
 
-         case MAC_LCID_MULT_PHR_ONE_OCT:
-            break;
+	 case MAC_LCID_MULT_PHR_FOUR_OCT :
+	    break;
 
-         case MAC_LCID_SINGLE_PHR :
-            break;
+	 case MAC_LCID_CFG_GRANT_CFM :
+	    break;
 
-         case MAC_LCID_CRNTI :
-            break;
+	 case MAC_LCID_MULT_PHR_ONE_OCT:
+	    break;
 
-         case MAC_LCID_SHORT_TRUNC_BSR :
-            break;
+	 case MAC_LCID_SINGLE_PHR :
+	    break;
 
-         case MAC_LCID_LONG_TRUNC_BSR :
-            break;
+	 case MAC_LCID_CRNTI :
+	    break;
 
-         case MAC_LCID_SHORT_BSR :
-            break;
+	 case MAC_LCID_SHORT_TRUNC_BSR :
+	    break;
 
-         case MAC_LCID_LONG_BSR :
-            break;
-         
-         case MAC_LCID_PADDING :
-         {
-            break;
-         }
+	 case MAC_LCID_LONG_TRUNC_BSR :
+	    break;
 
-         default:
-         {
-            DU_LOG("\nMAC : Invalid LC Id %d", lcId);
-            return RFAILED;
-         }
+	 case MAC_LCID_SHORT_BSR :
+	    break;
+
+	 case MAC_LCID_LONG_BSR :
+	    break;
+
+	 case MAC_LCID_PADDING :
+	    {
+	       break;
+	    }
+
+	 default:
+	    {
+	       DU_LOG("\nMAC : Invalid LC Id %d", lcId);
+	       return RFAILED;
+	    }
       } /* End of switch */
 
-		if(lcId == MAC_LCID_PADDING)
-		   break;
+      if(lcId == MAC_LCID_PADDING)
+	 break;
 
    } /* End of While */
 
@@ -161,5 +151,5 @@ int unpackRxData(RxDataIndPdu *rxDataIndPdu)
 } /* End of unpackRxData */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

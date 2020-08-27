@@ -18,7 +18,6 @@
 
 /* This functions contains main() for ric_app */
 #include "common_def.h"
-#include "odu_common_codec.h"
 #include "ric_stub.h"
 #include "ric_stub_sctp.h"
 #include "du_log.h"

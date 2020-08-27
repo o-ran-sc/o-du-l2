@@ -18,12 +18,7 @@
  
 /* This file contains DU APP and EGTP interface functions */
 #include "common_def.h"
-#include "lrg.h"
 #include "legtp.h"
-#include "lkw.x"
-#include "lrg.x"
-#include "du_cfg.h"
-#include "du_egtp.h"
 
 /*******************************************************************
  *
@@ -97,7 +92,7 @@ S16 packEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       RETVALUE(RFAILED);
@@ -193,7 +188,7 @@ S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
   
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
       RETVALUE(RFAILED);
@@ -252,7 +247,7 @@ S16 packEgtpSrvOpenReq(Pst *pst)
 {
    Buffer *mBuf;
  
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       RETVALUE(RFAILED);
@@ -305,7 +300,7 @@ S16 packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
  
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
       RETVALUE(RFAILED);
@@ -367,7 +362,7 @@ S16 packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       RETVALUE(RFAILED);
@@ -437,7 +432,7 @@ S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
       RETVALUE(RFAILED);
@@ -507,7 +502,7 @@ S16 packEgtpSlotInd(Pst *pst)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       RETVALUE(RFAILED);

@@ -22,8 +22,13 @@
 #include "lrg.h"
 #include "lkw.x"
 #include "lrg.x"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_mgr.h"
+#include "du_utils.h"
+#include "OCTET_STRING.h"
+#include "BIT_STRING.h"
+#include "odu_common_codec.h"
 #include "du_sys_info_hdl.h"
 #include "MIB.h"
 #include "SearchSpace.h"
@@ -32,7 +37,6 @@
 #include "SI-SchedulingInfo.h"
 #include "ConnEstFailureControl.h"
 #include "PLMN-IdentityInfo.h"
-#include "odu_common_codec.h"
 #include "PDSCH-TimeDomainResourceAllocation.h"
 #include "BCCH-Config.h"
 #include "PagingCycle.h"
@@ -799,44 +803,6 @@ S16 duReadCfg()
 
    return ROK;
 }
-
-/*******************************************************************
- *
- * @brief Converts bit strings to integer
- *
- * @details
- *
- *    Function : bitStringToInt
- *
- *    Functionality:
- *      - Converts ASN bit string format IEs to integer type
- *
- * @params[in] void
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-S16 bitStringToInt(BIT_STRING_t *bitString, U16 *val)
-{
-   U16 idx;
-   if(bitString->buf == NULL || bitString->size <= 0)
-   {
-      DU_LOG("\nDU_APP : Bit string is empty");
-      return RFAILED;
-   }
-
-   for(idx=0; idx< bitString->size-1; idx++)
-   {
-      *val |= bitString->buf[idx];
-      *val <<= 8;
-   }
-
-   *val |= bitString->buf[idx];
-   *val >>= bitString->bits_unused;
-
-   return ROK;
-}
-
 
 /**********************************************************************
   End of file

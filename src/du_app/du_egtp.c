@@ -22,9 +22,11 @@
 #include "lkw.x"
 #include "lrg.x"
 #include "legtp.h"
+#include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_egtp.h"
 #include "du_ue_mgr.h"
+#include "du_utils.h"
 
 /* Global variable declaration */
 EgtpGlobalCb egtpCb;
@@ -413,8 +415,8 @@ S16 egtpTnlAdd(EgtpTnlEvt tnlEvt)
 
    DU_LOG("\nEGTP : Tunnel addition : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
-   ret = SGetSBuf(DU_APP_MEM_REGION, DU_POOL, (Data **)&teidCb, (Size)sizeof(EgtpTeIdCb));
-   if(ret != ROK)
+   DU_ALLOC(teidCb, sizeof(EgtpTeIdCb));
+   if(teidCb == NULLP)
    {
       DU_LOG("\nEGTP : Memory allocation failed");
       return LCM_REASON_MEM_NOAVAIL;
@@ -428,7 +430,7 @@ S16 egtpTnlAdd(EgtpTnlEvt tnlEvt)
    if(ret != ROK)
    {
       DU_LOG("\nEGTP : Failed to insert in hash list");
-      SPutSBuf(DU_APP_MEM_REGION, DU_POOL, (Data *)teidCb, (Size)sizeof(EgtpTeIdCb));
+      DU_FREE(teidCb, sizeof(EgtpTeIdCb));
       return LCM_REASON_HASHING_FAILED;
    }
    egtpCb.dstCb.numTunn++;
@@ -511,7 +513,7 @@ S16 egtpTnlDel(EgtpTnlEvt tnlEvt)
    } 
 
    cmHashListDelete(&(egtpCb.dstCb.teIdLst), (PTR)teidCb);
-   SPutSBuf(DU_APP_MEM_REGION, DU_POOL, (Data *)teidCb, (Size)sizeof(EgtpTeIdCb));
+   DU_FREE(teidCb, sizeof(EgtpTeIdCb));
    egtpCb.dstCb.numTunn--;
 
    return ROK;

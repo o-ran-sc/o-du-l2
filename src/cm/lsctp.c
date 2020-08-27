@@ -18,14 +18,7 @@
 
 /* This file contains DU APP and SCTP interface functions */
 #include "common_def.h"
-#include "lrg.h"
-#include "legtp.h"
-#include "du_cfg.h"
-#include "lkw.x"
-#include "lrg.x"
-#include "du_mgr.h"
-#include "du_sctp.h"
-
+#include "lsctp.h"
 
 /*******************************************************************
  *
@@ -48,7 +41,7 @@ S16 cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(DU_APP_MEM_REGION, DU_POOL, &mBuf) != ROK)
+   if(SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
    {
       printf("\nSCTP : Failed to allocate memory");
       RETVALUE(RFAILED);
