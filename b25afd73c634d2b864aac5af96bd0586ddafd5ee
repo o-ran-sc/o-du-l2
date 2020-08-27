@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "02ea0e03_184b44e0",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1174,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T04:57:06Z",
+      "side": 1,
+      "message": "is extern required? above pack dont have them",
+      "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "605f9790_1b9599fb",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T04:57:06Z",
+      "side": 1,
+      "message": "is it still required? since the corresponding function has been moved out",
+      "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20d62fb9_94b11bb9",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1733,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T04:57:06Z",
+      "side": 1,
+      "message": "change to uint8_t",
+      "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64e28206_e4994b82",
+        "filename": "src/du_app/du_utils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-08-27T04:57:06Z",
+      "side": 1,
+      "message": "why retain RG here? change to MAC",
+      "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
