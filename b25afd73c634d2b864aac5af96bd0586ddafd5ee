@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "22731331_2a9afc7f",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1174,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-27T07:00:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02ea0e03_184b44e0",
+      "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "605f9790_1b9599fb",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 8
@@ -33,6 +51,24 @@
       "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f93dcb5d_e9527f35",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-27T07:00:33Z",
+      "side": 1,
+      "message": "odu_common_codec.h is dependent on above header files",
+      "parentUuid": "605f9790_1b9599fb",
+      "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "62da3519_ffb29097",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1733,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-27T07:00:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20d62fb9_94b11bb9",
+      "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "64e28206_e4994b82",
         "filename": "src/du_app/du_utils.h",
         "patchSetId": 8
@@ -67,6 +121,24 @@
       "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab4a01c3_363aa7a8",
+        "filename": "src/du_app/du_utils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-08-27T07:00:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64e28206_e4994b82",
+      "revId": "b25afd73c634d2b864aac5af96bd0586ddafd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
