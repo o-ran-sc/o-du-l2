@@ -57,6 +57,13 @@ MacSchDlRlcBoInfoFunc macSchDlRlcBoInfoOpts[]=
    packMacSchDlRlcBoInfo
 };
 
+/* Function pointer for sending SR Uci ind from MAC to SCH */
+MacSchSrUciIndFunc macSchSrUciIndOpts[]=
+{
+   packMacSchSrUciInd,
+   MacSchSrUciInd,
+   packMacSchSrUciInd
+};
 /*******************************************************************
  *
  * @brief Sends DL BO Info to SCH
@@ -389,6 +396,101 @@ uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
    return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Builds and send SR UCI Indication to SCH
+ *
+ * @details
+ *
+ *    Function : buildAndSendSrInd
+ *
+ *    Functionality:
+ *       Builds and send SR UCI Indication to SCH
+ *
+ * @params[in] SrUciIndInfo Pointer
+ *             UCI Indication Pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t buildAndSendSrInd(SrUciIndInfo *srUciInd, UciInd *uciInd)
+{
+   uint16_t cellIdx;
+   Pst pst;
+   memset(&pst, 0, sizeof(Pst));
+
+   GET_CELL_IDX(uciInd->cellId, cellIdx);
+   srUciInd->cellId          = macCb.macCell[cellIdx]->cellId;;
+   srUciInd->timingInfo.sfn  = uciInd->timingInfo.sfn;
+   srUciInd->timingInfo.slot = uciInd->timingInfo.slot;
+   srUciInd->numSrBits++;
+   memset(srUciInd->srPayload, 0, MAX_SR_BITS_IN_BYTES);
+
+   /* Fill Pst */
+   FILL_PST_MAC_TO_SCH(pst, EVENT_UCI_IND_TO_SCH);
+
+   return(*macSchSrUciIndOpts[pst.selector])(&pst, srUciInd);
+}
+
+/*******************************************************************
+ *
+ * @brief Processes UCI Indication from PHY
+ *
+ * @details
+ *
+ *    Function : fapiMacUciInd
+ *
+ *    Functionality:
+ *       Processes UCI Indication from PHY
+ *
+ * @params[in] Post Structure Pointer
+ *             UCI Indication Pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t FapiMacUciInd(Pst *pst, UciInd *uciInd)
+{
+   uint8_t     pduIdx = 0;
+   uint8_t     ret = ROK;
+   uint16_t    nPdus;
+   SrUciIndInfo   srUciInd;
+
+   if(uciInd)
+   {
+      nPdus = uciInd->numUcis;
+      while(nPdus)
+      {
+         switch(uciInd->pdus[pduIdx].pduType)
+         {
+            case UCI_IND_PUSCH:
+               break;
+            case UCI_IND_PUCCH_F0F1:
+               if(uciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
+               {
+                  DU_LOG("\nMAC : Received SR UCI indication");
+                  memset(&srUciInd, 0, sizeof(SrUciIndInfo));
+		  ret = buildAndSendSrInd(&srUciInd, uciInd);
+               }
+               break;
+            case UCI_IND_PUCCH_F2F3F4:
+               break;
+            default:
+               DU_LOG("\nMAC: Invalid Pdu Type %d at FapiMacUciInd", uciInd->pdus[pduIdx].pduType);
+               ret = RFAILED;
+               break;
+         }
+         pduIdx++;
+         nPdus--;
+      }
+   }
+   else
+   {
+      DU_LOG("\nMAC: Received Uci Ind is NULL at FapiMacUciInd()");
+      ret = RFAILED;
+   }
+   return ret;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

@@ -678,7 +678,7 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 
    SchCellCb *cell = schCb[inst].cells[inst];
    SchDlSlotInfo *schDlSlotInfo = \
-				  cell->schDlSlotInfo[(cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + MSG4_DELAY) % SCH_NUM_SLOTS];
+      cell->schDlSlotInfo[(cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + MSG4_DELAY) % SCH_NUM_SLOTS];
 
    for(lcIdx = 0; lcIdx < dlBoInfo->numLc; lcIdx++)
    {
@@ -702,6 +702,38 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
       }
    }
 
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes SR UCI indication from MAC 
+ *
+ * @details
+ *
+ *    Function : MacSchSrUciInd
+ *
+ *    Functionality:
+ *      Processes SR UCI indication from MAC
+ *
+ * @params[in] Post structure
+ *             UCI Indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
+{
+   Inst  inst = pst->dstInst-SCH_INST_START;
+
+   SchCellCb *cell = schCb[inst].cells[inst];
+   SchDlSlotInfo *schDlSlotInfo = \
+      cell->schDlSlotInfo[(cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + SR_DELAY) % SCH_NUM_SLOTS];
+
+   if(uciInd->numSrBits)
+   {
+      schDlSlotInfo->srIndPres = true;
+   }
    return ROK;
 }
 

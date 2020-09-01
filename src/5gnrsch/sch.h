@@ -33,6 +33,7 @@
 #define BO_DELTA 1
 #define RAR_DELAY   2
 #define MSG4_DELAY  1
+#define SR_DELAY  1
 #define PUSCH_START_RB 15
 #define PUCCH_NUM_PRB_FORMAT_0 1  /* number of PRBs in freq domain, spec 38.213 - 9.2.1 */
 #define SI_RNTI 0xFFFF
@@ -82,6 +83,7 @@ typedef struct schDlSlotInfo
    bool      sib1Pres;                          /*!< Flag to determine if SIB1 is present in this slot */
    RarInfo   *rarInfo;                          /*!< RAR info */
    Msg4Info  *msg4Info;                         /*!< msg4 info */
+   bool      srIndPres;                        /*!< SR IND info */
 }SchDlSlotInfo;
 
 typedef struct schRaCb

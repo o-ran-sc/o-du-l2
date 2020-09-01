@@ -118,6 +118,7 @@ void schCalcSlotValues(SlotIndInfo slotInd, SchSlotValue *schSlotValue)
    ADD_DELTA_TO_TIME(slotInd,schSlotValue->rarTime,PHY_DELTA+SCHED_DELTA);
    ADD_DELTA_TO_TIME(slotInd,schSlotValue->msg4Time,PHY_DELTA+SCHED_DELTA);
    ADD_DELTA_TO_TIME(slotInd,schSlotValue->dlMsgTime,PHY_DELTA+SCHED_DELTA+BO_DELTA);
+   ADD_DELTA_TO_TIME(slotInd,schSlotValue->srIndTime,PHY_DELTA+SCHED_DELTA);
 }
 
 /*******************************************************************
@@ -144,8 +145,9 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    DlSchedInfo dlSchedInfo;
    memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
    DlBrdcstAlloc *dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
-   RarAlloc  *rarAlloc;
-   Msg4Alloc *msg4Alloc;
+   RarAlloc  *rarAlloc = NULLP;
+   Msg4Alloc *msg4Alloc = NULLP;
+   SrIndAlloc *srIndAlloc = NULLP;
    dlBrdcstAlloc->ssbTrans = NO_SSB;
    dlBrdcstAlloc->sib1Trans = NO_SIB1;
 
@@ -256,7 +258,23 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, sizeof(Msg4Info));
       cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
    }
-
+   
+   /* check for SR IND */
+   if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.srIndTime.slot]->srIndPres)
+   {
+      slot = dlSchedInfo.schSlotValue.srIndTime.slot;
+      SCH_ALLOC(srIndAlloc, sizeof(SrIndAlloc));
+      if(!srIndAlloc)
+      {
+	 DU_LOG("\nMAC: Memory Allocation failed for SR Ind alloc");
+	 return RFAILED;
+      }
+      dlSchedInfo.srIndAlloc = srIndAlloc;
+      /* TODO: Fill PDCCH Info */
+      //schDlRsrcAllocSr(srIndAlloc, cell, dlSchedInfo.schSlotValue.srIndTime.slot);
+      DU_LOG("\nSCH: Scheduling UL grant for SR IND ");
+      cell->schDlSlotInfo[dlSchedInfo.schSlotValue.srIndTime.slot]->srIndPres = false;
+   }
 
    /* send msg to MAC */
    ret = sendDlAllocToMac(&dlSchedInfo, schInst);

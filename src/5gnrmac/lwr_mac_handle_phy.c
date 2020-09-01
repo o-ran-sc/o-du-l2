@@ -74,6 +74,14 @@ packStopIndMsg sendStopIndOpts[] =
    fapiMacStopInd,
    packStopInd
 };
+
+/* Function pointer for Uci indication from lower mac to mac */
+packMacUciIndMsg sendUciIndOpts[] =
+{
+   packMacUciInd,
+   FapiMacUciInd,
+   packMacUciInd
+};
 /*******************************************************************
  *
  * @brief Fills post structure
@@ -338,6 +346,121 @@ uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1
+ *
+ * @details
+ *
+ *    Function : fillUciIndPucchF0F1
+ *
+ *    Functionality:
+ *       Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1
+ *
+ *@params[in] UciPucchF0F1 *
+ *            fapi_uci_o_pucch_f0f1_t *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillUciIndPucchF0F1(UciPucchF0F1 *pduInfo, fapi_uci_o_pucch_f0f1_t *fapiPduInfo)
+{
+
+   uint8_t harqIdx;
+   uint8_t ret = ROK;
+   
+   pduInfo->handle        = fapiPduInfo->handle;
+   pduInfo->pduBitmap     = fapiPduInfo->pduBitmap;
+   pduInfo->pucchFormat   = fapiPduInfo->pucchFormat;
+   pduInfo->ul_cqi        = fapiPduInfo->ul_cqi;
+   pduInfo->rnti          = fapiPduInfo->rnti;
+   pduInfo->timingAdvance = fapiPduInfo->timingAdvance;
+   pduInfo->rssi          = fapiPduInfo->rssi;   
+   memcpy(pduInfo->uciBits, fapiPduInfo->uciBits, MAX_UCI_BIT_PER_TTI_IN_BYTES);
+   if(fapiPduInfo->srInfo.srIndication)
+   {
+      pduInfo->srInfo.srIndPres = fapiPduInfo->srInfo.srIndication;
+      pduInfo->srInfo.srConfdcLevel = fapiPduInfo->srInfo.srConfidenceLevel;
+
+   }
+   if(fapiPduInfo->harqInfo.numHarq)
+   {
+      pduInfo->harqInfo.numHarq = fapiPduInfo->harqInfo.numHarq;
+      pduInfo->harqInfo.harqConfdcLevel = fapiPduInfo->harqInfo.harqConfidenceLevel;
+      for(harqIdx = 0; harqIdx < pduInfo->harqInfo.numHarq; harqIdx++)
+      {
+         pduInfo->harqInfo.harqValue[harqIdx] = fapiPduInfo->harqInfo.harqValue[harqIdx];
+      }
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Handles Uci indication from PHY and sends to MAC
+ *
+ * @details
+ *
+ *    Function : procUciInd
+ *
+ *    Functionality:
+ *      Handles Uci indication from PHY and sends to MAC
+ *
+ * @params[in] fapi_uci_indication_t message pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
+{
+   uint8_t pduIdx;
+   uint8_t ret = ROK;
+   Pst     pst;
+   memset(&pst, 0, sizeof(Pst));
+   UciInd  uciInd;
+   memset(&uciInd, 0, sizeof(UciInd));
+
+   uciInd.cellId = lwrMacCb.cellCb[0].cellId;
+   uciInd.timingInfo.sfn = fapiUciInd->sfn; 
+   uciInd.timingInfo.slot = fapiUciInd->slot;
+   uciInd.numUcis = fapiUciInd->numUcis;
+
+   for(pduIdx = 0; pduIdx < uciInd.numUcis; pduIdx++)
+   {
+      uciInd.pdus[pduIdx].pduType = fapiUciInd->uciPdu[pduIdx].pduType;
+      switch(uciInd.pdus[pduIdx].pduType)
+      {
+         case UCI_IND_PUSCH:
+         break;
+         case UCI_IND_PUCCH_F0F1:
+         {
+            UciPucchF0F1 *pduInfo = NULLP;
+            uciInd.pdus[pduIdx].pduSize = fapiUciInd->uciPdu[pduIdx].pduSize;
+            pduInfo = &uciInd.pdus[pduIdx].uci.uciPucchF0F1;
+            ret = fillUciIndPucchF0F1(pduInfo, &fapiUciInd->uciPdu[pduIdx].uci.uciPucchF0F1);
+         }
+         break;
+         case UCI_IND_PUCCH_F2F3F4:
+            break;
+         default:
+            DU_LOG("\nLWR_MAC: Invalid Pdu Type %d", uciInd.pdus[pduIdx].pduType);
+	    ret = RFAILED;
+            break;
+      }
+   }
+   if(!ret)
+   {
+      fillLwrMacToMacPst(&pst);
+      pst.event = EVENT_UCI_IND_TO_MAC;
+      ret = (*sendUciIndOpts[pst.selector])(&pst, &uciInd);
+   }
+   else
+   {
+      DU_LOG("\nLWR_MAC: Failed sending UCI Ind to MAC");
+   }
+   return ret;
+}
 #endif /* FAPI */
 
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
@@ -389,6 +512,9 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 	 }  
       case FAPI_UCI_INDICATION:
 	 {
+	    fapi_uci_indication_t *uciInd = NULLP;
+	    uciInd = (fapi_uci_indication_t*)msg;
+	    procUciInd(uciInd);
 	    break;
 	 }
       case FAPI_SRS_INDICATION:
