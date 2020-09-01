@@ -246,8 +246,8 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst)
    schPucchInfo->numHarqBits = 1; /* 1 bit for HARQ */
 
    /* set SR and UCI flag to false */
-   schPucchInfo->srFlag  = false;
-   schPucchInfo->uciFlag = false;
+   schPucchInfo->srFlag  = true;
+   schPucchInfo->uciFlag = true;
 
    return ROK;
 }

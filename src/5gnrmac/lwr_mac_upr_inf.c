@@ -179,6 +179,33 @@ uint8_t packStopInd(Pst *pst, uint16_t cellId)
    }
 }
 
+/*******************************************************************
+ *
+ * @brief Packs and Sends UCI Ind to MAC
+ *
+ * @details
+ *
+ *    Function : packMacUciInd
+ *
+ *    Functionality:
+ *         Packs and Sends Uci Ind to MAC
+ *
+ * @params[in] Post structure pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacUciInd(Pst *pst, UciInd *uciInd)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   {
+      return ROK;
+   }
+   else
+   {
+      return RFAILED;
+   }
+}
 /**********************************************************************
   End of file
  **********************************************************************/

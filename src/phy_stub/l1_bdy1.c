@@ -36,6 +36,7 @@
 #define MAX_SFN_VALUE    1023
 #define NR_PCI            1
 
+
 uint16_t sfnValue = 0;
 uint16_t slotValue = 0;
 bool     rachIndSent = false;
@@ -663,6 +664,156 @@ PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 #endif
    return ROK;
 }
+
+#ifdef INTEL_FAPI
+/*******************************************************************
+ *
+ * @brief Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1
+ *
+ * @details
+ *
+ *    Function : fillPucchF0F1PduInfo
+ *
+ *    Functionality:
+ *       Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1 
+ *
+ * @params[in] fapi_uci_o_pucch_f0f1_t *
+ *             pucchPdu
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu_t pucchPdu)
+{
+   uint8_t idx = 0;
+
+   pduInfo->handle = pucchPdu.handle;
+   pduInfo->pduBitmap = 1;  //hardcoded for SR
+   pduInfo->pucchFormat = pucchPdu.formatType;
+   pduInfo->ul_cqi = 0;
+   pduInfo->rnti = pucchPdu.rnti;
+   pduInfo->timingAdvance = 0;
+   pduInfo->rssi = 0;
+   pduInfo->uciBits[idx] = 0;   //TODO: FAPI spec ver. 222.10.01 has no info about UCI Bits
+   if(pduInfo->pduBitmap & SR_PDU_BITMASK)
+   {
+      pduInfo->srInfo.srIndication = 1;
+      pduInfo->srInfo.srConfidenceLevel = 0;
+   }
+   if(pduInfo->pduBitmap & HARQ_PDU_BITMASK)
+   {
+      pduInfo->harqInfo.numHarq = pucchPdu.bitLenHarq;
+      pduInfo->harqInfo.harqConfidenceLevel = 0;
+      for(idx = 0; idx < pduInfo->harqInfo.numHarq; idx++)
+      {
+         pduInfo->harqInfo.harqValue[idx] = HARQ_PASS;
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+ *
+ * @brief Fills UCI Pdu Information
+ *
+ * @details
+ *
+ *    Function : fillUciPduInfo
+ *
+ *    Functionality:
+ *       Fills UCI Pdu Information
+ *
+ * @params[in] Pointer to uciPdu
+ *             pucchPdu
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillUciPduInfo(fapi_uci_pdu_info_t *uciPdu, fapi_ul_pucch_pdu_t pucchPdu)
+{
+   uint8_t ret = ROK;
+
+   /*TODO: The pduType is hardcoded here to support 
+     UCI Ind for PUCCH forat0/format1. This is to be
+     removed when we get SR form UE */
+   uciPdu->pduType = UCI_IND_PUCCH_F0F1;
+   switch(uciPdu->pduType)
+   {
+      case UCI_IND_PUSCH:
+         break;
+      case UCI_IND_PUCCH_F0F1:
+         {
+            fapi_uci_o_pucch_f0f1_t *pduInfo = NULLP;
+
+            pduInfo = &uciPdu->uci.uciPucchF0F1;
+            ret = fillPucchF0F1PduInfo(pduInfo, pucchPdu);
+            uciPdu->pduSize = sizeof(fapi_uci_o_pucch_f0f1_t);
+         }
+         break;
+      case UCI_IND_PUCCH_F2F3F4:
+         break;
+      default:
+         DU_LOG("\nPHY_STUB: Invalid Pdu Type %d", uciPdu->pduType);
+         break;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Build and send Uci indication
+ *
+ * @details
+ *
+ *    Function : l1BuildAndSendUciInd
+ *
+ *    Functionality:
+ *       Build and send Uci indication
+ *
+ * @params[in] SFN
+ *             Slot
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t l1BuildAndSendUciInd(uint16_t slot, uint16_t sfn, fapi_ul_pucch_pdu_t pucchPdu)
+{
+   uint8_t uciIdx = 0;
+   uint8_t nUciPdus = 0;
+   uint8_t ret = ROK;
+   uint32_t msgLen = 0;
+   fapi_uci_indication_t *uciInd =  NULLP;
+
+   MAC_ALLOC(uciInd, sizeof(fapi_uci_indication_t));
+   if(!uciInd)
+   {
+      printf("\nPHY_STUB: Memory allocation failed for UCI Indication");
+      return RFAILED;
+   }
+   memset(uciInd, 0, sizeof(fapi_uci_indication_t));
+   uciInd->sfn = sfn;
+   uciInd->slot = slot;
+   uciInd->numUcis = 1;   //consdering the UCI Ind for SR
+   nUciPdus = uciInd->numUcis;
+   while(nUciPdus)
+   {
+      ret = fillUciPduInfo(&uciInd->uciPdu[uciIdx], pucchPdu);
+      uciIdx++;
+      nUciPdus--;
+   }
+   if(ret == ROK)
+   {
+      msgLen = sizeof(fapi_uci_indication_t)- sizeof(fapi_msg_t);
+      fillMsgHeader(&uciInd->header, FAPI_UCI_INDICATION, msgLen);
+
+      /* Sending UCI indication to MAC */
+      DU_LOG("\nPHY STUB: Sending UCI Indication to MAC");
+      procPhyMessages(uciInd->header.msg_id, sizeof(fapi_uci_indication_t), (void *)uciInd);
+   }
+   MAC_FREE(uciInd, sizeof(fapi_uci_indication_t));
+   return ret;
+}
+#endif
+
 /*******************************************************************
  *
  * @brief Handles Ul Tti request received from MAC
@@ -710,6 +861,8 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {
 	 DU_LOG("\nPHY STUB: PUCCH PDU");
+	 l1BuildAndSendUciInd(ulTtiReq->slot, ulTtiReq->sfn, \
+	       ulTtiReq->pdus[numPdus-1].pdu.pucch_pdu); 
       }
       numPdus--;
    }
