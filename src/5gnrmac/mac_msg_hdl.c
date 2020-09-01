@@ -57,6 +57,13 @@ MacSchDlRlcBoInfoFunc macSchDlRlcBoInfoOpts[]=
    packMacSchDlRlcBoInfo
 };
 
+/* Function pointer for sending uci ind from MAC to SCH */
+MacSchUciIndFunc macSchUciIndOpts[]=
+{
+   packMacSchUciInd,
+   MacSchUciInd,
+   packMacSchUciInd
+};
 /*******************************************************************
  *
  * @brief Sends DL BO Info to SCH
@@ -389,6 +396,99 @@ uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
    return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Sends UCI Indication to SCH
+ *
+ * @details
+ *
+ *    Function : sendUciIndMacToSch 
+ *
+ *    Functionality:
+ *       Sends UCI Indication to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+uint8_t sendUciIndMacToSch(UciIndInfo *uciInd)
+{
+   Pst pst;
+   memset(&pst, 0, sizeof(Pst));
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_UCI_IND_TO_SCH);
+
+   return(*macSchUciIndOpts[pst.selector])(&pst, uciInd);
+}
+/*******************************************************************
+ *
+ * @brief Processes UCI Indication from PHY
+ *
+ * @details
+ *
+ *    Function : fapiMacUciInd
+ *
+ *    Functionality:
+ *       Processes UCI Indication from PHY
+ *
+ * @params[in] Post Structure Pointer
+ *             UCI Indication Pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t FapiMacUciInd(Pst *pst, UciInd *uciInd)
+{
+   uint8_t     pduIdx = 0;
+   uint8_t     ret = ROK;
+   uint16_t    cellIdx;
+   uint16_t    nPdus;
+   UciIndInfo   uciIndInfo;
+   memset(&uciIndInfo, 0, sizeof(UciIndInfo));
+
+   DU_LOG("\nMAC : Received UCI indication");
+
+   GET_CELL_IDX(uciInd->cellId, cellIdx);
+
+   uciIndInfo.cellId = macCb.macCell[cellIdx]->cellId;;
+   uciIndInfo.timingInfo.sfn  = uciInd->timingInfo.sfn;
+   uciIndInfo.timingInfo.slot = uciInd->timingInfo.slot;
+   uciIndInfo.numUciInds      = uciInd->numUcis;
+   nPdus = uciInd->numUcis;
+   while(nPdus)
+   {
+      switch(uciInd->pdus[pduIdx].pduType)
+      {
+         case UCI_IND_PUSCH:
+	    break;
+	 case UCI_IND_PUCCH_F0F1:
+	    MAC_ALLOC(uciIndInfo.uciIndPdu[pduIdx], uciInd->pdus[pduIdx].pduSize);
+	    if(uciIndInfo.uciIndPdu[pduIdx])
+	    {
+	       uciIndInfo.uciIndPdu[pduIdx] = (uint16_t *)(&(uciInd->pdus[pduIdx].uci.uciPucchF0F1));
+	    }
+	    else
+	    {
+	       DU_LOG("\nMAC: Failed Allocating memory at FapiMacUciInd()");
+	       ret = RFAILED;
+	    }
+	    break;
+	 case UCI_IND_PUCCH_F2F3F4:
+	    break;
+	 default:
+	    DU_LOG("\nMAC: Invalid Pdu Type %d at FapiMacUciInd", uciInd->pdus[pduIdx].pduType);
+	    ret = RFAILED;
+	    break;
+      }
+      pduIdx++;
+      nPdus--;
+   }
+   if(ret == ROK)
+      return(sendUciIndMacToSch(&uciIndInfo));
+   else
+      return ret;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

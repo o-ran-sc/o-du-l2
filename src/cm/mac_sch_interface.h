@@ -27,6 +27,7 @@
 #define EVENT_UE_CREATE_REQ_TO_SCH   8
 #define EVENT_UE_CREATE_RSP_TO_MAC   9
 #define EVENT_SLOT_IND_TO_SCH        10
+#define EVENT_UCI_IND_TO_SCH         11
 
 /*macros*/
 #define NO_SSB 0
@@ -53,6 +54,7 @@
 #define SCH_DATATYPE_PRACH 16
 
 #define MAX_NUMBER_OF_CRC_IND_BITS 1
+#define MAX_NUMBER_OF_UCI_IND_BITS 1
 #define MAX_NUM_LOGICAL_CHANNELS   11
 /* can we have a common numslot numscs between mac sch */
 #define MAX_SLOTS 10
@@ -1121,6 +1123,14 @@ typedef struct schUeCfgRsp
    SchFailureCause cause;
 }SchUeCfgRsp;
 
+typedef struct uciIndInfo
+{
+   uint16_t    cellId;
+   SlotIndInfo timingInfo;
+   uint16_t    numUciInds;
+   uint16_t    *uciIndPdu[MAX_NUMBER_OF_UCI_IND_BITS];
+}UciIndInfo;
+
 /* function pointers */
 
 typedef uint8_t (*SchCellCfgCfmFunc)    ARGS((
@@ -1167,6 +1177,10 @@ typedef uint8_t (*MacSchSlotIndFunc) ARGS((
          Pst         *pst,          /* Post structure */
 	 SlotIndInfo *slotInd));    /* Slot Info */
 
+typedef uint8_t (*MacSchUciIndFunc) ARGS(( 
+	 Pst         *pst,         /* Post structure */
+	 UciIndInfo  *uciInd));    /* UCI IND Info */
+
 /* function declarations */
 uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
 uint8_t packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo);
@@ -1193,6 +1207,8 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t macSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
 uint8_t packMacSchSlotInd(Pst * pst, SlotIndInfo * slotInd);
 uint8_t unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf);
+uint8_t packMacSchUciInd(Pst *pst, UciIndInfo *uciInd);
+uint8_t MacSchUciInd(Pst *pst, UciIndInfo *uciInd);
 
 /**********************************************************************
   End of file

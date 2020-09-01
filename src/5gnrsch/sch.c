@@ -705,6 +705,29 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Processes UCI indication from MAC 
+ *
+ * @details
+ *
+ *    Function : MacSchUciInd
+ *
+ *    Functionality:
+ *      Processes UCI indication from MAC
+ *
+ * @params[in] Post structure
+ *             UCI Indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchUciInd(Pst *pst, UciIndInfo *uciInd)
+{
+   //TODO: SCH to handle
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
