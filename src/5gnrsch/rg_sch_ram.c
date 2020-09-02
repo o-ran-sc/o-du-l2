@@ -158,10 +158,10 @@ RgrUeCfg     *ueCfg;
 #endif          
           )
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -244,7 +244,7 @@ RgSchErrInfo      *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "RARNTI:%d rgSCHTomRaReqInd(): RAM processing failed errType(%d) ",
                raReqInd->raRnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* SR_RACH_STATS : DED PREAMB*/
@@ -275,7 +275,7 @@ RgSchErrInfo      *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHRamProcRaReq(): Allocation"
             " of RaReq failed RARNTI:%d",raRnti);
       err->errCause = RGSCHERR_RAM_MEM_EXHAUST;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Insert the given raReqInfo */
@@ -302,7 +302,7 @@ RgSchErrInfo      *err;
       cmLListAdd2Tail(&cell->raInfo.raReqLst[raIndex], &raReqInfo->raReqLstEnt);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamProcRaReq */
 
 /**
@@ -346,7 +346,7 @@ RgSchErrInfo      *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHRamCreateRaCb(): Allocation of "
          "RaCb failed");
       err->errCause = RGSCHERR_RAM_MEM_EXHAUST;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    rntiLnk = rgSCHDbmGetRnti(cell);
@@ -368,7 +368,7 @@ RgSchErrInfo      *err;
       for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(inst, (Data **)(raCb), sizeof(RgSchRaCb));
       err->errCause = RGSCHERR_RAM_RNTI_EXHAUST;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Allocate and initialize the DL HARQ portion of the RACB */
@@ -382,7 +382,7 @@ RgSchErrInfo      *err;
       for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(inst, (Data **)(raCb), sizeof(RgSchRaCb));
       err->errCause = RGSCHERR_RAM_MEM_EXHAUST;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef EMTC_ENABLE
    (*raCb)->isEmtcRaCb = FALSE;
@@ -399,7 +399,7 @@ RgSchErrInfo      *err;
    (*raCb)->raCbLnk.node = (PTR)(*raCb);
    cmLListAdd2Tail(&cell->raInfo.raCbLst, &(*raCb)->raCbLnk);
    
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamCreateRaCb */
 
 /**
@@ -474,10 +474,10 @@ RgSchErrInfo   *err;
       err->errCause = RGSCHERR_RAM_NO_MSG3_RCVD;
       *hqEnt = NULLP;
       raCb->dlHqE->ue = NULLP;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamRgrUeCfg */
 
 
@@ -546,7 +546,7 @@ RgSchErrInfo *err;
    /* No need of raCb any more */
    rgSCHRamDelRaCb(cell, raCb, TRUE);
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamContResCrnti */
 
 
@@ -589,7 +589,7 @@ RgSchRaCb *raCb;
                "RNTI:%d RaCb in wrong State %d Drop Msg 3",
                raCb->rntiLnk->rnti, 
                raCb->raState);
-      RETVALUE(ROK);
+      return ROK;
    }
 
    raCb->raState = RGSCH_RA_MSG4_PENDING;
@@ -611,7 +611,7 @@ RgSchRaCb *raCb;
       raCb->contResTmrLnk.node = (PTR)(raCb);
       cmLListAdd2Tail(&(cell->contResGrdTmrLst), &(raCb->contResTmrLnk));
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamContResCcchsdu */
 
 
@@ -679,7 +679,7 @@ RgSchErrInfo    *err;
       }
    } 
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamProcMsg3 */
 
 
@@ -724,7 +724,7 @@ RgInfCmnBoRpt     *staRsp;
    rgSCHRamAddToRaInfoSchdLst(cell, raCb);
    /* MSG4 Fix  End */      
    
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHRamUpdtBo */
 
 /**
@@ -759,7 +759,7 @@ RgSchRaCb      *raCb;
    /*ccpu00128820 - MOD - Msg3 alloc double delete issue*/
    rgSCHUhmProcMsg3DatInd(&(raCb->msg3HqProc));
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamMsg3DatInd */
 
 /**
@@ -792,7 +792,7 @@ RgSchRaCb      *raCb;
    /*ccpu00128820 - MOD - Msg3 alloc double delete issue*/
    rgSCHUhmProcMsg3Failure(&(raCb->msg3HqProc));
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamMsg3FailureInd */
 
 /**
@@ -822,7 +822,7 @@ RgSchRaCb      *raCb;
 {
    TRC2(rgSCHRamMsg4FdbkInd)
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamMsg4FdbkInd */
 
 
@@ -916,7 +916,7 @@ RgSchRaCb      *raCb;
       rgSCHDhmRlsHqpTb(raCb->dlHqE->msg4Proc, 0, TRUE);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamMsg4Done */
 
 
@@ -1042,7 +1042,7 @@ Bool        rlsRnti;
 #endif
    rgSCHUtlFreeSBuf(inst, (Data **)&raCb, sizeof(RgSchRaCb));
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamDelRaCb */
 
 
@@ -1176,7 +1176,7 @@ RgSchCellCb  *cell;
       }
    }
    
-   RETVALUE(ROK); 
+   return ROK; 
 }  /* rgSCHRamTtiHndlr */
 
 
@@ -1282,7 +1282,7 @@ RgSchCellCb    *cell;
       rgSCHRamDelRaCb(cell, raCb, TRUE);
    }
 
-   RETVALUE(ROK); 
+   return ROK; 
 } /* rgSCHRamFreeCell */
 #ifdef RGR_V1
 #ifdef ANSI
@@ -1534,7 +1534,7 @@ U8                   raIdx;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -1564,7 +1564,7 @@ RgSchRaCb         *raCb;
    cmLListAdd2Tail(&(cell->raInfo.toBeSchdLst), &(raCb->schdLnk));
    raCb->contResTmrLnk.node = (PTR)(raCb);
    cmLListAdd2Tail(&(cell->contResTmrLst), &(raCb->contResTmrLnk));
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHRamAddToRaInfoSchdLst */
 
 
@@ -1587,7 +1587,7 @@ RgSchRaCb         *raCb;
    raCb->schdLnk.node = NULLP;   
    cmLListDelFrm(&(cell->contResTmrLst), &(raCb->contResTmrLnk));
    raCb->contResTmrLnk.node = NULLP;
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHRamRmvFrmRaInfoSchdLst */
 
 /*MSG4 Fix End*/

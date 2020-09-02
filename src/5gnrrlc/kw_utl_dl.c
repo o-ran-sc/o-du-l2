@@ -248,7 +248,7 @@ RguDDatReqInfo    *datReqInfo;
    if ( datReqInfo == NULLP )
    {
       RLOG0(L_FATAL,"Memory allocation failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
@@ -287,7 +287,7 @@ RguDDatReqInfo    *datReqInfo;
             post->pool, 
             datReqInfo, sizeof(RguDDatReqInfo));
    
-   RETVALUE(ROK);
+   return ROK;
 }/* End of KwLiRguDDatReq */
 
 /**
@@ -359,7 +359,7 @@ KwDStaIndInfo   *staIndInfo;
       {
          RLOG_ARG0(L_FATAL,DBG_CELLID,staIndInfo->cellId,
                   "Memory allocation failed");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    for(idx = 0; idx < staIndInfo->nmbOfUeGrantPerTti; idx++)
@@ -549,7 +549,7 @@ KwDStaIndInfo   *staIndInfo;
    rguSap = &(gCb->u.dlCb->rguDlSap[suId]);
 //Debug
    KwLiRguDDatReq(&rguSap->pst,rguSap->spId,datReqInfo); 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -600,7 +600,7 @@ U32        staPduBo;
        && (!staPduPrsnt) && ((CM_LTE_MODE_AM == rbCb->mode ) && (AMDL.nxtRetx == NULLP)))
    {
       rbCb->boUnRprtdCnt++;
-      RETVALUE(ROK);
+      return ROK;
    }
 #endif
 
@@ -625,7 +625,7 @@ U32        staPduBo;
    RlcMacSendBOStatus(&rguSap->pst,rguSap->spId,&boStatus);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -831,7 +831,7 @@ RlcDlRbCb *rbCb;
 {
    TRC2(rlcDlUtlSetReestInProgressForRB)
 
-   RETVALUE(rbCb->reestInProgress);
+   return (rbCb->reestInProgress);
 }
 
 /**
@@ -1198,7 +1198,7 @@ U32        *toBeFreed
    }
    if(*toBeFreed == 0)
    {
-      RETVALUE(TRUE);
+      return (TRUE);
    }
    
 #ifndef LTE_TDD 
@@ -1238,14 +1238,14 @@ U32        *toBeFreed
 
    if(*toBeFreed == 0)
    {
-      RETVALUE(TRUE);
+      return (TRUE);
    }  
    if(gCb->u.dlCb->shutdownReceived)
    {   
       (*toBeFreed)--;
    }
    
-   RETVALUE(FALSE);;
+   return (FALSE);;
 } 
 
 /**
@@ -1409,7 +1409,7 @@ S16 kwUtlL2MeasDlInit(RlcCb *gCb)
    gCb->u.dlCb->kwL2Cb.kwL2EvtCb[KW_L2MEAS_UU_LOSS].measCb.measType= LKW_L2MEAS_UU_LOSS;
    gCb->u.dlCb->kwL2Cb.kwL2EvtCb[KW_L2MEAS_ACT_UE].measCb.measType= LKW_L2MEAS_ACT_UE;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  *
@@ -1617,7 +1617,7 @@ RlcDlRbCb *rbCb;
                   (Data **)&curL2MeasTb,
                   (Size)sizeof(KwL2MeasTb)) != ROK)
          {
-            RETVALUE(NULLP);
+            return (NULLP);
          }
          rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx] = curL2MeasTb;
          /* Initialize the Meas Tb details */
@@ -1633,7 +1633,7 @@ RlcDlRbCb *rbCb;
             curL2MeasTb->lchInfo[idx].numSdus = 0;
          }
       }
-   RETVALUE(curL2MeasTb);
+   return (curL2MeasTb);
 }
 
 
@@ -1696,14 +1696,14 @@ U8               tbIdx;
    ret = ROK;
    if(hqStaInd->tbId[tbIdx] >= KW_INVALID_TBID)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* Find the L2 measurement tbCb to process DL Ip thruput*/
    l2MeasTb = ueCb->l2MeasTbCb[hqStaInd->tbId[tbIdx]];
    if(l2MeasTb == NULLP)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    /* For each logical channel in the tbCb, process 
     * and get the DL IP thruput */
@@ -1847,7 +1847,7 @@ U8               tbIdx;
    /*stopping Task*/
    SStopTask(startTime, PID_RLC_DLIP_TPT_PRCHARQIND);
 
-   RETVALUE(ret);
+   return (ret);
 }/* end of  kwUtlProcHarqInd */ 
 
 /**
@@ -2008,7 +2008,7 @@ KwL2MeasEvtCb         *measEvtCb;
    }
    /* Fix Klock warning */
    KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, &measCfmEvt);
-   RETVALUE(ROK);
+   return ROK;
 } /* kwUtlSndL2MeasCfm */
 /**
  *
@@ -2043,7 +2043,7 @@ KwL2MeasCfmEvt *measCfmEvt;
    TRC3(kwUtlSndDlL2MeasNCfm)
 
    KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
-   RETVALUE(ROK);
+   return ROK;
 } /* kwUtlSndL2MeasNCfm */
 /**
  *
@@ -2428,11 +2428,11 @@ KwSn             sn;
       txBuf = (KwTx *) node->node;
       if(txBuf->sn == sn)
       {
-         RETVALUE(txBuf);
+         return (txBuf);
       }
       CM_LLIST_NEXT_NODE(txBufLstCp, node);
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 } /* kwUtlStoreTxBuf */
 /**
  *

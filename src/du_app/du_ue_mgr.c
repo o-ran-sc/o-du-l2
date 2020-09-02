@@ -132,7 +132,7 @@ uint8_t duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
 
    /* Send UL data to CU via EGTP */
    duSendEgtpDatInd(mBuf);
-   SPutMsg(mBuf);
+   ODU_PUT_MSG(mBuf);
 
    return ROK;
 }

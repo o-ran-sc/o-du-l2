@@ -83,7 +83,7 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
    Inst inst = (instId  - SCH_INST_START);
 
    /* Initialize the MAC TskInit structure to zero */
-   cmMemset ((uint8_t *)&schCb[inst], 0, sizeof(schCb));
+   memset ((uint8_t *)&schCb[inst], 0, sizeof(schCb));
 
    /* Initialize the MAC TskInit with received values */
    schCb[inst].schInit.ent = entity;
@@ -117,7 +117,7 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
  *      -# LCM_REASON_INVALID_MSGTYPE
  *      -# LCM_REASON_MEM_NOAVAIL
  **/
-PUBLIC U16 SchInstCfg(RgCfg *cfg, Inst  dInst)
+PUBLIC uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
 {
    uint16_t ret = LCM_REASON_NOT_APPL;
    Inst     inst = (dInst - SCH_INST_START);
@@ -129,7 +129,7 @@ PUBLIC U16 SchInstCfg(RgCfg *cfg, Inst  dInst)
       return LCM_REASON_INVALID_MSGTYPE;
    }
    /* Update the Pst structure for LM interface */
-   cmMemcpy((U8 *)&schCb[inst].schInit.lmPst,
+   memcpy((U8 *)&schCb[inst].schInit.lmPst,
 	 (U8 *)&cfg->s.schInstCfg.genCfg.lmPst,
 	 sizeof(Pst));
 
@@ -150,19 +150,19 @@ PUBLIC U16 SchInstCfg(RgCfg *cfg, Inst  dInst)
    schCb[inst].genCfg.startCellId    = cfg->s.schInstCfg.genCfg.startCellId;
 #if 0
    /* Initialzie the timer queue */   
-   cmMemset((U8 *)&schCb[inst].tmrTq, 0, sizeof(CmTqType)*RGSCH_TQ_SIZE);
+   memset((U8 *)&schCb[inst].tmrTq, 0, sizeof(CmTqType)*RGSCH_TQ_SIZE);
    /* Initialize the timer control point */
-   cmMemset((U8 *)&schCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
+   memset((U8 *)&schCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
    schCb[inst].tmrTqCp.tmrLen = RGSCH_TQ_SIZE;
 
    /* SS_MT_TMR needs to be enabled as schActvTmr needs instance information */
    /* Timer Registration request to SSI */
-   if (SRegTmrMt(schCb[inst].schInit.ent, dInst,
+   if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst,
 	    (S16)schCb[inst].genCfg.tmrRes, schActvTmr) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "SchInstCfg(): Failed to "
 	    "register timer.");
-      RETVALUE(LCM_REASON_MEM_NOAVAIL);
+      return (LCM_REASON_MEM_NOAVAIL);
    }   
 #endif               
    /* Set Config done in TskInit */
@@ -190,7 +190,7 @@ PUBLIC U16 SchInstCfg(RgCfg *cfg, Inst  dInst)
  *  @return  S16
  *      -# ROK
  **/
-int SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
+uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
 {
    uint16_t       ret = LCM_PRIM_OK;
    uint16_t       reason = LCM_REASON_NOT_APPL;
@@ -209,7 +209,7 @@ int SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
    memset(&cfmPst, 0 , sizeof(Pst));
    SchFillCfmPst(pst, &cfmPst, cfg);
 
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   memset((U8 *)&cfm, 0, sizeof(RgMngmt));
 
 #ifdef LMINT3
    cfm.hdr.transId =
@@ -343,7 +343,7 @@ uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
  *      -# ROK 
  *      -# RFAILED 
  **/
-int schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
+uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
 {
    SchCellCb *cell;
    SCH_ALLOC(cell, sizeof(SchCellCb));

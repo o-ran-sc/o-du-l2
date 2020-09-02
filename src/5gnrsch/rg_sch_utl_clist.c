@@ -206,12 +206,12 @@ RgSchRrCList *node;                /* node to be removed */
   
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
-      RETVALUE(NULLP);
+      return (NULLP);
 #endif
 
    if(lCp->count == 0)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    if (lCp->count == 1)
    {
@@ -220,9 +220,9 @@ RgSchRrCList *node;                /* node to be removed */
          lCp->first = lCp->crnt = (RgSchRrCList *)NULLP;
          lCp->count = 0;
          node->next = node->prev = (RgSchRrCList *)NULLP;
-         RETVALUE(node);
+         return (node);
       }
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    
    if (lCp->first == node)
@@ -238,7 +238,7 @@ RgSchRrCList *node;                /* node to be removed */
        /* Adding this check and guarding the decrement of counter when
        node is deleted with reshuffling */
       lCp->count--;
-      RETVALUE(node);
+      return (node);
    }
 
    if(node->prev && node->next)
@@ -252,7 +252,7 @@ RgSchRrCList *node;                /* node to be removed */
       lCp->crnt = node->next;
    }
    node->next = node->prev = (RgSchRrCList *)NULLP;
-   RETVALUE(node);
+   return (node);
 } /* end of rgSCHRrCListDelFrm */
 
 /*

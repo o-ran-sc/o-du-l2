@@ -36,7 +36,7 @@ CmInetNetAddrLst remoteAddrLst;
 
 typedef struct
 {
-   S16           numFd;            /* Total count number of receivers socket Fd */
+   uint8_t           numFd;            /* Total count number of receivers socket Fd */
    U16           port;              /* Filled by the InetSctpRecvMsg during polling */              
    U32           flag;              /* Refers to the notifyHandler Flag during successful InetSctpRecvMsg*/
    Buffer        *mBuf;             /* Buffer filled during Socket polling*/
@@ -65,20 +65,20 @@ DuSctpDestCb f1Params;     /* SCTP configurations at DU */
 DuSctpDestCb ricParams;    /* SCTP configurations at DU */ 
 
 
-S16 sctpActvInit(Ent entity, Inst inst, Region region, Reason reason);
-S16 sctpActvTsk(Pst *pst, Buffer *mBuf);
+uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason);
+uint8_t sctpActvTsk(Pst *pst, Buffer *mBuf);
 void sctpAssocReq();
 void sendToDuApp(Buffer *mBuf, Event event);
-S16 sctpSend(Buffer *mBuf, U8 itfType);
-S16 duSctpCfgReq(SctpParams sctpCfg);
-S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr);
-S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr);
-S16 establishReq(DuSctpDestCb *paramPtr);
-S16 duSctpAssocReq(U8 itfType);
-S16 duFillSctpPst(Pst *pst, Event event);
-S16 sctpSetSockOpts(CmInetFd *sock_Fd);
-S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo, Bool recvMsgSet);
-S16 sctpSockPoll();
+uint8_t sctpSend(Buffer *mBuf, U8 itfType);
+uint8_t duSctpCfgReq(SctpParams sctpCfg);
+uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr);
+uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr);
+uint8_t establishReq(DuSctpDestCb *paramPtr);
+uint8_t duSctpAssocReq(U8 itfType);
+uint8_t duFillSctpPst(Pst *pst, Event event);
+uint8_t sctpSetSockOpts(CmInetFd *sock_Fd);
+uint8_t processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo, Bool recvMsgSet);
+uint8_t sctpSockPoll();
 
 #endif
 

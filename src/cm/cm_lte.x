@@ -37,22 +37,22 @@
 
 #include <cm_lte.h>
 /* Packing Defines */
-#define cmPkLteRbId              SPkU8
-#define cmPkLteRnti              SPkU16
-#define cmPkLteCellId            SPkU16
-#define cmPkLteRlcMode           SPkU8
-#define cmPkLteLcId              SPkU8
-#define cmPkLteLcType            SPkU8
-#define cmPkLteAggrLvl           SPkU32
+#define cmPkLteRbId              oduUnpackUInt8
+#define cmPkLteRnti              oduUnpackUInt16
+#define cmPkLteCellId            oduUnpackUInt16
+#define cmPkLteRlcMode           oduUnpackUInt8
+#define cmPkLteLcId              oduUnpackUInt8
+#define cmPkLteLcType            oduUnpackUInt8
+#define cmPkLteAggrLvl           oduUnpackUInt32
 
 /* Unpacking Defines */
-#define cmUnpkLteRbId            SUnpkU8
-#define cmUnpkLteRnti            SUnpkU16
-#define cmUnpkLteCellId          SUnpkU16
-#define cmUnpkLteRlcMode         SUnpkU8
-#define cmUnpkLteLcId            SUnpkU8
-#define cmUnpkLteLcType          SUnpkU8
-#define cmUnpkLteAggrLvl         SUnpkU32
+#define cmUnpkLteRbId            oduPackUInt8
+#define cmUnpkLteRnti            oduPackUInt16
+#define cmUnpkLteCellId          oduPackUInt16
+#define cmUnpkLteRlcMode         oduPackUInt8
+#define cmUnpkLteLcId            oduPackUInt8
+#define cmUnpkLteLcType          oduPackUInt8
+#define cmUnpkLteAggrLvl         oduPackUInt32
 
 #define MAX_POOL_SIZE        6      /*!< Maximum pool size */
 #define MAX_REGION_SIZE      5      /*!< Maximum Region size */

@@ -592,7 +592,7 @@ PRIVATE S16 rgSCHSCellDeActivation(sCellInfo)
 RgSchUeCellInfo *sCellInfo
 #endif
 {
-   RETVALUE(ROK);
+   return ROK;
    RgSchCmnCell *cellSch;
    Inst inst = sCellInfo->cell->instIdx;
 
@@ -643,7 +643,7 @@ RgSchUeCellInfo *sCellInfo
    printf("SCELL DEATIVATED  sCellInfo->ue->ueId =%d, sCellInfo->sCellId =%d\n", sCellInfo->ue->ueId, sCellInfo->sCellId);
    //MSPD_DBG("SCELL DEATIVATED  sCellInfo->ue->ueId =%d, sCellInfo->sCellId =%d\n", sCellInfo->ue->ueId, sCellInfo->sCellId);
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -687,7 +687,7 @@ U16           rnti;
    if((secCellCb = (RgSchCellCb *)rgSchUtlGetCellCb(inst, secCellId)) == NULLP)
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCell doesnt exists"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    hqEntRstInfo.cellId = secCellId;
@@ -697,7 +697,7 @@ U16           rnti;
 
    RgSchMacRstHqEnt(&pst, &hqEntRstInfo);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /*removed endif*/
 
@@ -915,14 +915,14 @@ U8            action;
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid Serv Cell Idx %d\n", \
                sCellIdx));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(ueCb->cellInfo[sCellIdx] == NULLP)
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Serv Cell not added to this Ue Scell Idx %d ueId %d\n", \
               sCellIdx,ueCb->ueId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    switch (action)
@@ -994,7 +994,7 @@ U8            action;
          break;
       }
    }
-   RETVALUE(ret);
+   return (ret);
 }
 
  
@@ -1035,10 +1035,10 @@ U8           *sCellIdx;
       if((ueCb->cellInfo[(*sCellIdx)] != NULLP) &&
             (ueCb->cellInfo[(*sCellIdx)]->sCellState == RG_SCH_SCELL_READY))
       {
-         RETVALUE(ROK);
+         return ROK;
       }
    }
-   RETVALUE(RFAILED);
+   return RFAILED;
 }
 
 /**
@@ -1224,7 +1224,7 @@ RgSchUeCb    *ueCb;
       rgSCHSCellDelUeSCell(cellCb,ueCb,idx);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef TFU_UPGRADE
@@ -1298,7 +1298,7 @@ U8                sCellIdx;
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid Serv Cell Idx %d\n",
                sCellIdx));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    sCellInfo = ueCb->cellInfo[sCellIdx];
@@ -1403,7 +1403,7 @@ U8                sCellIdx;
    cqiCb->riDist    = RG_SCH_INVALID_IDX; 
    cqiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
  
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -1650,7 +1650,7 @@ RgSchUePCqiCb     *cqiCb2;
       }
    }
 
-   RETVALUE(retCqiCb->servCellInfo->sCellIdx);
+   return (retCqiCb->servCellInfo->sCellIdx);
 }
 
 /**
@@ -1760,7 +1760,7 @@ RgSchUePCqiCb     *cqiCb;
    idx = ((nPCqiServCellIdx)& (CM_LTE_MAX_CELLS -1));
    ueCb->nPCqiCb = &ueCb->cellInfo[idx]->cqiCb;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1878,7 +1878,7 @@ RgSchUePCqiCb     *cqiCb;
    /* Set the next expected Cqi into nPCqiCb */
    ueCb->nPRiCb = &ueCb->cellInfo[nPRiServCellIdx]->cqiCb;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif/*TFU_UPGRADE*/
 
@@ -1923,7 +1923,7 @@ RgSchUeCb                  *ue;
          break;
       }
    }
-   RETVALUE(retVal);	
+   return (retVal);	
 }
 
 /**
@@ -1958,9 +1958,9 @@ RgSchUeCb      *ue
     * outstanding BO */
    if(ue->remBoCnt == RG_SCH_ACTIVATION_COUNT)
    {
-      RETVALUE(TRUE);
+      return (TRUE);
    }
-   RETVALUE(FALSE);
+   return (FALSE);
 }
 #endif/*LTE_ADV*/
 

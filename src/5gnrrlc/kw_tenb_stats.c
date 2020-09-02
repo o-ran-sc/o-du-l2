@@ -159,7 +159,7 @@ PUBLIC TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
    statsCb->stats.rnti = (U32)rnti;
    statsCb->inUse = TRUE;
 
-   RETVALUE(statsCb);
+   return (statsCb);
 }
 
 /*
@@ -225,7 +225,7 @@ PUBLIC TSL2CellStatsCb* TSL2AllocCellStatsBlk(cellId)
       printf("\n STATS Unexpected CellID = %d\n", (int)cellId);
    }
 
-   RETVALUE(l2CellStats[cellId-1]);
+   return (l2CellStats[cellId-1]);
 }
 
 /*

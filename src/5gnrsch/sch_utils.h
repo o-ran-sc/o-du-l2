@@ -52,7 +52,7 @@
           (Data **)&_datPtr, _size);                             \
    if(_ret == ROK)                                              \
    {                                                            \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
+      memset((U8*)_datPtr, 0, _size);                         \
    }                                                            \
    else                                                         \
    {                                                            \

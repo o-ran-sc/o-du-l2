@@ -844,7 +844,7 @@
    { \
       S16 ret; \
       if ((ret = func(val, mBuf)) != ROK) \
-         RETVALUE(ret); \
+         return (ret); \
    }
 
 #define CMCHKPKLOG(func, val, mBuf, errCode, pst) \
@@ -856,7 +856,7 @@
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId, __FILE__, \
                    __LINE__, (ErrCls) ERRCLS_ADD_RES, errCode, (ErrVal)ret, \
                    "Packing failure"); \
-          RETVALUE(ret); \
+          return (ret); \
        } \
    }
 
@@ -869,7 +869,7 @@
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId, __FILE__, \
                    __LINE__, (ErrCls) ERRCLS_ADD_RES, errCode, (ErrVal)ret, \
                    "Packing failure"); \
-         RETVALUE(ret); \
+         return (ret); \
       } \
    }
 
@@ -896,7 +896,7 @@
    { \
       S16 ret; \
       if ((ret = func(val, mBuf)) != ROK) \
-         RETVALUE(ret); \
+         return (ret); \
    }
 
 #define CMCHKUNPKLOG(func, val, mBuf, errCode, pst) \
@@ -908,7 +908,7 @@
          SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId, __FILE__, \
                    __LINE__, (ErrCls) ERRCLS_ADD_RES, (ErrVal)errCode, (ErrVal)ret, \
                    "Unpacking failure"); \
-          RETVALUE(ret); \
+          return (ret); \
        } \
    }
 
@@ -921,7 +921,7 @@
          SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId, __FILE__, \
                    __LINE__, (ErrCls) ERRCLS_ADD_RES, (ErrVal)errCode, (ErrVal)ret, \
                    "Unpacking failure"); \
-         RETVALUE(ret); \
+         return (ret); \
       } \
    }
 

@@ -149,7 +149,7 @@ KwGenCfg   *cfg;
             KW_MAX_UE, 
             cfg->maxUe);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 
    if(cfg->maxKwuSaps > KW_MAX_KWUSAPS)
@@ -159,7 +159,7 @@ KwGenCfg   *cfg;
             KW_MAX_KWUSAPS, 
             cfg->maxKwuSaps);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 
    if(cfg->maxUdxSaps > KW_MAX_UDXSAPS)
@@ -169,19 +169,19 @@ KwGenCfg   *cfg;
             KW_MAX_UDXSAPS, 
             cfg->maxUdxSaps);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    
    if((cfg->maxRguSaps == 0) || (cfg->maxRguSaps > KW_MAX_RGUSAPS))
    {
       
 
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    if(gCb->init.cfgDone == TRUE)
    {
       /* reconfiguration not supported */
-      RETVALUE(LCM_REASON_RECONFIG_FAIL);
+      return (LCM_REASON_RECONFIG_FAIL);
    }
 
    gCb->genCfg = *cfg;
@@ -197,7 +197,7 @@ KwGenCfg   *cfg;
       if (gCb->u.dlCb == NULLP)
       {  
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       
       }
       /* allocate memory to the KWU sap's */
@@ -211,7 +211,7 @@ KwGenCfg   *cfg;
       {
          RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -227,7 +227,7 @@ KwGenCfg   *cfg;
          RLC_FREE(gCb,gCb->u.dlCb->kwuDlSap, kwSapSize);
          RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -243,7 +243,7 @@ KwGenCfg   *cfg;
       
          KWLOGERROR(gCb,ERRCLS_INT_PAR, EKW043, (ErrVal) cfg->maxUe,
                    "kwLmmGenCfg: SgetSBuf Failed for rguSap...!");
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -257,7 +257,7 @@ KwGenCfg   *cfg;
          RLC_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
          RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
          RLOG0(L_FATAL,"RLC DL Initialization failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #if 0
       /* Register the timer */
@@ -270,7 +270,7 @@ KwGenCfg   *cfg;
          RLC_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
          RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
 
-         RETVALUE(LCM_REASON_REGTMR_FAIL);
+         return (LCM_REASON_REGTMR_FAIL);
       }
 #endif
       /* initializations for background processing of freeing memory */
@@ -286,7 +286,7 @@ KwGenCfg   *cfg;
          RLC_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
          RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
 
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       
       }
 #ifdef LTE_L2_MEAS
@@ -299,7 +299,7 @@ KwGenCfg   *cfg;
       if (gCb->u.ulCb == NULLP)
       {     
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       
       }
       /* allocate memory to the KWU sap's */
@@ -313,7 +313,7 @@ KwGenCfg   *cfg;
       {
          RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -331,7 +331,7 @@ KwGenCfg   *cfg;
          RLC_FREE(gCb,gCb->u.ulCb->kwuUlSap, kwSapSize);
          RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -347,7 +347,7 @@ KwGenCfg   *cfg;
       
          KWLOGERROR(gCb,ERRCLS_INT_PAR, EKW043, (ErrVal) cfg->maxUe,
                    "kwLmmGenCfg: SgetSBuf Failed for rguSap...!");
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -372,7 +372,7 @@ KwGenCfg   *cfg;
          RLC_FREE(gCb,gCb->u.ulCb->rguUlSap, kwSapSize);
          RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
 
-         RETVALUE(LCM_REASON_REGTMR_FAIL);
+         return (LCM_REASON_REGTMR_FAIL);
       }
 #endif
 #ifdef LTE_L2_MEAS
@@ -385,7 +385,7 @@ KwGenCfg   *cfg;
       RLOG0(L_ERROR, "Received Invalid RLC Mode");
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    /* Timer Initialization  */
    gCb->kwTqCp.tmrLen = KW_TMR_LEN;
@@ -408,7 +408,7 @@ KwGenCfg   *cfg;
 
    gCb->init.cfgDone = TRUE;
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -589,7 +589,7 @@ KwMngmt   *cfg;
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = LCM_REASON_INVALID_INSTANCE;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);     
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    
@@ -600,7 +600,7 @@ KwMngmt   *cfg;
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);     
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check configuration is done or not */
    if ((tRlcCb->init.cfgDone != TRUE) && 
@@ -614,7 +614,7 @@ KwMngmt   *cfg;
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);     
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RLOG1(L_DEBUG, "KwMiRlcConfigReq elmId(%d)", cfg->hdr.elmId.elmnt);
@@ -658,14 +658,14 @@ KwMngmt   *cfg;
       cfg->cfm.status = LCM_PRIM_OK;
       cfg->cfm.reason = LCM_REASON_NOT_APPL;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);
-      RETVALUE(ROK);
+      return ROK;
    }
    else
    {
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = reason;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 } 
 
@@ -746,7 +746,7 @@ KwMngmt   *cntrl;
       cntrl->cfm.reason =  LCM_REASON_INVALID_INSTANCE;
 
       kwLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    
@@ -757,7 +757,7 @@ KwMngmt   *cntrl;
       cntrl->cfm.status = LCM_PRIM_NOK;
       cntrl->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       kwLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (!(tRlcCb->init.cfgDone))
@@ -765,7 +765,7 @@ KwMngmt   *cntrl;
       cntrl->cfm.status = LCM_PRIM_NOK;
       cntrl->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       kwLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    RLOG1(L_DEBUG, "KwMiLkwCntrlReq(elmId(%d))", cntrl->hdr.elmId.elmnt);
 
@@ -814,7 +814,7 @@ KwMngmt   *cntrl;
 
    kwLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -855,7 +855,7 @@ KwMngmt   *sta;
       sta->cfm.reason = LCM_REASON_INVALID_INSTANCE;
 
       kwLmmSendCfm(tRlcCb,pst, sta, TSSTA, &sta->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    
@@ -866,7 +866,7 @@ KwMngmt   *sta;
       sta->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
 
       kwLmmSendCfm(tRlcCb,pst, sta, TSSTA, &sta->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RLOG1(L_DEBUG, "Status request for elmId(%d))", sta->hdr.elmId.elmnt);
@@ -928,7 +928,7 @@ KwMngmt   *sta;
    }
    kwLmmSendCfm(tRlcCb,pst, &rSta, TSSTA, &sta->hdr);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -991,7 +991,7 @@ KwMngmt   *sts;
       rSts.cfm.reason = LCM_REASON_INVALID_INSTANCE;
 
       kwLmmSendCfm(tRlcCb,pst, &rSts, TCNTRL, &sts->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    
@@ -1002,7 +1002,7 @@ KwMngmt   *sts;
       rSts.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
 
       kwLmmSendCfm(tRlcCb,pst, &rSts, TCNTRL, &sts->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RLOG2(L_DEBUG, "KwMiLkwStsReq(elmId(%d),action(%d))", 
@@ -1048,7 +1048,7 @@ KwMngmt   *sts;
    }
    kwLmmSendCfm(tRlcCb,pst, &rSts, TSTS, &sts->hdr);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /* kw005.201 added support for L2 Measurement */
@@ -1123,7 +1123,7 @@ KwL2MeasReqEvt *measReqEvt;
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
          kwUtlSndUlL2MeasNCfm(tRlcCb, measReqEvt, &measCfmEvt);
          RLC_FREE(tRlcCb, measReqEvt, sizeof(KwL2MeasReqEvt))
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -1142,7 +1142,7 @@ KwL2MeasReqEvt *measReqEvt;
       measCfmEvt.status.reason = LKW_CAUSE_INVALID_MEASTYPE;
       kwUtlSndDlL2MeasNCfm(tRlcCb, measReqEvt, &measCfmEvt);
       RLC_FREE(tRlcCb, measReqEvt, sizeof(KwL2MeasReqEvt))
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* for UL IP throughput meas enable for all QCIs */
@@ -1172,7 +1172,7 @@ KwL2MeasReqEvt *measReqEvt;
       if(measEvt == NULLP)
       {
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(RFAILED);
+         return RFAILED;
       }   
 #endif      
       cmMemcpy((Void*)measEvt, (Void*)measReqEvt, sizeof(KwL2MeasReqEvt));
@@ -1196,7 +1196,7 @@ KwL2MeasReqEvt *measReqEvt;
    }
    /*RLC_FREE(tRlcCb, measReqEvt, sizeof(KwL2MeasReqEvt));*/
 
-   RETVALUE(ret);
+   return (ret);
 } /* KwMiLkwL2MeasReq */
 
 /**
@@ -1258,14 +1258,14 @@ U8             measType;
    {
       /*Redirect the request to DL task */
       rlcUlUdxL2MeasStopReq(&(KW_GET_UDX_SAP(tRlcCb)->pst),measType);
-      /*RETVALUE(ROK);*/
+      /*return ROK;*/
    }
    /*cmMemset((U8*)&measCfmEvt, 0, sizeof(KwL2MeasCfmEvt)); */
 
    status = LCM_PRIM_OK; 
    KwMiLkwL2MeasStopCfm(&tRlcCb->genCfg.lmPst, measType,status); 
    
-   RETVALUE(ret);
+   return (ret);
 }
 /**
 @brief 
@@ -1307,7 +1307,7 @@ U8             measType;
       /*Redirect the request to DL task */
       rlcUlUdxL2MeasSendReq(&(KW_GET_UDX_SAP(tRlcCb)->pst),measType);
       /* L2 MEAS AGHOSH */
-      /*RETVALUE(ROK);*/
+      /*return ROK;*/
    }
 
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
@@ -1320,7 +1320,7 @@ U8             measType;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* LTE_L2_MEAS */
 
@@ -1356,7 +1356,7 @@ KwSapCfg   *cfg;
    /* Validate the protocol parameters */
    if((cfg->sapId >= (S16)gCb->genCfg.maxKwuSaps) || (cfg->sapId < 0))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1371,14 +1371,14 @@ KwSapCfg   *cfg;
       RLOG2(L_ERROR,"RLC Mode [%d] : Invalid kwuSap State [%d]",
             gCb->genCfg.rlcMode, kwuSapCb->state);
       /* reconfiguration not allowed */
-      RETVALUE(LCM_REASON_RECONFIG_FAIL);
+      return (LCM_REASON_RECONFIG_FAIL);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    /* Fill the parameters */
    KW_FILL_SAP_HELPER(kwuSapCb, cfg, gCb);
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1414,13 +1414,13 @@ KwSapCfg   *cfg;
    /* Validate config parameters */
    if ((cfg->sapId >= KW_MAX_CKWSAPS) || (cfg->sapId < 0) )
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 
    if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
       /* Get Sap control block */
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
@@ -1431,14 +1431,14 @@ KwSapCfg   *cfg;
    if(ckwSap->state  != KW_SAP_NOT_CFG)
    {
       RLOG1(L_ERROR,"Invalid kwuSap State [%d]",ckwSap->state);
-      RETVALUE(LCM_REASON_RECONFIG_FAIL);
+      return (LCM_REASON_RECONFIG_FAIL);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
    
    /* Fill the parameters */
    KW_FILL_SAP_HELPER(ckwSap, cfg, gCb);
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1475,7 +1475,7 @@ KwSapCfg   *cfg;
    /* Validate the protocol parameters */
    if((cfg->sapId >= KW_MAX_UDXSAPS) || (cfg->sapId < 0))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
    /* Get Sap control block */
@@ -1487,7 +1487,7 @@ KwSapCfg   *cfg;
       if(udxDlSap->state != KW_SAP_NOT_CFG)
       {
          RLOG1(L_ERROR,"Invalid udxDlSap State [%d]",udxDlSap->state);
-         RETVALUE(LCM_REASON_RECONFIG_FAIL);
+         return (LCM_REASON_RECONFIG_FAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1503,7 +1503,7 @@ KwSapCfg   *cfg;
       if(udxUlSap->state != KW_SAP_NOT_CFG)
       {
          RLOG1(L_ERROR,"Invalid udxUlSap State [%d]", udxUlSap->state);
-         RETVALUE(LCM_REASON_RECONFIG_FAIL);
+         return (LCM_REASON_RECONFIG_FAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1515,7 +1515,7 @@ KwSapCfg   *cfg;
       cmInitTimers(&(udxUlSap->bndTmr), 1);
    }
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1553,7 +1553,7 @@ KwSapCfg   *cfg;
    {
       KWLOGERROR(gCb,ERRCLS_INT_PAR, EKW047, (ErrVal)cfg->sapId,
                "kwLmmCfgRguSap: Invalid RGU sapId\n");
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
@@ -1566,7 +1566,7 @@ KwSapCfg   *cfg;
    {
       RLOG2(L_ERROR,"RLC Mode [%d]: Invalid rguSap State [%d]",
             gCb->genCfg.rlcMode, rguSap->state);
-      RETVALUE(LCM_REASON_RECONFIG_FAIL);
+      return (LCM_REASON_RECONFIG_FAIL);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1579,7 +1579,7 @@ KwSapCfg   *cfg;
 
    cmInitTimers(&(rguSap->bndTmr), 1);
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1629,7 +1629,7 @@ KwMngmt   *cntrl;
          break;
    }
    
-   RETVALUE(reason);
+   return (reason);
 } 
 
 /**
@@ -1800,7 +1800,7 @@ RlcCb   *gCb;
 
    RLC_MEM_SET (&(gCb->genSts), 0, sizeof (KwGenSts));
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1840,7 +1840,7 @@ KwMngmt *cntrl;
 
    if (reason != LCM_REASON_NOT_APPL)
    {
-      RETVALUE(reason);
+      return (reason);
    }
 
    switch(cntrl->t.cntrl.action)
@@ -1906,7 +1906,7 @@ KwMngmt *cntrl;
          break;
       }
    }
-   RETVALUE(reason);
+   return (reason);
 } 
 
 /**
@@ -1939,13 +1939,13 @@ KwMngmt   *cntrl;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
-      RETVALUE(LCM_REASON_INVALID_SAP);
+      return (LCM_REASON_INVALID_SAP);
    }
    /* validate SuId */
    if((cntrl->t.cntrl.s.sapCntrl.suId < 0) || 
       (cntrl->t.cntrl.s.sapCntrl.suId >= KW_MAX_UDXSAPS))
    {
-      RETVALUE(LCM_REASON_INVALID_SAP);
+      return (LCM_REASON_INVALID_SAP);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1955,7 +1955,7 @@ KwMngmt   *cntrl;
    if(UDX_SAP.state == KW_SAP_NOT_CFG)
    {
       RLOG0(L_ERROR,"udxUlSap not configured yet");
-      RETVALUE(LCM_REASON_INVALID_STATE);
+      return (LCM_REASON_INVALID_STATE);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1973,7 +1973,7 @@ KwMngmt   *cntrl;
          else
          {
             /* control request received for an already bound SAP */
-            RETVALUE(LCM_REASON_INVALID_STATE);
+            return (LCM_REASON_INVALID_STATE);
          }
       }
       break;
@@ -1985,11 +1985,11 @@ KwMngmt   *cntrl;
       }
       break;
       default:
-         RETVALUE(LCM_REASON_INVALID_ACTION);
+         return (LCM_REASON_INVALID_ACTION);
          break;
    } /* end of switch */
 #undef UDX_SAP
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2027,7 +2027,7 @@ KwMngmt   *cntrl;
    {
       KWLOGERROR(gCb,ERRCLS_INT_PAR, EKW047, (ErrVal)cntrl->t.cntrl.s.sapCntrl.suId,
                "kwLmmLSapCntrl: Invalid RGU suId\n");
-      RETVALUE(LCM_REASON_INVALID_SAP);
+      return (LCM_REASON_INVALID_SAP);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
    rguSap = (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL) ?
@@ -2039,7 +2039,7 @@ KwMngmt   *cntrl;
    if(rguSap->state == KW_SAP_NOT_CFG)
    {
       RLOG1(L_ERROR,"RLC Mode [%d]:rguSap not configured yet", gCb->genCfg.rlcMode);
-      RETVALUE(LCM_REASON_INVALID_STATE);
+      return (LCM_REASON_INVALID_STATE);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -2059,7 +2059,7 @@ KwMngmt   *cntrl;
          else
          {
             /* control request received for an already bound SAP */
-            RETVALUE(LCM_REASON_INVALID_STATE);
+            return (LCM_REASON_INVALID_STATE);
          }
       }
       break;
@@ -2071,11 +2071,11 @@ KwMngmt   *cntrl;
       }
       break;
       default:
-         RETVALUE(LCM_REASON_INVALID_ACTION);
+         return (LCM_REASON_INVALID_ACTION);
          break;
    } /* end of switch */
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2110,7 +2110,7 @@ KwKwuSapSta   *sta;
    if ((sta->spId >= (S16)gCb->genCfg.maxKwuSaps)||
        (sta->spId < 0))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
@@ -2121,7 +2121,7 @@ KwKwuSapSta   *sta;
 
    sta->state = kwSapCb->state;
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2152,7 +2152,7 @@ KwRguSapSta   *sta;
    /* Validate the protocol parameters */
    if((sta->suId >= KW_MAX_RGUSAPS) || (sta->suId < 0))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
@@ -2160,7 +2160,7 @@ KwRguSapSta   *sta;
                  gCb->u.dlCb->rguDlSap[sta->suId].state : 
                  gCb->u.ulCb->rguUlSap[sta->suId].state ;
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2193,12 +2193,12 @@ KwCkwCntSapSta   *sta;
        (sta->spId < 0 ) ||
        (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
    sta->state =  gCb->u.ulCb->ckwSap.state;
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 
 } 
 
@@ -2233,7 +2233,7 @@ Action     action;
    /* Validate protocol parameters */
    if ((action != LKW_ZEROSTS) && (action != LKW_NOZEROSTS))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
@@ -2244,7 +2244,7 @@ Action     action;
       RLC_MEM_SET (&(gCb->genSts), 0, sizeof (KwGenSts));
    }
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2281,7 +2281,7 @@ Action    action;
    /* Validate protocol parameters */
    if (action != LKW_ZEROSTS && action != LKW_NOZEROSTS)
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    switch(elmnt)
    {
@@ -2313,7 +2313,7 @@ Action    action;
          ckwSap = &sts->t.sts.s.ckwSap;
          if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL) 
          {
-            RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+            return (LCM_REASON_INVALID_PAR_VAL);
          }
 
          ckwSap->statMsgs = gCb->u.ulCb->ckwSap.sts.statMsgs;
@@ -2325,12 +2325,12 @@ Action    action;
          break;
       }
       default:
-         RETVALUE(LCM_REASON_INVALID_ELMNT);
+         return (LCM_REASON_INVALID_ELMNT);
    }
 
    SGetDateTime(&sts->t.sts.dt);
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2486,7 +2486,7 @@ Buffer   *mBuf;
         {
            /* rg005.201 removed SPutSBuf on error */
            RLOG0(L_ERROR,"SCpyMsgMsg Failed");   
-           RETVALUE(RFAILED);
+           return RFAILED;
         }
         /* Send Trace Indication to Layer manager */
         KwMiLkwTrcInd(&pst, &trc, dstMbuf);
@@ -2498,7 +2498,7 @@ Buffer   *mBuf;
         if (SFndLenMsg(mBuf, &bufLen) != ROK)
         {
            RLOG0(L_ERROR,"SFndLenMsg Failed");   
-           RETVALUE(RFAILED);
+           return RFAILED;
         }
         /* Check if the recvd buffer size is less than request trace len */
         if(bufLen < gCb->trcLen)
@@ -2509,7 +2509,7 @@ Buffer   *mBuf;
               != ROK)
            {
               RLOG0(L_ERROR,"SCpyMsgMsg Failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
          
            /* Send Trace Indication to Layer manager */
@@ -2527,7 +2527,7 @@ Buffer   *mBuf;
               (Void) SPutSMem(KW_GET_MEM_REGION(gCb), KW_GET_MEM_POOL(gCb));
       
                RLOG0(L_FATAL,"Memory Allocation failed");   
-               RETVALUE(LCM_REASON_MEM_NOAVAIL);
+               return (LCM_REASON_MEM_NOAVAIL);
            }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
          
@@ -2535,19 +2535,19 @@ Buffer   *mBuf;
            if (SCpyMsgFix(mBuf,0,gCb->trcLen,tempBuf,&tempCnt) != ROK)   
            {
               RLOG0(L_ERROR,"SCpyMsgFix Failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
 
            if (SGetMsg(pst.region, pst.pool, &dstMbuf) != ROK)
            {
               RLOG0(L_FATAL,"Memory Allocation failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
            /* Copy the tempBuf data to dst mBuf */
            if (SCpyFixMsg(tempBuf,dstMbuf,0,gCb->trcLen,&tempCnt) != ROK)
            {
               RLOG0(L_ERROR,"SCpyMsgFix Failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
   
            /* Free the memory allocated for tempBuf */
@@ -2562,7 +2562,7 @@ Buffer   *mBuf;
       KwMiLkwTrcInd(&pst, &trc, mBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
   
@@ -2599,11 +2599,11 @@ Inst   inst;
 
    if (inst >= MAX_RLC_INSTANCES)
    {
-      RETVALUE (RFAILED);
+      return  (RFAILED);
    }
    gCb = RLC_GET_RLCCB(inst); 
    cmPrcTmr(&(gCb->kwTqCp), gCb->kwTq, (PFV) kwTmrExpiry);
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of kwActvTmr */
 

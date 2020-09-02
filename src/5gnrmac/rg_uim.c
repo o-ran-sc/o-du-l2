@@ -182,7 +182,7 @@ SpId spId;
       /*T2K - Passing spId as it is required to access the SAP CB*/
       ret = rgUIMRguBndCfm(inst,spId, CM_BND_NOK);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguBndReq */
 
 
@@ -248,9 +248,9 @@ Reason reason;
       RGLOGERROR(inst,ERRCLS_INT_PAR, ERG011, (ErrVal)rgCb[inst].rguSap[spId].sapCfg.spId,
             "Invalid SAP Id:RgUiRguUbndReq failed\n");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* RgUiRguUbndReq */
 /**
  * @brief API for sending bind confirm from MAC to RLC
@@ -295,9 +295,9 @@ U8            status;
    {
       
       RLOG0(L_ERROR,"RgUiRguBndCfm Failed ");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMRguBndCfm*/
 
 
@@ -349,7 +349,7 @@ RguDDatReqInfo  *datReq;
    if (datReq == NULLP)
    {
       RLOG0(L_ERROR,"Input Message Buffer is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(rgCb[inst].rguSap[spId].sapCfg.spId == spId)
@@ -370,7 +370,7 @@ RguDDatReqInfo  *datReq;
                RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[id3]);
             }
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -385,7 +385,7 @@ RguDDatReqInfo  *datReq;
          RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[id3]);
       }
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Update RGU SAP statistics for received sdu count */
@@ -419,7 +419,7 @@ RguDDatReqInfo  *datReq;
    ret = rgROMDedDatReq(inst,datReq);
     SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,sizeof(RguDDatReqInfo), SS_SHARABLE_MEMORY);
    datReq = NULLP;
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguDDatReq */
 
 
@@ -465,7 +465,7 @@ RguCDatReqInfo  *datReq;
    if (datReq == NULLP)
    {
       RLOG0(L_ERROR,"Input Message Buffer is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(rgCb[inst].rguSap[spId].sapCfg.spId == spId)
@@ -480,7 +480,7 @@ RguCDatReqInfo  *datReq;
             RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCDatReq failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -488,7 +488,7 @@ RguCDatReqInfo  *datReq;
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiRguCDatReq failed ",spId);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -510,7 +510,7 @@ RguCDatReqInfo  *datReq;
    }
    ret = SPutStaticBuffer(pst->region, pst->pool,(Data *)datReq,sizeof(RguCDatReqInfo) , SS_SHARABLE_MEMORY);
    datReq = NULLP;
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguCDatReq */
 
 
@@ -566,7 +566,7 @@ RguDStaRspInfo  *staRsp;
 
    /*stoping Task*/
    SStopTask(startTime, PID_MAC_STA_RSP);
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguDStaRsp */
 
 
@@ -614,7 +614,7 @@ RguCStaRspInfo  *staRsp;
    if (staRsp == NULLP)
    {
       RLOG0(L_ERROR,"Input Response Buffer is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (spId == rgCb[inst].rguSap[spId].sapCfg.spId)
@@ -629,7 +629,7 @@ RguCStaRspInfo  *staRsp;
             RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCStaRsp failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -637,7 +637,7 @@ RguCStaRspInfo  *staRsp;
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiRguCStaRsp failed",spId);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -645,12 +645,12 @@ RguCStaRspInfo  *staRsp;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,staRsp->cellId,"Processing Of Status Response Failed");
-      RETVALUE(ret);
+      return (ret);
    }
 
    ret = SPutStaticBuffer(pst->region, pst->pool, (Data *)staRsp,sizeof(RguCStaRspInfo) , SS_SHARABLE_MEMORY);
    staRsp = NULLP;
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguCStaRsp */
 
 #ifdef LTE_L2_MEAS
@@ -698,7 +698,7 @@ RguL2MUlThrpMeasReqInfo  *measReq;
    if (measReq == NULLP)
    {
       RLOG0(L_ERROR,"Input Response Buffer is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (spId == rgCb[inst].rguSap[spId].sapCfg.spId)
@@ -713,7 +713,7 @@ RguL2MUlThrpMeasReqInfo  *measReq;
             RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguL2MUlThrpMeasReq failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -721,7 +721,7 @@ RguL2MUlThrpMeasReqInfo  *measReq;
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiRguL2MUlThrpMeasReq failed",spId);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -733,7 +733,7 @@ RguL2MUlThrpMeasReqInfo  *measReq;
 
   SPutStaticBuffer(pst->region, pst->pool, (Data *)measReq,sizeof(RguL2MUlThrpMeasReqInfo) , SS_SHARABLE_MEMORY);
    measReq= NULLP;
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguL2MUlThrpMeasReq */
 #endif
 
@@ -780,9 +780,9 @@ RgRguDedStaInd  *staInd;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"RgUiRguDStaInd Failed");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMSndDedStaInd */
 
 
@@ -829,9 +829,9 @@ RgRguCmnStaInd  *staInd;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"RgUiRguCStaInd Failed");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMSndCmnStaInd */
 
 
@@ -880,13 +880,13 @@ RgRguDedDatInd  *datInd;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,datInd->cellId,"RgUiRguDdatInd Failed");
-      RETVALUE(ret);
+      return (ret);
    }
 #else
    SRngIncrWIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
    SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].pktRate++;
 #endif
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMSndDedDatInd */
 
 
@@ -938,9 +938,9 @@ RgRguCmnDatInd  *datInd;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst),"RgUiRguCDatInd Failed\n"));
       RLOG_ARG0(L_ERROR,DBG_CELLID,datInd->cellId,"RgUiRguCDatInd Failed");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMSndCmnDatInd */
 
 /**
@@ -1048,7 +1048,7 @@ SpId  spId;
 #endif
       ret = rgUIMCrgBndCfm(inst,suId, CM_BND_NOK);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiCrgBndReq */
 
 
@@ -1106,7 +1106,7 @@ Reason reason;
             RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgUbndReq failed",
                   rgCb[inst].crgSap.sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -1115,9 +1115,9 @@ Reason reason;
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiCrgUbndReq failed",
             rgCb[inst].crgSap.sapCfg.spId);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* RgUiCrgUbndReq */
 
 /**
@@ -1158,10 +1158,10 @@ U8            status;
    if(RgUiCrgBndCfm(&(rgCb[inst].crgSap.sapCfg.sapPst), rgCb[inst].crgSap.sapCfg.suId, status) != ROK)
    {
       RLOG0(L_ERROR,"RgUiCrgBndCfm Failed ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgUIMCrgBndCfm*/
 
 /**
@@ -1219,7 +1219,7 @@ CrgCfgReqInfo *cfgReqInfo;
    {
       RLOG0(L_ERROR,"Input Param crgReqInfo is NULL ");
       rgUIMCrgCfgCfm(inst,transId, cfmStatus); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Upper SAP Id and State validation */
@@ -1240,7 +1240,7 @@ CrgCfgReqInfo *cfgReqInfo;
          cfgReqInfo = NULLP;
 
             rgUIMCrgCfgCfm(inst,transId, cfmStatus);
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -1253,7 +1253,7 @@ CrgCfgReqInfo *cfgReqInfo;
             sizeof(CrgCfgReqInfo));
       cfgReqInfo = NULLP;
       rgUIMCrgCfgCfm(inst,transId, cfmStatus); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ret = rgCOMCfgReq(inst,transId, cfgReqInfo);
    SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
@@ -1262,10 +1262,10 @@ CrgCfgReqInfo *cfgReqInfo;
    if (ret != ROK)
    {
       RLOG0(L_ERROR,"Configuration Request Handling Failed ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* RgUiCrgCfgReq */
 
 /**
@@ -1313,10 +1313,10 @@ U8            status;
    if (ret != ROK)
    {
       RLOG0(L_ERROR,"RgUiCrgCfgCfm Failed ");
-      RETVALUE(ret);
+      return (ret);
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMCrgCfgCfm */
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
 
@@ -1368,7 +1368,7 @@ Void;
       if((elmIndx = (U32)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC)) == NULLP)
       break;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 

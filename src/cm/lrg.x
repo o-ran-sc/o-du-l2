@@ -528,7 +528,7 @@ typedef S16 (*LrgCfgReq)     ARGS((
         RgMngmt    *cfg                /* Management Structure */
      ));
 
-typedef int (*LrgSchCfgReq)     ARGS((
+typedef uint8_t (*LrgSchCfgReq)     ARGS((
         Pst        *pst,               /* Post Structure */
         RgMngmt    *cfg                /* Management Structure */
      ));
@@ -653,7 +653,7 @@ EXTERN S16 RgMiLrgCfgReq ARGS((Pst *pst, RgMngmt *cfg));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN int MacSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+EXTERN uint8_t MacSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
 
  /** @brief This primitive carries the Confirmation for a Configuration Request
   * sent from the layer manager to MAC.
@@ -677,7 +677,7 @@ EXTERN S16 RgMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
   * @param cfg pointer to RgMngmt
   * @return ROK/RFAILED
   */
-EXTERN int SchProcGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+EXTERN uint8_t  SchProcGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
 
  /** @brief This primitive carries the Confirmation for a Configuration Request
   * sent from the layer manager to Scheduler.

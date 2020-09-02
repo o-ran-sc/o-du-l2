@@ -122,7 +122,7 @@ Region datRegId;                /* region for data buffers */
    strmCfg.datRegion = datRegId;
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -178,14 +178,14 @@ S32 len;                        /* bytes to remove */
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS325, ERRZERO, "Null pointer");
-      RETVALUE(0);
+      return (0);
    }
 #endif
 
 
    if (len == 0)                /* nothing to do */
    {
-      RETVALUE(1);
+      return (1);
    }
 
 
@@ -210,7 +210,7 @@ S32 len;                        /* bytes to remove */
       /* if we can't trim len bytes, fail */
       if (len > size)
       {
-         RETVALUE(0);
+         return (0);
       }
 
 
@@ -266,7 +266,7 @@ S32 len;                        /* bytes to remove */
       size += len;
       if (size < 0)
       {
-         RETVALUE(0);
+         return (0);
       }
 
 
@@ -294,7 +294,7 @@ S32 len;                        /* bytes to remove */
    }
 
 
-   RETVALUE(1);
+   return (1);
 } /* ssAdjMsg */
 
 
@@ -358,7 +358,7 @@ U32 pri;                        /* message priority */
       SSLOGERROR(ERRCLS_ADD_RES, ESS326, (ErrVal) r, "SAlloc() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -384,7 +384,7 @@ U32 pri;                        /* message priority */
 #else
          SFree(strmCfg.mdRegion, (Data *)bp, m);
 #endif /* SS_HISTOGRAM_SUPPORT */
-         RETVALUE(NULLP);
+         return (NULLP);
       }
    }
    /* we _can_ allocate a message with an empty data block */
@@ -397,7 +397,7 @@ U32 pri;                        /* message priority */
    SS_STRM_INITB(bp, (SsDblk *)(((U8 *)bp) + sizeof(SsMblk)), dat, size, NULLP);
 
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssAllocB */
 
 
@@ -439,7 +439,7 @@ SsMblk *mp;                     /* message block */
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS328, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -452,7 +452,7 @@ SsMblk *mp;                     /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS329, ERRZERO, "ssAllocB() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -468,7 +468,7 @@ SsMblk *mp;                     /* message block */
    }
 
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssCopyB */
 
 
@@ -509,7 +509,7 @@ SsMblk *mp;                     /* message block */
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS330, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -522,7 +522,7 @@ SsMblk *mp;                     /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS331, ERRZERO, "ssCopyB() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -541,14 +541,14 @@ SsMblk *mp;                     /* message block */
 #endif
 
          ssFreeMsg(first);
-         RETVALUE(NULLP);
+         return (NULLP);
       }
 
       bp = bp->b_cont;
    }
 
 
-   RETVALUE(first);
+   return (first);
 } /* ssCopyMsg */
 
 
@@ -589,7 +589,7 @@ SsMblk *mp;                     /* message block */
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS333, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -602,7 +602,7 @@ SsMblk *mp;                     /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS334, ERRZERO, "ssAllocB() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -627,7 +627,7 @@ SsMblk *mp;                     /* message block */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS335, ERRZERO,
                      "Could not lock the mBuf Ref Lock");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -642,12 +642,12 @@ SsMblk *mp;                     /* message block */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS336, ERRZERO,
                       "Could not give the Semaphore");
-      RETVALUE(NULLP);
+      return (NULLP);
 #endif
    }
 #endif
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssDupB */
 
 
@@ -692,7 +692,7 @@ SsMblk *mp;                     /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS337, ERRZERO, "ssDupB() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -711,14 +711,14 @@ SsMblk *mp;                     /* message block */
 #endif
 
          ssFreeMsg(first);
-         RETVALUE(NULLP);
+         return (NULLP);
       }
 
       bp = bp->b_cont;
    }
 
 
-   RETVALUE(first);
+   return (first);
 } /* ssDupMsg */
 
 
@@ -768,7 +768,7 @@ SsFrtn *fr_rtn;                 /* free routine */
    if (base == NULLP  ||  fr_rtn == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS339, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -791,7 +791,7 @@ SsFrtn *fr_rtn;                 /* free routine */
       SSLOGERROR(ERRCLS_ADD_RES, ESS340, (ErrVal) r, "SAlloc() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -800,7 +800,7 @@ SsFrtn *fr_rtn;                 /* free routine */
                   base, size, fr_rtn);
 
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssESBAlloc */
 
 
@@ -1139,7 +1139,7 @@ SsMblk *mp;                     /* message block */
    }
 
 
-   RETVALUE(size);
+   return (size);
 } /* ssMsgDSize */
 
 
@@ -1195,13 +1195,13 @@ S32 len;                        /* number of bytes to align */
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS346, ERRZERO, "Null pointer");
-      RETVALUE(0);
+      return (0);
    }
    
    if (len < -1)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS347, len, "Invalid length");
-      RETVALUE(0);
+      return (0);
    }
 #endif
 
@@ -1229,14 +1229,14 @@ S32 len;                        /* number of bytes to align */
 
    if (len == 0)
    {
-      RETVALUE(1);
+      return (1);
    }
 
 
    /* do we have enough bytes to pull up? */
    if (len < 0  ||  len > mLen)
    {
-      RETVALUE(0);
+      return (0);
    }
 
 
@@ -1244,7 +1244,7 @@ S32 len;                        /* number of bytes to align */
    newbp = ssAllocB(len, 0);
    if (newbp == NULLP)
    {
-      RETVALUE(0);
+      return (0);
    }
 
    newbp->b_datap->db_type = mp->b_datap->db_type;
@@ -1341,7 +1341,7 @@ S32 len;                        /* number of bytes to align */
    ssFreeB(newbp);
 
 
-   RETVALUE(1);
+   return (1);
 } /* ssPullupMsg */
 
 
@@ -1384,7 +1384,7 @@ SsMblk *bp;                     /* message block */
    if (mp == NULLP  ||  bp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS348, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -1405,7 +1405,7 @@ SsMblk *bp;                     /* message block */
       {
          if (mp == NULLP)
          {
-            RETVALUE((SsMblk *)-1);
+            return ((SsMblk *)-1);
          }
          else if (mp->b_cont == bp)
          {
@@ -1424,7 +1424,7 @@ SsMblk *bp;                     /* message block */
    bp->b_cont = NULLP;
 
 
-   RETVALUE(rp);
+   return (rp);
 } /* ssRmvB */
 
 
@@ -1467,11 +1467,11 @@ U32 pri;                        /* priority of the message buffer */
    if (bp)
    {
       ssFreeB(bp);
-      RETVALUE(1);
+      return (1);
    }
 
 
-   RETVALUE(0);
+   return (0);
 } /* ssTestB */
 
 
@@ -1511,7 +1511,7 @@ SsMblk *mp;                     /* message */
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS349, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -1521,7 +1521,7 @@ SsMblk *mp;                     /* message */
    mp->b_cont = NULLP;
 
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssUnlinkB */
 
 /**********************************************************************

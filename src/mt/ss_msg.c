@@ -287,20 +287,20 @@ Buffer **dBuf;
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS047, ERRZERO, "ssGetDBufOfSize : Null\
                  Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS048, ERRZERO, "ssGetDBufOfSize : Invalid\
                 region id");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (size <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS049, ERRZERO, "ssGetDBufOfSize : Invalid\
                  size");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -312,7 +312,7 @@ Buffer **dBuf;
    if (SAlloc(region, &mdsize, 0, (Data **) dBuf) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
    {
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
    data = (Data *) (*dBuf) + MDBSIZE;
    size = mdsize - MDBSIZE;
@@ -327,7 +327,7 @@ Buffer **dBuf;
    }
 #endif
    
-   RETVALUE(ROK);
+   return ROK;
 } /* ssGetDBufOfSize */
 
 
@@ -423,19 +423,19 @@ Buffer **mBuf;              /* pointer to message buffer */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS050, ERRZERO, "SGetMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS051, ERRZERO, "SGetMsg : Invalid region\
                                                    id");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS052, ERRZERO, "SGetMsg : Invalid pool id");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 /* ss037.103 Removed the semaphore operation for performance enhancement */
@@ -452,7 +452,7 @@ Buffer **mBuf;              /* pointer to message buffer */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #endif
@@ -468,12 +468,12 @@ Buffer **mBuf;              /* pointer to message buffer */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS054, ERRZERO,
                   "Could not release semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS055, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 /* ss037.103 Removed the semaphore operation for performance enhancement */
 
@@ -483,7 +483,7 @@ Buffer **mBuf;              /* pointer to message buffer */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS056, ERRZERO,
                   "Could not release semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 #endif
@@ -504,7 +504,7 @@ Buffer **mBuf;              /* pointer to message buffer */
 #endif /* SS_HISTOGRAM_SUPPORT */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS058, ERRZERO, "SGetMsg:Failed in SAlloc");
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 #else /* SS_M_PROTO_REGION */  
 /* ss001.301: additions */
@@ -515,7 +515,7 @@ Buffer **mBuf;              /* pointer to message buffer */
 #endif /* SS_HISTOGRAM_SUPPORT */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS059, ERRZERO, "SGetMsg:Failed in SAlloc");
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 #endif /* SS_M_PROTO_REGION */
 
@@ -546,7 +546,7 @@ Buffer **mBuf;              /* pointer to message buffer */
       }
    }
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef RGL_SPECIFIC_CHANGES
@@ -558,7 +558,7 @@ S16 SSetMBufPool(Buffer *mBuf, Pool pool)
     minfo = (SsMsgInfo*) mBuf->b_rptr; 
     minfo->pool   = pool;
 
-    RETVALUE(ROK);
+    return ROK;
 } 
 #endif
 
@@ -638,7 +638,7 @@ Buffer *mBuf;
          }
          if (mBuf->refCnt > 0)
          {
-            RETVALUE(ROK);
+            return ROK;
          }
       }
 #endif
@@ -655,7 +655,7 @@ Buffer *mBuf;
          {
             if(ROK == mtAddBufToRing(SS_RNG_BUF_MAC_FREE_RING,(Void *)mBuf,0))
             {
-               RETVALUE(ROK);
+               return ROK;
             }
          }
 #endif
@@ -664,7 +664,7 @@ Buffer *mBuf;
          {
             if(ROK == mtAddBufToRing(SS_RNG_BUF_RLC_FREE_RING,(Void *)mBuf,0))
             {
-               RETVALUE(ROK);
+               return ROK;
             }
          }
 #endif
@@ -676,13 +676,13 @@ Buffer *mBuf;
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS060, ERRZERO, "SPutMsg: Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS061, ERRZERO, "SPutMsg: Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -691,7 +691,7 @@ Buffer *mBuf;
    if(tmpThrReg == 0xFF)
    {
       printf("\n Not able to get region \n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -726,7 +726,7 @@ Buffer *mBuf;
    if (SFree(minfo->region, (Data *) mBuf, MSGSIZE) == RFAILED)
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
-      RETVALUE(RFAILED);
+      return RFAILED;
 #else /* SS_M_PROTO_REGION */
    /* ss021.103 - Addition to check return value of SFree */
 #ifdef SS_HISTOGRAM_SUPPORT
@@ -734,10 +734,10 @@ Buffer *mBuf;
 #else
    if (SFree(minfo->region, (Data *) mBuf, MSGSIZE) == RFAILED)
 #endif /* SS_HISTOGRAM_SUPPORT */
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif /* SS_M_PROTO_REGION */
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef SS_LOCKLESS_MEMORY
@@ -797,27 +797,27 @@ U8   memType;                   /* memory type used if shareable or not */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS220, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate pool ID */
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS221, pool, "Invalid pool");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* validate data pointer */
    if (ptr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS223, (ErrVal)0, "NULL data pointe");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate size */
    if (size <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS224, size, "Invalid size");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
@@ -832,7 +832,7 @@ U8   memType;                   /* memory type used if shareable or not */
          {
             if(ROK == mtAddBufToRing(SS_RNG_BUF_MAC_FREE_RING,(Void *)ptr,1))
             {
-               RETVALUE(ROK);
+               return ROK;
             }
          }
 #endif
@@ -841,7 +841,7 @@ U8   memType;                   /* memory type used if shareable or not */
          {
             if(ROK == mtAddBufToRing(SS_RNG_BUF_RLC_FREE_RING,(Void *)ptr,1))
             {
-               RETVALUE(ROK);
+               return ROK;
             }
          }
       }
@@ -859,7 +859,7 @@ U8   memType;                   /* memory type used if shareable or not */
        (osCp.dynRegionTbl[region].used == FALSE)))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS218, region, "Region not registered");
-      RETVALUE(ret);
+      return (ret);
    }
 #endif
 
@@ -891,7 +891,7 @@ U8   memType;                   /* memory type used if shareable or not */
    }
 #endif
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /*
@@ -953,27 +953,27 @@ U8   memType;                   /* memory type used if shareable or not */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS211, region, "Invalid region");
-      RETVALUE(ret);
+      return (ret);
    }
 
    /* validate pool ID */
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS212, pool, "Invalid pool");
-      RETVALUE(ret);
+      return (ret);
    }
    /* validate data pointer */
    if (ptr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS214, (ErrVal)0 , "NULL data pointer");
-      RETVALUE(ret);
+      return (ret);
    }
 
    /* validate size */
    if (size <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS215, size, "Invalid size");
-      RETVALUE(ret);
+      return (ret);
    }
 #endif
 
@@ -985,7 +985,7 @@ U8   memType;                   /* memory type used if shareable or not */
        (osCp.dynRegionTbl[region].used == FALSE)))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS218, region, "Region not registered");
-      RETVALUE(ret);
+      return (ret);
    }
 #endif
 
@@ -1023,7 +1023,7 @@ U8   memType;                   /* memory type used if shareable or not */
    }
 #endif
 
-   RETVALUE(ret);
+   return (ret);
 }
 #endif /* SS_LOCKLESS_MEMORY */
 
@@ -1051,7 +1051,7 @@ U8   memType;                   /* memory type used if shareable or not */
 
     ret = SGetSBuf(region, pool, ptr, size);
 
-    RETVALUE(ret);
+    return (ret);
 }
 
 
@@ -1078,7 +1078,7 @@ U8   memType;                   /* memory type used if shareable or not */
  
    ret = SPutSBuf(region, pool, ptr, size);
 
-   RETVALUE(ret);
+   return (ret);
 
 }
 #endif
@@ -1121,7 +1121,7 @@ Size size                       /* size requested */
 #endif
 #endif
 
-    RETVALUE(ret);
+    return (ret);
 }
 
 #ifdef T2K_MEM_LEAK_DBG
@@ -1158,7 +1158,7 @@ Size size                      /* size */
 #endif
 #endif
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 #endif  /* INTEL_WLS */
@@ -1265,28 +1265,28 @@ Size size;                      /* size requested */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS211, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate pool ID */
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS212, pool, "Invalid pool");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 /* ss008.13: addition */
    /* validate data pointer */
    if (ptr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS214, (ErrVal)0 , "NULL data pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate size */
    if (size <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS215, size, "Invalid size");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 /* ss037.103 Removed the semaphore operation for performance enhancement */
@@ -1305,7 +1305,7 @@ Size size;                      /* size requested */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -1322,12 +1322,12 @@ Size size;                      /* size requested */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS217, ERRZERO,
                   "Could not release semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS218, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 #endif
@@ -1425,7 +1425,7 @@ Size size;                      /* size requested */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS219, ERRZERO,
                   "Could not release semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 #endif
@@ -1439,7 +1439,7 @@ Size size;                      /* size requested */
     }
 #endif /* SSI_DEBUG_LEVEL1 */
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1539,28 +1539,28 @@ Size size;                      /* size */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS220, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate pool ID */
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS221, pool, "Invalid pool");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 /* ss008.13: addition */
    /* validate data pointer */
    if (ptr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS223, (ErrVal)0, "NULL data pointe");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate size */
    if (size <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS224, size, "Invalid size");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 /* ss037.103 Removed the semaphore operation for performance enhancement */
@@ -1578,7 +1578,7 @@ Size size;                      /* size */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1594,12 +1594,12 @@ Size size;                      /* size */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS226, ERRZERO,
                   "Could not release semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS227, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1655,7 +1655,7 @@ Size size;                      /* size */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS228, ERRZERO,
                   "Could not release semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 #endif
@@ -1670,7 +1670,7 @@ Size size;                      /* size */
     }
 #endif /* SSI_DEBUG_LEVEL1 */
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1713,13 +1713,13 @@ Buffer *mBuf;
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS062, ERRZERO, "SInitMsg: Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS063, ERRZERO, "SInitMsg: Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1729,7 +1729,7 @@ Buffer *mBuf;
    CM_MEM_GET_REGION(tmpRegId);
    if(tmpRegId == 0xFF)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    minfo = (SsMsgInfo*) mBuf->b_rptr;
@@ -1756,7 +1756,7 @@ Buffer *mBuf;
    minfo->endptr = NULLP;
    minfo->next = NULLP;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* ss016.301 - Added a new API - SAddPreMsgMultInOrder. This preserves the
@@ -1815,27 +1815,27 @@ PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS070, ERRZERO, "SAddPreMsgMultInOrder:\
                                                    Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check source */
    if (src == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS071, ERRZERO, "SAddPreMsgMultInOrder:\
                                                    Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check count */
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS072, ERRZERO, "SAddPreMsgMultInOrder:\
                                                    Invalid count");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS073, ERRZERO, "SAddPreMsgMultInOrder:\
                                                    Incorrect buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1875,7 +1875,7 @@ PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
       if (!cnt)
       {
          minfo->len += len;
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    newblk = prevblk = NULLP;
@@ -1900,7 +1900,7 @@ PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
             tmp->b_rptr = tmp->b_datap->db_base + offset;
          }
 
-         RETVALUE(ROUTRES);
+         return (ROUTRES);
       }
       /* attach curblk in the newblk chain */
       if (prevblk)
@@ -1947,7 +1947,7 @@ PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
    /* update length of message */
    minfo->len += len;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /*
 *
@@ -1995,13 +1995,13 @@ Buffer *mBuf;
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS064, ERRZERO, "SAddPreMsg: Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS065, ERRZERO, "SAddPreMsg: Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED); 
+      return RFAILED; 
    }
 #endif
 
@@ -2014,7 +2014,7 @@ Buffer *mBuf;
    if (minfo->len == 0x7FFF)
 #endif
    {
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
       
    /*
@@ -2030,7 +2030,7 @@ Buffer *mBuf;
       {
          SSLOGERROR(ERRCLS_DEBUG, ESS066, ERRZERO, "SAddPreMsg:Failed in\
                     SGetDBuf");
-         RETVALUE(ROUTRES);
+         return (ROUTRES);
       }
       /* set the read and write pointers to end of data buffer */
       /* subsequent prepends have all the buffer to insert data into */
@@ -2050,7 +2050,7 @@ Buffer *mBuf;
    *--tmp->b_rptr = data;
    minfo->len++;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2099,13 +2099,13 @@ Buffer *mBuf;
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS067, ERRZERO, "SAddPstMsg: Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS068, ERRZERO, "SAddPstMsg: Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -2119,7 +2119,7 @@ Buffer *mBuf;
       {
          SSLOGERROR(ERRCLS_DEBUG, ESS069, ERRZERO, "SAddPstMsg: Failed in\
                                                     SGetDBuf()");
-         RETVALUE(ROUTRES);
+         return (ROUTRES);
       }
 
       /* append newb to the end of the mBuf chain */
@@ -2137,7 +2137,7 @@ Buffer *mBuf;
    *tmp->b_wptr++ = data;
    minfo->len++;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2211,26 +2211,26 @@ Buffer *mBuf;
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS070, ERRZERO, "SAddPreMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check source */
    if (src == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS071, ERRZERO, "SAddPreMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check count */
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS072, ERRZERO, "SAddPreMsgMult: Invalid\
                                                    count");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS073, ERRZERO, "SAddPreMsgMult: Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -2260,7 +2260,7 @@ Buffer *mBuf;
       if (!cnt)
       {
          minfo->len += len;
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    newblk = prevblk = NULLP;
@@ -2280,7 +2280,7 @@ Buffer *mBuf;
             tmp->b_rptr = tmp->b_datap->db_base + offset;
          }
 
-         RETVALUE(ROUTRES);
+         return (ROUTRES);
       }
       /* attach curblk in the newblk chain */
       if (prevblk)
@@ -2316,7 +2316,7 @@ Buffer *mBuf;
    /* update length of message */
    minfo->len += len;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2389,26 +2389,26 @@ Buffer *mBuf;
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS074, ERRZERO, "SAddPstMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check source */
    if (src == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS075, ERRZERO, "SAddPstMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check count */
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS076, ERRZERO, "SAddPstMsgMult:Invalid\
                                                    count");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS077, ERRZERO, "SAddPstMsgMult: Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
  
@@ -2446,7 +2446,7 @@ Buffer *mBuf;
       if (!cnt)
       {
          minfo->len += len;
-         RETVALUE(ROK);
+         return ROK;
       }
    }
 
@@ -2468,7 +2468,7 @@ Buffer *mBuf;
             tmp->b_wptr = tmp->b_datap->db_lim - offset;
          }
 
-         RETVALUE(ROUTRES);
+         return (ROUTRES);
       }
 
       /* insert curblk in the newblk chain */
@@ -2504,7 +2504,7 @@ Buffer *mBuf;
    /* update length */
    minfo->len += len;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* #ifdef SS_LOCKLESS_MEMORY */
@@ -2560,24 +2560,24 @@ Buffer *mBuf;
    if (!dataPtr)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS078, ERRZERO, "SRemPreMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message buffer */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS079, ERRZERO, "SRemPreMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS080, ERRZERO, "SRemPreMsg : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
    if (!(tmp = mBuf->b_cont))
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
 
    /* get SsMsgInfo of mBuf */
    minfo = (SsMsgInfo *) mBuf->b_rptr;
@@ -2595,7 +2595,7 @@ Buffer *mBuf;
    if (!--minfo->len)
       minfo->endptr = NULLP;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2648,19 +2648,19 @@ Buffer *mBuf;               /* message buffer */
    if (dataPtr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS081, ERRZERO, "SRemPstMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message buffer */
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS082, ERRZERO, "SRemPstMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS083, ERRZERO, "SRemPstMsg : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -2668,7 +2668,7 @@ Buffer *mBuf;               /* message buffer */
    minfo = (SsMsgInfo*) mBuf->b_rptr;
 
    if (!(last = minfo->endptr))
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
 
    /* read databyte into dataPtr and decrement write ptr */
    *dataPtr = *--last->b_wptr;
@@ -2690,7 +2690,7 @@ Buffer *mBuf;               /* message buffer */
    /* update SsMsgInfo */
    minfo->len--;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2755,13 +2755,13 @@ Buffer *mBuf;               /* message buffer */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS084, ERRZERO, "SRemPreMsgMult:Invalid\
                                                    count");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message buffer */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS085, ERRZERO, "SRemPreMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* ss021.103 - Addition to check for NULL pointer */
    /* check data pointer */
@@ -2770,7 +2770,7 @@ Buffer *mBuf;               /* message buffer */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS086, ERRZERO, "SRemPreMsgMult : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -2779,7 +2779,7 @@ Buffer *mBuf;               /* message buffer */
 
    /* check if data present */
    if (minfo->len < cnt)
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    else
       minfo->len -= cnt;
 
@@ -2814,7 +2814,7 @@ Buffer *mBuf;               /* message buffer */
    if (!minfo->len)
       minfo->endptr = NULLP;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2879,19 +2879,19 @@ Buffer *mBuf;               /* message buffer */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS087, ERRZERO, "SRemPstMsgMult:Invalid\
                                                    count");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message buffer */
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS088, ERRZERO, "SRemPstMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS089, ERRZERO, "SRemPstMsgMult : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* ss021.103 - Addition to check dst data pointer */
    /* check data pointer */
@@ -2903,7 +2903,7 @@ Buffer *mBuf;               /* message buffer */
  
    /* check if data present */
    if (minfo->len < cnt)
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    else
    {
       minfo->len -= cnt;
@@ -2950,7 +2950,7 @@ Buffer *mBuf;               /* message buffer */
    else
       minfo->endptr = prev;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -3005,25 +3005,25 @@ MsgLen idx;                 /* index */
    if (!dataPtr)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS090, ERRZERO, "SExamMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message buffer */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS091, ERRZERO, "SExamMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check index */
    if (idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS092, ERRZERO, "SExamMsg : Invalid Index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS093, ERRZERO, "SExamMsg : Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
  
@@ -3032,7 +3032,7 @@ MsgLen idx;                 /* index */
 
    if (minfo->len <= idx)
    {
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
 
    /* get the first SS_M_DATA blk */
@@ -3043,7 +3043,7 @@ MsgLen idx;                 /* index */
 
    *dataPtr = *(tmp->b_rptr + idx);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3104,25 +3104,25 @@ MsgLen dataLen;
    if (!dataPtr)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS090, ERRZERO, "SGetDataFrmMsg: Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message buffer */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS091, ERRZERO, "SGetDataFrmMsg: Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check index */
    if (idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS092, ERRZERO, "SGetDataFrmMsg: Invalid Index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS093, ERRZERO, "SGetDataFrmMsg: Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
  
@@ -3131,7 +3131,7 @@ MsgLen dataLen;
 
    if (minfo->len <= (idx + dataLen) )
    {
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
 
    /* get the first SS_M_DATA blk */
@@ -3140,7 +3140,7 @@ MsgLen dataLen;
    /* determine offset */
    if(tmp == NULLP)
 	{
-		RETVALUE(ROKDNA);	
+		return (ROKDNA);	
 	}
 	else
 	{
@@ -3158,12 +3158,12 @@ MsgLen dataLen;
 	  }
 	  if( tmp == NULLP )
 	  {
-	    RETVALUE(ROKDNA);	
+	    return (ROKDNA);	
 	  }
      SMemCpy((Void *)tmpDataPtr, (Void *)(tmp->b_rptr + idx), (size_t)dataLen);
 	}
 
-   RETVALUE(ROK);
+   return ROK;
 } /* End of SGetDataFrmMsg() */
 
 /*
@@ -3205,19 +3205,19 @@ MsgLen *lngPtr;             /* pointer to length */
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS094, ERRZERO, "SFndLenMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check length pointer */
    if (lngPtr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS095, ERRZERO, "SFndLenMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS096, ERRZERO, "SFndLenMsg : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
  
@@ -3227,7 +3227,7 @@ MsgLen *lngPtr;             /* pointer to length */
    /* read length */
    *lngPtr = minfo->len;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3307,24 +3307,24 @@ Buffer **mBuf2;             /* message 2 */
    if (mBuf1 == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS097, ERRZERO, "SSegMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message buffer 2 */
    if (mBuf2 == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS098, ERRZERO, "SSegMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS099, ERRZERO, "SSegMsg : Invalid index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf1->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS100, ERRZERO, "SSegMsg : Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -3338,13 +3338,13 @@ Buffer **mBuf2;             /* message 2 */
    if (idx >= minfo1->len)
    {
       *mBuf2 = NULLP;
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
    /* allocate message buffer */
    if (SGetMsg(minfo1->region, minfo1->pool, mBuf2) != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS101, ERRZERO, "SSegMsg : SGetMsg failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* get the SsMsgInfo of mBuf2 */
@@ -3366,7 +3366,7 @@ Buffer **mBuf2;             /* message 2 */
       minfo1->endptr = NULLP;
       mBuf1->b_cont = NULLP;
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* get the first SS_M_DATA blk */
@@ -3396,7 +3396,7 @@ Buffer **mBuf2;             /* message 2 */
          /* reset length */
          minfo1->len += minfo2->len;
          (Void) SPutMsg(*mBuf2);
-         RETVALUE(ROUTRES);
+         return (ROUTRES);
       }
 
       (*mBuf2)->b_cont = next;
@@ -3434,7 +3434,7 @@ Buffer **mBuf2;             /* message 2 */
          /* reset length */
          minfo1->len += minfo2->len;
          (Void) SPutMsg(*mBuf2);
-         RETVALUE(ROUTRES);
+         return (ROUTRES);
       }
       (*mBuf2)->b_cont = next;
       tmp->b_wptr = tmp->b_rptr + idx;
@@ -3458,7 +3458,7 @@ Buffer **mBuf2;             /* message 2 */
 #endif /*SS_MULTICORE_SUPPORT*/
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -3506,31 +3506,31 @@ MsgLen *cCnt;               /* copied count */
    if (srcBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS102, ERRZERO, "SCpyFixMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check destination message buffer */
    if (dstMbuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS103, ERRZERO, "SCpyFixMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check copied count buffer */
    if (cCnt == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS104, ERRZERO, "SCpyFixMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check copy count */
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS105, ERRZERO, "SCpyFixMsg : Invalid count");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (dstMbuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS106, ERRZERO, "SCpyFixMsg : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -3541,7 +3541,7 @@ MsgLen *cCnt;               /* copied count */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS107, ERRZERO, "SCpyFixMsg : Invalid Index");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 /* ss021.103 - Addition test if message length will exceed max msg length */
@@ -3555,7 +3555,7 @@ MsgLen *cCnt;               /* copied count */
       *cCnt = 0;
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS108, ERRZERO, "SCpyFixMsg : msgLen + cnt > maxS16");
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 #endif
    
@@ -3568,11 +3568,11 @@ MsgLen *cCnt;               /* copied count */
          SSLOGERROR(ERRCLS_DEBUG, ESS109, ERRZERO, "SCpyFixMsg : Failed in\
                                                     SAddPreMsgMult");
 #endif
-         RETVALUE(ret);
+         return (ret);
       }
       *cCnt = cnt;
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* add data at the end of the dst buffer */
@@ -3580,17 +3580,17 @@ MsgLen *cCnt;               /* copied count */
    {
       if ((ret = SAddPstMsgMult(srcBuf, cnt, dstMbuf)) != ROK)
       {
-         RETVALUE(ret);
+         return (ret);
       }
       *cCnt = cnt;
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* segment the message into dstMbuf and right */
    if ((ret = SSegMsg(dstMbuf, dstIdx, &right)) != ROK)
    {
-      RETVALUE(ret);
+      return (ret);
    }
 
    /* append data at the end of dstMbuf */
@@ -3598,7 +3598,7 @@ MsgLen *cCnt;               /* copied count */
    {
       /* ss020.103 - Addition for cleanup */
       (Void) SPutMsg(right);
-      RETVALUE(ret);
+      return (ret);
    }
 
    /* cancatenate dstMbuf and right */
@@ -3606,14 +3606,14 @@ MsgLen *cCnt;               /* copied count */
    {
       /* ss020.103 - Addition for cleanup */
       (Void) SPutMsg(right);
-      RETVALUE(ret);
+      return (ret);
    }
 
    *cCnt = cnt;
 
    (Void) SPutMsg(right);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -3662,35 +3662,35 @@ MsgLen *cCnt;               /* copied count */
    if (srcMbuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS110, ERRZERO, "SCpyMsgFix : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check destination message buffer */
    if (dstBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS111, ERRZERO, "SCpyMsgFix : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS112, ERRZERO, "SCpyMsgFix : Invalid Index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (srcIdx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS113, ERRZERO, "SCpyMsgFix : Invalid Index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (!cCnt)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS114, ERRZERO, "SCpyMsgFix : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (srcMbuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS115, ERRZERO, "SCpyMsgFix : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -3700,7 +3700,7 @@ MsgLen *cCnt;               /* copied count */
    if ((srcIdx + cnt) > minfo->len)
    {
       *cCnt = 0;
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
 
    /* get the first SS_M_DATA blk */
@@ -3741,7 +3741,7 @@ MsgLen *cCnt;               /* copied count */
          break;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -3809,27 +3809,27 @@ Buffer **dstBuf;
    if (!srcBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS116, ERRZERO, "SCpyMsgMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (srcBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS117, ERRZERO, "SCpyMsgMsg : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* ss021.103 - Addition to validate region and pool */
    if (dstRegion >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS118, ERRZERO, 
                  "SCpyMsgMsg : Invalid region id");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (dstPool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS119, ERRZERO, 
                  "SCpyMsgMsg : Invalid pool id");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 /* ss037.103 Removed the semaphore operation for performance enhancement */
 
@@ -3845,7 +3845,7 @@ Buffer **dstBuf;
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -3859,12 +3859,12 @@ Buffer **dstBuf;
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS121, ERRZERO,
                   "Could not release semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS122, dstRegion, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 /* ss037.103 Removed the semaphore operation for performance enhancement */
@@ -3875,7 +3875,7 @@ Buffer **dstBuf;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS123, ERRZERO,
                   "Could not release semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 #endif
@@ -3891,7 +3891,7 @@ Buffer **dstBuf;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS124, ERRZERO, "SCpyMsgMsg : SGetMsg failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* get the SsMsgInfo from srcBuf */
    minfo1 = (SsMsgInfo*) srcBuf->b_rptr;
@@ -3925,7 +3925,7 @@ Buffer **dstBuf;
             }
             printf("Failed to get the buffer of size %s %d\n", __FILE__, __LINE__);
             (Void) SPutMsg(*dstBuf);
-            RETVALUE(ROUTRES);
+            return (ROUTRES);
          }
 
          if (!prevblk)
@@ -3943,7 +3943,7 @@ Buffer **dstBuf;
       minfo2->endptr = curblk;
       (*dstBuf)->b_cont = newblk;
 
-      RETVALUE(ROK);
+      return ROK;
 }
 
 
@@ -4008,13 +4008,13 @@ Buffer **dstBuf;
    if (!srcBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS126, ERRZERO, "SAddMsgRef : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (srcBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS127, ERRZERO, "SAddMsgRef : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #ifdef XEON_SPECIFIC_CHANGES
@@ -4028,7 +4028,7 @@ Buffer **dstBuf;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS128, ERRZERO, "SAddMsgRef : SGetMsg failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* get the SsMsgInfo from srcBuf */
    minfo1 = (SsMsgInfo*) srcBuf->b_rptr;
@@ -4063,7 +4063,7 @@ Buffer **dstBuf;
                newblk = curblk;
             }
             (Void) SPutMsg(*dstBuf);
-            RETVALUE(ROUTRES);
+            return (ROUTRES);
          }
 
          if (!prevblk)
@@ -4081,7 +4081,7 @@ Buffer **dstBuf;
       minfo2->endptr = curblk;
       (*dstBuf)->b_cont = newblk;
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* allocate a data buffer */
@@ -4091,7 +4091,7 @@ Buffer **dstBuf;
       (Void) SPutMsg(*dstBuf);
       SSLOGERROR(ERRCLS_DEBUG, ESS129, ERRZERO, "SAddMsgRef : ssGetDBufOfSize\
                  failed");
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
    dBuf->b_datap->db_type = SS_M_DATA;
 
@@ -4108,7 +4108,7 @@ Buffer **dstBuf;
    minfo2->endptr = dBuf;
    (*dstBuf)->b_cont = dBuf;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /* ss012.13: Addition */
 #ifdef SS_M_PROTO_REGION 
@@ -4162,14 +4162,14 @@ Buffer *mp;                 /* message block */
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS130, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
   if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS131, ERRZERO, "DupMsg : Invalid region\
                                                    id");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -4193,7 +4193,7 @@ Buffer *mp;                 /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS132, (ErrVal) r, "SAlloc() failed");
 #endif
 
-     RETVALUE(NULLP);
+     return (NULLP);
    }
 /* generic set-up-message function */
 #if 1
@@ -4218,7 +4218,7 @@ Buffer *mp;                 /* message block */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS335, ERRZERO,
                      "Could not lock the mBuf Ref Lock");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
    /* increment the reference count of the dblock */
@@ -4230,12 +4230,12 @@ Buffer *mp;                 /* message block */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS335, ERRZERO,
                      "Could not lock the mBuf Ref Lock");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
 
-   RETVALUE(bp);
+   return (bp);
 } /* DupMsg */
 #endif /* SS_M_PROTO_REGION */
 
@@ -4313,19 +4313,19 @@ Buffer **bufPtr;            /* pointer to buffer */
    if (!bufPtr)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS133, ERRZERO, "SGetDBuf : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS134, ERRZERO, "SGetDBuf : Invalid region\
                                                    id");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS135, ERRZERO, "SGetDBuf : Invalid pool id");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 /* ss037.103 Removed the semaphore operation for performance enhancement */
 
@@ -4341,7 +4341,7 @@ Buffer **bufPtr;            /* pointer to buffer */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -4358,12 +4358,12 @@ Buffer **bufPtr;            /* pointer to buffer */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS137, ERRZERO,
                   "Could not release semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS138, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 /* ss037.103 Removed the semaphore operation for performance enhancement */
@@ -4374,7 +4374,7 @@ Buffer **bufPtr;            /* pointer to buffer */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS139, ERRZERO,
                   "Could not release semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 #endif
@@ -4407,7 +4407,7 @@ Buffer **bufPtr;            /* pointer to buffer */
     if (SAlloc(region, &mdsize, 0, (Data **) bufPtr) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
     {
-       RETVALUE(ROUTRES);
+       return (ROUTRES);
     }
     data = (Data *) (*bufPtr) + MDBSIZE;
     size = mdsize - MDBSIZE;
@@ -4422,7 +4422,7 @@ Buffer **bufPtr;            /* pointer to buffer */
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -4487,26 +4487,26 @@ Buffer *buf;
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS141, ERRZERO, "SPutDBuf:Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS142, ERRZERO, "SPutDBuf:Invalid pool");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (buf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS143, ERRZERO, "SPutDBuf:Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ( (buf->b_datap->db_type != SS_M_DATA) && (buf->b_datap->db_type != SS_M_PROTO))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS144, ERRZERO, "SPutDBuf:Incorrect\
                  buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 /* ss016.13: Addition */
@@ -4516,7 +4516,7 @@ Buffer *buf;
    if(dptr->db_type == SS_MEM_TYPE_SSI_ZBC)
    {
       ret = SPutZbcDBuf(region, buf);
-      RETVALUE(ret);
+      return (ret);
    }
 
 #ifdef TENB_DPDK_BUF
@@ -4526,7 +4526,7 @@ Buffer *buf;
       SDetachDpdkPtrFrmDBuf(buf, &dpdkBuf);
       SPutSBufDpdk(dpdkBuf);
       ret = SFree(region, (Data *) buf, MDBSIZE);
-      RETVALUE(ret);
+      return (ret);
    }
 #endif  /* TENB_DPDK_BUF */
 #endif /* SS_USE_ZBC_MEMORY */
@@ -4554,7 +4554,7 @@ Buffer *buf;
    	{
       	   SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,
                 "Could not lock the mBuf Ref Lock");
-      	   RETVALUE(RFAILED);
+      	   return RFAILED;
    	}
 #endif
       --dptr->db_ref;
@@ -4593,7 +4593,7 @@ Buffer *buf;
 #else
          ret =  SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base);
 #endif /* SS_HISTOGRAM_SUPPORT */
-         RETVALUE(ret);
+         return (ret);
       }
 #ifndef SS_DBUF_REFLOCK_DISABLE
       ret = SUnlock(&(dptr->dBufLock));
@@ -4608,7 +4608,7 @@ Buffer *buf;
    ret =  SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base);
 #endif /* SS_HISTOGRAM_SUPPORT */
 #endif /* SS_MULTICORE_SUPPORT */
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -4668,38 +4668,38 @@ Order order;                /* order */
    if (mBuf1 == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS148, ERRZERO, "SCatMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message buffer 2 */
    if (mBuf2 == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS149, ERRZERO, "SCatMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* ss021.103 - Addition to test if same buffer */
    /* check message buffer 1 and 2 not same buffer */
    if (mBuf1 == mBuf2)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS150, ERRZERO, "SCatMsg : mBuf1 == mBuf2");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((order != M1M2) && (order != M2M1))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS151, ERRZERO, "SCatMsg : Invalid Order");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((mBuf1->b_datap->db_type != SS_M_PROTO) ||
        (mBuf2->b_datap->db_type != SS_M_PROTO))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS152, ERRZERO, 
                                          "SCatMsg : Incorrect buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
    /* no data to append or prepend */
    if (!mBuf2->b_cont)
-      RETVALUE(ROK);
+      return ROK;
 
    minfo1 = (SsMsgInfo*) mBuf1->b_rptr;
    minfo2 = (SsMsgInfo*) mBuf2->b_rptr;
@@ -4713,7 +4713,7 @@ Order order;                /* order */
 #endif
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS153, ERRZERO, "SCpyFixMsg : messages too big");
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 #endif
    
@@ -4722,7 +4722,7 @@ Order order;                /* order */
       /* duplicate mBuf2 from the region/pool of mBuf1, initialise mBuf2 */
 /*ss015.13: addition */
       if (SCpyMsgMsg(mBuf2, minfo1->region, minfo1->pool, &newb) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
 
       minfo2 = (SsMsgInfo*) newb->b_rptr;
    }
@@ -4757,7 +4757,7 @@ Order order;                /* order */
 #endif
             if (newb && (newb != mBuf2))
                (Void) SPutMsg(newb);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
    }
@@ -4775,7 +4775,7 @@ Order order;                /* order */
       (Void) SInitMsg(mBuf2);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -4834,18 +4834,18 @@ MsgLen idx;                 /* index */
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS155, ERRZERO, "SRepMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS156, ERRZERO, "SRepMsg : Invalid index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS157, ERRZERO, "SRepMsg : Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -4854,7 +4854,7 @@ MsgLen idx;                 /* index */
    /* if index > length of the buffer */
    if (minfo->len <= idx)
    {
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
 
    tmp = mBuf->b_cont; /* get the first SS_M_DATA blk */
@@ -4871,7 +4871,7 @@ MsgLen idx;                 /* index */
       {
          SSLOGERROR(ERRCLS_DEBUG, ESS158, ERRZERO, "SRepMsg : ssGetDBufOfSize\
                     failed");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       while (numBytes--)
          *newb->b_wptr++ = *tmp->b_rptr++;
@@ -4887,7 +4887,7 @@ MsgLen idx;                 /* index */
    }
    *(tmp->b_rptr + idx) = data;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -4927,24 +4927,24 @@ MsgLen dLen;                    /* data length */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS159, ERRZERO, "SUpdMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (!dBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS160, ERRZERO, "SUpdMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (dLen < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS161, ERRZERO, "SUpdMsg : Invalid length");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((mBuf->b_datap->db_type != SS_M_PROTO) ||
        (dBuf->b_datap->db_type != SS_M_DATA))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS162, ERRZERO, "SUpdMsg : Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -4957,7 +4957,7 @@ MsgLen dLen;                    /* data length */
    if ((dBuf->b_rptr + dLen) > dBuf->b_datap->db_lim)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS163, ERRZERO, "SUpdMsg:Offset out of bounds");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* offset write ptr from read ptr by dLen */
@@ -4974,7 +4974,7 @@ MsgLen dLen;                    /* data length */
 
    minfo->len += dLen;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -5019,20 +5019,20 @@ Buffer *dBuf;                   /* data buffer */
    if (!mBuf || !dBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS164, ERRZERO, "SAddDBufPst : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((mBuf->b_datap->db_type != SS_M_PROTO) ||
        (dBuf->b_datap->db_type != SS_M_DATA))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS165, ERRZERO, "SAddDBufPst : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
    /* no data, return */
    if (dBuf->b_wptr == dBuf->b_rptr)
-      RETVALUE(ROK);
+      return ROK;
 
    minfo = (SsMsgInfo*) (mBuf)->b_rptr;
  
@@ -5047,7 +5047,7 @@ Buffer *dBuf;                   /* data buffer */
 
    minfo->len += dBuf->b_wptr - dBuf->b_rptr;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -5093,20 +5093,20 @@ Buffer *dBuf;                    /* data buffer */
    if (!mBuf || !dBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS166, ERRZERO, "SAddDBufPre : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((mBuf->b_datap->db_type != SS_M_PROTO) ||
        (dBuf->b_datap->db_type != SS_M_DATA))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS167, ERRZERO, "SAddDBufPre : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
  
    /* no data, return */
    if (dBuf->b_wptr == dBuf->b_rptr)
-      RETVALUE(ROK);
+      return ROK;
  
    minfo = (SsMsgInfo*) (mBuf)->b_rptr;
 
@@ -5121,7 +5121,7 @@ Buffer *dBuf;                    /* data buffer */
    if (!tmp)
       minfo->endptr = dBuf;
 
-   RETVALUE(ROK);
+   return ROK;
 }
  
 /*
@@ -5168,19 +5168,19 @@ Buffer **dBufPtr;               /* pointer to data buffer */
    if (dBufPtr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS168, ERRZERO, "SRemDBufPre : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check queue */
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS169, ERRZERO, "SRemDBufPre : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS170, ERRZERO, "SRemDBufPre : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -5198,7 +5198,7 @@ Buffer **dBufPtr;               /* pointer to data buffer */
    if (!(minfo->len -= (*dBufPtr)->b_wptr - (*dBufPtr)->b_rptr))
       minfo->endptr = NULLP;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -5246,19 +5246,19 @@ Buffer **dBufPtr;               /* pointer to data buffer */
    if (!dBufPtr)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS171, ERRZERO, "SRemDBufPst : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS172, ERRZERO, "SRemDBufPst : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS173, ERRZERO, "SRemDBufPst : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
  
@@ -5280,7 +5280,7 @@ Buffer **dBufPtr;               /* pointer to data buffer */
    else
       minfo->endptr = tmp;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -5316,13 +5316,13 @@ Buffer *mBuf;                   /* message buffer */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS174, ERRZERO, "SInitNxtDBuf : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS175, ERRZERO, "SInitNxtDBuf : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -5331,7 +5331,7 @@ Buffer *mBuf;                   /* message buffer */
    /* set the next ptr of mBuf to point to the first SS_M_DATA blk */
    minfo->next = mBuf->b_cont;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -5369,18 +5369,18 @@ Buffer **dBuf;                  /* data buffer return */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS176, ERRZERO, "SGetNxtDBuf : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (!dBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS177, ERRZERO, "SGetNxtDBuf : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS178, ERRZERO, "SGetNxtDBuf : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -5388,12 +5388,12 @@ Buffer **dBuf;                  /* data buffer return */
 
    /* if next ptr of mBuf is NULLP, return */
    if ((*dBuf = minfo->next) == NULLP)
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
 
    /* update next */
    minfo->next = (*dBuf)->b_cont;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -5428,13 +5428,13 @@ Buffer *mBuf;                   /* message buffer */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS179, ERRZERO, "SChkNxtDBuf : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS180, ERRZERO, "SChkNxtDBuf : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS */
 
@@ -5442,9 +5442,9 @@ Buffer *mBuf;                   /* message buffer */
 
    /* if next is valid, return ROK */
    if (minfo->next)
-      RETVALUE(ROK);
+      return ROK;
    else
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
 }
 
 /*
@@ -5487,23 +5487,23 @@ MsgLen *retDatLen;              /* return data length */
    if (!dBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS181, ERRZERO, "SGetDataRx : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (!retDatLen || (pad < 0))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS182, ERRZERO, "SGetDataRx : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (!retDatPtr)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS183, ERRZERO, "SGetDataRx : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (dBuf->b_datap->db_type != SS_M_DATA)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS184, ERRZERO, "SGetDataRx : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS */
 
@@ -5513,7 +5513,7 @@ MsgLen *retDatLen;              /* return data length */
       SSLOGERROR(ERRCLS_DEBUG, ESS185, ERRZERO, "SGetDataRx : Reference\
                                                  count > 1");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* return the write ptr loc(with padding) if there is data to write to */
@@ -5525,10 +5525,10 @@ MsgLen *retDatLen;              /* return data length */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS186, ERRZERO, "SGetDataRx:No data available");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -5570,25 +5570,25 @@ MsgLen *retDatLen;              /* return data length */
    if (!retDatPtr)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS187, ERRZERO, "SGetDataTx : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (!dBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS188, ERRZERO, "SGetDataTx : Null Buffer");
       *retDatPtr = (Data *)NULLP;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (!retDatLen)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS189, ERRZERO, "SGetDataTx : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (dBuf->b_datap->db_type != SS_M_DATA)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS190, ERRZERO, "SGetDataTx : Incorrect\
                                                    buffer type");
       *retDatPtr = (Data *)NULLP;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS */
 
@@ -5601,10 +5601,10 @@ MsgLen *retDatLen;              /* return data length */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS191, ERRZERO, "SGetDataTx : Buffer empty");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifndef SS_ENABLE_MACROS
@@ -5647,19 +5647,19 @@ Pool   *pool;                   /* pool */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS192, ERRZERO, 
                  "SGetBufRegionPool : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((region == NULLP) && (pool == NULLP))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS193, ERRZERO, 
                  "SGetBufRegionPool : Null region and pool pointers");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS194, ERRZERO, 
                  "SUpdMsg : Incorrect buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* (ERRCLASS & ERRCLS_INT_PAR */
 
@@ -5670,7 +5670,7 @@ Pool   *pool;                   /* pool */
       SSLOGERROR(ERRCLS_DEBUG, ESS195, ERRZERO, 
                  "SGetBufRegionPool : mBuf's control data is null");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (region != NULLP)
@@ -5678,7 +5678,7 @@ Pool   *pool;                   /* pool */
    if (pool != NULLP)
       *pool   = mInfo->pool;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of SGetBufRegionPool */
 
 #endif /* SS_ENABLE_MACROS */
@@ -5728,13 +5728,13 @@ Buffer *mBuf;                    /* message buffer */
    if (!mBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS196, ERRZERO, "SCompressMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS197, ERRZERO, "SCompressMsg : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -5742,7 +5742,7 @@ Buffer *mBuf;                    /* message buffer */
 
    if ((tmp = mBuf->b_cont) == minfo->endptr)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* allocate a data buffer of size bytes*/
@@ -5750,7 +5750,7 @@ Buffer *mBuf;                    /* message buffer */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS198, ERRZERO, "SAddMsgRef : ssGetDBufOfSize\
                  failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    dBuf->b_datap->db_type = SS_M_DATA;
 
@@ -5777,7 +5777,7 @@ Buffer *mBuf;                    /* message buffer */
    mBuf->b_cont = dBuf;
    minfo->endptr = dBuf;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -5838,7 +5838,7 @@ S16 dst;                    /* destination id */
       sprintf(prntBuf,"\nmsg: empty\n");
       SPrint(prntBuf);
       SPrint( (S8*)"\n\n");
-      RETVALUE(ROK);
+      return ROK;
    }
 
    for (qlen = 0, tmp = mBuf->b_cont; tmp; qlen++)
@@ -5862,7 +5862,7 @@ S16 dst;                    /* destination id */
       sprintf(prntBuf," empty\n");
       SPrint(prntBuf);
       SPrint( (S8*)"\n\n");
-      RETVALUE(ROK);
+      return ROK;
    }
    tmp = mBuf->b_cont;
    cptr = tmp->b_rptr;
@@ -5930,7 +5930,7 @@ S16 dst;                    /* destination id */
    printf("%s\n", prntBuf);
 #endif   
    }
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SPrntMsg */
 
@@ -5981,16 +5981,16 @@ Buffer *mBuf;               /* message buffer */
    /* check message buffer */
    if (mBuf == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check count */
    if (cnt <= 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    /* get the message info */
@@ -6014,7 +6014,7 @@ Buffer *mBuf;               /* message buffer */
 
       tmp->b_wptr += numBytes;
       if (!cnt)
-         RETVALUE(ROK);
+         return ROK;
    }
    if (ssGetDBufOfSize(minfo->region, cnt, &newb) != ROK)
    {
@@ -6022,7 +6022,7 @@ Buffer *mBuf;               /* message buffer */
       if ((avail) && (tmp))
          tmp->b_wptr = tmp->b_datap->db_lim - avail;
       minfo->len -= avail;
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 
    minfo->len += cnt;
@@ -6042,7 +6042,7 @@ Buffer *mBuf;               /* message buffer */
 
    minfo->endptr = newb;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -6081,26 +6081,26 @@ Buffer *mBuf;
    /* check message buffer */
    if (mBuf == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    /* get the message info */
    minfo = (SsMsgInfo *) (mBuf->b_rptr);
 
    if (minfo->len < 2)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    /* get the first M_DATA blk*/
    tmp = mBuf->b_cont;
 
    if (((tmp->b_rptr + 2) <= tmp->b_wptr) || (SCompressMsg(mBuf) == ROK))
-      RETVALUE(ROK);
+      return ROK;
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 }
 
 /*
@@ -6137,23 +6137,23 @@ Buffer *dBuf;                   /* data buffer  */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS199, ERRZERO, "SAlignDBufEven : Null\
                  Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (dBuf->b_datap->db_type != SS_M_DATA)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS200, ERRZERO, "SAlignDBufEven : Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
    src = dBuf->b_rptr;
 /* ss008.13: addition */
    if (!((PTR)src % (PTR)2))
-      RETVALUE(ROK);
+      return ROK;
 
    if (dBuf->b_datap->db_ref > 1)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    len = dBuf->b_wptr - dBuf->b_rptr;
 
@@ -6172,9 +6172,9 @@ Buffer *dBuf;                   /* data buffer  */
             *--dBuf->b_rptr = *src--;
       }
       else
-         RETVALUE(RFAILED);
+         return RFAILED;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* ss004.13: addition */
@@ -6216,13 +6216,13 @@ U32    align;                      /* alignemnt required */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS201, ERRZERO, "SAlignDBuf: Null\
                  Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (dBuf->b_datap->db_type != SS_M_DATA)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS202, ERRZERO, "SAlignDBuf: Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6232,10 +6232,10 @@ U32    align;                      /* alignemnt required */
                                      * the read and write pointers */
 
    if (!upShift)
-      RETVALUE(ROK);
+      return ROK;
 
    if (dBuf->b_datap->db_ref > 1)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    downShift = align - upShift;   /* no of bytes by which to shift down
                                    * the read and write pointers */
@@ -6261,10 +6261,10 @@ U32    align;                      /* alignemnt required */
             *--dBuf->b_rptr = *src--;
       }
       else
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6310,14 +6310,14 @@ Pool *pool;                     /* pointer to pool ID */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS203, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate pointer to pool ID */
    if (pool == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS204, region, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6326,7 +6326,7 @@ Pool *pool;                     /* pointer to pool ID */
    *pool = 0;
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6371,14 +6371,14 @@ Pool pool;                      /* pool ID */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS205, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate pool ID */
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS206, region, "Invalid pool");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* ss021.103 - Addition to check if region is registered */
@@ -6392,7 +6392,7 @@ Pool pool;                      /* pool ID */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -6405,12 +6405,12 @@ Pool pool;                      /* pool ID */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS208, ERRZERO,
                   "Could not release semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS209, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6419,12 +6419,12 @@ Pool pool;                      /* pool ID */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS210, ERRZERO,
                   "Could not release semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6468,21 +6468,21 @@ Status *status;                 /* pointer to status */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS229, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate pool ID */
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS230, region, "Invalid pool");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate status pointer */
    if (status == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS231, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 /* ss037.103 Removed the semaphore operation for performance enhancement */
@@ -6498,7 +6498,7 @@ Status *status;                 /* pointer to status */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -6513,19 +6513,19 @@ Status *status;                 /* pointer to status */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS233, ERRZERO,
                   "Could not release semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS234, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* verify that this is a valid pool */
    if (osCp.regionTbl[region].poolTbl[pool].type != SS_POOL_DYNAMIC)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS235, ERRZERO, "Invalid pool");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #endif
@@ -6545,12 +6545,12 @@ Status *status;                 /* pointer to status */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS236, ERRZERO,
                   "Could not release semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 #endif
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /*
@@ -6598,25 +6598,25 @@ Buffer *mBuf2;              /* message 2 */
    if (mBuf1 == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS237, ERRZERO, "SSwapMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check message buffer 2 */
    if (mBuf2 == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS238, ERRZERO, "SSwapMsg : Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf1->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS239, ERRZERO, "SSwapMsg: Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf2->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS240, ERRZERO, "SSwapMsg: Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    minfo1 = (SsMsgInfo*) mBuf1->b_rptr;
    minfo2 = (SsMsgInfo*) mBuf2->b_rptr;
@@ -6624,7 +6624,7 @@ Buffer *mBuf2;              /* message 2 */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS241, ERRZERO, "SSwapMsg: differnt regions\
                                                    for messages");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6659,7 +6659,7 @@ Buffer *mBuf2;              /* message 2 */
    SMemCpy((Void *) (mBuf1->b_datap->db_base), (Void *) (mBuf2->b_datap->db_base), (size_t)(sizeof(SsMsgInfo)));
    SMemCpy((Void *) (mBuf2->b_datap->db_base), (Void *) minfop, (size_t)(sizeof(SsMsgInfo)));
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /* ss004.301 : Cavium changes */
 #ifdef SS_SEUM_CAVIUM
@@ -6705,7 +6705,7 @@ PUBLIC S16 SConvPtrPhy (mBuf)
   /* check mBuf for NULLP */
   if ( (mBuf == NULLP) || (*mBuf == NULLP ) )
   {
-	 RETVALUE(RFAILED);
+	 return RFAILED;
   }
 
   /* first block in Buffer is head */
@@ -6818,7 +6818,7 @@ PUBLIC S16 SConvPtrPhy (mBuf)
 
   *mBuf = (Buffer*)cvmx_ptr_to_phys (*mBuf);
 
-  RETVALUE(ROK);
+  return ROK;
 
 } /* SConvPtrPhy */
 
@@ -6863,7 +6863,7 @@ PUBLIC S16 SConvPhyPtr (workPtr)
   /* check workPtr for NULLP */
   if ( (workPtr == NULLP) || (*workPtr == NULLP) )
   {
-	 RETVALUE(RFAILED);
+	 return RFAILED;
   }
 
   /* Convert the buffer address to pointer */
@@ -6976,7 +6976,7 @@ PUBLIC S16 SConvPhyPtr (workPtr)
   /* Place the converted buffer */
   *workPtr = mBuf;
 
-  RETVALUE(ROK);
+  return ROK;
 
 } /* SConvPhyPtr */
 
@@ -7033,14 +7033,14 @@ PUBLIC S16 SCpyFpaMsg (srcBuf, dstRegion, dstPool, dstBuf)
 
   if ( srcBuf == (Buffer*)NULLP )
   {
-	 RETVALUE(RFAILED);
+	 return RFAILED;
   }
 
   if ((dstRegion >= SS_MAX_REGS) || (dstPool >= SS_MAX_POOLS_PER_REG))
   {
 	 /* Free the source buffer and return failure */
 	 SPutFpaMsg(srcBuf);
-	 RETVALUE(RFAILED);
+	 return RFAILED;
   }
 
   /* Allocate memory for destination buffer */
@@ -7048,7 +7048,7 @@ PUBLIC S16 SCpyFpaMsg (srcBuf, dstRegion, dstPool, dstBuf)
   {
 	 /* Free the source buffer and return failure */
 	 SPutFpaMsg(srcBuf);
-	 RETVALUE(ROUTRES);
+	 return (ROUTRES);
   }
 
   /* get the minfo of dest and src buffers */
@@ -7080,7 +7080,7 @@ PUBLIC S16 SCpyFpaMsg (srcBuf, dstRegion, dstPool, dstBuf)
 		(Void) SPutMsg(*dstBuf);
 		/* Free the source buffer and return failure */
 		SPutFpaMsg(srcBuf);
-		RETVALUE(ROUTRES);
+		return (ROUTRES);
 	 }
 
 	 dat = (Data *)tmpblk + MDBSIZE;
@@ -7130,7 +7130,7 @@ PUBLIC S16 SCpyFpaMsg (srcBuf, dstRegion, dstPool, dstBuf)
   /* Free the source buffer after copying it */
   SPutFpaMsg(srcBuf);
 
-  RETVALUE(ROK);
+  return ROK;
 
 } /* SCpyFpaMsg */
 
@@ -7183,7 +7183,7 @@ PUBLIC S16 SCpyMsgFpa (srcBuf, dstBuf)
 
   if (srcBuf == (Buffer*)NULLP)
   {
-	 RETVALUE(RFAILED);
+	 return RFAILED;
   }
 
   *dstBuf = (Buffer*)cvmx_fpa_alloc(SS_CVMX_POOL_0);
@@ -7192,7 +7192,7 @@ PUBLIC S16 SCpyMsgFpa (srcBuf, dstBuf)
   {
 	 /* Free the source buffer before returning  */
 	 SPutMsg(srcBuf);
-	 RETVALUE(ROUTRES);
+	 return (ROUTRES);
   }
 
   dat = (Data *)(*dstBuf) + MDBSIZE;
@@ -7250,7 +7250,7 @@ PUBLIC S16 SCpyMsgFpa (srcBuf, dstBuf)
 		  SPutFpaMsg(*dstBuf);
 		  /* Free the source buffer before returning  */
 		  SPutMsg(srcBuf);
-		  RETVALUE(RFAILED);
+		  return RFAILED;
 	 }
 
 	 /* Allocate for mBuf and copy both the header and contents */
@@ -7264,7 +7264,7 @@ PUBLIC S16 SCpyMsgFpa (srcBuf, dstBuf)
 		SPutFpaMsg(*dstBuf);
 		/* Free the source buffer before returning  */
 		SPutMsg(srcBuf);
-		RETVALUE(ROUTRES);
+		return (ROUTRES);
 	 }
 
 	 dat = (Data *)tmpblk + MDBSIZE;
@@ -7315,7 +7315,7 @@ PUBLIC S16 SCpyMsgFpa (srcBuf, dstBuf)
   /* Free the source buffer after copying it */
   SPutMsg(srcBuf);
 
-  RETVALUE(ROK);
+  return ROK;
 
 } /* SCpyMsgFpa */
 
@@ -7355,7 +7355,7 @@ Buffer *fpaBuf;
 
   if( fpaBuf == NULLP )
   {
-	 RETVALUE(ROK);
+	 return ROK;
   }
 
   curBlk = fpaBuf->b_cont;
@@ -7398,7 +7398,7 @@ Buffer *fpaBuf;
 
   cvmx_fpa_free(fpaBuf, SS_CVMX_POOL_0, 0);
 
-  RETVALUE(ROK);
+  return ROK;
 
 } /* SPutFpaMsg */
 
@@ -7454,24 +7454,24 @@ Buffer *dstBuf;
    if (!srcBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Null src Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (srcBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Incorrect\
                                                    src buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if(!dstBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Null dst Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (dstBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Incorrect\
                                                    dst buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* (ERRCLASS & ERRCLS_INT_PAR) */
 
@@ -7483,7 +7483,7 @@ Buffer *dstBuf;
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Incorrect\
                                                    idx value ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    sBuf = srcBuf->b_cont;
@@ -7518,7 +7518,7 @@ Buffer *dstBuf;
          {
             SSLOGERROR(ERRCLS_DEBUG, ESS125, ERRZERO, "SCpyPartMsg : SGetDBuf\
                  failed");
-            RETVALUE(ROUTRES);
+            return (ROUTRES);
          }
          dCnt = MIN(cnt, (dBuf->b_datap->db_lim - dBuf->b_datap->db_base));
          dPrev->b_cont = dBuf;
@@ -7571,7 +7571,7 @@ Buffer *dstBuf;
    dMinfo->len += numCpd;
    dMinfo->endptr = dBuf; 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -7621,24 +7621,24 @@ Buffer *dstBuf;
    if (!dstBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Null dstBuf");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (dstBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Incorrect\
                                                    dstBuf buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if(!srcBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Null Src Buffer ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (srcBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Incorrect\
                                                    sBuf buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif  /* (ERRCLASS & ERRCLS_INT_PAR) */
 
@@ -7649,7 +7649,7 @@ Buffer *dstBuf;
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Incorrect\
                                                    cnt value ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    dBuf = dstBuf->b_cont;
@@ -7692,10 +7692,10 @@ Buffer *dstBuf;
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : unable to replace\
                                                     some bytes ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -7766,18 +7766,18 @@ Buffer *dstBuf;             /* message 2 */
    if ((!srcBuf) || (!dstBuf ))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS097, ERRZERO, "SMovPartMsg : Null Buffer (src or Dst)");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS099, ERRZERO, "SMovPartMsg : Invalid index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((srcBuf->b_datap->db_type != SS_M_PROTO) || (dstBuf->b_datap->db_type != SS_M_PROTO)) 
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS100, ERRZERO, "SMovPartMsg : Incorrect buffer\
                                                    type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -7791,7 +7791,7 @@ Buffer *dstBuf;             /* message 2 */
    /*-- ss008.301 */
    if (idx > sMinfo->len)
    {
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
 
    /* one block might not sufficient - Check for generic implementation */
@@ -7813,7 +7813,7 @@ Buffer *dstBuf;             /* message 2 */
          {
             SSLOGERROR(ERRCLS_DEBUG, ESS125, ERRZERO, "SCpyMsgPartMsg : SGetDBuf\
                  failed");
-            RETVALUE(ROUTRES);
+            return (ROUTRES);
          }
          dCnt = MIN(idx, (dBuf->b_datap->db_lim - dBuf->b_datap->db_base));
          dPrev->b_cont = dBuf;
@@ -7874,10 +7874,10 @@ Buffer *dstBuf;             /* message 2 */
       dMinfo->len -= idx;
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SMovPartMsg : unable to copy\
                                                     some bytes ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -7935,26 +7935,26 @@ Buffer *mBuf;
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS070, ERRZERO, "SPkMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check source */
    if (src == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS071, ERRZERO, "SPkMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check count */
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS072, ERRZERO, "SPkMsgMult: Invalid\
                                                    count");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS073, ERRZERO, "SPkMsgMult: Incorrect\
                                                    buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -7983,7 +7983,7 @@ Buffer *mBuf;
       minfo->len += numBytes;
       if (!cnt)
       {
-         RETVALUE(ROK);
+         return ROK;
       }
    }
 
@@ -7991,7 +7991,7 @@ Buffer *mBuf;
    newblk = NULLP;
    if (ssGetDBufOfSize(minfo->region, cnt, &newblk) != ROK)
    {
-       RETVALUE(ROUTRES);
+       return (ROUTRES);
    }
    newblk->b_datap->db_type = SS_M_DATA;
    newblk->b_rptr = newblk->b_datap->db_lim - cnt;
@@ -8003,7 +8003,7 @@ Buffer *mBuf;
    minfo->len += cnt;
    minfo->endptr = newblk;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /* ss006.301 : new buffer management APIs, end */
 /*
@@ -8047,7 +8047,7 @@ MsgLen *len;
       *len = 0;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #ifdef SS_USE_ZBC_MEMORY
 /*
@@ -8112,7 +8112,7 @@ Buffer** mBuf;
    if (ptr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: Null PTR");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -8122,7 +8122,7 @@ Buffer** mBuf;
    if(SGetMsg(region, pool, mBuf) != ROK)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SGetMsg Failed");
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 
    mdsize = MDBSIZE;
@@ -8135,7 +8135,7 @@ Buffer** mBuf;
    {
        SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SAlloc Failed");
        SPutMsg(*mBuf);
-       RETVALUE(ROUTRES);
+       return (ROUTRES);
    }
 
    (*mBuf)->b_cont = newblk;
@@ -8164,7 +8164,7 @@ Buffer** mBuf;
    minfo->len = totalLen;
    minfo->endptr = newblk;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -8249,7 +8249,7 @@ Buffer *buf;
    	{
       	   SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,
                 "Could not lock the mBuf Ref Lock");
-      	   RETVALUE(RFAILED);
+      	   return RFAILED;
    	}
 #endif
       --dptr->db_ref;
@@ -8286,14 +8286,14 @@ Buffer *buf;
 #else
          ret =  SFree(region, (Data *) buf, MDBSIZE);
 #endif /* SS_HISTOGRAM_SUPPORT */
-          RETVALUE(ret);
+          return (ret);
       }
 #ifndef SS_DBUF_REFLOCK_DISABLE
       ret = SUnlock(&(dptr->dBufLock));
 #endif
    }
 
-   RETVALUE(ret);
+   return (ret);
 }
 #endif /* SS_USE_ZBC_MEMORY */
 
@@ -8363,14 +8363,14 @@ Buffer** mBuf;
    if (ptr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: Null PTR");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
    if(SGetMsg(region, pool, mBuf) != ROK)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SGetMsg Failed");
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 
    region = 0;
@@ -8384,7 +8384,7 @@ Buffer** mBuf;
    {
        SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SAlloc Failed");
        SPutMsg(*mBuf);
-       RETVALUE(ROUTRES);
+       return (ROUTRES);
    }
 
    (*mBuf)->b_cont = newblk;
@@ -8414,17 +8414,17 @@ Buffer** mBuf;
    minfo->endptr = newblk;
 
    //printf("Mbuf PTR = %x, DBlk PTR = %x, PTR = %x\n", *mBuf, newblk, ptr);
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* INTEL_WLS */
 PUBLIC S16 SIncMsgRef(Buffer *srcBuf,Region dstRegion, Pool dstPool,Buffer **dstBuf)
 {
 #ifndef L2_OPTMZ 
-  RETVALUE(SAddMsgRef(srcBuf,dstRegion, dstPool,dstBuf));
+  return (SAddMsgRef(srcBuf,dstRegion, dstPool,dstBuf));
 #else 
  *dstBuf = srcBuf;
 #endif 
-  RETVALUE(ROK);
+  return ROK;
 }
 #ifdef L2_OPTMZ
 PUBLIC Void SResetMBuf(Buffer *mbuf)
@@ -8522,7 +8522,7 @@ Buffer** mBuf;
    if (ptr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: Null PTR");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -8530,7 +8530,7 @@ Buffer** mBuf;
    if(SGetMsg(region, pool, mBuf) != ROK)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SGetMsg Failed");
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 
    mdsize = MDBSIZE;
@@ -8543,7 +8543,7 @@ Buffer** mBuf;
    {
        SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SAlloc Failed");
        SPutMsg(*mBuf);
-       RETVALUE(ROUTRES);
+       return (ROUTRES);
    }
 
    (*mBuf)->b_cont = newblk;
@@ -8573,7 +8573,7 @@ Buffer** mBuf;
    minfo->endptr = newblk;
 
    //printf("Mbuf PTR = %x, DBlk PTR = %x, PTR = %x\n", *mBuf, newblk, ptr);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef TENB_DPDK_BUF
@@ -8590,7 +8590,7 @@ Size size                       /* size requested */
     
     *ptr = ntl_alloc(mtGetNtlHdl(), size);
 
-    RETVALUE(ret);
+    return (ret);
 }
 
 PUBLIC S16 SPutSBufDpdk
@@ -8603,7 +8603,7 @@ Data *ptr                     /* pointer to buffer */
 
     ntl_free(mtGetNtlHdl(), ptr);
 
-    RETVALUE(ret);
+    return (ret);
 }
 
 PUBLIC S16 SDetachDpdkPtrFrmDBuf
@@ -8626,7 +8626,7 @@ Data       **ptr
     //minfo->len    = 0;
 
 
-    RETVALUE(ROK);
+    return ROK;
 }
 
 
@@ -8647,14 +8647,14 @@ PUBLIC S16 SDetachDpdkPtrFrmMBuf
    if(msgBlk == NULLP)
    {
       *ptr = NULLP;
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
       
    dptr = msgBlk->b_datap;
    if(dptr->db_type != SS_MEM_TYPE_DPDK_ZBC)
    {
       *ptr = NULLP;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }   
 
    *ptr   = msgBlk->b_rptr;;
@@ -8664,7 +8664,7 @@ PUBLIC S16 SDetachDpdkPtrFrmMBuf
    minfo         = (SsMsgInfo*) mBuf->b_rptr;
    minfo->len    = 0;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -8694,14 +8694,14 @@ Buffer** mBuf;
    SsDblk    *dptr;
 
    if(0 == msgLen)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    SAttachWlsPtrToMBuf(region, pool, ptr, readPtr, msgLen, totalLen, mBuf);
    dptr = (SsDblk*) (((Data *) ((*mBuf)->b_cont)) + MBSIZE);
    
    dptr->db_type = SS_MEM_TYPE_DPDK_ZBC;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #endif /* TENB_DPDK_BUF */

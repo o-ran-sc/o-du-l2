@@ -138,7 +138,7 @@ KwDatIndInfo   *datIndInfo;
          }
       }
       
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef LTE_L2_MEAS
@@ -196,7 +196,7 @@ KwDatIndInfo   *datIndInfo;
 #endif
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -249,7 +249,7 @@ Buffer     *sdu;
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
       RLC_FREE_BUF(sdu);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
@@ -269,7 +269,7 @@ Buffer     *sdu;
 
    KwUiKwuDatInd(&gCb->genCfg.lmPst, datIndInfo, sdu);
 #endif   
-   RETVALUE(ROK);
+   return ROK;
 } /* kwUtlSndDatInd */
 
 
@@ -386,7 +386,7 @@ S16 kwUtlL2MeasUlInit(RlcCb *gCb)
       cmMemset((U8 *)&(gCb->u.ulCb->kwL2Cb.kwL2EvtCb[cntr]), 0, sizeof(KwL2MeasEvtCb));
    }
    gCb->u.ulCb->kwL2Cb.kwL2EvtCb[KW_L2MEAS_UL_IP].measCb.measType = LKW_L2MEAS_UL_IP;
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  *
@@ -571,13 +571,13 @@ KwL2MeasEvtCb *measEvtCb;
       }
       measEvtCb->val.nonIpThMeas.measCb.numSamples--;
       kwStartTmr(gCb, (PTR)measEvtCb, KW_EVT_L2_TMR); 
-      RETVALUE(ROK);
+      return ROK;
    }
 #endif
 
    kwUtlSndUlL2MeasCfm(gCb, measEvtCb);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwUtlHdlL2TmrExp */
 /**
  *
@@ -683,7 +683,7 @@ KwL2MeasEvtCb         *measEvtCb;
       measCfmEvt.val.ipThMeas.numUes = cfmIdx; 
    }
    KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, &measCfmEvt);
-   RETVALUE(ROK);
+   return ROK;
 } /* kwUtlSndUlL2MeasCfm */
 /**
  *
@@ -720,7 +720,7 @@ KwL2MeasCfmEvt *measCfmEvt;
    TRC3(kwUtlSndUlL2MeasNCfm)
 
    KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
-   RETVALUE(ROK);
+   return ROK;
 } /* kwUtlSndL2MeasNCfm */
 
 #ifdef LTE_L2_MEAS_RLC
@@ -786,7 +786,7 @@ U8             *numLCh;
       measCfmEvt->measType = measType;
       measCfmEvt->status.status = LCM_PRIM_NOK;
       measCfmEvt->status.reason = LKW_CAUSE_INVALID_MEASTYPE;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*User can either request for Active UE,*
     *Dl delay, Dl discard, Uu Loss OR Dl ip throughput, Ul ip throughput. */
@@ -799,7 +799,7 @@ U8             *numLCh;
       measCfmEvt->measType = measType;
       measCfmEvt->status.status = LCM_PRIM_NOK;
       measCfmEvt->status.reason = LKW_CAUSE_INVALID_MEASTYPE;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Check for total maximum number of Measurement Control Block */
@@ -809,7 +809,7 @@ U8             *numLCh;
       measCfmEvt->measType = measType;
       measCfmEvt->status.status = LCM_PRIM_NOK;
       measCfmEvt->status.reason = LKW_CAUSE_EXCEED_NUMMEAS;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Check that number of samples should be a non-zero value */
@@ -820,7 +820,7 @@ U8             *numLCh;
       measCfmEvt->measType = measType;
       measCfmEvt->status.status = LCM_PRIM_NOK;
       measCfmEvt->status.reason = LKW_CAUSE_ZERO_NUMSAM;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Check that measurement period  should be completely divisible *
     * number of sample.                                             */
@@ -832,7 +832,7 @@ U8             *numLCh;
       measCfmEvt->measType = measType;
       measCfmEvt->status.status = LCM_PRIM_NOK;
       measCfmEvt->status.reason = LKW_CAUSE_INVALID_NUMSAM;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    {
       numQci = measReqEvt->measReq.val.nonIpThMeas.numQci;
@@ -857,7 +857,7 @@ U8             *numLCh;
       measCfmEvt->status.reason = LKW_CAUSE_INVALID_QCI;
       measCfmEvt->measType = measType;
       measCfmEvt->transId = measReqEvt->transId;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    {
       for(qciIdx = 0; qciIdx < numQci; qciIdx++)
@@ -876,10 +876,10 @@ U8             *numLCh;
    if(measCfmEvt->val.nonIpThMeas.numCfm > 0)
    {
       measCfmEvt->transId = measReqEvt->transId;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }/* kwUtlValidateL2Meas */
 #endif
 
@@ -911,7 +911,7 @@ KwL2MeasCfmEvt *measCfmEvt;
       measCfmEvt->measType = measType;
       measCfmEvt->status.status = LCM_PRIM_NOK;
       measCfmEvt->status.reason = LKW_CAUSE_INVALID_MEASTYPE;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*User can either request for Active UE,*
     *Dl delay, Dl discard, Uu Loss OR Dl ip throughput, Ul ip throughput. */
@@ -924,9 +924,9 @@ KwL2MeasCfmEvt *measCfmEvt;
       measCfmEvt->measType = measType;
       measCfmEvt->status.status = LCM_PRIM_NOK;
       measCfmEvt->status.reason = LKW_CAUSE_INVALID_MEASTYPE;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* kwUtlValidateL2Meas */
 
 /**
@@ -1144,11 +1144,11 @@ KwSn             sn;
       recBuf = (KwAmRecBuf *) node->node;
       if(recBuf->amHdr.sn == sn)
       {
-         RETVALUE(recBuf);
+         return (recBuf);
       }
       CM_LLIST_NEXT_NODE(recBufLstCp, node);
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 } /* kwUtlStoreRecBuf */
 /**
  *
