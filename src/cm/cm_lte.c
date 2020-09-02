@@ -105,7 +105,7 @@ Buffer *mBuf;
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
-   CMCHKPK(SPkU8, param->rbType, mBuf);
+   CMCHKPK(packUint8, param->rbType, mBuf);
    CMCHKPK(cmPkLteRbId, param->rbId, mBuf);
    RETVALUE(ROK);
 }
@@ -143,7 +143,7 @@ Buffer *mBuf;
    TRC3(cmUnpkLteRlcId);
 
    CMCHKUNPK(cmUnpkLteRbId, &param->rbId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->rbType, mBuf);
+   CMCHKUNPK(unPackUint8, &param->rbType, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    RETVALUE(ROK);
@@ -181,9 +181,9 @@ Buffer *mBuf;
 
    TRC3(cmPkLteTimingInfo);
 
-   CMCHKPK(SPkU16, param->slot, mBuf);
-   CMCHKPK(SPkU16, param->sfn, mBuf);
-   //CMCHKPK(SPkU16, param->hSfn, mBuf);
+   CMCHKPK(packUint16, param->slot, mBuf);
+   CMCHKPK(packUint16, param->sfn, mBuf);
+   //CMCHKPK(packUint16, param->hSfn, mBuf);
    RETVALUE(ROK);
 }
 
@@ -219,9 +219,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkLteTimingInfo);
 
-   //CMCHKUNPK(SUnpkU16, &param->hSfn, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->sfn, mBuf);
-   CMCHKUNPK(SUnpkU16,&param->slot, mBuf);
+   //CMCHKUNPK(unPackUint16, &param->hSfn, mBuf);
+   CMCHKUNPK(unPackUint16, &param->sfn, mBuf);
+   CMCHKUNPK(unPackUint16,&param->slot, mBuf);
    RETVALUE(ROK);
 }
 
@@ -257,7 +257,7 @@ Buffer *mBuf;
 
    TRC3(cmPkLtePdcpId);
 
-   CMCHKPK(SPkU8, param->rbType, mBuf);
+   CMCHKPK(packUint8, param->rbType, mBuf);
    CMCHKPK(cmPkLteRbId, param->rbId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
@@ -299,7 +299,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
    CMCHKUNPK(cmUnpkLteRbId, &param->rbId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->rbType, mBuf);
+   CMCHKUNPK(unPackUint8, &param->rbType, mBuf);
    RETVALUE(ROK);
 }
 #ifdef LTE_L2_MEAS 

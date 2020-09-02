@@ -201,68 +201,68 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
 
    TRC2(TSInfUtlPackUeInfo)
 
-   CMCHKPK(SPkU32, stats->persistent.numDeactivation, mBuf);
-   CMCHKPK(SPkU32, stats->persistent.numActivation, mBuf);
-   CMCHKPK(SPkU32, stats->persistent.activatedSCells, mBuf);
+   CMCHKPK(packUint32, stats->persistent.numDeactivation, mBuf);
+   CMCHKPK(packUint32, stats->persistent.numActivation, mBuf);
+   CMCHKPK(packUint32, stats->persistent.activatedSCells, mBuf);
 
-   CMCHKPK(SPkU32, stats->nonPersistent.rlc.dlMaxWindowSz, mBuf);
-   CMCHKPK(SPkU32, stats->nonPersistent.rlc.dlMaxPktsInSduQ, mBuf);
-   CMCHKPK(SPkU32, stats->nonPersistent.rlc.ulReOdrTmrExpCnt, mBuf);
+   CMCHKPK(packUint32, stats->nonPersistent.rlc.dlMaxWindowSz, mBuf);
+   CMCHKPK(packUint32, stats->nonPersistent.rlc.dlMaxPktsInSduQ, mBuf);
+   CMCHKPK(packUint32, stats->nonPersistent.rlc.ulReOdrTmrExpCnt, mBuf);
 
-   CMCHKPK(SPkU32, stats->nonPersistent.pdcp.dlFlowCtrlDropCnt, mBuf);
-   CMCHKPK(SPkU32, stats->nonPersistent.pdcp.dlPdcpAckWaitDropCnt, mBuf);
-   CMCHKPK(SPkU32, stats->nonPersistent.pdcp.dlPdcpDropCnt, mBuf);
+   CMCHKPK(packUint32, stats->nonPersistent.pdcp.dlFlowCtrlDropCnt, mBuf);
+   CMCHKPK(packUint32, stats->nonPersistent.pdcp.dlPdcpAckWaitDropCnt, mBuf);
+   CMCHKPK(packUint32, stats->nonPersistent.pdcp.dlPdcpDropCnt, mBuf);
 
 
    for (k = 0; k < L2_STATS_MAX_CELLS; k++)
    {
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulTpt, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulNumiTbs, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulSumiTbs, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulNumCqi, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulSumCqi, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulDtxCnt, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulNackCnt, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulAckNackCnt, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulPrbUsg, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulRetxOccns, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].ulTxOccns, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlTpt, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlBo, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulTpt, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulNumiTbs, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulSumiTbs, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulNumCqi, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulSumCqi, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulDtxCnt, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulNackCnt, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulAckNackCnt, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulPrbUsg, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulRetxOccns, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].ulTxOccns, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlTpt, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlBo, mBuf);
       for (i=0; i<4; i++)
       {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].riCnt[i], mBuf);
+         CMCHKPK(packUint32, stats->nonPersistent.sch[k].riCnt[i], mBuf);
       }
       for (i=0; i<5; i++)
       {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlPdbLvl[i], mBuf);
+         CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlPdbLvl[i], mBuf);
       }
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].cqiDropCnt, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlNumCw1iTbs, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlSumCw1iTbs, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlNumCw0iTbs, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlSumCw0iTbs, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlNumCw1Cqi, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlSumCw1Cqi, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlNumCw0Cqi, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlSumCw0Cqi, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].cqiDropCnt, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlNumCw1iTbs, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlSumCw1iTbs, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlNumCw0iTbs, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlSumCw0iTbs, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlNumCw1Cqi, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlSumCw1Cqi, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlNumCw0Cqi, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlSumCw0Cqi, mBuf);
       for (i=0; i<2; i++)
       {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlDtxCnt[i], mBuf);
-      }
-      for (i=0; i<2; i++)
-      {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlAckNackCnt[i], mBuf);
+         CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlDtxCnt[i], mBuf);
       }
       for (i=0; i<2; i++)
       {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlNackCnt[i], mBuf);
+         CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlAckNackCnt[i], mBuf);
       }
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlPrbUsg, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlRetxOccns, mBuf);
-      CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlTxOccns, mBuf);
+      for (i=0; i<2; i++)
+      {
+         CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlNackCnt[i], mBuf);
+      }
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlPrbUsg, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlRetxOccns, mBuf);
+      CMCHKPK(packUint32, stats->nonPersistent.sch[k].dlTxOccns, mBuf);
    }
-   CMCHKPK(SPkU32, stats->rnti, mBuf);
+   CMCHKPK(packUint32, stats->rnti, mBuf);
    RETVOID;
 }
 
@@ -282,103 +282,103 @@ PRIVATE Void TSInfUtlPackCellInfo(mBuf, stats)
 
    TRC2(TSInfUtlPackCellInfo)
 
-   CMCHKPK(SPkU32, stats->rlc.reOdrTmrExp, mBuf);
-   CMCHKPK(SPkU32, stats->rlc.maxRlcDrbRetxFail, mBuf);
-   CMCHKPK(SPkU32, stats->rlc.maxRlcSrbRetxFail, mBuf);
+   CMCHKPK(packUint32, stats->rlc.reOdrTmrExp, mBuf);
+   CMCHKPK(packUint32, stats->rlc.maxRlcDrbRetxFail, mBuf);
+   CMCHKPK(packUint32, stats->rlc.maxRlcSrbRetxFail, mBuf);
 
-   CMCHKPK(SPkU32, stats->sch.ulNumiTbs, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ulSumiTbs, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ulNumCqi, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ulSumCqi, mBuf);
+   CMCHKPK(packUint32, stats->sch.ulNumiTbs, mBuf);
+   CMCHKPK(packUint32, stats->sch.ulSumiTbs, mBuf);
+   CMCHKPK(packUint32, stats->sch.ulNumCqi, mBuf);
+   CMCHKPK(packUint32, stats->sch.ulSumCqi, mBuf);
 #ifdef RG_5GTF
-   CMCHKPK(SPkU32, stats->sch.ul5gtfRbAllocFail, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ul5gtfPdcchSend, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ul5gtfUeFnlzReAdd, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ul5gtfUeRmvFnlzZeroBo, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ul5gtfUeRbAllocDone, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ul5gtfAllocAllocated, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ul5gtfPdcchSchd, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ul5gtfUeSchPick, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ul5gtfBsrRecv, mBuf);
-   CMCHKPK(SPkU32, stats->sch.ul5gtfSrRecv, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfRbAllocFail, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfPdcchSend, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfUeFnlzReAdd, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfUeRmvFnlzZeroBo, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfUeRbAllocDone, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfAllocAllocated, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfPdcchSchd, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfUeSchPick, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfBsrRecv, mBuf);
+   CMCHKPK(packUint32, stats->sch.ul5gtfSrRecv, mBuf);
 
-   CMCHKPK(SPkU32, stats->sch.dl5gtfPdschCons, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dl5gtfPdcchSend, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dl5gtfBoUpd, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dl5gtfFnlzFail, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dl5gtfFnlzPass, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dl5gtfRbAllocFail, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dl5gtfRbAllocPass, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dl5gtfUePick, mBuf);
+   CMCHKPK(packUint32, stats->sch.dl5gtfPdschCons, mBuf);
+   CMCHKPK(packUint32, stats->sch.dl5gtfPdcchSend, mBuf);
+   CMCHKPK(packUint32, stats->sch.dl5gtfBoUpd, mBuf);
+   CMCHKPK(packUint32, stats->sch.dl5gtfFnlzFail, mBuf);
+   CMCHKPK(packUint32, stats->sch.dl5gtfFnlzPass, mBuf);
+   CMCHKPK(packUint32, stats->sch.dl5gtfRbAllocFail, mBuf);
+   CMCHKPK(packUint32, stats->sch.dl5gtfRbAllocPass, mBuf);
+   CMCHKPK(packUint32, stats->sch.dl5gtfUePick, mBuf);
 #endif
-   CMCHKPK(SPkU32, stats->sch.cntTtiProcTime500, mBuf);
-   CMCHKPK(SPkU32, stats->sch.cntTtiProcTime600, mBuf);
-   CMCHKPK(SPkU32, stats->sch.cntTtiProcTime700, mBuf);
-   CMCHKPK(SPkU32, stats->sch.cntTtiProcTime800, mBuf);
-   CMCHKPK(SPkU32, stats->sch.cntTtiProcTime900, mBuf);
-   CMCHKPK(SPkU32, stats->sch.cntTtiProcTime1000, mBuf);
-   CMCHKPK(SPkU32, stats->sch.avgTtiProcTime, mBuf);
+   CMCHKPK(packUint32, stats->sch.cntTtiProcTime500, mBuf);
+   CMCHKPK(packUint32, stats->sch.cntTtiProcTime600, mBuf);
+   CMCHKPK(packUint32, stats->sch.cntTtiProcTime700, mBuf);
+   CMCHKPK(packUint32, stats->sch.cntTtiProcTime800, mBuf);
+   CMCHKPK(packUint32, stats->sch.cntTtiProcTime900, mBuf);
+   CMCHKPK(packUint32, stats->sch.cntTtiProcTime1000, mBuf);
+   CMCHKPK(packUint32, stats->sch.avgTtiProcTime, mBuf);
    for (i=9; i>=0; i--)
    {
-      CMCHKPK(SPkU32, stats->sch.dlPdbRatio[i], mBuf);
-   }
-   for (i=9; i>=0; i--)
-   {
-      CMCHKPK(SPkU32, stats->sch.ulPrbUsage[i], mBuf);
+      CMCHKPK(packUint32, stats->sch.dlPdbRatio[i], mBuf);
    }
    for (i=9; i>=0; i--)
    {
-      CMCHKPK(SPkU32, stats->sch.dlPrbUsage[i], mBuf);
+      CMCHKPK(packUint32, stats->sch.ulPrbUsage[i], mBuf);
+   }
+   for (i=9; i>=0; i--)
+   {
+      CMCHKPK(packUint32, stats->sch.dlPrbUsage[i], mBuf);
    }
    for (i=3; i>=0; i--)
    {
-      CMCHKPK(SPkU32, stats->sch.ulDtx[i], mBuf);
+      CMCHKPK(packUint32, stats->sch.ulDtx[i], mBuf);
    }
    for (i=3; i>=0; i--)
    {
-      CMCHKPK(SPkU32, stats->sch.ulAckNack[i], mBuf);
+      CMCHKPK(packUint32, stats->sch.ulAckNack[i], mBuf);
    }
    for (i=3; i>=0; i--)
    {
-      CMCHKPK(SPkU32, stats->sch.ulNack[i], mBuf);
+      CMCHKPK(packUint32, stats->sch.ulNack[i], mBuf);
    }
    for (i=1; i>=0; i--)
    {
       for (j=3; j>=0; j--)
       {
-         CMCHKPK(SPkU32, stats->sch.dlDtx[i][j], mBuf);
+         CMCHKPK(packUint32, stats->sch.dlDtx[i][j], mBuf);
       }
    }
    for (i=1; i>=0; i--)
    {
       for (j=3; j>=0; j--)
       {
-         CMCHKPK(SPkU32, stats->sch.dlAckNack[i][j], mBuf);
+         CMCHKPK(packUint32, stats->sch.dlAckNack[i][j], mBuf);
       }
    }
    for (i=1; i>=0; i--)
    {
       for (j=3; j>=0; j--)
       {
-         CMCHKPK(SPkU32, stats->sch.dlNack[i][j], mBuf);
+         CMCHKPK(packUint32, stats->sch.dlNack[i][j], mBuf);
       }
    }
    for (i=3; i>=0; i--)
    {
-      CMCHKPK(SPkU32, stats->sch.riCnt[i], mBuf);
+      CMCHKPK(packUint32, stats->sch.riCnt[i], mBuf);
    }
-   CMCHKPK(SPkU32, stats->sch.dlNumCw1iTbs, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dlSumCw1iTbs, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dlNumCw0iTbs, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dlSumCw0iTbs, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dlNumCw1Cqi, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dlSumCw1Cqi, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dlNumCw0Cqi, mBuf);
-   CMCHKPK(SPkU32, stats->sch.dlSumCw0Cqi, mBuf);
-   CMCHKPK(SPkU32, stats->sch.msg3Fail, mBuf);
-   CMCHKPK(SPkU32, stats->sch.msg4Fail, mBuf);
+   CMCHKPK(packUint32, stats->sch.dlNumCw1iTbs, mBuf);
+   CMCHKPK(packUint32, stats->sch.dlSumCw1iTbs, mBuf);
+   CMCHKPK(packUint32, stats->sch.dlNumCw0iTbs, mBuf);
+   CMCHKPK(packUint32, stats->sch.dlSumCw0iTbs, mBuf);
+   CMCHKPK(packUint32, stats->sch.dlNumCw1Cqi, mBuf);
+   CMCHKPK(packUint32, stats->sch.dlSumCw1Cqi, mBuf);
+   CMCHKPK(packUint32, stats->sch.dlNumCw0Cqi, mBuf);
+   CMCHKPK(packUint32, stats->sch.dlSumCw0Cqi, mBuf);
+   CMCHKPK(packUint32, stats->sch.msg3Fail, mBuf);
+   CMCHKPK(packUint32, stats->sch.msg4Fail, mBuf);
 
-   CMCHKPK(SPkU32, stats->cellId, mBuf);
+   CMCHKPK(packUint32, stats->cellId, mBuf);
 
    RETVOID;
 }
@@ -400,68 +400,68 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
 
    TRC2(TSInfUtlUnpkUeInfo)
 
-   CMCHKUNPK(SUnpkU32, &stats->rnti, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->rnti, mBuf);
 
    for (k = L2_STATS_MAX_CELLS; k > 0; k--)
    {
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlTxOccns, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlRetxOccns, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlPrbUsg, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlTxOccns, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlRetxOccns, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlPrbUsg, mBuf);
       for (i=1; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlNackCnt[i], mBuf);
+         CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlNackCnt[i], mBuf);
       }
       for (i=1; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlAckNackCnt[i], mBuf);
+         CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlAckNackCnt[i], mBuf);
       }
       for (i=1; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlDtxCnt[i], mBuf);
+         CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlDtxCnt[i], mBuf);
       }
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlSumCw0Cqi, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlNumCw0Cqi, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlSumCw1Cqi, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlNumCw1Cqi, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlSumCw0iTbs, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlNumCw0iTbs, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlSumCw1iTbs, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlNumCw1iTbs, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].cqiDropCnt, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlSumCw0Cqi, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlNumCw0Cqi, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlSumCw1Cqi, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlNumCw1Cqi, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlSumCw0iTbs, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlNumCw0iTbs, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlSumCw1iTbs, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlNumCw1iTbs, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].cqiDropCnt, mBuf);
       for (i=4; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlPdbLvl[i], mBuf);
+         CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlPdbLvl[i], mBuf);
       }
       for (i=3; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].riCnt[i], mBuf);
+         CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].riCnt[i], mBuf);
       }
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlBo, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlTpt, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulTxOccns, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulRetxOccns, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulPrbUsg, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulAckNackCnt, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulNackCnt, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulDtxCnt, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulSumCqi, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulNumCqi, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulSumiTbs, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulNumiTbs, mBuf);
-      CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].ulTpt, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlBo, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].dlTpt, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulTxOccns, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulRetxOccns, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulPrbUsg, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulAckNackCnt, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulNackCnt, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulDtxCnt, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulSumCqi, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulNumCqi, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulSumiTbs, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulNumiTbs, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->nonPersistent.sch[k-1].ulTpt, mBuf);
    }
 
-   CMCHKUNPK(SUnpkU32, &stats->nonPersistent.pdcp.dlPdcpDropCnt, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->nonPersistent.pdcp.dlPdcpAckWaitDropCnt, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->nonPersistent.pdcp.dlFlowCtrlDropCnt, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->nonPersistent.pdcp.dlPdcpDropCnt, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->nonPersistent.pdcp.dlPdcpAckWaitDropCnt, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->nonPersistent.pdcp.dlFlowCtrlDropCnt, mBuf);
 
-   CMCHKUNPK(SUnpkU32, &stats->nonPersistent.rlc.ulReOdrTmrExpCnt, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->nonPersistent.rlc.dlMaxPktsInSduQ, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->nonPersistent.rlc.dlMaxWindowSz, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->nonPersistent.rlc.ulReOdrTmrExpCnt, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->nonPersistent.rlc.dlMaxPktsInSduQ, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->nonPersistent.rlc.dlMaxWindowSz, mBuf);
 
-   CMCHKUNPK(SUnpkU32, &stats->persistent.activatedSCells, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->persistent.numActivation, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->persistent.numDeactivation, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->persistent.activatedSCells, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->persistent.numActivation, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->persistent.numDeactivation, mBuf);
 
    RETVOID;
 }
@@ -482,103 +482,103 @@ PRIVATE Void TSInfUtlUnpkCellInfo(mBuf, stats)
 
    TRC2(TSInfUtlUnpkCellInfo)
 
-      CMCHKUNPK(SUnpkU32, &stats->cellId, mBuf);
+      CMCHKUNPK(unPackUint32, &stats->cellId, mBuf);
 
-   CMCHKUNPK(SUnpkU32, &stats->sch.msg4Fail, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.msg3Fail, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dlSumCw0Cqi, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dlNumCw0Cqi, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dlSumCw1Cqi, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dlNumCw1Cqi, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dlSumCw0iTbs, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dlNumCw0iTbs, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dlSumCw1iTbs, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dlNumCw1iTbs, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.msg4Fail, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.msg3Fail, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dlSumCw0Cqi, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dlNumCw0Cqi, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dlSumCw1Cqi, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dlNumCw1Cqi, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dlSumCw0iTbs, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dlNumCw0iTbs, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dlSumCw1iTbs, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dlNumCw1iTbs, mBuf);
    for (i=0; i<4; i++)
    {
-      CMCHKUNPK(SUnpkU32, &stats->sch.riCnt[i], mBuf);
+      CMCHKUNPK(unPackUint32, &stats->sch.riCnt[i], mBuf);
    }
    for (i=0; i<2; i++)
    {
       for (j=0; j<4; j++)
       {
-         CMCHKUNPK(SUnpkU32, &stats->sch.dlNack[i][j], mBuf);
+         CMCHKUNPK(unPackUint32, &stats->sch.dlNack[i][j], mBuf);
       }
    }
    for (i=0; i<2; i++)
    {
       for (j=0; j<4; j++)
       {
-         CMCHKUNPK(SUnpkU32, &stats->sch.dlAckNack[i][j], mBuf);
+         CMCHKUNPK(unPackUint32, &stats->sch.dlAckNack[i][j], mBuf);
       }
    }
    for (i=0; i<2; i++)
    {
       for (j=0; j<4; j++)
       {
-         CMCHKUNPK(SUnpkU32, &stats->sch.dlDtx[i][j], mBuf);
+         CMCHKUNPK(unPackUint32, &stats->sch.dlDtx[i][j], mBuf);
       }
    }
    for (i=0; i<4; i++)
    {
-      CMCHKUNPK(SUnpkU32, &stats->sch.ulNack[i], mBuf);
+      CMCHKUNPK(unPackUint32, &stats->sch.ulNack[i], mBuf);
    }
    for (i=0; i<4; i++)
    {
-      CMCHKUNPK(SUnpkU32, &stats->sch.ulAckNack[i], mBuf);
+      CMCHKUNPK(unPackUint32, &stats->sch.ulAckNack[i], mBuf);
    }
    for (i=0; i<4; i++)
    {
-      CMCHKUNPK(SUnpkU32, &stats->sch.ulDtx[i], mBuf);
+      CMCHKUNPK(unPackUint32, &stats->sch.ulDtx[i], mBuf);
    }
    for (i=0; i<10; i++)
    {
-      CMCHKUNPK(SUnpkU32, &stats->sch.dlPrbUsage[i], mBuf);
+      CMCHKUNPK(unPackUint32, &stats->sch.dlPrbUsage[i], mBuf);
    }
    for (i=0; i<10; i++)
    {
-      CMCHKUNPK(SUnpkU32, &stats->sch.ulPrbUsage[i], mBuf);
+      CMCHKUNPK(unPackUint32, &stats->sch.ulPrbUsage[i], mBuf);
    }
    for (i=0; i<10; i++)
    {
-      CMCHKUNPK(SUnpkU32, &stats->sch.dlPdbRatio[i], mBuf);
+      CMCHKUNPK(unPackUint32, &stats->sch.dlPdbRatio[i], mBuf);
    }
-   CMCHKUNPK(SUnpkU32, &stats->sch.avgTtiProcTime, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.cntTtiProcTime1000, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.cntTtiProcTime900, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.cntTtiProcTime800, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.cntTtiProcTime700, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.cntTtiProcTime600, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.cntTtiProcTime500, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.avgTtiProcTime, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.cntTtiProcTime1000, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.cntTtiProcTime900, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.cntTtiProcTime800, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.cntTtiProcTime700, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.cntTtiProcTime600, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.cntTtiProcTime500, mBuf);
 #ifdef RG_5GTF
-   CMCHKUNPK(SUnpkU32, &stats->sch.dl5gtfUePick, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dl5gtfRbAllocPass, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dl5gtfRbAllocFail, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dl5gtfFnlzPass, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dl5gtfFnlzFail, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dl5gtfBoUpd, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dl5gtfPdcchSend, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.dl5gtfPdschCons, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dl5gtfUePick, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dl5gtfRbAllocPass, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dl5gtfRbAllocFail, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dl5gtfFnlzPass, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dl5gtfFnlzFail, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dl5gtfBoUpd, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dl5gtfPdcchSend, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.dl5gtfPdschCons, mBuf);
 
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfSrRecv, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfBsrRecv, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfUeSchPick, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfPdcchSchd, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfAllocAllocated, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfUeRbAllocDone, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfUeRmvFnlzZeroBo, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfUeFnlzReAdd, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfPdcchSend, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ul5gtfRbAllocFail, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfSrRecv, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfBsrRecv, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfUeSchPick, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfPdcchSchd, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfAllocAllocated, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfUeRbAllocDone, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfUeRmvFnlzZeroBo, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfUeFnlzReAdd, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfPdcchSend, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ul5gtfRbAllocFail, mBuf);
 #endif
-   CMCHKUNPK(SUnpkU32, &stats->sch.ulSumCqi, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ulNumCqi, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ulSumiTbs, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->sch.ulNumiTbs, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ulSumCqi, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ulNumCqi, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ulSumiTbs, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->sch.ulNumiTbs, mBuf);
 
-   CMCHKUNPK(SUnpkU32, &stats->rlc.maxRlcSrbRetxFail, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->rlc.maxRlcDrbRetxFail, mBuf);
-   CMCHKUNPK(SUnpkU32, &stats->rlc.reOdrTmrExp, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->rlc.maxRlcSrbRetxFail, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->rlc.maxRlcDrbRetxFail, mBuf);
+   CMCHKUNPK(unPackUint32, &stats->rlc.reOdrTmrExp, mBuf);
 
    RETVOID;
 }

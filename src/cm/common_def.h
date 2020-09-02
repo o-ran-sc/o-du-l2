@@ -95,6 +95,15 @@ typedef struct PlmnIdentity
    uint8_t mnc[3];
 }Plmn;
 
+#define ODU_GET_MSG SGetMsg
+#define ODU_PUT_MSG SPutMsg
+#define ODU_ADD_PRE_MSG_MULT SAddPreMsgMult
+#define ODU_ADD_PST_MSG_MULT SAddPstMsgMult
+#define ODU_START_TASK SStartTask
+#define ODU_STOP_TASK SStopTask
+#define ODU_ATTACH_TTSK SAttachTTsk
+#define ODU_PST_TASK SPstTsk
+#define ODU_COPY_MSG_FIX SCpyMsgFix
 /**********************************************************************
   End of file
 ***********************************************************************/

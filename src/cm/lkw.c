@@ -1589,12 +1589,12 @@ Buffer *mBuf;
     {
       case STGEN:
       {
-         CMCHKPK(SPkU16, cfg->t.cfg.s.gen.maxRguSaps, mBuf);
-         CMCHKPK(SPkU8, cfg->t.cfg.s.gen.rlcMode, mBuf);
-         CMCHKPK(SPkU32, cfg->t.cfg.s.gen.timeRes, mBuf);
-         CMCHKPK(SPkU16, cfg->t.cfg.s.gen.maxUdxSaps, mBuf);
-         CMCHKPK(SPkU16, cfg->t.cfg.s.gen.maxKwuSaps, mBuf);
-         CMCHKPK(SPkU32, cfg->t.cfg.s.gen.maxUe, mBuf);
+         CMCHKPK(packUint16, cfg->t.cfg.s.gen.maxRguSaps, mBuf);
+         CMCHKPK(packUint8, cfg->t.cfg.s.gen.rlcMode, mBuf);
+         CMCHKPK(packUint32, cfg->t.cfg.s.gen.timeRes, mBuf);
+         CMCHKPK(packUint16, cfg->t.cfg.s.gen.maxUdxSaps, mBuf);
+         CMCHKPK(packUint16, cfg->t.cfg.s.gen.maxKwuSaps, mBuf);
+         CMCHKPK(packUint32, cfg->t.cfg.s.gen.maxUe, mBuf);
          CMCHKPK(cmPkPst, &cfg->t.cfg.s.gen.lmPst,mBuf);
 
          break;
@@ -1604,16 +1604,16 @@ Buffer *mBuf;
       case STUDXSAP:
       case STRGUSAP:
       {
-         CMCHKPK(SPkU8, cfg->t.cfg.s.sap.route,mBuf);
-         CMCHKPK(SPkU8, cfg->t.cfg.s.sap.priority,mBuf);
-         CMCHKPK(SPkU16, cfg->t.cfg.s.sap.bndTmrIntvl, mBuf);
+         CMCHKPK(packUint8, cfg->t.cfg.s.sap.route,mBuf);
+         CMCHKPK(packUint8, cfg->t.cfg.s.sap.priority,mBuf);
+         CMCHKPK(packUint16, cfg->t.cfg.s.sap.bndTmrIntvl, mBuf);
          CMCHKPK(SPkS16, cfg->t.cfg.s.sap.sapId, mBuf);
-         CMCHKPK(SPkU8, cfg->t.cfg.s.sap.inst, mBuf);
-         CMCHKPK(SPkU8, cfg->t.cfg.s.sap.ent, mBuf);
-         CMCHKPK(SPkU16, cfg->t.cfg.s.sap.procId, mBuf);
-         CMCHKPK(SPkU8, cfg->t.cfg.s.sap.mem.pool, mBuf);
-         CMCHKPK(SPkU8, cfg->t.cfg.s.sap.mem.region, mBuf);
-         CMCHKPK(SPkU8, cfg->t.cfg.s.sap.selector, mBuf);
+         CMCHKPK(packUint8, cfg->t.cfg.s.sap.inst, mBuf);
+         CMCHKPK(packUint8, cfg->t.cfg.s.sap.ent, mBuf);
+         CMCHKPK(packUint16, cfg->t.cfg.s.sap.procId, mBuf);
+         CMCHKPK(packUint8, cfg->t.cfg.s.sap.mem.pool, mBuf);
+         CMCHKPK(packUint8, cfg->t.cfg.s.sap.mem.region, mBuf);
+         CMCHKPK(packUint8, cfg->t.cfg.s.sap.selector, mBuf);
          break;
       }
        default:
@@ -1663,7 +1663,7 @@ Buffer *mBuf;
                   break;
                case SADBG:
                   {
-                      CMCHKPK(SPkU32, cntrl->t.cntrl.s.dbgCntrl.dbgMask,
+                      CMCHKPK(packUint32, cntrl->t.cntrl.s.dbgCntrl.dbgMask,
                                                            mBuf);
                   }
                   break;
@@ -1671,14 +1671,14 @@ Buffer *mBuf;
                   {
                      CMCHKPK(SPkS16, cntrl->t.cntrl.s.trcCntrl.trcLen, 
                                                            mBuf);
-                     CMCHKPK(SPkU8, cntrl->t.cntrl.s.trcCntrl.trcMask,
+                     CMCHKPK(packUint8, cntrl->t.cntrl.s.trcCntrl.trcMask,
                                                            mBuf);
                   }
                   break;
 #ifdef SS_DIAG
                case SALOG:
                   {
-                      CMCHKPK(SPkU32, cntrl->t.cntrl.s.logMask,  mBuf);
+                      CMCHKPK(packUint32, cntrl->t.cntrl.s.logMask,  mBuf);
                   }
                   break;
 #endif
@@ -1696,8 +1696,8 @@ Buffer *mBuf;
          break;
    }
 
-   CMCHKPK(SPkU8, cntrl->t.cntrl.action, mBuf);
-   CMCHKPK(SPkU8, cntrl->t.cntrl.subAction, mBuf);
+   CMCHKPK(packUint8, cntrl->t.cntrl.action, mBuf);
+   CMCHKPK(packUint8, cntrl->t.cntrl.subAction, mBuf);
    CMCHKPK(cmPkDateTime, &cntrl->t.cntrl.dt, mBuf);
 
    RETVALUE(ROK);
@@ -1734,9 +1734,9 @@ Buffer *mBuf;
    UNUSED(elmnt);
    /* lkw_c_001.main_2 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-   CMCHKPK(SPkU8, usta->t.usta.qci, mBuf);
+   CMCHKPK(packUint8, usta->t.usta.qci, mBuf);
 #endif
-   CMCHKPK(SPkU32, usta->t.usta.ueId, mBuf);
+   CMCHKPK(packUint32, usta->t.usta.ueId, mBuf);
    CMCHKPK(SPkS16, usta->t.usta.suId, mBuf);
    CMCHKPK(cmPkCmAlarm, &usta->t.usta.alarm,mBuf);
    CMCHKPK(cmPkDateTime, &usta->t.usta.dt, mBuf);
@@ -1835,7 +1835,7 @@ Buffer *mBuf;                /* data buffer */
 {
    TRC3(cmPkKwTrc)
 
-   CMCHKPK(SPkU16, trc->t.trc.event, mBuf); 
+   CMCHKPK(packUint16, trc->t.trc.event, mBuf); 
    CMCHKPK(cmPkDateTime, &trc->t.trc.dt, mBuf);
 
    RETVALUE(ROK);
@@ -1926,17 +1926,17 @@ Buffer *mBuf;
 {
    TRC3(cmPkGenSts)
 
-   CMCHKPK(SPkU32, gen->numSduDisc, mBuf);
-   CMCHKPK(SPkU32, gen->numOfRb, mBuf);
-   CMCHKPK(SPkU32, gen->protTimeOut, mBuf);
-   CMCHKPK(SPkU32, gen->errorPdusRecv, mBuf);
-   CMCHKPK(SPkU32, gen->unexpPdusRecv, mBuf);
-   CMCHKPK(SPkU32, gen->bytesSent, mBuf);
-   CMCHKPK(SPkU32, gen->bytesRecv, mBuf);
-   CMCHKPK(SPkU32, gen->pdusRetx, mBuf);
-   CMCHKPK(SPkU32, gen->pdusSent, mBuf);
-   CMCHKPK(SPkU32, gen->pdusRecv, mBuf);
-   CMCHKPK(SPkU32, gen->numUe, mBuf);
+   CMCHKPK(packUint32, gen->numSduDisc, mBuf);
+   CMCHKPK(packUint32, gen->numOfRb, mBuf);
+   CMCHKPK(packUint32, gen->protTimeOut, mBuf);
+   CMCHKPK(packUint32, gen->errorPdusRecv, mBuf);
+   CMCHKPK(packUint32, gen->unexpPdusRecv, mBuf);
+   CMCHKPK(packUint32, gen->bytesSent, mBuf);
+   CMCHKPK(packUint32, gen->bytesRecv, mBuf);
+   CMCHKPK(packUint32, gen->pdusRetx, mBuf);
+   CMCHKPK(packUint32, gen->pdusSent, mBuf);
+   CMCHKPK(packUint32, gen->pdusRecv, mBuf);
+   CMCHKPK(packUint32, gen->numUe, mBuf);
 
    RETVALUE(ROK);
 
@@ -1966,7 +1966,7 @@ Buffer *mBuf;
 {
    TRC3(cmPkCkwSapSts)
 
-   CMCHKPK(SPkU32, rcSap->statMsgs, mBuf);
+   CMCHKPK(packUint32, rcSap->statMsgs, mBuf);
 
    RETVALUE(ROK);
 } /* end of cmPkCkwSapSts */
@@ -1995,8 +1995,8 @@ Buffer *mBuf;
 {
    TRC3(cmPkCkwSapSts)
 
-   CMCHKPK(SPkU32, ruSap->sduTx, mBuf);
-   CMCHKPK(SPkU32, ruSap->sduRx, mBuf);
+   CMCHKPK(packUint32, ruSap->sduTx, mBuf);
+   CMCHKPK(packUint32, ruSap->sduRx, mBuf);
    /* lkw_c_001.main_2 changed from suId to spId */
    CMCHKPK(cmPkSuId, ruSap->spId, mBuf);
 
@@ -2133,12 +2133,12 @@ Buffer *mBuf;
       case STGEN:
       {
          CMCHKUNPK(cmUnpkPst, &cfg->t.cfg.s.gen.lmPst,mBuf);
-         CMCHKUNPK(SUnpkU32, &cfg->t.cfg.s.gen.maxUe, mBuf);
-         CMCHKUNPK(SUnpkU16, &cfg->t.cfg.s.gen.maxKwuSaps, mBuf);
-         CMCHKUNPK(SUnpkU16, &cfg->t.cfg.s.gen.maxUdxSaps, mBuf);
-         CMCHKUNPK(SUnpkU32, &cfg->t.cfg.s.gen.timeRes, mBuf);
-         CMCHKUNPK(SUnpkU8, &cfg->t.cfg.s.gen.rlcMode, mBuf);
-         CMCHKUNPK(SUnpkU16, &cfg->t.cfg.s.gen.maxRguSaps, mBuf);
+         CMCHKUNPK(unPackUint32, &cfg->t.cfg.s.gen.maxUe, mBuf);
+         CMCHKUNPK(unPackUint16, &cfg->t.cfg.s.gen.maxKwuSaps, mBuf);
+         CMCHKUNPK(unPackUint16, &cfg->t.cfg.s.gen.maxUdxSaps, mBuf);
+         CMCHKUNPK(unPackUint32, &cfg->t.cfg.s.gen.timeRes, mBuf);
+         CMCHKUNPK(unPackUint8, &cfg->t.cfg.s.gen.rlcMode, mBuf);
+         CMCHKUNPK(unPackUint16, &cfg->t.cfg.s.gen.maxRguSaps, mBuf);
       }
       break;
 
@@ -2147,16 +2147,16 @@ Buffer *mBuf;
       case STRGUSAP:
       case STUDXSAP:
       {
-         CMCHKUNPK(SUnpkU8, &cfg->t.cfg.s.sap.selector, mBuf);
-         CMCHKUNPK(SUnpkU8, &cfg->t.cfg.s.sap.mem.region, mBuf);
-         CMCHKUNPK(SUnpkU8, &cfg->t.cfg.s.sap.mem.pool, mBuf);
-         CMCHKUNPK(SUnpkU16, &cfg->t.cfg.s.sap.procId, mBuf);
-         CMCHKUNPK(SUnpkU8, &cfg->t.cfg.s.sap.ent, mBuf);
-         CMCHKUNPK(SUnpkU8, &cfg->t.cfg.s.sap.inst, mBuf);
+         CMCHKUNPK(unPackUint8, &cfg->t.cfg.s.sap.selector, mBuf);
+         CMCHKUNPK(unPackUint8, &cfg->t.cfg.s.sap.mem.region, mBuf);
+         CMCHKUNPK(unPackUint8, &cfg->t.cfg.s.sap.mem.pool, mBuf);
+         CMCHKUNPK(unPackUint16, &cfg->t.cfg.s.sap.procId, mBuf);
+         CMCHKUNPK(unPackUint8, &cfg->t.cfg.s.sap.ent, mBuf);
+         CMCHKUNPK(unPackUint8, &cfg->t.cfg.s.sap.inst, mBuf);
          CMCHKUNPK(SUnpkS16, &cfg->t.cfg.s.sap.sapId, mBuf);
-         CMCHKUNPK(SUnpkU16, &cfg->t.cfg.s.sap.bndTmrIntvl, mBuf);
-         CMCHKUNPK(SUnpkU8, &cfg->t.cfg.s.sap.priority,mBuf);
-         CMCHKUNPK(SUnpkU8, &cfg->t.cfg.s.sap.route,mBuf);
+         CMCHKUNPK(unPackUint16, &cfg->t.cfg.s.sap.bndTmrIntvl, mBuf);
+         CMCHKUNPK(unPackUint8, &cfg->t.cfg.s.sap.priority,mBuf);
+         CMCHKUNPK(unPackUint8, &cfg->t.cfg.s.sap.route,mBuf);
       }
       break;
       default:
@@ -2201,8 +2201,8 @@ Buffer *mBuf;
    UNUSED(elmnt);
 
    CMCHKUNPK(cmUnpkDateTime, &cfm->t.cntrl.dt, mBuf);
-   CMCHKUNPK(SUnpkU8, &cfm->t.cntrl.subAction, mBuf);
-   CMCHKUNPK(SUnpkU8, &cfm->t.cntrl.action, mBuf);
+   CMCHKUNPK(unPackUint8, &cfm->t.cntrl.subAction, mBuf);
+   CMCHKUNPK(unPackUint8, &cfm->t.cntrl.action, mBuf);
 
    subAction = cfm->t.cntrl.subAction;
 
@@ -2217,20 +2217,20 @@ Buffer *mBuf;
                case SADBG:
                   {
                      dbgCntrl = &cfm->t.cntrl.s.dbgCntrl;
-                     CMCHKUNPK(SUnpkU32, &dbgCntrl->dbgMask, mBuf);
+                     CMCHKUNPK(unPackUint32, &dbgCntrl->dbgMask, mBuf);
                   }
                   break;
                case SATRC:
                   {
                     trcCntrl = &cfm->t.cntrl.s.trcCntrl; 
-                    CMCHKUNPK(SUnpkU8, &trcCntrl->trcMask, mBuf);
+                    CMCHKUNPK(unPackUint8, &trcCntrl->trcMask, mBuf);
                     CMCHKUNPK(SUnpkS16,&trcCntrl->trcLen, mBuf);
                   }
                   break;
 #ifdef SS_DIAG
                case SALOG:
                   {
-                      CMCHKUNPK(SUnpkU32, &cfm->t.cntrl.s.logMask, mBuf);
+                      CMCHKUNPK(unPackUint32, &cfm->t.cntrl.s.logMask, mBuf);
                   }
                   break;
 #endif
@@ -2286,10 +2286,10 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkDateTime, &usta->t.usta.dt, mBuf);
    CMCHKUNPK(cmUnpkCmAlarm, &usta->t.usta.alarm,mBuf);
    CMCHKUNPK(SUnpkS16, &usta->t.usta.suId, mBuf);
-   CMCHKUNPK(SUnpkU32, &usta->t.usta.ueId, mBuf);
+   CMCHKUNPK(unPackUint32, &usta->t.usta.ueId, mBuf);
    /* lkw_c_001.main_2 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-   CMCHKUNPK(SUnpkU8, &usta->t.usta.qci, mBuf);
+   CMCHKUNPK(unPackUint8, &usta->t.usta.qci, mBuf);
 #endif
    RETVALUE(ROK);
 }
@@ -2385,7 +2385,7 @@ Buffer *mBuf;
    TRC3(cmUnpkKwTrc);
 
    CMCHKUNPK(cmUnpkDateTime, &trc->t.trc.dt, mBuf);
-   CMCHKUNPK(SUnpkU16, &trc->t.trc.event, mBuf);
+   CMCHKUNPK(unPackUint16, &trc->t.trc.event, mBuf);
 
    RETVALUE(ROK);
 } /* end of cmUnpkKwTrc */
@@ -2473,17 +2473,17 @@ Buffer *mBuf;
 {
    TRC3(cmUnpkGenSts);
 
-   CMCHKUNPK(SUnpkU32, &gen->numUe, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->pdusRecv, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->pdusSent, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->pdusRetx, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->bytesRecv, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->bytesSent, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->unexpPdusRecv, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->errorPdusRecv, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->protTimeOut, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->numOfRb, mBuf);
-   CMCHKUNPK(SUnpkU32, &gen->numSduDisc, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->numUe, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->pdusRecv, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->pdusSent, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->pdusRetx, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->bytesRecv, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->bytesSent, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->unexpPdusRecv, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->errorPdusRecv, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->protTimeOut, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->numOfRb, mBuf);
+   CMCHKUNPK(unPackUint32, &gen->numSduDisc, mBuf);
 
    RETVALUE(ROK);
 } /* end of cmUnpkGenSts */
@@ -2513,7 +2513,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkCkwSapSts);
 
-   CMCHKUNPK(SUnpkU32, &rcSap->statMsgs, mBuf); 
+   CMCHKUNPK(unPackUint32, &rcSap->statMsgs, mBuf); 
 
    RETVALUE(ROK);
 
@@ -2545,8 +2545,8 @@ Buffer *mBuf;
 
    /* lkw_c_001.main_2 changed from suId to spId */
    CMCHKUNPK(cmUnpkSuId, &ruSap->spId, mBuf);
-   CMCHKUNPK(SUnpkU32, &ruSap->sduRx, mBuf);
-   CMCHKUNPK(SUnpkU32, &ruSap->sduTx, mBuf);
+   CMCHKUNPK(unPackUint32, &ruSap->sduRx, mBuf);
+   CMCHKUNPK(unPackUint32, &ruSap->sduTx, mBuf);
 
    RETVALUE(ROK);
 
@@ -2588,7 +2588,7 @@ KwL2MeasReqEvt *measReqEvt;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (SPkU16(measReqEvt->measPeriod, mBuf) != ROK) {
+   if (packUint16(measReqEvt->measPeriod, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -2598,7 +2598,7 @@ KwL2MeasReqEvt *measReqEvt;
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-   if (SPkU32(measReqEvt->transId, mBuf) != ROK) {
+   if (packUint32(measReqEvt->transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -2640,24 +2640,24 @@ Buffer *mBuf;
          CMCHKPK(cmPkLteRnti,   param->val.ipThMeas.ueInfoLst[idx1].ueId, mBuf);
          for(idx = 0; idx < param->val.ipThMeas.ueInfoLst[idx1].numQci; idx++)
          {
-            CMCHKPK(SPkU8, param->val.ipThMeas.ueInfoLst[idx1].qci[idx], mBuf);
+            CMCHKPK(packUint8, param->val.ipThMeas.ueInfoLst[idx1].qci[idx], mBuf);
          }
-         CMCHKPK(SPkU8, param->val.ipThMeas.ueInfoLst[idx1].numQci, mBuf);
+         CMCHKPK(packUint8, param->val.ipThMeas.ueInfoLst[idx1].numQci, mBuf);
       }
-      CMCHKPK(SPkU16, param->val.ipThMeas.numUes, mBuf);
-      CMCHKPK(SPkU8, param->measType, mBuf);
+      CMCHKPK(packUint16, param->val.ipThMeas.numUes, mBuf);
+      CMCHKPK(packUint8, param->measType, mBuf);
       RETVALUE(ROK);
    }
    else
    {
       for(idx = 0; idx < param->val.nonIpThMeas.numQci; idx++)
       {
-         CMCHKPK(SPkU8, param->val.nonIpThMeas.qci[idx], mBuf);
+         CMCHKPK(packUint8, param->val.nonIpThMeas.qci[idx], mBuf);
       }
-      CMCHKPK(SPkU8, param->val.nonIpThMeas.numQci, mBuf);
-      CMCHKPK(SPkU16, param->val.nonIpThMeas.numSamples, mBuf);
+      CMCHKPK(packUint8, param->val.nonIpThMeas.numQci, mBuf);
+      CMCHKPK(packUint16, param->val.nonIpThMeas.numSamples, mBuf);
    }
-   CMCHKPK(SPkU8, param->measType, mBuf);
+   CMCHKPK(packUint8, param->measType, mBuf);
    RETVALUE(ROK);
 }
 
@@ -2684,7 +2684,7 @@ U8 measType;
 #endif
       RETVALUE(RFAILED);
    }
-   CMCHKPK(SPkU8, measType, mBuf);
+   CMCHKPK(packUint8, measType, mBuf);
    pst->event = (Event) LKW_EVT_L2MEAS_STOP_REQ;
    RETVALUE(SPstTsk(pst,mBuf));
 }
@@ -2712,7 +2712,7 @@ U8 measType;
 #endif
       RETVALUE(RFAILED);
    }
-   CMCHKPK(SPkU8, measType, mBuf);
+   CMCHKPK(packUint8, measType, mBuf);
    pst->event = (Event) LKW_EVT_L2MEAS_SEND_REQ;
    RETVALUE(SPstTsk(pst,mBuf));
 }
@@ -2735,7 +2735,7 @@ Buffer *mBuf;
    
    TRC3(cmUnpkLkwL2MeasReq)
 
-   if (SUnpkU32(&measReqEvt.transId, mBuf) != ROK) {
+   if (unPackUint32(&measReqEvt.transId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2744,7 +2744,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (SUnpkU16(&measReqEvt.measPeriod, mBuf) != ROK) {
+   if (unPackUint16(&measReqEvt.measPeriod, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2799,7 +2799,7 @@ Buffer *mBuf;
       RETVALUE(ret);
    }
 
-   if (SUnpkU32(&measReqEvt->transId, mBuf) != ROK) {
+   if (unPackUint32(&measReqEvt->transId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2808,7 +2808,7 @@ Buffer *mBuf;
 #endif
       RETVALUE(RFAILED);
    }
-   if (SUnpkU16(&measReqEvt->measPeriod, mBuf) != ROK) {
+   if (unPackUint16(&measReqEvt->measPeriod, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2850,18 +2850,18 @@ Buffer *mBuf;
 
    TRC3(cmUnpkKwL2MeasReqInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->measType, mBuf);
+   CMCHKUNPK(unPackUint8, &param->measType, mBuf);
 
    if((param->measType & LKW_L2MEAS_DL_IP) ||
          (param->measType & LKW_L2MEAS_UL_IP))
    {
-      CMCHKUNPK(SUnpkU16, &param->val.ipThMeas.numUes, mBuf);
+      CMCHKUNPK(unPackUint16, &param->val.ipThMeas.numUes, mBuf);
       for(idx1 = 0;idx1 < param->val.ipThMeas.numUes;idx1++)
       {
-         CMCHKUNPK(SUnpkU8, &param->val.ipThMeas.ueInfoLst[idx1].numQci, mBuf);
+         CMCHKUNPK(unPackUint8, &param->val.ipThMeas.ueInfoLst[idx1].numQci, mBuf);
          for(idx = param->val.ipThMeas.ueInfoLst[idx1].numQci; idx > 0; idx--)
          {
-            CMCHKUNPK(SUnpkU8, &param->val.ipThMeas.ueInfoLst[idx1].\
+            CMCHKUNPK(unPackUint8, &param->val.ipThMeas.ueInfoLst[idx1].\
                   qci[idx - 1], mBuf);
          }
          CMCHKUNPK(cmUnpkLteRnti, &param->val.ipThMeas.ueInfoLst[idx1].\
@@ -2873,11 +2873,11 @@ Buffer *mBuf;
    }
    else
    {
-      CMCHKUNPK(SUnpkU16, &param->val.nonIpThMeas.numSamples, mBuf);
-      CMCHKUNPK(SUnpkU8, &param->val.nonIpThMeas.numQci, mBuf);
+      CMCHKUNPK(unPackUint16, &param->val.nonIpThMeas.numSamples, mBuf);
+      CMCHKUNPK(unPackUint8, &param->val.nonIpThMeas.numQci, mBuf);
       for(idx = param->val.nonIpThMeas.numQci; idx > 0; idx--)
       {
-         CMCHKUNPK(SUnpkU8, &param->val.nonIpThMeas.qci[idx - 1], mBuf);
+         CMCHKUNPK(unPackUint8, &param->val.nonIpThMeas.qci[idx - 1], mBuf);
       }
    }
    RETVALUE(ROK);
@@ -2900,7 +2900,7 @@ Buffer *mBuf;
    U8 measType;
    TRC3(cmUnpkLkwL2MeasReq)
 
-   CMCHKUNPK(SUnpkU8, &measType, mBuf);
+   CMCHKUNPK(unPackUint8, &measType, mBuf);
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, measType));
 }
@@ -2923,7 +2923,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkLkwL2MeasSendReq)
 
-   CMCHKUNPK(SUnpkU8, &measType, mBuf); 
+   CMCHKUNPK(unPackUint8, &measType, mBuf); 
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, measType));
 }
@@ -2975,7 +2975,7 @@ KwL2MeasCfmEvt *measCfmEvt;
          }
       }
 
-      if (SPkU16(measCfmEvt->val.nonIpThMeas.numCfm, mBuf) != ROK) {
+      if (packUint16(measCfmEvt->val.nonIpThMeas.numCfm, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -3004,7 +3004,7 @@ KwL2MeasCfmEvt *measCfmEvt;
             }
          }
 
-         if (SPkU16(measCfmEvt->val.ipThMeas.ueInfoLst[idx1].numCfm, mBuf) != ROK) {
+         if (packUint16(measCfmEvt->val.ipThMeas.ueInfoLst[idx1].numCfm, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
             SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                   __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -3017,12 +3017,12 @@ KwL2MeasCfmEvt *measCfmEvt;
          CMCHKPK(cmPkLteCellId, measCfmEvt->val.ipThMeas.ueInfoLst[idx1].cellId, mBuf);
          CMCHKPK(cmPkLteRnti,   measCfmEvt->val.ipThMeas.ueInfoLst[idx1].ueId, mBuf);
       }
-      SPkU16(measCfmEvt->val.ipThMeas.numUes, mBuf);
+      packUint16(measCfmEvt->val.ipThMeas.numUes, mBuf);
    }
 
-   CMCHKPK(SPkU8, measCfmEvt->measType, mBuf);
+   CMCHKPK(packUint8, measCfmEvt->measType, mBuf);
    CMCHKPK(cmPkCmStatus, &measCfmEvt->status, mBuf);
-   if (SPkU32(measCfmEvt->transId, mBuf) != ROK) {
+   if (packUint32(measCfmEvt->transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -3056,16 +3056,16 @@ U8 measType;
    {
       CMCHKPK(SPkF32, param->val.ipThrput.ulIpThPut, mBuf);
       CMCHKPK(SPkF32, param->val.ipThrput.dlIpThPut, mBuf);
-      CMCHKPK(SPkU8, param->qci, mBuf);
+      CMCHKPK(packUint8, param->qci, mBuf);
       RETVALUE(ROK);
    }
    else  
    {
-      CMCHKPK(SPkU32, param->val.nonIpThrput.dlDiscRate, mBuf);
-      CMCHKPK(SPkU32, param->val.nonIpThrput.uuLoss, mBuf);
-      CMCHKPK(SPkU32, param->val.nonIpThrput.numActUe, mBuf);
-      CMCHKPK(SPkU32, param->val.nonIpThrput.dlSduDelay, mBuf);
-      CMCHKPK(SPkU8,  param->qci, mBuf);
+      CMCHKPK(packUint32, param->val.nonIpThrput.dlDiscRate, mBuf);
+      CMCHKPK(packUint32, param->val.nonIpThrput.uuLoss, mBuf);
+      CMCHKPK(packUint32, param->val.nonIpThrput.numActUe, mBuf);
+      CMCHKPK(packUint32, param->val.nonIpThrput.dlSduDelay, mBuf);
+      CMCHKPK(packUint8,  param->qci, mBuf);
    } 
    RETVALUE(ROK);
 }
@@ -3092,7 +3092,7 @@ Buffer *mBuf;
 
    cmMemset((U8 *)&measCfmEvt, 0 , sizeof(KwL2MeasCfmEvt));
 
-   if (SUnpkU32(&measCfmEvt.transId, mBuf) != ROK) {
+   if (unPackUint32(&measCfmEvt.transId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3102,18 +3102,18 @@ Buffer *mBuf;
       RETVALUE(RFAILED);
    }
    CMCHKUNPK(cmUnpkCmStatus, &measCfmEvt.status, mBuf);
-   CMCHKUNPK(SUnpkU8, &measCfmEvt.measType, mBuf);  
+   CMCHKUNPK(unPackUint8, &measCfmEvt.measType, mBuf);  
 
    if(measCfmEvt.measType & LKW_L2MEAS_DL_IP || measCfmEvt.measType & LKW_L2MEAS_UL_IP)
    { 
-      CMCHKUNPK(SUnpkU16, &measCfmEvt.val.ipThMeas.numUes, mBuf);
+      CMCHKUNPK(unPackUint16, &measCfmEvt.val.ipThMeas.numUes, mBuf);
       for(idx1 = 0;idx1<measCfmEvt.val.ipThMeas.numUes;idx1++)
       {
          CMCHKUNPK(cmUnpkLteRnti, &measCfmEvt.val.ipThMeas.\
                ueInfoLst[idx1].ueId, mBuf);
          CMCHKUNPK(cmUnpkLteCellId, &measCfmEvt.val.ipThMeas.\
                ueInfoLst[idx1].cellId, mBuf);
-         if (SUnpkU16(&measCfmEvt.val.ipThMeas.ueInfoLst[idx1].\
+         if (unPackUint16(&measCfmEvt.val.ipThMeas.ueInfoLst[idx1].\
                   numCfm, mBuf) != ROK) {
             SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -3140,7 +3140,7 @@ Buffer *mBuf;
    }
    else
    {
-      if (SUnpkU16(&measCfmEvt.val.nonIpThMeas.numCfm, mBuf) != ROK) {
+      if (unPackUint16(&measCfmEvt.val.nonIpThMeas.numCfm, mBuf) != ROK) {
          SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3186,18 +3186,18 @@ U8 measType;
    if((measType & LKW_L2MEAS_DL_IP) ||
          (measType & LKW_L2MEAS_UL_IP))
    {
-      CMCHKUNPK(SUnpkU8,  &param->qci, mBuf);
+      CMCHKUNPK(unPackUint8,  &param->qci, mBuf);
       CMCHKUNPK(SUnpkF32, &param->val.ipThrput.dlIpThPut, mBuf);
       CMCHKUNPK(SUnpkF32, &param->val.ipThrput.ulIpThPut, mBuf);
    }
    else
 
    {
-      CMCHKUNPK(SUnpkU8,  &param->qci, mBuf);
-      CMCHKUNPK(SUnpkU32, &param->val.nonIpThrput.dlSduDelay, mBuf);
-      CMCHKUNPK(SUnpkU32, &param->val.nonIpThrput.numActUe, mBuf);
-      CMCHKUNPK(SUnpkU32, &param->val.nonIpThrput.uuLoss, mBuf);
-      CMCHKUNPK(SUnpkU32, &param->val.nonIpThrput.dlDiscRate, mBuf);
+      CMCHKUNPK(unPackUint8,  &param->qci, mBuf);
+      CMCHKUNPK(unPackUint32, &param->val.nonIpThrput.dlSduDelay, mBuf);
+      CMCHKUNPK(unPackUint32, &param->val.nonIpThrput.numActUe, mBuf);
+      CMCHKUNPK(unPackUint32, &param->val.nonIpThrput.uuLoss, mBuf);
+      CMCHKUNPK(unPackUint32, &param->val.nonIpThrput.dlDiscRate, mBuf);
    }
    RETVALUE(ROK);
 }
@@ -3228,8 +3228,8 @@ U8  status
 #endif
       RETVALUE(RFAILED);
    }
-   CMCHKPK(SPkU8, status, mBuf);
-   CMCHKPK(SPkU8, measType, mBuf);
+   CMCHKPK(packUint8, status, mBuf);
+   CMCHKPK(packUint8, measType, mBuf);
    pst->event = (Event) LKW_EVT_L2MEAS_STOP_CFM;
    RETVALUE(SPstTsk(pst,mBuf));
 }
@@ -3251,8 +3251,8 @@ Buffer *mBuf;
    U8 measType;
    U8 status;
    TRC3(cmUnpkLkwL2MeasCfm)
-   CMCHKUNPK(SUnpkU8,  &measType, mBuf);
-   CMCHKUNPK(SUnpkU8,  &status, mBuf);
+   CMCHKUNPK(unPackUint8,  &measType, mBuf);
+   CMCHKUNPK(unPackUint8,  &status, mBuf);
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, measType,status));
 }

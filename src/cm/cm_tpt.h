@@ -283,10 +283,10 @@
 #endif /* __CMINETH__ */
 
 /*  packing/unpacking functions */
-#define cmPkCmIpv4NetAddr(x, mBuf)    SPkU32(x, mBuf)
+#define cmPkCmIpv4NetAddr(x, mBuf)    packUint32(x, mBuf)
 /* Moved all packing functions to cm_tpt from 
  * cm_inet.c files. Hence no #defines are required */
-#define cmUnpkCmIpv4NetAddr(x, mBuf)  SUnpkU32(x, mBuf)
+#define cmUnpkCmIpv4NetAddr(x, mBuf)  unPackUint32(x, mBuf)
 
 /* added macro to free memory allocated for IPv6
  *                      IPv6 extn hdrs*/

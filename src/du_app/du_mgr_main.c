@@ -64,7 +64,7 @@ S16 duAppInit(SSTskId sysTskId)
       return RFAILED;
    }
    /* Attach DU APP TAPA Task for DU */
-   if (SAttachTTsk((Ent)ENTDUAPP, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTDUAPP, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -100,7 +100,7 @@ S16 egtpInit(SSTskId sysTskId)
       return RFAILED;
    }
    /* Attach DU APP TAPA Task for DU */
-   if (SAttachTTsk((Ent)ENTEGTP, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTEGTP, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -136,7 +136,7 @@ S16 sctpInit(SSTskId sysTskId)
       return RFAILED;
    }
    /* Attach SCTP TAPA Task */
-   if (SAttachTTsk((Ent)ENTSCTP, (Inst)SCTP_INST, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTSCTP, (Inst)SCTP_INST, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -170,7 +170,7 @@ S16 rlcDlInit(SSTskId sysTskId)
       return RFAILED;
    }
    /* Attach RLC DL Task */
-   if (SAttachTTsk((Ent)ENTKW, (Inst)1, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTKW, (Inst)1, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -182,7 +182,7 @@ S16 rlcDlInit(SSTskId sysTskId)
       return RFAILED;
    }
    /* Attach MAC Task */
-   if (SAttachTTsk((Ent)ENTRG, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTRG, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -217,7 +217,7 @@ S16 rlcUlInit(SSTskId sysTskId)
       return RFAILED;
    }
    /* Attach RLC DL Task */
-   if (SAttachTTsk((Ent)ENTKW, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTKW, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }

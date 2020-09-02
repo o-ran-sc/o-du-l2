@@ -29,8 +29,8 @@ uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
    }
 
    /* pack SFN and slot value */
-   CMCHKPK(SPkU16,slotInd->sfn, mBuf);
-   CMCHKPK(SPkU16,slotInd->slot, mBuf);
+   CMCHKPK(packUint16,slotInd->sfn, mBuf);
+   CMCHKPK(packUint16,slotInd->slot, mBuf);
 
    return SPstTsk(pst,mBuf);
 }

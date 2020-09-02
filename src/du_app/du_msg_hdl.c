@@ -1257,12 +1257,12 @@ S16 duSendEgtpTestData()
 
    Buffer   *mBuf;
 
-   if(SGetMsg(DU_APP_MEM_REGION, DU_POOL, &mBuf) == ROK)
+   if(ODU_GET_MSG(DU_APP_MEM_REGION, DU_POOL, &mBuf) == ROK)
    {
-      if(SAddPstMsgMult((Data *)data, datSize, mBuf) != ROK)
+      if(ODU_ADD_PST_MSG_MULT((Data *)data, datSize, mBuf) != ROK)
       {
-	 DU_LOG("\nDU_APP : SAddPstMsgMult failed");
-	 SPutMsg(mBuf);
+	 DU_LOG("\nDU_APP : ODU_ADD_PST_MSG_MULT failed");
+	 ODU_PUT_MSG(mBuf);
 	 RETVALUE(RFAILED);
       }
    }
@@ -1339,7 +1339,7 @@ S16 duSendEgtpTestData()
       revPkArray[idx] = pkArray[CM_IPV4_HDRLEN - idx -1];
 
    /* this function automatically reverses revPkArray */
-   ret = SAddPreMsgMult(revPkArray, (MsgLen)cnt, mBuf);
+   ret = ODU_ADD_PRE_MSG_MULT(revPkArray, (MsgLen)cnt, mBuf);
 
    duSendEgtpDatInd(mBuf);
 

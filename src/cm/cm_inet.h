@@ -485,8 +485,8 @@
 #endif /* SUNOS || HPOS */
 #endif /* IPV6_SUPPORTED */
 
-#define cmPkCmInetIpAddr(x, mBuf)       SPkU32(x, mBuf)  /* pack IP Address */
-#define cmUnpkCmInetIpAddr(x, mBuf)     SUnpkU32(x, mBuf)  /* unpacks IP Address */
+#define cmPkCmInetIpAddr(x, mBuf)       packUint32(x, mBuf)  /* pack IP Address */
+#define cmUnpkCmInetIpAddr(x, mBuf)     unPackUint32(x, mBuf)  /* unpacks IP Address */
 
 #ifdef SS_VW
 #define CM_COPY_VWIPADDR(vwIpAddr, addr) \

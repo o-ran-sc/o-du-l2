@@ -109,13 +109,13 @@ S16 egtpActvTsk(Pst *pst, Buffer *mBuf)
             case EVTSLOTIND:
             {
                ret = unpackEgtpSlotInd(egtpSlotInd, pst, mBuf);
-               SPutMsg(mBuf);
+               ODU_PUT_MSG(mBuf);
                break;
             }
             default:
             {
                DU_LOG("\nEGTP : Invalid event %d", pst->event);
-               SPutMsg(mBuf);
+               ODU_PUT_MSG(mBuf);
                ret = RFAILED;
             }
          }
@@ -597,7 +597,7 @@ S16 egtpHdlDatInd(EgtpMsg egtpMsg)
    DU_LOG("\nEGTP : UL Data buffer before encoding header");
    SPrntMsg(egtpMsg.msg, 0, 0);
 
-   SAddPreMsgMult(&teidCb->preEncodedHdr.hdr[hdrLen], (EGTP_MAX_HDR_LEN - hdrLen), egtpMsg.msg);
+   ODU_ADD_PRE_MSG_MULT(&teidCb->preEncodedHdr.hdr[hdrLen], (EGTP_MAX_HDR_LEN - hdrLen), egtpMsg.msg);
 
 
    DU_LOG("\nEGTP : UL Data buffer after encoding header");
@@ -605,7 +605,7 @@ S16 egtpHdlDatInd(EgtpMsg egtpMsg)
 
    /* Send over UDP */
    egtpSendMsg(egtpMsg.msg);
-   SPutMsg(egtpMsg.msg);
+   ODU_PUT_MSG(egtpMsg.msg);
 
    return ROK;
 }/* EgtpHdlDatInd */

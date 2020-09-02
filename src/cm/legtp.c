@@ -39,8 +39,8 @@
  ******************************************************************/
 S16 packEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
 {
-   SPkU16(cfm.status, mBuf);
-   SPkU16(cfm.reason, mBuf);
+   packUint16(cfm.status, mBuf);
+   packUint16(cfm.reason, mBuf);
    
    RETVALUE(ROK);
 }
@@ -65,8 +65,8 @@ S16 packEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
 
 S16 unpackEgtpCfmStatus(CmStatus *cfm, Buffer *mBuf)
 {
-   SUnpkU16(&(cfm->reason), mBuf);
-   SUnpkU16(&(cfm->status), mBuf);
+   unPackUint16(&(cfm->reason), mBuf);
+   unPackUint16(&(cfm->status), mBuf);
 
    RETVALUE(ROK);
 }
@@ -99,20 +99,20 @@ S16 packEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
    }
    if(egtpCfg.localIp.ipV4Pres)
    {
-      SPkU32(egtpCfg.localIp.ipV4Addr, mBuf);
+      packUint32(egtpCfg.localIp.ipV4Addr, mBuf);
    }
    cmPkBool(egtpCfg.localIp.ipV4Pres, mBuf);
-   SPkU16(egtpCfg.localPort, mBuf);
+   packUint16(egtpCfg.localPort, mBuf);
 
    if(egtpCfg.destIp.ipV4Pres)
    {
-      SPkU32(egtpCfg.destIp.ipV4Addr, mBuf);
+      packUint32(egtpCfg.destIp.ipV4Addr, mBuf);
    }
    cmPkBool(egtpCfg.destIp.ipV4Pres, mBuf);
-   SPkU16(egtpCfg.destPort, mBuf);
+   packUint16(egtpCfg.destPort, mBuf);
 
-   SPkU32(egtpCfg.minTunnelId, mBuf);
-   SPkU32(egtpCfg.maxTunnelId, mBuf);
+   packUint32(egtpCfg.minTunnelId, mBuf);
+   packUint32(egtpCfg.maxTunnelId, mBuf);
 
    SPstTsk(pst, mBuf);
 
@@ -143,21 +143,21 @@ S16 unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
 
    cmMemset((U8 *)&egtpCfg, 0, sizeof(EgtpConfig));
 
-   SUnpkU32(&(egtpCfg.maxTunnelId), mBuf);
-   SUnpkU32(&(egtpCfg.minTunnelId), mBuf);
+   unPackUint32(&(egtpCfg.maxTunnelId), mBuf);
+   unPackUint32(&(egtpCfg.minTunnelId), mBuf);
   
-   SUnpkU16(&(egtpCfg.destPort), mBuf);
+   unPackUint16(&(egtpCfg.destPort), mBuf);
    cmUnpkBool(&(egtpCfg.destIp.ipV4Pres), mBuf);
    if(egtpCfg.destIp.ipV4Pres)
    {  
-      SUnpkU32(&(egtpCfg.destIp.ipV4Addr), mBuf);
+      unPackUint32(&(egtpCfg.destIp.ipV4Addr), mBuf);
    }
 
-   SUnpkU16(&(egtpCfg.localPort), mBuf);
+   unPackUint16(&(egtpCfg.localPort), mBuf);
    cmUnpkBool(&(egtpCfg.localIp.ipV4Pres), mBuf);
    if(egtpCfg.localIp.ipV4Pres)
    {
-      SUnpkU32(&(egtpCfg.localIp.ipV4Addr), mBuf);
+      unPackUint32(&(egtpCfg.localIp.ipV4Addr), mBuf);
    }
    
    SPutMsg(mBuf);
@@ -368,9 +368,9 @@ S16 packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
       RETVALUE(RFAILED);
    }
 
-   SPkU8(tnlEvt.action, mBuf);
-   SPkU32(tnlEvt.lclTeid, mBuf);
-   SPkU32(tnlEvt.remTeid, mBuf);
+   packUint8(tnlEvt.action, mBuf);
+   packUint32(tnlEvt.lclTeid, mBuf);
+   packUint32(tnlEvt.remTeid, mBuf);
 
    SPstTsk(pst, mBuf);
    RETVALUE(ROK);
@@ -401,9 +401,9 @@ S16 unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
 
    cmMemset((U8 *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
-   SUnpkU32(&(tnlEvt.remTeid), mBuf);
-   SUnpkU32(&(tnlEvt.lclTeid), mBuf);
-   SUnpkU8(&(tnlEvt.action), mBuf);
+   unPackUint32(&(tnlEvt.remTeid), mBuf);
+   unPackUint32(&(tnlEvt.lclTeid), mBuf);
+   unPackUint8(&(tnlEvt.action), mBuf);
 
    RETVALUE((* func)(pst, tnlEvt));
 
@@ -438,9 +438,9 @@ S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
       RETVALUE(RFAILED);
    }
     
-   SPkU8(tnlEvt.action, mBuf);
-   SPkU32(tnlEvt.lclTeid, mBuf);
-   SPkU32(tnlEvt.remTeid, mBuf);
+   packUint8(tnlEvt.action, mBuf);
+   packUint32(tnlEvt.lclTeid, mBuf);
+   packUint32(tnlEvt.remTeid, mBuf);
    
    packEgtpCfmStatus(tnlEvt.cfmStatus, mBuf);
     
@@ -474,9 +474,9 @@ S16 unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
    cmMemset((U8 *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
    unpackEgtpCfmStatus(&(tnlEvt.cfmStatus), mBuf); 
-   SUnpkU32(&(tnlEvt.remTeid), mBuf);
-   SUnpkU32(&(tnlEvt.lclTeid), mBuf);
-   SUnpkU8(&(tnlEvt.action), mBuf);
+   unPackUint32(&(tnlEvt.remTeid), mBuf);
+   unPackUint32(&(tnlEvt.lclTeid), mBuf);
+   unPackUint8(&(tnlEvt.action), mBuf);
  
    RETVALUE((* func)(tnlEvt));
  

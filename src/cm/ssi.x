@@ -936,22 +936,22 @@ EXTERN  S16 tst ARGS((void ));
 EXTERN  S16 rdConQ ARGS((Data data));
 
 EXTERN  S16 SPkS8 ARGS((S8 val,Buffer *mBuf));
-EXTERN  S16 SPkU8 ARGS((U8 val,Buffer *mBuf));
+EXTERN  S16 packUint8 ARGS((U8 val,Buffer *mBuf));
 EXTERN  S16 SPkS16 ARGS((S16 val,Buffer *mBuf));
-EXTERN  S16 SPkU16 ARGS((U16 val,Buffer *mBuf));
+EXTERN  S16 packUint16 ARGS((U16 val,Buffer *mBuf));
 EXTERN  S16 SPkS32 ARGS((S32 val,Buffer *mBuf));
-EXTERN  S16 SPkU32 ARGS((U32 val,Buffer *mBuf));
+EXTERN  S16 packUint32 ARGS((U32 val,Buffer *mBuf));
 /* ssi_x_001.main_49 : added packing of F32 and F64*/
 #ifdef SS_FLOAT
 EXTERN  S16 SPkF32 ARGS((F32 val,Buffer *mBuf));
 EXTERN  S16 SPkF64 ARGS((F64 val,Buffer *mBuf));
 #endif /* SS_FLOAT */
 EXTERN  S16 SUnpkS8 ARGS((S8 *val,Buffer *mBuf));
-EXTERN  S16 SUnpkU8 ARGS((U8 *val,Buffer *mBuf));
+EXTERN  S16 unPackUint8 ARGS((U8 *val,Buffer *mBuf));
 EXTERN  S16 SUnpkS16 ARGS((S16 *val,Buffer *mBuf));
-EXTERN  S16 SUnpkU16 ARGS((U16 *val,Buffer *mBuf));
+EXTERN  S16 unPackUint16 ARGS((U16 *val,Buffer *mBuf));
 EXTERN  S16 SUnpkS32 ARGS((S32 *val,Buffer *mBuf));
-EXTERN  S16 SUnpkU32 ARGS((U32 *val,Buffer *mBuf));
+EXTERN  S16 unPackUint32 ARGS((U32 *val,Buffer *mBuf));
 /* ssi_x_001.main_49 : added unpacking of F32 and F64*/
 #ifdef SS_FLOAT
 EXTERN  S16 SUnpkF32 ARGS((F32 *val,Buffer *mBuf));

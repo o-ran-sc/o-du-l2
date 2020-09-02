@@ -55,15 +55,15 @@
       /* Value */                                  \
       for (i = 0; i < (S16) len; i++)              \
       {                                            \
-         CMCHKPK(SPkU8, tknStr->val[i], mBuf);     \
+         CMCHKPK(packUint8, tknStr->val[i], mBuf);     \
       }                                            \
                                                    \
       /* Length */                                 \
-      CMCHKPK(SPkU8, tknStr->len, mBuf);           \
+      CMCHKPK(packUint8, tknStr->len, mBuf);           \
    }                                               \
                                                    \
    /* Token Header */                              \
-   CMCHKPK(SPkU8, tknStr->pres, mBuf);             \
+   CMCHKPK(packUint8, tknStr->pres, mBuf);             \
 }
 
 #define CMUNPKTKNBSTR(tknStr, mBuf)                                 \
@@ -72,12 +72,12 @@
    Cntr len;                                                       \
                                                                    \
    /* Token Header */                                              \
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);                        \
+   CMCHKUNPK(unPackUint8, &tknStr->pres, mBuf);                        \
                                                                    \
    if(tknStr->pres)                                                \
    {                                                               \
      /* Length */                                                  \
-      CMCHKUNPK(SUnpkU8, &tknStr->len, mBuf);                      \
+      CMCHKUNPK(unPackUint8, &tknStr->len, mBuf);                      \
                                                                    \
       if (tknStr->len % 8)                                         \
          len = (tknStr->len/8 ) + 1;                               \
@@ -87,7 +87,7 @@
       /* Value */                                                  \
       for (i = 1; i <= (S16) len; i++)                             \
       {                                                            \
-         CMCHKUNPK(SUnpkU8, &tknStr->val[len - i], mBuf);          \
+         CMCHKUNPK(unPackUint8, &tknStr->val[len - i], mBuf);          \
       }                                                            \
    }                                                               \
                                                                    \

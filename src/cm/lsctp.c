@@ -49,10 +49,10 @@ S16 cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
 
    if(ntfy->header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
-      SPkU16(ntfy->u.assocChange.state, mBuf);
-      SPkU32(ntfy->u.assocChange.assocId, mBuf);
+      packUint16(ntfy->u.assocChange.state, mBuf);
+      packUint32(ntfy->u.assocChange.assocId, mBuf);
    }
-   SPkU16(ntfy->header.nType, mBuf);
+   packUint16(ntfy->header.nType, mBuf);
 
    if (SPstTsk(pst, mBuf) != ROK)
    {
@@ -85,11 +85,11 @@ S16 cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf)
    CmInetSctpNotification ntfy;
    cmMemset((U8*)&ntfy, 0, sizeof(CmInetSctpNotification));
 
-   SUnpkU16(&(ntfy.header.nType), mBuf);
+   unPackUint16(&(ntfy.header.nType), mBuf);
    if(ntfy.header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
-      SUnpkU32(&(ntfy.u.assocChange.assocId), mBuf);
-      SUnpkU16(&(ntfy.u.assocChange.state), mBuf);
+      unPackUint32(&(ntfy.u.assocChange.assocId), mBuf);
+      unPackUint16(&(ntfy.u.assocChange.state), mBuf);
    }
 
    RETVALUE((*func)(mBuf, &ntfy));

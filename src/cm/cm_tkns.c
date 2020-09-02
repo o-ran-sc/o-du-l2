@@ -87,7 +87,7 @@ Buffer *mBuf;               /* message buffer */
    }
 
    /* Token Header */
-   CMCHKPK(SPkU8, tknS16->pres, mBuf);
+   CMCHKPK(packUint8, tknS16->pres, mBuf);
 
    RETVALUE(ROK);
 } /* end of cmPkTknS16 */
@@ -232,13 +232,13 @@ Buffer     *mBuf;               /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(SPkU8, tknStr->val[ndx], mBuf);
+         CMCHKPK(packUint8, tknStr->val[ndx], mBuf);
       }
       /* Length */
-      CMCHKPK(SPkU16, tknStr->len, mBuf);
+      CMCHKPK(packUint16, tknStr->len, mBuf);
    }
    /* Token Header */
-   CMCHKPK(SPkU8, tknStr->pres, mBuf);
+   CMCHKPK(packUint8, tknStr->pres, mBuf);
 
    RETVALUE(ROK);
 
@@ -287,13 +287,13 @@ Buffer     *mBuf;               /* message buffer */
       /* Value */
       for (ndx = 0; ndx < len; ndx++)
       {
-         CMCHKPK(SPkU8, tknStr->val[ndx], mBuf);
+         CMCHKPK(packUint8, tknStr->val[ndx], mBuf);
       }
       /* Length */
-      CMCHKPK(SPkU16, tknStr->len, mBuf);
+      CMCHKPK(packUint16, tknStr->len, mBuf);
    }
    /* Token Header */
-   CMCHKPK(SPkU8, tknStr->pres, mBuf);
+   CMCHKPK(packUint8, tknStr->pres, mBuf);
 
    RETVALUE(ROK);
 
@@ -335,15 +335,15 @@ Buffer     *mBuf;               /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(SPkU16, tknStr->val[ndx], mBuf);
+         CMCHKPK(packUint16, tknStr->val[ndx], mBuf);
       }
 
       /* Length */
-      CMCHKPK(SPkU8, tknStr->len, mBuf);
+      CMCHKPK(packUint8, tknStr->len, mBuf);
    }
 
    /* Token Header */
-   CMCHKPK(SPkU8, tknStr->pres, mBuf);
+   CMCHKPK(packUint8, tknStr->pres, mBuf);
 
    RETVALUE(ROK);
 } /* end of cmPkTknStrBMP4 */
@@ -384,13 +384,13 @@ Buffer      *mBuf;               /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(SPkU16, tknStr->val[ndx], mBuf);
+         CMCHKPK(packUint16, tknStr->val[ndx], mBuf);
       }
       /* Length */
-      CMCHKPK(SPkU16, tknStr->len, mBuf);
+      CMCHKPK(packUint16, tknStr->len, mBuf);
    }
    /* Token Header */
-   CMCHKPK(SPkU8, tknStr->pres, mBuf);
+   CMCHKPK(packUint8, tknStr->pres, mBuf);
 
    RETVALUE(ROK);
 } /* end of cmPkTknStrBMPXL */
@@ -431,15 +431,15 @@ Buffer     *mBuf;               /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(SPkU32, tknStr->val[ndx], mBuf);
+         CMCHKPK(packUint32, tknStr->val[ndx], mBuf);
       }
 
       /* Length */
-      CMCHKPK(SPkU8, tknStr->len, mBuf);
+      CMCHKPK(packUint8, tknStr->len, mBuf);
    }
 
    /* Token Header */
-   CMCHKPK(SPkU8, tknStr->pres, mBuf);
+   CMCHKPK(packUint8, tknStr->pres, mBuf);
 
    RETVALUE(ROK);
 } /* end of cmPkTknStrUNI4 */
@@ -480,13 +480,13 @@ Buffer      *mBuf;               /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(SPkU32, tknStr->val[ndx], mBuf);
+         CMCHKPK(packUint32, tknStr->val[ndx], mBuf);
       }
       /* Length */
-      CMCHKPK(SPkU16, tknStr->len, mBuf);
+      CMCHKPK(packUint16, tknStr->len, mBuf);
    }
    /* Token Header */
-   CMCHKPK(SPkU8, tknStr->pres, mBuf);
+   CMCHKPK(packUint8, tknStr->pres, mBuf);
 
    RETVALUE(ROK);
 } /* end of cmPkTknStrUNIXL */
@@ -524,7 +524,7 @@ Buffer *mBuf;               /* message buffer */
    TRC2(cmUnpkTknS16)
 
    /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknS16->pres, mBuf);
+   CMCHKUNPK(unPackUint8, &tknS16->pres, mBuf);
 
    if (tknS16->pres)
    {
@@ -673,12 +673,12 @@ Ptr         ptr;                /* pointer to control memory block */
 
    TRC2(cmUnpkTknStrOSXL)
 
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+   CMCHKUNPK(unPackUint8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(SUnpkU16, &tknStr->len, mBuf);
+      CMCHKUNPK(unPackUint16, &tknStr->len, mBuf);
 
       if( cmGetMem(ptr, tknStr->len, (Ptr *)&tknStr->val) != ROK)
       {
@@ -687,7 +687,7 @@ Ptr         ptr;                /* pointer to control memory block */
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(SUnpkU8, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(unPackUint8, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 
@@ -730,12 +730,12 @@ Buffer     *mBuf;               /* message buffer */
 
    TRC2(cmUnpkTknStrBSXL)
 
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+   CMCHKUNPK(unPackUint8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(SUnpkU16, &tknStr->len, mBuf);
+      CMCHKUNPK(unPackUint16, &tknStr->len, mBuf);
 
       if (tknStr->len % 8)
          len = (tknStr->len/8) + 1;
@@ -749,7 +749,7 @@ Buffer     *mBuf;               /* message buffer */
       /* Value */
       for (ndx = 1; ndx <= len; ndx++)
       {
-         CMCHKUNPK(SUnpkU8, &tknStr->val[len - ndx], mBuf);
+         CMCHKUNPK(unPackUint8, &tknStr->val[len - ndx], mBuf);
       }
    }
 
@@ -789,17 +789,17 @@ Buffer     *mBuf;               /* message buffer */
    TRC2(cmUnpkTknStrBMP4)
 
    /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+   CMCHKUNPK(unPackUint8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(SUnpkU8, &tknStr->len, mBuf);
+      CMCHKUNPK(unPackUint8, &tknStr->len, mBuf);
 
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(SUnpkU16, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(unPackUint16, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 
@@ -839,12 +839,12 @@ Ptr          ptr;                /* pointer to control memory block */
 
    TRC2(cmUnpkTknStrBMPXL)
 
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+   CMCHKUNPK(unPackUint8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(SUnpkU16, &tknStr->len, mBuf);
+      CMCHKUNPK(unPackUint16, &tknStr->len, mBuf);
 
       /* Each BMP Character is 2 octet long */
       if( cmGetMem(ptr, 2*(tknStr->len), (Ptr *)&tknStr->val) != ROK)
@@ -854,7 +854,7 @@ Ptr          ptr;                /* pointer to control memory block */
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(SUnpkU16, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(unPackUint16, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 
@@ -894,17 +894,17 @@ Buffer     *mBuf;               /* message buffer */
    TRC2(cmUnpkTknStrUNI4)
 
    /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+   CMCHKUNPK(unPackUint8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(SUnpkU8, &tknStr->len, mBuf);
+      CMCHKUNPK(unPackUint8, &tknStr->len, mBuf);
 
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(SUnpkU32, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(unPackUint32, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 
@@ -944,12 +944,12 @@ Ptr          ptr;                /* pointer to control memory block */
 
    TRC2(cmUnpkTknStrUNIXL)
 
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+   CMCHKUNPK(unPackUint8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(SUnpkU16, &tknStr->len, mBuf);
+      CMCHKUNPK(unPackUint16, &tknStr->len, mBuf);
 
       /* Each UNI Character is 4 octets long */
       if( cmGetMem(ptr, 4*tknStr->len, (Ptr *)&tknStr->val) != ROK)
@@ -959,7 +959,7 @@ Ptr          ptr;                /* pointer to control memory block */
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(SUnpkU32, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(unPackUint32, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 

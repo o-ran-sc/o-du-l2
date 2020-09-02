@@ -789,15 +789,15 @@ S16 duReadCfg()
    pst.pool= DU_POOL;
 
 
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, DU_POOL, &mBuf) != ROK)
    {
       DU_LOG("\nDU_APP : Memory allocation failed in duReadCfg");
       return RFAILED;
    }
 
-   if (SPstTsk(&pst, mBuf) != ROK)
+   if (ODU_PST_TASK(&pst, mBuf) != ROK)
    {
-      DU_LOG("\nDU_APP : SPstTsk failed in duReadCfg");
+      DU_LOG("\nDU_APP : ODU_PST_TASK failed in duReadCfg");
       return RFAILED;
    }
 

@@ -239,7 +239,7 @@ U8 status;
       RETVALUE(RFAILED);
    }
 
-   if (SPkU8(status, mBuf) != ROK) 
+   if (packUint8(status, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -283,7 +283,7 @@ Buffer *mBuf;
    
    TRC3(cmUnpkLwLcRgmBndCfm)
 
-   if (SUnpkU8(&status, mBuf) != ROK) 
+   if (unPackUint8(&status, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -763,7 +763,7 @@ U8 status;
       RETVALUE(RFAILED);
    }
 
-   if (SPkU8(status, mBuf) != ROK) 
+   if (packUint8(status, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -807,7 +807,7 @@ Buffer *mBuf;
    
    TRC3(cmUnpkRgmBndCfm)
 
-   if (SUnpkU8(&status, mBuf) != ROK) 
+   if (unPackUint8(&status, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -850,9 +850,9 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmPkCfgPrbRprt);
-   CMCHKPK(SPkU16, prbRprtCfg->usPrbAvgPeriodicty, mBuf);
-   CMCHKPK(SPkU8, prbRprtCfg->bConfigType, mBuf);
-   CMCHKPK(SPkU8, prbRprtCfg->bCellId, mBuf);
+   CMCHKPK(packUint16, prbRprtCfg->usPrbAvgPeriodicty, mBuf);
+   CMCHKPK(packUint8, prbRprtCfg->bConfigType, mBuf);
+   CMCHKPK(packUint8, prbRprtCfg->bCellId, mBuf);
    RETVALUE(ROK);
 }
 /**
@@ -880,9 +880,9 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmUnPkCfgPrbRprt);
-   CMCHKUNPK(SUnpkU8, &prbRprtCfg->bCellId, mBuf);
-   CMCHKUNPK(SUnpkU8, &prbRprtCfg->bConfigType, mBuf);
-   CMCHKUNPK(SUnpkU16, &prbRprtCfg->usPrbAvgPeriodicty, mBuf);
+   CMCHKUNPK(unPackUint8, &prbRprtCfg->bCellId, mBuf);
+   CMCHKUNPK(unPackUint8, &prbRprtCfg->bConfigType, mBuf);
+   CMCHKUNPK(unPackUint16, &prbRprtCfg->usPrbAvgPeriodicty, mBuf);
    RETVALUE(ROK);
 }
 
@@ -1027,9 +1027,9 @@ RgmPrbRptPerQci *qciPrbRprt;
 Buffer *mBuf = NULLP;
 #endif
 {
-   CMCHKPK(SPkU8, qciPrbRprt->bQci, mBuf);
-   CMCHKPK(SPkU8, qciPrbRprt->bAvgPrbUlUsage, mBuf);
-   CMCHKPK(SPkU8, qciPrbRprt->bAvgPrbDlUsage, mBuf);
+   CMCHKPK(packUint8, qciPrbRprt->bQci, mBuf);
+   CMCHKPK(packUint8, qciPrbRprt->bAvgPrbUlUsage, mBuf);
+   CMCHKPK(packUint8, qciPrbRprt->bAvgPrbDlUsage, mBuf);
 
    RETVALUE(ROK);
 }
@@ -1058,9 +1058,9 @@ RgmPrbRptPerQci *qciPrbRprt;
 Buffer *mBuf = NULLP;
 #endif
 {
-   CMCHKUNPK(SUnpkU8, &qciPrbRprt->bAvgPrbDlUsage, mBuf);
-   CMCHKUNPK(SUnpkU8, &qciPrbRprt->bAvgPrbUlUsage, mBuf);
-   CMCHKUNPK(SUnpkU8, &qciPrbRprt->bQci, mBuf);
+   CMCHKUNPK(unPackUint8, &qciPrbRprt->bAvgPrbDlUsage, mBuf);
+   CMCHKUNPK(unPackUint8, &qciPrbRprt->bAvgPrbUlUsage, mBuf);
+   CMCHKUNPK(unPackUint8, &qciPrbRprt->bQci, mBuf);
 
    RETVALUE(ROK);
 }
@@ -1099,8 +1099,8 @@ PUBLIC S16 cmPkPrbRprtInd(prbRprtInd, mBuf)
    {
       CMCHKPK(cmPkRgmPrbQciRpt, &prbRprtInd->stQciPrbRpts[idx], mBuf);
    }
-   CMCHKPK(SPkU8, prbRprtInd->bPrbUsageMask, mBuf);
-   CMCHKPK(SPkU8, prbRprtInd->bCellId, mBuf);
+   CMCHKPK(packUint8, prbRprtInd->bPrbUsageMask, mBuf);
+   CMCHKPK(packUint8, prbRprtInd->bCellId, mBuf);
    /* RRM_SP1_END */
    RETVALUE(ROK);
 }
@@ -1134,8 +1134,8 @@ PUBLIC S16 cmUnpkPrbRprtInd(prbRprtInd, mBuf)
    TRC3(cmUnpkPrbRprtInd);
 
    /* RRM_SP1_START */
-   CMCHKUNPK(SUnpkU8, &prbRprtInd->bCellId, mBuf);
-   CMCHKUNPK(SUnpkU8, &prbRprtInd->bPrbUsageMask, mBuf);
+   CMCHKUNPK(unPackUint8, &prbRprtInd->bCellId, mBuf);
+   CMCHKUNPK(unPackUint8, &prbRprtInd->bPrbUsageMask, mBuf);
    for(idx = 0; idx < RGM_MAX_QCI_REPORTS; idx++)
    {
       CMCHKUNPK(cmUnpkRgmPrbQciRpt, &prbRprtInd->stQciPrbRpts[idx], mBuf);
@@ -1275,9 +1275,9 @@ PUBLIC S16 cmPkTransModeInd(transModeInd, mBuf)
 #endif
 {
    TRC3(cmPkTransModeInd); 
-   CMCHKPK(SPkU32, transModeInd->eMode, mBuf);
-   CMCHKPK(SPkU16, transModeInd->usCrnti, mBuf);
-   CMCHKPK(SPkU8, transModeInd->bCellId, mBuf);
+   CMCHKPK(packUint32, transModeInd->eMode, mBuf);
+   CMCHKPK(packUint16, transModeInd->usCrnti, mBuf);
+   CMCHKPK(packUint8, transModeInd->bCellId, mBuf);
    RETVALUE(ROK);
 }
 
@@ -1307,9 +1307,9 @@ PUBLIC S16 cmUnpkTransModeInd(transModeInd, mBuf)
 {
    U32 tmpModeEnum;
    TRC3(cmUnpkTransModeInd);
-   CMCHKUNPK(SUnpkU8, &transModeInd->bCellId, mBuf);
-   CMCHKUNPK(SUnpkU16, &transModeInd->usCrnti, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpModeEnum, mBuf);
+   CMCHKUNPK(unPackUint8, &transModeInd->bCellId, mBuf);
+   CMCHKUNPK(unPackUint16, &transModeInd->usCrnti, mBuf);
+   CMCHKUNPK(unPackUint32, (U32 *)&tmpModeEnum, mBuf);
    transModeInd->eMode = (RgmTxnMode)tmpModeEnum;
    RETVALUE(ROK);
 }

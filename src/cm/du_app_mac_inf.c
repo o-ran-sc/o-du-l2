@@ -127,8 +127,8 @@ uint8_t  packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
       }
 
       /* pack the transaction ID in CNF structure */
-      CMCHKPK(SPkU16, macCellCfgCfm->cellId, mBuf);
-      CMCHKPK(SPkU8, macCellCfgCfm->rsp, mBuf);
+      CMCHKPK(packUint16, macCellCfgCfm->cellId, mBuf);
+      CMCHKPK(packUint8, macCellCfgCfm->rsp, mBuf);
 
       return SPstTsk(pst,mBuf);
    }
@@ -164,8 +164,8 @@ uint8_t unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf)
    if(pst->selector == ODU_SELECTOR_LC)
    {
       /* unpack the transaction ID in CNF structure */
-      CMCHKUNPK(SUnpkU8, &(macCellCfgCfm.rsp), mBuf);
-      CMCHKUNPK(SUnpkU16, &(macCellCfgCfm.cellId), mBuf);
+      CMCHKUNPK(unPackUint8, &(macCellCfgCfm.rsp), mBuf);
+      CMCHKUNPK(unPackUint16, &(macCellCfgCfm.cellId), mBuf);
       return (*func)(pst, &macCellCfgCfm);
    }
    else
@@ -362,9 +362,9 @@ uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo )
 
    if(pst->selector == ODU_SELECTOR_LC)
    {
-      CMCHKPK(SPkU16, slotInfo->cellId, mBuf);
-      CMCHKPK(SPkU16, slotInfo->sfn, mBuf);
-      CMCHKPK(SPkU16, slotInfo->slot, mBuf);
+      CMCHKPK(packUint16, slotInfo->cellId, mBuf);
+      CMCHKPK(packUint16, slotInfo->sfn, mBuf);
+      CMCHKPK(packUint16, slotInfo->slot, mBuf);
 
       CM_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotIndInfo));
       slotInfo = NULL;
@@ -415,9 +415,9 @@ uint8_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
    {
       SlotIndInfo slotInfo;
 
-      CMCHKUNPK(SUnpkU16, &(slotInfo.slot), mBuf);
-      CMCHKUNPK(SUnpkU16, &(slotInfo.sfn), mBuf);
-      CMCHKUNPK(SUnpkU16, &(slotInfo.cellId), mBuf);
+      CMCHKUNPK(unPackUint16, &(slotInfo.slot), mBuf);
+      CMCHKUNPK(unPackUint16, &(slotInfo.sfn), mBuf);
+      CMCHKUNPK(unPackUint16, &(slotInfo.cellId), mBuf);
 
       SPutMsg(mBuf);
       return (*func)(pst, &slotInfo);
@@ -462,7 +462,7 @@ uint8_t packMacStopInd(Pst *pst, MacCellStopInfo *cellStopId)
    {
       /*pack the payload here*/
       DU_LOG("\nDU APP : Packed CellId");
-      CMCHKPK(SPkU16, cellStopId->cellId, mBuf);
+      CMCHKPK(packUint16, cellStopId->cellId, mBuf);
       CM_FREE_SHRABL_BUF(pst->region, pst->pool, cellStopId, sizeof(MacCellStopInfo));
       cellStopId = NULL;
    }
@@ -510,7 +510,7 @@ uint8_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf)
    else if(pst->selector == ODU_SELECTOR_LC)
    {
       MacCellStopInfo cellStopId;
-      CMCHKUNPK(SUnpkU16, &(cellStopId.cellId), mBuf);
+      CMCHKUNPK(unPackUint16, &(cellStopId.cellId), mBuf);
 
       SPutMsg(mBuf);
       return (*func)(pst, &cellStopId);

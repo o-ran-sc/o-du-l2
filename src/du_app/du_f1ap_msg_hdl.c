@@ -686,26 +686,26 @@ uint8_t SendF1APMsg(Region region, Pool pool)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(region, pool, &mBuf) == ROK)
+   if(ODU_GET_MSG(region, pool, &mBuf) == ROK)
    {
-      if(SAddPstMsgMult((Data *)encBuf, encBufSize, mBuf) == ROK)
+      if(ODU_ADD_PST_MSG_MULT((Data *)encBuf, encBufSize, mBuf) == ROK)
       {
          SPrntMsg(mBuf, 0,0);
  
          if(sctpSend(mBuf, F1_INTERFACE) != ROK)
          {
             DU_LOG("\nF1AP : SCTP Send failed");
-            SPutMsg(mBuf);
+            ODU_PUT_MSG(mBuf);
             return RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nF1AP : SAddPstMsgMult failed");
-         SPutMsg(mBuf);
+         DU_LOG("\nF1AP : ODU_ADD_PST_MSG_MULT failed");
+         ODU_PUT_MSG(mBuf);
          return RFAILED;
       }
-      SPutMsg(mBuf);
+      ODU_PUT_MSG(mBuf);
    }
    else
    {
@@ -6273,7 +6273,7 @@ void F1APMsgHdlr(Buffer *mBuf)
       DU_LOG("\nF1AP : Memory allocation failed");
       return;
    }
-   if(SCpyMsgFix(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
+   if(ODU_COPY_MSG_FIX(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
    {
       DU_LOG("\nF1AP : Failed while copying %d", copyCnt);
       return;

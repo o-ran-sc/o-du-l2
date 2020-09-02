@@ -394,7 +394,7 @@ S16 duSctpAssocReq(U8 itfType)
 S16 duFillSctpPst(Pst *pst, Event event)
 {
    Buffer *mBuf;
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, DU_POOL, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       RETVALUE(RFAILED);
@@ -409,7 +409,7 @@ S16 duFillSctpPst(Pst *pst, Event event)
    pst->event = event;
    pst->selector = ODU_SELECTOR_LC;
    pst->pool= DU_POOL;
-   SPstTsk(pst, mBuf); 
+   ODU_PST_TASK(pst, mBuf); 
 
    RETVALUE(ROK);
 }
@@ -489,9 +489,9 @@ void sendToDuApp(Buffer *mBuf, Event event)
    pst.pool= DU_POOL;
    pst.region = DFLT_REGION;
 
-   if (SPstTsk(&pst, mBuf) != ROK)
+   if (ODU_PST_TASK(&pst, mBuf) != ROK)
    {
-      DU_LOG("\nSCTP : SPstTsk failed in duReadCfg");
+      DU_LOG("\nSCTP : ODU_PST_TASK failed in duReadCfg");
    }
 }
 
@@ -670,7 +670,7 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
 
          else
          {
-            SPutMsg(pollParams->mBuf);
+            ODU_PUT_MSG(pollParams->mBuf);
          }
       }
   }

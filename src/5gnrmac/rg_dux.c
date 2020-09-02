@@ -94,15 +94,15 @@ static int RLOG_MODULE_ID=4096;
 }
 
 #define RG_UNPACK_SHORT_BSR(_bsr, _mBuf, _ret) {\
-   _ret = SUnpkU8((_bsr), (_mBuf)); \
+   _ret = unPackUint8((_bsr), (_mBuf)); \
 }
 
 #define RG_UNPACK_TRUNC_BSR(_bsr, _mBuf, _ret) {\
-   _ret = SUnpkU8((_bsr), (_mBuf)); \
+   _ret = unPackUint8((_bsr), (_mBuf)); \
 }
 
 #define RG_UNPACK_PHR(_phr, _mBuf, _ret) {\
-   _ret = SUnpkU8((_phr), (_mBuf)); \
+   _ret = unPackUint8((_phr), (_mBuf)); \
 }
 
 #define RG_UNPACK_CRNTI(_rnti, _mBuf, _ret) {\
@@ -118,11 +118,11 @@ static int RLOG_MODULE_ID=4096;
 
 /* For EXT PHR DEMUX */
 #define RG_UNPACK_EXT_PHR_CI(_ci, _mBuf, _ret) {\
-   _ret = SUnpkU8((_ci), (_mBuf)); \
+   _ret = unPackUint8((_ci), (_mBuf)); \
 }
 
 #define RG_UNPACK_EXT_PHR(_extPhr, _mBuf, _ret) {\
-   _ret = SUnpkU8((_extPhr), (_mBuf)); \
+   _ret = unPackUint8((_extPhr), (_mBuf)); \
 }
 
 
@@ -235,9 +235,9 @@ RgErrInfo   *err;
    TRC2(rgDUXExtSubHdr)
 
    *len = 0;   
-   if(SUnpkU8(&byte,mBuf) != ROK)
+   if(unPackUint8(&byte,mBuf) != ROK)
    {
-      RLOG0(L_ERROR, "SUnpkU8 failed");
+      RLOG0(L_ERROR, "unPackUint8 failed");
       err->errCause = RGERR_DUX_UNPACK_FAILURE;
       RETVALUE(RFAILED);
    }
@@ -248,18 +248,18 @@ RgErrInfo   *err;
    if(*lcId <= RG_DEDLC_MAX_LCID)
    {  /* variable size MAC Sub PDU */
       RG_EXT_FORMT_BIT(fmt,byte);
-      if(SUnpkU8(&byte, mBuf) != ROK)
+      if(unPackUint8(&byte, mBuf) != ROK)
       {
-         RLOG0(L_ERROR, "SUnpkU8 failed");
+         RLOG0(L_ERROR, "unPackUint8 failed");
          err->errCause = RGERR_DUX_UNPACK_FAILURE;
          RETVALUE(RFAILED);
       }
       *len = byte;
       if(fmt)
       {
-         if(SUnpkU8(&byte,mBuf) != ROK)
+         if(unPackUint8(&byte,mBuf) != ROK)
          {
-            RLOG0(L_ERROR, "SUnpkU8 failed");
+            RLOG0(L_ERROR, "unPackUint8 failed");
             err->errCause = RGERR_DUX_UNPACK_FAILURE;
             RETVALUE(RFAILED);
          }

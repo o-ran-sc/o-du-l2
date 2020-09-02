@@ -117,16 +117,16 @@ uint8_t packRachInd(Pst *pst, RachInd *rachInd)
 uint8_t packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
 {
    Buffer *mBuf = NULLP;
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+   if (ODU_GET_MSG(pst->region, pst->pool, &mBuf) != ROK)
    {
       return RFAILED;
    }
 
    /* pack SFN and slot value */
-   CMCHKPK(SPkU16,slotInd->sfn, mBuf);
-   CMCHKPK(SPkU16,slotInd->slot, mBuf);
+   CMCHKPK(packUint16,slotInd->sfn, mBuf);
+   CMCHKPK(packUint16,slotInd->slot, mBuf);
 
-   return SPstTsk(pst,mBuf);
+   return ODU_PST_TASK(pst,mBuf);
 }
 
 /*******************************************************************
