@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0fc58d07_34820ecb",
+        "filename": "src/5gnrrlc/kw_udx_ul.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-02T14:47:24Z",
+      "side": 1,
+      "message": "what is this api file? which interface?",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ef4fc9e_b7755dfc",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-02T14:47:24Z",
+      "side": 1,
+      "message": "remove commented lines",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e36f00d1_052d0f9f",
+        "filename": "src/cm/ckw.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-02T14:47:24Z",
+      "side": 1,
+      "message": "why 11?",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c7cd2ae_3a48c8ba",
+        "filename": "src/cm/ckw.x",
+        "patchSetId": 13
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-02T14:47:24Z",
+      "side": 1,
+      "message": "remove commented line",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c42b9cd_1f595f61",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-02T14:47:24Z",
+      "side": 1,
+      "message": "remove these from common_def. Add them in only those files which need them",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71a3b90c_8b06a0b3",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-02T14:47:24Z",
+      "side": 1,
+      "message": "place all pst macros in rlc_utils.h/du_utils.h, etc",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63397a47_1fdaf8fd",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-02T14:47:24Z",
+      "side": 1,
+      "message": "club all function pointers together",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e089cc18_d84eba5d",
+        "filename": "src/cm/lkw.x",
+        "patchSetId": 13
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-02T14:47:24Z",
+      "side": 1,
+      "message": "do we need to prefix L?",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4a8aa9f_3025983d",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-02T14:47:24Z",
+      "side": 1,
+      "message": "\"L\" can be dropped everywhere. Follow what is done in MAC",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
