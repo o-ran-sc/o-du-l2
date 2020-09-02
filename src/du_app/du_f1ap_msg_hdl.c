@@ -73,14 +73,14 @@
 #include "du_mgr.h"
 #include "du_f1ap_msg_hdl.h"
 
-S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
+uint8_t procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
 void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg);
 extern char encBuf[ENC_BUF_MAX_LEN];
 extern DuCfgParams duCfgParam;
 uint8_t BuildULTnlInforet=RFAILED;
 uint8_t ServedCellListreturn=RFAILED;
-S16 sctpSend(Buffer *mBuf, U8 itfType);
+uint8_t sctpSend(Buffer *mBuf, U8 itfType);
 uint8_t Nrcgiret=RFAILED;
 uint8_t SplCellListret=RFAILED;
 uint8_t SRBSetupret=RFAILED;
@@ -686,26 +686,26 @@ uint8_t SendF1APMsg(Region region, Pool pool)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(region, pool, &mBuf) == ROK)
+   if(ODU_GET_MSG(region, pool, &mBuf) == ROK)
    {
-      if(SAddPstMsgMult((Data *)encBuf, encBufSize, mBuf) == ROK)
+      if(ODU_ADD_POST_MSG_MULT((Data *)encBuf, encBufSize, mBuf) == ROK)
       {
-         SPrntMsg(mBuf, 0,0);
+         ODU_PRINT_MSG(mBuf, 0,0);
  
          if(sctpSend(mBuf, F1_INTERFACE) != ROK)
          {
             DU_LOG("\nF1AP : SCTP Send failed");
-            SPutMsg(mBuf);
+            ODU_PUT_MSG(mBuf);
             return RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nF1AP : SAddPstMsgMult failed");
-         SPutMsg(mBuf);
+         DU_LOG("\nF1AP : ODU_ADD_POST_MSG_MULT failed");
+         ODU_PUT_MSG(mBuf);
          return RFAILED;
       }
-      SPutMsg(mBuf);
+      ODU_PUT_MSG(mBuf);
    }
    else
    {
@@ -1148,7 +1148,7 @@ uint8_t BuildAndSendF1SetupReq()
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */
-      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
          encBuf);
@@ -1624,7 +1624,7 @@ uint8_t BuildAndSendDUConfigUpdate()
        xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apDuCfg);
    
        /* Encode the DU Config Update type as APER */
-       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+       memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
        encBufSize = 0;
        encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apDuCfg, PrepFinalEncBuf, encBuf);
 
@@ -2068,7 +2068,7 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */
-      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
 	    encBuf);
@@ -4966,7 +4966,7 @@ uint8_t BuildDuToCuRrcContainer(DUtoCURRCContainer_t *duToCuRrcContainer)
 
 		/* encode cellGrpCfg into duToCuRrcContainer */
 		xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, &cellGrpCfg);
-		cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+		memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 		encBufSize = 0;
 		encRetVal = aper_encode(&asn_DEF_CellGroupConfigRrc, 0, &cellGrpCfg, PrepFinalEncBuf, encBuf);
 		/* Encode results */
@@ -5145,7 +5145,7 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
 			xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
 			/* Encode the F1SetupRequest type as APER */
-			cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+			memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 			encBufSize = 0;
 			encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf, encBuf);
 			/* Encode results */
@@ -6221,7 +6221,7 @@ uint8_t BuildAndSendUESetReq()
 	     xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
 	     /* Encode the F1SetupRequest type as APER */
-	     cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+	     memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 	     encBufSize = 0;
 	     encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
 			encBuf);
@@ -6283,16 +6283,18 @@ void F1APMsgHdlr(Buffer *mBuf)
    F1AP_PDU_t f1apasnmsg ;
  
    DU_LOG("\nF1AP : Received F1AP message buffer");
-   SPrntMsg(mBuf, 0,0);
+   ODU_PRINT_MSG(mBuf, 0,0);
  
    /* Copy mBuf into char array to decode it */
-   SFndLenMsg(mBuf, &recvBufLen);
-   if(SGetSBuf(DFLT_REGION, DFLT_POOL, (Data **)&recvBuf, (Size)recvBufLen) != ROK)
+   ODU_FIND_MSG_LEN(mBuf, &recvBufLen);
+   DU_ALLOC(recvBuf, (Size)recvBufLen);
+
+   if(recvBuf == NULLP)
    {
       DU_LOG("\nF1AP : Memory allocation failed");
       return;
    }
-   if(SCpyMsgFix(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
+   if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
    {
       DU_LOG("\nF1AP : Failed while copying %d", copyCnt);
       return;
@@ -6309,7 +6311,8 @@ void F1APMsgHdlr(Buffer *mBuf)
    memset(f1apMsg, 0, sizeof(F1AP_PDU_t));
  
    rval = aper_decode(0, &asn_DEF_F1AP_PDU, (void **)&f1apMsg, recvBuf, recvBufLen, 0, 0);
-   SPutSBuf(DFLT_REGION, DFLT_POOL, (Data *)recvBuf, (Size)recvBufLen);
+   DU_FREE(recvBuf, (Size)recvBufLen);
+
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
       DU_LOG("\nF1AP : ASN decode failed");

@@ -85,7 +85,7 @@ void init_log()
  *
  * ****************************************************************/
 
-S16 tst()
+uint8_t tst()
 {
    init_log();   
    DU_LOG("\nStarting CU_STUB");
@@ -103,7 +103,7 @@ S16 tst()
    sctpCfgReq();
    sctpStartReq();
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************

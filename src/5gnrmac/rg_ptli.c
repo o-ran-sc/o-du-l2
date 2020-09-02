@@ -418,7 +418,7 @@ SpId spId;
 
    TRC3(RgLiTfuBndReq)
 
-   RETVALUE((*RgLiTfuBndReqMt[pst->selector])(pst, suId, spId));
+   return ((*RgLiTfuBndReqMt[pst->selector])(pst, suId, spId));
 
 }
 
@@ -460,7 +460,7 @@ SpId spId;
 
    TRC3(RgLiTfuSchBndReq)
 
-   RETVALUE((*RgLiTfuSchBndReqMt[pst->selector])(pst, suId, spId));
+   return ((*RgLiTfuSchBndReqMt[pst->selector])(pst, suId, spId));
 
 }
 
@@ -502,7 +502,7 @@ Reason reason;
 
    TRC3(RgLiTfuUbndReq)
 
-   RETVALUE((*RgLiTfuUbndReqMt[pst->selector])(pst, spId, reason));
+   return ((*RgLiTfuUbndReqMt[pst->selector])(pst, spId, reason));
 
 }
 
@@ -544,7 +544,7 @@ Reason reason;
 
    TRC3(RgLiTfuSchUbndReq)
 
-   RETVALUE((*RgLiTfuSchUbndReqMt[pst->selector])(pst, spId, reason));
+   return ((*RgLiTfuSchUbndReqMt[pst->selector])(pst, spId, reason));
 
 }
 
@@ -600,7 +600,7 @@ TfuRecpReqInfo * recpReq;
 
    TRC3(RgLiTfuRecpReq)
 
-   RETVALUE((*RgLiTfuRecpReqMt[pst->selector])(pst, spId, recpReq));
+   return ((*RgLiTfuRecpReqMt[pst->selector])(pst, spId, recpReq));
 
 }
 
@@ -649,7 +649,7 @@ TfuCntrlReqInfo * cntrlReq;
 
    TRC3(RgLiTfuCntrlReq)
 
-   RETVALUE((*RgLiTfuCntrlReqMt[pst->selector])(pst, spId, cntrlReq));
+   return ((*RgLiTfuCntrlReqMt[pst->selector])(pst, spId, cntrlReq));
 
 }
 
@@ -697,7 +697,7 @@ TfuDatReqInfo * datReq;
 
    TRC3(RgLiTfuDatReq)
 
-   RETVALUE((*RgLiTfuDatReqMt[pst->selector])(pst, spId, datReq));
+   return ((*RgLiTfuDatReqMt[pst->selector])(pst, spId, datReq));
 
 }
 
@@ -743,7 +743,7 @@ TfuDelDatReqInfo * delDatReq;
 
    TRC3(RgLiTfuDelDatReq)
 
-   RETVALUE((*RgLiTfuDelDatReqMt[pst->selector])(pst, spId, delDatReq));
+   return ((*RgLiTfuDelDatReqMt[pst->selector])(pst, spId, delDatReq));
 
 }
 #endif /* L2_OPTMZ*/
@@ -794,7 +794,7 @@ SpId spId;
    UNUSED(suId);
    UNUSED(spId);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -840,7 +840,7 @@ SpId spId;
    UNUSED(suId);
    UNUSED(spId);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -886,7 +886,7 @@ Reason reason;
    UNUSED(spId);
    UNUSED(reason);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -932,7 +932,7 @@ Reason reason;
    UNUSED(spId);
    UNUSED(reason);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -992,7 +992,7 @@ TfuRecpReqInfo * recpReq;
    UNUSED(spId);
    UNUSED(recpReq);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1045,7 +1045,7 @@ TfuCntrlReqInfo * cntrlReq;
    UNUSED(spId);
    UNUSED(cntrlReq);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1097,7 +1097,7 @@ TfuDatReqInfo * datReq;
    UNUSED(spId);
    UNUSED(datReq);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1148,7 +1148,7 @@ TfuDelDatReqInfo * DelDatReq;
    UNUSED(spId);
    UNUSED(delDatReq);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*L2_OPTMZ*/

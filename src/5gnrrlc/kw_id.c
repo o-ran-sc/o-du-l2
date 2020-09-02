@@ -125,7 +125,7 @@ SystemId *s;                /* system id */
    s->bRev = sId.bRev;
    s->ptNmb = sId.ptNmb;
 
-   RETVALUE(TRUE);
+   return (TRUE);
 
 } /* end of kwGetSId */
 

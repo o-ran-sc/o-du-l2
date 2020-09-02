@@ -165,7 +165,7 @@ RgrUeCfg    *ueCfg;
       cmInitTimers (&ue->ackNakRepCb.ackNakRepDlInactvTmr, 1);
       cmInitTimers (&ue->ackNakRepCb.ackNakRepTmr, 1);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -289,7 +289,7 @@ RgrUeRecfg     *ueRecfg;
       ackNakRepCb->isAckNackEnabled = FALSE;
    } /* repetition disabled in re configuration */
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
  /** @brief This function is a utility to add the UE to the correct Measurement
@@ -341,9 +341,9 @@ RgrUeMeasGapCfg      *cfg;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
                   "rgSCHMeasGapANRepUeRecfg() Incorrect GAP Period"
                   "CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHMeasGapANRepUtlAddUe */ 
 
 
@@ -391,7 +391,7 @@ RgSchUeCb          *ue;
          ue->measGapCb.measQLnk.node = NULLP;
          break;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHMeasGapANRepUtlRmvUe */ 
 
 /**
@@ -547,7 +547,7 @@ PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
       }
    }
  
-   RETVALUE(ROK);
+   return ROK;
 } /* end of */ 
 
 
@@ -679,7 +679,7 @@ RgSchCellCb *cell;
    queue = &(dlSf->ueLst);
    rgSchAckNackRepUtlHdlTti (cell, queue);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
  /** @brief This function Marks the UE as ackNakRep so that Reception request
@@ -858,7 +858,7 @@ CmLListCp   *dlInactvUeLst;
    if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][ackNakTime.subframe] !=
          RG_SCH_TDD_DL_SUBFRAME)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    dlSf = rgSCHUtlSubFrmGet (cell, ackNakTime);
@@ -921,7 +921,7 @@ CmLListCp   *dlInactvUeLst;
 #ifdef LTE_TDD
    if(cell->ulDlCfgIdx == 5)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    rgSCHUtlGetPrevDlSfInfo(cell, ackNakTime, &ackNakTime, &repCntr);
    dlSf = rgSCHUtlSubFrmGet (cell, ackNakTime);
@@ -980,7 +980,7 @@ CmLListCp   *dlInactvUeLst;
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -1126,13 +1126,13 @@ CmLListCp   *ulInactvUeLst;
 #ifdef LTE_TDD
    if(cell->ulDlCfgIdx == 5)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, ackNakTime, TFU_DELTA);
    if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][ackNakTime.subframe] !=
          RG_SCH_TDD_DL_SUBFRAME)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 #else
    /* Introduced timing delta for DL control in FDD */
@@ -1177,7 +1177,7 @@ CmLListCp   *ulInactvUeLst;
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -1522,7 +1522,7 @@ U8                repCnt;
       }
    noSubfrms += rem;
 
-   RETVALUE(noSubfrms);
+   return (noSubfrms);
    }
 
 /**

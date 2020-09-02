@@ -467,8 +467,8 @@ Buffer  *mBuf;                      /* message buffer       */
           RG_FREE_MSG(mBuf);
           break;
    }
-   SExitTsk();
-   RETVALUE(ROK);
+   ODU_EXIT_TASK();
+   return ROK;
 }/* end of rgActvTsk */
 
 

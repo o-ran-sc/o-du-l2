@@ -296,7 +296,7 @@ RgMngmt  *cfm;    /* config confirm structure  */
 
    (*RgMiLrgCfgCfmMt[pst->selector])(pst, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgCfgCfm --*/
 
@@ -334,7 +334,7 @@ RgMngmt  *cfm;    /* config confirm structure  */
 
    (*RgMiLrgSchCfgCfmMt[pst->selector])(pst, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgSchCfgCfm --*/
 
@@ -374,7 +374,7 @@ RgMngmt  *cfm;    /* statistics confirm structure  */
 
    (*RgMiLrgStsCfmMt[pst->selector])(pst, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgStsCfm --*/
 
@@ -413,7 +413,7 @@ RgMngmt  *cfm;    /* status confirm structure  */
     
    (*RgMiLrgStaCfmMt[pst->selector])(pst,cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgStaCfm --*/
 
@@ -452,7 +452,7 @@ RgMngmt  *cfm;    /* control confirm structure  */
 
    (*RgMiLrgCntrlCfmMt[pst->selector])(pst,cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgCntrlCfm --*/
 
@@ -490,7 +490,7 @@ RgMngmt  *cfm;    /* control confirm structure  */
 
    (*RgMiLrgSchCntrlCfmMt[pst->selector])(pst,cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgSchCntrlCfm --*/
 
@@ -529,7 +529,7 @@ RgMngmt  *usta;    /* status indication structure  */
 
    (*RgMiLrgStaIndMt[pst->selector])(pst,usta);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgStaInd --*/
 
@@ -567,7 +567,7 @@ RgMngmt  *usta;    /* status indication structure  */
 
    (*RgMiLrgSchStaIndMt[pst->selector])(pst,usta);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgSchStaInd --*/
 
@@ -609,7 +609,7 @@ Buffer   *mBuf;   /* Trace message  */
 
    (*RgMiLrgTrcIndMt[pst->selector])(pst,trc,mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgTrcInd --*/
 
@@ -632,7 +632,7 @@ LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
    
    (*RgMiLrgSchL2mMeasCfmMt[pst->selector])(pst,cfm);
    
-   RETVALUE(ROK);
+   return ROK;
 
 } /* RgMiLrgSchL2MeasCfm */
 
@@ -669,7 +669,7 @@ LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
         
    (*RgMiLrgSchL2mMeasStopCfmMt[pst->selector])(pst,cfm);
           
-   RETVALUE(ROK);
+   return ROK;
         
 } /* RgMiLrgSchL2MeasStopCfm */
 
@@ -712,7 +712,7 @@ RgMngmt *cfm;           /* Config Confirm */
 {
    TRC3(PtMiLrgCfgCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgCfgCfm */
 
 /**
@@ -748,7 +748,7 @@ RgMngmt *cfm;           /* Config Confirm */
 {
    TRC3(PtMiLrgSchCfgCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchCfgCfm */
 
 
@@ -786,7 +786,7 @@ RgMngmt *cfm;           /* Statistics Confirm */
 {
    TRC3(PtMiLrgStsCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgStsCfm */
 
 
@@ -823,7 +823,7 @@ RgMngmt *cfm;           /* Status Confirm */
 #endif
 {
    TRC3(PtMiLrgStaCfm)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgStaCfm */
 
 
@@ -860,7 +860,7 @@ RgMngmt *usta;          /* Status indication */
 #endif
 {
    TRC3(PtMiLrgStaInd)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgStaInd */
 
 /**
@@ -895,7 +895,7 @@ RgMngmt *usta;          /* Status indication */
 #endif
 {
    TRC3(PtMiLrgSchStaInd)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchStaInd */
 
 
@@ -931,7 +931,7 @@ RgMngmt *cfm;           /* Control Confirm */
 #endif
 {
    TRC3(PtMiLrgCntrlCfm)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgCntrlCfm */
 
 /**
@@ -966,7 +966,7 @@ RgMngmt *cfm;           /* Control Confirm */
 #endif
 {
    TRC3(PtMiLrgSchCntrlCfm)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchCntrlCfm */
 
 
@@ -1004,7 +1004,7 @@ Buffer *mBuf;           /* Trace message */
 #endif
 {
    TRC3(PtMiLrgTrcInd)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgTrcInd */
 #ifdef LTE_L2_MEAS
 /**
@@ -1035,7 +1035,7 @@ LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
 {
    TRC3(PtMiLrgSchL2MeasCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchL2MeasCfm */
 
 /**
@@ -1066,7 +1066,7 @@ LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
 {
    TRC3(PtMiLrgSchL2MeasStopCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchL2MeasStopCfm */
 #endif
 #endif /*--PTRGMILRG--*/

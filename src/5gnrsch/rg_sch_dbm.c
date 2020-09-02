@@ -116,17 +116,17 @@ RgSchCellCb       *cellCb;
 
    /* Initialize ue list */
    if ((ret = rgSCHDbmInitUeCbLst(cellCb, RGSCH_MAX_UE_BIN_PER_CELL)) != ROK)
-      RETVALUE(ret);
+      return (ret);
 #ifdef LTE_TDD
    if ((ret = rgSCHDbmInitUeTfuPendLst(cellCb, 
                                        RGSCH_MAX_UE_BIN_PER_CELL)) != ROK)
-      RETVALUE(ret);
+      return (ret);
 #endif
 
 #ifdef LTEMAC_SPS
    /* Initialize SPS Ue list */
    if ((ret = rgSCHDbmInitSpsUeCbLst(cellCb, RGSCH_MAX_UE_BIN_PER_CELL)) != ROK)
-      RETVALUE(ret);
+      return (ret);
 #endif /* LTEMAC_SPS */
 
    /* Initialize BCCH/PCCH logical channels */
@@ -149,7 +149,7 @@ RgSchCellCb       *cellCb;
    cmLListInit(&cellCb->l2mList);
 #endif /* LTE_L2_MEAS */
 
-   RETVALUE(ret);
+   return (ret);
 
 } /* rgSCHDbmInitCell */
 
@@ -184,7 +184,7 @@ U16            numBins;
 
    /* Fix: syed It is better to compute offset dynamically
     * rather than hardcoding it as 0 */      
-   RETVALUE(cmHashListInit(&cellCb->ueLst, numBins, (U16)((PTR)&(ueCellInfo.ueLstEnt) - (PTR)&ueCellInfo), FALSE, 
+   return (cmHashListInit(&cellCb->ueLst, numBins, (U16)((PTR)&(ueCellInfo.ueLstEnt) - (PTR)&ueCellInfo), FALSE, 
                CM_HASH_KEYTYPE_CONID,
                rgSchCb[cellCb->instIdx].rgSchInit.region, 
                rgSchCb[cellCb->instIdx].rgSchInit.pool));
@@ -216,7 +216,7 @@ RgSchCellCb       *cellCb;
 {
    TRC2(rgSCHDbmDeInitUeCbLst)
 
-   RETVALUE(cmHashListDeinit(&cellCb->ueLst));
+   return (cmHashListDeinit(&cellCb->ueLst));
 
 }  /* rgSCHDbmDeInitUeCbLst */
 
@@ -250,7 +250,7 @@ U16               numBins;
    RgSchUeCb ue;
    TRC2(rgSCHDbmInitSpsUeCbLst)
 
-   RETVALUE(cmHashListInit(&cellCb->spsUeLst, numBins, (U16) ((PTR) &(ue.spsUeLstEnt) - (PTR) &ue), FALSE, 
+   return (cmHashListInit(&cellCb->spsUeLst, numBins, (U16) ((PTR) &(ue.spsUeLstEnt) - (PTR) &ue), FALSE, 
                CM_HASH_KEYTYPE_CONID,
                rgSchCb[cellCb->instIdx].rgSchInit.region, 
                rgSchCb[cellCb->instIdx].rgSchInit.pool));
@@ -282,7 +282,7 @@ RgSchCellCb       *cellCb;
 {
    TRC2(rgSCHDbmDeInitSpsUeCbLst)
 
-   RETVALUE(cmHashListDeinit(&cellCb->spsUeLst));
+   return (cmHashListDeinit(&cellCb->spsUeLst));
 
 }  /* rgSCHDbmDeInitSpsUeCbLst */
 
@@ -319,7 +319,7 @@ RgSchUeCb         *ueCb;
 
    ueCellInfo = ueCb->cellInfo[ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cellCb)]];
 
-   RETVALUE(cmHashListInsert(&cellCb->ueLst, (PTR)ueCellInfo, 
+   return (cmHashListInsert(&cellCb->ueLst, (PTR)ueCellInfo, 
       (U8 *)&ueCb->ueId, (U16)sizeof(ueCb->ueId)));
 
 }  /* rgSCHDbmInsUeCb */
@@ -353,7 +353,7 @@ RgSchUeCb         *ueCb;
 {
    TRC2(rgSCHDbmInsSpsUeCb)
 
-   RETVALUE(cmHashListInsert(&cellCb->spsUeLst, (PTR)ueCb, 
+   return (cmHashListInsert(&cellCb->spsUeLst, (PTR)ueCb, 
       (U8 *)&ueCb->spsRnti, (U16)sizeof(ueCb->spsRnti)));
 
 }  /* end of rgSCHDbmInsSpsUeCb */
@@ -392,7 +392,7 @@ CmLteRnti      ueId;
    cmHashListFind(&cellCb->ueLst, (U8 *)&ueId,
       sizeof(ueId), 0, (PTR *)&ueCellInfo);
 
-   RETVALUE(!ueCellInfo?NULLP:ueCellInfo->ue);
+   return (!ueCellInfo?NULLP:ueCellInfo->ue);
 }  /* rgSCHDbmGetUeCb */
 
 #ifdef LTEMAC_SPS
@@ -427,7 +427,7 @@ CmLteRnti         spsRnti;
 
    cmHashListFind(&cellCb->spsUeLst, (U8 *)&spsRnti,
       sizeof(spsRnti), 0, (PTR *)&ueCb);
-   RETVALUE(ueCb);
+   return (ueCb);
 }  /* rgSCHDbmGetSpsUeCb */
 #endif
 
@@ -468,7 +468,7 @@ RgSchUeCb         *ueCb;
    }
 
    cmHashListGetNext(&cellCb->ueLst, (PTR) ueCellInfo, (PTR *)&nextUeCellInfo);
-   RETVALUE(!nextUeCellInfo?NULLP:nextUeCellInfo->ue);
+   return (!nextUeCellInfo?NULLP:nextUeCellInfo->ue);
 }  /* rgSCHDbmGetNextUeCb */
 
 #ifdef LTEMAC_SPS
@@ -502,7 +502,7 @@ RgSchUeCb         *ueCb;
    TRC2(rgSCHDbmGetNextSpsUeCb)
 
    cmHashListGetNext(&cellCb->spsUeLst, (PTR) ueCb, (PTR *)&nextUeCb);
-   RETVALUE(nextUeCb);
+   return (nextUeCb);
 }  /* end of rgSCHDbmGetNextSpsUeCb */
 
 #endif /* LTEMAC_SPS */
@@ -566,7 +566,7 @@ RgSchUeCb         *ueCb;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHDbmDelL2MUe */
 
 #endif
@@ -603,7 +603,7 @@ RgSchUeCb         *ueCb;
 
    ueCellInfo = ueCb->cellInfo[ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cellCb)]];
 
-   RETVALUE(cmHashListDelete(&cellCb->ueLst, (PTR)ueCellInfo));
+   return (cmHashListDelete(&cellCb->ueLst, (PTR)ueCellInfo));
 }  /* rgSCHDbmDelUeCb */
 
 #ifdef LTEMAC_SPS
@@ -636,7 +636,7 @@ RgSchUeCb         *ueCb;
 {
    TRC2(rgSCHDbmDelSpsUeCb)
 
-   RETVALUE(cmHashListDelete(&cellCb->spsUeLst, (PTR)ueCb));
+   return (cmHashListDelete(&cellCb->spsUeLst, (PTR)ueCb));
 }  /* end of rgSCHDbmDelSpsUeCb */
 
 #endif /* LTEMAC_SPS */
@@ -673,7 +673,7 @@ RgSchUeCb       *ueCb;
    /* Initialize Dedicated logical channels */
    rgSCHDbmInitDedLcLst(ueCb);
 
-   RETVALUE(ret);
+   return (ret);
 } /* rgSCHDbmInitUe */
 
 /**
@@ -860,9 +860,9 @@ CmLteLcId        idx;
 
    if (idx < RGSCH_DEDLC_MIN_LCID || idx > RGSCH_DEDLC_MAX_LCID)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
-   RETVALUE(ueCb->dl.lcCb[idx-1]);
+   return (ueCb->dl.lcCb[idx-1]);
 
 }  /* rgSCHDbmGetDlDedLcCb */
 
@@ -895,10 +895,10 @@ RgSchUeCb         *ueCb;
    {
       if(ueCb->dl.lcCb[idx])
       {
-         RETVALUE(ueCb->dl.lcCb[idx]);
+         return (ueCb->dl.lcCb[idx]);
       }
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmGetFirstDlDedLcCb */
 /**
  * @brief Handler for accessing the existing next dl dedicated lcCb at idx 
@@ -930,17 +930,17 @@ RgSchDlLcCb       *lcCb;
 
    if (!lcCb)
    {
-      RETVALUE(rgSCHDbmGetFirstDlDedLcCb(ueCb));
+      return (rgSCHDbmGetFirstDlDedLcCb(ueCb));
    }
 
    for(idx = lcCb->lcId; idx < RGSCH_DEDLC_MAX_LCID; idx++)
    {
       if(ueCb->dl.lcCb[idx])
       {
-         RETVALUE(ueCb->dl.lcCb[idx]);
+         return (ueCb->dl.lcCb[idx]);
       }
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmGetNextDlDedLcCb */
 
 /**
@@ -976,10 +976,10 @@ CmLteLcId         lcId;
    {
       if(cellCb->cmnLcCb[idx].lcId == lcId)
       {
-         RETVALUE(&(cellCb->cmnLcCb[idx]));
+         return (&(cellCb->cmnLcCb[idx]));
       }
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmGetCmnLcCb */
 
 /**
@@ -1008,9 +1008,9 @@ RgSchCellCb       *cellCb;
  
    if(cellCb->cmnLcCb[RGSCH_BCCH_BCH_IDX].lcId != RGSCH_INVALID_LC_ID)
    {
-      RETVALUE(&(cellCb->cmnLcCb[RGSCH_BCCH_BCH_IDX]));
+      return (&(cellCb->cmnLcCb[RGSCH_BCCH_BCH_IDX]));
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmGetBcchOnBch */
 
 /**
@@ -1039,9 +1039,9 @@ RgSchCellCb       *cellCb;
 
    if(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX1].lcId != RGSCH_INVALID_LC_ID)
    {
-      RETVALUE(&(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX1]));
+      return (&(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX1]));
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmGetFirstBcchOnDlsch */
 
 /**
@@ -1070,9 +1070,9 @@ RgSchCellCb       *cellCb;
 
    if(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX2].lcId != RGSCH_INVALID_LC_ID)
    {
-      RETVALUE(&(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX2]));
+      return (&(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX2]));
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmGetSecondBcchOnDlsch */
 
 /**
@@ -1100,9 +1100,9 @@ RgSchCellCb       *cellCb;
  
    if(cellCb->cmnLcCb[RGSCH_PCCH_IDX].lcId != RGSCH_INVALID_LC_ID)
    {
-      RETVALUE(&(cellCb->cmnLcCb[RGSCH_PCCH_IDX]));
+      return (&(cellCb->cmnLcCb[RGSCH_PCCH_IDX]));
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmGetPcch */
 
 /**
@@ -1339,11 +1339,11 @@ CmLteRnti      key;
    {
       if(((RgSchRaCb *)tmpNode->node)->tmpCrnti == key)
       {
-         RETVALUE((RgSchRaCb *)(tmpNode->node));
+         return ((RgSchRaCb *)(tmpNode->node));
       }
       CM_LLIST_NEXT_NODE(&cellCb->raInfo.raCbLst,tmpNode);
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmGetRaCb */
 
 #ifndef LTE_TDD
@@ -1529,10 +1529,10 @@ RgSchCfgElem      *cfgElem;
 
    if(!cfgElem)
    {
-      RETVALUE( cellCb->rgCfgInfo.crntRgrCfgLst.first ? 
+      return ( cellCb->rgCfgInfo.crntRgrCfgLst.first ? 
                (RgSchCfgElem *)(cellCb->rgCfgInfo.crntRgrCfgLst.first->node) : NULLP );
    }
-   RETVALUE( cfgElem->cfgReqLstEnt.next ? 
+   return ( cfgElem->cfgReqLstEnt.next ? 
                (RgSchCfgElem *)(cfgElem->cfgReqLstEnt.next->node) : NULLP );
 }  /* rgSCHDbmGetNextCrntRgrCfgElem */
 
@@ -1564,10 +1564,10 @@ RgSchCfgElem      *cfgElem;
 
    if(!cfgElem)
    {
-      RETVALUE( cellCb->rgCfgInfo.pndngRgrCfgLst.first ? 
+      return ( cellCb->rgCfgInfo.pndngRgrCfgLst.first ? 
                (RgSchCfgElem *)(cellCb->rgCfgInfo.pndngRgrCfgLst.first->node) : NULLP );
    }
-   RETVALUE( cfgElem->cfgReqLstEnt.next ? 
+   return ( cfgElem->cfgReqLstEnt.next ? 
                (RgSchCfgElem *)(cfgElem->cfgReqLstEnt.next->node) : NULLP );
 }  /* rgSCHDbmGetNextPndngRgrCfgElem */
 
@@ -1605,11 +1605,11 @@ CmLteTimingInfo   key;
       if((((RgSchCfgElem *)tmpNode->node)->actvTime.sfn == key.sfn) &&
             (((RgSchCfgElem *)tmpNode->node)->actvTime.slot == key.slot))
       {
-         RETVALUE((RgSchCfgElem *)(tmpNode->node));
+         return ((RgSchCfgElem *)(tmpNode->node));
       }
       CM_LLIST_NEXT_NODE(&cellCb->rgCfgInfo.pndngRgrCfgLst,tmpNode);
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmGetPndngRgrCfgElemByKey */
 
 /**
@@ -1640,9 +1640,9 @@ RgSchCfgElem      *cfgElem;
 
    if(cmLListDelFrm(&cellCb->rgCfgInfo.crntRgrCfgLst,&cfgElem->cfgReqLstEnt))
    {
-      RETVALUE((RgSchCfgElem *)(cfgElem->cfgReqLstEnt.node));
+      return ((RgSchCfgElem *)(cfgElem->cfgReqLstEnt.node));
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmDelCrntRgrCfgElem */
 
 /**
@@ -1673,9 +1673,9 @@ RgSchCfgElem      *cfgElem;
 
    if(cmLListDelFrm(&cellCb->rgCfgInfo.pndngRgrCfgLst,&cfgElem->cfgReqLstEnt))
    {
-      RETVALUE((RgSchCfgElem *)(cfgElem->cfgReqLstEnt.node));
+      return ((RgSchCfgElem *)(cfgElem->cfgReqLstEnt.node));
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgSCHDbmDelPndngRgrCfgElem */
 
 /**
@@ -1716,7 +1716,7 @@ U16            maxRntis;
    if(rgSCHUtlAllocSBuf(cellCb->instIdx, 
        (Data **)&cellCb->rntiDb.rntiPool,maxRntis*sizeof(RgSchRntiLnk)) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cellCb->rntiDb.rntiStart = rntiStart;
    cellCb->rntiDb.maxRntis = maxRntis;
@@ -1750,7 +1750,7 @@ U16            maxRntis;
       cellCb->rntiDb.lastRnti = &rntiPool[idx];
    }
    cellCb->rntiDb.freeRnti = &rntiPool[0];
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHDbmRntiDbInit */
 
 /**
@@ -1819,7 +1819,7 @@ RgSchCellCb       *cellCb;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"RNTI exhausted count:%d",
                 cellCb->rntiDb.count);
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
    rntiLnk = cellCb->rntiDb.freeRnti;
@@ -1841,7 +1841,7 @@ RgSchCellCb       *cellCb;
    cellCb->rntiDb.count--;
 
    printf("rgSCHDbmGetRnti::rntiLnk->rnti %u\n",rntiLnk->rnti);
-   RETVALUE(rntiLnk);
+   return (rntiLnk);
 } /* rgSCHDbmGetRnti */
 
 /**
@@ -1932,10 +1932,10 @@ U16            numBins;
                rgSchCb[cellCb->instIdx].rgSchInit.region, 
                rgSchCb[cellCb->instIdx].rgSchInit.pool) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 }  /* rgSCHDbmInitUeTfuPendLst */
 
@@ -1966,7 +1966,7 @@ RgSchCellCb       *cellCb;
 
    cmHashListDeinit(&cellCb->ueTfuPendLst);
    
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHDbmDeInitUeTfuPendLst */
 #endif
 

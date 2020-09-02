@@ -174,7 +174,7 @@ uint8_t BuildMibPdu()
 	uint8_t ret = RFAILED;
 	BCCH_BCH_Message_t *bcchMsg;
 	asn_enc_rval_t encRetVal;        /* Encoder return value */
-   while(1)
+   while(true)
 	{
        DU_ALLOC(bcchMsg, sizeof(BCCH_BCH_Message_t));
        if(!bcchMsg)
@@ -196,7 +196,7 @@ uint8_t BuildMibPdu()
 		     break;
 		 }
 	    xer_fprint(stdout, &asn_DEF_BCCH_BCH_Message, bcchMsg);
-	    cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+	    memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 	    encBufSize = 0;
 	    encRetVal = aper_encode(&asn_DEF_BCCH_BCH_Message, 0,
 				   bcchMsg, PrepFinalEncBuf, encBuf);
@@ -278,7 +278,7 @@ uint8_t BuildMibMsg()
 	asn_enc_rval_t encRetVal;        /* Encoder return value */
    uint8_t ret = RFAILED;
 	uint8_t BuildMibret;
-   while(1)
+   while(true)
 	{
 	    DU_ALLOC(mibMsg, sizeof(MIB_t));
 	    if(!mibMsg)
@@ -292,7 +292,7 @@ uint8_t BuildMibMsg()
 		    break;
 		 }
 	    xer_fprint(stdout, &asn_DEF_MIB, mibMsg);
-	    cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+	    memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 	    encBufSize = 0;
 	    encRetVal = aper_encode(&asn_DEF_MIB, 0,
 				   mibMsg, PrepFinalEncBuf, encBuf);
@@ -2342,7 +2342,7 @@ uint8_t BuildSib1Msg()
        xer_fprint(stdout, &asn_DEF_SIB1, sib1Msg);
 
 	    /* Encode the F1SetupRequest type as APER */
-	    cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+	    memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
 	    encBufSize = 0;
 	    encRetVal = aper_encode(&asn_DEF_SIB1, 0, sib1Msg, PrepFinalEncBuf,\
 			encBuf);
@@ -2363,7 +2363,7 @@ uint8_t BuildSib1Msg()
        
 		 ret = ROK;
        break; 
-   }while(1);
+   }while(true);
 
 	FreeSib1Msg(sib1Msg);
    

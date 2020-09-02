@@ -447,7 +447,7 @@ S16    tmrEvnt;
       }
    } 
 
-   RETVALUE(FALSE);
+   return (FALSE);
 }
 
 /**

@@ -37,8 +37,8 @@
 #define EGTP_MASK_BIT7                   0x40
 #define EGTP_MASK_BIT8                   0x80
 
-S16 unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
-U8         protType;
+uint8_t unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
+uint8_t         protType;
 
 typedef struct egtpTptSrvr
 {
@@ -48,21 +48,21 @@ typedef struct egtpTptSrvr
 
 typedef struct EgtpTeIdCb
 {
-   U32 teId;              /* Local tunnel id */
-   U32 remTeId;           /* Remote tunnel id */
+   uint32_t teId;              /* Local tunnel id */
+   uint32_t remTeId;           /* Remote tunnel id */
    struct
    {
-      U8 hdr[EGTP_MAX_HDR_LEN];
-      U8 cnt;
+      uint8_t hdr[EGTP_MAX_HDR_LEN];
+      uint8_t cnt;
    }preEncodedHdr;        /* Pre-encoded header for PDUs on this tunnel */
 }EgtpTeIdCb;
 
 typedef struct egtpDstCb
 {
    CmInetIpAddr  dstIp;          /* destination IP */
-   U16           dstPort;        /* destination port that sends data */
+   uint16_t      dstPort;        /* destination port that sends data */
    EgtpTptSrvr   sendTptSrvr;    /* Transport server for sending UDP msg to */
-   U32           numTunn;        /* Number of tunnels */
+   uint32_t      numTunn;        /* Number of tunnels */
    CmHashListCp  teIdLst;        /* Tunnel Id list for this destination */
 }EgtpDstCb;
 
@@ -75,22 +75,22 @@ typedef struct egtpGlobalCb
 extern EgtpGlobalCb egtpCb;   /* EGTP global control block */
 
 uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg);
-S16 egtpActvInit(Ent entity, Inst inst, Region region, Reason reason);
-S16 egtpActvTsk(Pst *pst, Buffer *mBuf);
-S16 egtpFillRspPst(Pst *pst, Pst *rspPst);
-S16 egtpCfgReq(Pst *pst, EgtpConfig egtpCfg);
-S16 egtpSrvOpenReq(Pst *pst);
-S16 egtpSrvOpenPrc(U8 sockType, EgtpTptSrvr *server);
-S16 egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
-S16 egtpTnlAdd(EgtpTnlEvt tnlEvt);
-S16 egtpTnlMod(EgtpTnlEvt tnlEvt);
-S16 egtpTnlDel(EgtpTnlEvt tnlEvt);
-S16 egtpHdlDatInd(EgtpMsg msg);
-S16 egtpEncodeHdr(U8 *preEncodedHdr, EgtpMsgHdr *preDefHdr, U8 *hdrIdx);
-S16 egtpSendMsg(Buffer *mBuf);
-S16 egtpSlotInd();
-S16 egtpRecvMsg();
-S16 egtpHdlRecvData(Buffer *mBuf);
-S16 egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg);
+uint8_t egtpActvInit(Ent entity, Inst inst, Region region, Reason reason);
+uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf);
+uint8_t egtpFillRspPst(Pst *pst, Pst *rspPst);
+uint8_t egtpCfgReq(Pst *pst, EgtpConfig egtpCfg);
+uint8_t egtpSrvOpenReq(Pst *pst);
+uint8_t egtpSrvOpenPrc(uint8_t sockType, EgtpTptSrvr *server);
+uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
+uint8_t egtpTnlAdd(EgtpTnlEvt tnlEvt);
+uint8_t egtpTnlMod(EgtpTnlEvt tnlEvt);
+uint8_t egtpTnlDel(EgtpTnlEvt tnlEvt);
+uint8_t egtpHdlDatInd(EgtpMsg msg);
+uint8_t egtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrIdx);
+uint8_t egtpSendMsg(Buffer *mBuf);
+uint8_t egtpSlotInd();
+uint8_t egtpRecvMsg();
+uint8_t egtpHdlRecvData(Buffer *mBuf);
+uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg);
 
 #endif

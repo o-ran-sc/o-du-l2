@@ -42,25 +42,25 @@ typedef enum egtpMsgType
 
 typedef struct egtpIpAddr
 {
-   Bool ipV4Pres;
-   U32  ipV4Addr;
+   Bool      ipV4Pres;
+   uint32_t  ipV4Addr;
 }EgtpIpAddr;
 
 typedef struct egtpConfig
 {
    EgtpIpAddr  localIp;
-   U16         localPort;
+   uint16_t         localPort;
    EgtpIpAddr  destIp;
-   U16         destPort;
-   U32       minTunnelId;
-   U32       maxTunnelId;
+   uint16_t         destPort;
+   uint32_t       minTunnelId;
+   uint32_t       maxTunnelId;
 }EgtpConfig;
 
 typedef struct egtpTnlEvt
 {
-   U8        action;
-   U32       lclTeid;
-   U32       remTeid;
+   uint8_t        action;
+   uint32_t       lclTeid;
+   uint32_t       remTeid;
    CmStatus  cfmStatus;
 }EgtpTnlEvt;
 
@@ -77,8 +77,8 @@ typedef struct egtpMsgHdr
    TknU8      nPdu;                      /**< N-PDU Number */
    TknU32     seqNum;                    /**< Sequence Number */
    EgtpExtHdr extHdr;                       /**< Extension headers present flag */
-   U32        teId;                         /**< Tunnel Endpoint Id */
-   U8         msgType;                      /**< eGTP-U Message Type */
+   uint32_t        teId;                         /**< Tunnel Endpoint Id */
+   uint8_t         msgType;                      /**< eGTP-U Message Type */
 }EgtpMsgHdr;
 
 typedef struct egtpMsg
@@ -87,28 +87,28 @@ typedef struct egtpMsg
    Buffer     *msg;
 }EgtpMsg;
 
-typedef S16 (*EgtpCfgReq) ARGS((Pst *pst, EgtpConfig egtpCfg));
-typedef S16 (*EgtpCfgCfm) ARGS((CmStatus cfm));
-typedef S16 (*EgtpInitReq) ARGS((Buffer *mBuf));
-typedef S16 (*EgtpSrvOpenReq) ARGS(());
-typedef S16 (*EgtpSrvOpenCfm) ARGS((CmStatus cfm));
-typedef S16 (*EgtpTnlMgmtReq) ARGS((Pst *pst, EgtpTnlEvt tnlEvt));
-typedef S16 (*EgtpTnlMgmtCfm) ARGS((EgtpTnlEvt tnlEvt));
-typedef S16 (*EgtpSlotInd) ARGS(());
+typedef uint8_t (*EgtpCfgReq) ARGS((Pst *pst, EgtpConfig egtpCfg));
+typedef uint8_t (*EgtpCfgCfm) ARGS((CmStatus cfm));
+typedef uint8_t (*EgtpInitReq) ARGS((Buffer *mBuf));
+typedef uint8_t (*EgtpSrvOpenReq) ARGS(());
+typedef uint8_t (*EgtpSrvOpenCfm) ARGS((CmStatus cfm));
+typedef uint8_t (*EgtpTnlMgmtReq) ARGS((Pst *pst, EgtpTnlEvt tnlEvt));
+typedef uint8_t (*EgtpTnlMgmtCfm) ARGS((EgtpTnlEvt tnlEvt));
+typedef uint8_t (*EgtpSlotInd) ARGS(());
   
-S16 packEgtpCfgReq(Pst *pst, EgtpConfig  egtpCfg);
-S16 unpackEgtpCfgReq(EgtpCfgReq func , Pst *pst, Buffer *mBuf);
-S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm);
-S16 unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf);
-S16 packEgtpSrvOpenReq(Pst *pst);
-S16 unpackkEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
-S16 packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm);
-S16 unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf);
-S16 packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
-S16 unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf);
-S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt);
-S16 unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf);
-S16 packEgtpSlotInd(Pst *pst);
-S16 unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf);
+uint8_t packEgtpCfgReq(Pst *pst, EgtpConfig  egtpCfg);
+uint8_t unpackEgtpCfgReq(EgtpCfgReq func , Pst *pst, Buffer *mBuf);
+uint8_t packEgtpCfgCfm(Pst *pst, CmStatus cfm);
+uint8_t unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf);
+uint8_t packEgtpSrvOpenReq(Pst *pst);
+uint8_t unpackkEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
+uint8_t packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm);
+uint8_t unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf);
+uint8_t packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
+uint8_t unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf);
+uint8_t packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt);
+uint8_t unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf);
+uint8_t packEgtpSlotInd(Pst *pst);
+uint8_t unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf);
 
 #endif

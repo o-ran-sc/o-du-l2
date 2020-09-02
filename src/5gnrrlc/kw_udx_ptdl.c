@@ -103,7 +103,7 @@ U8   status;                    /* Status */
 {
    TRC3(PtDlUdxBndCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndCfm */
 
@@ -145,7 +145,7 @@ RlcCfgCfmInfo *cfmInfo;        /* Status */
 {
    TRC3(PtDlUdxCfgCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndCfm */
 
@@ -187,7 +187,7 @@ CmStatus      status;
 {
    TRC3(PtDlUdxUeIdChgCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndCfm */
 
@@ -202,7 +202,7 @@ KwUdxBufLst         *pBufLst
 )
 {
    TRC3(PtDlUdxStaUpdCfm);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 PRIVATE S16  PtDlUdxStaProhTmrStart
@@ -213,7 +213,7 @@ CmLteRlcId          *rlcId
 )
 {
    TRC3(PtDlUdxStaProhTmrStart);
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -333,7 +333,7 @@ U8   status;                    /* Status */
    /* jump to specific primitive depending on configured selector */
    (*rlcDlUdxBndCfmMt[pst->selector])(pst, suId, status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndCfm */
 
@@ -378,7 +378,7 @@ RlcCfgCfmInfo *cfmInfo;        /* Status */
    /* jump to specific primitive depending on configured selector */
    (*rlcDlUdxCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndCfm */
 
@@ -423,7 +423,7 @@ CmStatus      status;
    /* jump to specific primitive depending on configured selector */
    (*rlcDlUdxUeIdChgCfmMt[pst->selector])(pst, suId,transId,status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndCfm */
 
@@ -448,7 +448,7 @@ CmLteRlcId    *rlcId;
    /* jump to specific primitive depending on configured selector */
    (*rlcDlUdxStaProhTmrStartMt[pst->selector])(pst, suId, rlcId);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndCfm */
 

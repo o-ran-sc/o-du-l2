@@ -304,7 +304,7 @@ U32               measTime;
    measCb->dlTotalBw = 0;
    measCb->ulTotalBw = 0;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSchFillL2MeasCfm */
 
 /** @brief This function sends the L2 measurement confirm to LM 
@@ -349,9 +349,9 @@ Bool              isErr;
       cfm.cfm.status   = LCM_PRIM_NOK;
       cfm.cfm.reason   = LCM_REASON_INVALID_PAR_VAL;
       RgMiLrgSchL2MeasCfm(pst, &cfm);
-      RETVALUE(ROK);
+      return ROK;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSchL2mSndCfm */
 
 /** @brief This function fills the LM confirmation pst structure 
@@ -455,7 +455,7 @@ LrgSchMeasReqInfo *measInfo;
       {
          cell->l2mList.crnt = lnk;
          cmLListInsCrnt(&(cell->l2mList), node);
-         RETVALUE(ROK);
+         return ROK;
       }
       else
       {
@@ -463,7 +463,7 @@ LrgSchMeasReqInfo *measInfo;
       }
    }  /* End of While */
    cmLListAdd2Tail(&(cell->l2mList), node);
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSchL2mInsertMeasCb */
 
 /** @brief This function calculates the Down link prb count 
@@ -585,7 +585,7 @@ RgSchErrInfo      err;
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSchL2mAllocMeasCb():"
                   "Allocation of RgSchL2MeasCb failed");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    cmMemcpy((U8 *)&measCb->measReq, (U8 *)measInfo, sizeof(LrgSchMeasReqInfo));
    RGSCHCPYTIMEINFO(cell->crntTime, measCb->startTime);
@@ -593,7 +593,7 @@ RgSchErrInfo      err;
    measCb->dlTotalBw = 0;
    measCb->ulTotalBw = 0;
 
-   RETVALUE(measCb);
+   return (measCb);
 } /* rgSchL2mAllocMeasCb */
 
 /**
@@ -642,7 +642,7 @@ RgSchErrInfo      err;
                     RGSCHERR_SCH_ALLOC_FAILED);
        RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSchL2mMeasReq():"
                 "Allocation of RgSchL2MeasCb failed");
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
    /*cmMemcpy((U8 *)&measCb->measReq, (CONSTANT U8 *)measInfo,\
              sizeof(LrgSchMeasReqInfo));*/
@@ -695,7 +695,7 @@ RgSchErrInfo      err;
       rgSCHUtlGetPstToLyr(&pst, &rgSchCb[cell->instIdx], cell->macInst);
       RgSchMacL2Meas(&pst, &measReq);
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSchL2mMeasReq */
 
 /**
@@ -908,7 +908,7 @@ U8 isCalrCrcInd
          }
       }
    }/* end of while */
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHL2MEas */
 #endif /* LTE_L2_MEAS */
 /**********************************************************************

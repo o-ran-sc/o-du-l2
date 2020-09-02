@@ -43,13 +43,13 @@ uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
  
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      if (ODU_GET_MSG(pst->region, pst->pool, &mBuf) != ROK)
       {
          DU_LOG("\nRLC : Memory allocation failed at packDuRlcUeCreateReq");
          return RFAILED;
       }
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)ueCfg, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
    }
    else
    {
@@ -57,7 +57,7 @@ uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
       return RFAILED;
    }
 
-    return SPstTsk(pst,mBuf);
+    return ODU_POST_TASK(pst,mBuf);
 }
 
 /*******************************************************************
@@ -84,15 +84,15 @@ uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf)
    {
       RlcUeCfg *ueCfg;
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&ueCfg, mBuf);
-      SPutMsg(mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      ODU_PUT_MSG(mBuf);
       return (*func)(pst, ueCfg);
    }
    else
    {
       /* Nothing to do for other selectors */
       DU_LOG("\nRLC: Only LWLC supported for UE Create Request ");
-      SPutMsg(mBuf);
+      ODU_PUT_MSG(mBuf);
    }
 
    return RFAILED;
@@ -122,13 +122,13 @@ uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
  
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      if (ODU_GET_MSG(pst->region, pst->pool, &mBuf) != ROK)
       {
          DU_LOG("\nRLC : Memory allocation failed at packRlcUlDuUeCreateRsp");
          return RFAILED;
       }
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)ueCfg, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
    }
    else
    {
@@ -136,7 +136,7 @@ uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
       return RFAILED;
    }
 
-    return SPstTsk(pst,mBuf);
+    return ODU_POST_TASK(pst,mBuf);
 }
 
 /*******************************************************************
@@ -163,15 +163,15 @@ uint8_t unpackRlcUlUeCreateRsp(RlcUlDuUeCreateRsp func, Pst *pst, Buffer *mBuf)
    {
       RlcUeCfgRsp *cfgRsp;
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&cfgRsp, mBuf);
-      SPutMsg(mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
+      ODU_PUT_MSG(mBuf);
       return (*func)(pst, cfgRsp);
    }
    else
    {
       /* Nothing to do for other selectors */
       DU_LOG("\nRLC: Only LWLC supported for UE Create Response ");
-      SPutMsg(mBuf);
+      ODU_PUT_MSG(mBuf);
    }
 
    return RFAILED;
@@ -200,14 +200,14 @@ uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
 
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      if (ODU_GET_MSG(pst->region, pst->pool, &mBuf) != ROK)
       {
          DU_LOG("\nRLC : Memory allocation failed at packRlcUlRrcMsgToDu");
          return RFAILED;
       }
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)ulRrcMsgInfo, mBuf);
-      return SPstTsk(pst,mBuf);
+      CMCHKPK(oduPackPointer,(PTR)ulRrcMsgInfo, mBuf);
+      return ODU_POST_TASK(pst,mBuf);
    }
    else
    {
@@ -238,15 +238,15 @@ uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf)
    {
       RlcUlRrcMsgInfo *ulRrcMsgInfo;
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&ulRrcMsgInfo, mBuf);
-      SPutMsg(mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ulRrcMsgInfo, mBuf);
+      ODU_PUT_MSG(mBuf);
       return (*func)(pst, ulRrcMsgInfo);
    }
    else
    {
       /* Nothing to do for other selectors */
       DU_LOG("\nRLC: Only LWLC supported for UL RRC Message transfer ");
-      SPutMsg(mBuf);
+      ODU_PUT_MSG(mBuf);
    }
 
    return RFAILED;

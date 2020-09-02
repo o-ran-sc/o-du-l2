@@ -565,7 +565,7 @@ U8 status;
 
    TRC3(RgUiRgrBndCfm);
 
-   RETVALUE((*RgUiRgrBndCfmMt[pst->selector])(pst, suId, status));
+   return ((*RgUiRgrBndCfmMt[pst->selector])(pst, suId, status));
 
 }
 /**
@@ -599,7 +599,7 @@ U8 status;
 
    TRC3(RgUiRgmBndCfm);
 
-   RETVALUE((*RgUiRgmBndCfmMt[pst->selector])(pst, suId, status));
+   return ((*RgUiRgmBndCfmMt[pst->selector])(pst, suId, status));
 
 }
 
@@ -637,7 +637,7 @@ RgrTtiIndInfo *ttiInd;
 
    TRC3(RgUiRgrTtiInd);
 
-   RETVALUE((*RgUiRgrTtiIndMt[pst->selector])(pst, suId, ttiInd));
+   return ((*RgUiRgrTtiIndMt[pst->selector])(pst, suId, ttiInd));
 
 }
 
@@ -674,7 +674,7 @@ U8 status;
 
    TRC3(RgUiRgrCfgCfm);
 
-   RETVALUE((*RgUiRgrCfgCfmMt[pst->selector])(pst, transId, status));
+   return ((*RgUiRgrCfgCfmMt[pst->selector])(pst, transId, status));
 
 }
 
@@ -710,7 +710,7 @@ U8 status;
 
    TRC3(RgUiCrgBndCfm);
 
-   RETVALUE((*RgUiCrgBndCfmMt[pst->selector])(pst, suId, status));
+   return ((*RgUiCrgBndCfmMt[pst->selector])(pst, suId, status));
 
 }
 
@@ -749,7 +749,7 @@ U8 status;
 
    TRC3(RgUiCrgCfgCfm);
 
-   RETVALUE((*RgUiCrgCfgCfmMt[pst->selector])(pst, suId, transId, status));
+   return ((*RgUiCrgCfgCfmMt[pst->selector])(pst, suId, transId, status));
 
 }
 
@@ -785,7 +785,7 @@ U8 status;
 
    TRC3(RgUiRguBndCfm);
 
-   RETVALUE((*RgUiRguBndCfmMt[pst->selector])(pst, suId, status));
+   return ((*RgUiRguBndCfmMt[pst->selector])(pst, suId, status));
 
 }
 
@@ -825,7 +825,7 @@ RguCDatIndInfo  * datInd;
 
    TRC3(RgUiRguCDatInd);
 
-   RETVALUE((*RgUiRguCDatIndMt[pst->selector])(pst, suId, datInd));
+   return ((*RgUiRguCDatIndMt[pst->selector])(pst, suId, datInd));
 
 }
 
@@ -863,9 +863,9 @@ RguDDatIndInfo  * datInd;
    TRC3(RgUiRguDDatInd);
 
 #if defined(MAC_RLC_UL_RBUF) && !defined(SS_RBUF)
-   RETVALUE(RgUiRguDDatIndRbuf(datInd));
+   return (RgUiRguDDatIndRbuf(datInd));
 #else 
-   RETVALUE((*RgUiRguDDatIndMt[pst->selector])(pst, suId, datInd));
+   return ((*RgUiRguDDatIndMt[pst->selector])(pst, suId, datInd));
 #endif    
 }
 
@@ -904,7 +904,7 @@ RguCStaIndInfo  * staInd;
 
    TRC3(RgUiRguCStaInd);
 
-   RETVALUE((*RgUiRguCStaIndMt[pst->selector])(pst, suId, staInd));
+   return ((*RgUiRguCStaIndMt[pst->selector])(pst, suId, staInd));
 
 }
 
@@ -943,7 +943,7 @@ RguDStaIndInfo  * staInd;
 
    TRC3(RgUiRguDStaInd);
 
-   RETVALUE((*RgUiRguDStaIndMt[pst->selector])(pst, suId, staInd));
+   return ((*RgUiRguDStaIndMt[pst->selector])(pst, suId, staInd));
 
 }
 #ifdef LTE_L2_MEAS
@@ -967,9 +967,9 @@ RguHarqStatusInd *harqStatusInd;
 #if defined(SPLIT_RLC_DL_TASK) && defined(MAC_RLC_HARQ_STA_RBUF)
    S16 ret=ROK;
    ret = RgUiRguHqStaIndRbuf(pst,suId,harqStatusInd);
-   RETVALUE(ret);
+   return (ret);
 #else 
-   RETVALUE((*RgUiRguHqStaIndMt[pst->selector])(pst, suId, harqStatusInd));
+   return ((*RgUiRguHqStaIndMt[pst->selector])(pst, suId, harqStatusInd));
 #endif 
 
 } /* RgUiRguHqStaInd */
@@ -989,7 +989,7 @@ SuId suId;
 RguFlowCntrlInd *flowCntrlInd;
 #endif
 {
-  RETVALUE((*RgUiRguFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlInd));
+  return ((*RgUiRguFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlInd));
 }
 /* Added for SI Enhancement*/
 #ifdef RGR_SI_SCH
@@ -1026,7 +1026,7 @@ U8 status;
 
    TRC3(RgUiRgrSiCfgCfm);
 
-   RETVALUE((*RgUiRgrSiCfgCfmMt[pst->selector])(pst, suId, transId, status));
+   return ((*RgUiRgrSiCfgCfmMt[pst->selector])(pst, suId, transId, status));
 
 }
 
@@ -1065,7 +1065,7 @@ U8 status;
 {
    TRC3(RgUiRgrWarningSiCfgCfm);
 
-   RETVALUE((*RgUiRgrWarningSiCfgCfmMt[pst->selector])
+   return ((*RgUiRgrWarningSiCfgCfmMt[pst->selector])
          (pst, suId, transId, siId, status));
 }
 
@@ -1105,7 +1105,7 @@ RgrStaIndInfo *staInd;
 
    TRC3(RgUiRgrStaInd);
 
-   RETVALUE((*RgUiRgrStaIndMt[pst->selector])(pst, suId, staInd));
+   return ((*RgUiRgrStaIndMt[pst->selector])(pst, suId, staInd));
 
 }
 #endif /* End of RGR_CQI_REPT */
@@ -1141,7 +1141,7 @@ PUBLIC S16 RgUiRgrLoadInfInd(pst, suId, loadInfInd)
 
    TRC3(RgUiRgrLoadInfInd);
 
-   RETVALUE((*RgUiRgrLoadInfIndMt[pst->selector])(pst, suId, loadInfInd));
+   return ((*RgUiRgrLoadInfIndMt[pst->selector])(pst, suId, loadInfInd));
 
 }
 /* LTE_ADV_FLAG_REMOVED_END */
@@ -1176,7 +1176,7 @@ RgrUeStaIndInfo *ueStaInd;
 
    TRC3(RgUiRgrUeStaInd);
 
-   RETVALUE((*RgUiRgrUeStaIndMt[pst->selector])(pst, suId, ueStaInd));
+   return ((*RgUiRgrUeStaIndMt[pst->selector])(pst, suId, ueStaInd));
 
 }
 #endif /*--ifdef RG--*/
@@ -1218,7 +1218,7 @@ U8 status;
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1262,7 +1262,7 @@ U8 status;
    UNUSED(transId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*--ifdef PTRGUICRG--*/
@@ -1304,7 +1304,7 @@ U8 status;
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1345,7 +1345,7 @@ RguCDatIndInfo  * datInd;
    UNUSED(suId);
    UNUSED(datInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1386,7 +1386,7 @@ RguDDatIndInfo  * datInd;
    UNUSED(suId);
    UNUSED(datInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1429,7 +1429,7 @@ RguCStaIndInfo  * staInd;
    UNUSED(suId);
    UNUSED(staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1472,7 +1472,7 @@ RguDStaIndInfo  * staInd;
    UNUSED(suId);
    UNUSED(staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #ifdef LTE_L2_MEAS
@@ -1498,7 +1498,7 @@ RguHarqStatusInd *harqStatusInd;
    UNUSED(suId);
    UNUSED(harqStatusInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /* LTE_L2_MEAS */
@@ -1524,7 +1524,7 @@ RguHarqStatusInd *flowCntrlInd;
    UNUSED(suId);
    UNUSED(flowCntrlInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1567,7 +1567,7 @@ U8 status;
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1607,7 +1607,7 @@ RgrTtiIndInfo *ttiInd;
    UNUSED(suId);
    UNUSED(ttiInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1651,7 +1651,7 @@ U8 status;
    UNUSED(transId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1695,7 +1695,7 @@ U8 status;
    UNUSED(transId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1740,7 +1740,7 @@ U8 status;
    UNUSED(siId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif/* RGR_SI_SCH */
 
@@ -1782,7 +1782,7 @@ RgrStaIndInfo *staInd;
    UNUSED(suId);
    UNUSED(staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /* End of RGR_CQI_REPT */
@@ -1821,7 +1821,7 @@ PUBLIC S16 PtUiRgrLoadInfInd(pst, suId, loadInfInd)
    UNUSED(suId);
    UNUSED(loadInfInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 /* LTE_ADV_FLAG_REMOVED_END */
@@ -1860,7 +1860,7 @@ RgrUeStaIndInfo *ueStaInd;
    UNUSED(suId);
    UNUSED(ueStaInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*--ifdef PTRGUIRGR--*/
@@ -1902,7 +1902,7 @@ U8 status;
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1940,7 +1940,7 @@ RgmPrbRprtInd *prbRprtInd;
    UNUSED(suId);
    UNUSED(prbRprtInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1978,7 +1978,7 @@ RgmTransModeInd *transModeInd;
    UNUSED(suId);
    UNUSED(transModeInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif
@@ -2012,7 +2012,7 @@ RgmPrbRprtInd *prbRprtInd;
 
 {
    TRC2(RgUiRgmSendPrbRprtInd);
-   RETVALUE((*RgUiRgmSendPrbRprtIndMt[pst->selector])(pst, suId, prbRprtInd));
+   return ((*RgUiRgmSendPrbRprtIndMt[pst->selector])(pst, suId, prbRprtInd));
 }
 
 /**
@@ -2044,7 +2044,7 @@ RgmTransModeInd *transModeInd;
 
 {
    TRC2(RgUiRgmChangeTransModeInd);
-   RETVALUE((*RgUiRgmChangeTransModeIndMt[pst->selector])(pst, suId, transModeInd));
+   return ((*RgUiRgmChangeTransModeIndMt[pst->selector])(pst, suId, transModeInd));
 }
 
 #if defined(MAC_RLC_UL_RBUF) && !defined(SS_RBUF)
@@ -2078,7 +2078,7 @@ PRIVATE S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
          SRngIncrWIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
          SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].pktRate++;
       }
-  RETVALUE(ret);
+  return (ret);
 }
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
@@ -2147,7 +2147,7 @@ Void;
       break;
    }
  
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif 
 
@@ -2219,7 +2219,7 @@ Void;
       break;
    }
  
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif 
 #ifdef LTE_L2_MEAS
@@ -2255,7 +2255,7 @@ RguHarqStatusInd *harqStatusInd;
       SRngIncrWIndx(SS_RNG_BUF_MAC_HARQ);
       SsRngInfoTbl[SS_RNG_BUF_MAC_HARQ].pktRate++;
    }
-   RETVALUE(ret);
+   return (ret);
 }
 #endif
 #endif

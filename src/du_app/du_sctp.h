@@ -27,18 +27,18 @@
 #define MAX_RETRY 5
 
 /* Global variable declaration */
-U8   socket_type;      /* Socket type */
-Bool nonblocking;      /* Blocking/Non-blocking socket */
-Bool connUp;           /* Is connection up */
-Bool pollingState; 
+uint8_t   socket_type;      /* Socket type */
+bool nonblocking;      /* Blocking/Non-blocking socket */
+bool connUp;           /* Is connection up */
+bool pollingState; 
 CmInetNetAddrLst localAddrLst;
 CmInetNetAddrLst remoteAddrLst;
 
 typedef struct
 {
-   S16           numFd;            /* Total count number of receivers socket Fd */
-   U16           port;              /* Filled by the InetSctpRecvMsg during polling */              
-   U32           flag;              /* Refers to the notifyHandler Flag during successful InetSctpRecvMsg*/
+   uint8_t           numFd;            /* Total count number of receivers socket Fd */
+   uint16_t           port;              /* Filled by the InetSctpRecvMsg during polling */              
+   uint32_t           flag;              /* Refers to the notifyHandler Flag during successful InetSctpRecvMsg*/
    Buffer        *mBuf;             /* Buffer filled during Socket polling*/
    MsgLen        bufLen;            /* Determines the length of the Buffer filled during socket polling */
    CmInetNetAddr addr;              /* Determines the destination port filled during socket polling */
@@ -49,11 +49,11 @@ typedef struct
 
 typedef struct
 {
-   U8               itfState;         /* determines the interface State*/
-   U16              destPort;         /* Refers to the destination port of F1/E2 */
-   U16              srcPort;          /* Refers to respective src port of DU */
-   U32              assocId;          
-   Bool             recvMsgSet;
+   uint8_t               itfState;         /* determines the interface State*/
+   uint16_t              destPort;         /* Refers to the destination port of F1/E2 */
+   uint16_t              srcPort;          /* Refers to respective src port of DU */
+   uint32_t              assocId;          
+   bool             recvMsgSet;
    F1IpAddr         destIpAddr;       /* Refers to te destination Ip Address */
    CmInetFd         sockFd;           /* Socket file descriptor */
    CmInetNetAddrLst destAddrLst;      /* Refers to the destinaiton Addr Lst in CmInetNetAddrLst format */
@@ -65,20 +65,20 @@ DuSctpDestCb f1Params;     /* SCTP configurations at DU */
 DuSctpDestCb ricParams;    /* SCTP configurations at DU */ 
 
 
-S16 sctpActvInit(Ent entity, Inst inst, Region region, Reason reason);
-S16 sctpActvTsk(Pst *pst, Buffer *mBuf);
+uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason);
+uint8_t sctpActvTsk(Pst *pst, Buffer *mBuf);
 void sctpAssocReq();
 void sendToDuApp(Buffer *mBuf, Event event);
-S16 sctpSend(Buffer *mBuf, U8 itfType);
-S16 duSctpCfgReq(SctpParams sctpCfg);
-S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr);
-S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr);
-S16 establishReq(DuSctpDestCb *paramPtr);
-S16 duSctpAssocReq(U8 itfType);
-S16 duFillSctpPst(Pst *pst, Event event);
-S16 sctpSetSockOpts(CmInetFd *sock_Fd);
-S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo, Bool recvMsgSet);
-S16 sctpSockPoll();
+uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
+uint8_t duSctpCfgReq(SctpParams sctpCfg);
+uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr);
+uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr);
+uint8_t establishReq(DuSctpDestCb *paramPtr);
+uint8_t duSctpAssocReq(uint8_t itfType);
+uint8_t duFillSctpPst(Pst *pst, Event event);
+uint8_t sctpSetSockOpts(CmInetFd *sock_Fd);
+uint8_t processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo, bool recvMsgSet);
+uint8_t sctpSockPoll();
 
 #endif
 

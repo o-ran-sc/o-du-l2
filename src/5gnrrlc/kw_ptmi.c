@@ -253,7 +253,7 @@ KwMngmt    *cfm;                /* Layer Management structure */
    /* jump to specific primitive depending on configured selector */
    (*kwMiRlcConfigCfmMt[pst->selector])(pst, cfm);
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -287,7 +287,7 @@ KwMngmt *cfm;                /* confirm */
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwCntrlCfmMt[pst->selector])(pst, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwMiLkwCntrlCfm */
 
@@ -326,7 +326,7 @@ KwMngmt *usta;               /* unsolicited status */
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwStaIndMt[pst->selector])(pst, usta);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of KwMiLkwStaInd */
 
 
@@ -364,7 +364,7 @@ KwMngmt *cfm;                /* solicited status confirmation */
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwStaCfmMt[pst->selector])(pst, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwMiLkwStaCfm */
 
@@ -405,7 +405,7 @@ KwMngmt *cfm;                /* statistics confirmation */
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwStsCfmMt[pst->selector])(pst, action, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwMiLkwStsCfm */
 
@@ -445,7 +445,7 @@ Buffer *mBuf;                /* message buffer */
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwTrcIndMt[pst->selector])(pst, trc, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwMiLkwTrcInd */
 
@@ -469,7 +469,7 @@ KwL2MeasCfmEvt *measEvt;
 
    (*KwMiLkwL2MeasCfmMt[pst->selector])(pst, measEvt);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #ifdef ANSI
@@ -491,7 +491,7 @@ U8  status;
 
    (*KwMiLkwL2MeasStopCfmMt[pst->selector])(pst, measType,status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*  LTE_L2_MEAS */
@@ -535,7 +535,7 @@ KwMngmt *cfm;                /* Layer Management structure */
 
    TRC2(PtMiRlcConfigCfm() : function is not implemented)
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of PtMiRlcConfigCfm */
 
 /*
@@ -573,7 +573,7 @@ KwMngmt *cfm;             /* Layer Management structure */
 
    TRC2(PtMiLkwCntrlCfm() :  function is not implemented)
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of PtMiLkwCntrlCfm */
 
 
@@ -610,7 +610,7 @@ KwMngmt *usta;               /* unsolicited status */
 
    TRC2(PtMiLkwStaInd() : function is not implemented)
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of PtMiLkwStaInd */
 
 
@@ -645,7 +645,7 @@ KwMngmt *cfm;                /* solicited status confirmation */
    UNUSED(pst);
    UNUSED(cfm);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of PtMiLkwStaCfm */
 
 
@@ -683,7 +683,7 @@ KwMngmt *cfm;                /* statistics confirmation */
    UNUSED(action);
    UNUSED(cfm);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of PtMiLkwStsCfm */
 
 
@@ -721,7 +721,7 @@ Buffer *mBuf;                /* message buffer */
    UNUSED(trc);
    UNUSED(mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of PtMiLkwTrcInd */
 
 /* kw005.201 added support for L2 Measurement */
@@ -744,7 +744,7 @@ KwL2MeasCfmEvt * measEvt;
    UNUSED(pst);
    UNUSED(measEvt);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #ifdef ANSI
@@ -768,7 +768,7 @@ U8  status;
    UNUSED(measType);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*  LTE_L2_MEAS */

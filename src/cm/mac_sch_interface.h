@@ -610,7 +610,7 @@ typedef struct schCellCfg
 
 typedef struct schCellCfgCfm
 {
-   U16         cellId;     /* Cell Id */
+   uint16_t         cellId;     /* Cell Id */
    SchMacRsp   rsp;   
 }SchCellCfgCfm;
 
@@ -650,7 +650,7 @@ typedef struct dlBrdcstAlloc
     * 0 : No tranamission
     * 1 : SIB1 Transmission
     * 2 : SIB1 Repetition */
-   U8 sib1Trans;
+   uint8_t sib1Trans;
    Sib1AllocInfo sib1Alloc;
 }DlBrdcstAlloc;
 

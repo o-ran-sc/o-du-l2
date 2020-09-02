@@ -779,7 +779,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
          rgSCHCmnHdFddChkDlAllow ( cell, ue, &dlAllowed);
          if (dlAllowed == FALSE)
          {
-            RETVALUE(ROK);
+            return ROK;
          }
       }
 #endif
@@ -793,7 +793,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
    RGSCH_INCR_SUB_FRAME(schdTime, RG_SCH_CMN_DL_DELTA);
    if (RG_SCH_CMN_IS_UE_SPS_SCHDLD(ue, cell, schdTime))
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 #endif
    if (RG_SCH_CMN_IS_UE_SCHDLD(ue, cell))
@@ -805,7 +805,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"CRNTI:%d rgSCHSc1DlDedSvcAlloc():"
             "Ue retransmitting",ue->ueId);
-         RETVALUE(ROK);
+         return ROK;
       }
       /* UE is scheduled for either other services or TA */
       sc1HqDl = RG_GET_SC1_HQP_DL(proc);
@@ -821,7 +821,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "CRNTI:%d rgSCHSc1DlDedSvcAlloc():"
             " No HARQ Proc available", ue->ueId);
-         RETVALUE(ROK);
+         return ROK;
       }
       sc1HqDl = RG_GET_SC1_HQP_DL(proc);
       cmnHqDl = RG_SCH_CMN_GET_DL_HQP(proc);
@@ -854,7 +854,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
          /* ccpu00126519: proc should be set to NULLP in UE's DL scratch pad info as well. */
          ueDl->proc = NULLP;
       }
-      RETVALUE(ret);
+      return (ret);
    }
    svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
    svcSc1->hdrEstimate = rlcHdrEstmt;
@@ -865,7 +865,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
    rgSCHSc1DlAdd2UeSchdSvcs(cell, ue, svc);
    /* 3.1 MIMO moving this call to cmn scheduler */
    /*rgSCHCmnDlRbInfoAddUeTx(allocInfo, ue); */
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -2060,13 +2060,13 @@ RgSchErrInfo  *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
          "Memory allocation FAILED");
       err->errCause = RGSCHERR_SCH_SC1_DL_CFG;
-      RETVALUE(ret);
+      return (ret);
    }
 
    cellDl = RG_GET_SC1_CELL_DL(cell);
    /* Now perform downlink Queues related initializations  */
    rgSCHSc1DlInitQueues(cellDl);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrDlCellCfg */
 
 /***********************************************************
@@ -2191,7 +2191,7 @@ RgSchErrInfo *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Memory allocation FAILED"
                "CRNTI:%d",ue->ueId);
       err->errCause = RGSCHERR_SCH_SC1_DL_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ueDl = (RgSchSc1DlUe *)ueSchCmn->dl.schSpfc;
    if (ue->dl.ambrCfgd)
@@ -2207,7 +2207,7 @@ RgSchErrInfo *err;
    cmLListInit(&ueDl->ambrLst);
    cmLListInit(&ueDl->schdSvcs);
    cmLListInit(&ueDl->retxHqProcs);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrDlUeCfg */
 
 
@@ -2251,7 +2251,7 @@ PUBLIC S16 rgSCHSc1DlUeHqEntInit(cell, hqEnt)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "Memory allocation FAILED CRNTI:%d",hqEnt->ue->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    hqSpcSch = (RgSchSc1DlHqProc *)(hqEnt->sch);
    for(cnt = 0; cnt < hqEnt->numHqPrcs; cnt++)
@@ -2260,7 +2260,7 @@ PUBLIC S16 rgSCHSc1DlUeHqEntInit(cell, hqEnt)
       ((RgSchCmnDlHqProc *)((hqP)->sch))->schSpfc = \
                                                     hqSpcSch++;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -2299,9 +2299,9 @@ RgSchDlHqEnt     *hqE;
    }
    else
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief UE reconfiguration for scheduler
@@ -2398,7 +2398,7 @@ RgSchErrInfo *err;
          RgSchMacRlsHq (&pst, rlsHqBufs);
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrDlUeRecfg */
 
 /**
@@ -2647,7 +2647,7 @@ RgInfSfAlloc   *sfAlloc;
 #endif
 {
   TRC2(rgSCHSc1DlFillFlowCntrlInfo);
-  RETVALUE(ROK);
+  return ROK;
 }
 /**
  * @brief UE deletion for scheduler
@@ -2755,11 +2755,11 @@ RgSchErrInfo *err;
       RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHSc1CrgLcCfg():"
       "SCH struct alloc failed CRNTI:%d LCID:%d",ue->ueId,lcCfg->lcId);
       err->errCause = RGSCHERR_SCH_SC1_DL_CFG;
-      RETVALUE(ret);
+      return (ret);
    }
 
    rgSCHSc1DlSvcAdd(cell, ue, dlLc, &lcCfg->dlInfo);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrLcCfg */
 
 
@@ -2809,7 +2809,7 @@ RgSchErrInfo *err;
 
    rgSCHSc1DlSvcMod(cell,ue,dlLc, lcRecfg);
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrLcRecfg */
 
 
@@ -2842,7 +2842,7 @@ RgSchErrInfo            *err;
 #endif
 {
    TRC2(rgSCHSc1DlUeReset);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4002,7 +4002,7 @@ RgrLchCfg        *cfg,
 RgSchErrInfo     *err
 )
 {
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief UE Lc Reconfig for RR 
@@ -4028,7 +4028,7 @@ RgrLchRecfg      *recfg,
 RgSchErrInfo     *err
 )
 {
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief LC deletion for PFS
@@ -4061,7 +4061,7 @@ CmLteLcId        lcId;
 U8               lcgId;
 #endif
 {
-  RETVALUE (ROK);
+  return  (ROK);
 }
 
 /**
@@ -4165,10 +4165,10 @@ RgSchErrInfo *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
       "Memory allocation FAILED CRNTI:%d",ue->ueId);
       err->errCause = RGSCHERR_SCH_SC1_UL_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrUlUeCfg */
 
 /**
@@ -4206,7 +4206,7 @@ RgSchErrInfo *err;
 #endif
 {
    TRC2(rgSCHSc1RgrUlUeRecfg);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrUeRecfg */
 
 /**
@@ -4351,14 +4351,14 @@ RgSchErrInfo  *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
       "Memory allocation FAILED");
       err->errCause = RGSCHERR_SCH_SC1_UL_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cellUl = RG_GET_SC1_CELL_UL(cell);
    cmLListInit(&cellUl->contResLst);
    cmLListInit(&cellUl->ueTxLst[0]);
    cmLListInit(&cellUl->ueTxLst[1]);
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrUlCellCfg */
 
 
@@ -4391,7 +4391,7 @@ RgSchErrInfo            *err;
 #endif
 {
    TRC2(rgSCHSc1RgrUlCellRecfg);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -4472,7 +4472,7 @@ RgSchErrInfo *err;
 #endif
 {
    TRC2(rgSCHSc1RgrLcgCfg);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrLcgCfg */
 
 /**
@@ -4516,7 +4516,7 @@ RgSchErrInfo *err;
 #endif
 {
    TRC2(rgSCHSc1RgrLcgRecfg);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrLcgRecfg */
 
 /***********************************************************
@@ -5296,7 +5296,7 @@ RgInfUeDatInd       *datInd;
 
    TRC2(rgSCHSc1UlLcgUpd);
 
-   RETVALUE(ROK);  
+   return ROK;  
 }
 
 

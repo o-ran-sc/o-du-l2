@@ -976,11 +976,11 @@ typedef struct f1Ipaddr
 typedef struct sctpParams
 {
    F1IpAddr  duIpAddr;
-   U16       duPort[MAX_DU_PORT];
+   uint16_t       duPort[MAX_DU_PORT];
    F1IpAddr  cuIpAddr;
-   U16       cuPort;
+   uint16_t       cuPort;
    F1IpAddr  ricIpAddr;
-   U16       ricPort;
+   uint16_t       ricPort;
 }SctpParams;
 
 typedef struct f1EgtpParams
@@ -1190,9 +1190,9 @@ typedef struct duCfgParams
 
 /*function declarations */
 void FillSlotConfig();
-S16 readClCfg();
-S16 readCfg();
-S16 duReadCfg(); 
+uint8_t readClCfg();
+uint8_t readCfg();
+uint8_t duReadCfg(); 
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
 
 #endif /* __DU_CONFIG_H__ */

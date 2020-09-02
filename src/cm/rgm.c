@@ -76,23 +76,23 @@ SpId spId;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(spId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGMBNDREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -132,20 +132,20 @@ Buffer *mBuf;
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SUnpkS16(&spId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    ret = ((*func)(pst, suId, spId));
 
    SPutMsg(mBuf);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /**
@@ -180,21 +180,21 @@ Reason reason;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(reason, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(spId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGMUBNDREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 /**
@@ -230,23 +230,23 @@ U8 status;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if (SPkU8(status, mBuf) != ROK) 
+   if (oduUnpackUInt8(status, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
   pst->event = (Event) EVTRGMBNDCFM;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -283,19 +283,19 @@ Buffer *mBuf;
    
    TRC3(cmUnpkLwLcRgmBndCfm)
 
-   if (SUnpkU8(&status, mBuf) != ROK) 
+   if (oduPackUInt8(&status, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, status));
+   return ((*func)(pst, suId, status));
 }
 
 
@@ -333,25 +333,25 @@ RgmPrbRprtCfg  * prbRprtCfg;
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-    if(cmPkPtr((PTR)prbRprtCfg, mBuf) != ROK)
+    if(oduPackPointer((PTR)prbRprtCfg, mBuf) != ROK)
     {
        SPutMsg(mBuf); 
        SPutSBuf(pst->region, pst->pool, (Data*)prbRprtCfg, len);
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
 
    if (SPkS16(spId, mBuf) != ROK) 
    {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGMCFGPRBRPRT;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -391,20 +391,20 @@ Buffer *mBuf;
    if (SUnpkS16(&spId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if (cmUnpkPtr((PTR *)&prbRprtCfg, mBuf) != ROK)
+   if (oduUnpackPointer((PTR *)&prbRprtCfg, mBuf) != ROK)
    {
       SPutMsg(mBuf);
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    ret =  ((*func)(pst, spId, prbRprtCfg));
 
    SPutMsg(mBuf);
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -441,25 +441,25 @@ RgmPrbRprtInd  * prbRprtInd;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if(cmPkPtr((PTR)prbRprtInd, mBuf) != ROK)
+   if(oduPackPointer((PTR)prbRprtInd, mBuf) != ROK)
    {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGMCFGPRBRPRT;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -499,14 +499,14 @@ Buffer *mBuf;
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if (cmUnpkPtr((PTR *)&prbRprtInd, mBuf) != ROK) 
+   if (oduUnpackPointer((PTR *)&prbRprtInd, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -514,7 +514,7 @@ Buffer *mBuf;
 
    SPutMsg(mBuf);
 
-   RETVALUE(ret);
+   return (ret);
 }
 #endif
 
@@ -551,23 +551,23 @@ SpId spId;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(spId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGMBNDREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -607,20 +607,20 @@ Buffer *mBuf;
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SUnpkS16(&spId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    ret = ((*func)(pst, suId, spId));
 
    SPutMsg(mBuf);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /**
@@ -655,21 +655,21 @@ Reason reason;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(reason, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(spId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGMUBNDREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 #if 1 
@@ -709,15 +709,15 @@ Buffer *mBuf;
    if (SUnpkS16(&spId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SUnpkS16(&reason, mBuf) != ROK)
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, spId, reason));
+   return ((*func)(pst, spId, reason));
 }
 #endif
 
@@ -754,23 +754,23 @@ U8 status;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if (SPkU8(status, mBuf) != ROK) 
+   if (oduUnpackUInt8(status, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
   pst->event = (Event) EVTRGMBNDCFM;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -807,19 +807,19 @@ Buffer *mBuf;
    
    TRC3(cmUnpkRgmBndCfm)
 
-   if (SUnpkU8(&status, mBuf) != ROK) 
+   if (oduPackUInt8(&status, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, status));
+   return ((*func)(pst, suId, status));
 }
 
 
@@ -850,10 +850,10 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmPkCfgPrbRprt);
-   CMCHKPK(SPkU16, prbRprtCfg->usPrbAvgPeriodicty, mBuf);
-   CMCHKPK(SPkU8, prbRprtCfg->bConfigType, mBuf);
-   CMCHKPK(SPkU8, prbRprtCfg->bCellId, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, prbRprtCfg->usPrbAvgPeriodicty, mBuf);
+   CMCHKPK(oduUnpackUInt8, prbRprtCfg->bConfigType, mBuf);
+   CMCHKPK(oduUnpackUInt8, prbRprtCfg->bCellId, mBuf);
+   return ROK;
 }
 /**
 * @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
@@ -880,10 +880,10 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmUnPkCfgPrbRprt);
-   CMCHKUNPK(SUnpkU8, &prbRprtCfg->bCellId, mBuf);
-   CMCHKUNPK(SUnpkU8, &prbRprtCfg->bConfigType, mBuf);
-   CMCHKUNPK(SUnpkU16, &prbRprtCfg->usPrbAvgPeriodicty, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &prbRprtCfg->bCellId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &prbRprtCfg->bConfigType, mBuf);
+   CMCHKUNPK(oduPackUInt16, &prbRprtCfg->usPrbAvgPeriodicty, mBuf);
+   return ROK;
 }
 
 
@@ -923,27 +923,27 @@ RgmPrbRprtCfg  * prbRprtCfg;
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
     if(cmPkCfgPrbRprt(prbRprtCfg, mBuf) != ROK)
     {
        SPutMsg(mBuf); 
        SPutSBuf(pst->region, pst->pool, (Data*)prbRprtCfg, len);
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
 
    if (SPkS16(spId, mBuf) != ROK) 
    {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
 
    pst->event = (Event) EVTRGMCFGPRBRPRT;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -982,23 +982,23 @@ Buffer *mBuf;
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&prbRprtCfg, sizeof(RgmPrbRprtCfg))) != ROK)
       {
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
    if (SUnpkS16(&spId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmUnPkCfgPrbRprt(prbRprtCfg, mBuf) != ROK)
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, spId, prbRprtCfg));
+   return ((*func)(pst, spId, prbRprtCfg));
 }
 
 /* RRM_SP1_START */
@@ -1027,11 +1027,11 @@ RgmPrbRptPerQci *qciPrbRprt;
 Buffer *mBuf = NULLP;
 #endif
 {
-   CMCHKPK(SPkU8, qciPrbRprt->bQci, mBuf);
-   CMCHKPK(SPkU8, qciPrbRprt->bAvgPrbUlUsage, mBuf);
-   CMCHKPK(SPkU8, qciPrbRprt->bAvgPrbDlUsage, mBuf);
+   CMCHKPK(oduUnpackUInt8, qciPrbRprt->bQci, mBuf);
+   CMCHKPK(oduUnpackUInt8, qciPrbRprt->bAvgPrbUlUsage, mBuf);
+   CMCHKPK(oduUnpackUInt8, qciPrbRprt->bAvgPrbDlUsage, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -1058,11 +1058,11 @@ RgmPrbRptPerQci *qciPrbRprt;
 Buffer *mBuf = NULLP;
 #endif
 {
-   CMCHKUNPK(SUnpkU8, &qciPrbRprt->bAvgPrbDlUsage, mBuf);
-   CMCHKUNPK(SUnpkU8, &qciPrbRprt->bAvgPrbUlUsage, mBuf);
-   CMCHKUNPK(SUnpkU8, &qciPrbRprt->bQci, mBuf);
+   CMCHKUNPK(oduPackUInt8, &qciPrbRprt->bAvgPrbDlUsage, mBuf);
+   CMCHKUNPK(oduPackUInt8, &qciPrbRprt->bAvgPrbUlUsage, mBuf);
+   CMCHKUNPK(oduPackUInt8, &qciPrbRprt->bQci, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /* RRM_SP1_END */
 
@@ -1099,10 +1099,10 @@ PUBLIC S16 cmPkPrbRprtInd(prbRprtInd, mBuf)
    {
       CMCHKPK(cmPkRgmPrbQciRpt, &prbRprtInd->stQciPrbRpts[idx], mBuf);
    }
-   CMCHKPK(SPkU8, prbRprtInd->bPrbUsageMask, mBuf);
-   CMCHKPK(SPkU8, prbRprtInd->bCellId, mBuf);
+   CMCHKPK(oduUnpackUInt8, prbRprtInd->bPrbUsageMask, mBuf);
+   CMCHKPK(oduUnpackUInt8, prbRprtInd->bCellId, mBuf);
    /* RRM_SP1_END */
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -1134,15 +1134,15 @@ PUBLIC S16 cmUnpkPrbRprtInd(prbRprtInd, mBuf)
    TRC3(cmUnpkPrbRprtInd);
 
    /* RRM_SP1_START */
-   CMCHKUNPK(SUnpkU8, &prbRprtInd->bCellId, mBuf);
-   CMCHKUNPK(SUnpkU8, &prbRprtInd->bPrbUsageMask, mBuf);
+   CMCHKUNPK(oduPackUInt8, &prbRprtInd->bCellId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &prbRprtInd->bPrbUsageMask, mBuf);
    for(idx = 0; idx < RGM_MAX_QCI_REPORTS; idx++)
    {
       CMCHKUNPK(cmUnpkRgmPrbQciRpt, &prbRprtInd->stQciPrbRpts[idx], mBuf);
    }
 
    /* RRM_SP1_END */
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1180,27 +1180,27 @@ RgmPrbRprtInd  * prbRprtInd;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(cmPkPrbRprtInd(prbRprtInd, mBuf) != ROK)
    {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
 
    pst->event = (Event) EVTRGMPRBRPRTIND;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 /**
 * @brief PRB Usage Report Indication from MAC to RRM 
@@ -1237,17 +1237,17 @@ Buffer *mBuf;
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmUnpkPrbRprtInd(&prbRprtInd, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, &prbRprtInd));
+   return ((*func)(pst, suId, &prbRprtInd));
 }
 
 /**
@@ -1275,10 +1275,10 @@ PUBLIC S16 cmPkTransModeInd(transModeInd, mBuf)
 #endif
 {
    TRC3(cmPkTransModeInd); 
-   CMCHKPK(SPkU32, transModeInd->eMode, mBuf);
-   CMCHKPK(SPkU16, transModeInd->usCrnti, mBuf);
-   CMCHKPK(SPkU8, transModeInd->bCellId, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, transModeInd->eMode, mBuf);
+   CMCHKPK(oduUnpackUInt16, transModeInd->usCrnti, mBuf);
+   CMCHKPK(oduUnpackUInt8, transModeInd->bCellId, mBuf);
+   return ROK;
 }
 
 /**
@@ -1307,11 +1307,11 @@ PUBLIC S16 cmUnpkTransModeInd(transModeInd, mBuf)
 {
    U32 tmpModeEnum;
    TRC3(cmUnpkTransModeInd);
-   CMCHKUNPK(SUnpkU8, &transModeInd->bCellId, mBuf);
-   CMCHKUNPK(SUnpkU16, &transModeInd->usCrnti, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpModeEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &transModeInd->bCellId, mBuf);
+   CMCHKUNPK(oduPackUInt16, &transModeInd->usCrnti, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpModeEnum, mBuf);
    transModeInd->eMode = (RgmTxnMode)tmpModeEnum;
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
 * @brief Transmission Mode Change Indication  from MAC to RRM 
@@ -1346,27 +1346,27 @@ RgmTransModeInd *transModeInd;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(cmPkTransModeInd(transModeInd, mBuf) != ROK)
    {
       SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
       SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
 
    pst->event = (Event) EVTRGMTRANSMODEIND;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 /**
 * @brief Transmission Mode Change Indication  from MAC to RRM 
@@ -1403,17 +1403,17 @@ Buffer *mBuf;
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmUnpkTransModeInd(&transModeInd, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, &transModeInd));
+   return ((*func)(pst, suId, &transModeInd));
 }
 /**********************************************************************
  

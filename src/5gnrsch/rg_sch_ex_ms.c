@@ -270,8 +270,8 @@ Buffer  *mBuf;                      /* message buffer       */
           RGSCH_FREE_MSG(mBuf);
           break;
    }
-   SExitTsk();
-   RETVALUE(ROK);
+   ODU_EXIT_TASK();
+   return ROK;
 }/* end of schActvTsk */
 
 
