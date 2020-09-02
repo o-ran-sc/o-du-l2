@@ -229,7 +229,7 @@ SpId spId;                      /* Service Provider Id */
    /* jump to specific primitive depending on configured selector */
    (*kwLiRguBndReqMt[post->selector])(post, suId, spId);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwLiRguBndReq */
 
@@ -272,7 +272,7 @@ Reason      reason;
    /* jump to specific primitive depending on configured selector */
    (*kwLiRguUbndReqMt[post->selector])(post, spId, reason);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwLiRguUbndReq */
 
@@ -320,13 +320,13 @@ RlcMacData        *dlData;
 
       SPutStaticBuffer(post->region, post->pool,                      
                       (Data *) datReq, sizeof(RguDDatReqInfo), 0);             
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #else
    /* jump to specific primitive depending on configured selector */
    (*rlcMacSendDlDataOpts[post->selector])(post, spId, dlData);
 #endif 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwLiRguDDatReq */
 
@@ -372,13 +372,13 @@ RlcMacBOStatus    *boSta;
        post->event= EVTRGUDSTARSP;
       if((kwLiRguStaRspRbuf(post, spId, staRsp)) != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif 
    /* jump to specific primitive depending on configured selector */
    (*rlcMacSendBOStatusOpts[post->selector])(post, spId, boSta);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of RlcMacSendBOStatus */
 
@@ -427,7 +427,7 @@ RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq;
    /* jump to specific primitive depending on configured selector */
    (*kwLiRguL2MUlThrpMeasReqMt[post->selector])(post, spId, l2mUlThrpMeasReq);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwLiRguL2MUlThrpMeasReq */
 
@@ -501,7 +501,7 @@ Void;
       	break;
    }
 #endif
-   RETVALUE(ROK);
+   return ROK;
 
 }
 

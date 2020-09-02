@@ -134,14 +134,14 @@ SRegInfo *regInfo;              /* information about the region */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS028, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate region info pointer */
    if (regInfo == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS029, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -156,7 +156,7 @@ SRegInfo *regInfo;              /* information about the region */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -167,7 +167,7 @@ SRegInfo *regInfo;              /* information about the region */
       SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS031, ERRZERO, "Region ID used");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -189,7 +189,7 @@ SRegInfo *regInfo;              /* information about the region */
    SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -232,14 +232,14 @@ SRegInfo *regInfo;              /* information about the region */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS028, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate region info pointer */
    if (regInfo == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS029, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -254,7 +254,7 @@ SRegInfo *regInfo;              /* information about the region */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -265,7 +265,7 @@ SRegInfo *regInfo;              /* information about the region */
       SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS031, ERRZERO, "Region ID used");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -287,7 +287,7 @@ SRegInfo *regInfo;              /* information about the region */
    SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -326,7 +326,7 @@ Region region;                  /* region ID */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS032, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -341,7 +341,7 @@ Region region;                  /* region ID */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -351,7 +351,7 @@ Region region;                  /* region ID */
    {
       SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
       SSLOGERROR(ERRCLS_INT_PAR, ESS034, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -373,7 +373,7 @@ Region region;                  /* region ID */
    SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -462,7 +462,7 @@ Data **ptr;                     /* filled with pointer to block */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS035, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #ifndef XEON_SPECIFIC_CHANGES
@@ -485,7 +485,7 @@ Data **ptr;                     /* filled with pointer to block */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -501,12 +501,12 @@ Data **ptr;                     /* filled with pointer to block */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS037, ERRZERO, 
                   "Could not release the semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
       }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS038, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 /* ss001.301: Additions */
@@ -563,7 +563,7 @@ Data **ptr;                     /* filled with pointer to block */
 #if (ERRCLASS & ERRCLS_DEBUG)
      SSLOGERROR(ERRCLS_DEBUG, ESS039, ERRZERO, 
                   "Could not release the semaphore");
-     RETVALUE(RFAILED);
+     return RFAILED;
 #endif
    }
 #endif
@@ -669,21 +669,21 @@ Size size;                      /* size of block */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS040, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 /* ss021.103 - Addition to validate size and ptr */
    if (size <= NULLD)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS041, region, "Invalid size");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate ptr */
    if (ptr == (Data *)NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS042, region, "Invalid ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -700,7 +700,7 @@ Size size;                      /* size of block */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -714,12 +714,12 @@ Size size;                      /* size of block */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS044, ERRZERO, 
                   "Could not release the semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
        }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS045, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -761,7 +761,7 @@ Size size;                      /* size of block */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS046, ERRZERO, 
                   "Could not release the semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
     }
 #endif
@@ -1022,7 +1022,7 @@ Ent      *entId;
 
 	 }/* End of for. Region Count */
 
-   RETVALUE(ROK);
+   return ROK;
 }   
 
 #endif /* SS_HISTOGRAM_SUPPORT */

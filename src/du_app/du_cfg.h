@@ -1190,9 +1190,9 @@ typedef struct duCfgParams
 
 /*function declarations */
 void FillSlotConfig();
-S16 readClCfg();
-S16 readCfg();
-S16 duReadCfg(); 
+uint8_t readClCfg();
+uint8_t readCfg();
+uint8_t duReadCfg(); 
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
 
 #endif /* __DU_CONFIG_H__ */

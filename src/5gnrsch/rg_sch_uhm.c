@@ -785,7 +785,7 @@ U8                     idx;
    TRC2(rgSCHUhmAppendPhich)
 
 #ifdef RG_5GTF
-   RETVALUE(ROK);
+   return ROK;
 #endif
    if(cellUl->hqFdbkIdx[idx] != RGSCH_INVALID_INFO)
    {
@@ -865,7 +865,7 @@ U8                     idx;
          ulAlloc = rgSCHUtlNextHqFdbkAlloc (cellCb, ulAlloc, idx);
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUhmAppendPhich */
 
 /**
@@ -915,11 +915,11 @@ RgSchUeCb           *ueCb;
                            ueUl->hqEnt.numHqPrcs * \
                            sizeof(RgSchUlHqProcCb)) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUhmHqEntInit */
 
 #ifdef RG_5GTF
@@ -982,7 +982,7 @@ RgSchUlHqProcCb       **hqP;
       //printf("5GTF_ERROR rgSCHUhmGetAvlHqProc cellId %d  %ld inUse %ld ue %d"
                               //, cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId);
       /* No Harq Process available in the free queue. */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    tmpHqProc = (RgSchUlHqProcCb *)(tmp->node);
@@ -1000,7 +1000,7 @@ RgSchUlHqProcCb       **hqP;
 
    *hqP = tmpHqProc;
    
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUhmGetAvlHqProc */
 
 /**

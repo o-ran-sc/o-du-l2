@@ -1218,7 +1218,7 @@ U8 status;
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1262,7 +1262,7 @@ U8 status;
    UNUSED(transId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*--ifdef PTRGUICRG--*/
@@ -1304,7 +1304,7 @@ U8 status;
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1345,7 +1345,7 @@ RguCDatIndInfo  * datInd;
    UNUSED(suId);
    UNUSED(datInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1386,7 +1386,7 @@ RguDDatIndInfo  * datInd;
    UNUSED(suId);
    UNUSED(datInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1429,7 +1429,7 @@ RguCStaIndInfo  * staInd;
    UNUSED(suId);
    UNUSED(staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1472,7 +1472,7 @@ RguDStaIndInfo  * staInd;
    UNUSED(suId);
    UNUSED(staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #ifdef LTE_L2_MEAS
@@ -1498,7 +1498,7 @@ RguHarqStatusInd *harqStatusInd;
    UNUSED(suId);
    UNUSED(harqStatusInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /* LTE_L2_MEAS */
@@ -1524,7 +1524,7 @@ RguHarqStatusInd *flowCntrlInd;
    UNUSED(suId);
    UNUSED(flowCntrlInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1567,7 +1567,7 @@ U8 status;
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1607,7 +1607,7 @@ RgrTtiIndInfo *ttiInd;
    UNUSED(suId);
    UNUSED(ttiInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1651,7 +1651,7 @@ U8 status;
    UNUSED(transId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1695,7 +1695,7 @@ U8 status;
    UNUSED(transId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1740,7 +1740,7 @@ U8 status;
    UNUSED(siId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif/* RGR_SI_SCH */
 
@@ -1782,7 +1782,7 @@ RgrStaIndInfo *staInd;
    UNUSED(suId);
    UNUSED(staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /* End of RGR_CQI_REPT */
@@ -1821,7 +1821,7 @@ PUBLIC S16 PtUiRgrLoadInfInd(pst, suId, loadInfInd)
    UNUSED(suId);
    UNUSED(loadInfInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 /* LTE_ADV_FLAG_REMOVED_END */
@@ -1860,7 +1860,7 @@ RgrUeStaIndInfo *ueStaInd;
    UNUSED(suId);
    UNUSED(ueStaInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*--ifdef PTRGUIRGR--*/
@@ -1902,7 +1902,7 @@ U8 status;
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1940,7 +1940,7 @@ RgmPrbRprtInd *prbRprtInd;
    UNUSED(suId);
    UNUSED(prbRprtInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1978,7 +1978,7 @@ RgmTransModeInd *transModeInd;
    UNUSED(suId);
    UNUSED(transModeInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif
@@ -2147,7 +2147,7 @@ Void;
       break;
    }
  
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif 
 
@@ -2219,7 +2219,7 @@ Void;
       break;
    }
  
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif 
 #ifdef LTE_L2_MEAS

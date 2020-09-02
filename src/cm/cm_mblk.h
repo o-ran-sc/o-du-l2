@@ -89,7 +89,7 @@
       ret = cmGetMem( ptr, size, pptr); \
       if (ret != ROK) \
       { \
-          RETVALUE(RFAILED); \
+          return RFAILED; \
       } \
    }
 

@@ -589,7 +589,7 @@ KwMngmt   *cfg;
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = LCM_REASON_INVALID_INSTANCE;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);     
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    
@@ -600,7 +600,7 @@ KwMngmt   *cfg;
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);     
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check configuration is done or not */
    if ((tRlcCb->init.cfgDone != TRUE) && 
@@ -614,7 +614,7 @@ KwMngmt   *cfg;
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);     
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RLOG1(L_DEBUG, "KwMiRlcConfigReq elmId(%d)", cfg->hdr.elmId.elmnt);
@@ -658,14 +658,14 @@ KwMngmt   *cfg;
       cfg->cfm.status = LCM_PRIM_OK;
       cfg->cfm.reason = LCM_REASON_NOT_APPL;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);
-      RETVALUE(ROK);
+      return ROK;
    }
    else
    {
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = reason;
       kwLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 } 
 
@@ -746,7 +746,7 @@ KwMngmt   *cntrl;
       cntrl->cfm.reason =  LCM_REASON_INVALID_INSTANCE;
 
       kwLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    
@@ -757,7 +757,7 @@ KwMngmt   *cntrl;
       cntrl->cfm.status = LCM_PRIM_NOK;
       cntrl->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       kwLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (!(tRlcCb->init.cfgDone))
@@ -765,7 +765,7 @@ KwMngmt   *cntrl;
       cntrl->cfm.status = LCM_PRIM_NOK;
       cntrl->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       kwLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    RLOG1(L_DEBUG, "KwMiLkwCntrlReq(elmId(%d))", cntrl->hdr.elmId.elmnt);
 
@@ -814,7 +814,7 @@ KwMngmt   *cntrl;
 
    kwLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -855,7 +855,7 @@ KwMngmt   *sta;
       sta->cfm.reason = LCM_REASON_INVALID_INSTANCE;
 
       kwLmmSendCfm(tRlcCb,pst, sta, TSSTA, &sta->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    
@@ -866,7 +866,7 @@ KwMngmt   *sta;
       sta->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
 
       kwLmmSendCfm(tRlcCb,pst, sta, TSSTA, &sta->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RLOG1(L_DEBUG, "Status request for elmId(%d))", sta->hdr.elmId.elmnt);
@@ -928,7 +928,7 @@ KwMngmt   *sta;
    }
    kwLmmSendCfm(tRlcCb,pst, &rSta, TSSTA, &sta->hdr);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -991,7 +991,7 @@ KwMngmt   *sts;
       rSts.cfm.reason = LCM_REASON_INVALID_INSTANCE;
 
       kwLmmSendCfm(tRlcCb,pst, &rSts, TCNTRL, &sts->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    
@@ -1002,7 +1002,7 @@ KwMngmt   *sts;
       rSts.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
 
       kwLmmSendCfm(tRlcCb,pst, &rSts, TCNTRL, &sts->hdr);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RLOG2(L_DEBUG, "KwMiLkwStsReq(elmId(%d),action(%d))", 
@@ -1048,7 +1048,7 @@ KwMngmt   *sts;
    }
    kwLmmSendCfm(tRlcCb,pst, &rSts, TSTS, &sts->hdr);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /* kw005.201 added support for L2 Measurement */
@@ -1123,7 +1123,7 @@ KwL2MeasReqEvt *measReqEvt;
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
          kwUtlSndUlL2MeasNCfm(tRlcCb, measReqEvt, &measCfmEvt);
          RLC_FREE(tRlcCb, measReqEvt, sizeof(KwL2MeasReqEvt))
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -1142,7 +1142,7 @@ KwL2MeasReqEvt *measReqEvt;
       measCfmEvt.status.reason = LKW_CAUSE_INVALID_MEASTYPE;
       kwUtlSndDlL2MeasNCfm(tRlcCb, measReqEvt, &measCfmEvt);
       RLC_FREE(tRlcCb, measReqEvt, sizeof(KwL2MeasReqEvt))
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* for UL IP throughput meas enable for all QCIs */
@@ -1172,7 +1172,7 @@ KwL2MeasReqEvt *measReqEvt;
       if(measEvt == NULLP)
       {
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(RFAILED);
+         return RFAILED;
       }   
 #endif      
       cmMemcpy((Void*)measEvt, (Void*)measReqEvt, sizeof(KwL2MeasReqEvt));
@@ -1258,7 +1258,7 @@ U8             measType;
    {
       /*Redirect the request to DL task */
       rlcUlUdxL2MeasStopReq(&(KW_GET_UDX_SAP(tRlcCb)->pst),measType);
-      /*RETVALUE(ROK);*/
+      /*return ROK;*/
    }
    /*cmMemset((U8*)&measCfmEvt, 0, sizeof(KwL2MeasCfmEvt)); */
 
@@ -1307,7 +1307,7 @@ U8             measType;
       /*Redirect the request to DL task */
       rlcUlUdxL2MeasSendReq(&(KW_GET_UDX_SAP(tRlcCb)->pst),measType);
       /* L2 MEAS AGHOSH */
-      /*RETVALUE(ROK);*/
+      /*return ROK;*/
    }
 
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
@@ -1320,7 +1320,7 @@ U8             measType;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* LTE_L2_MEAS */
 
@@ -2486,7 +2486,7 @@ Buffer   *mBuf;
         {
            /* rg005.201 removed SPutSBuf on error */
            RLOG0(L_ERROR,"SCpyMsgMsg Failed");   
-           RETVALUE(RFAILED);
+           return RFAILED;
         }
         /* Send Trace Indication to Layer manager */
         KwMiLkwTrcInd(&pst, &trc, dstMbuf);
@@ -2498,7 +2498,7 @@ Buffer   *mBuf;
         if (SFndLenMsg(mBuf, &bufLen) != ROK)
         {
            RLOG0(L_ERROR,"SFndLenMsg Failed");   
-           RETVALUE(RFAILED);
+           return RFAILED;
         }
         /* Check if the recvd buffer size is less than request trace len */
         if(bufLen < gCb->trcLen)
@@ -2509,7 +2509,7 @@ Buffer   *mBuf;
               != ROK)
            {
               RLOG0(L_ERROR,"SCpyMsgMsg Failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
          
            /* Send Trace Indication to Layer manager */
@@ -2535,19 +2535,19 @@ Buffer   *mBuf;
            if (SCpyMsgFix(mBuf,0,gCb->trcLen,tempBuf,&tempCnt) != ROK)   
            {
               RLOG0(L_ERROR,"SCpyMsgFix Failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
 
            if (SGetMsg(pst.region, pst.pool, &dstMbuf) != ROK)
            {
               RLOG0(L_FATAL,"Memory Allocation failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
            /* Copy the tempBuf data to dst mBuf */
            if (SCpyFixMsg(tempBuf,dstMbuf,0,gCb->trcLen,&tempCnt) != ROK)
            {
               RLOG0(L_ERROR,"SCpyMsgFix Failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
   
            /* Free the memory allocated for tempBuf */
@@ -2562,7 +2562,7 @@ Buffer   *mBuf;
       KwMiLkwTrcInd(&pst, &trc, mBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
   
@@ -2603,7 +2603,7 @@ Inst   inst;
    }
    gCb = RLC_GET_RLCCB(inst); 
    cmPrcTmr(&(gCb->kwTqCp), gCb->kwTq, (PFV) kwTmrExpiry);
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of kwActvTmr */
 

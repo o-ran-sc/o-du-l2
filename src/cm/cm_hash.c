@@ -237,7 +237,7 @@ U16                *idx;               /* idx to return */
    else
       *idx = (U16) (c % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashFuncAnyKey */
 
 
@@ -290,7 +290,7 @@ U16                *idx;               /* idx to return */
    else
       *idx = (U16) (sum % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmHashFuncU32Mod () */
 
@@ -371,7 +371,7 @@ U16           *idx;               /* idx to return */
    else
       *idx = (U16) (sum % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashFuncBCD8 () */
 
 /*
@@ -428,7 +428,7 @@ U16                *idx;               /* idx to return */
    else
       *idx = (U16) (sum % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmHashFuncString () */
 
@@ -485,7 +485,7 @@ U16                *idx;               /* index to return */
    else
       *idx = (U16) (sum % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmHashFuncDefault */
 
@@ -547,7 +547,7 @@ U16                *idx;               /* index to return */
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (hashListCp->binBitMask == CM_HASH_NOBITMASK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    prod = CM_HASH_MULT24_CONST * *((U32 *)key);
@@ -555,7 +555,7 @@ U16                *idx;               /* index to return */
    shift = CM_HASH_MULT24_BITPOS - hashListCp->nmbBinBits;
    *idx = ((U16) (prod & (hashListCp->binBitMask << shift))) >> shift;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashFuncMult24 */
 
 
@@ -628,9 +628,9 @@ U16                *idx;               /* index to return */
          break;
 
       default:
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmHashFuncConId */
 
@@ -676,7 +676,7 @@ U16                *idx;               /* index to return */
 
    *idx = *((U16 *) key);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashFuncDirIdx */
 
   
@@ -715,7 +715,7 @@ U16 keyLen2;                      /* length of second key string */
 
    /* compare key lengths */
    if (keyLen1 != keyLen2)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    /* compare key strings */
    RETVALUE(cmMemcmp(key1, key2, (PTR) keyLen1));
@@ -755,7 +755,7 @@ CmListEnt *newEntry;                    /* new entry to add */
    oldEntry->next         = newEntry;
    (newEntry->next)->prev = newEntry;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmListInsert */
 
   
@@ -786,7 +786,7 @@ CmListEnt *entry;                       /* entry to delete */
    TRC2(cmListDelete);
 
    if (entry == NULLP) 
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    if (entry->prev != NULLP)
       (entry->prev)->next = entry->next;
@@ -794,7 +794,7 @@ CmListEnt *entry;                       /* entry to delete */
    if (entry->next != NULLP)
       (entry->next)->prev = entry->prev;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmListDelete */
 
 
@@ -869,7 +869,7 @@ Pool         pool;         /* memory pool to allocate bins */
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (hashListCp == NULLP) 
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* initialize control point fields */
@@ -934,11 +934,11 @@ Pool         pool;         /* memory pool to allocate bins */
 #ifndef CM_MT_HASH_BIN
       if (SGetSBuf(region, pool, (Data **) &hashListCp->hl, 
                    (Size) (nmbBins * sizeof(CmListEnt))) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
 #else
       if (SGetSBuf(region, pool, (Data **) &hashListCp->hl, 
                    (Size) (nmbBins * sizeof(CmListBinEnt))) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
 
       /* initialize bin pointers */
@@ -974,7 +974,7 @@ Pool         pool;         /* memory pool to allocate bins */
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListInit */
 
 
@@ -1009,7 +1009,7 @@ CmHashListCp *hashListCp;  /* hash list to deinitialize */
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (hashListCp == NULLP) 
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* deallocate memory for bins */
@@ -1038,7 +1038,7 @@ CmHashListCp *hashListCp;  /* hash list to deinitialize */
    hashListCp->keyType = CM_HASH_KEYTYPE_DEF;
    hashListCp->hashFunc = NULLP;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListDeinit */
 
   
@@ -1089,7 +1089,7 @@ U16          keyLen;       /* length of key */
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP) || 
        (key == NULLP) || (keyLen == 0))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* check for duplicates */
@@ -1111,7 +1111,7 @@ U16          keyLen;       /* length of key */
 
    /* compute index for insertion */
    if ((*hashListCp->hashFunc)(hashListCp, key, keyLen, &idx) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    hashListEnt->hashVal   = idx;
 
@@ -1125,7 +1125,7 @@ U16          keyLen;       /* length of key */
    hashListCp->hl[idx].nmbEnt++;
 #endif /* #ifndef CM_MT_HASH_BIN */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListInsert */
 
   
@@ -1169,7 +1169,7 @@ PTR          entry;        /* entry to delete */
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP)) 
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* get pointer to hash list entry header */
@@ -1178,13 +1178,13 @@ PTR          entry;        /* entry to delete */
    /* check if entry is already deleted if yes then return OK */
    if((hashListEnt->list.next == NULLP) ||
       (hashListEnt->list.prev == NULLP))
-      RETVALUE(ROK);
+      return ROK;
 
 #ifdef CM_MT_HASH_BIN
    /* compute index for insertion */
    if ((*hashListCp->hashFunc)(hashListCp, hashListEnt->key, 
                               hashListEnt->keyLen, &idx) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif /* #ifdef CM_MT_HASH_BIN */
 
    /* delete entry from list */
@@ -1205,7 +1205,7 @@ PTR          entry;        /* entry to delete */
    hashListCp->hl[idx].nmbEnt--;
 #endif /* #ifndef CM_MT_HASH_BIN */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListDelete */
 
   
@@ -1265,12 +1265,12 @@ PTR          *entry;       /* entry to be returned */
    /* error check on parameters */
    if ((hashListCp == NULLP) || (key == NULLP) || 
        (keyLen == 0) || (entry == NULLP))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* compute hash table index */
    if ((*hashListCp->hashFunc)(hashListCp, key, keyLen, &idx) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    /* search this bin for exact key match */
    hashListBin = &hashListCp->hl[idx];
@@ -1293,11 +1293,11 @@ PTR          *entry;       /* entry to be returned */
 
          /* check for duplicates */
          if (!hashListCp->dupFlg)
-            RETVALUE(ROK);
+            return ROK;
 
          /* for duplicate key, check sequence number */
          if (i++ == seqNmb)
-            RETVALUE(ROK);
+            return ROK;
       }
 
       /* go to next entry */
@@ -1305,7 +1305,7 @@ PTR          *entry;       /* entry to be returned */
    }
 
    /* no matching key found */
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* end of cmHashListFind */
 
 
@@ -1365,7 +1365,7 @@ PTR          *entry;         /* entry to be returned */
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* check if need to get first entry */
@@ -1386,7 +1386,7 @@ PTR          *entry;         /* entry to be returned */
             /* requested entry is in nxtEnt */
             *entry = (PTR) (((U8 *) hashListEnt) - hashListCp->offset);
 
-            RETVALUE(ROK);
+            return ROK;
          }
 
       /* no more entries */
@@ -1412,7 +1412,7 @@ PTR          *entry;         /* entry to be returned */
          /* found next entry */
          *entry = (PTR) (((U8 *) prevListEnt) - hashListCp->offset);
 
-         RETVALUE(ROK);
+         return ROK;
       }
 
       /* no more entries in this bin, go to next bin, check if more bins */
@@ -1480,7 +1480,7 @@ PTR          *entry;         /* entry to be returned */
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* check if need to get first entry */
@@ -1496,7 +1496,7 @@ PTR          *entry;         /* entry to be returned */
          /* requested entry is in nxtEnt */
          *entry = (PTR) (((U8 *) hashListEnt) - hashListCp->offset);
 
-         RETVALUE(ROK);
+         return ROK;
       }
 
       /* no more entries */
@@ -1518,7 +1518,7 @@ PTR          *entry;         /* entry to be returned */
       /* found next entry */
       *entry = (PTR) (((U8 *) prevListEnt) - hashListCp->offset);
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* no more entries */
@@ -1571,7 +1571,7 @@ U16          *result;        /* result of query */
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (result == NULLP)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* respond depending on query type */
@@ -1583,7 +1583,7 @@ U16          *result;        /* result of query */
 #else
       *result = (U16) sizeof(CmListBinEnt);
 #endif
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* deal with queries that do need hashListCp */
@@ -1591,7 +1591,7 @@ U16          *result;        /* result of query */
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (hashListCp == NULLP)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* respond depending on query type */
@@ -1607,30 +1607,30 @@ U16          *result;        /* result of query */
             *result += hashListCp->hl[i].nmbEnt;
          }
 #endif
-         RETVALUE(ROK);
+         return ROK;
 
       case CM_HASH_QUERYTYPE_BINS:      /* number of bins */
          *result = (U16) hashListCp->nmbBins;
-         RETVALUE(ROK);
+         return ROK;
 
       case CM_HASH_QUERYTYPE_OFFSET:    /* offset of CmHashListEnt in entries */
          *result = (U16) hashListCp->offset;
-         RETVALUE(ROK);
+         return ROK;
 
       case CM_HASH_QUERYTYPE_DUPFLG:    /* allow duplicate keys */
          *result = (U16) hashListCp->dupFlg;
-         RETVALUE(ROK);
+         return ROK;
 
       case CM_HASH_QUERYTYPE_KEYTYPE:   /* key type for selecting hash functions */
          *result = (U16) hashListCp->keyType;
-         RETVALUE(ROK);
+         return ROK;
 
       default:                          /* process other query types */
          break;
    }
 
    /* illegal query type */
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* end of cmHashListQuery */
 
 #ifdef HASH_OPEN_ADDRESSING
@@ -1692,7 +1692,7 @@ U16          keyLen;       /* length of key */
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP) || 
        (key == NULLP) || (keyLen == 0))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
 #ifndef CM_MT_HASH_BIN
@@ -1719,7 +1719,7 @@ U16          keyLen;       /* length of key */
 
    /* compute index for insertion */
    if ((*hashListCp->hashFunc)(hashListCp, key, keyLen, &idx) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    /*
     *  find an empty bin
@@ -1741,7 +1741,7 @@ U16          keyLen;       /* length of key */
 
    /* insert into list */
    if (cmListInsert(hashBin->prev, &hashListEnt->list) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    hashListEnt->hashVal   = idx;
 
@@ -1752,7 +1752,7 @@ U16          keyLen;       /* length of key */
    hashBin->nmbEnt++;
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListOAInsert */
 
 

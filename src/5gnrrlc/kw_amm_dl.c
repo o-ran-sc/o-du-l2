@@ -3009,7 +3009,7 @@ U32        sduId;
 #endif
 {
    TRC2(kwAmmDiscSdu);
-   RETVALUE(RFAILED);
+   return RFAILED;
 } 
 
 /**
@@ -4121,7 +4121,7 @@ PUBLIC S16 kwProcDlStatusPdu(Pst *udxPst,SuId suId,
    if( ROK != kwDbmFetchDlUeCb(gCb,rnti,cellId,&(ueCb)))
    {
      printf("\n RLC UECb Not found...\n");
-     RETVALUE(RFAILED);
+     return RFAILED;
    }
 
 
@@ -4130,14 +4130,14 @@ PUBLIC S16 kwProcDlStatusPdu(Pst *udxPst,SuId suId,
    /* Skip if mode is not AM */
    if((rbCb ==  NULLP) || (rbCb->mode != CM_LTE_MODE_AM))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(ROK != SExamMsg((Data *)(&fByte),
             rlcSdu, 0))
    {
       printf("\n Failure in Rlc Hdr SExamMsg\n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(KW_CNTRL_PDU == ((fByte & KW_DC_POS) >> KW_DC_SHT))

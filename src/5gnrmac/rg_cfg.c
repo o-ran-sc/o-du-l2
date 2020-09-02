@@ -133,7 +133,7 @@ RgErrInfo   *errInfo;
          || rgCb[inst].inactiveCell != NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Cell already exists");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((cellCfg->bwCfg.dlTotalBw < RG_MIN_DL_BW
             || cellCfg->bwCfg.dlTotalBw > RG_MAX_DL_BW)
@@ -143,13 +143,13 @@ RgErrInfo   *errInfo;
       RLOG_ARG2(L_ERROR,DBG_CELLID,cellCfg->cellId, 
             "Invalid Bandwidth configuration: ul %d dl %d",
             cellCfg->bwCfg.ulTotalBw, cellCfg->bwCfg.dlTotalBw);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cellCfg->rachCfg.maxMsg3Tx < RG_MIN_HQ_TX)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,
                 "Invalid RACH configuration: maxMsg3Tx %d",cellCfg->rachCfg.maxMsg3Tx);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef TENB_MULT_CELL_SUPPRT
    if((cellCfg->rguDlSapId > rgCb[inst].numRguSaps) ||
@@ -159,11 +159,11 @@ RgErrInfo   *errInfo;
                cellCfg->rguDlSapId,
                cellCfg->rguUlSapId,
                cellCfg->cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGVldtCrgCellCfg */
 
 
@@ -214,7 +214,7 @@ RgErrInfo *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"Transmission Mode=%d not supported",
             ueCfg->txMode.tm);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    /* Fetch the Active cell */
@@ -223,20 +223,20 @@ RgErrInfo *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"Active Cell does not exist for cellId%d",
             ueCfg->cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Check if Ue already configured */
    if (rgDBMGetUeCb(*cell, ueCfg->crnti) != NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_CRNTI,ueCfg->crnti,"Ue already exists");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (ueCfg->ueUlHqCfg.maxUlHqTx < RG_MIN_HQ_TX)
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti, "Invalid Uplink HARQ config %d ",
             ueCfg->ueUlHqCfg.maxUlHqTx);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef TENB_MULT_CELL_SUPPRT
    if((ueCfg->rguDlSapId > rgCb[inst].numRguSaps) ||
@@ -246,12 +246,12 @@ RgErrInfo *errInfo;
                ueCfg->rguDlSapId,
                ueCfg->rguUlSapId,
                ueCfg->crnti));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGVldtCrgUeCfg */
 
 
@@ -307,7 +307,7 @@ RgErrInfo  *errInfo;
       if ((rgCFGVldtCrgDedLcCfg(inst,lcCfg, cell, ue, errInfo)) != ROK)
       {
          RLOG_ARG0(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Validation for dedicated LC failed");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else if (lcCfg->lcType == CM_LTE_LCH_BCCH
@@ -317,14 +317,14 @@ RgErrInfo  *errInfo;
       if ((rgCFGVldtCrgCmnLcCfg(inst,lcCfg, cell, errInfo)) != ROK)
       {
          RLOG_ARG0(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Validation for common logical channels failed");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Invalid logical channel type %d",
                 lcCfg->lcType);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef LTE_L2_MEAS
    if ( lcCfg->qci <  RG_QCI_MIN ||
@@ -332,13 +332,13 @@ RgErrInfo  *errInfo;
       )
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Invalid qci %x",lcCfg->qci);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*validate qci */
 #endif /*LTE_L2_MEAS */
 
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGVldtCrgLcCfg */
 
 
@@ -392,22 +392,22 @@ RgErrInfo     *errInfo;
          && ((*cell = rgCb[inst].inactiveCell) == NULLP))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Cell does not exist");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if((*cell)->cellId != cellRecfg->cellId)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellRecfg->cellId, "Cell does not exist %d\n",cellRecfg->cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cellRecfg->rachRecfg.maxMsg3Tx < RG_MIN_HQ_TX)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellRecfg->cellId,
                 "Invalid RACH configuration: maxMsg3Tx %d",cellRecfg->rachRecfg.maxMsg3Tx);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGVldtCrgCellRecfg */
 
 
@@ -465,7 +465,7 @@ RgErrInfo   *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Transmission Mode=%d not supported",
                 ueRecfg->txMode.tm);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
     /* Fetch the Active cell */
@@ -473,7 +473,7 @@ RgErrInfo   *errInfo;
         || ((*cell)->cellId != ueRecfg->cellId))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,ueRecfg->cellId, "Active Cell does not exist\n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    /* Fix : syed UE ID change at MAC will now be controlled
@@ -481,16 +481,16 @@ RgErrInfo   *errInfo;
    if ((*ue = rgDBMGetUeCb(*cell, ueRecfg->oldCrnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"[%d]Old Ue does not exist", ueRecfg->oldCrnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (ueRecfg->ueUlHqRecfg.maxUlHqTx < RG_MIN_HQ_TX)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid Uplink HARQ config for UE %d",
             ueRecfg->ueUlHqRecfg.maxUlHqTx);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGVldtCrgUeRecfg */
 
 
@@ -553,30 +553,30 @@ RgErrInfo    *errInfo;
       || ((*cell)->cellId != lcRecfg->cellId))
    {
       RLOG_ARG2(L_ERROR,DBG_CRNTI,lcRecfg->crnti,"Active Cell %u does not exist for UE %u", lcRecfg->cellId, lcRecfg->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Fetch the Ue for dedicated channels */
    if ((*ue = rgDBMGetUeCb(*cell, lcRecfg->crnti)) == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_CRNTI,lcRecfg->crnti,"Ue does not exist for dedicated logical channel");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((*ulLc = rgDBMGetUlDedLcCb((*ue), lcRecfg->lcId)) == NULLP)
    {
       RLOG_ARG1(L_ERROR, DBG_CRNTI,lcRecfg->crnti,"Dedicated UL LC does not exist %d",lcRecfg->lcId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (lcRecfg->ulRecfg.lcgId > (RG_MAX_LCG_PER_UE - 1))
    {
       RLOG_ARG2(L_ERROR,DBG_CRNTI,lcRecfg->crnti,"Invalid lcgId for uplink logical channel lcg %d lc %d",
                 lcRecfg->ulRecfg.lcgId, lcRecfg->lcId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGVldtCrgLcRecfg */
 
 /* Start: LTEMAC_2.1_DEV_CFG */
@@ -632,18 +632,18 @@ RgErrInfo   *errInfo;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Active Cell does not exist %d\n",reset->crnti, reset->cellId));
       RLOG_ARG1(L_ERROR,DBG_CRNTI,reset->crnti,"Active Cell does not exist %d",reset->cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Fetch the Ue */
    if ((*ue = rgDBMGetUeCb(*cell, reset->crnti)) == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_CRNTI,reset->crnti,"UE does not exist");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGVldtCrgUeReset*/
 /* End: LTEMAC_2.1_DEV_CFG */
 
@@ -701,12 +701,12 @@ RgErrInfo   *errInfo;
    if((ret = rgAllocSBuf(inst,(Data**)&cell, sizeof(RgCellCb))) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Memory allocation FAILED for cell");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cell == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId, "Memory allocation FAILED for cell");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Initialize the cell */
@@ -730,14 +730,14 @@ RgErrInfo   *errInfo;
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"DBM initialization for cell failed");
       rgCFGFreeInactvCellCb(cell);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef LTE_ADV
    if (RFAILED == RgLaaCellCbInit(cell))
    {
       rgCFGFreeInactvCellCb(cell);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -780,7 +780,7 @@ RgErrInfo   *errInfo;
    /* Allocate a buffer for flowCntrlInd.*/
    SGetSBuf(pst->region, pst->pool, (Data **)&cell->flowCntrlInd, 
               sizeof(RguFlowCntrlInd));
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgCellCfg */
 
 #ifdef LTE_ADV
@@ -845,7 +845,7 @@ RgCellCb    *cell;
                "[%d]Ue already exist in scell %d during scell addition\n", 
                ueSCellCb->ueId,
                cell->cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Create UeCb */
@@ -854,7 +854,7 @@ RgCellCb    *cell;
    {
       RGDBGERRNEW(dstMacInst, (rgPBuf(dstMacInst),
                "[%d]UeCb creation failed\n", ueSCellCb->ueId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(rgDHMHqEntInit(dstMacInst, &ueCb->dl.hqEnt, 
@@ -862,7 +862,7 @@ RgCellCb    *cell;
    {
       RGDBGERRNEW(dstMacInst,(rgPBuf(dstMacInst), 
                "[%d]UeCb Harq Entity Initialization failed\n", ueSCellCb->ueId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    rgDBMInsUeCb(cell, ueCb);
 
@@ -894,7 +894,7 @@ RgCellCb    *cell;
       ueCb->ul.lcgArr[idx].lcCount = ueSCellCb->lcgInfo[idx].lcCount;
       ueCb->ul.lcgArr[idx].isGbr = ueSCellCb->lcgInfo[idx].isGbr;
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* rgCfgAddUeSCellCfg */
 
 /**
@@ -953,7 +953,7 @@ Bool            *isCfmRqrd;
       RGDBGERRNEW(inst,(rgPBuf(inst), 
                        "[%d]Active Cell does not exist %d\n",
                                   ueRecfg->oldCrnti, ueRecfg->cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGDBGPRM(inst,(rgPBuf(inst), 
@@ -964,7 +964,7 @@ Bool            *isCfmRqrd;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), 
                "[%d]Ue does not exist\n", ueRecfg->oldCrnti));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Initialize cfgCfmInfo in the ueCb. This is used while processing SCellAdd
@@ -1004,7 +1004,7 @@ Bool            *isCfmRqrd;
    } /*end of for loop */
    *isCfmRqrd = FALSE;
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgFillAndAddSCellCfg */
 #endif /* LTE_ADV */
 
@@ -1065,12 +1065,12 @@ RgErrInfo *errInfo;
       if((ue=rgRAMCreateUeCb(cell, ueCfg->crnti, FALSE, errInfo)) == NULLP)
       {
          RLOG_ARG0(L_ERROR,DBG_CRNTI,ueCfg->crnti,"UeCb creation failed");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if(rgDHMHqEntInit(inst,&ue->dl.hqEnt, cell->maxDlHqProcPerUe) != ROK)
       {
          RLOG_ARG0(L_ERROR,DBG_CRNTI,ueCfg->crnti,"UeCb Harq Entity Initialization failed");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       handover = TRUE;
    }
@@ -1105,7 +1105,7 @@ RgErrInfo *errInfo;
    /* Update satistics */
    rgUpdtUeCnt(inst,RG_CFG_ADD);
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgUeCfg */
 
 
@@ -1171,7 +1171,7 @@ CrgCfgTransId   transId;
       {
          RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,
                "Dedicated logical channel configuration failed %d",lcCfg->lcId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #ifdef LTE_ADV
       /*ERAB Multl Cell fix*/
@@ -1186,13 +1186,13 @@ CrgCfgTransId   transId;
       {
          RLOG_ARG1(L_ERROR, DBG_CRNTI, lcCfg->crnti, "Common logical channel configuration"
                   "failed %d\n", lcCfg->lcId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
    errInfo->errCause = RGERR_NONE;
    RLOG_ARG1(L_INFO, DBG_CRNTI,lcCfg->crnti, "CRG LC config done for UE: lcId %d\n", lcCfg->lcId);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgLcCfg */
 
 
@@ -1239,7 +1239,7 @@ RgErrInfo     *errInfo;
    cell->rachCfg = cellRecfg->rachRecfg;
 
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgCellRecfg */
 
 
@@ -1299,7 +1299,7 @@ RgErrInfo   *errInfo;
    rgUHMCrgUeRecfg(cell, ue, ueRecfg);
 
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgUeRecfg */
 
 
@@ -1361,7 +1361,7 @@ Bool        *isCfmRqrd;
    }
 
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgLcRecfg */
 
 /* Start: LTEMAC_2.1_DEV_CFG */
@@ -1406,7 +1406,7 @@ RgErrInfo   *errInfo;
 
    errInfo->errCause = RGERR_NONE;
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgUeReset */
 /* End: LTEMAC_2.1_DEV_CFG */
 
@@ -1459,7 +1459,7 @@ RgErrInfo   *errInfo;
 
          
          RLOG_ARG0(L_ERROR,DBG_CELLID,cellDelInfo->u.cellDel.cellId,"Cell does not exist");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* Delete cell from inactive list */
@@ -1469,7 +1469,7 @@ RgErrInfo   *errInfo;
       rgCFGFreeInactvCellCb(cell);
 
       errInfo->errCause = RGERR_NONE;
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* Delete from the cell list */
@@ -1486,7 +1486,7 @@ RgErrInfo   *errInfo;
 
    errInfo->errCause    = RGERR_NONE;
    RGDBGINFO(inst,(rgPBuf(inst), "Cell %d deleted\n", cellDelInfo->u.cellDel.cellId));
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgCellDel */
 
 
@@ -1535,12 +1535,12 @@ RgErrInfo   *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueDelInfo->u.ueDel.crnti,"Cell does not exist %d",
                 ueDelInfo->u.ueDel.cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    errInfo->errCause = RGERR_NONE;
    /* Fix: syed Context Deletion is relied upon SCH indication */
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgUeDel */
 
 
@@ -1597,7 +1597,7 @@ CrgCfgTransId transId;
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,"Cell does not exist %d",
                 lcDelInfo->u.lchDel.cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Fetch the Ue */
@@ -1605,7 +1605,7 @@ CrgCfgTransId transId;
    {
       RLOG_ARG0(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,
                 "UE does not exist for dedicated logical channel");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Validate downlink info */
@@ -1616,7 +1616,7 @@ CrgCfgTransId transId;
       {
          RLOG_ARG1(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,"DL LC %d does not exist",
                    lcDelInfo->u.lchDel.lcId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       rgDBMDelDlDedLcCb(ue, dlLc);
       dirVld = TRUE;
@@ -1630,7 +1630,7 @@ CrgCfgTransId transId;
       {
          RLOG_ARG1(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,"UL LC %d does not exist",
                    lcDelInfo->u.lchDel.lcId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       rgDBMDelUlDedLcCb(ue, ulLc);
       dirVld = TRUE;
@@ -1640,7 +1640,7 @@ CrgCfgTransId transId;
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,"Invalid direction %d for LC Delete",
             lcDelInfo->u.lchDel.dir);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef LTE_ADV
    /*ERAB - multicell fix*/
@@ -1649,7 +1649,7 @@ CrgCfgTransId transId;
    rgPomSndUeSCellLchDelToSmac(inst, lcDelInfo, isCfmRqrd);
 #endif
    errInfo->errCause = RGERR_NONE;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgLcDel */
 
 /***********************************************************
@@ -1697,7 +1697,7 @@ RgErrInfo     *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Active Cell does not exist: Cell %d",
                 lcCfg->cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Fetch the Ue */
@@ -1705,7 +1705,7 @@ RgErrInfo     *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"UE  does not exist for dedicated logical channel %d",
                 lcCfg->lcId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Validate logical channel Id */
@@ -1714,7 +1714,7 @@ RgErrInfo     *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Invalid logical channel Id %d",
                 lcCfg->lcId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Validate downlink info */
@@ -1724,7 +1724,7 @@ RgErrInfo     *errInfo;
       {
          RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"UE: Dedicated DL LC %d already configured",
                     lcCfg->lcId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       dirVld = TRUE;
    }
@@ -1736,13 +1736,13 @@ RgErrInfo     *errInfo;
       {
          RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"UE: Invalid lcgId for uplink logical channel %d",
                    lcCfg->ulInfo.lcgId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (rgDBMGetUlDedLcCb((*ue), lcCfg->lcId) != NULLP)
       {
          RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"UE: Dedicated UL LC %d already configured",
                    lcCfg->lcId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       dirVld = TRUE;
    }
@@ -1751,10 +1751,10 @@ RgErrInfo     *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Invalid Direction %d",
                lcCfg->dir);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGVldtCrgDedLcCfg */
 
 
@@ -1801,7 +1801,7 @@ RgErrInfo     *errInfo;
       && ((*cell)->cellId != lcCfg->cellId))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"Active Cell exists for common channels");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Fetch the inactive cell for common logical channels */
@@ -1810,7 +1810,7 @@ RgErrInfo     *errInfo;
    {
       
       RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"Inactive Cell does not exist for common channels");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Validate downlink info */
    if (lcCfg->dir & CRG_DIR_TX)
@@ -1822,7 +1822,7 @@ RgErrInfo     *errInfo;
             if (rgDBMGetBcchOnDlsch(*cell,lcCfg->lcId) != NULLP)
             {
                RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"BCCH on DLSCH already configured for cell");
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
          else if (lcCfg->dlInfo.dlTrchType == CM_LTE_TRCH_BCH)
@@ -1830,14 +1830,14 @@ RgErrInfo     *errInfo;
             if (rgDBMGetBcchOnBch(*cell) != NULLP)
             {
                RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"BCCH on BCH already configured for cell %d");
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
          else
          {
             RLOG_ARG1(L_ERROR,DBG_CELLID,lcCfg->cellId,"Invalid transport channel %d for cell",
                   lcCfg->dlInfo.dlTrchType);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
       else if (lcCfg->lcType == CM_LTE_LCH_PCCH)
@@ -1845,13 +1845,13 @@ RgErrInfo     *errInfo;
          if (rgDBMGetPcch(*cell) != NULLP)
          {
             RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"PCCH already configured for cell");
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
       else if (RG_DLCCCH_ISCFGD(*cell))
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"DL CCCH already configured for cell %d");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       dirVld = TRUE;
    }
@@ -1864,12 +1864,12 @@ RgErrInfo     *errInfo;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,lcCfg->cellId,"Invalid UL common lcType %d for cell ",
                   lcCfg->lcType);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (RG_ULCCCH_ISCFGD(*cell))
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"UL CCCH already configured for cell ");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       dirVld = TRUE;
    }
@@ -1878,10 +1878,10 @@ RgErrInfo     *errInfo;
    if (!dirVld)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,lcCfg->cellId,"Invalid Direction %d", lcCfg->dir);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGVldtCrgCmnLcCfg */
 
 /***********************************************************
@@ -1942,7 +1942,7 @@ RgErrInfo     *errInfo;
    {
       rgDBMInsDlDedLcCb(ue, lcCfg->lcId);
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgDedLcCfg */
 
 
@@ -2039,7 +2039,7 @@ RgErrInfo     *errInfo;
                config\n", lcCfg->lcId);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCFGCrgCmnLcCfg */
 #ifdef LTE_L2_MEAS
 /***********************************************************
@@ -2417,23 +2417,23 @@ RgInfCellReg*       regReq;
 
    if(NULLP == regReq)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
       
    if((cell  == NULLP) || (cell->cellId != regReq->cellId))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if(regReq->maxDlHqProcPerUe > RG_MAX_DL_HARQ_NUM) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Initialize */
    cell->schInstMap.cellSapId = regReq->cellSapId;
    cell->schInstMap.schInst   = pst->srcInst;
    cell->maxDlHqProcPerUe = regReq->maxDlHqProcPerUe;
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of RgSchMacCellRegReq */
 

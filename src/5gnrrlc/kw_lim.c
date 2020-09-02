@@ -136,7 +136,7 @@ U8     status;
       
       KW_SEND_SAPID_ALARM(tRlcCb,suId,LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_STATE);
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((suId >= tRlcCb->genCfg.maxRguSaps) || (suId < 0))
@@ -145,7 +145,7 @@ U8     status;
       
       KW_SEND_SAPID_ALARM(tRlcCb,suId, LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -186,7 +186,7 @@ U8     status;
    /* Send an alarm with proper event and cause */
    KW_SEND_SAPID_ALARM(tRlcCb, suId, event, cause);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* KwLiRguBndCfm */
 
 /**
@@ -287,7 +287,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcMacData *ulData)
     
 
    RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcMacData));
-   RETVALUE(ROK);
+   return ROK;
    
 }/* End of RlcProcUlData */
 
@@ -344,7 +344,7 @@ RguCDatIndInfo   *datInd;
    if (tRlcCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguCDatIndInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -355,7 +355,7 @@ RguCDatIndInfo   *datInd;
       RLOG_ARG1(L_ERROR,DBG_LCID,datInd->lcId, "Invalid LcId, Max is [%d]",
          KW_MAX_LCH_PER_CELL);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguCDatIndInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
@@ -366,7 +366,7 @@ RguCDatIndInfo   *datInd;
       RLOG_ARG1(L_ERROR, DBG_CELLID,datInd->cellId, "LcId [%d] not found",
          datInd->lcId);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguCDatIndInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Dispatch to TM Module */
@@ -378,7 +378,7 @@ RguCDatIndInfo   *datInd;
 
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguCDatIndInfo));
 
-   RETVALUE(ROK);
+   return ROK;
 } /* KwLiRguCDatInd */
 
 /**
@@ -429,7 +429,7 @@ RguDDatIndInfo   *datInd;
    {
        RLOG1(L_DEBUG,"KwLiRguDDatInd(pst, suId(%d))recieved in DL Inst",suId);
        RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguDDatIndInfo));
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
 #endif
    kwUtlRcvFrmLi(RLC_GET_RLCCB(pst->dstInst),datInd);
@@ -441,7 +441,7 @@ RguDDatIndInfo   *datInd;
 #endif
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 } /* KwLiRguDDatInd */
 
 
@@ -522,7 +522,7 @@ PUBLIC uint16_t RlcMacProcSchedRep(Pst *pst, SuId suId, RlcMacSchedRepInfo *schR
    
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRepInfo));
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -581,7 +581,7 @@ RguCStaIndInfo   *staInd;
             EKW040, 
             (ErrVal) suId,
             "KwLiRguCStaInd: Invalid RGU suId\n");
-      RETVALUE(RFAILED); 
+      return RFAILED; 
    }
    if (tRlcCb->genCfg.rlcMode == LKW_RLC_MODE_UL)
    {
@@ -589,7 +589,7 @@ RguCStaIndInfo   *staInd;
              "Received in RLC UL CELLID:%d",
              staInd->cellId);
        RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
 #endif
 
@@ -604,7 +604,7 @@ RguCStaIndInfo   *staInd;
             KW_MAX_LCH_PER_CELL,
             staInd->cellId);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
    /* Fertch RbCb from lcId */
@@ -615,7 +615,7 @@ RguCStaIndInfo   *staInd;
             "LcId [%d] not found CELLID:%d",
             staInd->lcId);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Dispatch to TM Module */
@@ -637,7 +637,7 @@ RguCStaIndInfo   *staInd;
 #else
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
 #endif
-   RETVALUE(ROK);
+   return ROK;
 } /* KwLiRguCStaInd */
 
 /**
@@ -691,7 +691,7 @@ RguDStaIndInfo   *staInd;
    {
        RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"Received in RLC UL ");
        RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguDStaIndInfo));
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
    if ((suId >= gCb->genCfg.maxRguSaps) || (suId < 0))
    {
@@ -700,14 +700,14 @@ RguDStaIndInfo   *staInd;
             EKW040, 
             (ErrVal) suId,
             "KwLiRguDStaInd: Invalid RGU suId\n");
-      RETVALUE(RFAILED); 
+      return RFAILED; 
    }
 #endif
    kwUtlSndToLi(gCb, suId, staInd);
 
    /* kw002.201 :Freeing from proper region */
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguDStaIndInfo));
-   RETVALUE(ROK);
+   return ROK;
 } /* KwLiRguDStaInd */
 
 /**
@@ -783,7 +783,7 @@ RguFlowCntrlInd  *flowCntrlInd;
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
@@ -840,7 +840,7 @@ RguHarqStatusInd   *staInd;
    ret = kwDbmFetchDlUeCb(tRlcCb, ueKey.ueId, ueKey.cellId, &ueCb);
    if (ret != ROK )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /*Call kwUtlProcHarqInd as many times as number of Tbs present*/
@@ -849,7 +849,7 @@ RguHarqStatusInd   *staInd;
       kwUtlProcHarqInd(tRlcCb, staInd, ueCb, tbIdx);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* KwLiRguHqStaInd */
 #endif /* LTE_L2_MEAS */
 

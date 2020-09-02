@@ -468,7 +468,7 @@ Buffer  *mBuf;                      /* message buffer       */
           break;
    }
    SExitTsk();
-   RETVALUE(ROK);
+   return ROK;
 }/* end of rgActvTsk */
 
 

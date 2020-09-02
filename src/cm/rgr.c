@@ -80,7 +80,7 @@ SpId spId;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR001, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -89,7 +89,7 @@ SpId spId;
          (ErrVal)ERGR002, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -98,7 +98,7 @@ SpId spId;
          (ErrVal)ERGR003, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    pst->event = (Event) EVTRGRBNDREQ;
    RETVALUE(SPstTsk(pst,mBuf));
@@ -146,7 +146,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR004, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SUnpkS16(&spId, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -155,7 +155,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR005, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, suId, spId));
@@ -201,16 +201,16 @@ U8 status;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR006, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   if (SPkU8(status, mBuf) != ROK) {
+   if (oduUnpackUInt8(status, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR007, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -219,7 +219,7 @@ U8 status;
          (ErrVal)ERGR008, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    pst->event = (Event) EVTRGRBNDCFM;
    RETVALUE(SPstTsk(pst,mBuf));
@@ -268,16 +268,16 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR009, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   if (SUnpkU8(&status, mBuf) != ROK) {
+   if (oduPackUInt8(&status, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR010, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, suId, status));
@@ -322,7 +322,7 @@ Reason reason;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR011, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(reason, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -331,7 +331,7 @@ Reason reason;
          (ErrVal)ERGR012, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -340,7 +340,7 @@ Reason reason;
          (ErrVal)ERGR013, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    pst->event = (Event) EVTRGRUBNDREQ;
    RETVALUE(SPstTsk(pst,mBuf));
@@ -388,7 +388,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR014, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SUnpkS16(&reason, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -397,7 +397,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR015, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, spId, reason));
@@ -446,7 +446,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR021, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -457,7 +457,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR022, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&cfgReqInfo,sizeof(RgrCfgReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -466,7 +466,7 @@ Buffer *mBuf;
             (ErrVal)ERGR023, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cmMemset((U8 *)cfgReqInfo, 0, sizeof(RgrCfgReqInfo));
    if (pst->selector == ODU_SELECTOR_LC) 
@@ -478,7 +478,7 @@ Buffer *mBuf;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERGR024, (ErrVal)0, "Packing failed");
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, transId, cfgReqInfo));
@@ -514,9 +514,9 @@ Buffer        *mBuf;
 #endif
 {
    TRC3(cmPkRgrTtiInd)
-   CMCHKPK(SPkU16, param->sfn, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->sfn, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -548,8 +548,8 @@ Buffer *mBuf;
    TRC3(cmUnpkRgrTtiIndInfo)
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->sfn, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt16, &param->sfn, mBuf);
+   return ROK;
 }
 
 
@@ -591,7 +591,7 @@ RgrTtiIndInfo *ttiInd;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR025, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cmPkRgrTtiIndInfo(ttiInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -601,7 +601,7 @@ RgrTtiIndInfo *ttiInd;
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(RgrTtiIndInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -611,7 +611,7 @@ RgrTtiIndInfo *ttiInd;
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(RgrTtiIndInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(RgrTtiIndInfo));
    pst->event = (Event) EVTRGRTTIIND;
@@ -660,7 +660,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR028, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&ttiInd, sizeof(RgrTtiIndInfo))) != ROK) 
    {
@@ -670,7 +670,7 @@ Buffer *mBuf;
           (ErrVal)ERGR029, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (cmUnpkRgrTtiIndInfo(ttiInd, mBuf) != ROK) {
@@ -684,7 +684,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR030, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, suId, ttiInd));
@@ -729,16 +729,16 @@ U8 status;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR031, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   if (SPkU8(status, mBuf) != ROK) {
+   if (oduUnpackUInt8(status, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR032, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cmPkRgrCfgTransId(&transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -747,7 +747,7 @@ U8 status;
          (ErrVal)ERGR033, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    pst->event = (Event) EVTMACSCHCFGCFM;
    RETVALUE(SPstTsk(pst,mBuf));
@@ -795,16 +795,16 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR036, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   if (SUnpkU8(&status, mBuf) != ROK) {
+   if (oduPackUInt8(&status, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR037, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, transId, status));
@@ -853,16 +853,16 @@ U8 status;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR038, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   if (SPkU8(status, mBuf) != ROK) {
+   if (oduUnpackUInt8(status, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR039, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cmPkRgrCfgTransId(&transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -871,7 +871,7 @@ U8 status;
          (ErrVal)ERGR040, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -880,7 +880,7 @@ U8 status;
          (ErrVal)ERGR041, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGRSICFGCFM;
@@ -930,7 +930,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR042, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cmUnpkRgrCfgTransId(&transId, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -939,16 +939,16 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR043, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   if (SUnpkU8(&status, mBuf) != ROK) {
+   if (oduPackUInt8(&status, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR044, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, suId, transId, status));
@@ -988,9 +988,9 @@ Buffer *mBuf;
    TRC3(cmPkRgrCfgTransId)
 
    for (i=RGR_CFG_TRANSID_SIZE-1; i >= 0; i--) {
-      CMCHKPK(SPkU8, param->trans[i], mBuf);
+      CMCHKPK(oduUnpackUInt8, param->trans[i], mBuf);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1027,9 +1027,9 @@ Buffer *mBuf;
    TRC3(cmUnpkRgrCfgTransId)
 
    for (i=0; i<RGR_CFG_TRANSID_SIZE; i++) {
-      CMCHKUNPK(SUnpkU8, &param->trans[i], mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->trans[i], mBuf);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1064,9 +1064,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrDlHqCfg)
 
-   CMCHKPK(SPkU8, param->maxMsg4HqTx, mBuf);
-   CMCHKPK(SPkU8, param->maxDlHqTx, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->maxMsg4HqTx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxDlHqTx, mBuf);
+   return ROK;
 }
 
 
@@ -1101,9 +1101,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrDlHqCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->maxDlHqTx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxMsg4HqTx, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->maxDlHqTx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxMsg4HqTx, mBuf);
+   return ROK;
 }
 
 
@@ -1138,9 +1138,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrRntiCfg)
 
-   CMCHKPK(SPkU16, param->size, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->size, mBuf);
    CMCHKPK(cmPkLteRnti, param->startRnti, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1176,8 +1176,8 @@ Buffer *mBuf;
    TRC3(cmUnpkRgrRntiCfg)
 
    CMCHKUNPK(cmUnpkLteRnti, &param->startRnti, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->size, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt16, &param->size, mBuf);
+   return ROK;
 }
 
 #ifdef EMTC_ENABLE
@@ -1211,12 +1211,12 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrEmtcRntiCfg)
 
-   CMCHKPK(SPkU16, param->size, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->size, mBuf);
    CMCHKPK(cmPkLteRnti, param->rntiCeModeBRange, mBuf);
    CMCHKPK(cmPkLteRnti, param->rntiCeModeBStart, mBuf);
    CMCHKPK(cmPkLteRnti, param->rntiCeModeARange, mBuf);
    CMCHKPK(cmPkLteRnti, param->rntiCeModeAStart, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1255,9 +1255,9 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteRnti, &param->rntiCeModeARange, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->rntiCeModeBStart, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->rntiCeModeBRange, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->size, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->size, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -1292,10 +1292,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrDlCmnCodeRateCfg)
 
-   CMCHKPK(SPkU8, param->ccchCqi, mBuf);
-   CMCHKPK(SPkU16, param->pdcchCodeRate, mBuf);
-   CMCHKPK(SPkU16, param->bcchPchRaCodeRate, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->ccchCqi, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->pdcchCodeRate, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->bcchPchRaCodeRate, mBuf);
+   return ROK;
 }
 
 
@@ -1330,10 +1330,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrDlCmnCodeRateCfg)
 
-   CMCHKUNPK(SUnpkU16, &param->bcchPchRaCodeRate, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->pdcchCodeRate, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->ccchCqi, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt16, &param->bcchPchRaCodeRate, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->pdcchCodeRate, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ccchCqi, mBuf);
+   return ROK;
 }
 
 
@@ -1368,8 +1368,8 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrCfiCfg)
 
-   CMCHKPK(SPkU8, param->cfi, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->cfi, mBuf);
+   return ROK;
 }
 
 
@@ -1404,8 +1404,8 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrCfiCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->cfi, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->cfi, mBuf);
+   return ROK;
 }
 
 
@@ -1442,12 +1442,12 @@ Buffer *mBuf;
    TRC3(cmPkRgrPuschSubBandCfg)
 
    for (i=param->numSubbands-1; i >= 0; i--) {
-      CMCHKPK(SPkU8, param->dmrs[i], mBuf);
+      CMCHKPK(oduUnpackUInt8, param->dmrs[i], mBuf);
    }
-   CMCHKPK(SPkU8, param->size, mBuf);
-   CMCHKPK(SPkU8, param->numSubbands, mBuf);
-   CMCHKPK(SPkU8, param->subbandStart, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->size, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numSubbands, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->subbandStart, mBuf);
+   return ROK;
 }
 
 
@@ -1483,13 +1483,13 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmUnpkRgrPuschSubBandCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->subbandStart, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numSubbands, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->size, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->subbandStart, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numSubbands, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->size, mBuf);
    for (i=0; i<param->numSubbands; i++) {
-      CMCHKUNPK(SUnpkU8, &param->dmrs[i], mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->dmrs[i], mBuf);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1524,8 +1524,8 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUlCmnCodeRateCfg)
 
-   CMCHKPK(SPkU8, param->ccchCqi, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->ccchCqi, mBuf);
+   return ROK;
 }
 
 
@@ -1560,8 +1560,8 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUlCmnCodeRateCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->ccchCqi, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->ccchCqi, mBuf);
+   return ROK;
 }
 
 
@@ -1596,8 +1596,8 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUlTrgCqiCfg)
 
-   CMCHKPK(SPkU8, param->trgCqi, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->trgCqi, mBuf);
+   return ROK;
 }
 
 
@@ -1632,8 +1632,8 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUlTrgCqiCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->trgCqi, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->trgCqi, mBuf);
+   return ROK;
 }
 
 
@@ -1668,9 +1668,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrBwCfg)
 
-   CMCHKPK(SPkU8, param->ulTotalBw, mBuf);
-   CMCHKPK(SPkU8, param->dlTotalBw, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->ulTotalBw, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->dlTotalBw, mBuf);
+   return ROK;
 }
 
 
@@ -1693,42 +1693,42 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmPkRgrEmtcSiCfg)
    	
-   CMCHKPK(SPkU8, param->siHoppingEnable, mBuf);
-   CMCHKPK(SPkU32, param->modPrd, mBuf);
-   CMCHKPK(SPkU8, param->siWinSizeBr, mBuf);
-   CMCHKPK(SPkU8, param->sib1Repetition, mBuf);
-   CMCHKPK(SPkU8, param->siRepetition, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->siHoppingEnable, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->modPrd, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->siWinSizeBr, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->sib1Repetition, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->siRepetition, mBuf);
    
-   CMCHKPK(SPkU16, param->startSymbolLc, mBuf);
-   //CMCHKPK(SPkU8, param->fddDLOrTddSfBitmapLC.sfnPtnChoice, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->startSymbolLc, mBuf);
+   //CMCHKPK(oduUnpackUInt8, param->fddDLOrTddSfBitmapLC.sfnPtnChoice, mBuf);
    /*Changes by SIMRAN*/
     if(!(param->fddDLOrTddSfBitmapLC.sfnPtnChoice))
     {
-      CMCHKPK(SPkU16, param->fddDLOrTddSfBitmapLC.u.ptn10, mBuf);
+      CMCHKPK(oduUnpackUInt16, param->fddDLOrTddSfBitmapLC.u.ptn10, mBuf);
     }
     else
    {
       //CMCHKPK(SPkU64,param->fddDLOrTddSfBitmapLC.u.ptn40, mBuf);
       for (i=0; i<2; i++) {
-         CMCHKPK(SPkU32, param->fddDLOrTddSfBitmapLC.u.ptn40[i], mBuf);
+         CMCHKPK(oduUnpackUInt32, param->fddDLOrTddSfBitmapLC.u.ptn40[i], mBuf);
       }
 
    }
-   CMCHKPK(SPkU8, param->fddDLOrTddSfBitmapLC.sfnPtnChoice, mBuf);
-   //CMCHKPK(SPkU16, param->fddDlOrTddSfBitmapBR, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->fddDLOrTddSfBitmapLC.sfnPtnChoice, mBuf);
+   //CMCHKPK(oduUnpackUInt16, param->fddDlOrTddSfBitmapBR, mBuf);
    
      for (i= (param->numSi-1); i >= 0; i--) {
-   		 CMCHKPK(SPkU8, param->schdInfo[i].emtcSiNarrowBand, mBuf);
-   		 CMCHKPK(SPkU16, param->schdInfo[i].emtcSiTbs, mBuf);
+   		 CMCHKPK(oduUnpackUInt8, param->schdInfo[i].emtcSiNarrowBand, mBuf);
+   		 CMCHKPK(oduUnpackUInt16, param->schdInfo[i].emtcSiTbs, mBuf);
      }
 
      for (i= (param->numSi-1); i >= 0; i--) {
-   	  CMCHKPK(SPkU32, param->siPeriodicity[i], mBuf);
+   	  CMCHKPK(oduUnpackUInt32, param->siPeriodicity[i], mBuf);
    	}
    
-     CMCHKPK(SPkU8, param->numSi, mBuf);  
+     CMCHKPK(oduUnpackUInt8, param->numSi, mBuf);  
 
- RETVALUE(ROK);
+ return ROK;
 }
 
 
@@ -1750,18 +1750,18 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmPkRgrEmtcRachCfg)
    	
-   CMCHKPK(SPkU8, param->emtcCeLvlSupported, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcCeLvlSupported, mBuf);
 
    for (i=RGR_MAX_CE_LEVEL-1; i >= 0; i--) {
-   	  CMCHKPK(SPkU8, param->ceLevelInfo[i].emtcRarHopping, mBuf);
-	  CMCHKPK(SPkU16, param->ceLevelInfo[i].raEmtcWinSize, mBuf);
-	  CMCHKPK(SPkU16, param->ceLevelInfo[i].raEmtcContResTmr, mBuf);
-   	  CMCHKPK(SPkU16, param->ceLevelInfo[i].emtcPreambleTransMax, mBuf);
-	  CMCHKPK(SPkU8, param->ceLevelInfo[i].emtcPreambleMap.firstPreamble, mBuf);
-   	  CMCHKPK(SPkU8, param->ceLevelInfo[i].emtcPreambleMap.lastPreamble, mBuf);
+   	  CMCHKPK(oduUnpackUInt8, param->ceLevelInfo[i].emtcRarHopping, mBuf);
+	  CMCHKPK(oduUnpackUInt16, param->ceLevelInfo[i].raEmtcWinSize, mBuf);
+	  CMCHKPK(oduUnpackUInt16, param->ceLevelInfo[i].raEmtcContResTmr, mBuf);
+   	  CMCHKPK(oduUnpackUInt16, param->ceLevelInfo[i].emtcPreambleTransMax, mBuf);
+	  CMCHKPK(oduUnpackUInt8, param->ceLevelInfo[i].emtcPreambleMap.firstPreamble, mBuf);
+   	  CMCHKPK(oduUnpackUInt8, param->ceLevelInfo[i].emtcPreambleMap.lastPreamble, mBuf);
    	}
    
- RETVALUE(ROK);
+ return ROK;
 }
 
 
@@ -1779,10 +1779,10 @@ Buffer *mBuf;
 {
 
    TRC3(cmPkRgrEmtcPdschCfg)
-   CMCHKPK(SPkU16, param->emtcMaxRepCeModeA, mBuf);
-   CMCHKPK(SPkU16, param->emtcMaxRepCeModeB, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->emtcMaxRepCeModeA, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->emtcMaxRepCeModeB, mBuf);
    
- RETVALUE(ROK);
+ return ROK;
 }
 
 #ifdef ANSI
@@ -1798,10 +1798,10 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmPkRgrEmtcPuschCfg)
-   CMCHKPK(SPkU16, param->emtcMaxRepCeModeA, mBuf);
-   CMCHKPK(SPkU16, param->emtcMaxRepCeModeB, mBuf);
-   CMCHKPK(SPkU8,  param->emtcHoppingOffset, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, param->emtcMaxRepCeModeA, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->emtcMaxRepCeModeB, mBuf);
+   CMCHKPK(oduUnpackUInt8,  param->emtcHoppingOffset, mBuf);
+   return ROK;
 }
 
 
@@ -1823,15 +1823,15 @@ Buffer *mBuf;
 
     TRC3(cmPkRgrEmtcPucchCfg)
    for (i=RGR_MAX_CE_LEVEL-1; i >= 0; i--) {
-   	  CMCHKPK(SPkU16, param->emtcN1pucchAnInfoLst[i], mBuf);
+   	  CMCHKPK(oduUnpackUInt16, param->emtcN1pucchAnInfoLst[i], mBuf);
   	}
 
- 	CMCHKPK(SPkU8, param->emtcPucchNumRepCEMsg4Lvl0, mBuf);
- 	CMCHKPK(SPkU8, param->emtcPucchNumRepCEMsg4Lvl1, mBuf);
- 	CMCHKPK(SPkU8, param->emtcPucchNumRepCEMsg4Lvl2, mBuf);
- 	CMCHKPK(SPkU8, param->emtcPucchNumRepCEMsg4Lvl3, mBuf);	
+ 	CMCHKPK(oduUnpackUInt8, param->emtcPucchNumRepCEMsg4Lvl0, mBuf);
+ 	CMCHKPK(oduUnpackUInt8, param->emtcPucchNumRepCEMsg4Lvl1, mBuf);
+ 	CMCHKPK(oduUnpackUInt8, param->emtcPucchNumRepCEMsg4Lvl2, mBuf);
+ 	CMCHKPK(oduUnpackUInt8, param->emtcPucchNumRepCEMsg4Lvl3, mBuf);	
    
- RETVALUE(ROK);
+ return ROK;
 }
 
 
@@ -1848,17 +1848,17 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmPkRgrEmtcPrachCeParamCfg) 
-   CMCHKPK(SPkU8, param->emtcPrachCfgIdx, mBuf);
-   CMCHKPK(SPkU8, param->emtcPrachFreqOffset, mBuf);
-   CMCHKPK(SPkU16,  param->emtcPrachStartSubFrame, mBuf);
-   CMCHKPK(SPkU8, param->emtcMaxPremAttemptCE, mBuf);
-   CMCHKPK(SPkU8, param->emtcNumRepPerPreambleAtt, mBuf);
-   CMCHKPK(SPkU8,  param->emtcNumMpdcchNBtoMonitor, mBuf);
-   CMCHKPK(SPkU8, param->emtcMpdcchNBtoMonitor[0], mBuf);
-   CMCHKPK(SPkU8,  param->emtcMpdcchNBtoMonitor[1], mBuf);
-   CMCHKPK(SPkU16, param->emtcMpdcchNumRep, mBuf);
-   CMCHKPK(SPkU8,  param->emtcPrachHoppingCfg, mBuf);   
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->emtcPrachCfgIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcPrachFreqOffset, mBuf);
+   CMCHKPK(oduUnpackUInt16,  param->emtcPrachStartSubFrame, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcMaxPremAttemptCE, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcNumRepPerPreambleAtt, mBuf);
+   CMCHKPK(oduUnpackUInt8,  param->emtcNumMpdcchNBtoMonitor, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcMpdcchNBtoMonitor[0], mBuf);
+   CMCHKPK(oduUnpackUInt8,  param->emtcMpdcchNBtoMonitor[1], mBuf);
+   CMCHKPK(oduUnpackUInt16, param->emtcMpdcchNumRep, mBuf);
+   CMCHKPK(oduUnpackUInt8,  param->emtcPrachHoppingCfg, mBuf);   
+   return ROK;
 }
 
 
@@ -1878,14 +1878,14 @@ Buffer *mBuf;
 
    S32 i;
    TRC3(cmPkRgrEmtcPrachCfg)
- 	CMCHKPK(SPkU8, param->emtcMpdcchStartSFCssRaFdd, mBuf);
- 	CMCHKPK(SPkU8, param->emtcPrachHopingOffset, mBuf);
- 	CMCHKPK(SPkU8, param->emtcInitialCElevel, mBuf);
+ 	CMCHKPK(oduUnpackUInt8, param->emtcMpdcchStartSFCssRaFdd, mBuf);
+ 	CMCHKPK(oduUnpackUInt8, param->emtcPrachHopingOffset, mBuf);
+ 	CMCHKPK(oduUnpackUInt8, param->emtcInitialCElevel, mBuf);
    for (i=RGR_MAX_CE_LEVEL-1; i >= 0; i--) {   	
  	CMCHKPK(cmPkRgrEmtcPrachCeParamCfg, &param->emtcPrachCEparmLst[i], mBuf);
    	}
    
- RETVALUE(ROK);
+ return ROK;
 }
 
 
@@ -1904,9 +1904,9 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmPkRgrEmtcCfg)
-   CMCHKPK(SPkU16, param->pci, mBuf);
-   CMCHKPK(SPkU32, param->emtcT300Tmr, mBuf);
-   CMCHKPK(SPkU32, param->emtcT301Tmr, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->pci, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->emtcT300Tmr, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->emtcT301Tmr, mBuf);
    CMCHKPK(cmPkRgrEmtcSiCfg, &param->emtcSiCfg, mBuf);
    CMCHKPK(cmPkRgrEmtcRachCfg, &param->emtcRachCfg, mBuf);
    CMCHKPK(cmPkRgrEmtcPdschCfg, &param->emtcPdschCfg, mBuf);
@@ -1914,11 +1914,11 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrEmtcPrachCfg, &param->emtcPrachCfg, mBuf);
    CMCHKPK(cmPkRgrEmtcPucchCfg, &param->emtcPucchCfg, mBuf);
    CMCHKPK(cmPkRgrEmtcRntiCfg, &param->emtcMacRnti, mBuf);
-   CMCHKPK(SPkU8, param->emtcPdschNbIdx, mBuf);
-   CMCHKPK(SPkU8, param->emtcMpdcchNbIdx, mBuf);
-   CMCHKPK(SPkU8, param->emtcPuschNbIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcPdschNbIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcMpdcchNbIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcPuschNbIdx, mBuf);
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* EMTC related pack changes end*/
@@ -1941,40 +1941,40 @@ Buffer *mBuf;
      S32 i;
      U32 tmpEnum; 
      TRC3(cmUnpkRgrEmtcSiCfg)
-     		 CMCHKUNPK(SUnpkU8, &param->numSi, mBuf); 
+     		 CMCHKUNPK(oduPackUInt8, &param->numSi, mBuf); 
 
 	  for (i=0; i < param->numSi ; i++) {
-   	  	 CMCHKUNPK(SUnpkU32,(U32*)&tmpEnum,mBuf);
+   	  	 CMCHKUNPK(oduPackUInt32,(U32*)&tmpEnum,mBuf);
 	  		 param->siPeriodicity[i] = (RgrSiPeriodicity) tmpEnum;
      }   
 
      for (i=0; i < param->numSi ; i++) {
-   		 CMCHKUNPK(SUnpkU16, &param->schdInfo[i].emtcSiTbs, mBuf);
-   		 CMCHKUNPK(SUnpkU8, &param->schdInfo[i].emtcSiNarrowBand, mBuf);
+   		 CMCHKUNPK(oduPackUInt16, &param->schdInfo[i].emtcSiTbs, mBuf);
+   		 CMCHKUNPK(oduPackUInt8, &param->schdInfo[i].emtcSiNarrowBand, mBuf);
      }
-     //CMCHKUNPK(SUnpkU16, &param->fddDlOrTddSfBitmapBR, mBuf);
-     CMCHKUNPK(SUnpkU8, &param->fddDLOrTddSfBitmapLC.sfnPtnChoice, mBuf);
+     //CMCHKUNPK(oduPackUInt16, &param->fddDlOrTddSfBitmapBR, mBuf);
+     CMCHKUNPK(oduPackUInt8, &param->fddDLOrTddSfBitmapLC.sfnPtnChoice, mBuf);
      /*Changes by SIMRAN*/
        if(!(param->fddDLOrTddSfBitmapLC.sfnPtnChoice))
        {
-        CMCHKUNPK(SUnpkU16, &param->fddDLOrTddSfBitmapLC.u.ptn10, mBuf);
+        CMCHKUNPK(oduPackUInt16, &param->fddDLOrTddSfBitmapLC.u.ptn10, mBuf);
        }
        else
        {
           for (i=1; i>=0; i--) {
-            CMCHKUNPK(SUnpkU32, &param->fddDLOrTddSfBitmapLC.u.ptn40[i], mBuf);
+            CMCHKUNPK(oduPackUInt32, &param->fddDLOrTddSfBitmapLC.u.ptn40[i], mBuf);
             }
      }
 
-     CMCHKUNPK(SUnpkU16, &param->startSymbolLc, mBuf);
-     CMCHKUNPK(SUnpkU8, &param->siRepetition, mBuf);
-     CMCHKUNPK(SUnpkU8, &param->sib1Repetition, mBuf);
-     CMCHKUNPK(SUnpkU8, &param->siWinSizeBr, mBuf);
-     CMCHKUNPK(SUnpkU32, (U32*)&tmpEnum, mBuf);
+     CMCHKUNPK(oduPackUInt16, &param->startSymbolLc, mBuf);
+     CMCHKUNPK(oduPackUInt8, &param->siRepetition, mBuf);
+     CMCHKUNPK(oduPackUInt8, &param->sib1Repetition, mBuf);
+     CMCHKUNPK(oduPackUInt8, &param->siWinSizeBr, mBuf);
+     CMCHKUNPK(oduPackUInt32, (U32*)&tmpEnum, mBuf);
      param->modPrd = (RgrModPeriodicity) tmpEnum;
-     CMCHKUNPK(SUnpkU8, &param->siHoppingEnable, mBuf);
+     CMCHKUNPK(oduPackUInt8, &param->siHoppingEnable, mBuf);
 
- 	  RETVALUE(ROK);
+ 	  return ROK;
 }
 
 
@@ -1996,15 +1996,15 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmUnpkRgrEmtcRachCfg)
    for (i=0; i < RGR_MAX_CE_LEVEL; i++) {
-   	  CMCHKUNPK(SUnpkU8, &(param->ceLevelInfo[i].emtcPreambleMap.lastPreamble), mBuf);
-	  CMCHKUNPK(SUnpkU8, &(param->ceLevelInfo[i].emtcPreambleMap.firstPreamble), mBuf);
-   	  CMCHKUNPK(SUnpkU16, &(param->ceLevelInfo[i].emtcPreambleTransMax), mBuf);
-	  CMCHKUNPK(SUnpkU16, &(param->ceLevelInfo[i].raEmtcContResTmr), mBuf);
-	  CMCHKUNPK(SUnpkU16, &(param->ceLevelInfo[i].raEmtcWinSize), mBuf);
-   	  CMCHKUNPK(SUnpkU8,&(param->ceLevelInfo[i].emtcRarHopping), mBuf);
+   	  CMCHKUNPK(oduPackUInt8, &(param->ceLevelInfo[i].emtcPreambleMap.lastPreamble), mBuf);
+	  CMCHKUNPK(oduPackUInt8, &(param->ceLevelInfo[i].emtcPreambleMap.firstPreamble), mBuf);
+   	  CMCHKUNPK(oduPackUInt16, &(param->ceLevelInfo[i].emtcPreambleTransMax), mBuf);
+	  CMCHKUNPK(oduPackUInt16, &(param->ceLevelInfo[i].raEmtcContResTmr), mBuf);
+	  CMCHKUNPK(oduPackUInt16, &(param->ceLevelInfo[i].raEmtcWinSize), mBuf);
+   	  CMCHKUNPK(oduPackUInt8,&(param->ceLevelInfo[i].emtcRarHopping), mBuf);
    	}
-    CMCHKUNPK(SUnpkU8, &param->emtcCeLvlSupported, mBuf);   
- RETVALUE(ROK);
+    CMCHKUNPK(oduPackUInt8, &param->emtcCeLvlSupported, mBuf);   
+ return ROK;
 }
 
 
@@ -2022,9 +2022,9 @@ Buffer *mBuf;
 {
 
    TRC3(cmUnpkRgrEmtcPdschCfg)
-   CMCHKUNPK(SUnpkU16, &param->emtcMaxRepCeModeB, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->emtcMaxRepCeModeA, mBuf);
- RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt16, &param->emtcMaxRepCeModeB, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->emtcMaxRepCeModeA, mBuf);
+ return ROK;
 }
 
 #ifdef ANSI
@@ -2040,10 +2040,10 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmUnpkRgrEmtcPuschCfg)
-   CMCHKUNPK(SUnpkU8,  &param->emtcHoppingOffset, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->emtcMaxRepCeModeB, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->emtcMaxRepCeModeA, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8,  &param->emtcHoppingOffset, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->emtcMaxRepCeModeB, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->emtcMaxRepCeModeA, mBuf);
+   return ROK;
 }
 
 
@@ -2065,15 +2065,15 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrEmtcPucchCfg)
 
- 	CMCHKUNPK(SUnpkU8, &param->emtcPucchNumRepCEMsg4Lvl3, mBuf);
- 	CMCHKUNPK(SUnpkU8, &param->emtcPucchNumRepCEMsg4Lvl2, mBuf);
- 	CMCHKUNPK(SUnpkU8, &param->emtcPucchNumRepCEMsg4Lvl1, mBuf);
- 	CMCHKUNPK(SUnpkU8, &param->emtcPucchNumRepCEMsg4Lvl0, mBuf);	
+ 	CMCHKUNPK(oduPackUInt8, &param->emtcPucchNumRepCEMsg4Lvl3, mBuf);
+ 	CMCHKUNPK(oduPackUInt8, &param->emtcPucchNumRepCEMsg4Lvl2, mBuf);
+ 	CMCHKUNPK(oduPackUInt8, &param->emtcPucchNumRepCEMsg4Lvl1, mBuf);
+ 	CMCHKUNPK(oduPackUInt8, &param->emtcPucchNumRepCEMsg4Lvl0, mBuf);	
  
    for (i=0; i <  RGR_MAX_CE_LEVEL ; i++) {
-   	  CMCHKUNPK(SUnpkU16, &param->emtcN1pucchAnInfoLst[i], mBuf);
+   	  CMCHKUNPK(oduPackUInt16, &param->emtcN1pucchAnInfoLst[i], mBuf);
   	}   
- RETVALUE(ROK);
+ return ROK;
 }
 
 
@@ -2090,17 +2090,17 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmUnpkRgrEmtcPrachCeParamCfg)
-   CMCHKUNPK(SUnpkU8,  &param->emtcPrachHoppingCfg, mBuf);  
-   CMCHKUNPK(SUnpkU16, &param->emtcMpdcchNumRep, mBuf);
-   CMCHKUNPK(SUnpkU8,  &param->emtcMpdcchNBtoMonitor[1], mBuf);
-   CMCHKUNPK(SUnpkU8, &param->emtcMpdcchNBtoMonitor[0], mBuf);
-   CMCHKUNPK(SUnpkU8,  &param->emtcNumMpdcchNBtoMonitor, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->emtcNumRepPerPreambleAtt, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->emtcMaxPremAttemptCE, mBuf);
-   CMCHKUNPK(SUnpkU16,  &param->emtcPrachStartSubFrame, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->emtcPrachFreqOffset, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->emtcPrachCfgIdx, mBuf); 
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8,  &param->emtcPrachHoppingCfg, mBuf);  
+   CMCHKUNPK(oduPackUInt16, &param->emtcMpdcchNumRep, mBuf);
+   CMCHKUNPK(oduPackUInt8,  &param->emtcMpdcchNBtoMonitor[1], mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->emtcMpdcchNBtoMonitor[0], mBuf);
+   CMCHKUNPK(oduPackUInt8,  &param->emtcNumMpdcchNBtoMonitor, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->emtcNumRepPerPreambleAtt, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->emtcMaxPremAttemptCE, mBuf);
+   CMCHKUNPK(oduPackUInt16,  &param->emtcPrachStartSubFrame, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->emtcPrachFreqOffset, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->emtcPrachCfgIdx, mBuf); 
+   return ROK;
 }
 
 
@@ -2123,11 +2123,11 @@ Buffer *mBuf;
    for (i=0; i < RGR_MAX_CE_LEVEL; i++) {   	
  	CMCHKUNPK(cmUnpkRgrEmtcPrachCeParamCfg, &param->emtcPrachCEparmLst[i], mBuf);
    	}
- 	CMCHKUNPK(SUnpkU8, &param->emtcInitialCElevel, mBuf);
- 	CMCHKUNPK(SUnpkU8, &param->emtcPrachHopingOffset, mBuf);
- 	CMCHKUNPK(SUnpkU8, &param->emtcMpdcchStartSFCssRaFdd, mBuf);
+ 	CMCHKUNPK(oduPackUInt8, &param->emtcInitialCElevel, mBuf);
+ 	CMCHKUNPK(oduPackUInt8, &param->emtcPrachHopingOffset, mBuf);
+ 	CMCHKUNPK(oduPackUInt8, &param->emtcMpdcchStartSFCssRaFdd, mBuf);
 
- RETVALUE(ROK);
+ return ROK;
 }
 
 #ifdef ANSI
@@ -2144,9 +2144,9 @@ Buffer *mBuf;
 {
 
    TRC3(cmUnpkRgrEmtcCfg)
-   CMCHKUNPK(SUnpkU8, &param->emtcPuschNbIdx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->emtcMpdcchNbIdx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->emtcPdschNbIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->emtcPuschNbIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->emtcMpdcchNbIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->emtcPdschNbIdx, mBuf);
    CMCHKUNPK(cmUnpkRgrEmtcRntiCfg, &param->emtcMacRnti, mBuf);
    CMCHKUNPK(cmUnpkRgrEmtcPucchCfg, &param->emtcPucchCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrEmtcPrachCfg, &param->emtcPrachCfg, mBuf);
@@ -2154,15 +2154,15 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkRgrEmtcPdschCfg, &param->emtcPdschCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrEmtcRachCfg, &param->emtcRachCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrEmtcSiCfg, &param->emtcSiCfg, mBuf);
-   CMCHKUNPK(SUnpkU32,&param->emtcT301Tmr, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->emtcT300Tmr, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->pci, mBuf);
+   CMCHKUNPK(oduPackUInt32,&param->emtcT301Tmr, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->emtcT300Tmr, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->pci, mBuf);
 
 
 
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* EMTC related unpack changes end*/
@@ -2201,9 +2201,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrBwCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->dlTotalBw, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->ulTotalBw, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->dlTotalBw, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ulTotalBw, mBuf);
+   return ROK;
 }
 
 
@@ -2238,9 +2238,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrPhichCfg)
 
-   CMCHKPK(SPkU8, param->isDurExtend, mBuf);
-   CMCHKPK(SPkU32, param->ngEnum, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->isDurExtend, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->ngEnum, mBuf);
+   return ROK;
 }
 
 
@@ -2276,10 +2276,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrPhichCfg)
 
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->ngEnum = (RgrPhichNg) tmpEnum;
-   CMCHKUNPK(SUnpkU8, &param->isDurExtend, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->isDurExtend, mBuf);
+   return ROK;
 }
 
 
@@ -2314,13 +2314,13 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrPucchCfg)
 
-   CMCHKPK(SPkU8, param->maxPucchRb, mBuf);
-   CMCHKPK(SPkU8, param->cyclicShift, mBuf);
-   CMCHKPK(SPkU8, param->deltaShift, mBuf);
-   CMCHKPK(SPkU16, param->n1PucchAn, mBuf);
-   CMCHKPK(SPkU8, param->resourceSize, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxPucchRb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cyclicShift, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->deltaShift, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->n1PucchAn, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->resourceSize, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2355,13 +2355,13 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrPucchCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->resourceSize, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->n1PucchAn, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->deltaShift, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->cyclicShift, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxPucchRb, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->resourceSize, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->n1PucchAn, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->deltaShift, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cyclicShift, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxPucchRb, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2396,11 +2396,11 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrSrsCfg)
 
-   CMCHKPK(SPkU8, param->srsSubFrameCfg, mBuf);
-   CMCHKPK(SPkU32, param->srsBwEnum, mBuf);
-   CMCHKPK(SPkU32, param->srsCfgPrdEnum, mBuf);
-   CMCHKPK(SPkU8, param->isSrsCfgSetup, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->srsSubFrameCfg, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->srsBwEnum, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->srsCfgPrdEnum, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isSrsCfgSetup, mBuf);
+   return ROK;
 }
 
 
@@ -2436,13 +2436,13 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrSrsCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isSrsCfgSetup, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isSrsCfgSetup, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->srsCfgPrdEnum = (RgrSrsCfgPrd) tmpEnum;
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->srsBwEnum = (RgrSrsBwCfg) tmpEnum;
-   CMCHKUNPK(SUnpkU8, &param->srsSubFrameCfg, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->srsSubFrameCfg, mBuf);
+   return ROK;
 }
 
 
@@ -2478,24 +2478,24 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmPkRgrRachCfg)
 
-   CMCHKPK(SPkU8, param->prachResource, mBuf);
-   CMCHKPK(SPkU16, param->msgSizeGrpA, mBuf);
-   CMCHKPK(SPkU8, param->sizeRaPreambleGrpA, mBuf);
-   CMCHKPK(SPkU8, param->numRaPreamble, mBuf);
-   CMCHKPK(SPkU8, param->maxMsg3Tx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->prachResource, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->msgSizeGrpA, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->sizeRaPreambleGrpA, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numRaPreamble, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxMsg3Tx, mBuf);
       for (i=param->raOccasion.size-1; i >= 0; i--) {
-         CMCHKPK(SPkU8, param->raOccasion.subFrameNum[i], mBuf);
+         CMCHKPK(oduUnpackUInt8, param->raOccasion.subFrameNum[i], mBuf);
       }
-      CMCHKPK(SPkU32, param->raOccasion.sfnEnum, mBuf);
-      CMCHKPK(SPkU8, param->raOccasion.size, mBuf);
-   CMCHKPK(SPkU8, param->raWinSize, mBuf);
-   CMCHKPK(SPkU8, param->preambleFormat, mBuf);
+      CMCHKPK(oduUnpackUInt32, param->raOccasion.sfnEnum, mBuf);
+      CMCHKPK(oduUnpackUInt8, param->raOccasion.size, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->raWinSize, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->preambleFormat, mBuf);
 #ifdef RGR_V1
    /* rgr_c_001.main_5: cccpu00112372: Added contention resolution 
     * timer configuration */
-   CMCHKPK(SPkU8, param->contResTmr, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->contResTmr, mBuf);
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2534,22 +2534,22 @@ Buffer *mBuf;
 #ifdef RGR_V1 
    /* rgr_c_001.main_5: cccpu00112372: Added contention resolution 
     * timer configuration */
-   CMCHKUNPK(SUnpkU8, &param->contResTmr, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->contResTmr, mBuf);
 #endif
-   CMCHKUNPK(SUnpkU8, &param->preambleFormat, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->raWinSize, mBuf);
-      CMCHKUNPK(SUnpkU8, &param->raOccasion.size, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->preambleFormat, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->raWinSize, mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->raOccasion.size, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->raOccasion.sfnEnum = (RgrRaSfn) tmpEnum;
       for (i=0; i<param->raOccasion.size; i++) {
-         CMCHKUNPK(SUnpkU8, &param->raOccasion.subFrameNum[i], mBuf);
+         CMCHKUNPK(oduPackUInt8, &param->raOccasion.subFrameNum[i], mBuf);
       }
-   CMCHKUNPK(SUnpkU8, &param->maxMsg3Tx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numRaPreamble, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->sizeRaPreambleGrpA, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->msgSizeGrpA, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->prachResource, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->maxMsg3Tx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numRaPreamble, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->sizeRaPreambleGrpA, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->msgSizeGrpA, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->prachResource, mBuf);
+   return ROK;
 }
 
 
@@ -2596,15 +2596,15 @@ Buffer *mBuf;
 
    for (idx=param->numSi-1; idx >= 0; idx--) {
    /* Enum to be packed/unpacked as U32 instead of S32 */
-      CMCHKPK(SPkU32, param->siPeriodicity[idx], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->siPeriodicity[idx], mBuf);
    }
-   CMCHKPK(SPkU8, param->numSi, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numSi, mBuf);
    /*rgr_c_001.main_9 ccpu00115364 MOD changed modPrd to enum*/
-   CMCHKPK(SPkU32, (U32)param->modPrd, mBuf);
+   CMCHKPK(oduUnpackUInt32, (U32)param->modPrd, mBuf);
 #endif/*RGR_SI_SCH*/
-   CMCHKPK(SPkU8, param->retxCnt, mBuf);
-   CMCHKPK(SPkU8, param->siWinSize, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->retxCnt, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->siWinSize, mBuf);
+   return ROK;
 }
 
 
@@ -2644,13 +2644,13 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrSiCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->siWinSize, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->retxCnt, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->siWinSize, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->retxCnt, mBuf);
 #ifdef RGR_SI_SCH
    /*rgr_c_001.main_9 ccpu00115364 MOD changed modPrd to enum*/
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->modPrd = (RgrModPeriodicity) tmpEnum;
-   CMCHKUNPK(SUnpkU8, &param->numSi, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numSi, mBuf);
 
    if(param->numSi > sizeof(param->siPeriodicity)/
                        sizeof(param->siPeriodicity[0]))
@@ -2659,12 +2659,12 @@ Buffer *mBuf;
 
    /* Enum to be packed/unpacked as U32 instead of S32 */
    for (idx=0; idx < param->numSi; idx++) {
-      CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+      CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
       param->siPeriodicity[idx] = (RgrSiPeriodicity) tmpEnum;
    }
 #endif/*RGR_SI_SCH*/
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2699,9 +2699,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrTpcRntiCfg)
 
-   CMCHKPK(SPkU16, param->size, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->size, mBuf);
    CMCHKPK(cmPkLteRnti, param->startTpcRnti, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2737,8 +2737,8 @@ Buffer *mBuf;
    TRC3(cmUnpkRgrTpcRntiCfg)
 
    CMCHKUNPK(cmUnpkLteRnti, &param->startTpcRnti, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->size, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt16, &param->size, mBuf);
+   return ROK;
 }
 
 
@@ -2779,9 +2779,9 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrTpcRntiCfg, &param->pucchPwrFmt3, mBuf);
    CMCHKPK(SPkS8, param->deltaPreambleMsg3, mBuf);
    CMCHKPK(SPkS8, param->p0NominalPucch, mBuf);
-   CMCHKPK(SPkU32, param->alpha, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->alpha, mBuf);
    CMCHKPK(SPkS8, param->p0NominalPusch, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2818,7 +2818,7 @@ Buffer *mBuf;
    TRC3(cmUnpkRgrUlPwrCfg)
 
    CMCHKUNPK(SUnpkS8, &param->p0NominalPusch, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->alpha = (RgrPwrAlpha) tmpEnum;
    CMCHKUNPK(SUnpkS8, &param->p0NominalPucch, mBuf);
    CMCHKUNPK(SUnpkS8, &param->deltaPreambleMsg3, mBuf);
@@ -2826,7 +2826,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkRgrTpcRntiCfg, &param->pucchPwrFmt3a, mBuf);
    CMCHKUNPK(cmUnpkRgrTpcRntiCfg, &param->puschPwrFmt3, mBuf);
    CMCHKUNPK(cmUnpkRgrTpcRntiCfg, &param->puschPwrFmt3a, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2861,10 +2861,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrPuschCfg)
 
-   CMCHKPK(SPkU8, param->hopOffst, mBuf);
-   CMCHKPK(SPkU8, param->isIntraHop, mBuf);
-   CMCHKPK(SPkU8, param->numSubBands, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->hopOffst, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isIntraHop, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numSubBands, mBuf);
+   return ROK;
 }
 
 
@@ -2899,10 +2899,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrPuschCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->numSubBands, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isIntraHop, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->hopOffst, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->numSubBands, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isIntraHop, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->hopOffst, mBuf);
+   return ROK;
 }
 
 
@@ -2939,10 +2939,10 @@ Buffer *mBuf;
    TRC3(cmPkRgrCodeBookRstCfg)
 
    for (i=1-1; i >= 0; i--) {
-      CMCHKPK(SPkU32, param->pmiBitMap[i], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->pmiBitMap[i], mBuf);
    }
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -2978,11 +2978,11 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmUnpkRgrCodeBookRstCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
    for (i=0; i<1; i++) {
-      CMCHKUNPK(SUnpkU32, &param->pmiBitMap[i], mBuf);
+      CMCHKUNPK(oduPackUInt32, &param->pmiBitMap[i], mBuf);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3017,10 +3017,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrPreambleSetCfg)
 
-   CMCHKPK(SPkU8, param->size, mBuf);
-   CMCHKPK(SPkU8, param->start, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->size, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->start, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -3055,10 +3055,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrPreambleSetCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->start, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->size, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->start, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->size, mBuf);
+   return ROK;
 }
 
 
@@ -3093,12 +3093,12 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrCmnLchCfg)
 
-   CMCHKPK(SPkU8, param->ulTrchType, mBuf);
-   CMCHKPK(SPkU8, param->dlTrchType, mBuf);
-   CMCHKPK(SPkU8, param->dir, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->ulTrchType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->dlTrchType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->dir, mBuf);
    CMCHKPK(cmPkLteLcType, param->lcType, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3135,10 +3135,10 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(cmUnpkLteLcType, &param->lcType, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->dir, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->dlTrchType, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->ulTrchType, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->dir, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->dlTrchType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ulTrchType, mBuf);
+   return ROK;
 }
 
 
@@ -3173,9 +3173,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrDlfsCfg)
 
-   CMCHKPK(SPkU8, param->thresholdCqi, mBuf);
-   CMCHKPK(SPkU8, param->isDlFreqSel, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->thresholdCqi, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isDlFreqSel, mBuf);
+   return ROK;
 }
 
 
@@ -3210,9 +3210,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrDlfsCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isDlFreqSel, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->thresholdCqi, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->isDlFreqSel, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->thresholdCqi, mBuf);
+   return ROK;
 }
 
 
@@ -3251,11 +3251,11 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrTddPrachInfo)
 
-   CMCHKPK(SPkU8, param->ulStartSfIdx, mBuf);
-   CMCHKPK(SPkU8, param->halfFrm, mBuf);
-   CMCHKPK(SPkU32, param->sfn, mBuf);
-   CMCHKPK(SPkU8, param->freqIdx, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->ulStartSfIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->halfFrm, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->sfn, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->freqIdx, mBuf);
+   return ROK;
 }
 
 
@@ -3291,12 +3291,12 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrTddPrachInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->freqIdx, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->freqIdx, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->sfn = tmpEnum;
-   CMCHKUNPK(SUnpkU8, &param->halfFrm, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->ulStartSfIdx, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->halfFrm, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ulStartSfIdx, mBuf);
+   return ROK;
 }
 
 
@@ -3335,8 +3335,8 @@ Buffer *mBuf;
    for (i=param->numRsc-1; i >= 0; i--) {
       CMCHKPK(cmPkRgrTddPrachInfo, &param->prachInfo[i], mBuf);
    }
-   CMCHKPK(SPkU8, param->numRsc, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->numRsc, mBuf);
+   return ROK;
 }
 
 
@@ -3372,11 +3372,11 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmUnpkRgrTddPrachRscInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->numRsc, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numRsc, mBuf);
    for (i=0; i<param->numRsc; i++) {
       CMCHKUNPK(cmUnpkRgrTddPrachInfo, &param->prachInfo[i], mBuf);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3416,12 +3416,12 @@ Buffer    *mBuf;
    TRC3(cmPkRgrEnbPfs)
    for(idx = RGR_MAX_NUM_QCI-1; idx >= 0; idx--)
    {
-      CMCHKPK(SPkU32, param->qciWgt[idx], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->qciWgt[idx], mBuf);
    }   
-   CMCHKPK(SPkU8, param->fairCoeffi, mBuf);
-   CMCHKPK(SPkU8, param->tptCoeffi, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->fairCoeffi, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->tptCoeffi, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3456,13 +3456,13 @@ Buffer *mBuf;
    S32 idx;
    TRC3(cmUnpkRgrEnbPfs)
 
-   CMCHKUNPK(SUnpkU8, &param->tptCoeffi, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->fairCoeffi, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->tptCoeffi, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->fairCoeffi, mBuf);
    for(idx = 0; idx < RGR_MAX_NUM_QCI; idx++)
    {
-      CMCHKUNPK(SUnpkU32, &param->qciWgt[idx], mBuf);
+      CMCHKUNPK(oduPackUInt32, &param->qciWgt[idx], mBuf);
    }   
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*rgr_c_001.main_7 - Added support for SPS*/
@@ -3497,11 +3497,11 @@ Buffer *mBuf;
 {
 
    TRC3(cmPkRgrSpsCellCfg)
-   CMCHKPK(SPkU16, param->maxSpsUePerUlSf, mBuf);
-   CMCHKPK(SPkU16, param->maxSpsUePerDlSf, mBuf);
-   CMCHKPK(SPkU8, param->maxSpsDlBw, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->maxSpsUePerUlSf, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->maxSpsUePerDlSf, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxSpsDlBw, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3537,11 +3537,11 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrSpsDlCellCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->maxSpsDlBw, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->maxSpsUePerDlSf, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->maxSpsUePerUlSf, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxSpsDlBw, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->maxSpsUePerDlSf, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->maxSpsUePerUlSf, mBuf);
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef RG_5GTF
@@ -3555,15 +3555,15 @@ Buffer           *mBuf
    for (idx = MAX_5GTF_SUBFRAME_INFO - 1; idx >= 0 ;--idx)
    {
 
-      CMCHKPK(SPkU32, param->dynConfig[(U8)idx], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->dynConfig[(U8)idx], mBuf);
    }
-   CMCHKPK(SPkU8, param->uePerGrp, mBuf);
-   CMCHKPK(SPkU8, param->ueGrpPerTti, mBuf);
-   CMCHKPK(SPkU8, param->numUes, mBuf);
-   CMCHKPK(SPkU8, param->numOfCC, mBuf);
-   CMCHKPK(SPkU8, param->bwPerCC, mBuf);
-   CMCHKPK(SPkU8, param->cfi, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->uePerGrp, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->ueGrpPerTti, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numUes, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numOfCC, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->bwPerCC, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cfi, mBuf);
+   return ROK;
 }
 
 PUBLIC S16 cmUnPkRgr5gtfCellCfg
@@ -3574,18 +3574,18 @@ Buffer           *mBuf
 {
    S8 idx = 0;      
    
-   CMCHKUNPK(SUnpkU8, &param->cfi, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->bwPerCC, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numOfCC, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numUes, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->ueGrpPerTti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->uePerGrp, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cfi, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->bwPerCC, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numOfCC, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numUes, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ueGrpPerTti, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->uePerGrp, mBuf);
    for (idx = 0; idx < MAX_5GTF_SUBFRAME_INFO ; ++idx)
    {
 
-      CMCHKUNPK(SUnpkU32, &param->dynConfig[(U8)idx], mBuf);
+      CMCHKUNPK(oduPackUInt32, &param->dynConfig[(U8)idx], mBuf);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -3620,9 +3620,9 @@ Buffer *mBuf;
 {
 
    TRC3(cmPkRgrlteUCellCfg)
-   CMCHKPK(SPkU8, param->isLaaCell, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isLaaCell, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -3655,9 +3655,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrLteUCellCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isLaaCell, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isLaaCell, mBuf);
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* LTE_ADV_FLAG_REMOVED_START */
@@ -3690,10 +3690,10 @@ PUBLIC S16 cmPkRgrLteAdvancedUeConfig(param, mBuf)
 {
 
    TRC3(cmPkRgrLteAdvancedUeConfig)
-   CMCHKPK(SPkU8, param->isUeCellEdge, mBuf);
-   CMCHKPK(SPkU8, param->isAbsUe, mBuf);
-   CMCHKPK(SPkU32, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->isUeCellEdge, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isAbsUe, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->pres, mBuf);
+   return ROK;
 }
 
 /***********************************************************
@@ -3725,10 +3725,10 @@ PUBLIC S16 cmUnpkRgrLteAdvancedUeConfig(param, mBuf)
 {
 
    TRC3(cmUnpkRgrLteAdvancedUeConfig)
-   CMCHKUNPK(SUnpkU32, &param->pres, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isAbsUe, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isUeCellEdge, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt32, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isAbsUe, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isUeCellEdge, mBuf);
+   return ROK;
 }
 
 /***********************************************************
@@ -3761,16 +3761,16 @@ PUBLIC S16 cmPkRgrAbsConfig(param, mBuf)
    S8   indx = 0;
 
    TRC3(cmPkRgrAbsConfig)
-   CMCHKPK(SPkU32, (U32)param->status, mBuf);
+   CMCHKPK(oduUnpackUInt32, (U32)param->status, mBuf);
    for (indx = RGR_ABS_PATTERN_LEN-1; indx >= 0; indx--) 
    {
-      CMCHKPK(SPkU8, param->absPattern[(U8)indx], mBuf);
+      CMCHKPK(oduUnpackUInt8, param->absPattern[(U8)indx], mBuf);
    }
 
-   CMCHKPK(SPkU32, param->absPatternType, mBuf);
-   CMCHKPK(SPkU32, param->absLoadPeriodicity, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->absPatternType, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->absLoadPeriodicity, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 /***********************************************************
@@ -3802,15 +3802,15 @@ PUBLIC S16 cmPkRgrSfrConfig(param, mBuf)
 {
    TRC3(cmPkRgrSfrConfig)
 
-   CMCHKPK(SPkU32, (U32)param->status, mBuf);
+   CMCHKPK(oduUnpackUInt32, (U32)param->status, mBuf);
 #ifdef TFU_UPGRADE   
-   CMCHKPK(SPkU32, param->pwrThreshold.pHigh, mBuf);
-   CMCHKPK(SPkU32, param->pwrThreshold.pLow, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->pwrThreshold.pHigh, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->pwrThreshold.pLow, mBuf);
 #endif   
-   CMCHKPK(SPkU8, param->cellEdgeRbRange.endRb, mBuf);
-   CMCHKPK(SPkU8, param->cellEdgeRbRange.startRb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cellEdgeRbRange.endRb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cellEdgeRbRange.startRb, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -3844,9 +3844,9 @@ PUBLIC S16 cmPkRgrDsfrConfig(param, mBuf)
 {
    TRC3(cmPkRgrDsfrConfig)
 
-   CMCHKPK(SPkU32, (U32)param->status, mBuf);
+   CMCHKPK(oduUnpackUInt32, (U32)param->status, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -3880,8 +3880,8 @@ PUBLIC S16 cmUnpkRgrDsfrConfig(param, mBuf)
 {
    TRC3(cmUnpkRgrDsfrConfig)
 
-   CMCHKUNPK(SUnpkU32, (U32 *)&param->status, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&param->status, mBuf);
+   return ROK;
 
 }
 
@@ -3915,12 +3915,12 @@ PUBLIC S16 cmPkRgrCellLteAdvancedFeatureCfg(param, mBuf)
 {
    TRC3(cmPkRgrCellLteAdvancedFeatureCfg)
 
-   CMCHKPK(SPkU32, param->pres, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->pres, mBuf);
    CMCHKPK(cmPkRgrDsfrConfig, &param->dsfrCfg, mBuf); /*AIRSPAN_LTE_ADV_DSFR*/
    CMCHKPK(cmPkRgrSfrConfig,  &param->sfrCfg, mBuf);
    CMCHKPK(cmPkRgrAbsConfig,  &param->absCfg, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }   
 
@@ -3956,15 +3956,15 @@ PUBLIC S16 cmUnpkRgrAbsConfig(param, mBuf)
    S8 indx = 0;
    TRC3(cmUnpkRgrAbsConfig)
 
-   CMCHKUNPK(SUnpkU32, &param->absLoadPeriodicity, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->absPatternType, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->absLoadPeriodicity, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->absPatternType, mBuf);
    for (indx = 0; indx <RGR_ABS_PATTERN_LEN; indx++) 
    {
-      CMCHKUNPK(SUnpkU8, &param->absPattern[(U8)indx], mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->absPattern[(U8)indx], mBuf);
    }
-   CMCHKUNPK(SUnpkU32, (U32*)&param->status, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32*)&param->status, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -3998,15 +3998,15 @@ PUBLIC S16 cmUnpkRgrSfrConfig(param, mBuf)
 
    TRC3(cmUnpkRgrSfrConfig)
 
-   CMCHKUNPK(SUnpkU8, &param->cellEdgeRbRange.startRb, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->cellEdgeRbRange.endRb, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cellEdgeRbRange.startRb, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cellEdgeRbRange.endRb, mBuf);
 #ifdef TFU_UPGRADE   
-   CMCHKUNPK(SUnpkU32, (U32*)&param->pwrThreshold.pLow, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32*)&param->pwrThreshold.pHigh, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32*)&param->pwrThreshold.pLow, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32*)&param->pwrThreshold.pHigh, mBuf);
 #endif   
-   CMCHKUNPK(SUnpkU32, (U32*)&param->status, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32*)&param->status, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -4041,9 +4041,9 @@ PUBLIC S16 cmUnpkRgrCellLteAdvancedFeatureCfg(param, mBuf)
    CMCHKUNPK(cmUnpkRgrAbsConfig, &param->absCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrSfrConfig, &param->sfrCfg, mBuf);   
    CMCHKUNPK(cmUnpkRgrDsfrConfig, &param->dsfrCfg, mBuf); /*AIRSPAN_LTE_ADV_DSFR*/
-   CMCHKUNPK(SUnpkU32, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->pres, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* LTE_ADV_FLAG_REMOVED_END */
@@ -4075,13 +4075,13 @@ Buffer         *mBuf;
 {
    TRC3(cmPkMacSchedGnbCfg)
 
-   CMCHKPK(SPkU8, param->maxDlUePerTti, mBuf);
-   CMCHKPK(SPkU8, param->maxUlUePerTti, mBuf);
-   CMCHKPK(SPkU8, param->numCells, mBuf);
-   CMCHKPK(SPkU8, param->dlSchdType, mBuf);
-   CMCHKPK(SPkU8, param->ulSchdType, mBuf);
-   CMCHKPK(SPkU8, param->numTxAntPorts, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->maxDlUePerTti, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxUlUePerTti, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numCells, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->dlSchdType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->ulSchdType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numTxAntPorts, mBuf);
+   return ROK;
 } /* cmPkRgrSchedEnbCfg */
 
 /***********************************************************
@@ -4114,13 +4114,13 @@ Buffer         *mBuf;
 
    TRC3(cmUnpkMacSchedGnbCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->numTxAntPorts, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->ulSchdType, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->dlSchdType, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numCells, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxUlUePerTti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxDlUePerTti, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->numTxAntPorts, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ulSchdType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->dlSchdType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numCells, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxUlUePerTti, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxDlUePerTti, mBuf);
+   return ROK;
 } /* cmUnpkMacSchedGnbCfg */
 
 
@@ -4166,35 +4166,35 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgr5gtfCellCfg, &param->Cell5gtfCfg, mBuf);
 #endif
 #ifdef LTE_ADV
-   CMCHKPK(SPkU8, param->isPucchFormat3Sptd, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isPucchFormat3Sptd, mBuf);
 #endif
 /*LAA: Pack LAA params*/
    CMCHKPK(cmPkRgrLteUCellCfg, &param->lteUCfg, mBuf);
-   CMCHKPK(SPkU32, param->msg4pAVal, mBuf);
-   CMCHKPK(SPkU8, param->isAutoCfgModeEnb, mBuf);
-   CMCHKPK(SPkU8, param->isDynCfiEnb, mBuf);
-   CMCHKPK(SPkU16, param->phichTxPwrOffset, mBuf);
-   CMCHKPK(SPkU16, param->rarTxPwrOffset, mBuf);
-   CMCHKPK(SPkU16, param->pcchTxPwrOffset, mBuf);
-   CMCHKPK(SPkU16, param->bcchTxPwrOffset, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->msg4pAVal, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isAutoCfgModeEnb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isDynCfiEnb, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->phichTxPwrOffset, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->rarTxPwrOffset, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->pcchTxPwrOffset, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->bcchTxPwrOffset, mBuf);
 
-   CMCHKPK(SPkU16, param->t300TmrVal, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->t300TmrVal, mBuf);
 /*rgr_c_001.main_7 - Added support for SPS*/
    CMCHKPK(cmPkRgrSpsCellCfg, &param->spsCfg, mBuf);
 
 /* rgr_c_001.main_3: Added TTI indication from MAC to RGR user */
-   CMCHKPK(SPkU8, param->rrmTtiIndPrd, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->rrmTtiIndPrd, mBuf);
 #ifdef LTE_TDD
    CMCHKPK(cmPkRgrTddPrachRscInfo, &param->prachRscInfo, mBuf);
-   CMCHKPK(SPkU8, param->spclSfCfgIdx, mBuf);
-   CMCHKPK(SPkU8, param->ulDlCfgIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->spclSfCfgIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->ulDlCfgIdx, mBuf);
 
 #endif
    CMCHKPK(cmPkRgrCellCsgParamCfg, &param->csgParamCfg, mBuf);
    for (i=param->numCmnLcs-1; i >= 0; i--) {
       CMCHKPK(cmPkRgrCmnLchCfg, &param->cmnLcCfg[i], mBuf);
    }
-   CMCHKPK(SPkU8, param->numCmnLcs, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numCmnLcs, mBuf);
    CMCHKPK(cmPkRgrPreambleSetCfg, &param->macPreambleSet, mBuf);
    CMCHKPK(cmPkRgrPuschCfg, &param->puschCfg, mBuf);
    CMCHKPK(cmPkRgrUlPwrCfg, &param->pwrCfg, mBuf);
@@ -4215,36 +4215,36 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrCfiCfg, &param->cfiCfg, mBuf);
    CMCHKPK(cmPkRgrRntiCfg, &param->macRnti, mBuf);
    CMCHKPK(cmPkRgrDlHqCfg, &param->dlHqCfg, mBuf);
-   CMCHKPK(SPkU8, param->dlfsSchdType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->dlfsSchdType, mBuf);
 
    CMCHKPK(SPkS8, param->pMax, mBuf);
-   CMCHKPK(SPkU8, param->cellModSchm, mBuf);
-   CMCHKPK(SPkU8, param->isCpDlExtend, mBuf);
-   CMCHKPK(SPkU8, param->isCpUlExtend, mBuf);
-   CMCHKPK(SPkU8, param->maxUlUeNewTxPerTti, mBuf);
-   CMCHKPK(SPkU8, param->maxDlUeNewTxPerTti, mBuf);
-   CMCHKPK(SPkU8, param->maxDlRetxBw, mBuf);
-   CMCHKPK(SPkU8, param->maxDlBwPerUe, mBuf);
-   CMCHKPK(SPkU8, param->maxUlBwPerUe, mBuf);
-   CMCHKPK(SPkU8, param->maxCcchPerDlSf, mBuf);
-   CMCHKPK(SPkU8, param->maxUePerDlSf, mBuf);
-   CMCHKPK(SPkU8, param->maxUePerUlSf, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cellModSchm, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isCpDlExtend, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isCpUlExtend, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxUlUeNewTxPerTti, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxDlUeNewTxPerTti, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxDlRetxBw, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxDlBwPerUe, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxUlBwPerUe, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxCcchPerDlSf, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxUePerDlSf, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxUePerUlSf, mBuf);
 #ifdef RGR_V1
    /* rgr_x_001.main_7: [ccpu00112789] Added configuration for maximum number
       of  MSG3s */
-   CMCHKPK(SPkU8, param->maxMsg3PerUlSf, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxMsg3PerUlSf, mBuf);
 #endif
-   CMCHKPK(SPkU8, param->macInst, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->macInst, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
 
 #ifdef EMTC_ENABLE 
 /* EMTC related changes start*/
-   CMCHKPK(SPkU8, param->emtcEnable, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcEnable, mBuf);
    CMCHKPK(cmPkRgrEmtcCfg, &param->emtcCellCfg, mBuf);
 /* EMTC related changes ends*/
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4283,30 +4283,30 @@ Buffer *mBuf;
 #ifdef EMTC_ENABLE   	
 /* EMTC related changes start*/
    CMCHKUNPK(cmUnpkRgrEmtcCfg, &param->emtcCellCfg, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->emtcEnable, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->emtcEnable, mBuf);
 /* EMTC related changes ends*/
 #endif
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->macInst, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->macInst, mBuf);
 #ifdef RGR_V1
    /* rgr_x_001.main_7: [ccpu00112789] Added configuration for maximum number
       of  MSG3s */
-   CMCHKUNPK(SUnpkU8, &param->maxMsg3PerUlSf, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxMsg3PerUlSf, mBuf);
 #endif
-   CMCHKUNPK(SUnpkU8, &param->maxUePerUlSf, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxUePerDlSf, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxCcchPerDlSf, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxUlBwPerUe, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxDlBwPerUe, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxDlRetxBw, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxDlUeNewTxPerTti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxUlUeNewTxPerTti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isCpUlExtend, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isCpDlExtend, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->cellModSchm, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxUePerUlSf, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxUePerDlSf, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxCcchPerDlSf, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxUlBwPerUe, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxDlBwPerUe, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxDlRetxBw, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxDlUeNewTxPerTti, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxUlUeNewTxPerTti, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isCpUlExtend, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isCpDlExtend, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cellModSchm, mBuf);
    CMCHKUNPK(SUnpkS8, &param->pMax, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->dlfsSchdType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->dlfsSchdType, mBuf);
    CMCHKUNPK(cmUnpkRgrDlHqCfg, &param->dlHqCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrRntiCfg, &param->macRnti, mBuf);
    CMCHKUNPK(cmUnpkRgrCfiCfg, &param->cfiCfg, mBuf);
@@ -4327,40 +4327,40 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkRgrUlPwrCfg, &param->pwrCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrPuschCfg, &param->puschCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrPreambleSetCfg, &param->macPreambleSet, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numCmnLcs, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numCmnLcs, mBuf);
    for (i=0; i<param->numCmnLcs; i++) {
       CMCHKUNPK(cmUnpkRgrCmnLchCfg, &param->cmnLcCfg[i], mBuf);
    }
    CMCHKUNPK(cmUnpkRgrCellCsgParamCfg, &param->csgParamCfg, mBuf);
 
 #ifdef LTE_TDD
-   CMCHKUNPK(SUnpkU8, &param->ulDlCfgIdx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->spclSfCfgIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ulDlCfgIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->spclSfCfgIdx, mBuf);
    CMCHKUNPK(cmUnpkRgrTddPrachRscInfo, &param->prachRscInfo, mBuf);
 
 #endif
 /* rgr_c_001.main_3: Added TTI indication from MAC to RGR user */
-   CMCHKUNPK(SUnpkU8, &param->rrmTtiIndPrd, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->rrmTtiIndPrd, mBuf);
    /*rgr_c_001.main_7 - Added support for SPS*/
    CMCHKUNPK(cmUnpkRgrSpsDlCellCfg, &param->spsCfg, mBuf);
 
-   CMCHKUNPK(SUnpkU16, &param->t300TmrVal, mBuf);
-   CMCHKPK(SUnpkU16, &param->bcchTxPwrOffset, mBuf);
-   CMCHKPK(SUnpkU16, &param->pcchTxPwrOffset, mBuf);
-   CMCHKPK(SUnpkU16, &param->rarTxPwrOffset, mBuf);
-   CMCHKPK(SUnpkU16, &param->phichTxPwrOffset, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isDynCfiEnb, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isAutoCfgModeEnb, mBuf);
-   CMCHKPK(SUnpkU32, (U32*)&param->msg4pAVal, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->t300TmrVal, mBuf);
+   CMCHKPK(oduPackUInt16, &param->bcchTxPwrOffset, mBuf);
+   CMCHKPK(oduPackUInt16, &param->pcchTxPwrOffset, mBuf);
+   CMCHKPK(oduPackUInt16, &param->rarTxPwrOffset, mBuf);
+   CMCHKPK(oduPackUInt16, &param->phichTxPwrOffset, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isDynCfiEnb, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isAutoCfgModeEnb, mBuf);
+   CMCHKPK(oduPackUInt32, (U32*)&param->msg4pAVal, mBuf);
    /*LAA: Unpack LAA Cell params*/
    CMCHKUNPK(cmUnpkRgrLteUCellCfg, &param->lteUCfg, mBuf);
    #ifdef LTE_ADV
-   CMCHKUNPK(SUnpkU8, &param->isPucchFormat3Sptd, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isPucchFormat3Sptd, mBuf);
 #endif
 #ifdef RG_5GTF
    CMCHKUNPK(cmUnPkRgr5gtfCellCfg, &param->Cell5gtfCfg, mBuf);
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4396,13 +4396,13 @@ Buffer *mBuf;
    TRC3(cmPkRgrUeAprdDlCqiCfg)
    /*Pack Aperiodic Trigger List only for Pcell */
 #ifdef LTE_ADV
-   CMCHKPK(SPkU8, param->triggerSet2, mBuf);
-   CMCHKPK(SPkU8, param->triggerSet1, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->triggerSet2, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->triggerSet1, mBuf);
 #endif
 
-   CMCHKPK(SPkU32, param->aprdModeEnum, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, param->aprdModeEnum, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -4438,16 +4438,16 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeAprdDlCqiCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->aprdModeEnum = (RgrAprdCqiMode) tmpEnum;
 
 #ifdef LTE_ADV
-   CMCHKUNPK(SUnpkU8, &param->triggerSet1, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->triggerSet2, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->triggerSet1, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->triggerSet2, mBuf);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4485,14 +4485,14 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUePrdDlCqiCfg)
 
-   CMCHKPK(SPkU16, param->cqiPmiCfgIdx, mBuf);
-   CMCHKPK(SPkU8, param->k, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->cqiPmiCfgIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->k, mBuf);
    CMCHKPK(SPkS8, param->cqiOffst, mBuf);
-   CMCHKPK(SPkU8, param->subframeOffst, mBuf);
-   CMCHKPK(SPkU32, param->prdicityEnum, mBuf);
-   CMCHKPK(SPkU32, param->prdModeEnum, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->subframeOffst, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->prdicityEnum, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->prdModeEnum, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -4528,16 +4528,16 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUePrdDlCqiCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->prdModeEnum = tmpEnum;
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->prdicityEnum = tmpEnum;
-   CMCHKUNPK(SUnpkU8, &param->subframeOffst, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->subframeOffst, mBuf);
    CMCHKUNPK(SUnpkS8, &param->cqiOffst, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->k, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->cqiPmiCfgIdx, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->k, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->cqiPmiCfgIdx, mBuf);
+   return ROK;
 }
 
 
@@ -4575,16 +4575,16 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeDlPCqiSetup)
 
-   CMCHKPK(SPkU32, param->prdModeEnum, mBuf);
-   CMCHKPK(SPkU8, param->sANCQI, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->prdModeEnum, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->sANCQI, mBuf);
    /*rgr_c_001.main_9 DEL removed unwanted comments*/
-   CMCHKPK(SPkU16, param->riCfgIdx, mBuf);
-   CMCHKPK(SPkU8, param->riEna, mBuf);
-   CMCHKPK(SPkU8, param->k, mBuf);
-   CMCHKPK(SPkU8, param->cqiRepType, mBuf);
-   CMCHKPK(SPkU16, param->cqiPCfgIdx, mBuf);
-   CMCHKPK(SPkU16, param->cqiPResIdx, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, param->riCfgIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->riEna, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->k, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cqiRepType, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->cqiPCfgIdx, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->cqiPResIdx, mBuf);
+   return ROK;
 }
 
 
@@ -4620,17 +4620,17 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeDlPCqiSetup)
 
-   CMCHKUNPK(SUnpkU16, &param->cqiPResIdx, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->cqiPCfgIdx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->cqiRepType, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->k, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->riEna, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->cqiPResIdx, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->cqiPCfgIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cqiRepType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->k, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->riEna, mBuf);
    /*rgr_c_001.main_9 DEL removed unwanted comments*/
-   CMCHKUNPK(SUnpkU16, &param->riCfgIdx, mBuf); 
-   CMCHKUNPK(SUnpkU8, &param->sANCQI, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->riCfgIdx, mBuf); 
+   CMCHKUNPK(oduPackUInt8, &param->sANCQI, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->prdModeEnum = (RgrPrdCqiMode) tmpEnum;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4666,8 +4666,8 @@ Buffer *mBuf;
    TRC3(cmPkRgrUePrdDlCqiCfg)
 
    CMCHKPK(cmPkRgrUeDlPCqiSetup, &param->cqiSetup, mBuf);
-   CMCHKPK(SPkU8, param->type, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->type, mBuf);
+   return ROK;
 }
 
 
@@ -4702,9 +4702,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUePrdDlCqiCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->type, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->type, mBuf);
    CMCHKUNPK(cmUnpkRgrUeDlPCqiSetup, &param->cqiSetup, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4740,16 +4740,16 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeUlSrsSetupCfg)
 
-   CMCHKPK(SPkU8, param->fDomPosi, mBuf);
-   CMCHKPK(SPkU8, param->txComb, mBuf);
-   CMCHKPK(SPkU8, param->sANSrs, mBuf);
-   CMCHKPK(SPkU8, param->duration, mBuf);
-   CMCHKPK(SPkU32, param->cycShift, mBuf);
-   CMCHKPK(SPkU32, param->srsHopBw, mBuf);
-   CMCHKPK(SPkU32, param->srsBw, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->fDomPosi, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->txComb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->sANSrs, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->duration, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->cycShift, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->srsHopBw, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->srsBw, mBuf);
    /*rgr_c_001.main_9 DEL removed unwanted comments*/
-   CMCHKPK(SPkU16, param->srsCfgIdx, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, param->srsCfgIdx, mBuf);
+   return ROK;
 }
 
 
@@ -4787,18 +4787,18 @@ Buffer *mBuf;
    TRC3(cmUnpkRgrUeUlSrsSetupCfg)
 
    /*rgr_c_001.main_9 DEL removed unwanted comments*/
-   CMCHKUNPK(SUnpkU16, &param->srsCfgIdx, mBuf); 
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->srsCfgIdx, mBuf); 
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->srsBw = (RgrUlSrsBwInfo) tmpEnum;
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->srsHopBw = (RgrUlSrsHoBwInfo) tmpEnum;
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->cycShift = (RgrUlSrsCycShiftInfo) tmpEnum;
-   CMCHKUNPK(SUnpkU8, &param->duration, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->sANSrs, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->txComb, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->fDomPosi, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->duration, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->sANSrs, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->txComb, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->fDomPosi, mBuf);
+   return ROK;
 }
 
 
@@ -4835,9 +4835,9 @@ Buffer *mBuf;
 
    /* ccpu00131601:DEL - dTMax Packing removed since this param will not 
     * be required by Scheduler*/
-   CMCHKPK(SPkU8, param->srCfgIdx, mBuf);
-   CMCHKPK(SPkU16, param->srResIdx, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->srCfgIdx, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->srResIdx, mBuf);
+   return ROK;
 }
 
 
@@ -4871,11 +4871,11 @@ Buffer *mBuf;
 {
    TRC3(cmUnpkRgrUeSrSetupCfg)
 
-   CMCHKUNPK(SUnpkU16, &param->srResIdx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->srCfgIdx, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->srResIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->srCfgIdx, mBuf);
    /* ccpu00131601:DEL - dTMax UnPacking removed since this param will not 
     * be required by Scheduler*/
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4911,8 +4911,8 @@ Buffer *mBuf;
    TRC3(cmPkRgrUeSrCfg)
 
    CMCHKPK(cmPkRgrUeSrSetupCfg, &param->srSetup, mBuf);
-   CMCHKPK(SPkU8, param->type, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->type, mBuf);
+   return ROK;
 }
 
 
@@ -4947,9 +4947,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeSrCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->type, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->type, mBuf);
    CMCHKUNPK(cmUnpkRgrUeSrSetupCfg, &param->srSetup, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4987,8 +4987,8 @@ Buffer *mBuf;
 
    /*rgr_c_001.main_9 DEL removed unwanted comments*/
    CMCHKPK(cmPkRgrUeUlSrsSetupCfg, &param->srsSetup, mBuf);  
-   CMCHKPK(SPkU8, param->type, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->type, mBuf);
+   return ROK;
 }
 
 
@@ -5024,10 +5024,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeUlSrsCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->type, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->type, mBuf);
    /*rgr_c_001.main_9 DEL removed unwanted comments*/
    CMCHKUNPK(cmUnpkRgrUeUlSrsSetupCfg, &param->srsSetup, mBuf);  
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -5075,7 +5075,7 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrUePrdDlCqiCfg, &param->prdCqiCfg, mBuf);
 #endif
    CMCHKPK(cmPkRgrUeAprdDlCqiCfg, &param->aprdCqiCfg, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -5112,7 +5112,7 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkRgrUeAprdDlCqiCfg, &param->aprdCqiCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrUePrdDlCqiCfg, &param->prdCqiCfg, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -5147,10 +5147,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeMeasGapCfg)
 
-   CMCHKPK(SPkU8, param->gapOffst, mBuf);
-   CMCHKPK(SPkU8, param->gapPrd, mBuf);
-   CMCHKPK(SPkU8, param->isMesGapEnabled, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->gapOffst, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->gapPrd, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isMesGapEnabled, mBuf);
+   return ROK;
 }
 
 
@@ -5185,10 +5185,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeMeasGapCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isMesGapEnabled, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->gapPrd, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->gapOffst, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->isMesGapEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->gapPrd, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->gapOffst, mBuf);
+   return ROK;
 }
 
 /*rgr_c_001.main_9 ADD DRX functionality under flag*/
@@ -5223,9 +5223,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrDrxLongCycleOffst)
 
-   CMCHKPK(SPkU16, param->drxStartOffst, mBuf);
-   CMCHKPK(SPkU16, param->longDrxCycle, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, param->drxStartOffst, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->longDrxCycle, mBuf);
+   return ROK;
 }
 
 
@@ -5260,9 +5260,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrDrxLongCycleOffst)
 
-   CMCHKUNPK(SUnpkU16, &param->longDrxCycle, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->drxStartOffst, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt16, &param->longDrxCycle, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->drxStartOffst, mBuf);
+   return ROK;
 }
 
 
@@ -5297,10 +5297,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrDrxShortDrx)
 
-   CMCHKPK(SPkU8, param->drxShortCycleTmr, mBuf);
-   CMCHKPK(SPkU16, param->shortDrxCycle, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->drxShortCycleTmr, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->shortDrxCycle, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -5335,10 +5335,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrDrxShortDrx)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->shortDrxCycle, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->drxShortCycleTmr, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->shortDrxCycle, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->drxShortCycleTmr, mBuf);
+   return ROK;
 }
 
 /***********************************************************
@@ -5373,20 +5373,20 @@ Buffer *mBuf;
 
    CMCHKPK(cmPkRgrDrxShortDrx, &param->drxShortDrx, mBuf);
    CMCHKPK(cmPkRgrDrxLongCycleOffst, &param->drxLongCycleOffst, mBuf);
-   CMCHKPK(SPkU16, param->drxRetxTmr, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->drxRetxTmr, mBuf);
 #ifdef EMTC_ENABLE
-   CMCHKPK(SPkU8,  param->drxRetxTmrR13Pres, mBuf);
-   CMCHKPK(SPkU8,  param->drxOnDurTmrR13Pres, mBuf);
-   CMCHKPK(SPkU16, param->emtcDrxUlRetxTmr, mBuf);
-   CMCHKPK(SPkU8,  param->isEmtcUe, mBuf); 
+   CMCHKPK(oduUnpackUInt8,  param->drxRetxTmrR13Pres, mBuf);
+   CMCHKPK(oduUnpackUInt8,  param->drxOnDurTmrR13Pres, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->emtcDrxUlRetxTmr, mBuf);
+   CMCHKPK(oduUnpackUInt8,  param->isEmtcUe, mBuf); 
 #endif
-   CMCHKPK(SPkU16, param->drxInactvTmr, mBuf);
-   CMCHKPK(SPkU16, param->drxOnDurTmr, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->drxInactvTmr, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->drxOnDurTmr, mBuf);
 /*rgr_c_001.main_9 ADD added changes for R9*/
 #ifdef LTEMAC_R9
    CMCHKPK(cmPkTknS32, &param->cqiMask, mBuf);
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -5425,18 +5425,18 @@ Buffer *mBuf;
 #ifdef LTEMAC_R9
    CMCHKUNPK(cmUnpkTknS32, &param->cqiMask, mBuf);
 #endif
-   CMCHKUNPK(SUnpkU16, &param->drxOnDurTmr, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->drxInactvTmr, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->drxOnDurTmr, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->drxInactvTmr, mBuf);
 #ifdef EMTC_ENABLE
-   CMCHKUNPK(SUnpkU8, &param->isEmtcUe, mBuf); 
-   CMCHKUNPK(SUnpkU16,&param->emtcDrxUlRetxTmr, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->drxOnDurTmrR13Pres, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->drxRetxTmrR13Pres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isEmtcUe, mBuf); 
+   CMCHKUNPK(oduPackUInt16,&param->emtcDrxUlRetxTmr, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->drxOnDurTmrR13Pres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->drxRetxTmrR13Pres, mBuf);
 #endif
-   CMCHKUNPK(SUnpkU16, &param->drxRetxTmr, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->drxRetxTmr, mBuf);
    CMCHKUNPK(cmUnpkRgrDrxLongCycleOffst, &param->drxLongCycleOffst, mBuf);
    CMCHKUNPK(cmUnpkRgrDrxShortDrx, &param->drxShortDrx, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*rgr_c_001.main_9 ADD added DRX changes under DRX*/
@@ -5471,12 +5471,12 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeCapCfg)
 
-   CMCHKPK(SPkU8, param->txAntSel, mBuf);
-   CMCHKPK(SPkU8, param->simCqiAckNack, mBuf);
-   CMCHKPK(SPkU8, param->resAloocType1, mBuf);
-   CMCHKPK(SPkU8, param->intraSfFeqHop, mBuf);
-   CMCHKPK(SPkU8, param->pwrClass, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->txAntSel, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->simCqiAckNack, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->resAloocType1, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->intraSfFeqHop, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pwrClass, mBuf);
+   return ROK;
 }
 
 
@@ -5511,13 +5511,13 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeCapCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pwrClass, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->intraSfFeqHop, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->resAloocType1, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->simCqiAckNack, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->txAntSel, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->pwrClass, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->intraSfFeqHop, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->resAloocType1, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->simCqiAckNack, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->txAntSel, mBuf);
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -5551,10 +5551,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeAckNackRepCfg)
 
-   CMCHKPK(SPkU32, param->ackNackRepFactor, mBuf);
-   CMCHKPK(SPkU16, param->pucchAckNackRep, mBuf);
-   CMCHKPK(SPkU8, param->isAckNackEnabled, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, param->ackNackRepFactor, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->pucchAckNackRep, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isAckNackEnabled, mBuf);
+   return ROK;
 }
 
 
@@ -5590,11 +5590,11 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeAckNackRepCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isAckNackEnabled, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->pucchAckNackRep, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isAckNackEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->pucchAckNackRep, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->ackNackRepFactor = (RgrAckNackRepFactor) tmpEnum;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -5629,11 +5629,11 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeTxModeCfg)
 
-   CMCHKPK(SPkU32, param->txModeEnum, mBuf);
-   CMCHKPK(SPkU32, param->tmTrnstnState, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->txModeEnum, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->tmTrnstnState, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -5669,13 +5669,13 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeTxModeCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->tmTrnstnState = (RgrTxModeTrnstn) tmpEnum;
 
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->txModeEnum = (RgrTxMode) tmpEnum;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -5710,9 +5710,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeUlHqCfg)
 
-   CMCHKPK(SPkU8, param->deltaHqOffst, mBuf);
-   CMCHKPK(SPkU8, param->maxUlHqTx, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->deltaHqOffst, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->maxUlHqTx, mBuf);
+   return ROK;
 }
 
 
@@ -5747,9 +5747,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeUlHqCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->maxUlHqTx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->deltaHqOffst, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->maxUlHqTx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->deltaHqOffst, mBuf);
+   return ROK;
 }
 
 
@@ -5784,10 +5784,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeGrpPwrCfg)
 
-   CMCHKPK(SPkU8, param->idx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->idx, mBuf);
    CMCHKPK(cmPkLteRnti, param->tpcRnti, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -5822,10 +5822,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeGrpPwrCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->tpcRnti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->idx, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->idx, mBuf);
+   return ROK;
 }
 
 /*rgr_c_001.main_7 - Added support for SPS*/
@@ -5861,15 +5861,15 @@ Buffer *mBuf;
 
    S32 i;
    TRC3(cmPkRgrUeSpsDlCfg)
-   CMCHKPK(SPkU16, param->explicitRelCnt, mBuf);
-   CMCHKPK(SPkU32, param->dlSpsPrdctyEnum, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->explicitRelCnt, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->dlSpsPrdctyEnum, mBuf);
    for (i=param->numPucchVal-1; i >= 0; i--) {
-      CMCHKPK(SPkU32, param->n1PucchVal[i], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->n1PucchVal[i], mBuf);
    }
-   CMCHKPK(SPkU8, param->numPucchVal, mBuf);
-   CMCHKPK(SPkU8, param->numSpsHqProc, mBuf);
-   CMCHKPK(SPkU8, param->isDlSpsEnabled, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->numPucchVal, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numSpsHqProc, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isDlSpsEnabled, mBuf);
+   return ROK;
 }
 
 
@@ -5906,16 +5906,16 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmUnpkRgrUeSpsDlCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isDlSpsEnabled, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numSpsHqProc, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numPucchVal, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isDlSpsEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numSpsHqProc, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numPucchVal, mBuf);
    for (i=0; i<param->numPucchVal; i++) {
-      CMCHKUNPK(SUnpkU32, &param->n1PucchVal[i], mBuf);
+      CMCHKUNPK(oduPackUInt32, &param->n1PucchVal[i], mBuf);
    }
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->dlSpsPrdctyEnum = tmpEnum;
-   CMCHKUNPK(SUnpkU16, &param->explicitRelCnt, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt16, &param->explicitRelCnt, mBuf);
+   return ROK;
 }
 
 
@@ -5951,26 +5951,26 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmPkRgrUeSpsUlCfg)
 
-   CMCHKPK(SPkU8, param->isLcSRMaskEnab, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isLcSRMaskEnab, mBuf);
    for (i=param->lcCnt-1; i >= 0; i--) {
       /* SPS Changes starts */
-      CMCHKPK(SPkU8, param->spsLcInfo[i].isSpsEnabled, mBuf);
-      CMCHKPK(SPkU8, param->spsLcInfo[i].lcId, mBuf);
+      CMCHKPK(oduUnpackUInt8, param->spsLcInfo[i].isSpsEnabled, mBuf);
+      CMCHKPK(oduUnpackUInt8, param->spsLcInfo[i].lcId, mBuf);
       /* SPS Changes ends */
    }
-   CMCHKPK(SPkU8, param->lcCnt, mBuf);
-   CMCHKPK(SPkU32, param->ulSpsPrdctyEnum, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->lcCnt, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->ulSpsPrdctyEnum, mBuf);
       CMCHKPK(SPkS8, param->pwrCfg.p0UePuschVal, mBuf);
       CMCHKPK(SPkS8, param->pwrCfg.p0NominalPuschVal, mBuf);
-   CMCHKPK(SPkU8, param->pwrCfgPres, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pwrCfgPres, mBuf);
 
 #ifdef LTE_TDD
-   CMCHKPK(SPkU8, param->twoIntervalCfg, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->twoIntervalCfg, mBuf);
 
 #endif
-   CMCHKPK(SPkU32, param->implicitRelCnt, mBuf);
-   CMCHKPK(SPkU8, param->isUlSpsEnabled, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, param->implicitRelCnt, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isUlSpsEnabled, mBuf);
+   return ROK;
 }
 
 
@@ -6007,26 +6007,26 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmUnpkRgrUeSpsUlCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isUlSpsEnabled, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isUlSpsEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->implicitRelCnt = tmpEnum;
 
 #ifdef LTE_TDD
-   CMCHKUNPK(SUnpkU8, &param->twoIntervalCfg, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->twoIntervalCfg, mBuf);
 
 #endif
-   CMCHKUNPK(SUnpkU8, &param->pwrCfgPres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->pwrCfgPres, mBuf);
       CMCHKUNPK(SUnpkS8, &param->pwrCfg.p0NominalPuschVal, mBuf);
       CMCHKUNPK(SUnpkS8, &param->pwrCfg.p0UePuschVal, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->ulSpsPrdctyEnum = tmpEnum;
-   CMCHKUNPK(SUnpkU8, &param->lcCnt, mBuf); 
+   CMCHKUNPK(oduPackUInt8, &param->lcCnt, mBuf); 
    for (i=0; i<param->lcCnt; i++) {
-      CMCHKUNPK(SUnpkU8, &param->spsLcInfo[i].lcId, mBuf);
-      CMCHKUNPK(SUnpkU8, &param->spsLcInfo[i].isSpsEnabled, mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->spsLcInfo[i].lcId, mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->spsLcInfo[i].isSpsEnabled, mBuf);
    }
-   CMCHKUNPK(SUnpkU8, &param->isLcSRMaskEnab, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->isLcSRMaskEnab, mBuf);
+   return ROK;
 }
 
 
@@ -6064,7 +6064,7 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrUeSpsUlCfg, &param->ulSpsCfg, mBuf);
    CMCHKPK(cmPkRgrUeSpsDlCfg, &param->dlSpsCfg, mBuf);
    CMCHKPK(cmPkLteRnti, param->spsRnti, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6102,7 +6102,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteRnti, &param->spsRnti, mBuf);
    CMCHKUNPK(cmUnpkRgrUeSpsDlCfg, &param->dlSpsCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrUeSpsUlCfg, &param->ulSpsCfg, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6136,15 +6136,15 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeUlPwrCfg)
 
-   CMCHKPK(SPkU8, param->trgCqi, mBuf);
-   CMCHKPK(SPkU8, param->pSRSOffset, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->trgCqi, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pSRSOffset, mBuf);
    CMCHKPK(SPkS8, param->p0UePucch, mBuf);
    CMCHKPK(SPkS8, param->p0UePusch, mBuf);
-   CMCHKPK(SPkU8, param->isDeltaMCSEnabled, mBuf);
-   CMCHKPK(SPkU8, param->isAccumulated, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isDeltaMCSEnabled, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isAccumulated, mBuf);
    CMCHKPK(cmPkRgrUeGrpPwrCfg, &param->uePucchPwr, mBuf);
    CMCHKPK(cmPkRgrUeGrpPwrCfg, &param->uePuschPwr, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6181,13 +6181,13 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkRgrUeGrpPwrCfg, &param->uePuschPwr, mBuf);
    CMCHKUNPK(cmUnpkRgrUeGrpPwrCfg, &param->uePucchPwr, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isAccumulated, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isDeltaMCSEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isAccumulated, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isDeltaMCSEnabled, mBuf);
    CMCHKUNPK(SUnpkS8, &param->p0UePusch, mBuf);
    CMCHKUNPK(SUnpkS8, &param->p0UePucch, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->pSRSOffset, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->trgCqi, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->pSRSOffset, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->trgCqi, mBuf);
+   return ROK;
 }
 
 
@@ -6222,10 +6222,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeQosCfg)
 
-   CMCHKPK(SPkU32, param->ueBr, mBuf);
-   CMCHKPK(SPkU32, param->dlAmbr, mBuf);
-   CMCHKPK(SPkU8, param->ambrPres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, param->ueBr, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->dlAmbr, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->ambrPres, mBuf);
+   return ROK;
 }
 
 
@@ -6260,10 +6260,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeQosCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->ambrPres, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->dlAmbr, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->ueBr, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->ambrPres, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->dlAmbr, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->ueBr, mBuf);
+   return ROK;
 }
 
 /*********************************************************** 
@@ -6296,11 +6296,11 @@ Buffer *mBuf;
  
    TRC3(cmPkRgrUePuschDedCfg) 
  
-   CMCHKPK(SPkU8, param->bCQIIdx, mBuf);
-   CMCHKPK(SPkU8, param->bRIIdx, mBuf);
-   CMCHKPK(SPkU8, param->bACKIdx, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->bCQIIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->bRIIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->bACKIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -6335,11 +6335,11 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUePuschDedCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->bACKIdx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->bRIIdx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->bCQIIdx, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->bACKIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->bRIIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->bCQIIdx, mBuf);
+   return ROK;
 }
 
 /***********************************************************
@@ -6372,9 +6372,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeTxAntSelCfg)
 
-   CMCHKPK(SPkU32, param->selType, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, param->selType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -6410,10 +6410,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeTxAntSelCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->selType = (RgrUeTxAntSelType) tmpEnum;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6447,9 +6447,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeTaTmrCfg)
 
-   CMCHKPK(SPkU16, param->taTmr, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, param->taTmr, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -6484,9 +6484,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeTaTmrCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->taTmr, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->taTmr, mBuf);
+   return ROK;
 }
 
 
@@ -6509,45 +6509,45 @@ Buffer *mBuf;
    RgrPucchRepCfgRel13 *emtcPucchRepCfg = &(param->emtcPucchRepCfg);
    RgrEpdcchAddModLst *epdcchAddModLst;
 
-   CMCHKUNPK(SUnpkU8,&param->pdschReptLevModeA,mBuf);
+   CMCHKUNPK(oduPackUInt8,&param->pdschReptLevModeA,mBuf);
    /*UnPacking PUCCH Rep */
-   CMCHKUNPK(SUnpkU8,&(emtcPucchRepCfg->modeANumPucchRepFormat2),mBuf);
-   CMCHKUNPK(SUnpkU8,&(emtcPucchRepCfg->modeANumPucchRepFormat1),mBuf);
-   CMCHKUNPK(SUnpkU8,&(emtcPucchRepCfg->isPucchRepPres),mBuf);
+   CMCHKUNPK(oduPackUInt8,&(emtcPucchRepCfg->modeANumPucchRepFormat2),mBuf);
+   CMCHKUNPK(oduPackUInt8,&(emtcPucchRepCfg->modeANumPucchRepFormat1),mBuf);
+   CMCHKUNPK(oduPackUInt8,&(emtcPucchRepCfg->isPucchRepPres),mBuf);
    
    
    
    for(indx = 0; indx < RGR_MAX_EPDCCH_SET; indx++)
    {
       epdcchAddModLst =  &(emtcEpdcchCfg->epdcchAddModLst[indx]);
-      CMCHKUNPK(SUnpkU32,&(epdcchAddModLst->extaddgrp2.mpddchNB),mBuf);
-      CMCHKUNPK(SUnpkU16,&(epdcchAddModLst->extaddgrp2.mpdcchNumRep),mBuf);
-      CMCHKUNPK(SUnpkU8,&(epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD),mBuf);
-      CMCHKUNPK(SUnpkU8,&(epdcchAddModLst->extaddgrp2.mpddchPdschHop),mBuf);
-      CMCHKUNPK(SUnpkU8,&(epdcchAddModLst->extaddgrp2.csiNumRep),mBuf);
-      CMCHKUNPK(SUnpkU8,&(epdcchAddModLst->extaddgrp2.pres),mBuf);
+      CMCHKUNPK(oduPackUInt32,&(epdcchAddModLst->extaddgrp2.mpddchNB),mBuf);
+      CMCHKUNPK(oduPackUInt16,&(epdcchAddModLst->extaddgrp2.mpdcchNumRep),mBuf);
+      CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD),mBuf);
+      CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->extaddgrp2.mpddchPdschHop),mBuf);
+      CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->extaddgrp2.csiNumRep),mBuf);
+      CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->extaddgrp2.pres),mBuf);
       CMCHKUNPK(cmUnpkTknU8,&(epdcchAddModLst->mpdcchNumPRBpair),mBuf);
       CMCHKUNPK(cmUnpkTknU32,&(epdcchAddModLst->pdschRemapQLcfgId),mBuf);
-      CMCHKUNPK(SUnpkU32,&(epdcchAddModLst->pucchResStartoffset),mBuf);
-      CMCHKUNPK(SUnpkU32,&(epdcchAddModLst->dmrsScrambSeq),mBuf);
+      CMCHKUNPK(oduPackUInt32,&(epdcchAddModLst->pucchResStartoffset),mBuf);
+      CMCHKUNPK(oduPackUInt32,&(epdcchAddModLst->dmrsScrambSeq),mBuf);
       for(idx = 0; idx < 5; idx++)
       {
-         CMCHKUNPK(SUnpkU8,&(epdcchAddModLst->resBlkAssignment.rbAssignment[idx]),mBuf);
+         CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->resBlkAssignment.rbAssignment[idx]),mBuf);
       }
 
-      CMCHKUNPK(SUnpkU8,&(epdcchAddModLst->resBlkAssignment.numPRBpairs),mBuf);
-      CMCHKUNPK(SUnpkU8,&(epdcchAddModLst->transmissionType),mBuf);
-      CMCHKUNPK(SUnpkU8,&(epdcchAddModLst->setConfigId),mBuf);
+      CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->resBlkAssignment.numPRBpairs),mBuf);
+      CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->transmissionType),mBuf);
+      CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->setConfigId),mBuf);
 
    }
    CMCHKUNPK(cmUnpkTknU32,&(emtcEpdcchCfg->startSymbolr11),mBuf);
    for(indx = 0; indx < 5; indx++)
    {
-      CMCHKUNPK(SUnpkU8,&(emtcEpdcchCfg->sfPtn.measSfPatFDD[indx]),mBuf);
+      CMCHKUNPK(oduPackUInt8,&(emtcEpdcchCfg->sfPtn.measSfPatFDD[indx]),mBuf);
    }
-   CMCHKUNPK(SUnpkU8, &(emtcEpdcchCfg->sfPtn.pres), mBuf);
-   CMCHKUNPK(SUnpkU8, &(param->pres), mBuf);
-   CMCHKUNPK(SUnpkU8, &(param->isHdFddEnbld), mBuf);
+   CMCHKUNPK(oduPackUInt8, &(emtcEpdcchCfg->sfPtn.pres), mBuf);
+   CMCHKUNPK(oduPackUInt8, &(param->pres), mBuf);
+   CMCHKUNPK(oduPackUInt8, &(param->isHdFddEnbld), mBuf);
 
 #ifdef EMTC_DEBUG_CONSOLE_PRINTS 
    printf("\n EMTC RGR UE unpack\n");
@@ -6588,7 +6588,7 @@ Buffer *mBuf;
 
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6605,42 +6605,42 @@ PUBLIC S16 cmPkRgrEmtcUeCfg
    RgrPucchRepCfgRel13 *emtcPucchRepCfg = &(param->emtcPucchRepCfg);
    RgrEpdcchAddModLst *epdcchAddModLst;
 
-   CMCHKPK(SPkU8, param->isHdFddEnbld, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   CMCHKPK(SPkU8, emtcEpdcchCfg->sfPtn.pres, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isHdFddEnbld, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   CMCHKPK(oduUnpackUInt8, emtcEpdcchCfg->sfPtn.pres, mBuf);
    for(indx = 4; indx >=0; indx--)
    {
-      CMCHKPK(SPkU8,emtcEpdcchCfg->sfPtn.measSfPatFDD[indx],mBuf);
+      CMCHKPK(oduUnpackUInt8,emtcEpdcchCfg->sfPtn.measSfPatFDD[indx],mBuf);
    }
    CMCHKPK(cmPkTknU32,&emtcEpdcchCfg->startSymbolr11,mBuf);
    for(indx = RGR_MAX_EPDCCH_SET-1 ; indx >= 0; indx--)
    {
       epdcchAddModLst =  &(emtcEpdcchCfg->epdcchAddModLst[indx]);
 
-      CMCHKPK(SPkU8,epdcchAddModLst->setConfigId,mBuf);
-      CMCHKPK(SPkU8,epdcchAddModLst->transmissionType,mBuf);
-      CMCHKPK(SPkU8,epdcchAddModLst->resBlkAssignment.numPRBpairs,mBuf);
+      CMCHKPK(oduUnpackUInt8,epdcchAddModLst->setConfigId,mBuf);
+      CMCHKPK(oduUnpackUInt8,epdcchAddModLst->transmissionType,mBuf);
+      CMCHKPK(oduUnpackUInt8,epdcchAddModLst->resBlkAssignment.numPRBpairs,mBuf);
       for(idx = 4; idx >= 0; idx--)
       {
-         CMCHKPK(SPkU8,epdcchAddModLst->resBlkAssignment.rbAssignment[idx],mBuf);
+         CMCHKPK(oduUnpackUInt8,epdcchAddModLst->resBlkAssignment.rbAssignment[idx],mBuf);
       }
-      CMCHKPK(SPkU32,epdcchAddModLst->dmrsScrambSeq,mBuf);
-      CMCHKPK(SPkU32,epdcchAddModLst->pucchResStartoffset,mBuf);
+      CMCHKPK(oduUnpackUInt32,epdcchAddModLst->dmrsScrambSeq,mBuf);
+      CMCHKPK(oduUnpackUInt32,epdcchAddModLst->pucchResStartoffset,mBuf);
       CMCHKPK(cmPkTknU32,&(epdcchAddModLst->pdschRemapQLcfgId),mBuf);
       CMCHKPK(cmPkTknU8,&(epdcchAddModLst->mpdcchNumPRBpair),mBuf);
-      CMCHKPK(SPkU8,epdcchAddModLst->extaddgrp2.pres,mBuf);
-      CMCHKPK(SPkU8,epdcchAddModLst->extaddgrp2.csiNumRep,mBuf);
-      CMCHKPK(SPkU8,epdcchAddModLst->extaddgrp2.mpddchPdschHop,mBuf);
-      CMCHKPK(SPkU8,epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD,mBuf);
-      CMCHKPK(SPkU16,epdcchAddModLst->extaddgrp2.mpdcchNumRep,mBuf);
-      CMCHKPK(SPkU32,epdcchAddModLst->extaddgrp2.mpddchNB,mBuf);
+      CMCHKPK(oduUnpackUInt8,epdcchAddModLst->extaddgrp2.pres,mBuf);
+      CMCHKPK(oduUnpackUInt8,epdcchAddModLst->extaddgrp2.csiNumRep,mBuf);
+      CMCHKPK(oduUnpackUInt8,epdcchAddModLst->extaddgrp2.mpddchPdschHop,mBuf);
+      CMCHKPK(oduUnpackUInt8,epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD,mBuf);
+      CMCHKPK(oduUnpackUInt16,epdcchAddModLst->extaddgrp2.mpdcchNumRep,mBuf);
+      CMCHKPK(oduUnpackUInt32,epdcchAddModLst->extaddgrp2.mpddchNB,mBuf);
    }
    
 /*Packing PUCCH Rep */
-   CMCHKPK(SPkU8,emtcPucchRepCfg->isPucchRepPres, mBuf);
-   CMCHKPK(SPkU8,emtcPucchRepCfg->modeANumPucchRepFormat1,mBuf);
-   CMCHKPK(SPkU8,emtcPucchRepCfg->modeANumPucchRepFormat2,mBuf);
-   CMCHKPK(SPkU8,param->pdschReptLevModeA,mBuf);
+   CMCHKPK(oduUnpackUInt8,emtcPucchRepCfg->isPucchRepPres, mBuf);
+   CMCHKPK(oduUnpackUInt8,emtcPucchRepCfg->modeANumPucchRepFormat1,mBuf);
+   CMCHKPK(oduUnpackUInt8,emtcPucchRepCfg->modeANumPucchRepFormat2,mBuf);
+   CMCHKPK(oduUnpackUInt8,param->pdschReptLevModeA,mBuf);
    
 #ifdef EMTC_DEBUG_CONSOLE_PRINTS 
    printf("\n EMTC RGR UE pack\n");
@@ -6683,7 +6683,7 @@ PUBLIC S16 cmPkRgrEmtcUeCfg
 
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -6694,12 +6694,12 @@ PUBLIC S16 cmUnpkRgr5gtfUeCfg
  Buffer       *mBuf
 )
 {
-   CMCHKUNPK(SUnpkU8, &param->grpId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->BeamId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numCC, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->mcs, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->maxPrb, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->grpId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->BeamId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numCC, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->mcs, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->maxPrb, mBuf);
+   return ROK;
 }
 
 PUBLIC S16 cmPkRgr5gtfUeCfg
@@ -6708,12 +6708,12 @@ PUBLIC S16 cmPkRgr5gtfUeCfg
  Buffer       *mBuf
 )
 {
-   CMCHKPK(SPkU8, param->maxPrb, mBuf);
-   CMCHKPK(SPkU8, param->mcs, mBuf);
-   CMCHKPK(SPkU8, param->numCC, mBuf);
-   CMCHKPK(SPkU8, param->BeamId, mBuf);
-   CMCHKPK(SPkU8, param->grpId, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->maxPrb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->mcs, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numCC, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->BeamId, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->grpId, mBuf);
+   return ROK;
 }
 #endif
 
@@ -6753,9 +6753,9 @@ Buffer *mBuf;
 #ifdef EMTC_ENABLE
  CMCHKPK(cmPkRgrEmtcUeCfg, &param->emtcUeCfg, mBuf);
 #endif
-   CMCHKPK(SPkU8, param->csgMmbrSta, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->csgMmbrSta, mBuf);
 
-   CMCHKPK(SPkU32, param->accessStratumRls, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->accessStratumRls, mBuf);
    /* LTE_ADV_FLAG_REMOVED_START */
    CMCHKPK(cmPkRgrLteAdvancedUeConfig, &param->ueLteAdvCfg, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
@@ -6775,7 +6775,7 @@ Buffer *mBuf;
 
 /*rgr_c_001.main_9 ADD added changes for HDFDD*/
 #ifdef LTEMAC_HDFDD
-   CMCHKPK(SPkU8, param->isHdFddEnbld, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isHdFddEnbld, mBuf);
 #endif
 
 #ifdef TFU_UPGRADE
@@ -6788,7 +6788,7 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrUeSpsCfg, &param->ueSpsCfg, mBuf);
 
 #ifdef LTE_TDD
-   CMCHKPK(SPkU32, param->ackNackModeEnum, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->ackNackModeEnum, mBuf);
 
 #endif
    CMCHKPK(cmPkTknU8, &param->dedPreambleId, mBuf);
@@ -6796,7 +6796,7 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrUeCapCfg, &param->ueCapCfg, mBuf);
    CMCHKPK(cmPkRgrUeMeasGapCfg, &param->ueMesGapCfg, mBuf);
    CMCHKPK(cmPkRgrUeAckNackRepCfg, &param->ueAckNackCfg, mBuf);
-   CMCHKPK(SPkU8, param->isTtiBundlEnabled, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isTtiBundlEnabled, mBuf);
 /*rgr_c_001.main_9 ADD added changes for DRX*/
    
    /* Anshika - Pack only if DRX is enabled */
@@ -6804,9 +6804,9 @@ Buffer *mBuf;
    {   
     CMCHKPK(cmPkRgrUeDrxCfg, &param->ueDrxCfg, mBuf);
    }
-   CMCHKPK(SPkU8, param->ueDrxCfg.isDrxEnabled, mBuf); /* This has to be packed even if
+   CMCHKPK(oduUnpackUInt8, param->ueDrxCfg.isDrxEnabled, mBuf); /* This has to be packed even if
                                                  DRX is disabled */
-   CMCHKPK(SPkU32, param->ueCatEnum, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->ueCatEnum, mBuf);
 #ifdef RGR_V1
    /* rgr_c_001.main_5: ccpu00112398: Added periodicBSR-timer and
     * retxBSR-timer */
@@ -6820,7 +6820,7 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrUeTxModeCfg, &param->txMode, mBuf);
    CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6869,17 +6869,17 @@ Buffer *mBuf;
     * retxBSR-timer */
    CMCHKUNPK(cmUnpkRgrUeBsrTmrCfg, &param->ueBsrTmrCfg, mBuf);
 #endif
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->ueCatEnum = (CmLteUeCategory) tmpEnum;
 /*rgr_c_001.main_9 ADD added changes for DRX*/
    
    /* Anshika - Unpack only if DRX is enabled */
-   CMCHKUNPK(SUnpkU8, &param->ueDrxCfg.isDrxEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ueDrxCfg.isDrxEnabled, mBuf);
    if(TRUE == param->ueDrxCfg.isDrxEnabled)
    {
       CMCHKUNPK(cmUnpkRgrUeDrxCfg, &param->ueDrxCfg, mBuf);
    }
-   CMCHKUNPK(SUnpkU8, &param->isTtiBundlEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isTtiBundlEnabled, mBuf);
    CMCHKUNPK(cmUnpkRgrUeAckNackRepCfg, &param->ueAckNackCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrUeMeasGapCfg, &param->ueMesGapCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrUeCapCfg, &param->ueCapCfg, mBuf);
@@ -6887,7 +6887,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkTknU8, &param->dedPreambleId, mBuf);
 
 #ifdef LTE_TDD
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->ackNackModeEnum = tmpEnum;
 
 #endif
@@ -6901,7 +6901,7 @@ Buffer *mBuf;
 #endif
 /*rgr_c_001.main_9 ADD added changes for HDFDD*/
 #ifdef LTEMAC_HDFDD
-   CMCHKUNPK(SUnpkU8, &param->isHdFddEnbld, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isHdFddEnbld, mBuf);
 #endif
    CMCHKUNPK(cmUnpkRgrUePuschDedCfg, &param->puschDedCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrUeTxAntSelCfg, &param->ulTxAntSel, mBuf);
@@ -6916,8 +6916,8 @@ Buffer *mBuf;
    /* LTE_ADV_FLAG_REMOVED_START */
    CMCHKUNPK(cmUnpkRgrLteAdvancedUeConfig, &param->ueLteAdvCfg, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
-   CMCHKUNPK(SUnpkU32, (U32 *)&param->accessStratumRls, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->csgMmbrSta, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&param->accessStratumRls, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->csgMmbrSta, mBuf);
 
 #ifdef EMTC_ENABLE
  CMCHKUNPK(cmUnpkRgrEmtcUeCfg, &param->emtcUeCfg, mBuf);
@@ -6927,7 +6927,7 @@ Buffer *mBuf;
  CMCHKUNPK(cmUnpkRgr5gtfUeCfg, &param->ue5gtfCfg, mBuf);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6962,10 +6962,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrLchQosCfg)
 
-   CMCHKPK(SPkU32, param->mbr, mBuf);
-   CMCHKPK(SPkU32, param->gbr, mBuf);
-   CMCHKPK(SPkU8, param->qci, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, param->mbr, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->gbr, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->qci, mBuf);
+   return ROK;
 }
 
 
@@ -7000,10 +7000,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrLchQosCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->qci, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->gbr, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->mbr, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->qci, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->gbr, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->mbr, mBuf);
+   return ROK;
 }
 /*rgr_c_001.main_7 - Added support for SPS*/
 
@@ -7039,8 +7039,8 @@ Buffer *mBuf;
    TRC3(cmPkRgrLchSpsCfg)
 
    /* SPS_DEV */
-   CMCHKPK(SPkU8, param->isSpsEnabled, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->isSpsEnabled, mBuf);
+   return ROK;
 }
 
 
@@ -7075,9 +7075,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrLchSpsCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isSpsEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isSpsEnabled, mBuf);
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7112,11 +7112,11 @@ Buffer *mBuf;
    TRC3(cmPkRgrDlLchCfg)
 /*rgr_c_001.main_7 - Added support for SPS*/
 
-   CMCHKPK(SPkU8, param->rlcReorderTmr, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->rlcReorderTmr, mBuf);
    CMCHKPK(cmPkRgrLchSpsCfg, &param->dlSpsCfg, mBuf);
    CMCHKPK(cmPkRgrLchQosCfg, &param->dlQos, mBuf);
-   CMCHKPK(SPkU8, param->dlTrchType, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->dlTrchType, mBuf);
+   return ROK;
 }
 
 
@@ -7151,13 +7151,13 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrDlLchCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->dlTrchType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->dlTrchType, mBuf);
    CMCHKUNPK(cmUnpkRgrLchQosCfg, &param->dlQos, mBuf);
    /*rgr_c_001.main_7 - Added support for SPs*/
    CMCHKUNPK(cmUnpkRgrLchSpsCfg, &param->dlSpsCfg, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->rlcReorderTmr, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->rlcReorderTmr, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7195,9 +7195,9 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUlLchCfg)
 
-   CMCHKPK(SPkU8, param->qci, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->qci, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7234,8 +7234,8 @@ Buffer *mBuf;
    TRC3(cmUnpkRgrUlLchCfg)
 
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->qci, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->qci, mBuf);
+   return ROK;
 }
 
 
@@ -7274,8 +7274,8 @@ Buffer *mBuf;
    S32 i;
 #endif
    TRC3(cmPkRgrUlLcgCfg)
-   CMCHKPK(SPkU32, param->mbr, mBuf);
-   CMCHKPK(SPkU32, param->gbr, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->mbr, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->gbr, mBuf);
 
 /*rgr_c_001.main_9 ADD added changes for L2 measurements*/
 #ifdef LTE_L2_MEAS
@@ -7283,10 +7283,10 @@ Buffer *mBuf;
    {
       CMCHKPK(cmPkRgrUlLchCfg, &param->lchUlCfg[i], mBuf);
    }
-   CMCHKPK(SPkU8, param->numLch, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numLch, mBuf);
 #endif
-   CMCHKPK(SPkU8, param->lcgId, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->lcgId, mBuf);
+   return ROK;
 }
 
 
@@ -7325,19 +7325,19 @@ Buffer *mBuf;
 #endif
    TRC3(cmUnpkRgrUlLcgCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->lcgId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->lcgId, mBuf);
 /*rgr_c_001.main_9 ADD added changes for L2 measurements*/
 #ifdef LTE_L2_MEAS
-   CMCHKUNPK(SUnpkU8, &param->numLch, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numLch, mBuf);
    for (i = 0; i< param->numLch; i++)
    {
       CMCHKUNPK(cmUnpkRgrUlLchCfg, &param->lchUlCfg[i], mBuf);
    }
 
 #endif
-   CMCHKUNPK(SUnpkU32, &param->gbr, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->mbr, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt32, &param->gbr, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->mbr, mBuf);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -7352,10 +7352,10 @@ RgrUlLchQciCfg *param;
 Buffer *mBuf;
 #endif
 {
-   CMCHKPK(SPkU8, param->lcId, mBuf);
-   CMCHKPK(SPkU8, param->qci, mBuf);
-   CMCHKPK(SPkU8, param->lcgId, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->lcId, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->qci, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->lcgId, mBuf);
+   return ROK;
 }
 #ifdef ANSI
 PUBLIC S16 cmUnpkRgrUlLchQciCfg
@@ -7369,10 +7369,10 @@ RgrUlLchQciCfg *param;
 Buffer *mBuf;
 #endif
 {
-   CMCHKUNPK(SUnpkU8, &param->lcgId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->qci, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->lcId, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->lcgId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->qci, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->lcId, mBuf);
+   return ROK;
 }
 
 
@@ -7405,14 +7405,14 @@ Buffer *mBuf;
 {
 
    TRC3(cmPkRgrLchCfg)
-   CMCHKPK(SPkU8, param->lcgId, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->lcgId, mBuf);
    CMCHKPK(cmPkRgrUlLchQciCfg, &param->ulLchQciInfo, mBuf);
    CMCHKPK(cmPkRgrDlLchCfg, &param->dlInfo, mBuf);
    CMCHKPK(cmPkLteLcType, param->lcType, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
    CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7453,8 +7453,8 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteLcType, &param->lcType, mBuf);
    CMCHKUNPK(cmUnpkRgrDlLchCfg, &param->dlInfo, mBuf);
    CMCHKUNPK(cmUnpkRgrUlLchQciCfg, &param->ulLchQciInfo, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->lcgId, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->lcgId, mBuf);
+   return ROK;
 }
 
 
@@ -7476,7 +7476,7 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrUlLcgCfg, &param->ulInfo, mBuf);
    CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7498,7 +7498,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
    CMCHKUNPK(cmUnpkRgrUlLcgCfg, &param->ulInfo, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7550,10 +7550,10 @@ Buffer *mBuf;
             CMCHKPK(cmPkMacSchedGnbCfg, &param->u.schedGnbCfg, mBuf);
             break;
          default :
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
-   CMCHKPK(SPkU8, param->cfgType, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->cfgType, mBuf);
+   return ROK;
 }
 
 
@@ -7588,7 +7588,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->cfgType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cfgType, mBuf);
       switch(param->cfgType) {
          case MAC_GNB_CFG:
             CMCHKUNPK(cmUnpkMacSchedGnbCfg, &param->u.schedGnbCfg, mBuf);
@@ -7606,9 +7606,9 @@ Buffer *mBuf;
             CMCHKUNPK(cmUnpkRgrLcgCfg, &param->u.lcgCfg, mBuf);
             break;
          default :
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7644,8 +7644,8 @@ Buffer *mBuf;
    TRC3(cmPkRgrActvTime)
 
    CMCHKPK(cmPkLteTimingInfo, &param->actvTime, mBuf);
-   CMCHKPK(SPkU8, param->pres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->pres, mBuf);
+   return ROK;
 }
 
 
@@ -7680,9 +7680,9 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrActvTime)
 
-   CMCHKUNPK(SUnpkU8, &param->pres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
    CMCHKUNPK(cmUnpkLteTimingInfo, &param->actvTime, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7718,12 +7718,12 @@ Buffer *mBuf;
    TRC3(cmPkRgrCellRecfg)
    CMCHKPK(cmPkRgrCellCntrlCmdCfg, &param->cntrlCmdCfg, mBuf);
    CMCHKPK(cmPkRgrCellCsgParamCfg, &param->csgParamCfg, mBuf);
-   CMCHKPK(SPkU8, param->isDynCfiEnb, mBuf);
-   CMCHKPK(SPkU8, param->isAutoCfgModeEnb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isDynCfiEnb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isAutoCfgModeEnb, mBuf);
    /* LTE_ADV_FLAG_REMOVED_START */
    CMCHKPK(cmPkRgrCellLteAdvancedFeatureCfg, &param->rgrLteAdvCfg, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
-   CMCHKPK(SPkU16, param->t300TmrVal, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->t300TmrVal, mBuf);
    /* rgr_c_001.main_4:MOD-Modified for SI Enhancement. */
 #ifdef RGR_SI_SCH
    CMCHKPK(cmPkRgrSiCfg, &param->siReCfg, mBuf);
@@ -7739,9 +7739,9 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrCfiCfg, &param->cfiRecfg, mBuf);
    CMCHKPK(cmPkRgrDlHqCfg, &param->dlHqRecfg, mBuf);
    CMCHKPK(cmPkRgrActvTime, &param->recfgActvTime, mBuf);
-   CMCHKPK(SPkU32, param->recfgTypes, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->recfgTypes, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7777,7 +7777,7 @@ Buffer *mBuf;
    TRC3(cmUnpkRgrCellRecfg)
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->recfgTypes, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->recfgTypes, mBuf);
    CMCHKUNPK(cmUnpkRgrActvTime, &param->recfgActvTime, mBuf);
    CMCHKUNPK(cmUnpkRgrDlHqCfg, &param->dlHqRecfg, mBuf);
    CMCHKUNPK(cmUnpkRgrCfiCfg, &param->cfiRecfg, mBuf);
@@ -7793,16 +7793,16 @@ Buffer *mBuf;
 #ifdef RGR_SI_SCH
    CMCHKUNPK(cmUnpkRgrSiCfg, &param->siReCfg, mBuf);
 #endif /* RGR_SI_SCH */
-   CMCHKUNPK(SUnpkU16, &param->t300TmrVal, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->t300TmrVal, mBuf);
    /* LTE_ADV_FLAG_REMOVED_START */
    CMCHKUNPK(cmUnpkRgrCellLteAdvancedFeatureCfg, &param->rgrLteAdvCfg, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
-   CMCHKUNPK(SUnpkU8, &param->isAutoCfgModeEnb, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isDynCfiEnb, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isAutoCfgModeEnb, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isDynCfiEnb, mBuf);
    CMCHKUNPK(cmUnpkRgrCellCsgParamCfg, &param->csgParamCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrCellCntrlCmdCfg, &param->cntrlCmdCfg, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7839,20 +7839,20 @@ Buffer *mBuf;
 #ifdef EMTC_ENABLE
    /* Note: As we add more members to emtcUeRecfg, 
       create a new function for pkUnpk */
-   CMCHKPK(SPkU8, param->emtcUeRecfg.isHdFddEnbld, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcUeRecfg.isHdFddEnbld, mBuf);
 #endif
-   CMCHKPK(SPkU8, param->csgMmbrSta, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->csgMmbrSta, mBuf);
   
-   CMCHKPK(SPkU32, param->accessStratumRls, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->accessStratumRls, mBuf);
 #ifdef LTE_ADV 
-   CMCHKPK(SPkU8, param->simulAckNackCQIFormat3, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->simulAckNackCQIFormat3, mBuf);
    CMCHKPK(cmPkRgrUeSCellAckPucchCfg, &param->sCellAckN1ResCfg,mBuf);
    CMCHKPK(cmPkRgrUeSecCellInfo, &param->ueSCellCfgInfo,mBuf);
 #endif
    /* LTE_ADV_FLAG_REMOVED_START */
-   CMCHKPK(SPkU8, param->ueLteAdvCfg.isUeCellEdge, mBuf);
-   CMCHKPK(SPkU8, param->ueLteAdvCfg.isAbsUe, mBuf);
-   CMCHKPK(SPkU32, param->ueLteAdvCfg.pres, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->ueLteAdvCfg.isUeCellEdge, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->ueLteAdvCfg.isAbsUe, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->ueLteAdvCfg.pres, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
    /*ccpu00130497: Removed the duplicate packing*/
 #ifdef TFU_UPGRADE
@@ -7869,7 +7869,7 @@ Buffer *mBuf;
 
 /*rgr_c_001.main_9 ADD added changes for HDFDD*/
 #ifdef LTEMAC_HDFDD
-   CMCHKPK(SPkU8, param->isHdFddEnbld, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isHdFddEnbld, mBuf);
 #endif
 
 #ifdef TFU_UPGRADE
@@ -7883,13 +7883,13 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrUeTxAntSelCfg, &param->ulTxAntSel, mBuf);
 
    /* rgr_c_001.main_7 - Changes for UE category Reconfiguration */
-   CMCHKPK(SPkU32, param->ueCatEnum, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->ueCatEnum, mBuf);
 
    CMCHKPK(cmPkRgrCodeBookRstCfg, &param->ueCodeBookRstRecfg, mBuf);
    CMCHKPK(cmPkRgrUeMeasGapCfg, &param->ueMeasGapRecfg, mBuf);
    CMCHKPK(cmPkRgrUeCapCfg, &param->ueCapRecfg, mBuf);
    CMCHKPK(cmPkRgrUeAckNackRepCfg, &param->ueAckNackRecfg, mBuf);
-   CMCHKPK(SPkU8, param->isTtiBundlEnabled, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isTtiBundlEnabled, mBuf);
 /*rgr_c_001.main_9 ADD added changes for DRX*/
    
    /* Anshika - Pack only if DRX is enabled */
@@ -7897,7 +7897,7 @@ Buffer *mBuf;
    {
       CMCHKPK(cmPkRgrUeDrxCfg, &param->ueDrxRecfg, mBuf);
    }
-   CMCHKPK(SPkU8, param->ueDrxRecfg.isDrxEnabled, mBuf); /* This has to be packed even if
+   CMCHKPK(oduUnpackUInt8, param->ueDrxRecfg.isDrxEnabled, mBuf); /* This has to be packed even if
                                                  DRX is disabled */
    CMCHKPK(cmPkRgrUeUlPwrCfg, &param->ueUlPwrRecfg, mBuf);
 #ifdef RGR_V1
@@ -7918,12 +7918,12 @@ Buffer *mBuf;
    /*rgr_c_001.main_9: changing ueRecfgTypes to U32 */
    /* LTE_ADV_FLAG_REMOVED_START */
    /* KW fix for LTE_ADV */
-   CMCHKPK(SPkU32, param->ueRecfgTypes, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->ueRecfgTypes, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
    CMCHKPK(cmPkLteRnti, param->newCrnti, mBuf);
    CMCHKPK(cmPkLteRnti, param->oldCrnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -7965,7 +7965,7 @@ Buffer *mBuf;
    /* LTE_ADV_FLAG_REMOVED_START */
    /*rgr_c_001.main_9: changing ueRecfgTypes to U32 */
    /* KW fix for LTE_ADV */
-   CMCHKUNPK(SUnpkU32, &param->ueRecfgTypes, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->ueRecfgTypes, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
    CMCHKUNPK(cmUnpkRgrUeTxModeCfg, &param->txMode, mBuf);
 
@@ -7987,18 +7987,18 @@ Buffer *mBuf;
 /*rgr_c_001.main_9 ADD added changes for DRX*/
    
    /* Anshika - Unpack only if DRX is enabled */
-   CMCHKUNPK(SUnpkU8, &param->ueDrxRecfg.isDrxEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ueDrxRecfg.isDrxEnabled, mBuf);
    if(TRUE == param->ueDrxRecfg.isDrxEnabled)
    {
       CMCHKUNPK(cmUnpkRgrUeDrxCfg, &param->ueDrxRecfg, mBuf);
    }
-   CMCHKUNPK(SUnpkU8, &param->isTtiBundlEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isTtiBundlEnabled, mBuf);
    CMCHKUNPK(cmUnpkRgrUeAckNackRepCfg, &param->ueAckNackRecfg, mBuf);
    CMCHKUNPK(cmUnpkRgrUeCapCfg, &param->ueCapRecfg, mBuf);
    CMCHKUNPK(cmUnpkRgrUeMeasGapCfg, &param->ueMeasGapRecfg, mBuf);
    CMCHKUNPK(cmUnpkRgrCodeBookRstCfg, &param->ueCodeBookRstRecfg, mBuf);
 /* rgr_c_001.main_7 - Changes for UE category Reconfiguration */
-   CMCHKUNPK(SUnpkU32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
    param->ueCatEnum = (CmLteUeCategory) tmpEnum;
    CMCHKUNPK(cmUnpkRgrUeTxAntSelCfg, &param->ulTxAntSel, mBuf);
    /*rgr_c_001.main_7 - Added support for SPS*/
@@ -8013,7 +8013,7 @@ Buffer *mBuf;
 
 /*rgr_c_001.main_9 ADD added changes for HDFDD*/
 #ifdef LTEMAC_HDFDD
-   CMCHKUNPK(SUnpkU8, &param->isHdFddEnbld, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isHdFddEnbld, mBuf);
 #endif
 
    CMCHKUNPK(cmUnpkRgrUePuschDedCfg, &param->puschDedCfg, mBuf);
@@ -8028,23 +8028,23 @@ Buffer *mBuf;
 #endif
 
    /* LTE_ADV_FLAG_REMOVED_START */
-   CMCHKUNPK(SUnpkU32, &param->ueLteAdvCfg.pres, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->ueLteAdvCfg.isAbsUe, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->ueLteAdvCfg.isUeCellEdge, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->ueLteAdvCfg.pres, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ueLteAdvCfg.isAbsUe, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ueLteAdvCfg.isUeCellEdge, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
 #ifdef LTE_ADV 
    CMCHKUNPK(cmUnpkRgrUeSecCellInfo, &param->ueSCellCfgInfo,mBuf);
    CMCHKUNPK(cmUnpkRgrUeSCellAckPucchCfg, &param->sCellAckN1ResCfg,mBuf);
-   CMCHKUNPK(SUnpkU8, &param->simulAckNackCQIFormat3, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->simulAckNackCQIFormat3, mBuf);
 #endif
-   CMCHKUNPK(SUnpkU32, (U32 *)&param->accessStratumRls, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&param->accessStratumRls, mBuf);
 
-   CMCHKUNPK(SUnpkU8, &param->csgMmbrSta, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->csgMmbrSta, mBuf);
 #ifdef EMTC_ENABLE
-   CMCHKPK(SUnpkU8, &param->emtcUeRecfg.isHdFddEnbld, mBuf);
+   CMCHKPK(oduPackUInt8, &param->emtcUeRecfg.isHdFddEnbld, mBuf);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -8079,7 +8079,7 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrLchRecfg)
 /*rgr_c_001.main_7 - Added support for SPS*/
-   CMCHKPK(SPkU8, param->lcgId, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->lcgId, mBuf);
    
    CMCHKPK(cmPkRgrUlLchQciCfg, &param->ulLchQciInfo, mBuf);
    CMCHKPK(cmPkRgrLchSpsCfg, &param->dlRecfg.dlSpsRecfg, mBuf);
@@ -8088,7 +8088,7 @@ Buffer *mBuf;
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
    CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -8131,8 +8131,8 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkRgrLchSpsCfg, &param->dlRecfg.dlSpsRecfg, mBuf);
 
    CMCHKUNPK(cmUnpkRgrUlLchQciCfg, &param->ulLchQciInfo, mBuf);   
-   CMCHKUNPK(SUnpkU8, &param->lcgId, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->lcgId, mBuf);
+   return ROK;
 }
 
 
@@ -8153,19 +8153,19 @@ Buffer *mBuf;
 #endif
    TRC3(cmPkRgrLcgRecfg)
 
-   CMCHKPK(SPkU32, param->ulRecfg.mbr, mBuf);
-   CMCHKPK(SPkU32, param->ulRecfg.gbr, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->ulRecfg.mbr, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->ulRecfg.gbr, mBuf);
 #ifdef RG_UNUSED
    for (i = param->ulRecfg.numLch - 1; i >= 0; i--)
    {
       CMCHKPK(cmPkRgrUlLchCfg, &param->ulRecfg.lchUlCfg[i], mBuf);
    }
-   CMCHKPK(SPkU8, param->ulRecfg.numLch, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->ulRecfg.numLch, mBuf);
 #endif
-   CMCHKPK(SPkU8, param->ulRecfg.lcgId, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->ulRecfg.lcgId, mBuf);
    CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -8188,19 +8188,19 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->ulRecfg.lcgId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ulRecfg.lcgId, mBuf);
 
 #ifdef RG_UNUSED
-   CMCHKUNPK(SUnpkU8, &param->ulRecfg.numLch, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->ulRecfg.numLch, mBuf);
    for (i = 0; i < param->ulRecfg.numLch; i++)
    {
       CMCHKUNPK(cmUnpkRgrUlLchCfg, &param->ulRecfg.lchUlCfg[i], mBuf);
    }
 #endif
-   CMCHKUNPK(SUnpkU32, &param->ulRecfg.gbr, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->ulRecfg.mbr, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->ulRecfg.gbr, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->ulRecfg.mbr, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -8249,10 +8249,10 @@ Buffer *mBuf;
             CMCHKPK(cmPkRgrCellRecfg, &param->u.cellRecfg, mBuf);
             break;
          default :
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
-   CMCHKPK(SPkU8, param->recfgType, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->recfgType, mBuf);
+   return ROK;
 }
 
 
@@ -8287,7 +8287,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrRecfg)
 
-   CMCHKUNPK(SUnpkU8, &param->recfgType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->recfgType, mBuf);
       switch(param->recfgType) {
          case RGR_CELL_CFG:
             CMCHKUNPK(cmUnpkRgrCellRecfg, &param->u.cellRecfg, mBuf);
@@ -8302,9 +8302,9 @@ Buffer *mBuf;
             CMCHKUNPK(cmUnpkRgrLcgRecfg, &param->u.lcgRecfg, mBuf);
             break;
          default :
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef LTE_ADV
@@ -8335,9 +8335,9 @@ RgrUeDlSecCellRelInfo *param;
 Buffer *mBuf;
 #endif
 {
-   CMCHKPK(SPkU16, param->sCellId, mBuf);
-   CMCHKPK(SPkU8, param->sCellIdx, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, param->sCellId, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->sCellIdx, mBuf);
+   return ROK;
 }
 
 /***********************************************************
@@ -8372,9 +8372,9 @@ Buffer *mBuf;
    {
       CMCHKPK(cmPkRgrUeDlSecCellRelInfo, &param->ueSCellRelDedCfg[(U8)idx],mBuf);
    }
-   CMCHKPK(SPkU8, param->numSCells, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numSCells, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -8411,12 +8411,12 @@ Buffer *mBuf;
 
       switch(param->delType) {
          case RGR_LCG_CFG:
-            CMCHKPK(SPkU8, param->u.lcgDel.lcgId, mBuf);
+            CMCHKPK(oduUnpackUInt8, param->u.lcgDel.lcgId, mBuf);
             CMCHKPK(cmPkLteRnti, param->u.lcgDel.crnti, mBuf);
             CMCHKPK(cmPkLteCellId, param->u.lcgDel.cellId, mBuf);
          break;
          case RGR_LCH_CFG:
-            CMCHKPK(SPkU8, param->u.lchDel.lcgId, mBuf);
+            CMCHKPK(oduUnpackUInt8, param->u.lchDel.lcgId, mBuf);
             CMCHKPK(cmPkLteLcId, param->u.lchDel.lcId, mBuf);
             CMCHKPK(cmPkLteRnti, param->u.lchDel.crnti, mBuf);
             CMCHKPK(cmPkLteCellId, param->u.lchDel.cellId, mBuf);
@@ -8431,16 +8431,16 @@ Buffer *mBuf;
 #ifdef LTE_ADV
          case RGR_SCELL_UE_CFG:
             CMCHKPK(cmPkRgrUeSecCellRelInfo, &param->u.ueScellRel.ueSCellRelCfgInfo, mBuf);
-            CMCHKPK(SPkU32, param->u.ueScellRel.ueDelTypes, mBuf);
+            CMCHKPK(oduUnpackUInt32, param->u.ueScellRel.ueDelTypes, mBuf);
             CMCHKPK(cmPkLteRnti, param->u.ueScellRel.crnti, mBuf);
             CMCHKPK(cmPkLteCellId, param->u.ueScellRel.cellId, mBuf);
          break;
 #endif
          default :
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
-   CMCHKPK(SPkU8, param->delType, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->delType, mBuf);
+   return ROK;
 }
 
 
@@ -8473,9 +8473,9 @@ RgrUeDlSecCellRelInfo *param;
 Buffer *mBuf;
 #endif
 {
-   CMCHKUNPK(SUnpkU8, &param->sCellIdx, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->sCellId, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->sCellIdx, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->sCellId, mBuf);
+   return ROK;
 }
 
 
@@ -8508,13 +8508,13 @@ Buffer *mBuf;
 {
    U8 idx;
 
-   CMCHKUNPK(SUnpkU8, &param->numSCells, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numSCells, mBuf);
 
    for(idx = 0; idx < param->numSCells;idx++)
    {
       CMCHKUNPK(cmUnpkRgrUeDlSecCellRelInfo, &param->ueSCellRelDedCfg[idx],mBuf);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -8548,7 +8548,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrDel)
 
-   CMCHKUNPK(SUnpkU8, &param->delType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->delType, mBuf);
       switch(param->delType) {
          case RGR_CELL_CFG:
             CMCHKUNPK(cmUnpkLteCellId, &param->u.cellDel.cellId, mBuf);
@@ -8561,25 +8561,25 @@ Buffer *mBuf;
             CMCHKUNPK(cmUnpkLteCellId, &param->u.lchDel.cellId, mBuf);
             CMCHKUNPK(cmUnpkLteRnti, &param->u.lchDel.crnti, mBuf);
             CMCHKUNPK(cmUnpkLteLcId, &param->u.lchDel.lcId, mBuf);
-            CMCHKUNPK(SUnpkU8, &param->u.lchDel.lcgId, mBuf);
+            CMCHKUNPK(oduPackUInt8, &param->u.lchDel.lcgId, mBuf);
          break;
          case RGR_LCG_CFG:
             CMCHKUNPK(cmUnpkLteCellId, &param->u.lcgDel.cellId, mBuf);
             CMCHKUNPK(cmUnpkLteRnti, &param->u.lcgDel.crnti, mBuf);
-            CMCHKUNPK(SUnpkU8, &param->u.lcgDel.lcgId, mBuf);
+            CMCHKUNPK(oduPackUInt8, &param->u.lcgDel.lcgId, mBuf);
          break;
 #ifdef LTE_ADV
          case RGR_SCELL_UE_CFG:
             CMCHKUNPK(cmUnpkLteCellId, &param->u.ueScellRel.cellId, mBuf);
             CMCHKUNPK(cmUnpkLteRnti, &param->u.ueScellRel.crnti, mBuf);
-            CMCHKUNPK(SUnpkU32, &param->u.ueScellRel.ueDelTypes, mBuf);
+            CMCHKUNPK(oduPackUInt32, &param->u.ueScellRel.ueDelTypes, mBuf);
             CMCHKUNPK(cmUnpkRgrUeSecCellRelInfo, &param->u.ueScellRel.ueSCellRelCfgInfo, mBuf);
          break;
 #endif
          default :
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
-   RETVALUE(ROK);
+   return ROK;
 }
 /***********************************************************
 *
@@ -8612,7 +8612,7 @@ Buffer *mBuf;
    TRC3(cmPkRgrPrbCfg)
    for(count = RGR_SCH_MAX_PA_PER_PRB - 1; count >= 0; count --)
    {
-      CMCHKPK(SPkU32, param->paLevelPerPrb[count], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->paLevelPerPrb[count], mBuf);
    }
    for(count = param->numCellCentreUEs - 1; count >= 0; count --)
    {
@@ -8622,10 +8622,10 @@ Buffer *mBuf;
    {
       CMCHKPK(cmPkLteRnti, param->cellEdgeUe[count], mBuf);
    }
-   CMCHKPK(SPkU8, param->numCellCentreUEs, mBuf);
-   CMCHKPK(SPkU8, param->numCellEdgeUEs, mBuf);
-   CMCHKPK(SPkU8, param->isSonIcicEnable, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->numCellCentreUEs, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numCellEdgeUEs, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isSonIcicEnable, mBuf);
+   return ROK;
 }
 
 /***********************************************************
@@ -8657,9 +8657,9 @@ Buffer      *mBuf;
 {
    S32   count;
    TRC3(cmUnpkRgrSonPrbCfg)
-   CMCHKUNPK(SUnpkU8, &param->isSonIcicEnable, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numCellEdgeUEs, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numCellCentreUEs, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isSonIcicEnable, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numCellEdgeUEs, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numCellCentreUEs, mBuf);
    for (count = 0; count < param->numCellEdgeUEs; count++)
    {
       CMCHKUNPK(cmUnpkLteRnti, &param->cellEdgeUe[count], mBuf);
@@ -8670,9 +8670,9 @@ Buffer      *mBuf;
    }
    for(count = 0; count < RGR_SCH_MAX_PA_PER_PRB; count ++)
    {
-      CMCHKUNPK(SUnpkU32,(U32 *) &param->paLevelPerPrb[count], mBuf);
+      CMCHKUNPK(oduPackUInt32,(U32 *) &param->paLevelPerPrb[count], mBuf);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 /***********************************************************
 *
@@ -8709,10 +8709,10 @@ Buffer *mBuf;
       CMCHKPK(cmPkRgrSonPrbCfg, &param->u.prbCfg, mBuf);
       break;
       default :
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   CMCHKPK(SPkU32, param->cfgType, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, param->cfgType, mBuf);
+   return ROK;
 }
 
 /***********************************************************
@@ -8744,7 +8744,7 @@ Buffer      *mBuf;
 {
 
    TRC3(cmUnpkRgrSonCfg)
-   CMCHKUNPK(SUnpkU32, (U32 *)&param->cfgType, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32 *)&param->cfgType, mBuf);
    switch(param->cfgType)
    {
       case RGR_SON_PRB_CFG :
@@ -8752,10 +8752,10 @@ Buffer      *mBuf;
          CMCHKUNPK(cmUnpkRgrSonPrbCfg, &param->u.prbCfg, mBuf);
          break;
          default :
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -8791,7 +8791,7 @@ Buffer *mBuf;
 
    CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -8828,7 +8828,7 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 #ifdef LTE_ADV
 /***********************************************************
@@ -8860,8 +8860,8 @@ Buffer *mBuf;
 {
    TRC3(cmUnPkRgrSCellActDeactInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->sCellIdx, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->sCellIdx, mBuf);
+   return ROK;
 }
 
 /***********************************************************
@@ -8896,14 +8896,14 @@ Buffer *mBuf;
    U8 idx;
 
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numOfSCells, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numOfSCells, mBuf);
 
    for(idx = 0; idx < param->numOfSCells;idx++)
    {
       CMCHKUNPK(cmUnPkRgrSCellActDeactInfo, &param->sCellActDeactInfo[idx],mBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -8936,9 +8936,9 @@ Buffer *mBuf;
 {
    TRC3(cmPkRgrSCellActDeactInfo)
 
-   CMCHKPK(SPkU8, param->sCellIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->sCellIdx, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -8977,10 +8977,10 @@ Buffer *mBuf;
       CMCHKPK(cmPkRgrSCellActDeactInfo, &param->sCellActDeactInfo[(U8)idx], mBuf);
    }
 
-   CMCHKPK(SPkU8, param->numOfSCells, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numOfSCells, mBuf);
    CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -9040,10 +9040,10 @@ Buffer *mBuf;
             break;
 #endif
          default :
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
-   CMCHKPK(SPkU8, param->action, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->action, mBuf);
+   return ROK;
 }
 
 
@@ -9078,7 +9078,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrCfgReqInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->action, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->action, mBuf);
       switch(param->action) {
          case SCH_CONFIG:
             CMCHKUNPK(cmUnpkRgrCfg, &param->u.cfgInfo, mBuf);
@@ -9103,9 +9103,9 @@ Buffer *mBuf;
             break;
 #endif /* LTE_ADV */
          default :
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
-   RETVALUE(ROK);
+   return ROK;
 }
 #ifdef RGR_V1
 /* rgr_c_001.main_5: ccpu00112398: Added periodicBSR-timer and
@@ -9140,10 +9140,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeBsrTmrCfg)
 
-   CMCHKPK(SPkU16, param->prdBsrTmr, mBuf);
-   CMCHKPK(SPkU16, param->retxBsrTmr, mBuf);
-   CMCHKPK(SPkU8, param->isPrdBsrTmrPres, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, param->prdBsrTmr, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->retxBsrTmr, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isPrdBsrTmrPres, mBuf);
+   return ROK;
 }
 
 /***********************************************************
@@ -9176,10 +9176,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeBsrTmrCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isPrdBsrTmrPres, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->retxBsrTmr, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->prdBsrTmr, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->isPrdBsrTmrPres, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->retxBsrTmr, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->prdBsrTmr, mBuf);
+   return ROK;
 }
 #endif /* RGR_V1 */
 /* rgr_c_001.main_4-ADD-Added for SI Enhancement. */
@@ -9229,7 +9229,7 @@ RgrSiCfgReqInfo * cfgReqInfo;
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
                  sizeof(RgrSiCfgReqInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cmPkRgrSiCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -9240,7 +9240,7 @@ RgrSiCfgReqInfo * cfgReqInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
                 sizeof(RgrSiCfgReqInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cmPkRgrCfgTransId(&transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -9251,7 +9251,7 @@ RgrSiCfgReqInfo * cfgReqInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
                sizeof(RgrSiCfgReqInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -9262,7 +9262,7 @@ RgrSiCfgReqInfo * cfgReqInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
                sizeof(RgrSiCfgReqInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
                sizeof(RgrSiCfgReqInfo)) != ROK) {
@@ -9272,7 +9272,7 @@ RgrSiCfgReqInfo * cfgReqInfo;
             (ErrVal)ERGR049, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGRSICFGREQ;
@@ -9322,7 +9322,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR050, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cmUnpkRgrCfgTransId(&transId, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -9331,7 +9331,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR051, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&cfgReqInfo,
             sizeof(RgrSiCfgReqInfo))) != ROK) {
@@ -9341,7 +9341,7 @@ Buffer *mBuf;
             (ErrVal)ERGR052, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cmMemset((U8 *)cfgReqInfo, 0, sizeof(RgrSiCfgReqInfo));
    if (pst->selector == ODU_SELECTOR_LC) 
@@ -9354,7 +9354,7 @@ Buffer *mBuf;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERGR053, (ErrVal)0, "Packing failed");
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    SPutMsg(mBuf);
 
@@ -9395,14 +9395,14 @@ Buffer *mBuf;
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(SPkS32, param->cfgType, mBuf);
-   CMCHKPK(SPkU8, param->siId, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->siId, mBuf);
 
    if(NULLP != param->pdu)
    {
       if (SFndLenMsg(param->pdu, &msgLen) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       if (SCatMsg(mBuf, param->pdu, M1M2) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       SPutMsg(param->pdu);
       CMCHKPK(cmPkMsgLen, msgLen, mBuf);
    }
@@ -9412,7 +9412,7 @@ Buffer *mBuf;
       CMCHKPK(cmPkMsgLen, 0, mBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -9456,9 +9456,9 @@ Buffer *mBuf;
       if(msgLen > 0)
       {
          if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)
-            RETVALUE(RFAILED);
+            return RFAILED;
          if (SSegMsg(mBuf, totalMsgLen-msgLen, &param->pdu) != ROK)
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
       else
       {
@@ -9466,14 +9466,14 @@ Buffer *mBuf;
       }
    }
 
-   CMCHKUNPK(SUnpkU8, &param->siId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->siId, mBuf);
    /*CMCHKUNPK(SUnpkS32, (S32 *)&param->cfgType, mBuf);*/
    /*Merge from Mohit Changes*/
    CMCHKUNPK(SUnpkS32,(S32 *)&cfgType, mBuf);
    param->cfgType = (RgrSiCfgType) cfgType;
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -9523,7 +9523,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo;
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                  sizeof(RgrWarningSiCfgReqInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmPkRgrWarningSiCfgReqInfo(pst, warningSiCfgReqInfo, mBuf) != ROK) 
@@ -9536,7 +9536,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                 sizeof(RgrWarningSiCfgReqInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmPkRgrCfgTransId(&transId, mBuf) != ROK) 
@@ -9549,7 +9549,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                sizeof(RgrWarningSiCfgReqInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(spId, mBuf) != ROK) 
@@ -9562,7 +9562,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo;
       SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                sizeof(RgrWarningSiCfgReqInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* if the application wants to retain this structure, the below 
@@ -9576,7 +9576,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo;
             (ErrVal)ERGR065, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGRWARNINGSICFGREQ;
@@ -9628,7 +9628,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR066, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmUnpkRgrCfgTransId(&transId, mBuf) != ROK) 
@@ -9639,7 +9639,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR067, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&warningSiCfgReqInfo,
@@ -9651,7 +9651,7 @@ Buffer *mBuf;
             (ErrVal)ERGR068, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -9667,7 +9667,7 @@ Buffer *mBuf;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERGR069, (ErrVal)0, "Packing failed");
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    SPutMsg(mBuf);
@@ -9713,10 +9713,10 @@ Buffer *mBuf;
  
    TRC3(cmPkRgrWarningSiCfgReqInfo)
 
-   CMCHKPK(SPkU8, param->emtcEnable, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->emtcEnable, mBuf);
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   CMCHKPK(SPkU8, param->siId, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->siId, mBuf);
 
    count = param->siPduLst.count;
    node = param->siPduLst.last;
@@ -9727,9 +9727,9 @@ Buffer *mBuf;
       if(NULLP != pdu)
       {
          if (SFndLenMsg(pdu->pdu, &msgLen) != ROK)
-            RETVALUE(RFAILED);
+            return RFAILED;
          if (SCatMsg(mBuf, pdu->pdu, M1M2) != ROK)
-            RETVALUE(RFAILED);
+            return RFAILED;
          /* The PDU is not Released. This has to be done by 
           * the caller of the packing function  */
          CMCHKPK(cmPkMsgLen, msgLen, mBuf);
@@ -9739,8 +9739,8 @@ Buffer *mBuf;
       SPutSBuf(pst->region, pst->pool, (Data *)node, sizeof(RgrSegmentInfo));
       node= prevNode;
    }
-   CMCHKPK(SPkU32, count, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, count, mBuf);
+   return ROK;
 }
 
 
@@ -9781,12 +9781,12 @@ Buffer *mBuf;
    TRC3(cmUnpkRgrWarningSiCfgReqInfo)
 
    cmLListInit(&param->siPduLst);
-   CMCHKUNPK(SUnpkU32, &count, mBuf);
+   CMCHKUNPK(oduPackUInt32, &count, mBuf);
    for (loopCnt=0; loopCnt<count; loopCnt++) 
    {
       if(SFndLenMsg(mBuf, &msgLen) != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       } 
 
       if(msgLen > 0)
@@ -9794,29 +9794,29 @@ Buffer *mBuf;
          CMCHKUNPK(cmUnpkMsgLen, &msgLen, mBuf);
          if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)
          { 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }   
          if (SSegMsg(mBuf, totalMsgLen-msgLen, &pdu) != ROK)
          {		 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }   
       }
       else
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if ((SGetSBuf(pst->region, pst->pool, (Data **)&node,
                   sizeof(CmLList))) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       node->node = (PTR)pdu;
       cmLListAdd2Tail(&param->siPduLst, node);
    }
 
-   CMCHKUNPK(SUnpkU8, &param->siId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->siId, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-   CMCHKPK(SUnpkU8, &param->emtcEnable, mBuf);
+   CMCHKPK(oduPackUInt8, &param->emtcEnable, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -9859,10 +9859,10 @@ U8            siId;
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR070, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   CMCHKPK(SPkU8, siId, mBuf);
+   CMCHKPK(oduUnpackUInt8, siId, mBuf);
 
  
    if (cmPkRgrCfgTransId(&transId, mBuf) != ROK) 
@@ -9873,7 +9873,7 @@ U8            siId;
          (ErrVal)ERGR082, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -9885,7 +9885,7 @@ U8            siId;
             (ErrVal)ERGR071, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGRWARNINGSISTOPREQ;
@@ -9933,7 +9933,7 @@ Buffer *mBuf;
            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
            (ErrVal)ERGR072, (ErrVal)0, "Packing failed");
 #endif
-     RETVALUE(RFAILED);
+     return RFAILED;
   }
 
     if (cmUnpkRgrCfgTransId(&transId, mBuf) != ROK) 
@@ -9944,10 +9944,10 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR083, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
-   CMCHKUNPK(SUnpkU8, &siId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &siId, mBuf);
 
    SPutMsg(mBuf);
 
@@ -9999,10 +9999,10 @@ U8            status;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR073, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if (SPkU8(status, mBuf) != ROK)
+   if (oduUnpackUInt8(status, mBuf) != ROK)
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -10010,10 +10010,10 @@ U8            status;
          (ErrVal)ERGR074, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if (SPkU8(siId, mBuf) != ROK)
+   if (oduUnpackUInt8(siId, mBuf) != ROK)
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -10021,7 +10021,7 @@ U8            status;
          (ErrVal)ERGR075, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmPkRgrCfgTransId(&transId, mBuf) != ROK) 
@@ -10032,7 +10032,7 @@ U8            status;
          (ErrVal)ERGR076, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK)
@@ -10043,7 +10043,7 @@ U8            status;
          (ErrVal)ERGR077, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGRWARNINGSICFGCFM;
@@ -10095,7 +10095,7 @@ Buffer *mBuf;
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR078, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmUnpkRgrCfgTransId(&transId, mBuf) != ROK) 
@@ -10106,10 +10106,10 @@ Buffer *mBuf;
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR079, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if (SUnpkU8(&siId, mBuf) != ROK) 
+   if (oduPackUInt8(&siId, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -10117,10 +10117,10 @@ Buffer *mBuf;
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR080, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if (SUnpkU8(&status, mBuf) != ROK) 
+   if (oduPackUInt8(&status, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -10128,7 +10128,7 @@ Buffer *mBuf;
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR081, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, suId, transId, siId, status));
@@ -10181,7 +10181,7 @@ RgrLoadInfReqInfo * loadInfReq;
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
                  sizeof(RgrLoadInfReqInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cmPkRgrLoadInfReqInfo(loadInfReq, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -10192,7 +10192,7 @@ RgrLoadInfReqInfo * loadInfReq;
       SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
                 sizeof(RgrLoadInfReqInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (cmPkRgrCfgTransId(&transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -10203,7 +10203,7 @@ RgrLoadInfReqInfo * loadInfReq;
       SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
                sizeof(RgrLoadInfReqInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -10214,7 +10214,7 @@ RgrLoadInfReqInfo * loadInfReq;
       SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
                sizeof(RgrLoadInfReqInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
                sizeof(RgrLoadInfReqInfo)) != ROK) {
@@ -10224,7 +10224,7 @@ RgrLoadInfReqInfo * loadInfReq;
             (ErrVal)ERGR049, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGRLOADINFREQ;
@@ -10274,7 +10274,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR050, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmUnpkRgrCfgTransId(&transId, mBuf) != ROK) {
@@ -10284,7 +10284,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR051, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&loadInfReq,
@@ -10295,7 +10295,7 @@ Buffer *mBuf;
             (ErrVal)ERGR052, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    cmMemset((U8 *)loadInfReq, 0, sizeof(RgrLoadInfReqInfo));
@@ -10310,7 +10310,7 @@ Buffer *mBuf;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERGR053, (ErrVal)0, "Packing failed");
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    SPutMsg(mBuf);
 
@@ -10347,10 +10347,10 @@ Buffer *mBuf;
    TRC3(cmPkRgrLoadInfReqInfo)
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   CMCHKPK(SPkU8, param->rgrCcPHighStartRb, mBuf);
-   CMCHKPK(SPkU8, param->rgrCcPHighEndRb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->rgrCcPHighStartRb, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->rgrCcPHighEndRb, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -10382,11 +10382,11 @@ Buffer *mBuf;
 {
    TRC3(cmUnpkRgrLoadInfReqInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->rgrCcPHighEndRb, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->rgrCcPHighStartRb, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->rgrCcPHighEndRb, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->rgrCcPHighStartRb, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /* LTE_ADV_FLAG_REMOVED_END */
 
@@ -10423,9 +10423,9 @@ Buffer *mBuf;
 {
    TRC3(cmPkRgrUeCqiReptCfg)
 
-   CMCHKPK(SPkU8, param->numColltdCqiRept, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numColltdCqiRept, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -10459,9 +10459,9 @@ Buffer *mBuf;
 {
    TRC3(cmUnpkRgrUeCqiReptCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->numColltdCqiRept, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numColltdCqiRept, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -10507,7 +10507,7 @@ RgrStaIndInfo* staInd;
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)staInd, 
                sizeof(RgrStaIndInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmPkRgrStaIndInfo(staInd, mBuf) != ROK) 
@@ -10519,7 +10519,7 @@ RgrStaIndInfo* staInd;
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)staInd, sizeof(RgrStaIndInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if (SPkS16(suId, mBuf) != ROK) 
@@ -10532,7 +10532,7 @@ RgrStaIndInfo* staInd;
       SPutSBuf(pst->region, pst->pool, (Data *)staInd, 
                   sizeof(RgrStaIndInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPutSBuf(pst->region, pst->pool, (Data *)staInd, 
@@ -10544,7 +10544,7 @@ RgrStaIndInfo* staInd;
          (ErrVal)ERGR057, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGRSTAIND;
@@ -10593,7 +10593,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR058, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&staInd,
@@ -10605,7 +10605,7 @@ Buffer *mBuf;
             (ErrVal)ERGR059, (ErrVal)0, "Packing failed");
 #endif
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    if (cmUnpkRgrStaIndInfo(staInd, mBuf) != ROK)
@@ -10618,7 +10618,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR060, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutMsg(mBuf);
@@ -10659,7 +10659,7 @@ Buffer *mBuf;
    CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
    CMCHKPK(cmPkRgrUeCqiInfo, &param->ueCqiInfo, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /*rgr_c_001.main_9 ADD added changes for CQI management*/
 /***********************************************************
@@ -10695,7 +10695,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /*rgr_c_001.main_9 ADD added changes for CQI management*/
 /***********************************************************
@@ -10732,9 +10732,9 @@ Buffer *mBuf;
    {
       CMCHKPK(cmPkRgrUeCqiRept, &param->cqiRept[idx], mBuf);
    }
-   CMCHKPK(SPkU8, param->numCqiRept, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numCqiRept, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* cmPkRgrUeCqiInfo */
 
 /*rgr_c_001.main_9 ADD added changes for CQI management*/
@@ -10768,13 +10768,13 @@ Buffer *mBuf;
    U8  idx;
    TRC3(cmUnpkRgrUeCqiInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->numCqiRept, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numCqiRept, mBuf);
    for (idx = 0; idx < param->numCqiRept; idx++)
    {
       CMCHKUNPK(cmUnpkRgrUeCqiRept, &param->cqiRept[idx], mBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* cmUnpkRgrUeCqiInfo */
 
 /***********************************************************
@@ -10806,11 +10806,11 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrSubBandCqiInfo)
 
-   CMCHKPK(SPkU8, param->cqi[0], mBuf);
-   CMCHKPK(SPkU8, param->cqi[1], mBuf);
-   CMCHKPK(SPkU8, param->subBandIdx, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cqi[0], mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cqi[1], mBuf);
+   CMCHKPK(oduUnpackUInt8, param->subBandIdx, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* cmPkRgrSubBandCqiInfo */
 
 /*rgr_c_001.main_9 ADD added changes for CQI management*/
@@ -10845,16 +10845,16 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrUeCqiRept)
 
-   CMCHKPK(SPkU8, param->cqi[0], mBuf);
-   CMCHKPK(SPkU8, param->cqi[1], mBuf);
-   CMCHKPK(SPkU8, param->cqiMode, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cqi[0], mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cqi[1], mBuf);
+   CMCHKPK(oduUnpackUInt8, param->cqiMode, mBuf);
    for (idx = param->numSubBand - 1; idx >= 0; idx--)
    {
       count = idx;
       CMCHKPK(cmPkRgrSubBandCqiInfo, &param->sbCqiInfo[count], mBuf);
    }
-   CMCHKPK(SPkU8, param->numSubBand, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->numSubBand, mBuf);
+   return ROK;
 } /* cmPkRgrUeCqiRept */
 
 /***********************************************************
@@ -10886,11 +10886,11 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrSubBandCqiInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->subBandIdx, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->cqi[1], mBuf);
-   CMCHKUNPK(SUnpkU8, &param->cqi[0], mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->subBandIdx, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cqi[1], mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cqi[0], mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* cmUnpkRgrSubBandCqiInfo*/
 
 /*rgr_c_001.main_9 ADD added changes for CQI management*/
@@ -10923,16 +10923,16 @@ Buffer *mBuf;
    U8 idx;
 
    TRC3(cmUnpkRgrUeCqiRept)
-   CMCHKUNPK(SUnpkU8, &param->numSubBand, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numSubBand, mBuf);
    for (idx = 0; idx < param->numSubBand; idx++)
    {
       CMCHKUNPK(cmUnpkRgrSubBandCqiInfo, &param->sbCqiInfo[idx], mBuf);
    }
-   CMCHKUNPK(SUnpkU8, &param->cqiMode, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->cqi[1], mBuf);
-   CMCHKUNPK(SUnpkU8, &param->cqi[0], mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cqiMode, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cqi[1], mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->cqi[0], mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* cmUnpkRgrUeCqiRept */
 #endif /* End of ifdef RGR_CQI_REPT */
 
@@ -10978,7 +10978,7 @@ RgrLoadInfIndInfo* loadInfInd;
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)loadInfInd,
             sizeof(RgrLoadInfIndInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmPkRgrLoadInfIndInfo(loadInfInd, mBuf) != ROK)
@@ -10992,7 +10992,7 @@ RgrLoadInfIndInfo* loadInfInd;
             sizeof(RgrLoadInfIndInfo));
       SPutMsg(mBuf);
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK)
@@ -11005,7 +11005,7 @@ RgrLoadInfIndInfo* loadInfInd;
       SPutSBuf(pst->region, pst->pool, (Data *)loadInfInd,
             sizeof(RgrLoadInfIndInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPutSBuf(pst->region, pst->pool, (Data *)loadInfInd,
@@ -11017,7 +11017,7 @@ RgrLoadInfIndInfo* loadInfInd;
             (ErrVal)ERGR057, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGRLOADINFIND;
@@ -11065,7 +11065,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR058, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&loadInfInd,
@@ -11077,7 +11077,7 @@ Buffer *mBuf;
             (ErrVal)ERGR059, (ErrVal)0, "Packing failed");
 #endif
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    /* dsfr_pal_fixes ** 22-March-2013 ** SKS */
@@ -11091,7 +11091,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR060, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutMsg(mBuf);
@@ -11129,12 +11129,12 @@ Buffer *mBuf;
    TRC3(cmPkRgrLoadInfIndInfo)
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   CMCHKPK(SPkU16, param->bw, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->bw, mBuf);
    if(RGR_ABS == param->type)
    {
       for(idx = 0; idx < RGR_ABS_PATTERN_LEN; idx++)
       {
-         CMCHKPK(SPkU32, param->u.absLoadInfo[idx], mBuf);
+         CMCHKPK(oduUnpackUInt32, param->u.absLoadInfo[idx], mBuf);
       }
    }
    else
@@ -11142,9 +11142,9 @@ Buffer *mBuf;
       CMCHKPK(cmPkTknStrOSXL, &param->u.rntpInfo, mBuf);
    }
 
-   CMCHKPK(SPkU32, param->type, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->type, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -11183,12 +11183,12 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrLoadInfIndInfo)
 
-   CMCHKUNPK(SUnpkU32, &param->type, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->type, mBuf);
    if(RGR_ABS == param->type)
    {
       for(idx = RGR_ABS_PATTERN_LEN -1 ; idx >= 0; idx--)
       {
-         CMCHKUNPK(SUnpkU32, &param->u.absLoadInfo[(U8)idx], mBuf);
+         CMCHKUNPK(oduPackUInt32, &param->u.absLoadInfo[(U8)idx], mBuf);
       }
    }
    else
@@ -11197,12 +11197,12 @@ Buffer *mBuf;
       /* dsfr_pal_fixes ** 21-March-2013 ** SKS ** Start */
       tknStr = &param->u.rntpInfo;
 
-      CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+      CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
 
       if(tknStr->pres)
       {
          /* Length */
-         CMCHKUNPK(SUnpkU16, &tknStr->len, mBuf);
+         CMCHKUNPK(oduPackUInt16, &tknStr->len, mBuf);
 
          if ((SGetSBuf(pst->region, pst->pool, (Data **)&tknStr->val,tknStr->len)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -11211,24 +11211,24 @@ Buffer *mBuf;
                (ErrVal)ERGR052, (ErrVal)0, "Packing failed");
 #endif
             SPutMsg(mBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          /* Value */
          for (ndx = 1; ndx <= tknStr->len; ndx++)
          {
-            CMCHKUNPK(SUnpkU8, &tknStr->val[tknStr->len - ndx], mBuf);
+            CMCHKUNPK(oduPackUInt8, &tknStr->val[tknStr->len - ndx], mBuf);
          }
       }
    }
    /* dsfr_pal_fixes ** 21-March-2013 ** SKS ** End */
 
    /* dsfr_pal_fixes ** 22-March-2013 ** SKS */
-   CMCHKUNPK(SUnpkU16, &param->bw, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->bw, mBuf);
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /* LTE_ADV_FLAG_REMOVED_END */
 
@@ -11265,11 +11265,11 @@ Buffer *mBuf;
 
    if(param->pAPrsnt)
    {
-      CMCHKPK(SPkU32, param->pA, mBuf);
+      CMCHKPK(oduUnpackUInt32, param->pA, mBuf);
    }
-   CMCHKPK(SPkU8, param->pAPrsnt, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pAPrsnt, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -11304,14 +11304,14 @@ Buffer *mBuf;
    U32 tmpEnum;
    TRC3(cmUnpkRgrUepACfg)
 
-   CMCHKUNPK(SUnpkU8, (U8 *)&param->pAPrsnt, mBuf);
+   CMCHKUNPK(oduPackUInt8, (U8 *)&param->pAPrsnt, mBuf);
    if (param->pAPrsnt)
    {
-      CMCHKUNPK(SUnpkU32, (U32*)&tmpEnum, mBuf);
+      CMCHKUNPK(oduPackUInt32, (U32*)&tmpEnum, mBuf);
       param->pA = (RgrUeDlPwrCntrlPaCfg) tmpEnum;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*rgr_c_001.main_9 ADD PDSCH ded cfg*/
@@ -11346,7 +11346,7 @@ Buffer *mBuf;
 
    CMCHKPK(cmPkRgrUepACfg, &param->uepACfg, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -11382,7 +11382,7 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkRgrUepACfg, &param->uepACfg, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -11417,12 +11417,12 @@ Buffer *mBuf;
 #endif
 {
    TRC3(cmPkRgrUeUlPwrDedSCellCfg)
-   CMCHKPK(SPkU8, param->pSRSOffset, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->pSRSOffset, mBuf);
    CMCHKPK(SPkS8, param->p0UePusch, mBuf);
-   CMCHKPK(SPkU8, param->isDeltaMCSEnabled, mBuf);
-   CMCHKPK(SPkU8, param->isAccumulated, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isDeltaMCSEnabled, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isAccumulated, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -11455,11 +11455,11 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeUlPwrDedSCellCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->isAccumulated, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isDeltaMCSEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isAccumulated, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isDeltaMCSEnabled, mBuf);
    CMCHKUNPK(SUnpkS8, &param->p0UePusch, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->pSRSOffset, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->pSRSOffset, mBuf);
+   return ROK;
 }
 
 
@@ -11493,7 +11493,7 @@ Buffer *mBuf;
 #endif
 {
    CMCHKPK(cmPkRgrUeUlPwrDedSCellCfg,&param->ueSCellUlDedPwrCfg, mBuf);
-   CMCHKPK(SPkU8, param->isUlCaEnabled, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isUlCaEnabled, mBuf);
    CMCHKPK(cmPkRgrUeTxModeCfg, &param->txMode, mBuf);
 #ifdef TFU_UPGRADE
 /*rgr_c_001.main_9 ADD PDSCH ded cfg*/
@@ -11501,10 +11501,10 @@ Buffer *mBuf;
 #endif
    CMCHKPK(cmPkRgrUeDlCqiCfg,&param->ueSCellDlCqiCfg, mBuf);
    CMCHKPK(cmPkTknU32, &param->sCellDeActTmr, mBuf);
-   CMCHKPK(SPkU16, param->sCellId, mBuf);
-   CMCHKPK(SPkU8, param->sCellIdx, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->sCellId, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->sCellIdx, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -11542,11 +11542,11 @@ Buffer *mBuf;
       CMCHKPK(cmPkRgrUeSecCellCfg, &param->ueSCellDedCfg[(U8)idx],mBuf);
    }
 
-   CMCHKPK(SPkU8, param->numSCells, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numSCells, mBuf);
 
-   CMCHKPK(SPkU8, param->useExtBSRSizes, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->useExtBSRSizes, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -11577,18 +11577,18 @@ RgrUeSecCellCfg *param;
 Buffer *mBuf;
 #endif
 {
-   CMCHKUNPK(SUnpkU8, &param->sCellIdx, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->sCellId, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->sCellIdx, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->sCellId, mBuf);
    CMCHKUNPK(cmUnpkTknU32, &param->sCellDeActTmr, mBuf);
    CMCHKUNPK(cmUnpkRgrUeDlCqiCfg, &param->ueSCellDlCqiCfg, mBuf);
 #ifdef TFU_UPGRADE
    CMCHKUNPK(cmUnpkRgrUePdschDedCfg, &param->uePdschDedCfg, mBuf);
 #endif
    CMCHKUNPK(cmUnpkRgrUeTxModeCfg, &param->txMode, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->isUlCaEnabled, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->isUlCaEnabled, mBuf);
    CMCHKUNPK(cmUnpkRgrUeUlPwrDedSCellCfg, &param->ueSCellUlDedPwrCfg, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -11623,15 +11623,15 @@ Buffer *mBuf;
 {
    U8 idx;
 
-   CMCHKUNPK(SUnpkU8, &param->useExtBSRSizes, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numSCells, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->useExtBSRSizes, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numSCells, mBuf);
 
    for(idx = 0; idx < param->numSCells;idx++)
    {
       CMCHKUNPK(cmUnpkRgrUeSecCellCfg, &param->ueSCellDedCfg[idx],mBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /* Sprint 3 */
 /***********************************************************
@@ -11668,37 +11668,37 @@ Buffer *mBuf;
    { 
       for(idx = param->u.format1Bcs.sCellAckN1ResTb2Count - 1; idx >=0 ;idx--)
       {
-         CMCHKPK(SPkU16, param->u.format1Bcs.sCellAckN1ResTb2[(U8)idx], mBuf);
+         CMCHKPK(oduUnpackUInt16, param->u.format1Bcs.sCellAckN1ResTb2[(U8)idx], mBuf);
       }
 
-      CMCHKPK(SPkU8, param->u.format1Bcs.sCellAckN1ResTb2Count, mBuf);
+      CMCHKPK(oduUnpackUInt8, param->u.format1Bcs.sCellAckN1ResTb2Count, mBuf);
 
       for(idx = param->u.format1Bcs.sCellAckN1ResTb1Count - 1; idx >=0 ;idx--)
       {
-         CMCHKPK(SPkU16, param->u.format1Bcs.sCellAckN1ResTb1[(U8)idx], mBuf);
+         CMCHKPK(oduUnpackUInt16, param->u.format1Bcs.sCellAckN1ResTb1[(U8)idx], mBuf);
       }
 
-      CMCHKPK(SPkU8, param->u.format1Bcs.sCellAckN1ResTb1Count, mBuf);
+      CMCHKPK(oduUnpackUInt8, param->u.format1Bcs.sCellAckN1ResTb1Count, mBuf);
    }
    else
    {
       for(idx = param->u.format3.sCellAckN3ResAntP1Count - 1; idx >=0 ;idx--)
       {
-         CMCHKPK(SPkU16, param->u.format3.sCellAckN3ResAntP1[(U8)idx], mBuf);
+         CMCHKPK(oduUnpackUInt16, param->u.format3.sCellAckN3ResAntP1[(U8)idx], mBuf);
       }
 
-      CMCHKPK(SPkU8, param->u.format3.sCellAckN3ResAntP1Count, mBuf);
+      CMCHKPK(oduUnpackUInt8, param->u.format3.sCellAckN3ResAntP1Count, mBuf);
 
       for(idx = param->u.format3.sCellAckN3ResAntP0Count- 1; idx >=0 ;idx--)
       {
-         CMCHKPK(SPkU16, param->u.format3.sCellAckN3ResAntP0[(U8)idx], mBuf);
+         CMCHKPK(oduUnpackUInt16, param->u.format3.sCellAckN3ResAntP0[(U8)idx], mBuf);
       }
 
-      CMCHKPK(SPkU8, param->u.format3.sCellAckN3ResAntP0Count, mBuf);
+      CMCHKPK(oduUnpackUInt8, param->u.format3.sCellAckN3ResAntP0Count, mBuf);
    }
-   CMCHKPK(SPkU32, param->pucchFormatType, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->pucchFormatType, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -11732,42 +11732,42 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeSCellAckPucchCfg);
 
-   CMCHKUNPK(SUnpkU32, (U32*)&param->pucchFormatType, mBuf);
+   CMCHKUNPK(oduPackUInt32, (U32*)&param->pucchFormatType, mBuf);
    //if (param->pucchFormatType == RG_SCH_UCI_FORMAT1B_CS)
    if (param->pucchFormatType == RG_SCH_UCI_FORMAT1B_CS || param->pucchFormatType == RG_SCH_UCI_FORMAT1A_1B)
    {
-      CMCHKUNPK(SUnpkU8, &param->u.format1Bcs.sCellAckN1ResTb1Count, mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->u.format1Bcs.sCellAckN1ResTb1Count, mBuf);
 
       for(idx = 0; idx < param->u.format1Bcs.sCellAckN1ResTb1Count; idx++)
       {
-         CMCHKUNPK(SUnpkU16, &param->u.format1Bcs.sCellAckN1ResTb1[idx], mBuf);
+         CMCHKUNPK(oduPackUInt16, &param->u.format1Bcs.sCellAckN1ResTb1[idx], mBuf);
       }
 
-      CMCHKUNPK(SUnpkU8, &param->u.format1Bcs.sCellAckN1ResTb2Count, mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->u.format1Bcs.sCellAckN1ResTb2Count, mBuf);
 
       for(idx = 0; idx < param->u.format1Bcs.sCellAckN1ResTb2Count; idx++)
       {
-         CMCHKUNPK(SUnpkU16, &param->u.format1Bcs.sCellAckN1ResTb2[idx], mBuf);
+         CMCHKUNPK(oduPackUInt16, &param->u.format1Bcs.sCellAckN1ResTb2[idx], mBuf);
       }
    }
    else
    {
-      CMCHKUNPK(SUnpkU8, &param->u.format3.sCellAckN3ResAntP0Count, mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->u.format3.sCellAckN3ResAntP0Count, mBuf);
 
       for(idx = 0; idx < param->u.format3.sCellAckN3ResAntP0Count; idx++)
       {
-         CMCHKUNPK(SUnpkU16, &param->u.format3.sCellAckN3ResAntP0[idx], mBuf);
+         CMCHKUNPK(oduPackUInt16, &param->u.format3.sCellAckN3ResAntP0[idx], mBuf);
       }
 
-      CMCHKUNPK(SUnpkU8, &param->u.format3.sCellAckN3ResAntP1Count, mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->u.format3.sCellAckN3ResAntP1Count, mBuf);
 
       for(idx = 0; idx < param->u.format3.sCellAckN3ResAntP1Count; idx++)
       {
-         CMCHKUNPK(SUnpkU16, &param->u.format3.sCellAckN3ResAntP1[idx], mBuf);
+         CMCHKUNPK(oduPackUInt16, &param->u.format3.sCellAckN3ResAntP1[idx], mBuf);
       }
 
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -11816,7 +11816,7 @@ RgrUeStaIndInfo* ueStaInd;
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)ueStaInd, 
                sizeof(RgrUeStaIndInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cmPkRgrUeStaIndInfo(ueStaInd, mBuf) != ROK) 
@@ -11829,7 +11829,7 @@ RgrUeStaIndInfo* ueStaInd;
       SPutSBuf(pst->region, pst->pool, (Data *)ueStaInd, 
                sizeof(RgrUeStaIndInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if (SPkS16(suId, mBuf) != ROK) 
@@ -11842,7 +11842,7 @@ RgrUeStaIndInfo* ueStaInd;
       SPutSBuf(pst->region, pst->pool, (Data *)ueStaInd, 
                   sizeof(RgrUeStaIndInfo));
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (SPutSBuf(pst->region, pst->pool, (Data *)ueStaInd, 
@@ -11854,7 +11854,7 @@ RgrUeStaIndInfo* ueStaInd;
          (ErrVal)ERGR057, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGRUESTAIND;
@@ -11903,7 +11903,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR058, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&ueStaInd,
@@ -11915,7 +11915,7 @@ Buffer *mBuf;
             (ErrVal)ERGR059, (ErrVal)0, "Packing failed");
 #endif
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    if (cmUnpkRgrUeStaIndInfo(ueStaInd, mBuf) != ROK)
@@ -11928,7 +11928,7 @@ Buffer *mBuf;
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR060, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutMsg(mBuf);
@@ -11966,9 +11966,9 @@ Buffer *mBuf;
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
-   CMCHKPK(SPkU8, param->status, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->status, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /***********************************************************
 *
@@ -11999,11 +11999,11 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrUeStaIndInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->status, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->status, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -12037,10 +12037,10 @@ Buffer *mBuf;
 
    TRC3(cmPkRgrCellCsgParamCfg)
 
-   CMCHKPK(SPkU8, param->minUlResNonCsg, mBuf);
-   CMCHKPK(SPkU8, param->minDlResNonCsg, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->minUlResNonCsg, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->minDlResNonCsg, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -12072,10 +12072,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrCellCsgParamCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->minDlResNonCsg, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->minUlResNonCsg, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->minDlResNonCsg, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->minUlResNonCsg, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -12109,18 +12109,18 @@ Buffer *mBuf;
    switch(param->cmdType)
    {
       case RGR_CNTRL_CMD_RACH_OVRLD:
-         CMCHKUNPK(SPkU8, param->cmdDesc.rachOvrLd.backOffVal, mBuf);
-         CMCHKUNPK(SPkU8, param->cmdDesc.rachOvrLd.backOffEnb, mBuf);
+         CMCHKUNPK(oduUnpackUInt8, param->cmdDesc.rachOvrLd.backOffVal, mBuf);
+         CMCHKUNPK(oduUnpackUInt8, param->cmdDesc.rachOvrLd.backOffEnb, mBuf);
          break;
       case RGR_CNTRL_CMD_CPU_OVRLD:
-         CMCHKUNPK(SPkU8, param->cmdDesc.cpuOvrLd.instruction, mBuf);
+         CMCHKUNPK(oduUnpackUInt8, param->cmdDesc.cpuOvrLd.instruction, mBuf);
          break;
       default:
          break;
    }
-   CMCHKUNPK(SPkU32, param->cmdType, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, param->cmdType, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /***********************************************************
 *
@@ -12152,22 +12152,22 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRgrCellCntrlCmdCfg)
 
-   CMCHKUNPK(SUnpkU32, &tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, &tmpEnum, mBuf);
    param->cmdType = (RgrCellCntrlCmdType) tmpEnum;
    switch(param->cmdType)
    {
       case RGR_CNTRL_CMD_RACH_OVRLD:
-         CMCHKUNPK(SUnpkU8, &param->cmdDesc.rachOvrLd.backOffEnb, mBuf);
-         CMCHKUNPK(SUnpkU8, &param->cmdDesc.rachOvrLd.backOffVal, mBuf);
+         CMCHKUNPK(oduPackUInt8, &param->cmdDesc.rachOvrLd.backOffEnb, mBuf);
+         CMCHKUNPK(oduPackUInt8, &param->cmdDesc.rachOvrLd.backOffVal, mBuf);
          break;
       case RGR_CNTRL_CMD_CPU_OVRLD:
-         CMCHKUNPK(SUnpkU8, &param->cmdDesc.cpuOvrLd.instruction, mBuf);
+         CMCHKUNPK(oduPackUInt8, &param->cmdDesc.cpuOvrLd.instruction, mBuf);
          break;
       default:
          break;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* End of if defined(LCRGR) */
 

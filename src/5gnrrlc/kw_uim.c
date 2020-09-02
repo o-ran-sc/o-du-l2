@@ -119,7 +119,7 @@ SpId   spId;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -162,7 +162,7 @@ SpId   spId;
 
             RLOG0(L_ERROR, "CKW SAP already Bound");
             KwUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_NOK);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          break;
       }
@@ -176,13 +176,13 @@ SpId   spId;
                              LCM_CAUSE_INV_STATE);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
          KwUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_NOK);
-         RETVALUE(RFAILED);
+         return RFAILED;
          break;
       }
    }
 
    KwUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_OK);
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -225,7 +225,7 @@ Reason   reason;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
@@ -245,7 +245,7 @@ Reason   reason;
 
    /* disable upper sap (CKW) */
    tRlcCb->u.ulCb->ckwSap.state = KW_SAP_CFG;
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -288,7 +288,7 @@ RlcCfgInfo   *cfg;
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
       RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
@@ -298,7 +298,7 @@ RlcCfgInfo   *cfg;
    if (cfgTmpData == NULLP)
    {
       RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    cfgTmpData->uprLyrTransId = cfg->transId; /*Save User TransId*/
@@ -312,13 +312,13 @@ RlcCfgInfo   *cfg;
       RLOG0(L_ERROR, "Addition to UL transId Lst Failed");
       RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo));
       
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    rlcUlHdlCfgReq(tRlcCb, cfgTmpData, cfg);
    rlcUlUdxCfgReq(&(KW_GET_UDX_SAP(tRlcCb)->pst),KW_GET_UDX_SAP(tRlcCb)->spId,cfg); 
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -419,7 +419,7 @@ CkwUeInfo   *newUeInfo;
       {
          RLC_FREE(tRlcCb, cfgTmpData, sizeof (RlcUlCfgTmpData));
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(ROK != rlcCfgValidateUeIdChng(tRlcCb,ueInfo,newUeInfo,cfgTmpData))
@@ -434,7 +434,7 @@ CkwUeInfo   *newUeInfo;
                      ueInfo,
                      newUeInfo);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -628,7 +628,7 @@ SpId   spId;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
@@ -640,7 +640,7 @@ SpId   spId;
    {
       RLOG0(L_ERROR,"Invalid spId");
       KW_SEND_SAPID_ALARM(tRlcCb,spId, LKW_EVENT_KWU_BND_REQ, LCM_CAUSE_INV_SAP);
-      RETVALUE(RFAILED); 
+      return RFAILED; 
    }
 #endif
 
@@ -683,7 +683,7 @@ SpId   spId;
             RLOG1(L_ERROR,"RLC Mode [%d] : KWU SAP already Bound",
                   tRlcCb->genCfg.rlcMode);
             KwUiKwuBndCfm(&(kwuSap->pst), kwuSap->suId, CM_BND_NOK);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          break;
       }
@@ -699,11 +699,11 @@ SpId   spId;
                              LCM_CAUSE_INV_STATE);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
          KwUiKwuBndCfm(&(kwuSap->pst), kwuSap->suId, CM_BND_NOK);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    KwUiKwuBndCfm(&(kwuSap->pst), kwuSap->suId, CM_BND_OK);
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -766,7 +766,7 @@ Reason   reason;
 
    kwuSap->state = KW_SAP_CFG;
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -811,7 +811,7 @@ Buffer          *mBuf;
    if(pst->dstInst >= MAX_RLC_INSTANCES)
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -825,7 +825,7 @@ Buffer          *mBuf;
             datReq->rlcId.cellId,datReq->rlcId.rbId);
       RLC_FREE_BUF(mBuf);
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Dispatch according to mode of the rbCb */
@@ -841,7 +841,7 @@ Buffer          *mBuf;
                         sizeof(KwuDatReqInfo));
             RLC_FREE_BUF(mBuf);
              
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          kwTmmQSdu(tRlcCb,rbCb, datReq, mBuf);
@@ -901,7 +901,7 @@ KwuDiscSduInfo   *discSdu;
 #endif
 {
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, discSdu, sizeof(KwuDiscSduInfo));
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /********************************************************************30**

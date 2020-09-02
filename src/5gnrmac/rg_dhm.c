@@ -144,7 +144,7 @@ U8                 maxHqProcs;
             rgFreeSBuf(inst,(Data **)&(hqE->procs[idx1]), sizeof(RgDlHqProcCb));
          }
          RLOG0(L_ERROR, "Memory Alloc Failure for RgDlHqProcCb");        
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       hqE->procs[idx1]->procId      = idx1;
@@ -180,7 +180,7 @@ U8                 maxHqProcs;
    }
 
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgDHMHqEntInit */
 
 /**
@@ -392,7 +392,7 @@ U8                   tbIndex;
    if((tbIndex > RG_MAX_TB_PER_UE) ||
       (tbIndex == 0))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    hqP->tbInfo[tbIndex-1].numSchLch = 0;
@@ -438,7 +438,7 @@ U8                   tbIndex;
    hqP->tbInfo[tbIndex-1].contResCe = NOTPRSNT;
    hqP->tbInfo[tbIndex-1].contResId = NULLP;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgDHMRlsHqProc */
 
 /**
@@ -477,7 +477,7 @@ RgDlHqProcCb         **hqP;
    /* Pick the proc based on the index provided */
    *hqP = (ue->dl.hqEnt.procs[idx]);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgDHMGetHqProcFrmId */
 
 /*PRIVATE U32 dataAvl; */
@@ -580,7 +580,7 @@ RgErrInfo       *err;
                   hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
                   hqP->tbInfo[i].pdcch.rnti);
 
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
             }
             else   
@@ -605,7 +605,7 @@ RgErrInfo       *err;
                   hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
                   hqP->tbInfo[i].pdcch.rnti);
                   
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
 #else
                /*Padding is not done so data for this UE will not be
@@ -635,13 +635,13 @@ RgErrInfo       *err;
          rgDHMRlsHqProcTB(cellCb, hqP, 2);
       }
       
-      RETVALUE(ROK);
+      return ROK;
    }
 
    if (rgGetEventMem(inst,(Ptr *)&datReq, sizeof(TfuDatReqPduInfo),
             &(datInfo->memCp)) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Fill the TFU Dat Req with information from Harq Proc */
   
@@ -662,7 +662,7 @@ RgErrInfo       *err;
    cmLListAdd2Tail(&datInfo->pdus, &(datReq->lnk));
    datReq->lnk.node = (PTR)datReq;
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgDHMSndDatReq */
 
 /**
@@ -730,7 +730,7 @@ RgErrInfo      *err;
          } 
          rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for(i=0;i<datReq->nmbOfTbs;i++)
@@ -754,7 +754,7 @@ RgErrInfo      *err;
             rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
             printf("\nrgDHMHndlDedDatReq:: hqP %p \n", (Void *)hqProc);
          }
-         RETVALUE(RFAILED);
+         return RFAILED;
 
       }
 #ifndef L2_OPTMZ
@@ -802,13 +802,13 @@ RgErrInfo      *err;
             }
             rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
          }
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       /*
       SFndLenMsg(hqProc->tbInfo[i].tb, &len);
       */
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgDHMHndlDedDatReq */
 
 /**
@@ -863,7 +863,7 @@ RgErrInfo      *err;
          rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_HARQ); 
          rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
                LRG_CAUSE_HQ_PROC_BUSY, &dgn);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
    bldPdu.datReq    =  datReq;
@@ -885,10 +885,10 @@ RgErrInfo      *err;
             hqProc->tbInfo[0].pdcch.rnti);
 
       RG_FREE_MSG(datReq->pdu);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgDHMHndlCmnDatReq */
 
 /**
@@ -1123,7 +1123,7 @@ RgErrInfo       *err;
                {
                   err->errType  = RGERR_DHM_SND_STA_IND;
                   err->errCause = RG_DHM_MEM_ALLOC_FAIL;
-                  RETVALUE(RFAILED); 
+                  return RFAILED; 
                }
             }
 
@@ -1172,7 +1172,7 @@ RgErrInfo       *err;
                   err->errType  = RGERR_DHM_SND_STA_IND;
                   err->errCause = RG_DHM_MEM_ALLOC_FAIL;
                   /* Need to return as memory allocation will fail for other UEs also*/
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
                dStaInd[rguDlSpId]->nmbOfUeGrantPerTti = 0;
                rguDlSap[rguDlSpId] = ue->rguDlSap;
@@ -1261,7 +1261,7 @@ RgErrInfo       *err;
       }
 
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgDHMSndConsolidatedStaInd */
 
 
@@ -1471,7 +1471,7 @@ U8                   tbIndex;
    if((tbIndex > RG_MAX_TB_PER_UE) ||
       (tbIndex == 0))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    tb = &(hqP->tbInfo[tbIndex-1].tb);
@@ -1489,7 +1489,7 @@ U8                   tbIndex;
    }
       hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sf = NULLP;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -1591,19 +1591,19 @@ RgInfResetHqEnt*     hqEntInfo;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "For user [%d]Cell does not exist %d\n",
                 hqEntInfo->crnti,hqEntInfo->cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, hqEntInfo->crnti)) == NULLP)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UE does not exist for this hqEntInfo\n",
                        hqEntInfo->crnti));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    rgDHMUeReset(cell, &ue->dl.hqEnt);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 U32 gSaveVal;
 
@@ -1660,7 +1660,7 @@ RgInfRlsHqInfo      *rlshqUeInfo;
 
    if(NULLP == rlshqUeInfo)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if((cell  == NULLP)
@@ -1669,12 +1669,12 @@ RgInfRlsHqInfo      *rlshqUeInfo;
        
       RLOG_ARG0(L_ERROR,DBG_CELLID,rlshqUeInfo->cellId,
                 "No cellCb found with cellId");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(NULLP == rlshqUeInfo->ueHqInfo)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for(idx1 = 0; idx1 < rlshqUeInfo->numUes; idx1++)
@@ -1783,7 +1783,7 @@ RgInfRlsHqInfo      *rlshqUeInfo;
    /*starting Task*/
    SStopTask(startTime,PID_MAC_AM_HARQ_RLS);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of RgSchMacRlsHqReq */
 
 

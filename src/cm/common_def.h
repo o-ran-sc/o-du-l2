@@ -114,6 +114,22 @@ typedef struct PlmnIdentity
 void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 
 #endif
+
+/* Defining macros for common utility functions */
+#define ODU_GET_MSG SGetMsg
+#define ODU_PUT_MSG SPutMsg
+#define ODU_ADD_PRE_MSG_MULT SAddPreMsgMult
+#define ODU_ADD_POST_MSG_MULT SAddPstMsgMult
+#define ODU_START_TASK SStartTask
+#define ODU_STOP_TASK SStopTask
+#define ODU_ATTACH_TTSK SAttachTTsk
+#define ODU_POST_TASK SPstTsk
+#define ODU_COPY_MSG_TO_FIX_BUF SCpyMsgFix
+#define ODU_REG_TTSK SRegTTsk
+#define ODU_SET_PROC_ID SSetProcId
+#define ODU_FIND_MSG_LEN SFndLenMsg
+#define ODU_EXIT_TASK SExitTsk
+#define ODU_PRINT_MSG SPrntMsg
 /**********************************************************************
   End of file
 ***********************************************************************/

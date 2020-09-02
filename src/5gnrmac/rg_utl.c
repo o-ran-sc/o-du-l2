@@ -135,7 +135,7 @@ Size    size;               /* size */
 
    if (size == 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* allocate buffer */
@@ -148,7 +148,7 @@ Size    size;               /* size */
      rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
                                        LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
       RGLOGERROR(inst,ERRCLS_DEBUG, ERG028, 0, "Unable to Allocate Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifndef ALIGN_64BIT
@@ -162,7 +162,7 @@ Size    size;               /* size */
    /* zero out the allocated memory */
    cmMemset((U8 *)*pData, 0x00, size);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rgAllocSBuf */
 
@@ -207,7 +207,7 @@ Size    size;               /* size */
 
    if (size == 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* allocate buffer */
@@ -223,13 +223,13 @@ Size    size;               /* size */
      rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
                                        LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
       RGLOGERROR(inst,ERRCLS_DEBUG, ERG028, 0, "Unable to Allocate Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* zero out the allocated memory */
    cmMemset((U8 *)*pData, 0x00, size);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rgAllocSBuf */
 
@@ -397,10 +397,10 @@ Buffer  **mBuf;           /* Message Buffer pointer be returned */
       rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_DMEM_ALLOC_FAIL,
                                        LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
       RGLOGERROR(inst,ERRCLS_DEBUG, ERG030, 0, "Unable to Allocate Buffer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rgGetMsg */
 
@@ -730,13 +730,13 @@ Size      memSize;
 #endif /* */
    {
       RLOG0(L_ERROR,"cmAllocEvnt Failed"); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /*stoping Task*/
    SStopTask(startTime, PID_MACUTL_CMALLCEVT);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgAllocEventMem*/
 
 /*
@@ -878,18 +878,18 @@ RgInfLcgRegReq *lcgRegReq;
    {
       
       RLOG_ARG0(L_ERROR,DBG_CELLID,lcgRegReq->cellId,"Cell does not exist ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, lcgRegReq->crnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,cell->cellId,"CRNTI:%d does not exist", 
 		         lcgRegReq->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ue->ul.lcgArr[lcgRegReq->lcgId].isGbr = lcgRegReq->isGbr;
 
-   RETVALUE(ROK); 
+   return ROK; 
 } /* end of RgSchMacLcgRegReq */
 
 #ifdef LTEMAC_SPS
@@ -937,20 +937,20 @@ RgInfUlSpsReset *ulSpsResetInfo;
    {
       
       RLOG_ARG0(L_ERROR, DBG_CELLID,ulSpsResetInfo->cellId,"Cell does not exist ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, ulSpsResetInfo->crnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,cell->cellId,"CRNTI:%d does not exist", 
 		      ulSpsResetInfo->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    ue->ul.implRelCntr = 0;
    ue->ul.explRelCntr = 0;
 
-   RETVALUE(ROK); 
+   return ROK; 
 } /* end of RgSchMacUlSpsResetReq */
 
 
@@ -1008,14 +1008,14 @@ RgInfSpsLcInfo *lcInfo;
    {
       
       RLOG_ARG0(L_ERROR,DBG_CELLID,lcInfo->cellId, "Cell does not exist ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, lcInfo->crnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,cell->cellId,"CRNTI:%d does not exist", 
 		      lcInfo->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Store the sps-rnti and SPS LC information in the UE */ 
@@ -1033,10 +1033,10 @@ RgInfSpsLcInfo *lcInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
 	            "Ue insertion into SPS list failed SPS CRNTI:%d", ue->spsRnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    } 
 
-   RETVALUE(ROK); 
+   return ROK; 
 } /* end of RgSchMacSpsLcRegReq */
 
 
@@ -1092,13 +1092,13 @@ CmLteRnti      crnti;
    {
       
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellId, "Cell does not exist ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, crnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,cellId,"CRNTI:%d Ue does not exist", crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* No need to reset the SPS LC Ids as they will not be looked at*/
@@ -1106,7 +1106,7 @@ CmLteRnti      crnti;
    /* Delete UE from the SPS UE List */
    rgDBMDelSpsUeCb(cell, ue);
    
-   RETVALUE(ROK); 
+   return ROK; 
 } /* end of RgSchMacSpsLcDeregReq */
 
 #endif /* LTEMAC_SPS */
@@ -1159,7 +1159,7 @@ CmLteRnti       newRnti;
       RLOG_ARG4(L_ERROR,DBG_CELLID,cell->cellId,
          		"RNTI:%d Failed to get UECB[%lu:%lu] or NEW RNTI:%d", 
                rnti, ((PTR)ue), ((PTR)newUe), newRnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef XEON_SPECIFIC_CHANGES
    CM_LOG_DEBUG(CM_LOG_ID_MAC, "MAC:UE[%d] id changed to %d\n", rnti, newRnti);
@@ -1180,7 +1180,7 @@ CmLteRnti       newRnti;
    rgDBMDelUeCbFromRachLst(cell, newUe);
    rgFreeSBuf(inst,(Data **)&newUe, sizeof(*newUe));
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgUtlHndlCrntiChng */
 
 #ifdef LTE_ADV
@@ -1239,7 +1239,7 @@ RgUeCb        *ue;
       } /* loop of if */
    } /* loop of for */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgDelUeFrmAllSCell */
 
 /**
@@ -1347,7 +1347,7 @@ TfuDelDatReqInfo delDatReq;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst),"[%d]RNTI:Failed to get ueCb \
                newRnti=%d\n", rnti, newRnti));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* For all added SCells, prepare and send ueIdChngReq */
    for(idx = 0; idx < RG_MAX_SCELL_PER_UE ; idx++)
@@ -1379,7 +1379,7 @@ TfuDelDatReqInfo delDatReq;
       } /* loop of if */
    } /* loop of for */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgUtlSndCrntiChngReq2AllSMacs */
 
 #endif /* LTE_ADV */
@@ -1517,7 +1517,7 @@ TfuDelDatReqInfo delDatReq;
 
    if(NULLP == rlsRnti)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if((cell == NULLP) ||
@@ -1527,7 +1527,7 @@ TfuDelDatReqInfo delDatReq;
       RLOG_ARG1(L_ERROR,DBG_CELLID,rlsRnti->cellId,
                "No cellCb found with cellId for RNTI:%d", 
 		         rlsRnti->rnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Fix : syed Clearing UE context when SCH indicates to do so
     * UE DEL from CRG interface is now dummy. */
@@ -1541,7 +1541,7 @@ TfuDelDatReqInfo delDatReq;
          RLOG_ARG2(L_ERROR,DBG_CELLID,rlsRnti->cellId,
 	                "CRNTI change failed for RNTI:%d new RNTI:%d",
                    rlsRnti->rnti,rlsRnti->newRnti);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
 #ifdef LTE_ADV
@@ -1551,7 +1551,7 @@ TfuDelDatReqInfo delDatReq;
       if(rgUtlSndCrntiChngReq2AllSMacs(cell, rlsRnti->rnti, rlsRnti->newRnti) != ROK)
       {
          /* TODO: do we need to send DelInd to SCH in failure case*/ 
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif
 #ifdef L2_OPTMZ
@@ -1582,7 +1582,7 @@ TfuDelDatReqInfo delDatReq;
 #endif
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of RgSchMacRlsRntiReq */
 
 #ifdef L2_OPTMZ

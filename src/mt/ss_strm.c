@@ -122,7 +122,7 @@ Region datRegId;                /* region for data buffers */
    strmCfg.datRegion = datRegId;
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 

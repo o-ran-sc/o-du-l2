@@ -85,7 +85,7 @@ SpId spId;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU001, (ErrVal)0, "Packing failed");
 #endif      
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -94,7 +94,7 @@ SpId spId;
           (ErrVal)ERGU002, (ErrVal)0, "Packing failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -103,7 +103,7 @@ SpId spId;
           (ErrVal)ERGU003, (ErrVal)0, "Packing failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    pst->event = (Event) EVTRGUBNDREQ;
    RETVALUE(SPstTsk(pst,mBuf));
@@ -149,7 +149,7 @@ Buffer *mBuf;
           (ErrVal)ERGU004, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SUnpkS16(&spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -158,7 +158,7 @@ Buffer *mBuf;
           (ErrVal)ERGU005, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, suId, spId));
@@ -201,7 +201,7 @@ Reason reason;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU006, (ErrVal)0, "Packing failed");
 #endif      
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(reason, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -210,7 +210,7 @@ Reason reason;
           (ErrVal)ERGU007, (ErrVal)0, "Packing failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -219,7 +219,7 @@ Reason reason;
           (ErrVal)ERGU008, (ErrVal)0, "Packing failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    pst->event = (Event) EVTRGUUBNDREQ;
    RETVALUE(SPstTsk(pst,mBuf));
@@ -265,7 +265,7 @@ Buffer *mBuf;
           (ErrVal)ERGU009, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SUnpkS16(&reason, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -274,7 +274,7 @@ Buffer *mBuf;
           (ErrVal)ERGU010, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, spId, reason));
@@ -318,16 +318,16 @@ U8 status;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU011, (ErrVal)0, "Packing failed");
 #endif      
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   if (SPkU8(status, mBuf) != ROK) {
+   if (oduUnpackUInt8(status, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU012, (ErrVal)0, "Packing failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -336,7 +336,7 @@ U8 status;
           (ErrVal)ERGU013, (ErrVal)0, "Packing failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    pst->event = (Event) EVTRGUBNDCFM;
    RETVALUE(SPstTsk(pst,mBuf));
@@ -383,16 +383,16 @@ Buffer *mBuf;
           (ErrVal)ERGU014, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   if (SUnpkU8(&status, mBuf) != ROK) {
+   if (oduPackUInt8(&status, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU015, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SPutMsg(mBuf);
    RETVALUE((*func)(pst, suId, status));
@@ -430,12 +430,12 @@ RlcMacData  *dlData
           (ErrVal)ERGU022, (ErrVal)0, "Packing failed");
 #endif      
       SPutSBuf(pst->region, pst->pool, (Data *)dlData, sizeof(RlcMacData));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) dlData, mBuf);
+      CMCHKPK(oduPackPointer,(PTR) dlData, mBuf);
    }
    else
    {
@@ -454,7 +454,7 @@ RlcMacData  *dlData
          SPutSBuf(pst->region, pst->pool, (Data *)dlData,
                                        sizeof(RlcMacData));
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       if (SPutSBuf(pst->region, pst->pool, 
@@ -465,7 +465,7 @@ RlcMacData  *dlData
              (ErrVal)ERGU025, (ErrVal)0, "Packing failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       dlData = NULLP;
    }
@@ -481,7 +481,7 @@ RlcMacData  *dlData
                   (Data *)dlData, sizeof(RlcMacData));
       }
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    pst->event = (Event) EVTRLCDLDAT;
    RETVALUE(SPstTsk(pst,mBuf));
@@ -516,12 +516,12 @@ Buffer *mBuf
 
    if (SUnpkS16(&spId, mBuf) != ROK) {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &dlData, mBuf);
+      CMCHKUNPK(oduUnpackPointer,(PTR *) &dlData, mBuf);
    }
    else 
    {
@@ -533,7 +533,7 @@ Buffer *mBuf
              (ErrVal)ERGU026, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       cmMemset((U8*)dlData, (U8)0, sizeof(RlcMacData));
   /*rgu_c_001.main_5 - ADD - L2M Support */
@@ -551,7 +551,7 @@ Buffer *mBuf
          SPutMsg(mBuf);
          SPutSBuf(pst->region, pst->pool, (Data *)dlData,
                                      sizeof(RlcMacData));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    SPutMsg(mBuf);
@@ -588,12 +588,12 @@ uint8_t packRlcUlData(Pst* pst, RlcMacData  *ulData)
           (ErrVal)ERGU035, (ErrVal)0, "Packing failed");
 #endif      
       SPutStaticBuffer(pst->region, pst->pool, (Data *)ulData, sizeof(RlcMacData),0);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR)ulData, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)ulData, mBuf);
    }
    else
    {
@@ -605,7 +605,7 @@ uint8_t packRlcUlData(Pst* pst, RlcMacData  *ulData)
 #endif            
          SPutStaticBuffer(pst->region, pst->pool, (Data *)ulData, sizeof(RlcMacData),0);
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       if (SPutStaticBuffer(pst->region, pst->pool, 
@@ -616,7 +616,7 @@ uint8_t packRlcUlData(Pst* pst, RlcMacData  *ulData)
              (ErrVal)ERGU038, (ErrVal)0, "Packing failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       ulData = NULLP;
    }
@@ -647,7 +647,7 @@ uint8_t unpackRcvdUlData(RlcMacUlDataFunc func, Pst *pst, Buffer *mBuf)
 
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &ulData, mBuf);
+      CMCHKUNPK(oduUnpackPointer,(PTR *) &ulData, mBuf);
    }
    else 
    {
@@ -659,7 +659,7 @@ uint8_t unpackRcvdUlData(RlcMacUlDataFunc func, Pst *pst, Buffer *mBuf)
              (ErrVal)ERGU040, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (unpackRlcMacDataInfo(ulData, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -670,7 +670,7 @@ uint8_t unpackRcvdUlData(RlcMacUlDataFunc func, Pst *pst, Buffer *mBuf)
          SPutMsg(mBuf);
          SPutStaticBuffer(pst->region, pst->pool, 
                     (Data *)ulData, sizeof(RlcMacData),0);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    SPutMsg(mBuf);
@@ -712,15 +712,15 @@ Buffer *mBuf;
    S32 loop;
    TRC3(cmPkRguL2MUlThrpMeasReqInfo);
 
-   CMCHKPK(SPkU8, param->enbMeas, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->enbMeas, mBuf);
    for (loop=param->numLcId-1; loop >= 0; loop--)
    {
-      CMCHKPK(SPkU8, param->lcId[loop], mBuf);
+      CMCHKPK(oduUnpackUInt8, param->lcId[loop], mBuf);
    }
    CMCHKPK(cmPkLteLcId, param->numLcId, mBuf);
    CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -761,10 +761,10 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteLcId, &param->numLcId, mBuf);
    for (loop=0; loop<param->numLcId; loop++)
    {
-      CMCHKUNPK(SUnpkU8, &param->lcId[loop], mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->lcId[loop], mBuf);
    }
-   CMCHKUNPK(SUnpkU8, &param->enbMeas, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->enbMeas, mBuf);
+   return ROK;
 }
 
 /**
@@ -806,11 +806,11 @@ RguL2MUlThrpMeasReqInfo* measReq;
           (ErrVal)ERGU049, (ErrVal)0, "Packing failed");
 #endif      
       SPutSBuf(pst->region, pst->pool, (Data *)measReq, sizeof(RguL2MUlThrpMeasReqInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) measReq, mBuf);
+      CMCHKPK(oduPackPointer,(PTR) measReq, mBuf);
    }
    else
    {
@@ -823,7 +823,7 @@ RguL2MUlThrpMeasReqInfo* measReq;
          SPutSBuf(pst->region, pst->pool, (Data *)measReq, 
                                     sizeof(RguL2MUlThrpMeasReqInfo));
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (SPutSBuf(pst->region, pst->pool, (Data *)measReq, 
                            sizeof(RguL2MUlThrpMeasReqInfo)) != ROK) {
@@ -833,7 +833,7 @@ RguL2MUlThrpMeasReqInfo* measReq;
              (ErrVal)ERGU052, (ErrVal)0, "Packing failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       measReq = NULLP;
    }
@@ -850,7 +850,7 @@ RguL2MUlThrpMeasReqInfo* measReq;
                              sizeof(RguL2MUlThrpMeasReqInfo));
       }
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTRGUL2MULTHRPMEASREQ;
@@ -899,11 +899,11 @@ Buffer *mBuf;
           (ErrVal)ERGU053, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &measReq, mBuf);
+      CMCHKUNPK(oduUnpackPointer,(PTR *) &measReq, mBuf);
    }
    else 
    {
@@ -915,7 +915,7 @@ Buffer *mBuf;
              (ErrVal)ERGU054, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (cmUnpkRguL2MUlThrpMeasReqInfo(measReq, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -926,7 +926,7 @@ Buffer *mBuf;
          SPutMsg(mBuf);
          SPutSBuf(pst->region, pst->pool, (Data *)measReq, 
                                 sizeof(RguL2MUlThrpMeasReqInfo));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    SPutMsg(mBuf);
@@ -969,13 +969,13 @@ RlcMacBOStatus  *boStatus
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGU056, (ErrVal)0, "Packing failed");
 #endif      
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef ERRCLS_KW
    /* boStaInfo cant be NULL here */
    if (boStaInfo == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    cmMemcpy((U8 *)boStaInfo, (U8 *)boStatus, sizeof(RlcMacBOStatus)); 
@@ -987,11 +987,11 @@ RlcMacBOStatus  *boStatus
 #endif      
          SPutSBuf(pst->region, pst->pool, (Data *)boStaInfo, sizeof(RlcMacBOStatus));
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) boStaInfo, mBuf);
+      CMCHKPK(oduPackPointer,(PTR) boStaInfo, mBuf);
    }
    else
    {
@@ -1002,7 +1002,7 @@ RlcMacBOStatus  *boStatus
             (ErrVal)ERGU057, (ErrVal)0, "Packing failed");
 #endif      
         SPutMsg(mBuf);
-        RETVALUE(RFAILED);
+        return RFAILED;
      }
    }
    if (SPkS16(spId, mBuf) != ROK) {
@@ -1016,7 +1016,7 @@ RlcMacBOStatus  *boStatus
          SPutSBuf(pst->region, pst->pool, (Data *)boStaInfo, sizeof(RlcMacBOStatus));
       }
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event)EVTRLCBOSTA;
@@ -1058,12 +1058,12 @@ Buffer *mBuf
           (ErrVal)ERGU060, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &boSta, mBuf);
+      CMCHKUNPK(oduUnpackPointer,(PTR *) &boSta, mBuf);
    }
    else
    {
@@ -1075,7 +1075,7 @@ Buffer *mBuf
              (ErrVal)ERGU061, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (unpackBOStatusInfo(boSta, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -1085,13 +1085,13 @@ Buffer *mBuf
 #endif      
          SPutMsg(mBuf);
          SPutSBuf(pst->region, pst->pool, (Data *)boSta, sizeof(RlcMacBOStatus));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    SPutMsg(mBuf);
   // (*func)(pst, spId, boSta);
    SPutSBuf(pst->region, pst->pool, (Data *)boSta, sizeof(RlcMacBOStatus));
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1143,7 +1143,7 @@ RguHarqStatusInd  *harqStatusInd;
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGU070, (ErrVal)0, "Packing failed");
 #endif      
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    cmMemcpy((U8 *)harqStaInd, (U8 *)harqStatusInd, sizeof(RguHarqStatusInd));
@@ -1159,24 +1159,24 @@ RguHarqStatusInd  *harqStatusInd;
 #else      
       SPutStaticBuffer(pst->region, pst->pool, (Data *)harqStaInd, sizeof(RguHarqStatusInd), 0);
 #endif      
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) harqStaInd, mBuf); 
+      CMCHKPK(oduPackPointer,(PTR) harqStaInd, mBuf); 
    }
    else
    {
       for(idx = 0; idx < harqStaInd->numTbs; idx++)
       {
-         CMCHKPK(SPkU16, harqStaInd->status[idx], mBuf);
+         CMCHKPK(oduUnpackUInt16, harqStaInd->status[idx], mBuf);
       }
       for(idx = 0; idx < harqStaInd->numTbs; idx++)
       {
-         CMCHKPK(SPkU32, harqStaInd->tbId[idx], mBuf);
+         CMCHKPK(oduUnpackUInt32, harqStaInd->tbId[idx], mBuf);
       }
-      CMCHKPK(SPkU8, harqStaInd->numTbs, mBuf);
+      CMCHKPK(oduUnpackUInt8, harqStaInd->numTbs, mBuf);
       CMCHKPK(cmPkLteRnti, harqStaInd->ueId, mBuf);
       CMCHKPK(cmPkLteCellId, harqStaInd->cellId, mBuf);
    }
@@ -1193,7 +1193,7 @@ RguHarqStatusInd  *harqStatusInd;
       SPutStaticBuffer(pst->region, pst->pool, (Data *)harqStaInd, sizeof(RguHarqStatusInd), 0);
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef XEON_SPECIFIC_CHANGES
    if (SPutSBuf(pst->region, pst->pool, (Data *)harqStaInd,
@@ -1211,7 +1211,7 @@ RguHarqStatusInd  *harqStatusInd;
                (ErrVal)ERGU072, (ErrVal)0, "Packing failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #ifndef XEON_SPECIFIC_CHANGES      
    }
@@ -1262,7 +1262,7 @@ Buffer *mBuf;
           (ErrVal)ERGU073, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef XEON_SPECIFIC_CHANGES
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&hqStaInd, 
@@ -1270,7 +1270,7 @@ Buffer *mBuf;
 #else   
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &hqStaInd, mBuf);
+      CMCHKUNPK(oduUnpackPointer,(PTR *) &hqStaInd, mBuf);
    }  
    else
    {   
@@ -1284,18 +1284,18 @@ Buffer *mBuf;
                (ErrVal)ERGU074, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       CMCHKUNPK(cmUnpkLteCellId, &hqStaInd->cellId, mBuf);
       CMCHKUNPK(cmUnpkLteRnti, &hqStaInd->ueId, mBuf);
-      CMCHKUNPK(SUnpkU8, &hqStaInd->numTbs, mBuf);
+      CMCHKUNPK(oduPackUInt8, &hqStaInd->numTbs, mBuf);
       for(idx = hqStaInd->numTbs; idx > 0; idx--)
       {
-         CMCHKUNPK(SUnpkU32, &hqStaInd->tbId[idx - 1], mBuf);
+         CMCHKUNPK(oduPackUInt32, &hqStaInd->tbId[idx - 1], mBuf);
       }
       for(idx = hqStaInd->numTbs; idx > 0; idx--)
       {
-         CMCHKUNPK(SUnpkU16, &hqStaInd->status[idx - 1], mBuf);
+         CMCHKUNPK(oduPackUInt16, &hqStaInd->status[idx - 1], mBuf);
       }
 #ifndef XEON_SPECIFIC_CHANGES      
    }
@@ -1307,7 +1307,7 @@ Buffer *mBuf;
 #else   
    SPutStaticBuffer(pst->region, pst->pool, (Data *)hqStaInd, sizeof(RguHarqStatusInd), 0);
 #endif   
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* LTE_L2_MEAS */
 
@@ -1345,11 +1345,11 @@ RlcMacSchedRepInfo  * schRep
           (ErrVal)ERGU076, (ErrVal)0, "Packing failed");
 #endif      
       SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRepInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) schRep, mBuf);
+      CMCHKPK(oduPackPointer,(PTR) schRep, mBuf);
    }
    else
    {
@@ -1362,7 +1362,7 @@ RlcMacSchedRepInfo  * schRep
         SPutSBuf(pst->region, pst->pool, (Data *)schRep, 
                                          sizeof(RlcMacSchedRepInfo));
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       } 
       if (SPutSBuf(pst->region, pst->pool, (Data *)schRep,
                                   sizeof(RlcMacSchedRepInfo)) != ROK) {
@@ -1372,7 +1372,7 @@ RlcMacSchedRepInfo  * schRep
              (ErrVal)ERGU079, (ErrVal)0, "Packing failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       schRep= NULLP;
    }
@@ -1387,7 +1387,7 @@ RlcMacSchedRepInfo  * schRep
          SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRepInfo));
       }
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTSCHREP;
@@ -1430,11 +1430,11 @@ Buffer *mBuf
           (ErrVal)ERGU080, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &schRep, mBuf);
+      CMCHKUNPK(oduUnpackPointer,(PTR *) &schRep, mBuf);
    }
    else 
    {
@@ -1445,7 +1445,7 @@ Buffer *mBuf
          (ErrVal)ERGU081, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (unpackSchedRepInfo(schRep, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -1455,7 +1455,7 @@ Buffer *mBuf
 #endif      
          SPutMsg(mBuf);
          SPutSBuf(pst->region, pst->pool, (Data *)schRep, sizeof(RlcMacSchedRepInfo));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    SPutMsg(mBuf);
@@ -1475,11 +1475,11 @@ Buffer             *mBuf;
 #endif
 {
   TRC3(cmPkRguLcFlowCntrlInfo);
-  CMCHKPK(SPkU32, param->maxBo4FlowCtrl, mBuf);
-  CMCHKPK(SPkU32, param->pktAdmitCnt, mBuf);
+  CMCHKPK(oduUnpackUInt32, param->maxBo4FlowCtrl, mBuf);
+  CMCHKPK(oduUnpackUInt32, param->pktAdmitCnt, mBuf);
   CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
 
-  RETVALUE(ROK);
+  return ROK;
 }
 
 #ifdef ANSI
@@ -1502,9 +1502,9 @@ Buffer             *mBuf;
   {
     cmPkRguLcFlowCntrlInfo(&param->lcInfo[idx],mBuf);
   }
-  CMCHKPK(SPkU32, param->numLcs, mBuf);
+  CMCHKPK(oduUnpackUInt32, param->numLcs, mBuf);
   CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
-  RETVALUE(ROK);
+  return ROK;
 }
 
 #ifdef ANSI
@@ -1527,9 +1527,9 @@ Buffer          *mBuf;
   {
     cmPkRguUeFlowCntrlInfo(&param->ueFlowCntrlInfo[idx],mBuf);
   }
-  CMCHKPK(SPkU32, param->numUes, mBuf);
+  CMCHKPK(oduUnpackUInt32, param->numUes, mBuf);
   CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-  RETVALUE(ROK);
+  return ROK;
 }
 
 /**
@@ -1570,11 +1570,11 @@ RguFlowCntrlInd   *flowCntrlInd;
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU076, (ErrVal)0, "Packing failed");
 #endif      
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKPK(cmPkPtr,(PTR) flowCntrlInd, mBuf);
+      CMCHKPK(oduPackPointer,(PTR) flowCntrlInd, mBuf);
    }
    else
    {
@@ -1585,7 +1585,7 @@ RguFlowCntrlInd   *flowCntrlInd;
                (ErrVal)ERGU077, (ErrVal)0, "Packing failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       } 
    }
    if (SPkS16(suId, mBuf) != ROK) {
@@ -1595,7 +1595,7 @@ RguFlowCntrlInd   *flowCntrlInd;
           (ErrVal)ERGU078, (ErrVal)0, "Packing failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    pst->event = (Event) EVTRGUFLOWCNTRLIND;
@@ -1617,10 +1617,10 @@ Buffer           *mBuf;
   TRC3(cmUnpkRguLcFlowCntrlInfo);
 
   CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
-  CMCHKUNPK(SUnpkU32, &param->pktAdmitCnt, mBuf);
-  CMCHKUNPK(SUnpkU32, &param->maxBo4FlowCtrl, mBuf);
+  CMCHKUNPK(oduPackUInt32, &param->pktAdmitCnt, mBuf);
+  CMCHKUNPK(oduPackUInt32, &param->maxBo4FlowCtrl, mBuf);
   
-  RETVALUE(ROK);
+  return ROK;
 }
 #ifdef ANSI
 PUBLIC S16 cmUnpkRguUeFlowCntrlInfo
@@ -1637,12 +1637,12 @@ Buffer           *mBuf;
   U32 idx;
   TRC3(cmUnpkRguUeFlowCntrlInfo);
   CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
-  CMCHKUNPK(SUnpkU32, &param->numLcs, mBuf);
+  CMCHKUNPK(oduPackUInt32, &param->numLcs, mBuf);
   for(idx=0; idx < param->numLcs; idx++)
   {
     cmUnpkRguLcFlowCntrlInfo(&param->lcInfo[idx],mBuf);
   }
-  RETVALUE(ROK);
+  return ROK;
 }
 
 #ifdef ANSI
@@ -1662,12 +1662,12 @@ Buffer           *mBuf;
   TRC3(cmUnpkRguFlowCntrlInfo);
 
   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-  CMCHKUNPK(SUnpkU32, &param->numUes, mBuf);
+  CMCHKUNPK(oduPackUInt32, &param->numUes, mBuf);
   for (idx=0; idx < param->numUes; idx++)
   {
     cmUnpkRguUeFlowCntrlInfo(&param->ueFlowCntrlInfo[idx],mBuf);
   }
-  RETVALUE(ROK);
+  return ROK;
 }
 
 /**
@@ -1711,11 +1711,11 @@ Buffer *mBuf;
           (ErrVal)ERGU080, (ErrVal)0, "UnPacking failed");
 #endif      
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
-      CMCHKUNPK(cmUnpkPtr,(PTR *) &flowCntrlInd, mBuf);
+      CMCHKUNPK(oduUnpackPointer,(PTR *) &flowCntrlInd, mBuf);
    }
    else 
    {
@@ -1726,7 +1726,7 @@ Buffer *mBuf;
          (ErrVal)ERGU081, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (cmUnpkRguFlowCntrlInfo(flowCntrlInd, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -1736,7 +1736,7 @@ Buffer *mBuf;
 #endif      
          SPutMsg(mBuf);
          SPutSBuf(pst->region, pst->pool, (Data *)flowCntrlInd, sizeof(RguFlowCntrlInd));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    SPutMsg(mBuf);
@@ -1779,14 +1779,14 @@ Buffer *mBuf;
      /* rgu_c_001.main_3: ccpu00111328: S16 is renamed as MsgLen */
       MsgLen msgLen = 0;
       if (SFndLenMsg(param->mBuf[i], &msgLen) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       if (SCatMsg(mBuf, param->mBuf[i], M1M2) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       SPutMsg(param->mBuf[i]);
       CMCHKPK(cmPkMsgLen, msgLen, mBuf);
    }
-   CMCHKPK(SPkU8, param->numPdu, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->numPdu, mBuf);
+   return ROK;
 }
 
 
@@ -1823,16 +1823,16 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRguPduInfo);
 
-   CMCHKUNPK(SUnpkU8, &param->numPdu, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numPdu, mBuf);
    for (i=0; i<param->numPdu; i++) {
       MsgLen msgLen, totalMsgLen;
       CMCHKUNPK(cmUnpkMsgLen, &msgLen, mBuf);
       if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       if (SSegMsg(mBuf, totalMsgLen-msgLen, &param->mBuf[i]) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1868,14 +1868,14 @@ Buffer *mBuf;
 
    TRC3(cmPkRguDBoReport);
 
-   CMCHKPK(SPkU32, param->oldestSduArrTime, mBuf);
-   CMCHKPK(SPkU32, param->staPduBo, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->oldestSduArrTime, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->staPduBo, mBuf);
 #ifdef CCPU_OPT
-   CMCHKPK(SPkU8, param->staPduPrsnt, mBuf);
-   CMCHKPK(SPkU16, param->estRlcHdrSz, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->staPduPrsnt, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->estRlcHdrSz, mBuf);
 #endif
    CMCHKPK(SPkS32, param->bo, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1913,13 +1913,13 @@ Buffer *mBuf;
 
    CMCHKUNPK(SUnpkS32, &param->bo, mBuf);
 #ifdef CCPU_OPT
-   CMCHKUNPK(SUnpkU16, &param->estRlcHdrSz, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->staPduPrsnt, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->estRlcHdrSz, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->staPduPrsnt, mBuf);
 #endif
    
-   CMCHKUNPK(SUnpkU32, &param->staPduBo, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->oldestSduArrTime, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt32, &param->staPduBo, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->oldestSduArrTime, mBuf);
+   return ROK;
 }
 
 
@@ -1958,9 +1958,9 @@ Buffer *mBuf;
    if (param->pdu != NULLP)
    {
       if (SFndLenMsg(param->pdu, &msgLen) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       if (SCatMsg(mBuf, param->pdu, M1M2) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       SPutMsg(param->pdu);
       CMCHKPK(cmPkMsgLen, msgLen, mBuf);
    }
@@ -1972,17 +1972,17 @@ Buffer *mBuf;
       case CM_LTE_LCH_PCCH:
          CMCHKPK(cmPkLteTimingInfo, &param->u.timeToTx, mBuf);
 #ifdef EMTC_ENABLE
-        CMCHKPK(SPkU8,param->pnb,mBuf);
+        CMCHKPK(oduUnpackUInt8,param->pnb,mBuf);
 #endif
          break;
       default :
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
-   CMCHKPK(SPkU32, param->transId, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->transId, mBuf);
    CMCHKPK(cmPkLteLcType, param->lcType, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2022,12 +2022,12 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(cmUnpkLteLcType, &param->lcType, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->transId, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->transId, mBuf);
    switch(param->lcType) {
       case CM_LTE_LCH_BCCH:
       case CM_LTE_LCH_PCCH:
 #ifdef EMTC_ENABLE
-         CMCHKUNPK(SUnpkU8,&param->pnb, mBuf);
+         CMCHKUNPK(oduPackUInt8,&param->pnb, mBuf);
 #endif
          CMCHKUNPK(cmUnpkLteTimingInfo, &param->u.timeToTx, mBuf);
          break;
@@ -2035,18 +2035,18 @@ Buffer *mBuf;
          CMCHKUNPK(cmUnpkLteRnti, &param->u.rnti, mBuf);
          break;
       default :
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
    SFndLenMsg(mBuf, &msgLen);
    if (msgLen > 0)
    {
       CMCHKUNPK(cmUnpkMsgLen, &msgLen, mBuf);
       if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       if (SSegMsg(mBuf, totalMsgLen-msgLen, &param->pdu) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2083,13 +2083,13 @@ Buffer *mBuf;
    TRC3(cmPkRguLchDatReq);
 
 #ifdef L2_OPTMZ
-   CMCHKPK(SPkU8, param->freeBuff, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->freeBuff, mBuf);
 #endif
-   CMCHKPK(SPkU8, param->setMaxUlPrio, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->setMaxUlPrio, mBuf);
    CMCHKPK(cmPkRguPduInfo, &param->pdu, mBuf);
    CMCHKPK(cmPkRguDBoReport, &param->boReport, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2128,11 +2128,11 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(cmUnpkRguDBoReport, &param->boReport, mBuf);
    CMCHKUNPK(cmUnpkRguPduInfo, &param->pdu, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->setMaxUlPrio, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->setMaxUlPrio, mBuf);
 #ifdef L2_OPTMZ
-   CMCHKUNPK(SUnpkU8, &param->freeBuff, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->freeBuff, mBuf);
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2169,13 +2169,13 @@ Buffer *mBuf;
    TRC3(cmPkRguDatReqTb);
    /*rgu_c_001.main_5 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
-   CMCHKPK(SPkU32, param->tbId, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->tbId, mBuf);
 #endif
    for (i=param->nmbLch-1; i >= 0; i--) {
       CMCHKPK(cmPkRguLchDatReq, &param->lchData[i], mBuf);
    }
-   CMCHKPK(SPkU8, param->nmbLch, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->nmbLch, mBuf);
+   return ROK;
 }
 
 
@@ -2228,15 +2228,15 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRguDatReqTb);
 
-   CMCHKUNPK(SUnpkU8, &param->nmbLch, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->nmbLch, mBuf);
    for (i=0; i<param->nmbLch; i++) {
       CMCHKUNPK(cmUnpkRguLchDatReq, &param->lchData[i], mBuf);
    }
    /*rgu_c_001.main_5 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
-   CMCHKUNPK(SUnpkU32, &param->tbId, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->tbId, mBuf);
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2297,13 +2297,13 @@ Buffer *mBuf;
       {
          CMCHKPK(cmPkRguDatReqTb, &datReq->datReqTb[i], mBuf);
       }
-      CMCHKPK(SPkU8, datReq->nmbOfTbs, mBuf);
-      CMCHKPK(SPkU32, datReq->transId, mBuf);
+      CMCHKPK(oduUnpackUInt8, datReq->nmbOfTbs, mBuf);
+      CMCHKPK(oduUnpackUInt32, datReq->transId, mBuf);
       CMCHKPK(cmPkLteRnti, datReq->rnti, mBuf);
    }
-   CMCHKPK(SPkU8, param->nmbOfUeGrantPerTti, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->nmbOfUeGrantPerTti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2368,13 +2368,13 @@ Buffer *mBuf;
    retVal = ROK;
 #endif
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->nmbOfUeGrantPerTti, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->nmbOfUeGrantPerTti, mBuf);
    for(idx = 0; idx < param->nmbOfUeGrantPerTti; idx++)
    { 
       RguDDatReqPerUe *datReq = &param->datReq[idx];
       CMCHKUNPK(cmUnpkLteRnti, &datReq->rnti, mBuf);
-      CMCHKUNPK(SUnpkU32, &datReq->transId, mBuf);
-      CMCHKUNPK(SUnpkU8, &datReq->nmbOfTbs, mBuf);
+      CMCHKUNPK(oduPackUInt32, &datReq->transId, mBuf);
+      CMCHKUNPK(oduPackUInt8, &datReq->nmbOfTbs, mBuf);
       /* rgu_c_001.main_4 - Changes for MIMO feature addition */
       for (i=0; i<RGU_MAX_TB; i++) 
       {
@@ -2384,14 +2384,14 @@ Buffer *mBuf;
          retVal = cmUnpkRguDatReqTb(pst, &datReq->datReqTb[i], mBuf);
          if(retVal != ROK)
          {
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 #else
          CMCHKUNPK(cmUnpkRguDatReqTb, &datReq->datReqTb[i], mBuf);
 #endif
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2429,15 +2429,15 @@ Buffer *mBuf;
    TRC3(cmPkRguCDatIndInfo);
 
    if (SFndLenMsg(param->pdu, &msgLen) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
    if (SCatMsg(mBuf, param->pdu, M1M2) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
    SPutMsg(param->pdu);
    CMCHKPK(cmPkMsgLen, msgLen, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
    CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2479,10 +2479,10 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(cmUnpkMsgLen, &msgLen, mBuf);
    if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
    if (SSegMsg(mBuf, totalMsgLen-msgLen, &param->pdu) != ROK)
-      RETVALUE(RFAILED);
-   RETVALUE(ROK);
+      return RFAILED;
+   return ROK;
 }
 
 
@@ -2519,7 +2519,7 @@ Buffer *mBuf;
 
       CMCHKPK(cmPkRguPduInfo, &param->pdu, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2556,7 +2556,7 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(cmUnpkRguPduInfo, &param->pdu, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2598,18 +2598,18 @@ Buffer *mBuf;
    {
       msgLen = 0;
       //if (SFndLenMsg(param->pduInfo[i].pduBuf, &msgLen) != ROK)
-      //   RETVALUE(RFAILED);
+      //   return RFAILED;
       //if (SCatMsg(mBuf, param->pduInfo[i].pduBuf, M1M2) != ROK)
-      //    RETVALUE(RFAILED);      
+      //    return RFAILED;      
       CMCHKPK(cmPkMsgLen, msgLen, mBuf);
       CMCHKPK(cmPkLteLcId, param->pduInfo[i].lcId, mBuf);
-      CMCHKPK(cmPkBool, param->pduInfo[i].commCh, mBuf);
+      CMCHKPK(oduPackBool, param->pduInfo[i].commCh, mBuf);
    }
-   CMCHKPK(SPkU8, param->numPdu, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->numPdu, mBuf);
    CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    //CMCHKPK(cmPkLteTimingInfo, &param->timeToTx, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2649,20 +2649,20 @@ Buffer *mBuf;
    //CMCHKUNPK(cmUnpkLteTimingInfo, &param->timeToTx, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->numPdu, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->numPdu, mBuf);
    for (i=0; i<param->numPdu; i++) 
    {
       MsgLen totalMsgLen;
 
-      CMCHKUNPK(cmUnpkBool, &param->pduInfo[i].commCh, mBuf);
+      CMCHKUNPK(oduUnpackBool, &param->pduInfo[i].commCh, mBuf);
       CMCHKUNPK(cmUnpkLteLcId, &param->pduInfo[i].lcId, mBuf);
       CMCHKUNPK(cmUnpkMsgLen, &param->pduInfo[i].pduLen, mBuf);
       if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
       //if (SSegMsg(mBuf, totalMsgLen-param->pduInfo[i].pduLen, &param->pduInfo[i].pduBuf) != ROK)
-      //   RETVALUE(RFAILED);
+      //   return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2705,18 +2705,18 @@ Buffer *mBuf;
       case CM_LTE_LCH_PCCH:
          CMCHKPK(cmPkLteTimingInfo, &param->u.timeToTx, mBuf);
 #ifdef EMTC_ENABLE
-         CMCHKPK(SPkU8,param->pnb,mBuf);
-         CMCHKPK(SPkU8,param->emtcDiReason,mBuf);
+         CMCHKPK(oduUnpackUInt8,param->pnb,mBuf);
+         CMCHKPK(oduUnpackUInt8,param->emtcDiReason,mBuf);
 #endif
          break;
       default :
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
    CMCHKPK(SPkS32, param->bo, mBuf);
    CMCHKPK(cmPkLteLcType, param->lcType, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2760,8 +2760,8 @@ Buffer *mBuf;
       case CM_LTE_LCH_BCCH:
       case CM_LTE_LCH_PCCH:
 #ifdef EMTC_ENABLE
-         CMCHKUNPK(SUnpkU8,&param->emtcDiReason , mBuf);
-         CMCHKUNPK(SUnpkU8,&param->pnb , mBuf);
+         CMCHKUNPK(oduPackUInt8,&param->emtcDiReason , mBuf);
+         CMCHKUNPK(oduPackUInt8,&param->pnb , mBuf);
 #endif
          CMCHKUNPK(cmUnpkLteTimingInfo, &param->u.timeToTx, mBuf);
          break;
@@ -2769,9 +2769,9 @@ Buffer *mBuf;
          CMCHKUNPK(cmUnpkLteRnti, &param->u.rnti, mBuf);
          break;
       default :
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2809,10 +2809,10 @@ Buffer *mBuf;
 
    CMCHKPK(SPkS32, param->bo, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
-   CMCHKPK(cmPkBool, param->commCh, mBuf);
+   CMCHKPK(oduPackBool, param->commCh, mBuf);
    CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 } /* End of packBOStatusInfo */
 
 
@@ -2850,10 +2850,10 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
-   CMCHKUNPK(cmUnpkBool, &param->commCh, mBuf);
+   CMCHKUNPK(oduUnpackBool, &param->commCh, mBuf);
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(SUnpkS32, &param->bo, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 } /* End of unpackBOStatusInfo */
 
 
@@ -2890,7 +2890,7 @@ Buffer *mBuf;
 
    CMCHKPK(SPkS16, param->totBufSize, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2928,7 +2928,7 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(SUnpkS16, &param->totBufSize, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2965,14 +2965,14 @@ Buffer *mBuf;
    TRC3(cmPkRguStaIndTb);
 
 #ifdef LTE_L2_MEAS
-   CMCHKPK(SPkU16, param->status, mBuf);
-   CMCHKPK(SPkU32, param->tbId, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->status, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->tbId, mBuf);
 #endif   
    for (i=param->nmbLch-1; i >= 0; i--) {
       CMCHKPK(cmPkRguLchStaInd, &param->lchStaInd[i], mBuf);
    }
-   CMCHKPK(SPkU8, param->nmbLch, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt8, param->nmbLch, mBuf);
+   return ROK;
 }
 
 
@@ -3009,15 +3009,15 @@ Buffer *mBuf;
 
    TRC3(cmUnpkRguStaIndTb);
 
-   CMCHKUNPK(SUnpkU8, &param->nmbLch, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->nmbLch, mBuf);
    for (i=0; i<param->nmbLch; i++) {
       CMCHKUNPK(cmUnpkRguLchStaInd, &param->lchStaInd[i], mBuf);
    }
 #ifdef LTE_L2_MEAS
-   CMCHKUNPK(SUnpkU32, &param->tbId, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->status, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->tbId, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->status, mBuf);
 #endif   
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3050,14 +3050,14 @@ Buffer *mBuf
    for(idx = (param->nmbLch-1); idx >= 0; idx--)
    {
       CMCHKPK(cmPkRguLchStaInd, &param->lchSta[idx].lchStaInd, mBuf);
-      CMCHKPK(cmPkBool, param->lchSta[idx].commCh, mBuf);
+      CMCHKPK(oduPackBool, param->lchSta[idx].commCh, mBuf);
    }
-   CMCHKPK(SPkU8, param->nmbLch, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->nmbLch, mBuf);
    CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(cmPkLteTimingInfo, &param->timeToTx, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* End of packSchedRepInfo */
 
 
@@ -3091,14 +3091,14 @@ Buffer *mBuf
    CMCHKUNPK(cmUnpkLteTimingInfo, &param->timeToTx, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->nmbLch, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->nmbLch, mBuf);
    for(idx = 0; idx < param->nmbLch; idx++)
    {
-      CMCHKUNPK(cmUnpkBool, &param->lchSta[idx].commCh, mBuf);
+      CMCHKUNPK(oduUnpackBool, &param->lchSta[idx].commCh, mBuf);
       CMCHKUNPK(cmUnpkRguLchStaInd, &param->lchSta[idx].lchStaInd, mBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* End of unpackSchedRepInfo */
 
 #endif

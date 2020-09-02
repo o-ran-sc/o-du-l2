@@ -248,7 +248,7 @@ RguDDatReqInfo    *datReqInfo;
    if ( datReqInfo == NULLP )
    {
       RLOG0(L_FATAL,"Memory allocation failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
@@ -287,7 +287,7 @@ RguDDatReqInfo    *datReqInfo;
             post->pool, 
             datReqInfo, sizeof(RguDDatReqInfo));
    
-   RETVALUE(ROK);
+   return ROK;
 }/* End of KwLiRguDDatReq */
 
 /**
@@ -359,7 +359,7 @@ KwDStaIndInfo   *staIndInfo;
       {
          RLOG_ARG0(L_FATAL,DBG_CELLID,staIndInfo->cellId,
                   "Memory allocation failed");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    for(idx = 0; idx < staIndInfo->nmbOfUeGrantPerTti; idx++)
@@ -549,7 +549,7 @@ KwDStaIndInfo   *staIndInfo;
    rguSap = &(gCb->u.dlCb->rguDlSap[suId]);
 //Debug
    KwLiRguDDatReq(&rguSap->pst,rguSap->spId,datReqInfo); 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -600,7 +600,7 @@ U32        staPduBo;
        && (!staPduPrsnt) && ((CM_LTE_MODE_AM == rbCb->mode ) && (AMDL.nxtRetx == NULLP)))
    {
       rbCb->boUnRprtdCnt++;
-      RETVALUE(ROK);
+      return ROK;
    }
 #endif
 
@@ -625,7 +625,7 @@ U32        staPduBo;
    RlcMacSendBOStatus(&rguSap->pst,rguSap->spId,&boStatus);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -1409,7 +1409,7 @@ S16 kwUtlL2MeasDlInit(RlcCb *gCb)
    gCb->u.dlCb->kwL2Cb.kwL2EvtCb[KW_L2MEAS_UU_LOSS].measCb.measType= LKW_L2MEAS_UU_LOSS;
    gCb->u.dlCb->kwL2Cb.kwL2EvtCb[KW_L2MEAS_ACT_UE].measCb.measType= LKW_L2MEAS_ACT_UE;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  *
@@ -1696,14 +1696,14 @@ U8               tbIdx;
    ret = ROK;
    if(hqStaInd->tbId[tbIdx] >= KW_INVALID_TBID)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* Find the L2 measurement tbCb to process DL Ip thruput*/
    l2MeasTb = ueCb->l2MeasTbCb[hqStaInd->tbId[tbIdx]];
    if(l2MeasTb == NULLP)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    /* For each logical channel in the tbCb, process 
     * and get the DL IP thruput */
@@ -2008,7 +2008,7 @@ KwL2MeasEvtCb         *measEvtCb;
    }
    /* Fix Klock warning */
    KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, &measCfmEvt);
-   RETVALUE(ROK);
+   return ROK;
 } /* kwUtlSndL2MeasCfm */
 /**
  *
@@ -2043,7 +2043,7 @@ KwL2MeasCfmEvt *measCfmEvt;
    TRC3(kwUtlSndDlL2MeasNCfm)
 
    KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
-   RETVALUE(ROK);
+   return ROK;
 } /* kwUtlSndL2MeasNCfm */
 /**
  *

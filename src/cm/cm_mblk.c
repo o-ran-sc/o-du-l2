@@ -119,7 +119,7 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
      printf("eventSize [%ld] greater than maxBlkSize [%ld]\n",
            evntSize, maxBlkSize);
 #endif
-     RETVALUE(RFAILED);
+     return RFAILED;
   }
 #endif
  
@@ -134,7 +134,7 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
                (Size)(maxBlkSize + sizeof(CmMemList))) != ROK)
 #endif /* SS_LOCKLESS_MEMORY */
 
-     RETVALUE(RFAILED);
+     return RFAILED;
 
   /* Reset the contents */
   cmMemset((U8 *)allocPtr, (U8 )0, 
@@ -180,7 +180,7 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
   *ptr = (Ptr) ((PTR)allocPtr + sizeof(CmMemList));
   cb->runPtr = ((PTR)(*ptr) + evntSize);
 
-  RETVALUE(ROK);
+  return ROK;
 
 } /* End of cmAllocEvnt */
 
@@ -289,7 +289,7 @@ Ptr          *allocPtr; /* location to place pointer */
       *allocPtr = (Ptr) cb->runPtr;
       cb->memAllocated += size;
       cb->runPtr += size;
-      RETVALUE(ROK);
+      return ROK;
     }
   }
   
@@ -305,7 +305,7 @@ Ptr          *allocPtr; /* location to place pointer */
               (Data **)&(cb->initPtr),
               (Size)(blkSize + sizeof(CmMemList)) )  != ROK)
 #endif /* SS_LOCKLESS_MEMORY */
-     RETVALUE(RFAILED);
+     return RFAILED;
 
   /* Reset the contents */
   /* Initialise above allocated structure */
@@ -335,7 +335,7 @@ Ptr          *allocPtr; /* location to place pointer */
   *allocPtr = (Ptr) ((PTR)cb->initPtr + sizeof(CmMemList));
   cb->runPtr = ((PTR)(*allocPtr) + size);
 
-  RETVALUE(ROK);   
+  return ROK;   
 
 } /* End of cmGetMem */
 
@@ -385,7 +385,7 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
 
   /* Validation check */
   if( evntSize > maxBlkSize)
-     RETVALUE(RFAILED);
+     return RFAILED;
  
   /* Allocate memory for the first Memory Chunk */
   /* Allocated memory should be maxBlkSize + sizeof(CmMemList) */
@@ -398,7 +398,7 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
                (Size)(maxBlkSize + sizeof(CmMemList))) != ROK)
 #endif /* SS_LOCKLESS_MEMORY */
 
-     RETVALUE(RFAILED);
+     return RFAILED;
 
   /* Reset the contents */
   cmMemset((U8 *)allocPtr, (U8 )0, 
@@ -444,7 +444,7 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
   *ptr = (Ptr) ((PTR)allocPtr + sizeof(CmMemList));
   cb->runPtr = ((PTR)(*ptr) + evntSize);
 
-  RETVALUE(ROK);
+  return ROK;
 
 } /* End of cmAllocEvntNoInit */
 
@@ -514,7 +514,7 @@ Ptr          *allocPtr; /* location to place pointer */
         //   (PTR)(size) );
       cb->memAllocated += size;
       cb->runPtr += size;
-      RETVALUE(ROK);
+      return ROK;
     }
   }
   
@@ -530,7 +530,7 @@ Ptr          *allocPtr; /* location to place pointer */
               (Data **)&(cb->initPtr),
               (Size)(blkSize + sizeof(CmMemList)) )  != ROK)
 #endif /* SS_LOCKLESS_MEMORY */
-     RETVALUE(RFAILED);
+     return RFAILED;
 
   /* Reset the contents */
   /* Initialise above allocated structure */
@@ -559,7 +559,7 @@ Ptr          *allocPtr; /* location to place pointer */
   *allocPtr = (Ptr) ((PTR)cb->initPtr + sizeof(CmMemList));
   cb->runPtr = ((PTR)(*allocPtr) + size);
 
-  RETVALUE(ROK);   
+  return ROK;   
 
 } /* End of cmGetMemNoInit */
 

@@ -128,7 +128,7 @@ Bool hdFddEnbl;
                   "rgSCHHdFddUeCfg(): HD-FDD already enabled for this UE"
                   "CRNTI:%d",ueCb->ueId);
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef LTEMAC_SPS
@@ -140,7 +140,7 @@ Bool hdFddEnbl;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
       "rgSCHHdFddUeCfg(): Could'nt do HDFDD cfg, SPS already configured"
                "CRNTI:%d",ueCb->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -164,10 +164,10 @@ Bool hdFddEnbl;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
                "rgSCHHdFddUeCfg(): Could not allocate memory for hd-fdd ueCb"
                "CRNTI:%d",ueCb->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }/*rgSCHHdFddUeCfg*/
 
 
@@ -223,7 +223,7 @@ RgSchUeCb   *ueCb;
        ueCb->hdFddEnbld = FALSE;
     }
 
-    RETVALUE(ROK);
+    return ROK;
 } /* rgSCHHdFddUeDel */
 
 

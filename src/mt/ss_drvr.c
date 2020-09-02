@@ -137,7 +137,7 @@ ISTsk isTsk;                    /* interrupt service function */
    if (SGetProcIdLst(&count, procIdLst) != ROK)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS001, ERRZERO, "Null procId list");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for (i = 0; i < count; i++)
@@ -145,7 +145,7 @@ ISTsk isTsk;                    /* interrupt service function */
       if (procIdLst[i] >= low  &&  procIdLst[i] <= high)
       {
        SSLOGERROR(ERRCLS_INT_PAR, ESS002, ERRZERO, "Invalid procId range");
-       RETVALUE(RFAILED);
+       return RFAILED;
       }
    }
 #else /* SS_MULTIPLE_PROCS */
@@ -153,21 +153,21 @@ ISTsk isTsk;                    /* interrupt service function */
    if (thisProcId >= low  &&  thisProcId <= high)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS003, ERRZERO, "Invalid procId range");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* SS_MULTIPLE_PROCS */
 
    if (channel >= SS_MAX_DRVRTSKS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS004, channel, "Invalid channel");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* check activation functions */
    if (actvTsk == NULLP  ||  isTsk == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS005, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* check if already registered */
@@ -175,7 +175,7 @@ ISTsk isTsk;                    /* interrupt service function */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS006, ERRZERO,
                   "Driver task already registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -197,7 +197,7 @@ ISTsk isTsk;                    /* interrupt service function */
       SSLOGERROR(ERRCLS_DEBUG, ESS008, ERRZERO, "Could not initialize lock");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    osCp.drvrTskTbl[channel].channel = channel;
@@ -259,7 +259,7 @@ Inst channel;
    if (channel >= SS_MAX_DRVRTSKS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, channel, "Invalid channel");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* check if already registered */
@@ -267,7 +267,7 @@ Inst channel;
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS477, ERRZERO,
                   "Driver task is not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -278,7 +278,7 @@ Inst channel;
          SSLOGERROR(ERRCLS_DEBUG, ESS477, ERRZERO,
                      "Could not lock driver task lock");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ssdDeregDrvrTsk(&osCp.drvrTskTbl[channel]);
 
@@ -296,11 +296,11 @@ Inst channel;
          SSLOGERROR(ERRCLS_DEBUG, ESS477, ERRZERO,
                      "Could not unlock driver task lock");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    SDestroyLock(&osCp.drvrTskTbl[channel].lock);
    /* ss002.301 Modifications */
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* SS_DRVR_SUPPORT */
 /**********************************************************************

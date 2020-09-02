@@ -76,7 +76,7 @@ RgInfUeDelInd*  ueDelInd;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
 #ifdef MS_MBUF_CORRUPTION 
@@ -85,7 +85,7 @@ RgInfUeDelInd*  ueDelInd;
    if(SAddPstMsgMult((Data *)ueDelInd, sizeof(RgInfUeDelInd), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFUEDELIND;
@@ -128,7 +128,7 @@ Buffer *mBuf;
    if(SRemPreMsgMult((Data *)&ueDelInd, sizeof(RgInfUeDelInd), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -167,7 +167,7 @@ RgInfDedBoRpt* boRpt;
    TRC2(cmPkMacSchDedBoUpdtReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef MS_MBUF_CORRUPTION 
@@ -176,7 +176,7 @@ RgInfDedBoRpt* boRpt;
    if(SAddPstMsgMult((Data *)boRpt, sizeof(RgInfDedBoRpt), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFDEDBOUPDTREQ;
@@ -219,7 +219,7 @@ Buffer *mBuf;
    if(SRemPreMsgMult((Data *)&boRpt, sizeof(RgInfDedBoRpt), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -255,7 +255,7 @@ RgInfCmnBoRpt* boRpt;
    TRC2(cmPkMacSchCmnBoUpdtReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef MS_MBUF_CORRUPTION 
@@ -264,7 +264,7 @@ RgInfCmnBoRpt* boRpt;
    if(SAddPstMsgMult((Data *)boRpt, sizeof(RgInfCmnBoRpt), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFCMNBOUPDTREQ;
@@ -307,7 +307,7 @@ Buffer *mBuf;
    if(SRemPreMsgMult((Data *)&boRpt, sizeof(RgInfCmnBoRpt), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -343,13 +343,13 @@ RgInfSfDatInd*  datInd;
    TRC2(cmPkMacSchSfRecpInd)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if(cmPkPtr((PTR)datInd, mBuf) != ROK)
+   if(oduPackPointer((PTR)datInd, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFSFRECPIND;
@@ -389,10 +389,10 @@ Buffer *mBuf;
    
    TRC2(cmUnpkMacSchCmnBoUpdtReq)
 
-   if(cmUnpkPtr((PTR *)&datInd, mBuf) != ROK)
+   if(oduUnpackPointer((PTR *)&datInd, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -430,13 +430,13 @@ RgInfSpsRelInfo*     relInfo;
    TRC2(cmPkMacSchSpsRelInd)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if(cmPkPtr((PTR)relInfo, mBuf) != ROK)
+   if(oduPackPointer((PTR)relInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFSPSRELIND;
@@ -474,10 +474,10 @@ Buffer         *mBuf;
    
    TRC2(cmUnpkMacSchSpsRelInd)
 
-   if(cmUnpkPtr((PTR *)&relInfo, mBuf) != ROK)
+   if(oduUnpackPointer((PTR *)&relInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -517,13 +517,13 @@ RgInfSfAlloc*   resAllocReq;
    TRC2(cmPkSchMacSfAllocReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if(cmPkPtr((PTR)resAllocReq, mBuf) != ROK)
+   if(oduPackPointer((PTR)resAllocReq, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFSFALLOCREQ;
@@ -563,10 +563,10 @@ Buffer *mBuf;
    
    TRC2(cmUnpkSchMacSfAllocReq)
 
-   if(cmUnpkPtr((PTR *)&resAllocReq, mBuf) != ROK)
+   if(oduUnpackPointer((PTR *)&resAllocReq, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -600,13 +600,13 @@ RgInfResetHqEnt*     hqEntInfo
    TRC2(cmPkSchMacRstHqEntReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if(cmPkPtr((PTR)hqEntInfo, mBuf) != ROK)
+   if(oduPackPointer((PTR)hqEntInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFHQENTRESET;
@@ -643,10 +643,10 @@ Buffer *mBuf
    
    TRC2(cmUnpkSchMacRstHqEntReq)
 
-   if(cmUnpkPtr((PTR *)&hqEntRstInfo, mBuf) != ROK)
+   if(oduUnpackPointer((PTR *)&hqEntRstInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -683,13 +683,13 @@ RgInfRlsHqInfo* sfHqInfo;
    TRC2(cmPkSchMacRlsHqReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if(cmPkPtr((PTR)sfHqInfo, mBuf) != ROK)
+   if(oduPackPointer((PTR)sfHqInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFRLSHQREQ;
@@ -728,10 +728,10 @@ Buffer *mBuf;
    
    TRC2(cmUnpkSchMacRlsHqReq)
 
-   if(cmUnpkPtr((PTR *)&sfHqInfo, mBuf) != ROK)
+   if(oduUnpackPointer((PTR *)&sfHqInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -767,7 +767,7 @@ RgInfRlsRnti* rlsRnti;
    TRC2(cmPkSchMacRlsRntiReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef MS_MBUF_CORRUPTION 
@@ -776,7 +776,7 @@ RgInfRlsRnti* rlsRnti;
    if(SAddPstMsgMult((Data *)rlsRnti, sizeof(RgInfRlsRnti), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFRLSRNTIREQ;
@@ -818,7 +818,7 @@ Buffer *mBuf;
    if(SRemPreMsgMult((Data *)&rlsRnti, sizeof(RgInfRlsRnti), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -855,7 +855,7 @@ RgInfCellReg* regReq;
    TRC2(cmPkSchMacCellRegReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef MS_MBUF_CORRUPTION 
@@ -864,7 +864,7 @@ RgInfCellReg* regReq;
    if(SAddPstMsgMult((Data *)regReq, sizeof(RgInfCellReg), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFCELLREGREQ;
@@ -906,7 +906,7 @@ Buffer *mBuf;
    if(SRemPreMsgMult((Data *)&regReq, sizeof(RgInfCellReg), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -942,13 +942,13 @@ RgInfLcgRegReq       *lcgRegReq;
    TRC2(cmPkSchMacLcgRegReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(SAddPstMsgMult((Data *)lcgRegReq, sizeof(RgInfLcgRegReq), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFLCGREG;
@@ -986,10 +986,10 @@ Buffer         *mBuf;
    
    TRC2(cmUnpkSchMacLcgRegReq)
 
-   if(cmUnpkPtr((PTR *)&lcgRegReq, mBuf) != ROK)
+   if(oduUnpackPointer((PTR *)&lcgRegReq, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -1027,13 +1027,13 @@ RgInfSpsLcInfo       *lcInfo;
    TRC2(cmPkSchMacSpsLcRegReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if(cmPkPtr((PTR)lcInfo, mBuf) != ROK)
+   if(oduPackPointer((PTR)lcInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFSPSLCREG;
@@ -1069,13 +1069,13 @@ RgInfUlSpsReset       *ulSpsResetInfo;
    TRC2(cmPkSchMacUlSpsResetReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   if(cmPkPtr((PTR)ulSpsResetInfo, mBuf) != ROK)
+   if(oduPackPointer((PTR)ulSpsResetInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFSPSRESET;
@@ -1113,10 +1113,10 @@ Buffer         *mBuf;
    
    TRC2(cmUnpkSchMacSpsLcRegReq)
 
-   if(cmUnpkPtr((PTR *)&lcInfo, mBuf) != ROK)
+   if(oduUnpackPointer((PTR *)&lcInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -1156,10 +1156,10 @@ Buffer         *mBuf;
    
    TRC2(cmUnpkSchMacUlSpsResetReq)
 
-   if(cmUnpkPtr((PTR *)&ulSpsResetInfo, mBuf) != ROK)
+   if(oduUnpackPointer((PTR *)&ulSpsResetInfo, mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -1200,7 +1200,7 @@ CmLteRnti            crnti;
    TRC2(cmPkSchMacSpsLcDeregReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    CMCHKPK(cmPkLteCellId, cellId, mBuf);
@@ -1281,12 +1281,12 @@ RgInfL2MeasReq      *measInfo;
    TRC2(cmPkSchMacL2MeasReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if(SAddPstMsgMult((Data *)measInfo, sizeof(RgInfL2MeasReq), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFL2MEASREQ;
@@ -1322,12 +1322,12 @@ RgInfL2MeasStopReq *measInfo;
    TRC2(cmPkSchMacL2MeasStopReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-       RETVALUE(RFAILED);
+       return RFAILED;
   }
    if(SAddPstMsgMult((Data *)measInfo, sizeof(RgInfL2MeasStopReq), mBuf) != ROK)
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFL2MEASSTOPREQ;
@@ -1361,13 +1361,13 @@ RgInfL2MeasSndReq *measInfo;
 
    TRC2(cmPkSchMacL2MeasSendReq)
  if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-       RETVALUE(RFAILED);
+       return RFAILED;
   }
 
    if(SAddPstMsgMult((Data *)measInfo, sizeof(RgInfL2MeasSndReq), mBuf) != ROK)
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFL2MEASSENDREQ;
@@ -1408,7 +1408,7 @@ Buffer         *mBuf;
    if(SRemPreMsgMult((Data *)&measInfo, sizeof(RgInfL2MeasReq), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -1448,7 +1448,7 @@ Buffer         *mBuf;
    if(SRemPreMsgMult((Data *)&measInfo, sizeof(RgInfL2MeasStopReq), mBuf) != ROK)
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutMsg(mBuf);
@@ -1487,7 +1487,7 @@ Buffer         *mBuf;
  if(SRemPreMsgMult((Data *)&measInfo, sizeof(RgInfL2MeasSndReq), mBuf) != ROK)  
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutMsg(mBuf);
@@ -1523,13 +1523,13 @@ RgInfL2MeasCfm       *measCfm;
    TRC2(cmPkMacSchL2MeasCfm)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(SAddPstMsgMult((Data *)measCfm, sizeof(RgInfL2MeasCfm), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFL2MEASCFM;
@@ -1565,13 +1565,13 @@ RgInfL2MeasCfm       *measCfm;
 
    TRC2(cmPkMacSchL2MeasStopCfm)
  if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(SAddPstMsgMult((Data *)measCfm, sizeof(RgInfL2MeasCfm), mBuf) != ROK)
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTINFL2MEASSTOPCFM;
@@ -1611,7 +1611,7 @@ Buffer         *mBuf;
    if(SRemPreMsgMult((Data *)&measCfm, sizeof(RgInfL2MeasCfm), mBuf) != ROK)
    {
       RGSCHINF_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGSCHINF_FREE_MSG(mBuf);
@@ -1652,7 +1652,7 @@ RgInfL2MeasCfm      measCfm;
    if(SRemPreMsgMult((Data *)&measCfm, sizeof(RgInfL2MeasCfm), mBuf) != ROK)
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutMsg(mBuf);

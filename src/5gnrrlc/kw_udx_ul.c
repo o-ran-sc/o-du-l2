@@ -135,7 +135,7 @@ U8     status;
       KW_SEND_SAPID_ALARM(tRlcCb,suId, 
                           LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_STATE);
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (suId < 0)
@@ -144,7 +144,7 @@ U8     status;
       KW_SEND_SAPID_ALARM(tRlcCb,suId, 
                            LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -187,7 +187,7 @@ U8     status;
    /* Send an alarm with proper event and cause */
    KW_SEND_SAPID_ALARM(tRlcCb,suId, event, cause);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -250,7 +250,7 @@ RlcCfgCfmInfo   *cfmInfo;
                          pst->pool,
 	                 cfmInfo,
                          sizeof(RlcCfgCfmInfo));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -270,7 +270,7 @@ RlcCfgCfmInfo   *cfmInfo;
                          pst->pool,
 	                 cfmInfo,
                          sizeof(RlcCfgCfmInfo));
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
       /* Allocate memory and memset to 0 for cfmInfo */
    RLC_ALLOC(tRlcCb,cfgCfm, sizeof(RlcCfgCfmInfo));
@@ -282,7 +282,7 @@ RlcCfgCfmInfo   *cfmInfo;
                          pst->pool,
 	                 cfmInfo,
                          sizeof(RlcCfgCfmInfo));
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    kwHdlCrlcUlCfgReq(tRlcCb,cfgTmpData, cfmInfo, cfgCfm);
@@ -299,7 +299,7 @@ RlcCfgCfmInfo   *cfmInfo;
    RLC_PST_FREE(pst->region, pst->pool, cfgTmpData->cfgInfo, sizeof(RlcCfgInfo));
    RLC_FREE(tRlcCb,cfgTmpData,sizeof(RlcUlCfgTmpData));
    
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -353,7 +353,7 @@ CmStatus   status;
    if (suId < 0)
    {
       RLOG0(L_ERROR, "Invalid suId");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -365,7 +365,7 @@ CmStatus   status;
 
    if(ROK != kwDbmDelUlTransaction(tRlcCb, cfgTmpData))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(status.status == CKW_CFG_CFM_OK)
@@ -382,7 +382,7 @@ CmStatus   status;
       interface or by he receipient in case of tight coupling */
    RLC_PST_FREE(pst->region, pst->pool, cfgTmpData->newUeInfo, sizeof(CkwUeInfo));
    RLC_FREE_WC(tRlcCb, cfgTmpData, sizeof (RlcUlCfgTmpData));
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -419,7 +419,7 @@ CmLteRlcId   *rlcId
    {    
       RLOG_ARG2(L_ERROR, DBG_UEID,rlcId->ueId, "CellId [%u]:RbId[%d] not found",
             rlcId->cellId,rlcId->rbId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Start staProhTmr */
@@ -593,7 +593,7 @@ RlcCfgCfmInfo    *cfgCfm;
    cfgCfm->cellId = cfg->cellId;
    cfgCfm->numEnt = cfg->numEnt;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #ifdef __cplusplus
 }

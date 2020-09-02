@@ -2931,14 +2931,14 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
          "bw<=bwAssigned for UEID:%d",ueCb->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (rgSCHDhmGetCcchSduHqProc(ueCb, cellSch->dl.time, &(ueDl->proc)) != ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
          "rgSCHDhmGetCcchSduHqProc failed UEID:%d",ueCb->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    rbAllocInfo =  RG_SCH_CMN_GET_ALLOCCB_FRM_UE(ueCb, cell);
@@ -2950,13 +2950,13 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
       rgSCHDhmRlsHqpTb(ueDl->proc, 0, FALSE);
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
          "rgSCHCmnCcchSduDedAlloc failed UEID:%d",ueCb->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cmLListAdd2Tail(&allocInfo->ccchSduAlloc.ccchSduTxLst, &ueDl->proc->reqLnk);
    ueDl->proc->reqLnk.node = (PTR)ueDl->proc;
    allocInfo->ccchSduAlloc.ccchSduDlSf->schdCcchUe++;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief This function scheduler for downlink CCCH messages.
@@ -3940,14 +3940,14 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId ,
          "bw<=bwAssigned");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (rgSCHDhmGetMsg4HqProc(raCb, cellSch->dl.time) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
          "rgSCHDhmGetMsg4HqProc failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    raCb->rbAllocInfo.dlSf = allocInfo->msg4Alloc.msg4DlSf;
@@ -3958,13 +3958,13 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
       rgSCHDhmRlsHqpTb(raCb->dlHqE->msg4Proc, 0, FALSE);
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
          "rgSCHCmnMsg4DedAlloc failed.");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cmLListAdd2Tail(&allocInfo->msg4Alloc.msg4TxLst, &raCb->dlHqE->msg4Proc->reqLnk);
    raCb->dlHqE->msg4Proc->reqLnk.node = (PTR)raCb->dlHqE->msg4Proc;
    allocInfo->msg4Alloc.msg4DlSf->schdCcchUe++;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4219,7 +4219,7 @@ RgSchUeCb        *ueCb;
       }
       else
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -4231,7 +4231,7 @@ RgSchUeCb        *ueCb;
    rbAllocinfo->rnti = ueCb->ueId;
    rbAllocinfo->tbInfo[0].noLyr = 1;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -4317,7 +4317,7 @@ RgSchRaCb        *raCb;
       }
       else
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -4329,7 +4329,7 @@ RgSchRaCb        *raCb;
    rbAllocinfo->tbInfo[0].schdlngForTb = TRUE;
    rbAllocinfo->tbInfo[0].noLyr = 1;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef LTE_TDD
@@ -4593,7 +4593,7 @@ RgSchCmnDlRbAllocInfo   *allocInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
          "bw == bwAssigned RARNTI:%d",rarnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    reqLst = &cell->raInfo.raReqLst[raIndex];
@@ -4601,7 +4601,7 @@ RgSchCmnDlRbAllocInfo   *allocInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
          "reqLst Count=0 RARNTI:%d",rarnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    remNumRapid = reqLst->count;
 
@@ -4670,7 +4670,7 @@ RgSchCmnDlRbAllocInfo   *allocInfo;
    if (!isAlloc)
    {
       RLOG_ARG0(L_INFO,DBG_CELLID,cell->cellId,"BW alloc Failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    subFrm->bwAssigned = subFrm->bwAssigned + rb;
@@ -4688,7 +4688,7 @@ RgSchCmnDlRbAllocInfo   *allocInfo;
    allocInfo->raRspAlloc[noRaRnti].tbInfo[0].noLyr = 1;
    allocInfo->raRspAlloc[noRaRnti].vrbgReq = RGSCH_CEIL(nPrb,MAX_5GTF_VRBG_SIZE); 
    schdNumRapid += remNumRapid; 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -8379,7 +8379,7 @@ RgSchDlHqEnt  *hqEnt;
       if (rgSCHUtlAllocSBuf(cell->instIdx,
                (Data**)&(hqP->sch), (sizeof(RgSchCmnDlHqProc))) != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 #ifdef EMTC_ENABLE
@@ -8387,7 +8387,7 @@ RgSchDlHqEnt  *hqEnt;
    {
       if(ROK != cellSchd->apisEmtcDl->rgSCHDlUeHqEntInit(cell, hqEnt))
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
    }
@@ -8396,11 +8396,11 @@ RgSchDlHqEnt  *hqEnt;
    {
       if(ROK != cellSchd->apisDl->rgSCHDlUeHqEntInit(cell, hqEnt))
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHCmnDlInitHqEnt */
 
 /**
@@ -8570,7 +8570,7 @@ RgSchErrInfo *err;
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Memory allocation FAILED\n"));
       err->errCause = RGSCHERR_SCH_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ueSchCmn = RG_SCH_CMN_GET_UE(ue,sCell);
 
@@ -8631,7 +8631,7 @@ RgSchErrInfo *err;
    if ((cellSchd->apisDl->rgSCHRgrSCellDlUeCfg(sCell, ue, err)) != ROK)
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Spec Sched DL UE CFG FAILED\n"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* TODO: enhance for DLFS RB Allocation for SCELLs in future dev */
@@ -8642,7 +8642,7 @@ RgSchErrInfo *err;
       if ((cellSchd->apisDlfs->rgSCHDlfsSCellUeCfg(sCell, ue, sCellInfoCfg, err)) != ROK)
       {
          RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "DLFS UE config FAILED\n"));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -8659,7 +8659,7 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId,"SCELL UHM HARQ Ent Init "
                "Failed for CRNTI:%d", ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       ueUlPcell = RG_SCH_CMN_GET_UL_UE(ue, ue->cell);
@@ -8693,7 +8693,7 @@ RgSchErrInfo *err;
             RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId,"SCELL Memory allocation FAILED"
                   "for CRNTI:%d",ue->ueId);
             err->errCause = RGSCHERR_SCH_CFG;
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          allRcd->allocTime = sCell->crntTime;
          cmLListAdd2Tail(&ueUl->ulAllocLst, &allRcd->lnk);
@@ -8706,7 +8706,7 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId, "Could not do "
                "power config for UE CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
 #ifdef EMTC_ENABLE   
@@ -8716,7 +8716,7 @@ RgSchErrInfo *err;
          {
             RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId, "Spec Sched UL UE CFG FAILED"
                   "for CRNTI:%d",ue->ueId);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
       else
@@ -8726,14 +8726,14 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId, "Spec Sched UL UE CFG FAILED"
                "for CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       }
    
       ue->ul.isUlCaEnabled = TRUE;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHCmnRgrSCellUeCfg */
 
 
@@ -8792,7 +8792,7 @@ RgSchUeCb    *ue;
       if ((cellSchd->apisDlfs->rgSCHDlfsSCellUeDel(sCellInfo->cell, ue)) != ROK)
       {
          RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "DLFS Scell del FAILED\n"));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -8800,7 +8800,7 @@ RgSchUeCb    *ue;
          (Data**)(&(sCellInfo->sch)), (sizeof(RgSchCmnUe)));
 
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHCmnRgrSCellUeDel */
  
 #endif
@@ -8864,11 +8864,11 @@ RgrUeCfg    *cfg;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
 	    "5GTF_ERROR Invalid beam id CRNTI:%d",cfg->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ue5gtfGrp->beamBitMask |= (1 << ue->ue5gtfCb.BeamId);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -8932,7 +8932,7 @@ RgSchErrInfo *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
             "Memory allocation FAILED for CRNTI:%d",ueCfg->crnti);
       err->errCause = RGSCHERR_SCH_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ueSchCmn   = RG_SCH_CMN_GET_UE(ue,cell);
    ue->dl.ueDlCqiCfg = ueCfg->ueDlCqiCfg;
@@ -9010,7 +9010,7 @@ RgSchErrInfo *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"UL Ambr and DL Ambr are"
          "configured as 0 for CRNTI:%d",ueCfg->crnti);
       err->errCause = RGSCHERR_SCH_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* DL ambr */
    ue->dl.ambrCfgd = (ueCfg->ueQosCfg.dlAmbr * RG_SCH_CMN_REFRESH_TIME)/100;
@@ -9027,7 +9027,7 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "Spec Sched DL UE CFG FAILED for CRNTI:%d",ueCfg->crnti);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
    }
@@ -9038,7 +9038,7 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "Spec Sched DL UE CFG FAILED for CRNTI:%d",ueCfg->crnti);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -9068,7 +9068,7 @@ RgSchErrInfo *err;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED"
                    "for CRNTI:%d",ueCfg->crnti);
          err->errCause = RGSCHERR_SCH_CFG;
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       allRcd->allocTime = cell->crntTime;
       cmLListAdd2Tail(&ueUl->ulAllocLst, &allRcd->lnk);
@@ -9093,7 +9093,7 @@ RgSchErrInfo *err;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Could not do "
          "power config for UE CRNTI:%d",ueCfg->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef LTEMAC_SPS
    ret = rgSCHCmnSpsUeCfg(cell, ue, ueCfg, err);
@@ -9101,7 +9101,7 @@ RgSchErrInfo *err;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Could not do "
          "SPS config for CRNTI:%d",ueCfg->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* LTEMAC_SPS */
 
@@ -9112,7 +9112,7 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Spec Sched UL UE CFG FAILED"
                   "for CRNTI:%d",ueCfg->crnti);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -9122,7 +9122,7 @@ RgSchErrInfo *err;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Spec Sched UL UE CFG FAILED"
                "for CRNTI:%d",ueCfg->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    }
 
@@ -9133,7 +9133,7 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "DLFS UE config FAILED"
                    "for CRNTI:%d",ueCfg->crnti);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -9145,7 +9145,7 @@ RgSchErrInfo *err;
    rgSCHCmn5gtfUeCfg(cell, ue, ueCfg);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHCmnRgrUeCfg */
 
 /**
@@ -9549,7 +9549,7 @@ RgSchErrInfo *err;
             "reporting mode %d for old CRNIT:%d", 
             (int)ueRecfg->prdDlCqiRecfg.prdModeEnum,ueRecfg->oldCrnti);
          err->errCause = RGSCHERR_SCH_CFG;
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
      ue->dl.ueDlCqiCfg.prdCqiCfg = ueRecfg->prdDlCqiRecfg;
    }
@@ -9561,7 +9561,7 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "Power Reconfiguration Failed for OLD CRNTI:%d",ueRecfg->oldCrnti);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -9573,7 +9573,7 @@ RgSchErrInfo *err;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Ul Ambr and DL Ambr "
             "configured as 0 for OLD CRNTI:%d",ueRecfg->oldCrnti);
          err->errCause = RGSCHERR_SCH_CFG;
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       ue->ul.cfgdAmbr = (ueRecfg->ueQosRecfg.ueBr * \
       RG_SCH_CMN_REFRESH_TIME)/100;
@@ -9595,13 +9595,13 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
                "Spec Sched UL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if ((cellSchCmn->apisEmtcDl->rgSCHRgrDlUeRecfg(cell, ue, ueRecfg, err)) != ROK)
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
                "Spec Sched DL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -9611,13 +9611,13 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
             "Spec Sched UL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if ((cellSchCmn->apisDl->rgSCHRgrDlUeRecfg(cell, ue, ueRecfg, err)) != ROK)
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
             "Spec Sched DL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    /* DLFS UE Config */
@@ -9628,7 +9628,7 @@ RgSchErrInfo *err;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
                "DLFS UE re-config FAILED for CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -9638,11 +9638,11 @@ RgSchErrInfo *err;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
               "DL SPS ReCFG FAILED for UE CRNTI:%d", ue->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHCmnRgrUeRecfg*/
 
 /***********************************************************
@@ -10107,13 +10107,13 @@ RgrDlCmnCodeRateCfg     *dlCmnCodeRate;
    }
    if (dlCmnCodeRate->ccchCqi == 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    else
    {
       cellDl->dl.ccchCqi = dlCmnCodeRate->ccchCqi;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef LTE_TDD
@@ -10190,7 +10190,7 @@ RgSchErrInfo   *err;
    }
    if (cellSch->dl.maxUePerDlSf < cellSch->dl.maxUeNewTxPerTti)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -10304,7 +10304,7 @@ RgSchErrInfo   *err;
    /* Intialize the RACH response scheduling related infromation */
    if(rgSCHCmnDlRachInfoInit(cell) != ROK)
    {
-     RETVALUE(RFAILED);
+     return RFAILED;
    }
 
    /* Allocate PRACH preamble list */
@@ -10469,7 +10469,7 @@ RgSchErrInfo   *err;
                       "maxCcchPerDlSf %u > maxUePerDlSf %u",
                    cfg->maxCcchPerDlSf, cfg->maxUePerDlSf );
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    else if (!cfg->maxCcchPerDlSf)
    {
@@ -10486,7 +10486,7 @@ RgSchErrInfo   *err;
    }
    if (rgSCHCmnDlCnsdrCmnRt(cell, &cfg->dlCmnCodeRate) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /*ccpu00118273 - ADD - start */
@@ -10505,7 +10505,7 @@ RgSchErrInfo   *err;
       ret = cellSch->apisDlfs->rgSCHDlfsCellCfg(cell, cfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    cellSch->dl.isDlFreqSel = cfg->dlfsCfg.isDlFreqSel;
@@ -10515,7 +10515,7 @@ RgSchErrInfo   *err;
    ret = rgSCHPwrCellCfg(cell, cfg);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    cellSch->dl.bcchTxPwrOffset = cfg->bcchTxPwrOffset; 
@@ -10523,7 +10523,7 @@ RgSchErrInfo   *err;
    cellSch->dl.rarTxPwrOffset  = cfg->rarTxPwrOffset; 
    cellSch->dl.phichTxPwrOffset  = cfg->phichTxPwrOffset; 
    cellSch->dl.msg4pAVal        = cfg->msg4pAVal;
-   RETVALUE(ROK);
+   return ROK;
 }
 #else /* LTE_TDD */
 /**
@@ -10681,7 +10681,7 @@ RgSchErrInfo            *err;
             "FAILED MaxUePerDlSf(%u) < MaxDlUeNewTxPerTti(%u)",
             cellSch->dl.maxUePerDlSf,
             cellSch->dl.maxUeNewTxPerTti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*[ccpu00138609]-ADD- Configure the Max CCCH Counter */
    if (cfg->maxCcchPerDlSf > cfg->maxUePerDlSf)
@@ -10690,7 +10690,7 @@ RgSchErrInfo            *err;
             "maxCcchPerDlSf %u > maxUePerDlSf %u",
             cfg->maxCcchPerDlSf, cfg->maxUePerDlSf );
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    else if (!cfg->maxCcchPerDlSf)
    {
@@ -10709,7 +10709,7 @@ RgSchErrInfo            *err;
 
    if (rgSCHCmnDlCnsdrCmnRt(cell, &cfg->dlCmnCodeRate) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cmLListInit(&cellSch->dl.msg4RetxLst);
 #ifdef RGR_V1
@@ -10726,7 +10726,7 @@ RgSchErrInfo            *err;
       ret = cellSch->apisDlfs->rgSCHDlfsCellCfg(cell, cfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    cellSch->dl.isDlFreqSel = cfg->dlfsCfg.isDlFreqSel;
@@ -10736,7 +10736,7 @@ RgSchErrInfo            *err;
    ret = rgSCHPwrCellCfg(cell, cfg);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    cellSch->dl.bcchTxPwrOffset = cfg->bcchTxPwrOffset; 
@@ -10744,7 +10744,7 @@ RgSchErrInfo            *err;
    cellSch->dl.rarTxPwrOffset  = cfg->rarTxPwrOffset; 
    cellSch->dl.phichTxPwrOffset  = cfg->phichTxPwrOffset; 
    RG_SCH_RESET_HCSG_DL_PRB_CNTR(&cellSch->dl);
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* LTE_TDD */
 
@@ -10859,7 +10859,7 @@ Bool         isEcp;
    
    if (msgSzA < RGSCH_MIN_MSG3_GRNT_SZ)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    numSb = RGSCH_CEIL(rgSCHCmnUlCalcReqRbCeil(msgSzA, ccchCqi, cellUl), sbSize);
    
@@ -10898,7 +10898,7 @@ Bool         isEcp;
     * Refer- TG36.321- section- 5.1.2*/
    cellUl->ra.prmblANumSb = numSb;
    cellUl->ra.prmblAIMcs  = ccchMcs;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 PUBLIC U32 gPrntPucchDet=0;
@@ -11005,7 +11005,7 @@ U8            *bwAvailRef;
    if (puschRbStart * 2 >= ulBw)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"No bw available for PUSCH");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    *rbStartRef = puschRbStart;
@@ -11017,7 +11017,7 @@ U8            *bwAvailRef;
       cell->dynCfiCb.maxCfi = RGSCH_MIN(cfi-1, cell->dynCfiCb.maxCfi);
    }
     
-   RETVALUE(ROK);
+   return ROK;
 }
 #else
 
@@ -11124,7 +11124,7 @@ U8            *bwAvailRef;
    if (puschRbStart*2 >= ulBw)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"No bw available for PUSCH");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    *rbStartRef = puschRbStart;
@@ -11136,7 +11136,7 @@ U8            *bwAvailRef;
       cell->dynCfiCb.maxCfi = RGSCH_MIN(cfi-1, cell->dynCfiCb.maxCfi);
    }
    
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -11243,7 +11243,7 @@ PRIVATE S16 rgSCHCmnUlCellInit(cell, cellCfg)
             "FAILED: MaxUePerUlSf(%u) < MaxUlUeNewTxPerTti(%u)",
             cellUl->maxAllocPerUlSf,
             cellUl->maxUeNewTxPerTti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef LTE_L2_MEAS
@@ -11283,7 +11283,7 @@ PRIVATE S16 rgSCHCmnUlCellInit(cell, cellCfg)
    if (sbSize != rgSchCmnMult235Tbl[sbSize].match)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid subband size %d", sbSize);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 	//Setting the subband size to 4 which is size of VRBG in 5GTF
 #ifdef RG_5GTF
@@ -11295,7 +11295,7 @@ PRIVATE S16 rgSCHCmnUlCellInit(cell, cellCfg)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHCmnUlCellInit(): "
          "maxUlBwPerUe/sbSize is zero");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cellUl->maxSbPerUe = rgSchCmnMult235Tbl[maxSbPerUe].prvMatch;
 
@@ -11305,7 +11305,7 @@ PRIVATE S16 rgSCHCmnUlCellInit(cell, cellCfg)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHCmnUlCellInit(): "
          "Invalid cqi");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cellUl->dfltUlCqi = cellCfg->ulCmnCodeRate.ccchCqi;
 
@@ -11428,7 +11428,7 @@ PRIVATE S16 rgSCHCmnUlCellInit(cell, cellCfg)
                cellSch->cfiCfg.cfi, cell->dynCfiCb.maxCfi, 
                cell->pucchCfg.maxPucchRb);
             
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* DMRS values */
@@ -11469,7 +11469,7 @@ PRIVATE S16 rgSCHCmnUlCellInit(cell, cellCfg)
       }
    }
    RG_SCH_RESET_HCSG_UL_PRB_CNTR(cellUl);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -11609,7 +11609,7 @@ RgSchErrInfo  *err;
    }
    rgSCHCmnInitVars(cell);
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHCmnRgrCellCfg*/
 
 
@@ -11655,7 +11655,7 @@ RgSchErrInfo            *err;
          err->errCause = RGSCHERR_SCH_CFG;
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHCmnRgrCellRecfg(): "
             "Invalid cqi");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       cellUl->dfltUlCqi = recfg->ulCmnCodeRate.ccchCqi;
       ret = rgSCHCmnPrecompMsg3Vars(cellUl, recfg->ulCmnCodeRate.ccchCqi,
@@ -11674,7 +11674,7 @@ RgSchErrInfo            *err;
       if (rgSCHCmnDlCnsdrCmnRt(cell, &recfg->dlCmnCodeRate) != ROK)
       {
          err->errCause = RGSCHERR_SCH_CFG;
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
  
@@ -11685,14 +11685,14 @@ RgSchErrInfo            *err;
       ret = cellSch->apisEmtcUl->rgSCHRgrUlCellRecfg(cell, recfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* Invoke DL sched for cell Recfg */
       ret = cellSch->apisEmtcDl->rgSCHRgrDlCellRecfg(cell, recfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -11702,14 +11702,14 @@ RgSchErrInfo            *err;
    ret = cellSch->apisUl->rgSCHRgrUlCellRecfg(cell, recfg, err);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Invoke DL sched for cell Recfg */
    ret = cellSch->apisDl->rgSCHRgrDlCellRecfg(cell, recfg, err);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    }
 
@@ -11718,7 +11718,7 @@ RgSchErrInfo            *err;
       ret = cellSch->apisDlfs->rgSCHDlfsCellRecfg(cell, recfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       cellSch->dl.isDlFreqSel = recfg->dlfsRecfg.isDlFreqSel;
    }
@@ -11728,11 +11728,11 @@ RgSchErrInfo            *err;
       ret = rgSCHPwrCellRecfg(cell, recfg);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -11945,7 +11945,7 @@ RgrLchQosCfg            *dlQos;
 
    if ( qci < RG_SCH_CMN_MIN_QCI || qci > RG_SCH_CMN_MAX_QCI )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((qci >= RG_SCH_CMN_GBR_QCI_START) &&
@@ -11953,10 +11953,10 @@ RgrLchQosCfg            *dlQos;
    {
       if ((dlQos->mbr == 0) || (dlQos->mbr < dlQos->gbr))
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -12044,7 +12044,7 @@ RgSchErrInfo *err;
       ret = cellSch->apisEmtcDl->rgSCHRgrDlLcCfg(cell, ue,dlLc ,lcCfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -12053,7 +12053,7 @@ RgSchErrInfo *err;
       ret = cellSch->apisDl->rgSCHRgrDlLcCfg(cell, ue, dlLc, lcCfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    
@@ -12063,7 +12063,7 @@ RgSchErrInfo *err;
       ret = cellSch->apisEmtcUl->rgSCHRgrUlLcCfg(cell, ue, lcCfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -12072,7 +12072,7 @@ RgSchErrInfo *err;
    ret = cellSch->apisUl->rgSCHRgrUlLcCfg(cell, ue, lcCfg, err);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    }
    
@@ -12094,12 +12094,12 @@ RgSchErrInfo *err;
          RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,  "rgSchCmnRgrLchCfg(): "
             "SPS configuration failed for DL LC for CRNTI:%d LCID:%d",ue->ueId,lcCfg->lcId);
          err->errCause = RGSCHERR_SCH_CFG;
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -12182,12 +12182,12 @@ RgSchErrInfo *err;
       ret = cellSch->apisEmtcDl->rgSCHRgrDlLcRecfg(cell, ue, dlLc, lcRecfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       ret = cellSch->apisEmtcUl->rgSCHRgrUlLcRecfg(cell, ue, lcRecfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -12196,12 +12196,12 @@ RgSchErrInfo *err;
    ret = cellSch->apisDl->rgSCHRgrDlLcRecfg(cell, ue, dlLc, lcRecfg, err);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ret = cellSch->apisUl->rgSCHRgrUlLcRecfg(cell, ue, lcRecfg, err);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    }
     
@@ -12218,11 +12218,11 @@ RgSchErrInfo *err;
                   "supported for dlLC Ignore this CRNTI:%d LCID:%d",ue->ueId,lcRecfg->lcId);
          }
       }
-      RETVALUE(ROK);
+      return ROK;
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -12280,7 +12280,7 @@ RgSchErrInfo *err;
       ret = cellSch->apisEmtcUl->rgSCHRgrUlLcgCfg(cell, ue, lcg, lcgCfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -12289,7 +12289,7 @@ RgSchErrInfo *err;
    ret = cellSch->apisUl->rgSCHRgrUlLcgCfg(cell, ue, lcg, lcgCfg, err);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    }
    if (RGSCH_IS_GBR_BEARER(ulLcg->cfgdGbr))
@@ -12297,7 +12297,7 @@ RgSchErrInfo *err;
       /* Indicate MAC that this LCG is GBR LCG */
       rgSCHUtlBuildNSendLcgReg(cell, ue->ueId, lcgCfg->ulInfo.lcgId, TRUE);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -12355,7 +12355,7 @@ RgSchErrInfo *err;
       ret = cellSch->apisEmtcUl->rgSCHRgrUlLcgRecfg(cell, ue, lcg, reCfg, err);
       if (ret != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -12364,7 +12364,7 @@ RgSchErrInfo *err;
    ret = cellSch->apisUl->rgSCHRgrUlLcgRecfg(cell, ue, lcg, reCfg, err);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    }
    if (RGSCH_IS_GBR_BEARER(ulLcg->cfgdGbr))
@@ -12377,7 +12377,7 @@ RgSchErrInfo *err;
       /* In case of RAB modification */
       rgSCHUtlBuildNSendLcgReg(cell, ue->ueId, reCfg->ulRecfg.lcgId, FALSE);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -12421,7 +12421,7 @@ U8            lcgId;
    {
    cellSch->apisUl->rgSCHRgrUlLchDel(cell, ue, lcId, lcgId);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -13849,7 +13849,7 @@ U32          effTgt;
       if ((nPrb >= maxRb) && (resiTbs <= 10))
       {
          /* Could not accomodate ACQI */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       totREs = nPrb * RG_SCH_CMN_UL_NUM_RE_PER_RB(cellUl);
       tbSz = rgTbSzTbl[0][resiTbs][nPrb-1];
@@ -13894,7 +13894,7 @@ U32          effTgt;
    *numSb = resNumSb;
    *iTbs = resiTbs;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 #endif
@@ -13958,7 +13958,7 @@ RgSchUlHole           *hole;
    if (proc == NULLP)
    {
       //printf("UE [%d] HQ Proc unavailable\n", ue->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -13978,7 +13978,7 @@ RgSchUlHole           *hole;
    {
       RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId, 
          "rgSCHCmnUlRbAllocForUe(): Could not get PDCCH for CRNTI:%d",ue->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 	gUl5gtfPdcchSchd++;
 #if defined (TENB_STATS) && defined (RG_5GTF)
@@ -14014,7 +14014,7 @@ RgSchUlHole           *hole;
       RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, 
          "rgSCHCmnUlRbAllocForUe(): Could not get UlAlloc %d CRNTI:%d",numVrbg,ue->ueId);
       rgSCHCmnPdcchRlsCrntSf(cell, pdcch);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    gUl5gtfAllocAllocated++;
 #if defined (TENB_STATS) && defined (RG_5GTF)
@@ -14075,7 +14075,7 @@ RgSchUlHole           *hole;
    ueUl->alloc.alloc = alloc;
    /*rntiwari-Adding the debug for generating the graph.*/
    /* No grant attr recorded now */
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -14889,7 +14889,7 @@ RgSchUeCb       *ue;
    cellSch->apisUl->rgSCHUlUeRefresh(cell, ue);
    cellSch->apisDl->rgSCHDlUeRefresh(cell, ue);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -14931,7 +14931,7 @@ S16 tmrEvnt;           /* Timer Event */
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHCmnTmrExpiry(): Invalid "
          "timer event CRNTI:%d",ue->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #else
    UNUSED(tmrEvnt);
@@ -14941,7 +14941,7 @@ S16 tmrEvnt;           /* Timer Event */
 
    rgSCHCmnAddUeToRefreshQ(cell, ue, RG_SCH_CMN_REFRESH_TIME);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -15001,7 +15001,7 @@ RgSchCellCb *cell;
       cmPrcTmr(&sched->tmrTqCp, sched->tmrTq, (PFV)rgSCHCmnTmrExpiry);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -15919,14 +15919,14 @@ U8                 pmi;
 
    if (ue->txModeTransCmplt == FALSE)
    {
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
  
    if (cell->numTxAntPorts == 2)
    {
       if (pmi > 3)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (ueDl->mimoInfo.ri == 2)
       {
@@ -15934,7 +15934,7 @@ U8                 pmi;
          /* PMI 2 and 3 are invalid incase of 2 TxAnt and 2 Layered SM */
          if (pmi == 2 || pmi == 3)
          {
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ueDl->mimoInfo.pmi = pmi+1;
       }
@@ -15947,13 +15947,13 @@ U8                 pmi;
    {
       if (pmi > 15)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       ueDl->mimoInfo.pmi = pmi;
    }
    /* Reset the No PMI Flag in forceTD */
    RG_SCH_CMN_UNSET_FORCE_TD(ue, cell, RG_SCH_CMN_TD_NO_PMI);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -17383,11 +17383,11 @@ RgSchUlHqProcCb  *oldProc;
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (curProc->alloc == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    curProc->alloc->hqProc = curProc;
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHCmnUpdUlHqProc */
 #endif
 
@@ -17432,7 +17432,7 @@ RgSchUeCb  *ueCb;
       if(ueCb->isEmtcUe)
       {
          cellSch->apisEmtcUl->rgSCHSrRcvd(ueCb->cell, ueCb);
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    else
@@ -17495,7 +17495,7 @@ RgSchErrInfo *err;
    if (!RGSCH_LCG_ISCFGD(ulLcg))
    {
       err->errCause = RGSCHERR_SCH_LCG_NOT_CFGD;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    for (lcgCnt=0; lcgCnt<4; lcgCnt++)
    {
@@ -17596,7 +17596,7 @@ RgSchErrInfo *err;
       if(ue->isEmtcUe)
       {
          cellSch->apisEmtcUl->rgSCHUpdBsrShort(cell, ue, ulLcg, bsr);
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    else
@@ -17624,7 +17624,7 @@ RgSchErrInfo *err;
    }
 #endif 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -17676,7 +17676,7 @@ RgSchErrInfo *err;
    if (!RGSCH_LCG_ISCFGD(ulLcg))
    {
       err->errCause = RGSCHERR_SCH_LCG_NOT_CFGD;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* set all higher prio lcgs bs to 0 and update this lcgs bs and
       total bsr= sumofall lcgs bs */
@@ -17774,7 +17774,7 @@ RgSchErrInfo *err;
       if(ue->isEmtcUe)
       {
          cellSch->apisEmtcUl->rgSCHUpdBsrTrunc(cell, ue, ulLcg, bsr);
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    else
@@ -17801,7 +17801,7 @@ RgSchErrInfo *err;
    }
 #endif 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -17944,7 +17944,7 @@ RgSchErrInfo *err;
       if(ue->isEmtcUe)
       {
          cellSch->apisEmtcUl->rgSCHUpdBsrLong(cell, ue, bsArr);
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    else
@@ -17971,7 +17971,7 @@ RgSchErrInfo *err;
    }
 #endif 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -18035,7 +18035,7 @@ RgSchErrInfo   *err;
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHCmnUpdExtPhr */
 
 
@@ -18102,7 +18102,7 @@ RgSchErrInfo   *err;
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHCmnUpdPhr */
 
 /**
@@ -18145,7 +18145,7 @@ RgSchErrInfo *err;
       if(ue->isEmtcUe)
       {
          cellSch->apisEmtcUl->rgSCHContResUlGrant(cell, ue);
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    else
@@ -18153,7 +18153,7 @@ RgSchErrInfo *err;
    {
       cellSch->apisUl->rgSCHContResUlGrant(cell, ue);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -18218,7 +18218,7 @@ RgSchErrInfo *err;
       if(ue->isEmtcUe)
       {
          cellSch->apisEmtcUl->rgSCHSrRcvd(cell, ue);
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    else
@@ -18226,7 +18226,7 @@ RgSchErrInfo *err;
    {
       cellSch->apisUl->rgSCHSrRcvd(cell, ue);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -19470,7 +19470,7 @@ RgSchCellCb                *cell;
                                                    cell->subFrms[sfNum]->dlFdbkInfo.sfnOffset;
       cell->subFrms[dlIdx]->dlFdbkInfo.m = cell->subFrms[sfNum]->dlFdbkInfo.m;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -19588,7 +19588,7 @@ RgSchCellCb                *cell;
       cell->subFrms[dlIdx]->ulAscInfo.sfnOffset =
          cell->subFrms[sfNum]->ulAscInfo.sfnOffset;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -19631,7 +19631,7 @@ RgSchCellCb                *cell;
       cell->rgSchTddNpValTbl[idx] = (U8) (np/36);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -19682,7 +19682,7 @@ RgSchCellCb                *cell;
 
    cell->raInfo.lstSize = lstSize;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -19849,7 +19849,7 @@ RgSchCellCb                *cell;
       RETVALUE(ret);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -19964,7 +19964,7 @@ RgSchCellCb                *cell;
       cell->subFrms[dlIdx]->phichOffInfo.sfnOffset =
          cell->subFrms[sfNum]->phichOffInfo.sfnOffset;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -20282,11 +20282,11 @@ RgSchUeCb       *ue;
 
    if (sfDiff > (U32)RG_SCH_CMN_UE_IDLE_THRSLD(ue))
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    else
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 }
 
@@ -20573,12 +20573,12 @@ U8           *prachMskIdx;
    {
       if (cellSch->rachCfg.remDedPrm == 0)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       /* DTX Changes: One Variable is passed to check whether it is DTX or Not */
       if ((*pdcch = rgSCHCmnPdcchAlloc(cell, ue, dlSf, ueDl->mimoInfo.cwInfo[0].cqi, TFU_DCI_FORMAT_1A, FALSE)) == NULLP)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       /* The stored prachMskIdx is the index of PRACH Oppurtunities in
        * raOccasions.subframes[].
@@ -20601,13 +20601,13 @@ U8           *prachMskIdx;
       /* DTX Changes: One Variable is passed to check whether it is DTX or Not */
       if ((*pdcch = rgSCHCmnPdcchAlloc(cell, ue, dlSf, ueDl->mimoInfo.cwInfo[0].cqi, TFU_DCI_FORMAT_1A, FALSE)) == NULLP)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       *prachMskIdx = 0;
       *rapId       = 0;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -21173,7 +21173,7 @@ U8                    maxRb;
    TRC2(rgSCHCmnUlRbAllocForPoHoUe);
    if ((hole = rgSCHUtlUlHoleFirst(sf)) == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*MS_WORKAROUND for HO ccpu00121116*/
    cqi   = rgSCHCmnUlGetCqi(cell, ue, ueCtg);
@@ -21202,7 +21202,7 @@ U8                    maxRb;
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (!bits)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -21243,7 +21243,7 @@ U8                    maxRb;
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
          "rgSCHCmnUlRbAllocForPoHoUe(): Could not get UlAlloc");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    rgSCHCmnUlAllocFillRbInfo(cell, sf, alloc);
    
@@ -21271,7 +21271,7 @@ U8                    maxRb;
    RG_SCH_UL_MCS_TO_MODODR(alloc->grnt.iMcsCrnt,alloc->grnt.modOdr);
    rgSCHUhmNewTx(proc, ueUl->hqEnt.maxHqRetx, alloc);
    /* No grant attr recorded now */
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -23895,7 +23895,7 @@ RgSchDlRbAlloc   *allocInfo;
    if(dlSf->bwAlloced == dlSf->bw)
 #endif
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifndef LTE_TDD
    if (allocInfo->rbsReq > (dlSf->bw - dlSf->bwAlloced))
@@ -23928,7 +23928,7 @@ RgSchDlRbAlloc   *allocInfo;
          if (!spsRbsAlloc)
 #endif /* LTEMAC_SPS */
          {
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
    }
@@ -23938,7 +23938,7 @@ RgSchDlRbAlloc   *allocInfo;
    allocInfo->pdcch = rgSCHCmnCmnPdcchAlloc(cell, dlSf);
    if (allocInfo->pdcch == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    allocInfo->dciFormat = TFU_DCI_FORMAT_1A;
    allocInfo->pdcch->dciNumOfBits = cell->dciSize.size[TFU_DCI_FORMAT_1A];
@@ -24058,7 +24058,7 @@ RgSchDlRbAlloc   *allocInfo;
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -24096,7 +24096,7 @@ PRIVATE S16 rgSCHCmnNonDlfsCmnRbAlloc(cell, allocInfo)
 
    if(dlSf->bwAlloced == dlSf->bw)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    allocInfo->tbInfo[0].noLyr = 1;
@@ -24105,7 +24105,7 @@ PRIVATE S16 rgSCHCmnNonDlfsCmnRbAlloc(cell, allocInfo)
    allocInfo->pdcch = rgSCHCmnCmnPdcchAlloc(cell, dlSf);
    if (allocInfo->pdcch == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    allocInfo->dciFormat = TFU_DCI_FORMAT_1A;
    allocInfo->pdcch->dciNumOfBits = cell->dciSize.size[TFU_DCI_FORMAT_1A];
@@ -24124,13 +24124,13 @@ PRIVATE S16 rgSCHCmnNonDlfsCmnRbAlloc(cell, allocInfo)
    allocInfo->pdcch = rgSCHCmnPdcchAlloc(cell, NULLP, dlSf, 13, TFU_DCI_FORMAT_B1, FALSE);
    if (allocInfo->pdcch == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    RgSchSfBeamInfo  *beamInfo = &(dlSf->sfBeamInfo[0]);
    if(beamInfo->totVrbgAllocated > MAX_5GTF_VRBG)
    {
       printf("5GTF_ERROR vrbg allocated > 25\n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    allocInfo->tbInfo[0].cmnGrnt.vrbgStart = beamInfo->vrbgStart;
@@ -24155,7 +24155,7 @@ PRIVATE S16 rgSCHCmnNonDlfsCmnRbAlloc(cell, allocInfo)
    printf("\n[%s],allocInfo->tbInfo[0].bytesAlloc:%u,vrbgReq:%u\n",
          __func__,allocInfo->tbInfo[0].bytesAlloc,allocInfo->vrbgReq);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -24900,7 +24900,7 @@ U8                 numRb;
             {
                RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,  "rgSCHCmnNonDlfsUpdDSFRTyp2Alloc():"
                         "sfrCCPool1 is NULL for CRNTI:%d",ue->ueId);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
       n = cmLListNext(l);
       if(n)
@@ -24924,7 +24924,7 @@ U8                 numRb;
                {
                     RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHCmnNonDlfsUpdDSFRTyp2Alloc():"
                       "rgSCHCmnBuildRntpInfo() function returned RFAILED for CRNTI:%d",ue->ueId);
-                    RETVALUE(RFAILED);
+                    return RFAILED;
                }
            }
       }
@@ -24941,7 +24941,7 @@ U8                 numRb;
             {
                RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,   "rgSCHCmnNonDlfsUpdDSFRTyp2Alloc():" 
                         "rgSCHCmnBuildRntpInfo() function returned RFAILED CRNTI:%d",ue->ueId);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
       }
@@ -24952,7 +24952,7 @@ U8                 numRb;
    /*MS_FIX for ccpu00123918*/
    dlSf->type2Start += numRb;
 #endif
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif
@@ -25232,7 +25232,7 @@ U16                 bw;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
                "rgSCHCmnBuildRntpInfo():"
                "rntpPtr can't be NULLP (Memory Allocation Failed)");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    while(rbPtrStartIdx <= rbPtrEndIdx)
@@ -25263,7 +25263,7 @@ U16                 bw;
 
    /* dsfr_pal_fixes ** 25-March-2013 ** SKS ** Adding Debug logs to print RNTP */
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -25330,7 +25330,7 @@ U8                 numRb;
             {
                RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHCmnNonDlfsUpdSFRPoolTyp2Alloc():"
                         "rgSCHCmnBuildRntpInfo() function returned RFAILED for CRNTI:%d",ue->ueId);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
       }
@@ -25342,7 +25342,7 @@ U8                 numRb;
          {
             RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHCmnNonDlfsUpdSFRPoolTyp2Alloc():"
                      "rgSCHCmnBuildRntpInfo() function returned RFAILED for CRNTI:%d",ue->ueId);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
    }
@@ -25350,7 +25350,7 @@ U8                 numRb;
    sfrPool->bwAlloced += numRb;
 #endif 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -25627,7 +25627,7 @@ U8                 *isDlBwAvail;
       {
          *isDlBwAvail = FALSE;
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (dlUe->proc->tbInfo[0].isAckNackDtx == TFU_HQFDB_DTX || dlUe->proc->tbInfo[1].isAckNackDtx)
@@ -25642,7 +25642,7 @@ U8                 *isDlBwAvail;
    if (!(allocInfo->pdcch))
    {
       /* Returning ROK since PDCCH might be available for another UE and further allocations could be done */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
 #ifdef LTEMAC_SPS
@@ -25683,7 +25683,7 @@ U8                 *isDlBwAvail;
    dlSf->bwAlloced += allocInfo->rbsReq;
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 /* LTE_ADV_FLAG_REMOVED_END */
@@ -25745,7 +25745,7 @@ U8                 *isDlBwAvail;
          "5GTF_ERROR : vrbg allocated > 25 :ue (%u)",
          ue->ueId);
 	   printf("5GTF_ERROR vrbg allocated > 25\n");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
    if (dlUe->proc->tbInfo[0].isAckNackDtx == TFU_HQFDB_DTX 
@@ -25765,7 +25765,7 @@ U8                 *isDlBwAvail;
          "5GTF_ERROR : PDCCH allocation failed :ue (%u)",
          ue->ueId);
 	   printf("5GTF_ERROR PDCCH allocation failed\n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef RG_5GTF
 	//maxPrb = RGSCH_MIN((allocInfo->vrbgReq * MAX_5GTF_VRBG_SIZE), ue5gtfCb->maxPrb);
@@ -25789,7 +25789,7 @@ U8                 *isDlBwAvail;
 	allocInfo->tbInfo[0].bytesAlloc = allocInfo->tbInfo[0].bytesReq;
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef RGR_V1
@@ -25935,7 +25935,7 @@ RgSchDlSf          *dlSf;
       (allocInfo->rbsReq > (dlSf->bw - dlSf->bwAlloced)))
 #endif
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Retrieve PDCCH */
    /* DTX Changes: One Variable is passed to check whether it is DTX or Not */
@@ -25952,7 +25952,7 @@ RgSchDlSf          *dlSf;
    if (!(allocInfo->pdcch))
    {
       /* Returning RFAILED since PDCCH not available for any CCCH allocations */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Update allocation information */
@@ -25988,7 +25988,7 @@ RgSchDlSf          *dlSf;
    /* ccpu00131941 - bwAlloced is updated from SPS bandwidth */  
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -26038,7 +26038,7 @@ RgSchDlSf          *dlSf;
          "5GTF_ERROR : vrbg allocated > 25 :ue (%u)",
          raCb->ue->ueId);
 	   printf("5GTF_ERROR vrbg allocated > 25\n");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 #endif
 #ifdef LTEMAC_SPS
@@ -26050,7 +26050,7 @@ RgSchDlSf          *dlSf;
 #endif
    {
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* DTX Changes: One Variable is passed to check whether it is DTX or Not */
@@ -26065,7 +26065,7 @@ RgSchDlSf          *dlSf;
    if (!(allocInfo->pdcch))
    {
       /* Returning RFAILED since PDCCH not available for any CCCH allocations */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
 #ifndef RG_5GTF
@@ -26125,7 +26125,7 @@ RgSchDlSf          *dlSf;
 
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -26640,7 +26640,7 @@ U8                         raArrSz;
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 /**
@@ -29370,7 +29370,7 @@ RgSchCmnDlRbAllocInfo      *cellWdAllocInfo;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* DwPTS Scheduling Changes Start */
@@ -29574,7 +29574,7 @@ RgSchCmnDlRbAllocInfo      *cellWdAllocInfo;
    /* Check for DL BW exhaustion */
    if (subFrm->bw <= subFrm->bwAssigned)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Call TM specific RB allocation routine */
    (dlAllocRetxRbFunc[ue->mimoInfo.txMode - 1])(cell, subFrm, ue, bo, effBo, \
@@ -29596,7 +29596,7 @@ RgSchCmnDlRbAllocInfo      *cellWdAllocInfo;
       RGSCHCPYTIMEINFO((cell->crntTime),(ue->dl.lstSchTime))
    }
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -29698,7 +29698,7 @@ U32                        *effBo;
    /* Update the subframe Allocated BW field */
    subFrm->bwAssigned = subFrm->bwAssigned + tempNumRb - allocInfo->rbsReq;
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -29862,7 +29862,7 @@ U32                        *effBo;
    {
       RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
             "rgSCHCmnDlAllocRb(): UEs max allocation exceed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    noLyr1 = ueDl->mimoInfo.cwInfo[0].noLyr;
@@ -30020,7 +30020,7 @@ U32                        *effBo;
 #ifdef LTE_ADV
    if (ROK != rgSCHLaaCmn2TBPrbCheck(allocInfo, tb1Sz, tb2Sz, boTmp, effBo, iTbs1, iTbs2, numRb, proc))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -30033,7 +30033,7 @@ U32                        *effBo;
    *numRbRef = (U8)numRb;
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -30118,14 +30118,14 @@ U32                        *effBo;
       if(*numRb <= 3)
       {
          RLOG1(L_ERROR," Number of RBs [%d] are less than or equal to 3",*numRb);
-	 RETVALUE(RFAILED);
+	 return RFAILED;
       }
    }
 #endif
 
    if ((S16)*numRb > availBw)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Update the subframe Allocated BW field */
    subFrm->bwAssigned += *numRb;
@@ -30163,7 +30163,7 @@ U32                        *effBo;
    
    *effBo = reTxTb->tbSz + tb2Sz;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -30251,13 +30251,13 @@ U32                        *effBo;
       if(*numRb <= 3)
       {
          RLOG1(L_ERROR," Number of RBs [%d] are less than or equal to 3",*numRb);
-	 RETVALUE(RFAILED);
+	 return RFAILED;
       }
    }
 #endif
    if ((S16)*numRb > (S16)(subFrm->bw - subFrm->bwAssigned))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Update the subframe Allocated BW field */
    subFrm->bwAssigned += *numRb;
@@ -30271,7 +30271,7 @@ U32                        *effBo;
 
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -30335,7 +30335,7 @@ U32                        *effBo;
    *numRb = tbInfo->dlGrnt.numRb;
    if ((S16)*numRb > (S16)(subFrm->bw - subFrm->bwAssigned))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Update the subframe Allocated BW field */
    subFrm->bwAssigned += *numRb;
@@ -30346,7 +30346,7 @@ U32                        *effBo;
          0, imcs, tbInfo, tbInfo->numLyrs);
    *effBo = tbInfo->tbSz;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef LTEMAC_SPS
@@ -31461,7 +31461,7 @@ RgrUeCqiRept        *ueCqiRpt;
 
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* End of rgSCHCmnUeDlPwrCtColltCqiRept */
 
 #endif /* End of RGR_CQI_REPT */

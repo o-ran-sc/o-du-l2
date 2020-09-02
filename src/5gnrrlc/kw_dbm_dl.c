@@ -116,7 +116,7 @@ RlcCb *gCb;
                             KW_GET_MEM_POOL(gCb)))
    {   
       RLOG0(L_ERROR, "UeLstCp Initialization Failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Initialize cellCb Hash List */
@@ -130,7 +130,7 @@ RlcCb *gCb;
    {
       cmHashListDeinit(&gCb->u.dlCb->ueLstCp);
       RLOG0(L_ERROR, "CellLstCp Initialization Failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 /* kw005.201 added support for L2 Measurement */         
@@ -147,7 +147,7 @@ RlcCb *gCb;
       cmHashListDeinit(&gCb->u.dlCb->cellLstCp);
       cmHashListDeinit(&gCb->u.dlCb->ueLstCp);
       RLOG0(L_ERROR, "kwDbmInit: cmHashListInit Failed for rlcCb.qciHlCp");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    /* Initialize tbHlCp Hash List */
@@ -163,11 +163,11 @@ RlcCb *gCb;
       cmHashListDeinit(&gCb->u.dlCb->cellLstCp);
       cmHashListDeinit(&gCb->u.dlCb->ueLstCp);
       RLOG0(L_ERROR, "kwDbmInit: cmHashListInit Failed for rlcCb.tbHlCp");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* LTE_L2_MEAS */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwDbmDlInit */
 
 
@@ -475,7 +475,7 @@ RlcDlUeCb      **ueCb;
       RLOG_ARG1(L_FATAL,DBG_UEID,ueId,
             "Memory allocation failed cellID:%d",
             cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
@@ -491,13 +491,13 @@ RlcDlUeCb      **ueCb;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellId,
             "UeId[%u] HashList Insertion Failed",
             ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* kw005.201 ccpu00117318, updating the statistics */
    gCb->genSts.numUe++;
 
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwDbmCreateUeCb */
 
 
@@ -715,7 +715,7 @@ RlcDlCellCb    **cellCb;
    if (*cellCb == NULLP)
    {
       RLOG_ARG0(L_FATAL, DBG_CELLID,cellId,"Memory allocation failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
@@ -728,10 +728,10 @@ RlcDlCellCb    **cellCb;
                               (U16) sizeof(CmLteCellId)))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellId,"HashList Insertion Failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwDbmCreateDlCellCb */
 
 
@@ -777,10 +777,10 @@ RlcDlCellCb    **cellCb;
                             (PTR*) cellCb))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID, cellId,"CellCb not found");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwDbmFetchCellCb */
 
 
@@ -896,7 +896,7 @@ RlcCb *gCb;
    kwDbmDlDeInit(gCb);
 
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwDbmShutdown */
 
 

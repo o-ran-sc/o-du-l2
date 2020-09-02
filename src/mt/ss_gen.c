@@ -276,7 +276,7 @@ PUBLIC S16 SInit()
 	  sprintf(prntBufLoc,"\n SInit(): ssdInitGen failed to initialize\
 	  							implementation specific general information \n");
       SDisplay(1,prntBufLoc);
-      RETVALUE(RFAILED);
+      return RFAILED;
 	}
  
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
@@ -667,7 +667,7 @@ PUBLIC S16 SInit()
    ssdStart();
 
 
-   RETVALUE(ROK);
+   return ROK;
 
 
 /* clean up code */
@@ -724,7 +724,7 @@ cleanup0:
    ssdDeinitGen();
 
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 }
 
 
@@ -774,7 +774,7 @@ PUBLIC S16 SDeInit()
 #if (ERRCLASS & ERRCLS_DEBUG)
     SSLOGERROR(ERRCLS_DEBUG, ESS014, ERRZERO,
                       "Could not destroy the Semaphore");
-    RETVALUE(RFAILED);
+    return RFAILED;
 
 #endif
    }
@@ -786,7 +786,7 @@ PUBLIC S16 SDeInit()
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS015, ERRZERO,
                       "Could not destroy the Semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 
 #endif
    }
@@ -803,7 +803,7 @@ PUBLIC S16 SDeInit()
    SDestroyLock(&(osCp.logger.bufLock));
 #endif /* SS_LOGGER_SUPPORT */
    ssdDeinitLog();
-   RETVALUE(ROK);
+   return ROK;
 
 }
 /* ss001.301: additions */
@@ -826,7 +826,7 @@ Txt *buf;                       /* buffer */
    if(osCp.logger.started == FALSE)
    {
       (Void)SUnlock(&(osCp.logger.bufLock));
-      RETVALUE(ROK);
+      return ROK;
    }
    /*
     * Append the buffer to the global buffer
@@ -846,7 +846,7 @@ Txt *buf;                       /* buffer */
       osCp.logger.curBufSiz += bufSz;
    }
    (Void)SUnlock(&(osCp.logger.bufLock));
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* SS_LOGGER_SUPPORT  */
 /*
@@ -888,7 +888,7 @@ Txt *buf;                       /* buffer */
    SWrtLogBuf(buf);
 #endif /* SS_LOGGER_SUPPORT  */
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SPrint */
 
@@ -1154,7 +1154,7 @@ ProcId proc;
       {
          osCp.procLst.procId[i] = proc;
          osCp.procLst.free--;
-         RETVALUE(ROK);
+         return ROK;
       }
 
    /* search for free entry upto idx */
@@ -1163,10 +1163,10 @@ ProcId proc;
       {
          osCp.procLst.procId[i] = proc;
          osCp.procLst.free--;
-         RETVALUE(ROK);
+         return ROK;
       }
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* SInsProcId */
 
 
@@ -1205,7 +1205,7 @@ ProcId proc;
       {
          osCp.procLst.procId[i] = SS_INV_PROCID;
          osCp.procLst.free++;
-         RETVALUE(ROK);
+         return ROK;
       }
 
    /* search upto idx */
@@ -1214,10 +1214,10 @@ ProcId proc;
       {
          osCp.procLst.procId[i] = SS_INV_PROCID;
          osCp.procLst.free++;
-         RETVALUE(ROK);
+         return ROK;
       }
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* SRemProcId */
 
 
@@ -1252,7 +1252,7 @@ PRIVATE S16 SLockOsCp(Void)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS016, ERRZERO,
                      "Could not lock system task table");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SS_ACQUIRE_ALL_SEMA(&osCp.tTskTblSem, ret);
@@ -1269,14 +1269,14 @@ PRIVATE S16 SLockOsCp(Void)
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS018, ERRZERO,
                       "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* SLockOsCp */
 
@@ -1313,11 +1313,11 @@ PRIVATE S16 SULockOsCp(Void)
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS019, ERRZERO,
                       "Could not give the Semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* SULockOsCp */
 
@@ -1359,7 +1359,7 @@ ProcId *pIdLst;
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS020, ERRZERO, "number of proc Ids exceeds\
  limit");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* find if the entry exist in the table */
@@ -1368,14 +1368,14 @@ ProcId *pIdLst;
       if (pIdLst[i] == SS_INV_PROCID)
       {
          SSLOGERROR(ERRCLS_INT_PAR, ESS021, ERRZERO, "Invalid proc Ids");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
 #endif
    
    if (SLockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    for (i = 0; i < numPIds; i++)
@@ -1383,7 +1383,7 @@ ProcId *pIdLst;
       {
          SSLOGERROR(ERRCLS_INT_PAR, ESS022, ERRZERO, "Duplicate proc id");
          (Void) SULockOsCp();
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
    if (numPIds > osCp.procLst.free)
@@ -1391,7 +1391,7 @@ ProcId *pIdLst;
       SSLOGERROR(ERRCLS_INT_PAR, ESS023, ERRZERO, "Total number of proc id \
 exceeds");
       (Void) SULockOsCp();
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif 
 
@@ -1407,13 +1407,13 @@ exceeds");
                       "Could not insert the proc id");
 #endif
          (Void) SULockOsCp();
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
    /* unlock the table */
    if (SULockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    RETVALUE(ret);
 } /* SAddProcIdLst */
@@ -1451,16 +1451,16 @@ ProcId *pIdLst;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* range check */
    if (numPIds > SS_MAX_PROCS)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    if (SLockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    if (numPIds > (SS_MAX_PROCS - osCp.procLst.free))
    {
       (Void) SULockOsCp();
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* find if the entry exist in the table */
@@ -1469,7 +1469,7 @@ ProcId *pIdLst;
       if (SGetProcIdIdx(pIdLst[i]) == SS_INV_PROCID_IDX)
       {
          (Void) SULockOsCp();
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -1478,9 +1478,9 @@ ProcId *pIdLst;
       SRemProcId(pIdLst[i]);
 
    if (SULockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* SRemProcIdLst */
 
 
@@ -1518,12 +1518,12 @@ ProcId *pIdLst;
    if ((numPIds == NULLP) || (pIdLst == NULLP))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS025, ERRZERO, "Invalid numPIds/pIdLst");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif 
 
    if (SLockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    for (i = 0; i < SS_MAX_PROCS; i++)
    {
@@ -1534,12 +1534,12 @@ ProcId *pIdLst;
    *numPIds = count;
 
    if (SULockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    if (count == 0)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* SGetProcIdLst */
 
 
@@ -1582,7 +1582,7 @@ Void **xxCb;
    if ((proc == SS_INV_PROCID) || (ent >= SS_MAX_ENT) ||  (inst >= SS_MAX_INST))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS026, ERRZERO, "Invalid proc/entity/instance");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif 
    
@@ -1598,22 +1598,22 @@ Void **xxCb;
 #if (ERRCLASS & ERRCLS_INT_PAR)
       SSLOGERROR(ERRCLS_INT_PAR, ESS027, ERRZERO, "Could not get proc table idx");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    idx = osCp.tTskIds[procIdIdx][ent][inst];
    if (idx == SS_TSKNC)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* update the CB */
    *xxCb = osCp.tTskTbl[idx].xxCb;
    /*ss032.103 added a check for NULLP */
    if (*xxCb == NULLP)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* SGetXxCb */
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -1809,7 +1809,7 @@ PUBLIC S16 SFillEntIds(Void)
    TRC2(SFillEntIds)
             memcpy((U8*)osCp.entId, (U8*)entInfo, sizeof(entInfo));
 
-   RETVALUE(ROK);
+   return ROK;
 } /* SFillEntIds */
 
 
@@ -1877,7 +1877,7 @@ U8       *fileName;
 		     if (letter[1] == 'g' && letter[2] == 'u')
 		     {
 		        *entId = ENTGT;
-			     RETVALUE(ROK);
+			     return ROK;
 		     }
 		   default: 
 			     break;
@@ -1897,7 +1897,7 @@ U8       *fileName;
 	    if(letter[count] < 'a' || letter[count] > 'z')
 	    {
 		   *entId = ENTNC;
-		   RETVALUE(ROK);
+		   return ROK;
 	    }
 	    else
 	    {
@@ -1915,7 +1915,7 @@ U8       *fileName;
 	/* First two letter of file name are alphabets the get the 
 	 * entity id from the static data base which is loaded in sFillEntIds() */
 	*entId = osCp.entId[firstIdx][secondIdx];
-	RETVALUE(ROK);
+	return ROK;
 } /* SGetEntInd */
 
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -1954,9 +1954,9 @@ U8         lockType;
   if((retVal = ssdLockNew(lockId, lockType)) != ROK) 
   {
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SLockNew(): Failed to aquire the lock\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
   }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -1991,9 +1991,9 @@ U8         lockType;
   if((retVal = ssdInitLockNew(lockId, lockType)) != ROK) 
   {
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SInitLockNew(): Initialization of lock Failed\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
   }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2028,9 +2028,9 @@ U8         lockType;
   if((retVal = ssdUnlockNew(lockId, lockType)) != ROK) 
   {
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SUnlockNew(): Failed to release the lock\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
   }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2065,9 +2065,9 @@ U8         lockType;
   if((retVal = ssdDestroyLockNew(lockId, lockType)) != ROK) 
   {
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SDestroyLockNew(): Failed to destroy the lock\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
   }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* SS_LOCK_SUPPORT */
 
@@ -2251,9 +2251,9 @@ PUBLIC S16 SReInitTmr()
    {
        /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SReInitTmr(): Failed to Restart the Tmr\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*

@@ -95,7 +95,7 @@ RlcCb *gCb;
                             KW_GET_MEM_POOL(gCb)))
    {
       RLOG0(L_ERROR, "UeLstCp Initialization Failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Initialize cellCb Hash List */
@@ -109,7 +109,7 @@ RlcCb *gCb;
    {
       cmHashListDeinit(&gCb->u.ulCb->ueLstCp);
       RLOG0(L_ERROR, "CellLstCp Initialization Failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(ROK != cmHashListInit(&(gCb->u.ulCb->transIdLstCp), 
@@ -123,7 +123,7 @@ RlcCb *gCb;
       cmHashListDeinit(&gCb->u.ulCb->ueLstCp);
       cmHashListDeinit(&gCb->u.ulCb->cellLstCp);
       RLOG0(L_ERROR, "transIdLstCp Initialization Failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 /* kw005.201 added support for L2 Measurement */         
@@ -131,7 +131,7 @@ RlcCb *gCb;
    /* Initialize qcI Hash List */
 #endif /* LTE_L2_MEAS */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwDbmUlInit */
 
 
@@ -430,13 +430,13 @@ RlcUlUeCb      *ueCb;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellId,
             "UeId[%u] HashList Insertion Failed",
             ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* kw005.201 ccpu00117318, updating the statistics */
    gCb->genSts.numUe++;
 
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -519,9 +519,9 @@ RlcUlCfgTmpData   **cfg;
                             KW_DEF_SEQ_NUM,(PTR *) cfg))
    {
       RLOG1(L_ERROR,"TransId [%ld] not found",transId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -559,10 +559,10 @@ RlcUlCfgTmpData   *cfg;
    if(cmHashListDelete(&(gCb->u.ulCb->transIdLstCp),(PTR) (cfg)) != ROK) 
    {
       RLOG0(L_ERROR,"HashList Deletion failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -600,13 +600,13 @@ RlcCb *gCb;
    {
       if(kwDbmDelUlTransaction(gCb, cfg) != ROK)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       
       cfg = NULLP;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -797,10 +797,10 @@ RlcUlCellCb    *cellCb;
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,tCellCb->cellId,
             "HashList Insertion Failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 

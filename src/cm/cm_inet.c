@@ -353,7 +353,7 @@ U32               timeout;              /* timeout value for Poll */
 #endif
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */      
-      RETVALUE(RFAILED);
+      return RFAILED;
    } 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -365,7 +365,7 @@ U32               timeout;              /* timeout value for Poll */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPoll() : Invalid Parameter (pollFdArr is NULL)");
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */      
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -388,14 +388,14 @@ U32               timeout;              /* timeout value for Poll */
                     error(%d)\n", __FILE__, __LINE__, INET_ERR_CODE);
             SPrint(prntBuf);
 #endif /* CMINETDBG */
-            RETVALUE(RFAILED);
+            return RFAILED;
 
       } /* end of switch */
    }
    
    *numRdyFds = (S16)ret;
   
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -441,7 +441,7 @@ U16              eventMask;             /* Event Mask to be set */
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -453,7 +453,7 @@ U16              eventMask;             /* Event Mask to be set */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollSetFd() : Invalid Parameter (pollFdArr is NULL)");
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */      
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -491,7 +491,7 @@ U16              eventMask;             /* Event Mask to be set */
 #endif /*ALIGN_64BIT */
 #endif /* CMINETDBG */
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -535,7 +535,7 @@ U16               eventMask;         /* Event Mask to be set */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollFdIsSet() : Invalid Index (%d) \n",idx);
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -547,7 +547,7 @@ U16               eventMask;         /* Event Mask to be set */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollFdIsSet() : Invalid Parameter (pollFdArr is NULL)");
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */      
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -596,7 +596,7 @@ U16               eventMask;         /* Event Mask to be set */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollClearFdREvent() : Invalid Index (%d) \n",idx);
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -608,7 +608,7 @@ U16               eventMask;         /* Event Mask to be set */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollClearFdREvent() : Invalid Parameter (pollFdArr is NULL)");
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */      
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -643,7 +643,7 @@ U16               eventMask;         /* Event Mask to be set */
 #endif /*ALIGN_64BIT */
 #endif /* CMINETDBG */
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -688,7 +688,7 @@ U16             eventMask;            /* Event Mask to be set */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollClearFdEvent() : Invalid Index (%d) \n",idx);
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -700,7 +700,7 @@ U16             eventMask;            /* Event Mask to be set */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollClearFdEvent() : Invalid Parameter (pollFdArr is NULL)");
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */      
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -735,7 +735,7 @@ U16             eventMask;            /* Event Mask to be set */
 #endif /*ALIGN_64BIT */
 #endif /* CMINETDBG */
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -786,7 +786,7 @@ S16               lastIdx;           /* Last index of poll Fd Array */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollDelFd() : Invalid Index \n Current Index (%d) Delete Index (%d) \n",lastIdx,delIdx);
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -798,7 +798,7 @@ S16               lastIdx;           /* Last index of poll Fd Array */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollDelFd() : Invalid Parameter (pollFdArr is NULL)");
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */      
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -824,7 +824,7 @@ S16               lastIdx;           /* Last index of poll Fd Array */
    pollFdArr[lastIdx].events = 0;
    pollFdArr[lastIdx].revents = 0;
    
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -872,7 +872,7 @@ CmInetPollFd  *pollFdArr;            /* poll FD Array */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "cmInetPollInitFdArr() : Invalid Parameter (pollFdArr is NULL)");
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINETXXX, 0, prntBuf);
 #endif /* CMINETDBG */      
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -882,7 +882,7 @@ CmInetPollFd  *pollFdArr;            /* poll FD Array */
       pollFdArr[idx].events = 0;
       pollFdArr[idx].revents = 0;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #if (!(defined(WIN32)) && !(defined(CMINETFLATBUF)))
@@ -1207,7 +1207,7 @@ MsgLen         *ioLen;          /* cm_inet_c_001.main_50 - Len of dbuf packed in
    ret = SInitNxtDBuf(mBuf);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    iovIdx = 0;
@@ -1222,7 +1222,7 @@ MsgLen         *ioLen;          /* cm_inet_c_001.main_50 - Len of dbuf packed in
       {
          ret = SGetNxtDBuf(mBuf, &dBuf);
          if (ret != ROK)
-            RETVALUE(RFAILED);
+            return RFAILED;
          dBufsToSkip --;
       }
    }
@@ -1388,7 +1388,7 @@ CmInetFd *sockFd;               /* socket file descriptor */
 #endif /* CMINETDBG */
       /* Set sockFd->fd to invalid socket */
       sockFd->fd = CM_INET_INV_SOCKFD;
-      RETVALUE(RFAILED);   
+      return RFAILED;   
    }
 
    /* set socket type */
@@ -1410,7 +1410,7 @@ CmInetFd *sockFd;               /* socket file descriptor */
    if (ret != ROK) 
    {
       ret = cmInetClose(sockFd);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef SS_LINUX
@@ -1420,7 +1420,7 @@ CmInetFd *sockFd;               /* socket file descriptor */
    if (ret != ROK) 
    {
       ret = cmInetClose(sockFd);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* CMINET_BSDCOMPAT */
 #endif /* SS_LINUX */
@@ -1448,7 +1448,7 @@ CmInetFd *sockFd;               /* socket file descriptor */
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */      
             ret = cmInetClose(sockFd);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
 #endif /* WIN2K && WIN32 */   
@@ -1467,12 +1467,12 @@ CmInetFd *sockFd;               /* socket file descriptor */
       if (ret != ROK)
       {
          ret = cmInetClose(sockFd);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 #endif  /* CM_LKSCTP_NONBLOCK ends */
 #endif
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetSocket */
 
 
@@ -1522,7 +1522,7 @@ CmInetAddr *myAddr;             /* locale Internet address/port */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
        (myAddr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1594,10 +1594,10 @@ CmInetAddr *myAddr;             /* locale Internet address/port */
 #endif /*ALIGN_64BIT*/
 #endif /* IPV6_SUPPORTED */
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK); 
+   return ROK; 
 } /* end of cmInetBind */
 
 /*cm_inet_c_001.main_38 Updated for TUCL 2.1 Release (Kernel SCTP Support) */
@@ -1665,7 +1665,7 @@ U16                port;         /* port number */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
        (addrLst == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(addrLst->count > CM_INET_NUM_NET_ADDR)
@@ -1686,7 +1686,7 @@ U16                port;         /* port number */
       CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET005, 0, prntBuf);   
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1718,7 +1718,7 @@ U16                port;         /* port number */
             CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET057, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          addrs6[idx6].sin6_family      = AF_INET6;
@@ -1748,7 +1748,7 @@ U16                port;         /* port number */
             CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET058, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          addrs6[idx6].sin6_family      = AF_INET6;
@@ -1819,7 +1819,7 @@ U16                port;         /* port number */
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET006, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (addrLst->count > 1)
@@ -1850,7 +1850,7 @@ U16                port;         /* port number */
          CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET059, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       ret = sctp_bindx(sockFd->fd, (Void*)tempAddrPtr, addrLst->count - 1, SCTP_BINDX_ADD_ADDR); 
@@ -1877,10 +1877,10 @@ U16                port;         /* port number */
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET007, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK); 
+   return ROK; 
 }
 
 /*
@@ -1956,12 +1956,12 @@ U16                port;         /* port number */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
          (primAddr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
     /* cm_inet_c_001.main_58 : Added check for addrLst to fix klockwork issue */
    if (addrLst == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* cm_inet_c_001.main_46: Included check for no of address aginst max */
    if( addrLst->count > CM_INET_NUM_NET_ADDR )
@@ -1982,7 +1982,7 @@ U16                port;         /* port number */
       CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET060, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -2013,7 +2013,7 @@ U16                port;         /* port number */
          CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET008, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       addrs6[idx6].sin6_family      = AF_INET6;
@@ -2042,7 +2042,7 @@ U16                port;         /* port number */
          CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET061, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       addrs6[idx6].sin6_family      = AF_INET6;
       addrs6[idx6].sin6_port        = CM_INET_HTON_U16(port);
@@ -2119,7 +2119,7 @@ U16                port;         /* port number */
                CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET009, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
 
             addrs6[idx6].sin6_family      = AF_INET6;
@@ -2149,7 +2149,7 @@ U16                port;         /* port number */
                CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET062, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             addrs6[idx6].sin6_family      = AF_INET6;
             addrs6[idx6].sin6_port        = CM_INET_HTON_U16(port);
@@ -2194,7 +2194,7 @@ U16                port;         /* port number */
    }
    else
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef IPV6_SUPPORTED
@@ -2205,7 +2205,7 @@ U16                port;         /* port number */
    }
    else
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* IPV6_SUPPORTED */
 
@@ -2339,12 +2339,12 @@ U16                port;         /* port number */
 
          /* it is a real error */ 
          default:
-            RETVALUE(RFAILED);
+            return RFAILED;
             break;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2381,7 +2381,7 @@ CmInetFdType      *assocFd;      /* association fd */
    /* error check on parameters */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) || (assocFd == NULLP)) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -2405,12 +2405,12 @@ CmInetFdType      *assocFd;      /* association fd */
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    *assocFd = ret;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2483,7 +2483,7 @@ U32              context;      /* value to be passed back, if error occurs */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd)
        || (info == NULLP) || (mBuf == NULLP) || (len == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -2497,13 +2497,13 @@ U32              context;      /* value to be passed back, if error occurs */
    ret = SFndLenMsg(mBuf, &bufLen);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* max message length is limited to control the memory usage */
    /* casting bufLen to avoid warnings */
    if ((bufLen > 0) && ((U32)bufLen > CM_INET_MAX_MSG_LEN))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ret = SGetSBuf(info->region, info->pool, &sendBuf, bufLen);                  
    if (ret != ROK)
@@ -2514,7 +2514,7 @@ U32              context;      /* value to be passed back, if error occurs */
    if ((ret != ROK) || (msgLen != bufLen)) 
    {
       SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ( dstAddr != NULLP)
@@ -2539,7 +2539,7 @@ U32              context;      /* value to be passed back, if error occurs */
             CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET012, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          addr6.sin6_family      = AF_INET6;
@@ -2568,7 +2568,7 @@ U32              context;      /* value to be passed back, if error occurs */
             CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET064, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          addr6.sin6_family      = AF_INET6;
          addr6.sin6_port        = CM_INET_HTON_U16(port);
@@ -2657,7 +2657,7 @@ U32              context;      /* value to be passed back, if error occurs */
       else if (INET_ERR_CODE == ERR_PIPE)
          RETVALUE(RCLOSED);
       else 
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    /* cm_inet_c_001.main_58 : Fix for klockwork issue */
@@ -2666,7 +2666,7 @@ U32              context;      /* value to be passed back, if error occurs */
    /* cleanup */
    SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2733,7 +2733,7 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
        (srcAddr == NULLP) || (port == NULLP) || (meminfo == NULLP) || 
        (mBuf == NULLP) || (len == NULLP) || (sinfo == NULLP) || (flag == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -2754,7 +2754,7 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "SGetSBuf failed to allocate memory\n");
       CMINETLOGERROR(ERRCLS_ADD_RES, ECMINET065, 0, prntBuf);
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    addrlen = sizeof(struct sockaddr_storage);
@@ -2782,7 +2782,7 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* save the length of the received message */
@@ -3021,7 +3021,7 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
       if (ret != ROK)
       {
          SPutSBuf(meminfo->region, meminfo->pool, recvbuf, buflen);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       ret = SAddPstMsgMult(recvbuf, *len, *mBuf);
@@ -3029,14 +3029,14 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
       {
          SPutMsg(*mBuf);
          SPutSBuf(meminfo->region, meminfo->pool, recvbuf, buflen);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
    /* cleanup */
    SPutSBuf(meminfo->region, meminfo->pool, recvbuf, buflen);       
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -3101,7 +3101,7 @@ CmInetNetAddrLst     *addrlst;      /* peer address list */
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
    byteAddress = (U8*)peerAddrList;
@@ -3127,7 +3127,7 @@ CmInetNetAddrLst     *addrlst;      /* peer address list */
 #endif /* CMINETDBG */
 
             sctp_freepaddrs(peerAddrList);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          pAddr6 = (struct sockaddr_in6*)byteAddress;
@@ -3156,7 +3156,7 @@ CmInetNetAddrLst     *addrlst;      /* peer address list */
 
    sctp_freepaddrs(peerAddrList);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -3217,7 +3217,7 @@ Ptr       value;                /* option value */
    /* error check on parameters */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -3332,7 +3332,7 @@ Ptr       value;                /* option value */
 
             default:
                {
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
                break;
          }
@@ -3399,7 +3399,7 @@ Ptr       value;                /* option value */
                CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET017, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
 
             pAddr6 = (struct sockaddr_in6*)&(addrInfo.spinfo_address);
@@ -3464,7 +3464,7 @@ Ptr       value;                /* option value */
                   CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET066, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
 
                pAddr6 = (struct sockaddr_in6*)&(addrParams.spp_address);
@@ -3584,7 +3584,7 @@ Ptr       value;                /* option value */
          break;
 
       default:
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    if (ret == INET_ERR)
@@ -3603,10 +3603,10 @@ Ptr       value;                /* option value */
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET067, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }          
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* cm_inet_c_001.main_54: Added new function cmInetShutDownSctp()*/
@@ -3668,10 +3668,10 @@ PUBLIC S16 cmInetShutDownSctp(sockFd)
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* cm_inet_c_001.main_61: Added new function cmInetAbortSctpAssoc()*/
@@ -3736,10 +3736,10 @@ PUBLIC S16 cmInetAbortSctpAssoc(sockFd, assocId)
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #endif
@@ -3794,7 +3794,7 @@ PUBLIC S16 cmInetConnect(sockFd, servAddr)
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
          (servAddr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -3903,12 +3903,12 @@ PUBLIC S16 cmInetConnect(sockFd, servAddr)
 #endif /*ALIGN_64BIT*/
 #endif /* IPV6_SUPPORTED */
 #endif /* CMINETDBG */
-            RETVALUE(RFAILED);
+            return RFAILED;
             break;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetConnect */
 
 
@@ -3949,7 +3949,7 @@ S16       backLog;              /* max. number of outstandig connections 0..5 */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
          (backLog < MIN_BACK_LOG) || (backLog > MAX_BACK_LOG))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -3970,10 +3970,10 @@ S16       backLog;              /* max. number of outstandig connections 0..5 */
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET021, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetListen */
 
 
@@ -4029,7 +4029,7 @@ CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
    /* error check on parameters */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -4070,7 +4070,7 @@ CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
          CMINETLOGERROR(ERRCLS_DEBUG, ECMINET022, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }     
 
@@ -4095,7 +4095,7 @@ CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET071, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 #endif /* IPV6_SUPPORTED */      
 
@@ -4108,7 +4108,7 @@ CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
    if ( ret != ROK) 
    {
       ret = cmInetClose(newSockFd);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef IPV6_SUPPORTED
@@ -4134,7 +4134,7 @@ CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
    fromAddr->port    = CM_INET_NTOH_U16(peerAddr->sin_port);
    fromAddr->address = CM_INET_NTOH_U32(peerAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetAccept */ 
 
 
@@ -4193,7 +4193,7 @@ U32 *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
    tempHdr->cmsg_len = len;  
    *curMsgIdx += len;
 
-   RETVALUE(ROK);
+   return ROK;
 
 }/* end of cmInet4FillTos */ 
 /*
@@ -4304,7 +4304,7 @@ S16             flags;          /* additional control flags, unused */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
          (info == NULLP) || (len == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -4359,13 +4359,13 @@ S16             flags;          /* additional control flags, unused */
    ret = SFndLenMsg(mBuf, &bufLen);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* max message length is limited to control the memory usage */
    /* casting bufLen to avoid warnings */
    if ((bufLen > 0) && ((U32)bufLen > CM_INET_MAX_MSG_LEN))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ret = SGetSBuf(info->region, info->pool, &sendBuf, bufLen);                  
    if (ret != ROK)
@@ -4377,7 +4377,7 @@ S16             flags;          /* additional control flags, unused */
    {
       /* cleanup */
       SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (dstAddr == NULLP)
@@ -4456,7 +4456,7 @@ S16             flags;          /* additional control flags, unused */
          RETVALUE(RCLOSED);
       }
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    *len = ret;
@@ -4477,7 +4477,7 @@ S16             flags;          /* additional control flags, unused */
    ret = SFndLenMsg(mBuf, &msgLen);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* added */
@@ -4602,7 +4602,7 @@ S16             flags;          /* additional control flags, unused */
                /* Compress the message into a single dBuf */
                ret = SCompressMsg(mBuf);
                if (ret != ROK)
-                  RETVALUE(RFAILED);
+                  return RFAILED;
 
                strtEndDBufNum = 0;
                /* Rebuild the send vector */
@@ -4611,13 +4611,13 @@ S16             flags;          /* additional control flags, unused */
                ret = buildSendIovec(mBuf, unSentLen, txArr, numDBufs, &i,
                      &strtEndDBufNum, &ioLen);
                if (ret != ROK)
-                  RETVALUE(RFAILED);
+                  return RFAILED;
 
                retVal = ROK;
             }
          }
          else
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
       msg.msg_iov           = txArr;
       msg.msg_iovlen        = i;
@@ -4674,7 +4674,7 @@ S16             flags;          /* additional control flags, unused */
             *len = 0;
             RETVALUE(RCLOSED);
          }
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* cm_inet_c_001.main_50 - Update the length only in successful cases */
@@ -4691,7 +4691,7 @@ S16             flags;          /* additional control flags, unused */
    } while (*len < msgLen);
 #endif /* WIN32 | CMINETFLATBUF */
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmInetSendDscpMsg */
 
@@ -4816,7 +4816,7 @@ S16             flags;          /* additional control flags, unused */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
          (info == NULLP) || (len == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -4873,13 +4873,13 @@ S16             flags;          /* additional control flags, unused */
    ret = SFndLenMsg(mBuf, &bufLen);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* max message length is limited to control the memory usage */
    /* casting bufLen to avoid warnings */
    if ((bufLen > 0) && ((U32)bufLen > CM_INET_MAX_MSG_LEN))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ret = SGetSBuf(info->region, info->pool, &sendBuf, bufLen);                  
    if (ret != ROK)
@@ -4891,7 +4891,7 @@ S16             flags;          /* additional control flags, unused */
    {
       /* cleanup */
       SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (dstAddr == NULLP)
@@ -4970,7 +4970,7 @@ S16             flags;          /* additional control flags, unused */
          RETVALUE(RCLOSED);
       }
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    *len = ret;
@@ -4991,7 +4991,7 @@ S16             flags;          /* additional control flags, unused */
    ret = SFndLenMsg(mBuf, &msgLen);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* added */
@@ -5108,7 +5108,7 @@ S16             flags;          /* additional control flags, unused */
                /* Compress the message into a single dBuf */
                ret = SCompressMsg(mBuf);
                if (ret != ROK)
-                  RETVALUE(RFAILED);
+                  return RFAILED;
 
                strtEndDBufNum = 0;
                /* Rebuild the send vector */
@@ -5117,13 +5117,13 @@ S16             flags;          /* additional control flags, unused */
                ret = buildSendIovec(mBuf, unSentLen, txArr, numDBufs, &i,
                      &strtEndDBufNum, &ioLen);
                if (ret != ROK)
-                  RETVALUE(RFAILED);
+                  return RFAILED;
 
                retVal = ROK;
             }
          }
          else
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
       msg.msg_iov           = txArr;
       msg.msg_iovlen        = i;
@@ -5180,7 +5180,7 @@ S16             flags;          /* additional control flags, unused */
             *len = 0;
             RETVALUE(RCLOSED);
          }
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* cm_inet_c_001.main_50 - Update the length only in successful cases */
@@ -5197,7 +5197,7 @@ S16             flags;          /* additional control flags, unused */
    } while (*len < msgLen);
 #endif /* WIN32 | CMINETFLATBUF */
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmInetSendMsg */
 
@@ -5317,7 +5317,7 @@ U8   protType;  /* whether IPv4/IPv6 socket */
    tempHdr->cmsg_len = len;  
    *curMsgIdx += len;
 
-   RETVALUE(ROK);
+   return ROK;
 
 }/* end of cmInet6BuildSendPktinfo */ 
 #endif /* LOCAL_INTF */
@@ -5382,7 +5382,7 @@ U32 *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
    tempHdr->cmsg_len = len;
    *curMsgIdx += len;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetBuildSendHoplimit  */
 #endif /* SS_LINUX */
 
@@ -5511,7 +5511,7 @@ U8 hdrId;                       /* 0: HBH hdr, 1:Dest Hdr */
    tempHdr->cmsg_len = len;
    *curMsgIdx += len;
 
-   RETVALUE(ROK);    
+   return ROK;    
 } /* end of cmInet6BuildSendHBHOpts */
 
 
@@ -5607,7 +5607,7 @@ U32 *curMsgIdx;              /* idx in cmsgBuf where to start building RT hd */
    }
 
    *curMsgIdx += len;  
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInet6BuildSendRouteOpts */
 
 
@@ -5824,7 +5824,7 @@ CmInetMemInfo   *info;           /* Memory information */
       /* get next option */
       optsIdx++; 
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInet6BuildRecvHopOptsArr() */
 
 
@@ -5923,7 +5923,7 @@ CmInetMemInfo   *info;     /* Memory information */
       curDataIdx += 16;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInet6BuildRecvRtHdr() */
 
 
@@ -5976,7 +5976,7 @@ CmInetIpv6HdrParm *ipv6HdrParam; /* ipv6 header parameters */
    hopLimitValue = (U32 *)(cmsgData);
    ipv6HdrParam->ttl.val = (U8)(*hopLimitValue);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* IPV6_OPTS_SUPPORTED */
 
@@ -6155,7 +6155,7 @@ S32              flags;         /* additional control flags */
       if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
             (info == NULLP) || (mPtr == NULLP) || (len == NULLP))
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -6394,7 +6394,7 @@ S32              flags;         /* additional control flags */
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
-            RETVALUE(RFAILED);
+            return RFAILED;
          } 
          curLen -= recvLen;
          bufPtr += recvLen;
@@ -6682,7 +6682,7 @@ S32              flags;         /* additional control flags */
                 * against unexpected WOULDBLOCKS observed in solaris
                 */
                if (*mPtr != NULLP)
-                  RETVALUE(ROK);
+                  return ROK;
 
                RETVALUE(ROKDNA);
             }
@@ -6716,7 +6716,7 @@ S32              flags;         /* additional control flags */
                *len = 0;
                RETVALUE(RCLOSED);
             }
-            RETVALUE(RFAILED); 
+            return RFAILED; 
          } 
 
          bufLen -= recvLen;
@@ -6952,7 +6952,7 @@ S32              flags;         /* additional control flags */
                SPutMsg(tempMsg);
                SPutSBuf(info->region, info->pool, (Data*)dBufs, 
                      numDBufs*sizeof(Buffer*)); 
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             SPutMsg(tempMsg);
          }
@@ -7048,7 +7048,7 @@ S32              flags;         /* additional control flags */
       RETVALUE(ROKDNA);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetRecvMsg */
 
 
@@ -7127,7 +7127,7 @@ PUBLIC S16 cmInetPeekNew(sockFd, fromAddr, info, dataPos, dataLen, data)
          (info == NULLP) || (data == NULLP) ||
          (dataPos < 0) || (dataLen < 0))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -7203,7 +7203,7 @@ PUBLIC S16 cmInetPeekNew(sockFd, fromAddr, info, dataPos, dataLen, data)
 #endif
 #endif /* CMINETDBG */
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    } 
    else if (recvLen == 0)
    {
@@ -7246,7 +7246,7 @@ PUBLIC S16 cmInetPeekNew(sockFd, fromAddr, info, dataPos, dataLen, data)
 #endif /* IPV6_SUPPORTED */
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetPeeknew */
 
 
@@ -7321,7 +7321,7 @@ Data            *data;          /* read data */
          (info == NULLP) || (data == NULLP) ||
          (dataPos < 0) || (dataLen < 0))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -7356,7 +7356,7 @@ Data            *data;          /* read data */
          if (ret == RCLOSED)
             RETVALUE(RCLOSED);
 
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* check if connection got closed */
@@ -7483,7 +7483,7 @@ Data            *data;          /* read data */
                recvLen = 0;
                RETVALUE(RCLOSED);
             }
-            RETVALUE(RFAILED);
+            return RFAILED;
          } 
 
          if (recvLen < (S32)bufLen)  /* maybe happen */
@@ -7542,7 +7542,7 @@ Data            *data;          /* read data */
       RETVALUE(ROKDNA);
    }   
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetPeek */
 
 
@@ -7579,7 +7579,7 @@ CmInetFd *sockFd;               /* socket file descriptor */
    /* error check on parameters */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -7604,10 +7604,10 @@ CmInetFd *sockFd;               /* socket file descriptor */
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET037, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetClose */
 
 
@@ -7655,7 +7655,7 @@ S32       howTo;                /* operation flag */
    /* error check on parameters */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -7665,7 +7665,7 @@ S32       howTo;                /* operation flag */
       if (INET_ERR_CODE == ERR_NOTCONN)
       {
          /* socket is not connected */ 
-         RETVALUE(ROK); 
+         return ROK; 
       }
       else
       {
@@ -7684,11 +7684,11 @@ S32       howTo;                /* operation flag */
          CMINETLOGERROR(ERRCLS_DEBUG, ECMINET038, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }   
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetShutdown */
 
 
@@ -7738,7 +7738,7 @@ S16         *numFdS;            /* number of ready descriptors */
    /* error check on parameters */
    if (numFdS == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -7785,7 +7785,7 @@ S16         *numFdS;            /* number of ready descriptors */
       switch(errCode = INET_ERR_CODE)
       {
          case ERR_INVAL:
-            RETVALUE(ROK);
+            return ROK;
 
          default:
 #ifdef CMINETDBG
@@ -7795,7 +7795,7 @@ S16         *numFdS;            /* number of ready descriptors */
                   INET_ERR_CODE);
             CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET039, 0, prntBuf);
 #endif /* CMINETDBG */
-            RETVALUE(RFAILED);
+            return RFAILED;
 
       } /* end of switch */
    }
@@ -7804,7 +7804,7 @@ S16         *numFdS;            /* number of ready descriptors */
    /* cm_inet_c_001.main_54: Fix for Klockworks issue */
    *numFdS = (S16)ret;   
 
-   RETVALUE(ROK); 
+   return ROK; 
 } /* end of  cmInetSelect */
 
 
@@ -8065,14 +8065,14 @@ Ptr       value;                /* option value */
    /* cm_inet_c_001.main_58 : Added NULL check for value field */ 
    if(value == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* error check on parameters */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -8122,7 +8122,7 @@ Ptr       value;                /* option value */
 
             default:
                /* wrong value */
-               RETVALUE(RFAILED);
+               return RFAILED;
                break;
          }
          break;
@@ -8343,14 +8343,14 @@ Ptr       value;                /* option value */
             ret = setsockopt(sockFd->fd, level, IP_ROUTER_ALERT,
                   (char*)&enable, sizeof(enable));
             if (ret != ROK)
-               RETVALUE(RFAILED);
+               return RFAILED;
          }
          else if (*optVal == CM_INET_OPT_DISABLE)
          {   
             ret = setsockopt(sockFd->fd, level, IP_ROUTER_ALERT,
                   (char*)&disable, sizeof(disable));
             if (ret != ROK)
-               RETVALUE(RFAILED);
+               return RFAILED;
          }   
          break;         
 #endif /* SS_LINUX */
@@ -8379,7 +8379,7 @@ Ptr       value;                /* option value */
                      (char *)tempTknStr64->val, tempTknStr64->len);
          }
          else
-            RETVALUE(RFAILED); /* Trying to set IPv4 Hdr option
+            return RFAILED; /* Trying to set IPv4 Hdr option
                                 * without giving option values*/
 #endif /* SS_VW || SS_LINUX */
          break;
@@ -8397,7 +8397,7 @@ Ptr       value;                /* option value */
                   (char*)&enable, sizeof(enable));
 
             if (ret != ROK)
-               RETVALUE(RFAILED);
+               return RFAILED;
          }
          else if (*optVal == CM_INET_OPT_DISABLE)
          {   
@@ -8406,7 +8406,7 @@ Ptr       value;                /* option value */
                   (char*)&disable, sizeof(disable));
 
             if (ret != ROK)
-               RETVALUE(RFAILED);
+               return RFAILED;
          }   
          break;   
 #endif /* LOCAL_INTF */            
@@ -8712,7 +8712,7 @@ Ptr       value;                /* option value */
                CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET040, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
 
             pAddr6 = (struct sockaddr_in6*)&(setPrim.ssp_addr);
@@ -8767,7 +8767,7 @@ Ptr       value;                /* option value */
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
 
                pAddr6 = (struct sockaddr_in6*)&(addrParams.spp_address);
@@ -8900,7 +8900,7 @@ Ptr       value;                /* option value */
 
       default:  
          /* wrong socket option type */
-         RETVALUE(RFAILED);
+         return RFAILED;
          break;
    }
 
@@ -8920,9 +8920,9 @@ Ptr       value;                /* option value */
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET042, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }          
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetSetOpt */
 
 
@@ -8967,7 +8967,7 @@ U32      *dataLen;              /* number of pending octets */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
          (dataLen == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -9030,7 +9030,7 @@ U32      *dataLen;              /* number of pending octets */
 #ifdef SS_LINUX
       /* cm_inet_c_001.main_45: Change 2048 to CM_INET_MAX_UDPRAW_MSGSIZE */
       *dataLen = CM_INET_MAX_UDPRAW_MSGSIZE;
-      RETVALUE(ROK);
+      return ROK;
 #endif /* SS_LINUX */
 
       /* removed error debug printing added for recvfrom call. */
@@ -9049,10 +9049,10 @@ U32      *dataLen;              /* number of pending octets */
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET043, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetGetNumRead */
 
 
@@ -9105,7 +9105,7 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
       /* error check on parameters */
       if ((hostName == NULLP) || (addrTbl == NULLP))
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -9127,7 +9127,7 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
             " hostName(%p)\n", INET_ERR_CODE, hostName);
       CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET044, 0, prntBuf);
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (hostid->h_addrtype != AF_INET)
    {
@@ -9139,7 +9139,7 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
             INET_ERR_CODE, hostName, hostid->h_addrtype);
       CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET045, 0, prntBuf);
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    else
    {
@@ -9167,7 +9167,7 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
                " hostName(%p)\n", INET_ERR_CODE, hostName);
          CMINETLOGERROR(ERRCLS_DEBUG, ECMINET046, 0, prntBuf);
 #endif /* CMINETDBG */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       CM_COPY_VWIPADDR(vwIpAddr, &(addrTbl->netAddr[addrTbl->count]));
       addrTbl->count++;
@@ -9186,7 +9186,7 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
             INET_ERR_CODE, hostName, hostid.h_addrtype);
       CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET047, 0, prntBuf);
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    else
    {
@@ -9202,7 +9202,7 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
 
 #endif /* WIN32  || SS_LINUX || HPOS */
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmInetGetHostByName */
 
@@ -9264,7 +9264,7 @@ CmInetIpAddrArr *addrArr;          /* Array of addressed filled in */
    /* error check on parameters */
    if ((hostName == NULLP) || (addrArr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -9288,7 +9288,7 @@ CmInetIpAddrArr *addrArr;          /* Array of addressed filled in */
             err, hostName, addrArr->type);
       CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET048, 0, prntBuf);
 #endif /* CMINETDBG */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef IPV6_SUPPORTED
@@ -9316,7 +9316,7 @@ CmInetIpAddrArr *addrArr;          /* Array of addressed filled in */
                err, hostName, addrArr->type, hostid->h_addrtype);
          CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET049, 0, prntBuf);
 #endif /* CMINETDBG */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -9343,13 +9343,13 @@ CmInetIpAddrArr *addrArr;          /* Array of addressed filled in */
                err, hostName, hostid->h_addrtype, addrArr->type);
          CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET050, 0, prntBuf);
 #endif /* CMINETDBG */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 #endif /* SS_LINUX */
 #endif /* SUNOS */
 
-   RETVALUE(ROK);
+   return ROK;
 #else
    ret = cmInetGetHostByName(hostName, &addrArr->u.ipv4AddrArr); 
    RETVALUE(ret);
@@ -9392,7 +9392,7 @@ CmInetIpAddr *address;          /* 4 byte interent address */
    /* error check on parameters */
    if (asciiAddr == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -9400,10 +9400,10 @@ CmInetIpAddr *address;          /* 4 byte interent address */
    if (*address == (U32)ERR_INADDRNONE)
    {
       /* asciiAddr does not contain a valid internet address */ 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -9445,7 +9445,7 @@ S8           **asciiAddr;       /* ascii address representation */
    /* error check on parameters */
    if (asciiAddr == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -9454,10 +9454,10 @@ S8           **asciiAddr;       /* ascii address representation */
    *asciiAddr = inet_ntoa(inetAddr);
    if (*asciiAddr == NULL)
    { 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /*
 *
@@ -9500,7 +9500,7 @@ U32            len;
    /* error check on parameters */
    if (asciiAddr == NULLP || address == NULLP || len == 0 )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -9515,10 +9515,10 @@ U32            len;
    }
    if(inet_ntop(domain,address,asciiAddr,len) == NULL)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -9563,17 +9563,17 @@ S8            *asciiAddr;       /* ascii address representation */
    /* error check on parameters */
    if ((asciiAddr == NULLP) || (address == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    ret = inet_pton(AF_INET, asciiAddr, (void *)address);
    if (ret != 1)
    { 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetPton */
 #endif /* SUNOS */
 #endif /* IPV6_SUPPORTED */
@@ -9618,7 +9618,7 @@ S8            *asciiAddr;       /* ascii address representation */
    /* error check on parameters */
    if ((asciiAddr == NULLP) || (address6 == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -9626,7 +9626,7 @@ S8            *asciiAddr;       /* ascii address representation */
    ret = inet_pton(AF_INET6, asciiAddr, (void *)address6);
    if (ret != 1)
    { 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #else
    /* cm_inet_c_001.main_44 : In windows inet_pton is not implemented. so we are using the below function
@@ -9635,7 +9635,7 @@ S8            *asciiAddr;       /* ascii address representation */
    cmMemcpy((U8*)address6, (U8*)&(((struct sockaddr_in6 *)&ss)->sin6_addr), sizeof(CmInetIpAddr6));
 #endif /* WIN32 */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetPton6 */
 #endif /* IPV6_SUPPORTED */
 #endif /* SS_PS */
@@ -9673,7 +9673,7 @@ S32 *size;                      /* max used memory size */
    *size = CM_INET_MAX_MSG_LEN;
 #endif 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -9709,11 +9709,11 @@ PUBLIC S16 cmInetInit(Void)
    err = WSAStartup(version, &data);
    if (err != 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -9748,11 +9748,11 @@ PUBLIC S16 cmInetDeInit(Void)
    err = WSACleanup();
    if (err != 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of cmInetDeInit() */
 
 
@@ -9810,7 +9810,7 @@ CmInetAddr *locAddr;
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd) ||
          (locAddr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -9836,7 +9836,7 @@ CmInetAddr *locAddr;
 #else
             locAddr->port = CM_INET_NTOH_U16(sockAddr->sin_port);
 #endif /* IPV6_SUPPORTED */
-            RETVALUE(ROK);
+            return ROK;
 
          default:
 #ifdef CMINETDBG
@@ -9853,7 +9853,7 @@ CmInetAddr *locAddr;
             CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET051, 0, prntBuf);
 #endif /* ALIGN_64BIT */
 #endif /* CMINETDBG */
-            RETVALUE(RFAILED);
+            return RFAILED;
       }/* end of switch */
 
    }/* end if */
@@ -9882,7 +9882,7 @@ CmInetAddr *locAddr;
    locAddr->port    = CM_INET_NTOH_U16(sockAddr->sin_port);
    locAddr->address = CM_INET_NTOH_U32(sockAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
-   RETVALUE(ROK);
+   return ROK;
 }/* end of cmInetGetSockName() */
 
 /*  New functions to peek into the file descriptor 
@@ -9926,11 +9926,11 @@ CmInetFdSetInfo *fdSetInfo;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (fdSetInfo == NULLP)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    if (fdSetInfo->initDone == TRUE)
-      RETVALUE(ROK);
+      return ROK;
 
 #ifdef WIN32
    fdSetInfo->numFds = 0;
@@ -9977,7 +9977,7 @@ CmInetFdSetInfo *fdSetInfo;
 #endif /* SUNOS  || SS_LINUX || SS_VW || HPOS */   
 
    fdSetInfo->initDone = TRUE;
-   RETVALUE(ROK);
+   return ROK;
 }/* end of cmInetFdSetInfoInit() */
 
 
@@ -10028,7 +10028,7 @@ CmInetFdType    *sockFd;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((fdSetInfo == NULLP) || (fdSet == NULLP) || (sockFd == NULLP))
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    if (fdSetInfo->initDone != TRUE)
       RETVALUE(RNA);
@@ -10037,7 +10037,7 @@ CmInetFdType    *sockFd;
 #ifdef WIN32
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (fdSetInfo->numFds > FD_SETSIZE)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif /* ERRCLASS & ERRCLS_DEBUG */
    /* cm_inet_c_001.main_32 :  Corrected check for number of fd set in
       a fdset for WIN32*/
@@ -10046,7 +10046,7 @@ CmInetFdType    *sockFd;
 
    *sockFd = fdSet->fd_array[fdSetInfo->numFds];
    fdSetInfo->numFds += 1;
-   RETVALUE(ROK);
+   return ROK;
 #endif /* WIN32 */
 
    /* cm_inet_c_001.main_59: Protected under if not defined WIN32 */
@@ -10094,7 +10094,7 @@ CmInetFdType    *sockFd;
                   *sockFd += (curIdx  * (sizOfFdSetArElem << 3));
                   /* Clear the file descriptor */
                   *tempByte &= ~(1 << bitPos);
-                  RETVALUE(ROK);
+                  return ROK;
                }
                if (fdSetInfo->bigEndian)
                   tempByte -= 1;
@@ -10108,7 +10108,7 @@ CmInetFdType    *sockFd;
    if (!found)
       RETVALUE(ROKDNA);
 
-   RETVALUE(ROK);
+   return ROK;
 #endif /* SUNOS || SS_LINUX || SS_VW || HPOS */
 } /* end of cmInetGetFd */
 
@@ -10194,7 +10194,7 @@ CmInetNetAddr      *address;           /* IP Address */
             ((val[idx] < 'A') || (val[idx] > 'F')))
       {
          /* Not a digit */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
@@ -10213,7 +10213,7 @@ CmInetNetAddr      *address;           /* IP Address */
    if ((val[idx] != '.') && (val[idx] != ':'))
    {
       /* Not a digit */
-      RETVALUE(RFAILED);
+      return RFAILED;
    } /* if, couldn't determine IPV4 or IPV6 */
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
@@ -10240,7 +10240,7 @@ CmInetNetAddr      *address;           /* IP Address */
             if (compressed == TRUE)
             {
                /* can't have 2 :: */
-               RETVALUE(RFAILED);
+               return RFAILED;
             } /* if, 2 :: */
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
@@ -10284,7 +10284,7 @@ CmInetNetAddr      *address;           /* IP Address */
                   ((val[idx] < 'A') || (val[idx] > 'F')))
             {
                /* Not a digit */
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
@@ -10336,7 +10336,7 @@ CmInetNetAddr      *address;           /* IP Address */
    } /* else, IPV6 */
 #endif /* IPV6_SUPPORTED */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* cmInetConvertStrToIpAddr */
 
 
@@ -10392,7 +10392,7 @@ U8                 *val;               /* Domain Name String */
          if (val[idx] < '0' || val[idx] > '9')
          {
             /* Not a digit */
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
@@ -10405,7 +10405,7 @@ U8                 *val;               /* Domain Name String */
       idx++;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* cmInetAsciiToIpv4 */
 
 /* cm_inet_c_001.main_34:Added wrapper function for getaddrinfo and freeaddrinfo */
@@ -10450,7 +10450,7 @@ CmInetAddrInfo           **res;          /* Link list of addrInfo structure */
    /* error check on parameters */
    if ((node == NULLP) || (hints == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -10599,7 +10599,7 @@ S32              flags;         /* additional control flags */
       /* error check on parameters */
       if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd))
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -10670,7 +10670,7 @@ S32              flags;         /* additional control flags */
             CMINETLOGERROR(ERRCLS_DEBUG, ECMINET054, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          else
          {
@@ -10773,7 +10773,7 @@ S32              flags;         /* additional control flags */
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
-         RETVALUE(RFAILED);
+         return RFAILED;
       } 
 
       if(recvLen < curLen)
@@ -10854,7 +10854,7 @@ S32              flags;         /* additional control flags */
             *len = 0;
             RETVALUE(RCLOSED);
          }
-         RETVALUE(RFAILED); 
+         return RFAILED; 
       }/* if ((recvLen == INET_ERR) || (recvLen > CM_INET_MAX_MSG_LEN))*/ 
 
       if(recvLen < curLen)
@@ -10870,7 +10870,7 @@ S32              flags;         /* additional control flags */
 #endif /* WIN32 | CMINETFLATBUF  */
 
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmInetFlushRecvBuf */
 
 #endif /* CM_INET_FLUSH_RECV_BUF*/

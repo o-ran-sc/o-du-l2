@@ -690,7 +690,7 @@ KwUmHdr    *umHdr;
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
 
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #else
       SRemPreMsg(dst,pdu);
@@ -711,7 +711,7 @@ KwUmHdr    *umHdr;
                   "SRemPreMsgMult Failed for 10 bits SN UEID:%d CELLID:%d",
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #else
       SRemPreMsgMult(dst,2,pdu);
@@ -741,7 +741,7 @@ KwUmHdr    *umHdr;
                   "SRemPreMsgMult Failed UEID:%d CELLID:%d",
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #else
       SRemPreMsgMult(dst,2,pdu);
@@ -754,7 +754,7 @@ KwUmHdr    *umHdr;
                   "Received LI as 0 UEID:%d CELLID:%d",
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
-         RETVALUE(RFAILED); 
+         return RFAILED; 
       }
       totalSz += umHdr->li[umHdr->numLi];
       if ( pduSz <=  totalSz )
@@ -770,7 +770,7 @@ KwUmHdr    *umHdr;
                   pduSz,
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
-         RETVALUE(RFAILED); /* the situation where in the PDU size 
+         return RFAILED; /* the situation where in the PDU size 
                             is something that does not match with 
                             the size in LIs*/
       }
@@ -793,7 +793,7 @@ KwUmHdr    *umHdr;
                      "SRemPreMsg Failed UEID:%d CELLID:%d",
                      rbCb->rlcId.ueId,
                      rbCb->rlcId.cellId);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 #else
          SRemPreMsg(dst,pdu);
@@ -807,7 +807,7 @@ KwUmHdr    *umHdr;
                      "Received LI as 0 UEID:%d CELLID:%d",
                      rbCb->rlcId.ueId,
                      rbCb->rlcId.cellId);
-            RETVALUE(RFAILED); 
+            return RFAILED; 
          }
          totalSz += umHdr->li[umHdr->numLi];
          pduSz--;
@@ -815,7 +815,7 @@ KwUmHdr    *umHdr;
 
          if (pduSz < totalSz)
          {
-            RETVALUE(RFAILED); /* the situation where in the PDU size is 
+            return RFAILED; /* the situation where in the PDU size is 
                                something that does not match with the 
                                size in LIs*/
          }
@@ -826,9 +826,9 @@ KwUmHdr    *umHdr;
    if (e)
    {
       /* PDU was constructed with LIs that exceeded KW_MAX_LI */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK); 
+   return ROK; 
 }
    
 /**

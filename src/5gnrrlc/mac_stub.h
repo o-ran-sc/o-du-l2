@@ -31,8 +31,8 @@
 #define DU_IP_V4_ADDR "192.168.130.81"
 #define CU_IP_V4_ADDR "192.168.130.82"
 
-S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta);
-S16 macStubSendDlData(Pst *post, SpId spId, RlcMacData *dlData);
+uint8_t macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta);
+uint8_t macStubSendDlData(Pst *post, SpId spId, RlcMacData *dlData);
 void macStubBuildUlData(Buffer *mBuf);
 
 #endif /* __MAC_STUB_H__ */

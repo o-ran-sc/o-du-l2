@@ -1032,21 +1032,21 @@ CmLteLcId        lcId;
 
    if(cellCb->bcchBchInfo.lcId == lcId)
    {
-      RETVALUE(ROK);
+      return ROK;
    } 
    if(cellCb->pcchInfo.lcId == lcId)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    for (idx = 0; idx < cellCb->numBcchDlschInfo; idx++)
    {
       if(cellCb->bcchDlschInfo[idx].lcId == lcId)
       {
-         RETVALUE(ROK);
+         return ROK;
       } 
    }
-   RETVALUE(RFAILED);
+   return RFAILED;
 }  /* rgDBMChkCmnLcCb */
 
 /**

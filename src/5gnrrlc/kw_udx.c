@@ -255,7 +255,7 @@ U8 status;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
        RETVALUE(ret1);
     }
-    CMCHKPKLOG(SPkU8, status, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduUnpackUInt8, status, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_BND_CFM;
 
@@ -320,7 +320,7 @@ RlcCfgInfo        *cfgInfo;
           }
         case UDX_SEL_LWLC:
           {
-             CMCHKPKLOG(cmPkPtr,(PTR)cfgInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)cfgInfo,mBuf,EUDXXXX,pst);
              break;
           }
 #endif /* LCUDX */
@@ -392,7 +392,7 @@ RlcCfgCfmInfo     *cfgCfmInfo;
           }
         case UDX_SEL_LWLC:
           {
-             CMCHKPKLOG(cmPkPtr,(PTR)cfgCfmInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)cfgCfmInfo,mBuf,EUDXXXX,pst);
              break;
           }
 #endif /* LCUDX */
@@ -467,8 +467,8 @@ CkwUeInfo         *newUeInfo;
        }
        case UDX_SEL_LWLC:
           {
-             CMCHKPKLOG(cmPkPtr,(PTR)newUeInfo,mBuf,EUDXXXX,pst);
-             CMCHKPKLOG(cmPkPtr,(PTR)ueInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)newUeInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)ueInfo,mBuf,EUDXXXX,pst);
              break;
           }
        default:
@@ -478,7 +478,7 @@ CkwUeInfo         *newUeInfo;
        }
 #endif
     }
-    CMCHKPKLOG(SPkU32, transId, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduUnpackUInt32, transId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UEIDCHG_REQ;
 
@@ -534,7 +534,7 @@ CmStatus          status;
     }
     
     CMCHKPK(cmPkCmStatus, &status, mBuf); 
-    CMCHKPKLOG(SPkU32, transId, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduUnpackUInt32, transId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UEIDCHG_CFM;
 
@@ -600,8 +600,8 @@ KwUdxBufLst       *pStaPdu;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) pStaPdu, mBuf);
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) pStaPdu, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
@@ -667,7 +667,7 @@ CmLteRlcId        *rlcId;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
@@ -739,8 +739,8 @@ KwUdxStaPdu       *pStaPdu;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) pStaPdu, mBuf);
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) pStaPdu, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
@@ -812,8 +812,8 @@ KwUdxDlStaPdu     *pStaPdu;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) pStaPdu, mBuf);
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) pStaPdu, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
@@ -875,7 +875,7 @@ KwL2MeasReqEvt    *measReqEvt;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) measReqEvt, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) measReqEvt, mBuf);
          break;
        }
     }
@@ -931,7 +931,7 @@ U8                measType
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKPKLOG(SPkU8, measType, mBuf, EUDXXXX, pst);
+          CMCHKPKLOG(oduUnpackUInt8, measType, mBuf, EUDXXXX, pst);
           break;
        }
     }
@@ -987,7 +987,7 @@ U8                measType
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKPKLOG(SPkU8, measType, mBuf, EUDXXXX, pst);
+          CMCHKPKLOG(oduUnpackUInt8, measType, mBuf, EUDXXXX, pst);
           break;
        }
     }
@@ -1111,7 +1111,7 @@ Buffer         *mBuf;
     TRC3(cmUnpkUdxBndCfm)
 
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
-    CMCHKUNPKLOG(SUnpkU8, &status, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
 
     RETVALUE((*func)(pst, suId, status));
@@ -1178,7 +1178,7 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &cfgInfo, mBuf);
           break;
        }
 #endif /* LCUDX */
@@ -1258,7 +1258,7 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgCfmInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &cfgCfmInfo, mBuf);
           break;
        }
 #endif /* LCUDX */
@@ -1306,7 +1306,7 @@ Buffer            *mBuf;
 
 
     CMCHKUNPK(SUnpkS16, &(spId), mBuf);
-    CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
 
     switch(pst->selector)
     {
@@ -1322,8 +1322,8 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &ueInfo, mBuf);
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &newUeInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &ueInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &newUeInfo, mBuf);
           break;
        }
        default:
@@ -1376,7 +1376,7 @@ Buffer            *mBuf;
     cmMemset((U8 *)&status, (U8)0, (PTR)sizeof(CmStatus));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
-    CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
 
     CMCHKUNPK(cmUnpkCmStatus, &status, mBuf);
 
@@ -1428,8 +1428,8 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&pBufLst,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&pBufLst,mBuf);
           break;
        }
     } 
@@ -1500,8 +1500,8 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&pStaPdu,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&pStaPdu,mBuf);
           break;
        }
     } 
@@ -1572,8 +1572,8 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&pStaPdu,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&pStaPdu,mBuf);
           break;
        }
     } 
@@ -1627,7 +1627,7 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
           break;
        }
     } 
@@ -1679,7 +1679,7 @@ Buffer           *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKUNPK(cmUnpkPtr, (PTR *)&measReqEvt,mBuf);
+         CMCHKUNPK(oduUnpackPointer, (PTR *)&measReqEvt,mBuf);
          break;
        }
     }
@@ -1722,7 +1722,7 @@ Buffer             *mBuf;
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(SUnpkU8, &measType, mBuf);
+          CMCHKUNPK(oduPackUInt8, &measType, mBuf);
          break;
        }
     }
@@ -1765,7 +1765,7 @@ Buffer               *mBuf;
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(SUnpkU8, &measType, mBuf);
+          CMCHKUNPK(oduPackUInt8, &measType, mBuf);
          break;
        }
     }

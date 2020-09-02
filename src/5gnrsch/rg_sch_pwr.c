@@ -2483,7 +2483,7 @@ RgrCellCfg           *cfg;
          || (cfg->pwrCfg.puschPwrFmt3.size + cfg->pwrCfg.puschPwrFmt3a.size
             > RG_SCH_CMN_MAX_NUM_TPC_PUSCH_RNTI))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Now initialise TPC RNTIs */
@@ -2524,7 +2524,7 @@ RgrCellCfg           *cfg;
       rgSCHPwrAddRntiToPuschRntiLst(cell, rnti, isFmt3a);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -2560,7 +2560,7 @@ RgrCellRecfg         *recfg;
 
    /* Not doing anything for power reconfig, so such structure
     * in RGR */
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -2658,7 +2658,7 @@ RgrUeSecCellCfg  *sCellInfoCfg;
    }
    uePwr->p0UePusch = sCellInfoCfg->ueSCellUlDedPwrCfg.p0UePusch;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -2838,7 +2838,7 @@ RgrUeUlPwrCfg        *pwrCfg;
          rgSCHPwrGetPucchRntiCb(cell, pwrCfg->uePucchPwr.tpcRnti);
       if (pucchRntiCb == NULLP)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       pucchIdx = pwrCfg->uePucchPwr.idx;
       ret = rgSCHPwrChkPucchTpcRntiIdx(pucchRntiCb, pucchIdx);
@@ -2855,7 +2855,7 @@ RgrUeUlPwrCfg        *pwrCfg;
          rgSCHPwrGetPuschRntiCb(cell, pwrCfg->uePuschPwr.tpcRnti);
       if (puschRntiCb == NULLP)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       puschIdx = pwrCfg->uePuschPwr.idx;
       ret = rgSCHPwrChkPuschTpcRntiIdx(puschRntiCb, puschIdx);
@@ -2941,7 +2941,7 @@ RgrUeUlPwrCfg        *pwrCfg;
    uePwr->p0UePusch = pwrCfg->p0UePusch;
    uePwr->p0UePucch = pwrCfg->p0UePucch;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3968,13 +3968,13 @@ U8                     idx;
 
    if (rgSCHPwrChkTpcRntiIdx(cb, idx) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (rgSCHPwrChkUniqPucchTpcRntiIdx(cb, idx) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -4008,13 +4008,13 @@ U8                     idx;
 
    if (rgSCHPwrChkTpcRntiIdx(cb, idx) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (rgSCHPwrChkUniqPuschTpcRntiIdx(cb, idx) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -4051,10 +4051,10 @@ U8                     idx;
       RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
       if (uePwr->pucchIdx == idx)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -4091,10 +4091,10 @@ U8                     idx;
       RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
       if (uePwr->puschIdx == idx)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -4128,17 +4128,17 @@ U8                     idx;
    {
       if (idx >= TFU_MAX_1BIT_TPC)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
    {
       if (idx >= TFU_MAX_2BIT_TPC)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 /* Warning Fix: Commenting out as not used */
 

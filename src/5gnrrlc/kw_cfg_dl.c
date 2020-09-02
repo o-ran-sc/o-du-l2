@@ -108,7 +108,7 @@ PRIVATE S16 kwHdlMeasDlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -156,7 +156,7 @@ PRIVATE S16 kwDelFrmDlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -251,7 +251,7 @@ PRIVATE S16 kwAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *kwRbCb,U8 cellId,U8 ueId)
          {
             if (gCb->genCfg.maxUe == measCb->val.ipThMeas.numUes)
             {
-               RETVALUE(RFAILED);  
+               return RFAILED;  
             }
             if (gCb->genCfg.maxUe == freeIdx)
             {               
@@ -298,7 +298,7 @@ PRIVATE S16 kwAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *kwRbCb,U8 cellId,U8 ueId)
       }
       kwRbCb->rbL2Cb.measOn |= measCb->measType;      
    }
-   RETVALUE(ROK);
+   return ROK;
 }/*kwAddToDlL2Meas*/ 
 #endif /*LTE_L2_MEAS*/
 
@@ -410,13 +410,13 @@ RlcEntCfgInfo   *entCfg;
                   "Invalid RB Mode ueId(%d),cellId(%d)",
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    rbCb->mode = entCfg->entMode;
    rbCb->discTmrInt = entCfg->discardTmr;
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -587,13 +587,13 @@ RlcEntCfgCfmInfo   *entCfm;
       RLOG_ARG1(L_ERROR,DBG_RBID,entCfg->rbId,
                "Add DLRb,CellId is 0 for UEID:%d",
                ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((entCfg->rguSapId >= gCb->genCfg.maxRguSaps) || (entCfg->rguSapId < 0))
    {
          KWDBGP_ERROR(gCb, "rlcCfgAddDlRb(ueId(%u), cellId(%u), Invalid rguSapId (%d)\n",
                ueId, cellId, entCfg->rguSapId);
-         RETVALUE(RFAILED); 
+         return RFAILED; 
    }
 
 
@@ -611,7 +611,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   KW_MAX_RB_PER_CELL,
                   cellId,
                   ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       if (((entCfg->lCh[0].type == CM_LTE_LCH_BCCH) || 
@@ -634,7 +634,7 @@ RlcEntCfgCfmInfo   *entCfm;
                         "RbId [%d] already exists UEID:%d",
                         entCfg->rbId,
                         ueId);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
          else  /* Cell CB UNKNOWN */
@@ -650,7 +650,7 @@ RlcEntCfgCfmInfo   *entCfm;
                         "cellCb Creation failed RBID:%d UEID:%d",
                         entCfg->rbId,
                         ueId);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
 
@@ -665,7 +665,7 @@ RlcEntCfgCfmInfo   *entCfm;
             /* Fill entCfm structure */                               
             KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                   CKW_CFG_CFM_NOK, CKW_CFG_REAS_INVALID_LCHID);           
-            RETVALUE(RFAILED);                                        
+            return RFAILED;                                        
          }                                                            
 
          /* Create RB CB */
@@ -679,7 +679,7 @@ RlcEntCfgCfmInfo   *entCfm;
             /* Fill entCfm structure */                           
             KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType,
                                 CKW_CFG_CFM_NOK, CKW_CFG_REAS_RB_CREAT_FAIL); 
-            RETVALUE(RFAILED); 
+            return RFAILED; 
          }
          kwRbCb->rlcId.rbId = entCfg->rbId;
          cellCb->rbCb[entCfg->rbId] = kwRbCb;
@@ -693,7 +693,7 @@ RlcEntCfgCfmInfo   *entCfm;
          /* Fill entCfm structure */
          KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                              CKW_CFG_CFM_NOK, reason);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
@@ -707,7 +707,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   "Invalid RbId for RbType[%d] UEID:%d", 
                   entCfg->rbType,
                   ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if ((((entCfg->lCh[0].type == CM_LTE_LCH_DCCH) && 
             (entCfg->entMode != CM_LTE_MODE_UM) && 
@@ -731,7 +731,7 @@ RlcEntCfgCfmInfo   *entCfm;
                         "CellId[%u]:rbId [%d] already exists",
                         cellId,
                         entCfg->rbId);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
          else  /* UE CB UNKNOWN */
@@ -746,7 +746,7 @@ RlcEntCfgCfmInfo   *entCfm;
                         "UeId [%u]:ueCb Creation Failed RBID:%d",
                         ueId,
                         entCfg->rbId);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
 
@@ -758,7 +758,7 @@ RlcEntCfgCfmInfo   *entCfm;
             /* Fill entCfm structure */                               
             KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                   CKW_CFG_CFM_NOK, CKW_CFG_REAS_INVALID_LCHID);           
-            RETVALUE(RFAILED);                                        
+            return RFAILED;                                        
          }                                                            
 
          /* Create RB CB */
@@ -772,7 +772,7 @@ RlcEntCfgCfmInfo   *entCfm;
                      "Memory allocation failed RBID:%d CELLID:%d",
                      entCfg->rbId,
                      cellId);
-            RETVALUE(RFAILED); 
+            return RFAILED; 
          }
 
          /* copy the RB Cb into UECb */
@@ -798,7 +798,7 @@ RlcEntCfgCfmInfo   *entCfm;
 
          /* Fill entCfm structure */
          KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK, reason);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -825,7 +825,7 @@ RlcEntCfgCfmInfo   *entCfm;
                "Filling of RbCb failed UEID:%d CELLID:%d",
                ueId,
                cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    kwRbCb->qci = entCfg->qci;
 #ifdef LTE_L2_MEAS
@@ -840,7 +840,7 @@ RlcEntCfgCfmInfo   *entCfm;
    /* Fill entCfm structure */
    KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_OK, CKW_CFG_REAS_NONE);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -919,7 +919,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   KW_MAX_RB_PER_CELL,
                   ueId,
                   cellId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       /* Get cellCb */
       kwDbmFetchDlCellCb(gCb,cellId, &cellCb);
@@ -933,7 +933,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   ueId,
                   entCfg->rbId,
                   cellId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* Get rbCb */
@@ -948,7 +948,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   "CELLID:%d RBID:%d not found",
                   cellId,
                   entCfg->rbId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* Take backup of rbCb before updating.
@@ -988,7 +988,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   cellId,
                   entCfg->rbId,
                   entCfg->rbType);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       /* Get ueCb */
       ret = kwDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb);
@@ -1044,7 +1044,7 @@ RlcEntCfgCfmInfo   *entCfm;
    /* Fill entCfm structure */
    KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_OK, CKW_CFG_REAS_NONE);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -1124,7 +1124,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   KW_MAX_RB_PER_CELL,
                   ueId,
                   cellId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       /* Get cellCb */
       kwDbmFetchDlCellCb(gCb,cellId, &cellCb);
@@ -1176,7 +1176,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   entCfg->rbType,
                   ueId,
                   cellId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* Get ueCb */
@@ -1321,7 +1321,7 @@ RlcEntCfgCfmInfo   *entCfm;
                "CellId[%u]:RbId[%d] not found",
                cellId,
                entCfg->rbId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    rbCb->rlcId.ueId = ueId;
@@ -1351,7 +1351,7 @@ RlcEntCfgCfmInfo   *entCfm;
    KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType,
       CKW_CFG_CFM_OK, CKW_CFG_REAS_NONE);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -1418,7 +1418,7 @@ RlcEntCfgCfmInfo   *entCfm;
                "ueId(%d), cellId(%d)",
                ueId, 
                cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Fetch Ue Cb */
@@ -1432,7 +1432,7 @@ RlcEntCfgCfmInfo   *entCfm;
                "UEID:%d UeCb not found RBID:%d",
                ueId,
                entCfg->rbId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef LTE_L2_MEAS
@@ -1446,7 +1446,7 @@ RlcEntCfgCfmInfo   *entCfm;
    KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType,
       CKW_CFG_CFM_OK, CKW_CFG_REAS_NONE);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -1508,7 +1508,7 @@ RlcEntCfgCfmInfo   *entCfm;
       RLOG_ARG1(L_DEBUG,DBG_RBID,entCfg->rbId,
                "cellId is 0 (%d) ",
                cellId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Fetch Ue Cb */
@@ -1521,7 +1521,7 @@ RlcEntCfgCfmInfo   *entCfm;
       RLOG_ARG1(L_ERROR, DBG_CELLID,cellId,
                "CellCb not found for RBID:%d",
                entCfg->rbId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Delete Ue Cb */
@@ -1532,7 +1532,7 @@ RlcEntCfgCfmInfo   *entCfm;
    KW_CFG_FILL_CFG_CFM(entCfm, rbId, entCfg->rbType, CKW_CFG_CFM_OK,
                        CKW_CFG_REAS_NONE);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -1585,7 +1585,7 @@ CmStatus    *status;
             "Old UeId[%d] same as new UeId[%d]",
             ueInfo->ueId,
             newUeInfo->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    } 
    
    if(ROK == kwDbmFetchDlUeCb(gCb,newUeInfo->ueId, newUeInfo->cellId, &ueCb))
@@ -1595,7 +1595,7 @@ CmStatus    *status;
             newUeInfo->ueId);
       status->reason = CKW_CFG_REAS_UE_EXISTS;
       status->status = CKW_CFG_CFM_NOK;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
   
    if(ROK != kwDbmFetchDlUeCb(gCb,ueInfo->ueId, ueInfo->cellId, &ueCb))
@@ -1606,7 +1606,7 @@ CmStatus    *status;
             ueInfo->ueId);
       status->reason = CKW_CFG_REAS_UE_UNKWN;
       status->status = CKW_CFG_CFM_NOK;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
   
 #ifdef LTE_L2_MEAS
@@ -1619,7 +1619,7 @@ CmStatus    *status;
             ueInfo->ueId);
       status->reason = CKW_CFG_REAS_UE_CREAT_FAIL;
       status->status = CKW_CFG_CFM_NOK;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    /* update the hash key with new values */ 
@@ -1636,10 +1636,10 @@ CmStatus    *status;
             newUeInfo->ueId);
       status->reason = CKW_CFG_REAS_UE_CREAT_FAIL;
       status->status = CKW_CFG_CFM_NOK;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }  
   
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /********************************************************************30**

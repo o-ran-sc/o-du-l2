@@ -59,7 +59,7 @@ S16 buildPlmnId(Plmn plmn, OCTET_STRING_t *octe)
       octe->buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
       octe->buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -87,7 +87,7 @@ S16 fillBitString(BIT_STRING_t *id, U8 unusedBits, U8 byteSize, U8 val)
    U8 tmp;
    if(id->buf == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for (tmp = 0 ; tmp < (byteSize-1); tmp++)
@@ -96,7 +96,7 @@ S16 fillBitString(BIT_STRING_t *id, U8 unusedBits, U8 byteSize, U8 val)
    }
    id->buf[byteSize-1]   = val;
    id->bits_unused = unusedBits;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************

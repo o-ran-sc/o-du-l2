@@ -20,13 +20,13 @@
 #define __DU_MGR_MAIN_H__
 
 /* Function declarations */
-S16 duAppInit(SSTskId sysTskId);
-S16 sctpInit(SSTskId sysTskId);
-S16 rlcDlInit(SSTskId sysTskId);
-S16 rlcUlInit(SSTskId sysTskId);
-S16 commonInit();
-S16 duInit();
-S16 tst(void);
+uint8_t duAppInit(SSTskId sysTskId);
+uint8_t sctpInit(SSTskId sysTskId);
+uint8_t rlcDlInit(SSTskId sysTskId);
+uint8_t rlcUlInit(SSTskId sysTskId);
+uint8_t commonInit();
+uint8_t duInit();
+uint8_t tst(void);
 
 #endif
 

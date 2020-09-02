@@ -213,7 +213,7 @@ U8      status;
    {
       RLOG2(L_ERROR,"Incorrect SuId. Configured (%d) Recieved (%d)",
             tfuSap->sapCfg.suId, suId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ret = rgLMMBndCfm (pst, suId, status);
    RETVALUE(ret);
@@ -253,15 +253,15 @@ PRIVATE S16 rgLIMValidateSap(inst,suId)
    {
       RLOG2(L_ERROR,"Incorrect SuId. Configured (%d) Recieved (%d)",
             tfuSap->sapCfg.suId, suId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (tfuSap->sapSta.sapState != LRG_BND)
    {
       RLOG1(L_ERROR,"Lower SAP not enabled SuId (%d)",
             tfuSap->sapCfg.suId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgLIMValidateSap */
 #endif
 /** @brief This function frees up the TfuDatIndInfo structure
@@ -495,7 +495,7 @@ TfuDatReqInfo *datReq;
       /* This case will never be hit if sap is not bound then we dont get TTI */
       rgLIMUtlFreeDatReqEvnt(datReq, TRUE);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -553,7 +553,7 @@ TfuDelDatReqInfo *delDatReq;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,delDatReq->cellId,"Lower SAP not bound (%d)",
             tfuSap->sapSta.sapState);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -600,11 +600,11 @@ SuId                suId;
    if (rgLIMValidateSap (pst->dstInst - RG_INST_START, suId) != ROK)
    {
       RGDBGERRNEW(pst->dstInst - RG_INST_START, (rgPBuf(pst->dstInst - RG_INST_START),"RgLiTfuNonRtInd() SAP Validation failed.\n"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    rgDHMFreeTbBufs(pst->dstInst - RG_INST_START);
-   RETVALUE(ROK);
+   return ROK;
 }  /* RgLiTfuNonRtInd */
 
 #endif

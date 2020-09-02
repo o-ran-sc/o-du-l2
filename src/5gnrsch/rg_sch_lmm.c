@@ -849,7 +849,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
    arg.wait = tmrVal;      
    cmPlcCbTq(&arg);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1042,9 +1042,9 @@ U8 status;              /* Status */
          break;
       case LRG_BND:
          /* SAP is already bound */
-         RETVALUE(ROK);
+         return ROK;
       default:
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    cfmPst = rgSchCb[inst].rgSchInit.lmPst;
@@ -1136,7 +1136,7 @@ RgUstaDgn *dgn;
 
    if(rgSchCb[inst].rgSchInit.usta == FALSE)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    cmMemset((U8 *)&usta, 0, sizeof(RgMngmt));
@@ -1201,7 +1201,7 @@ Inst inst;
    cmPrcTmr(&rgSchCb[schInst].tmrTqCp,
             rgSchCb[schInst].tmrTq, (PFV) rgSCHLmmTmrExpiry);
  
-   RETVALUE(ROK);
+   return ROK;
  
 } /* end of schActvTmr */
 

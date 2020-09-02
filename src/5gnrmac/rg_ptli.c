@@ -794,7 +794,7 @@ SpId spId;
    UNUSED(suId);
    UNUSED(spId);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -840,7 +840,7 @@ SpId spId;
    UNUSED(suId);
    UNUSED(spId);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -886,7 +886,7 @@ Reason reason;
    UNUSED(spId);
    UNUSED(reason);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -932,7 +932,7 @@ Reason reason;
    UNUSED(spId);
    UNUSED(reason);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -992,7 +992,7 @@ TfuRecpReqInfo * recpReq;
    UNUSED(spId);
    UNUSED(recpReq);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1045,7 +1045,7 @@ TfuCntrlReqInfo * cntrlReq;
    UNUSED(spId);
    UNUSED(cntrlReq);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1097,7 +1097,7 @@ TfuDatReqInfo * datReq;
    UNUSED(spId);
    UNUSED(datReq);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1148,7 +1148,7 @@ TfuDelDatReqInfo * DelDatReq;
    UNUSED(spId);
    UNUSED(delDatReq);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*L2_OPTMZ*/

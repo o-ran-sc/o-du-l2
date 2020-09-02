@@ -101,7 +101,7 @@ PUBLIC S16 rlcDlInitExt()
 {
    TRC2(rlcDlInitExt);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwInitExt */
 
 
@@ -155,7 +155,7 @@ Reason reason;              /* reason */
    if (inst >= MAX_RLC_INSTANCES)
    {
        /* intance greater than MAX instances */ 
-       RETVALUE(RFAILED); 
+       return RFAILED; 
    }
 
    if (rlcCb[inst] != NULLP)
@@ -166,7 +166,7 @@ Reason reason;              /* reason */
    if (SGetSBuf(region, 0, (Data **)&tRlcCb,
                 (Size)sizeof (RlcCb)) != ROK)    
    {                     
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Initialize rlcCb */
    RLC_MEM_SET(tRlcCb, 0, sizeof(RlcCb));
@@ -204,7 +204,7 @@ Reason reason;              /* reason */
 
    
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwActvInit */
 
 

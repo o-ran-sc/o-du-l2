@@ -155,7 +155,7 @@ RgRguDedDatReq *datReq;
          /* Update stats */
          rgUpdtRguDedSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP, datReq);
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 /* Add loop here to scan for all UEs in the consolidated DDatReq*/
@@ -190,7 +190,7 @@ RgRguDedDatReq *datReq;
          RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
 #endif
          continue;
-        // RETVALUE(RFAILED);
+        // return RFAILED;
       }
 
       if ((ue = rgDBMGetUeCb(cell, datReq->datReq[idx].rnti)) == NULLP)
@@ -309,7 +309,7 @@ RgRguDedDatReq *datReq;
 
 #endif
    /* Data send successfully to PHY. lets retuns ROK*/
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgROMDedDatReq */
 
 
@@ -369,7 +369,7 @@ RgRguCmnDatReq *datReq;
       {
          rgUpdtRguCmnSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP);
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (datReq->lcId == cell->dlCcchId)
@@ -475,7 +475,7 @@ RgErrInfo      *err;
                               "rgROMHndlCcchDatReq(): Invalid ue Id");
    #endif
          err->errCause = RGERR_ROM_INV_UE_ID;
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -494,7 +494,7 @@ RgErrInfo      *err;
                               LRG_CAUSE_DELAYED_DATREQ, &dgn);
 #endif
       err->errCause = RGERR_ROM_DELAYED_DATREQ;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    hqPId = (U8)(datReq->transId);
@@ -513,10 +513,10 @@ RgErrInfo      *err;
       /* Release First TB */
       rgDHMRlsHqProcTB(cell, hqProc, 1);
       /* err shall be filled in appropriately by DHM */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
-   RETVALUE(ROK); 
+   return ROK; 
 } /* rgROMHndlCcchDatReq */
 
 
@@ -582,7 +582,7 @@ RgErrInfo      *err;
                               LRG_CAUSE_DELAYED_DATREQ, &dgn);
 #endif
       err->errCause = RGERR_ROM_DELAYED_DATREQ;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifndef RGR_SI_SCH
@@ -595,7 +595,7 @@ RgErrInfo      *err;
       SCpyMsgMsg(datReq->pdu, RG_GET_MEM_REGION(rgCb[inst]),
                RG_GET_MEM_POOL(rgCb[inst]), &bcch->tb);
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    bch = rgDBMGetBcchOnBch(cell);
@@ -603,7 +603,7 @@ RgErrInfo      *err;
    {
       /* Store BCH data received in Scheduled slot */
       sf->bch.tb = datReq->pdu;
-      RETVALUE(ROK);
+      return ROK;
    }
 #endif/*RGR_SI_SCH*/
 
@@ -612,7 +612,7 @@ RgErrInfo      *err;
    {
       /* Store PCCH-DLSCH data received in Scheduled slot */
       sf->pcch.tb = datReq->pdu;
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* Handle lcCb fetch failure */
@@ -620,7 +620,7 @@ RgErrInfo      *err;
                   "rgROMHndlBcchPcchDatReq(): Invalid Lc Id");
    err->errCause = RGERR_ROM_INV_LC_ID;
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* rgROMHndlBcchPcchDatReq */
 
 /**
@@ -680,12 +680,12 @@ RgRguDedStaRsp *staRsp;
 				rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
             schPst.event = 0;
             //TODO: commented for compilation without SCH RgMacSchDedBoUpdt(&schPst, &boRpt);
-            RETVALUE(ROK);
+            return ROK;
    }
    RLOG_ARG2(L_ERROR,DBG_CELLID,staRsp->cellId,"Invalid cell for CRNTI:%d LCID:%d ",
              staRsp->rnti,staRsp->lcId);
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 }  /* rgROMDedStaRsp */
 
 S16 RgMacSchBrdcmDedBoUpdtReq(
@@ -715,7 +715,7 @@ S32 bo
      schPst.event = 0;
      //TODO: commented for compilation without SCH RgMacSchDedBoUpdtReq (&schPst,&boRpt);
   }
-  RETVALUE(ROK);
+  return ROK;
 }
 /**
  * @brief Handler for StaRsp received on RGU for a common logical channel.
@@ -761,7 +761,7 @@ RgRguCmnStaRsp *staRsp;
                 "Invalid cell for CRNTI:%d LCID:%d",staRsp->u.rnti,staRsp->lcId);
       err.errType = RGERR_ROM_CMNSTARSP;
       err.errCause = RGERR_ROM_INV_CELL_ID;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* handle status response on CCCH */
@@ -774,7 +774,7 @@ RgRguCmnStaRsp *staRsp;
       rgROMHndlBcchPcchStaRsp(cell, staRsp, &err); 
    }
    
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgROMCmnStaRsp */
 
 #ifdef LTE_L2_MEAS
@@ -835,12 +835,12 @@ RgRguL2MUlThrpMeasReq *measReq;
                }
             }
          }
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    RLOG_ARG1(L_ERROR,DBG_CELLID,measReq->cellId,"Invalid cell CRNTI:%d",
              measReq->rnti);
-   RETVALUE(RFAILED);
+   return RFAILED;
 }  /* rgROML2MUlThrpMeasReq */
 
 #endif
@@ -894,7 +894,7 @@ RgErrInfo      *err;
    rgGetPstToInst(&schPst,macInst, cell->schInstMap.schInst);
    //TODO: commented for compilation without SCH RgMacSchCmnBoUpdt(&schPst, &boRpt);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgROMHndlCcchStaRsp */
 
 
@@ -941,7 +941,7 @@ RgErrInfo      *err;
       /* Handle lcCb fetch failure */
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid LCID:%d",staRsp->lcId);
       err->errCause = RGERR_ROM_INV_LC_ID;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* MS_WORKAROUND : This is to ensure that the queue for BCH is not filled with old BO requests :
          This assumes that BO is not received more than 4 frames in advance from the enodeb application */
@@ -953,7 +953,7 @@ RgErrInfo      *err;
       if ((staRsp->u.timeToTx.sfn != nextBchSfn) ||
          ((staRsp->u.timeToTx.sfn == cell->crntTime.sfn) && (cell->crntTime.slot >= 7)))
       {
-        RETVALUE(ROK);
+        return ROK;
       }
    }
 /*
@@ -976,7 +976,7 @@ RgErrInfo      *err;
    rgGetPstToInst(&schPst,macInst, cell->schInstMap.schInst);
    //TODO: commented for compilation without SCH RgMacSchCmnBoUpdt(&schPst, &boRpt);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgROMHndlBcchPcchStaRsp */
 
 /* ADD Changes for Downlink UE Timing Optimization */
@@ -1020,7 +1020,7 @@ RgDlSf         *dlSf;
         * request than the allocation. Do nothing for this. */
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
             "RX new data while remDatReqCnt is 0 for cell");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /*Decrement the remaining data request to be received countter
@@ -1046,7 +1046,7 @@ RgDlSf         *dlSf;
       dlSf->txDone = TRUE;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgROMUpdDlSfRemDataCnt*/
 #endif
 
