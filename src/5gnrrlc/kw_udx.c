@@ -72,7 +72,7 @@ MsgLen    size;
     MsgLen tmpLen;
 
     TRC3(cmUnpkUdxStruct)
-    RETVALUE(SCpyMsgFix(srcMBuf,offset,size,dstBuf,&tmpLen));
+    return (SCpyMsgFix(srcMBuf,offset,size,dstBuf,&tmpLen));
 
 } /*end of function cmPkUdxBndReq*/
 
@@ -105,7 +105,7 @@ Buffer *dstMBuf;
 {
 
     TRC3(cmPkUdxStruct)
-    RETVALUE(SAddPstMsgMult(srcBuf,size,dstMBuf));
+    return (SAddPstMsgMult(srcBuf,size,dstMBuf));
 
 } /*end of function cmPkUdxBndReq*/
 /*
@@ -150,13 +150,13 @@ SpId spId;
                (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_BND_REQ;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /*end of function cmPkUdxBndReq*/
 
 /*
@@ -201,13 +201,13 @@ Reason reason;
                (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
     CMCHKPKLOG(SPkS16, reason, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UBND_REQ;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /*end of function cmPkUdxUbndReq*/
 
 /*
@@ -253,13 +253,13 @@ U8 status;
        }
 
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
-    CMCHKPKLOG(SPkU8, status, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduUnpackUInt8, status, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_BND_CFM;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /*end of function cmPkUdxBndCfm*/
 
 
@@ -305,7 +305,7 @@ RlcCfgInfo        *cfgInfo;
                (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
 
     switch(pst->selector)
@@ -320,7 +320,7 @@ RlcCfgInfo        *cfgInfo;
           }
         case UDX_SEL_LWLC:
           {
-             CMCHKPKLOG(cmPkPtr,(PTR)cfgInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)cfgInfo,mBuf,EUDXXXX,pst);
              break;
           }
 #endif /* LCUDX */
@@ -329,7 +329,7 @@ RlcCfgInfo        *cfgInfo;
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_CFG_REQ;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /* cmPkUdxCfgReq */
 
 
@@ -375,7 +375,7 @@ RlcCfgCfmInfo     *cfgCfmInfo;
                (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
 
     switch(pst->selector)
@@ -392,7 +392,7 @@ RlcCfgCfmInfo     *cfgCfmInfo;
           }
         case UDX_SEL_LWLC:
           {
-             CMCHKPKLOG(cmPkPtr,(PTR)cfgCfmInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)cfgCfmInfo,mBuf,EUDXXXX,pst);
              break;
           }
 #endif /* LCUDX */
@@ -401,7 +401,7 @@ RlcCfgCfmInfo     *cfgCfmInfo;
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_CFG_CFM;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /* cmPkUdxCfgCfm */
 
 
@@ -452,7 +452,7 @@ CkwUeInfo         *newUeInfo;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
 
     switch(pst->selector)
@@ -467,8 +467,8 @@ CkwUeInfo         *newUeInfo;
        }
        case UDX_SEL_LWLC:
           {
-             CMCHKPKLOG(cmPkPtr,(PTR)newUeInfo,mBuf,EUDXXXX,pst);
-             CMCHKPKLOG(cmPkPtr,(PTR)ueInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)newUeInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)ueInfo,mBuf,EUDXXXX,pst);
              break;
           }
        default:
@@ -478,11 +478,11 @@ CkwUeInfo         *newUeInfo;
        }
 #endif
     }
-    CMCHKPKLOG(SPkU32, transId, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduUnpackUInt32, transId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UEIDCHG_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxUeIdChgReq */
 
@@ -530,15 +530,15 @@ CmStatus          status;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     CMCHKPK(cmPkCmStatus, &status, mBuf); 
-    CMCHKPKLOG(SPkU32, transId, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduUnpackUInt32, transId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UEIDCHG_CFM;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxUeIdChgCfm */
 
@@ -587,7 +587,7 @@ KwUdxBufLst       *pStaPdu;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
@@ -600,15 +600,15 @@ KwUdxBufLst       *pStaPdu;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) pStaPdu, mBuf);
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) pStaPdu, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_STA_UPD_CFM;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaUpdCfm */
 
@@ -655,7 +655,7 @@ CmLteRlcId        *rlcId;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
@@ -667,14 +667,14 @@ CmLteRlcId        *rlcId;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_STA_PHBT_TMR_START;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaProhTmrStart */
 
@@ -723,7 +723,7 @@ KwUdxStaPdu       *pStaPdu;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
@@ -739,15 +739,15 @@ KwUdxStaPdu       *pStaPdu;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) pStaPdu, mBuf);
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) pStaPdu, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_STA_UPD_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaUpdReq */
 
@@ -796,7 +796,7 @@ KwUdxDlStaPdu     *pStaPdu;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
@@ -812,15 +812,15 @@ KwUdxDlStaPdu     *pStaPdu;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) pStaPdu, mBuf);
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) pStaPdu, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_STA_PDU_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaUpdReq */
 
@@ -863,7 +863,7 @@ KwL2MeasReqEvt    *measReqEvt;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
@@ -875,13 +875,13 @@ KwL2MeasReqEvt    *measReqEvt;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) measReqEvt, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) measReqEvt, mBuf);
          break;
        }
     }
     pst->event = (Event) UDX_EVT_L2MEAS_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaUpdReq */
 
@@ -923,7 +923,7 @@ U8                measType
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
@@ -931,13 +931,13 @@ U8                measType
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKPKLOG(SPkU8, measType, mBuf, EUDXXXX, pst);
+          CMCHKPKLOG(oduUnpackUInt8, measType, mBuf, EUDXXXX, pst);
           break;
        }
     }
     pst->event = (Event) UDX_EVT_L2MEAS_SEND_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } 
 
@@ -979,7 +979,7 @@ U8                measType
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
@@ -987,13 +987,13 @@ U8                measType
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKPKLOG(SPkU8, measType, mBuf, EUDXXXX, pst);
+          CMCHKPKLOG(oduUnpackUInt8, measType, mBuf, EUDXXXX, pst);
           break;
        }
     }
     pst->event = (Event) UDX_EVT_L2MEAS_STOP_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } 
 #endif
@@ -1037,7 +1037,7 @@ Buffer         *mBuf;
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, spId));
+    return ((*func)(pst, suId, spId));
 } /*end of function cmUnpkUdxBndReq*/
 
 /*
@@ -1075,7 +1075,7 @@ Buffer         *mBuf;
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(SUnpkS16, &reason, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
-    RETVALUE((*func)(pst, spId, reason));
+    return ((*func)(pst, spId, reason));
 } /*end of function cmUnpkUdxUbndReq*/
 
 /*
@@ -1111,10 +1111,10 @@ Buffer         *mBuf;
     TRC3(cmUnpkUdxBndCfm)
 
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
-    CMCHKUNPKLOG(SUnpkU8, &status, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, status));
+    return ((*func)(pst, suId, status));
 } /*end of function cmUnpkUdxBndCfm*/
 
 
@@ -1168,7 +1168,7 @@ Buffer            *mBuf;
              SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                   (ErrVal)EUDXXXX, (ErrVal)ret1, "Unpacking failure");
-             RETVALUE( ret1 );
+             return ( ret1 );
           }
 #else
          cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpCfgInfo,sizeof(RlcCfgInfo));
@@ -1178,14 +1178,14 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &cfgInfo, mBuf);
           break;
        }
 #endif /* LCUDX */
     }
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, cfgInfo));
+    return ((*func)(pst, spId, cfgInfo));
 } /* cmUnpkUdxCfgReq */
 
 
@@ -1240,7 +1240,7 @@ Buffer            *mBuf;
                       (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              RETVALUE(ret1);
+              return (ret1);
            }
 
           ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)cfgCfmInfo, sizeof(RlcCfgCfmInfo));
@@ -1251,21 +1251,21 @@ Buffer            *mBuf;
              SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                   (ErrVal)EUDXXXX, (ErrVal)ret1, "Unpacking failure");
-             RETVALUE( ret1 );
+             return ( ret1 );
           }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
           break;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgCfmInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &cfgCfmInfo, mBuf);
           break;
        }
 #endif /* LCUDX */
     }
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, cfgCfmInfo));
+    return ((*func)(pst, suId, cfgCfmInfo));
 } /* cmUnpkUdxCfgCfm */
 
 /*
@@ -1306,7 +1306,7 @@ Buffer            *mBuf;
 
 
     CMCHKUNPK(SUnpkS16, &(spId), mBuf);
-    CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
 
     switch(pst->selector)
     {
@@ -1322,8 +1322,8 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &ueInfo, mBuf);
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &newUeInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &ueInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &newUeInfo, mBuf);
           break;
        }
        default:
@@ -1336,7 +1336,7 @@ Buffer            *mBuf;
     }
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, transId, ueInfo, newUeInfo));
+    return ((*func)(pst, spId, transId, ueInfo, newUeInfo));
 
 } /* cmUnpkUdxUeIdChgReq */
 
@@ -1376,13 +1376,13 @@ Buffer            *mBuf;
     cmMemset((U8 *)&status, (U8)0, (PTR)sizeof(CmStatus));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
-    CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
 
     CMCHKUNPK(cmUnpkCmStatus, &status, mBuf);
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, transId, status));
+    return ((*func)(pst, suId, transId, status));
 
 } /* cmUnpkUdxUeIdChgCfm */
 
@@ -1428,15 +1428,15 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&pBufLst,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&pBufLst,mBuf);
           break;
        }
     } 
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, rlcId, pBufLst));
+    return ((*func)(pst, suId, rlcId, pBufLst));
 
 } /* cmUnpkUdxUeIdChgCfm */
 
@@ -1491,7 +1491,7 @@ Buffer            *mBuf;
                       (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              RETVALUE(ret1);
+              return (ret1);
            }
           ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)pStaPdu, sizeof(KwUdxStaPdu));
           ret1 = cmUnpkUdxStruct(mBuf,sizeof(KwUdxStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
@@ -1500,15 +1500,15 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&pStaPdu,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&pStaPdu,mBuf);
           break;
        }
     } 
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, rlcId, pStaPdu));
+    return ((*func)(pst, spId, rlcId, pStaPdu));
 
 } /* cmUnpkUdxUeIdChgCfm */
 
@@ -1563,7 +1563,7 @@ Buffer            *mBuf;
                       (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              RETVALUE(ret1);
+              return (ret1);
            }
           ret1 = cmUnpkUdxStruct(mBuf,0, (U8 *)pStaPdu, sizeof(KwUdxDlStaPdu));
           ret1 = cmUnpkUdxStruct(mBuf,sizeof(KwUdxDlStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
@@ -1572,14 +1572,14 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&pStaPdu,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&pStaPdu,mBuf);
           break;
        }
     } 
 
     SPutMsg(mBuf);
-    RETVALUE((*func)(pst, spId, rlcId, pStaPdu));
+    return ((*func)(pst, spId, rlcId, pStaPdu));
 
 } /* cmUnpkUdxUeIdChgCfm */
 
@@ -1627,14 +1627,14 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
           break;
        }
     } 
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, rlcId));
+    return ((*func)(pst, spId, rlcId));
 
 } /* cmUnpkUdxStaProhTmrStart */
 
@@ -1679,14 +1679,14 @@ Buffer           *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKUNPK(cmUnpkPtr, (PTR *)&measReqEvt,mBuf);
+         CMCHKUNPK(oduUnpackPointer, (PTR *)&measReqEvt,mBuf);
          break;
        }
     }
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, measReqEvt));
+    return ((*func)(pst, measReqEvt));
 } /* cmUnpkUdxL2MeasReq */
 
 /*
@@ -1722,14 +1722,14 @@ Buffer             *mBuf;
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(SUnpkU8, &measType, mBuf);
+          CMCHKUNPK(oduPackUInt8, &measType, mBuf);
          break;
        }
     }
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, measType));
+    return ((*func)(pst, measType));
 } /* cmUnpkUdxL2MeasReq */
 
 /*
@@ -1765,14 +1765,14 @@ Buffer               *mBuf;
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(SUnpkU8, &measType, mBuf);
+          CMCHKUNPK(oduPackUInt8, &measType, mBuf);
          break;
        }
     }
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, measType));
+    return ((*func)(pst, measType));
 } /* cmUnpkUdxL2MeasStopReq */
 #endif
 #endif /* LCUDX */

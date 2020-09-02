@@ -433,11 +433,11 @@ typedef struct failureCause
 typedef struct carrierCfg
 {
    Bool  pres;
-   U16   bw;             /* DL/UL bandwidth */
+   uint16_t   bw;             /* DL/UL bandwidth */
    U32   freq;           /* Absolute frequency of DL/UL point A in KHz */
-   U16   k0[NUM_NUMEROLOGY];          /* K0 for DL/UL */
-   U16   gridSize[NUM_NUMEROLOGY];    /* DL/UL Grid size for each numerologies */
-   U16   numAnt;         /* Number of Tx/Rx antennas */
+   uint16_t   k0[NUM_NUMEROLOGY];          /* K0 for DL/UL */
+   uint16_t   gridSize[NUM_NUMEROLOGY];    /* DL/UL Grid size for each numerologies */
+   uint16_t   numAnt;         /* Number of Tx/Rx antennas */
 }CarrierCfg;
 
 typedef struct ssbCfg
@@ -458,12 +458,12 @@ typedef struct ssbCfg
 
 typedef struct fdmInfo
 {
-   U16   rootSeqIdx;        /* Root sequence index */
-   U8    numRootSeq;        /* Number of root sequences required for FD */
-   U16   k1;                /* Frequency Offset for each FD */
-   U8    zeroCorrZoneCfg;   /* Zero correlation zone cofig */
-   U8    numUnusedRootSeq;  /* Number of unused root sequence */
-   U8    *unsuedRootSeq;     /* Unused root sequence per FD */
+   uint16_t   rootSeqIdx;        /* Root sequence index */
+   uint8_t    numRootSeq;        /* Number of root sequences required for FD */
+   uint16_t   k1;                /* Frequency Offset for each FD */
+   uint8_t    zeroCorrZoneCfg;   /* Zero correlation zone cofig */
+   uint8_t    numUnusedRootSeq;  /* Number of unused root sequence */
+   uint8_t    *unsuedRootSeq;     /* Unused root sequence per FD */
 }PrachFdmInfo;
 
 typedef struct prachCfg
@@ -577,10 +577,10 @@ typedef struct bwpUlConfig
 
 typedef struct macCellCfg
 {
-   U16            cellId;           /* Cell Id */
-   U8             numTlv;           /* Number of configuration TLVs */
-   U8             carrierId;        /* Carrired Index */
-   U16            phyCellId;        /* Physical cell id */
+   uint16_t            cellId;           /* Cell Id */
+   uint8_t             numTlv;           /* Number of configuration TLVs */
+   uint8_t             carrierId;        /* Carrired Index */
+   uint16_t            phyCellId;        /* Physical cell id */
    DuplexMode     dupType;          /* Duplex type: TDD/FDD */
    CarrierCfg     dlCarrCfg;        /* DL Carrier configuration */
    CarrierCfg     ulCarrCfg;        /* UL Carrier configuration */
@@ -597,7 +597,7 @@ typedef struct macCellCfg
 
 typedef struct macCellCfgCfm
 {
-   U16            cellId;
+   uint16_t            cellId;
    uint8_t        rsp; 
 }MacCellCfgCfm;
 

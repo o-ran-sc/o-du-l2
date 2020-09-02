@@ -20,8 +20,8 @@
 #ifndef __DU_CELL_MGR_H__
 #define __DU_CELL_MGR_H__
 
-S16 duSendSchGnbCfg();
-S16 duSendSchGnbCfgToMac(RgrCfgReqInfo *cfgReq, U32 trans_id);
+uint8_t duSendSchGnbCfg();
+uint8_t duSendSchGnbCfgToMac(RgrCfgReqInfo *cfgReq, U32 trans_id);
 #endif
 /**********************************************************************
   End of file

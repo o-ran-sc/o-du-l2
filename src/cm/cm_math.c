@@ -72,7 +72,7 @@ F64          val;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
-   RETVALUE((U32) abs((int) val));/* G++ */
+   return ((U32) abs((int) val));/* G++ */
 #endif
 } /* end of cmAbs */
 #endif /* SS_FLOAT */
@@ -105,7 +105,7 @@ F64           y;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
-   RETVALUE((F64) pow((F64)x, (F64)y));
+   return ((F64) pow((F64)x, (F64)y));
 #endif
 } /* end of cmPow */
 #endif /* SS_FLOAT */
@@ -136,7 +136,7 @@ F64           x;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
-   RETVALUE((F64) floor((F64)x));
+   return ((F64) floor((F64)x));
 #endif
 
 } /* end of cmFloor */
@@ -167,7 +167,7 @@ F64           x;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
-   RETVALUE((F64) log((F64)x));
+   return ((F64) log((F64)x));
 #endif
 
 } /* end of cmLog */
@@ -198,7 +198,7 @@ F64           x;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
-   RETVALUE((F64) log10((F64)x));
+   return ((F64) log10((F64)x));
 #endif
 } /* end of cmLog10 */
 #endif /* SS_FLOAT */

@@ -104,7 +104,7 @@ SpId   spId;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
@@ -166,7 +166,7 @@ SpId   spId;
       }
    }
    rlcDlUdxBndCfm(&(udxSap->pst), udxSap->suId, CM_BND_OK);
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 
@@ -203,7 +203,7 @@ Reason   reason;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -219,7 +219,7 @@ Reason   reason;
    KW_GET_AND_VALIDATE_UDXSAP(tRlcCb,udxSap, EKW208, "KwUiDlUdxndReq");
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
    udxSap->state = KW_SAP_CFG;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -268,7 +268,7 @@ RlcCfgInfo   *cfg;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -288,7 +288,7 @@ RlcCfgInfo   *cfg;
       RLOG0(L_FATAL,"Memory Allocation Failed.");
       /* kw002.201 Freeing from proper region */
       /* RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo)); */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
@@ -414,7 +414,7 @@ RlcCfgInfo   *cfg;
                  tRlcCb->u.dlCb->udxDlSap[spId].suId, 
                  cfgCfm);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -459,7 +459,7 @@ CkwUeInfo   *newUeInfo;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -485,7 +485,7 @@ CkwUeInfo   *newUeInfo;
                      transId, 
                      status);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -531,7 +531,7 @@ KwUdxDlStaPdu   *pStaPdu;
 			 pst->pool, 
 			 pStaPdu, 
 			 sizeof(KwUdxDlStaPdu));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    AMDL.cntrlBo = pStaPdu->controlBo;
@@ -548,7 +548,7 @@ KwUdxDlStaPdu   *pStaPdu;
    AMDL.pStaPdu = pStaPdu;
    kwAmmSendDStaRsp(tRlcCb, rbCb, &AMDL);             
 
-   RETVALUE (ROK);
+   return  (ROK);
 }
 
 /**
@@ -590,7 +590,7 @@ KwUdxStaPdu   *pStaPdu;
    {
       RLOG_ARG2(L_ERROR, DBG_UEID,rlcId->ueId, "CellId [%u]:RbId[%d] not found",
             rlcId->cellId,rlcId->rbId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    kwAmmDlHndlStatusPdu(tRlcCb, rbCb, pStaPdu);
@@ -600,7 +600,7 @@ KwUdxStaPdu   *pStaPdu;
 		      pStaPdu, 
 		      sizeof(KwUdxStaPdu));
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef LTE_L2_MEAS
@@ -667,7 +667,7 @@ KwL2MeasReqEvt *measReqEvt;
 
    /*stopping Task*/
    SStopTask(startTime, PID_RLC_MEAS_START);
-   RETVALUE(ROK);
+   return ROK;
 } /* rlcDlUdxMeasReq */
 
 /**
@@ -730,7 +730,7 @@ U8             measType;
    /*stopping Task*/
    SStopTask(startTime, PID_RLC_MEAS_STOP);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
 @brief 
@@ -778,7 +778,7 @@ U8             measType;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* LTE_L2_MEAS */
 

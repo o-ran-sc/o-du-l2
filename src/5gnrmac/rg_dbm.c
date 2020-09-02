@@ -101,12 +101,12 @@ RgCellCb       *cellCb;
 
    /* Initialize ue list */
    if ((ret = rgDBMInitUeCbLst(cellCb, RG_MAX_UE_BIN_PER_CELL)) != ROK)
-      RETVALUE(ret);
+      return (ret);
 
 #ifdef LTEMAC_SPS
    /* Initialize SPS Ue list */
    if ((ret = rgDBMInitSpsUeCbLst(cellCb, RG_MAX_UE_BIN_PER_CELL)) != ROK)
-      RETVALUE(ret);
+      return (ret);
 #endif /* LTEMAC_SPS */
 
    /* Initialize BCCH/PCCH logical channels */
@@ -116,7 +116,7 @@ RgCellCb       *cellCb;
    /* Initialize rach ue list */
    rgDBMInitRachLst(cellCb);
 
-   RETVALUE(ret);
+   return (ret);
 
 } /* rgDBMInitCell */
 
@@ -150,7 +150,7 @@ U16            numBins;
    RgUeCb ue;  
    TRC2(rgDBMInitUeCbLst)
 
-   RETVALUE(cmHashListInit(&cellCb->ueLst, numBins, (U16)((PTR)&(ue.ueLstEnt) - (PTR)&ue), FALSE, 
+   return (cmHashListInit(&cellCb->ueLst, numBins, (U16)((PTR)&(ue.ueLstEnt) - (PTR)&ue), FALSE, 
                CM_HASH_KEYTYPE_CONID, rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool));
 
 }  /* rgDBMInitUeCbLst */
@@ -180,7 +180,7 @@ RgCellCb       *cellCb;
 {
    TRC2(rgDBMDeInitUeCbLst)
 
-   RETVALUE(cmHashListDeinit(&cellCb->ueLst));
+   return (cmHashListDeinit(&cellCb->ueLst));
 
 }  /* rgDBMDeInitUeCbLst */
 
@@ -215,7 +215,7 @@ U16            numBins;
    RgUeCb ue;
    TRC2(rgDBMInitSpsUeCbLst)
 
-   RETVALUE(cmHashListInit(&cellCb->spsUeLst, numBins, (U16) ((PTR) &(ue.spsUeLstEnt) - (PTR) &ue), FALSE, 
+   return (cmHashListInit(&cellCb->spsUeLst, numBins, (U16) ((PTR) &(ue.spsUeLstEnt) - (PTR) &ue), FALSE, 
                CM_HASH_KEYTYPE_CONID, rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool));
 
 }  /* rgDBMInitSpsUeCbLst */
@@ -245,7 +245,7 @@ RgCellCb       *cellCb;
 {
    TRC2(rgDBMDeInitSpsUeCbLst)
 
-   RETVALUE(cmHashListDeinit(&cellCb->spsUeLst));
+   return (cmHashListDeinit(&cellCb->spsUeLst));
 
 }  /* rgDBMDeInitSpsUeCbLst */
 
@@ -279,7 +279,7 @@ RgUeCb         *ueCb;
 {
    TRC2(rgDBMInsUeCb)
 
-   RETVALUE(cmHashListInsert(&cellCb->ueLst, (PTR)ueCb, 
+   return (cmHashListInsert(&cellCb->ueLst, (PTR)ueCb, 
       (U8 *)&ueCb->ueId, (U16)sizeof(ueCb->ueId)));
 
 }  /* rgDBMInsUeCb */
@@ -313,7 +313,7 @@ RgUeCb         *ueCb;
 {
    TRC2(rgDBMInsSpsUeCb)
 
-   RETVALUE(cmHashListInsert(&cellCb->spsUeLst, (PTR)ueCb, 
+   return (cmHashListInsert(&cellCb->spsUeLst, (PTR)ueCb, 
       (U8 *)&ueCb->spsRnti, (U16)sizeof(ueCb->spsRnti)));
 
 }  /* end of rgDBMInsSpsUeCb */
@@ -351,7 +351,7 @@ CmLteRnti      ueId;
 
    cmHashListFind(&cellCb->ueLst, (U8 *)&ueId,
       sizeof(ueId), 0, (PTR *)&ueCb);
-   RETVALUE(ueCb);
+   return (ueCb);
 }  /* rgDBMGetUeCb */
 
 #ifdef LTEMAC_SPS
@@ -386,7 +386,7 @@ CmLteRnti      spsRnti;
 
    cmHashListFind(&cellCb->spsUeLst, (U8 *)&spsRnti,
       sizeof(spsRnti), 0, (PTR *)&ueCb);
-   RETVALUE(ueCb);
+   return (ueCb);
 }  /* rgDBMGetSpsUeCb */
 
 #endif /* LTEMAC_SPS */
@@ -421,7 +421,7 @@ RgUeCb         *ueCb;
    TRC2(rgDBMGetNextUeCb)
 
    cmHashListGetNext(&cellCb->ueLst, (PTR) ueCb, (PTR *)&nextUeCb);
-   RETVALUE(nextUeCb);
+   return (nextUeCb);
 }  /* rgDBMGetNextUeCb */
 
 #ifdef LTEMAC_SPS
@@ -455,7 +455,7 @@ RgUeCb         *ueCb;
    TRC2(rgDBMGetNextSpsUeCb)
 
    cmHashListGetNext(&cellCb->spsUeLst, (PTR) ueCb, (PTR *)&nextUeCb);
-   RETVALUE(nextUeCb);
+   return (nextUeCb);
 }  /* end of rgDBMGetNextSpsUeCb */
 
 #endif /* LTEMAC_SPS */
@@ -490,7 +490,7 @@ RgUeCb         *ueCb;
 {
    TRC2(rgDBMDelUeCb)
 
-   RETVALUE(cmHashListDelete(&cellCb->ueLst, (PTR)ueCb));
+   return (cmHashListDelete(&cellCb->ueLst, (PTR)ueCb));
 }  /* rgDBMDelUeCb */
 
 #ifdef LTEMAC_SPS
@@ -523,7 +523,7 @@ RgUeCb         *ueCb;
 {
    TRC2(rgDBMDelSpsUeCb)
 
-   RETVALUE(cmHashListDelete(&cellCb->spsUeLst, (PTR)ueCb));
+   return (cmHashListDelete(&cellCb->spsUeLst, (PTR)ueCb));
 }  /* end of rgDBMDelSpsUeCb */
 
 #endif /* LTEMAC_SPS */
@@ -797,14 +797,14 @@ CmLteLcId        idx;
 
    if (idx > RG_DEDLC_MAX_LCID || idx <= 0)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    if(ueCb->dl.lcCb[idx-1].lcId == RG_INVALID_LC_ID)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
-   RETVALUE(&ueCb->dl.lcCb[idx-1]);
+   return (&ueCb->dl.lcCb[idx-1]);
 
 }  /* rgDBMGetDlDedLcCb */
 
@@ -989,14 +989,14 @@ CmLteLcId        idx;
 
    if (idx > RG_DEDLC_MAX_LCID || idx < RG_DEDLC_MIN_LCID)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    if(ueCb->ul.lcCb[idx-1].lcId == RG_INVALID_LC_ID)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
-   RETVALUE(&ueCb->ul.lcCb[idx-1]);
+   return (&ueCb->ul.lcCb[idx-1]);
 }  /* rgDBMGetDlDedLcCb */
 
 /**
@@ -1032,21 +1032,21 @@ CmLteLcId        lcId;
 
    if(cellCb->bcchBchInfo.lcId == lcId)
    {
-      RETVALUE(ROK);
+      return ROK;
    } 
    if(cellCb->pcchInfo.lcId == lcId)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    for (idx = 0; idx < cellCb->numBcchDlschInfo; idx++)
    {
       if(cellCb->bcchDlschInfo[idx].lcId == lcId)
       {
-         RETVALUE(ROK);
+         return ROK;
       } 
    }
-   RETVALUE(RFAILED);
+   return RFAILED;
 }  /* rgDBMChkCmnLcCb */
 
 /**
@@ -1075,9 +1075,9 @@ RgCellCb       *cellCb;
 
    if(cellCb->bcchBchInfo.lcId != RG_INVALID_LC_ID)
    {
-      RETVALUE(&(cellCb->bcchBchInfo));
+      return (&(cellCb->bcchBchInfo));
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgDBMGetBcchOnBch */
 
 /**
@@ -1113,10 +1113,10 @@ CmLteLcId      lcId;
    {
       if(cellCb->bcchDlschInfo[idx].lcId == lcId)
       {
-         RETVALUE(&(cellCb->bcchDlschInfo[idx]));
+         return (&(cellCb->bcchDlschInfo[idx]));
       }
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgDBMGetBcchOnDlsch */
 
 /**
@@ -1144,9 +1144,9 @@ RgCellCb       *cellCb;
  
    if(cellCb->pcchInfo.lcId != RG_INVALID_LC_ID)
    {
-      RETVALUE(&(cellCb->pcchInfo));
+      return (&(cellCb->pcchInfo));
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgDBMGetPcch */
 
 /**
@@ -1337,11 +1337,11 @@ CmLteRnti      key;
    {
       if(((RgUeCb *)tmpNode->node)->ueId == key)
       {
-         RETVALUE((RgUeCb *)(tmpNode->node));
+         return ((RgUeCb *)(tmpNode->node));
       }
       CM_LLIST_NEXT_NODE(&cellCb->raInfo.ueRachLst,tmpNode);
    }
-   RETVALUE(NULLP);
+   return (NULLP);
 }  /* rgDBMGetUeCbFromRachLst */
 
 /**
@@ -1372,10 +1372,10 @@ RgUeCb         *ueCb;
 
    if(!ueCb)
    {
-      RETVALUE( cellCb->raInfo.ueRachLst.first ? 
+      return ( cellCb->raInfo.ueRachLst.first ? 
                (RgUeCb *)(cellCb->raInfo.ueRachLst.first->node) : NULLP );
    }
-   RETVALUE( ueCb->rachLstEnt.next ? 
+   return ( ueCb->rachLstEnt.next ? 
                (RgUeCb *)(ueCb->rachLstEnt.next->node) : NULLP );
 }  /* rgDBMGetNextUeCbFromRachLst */
 

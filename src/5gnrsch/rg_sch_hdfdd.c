@@ -87,7 +87,7 @@ extern "C" {
  *  @param[in]  RgSchUeCb    *ue
  *  @param[in]  Bool         *hdFddEnbl
  *
- *  @RETVALUE S16
+ *  @return  S16
  *      -# ROK
  *      -# RFAILED
 */ 
@@ -128,7 +128,7 @@ Bool hdFddEnbl;
                   "rgSCHHdFddUeCfg(): HD-FDD already enabled for this UE"
                   "CRNTI:%d",ueCb->ueId);
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef LTEMAC_SPS
@@ -140,7 +140,7 @@ Bool hdFddEnbl;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
       "rgSCHHdFddUeCfg(): Could'nt do HDFDD cfg, SPS already configured"
                "CRNTI:%d",ueCb->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -164,10 +164,10 @@ Bool hdFddEnbl;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
                "rgSCHHdFddUeCfg(): Could not allocate memory for hd-fdd ueCb"
                "CRNTI:%d",ueCb->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }/*rgSCHHdFddUeCfg*/
 
 
@@ -191,7 +191,7 @@ Bool hdFddEnbl;
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
  *
- *  @RETVALUE( S16
+ *  @return ( S16
  *      -# ROK
 *
 */
@@ -223,7 +223,7 @@ RgSchUeCb   *ueCb;
        ueCb->hdFddEnbld = FALSE;
     }
 
-    RETVALUE(ROK);
+    return ROK;
 } /* rgSCHHdFddUeDel */
 
 
@@ -239,7 +239,7 @@ RgSchUeCb   *ueCb;
  *               instance updates
  *               for HD FDD UEs
  *  @param[in]  RgSchCellCb *cell
- *  @RETVALUE   None
+ *  @return    None
  */
 
 #ifdef ANSI
@@ -372,7 +372,7 @@ RgSchCellCb *cellCb;
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
  *
- *  @RETVALUE   None
+ *  @return    None
  *
  */
 #ifdef ANSI
@@ -701,7 +701,7 @@ Bool *allow; /* Valdity of this pointer is not done in this function */
  *
  *  @param[in]  RgSchUeCb    *ue
  *
- *  @RETVALUE None
+ *  @return  None
  *
  */
 
@@ -780,7 +780,7 @@ Bool *sndNACK;
  *  @param[out] U8 *allow -- TRUE is allowed or FALSE if no allowedi.
  *             Valdity of this pointer is not done in this function.
  *
- *  @RETVALUE None
+ *  @return  None
  */
 #ifdef ANSI
 PUBLIC Void rgSCHCmnHdFddUpdULMark
@@ -862,7 +862,7 @@ RgSchUeCb   *ueCb;
  *  @param[out] U8 *allow -- TRUE is allowed or FALSE if no allowed.
  *                Valdity of this pointer is not done in this function
  *
- *  @RETVALUE None
+ *  @return  None
  */
 
 #ifdef ANSI
@@ -933,7 +933,7 @@ RgSchUeCb   *ueCb;
  *  @param[in]  timeInfo timing information subframe of interest 
  *  @param[in]  offsest  Offest with w.r.t which SFN has to be determined
  *
- *  @RETVALUE None
+ *  @return  None
  */
 
 #ifdef ANSI

@@ -280,7 +280,7 @@ KwSn          *prevNackSn;
       }
    *prevNackSn = sn;
 
-   RETVALUE(sizeToBeEncd);
+   return (sizeToBeEncd);
 }
 
 /**
@@ -905,7 +905,7 @@ U8         *fByte;
    if (KW_CNTRL_PDU == amHdr->dc)
    {
    //printf ("++++++++++++ 5GNRLOG HDR extracted CTRL : \n");
-      RETVALUE(ROK);
+      return ROK;
    }
 
    amHdr->p  = (*fByte & KW_POLL_POS) >> KW_POLL_SHT;
@@ -938,7 +938,7 @@ U8         *fByte;
    }
 
    //printf ("++++++++++++ 5GNRLOG HDR extracted DATA : sn %d  \n", sn);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef OLD
@@ -997,7 +997,7 @@ U8         *fByte;
    amHdr->dc = (*fByte & KW_DC_POS) >> KW_DC_SHT;
    if (KW_CNTRL_PDU == amHdr->dc)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    /* kw002.201 : Changed the extraction of hdr elements to avoid */
    /*             function calls                                  */
@@ -1039,7 +1039,7 @@ U8         *fByte;
       if (! hdrInfo.val)
       {
          RLOG0(L_ERROR, "Received LI as 0");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* store the extracted  LI value */
@@ -1052,7 +1052,7 @@ U8         *fByte;
    {
       RLOG2(L_ERROR,"LI Count [%u] exceeds Max LI Count[%u]", 
             amHdr->numLi, KW_MAX_UL_LI);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /*                                first 2 bytes + Add one for  Odd LI*/
@@ -1062,10 +1062,10 @@ U8         *fByte;
    {   
       RLOG3(L_ERROR,"SN [%d]:Corrupted PDU as TotSz[%lu] PduSz[%lu] ",
                amHdr->sn, totalSz, pduSz);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -1381,7 +1381,7 @@ U16        pduSz;
                   rbCb->rlcId.cellId);
 
          RLC_FREE_BUF(pdu);
-         RETVALUE(FALSE);
+         return (FALSE);
       }
 #endif /* ERRCLASS & ERRCLS_RES */
       kwUtlStoreRecBuf(AMUL.recBufLst, recBuf, amHdr->sn);
@@ -1391,7 +1391,7 @@ U16        pduSz;
       if (recBuf->allRcvd == TRUE)
       {
          RLC_FREE_BUF(pdu);
-         RETVALUE(FALSE);
+         return (FALSE);
       }
    }
  			
@@ -1411,7 +1411,7 @@ U16        pduSz;
       /* This is a duplicate segment */
       gRlcStats.amRlcStats.numRlcAmCellDupPduRx++;
       RLC_FREE_BUF(pdu);
-      RETVALUE(FALSE);
+      return (FALSE);
    }
 
    if ((seg) && (seg->amHdr.so <= soEnd))
@@ -1419,7 +1419,7 @@ U16        pduSz;
       /* This is a duplicate segment */
       gRlcStats.amRlcStats.numRlcAmCellDupPduRx++;
       RLC_FREE_BUF(pdu);
-      RETVALUE(FALSE);
+      return (FALSE);
    }
 
    /* If we have come this far, we have to add this segment to the   */
@@ -1434,7 +1434,7 @@ U16        pduSz;
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
       RLC_FREE_BUF(pdu);
-      RETVALUE(FALSE);
+      return (FALSE);
    }
 #endif /* ERRCLASS & ERRCLS_RES */
 
@@ -1456,7 +1456,7 @@ U16        pduSz;
    tseg->lstEnt.node = (PTR)tseg;
    kwAmmUpdExpByteSeg(gCb,&AMUL,tseg);
 
-   RETVALUE(TRUE);
+   return (TRUE);
 }
 
 /**
@@ -1517,7 +1517,7 @@ KwAmHdr    *amHdr;
 
       gCb->genSts.unexpPdusRecv++;
       RLC_FREE_BUF(pdu);
-      RETVALUE(FALSE);
+      return (FALSE);
    }
 
    if (amHdr->si == 0)
@@ -1538,7 +1538,7 @@ KwAmHdr    *amHdr;
                      rbCb->rlcId.ueId,
                      rbCb->rlcId.cellId);
             RLC_FREE_BUF(pdu);
-            RETVALUE(FALSE);
+            return (FALSE);
          }
 #endif /* ERRCLASS & ERRCLS_RES */
          kwUtlStoreRecBuf(AMUL.recBufLst, recBuf, sn);
@@ -1552,7 +1552,7 @@ KwAmHdr    *amHdr;
          gRlcStats.amRlcStats.numRlcAmCellDupPduRx++;
          gCb->genSts.unexpPdusRecv++;
          RLC_FREE_BUF(pdu);
-         RETVALUE(FALSE);
+         return (FALSE);
       }
       recBuf->isDelvUpperLayer = FALSE;
       recBuf->pdu = pdu;
@@ -1560,13 +1560,13 @@ KwAmHdr    *amHdr;
       recBuf->allRcvd = TRUE;
       gRlcStats.amRlcStats.numRlcAmCellSduRx++;
       KW_MEM_CPY(&recBuf->amHdr, amHdr, sizeof(KwAmHdr));
-      RETVALUE(TRUE);
+      return (TRUE);
    }
    else
    {
       /* We received a segment. We need to add that to the existing */
       /* segments, if any.                                          */
-      RETVALUE(kwAmmAddRcvdSeg(gCb,rbCb, amHdr, pdu, pduSz));
+      return (kwAmmAddRcvdSeg(gCb,rbCb, amHdr, pdu, pduSz));
    }
 }
 
@@ -1789,7 +1789,7 @@ KwAmRecBuf   *recBuf;
       AMUL.expSo = 0;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**

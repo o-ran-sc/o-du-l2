@@ -86,12 +86,12 @@ SpId spId;
                (ErrVal)EKWU001, (ErrVal)0, "SGetMsg() failed");
       }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-      RETVALUE(ret1);
+      return (ret1);
    }
    CMCHKPKLOG(SPkS16, spId, mBuf, EKWU002, pst);
    CMCHKPKLOG(SPkS16, suId, mBuf, EKWU003, pst);
    pst->event = (Event) KWU_EVT_BND_REQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -126,13 +126,13 @@ U8 status;
                (ErrVal)EKWU004, (ErrVal)0, "SGetMsg() failed");
       }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-      RETVALUE(ret1);
+      return (ret1);
    }
 
-   CMCHKPKLOG(SPkU8, status, mBuf, EKWU005, pst);
+   CMCHKPKLOG(oduUnpackUInt8, status, mBuf, EKWU005, pst);
    CMCHKPKLOG(SPkS16, suId, mBuf, EKWU006, pst);
    pst->event = (Event) KWU_EVT_BND_CFM;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -167,13 +167,13 @@ Reason reason;
                (ErrVal)EKWU007, (ErrVal)0, "SGetMsg() failed");
       }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-      RETVALUE(ret1);
+      return (ret1);
    }
    CMCHKPKLOG(SPkS16, reason, mBuf, EKWU008, pst);
    CMCHKPKLOG(SPkS16, suId, mBuf, EKWU009, pst);
 
    pst->event = (Event) KWU_EVT_UBND_REQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 } /* cmPkKwuUbndReq */
 
 #ifdef ANSI
@@ -200,22 +200,22 @@ Buffer *mBuf;
       case  CM_LTE_LCH_PCCH:
          CMCHKPK(cmPkLteTimingInfo, &param->tm.tmg, mBuf);
 #ifdef EMTC_ENABLE
-         CMCHKPK(SPkU8, param->emtcDiReason,mBuf);
-         CMCHKPK(SPkU8, param->pnb,mBuf);
+         CMCHKPK(oduUnpackUInt8, param->emtcDiReason,mBuf);
+         CMCHKPK(oduUnpackUInt8, param->pnb,mBuf);
 #endif
          break;
       case CM_LTE_LCH_DTCH:
       case CM_LTE_LCH_DCCH:
          break;
       default :
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
    CMCHKPK(cmPkLteLcType, param->lcType, mBuf);
 
 #endif
-   CMCHKPK(SPkU32, param->sduId, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->sduId, mBuf);
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 } /* cmPkKwuDatReqInfo */
 
 
@@ -264,14 +264,14 @@ Buffer * mBuf;
                         (ErrVal)EKWU028, (ErrVal)0, "SGetMsg() failed");
                }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-               RETVALUE(ret1);
+               return (ret1);
             }
             cmMemcpy((U8*)datReqInfo,(U8*)datReq,sizeof(KwuDatReqInfo));
-            CMCHKPK(cmPkPtr,(PTR)datReqInfo, mBuf);
+            CMCHKPK(oduPackPointer,(PTR)datReqInfo, mBuf);
            }
            else
            {
-            CMCHKPK(cmPkPtr,(PTR)datReq, mBuf);
+            CMCHKPK(oduPackPointer,(PTR)datReq, mBuf);
            }
         }
         break;
@@ -285,7 +285,7 @@ Buffer * mBuf;
               SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                     __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                     (ErrVal)EKWU010, (ErrVal)ret1, "Packing failure");
-              RETVALUE( ret1 );
+              return ( ret1 );
            }
 #else
            cmPkKwuDatReqInfo( (datReq), mBuf);
@@ -296,7 +296,7 @@ Buffer * mBuf;
                        sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY) != ROK)
               {
                  SPutMsg(mBuf);
-                 RETVALUE(RFAILED);
+                 return RFAILED;
               }
            }
         }
@@ -308,7 +308,7 @@ Buffer * mBuf;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-          RETVALUE(RFAILED);
+          return RFAILED;
    }
 
 #ifdef L2_L3_SPLIT
@@ -323,7 +323,7 @@ Buffer * mBuf;
 #else
     pst->event = (Event) KWU_EVT_DAT_REQ;
 #endif
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 #else
    if (pst->srcEnt == ENTPJ)
    {
@@ -364,14 +364,14 @@ Buffer * mBuf;
                   SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                         (ErrVal)EKWU010, (ErrVal)ret1, "Packing failure");
-                  RETVALUE( ret1 );
+                  return ( ret1 );
                }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
             }
             break;
          case ODU_SELECTOR_LWLC:
             {
-               CMCHKPK(cmPkPtr,(PTR)datReq, mBuf);
+               CMCHKPK(oduPackPointer,(PTR)datReq, mBuf);
             }
             break;
 #endif /* LCKWU */
@@ -386,11 +386,11 @@ Buffer * mBuf;
                   sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY) != ROK)
          {
             SPutMsg(mBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
    }
-   RETVALUE(ret1);
+   return (ret1);
 #endif
 } /* cmPkKwuDatReq */
 
@@ -409,12 +409,12 @@ Buffer *mBuf;
 {
    TRC3(cmPkKwuDatIndInfo);
 
-   CMCHKPK(SPkU8, param->isOutOfSeq, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->isOutOfSeq, mBuf);
 #ifdef CCPU_OPT
    CMCHKPK(cmPkLteRnti, param->tCrnti, mBuf);
 #endif
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -471,11 +471,11 @@ Buffer * mBuf;
                         (ErrVal)EKWU028, (ErrVal)0, "SGetMsg() failed");
                }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-               RETVALUE(ret1);
+               return (ret1);
             }
 
             cmMemcpy((U8*)datIndInfo,(U8*)datInd,sizeof(KwuDatIndInfo));
-            CMCHKPK(cmPkPtr,(PTR)datIndInfo, mBuf);
+            CMCHKPK(oduPackPointer,(PTR)datIndInfo, mBuf);
           }
           break;
        case ODU_SELECTOR_LC:
@@ -488,7 +488,7 @@ Buffer * mBuf;
                 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                       (ErrVal)EKWU012, (ErrVal)ret1, "Packing failure");
-                RETVALUE( ret1 );
+                return ( ret1 );
              }
 #else
              cmPkKwuDatIndInfo( (datInd), mBuf);
@@ -502,12 +502,12 @@ Buffer * mBuf;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-          RETVALUE(RFAILED);
+          return RFAILED;
     }
 
     pst->event = (Event) KWU_EVT_DAT_IND;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /* cmPkKwuDatInd */
 
 
@@ -528,11 +528,11 @@ Buffer *mBuf;
    TRC3(cmPkKwuDatCfmInfo);
    for(iter = 0; iter < param->numSduIds; iter++)
    {
-      CMCHKPK(SPkU32, param->sduIds[iter], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->sduIds[iter], mBuf);
    }
-   CMCHKPK(SPkU32, param->numSduIds, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->numSduIds, mBuf);
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 } /* cmPkKwuDatCfmInfo */
 
 
@@ -560,14 +560,14 @@ KwuDatCfmInfo* datCfm;
    mBuf = NULLP;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    switch(pst->selector)
    {
       case ODU_SELECTOR_LWLC:
          {
-            CMCHKPK(cmPkPtr,(PTR)datCfm, mBuf);
+            CMCHKPK(oduPackPointer,(PTR)datCfm, mBuf);
          }
          break;
       case ODU_SELECTOR_LC:
@@ -580,7 +580,7 @@ KwuDatCfmInfo* datCfm;
                SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                      __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                      (ErrVal)EKWU014, (ErrVal)ret1, "Packing failure");
-               RETVALUE( ret1 );
+               return ( ret1 );
             }
 #else
             cmPkKwuDatCfmInfo( (datCfm), mBuf);
@@ -589,7 +589,7 @@ KwuDatCfmInfo* datCfm;
                      sizeof(KwuDatCfmInfo),SS_SHARABLE_MEMORY) != ROK)
             {
                SPutMsg(mBuf);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
          break;
@@ -600,13 +600,13 @@ KwuDatCfmInfo* datCfm;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-          RETVALUE(RFAILED);
+          return RFAILED;
    }
 
     CMCHKPKLOG(SPkS16, suId, mBuf, EKWU015, pst);
     pst->event = (Event) KWU_EVT_DAT_CFM;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /* cmPkKwuDatCfm */
 
 
@@ -634,7 +634,7 @@ KwuDiscSduInfo* discSdu;
    mBuf = NULLP;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    switch(pst->selector)
@@ -656,11 +656,11 @@ KwuDiscSduInfo* discSdu;
                         (ErrVal)EKWU028, (ErrVal)0, "SGetMsg() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              RETVALUE(ret1);
+              return (ret1);
            }
             
            cmMemcpy((U8*)discSduInfo,(U8*)discSdu,sizeof(KwuDiscSduInfo));
-           CMCHKPK(cmPkPtr,(PTR)discSduInfo, mBuf);
+           CMCHKPK(oduPackPointer,(PTR)discSduInfo, mBuf);
          }
          break;
       case ODU_SELECTOR_LC:
@@ -673,7 +673,7 @@ KwuDiscSduInfo* discSdu;
                SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                      __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                      (ErrVal)EKWU016, (ErrVal)ret1, "Packing failure");
-               RETVALUE( ret1 );
+               return ( ret1 );
             }
 #else
             cmPkKwuDiscSduInfo( (discSdu), mBuf);
@@ -685,7 +685,7 @@ KwuDiscSduInfo* discSdu;
     CMCHKPKLOG(SPkS16, spId, mBuf, EKWU017, pst);
     pst->event = (Event) KWU_EVT_DISC_SDU_REQ;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /* cmPkKwuDiscSduReq */
 
 
@@ -707,11 +707,11 @@ Buffer *mBuf;
 
    for (i = (param->numSdu - 1); i >= 0; i--)
    {
-      CMCHKPK(SPkU32, param->sduId[(U16)i], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->sduId[(U16)i], mBuf);
    }
-   CMCHKPK(SPkU32, param->numSdu, mBuf);
+   CMCHKPK(oduUnpackUInt32, param->numSdu, mBuf);
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -728,10 +728,10 @@ Buffer               *mBuf;
 {
    TRC3(cmPkKwuFlowCntrlIndInfo);
 
-   CMCHKPK(SPkU32, param->pktAdmitCnt, mBuf);   
+   CMCHKPK(oduUnpackUInt32, param->pktAdmitCnt, mBuf);   
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* cmPkKwuFlowCntrlIndInfo */
 
 #ifdef ANSI
@@ -749,9 +749,9 @@ Buffer               *mBuf;
    TRC3(cmUnpkKwuFlowCntrlIndInfo);
    
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->pktAdmitCnt, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->pktAdmitCnt, mBuf);
   
-   RETVALUE(ROK);
+   return ROK;
 } /* cmUnpkKwuFlowCntrlIndInfo */
 
 
@@ -781,14 +781,14 @@ KwuStaIndInfo* staInd;
    mBuf = NULLP;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
     switch(pst->selector)
     {
        case ODU_SELECTOR_LWLC:
           {
-             CMCHKPK(cmPkPtr,(PTR) staInd, mBuf);
+             CMCHKPK(oduPackPointer,(PTR) staInd, mBuf);
           }
           break;
        case ODU_SELECTOR_LC:
@@ -801,7 +801,7 @@ KwuStaIndInfo* staInd;
                 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                       (ErrVal)EKWU018, (ErrVal)ret1, "Packing failure");
-                RETVALUE( ret1 );
+                return ( ret1 );
              }
 #else
              cmPkKwuStaIndInfo( (staInd), mBuf);
@@ -810,7 +810,7 @@ KwuStaIndInfo* staInd;
                       sizeof(KwuStaIndInfo),SS_SHARABLE_MEMORY) != ROK)
              {
                 SPutMsg(mBuf);
-                RETVALUE(RFAILED);
+                return RFAILED;
              }
           }
           break;
@@ -821,13 +821,13 @@ KwuStaIndInfo* staInd;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif
-          RETVALUE(RFAILED);
+          return RFAILED;
     }
 
     CMCHKPKLOG(SPkS16, suId, mBuf, EKWU019, pst);
     pst->event = (Event) KWU_EVT_STA_IND;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /* cmPkKwuStaInd */
 
 
@@ -857,7 +857,7 @@ CmLteRlcId rlcId;
    mBuf = NULLP;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
     switch(pst->selector)
@@ -873,7 +873,7 @@ CmLteRlcId rlcId;
                 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                       (ErrVal)EKWU018, (ErrVal)ret1, "Packing failure");
-                RETVALUE( ret1 );
+                return ( ret1 );
              }
 #else
              cmPkLteRlcId( &rlcId, mBuf);
@@ -886,7 +886,7 @@ CmLteRlcId rlcId;
     CMCHKPKLOG(SPkS16, suId, mBuf, EKWU019, pst);
     pst->event = (Event) KWU_EVT_REEST_CMP_IND;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /* cmPkKwuReEstCmpInd */
 
 /* kwu_c_001.main_3 added support for L2 Measurement */
@@ -914,14 +914,14 @@ KwuDiscSduInfo *discCfmSdu;
    mBuf = NULLP;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    switch(pst->selector)
    {
       case ODU_SELECTOR_LWLC:
          {
-            CMCHKPK(cmPkPtr,(PTR)discCfmSdu, mBuf);
+            CMCHKPK(oduPackPointer,(PTR)discCfmSdu, mBuf);
          }
          break;
       case ODU_SELECTOR_LC:
@@ -934,7 +934,7 @@ KwuDiscSduInfo *discCfmSdu;
                SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                      __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                      (ErrVal)ERRKWU, (ErrVal)ret1, "Packing failure");
-               RETVALUE( ret1 );
+               return ( ret1 );
             }
 #else
             cmPkKwuDiscSduInfo((discCfmSdu), mBuf);
@@ -943,7 +943,7 @@ KwuDiscSduInfo *discCfmSdu;
                      sizeof(KwuDiscSduInfo),SS_SHARABLE_MEMORY) != ROK)
             {
                SPutMsg(mBuf);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          }
          break;
@@ -954,13 +954,13 @@ KwuDiscSduInfo *discCfmSdu;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif
-          RETVALUE(RFAILED);
+          return RFAILED;
    }
 
    CMCHKPKLOG(SPkS16, spId, mBuf, ERRKWU, pst);
    pst->event = (Event) KWU_EVT_DISC_SDU_CFM;
 
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 } /* cmPkKwuDiscSduCfm */
 
 #ifdef ANSI
@@ -989,7 +989,7 @@ KwuFlowCntrlIndInfo *flowCntrlIndInfo;
                pst->pool, 
                (Data *)flowCntrlIndInfo,
                sizeof(KwuFlowCntrlIndInfo),0);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef LCKWU
    switch(pst->selector)
@@ -1004,14 +1004,14 @@ KwuFlowCntrlIndInfo *flowCntrlIndInfo;
                       sizeof(KwuFlowCntrlIndInfo),0) != ROK)
          {
             SPutMsg(mBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
       break;
       
       case ODU_SELECTOR_LWLC:
       {
-         CMCHKPK(cmPkPtr,(PTR) flowCntrlIndInfo, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) flowCntrlIndInfo, mBuf);
       }
       break;
    }
@@ -1020,7 +1020,7 @@ KwuFlowCntrlIndInfo *flowCntrlIndInfo;
    CMCHKPKLOG(SPkS16, suId, mBuf, ERRKWU, pst);
    pst->event = (Event) KWU_EVT_FLOW_CNTRL_IND;
 
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 } /* cmPkKwuFlowCntrlInd */
 
 #ifdef LTE_L2_MEAS
@@ -1039,8 +1039,8 @@ Buffer *mBuf;
    TRC3(cmPkKwuDatAckIndInfo);
 
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
-   CMCHKPK(SPkU32, param->sduId, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt32, param->sduId, mBuf);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -1066,7 +1066,7 @@ KwuDatAckInfo* datInd;
    mBuf = NULLP;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    ret1 = cmPkKwuDatAckInfo( (datInd), mBuf);
@@ -1077,20 +1077,20 @@ KwuDatAckInfo* datInd;
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERRKWU, (ErrVal)ret1, "Packing failure");
-      RETVALUE( ret1 );
+      return ( ret1 );
    }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
    if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd,
             sizeof(KwuDatAckInfo),SS_SHARABLE_MEMORY) != ROK)
    {
       SPutMsg(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    CMCHKPKLOG(SPkS16, suId, mBuf, ERRKWU, pst);
    pst->event = (Event) KWU_EVT_DAT_ACK_IND;
 
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 } /* cmPkKwuDatAckInd */
 #endif /* LTE_L2_MEAS */
 
@@ -1118,7 +1118,7 @@ Buffer *mBuf;
    CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EKWU021, pst);
    SPutMsg(mBuf);
 
-   RETVALUE((*func)(pst, suId, spId));
+   return ((*func)(pst, suId, spId));
 }
 
 
@@ -1142,10 +1142,10 @@ Buffer *mBuf;
    TRC3(cmUnpkKwuBndCfm)
 
    CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EKWU022, pst);
-   CMCHKUNPKLOG(SUnpkU8, &status, mBuf, EKWU023, pst);
+   CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EKWU023, pst);
    SPutMsg(mBuf);
 
-   RETVALUE((*func)(pst, suId, status));
+   return ((*func)(pst, suId, status));
 }
 
 
@@ -1172,7 +1172,7 @@ Buffer *mBuf;
    CMCHKUNPKLOG(SUnpkS16, &reason, mBuf, EKWU025, pst);
    SPutMsg(mBuf);
 
-   RETVALUE((*func)(pst, spId, reason));
+   return ((*func)(pst, spId, reason));
 } /* cmUnpkKwuUbndReq */
 
 
@@ -1192,7 +1192,7 @@ Buffer *mBuf;
    TRC3(cmUnpkKwuDatReqInfo);
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->sduId, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->sduId, mBuf);
 
 #ifdef CCPU_OPT
    CMCHKUNPK(cmUnpkLteLcType, &param->lcType, mBuf);
@@ -1200,8 +1200,8 @@ Buffer *mBuf;
       case CM_LTE_LCH_BCCH:
       case  CM_LTE_LCH_PCCH:
 #ifdef EMTC_ENABLE
-         CMCHKUNPK(SUnpkU8,&param->pnb , mBuf);
-         CMCHKUNPK(SUnpkU8,&param->emtcDiReason , mBuf);
+         CMCHKUNPK(oduPackUInt8,&param->pnb , mBuf);
+         CMCHKUNPK(oduPackUInt8,&param->emtcDiReason , mBuf);
 #endif         
          CMCHKUNPK(cmUnpkLteTimingInfo, &param->tm.tmg, mBuf);
 
@@ -1213,10 +1213,10 @@ Buffer *mBuf;
       case CM_LTE_LCH_DCCH:
          break;
       default :
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1247,7 +1247,7 @@ Buffer *mBuf;
    {
       case ODU_SELECTOR_LWLC:
          {
-            CMCHKUNPK(cmUnpkPtr,(PTR *) &datReq, mBuf);
+            CMCHKUNPK(oduUnpackPointer,(PTR *) &datReq, mBuf);
          }
          break;
       case ODU_SELECTOR_LC:
@@ -1264,7 +1264,7 @@ Buffer *mBuf;
                SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                      __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                      (ErrVal)EKWU027, (ErrVal)ret1, "Unpacking failure");
-               RETVALUE( ret1 );
+               return ( ret1 );
             }
 #else
             cmUnpkKwuDatReqInfo( (datReq), mBuf);
@@ -1278,7 +1278,7 @@ Buffer *mBuf;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    retVal = (*func)(pst, datReq, mBuf);
@@ -1289,7 +1289,7 @@ Buffer *mBuf;
       retVal = SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,
             sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY);
    }
-   RETVALUE(retVal);
+   return (retVal);
 } /* cmUnpkKwuDatReq */
 
 
@@ -1312,8 +1312,8 @@ Buffer *mBuf;
 #ifdef CCPU_OPT
    CMCHKUNPK(cmUnpkLteRnti, &param->tCrnti, mBuf);
 #endif
-   CMCHKUNPK(SUnpkU8, &param->isOutOfSeq, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->isOutOfSeq, mBuf);
+   return ROK;
 }
 
 
@@ -1341,7 +1341,7 @@ Buffer *mBuf;
     {
       case ODU_SELECTOR_LWLC:
          {
-            CMCHKUNPK(cmUnpkPtr,(PTR *) &datInd, mBuf);
+            CMCHKUNPK(oduUnpackPointer,(PTR *) &datInd, mBuf);
          }
          break;
       case ODU_SELECTOR_LC:
@@ -1361,7 +1361,7 @@ Buffer *mBuf;
                (ErrVal)EKWU028, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-                  RETVALUE(ret1);
+                  return (ret1);
                }
             }
             else
@@ -1377,7 +1377,7 @@ Buffer *mBuf;
              SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                   (ErrVal)EKWU029, (ErrVal)ret1, "Unpacking failure");
-             RETVALUE( ret1 );
+             return ( ret1 );
           }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
          }
@@ -1387,7 +1387,7 @@ Buffer *mBuf;
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
-         RETVALUE(RFAILED);
+         return RFAILED;
     }
     retVal = (*func)(pst, datInd, mBuf);
     /* If LWLC is configured and the destination entity is PDCP, we need to
@@ -1397,7 +1397,7 @@ Buffer *mBuf;
        retVal = SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd,
                 sizeof(KwuDatIndInfo),SS_SHARABLE_MEMORY);
     }
-    RETVALUE(retVal);
+    return (retVal);
 } /* cmUnpkKwuDatInd */
 
 
@@ -1417,7 +1417,7 @@ Buffer *mBuf;
    TRC3(cmUnpkKwuDatCfmInfo);
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->numSduIds, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->numSduIds, mBuf);
 
 #ifdef L2_L3_SPLIT /*Work Around */
    if (param->numSduIds >= KWU_MAX_DAT_CFM)
@@ -1425,9 +1425,9 @@ Buffer *mBuf;
 #endif
    for(iter = param->numSduIds -1; iter >= 0 ; iter--)
    {
-      CMCHKUNPK(SUnpkU32, &param->sduIds[iter], mBuf);
+      CMCHKUNPK(oduPackUInt32, &param->sduIds[iter], mBuf);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -1456,7 +1456,7 @@ Buffer *mBuf;
    {
       case ODU_SELECTOR_LWLC:
          {
-            CMCHKUNPK(cmUnpkPtr,(PTR *) &datCfm, mBuf);
+            CMCHKUNPK(oduUnpackPointer,(PTR *) &datCfm, mBuf);
          }
          break;
       case ODU_SELECTOR_LC:
@@ -1472,7 +1472,7 @@ Buffer *mBuf;
                (ErrVal)EKWU030, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-               RETVALUE(ret1);
+               return (ret1);
             }
 
             cmMemset((U8 *)datCfm, 0, sizeof(KwuDatCfmInfo));
@@ -1484,7 +1484,7 @@ Buffer *mBuf;
              SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                   (ErrVal)EKWU031, (ErrVal)ret1, "Unpacking failure");
-             RETVALUE( ret1 );
+             return ( ret1 );
           }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
          }
@@ -1496,12 +1496,12 @@ Buffer *mBuf;
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif
           SPutMsg(mBuf);
-          RETVALUE(RFAILED);
+          return RFAILED;
    }
 
    SPutMsg(mBuf);
 
-   RETVALUE((*func)(pst, suId, datCfm));
+   return ((*func)(pst, suId, datCfm));
 } /* cmUnpkKwuDatCfm */
 
 
@@ -1529,7 +1529,7 @@ Buffer *mBuf;
    {
       case ODU_SELECTOR_LWLC:
          {
-            CMCHKUNPK(cmUnpkPtr,(PTR *) &discSdu, mBuf);
+            CMCHKUNPK(oduUnpackPointer,(PTR *) &discSdu, mBuf);
          }
          break;
       case ODU_SELECTOR_LC:
@@ -1544,7 +1544,7 @@ Buffer *mBuf;
                      (ErrVal)EKWU032, (ErrVal)0, "SGetMsg() failed");
 
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-               RETVALUE(ret1);
+               return (ret1);
             }
 
             cmMemset((U8 *)discSdu, 0, sizeof(KwuDiscSduInfo));
@@ -1556,7 +1556,7 @@ Buffer *mBuf;
                SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                      __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                      (ErrVal)EKWU033, (ErrVal)ret1, "Unpacking failure");
-               RETVALUE( ret1 );
+               return ( ret1 );
             }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
             break;
@@ -1568,11 +1568,11 @@ Buffer *mBuf;
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif
           SPutMsg(mBuf);
-          RETVALUE(RFAILED);
+          return RFAILED;
    }
    SPutMsg(mBuf);
 
-   RETVALUE((*func)(pst, spId, discSdu));
+   return ((*func)(pst, spId, discSdu));
 } /* cmUnpkKwuDiscSduReq */
 
 
@@ -1593,13 +1593,13 @@ Buffer *mBuf;
    TRC3(cmUnpkKwuStaIndInfo);
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
-   CMCHKUNPK(SUnpkU32, &param->numSdu, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->numSdu, mBuf);
    for (i = 0; i < param->numSdu; i++)
    {
-      CMCHKUNPK(SUnpkU32, &param->sduId[i], mBuf);
+      CMCHKUNPK(oduPackUInt32, &param->sduId[i], mBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* cmUnpkKwuStaIndInfo */
 
 
@@ -1629,7 +1629,7 @@ Buffer *mBuf;
    {
       case ODU_SELECTOR_LWLC:
          {
-            CMCHKUNPK(cmUnpkPtr,(PTR *)&staInd, mBuf);
+            CMCHKUNPK(oduUnpackPointer,(PTR *)&staInd, mBuf);
          }
          break;
       case ODU_SELECTOR_LC:
@@ -1645,7 +1645,7 @@ Buffer *mBuf;
                         (ErrVal)EKWU034, (ErrVal)0, "SGetMsg() failed");
                }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-               RETVALUE(ret1);
+               return (ret1);
             }
 
             cmMemset((U8 *)staInd, 0, sizeof(KwuStaIndInfo));
@@ -1658,7 +1658,7 @@ Buffer *mBuf;
                SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                      __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                      (ErrVal)EKWU035, (ErrVal)ret1, "Unpacking failure");
-               RETVALUE( ret1 );
+               return ( ret1 );
             }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
          }
@@ -1670,11 +1670,11 @@ Buffer *mBuf;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif
-          RETVALUE(RFAILED);
+          return RFAILED;
    }
    SPutMsg(mBuf);
 
-   RETVALUE((*func)(pst, suId, staInd));
+   return ((*func)(pst, suId, staInd));
 } /* cmUnpkKwuStaInd */
 
 
@@ -1716,7 +1716,7 @@ Buffer *mBuf;
                SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                      __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                      (ErrVal)EKWU035, (ErrVal)ret1, "Unpacking failure");
-               RETVALUE( ret1 );
+               return ( ret1 );
             }
 #else
             cmUnpkLteRlcId( &rlcId, mBuf);
@@ -1727,7 +1727,7 @@ Buffer *mBuf;
    }
    SPutMsg(mBuf);
 
-   RETVALUE((*func)(pst, suId, rlcId));
+   return ((*func)(pst, suId, rlcId));
 } /* cmUnpkKwuReEstCmpInd */
 
 /* kwu_c_001.main_3 added support for L2 Measurement */
@@ -1757,7 +1757,7 @@ Buffer         *mBuf;
    {
       case ODU_SELECTOR_LWLC:
          {
-            CMCHKUNPK(cmUnpkPtr,(PTR *) &discSdu, mBuf);
+            CMCHKUNPK(oduUnpackPointer,(PTR *) &discSdu, mBuf);
          }
          break;
       case ODU_SELECTOR_LC:
@@ -1773,7 +1773,7 @@ Buffer         *mBuf;
                (ErrVal)ERRKWU, (ErrVal)0, "SGetMsg() failed");
       }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-               RETVALUE(ret1);
+               return (ret1);
             }
             cmMemset((U8 *)discSdu, 0, sizeof(KwuDiscSduInfo));
 
@@ -1796,11 +1796,11 @@ Buffer         *mBuf;
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
                (ErrVal)ERRKWU, (ErrVal)ret1, "pst->selector is invalid\n");
 #endif
-          RETVALUE(RFAILED);
+          return RFAILED;
    }
    SPutMsg(mBuf);
 
-   RETVALUE((*func)(pst, spId, discSdu));
+   return ((*func)(pst, spId, discSdu));
 } /* cmUnpkKwuDiscSduCfm */
 #ifdef ANSI
 PUBLIC S16 cmUnpkKwuFlowCntrlInd
@@ -1833,7 +1833,7 @@ Buffer         *mBuf;
                      sizeof(KwuFlowCntrlIndInfo),0) != ROK)
          {
             SPutMsg(mBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          cmUnpkKwuFlowCntrlIndInfo(flowCntrlInfo, mBuf);
@@ -1842,7 +1842,7 @@ Buffer         *mBuf;
 
       case ODU_SELECTOR_LWLC:
       {
-         CMCHKUNPK(cmUnpkPtr,(PTR *) &flowCntrlInfo, mBuf);
+         CMCHKUNPK(oduUnpackPointer,(PTR *) &flowCntrlInfo, mBuf);
       }
       break;
 #endif
@@ -1850,7 +1850,7 @@ Buffer         *mBuf;
 
    SPutMsg(mBuf);
 
-   RETVALUE((*func)(pst, suId, flowCntrlInfo));
+   return ((*func)(pst, suId, flowCntrlInfo));
 } /* cmUnpkKwuFlowCntrlInd */
 #ifdef LTE_L2_MEAS
 
@@ -1868,10 +1868,10 @@ Buffer *mBuf;
 {
    TRC3(cmUnpkKwuDatAckInfo);
 
-   CMCHKUNPK(SUnpkU32, &param->sduId, mBuf);
+   CMCHKUNPK(oduPackUInt32, &param->sduId, mBuf);
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1906,7 +1906,7 @@ Buffer *mBuf;
                 (ErrVal)ERRKWU, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
 
     cmMemset((U8 *)datInd, 0, sizeof(KwuDatAckInfo));
@@ -1920,11 +1920,11 @@ Buffer *mBuf;
        SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
              __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
              (ErrVal)ERRKWU, (ErrVal)ret1, "Unpacking failure");
-       RETVALUE( ret1 );
+       return ( ret1 );
     }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
 
-    RETVALUE((*func)(pst, suId, datInd));
+    return ((*func)(pst, suId, datInd));
 } /* cmUnpkKwuDatAckInd */
 #endif /* LTE_L2_MEAS */
 #endif /* LCKWU */

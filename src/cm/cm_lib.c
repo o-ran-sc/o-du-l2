@@ -234,12 +234,12 @@ if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 }
 #endif 
 #if (MEMCPY_AVAIL) /* memcpy is available */
-   RETVALUE((U8 *) memcpy((Void *)tgt, (CONSTANT Void *)src, (size_t)len));
+   return ((U8 *) memcpy((Void *)tgt, (CONSTANT Void *)src, (size_t)len));
 #else
    while (len--)
       *tgt++ = *src++;
 
-   RETVALUE(tgt);
+   return (tgt);
 #endif /* MEMCPY_AVAIL */
 
 } /* end of cmMemcpy */
@@ -279,16 +279,16 @@ PTR             len;
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmMemcmp)
 #if MEMCMP_AVAIL /* memcmp is available */
-   RETVALUE((S16) memcmp((CONSTANT Void *)s1, (CONSTANT Void *)s2, (size_t)len));
+   return ((S16) memcmp((CONSTANT Void *)s1, (CONSTANT Void *)s2, (size_t)len));
 #else  /* MEMCMP_AVAIL: memcmp is not available */
    while (len--)
    {
       if (*s1 ^ *s2)
-         RETVALUE((S16) (*s1 - *s2));
+         return ((S16) (*s1 - *s2));
       s1++;
       s2++;
    }
-   RETVALUE(0);
+   return (0);
 #endif /* MEMCMP_AVAIL */
 } /* end of cmMemcmp */
 
@@ -352,7 +352,7 @@ if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
       *str++ = val;
 
 #endif /* MEMSET_AVAIL */
-   RETVALUE(str);
+   return (str);
 } /* end of cmMemset */
 
 
@@ -405,17 +405,17 @@ CONSTANT U8 *s2;
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmStrcmp)
 #if (STRCMP_AVAIL)
-   RETVALUE(strcmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2));
+   return (strcmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2));
 #else   /* STRCMP_AVAIL */
   
    while (*s1 && *s2)
    {
       if (*s1 ^ *s2)
-         RETVALUE(*s1 - *s2);
+         return (*s1 - *s2);
       s1++;
       s2++;
    }
-   RETVALUE(0);
+   return (0);
 #endif      /* strcmp is not available */
 
 } /* end of cmStrcmp */
@@ -472,17 +472,17 @@ MsgLen       len;
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmStrncmp)
 #if (STRNCMP_AVAIL)
-   RETVALUE(strncmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2, (size_t) len));
+   return (strncmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2, (size_t) len));
 #else   /* STRNCMP_AVAIL */
   
    while (*s1 && *s2 && len--)
    {
       if (*s1 ^ *s2)
-         RETVALUE(*s1 - *s2);
+         return (*s1 - *s2);
       s1++;
       s2++;
    }
-   RETVALUE(0);
+   return (0);
 #endif   /* strncmp is not available */
 } /* end of cmStrncmp */
 
@@ -524,7 +524,7 @@ CONSTANT U8 *s;
 #if (STRLEN_AVAIL)
    /*cm_lib_c_001.main_15 : Fix for warning due to mixed declation*/
    TRC2(cmStrlen)
-   RETVALUE((MsgLen)strlen((CONSTANT S8 *)s));
+   return ((MsgLen)strlen((CONSTANT S8 *)s));
 #else   /* STRLEN_AVAIL */
    MsgLen i;
   
@@ -532,7 +532,7 @@ CONSTANT U8 *s;
    TRC2(cmStrlen)
 
    for (i = 0; *s; i++, s++);
-   RETVALUE(i);
+   return (i);
 #endif   /* strlen is not available */
 } /* end of cmStrlen */
 

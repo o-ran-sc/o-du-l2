@@ -90,7 +90,7 @@ PUBLIC S16 rlcUlInitExt()
 {
    TRC2(rlcUlInitExt);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* kwInitExt */
 
 
@@ -144,18 +144,18 @@ Reason reason;              /* reason */
    if (inst >= MAX_RLC_INSTANCES)
    {
        /* intance greater than MAX instances */ 
-       RETVALUE(RFAILED); 
+       return RFAILED; 
    }
 
    if (rlcCb[inst] != NULLP)
    {
-       RETVALUE (RFAILED);
+       return  (RFAILED);
    }
   
    if (SGetSBuf(region, 0, (Data **)&tRlcCb,
                 (Size)sizeof (RlcCb)) != ROK)    
    {                     
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Initialize rlcCb */
@@ -183,7 +183,7 @@ Reason reason;              /* reason */
    TSL2AllocStatsMem(tRlcCb->init.region, tRlcCb->init.pool); 
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rlcUlActvInit */
 
 
@@ -504,9 +504,9 @@ Buffer *mBuf;           /* message buffer */
             break;
          }
     }
-   SExitTsk();
+   ODU_EXIT_TASK();
 
-   RETVALUE(ret);
+   return (ret);
 } /* kwActvTsk */
 
 

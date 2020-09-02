@@ -162,7 +162,7 @@ PUBLIC U16 SchInstCfg(RgCfg *cfg, Inst  dInst)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "SchInstCfg(): Failed to "
 	    "register timer.");
-      RETVALUE(LCM_REASON_MEM_NOAVAIL);
+      return (LCM_REASON_MEM_NOAVAIL);
    }   
 #endif               
    /* Set Config done in TskInit */

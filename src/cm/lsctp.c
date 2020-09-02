@@ -37,30 +37,30 @@
  *
  * ****************************************************************/
 
-S16 cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
+uint8_t cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG(pst->region, pst->pool, &mBuf) != ROK)
    {
       printf("\nSCTP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(ntfy->header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
-      SPkU16(ntfy->u.assocChange.state, mBuf);
-      SPkU32(ntfy->u.assocChange.assocId, mBuf);
+      oduUnpackUInt16(ntfy->u.assocChange.state, mBuf);
+      oduUnpackUInt32(ntfy->u.assocChange.assocId, mBuf);
    }
-   SPkU16(ntfy->header.nType, mBuf);
+   oduUnpackUInt16(ntfy->header.nType, mBuf);
 
-   if (SPstTsk(pst, mBuf) != ROK)
+   if (ODU_POST_TASK(pst, mBuf) != ROK)
    {
-      printf("\nSCTP : SPstTsk failed while sending SCTP notification");
-      RETVALUE(RFAILED);
+      printf("\nSCTP : ODU_POST_TASK failed while sending SCTP notification");
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -80,19 +80,19 @@ S16 cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
  *
  * ****************************************************************/
 
-S16 cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf)
+uint8_t cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf)
 {
    CmInetSctpNotification ntfy;
-   cmMemset((U8*)&ntfy, 0, sizeof(CmInetSctpNotification));
+   memset((uint8_t*)&ntfy, 0, sizeof(CmInetSctpNotification));
 
-   SUnpkU16(&(ntfy.header.nType), mBuf);
+   oduPackUInt16(&(ntfy.header.nType), mBuf);
    if(ntfy.header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
-      SUnpkU32(&(ntfy.u.assocChange.assocId), mBuf);
-      SUnpkU16(&(ntfy.u.assocChange.state), mBuf);
+      oduPackUInt32(&(ntfy.u.assocChange.assocId), mBuf);
+      oduPackUInt16(&(ntfy.u.assocChange.state), mBuf);
    }
 
-   RETVALUE((*func)(mBuf, &ntfy));
+   return ((*func)(mBuf, &ntfy));
 }
 
 /**********************************************************************

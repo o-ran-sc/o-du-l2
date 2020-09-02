@@ -80,7 +80,7 @@
    { \
       S16 ret; \
       if ((ret = func(val, ptr, mBuf)) != ROK) \
-         RETVALUE(ret); \
+         return (ret); \
    }
 
 #define CMGETMBLK(ptr, size, pptr) \
@@ -89,7 +89,7 @@
       ret = cmGetMem( ptr, size, pptr); \
       if (ret != ROK) \
       { \
-          RETVALUE(RFAILED); \
+          return RFAILED; \
       } \
    }
 

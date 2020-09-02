@@ -37,7 +37,7 @@
 #include "du_f1ap_msg_hdl.h"
 
 extern DuCfgParams duCfgParam;
-extern S16 duBuildAndSendMacCellCfg();
+extern uint8_t duBuildAndSendMacCellCfg();
 
 /*******************************************************************
  *
@@ -55,10 +55,10 @@ extern S16 duBuildAndSendMacCellCfg();
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
+uint8_t procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 {
    U16 idx = 0;
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 
    for(idx=0; idx<cellsToActivate.list.count; idx++)
    {
@@ -202,7 +202,7 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
+uint8_t procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
 {
    DU_LOG("\nF1AP : GNB-DU config update acknowledgment received");
 /* TODO :Check the deallocation */

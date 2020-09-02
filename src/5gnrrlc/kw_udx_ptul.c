@@ -81,7 +81,7 @@ SpId spId;                    /* Status */
 {
    TRC3(PtUlUdxBndReq)
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndReq */
 
@@ -121,7 +121,7 @@ Reason Reason;                    /* Status */
 {
    TRC3(PtUlUdxUbndReq)
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of PtDlUdxBndReq */
 
@@ -141,7 +141,7 @@ RlcCfgInfo *cfmInfo;              /* Config Info */
 {
    TRC3(PtUlUdxCfgReq)
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxCfgReq */
 
@@ -166,7 +166,7 @@ CkwUeInfo *newUeInfo;          /* Config Info */
    TRC3(PtUlUdxUeIdChgReq)
 
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxCfgReq */
 
@@ -181,7 +181,7 @@ KwUdxDlStaPdu       *pStaPdu
 {
    TRC3(PtUlUdxStaPduReq);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -215,7 +215,7 @@ KwUdxDlStaPdu       *pStaPdu;
 
    TRC3(PtUlUdxStaUpdReq);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of RlcUlmDlmStaUpd*/
 
 #ifdef LTE_L2_MEAS
@@ -246,7 +246,7 @@ KwL2MeasReqEvt      *measReqEvt;
 
    TRC3(PtUlUdxL2MeasReq);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -276,7 +276,7 @@ U8                  status
 
    TRC3(PtUlUdxL2MeasSendReq);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -306,7 +306,7 @@ U8                  status
 
    TRC3(PtUlUdxL2MeasStopReq);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 #endif
@@ -523,7 +523,7 @@ SpId spId;                    /* Status */
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxBndReqMt[pst->selector])(pst, suId, spId);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndReq */
 
@@ -566,7 +566,7 @@ Reason Reason;                    /* Status */
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxUbndReqMt[pst->selector])(pst, spId,reason );
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxBndReq */
 
@@ -589,7 +589,7 @@ RlcCfgInfo *cfmInfo;              /* Config Info */
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxCfgReqMt[pst->selector])(pst, spId, cfmInfo);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxCfgReq */
 
@@ -616,7 +616,7 @@ CkwUeInfo *newUeInfo;          /* Config Info */
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxUeIdChgReqMt[pst->selector])(pst, spId,transId,ueInfo,newUeInfo);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rlcDlUdxCfgReq */
 
@@ -632,7 +632,7 @@ KwUdxDlStaPdu       *pStaPdu
 {
    TRC3(rlcUlUdxStaPduReq);
 
-   RETVALUE((*rlcUlUdxStaPduReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
+   return ((*rlcUlUdxStaPduReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
 }
 
 /**
@@ -666,7 +666,7 @@ KwUdxStaPdu         *pStaPdu;
 
    TRC3(rlcUlUdxStaUpdReq);
 
-   RETVALUE((*rlcUlUdxStaUpdReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
+   return ((*rlcUlUdxStaUpdReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
 } /* end of RlcUlmDlmStaUpd*/
 
 #ifdef LTE_L2_MEAS
@@ -697,7 +697,7 @@ KwL2MeasReqEvt      *measReqEvt;
 
    TRC3(rlcUlUdxStaUpdReq);
 
-   RETVALUE((*rlcUlUdxL2MeasReqMt[pst->selector])(pst,measReqEvt));
+   return ((*rlcUlUdxL2MeasReqMt[pst->selector])(pst,measReqEvt));
 } /* end of rlcUlUdxL2MeasReq*/
 
 /**
@@ -727,7 +727,7 @@ U8                  measType;
 
    TRC3(rlcUlUdxStaUpdReq);
 
-   RETVALUE((*rlcUlUdxL2MeasSendReqMt[pst->selector])(pst,measType));
+   return ((*rlcUlUdxL2MeasSendReqMt[pst->selector])(pst,measType));
 } /* end of rlcUlUdxMesReq*/
 
 /**
@@ -757,7 +757,7 @@ U8                  measType;
 
    TRC3(rlcUlUdxStaUpdReq);
 
-   RETVALUE((*rlcUlUdxL2MeasStopReqMt[pst->selector])(pst,measType));
+   return ((*rlcUlUdxL2MeasStopReqMt[pst->selector])(pst,measType));
 } /* end of rlcUlUdxMesReq*/
 #endif
 /**********************************************************************

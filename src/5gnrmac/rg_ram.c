@@ -151,7 +151,7 @@ RgErrInfo      *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                 "Memory allocation FAILED for CRNTI:%d",tmpCrnti);
       err->errCause = RGERR_RAM_MEM_EXHAUST;
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
    /* Inititialize Ue control block */
@@ -178,7 +178,7 @@ RgErrInfo      *err;
       rgDBMInsUeCbInRachLst(cell, ueCb);
    }
 
-   RETVALUE(ueCb);
+   return (ueCb);
 }  /* rgRAMCreateUeCb */
 
 /**
@@ -218,7 +218,7 @@ RgCellCb    *cell;
       rgRAMFreeUeCb(inst,ueCb);
    }
 
-   RETVALUE(ROK); 
+   return ROK; 
 } /* rgRAMFreeCell */
 /**
  * @brief Function for handling RA response scheduled for a subframe.
@@ -268,7 +268,7 @@ RgErrInfo           *err;
 
    if(NULLP == rarInfo->raRntiInfo)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    idx = (timingInfo.slot % RG_NUM_SUB_FRAMES);
@@ -289,7 +289,7 @@ RgErrInfo           *err;
                   rarInfo->raRntiInfo[idx1].crntiInfo[idx2].tmpCrnti, 
                   TRUE, err) == NULLP)
                {
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
             }
          }
@@ -314,7 +314,7 @@ RgErrInfo           *err;
          continue;
       }
    } /* end of raRntis loop */
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgHndlRaResp */
 
 /**********************************************************************

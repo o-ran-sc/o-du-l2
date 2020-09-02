@@ -327,15 +327,15 @@ F64    n;
 {
  if( n==0 )
  {
-   RETVALUE( 1 );
+   return ( 1 );
  }
  else if ( n>0 )
  {
-   RETVALUE( x * rgSCHUtlPower( x, n-1 ) );
+   return ( x * rgSCHUtlPower( x, n-1 ) );
  }
  else
  {
-   RETVALUE( (1/x) * rgSCHUtlPower( x, n+1 ) );
+   return ( (1/x) * rgSCHUtlPower( x, n+1 ) );
  }
 } /* end of rgSCHUtlPower*/
 
@@ -383,7 +383,7 @@ U8     buffSize;
       }
       pointToEnd++;
    }
-   RETVALUE((U32)result);
+   return ((U32)result);
 } /* end of rgSCHUtlParse*/
 
 /*
@@ -421,7 +421,7 @@ U16    tempIdx;
     crntTime += RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
     dist+=1;
  }
- RETVALUE(dist-1);
+ return (dist-1);
 } /* end of rgSCHUtlFindDist*/
 #endif
 
@@ -525,7 +525,7 @@ RgSchPdcch              **pdcch;
 	if ((offset >= ((pdcchInfo->nCce + 7) >> 3)) || 
 		  ((aggrLvl == CM_LTE_AGGR_LVL16) && (offset > 0)))
 	{
-		RETVALUE(FALSE);
+		return (FALSE);
 	}
 
 	byte = &pdcchInfo->map[offset];
@@ -540,7 +540,7 @@ RgSchPdcch              **pdcch;
       ret = rgSCHUtlAllocSBuf(inst, (Data **)pdcch, sizeof(RgSchPdcch));
       if(ROK != ret)
       {
-         RETVALUE(FALSE);
+         return (FALSE);
       }
    }
 
@@ -558,7 +558,7 @@ RgSchPdcch              **pdcch;
       (*pdcch)->nCce = aggrLvl;
       (*pdcch)->ue = NULLP;
    }
-   RETVALUE(TRUE);
+   return (TRUE);
 }
 
 
@@ -838,7 +838,7 @@ PRIVATE Void rgSchSFRTotalPoolInit(cell, sf)
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
 		      "CE Pool memory allocation FAILED for cell");       
       rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo, cell);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&temp->node, sizeof(RgSchSFRPoolInfo));
@@ -847,7 +847,7 @@ PRIVATE Void rgSchSFRTotalPoolInit(cell, sf)
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
 		      "CE Pool memory allocation FAILED for cell ");       
       rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    l = &sf->sfrTotalPoolInfo.cePool;
@@ -881,7 +881,7 @@ PRIVATE Void rgSchSFRTotalPoolInit(cell, sf)
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
 		      "CC Pool memory allocation FAILED for cell ");       
       rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&temp->node, sizeof(RgSchSFRPoolInfo));
@@ -890,7 +890,7 @@ PRIVATE Void rgSchSFRTotalPoolInit(cell, sf)
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
 		      "CC Pool memory allocation FAILED for cell ");       
       rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    l = &sf->sfrTotalPoolInfo.ccPool;
@@ -943,7 +943,7 @@ PRIVATE Void rgSchSFRTotalPoolInit(cell, sf)
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
 			 "CC Pool memory allocation FAILED for cell ");       
          rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&temp->node, sizeof(RgSchSFRPoolInfo));
@@ -952,7 +952,7 @@ PRIVATE Void rgSchSFRTotalPoolInit(cell, sf)
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
 			 "CC Pool memory allocation FAILED for cell ");       
          rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       cmLListAdd2Tail(l, temp);
@@ -981,7 +981,7 @@ PRIVATE Void rgSchSFRTotalPoolInit(cell, sf)
    sf->sfrTotalPoolInfo.ccBwFull          = FALSE;
    sf->sfrTotalPoolInfo.ceBwFull          = FALSE;
    sf->sfrTotalPoolInfo.isUeCellEdge      = FALSE;
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief This function resets temporary variables in RNTP Prepration
@@ -1026,10 +1026,10 @@ PRIVATE Void rgSchDSFRRntpInfoInit(rntpPtr, cell, bw)
                (len * sizeof(U8)))) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for RNTP Alloc");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -1073,7 +1073,7 @@ PRIVATE Void rgSchDSFRRntpInfoFree(rntpPtr, cell, bw)
       rntpPtr->len  = 0;   
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -1259,7 +1259,7 @@ Bool                    isForMsg3;
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, " rgSCHUtlAddPhich(): "
                "Allocation of RgSchPhich failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef LTE_TDD
    RGSCH_INITPHICH(phich, hqFeedBack, nDmrs, rbStart, iPhich);
@@ -1267,7 +1267,7 @@ Bool                    isForMsg3;
    RGSCH_INITPHICH(phich, hqFeedBack, nDmrs, rbStart, isForMsg3); /*SR_RACH_STATS */
 #endif
    cmLListAdd2Tail(&dlSf->phichInfo.phichs, &phich->lnk);
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUtlAddPhich */
 
 /**
@@ -1364,7 +1364,7 @@ CmLteTimingInfo        frm;
   /* CA dev Start */
    sf->dlIdx    = dlIdx;
   /* CA dev End */
-   RETVALUE(sf);
+   return (sf);
 }
 
 
@@ -1532,7 +1532,7 @@ U32               n;
          ret |= s[i];
       }
    }
-   RETVALUE(ret);
+   return (ret);
 }
 
 #ifdef LTEMAC_SPS
@@ -1711,7 +1711,7 @@ Bool  isEcp;
       default: /* case 1 */
          regs += bw * RGSCH_NUM_REGS_1ST_SYM;
    }
-   RETVALUE(regs);
+   return (regs);
 }
 
 /***********************************************************
@@ -1741,7 +1741,7 @@ U8 ng6;
 {
    TRC2(rgSCHUtlCalcPhichRegs);
    /* ccpu00115330: Corrected the calculation for number of PHICH groups*/
-   RETVALUE(RGSCH_CEIL((bw * ng6) ,(8 * 6)) * RGSCH_NUM_REG_PER_PHICH_GRP);
+   return (RGSCH_CEIL((bw * ng6) ,(8 * 6)) * RGSCH_NUM_REG_PER_PHICH_GRP);
 }
 
 #ifdef LTE_TDD
@@ -1816,7 +1816,7 @@ Bool           isEcp;
    phichRegs = rgSCHUtlCalcPhichRegs(bw, ng6);
    cceRegs   = totalRegs - mPhich*phichRegs - RGSCH_NUM_PCFICH_REG;
 
-   RETVALUE((U8)(cceRegs/RGSCH_NUM_REG_PER_CCE));
+   return ((U8)(cceRegs/RGSCH_NUM_REG_PER_CCE));
 }
 
 #else
@@ -1887,7 +1887,7 @@ Bool           isEcp;
    phichRegs = rgSCHUtlCalcPhichRegs(bw, ng6);
    cceRegs   = totalRegs - phichRegs - RGSCH_NUM_PCFICH_REG;
 
-   RETVALUE((U8)(cceRegs/RGSCH_NUM_REG_PER_CCE));
+   return ((U8)(cceRegs/RGSCH_NUM_REG_PER_CCE));
 }
 #endif
 
@@ -1953,7 +1953,7 @@ U8                *nDmrsRef;
 #endif
        ret = ROK;
     }
-    RETVALUE(ret);
+    return (ret);
 }
 #ifndef TFU_UPGRADE
 /**
@@ -2024,7 +2024,7 @@ U8             *hqPId;
 #if (ERRCLASS & ERRCLS_DEBUG)
    if ((alloc == NULLP) || (alloc->hqProc == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -2035,7 +2035,7 @@ U8             *hqPId;
          RLOG_ARG2(L_ERROR,DBG_CELLID,alloc->ue->cell->cellId,
                      "Failed: ue->sch is null RNTI:%d,isRetx=%d",
                      alloc->rnti, alloc->grnt.isRtx);
-         RETVALUE(RFAILED); 
+         return RFAILED; 
       }
      ueCtgy =  (RG_SCH_CMN_GET_UE_CTGY(alloc->ue));
    }
@@ -2055,7 +2055,7 @@ U8             *hqPId;
    *ndi        = alloc->hqProc->ndi;
    *hqPId      = alloc->hqProc->procId;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #else
 /**
@@ -2100,7 +2100,7 @@ TfuUeUlSchRecpInfo      *recpReq;
 #if (ERRCLASS & ERRCLS_DEBUG)
    if ((alloc == NULLP) || (alloc->hqProc == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    recpReq->size           = alloc->grnt.datSz;
@@ -2173,7 +2173,7 @@ TfuUeUlSchRecpInfo      *recpReq;
    }
 #endif
   /* ccpu00117050 - DEL - nSrs setting at rgSCHUtlAllocRcptInfo */
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -2405,7 +2405,7 @@ RgSchErrInfo      *errInfo;
                (Data **)&cell->subFrms, sizeof(RgSchDlSf *) * maxslots);
    if (cell->subFrms == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Create memory for each frame. */
@@ -2467,7 +2467,7 @@ RgSchErrInfo      *errInfo;
       rgSCHUtlFreeSBuf(cell->instIdx,
             (Data **)(&(cell->subFrms)), sizeof(RgSchDlSf *) * maxslots);
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cell->sc.apis == NULLP)
@@ -2481,7 +2481,7 @@ RgSchErrInfo      *errInfo;
       /* ccpu00132286- Removed deletion of sf nodes as the deletion will be 
        * happening during CellDelete. Added return handling to provide negative
        * confirm*/
-      RETVALUE(ret);
+      return (ret);
    }
 
    /* Release the slots and thereby perform the initialization */
@@ -2496,7 +2496,7 @@ RgSchErrInfo      *errInfo;
      rgSCHUtlDlRlsSubFrm(cell, frm);
    }
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 #else
@@ -2597,7 +2597,7 @@ RgSchErrInfo      *errInfo;
          /*initialize the RNTP Buffer*/
          if(rgSchDSFRRntpInfoInit(&sf->rntpInfo, cell, sf->bw))
          {
-            RETVALUE(RFAILED); 
+            return RFAILED; 
          }
       }
 
@@ -2606,7 +2606,7 @@ RgSchErrInfo      *errInfo;
          /*initialise the pools of CC and CE*/
          if(rgSchSFRTotalPoolInit(cell, sf))
          {
-            RETVALUE(RFAILED); 
+            return RFAILED; 
          }
       }
       /* LTE_ADV_FLAG_REMOVED_END */
@@ -2620,7 +2620,7 @@ RgSchErrInfo      *errInfo;
                   (len * sizeof(U8)))) != ROK)
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for RNTP Alloc");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       cell->rntpAggrInfo.pres = PRSNT_NODEF;
       cell->rntpAggrInfo.len  = len;
@@ -2641,7 +2641,7 @@ RgSchErrInfo      *errInfo;
          rgSCHLaaDeInitDlSfCb(cell, sf);
 #endif
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cell->sc.apis == NULLP)
@@ -2667,7 +2667,7 @@ RgSchErrInfo      *errInfo;
    if (ret != ROK)
    {
       errInfo->errCause = RGSCHERR_SCH_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef EMTC_ENABLE
       if(cell->emtcEnable)
@@ -2680,12 +2680,12 @@ RgSchErrInfo      *errInfo;
                   RGSCH_IOT_PUCCH_POOLSZ, RGSCH_IOT_PUCCH_DELTA, RGSCH_IOT_PUCCH_MAXFREQSZ) != ROK)
          {
             errInfo->errCause = RGSCHERR_SCH_CFG;
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
 #endif
 
-   RETVALUE(ret);
+   return (ret);
 }
 #endif
 
@@ -2722,7 +2722,7 @@ RgSchErrInfo      *err;
 #endif
 {
    TRC2(rgSCHUtlRgrCellRecfg);
-   RETVALUE(cell->sc.apis->rgSCHRgrCellRecfg(cell, recfg, err));
+   return (cell->sc.apis->rgSCHRgrCellRecfg(cell, recfg, err));
 }
 
 
@@ -2870,7 +2870,7 @@ RgSchCellCb          *cell;
    rgSchDSFRRntpInfoFree(&cell->rntpAggrInfo, cell, cell->bwCfg.dlTotalBw);
    /* LTE_ADV_FLAG_REMOVED_END */
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2921,7 +2921,7 @@ RgSchErrInfo               *err;
       if (cfg->txMode.txModeEnum == RGR_UE_TM_5)
       {
          err->errCause = RGSCHERR_SCH_CFG;
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       ue->mimoInfo.txMode = cfg->txMode.txModeEnum;
    }
@@ -2934,7 +2934,7 @@ RgSchErrInfo               *err;
        (cfg->puschDedCfg.bRIIdx > 15))
    {
       err->errCause = RGSCHERR_SCH_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ue->ul.betaHqOffst = cfg->puschDedCfg.bACKIdx;
    ue->ul.betaCqiOffst = cfg->puschDedCfg.bCQIIdx;
@@ -2945,7 +2945,7 @@ RgSchErrInfo               *err;
    cmMemset((U8 *)&ue->pfsStats, 0, sizeof(RgSchPfsStats));
 #endif
    /* Call the handler of the scheduler based on cell configuration */
-   RETVALUE(cell->sc.apis->rgSCHRgrUeCfg(cell, ue, cfg, err));
+   return (cell->sc.apis->rgSCHRgrUeCfg(cell, ue, cfg, err));
 }
 /* Start : LTEMAC_2.1_DEV_CFG */
 
@@ -2988,7 +2988,7 @@ RgSchErrInfo               *errInfo;
 #endif
 {
    TRC2(rgSCHUtlRgrLcCfg);
-   RETVALUE(cell->sc.apis->rgSCHRgrLchCfg(cell, ue, dlLc, cfg, errInfo));
+   return (cell->sc.apis->rgSCHRgrLchCfg(cell, ue, dlLc, cfg, errInfo));
 }
 
 
@@ -3031,7 +3031,7 @@ RgSchErrInfo               *err;
 #endif
 {
    TRC2(rgSCHUtlRgrLcRecfg);
-   RETVALUE(cell->sc.apis->rgSCHRgrLchRecfg(cell, ue, dlLc, recfg, err));
+   return (cell->sc.apis->rgSCHRgrLchRecfg(cell, ue, dlLc, recfg, err));
 }
 
 /**
@@ -3070,7 +3070,7 @@ U8                         lcgId;
    TRC2(rgSCHUtlRgrLcDel);
    cell->sc.apis->rgSCHRgrLchDel(cell, ue, lcId, lcgId);
 
-   RETVALUE (ROK);
+   return  (ROK);
 } /* rgSCHUtlRgrLcDel */
 
 /**
@@ -3109,7 +3109,7 @@ RgSchErrInfo               *errInfo;
 #endif
 {
    TRC2(rgSCHUtlRgrLcgCfg);
-   RETVALUE(cell->sc.apis->rgSCHRgrLcgCfg(cell, ue, &(ue->ul.lcgArr[cfg->ulInfo.lcgId]), cfg, errInfo));
+   return (cell->sc.apis->rgSCHRgrLcgCfg(cell, ue, &(ue->ul.lcgArr[cfg->ulInfo.lcgId]), cfg, errInfo));
 }
 
 
@@ -3149,7 +3149,7 @@ RgSchErrInfo               *err;
 #endif
 {
    TRC2(rgSCHUtlRgrLcgRecfg);
-   RETVALUE(cell->sc.apis->rgSCHRgrLcgRecfg(cell, ue, &(ue->ul.lcgArr[recfg->ulRecfg.lcgId]), recfg, err));
+   return (cell->sc.apis->rgSCHRgrLcgRecfg(cell, ue, &(ue->ul.lcgArr[recfg->ulRecfg.lcgId]), recfg, err));
 } /* rgSCHUtlRgrLcRecfg */
 
 /**
@@ -3818,7 +3818,7 @@ PUBLIC RgSchCellCb* rgSchUtlGetCellCb(inst, cellId)
    strtCellId = rgSchCb[inst].genCfg.startCellId;
    cellCb     = rgSchCb[inst].cells[cellId - strtCellId];
 
-   RETVALUE(cellCb);
+   return (cellCb);
 
 }  /* rgSchUtlGetCellCb */
 
@@ -3857,7 +3857,7 @@ PUBLIC U8 rgSchUtlGetServCellIdx(inst,cellId,ue)
 
    servCellIdx = ue->cellIdToCellIdxMap[cellId - strtCellId];
 
-   RETVALUE(servCellIdx);
+   return (servCellIdx);
 
 }  /* rgSchUtlGetCellCb */
 
@@ -3892,9 +3892,9 @@ PUBLIC S16 rgSchUtlVldtCellId(inst, cellId)
    strtCellId = rgSchCb[inst].genCfg.startCellId;
    if((cellId >= strtCellId) && ((cellId - strtCellId) < CM_LTE_MAX_CELLS))
    {
-      RETVALUE(ROK);
+      return ROK;
    }
-   RETVALUE(RFAILED);
+   return RFAILED;
 }  /* rgSchUtlVldtCellId */
 
 #endif /* LTE_ADV*/
@@ -3955,7 +3955,7 @@ RgSchErrInfo *err;
          if (ueRecfg->txMode.txModeEnum == RGR_UE_TM_5)
          {
             err->errCause = RGSCHERR_SCH_CFG;
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 #ifdef LTE_ADV
         if(ue->mimoInfo.txMode != ueRecfg->txMode.txModeEnum)
@@ -3995,7 +3995,7 @@ RgSchErrInfo *err;
 
    /* Commenting here to assign garbage value when it is not set in APP. */
    //ue->accessStratumRls = ueRecfg->accessStratumRls;
-   RETVALUE(cell->sc.apis->rgSCHRgrUeRecfg(cell, ue, ueRecfg, err));
+   return (cell->sc.apis->rgSCHRgrUeRecfg(cell, ue, ueRecfg, err));
 }  /* rgSCHUtlRgrUeRecfg */
 
 /**
@@ -4176,7 +4176,7 @@ RgSchUlHqProcCb  *oldProc;
 #endif
 {
    TRC2(rgSCHUtlUpdUlHqProc);
-   RETVALUE(cell->sc.apis->rgSCHUpdUlHqProc(cell, curProc, oldProc));
+   return (cell->sc.apis->rgSCHUpdUlHqProc(cell, curProc, oldProc));
 }  /* rgSCHUtlUpdUlHqProc */
 #endif
 /**
@@ -4215,7 +4215,7 @@ RgSchErrInfo *err;
 
    ue->isMsg4PdcchWithCrnti = TRUE; 
 
-   RETVALUE(cell->sc.apis->rgSCHContResUlGrant(cell, ue, err));
+   return (cell->sc.apis->rgSCHContResUlGrant(cell, ue, err));
 }  /* rgSCHUtlContResUlGrant */
 
 /**
@@ -4251,7 +4251,7 @@ RgSchErrInfo *err;
 #endif
 {
    TRC2(rgSCHUtlSrRcvd);
-   RETVALUE(cell->sc.apis->rgSCHSrRcvd(cell, ue, frm, err));
+   return (cell->sc.apis->rgSCHSrRcvd(cell, ue, frm, err));
 }  /* rgSCHUtlSrRcvd */
 
 /**
@@ -4429,7 +4429,7 @@ RgSchErrInfo *err;
 #endif
 {
    TRC2(rgSCHUtlUpdExtPhr);
-   RETVALUE(cell->sc.apis->rgSCHUpdExtPhr(cell, ue, extPhr, err));
+   return (cell->sc.apis->rgSCHUpdExtPhr(cell, ue, extPhr, err));
 }  /* rgSCHUtlUpdExtPhr */
 
 
@@ -4468,7 +4468,7 @@ RgSchErrInfo *err;
 #endif
 {
    TRC2(rgSCHUtlUpdPhr);
-   RETVALUE(cell->sc.apis->rgSCHUpdPhr(cell, ue, phr, err));
+   return (cell->sc.apis->rgSCHUpdPhr(cell, ue, phr, err));
 }  /* rgSCHUtlUpdPhr */
 
 
@@ -4643,7 +4643,7 @@ RgSchCellCb      *cell;
 #endif
 {
    TRC2(rgSCHUtlFirstRcptnReq);
-   RETVALUE(cell->sc.apis->rgSCHFirstRcptnReq(cell));
+   return (cell->sc.apis->rgSCHFirstRcptnReq(cell));
 }
 
 /**
@@ -4676,7 +4676,7 @@ RgSchUlAlloc     *alloc;
 #endif
 {
    TRC2(rgSCHUtlNextRcptnReq);
-   RETVALUE(cell->sc.apis->rgSCHNextRcptnReq(cell, alloc));
+   return (cell->sc.apis->rgSCHNextRcptnReq(cell, alloc));
 }
 
 /**
@@ -4710,7 +4710,7 @@ U8               idx;
 #endif
 {
    TRC2(rgSCHUtlFirstHqFdbkAlloc);
-   RETVALUE(cell->sc.apis->rgSCHFirstHqFdbkAlloc(cell, idx));
+   return (cell->sc.apis->rgSCHFirstHqFdbkAlloc(cell, idx));
 }
 
 
@@ -4744,7 +4744,7 @@ U8               idx;
 #endif
 {
    TRC2(rgSCHUtlNextHqFdbkAlloc);
-   RETVALUE(cell->sc.apis->rgSCHNextHqFdbkAlloc(cell, alloc, idx));
+   return (cell->sc.apis->rgSCHNextHqFdbkAlloc(cell, alloc, idx));
 }
 
 /***********************************
@@ -4794,7 +4794,7 @@ SpId    spId;
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"rgSCHUtlTfuBndReq() Call to RgLiTfuBndReq()"
                     " failed");
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlTfuBndReq */
 
 /**
@@ -4838,7 +4838,7 @@ Reason  reason;
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"rgSCHUtlTfuUBndReq() Call to"
                                     " RgLiTfuUbndReq() failed");
    }
-   RETVALUE(ret);
+   return (ret);
 
 }  /* rgSCHUtlTfuUBndReq */
 
@@ -4886,7 +4886,7 @@ Bool         restAlloc;
    {
       sfAlloc->cmnLcInfo.bitMask = 0;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -4930,11 +4930,11 @@ RgSchCellCb *cell;
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for "
             "UE Alloc");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -4981,7 +4981,7 @@ RgSchCellCb *cell;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -5034,7 +5034,7 @@ RgSchCellCb *cell;
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for "
             "UE Alloc");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* Allocate memory for "scheduled RAR" Info */
@@ -5044,7 +5044,7 @@ RgSchCellCb *cell;
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for "
             "RARNTI");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       for(indx = 0; indx < RGSCH_MAX_RARNTI_PER_DL_SF; indx++)
       {
@@ -5054,7 +5054,7 @@ RgSchCellCb *cell;
          {
             RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for "
                "RNTI");
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
 
@@ -5064,7 +5064,7 @@ RgSchCellCb *cell;
    rgSCHEmtcUtlGetSfAlloc(cell);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -5139,7 +5139,7 @@ RgSchCellCb *cell;
 #ifdef EMTC_ENABLE
    rgSCHEmtcUtlPutSfAlloc(cell);
 #endif
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -5185,7 +5185,7 @@ Size    size;               /* size */
 #ifndef NO_ERRCLS
    if (size == 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -5205,14 +5205,14 @@ Size    size;               /* size */
                                        LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
      RGSCHLOGERROR(inst, ERRCLS_DEBUG, ERG015, 0, "Unable to Allocate Buffer");
      RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "Unable to Allocate the Buffer");
-     RETVALUE(RFAILED);
+     return RFAILED;
    }
 
 
    /* zero out the allocated memory */
    cmMemset((U8 *)*pData, 0x00, size);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rgSCHUtlAllocSBuf */
 
@@ -5418,11 +5418,11 @@ RgSchCellCb             *cell;
    {
       warningSiPdu = (RgSchWarningSiPdu *)node->node;
       pdu = warningSiPdu->pdu;
-      RETVALUE(pdu);
+      return (pdu);
    }
    else
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }                                                  
 } /* rgSCHUtlGetWarningSiPdu  */    
 
@@ -5475,17 +5475,17 @@ MsgLen              *msgLen;
       CM_LLIST_FIRST_NODE(&warningSi->warningSiMsg.segLstCp, node);
       if (node == NULLP)
       {
-        RETVALUE(RFAILED);
+        return RFAILED;
       }
       
       warningSiPdu = (RgSchWarningSiPdu *)node->node;
       *mcs = warningSiPdu->mcs;
       *nPrb = warningSiPdu->nPrb;
       *msgLen = warningSiPdu->msgLen;
-      RETVALUE(ROK);
+      return ROK;
             
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUtlGetMcsAndNPrb  */     
 
 /*
@@ -5526,7 +5526,7 @@ U8                  siId;
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "msgLen does "
             "not match any valid TB Size");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
 
@@ -5572,7 +5572,7 @@ U8                  siId;
       cell->siCb.crntSiInfo.siInfo[siId-1].msgLen = msgLen;
    }
 
-    RETVALUE(ROK);
+    return ROK;
 }
 #endif
 
@@ -5732,7 +5732,7 @@ Bool            sendInd;
       sfAlloc->cmnLcInfo.pcchInfo.lcId = lcId;
       sfAlloc->cmnLcInfo.bitMask |= RGINF_PCCH_INFO;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /** @brief This function fills in the RAR information to be sent to MAC
@@ -5869,7 +5869,7 @@ RgSchCellCb     *cell;
       TODO-Need to add a check for max tx power per symbol */
    sfAlloc->rarInfo.txPwrOffset = cellDl->rarTxPwrOffset;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHUtlFillRgInfRarInfo */
 
 /** @brief This function fills in the pdsch data related allocation Info
@@ -5946,13 +5946,13 @@ TfuDciInfo      *pdcchDci;
  ret = rgSCHEmtcUtlFillPdschDciInfo(pdsch, pdcchDci);
  if(RFAILED == ret)
  {
-      RETVALUE(RFAILED);
+      return RFAILED;
 	 }
 #else  
-	 RETVALUE(RFAILED);
+	 return RFAILED;
 #endif
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* LTE_ADV_FLAG_REMOVED_START */
@@ -6574,7 +6574,7 @@ RgSchErrInfo     *err;
       /* PHR present */
       RGSCHCPYTIMEINFO(subfrmInfo->timingInfo, ueCb->macCeRptTime);
       if ((ret = rgSCHUtlUpdPhr(cellCb, ueCb, pdu->ceInfo.ces.phr, err)) != ROK)
-         RETVALUE(ret);
+         return (ret);
    }
    /* Note: Order of indication to Sch now is
     *       1st Indicate the DataInd info for each LCG's
@@ -6628,7 +6628,7 @@ RgSchErrInfo     *err;
    }
 #endif
             
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHUtlUpdSch */
 #ifdef RGR_V1
 /**
@@ -6670,13 +6670,13 @@ RgSchUeCb         *ueCb;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unexpected CCCH SDU BO",
          ueCb->ueId);
-      RETVALUE(ROK);
+      return ROK;
    }
 
    ueCb->ccchSduLnk.node = (PTR)(ueCb);
    cmLListAdd2Tail(&(cell->ccchSduUeLst), &(ueCb->ccchSduLnk));
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  *
@@ -6711,7 +6711,7 @@ RgInfCmnBoRpt     *staRsp;
    {
       /* Handle Ue fetch failure */
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid UEID:%d",staRsp->u.rnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Update Bo in ueCb */
    ueCb->dlCcchInfo.bo = (U32)(staRsp->bo);
@@ -6726,7 +6726,7 @@ RgInfCmnBoRpt     *staRsp;
       rgSCHUtlAddUeToCcchSduLst(cell, ueCb);
     }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUtlUpdtBo */
 
 #endif
@@ -6767,12 +6767,12 @@ RgInfCmnBoRpt  *boRpt;
 #ifdef RGR_V1
    /* CR timer implementation changes*/
       /*If no raCb, schedule ueCb, ueCb is extracted in rgSCHUtlUpdtBo*/
-      RETVALUE(rgSCHUtlUpdtBo(cell, boRpt));
+      return (rgSCHUtlUpdtBo(cell, boRpt));
 #else
       /* Handle RaCb fetch failure */
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
 		      "Invalid RNTI:%d to fetch raCb",boRpt->u.rnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 
@@ -6807,7 +6807,7 @@ RgInfCmnBoRpt  *boRpt;
          {
             /* Handle Ue fetch failure */
             RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid RNTI:%d",boRpt->u.rnti);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          /* Update Bo in ueCb */
          ueCb->dlCcchInfo.bo = (U32)(boRpt->bo);     
@@ -6817,7 +6817,7 @@ RgInfCmnBoRpt  *boRpt;
       rgSCHRamUpdtBo(cell, raCb, boRpt);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUtlHndlCcchBoUpdt */
 
 /**
@@ -6866,7 +6866,7 @@ U8  *mcs;
       {
          *nPrb = rgSchUtlBcchPcchTbSzTbl[cn].rbIndex;
          *mcs  = rgSchUtlBcchPcchTbSzTbl[cn].mcs;
-         RETVALUE(rgSchUtlBcchPcchTbSzTbl[cn].tbSz);
+         return (rgSchUtlBcchPcchTbSzTbl[cn].tbSz);
       }
       else if (rgSchUtlBcchPcchTbSzTbl[cn].tbSz < bo)
          lt = cn + 1;
@@ -6875,11 +6875,11 @@ U8  *mcs;
    }
    if (lt == 44)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    *nPrb = rgSchUtlBcchPcchTbSzTbl[lt].rbIndex;
    *mcs  = rgSchUtlBcchPcchTbSzTbl[lt].mcs;
-   RETVALUE(rgSchUtlBcchPcchTbSzTbl[lt].tbSz);
+   return (rgSchUtlBcchPcchTbSzTbl[lt].tbSz);
 }
 
 /**
@@ -6923,7 +6923,7 @@ RgInfCmnBoRpt  *boUpdt;
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
       "No Logical Channel dlLc is NULLP for RNTI:%d LCID:%d",boUpdt->u.rnti,boUpdt->lcId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (boUpdt->lcId != dlLc->lcId)
    {
@@ -6936,12 +6936,12 @@ RgInfCmnBoRpt  *boUpdt;
          {
             RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,"[%ld]BO: does not match any "
                   "valid TB Size RNTI:%d LCID:%d", boUpdt->bo,boUpdt->u.rnti,boUpdt->lcId);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }/*end of rgSCHChkBoUpdate*/
       else
       {
-          RETVALUE(ROK);
+          return ROK;
       } 
    }
    if ((dlLc = rgSCHDbmGetCmnLcCb(cell, boUpdt->lcId)) == NULLP)
@@ -6956,7 +6956,7 @@ RgInfCmnBoRpt  *boUpdt;
    {
       RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId, "Allocation of common bo %dreport "
          "failed  RNTI:%d LCID:%d", boUpdt->bo,boUpdt->u.rnti,boUpdt->lcId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    boRpt->bo = boUpdt->bo;
@@ -6982,7 +6982,7 @@ RgInfCmnBoRpt  *boUpdt;
    }
    rgSCHDbmInsCmnLcBoRpt(dlLc, boRpt);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUtlHndlBcchPcchBoUpdt */
 
 /**
@@ -7025,9 +7025,9 @@ U8            status;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"rgSCHUtlRgrBndCfm: RgUiRgrBndCfm Failed ");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlRgrBndCfm*/
 
 /**
@@ -7070,9 +7070,9 @@ U8            status;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"rgSCHUtlRgmBndCfm: RgUiRgrBndCfm Failed ");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlRgmBndCfm*/
 
 
@@ -7130,9 +7130,9 @@ U8            status;
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"schSendCfgCfm: RgUiRgrCfgCfm Failed");
       printf("\nschSendCfgCfm: RgUiRgrCfgCfm Failed ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* schSendCfgCfm*/
 #ifdef RGR_RRM_TICK
 /**
@@ -7179,7 +7179,7 @@ RgrTtiIndInfo        *rgrTti;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "rgSCHUtlRgrTtiInd() Upper SAP not bound (%d) ",
                rgrSap->sapSta.sapState);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    RgUiRgrTtiInd(&(cell->rgrSap->sapCfg.sapPst),
          cell->rgrSap->sapCfg.suId, rgrTti);
@@ -7189,7 +7189,7 @@ RgrTtiIndInfo        *rgrTti;
       mtTmrHdlrPublic();
    }
 #endif
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlRgrTtiInd*/
 #endif
 /** @brief This function is called by rgMacSchSfRecpInd. This function invokes the
@@ -7248,7 +7248,7 @@ RgSchErrInfo     *err;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, "RNTI:%d Received MSG3, unable to "
          "find raCb",rnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* ccpu00130982: Processing CRNTI MAC CE before Short BSR, if any, such that 
@@ -7258,7 +7258,7 @@ RgSchErrInfo     *err;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"Processing failed in the RAM "
          "RNTI:%d ",rnti);
-      RETVALUE(ret);
+      return (ret);
    }
    /* if ueCb is present */
    if (ueCb != NULLP)
@@ -7266,7 +7266,7 @@ RgSchErrInfo     *err;
       rgSCHUtlUpdSch (subfrmInfo, cellCb, ueCb, pdu, err);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #ifdef LTEMAC_SPS
 /** @brief This function is called by RgMacSchSpsRelInd. This function invokes the
@@ -7303,7 +7303,7 @@ Bool               isExplRel;
 {
    TRC2(rgSCHUtlSpsRelInd);
    cellCb->sc.apis->rgSCHUlSpsRelInd(cellCb, ueCb, isExplRel);
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHUtlSpsRelInd */
 
 
@@ -7341,7 +7341,7 @@ U16                spsSduSize;
 {
    TRC2(rgSCHUtlSpsActInd);
    cellCb->sc.apis->rgSCHUlSpsActInd(cellCb, ueCb, spsSduSize);
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHUtlSpsActInd */
 
 
@@ -7390,7 +7390,7 @@ TfuGrpPwrCntrlReqInfo *grpPwrCntrlReq;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,grpPwrCntrlReq->cellId,
 		      "rgSCHUtlTfuGrpPwrCntrlReq() Lower SAP not bound (%d) ",tfuSap->sapSta.sapState);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cmMemcpy ((U8*)&pst, (U8*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
    if((ret = RgLiTfuGrpPwrCntrlReq (&pst, tfuSap->sapCfg.spId, grpPwrCntrlReq)) != ROK)
@@ -7398,7 +7398,7 @@ TfuGrpPwrCntrlReqInfo *grpPwrCntrlReq;
       RLOG_ARG0(L_ERROR,DBG_CELLID,grpPwrCntrlReq->cellId,
 		      "rgSCHUtlTfuGrpPwrCntrlReq() Call to RgLiTfuGrpPwrCntrlReq() failed");
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlTfuGrpPwrCntrlReq */
 #endif
 
@@ -7446,7 +7446,7 @@ TfuCntrlReqInfo *cntrlReq;
       RLOG_ARG1(L_ERROR,DBG_INSTID,inst,"rgSCHUtlTfuCntrlReq() Lower SAP not bound (%d) ",
             tfuSap->sapSta.sapState);
       RGSCH_FREE_MEM(cntrlReq);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -7456,7 +7456,7 @@ TfuCntrlReqInfo *cntrlReq;
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"rgSCHUtlTfuCntrlReq() Call to RgLiTfuCntrlReq() failed");
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlTfuCntrlReq*/
 
 
@@ -7493,7 +7493,7 @@ RgSchUeCb   *ue;
 {
    TRC2(rgSCHUtlDlActvtUe);
    cell->sc.apis->rgSCHActvtDlUe(cell, ue);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -7527,7 +7527,7 @@ RgSchUeCb   *ue;
 {
    TRC2(rgSCHUtlUlActvtUe);
    cell->sc.apis->rgSCHActvtUlUe(cell, ue);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -7574,7 +7574,7 @@ TfuRecpReqInfo *recpReq;
       RLOG_ARG1(L_ERROR,DBG_INSTID,inst,"rgSCHUtlTfuRecpReq() Lower SAP not bound (%d) ",
             tfuSap->sapSta.sapState);
       RGSCH_FREE_MEM(recpReq);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -7584,7 +7584,7 @@ TfuRecpReqInfo *recpReq;
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"rgSCHUtlTfuRecpReq() Call to RgLiTfuRecpReq() failed");
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlTfuRecpReq */
 
  /** @brief This function Validates the SAP information received along with the
@@ -7617,7 +7617,7 @@ SuId  suId;
    if(suId >= rgSchCb[inst].numSaps)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "Incorrect SuId");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    tfuSap = &(rgSchCb[inst].tfuSap[suId]);
 
@@ -7626,15 +7626,15 @@ SuId  suId;
    {
       RLOG_ARG2(L_ERROR,DBG_INSTID,inst,"Incorrect SuId. Configured (%d) Recieved (%d)",
             tfuSap->sapCfg.suId, suId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (tfuSap->sapSta.sapState != LRG_BND)
    {
       RLOG_ARG1(L_ERROR,DBG_INSTID,inst,"Lower SAP not enabled SuId (%d)",
             tfuSap->sapCfg.suId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHUtlValidateTfuSap */
 
 /*
@@ -7678,7 +7678,7 @@ Size      memSize;
    {
       RGSCHLOGERROR(inst, ERRCLS_INT_PAR, ERG022, memSize,
                    "rgAllocEventMem(): memSize invalid\n");
-      RETVALUE (RFAILED);
+      return  (RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
    /*starting Task*/
@@ -7694,11 +7694,11 @@ Size      memSize;
 #endif /* */
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"cmAllocEvnt Failed.");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*stoping Task*/
    SStopTask(startTime, PID_SCHUTL_CMALLCEVT);
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHUtlAllocEventMem*/
 
 /*
@@ -7737,7 +7737,7 @@ Ptr       memCp;
 #else
    ret = cmGetMem(memCp, len, (Ptr *)ptr);
 #endif
-   RETVALUE(ret);
+   return (ret);
 } /* end of rgSCHUtlGetEventMem*/
 
 #ifdef LTE_TDD
@@ -7775,7 +7775,7 @@ U8                   servCellIdx;
                (Data **) &(ue->cellInfo[servCellIdx]->anInfo), sizeof(RgSchTddANInfo) * \
                ue->cell->ackNackFdbkArrSize) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for(idx=0; idx < ue->cell->ackNackFdbkArrSize; idx++)
@@ -7785,7 +7785,7 @@ U8                   servCellIdx;
 
    /* Set it to the first index */
    ue->cellInfo[servCellIdx]->nextFreeANIdx = 0;
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUtlAllocUeANFdbkInfo */
 
 /**
@@ -7853,7 +7853,7 @@ RgSchTddANInfo       *anFdInfo;
    anFdInfo->dlDai = RG_SCH_INVALID_DAI_VAL;
    anFdInfo->latestMIdx = RG_SCH_INVALID_M_VAL;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHUtlInitUeANFdbkInfo */
 
 /**
@@ -7893,11 +7893,11 @@ U8                servCellIdx;
        if( (timeInfo->sfn == ueCb->cellInfo[servCellIdx]->anInfo[idx].sfn) &&
                (timeInfo->slot == ueCb->cellInfo[servCellIdx]->anInfo[idx].slot))
        {
-            RETVALUE(&ueCb->cellInfo[servCellIdx]->anInfo[idx]);
+            return (&ueCb->cellInfo[servCellIdx]->anInfo[idx]);
        }
    }
 
-   RETVALUE(NULLP);
+   return (NULLP);
 } /* rgSCHUtlGetUeANFdbkInfo */
 
 /**
@@ -7934,7 +7934,7 @@ CmLteTimingInfo *timeInfo;
          rgSchTddNumDlSubfrmTbl[cell->ulDlCfgIdx][timeInfo->slot]) - 1;
    idx = idx % cell->numDlSubfrms;
 
-   RETVALUE((U8)idx);
+   return ((U8)idx);
 }
 
 /**
@@ -8094,7 +8094,7 @@ U8           maxUePerSf;
                            sizeof(RgSchUlAllocDb));
    if (ret != ROK)
    {
-      RETVALUE(ret);
+      return (ret);
    }
    ret = rgSCHUtlUlAllocDbInit(cell, sf->allocDb, maxUePerSf);
    if (ret != ROK)
@@ -8103,7 +8103,7 @@ U8           maxUePerSf;
       for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(cell->instIdx, (Data **)(&(sf->allocDb)),
                        sizeof(RgSchUlAllocDb));
-      RETVALUE(ret);
+      return (ret);
    }
    ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&sf->holeDb,
          sizeof(RgSchUlHoleDb));
@@ -8114,7 +8114,7 @@ U8           maxUePerSf;
       for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(cell->instIdx, (Data **)(&(sf->allocDb)),
                        sizeof(RgSchUlAllocDb));
-      RETVALUE(ret);
+      return (ret);
    }
    /* Initialize the hole with CFI 1 Pusch Bw Info */ 
    ret = rgSCHUtlUlHoleDbInit(cell, sf->holeDb, (U8)(maxUePerSf + 2), \
@@ -8129,7 +8129,7 @@ U8           maxUePerSf;
                        sizeof(RgSchUlAllocDb));
       rgSCHUtlFreeSBuf(cell->instIdx, (Data **)(&(sf->holeDb)),
                        sizeof(RgSchUlHoleDb));
-      RETVALUE(ret);
+      return (ret);
    }
    cmLListInit(&sf->reTxLst);
 
@@ -8149,7 +8149,7 @@ U8           maxUePerSf;
    }
 #endif
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -8231,11 +8231,11 @@ U8             maxAllocs;
    TRC2(rgSCHUtlUlAllocDbInit);
    if (ret != ROK)
    {
-      RETVALUE(ret);
+      return (ret);
    }
    allocDb->count = 0;
    allocDb->first = NULLP;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -8309,14 +8309,14 @@ U8            num;
    ret = rgSCHUtlUlHoleMemInit(cell, &holeDb->mem, maxHoles, &hole);
    if (ret != ROK)
    {
-      RETVALUE(ret);
+      return (ret);
    }
    holeDb->count = 1;
    holeDb->first = hole;
    hole->start = start;
    hole->num = num;
    hole->prv = hole->nxt = NULLP;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -8382,11 +8382,11 @@ RgSchUlHole *hole;
    TRC2(rgSCHUtlUlAllocGetHole);
    if (numSb < hole->num)
    {
-      RETVALUE(rgSCHUtlUlAllocGetPartHole(sf, numSb, hole));
+      return (rgSCHUtlUlAllocGetPartHole(sf, numSb, hole));
    }
    else
    {
-      RETVALUE(rgSCHUtlUlAllocGetCompHole(sf, hole));
+      return (rgSCHUtlUlAllocGetCompHole(sf, hole));
    }
 }
 
@@ -8454,7 +8454,7 @@ RgSchUlHole *hole;
    /* UL_ALLOC_CHANGES*/
    alloc->allocDbRef = (void*)sf->allocDb;
    alloc->holeDbRef  = (void*)sf->holeDb;
-   RETVALUE(alloc);
+   return (alloc);
 }
 
 /***********************************************************
@@ -8522,7 +8522,7 @@ RgSchUlHole *hole;
    alloc->allocDbRef = (void*)sf->allocDb;
    alloc->holeDbRef  = (void*)sf->holeDb;
 
-   RETVALUE(alloc);
+   return (alloc);
 }
 
 /***********************************************************
@@ -8549,7 +8549,7 @@ RgSchUlSf *sf;
 #endif
 {
    TRC2(rgSCHUtlUlAllocFirst);
-   RETVALUE(sf->allocDb->first);
+   return (sf->allocDb->first);
 }
 
 /***********************************************************
@@ -8579,7 +8579,7 @@ RgSchUlAlloc *alloc;
 {
    TRC2(rgSCHUtlUlAllocNxt);
    UNUSED(sf);
-   RETVALUE(alloc->nxt);
+   return (alloc->nxt);
 }
 
 /***********************************************************
@@ -8620,7 +8620,7 @@ RgSchUlAlloc   *prv;
 #if (ERRCLASS & ERRCLS_DEBUG)
    if ( alloc == NULLP )
    {
-       RETVALUE ( NULLP );
+       return  ( NULLP );
    }
 #endif
    alloc->prv = prv;
@@ -8633,7 +8633,7 @@ RgSchUlAlloc   *prv;
 
    ++db->count;
 
-   RETVALUE(alloc);
+   return (alloc);
 }
 
 /***********************************************************
@@ -8671,7 +8671,7 @@ RgSchUlAllocDb *db;
 #if (ERRCLASS & ERRCLS_DEBUG)
     if ( alloc == NULLP )
     {
-       RETVALUE ( NULLP );
+       return  ( NULLP );
     }
 #endif
 
@@ -8685,7 +8685,7 @@ RgSchUlAllocDb *db;
 
    ++db->count;
 
-   RETVALUE(alloc);
+   return (alloc);
 }
 
 /* UL_ALLOC_ENHANCEMENT */
@@ -8892,7 +8892,7 @@ RgSchUlSf *sf;
 #endif
 {
    TRC2(rgSCHUtlUlHoleFirst);
-   RETVALUE(sf->holeDb->first);
+   return (sf->holeDb->first);
 }
 
 /***********************************************************
@@ -8922,7 +8922,7 @@ RgSchUlHole *hole;
 {
    TRC2(rgSCHUtlUlHoleNxt);
    UNUSED(sf);
-   RETVALUE(hole->nxt);
+   return (hole->nxt);
 }
 
 /***********************************************************
@@ -9477,7 +9477,7 @@ U8           maxAllocs;
                            maxAllocs * sizeof(*allocs));
    if (ret != ROK)
    {
-      RETVALUE(ret);
+      return (ret);
    }
    mem->allocs = allocs;
    mem->maxAllocs = maxAllocs;
@@ -9500,7 +9500,7 @@ U8           maxAllocs;
       allocs[i].nxt = NULLP;
    }
    mem->firstFree = &allocs[0];
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -9576,7 +9576,7 @@ RgSchUlHole    **holeRef;
                            maxHoles * sizeof(*holes));
    if (ret != ROK)
    {
-      RETVALUE(ret);
+      return (ret);
    }
 
    mem->holes = holes;
@@ -9607,7 +9607,7 @@ RgSchUlHole    **holeRef;
    }
    mem->firstFree = &holes[1];
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /***********************************************************
@@ -9674,7 +9674,7 @@ RgSchUlAllocMem *mem;
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (mem->firstFree == NULLP)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -9683,7 +9683,7 @@ RgSchUlAllocMem *mem;
    alloc->nxt = NULLP; /* probably not needed */
    /* alloc->prv might already be NULLP, in case was needed to set it to NULLP */
 
-   RETVALUE(alloc);
+   return (alloc);
 }
 
 /***********************************************************
@@ -9752,7 +9752,7 @@ RgSchUlHoleMem *mem;
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (mem->firstFree == NULLP)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -9762,7 +9762,7 @@ RgSchUlHoleMem *mem;
    hole->nxt = NULLP; /* probably not needed */
    /* hole->prv is might already be NULLP, in case was needed to set it to NULLP */
 
-   RETVALUE(hole);
+   return (hole);
 }
 
 /***********************************************************
@@ -9841,7 +9841,7 @@ U8              numSb;
 
    if ((hole = rgSCHUtlUlHoleFirst(sf)) == NULLP)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    do
    {
@@ -9858,7 +9858,7 @@ U8              numSb;
 #if (ERRCLASS & ERRCLS_DEBUG)
             if ( newHole == NULLP )
             {
-                RETVALUE( NULLP );
+                return ( NULLP );
             }
 #endif
             newHole->start = hole->start;
@@ -9898,7 +9898,7 @@ U8              numSb;
          break;
       }
    } while ((hole = nxtHole) != NULLP);
-   RETVALUE(alloc);
+   return (alloc);
 }
 #ifdef LTE_L2_MEAS
 /**
@@ -9939,15 +9939,15 @@ U8           *qci;
       qciVal = qci[qciIdx];
       if(qciVal == 0 || qciVal > 9)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if(qciVal != cellCb->qciArray[qciVal].qci)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }/* rgSCHUtlValidateQci */
 /**
  * @brief  Validates the measurement request parameters.
@@ -9987,7 +9987,7 @@ RgSchErrInfo      *err;
    {
       err->errType = RGSCHERR_SCH_INVALID_MEAS_TYPE;
       err->errCause = RGSCHERR_SCH_L2MEAS;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if((schL2MeasInfo->timePrd !=0) &&
       (measType & LRG_L2MEAS_AVG_PRB_PER_QCI_DL) &&
@@ -9996,7 +9996,7 @@ RgSchErrInfo      *err;
    {
       err->errType = RGSCHERR_SCH_INVALID_PARAM_RANGE;
       err->errCause = RGSCHERR_SCH_L2MEAS;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if((schL2MeasInfo->timePrd !=0) &&
      (measType & LRG_L2MEAS_AVG_PRB_PER_QCI_UL) &&
@@ -10004,7 +10004,7 @@ RgSchErrInfo      *err;
    {
       err->errType = RGSCHERR_SCH_INVALID_PARAM_RANGE;
       err->errCause = RGSCHERR_SCH_L2MEAS;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if((measType & LRG_L2MEAS_NMB_ACTV_UE_PER_QCI_DL) &&
          ((schL2MeasInfo->nmbActvUeQciDl.numQci > LRG_MAX_QCI_PER_REQ) ||
@@ -10015,7 +10015,7 @@ RgSchErrInfo      *err;
    {
       err->errType = RGSCHERR_SCH_INVALID_PARAM_RANGE;
       err->errCause = RGSCHERR_SCH_L2MEAS;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if((measType & LRG_L2MEAS_NMB_ACTV_UE_PER_QCI_UL) &&
       ((schL2MeasInfo->nmbActvUeQciUl.numQci > LRG_MAX_QCI_PER_REQ) ||
@@ -10026,7 +10026,7 @@ RgSchErrInfo      *err;
    {
       err->errType = RGSCHERR_SCH_INVALID_PARAM_RANGE;
       err->errCause = RGSCHERR_SCH_L2MEAS;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if((schL2MeasInfo->timePrd !=0) &&
        (measType & LRG_L2MEAS_AVG_PRB_PER_QCI_DL))
@@ -10039,10 +10039,10 @@ RgSchErrInfo      *err;
       {
           err->errType = RGSCHERR_SCH_INVALID_QCI_VAL;
           err->errCause = RGSCHERR_SCH_L2MEAS;
-          RETVALUE(RFAILED);
+          return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* rgSCHUtlValidateMeasReq */
 #endif /* LTE_L2_MEAS */
 /******* </AllocHolesMemMgmnt>: END *****/
@@ -10095,10 +10095,10 @@ U8            status;
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"rgSCHUtlRgrSiCfgCfm: "
                 "RgUiRgrSiCfgCfm Failed ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHUtlRgrSiCfgCfm */
 
 
@@ -10152,10 +10152,10 @@ U8            status;
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"rgSCHUtlRgrSiCfgCfm: "
                 "RgUiRgrSiCfgCfm Failed ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHUtlRgrWarningSiCfgCfm */
 
 /***********************************************************
@@ -10363,7 +10363,7 @@ CmLListCp       *ulInActvLst;
       }
    }/*if(isNewTx == TRUE) */
 
-   RETVALUE(ROK);
+   return ROK;
 }/* rgSCHUtlGetSchdUes*/
 
 /* ccpu00117452 - MOD - Changed macro name from
@@ -10427,10 +10427,10 @@ U8                 numCqiRept;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Could not send "
          "CQI reports for RNTI:%d",ue->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 }/* End of rgSCHUtlFillSndStaInd */
 
@@ -10477,11 +10477,11 @@ RgrStaIndInfo        *rgrSta;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "rgSCHUtlRgrStaInd() Upper SAP not bound (%d) ",
                rgrSap->sapSta.sapState);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    RgUiRgrStaInd(&(cell->rgrSap->sapCfg.sapPst),
          cell->rgrSap->sapCfg.suId, rgrSta);
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlRgrStaInd*/
 #endif /* End of RGR_CQI_REPT */
 
@@ -10585,11 +10585,11 @@ PUBLIC S16 rgSCHUtlRgrLoadInfInd(cell, rgrLoadInf)
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "rgSCHUtlRgrLoadInfInd() Upper SAP not bound (%d) ",
                rgrSap->sapSta.sapState);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    RgUiRgrLoadInfInd(&(cell->rgrSap->sapCfg.sapPst),
          cell->rgrSap->sapCfg.suId, rgrLoadInf);
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlRgrLoadInfInd*/
 /* LTE_ADV_FLAG_REMOVED_END */
 
@@ -10690,10 +10690,10 @@ RgrUeStaIndInfo      *ueStaInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Could not send "
          "UE Sta reports CRNTI:%d",ue->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 }/* End of rgSCHUtlFillSndStaInd */
 
@@ -10740,11 +10740,11 @@ RgrUeStaIndInfo      *rgrUeSta;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "rgSCHUtlRgrUeStaInd() Upper SAP not bound (%d) ",
                rgrSap->sapSta.sapState);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    RgUiRgrUeStaInd(&(cell->rgrSap->sapCfg.sapPst),
          cell->rgrSap->sapCfg.suId, rgrUeSta);
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHUtlRgrStaInd*/
 
 /* RRM_RBC_X */
@@ -10816,7 +10816,7 @@ RgSchCellCb       *cell;
                cell->rgmSap->sapCfg.sapPst.pool, (Data**)&prbRprtInd, 
                sizeof(RgmPrbRprtInd)) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    cmMemset((U8 *) &prbRprtInd->stQciPrbRpts[0],
@@ -10872,7 +10872,7 @@ RgSchCellCb       *cell;
                     cell->rgmSap->sapCfg.suId, prbRprtInd);
 
 
-   RETVALUE(ret);
+   return (ret);
 }
 /* RRM_RBC_Y */
 
@@ -10971,9 +10971,9 @@ RgInfCmnBoRpt  *boUpdt;
 
    if (distance > RGSCH_PCCHBCCH_WIN)
    {
-	   RETVALUE(RFAILED);
+	   return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 
 }/*rgSCHChkBoUpdate*/
 
@@ -11046,7 +11046,7 @@ U8              hqFdbkIdx;
       /* Fetch the corresponding  UL slot Idx in UL sf array */ 
       reTxIdx = rgSCHCmnGetUlSfIdx(&phichTime, cell);
    }
-   RETVALUE(reTxIdx);
+   return (reTxIdx);
 }
 #endif
 
@@ -11380,7 +11380,7 @@ U8            numTxAnt;
       break;
    }
    
-   RETVALUE(pcqiSz);
+   return (pcqiSz);
 }
 #endif
 #endif
@@ -11418,7 +11418,7 @@ U32                          *numSbs;
    //Currently hardcoding MAX prb for each UE
    nPrb = ue->ue5gtfCb.maxPrb;
    (*numSbs) = RGSCH_CEIL(nPrb, MAX_5GTF_VRBG_SIZE);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -11506,7 +11506,7 @@ U8           vrbgRequired;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -11560,7 +11560,7 @@ Bool           isGbr;
    /* code Coverage portion of the test case */ 
    RgSchMacLcgReg(&pst, &lcgRegReq);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef TFU_UPGRADE
@@ -11617,7 +11617,7 @@ RgrSchFrmt1b3TypEnum fdbkType;
      }
      break;
    }
-   RETVALUE(mode);
+   return (mode);
 }
 #endif /* TFU_TDD */
 #endif /* LTE_ADV */
@@ -11725,7 +11725,7 @@ RgrTxMode txMode
          break;
    }
 
-   RETVALUE(maxTbCount);
+   return (maxTbCount);
 }
 
 /**
@@ -12497,7 +12497,7 @@ PUBLIC S16 rgSCHUtlResetCpuOvrLdState(cell, crntCpuOvrLdIns)
             schCmnCell->ul.maxUeNewTxPerTti;
       }
 
-      RETVALUE(ROK);
+      return ROK;
    }
    /* Check and Update numUEPer TTI based CPU overload instruction before
     * going for TP based CPU OL  
@@ -12507,7 +12507,7 @@ PUBLIC S16 rgSCHUtlResetCpuOvrLdState(cell, crntCpuOvrLdIns)
       rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(cell, crntCpuOvrLdIns);
       /* If need to have both TP and numUePerTti instrcution together in
        * one command then dont return from here */
-      RETVALUE(ROK);
+      return ROK;
    }
 
    crntDlCpuOL = (crntCpuOvrLdIns & RGR_CPU_OVRLD_DL_TPT_UP) +\
@@ -12516,7 +12516,7 @@ PUBLIC S16 rgSCHUtlResetCpuOvrLdState(cell, crntCpuOvrLdIns)
        (crntDlCpuOL != RGR_CPU_OVRLD_DL_TPT_DOWN))
    {
       /* Cfg validation failed. Invalid Command. Either UP/DOWN is allowed */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    crntUlCpuOL = (crntCpuOvrLdIns & RGR_CPU_OVRLD_UL_TPT_UP) +\
                  (crntCpuOvrLdIns & RGR_CPU_OVRLD_UL_TPT_DOWN);
@@ -12524,12 +12524,12 @@ PUBLIC S16 rgSCHUtlResetCpuOvrLdState(cell, crntCpuOvrLdIns)
        (crntUlCpuOL != RGR_CPU_OVRLD_UL_TPT_DOWN))
    {
       /* Cfg validation failed. Invalid Command. Either UP/DOWN is allowed */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((crntDlCpuOL == 0) && (crntUlCpuOL == 0))
    {
       /* Cfg validation failed. Invalid Command. Either UP/DOWN is allowed */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    cell->cpuOvrLdCntrl.cpuOvrLdIns = crntCpuOvrLdIns;
@@ -12575,7 +12575,7 @@ PUBLIC S16 rgSCHUtlResetCpuOvrLdState(cell, crntCpuOvrLdIns)
 #endif
    }
    rgSCHUtlCpuOvrLdAdjItbsCap(cell);
-   RETVALUE(ROK);
+   return ROK;
 }
 #ifdef EMTC_ENABLE
 PUBLIC S16 rgSCHUtlAddToResLst
@@ -12586,7 +12586,7 @@ PUBLIC S16 rgSCHUtlAddToResLst
 {
    cmLListAdd2Tail(cp, &iotRes->resLnk);
    iotRes->resLnk.node = (PTR)iotRes;
-   RETVALUE(ROK);
+   return ROK;
 }
 PUBLIC S16 rgSCHUtlDelFrmResLst
 (
@@ -12612,12 +12612,12 @@ RgSchIotRes *iotRes
       if(cp->count == 0)
       {
          RLOG0(L_INFO,"****error count*****\n");
-         RETVALUE(ROK);
+         return ROK;
       }
    }
    cmLListDelFrm(cp, &iotRes->resLnk);
    iotRes->resLnk.node = NULLP;
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 /**********************************************************************

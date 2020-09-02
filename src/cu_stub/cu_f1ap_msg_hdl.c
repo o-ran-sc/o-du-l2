@@ -44,34 +44,34 @@ S16 SendF1APMsg(Region region, Pool pool)
 {
    Buffer *mBuf = NULLP;
 
-   if(SGetMsg(region, pool, &mBuf) == ROK)
+   if(ODU_GET_MSG(region, pool, &mBuf) == ROK)
    {
-      if(SAddPstMsgMult((Data *)encBuf, encBufSize, mBuf) == ROK)
+      if(ODU_ADD_POST_MSG_MULT((Data *)encBuf, encBufSize, mBuf) == ROK)
       {
-         SPrntMsg(mBuf, 0,0);
+         ODU_PRINT_MSG(mBuf, 0,0);
  
          if(sctpSend(mBuf) != ROK)
          {
             DU_LOG("\nF1AP : SCTP Send failed");
-            SPutMsg(mBuf);
-            RETVALUE(RFAILED);
+            ODU_PUT_MSG(mBuf);
+            return RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nF1AP : SAddPstMsgMult failed");
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+         DU_LOG("\nF1AP : ODU_ADD_POST_MSG_MULT failed");
+         ODU_PUT_MSG(mBuf);
+         return RFAILED;
       }
-      SPutMsg(mBuf);
+      ODU_PUT_MSG(mBuf);
    }
    else
    {
       DU_LOG("\nF1AP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
-   RETVALUE(ROK);
+   return ROK;
 } /* SendF1APMsg */
 
 /*******************************************************************
@@ -100,7 +100,7 @@ S16 BuildNrCellId(BIT_STRING_t *nrcell)
    nrcell->buf[4]   = 16; 
    nrcell->bits_unused = 4;
    nrcell->size = 5 * sizeof(uint8_t);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /********************************************************************
@@ -138,7 +138,7 @@ S16 BuildAndSendF1SetupRsp()
    if(f1apMsg == NULLP)
    {
       DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    f1apMsg->present =  F1AP_PDU_PR_successfulOutcome;
 
@@ -147,7 +147,7 @@ S16 BuildAndSendF1SetupRsp()
    {
       DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);  
+      return RFAILED;  
    }
 
    f1apMsg->choice.successfulOutcome->procedureCode = ProcedureCode_id_F1Setup;
@@ -167,7 +167,7 @@ S16 BuildAndSendF1SetupRsp()
       DU_LOG("\nF1AP : Memory allocation for F1ResponseIEs failed");
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for(idx=0; idx<elementCnt; idx++)
@@ -181,7 +181,7 @@ S16 BuildAndSendF1SetupRsp()
          CU_FREE(f1apMsg->choice.successfulOutcome, \
                sizeof(SuccessfulOutcome_t));
          CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }    
    }
 
@@ -216,7 +216,7 @@ S16 BuildAndSendF1SetupRsp()
          CU_FREE(f1apMsg->choice.successfulOutcome,\
                sizeof(SuccessfulOutcome_t));
          CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    strcpy((char*)cuName->buf, (char*)cuCfgParams.cuName);
  
@@ -247,7 +247,7 @@ S16 BuildAndSendF1SetupRsp()
             elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    for(idy=0; idy<cellCnt; idy++)
    {
@@ -268,7 +268,7 @@ S16 BuildAndSendF1SetupRsp()
          CU_FREE(f1apMsg->choice.successfulOutcome, \
                sizeof(SuccessfulOutcome_t));
          CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    cellToActivate->list.array[0]->id = \
@@ -304,7 +304,7 @@ S16 BuildAndSendF1SetupRsp()
       CU_FREE(f1apMsg->choice.successfulOutcome, \
             sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
     buildPlmnId(cuCfgParams.plmn , &cellToActivate->list.array[0]->value.choice.\
          Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity);
@@ -338,7 +338,7 @@ S16 BuildAndSendF1SetupRsp()
       CU_FREE(f1apMsg->choice.successfulOutcome, \
             sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    BuildNrCellId(&(cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity));
    /* RRC Version */
@@ -364,7 +364,7 @@ S16 BuildAndSendF1SetupRsp()
             elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
   /* Need to check RRC Version */
@@ -384,7 +384,7 @@ S16 BuildAndSendF1SetupRsp()
             elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    rrcVer->iE_Extensions->list.count = 1;
    rrcVer->iE_Extensions->list.size = sizeof(struct RRC_Version_ExtIEs *);
@@ -405,7 +405,7 @@ S16 BuildAndSendF1SetupRsp()
             elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    CU_ALLOC(rrcVer->iE_Extensions->list.array[0],\
          sizeof(struct RRC_Version_ExtIEs));
@@ -426,7 +426,7 @@ S16 BuildAndSendF1SetupRsp()
             elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    rrcVer->iE_Extensions->list.array[0]->id = \
                                 ProtocolIE_ID_id_latest_RRC_Version_Enhanced;
@@ -458,7 +458,7 @@ S16 BuildAndSendF1SetupRsp()
             elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    rrcVer->iE_Extensions->list.array[0]->extensionValue.choice.\
       Latest_RRC_Version_Enhanced.buf[0] = 0;
@@ -490,7 +490,7 @@ S16 BuildAndSendF1SetupRsp()
    {
 	   DU_LOG("\nF1AP : Could not encode F1SetupResponse structure (at %s)\n",\
 			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	   RETVALUE(RFAILED);   
+	   return RFAILED;   
    } 
    else 
    {
@@ -505,10 +505,10 @@ S16 BuildAndSendF1SetupRsp()
    if(SendF1APMsg(CU_APP_MEM_REG, CU_POOL) != ROK)
    {
 	   DU_LOG("\nF1AP : Sending F1 Setup Response failed");      
-	   RETVALUE(RFAILED);
+	   return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }/* End of BuildAndSendF1SetupRsp */
 
 /*******************************************************************
@@ -545,7 +545,7 @@ S16 BuildAndSendDUUpdateAck()
    if(f1apMsg == NULLP)
    {
       DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    f1apMsg->present =  F1AP_PDU_PR_successfulOutcome;
@@ -555,7 +555,7 @@ S16 BuildAndSendDUUpdateAck()
    {
       DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    f1apMsg->choice.successfulOutcome->procedureCode = ProcedureCode_id_gNBDUConfigurationUpdate;
@@ -574,7 +574,7 @@ S16 BuildAndSendDUUpdateAck()
       DU_LOG("\nF1AP : Memory allocation for DuUpdateAcknowledgeIEs failed");
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for(idx=0; idx<elementCnt; idx++)
@@ -585,7 +585,7 @@ S16 BuildAndSendDUUpdateAck()
          CU_FREE(gNBDuCfgAck->protocolIEs.list.array, elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t *));
          CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
          CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -616,7 +616,7 @@ S16 BuildAndSendDUUpdateAck()
    if(enRetVal.encoded == ENCODE_FAIL) 
    {
       DU_LOG("\nF1AP : Could not encode DUConfigUpdateAcknowledge structure (at %s)",enRetVal.failed_type ? enRetVal.failed_type->name : "unknown");
-      RETVALUE(RFAILED); 
+      return RFAILED; 
    } 
    else 
    {
@@ -631,10 +631,10 @@ S16 BuildAndSendDUUpdateAck()
    if(SendF1APMsg(CU_APP_MEM_REG, CU_POOL) != ROK)
    {
       DU_LOG("\nF1AP : Sending GNB-DU Config Update Ack failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 }/* End of BuildAndSendDUUpdateAck*/
 
@@ -1015,7 +1015,7 @@ S16 BuildAndSendDLRRCMessageTransfer()
    {
      DU_LOG( "\n F1AP : Could not encode DL RRC Message Transfer structure (at %s)\n",\
          encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-     RETVALUE(RFAILED);
+     return RFAILED;
    }
    else
    {
@@ -1073,7 +1073,7 @@ S16 BuildAndSendUESetRsp()
 	if(f1apMsg == NULLP)
 	{
 		DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	f1apMsg->present = F1AP_PDU_PR_successfulOutcome;
@@ -1083,7 +1083,7 @@ S16 BuildAndSendUESetRsp()
 	{
 		DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
 		CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	f1apMsg->choice.successfulOutcome->procedureCode = \
@@ -1107,7 +1107,7 @@ S16 BuildAndSendUESetRsp()
 		CU_FREE(f1apMsg->choice.successfulOutcome,
 				sizeof(SuccessfulOutcome_t));
 		CU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
 	for(idx=0; idx<elementCnt; idx++)
@@ -1126,7 +1126,7 @@ S16 BuildAndSendUESetRsp()
 			CU_FREE(f1apMsg->choice.successfulOutcome,\
 												sizeof(SuccessfulOutcome_t));
 			CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-			RETVALUE(RFAILED);
+			return RFAILED;
 		}
 	}
 
@@ -1162,7 +1162,7 @@ S16 BuildAndSendUESetRsp()
 	{
 		DU_LOG( "\n F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
 				encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 	else
 	{
@@ -1177,10 +1177,10 @@ S16 BuildAndSendUESetRsp()
 	if(SendF1APMsg(CU_APP_MEM_REG,CU_POOL)	!=	ROK)
 	{
 		DU_LOG("\n F1AP : Sending	UE Context Setup Request Failed");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 
-	RETVALUE(ROK);
+	return ROK;
 }/* End of BuildAndSendUESetRsp */
 
 
@@ -1267,16 +1267,18 @@ void F1APMsgHdlr(Buffer *mBuf)
    F1AP_PDU_t f1apasnmsg ;
  
    DU_LOG("\nF1AP : Received F1AP message buffer");
-   SPrntMsg(mBuf, 0,0);
+   ODU_PRINT_MSG(mBuf, 0,0);
  
    /* Copy mBuf into char array to decode it */
-   SFndLenMsg(mBuf, &recvBufLen);
-   if(SGetSBuf(DFLT_REGION, DFLT_POOL, (Data **)&recvBuf, (Size)recvBufLen) != ROK)
+   ODU_FIND_MSG_LEN(mBuf, &recvBufLen);
+   CU_ALLOC(recvBuf, (Size)recvBufLen);
+
+   if(recvBuf == NULLP)
    {
       DU_LOG("\nF1AP : Memory allocation failed");
       return;
    }
-   if(SCpyMsgFix(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
+   if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
    {
       DU_LOG("\nF1AP : Failed while copying %d", copyCnt);
       return;
@@ -1293,7 +1295,8 @@ void F1APMsgHdlr(Buffer *mBuf)
    memset(f1apMsg, 0, sizeof(F1AP_PDU_t));
  
    rval = aper_decode(0, &asn_DEF_F1AP_PDU, (void **)&f1apMsg, recvBuf, recvBufLen, 0, 0);
-   SPutSBuf(DFLT_REGION, DFLT_POOL, (Data *)recvBuf, (Size)recvBufLen);
+   CU_FREE(recvBuf, (Size)recvBufLen);
+   
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
       DU_LOG("\nF1AP : ASN decode failed");

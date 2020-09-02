@@ -23,7 +23,7 @@
 uint8_t rlcDatSn = 0;
 uint64_t ulDatNum = 0;
 
-PUBLIC S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
+PUBLIC uint8_t macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
 {
   Pst rspPst;
   RlcMacSchedRepInfo *schRep;
@@ -59,7 +59,7 @@ PUBLIC S16 macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
 
 }
 
-PUBLIC S16 macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
+PUBLIC uint8_t macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
 {
    U32 availmem;
 
@@ -69,7 +69,7 @@ PUBLIC S16 macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
 
    DU_LOG("\nMAC_STUB : Received DL data from RLC to be sent to PHY"); 
 
-   SPutMsg(dlData->pduInfo[0].pduBuf);
+   ODU_PUT_MSG(dlData->pduInfo[0].pduBuf);
    dlData->pduInfo[0].pduBuf = NULL;
 
 #if 0
@@ -84,7 +84,7 @@ PUBLIC S16 macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
 #endif
    
    ulData = dlData;
-   SGetMsg(pst->region, pst->pool, &mBuf);
+   ODU_GET_MSG(pst->region, pst->pool, &mBuf);
    macStubBuildUlData(mBuf);
    ulData->pduInfo[0].pduBuf = mBuf;
 
@@ -110,7 +110,7 @@ void macStubBuildUlData(Buffer *mBuf)
    int datSize = 30;
    U32 availmem;
 
-   SAddPstMsgMult((Data *)data, datSize, mBuf);
+   ODU_ADD_POST_MSG_MULT((Data *)data, datSize, mBuf);
 
    /* filling IPv4 header */
    CmIpv4Hdr ipv4Hdr;
@@ -183,9 +183,9 @@ void macStubBuildUlData(Buffer *mBuf)
         revPkArray[idx] = pkArray[CM_IPV4_HDRLEN - idx -1];
     
    /* this function automatically reverses revPkArray */
-   ret = SAddPreMsgMult(revPkArray, (MsgLen)cnt, mBuf);
+   ret = ODU_ADD_PRE_MSG_MULT(revPkArray, (MsgLen)cnt, mBuf);
 
-   SAddPreMsgMult((Data *)&rlcDatSn, sizeof(uint8_t), mBuf);
+   ODU_ADD_PRE_MSG_MULT((Data *)&rlcDatSn, sizeof(uint8_t), mBuf);
 #if 0
    SRegInfoShow(0, &availmem);
    SRegInfoShow(1, &availmem);

@@ -200,7 +200,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       if(ret != ROK)
       {
 	 DU_LOG("\nschBroadcastAlloc failed");
-	 RETVALUE(ret);
+	 return (ret);
       }
    }
 
@@ -305,7 +305,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    if(ret != ROK)
    {
       DU_LOG("\nSending DL Broadcast allocation from SCH to MAC failed");
-      RETVALUE(ret);
+      return (ret);
    }
 
    schInitDlSlot(cell->schDlSlotInfo[slot]);

@@ -30,12 +30,12 @@
 #include "du_sctp.h"
 #include "du_egtp.h"
 
-extern S16 rlcUlActvTsk (Pst *, Buffer *);
-extern S16 rlcUlActvInit (Ent, Inst, Region, Reason);
-extern S16 rlcDlActvTsk (Pst *, Buffer *);
-extern S16 rlcDlActvInit (Ent, Inst, Region, Reason);
-extern S16 rgActvTsk (Pst *, Buffer *);
-extern S16 rgActvInit (Ent, Inst, Region, Reason);
+extern uint8_t rlcUlActvTsk (Pst *, Buffer *);
+extern uint8_t rlcUlActvInit (Ent, Inst, Region, Reason);
+extern uint8_t rlcDlActvTsk (Pst *, Buffer *);
+extern uint8_t rlcDlActvInit (Ent, Inst, Region, Reason);
+extern uint8_t rgActvTsk (Pst *, Buffer *);
+extern uint8_t rgActvInit (Ent, Inst, Region, Reason);
 
 /* Global variable */
 DuCfgParams duCfgParam;
@@ -57,16 +57,16 @@ DuCfgParams duCfgParam;
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duAppInit(SSTskId sysTskId)
+uint8_t duAppInit(SSTskId sysTskId)
 {
 	/* Register DU APP TAPA Task for DU */
-	if(SRegTTsk((Ent)ENTDUAPP, (Inst)DU_INST, (Ttype)TTNORM, (Prior)PRIOR0,
+	if(ODU_REG_TTSK((Ent)ENTDUAPP, (Inst)DU_INST, (Ttype)TTNORM, (Prior)PRIOR0,
             duActvInit, (ActvTsk)duActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach DU APP TAPA Task for DU */
-   if (SAttachTTsk((Ent)ENTDUAPP, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTDUAPP, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -93,16 +93,16 @@ S16 duAppInit(SSTskId sysTskId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 egtpInit(SSTskId sysTskId)
+uint8_t egtpInit(SSTskId sysTskId)
 {
    /* Register DU APP TAPA Task for DU */
-   if(SRegTTsk((Ent)ENTEGTP, (Inst)EGTP_INST, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(ODU_REG_TTSK((Ent)ENTEGTP, (Inst)EGTP_INST, (Ttype)TTNORM, (Prior)PRIOR0,
              egtpActvInit, (ActvTsk)egtpActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach DU APP TAPA Task for DU */
-   if (SAttachTTsk((Ent)ENTEGTP, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTEGTP, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -129,16 +129,16 @@ S16 egtpInit(SSTskId sysTskId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 sctpInit(SSTskId sysTskId)
+uint8_t sctpInit(SSTskId sysTskId)
 {
    /* Register SCTP TAPA Task */
-   if(SRegTTsk((Ent)ENTSCTP, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(ODU_REG_TTSK((Ent)ENTSCTP, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
             sctpActvInit, (ActvTsk)sctpActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach SCTP TAPA Task */
-   if (SAttachTTsk((Ent)ENTSCTP, (Inst)SCTP_INST, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTSCTP, (Inst)SCTP_INST, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -163,28 +163,28 @@ S16 sctpInit(SSTskId sysTskId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 rlcDlInit(SSTskId sysTskId)
+uint8_t rlcDlInit(SSTskId sysTskId)
 {
    /* Register RLC DL TAPA Task */
-   if(SRegTTsk((Ent)ENTKW, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(ODU_REG_TTSK((Ent)ENTKW, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
             rlcDlActvInit, (ActvTsk)rlcDlActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach RLC DL Task */
-   if (SAttachTTsk((Ent)ENTKW, (Inst)1, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTKW, (Inst)1, sysTskId)!= ROK)
    {
       return RFAILED;
    }
 
    /* Register MAC TAPA Task */
-   if(SRegTTsk((Ent)ENTRG, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(ODU_REG_TTSK((Ent)ENTRG, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
             rgActvInit, (ActvTsk)rgActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach MAC Task */
-   if (SAttachTTsk((Ent)ENTRG, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTRG, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -210,16 +210,16 @@ S16 rlcDlInit(SSTskId sysTskId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 rlcUlInit(SSTskId sysTskId)
+uint8_t rlcUlInit(SSTskId sysTskId)
 {
    /* Register RLC UL TAPA Task */
-   if(SRegTTsk((Ent)ENTKW, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(ODU_REG_TTSK((Ent)ENTKW, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
             rlcUlActvInit, (ActvTsk)rlcUlActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach RLC DL Task */
-   if (SAttachTTsk((Ent)ENTKW, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTKW, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -244,14 +244,14 @@ S16 rlcUlInit(SSTskId sysTskId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 commonInit()
+uint8_t commonInit()
 {
    /* Declare system task Ids */
    SSTskId du_app_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk;
 
    pthread_attr_t attr;
 
-   SSetProcId(DU_PROC);
+   ODU_SET_PROC_ID(DU_PROC);
 
    /* system task for DU APP */
    SCreateSTsk(PRIOR0, &du_app_stsk);
@@ -317,7 +317,7 @@ S16 commonInit()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duInit()
+uint8_t duInit()
 {
    int ret = ROK;
    if(commonInit() != ROK)
@@ -349,7 +349,7 @@ void init_log()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 tst(void)
+uint8_t tst(void)
 {
 	init_log();
 

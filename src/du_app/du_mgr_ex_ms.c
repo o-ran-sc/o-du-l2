@@ -40,11 +40,11 @@
 #include "du_ue_mgr.h"
 #include "du_utils.h"
 
-extern S16 unpackRlcConfigCfm(RlcConfigCfm func,Pst *pst, Buffer *mBuf);
-extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
-extern S16 cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
+extern uint8_t unpackRlcConfigCfm(RlcConfigCfm func,Pst *pst, Buffer *mBuf);
+extern uint8_t cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
+extern uint8_t cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
 extern uint8_t cmUnpkKwuDatInd(KwuDatInd func,Pst *pst, Buffer *mBuf);
-extern S16 cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
+extern uint8_t cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *
@@ -65,7 +65,7 @@ extern S16 cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
  * @return ROK     - success
  *         RFAILED - failure
  ***************************************************************************/
-S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
+uint8_t duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 {
    uint8_t id;
 
@@ -97,7 +97,7 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
    duCb.numCfgCells  = 0;
    duCb.numActvCells = 0;
 
-   SSetProcId(DU_PROC);
+   ODU_SET_PROC_ID(DU_PROC);
 
    return ROK;
 
@@ -123,9 +123,9 @@ S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duActvTsk(Pst *pst, Buffer *mBuf)
+uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 
    switch(pst->srcEnt)
    {
@@ -137,13 +137,13 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		  {
 		     DU_LOG("\n****** Received initial configs at DU APP ******\n");
 		     duProcCfgComplete();
-		     SPutMsg(mBuf);
+		     ODU_PUT_MSG(mBuf);
 		     break;
 		  }
 	       default:
 		  {
 		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTDUAPP");
-		     SPutMsg(mBuf);
+		     ODU_PUT_MSG(mBuf);
 		     ret = RFAILED;
 		  }
 	    }
@@ -187,7 +187,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		  {
 		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \
 			   pst->event);
-		     SPutMsg(mBuf);
+		     ODU_PUT_MSG(mBuf);
 		     ret = RFAILED;
 		  }
 	    }
@@ -200,7 +200,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 	       //Config complete
 	       case EVTCFG:
 		  {
-		     SPutMsg(mBuf);
+		     ODU_PUT_MSG(mBuf);
 		     break;
 		  }
 	       case EVTLRGCFGCFM:
@@ -246,7 +246,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 	       default:
 		  {
 		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");
-		     SPutMsg(mBuf);
+		     ODU_PUT_MSG(mBuf);
 		     ret = RFAILED;
 		  }
 	    }
@@ -279,7 +279,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 
 	    }
-	    SPutMsg(mBuf);
+	    ODU_PUT_MSG(mBuf);
 	    break;
 	 }
       case ENTEGTP:
@@ -307,18 +307,18 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		     ret = RFAILED;
 		  }
 	    }
-	    SPutMsg(mBuf);
+	    ODU_PUT_MSG(mBuf);
 	    break;
 	 }
       default:
 	 {
 	    DU_LOG("\nDU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
-	    SPutMsg(mBuf);
+	    ODU_PUT_MSG(mBuf);
 	    ret = RFAILED;
 	 }
 
    }
-   SExitTsk();
+   ODU_EXIT_TASK();
    return ret;
 }
 

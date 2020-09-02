@@ -20,7 +20,7 @@
 
 #define ENCODE_FAIL -1
 
-S16 sctpSend(Buffer *mBuf, U8 itfType);
+uint8_t sctpSend(Buffer *mBuf, U8 itfType);
 
 typedef struct e2apDb
 {

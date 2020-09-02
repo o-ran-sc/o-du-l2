@@ -83,18 +83,18 @@ RgPrgUeSCellCfgInfo    *ueSCellCfgInfo;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(SAddPstMsgMult((Data *)ueSCellCfgInfo, sizeof(RgPrgUeSCellCfgInfo),\
             mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTPRGUESCELLCFGREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 /** 
@@ -131,11 +131,11 @@ Buffer               *mBuf;
    if(SRemPreMsgMult((Data *)&ueSCellCfgInfo, sizeof(RgPrgUeSCellCfgInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGPRG_FREE_MSG(mBuf);
-   RETVALUE((*func)(pst, &ueSCellCfgInfo));
+   return ((*func)(pst, &ueSCellCfgInfo));
 }
 
 /** 
@@ -169,13 +169,13 @@ RgPrgCfgCfmInfo    *cfgCfm;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(SAddPstMsgMult((Data *)cfgCfm, sizeof(RgPrgCfgCfmInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    switch(cfgCfm->event)
    {
@@ -200,7 +200,7 @@ RgPrgCfgCfmInfo    *cfgCfm;
       }
       break;
    }
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 /** 
@@ -238,11 +238,11 @@ Buffer              *mBuf;
    if(SRemPreMsgMult((Data *)&cfgCfm, sizeof(RgPrgCfgCfmInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGPRG_FREE_MSG(mBuf);
-   RETVALUE((*func)(pst, &cfgCfm));
+   return ((*func)(pst, &cfgCfm));
 }
 
 /** 
@@ -276,18 +276,18 @@ RgPrgUeSCellDelInfo    *ueSCellDelInfo;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(SAddPstMsgMult((Data *)ueSCellDelInfo, sizeof(RgPrgUeSCellDelInfo), mBuf)\
          != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTPRGUESCELLDELREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 /** 
@@ -326,11 +326,11 @@ Buffer           *mBuf;
             mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGPRG_FREE_MSG(mBuf);
-   RETVALUE((*func)(pst, &ueSCellDelInfo));
+   return ((*func)(pst, &ueSCellDelInfo));
 }
 
 /** 
@@ -364,18 +364,18 @@ RgPrgUeSCellLchAddInfo    *lchCfgInfo;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(SAddPstMsgMult((Data *)lchCfgInfo, sizeof(RgPrgUeSCellLchAddInfo),\
             mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTPRGUESCELLLCHADDREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 /** 
@@ -413,11 +413,11 @@ Buffer                       *mBuf;
    if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchAddInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGPRG_FREE_MSG(mBuf);
-   RETVALUE((*func)(pst, &lchCfgInfo));
+   return ((*func)(pst, &lchCfgInfo));
 }
 
 /** 
@@ -451,18 +451,18 @@ RgPrgUeSCellLchDelInfo    *delLcCb;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(SAddPstMsgMult((Data *)delLcCb, sizeof(RgPrgUeSCellLchDelInfo),\
             mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTPRGUESCELLLCHDELREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -497,18 +497,18 @@ RgPrgUeSCellLchModInfo    *lchCfgInfo;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(SAddPstMsgMult((Data *)lchCfgInfo, sizeof(RgPrgUeSCellLchModInfo),\
             mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    pst->event = (Event) EVTPRGUESCELLLCHMODREQ;
-   RETVALUE(SPstTsk(pst,mBuf));
+   return (SPstTsk(pst,mBuf));
 }
 
 
@@ -547,11 +547,11 @@ Buffer                  *mBuf;
    if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchModInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGPRG_FREE_MSG(mBuf);
-   RETVALUE((*func)(pst, &lchCfgInfo));
+   return ((*func)(pst, &lchCfgInfo));
 }
 
 
@@ -590,11 +590,11 @@ Buffer                  *mBuf;
    if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchDelInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGPRG_FREE_MSG(mBuf);
-   RETVALUE((*func)(pst, &lchCfgInfo));
+   return ((*func)(pst, &lchCfgInfo));
 }
 
 #endif /*LCPRG*/ 

@@ -291,7 +291,7 @@ U8   status;                    /* Status */
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuBndCfmMt[pst->selector])(pst, suId, status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiKwuBndCfm */
 
@@ -335,7 +335,7 @@ Buffer            *mBuf;
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatIndMt[pst->selector])(pst, datInd, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiKwuDatInd */
 
@@ -381,7 +381,7 @@ KwuDatCfmInfo     *datCfm;
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatCfmMt[pst->selector])(pst, suId, datCfm);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiKwuDatCfm */
 
@@ -425,7 +425,7 @@ KwuStaIndInfo     *staInd;
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuStaIndMt[pst->selector])(pst, suId, staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiKwuStaInd */
 
@@ -470,7 +470,7 @@ CmLteRlcId        rlcId;
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuReEstCmpIndMt[pst->selector])(pst, suId, rlcId);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiKwuReEstCmpInd */
 /* kw005.201 added support for L2 Measurement */
@@ -512,7 +512,7 @@ KwuDiscSduInfo    *discCfm;
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDiscSduCfmMt[pst->selector])(pst, suId, discCfm);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiKwuDiscSduCfm */ 
 
@@ -554,7 +554,7 @@ KwuFlowCntrlIndInfo   *flowCntrlIndInfo;
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlIndInfo);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiKwuFlowCntrlInd */ 
 #ifdef LTE_L2_MEAS
@@ -596,7 +596,7 @@ KwuDatAckInfo     *datAckInd;
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatAckIndMt[pst->selector])(pst, suId, datAckInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiKwuDatAckInd */ 
 #endif /* LTE_L2_MEAS */
@@ -685,7 +685,7 @@ U8   status;                    /* Status */
    /* jump to specific primitive depending on configured selector */
    (*kwUiCkwBndCfmMt[pst->selector])(pst, suId, status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiCkwBndCfm */
 
@@ -729,7 +729,7 @@ RlcCfgCfmInfo  *cfmInfo;                   /* Configuration Confirm */
    /* jump to specific primitive depending on configured selector */
    (*kwUiRlcCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiRlcCfgCfm */
 
@@ -777,7 +777,7 @@ CmStatus       status;
    /* jump to specific primitive depending on configured selector */
    (*kwUiCkwUeIdChgCfmMt[pst->selector])(pst, suId, transId, ueInfo, status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of KwUiRlcCfgCfm */
 
@@ -867,7 +867,7 @@ Void;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -938,7 +938,7 @@ Void;
       elmIndx = (Void *)SRngGetRIndx(SS_RNG_BUF_DLPDCP_TO_DLRLC);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -959,7 +959,7 @@ Void;
 #endif
     kwUtlFreeDlMem();
 #endif
-    RETVALUE(ROK);
+    return ROK;
 }   
 
 
@@ -989,7 +989,7 @@ Void;
       if((elmIndx = SRngGetRIndx(SS_RNG_BUF_DLPDCP_TO_DLRLC)) == NULLP)
       break;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 

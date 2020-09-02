@@ -52,26 +52,26 @@ S16 SendE2APMsg(Region region, Pool pool)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(region, pool, &mBuf) == ROK)
+   if(ODU_GET_MSG(region, pool, &mBuf) == ROK)
    {
-      if(SAddPstMsgMult((Data *)encBuf, encBufSize, mBuf) == ROK)
+      if(ODU_ADD_POST_MSG_MULT((Data *)encBuf, encBufSize, mBuf) == ROK)
       {
-         SPrntMsg(mBuf, 0,0);
+         ODU_PRINT_MSG(mBuf, 0,0);
  
          if(sctpSend(mBuf) != ROK)
          {
             DU_LOG("\nE2AP : SCTP Send for E2  failed");
-            SPutMsg(mBuf);
+            ODU_PUT_MSG(mBuf);
             return RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nE2AP : SAddPstMsgMult failed");
-         SPutMsg(mBuf);
+         DU_LOG("\nE2AP : ODU_ADD_POST_MSG_MULT failed");
+         ODU_PUT_MSG(mBuf);
          return RFAILED;
       }
-      SPutMsg(mBuf);
+      ODU_PUT_MSG(mBuf);
    }
    else
    {
@@ -284,7 +284,7 @@ RICaction_ToBeSetup_Item_t* fillSetupItems(RICaction_ToBeSetup_Item_t *setupItem
       setupItems->ricActionType = RICactionType_report;
    }
 
-   RETVALUE(setupItems);
+   return (setupItems);
 }
 
 /*******************************************************************
@@ -539,16 +539,18 @@ void E2APMsgHdlr(Buffer *mBuf)
    E2AP_PDU_t e2apasnmsg ;
  
    DU_LOG("\nE2AP : Received E2AP message buffer");
-   SPrntMsg(mBuf, 0,0);
+   ODU_PRINT_MSG(mBuf, 0,0);
  
    /* Copy mBuf into char array to decode it */
-   SFndLenMsg(mBuf, &recvBufLen);
-   if(SGetSBuf(DFLT_REGION, DFLT_POOL, (Data **)&recvBuf, (Size)recvBufLen) != ROK)
+   ODU_FIND_MSG_LEN(mBuf, &recvBufLen);
+   RIC_ALLOC(recvBuf, (Size)recvBufLen);
+
+   if(recvBuf == NULLP)
    {
       DU_LOG("\nE2AP : Memory allocation failed");
       return;
    }
-   if(SCpyMsgFix(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
+   if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
    {
       DU_LOG("\nE2AP : Failed while copying %d", copyCnt);
       return;
@@ -565,7 +567,8 @@ void E2APMsgHdlr(Buffer *mBuf)
    memset(e2apMsg, 0, sizeof(E2AP_PDU_t));
 
    rval = aper_decode(0, &asn_DEF_E2AP_PDU, (void **)&e2apMsg, recvBuf, recvBufLen, 0, 0);
-   SPutSBuf(DFLT_REGION, DFLT_POOL, (Data *)recvBuf, (Size)recvBufLen);
+   RIC_FREE(recvBuf, (Size)recvBufLen);
+
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
       DU_LOG("\nE2AP : ASN decode failed");

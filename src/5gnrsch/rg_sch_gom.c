@@ -166,7 +166,7 @@ RgrCfgReqInfo *cfgReqInfo;
    {
       ret = rgSCHGomCfgReq (pst->region, pst->pool, instCb, 
             transId, cfgReqInfo);
-      RETVALUE(ret);
+      return (ret);
    }
 
    /* Fetch the cell Id for the recieved request */
@@ -178,7 +178,7 @@ RgrCfgReqInfo *cfgReqInfo;
             (Size)sizeof(*cfgReqInfo));
       cfgReqInfo = NULLP;
       schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Extract the cell and Enquee Config Request */
    if(NULLP != instCb->rgrSap[spId].cell)
@@ -192,7 +192,7 @@ RgrCfgReqInfo *cfgReqInfo;
                (Size)sizeof(*cfgReqInfo));
          cfgReqInfo = NULLP;
          schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       cell = instCb->rgrSap[spId].cell;
 
@@ -207,16 +207,16 @@ RgrCfgReqInfo *cfgReqInfo;
                (Size)sizeof(*cfgReqInfo));
          cfgReqInfo = NULLP;
          schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
-      RETVALUE(ROK);
+      return ROK;
    }
    SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
          (Size)sizeof(*cfgReqInfo));
    cfgReqInfo = NULLP;
    schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
-   RETVALUE(RFAILED);
+   return RFAILED;
 
 }/* rgSCHGomHndlCfg */
 
@@ -338,7 +338,7 @@ printf("\n AT MAC sending RGR cfg cfm \n");
 printf("\n AT MAC RGR cfg cfm sent\n");
 #endif
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHGomCfgReq */
 
 
@@ -400,7 +400,7 @@ RgrCfgReqInfo *rgrCfgReq;
    ret = rgSCHUtlAllocSBuf(inst, (Data **)&rgrCfgElem, sizeof(RgSchCfgElem));
    if ((ret != ROK) || ((U8 *)rgrCfgElem == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Initialize the configuration element */
@@ -433,7 +433,7 @@ RgrCfgReqInfo *rgrCfgReq;
          /* ccpu00117052 - MOD - Passing double pointer
          for proper NULLP assignment*/
          rgSCHUtlFreeSBuf(inst, (Data **)&rgrCfgElem, sizeof(*rgrCfgElem));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       sfDiff = RGSCH_CALC_SF_DIFF(actvTime, cell->crntTime);
@@ -447,7 +447,7 @@ RgrCfgReqInfo *rgrCfgReq;
          /* ccpu00117052 - MOD - Passing double pointer
          for proper NULLP assignment*/
          rgSCHUtlFreeSBuf(inst, (Data **)&rgrCfgElem, sizeof(*rgrCfgElem));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       if (sfDiff)
@@ -456,14 +456,14 @@ RgrCfgReqInfo *rgrCfgReq;
          rgrCfgElem->actvTime = actvTime; 
          rgSCHDbmInsPndngRgrCfgElem(cell, rgrCfgElem);
          /* Cfm to be sent only after applying request */
-         RETVALUE(ROK);
+         return ROK;
       }
    }
 
    /* Add to current cfgReq list */
    rgSCHDbmInsCrntRgrCfgElem(cell, rgrCfgElem);
    /* Cfm to be sent only after applying request */
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHGomEnqCfgReq */
 
 
@@ -529,7 +529,7 @@ SpId             spId;
       rgSCHUtlFreeSBuf(inst, (Data **)&cfgElem, sizeof(*cfgElem));
    } 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -591,7 +591,7 @@ RgSchErrInfo   *errInfo;
             {
                RLOG1(L_ERROR,"Rgr Cell configuration "
                   "validation FAILED: Cell %d", cfg->u.cellCfg.cellId);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          ret = rgSCHCfgRgrCellCfg(instCb, spId, &cfg->u.cellCfg, errInfo);
          break;
@@ -604,7 +604,7 @@ RgSchErrInfo   *errInfo;
          {
             RLOG1(L_ERROR,"Ue configuration validation"
                " FAILED: CRNTI:%d", cfg->u.ueCfg.crnti);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ret = rgSCHCfgRgrUeCfg(cell, &cfg->u.ueCfg, errInfo);
          break;
@@ -616,7 +616,7 @@ RgSchErrInfo   *errInfo;
          {
             RLOG1(L_ERROR,"LC configuration validation "
               "FAILED: LCID:%d", cfg->u.lchCfg.lcId);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ret = rgSCHCfgRgrLchCfg(cell, ue, &cfg->u.lchCfg, errInfo); 
          break;
@@ -628,7 +628,7 @@ RgSchErrInfo   *errInfo;
          {
             RLOG1(L_ERROR,"LCG configuration validation "
               "FAILED: LCGID:%d", cfg->u.lcgCfg.ulInfo.lcgId);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ret = rgSCHCfgRgrLcgCfg(cell, ue, &cfg->u.lcgCfg, errInfo); 
          break;
@@ -640,7 +640,7 @@ RgSchErrInfo   *errInfo;
          {
             RGSCHDBGERR(inst,(rgSchPBuf(inst), "SCH ENB configuration validation "
               "FAILED: \n" ));
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ret = rgSCHCfgRgrSchedEnbCfg(inst, spId, &cfg->u.schedEnbCfg, errInfo); 
          break;
@@ -651,11 +651,11 @@ RgSchErrInfo   *errInfo;
             RLOG1(L_ERROR,"Should never come here: "
                 "cfgType %d", cfg->cfgType);
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHGomHndlCfgReq */
 
 #ifdef LTE_ADV
@@ -717,7 +717,7 @@ U8                    action;
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]UE: does not exist\n", 
             sCellActDeactEvnt->crnti));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    for(idx = 0; idx < sCellActDeactEvnt->numOfSCells; idx++)
@@ -729,13 +729,13 @@ U8                    action;
             RGSCHDBGERR(inst,(rgSchPBuf(inst), "SCell Actication failed"
                      "for UE [%d] with SCellIdx [%d]\n", 
                      sCellActDeactEvnt->crnti, idx));
-            RETVALUE(RFAILED);
+            return RFAILED;
 
       }
 
    }
    RGSCHDBGINFO(inst,(rgSchPBuf(inst), "RGR Reconfiguration processed\n"));
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHGomHndlSCellActDeactReq */
 
 #endif /* LTE_ADV */
@@ -799,7 +799,7 @@ RgSchErrInfo  *errInfo;
          {
             RLOG_ARG0(L_ERROR,DBG_CELLID,recfg->u.cellRecfg.cellId,"Rgr Cell Recfg Validation "
                      "FAILED");
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ret = rgSCHCfgRgrCellRecfg(cell, &recfg->u.cellRecfg, errInfo);
          break;
@@ -812,7 +812,7 @@ RgSchErrInfo  *errInfo;
          {
             RLOG_ARG1(L_ERROR,DBG_CELLID,recfg->u.ueRecfg.cellId,"Ue Recfg Validation FAILED"
                       "OLD CRNTI:%d",recfg->u.ueRecfg.oldCrnti);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ret = rgSCHCfgRgrUeRecfg(cell, ue, &recfg->u.ueRecfg, errInfo);
          break;
@@ -825,7 +825,7 @@ RgSchErrInfo  *errInfo;
          {
             RLOG_ARG1(L_ERROR,DBG_CELLID,recfg->u.lchRecfg.cellId,"Lc Recfg Validation FAILED"
                       "LCID:%d",recfg->u.lchRecfg.lcId);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ret = rgSCHCfgRgrLchRecfg(cell, ue, dlLc, &recfg->u.lchRecfg, errInfo);
          break;
@@ -838,7 +838,7 @@ RgSchErrInfo  *errInfo;
          {
             RLOG_ARG1(L_ERROR,DBG_CELLID,recfg->u.lcgRecfg.cellId, "Lcg Recfg Validation FAILED"
                       "LCGID:%d",recfg->u.lcgRecfg.ulRecfg.lcgId);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ret = rgSCHCfgRgrLcgRecfg(cell, ue, &recfg->u.lcgRecfg, errInfo);
          break;
@@ -848,11 +848,11 @@ RgSchErrInfo  *errInfo;
 #if(ERRCLASS & ERRCLS_INT_PAR)
          RLOG1(L_ERROR,"Should never come here: recfgType %d", recfg->recfgType);
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHGomHndlRecfgReq */
 
 /**
@@ -908,7 +908,7 @@ RgSchErrInfo  *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,reset->cellId,"Rgr UE Reset Validation FAILED"
                "CRNTI:%d",reset->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    ret = rgSCHCfgRgrUeReset(cell, ue, reset, errInfo);
@@ -916,10 +916,10 @@ RgSchErrInfo  *errInfo;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,reset->cellId,"Rgr UE Reset FAILED"
                "CRNTI:%d",reset->crnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHGomHndlResetReq */
 
 
@@ -975,7 +975,7 @@ RgSchErrInfo  *errInfo;
    if(instCb->rgrSap[spId].cell == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"Cell doesnt exist");
-      RETVALUE(RFAILED); 
+      return RFAILED; 
    }
    
    /* Process the delete request */ 
@@ -1024,11 +1024,11 @@ RgSchErrInfo  *errInfo;
 #if(ERRCLASS & ERRCLS_INT_PAR)
          RLOG1(L_ERROR,"Should never come here: delType %d", del->delType);
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHGomHndlDelReq */
 
 
@@ -1095,17 +1095,17 @@ CmLteCellId   *cellId;
             }
             else
             {
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             break;
          }
       default:
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }  /* End of Switch */
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHGomGetCellIdFrmCfgReq */
 
 #ifdef RGR_SI_SCH
@@ -1176,7 +1176,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
       SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
       cfgReqInfo = NULLP;
       rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /*Validate the received SI configuration */
@@ -1189,7 +1189,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
       SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
       cfgReqInfo = NULLP;
       rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*ccpu00140789: Stopping SI scheduling*/
    if(RGR_SI_STOP == cfgReqInfo->cfgType)
@@ -1209,14 +1209,14 @@ RgrSiCfgReqInfo *cfgReqInfo;
          cfgReqInfo = NULLP;   
          cfmStatus = RGR_CFG_CFM_OK;
          rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus);
-         RETVALUE(ROK); 
+         return ROK; 
        }
        else
        {
           SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo));
           cfgReqInfo = NULLP;
           rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus);
-          RETVALUE(RFAILED); 
+          return RFAILED; 
        }
    }
 
@@ -1249,7 +1249,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
             cfgReqInfo = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                            cfmStatus); 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          cmMemset((U8*)padding,(U8)0,nmPadBytes);
@@ -1267,7 +1267,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
             padding = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                             cfmStatus); 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          SPutSBuf(reg, pool, (Data* )padding,(Size)nmPadBytes);
          padding = NULLP;
@@ -1297,7 +1297,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
                cfgReqInfo = NULLP;
                rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                      cfmStatus); 
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
 
             RGSCHCHKNUPDSIPDU(cell->siCb.crntSiInfo.sib1Info.sib1, 
@@ -1319,7 +1319,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
             cfgReqInfo = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                                  cfmStatus); 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          RGSCHCHKNUPDSIPDU(cell->siCb.crntSiInfo.sib1Info.sib1, 
                cell->siCb.newSiInfo.sib1Info.sib1, 
@@ -1340,7 +1340,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
             cfgReqInfo = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                                  cfmStatus); 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          /* Si recfg, where numSi changes */
          if (cell->siCb.siBitMask & RGSCH_SI_SICFG_UPD) 
@@ -1388,7 +1388,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
             cfgReqInfo = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                                  cfmStatus); 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          /* No need to wait for Modification period boundary */
          cell->siCb.siArray[cfgReqInfo->siId-1].si = cfgReqInfo->pdu;
@@ -1405,7 +1405,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
          cfgReqInfo = NULLP;
          rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                cfmStatus); 
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
@@ -1414,7 +1414,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
    rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus); 
 
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHGomHndlSiCfg */
 
 
@@ -1502,7 +1502,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
       warningSiCfgReqInfo = NULLP;
       rgSCHUtlRgrWarningSiCfgCfm(instCb->rgSchInit.inst, spId, siId, transId, 
             cfmStatus); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Search for free index in WarningSi */
@@ -1556,7 +1556,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
                      warningSiCfgReqInfo = NULLP;
                      rgSCHUtlRgrWarningSiCfgCfm(instCb->rgSchInit.inst, spId,
                            siId, transId,cfmStatus); 
-                     RETVALUE(RFAILED);
+                     return RFAILED;
 
                   }
                }
@@ -1610,13 +1610,13 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
       warningSiCfgReqInfo = NULLP;
       rgSCHUtlRgrWarningSiCfgCfm(instCb->rgSchInit.inst, spId, siId, transId, 
             cfmStatus); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SPutSBuf(reg, pool, (Data *)warningSiCfgReqInfo, 
          sizeof(RgrWarningSiCfgReqInfo)); 
    warningSiCfgReqInfo = NULLP;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1743,14 +1743,14 @@ PRIVATE Void rgSchUpdtRNTPInfo(cell, sf)
       {
          sfrCCPool->pwrHiCCRange.endRb   = loadInfReq->rgrCcPHighEndRb;
          sfrCCPool->pwrHiCCRange.startRb = loadInfReq->rgrCcPHighStartRb;
-         RETVALUE(ROK);
+         return ROK;
       }
       else
       {
          n = cmLListNext(l);
       }
    }
-   RETVALUE(ret);
+   return (ret);
 }
 /**
  * @brief Handler to handle LOAD INF request from RRM to MAC.
@@ -1811,14 +1811,14 @@ PUBLIC S16 rgSCHGomHndlLoadInf(reg, pool, instCb, spId, transId, loadInfReq)
       RLOG_ARG1(L_ERROR,DBG_CELLID,loadInfReq->cellId,"Cell Control block does not exist"
              "for load cellId:%d",loadInfReq->cellId);
       SPutSBuf(reg, pool, (Data *)loadInfReq, (Size)sizeof(*loadInfReq));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (cell->lteAdvCb.dsfrCfg.status == RGR_DISABLE)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHGomHndlLoadInf(): DSFR Feature not enabled");
       SPutSBuf(reg, pool, (Data *)loadInfReq, (Size)sizeof(*loadInfReq));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Validate the received LOAD INF Configuration */
    ret = rgSCHCfgVldtRgrLoadInf(inst, loadInfReq, cell, &errInfo);
@@ -1827,7 +1827,7 @@ PUBLIC S16 rgSCHGomHndlLoadInf(reg, pool, instCb, spId, transId, loadInfReq)
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Rgr LOAD INF Configuration "
                "validation FAILED");
       SPutSBuf(reg, pool, (Data *)loadInfReq, (Size)sizeof(*loadInfReq));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Update the RNTP info rcvd in the respective cell centre pool so that Phigh can be
       sent for the UEs scheduled in that particular RB range*/
@@ -1835,14 +1835,14 @@ PUBLIC S16 rgSCHGomHndlLoadInf(reg, pool, instCb, spId, transId, loadInfReq)
    {
       if((rgSchUpdtRNTPInfo(cell, cell->subFrms[i], loadInfReq) != ROK))
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
    SPutSBuf(reg, pool, (Data *)loadInfReq, (Size)sizeof(*loadInfReq));
 
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHGomHndlLoadInf */
 /* LTE_ADV_FLAG_REMOVED_END */
 

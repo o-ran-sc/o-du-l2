@@ -55,7 +55,7 @@
 #define MAC_CONFIGURED (MAC_GEN_CFG | MAC_SAP_CFG)
 
 #define DU_SET_ZERO(_buf, _size)   \
-   cmMemset((U8 *)(_buf), 0, _size);
+   memset((U8 *)(_buf), 0, _size);
 
 typedef enum
 {
@@ -162,36 +162,36 @@ DuCb duCb;
 //DuCfgParams duCfgParam;
 
 /* DU Cell Functions */
-S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason);
-S16 duActvTsk(Pst *pst, Buffer *mBuf);
-S16 duSendRlcUlCfg();
-S16 duSendRlcDlCfg();
-S16 duBuildRlcCfg(Inst inst);
-S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst);
-S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst);
-S16 DuHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm);
-S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cfm);
-S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm);
-S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm);
-S16 duSendMacCfg();
-S16 duBuildMacGenCfg();
-S16 duBuildMacUsapCfg(SpId sapId);
-S16 duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm);
-S16 duBindUnbindRlcToMacSap(U8 inst, U8 action);
-S16 duProcCfgComplete();
-S16 duSendSchCfg();
-S16 duSctpStartReq();
-S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy);
+uint8_t duActvInit(Ent entity, Inst inst, Region region, Reason reason);
+uint8_t duActvTsk(Pst *pst, Buffer *mBuf);
+uint8_t duSendRlcUlCfg();
+uint8_t duSendRlcDlCfg();
+uint8_t duBuildRlcCfg(Inst inst);
+uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst);
+uint8_t duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst);
+uint8_t DuHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm);
+uint8_t duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cfm);
+uint8_t duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm);
+uint8_t duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm);
+uint8_t duSendMacCfg();
+uint8_t duBuildMacGenCfg();
+uint8_t duBuildMacUsapCfg(SpId sapId);
+uint8_t duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm);
+uint8_t duBindUnbindRlcToMacSap(U8 inst, U8 action);
+uint8_t duProcCfgComplete();
+uint8_t duSendSchCfg();
+uint8_t duSctpStartReq();
+uint8_t duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy);
 
-S16 duBuildEgtpCfgReq();
-S16 duHdlEgtpCfgComplete(CmStatus cfm);
-S16 duSendEgtpSrvOpenReq();
-S16 duHdlEgtpSrvOpenComplete(CmStatus cfm);
-S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid);
-S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm);
-S16 duSendEgtpTestData();
-S16 duSendEgtpDatInd(Buffer *mBuf);
-S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
+uint8_t duBuildEgtpCfgReq();
+uint8_t duHdlEgtpCfgComplete(CmStatus cfm);
+uint8_t duSendEgtpSrvOpenReq();
+uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm);
+uint8_t duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid);
+uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm);
+uint8_t duSendEgtpTestData();
+uint8_t duSendEgtpDatInd(Buffer *mBuf);
+uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint8_t duBuildAndSendMacCellStartReq();
 uint8_t duBuildAndSendMacCellStopReq();
 #endif

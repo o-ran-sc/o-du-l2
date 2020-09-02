@@ -87,28 +87,28 @@ typedef struct egtpMsg
    Buffer     *msg;
 }EgtpMsg;
 
-typedef S16 (*EgtpCfgReq) ARGS((Pst *pst, EgtpConfig egtpCfg));
-typedef S16 (*EgtpCfgCfm) ARGS((CmStatus cfm));
-typedef S16 (*EgtpInitReq) ARGS((Buffer *mBuf));
-typedef S16 (*EgtpSrvOpenReq) ARGS(());
-typedef S16 (*EgtpSrvOpenCfm) ARGS((CmStatus cfm));
-typedef S16 (*EgtpTnlMgmtReq) ARGS((Pst *pst, EgtpTnlEvt tnlEvt));
-typedef S16 (*EgtpTnlMgmtCfm) ARGS((EgtpTnlEvt tnlEvt));
-typedef S16 (*EgtpSlotInd) ARGS(());
+typedef uint8_t (*EgtpCfgReq) ARGS((Pst *pst, EgtpConfig egtpCfg));
+typedef uint8_t (*EgtpCfgCfm) ARGS((CmStatus cfm));
+typedef uint8_t (*EgtpInitReq) ARGS((Buffer *mBuf));
+typedef uint8_t (*EgtpSrvOpenReq) ARGS(());
+typedef uint8_t (*EgtpSrvOpenCfm) ARGS((CmStatus cfm));
+typedef uint8_t (*EgtpTnlMgmtReq) ARGS((Pst *pst, EgtpTnlEvt tnlEvt));
+typedef uint8_t (*EgtpTnlMgmtCfm) ARGS((EgtpTnlEvt tnlEvt));
+typedef uint8_t (*EgtpSlotInd) ARGS(());
   
-S16 packEgtpCfgReq(Pst *pst, EgtpConfig  egtpCfg);
-S16 unpackEgtpCfgReq(EgtpCfgReq func , Pst *pst, Buffer *mBuf);
-S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm);
-S16 unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf);
-S16 packEgtpSrvOpenReq(Pst *pst);
-S16 unpackkEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
-S16 packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm);
-S16 unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf);
-S16 packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
-S16 unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf);
-S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt);
-S16 unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf);
-S16 packEgtpSlotInd(Pst *pst);
-S16 unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf);
+uint8_t packEgtpCfgReq(Pst *pst, EgtpConfig  egtpCfg);
+uint8_t unpackEgtpCfgReq(EgtpCfgReq func , Pst *pst, Buffer *mBuf);
+uint8_t packEgtpCfgCfm(Pst *pst, CmStatus cfm);
+uint8_t unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf);
+uint8_t packEgtpSrvOpenReq(Pst *pst);
+uint8_t unpackkEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
+uint8_t packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm);
+uint8_t unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf);
+uint8_t packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
+uint8_t unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf);
+uint8_t packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt);
+uint8_t unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf);
+uint8_t packEgtpSlotInd(Pst *pst);
+uint8_t unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf);
 
 #endif
