@@ -387,6 +387,24 @@
     },
     {
       "key": {
+        "uuid": "1898a060_f1d2defb",
+        "filename": "src/cm/ckw.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "removed in latest patch",
+      "parentUuid": "5ebeef8f_ce2c0255",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "402f46ec_92c26b0f",
         "filename": "src/cm/ckw.c",
         "patchSetId": 11
@@ -404,6 +422,24 @@
     },
     {
       "key": {
+        "uuid": "2e4b9b42_82e2c1c7",
+        "filename": "src/cm/ckw.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "402f46ec_92c26b0f",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "05ea1d57_81a3789b",
         "filename": "src/cm/ckw.h",
         "patchSetId": 11
@@ -418,6 +454,24 @@
       "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6346eaaa_e9635b47",
+        "filename": "src/cm/ckw.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05ea1d57_81a3789b",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -473,6 +527,24 @@
     },
     {
       "key": {
+        "uuid": "b57f6d3b_447651f0",
+        "filename": "src/cm/ckw.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f40ef083_38f82b6b",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "962717d4_cf403915",
         "filename": "src/cm/ckw.x",
         "patchSetId": 11
@@ -487,6 +559,24 @@
       "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0ebcb8e_78cfe4da",
+        "filename": "src/cm/ckw.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "962717d4_cf403915",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -507,6 +597,24 @@
     },
     {
       "key": {
+        "uuid": "fd1ecae0_3ff7aae8",
+        "filename": "src/cm/ckw.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "In the seed code RLC has RLC upper interface. So this is now renamed as RlcProcCfgReq",
+      "parentUuid": "2f488feb_59641943",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dbb4854a_1336e75a",
         "filename": "src/cm/common_def.h",
         "patchSetId": 11
@@ -521,6 +629,24 @@
       "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d83ee11_74aa3ea7",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbb4854a_1336e75a",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -576,6 +702,24 @@
     },
     {
       "key": {
+        "uuid": "834cd6bd_3326cfb7",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c756e41d_5089a088",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "15a1837c_abe2bff8",
         "filename": "src/du_app/du_cell_mgr.c",
         "patchSetId": 11
@@ -590,6 +734,24 @@
       "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "372a0cb2_1f94f788",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "agreed. but due to dependency of ducb, du_mgr.h is required here and thus rlc_inf and mac_inf are required",
+      "parentUuid": "15a1837c_abe2bff8",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -610,6 +772,24 @@
     },
     {
       "key": {
+        "uuid": "e4564911_7db2f19d",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5733f207_7fd10b8e",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b2ddb762_cbd46366",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 11
@@ -624,6 +804,24 @@
       "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e6b8de6_5e2281e8",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "In this file since we are using duCb variable which is declared in du_mgr.h\nAnd du_app_mac_inf.h, du_app_rlc_inf.h are required to complete the inclusion of du_mgr.h",
+      "parentUuid": "b2ddb762_cbd46366",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -781,6 +979,24 @@
       "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86bc0c60_97d68d4a",
+        "filename": "src/du_app/du_ue_mgr.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "agreed",
+      "parentUuid": "99a92d32_71ead8c6",
+      "revId": "682f4e2316444290f6f8e396372f998d87b8b4b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }

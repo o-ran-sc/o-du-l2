@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "db467683_92764a76",
+        "filename": "src/5gnrrlc/kw_udx_ul.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "This file handles the response of RLC UL/DL to DU\n - it maps the old api to new api and\n - packs the values and posts the event\n - this file operates similar to kw_ptui.c\nfor more readability i have renamed it to rlc_mgr.h",
+      "parentUuid": "0fc58d07_34820ecb",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ef4fc9e_b7755dfc",
         "filename": "src/5gnrrlc/kw_uim.c",
         "patchSetId": 13
@@ -33,6 +51,24 @@
       "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "377eb97c_aa12ebdc",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ef4fc9e_b7755dfc",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "f44adfbd_99254b56",
+        "filename": "src/cm/ckw.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "for now we are supporting max logical channels as 11 in du, MAC and SCH\nso i have made 11 in RLC as well.\nAs per discussion, i have to verify further if it is for LC or LCGS.\nfor the time being i am keeping a TODO check here",
+      "parentUuid": "e36f00d1_052d0f9f",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0c7cd2ae_3a48c8ba",
         "filename": "src/cm/ckw.x",
         "patchSetId": 13
@@ -67,6 +121,24 @@
       "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a86c37a_7af7f4e8",
+        "filename": "src/cm/ckw.x",
+        "patchSetId": 13
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c7cd2ae_3a48c8ba",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "85a3a602_64e31741",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "2c42b9cd_1f595f61",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "71a3b90c_8b06a0b3",
         "filename": "src/cm/du_app_rlc_inf.h",
         "patchSetId": 13
@@ -101,6 +191,24 @@
       "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a91d4ad_f180cd68",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "moved to du_utils.h",
+      "parentUuid": "71a3b90c_8b06a0b3",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "9462f974_39d0852d",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63397a47_1fdaf8fd",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e089cc18_d84eba5d",
         "filename": "src/cm/lkw.x",
         "patchSetId": 13
@@ -138,6 +264,24 @@
     },
     {
       "key": {
+        "uuid": "23d00f11_bd6e5e4d",
+        "filename": "src/cm/lkw.x",
+        "patchSetId": 13
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "As discussed prefix L is dropped now",
+      "parentUuid": "e089cc18_d84eba5d",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d4a8aa9f_3025983d",
         "filename": "src/du_app/du_mgr_ex_ms.c",
         "patchSetId": 13
@@ -152,6 +296,24 @@
       "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "222f3795_d13542d2",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-04T12:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4a8aa9f_3025983d",
+      "revId": "4648cbcc3c3a98ba21d2bbbd3e09be38766a879d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
