@@ -24,6 +24,7 @@
 #include "lrg.x"
 #include "du_app_mac_inf.h"
 #include "du_cfg.h"
+#include "du_app_rlc_inf.h"
 #include "E2AP-PDU.h"
 #include "du_mgr.h"
 #include "du_mgr_main.h"
@@ -1935,6 +1936,12 @@ void FreeULRRCMessageTransfer( F1AP_PDU_t *f1apMsg)
                  {
                      if(ulRRCMsg->protocolIEs.list.array[idx1] != NULLP)
                      {
+		         if(ulRRCMsg->protocolIEs.list.array[idx1]->value.present ==
+			    ULRRCMessageTransferIEs__value_PR_RRCContainer)
+			 {
+			    DU_FREE(ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf,
+			       ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size);
+			 }
                          DU_FREE(ulRRCMsg->protocolIEs.list.array[idx1],sizeof(ULRRCMessageTransferIEs_t));
                      }
                  }
@@ -1962,124 +1969,135 @@ void FreeULRRCMessageTransfer( F1AP_PDU_t *f1apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendULRRCMessageTransfer()
+uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
+   uint8_t *rrcMsg, uint16_t msgLen)
 {
-	uint8_t   elementCnt;
-	uint8_t   idx1;
-	uint8_t   idx;
-	F1AP_PDU_t      			*f1apMsg = NULL;
+   uint8_t   elementCnt;
+   uint8_t   idx1;
+   uint8_t   idx;
+   F1AP_PDU_t      		*f1apMsg = NULL;
    ULRRCMessageTransfer_t	*ulRRCMsg;
-	asn_enc_rval_t  			encRetVal;        /* Encoder return value */
+   asn_enc_rval_t  		encRetVal;        /* Encoder return value */
    uint8_t ret =RFAILED;
-	while(1)
-	{
-	   DU_LOG("\n F1AP : Building UL RRC Message Transfer Message\n");
+   while(1)
+   {
+      DU_LOG("\n F1AP : Building UL RRC Message Transfer Message\n");
 
-	   DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
-	   if(f1apMsg == NULLP)
-	   {
-		   DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
-			break;
-	   }
+      DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+      if(f1apMsg == NULLP)
+      {
+	 DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
+	 break;
+      }
 
-	   f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
-   	DU_ALLOC(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
-	   if(f1apMsg->choice.initiatingMessage == NULLP)
-	   {
-		   DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
-			break;
-	   }
-   	f1apMsg->choice.initiatingMessage->procedureCode = \
-												ProcedureCode_id_ULRRCMessageTransfer;
-	   f1apMsg->choice.initiatingMessage->criticality = Criticality_ignore;
-	   f1apMsg->choice.initiatingMessage->value.present = \
-								InitiatingMessage__value_PR_ULRRCMessageTransfer;
-	   ulRRCMsg =
-		    &f1apMsg->choice.initiatingMessage->value.choice.ULRRCMessageTransfer;
-	   elementCnt = 3;
-   	ulRRCMsg->protocolIEs.list.count = elementCnt;
-	   ulRRCMsg->protocolIEs.list.size = \
-									elementCnt * sizeof(ULRRCMessageTransferIEs_t *);
+      f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
+      DU_ALLOC(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+      if(f1apMsg->choice.initiatingMessage == NULLP)
+      {
+	 DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
+	 break;
+      }
+      f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_ULRRCMessageTransfer;
+      f1apMsg->choice.initiatingMessage->criticality = Criticality_ignore;
+      f1apMsg->choice.initiatingMessage->value.present = \
+	InitiatingMessage__value_PR_ULRRCMessageTransfer;
+      ulRRCMsg =
+	 &f1apMsg->choice.initiatingMessage->value.choice.ULRRCMessageTransfer;
+      elementCnt = 4;
+      ulRRCMsg->protocolIEs.list.count = elementCnt;
+      ulRRCMsg->protocolIEs.list.size = \
+	elementCnt * sizeof(ULRRCMessageTransferIEs_t *);
 
-	    /* Initialize the F1Setup members */
-	   DU_ALLOC(ulRRCMsg->protocolIEs.list.array, ulRRCMsg->protocolIEs.list.size);
-	   if(ulRRCMsg->protocolIEs.list.array == NULLP)
-	   {
-		    DU_LOG(" F1AP : Memory allocation for UL RRC MessageTransferIEs failed");
-			 break;
-    	}
-	   for(idx=0; idx<elementCnt; idx++)
-	   {
-		   DU_ALLOC(ulRRCMsg->protocolIEs.list.array[idx],sizeof(ULRRCMessageTransferIEs_t));
-	    	if(ulRRCMsg->protocolIEs.list.array[idx] == NULLP)
-		   {
-			   break;
-		   }
-	   }
+      /* Initialize the F1Setup members */
+      DU_ALLOC(ulRRCMsg->protocolIEs.list.array, ulRRCMsg->protocolIEs.list.size);
+      if(ulRRCMsg->protocolIEs.list.array == NULLP)
+      {
+	 DU_LOG(" F1AP : Memory allocation for UL RRC MessageTransferIEs failed");
+	 break;
+      }
+      for(idx=0; idx<elementCnt; idx++)
+      {
+	 DU_ALLOC(ulRRCMsg->protocolIEs.list.array[idx],sizeof(ULRRCMessageTransferIEs_t));
+	 if(ulRRCMsg->protocolIEs.list.array[idx] == NULLP)
+	 {
+	    break;
+	 }
+      }
 
-	   idx1 = 0;
+      idx1 = 0;
 
-	    /*GNB CU UE F1AP ID*/
-	   ulRRCMsg->protocolIEs.list.array[idx1]->id	= \
-					 			                 ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
-	   ulRRCMsg->protocolIEs.list.array[idx1]->criticality	= 	Criticality_reject;
-	   ulRRCMsg->protocolIEs.list.array[idx1]->value.present = \
-                    		ULRRCMessageTransferIEs__value_PR_GNB_CU_UE_F1AP_ID;
-   	ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.GNB_CU_UE_F1AP_ID = CU_ID;
+      /*GNB CU UE F1AP ID*/
+      ulRRCMsg->protocolIEs.list.array[idx1]->id = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
+      ulRRCMsg->protocolIEs.list.array[idx1]->criticality = Criticality_reject;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.present = \
+	ULRRCMessageTransferIEs__value_PR_GNB_CU_UE_F1AP_ID;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.GNB_CU_UE_F1AP_ID = ueCb.gnbCuUeF1apId;
 
-	   /*GNB DU UE F1AP ID*/
-	   idx1++;
-   	ulRRCMsg->protocolIEs.list.array[idx1]->id	= \
-					 			                 ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
-	   ulRRCMsg->protocolIEs.list.array[idx1]->criticality	= 	Criticality_reject;
-	   ulRRCMsg->protocolIEs.list.array[idx1]->value.present = \
-                    		ULRRCMessageTransferIEs__value_PR_GNB_DU_UE_F1AP_ID;
-	   ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.GNB_DU_UE_F1AP_ID = DU_ID;
+      /*GNB DU UE F1AP ID*/
+      idx1++;
+      ulRRCMsg->protocolIEs.list.array[idx1]->id = ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+      ulRRCMsg->protocolIEs.list.array[idx1]->criticality = Criticality_reject;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.present = \
+         ULRRCMessageTransferIEs__value_PR_GNB_DU_UE_F1AP_ID;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.GNB_DU_UE_F1AP_ID = ueCb.gnbDuUeF1apId;
 
-	   /*SRBID*/
-	   idx1++;
-	   ulRRCMsg->protocolIEs.list.array[idx1]->id	= \
-									 			                 ProtocolIE_ID_id_SRBID;
-	   ulRRCMsg->protocolIEs.list.array[idx1]->criticality	= 	Criticality_reject;
-	   ulRRCMsg->protocolIEs.list.array[idx1]->value.present = \
-				                    		ULRRCMessageTransferIEs__value_PR_SRBID;
-	   ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.SRBID = UL_SRBID;
+      /*SRBID*/
+      idx1++;
+      ulRRCMsg->protocolIEs.list.array[idx1]->id = ProtocolIE_ID_id_SRBID;
+      ulRRCMsg->protocolIEs.list.array[idx1]->criticality = Criticality_reject;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.present = \
+	ULRRCMessageTransferIEs__value_PR_SRBID;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.SRBID = lcId;
 
-	   /*RRCContainer*/
-	   //YET TO FILL
+      /*RRCContainer*/
+      idx1++;
+      ulRRCMsg->protocolIEs.list.array[idx1]->id  = ProtocolIE_ID_id_RRCContainer;
+      ulRRCMsg->protocolIEs.list.array[idx1]->criticality = Criticality_reject;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.present = \
+         ULRRCMessageTransferIEs__value_PR_RRCContainer;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size = msgLen;
+      DU_ALLOC(ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf,
+         ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size)
+      if(!ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf)
+      {
+         DU_LOG(" F1AP : Memory allocation for BuildAndSendULRRCMessageTransfer failed");
+         break;
+      }
+      memcpy(ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf, \
+         rrcMsg, ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size);
 
-	   xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
+      xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
-	   /* Encode the F1SetupRequest type as APER */
-	   cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
-	   encBufSize = 0;
-	   encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
-			encBuf);
-	   /* Encode results */
-	   if(encRetVal.encoded == ENCODE_FAIL)
-	   {
-		     DU_LOG( "\n F1AP : Could not encode ULRRCMessageTransfer structure (at %s)\n",\
-				encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-			  break;
-	   }
-	   else
-	   {
-		    DU_LOG("\n F1AP : Created APER encoded buffer for ULRRCMessageTransfer\n");
-		    for(int i=0; i< encBufSize; i++)
-		    {
-			     printf("%x",encBuf[i]);
-		    }
-	   }
+      /* Encode the F1SetupRequest type as APER */
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
+	    encBuf);
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+	 DU_LOG( "\n F1AP : Could not encode ULRRCMessageTransfer structure (at %s)\n",\
+	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+	 break;
+      }
+      else
+      {
+	 DU_LOG("\n F1AP : Created APER encoded buffer for ULRRCMessageTransfer\n");
+	 for(int i=0; i< encBufSize; i++)
+	 {
+	    printf("%x",encBuf[i]);
+	 }
+      }
 
-	   /* Sending  msg  */
-	   if(SendF1APMsg(DU_APP_MEM_REGION,DU_POOL)	!=	ROK)
-	   {
-		    DU_LOG("\n F1AP : Sending	UL RRC Message Transfer Failed");
-			 break;
-		}
+      /* Sending  msg  */
+      if(SendF1APMsg(DU_APP_MEM_REGION,DU_POOL)	!=	ROK)
+      {
+	 DU_LOG("\n F1AP : Sending	UL RRC Message Transfer Failed");
+	 break;
+      }
       ret = ROK;
-		break;
-	}
+      break;
+   }
    FreeULRRCMessageTransfer(f1apMsg);
 
 	return ret;
@@ -2511,10 +2529,11 @@ struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
 {
    uint8_t idx;
    uint8_t elementCnt;
-	uint8_t numBytes;
-	uint8_t byteIdx;
-	uint8_t bitsUnused;
+   uint8_t numBytes, bitsUnused;
    struct ControlResourceSet *controlRSet;
+   uint8_t freqDomainResource[6] = {0};
+   uint8_t coreset0EndPrb, coreset1StartPrb, coreset1NumPrb;
+
 
    elementCnt = 1;
    controlRSetList->list.count = elementCnt;
@@ -2531,7 +2550,7 @@ struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
 
    for(idx = 0; idx < elementCnt; idx++)
    {
-	   controlRSetList->list.array[idx] = NULLP;
+      controlRSetList->list.array[idx] = NULLP;
       DU_ALLOC(controlRSetList->list.array[idx], sizeof(struct ControlResourceSet));
       if(!controlRSetList->list.array[idx])
       {
@@ -2550,7 +2569,7 @@ struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
 	 * 3 LSBs unsued
 	 * Bit string stored ff0000000000
 	 */
-	numBytes = 6;
+   numBytes = 6;
    bitsUnused = 3;
    controlRSet->frequencyDomainResources.size = numBytes * sizeof(uint8_t);
 
@@ -2562,13 +2581,15 @@ struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
 	   DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
 		return RFAILED;
    }
-   byteIdx = 0;
-	controlRSet->frequencyDomainResources.buf[byteIdx] = PDCCH_FREQ_DOM_RSRC; /* setting 8 MSBs i.e. ff */
-   for(byteIdx = 1; byteIdx < numBytes; byteIdx++)
-	{
-	   controlRSet->frequencyDomainResources.buf[byteIdx] = 0;
-	}
-	controlRSet->frequencyDomainResources.bits_unused = bitsUnused;
+
+   memset(controlRSet->frequencyDomainResources.buf, 0, FREQ_DOM_RSRC_SIZE);
+   coreset0EndPrb = 48;
+   coreset1StartPrb = coreset0EndPrb + 6;
+   coreset1NumPrb = 24;
+   /* calculate the PRBs */
+   schAllocFreqDomRscType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+   memcpy(controlRSet->frequencyDomainResources.buf, freqDomainResource, FREQ_DOM_RSRC_SIZE);
+   controlRSet->frequencyDomainResources.bits_unused = bitsUnused;
 
    controlRSet->duration = PDCCH_CTRL_RSRC_SET_ONE_DURATION;
    controlRSet->cce_REG_MappingType.present = \

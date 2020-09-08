@@ -16,24 +16,31 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains all F1AP message handler related functionality */
+#define MAX_SLOT_VALUE   9
+#define MAX_SFN_VALUE    1023
+#define NR_PCI            1
 
-#define TRANS_ID 1
-#define RRC_SIZE 1
-#define SUL_BAND_COUNT 0
-#define UL_SRBID        1
-#define DL_SRBID        0
-#define DU_ID           1
-#define CU_ID           1
-#define CRNTI           17017
-#define CELL_INDEX      0
+typedef enum
+{
+   MSG_TYPE_MSG3,
+   MSG_TYPE_SHORT_BSR,
+   MSG_TYPE_MSG5
+}MsgType;
 
-void F1APMsgHdlr(Buffer *mBuf);
-uint8_t BuildAndSendF1SetupReq();
-uint8_t BuildAndSendDUConfigUpdate();
-uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);
-uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, uint8_t *rrcMsg, uint16_t msgLen);
+uint16_t sfnValue = 0;
+uint16_t slotValue = 0;
+bool     rachIndSent = false;
+bool     msg3Sent = false;
+bool     msg5ShortBsrSent = false;
+bool     msg5Sent = false;
 
+EXTERN void phyToMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
+#ifdef INTEL_FAPI
+EXTERN void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, uint16_t tag, uint16_t
+length, uint16_t value, uint32_t *msgLen));
+EXTERN void fillMsgHeader ARGS((fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen));
+#endif
+EXTERN void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 /**********************************************************************
          End of file
 **********************************************************************/

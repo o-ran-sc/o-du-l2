@@ -19,6 +19,8 @@
 /* This file contains the definitions for Upper Interface APIs that are
  * invoked from MAC */
 #include "common_def.h"
+#include "rgu.h"
+#include "rgu.x"
 #include "du_app_mac_inf.h"
 #include "mac_upr_inf_api.h"
 
@@ -43,6 +45,14 @@ DuMacUlCcchInd packMacUlCcchIndOpts[] =
    packMacUlCcchInd,
    duHandleUlCcchInd,
    packMacUlCcchInd
+};
+
+/* Function pointer options for UL Data to RLC */
+RlcMacUlDataFunc rlcMacSendUlDataOpts[] =
+{
+   packRlcUlData,
+   RlcMacProcUlData,
+   packRlcUlData
 };
 
 /*******************************************************************
@@ -110,6 +120,26 @@ uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
 uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 {
    return (*packMacUlCcchIndOpts[pst->selector])(pst, ulCcchIndInfo);
+}
+
+/*******************************************************************
+ *
+ * @brief Send UL data to RLC
+ *
+ * @details
+ *
+ *    Function : MacRlcSendUlData
+ *
+ *    Functionality: Send UL data to RLC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSendUlDataToRlc(Pst *pst, RlcMacData *ulData)
+{
+   return (*rlcMacSendUlDataOpts[pst->selector])(pst, ulData);
 }
 
 

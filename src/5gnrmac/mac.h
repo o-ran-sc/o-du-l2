@@ -67,8 +67,8 @@
 #define SR_DELAY_TMR_2560MS   2560
 
 #define MAC_LCID_CCCH              0
-#define MAC_DEDLC_MIN_LCID         1
-#define MAC_DEDLC_MAX_LCID         32
+#define MAC_LCID_MIN               1
+#define MAC_LCID_MAX               32
 #define MAC_LCID_RESERVED_MIN      33
 #define MAC_LCID_RESERVED_MAX      51
 #define MAC_LCID_CCCH_48BIT        52
@@ -237,11 +237,13 @@ void createMacRaCb(uint16_t cellId, uint16_t crnti);
 void fillMsg4DlData(uint16_t cellId, MacDlData *dlData, uint8_t *msg4Pdu);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);
-uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu);
-uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti);
+uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu);
 void fillMg4Pdu(Msg4Alloc *msg4Alloc);
 void buildAndSendMuxPdu(SlotIndInfo currTimingInfo);
-
+uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint8_t *rrcContainer);
+uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t bufferSize);
+uint8_t macFillAndSendUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
+   uint8_t lcId, uint8_t *pdu, uint16_t pduLen);
 #endif
 /**********************************************************************
   End of file

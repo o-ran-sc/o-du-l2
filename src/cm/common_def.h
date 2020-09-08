@@ -15,6 +15,9 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+#ifndef __COMMON_DEF_H__
+#define __COMMON_DEF_H__
+
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -82,6 +85,19 @@
    _cellIdx = _cellId - 1;                \
 }
 
+#define SET_BITS_MSB(_startBit, _numBits, _byte) \
+{                                                \
+   _byte = (~((0xFF) >> _numBits));              \
+       _byte >>= _startBit;                          \
+}
+
+#define SET_BITS_LSB(_startBit, _numBits, _byte) \
+{                                                \
+   _byte = (~((0xFF) << _numBits));              \
+       _byte <<= _startBit;                          \
+}
+
+
 typedef struct slotIndInfo
 {
    uint16_t cellId;
@@ -95,6 +111,9 @@ typedef struct PlmnIdentity
    uint8_t mnc[3];
 }Plmn;
 
+void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
+
+#endif
 /**********************************************************************
   End of file
 ***********************************************************************/

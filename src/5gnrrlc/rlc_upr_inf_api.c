@@ -15,24 +15,37 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+#include "common_def.h"
+#include "du_app_rlc_inf.h"
 
-/* This file contains all F1AP message handler related functionality */
+/* Function pointer array for UL RRC Msg Transfer */
+RlcUlRrcMsgToDuFunc rlcSendUlRrcMsgToDuOpts[] = 
+{
+   packRlcUlRrcMsgToDu,       /* 0 - Loosely coupled */
+   DuProcRlcUlRrcMsgTrans,    /* 1 - Tightly coupled */
+   packRlcUlRrcMsgToDu        /* 2 - Light weight loosely coupled */
+};
 
-#define TRANS_ID 1
-#define RRC_SIZE 1
-#define SUL_BAND_COUNT 0
-#define UL_SRBID        1
-#define DL_SRBID        0
-#define DU_ID           1
-#define CU_ID           1
-#define CRNTI           17017
-#define CELL_INDEX      0
-
-void F1APMsgHdlr(Buffer *mBuf);
-uint8_t BuildAndSendF1SetupReq();
-uint8_t BuildAndSendDUConfigUpdate();
-uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);
-uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, uint8_t *rrcMsg, uint16_t msgLen);
+/*******************************************************************
+ *
+ * @brief Sends UL RRC Message Info to DU APP
+ *
+ * @details
+ *
+ *    Function : rlcSendUlRrcMsgToDu
+ *
+ *    Functionality:  Sends UL RRC Message Info to DU APP
+ *
+ * @params[in] Pst structure
+ *             UL RRC Msg Info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t rlcSendUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
+{
+   return (*rlcSendUlRrcMsgToDuOpts[pst->selector])(pst, ulRrcMsgInfo);
+}
 
 /**********************************************************************
          End of file

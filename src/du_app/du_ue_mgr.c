@@ -218,7 +218,7 @@ PUBLIC S16 duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
+uint8_t duBuildAndSendDlCcchInd(uint16_t *cellId, uint16_t *crnti, \
       DlCcchMsgType msgType, uint8_t *dlCcchMsg, uint16_t dlCcchMsgSize)
 {
    uint8_t ret                  = ROK;
@@ -227,6 +227,7 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
    Pst pst;
 
    memset(&pst, 0, sizeof(Pst));
+   printf("\n==CELLID: %d", *cellId);
    DU_LOG("\nDU APP : Building and Sending DL CCCH Ind to MAC");
 
    DU_ALLOC_SHRABL_BUF(dlCcchIndInfo, sizeof(DlCcchIndInfo));
@@ -237,8 +238,8 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t cellId, uint16_t crnti, \
       return RFAILED;
    }
 
-   dlCcchIndInfo->cellId = cellId;
-   dlCcchIndInfo->crnti = crnti;
+   dlCcchIndInfo->cellId = *cellId;
+   dlCcchIndInfo->crnti = *crnti;
    dlCcchIndInfo->msgType = msgType;
    dlCcchIndInfo->dlCcchMsgLen = dlCcchMsgSize;
 
@@ -296,7 +297,7 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
    uint32_t               gnbCuUeF1apId, gnbDuUeF1apId;
 
 
-   DU_LOG("\nDU_APP : DL RRC message transfer Recevied");
+   DU_LOG("\n====DU_APP : DL RRC message transfer Recevied");
    dlRrcMsg = &f1apMsg->choice.initiatingMessage->value.choice.DLRRCMessageTransfer;
 
    ret = ROK;
@@ -360,7 +361,7 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
    }
    if(srbId == SRB_ID_1) //RRC connection setup
    {
-      ret = duBuildAndSendDlCcchInd(cellId, crnti, RRC_SETUP, dlCcchMsg, dlCcchMsgSize);
+      ret = duBuildAndSendDlCcchInd(&cellId, &crnti, RRC_SETUP, dlCcchMsg, dlCcchMsgSize);
       if(ret)
       {
 	 DU_LOG("\nDU_APP: Falied at duBuildAndSendDlCcchInd()");
@@ -466,6 +467,9 @@ uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
 void fillInitDlBwp(InitialDlBwp *initDlBwp)
 {
    uint8_t idx = 0;
+   uint8_t freqDomainResource[6] = {0};
+   uint8_t coreset0EndPrb, coreset1StartPrb, coreset1NumPrb;
+
 
    if(initDlBwp)
    {
@@ -481,8 +485,14 @@ void fillInitDlBwp(InitialDlBwp *initDlBwp)
 	       PDCCH_CTRL_RSRC_SET_ONE_ID;
 	    memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
 	       FREQ_DOM_RSRC_SIZE); 
-	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc[idx] =\
-	       PDCCH_FREQ_DOM_RSRC;
+	    coreset0EndPrb = 48;
+	    coreset1StartPrb = coreset0EndPrb +6;
+	    coreset1NumPrb = 24;
+	    /* calculate the PRBs */
+	    schAllocFreqDomRscType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+	    memcpy(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, freqDomainResource,
+	       FREQ_DOM_RSRC_SIZE);
+
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].duration = \
 	       PDCCH_CTRL_RSRC_SET_ONE_DURATION;
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cceRegMappingType = \
@@ -855,21 +865,21 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 	 GET_UE_IDX(ueCcchCtxt->crnti, ueIdx);
 	 DU_LOG("\nDU_APP: Filling UeCb for ueIdx [%d]", ueIdx);
 
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId = ueCcchCtxt->gnbDuUeF1apId;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId = gnbCuUeF1apId;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState       = UE_ACTIVE;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbDuUeF1apId = ueCcchCtxt->gnbDuUeF1apId;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId = gnbCuUeF1apId;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].ueState       = UE_ACTIVE;
 
 	 /* Filling Mac Ue Config */ 
-	 memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg, 0, sizeof(MacUeCfg));
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId        = ueCcchCtxt->cellId;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.ueIdx         = ueIdx;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.crnti         = ueCcchCtxt->crnti;
-	 fillMacUeCfg(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg);
+	 memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg, 0, sizeof(MacUeCfg));
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.cellId        = ueCcchCtxt->cellId;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.ueIdx         = ueIdx;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.crnti         = ueCcchCtxt->crnti;
+	 fillMacUeCfg(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg);
 	 duCb.actvCellLst[cellIdx]->numActvUes++;
 	 memset(ueCcchCtxt, 0, sizeof(UeCcchCtxt));
 
 	 /* Send Ue Create Request to MAC */
-	 ret = duBuildAndSendUeCreateReqToMac(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId, ueIdx);
+	 ret = duBuildAndSendUeCreateReqToMac(duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.cellId, ueIdx);
 	 if(ret)
 	    DU_LOG("\nDU_APP: Failed to send UE create request to MAC");
       }
@@ -911,7 +921,7 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
    if(macUeCfg)
    {
       memset(macUeCfg, 0, sizeof(MacUeCfg));
-      memcpy(macUeCfg, &duCb.actvCellLst[cellId - 1]->ueCb[ueIdx].macUeCfg, sizeof(MacUeCfg));
+      memcpy(macUeCfg, &duCb.actvCellLst[cellId - 1]->ueCb[ueIdx-1].macUeCfg, sizeof(MacUeCfg));
       /* Processing one Ue at a time to MAC */
       ret = (*packMacUeCreateReqOpts[pst.selector])(&pst, macUeCfg);
       if(ret)

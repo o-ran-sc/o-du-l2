@@ -367,11 +367,11 @@ RguCStaIndInfo   *staInd;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
-   dlData->timeToTx.sfn = sdu->mode.tm.sfn;
-   dlData->timeToTx.slot = sdu->mode.tm.slot;
+   dlData->slotInfo.sfn = sdu->mode.tm.sfn;
+   dlData->slotInfo.slot = sdu->mode.tm.slot;
    dlData->cellId = rbCb->rlcId.cellId;
    dlData->rnti = sdu->mode.tm.rnti;
-   dlData->nmbPdu = 1;
+   dlData->numPdu = 1;
    dlData->pduInfo[0].commCh = TRUE;
    dlData->pduInfo[0].lcId = rbCb->lch.lChId;
    dlData->pduInfo[0].pduBuf =  sdu->mBuf;

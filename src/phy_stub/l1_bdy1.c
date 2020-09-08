@@ -31,22 +31,7 @@
 #include "lphy_stub.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac_utils.h"
-
-#define MAX_SLOT_VALUE   9
-#define MAX_SFN_VALUE    1023
-#define NR_PCI            1
-
-uint16_t sfnValue = 0;
-uint16_t slotValue = 0;
-bool     rachIndSent = false;
-
-EXTERN void phyToMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
-#ifdef INTEL_FAPI
-EXTERN void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, uint16_t tag, uint16_t
-length, uint16_t value, uint32_t *msgLen));
-EXTERN void fillMsgHeader ARGS((fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen));
-#endif
-EXTERN void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
+#include "l1.h"
 
 /*******************************************************************
  *
@@ -347,7 +332,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
+uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu, MsgType type)
 {
    uint8_t idx = 0;
    fapi_rx_data_indication_t *rxDataInd;
@@ -374,7 +359,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    pduInfo->handle = puschPdu.handle;
    pduInfo->rnti = puschPdu.rnti;
    pduInfo->harqId = puschPdu.puschData.harqProcessId;
-   pduInfo->pdu_length = puschPdu.puschData.tbSize;
+   pduInfo->pdu_length = puschPdu.puschData.tbSize ;
    pduInfo->ul_cqi = 0;
    pduInfo->timingAdvance = 0;
    pduInfo->rssi = 0;
@@ -388,21 +373,80 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
       return RFAILED;
    }
 
-   /* Harcoded Initial RRC setup Request */
+   /* Filling PDU */
    pdu = (uint8_t *)pduInfo->pduData;
-   pdu[byteIdx++] = 0;
-   pdu[byteIdx++] = 181;
-   pdu[byteIdx++] = 99;
-   pdu[byteIdx++] = 20;
-   pdu[byteIdx++] = 170;
-   pdu[byteIdx++] = 132;
-   pdu[byteIdx++] = 96;
 
-   /* Harcoding the pad bytes */
-   pdu[byteIdx++] = 63;
+   switch(type)
+   {
+      case MSG_TYPE_MSG3: 
+	 {
+	    /* For Initial RRC setup Request,
+	       MAC subheader format is R/R/LCId (1byte)
+	       LCId is CCCH(0)
+	       From 38.321 section 6.1.1
+	     */
+	    pdu[byteIdx++] = 0;
+	    /* Hardcoding MAC PDU */
+	    pdu[byteIdx++] = 181;
+	    pdu[byteIdx++] = 99;
+	    pdu[byteIdx++] = 20;
+	    pdu[byteIdx++] = 170;
+	    pdu[byteIdx++] = 132;
+	    pdu[byteIdx++] = 96;
 
-   for(; byteIdx < pduInfo->pdu_length; byteIdx++)
-      pdu[byteIdx] = 0;
+	    break;
+	 }
+
+      case MSG_TYPE_SHORT_BSR:
+	 {
+	    uint8_t lcgId = 0;
+	    uint8_t bufferSizeIdx = 4;
+
+	    /* For Short BSR
+	       MAC subheader format is R/R/LcId (1Byte)
+	       LCId is 61
+	       From 38.321 section 6.1.1
+	     */
+	    pdu[byteIdx++] = 61;    // LCID
+	    pdu[byteIdx++] = (lcgId << 5) | bufferSizeIdx;
+
+	    break;
+	 }
+
+      case MSG_TYPE_MSG5:
+	 {
+	    uint8_t  msg5PduLen = 33;
+	    /* For RRC setup complete
+	       MAC subheader format is R/F/LCId/L (2/3 bytes)
+	       LCId is 1 for SRB1
+	       L is length of PDU i.e 6bytes here 
+	       From 38.321 section 6.1.1
+	     */
+	    uint8_t msg5[] = {1, msg5PduLen, 0, 0, 16, 0, 5, 223, 128, 16, 94, \
+	       64, 3, 64, 89, 61, 138, 64, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, \
+	       184, 56, 0, 0, 0, 0, 0};
+
+	    msg5PduLen += 2;  /* 2bytes of header */
+	    memcpy(pdu, &msg5, msg5PduLen);
+	    byteIdx += msg5PduLen; /* 2 bytes of header */
+	 }
+
+      default:
+	 break;
+   } /* End of switch(type) */
+   /* Filling MAC SDU for Padding bytes*/
+   if(byteIdx < pduInfo->pdu_length)
+   {
+      /* For Padding
+	 MAC subheader format is R/R/LCId (1byte)
+	 LCId is 63 for padding
+	 From 38.321 section 6.1.1
+       */
+      pdu[byteIdx++] = 63;
+
+      for(; byteIdx < pduInfo->pdu_length; byteIdx++)
+	 pdu[byteIdx] = 0;
+   }
    msgLen += pduInfo->pdu_length;
 
    fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
@@ -663,6 +707,156 @@ PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 #endif
    return ROK;
 }
+
+#ifdef INTEL_FAPI
+/*******************************************************************
+ *
+ * @brief Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1
+ *
+ * @details
+ *
+ *    Function : fillPucchF0F1PduInfo
+ *
+ *    Functionality:
+ *       Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1 
+ *
+ * @params[in] fapi_uci_o_pucch_f0f1_t *
+ *             pucchPdu
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu_t pucchPdu)
+{
+   uint8_t idx = 0;
+
+   pduInfo->handle = pucchPdu.handle;
+   pduInfo->pduBitmap = 1;  //hardcoded for SR
+   pduInfo->pucchFormat = pucchPdu.formatType;
+   pduInfo->ul_cqi = 0;
+   pduInfo->rnti = pucchPdu.rnti;
+   pduInfo->timingAdvance = 0;
+   pduInfo->rssi = 0;
+   pduInfo->uciBits[idx] = 0;   //TODO: FAPI spec ver. 222.10.01 has no info about UCI Bits
+   if(pduInfo->pduBitmap & SR_PDU_BITMASK)
+   {
+      pduInfo->srInfo.srIndication = SR_DETECTED;
+      pduInfo->srInfo.srConfidenceLevel = CONFDC_LEVEL_GOOD;
+   }
+   if(pduInfo->pduBitmap & HARQ_PDU_BITMASK)
+   {
+      pduInfo->harqInfo.numHarq++;
+      pduInfo->harqInfo.harqConfidenceLevel = CONFDC_LEVEL_GOOD;
+      for(idx = 0; idx < pduInfo->harqInfo.numHarq; idx++)
+      {
+         pduInfo->harqInfo.harqValue[idx] = HARQ_PASS;
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+ *
+ * @brief Fills UCI Pdu Information
+ *
+ * @details
+ *
+ *    Function : fillUciPduInfo
+ *
+ *    Functionality:
+ *       Fills UCI Pdu Information
+ *
+ * @params[in] Pointer to uciPdu
+ *             pucchPdu
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillUciPduInfo(fapi_uci_pdu_info_t *uciPdu, fapi_ul_pucch_pdu_t pucchPdu)
+{
+   uint8_t ret = ROK;
+
+   /*TODO: The pduType is hardcoded here to support 
+     UCI Ind for PUCCH forat0/format1. This is to be
+     modified when we get SR form UE */
+   uciPdu->pduType = UCI_IND_PUCCH_F0F1;
+   switch(uciPdu->pduType)
+   {
+      case UCI_IND_PUSCH:
+         break;
+      case UCI_IND_PUCCH_F0F1:
+         {
+            fapi_uci_o_pucch_f0f1_t *pduInfo = NULLP;
+
+            pduInfo = &uciPdu->uci.uciPucchF0F1;
+            ret = fillPucchF0F1PduInfo(pduInfo, pucchPdu);
+            uciPdu->pduSize = sizeof(fapi_uci_o_pucch_f0f1_t);
+         }
+         break;
+      case UCI_IND_PUCCH_F2F3F4:
+         break;
+      default:
+         DU_LOG("\nPHY_STUB: Invalid Pdu Type %d", uciPdu->pduType);
+         break;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Build and send Uci indication
+ *
+ * @details
+ *
+ *    Function : l1BuildAndSendUciInd
+ *
+ *    Functionality:
+ *       Build and send Uci indication
+ *
+ * @params[in] SFN
+ *             Slot
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t l1BuildAndSendUciInd(uint16_t slot, uint16_t sfn, fapi_ul_pucch_pdu_t pucchPdu)
+{
+   uint8_t uciIdx = 0;
+   uint8_t nUciPdus = 0;
+   uint8_t ret = ROK;
+   uint32_t msgLen = 0;
+   fapi_uci_indication_t *uciInd =  NULLP;
+
+   MAC_ALLOC(uciInd, sizeof(fapi_uci_indication_t));
+   if(!uciInd)
+   {
+      printf("\nPHY_STUB: Memory allocation failed for UCI Indication");
+      return RFAILED;
+   }
+   memset(uciInd, 0, sizeof(fapi_uci_indication_t));
+   uciInd->sfn = sfn;
+   uciInd->slot = slot;
+   uciInd->numUcis = 1;   //consdering the UCI Ind for SR
+   nUciPdus = uciInd->numUcis;
+   while(nUciPdus)
+   {
+      ret = fillUciPduInfo(&uciInd->uciPdu[uciIdx], pucchPdu);
+      uciIdx++;
+      nUciPdus--;
+   }
+   if(ret == ROK)
+   {
+      msgLen = sizeof(fapi_uci_indication_t)- sizeof(fapi_msg_t);
+      fillMsgHeader(&uciInd->header, FAPI_UCI_INDICATION, msgLen);
+
+      /* Sending UCI indication to MAC */
+      DU_LOG("\nPHY STUB: Sending UCI Indication to MAC");
+      procPhyMessages(uciInd->header.msg_id, sizeof(fapi_uci_indication_t), (void *)uciInd);
+   }
+   MAC_FREE(uciInd, sizeof(fapi_uci_indication_t));
+   return ret;
+}
+#endif
+
 /*******************************************************************
  *
  * @brief Handles Ul Tti request received from MAC
@@ -684,8 +878,8 @@ PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   fapi_ul_tti_req_t *ulTtiReq;
-
+   fapi_ul_tti_req_t *ulTtiReq = NULLP;
+   
    DU_LOG("\nPHY STUB: Received UL TTI Request");
 
    ulTtiReq = (fapi_ul_tti_req_t *)msg;
@@ -704,12 +898,30 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
 	 DU_LOG("\nPHY STUB: PUSCH PDU");			
-	 l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
-	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
+	 if(!msg3Sent)
+	 {
+	    msg3Sent = true;
+	    l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
+	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu, MSG_TYPE_MSG3); 
+         }
+	 else if(!msg5ShortBsrSent)
+	 {
+	    msg5ShortBsrSent = true;
+	    l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
+	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu, MSG_TYPE_SHORT_BSR);
+	 }
+	 else if(!msg5Sent)
+	 {
+	    msg5Sent = true;
+	    l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
+	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu, MSG_TYPE_MSG5);
+	 }
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {
 	 DU_LOG("\nPHY STUB: PUCCH PDU");
+	 l1BuildAndSendUciInd(ulTtiReq->slot, ulTtiReq->sfn, \
+	       ulTtiReq->pdus[numPdus-1].pdu.pucch_pdu); 
       }
       numPdus--;
    }
@@ -805,6 +1017,153 @@ PUBLIC S16 l1HdlStopReq(uint32_t msgLen, void *msg)
 
 /*******************************************************************
  *
+ * @brief Build And Send Rx Data Ind for Msg5
+ *
+ * @details
+ *
+ *    Function : l1BuildAndSendMsg5
+ *
+ *    Functionality: Build And Send Rx Data Ind for Msg5
+ *
+ * @params[in] SFN
+ *             Slot
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t l1BuildAndSendMsg5(uint16_t sfn, uint16_t slot)
+{   
+#ifdef INTEL_FAPI
+   uint8_t idx = 0;
+   fapi_rx_data_indication_t *rxDataInd;
+   fapi_pdu_ind_info_t       *pduInfo;
+   uint8_t  *pdu;
+   uint16_t byteIdx = 0;
+   uint32_t msgLen = 0;
+
+   MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
+   if(!rxDataInd)
+   {
+      printf("\nPHY_STUB: Memory allocation failed for Rx Data Indication for msg5");
+      return RFAILED;
+   }
+   memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
+
+   /* TODO: Fill the required values */
+   msgLen = sizeof(fapi_rx_data_indication_t) - sizeof(fapi_msg_t);
+   rxDataInd->sfn = sfn;
+   rxDataInd->slot = slot;
+   rxDataInd->numPdus = 1;
+
+   pduInfo = &rxDataInd->pdus[idx];
+   pduInfo->handle = 100;
+   pduInfo->rnti = 100;
+   pduInfo->harqId = 1;
+   pduInfo->pdu_length = 25;
+   pduInfo->ul_cqi = 0;
+   pduInfo->timingAdvance = 0;
+   pduInfo->rssi = 0;
+
+   /* Filling pdu with random values for testing */
+   pduInfo->pduData = NULL;
+   MAC_ALLOC(pduInfo->pduData, pduInfo->pdu_length);
+   if(!pduInfo->pduData)
+   {
+      printf("\nPHY_STUB: Memory allocation failed for Rx Data Pdu");
+      return RFAILED;
+   }
+
+   /* Filling PDU */
+   pdu = (uint8_t *)pduInfo->pduData;
+   /* For RRC setup complete
+      MAC subheader format is R/F/LCId/L (2/3 bytes)
+      LCId is 1 for SRB1
+      L is length of PDU i.e 6bytes here
+      From 38.321 section 6.1.1
+    */
+   pdu[byteIdx++] = 1;    // LCID
+   pdu[byteIdx++] = 6;
+
+   /* Hardcoding MAC PDU */
+   pdu[byteIdx++] = 181;
+   pdu[byteIdx++] = 99;
+   pdu[byteIdx++] = 20;
+   pdu[byteIdx++] = 170;
+   pdu[byteIdx++] = 132;
+   pdu[byteIdx++] = 96;
+
+   /* Filling MAC SDU for Padding bytes*/
+   if(byteIdx < pduInfo->pdu_length)
+   {
+      /* For Padding
+	 MAC subheader format is R/R/LCId (1byte)
+	 LCId is 63 for padding
+	 From 38.321 section 6.1.1
+       */
+      pdu[byteIdx++] = 63;
+
+      for(; byteIdx < pduInfo->pdu_length; byteIdx++)
+	 pdu[byteIdx] = 0;
+   }
+   msgLen += pduInfo->pdu_length;
+
+   fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
+
+   /* Sending Rx data indication to MAC */
+   DU_LOG("\nPHY STUB: Sending Rx data Indication to MAC");
+   procPhyMessages(rxDataInd->header.msg_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
+
+   if(pduInfo->pdu_length)
+      MAC_FREE(pduInfo->pduData, pduInfo->pdu_length);
+   MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
+#endif
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Handles Ul Dci request received from MAC
+ *
+ * @details
+ *
+ *    Function : l1HdlUlDciReq
+ *
+ *    Functionality:
+ *          -Handles Ul Dci request received from MAC
+ *
+ * @params[in]   Message length
+ *               Ul Dci request message pointer
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+PUBLIC S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
+{
+#ifdef INTEL_FAPI
+   fapi_ul_dci_req_t *ulDciReq = NULLP;
+
+   ulDciReq = (fapi_ul_dci_req_t *)msg;
+   uint8_t numPdus = ulDciReq->numPdus;
+
+   while(numPdus)
+   {
+      if(ulDciReq->pdus[numPdus-1].pduType == 0)
+      {
+	 DU_LOG("\nPHY STUB: Received UL DCI Request for PDCCH PDU");
+	 //l1BuildAndSendMsg5(ulDciReq->sfn, ulDciReq->slot);
+	 //msg5Sent = true;
+      }
+      numPdus--;
+   }
+
+   MAC_FREE(ulDciReq, msgLen);
+#endif
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Receives message from MAC
  *
  * @details
@@ -847,6 +1206,9 @@ void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
 	 break;
       case FAPI_STOP_REQUEST:
 	 l1HdlStopReq(msgLen, msg);
+	 break;
+      case FAPI_UL_DCI_REQUEST:
+	 l1HdlUlDciReq(msgLen, msg);
 	 break;
       default:
 	 DU_LOG("\nPHY_STUB: Invalid message type[%x] received at PHY", msgType);

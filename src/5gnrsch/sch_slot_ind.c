@@ -139,13 +139,13 @@ void schCalcSlotValues(SlotIndInfo slotInd, SchSlotValue *schSlotValue)
 uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 {
    int ret = ROK;
-   uint8_t ssb_rep;
+   uint8_t ssb_rep, ueIdx, lcgIdx;
    uint16_t slot, sfnSlot = 0;
    DlSchedInfo dlSchedInfo;
    memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
    DlBrdcstAlloc *dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
-   RarAlloc  *rarAlloc;
-   Msg4Alloc *msg4Alloc;
+   RarAlloc  *rarAlloc = NULLP;
+   Msg4Alloc *msg4Alloc = NULLP;
    dlBrdcstAlloc->ssbTrans = NO_SSB;
    dlBrdcstAlloc->sib1Trans = NO_SIB1;
 
@@ -256,7 +256,49 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, sizeof(Msg4Info));
       cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
    }
+   /* check if UL grant must be sent in this slot for a SR/BSR that had been received */
+   for(ueIdx=1; ueIdx<=cell->numActvUe; ueIdx++)
+   {
+      uint32_t totDataReq = 0; /* in bytes */
+      DciInfo  *dciInfo = NULLP;
+      SchUeCb *ueCb = NULLP;
+      SchPuschInfo schPuschInfo;
+   
+      memset(&schPuschInfo, 0, sizeof(SchPuschInfo));
 
+      ueCb = &cell->ueCb[ueIdx];
+      /* check for SR */
+      if(ueCb->srRcvd)
+      {
+         totDataReq = UL_GRANT_SIZE; /*fixing so that all control msgs can be handled in SR */
+         ueCb->srRcvd = false;
+      }
+      /* check for BSR */
+      for(lcgIdx=0; lcgIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
+      {
+        totDataReq+= ueCb->bsrInfo[lcgIdx].dataVol;
+	ueCb->bsrInfo[lcgIdx].dataVol = 0;
+      }
+      if(totDataReq > 0) /* UL grant must be provided for this UE in this slot */
+      {
+	 SCH_ALLOC(dciInfo, sizeof(DciInfo));
+	 if(!dciInfo)
+	 {
+	    DU_LOG("\nMAC: Memory Allocation failed for dciInfo alloc");
+	    return RFAILED;
+	 }
+	 memset(dciInfo,0,sizeof(DciInfo));
+	 /* update the SFN and SLOT */
+	 memcpy(&dlSchedInfo.schSlotValue.ulDciTime, slotInd, sizeof(SlotIndInfo));
+	 slot = dlSchedInfo.schSlotValue.ulDciTime.slot;
+	 /* Update PUSCH allocation */
+	 schFillPuschAlloc(ueCb, slot, totDataReq, &schPuschInfo);
+	 /* Fill DCI for UL grant */
+	 schFillUlDci(ueCb, schPuschInfo, dciInfo);
+	 memcpy(&dciInfo->slotIndInfo, &dlSchedInfo.schSlotValue.ulDciTime, sizeof(SlotIndInfo));
+         dlSchedInfo.ulGrant = dciInfo;
+      }
+   }
 
    /* send msg to MAC */
    ret = sendDlAllocToMac(&dlSchedInfo, schInst);

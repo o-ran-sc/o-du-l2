@@ -20,6 +20,8 @@
 #include "common_def.h"
 #include "lrg.h"
 #include "lrg.x"
+#include "rgu.h"
+#include "rgu.x"
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"

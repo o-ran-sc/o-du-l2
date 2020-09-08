@@ -16,23 +16,27 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains all F1AP message handler related functionality */
+#define EVENT_UL_RRC_MSG_TRANS_TO_DU  212
 
-#define TRANS_ID 1
-#define RRC_SIZE 1
-#define SUL_BAND_COUNT 0
-#define UL_SRBID        1
-#define DL_SRBID        0
-#define DU_ID           1
-#define CU_ID           1
-#define CRNTI           17017
-#define CELL_INDEX      0
+/* UL RRC Message from RLC to DU APP */
+typedef struct ulRrcMsgInfo
+{
+   uint16_t   cellId;       /* Cell Id */
+   uint16_t   ueIdx;        /* UE Index */
+   uint8_t    lcId;         /* Logical channel Id */
+   uint16_t   msgLen;       /* RRC message length (in bytes) */
+   uint8_t    *rrcMsg;      /* RRC Message (UL-DCCH Message) */
+}RlcUlRrcMsgInfo;
 
-void F1APMsgHdlr(Buffer *mBuf);
-uint8_t BuildAndSendF1SetupReq();
-uint8_t BuildAndSendDUConfigUpdate();
-uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);
-uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, uint8_t *rrcMsg, uint16_t msgLen);
+/* Function pointer */
+
+typedef uint8_t (*RlcUlRrcMsgToDuFunc) ARGS((
+   Pst           *pst,
+   RlcUlRrcMsgInfo *ulRrcMsgInfo));
+
+uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
+uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
+uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf);
 
 /**********************************************************************
          End of file

@@ -18,6 +18,7 @@
 
 /* Contains common utility definitions to be used at MAC */
 
+#define MAX_SHORT_BSR_TABLE_ENTRIES 32
 #define MAC_MEM_REGION   4
 #define MAC_POOL         1
 
@@ -107,6 +108,24 @@
    _pst.route = 0;                                          \
    _pst.prior = 0;                                          \
    _pst.intfVer = 0;                                        \
+}
+
+/* Fills Pst to send msg to RLC */
+#define FILL_PST_MAC_TO_RLC(_pst, _dstInst, _event)        \
+{                                                      \
+   pst.selector  = ODU_SELECTOR_LWLC;                  \
+   pst.srcEnt    = ENTRG;                              \
+   pst.dstEnt    = ENTKW;                              \
+   pst.dstInst   = _dstInst;                           \
+   pst.srcInst   = macCb.macInst;                      \
+   pst.dstProcId = macCb.procId;                       \
+   pst.srcProcId = macCb.procId;                       \
+   pst.region    = MAC_MEM_REGION;                     \
+   pst.pool      = MAC_POOL;                           \
+   pst.event     = _event;                             \
+   pst.route     = 0;                                  \
+   pst.prior     = 0;                                  \
+   pst.intfVer   = 0;                                  \
 }
 
 /**********************************************************************

@@ -14,26 +14,13 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+ *******************************************************************************/
+/* header include files (.h) */
+#include "common_def.h"
+#include "mac_utils.h"
 
-/* This file contains all F1AP message handler related functionality */
 
-#define TRANS_ID 1
-#define RRC_SIZE 1
-#define SUL_BAND_COUNT 0
-#define UL_SRBID        1
-#define DL_SRBID        0
-#define DU_ID           1
-#define CU_ID           1
-#define CRNTI           17017
-#define CELL_INDEX      0
-
-void F1APMsgHdlr(Buffer *mBuf);
-uint8_t BuildAndSendF1SetupReq();
-uint8_t BuildAndSendDUConfigUpdate();
-uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);
-uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, uint8_t *rrcMsg, uint16_t msgLen);
-
-/**********************************************************************
-         End of file
-**********************************************************************/
+uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES] = { 0, 10, 14, 20, 28, 38, 53, 74, 102, 142, 198, 276, 384, 
+                                                             535, 745, 1038, 1446, 2014, 2806, 3909, 5446, 7587,
+																				 10570, 14726, 20516, 28581, 39818, 55474, 77284, 107669,
+																				 150000, 150001 };

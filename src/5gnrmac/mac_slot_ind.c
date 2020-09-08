@@ -19,6 +19,8 @@
 #include "common_def.h"
 #include "lrg.h"
 #include "lrg.x"
+#include "rgu.h"
+#include "rgu.x"
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
@@ -30,12 +32,13 @@
 /* Function declarations */
 extern uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo);
 extern uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo);
+extern uint16_t fillUlDciReq(SlotIndInfo currTimingInfo);
 
 /* function pointers for packing slot ind from mac to sch */
 MacSchSlotIndFunc macSchSlotIndOpts[] =
 {
    packMacSchSlotInd,
-   macSchSlotInd,
+   MacSchSlotInd,
    packMacSchSlotInd
 };
 
@@ -88,6 +91,12 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 	 currDlSlot->dlInfo.msg4Alloc = dlSchedInfo->msg4Alloc; /* copy msg4 alloc pointer in MAC slot info */
 	 msg4Alloc = dlSchedInfo->msg4Alloc;
 	 macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize = msg4Alloc->msg4PdschCfg.codeword[0].tbSize;
+      }
+      if(dlSchedInfo->ulGrant != NULLP)
+      {
+	 currDlSlot = &macCb.macCell[cellIdx]->\
+	    dlSlot[dlSchedInfo->schSlotValue.ulDciTime.slot];
+         currDlSlot->dlInfo.ulGrant = dlSchedInfo->ulGrant;
       }
    }
    return ROK;
@@ -300,6 +309,9 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
 
    /* Trigger for UL TTI REQ */
    fillUlTtiReq(slotInd);
+   
+   /* Trigger for UL DCI REQ */
+   fillUlDciReq(slotInd);
 
    return ROK;
 }  /* macProcSlotInd */
