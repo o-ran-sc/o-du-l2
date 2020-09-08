@@ -114,6 +114,9 @@ uint8_t *msg3NumRb)
 	uint8_t    startRb       = 0;
 	uint8_t    numRb         = 0;
 	uint8_t    idx           = 0;
+	uint8_t    mcs            = 4;
+	uint8_t    numPdschSymbols= 14;
+	uint16_t   tbSize         = 0;
 
 
    cell = schCb[schInst].cells[schInst];
@@ -127,16 +130,14 @@ uint8_t *msg3NumRb)
 	msg3SlotAlloc = slot + k2 + delta;
 	msg3SlotAlloc = msg3SlotAlloc % SCH_NUM_SLOTS; 
 
-	startRb = PUSCH_START_RB;
-
-	/* formula used for calculation of rbSize, 38.214 section 6.1.4.2 
-	 * Ninfo = S.Nre.R.Qm.v
-	 * Nre'  = Nsc.NsymPdsch-NdmrsSymb-Noh
-	 * Nre   = min(156,Nre').nPrb */
-	numRb = 1; /* based on above calculation */
+        startRb = cell->schUlSlotInfo[msg3SlotAlloc]->puschCurrentPrb;
+        tbSize = schCalcTbSize(8); /* 6 bytes msg3  and 2 bytes header */
+	numRb = schCalcNumPrb(tbSize, mcs, numPdschSymbols);
 
 	/* allocating 1 extra RB for now */
 	numRb++;
+	/* increment PUSCH PRB */
+	cell->schUlSlotInfo[msg3SlotAlloc]->puschCurrentPrb += numRb;
 
 	for(idx=startSymb; idx<symbLen; idx++)
 	{
@@ -156,7 +157,7 @@ uint8_t *msg3NumRb)
 	schUlSlotInfo->schPuschInfo->fdAlloc.numPrb    = numRb;
 	schUlSlotInfo->schPuschInfo->tdAlloc.startSymb = startSymb;
 	schUlSlotInfo->schPuschInfo->tdAlloc.numSymb   = symbLen;
-	schUlSlotInfo->schPuschInfo->tbInfo.mcs	     = 4;
+	schUlSlotInfo->schPuschInfo->tbInfo.mcs	       = mcs;
 	schUlSlotInfo->schPuschInfo->tbInfo.ndi        = 1; /* new transmission */
 	schUlSlotInfo->schPuschInfo->tbInfo.rv	        = 0;
 	schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = 24; /*Considering 2 PRBs */

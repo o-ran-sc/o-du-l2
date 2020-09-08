@@ -32,7 +32,7 @@
 MacSchUeCreateReqFunc macSchUeCreateReqOpts[] =
 {
    packMacSchUeCreateReq,    /* packing for loosely coupled */
-   macSchUeCreateReq,        /* packing for tightly coupled */
+   MacSchUeCreateReq,        /* packing for tightly coupled */
    packMacSchUeCreateReq     /* packing for light weight loosely coupled */
 };
 

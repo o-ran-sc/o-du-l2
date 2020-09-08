@@ -466,6 +466,9 @@ uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
 void fillInitDlBwp(InitialDlBwp *initDlBwp)
 {
    uint8_t idx = 0;
+   uint8_t freqDomainResource[6] = {0};
+   uint8_t coreset0EndPrb, coreset1StartPrb, coreset1NumPrb;
+
 
    if(initDlBwp)
    {
@@ -481,8 +484,14 @@ void fillInitDlBwp(InitialDlBwp *initDlBwp)
 	       PDCCH_CTRL_RSRC_SET_ONE_ID;
 	    memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
 	       FREQ_DOM_RSRC_SIZE); 
-	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc[idx] =\
-	       PDCCH_FREQ_DOM_RSRC;
+	    coreset0EndPrb = 48;
+	    coreset1StartPrb = coreset0EndPrb +6;
+	    coreset1NumPrb = 24;
+	    /* calculate the PRBs */
+	    schAllocFreqDomRscType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+	    memcpy(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, freqDomainResource,
+	       FREQ_DOM_RSRC_SIZE);
+
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].duration = \
 	       PDCCH_CTRL_RSRC_SET_ONE_DURATION;
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cceRegMappingType = \

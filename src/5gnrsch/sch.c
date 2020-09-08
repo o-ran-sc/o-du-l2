@@ -248,7 +248,7 @@ int SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
  *
  * @details
  *
- *     Function : macSchSlotInd 
+ *     Function : MacSchSlotInd 
  *      
  *      This API is invoked by PHY to indicate slot indication to Scheduler for
  *      a cell.
@@ -259,7 +259,7 @@ int SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
  *      -# ROK 
  *      -# RFAILED 
  **/
-uint8_t macSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
+uint8_t MacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
 
@@ -267,7 +267,7 @@ uint8_t macSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
    schProcessSlotInd(slotInd, inst);
 
    return ROK;
-}  /* macSchSlotInd */
+}  /* MacSchSlotInd */
 
 /*******************************************************************
  *
@@ -275,7 +275,7 @@ uint8_t macSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
  *
  * @details
  *
- *    Function : macSchRachInd
+ *    Function : MacSchRachInd
  *
  *    Functionality:
  *      Processes Rach indication from MAC
@@ -285,7 +285,7 @@ uint8_t macSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t macSchRachInd(Pst *pst, RachIndInfo *rachInd)
+uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
    DU_LOG("\nSCH : Received Rach indication");
@@ -299,7 +299,7 @@ uint8_t macSchRachInd(Pst *pst, RachIndInfo *rachInd)
  *
  * @details
  *
- *    Function : macSchCrcInd
+ *    Function : MacSchCrcInd
  *
  *    Functionality:
  *      Processes CRC indication from MAC
@@ -310,7 +310,7 @@ uint8_t macSchRachInd(Pst *pst, RachIndInfo *rachInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t macSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
+uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
    switch(crcInd->crcInd[0])
    {
@@ -333,7 +333,7 @@ uint8_t macSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
  *
  * @details
  *
- *     Function : InitSchCellCb 
+ *     Function : schInitCellCb 
  *      
  *      This API is invoked after receiving schCellCfg
  *           
@@ -343,13 +343,13 @@ uint8_t macSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
  *      -# ROK 
  *      -# RFAILED 
  **/
-int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
+int schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
 {
    SchCellCb *cell;
    SCH_ALLOC(cell, sizeof(SchCellCb));
    if(!cell)
    {
-      DU_LOG("\nMemory allocation failed in InitSchCellCb");
+      DU_LOG("\nMemory allocation failed in schInitCellCb");
       return RFAILED;
    }
 
@@ -375,7 +375,7 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
       SCH_ALLOC(schDlSlotInfo, sizeof(SchDlSlotInfo));
       if(!schDlSlotInfo)
       {
-	 DU_LOG("\nMemory allocation failed in InitSchCellCb");
+	 DU_LOG("\nMemory allocation failed in schInitCellCb");
 	 return RFAILED;
       }
 
@@ -383,7 +383,7 @@ int InitSchCellCb(Inst inst, SchCellCfg *schCellCfg)
       SCH_ALLOC(schUlSlotInfo, sizeof(SchUlSlotInfo));
       if(!schUlSlotInfo)
       {
-	 DU_LOG("\nMemory allocation failed in InitSchCellCb");
+	 DU_LOG("\nMemory allocation failed in schInitCellCb");
 	 return RFAILED;
       }
 
@@ -485,7 +485,7 @@ void fillSchSib1Cfg(Inst schInst, SchSib1Cfg *sib1SchCfg, uint16_t pci, \
    bwp->cyclicPrefix       = 0;              /* normal */
 
    /* fill the PDCCH PDU */
-   pdcch->coreset0Cfg.coreSet0Size = numRbs;
+   pdcch->coreset0Cfg.coreSetSize = numRbs;
    pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
    pdcch->coreset0Cfg.durationSymbols = numSymbols;
    memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
@@ -628,7 +628,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    Pst rspPst;
    Inst inst = pst->dstInst-1; 
 
-   InitSchCellCb(inst, schCellCfg);
+   schInitCellCb(inst, schCellCfg);
    cellCb = schCb[inst].cells[inst]; //cells is of MAX_CELLS, why inst
    cellCb->macInst = pst->srcInst;
 
@@ -660,7 +660,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
  *
  * @details
  *
- *    Function : macSchDlRlcBoInfo
+ *    Function : MacSchDlRlcBoInfo
  *
  *    Functionality:
  *       Processes DL RLC BO info from MAC
@@ -670,7 +670,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
+uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 {
    uint16_t  lcIdx;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -703,6 +703,45 @@ uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
    }
 
    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes BSR indiation from MAC
+ *
+ * @details
+ *
+ *    Function : MacSchBsr
+ *
+ *    Functionality:
+ *       Processes DL BSR from MAC
+ *
+ * @params[in]    Pst pst
+ *                UlBufferStatusRptInd bsrInd
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
+{
+   Inst           schInst       = pst->dstInst-SCH_INST_START;
+   SchCellCb      *cellCb       = NULLP;
+   SchUeCb        *ueCb         = NULLP;
+   uint8_t        lcgIdx;
+
+   DU_LOG("\nSCH : Received BSR");
+
+   cellCb = schCb[schInst].cells[schInst];
+   ueCb = schGetUeCb(cellCb, bsrInd->crnti);
+
+   /* store dataVolume per lcg in uecb */
+   for(lcgIdx = 0; lcgIdx < bsrInd->numLcg; lcgIdx++)
+   {
+      ueCb->bsrInfo[lcgIdx].priority = 1; //TODO: determining LCG priority?
+      ueCb->bsrInfo[lcgIdx].dataVol = bsrInd->dataVolInfo[lcgIdx].dataVol;
+   }
+
+    return ROK;
 }
 
 /**********************************************************************

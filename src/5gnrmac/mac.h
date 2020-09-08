@@ -238,9 +238,10 @@ void fillMsg4DlData(uint16_t cellId, MacDlData *dlData, uint8_t *msg4Pdu);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);
 uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu);
-uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti);
 void fillMg4Pdu(Msg4Alloc *msg4Alloc);
 void buildAndSendMuxPdu(SlotIndInfo currTimingInfo);
+uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint8_t *rrcContainer);
+uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t bufferSize);
 
 #endif
 /**********************************************************************

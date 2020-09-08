@@ -106,10 +106,17 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
    /* SIB1 allocation */
    if(dlBrdcstAlloc->sib1Trans)
    {
+      uint16_t tbSize         = 0;
+      uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
+      uint8_t mcs             = 4;  /* MCS fixed to 4 */
+      uint8_t numSib1Prb      = 0;
       schDlSlotInfo->sib1Pres = true;
+
+      tbSize = schCalcTbSize(95); /* send this value to the func in bytes when considering sib1 size */
+      numSib1Prb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
       for(idx=0; idx<SCH_SYMBOL_PER_SLOT; idx++)
       {
-	 schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + 10; /* 10 PRBs for sib1 */
+	 schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + numSib1Prb; /* 10 PRBs for sib1 */
       }
       memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
       memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
@@ -384,7 +391,7 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    pdcch->coreset0Cfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
    pdcch->coreset0Cfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
    pdcch->coreset0Cfg.coreSetType = 0;
-   pdcch->coreset0Cfg.coreSet0Size = numRbs;
+   pdcch->coreset0Cfg.coreSetSize = numRbs;
    pdcch->coreset0Cfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;

@@ -35,7 +35,7 @@ extern uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo);
 MacSchSlotIndFunc macSchSlotIndOpts[] =
 {
    packMacSchSlotInd,
-   macSchSlotInd,
+   MacSchSlotInd,
    packMacSchSlotInd
 };
 

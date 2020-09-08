@@ -269,6 +269,37 @@ uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and Send BSR from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchBsr
+ *
+ *    Functionality:
+ *       Pack and Send BSR from MAC to SCH
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
+
+
 /**********************************************************************
   End of file
  **********************************************************************/

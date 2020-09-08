@@ -44,7 +44,8 @@
 #define CRC_FAILED 0
 #define CRC_PASSED 1
 
-extern uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
+typedef struct schCellCb SchCellCb;
+typedef struct schUeCb SchUeCb;
 
 typedef enum
 {
@@ -97,6 +98,7 @@ typedef struct schUlSlotInfo
 {
    uint16_t     totalPrb;  /*!< Number of RBs in the cell */
    uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
+   uint8_t      puschCurrentPrb; /* Current PRB for PUSCH allocation */
    bool         puschPres; /*!< PUSCH presence field */
    SchPuschInfo *schPuschInfo; /*!< PUSCH info */
    bool         pucchPres; /*!< PUCCH presence field */
@@ -104,15 +106,29 @@ typedef struct schUlSlotInfo
 }SchUlSlotInfo;
 
 /**
+@brief
+* BSR info per slot per UE.
+*/
+typedef struct bsrInfo
+{
+   uint8_t    priority;  /* CG priority */
+   uint32_t   dataVol;   /* Data volume requested in bytes */
+}BsrInfo;
+
+
+
+/**
  * @brief
  * UE control block
  */
 typedef struct schUeCb
 {
-   uint16_t  ueIdx;
-   uint16_t  crnti;
-   SchUeCfg  ueCfg;
-   SchUeState  state;
+   uint16_t   ueIdx;
+   uint16_t   crnti;
+   SchUeCfg   ueCfg;
+   SchUeState state;
+   SchCellCb  *cellCb;
+   BsrInfo    bsrInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
 }SchUeCb;
 
 /**
@@ -157,6 +173,10 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
 uint16_t schCalcTbSize(uint16_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
 uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
+uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
+uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo);
+uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, SchPuschInfo *puschInfo);
+
 /**********************************************************************
   End of file
  **********************************************************************/

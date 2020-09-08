@@ -132,7 +132,7 @@ S16 readMacCfg()
    /* DL carrier configuration */
    duCfgParam.macCellCfg.dlCarrCfg.pres = TRUE;
    duCfgParam.macCellCfg.dlCarrCfg.bw = BANDWIDTH;
-   duCfgParam.macCellCfg.dlCarrCfg.freq = NR_ARFCN;
+   duCfgParam.macCellCfg.dlCarrCfg.freq = NR_DL_ARFCN;
    duCfgParam.macCellCfg.dlCarrCfg.k0[0] = 1;
    duCfgParam.macCellCfg.dlCarrCfg.k0[1] = 1;
    duCfgParam.macCellCfg.dlCarrCfg.k0[2] = 1;
@@ -147,8 +147,8 @@ S16 readMacCfg()
 
    /* UL Carrier configuration */
    duCfgParam.macCellCfg.ulCarrCfg.pres = TRUE;
-   duCfgParam.macCellCfg.ulCarrCfg.bw = SUL_ARFCN;
-   duCfgParam.macCellCfg.ulCarrCfg.freq = NR_ARFCN;
+   duCfgParam.macCellCfg.ulCarrCfg.bw = BANDWIDTH;
+   duCfgParam.macCellCfg.ulCarrCfg.freq = NR_UL_ARFCN;
    duCfgParam.macCellCfg.ulCarrCfg.k0[0] = 1;
    duCfgParam.macCellCfg.ulCarrCfg.k0[1] = 1;
    duCfgParam.macCellCfg.ulCarrCfg.k0[2] = 1;
@@ -623,7 +623,7 @@ S16 readCfg()
       duCfgParam.srvdCellLst[i].duCellInfo.tac = DU_TAC;
       duCfgParam.srvdCellLst[i].duCellInfo.epsTac = DU_TAC; //to check and fill
       /* NR Mode info */
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.nrArfcn = NR_ARFCN;
+      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.nrArfcn = NR_UL_ARFCN;
       duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
       duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrScs = SCS_120;
       duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrb = NRB_66;
@@ -652,7 +652,7 @@ S16 readCfg()
 	    duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.freqBand[j].sulBand[k] = SUL_BAND;
 	 }
       }
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.nrArfcn = NR_ARFCN;
+      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.nrArfcn = NR_DL_ARFCN;
       duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
       duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrScs = SCS_120;
       duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrb = NRB_66;

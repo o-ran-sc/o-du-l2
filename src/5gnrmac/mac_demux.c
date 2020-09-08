@@ -26,6 +26,8 @@
 #include "mac.h"
 #include "mac_utils.h"
 
+extern uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
+
 /*******************************************************************
  *
  * @brief De-mux of MAC-Sub PDUs from Rx Data Ind Pdu
@@ -87,7 +89,7 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 	       memcpy(macCb.macCell[cellIdx]->macRaCb[0].msg3Pdu, pdu, length);
 
 	       /* Send UL-CCCH Indication to DU APP */
-	       macSendUlCcchInd(pdu, macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti); 
+	       macProcUlCcchInd(macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti, pdu);
 	       break;
 	    }
 
@@ -125,6 +127,24 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 	    break;
 
 	 case MAC_LCID_SHORT_BSR :
+	    {
+	       uint8_t  lcgId         = 0;
+	       uint8_t  bufferSizeIdx = 0;
+	       uint8_t  crnti         = 0;
+	       uint32_t bufferSize    = 0;
+
+	       pduLen--;
+
+	       idx++;
+	       crnti = rxDataIndPdu->rnti;
+	       /* 5 LSB bits in pdu represent buffer size */
+	       bufferSizeIdx = (~((~0) << 5)) & rxDataPdu[idx];
+	       /* first 3 MSB bits in pdu represent LCGID */
+	       lcgId = (rxDataPdu[idx]) >> 6;
+	       /* determine actual number of bytes requested */
+	       bufferSize = shortBsrBytesTable[bufferSizeIdx];
+	       macProcShortBsr(macCb.macCell[cellIdx]->cellId, crnti, lcgId, bufferSize);
+	    }
 	    break;
 
 	 case MAC_LCID_LONG_BSR :

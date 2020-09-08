@@ -2300,7 +2300,7 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
        * RBLen = length of contiguously allocted RBs
        * Spec 38.214 Sec 5.1.2.2.2
        */
-      coreset0Size= sib1PdcchInfo->coreset0Cfg.coreSet0Size;
+      coreset0Size= sib1PdcchInfo->coreset0Cfg.coreSetSize;
       rbStart = 0;              /* For SIB1 */
       //rbStart = sib1PdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.startPrb;
       rbLen = sib1PdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
@@ -2439,7 +2439,7 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
        */
 
       /* TODO: Fill values of coreset0Size, rbStart and rbLen */
-      coreset0Size= rarPdcchInfo->coreset0Cfg.coreSet0Size;
+      coreset0Size= rarPdcchInfo->coreset0Cfg.coreSetSize;
       rbStart = 0;              /* For SIB1 */
       //rbStart = rarPdcchInfo->dci.pdschCfg->freqAlloc.rbStart;
       rbLen = rarPdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
@@ -2582,7 +2582,7 @@ void fillMsg4DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *msg4PdcchInfo,\
        */
 
       /* TODO: Fill values of coreset0Size, rbStart and rbLen */
-      coreset0Size = msg4PdcchInfo->coreset0Cfg.coreSet0Size;
+      coreset0Size = msg4PdcchInfo->coreset0Cfg.coreSetSize;
       //rbStart = msg4PdcchInfo->dci.pdschCfg->freqAlloc.rbStart;
       rbLen = msg4PdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
 

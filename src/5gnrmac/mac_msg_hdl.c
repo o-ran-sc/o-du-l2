@@ -45,7 +45,7 @@ uint16_t buildMacPdu(RlcMacData *dlData);
 MacSchCrcIndFunc macSchCrcIndOpts[]=
 {
    packMacSchCrcInd,
-   macSchCrcInd,
+   MacSchCrcInd,
    packMacSchCrcInd
 };
 
@@ -53,9 +53,18 @@ MacSchCrcIndFunc macSchCrcIndOpts[]=
 MacSchDlRlcBoInfoFunc macSchDlRlcBoInfoOpts[]=
 {
    packMacSchDlRlcBoInfo,
-   macSchDlRlcBoInfo,
+   MacSchDlRlcBoInfo,
    packMacSchDlRlcBoInfo
 };
+
+/* Function pointer for sending short BSR from MAC to SCH */
+MacSchBsrFunc macSchBsrOpts[]=
+{
+   packMacSchBsr,
+   MacSchBsr,
+   packMacSchBsr
+};
+
 
 /*******************************************************************
  *
@@ -347,7 +356,7 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
  *
  * @details
  *
- *    Function : macSendUlCcchInd
+ *    Function : macProcUlCcchInd
  *
  *    Functionality:
  *        MAC sends UL CCCH Ind to DU APP
@@ -358,7 +367,7 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
+uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint8_t *rrcContainer)
 {
    Pst pst;
    uint8_t ret = ROK;
@@ -367,7 +376,7 @@ uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
    MAC_ALLOC_SHRABL_BUF(ulCcchIndInfo, sizeof(UlCcchIndInfo));
    if(!ulCcchIndInfo)
    {
-      DU_LOG("\nMAC: Memory failed in macSendUlCcchInd");
+      DU_LOG("\nMAC: Memory failed in macProcUlCcchInd");
       return RFAILED;
    }
 
@@ -388,6 +397,45 @@ uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
    }
    return ret;
 }
+
+/*******************************************************************
+ *
+ * @brief Processes received short BSR
+ *
+ * @details
+ *
+ *    Function : macProcShortBsr
+ *
+ *    Functionality:
+ *        MAC sends Short BSR to SCH
+ *
+ * @params[in] cell ID
+ *             crnti
+ *             lcg ID
+ *             buffer size
+ *
+ *
+ * ****************************************************************/
+uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t bufferSize)
+{
+   Pst                  pst;
+   UlBufferStatusRptInd bsrInd;
+
+   memset(&pst, 0, sizeof(Pst));
+   memset(&bsrInd, 0, sizeof(UlBufferStatusRptInd));
+
+   bsrInd.cellId                 = cellId;
+   bsrInd.crnti                  = crnti;
+   bsrInd.bsrType                = SHORT_BSR;
+   bsrInd.numLcg                 = 1; /* short bsr reports one lcg at a time */
+   bsrInd.dataVolInfo[0].lcgId   = lcgId;
+   bsrInd.dataVolInfo[0].dataVol = bufferSize;
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_SHORT_BSR);
+   return(*macSchBsrOpts[pst.selector])(&pst, &bsrInd);
+}
+
+
 
 /**********************************************************************
   End of file

@@ -2511,10 +2511,11 @@ struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
 {
    uint8_t idx;
    uint8_t elementCnt;
-	uint8_t numBytes;
-	uint8_t byteIdx;
-	uint8_t bitsUnused;
+   uint8_t numBytes, bitsUnused;
    struct ControlResourceSet *controlRSet;
+   uint8_t freqDomainResource[6] = {0};
+   uint8_t coreset0EndPrb, coreset1StartPrb, coreset1NumPrb;
+
 
    elementCnt = 1;
    controlRSetList->list.count = elementCnt;
@@ -2531,7 +2532,7 @@ struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
 
    for(idx = 0; idx < elementCnt; idx++)
    {
-	   controlRSetList->list.array[idx] = NULLP;
+      controlRSetList->list.array[idx] = NULLP;
       DU_ALLOC(controlRSetList->list.array[idx], sizeof(struct ControlResourceSet));
       if(!controlRSetList->list.array[idx])
       {
@@ -2550,7 +2551,7 @@ struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
 	 * 3 LSBs unsued
 	 * Bit string stored ff0000000000
 	 */
-	numBytes = 6;
+   numBytes = 6;
    bitsUnused = 3;
    controlRSet->frequencyDomainResources.size = numBytes * sizeof(uint8_t);
 
@@ -2562,13 +2563,15 @@ struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
 	   DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
 		return RFAILED;
    }
-   byteIdx = 0;
-	controlRSet->frequencyDomainResources.buf[byteIdx] = PDCCH_FREQ_DOM_RSRC; /* setting 8 MSBs i.e. ff */
-   for(byteIdx = 1; byteIdx < numBytes; byteIdx++)
-	{
-	   controlRSet->frequencyDomainResources.buf[byteIdx] = 0;
-	}
-	controlRSet->frequencyDomainResources.bits_unused = bitsUnused;
+
+   memset(controlRSet->frequencyDomainResources.buf, 0, FREQ_DOM_RSRC_SIZE);
+   coreset0EndPrb = 48;
+   coreset1StartPrb = coreset0EndPrb + 6;
+   coreset1NumPrb = 24;
+   /* calculate the PRBs */
+   schAllocFreqDomRscType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+   memcpy(controlRSet->frequencyDomainResources.buf, freqDomainResource, FREQ_DOM_RSRC_SIZE);
+   controlRSet->frequencyDomainResources.bits_unused = bitsUnused;
 
    controlRSet->duration = PDCCH_CTRL_RSRC_SET_ONE_DURATION;
    controlRSet->cce_REG_MappingType.present = \
