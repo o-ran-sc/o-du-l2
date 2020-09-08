@@ -71,6 +71,7 @@ static int RLOG_FILE_ID=196;
 #include "kw_udx.x"
 #include "kw_dl.x"
 #include "kw_ul.x"
+#include "rlc_utils.h"
 
 #ifdef __cplusplus
 EXTERN "C" {
@@ -206,7 +207,7 @@ U8     status;
  *
 */
 
-PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
+PUBLIC uint8_t RlcMacProcUlData(Pst *pst, RlcMacData *ulData)
 {
    U8              idx;
    U8              lcId;                    /* Logical Channel */
@@ -215,6 +216,7 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
    RguLchDatInd    dLchData[RGU_MAX_LC];  /* PDU info on dedicated logical channel */
    RguDDatIndInfo  *dLchUlDat;               /* UL data on dedicated logical channel */
    RguCDatIndInfo  *cLchUlDat;               /* UL data on common logical channel */
+   uint16_t        copyLen;
 
    /* Initializing dedicated logical channel Database */
    for(idx = 0; idx < RGU_MAX_LC; idx++)
@@ -222,39 +224,48 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
       dLchData[idx].lcId = idx;
       dLchData[idx].pdu.numPdu = 0;
    }
-   
+
    dLchPduPres = FALSE;
-  
+
    /* Seggregate PDUs received on common and dedicated channels
     * and call common channel's handler */
-   for(idx = 0; idx< ulData->nmbPdu; idx++)
+   for(idx = 0; idx< ulData->numPdu; idx++)
    {
       if(ulData->pduInfo[idx].commCh)
       {
-         KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, cLchUlDat, sizeof(RguCDatIndInfo));
-         cmMemset((U8*)cLchUlDat, (U8)0, sizeof(RguCDatIndInfo));
-       
-         cLchUlDat->cellId = ulData->cellId;
-         cLchUlDat->rnti   = ulData->rnti;
-         cLchUlDat->lcId   = ulData->pduInfo[idx].lcId;
-         cLchUlDat->pdu    = ulData->pduInfo[idx].pduBuf;
-         
-         KwLiRguCDatInd(pst, suId, cLchUlDat);
+	 KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, cLchUlDat, sizeof(RguCDatIndInfo));
+	 cmMemset((U8*)cLchUlDat, (U8)0, sizeof(RguCDatIndInfo));
+
+	 cLchUlDat->cellId = ulData->cellId;
+	 GET_UE_IDX(ulData->rnti, cLchUlDat->rnti);
+	 cLchUlDat->lcId   = ulData->pduInfo[idx].lcId;
+
+	 /* Copy fixed buffer to message */
+	 if(SGetMsg(RLC_MEM_REGION_UL, RLC_POOL, &cLchUlDat->pdu) != ROK)
+	 {
+	    DU_LOG("\nRLC : Memory allocation failed at RlcMacProcUlData");
+	    return RFAILED;
+	 }
+	 reverseFixBuf(ulData->pduInfo[idx].pduBuf, ulData->pduInfo[idx].pduLen);
+	 SCpyFixMsg(ulData->pduInfo[idx].pduBuf, cLchUlDat->pdu, 0, \
+	       ulData->pduInfo[idx].pduLen, (MsgLen *)&copyLen);
+
+	 KwLiRguCDatInd(pst, 0, cLchUlDat);
       } 
       else
       {
-         if(!dLchPduPres)
-         {
-            KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, dLchUlDat, sizeof(RguDDatIndInfo));
-            dLchPduPres = TRUE;
-         }
+	 if(!dLchPduPres)
+	 {
+	    KW_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, dLchUlDat, sizeof(RguDDatIndInfo));
+	    dLchPduPres = TRUE;
+	 }
 
-         lcId = ulData->pduInfo[idx].lcId;
-         dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu] = ulData->pduInfo[idx].pduBuf;
-         dLchData[lcId].pdu.numPdu++; 
+	 lcId = ulData->pduInfo[idx].lcId;
+	 dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu] = ulData->pduInfo[idx].pduBuf;
+	 dLchData[lcId].pdu.numPdu++; 
       }
    }
- 
+
    /* If any PDU received on dedicated logical channel, copy into RguDDatIndInfo
     * and call its handler */ 
    if(dLchPduPres)
@@ -264,20 +275,20 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
 
       for(idx = 0; idx < RGU_MAX_LC; idx++)
       {
-         if(dLchData[idx].pdu.numPdu)
-         {
-            cmMemcpy((U8 *)&dLchUlDat->lchData[numDLch], (U8 *)&dLchData[idx], sizeof(RguLchDatInd));
-            numDLch++;      
-         }
+	 if(dLchData[idx].pdu.numPdu)
+	 {
+	    cmMemcpy((U8 *)&dLchUlDat->lchData[numDLch], (U8 *)&dLchData[idx], sizeof(RguLchDatInd));
+	    numDLch++;      
+	 }
       }
       dLchUlDat->numLch = numDLch;
-      KwLiRguDDatInd(pst, suId, dLchUlDat);
+      KwLiRguDDatInd(pst, 0, dLchUlDat);
    }
-    
+
 
    KW_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcMacData));
    RETVALUE(ROK);
-   
+
 }/* End of RlcMacProcUlData */
 
 PUBLIC int   rlcDDatIndRcvd;

@@ -239,7 +239,7 @@ void fillMsg4DlData(uint16_t cellId, MacDlData *dlData, uint8_t *msg4Pdu)
  * Function : fillMacCe
  *      This function fills Mac ce identities
  *           
- * @param[in]  RlcMacData *dlData
+ * @param[in]  CE info
  *             Msg3Pdu Data
  ************************************************/
 

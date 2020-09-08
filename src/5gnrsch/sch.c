@@ -672,18 +672,25 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
  * ****************************************************************/
 uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
 {
+   uint8_t   dlSlot;
    uint16_t  lcIdx;
-   Inst  inst = pst->dstInst-SCH_INST_START;
+   Inst      inst;
+   SchCellCb *cell;
+   SchDlSlotInfo *schDlSlotInfo;
+
    DU_LOG("\nSCH : Received RLC BO Status indication");
 
-   SchCellCb *cell = schCb[inst].cells[inst];
-   SchDlSlotInfo *schDlSlotInfo = \
-				  cell->schDlSlotInfo[(cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + MSG4_DELAY) % SCH_NUM_SLOTS];
+   inst = pst->dstInst-SCH_INST_START;
+   cell = schCb[inst].cells[inst];
 
    for(lcIdx = 0; lcIdx < dlBoInfo->numLc; lcIdx++)
    {
       if(dlBoInfo->boInfo[lcIdx].lcId == CCCH_LCID)
       {
+         /* Calculate slot to schedule MSG4 */
+         dlSlot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + MSG4_DELAY) % SCH_NUM_SLOTS;
+	 schDlSlotInfo = cell->schDlSlotInfo[dlSlot];
+
 	 SCH_ALLOC(schDlSlotInfo->msg4Info, sizeof(Msg4Info));
 	 if(!schDlSlotInfo->msg4Info)
 	 {

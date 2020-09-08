@@ -261,7 +261,7 @@ RguDDatReqInfo    *datReqInfo;
       dlData->cellId = datReqInfo->cellId;
       dlData->rnti = datPerUe.rnti;
       //dlData->timeToTx = datPerUe.transId; /* Derive timing info from transId */
-      dlData->nmbPdu = 0;
+      dlData->numPdu = 0;
 
       for(tbIdx = 0; tbIdx < datPerUe.nmbOfTbs; tbIdx++)
       {
@@ -271,10 +271,10 @@ RguDDatReqInfo    *datReqInfo;
             datPerLch = datPerTb.lchData[lchIdx];
             for(pduIdx = 0; pduIdx < datPerLch.pdu.numPdu; pduIdx++)
             {
-               dlData->pduInfo[dlData->nmbPdu].commCh = FALSE;
-               dlData->pduInfo[dlData->nmbPdu].lcId = datPerLch.lcId;
-               dlData->pduInfo[dlData->nmbPdu].pduBuf = datPerLch.pdu.mBuf[pduIdx];
-               dlData->nmbPdu++;
+               dlData->pduInfo[dlData->numPdu].commCh = FALSE;
+               dlData->pduInfo[dlData->numPdu].lcId = datPerLch.lcId;
+               dlData->pduInfo[dlData->numPdu].pduBuf = datPerLch.pdu.mBuf[pduIdx];
+               dlData->numPdu++;
             }/* For per PDU */
          }/* For Data per Lch */
       }/* For Data per Tb */

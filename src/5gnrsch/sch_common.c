@@ -451,7 +451,24 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    return ROK;
 }
 
-uint16_t schAllocPucchResource(SchCellCb *cell,uint16_t crnti, uint16_t slot)
+/*******************************************************************
+ *
+ * @brief Time domain resource allocation for PUCCH
+ *
+ * @details
+ *
+ *    Function : schAllocPucchResource
+ *
+ *    Functionality: Time domain resource allocation for PUCCH
+ *
+ * @params[in] Cell control block
+ *             CRNTI
+ *             Slot scheduled for DL msg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t schAllocPucchResource(SchCellCb *cell,uint16_t crnti, uint16_t slot)
 {
    uint8_t k1 = 1; /* dl-DataToUL-ACK RRC parameter will received from DU-APP msg4-pucch config */
    uint16_t pucchSlot = (slot + k1)  % SCH_NUM_SLOTS;
@@ -462,6 +479,90 @@ uint16_t schAllocPucchResource(SchCellCb *cell,uint16_t crnti, uint16_t slot)
 
    schUlSlotInfo->pucchPres = true;
    schUlSlotInfo->schPucchInfo.rnti = crnti;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Resource allocation for Msg5 PUSCH 
+ *
+ * @details
+ *
+ *    Function : schAllocMsg5Pusch
+ *
+ *    Functionality: Resource allocation for Msg5 PUSCH
+ *
+ * @params[in]  Scheduler instance
+ *              Slot scheduled for MSG4
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t schAllocMsg5Pusch(Inst schInst, uint16_t slot)
+{
+   SchCellCb      *cell         = NULLP;
+   SchUlSlotInfo  *schUlSlotInfo    = NULLP;
+   uint8_t    puschMu       = 0;
+   uint8_t    msg5SlotAlloc = 0;
+   uint8_t    delta         = 0;
+   uint8_t    k2            = 0;
+   uint8_t    startSymb     = 0;
+   uint8_t    symbLen       = 0;
+   uint8_t    startRb       = 0;
+   uint8_t    numRb         = 0;
+   uint8_t    idx           = 0;
+
+  /* TODO : Below is dummy code for MSG5 PUSCH allocation written for testing
+     To be replaced with actual allocations */
+
+   cell = schCb[schInst].cells[schInst];
+   //   puschMu = cell->cellCfg.puschMu;
+   delta = puschDeltaTable[puschMu];
+   k2 = cell->cellCfg.schInitialUlBwp.puschCommon.k2;
+   startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.startSymbol;
+   symbLen = cell->cellCfg.schInitialUlBwp.puschCommon.lengthSymbol;
+
+   /* Slot allocation for msg3 based on 38.214 section 6.1.2.1 */
+   msg5SlotAlloc = slot + k2 + delta;
+   msg5SlotAlloc = msg5SlotAlloc % SCH_NUM_SLOTS;
+
+   startRb = PUSCH_START_RB;
+
+   /* formula used for calculation of rbSize, 38.214 section 6.1.4.2
+    * Ninfo = S.Nre.R.Qm.v
+    * Nre'  = Nsc.NsymPdsch-NdmrsSymb-Noh
+    * Nre   = min(156,Nre').nPrb */
+   numRb = 1; /* based on above calculation */
+
+   /* allocating 1 extra RB for now */
+   numRb++;
+
+   for(idx=startSymb; idx<symbLen; idx++)
+   {
+      cell->schUlSlotInfo[msg5SlotAlloc]->assignedPrb[idx] = startRb + numRb;
+   }
+   schUlSlotInfo = cell->schUlSlotInfo[msg5SlotAlloc];
+
+   SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
+   if(!schUlSlotInfo->schPuschInfo)
+   {
+      DU_LOG("SCH: Memory allocation failed in schAllocMsg3Pusch");
+      return RFAILED;
+   }
+   schUlSlotInfo->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
+   schUlSlotInfo->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
+   schUlSlotInfo->schPuschInfo->fdAlloc.startPrb  = startRb;
+   schUlSlotInfo->schPuschInfo->fdAlloc.numPrb    = numRb;
+   schUlSlotInfo->schPuschInfo->tdAlloc.startSymb = startSymb;
+   schUlSlotInfo->schPuschInfo->tdAlloc.numSymb   = symbLen;
+   schUlSlotInfo->schPuschInfo->tbInfo.mcs        = 4;
+   schUlSlotInfo->schPuschInfo->tbInfo.ndi        = 1; /* new transmission */
+   schUlSlotInfo->schPuschInfo->tbInfo.rv         = 0;
+   schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = 24; /*Considering 2 PRBs */
+   schUlSlotInfo->schPuschInfo->dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
+   schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
+   schUlSlotInfo->schPuschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;
 
    return ROK;
 }

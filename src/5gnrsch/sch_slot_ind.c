@@ -253,6 +253,9 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       /* PUCCH resource */
       schAllocPucchResource(cell, msg4Alloc->msg4Info.crnti, dlSchedInfo.schSlotValue.msg4Time.slot);
 
+      /* PUSCH resource */
+      schAllocMsg5Pusch(schInst, dlSchedInfo.schSlotValue.msg4Time.slot);
+
       SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info, sizeof(Msg4Info));
       cell->schDlSlotInfo[dlSchedInfo.schSlotValue.msg4Time.slot]->msg4Info = NULL;
    }

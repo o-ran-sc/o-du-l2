@@ -19,34 +19,15 @@
 /*This file contains stub for PHY to handle messages to/from MAC CL */
 
 #include "common_def.h"
-#include "lrg.h"
-#include "lrg.x"
-#include "du_app_mac_inf.h"
-#include "mac_sch_interface.h"
 #include "lwr_mac.h"
 #include "lwr_mac_phy.h"
-#ifdef INTEL_FAPI
-#include "fapi.h"
-#endif
 #include "lphy_stub.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac_utils.h"
-
-#define MAX_SLOT_VALUE   9
-#define MAX_SFN_VALUE    1023
-#define NR_PCI            1
-
-uint16_t sfnValue = 0;
-uint16_t slotValue = 0;
-bool     rachIndSent = false;
-
-EXTERN void phyToMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
 #ifdef INTEL_FAPI
-EXTERN void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, uint16_t tag, uint16_t
-length, uint16_t value, uint32_t *msgLen));
-EXTERN void fillMsgHeader ARGS((fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen));
+#include "fapi.h"
 #endif
-EXTERN void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
+#include "l1.h"
 
 /*******************************************************************
  *
@@ -339,7 +320,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
  *    Function : l1BuildAndSendRxDataInd
  *
  *    Functionality:
- *       Build and send Rx data indication
+ *       Build and send Rx data indication for Msg3
  *
  * @params[in] SFN
  *             Slot
@@ -347,7 +328,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
+uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu, MsgType type)
 {
    uint8_t idx = 0;
    fapi_rx_data_indication_t *rxDataInd;
@@ -388,9 +369,32 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
       return RFAILED;
    }
 
-   /* Harcoded Initial RRC setup Request */
+   /* Filling PDU */
    pdu = (uint8_t *)pduInfo->pduData;
-   pdu[byteIdx++] = 0;
+
+   /* Filling MAC sub-header based on type of data */
+   if(type == MSG_TYPE_MSG3)
+   {
+      /* For Initial RRC setup Request, 
+         MAC subheader format is R/R/LCId (1byte)
+	 LCId is CCCH(0)
+	 From 38.321 section 6.1.1
+      */
+      pdu[byteIdx++] = 0;
+   }
+   else if(type == MSG_TYPE_MSG5)
+   {
+      /* For RRC setup complete
+         MAC subheader format is R/F/LCId/L (2/3 bytes)
+	 LCId is 1 for SRB1
+	 L is length of PDU i.e 6bytes here 
+	 From 38.321 section 6.1.1
+	*/
+      pdu[byteIdx++] = 1;
+      pdu[byteIdx++] = 6;
+   }
+
+   /* Hardcoding MAC PDU */
    pdu[byteIdx++] = 181;
    pdu[byteIdx++] = 99;
    pdu[byteIdx++] = 20;
@@ -398,11 +402,19 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    pdu[byteIdx++] = 132;
    pdu[byteIdx++] = 96;
 
-   /* Harcoding the pad bytes */
-   pdu[byteIdx++] = 63;
+   /* Filling MAC SDU for Padding bytes*/
+   if(byteIdx < pduInfo->pdu_length)
+   {
+      /* For Padding
+         MAC subheader format is R/R/LCId (1byte)
+	 LCId is 63 for padding
+         From 38.321 section 6.1.1
+      */
+      pdu[byteIdx++] = 63;
 
-   for(; byteIdx < pduInfo->pdu_length; byteIdx++)
-      pdu[byteIdx] = 0;
+      for(; byteIdx < pduInfo->pdu_length; byteIdx++)
+         pdu[byteIdx] = 0;
+   }
    msgLen += pduInfo->pdu_length;
 
    fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
@@ -704,8 +716,18 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
 	 DU_LOG("\nPHY STUB: PUSCH PDU");			
-	 l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
-	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
+	 if(!msg3Sent)
+	 {
+	    msg3Sent = true;
+	    l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
+	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu, MSG_TYPE_MSG3); 
+         }
+	 else if(!msg5Sent)
+	 {
+	    msg5Sent = true;
+	    l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
+	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu, MSG_TYPE_MSG5);
+	 }
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {

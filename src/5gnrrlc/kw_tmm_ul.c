@@ -61,6 +61,9 @@ static int RLOG_FILE_ID=201;
 
 #include "kw.x"
 #include "kw_ul.x"
+#include "du_app_rlc_inf.h"
+#include "rlc_utils.h"
+#include "rlc_upr_inf_api.h"
 
 #if defined(PRE_DEF_UE_CTX) || defined(PRE_DEF_UE_CTX_HO)
 #ifdef EG_GEN_LOAD_5GTF
@@ -273,45 +276,53 @@ Buffer     *pdu;
 #endif
 #endif 
 {
-   KwuDatIndInfo   *datIndInfo;   /* Data Indication Information */
-   MsgLen          msgLen;
+   RlcUlRrcMsgInfo  *ulRrcMsgInfo;
+   uint16_t         msgLen;
+   uint16_t         copyLen;    /* Number of bytes copied */
+   Pst              pst;
  
    TRC2(kwTmmRcvFrmLi) 
 
-   /* Creating static memory for KwuDatIndInfo. #else will be 
-    * removed once the sanity testing is performed for all platforms */
-   KwuDatIndInfo datIndInfoTmp;
-   datIndInfo = &datIndInfoTmp;
-#if (ERRCLASS & ERRCLS_ADD_RES)
-   if ( datIndInfo == NULLP )
-   {   
-      RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
-            "Memory Allocation failed UEID:%d CELLID:%d",
-            rbCb->rlcId.ueId,
-            rbCb->rlcId.cellId);   
-      RETVOID;
-   }
-#endif /* ERRCLASS & ERRCLS_ADD_RES */
-   KW_MEM_CPY(&(datIndInfo->rlcId),&(rbCb->rlcId),sizeof(CmLteRlcId));
-#ifdef CCPU_OPT 
-   if ( rbCb->lch.lChType == CM_LTE_LCH_CCCH ) 
-   {
-      datIndInfo->tCrnti = tCrnti;
-   }
-#endif 
    gCb->genSts.pdusRecv++;
-   SFndLenMsg(pdu, &msgLen);
+   SFndLenMsg(pdu, (MsgLen *)&msgLen);
    gCb->genSts.bytesRecv += msgLen;
    /* If trace flag is enabled send the trace indication */
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      kwLmmSendTrc(gCb,KWU_EVT_DAT_IND, pdu);
+      kwLmmSendTrc(gCb, EVENT_UL_RRC_MSG_TRANS_TO_DU, pdu);
    }
-   KwUiKwuDatInd( &gCb->u.ulCb->kwuUlSap->pst, 
-                  //gCb->u.ulCb->kwuUlSap->suId, 
-                  datIndInfo, pdu);
-   
+  
+   /* Filling UL RRC Message Info */
+   KW_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
+      ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
+   if (ulRrcMsgInfo)
+   {
+      ulRrcMsgInfo->cellId = rbCb->rlcId.cellId;
+      ulRrcMsgInfo->ueIdx = rbCb->rlcId.ueId;
+      ulRrcMsgInfo->lcId = rbCb->lch.lChId;
+      KW_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
+         ulRrcMsgInfo->rrcMsg, msgLen);
+      if (ulRrcMsgInfo->rrcMsg)
+      {
+         SCpyMsgFix(pdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
+         ulRrcMsgInfo->msgLen = msgLen;
+
+         /* Sending UL RRC Message transfeer to DU APP */
+         memset(&pst, 0, sizeof(Pst));
+         FILL_PST_RLC_TO_DUAPP(pst, SFndProcId(), RLC_UL_INST, EVENT_UL_RRC_MSG_TRANS_TO_DU);
+         rlcSendUlRrcMsgToDu(&pst, ulRrcMsgInfo);
+      }
+      else
+      {
+         DU_LOG("\nRLC : Memory allocation failed");
+      }
+   }
+   else
+   {
+      DU_LOG("\nRLC : Memory allocation failed");
+   }
+ 
    RETVOID;
 }
 

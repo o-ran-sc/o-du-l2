@@ -855,21 +855,21 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 	 GET_UE_IDX(ueCcchCtxt->crnti, ueIdx);
 	 DU_LOG("\nDU_APP: Filling UeCb for ueIdx [%d]", ueIdx);
 
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId = ueCcchCtxt->gnbDuUeF1apId;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId = gnbCuUeF1apId;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState       = UE_ACTIVE;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbDuUeF1apId = ueCcchCtxt->gnbDuUeF1apId;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId = gnbCuUeF1apId;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].ueState       = UE_ACTIVE;
 
 	 /* Filling Mac Ue Config */ 
-	 memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg, 0, sizeof(MacUeCfg));
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId        = ueCcchCtxt->cellId;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.ueIdx         = ueIdx;
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.crnti         = ueCcchCtxt->crnti;
-	 fillMacUeCfg(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg);
+	 memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg, 0, sizeof(MacUeCfg));
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.cellId        = ueCcchCtxt->cellId;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.ueIdx         = ueIdx;
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.crnti         = ueCcchCtxt->crnti;
+	 fillMacUeCfg(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg);
 	 duCb.actvCellLst[cellIdx]->numActvUes++;
 	 memset(ueCcchCtxt, 0, sizeof(UeCcchCtxt));
 
 	 /* Send Ue Create Request to MAC */
-	 ret = duBuildAndSendUeCreateReqToMac(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg.cellId, ueIdx);
+	 ret = duBuildAndSendUeCreateReqToMac(duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.cellId, ueIdx);
 	 if(ret)
 	    DU_LOG("\nDU_APP: Failed to send UE create request to MAC");
       }
@@ -911,7 +911,7 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx)
    if(macUeCfg)
    {
       memset(macUeCfg, 0, sizeof(MacUeCfg));
-      memcpy(macUeCfg, &duCb.actvCellLst[cellId - 1]->ueCb[ueIdx].macUeCfg, sizeof(MacUeCfg));
+      memcpy(macUeCfg, &duCb.actvCellLst[cellId - 1]->ueCb[ueIdx-1].macUeCfg, sizeof(MacUeCfg));
       /* Processing one Ue at a time to MAC */
       ret = (*packMacUeCreateReqOpts[pst.selector])(&pst, macUeCfg);
       if(ret)

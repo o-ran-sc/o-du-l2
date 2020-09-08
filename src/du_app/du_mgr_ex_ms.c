@@ -34,6 +34,7 @@
 #include "du_app_mac_inf.h"
 #include "du_ue_mgr.h"
 #include "kwu.x"
+#include "du_app_rlc_inf.h"
 
 extern S16 cmUnpkLkwCfgCfm(LkwCfgCfm func,Pst *pst, Buffer *mBuf);
 extern S16 cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
@@ -168,6 +169,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
 		     break;
 		  }
+	       case EVENT_UL_RRC_MSG_TRANS_TO_DU:
+	          {
+	             ret = unpackRlcUlRrcMsgToDu(DuProcRlcUlRrcMsgTrans, pst, mBuf);
+		     break;
+                  }
 	       default:
 		  {
 		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \

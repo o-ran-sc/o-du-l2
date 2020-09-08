@@ -169,7 +169,7 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 
    for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
    {
-      unpackRxData(rxDataInd->cellId, &rxDataInd->pdus[pduIdx]);
+      unpackRxData(rxDataInd->cellId, rxDataInd->timingInfo, &rxDataInd->pdus[pduIdx]);
    }
    return ROK;
 }
@@ -193,6 +193,62 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  * ****************************************************************/
 uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData)
 {
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds and Sends UL Data to RLC
+ *
+ * @details
+ *
+ *    Function : macFillAndSendUlData
+ *
+ *    Functionality: Builds and Sends UL Data to RLC
+ *
+ * @params[in] CellId
+ *             CRNTI
+ *             Slot information
+ *             LC Id on which payload was received
+ *             Pointer to the payload
+ *             Length of payload
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t macFillAndSendUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
+uint8_t lcId, uint8_t *pdu, uint16_t pduLen)
+{
+   Pst         pst;
+   RlcMacData  *ulData;
+
+   /* Filling RLC Ul Data*/
+   MAC_ALLOC_SHRABL_BUF(ulData, sizeof(RlcMacData));
+   if(!ulData)
+   {
+      DU_LOG("\nMAC : Memory allocation failed while sending UL data to RLC");
+      return RFAILED;
+   }
+   memset(ulData, 0, sizeof(RlcMacData));
+   ulData->cellId = cellId; 
+   ulData->rnti = rnti;
+   memcpy(&ulData->slotInfo, &slotInfo, sizeof(SlotIndInfo));
+
+   /* Filling pdu info */
+   if(lcId == SRB1_LCID || lcId == SRB2_LCID)
+   {
+      ulData->pduInfo[ulData->numPdu].commCh = true;
+   }
+   ulData->pduInfo[ulData->numPdu].lcId = lcId;
+   ulData->pduInfo[ulData->numPdu].pduBuf = pdu;
+   ulData->pduInfo[ulData->numPdu].pduLen = pduLen;
+   ulData->numPdu++;
+
+   /* Filling Post and send to RLC */
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_MAC_TO_RLC(pst, 0, EVTRLCULDAT);
+   MacSendUlDataToRlc(&pst, ulData);
+
    return ROK;
 }
 

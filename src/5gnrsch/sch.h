@@ -156,7 +156,8 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot);
 uint16_t schCalcTbSize(uint16_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
-uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
+uint8_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
+uint8_t schAllocMsg5Pusch(Inst schInst, uint16_t slot);
 /**********************************************************************
   End of file
  **********************************************************************/
