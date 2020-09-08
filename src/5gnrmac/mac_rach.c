@@ -29,7 +29,7 @@
 MacSchRachIndFunc macSchRachIndOpts[]=
 {
    packMacSchRachInd,
-   macSchRachInd,
+   MacSchRachInd,
    packMacSchRachInd
 };
 

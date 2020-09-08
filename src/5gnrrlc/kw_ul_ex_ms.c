@@ -432,7 +432,7 @@ Buffer *mBuf;           /* message buffer */
 
                case EVTRLCULDAT:    /* Dedicated Channel Data request */
                   {
-                     ret = unpackRcvdUlData(RlcMacProcUlData, pst, mBuf);
+                     ret = unpackRcvdUlData(RlcProcUlData, pst, mBuf);
                      break;
                   }
 

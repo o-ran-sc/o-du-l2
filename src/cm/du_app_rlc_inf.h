@@ -24,6 +24,7 @@
 #define MAX_NUM_LOGICAL_CHANNELS 11
 #define EVENT_RLC_UL_UE_CREATE_REQ  210
 #define EVENT_RLC_UL_UE_CREATE_RSP 211    /*!< Config Confirm */
+#define EVENT_UL_RRC_MSG_TRANS_TO_DU  212
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -489,6 +490,16 @@ typedef struct rlcUeCfgRsp
    FailureReason  reason;
 }RlcUeCfgRsp;
 
+/* UL RRC Message from RLC to DU APP */
+typedef struct ulRrcMsgInfo
+{
+   uint16_t   cellId;       /* Cell Id */
+   uint16_t   ueIdx;        /* UE Index */
+   uint8_t    lcId;         /* Logical channel Id */
+   uint16_t   msgLen;       /* RRC message length (in bytes) */
+   uint8_t    *rrcMsg;      /* RRC Message (UL-DCCH Message) */
+}RlcUlRrcMsgInfo;
+
 /* Function Pointers */
 /* UE create Request from DU APP to RLC*/
 typedef uint8_t (*DuRlcUlUeCreateReq) ARGS((
@@ -500,6 +511,11 @@ typedef uint8_t (*RlcUlDuUeCreateRsp) ARGS((
    Pst          *pst,
    RlcUeCfgRsp  *ueCfgRsp));
 
+/* UL RRC Message from RLC to DU APP */
+typedef uint8_t (*RlcUlRrcMsgToDuFunc) ARGS((
+   Pst           *pst,
+   RlcUlRrcMsgInfo *ulRrcMsgInfo));
+
 /* Function Declarations */
 uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf);
@@ -507,6 +523,9 @@ uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfgRsp);
 uint8_t unpackRlcUlUeCreateRsp(RlcUlDuUeCreateRsp func, Pst *pst, Buffer *mBuf);
 uint8_t DuProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
+uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
+uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
+uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf);
 
 #endif /* RLC_INF_H */
 

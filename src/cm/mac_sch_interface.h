@@ -17,16 +17,18 @@
  *******************************************************************************/
 
 /* events */
-#define EVENT_SCH_CELL_CFG      1
-#define EVENT_SCH_CELL_CFG_CFM  2
-#define EVENT_DL_ALLOC          3 
-#define EVENT_UL_SCH_INFO       4 
+#define EVENT_SCH_CELL_CFG           1
+#define EVENT_SCH_CELL_CFG_CFM       2
+#define EVENT_DL_ALLOC               3 
+#define EVENT_UL_SCH_INFO            4 
 #define EVENT_RACH_IND_TO_SCH        5
 #define EVENT_CRC_IND_TO_SCH         6
 #define EVENT_DL_RLC_BO_INFO_TO_SCH  7
 #define EVENT_UE_CREATE_REQ_TO_SCH   8
 #define EVENT_UE_CREATE_RSP_TO_MAC   9
 #define EVENT_SLOT_IND_TO_SCH        10
+#define EVENT_SHORT_BSR              11
+#define EVENT_UCI_IND_TO_SCH         12
 
 /*macros*/
 #define NO_SSB 0
@@ -53,7 +55,10 @@
 #define SCH_DATATYPE_PRACH 16
 
 #define MAX_NUMBER_OF_CRC_IND_BITS 1
+#define MAX_NUMBER_OF_UCI_IND_BITS 1
+#define MAX_SR_BITS_IN_BYTES       1
 #define MAX_NUM_LOGICAL_CHANNELS   11
+#define MAX_NUM_LOGICAL_CHANNEL_GROUPS 8
 /* can we have a common numslot numscs between mac sch */
 #define MAX_SLOTS 10
 #define MAX_SFN   1024
@@ -69,6 +74,8 @@
 
 #define SD_SIZE   3
 #define CCCH_LCID  0
+#define SRB1_LCID  1
+#define SRB2_LCID  2
 
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
@@ -87,7 +94,6 @@
    }                                                       \
 }
 
-/*structures*/
 typedef enum
 {
    UNSPECIFIED_CAUSE,
@@ -315,6 +321,23 @@ typedef enum
    RSP_NOK
 }SchMacRsp;
 
+typedef enum
+{
+   SHORT_BSR,
+   LONG_BSR,
+   SHORT_TRUNCATED_BSR,
+   LONG_TRUNCATED_BSR
+}BsrType;
+
+typedef enum
+{
+   FORMAT0_0,
+   FORMAT0_1,
+   FORMAT1_0,
+   FORMAT1_1
+}FormatType;
+
+/*structures*/
 typedef struct timeDomainAlloc
 {
    uint16_t startSymb;
@@ -427,7 +450,7 @@ typedef struct pdschCfg
 
 typedef struct coresetCfg
 {
-   uint8_t coreSet0Size;
+   uint8_t coreSetSize;
    uint8_t startSymbolIndex;
    uint8_t durationSymbols;
    uint8_t freqDomainResource[6];
@@ -679,7 +702,61 @@ typedef struct schSlotValue
    SlotIndInfo rarTime;
    SlotIndInfo msg4Time;
    SlotIndInfo dlMsgTime;
+   SlotIndInfo ulDciTime;
 }SchSlotValue;
+
+typedef struct format0_0
+{
+   uint8_t         resourceAllocType;
+   /* since we are using type-1, hence rbBitmap excluded */
+   FreqDomainAlloc freqAlloc;
+   TimeDomainAlloc timeAlloc;
+   uint16_t        rowIndex;
+   uint8_t         mcs;
+   uint8_t         harqProcId;   /* HARQ Process ID */
+   bool            puschHopFlag;
+   bool            freqHopFlag;
+   uint8_t         ndi;    /* NDI */
+   uint8_t         rv;     /* Redundancy Version */
+   uint8_t         tpcCmd;
+   bool            sUlCfgd;
+}Format0_0;
+
+typedef struct format0_1
+{
+/* TBD */
+
+}Format0_1;
+
+typedef struct format1_0
+{
+/* TBD */
+
+}Format1_0;
+
+typedef struct format1_1
+{
+/* TBD */
+}Format1_1;
+
+typedef struct dciInfo
+{
+   uint16_t      cellId;   
+   uint16_t      crnti;          /* CRNI */
+   SlotIndInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
+   BwpCfg        bwpCfg;         /* BWP Cfg */
+   CoresetCfg    coresetCfg;     /* Coreset1 Cfg */
+   FormatType    formatType;     /* DCI Format */
+   union
+   {
+      Format0_0  format0_0;      /* Format 0_0 */
+      Format0_1  format0_1;      /* Format 0_1 */
+      Format1_0  format1_0;      /* Format 1_0 */
+      Format1_1  format1_1;      /* Format 1_1 */
+   }format;
+   DlDCI    dciInfo;
+}DciInfo;
+
 
 typedef struct dlSchedInfo
 {
@@ -696,6 +773,10 @@ typedef struct dlSchedInfo
 
    /* Allocation from MSG4 */
    Msg4Alloc *msg4Alloc;
+
+   /* UL grant in response to BSR */
+   DciInfo    *ulGrant;
+
 }DlSchedInfo;
 
 typedef struct tbInfo
@@ -1121,6 +1202,30 @@ typedef struct schUeCfgRsp
    SchFailureCause cause;
 }SchUeCfgRsp;
 
+typedef struct dataVolInfo
+{
+   uint8_t  lcgId;
+   uint32_t dataVol;
+}DataVolInfo;
+
+typedef struct ulBufferStatusRptInd
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   BsrType     bsrType;
+   uint8_t     numLcg;
+   DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
+}UlBufferStatusRptInd;
+
+typedef struct srUciIndInfo
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   SlotIndInfo slotInd;
+   uint8_t     numSrBits;
+   uint8_t     srPayload[MAX_SR_BITS_IN_BYTES];
+}SrUciIndInfo;
+
 /* function pointers */
 
 typedef uint8_t (*SchCellCfgCfmFunc)    ARGS((
@@ -1167,6 +1272,16 @@ typedef uint8_t (*MacSchSlotIndFunc) ARGS((
          Pst         *pst,          /* Post structure */
 	 SlotIndInfo *slotInd));    /* Slot Info */
 
+typedef uint8_t (*MacSchBsrFunc)       ARGS((
+   Pst                  *pst,
+   UlBufferStatusRptInd *bsrInd
+));
+
+typedef uint8_t (*MacSchSrUciIndFunc) ARGS(( 
+	 Pst         *pst,         /* Post structure */
+	 SrUciIndInfo  *uciInd));    /* UCI IND Info */
+
+
 /* function declarations */
 uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
 uint8_t packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo);
@@ -1181,18 +1296,22 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason);
 uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
 uint8_t packMacSchRachInd(Pst *pst, RachIndInfo *rachInd);
-uint8_t macSchRachInd(Pst *pst, RachIndInfo *rachInd);
+uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd);
 uint8_t packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
-uint8_t macSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
+uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
 uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
-uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
+uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
 uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
-uint8_t macSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
-uint8_t macSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
+uint8_t MacSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
 uint8_t packMacSchSlotInd(Pst * pst, SlotIndInfo * slotInd);
 uint8_t unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf);
+uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
+uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
+uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
+uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 
 /**********************************************************************
   End of file

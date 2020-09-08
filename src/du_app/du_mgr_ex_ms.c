@@ -178,6 +178,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		     ret = unpackRlcUlUeCreateRsp(DuProcRlcUlUeCreateRsp, pst, mBuf);
 		     break;
 		  }
+	       case EVENT_UL_RRC_MSG_TRANS_TO_DU:
+	          {
+	             ret = unpackRlcUlRrcMsgToDu(DuProcRlcUlRrcMsgTrans, pst, mBuf);
+		     break;
+                  }
 	       default:
 		  {
 		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \

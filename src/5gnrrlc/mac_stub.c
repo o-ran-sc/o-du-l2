@@ -100,7 +100,7 @@ PUBLIC S16 macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
 
    ulDatNum++;
    DU_LOG("\nMAC_STUB : UL data number %d", ulDatNum);
-   RlcMacProcUlData(&rspPst, 1, ulData);
+   RlcProcUlData(&rspPst, 1, ulData);
    return ROK;
 }
 

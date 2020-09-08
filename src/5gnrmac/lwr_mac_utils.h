@@ -16,15 +16,24 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains the definitions for Upper Interface APIs that are
- * invoked from MAC */
-
-uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo);
-uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId);
-uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
-uint8_t MacSendUlDataToRlc(Pst *pst, RlcMacData *ulData);
-
+/* Fill Pst structure for sending msg from MAC to SCH */
+#define FILL_PST_LWR_MAC_TO_MAC(_pst, _event)               \
+{                                                           \
+   _pst.selector  = ODU_SELECTOR_TC;                        \
+   _pst.srcEnt    = ENTTF;                                  \
+   _pst.dstEnt    = ENTRG;                                  \
+   _pst.dstInst   = 0;                                      \
+   _pst.srcInst   = 0;                                      \
+   _pst.dstProcId = SFndProcId();                           \
+   _pst.srcProcId = SFndProcId();                           \
+   _pst.region = MAC_MEM_REGION;                            \
+   _pst.pool = MAC_POOL;                                    \
+   _pst.event = _event;                                     \
+   _pst.route = 0;                                          \
+   _pst.prior = 0;                                          \
+   _pst.intfVer = 0;                                        \
+}
+ 
 /**********************************************************************
          End of file
 **********************************************************************/
-

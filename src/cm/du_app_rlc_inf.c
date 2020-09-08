@@ -17,7 +17,6 @@
 *******************************************************************************/
 
 #include "common_def.h"
-#include "du_log.h"
 #include "du_app_rlc_inf.h"
 
 /*******************************************************************
@@ -177,6 +176,83 @@ uint8_t unpackRlcUlUeCreateRsp(RlcUlDuUeCreateRsp func, Pst *pst, Buffer *mBuf)
 
    return RFAILED;
 }
+
+/*******************************************************************
+ *
+ * @brief Pack and send UL RRC message transfer from RLC to DU APP
+ *
+ * @details
+ *
+ *    Function : packRlcUlRrcMsgToDu
+ *
+ *    Functionality:
+ *       Pack and send UL RRC message transfer from RLC to DU APP
+ *
+ * @params[in] Post structure
+ *             UL RRC Msg transfer info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nRLC : Memory allocation failed at packRlcUlRrcMsgToDu");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(cmPkPtr,(PTR)ulRrcMsgInfo, mBuf);
+      return SPstTsk(pst,mBuf);
+   }
+   else
+   {
+      DU_LOG("\nRLC: Only LWLC supported for packRlcUlRrcMsgToDu");
+   }
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack UL RRC Msg Transfer received at DU APP from RLC
+ *
+ * @details
+ *
+ *    Function : unpackRlcUlRrcMsgToDu
+ *
+ *    Functionality:
+ *      Unpack UL RRC Msg Transfer received at DU APP from RLC
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      RlcUlRrcMsgInfo *ulRrcMsgInfo;
+      /* unpack the address of the structure */
+      CMCHKUNPK(cmUnpkPtr, (PTR *)&ulRrcMsgInfo, mBuf);
+      SPutMsg(mBuf);
+      return (*func)(pst, ulRrcMsgInfo);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nRLC: Only LWLC supported for UL RRC Message transfer ");
+      SPutMsg(mBuf);
+   }
+
+   return RFAILED;
+}
+
+
 /**********************************************************************
          End of file
-**********************************************************************/
+***********************************************************************/

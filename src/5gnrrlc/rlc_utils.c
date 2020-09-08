@@ -16,15 +16,37 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains the definitions for Upper Interface APIs that are
- * invoked from MAC */
+#include "common_def.h"
 
-uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo);
-uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId);
-uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
-uint8_t MacSendUlDataToRlc(Pst *pst, RlcMacData *ulData);
+/*******************************************************************
+ *
+ * @brief Reverse fixed buffer
+ *
+ * @details
+ *
+ *    Function : reverseFixBuf
+ *
+ *    Functionality: Reverse fixed buffer
+ *
+ * @params[in] Fixed buffer to be reversed
+ *             Buffer length
+ * @return void
+ *
+ * ****************************************************************/
+void reverseFixBuf(uint8_t *buf, uint16_t len)
+{
+   uint8_t idx, revIdx;
+   uint8_t temp;
+
+   for(idx = 0, revIdx = len-1; idx < len/2; idx++, revIdx--)
+   {
+      temp = buf[idx];
+      buf[idx] = buf[revIdx];
+      buf[revIdx] = temp;
+   }
+   return;
+}
 
 /**********************************************************************
          End of file
 **********************************************************************/
-

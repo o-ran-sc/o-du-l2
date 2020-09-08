@@ -429,15 +429,15 @@ typedef struct rlcMacPduInfo
    Bool         commCh;   /*!<Common or Dedicated Channel */
    CmLteLcId    lcId;     /*!< Logical channel ID */
    MsgLen       pduLen;   /*!< PDU Length */
-   Buffer       *pduBuf;  /*!< RLC PDU buffer */
+   uint8_t      *pduBuf;  /*!< RLC PDU buffer */
 }RlcMacPduInfo;
 
 typedef struct rlcMacData
 {  
-   CmLteTimingInfo timeToTx;  /*!< Air interface time */
    CmLteCellId     cellId;       /*!< CELL ID */
    CmLteRnti       rnti;         /*!< Temporary CRNTI */ 
-   U8              nmbPdu;       /*!< Number of RLC PDUs */
+   SlotIndInfo     slotInfo;     /*!< Timing info */
+   U8              numPdu;       /*!< Number of RLC PDUs */
    RlcMacPduInfo   pduInfo[RGU_MAX_PDU];
 }RlcMacData;
 
@@ -491,9 +491,8 @@ typedef S16 (*RguDDatInd) ARGS((
    SuId                 suId,
    RguDDatIndInfo       *datInd));
 
-typedef S16 (*RlcMacUlData) ARGS((
+typedef uint8_t (*RlcMacUlDataFunc) ARGS((
    Pst*                 pst,
-   SuId                 suId,
    RlcMacData           *ulData));
 /** @brief Status Response from RLC to MAC to 
  * inform the BO report for common channels */
@@ -708,9 +707,8 @@ EXTERN S16 RlcMacSendDlData ARGS((
 /** @brief Handler toprocess UL data from MAC and
  * forwarding to appropriate common/dedicated
  * channel's handler */
-EXTERN S16 RlcMacProcUlData ARGS((
+EXTERN uint8_t RlcProcUlData ARGS((
    Pst*           pst,
-   SuId           suId,
    RlcMacData   *ulData
 ));
 
@@ -880,15 +878,14 @@ EXTERN S16 cmUnpkRguCDatInd ARGS((
 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
-EXTERN S16 packRcvdUlData ARGS((
+EXTERN uint8_t packRlcUlData ARGS((
    Pst*                 pst,
-   SuId                 suId,
    RlcMacData  *    ulData
 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
-EXTERN S16 unpackRcvdUlData ARGS((
-   RlcMacUlData         func,
+EXTERN uint8_t unpackRcvdUlData ARGS((
+   RlcMacUlDataFunc     func,
    Pst*                 pst,
    Buffer               *mBuf
 ));

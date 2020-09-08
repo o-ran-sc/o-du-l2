@@ -71,6 +71,7 @@ static int RLOG_FILE_ID=196;
 #include "kw_udx.x"
 #include "kw_dl.x"
 #include "kw_ul.x"
+#include "rlc_utils.h"
 
 #ifdef __cplusplus
 EXTERN "C" {
@@ -206,7 +207,7 @@ U8     status;
  *
 */
 
-PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
+uint8_t RlcProcUlData(Pst *pst, RlcMacData *ulData)
 {
    U8              idx;
    U8              lcId;                    /* Logical Channel */
@@ -215,6 +216,7 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
    RguLchDatInd    dLchData[RGU_MAX_LC];  /* PDU info on dedicated logical channel */
    RguDDatIndInfo  *dLchUlDat;               /* UL data on dedicated logical channel */
    RguCDatIndInfo  *cLchUlDat;               /* UL data on common logical channel */
+   uint16_t        copyLen;
 
    /* Initializing dedicated logical channel Database */
    for(idx = 0; idx < RGU_MAX_LC; idx++)
@@ -227,31 +229,40 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
   
    /* Seggregate PDUs received on common and dedicated channels
     * and call common channel's handler */
-   for(idx = 0; idx< ulData->nmbPdu; idx++)
+   for(idx = 0; idx< ulData->numPdu; idx++)
    {
       if(ulData->pduInfo[idx].commCh)
       {
-         RLC_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, cLchUlDat, sizeof(RguCDatIndInfo));
-         cmMemset((U8*)cLchUlDat, (U8)0, sizeof(RguCDatIndInfo));
-       
-         cLchUlDat->cellId = ulData->cellId;
-         cLchUlDat->rnti   = ulData->rnti;
-         cLchUlDat->lcId   = ulData->pduInfo[idx].lcId;
-         cLchUlDat->pdu    = ulData->pduInfo[idx].pduBuf;
-         
-         KwLiRguCDatInd(pst, suId, cLchUlDat);
+	 RLC_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, cLchUlDat, sizeof(RguCDatIndInfo));
+	 cmMemset((U8*)cLchUlDat, (U8)0, sizeof(RguCDatIndInfo));
+
+	 cLchUlDat->cellId = ulData->cellId;
+	 GET_UE_IDX(ulData->rnti, cLchUlDat->rnti);
+	 cLchUlDat->lcId   = ulData->pduInfo[idx].lcId;
+
+	 /* Copy fixed buffer to message */
+	 if(SGetMsg(RLC_MEM_REGION_UL, RLC_POOL, &cLchUlDat->pdu) != ROK)
+	 {
+	    DU_LOG("\nRLC : Memory allocation failed at RlcProcUlData");
+	    return RFAILED;
+	 }
+	 reverseFixBuf(ulData->pduInfo[idx].pduBuf, ulData->pduInfo[idx].pduLen);
+	 SCpyFixMsg(ulData->pduInfo[idx].pduBuf, cLchUlDat->pdu, 0, \
+	       ulData->pduInfo[idx].pduLen, (MsgLen *)&copyLen);
+
+	 KwLiRguCDatInd(pst, 0, cLchUlDat);
       } 
       else
       {
-         if(!dLchPduPres)
-         {
-            RLC_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, dLchUlDat, sizeof(RguDDatIndInfo));
-            dLchPduPres = TRUE;
-         }
+	 if(!dLchPduPres)
+	 {
+	    RLC_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, dLchUlDat, sizeof(RguDDatIndInfo));
+	    dLchPduPres = TRUE;
+	 }
 
-         lcId = ulData->pduInfo[idx].lcId;
-         dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu] = ulData->pduInfo[idx].pduBuf;
-         dLchData[lcId].pdu.numPdu++; 
+	 lcId = ulData->pduInfo[idx].lcId;
+	 dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu] = ulData->pduInfo[idx].pduBuf;
+	 dLchData[lcId].pdu.numPdu++; 
       }
    }
  
@@ -264,21 +275,21 @@ PUBLIC S16 RlcMacProcUlData(Pst *pst, SuId suId, RlcMacData *ulData)
 
       for(idx = 0; idx < RGU_MAX_LC; idx++)
       {
-         if(dLchData[idx].pdu.numPdu)
-         {
-            cmMemcpy((U8 *)&dLchUlDat->lchData[numDLch], (U8 *)&dLchData[idx], sizeof(RguLchDatInd));
-            numDLch++;      
-         }
+	 if(dLchData[idx].pdu.numPdu)
+	 {
+	    cmMemcpy((U8 *)&dLchUlDat->lchData[numDLch], (U8 *)&dLchData[idx], sizeof(RguLchDatInd));
+	    numDLch++;      
+	 }
       }
       dLchUlDat->numLch = numDLch;
-      KwLiRguDDatInd(pst, suId, dLchUlDat);
+      KwLiRguDDatInd(pst, 0, dLchUlDat);
    }
     
 
    RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcMacData));
    RETVALUE(ROK);
    
-}/* End of RlcMacProcUlData */
+}/* End of RlcProcUlData */
 
 PUBLIC int   rlcDDatIndRcvd;
 PUBLIC int   rlcCDatIndRcvd;
@@ -349,7 +360,7 @@ RguCDatIndInfo   *datInd;
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
    /* Fetch RbCb from lcId */
-   kwDbmFetchUlRbCbFromLchId(tRlcCb, 0, datInd->cellId, datInd->lcId, &rbCb);
+   kwDbmFetchUlRbCbFromLchId(tRlcCb, datInd->rnti, datInd->cellId, datInd->lcId, &rbCb);
    if (!rbCb)
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,datInd->cellId, "LcId [%d] not found",

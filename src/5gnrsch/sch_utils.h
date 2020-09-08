@@ -82,13 +82,17 @@
    _pst.selector  = ODU_SELECTOR_TC;                         \
 }
 
+extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
+extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
+
 /* functions declarations */
 void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 uint16_t schCalcTbSize(uint16_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
+SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
+void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
+void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
 
-extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
-extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 
 /**********************************************************************
   End of file

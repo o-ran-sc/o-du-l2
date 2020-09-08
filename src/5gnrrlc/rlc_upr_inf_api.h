@@ -16,15 +16,8 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains the definitions for Upper Interface APIs that are
- * invoked from MAC */
-
-uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo);
-uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId);
-uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
-uint8_t MacSendUlDataToRlc(Pst *pst, RlcMacData *ulData);
+uint8_t rlcSendUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 
 /**********************************************************************
          End of file
 **********************************************************************/
-

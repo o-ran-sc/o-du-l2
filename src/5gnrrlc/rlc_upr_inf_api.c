@@ -15,16 +15,38 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+#include "common_def.h"
+#include "du_app_rlc_inf.h"
 
-/* This file contains the definitions for Upper Interface APIs that are
- * invoked from MAC */
+/* Function pointer array for UL RRC Msg Transfer */
+RlcUlRrcMsgToDuFunc rlcSendUlRrcMsgToDuOpts[] = 
+{
+   packRlcUlRrcMsgToDu,       /* 0 - Loosely coupled */
+   DuProcRlcUlRrcMsgTrans,    /* 1 - Tightly coupled */
+   packRlcUlRrcMsgToDu        /* 2 - Light weight loosely coupled */
+};
 
-uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo);
-uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId);
-uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
-uint8_t MacSendUlDataToRlc(Pst *pst, RlcMacData *ulData);
+/*******************************************************************
+ *
+ * @brief Sends UL RRC Message Info to DU APP
+ *
+ * @details
+ *
+ *    Function : rlcSendUlRrcMsgToDu
+ *
+ *    Functionality:  Sends UL RRC Message Info to DU APP
+ *
+ * @params[in] Pst structure
+ *             UL RRC Msg Info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t rlcSendUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
+{
+   return (*rlcSendUlRrcMsgToDuOpts[pst->selector])(pst, ulRrcMsgInfo);
+}
 
 /**********************************************************************
          End of file
 **********************************************************************/
-

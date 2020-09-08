@@ -463,63 +463,6 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
  *
  * @details
  *
- *     Function: schAllocFreqDomRscType0
- *     
- *     This function does allocation in frequency domain resource.
- *     This is a bitmap defining  non-overlapping groups of 6 PRBs in ascending order.
- *     
- *  @param[in]  startPrb - start PRB from where the freq alloc starts.  
- *  @param[in]  prbSize - number of PRBs to be allocted.
- *  @param[in]  freqDomain - 6 bytes of info, each bit represents a group of 6 PRB.
- *  @return   void
- **/
-void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
-{
-   uint8_t remBits = prbSize; /* each bit represents 6 PRBs */
-   uint8_t firstByte = 1;
-   uint8_t numBits,startBit,byteCount = 5;
-
-   while(remBits)
-   {
-      /* when the startPrb is not in this byteCount */
-      if(startPrb/8)
-      {
-         startPrb -= 8;
-         byteCount--;
-         continue;
-      }
-
-      /* max bytecount is 6 nearly equal to 45 bits*/
-      if(byteCount >= 6)
-          break;
-
-      /* when we are filling the second byte, then the start should be equal to 0 */
-      if(firstByte)
-         startBit = startPrb;
-      else
-         startBit = 0;
-
-      /* calculate the number of bits to be set in this byte */
-      if((remBits+startPrb) <= 8)
-         numBits = remBits;
-      else
-         numBits = 8 - startBit;
-
-      /* bit operation to set the bits */
-		SET_BITS_MSB((startBit % 8),numBits,freqDomain[byteCount])
-      firstByte = 0;
-
-      /* the ramaining bits should be subtracted with the numBits set in this byte */
-      remBits -= numBits;
-      byteCount--;
-   }
-}
-
-/**
- * @brief frequency domain allocation function. 
- *
- * @details
- *
  *     Function: schCalcTbSize
  *     
  *     This function finds the TBSize from table Table 5.1.3.2-1 spec 38.214
@@ -530,15 +473,15 @@ void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqD
 uint16_t schCalcTbSize(uint16_t payLoadSize)
 {
    uint8_t tbsIndex = 0;
-	payLoadSize = payLoadSize*8;
+   payLoadSize = payLoadSize*8;
 
-	while(payLoadSize > tbSizeTable[tbsIndex])
-	{
-	   tbsIndex++;
-	}
+   while(payLoadSize > tbSizeTable[tbsIndex])
+   {
+      tbsIndex++;
+   }
 
-	/* return the TBsize in bytes */
-	return (tbSizeTable[tbsIndex]/8);
+   /* return the TBsize in bytes */
+   return (tbSizeTable[tbsIndex]);
 }
 
 /**
@@ -559,27 +502,100 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
 {
    uint16_t numPrb = 0;
    uint16_t nre = 0;
-	uint16_t nreDash = 0;
-	uint8_t  qm     = mcsTable[mcs][1];
-	uint16_t rValue = mcsTable[mcs][2];
-	uint8_t  numLayer = 1;       /* v value */
+   uint16_t nreDash = 0;
+   uint8_t  qm     = mcsTable[mcs][1];
+   uint16_t rValue = mcsTable[mcs][2];
+   uint8_t  numLayer = 1;       /* v value */
 
    /* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
     * Ninfo = Nre . R . Qm . v                                       *
     * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                       *
     * Nre = min(156,Nre') . nPrb                                     */
 
-	nre = ceil( (float)tbSize * 1024 / (qm * rValue * numLayer));
+   nre = ceil( (float)tbSize * 1024 / (qm * rValue * numLayer));
 
-	nreDash = ceil( (12 * numSymbols) - NUM_DMRS_SYMBOLS - 0);
+   nreDash = ceil( (12 * numSymbols) - NUM_DMRS_SYMBOLS - 0);
 
-	if (nreDash > 156)
-	   nre = 156;
+   if (nreDash > 156)
+      nre = 156;
 
    numPrb = ceil((float)nre / nreDash);   
-	return numPrb;
+   return numPrb;
 }
 
+/**
+ * @brief fetching ueCb from cellCb
+ *
+ * @details
+ *
+ *     Function: schGetUeCb
+ *
+ *     This function fetched UeCb based on crnti from cellCb
+ *
+ *  @param[in]  cellCb
+ *  @param[in]  crnti
+ *  @return     ueCb
+ **/
+SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti)
+{
+   uint16_t ueIdx;
+   GET_UE_IDX(crnti, ueIdx);
+   return &(cellCb->ueCb[ueIdx -1]);
+}
+
+/**
+ * @brief initialize UL slot info
+ *
+ * @details
+ *
+ *     Function: schInitUlSlot
+ *
+ *     This function intializes UL slot of the cell
+ *
+ *  @param[in]  schUlSlotInfo
+ *  @return     void
+ **/
+void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo)
+{
+   memset(schUlSlotInfo, 0, sizeof(SchUlSlotInfo));
+   schUlSlotInfo->totalPrb = MAX_NUM_RB;
+   for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
+   {
+      schUlSlotInfo->assignedPrb[itr] = 0;
+   }
+   schUlSlotInfo->puschCurrentPrb = PUSCH_START_RB;
+   schUlSlotInfo->schPuschInfo = NULLP;
+
+}
+
+/**
+ * @brief initialize DL slot info
+ *
+ * @details
+ *
+ *     Function: schInitDlSlot
+ *
+ *     This function intializes DL slot of the cell
+ *
+ *  @param[in]  schDlSlotInfo
+ *  @return     void
+ **/
+void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
+{
+   memset(schDlSlotInfo, 0, sizeof(SchDlSlotInfo));
+   schDlSlotInfo->totalPrb = MAX_NUM_RB;
+   for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
+   {
+      schDlSlotInfo->assignedPrb[itr] = 0;
+   }
+  
+   for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
+   {
+      memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
+   }
+
+
+}
 /**********************************************************************
          End of file
 **********************************************************************/

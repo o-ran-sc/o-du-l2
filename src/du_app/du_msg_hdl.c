@@ -28,6 +28,7 @@
 #include "du_app_mac_inf.h"
 #include "du_app_rlc_inf.h"
 #include "du_cfg.h"
+#include "du_app_rlc_inf.h"
 #include "du_mgr.h"
 #include "du_sctp.h"
 #include "F1AP-PDU.h"
@@ -1822,6 +1823,34 @@ uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
    return (duProcUlCcchInd(ulCcchIndInfo));
 }
 
+/*******************************************************************
+ *
+ * @brief Process UL RRC Message from RLC
+ *
+ * @details
+ *
+ *    Function : DuProcRlcUlRrcMsgTrans
+ *
+ *    Functionality: Process UL RRC Message from RLC
+ *
+ * @params[in] Post structure
+ *             UL RRC Message Info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
+{
+   DuUeCb   ueCb;
+   
+   ueCb = duCb.actvCellLst[ulRrcMsgInfo->cellId -1]->ueCb[ulRrcMsgInfo->ueIdx -1];
+   BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, \
+      ulRrcMsgInfo->rrcMsg);
+
+   DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo->rrcMsg, ulRrcMsgInfo->msgLen);
+   DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
+   return ROK;
+}
 
 /**********************************************************************
   End of file

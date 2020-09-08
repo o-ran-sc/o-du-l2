@@ -45,7 +45,7 @@ uint16_t buildMacPdu(RlcMacData *dlData);
 MacSchCrcIndFunc macSchCrcIndOpts[]=
 {
    packMacSchCrcInd,
-   macSchCrcInd,
+   MacSchCrcInd,
    packMacSchCrcInd
 };
 
@@ -53,8 +53,24 @@ MacSchCrcIndFunc macSchCrcIndOpts[]=
 MacSchDlRlcBoInfoFunc macSchDlRlcBoInfoOpts[]=
 {
    packMacSchDlRlcBoInfo,
-   macSchDlRlcBoInfo,
+   MacSchDlRlcBoInfo,
    packMacSchDlRlcBoInfo
+};
+
+/* Function pointer for sending short BSR from MAC to SCH */
+MacSchBsrFunc macSchBsrOpts[]=
+{
+   packMacSchBsr,
+   MacSchBsr,
+   packMacSchBsr
+};
+
+/* Function pointer for sending SR Uci ind from MAC to SCH */
+MacSchSrUciIndFunc macSchSrUciIndOpts[]=
+{
+   packMacSchSrUciInd,
+   MacSchSrUciInd,
+   packMacSchSrUciInd
 };
 
 /*******************************************************************
@@ -169,7 +185,7 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 
    for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
    {
-      unpackRxData(rxDataInd->cellId, &rxDataInd->pdus[pduIdx]);
+      unpackRxData(rxDataInd->cellId, rxDataInd->timingInfo, &rxDataInd->pdus[pduIdx]);
    }
    return ROK;
 }
@@ -195,6 +211,64 @@ uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData)
 {
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Builds and Sends UL Data to RLC
+ *
+ * @details
+ *
+ *    Function : macProcUlData
+ *
+ *    Functionality: Builds and Sends UL Data to RLC
+ *
+ * @params[in] CellId
+ *             CRNTI
+ *             Slot information
+ *             LC Id on which payload was received
+ *             Pointer to the payload
+ *             Length of payload
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
+uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
+{
+   Pst         pst;
+   RlcMacData  *ulData;
+
+   /* Filling RLC Ul Data*/
+   MAC_ALLOC_SHRABL_BUF(ulData, sizeof(RlcMacData));
+   if(!ulData)
+   {
+      DU_LOG("\nMAC : Memory allocation failed while sending UL data to RLC");
+      return RFAILED;
+   }
+   memset(ulData, 0, sizeof(RlcMacData));
+   ulData->cellId = cellId; 
+   ulData->rnti = rnti;
+   memcpy(&ulData->slotInfo, &slotInfo, sizeof(SlotIndInfo));
+   ulData->slotInfo.cellId = cellId;
+
+   /* Filling pdu info */
+   if(lcId == SRB1_LCID || lcId == SRB2_LCID)
+   {
+      ulData->pduInfo[ulData->numPdu].commCh = true;
+   }
+   ulData->pduInfo[ulData->numPdu].lcId = lcId;
+   ulData->pduInfo[ulData->numPdu].pduBuf = pdu;
+   ulData->pduInfo[ulData->numPdu].pduLen = pduLen;
+   ulData->numPdu++;
+
+   /* Filling Post and send to RLC */
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_MAC_TO_RLC(pst, 0, EVTRLCULDAT);
+   MacSendUlDataToRlc(&pst, ulData);
+
+   return ROK;
+}
+
 
 /*******************************************************************
  *
@@ -347,7 +421,7 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
  *
  * @details
  *
- *    Function : macSendUlCcchInd
+ *    Function : macProcUlCcchInd
  *
  *    Functionality:
  *        MAC sends UL CCCH Ind to DU APP
@@ -358,7 +432,7 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
+uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint16_t rrcContSize, uint8_t *rrcContainer)
 {
    Pst pst;
    uint8_t ret = ROK;
@@ -367,12 +441,13 @@ uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
    MAC_ALLOC_SHRABL_BUF(ulCcchIndInfo, sizeof(UlCcchIndInfo));
    if(!ulCcchIndInfo)
    {
-      DU_LOG("\nMAC: Memory failed in macSendUlCcchInd");
+      DU_LOG("\nMAC: Memory failed in macProcUlCcchInd");
       return RFAILED;
    }
 
    ulCcchIndInfo->cellId = cellId;
    ulCcchIndInfo->crnti  = crnti;
+   ulCcchIndInfo->ulCcchMsgLen = rrcContSize;
    ulCcchIndInfo->ulCcchMsg = rrcContainer;
 
    /* Fill Pst */
@@ -381,13 +456,149 @@ uint8_t macSendUlCcchInd(uint8_t *rrcContainer, uint16_t cellId, uint16_t crnti)
    if(MacDuAppUlCcchInd(&pst, ulCcchIndInfo) != ROK)
    {
       DU_LOG("\nMAC: Failed to send UL CCCH Ind to DU APP");
-      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulCcchIndInfo->ulCcchMsg,
-	    strlen((const char*)ulCcchIndInfo->ulCcchMsg));
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulCcchIndInfo->ulCcchMsg, ulCcchIndInfo->ulCcchMsgLen);
       MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulCcchIndInfo, sizeof(UlCcchIndInfo));
       ret = RFAILED;
    }
    return ret;
 }
+
+/*******************************************************************
+ *
+ * @brief Processes received short BSR
+ *
+ * @details
+ *
+ *    Function : macProcShortBsr
+ *
+ *    Functionality:
+ *        MAC sends Short BSR to SCH
+ *
+ * @params[in] cell ID
+ *             crnti
+ *             lcg ID
+ *             buffer size
+ *
+ *
+ * ****************************************************************/
+uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t bufferSize)
+{
+   Pst                  pst;
+   UlBufferStatusRptInd bsrInd;
+
+   memset(&pst, 0, sizeof(Pst));
+   memset(&bsrInd, 0, sizeof(UlBufferStatusRptInd));
+
+   bsrInd.cellId                 = cellId;
+   bsrInd.crnti                  = crnti;
+   bsrInd.bsrType                = SHORT_BSR;
+   bsrInd.numLcg                 = 1; /* short bsr reports one lcg at a time */
+   bsrInd.dataVolInfo[0].lcgId   = lcgId;
+   bsrInd.dataVolInfo[0].dataVol = bufferSize;
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_SHORT_BSR);
+   return(*macSchBsrOpts[pst.selector])(&pst, &bsrInd);
+}
+
+/*******************************************************************
+ *
+ * @brief Builds and send SR UCI Indication to SCH
+ *
+ * @details
+ *
+ *    Function : buildAndSendSrInd
+ *
+ *    Functionality:
+ *       Builds and send SR UCI Indication to SCH
+ *
+ * @params[in] SrUciIndInfo Pointer
+ *             crnti value
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t buildAndSendSrInd(UciInd *macUciInd, uint8_t crnti)
+{
+   uint16_t cellIdx;
+   Pst pst;
+   SrUciIndInfo   srUciInd;
+   memset(&pst, 0, sizeof(Pst));
+   memset(&srUciInd, 0, sizeof(SrUciIndInfo));
+
+   GET_CELL_IDX(macUciInd->cellId, cellIdx);
+   srUciInd.cellId       = macCb.macCell[cellIdx]->cellId;;
+   srUciInd.crnti        = crnti;
+   srUciInd.slotInd.sfn  = macUciInd->slotInd.sfn;
+   srUciInd.slotInd.slot = macUciInd->slotInd.slot;
+   srUciInd.numSrBits++;
+   memset(srUciInd.srPayload, 0, MAX_SR_BITS_IN_BYTES);
+
+   /* Fill Pst */
+   FILL_PST_MAC_TO_SCH(pst, EVENT_UCI_IND_TO_SCH);
+
+   return(*macSchSrUciIndOpts[pst.selector])(&pst, &srUciInd);
+}
+
+/*******************************************************************
+ *
+ * @brief Processes UCI Indication from PHY
+ *
+ * @details
+ *
+ *    Function : fapiMacUciInd
+ *
+ *    Functionality:
+ *       Processes UCI Indication from PHY
+ *
+ * @params[in] Post Structure Pointer
+ *             UCI Indication Pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
+{
+   uint8_t     pduIdx = 0;
+   uint8_t     ret = ROK;
+   uint16_t    nPdus;
+   uint16_t    crnti;
+
+   if(macUciInd)
+   {
+      nPdus = macUciInd->numUcis;
+      while(nPdus)
+      {
+         switch(macUciInd->pdus[pduIdx].pduType)
+         {
+            case UCI_IND_PUSCH:
+               break;
+            case UCI_IND_PUCCH_F0F1:
+               if(macUciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
+               {
+                  DU_LOG("\nMAC : Received SR UCI indication");
+		  crnti = macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti; 
+		  ret = buildAndSendSrInd(macUciInd, crnti);
+               }
+               break;
+            case UCI_IND_PUCCH_F2F3F4:
+               break;
+            default:
+               DU_LOG("\nMAC: Invalid Pdu Type %d at FapiMacUciInd", macUciInd->pdus[pduIdx].pduType);
+               ret = RFAILED;
+               break;
+         }
+         pduIdx++;
+         nPdus--;
+      }
+   }
+   else
+   {
+      DU_LOG("\nMAC: Received Uci Ind is NULL at FapiMacUciInd()");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
 
 /**********************************************************************
   End of file

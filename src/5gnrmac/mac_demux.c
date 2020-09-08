@@ -26,6 +26,8 @@
 #include "mac.h"
 #include "mac_utils.h"
 
+extern uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
+
 /*******************************************************************
  *
  * @brief De-mux of MAC-Sub PDUs from Rx Data Ind Pdu
@@ -43,15 +45,17 @@
  *         RFAILED
  *
  * ****************************************************************/
-uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
+uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu)
 {
-   uint8_t   lcId;
-   uint8_t   idx = 0;
-   uint16_t  length;
-   uint8_t   *pdu;
-   uint16_t  pduLen;
-   uint8_t   *rxDataPdu;
-   uint16_t  cellIdx;
+   uint8_t   lcId;        /* LC ID of a sub pdu */
+   uint8_t   fBit = 0;    /* Value of F Bit in MAC sub-header */
+   uint8_t   idx = 0;     /* Iterator for received PDU */
+   uint16_t  length;      /* Length of payload in a sub-PDU */ 
+   uint8_t   *pdu;        /* Payload in sub-PDU */
+   uint16_t  pduLen;      /* Length of undecoded PDU */
+   uint8_t   *rxDataPdu;  /* Received PDU in Rx Data Ind */
+   uint16_t  cellIdx;     /* Cell Index */
+   uint8_t   ret =ROK;
 
    GET_CELL_IDX(cellId, cellIdx);
    pduLen = rxDataIndPdu->pduLength;
@@ -59,6 +63,10 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 
    while(pduLen > 0)
    {
+      /* MSB in 1st octet is Reserved bit. Hence not decoding it. 
+	 2nd MSB in 1st octet is R/F bit depending upon type of payload */
+      fBit = (1 << 7) & rxDataPdu[idx];
+
       /* LC id is the 6 LSB in 1st octet */
       lcId = (~((~0) << 6)) & rxDataPdu[idx];
 
@@ -87,13 +95,43 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 	       memcpy(macCb.macCell[cellIdx]->macRaCb[0].msg3Pdu, pdu, length);
 
 	       /* Send UL-CCCH Indication to DU APP */
-	       macSendUlCcchInd(pdu, macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti); 
+	       ret = macProcUlCcchInd(macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti, length, pdu);
 	       break;
 	    }
 
-	 case MAC_DEDLC_MIN_LCID ... MAC_DEDLC_MAX_LCID :
-	    break;
+	 case MAC_LCID_MIN ... MAC_LCID_MAX :
+	    {
+	       DU_LOG("\nMAC : PDU received for LC ID %d", lcId);
 
+	       pduLen--;
+	       idx++;
+
+	       length = rxDataPdu[idx];
+	       if(fBit)
+	       {
+	          pduLen--;
+		  idx++;
+		  length = (length << 8) & rxDataPdu[idx];
+	       }
+
+	       /*  Copying the payload to send to RLC */
+	       MAC_ALLOC_SHRABL_BUF(pdu, length);
+	       if(!pdu)
+	       {
+		  DU_LOG("\nMAC : Memory allocation failed while demuxing Rx Data PDU");
+		  return RFAILED;
+	       }
+	       pduLen--;
+               idx++;
+	       memcpy(pdu, &rxDataPdu[idx], length);
+	       pduLen -= length;
+	       idx = idx + length;
+	       
+	       /* Send UL Data to RLC */
+	       ret = macProcUlData(cellId, rxDataIndPdu->rnti, slotInfo, lcId, length, pdu);
+
+	       break;
+	    }
 	 case MAC_LCID_RESERVED_MIN ... MAC_LCID_RESERVED_MAX :
 	    break;
 
@@ -125,16 +163,35 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 	    break;
 
 	 case MAC_LCID_SHORT_BSR :
-	    break;
+	    {
+	       uint8_t  lcgId         = 0;
+	       uint8_t  bufferSizeIdx = 0;
+	       uint8_t  crnti         = 0;
+	       uint32_t bufferSize    = 0;
+
+	       pduLen--;
+
+	       idx++;
+	       crnti = rxDataIndPdu->rnti;
+	       /* 5 LSB bits in pdu represent buffer size */
+	       bufferSizeIdx = (~((~0) << 5)) & rxDataPdu[idx];
+	       /* first 3 MSB bits in pdu represent LCGID */
+	       lcgId = (rxDataPdu[idx]) >> 5;
+	       /* determine actual number of bytes requested */
+	       bufferSize = shortBsrBytesTable[bufferSizeIdx];
+	       ret = macProcShortBsr(macCb.macCell[cellIdx]->cellId, crnti, lcgId, bufferSize);
+	       pduLen--;
+	       idx++;
+	
+	       break;
+	    }
 
 	 case MAC_LCID_LONG_BSR :
 	    break;
 
 	 case MAC_LCID_PADDING :
-	    {
-	       break;
-	    }
-
+	    break;
+	 
 	 default:
 	    {
 	       DU_LOG("\nMAC : Invalid LC Id %d", lcId);
@@ -143,11 +200,12 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
       } /* End of switch */
 
       if(lcId == MAC_LCID_PADDING)
+      {
 	 break;
-
+      }
    } /* End of While */
 
-   return ROK;
+   return ret;
 } /* End of unpackRxData */
 
 /**********************************************************************

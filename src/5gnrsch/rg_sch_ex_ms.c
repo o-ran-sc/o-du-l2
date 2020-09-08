@@ -242,7 +242,7 @@ Buffer  *mBuf;                      /* message buffer       */
 #endif
 #endif            
             case EVENT_SLOT_IND_TO_SCH:
-               unpackMacSchSlotInd(macSchSlotInd, pst, mBuf);
+               unpackMacSchSlotInd(MacSchSlotInd, pst, mBuf);
                break;
             default:
                RGSCH_FREE_MSG(mBuf);

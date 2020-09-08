@@ -615,6 +615,7 @@ typedef struct ulCcchInd
 {
    uint16_t cellId;
    uint16_t crnti;
+   uint16_t ulCcchMsgLen;
    uint8_t  *ulCcchMsg;
 }UlCcchIndInfo;
 

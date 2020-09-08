@@ -43,7 +43,8 @@
 #define PLMN_MNC1 8
 #define PLMN_MNC2 0
 #define PLMN_SIZE 3
-#define NR_ARFCN  2079427
+#define NR_DL_ARFCN 385627
+#define NR_UL_ARFCN 386687
 #define SUL_ARFCN 100
 #define NR_FREQ_BAND 257
 #define NR_FREQ_BAND_IND 78
@@ -75,6 +76,8 @@
 #define BANDWIDTH 20
 #define DMRS_TYPE_A_POS 2
 #define NUM_SYMBOLS_PER_SLOT 14       /* Number of symbols within a slot */
+#define CORESET0_END_PRB   48
+#define CORESET1_NUM_PRB   24
 
 /* MACRO defines for PRACH Configuration */
 #define PRACH_CONFIG_IDX   88
@@ -119,13 +122,12 @@
 #define PDCCH_SRCH_SPC_TWO_AGG_LVL8_CANDIDATE 2   /* Num of candidate at aggregation level 8 */
 #define PDCCH_SRCH_SPC_TWO_AGG_LVL16_CANDIDATE 1  /* Num of candidate at aggregation level 16 */
 #define PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT  0  /* format 0-0 and 1-0 */
-#define PDCCH_FREQ_DOM_RSRC 255          /* Frequency domain Resource Value */
 #define PDCCH_SYMBOL_WITHIN_SLOT 128     /* Symbol within Slot Value */
 
 
 #define SIB1_VALUE_TAG 10
 
-/* MACRCO Ddefine for PDSCH Configuration */
+/* MACRO Ddefine for PDSCH Configuration */
 #define PDSCH_K0  0
 #define PDSCH_START_SYMBOL  2
 #define PDSCH_LENGTH_SYMBOL 12
