@@ -1,0 +1,497 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b55a294_322d6c54",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Add comment \"Defining macros for common utility functions\"",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b8f85ba_f0fa3bbd",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "use POST instead of PST for better readability",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e691205b_13bfa1e8",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "use POST instead of PST for better readability",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85911001_458bd8f4",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Call this ODU_COPY_MSG_TO_FIX_BUF",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4716920e_d927d21d",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Move all these macros to top of file where all other macros are defined",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bd6315e_4ba0565d",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "This file is still using SGetMsg/SPutMsg/SPstTsk etc. Replace all SSI function calls",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79769c95_ecae93e2",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "rename cmPkPtr as well",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f104d599_3b7c4e9b",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "rename cmUnpkPtr as well",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01fe6258_3cfecff1",
+        "filename": "src/cm/legtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "make all functions return type as uint8_t if it is returning ROK/RFAILED",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "648f2167_5862f727",
+        "filename": "src/cm/legtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "replace all RETVALUE with return",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3f2cec9_8d4b1f65",
+        "filename": "src/cm/legtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "rename cmPkBool and cmUnpkBool as well",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41323535_4df317ce",
+        "filename": "src/cm/legtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Replace all SSI functions in this file",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f22c4b68_df6fb31e",
+        "filename": "src/cm/legtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "use return",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "490436c9_090bf697",
+        "filename": "src/cm/lsctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "replace all function return type with uint8_t if function is returning ROK/RFAILED",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b06ed58_3c6eea0b",
+        "filename": "src/cm/lsctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "replace with return in whole file",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10f1838e_b54ecf04",
+        "filename": "src/cm/lsctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "why using SSI functions here ? Rename.",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a875f5cb_8faeed93",
+        "filename": "src/cm/mac_sch_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "rename all SSI functions in this file",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcade9d0_fad41fd5",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "replace cmMemset with memset in all the new code",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "974747cc_9d3d52eb",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1168,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Replace this SSI function also",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd100ccc_decd7e95",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Replace SFndMsgLen",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03933215_4bfefe2a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Use DU_ALLOC macro for this",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d89fe579_85db2b05",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1248,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "use DU_FREE",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a9baa0e_77d555dc",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Replace this SSI function",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03234a2c_ec97d0c1",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "use memcpy",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ecc8116_1c52fc51",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6271,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Use DU_ALLOC/DU_FREE instead of SGetSBuf and SPutSBuf. Recheck all new code",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b117f72d_0d950e55",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Replace SSetProcId",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57a7c100_cd2c41a4",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "Replace SRegTTsk",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f5440f8_820ca010",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1266,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "replace all RETVALUE with return",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67a00411_4f113543",
+        "filename": "src/mt/ss_pack.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-08T09:24:57Z",
+      "side": 1,
+      "message": "add odu in the name of all pack unpack functions. For example oduPackUInt8/oduUnpackUInt8",
+      "revId": "da6bcfcf95218e192b0333bf6545ee5929cc2b49",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
