@@ -69,6 +69,8 @@
 
 #define SD_SIZE   3
 #define CCCH_LCID  0
+#define SRB1_LCID  1
+#define SRB2_LCID  2
 
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \

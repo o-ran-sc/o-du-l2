@@ -22,6 +22,7 @@
 #include "legtp.h"
 #include "du_app_mac_inf.h"
 #include "du_cfg.h"
+#include "du_app_rlc_inf.h"
 #include "du_mgr_main.h"
 #include "du_utils.h"
 #include "GlobalE2node-gNB-ID.h"

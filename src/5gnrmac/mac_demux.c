@@ -43,15 +43,16 @@
  *         RFAILED
  *
  * ****************************************************************/
-uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
+uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu)
 {
-   uint8_t   lcId;
-   uint8_t   idx = 0;
-   uint16_t  length;
-   uint8_t   *pdu;
-   uint16_t  pduLen;
-   uint8_t   *rxDataPdu;
-   uint16_t  cellIdx;
+   uint8_t   lcId;        /* LC ID of a sub pdu */
+   uint8_t   fBit = 0;    /* Value of F Bit in MAC sub-header */
+   uint8_t   idx = 0;     /* Iterator for received PDU */
+   uint16_t  length;      /* Length of payload in a sub-PDU */ 
+   uint8_t   *pdu;        /* Payload in sub-PDU */
+   uint16_t  pduLen;      /* Length of undecoded PDU */
+   uint8_t   *rxDataPdu;  /* Received PDU in Rx Data Ind */
+   uint16_t  cellIdx;     /* Cell Index */
 
    GET_CELL_IDX(cellId, cellIdx);
    pduLen = rxDataIndPdu->pduLength;
@@ -59,15 +60,23 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 
    while(pduLen > 0)
    {
+      /* MSB in 1st octet is Reserved bit. Hence not decoding it. 
+	 2nd MSB in 1st octet is R/F bit depending upon type of payload */
+      fBit = (1 << 7) & rxDataPdu[idx];
+
       /* LC id is the 6 LSB in 1st octet */
       lcId = (~((~0) << 6)) & rxDataPdu[idx];
+
+      /* Since 1st byte is now decoded, reducing pduLen by 1 and
+	 incrementing index by 1
+       */
+      pduLen--;
+      idx++;
 
       switch(lcId)
       {
 	 case MAC_LCID_CCCH :
 	    {
-	       pduLen--;
-
 	       /* for UL CCCH,fixed length of MAC SDU */
 	       length = 6;
 
@@ -78,7 +87,6 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 		  DU_LOG("\nMAC : UL CCCH PDU memory allocation failed");
 		  return RFAILED;
 	       }  
-	       idx++;
 	       memcpy(pdu, &rxDataPdu[idx], length);
 	       pduLen -= length;
 	       idx = idx + length;
@@ -87,13 +95,38 @@ uint8_t unpackRxData(uint16_t cellId, RxDataIndPdu *rxDataIndPdu)
 	       memcpy(macCb.macCell[cellIdx]->macRaCb[0].msg3Pdu, pdu, length);
 
 	       /* Send UL-CCCH Indication to DU APP */
-	       macSendUlCcchInd(pdu, macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti); 
+	       macSendUlCcchInd(pdu, cellId, rxDataIndPdu->rnti); 
 	       break;
 	    }
 
-	 case MAC_DEDLC_MIN_LCID ... MAC_DEDLC_MAX_LCID :
-	    break;
+	 case MAC_LCID_MIN ... MAC_LCID_MAX :
+	    {
+	       DU_LOG("\nMAC : PDU received for LC ID %d", lcId);
 
+	       length = rxDataPdu[idx];
+	       if(fBit)
+	       {
+		  idx++;
+		  length = (length << 8) & rxDataPdu[idx];
+	       }
+
+	       /*  Copying the payload to send to RLC */
+	       MAC_ALLOC_SHRABL_BUF(pdu, length);
+	       if(!pdu)
+	       {
+		  DU_LOG("\nMAC : Memory allocation failed while demuxing Rx Data PDU");
+		  return RFAILED;
+	       }
+               idx++;
+	       memcpy(pdu, &rxDataPdu[idx], length);
+	       pduLen -= length;
+	       idx = idx + length;
+	       
+	       /* Send UL Data to RLC */
+	       macFillAndSendUlData(cellId, rxDataIndPdu->rnti, slotInfo, lcId, pdu, length);
+
+	       break;
+	    }
 	 case MAC_LCID_RESERVED_MIN ... MAC_LCID_RESERVED_MAX :
 	    break;
 

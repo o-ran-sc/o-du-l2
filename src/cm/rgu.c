@@ -577,22 +577,9 @@ Buffer *mBuf
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 packRcvdUlData
-(
-Pst* pst,
-SuId suId,
-RlcMacData  *ulData
-)
-#else
-PUBLIC S16 packRcvdUlData(pst, suId, ulData)
-Pst* pst;
-SuId suId;
-RlcMacData  *ulData;
-#endif
+uint8_t packRlcUlData(Pst* pst, RlcMacData  *ulData)
 {
    Buffer *mBuf = NULLP;
-   TRC3(packRcvdUlData)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -633,17 +620,6 @@ RlcMacData  *ulData;
       }
       ulData = NULLP;
    }
-   if (SPkS16(suId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU037, (ErrVal)0, "Packing failed");
-#endif      
-      SPutStaticBuffer(pst->region, pst->pool, (Data *)ulData, sizeof(RlcMacData),0);
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
-
    pst->event = (Event) EVTRLCULDAT;
    RETVALUE(SPstTsk(pst,mBuf));
 }
@@ -663,27 +639,11 @@ RlcMacData  *ulData;
 *  @return   S16
 *      -# ROK
 **/
-PUBLIC S16 unpackRcvdUlData
-(
-RlcMacUlData func,
-Pst *pst,
-Buffer *mBuf
-)
+uint8_t unpackRcvdUlData(RlcMacUlDataFunc func, Pst *pst, Buffer *mBuf)
 {
-   SuId suId;
    RlcMacData *ulData;
    
    TRC3(unpackRcvdUlData)
-
-   if (SUnpkS16(&suId, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-          (ErrVal)ERGU039, (ErrVal)0, "UnPacking failed");
-#endif      
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
 
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
@@ -714,7 +674,7 @@ Buffer *mBuf
       }
    }
    SPutMsg(mBuf);
-   RETVALUE((*func)(pst, suId, ulData));
+   RETVALUE((*func)(pst, ulData));
 }
 
 
@@ -2634,21 +2594,21 @@ Buffer *mBuf;
 
    TRC3(packRlcMacDataInfo);
 
-   for (i=param->nmbPdu-1; i >= 0; i--)
+   for (i=param->numPdu-1; i >= 0; i--)
    {
       msgLen = 0;
-      if (SFndLenMsg(param->pduInfo[i].pduBuf, &msgLen) != ROK)
-         RETVALUE(RFAILED);
-      if (SCatMsg(mBuf, param->pduInfo[i].pduBuf, M1M2) != ROK)
-          RETVALUE(RFAILED);      
+      //if (SFndLenMsg(param->pduInfo[i].pduBuf, &msgLen) != ROK)
+      //   RETVALUE(RFAILED);
+      //if (SCatMsg(mBuf, param->pduInfo[i].pduBuf, M1M2) != ROK)
+      //    RETVALUE(RFAILED);      
       CMCHKPK(cmPkMsgLen, msgLen, mBuf);
       CMCHKPK(cmPkLteLcId, param->pduInfo[i].lcId, mBuf);
       CMCHKPK(cmPkBool, param->pduInfo[i].commCh, mBuf);
    }
-   CMCHKPK(SPkU8, param->nmbPdu, mBuf);
+   CMCHKPK(SPkU8, param->numPdu, mBuf);
    CMCHKPK(cmPkLteRnti, param->rnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   CMCHKPK(cmPkLteTimingInfo, &param->timeToTx, mBuf);
+   //CMCHKPK(cmPkLteTimingInfo, &param->timeToTx, mBuf);
    RETVALUE(ROK);
 }
 
@@ -2686,11 +2646,11 @@ Buffer *mBuf;
 
    TRC3(unpackRlcMacDataInfo);
    
-   CMCHKUNPK(cmUnpkLteTimingInfo, &param->timeToTx, mBuf);
+   //CMCHKUNPK(cmUnpkLteTimingInfo, &param->timeToTx, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->nmbPdu, mBuf);
-   for (i=0; i<param->nmbPdu; i++) 
+   CMCHKUNPK(SUnpkU8, &param->numPdu, mBuf);
+   for (i=0; i<param->numPdu; i++) 
    {
       MsgLen totalMsgLen;
 
@@ -2699,8 +2659,8 @@ Buffer *mBuf;
       CMCHKUNPK(cmUnpkMsgLen, &param->pduInfo[i].pduLen, mBuf);
       if (SFndLenMsg(mBuf, &totalMsgLen) != ROK)
          RETVALUE(RFAILED);
-      if (SSegMsg(mBuf, totalMsgLen-param->pduInfo[i].pduLen, &param->pduInfo[i].pduBuf) != ROK)
-         RETVALUE(RFAILED);
+      //if (SSegMsg(mBuf, totalMsgLen-param->pduInfo[i].pduLen, &param->pduInfo[i].pduBuf) != ROK)
+      //   RETVALUE(RFAILED);
    }
    RETVALUE(ROK);
 }

@@ -100,6 +100,7 @@ typedef struct duUeCb
    uint32_t gnbCuUeF1apId; /* GNB CU UE F1AP ID */
    UeState  ueState;
    MacUeCfg macUeCfg;
+   RlcUeCfg rlcUeCfg;
 }DuUeCb;
 
 typedef struct duCellCb

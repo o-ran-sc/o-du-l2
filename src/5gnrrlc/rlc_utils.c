@@ -16,23 +16,36 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains all F1AP message handler related functionality */
+#include "common_def.h"
 
-#define TRANS_ID 1
-#define RRC_SIZE 1
-#define SUL_BAND_COUNT 0
-#define UL_SRBID        1
-#define DL_SRBID        0
-#define DU_ID           1
-#define CU_ID           1
-#define CRNTI           17017
-#define CELL_INDEX      0
+/*******************************************************************
+ *
+ * @brief Reverse fixed buffer
+ *
+ * @details
+ *
+ *    Function : reverseFixBuf
+ *
+ *    Functionality: Reverse fixed buffer
+ *
+ * @params[in] Fixed buffer to be reversed
+ *             Buffer length
+ * @return void
+ *
+ * ****************************************************************/
+void reverseFixBuf(uint8_t *buf, uint16_t len)
+{
+   uint8_t idx, revIdx;
+   uint8_t temp;
 
-void F1APMsgHdlr(Buffer *mBuf);
-uint8_t BuildAndSendF1SetupReq();
-uint8_t BuildAndSendDUConfigUpdate();
-uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint8_t *rrcContainer);
-uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, uint8_t *rrcMsg, uint16_t msgLen);
+   for(idx = 0, revIdx = len-1; idx < len/2; idx++, revIdx--)
+   {
+      temp = buf[idx];
+      buf[idx] = buf[revIdx];
+      buf[revIdx] = temp;
+   }
+   return;
+}
 
 /**********************************************************************
          End of file

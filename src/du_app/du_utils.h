@@ -90,6 +90,24 @@
    _pst.intfVer = 0;                                        \
 }
 
+/* Fill Pst structure for sending msg from DU_APP to RLC */
+#define FILL_PST_DUAPP_TO_RLC(_pst, _dstInst, _event)       \
+{                                                           \
+   _pst.selector  = ODU_SELECTOR_LWLC;                      \
+   _pst.srcEnt    = ENTDUAPP;                               \
+   _pst.dstEnt    = ENTKW;                                  \
+   _pst.dstInst   = _dstInst;                               \
+   _pst.srcInst   = DU_INST;                                \
+   _pst.dstProcId = DU_PROC;                                \
+   _pst.srcProcId = DU_PROC;                                \
+   _pst.region = DU_APP_MEM_REGION;                         \
+   _pst.pool = DU_POOL;                                     \
+   _pst.event = _event;                                     \
+   _pst.route = 0;                                          \
+   _pst.prior = 0;                                          \
+   _pst.intfVer = 0;                                        \
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

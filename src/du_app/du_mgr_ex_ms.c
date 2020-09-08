@@ -24,6 +24,7 @@
 #include "lrg.x"
 #include "lkw.x"
 #include "du_app_mac_inf.h"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "E2AP-PDU.h"
 #include "du_sctp.h"
@@ -168,6 +169,11 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 		     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
 		     break;
 		  }
+	       case EVENT_UL_RRC_MSG_TRANS_TO_DU:
+	          {
+	             ret = unpackRlcUlRrcMsgToDu(DuProcRlcUlRrcMsgTrans, pst, mBuf);
+		     break;
+                  }
 	       default:
 		  {
 		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \
