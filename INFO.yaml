@@ -1,0 +1,63 @@
+---
+project: 'o_du_l2'
+project_creation_date: '2019-11-08'
+project_category: ''
+lifecycle_state: 'Incubation'
+project_lead: &oran_o_du_l2_ptl
+    name: 'Sachin Srivastava'
+    email: 'sachin.srivastava.com'
+    id: 'sachinccin'
+    company: 'Radisys'
+    timezone: 'Asia/Kolkata'
+primary_contact: *oran_o_du_l2_ptl
+issue_tracking:
+    type: 'jira'
+    url: 'https://jira.o-ran-sc.org/projects/'
+    key: 'o_du_l2'
+mailing_list:
+    type: 'groups.io'
+    url: 'technical-discuss@lists.o-ran-sc.org'
+    tag: '[]'
+realtime_discussion:
+    type: 'irc'
+    server: 'freenode.net'
+    channel: '#oran'
+meetings:
+    - type: 'gotomeeting+irc'
+      agenda: 'https://wiki.o-ran-sc.org/display/'
+      url: ''
+      server: 'freenode.net'
+      channel: '#oran'
+      repeats: ''
+      time: ''
+repositories:
+    - ric-plt/appmgr
+committers:
+    - <<: *oran_o_du_l2_ptl
+    - name: 'Sphoorthi Dayanand'
+      email: 'sphoorthi.dayanand@radisys.com'
+      company: 'radisys'
+      id: 'sphoorthi'
+      timezone: 'Asia/Kolkata'
+    - name: 'Harshita Lal'
+      email: 'harshita.lal@radisys.com'
+      company: 'radisys'
+      id: 'lal.harshita'
+      timezone: 'Asia/Kolkata'
+    - name: 'Vidhu Shekar Pandey'
+      email: 'vidhu.pandey@hcl.com'
+      company: 'hcl'
+      id: 'Vidhu'
+      timezone: 'Asia/Kolkata'
+    - name: 'Hariom Gupta'
+      email: 'hariom.g@hcl.com'
+      company: 'hcl'
+      id: 'HariomGupta'
+      timezone: 'Asia/Kolkata'
+tsc:
+    # yamllint disable rule:line-length
+    approval: 'missing'
+    changes:
+        - type: ''
+          name: ''
+          link: ''
