@@ -5,7 +5,7 @@ project_category: ''
 lifecycle_state: 'Incubation'
 project_lead: &oran_o_du_l2_ptl
     name: 'Sachin Srivastava'
-    email: 'sachin.srivastava.com'
+    email: 'sachin.srivastava@radisys.com'
     id: 'sachinccin'
     company: 'Radisys'
     timezone: 'Asia/Kolkata'
@@ -31,17 +31,17 @@ meetings:
       repeats: ''
       time: ''
 repositories:
-    - ric-plt/appmgr
+    - o-du/l2
 committers:
     - <<: *oran_o_du_l2_ptl
     - name: 'Sphoorthi Dayanand'
       email: 'sphoorthi.dayanand@radisys.com'
-      company: 'radisys'
+      company: 'Radisys'
       id: 'sphoorthi'
       timezone: 'Asia/Kolkata'
     - name: 'Harshita Lal'
       email: 'harshita.lal@radisys.com'
-      company: 'radisys'
+      company: 'Radisys'
       id: 'lal.harshita'
       timezone: 'Asia/Kolkata'
     - name: 'Vidhu Shekar Pandey'
