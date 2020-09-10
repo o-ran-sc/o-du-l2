@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ea5af51_ef2625b6",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-10T13:34:55Z",
+      "side": 1,
+      "message": "check if \"extern\" is really required",
+      "revId": "2ceceb392f4383366088443dab39a923de5edceb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "709b3ace_fa965fff",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-10T13:34:55Z",
+      "side": 1,
+      "message": "retain these only if not already present in common_def.h",
+      "revId": "2ceceb392f4383366088443dab39a923de5edceb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28e9ccb8_702dd2ae",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-10T13:34:55Z",
+      "side": 1,
+      "message": "check if these are already present in common_def",
+      "revId": "2ceceb392f4383366088443dab39a923de5edceb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
