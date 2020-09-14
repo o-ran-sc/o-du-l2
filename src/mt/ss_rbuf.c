@@ -45,13 +45,13 @@ U32 ssRngBufStatus = 0;
 SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
 
 
-PUBLIC Void SsRngBufEnable(Void)
+Void SsRngBufEnable(Void)
 {
   ssRngBufStatus = TRUE;
 }
 
 
-PUBLIC Void SsRngBufDisable(Void)
+Void SsRngBufDisable(Void)
 {
   ssRngBufStatus = FALSE;
 
@@ -63,7 +63,7 @@ Desc: Creates Ring Buffer for the given Id.
       Region and Pool
 */
 #ifdef ANSI
-PUBLIC S16 SCreateSRngBuf
+S16 SCreateSRngBuf
 (
 U32 id,  
 Region region,
@@ -72,7 +72,7 @@ U32 elmSize,
 U32 rngSize
 )
 #else
-PUBLIC S16 SCreateSRngBuf (id, region, pool, elmSize, rngSize)
+S16 SCreateSRngBuf (id, region, pool, elmSize, rngSize)
 U32 id; 
 Region region;
 Pool pool;
@@ -150,14 +150,14 @@ Desc: Attach the calling Entity to a ring buffer
       as consumer(Rx) or producer (Tx)
 */
 #ifdef ANSI
-PUBLIC S16 SAttachSRngBuf
+S16 SAttachSRngBuf
 (
 U32 id,  
 U32 ent,
 U32 txRx
 )
 #else
-PUBLIC S16 SAttachSRngBuf (id, ent, txRx)
+S16 SAttachSRngBuf (id, ent, txRx)
 U32 id;
 U32 ent;
 U32 txRx;
@@ -204,13 +204,13 @@ Desc: Establish a pipe between producer and consumer
 
 */
 #ifdef ANSI
-PUBLIC S16 SConnectSRngBuf
+S16 SConnectSRngBuf
 (
 U32 id,  
 U32 rxEnt
 )
 #else
-PUBLIC S16 SConnectSRngBuf (id, rxEnt)
+S16 SConnectSRngBuf (id, rxEnt)
 U32 id;
 U32 rxEnt;
 #endif
@@ -251,7 +251,7 @@ inline static S16 IsEmpty(SsRngBuf* rBuf)
    return (rBuf->write == rBuf->read); 
 }
 
-PUBLIC S16 isRngEmpty(U32 id)
+S16 isRngEmpty(U32 id)
 {
    return (IsEmpty(SsRngInfoTbl[id].r_addr));
 }
@@ -260,13 +260,13 @@ Func: SEnqSRngBuf
 Desc: Perform Queue operation on Ring bufer
 */
 #ifdef ANSI
-PUBLIC S16 SEnqSRngBuf 
+S16 SEnqSRngBuf 
 (
 U32 id, 
 Void* elem
 )
 #else
-PUBLIC S16 SEnqSRngBuf(id,elem) 
+S16 SEnqSRngBuf(id,elem) 
 U32 id;
 Void* elem;
 #endif
@@ -301,12 +301,12 @@ Void* elem;
 }
 
 #ifdef ANSI
-PUBLIC S16 SGetNumElemInRng
+S16 SGetNumElemInRng
 (
 U32 id
 )
 #else
-PUBLIC S16 SGetNumElemInRng (id)
+S16 SGetNumElemInRng (id)
 U32 id;
 #endif
 {
@@ -320,13 +320,13 @@ Func: SDeqSRngBuf
 Desc: Perform DeQueue operation on Ring bufer
 */
 #ifdef ANSI
-PUBLIC S16 SDeqSRngBuf
+S16 SDeqSRngBuf
 (
 U32 id,
 Void *elem
 )
 #else
-PUBLIC S16 SDeqSRngBuf (id,elem)
+S16 SDeqSRngBuf (id,elem)
 U8 id;
 Void *elem;
 #endif
@@ -357,14 +357,14 @@ Void *elem;
 }
 
 #ifdef ANSI
-PUBLIC S16 SDestroySRngBuf 
+S16 SDestroySRngBuf 
 (
 U32 id,
 Region region,
 Pool pool
 )
 #else
-PUBLIC S16 SDestroySRngBuf(id, region, pool)
+S16 SDestroySRngBuf(id, region, pool)
 U32 id;
 Region region;
 Pool pool;
@@ -388,12 +388,12 @@ Pool pool;
 }
 
 #ifdef ANSI
-PUBLIC S16 SPrintSRngStats
+S16 SPrintSRngStats
 (
 Void
 )
 #else
-PUBLIC S16 SPrintSRngStats ()
+S16 SPrintSRngStats ()
 Void;
 #endif
 {
@@ -462,12 +462,12 @@ U32 i;
 }
 
 #ifdef ANSI
-PUBLIC Void* SRngGetWIndx
+Void* SRngGetWIndx
 (
 U32 rngId
 )
 #else
-PUBLIC Void* SRngGetWIndx (rngId)
+Void* SRngGetWIndx (rngId)
 U32 rngId;
 #endif
 {
@@ -485,12 +485,12 @@ U32 rngId;
 }
 
 #ifdef ANSI
-PUBLIC Void* SRngGetRIndx
+Void* SRngGetRIndx
 (
 U32 rngId
 )
 #else
-PUBLIC Void* SRngGetRIndx (rngId)
+Void* SRngGetRIndx (rngId)
 U32 rngId;
 #endif
 {
@@ -508,12 +508,12 @@ U32 rngId;
 }
 
 #ifdef ANSI
-PUBLIC Void SRngIncrWIndx
+Void SRngIncrWIndx
 (
 U32 rngId
 )
 #else
-PUBLIC Void SRngIncrWIndx (rngId)
+Void SRngIncrWIndx (rngId)
 U32 rngId;
 #endif
 {
@@ -527,12 +527,12 @@ U32 rngId;
 }
 
 #ifdef ANSI
-PUBLIC Void SRngIncrRIndx
+Void SRngIncrRIndx
 (
 U32 rngId
 )
 #else
-PUBLIC Void SRngIncrRIndx (rngId)
+Void SRngIncrRIndx (rngId)
 U32 rngId;
 #endif
 {

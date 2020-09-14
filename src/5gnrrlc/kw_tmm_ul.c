@@ -25,9 +25,9 @@
      Desc:     Source code for RLC Transparent mode assembly and
                reassembly.This file contains following functions
                 
-                  --kwTmmQSdu
-                  --kwTmmSndToLi
-                  --kwTmmRcvFrmLi
+                  --rlcTmmQSdu
+                  --rlcTmmSndToLi
+                  --rlcTmmRcvFrmLi
                   --kwTmmReEstablish 
 
      File:     kw_tmm_ul.c
@@ -72,13 +72,13 @@ extern U32 loadStart;
 
 EXTERN S16 PjUiPjuDatInd(Pst* pst,SuId suId,CmLtePdcpId * pdcpId,Buffer *mBuf);
 #ifdef ANSI
-PUBLIC Void AddUeContext
+Void AddUeContext
 (
 CmLteRnti   crnti,
 U8 rrcMsgType
 )
 #else
-PUBLIC Void AddUeContext(crnti,rrcMsgType)
+Void AddUeContext(crnti,rrcMsgType)
 CmLteRnti   crnti,
 U8 rrcMsgType 
 #endif
@@ -109,7 +109,7 @@ U8 rrcUeCapabilityInfo[] =
 #ifdef PJ
    Pst ulPst2 ={100,100,217,0,216,0,PRIOR0,0,68,0,1,0,0};
 #endif
-  TRC2(kwTmmRcvFrmLi) 
+  TRC2(rlcTmmRcvFrmLi) 
 
   if(1 == rrcMsgType)
   {
@@ -129,7 +129,7 @@ U8 rrcUeCapabilityInfo[] =
 
    RLOG1(L_INFO,"Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
    printf("Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
-   KwUiKwuDatInd(&ulPst1, datIndInfo, pdu);
+   RlcUiKwuDatInd(&ulPst1, datIndInfo, pdu);
  }
  else if(2 == rrcMsgType)
  {
@@ -223,7 +223,7 @@ U8 rrcUeCapabilityInfo[] =
 /** @addtogroup tmmode */
 /*@{*/
 
-#define KW_MODULE (KW_DBGMASK_TM | KW_DBGMASK_UL)
+#define RLC_MODULE (RLC_DBGMASK_TM | RLC_DBGMASK_UL)
 
 /**
  * @brief
@@ -246,7 +246,7 @@ U8 rrcUeCapabilityInfo[] =
  */
 #ifdef CCPU_OPT
 #ifdef ANSI
-PUBLIC Void kwTmmRcvFrmLi
+Void rlcTmmRcvFrmLi
 (
 RlcCb        *gCb,
 RlcUlRbCb    *rbCb,  
@@ -254,7 +254,7 @@ CmLteRnti   tCrnti,
 Buffer      *pdu      
 )
 #else
-PUBLIC Void kwTmmRcvFrmLi(gCb,rbCb, tCrnti, pdu)
+Void rlcTmmRcvFrmLi(gCb,rbCb, tCrnti, pdu)
 RlcCb        *gCb;
 RlcUlRbCb    *rbCb;  
 CmLteRnti   tCrnti; 
@@ -262,14 +262,14 @@ Buffer      *pdu;
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void kwTmmRcvFrmLi
+Void rlcTmmRcvFrmLi
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb,         
 Buffer     *pdu            
 )
 #else
-PUBLIC Void kwTmmRcvFrmLi(gCb,rbCb, pdu)
+Void rlcTmmRcvFrmLi(gCb,rbCb, pdu)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;         
 Buffer     *pdu;         
@@ -281,7 +281,7 @@ Buffer     *pdu;
    uint16_t         copyLen;    /* Number of bytes copied */
    Pst              pst;
  
-   TRC2(kwTmmRcvFrmLi) 
+   TRC2(rlcTmmRcvFrmLi) 
 
    gCb->genSts.pdusRecv++;
    SFndLenMsg(pdu, (MsgLen *)&msgLen);
@@ -290,7 +290,7 @@ Buffer     *pdu;
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      kwLmmSendTrc(gCb, EVENT_UL_RRC_MSG_TRANS_TO_DU, pdu);
+      rlcLmmSendTrc(gCb, EVENT_UL_RRC_MSG_TRANS_TO_DU, pdu);
    }
   
    /* Filling UL RRC Message Info */
@@ -340,15 +340,15 @@ Buffer     *pdu;
  *       
  **/
 #ifdef ANSI
-PUBLIC Void kwTmmUlReEstablish
+Void rlcTmmUlReEstablish
 (
 RlcCb        *gCb,
 RlcUlRbCb    *rbCb        
 )
 #else
-PUBLIC Void kwTmmUlReEstablish(rbCb)
+Void rlcTmmUlReEstablish(rbCb)
 RlcCb        *gCb;
-KwRbCb      *rbCb;          
+RlcUlRbCb    *rbCb;          
 #endif
 {
    TRC2(rlcUlTmmReEstablish)

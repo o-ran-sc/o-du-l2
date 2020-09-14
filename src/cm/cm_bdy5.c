@@ -96,14 +96,14 @@
  
 #ifdef SS_FAP
 #ifdef ANSI
-PUBLIC Void cmPrcTmr
+Void cmPrcTmr
 (
 CmTqCp   *tqCp,          /* timing que control point */
 CmTqType *tq,            /* timing queue */
 PFV      func            /* function */
 )
 #else
-PUBLIC Void cmPrcTmr(tqCp, tq, func)
+Void cmPrcTmr(tqCp, tq, func)
 CmTqCp   *tqCp;          /* connection control block */
 CmTqType *tq;            /* message buffer */
 PFV      func;           /* function */
@@ -166,14 +166,14 @@ PFV      func;           /* function */
 #else /* not defined SS_FAP */
 
 #ifdef ANSI
-PUBLIC Void cmPrcTmr
+Void cmPrcTmr
 (
 CmTqCp   *tqCp,          /* timing que control point */
 CmTqType *tq,            /* timing queue */
 PFV      func            /* function */
 )
 #else
-PUBLIC Void cmPrcTmr(tqCp, tq, func)
+Void cmPrcTmr(tqCp, tq, func)
 CmTqCp   *tqCp;          /* connection control block */
 CmTqType *tq;            /* message buffer */
 PFV      func;           /* function */
@@ -269,13 +269,13 @@ PFV      func;           /* function */
 *
 */
 #ifdef ANSI
-PUBLIC Void cmInitTimers
+Void cmInitTimers
 (
 CmTimer *timers,     /* timer list */
 U8 max               /* maximum tmrs */
 )
 #else
-PUBLIC Void cmInitTimers(timers, max)
+Void cmInitTimers(timers, max)
 CmTimer *timers;     /* timer list */
 U8 max;              /* maximum tmrs */
 #endif
@@ -312,12 +312,12 @@ U8 max;              /* maximum tmrs */
 */
   
 #ifdef ANSI
-PUBLIC Void cmPlcCbTq
+Void cmPlcCbTq
 (
 CmTmrArg *arg
 )
 #else
-PUBLIC Void cmPlcCbTq(arg)
+Void cmPlcCbTq(arg)
 CmTmrArg *arg;
 #endif
 {
@@ -402,12 +402,12 @@ CmTmrArg *arg;
 */
   
 #ifdef ANSI
-PUBLIC Void cmRstCbTq
+Void cmRstCbTq
 (
 CmTmrArg *arg
 )
 #else
-PUBLIC Void cmRstCbTq(arg)
+Void cmRstCbTq(arg)
 CmTmrArg *arg;
 #endif
 {
@@ -434,12 +434,12 @@ CmTmrArg *arg;
 */
   
 #ifdef ANSI
-PUBLIC Void cmRmvCbTq
+Void cmRmvCbTq
 (
 CmTmrArg *arg
 )
 #else
-PUBLIC Void cmRmvCbTq(arg)
+Void cmRmvCbTq(arg)
 CmTmrArg *arg;
 #endif
 {

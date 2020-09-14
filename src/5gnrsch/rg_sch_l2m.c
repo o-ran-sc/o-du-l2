@@ -87,7 +87,7 @@ PRIVATE RgSchL2MeasCb * rgSchL2mAllocMeasCb ARGS((
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC S16 rgSchFillL2MeasCfm
+S16 rgSchFillL2MeasCfm
 (
 RgSchCellCb       *cell,
 RgSchL2MeasCb     *measCb,
@@ -95,7 +95,7 @@ LrgSchMeasCfmInfo *cfm,
 U32               measTime   
 )
 #else
-PUBLIC S16 rgSchFillL2MeasCfm(cell, measCb, cfm, measTime)
+S16 rgSchFillL2MeasCfm(cell, measCb, cfm, measTime)
 RgSchCellCb       *cell;
 RgSchL2MeasCb     *measCb;
 LrgSchMeasCfmInfo *cfm;
@@ -320,7 +320,7 @@ U32               measTime;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC S16 rgSchL2mSndCfm
+S16 rgSchL2mSndCfm
 (
 Pst               *pst,
 RgSchL2MeasCb     *measCb,
@@ -328,7 +328,7 @@ LrgSchMeasReqInfo *measInfo,
 Bool              isErr
 )
 #else
-PUBLIC S16 rgSchL2mSndCfm(pst, measCb, measInfo, isErr)
+S16 rgSchL2mSndCfm(pst, measCb, measInfo, isErr)
 Pst               *pst;
 RgSchL2MeasCb     *measCb;
 LrgSchMeasReqInfo *measInfo;
@@ -366,14 +366,14 @@ Bool              isErr;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void rgSchL2mFillCfmPst
+Void rgSchL2mFillCfmPst
 (
 Pst    *pst,
 Pst    *cfmPst,
 LrgSchMeasReqInfo *measInfo 
 )
 #else
-PUBLIC Void rgSchL2mFillCfmPst(pst, cfmPst, measInfo)
+Void rgSchL2mFillCfmPst(pst, cfmPst, measInfo)
 Pst    *pst;
 Pst    *cfmPst;
 LrgSchMeasReqInfo *measInfo;
@@ -616,14 +616,14 @@ RgSchErrInfo      err;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSchL2mMeasReq 
+S16 rgSchL2mMeasReq 
 (
 RgSchCellCb       *cell,
 LrgSchMeasReqInfo *measInfo,
 RgSchErrInfo      err
 )
 #else
-PUBLIC S16 rgSchL2mMeasReq(cell, measInfo, err)
+S16 rgSchL2mMeasReq(cell, measInfo, err)
 RgSchCellCb       *cell;
 LrgSchMeasReqInfo *measInfo;
 RgSchErrInfo      err;
@@ -712,13 +712,13 @@ RgSchErrInfo      err;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHL2Meas
+S16 rgSCHL2Meas
 (
 RgSchCellCb  *cell,
 U8 isCalrCrcInd
 )
 #else
-PUBLIC S16 rgschL2Meas(cell,isCalrCrcInd)
+S16 rgschL2Meas(cell,isCalrCrcInd)
 RgSchCellCb  *cell;
 U8 isCalrCrcInd
 #endif

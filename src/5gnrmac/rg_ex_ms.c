@@ -431,13 +431,13 @@ Buffer  *mBuf;                      /* message buffer       */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgActvTsk
+S16 rgActvTsk
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 #else
-PUBLIC S16 rgActvTsk(pst, mBuf)
+S16 rgActvTsk(pst, mBuf)
 Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
@@ -454,13 +454,13 @@ Buffer  *mBuf;                      /* message buffer       */
       case ENTNH:
           rgHdlNHEvents(pst, mBuf);
           break;
-      case ENTKW:
+      case ENTRLC:
           rgHdlKWEvents(pst, mBuf);
           break;
-      case ENTTF:
+      case ENTLWRMAC:
           rgHdlTFEvents(pst, mBuf);
           break;
-      case ENTRG: /* When scheduler instance sends msg to MAC */
+      case ENTMAC: /* When scheduler instance sends msg to MAC */
           rgHdlRGEvents(pst, mBuf);
           break;
        default:

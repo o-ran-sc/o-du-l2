@@ -1340,9 +1340,9 @@
 #define ENTEG       0xd3            /*  EGTP Layer */
 #define ENTEU       0xd4            /* EGTP USER */
 /* ssi_h_001.main_135 : addition of LTE related entities */
-#define ENTTF       0xd5             /* LTE-PHY */
-#define ENTRG       0xd6             /* LTE-MAC */
-#define ENTKW       0xd7             /* LTE-RLC */
+#define ENTLWRMAC       0xd5             /* LTE-PHY */
+#define ENTMAC       0xd6             /* LTE-MAC */
+#define ENTRLC       0xd7             /* LTE-RLC */
 #define ENTPJ       0xd8             /* LTE-PDCP */
 #define ENTNH       0xd9             /* LTE-RRC */
 

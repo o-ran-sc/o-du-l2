@@ -98,13 +98,13 @@ U16 gTransId = 0;
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkDateTime
+S16 cmPkDateTime
 (
 DateTime *dateTime,       /* date and time */
 Buffer *mBuf              /* message buffer */
 )
 #else
-PUBLIC S16 cmPkDateTime(dateTime, mBuf)
+S16 cmPkDateTime(dateTime, mBuf)
 DateTime *dateTime;       /* date and time */
 Buffer *mBuf;             /* message buffer */
 #endif
@@ -142,13 +142,13 @@ Buffer *mBuf;             /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkDuration
+S16 cmPkDuration
 (
 Duration *duration,        /* duration */
 Buffer   *mBuf             /* message buffer */
 )
 #else
-PUBLIC S16 cmPkDuration(duration, mBuf)
+S16 cmPkDuration(duration, mBuf)
 Duration *duration;        /* duration */
 Buffer   *mBuf;            /* message buffer */
 #endif
@@ -179,13 +179,13 @@ Buffer   *mBuf;            /* message buffer */
 */
  
 #ifdef ANSI
-PUBLIC S16 oduPackPointer
+S16 oduPackPointer
 (
 PTR      ptr,              /* pointer */
 Buffer   *mBuf             /* message buffer */
 )
 #else
-PUBLIC S16 oduPackPointer(ptr, mBuf)
+S16 oduPackPointer(ptr, mBuf)
 PTR      ptr;              /* pointer */
 Buffer   *mBuf;            /* message buffer */
 #endif
@@ -293,13 +293,13 @@ Buffer   *mBuf;            /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkEntityId
+S16 cmPkEntityId
 (
 EntityId *entityId,        /* entity id */
 Buffer   *mBuf             /* message buffer */
 )
 #else
-PUBLIC S16 cmPkEntityId(entityId, mBuf)
+S16 cmPkEntityId(entityId, mBuf)
 EntityId *entityId;        /* entity id */
 Buffer   *mBuf;            /* message buffer */
 #endif
@@ -328,13 +328,13 @@ Buffer   *mBuf;            /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkElmntId
+S16 cmPkElmntId
 (
 ElmntId *elmntId,         /* element id */
 Buffer  *mBuf             /* message buffer */
 )
 #else
-PUBLIC S16 cmPkElmntId(elmntId, mBuf)
+S16 cmPkElmntId(elmntId, mBuf)
 ElmntId *elmntId;         /* element id */
 Buffer  *mBuf;            /* message buffer */
 #endif
@@ -365,13 +365,13 @@ Buffer  *mBuf;            /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkMemoryId
+S16 cmPkMemoryId
 (
 MemoryId *memoryId,        /* memoryId */
 Buffer   *mBuf             /* message buffer */
 )
 #else
-PUBLIC S16 cmPkMemoryId(memoryId, mBuf)
+S16 cmPkMemoryId(memoryId, mBuf)
 MemoryId *memoryId;        /* memoryId */
 Buffer   *mBuf;            /* message buffer */
 #endif
@@ -400,13 +400,13 @@ Buffer   *mBuf;            /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkSystemId
+S16 cmPkSystemId
 (
 SystemId *systemId,         /* system id */
 Buffer   *mBuf              /* message buffer */
 )
 #else
-PUBLIC S16 cmPkSystemId(systemId, mBuf)
+S16 cmPkSystemId(systemId, mBuf)
 SystemId *systemId;         /* system id */
 Buffer   *mBuf;             /* message buffer */
 #endif
@@ -449,13 +449,13 @@ Buffer   *mBuf;             /* message buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmPkProtAddr
+S16 cmPkProtAddr
 (
 ProtAddr     *pAddr,     /* protocol address */
 Buffer       *mBuf       /* buffer */
 )
 #else
-PUBLIC S16 cmPkProtAddr(pAddr, mBuf)
+S16 cmPkProtAddr(pAddr, mBuf)
 ProtAddr     *pAddr;      /* protocol address */
 Buffer       *mBuf;          /* buffer */
 #endif
@@ -498,13 +498,13 @@ Buffer       *mBuf;          /* buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmPkProtAddrTbl
+S16 cmPkProtAddrTbl
 (
 ProtAddrTbl  *protAddr,      /* protocol address table */
 Buffer       *mBuf          /* buffer */
 )
 #else
-PUBLIC S16 cmPkProtAddrTbl(protAddr, mBuf)
+S16 cmPkProtAddrTbl(protAddr, mBuf)
 ProtAddrTbl  *protAddr;      /* protocol address table */
 Buffer       *mBuf;          /* buffer */
 #endif
@@ -557,13 +557,13 @@ Buffer       *mBuf;          /* buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkAddrs
+S16 cmPkAddrs
 (
 Addrs *addrs,           /* address */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmPkAddrs(addrs, mBuf)
+S16 cmPkAddrs(addrs, mBuf)
 Addrs *addrs;           /* address */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -602,13 +602,13 @@ Buffer *mBuf;           /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkShrtAddrs
+S16 cmPkShrtAddrs
 (
 ShrtAddrs *addrs,          /* address */
 Buffer    *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmPkShrtAddrs(addrs, mBuf)
+S16 cmPkShrtAddrs(addrs, mBuf)
 ShrtAddrs *addrs;          /* address */
 Buffer    *mBuf;           /* message buffer */
 #endif 
@@ -646,13 +646,13 @@ Buffer    *mBuf;           /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkAddrMask
+S16 cmPkAddrMask
 (
 U8 *mask,             /* pointer to address mask array */
 Buffer  *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmPkAddrMask(mask, mBuf)
+S16 cmPkAddrMask(mask, mBuf)
 U8 *mask;             /* pointer to address mask array */
 Buffer  *mBuf;        /* message buffer */
 #endif
@@ -686,13 +686,13 @@ Buffer  *mBuf;        /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkBndCfg
+S16 cmPkBndCfg
 (
 BndCfg *bndCfg,         /* bndCfg */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmPkBndCfg(bndCfg, mBuf)
+S16 cmPkBndCfg(bndCfg, mBuf)
 BndCfg *bndCfg;         /* bndCfg */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -735,13 +735,13 @@ Buffer *mBuf;           /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkPst
+S16 cmPkPst
 (
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkPst(pst, mBuf)
+S16 cmPkPst(pst, mBuf)
 Pst *pst;
 Buffer *mBuf;
 #endif
@@ -782,13 +782,13 @@ Buffer *mBuf;
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkElmtHdr
+S16 cmPkElmtHdr
 (
 ElmtHdr *m,                  /* element header */
 Buffer  *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkElmtHdr(m, mBuf)
+S16 cmPkElmtHdr(m, mBuf)
 ElmtHdr *m;                  /* element header */
 Buffer  *mBuf;               /* message buffer */
 #endif
@@ -829,13 +829,13 @@ Buffer  *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknU8
+S16 cmPkTknU8
 (
 TknU8  *tknU8,              /* token U8 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknU8(tknU8, mBuf)
+S16 cmPkTknU8(tknU8, mBuf)
 TknU8  *tknU8;              /* token U8 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -870,13 +870,13 @@ Buffer *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknS8
+S16 cmPkTknS8
 (
 TknS8  *tknS8,              /* token S8 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknS8(tknS8, mBuf)
+S16 cmPkTknS8(tknS8, mBuf)
 TknS8  *tknS8;              /* token S8 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -911,13 +911,13 @@ Buffer *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknU16
+S16 cmPkTknU16
 (
 TknU16 *tknU16,             /* token U16 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknU16(tknU16, mBuf)
+S16 cmPkTknU16(tknU16, mBuf)
 TknU16 *tknU16;             /* token U16 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -952,13 +952,13 @@ Buffer *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknU32
+S16 cmPkTknU32
 (
 TknU32 *tknU32,             /* token U32 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknU32(tknU32, mBuf)
+S16 cmPkTknU32(tknU32, mBuf)
 TknU32 *tknU32;             /* token U32 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -993,13 +993,13 @@ Buffer *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr
+S16 cmPkTknStr
 (
 TknStr *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStr(tknStr, mBuf)
+S16 cmPkTknStr(tknStr, mBuf)
 TknStr *tknStr;             /* token string */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -1042,13 +1042,13 @@ Buffer *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStrM
+S16 cmPkTknStrM
 (
 TknStrM *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStrM(tknStr, mBuf)
+S16 cmPkTknStrM(tknStr, mBuf)
 TknStrM *tknStr;             /* token string */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -1091,13 +1091,13 @@ Buffer *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStrS
+S16 cmPkTknStrS
 (
 TknStrS *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStrS(tknStr, mBuf)
+S16 cmPkTknStrS(tknStr, mBuf)
 TknStrS *tknStr;             /* token string */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -1140,13 +1140,13 @@ Buffer *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStrE
+S16 cmPkTknStrE
 (
 TknStrE *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStrE(tknStr, mBuf)
+S16 cmPkTknStrE(tknStr, mBuf)
 TknStrE *tknStr;             /* token string */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -1191,13 +1191,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkPnNodeId
+S16 cmPkPnNodeId
 (
 PnNodeId  *src,     /* source PNNI Node Id */
 Buffer *mBuf        /* message buffer */
 )
 #else
-PUBLIC S16 cmPkPnNodeId (src, mBuf)
+S16 cmPkPnNodeId (src, mBuf)
 PnNodeId  *src;     /* source PNNI Node Id */
 Buffer *mBuf;       /* message buffer */
 #endif
@@ -1232,13 +1232,13 @@ Buffer *mBuf;       /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr4
+S16 cmPkTknStr4
 (
 TknStr4 *tknStr,             /* token string */
 Buffer  *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStr4(tknStr, mBuf)
+S16 cmPkTknStr4(tknStr, mBuf)
 TknStr4 *tknStr;             /* token string */
 Buffer  *mBuf;               /* message buffer */
 #endif
@@ -1268,13 +1268,13 @@ Buffer  *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr12
+S16 cmPkTknStr12
 (
 TknStr12 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStr12(tknStr, mBuf)
+S16 cmPkTknStr12(tknStr, mBuf)
 TknStr12 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -1303,13 +1303,13 @@ Buffer   *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr32
+S16 cmPkTknStr32
 (
 TknStr32 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStr32(tknStr, mBuf)
+S16 cmPkTknStr32(tknStr, mBuf)
 TknStr32 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -1338,13 +1338,13 @@ Buffer   *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr64
+S16 cmPkTknStr64
 (
 TknStr64 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStr64(tknStr, mBuf)
+S16 cmPkTknStr64(tknStr, mBuf)
 TknStr64 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -1373,13 +1373,13 @@ Buffer   *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr132
+S16 cmPkTknStr132
 (
 TknStr132 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStr132(tknStr, mBuf)
+S16 cmPkTknStr132(tknStr, mBuf)
 TknStr132 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -1408,13 +1408,13 @@ Buffer   *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr256
+S16 cmPkTknStr256
 (
 TknStr256 *tknStr,             /* token string */
 Buffer    *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknStr256(tknStr, mBuf)
+S16 cmPkTknStr256(tknStr, mBuf)
 TknStr256 *tknStr;             /* token string */
 Buffer    *mBuf;               /* message buffer */
 #endif
@@ -1443,13 +1443,13 @@ Buffer    *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknOid
+S16 cmPkTknOid
 (
 TknOid   *tknOid,             /* Object Identifier token */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknOid(tknOid, mBuf)
+S16 cmPkTknOid(tknOid, mBuf)
 TknOid   *tknOid;             /* Object Identifier token */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -1496,13 +1496,13 @@ Buffer   *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknS32
+S16 cmPkTknS32
 (
 TknS32 *tknS32,             /* token S32 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknS32(tknS32, mBuf)
+S16 cmPkTknS32(tknS32, mBuf)
 TknS32 *tknS32;             /* token S32 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -1537,13 +1537,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkHeader
+S16 cmPkHeader
 (
 Header *header,             /* header */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkHeader(header, mBuf)
+S16 cmPkHeader(header, mBuf)
 Header *header;             /* header */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -1583,13 +1583,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkCmStatus
+S16 cmPkCmStatus
 (
 CmStatus *sta,              /* status structure */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmStatus(sta, mBuf)
+S16 cmPkCmStatus(sta, mBuf)
 CmStatus *sta;              /* status structure */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -1618,13 +1618,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkCmAlarm
+S16 cmPkCmAlarm
 (
 CmAlarm *alarm,            /* alarm structure */
 Buffer  *mBuf              /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmAlarm(alarm, mBuf)
+S16 cmPkCmAlarm(alarm, mBuf)
 CmAlarm *alarm;             /* alarm structure */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -1655,13 +1655,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkSmCfg
+S16 cmPkSmCfg
 (
 SmCfg *smCfg,           /* stack manager */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmPkSmCfg(smCfg, mBuf)
+S16 cmPkSmCfg(smCfg, mBuf)
 SmCfg *smCfg;           /* stack manager */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -1695,13 +1695,13 @@ Buffer *mBuf;           /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTmrCfg
+S16 cmPkTmrCfg
 (
 TmrCfg *tmrCfg,         /* timer configuration */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTmrCfg(tmrCfg, mBuf)
+S16 cmPkTmrCfg(tmrCfg, mBuf)
 TmrCfg *tmrCfg;         /* timer configuration */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -1730,13 +1730,13 @@ Buffer *mBuf;           /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmPkTknBuf
+S16 cmPkTknBuf
 (
 TknBuf *tknBuf,                /* token string */
 Buffer    *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmPkTknBuf(tknBuf, mBuf)
+S16 cmPkTknBuf(tknBuf, mBuf)
 TknBuf *tknBuf;                /* token string */
 Buffer    *mBuf;               /* message buffer */
 #endif
@@ -1778,13 +1778,13 @@ Buffer    *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmPkIntf
+S16 cmPkIntf
 (
 CmIntf *intf,           /* interface info */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmPkIntf(intf, mBuf)
+S16 cmPkIntf(intf, mBuf)
 CmIntf *intf;           /* interface info */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -1819,13 +1819,13 @@ Buffer *mBuf;           /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkDateTime
+S16 cmUnpkDateTime
 (
 DateTime *dateTime,  /* date/time structure */
 Buffer *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkDateTime(dateTime, mBuf)
+S16 cmUnpkDateTime(dateTime, mBuf)
 DateTime *dateTime;  /* date/time structure */
 Buffer *mBuf;        /* message buffer */
 #endif
@@ -1864,13 +1864,13 @@ Buffer *mBuf;        /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkDuration
+S16 cmUnpkDuration
 (
 Duration *duration,  /* duration structure */
 Buffer *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkDuration(duration, mBuf)
+S16 cmUnpkDuration(duration, mBuf)
 Duration *duration;  /* duration structure */
 Buffer *mBuf;        /* message buffer */
 #endif
@@ -1901,13 +1901,13 @@ Buffer *mBuf;        /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 oduUnpackPointer
+S16 oduUnpackPointer
 (
 PTR *ptr,  /* duration structure */
 Buffer *mBuf    /* message buffer */
 )
 #else
-PUBLIC S16 oduUnpackPointer(ptr, mBuf)
+S16 oduUnpackPointer(ptr, mBuf)
 PTR *ptr;  /* duration structure */
 Buffer *mBuf;   /* message buffer */
 #endif
@@ -2033,13 +2033,13 @@ Buffer *mBuf;   /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkEntityId
+S16 cmUnpkEntityId
 (
 EntityId *entityId,        /* entity id */
 Buffer   *mBuf             /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkEntityId(entityId, mBuf)
+S16 cmUnpkEntityId(entityId, mBuf)
 EntityId *entityId;        /* entity id */
 Buffer   *mBuf;            /* message buffer */
 #endif
@@ -2068,13 +2068,13 @@ Buffer   *mBuf;            /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkElmntId
+S16 cmUnpkElmntId
 (
 ElmntId *elmntId,         /* element id */
 Buffer  *mBuf             /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkElmntId(elmntId, mBuf)
+S16 cmUnpkElmntId(elmntId, mBuf)
 ElmntId *elmntId;         /* element id */
 Buffer  *mBuf;            /* message buffer */
 #endif
@@ -2105,13 +2105,13 @@ Buffer  *mBuf;            /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkMemoryId
+S16 cmUnpkMemoryId
 (
 MemoryId *memoryId,        /* memoryId */
 Buffer   *mBuf             /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkMemoryId(memoryId, mBuf)
+S16 cmUnpkMemoryId(memoryId, mBuf)
 MemoryId *memoryId;        /* memoryId */
 Buffer   *mBuf;            /* message buffer */
 #endif
@@ -2140,13 +2140,13 @@ Buffer   *mBuf;            /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkSystemId
+S16 cmUnpkSystemId
 (
 SystemId *systemId,         /* system id */
 Buffer   *mBuf              /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkSystemId(systemId, mBuf)
+S16 cmUnpkSystemId(systemId, mBuf)
 SystemId *systemId;         /* system id */
 Buffer   *mBuf;             /* message buffer */
 #endif
@@ -2189,13 +2189,13 @@ Buffer   *mBuf;             /* message buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkProtAddr
+S16 cmUnpkProtAddr
 (
 ProtAddr     *pAddr,         /* protocol address */
 Buffer       *mBuf           /* buffer */
 )
 #else
-PUBLIC S16 cmUnpkProtAddr(pAddr, mBuf)
+S16 cmUnpkProtAddr(pAddr, mBuf)
 ProtAddr     *pAddr;         /* protocol address table */
 Buffer       *mBuf;          /* buffer */
 #endif
@@ -2236,13 +2236,13 @@ Buffer       *mBuf;          /* buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkProtAddrTbl
+S16 cmUnpkProtAddrTbl
 (
 ProtAddrTbl  *protAddr,      /* protocol address table */
 Buffer       *mBuf           /* buffer */
 )
 #else
-PUBLIC S16 cmUnpkProtAddrTbl(protAddr, mBuf)
+S16 cmUnpkProtAddrTbl(protAddr, mBuf)
 ProtAddrTbl  *protAddr;      /* protocol address table */
 Buffer       *mBuf;          /* buffer */
 #endif
@@ -2290,13 +2290,13 @@ Buffer       *mBuf;          /* buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkAddrs
+S16 cmUnpkAddrs
 (
 Addrs *addrs,     /* address */
 Buffer *mBuf      /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkAddrs(addrs, mBuf)
+S16 cmUnpkAddrs(addrs, mBuf)
 Addrs *addrs;     /* address */
 Buffer *mBuf;     /* message buffer */
 #endif
@@ -2333,13 +2333,13 @@ Buffer *mBuf;     /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkShrtAddrs
+S16 cmUnpkShrtAddrs
 (
 ShrtAddrs *addrs,    /* address */
 Buffer    *mBuf      /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkShrtAddrs(addrs, mBuf)
+S16 cmUnpkShrtAddrs(addrs, mBuf)
 ShrtAddrs *addrs;    /* address */
 Buffer    *mBuf;     /* message buffer */
 #endif
@@ -2376,13 +2376,13 @@ Buffer    *mBuf;     /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkAddrMask
+S16 cmUnpkAddrMask
 (
 U8 *mask,             /* pointer to address mask */
 Buffer  *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkAddrMask(mask, mBuf)
+S16 cmUnpkAddrMask(mask, mBuf)
 U8 *mask;             /* pointer to address mask */
 Buffer  *mBuf;        /* message buffer */
 #endif
@@ -2415,13 +2415,13 @@ Buffer  *mBuf;        /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkBndCfg
+S16 cmUnpkBndCfg
 (
 BndCfg *bndCfg,         /* bndCfg */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkBndCfg(bndCfg, mBuf)
+S16 cmUnpkBndCfg(bndCfg, mBuf)
 BndCfg *bndCfg;         /* bndCfg */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -2463,13 +2463,13 @@ Buffer *mBuf;           /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkPst
+S16 cmUnpkPst
 (
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkPst(pst, mBuf)
+S16 cmUnpkPst(pst, mBuf)
 Pst *pst;
 Buffer *mBuf;
 #endif
@@ -2510,13 +2510,13 @@ Buffer *mBuf;
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkElmtHdr
+S16 cmUnpkElmtHdr
 (
 ElmtHdr *m,                  /* element header */
 Buffer  *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkElmtHdr(m, mBuf)
+S16 cmUnpkElmtHdr(m, mBuf)
 ElmtHdr *m;                  /* element header */
 Buffer  *mBuf;               /* message buffer */
 #endif
@@ -2557,13 +2557,13 @@ Buffer  *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknU8
+S16 cmUnpkTknU8
 (
 TknU8 *tknU8,               /* token U8 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknU8(tknU8, mBuf)
+S16 cmUnpkTknU8(tknU8, mBuf)
 TknU8 *tknU8;               /* token U8 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -2598,13 +2598,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknS8
+S16 cmUnpkTknS8
 (
 TknS8 *tknS8,               /* token S8 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknS8(tknS8, mBuf)
+S16 cmUnpkTknS8(tknS8, mBuf)
 TknS8 *tknS8;               /* token S8 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -2639,13 +2639,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknU16
+S16 cmUnpkTknU16
 (
 TknU16 *tknU16,             /* token U16 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknU16(tknU16, mBuf)
+S16 cmUnpkTknU16(tknU16, mBuf)
 TknU16 *tknU16;             /* token U16 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -2680,13 +2680,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknU32
+S16 cmUnpkTknU32
 (
 TknU32 *tknU32,             /* token U32 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknU32(tknU32, mBuf)
+S16 cmUnpkTknU32(tknU32, mBuf)
 TknU32 *tknU32;             /* token U32 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -2720,13 +2720,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr
+S16 cmUnpkTknStr
 (
 TknStr *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStr(tknStr, mBuf)
+S16 cmUnpkTknStr(tknStr, mBuf)
 TknStr *tknStr;             /* token string */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -2770,13 +2770,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStrM
+S16 cmUnpkTknStrM
 (
 TknStrM *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStrM(tknStr, mBuf)
+S16 cmUnpkTknStrM(tknStr, mBuf)
 TknStrM *tknStr;             /* token string */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -2821,13 +2821,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStrS
+S16 cmUnpkTknStrS
 (
 TknStrS *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStrS(tknStr, mBuf)
+S16 cmUnpkTknStrS(tknStr, mBuf)
 TknStrS *tknStr;             /* token string */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -2872,13 +2872,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStrE
+S16 cmUnpkTknStrE
 (
 TknStrE *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStrE(tknStr, mBuf)
+S16 cmUnpkTknStrE(tknStr, mBuf)
 TknStrE *tknStr;             /* token string */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -2925,13 +2925,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkPnNodeId
+S16 cmUnpkPnNodeId
 (
 PnNodeId  *dst,     /* source PNNI Node Id */
 Buffer *mBuf        /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkPnNodeId (dst, mBuf)
+S16 cmUnpkPnNodeId (dst, mBuf)
 PnNodeId  *dst;     /* source PNNI Node Id */
 Buffer *mBuf;       /* message buffer */
 #endif
@@ -2966,13 +2966,13 @@ Buffer *mBuf;       /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr4
+S16 cmUnpkTknStr4
 (
 TknStr4 *tknStr,             /* token string */
 Buffer  *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStr4(tknStr, mBuf)
+S16 cmUnpkTknStr4(tknStr, mBuf)
 TknStr4 *tknStr;             /* token string */
 Buffer  *mBuf;               /* message buffer */
 #endif
@@ -3002,13 +3002,13 @@ Buffer  *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr12
+S16 cmUnpkTknStr12
 (
 TknStr12 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStr12(tknStr, mBuf)
+S16 cmUnpkTknStr12(tknStr, mBuf)
 TknStr12 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -3037,13 +3037,13 @@ Buffer   *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr32
+S16 cmUnpkTknStr32
 (
 TknStr32 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStr32(tknStr, mBuf)
+S16 cmUnpkTknStr32(tknStr, mBuf)
 TknStr32 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -3072,13 +3072,13 @@ Buffer   *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr64
+S16 cmUnpkTknStr64
 (
 TknStr64 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStr64(tknStr, mBuf)
+S16 cmUnpkTknStr64(tknStr, mBuf)
 TknStr64 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -3107,13 +3107,13 @@ Buffer   *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr132
+S16 cmUnpkTknStr132
 (
 TknStr132 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStr132(tknStr, mBuf)
+S16 cmUnpkTknStr132(tknStr, mBuf)
 TknStr132 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -3142,13 +3142,13 @@ Buffer   *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr256
+S16 cmUnpkTknStr256
 (
 TknStr256 *tknStr,             /* token string */
 Buffer    *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknStr256(tknStr, mBuf)
+S16 cmUnpkTknStr256(tknStr, mBuf)
 TknStr256 *tknStr;             /* token string */
 Buffer    *mBuf;               /* message buffer */
 #endif
@@ -3177,13 +3177,13 @@ Buffer    *mBuf;               /* message buffer */
  */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknOid
+S16 cmUnpkTknOid
 (
 TknOid   *tknOid,             /* Object Identifier token */
 Buffer   *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknOid(tknOid, mBuf)
+S16 cmUnpkTknOid(tknOid, mBuf)
 TknOid   *tknOid;             /* Object Identifier token */
 Buffer   *mBuf;               /* message buffer */
 #endif
@@ -3232,13 +3232,13 @@ Buffer   *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknS32
+S16 cmUnpkTknS32
 (
 TknS32 *tknS32,             /* token S32 */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknS32(tknS32, mBuf)
+S16 cmUnpkTknS32(tknS32, mBuf)
 TknS32 *tknS32;             /* token S32 */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -3273,13 +3273,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkHeader
+S16 cmUnpkHeader
 (
 Header *header,   /* header structure */
 Buffer *mBuf      /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkHeader(header, mBuf)
+S16 cmUnpkHeader(header, mBuf)
 Header *header;   /* header structure */
 Buffer *mBuf;     /* message buffer */
 #endif
@@ -3319,13 +3319,13 @@ Buffer *mBuf;     /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmStatus
+S16 cmUnpkCmStatus
 (
 CmStatus *sta,              /* status structure */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmStatus(sta, mBuf)
+S16 cmUnpkCmStatus(sta, mBuf)
 CmStatus *sta;              /* status structure */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -3354,13 +3354,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmAlarm
+S16 cmUnpkCmAlarm
 (
 CmAlarm *alarm,             /* alarm structure */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmAlarm(alarm, mBuf)
+S16 cmUnpkCmAlarm(alarm, mBuf)
 CmAlarm *alarm;             /* alarm structure */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -3391,13 +3391,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkSmCfg
+S16 cmUnpkSmCfg
 (
 SmCfg *smCfg,           /* stack manager */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkSmCfg(smCfg, mBuf)
+S16 cmUnpkSmCfg(smCfg, mBuf)
 SmCfg *smCfg;           /* stack manager */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -3431,13 +3431,13 @@ Buffer *mBuf;           /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkTmrCfg
+S16 cmUnpkTmrCfg
 (
 TmrCfg *tmrCfg,         /* timer configuration */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTmrCfg(tmrCfg, mBuf)
+S16 cmUnpkTmrCfg(tmrCfg, mBuf)
 TmrCfg *tmrCfg;         /* timer configuration */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -3465,13 +3465,13 @@ Buffer *mBuf;           /* message buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknBuf
+S16 cmUnpkTknBuf
 (
 TknBuf *tknBuf,                /* token string */
 Buffer    **tBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkTknBuf(tknBuf, tBuf)
+S16 cmUnpkTknBuf(tknBuf, tBuf)
 TknBuf *tknBuf;                /* token string */
 Buffer    **tBuf;               /* message buffer */
 #endif
@@ -3534,13 +3534,13 @@ Buffer    **tBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmUnpkIntf
+S16 cmUnpkIntf
 (
 CmIntf *intf,           /* interface info */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkIntf(intf, mBuf)
+S16 cmUnpkIntf(intf, mBuf)
 CmIntf *intf;           /* interface info */
 Buffer *mBuf;           /* message buffer */
 #endif

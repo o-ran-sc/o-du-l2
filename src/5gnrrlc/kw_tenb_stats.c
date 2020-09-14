@@ -52,10 +52,10 @@
 #endif
 
 #ifdef TENB_STATS
-PUBLIC TSL2CellStatsCb* l2CellStats[L2_STATS_MAX_CELLS];
-PUBLIC TSL2UeStatsCb*   l2UeStats[L2_STATS_MAX_UES];
-PUBLIC CmLListCp        freeL2UeStatsLst; /*!< Free Pool of UE stats Blocks */
-PUBLIC CmLListCp        inUseL2UeStatsLst;/*!< In Use Pool of UE stats Blocks */
+TSL2CellStatsCb* l2CellStats[L2_STATS_MAX_CELLS];
+TSL2UeStatsCb*   l2UeStats[L2_STATS_MAX_UES];
+CmLListCp        freeL2UeStatsLst; /*!< Free Pool of UE stats Blocks */
+CmLListCp        inUseL2UeStatsLst;/*!< In Use Pool of UE stats Blocks */
 
 /*
 *
@@ -70,13 +70,13 @@ PUBLIC CmLListCp        inUseL2UeStatsLst;/*!< In Use Pool of UE stats Blocks */
 *
 */
 #ifdef ANSI
-PUBLIC Void TSL2AllocStatsMem 
+Void TSL2AllocStatsMem 
 (
  Region region,
  Pool   pool 
 )
 #else
-PUBLIC Void TSL2AllocStatsMem(region, pool)
+Void TSL2AllocStatsMem(region, pool)
  Region region;
  Pool   pool;
 #endif
@@ -133,12 +133,12 @@ PUBLIC Void TSL2AllocStatsMem(region, pool)
 *
 */
 #ifdef ANSI
-PUBLIC TSL2UeStatsCb* TSL2AllocUeStatsBlk 
+TSL2UeStatsCb* TSL2AllocUeStatsBlk 
 (
  U16   rnti
 )
 #else
-PUBLIC TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
+TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
  U16   rnti;
 #endif
 {
@@ -175,13 +175,13 @@ PUBLIC TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
 *
 */
 #ifdef ANSI
-PUBLIC Void TSL2DeallocUeStatsBlk 
+Void TSL2DeallocUeStatsBlk 
 (
  U16              rnti,
  TSL2UeStatsCb  *statsCb
 )
 #else
-PUBLIC Void TSL2DeallocUeStatsBlk(rnti, statsCb)
+Void TSL2DeallocUeStatsBlk(rnti, statsCb)
  U16              rnti;
  TSL2UeStatsCb  *statsCb;
 #endif
@@ -209,12 +209,12 @@ PUBLIC Void TSL2DeallocUeStatsBlk(rnti, statsCb)
 *
 */
 #ifdef ANSI
-PUBLIC TSL2CellStatsCb* TSL2AllocCellStatsBlk 
+TSL2CellStatsCb* TSL2AllocCellStatsBlk 
 (
  U32 cellId
 )
 #else
-PUBLIC TSL2CellStatsCb* TSL2AllocCellStatsBlk(cellId)
+TSL2CellStatsCb* TSL2AllocCellStatsBlk(cellId)
  U32 cellId;
 #endif
 {
@@ -241,12 +241,12 @@ PUBLIC TSL2CellStatsCb* TSL2AllocCellStatsBlk(cellId)
 *
 */
 #ifdef ANSI
-PUBLIC Void TSL2DeallocCellStatsBlk 
+Void TSL2DeallocCellStatsBlk 
 (
  U32 cellId
 )
 #else
-PUBLIC Void TSL2DeallocCellStatsBlk(cellId)
+Void TSL2DeallocCellStatsBlk(cellId)
  U32 cellId;
 #endif
 {
@@ -271,13 +271,13 @@ PUBLIC Void TSL2DeallocCellStatsBlk(cellId)
 *
 */
 #ifdef ANSI
-PUBLIC Void TSL2SendStatsToApp
+Void TSL2SendStatsToApp
 (
  Pst    *pst,
  SuId   suId
  )
 #else
-PUBLIC Void TSL2SendStatsToApp(pst, suId)
+Void TSL2SendStatsToApp(pst, suId)
  Pst    *pst;
  SuId   suId;
 #endif

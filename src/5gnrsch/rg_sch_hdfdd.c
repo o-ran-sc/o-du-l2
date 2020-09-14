@@ -93,14 +93,14 @@ extern "C" {
 */ 
 
 #ifdef ANSI
-PUBLIC S16 rgSCHHdFddUeCfg 
+S16 rgSCHHdFddUeCfg 
 (
 RgSchCellCb  *cellCb,
 RgSchUeCb *ueCb,
 Bool hdFddEnbl
 )
 #else /* ANSI */
-PUBLIC S16 rgSCHHdFddUeCfg (cellCb, ueCb, hdFddEnbl)
+S16 rgSCHHdFddUeCfg (cellCb, ueCb, hdFddEnbl)
 RgSchCellCb  *cellCb;
 RgSchUeCb *ueCb;
 Bool hdFddEnbl;
@@ -196,13 +196,13 @@ Bool hdFddEnbl;
 *
 */
 #ifdef ANSI
-PUBLIC S16 rgSCHHdFddUeDel 
+S16 rgSCHHdFddUeDel 
 (
 RgSchCellCb *cellCb,
 RgSchUeCb   *ueCb
 )
 #else /* ANSI */
-PUBLIC S16 rgSCHHdFddUeDel(cellCb, ueCb)
+S16 rgSCHHdFddUeDel(cellCb, ueCb)
 RgSchCellCb *cellCb;
 RgSchUeCb   *ueCb;
 #endif /* ANSI */
@@ -243,12 +243,12 @@ RgSchUeCb   *ueCb;
  */
 
 #ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddPtUlMrk 
+Void rgSCHCmnHdFddPtUlMrk 
 (
 RgSchCellCb *cellCb
 )
 #else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddPtUlMrk (cellCb)
+Void rgSCHCmnHdFddPtUlMrk (cellCb)
 RgSchCellCb *cellCb;
 #endif /* ANSI */
 {
@@ -376,14 +376,14 @@ RgSchCellCb *cellCb;
  *
  */
 #ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddChkUlAllow
+Void rgSCHCmnHdFddChkUlAllow
 ( 
  RgSchCellCb *cellCb,
  RgSchUeCb   *ueCb,
  U8          *allow
 )
 #else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddChkUlAllow ( cellCb, ueCb, allow)
+Void rgSCHCmnHdFddChkUlAllow ( cellCb, ueCb, allow)
 RgSchCellCb *cellCb;
 RgSchUeCb   *ueCb;
 U8          *allow;
@@ -546,14 +546,14 @@ U8          *allow;
  *
  */
 #ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddChkDlAllow 
+Void rgSCHCmnHdFddChkDlAllow 
 (
 RgSchCellCb *cellCb,
 RgSchUeCb *ueCb,
 Bool *allow /* Valdity of this pointer is not done in this function */
 )
 #else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddChkDlAllow ( cellCb, ueCb, allow)
+Void rgSCHCmnHdFddChkDlAllow ( cellCb, ueCb, allow)
 RgSchCellCb *cellCb;
 RgSchUeCb *ueCb;
 Bool *allow; /* Valdity of this pointer is not done in this function */
@@ -706,7 +706,7 @@ Bool *allow; /* Valdity of this pointer is not done in this function */
  */
 
 #ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddChkNackAllow
+Void rgSCHCmnHdFddChkNackAllow
 (
 RgSchCellCb *cellCb,
 RgSchUeCb   *ueCb,
@@ -714,7 +714,7 @@ CmLteTimingInfo  timeInfo,
 Bool *sndNACK
 )
 #else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddChkNackAllow(cellCb, ueCb, timeInfo, sndNACK)
+Void rgSCHCmnHdFddChkNackAllow(cellCb, ueCb, timeInfo, sndNACK)
 RgSchCellCb *cellCb;
 RgSchUeCb   *ueCb;
 CmLteTimingInfo  timeInfo;
@@ -783,13 +783,13 @@ Bool *sndNACK;
  *  @return  None
  */
 #ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddUpdULMark
+Void rgSCHCmnHdFddUpdULMark
 (
 RgSchCellCb *cellCb,
 RgSchUeCb   *ueCb
 )
 #else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddUpdULMark ( cellCb, ueCb)
+Void rgSCHCmnHdFddUpdULMark ( cellCb, ueCb)
 RgSchCellCb *cellCb;
 RgSchUeCb   *ueCb;
 #endif /* ANSI */
@@ -866,13 +866,13 @@ RgSchUeCb   *ueCb;
  */
 
 #ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddUpdDLMark
+Void rgSCHCmnHdFddUpdDLMark
 (
 RgSchCellCb *cellCb,
 RgSchUeCb   *ueCb
 )
 #else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddUpdDLMark (cellCb, ueCb)
+Void rgSCHCmnHdFddUpdDLMark (cellCb, ueCb)
 RgSchCellCb *cellCb;
 RgSchUeCb   *ueCb;
 #endif /* ANSI */
@@ -937,14 +937,14 @@ RgSchUeCb   *ueCb;
  */
 
 #ifdef ANSI
-PUBLIC Void rgSCHHdFddGetSfn
+Void rgSCHHdFddGetSfn
 (
  U16 *sfn,
  CmLteTimingInfo  timeInfo,
  S16 offset
 )
 #else /* ANSI */
-PUBLIC Void rgSCHHdFddGetSfn (sfn, timeInfo, offset)
+Void rgSCHHdFddGetSfn (sfn, timeInfo, offset)
  U16 *sfn;
  CmLteTimingInfo  timeInfo;
  S16 offset;

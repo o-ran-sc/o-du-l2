@@ -63,7 +63,7 @@ SchCellCfgFunc SchCellCfgOpts[] =
  *  @return 
  *      -# ROK
  **/
-PUBLIC uint8_t MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
+uint8_t MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
 {
    printf("\nReceived Scheduler gen config at MAC");
    pst->dstInst = DEFAULT_CELLS + 1;
@@ -87,7 +87,7 @@ PUBLIC uint8_t MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
  *  @return 
  *      -# ROK
  **/
-PUBLIC uint8_t SchSendCfgCfm(Pst *pst, RgMngmt  *cfm)
+uint8_t SchSendCfgCfm(Pst *pst, RgMngmt  *cfm)
 {
    printf("\nSending Scheduler config confirm to DU APP");
    pst->dstEnt = ENTDUAPP;
@@ -119,7 +119,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 {
    Pst cfmPst;
    uint16_t cellIdx;
-   uint16_t ret = ROK;
+   uint8_t ret = ROK;
    MacCellCb     *macCellCb;
 
    memset((uint8_t *)&cfmPst, 0, sizeof(Pst));

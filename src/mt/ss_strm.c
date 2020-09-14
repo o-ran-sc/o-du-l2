@@ -104,13 +104,13 @@ PRIVATE struct
 *
 */
 #ifdef ANSI
-PUBLIC S16 ssStrmCfg
+S16 ssStrmCfg
 (
 Region mdRegId,                 /* region for message and data blocks */
 Region datRegId                 /* region for data buffers */
 )
 #else
-PUBLIC S16 ssStrmCfg(mdRegId, datRegId)
+S16 ssStrmCfg(mdRegId, datRegId)
 Region mdRegId;                 /* region for message and data blocks */
 Region datRegId;                /* region for data buffers */
 #endif
@@ -153,13 +153,13 @@ Region datRegId;                /* region for data buffers */
 *
 */
 #ifdef ANSI
-PUBLIC S32 ssAdjMsg
+S32 ssAdjMsg
 (
 SsMblk *mp,                     /* message */
 S32 len                         /* bytes to remove */
 )
 #else
-PUBLIC S32 ssAdjMsg(mp, len)
+S32 ssAdjMsg(mp, len)
 SsMblk *mp;                     /* message */
 S32 len;                        /* bytes to remove */
 #endif
@@ -316,13 +316,13 @@ S32 len;                        /* bytes to remove */
 *
 */
 #ifdef ANSI
-PUBLIC SsMblk *ssAllocB
+SsMblk *ssAllocB
 (
 S32 size,                       /* required size */
 U32 pri                         /* message priority */
 )
 #else
-PUBLIC SsMblk *ssAllocB(size, pri)
+SsMblk *ssAllocB(size, pri)
 S32 size;                       /* required size */
 U32 pri;                        /* message priority */
 #endif
@@ -418,12 +418,12 @@ U32 pri;                        /* message priority */
 *
 */
 #ifdef ANSI
-PUBLIC SsMblk *ssCopyB
+SsMblk *ssCopyB
 (
 SsMblk *mp                      /* message block */
 )
 #else
-PUBLIC SsMblk *ssCopyB(mp)
+SsMblk *ssCopyB(mp)
 SsMblk *mp;                     /* message block */
 #endif
 {
@@ -489,12 +489,12 @@ SsMblk *mp;                     /* message block */
 *
 */
 #ifdef ANSI
-PUBLIC SsMblk *ssCopyMsg
+SsMblk *ssCopyMsg
 (
 SsMblk *mp                      /* message block */
 )
 #else
-PUBLIC SsMblk *ssCopyMsg(mp)
+SsMblk *ssCopyMsg(mp)
 SsMblk *mp;                     /* message block */
 #endif
 {
@@ -570,12 +570,12 @@ SsMblk *mp;                     /* message block */
 *
 */
 #ifdef ANSI
-PUBLIC SsMblk *ssDupB
+SsMblk *ssDupB
 (
 SsMblk *mp                      /* message block */
 )
 #else
-PUBLIC SsMblk *ssDupB(mp)
+SsMblk *ssDupB(mp)
 SsMblk *mp;                     /* message block */
 #endif
 {
@@ -668,12 +668,12 @@ SsMblk *mp;                     /* message block */
 *
 */
 #ifdef ANSI
-PUBLIC SsMblk *ssDupMsg
+SsMblk *ssDupMsg
 (
 SsMblk *mp                      /* message block */
 )
 #else
-PUBLIC SsMblk *ssDupMsg(mp)
+SsMblk *ssDupMsg(mp)
 SsMblk *mp;                     /* message block */
 #endif
 {
@@ -738,7 +738,7 @@ SsMblk *mp;                     /* message block */
 *
 */
 #ifdef ANSI
-PUBLIC SsMblk *ssESBAlloc
+SsMblk *ssESBAlloc
 (
 U8 *base,                       /* client supplied data buffer */
 S32 size,                       /* size of data buffer */
@@ -746,7 +746,7 @@ S32 pri,                        /* message priority */
 SsFrtn *fr_rtn                  /* free routine */
 )
 #else
-PUBLIC SsMblk *ssESBAlloc(base, size, pri, fr_rtn)
+SsMblk *ssESBAlloc(base, size, pri, fr_rtn)
 U8 *base;                       /* client supplied data buffer */
 S32 size;                       /* size of data buffer */
 S32 pri;                        /* message priority */
@@ -821,12 +821,12 @@ SsFrtn *fr_rtn;                 /* free routine */
 *
 */
 #ifdef ANSI
-PUBLIC Void ssFreeB
+Void ssFreeB
 (
 SsMblk *mp                      /* message block */
 )
 #else
-PUBLIC Void ssFreeB(mp)
+Void ssFreeB(mp)
 SsMblk *mp;                     /* message block */
 #endif
 {
@@ -1012,12 +1012,12 @@ SsMblk *mp;                     /* message block */
 *
 */
 #ifdef ANSI
-PUBLIC Void ssFreeMsg
+Void ssFreeMsg
 (
 SsMblk *mp                      /* message block */
 )
 #else
-PUBLIC Void ssFreeMsg(mp)
+Void ssFreeMsg(mp)
 SsMblk *mp;                     /* message block */
 #endif
 {
@@ -1054,13 +1054,13 @@ SsMblk *mp;                     /* message block */
 *
 */
 #ifdef ANSI
-PUBLIC Void ssLinkB
+Void ssLinkB
 (
 SsMblk *mp,                     /* first message block */
 SsMblk *bp                      /* second message block */
 )
 #else
-PUBLIC Void ssLinkB(mp, bp)
+Void ssLinkB(mp, bp)
 SsMblk *mp;                     /* first message block */
 SsMblk *bp;                     /* second message block */
 #endif
@@ -1106,12 +1106,12 @@ SsMblk *bp;                     /* second message block */
 *
 */
 #ifdef ANSI
-PUBLIC S32 ssMsgDSize
+S32 ssMsgDSize
 (
 SsMblk *mp                      /* message block */
 )
 #else
-PUBLIC S32 ssMsgDSize(mp)
+S32 ssMsgDSize(mp)
 SsMblk *mp;                     /* message block */
 #endif
 {
@@ -1160,13 +1160,13 @@ SsMblk *mp;                     /* message block */
 *
 */
 #ifdef ANSI
-PUBLIC S32 ssPullupMsg
+S32 ssPullupMsg
 (
 SsMblk *mp,                     /* message block */
 S32 len                         /* number of bytes to align */
 )
 #else
-PUBLIC S32 ssPullupMsg(mp, len)
+S32 ssPullupMsg(mp, len)
 SsMblk *mp;                     /* message block */
 S32 len;                        /* number of bytes to align */
 #endif
@@ -1363,13 +1363,13 @@ S32 len;                        /* number of bytes to align */
 *
 */
 #ifdef ANSI
-PUBLIC SsMblk *ssRmvB
+SsMblk *ssRmvB
 (
 SsMblk *mp,                     /* message */
 SsMblk *bp                      /* message block */
 )
 #else
-PUBLIC SsMblk *ssRmvB(mp, bp)
+SsMblk *ssRmvB(mp, bp)
 SsMblk *mp;                     /* message */
 SsMblk *bp;                     /* message block */
 #endif
@@ -1446,13 +1446,13 @@ SsMblk *bp;                     /* message block */
 *
 */
 #ifdef ANSI
-PUBLIC S32 ssTestB
+S32 ssTestB
 (
 S32 size,                       /* size required */
 U32 pri                         /* priority of the message buffer */
 )
 #else
-PUBLIC S32 ssTestB(size, pri)
+S32 ssTestB(size, pri)
 S32 size;                       /* size required */
 U32 pri;                        /* priority of the message buffer */
 #endif
@@ -1492,12 +1492,12 @@ U32 pri;                        /* priority of the message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC SsMblk *ssUnlinkB
+SsMblk *ssUnlinkB
 (
 SsMblk *mp                      /* message */
 )
 #else
-PUBLIC SsMblk *ssUnlinkB(mp)
+SsMblk *ssUnlinkB(mp)
 SsMblk *mp;                     /* message */
 #endif
 {

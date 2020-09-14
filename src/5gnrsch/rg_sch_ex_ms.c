@@ -74,13 +74,13 @@ registered with SSI during the LTE MAC Task initialization.
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 schActvTsk
+S16 schActvTsk
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 #else
-PUBLIC S16 schActvTsk(pst, mBuf)
+S16 schActvTsk(pst, mBuf)
 Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
@@ -160,7 +160,7 @@ Buffer  *mBuf;                      /* message buffer       */
                break;
          }
          break;
-      case ENTTF:
+      case ENTLWRMAC:
          switch(pst->event)
          {
 /*#ifdef LCRGLITFU L2Split */
@@ -214,7 +214,7 @@ Buffer  *mBuf;                      /* message buffer       */
                break;
          }
          break;
-      case ENTRG: /* When MAC sends a msg to Scheduler instance */
+      case ENTMAC: /* When MAC sends a msg to Scheduler instance */
          switch(pst->event)
          {
 #ifdef LCSCH

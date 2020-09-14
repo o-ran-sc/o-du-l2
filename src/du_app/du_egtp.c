@@ -122,7 +122,7 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
          }
          break;
       }
-      case ENTKW:
+      case ENTRLC:
       {
          switch(pst->event)
          {

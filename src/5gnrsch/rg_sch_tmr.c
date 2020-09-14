@@ -56,7 +56,7 @@ static int RLOG_FILE_ID=175;
 #include "rg_sch.x"            /* typedefs for MAC */
 
 #ifdef LTE_ADV
-EXTERN PUBLIC Void rgSCHSCellActivation ARGS((
+EXTERN Void rgSCHSCellActivation ARGS((
 RgSchUeCellInfo  *sCell
 ));
 #endif
@@ -77,7 +77,7 @@ RgSchUeCellInfo  *sCell
   *   @return  Void
   */
 #ifdef ANSI
-PUBLIC Void rgSCHTmrStartTmr
+Void rgSCHTmrStartTmr
 (
 RgSchCellCb *cell,
 Ptr         cb,
@@ -85,7 +85,7 @@ S16         tmrEvnt,
 U32         tmrVal
 )
 #else
-PUBLIC Void rgSCHTmrStartTmr (cell, cb, tmrEvnt, tmrVal)
+Void rgSCHTmrStartTmr (cell, cb, tmrEvnt, tmrVal)
 RgSchCellCb *cell;
 Ptr         cb;
 S16         tmrEvnt;
@@ -207,14 +207,14 @@ U32         tmrVal;
   *   @return  Void
   */
 #ifdef ANSI
-PUBLIC Void rgSCHTmrStopTmr
+Void rgSCHTmrStopTmr
 (
 RgSchCellCb   *cell,
 S16           tmrEvnt,
 Ptr           cb
 )
 #else
-PUBLIC Void rgSCHTmrStopTmr (cell, tmrEvnt, cb)
+Void rgSCHTmrStopTmr (cell, tmrEvnt, cb)
 RgSchCellCb   *cell;
 S16           tmrEvnt;
 Ptr           cb;
@@ -334,13 +334,13 @@ Ptr           cb;
   *   @return  Void
   */
 #ifdef ANSI
-PUBLIC Void rgSCHTmrProcTmr 
+Void rgSCHTmrProcTmr 
 (
 Ptr         cb,
 S16         tmrEvnt
 )
 #else
-PUBLIC Void rgSCHTmrProcTmr (cb, tmrEvnt)
+Void rgSCHTmrProcTmr (cb, tmrEvnt)
 Ptr         cb;
 S16         tmrEvnt;
 #endif

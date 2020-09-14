@@ -105,7 +105,7 @@ uint8_t lwr_mac_procInvalidEvt(void *msg)
  * @return void
  *
  * ****************************************************************/
-PUBLIC void fillMsgHeader(fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen)
+void fillMsgHeader(fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen)
 {
    memset(hdr, 0, sizeof(fapi_msg_t));
    hdr->msg_id = msgType;
@@ -131,7 +131,7 @@ PUBLIC void fillMsgHeader(fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen)
  * @return void
  *
  * ****************************************************************/
-PUBLIC void fillTlvs(fapi_uint32_tlv_t *tlv, uint16_t tag, uint16_t length,
+void fillTlvs(fapi_uint32_tlv_t *tlv, uint16_t tag, uint16_t length,
       uint16_t value, uint32_t *msgLen)
 {
    tlv->tl.tag    = tag;
@@ -156,7 +156,7 @@ PUBLIC void fillTlvs(fapi_uint32_tlv_t *tlv, uint16_t tag, uint16_t length,
  * @return void
  *
  ********************************************************************/
-PUBLIC void fillCyclicPrefix(uint8_t value, ClCellParam **cellPtr)
+void fillCyclicPrefix(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_NORMAL_CYCLIC_PREFIX_MASK) == FAPI_NORMAL_CYCLIC_PREFIX_MASK)
    {
@@ -190,7 +190,7 @@ PUBLIC void fillCyclicPrefix(uint8_t value, ClCellParam **cellPtr)
  *
  * ****************************************************************/
 
-PUBLIC void fillSubcarrierSpaceDl(uint8_t value, ClCellParam **cellPtr)
+void fillSubcarrierSpaceDl(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_15KHZ_MASK) == FAPI_15KHZ_MASK)
    {
@@ -232,7 +232,7 @@ PUBLIC void fillSubcarrierSpaceDl(uint8_t value, ClCellParam **cellPtr)
  *
  * ****************************************************************/
 
-PUBLIC void fillBandwidthDl(uint16_t value, ClCellParam **cellPtr)
+void fillBandwidthDl(uint16_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_5MHZ_BW_MASK) == FAPI_5MHZ_BW_MASK)
    {
@@ -310,7 +310,7 @@ PUBLIC void fillBandwidthDl(uint16_t value, ClCellParam **cellPtr)
  *
  * ****************************************************************/
 
-PUBLIC void fillSubcarrierSpaceUl(uint8_t value, ClCellParam **cellPtr)
+void fillSubcarrierSpaceUl(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_15KHZ_MASK) == FAPI_15KHZ_MASK)
    {
@@ -355,7 +355,7 @@ PUBLIC void fillSubcarrierSpaceUl(uint8_t value, ClCellParam **cellPtr)
  *
  * ****************************************************************/
 
-PUBLIC void fillBandwidthUl(uint16_t value, ClCellParam **cellPtr)
+void fillBandwidthUl(uint16_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_5MHZ_BW_MASK) == FAPI_5MHZ_BW_MASK)
    {
@@ -433,7 +433,7 @@ PUBLIC void fillBandwidthUl(uint16_t value, ClCellParam **cellPtr)
  *
  * ****************************************************************/
 
-PUBLIC void fillCCEmaping(uint8_t value,  ClCellParam **cellPtr)
+void fillCCEmaping(uint8_t value,  ClCellParam **cellPtr)
 {
    if ((value & FAPI_CCE_MAPPING_INTERLEAVED_MASK) == FAPI_CCE_MAPPING_INTERLEAVED_MASK)
    {
@@ -468,7 +468,7 @@ PUBLIC void fillCCEmaping(uint8_t value,  ClCellParam **cellPtr)
  *
  * ****************************************************************/
 
-PUBLIC void fillPucchFormat(uint8_t value, ClCellParam **cellPtr)
+void fillPucchFormat(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_FORMAT_0_MASK) == FAPI_FORMAT_0_MASK)
    {
@@ -514,7 +514,7 @@ PUBLIC void fillPucchFormat(uint8_t value, ClCellParam **cellPtr)
  *
  * ****************************************************************/
 
-PUBLIC void fillPdschMappingType(uint8_t value, ClCellParam **cellPtr)
+void fillPdschMappingType(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PDSCH_MAPPING_TYPE_A_MASK) == FAPI_PDSCH_MAPPING_TYPE_A_MASK)
    {
@@ -548,7 +548,7 @@ PUBLIC void fillPdschMappingType(uint8_t value, ClCellParam **cellPtr)
  *
  * ****************************************************************/
 
-PUBLIC void fillPdschAllocationType(uint8_t value, ClCellParam **cellPtr)
+void fillPdschAllocationType(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PDSCH_ALLOC_TYPE_0_MASK) == FAPI_PDSCH_ALLOC_TYPE_0_MASK)
    {
@@ -581,7 +581,7 @@ PUBLIC void fillPdschAllocationType(uint8_t value, ClCellParam **cellPtr)
  * @return void
  *
  ******************************************************************/
-PUBLIC void fillPrbMappingType(uint8_t value, ClCellParam **cellPtr)
+void fillPrbMappingType(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PDSCH_VRB_TO_PRB_MAP_NON_INTLV_MASK) == FAPI_PDSCH_VRB_TO_PRB_MAP_NON_INTLV_MASK)
    {
@@ -615,7 +615,7 @@ PUBLIC void fillPrbMappingType(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPdschDmrsConfigType(uint8_t value, ClCellParam **cellPtr)
+void fillPdschDmrsConfigType(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PDSCH_DMRS_CONFIG_TYPE_1_MASK) == FAPI_PDSCH_DMRS_CONFIG_TYPE_1_MASK)
    {
@@ -648,7 +648,7 @@ PUBLIC void fillPdschDmrsConfigType(uint8_t value, ClCellParam **cellPtr)
  * @return void
  *
  ******************************************************************/
-PUBLIC void fillPdschDmrsLength(uint8_t value, ClCellParam **cellPtr)
+void fillPdschDmrsLength(uint8_t value, ClCellParam **cellPtr)
 {
    if(value == FAPI_PDSCH_DMRS_MAX_LENGTH_1)
    {
@@ -682,7 +682,7 @@ PUBLIC void fillPdschDmrsLength(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPdschDmrsAddPos(uint8_t value, ClCellParam **cellPtr)
+void fillPdschDmrsAddPos(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_DMRS_ADDITIONAL_POS_0_MASK) == FAPI_DMRS_ADDITIONAL_POS_0_MASK)
    {
@@ -723,7 +723,7 @@ PUBLIC void fillPdschDmrsAddPos(uint8_t value, ClCellParam **cellPtr)
  * @return void
  *
  ******************************************************************/
-PUBLIC void fillModulationOrderDl(uint8_t value, ClCellParam **cellPtr)
+void fillModulationOrderDl(uint8_t value, ClCellParam **cellPtr)
 {
    if(value == 0 )
    {
@@ -765,7 +765,7 @@ PUBLIC void fillModulationOrderDl(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPuschDmrsConfig(uint8_t value, ClCellParam **cellPtr)
+void fillPuschDmrsConfig(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PUSCH_DMRS_CONFIG_TYPE_1_MASK) == FAPI_PUSCH_DMRS_CONFIG_TYPE_1_MASK)
    {
@@ -799,7 +799,7 @@ PUBLIC void fillPuschDmrsConfig(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPuschDmrsLength(uint8_t value, ClCellParam **cellPtr)
+void fillPuschDmrsLength(uint8_t value, ClCellParam **cellPtr)
 {
    if(value  == FAPI_PUSCH_DMRS_MAX_LENGTH_1)
    {
@@ -833,7 +833,7 @@ PUBLIC void fillPuschDmrsLength(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPuschDmrsAddPos(uint8_t value, ClCellParam **cellPtr)
+void fillPuschDmrsAddPos(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_DMRS_ADDITIONAL_POS_0_MASK) == FAPI_DMRS_ADDITIONAL_POS_0_MASK)
    {
@@ -875,7 +875,7 @@ PUBLIC void fillPuschDmrsAddPos(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPuschMappingType(uint8_t value, ClCellParam **cellPtr)
+void fillPuschMappingType(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PUSCH_MAPPING_TYPE_A_MASK) == FAPI_PUSCH_MAPPING_TYPE_A_MASK)
    {
@@ -909,7 +909,7 @@ PUBLIC void fillPuschMappingType(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPuschAllocationType(uint8_t value, ClCellParam **cellPtr)
+void fillPuschAllocationType(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PUSCH_ALLOC_TYPE_0_MASK) == FAPI_PUSCH_ALLOC_TYPE_0_MASK)
    {
@@ -943,7 +943,7 @@ PUBLIC void fillPuschAllocationType(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPuschPrbMappingType(uint8_t value, ClCellParam **cellPtr)
+void fillPuschPrbMappingType(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PUSCH_VRB_TO_PRB_MAP_NON_INTLV_MASK) == FAPI_PUSCH_VRB_TO_PRB_MAP_NON_INTLV_MASK)
    {
@@ -977,7 +977,7 @@ PUBLIC void fillPuschPrbMappingType(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillModulationOrderUl(uint8_t value, ClCellParam **cellPtr)
+void fillModulationOrderUl(uint8_t value, ClCellParam **cellPtr)
 {
    if(value == 0)
    {
@@ -1019,7 +1019,7 @@ PUBLIC void fillModulationOrderUl(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPuschAggregationFactor(uint8_t value, ClCellParam **cellPtr)
+void fillPuschAggregationFactor(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_FORMAT_0_MASK) == FAPI_FORMAT_0_MASK)
    {
@@ -1061,7 +1061,7 @@ PUBLIC void fillPuschAggregationFactor(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPrachLongFormat(uint8_t value, ClCellParam **cellPtr)
+void fillPrachLongFormat(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PRACH_LF_FORMAT_0_MASK) == FAPI_PRACH_LF_FORMAT_0_MASK)
    {
@@ -1103,7 +1103,7 @@ PUBLIC void fillPrachLongFormat(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillPrachShortFormat(uint8_t value, ClCellParam **cellPtr)
+void fillPrachShortFormat(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_PRACH_SF_FORMAT_A1_MASK) == FAPI_PRACH_SF_FORMAT_A1_MASK)
    {
@@ -1165,7 +1165,7 @@ PUBLIC void fillPrachShortFormat(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillFdOccasions(uint8_t value, ClCellParam **cellPtr)
+void fillFdOccasions(uint8_t value, ClCellParam **cellPtr)
 {
    if(value == 0)
    {
@@ -1207,7 +1207,7 @@ PUBLIC void fillFdOccasions(uint8_t value, ClCellParam **cellPtr)
  *
  ******************************************************************/
 
-PUBLIC void fillRssiMeas(uint8_t value, ClCellParam **cellPtr)
+void fillRssiMeas(uint8_t value, ClCellParam **cellPtr)
 {
    if((value & FAPI_RSSI_REPORT_IN_DBM_MASK) == FAPI_RSSI_REPORT_IN_DBM_MASK)
    {
@@ -2178,7 +2178,7 @@ uint8_t lwr_mac_procStopReqEvt(void *msg)
  *             pointer to modified value
  ******************************************************************/
 
-PUBLIC void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
+void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
 {
    *mibPdu |= (((uint8_t)(sfn >> 2)) & MIB_SFN_BITMASK);
    *val = (mibPdu[0] << 24 | mibPdu[1] << 16 | mibPdu[2] << 8);

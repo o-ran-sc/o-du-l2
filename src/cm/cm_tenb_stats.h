@@ -53,11 +53,11 @@ extern "C" {
 #ifdef L2_L3_SPLIT
 #define STATS_SRCPROCID 1
 #define STATS_DSTPROCID 1 
-#define STATS_DSTENT    ENTKW
+#define STATS_DSTENT    ENTRLC
 #else
 #define STATS_SRCPROCID 100
 #define STATS_DSTPROCID 100 
-#define STATS_DSTENT    ENTKW
+#define STATS_DSTENT    ENTRLC
 #endif /* L2_L3_SPLIT */
 
 #define STATS_DSTINST   0        /* PDCP UL */
@@ -70,7 +70,7 @@ extern "C" {
 #endif /* MSPD */
 #endif
 
-#define STATS_SRCENT    ENTTF
+#define STATS_SRCENT    ENTLWRMAC
 
 #define EVTTENBL2CELLSTATS  0xF1
 #define EVTTENBL2UESTATS    0xF2

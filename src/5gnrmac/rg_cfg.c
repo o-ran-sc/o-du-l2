@@ -61,7 +61,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_pom_scell.x"
 #endif
 /* LTE-MAC Control Block Structure */
-PUBLIC RgCb rgCb[RG_MAX_INST];
+RgCb rgCb[RG_MAX_INST];
 
 /* local defines */
 PRIVATE S16 rgCFGVldtCrgDedLcCfg ARGS((Inst inst,CrgLchCfg *lcCfg, RgCellCb **cell,
@@ -113,14 +113,14 @@ PRIVATE Void rgCFGFreeSpsUeLst ARGS((RgCellCb *cell));
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGVldtCrgCellCfg
+S16 rgCFGVldtCrgCellCfg
 (
 Inst        inst,
 CrgCellCfg  *cellCfg,
 RgErrInfo   *errInfo
 )
 #else
-PUBLIC S16 rgCFGVldtCrgCellCfg(inst,cellCfg, errInfo)
+S16 rgCFGVldtCrgCellCfg(inst,cellCfg, errInfo)
 Inst        inst;
 CrgCellCfg  *cellCfg;
 RgErrInfo   *errInfo;
@@ -191,7 +191,7 @@ RgErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGVldtCrgUeCfg
+S16 rgCFGVldtCrgUeCfg
 (
 Inst      inst,
 CrgUeCfg  *ueCfg,
@@ -199,7 +199,7 @@ RgCellCb  **cell,
 RgErrInfo *errInfo
 )
 #else
-PUBLIC S16 rgCFGVldtCrgUeCfg(inst,ueCfg, cell, errInfo)
+S16 rgCFGVldtCrgUeCfg(inst,ueCfg, cell, errInfo)
 Inst      inst;
 CrgUeCfg  *ueCfg;
 RgCellCb  **cell;
@@ -281,7 +281,7 @@ RgErrInfo *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGVldtCrgLcCfg
+S16 rgCFGVldtCrgLcCfg
 (
 Inst       inst, 
 CrgLchCfg  *lcCfg,
@@ -290,7 +290,7 @@ RgUeCb     **ue,
 RgErrInfo  *errInfo
 )
 #else
-PUBLIC S16 rgCFGVldtCrgLcCfg(inst,lcCfg, cell, ue, errInfo)
+S16 rgCFGVldtCrgLcCfg(inst,lcCfg, cell, ue, errInfo)
 Inst       inst;
 CrgLchCfg  *lcCfg;
 RgCellCb   **cell;
@@ -369,7 +369,7 @@ RgErrInfo  *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGVldtCrgCellRecfg
+S16 rgCFGVldtCrgCellRecfg
 (
 Inst          inst,
 CrgCellRecfg  *cellRecfg,
@@ -377,7 +377,7 @@ RgCellCb      **cell,
 RgErrInfo     *errInfo
 )
 #else
-PUBLIC S16 rgCFGVldtCrgCellRecfg(inst,cellRecfg, cell, errInfo)
+S16 rgCFGVldtCrgCellRecfg(inst,cellRecfg, cell, errInfo)
 Inst          inst;
 CrgCellRecfg  *cellRecfg;
 RgCellCb      **cell;
@@ -439,7 +439,7 @@ RgErrInfo     *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGVldtCrgUeRecfg
+S16 rgCFGVldtCrgUeRecfg
 (
 Inst        inst,
 CrgUeRecfg  *ueRecfg,
@@ -448,7 +448,7 @@ RgUeCb      **ue,
 RgErrInfo   *errInfo
 )
 #else
-PUBLIC S16 rgCFGVldtCrgUeRecfg(inst,ueRecfg, cell, ue, errInfo)
+S16 rgCFGVldtCrgUeRecfg(inst,ueRecfg, cell, ue, errInfo)
 Inst        inst;
 CrgUeRecfg  *ueRecfg;
 RgCellCb    **cell;
@@ -525,7 +525,7 @@ RgErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGVldtCrgLcRecfg
+S16 rgCFGVldtCrgLcRecfg
 (
 Inst        inst,
 CrgLchRecfg *lcRecfg,
@@ -535,7 +535,7 @@ RgUlLcCb    **ulLc,
 RgErrInfo   *errInfo
 )
 #else
-PUBLIC S16 rgCFGVldtCrgLcRecfg(inst,lcRecfg, cell, ue, ulLc, errInfo)
+S16 rgCFGVldtCrgLcRecfg(inst,lcRecfg, cell, ue, ulLc, errInfo)
 Inst        inst;
 CrgLchRecfg  *lcRecfg;
 RgCellCb     **cell;
@@ -605,7 +605,7 @@ RgErrInfo    *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGVldtCrgUeReset
+S16 rgCFGVldtCrgUeReset
 (
 Inst       inst,
 CrgRst     *reset,
@@ -614,7 +614,7 @@ RgUeCb      **ue,
 RgErrInfo   *errInfo
 )
 #else
-PUBLIC S16 rgCFGVldtCrgUeReset(inst,reset, cell, ue, errInfo)
+S16 rgCFGVldtCrgUeReset(inst,reset, cell, ue, errInfo)
 Inst       inst;
 CrgRst     *reset;
 RgCellCb    **cell;
@@ -672,14 +672,14 @@ RgErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgCellCfg
+S16 rgCFGCrgCellCfg
 (
 Inst        inst,
 CrgCellCfg  *cellCfg,
 RgErrInfo   *errInfo
 )
 #else
-PUBLIC S16 rgCFGCrgCellCfg(inst,cellCfg, errInfo)
+S16 rgCFGCrgCellCfg(inst,cellCfg, errInfo)
 Inst        inst;
 CrgCellCfg  *cellCfg;
 RgErrInfo   *errInfo;
@@ -807,14 +807,14 @@ RgErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCfgAddUeSCellCfg
+S16 rgCfgAddUeSCellCfg
 (
 Inst        dstMacInst,    
 RgPrgUeSCellCfgInfo *ueSCellCb,
 RgCellCb    *cell
 )
 #else
-PUBLIC S16 rgCfgAddUeSCellCfg(dstMacInst, ueSCellCb, cell)
+S16 rgCfgAddUeSCellCfg(dstMacInst, ueSCellCb, cell)
 Inst        dstMacInst;    
 RgPrgUeSCellCfgInfo *ueSCellCb;
 RgCellCb    *cell;
@@ -921,7 +921,7 @@ RgCellCb    *cell;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgFillAndAddSCellCfg
+S16 rgFillAndAddSCellCfg
 (
 Inst            inst,
 RgCellCb        *cell,
@@ -930,7 +930,7 @@ CrgCfgTransId   transId,
 Bool            *isCfmRqrd
 )
 #else
-PUBLIC S16 rgFillAndAddSCellCfg(inst, cell, ueRecfg, transId, isCfmRqrd)
+S16 rgFillAndAddSCellCfg(inst, cell, ueRecfg, transId, isCfmRqrd)
 Inst            inst;
 RgCellCb        *cell;
 CrgUeRecfg      *ueRecfg;
@@ -1034,7 +1034,7 @@ Bool            *isCfmRqrd;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgUeCfg
+S16 rgCFGCrgUeCfg
 (
 Inst      inst,
 RgCellCb  *cell,
@@ -1042,7 +1042,7 @@ CrgUeCfg  *ueCfg,
 RgErrInfo *errInfo
 )
 #else
-PUBLIC S16 rgCFGCrgUeCfg(inst,cell, ueCfg, errInfo)
+S16 rgCFGCrgUeCfg(inst,cell, ueCfg, errInfo)
 Inst      inst;
 RgCellCb  *cell;
 CrgUeCfg  *ueCfg;
@@ -1139,7 +1139,7 @@ RgErrInfo *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgLcCfg
+S16 rgCFGCrgLcCfg
 (
 Inst            inst,
 RgCellCb        *cell,
@@ -1150,7 +1150,7 @@ Bool            *isCfmRqrd,
 CrgCfgTransId   transId
 )
 #else
-PUBLIC S16 rgCFGCrgLcCfg(inst,cell, ue, lcCfg, errInfo, isCfmRqrd,transId)
+S16 rgCFGCrgLcCfg(inst,cell, ue, lcCfg, errInfo, isCfmRqrd,transId)
 Inst        inst;
 RgCellCb    *cell;
 RgUeCb      *ue;
@@ -1218,7 +1218,7 @@ CrgCfgTransId   transId;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgCellRecfg
+S16 rgCFGCrgCellRecfg
 (
 Inst          inst,
 RgCellCb      *cell,
@@ -1226,7 +1226,7 @@ CrgCellRecfg  *cellRecfg,
 RgErrInfo     *errInfo
 )
 #else
-PUBLIC S16 rgCFGCrgCellRecfg(inst,cell, cellRecfg, errInfo)
+S16 rgCFGCrgCellRecfg(inst,cell, cellRecfg, errInfo)
 Inst          inst;
 RgCellCb      *cell;
 CrgCellRecfg  *cellRecfg;
@@ -1271,7 +1271,7 @@ RgErrInfo     *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgUeRecfg
+S16 rgCFGCrgUeRecfg
 (
 Inst        inst,
 RgCellCb    *cell,
@@ -1280,7 +1280,7 @@ CrgUeRecfg  *ueRecfg,
 RgErrInfo   *errInfo
 )
 #else
-PUBLIC S16 rgCFGCrgUeRecfg(inst,cell, ue, ueRecfg, errInfo)
+S16 rgCFGCrgUeRecfg(inst,cell, ue, ueRecfg, errInfo)
 Inst        inst;
 RgCellCb    *cell;
 RgUeCb      *ue;
@@ -1329,7 +1329,7 @@ RgErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgLcRecfg
+S16 rgCFGCrgLcRecfg
 (
 Inst        inst,
 RgCellCb    *cell,
@@ -1340,7 +1340,7 @@ RgErrInfo   *errInfo,
 Bool        *isCfmRqrd
 )
 #else
-PUBLIC S16 rgCFGCrgLcRecfg(inst,cell, ue, ulLc, lcRecfg, errInfo, isCfmRqrd)
+S16 rgCFGCrgLcRecfg(inst,cell, ue, ulLc, lcRecfg, errInfo, isCfmRqrd)
 Inst        inst;
 RgCellCb    *cell;
 RgUeCb      *ue;
@@ -1384,7 +1384,7 @@ Bool        *isCfmRqrd;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgUeReset
+S16 rgCFGCrgUeReset
 (
 RgCellCb    *cell,
 RgUeCb      *ue,
@@ -1392,7 +1392,7 @@ CrgRst     *reset,
 RgErrInfo   *errInfo
 )
 #else
-PUBLIC S16 rgCFGCrgUeReset(cell, ue, reset, errInfo)
+S16 rgCFGCrgUeReset(cell, ue, reset, errInfo)
 RgCellCb    *cell;
 RgUeCb      *ue;
 CrgRst     *reset;
@@ -1431,14 +1431,14 @@ RgErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgCellDel
+S16 rgCFGCrgCellDel
 (
 Inst        inst,
 CrgDel      *cellDelInfo,
 RgErrInfo   *errInfo
 )
 #else
-PUBLIC S16 rgCFGCrgCellDel(inst,cellDelInfo, errInfo)
+S16 rgCFGCrgCellDel(inst,cellDelInfo, errInfo)
 Inst        inst,
 CrgDel      *cellDelInfo;
 RgErrInfo   *errInfo;
@@ -1511,14 +1511,14 @@ RgErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgUeDel
+S16 rgCFGCrgUeDel
 (
 Inst        inst,
 CrgDel      *ueDelInfo,
 RgErrInfo   *errInfo
 )
 #else
-PUBLIC S16 rgCFGCrgUeDel(inst,ueDelInfo, errInfo)
+S16 rgCFGCrgUeDel(inst,ueDelInfo, errInfo)
 Inst        inst;
 CrgDel      *ueDelInfo;
 RgErrInfo   *errInfo;
@@ -1565,7 +1565,7 @@ RgErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgCFGCrgLcDel
+S16 rgCFGCrgLcDel
 (
 Inst        inst,
 CrgDel      *lcDelInfo,
@@ -1574,7 +1574,7 @@ Bool        *isCfmRqrd,
 CrgCfgTransId transId
 )
 #else
-PUBLIC S16 rgCFGCrgLcDel(inst,lcDelInfo, errInfo,isCfmRqrd,transId)
+S16 rgCFGCrgLcDel(inst,lcDelInfo, errInfo,isCfmRqrd,transId)
 Inst        inst;
 CrgDel      *lcDelInfo;
 RgErrInfo   *errInfo;
@@ -2102,12 +2102,12 @@ RgCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgCFGFreeCellCb
+Void rgCFGFreeCellCb
 (
 RgCellCb      *cell
 )
 #else
-PUBLIC Void rgCFGFreeCellCb(cell)
+Void rgCFGFreeCellCb(cell)
 RgCellCb      *cell;
 #endif
 {
@@ -2163,12 +2163,12 @@ RgCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgCFGFreeInactvCellCb
+Void rgCFGFreeInactvCellCb
 (
 RgCellCb      *cell
 )
 #else
-PUBLIC Void rgCFGFreeInactvCellCb(cell)
+Void rgCFGFreeInactvCellCb(cell)
 RgCellCb      *cell;
 #endif
 {
@@ -2215,13 +2215,13 @@ RgCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgCFGFreeUeCb
+Void rgCFGFreeUeCb
 (
 RgCellCb    *cell,
 RgUeCb      *ue
 )
 #else
-PUBLIC Void rgCFGFreeUeCb(cell, ue)
+Void rgCFGFreeUeCb(cell, ue)
 RgCellCb    *cell;
 RgUeCb      *ue;
 #endif
@@ -2395,13 +2395,13 @@ RgCellCb      *cell;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacCellRegReq
+S16 RgSchMacCellRegReq
 (
 Pst*                pst,
 RgInfCellReg*       regReq 
 )
 #else
-PUBLIC S16 RgSchMacCellRegReq(pst, regReq)
+S16 RgSchMacCellRegReq(pst, regReq)
 Pst*                pst;
 RgInfCellReg*       regReq;
 #endif
@@ -2440,7 +2440,7 @@ RgInfCellReg*       regReq;
 /*Added Ue for Onging L2 Meas*/
 #ifdef LTE_L2_MEAS
 /*LTE_L2_MEAS_PHASE2*/
-PUBLIC S16 rgAddToL2MeasPerQci(RgCellCb  *cell,U8 qci)
+S16 rgAddToL2MeasPerQci(RgCellCb  *cell,U8 qci)
 {
  S16      ret = ROK;	
  CmLList   *lnk;
