@@ -1,0 +1,548 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "30b07457_16b26012",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "since it just returns a ROK, it can be defined as uint8_t",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc84c492_2d66fb30",
+        "filename": "src/5gnrmac/rg_dbm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1395,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "datatype can be updated to our coding conventions\ni.e. void",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8343ede8_96246048",
+        "filename": "src/5gnrmac/rg_dhm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "general comment:\n - use void in place of Void",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34379f51_a11f0046",
+        "filename": "src/5gnrmac/rg_dhm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "Void to void",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e99ade8b_fb6df1b7",
+        "filename": "src/5gnrrlc/kw.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "RLC_GET_MEM_POOL_ADDRESS",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8790a3e2_266e003c",
+        "filename": "src/5gnrrlc/kw.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "rename it to RLC_GET_SDU_IDX",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33610451_eb06cb80",
+        "filename": "src/5gnrrlc/kw.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "General Comment:\n  - rename all Kw/kw macros to Rlc/rlc respectively",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e22e0993_5797a5b5",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "rename kw to rlc",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55ac3366_4317ebfb",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "rename to Kw to Rlc",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1f1734a_deda6cb5",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "rename KwL2MeasDlIpTh to RlcL2MeasDlIpTh",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1369d739_2318c27a",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "general comment\n - rename all the missed typedef definitions having Kw/kw to Rlc/rlc resp",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c224a53e_776a58fe",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52f31616_4f0e26e7",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82aa4d4b_41c8f155",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd1b1a78_233a361f",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec58cc72_6ec5b3ff",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "address the missed definitions here as well\neg: KwUdxStaPdu to RlcUdxStaPdu",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b06d2d7f_04ec3d9f",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "rename macros as well",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2e6f617_4538b21f",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "address the missed definition in this file",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15996abb_e5cbc901",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1235,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "The struct name and the declared variable to be renamed as Rlc/rlc resp.",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b5966eb_35737ab8",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1799,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b508c6a_646394ee",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "Void to void",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2070426a_4950a6b0",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "kw to rlc",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9cd23b1_c6151241",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "Kw to Rlc",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35c26931_212fed0b",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "151acae5_4c8ee7ab",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66c45916_1deb8bb1",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "rename to rlcDatReq",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ad487a7_4739a986",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "rename to RlcDatReq",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10e848eb_d0378f23",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "address all the missed definitions of kw/Kw and general comments given so far",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bb4b4a6_966d0984",
+        "filename": "src/5gnrrlc/kw_dl_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "interface api to start with caps. \nEg: rlcMiRlcConfigReq to RlcMiRlcConfigReq\nWe are started changing it in the new code.",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ce89dd3_a8c31065",
+        "filename": "src/5gnrrlc/kw_dl_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4643b54_1a1d015c",
+        "filename": "src/5gnrrlc/kw_dl_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75cddf03_c24d11e2",
+        "filename": "src/5gnrrlc/kw_err.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T16:41:55Z",
+      "side": 1,
+      "message": "macros starting with KW_ can be renamed to RLC_",
+      "revId": "8c0c25ff4bbff8029b3101989c80c21c0026dac4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
