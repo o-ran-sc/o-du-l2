@@ -1262,12 +1262,12 @@ uint8_t duSendEgtpTestData()
 
    Buffer   *mBuf;
 
-   if(ODU_GET_MSG(DU_APP_MEM_REGION, DU_POOL, &mBuf) == ROK)
+   if(ODU_GET_MSG_BUF(DU_APP_MEM_REGION, DU_POOL, &mBuf) == ROK)
    {
       if(ODU_ADD_POST_MSG_MULT((Data *)data, datSize, mBuf) != ROK)
       {
 	 DU_LOG("\nDU_APP : ODU_ADD_POST_MSG_MULT failed");
-	 ODU_PUT_MSG(mBuf);
+	 ODU_PUT_MSG_BUF(mBuf);
 	 return RFAILED;
       }
    }

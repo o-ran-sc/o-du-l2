@@ -1163,7 +1163,7 @@ uint8_t SendE2APMsg(Region region, Pool pool)
 {
    Buffer *mBuf=NULLP;
 
-   if(ODU_GET_MSG(region, pool, &mBuf) == ROK)
+   if(ODU_GET_MSG_BUF(region, pool, &mBuf) == ROK)
    {
       if(ODU_ADD_POST_MSG_MULT((Data *)encBuf, encBufSize, mBuf) == ROK)
       {
@@ -1172,17 +1172,17 @@ uint8_t SendE2APMsg(Region region, Pool pool)
          if(sctpSend(mBuf, E2_INTERFACE) != ROK)
          {
             DU_LOG("\nE2AP : SCTP Send for E2  failed");
-            ODU_PUT_MSG(mBuf);
+            ODU_PUT_MSG_BUF(mBuf);
             return RFAILED;
          }
       }
       else
       {
          DU_LOG("\nE2AP : ODU_ADD_POST_MSG_MULT failed");
-         ODU_PUT_MSG(mBuf);
+         ODU_PUT_MSG_BUF(mBuf);
          return RFAILED;
       }
-      ODU_PUT_MSG(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
    }
    else
    {

@@ -70,8 +70,8 @@
 #define ODU_END_CRNTI     500
 
 /* Defining macros for common utility functions */
-#define ODU_GET_MSG SGetMsg
-#define ODU_PUT_MSG SPutMsg
+#define ODU_GET_MSG_BUF SGetMsg
+#define ODU_PUT_MSG_BUF SPutMsg
 #define ODU_ADD_PRE_MSG_MULT SAddPreMsgMult
 #define ODU_ADD_POST_MSG_MULT SAddPstMsgMult
 #define ODU_START_TASK SStartTask
@@ -79,6 +79,7 @@
 #define ODU_ATTACH_TTSK SAttachTTsk
 #define ODU_POST_TASK SPstTsk
 #define ODU_COPY_MSG_TO_FIX_BUF SCpyMsgFix
+#define ODU_COPY_FIX_BUF_TO_MSG SCpyFixMsg
 #define ODU_REG_TTSK SRegTTsk
 #define ODU_SET_PROC_ID SSetProcId
 #define ODU_FIND_MSG_LEN SFndLenMsg

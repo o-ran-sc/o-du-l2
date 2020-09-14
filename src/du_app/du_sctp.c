@@ -396,7 +396,7 @@ uint8_t duSctpAssocReq(uint8_t itfType)
 uint8_t duFillSctpPst(Pst *pst, Event event)
 {
    Buffer *mBuf;
-   if(ODU_GET_MSG(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(DFLT_REGION, DU_POOL, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       return RFAILED;
@@ -672,7 +672,7 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
 
          else
          {
-            ODU_PUT_MSG(pollParams->mBuf);
+            ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
       }
   }

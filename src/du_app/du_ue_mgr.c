@@ -61,6 +61,13 @@ DuRlcUlUeCreateReq packRlcUlUeCreateReqOpts[] =
    packDuRlcUlUeCreateReq,       /* Light weight-loose coupling */
 };
 
+DuDlRrcMsgToRlcFunc duSendDlRrcMsgToRlcOpts[] =
+{
+   packDlRrcMsgToRlc,          /* Loose coupling */ 
+   RlcProcDlRrcMsgTransfer,       /* Tight coupling */
+   packDlRrcMsgToRlc           /* Light weight-loose coupling */
+};
+
 /*******************************************************************
  *
  * @brief Handles EGTP data from CU 
@@ -79,15 +86,15 @@ DuRlcUlUeCreateReq packRlcUlUeCreateReqOpts[] =
  * ****************************************************************/
 uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
 {
+
    /* TODO : Extract RbId/UeID/CellID/SduId from database
       using tunnel id in egtp header */
 
    DU_LOG("\nDU_APP : Processing DL data");
-
+#ifdef EGTP_TEST
    Pst pst;
    KwuDatReqInfo datReqInfo;
 
-#ifdef EGTP_TEST
    datReqInfo.rlcId.rbId = RB_ID;
    datReqInfo.rlcId.rbType = CM_LTE_DRB;
    datReqInfo.rlcId.ueId = UE_ID;
@@ -95,7 +102,7 @@ uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
 
    datReqInfo.sduId = ++sduId;
    datReqInfo.lcType = CM_LTE_LCH_DTCH;
-#endif
+
    /* Filling pst and Sending to RLC DL */
    pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
@@ -106,6 +113,9 @@ uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
    pst.region    = duCb.init.region;
 
    cmPkKwuDatReq(&pst, &datReqInfo, egtpMsg->msg);
+#else
+   //duBuildAndSendDlRrcMessageToRlc();
+#endif
    return ROK;
 }
 
@@ -132,7 +142,7 @@ uint8_t duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
 
    /* Send UL data to CU via EGTP */
    duSendEgtpDatInd(mBuf);
-   ODU_PUT_MSG(mBuf);
+   ODU_PUT_MSG_BUF(mBuf);
 
    return ROK;
 }
@@ -204,6 +214,172 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t *cellId, uint16_t *crnti, \
 
    return ret;
 
+}
+
+/*******************************************************************
+ *
+ * @brief Build and Send DL RRC Message transfer to RLC
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendDlRrcMessageToRlc
+ *
+ *    Functionality:
+ *      Build and Send DL RRC Message transfer to RLC
+ *
+ * @params[in] Cell ID
+ *             UE Index
+ *             Logical Channgel ID
+ *             RRC Message
+ *             RRC Message Length
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t duBuildAndSendDlRrcMessageToRlc(uint16_t cellId, RlcUeCfg ueCfg, \
+   uint8_t lcId, uint16_t rrcMsgLen, uint8_t *rrcMsg)
+{
+   Pst  pst;
+   uint8_t ret;
+   uint8_t lcIdx;
+   RlcDlRrcMsgInfo  *dlRrcMsgInfo;
+
+   DU_ALLOC_SHRABL_BUF(dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
+   if(!dlRrcMsgInfo)
+   {
+      DU_LOG("\nDU APP : Memory allocation failed for dlRrcMsgInfo in \
+         duBuildAndSendDlRrcMessageToRlc");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rrcMsg, rrcMsgLen);
+      return RFAILED;
+   }
+
+   /* Filling up the RRC msg info */
+   dlRrcMsgInfo->cellId = cellId;
+   dlRrcMsgInfo->ueIdx = ueCfg.ueIdx;
+   for(lcIdx = 0; lcIdx <= MAX_NUM_LOGICAL_CHANNELS; lcIdx++)
+   {
+      if(ueCfg.rlcBearerCfg[lcIdx].lcId == lcId)
+      {
+         dlRrcMsgInfo->rbId = ueCfg.rlcBearerCfg[lcIdx].rbId;
+	 dlRrcMsgInfo->rbType = ueCfg.rlcBearerCfg[lcIdx].rbType;
+         dlRrcMsgInfo->lcId = ueCfg.rlcBearerCfg[lcIdx].lcId;
+	 dlRrcMsgInfo->lcType = ueCfg.rlcBearerCfg[lcIdx].lcType;
+	 break;
+      }
+   }
+   dlRrcMsgInfo->execDup = false;
+   dlRrcMsgInfo->deliveryStaRpt = true;
+   dlRrcMsgInfo->rrcMsg = rrcMsg;
+   dlRrcMsgInfo->msgLen = rrcMsgLen;
+
+   /* Filling post structure and sending msg */ 
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_DUAPP_TO_RLC(pst, RLC_DL_INST, EVENT_DL_RRC_MSG_TRANS_TO_RLC);
+   ret = (*duSendDlRrcMsgToRlcOpts[pst.selector])(&pst, dlRrcMsgInfo);
+   if(ret != ROK)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rrcMsg, rrcMsgLen);
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
+      return RFAILED;
+   }
+
+   return ROK;
+} 
+
+/*******************************************************************
+ *
+ * @brief Process UE context setup request from CU
+ *
+ * @details
+ *
+ *    Function : procUeCintextSetupReq
+ *
+ *    Functionality: Process UE context setup request from CU
+ *
+ * @params[in] F1AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t    ret = ROK;
+   uint8_t    ieIdx, byteIdx, ueIdx;
+   uint8_t    *rrcMsg = NULLP;
+   uint16_t   rrcMsgLen;
+   uint16_t   cellId, cellIdx;
+   uint32_t   gnbDuUeF1apId; /* GNB DU UE F1AP ID */
+   uint32_t   gnbCuUeF1apId; /* GNB CU UE F1AP ID */
+   DuUeCb     *ueCb = NULLP;
+   UEContextSetupRequest_t   *ueSetReq = NULLP;
+  
+   ueSetReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
+
+   /* TODO : fetch remaining values from f1ap msg */
+   for(ieIdx=0; ieIdx < ueSetReq->protocolIEs.list.count; ieIdx++)
+   {
+      switch(ueSetReq->protocolIEs.list.array[ieIdx]->id)
+      {
+         case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+	    {
+	       gnbCuUeF1apId = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID;
+	       break;
+            }
+	 case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+	    {
+	       gnbDuUeF1apId = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID;
+	       break;
+	    }
+         case ProtocolIE_ID_id_ServCellIndex:
+	    {
+	       cellIdx = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.ServCellIndex;
+	       break;
+	    }
+         case ProtocolIE_ID_id_RRCContainer: 
+         {
+            rrcMsgLen = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size;
+            DU_ALLOC_SHRABL_BUF(rrcMsg, rrcMsgLen);
+	    if(!rrcMsg)
+	    {
+	       DU_LOG("\nDU APP : Memory allocation failed for RRC Msg in procUeCtxtSetupReq");
+	       return RFAILED;
+	    }
+	    memcpy(rrcMsg, ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf,\
+	       rrcMsgLen);
+	    break;
+         }
+	 
+      }
+   }
+
+   cellId = duCb.actvCellLst[cellIdx]->cellId;
+   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+   {
+      if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId) &&
+         (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId &&
+	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState == UE_ACTIVE))
+      {
+         ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
+	 break;
+      }
+   }
+
+   /* TODO :  send RB config to MAC/RLC */
+
+   /* Sending DL RRC Message to RLC */
+   if(ueIdx != MAX_NUM_UE)
+   {
+      ret = duBuildAndSendDlRrcMessageToRlc(cellId, ueCb->rlcUeCfg, SRB_ID_1, rrcMsgLen, rrcMsg); 
+   }
+   else
+   {
+      DU_LOG("\nDU APP : No UE found for CuUeF1apId[%d] and DuUeF1apId[%d]", \
+         gnbCuUeF1apId, gnbDuUeF1apId);
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rrcMsg, rrcMsgLen);
+      ret = RFAILED;
+   }
+
+   return ret;
 }
 
 /******************************************************************
