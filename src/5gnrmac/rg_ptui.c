@@ -569,31 +569,31 @@ U8 status;
 
 }
 /**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
+ * @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps via RGM interface
-*
-* @details
-*
-*     Function : RgUiRgmBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgUiRgmBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmBndCfm
+   PUBLIC S16 RgUiRgmBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 RgUiRgmBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
 
@@ -608,30 +608,30 @@ U8 status;
 /* Added for sending TTI tick to RRM */
 
 /**
-* @brief TTI indication from MAC to RGR user.
-*
-* @details
-*
-*     Function : RgUiRgrTtiInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrTtiIndInfo  ttiInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief TTI indication from MAC to RGR user.
+ *
+ * @details
+ *
+ *     Function : RgUiRgrTtiInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrTtiIndInfo  ttiInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrTtiInd
+   PUBLIC S16 RgUiRgrTtiInd
 (
-Pst* pst,
-SuId suId,
-RgrTtiIndInfo  *ttiInd
-)
+ Pst* pst,
+ SuId suId,
+ RgrTtiIndInfo  *ttiInd
+ )
 #else
 PUBLIC S16 RgUiRgrTtiInd(pst, suId, ttiInd)
-Pst* pst;
-SuId suId;
-RgrTtiIndInfo *ttiInd;
+   Pst* pst;
+   SuId suId;
+   RgrTtiIndInfo *ttiInd;
 #endif
 {
 
@@ -644,31 +644,31 @@ RgrTtiIndInfo *ttiInd;
 
 
 /**
-* @brief Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : RgUiRgrCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configuration Confirm from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : RgUiRgrCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrCfgTransId  transId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrCfgCfm
+   PUBLIC S16 RgUiRgrCfgCfm
 (
-Pst* pst,
-RgrCfgTransId transId,
-U8 status
-)
+ Pst* pst,
+ RgrCfgTransId transId,
+ U8 status
+ )
 #else
 PUBLIC S16 RgUiRgrCfgCfm(pst, transId, status)
-Pst* pst;
-RgrCfgTransId transId;
-U8 status;
+   Pst* pst;
+   RgrCfgTransId transId;
+   U8 status;
 #endif
 {
 
@@ -680,31 +680,31 @@ U8 status;
 
 
 /**
-* @brief Confirmation from MAC to RRC for the bind/Unbind 
+ * @brief Confirmation from MAC to RRC for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : RgUiCrgBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgUiCrgBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgBndCfm
+   PUBLIC S16 RgUiCrgBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 RgUiCrgBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
 
@@ -717,33 +717,33 @@ U8 status;
 
 
 /**
-* @brief Configuration Confirm from MAC to RRC
-*
-* @details
-*
-*     Function : RgUiCrgCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   CrgCfgTransId  transId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configuration Confirm from MAC to RRC
+ *
+ * @details
+ *
+ *     Function : RgUiCrgCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   CrgCfgTransId  transId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgCfgCfm
+   PUBLIC S16 RgUiCrgCfgCfm
 (
-Pst* pst,
-SuId suId,
-CrgCfgTransId transId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ CrgCfgTransId transId,
+ U8 status
+ )
 #else
 PUBLIC S16 RgUiCrgCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-CrgCfgTransId transId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   CrgCfgTransId transId;
+   U8 status;
 #endif
 {
 
@@ -755,31 +755,31 @@ U8 status;
 
 
 /**
-* @brief Confirmation from MAC to RLC for the bind/Unbind 
+ * @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : RgUiRguBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgUiRguBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguBndCfm
+   PUBLIC S16 RgUiRguBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 RgUiRguBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
 
@@ -794,31 +794,31 @@ PUBLIC int macCDatIndSnt;
 
 
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels
-*
-* @details
-*
-*     Function : RgUiRguCDatInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguCDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgUiRguCDatInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguCDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguCDatInd
+   PUBLIC S16 RgUiRguCDatInd
 (
-Pst* pst,
-SuId suId,
-RguCDatIndInfo  * datInd
-)
+ Pst* pst,
+ SuId suId,
+ RguCDatIndInfo  * datInd
+ )
 #else
 PUBLIC S16 RgUiRguCDatInd(pst, suId, datInd)
-Pst* pst;
-SuId suId;
-RguCDatIndInfo  * datInd;
+   Pst* pst;
+   SuId suId;
+   RguCDatIndInfo  * datInd;
 #endif
 {
    macCDatIndSnt++;
@@ -831,31 +831,31 @@ RguCDatIndInfo  * datInd;
 
 
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
-*
-* @details
-*
-*     Function : RgUiRguDDatInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgUiRguDDatInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguDDatInd
+   PUBLIC S16 RgUiRguDDatInd
 (
-Pst* pst,
-SuId suId,
-RguDDatIndInfo  * datInd
-)
+ Pst* pst,
+ SuId suId,
+ RguDDatIndInfo  * datInd
+ )
 #else
 PUBLIC S16 RgUiRguDDatInd(pst, suId, datInd)
-Pst* pst;
-SuId suId;
-RguDDatIndInfo  * datInd;
+   Pst* pst;
+   SuId suId;
+   RguDDatIndInfo  * datInd;
 #endif
 {
    macDDatIndSnt++;
@@ -872,33 +872,33 @@ RguDDatIndInfo  * datInd;
 
 
 /**
-* @brief Status Indication from MAC to RLC  
+ * @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels.
-*
-* @details
-*
-*     Function : RgUiRguCStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguCStaIndInfo  *  staInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgUiRguCStaInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguCStaIndInfo  *  staInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguCStaInd
+   PUBLIC S16 RgUiRguCStaInd
 (
-Pst* pst,
-SuId suId,
-RguCStaIndInfo  * staInd
-)
+ Pst* pst,
+ SuId suId,
+ RguCStaIndInfo  * staInd
+ )
 #else
 PUBLIC S16 RgUiRguCStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RguCStaIndInfo  * staInd;
+   Pst* pst;
+   SuId suId;
+   RguCStaIndInfo  * staInd;
 #endif
 {
 
@@ -911,33 +911,33 @@ RguCStaIndInfo  * staInd;
 
 
 /**
-* @brief Status Indication from MAC to RLC  
+ * @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels.
-*
-* @details
-*
-*     Function : RgUiRguDStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDStaIndInfo  *  staInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgUiRguDStaInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDStaIndInfo  *  staInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguDStaInd
+   PUBLIC S16 RgUiRguDStaInd
 (
-Pst* pst,
-SuId suId,
-RguDStaIndInfo  * staInd
-)
+ Pst* pst,
+ SuId suId,
+ RguDStaIndInfo  * staInd
+ )
 #else
 PUBLIC S16 RgUiRguDStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RguDStaIndInfo  * staInd;
+   Pst* pst;
+   SuId suId;
+   RguDStaIndInfo  * staInd;
 #endif
 {
 
@@ -949,17 +949,17 @@ RguDStaIndInfo  * staInd;
 #ifdef LTE_L2_MEAS
 /* TODO: Function header */
 #ifdef ANSI
-PUBLIC S16 RgUiRguHqStaInd
+   PUBLIC S16 RgUiRguHqStaInd
 (
-Pst* pst,
-SuId suId,
-RguHarqStatusInd *harqStatusInd
-)
+ Pst* pst,
+ SuId suId,
+ RguHarqStatusInd *harqStatusInd
+ )
 #else
 PUBLIC S16 RgUiRguHqStaInd(pst, suId, harqStatusInd)
-Pst* pst;
-SuId suId;
-RguHarqStatusInd *harqStatusInd;
+   Pst* pst;
+   SuId suId;
+   RguHarqStatusInd *harqStatusInd;
 #endif
 {
 
@@ -976,51 +976,51 @@ RguHarqStatusInd *harqStatusInd;
 #endif /* LTE_L2_MEAS */
 
 #ifdef ANSI
-PUBLIC S16 RgUiRguFlowCntrlInd
+   PUBLIC S16 RgUiRguFlowCntrlInd
 (
-Pst* pst,
-SuId suId,
-RguFlowCntrlInd *flowCntrlInd
-)
+ Pst* pst,
+ SuId suId,
+ RguFlowCntrlInd *flowCntrlInd
+ )
 #else
 PUBLIC S16 RgUiRguFlowCntrlInd(pst, suId, harqStatusInd)
-Pst* pst;
-SuId suId;
-RguFlowCntrlInd *flowCntrlInd;
+   Pst* pst;
+   SuId suId;
+   RguFlowCntrlInd *flowCntrlInd;
 #endif
 {
-  RETVALUE((*RgUiRguFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlInd));
+   RETVALUE((*RgUiRguFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlInd));
 }
 /* Added for SI Enhancement*/
 #ifdef RGR_SI_SCH
 /**
-* @brief SI Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : RgUiRgrSiCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief SI Configuration Confirm from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : RgUiRgrSiCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrCfgTransId  transId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrSiCfgCfm
+   PUBLIC S16 RgUiRgrSiCfgCfm
 (
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ RgrCfgTransId transId,
+ U8 status
+ )
 #else
 PUBLIC S16 RgUiRgrSiCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   RgrCfgTransId transId;
+   U8 status;
 #endif
 {
 
@@ -1031,42 +1031,42 @@ U8 status;
 }
 
 /**
-* @brief Warning SI Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : RgUiRgrWarningSiCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8   siId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Warning SI Configuration Confirm from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : RgUiRgrWarningSiCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrCfgTransId  transId
+ *  @param[in]   U8   siId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrWarningSiCfgCfm
+   PUBLIC S16 RgUiRgrWarningSiCfgCfm
 (
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8   siId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ RgrCfgTransId transId,
+ U8   siId,
+ U8 status
+ )
 #else
 PUBLIC S16 RgUiRgrWarningSiCfgCfm(pst, suId, transId, siId,status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8  siId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   RgrCfgTransId transId;
+   U8  siId;
+   U8 status;
 #endif
 {
    TRC3(RgUiRgrWarningSiCfgCfm);
 
    RETVALUE((*RgUiRgrWarningSiCfgCfmMt[pst->selector])
-         (pst, suId, transId, siId, status));
+	 (pst, suId, transId, siId, status));
 }
 
 #endif/*RGR_SI_SCH*/
@@ -1076,30 +1076,30 @@ U8 status;
    RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
 /**
-* @brief STA indication from MAC to RGR user.
-*
-* @details
-*
-*     Function : RgUiRgrStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrStaIndInfo  *staInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief STA indication from MAC to RGR user.
+ *
+ * @details
+ *
+ *     Function : RgUiRgrStaInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrStaIndInfo  *staInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrStaInd
+   PUBLIC S16 RgUiRgrStaInd
 (
-Pst* pst,
-SuId suId,
-RgrStaIndInfo  *staInd
-)
+ Pst* pst,
+ SuId suId,
+ RgrStaIndInfo  *staInd
+ )
 #else
 PUBLIC S16 RgUiRgrStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RgrStaIndInfo *staInd;
+   Pst* pst;
+   SuId suId;
+   RgrStaIndInfo *staInd;
 #endif
 {
 
@@ -1125,7 +1125,7 @@ RgrStaIndInfo *staInd;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrLoadInfInd
+   PUBLIC S16 RgUiRgrLoadInfInd
 (
  Pst* pst,
  SuId suId,
@@ -1147,30 +1147,30 @@ PUBLIC S16 RgUiRgrLoadInfInd(pst, suId, loadInfInd)
 /* LTE_ADV_FLAG_REMOVED_END */
 
 /**
-* @brief UESTA indication from MAC to RGR user.
-*
-* @details
-*
-*     Function : RgUiRgrUeStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrStaIndInfo  *staInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief UESTA indication from MAC to RGR user.
+ *
+ * @details
+ *
+ *     Function : RgUiRgrUeStaInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrStaIndInfo  *staInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrUeStaInd
+   PUBLIC S16 RgUiRgrUeStaInd
 (
-Pst             *pst,
-SuId            suId,
-RgrUeStaIndInfo *ueStaInd
-)
+ Pst             *pst,
+ SuId            suId,
+ RgrUeStaIndInfo *ueStaInd
+ )
 #else
 PUBLIC S16 RgUiRgrUeStaInd(pst, suId, ueStaInd)
-Pst             *pst;
-SuId            suId;
-RgrUeStaIndInfo *ueStaInd;
+   Pst             *pst;
+   SuId            suId;
+   RgrUeStaIndInfo *ueStaInd;
 #endif
 {
 
@@ -1184,31 +1184,31 @@ RgrUeStaIndInfo *ueStaInd;
 #ifdef PTRGUICRG
 
 /**
-* @brief Confirmation from MAC to RRC for the bind/Unbind 
+ * @brief Confirmation from MAC to RRC for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : PtUiCrgBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : PtUiCrgBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiCrgBndCfm
+   PUBLIC S16 PtUiCrgBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 PtUiCrgBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
 
@@ -1225,33 +1225,33 @@ U8 status;
 
 
 /**
-* @brief Configuration Confirm from MAC to RRC
-*
-* @details
-*
-*     Function : PtUiCrgCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   CrgCfgTransId  transId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configuration Confirm from MAC to RRC
+ *
+ * @details
+ *
+ *     Function : PtUiCrgCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   CrgCfgTransId  transId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiCrgCfgCfm
+   PUBLIC S16 PtUiCrgCfgCfm
 (
-Pst* pst,
-SuId suId,
-CrgCfgTransId transId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ CrgCfgTransId transId,
+ U8 status
+ )
 #else
 PUBLIC S16 PtUiCrgCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-CrgCfgTransId transId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   CrgCfgTransId transId;
+   U8 status;
 #endif
 {
 
@@ -1270,31 +1270,31 @@ U8 status;
 #ifdef PTRGUIRGU
 
 /**
-* @brief Confirmation from MAC to RLC for the bind/Unbind 
+ * @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : PtUiRguBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : PtUiRguBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguBndCfm
+   PUBLIC S16 PtUiRguBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 PtUiRguBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
 
@@ -1311,31 +1311,31 @@ U8 status;
 
 
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels
-*
-* @details
-*
-*     Function : PtUiRguCDatInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguCDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : PtUiRguCDatInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguCDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguCDatInd
+   PUBLIC S16 PtUiRguCDatInd
 (
-Pst* pst,
-SuId suId,
-RguCDatIndInfo  * datInd
-)
+ Pst* pst,
+ SuId suId,
+ RguCDatIndInfo  * datInd
+ )
 #else
 PUBLIC S16 PtUiRguCDatInd(pst, suId, datInd)
-Pst* pst;
-SuId suId;
-RguCDatIndInfo  * datInd;
+   Pst* pst;
+   SuId suId;
+   RguCDatIndInfo  * datInd;
 #endif
 {
 
@@ -1352,31 +1352,31 @@ RguCDatIndInfo  * datInd;
 
 
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
-*
-* @details
-*
-*     Function : PtUiRguDDatInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : PtUiRguDDatInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguDDatInd
+   PUBLIC S16 PtUiRguDDatInd
 (
-Pst* pst,
-SuId suId,
-RguDDatIndInfo  * datInd
-)
+ Pst* pst,
+ SuId suId,
+ RguDDatIndInfo  * datInd
+ )
 #else
 PUBLIC S16 PtUiRguDDatInd(pst, suId, datInd)
-Pst* pst;
-SuId suId;
-RguDDatIndInfo  * datInd;
+   Pst* pst;
+   SuId suId;
+   RguDDatIndInfo  * datInd;
 #endif
 {
 
@@ -1393,33 +1393,33 @@ RguDDatIndInfo  * datInd;
 
 
 /**
-* @brief Status Indication from MAC to RLC  
+ * @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels.
-*
-* @details
-*
-*     Function : PtUiRguCStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguCStaIndInfo  *  staInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : PtUiRguCStaInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguCStaIndInfo  *  staInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguCStaInd
+   PUBLIC S16 PtUiRguCStaInd
 (
-Pst* pst,
-SuId suId,
-RguCStaIndInfo  * staInd
-)
+ Pst* pst,
+ SuId suId,
+ RguCStaIndInfo  * staInd
+ )
 #else
 PUBLIC S16 PtUiRguCStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RguCStaIndInfo  * staInd;
+   Pst* pst;
+   SuId suId;
+   RguCStaIndInfo  * staInd;
 #endif
 {
 
@@ -1436,33 +1436,33 @@ RguCStaIndInfo  * staInd;
 
 
 /**
-* @brief Status Indication from MAC to RLC  
+ * @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels.
-*
-* @details
-*
-*     Function : PtUiRguDStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDStaIndInfo  *  staInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : PtUiRguDStaInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDStaIndInfo  *  staInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguDStaInd
+   PUBLIC S16 PtUiRguDStaInd
 (
-Pst* pst,
-SuId suId,
-RguDStaIndInfo  * staInd
-)
+ Pst* pst,
+ SuId suId,
+ RguDStaIndInfo  * staInd
+ )
 #else
 PUBLIC S16 PtUiRguDStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RguDStaIndInfo  * staInd;
+   Pst* pst;
+   SuId suId;
+   RguDStaIndInfo  * staInd;
 #endif
 {
 
@@ -1478,17 +1478,17 @@ RguDStaIndInfo  * staInd;
 #ifdef LTE_L2_MEAS
 /* TODO: Function Header */
 #ifdef ANSI
-PUBLIC S16 PtUiRguHqStaInd
+   PUBLIC S16 PtUiRguHqStaInd
 (
-Pst* pst,
-SuId suId,
-RguHarqStatusInd *harqStatusInd
-)
+ Pst* pst,
+ SuId suId,
+ RguHarqStatusInd *harqStatusInd
+ )
 #else
 PUBLIC S16 PtUiRguHqStaInd(pst, suId, harqStatusInd)
-Pst* pst;
-SuId suId;
-RguHarqStatusInd *harqStatusInd;
+   Pst* pst;
+   SuId suId;
+   RguHarqStatusInd *harqStatusInd;
 #endif
 {
 
@@ -1504,17 +1504,17 @@ RguHarqStatusInd *harqStatusInd;
 #endif /* LTE_L2_MEAS */
 
 #ifdef ANSI
-PUBLIC S16 PtUiRguFlowCntrlInd
+   PUBLIC S16 PtUiRguFlowCntrlInd
 (
-Pst* pst,
-SuId suId,
-RguFlowCntrlInd *flowCntrlInd
-)
+ Pst* pst,
+ SuId suId,
+ RguFlowCntrlInd *flowCntrlInd
+ )
 #else
 PUBLIC S16 PtUiRguFlowCntrlInd(pst, suId, flowCntrlInd)
-Pst* pst;
-SuId suId;
-RguHarqStatusInd *flowCntrlInd;
+   Pst* pst;
+   SuId suId;
+   RguHarqStatusInd *flowCntrlInd;
 #endif
 {
 
@@ -1533,31 +1533,31 @@ RguHarqStatusInd *flowCntrlInd;
 #ifdef PTRGUIRGR
 
 /**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
+ * @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : PtUiRgrBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : PtUiRgrBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrBndCfm
+   PUBLIC S16 PtUiRgrBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 PtUiRgrBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
 
@@ -1574,30 +1574,30 @@ U8 status;
 /* Added for sending TTI tick to RRM */
 
 /**
-* @brief TTI indication from MAC to RGR user.
-*
-* @details
-*
-*     Function : PtUiRgrTtiInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrTtiIndInfo  *ttiInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief TTI indication from MAC to RGR user.
+ *
+ * @details
+ *
+ *     Function : PtUiRgrTtiInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrTtiIndInfo  *ttiInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrTtiInd
+   PUBLIC S16 PtUiRgrTtiInd
 (
-Pst* pst,
-SuId suId,
-RgrTtiIndInfo *ttiInd
-)
+ Pst* pst,
+ SuId suId,
+ RgrTtiIndInfo *ttiInd
+ )
 #else
 PUBLIC S16 PtUiRgrTtiInd(pst, suId, ttiInd)
-Pst* pst;
-SuId suId;
-RgrTtiIndInfo *ttiInd;
+   Pst* pst;
+   SuId suId;
+   RgrTtiIndInfo *ttiInd;
 #endif
 {
 
@@ -1614,33 +1614,33 @@ RgrTtiIndInfo *ttiInd;
 
 
 /**
-* @brief Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : PtUiRgrCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configuration Confirm from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : PtUiRgrCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrCfgTransId  transId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrCfgCfm
+   PUBLIC S16 PtUiRgrCfgCfm
 (
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ RgrCfgTransId transId,
+ U8 status
+ )
 #else
 PUBLIC S16 PtUiRgrCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   RgrCfgTransId transId;
+   U8 status;
 #endif
 {
 
@@ -1658,33 +1658,33 @@ U8 status;
 /* Added for SI Enhancement*/
 #ifdef RGR_SI_SCH
 /**
-* @brief SI Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : PtUiRgrSiCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief SI Configuration Confirm from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : PtUiRgrSiCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrCfgTransId  transId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrSiCfgCfm
+   PUBLIC S16 PtUiRgrSiCfgCfm
 (
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ RgrCfgTransId transId,
+ U8 status
+ )
 #else
 PUBLIC S16 PtUiRgrSiCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   RgrCfgTransId transId;
+   U8 status;
 #endif
 {
 
@@ -1700,36 +1700,36 @@ U8 status;
 }
 
 /**
-* @brief Warning SI Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : PtUiRgrWarningSiCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8 siId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Warning SI Configuration Confirm from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : PtUiRgrWarningSiCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrCfgTransId  transId
+ *  @param[in]   U8 siId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrWarningSiCfgCfm
+   PUBLIC S16 PtUiRgrWarningSiCfgCfm
 (
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8 siId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ RgrCfgTransId transId,
+ U8 siId,
+ U8 status
+ )
 #else
 PUBLIC S16 PtUiRgrWarningSiCfgCfm(pst, suId, transId, siId, status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8  siId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   RgrCfgTransId transId;
+   U8  siId;
+   U8 status;
 #endif
 {
    TRC3(PtUiRgrWarningSiCfgCfm);
@@ -1749,30 +1749,30 @@ U8 status;
    RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
 /**
-* @brief STA indication from MAC to RGR user.
-*
-* @details
-*
-*     Function : PtUiRgrStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrStaIndInfo  *staInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief STA indication from MAC to RGR user.
+ *
+ * @details
+ *
+ *     Function : PtUiRgrStaInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrStaIndInfo  *staInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrStaInd
+   PUBLIC S16 PtUiRgrStaInd
 (
-Pst* pst,
-SuId suId,
-RgrStaIndInfo  *staInd
-)
+ Pst* pst,
+ SuId suId,
+ RgrStaIndInfo  *staInd
+ )
 #else
 PUBLIC S16 PtUiRgrStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RgrStaIndInfo *staInd;
+   Pst* pst;
+   SuId suId;
+   RgrStaIndInfo *staInd;
 #endif
 {
 
@@ -1801,7 +1801,7 @@ RgrStaIndInfo *staInd;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrLoadInfInd
+   PUBLIC S16 PtUiRgrLoadInfInd
 (
  Pst* pst,
  SuId suId,
@@ -1827,30 +1827,30 @@ PUBLIC S16 PtUiRgrLoadInfInd(pst, suId, loadInfInd)
 /* LTE_ADV_FLAG_REMOVED_END */
 
 /**
-* @brief STA indication from MAC to RGR user.
-*
-* @details
-*
-*     Function : PtUiRgrUeStaInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrUeStaIndInfo  *ueStaInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief STA indication from MAC to RGR user.
+ *
+ * @details
+ *
+ *     Function : PtUiRgrUeStaInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrUeStaIndInfo  *ueStaInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrUeStaInd
+   PUBLIC S16 PtUiRgrUeStaInd
 (
-Pst* pst,
-SuId suId,
-RgrUeStaIndInfo  *ueStaInd
-)
+ Pst* pst,
+ SuId suId,
+ RgrUeStaIndInfo  *ueStaInd
+ )
 #else
 PUBLIC S16 PtUiRgrUeStaInd(pst, suId, ueStaInd)
-Pst* pst;
-SuId suId;
-RgrUeStaIndInfo *ueStaInd;
+   Pst* pst;
+   SuId suId;
+   RgrUeStaIndInfo *ueStaInd;
 #endif
 {
 
@@ -1868,31 +1868,31 @@ RgrUeStaIndInfo *ueStaInd;
 
 #ifdef PTRGUIRGM
 /**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
+ * @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps via RGM interface
-*
-* @details
-*
-*     Function : PtUiRgmBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : PtUiRgmBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgmBndCfm
+   PUBLIC S16 PtUiRgmBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 PtUiRgmBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
 
@@ -1907,30 +1907,30 @@ U8 status;
 }
 
 /**
-* @brief Average PRB indication from MAC to RRM
-*
-* @details
-*
-*     Function : PtUiRgmPrbRprtInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrUeStaIndInfo  *ueStaInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Average PRB indication from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : PtUiRgmPrbRprtInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgrUeStaIndInfo  *ueStaInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgmPrbRprtInd
+   PUBLIC S16 PtUiRgmPrbRprtInd
 (
-Pst* pst,
-SuId suId,
-RgmPrbRprtInd *prbRprtInd
-)
+ Pst* pst,
+ SuId suId,
+ RgmPrbRprtInd *prbRprtInd
+ )
 #else
 PUBLIC S16 PtUiRgmPrbRprtInd(pst, suId, prbRprtInd)
-Pst* pst;
-SuId suId;
-RgmPrbRprtInd *prbRprtInd;
+   Pst* pst;
+   SuId suId;
+   RgmPrbRprtInd *prbRprtInd;
 #endif
 {
 
@@ -1945,30 +1945,30 @@ RgmPrbRprtInd *prbRprtInd;
 }
 
 /**
-* @brief Transmission Mode Change indication from MAC to RRM
-*
-* @details
-*
-*     Function : PtUiRgmTransModeInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgmTransModeInd *transModeInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Transmission Mode Change indication from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : PtUiRgmTransModeInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgmTransModeInd *transModeInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgmTransModeInd
+   PUBLIC S16 PtUiRgmTransModeInd
 (
-Pst* pst,
-SuId suId,
-RgmTransModeInd *transModeInd
-)
+ Pst* pst,
+ SuId suId,
+ RgmTransModeInd *transModeInd
+ )
 #else
 PUBLIC S16 PtUiRgmTransModeInd(pst, suId, transModeInd)
-Pst* pst;
-SuId suId;
-RgmTransModeInd *transModeInd;
+   Pst* pst;
+   SuId suId;
+   RgmTransModeInd *transModeInd;
 #endif
 {
 
@@ -1984,30 +1984,30 @@ RgmTransModeInd *transModeInd;
 #endif
 
 /**
-* @brief Average PRB indication from MAC to RRM
-*
-* @details
-*
-*     Function : RgUiRgmSendPrbRprtInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgmPrbRprtInd prbRprtInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Average PRB indication from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : RgUiRgmSendPrbRprtInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgmPrbRprtInd prbRprtInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmSendPrbRprtInd
+   PUBLIC S16 RgUiRgmSendPrbRprtInd
 (
-Pst* pst,
-SuId suId,
-RgmPrbRprtInd *prbRprtInd
-)
+ Pst* pst,
+ SuId suId,
+ RgmPrbRprtInd *prbRprtInd
+ )
 #else
 PUBLIC S16 RgUiRgmSendPrbRprtInd(pst, suId, prbRprtInd)
-Pst* pst;
-SuId suId;
-RgmPrbRprtInd *prbRprtInd;
+   Pst* pst;
+   SuId suId;
+   RgmPrbRprtInd *prbRprtInd;
 #endif
 
 {
@@ -2016,30 +2016,30 @@ RgmPrbRprtInd *prbRprtInd;
 }
 
 /**
-* @brief Transmission Mode change indication from MAC to RRM
-*
-* @details
-*
-*     Function : RgUiRgmChangeTransModeInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgmTransModeInd transModeInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Transmission Mode change indication from MAC to RRM
+ *
+ * @details
+ *
+ *     Function : RgUiRgmChangeTransModeInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgmTransModeInd transModeInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmChangeTransModeInd
+   PUBLIC S16 RgUiRgmChangeTransModeInd
 (
-Pst* pst,
-SuId suId,
-RgmTransModeInd *transModeInd
-)
+ Pst* pst,
+ SuId suId,
+ RgmTransModeInd *transModeInd
+ )
 #else
 PUBLIC S16 RgUiRgmChangeTransModeInd(pst, suId, transModeInd)
-Pst* pst;
-SuId suId;
-RgmTransModeInd *transModeInd;
+   Pst* pst;
+   SuId suId;
+   RgmTransModeInd *transModeInd;
 #endif
 
 {
@@ -2050,49 +2050,49 @@ RgmTransModeInd *transModeInd;
 #if defined(MAC_RLC_UL_RBUF) && !defined(SS_RBUF)
 PRIVATE S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
 {
-      S16  ret = ROK;
-      Void *elem = NULLP;
-      RguDedDatInd1 *rguDatIndl = NULLP;
-      elem = SRngGetWIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
-      rguDatIndl = (RguDedDatInd1 *) elem;
-      if (NULLP == elem)
+   S16  ret = ROK;
+   Void *elem = NULLP;
+   RguDedDatInd1 *rguDatIndl = NULLP;
+   elem = SRngGetWIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
+   rguDatIndl = (RguDedDatInd1 *) elem;
+   if (NULLP == elem)
+   {
+      SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].pktDrop++;
+      U32 i,j;
+      for(i = 0; i< datInd->numLch; i++)
       {
-         SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].pktDrop++;
-         U32 i,j;
-         for(i = 0; i< datInd->numLch; i++)
-         {
-            for(j = 0; j < datInd->lchData[i].pdu.numPdu; j++)
-            {
-               if(datInd->lchData[i].pdu.mBuf[j])
-               {
-                  SPutMsg(datInd->lchData[i].pdu.mBuf[j]);
-               }
-            }
-         }
-         rgFreeSharableSBuf((Data **)&datInd,sizeof(RguDDatIndInfo));
-         ret = RFAILED;
+	 for(j = 0; j < datInd->lchData[i].pdu.numPdu; j++)
+	 {
+	    if(datInd->lchData[i].pdu.mBuf[j])
+	    {
+	       SPutMsg(datInd->lchData[i].pdu.mBuf[j]);
+	    }
+	 }
       }
-      else
-      {
-         rguDatIndl->msg = datInd;
-         SRngIncrWIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
-         SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].pktRate++;
-      }
-  RETVALUE(ret);
+      rgFreeSharableSBuf((Data **)&datInd,sizeof(RguDDatIndInfo));
+      ret = RFAILED;
+   }
+   else
+   {
+      rguDatIndl->msg = datInd;
+      SRngIncrWIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
+      SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].pktRate++;
+   }
+   RETVALUE(ret);
 }
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
 #ifdef ANSI
-PUBLIC S16 rgDlDatReqBatchProc
+   PUBLIC S16 rgDlDatReqBatchProc
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC S16 rgDlDatReqBatchProc()
-Void;
+   Void;
 #endif
 {
-/* Read from Ring Buffer and process PDCP packets */
+   /* Read from Ring Buffer and process PDCP packets */
 
    U8 rngBufDeqIndx = 0;
    PRIVATE Pst rgDDatRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUDDATREQ,0,0,2,0};
@@ -2106,32 +2106,32 @@ Void;
       SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].nPktProc++;;//Number of pkt processed in tti
       if(datReqRing->msg)
       {
-         if(datReqRing->event == EVTRGUDDATREQ)
-         {
-         RgUiRguDDatReq(&rgDDatRbfuPst, datReqRing->spId, (RguDDatReqInfo *) datReqRing->msg);
-         }
-         else
-         { 
-          //  printf("CSHP:*** Received CDatReq in MAC Ring  \n");
-         RgUiRguCDatReq(&rgCDatRbfuPst, datReqRing->spId, (RguCDatReqInfo *) datReqRing->msg); 
-         }
+	 if(datReqRing->event == EVTRGUDDATREQ)
+	 {
+	    RgUiRguDDatReq(&rgDDatRbfuPst, datReqRing->spId, (RguDDatReqInfo *) datReqRing->msg);
+	 }
+	 else
+	 { 
+	    //  printf("CSHP:*** Received CDatReq in MAC Ring  \n");
+	    RgUiRguCDatReq(&rgCDatRbfuPst, datReqRing->spId, (RguCDatReqInfo *) datReqRing->msg); 
+	 }
       }
       else
       {
-	      printf(" Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->read,
-              SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->write);
-	      /* Due to the cache issue we are verifying the mbuf pointer again and sending it to rlc if avilable*/
-              if(datReqRing->msg)
-	      {
-		      if(datReqRing->event == EVTRGUDDATREQ)
-			      RgUiRguDDatReq(&rgDDatRbfuPst, datReqRing->spId, (RguDDatReqInfo *) datReqRing->msg);
-		      else 
-			      RgUiRguCDatReq(&rgCDatRbfuPst, datReqRing->spId, (RguCDatReqInfo *) datReqRing->msg); 
-	      }else 
-	      {
-		      printf(" still Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->read,
-		      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->write);
-	      } 
+	 printf(" Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->read,
+	       SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->write);
+	 /* Due to the cache issue we are verifying the mbuf pointer again and sending it to rlc if avilable*/
+	 if(datReqRing->msg)
+	 {
+	    if(datReqRing->event == EVTRGUDDATREQ)
+	       RgUiRguDDatReq(&rgDDatRbfuPst, datReqRing->spId, (RguDDatReqInfo *) datReqRing->msg);
+	    else 
+	       RgUiRguCDatReq(&rgCDatRbfuPst, datReqRing->spId, (RguCDatReqInfo *) datReqRing->msg); 
+	 }else 
+	 {
+	    printf(" still Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->read,
+		  SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->write);
+	 } 
       }
       datReqRing->msg=NULLP;
       SRngIncrRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ);
@@ -2141,28 +2141,28 @@ Void;
       rngBufDeqIndx++;
 
       if(rngBufDeqIndx >= SS_RNG_MAX_DLRLC_TO_DLMAC_DAT_REQ_DQ_CNT)
-        break;
+	 break;
 
       if((elmIndx = SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ)) == NULLP)
-      break;
+	 break;
    }
- 
+
    RETVALUE(ROK);
 }
 #endif 
 
 #ifdef RLC_MAC_STA_RSP_RBUF
 #ifdef ANSI
-PUBLIC S16 rgDlStaRspBatchProc
+   PUBLIC S16 rgDlStaRspBatchProc
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC S16 rgDlStaRspBatchProc()
-Void;
+   Void;
 #endif
 {
-/* Read from Ring Buffer and process PDCP packets */
+   /* Read from Ring Buffer and process PDCP packets */
 
    U8 rngBufDeqIndx = 0;
    PRIVATE Pst rgDStaRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUDSTARSP,0,0,2,0};
@@ -2175,34 +2175,34 @@ Void;
    {
       staRspRing= (RguInfoRingElem *)elmIndx;
       SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].nPktProc++;;//Number of pkt processed in tti
-      
+
       if(staRspRing->msg!= NULLP)
       {
-         if( staRspRing->event == EVTRGUDSTARSP)
-         {
-         RgUiRguDStaRsp(&rgDStaRbfuPst, staRspRing->spId, (RguDStaRspInfo *) staRspRing->msg);
-         }
-         else
-         {
-         RgUiRguCStaRsp(&rgCStaRbfuPst, staRspRing->spId, (RguCStaRspInfo *) staRspRing->msg);
-         } 
+	 if( staRspRing->event == EVTRGUDSTARSP)
+	 {
+	    RgUiRguDStaRsp(&rgDStaRbfuPst, staRspRing->spId, (RguDStaRspInfo *) staRspRing->msg);
+	 }
+	 else
+	 {
+	    RgUiRguCStaRsp(&rgCStaRbfuPst, staRspRing->spId, (RguCStaRspInfo *) staRspRing->msg);
+	 } 
       }
       else
       {
-	      printf(" Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->read,
-			      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->write);
-	      /* Due to the cache issue we are verifying the mbuf pointer again and sending it to rlc if avilable*/
-              if(staRspRing->msg!= NULLP)
-	      {
-		      if( staRspRing->event == EVTRGUDSTARSP)
-			      RgUiRguDStaRsp(&rgDStaRbfuPst, staRspRing->spId, (RguDStaRspInfo *) staRspRing->msg);
-		      else  
-			      RgUiRguCStaRsp(&rgCStaRbfuPst, staRspRing->spId, (RguCStaRspInfo *) staRspRing->msg);
-	      }else 
-	      {
-		      printf(" still Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->read,
-				      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->write);
-	      } 
+	 printf(" Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->read,
+	       SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->write);
+	 /* Due to the cache issue we are verifying the mbuf pointer again and sending it to rlc if avilable*/
+	 if(staRspRing->msg!= NULLP)
+	 {
+	    if( staRspRing->event == EVTRGUDSTARSP)
+	       RgUiRguDStaRsp(&rgDStaRbfuPst, staRspRing->spId, (RguDStaRspInfo *) staRspRing->msg);
+	    else  
+	       RgUiRguCStaRsp(&rgCStaRbfuPst, staRspRing->spId, (RguCStaRspInfo *) staRspRing->msg);
+	 }else 
+	 {
+	    printf(" still Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->read,
+		  SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->write);
+	 } 
       }
       staRspRing->msg=NULLP;
       SRngIncrRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
@@ -2213,29 +2213,29 @@ Void;
       rngBufDeqIndx++;
 
       if(rngBufDeqIndx >= SS_RNG_MAX_DLRLC_TO_DLMAC_STA_RSP_DQ_CNT)
-        break;
+	 break;
 
       if((elmIndx = SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC)) == NULLP)
-      break;
+	 break;
    }
- 
+
    RETVALUE(ROK);
 }
 #endif 
 #ifdef LTE_L2_MEAS
 #ifdef MAC_RLC_HARQ_STA_RBUF
 #ifdef ANSI
-PUBLIC S16 RgUiRguHqStaIndRbuf 
+   PUBLIC S16 RgUiRguHqStaIndRbuf 
 (
-Pst* pst,
-SuId suId,
-RguHarqStatusInd *harqStatusInd
-)
+ Pst* pst,
+ SuId suId,
+ RguHarqStatusInd *harqStatusInd
+ )
 #else
 PUBLIC S16 RgUiRguHqStaIndRbuf(pst, suId, harqStatusInd)
-Pst* pst;
-SuId suId;
-RguHarqStatusInd *harqStatusInd;
+   Pst* pst;
+   SuId suId;
+   RguHarqStatusInd *harqStatusInd;
 #endif
 {
    S16  ret = ROK;
@@ -2262,6 +2262,6 @@ RguHarqStatusInd *harqStatusInd;
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

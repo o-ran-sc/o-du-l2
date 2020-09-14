@@ -53,26 +53,26 @@ typedef struct tSL2UeStatsCb
 }TSL2UeStatsCb;
 
 EXTERN Void TSL2AllocStatsMem ARGS((
- Region region,
- Pool   pool
-));
+	 Region region,
+	 Pool   pool
+	 ));
 EXTERN TSL2UeStatsCb* TSL2AllocUeStatsBlk ARGS((
- U16   rnti
-));
+	 U16   rnti
+	 ));
 EXTERN Void TSL2DeallocUeStatsBlk ARGS((
- U16         rnti,
- TSL2UeStatsCb   *statsCb
-));
+	 U16         rnti,
+	 TSL2UeStatsCb   *statsCb
+	 ));
 EXTERN TSL2CellStatsCb* TSL2AllocCellStatsBlk ARGS((
- U32 cellId
-));
+	 U32 cellId
+	 ));
 EXTERN Void TSL2DeallocCellStatsBlk ARGS((
- U32 cellId
-));
+	 U32 cellId
+	 ));
 EXTERN Void TSL2SendStatsToApp ARGS((
- Pst    *pst,
- SuId   suId
-));
+	 Pst    *pst,
+	 SuId   suId
+	 ));
 
 #ifdef __cplusplus
 }
@@ -81,5 +81,5 @@ EXTERN Void TSL2SendStatsToApp ARGS((
 #endif /* TENB_STATS */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -83,28 +83,28 @@ PRIVATE CONSTANT SystemId sId ={
  *  @return  void
  **/
 /*
-*
-*       Fun:   get system id
-*
-*       Desc:  Get system id consisting of part number, main version and
-*              revision and branch version and branch.
-*
-*       Ret:   TRUE      - ok
-*
-*       Notes: None
-*
-*       File:  rg_id.c
-*
-*/
- 
+ *
+ *       Fun:   get system id
+ *
+ *       Desc:  Get system id consisting of part number, main version and
+ *              revision and branch version and branch.
+ *
+ *       Ret:   TRUE      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  rg_id.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC Void rgGetSId
+   PUBLIC Void rgGetSId
 (
-SystemId *s                 /* system id */
-)
+ SystemId *s                 /* system id */
+ )
 #else
 PUBLIC Void rgGetSId(s)
-SystemId *s;                /* system id */
+   SystemId *s;                /* system id */
 #endif
 {
    TRC2(rgGetSId);
@@ -116,13 +116,13 @@ SystemId *s;                /* system id */
    cmMemcpy((U8 *)s->ptNmb, (U8 *)sId.ptNmb, LRG_MAX_PT_NUM_SIZE); 
 
    /* Stack Crash Problem for TRACE5 Changes. Added the return below */
-  RETVOID; 
-  
+   RETVOID; 
+
 } /* end of rgGetSid */
 
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

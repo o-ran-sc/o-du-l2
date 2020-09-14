@@ -88,13 +88,13 @@
 #define SET_BITS_MSB(_startBit, _numBits, _byte) \
 {                                                \
    _byte = (~((0xFF) >> _numBits));              \
-       _byte >>= _startBit;                          \
+   _byte >>= _startBit;                          \
 }
 
 #define SET_BITS_LSB(_startBit, _numBits, _byte) \
 {                                                \
    _byte = (~((0xFF) << _numBits));              \
-       _byte <<= _startBit;                          \
+   _byte <<= _startBit;                          \
 }
 
 
@@ -116,4 +116,4 @@ void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqD
 #endif
 /**********************************************************************
   End of file
-***********************************************************************/
+ ***********************************************************************/

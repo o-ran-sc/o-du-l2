@@ -47,7 +47,7 @@ typedef struct cmTimer         /* timer structure */
    struct cmTimer *next;       /* Next item in the timing queue */
    struct cmTimer *prev;       /* Previous item in the timing queue */
    U8     ent2bUpd;            /* TRUE, if the timer block is not in the
-                                  proper bin */
+				  proper bin */
    U16   entIdx;                /* Current entry index */
 } CmTimer;
 
@@ -94,6 +94,6 @@ extern Void cmRstCbTq ARGS((CmTmrArg* arg));
 
 
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

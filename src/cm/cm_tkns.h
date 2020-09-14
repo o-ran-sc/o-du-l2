@@ -44,24 +44,24 @@
 {                                                  \
    Cntr i;                                         \
    Cntr len;                                       \
-                                                   \
+   \
    if(tknStr->pres)                                \
    {                                               \
       if (tknStr->len % 8)                         \
-         len = (tknStr->len/8 ) + 1;               \
+      len = (tknStr->len/8 ) + 1;               \
       else                                         \
-         len = (tknStr->len/8 );                   \
-                                                   \
+      len = (tknStr->len/8 );                   \
+      \
       /* Value */                                  \
       for (i = 0; i < (S16) len; i++)              \
       {                                            \
-         CMCHKPK(SPkU8, tknStr->val[i], mBuf);     \
+	 CMCHKPK(SPkU8, tknStr->val[i], mBuf);     \
       }                                            \
-                                                   \
+      \
       /* Length */                                 \
       CMCHKPK(SPkU8, tknStr->len, mBuf);           \
    }                                               \
-                                                   \
+   \
    /* Token Header */                              \
    CMCHKPK(SPkU8, tknStr->pres, mBuf);             \
 }
@@ -70,33 +70,33 @@
 {                                                                  \
    Cntr i;                                                         \
    Cntr len;                                                       \
-                                                                   \
+   \
    /* Token Header */                                              \
    CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);                        \
-                                                                   \
+   \
    if(tknStr->pres)                                                \
    {                                                               \
-     /* Length */                                                  \
+      /* Length */                                                  \
       CMCHKUNPK(SUnpkU8, &tknStr->len, mBuf);                      \
-                                                                   \
+      \
       if (tknStr->len % 8)                                         \
-         len = (tknStr->len/8 ) + 1;                               \
+      len = (tknStr->len/8 ) + 1;                               \
       else                                                         \
-         len = (tknStr->len/8 );                                   \
-                                                                   \
+      len = (tknStr->len/8 );                                   \
+      \
       /* Value */                                                  \
       for (i = 1; i <= (S16) len; i++)                             \
       {                                                            \
-         CMCHKUNPK(SUnpkU8, &tknStr->val[len - i], mBuf);          \
+	 CMCHKUNPK(SUnpkU8, &tknStr->val[len - i], mBuf);          \
       }                                                            \
    }                                                               \
-                                                                   \
+   \
 }
 
 #endif /* __CMTKNSH */
 
   
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

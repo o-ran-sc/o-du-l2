@@ -211,23 +211,23 @@ PUBLIC RguL2MUlThrpMeasReq kwLiRguL2MUlThrpMeasReqMt[] =
  */
 
 #ifdef ANSI
-PUBLIC S16 KwLiRguBndReq
+   PUBLIC S16 KwLiRguBndReq
 (
-Pst  *post,                       /* post structure */
-SuId suId,                      /* Service User Id */
-SpId spId                       /* Service Provider Id */
-)
+ Pst  *post,                       /* post structure */
+ SuId suId,                      /* Service User Id */
+ SpId spId                       /* Service Provider Id */
+ )
 #else
 PUBLIC S16 KwLiRguBndReq(post, suId, spId)
-Pst  *post;                       /* post structure */
-SuId suId;                      /* Service User Id */
-SpId spId;                      /* Service Provider Id */
+   Pst  *post;                       /* post structure */
+   SuId suId;                      /* Service User Id */
+   SpId spId;                      /* Service Provider Id */
 #endif
 {
    TRC3(KwLiRguBndReq)
 
-   /* jump to specific primitive depending on configured selector */
-   (*kwLiRguBndReqMt[post->selector])(post, suId, spId);
+      /* jump to specific primitive depending on configured selector */
+      (*kwLiRguBndReqMt[post->selector])(post, suId, spId);
 
    RETVALUE(ROK);
 
@@ -254,23 +254,23 @@ SpId spId;                      /* Service Provider Id */
  */
 
 #ifdef ANSI
-PUBLIC S16 KwLiRguUbndReq
+   PUBLIC S16 KwLiRguUbndReq
 (
-Pst         *post,
-SpId        spId,
-Reason      reason
-)
+ Pst         *post,
+ SpId        spId,
+ Reason      reason
+ )
 #else
 PUBLIC S16 KwLiRguUbndReq(post, spId, reason)
-Pst         *post;
-SpId        spId;
-Reason      reason;
+   Pst         *post;
+   SpId        spId;
+   Reason      reason;
 #endif
 {
    TRC3(KwLiRguUbndReq)
 
-   /* jump to specific primitive depending on configured selector */
-   (*kwLiRguUbndReqMt[post->selector])(post, spId, reason);
+      /* jump to specific primitive depending on configured selector */
+      (*kwLiRguUbndReqMt[post->selector])(post, spId, reason);
 
    RETVALUE(ROK);
 
@@ -299,29 +299,29 @@ Reason      reason;
  *
  */
 #ifdef ANSI
-PUBLIC S16 RlcMacSendDlData
+   PUBLIC S16 RlcMacSendDlData
 (
-Pst               *post,
-SpId              spId,
-RlcMacData       *dlData
-)
+ Pst               *post,
+ SpId              spId,
+ RlcMacData       *dlData
+ )
 #else
 PUBLIC S16 RlcMacSendDlData(post, spId, dlData)
-Pst               *post;
-SpId              spId;
-RlcMacData        *dlData;
+   Pst               *post;
+   SpId              spId;
+   RlcMacData        *dlData;
 #endif
 {
    TRC3(RlcMacSendDlData)
 #ifdef RLC_MAC_DAT_REQ_RBUF
-        post->event=EVTRGUDDATREQ;
-      if((kwLiRguDatReqRbuf(post, spId, datReq)) != ROK)
-      {
+      post->event=EVTRGUDDATREQ;
+   if((kwLiRguDatReqRbuf(post, spId, datReq)) != ROK)
+   {
 
       SPutStaticBuffer(post->region, post->pool,                      
-                      (Data *) datReq, sizeof(RguDDatReqInfo), 0);             
-         RETVALUE(RFAILED);
-      }
+	    (Data *) datReq, sizeof(RguDDatReqInfo), 0);             
+      RETVALUE(RFAILED);
+   }
 #else
    /* jump to specific primitive depending on configured selector */
    (*rlcMacSendDlDataOpts[post->selector])(post, spId, dlData);
@@ -354,26 +354,26 @@ RlcMacData        *dlData;
  *
  */
 #ifdef ANSI
-PUBLIC S16 RlcMacSendBOStatus
+   PUBLIC S16 RlcMacSendBOStatus
 (
-Pst               *post,
-SpId              spId,
-RlcMacBOStatus    *boSta
-)
+ Pst               *post,
+ SpId              spId,
+ RlcMacBOStatus    *boSta
+ )
 #else
 PUBLIC S16 RlcMacSendBOStatus(post, spId, staRsp)
-Pst               *post;
-SpId              spId;
-RlcMacBOStatus    *boSta;
+   Pst               *post;
+   SpId              spId;
+   RlcMacBOStatus    *boSta;
 #endif
 {
    TRC3(RlcMacSendBOStatus)
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-       post->event= EVTRGUDSTARSP;
-      if((kwLiRguStaRspRbuf(post, spId, staRsp)) != ROK)
-      {
-         RETVALUE(RFAILED);
-      }
+      post->event= EVTRGUDSTARSP;
+   if((kwLiRguStaRspRbuf(post, spId, staRsp)) != ROK)
+   {
+      RETVALUE(RFAILED);
+   }
 #endif 
    /* jump to specific primitive depending on configured selector */
    (*rlcMacSendBOStatusOpts[post->selector])(post, spId, boSta);
@@ -409,23 +409,23 @@ RlcMacBOStatus    *boSta;
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwLiRguL2MUlThrpMeasReq
+   PUBLIC S16 KwLiRguL2MUlThrpMeasReq
 (
-Pst                     *post,
-SpId                    spId,
-RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq
-)
+ Pst                     *post,
+ SpId                    spId,
+ RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq
+ )
 #else
 PUBLIC S16 KwLiRguL2MUlThrpMeasReq(post, spId, l2mUlThrpMeasReq)
-Pst                     *post;
-SpId                    spId;
-RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq;
+   Pst                     *post;
+   SpId                    spId;
+   RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq;
 #endif
 {
    TRC3(KwLiRguL2MUlThrpMeasReq)
 
-   /* jump to specific primitive depending on configured selector */
-   (*kwLiRguL2MUlThrpMeasReqMt[post->selector])(post, spId, l2mUlThrpMeasReq);
+      /* jump to specific primitive depending on configured selector */
+      (*kwLiRguL2MUlThrpMeasReqMt[post->selector])(post, spId, l2mUlThrpMeasReq);
 
    RETVALUE(ROK);
 
@@ -440,20 +440,20 @@ PUBLIC S16 rlcUlBatchProc ARGS ((Void));
 EXTERN Void kwUtlFreeUlRBuf ARGS((void));
 
 #ifdef ANSI
-PUBLIC S16 rlcUlBatchProc
+   PUBLIC S16 rlcUlBatchProc
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC S16 rlcUlBatchProc()
-Void;
+   Void;
 #endif
 {
-/* Read from Ring Buffer and process PDCP packets */
+   /* Read from Ring Buffer and process PDCP packets */
    RguDDatIndInfo   *datInd;
    Void *elmIndx = NULLP;
    PRIVATE Pst rlcUlRbfuPst={1,1,ENTKW,0,ENTRG,0,PRIOR0,RTESPEC,EVTRLCULDAT,0,0,0,0};
-/* Read from Ring Buffer and process PDCP packets */
+   /* Read from Ring Buffer and process PDCP packets */
 
 #ifndef SS_RBUF
    RguDedDatInd1 *rguDatInd = NULLP;
@@ -467,11 +467,11 @@ Void;
       SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].nPktProc++;;//Number of pkt processed in tti
       if(datInd != NULLP)
       {
-         KwLiRguDDatInd(&rlcUlRbfuPst, 0, datInd);
+	 KwLiRguDDatInd(&rlcUlRbfuPst, 0, datInd);
       }
       else
       {
-         RLOG0(L_ERROR,"Received NULL buffer");
+	 RLOG0(L_ERROR,"Received NULL buffer");
       }
       rguDatInd->msg=NULLP;
       SRngIncrRIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
@@ -481,10 +481,10 @@ Void;
       rngBufDeqIndx++;
 
       //if(rngBufDeqIndx >= SS_RNG_MAX_ULMAC_TO_ULRLC_DQ_CNT)
-       // break;
+      // break;
 
       if((elmIndx = SRngGetRIndx(SS_RNG_BUF_ULMAC_TO_ULRLC)) == NULLP)
-      break;
+	 break;
    }
 #else
    elmIndx = SRngGetRIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
@@ -498,7 +498,7 @@ Void;
       SRngIncrRIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
 
       if((elmIndx = SRngGetRIndx(SS_RNG_BUF_ULMAC_TO_ULRLC)) == NULLP)
-      	break;
+	 break;
    }
 #endif
    RETVALUE(ROK);
@@ -530,41 +530,41 @@ PUBLIC Void kwUtlFreeUlRBuf()
    U8             numPdu;
 
    TRC2(kwUtlFreeUlRBuf)
-   /* Free SS_RNG_BUF_ULMAC_TO_ULRLC  */
-   while((SDeqSRngBuf (SS_RNG_BUF_ULMAC_TO_ULRLC, &elem) == ROK))
-   {
-      datInd = (RguDDatIndInfo *)elem; 
-      for(numLch = 0; numLch< datInd->numLch; numLch++)
+      /* Free SS_RNG_BUF_ULMAC_TO_ULRLC  */
+      while((SDeqSRngBuf (SS_RNG_BUF_ULMAC_TO_ULRLC, &elem) == ROK))
       {
-         for(numPdu = 0; numPdu < datInd->lchData[numLch].pdu.numPdu; numPdu++)
-         {
-            if(datInd->lchData[numLch].pdu.mBuf[numPdu])
-            {
-               RLC_FREE_BUF_WC(datInd->lchData[numLch].pdu.mBuf[numPdu]);
-            }
-         }
+	 datInd = (RguDDatIndInfo *)elem; 
+	 for(numLch = 0; numLch< datInd->numLch; numLch++)
+	 {
+	    for(numPdu = 0; numPdu < datInd->lchData[numLch].pdu.numPdu; numPdu++)
+	    {
+	       if(datInd->lchData[numLch].pdu.mBuf[numPdu])
+	       {
+		  RLC_FREE_BUF_WC(datInd->lchData[numLch].pdu.mBuf[numPdu]);
+	       }
+	    }
+	 }
+	 RLC_PST_FREE(0, 0, datInd, sizeof(RguDDatIndInfo)); 
       }
-      RLC_PST_FREE(0, 0, datInd, sizeof(RguDDatIndInfo)); 
-   }
 }
 #endif
 #ifdef RLC_MAC_STA_RSP_RBUF
 #ifdef ANSI
-PUBLIC S16 kwLiRguStaRspRbuf
+   PUBLIC S16 kwLiRguStaRspRbuf
 (
-Pst               *post,
-SpId              spId,
-Void             *staRsp
-)
+ Pst               *post,
+ SpId              spId,
+ Void             *staRsp
+ )
 #else
 PUBLIC S16 kwLiRguStaRspRbuf(post, spId, staRsp)
-Pst               *post;
-SpId              spId;
-Void              *staRsp;
+   Pst               *post;
+   SpId              spId;
+   Void              *staRsp;
 #endif /* ANSI */
 {
    S16 ret1 = ROK;
-   
+
    Void *elem = NULLP;
 
    RguDStaRspInfo  *staRspInfo = NULL;
@@ -589,21 +589,21 @@ Void              *staRsp;
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
 #ifdef ANSI
-PUBLIC S16 kwLiRguDatReqRbuf
+   PUBLIC S16 kwLiRguDatReqRbuf
 (
-Pst               *post,
-SpId              spId,
-Void             *datReq
-)
+ Pst               *post,
+ SpId              spId,
+ Void             *datReq
+ )
 #else
 PUBLIC S16 kwLiRguDatReqRbuf(post, spId, datReq)
-Pst               *post;
-SpId              spId;
-Void             *datReq;
+   Pst               *post;
+   SpId              spId;
+   Void             *datReq;
 #endif /* ANSI */
 {
    S16 ret1 = ROK;
-   
+
    Void *elem = NULLP;
    RguInfoRingElem *datReqRing=NULLP;
    elem = SRngGetWIndx(SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ);
@@ -632,5 +632,5 @@ Void             *datReq;
 #endif /* __cplusplus */
   
 /********************************************************************30**
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

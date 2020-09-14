@@ -121,17 +121,17 @@ CrgUeCfg       *ueCfg;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgUHMCrgUeRecfg
+   PUBLIC Void rgUHMCrgUeRecfg
 (
-RgCellCb       *cellCb,
-RgUeCb         *ueCb,
-CrgUeRecfg     *ueRecfg
-)
+ RgCellCb       *cellCb,
+ RgUeCb         *ueCb,
+ CrgUeRecfg     *ueRecfg
+ )
 #else
 PUBLIC Void rgUHMCrgUeRecfg(cellCb, ueCb, ueRecfg) 
-RgCellCb       *cellCb;
-RgUeCb         *ueCb;
-CrgUeRecfg     *ueRecfg;
+   RgCellCb       *cellCb;
+   RgUeCb         *ueCb;
+   CrgUeRecfg     *ueRecfg;
 #endif
 {
    TRC2(rgUHMCrgUeRecfg);
@@ -141,6 +141,6 @@ CrgUeRecfg     *ueRecfg;
 }  /* rgUHMCrgUeCfg */
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

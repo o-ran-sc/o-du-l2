@@ -95,7 +95,7 @@ typedef S16 (*EgtpSrvOpenCfm) ARGS((CmStatus cfm));
 typedef S16 (*EgtpTnlMgmtReq) ARGS((Pst *pst, EgtpTnlEvt tnlEvt));
 typedef S16 (*EgtpTnlMgmtCfm) ARGS((EgtpTnlEvt tnlEvt));
 typedef S16 (*EgtpSlotInd) ARGS(());
-  
+
 S16 packEgtpCfgReq(Pst *pst, EgtpConfig  egtpCfg);
 S16 unpackEgtpCfgReq(EgtpCfgReq func , Pst *pst, Buffer *mBuf);
 S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm);

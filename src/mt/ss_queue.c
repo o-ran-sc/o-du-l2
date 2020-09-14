@@ -105,12 +105,12 @@ Queue *q;              /* queue */
    TRC1(SInitQueue)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check queue pointer */
-   if (q == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS266, ERRZERO, "Null Ptr");
-      RETVALUE(RFAILED);
-   }
+      /* check queue pointer */
+      if (q == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS266, ERRZERO, "Null Ptr");
+	 RETVALUE(RFAILED);
+      }
 #endif
    q->head     = NULLP;
    q->tail     = NULLP;
@@ -122,34 +122,34 @@ Queue *q;              /* queue */
 
   
 /*
-*
-*       Fun:   SFlushQueue
-*
-*       Desc:  This function will release all of the data or message
-*              buffers on the specified queue.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: if queue is empty: no action is taken.
-*
-*              if queue is not empty: all buffers in queue are returned
-*              to memory. queue length is set to zero.
-*
-*              if dequeud buffer is a message buffer, all data buffers
-*              associated with the message buffer are returned to memory
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SFlushQueue
+ *
+ *       Desc:  This function will release all of the data or message
+ *              buffers on the specified queue.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: if queue is empty: no action is taken.
+ *
+ *              if queue is not empty: all buffers in queue are returned
+ *              to memory. queue length is set to zero.
+ *
+ *              if dequeud buffer is a message buffer, all data buffers
+ *              associated with the message buffer are returned to memory
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SFlushQueue
+   PUBLIC S16 SFlushQueue
 (
-Queue *q                    /* queue */
-)
+ Queue *q                    /* queue */
+ )
 #else
 PUBLIC S16 SFlushQueue(q)
-Queue *q;                   /* queue */
+   Queue *q;                   /* queue */
 #endif
 {
    Buffer *tBuf;
@@ -164,12 +164,12 @@ Queue *q;                   /* queue */
    TRC1(SFlushQueue)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check queue */
-   if (q == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS267, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
-   }
+      /* check queue */
+      if (q == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS267, ERRZERO, "Null Q Ptr");
+	 RETVALUE(RFAILED);
+      }
 #endif
 
    tBuf = q->head;
@@ -177,11 +177,11 @@ Queue *q;                   /* queue */
    {
       mBuf = tBuf->b_next;
       if (tBuf->b_datap->db_type == SS_M_PROTO)
-         SPutMsg(tBuf);
+	 SPutMsg(tBuf);
       else
       {
-         minfo = (SsMsgInfo *) tBuf->b_rptr;
-         SPutDBuf(minfo->region, minfo->pool, tBuf);
+	 minfo = (SsMsgInfo *) tBuf->b_rptr;
+	 SPutDBuf(minfo->region, minfo->pool, tBuf);
       }
       tBuf = mBuf;
    }
@@ -195,57 +195,57 @@ Queue *q;                   /* queue */
 
   
 /*
-*
-*       Fun:   SCatQueue
-*
-*       Desc:  This function will concatenate the two specified queues
-*              into one queue.
-*
-*       Ret:   ROK     - ok
-*              RFAILED - failed, general (optional)
-*
-*       Notes: if order equals Q1Q2: all buffers attached to queue 2 are
-*              moved to the end of queue 1. queue 2 is set to empty.
-*              queue 1 length is increased by length of queue 2. queue
-*              2 length is set to zero. return is ok.
-*
-*              if order equals Q2Q1: all buffers attached to queue 2 are
-*              moved to the front of queue 1. queue 2 is set to empty.
-*              queue 1 length is increased by length of queue 2. queue
-*              2 length is set to zero. return is ok.
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SCatQueue
+ *
+ *       Desc:  This function will concatenate the two specified queues
+ *              into one queue.
+ *
+ *       Ret:   ROK     - ok
+ *              RFAILED - failed, general (optional)
+ *
+ *       Notes: if order equals Q1Q2: all buffers attached to queue 2 are
+ *              moved to the end of queue 1. queue 2 is set to empty.
+ *              queue 1 length is increased by length of queue 2. queue
+ *              2 length is set to zero. return is ok.
+ *
+ *              if order equals Q2Q1: all buffers attached to queue 2 are
+ *              moved to the front of queue 1. queue 2 is set to empty.
+ *              queue 1 length is increased by length of queue 2. queue
+ *              2 length is set to zero. return is ok.
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SCatQueue
+   PUBLIC S16 SCatQueue
 (
-Queue *q1,                  /* queue 1 */
-Queue *q2,                  /* queue 2 */
-Order order                 /* order */
-)
+ Queue *q1,                  /* queue 1 */
+ Queue *q2,                  /* queue 2 */
+ Order order                 /* order */
+ )
 #else
 PUBLIC S16 SCatQueue(q1, q2, order)
-Queue *q1;                  /* queue 1 */
-Queue *q2;                  /* queue 2 */
-Order order;                /* order */
+   Queue *q1;                  /* queue 1 */
+   Queue *q2;                  /* queue 2 */
+   Order order;                /* order */
 #endif
 {
    TRC1(SCatQueue)
- 
+
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (q1 == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS268, ERRZERO, "Null Q1 Ptr");
-      RETVALUE(RFAILED);
-   }
- 
+      if (q1 == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS268, ERRZERO, "Null Q1 Ptr");
+	 RETVALUE(RFAILED);
+      }
+
    if (q2 == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS269, ERRZERO, "Null Q2 Ptr");
       RETVALUE(RFAILED);
    }
-   
+
    if ((order != Q1Q2) && (order != Q2Q1))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS270, ERRZERO, "Invalid queue order");
@@ -258,9 +258,9 @@ Order order;                /* order */
       SSLOGERROR(ERRCLS_INT_PAR, ESS271, ERRZERO, "Q1 == Q2");
       RETVALUE(RFAILED);
    }
-   
+
 #endif /* ERRCLASS */
-   
+
    if (q1->crntSize == 0)
    {
       q1->head       = q2->head;
@@ -270,7 +270,7 @@ Order order;                /* order */
       q2->head       = NULLP;
       q2->tail       = NULLP;
       q2->crntSize   = 0;
-      
+
       RETVALUE(ROK);
    }
 
@@ -278,28 +278,28 @@ Order order;                /* order */
    {
       RETVALUE(ROK);
    }
-   
+
    switch (order)
    {
       case Q1Q2:
-      {
-         q1->tail->b_next = q2->head;
-         q2->head->b_prev = q1->tail;
-         q1->tail         = q2->tail;
+	 {
+	    q1->tail->b_next = q2->head;
+	    q2->head->b_prev = q1->tail;
+	    q1->tail         = q2->tail;
 
-         break;
-      }
+	    break;
+	 }
 
       case Q2Q1:
-      {
-         q2->tail->b_next = q1->head;
-         q1->head->b_prev = q2->tail;
-         q1->head         = q2->head;
+	 {
+	    q2->tail->b_next = q1->head;
+	    q1->head->b_prev = q2->tail;
+	    q1->head         = q2->head;
 
-         break;
-      }
+	    break;
+	 }
       default:
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
    }
 
    q1->crntSize  += q2->crntSize;
@@ -315,41 +315,41 @@ Order order;                /* order */
 
   
 /*
-*
-*       Fun:   SFndLenQueue
-*
-*       Desc:  This function determines the length of a queue.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed
-*
-*       Notes: length of queue is determined, queue is unchanged
-*              and length is returned via pointer to length.
-*              
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SFndLenQueue
+ *
+ *       Desc:  This function determines the length of a queue.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed
+ *
+ *       Notes: length of queue is determined, queue is unchanged
+ *              and length is returned via pointer to length.
+ *              
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SFndLenQueue
+   PUBLIC S16 SFndLenQueue
 (
-Queue *q,                   /* queue */
-QLen  *lngPtr               /* pointer to length */
-)
+ Queue *q,                   /* queue */
+ QLen  *lngPtr               /* pointer to length */
+ )
 #else
 PUBLIC S16 SFndLenQueue(q, lngPtr)
-Queue *q;                   /* queue */
-QLen  *lngPtr;              /* pointer to length */
+   Queue *q;                   /* queue */
+   QLen  *lngPtr;              /* pointer to length */
 #endif
 {
    TRC1(SFndLenQueue)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check queue */
-   if (q == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS272, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
-   }
+      /* check queue */
+      if (q == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS272, ERRZERO, "Null Q Ptr");
+	 RETVALUE(RFAILED);
+      }
    /* check length */
    if (lngPtr == NULLP)
    {
@@ -366,60 +366,60 @@ QLen  *lngPtr;              /* pointer to length */
 
 
 /*
-*
-*       Fun:   SExamQueue
-*
-*       Desc:  This function examines the queue at the desired index.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed 
-*
-*       Notes: index is 0 based and indicates location in queue.
-*
-*              if queue is empty: pointer to buffer is set to null and
-*              return is ok, data not available. queue length is unchanged.
-*
-*              if queue is not empty: pointer to buffer is set to indexed
-*              buffer in queue. return is ok. queue length is unchanged.
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SExamQueue
+ *
+ *       Desc:  This function examines the queue at the desired index.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed 
+ *
+ *       Notes: index is 0 based and indicates location in queue.
+ *
+ *              if queue is empty: pointer to buffer is set to null and
+ *              return is ok, data not available. queue length is unchanged.
+ *
+ *              if queue is not empty: pointer to buffer is set to indexed
+ *              buffer in queue. return is ok. queue length is unchanged.
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SExamQueue
+   PUBLIC S16 SExamQueue
 (
-Buffer **bufPtr,            /* pointer to buffer */
-Queue  *q,                  /* queue */
-QLen   idx                  /* index */
-)
+ Buffer **bufPtr,            /* pointer to buffer */
+ Queue  *q,                  /* queue */
+ QLen   idx                  /* index */
+ )
 #else
 PUBLIC S16 SExamQueue(bufPtr, q, idx)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue  *q;                  /* queue */
-QLen   idx;                 /* index */
+   Buffer **bufPtr;            /* pointer to buffer */
+   Queue  *q;                  /* queue */
+   QLen   idx;                 /* index */
 #endif
 {
    Buffer *tmpBuf;
    QLen   i;
 
    TRC1(SExamQueue)
- 
+
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check buffer pointer */
-   if (bufPtr == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS274, ERRZERO, "Null Buf Ptr");
-      RETVALUE(RFAILED);
-   }
- 
+      /* check buffer pointer */
+      if (bufPtr == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS274, ERRZERO, "Null Buf Ptr");
+	 RETVALUE(RFAILED);
+      }
+
    /* check index */
    if ((S32)idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS275, ERRZERO, "-ve index ");
       RETVALUE(RFAILED);
    }
- 
+
    /* check queue */
    if (q == NULLP)
    {
@@ -427,7 +427,7 @@ QLen   idx;                 /* index */
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS */
- 
+
    if (idx >= q->crntSize)
    {
       *bufPtr = NULLP;
@@ -447,7 +447,7 @@ QLen   idx;                 /* index */
       tmpBuf = q->head;
       for (i = 0; i < idx; i++)
       {
-         tmpBuf = tmpBuf->b_next;
+	 tmpBuf = tmpBuf->b_next;
       }
       *bufPtr = tmpBuf;
    }
@@ -458,62 +458,62 @@ QLen   idx;                 /* index */
 
 
 /*
-*
-*       Fun:   SAddQueue
-*
-*       Desc:  This function inserts a bufer into the queue before 
-*              the desired index.
-*
-*       Ret:   ROK     - ok
-*              RFAILED - failed
-*              ROKDNA  - failed - specified index not available
-*
-*       Notes: index is 0 based and indicates location in queue.
-*
-*              if queue is empty: buffer is placed in the queue.
-*              queue length is incremented.
-*
-*              if queue is not empty: if index is less than the queue length, 
-*              buffer is inserted before the desired index;
-*              otherwise, buffer is placed behind all other buffers in queue.
-*              queue length is incremented.
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SAddQueue
+ *
+ *       Desc:  This function inserts a bufer into the queue before 
+ *              the desired index.
+ *
+ *       Ret:   ROK     - ok
+ *              RFAILED - failed
+ *              ROKDNA  - failed - specified index not available
+ *
+ *       Notes: index is 0 based and indicates location in queue.
+ *
+ *              if queue is empty: buffer is placed in the queue.
+ *              queue length is incremented.
+ *
+ *              if queue is not empty: if index is less than the queue length, 
+ *              buffer is inserted before the desired index;
+ *              otherwise, buffer is placed behind all other buffers in queue.
+ *              queue length is incremented.
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SAddQueue
+   PUBLIC S16 SAddQueue
 (
-Buffer *mBuf,                /* buffer */
-Queue  *q,                   /* queue */
-QLen   idx                   /* index */
-)
+ Buffer *mBuf,                /* buffer */
+ Queue  *q,                   /* queue */
+ QLen   idx                   /* index */
+ )
 #else
 PUBLIC S16 SAddQueue(mBuf, q, idx)
-Buffer *mBuf;                /* buffer */
-Queue  *q;                   /* queue */
-QLen   idx;                  /* index */
+   Buffer *mBuf;                /* buffer */
+   Queue  *q;                   /* queue */
+   QLen   idx;                  /* index */
 #endif
 {
    Buffer *tBuf;
    QLen   i;
 
    TRC1(SAddQueue)
- 
+
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check queue */
-   if (q == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS277, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
-   }
- 
+      /* check queue */
+      if (q == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS277, ERRZERO, "Null Q Ptr");
+	 RETVALUE(RFAILED);
+      }
+
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS278, ERRZERO, "Null Buf Ptr");
       RETVALUE(RFAILED);
    }
- 
+
    if ((S32)idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS279, ERRZERO, "-ve index");
@@ -523,7 +523,7 @@ QLen   idx;                  /* index */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS280, ERRZERO, 
-                 "Incorrect buffer type");
+	    "Incorrect buffer type");
       RETVALUE(RFAILED);
    }
    tBuf = q->head;
@@ -531,8 +531,8 @@ QLen   idx;                  /* index */
    {
       if (tBuf == mBuf)
       {
-         SSLOGERROR(ERRCLS_INT_PAR, ESS281, ERRZERO, "Duplicate queued mBuf");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS281, ERRZERO, "Duplicate queued mBuf");
+	 RETVALUE(RFAILED);
       }
       tBuf = tBuf->b_next;
    }
@@ -570,9 +570,9 @@ QLen   idx;                  /* index */
       tBuf = q->head;
       for (i = 0; i < idx; i++)
       {
-         tBuf = tBuf->b_next;
+	 tBuf = tBuf->b_next;
       }
-    
+
       tBuf->b_prev->b_next = mBuf;
       mBuf->b_prev         = tBuf->b_prev;
       mBuf->b_next         = tBuf;
@@ -585,68 +585,68 @@ QLen   idx;                  /* index */
 
 
 /*
-*
-*       Fun:   SRemQueue
-*
-*       Desc:  This function removes a buffer from the queue at 
-*              the desired index.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed
-*
-*       Notes: index is 0 based and indicates location in queue.
-*
-*              if queue is empty: pointer to buffer is set to null and
-*              return is ok, data not available. queue length is unchanged.
-*
-*              if queue is not empty: pointer to buffer is set to indexed
-*              buffer in queue. return is ok. queue length is decremented.
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SRemQueue
+ *
+ *       Desc:  This function removes a buffer from the queue at 
+ *              the desired index.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed
+ *
+ *       Notes: index is 0 based and indicates location in queue.
+ *
+ *              if queue is empty: pointer to buffer is set to null and
+ *              return is ok, data not available. queue length is unchanged.
+ *
+ *              if queue is not empty: pointer to buffer is set to indexed
+ *              buffer in queue. return is ok. queue length is decremented.
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SRemQueue
+   PUBLIC S16 SRemQueue
 (
-Buffer **bufPtr,            /* pointer to buffer */
-Queue  *q,                  /* queue */
-QLen   idx                  /* index */
-)
+ Buffer **bufPtr,            /* pointer to buffer */
+ Queue  *q,                  /* queue */
+ QLen   idx                  /* index */
+ )
 #else
 PUBLIC S16 SRemQueue(bufPtr, q, idx)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue  *q;                  /* queue */
-QLen   idx;                 /* index */
+   Buffer **bufPtr;            /* pointer to buffer */
+   Queue  *q;                  /* queue */
+   QLen   idx;                 /* index */
 #endif
 {
    Buffer *tBuf;
    QLen   i;
 
    TRC1(SRemQueue)
- 
+
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check buffer pointer */
-   if (bufPtr == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS283, ERRZERO, "Null Buf Ptr");
-      RETVALUE(RFAILED);
-   }
- 
+      /* check buffer pointer */
+      if (bufPtr == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS283, ERRZERO, "Null Buf Ptr");
+	 RETVALUE(RFAILED);
+      }
+
    /* check queue */
    if (q == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS284, ERRZERO, "Null Q Ptr");
       RETVALUE(RFAILED);
    }
- 
+
    if ((S32)idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS285, ERRZERO, "-ve Index");
       RETVALUE(RFAILED);
    }      
 #endif /* ERRCLASS */   
- 
+
    if (idx >= q->crntSize)
    {
       *bufPtr = NULLP;
@@ -657,13 +657,13 @@ QLen   idx;                 /* index */
       *bufPtr = q->head;
       if (q->crntSize == 1)
       {
-         q->head = NULLP;
-         q->tail = NULLP;
+	 q->head = NULLP;
+	 q->tail = NULLP;
       }
       else
       {
-         q->head         = q->head->b_next;
-         q->head->b_prev = NULLP;
+	 q->head         = q->head->b_next;
+	 q->head->b_prev = NULLP;
       }
    }
    else if (idx == q->crntSize -1)
@@ -678,10 +678,10 @@ QLen   idx;                 /* index */
 
       for (i = 0; i < idx; i++)
       {
-         tBuf = tBuf->b_next;
+	 tBuf = tBuf->b_next;
       }
       *bufPtr = tBuf;
-      
+
       tBuf->b_prev->b_next = tBuf->b_next;
       tBuf->b_next->b_prev = tBuf->b_prev;
    }
@@ -696,121 +696,121 @@ QLen   idx;                 /* index */
 
 
 /*
-*
-*       Fun:   SQueueFirst
-*
-*       Desc:  This function queues a data or message buffer to the
-*              front of the specified queue.
-*
-*       Ret:   ROK     - ok
-*              RFAILED - failed, general (optional)
-*
-*       Notes: if queue is empty: buffer is placed in the queue. queue
-*              length is incremented.
-*              
-*              if queue is not empty: buffer is placed in front of all
-*              other buffers in queue. queue length is incremented.
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SQueueFirst
+ *
+ *       Desc:  This function queues a data or message buffer to the
+ *              front of the specified queue.
+ *
+ *       Ret:   ROK     - ok
+ *              RFAILED - failed, general (optional)
+ *
+ *       Notes: if queue is empty: buffer is placed in the queue. queue
+ *              length is incremented.
+ *              
+ *              if queue is not empty: buffer is placed in front of all
+ *              other buffers in queue. queue length is incremented.
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC INLINE S16 SQueueFirst
+   PUBLIC INLINE S16 SQueueFirst
 (
-Buffer *buf,                /* buffer */
-Queue *q                    /* queue */
-)
+ Buffer *buf,                /* buffer */
+ Queue *q                    /* queue */
+ )
 #else
 PUBLIC INLINE S16 SQueueFirst(buf, q)
-Buffer *buf;                /* buffer */
-Queue *q;                   /* queue */
+   Buffer *buf;                /* buffer */
+   Queue *q;                   /* queue */
 #endif
 {
    TRC1(SQueueFirst)
 
-   RETVALUE(SAddQueue(buf, q, 0));
+      RETVALUE(SAddQueue(buf, q, 0));
 } /* end of SQueueFirst */
 
   
 /*
-*
-*       Fun:   SDequeueFirst
-*
-*       Desc:  This function dequeues a data or message buffer from
-*              the front of the specified queue.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: if queue is empty: pointer to buffer is set to null and
-*              return is ok, data not available. queue length is unchanged.
-*              
-*              if queue is not empty: pointer to buffer is set to first
-*              buffer in queue, first buffer in queue is removed and
-*              return is ok. queue length is decremented.
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SDequeueFirst
+ *
+ *       Desc:  This function dequeues a data or message buffer from
+ *              the front of the specified queue.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: if queue is empty: pointer to buffer is set to null and
+ *              return is ok, data not available. queue length is unchanged.
+ *              
+ *              if queue is not empty: pointer to buffer is set to first
+ *              buffer in queue, first buffer in queue is removed and
+ *              return is ok. queue length is decremented.
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC INLINE S16 SDequeueFirst
+   PUBLIC INLINE S16 SDequeueFirst
 (
-Buffer **bufPtr,            /* pointer to buffer */
-Queue *q                    /* queue */
-)
+ Buffer **bufPtr,            /* pointer to buffer */
+ Queue *q                    /* queue */
+ )
 #else
 PUBLIC INLINE S16 SDequeueFirst(bufPtr, q)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue *q;                   /* queue */
+   Buffer **bufPtr;            /* pointer to buffer */
+   Queue *q;                   /* queue */
 #endif
 {
    TRC2(SDequeueFirst)
 
-   RETVALUE(SRemQueue(bufPtr, q, 0));
+      RETVALUE(SRemQueue(bufPtr, q, 0));
 } /* end of SDequeueFirst */
 
   
 /*
-*
-*       Fun:   SQueueLast
-*
-*       Desc:  This function queues a data or message buffer to the
-*              back of the specified queue.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: if queue is empty: buffer is placed in the queue.
-*              queue length is incremented.
-*              
-*              if queue is not empty: buffer is placed behind all
-*              other buffers in queue. queue length is incremented.
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SQueueLast
+ *
+ *       Desc:  This function queues a data or message buffer to the
+ *              back of the specified queue.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: if queue is empty: buffer is placed in the queue.
+ *              queue length is incremented.
+ *              
+ *              if queue is not empty: buffer is placed behind all
+ *              other buffers in queue. queue length is incremented.
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SQueueLast
+   PUBLIC S16 SQueueLast
 (
-Buffer *buf,                /* buffer */
-Queue *q                    /* queue */
-)
+ Buffer *buf,                /* buffer */
+ Queue *q                    /* queue */
+ )
 #else
 PUBLIC S16 SQueueLast(buf, q)
-Buffer *buf;                /* buffer */
-Queue *q;                   /* queue */
+   Buffer *buf;                /* buffer */
+   Queue *q;                   /* queue */
 #endif
 {
    TRC1(SQueueLast)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check queue */
-   if (q == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS286, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
-   }
+      /* check queue */
+      if (q == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS286, ERRZERO, "Null Q Ptr");
+	 RETVALUE(RFAILED);
+      }
    /* check queue */
    if (buf == NULLP)
    {
@@ -824,36 +824,36 @@ Queue *q;                   /* queue */
 
   
 /*
-*
-*       Fun:   SDequeueLast
-*
-*       Desc:  This function dequeues a data or message buffer from the
-*              back of the specified queue.
-*
-*       Ret:   ROK     - ok
-*              ROKDNA  - ok, data not available
-*              RFAILED - failed, general (optional)
-*
-*       Notes: if queue is empty: pointer to buffer is set to null and
-*              return is ok, data not available. queue length is unchanged.
-*              
-*              if queue is not empty: pointer to buffer is set to last
-*              buffer in queue, last buffer in queue is removed and
-*              return is ok. queue length is decremented.
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   SDequeueLast
+ *
+ *       Desc:  This function dequeues a data or message buffer from the
+ *              back of the specified queue.
+ *
+ *       Ret:   ROK     - ok
+ *              ROKDNA  - ok, data not available
+ *              RFAILED - failed, general (optional)
+ *
+ *       Notes: if queue is empty: pointer to buffer is set to null and
+ *              return is ok, data not available. queue length is unchanged.
+ *              
+ *              if queue is not empty: pointer to buffer is set to last
+ *              buffer in queue, last buffer in queue is removed and
+ *              return is ok. queue length is decremented.
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SDequeueLast
+   PUBLIC S16 SDequeueLast
 (
-Buffer **bufPtr,            /* pointer to buffer */
-Queue *q                    /* queue */
-)
+ Buffer **bufPtr,            /* pointer to buffer */
+ Queue *q                    /* queue */
+ )
 #else
 PUBLIC S16 SDequeueLast(bufPtr, q)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue *q;                   /* queue */
+   Buffer **bufPtr;            /* pointer to buffer */
+   Queue *q;                   /* queue */
 #endif
 {
    S16   ret;
@@ -861,12 +861,12 @@ Queue *q;                   /* queue */
    TRC1(SDequeueLast)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check buffer pointer */
-   if (!bufPtr)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS288, ERRZERO, "Null Buf Ptr");
-      RETVALUE(RFAILED);
-   }
+      /* check buffer pointer */
+      if (!bufPtr)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS288, ERRZERO, "Null Buf Ptr");
+	 RETVALUE(RFAILED);
+      }
    /* check queue */
    if (!q)
    {
@@ -886,27 +886,27 @@ Queue *q;                   /* queue */
 
 
 /*
-*
-*       Fun:   ssInitDmndQ
-*
-*       Desc:  This function initializes a Demand Queue
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed
-*
-*       Notes: 
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   ssInitDmndQ
+ *
+ *       Desc:  This function initializes a Demand Queue
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed
+ *
+ *       Notes: 
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 ssInitDmndQ
+   PUBLIC S16 ssInitDmndQ
 (
-SsDmndQ *dQueue                 /* Demand Queue */
-)
+ SsDmndQ *dQueue                 /* Demand Queue */
+ )
 #else
 PUBLIC S16 ssInitDmndQ(dQueue)
-SsDmndQ *dQueue;                /* Demand Queue */
+   SsDmndQ *dQueue;                /* Demand Queue */
 #endif
 {
    U8  i;
@@ -915,11 +915,11 @@ SsDmndQ *dQueue;                /* Demand Queue */
    TRC0(ssInitDmnddQ)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (dQueue == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS290, ERRZERO, "NULL DQ Pointer");
-      RETVALUE(RFAILED);
-   }
+      if (dQueue == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS290, ERRZERO, "NULL DQ Pointer");
+	 RETVALUE(RFAILED);
+      }
 #endif
 
    for (i = 0; i < SS_MAX_NUM_DQ; i++)
@@ -932,27 +932,27 @@ SsDmndQ *dQueue;                /* Demand Queue */
 #ifndef TENB_RTLIN_CHANGES
    for (i = 0; i < SS_DQ_BIT_MASK_LEN; i++)
 #else
-   for (i = 0; i < SS_MAX_NUM_DQ; i++)
+      for (i = 0; i < SS_MAX_NUM_DQ; i++)
 #endif
-   {
-#ifndef TENB_RTLIN_CHANGES
-      dQueue->bitMask[i] =  0;
-#endif
-      /* ss039.103 : Replaced SInitLock with WTInitLock */
-#ifdef SS_WIN
-      ret = WTInitLock(&dQueue->dmndQLock[i], SS_DMNDQ_LOCK);
-#else
-      ret = SInitLock(&dQueue->dmndQLock[i], SS_DMNDQ_LOCK);
-#endif
-      if (ret != ROK)
       {
-#if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS291, (ErrVal)ret,
-                                   "Failed to initialize lock");
+#ifndef TENB_RTLIN_CHANGES
+	 dQueue->bitMask[i] =  0;
 #endif
-         RETVALUE(RFAILED);
+	 /* ss039.103 : Replaced SInitLock with WTInitLock */
+#ifdef SS_WIN
+	 ret = WTInitLock(&dQueue->dmndQLock[i], SS_DMNDQ_LOCK);
+#else
+	 ret = SInitLock(&dQueue->dmndQLock[i], SS_DMNDQ_LOCK);
+#endif
+	 if (ret != ROK)
+	 {
+#if (ERRCLASS & ERRCLS_DEBUG)
+	    SSLOGERROR(ERRCLS_DEBUG, ESS291, (ErrVal)ret,
+		  "Failed to initialize lock");
+#endif
+	    RETVALUE(RFAILED);
+	 }
       }
-   }
 
    /* initialize the semaphore */
    ret = ssInitSema(&dQueue->dmndQSema, 0);
@@ -961,19 +961,19 @@ SsDmndQ *dQueue;                /* Demand Queue */
 #ifndef TENB_RTLIN_CHANGES
       for (i = 0; i < SS_DQ_BIT_MASK_LEN; i++)
 #else
-      for (i = 0; i < SS_MAX_NUM_DQ; i++)
+	 for (i = 0; i < SS_MAX_NUM_DQ; i++)
 #endif
-      {
-         /* ss039.103 : Replaced SDestroyLock with WTDestroyLock */
+	 {
+	    /* ss039.103 : Replaced SDestroyLock with WTDestroyLock */
 #ifdef SS_WIN
-         WTDestroyLock(&dQueue->dmndQLock[i]);
+	    WTDestroyLock(&dQueue->dmndQLock[i]);
 #else
-         SDestroyLock(&dQueue->dmndQLock[i]);
+	    SDestroyLock(&dQueue->dmndQLock[i]);
 #endif
-      }
+	 }
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS292, (ErrVal)ret, 
-                                   "Failed to init semaphore");
+	    "Failed to init semaphore");
 #endif
       RETVALUE(RFAILED);
    }
@@ -983,28 +983,28 @@ SsDmndQ *dQueue;                /* Demand Queue */
 
 
 /*
-*
-*       Fun:   ssDestroyDmndQ
-*
-*       Desc:  This function destroys a Demand Queue by releasing all the
-*              queued messages and detroying all the associated locks
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: 
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   ssDestroyDmndQ
+ *
+ *       Desc:  This function destroys a Demand Queue by releasing all the
+ *              queued messages and detroying all the associated locks
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: 
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 ssDestroyDmndQ
+   PUBLIC S16 ssDestroyDmndQ
 (
-SsDmndQ *dQueue                        /* demand Queue */
-)
+ SsDmndQ *dQueue                        /* demand Queue */
+ )
 #else
 PUBLIC S16 ssDestroyDmndQ(dQueue)
-SsDmndQ *dQueue;                       /* demand Queue */
+   SsDmndQ *dQueue;                       /* demand Queue */
 #endif
 {
    U8     i;
@@ -1014,48 +1014,48 @@ SsDmndQ *dQueue;                       /* demand Queue */
    TRC0(ssDestroyDmndQ)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (dQueue == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS293, ERRZERO, "NULL DQ Pointer");
-      RETVALUE(RFAILED);
-   }
+      if (dQueue == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS293, ERRZERO, "NULL DQ Pointer");
+	 RETVALUE(RFAILED);
+      }
 #endif
 
 #ifndef TENB_RTLIN_CHANGES
-      for (i = 0; i < SS_DQ_BIT_MASK_LEN; i++)
+   for (i = 0; i < SS_DQ_BIT_MASK_LEN; i++)
 #else
       for (i = 0; i < SS_MAX_NUM_DQ; i++)
 #endif
-   {
-      /* ss039.103 : Replaced SDestroyLock with WTDestroyLock */
-#ifdef SS_WIN
-      ret = WTDestroyLock(&dQueue->dmndQLock[i]);
-#else
-      ret = SDestroyLock(&dQueue->dmndQLock[i]);
-#endif
-      if (ret != ROK)
       {
-#if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS294, (ErrVal)ret, "Failed to destroy lock");
+	 /* ss039.103 : Replaced SDestroyLock with WTDestroyLock */
+#ifdef SS_WIN
+	 ret = WTDestroyLock(&dQueue->dmndQLock[i]);
+#else
+	 ret = SDestroyLock(&dQueue->dmndQLock[i]);
 #endif
-         RETVALUE(RFAILED);
+	 if (ret != ROK)
+	 {
+#if (ERRCLASS & ERRCLS_DEBUG)
+	    SSLOGERROR(ERRCLS_DEBUG, ESS294, (ErrVal)ret, "Failed to destroy lock");
+#endif
+	    RETVALUE(RFAILED);
+	 }
       }
-   }
    for (i = 0; i < SS_MAX_NUM_DQ; i++)
    {
       while (dQueue->queue[i].head != NULLP)
       {
-         tBuf = dQueue->queue[i].head;
-         dQueue->queue[i].head = dQueue->queue[i].head->b_next;
-         SPutMsg(tBuf);
+	 tBuf = dQueue->queue[i].head;
+	 dQueue->queue[i].head = dQueue->queue[i].head->b_next;
+	 SPutMsg(tBuf);
       }
    }
 
-/* ss06.13:addition */
+   /* ss06.13:addition */
    if( ssDestroySema(&dQueue->dmndQSema) != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS295, ERRZERO,
-                         "Could not delete the Semaphore");
+	    "Could not delete the Semaphore");
       RETVALUE(RFAILED);
 
    }
@@ -1065,36 +1065,36 @@ SsDmndQ *dQueue;                       /* demand Queue */
 
 
 /*
-*
-*       Fun:   ssDmndQPut
-*
-*       Desc:  This function adds a message to the head or tail of the 
-*              priority queue specified. The priority specified is the 
-*              destination Q index i.e 
-*              ((dst_Tsk_pri * SS_MAX_MSG_PRI) + msg_pri)
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed
-*
-*       Notes: 
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   ssDmndQPut
+ *
+ *       Desc:  This function adds a message to the head or tail of the 
+ *              priority queue specified. The priority specified is the 
+ *              destination Q index i.e 
+ *              ((dst_Tsk_pri * SS_MAX_MSG_PRI) + msg_pri)
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed
+ *
+ *       Notes: 
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 ssDmndQPut
+   PUBLIC S16 ssDmndQPut
 (
-SsDmndQ *dQueue,                       /* demand Queue */
-Buffer  *mBuf,                         /* message buffer */
-Prior   priority,                      /* priority */
-Order   order                          /* position */
-)
+ SsDmndQ *dQueue,                       /* demand Queue */
+ Buffer  *mBuf,                         /* message buffer */
+ Prior   priority,                      /* priority */
+ Order   order                          /* position */
+ )
 #else
 PUBLIC S16 ssDmndQPut(dQueue, mBuf, priority, order)
-SsDmndQ *dQueue;                       /* demand Queue */
-Buffer  *mBuf;                         /* message buffer */
-Prior   priority;                      /* priority */
-Order   order;                         /* position */
+   SsDmndQ *dQueue;                       /* demand Queue */
+   Buffer  *mBuf;                         /* message buffer */
+   Prior   priority;                      /* priority */
+   Order   order;                         /* position */
 #endif
 {
 #ifndef TENB_RTLIN_CHANGES
@@ -1116,11 +1116,11 @@ Order   order;                         /* position */
    TRC0(ssDmndQPut)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (dQueue == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS296, ERRZERO, "NULL DQ Pointer");
-      RETVALUE(RFAILED);
-   }
+      if (dQueue == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS296, ERRZERO, "NULL DQ Pointer");
+	 RETVALUE(RFAILED);
+      }
 
    if (mBuf == NULLP)
    {
@@ -1140,7 +1140,7 @@ Order   order;                         /* position */
       RETVALUE(RFAILED);
    }
 #endif
-   
+
 #ifndef TENB_RTLIN_CHANGES
    maskIndex   = priority >> 3;
    bitPosition = 7 - (priority % 8);
@@ -1188,17 +1188,17 @@ Order   order;                         /* position */
    {
       if (order == SS_DQ_LAST)
       {
-         mBuf->b_prev        = queue->tail;
-         mBuf->b_next        = NULLP;
-         queue->tail->b_next = mBuf;
-         queue->tail         = mBuf;
+	 mBuf->b_prev        = queue->tail;
+	 mBuf->b_next        = NULLP;
+	 queue->tail->b_next = mBuf;
+	 queue->tail         = mBuf;
       }
       else
       {
-         mBuf->b_next        = queue->head;
-         mBuf->b_prev        = NULLP;
-         queue->head->b_prev = mBuf;
-         queue->head         = mBuf;
+	 mBuf->b_next        = queue->head;
+	 mBuf->b_prev        = NULLP;
+	 queue->head->b_prev = mBuf;
+	 queue->head         = mBuf;
       }
    }
    queue->crntSize++;
@@ -1228,11 +1228,11 @@ Order   order;                         /* position */
       /* ss035.103 */
       if (order == SS_DQ_LAST)
       {
-         SDequeueLast(&mBuf, queue);
+	 SDequeueLast(&mBuf, queue);
       }
       else
       {
-         SDequeueFirst(&mBuf, queue);
+	 SDequeueFirst(&mBuf, queue);
       }
       RETVALUE (RFAILED);
    }
@@ -1240,30 +1240,30 @@ Order   order;                         /* position */
    /* increment the counting semaphore */
    /* ss006.13: addition */
 
-/* ss037.103 for Performance enhancement : this is to ensure that semaphore is posted every time the first message is posted to the queue so that permanent tick is picked */
+   /* ss037.103 for Performance enhancement : this is to ensure that semaphore is posted every time the first message is posted to the queue so that permanent tick is picked */
 #ifdef SS_PERF
-  if (size > 1)
-  {
-     sem_getvalue(&dQueue->dmndQSema, &value);
-     if (value > 0)
-           RETVALUE(ROK);
-  }
+   if (size > 1)
+   {
+      sem_getvalue(&dQueue->dmndQSema, &value);
+      if (value > 0)
+	 RETVALUE(ROK);
+   }
 #endif
    if (ssPostSema(&dQueue->dmndQSema) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-       SSLOGERROR(ERRCLS_DEBUG, ESS302, ERRZERO,
-                         "Could not unlock the Semaphore");
-       /* ss035.103 */
-       if (order == SS_DQ_LAST)
-       {
-          SDequeueLast(&mBuf, queue);
-       }
-       else
-       {
-          SDequeueFirst(&mBuf, queue);
-       } 
-       RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS302, ERRZERO,
+	    "Could not unlock the Semaphore");
+      /* ss035.103 */
+      if (order == SS_DQ_LAST)
+      {
+	 SDequeueLast(&mBuf, queue);
+      }
+      else
+      {
+	 SDequeueFirst(&mBuf, queue);
+      } 
+      RETVALUE(RFAILED);
 #endif
    }
    RETVALUE(ROK);
@@ -1272,29 +1272,29 @@ Order   order;                         /* position */
 
 
 /*
-*
-*       Fun:   ssDmndQWait
-*
-*       Desc:  This function removes a message from head or tail of the 
-*              highest non-empty priority queue message. 
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed
-*              ROKDNA   - ok, no data available in queue
-*
-*       Notes:  This is a blocking call
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   ssDmndQWait
+ *
+ *       Desc:  This function removes a message from head or tail of the 
+ *              highest non-empty priority queue message. 
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed
+ *              ROKDNA   - ok, no data available in queue
+ *
+ *       Notes:  This is a blocking call
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 ssDmndQWait
+   PUBLIC S16 ssDmndQWait
 (
-SsDmndQ *dQueue                          /* demand queue */
-)
+ SsDmndQ *dQueue                          /* demand queue */
+ )
 #else
 PUBLIC S16 ssDmndQWait(dQueue)
-SsDmndQ *dQueue;                          /* demand queue */
+   SsDmndQ *dQueue;                          /* demand queue */
 #endif
 {
    S16   ret;
@@ -1302,11 +1302,11 @@ SsDmndQ *dQueue;                          /* demand queue */
    TRC0(ssDmndQWait)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (dQueue == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS303, ERRZERO, "NULL DQ Pointer");
-      RETVALUE(RFAILED);
-   }
+      if (dQueue == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS303, ERRZERO, "NULL DQ Pointer");
+	 RETVALUE(RFAILED);
+      }
 
 #endif
 
@@ -1327,33 +1327,33 @@ SsDmndQ *dQueue;                          /* demand queue */
 
 
 /*
-*
-*       Fun:   ssDmndQGet
-*
-*       Desc:  This function removes a message from head or tail of the 
-*              highest non-empty priority queue message. 
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed
-*              ROKDNA   - ok, no data available in queue
-*
-*       Notes:  This is a blocking call
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   ssDmndQGet
+ *
+ *       Desc:  This function removes a message from head or tail of the 
+ *              highest non-empty priority queue message. 
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed
+ *              ROKDNA   - ok, no data available in queue
+ *
+ *       Notes:  This is a blocking call
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 ssDmndQGet
+   PUBLIC S16 ssDmndQGet
 (
-SsDmndQ *dQueue,                          /* demand queue */
-Buffer  **mBuf,                           /* message buffer */
-Order   order                             /* position */ 
-)
+ SsDmndQ *dQueue,                          /* demand queue */
+ Buffer  **mBuf,                           /* message buffer */
+ Order   order                             /* position */ 
+ )
 #else
 PUBLIC S16 ssDmndQGet(dQueue, mBuf, order)
-SsDmndQ *dQueue;                          /* demand queue */
-Buffer  **mBuf;                           /* message buffer */
-Order   order;                            /* position */
+   SsDmndQ *dQueue;                          /* demand queue */
+   Buffer  **mBuf;                           /* message buffer */
+   Order   order;                            /* position */
 #endif
 {
    Queue *queue;
@@ -1367,11 +1367,11 @@ Order   order;                            /* position */
    TRC0(ssDmndQGet)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (mBuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS304, ERRZERO, "NULL mBuf Pointer");
-      RETVALUE(RFAILED);
-   }
+      if (mBuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS304, ERRZERO, "NULL mBuf Pointer");
+	 RETVALUE(RFAILED);
+      }
 
    if ((order != SS_DQ_FIRST) && (order != SS_DQ_LAST))
    {
@@ -1392,14 +1392,14 @@ Order   order;                            /* position */
       if (ret != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS307, (ErrVal)ret, "Failed to get lock");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS307, (ErrVal)ret, "Failed to get lock");
 #endif
-         RETVALUE (RFAILED);
+	 RETVALUE (RFAILED);
       }
 
       bitPosition = osCp.dmndQLookupTbl[dQueue->bitMask[i]];
       if (bitPosition != 255)
-         break;
+	 break;
 
       /* ss039.103 : Replaced SUnlock with WTUnlock */
 #ifdef SS_WIN
@@ -1410,9 +1410,9 @@ Order   order;                            /* position */
       if (ret != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS308, ret, "Failed to release lock");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS308, ret, "Failed to release lock");
 #endif
-         RETVALUE (RFAILED);
+	 RETVALUE (RFAILED);
       }
    }
    if (i >= SS_DQ_BIT_MASK_LEN)
@@ -1421,7 +1421,7 @@ Order   order;                            /* position */
       *mBuf = NULLP;
       RETVALUE (ROKDNA);
    }
-   
+
    qIndex = (i * 8) +  (7 - bitPosition);
    queue = &dQueue->queue[qIndex];
 
@@ -1430,7 +1430,7 @@ Order   order;                            /* position */
    {
       queue = &dQueue->queue[i];
       if (queue->crntSize)
-         break;
+	 break;
    }
 
    if (i >= SS_MAX_NUM_DQ)
@@ -1455,8 +1455,8 @@ Order   order;                            /* position */
    }
 
 #endif
-/* ss037.103 For performance enhancement replace the check sequence with simple 
-setting the crntSize to 0 and removing the message */
+   /* ss037.103 For performance enhancement replace the check sequence with simple 
+      setting the crntSize to 0 and removing the message */
 #ifndef SS_PERF
    if (queue->crntSize == 1)
    {
@@ -1471,15 +1471,15 @@ setting the crntSize to 0 and removing the message */
    {
       if (order == SS_DQ_FIRST)
       {
-         *mBuf = queue->head;
-         queue->head = queue->head->b_next;
-         queue->head->b_prev = NULLP;
+	 *mBuf = queue->head;
+	 queue->head = queue->head->b_next;
+	 queue->head->b_prev = NULLP;
       }
       else
       {
-         *mBuf = queue->tail;
-         queue->tail = queue->tail->b_prev;
-         queue->tail->b_next = NULLP;
+	 *mBuf = queue->tail;
+	 queue->tail = queue->tail->b_prev;
+	 queue->tail->b_next = NULLP;
       }
    }
    queue->crntSize--;
@@ -1488,7 +1488,7 @@ setting the crntSize to 0 and removing the message */
    *mBuf = queue->head;
    queue->head = NULLP;
    queue->tail = NULLP;
-       
+
 #endif
 
    /* ss039.103 : Replaced SUnlock with WTUnlock */
@@ -1511,47 +1511,47 @@ setting the crntSize to 0 and removing the message */
 
 
 /*
-*
-*       Fun:   ssFndLenDmndQ 
-*
-*       Desc:  This function returns the number of messages in a queue
-*              If priority is specified, length of the associated Q is 
-*              returned otherwise total length of all Qs is returned.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed
-*
-*       Notes: 
-*
-*       File:  ss_queue.c
-*
-*/
+ *
+ *       Fun:   ssFndLenDmndQ 
+ *
+ *       Desc:  This function returns the number of messages in a queue
+ *              If priority is specified, length of the associated Q is 
+ *              returned otherwise total length of all Qs is returned.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed
+ *
+ *       Notes: 
+ *
+ *       File:  ss_queue.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 ssFndLenDmndQ
+   PUBLIC S16 ssFndLenDmndQ
 (
-SsDmndQ *dQueue,                               /* demand queue */
-Prior   priority,                              /* priority */
-QLen    *len                                   /* queue length */
-)
+ SsDmndQ *dQueue,                               /* demand queue */
+ Prior   priority,                              /* priority */
+ QLen    *len                                   /* queue length */
+ )
 #else
 PUBLIC S16 ssFndLenDmndQ(dQueue, priority, len)
-SsDmndQ *dQueue;                               /* demand queue */
-Prior   priority;                              /* priority */
-QLen    *len;                                  /* queue length */
+   SsDmndQ *dQueue;                               /* demand queue */
+   Prior   priority;                              /* priority */
+   QLen    *len;                                  /* queue length */
 #endif
 {
-   
+
    S16  ret;                                   /* return value */
    U8   i;
 
    TRC0(ssFndLenDmndQ)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if ((dQueue == NULLP) || (len == NULLP))
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS310, ERRZERO, "NULL Pointer");
-      RETVALUE(RFAILED);
-   }
+      if ((dQueue == NULLP) || (len == NULLP))
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS310, ERRZERO, "NULL Pointer");
+	 RETVALUE(RFAILED);
+      }
 #endif
 
    *len = 0;
@@ -1567,9 +1567,9 @@ QLen    *len;                                  /* queue length */
       if (ret != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS311, (ErrVal)ret, "Failed to get lock");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS311, (ErrVal)ret, "Failed to get lock");
 #endif
-         RETVALUE (RFAILED);
+	 RETVALUE (RFAILED);
       }
 
       *len = dQueue->queue[priority].crntSize;
@@ -1583,10 +1583,10 @@ QLen    *len;                                  /* queue length */
       if (ret != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS312, (ErrVal)ret,  \
-                                         "Failed to release lock");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS312, (ErrVal)ret,  \
+	       "Failed to release lock");
 #endif
-         RETVALUE (RFAILED);
+	 RETVALUE (RFAILED);
       }
    }
    else
@@ -1594,74 +1594,74 @@ QLen    *len;                                  /* queue length */
 #ifndef TENB_RTLIN_CHANGES
       for (i = 0; i < SS_DQ_BIT_MASK_LEN; i++)
 #else
-      for (i = 0; i < SS_MAX_NUM_DQ; i++)
+	 for (i = 0; i < SS_MAX_NUM_DQ; i++)
 #endif
-      {
-         /* ss039.103 : Replaced SLock with WTLock */
+	 {
+	    /* ss039.103 : Replaced SLock with WTLock */
 #ifdef SS_WIN
-         ret = WTLock(&dQueue->dmndQLock[i]);
+	    ret = WTLock(&dQueue->dmndQLock[i]);
 #else
-         ret = SLock(&dQueue->dmndQLock[i]);
+	    ret = SLock(&dQueue->dmndQLock[i]);
 #endif
-         if (ret != ROK)
-         {
+	    if (ret != ROK)
+	    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS313, (ErrVal)ret, "Failed to get lock");
+	       SSLOGERROR(ERRCLS_DEBUG, ESS313, (ErrVal)ret, "Failed to get lock");
 #endif
-            /* Release all the locks aquired */
-            while (i > 0)
-            {
+	       /* Release all the locks aquired */
+	       while (i > 0)
+	       {
 
-/* ss006.13: addition */
-                /* ss039.103 : Replaced SUnlock with WTUnlock */
+		  /* ss006.13: addition */
+		  /* ss039.103 : Replaced SUnlock with WTUnlock */
 #ifdef SS_WIN
-                if( WTUnlock(&dQueue->dmndQLock[i-1]) != ROK)
+		  if( WTUnlock(&dQueue->dmndQLock[i-1]) != ROK)
 #else
-                if( SUnlock(&dQueue->dmndQLock[i-1]) != ROK)
+		     if( SUnlock(&dQueue->dmndQLock[i-1]) != ROK)
 #endif
-                {
+		     {
 #if (ERRCLASS & ERRCLS_DEBUG)
-                   SSLOGERROR(ERRCLS_DEBUG, ESS314, ERRZERO,
-                         "Could not give the Semaphore");
-                   RETVALUE(RFAILED);
+			SSLOGERROR(ERRCLS_DEBUG, ESS314, ERRZERO,
+			      "Could not give the Semaphore");
+			RETVALUE(RFAILED);
 #endif
-                }
+		     }
 
-               i--;
-            }
+		  i--;
+	       }
 
-            RETVALUE (RFAILED);
-         }
-      }
+	       RETVALUE (RFAILED);
+	    }
+	 }
 
       for (i = 0; i  < SS_MAX_NUM_DQ; i++)
-         *len  += dQueue->queue[i].crntSize;
+	 *len  += dQueue->queue[i].crntSize;
 
 #ifndef TENB_RTLIN_CHANGES
       for (i = 0; i < SS_DQ_BIT_MASK_LEN; i++)
 #else
-      for ( i = 0; i < SS_MAX_NUM_DQ; i++)
+	 for ( i = 0; i < SS_MAX_NUM_DQ; i++)
 #endif
-      {
-         /* ss039.103 : Replaced SUnlock with WTUnlock */ 
+	 {
+	    /* ss039.103 : Replaced SUnlock with WTUnlock */ 
 #ifdef SS_WIN
-         ret = WTUnlock(&dQueue->dmndQLock[i]);
+	    ret = WTUnlock(&dQueue->dmndQLock[i]);
 #else
-         ret = SUnlock(&dQueue->dmndQLock[i]);
+	    ret = SUnlock(&dQueue->dmndQLock[i]);
 #endif
-         if (ret != ROK)
-         {
+	    if (ret != ROK)
+	    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS315, (ErrVal)ret, "Failed to get lock");
+	       SSLOGERROR(ERRCLS_DEBUG, ESS315, (ErrVal)ret, "Failed to get lock");
 #endif
-            RETVALUE (RFAILED);
-         }
-      }
+	       RETVALUE (RFAILED);
+	    }
+	 }
    }
    RETVALUE(ROK);
 
 } /* End of ssFndLenDmndQ */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

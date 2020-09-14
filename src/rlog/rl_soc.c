@@ -64,10 +64,10 @@ PUBLIC void rlInitL2SocSpecific(void)
 #ifndef RLOG_ENABLE_TEXT_LOGGING
 
    if (SGetStaticBuffer(0,  /* region - value does not matter in this case  */
-                        0,  /* pool   - value does not matter in this case  */  
-                        &g_l2rlogBuf, 
-                        L2LOG_BUFF_BLOCK_SIZE, /* Buffer size to be allocated */
-                        0) != ROK)      /* Memory type is SS_SHARABLE_MEMORY  */
+	    0,  /* pool   - value does not matter in this case  */  
+	    &g_l2rlogBuf, 
+	    L2LOG_BUFF_BLOCK_SIZE, /* Buffer size to be allocated */
+	    0) != ROK)      /* Memory type is SS_SHARABLE_MEMORY  */
    {
       printf("Memory allocation failed for g_l2rlogBuf!!!\n");
       /* kill binary */
@@ -100,7 +100,7 @@ PUBLIC void processL2LogBuff(void)
       /* Log buffer position in flat buffer. If position is last wrap to first buffer */
       if (g_l2logBuffPos++ >=4)
       {
-         g_l2logBuffPos = 0;
+	 g_l2logBuffPos = 0;
       }
 
       g_writeCirBuf = 1; /* This will avoid contention while switching log buffers */
@@ -108,7 +108,7 @@ PUBLIC void processL2LogBuff(void)
       l2rlogBuf_post = g_l2LogBufBasePtr;   /* copy logBufferPointer for later use */
       /* Set L2 Log Buffer length in first 4 bytes of flat buffer */
       *((U32*) g_l2LogBufBasePtr) = g_l2LogBufLen; /* Set L2 Log Buffer length in 
-                                               first 4 bytes of flat buffer */
+						      first 4 bytes of flat buffer */
 
       /* Re-setting pointer so that L2 will use this to write logs */
       g_l2LogBufBasePtr = g_l2rlogBuf + (g_l2logBuffPos * L2LOG_BUFF_BLOCK_SIZE) ; 
@@ -133,12 +133,12 @@ PUBLIC void processL2LogBuff(void)
 //                 logPtr   - Address of log Buffer
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void rlGetL2LogBufPtr
+   PUBLIC void rlGetL2LogBufPtr
 (
-   void *mBuf,
-   U32 *logLen,
-   Data **logPtr
-)
+ void *mBuf,
+ U32 *logLen,
+ Data **logPtr
+ )
 {
    /* Get Buffer pointer and length */
    *logPtr = ((Data *)mBuf) + sizeof(logLen);
@@ -154,15 +154,15 @@ PUBLIC void rlGetL2LogBufPtr
 //  @out         : void
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void rlInvalidateL2LogsInCache
+   PUBLIC void rlInvalidateL2LogsInCache
 (
-   Data *ptr,
-   U32   len
-)
+ Data *ptr,
+ U32   len
+ )
 {
    RETVOID;
 }
 
 /**********************************************************************
-         End of file
-***********************************************************************/
+  End of file
+ ***********************************************************************/

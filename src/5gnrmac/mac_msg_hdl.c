@@ -233,7 +233,7 @@ uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData)
  *
  * ****************************************************************/
 uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
-uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
+      uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
 {
    Pst         pst;
    RlcMacData  *ulData;
@@ -387,7 +387,7 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
    {
       dlBoInfo.boInfo[dlBoInfo.numLc].lcId = SRB_ID_0;    // SRB ID 0 for msg4
       dlBoInfo.boInfo[SRB_ID_0].dataVolume = \
-         dlCcchIndInfo->dlCcchMsgLen;
+					     dlCcchIndInfo->dlCcchMsgLen;
       dlBoInfo.numLc++;
 
       /* storing Msg4 Pdu in raCb */
@@ -395,13 +395,13 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
       {
 	 macCb.macCell[cellIdx]->macRaCb[0].msg4PduLen = dlCcchIndInfo->dlCcchMsgLen;
 	 MAC_ALLOC(macCb.macCell[cellIdx]->macRaCb[0].msg4Pdu, \
-	    macCb.macCell[cellIdx]->macRaCb[0].msg4PduLen);
+	       macCb.macCell[cellIdx]->macRaCb[0].msg4PduLen);
 	 if(macCb.macCell[cellIdx]->macRaCb[0].msg4Pdu)
 	 {
 	    for(idx = 0; idx < dlCcchIndInfo->dlCcchMsgLen; idx++)
 	    {
 	       macCb.macCell[cellIdx]->macRaCb[0].msg4Pdu[idx] =\
-	          dlCcchIndInfo->dlCcchMsg[idx];
+								dlCcchIndInfo->dlCcchMsg[idx];
 	    }
 	 }
       }
@@ -568,27 +568,27 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
       nPdus = macUciInd->numUcis;
       while(nPdus)
       {
-         switch(macUciInd->pdus[pduIdx].pduType)
-         {
-            case UCI_IND_PUSCH:
-               break;
-            case UCI_IND_PUCCH_F0F1:
-               if(macUciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
-               {
-                  DU_LOG("\nMAC : Received SR UCI indication");
+	 switch(macUciInd->pdus[pduIdx].pduType)
+	 {
+	    case UCI_IND_PUSCH:
+	       break;
+	    case UCI_IND_PUCCH_F0F1:
+	       if(macUciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
+	       {
+		  DU_LOG("\nMAC : Received SR UCI indication");
 		  crnti = macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti; 
 		  ret = buildAndSendSrInd(macUciInd, crnti);
-               }
-               break;
-            case UCI_IND_PUCCH_F2F3F4:
-               break;
-            default:
-               DU_LOG("\nMAC: Invalid Pdu Type %d at FapiMacUciInd", macUciInd->pdus[pduIdx].pduType);
-               ret = RFAILED;
-               break;
-         }
-         pduIdx++;
-         nPdus--;
+	       }
+	       break;
+	    case UCI_IND_PUCCH_F2F3F4:
+	       break;
+	    default:
+	       DU_LOG("\nMAC: Invalid Pdu Type %d at FapiMacUciInd", macUciInd->pdus[pduIdx].pduType);
+	       ret = RFAILED;
+	       break;
+	 }
+	 pduIdx++;
+	 nPdus--;
       }
    }
    else

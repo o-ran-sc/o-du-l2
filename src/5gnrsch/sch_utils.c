@@ -588,7 +588,7 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
    {
       schDlSlotInfo->assignedPrb[itr] = 0;
    }
-  
+
    for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
    {
       memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
@@ -597,5 +597,5 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
 
 }
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

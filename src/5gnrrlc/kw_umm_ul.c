@@ -99,15 +99,15 @@ extern U32 isMemThreshReached(Region region);
 PRIVATE Void kwUmmFindNextVRUR (KwUmUl* umUl, KwSn nextSn)
 {
    KwSn ur = KW_UM_GET_VALUE(umUl->vrUr, *umUl);
-   
+
    KwSn nextSnToCompare = KW_UM_GET_VALUE(nextSn,*umUl);
-   
+
    while (ur < nextSnToCompare)
    {
       if (!(umUl->recBuf[nextSn])) /* if the buffer is empty, SN not received */
       {
-         umUl->vrUr = nextSn;
-         break;
+	 umUl->vrUr = nextSn;
+	 break;
       }
       nextSn = (nextSn + 1) & umUl->modBitMask; 
       nextSnToCompare = KW_UM_GET_VALUE(nextSn,*umUl);
@@ -126,9 +126,9 @@ PRIVATE Void kwUmmFindNextVRUR (KwUmUl* umUl, KwSn nextSn)
  *      -# FALSE
  *
  * @return  Void
-*/
+ */
 PRIVATE S16 kwUmmCheckSnInReordWindow (KwSn sn, 
-                                       CONSTANT KwUmUl* CONSTANT umUl)  
+      CONSTANT KwUmUl* CONSTANT umUl)  
 {
    return (KW_UM_GET_VALUE(sn, *umUl) < KW_UM_GET_VALUE(umUl->vrUh, *umUl)); 
 }
@@ -147,38 +147,38 @@ PRIVATE S16 kwUmmCheckSnInReordWindow (KwSn sn,
  * @param[in] pduInfo  Pdu information 
  *
  *  @return Void
-*/
+ */
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
 
 #ifdef ANSI
-PUBLIC Void kwUmmProcessPdus
+   PUBLIC Void kwUmmProcessPdus
 (
-RlcCb      *gCb,
-RlcUlRbCb  *rbCb,                   /* Rb Control Block */
-KwPduInfo *pduInfo,                 /* Pdu  data and related information */
-U32       ttiCnt                  /* ttiCnt received from MAC */
-)
+ RlcCb      *gCb,
+ RlcUlRbCb  *rbCb,                   /* Rb Control Block */
+ KwPduInfo *pduInfo,                 /* Pdu  data and related information */
+ U32       ttiCnt                  /* ttiCnt received from MAC */
+ )
 #else
 PUBLIC Void kwUmmProcessPdus(rbCb,pduInfo,ttiCnt)
-RlcCb      *gCb;
-RlcUlRbCb  *rbCb;                   /* Rb Control Block */
-KwPduInfo *pduInfo;                /* Pdu  data and related information */
-U32       ttiCnt;                  /* ttiCnt received from MAC */
+   RlcCb      *gCb;
+   RlcUlRbCb  *rbCb;                   /* Rb Control Block */
+   KwPduInfo *pduInfo;                /* Pdu  data and related information */
+   U32       ttiCnt;                  /* ttiCnt received from MAC */
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void kwUmmProcessPdus
+   PUBLIC Void kwUmmProcessPdus
 (
-RlcCb      *gCb,
-RlcUlRbCb  *rbCb,                /* Rb Control Block */
-KwPduInfo *pduInfo              /* Pdu  data and related information */
-)
+ RlcCb      *gCb,
+ RlcUlRbCb  *rbCb,                /* Rb Control Block */
+ KwPduInfo *pduInfo              /* Pdu  data and related information */
+ )
 #else
 PUBLIC Void kwUmmProcessPdus(rbCb,pduInfo)
-RlcCb      *gCb;
-RlcUlRbCb  *rbCb;                /* Rb Control Block */
-KwPduInfo *pduInfo;             /* Pdu  data and related information */
+   RlcCb      *gCb;
+   RlcUlRbCb  *rbCb;                /* Rb Control Block */
+   KwPduInfo *pduInfo;             /* Pdu  data and related information */
 #endif
 #endif
 {
@@ -191,16 +191,16 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
    KwUmRecBuf   **recBuf;   /* UM Reception Buffer */
 
    Bool         tmrRunning;   /* Boolean for checking Tmr */
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 
    TRC2(kwUmmProcessPdus)
 
 
-   count = 0;
+      count = 0;
 
    /* pduCount should be the min of RGU_MAX_PDU and pduInfo->numPdu */
    pduCount = (pduInfo->numPdu < RGU_MAX_PDU)? pduInfo->numPdu : RGU_MAX_PDU;
-   
+
    vrUh   = &(rbCb->m.umUl.vrUh);
    vrUr   = &(rbCb->m.umUl.vrUr);
    vrUx   = &(rbCb->m.umUl.vrUx);
@@ -229,32 +229,32 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (tmpRecBuf == NULLP)
       {   
-         RLOG_ARG2(L_FATAL, DBG_RBID,rbCb->rlcId.rbId,
-                  "Memory allocation failed UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-         SPutMsg(pdu);
+	 RLOG_ARG2(L_FATAL, DBG_RBID,rbCb->rlcId.rbId,
+	       "Memory allocation failed UEID:%d CELLID:%d",
+	       rbCb->rlcId.ueId,
+	       rbCb->rlcId.cellId);
+	 SPutMsg(pdu);
 
-         RETVOID;
+	 RETVOID;
       }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */      
       /* ccpu00142274 - UL memory based flow control*/ 
 #ifndef RGL_SPECIFIC_CHANGES
 #ifndef TENB_ACC
 #ifndef LTE_PAL_ENB
-    /* Changed the condition to TRUE from ROK  */
+      /* Changed the condition to TRUE from ROK  */
 #ifndef XEON_SPECIFIC_CHANGES    
-     if(isMemThreshReached(rlcCb[0]->init.region) == TRUE)
-     {
-        extern U32 rlculdrop;
-        rlculdrop++;
-        RLC_FREE_BUF(pdu);
-        RLC_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
-        /*Fix for CR ccpu00144030: If threshhold is hit then also count
-         *should be incrmented */
-        count++;
-        continue;
-     }
+      if(isMemThreshReached(rlcCb[0]->init.region) == TRUE)
+      {
+	 extern U32 rlculdrop;
+	 rlculdrop++;
+	 RLC_FREE_BUF(pdu);
+	 RLC_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
+	 /*Fix for CR ccpu00144030: If threshhold is hit then also count
+	  *should be incrmented */
+	 count++;
+	 continue;
+      }
 #endif     
 #endif
 #endif
@@ -262,20 +262,20 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
       /* get the pdu header */
       if (kwUmmExtractHdr(gCb, rbCb, pdu, &(tmpRecBuf->umHdr)))  
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "Header Extraction Failed UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+	 RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
+	       "Header Extraction Failed UEID:%d CELLID:%d",
+	       rbCb->rlcId.ueId,
+	       rbCb->rlcId.cellId);
 
-         /* Header extraction is a problem. 
-          * log an error and free the allocated memory */
-         /* ccpu00136940 */
-         RLC_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
-         SPutMsg(pdu);
-         count++;
-         /* kw005.201 ccpu00117318, updating the statistics */
-         gCb->genSts.errorPdusRecv++;
-         continue;
+	 /* Header extraction is a problem. 
+	  * log an error and free the allocated memory */
+	 /* ccpu00136940 */
+	 RLC_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
+	 SPutMsg(pdu);
+	 count++;
+	 /* kw005.201 ccpu00117318, updating the statistics */
+	 gCb->genSts.errorPdusRecv++;
+	 continue;
       }
       curSn = tmpRecBuf->umHdr.sn;
 
@@ -285,21 +285,21 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
       seqNum = KW_UM_GET_VALUE(curSn, KW_UMUL); 
 
       if (((ur < seqNum) && (seqNum < uh) && (KW_UMUL.recBuf[curSn])) || 
-          (seqNum < ur)) 
+	    (seqNum < ur)) 
       {
-         /* PDU needs to be discarded */
-         RLOG_ARG3(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                  "Received a duplicate pdu with sn %d UEID:%d CELLID:%d",
-                  curSn,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+	 /* PDU needs to be discarded */
+	 RLOG_ARG3(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
+	       "Received a duplicate pdu with sn %d UEID:%d CELLID:%d",
+	       curSn,
+	       rbCb->rlcId.ueId,
+	       rbCb->rlcId.cellId);
 
-         RLC_FREE_BUF(pdu);
-         RLC_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
-         count++;
-         /* kw005.201 ccpu00117318, updating the statistics */
-         gCb->genSts.unexpPdusRecv++;
-         continue;
+	 RLC_FREE_BUF(pdu);
+	 RLC_FREE_WC(gCb, tmpRecBuf, sizeof(KwUmRecBuf));
+	 count++;
+	 /* kw005.201 ccpu00117318, updating the statistics */
+	 gCb->genSts.unexpPdusRecv++;
+	 continue;
       } 
 
       /* kw005.201 added support for L2 Measurement */
@@ -316,85 +316,85 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
       SFndLenMsg(pdu,&(recBuf[curSn]->pduSz));
       /* kw005.201 ccpu00117318, updating the statistics */
       gCb->genSts.bytesRecv += recBuf[curSn]->pduSz;
-      
+
       if (!kwUmmCheckSnInReordWindow(curSn,&KW_UMUL))
       {  /* currSn is outside re-ordering window */
-         *vrUh  = (curSn + 1) & KW_UMUL.modBitMask;
+	 *vrUh  = (curSn + 1) & KW_UMUL.modBitMask;
 
-         /* re-assemble all pdus outside the modified re-ordering window */
-         /* the first SN is VR(UR) */
-         if (!kwUmmCheckSnInReordWindow(*vrUr,&KW_UMUL))
-         {
-            /* TODO : should it be VR(UR) + 1 ?... check, earlier it was so */
-            KwSn sn = *vrUr; /* SN's which need to be re-assembled */
-            KwSn lowerEdge;  /* to hold the lower-edge of the 
-                                re-ordering window */
+	 /* re-assemble all pdus outside the modified re-ordering window */
+	 /* the first SN is VR(UR) */
+	 if (!kwUmmCheckSnInReordWindow(*vrUr,&KW_UMUL))
+	 {
+	    /* TODO : should it be VR(UR) + 1 ?... check, earlier it was so */
+	    KwSn sn = *vrUr; /* SN's which need to be re-assembled */
+	    KwSn lowerEdge;  /* to hold the lower-edge of the 
+				re-ordering window */
 
-            /* The new value ov VR(UR) is the lower end of the window i
-             * and SN's still this value need to be re-assembled */
-            
-            *vrUr = (*vrUh - KW_UMUL.umWinSz) &  KW_UMUL.modBitMask;         
-            lowerEdge = KW_UM_GET_VALUE(*vrUr ,KW_UMUL);
-            
-            while (KW_UM_GET_VALUE(sn, KW_UMUL) < lowerEdge)
-            {
-               if (recBuf[sn])
-               {
-                  kwUmmReAssembleSdus(gCb,rbCb,recBuf[sn]);
-                  RLC_FREE_WC(gCb,recBuf[sn],sizeof(KwUmRecBuf));
-                  recBuf[sn] = NULLP;
-               }
-               sn = (sn + 1) & KW_UMUL.modBitMask;
-            }
-         }
+	    /* The new value ov VR(UR) is the lower end of the window i
+	     * and SN's still this value need to be re-assembled */
+
+	    *vrUr = (*vrUh - KW_UMUL.umWinSz) &  KW_UMUL.modBitMask;         
+	    lowerEdge = KW_UM_GET_VALUE(*vrUr ,KW_UMUL);
+
+	    while (KW_UM_GET_VALUE(sn, KW_UMUL) < lowerEdge)
+	    {
+	       if (recBuf[sn])
+	       {
+		  kwUmmReAssembleSdus(gCb,rbCb,recBuf[sn]);
+		  RLC_FREE_WC(gCb,recBuf[sn],sizeof(KwUmRecBuf));
+		  recBuf[sn] = NULLP;
+	       }
+	       sn = (sn + 1) & KW_UMUL.modBitMask;
+	    }
+	 }
       }
       if (recBuf[*vrUr])
       {
-         KwSn sn       = *vrUr;
-         KwSn tSn      = KW_UM_GET_VALUE(sn,KW_UMUL); 
-         KwSn tVrUr;       
+	 KwSn sn       = *vrUr;
+	 KwSn tSn      = KW_UM_GET_VALUE(sn,KW_UMUL); 
+	 KwSn tVrUr;       
 
-         /* set VR(UR) to next SN > current VR(UR) which is not received */
-         KwSn nextVrUr = (*vrUr + 1) & KW_UMUL.modBitMask;
-         kwUmmFindNextVRUR(&KW_UMUL, nextVrUr);
+	 /* set VR(UR) to next SN > current VR(UR) which is not received */
+	 KwSn nextVrUr = (*vrUr + 1) & KW_UMUL.modBitMask;
+	 kwUmmFindNextVRUR(&KW_UMUL, nextVrUr);
 
-         /* re-assemble SDUs with SN < Vr(UR) */
-         tVrUr = KW_UM_GET_VALUE(*vrUr,KW_UMUL);
-         while (recBuf[sn] && tSn < tVrUr)
-         {
-            kwUmmReAssembleSdus(gCb,rbCb,recBuf[sn]);
-            RLC_FREE_WC(gCb,recBuf[sn],sizeof(KwUmRecBuf));
-            recBuf[sn] = NULLP;
-            sn = (sn + 1) & KW_UMUL.modBitMask;
-            tSn = KW_UM_GET_VALUE(sn, KW_UMUL);
-         }
+	 /* re-assemble SDUs with SN < Vr(UR) */
+	 tVrUr = KW_UM_GET_VALUE(*vrUr,KW_UMUL);
+	 while (recBuf[sn] && tSn < tVrUr)
+	 {
+	    kwUmmReAssembleSdus(gCb,rbCb,recBuf[sn]);
+	    RLC_FREE_WC(gCb,recBuf[sn],sizeof(KwUmRecBuf));
+	    recBuf[sn] = NULLP;
+	    sn = (sn + 1) & KW_UMUL.modBitMask;
+	    tSn = KW_UM_GET_VALUE(sn, KW_UMUL);
+	 }
       }
 
       tmrRunning = kwChkTmr(gCb,(PTR)rbCb, KW_EVT_UMUL_REORD_TMR);
 
       if (tmrRunning) 
       {
-         KwSn tVrUx = KW_UM_GET_VALUE(*vrUx, KW_UMUL);
-         KwSn tVrUr = KW_UM_GET_VALUE(*vrUr ,KW_UMUL);
+	 KwSn tVrUx = KW_UM_GET_VALUE(*vrUx, KW_UMUL);
+	 KwSn tVrUr = KW_UM_GET_VALUE(*vrUr ,KW_UMUL);
 
-         KwSn tVrUh = KW_UM_GET_VALUE(*vrUh, KW_UMUL);
+	 KwSn tVrUh = KW_UM_GET_VALUE(*vrUh, KW_UMUL);
 
-         S16 ret = kwUmmCheckSnInReordWindow(*vrUx, &KW_UMUL);
+	 S16 ret = kwUmmCheckSnInReordWindow(*vrUx, &KW_UMUL);
 
-         if ( (tVrUx <= tVrUr) || ((!ret) && (tVrUx != tVrUh))) 
-         {
-            kwStopTmr(gCb,(PTR)rbCb,KW_EVT_UMUL_REORD_TMR);
-            tmrRunning = FALSE;
-         }
+	 if ( (tVrUx <= tVrUr) || ((!ret) && (tVrUx != tVrUh))) 
+	 {
+	    kwStopTmr(gCb,(PTR)rbCb,KW_EVT_UMUL_REORD_TMR);
+	    tmrRunning = FALSE;
+	 }
       }
 
       if (!tmrRunning)
       {
-         if (KW_UM_GET_VALUE(*vrUh, KW_UMUL) > KW_UM_GET_VALUE(*vrUr, KW_UMUL))
-         {
-            kwStartTmr(gCb,(PTR)rbCb,KW_EVT_UMUL_REORD_TMR); 
-            *vrUx = *vrUh;
-         }
+	 if (KW_UM_GET_VALUE(*vrUh, KW_UMUL) > KW_UM_GET_VALUE(*vrUr, KW_UMUL))
+	 {
+	    kwStartTmr(gCb,(PTR)rbCb,KW_EVT_UMUL_REORD_TMR); 
+	    *vrUx = *vrUh;
+	 }
       }
       count++;
    }/* end while count < pduCount */
@@ -416,19 +416,19 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
  * @param[in] umRecBuf   Reception Buffer to be Re-Assembled 
  *
  * @return  Void
-*/
+ */
 #ifdef ANSI
-PRIVATE Void kwUmmReAssembleSdus
+   PRIVATE Void kwUmmReAssembleSdus
 (
-RlcCb         *gCb,
-RlcUlRbCb     *rbCb,   
-KwUmRecBuf   *umRecBuf 
-)
+ RlcCb         *gCb,
+ RlcUlRbCb     *rbCb,   
+ KwUmRecBuf   *umRecBuf 
+ )
 #else
 PRIVATE Void kwUmmReAssembleSdus(gCb,rbCb,umRecBuf)
-RlcCb         *gCb;
-RlcUlRbCb     *rbCb;     
-KwUmRecBuf   *umRecBuf; 
+   RlcCb         *gCb;
+   RlcUlRbCb     *rbCb;     
+   KwUmRecBuf   *umRecBuf; 
 #endif
 {
    U32      liCount;        /* LI count */
@@ -443,117 +443,117 @@ KwUmRecBuf   *umRecBuf;
    TRC2(kwUmmReAssembleSdus)  
 
 
-   liCount = umRecBuf->umHdr.numLi;
+      liCount = umRecBuf->umHdr.numLi;
    fi = umRecBuf->umHdr.fi;
    sn =  umRecBuf->umHdr.sn;
- 
+
    for (count = 0; (count <= liCount);count++)
    {
       if (count < liCount )
-         len = umRecBuf->umHdr.li[count];
+	 len = umRecBuf->umHdr.li[count];
       else
       {
-         if (!(umRecBuf->pdu))
-         {
-            RETVOID;
-         }
-         SFndLenMsg(umRecBuf->pdu,&len);
+	 if (!(umRecBuf->pdu))
+	 {
+	    RETVOID;
+	 }
+	 SFndLenMsg(umRecBuf->pdu,&len);
       }
-         
+
       /* get the sdu out of the pdu */
       SSegMsg(umRecBuf->pdu,len,&remPdu);
       sdu = umRecBuf->pdu;
       umRecBuf->pdu = remPdu;
-      
+
       partialSdu = &(rbCb->m.umUl.partialSdu);
       /* While re-assembling the SDUs, consider the first LI and perform 
        * the following steps.
-          -# If the first bit of FI(Framing Info of 2  bits) is set => 
-                -# The current Data field in the PDU is a segment. 
-                   So form a SDU only if the 
-                       rbCb->m.um.umUl.partialSdu exists and the SNs are 
-                       in-sequence.
-                -# If there are no LIs and the second bit of LI is 1 
-                   then a partial SDU is formed which would not be sent 
-                   to the upper layer.
-          -# else
-                -# If rbCb->partialSdu is not NULL then flush it off.
-                -# If LI count > 0 or LI count is 0 and second bit 
-                   of FI is not 1 
-                         The SDU is complete.So send it to upper layer.
-                -# else
-                         The SDU is partial and is placed 
-                         in rbCb->m.um.umUl.partialSdu;
-      */
-             
+       -# If the first bit of FI(Framing Info of 2  bits) is set => 
+       -# The current Data field in the PDU is a segment. 
+       So form a SDU only if the 
+       rbCb->m.um.umUl.partialSdu exists and the SNs are 
+       in-sequence.
+       -# If there are no LIs and the second bit of LI is 1 
+       then a partial SDU is formed which would not be sent 
+       to the upper layer.
+       -# else
+       -# If rbCb->partialSdu is not NULL then flush it off.
+       -# If LI count > 0 or LI count is 0 and second bit 
+       of FI is not 1 
+       The SDU is complete.So send it to upper layer.
+       -# else
+       The SDU is partial and is placed 
+       in rbCb->m.um.umUl.partialSdu;
+       */
+
       if (0 == count )
       {
-         if (fi & 2)
-         {
-            if ((*partialSdu) && 
-                (sn == ((rbCb->m.umUl.sn + 1) & rbCb->m.umUl.modBitMask)))
-            {
-               SCatMsg(*partialSdu,sdu,M1M2);
-               RLC_FREE_BUF(sdu);
-               if (liCount > 0 || !(fi & 1))
-               {
-                  kwUtlSndDatInd(gCb,rbCb,*partialSdu);
-                  *partialSdu = NULLP;
-               }
-            }
-            else
-            {
-                /* Partial Sdu stored is not valid now.So free it */
-               if (*partialSdu)
-               {
-                  RLC_FREE_BUF(*partialSdu);
-                  *partialSdu = NULLP;
-               }
-                  
-               RLC_FREE_BUF(sdu);
-               sdu = NULLP;
-            }
-         }
-         else
-         {
-            if (*partialSdu)
-            {
-               RLC_FREE_BUF(*partialSdu);  /* RLC mem leak fix */
-               *partialSdu = NULLP;
-            }
-            
-            if (liCount > 0 || !( fi & 1))
-            {
-               kwUtlSndDatInd(gCb,rbCb,sdu);
-            }
-            else
-            {
-                  *partialSdu = sdu; 
-            }
-         }
+	 if (fi & 2)
+	 {
+	    if ((*partialSdu) && 
+		  (sn == ((rbCb->m.umUl.sn + 1) & rbCb->m.umUl.modBitMask)))
+	    {
+	       SCatMsg(*partialSdu,sdu,M1M2);
+	       RLC_FREE_BUF(sdu);
+	       if (liCount > 0 || !(fi & 1))
+	       {
+		  kwUtlSndDatInd(gCb,rbCb,*partialSdu);
+		  *partialSdu = NULLP;
+	       }
+	    }
+	    else
+	    {
+	       /* Partial Sdu stored is not valid now.So free it */
+	       if (*partialSdu)
+	       {
+		  RLC_FREE_BUF(*partialSdu);
+		  *partialSdu = NULLP;
+	       }
+
+	       RLC_FREE_BUF(sdu);
+	       sdu = NULLP;
+	    }
+	 }
+	 else
+	 {
+	    if (*partialSdu)
+	    {
+	       RLC_FREE_BUF(*partialSdu);  /* RLC mem leak fix */
+	       *partialSdu = NULLP;
+	    }
+
+	    if (liCount > 0 || !( fi & 1))
+	    {
+	       kwUtlSndDatInd(gCb,rbCb,sdu);
+	    }
+	    else
+	    {
+	       *partialSdu = sdu; 
+	    }
+	 }
       }
       /*
-          If the SDU pointer has the last Data field of the PDU
-            -# If FI is 1,place the SDU in rbCb->m.um.umDl.partialSdu
-            -# else send the SDU to upper layer.
-      */
-       else if (count == liCount)
+	 If the SDU pointer has the last Data field of the PDU
+	 -# If FI is 1,place the SDU in rbCb->m.um.umDl.partialSdu
+	 -# else send the SDU to upper layer.
+       */
+      else if (count == liCount)
       {
-         if (fi & 1)
-         {
-            *partialSdu = sdu;
-         }
-         else
-         {
-            kwUtlSndDatInd(gCb, rbCb, sdu);
-         }
+	 if (fi & 1)
+	 {
+	    *partialSdu = sdu;
+	 }
+	 else
+	 {
+	    kwUtlSndDatInd(gCb, rbCb, sdu);
+	 }
       }
       /*  
-         If the LI is something other than the first one, 
-         just send the SDU to the upper layer */
+	  If the LI is something other than the first one, 
+	  just send the SDU to the upper layer */
       else
       {
-         kwUtlSndDatInd(gCb, rbCb, sdu);
+	 kwUtlSndDatInd(gCb, rbCb, sdu);
       }
    }
    rbCb->m.umUl.sn = sn;
@@ -579,19 +579,19 @@ KwUmRecBuf   *umRecBuf;
  *                       is to be done
  *
  * @return  Void
-*/ 
+ */ 
 #ifdef ANSI
-PUBLIC Void kwUmmUlReEstablish
+   PUBLIC Void kwUmmUlReEstablish
 (
-RlcCb         *gCb,
-CmLteRlcId   *rlcId,
-RlcUlRbCb     *rbCb
-)
+ RlcCb         *gCb,
+ CmLteRlcId   *rlcId,
+ RlcUlRbCb     *rbCb
+ )
 #else
 PUBLIC Void kwUmmUlReEstablish(gCb, rlcId, rbCb)
-RlcCb         *gCb;
-CmLteRlcId   *rlcId;
-RlcUlRbCb     *rbCb;
+   RlcCb         *gCb;
+   CmLteRlcId   *rlcId;
+   RlcUlRbCb     *rbCb;
 #endif
 {
    KwSn         curSn;
@@ -602,22 +602,22 @@ RlcUlRbCb     *rbCb;
    TRC2(kwUmmUlReEstablish)
 
 
-   curSn = rbCb->m.umUl.vrUr;
+      curSn = rbCb->m.umUl.vrUr;
    vrUh  = KW_UM_GET_VALUE(rbCb->m.umUl.vrUh,rbCb->m.umUl);
    recBuf =  rbCb->m.umUl.recBuf;
 
    if(TRUE == kwChkTmr(gCb,(PTR)rbCb,KW_EVT_UMUL_REORD_TMR))
    {
-       kwStopTmr(gCb,(PTR)rbCb,KW_EVT_UMUL_REORD_TMR);
+      kwStopTmr(gCb,(PTR)rbCb,KW_EVT_UMUL_REORD_TMR);
    }
-   
+
    while (KW_UM_GET_VALUE(curSn,rbCb->m.umUl) < vrUh)
    {
       if ( recBuf[curSn] != NULLP )
       {
-         kwUmmReAssembleSdus(gCb,rbCb,recBuf[curSn]);
-         RLC_FREE_WC(gCb,recBuf[curSn],sizeof(KwUmRecBuf));
-         recBuf[curSn] = NULLP;
+	 kwUmmReAssembleSdus(gCb,rbCb,recBuf[curSn]);
+	 RLC_FREE_WC(gCb,recBuf[curSn],sizeof(KwUmRecBuf));
+	 recBuf[curSn] = NULLP;
       } 
       curSn = (curSn + 1) & rbCb->m.umUl.modBitMask;
    }
@@ -649,21 +649,21 @@ RlcUlRbCb     *rbCb;
  * @return  S16
  *      -# TRUE 
  *      -# FALSE
-*/
+ */
 #ifdef ANSI
-PRIVATE S16 kwUmmExtractHdr
+   PRIVATE S16 kwUmmExtractHdr
 (
-RlcCb       *gCb,
-RlcUlRbCb   *rbCb, 
-Buffer     *pdu, 
-KwUmHdr    *umHdr 
-)
+ RlcCb       *gCb,
+ RlcUlRbCb   *rbCb, 
+ Buffer     *pdu, 
+ KwUmHdr    *umHdr 
+ )
 #else
 PRIVATE S16 kwUmmExtractHdr(gCb, rbCb, pdu, umHdr)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb; 
-Buffer     *pdu; 
-KwUmHdr    *umHdr; 
+   RlcCb       *gCb;
+   RlcUlRbCb   *rbCb; 
+   Buffer     *pdu; 
+   KwUmHdr    *umHdr; 
 #endif
 {
    U8        e;         /* Extension Bit */
@@ -677,20 +677,20 @@ KwUmHdr    *umHdr;
    TRC3(kwUmmExtractHdr)
 
 
-   SFndLenMsg(pdu,&pduSz);
- 
+      SFndLenMsg(pdu,&pduSz);
+
    if ( rbCb->m.umUl.snLen == 1)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       ret = SRemPreMsg(dst,pdu);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "SRemPreMsg Failed for 5 bit SN UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+	 RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
+	       "SRemPreMsg Failed for 5 bit SN UEID:%d CELLID:%d",
+	       rbCb->rlcId.ueId,
+	       rbCb->rlcId.cellId);
 
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
 #else
       SRemPreMsg(dst,pdu);
@@ -707,17 +707,17 @@ KwUmHdr    *umHdr;
       ret = SRemPreMsgMult(dst,2,pdu);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "SRemPreMsgMult Failed for 10 bits SN UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
+	       "SRemPreMsgMult Failed for 10 bits SN UEID:%d CELLID:%d",
+	       rbCb->rlcId.ueId,
+	       rbCb->rlcId.cellId);
+	 RETVALUE(RFAILED);
       }
 #else
       SRemPreMsgMult(dst,2,pdu);
 #endif
       pduSz -= 2;
-   
+
       /* kw005.201 R9 Upgrade 3gpp spec 36.322 ver9.3.0 CR0082      *
        * Removed the "if" condition for checking the reserved field *
        * Added mask 0x03 for extracting the FI field.          */
@@ -729,7 +729,7 @@ KwUmHdr    *umHdr;
    }
 
    umHdr->numLi = 0;
-   
+
    totalSz = 0;
    while(e && umHdr->numLi < KW_MAX_UL_LI )
    {
@@ -737,11 +737,11 @@ KwUmHdr    *umHdr;
       ret = SRemPreMsgMult(dst,2,pdu);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "SRemPreMsgMult Failed UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
+	       "SRemPreMsgMult Failed UEID:%d CELLID:%d",
+	       rbCb->rlcId.ueId,
+	       rbCb->rlcId.cellId);
+	 RETVALUE(RFAILED);
       }
 #else
       SRemPreMsgMult(dst,2,pdu);
@@ -750,77 +750,77 @@ KwUmHdr    *umHdr;
       umHdr->li[umHdr->numLi] |= dst[1] >> 4;
       if ( 0 == umHdr->li[umHdr->numLi] )
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "Received LI as 0 UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-         RETVALUE(RFAILED); 
+	 RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
+	       "Received LI as 0 UEID:%d CELLID:%d",
+	       rbCb->rlcId.ueId,
+	       rbCb->rlcId.cellId);
+	 RETVALUE(RFAILED); 
       }
       totalSz += umHdr->li[umHdr->numLi];
       if ( pduSz <=  totalSz )
       {
-         RLOG_ARG3(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "SN [%d]: UEID:%d CELLID:%d",
-                  umHdr->sn, 
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-         RLOG_ARG4(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "Corrupted PDU as TotSz[%lu] PduSz[%lu] UEID:%d CELLID:%d ",
-                  totalSz, 
-                  pduSz,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-         RETVALUE(RFAILED); /* the situation where in the PDU size 
-                            is something that does not match with 
-                            the size in LIs*/
+	 RLOG_ARG3(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
+	       "SN [%d]: UEID:%d CELLID:%d",
+	       umHdr->sn, 
+	       rbCb->rlcId.ueId,
+	       rbCb->rlcId.cellId);
+	 RLOG_ARG4(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
+	       "Corrupted PDU as TotSz[%lu] PduSz[%lu] UEID:%d CELLID:%d ",
+	       totalSz, 
+	       pduSz,
+	       rbCb->rlcId.ueId,
+	       rbCb->rlcId.cellId);
+	 RETVALUE(RFAILED); /* the situation where in the PDU size 
+			       is something that does not match with 
+			       the size in LIs*/
       }
       umHdr->numLi++;
       pduSz -= 2;
 
       e = ((dst[0]) & 0x80) >> 7;
-   
+
       if ( e && umHdr->numLi < KW_MAX_UL_LI)
       {
-         U8 tmp = ((dst[1]) & 0x08) >> 3;
-         umHdr->li[umHdr->numLi] = ( dst[1] & 0x07) << 8;
+	 U8 tmp = ((dst[1]) & 0x08) >> 3;
+	 umHdr->li[umHdr->numLi] = ( dst[1] & 0x07) << 8;
 
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         ret = SRemPreMsg(dst,pdu);
-         if (ret != ROK)
-         {
-            RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                     "SRemPreMsg Failed UEID:%d CELLID:%d",
-                     rbCb->rlcId.ueId,
-                     rbCb->rlcId.cellId);
-            RETVALUE(RFAILED);
-         }
+	 ret = SRemPreMsg(dst,pdu);
+	 if (ret != ROK)
+	 {
+	    RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
+		  "SRemPreMsg Failed UEID:%d CELLID:%d",
+		  rbCb->rlcId.ueId,
+		  rbCb->rlcId.cellId);
+	    RETVALUE(RFAILED);
+	 }
 #else
-         SRemPreMsg(dst,pdu);
+	 SRemPreMsg(dst,pdu);
 #endif
-         umHdr->li[umHdr->numLi] |= ( dst[0] );    /* The first byte lies in 
-                                                   the first 8 bits.We want 
-                                                   them in the last 8 bits */
-         if ( 0 == umHdr->li[umHdr->numLi] )
-         {
-            RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                     "Received LI as 0 UEID:%d CELLID:%d",
-                     rbCb->rlcId.ueId,
-                     rbCb->rlcId.cellId);
-            RETVALUE(RFAILED); 
-         }
-         totalSz += umHdr->li[umHdr->numLi];
-         pduSz--;
-         umHdr->numLi++;
+	 umHdr->li[umHdr->numLi] |= ( dst[0] );    /* The first byte lies in 
+						      the first 8 bits.We want 
+						      them in the last 8 bits */
+	 if ( 0 == umHdr->li[umHdr->numLi] )
+	 {
+	    RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
+		  "Received LI as 0 UEID:%d CELLID:%d",
+		  rbCb->rlcId.ueId,
+		  rbCb->rlcId.cellId);
+	    RETVALUE(RFAILED); 
+	 }
+	 totalSz += umHdr->li[umHdr->numLi];
+	 pduSz--;
+	 umHdr->numLi++;
 
-         if (pduSz < totalSz)
-         {
-            RETVALUE(RFAILED); /* the situation where in the PDU size is 
-                               something that does not match with the 
-                               size in LIs*/
-         }
+	 if (pduSz < totalSz)
+	 {
+	    RETVALUE(RFAILED); /* the situation where in the PDU size is 
+				  something that does not match with the 
+				  size in LIs*/
+	 }
 
-         e = tmp;
+	 e = tmp;
       }
    } /* while(e && umHdr->numLi < KW_MAX_LI ) */
    if (e)
@@ -830,7 +830,7 @@ KwUmHdr    *umHdr;
    }
    RETVALUE(ROK); 
 }
-   
+
 /**
  * @brief Handles expiry of re-ordering timer
  *
@@ -838,17 +838,17 @@ KwUmHdr    *umHdr;
  * @param[in] rbCb    Rb Control block for which re-order timer expired
  *
  * @return  Void
-*/
+ */
 #ifdef ANSI
-PUBLIC Void kwUmmReOrdTmrExp
+   PUBLIC Void kwUmmReOrdTmrExp
 (
-RlcCb       *gCb,
-RlcUlRbCb   *rbCb     
-)
+ RlcCb       *gCb,
+ RlcUlRbCb   *rbCb     
+ )
 #else
 PUBLIC Void kwUmmReOrdTmrExp(gCb, rbCb)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb;   
+   RlcCb       *gCb;
+   RlcUlRbCb   *rbCb;   
 #endif
 {
    KwSn prevVrUr;   /* prevVrUr */
@@ -856,30 +856,30 @@ RlcUlRbCb   *rbCb;
    TRC3(kwUmmReOrdTmrExp)
 
 
-   prevVrUr = KW_UMUL.vrUr;
+      prevVrUr = KW_UMUL.vrUr;
 
    /* set VR(UR) to SN >= VR(UX) that has not been received */
    kwUmmFindNextVRUR(&KW_UMUL, KW_UMUL.vrUx);
 
    while (KW_UM_GET_VALUE(prevVrUr,KW_UMUL) < 
-          KW_UM_GET_VALUE(KW_UMUL.vrUr,KW_UMUL))
+	 KW_UM_GET_VALUE(KW_UMUL.vrUr,KW_UMUL))
    {
       if (KW_UMUL.recBuf[prevVrUr])
       {
-         kwUmmReAssembleSdus(gCb, rbCb, KW_UMUL.recBuf[prevVrUr]);
-         if(KW_UMUL.recBuf[prevVrUr]->pdu != NULLP) /* RLC mem leak fix */
-         {
-            RLC_FREE_BUF(KW_UMUL.recBuf[prevVrUr]->pdu);
-         }
-         RLC_FREE_WC(gCb, KW_UMUL.recBuf[prevVrUr], sizeof(KwUmRecBuf));
-         KW_UMUL.recBuf[prevVrUr] = NULLP;
+	 kwUmmReAssembleSdus(gCb, rbCb, KW_UMUL.recBuf[prevVrUr]);
+	 if(KW_UMUL.recBuf[prevVrUr]->pdu != NULLP) /* RLC mem leak fix */
+	 {
+	    RLC_FREE_BUF(KW_UMUL.recBuf[prevVrUr]->pdu);
+	 }
+	 RLC_FREE_WC(gCb, KW_UMUL.recBuf[prevVrUr], sizeof(KwUmRecBuf));
+	 KW_UMUL.recBuf[prevVrUr] = NULLP;
       }
 
       prevVrUr = (prevVrUr + 1) & rbCb->m.umUl.modBitMask;
    }
 
    if (KW_UM_GET_VALUE(KW_UMUL.vrUh, KW_UMUL) > 
-       KW_UM_GET_VALUE(KW_UMUL.vrUr, KW_UMUL))
+	 KW_UM_GET_VALUE(KW_UMUL.vrUr, KW_UMUL))
    {
       kwStartTmr(gCb,(PTR)rbCb,KW_EVT_UMUL_REORD_TMR);
       KW_UMUL.vrUx = KW_UMUL.vrUh;
@@ -901,15 +901,15 @@ RlcUlRbCb   *rbCb;
  */
 
 #ifdef ANSI
-PUBLIC Void kwUmmFreeUlRbCb
+   PUBLIC Void kwUmmFreeUlRbCb
 (
-RlcCb       *gCb,
-RlcUlRbCb   *rbCb
-)
+ RlcCb       *gCb,
+ RlcUlRbCb   *rbCb
+ )
 #else
 PUBLIC Void kwUmmFreeUlRbCb(gCb,rbCb)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb;
+   RlcCb       *gCb;
+   RlcUlRbCb   *rbCb;
 #endif
 {
    KwSn         curSn = 0;           /* sequence number of PDU */
@@ -919,7 +919,7 @@ RlcUlRbCb   *rbCb;
    TRC2(kwUmmFreeUlRbCb)
 
 
-   windSz  = rbCb->m.umUl.umWinSz << 1;
+      windSz  = rbCb->m.umUl.umWinSz << 1;
 
    umRecBuf =  rbCb->m.umUl.recBuf;
 
@@ -931,11 +931,11 @@ RlcUlRbCb   *rbCb;
    {
       if (umRecBuf[curSn] != NULLP)
       {
-         RLC_FREE_BUF_WC(umRecBuf[curSn]->pdu);
-         umRecBuf[curSn]->pdu = NULLP;
+	 RLC_FREE_BUF_WC(umRecBuf[curSn]->pdu);
+	 umRecBuf[curSn]->pdu = NULLP;
 
-         RLC_FREE_WC(gCb, umRecBuf[curSn], sizeof(KwUmRecBuf));
-         umRecBuf[curSn] = NULLP;
+	 RLC_FREE_WC(gCb, umRecBuf[curSn], sizeof(KwUmRecBuf));
+	 umRecBuf[curSn] = NULLP;
       }
       curSn++;
    }
@@ -946,5 +946,5 @@ RlcUlRbCb   *rbCb;
 
 
 /********************************************************************30**
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

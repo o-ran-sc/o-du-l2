@@ -262,24 +262,24 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       uint32_t totDataReq = 0; /* in bytes */
       DciInfo  *dciInfo = NULLP;
       SchUeCb *ueCb = NULLP;
-   
+
       ueCb = &cell->ueCb[ueIdx];
       /* check for SR */
       if(ueCb->srRcvd)
       {
-         totDataReq = UL_GRANT_SIZE; /*fixing so that all control msgs can be handled in SR */
-         ueCb->srRcvd = false;
+	 totDataReq = UL_GRANT_SIZE; /*fixing so that all control msgs can be handled in SR */
+	 ueCb->srRcvd = false;
       }
       /* check for BSR */
       for(lcgIdx=0; lcgIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
       {
-        totDataReq+= ueCb->bsrInfo[lcgIdx].dataVol;
-	ueCb->bsrInfo[lcgIdx].dataVol = 0;
+	 totDataReq+= ueCb->bsrInfo[lcgIdx].dataVol;
+	 ueCb->bsrInfo[lcgIdx].dataVol = 0;
       }
       if(totDataReq > 0) /* UL grant must be provided for this UE in this slot */
       {
-         SchPuschInfo schPuschInfo;
-         memset(&schPuschInfo, 0, sizeof(SchPuschInfo));
+	 SchPuschInfo schPuschInfo;
+	 memset(&schPuschInfo, 0, sizeof(SchPuschInfo));
 
 	 SCH_ALLOC(dciInfo, sizeof(DciInfo));
 	 if(!dciInfo)
@@ -296,7 +296,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 	 /* Fill DCI for UL grant */
 	 schFillUlDci(ueCb, schPuschInfo, dciInfo);
 	 memcpy(&dciInfo->slotIndInfo, &dlSchedInfo.schSlotValue.ulDciTime, sizeof(SlotIndInfo));
-         dlSchedInfo.ulGrant = dciInfo;
+	 dlSchedInfo.ulGrant = dciInfo;
       }
    }
 

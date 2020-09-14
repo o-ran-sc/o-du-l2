@@ -115,22 +115,22 @@ RgMngmt  *cntrl;  /* control structure  */
    S16       ret = ROK;            /* return value */
    Pst       cfmPst;
    RgMngmt   cfm;
-   
+
    Inst      inst = (pst->dstInst - SCH_INST_START); /* Scheduler instance Id */
    TRC3(RgMiLrgSchCntrlReq)
-   
 
-   /* Fill the post structure for sending the confirmation */
-   SchFillCfmPst(pst, &cfmPst, cntrl);
+
+      /* Fill the post structure for sending the confirmation */
+      SchFillCfmPst(pst, &cfmPst, cntrl);
 
    /* Initialize the cfg cfm structure 
-   if (SGetSBuf(cfmPst.region, cfmPst.pool, (Data **)&cfm, sizeof(RgMngmt))
+      if (SGetSBuf(cfmPst.region, cfmPst.pool, (Data **)&cfm, sizeof(RgMngmt))
       != ROK)
-   {
+      {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "Memory Unavailable for Confirmation");
       SPutSBuf(pst->region, pst->pool, (Data *)cntrl, sizeof(RgMngmt));
       RETVALUE(ROK);
-   } */
+      } */
    cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
 
 #ifdef LMINT3
@@ -158,19 +158,19 @@ RgMngmt  *cntrl;  /* control structure  */
    switch(cntrl->hdr.elmId.elmnt)
    {
       case STGEN:
-         rgSCHLmmGenCntrl(cntrl, &cfm, &cfmPst);
-         break;
+	 rgSCHLmmGenCntrl(cntrl, &cfm, &cfmPst);
+	 break;
       case STTFUSAP:
       case STRGRSAP:
-         rgSCHLmmSapCntrl(cntrl, &cfm, &cfmPst);
-         break;
+	 rgSCHLmmSapCntrl(cntrl, &cfm, &cfmPst);
+	 break;
       default:
-         cfm.cfm.status = LCM_PRIM_NOK;
-         cfm.cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-         RgMiLrgSchCntrlCfm(&cfmPst, &cfm);
-         RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "invalid elmnt=%d",
-                  cntrl->hdr.elmId.elmnt);
-         break;
+	 cfm.cfm.status = LCM_PRIM_NOK;
+	 cfm.cfm.reason = LCM_REASON_INVALID_PAR_VAL;
+	 RgMiLrgSchCntrlCfm(&cfmPst, &cfm);
+	 RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "invalid elmnt=%d",
+	       cntrl->hdr.elmId.elmnt);
+	 break;
    }
    /*   SPutSBuf(pst->region, pst->pool, (Data *)cntrl, sizeof(RgMngmt)); */
    RETVALUE(ret);
@@ -193,11 +193,11 @@ RgMngmt  *cntrl;  /* control structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchL2MeasReq
+   PUBLIC S16 RgMiLrgSchL2MeasReq
 (
-Pst               *pst,     /* post structure  */
-LrgSchMeasReqInfo *measInfo /* Meas Req Info */
-)
+ Pst               *pst,     /* post structure  */
+ LrgSchMeasReqInfo *measInfo /* Meas Req Info */
+ )
 #else
 PUBLIC S16 RgMiLrgSchL2MeasReq(pst, measInfo)
    Pst               *pst;     /* post structure  */
@@ -224,16 +224,16 @@ PUBLIC S16 RgMiLrgSchL2MeasReq(pst, measInfo)
    TRC3(RgMiLrgSchL2MeasReq)
 
 
-   /* Find the cellCb using cellId in measInfo. Iterate through all cells
-    * in rgrsapCb in RgschCb */
-   cell = NULLP;
+      /* Find the cellCb using cellId in measInfo. Iterate through all cells
+       * in rgrsapCb in RgschCb */
+      cell = NULLP;
    for (idx = 0; idx < instCb->numSaps; idx++)
    {
       if ( instCb->rgrSap[idx].cell->cellId == measInfo->cellId)
       {
-         /* got the cell break the loop */
-         cell = instCb->rgrSap[idx].cell;
-         break;
+	 /* got the cell break the loop */
+	 cell = instCb->rgrSap[idx].cell;
+	 break;
       }
    }
    /* If no cellCb return Err with Invalid Cell Id */
@@ -243,8 +243,8 @@ PUBLIC S16 RgMiLrgSchL2MeasReq(pst, measInfo)
       RGSCHFILLERR(err, RGSCHERR_L2M_MEASREQ, RGSCHERR_SCH_INVALID_CELLID);
       rgSchL2mSndCfm(&cfmPst, NULLP, measInfo, TRUE);
       RLOG_ARG2(L_ERROR,DBG_INSTID,inst, 
-               "Meas req Failed.Invalid Cell Id errType(%d) errCause(%d)",
-               err.errType, err.errCause);
+	    "Meas req Failed.Invalid Cell Id errType(%d) errCause(%d)",
+	    err.errType, err.errCause);
       RETVALUE(RFAILED);
    }
    /* Validate for Meas Types */
@@ -254,8 +254,8 @@ PUBLIC S16 RgMiLrgSchL2MeasReq(pst, measInfo)
       RGSCHFILLERR(err, RGSCHERR_L2M_MEASREQ, RGSCHERR_SCH_INVALID_MEASTYPE);
       rgSchL2mSndCfm(&cfmPst, NULLP, measInfo, TRUE);
       RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-               "Meas req Failed.Invalid Measurement Type"
-               "errCasue(%d) errType(%d)", err.errType, err.errCause);
+	    "Meas req Failed.Invalid Measurement Type"
+	    "errCasue(%d) errType(%d)", err.errType, err.errCause);
       RETVALUE(RFAILED);
    }
    /* Iterate through all meas requests in l2mList in cellCb */
@@ -268,13 +268,13 @@ PUBLIC S16 RgMiLrgSchL2MeasReq(pst, measInfo)
       lnk = lnk->next;
       if (measCb->measReq.hdr.transId == measInfo->hdr.transId)
       {
-         rgSchL2mFillCfmPst(pst, &cfmPst, measInfo);
-         RGSCHFILLERR(err, RGSCHERR_L2M_MEASREQ, RGSCHERR_SCH_DUP_TRANSID);
-         rgSchL2mSndCfm(&cfmPst, measCb, measInfo, TRUE);
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-                  "Meas req Failed.Dublicate TransId"
-                  "errType(%d) errCause(%d)", err.errType, err.errCause);
-         RETVALUE(RFAILED);
+	 rgSchL2mFillCfmPst(pst, &cfmPst, measInfo);
+	 RGSCHFILLERR(err, RGSCHERR_L2M_MEASREQ, RGSCHERR_SCH_DUP_TRANSID);
+	 rgSchL2mSndCfm(&cfmPst, measCb, measInfo, TRUE);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
+	       "Meas req Failed.Dublicate TransId"
+	       "errType(%d) errCause(%d)", err.errType, err.errCause);
+	 RETVALUE(RFAILED);
       }
    }
 #endif
@@ -286,8 +286,8 @@ PUBLIC S16 RgMiLrgSchL2MeasReq(pst, measInfo)
       RGSCHFILLERR(err, RGSCHERR_L2M_MEASREQ, RGSCHERR_SCH_L2MEAS_FAILED);
       rgSchL2mSndCfm(&cfmPst, measCb, measInfo, TRUE);
       RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, 
-               "Meas req Failed.errType(%d) errCause(%d)",
-               err.errType, err.errCause);
+	    "Meas req Failed.errType(%d) errCause(%d)",
+	    err.errType, err.errCause);
       RETVALUE(RFAILED);
    }
    RETVALUE(ret);
@@ -309,11 +309,11 @@ PUBLIC S16 RgMiLrgSchL2MeasReq(pst, measInfo)
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchL2MeasStopReq
+   PUBLIC S16 RgMiLrgSchL2MeasStopReq
 (
-Pst               *pst,     /* post structure  */
-LrgSchMeasStopReqInfo *measInfo /* Meas Req Info */
-)
+ Pst               *pst,     /* post structure  */
+ LrgSchMeasStopReqInfo *measInfo /* Meas Req Info */
+ )
 #else
 PUBLIC S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
    Pst               *pst;     /* post structure  */
@@ -332,19 +332,19 @@ PUBLIC S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
    TRC3(RgMiLrgSchL2MeasStopReq)
 
 
-   for (idx = 0; idx < instCb->numSaps; idx++)
-   {
-      if ( instCb->rgrSap[idx].cell->cellId == measInfo->cellId)
+      for (idx = 0; idx < instCb->numSaps; idx++)
       {
-         /* got the cell break the loop */
-         cell = instCb->rgrSap[idx].cell;
-         break;
+	 if ( instCb->rgrSap[idx].cell->cellId == measInfo->cellId)
+	 {
+	    /* got the cell break the loop */
+	    cell = instCb->rgrSap[idx].cell;
+	    break;
+	 }
       }
-   }
    if (cell == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,
-               "Stop req Failed.Invalid Cell Id ");
+	    "Stop req Failed.Invalid Cell Id ");
       RETVALUE(RFAILED);
    }
    cmMemset((U8 *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
@@ -356,7 +356,7 @@ PUBLIC S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
       node = (node)->next;
       cmLListDelFrm(&cell->l2mList, &measCb->measLnk);
       rgSCHUtlFreeSBuf(cell->instIdx, (Data **)&measCb,
-            sizeof(RgSchL2MeasCb));    
+	    sizeof(RgSchL2MeasCb));    
    }
 
    if(measInfo->measType & LRG_L2MEAS_AVG_PRB_PER_QCI_UL)
@@ -374,7 +374,7 @@ PUBLIC S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
    else
    { 
       RgMiLrgSchL2MeasStopCfm(&(rgSchCb[cell->instIdx].rgSchInit.lmPst),
-            &measCfm);
+	    &measCfm);
    }
    RETVALUE(ret);
 }/*RgMiLrgSchL2MeasStopReq*/
@@ -394,11 +394,11 @@ PUBLIC S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchL2MeasSendReq
+   PUBLIC S16 RgMiLrgSchL2MeasSendReq
 (
-Pst               *pst,     /* post structure  */
-LrgSchMeasSndReqInfo *measInfo /* Meas Req Info */
-)
+ Pst               *pst,     /* post structure  */
+ LrgSchMeasSndReqInfo *measInfo /* Meas Req Info */
+ )
 #else
 PUBLIC S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
    Pst               *pst;     /* post structure  */
@@ -414,20 +414,20 @@ PUBLIC S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
 
 
 
-   cell = NULLP;
+      cell = NULLP;
    for (idx = 0; idx < instCb->numSaps; idx++)
    {
       if ( instCb->rgrSap[idx].cell->cellId == measInfo->cellId)
       {
-         /* got the cell break the loop */
-         cell = instCb->rgrSap[idx].cell;
-         break;
+	 /* got the cell break the loop */
+	 cell = instCb->rgrSap[idx].cell;
+	 break;
       }
    }
    if (cell == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,
-               "Send req Failed.Invalid Cell Id");
+	    "Send req Failed.Invalid Cell Id");
       RETVALUE(RFAILED);
    }
 
@@ -476,7 +476,7 @@ PUBLIC S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrBndReq
+   PUBLIC S16 RgUiRgrBndReq
 (
  Pst   *pst, 
  SuId  suId,
@@ -497,7 +497,7 @@ PUBLIC S16 RgUiRgrBndReq(pst, suId, spId)
    TRC3(RgUiRgrBndReq)
 
 
-   tmpPst.prior       = pst->prior;
+      tmpPst.prior       = pst->prior;
    tmpPst.route       = pst->route;
    tmpPst.selector    = pst->selector;
    tmpPst.region      = rgSchCb[instId].rgSchInit.region;
@@ -515,40 +515,40 @@ PUBLIC S16 RgUiRgrBndReq(pst, suId, spId)
       /* Check the state of the SAP */
       switch (rgSchCb[instId].rgrSap[spId].sapSta.sapState)
       {
-         /* This case might not be needed if SAP not configured then it will go
-          * to else of above if condition */
-         case LRG_UNBND: /* SAP is not bound */
-            RLOG0(L_DEBUG,"SAP Not yet bound");
-            rgSchCb[instId].rgrSap[spId].sapSta.sapState = LRG_BND;
-            rgSchCb[instId].rgrSap[spId].sapCfg.suId = suId;
-            /* Send Bind Confirm with status as SUCCESS */
-            ret = rgSCHUtlRgrBndCfm(instId, suId, CM_BND_OK);
-            /*Indicate to Layer manager  */
-            rgSCHUtlFillDgnParams(instId, &dgn, LRG_USTA_DGNVAL_MEM); 
-            ret = rgSCHLmmStaInd(instId, LCM_CATEGORY_INTERFACE,
-                  LRG_EVENT_RGRSAP_ENB, LCM_CAUSE_UNKNOWN, &dgn);
-            break;
-         case LRG_BND: /* SAP is already bound*/
-            RLOG0(L_DEBUG,"SAP is already bound");
-            ret = rgSCHUtlRgrBndCfm(instId, suId, CM_BND_OK);
-            break;
-         default: /* Should Never Enter here */
+	 /* This case might not be needed if SAP not configured then it will go
+	  * to else of above if condition */
+	 case LRG_UNBND: /* SAP is not bound */
+	    RLOG0(L_DEBUG,"SAP Not yet bound");
+	    rgSchCb[instId].rgrSap[spId].sapSta.sapState = LRG_BND;
+	    rgSchCb[instId].rgrSap[spId].sapCfg.suId = suId;
+	    /* Send Bind Confirm with status as SUCCESS */
+	    ret = rgSCHUtlRgrBndCfm(instId, suId, CM_BND_OK);
+	    /*Indicate to Layer manager  */
+	    rgSCHUtlFillDgnParams(instId, &dgn, LRG_USTA_DGNVAL_MEM); 
+	    ret = rgSCHLmmStaInd(instId, LCM_CATEGORY_INTERFACE,
+		  LRG_EVENT_RGRSAP_ENB, LCM_CAUSE_UNKNOWN, &dgn);
+	    break;
+	 case LRG_BND: /* SAP is already bound*/
+	    RLOG0(L_DEBUG,"SAP is already bound");
+	    ret = rgSCHUtlRgrBndCfm(instId, suId, CM_BND_OK);
+	    break;
+	 default: /* Should Never Enter here */
 #if (ERRCLASS & ERRCLS_ADD_RES) 
-            RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG001, 
-                  (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
-                  "Invalid SAP State:RgUiRrgBndReq failed\n");
+	    RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG001, 
+		  (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
+		  "Invalid SAP State:RgUiRrgBndReq failed\n");
 #endif
-            ret = rgSCHUtlRgrBndCfm(instId, suId, CM_BND_NOK);
-            break;
+	    ret = rgSCHUtlRgrBndCfm(instId, suId, CM_BND_NOK);
+	    break;
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       /* ccpu00117035 - MOD - Changed ErrVal argument from accessing sap state 
-         to spId to avoid seg fault due to invalid sapID */
+	 to spId to avoid seg fault due to invalid sapID */
       RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG002,
-            (ErrVal)spId, "Invalid SAP Id:RgUiRrgBndReq failed\n");
+	    (ErrVal)spId, "Invalid SAP Id:RgUiRrgBndReq failed\n");
 #endif
       ret = RgUiRgrBndCfm(&tmpPst, suId, CM_BND_NOK);
    }
@@ -575,7 +575,7 @@ PUBLIC S16 RgUiRgrBndReq(pst, suId, spId)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrUbndReq
+   PUBLIC S16 RgUiRgrUbndReq
 (
  Pst    *pst,
  SpId   spId,
@@ -592,34 +592,34 @@ PUBLIC S16 RgUiRgrUbndReq(pst, spId, reason)
    TRC3(RgUiRgrUbndReq)
 
 
-   /* SAP Id validation */
-   if (spId < rgSchCb[instId].numSaps)
-   {
-      switch(rgSchCb[instId].rgrSap[spId].sapSta.sapState)
+      /* SAP Id validation */
+      if (spId < rgSchCb[instId].numSaps)
       {
-         case LRG_BND: /* SAP is already bound*/
-            RLOG0(L_DEBUG,"SAP is already bound");
-            /* setting SAP state to UN BOUND */
-            rgSchCb[instId].rgrSap[spId].sapSta.sapState = LRG_UNBND;
-            break;
-         default:
+	 switch(rgSchCb[instId].rgrSap[spId].sapSta.sapState)
+	 {
+	    case LRG_BND: /* SAP is already bound*/
+	       RLOG0(L_DEBUG,"SAP is already bound");
+	       /* setting SAP state to UN BOUND */
+	       rgSchCb[instId].rgrSap[spId].sapSta.sapState = LRG_UNBND;
+	       break;
+	    default:
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG003,
-                  (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
-                  "Invalid SAP State: RgUiRgrUbndReq failed\n");
+	       RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG003,
+		     (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
+		     "Invalid SAP State: RgUiRgrUbndReq failed\n");
 #endif
-            RETVALUE(RFAILED);
+	       RETVALUE(RFAILED);
+	 }
       }
-   }
-   else
-   {
+      else
+      {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-      RGSCHLOGERROR(instId,ERRCLS_INT_PAR, ERG004, 
-            (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
-            "Invalid SAP Id:RgUiRgrUbndReq failed\n");
+	 RGSCHLOGERROR(instId,ERRCLS_INT_PAR, ERG004, 
+	       (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
+	       "Invalid SAP Id:RgUiRgrUbndReq failed\n");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    RETVALUE(ROK);
 }  /* RgUiRgrUbndReq */
 
@@ -646,19 +646,19 @@ PUBLIC S16 RgUiRgrUbndReq(pst, spId, reason)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrSiCfgReq
+   PUBLIC S16 RgUiRgrSiCfgReq
 (
-Pst           *pst, 
-SpId          spId,
-RgrCfgTransId transId,
-RgrSiCfgReqInfo *cfgReqInfo
-)
+ Pst           *pst, 
+ SpId          spId,
+ RgrCfgTransId transId,
+ RgrSiCfgReqInfo *cfgReqInfo
+ )
 #else
 PUBLIC S16 RgUiRgrSiCfgReq(pst, spId, transId, cfgReqInfo)
-Pst           *pst; 
-SpId          spId;
-RgrCfgTransId transId;
-RgrSiCfgReqInfo *cfgReqInfo;
+   Pst           *pst; 
+   SpId          spId;
+   RgrCfgTransId transId;
+   RgrSiCfgReqInfo *cfgReqInfo;
 #endif
 {
    S16       ret       = ROK;
@@ -675,7 +675,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
    if (cfgReqInfo == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"Input Message Buffer "
-                   "is NULL");
+	    "is NULL");
       rgSCHUtlRgrSiCfgCfm(instId, spId, transId, cfmStatus); 
       RETVALUE(RFAILED);
    }
@@ -685,52 +685,52 @@ RgrSiCfgReqInfo *cfgReqInfo;
       if(LRG_BND != rgSchCb[instId].rgrSap[spId].sapSta.sapState)
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-         RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG007, 
-                  (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
-                  "Invalid SAP State: RgUiRgrSiCfgReq failed\n");
+	 RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG007, 
+	       (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
+	       "Invalid SAP State: RgUiRgrSiCfgReq failed\n");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo,
-                                          (Size)sizeof(*cfgReqInfo));
-         rgSCHUtlRgrSiCfgCfm(instId, spId, transId, cfmStatus); 
-         RETVALUE(RFAILED);
+	 SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo,
+	       (Size)sizeof(*cfgReqInfo));
+	 rgSCHUtlRgrSiCfgCfm(instId, spId, transId, cfmStatus); 
+	 RETVALUE(RFAILED);
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG008,
-            (ErrVal)rgSchCb[instId].rgrSap[spId].sapCfg.spId,
-            "Invalid SAP Id:RgUiRgrSiCfgReq failed\n");
+	    (ErrVal)rgSchCb[instId].rgrSap[spId].sapCfg.spId,
+	    "Invalid SAP Id:RgUiRgrSiCfgReq failed\n");
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo,
-                                   (Size)sizeof(*cfgReqInfo));
+	    (Size)sizeof(*cfgReqInfo));
       rgSCHUtlRgrSiCfgCfm(instId, spId, transId, cfmStatus); 
       RETVALUE(RFAILED);
    }
 
    /* Handle configuration */
 #ifdef EMTC_ENABLE
-if(rgSchCb[instId].rgrSap[spId].cell->emtcEnable)
-{
-   ret = rgSCHGomEmtcHndlSiCfg(pst->region, pst->pool,
-            &rgSchCb[instId], spId, transId, 
-                        cfgReqInfo);
-}
-else
-{
+   if(rgSchCb[instId].rgrSap[spId].cell->emtcEnable)
+   {
+      ret = rgSCHGomEmtcHndlSiCfg(pst->region, pst->pool,
+	    &rgSchCb[instId], spId, transId, 
+	    cfgReqInfo);
+   }
+   else
+   {
+      ret = rgSCHGomHndlSiCfg(pst->region, pst->pool,
+	    &rgSchCb[instId], spId, transId, 
+	    cfgReqInfo);
+   }
+#else
    ret = rgSCHGomHndlSiCfg(pst->region, pst->pool,
-            &rgSchCb[instId], spId, transId, 
-                        cfgReqInfo);
-}
- #else
-   ret = rgSCHGomHndlSiCfg(pst->region, pst->pool,
-            &rgSchCb[instId], spId, transId, 
-                        cfgReqInfo);
- #endif
+	 &rgSchCb[instId], spId, transId, 
+	 cfgReqInfo);
+#endif
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"RgUiRgrSiCfgReq:"
-                   "Configuration Request Handling Failed");
+	    "Configuration Request Handling Failed");
       RETVALUE(RFAILED);
    }
 
@@ -760,19 +760,19 @@ else
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrWarningSiCfgReq
+   PUBLIC S16 RgUiRgrWarningSiCfgReq
 (
-Pst           *pst, 
-SpId          spId,
-RgrCfgTransId transId,
-RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
-)
+ Pst           *pst, 
+ SpId          spId,
+ RgrCfgTransId transId,
+ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
+ )
 #else
 PUBLIC S16 RgUiRgrWarningSiCfgReq(pst, spId, transId, warningSiCfgReqInfo)
-Pst           *pst; 
-SpId          spId;
-RgrCfgTransId transId;
-RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
+   Pst           *pst; 
+   SpId          spId;
+   RgrCfgTransId transId;
+   RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
 #endif
 {
    Inst     instId = pst->dstInst-SCH_INST_START;
@@ -790,7 +790,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
    if (warningSiCfgReqInfo == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"Input Message Buffer "
-               "is NULL");
+	    "is NULL");
       rgSCHUtlRgrWarningSiCfgCfm(instId, spId, 0, transId, cfmStatus);
       RETVALUE(RFAILED);
    }
@@ -800,55 +800,55 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
       if(LRG_BND != rgSchCb[instId].rgrSap[spId].sapSta.sapState)
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-         RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG023, 
-               (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
-               "Invalid SAP State: warningSiCfgReqInfo failed\n");
+	 RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG023, 
+	       (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
+	       "Invalid SAP State: warningSiCfgReqInfo failed\n");
 #endif
-         rgSCHUtlFreeWarningSiSeg(pst->region, pst->pool, 
-               &warningSiCfgReqInfo->siPduLst);
-         SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo,
-               sizeof(RgrWarningSiCfgReqInfo));
-         rgSCHUtlRgrWarningSiCfgCfm(instId, spId, warningSiCfgReqInfo->siId, 
-               transId, cfmStatus);
-         RETVALUE(RFAILED);
+	 rgSCHUtlFreeWarningSiSeg(pst->region, pst->pool, 
+	       &warningSiCfgReqInfo->siPduLst);
+	 SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo,
+	       sizeof(RgrWarningSiCfgReqInfo));
+	 rgSCHUtlRgrWarningSiCfgCfm(instId, spId, warningSiCfgReqInfo->siId, 
+	       transId, cfmStatus);
+	 RETVALUE(RFAILED);
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG024,
-            (ErrVal)rgSchCb[instId].rgrSap[spId].sapCfg.spId,
-            "Invalid SAP Id:warningSiCfgReqInfo failed\n");
+	    (ErrVal)rgSchCb[instId].rgrSap[spId].sapCfg.spId,
+	    "Invalid SAP Id:warningSiCfgReqInfo failed\n");
 #endif
       rgSCHUtlFreeWarningSiSeg(pst->region, pst->pool, 
-            &warningSiCfgReqInfo->siPduLst);
+	    &warningSiCfgReqInfo->siPduLst);
       SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo,
-            sizeof(RgrWarningSiCfgReqInfo));
+	    sizeof(RgrWarningSiCfgReqInfo));
       rgSCHUtlRgrWarningSiCfgCfm(instId, spId, warningSiCfgReqInfo->siId, 
-            transId, cfmStatus);
+	    transId, cfmStatus);
       RETVALUE(RFAILED);
    }
 
    /* Handle configuration */
 #ifdef EMTC_ENABLE
-if(rgSchCb[instId].rgrSap[spId].cell->emtcEnable)
-{
-   ret = rgSCHGomEmtcHndlWarningSiCfg(pst->region, pst->pool,
-         &rgSchCb[instId], spId, transId, warningSiCfgReqInfo);
-}
-else
-{
-   ret = rgSCHGomHndlWarningSiCfg(pst->region, pst->pool,
-         &rgSchCb[instId], spId, transId, warningSiCfgReqInfo);
-}
+   if(rgSchCb[instId].rgrSap[spId].cell->emtcEnable)
+   {
+      ret = rgSCHGomEmtcHndlWarningSiCfg(pst->region, pst->pool,
+	    &rgSchCb[instId], spId, transId, warningSiCfgReqInfo);
+   }
+   else
+   {
+      ret = rgSCHGomHndlWarningSiCfg(pst->region, pst->pool,
+	    &rgSchCb[instId], spId, transId, warningSiCfgReqInfo);
+   }
 #else
    ret = rgSCHGomHndlWarningSiCfg(pst->region, pst->pool,
-         &rgSchCb[instId], spId, transId, warningSiCfgReqInfo);
+	 &rgSchCb[instId], spId, transId, warningSiCfgReqInfo);
 #endif
    if(ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,
-               "Configuration Request Handling Failed");
+	    "Configuration Request Handling Failed");
       RETVALUE(RFAILED);
    }
 
@@ -877,19 +877,19 @@ else
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrWarningSiStopReq
+   PUBLIC S16 RgUiRgrWarningSiStopReq
 (
-Pst           *pst,
-SpId          spId,
-RgrCfgTransId transId,
-U8            siId
-)
+ Pst           *pst,
+ SpId          spId,
+ RgrCfgTransId transId,
+ U8            siId
+ )
 #else
 PUBLIC S16 RgUiRgrWarningSiStopReq(pst,spId, transId, siId)
-Pst           *pst;
-SpId          spId;
-RgrCfgTransId transId;
-U8            siId;
+   Pst           *pst;
+   SpId          spId;
+   RgrCfgTransId transId;
+   U8            siId;
 #endif
 {         
    Inst         instId = pst->dstInst-SCH_INST_START;
@@ -898,30 +898,30 @@ U8            siId;
 
 
 
-   if (spId < rgSchCb[instId].numSaps)
-   {
-      if(LRG_BND != rgSchCb[instId].rgrSap[spId].sapSta.sapState)
+      if (spId < rgSchCb[instId].numSaps)
+      {
+	 if(LRG_BND != rgSchCb[instId].rgrSap[spId].sapSta.sapState)
+	 {
+#if (ERRCLASS & ERRCLS_ADD_RES)      
+	    RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG025, 
+		  (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
+		  "Invalid SAP State: RgUiRgrWarningSiStopReq failed\n");
+#endif
+	    RETVALUE(RFAILED);
+	 }
+      }
+      else
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-         RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG025, 
-               (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
-               "Invalid SAP State: RgUiRgrWarningSiStopReq failed\n");
+	 RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG026,
+	       (ErrVal)rgSchCb[instId].rgrSap[spId].sapCfg.spId,
+	       "Invalid SAP Id:RgUiRgrWarningSiStopReq failed\n");
 #endif
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
-   }
-   else
-   {
-#if (ERRCLASS & ERRCLS_ADD_RES)      
-      RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG026,
-            (ErrVal)rgSchCb[instId].rgrSap[spId].sapCfg.spId,
-            "Invalid SAP Id:RgUiRgrWarningSiStopReq failed\n");
-#endif
-      RETVALUE(RFAILED);
-   }
 
    rgSCHGomHndlWarningSiStopReq(pst->region, pst->pool,
-         &rgSchCb[instId], siId, transId, spId);
+	 &rgSchCb[instId], siId, transId, spId);
 
    RETVALUE(ROK);
 }
@@ -951,7 +951,7 @@ U8            siId;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrLoadInfReq
+   PUBLIC S16 RgUiRgrLoadInfReq
 (
  Pst               *pst,
  SpId              spId,
@@ -979,7 +979,7 @@ PUBLIC S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
    if (loadInfReq == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"Input Message Buffer "
-               "is NULL");
+	    "is NULL");
       RETVALUE(RFAILED);
    }
 
@@ -988,35 +988,35 @@ PUBLIC S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
       if(LRG_BND != rgSchCb[instId].rgrSap[spId].sapSta.sapState)
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-         RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG007, 
-               (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
-               "Invalid SAP State: RgUiRgrLoadInfReq failed\n");
+	 RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG007, 
+	       (ErrVal)rgSchCb[instId].rgrSap[spId].sapSta.sapState,
+	       "Invalid SAP State: RgUiRgrLoadInfReq failed\n");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq,
-               (Size)sizeof(*loadInfReq));
-         RETVALUE(RFAILED);
+	 SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq,
+	       (Size)sizeof(*loadInfReq));
+	 RETVALUE(RFAILED);
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG008,
-            (ErrVal)rgSchCb[instId].rgrSap[spId].sapCfg.spId,
-            "Invalid SAP Id:RgUiRgrLoadInfReq failed\n");
+	    (ErrVal)rgSchCb[instId].rgrSap[spId].sapCfg.spId,
+	    "Invalid SAP Id:RgUiRgrLoadInfReq failed\n");
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq,
-            (Size)sizeof(*loadInfReq));
+	    (Size)sizeof(*loadInfReq));
       RETVALUE(RFAILED);
    }
 
    /* Handle configuration */
    ret = rgSCHGomHndlLoadInf(pst->region, pst->pool,
-         &rgSchCb[(pst->dstInst - SCH_INST_START)], spId, transId, 
-         loadInfReq);
+	 &rgSchCb[(pst->dstInst - SCH_INST_START)], spId, transId, 
+	 loadInfReq);
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,instId,
-               "Configuration Request Handling Failed");
+	    "Configuration Request Handling Failed");
       RETVALUE(RFAILED);
    }
 
@@ -1042,21 +1042,21 @@ PUBLIC S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchDedBoUpdtReq
+   PUBLIC S16 RgMacSchDedBoUpdtReq
 (
-Pst*           pst,
-RgInfDedBoRpt  *boRpt
-)
+ Pst*           pst,
+ RgInfDedBoRpt  *boRpt
+ )
 #else
 PUBLIC S16 RgMacSchDedBoUpdtReq(pst, boRpt)
-Pst*           pst;
-RgInfDedBoRpt  *boRpt;
+   Pst*           pst;
+   RgInfDedBoRpt  *boRpt;
 #endif
 {
    RgSchCellCb   *cell;
    RgSchUeCb     *ue;
 #ifdef SCH_STATS
-      RgSchCmnDlUe  *dlUe;
+   RgSchCmnDlUe  *dlUe;
 #endif
 
 
@@ -1064,20 +1064,20 @@ RgInfDedBoRpt  *boRpt;
    S16           cellSapId = boRpt->cellSapId;
 
    TRC3(RgMacSchDedBoUpdtReq)
-/*
-   RLOG_ARG2(L_DEBUG,DBG_CELLID,boRpt->cellId,"rgMacSchDedBoUpdtReq():"
-            " boRpt->rnti = %u  boRpt->lcId = %u",boRpt->rnti, boRpt->lcId);
-*/
-   /* No need to chk for cell being NULL as MAC wouldn't have found instance if
-    * it doesnt exist */
-   cell = rgSchCb[inst].rgrSap[cellSapId].cell;
+      /*
+	 RLOG_ARG2(L_DEBUG,DBG_CELLID,boRpt->cellId,"rgMacSchDedBoUpdtReq():"
+	 " boRpt->rnti = %u  boRpt->lcId = %u",boRpt->rnti, boRpt->lcId);
+       */
+      /* No need to chk for cell being NULL as MAC wouldn't have found instance if
+       * it doesnt exist */
+      cell = rgSchCb[inst].rgrSap[cellSapId].cell;
 
 #ifndef NO_ERRCLS
    if (cell->cellId != boRpt->cellId)
    {
       /* Handle Cell fetch failure */
       RGSCHLOGERROR(inst, ERRCLS_INT_PAR,ERG009,(ErrVal)boRpt->cellId,
-                            "rgMacSchDedBoUpdtReq(): Invalid cell Id");
+	    "rgMacSchDedBoUpdtReq(): Invalid cell Id");
       RETVALUE(RFAILED);
    }
 #endif
@@ -1090,73 +1090,73 @@ RgInfDedBoRpt  *boRpt;
 #ifdef LTE_ADV
       if (cell != ue->cell)
       {
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
 #endif
       if ((dlLc = rgSCHDbmGetDlDedLcCb(ue, boRpt->lcId)) != NULLP)
       {
 #ifdef LTE_L2_MEAS
-         if(dlLc->lcType == CM_LTE_LCH_DTCH)
-         {
-            if((dlLc->bo == 0) &&(boRpt->bo != 0))
-            {
-               /* UE is active */
-               if(!(ue->qciActiveLCs[dlLc->qciCb->qci]))
-               {
-                  dlLc->qciCb->dlUeCount++;
-               }
-               ue->qciActiveLCs[dlLc->qciCb->qci]++;
-            }
-            else if((dlLc->bo != 0) && (boRpt->bo == 0) && (dlLc->qciCb->dlUeCount))
-            {
-               /* UE is inactive */
-               if (ue->qciActiveLCs[dlLc->qciCb->qci])
-               {
-                  ue->qciActiveLCs[dlLc->qciCb->qci]--;
-                  if (!(ue->qciActiveLCs[dlLc->qciCb->qci]))
-                  {
-                     dlLc->qciCb->dlUeCount--;
-                  }
-               }
-            }
-        }
+	 if(dlLc->lcType == CM_LTE_LCH_DTCH)
+	 {
+	    if((dlLc->bo == 0) &&(boRpt->bo != 0))
+	    {
+	       /* UE is active */
+	       if(!(ue->qciActiveLCs[dlLc->qciCb->qci]))
+	       {
+		  dlLc->qciCb->dlUeCount++;
+	       }
+	       ue->qciActiveLCs[dlLc->qciCb->qci]++;
+	    }
+	    else if((dlLc->bo != 0) && (boRpt->bo == 0) && (dlLc->qciCb->dlUeCount))
+	    {
+	       /* UE is inactive */
+	       if (ue->qciActiveLCs[dlLc->qciCb->qci])
+	       {
+		  ue->qciActiveLCs[dlLc->qciCb->qci]--;
+		  if (!(ue->qciActiveLCs[dlLc->qciCb->qci]))
+		  {
+		     dlLc->qciCb->dlUeCount--;
+		  }
+	       }
+	    }
+	 }
 #endif
 #ifdef SCH_STATS
-         dlUe = RG_SCH_CMN_GET_DL_UE(ue, cell);
-         if (boRpt->bo > dlLc->bo)
-         {
-            dlUe->boReported += (boRpt->bo - dlLc->bo);
-         }
+	 dlUe = RG_SCH_CMN_GET_DL_UE(ue, cell);
+	 if (boRpt->bo > dlLc->bo)
+	 {
+	    dlUe->boReported += (boRpt->bo - dlLc->bo);
+	 }
 #endif
 #ifdef TENB_STATS
-         if (boRpt->bo > dlLc->bo)
-         {
-            ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(cell)].dlBo += ((boRpt->bo - dlLc->bo)<<3);
-         }
+	 if (boRpt->bo > dlLc->bo)
+	 {
+	    ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(cell)].dlBo += ((boRpt->bo - dlLc->bo)<<3);
+	 }
 #endif
-         /* RLC provides cumulative BO for each LC.
-          * Reduce the left out unscheduled bo from total bo and 
-          * update the new BO to the total bo */
-         if(ue->totalBo >= dlLc->bo)
-         {
-            ue->totalBo -= dlLc->bo;
-         }
-         else
-         {
-            ue->totalBo = 0; /* this case should not arise
-                             * Resetting for safety */
-         }
+	 /* RLC provides cumulative BO for each LC.
+	  * Reduce the left out unscheduled bo from total bo and 
+	  * update the new BO to the total bo */
+	 if(ue->totalBo >= dlLc->bo)
+	 {
+	    ue->totalBo -= dlLc->bo;
+	 }
+	 else
+	 {
+	    ue->totalBo = 0; /* this case should not arise
+			      * Resetting for safety */
+	 }
 
-         ue->totalBo +=  boRpt->bo;
-         dlLc->bo = boRpt->bo;
-         dlLc->oldestSduArrTime = boRpt->oldestSduArrTime;
-         dlLc->staPduBo = boRpt->staPduBo;
-         
-         dlLc->setMaxUlPrio = boRpt->setMaxUlPrio;
-         dlLc->setMaxDlPrio = boRpt->setMaxDlPrio;
-         /* Update the scheduler */
-         rgSCHUtlDlDedBoUpd(cell, ue, dlLc);
-         RETVALUE(ROK);
+	 ue->totalBo +=  boRpt->bo;
+	 dlLc->bo = boRpt->bo;
+	 dlLc->oldestSduArrTime = boRpt->oldestSduArrTime;
+	 dlLc->staPduBo = boRpt->staPduBo;
+
+	 dlLc->setMaxUlPrio = boRpt->setMaxUlPrio;
+	 dlLc->setMaxDlPrio = boRpt->setMaxDlPrio;
+	 /* Update the scheduler */
+	 rgSCHUtlDlDedBoUpd(cell, ue, dlLc);
+	 RETVALUE(ROK);
       }
    }
    RETVALUE(RFAILED);
@@ -1181,15 +1181,15 @@ RgInfDedBoRpt  *boRpt;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchCmnBoUpdtReq
+   PUBLIC S16 RgMacSchCmnBoUpdtReq
 (
-Pst*           pst,
-RgInfCmnBoRpt  *boRpt
-)
+ Pst*           pst,
+ RgInfCmnBoRpt  *boRpt
+ )
 #else
 PUBLIC S16 RgMacSchCmnBoUpdtReq(pst, boRpt)
-Pst*           pst;
-RgInfCmnBoRpt  *boRpt;
+   Pst*           pst;
+   RgInfCmnBoRpt  *boRpt;
 #endif
 {
    RgSchCellCb   *cell;
@@ -1198,13 +1198,13 @@ RgInfCmnBoRpt  *boRpt;
 
    TRC3(RgMacSchCmnBoUpdtReq)
 
-   /* No need to chk for cell being NULL as MAC would not have found instance if
-    * it doesnt exist */
-   cell = rgSchCb[inst].rgrSap[cellSapId].cell;
+      /* No need to chk for cell being NULL as MAC would not have found instance if
+       * it doesnt exist */
+      cell = rgSchCb[inst].rgrSap[cellSapId].cell;
    if (cell->cellId != boRpt->cellId)
    {
       RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,"RgMacSchCmnBoUpdtReq():"
-               "Invalid boRpt cell Id:%d",boRpt->cellId);
+	    "Invalid boRpt cell Id:%d",boRpt->cellId);
       RETVALUE(RFAILED);
    }
 
@@ -1212,14 +1212,14 @@ RgInfCmnBoRpt  *boRpt;
    if(boRpt->lcId == cell->dlCcchId)
    {
       RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,"RgMacSchCmnBoUpdtReq():"
-               " BO update for CCCH");
+	    " BO update for CCCH");
       rgSCHUtlHndlCcchBoUpdt(cell, boRpt); 
    }
    else
    {
       rgSCHUtlHndlBcchPcchBoUpdt(cell, boRpt); 
    }
-   
+
    RETVALUE(ROK);
 } /* end of RgMacSchCmnBoUpdtReq */
 /*Fix: start: Inform UE delete to scheduler*/
@@ -1239,15 +1239,15 @@ RgInfCmnBoRpt  *boRpt;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchUeDelInd
+   PUBLIC S16 RgMacSchUeDelInd
 (
-Pst*             pst,
-RgInfUeDelInd    *ueDelInd
-)
+ Pst*             pst,
+ RgInfUeDelInd    *ueDelInd
+ )
 #else
 PUBLIC S16 RgMacSchUeDelInd(pst, ueDelInd)
-Pst*             pst;
-RgInfUeDelInd    *ueDelInd;
+   Pst*             pst;
+   RgInfUeDelInd    *ueDelInd;
 #endif
 {
    RgSchCellCb       *cell;
@@ -1255,26 +1255,26 @@ RgInfUeDelInd    *ueDelInd;
    S16               cellSapId = ueDelInd->cellSapId;
    CmLList           *tmp;
    RgSchRntiLnk      *rntiLnk=NULL;
-   
+
    TRC3(RgMacSchUeDelInd)
 
-   if (rgSchCb[inst].rgrSap == NULLP || rgSchCb[inst].rgrSap[cellSapId].cell == NULLP)
-   {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,ueDelInd->cellId,"rgrSap or cell is not configured");
-      RETVALUE(ROK);
-   }
+      if (rgSchCb[inst].rgrSap == NULLP || rgSchCb[inst].rgrSap[cellSapId].cell == NULLP)
+      {
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,ueDelInd->cellId,"rgrSap or cell is not configured");
+	 RETVALUE(ROK);
+      }
    cell = rgSchCb[inst].rgrSap[cellSapId].cell;
 #ifndef NO_ERRCLS
    if (cell->cellId != ueDelInd->cellId)
    {
       /* Handle Cell fetch failure */
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-         		"rgMacSchUeDelInd(): Invalid ueDelInd cell Id:%d",
-		         ueDelInd->cellId);
+	    "rgMacSchUeDelInd(): Invalid ueDelInd cell Id:%d",
+	    ueDelInd->cellId);
       RETVALUE(ROK);
    }
 #endif
-      
+
    CM_LLIST_FIRST_NODE(&cell->rntiDb.rntiGuardPool, tmp);
 
    while(tmp)
@@ -1282,29 +1282,29 @@ RgInfUeDelInd    *ueDelInd;
       rntiLnk = (RgSchRntiLnk *)(tmp->node);
       if(rntiLnk->rnti == ueDelInd->rnti)
       {
-         cmLListDelFrm(&cell->rntiDb.rntiGuardPool, tmp);
-         tmp->node = NULLP;
-         rgSCHDbmRlsRnti(cell, rntiLnk);
-      	 RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
-		  "RNTI:%d Released from the Guard pool(%ld)",
-		  ueDelInd->rnti, cell->rntiDb.rntiGuardPool.count);
-	 
-         break;
+	 cmLListDelFrm(&cell->rntiDb.rntiGuardPool, tmp);
+	 tmp->node = NULLP;
+	 rgSCHDbmRlsRnti(cell, rntiLnk);
+	 RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
+	       "RNTI:%d Released from the Guard pool(%ld)",
+	       ueDelInd->rnti, cell->rntiDb.rntiGuardPool.count);
+
+	 break;
       }
       CM_LLIST_NEXT_NODE(&cell->rntiDb.rntiGuardPool, tmp);
    }
 
 #ifdef EMTC_ENABLE
- rgEmtcMacSchUeDelInd(cell,ueDelInd);  
+   rgEmtcMacSchUeDelInd(cell,ueDelInd);  
 #endif
 
    if(tmp == NULLP)
    {
       /* Fix : syed HO UE does not have a valid ue->rntiLnk */
       RLOG_ARG2(L_INFO,DBG_CELLID,ueDelInd->cellId,"HO CRNTI:%d not present in the"
-           "Guard Pool:%ld", ueDelInd->rnti, cell->rntiDb.rntiGuardPool.count);
+	    "Guard Pool:%ld", ueDelInd->rnti, cell->rntiDb.rntiGuardPool.count);
    } 
-   
+
    RETVALUE(ROK);
 }  /* rgMacSchUeDelInd */
 /*Fix: end: Inform UE delete to scheduler*/
@@ -1327,15 +1327,15 @@ RgInfUeDelInd    *ueDelInd;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchSfRecpInd
+   PUBLIC S16 RgMacSchSfRecpInd
 (
-Pst*             pst,
-RgInfSfDatInd    *subfrmInfo
-)
+ Pst*             pst,
+ RgInfSfDatInd    *subfrmInfo
+ )
 #else
 PUBLIC S16 RgMacSchSfRecpInd(pst, subfrmInfo)
-Pst*             pst;
-RgInfSfDatInd    *subfrmInfo;
+   Pst*             pst;
+   RgInfSfDatInd    *subfrmInfo;
 #endif
 {
    S16               ret = RFAILED;
@@ -1350,13 +1350,13 @@ RgInfSfDatInd    *subfrmInfo;
    S16               cellSapId = subfrmInfo->cellSapId;
    RgrUeStaIndInfo   *ueStaInd;
 #ifdef RG_UNUSED
-//#ifdef LTEMAC_SPS
+   //#ifdef LTEMAC_SPS
    RgSchCmnUlUeSpsInfo   *ulSpsUe ;
 #endif
    /* RRM_RBC_X */
    U32                   idx;
    /* RRM_RBC_Y */
-   
+
 #ifdef LTE_L2_MEAS
    U8               qci;
    U16              datIndActQci = 0;
@@ -1367,9 +1367,9 @@ RgInfSfDatInd    *subfrmInfo;
 #endif
    TRC3(RgMacSchSfRecpInd)
 
-   /* No need to chk for cell being NULL as MAC wouldn't have found instance if
-    * it doesnt exist */
-   cell = rgSchCb[inst].rgrSap[cellSapId].cell;
+      /* No need to chk for cell being NULL as MAC wouldn't have found instance if
+       * it doesnt exist */
+      cell = rgSchCb[inst].rgrSap[cellSapId].cell;
 
    /* lnkLst assignment */
    lnkLst = &(subfrmInfo->ueLst);
@@ -1391,7 +1391,7 @@ RgInfSfDatInd    *subfrmInfo;
        * 2. If the incoming PDU contained a CRNTI control element, i.e. we should
        * have a ueCb also for this 
        */
-      
+
       /* It could be that a non-msg3 pdu contains a CRNTI Control element. We
        * should check for CRNTI CE and if it exists the UECb must exist, also an
        * if the CRNTI in the CE and the one with which the message came in are
@@ -1399,157 +1399,157 @@ RgInfSfDatInd    *subfrmInfo;
        */
       if (datInd->ceInfo.bitMask & RGSCH_CRNTI_CE_PRSNT)
       {
-         /* SR_RACH_STATS : CRNTI CE*/
-         rgNumMsg3CrntiCE++;
+	 /* SR_RACH_STATS : CRNTI CE*/
+	 rgNumMsg3CrntiCE++;
 
-         if (datInd->ceInfo.bitMask & RGSCH_CCCH_SDU_PRSNT)
-         {
-            RGSCH_FREE_MEM(subfrmInfo);
-            err.errType = RGSCHERR_TOM_DATIND;
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                      "Received MSG3 with CRNTI:%d and also CCCH ", 
-                     datInd->ceInfo.ces.cRnti);
-            RETVALUE(RFAILED);
-         }
-         ue = rgSCHDbmGetUeCb (cell, datInd->ceInfo.ces.cRnti);
-         if (ue == NULLP)
-         {
-            /* SR_RACH_STATS : CRNTI CE UECB NOT FOUND*/
-            rgNumCrntiCeCrntiNotFound++;
-            /* ccpu00141318 - Removed condition for SPS rnti checking*/
-            RGSCH_FREE_MEM(subfrmInfo);
-            err.errType = RGSCHERR_TOM_DATIND;
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Received MSG3 "
-                     "with CRNTI:%d unable to find ueCb", 
-                     datInd->ceInfo.ces.cRnti);
-            RETVALUE(RFAILED);
-         }
+	 if (datInd->ceInfo.bitMask & RGSCH_CCCH_SDU_PRSNT)
+	 {
+	    RGSCH_FREE_MEM(subfrmInfo);
+	    err.errType = RGSCHERR_TOM_DATIND;
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
+		  "Received MSG3 with CRNTI:%d and also CCCH ", 
+		  datInd->ceInfo.ces.cRnti);
+	    RETVALUE(RFAILED);
+	 }
+	 ue = rgSCHDbmGetUeCb (cell, datInd->ceInfo.ces.cRnti);
+	 if (ue == NULLP)
+	 {
+	    /* SR_RACH_STATS : CRNTI CE UECB NOT FOUND*/
+	    rgNumCrntiCeCrntiNotFound++;
+	    /* ccpu00141318 - Removed condition for SPS rnti checking*/
+	    RGSCH_FREE_MEM(subfrmInfo);
+	    err.errType = RGSCHERR_TOM_DATIND;
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Received MSG3 "
+		  "with CRNTI:%d unable to find ueCb", 
+		  datInd->ceInfo.ces.cRnti);
+	    RETVALUE(RFAILED);
+	 }
 
-         if ((ret = rgSCHUtlProcMsg3 (subfrmInfo, cell, ue, 
-               rnti, datInd, &err)) != ROK)
-         { 
-            RGSCH_FREE_MEM(subfrmInfo);
-            err.errType = RGSCHERR_TOM_DATIND;
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Processing for MSG3 failed for CRNTI:%d", 
-                     datInd->rnti);
-            RETVALUE(RFAILED);
-         }
-         
+	 if ((ret = rgSCHUtlProcMsg3 (subfrmInfo, cell, ue, 
+		     rnti, datInd, &err)) != ROK)
+	 { 
+	    RGSCH_FREE_MEM(subfrmInfo);
+	    err.errType = RGSCHERR_TOM_DATIND;
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Processing for MSG3 failed for CRNTI:%d", 
+		  datInd->rnti);
+	    RETVALUE(RFAILED);
+	 }
+
 #ifdef LTEMAC_SPS
-         rgSCHUtlHdlCrntiCE (cell, ue);
+	 rgSCHUtlHdlCrntiCE (cell, ue);
 #endif
-         ret = rgSCHUtlAllocSBuf (cell->instIdx,(Data**)&ueStaInd,
-                                  sizeof(RgrUeStaIndInfo));
-         if(ret == ROK)
-         {
-            ueStaInd->status = RGR_UESTA_MAC_CRNTI_CE_RECVD;
+	 ret = rgSCHUtlAllocSBuf (cell->instIdx,(Data**)&ueStaInd,
+	       sizeof(RgrUeStaIndInfo));
+	 if(ret == ROK)
+	 {
+	    ueStaInd->status = RGR_UESTA_MAC_CRNTI_CE_RECVD;
 #ifdef RG_UNUSED
-//#ifdef LTEMAC_SPS
-            ulSpsUe = RG_SCH_CMN_GET_UL_SPS_UE(ue);
-            if(ulSpsUe->isUlSpsActv)
-            {
-               ueStaInd->status = RGR_UESTA_MAC_CRNTI_CE_RECVD_IN_SPS_ACTIVE;
-               ue->ul.ulSpsCfg.isLcSRMaskEnab = FALSE;
-            }
+	    //#ifdef LTEMAC_SPS
+	    ulSpsUe = RG_SCH_CMN_GET_UL_SPS_UE(ue);
+	    if(ulSpsUe->isUlSpsActv)
+	    {
+	       ueStaInd->status = RGR_UESTA_MAC_CRNTI_CE_RECVD_IN_SPS_ACTIVE;
+	       ue->ul.ulSpsCfg.isLcSRMaskEnab = FALSE;
+	    }
 #endif
-            ret = rgSCHUtlFillSndUeStaInd(cell, ue, ueStaInd);
-            if(ret != ROK)
-            {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                   "Could not Send Ue Sta Ind UEID:%d",ue->ueId);
-            }
-         }
-         CM_LLIST_NEXT_NODE(lnkLst, tmp);
-         continue;
+	    ret = rgSCHUtlFillSndUeStaInd(cell, ue, ueStaInd);
+	    if(ret != ROK)
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
+		     "Could not Send Ue Sta Ind UEID:%d",ue->ueId);
+	    }
+	 }
+	 CM_LLIST_NEXT_NODE(lnkLst, tmp);
+	 continue;
       } /* end of CRNTI based message */
       else if (datInd->ceInfo.bitMask & RGSCH_CCCH_SDU_PRSNT)
       {
-         /* SR_RACH_STATS : CCCH SDU */
-         rgNumMsg3CCCHSdu++;
-         /* SR_RACH_STATS : CCCH SDU RACB NOT FOUND*/
-         if (NULLP == rgSCHDbmGetRaCb (cell, rnti))
-         {
-            rgNumCCCHSduCrntiNotFound++;
-         }
+	 /* SR_RACH_STATS : CCCH SDU */
+	 rgNumMsg3CCCHSdu++;
+	 /* SR_RACH_STATS : CCCH SDU RACB NOT FOUND*/
+	 if (NULLP == rgSCHDbmGetRaCb (cell, rnti))
+	 {
+	    rgNumCCCHSduCrntiNotFound++;
+	 }
 
-         if ((ret = rgSCHUtlProcMsg3 (subfrmInfo, cell, ue, 
-               rnti, datInd, &err)) != ROK)
-         { 
-            RGSCH_FREE_MEM(subfrmInfo);
-            err.errType = RGSCHERR_TOM_DATIND;
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Processing for MSG3 failed for CRNTI:%d", 
-                     datInd->rnti);
-            RETVALUE(RFAILED);
-         }
-         /* fix */
-          CM_LLIST_NEXT_NODE(lnkLst, tmp);
-          continue;
+	 if ((ret = rgSCHUtlProcMsg3 (subfrmInfo, cell, ue, 
+		     rnti, datInd, &err)) != ROK)
+	 { 
+	    RGSCH_FREE_MEM(subfrmInfo);
+	    err.errType = RGSCHERR_TOM_DATIND;
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Processing for MSG3 failed for CRNTI:%d", 
+		  datInd->rnti);
+	    RETVALUE(RFAILED);
+	 }
+	 /* fix */
+	 CM_LLIST_NEXT_NODE(lnkLst, tmp);
+	 continue;
       } /* end of Msg3 processing */
 
       if (ue == NULLP)
       {
-         ue = rgSCHDbmGetUeCb (cell, datInd->rnti);
-         if (ue == NULLP)
-         {
+	 ue = rgSCHDbmGetUeCb (cell, datInd->rnti);
+	 if (ue == NULLP)
+	 {
 #ifdef LTEMAC_SPS 
-         if((ue = rgSCHDbmGetSpsUeCb (cell, datInd->rnti)) == NULLP)
+	    if((ue = rgSCHDbmGetSpsUeCb (cell, datInd->rnti)) == NULLP)
 #endif
-            {
-               RGSCH_FREE_MEM(subfrmInfo);
-               err.errType = RGSCHERR_TOM_DATIND;
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the UE CB for CRNTI:%d", 
-               datInd->rnti);
-               RETVALUE(RFAILED);
-            }
-         }
+	    {
+	       RGSCH_FREE_MEM(subfrmInfo);
+	       err.errType = RGSCHERR_TOM_DATIND;
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the UE CB for CRNTI:%d", 
+		     datInd->rnti);
+	       RETVALUE(RFAILED);
+	    }
+	 }
       }
-/* L2_COUNTERS */
+      /* L2_COUNTERS */
 #ifdef LTE_L2_MEAS
       /* The LCs for which data is received at MAC is provided to SCH.
-         This information is used to estimate the Active LCs at UE
-         since estimates based on only BSR is not accurate */
+	 This information is used to estimate the Active LCs at UE
+	 since estimates based on only BSR is not accurate */
       if (datInd->ceInfo.bitMask & RGSCH_ACTIVE_LC_PRSNT)
       {
-      
-        /* Compose a Bitmask with for the QCI's for which Data
-           is received */
-        for (lcCount = 0; lcCount < RGINF_MAX_NUM_DED_LC; lcCount++)
-        {
-           if ((datInd->ceInfo.ulActLCs[lcCount] == TRUE) && (TRUE == ue->ul.lcCb[lcCount].isValid))
-           {
-              datIndActQci |= (1 << (ue->ul.lcCb[lcCount].qciCb->qci -1));
-           }
-        }
-        if (ue->ulActiveLCs && ue->lastDatIndLCs)
-        {
-           /* Combine previous Dat Ind and current Dat Ind to
-              estimate active LCs at UE */
-           combDatIndActQci = ue->lastDatIndLCs | datIndActQci;
-           tempUeActQci = ue->ulActiveLCs;
-           ue->ulActiveLCs = combDatIndActQci;
-           diffBits = combDatIndActQci ^ tempUeActQci;
-           while (diffBits)
-           {
-              qci++;
-              if (0x1 & diffBits)
-              {
-                 if (0x1 & tempUeActQci)
-                 {
-                    /* An active QCI has become inactive */
-                    cell->qciArray[qci].ulUeCount--;
-                 }
-                 else
-                 {
-                    /* An Inactive QCI has become active */
-                    cell->qciArray[qci].ulUeCount++;
-                 }
-              }
-              diffBits >>= 1;
-              tempUeActQci >>= 1;
-           }
-        }
-        ue->lastDatIndLCs = datIndActQci;
-      
+
+	 /* Compose a Bitmask with for the QCI's for which Data
+	    is received */
+	 for (lcCount = 0; lcCount < RGINF_MAX_NUM_DED_LC; lcCount++)
+	 {
+	    if ((datInd->ceInfo.ulActLCs[lcCount] == TRUE) && (TRUE == ue->ul.lcCb[lcCount].isValid))
+	    {
+	       datIndActQci |= (1 << (ue->ul.lcCb[lcCount].qciCb->qci -1));
+	    }
+	 }
+	 if (ue->ulActiveLCs && ue->lastDatIndLCs)
+	 {
+	    /* Combine previous Dat Ind and current Dat Ind to
+	       estimate active LCs at UE */
+	    combDatIndActQci = ue->lastDatIndLCs | datIndActQci;
+	    tempUeActQci = ue->ulActiveLCs;
+	    ue->ulActiveLCs = combDatIndActQci;
+	    diffBits = combDatIndActQci ^ tempUeActQci;
+	    while (diffBits)
+	    {
+	       qci++;
+	       if (0x1 & diffBits)
+	       {
+		  if (0x1 & tempUeActQci)
+		  {
+		     /* An active QCI has become inactive */
+		     cell->qciArray[qci].ulUeCount--;
+		  }
+		  else
+		  {
+		     /* An Inactive QCI has become active */
+		     cell->qciArray[qci].ulUeCount++;
+		  }
+	       }
+	       diffBits >>= 1;
+	       tempUeActQci >>= 1;
+	    }
+	 }
+	 ue->lastDatIndLCs = datIndActQci;
+
       }
 
 #endif /* LTE_L2_MEAS */
@@ -1559,11 +1559,11 @@ RgInfSfDatInd    *subfrmInfo;
 
       if ((ret = rgSCHUtlUpdSch (subfrmInfo, cell, ue, datInd, &err)) != ROK)
       {
-         RGSCH_FREE_MEM(subfrmInfo);
-         err.errType = RGSCHERR_TOM_DATIND;
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to handle Data"
-                   " Indication for UEID:%d",ue->ueId);
-         RETVALUE(RFAILED);
+	 RGSCH_FREE_MEM(subfrmInfo);
+	 err.errType = RGSCHERR_TOM_DATIND;
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to handle Data"
+	       " Indication for UEID:%d",ue->ueId);
+	 RETVALUE(RFAILED);
       }
 
       CM_LLIST_NEXT_NODE(lnkLst, tmp);
@@ -1603,15 +1603,15 @@ RgInfSfDatInd    *subfrmInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchSpsRelInd
+   PUBLIC S16 RgMacSchSpsRelInd
 (
-Pst                *pst, 
-RgInfSpsRelInfo    *relInfo
-)
+ Pst                *pst, 
+ RgInfSpsRelInfo    *relInfo
+ )
 #else
 PUBLIC S16 RgMacSchSpsRelInd(pst, relInfo)
-Pst                *pst;
-RgInfSpsRelInfo    *relInfo;
+   Pst                *pst;
+   RgInfSpsRelInfo    *relInfo;
 #endif
 {
    RgSchUeCb       *ue;
@@ -1627,14 +1627,14 @@ RgInfSpsRelInfo    *relInfo;
    if ((ue = rgSCHDbmGetUeCb(cell, relInfo->cRnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-           "No Ue exists with CRNTI:%d",relInfo->cRnti);
+	    "No Ue exists with CRNTI:%d",relInfo->cRnti);
       RETVALUE(RFAILED);
    }
 
    if ((rgSCHUtlSpsRelInd(cell, ue, relInfo->isExplRel)) != ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-           "RelInd processing for CRNTI:%d failed",relInfo->cRnti);
+	    "RelInd processing for CRNTI:%d failed",relInfo->cRnti);
       RETVALUE(RFAILED);
    }
    RETVALUE(ROK);
@@ -1664,15 +1664,15 @@ RgInfSpsRelInfo    *relInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchL2MeasCfm
+   PUBLIC S16 RgMacSchL2MeasCfm
 (
-Pst                *pst, 
-RgInfL2MeasCfm     *measCfm
-)
+ Pst                *pst, 
+ RgInfL2MeasCfm     *measCfm
+ )
 #else
 PUBLIC S16 RgMacSchL2MeasCfm(pst, measCfm)
-Pst                *pst;
-RgInfL2MeasCfm     *measCfm;
+   Pst                *pst;
+   RgInfL2MeasCfm     *measCfm;
 #endif
 {
    RgSchCellCb       *cell = NULLP;
@@ -1693,19 +1693,19 @@ RgInfL2MeasCfm     *measCfm;
    {
       if ( instCb->rgrSap[idx].cell->cellId == measCfm->cellId)
       {
-         /* got the cell break the loop */
-         cell = instCb->rgrSap[idx].cell;
-         break;
+	 /* got the cell break the loop */
+	 cell = instCb->rgrSap[idx].cell;
+	 break;
       }
    }
    /* If no cellCb return Err with Invalid Cell Id */
    if (cell == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,measCfm->cellId,
-                  "Meas Cfm Failed.Invalid Cell Id");
+	    "Meas Cfm Failed.Invalid Cell Id");
       RETVALUE(RFAILED);
    }
-   
+
 
    /* Iterate through all meas requests in l2mList in cellCb */
    lnk = cell->l2mList.first;
@@ -1716,7 +1716,7 @@ RgInfL2MeasCfm     *measCfm;
       lnk = lnk->next;
       if (measCb->measReq.hdr.transId == measCfm->transId)
       {
-         break;
+	 break;
       }
    }
    if ( measCb == NULLP )
@@ -1729,14 +1729,14 @@ RgInfL2MeasCfm     *measCfm;
    {
       for (idx = 0; idx < measCb->measReq.avgPrbQciUl.numQci; idx++)
       {
-        qciVal = measCb->measReq.avgPrbQciUl.qci[idx];
-        cell->qciArray[qciVal].qci = 0;
+	 qciVal = measCb->measReq.avgPrbQciUl.qci[idx];
+	 cell->qciArray[qciVal].qci = 0;
       }
       /* Delete this measCb, send the negative confirmation to
        * stack manager */
       cmLListDelFrm(&cell->l2mList, &measCb->measLnk);
       /* ccpu00117052 - MOD - Passing double pointer
-         for proper NULLP assignment*/
+	 for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(cell->instIdx, (Data **)&measCb, sizeof(RgSchL2MeasCb));
       cmMemset((U8 *)&schMeasCfm, 0, sizeof(LrgSchMeasCfmInfo));
       schMeasCfm.measType     = measCfm->measType;
@@ -1754,14 +1754,14 @@ RgInfL2MeasCfm     *measCfm;
       qciVal1 = measCfm->u.prbCfm.prbUsage[idx].qciValue;
       for(idx1=0;idx1<measCb->measReq.avgPrbQciUl.numQci;idx1++)
       {
-         if(measCb->measReq.avgPrbQciUl.qci[idx1] == qciVal1)
-         {
-            break;
-         }
+	 if(measCb->measReq.avgPrbQciUl.qci[idx1] == qciVal1)
+	 {
+	    break;
+	 }
       }
       if(idx1 == measCb->measReq.avgPrbQciUl.numQci)
       {
-         measCb->measReq.avgPrbQciUl.qci[measCb->measReq.avgPrbQciUl.numQci++] = qciVal1;
+	 measCb->measReq.avgPrbQciUl.qci[measCb->measReq.avgPrbQciUl.numQci++] = qciVal1;
       }
    }
    measCb->avgPrbQciUl.numQci = measCfm->u.prbCfm.numQci;
@@ -1791,15 +1791,15 @@ RgInfL2MeasCfm     *measCfm;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchL2MeasStopCfm
+   PUBLIC S16 RgMacSchL2MeasStopCfm
 (
-Pst                *pst,
-RgInfL2MeasCfm     *measCfm
-)
+ Pst                *pst,
+ RgInfL2MeasCfm     *measCfm
+ )
 #else
 PUBLIC S16 RgMacSchL2MeasStopCfm(pst, measCfm)
-Pst                *pst;
-RgInfL2MeasCfm     *measCfm;
+   Pst                *pst;
+   RgInfL2MeasCfm     *measCfm;
 #endif
 {
    LrgSchMeasCfmInfo schMeasCfm;
@@ -1838,17 +1838,17 @@ RgInfL2MeasCfm     *measCfm;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSchBndCfm 
+   PUBLIC S16 RgLiTfuSchBndCfm 
 (
-Pst     *pst,
-SuId    suId, 
-U8      status
-)
+ Pst     *pst,
+ SuId    suId, 
+ U8      status
+ )
 #else
 PUBLIC S16 RgLiTfuSchBndCfm(pst, suId, status)
-Pst     *pst; 
-SuId    suId; 
-U8      status;
+   Pst     *pst; 
+   SuId    suId; 
+   U8      status;
 #endif
 {
    S16 ret;
@@ -1869,7 +1869,7 @@ U8      status;
    if (suId != tfuSap->sapCfg.suId)
    {
       RLOG_ARG2(L_ERROR,DBG_INSTID,instId, "Incorrect SuId. Configured (%d)"
-            "Recieved (%d)", tfuSap->sapCfg.suId, suId);
+	    "Recieved (%d)", tfuSap->sapCfg.suId, suId);
       RETVALUE(RFAILED);
    }
    ret = rgSCHLmmBndCfm (pst, suId, status);
@@ -1895,17 +1895,17 @@ U8      status;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuRaReqInd
+   PUBLIC S16 RgLiTfuRaReqInd
 (
-Pst              *pst, 
-SuId             suId, 
-TfuRaReqIndInfo  *raReqInd
-)
+ Pst              *pst, 
+ SuId             suId, 
+ TfuRaReqIndInfo  *raReqInd
+ )
 #else
 PUBLIC S16 RgLiTfuRaReqInd(pst, suId, raReqInd)
-Pst              *pst; 
-SuId             suId; 
-TfuRaReqIndInfo  *raReqInd;
+   Pst              *pst; 
+   SuId             suId; 
+   TfuRaReqIndInfo  *raReqInd;
 #endif
 {
    S16   ret;
@@ -1937,7 +1937,7 @@ TfuRaReqIndInfo  *raReqInd;
    /* Free up the memory for the request structure */
    RGSCH_FREE_MEM(raReqInd);
    /*SPutSBuf (pst->region, pst->pool, (Data *)raReqInd,
-         sizeof(TfuRaReqIndInfo)); */
+     sizeof(TfuRaReqIndInfo)); */
    RETVALUE(ret);
 }  /* RgLiTfuRaReqInd */
 
@@ -1959,17 +1959,17 @@ TfuRaReqIndInfo  *raReqInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuUlCqiInd
+   PUBLIC S16 RgLiTfuUlCqiInd
 (
-Pst              *pst, 
-SuId             suId, 
-TfuUlCqiIndInfo  *ulCqiInd
-)
+ Pst              *pst, 
+ SuId             suId, 
+ TfuUlCqiIndInfo  *ulCqiInd
+ )
 #else
 PUBLIC S16 RgLiTfuUlCqiInd(pst, suId, ulCqiInd)
-Pst              *pst; 
-SuId             suId; 
-TfuUlCqiIndInfo  *ulCqiInd;
+   Pst              *pst; 
+   SuId             suId; 
+   TfuUlCqiIndInfo  *ulCqiInd;
 #endif
 {
    S16   ret;
@@ -2016,17 +2016,17 @@ TfuUlCqiIndInfo  *ulCqiInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuPucchDeltaPwrInd
+   PUBLIC S16 RgLiTfuPucchDeltaPwrInd
 (
-Pst                     *pst,
-SuId                    suId,
-TfuPucchDeltaPwrIndInfo *pucchDeltaPwr
-)
+ Pst                     *pst,
+ SuId                    suId,
+ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr
+ )
 #else
 PUBLIC S16 RgLiTfuPucchDeltaPwrInd(pst, suId, pucchDeltaPwr)
-Pst                     *pst;
-SuId                    suId;
-TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
+   Pst                     *pst;
+   SuId                    suId;
+   TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
 #endif
 {
    S16   ret;
@@ -2074,17 +2074,17 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuHqInd
+   PUBLIC S16 RgLiTfuHqInd
 (
-Pst                *pst, 
-SuId               suId, 
-TfuHqIndInfo       *harqAckInd
-)
+ Pst                *pst, 
+ SuId               suId, 
+ TfuHqIndInfo       *harqAckInd
+ )
 #else
 PUBLIC S16 RgLiTfuHqInd(pst, suId, harqAckInd)
-Pst                *pst; 
-SuId               suId; 
-TfuHqIndInfo       *harqAckInd;
+   Pst                *pst; 
+   SuId               suId; 
+   TfuHqIndInfo       *harqAckInd;
 #endif
 {
    S16   ret;
@@ -2134,17 +2134,17 @@ TfuHqIndInfo       *harqAckInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSrInd
+   PUBLIC S16 RgLiTfuSrInd
 (
-Pst                *pst, 
-SuId               suId, 
-TfuSrIndInfo       *srInd
-)
+ Pst                *pst, 
+ SuId               suId, 
+ TfuSrIndInfo       *srInd
+ )
 #else 
 PUBLIC S16 RgLiTfuSrInd(pst, suId, srInd)
-Pst                *pst; 
-SuId               suId; 
-TfuSrIndInfo       *srInd;
+   Pst                *pst; 
+   SuId               suId; 
+   TfuSrIndInfo       *srInd;
 #endif
 {
    S16   ret;
@@ -2193,17 +2193,17 @@ TfuSrIndInfo       *srInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuDlCqiInd
+   PUBLIC S16 RgLiTfuDlCqiInd
 (
-Pst                *pst, 
-SuId               suId, 
-TfuDlCqiIndInfo    *dlCqiInd
-)
+ Pst                *pst, 
+ SuId               suId, 
+ TfuDlCqiIndInfo    *dlCqiInd
+ )
 #else
 PUBLIC S16 RgLiTfuDlCqiInd(pst, suId, dlCqiInd)
-Pst                *pst; 
-SuId               suId; 
-TfuDlCqiIndInfo    *dlCqiInd;
+   Pst                *pst; 
+   SuId               suId; 
+   TfuDlCqiIndInfo    *dlCqiInd;
 #endif
 {
    S16   ret;
@@ -2250,17 +2250,17 @@ TfuDlCqiIndInfo    *dlCqiInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuRawCqiInd
+   PUBLIC S16 RgLiTfuRawCqiInd
 (
-Pst                *pst, 
-SuId               suId, 
-TfuRawCqiIndInfo    *rawCqiInd
-)
+ Pst                *pst, 
+ SuId               suId, 
+ TfuRawCqiIndInfo    *rawCqiInd
+ )
 #else
 PUBLIC S16 RgLiTfuRawCqiInd(pst, suId, rawCqiInd)
-Pst                *pst; 
-SuId               suId; 
-TfuRawCqiIndInfo    *rawCqiInd;
+   Pst                *pst; 
+   SuId               suId; 
+   TfuRawCqiIndInfo    *rawCqiInd;
 #endif
 {
    S16   ret;
@@ -2308,17 +2308,17 @@ TfuRawCqiIndInfo    *rawCqiInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSrsInd
+   PUBLIC S16 RgLiTfuSrsInd
 (
-Pst                *pst, 
-SuId               suId, 
-TfuSrsIndInfo    *srsInd
-)
+ Pst                *pst, 
+ SuId               suId, 
+ TfuSrsIndInfo    *srsInd
+ )
 #else
 PUBLIC S16 RgLiTfuSrsInd(pst, suId, srsInd)
-Pst                *pst; 
-SuId               suId; 
-TfuSrsIndInfo    *srsInd;
+   Pst                *pst; 
+   SuId               suId; 
+   TfuSrsIndInfo    *srsInd;
 #endif
 {
    S16   ret;
@@ -2366,17 +2366,17 @@ TfuSrsIndInfo    *srsInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuDoaInd 
+   PUBLIC S16 RgLiTfuDoaInd 
 (
-Pst                *pst, 
-SuId               suId, 
-TfuDoaIndInfo      *doaInd
-)
+ Pst                *pst, 
+ SuId               suId, 
+ TfuDoaIndInfo      *doaInd
+ )
 #else
 PUBLIC S16 RgLiTfuDoaInd(pst, suId, doaInd)
-Pst                *pst; 
-SuId               suId; 
-TfuDoaIndInfo      *doaInd;
+   Pst                *pst; 
+   SuId               suId; 
+   TfuDoaIndInfo      *doaInd;
 #endif
 {
    S16   ret;
@@ -2420,17 +2420,17 @@ TfuDoaIndInfo      *doaInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuCrcInd
+   PUBLIC S16 RgLiTfuCrcInd
 (
-Pst                *pst, 
-SuId               suId, 
-TfuCrcIndInfo  *crcInd
-)
+ Pst                *pst, 
+ SuId               suId, 
+ TfuCrcIndInfo  *crcInd
+ )
 #else
 PUBLIC S16 RgLiTfuCrcInd (pst, suId, crcInd)
-Pst                *pst; 
-SuId               suId; 
-TfuCrcIndInfo  *crcInd;
+   Pst                *pst; 
+   SuId               suId; 
+   TfuCrcIndInfo  *crcInd;
 #endif
 {
    S16              ret;
@@ -2438,8 +2438,8 @@ TfuCrcIndInfo  *crcInd;
 
    TRC3(RgLiTfuCrcInd);
 #ifdef XEON_SPECIFIC_CHANGES
-struct timeval start6, end6;
-gettimeofday(&start6, NULL);
+   struct timeval start6, end6;
+   gettimeofday(&start6, NULL);
 #endif
 #ifndef NO_ERRCLS
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
@@ -2461,7 +2461,7 @@ gettimeofday(&start6, NULL);
    /* Free up the memory for the request structure */
    RGSCH_FREE_MEM(crcInd);
 #ifdef XEON_SPECIFIC_CHANGES
-gettimeofday(&end6, NULL);
+   gettimeofday(&end6, NULL);
 #endif
    RETVALUE(ret);
 }  /* RgLiTfuCrcInd */
@@ -2484,17 +2484,17 @@ gettimeofday(&end6, NULL);
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuTimingAdvInd
+   PUBLIC S16 RgLiTfuTimingAdvInd
 (
-Pst                  *pst, 
-SuId                 suId, 
-TfuTimingAdvIndInfo  *timingAdvInd
-)
+ Pst                  *pst, 
+ SuId                 suId, 
+ TfuTimingAdvIndInfo  *timingAdvInd
+ )
 #else
 PUBLIC S16 RgLiTfuTimingAdvInd(pst, suId, timingAdvInd)
-Pst                  *pst; 
-SuId                 suId; 
-TfuTimingAdvIndInfo  *timingAdvInd;
+   Pst                  *pst; 
+   SuId                 suId; 
+   TfuTimingAdvIndInfo  *timingAdvInd;
 #endif
 {
    S16   ret;
@@ -2543,17 +2543,17 @@ TfuTimingAdvIndInfo  *timingAdvInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmBndReq
+   PUBLIC S16 RgUiRgmBndReq
 (
-Pst   *pst, 
-SuId  suId,
-SpId  spId
-)
+ Pst   *pst, 
+ SuId  suId,
+ SpId  spId
+ )
 #else
 PUBLIC S16 RgUiRgmBndReq(pst, suId, spId)
-Pst   *pst; 
-SuId  suId;
-SpId  spId;
+   Pst   *pst; 
+   SuId  suId;
+   SpId  spId;
 #endif
 {
    S16       ret = ROK;
@@ -2561,9 +2561,9 @@ SpId  spId;
    Inst      instId = pst->dstInst-SCH_INST_START;
 
    TRC3(RgUiRgmBndReq)
-   
-   
-   tmpPst.prior       = pst->prior;
+
+
+      tmpPst.prior       = pst->prior;
    tmpPst.route       = pst->route;
    tmpPst.selector    = pst->selector;
    tmpPst.region      = rgSchCb[instId].rgSchInit.region;
@@ -2587,37 +2587,37 @@ SpId  spId;
       /* Check the state of the SAP */
       switch (rgSchCb[instId].rgmSap[spId].sapSta.sapState)
       {
-         /* This case might not be needed if SAP not configured then it will go
-          * to else of above if condition */
-         case LRG_UNBND: /* SAP is not bound */
-	         RLOG0(L_DEBUG,"SAP is not yet bound");
-            rgSchCb[instId].rgmSap[spId].sapSta.sapState = LRG_BND;
-            rgSchCb[instId].rgmSap[spId].sapCfg.suId = suId;
-            /* Send Bind Confirm with status as SUCCESS */
-            ret = rgSCHUtlRgmBndCfm(instId, suId, CM_BND_OK);
-             /*Indicate to Layer manager  */
-            break;
-         case LRG_BND: /* SAP is already bound*/
-	         RLOG0(L_DEBUG,"SAP is already bound");
-            ret = rgSCHUtlRgmBndCfm(instId, suId, CM_BND_OK);
-            break;
-         default: /* Should Never Enter here */
+	 /* This case might not be needed if SAP not configured then it will go
+	  * to else of above if condition */
+	 case LRG_UNBND: /* SAP is not bound */
+	    RLOG0(L_DEBUG,"SAP is not yet bound");
+	    rgSchCb[instId].rgmSap[spId].sapSta.sapState = LRG_BND;
+	    rgSchCb[instId].rgmSap[spId].sapCfg.suId = suId;
+	    /* Send Bind Confirm with status as SUCCESS */
+	    ret = rgSCHUtlRgmBndCfm(instId, suId, CM_BND_OK);
+	    /*Indicate to Layer manager  */
+	    break;
+	 case LRG_BND: /* SAP is already bound*/
+	    RLOG0(L_DEBUG,"SAP is already bound");
+	    ret = rgSCHUtlRgmBndCfm(instId, suId, CM_BND_OK);
+	    break;
+	 default: /* Should Never Enter here */
 #if (ERRCLASS & ERRCLS_ADD_RES) 
-            RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG001, 
-                 (ErrVal)rgSchCb[instId].rgmSap[spId].sapSta.sapState,
-                  "Invalid SAP State:RgUiRgmBndReq failed\n");
+	    RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG001, 
+		  (ErrVal)rgSchCb[instId].rgmSap[spId].sapSta.sapState,
+		  "Invalid SAP State:RgUiRgmBndReq failed\n");
 #endif
-            ret = rgSCHUtlRgmBndCfm(instId, suId, CM_BND_NOK);
-            break;
+	    ret = rgSCHUtlRgmBndCfm(instId, suId, CM_BND_NOK);
+	    break;
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-/* ccpu00117035 - MOD - Changed ErrVal argument from accessing sap state 
-   to spId to avoid seg fault due to invalid sapID */
+      /* ccpu00117035 - MOD - Changed ErrVal argument from accessing sap state 
+	 to spId to avoid seg fault due to invalid sapID */
       RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG002,
-            (ErrVal)spId, "Invalid SAP Id:RgUiRrmBndReq failed\n");
+	    (ErrVal)spId, "Invalid SAP Id:RgUiRrmBndReq failed\n");
 #endif
       ret = RgUiRgmBndCfm(&tmpPst, suId, CM_BND_NOK);
    }
@@ -2644,51 +2644,51 @@ SpId  spId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmUbndReq
+   PUBLIC S16 RgUiRgmUbndReq
 (
-Pst    *pst,
-SpId   spId,
-Reason reason
-)
+ Pst    *pst,
+ SpId   spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 RgUiRgmUbndReq(pst, spId, reason)
-Pst    *pst; 
-SpId   spId;
-Reason reason;
+   Pst    *pst; 
+   SpId   spId;
+   Reason reason;
 #endif
 {
    Inst instId = pst->dstInst-SCH_INST_START;
    TRC3(RgUiRgmUbndReq)
-   
 
-   /* SAP Id validation */
-   if (spId < rgSchCb[instId].numSaps)
-   {
-      switch(rgSchCb[instId].rgmSap[spId].sapSta.sapState)
+
+      /* SAP Id validation */
+      if (spId < rgSchCb[instId].numSaps)
       {
-         case LRG_BND: /* SAP is already bound*/
-            /* setting SAP state to UN BOUND */
-	         RLOG0(L_DEBUG,"SAP is already bound");
-            rgSchCb[instId].rgmSap[spId].sapSta.sapState = LRG_UNBND;
-            break;
-         default:
+	 switch(rgSchCb[instId].rgmSap[spId].sapSta.sapState)
+	 {
+	    case LRG_BND: /* SAP is already bound*/
+	       /* setting SAP state to UN BOUND */
+	       RLOG0(L_DEBUG,"SAP is already bound");
+	       rgSchCb[instId].rgmSap[spId].sapSta.sapState = LRG_UNBND;
+	       break;
+	    default:
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG003,
-                   (ErrVal)rgSchCb[instId].rgmSap[spId].sapSta.sapState,
-                  "Invalid SAP State: RgUiRgmUbndReq failed\n");
+	       RGSCHLOGERROR(instId, ERRCLS_INT_PAR, ERG003,
+		     (ErrVal)rgSchCb[instId].rgmSap[spId].sapSta.sapState,
+		     "Invalid SAP State: RgUiRgmUbndReq failed\n");
 #endif
-            RETVALUE(RFAILED);
+	       RETVALUE(RFAILED);
+	 }
       }
-   }
-   else
-   {
+      else
+      {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-      RGSCHLOGERROR(instId,ERRCLS_INT_PAR, ERG004, 
-            (ErrVal)rgSchCb[instId].rgmSap[spId].sapSta.sapState,
-            "Invalid SAP Id:RgUiRgmUbndReq failed\n");
+	 RGSCHLOGERROR(instId,ERRCLS_INT_PAR, ERG004, 
+	       (ErrVal)rgSchCb[instId].rgmSap[spId].sapSta.sapState,
+	       "Invalid SAP Id:RgUiRgmUbndReq failed\n");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    RETVALUE(ROK);
 }  /* RgUiRgmUbndReq */
 
@@ -2713,20 +2713,20 @@ Reason reason;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmCfgPrbRprt
+   PUBLIC S16 RgUiRgmCfgPrbRprt
 (
-Pst   *pst, 
-SpId  spId,
-RgmPrbRprtCfg   *prbRprtCfg
-)
+ Pst   *pst, 
+ SpId  spId,
+ RgmPrbRprtCfg   *prbRprtCfg
+ )
 #else
 PUBLIC S16 RgUiRgmCfgPrbRprt(pst, spId, prbRprtCfg)
-Pst   *pst; 
-SpId  spId;
-RgmPrbRprtCfg   *prbRprtCfg;
+   Pst   *pst; 
+   SpId  spId;
+   RgmPrbRprtCfg   *prbRprtCfg;
 #endif
 {
-/* Initalize*/
+   /* Initalize*/
    RgSchCellCb   *cell;
    RgSchPrbUsage *prbUsage;
    Inst          inst = (pst->dstInst  - SCH_INST_START);
@@ -2740,15 +2740,15 @@ RgmPrbRprtCfg   *prbRprtCfg;
 
    /* clear the qciPrbRpts for all GBR QCIs */
    cmMemset((U8*)&prbUsage->qciPrbRpts[0], 0, 
-             (RGM_MAX_QCI_REPORTS * sizeof(RgSchQciPrbUsage)));
+	 (RGM_MAX_QCI_REPORTS * sizeof(RgSchQciPrbUsage)));
 
    RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
-	     "RgUiRgmCfgPrbRprt config type %d with the report period %d",
-	     prbUsage->prbRprtEnabld,prbUsage->rprtPeriod);
+	 "RgUiRgmCfgPrbRprt config type %d with the report period %d",
+	 prbUsage->prbRprtEnabld,prbUsage->rprtPeriod);
 
    /* ccpu00134393 : mem leak fix */
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
-  
+   SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+
    RETVALUE(ROK);
 }
 /**
@@ -2772,17 +2772,17 @@ RgmPrbRprtCfg   *prbRprtCfg;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuErrInd
+   PUBLIC S16 RgLiTfuErrInd
 (
-Pst                *pst, 
-SuId               suId, 
-TfuErrIndInfo       *errInd
-)
+ Pst                *pst, 
+ SuId               suId, 
+ TfuErrIndInfo       *errInd
+ )
 #else
 PUBLIC S16 RgLiTfuErrInd(pst, suId, errInd)
-Pst                *pst; 
-SuId               suId; 
-TfuErrIndInfo       *errInd;
+   Pst                *pst; 
+   SuId               suId; 
+   TfuErrIndInfo       *errInd;
 #endif
 {
    S16   ret = ROK;
@@ -2817,6 +2817,6 @@ TfuErrIndInfo       *errInd;
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

@@ -89,32 +89,32 @@ PRIVATE CONSTANT SystemId sId ={
 };
 
 /*
-*     support functions
-*/
+ *     support functions
+ */
 
 /*
-*
-*       Fun:   get system id
-*
-*       Desc:  Get system id consisting of part number, main version and
-*              revision and branch version and branch.
-*
-*       Ret:   TRUE      - ok
-*
-*       Notes: None
-*
-*       File:  kw_id.c
-*
-*/
+ *
+ *       Fun:   get system id
+ *
+ *       Desc:  Get system id consisting of part number, main version and
+ *              revision and branch version and branch.
+ *
+ *       Ret:   TRUE      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  kw_id.c
+ *
+ */
 
 #ifdef ANSI
-PUBLIC S16 kwGetSId
+   PUBLIC S16 kwGetSId
 (
-SystemId *s                 /* system id */
-)
+ SystemId *s                 /* system id */
+ )
 #else
 PUBLIC S16 kwGetSId(s)
-SystemId *s;                /* system id */
+   SystemId *s;                /* system id */
 #endif
 {
    TRC2(kwGetSId);
@@ -131,6 +131,6 @@ SystemId *s;                /* system id */
 
   
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

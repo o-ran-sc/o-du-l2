@@ -500,23 +500,23 @@ RgSchErrInfo     *errInfo;
    if ((rgSCHCfgVldtRgrSchCfg(inst, schedEnbCfg)) != ROK)
    {
       RGSCHDBGERR(inst, (rgSchPBuf(inst), "Validation for scheduler related "
-                          "config failed\n"));
+	       "config failed\n"));
       RETVALUE(RFAILED);
    }
 
    RLOG1(L_INFO, "MIMO_DBG:: SCH:: numAntPorts=%d\n",schedEnbCfg->numTxAntPorts);
-   
+
    /* Validation for the ENB parameters */
    if ((schedEnbCfg->numTxAntPorts == 0) || (schedEnbCfg->numTxAntPorts > 4))
    {
       RGSCHDBGERR(inst, (rgSchPBuf(inst),"Invalid number of transmit antenna" 
-            " ports %d\n", schedEnbCfg->numTxAntPorts));
+	       " ports %d\n", schedEnbCfg->numTxAntPorts));
       RETVALUE(RFAILED);
    }
 
    /* Validate csg access mode */
    if((schedEnbCfg->accsMode < RGR_CELL_ACCS_OPEN) ||
-      (schedEnbCfg->accsMode > RGR_CELL_ACCS_HYBRID))
+	 (schedEnbCfg->accsMode > RGR_CELL_ACCS_HYBRID))
    {
       RGSCHDBGERR(inst, (rgSchPBuf(inst), "Invalid CSG Access mode\n"));
       RETVALUE(RFAILED);
@@ -554,19 +554,19 @@ RgSchErrInfo     *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrCellCfg
+   PUBLIC S16 rgSCHCfgVldtRgrCellCfg
 (
-Inst         inst,
-RgrCellCfg   *cellCfg,
-RgSchCellCb  *cell,
-RgSchErrInfo *errInfo
-)
+ Inst         inst,
+ RgrCellCfg   *cellCfg,
+ RgSchCellCb  *cell,
+ RgSchErrInfo *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrCellCfg(inst, cellCfg, cell, errInfo)
-Inst         inst;
-RgrCellCfg   *cellCfg;
-RgSchCellCb  *cell;
-RgSchErrInfo *errInfo;
+   Inst         inst;
+   RgrCellCfg   *cellCfg;
+   RgSchCellCb  *cell;
+   RgSchErrInfo *errInfo;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrCellCfg);
@@ -579,144 +579,144 @@ RgSchErrInfo *errInfo;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Cell Id already exists");
       RETVALUE(RFAILED);
    }
-   
+
    if(cellCfg->macInst >= SCH_INST_START)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid MAC Instance %d ",
-               cellCfg->macInst);
+	    cellCfg->macInst);
       RETVALUE(RFAILED);
    }
-   
+
    if (cellCfg->macRnti.startRnti < RGSCH_MIN_MAC_RNTI )
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid start RNTI %d for cell ",
-               cellCfg->macRnti.startRnti);
+	    cellCfg->macRnti.startRnti);
       RETVALUE(RFAILED);
    }
 
    if ((rgSCHCfgVldtRgrCellSchCfg(inst, cellCfg)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Validation for scheduler related "
-                          "config failed");
+	    "config failed");
       RETVALUE(RFAILED);
    }
 
    if ((cellCfg->dlHqCfg.maxDlHqTx < RGSCH_MIN_HQ_TX) ||
-         (cellCfg->dlHqCfg.maxMsg4HqTx < RGSCH_MIN_HQ_TX))
+	 (cellCfg->dlHqCfg.maxMsg4HqTx < RGSCH_MIN_HQ_TX))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,cellCfg->cellId, "Invalid Downlink HARQ configuration:"
-               " maxDlHqTx %d maxMsg4HqTx %d", cellCfg->dlHqCfg.maxDlHqTx,
-               cellCfg->dlHqCfg.maxMsg4HqTx);
+	    " maxDlHqTx %d maxMsg4HqTx %d", cellCfg->dlHqCfg.maxDlHqTx,
+	    cellCfg->dlHqCfg.maxMsg4HqTx);
       RETVALUE(RFAILED);
    }
    if ((cellCfg->cfiCfg.cfi < RGSCH_MIN_CFI_VAL) ||
-         (cellCfg->cfiCfg.cfi > RGSCH_MAX_CFI_VAL))
+	 (cellCfg->cfiCfg.cfi > RGSCH_MAX_CFI_VAL))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid CFI configuration %d",
-           cellCfg->cfiCfg.cfi);
+	    cellCfg->cfiCfg.cfi);
       RETVALUE(RFAILED);
    }
    if (((cellCfg->puschSubBand.subbandStart) + 
-        ((cellCfg->puschSubBand.numSubbands -1) * cellCfg->puschSubBand.size))
-         > (cellCfg->bwCfg.ulTotalBw - 1))
+	    ((cellCfg->puschSubBand.numSubbands -1) * cellCfg->puschSubBand.size))
+	 > (cellCfg->bwCfg.ulTotalBw - 1))
    {
       RLOG_ARG4(L_ERROR,DBG_CELLID,cellCfg->cellId, "Invalid PUSCH subband configuration:"
-               " subBandStart %d numSubBands %d subBandSize %d ulTotBw %d",
-               cellCfg->puschSubBand.subbandStart, 
-               cellCfg->puschSubBand.numSubbands, cellCfg->puschSubBand.size,
-               cellCfg->bwCfg.ulTotalBw);
+	    " subBandStart %d numSubBands %d subBandSize %d ulTotBw %d",
+	    cellCfg->puschSubBand.subbandStart, 
+	    cellCfg->puschSubBand.numSubbands, cellCfg->puschSubBand.size,
+	    cellCfg->bwCfg.ulTotalBw);
       RETVALUE(RFAILED);
    }
 
    if (((cellCfg->bwCfg.dlTotalBw < RGSCH_MIN_DL_BW) ||
-            (cellCfg->bwCfg.dlTotalBw > RGSCH_MAX_DL_BW)) ||
-         ((cellCfg->bwCfg.ulTotalBw < RGSCH_MIN_UL_BW) || 
-          (cellCfg->bwCfg.ulTotalBw > RGSCH_MAX_UL_BW)))
+	    (cellCfg->bwCfg.dlTotalBw > RGSCH_MAX_DL_BW)) ||
+	 ((cellCfg->bwCfg.ulTotalBw < RGSCH_MIN_UL_BW) || 
+	  (cellCfg->bwCfg.ulTotalBw > RGSCH_MAX_UL_BW)))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid Bandwidth configuration:"
-            " ul %d dl %d",cellCfg->bwCfg.ulTotalBw,
-            cellCfg->bwCfg.dlTotalBw);
+	    " ul %d dl %d",cellCfg->bwCfg.ulTotalBw,
+	    cellCfg->bwCfg.dlTotalBw);
       RETVALUE(RFAILED);
    }
    if (cellCfg->phichCfg.ngEnum > RGR_NG_TWO)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid PHICH Ng configuration %d",
-               (U8)cellCfg->phichCfg.ngEnum);
+	    (U8)cellCfg->phichCfg.ngEnum);
       RETVALUE(RFAILED);
    }
    /* Validation for extended PHICH Duration */
    if ((cellCfg->phichCfg.isDurExtend == TRUE) && 
-         (cellCfg->bwCfg.dlTotalBw <= 10) && (cellCfg->cfiCfg.cfi < 2))
+	 (cellCfg->bwCfg.dlTotalBw <= 10) && (cellCfg->cfiCfg.cfi < 2))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid cfi value for"
-               "Extended PHICH duration cfi:%d dlBw:%d",
-               (U8)cellCfg->cfiCfg.cfi, cellCfg->bwCfg.dlTotalBw);
+	    "Extended PHICH duration cfi:%d dlBw:%d",
+	    (U8)cellCfg->cfiCfg.cfi, cellCfg->bwCfg.dlTotalBw);
       RETVALUE(RFAILED);
    }
    if ((cellCfg->phichCfg.isDurExtend == TRUE) &&
-         (cellCfg->bwCfg.dlTotalBw > 10) && (cellCfg->cfiCfg.cfi < 3))
+	 (cellCfg->bwCfg.dlTotalBw > 10) && (cellCfg->cfiCfg.cfi < 3))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid cfi value for"
-               "Extended PHICH duration cfi:%d dlBw:%d",
-               (U8)cellCfg->cfiCfg.cfi, cellCfg->bwCfg.dlTotalBw);
+	    "Extended PHICH duration cfi:%d dlBw:%d",
+	    (U8)cellCfg->cfiCfg.cfi, cellCfg->bwCfg.dlTotalBw);
       RETVALUE(RFAILED);
    }
    RLOG4(L_INFO,"CA_DBG:: PUCCH configuration:"
-         " N2_RB %d N1_PUCCH %d deltaShift %d cyclicShift %d",
-         cellCfg->pucchCfg.resourceSize,
-         cellCfg->pucchCfg.n1PucchAn,
-         cellCfg->pucchCfg.deltaShift,
-         cellCfg->pucchCfg.cyclicShift);
+	 " N2_RB %d N1_PUCCH %d deltaShift %d cyclicShift %d",
+	 cellCfg->pucchCfg.resourceSize,
+	 cellCfg->pucchCfg.n1PucchAn,
+	 cellCfg->pucchCfg.deltaShift,
+	 cellCfg->pucchCfg.cyclicShift);
 
    /* ccpu00138567- Removing validation check for resourceSize as 0.
     * From the spec, n2RB value 0 is a valid config. */
    if ((cellCfg->pucchCfg.resourceSize >= cellCfg->bwCfg.ulTotalBw/2) ||
-         (cellCfg->pucchCfg.n1PucchAn == 0) ||
-         (cellCfg->pucchCfg.deltaShift < RGSCH_PUCCH_MINVAL_DS) ||
-         (cellCfg->pucchCfg.deltaShift > RGSCH_PUCCH_MAXVAL_DS) ||
-         (cellCfg->pucchCfg.cyclicShift > RGSCH_PUCCH_MAXVAL_CS))
+	 (cellCfg->pucchCfg.n1PucchAn == 0) ||
+	 (cellCfg->pucchCfg.deltaShift < RGSCH_PUCCH_MINVAL_DS) ||
+	 (cellCfg->pucchCfg.deltaShift > RGSCH_PUCCH_MAXVAL_DS) ||
+	 (cellCfg->pucchCfg.cyclicShift > RGSCH_PUCCH_MAXVAL_CS))
    {
       RLOG_ARG4(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid PUCCH configuration:"
-              " N2_RB %d N1_PUCCH %d deltaShift %d cyclicShift %d",
-               cellCfg->pucchCfg.resourceSize,
-               cellCfg->pucchCfg.n1PucchAn,
-               cellCfg->pucchCfg.deltaShift,
-               cellCfg->pucchCfg.cyclicShift);
+	    " N2_RB %d N1_PUCCH %d deltaShift %d cyclicShift %d",
+	    cellCfg->pucchCfg.resourceSize,
+	    cellCfg->pucchCfg.n1PucchAn,
+	    cellCfg->pucchCfg.deltaShift,
+	    cellCfg->pucchCfg.cyclicShift);
       RETVALUE(RFAILED);
    }
    if (cellCfg->srsCfg.isSrsCfgSetup && cellCfg->srsCfg.srsBwEnum > RGR_SRS_BWCFG_7)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid SRS configuration: "
-               " srsBw %d", (U8)cellCfg->srsCfg.srsBwEnum);
+	    " srsBw %d", (U8)cellCfg->srsCfg.srsBwEnum);
       RETVALUE(RFAILED);
    }
 
    if ((rgSCHCfgVldtRgrCellRACfg(inst, cellCfg)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Validation for Random access related"
-                          "config failed");
+	    "config failed");
       RETVALUE(RFAILED);
    }
 
    if ((rgSCHCfgVldtRgrCellPwrCfg(inst, cellCfg, errInfo)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Validation for cell power "
-                          "config failed");
+	    "config failed");
       RETVALUE(RFAILED);
    }
 
    /* Validate the common logical channel configuration */
    if( (cellCfg->numCmnLcs < RGR_MIN_CMN_LC_PER_CELL)||
-       (cellCfg->numCmnLcs > RGR_MAX_CMN_LC_PER_CELL))
+	 (cellCfg->numCmnLcs > RGR_MAX_CMN_LC_PER_CELL))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid number(%d) of common logical"
-              "channels in cell config", cellCfg->numCmnLcs);
+	    "channels in cell config", cellCfg->numCmnLcs);
       RETVALUE(RFAILED);
    }
    if ((rgSCHCfgVldtRgrCmnLcCfg(inst, cellCfg, errInfo)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Validation for common logical"
-                          "channels failed");
+	    "channels failed");
       RETVALUE(RFAILED);
    }
 
@@ -727,7 +727,7 @@ RgSchErrInfo *errInfo;
    if ((rgSCHCfgVldtRgrCellSiCfg(inst, &(cellCfg->siCfg))) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Validation for SI"
-                          "configuration failed");
+	    "configuration failed");
       RETVALUE(RFAILED);
    }
 #endif /*RGR_SI_SCH */
@@ -740,79 +740,79 @@ RgSchErrInfo *errInfo;
       if(cellCfg->srsCfg.isSrsCfgSetup && cellCfg->srsCfg.srsSubFrameCfg > 14)
 #endif
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid"
-                  "Subframe configuration");
-         RETVALUE(RFAILED);
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid"
+	       "Subframe configuration");
+	 RETVALUE(RFAILED);
       }
 #endif
    /*ccpu00116923 - ADD - Srs Present support - End*/
-  
-  if ((cellCfg->bcchTxPwrOffset > 10000) ||
-       (cellCfg->pcchTxPwrOffset > 10000) ||
-       (cellCfg->rarTxPwrOffset > 10000) ||
-       (cellCfg->phichTxPwrOffset > 10000) 
+
+   if ((cellCfg->bcchTxPwrOffset > 10000) ||
+	 (cellCfg->pcchTxPwrOffset > 10000) ||
+	 (cellCfg->rarTxPwrOffset > 10000) ||
+	 (cellCfg->phichTxPwrOffset > 10000) 
       )
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId, 
-            "Invalid txPower offset ");
+	    "Invalid txPower offset ");
       RETVALUE(RFAILED);
    }
 
-/* LTE_ADV_FLAG_REMOVED_START */
+   /* LTE_ADV_FLAG_REMOVED_START */
    /* Checking Whether DSFR is enabled without enabling SFR */
    if(((cellCfg->rgrLteAdvCfg.pres & RGR_DSFR) && 
-       (RGR_ENABLE == cellCfg->rgrLteAdvCfg.dsfrCfg.status)) &&
-      (!((cellCfg->rgrLteAdvCfg.pres & RGR_SFR) &&
-         (RGR_ENABLE == cellCfg->rgrLteAdvCfg.sfrCfg.status))))
+	    (RGR_ENABLE == cellCfg->rgrLteAdvCfg.dsfrCfg.status)) &&
+	 (!((cellCfg->rgrLteAdvCfg.pres & RGR_SFR) &&
+	    (RGR_ENABLE == cellCfg->rgrLteAdvCfg.sfrCfg.status))))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "DSFR is enbaled"
-               "Without enabling SFR");
+	    "Without enabling SFR");
       RETVALUE(RFAILED);
    }
 
    if ((rgSCHCfgVldtRgrCellLteAdvCfg(inst, &(cellCfg->rgrLteAdvCfg), 
-                                      cellCfg->bwCfg.dlTotalBw)) != ROK)
+	       cellCfg->bwCfg.dlTotalBw)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Validation for LTE Adv"
-               "configuration failed");
+	    "configuration failed");
       RETVALUE(RFAILED);
    }
 #ifdef LTE_ADV
    if ((rgSCHCfgVldtRgrCellLteLAACfg(inst, cellCfg)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Validation for LTE LAA"
-               "configuration failed");
+	    "configuration failed");
       RETVALUE(RFAILED);
    }
 #endif
-/* LTE_ADV_FLAG_REMOVED_END */
+   /* LTE_ADV_FLAG_REMOVED_END */
    if (cellCfg->msg4pAVal > RGRUE_DLPWRCNTRL_PA_DB3)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,  "Invalid"
-               "msg4pAVal %u", cellCfg->msg4pAVal);
+	    "msg4pAVal %u", cellCfg->msg4pAVal);
       RETVALUE(RFAILED);
    }
-  
+
    /* Validate RgrCellCsgParamCfg */
    if(rgSchCb[inst].rgrSchedEnbCfg.accsMode == RGR_CELL_ACCS_HYBRID) 
    {
       if((rgSCHCfgVldtRgrCellCsgParamCfg(inst, 
-                  &(cellCfg->csgParamCfg)) != ROK))
+		  &(cellCfg->csgParamCfg)) != ROK))
       {
-         RGSCHDBGERR(inst, (rgSchPBuf(inst), "Validation failed for \n"
-                  "Access CSG parameter failed\n"));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERR(inst, (rgSchPBuf(inst), "Validation failed for \n"
+		  "Access CSG parameter failed\n"));
+	 RETVALUE(RFAILED);
       }
    }
 #ifdef EMTC_ENABLE
-          if (cellCfg->emtcEnable)
-          {
-   	     if(ROK != rgSCHCfgVldtRgrEmtcCellCfg(cellCfg))
-   	     {
-     			 RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,"Invalid EMTC cell Configuration %d for cell" ,cellCfg->cellId);
-     			 RETVALUE(RFAILED);
-   	     }
-          }
+   if (cellCfg->emtcEnable)
+   {
+      if(ROK != rgSCHCfgVldtRgrEmtcCellCfg(cellCfg))
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,"Invalid EMTC cell Configuration %d for cell" ,cellCfg->cellId);
+	 RETVALUE(RFAILED);
+      }
+   }
 #endif
    errInfo->errCause = RGSCHERR_NONE;
    RETVALUE(ROK);
@@ -840,31 +840,31 @@ RgSchErrInfo *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrSchCfg
+   PUBLIC S16 rgSCHCfgVldtRgrSchCfg
 (
-Inst         inst,
-RgrSchedEnbCfg   *rgSchedCfg
-)
+ Inst         inst,
+ RgrSchedEnbCfg   *rgSchedCfg
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrSchCfg(inst, rgSchedCfg)
-Inst         inst;
-RgrSchedCfg   *rgSchedCfg;
+   Inst         inst;
+   RgrSchedCfg   *rgSchedCfg;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrSchCfg);
 
    RGSCHDBGPRM(inst, (rgSchPBuf(inst), "rgSCHCfgVldtRgrSchCfg:Validating \
-               scheduler related Configuration"));
+	    scheduler related Configuration"));
    if (rgSchedCfg->ulSchdType > (RGSCH_NUM_SCHEDULERS - 1))
    {
       RGSCHDBGERR(inst, (rgSchPBuf(inst), "rgSCHCfgVldtRgrSchCfg:Invalid \
-                  UL scheduler type %d \n", rgSchedCfg->ulSchdType));
+	       UL scheduler type %d \n", rgSchedCfg->ulSchdType));
       RETVALUE(RFAILED);
    }
    if (rgSchedCfg->dlSchdType > (RGSCH_NUM_SCHEDULERS - 1))
    {
       RGSCHDBGERR(inst, (rgSchPBuf(inst), "rgSCHCfgVldtRgrSchCfg:Invalid \
-                  DL scheduler type %d \n", rgSchedCfg->dlSchdType));
+	       DL scheduler type %d \n", rgSchedCfg->dlSchdType));
       RETVALUE(RFAILED);
    }
    RETVALUE(ROK);
@@ -891,15 +891,15 @@ RgrSchedCfg   *rgSchedCfg;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrCellSchCfg
+   PUBLIC S16 rgSCHCfgVldtRgrCellSchCfg
 (
-Inst         inst,
-RgrCellCfg   *cellCfg
-)
+ Inst         inst,
+ RgrCellCfg   *cellCfg
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrCellSchCfg(inst, cellCfg)
-Inst         inst;
-RgrCellCfg   *cellCfg;
+   Inst         inst;
+   RgrCellCfg   *cellCfg;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrCellSchCfg);
@@ -908,7 +908,7 @@ RgrCellCfg   *cellCfg;
    if (cellCfg->dlfsSchdType > RGSCH_NUM_DLFS_SCHEDULERS - 1)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,"Invalid dlfs scheduler type %d for cell",
-                cellCfg->dlfsSchdType);
+	    cellCfg->dlfsSchdType);
       RETVALUE(RFAILED);
    }
 #endif
@@ -936,15 +936,15 @@ RgrCellCfg   *cellCfg;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrCellRACfg
+   PUBLIC S16 rgSCHCfgVldtRgrCellRACfg
 (
-Inst         inst,
-RgrCellCfg   *cellCfg
-)
+ Inst         inst,
+ RgrCellCfg   *cellCfg
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrCellRACfg(inst, cellCfg)
-Inst         inst;
-RgrCellCfg   *cellCfg;
+   Inst         inst;
+   RgrCellCfg   *cellCfg;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrCellRACfg);
@@ -953,27 +953,27 @@ RgrCellCfg   *cellCfg;
 #ifdef LTE_TDD
    if ((cellCfg->rachCfg.preambleFormat > RGSCH_MAX_TDD_RA_PREAMBLE_FMT) ||
 #else
-   if ((cellCfg->rachCfg.preambleFormat > RGSCH_MAX_RA_PREAMBLE_FMT) ||
+	 if ((cellCfg->rachCfg.preambleFormat > RGSCH_MAX_RA_PREAMBLE_FMT) ||
 #endif
-         (cellCfg->rachCfg.raWinSize < RGSCH_MIN_RA_WINSIZE)  ||
-         (cellCfg->rachCfg.raWinSize > RGSCH_MAX_RA_WINSIZE) ||
-         (cellCfg->rachCfg.maxMsg3Tx < RGSCH_MIN_HQ_TX) ||
-         (cellCfg->rachCfg.numRaPreamble < RGSCH_MIN_NUM_RA_PREAMBLE) ||
-         (cellCfg->rachCfg.numRaPreamble > RGSCH_MAX_NUM_RA_PREAMBLE) ||
-         (cellCfg->rachCfg.sizeRaPreambleGrpA >
-          cellCfg->rachCfg.numRaPreamble) || 
-         (cellCfg->rachCfg.prachResource > 
-          (cellCfg->bwCfg.ulTotalBw - RGSCH_NUM_RA_RB)))
-   {
-      RLOG_ARG3(L_ERROR,DBG_CELLID,cellCfg->cellId,"Invalid RACH configuration:"
-                "preamble Fmt %d raWinSize %d maxMsg3Tx %d",
-                cellCfg->rachCfg.preambleFormat, cellCfg->rachCfg.raWinSize,
-                cellCfg->rachCfg.maxMsg3Tx);
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cellCfg->cellId,"Invalid numRaPreamble %d sizeRaPreambleGrpA %d",
-                cellCfg->rachCfg.numRaPreamble,
-                cellCfg->rachCfg.sizeRaPreambleGrpA);
-      RETVALUE(RFAILED);
-   }
+	    (cellCfg->rachCfg.raWinSize < RGSCH_MIN_RA_WINSIZE)  ||
+	    (cellCfg->rachCfg.raWinSize > RGSCH_MAX_RA_WINSIZE) ||
+	    (cellCfg->rachCfg.maxMsg3Tx < RGSCH_MIN_HQ_TX) ||
+	    (cellCfg->rachCfg.numRaPreamble < RGSCH_MIN_NUM_RA_PREAMBLE) ||
+	    (cellCfg->rachCfg.numRaPreamble > RGSCH_MAX_NUM_RA_PREAMBLE) ||
+	    (cellCfg->rachCfg.sizeRaPreambleGrpA >
+	     cellCfg->rachCfg.numRaPreamble) || 
+	    (cellCfg->rachCfg.prachResource > 
+	     (cellCfg->bwCfg.ulTotalBw - RGSCH_NUM_RA_RB)))
+	 {
+	 RLOG_ARG3(L_ERROR,DBG_CELLID,cellCfg->cellId,"Invalid RACH configuration:"
+	       "preamble Fmt %d raWinSize %d maxMsg3Tx %d",
+	       cellCfg->rachCfg.preambleFormat, cellCfg->rachCfg.raWinSize,
+	       cellCfg->rachCfg.maxMsg3Tx);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,cellCfg->cellId,"Invalid numRaPreamble %d sizeRaPreambleGrpA %d",
+	       cellCfg->rachCfg.numRaPreamble,
+	       cellCfg->rachCfg.sizeRaPreambleGrpA);
+	 RETVALUE(RFAILED);
+	 }
    /* RACHO */
    /* verify that the ded Preambles cfgd for Pdcch Order
     * do not collide with that of non-dedicated  and validates against
@@ -981,16 +981,16 @@ RgrCellCfg   *cellCfg;
     * ded-preambles. For non-zero ded preamble cfg, 
     * the config index is expected to be != NA.*/
    if ((cellCfg->macPreambleSet.pres) && 
-       ((cellCfg->macPreambleSet.start < cellCfg->rachCfg.numRaPreamble) ||
-       (cellCfg->macPreambleSet.start >= RGSCH_MAX_NUM_RA_PREAMBLE) ||
-       (cellCfg->macPreambleSet.size < 1) ||
-       (cellCfg->macPreambleSet.size > RGSCH_MAX_NUM_RA_PREAMBLE-
-                                       cellCfg->rachCfg.numRaPreamble) ||
-       (cellCfg->rachCfg.raOccasion.sfnEnum == RGR_SFN_NA)))
+	 ((cellCfg->macPreambleSet.start < cellCfg->rachCfg.numRaPreamble) ||
+	  (cellCfg->macPreambleSet.start >= RGSCH_MAX_NUM_RA_PREAMBLE) ||
+	  (cellCfg->macPreambleSet.size < 1) ||
+	  (cellCfg->macPreambleSet.size > RGSCH_MAX_NUM_RA_PREAMBLE-
+	   cellCfg->rachCfg.numRaPreamble) ||
+	  (cellCfg->rachCfg.raOccasion.sfnEnum == RGR_SFN_NA)))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,cellCfg->cellId,"Invalid RACH Preambleset conf:"
-                "preambleSet Start %d preambleSet Size %d",
-                cellCfg->macPreambleSet.start, cellCfg->macPreambleSet.size);
+	    "preambleSet Start %d preambleSet Size %d",
+	    cellCfg->macPreambleSet.start, cellCfg->macPreambleSet.size);
       RETVALUE(RFAILED);
    }
 #ifdef RGR_V1
@@ -1003,30 +1003,30 @@ RgrCellCfg   *cellCfg;
       idx = 7; /* FDD */
 #endif
       /* maxMsg4TxDelay = (HARQ_RTT * MAX_MSG4_HARQ_RETX)  + 
-         3 TTI (MAX L1+L2 processing delay at the UE) */
+	 3 TTI (MAX L1+L2 processing delay at the UE) */
       U8 maxMsg4TxDelay = (cellCfg->dlHqCfg.maxMsg4HqTx-1) * 
-         rgSchCmnHarqRtt[idx] + 3; 
+	 rgSchCmnHarqRtt[idx] + 3; 
 
 
       if(maxMsg4TxDelay >= cellCfg->rachCfg.contResTmr)
       {
-         RLOG_ARG2(L_WARNING,DBG_CELLID,cellCfg->cellId ,
-               "Warining !: Contention Resolution timer not greater than the "
-               "guard timer. Conte Res timer %d Guard timer %d",
-               cellCfg->rachCfg.contResTmr, 
-               maxMsg4TxDelay );
-         /* [ccpu00138532]-DEL- removed return fail here as it is ok if the 
-            max Msg4 Tx delay is more than the contension Resolution timer. 
-            In such case, the CRI CE will be scheduled immediately once 
-            msg3 is received */ 
+	 RLOG_ARG2(L_WARNING,DBG_CELLID,cellCfg->cellId ,
+	       "Warining !: Contention Resolution timer not greater than the "
+	       "guard timer. Conte Res timer %d Guard timer %d",
+	       cellCfg->rachCfg.contResTmr, 
+	       maxMsg4TxDelay );
+	 /* [ccpu00138532]-DEL- removed return fail here as it is ok if the 
+	    max Msg4 Tx delay is more than the contension Resolution timer. 
+	    In such case, the CRI CE will be scheduled immediately once 
+	    msg3 is received */ 
       }
    }
    else
    {
       /* ccpu00128575 ADD - If contention resolution timer is configured as 0,
-         Then return fail*/
+	 Then return fail*/
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId, 
-               "Contention Resolution timer is configured as '0'");
+	    "Contention Resolution timer is configured as '0'");
       RETVALUE(RFAILED);
    }
 #endif
@@ -1058,19 +1058,19 @@ RgrCellCfg   *cellCfg;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUeCfg
+   PUBLIC S16 rgSCHCfgVldtRgrUeCfg
 (
-Inst         inst,
-RgrUeCfg     *ueCfg,
-RgSchCellCb  **cell,
-RgSchErrInfo *errInfo
-)
+ Inst         inst,
+ RgrUeCfg     *ueCfg,
+ RgSchCellCb  **cell,
+ RgSchErrInfo *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrUeCfg(inst, ueCfg, cell, errInfo)
-Inst         inst;
-RgrUeCfg     *ueCfg;
-RgSchCellCb  **cell;
-RgSchErrInfo *errInfo;
+   Inst         inst;
+   RgrUeCfg     *ueCfg;
+   RgSchCellCb  **cell;
+   RgSchErrInfo *errInfo;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrUeCfg);
@@ -1078,10 +1078,10 @@ RgSchErrInfo *errInfo;
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_CFG;
 
    if (((*cell) == NULLP) || 
-       ((*cell)->cellId != ueCfg->cellId))
+	 ((*cell)->cellId != ueCfg->cellId))
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"Cell does not exist %d", 
-           ueCfg->cellId);
+	    ueCfg->cellId);
       RETVALUE(RFAILED);
    }
    /* RACHO: 
@@ -1091,59 +1091,59 @@ RgSchErrInfo *errInfo;
    if ((rgSCHRamVldtUeCfg(*cell, ueCfg)) != ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Preamble Id configuration"
-               "failed ",ueCfg->cellId);
+	    "failed ",ueCfg->cellId);
       RETVALUE(RFAILED);
    }
    /* Check if Ue already configured */
    if (rgSCHDbmGetUeCb(*cell, ueCfg->crnti) != NULLP)
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d UEID already exists",
-             ueCfg->cellId);
+	    ueCfg->cellId);
       RETVALUE(RFAILED);
    }
    /* Validate Transmission UE modes  */
    if ((ueCfg->txMode.pres == TRUE) && ((ueCfg->txMode.txModeEnum < RGR_UE_TM_1)
-            || (ueCfg->txMode.txModeEnum > RGR_UE_TM_7)))
+	    || (ueCfg->txMode.txModeEnum > RGR_UE_TM_7)))
    {
       RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid transmission mode for"
-               " UE is %d", ueCfg->cellId,(U8)ueCfg->txMode.txModeEnum);
+	    " UE is %d", ueCfg->cellId,(U8)ueCfg->txMode.txModeEnum);
       RETVALUE(RFAILED);
    }
-  
+
    /* Validate UE Category */
    if (ueCfg->ueCatEnum > CM_LTE_UE_CAT_8)
    {
       RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid category for UE %d",
-               ueCfg->cellId,(U8)ueCfg->ueCatEnum);
+	    ueCfg->cellId,(U8)ueCfg->ueCatEnum);
       RETVALUE(RFAILED);
    }
-  
+
    /* Validate UE Access Stratum Release */
    if (ueCfg->accessStratumRls > RGR_REL_10)
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Invalid Access Stratum Release %u for UE\n",
-               ueCfg->accessStratumRls));
+	       ueCfg->accessStratumRls));
       RETVALUE(RFAILED);
    }
    RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), "Configured Access Stratum Release %u\n", \
-            ueCfg->accessStratumRls));
-  
+	    ueCfg->accessStratumRls));
+
    if ((*cell)->numTxAntPorts == 1)
    {
       if ((ueCfg->txMode.pres == TRUE) && 
-            (ueCfg->txMode.txModeEnum > RGR_UE_TM_1))
+	    (ueCfg->txMode.txModeEnum > RGR_UE_TM_1))
       {
-         RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid transmission mode for"
-                  " UE (%d) for the configured Cell Antenna Ports",ueCfg->cellId,
-                  (U8)ueCfg->txMode.txModeEnum);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid transmission mode for"
+	       " UE (%d) for the configured Cell Antenna Ports",ueCfg->cellId,
+	       (U8)ueCfg->txMode.txModeEnum);
+	 RETVALUE(RFAILED);
       }
    }
-   
+
    if ((rgSCHCfgVldtUeCqiModeCfg(*cell, &ueCfg->ueDlCqiCfg)) != ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti, "CELLID:%d Invalid CQI Mode configuration",
-                ueCfg->cellId);
+	    ueCfg->cellId);
       RETVALUE(RFAILED);
    }
 
@@ -1151,33 +1151,33 @@ RgSchErrInfo *errInfo;
    if (ueCfg->ueUlHqCfg.maxUlHqTx < RGSCH_MIN_HQ_TX)
    {
       RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid Uplink HARQ config for "
-            "UE %d",ueCfg->cellId,ueCfg->ueUlHqCfg.maxUlHqTx);
+	    "UE %d",ueCfg->cellId,ueCfg->ueUlHqCfg.maxUlHqTx);
       RETVALUE(RFAILED);
    }
 
    if (rgSCHCfgVldtUePwrCfg(*cell, &ueCfg->ueUlPwrCfg) != ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid PUSCH Group power"
-           " configuration",ueCfg->cellId);
+	    " configuration",ueCfg->cellId);
       RETVALUE(RFAILED);
    }
- 
+
    if (rgSCHCfgVldtUeMeasGapAckNakRepCfg(*cell, ueCfg) != ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid MeasGap/AckNackRep"
-            " configuration",ueCfg->cellId);
+	    " configuration",ueCfg->cellId);
       RETVALUE(RFAILED);
    }
-  
+
 #ifdef LTEMAC_SPS
    /* Validating SPS RNTI */
    if (((ueCfg->ueSpsCfg.spsRnti >=  (*cell)->rntiDb.rntiStart) && 
-       (ueCfg->ueSpsCfg.spsRnti<=((*cell)->rntiDb.rntiStart+(*cell)->rntiDb.maxRntis)))
-       ||(ueCfg->ueSpsCfg.spsRnti == RGSCH_SI_RNTI) 
-       ||(ueCfg->ueSpsCfg.spsRnti == RGSCH_P_RNTI))
+	    (ueCfg->ueSpsCfg.spsRnti<=((*cell)->rntiDb.rntiStart+(*cell)->rntiDb.maxRntis)))
+	 ||(ueCfg->ueSpsCfg.spsRnti == RGSCH_SI_RNTI) 
+	 ||(ueCfg->ueSpsCfg.spsRnti == RGSCH_P_RNTI))
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid SPS RNTI "
-               " in DL SPS Config",ueCfg->cellId);
+	    " in DL SPS Config",ueCfg->cellId);
       RETVALUE(RFAILED);
    }
 
@@ -1185,9 +1185,9 @@ RgSchErrInfo *errInfo;
    {
       if (rgSCHCfgVldtUeDlSpsCfg(*cell, &ueCfg->ueSpsCfg.dlSpsCfg) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid DL SPS configuration"
-                  " for the UE",ueCfg->cellId);
-         RETVALUE(RFAILED);
+	 RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid DL SPS configuration"
+	       " for the UE",ueCfg->cellId);
+	 RETVALUE(RFAILED);
       }
    }
 #endif 
@@ -1196,7 +1196,7 @@ RgSchErrInfo *errInfo;
    if ( ROK != rgSCHCfgVldtCqiSrSrsUeCfg(*cell, ueCfg, errInfo))
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid Periodic CQI/SR/SRS"
-               "configuration",ueCfg->cellId);
+	    "configuration",ueCfg->cellId);
       RETVALUE(RFAILED);
    }
 #endif
@@ -1205,32 +1205,32 @@ RgSchErrInfo *errInfo;
    if ( ROK != rgSCHCfgVldtDrxUeCfg(*cell, &(ueCfg->ueDrxCfg)))
    {
       RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid DRX configuration",
-                ueCfg->cellId);
+	    ueCfg->cellId);
       RETVALUE(RFAILED);
    }
 
-/* ccpu00117452 - MOD - Changed macro name from
-   RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
+   /* ccpu00117452 - MOD - Changed macro name from
+      RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
    if (ueCfg->ueCqiReptCfg.numColltdCqiRept > RGR_CQIRPTS_MAXN)
    {
       RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid numColltdCqiRept,"
-               "MAX supported %d",RGR_CQIRPTS_MAXN,ueCfg->cellId);
+	    "MAX supported %d",RGR_CQIRPTS_MAXN,ueCfg->cellId);
       RETVALUE(RFAILED);
    }
 #endif /* End of RGR_CQI_REPT */
 
 #ifdef EMTC_ENABLE
-/*This is to validate the EMTC related configuration if a UE is an EMTC UE*/
-          if(TRUE == ueCfg->emtcUeCfg.pres)
-          {
-   	     if ( ROK != rgSCHCfgVldtEmtcUeCfg(*cell, &(ueCfg->emtcUeCfg)))
-   	     {
-      	        	 RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid EMTC UE configurationfor crnti:%d",
-                  		  ueCfg->cellId, ueCfg->crnti);
-      		         RETVALUE(RFAILED);
-   	     }
-          }
+   /*This is to validate the EMTC related configuration if a UE is an EMTC UE*/
+   if(TRUE == ueCfg->emtcUeCfg.pres)
+   {
+      if ( ROK != rgSCHCfgVldtEmtcUeCfg(*cell, &(ueCfg->emtcUeCfg)))
+      {
+	 RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid EMTC UE configurationfor crnti:%d",
+	       ueCfg->cellId, ueCfg->crnti);
+	 RETVALUE(RFAILED);
+      }
+   }
 #endif
    errInfo->errCause = RGSCHERR_NONE;
    RETVALUE(ROK);
@@ -1264,29 +1264,29 @@ RgSchErrInfo *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrCellRecfg
+   PUBLIC S16 rgSCHCfgVldtRgrCellRecfg
 (
-Inst          inst,
-RgrCellRecfg  *cellRecfg,
-RgSchCellCb   **cell,
-RgSchErrInfo  *errInfo
-)
+ Inst          inst,
+ RgrCellRecfg  *cellRecfg,
+ RgSchCellCb   **cell,
+ RgSchErrInfo  *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrCellRecfg(inst, cellRecfg, cell, errInfo)
-Inst          inst;
-RgrCellRecfg  *cellRecfg;
-RgSchCellCb   **cell;
-RgSchErrInfo  *errInfo;
+   Inst          inst;
+   RgrCellRecfg  *cellRecfg;
+   RgSchCellCb   **cell;
+   RgSchErrInfo  *errInfo;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrCellRecfg);
 
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_CELL_RECFG;
-   
+
    /* Fetch cell and validate cell Id with the cell control block*/
    if (((*cell) == NULLP) ||
-       ((*cell)->cellId != cellRecfg->cellId)) 
+	 ((*cell)->cellId != cellRecfg->cellId)) 
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Cell control block does not exist");
       RETVALUE(RFAILED);
@@ -1294,20 +1294,20 @@ RgSchErrInfo  *errInfo;
 
    /* Validate recieved values */
    if ((cellRecfg->recfgTypes & RGR_CELL_DL_HARQ_RECFG) &&
-         ((cellRecfg->dlHqRecfg.maxDlHqTx < RGSCH_MIN_HQ_TX) ||
-          (cellRecfg->dlHqRecfg.maxMsg4HqTx < RGSCH_MIN_HQ_TX)))
+	 ((cellRecfg->dlHqRecfg.maxDlHqTx < RGSCH_MIN_HQ_TX) ||
+	  (cellRecfg->dlHqRecfg.maxMsg4HqTx < RGSCH_MIN_HQ_TX)))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Downlink HARQ configuration:"
-           " maxDlHqTx %d maxMsg4HqTx %d", cellRecfg->dlHqRecfg.maxDlHqTx,
-            cellRecfg->dlHqRecfg.maxMsg4HqTx);
+	    " maxDlHqTx %d maxMsg4HqTx %d", cellRecfg->dlHqRecfg.maxDlHqTx,
+	    cellRecfg->dlHqRecfg.maxMsg4HqTx);
       RETVALUE(RFAILED);
    }
    if ((cellRecfg->recfgTypes & RGR_CELL_CFI_RECFG) && 
-         ((cellRecfg->cfiRecfg.cfi < RGSCH_MIN_CFI_VAL) ||
-          (cellRecfg->cfiRecfg.cfi > RGSCH_MAX_CFI_VAL)))
+	 ((cellRecfg->cfiRecfg.cfi < RGSCH_MIN_CFI_VAL) ||
+	  (cellRecfg->cfiRecfg.cfi > RGSCH_MAX_CFI_VAL)))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid CFI configuration %d",
-               cellRecfg->cfiRecfg.cfi);
+	    cellRecfg->cfiRecfg.cfi);
       RETVALUE(RFAILED);
    }
    if (cellRecfg->recfgTypes & RGR_CELL_PUCCH_RECFG)
@@ -1315,27 +1315,27 @@ RgSchErrInfo  *errInfo;
       /* ccpu00138567- Removing validation check for resourceSize as 0.
        * From the spec, n2RB value 0 is a valid config. */
       if ((cellRecfg->pucchRecfg.n1PucchAn == 0) ||
-          (cellRecfg->pucchRecfg.resourceSize >= (*cell)->bwCfg.ulTotalBw/2)||
-          ((cellRecfg->pucchRecfg.deltaShift < RGSCH_PUCCH_MINVAL_DS) || 
-           (cellRecfg->pucchRecfg.deltaShift > RGSCH_PUCCH_MAXVAL_DS)) ||
-          (cellRecfg->pucchRecfg.cyclicShift > RGSCH_PUCCH_MAXVAL_CS))
+	    (cellRecfg->pucchRecfg.resourceSize >= (*cell)->bwCfg.ulTotalBw/2)||
+	    ((cellRecfg->pucchRecfg.deltaShift < RGSCH_PUCCH_MINVAL_DS) || 
+	     (cellRecfg->pucchRecfg.deltaShift > RGSCH_PUCCH_MAXVAL_DS)) ||
+	    (cellRecfg->pucchRecfg.cyclicShift > RGSCH_PUCCH_MAXVAL_CS))
       {
-         RLOG_ARG4(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid PUCCH configuration: "
-               "N2_RB %d N1_PUCCH %d deltaShift %d cyclicShift %d",
-               cellRecfg->pucchRecfg.resourceSize,
-               cellRecfg->pucchRecfg.n1PucchAn,
-               cellRecfg->pucchRecfg.deltaShift,
-               cellRecfg->pucchRecfg.cyclicShift);
-         RETVALUE(RFAILED);
+	 RLOG_ARG4(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid PUCCH configuration: "
+	       "N2_RB %d N1_PUCCH %d deltaShift %d cyclicShift %d",
+	       cellRecfg->pucchRecfg.resourceSize,
+	       cellRecfg->pucchRecfg.n1PucchAn,
+	       cellRecfg->pucchRecfg.deltaShift,
+	       cellRecfg->pucchRecfg.cyclicShift);
+	 RETVALUE(RFAILED);
       }
    }
    if (cellRecfg->recfgTypes & RGR_CELL_SRS_RECFG)
    {
       if (cellRecfg->srsRecfg.isSrsCfgSetup && cellRecfg->srsRecfg.srsBwEnum > RGR_SRS_BWCFG_7)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid SRS configuration: "
-               "srsBw %d", (U8)cellRecfg->srsRecfg.srsBwEnum);
-         RETVALUE(RFAILED);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid SRS configuration: "
+	       "srsBw %d", (U8)cellRecfg->srsRecfg.srsBwEnum);
+	 RETVALUE(RFAILED);
       }
 
       /*ccpu00116923 - ADD - Srs Present support - Start*/
@@ -1343,38 +1343,38 @@ RgSchErrInfo  *errInfo;
 #ifdef LTE_TDD
       if(cellRecfg->srsRecfg.isSrsCfgSetup && cellRecfg->srsRecfg.srsSubFrameCfg > 13)
 #else
-         if(cellRecfg->srsRecfg.isSrsCfgSetup && cellRecfg->srsRecfg.srsSubFrameCfg > 14)
+	 if(cellRecfg->srsRecfg.isSrsCfgSetup && cellRecfg->srsRecfg.srsSubFrameCfg > 14)
 #endif
-         {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Subframe configuration ");
-            RETVALUE(RFAILED);
-         }
+	 {
+	    RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Subframe configuration ");
+	    RETVALUE(RFAILED);
+	 }
 #endif
       /*ccpu00116923 - ADD - Srs Present support - End*/
    }
    if (cellRecfg->recfgTypes & RGR_CELL_RACH_RECFG)
    {
       if ((cellRecfg->rachRecfg.preambleFormat > RGSCH_MAX_RA_PREAMBLE_FMT) ||
-            ((cellRecfg->rachRecfg.raWinSize < RGSCH_MIN_RA_WINSIZE) ||
-             (cellRecfg->rachRecfg.raWinSize > RGSCH_MAX_RA_WINSIZE)) ||
-            (cellRecfg->rachRecfg.maxMsg3Tx < RGSCH_MIN_HQ_TX) ||
-            ((cellRecfg->rachRecfg.numRaPreamble < RGSCH_MIN_NUM_RA_PREAMBLE)
-            || (cellRecfg->rachRecfg.numRaPreamble > RGSCH_MAX_NUM_RA_PREAMBLE))
-            || (cellRecfg->rachRecfg.sizeRaPreambleGrpA >
-               cellRecfg->rachRecfg.numRaPreamble) ||
-            (cellRecfg->rachRecfg.prachResource >
-               (*cell)->bwCfg.ulTotalBw - RGSCH_NUM_RA_RB))
+	    ((cellRecfg->rachRecfg.raWinSize < RGSCH_MIN_RA_WINSIZE) ||
+	     (cellRecfg->rachRecfg.raWinSize > RGSCH_MAX_RA_WINSIZE)) ||
+	    (cellRecfg->rachRecfg.maxMsg3Tx < RGSCH_MIN_HQ_TX) ||
+	    ((cellRecfg->rachRecfg.numRaPreamble < RGSCH_MIN_NUM_RA_PREAMBLE)
+	     || (cellRecfg->rachRecfg.numRaPreamble > RGSCH_MAX_NUM_RA_PREAMBLE))
+	    || (cellRecfg->rachRecfg.sizeRaPreambleGrpA >
+	       cellRecfg->rachRecfg.numRaPreamble) ||
+	    (cellRecfg->rachRecfg.prachResource >
+	     (*cell)->bwCfg.ulTotalBw - RGSCH_NUM_RA_RB))
       {
-         RLOG_ARG3(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid RACH configuration:"
-               " preamble Fmt %d raWinSize %d maxMsg3Tx %d",
-               cellRecfg->rachRecfg.preambleFormat,
-               cellRecfg->rachRecfg.raWinSize,
-               cellRecfg->rachRecfg.maxMsg3Tx);
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid RACH configuration:"
-               "numRaPreamble %d sizeRaPreambleGrpA %d",
-               cellRecfg->rachRecfg.numRaPreamble,
-               cellRecfg->rachRecfg.sizeRaPreambleGrpA);
-         RETVALUE(RFAILED);
+	 RLOG_ARG3(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid RACH configuration:"
+	       " preamble Fmt %d raWinSize %d maxMsg3Tx %d",
+	       cellRecfg->rachRecfg.preambleFormat,
+	       cellRecfg->rachRecfg.raWinSize,
+	       cellRecfg->rachRecfg.maxMsg3Tx);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid RACH configuration:"
+	       "numRaPreamble %d sizeRaPreambleGrpA %d",
+	       cellRecfg->rachRecfg.numRaPreamble,
+	       cellRecfg->rachRecfg.sizeRaPreambleGrpA);
+	 RETVALUE(RFAILED);
       }
    }
 
@@ -1383,56 +1383,56 @@ RgSchErrInfo  *errInfo;
    {
       if ((rgSCHCfgVldtRgrCellSiCfg(inst, &(cellRecfg->siReCfg))) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Validation for SI"
-                          "Re-configuration failed");
-         RETVALUE(RFAILED);
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Validation for SI"
+	       "Re-configuration failed");
+	 RETVALUE(RFAILED);
       }
    }
 #endif /*RGR_SI_SCH */
 
-/* LTE_ADV_FLAG_REMOVED_START */
+   /* LTE_ADV_FLAG_REMOVED_START */
    if (cellRecfg->recfgTypes & RGR_CELL_LTEA_FEATURE_RECFG)
    {
       /* Checkin whether DSFR is enbaled without enabling SFR.
        * So we need to check if SFR is enabled along with DSFR
        * in the same reconfiguration or it is already enabled earlier*/
       if((cellRecfg->rgrLteAdvCfg.pres & RGR_DSFR) && 
-         (RGR_ENABLE == cellRecfg->rgrLteAdvCfg.dsfrCfg.status)) 
+	    (RGR_ENABLE == cellRecfg->rgrLteAdvCfg.dsfrCfg.status)) 
       {   
-         if(!(((cellRecfg->rgrLteAdvCfg.pres & RGR_SFR) &&
-               (RGR_ENABLE == cellRecfg->rgrLteAdvCfg.sfrCfg.status)) || 
-               ((*cell)->lteAdvCb.sfrCfg.status == RGR_ENABLE)))
-         {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"DSFR is enbaled"
-                     "Without enabling SFR");
-            RETVALUE(RFAILED);
-         }
+	 if(!(((cellRecfg->rgrLteAdvCfg.pres & RGR_SFR) &&
+		     (RGR_ENABLE == cellRecfg->rgrLteAdvCfg.sfrCfg.status)) || 
+		  ((*cell)->lteAdvCb.sfrCfg.status == RGR_ENABLE)))
+	 {
+	    RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"DSFR is enbaled"
+		  "Without enabling SFR");
+	    RETVALUE(RFAILED);
+	 }
       }
       if ((rgSCHCfgVldtRgrCellLteAdvCfg(inst, &(cellRecfg->rgrLteAdvCfg),
-                                       (*cell)->bwCfg.dlTotalBw)) != ROK)
+		  (*cell)->bwCfg.dlTotalBw)) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Validation for Lte Adv"
-                  "Re-configuration failed");
-         RETVALUE(RFAILED);
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Validation for Lte Adv"
+	       "Re-configuration failed");
+	 RETVALUE(RFAILED);
       }
    }
-/* LTE_ADV_FLAG_REMOVED_END */
+   /* LTE_ADV_FLAG_REMOVED_END */
 
    /* Validating minimum resource for non-CSG users */
    if (cellRecfg->recfgTypes & RGR_CELL_CSG_PARAM_RECFG)
    {
-     if (cellRecfg->csgParamCfg.minDlResNonCsg > 100)
-     {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Configuration "
-               "of minimum DL resources for NON-CSG");
-         RETVALUE(RFAILED);
-     }
-     if (cellRecfg->csgParamCfg.minUlResNonCsg > 100)
-     {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Configuration "
-               "of minimum UL resources for NON-CSG");
-         RETVALUE(RFAILED);
-     }
+      if (cellRecfg->csgParamCfg.minDlResNonCsg > 100)
+      {
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Configuration "
+	       "of minimum DL resources for NON-CSG");
+	 RETVALUE(RFAILED);
+      }
+      if (cellRecfg->csgParamCfg.minUlResNonCsg > 100)
+      {
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Configuration "
+	       "of minimum UL resources for NON-CSG");
+	 RETVALUE(RFAILED);
+      }
    }
    errInfo->errCause = RGSCHERR_NONE;
    RETVALUE(ROK);
@@ -1459,19 +1459,19 @@ RgSchErrInfo  *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHSCellCfgUeCfg
+   PUBLIC S16 rgSCHSCellCfgUeCfg
 (
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgrUeRecfg   *ueRecfg,
-RgSchErrInfo *err
-)
+ RgSchCellCb  *cell,
+ RgSchUeCb    *ue,
+ RgrUeRecfg   *ueRecfg,
+ RgSchErrInfo *err
+ )
 #else
 PUBLIC S16 rgSCHSCellCfgUeCfg(cell, ue, ueRecfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgrUeRecfg   *ueRecfg;
-RgSchErrInfo *err;
+   RgSchCellCb  *cell;
+   RgSchUeCb    *ue;
+   RgrUeRecfg   *ueRecfg;
+   RgSchErrInfo *err;
 #endif
 {
    U8                  idx;
@@ -1486,53 +1486,53 @@ RgSchErrInfo *err;
 #endif
 
    TRC2(rgSCHSCellCfgUeCfg);
- 
+
    RLOG0(L_INFO, "SCELL recfg received from APP \n");  
 
    RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), 
-     "--------------------------------------------------------------------\n"
-     "UE SCell ReConfiguration at SCH: rnti (%u) cell(%u)\n"
-     "--------------------------------------------------------------------\n",
-     ue->ueId, cell->cellId));
+	    "--------------------------------------------------------------------\n"
+	    "UE SCell ReConfiguration at SCH: rnti (%u) cell(%u)\n"
+	    "--------------------------------------------------------------------\n",
+	    ue->ueId, cell->cellId));
 
- 
+
    for(idx = 0; idx < ueRecfg->ueSCellCfgInfo.numSCells; idx++)
    {
-     /* Allocate the Ue control block */
+      /* Allocate the Ue control block */
       if (((rgSCHUtlAllocSBuf(inst, (Data **)&sCellInfo,
-                    sizeof(RgSchUeCellInfo))) != ROK))
+		     sizeof(RgSchUeCellInfo))) != ROK))
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]SCellIdx :Memomy allocation "
-                  "Failed while Adding SCell Information\n", idx));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]SCellIdx :Memomy allocation "
+		  "Failed while Adding SCell Information\n", idx));
+	 RETVALUE(RFAILED);
       }
-      
+
 
       sCellInfoCfg = &ueRecfg->ueSCellCfgInfo.ueSCellDedCfg[idx];
 
 
       sCellInfo->sCellIdx  = sCellInfoCfg->sCellIdx;
       sCellInfo->sCellId   = sCellInfoCfg->sCellId;
-      
+
       if(PRSNT_NODEF == sCellInfoCfg->sCellDeActTmr.pres)
       {
-         /* Configure implicit release */
-         ue->sCellDeactTmrVal.val = sCellInfoCfg->sCellDeActTmr.val;
-         ue->isScellExplicitDeAct = FALSE;
-         ue->sCellDeactTmrVal.pres = PRSNT_NODEF;
+	 /* Configure implicit release */
+	 ue->sCellDeactTmrVal.val = sCellInfoCfg->sCellDeActTmr.val;
+	 ue->isScellExplicitDeAct = FALSE;
+	 ue->sCellDeactTmrVal.pres = PRSNT_NODEF;
       }
       else if (rgSchCb[cell->instIdx].genCfg.isSCellActDeactAlgoEnable == TRUE)
       {
-         /* Configure explicit release */
-         ue->sCellDeactTmrVal.val = RGSCH_SCELL_DEACT_TMR_INFINITY_VAL;
-         ue->isScellExplicitDeAct = TRUE;
-         ue->sCellDeactTmrVal.pres = PRSNT_NODEF;
+	 /* Configure explicit release */
+	 ue->sCellDeactTmrVal.val = RGSCH_SCELL_DEACT_TMR_INFINITY_VAL;
+	 ue->isScellExplicitDeAct = TRUE;
+	 ue->sCellDeactTmrVal.pres = PRSNT_NODEF;
       }
       else
       {
-         ue->sCellDeactTmrVal.val  = 0;
-         ue->isScellExplicitDeAct  = FALSE;
-         ue->sCellDeactTmrVal.pres = NOTPRSNT;
+	 ue->sCellDeactTmrVal.val  = 0;
+	 ue->isScellExplicitDeAct  = FALSE;
+	 ue->sCellDeactTmrVal.pres = NOTPRSNT;
       }
 
       sCellInfo->sCellState = RG_SCH_SCELL_INACTIVE;
@@ -1540,16 +1540,16 @@ RgSchErrInfo *err;
       sCellInfo->ue = ue;
       ue->cellInfo[(sCellInfoCfg->sCellIdx)] = sCellInfo;
       sCellidx = ((sCellInfo->sCellId -
-               rgSchCb[cell->instIdx].genCfg.startCellId)&(CM_LTE_MAX_CELLS-1));
+	       rgSchCb[cell->instIdx].genCfg.startCellId)&(CM_LTE_MAX_CELLS-1));
       ue->cellIdToCellIdxMap[sCellidx] = sCellInfo->sCellIdx;
 
       /* For for time one Scell got added, setting allocCmnUlPdcch flag to TRUE, So that
-         we will allocate PDCCH from common search space and the csiRequest field in DCI0 will 
-         be one bit (spec 36.213 sec 7.2.1)*/
+	 we will allocate PDCCH from common search space and the csiRequest field in DCI0 will 
+	 be one bit (spec 36.213 sec 7.2.1)*/
 #ifdef LTE_ADV
       if ( ue->numSCells == 0)
       {
-         ue->allocCmnUlPdcch = TRUE;
+	 ue->allocCmnUlPdcch = TRUE;
       }
 #endif      
       ue->numSCells++;
@@ -1559,22 +1559,22 @@ RgSchErrInfo *err;
       /* retrieve teh sec cell Cb */
       if((secCellCb = (RgSchCellCb *)rgSchUtlGetCellCb(inst, sCellInfo->sCellId)) == NULLP)
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCell doesnt exists"));
-         rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCell doesnt exists"));
+	 rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
+	 RETVALUE(RFAILED);
       }
 
       if(TRUE == sCellInfoCfg->txMode.pres)
       {
-         sCellInfo->txMode = sCellInfoCfg->txMode;
+	 sCellInfo->txMode = sCellInfoCfg->txMode;
       }
       else
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]SCellIdx Tx mode not present ",idx));
-         sCellInfoCfg->txMode.pres = TRUE;
-         sCellInfoCfg->txMode.txModeEnum = RGR_UE_TM_1;
-      
-         sCellInfo->txMode = sCellInfoCfg->txMode;
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]SCellIdx Tx mode not present ",idx));
+	 sCellInfoCfg->txMode.pres = TRUE;
+	 sCellInfoCfg->txMode.txModeEnum = RGR_UE_TM_1;
+
+	 sCellInfo->txMode = sCellInfoCfg->txMode;
       }
       cmInitTimers (&sCellInfo->actDelayTmr, 1);
       cmInitTimers (&sCellInfo->deactTmr, 1);
@@ -1584,38 +1584,38 @@ RgSchErrInfo *err;
 #ifdef TFU_UPGRADE
       if(TRUE == sCellInfoCfg->ueSCellDlCqiCfg.aprdCqiCfg.pres)
       {
-         sCellInfo->acqiCb.aCqiCfg.aprdModeEnum = 
-            sCellInfoCfg->ueSCellDlCqiCfg.aprdCqiCfg.aprdModeEnum;
+	 sCellInfo->acqiCb.aCqiCfg.aprdModeEnum = 
+	    sCellInfoCfg->ueSCellDlCqiCfg.aprdCqiCfg.aprdModeEnum;
       }
 
       if(TRUE == sCellInfoCfg->uePdschDedCfg.uepACfg.pAPrsnt)
       {
-         sCellInfo->pA.pres = TRUE;
-         sCellInfo->pA.val = sCellInfoCfg->uePdschDedCfg.uepACfg.pA;
+	 sCellInfo->pA.pres = TRUE;
+	 sCellInfo->pA.val = sCellInfoCfg->uePdschDedCfg.uepACfg.pA;
       }
       else
       {
-         sCellInfo->pA.pres = FALSE;
+	 sCellInfo->pA.pres = FALSE;
       }
 
       aCqiCfg = &sCellInfoCfg->ueSCellDlCqiCfg.aprdCqiCfg; 
       RGSCHDBGPRM(cell->instIdx, (rgSchPBuf(cell->instIdx), 
-            "rgSCHCfgACqiUeCfg cellId =%d,Config Presence =%d for \
-            Sec Cell Id = %d\n",
-            cellCb->cellId,  aCqiCfg->pres,sCellInfo->sCellId));
+	       "rgSCHCfgACqiUeCfg cellId =%d,Config Presence =%d for \
+	       Sec Cell Id = %d\n",
+	       cellCb->cellId,  aCqiCfg->pres,sCellInfo->sCellId));
 
       /* if aperiodic cqi is present then only call the below function as it is
        * not mandatory*/
       if(aCqiCfg->pres)
       {
-         if( ROK != rgSCHCfgACqiUeCfg(secCellCb,ue, &sCellInfo->acqiCb,
-                  sCellInfo->txMode.txModeEnum, aCqiCfg, ue->ueCatEnum))
-         {
-            RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]SCellIdx ACQI Cfg"
-                     "failed..n\n", idx));
-            rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
-            RETVALUE(RFAILED);
-         }
+	 if( ROK != rgSCHCfgACqiUeCfg(secCellCb,ue, &sCellInfo->acqiCb,
+		  sCellInfo->txMode.txModeEnum, aCqiCfg, ue->ueCatEnum))
+	 {
+	    RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]SCellIdx ACQI Cfg"
+		     "failed..n\n", idx));
+	    rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
+	    RETVALUE(RFAILED);
+	 }
       }
       /* Configuring PCQI */ 
       /* Scell needs to be added to the
@@ -1623,25 +1623,25 @@ RgSchErrInfo *err;
       pCqiCfg = &sCellInfoCfg->ueSCellDlCqiCfg.prdCqiCfg;
 
       if(ROK != rgSCHSCellPCqiCfg(cell,secCellCb,ue,pCqiCfg,
-            ue->ueCatEnum,sCellInfoCfg->sCellIdx))
+	       ue->ueCatEnum,sCellInfoCfg->sCellIdx))
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]SCellIdx PCQI Cfg failed..n\n", idx));
-         rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]SCellIdx PCQI Cfg failed..n\n", idx));
+	 rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
+	 RETVALUE(RFAILED);
       }
 #endif
-   
+
       /* Configuring ACQI */ 
- 
+
       /* Stroing the secCell for easy access */
       sCellInfo->cell   = secCellCb;
 
 
 #ifdef LTE_ADV
       if (ROK != rgSCHLaaInitDlRbAllocCb(secCellCb, 
-               &sCellInfo->dlAllocCb))
+	       &sCellInfo->dlAllocCb))
       {
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
 #endif
       /* Initialize Harq entity */
@@ -1649,10 +1649,10 @@ RgSchErrInfo *err;
       sCellInfo->hqEnt = rgSCHDhmHqEntInit(secCellCb);
       if (sCellInfo->hqEnt == NULLP)
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]UEID:Hq Entity Initialization "
-                  "failed in config\n", ue->ueId));
-         rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]UEID:Hq Entity Initialization "
+		  "failed in config\n", ue->ueId));
+	 rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
+	 RETVALUE(RFAILED);
       }
 #ifdef EMTC_ENABLE
       rgSCHEmtcHqPAlloc(secCellCb, sCellInfo->hqEnt);
@@ -1663,29 +1663,29 @@ RgSchErrInfo *err;
       /* Init SCell Specific Sched Spfc UE DL CB */
       if ((secCellCb->sc.apis->rgSCHRgrSCellUeCfg(secCellCb, ue, sCellInfoCfg, err)) != ROK)
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Spec Sched DL UE CFG FAILED\n"));
-         rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Spec Sched DL UE CFG FAILED\n"));
+	 rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
+	 RETVALUE(RFAILED);
       }
 
 #ifdef LTE_TDD
-     if((rgSCHUtlAllocUeANFdbkInfo(ue,sCellInfoCfg->sCellIdx)) != ROK)
-     {
-        RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]UEID:Memomy allocation "
-                 "Failed while UE related Ack Nack Information\n",
-                 ue->ueId));
-        rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
-        RETVALUE(RFAILED);
-     }
+      if((rgSCHUtlAllocUeANFdbkInfo(ue,sCellInfoCfg->sCellIdx)) != ROK)
+      {
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%d]UEID:Memomy allocation "
+		  "Failed while UE related Ack Nack Information\n",
+		  ue->ueId));
+	 rgSCHSCellFreeBuf (inst,ue,ueRecfg,idx);
+	 RETVALUE(RFAILED);
+      }
 #endif /* LTE_TDD */
 
 #ifdef LTE_ADV
-     sCellInfo->sCellLnk.node = (PTR)sCellInfo;
-     cmLListAdd2Tail(&secCellCb->sCellUeLst, &sCellInfo->sCellLnk);
+      sCellInfo->sCellLnk.node = (PTR)sCellInfo;
+      cmLListAdd2Tail(&secCellCb->sCellUeLst, &sCellInfo->sCellLnk);
 #endif
 
       /* Inserting UECB into SCELL DBM */
-     rgSCHDbmInsUeCb(secCellCb, ue);
+      rgSCHDbmInsUeCb(secCellCb, ue);
    }
 
 #ifndef MAC_5GTF_UPDATE
@@ -1722,19 +1722,19 @@ RgSchErrInfo *err;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHSCellCfgUePucchReCfg
+   PUBLIC S16 rgSCHSCellCfgUePucchReCfg
 (
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgrUeRecfg   *ueRecfg,
-RgSchErrInfo *err
-)
+ RgSchCellCb  *cell,
+ RgSchUeCb    *ue,
+ RgrUeRecfg   *ueRecfg,
+ RgSchErrInfo *err
+ )
 #else
 PUBLIC S16 rgSCHSCellCfgUePucchReCfg(cell, ue, ueRecfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgrUeRecfg   *ueRecfg;
-RgSchErrInfo *err;
+   RgSchCellCb  *cell;
+   RgSchUeCb    *ue;
+   RgrUeRecfg   *ueRecfg;
+   RgSchErrInfo *err;
 #endif
 {
    Inst         inst = cell->instIdx;
@@ -1743,16 +1743,16 @@ RgSchErrInfo *err;
 
    TRC2(rgSCHSCellCfgUePucchReCfg);
    RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), 
-     "--------------------------------------------------------------------\n"
-     "UE SCell PUCCH ReConfiguration at SCH: rnti (%u) cell(%u)\n"
-     "--------------------------------------------------------------------\n",
-     ue->ueId, cell->cellId));
+	    "--------------------------------------------------------------------\n"
+	    "UE SCell PUCCH ReConfiguration at SCH: rnti (%u) cell(%u)\n"
+	    "--------------------------------------------------------------------\n",
+	    ue->ueId, cell->cellId));
 
- 
+
    sCellPucchRecfg = &ueRecfg->sCellAckN1ResCfg;
    /* Copy the UCI format type suported/configured for UE */
    ue->uciFrmtTyp = sCellPucchRecfg->pucchFormatType;
-   
+
    if (ue->uciFrmtTyp == RG_SCH_UCI_FORMAT1B_CS)
    {
       ue->n1PucchF1bResCb.cw1N1ResCount = sCellPucchRecfg->u.format1Bcs.sCellAckN1ResTb1Count;
@@ -1760,12 +1760,12 @@ RgSchErrInfo *err;
 
       for(idx = 0; idx < sCellPucchRecfg->u.format1Bcs.sCellAckN1ResTb1Count; idx++)
       {
-         ue->n1PucchF1bResCb.cw1N1Res[idx].n1PucchIdx = sCellPucchRecfg->u.format1Bcs.sCellAckN1ResTb1[idx];
+	 ue->n1PucchF1bResCb.cw1N1Res[idx].n1PucchIdx = sCellPucchRecfg->u.format1Bcs.sCellAckN1ResTb1[idx];
       }
 
       for(idx = 0; idx < sCellPucchRecfg->u.format1Bcs.sCellAckN1ResTb2Count; idx++)
       {
-         ue->n1PucchF1bResCb.cw2N1Res[idx].n1PucchIdx = sCellPucchRecfg->u.format1Bcs.sCellAckN1ResTb2[idx];
+	 ue->n1PucchF1bResCb.cw2N1Res[idx].n1PucchIdx = sCellPucchRecfg->u.format1Bcs.sCellAckN1ResTb2[idx];
       }
    }
 #ifdef LTE_ADV
@@ -1775,17 +1775,17 @@ RgSchErrInfo *err;
       ue->n3PucchResCb.antP1N3ResCount = sCellPucchRecfg->u.format3.sCellAckN3ResAntP1Count;
       for (idx = 0;idx < ue->n3PucchResCb.antP0N3ResCount; idx++ )
       {
-         ue->n3PucchResCb.antP0N3Res[idx].n3PucchIdx 
-                        = sCellPucchRecfg->u.format3.sCellAckN3ResAntP0[idx];
-         ue->n3PucchResCb.antP0N3Res[idx].n3Lnk.node = NULLP;
-         ue->n3PucchResCb.antP0N3Res[idx].sCellIdx = RGSCH_INVALID_CELL_IDX;
+	 ue->n3PucchResCb.antP0N3Res[idx].n3PucchIdx 
+	    = sCellPucchRecfg->u.format3.sCellAckN3ResAntP0[idx];
+	 ue->n3PucchResCb.antP0N3Res[idx].n3Lnk.node = NULLP;
+	 ue->n3PucchResCb.antP0N3Res[idx].sCellIdx = RGSCH_INVALID_CELL_IDX;
       }
       for (idx = 0;idx < ue->n3PucchResCb.antP1N3ResCount; idx++ )
       {
-         ue->n3PucchResCb.antP1N3Res[idx].n3PucchIdx 
-                        = sCellPucchRecfg->u.format3.sCellAckN3ResAntP1[idx];
-         ue->n3PucchResCb.antP1N3Res[idx].n3Lnk.node = NULLP;
-         ue->n3PucchResCb.antP1N3Res[idx].sCellIdx = RGSCH_INVALID_CELL_IDX;
+	 ue->n3PucchResCb.antP1N3Res[idx].n3PucchIdx 
+	    = sCellPucchRecfg->u.format3.sCellAckN3ResAntP1[idx];
+	 ue->n3PucchResCb.antP1N3Res[idx].n3Lnk.node = NULLP;
+	 ue->n3PucchResCb.antP1N3Res[idx].sCellIdx = RGSCH_INVALID_CELL_IDX;
       }
       ue->simulAckNackCQIFormat3 = ueRecfg->simulAckNackCQIFormat3;
    }
@@ -1826,19 +1826,19 @@ RgSchErrInfo *err;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUeSCellRecfg
+   PUBLIC S16 rgSCHCfgVldtRgrUeSCellRecfg
 (
-RgrUeRecfg     *ueRecfg,
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgSchErrInfo   *errInfo
-)
+ RgrUeRecfg     *ueRecfg,
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ue,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrUeSCellRecfg(inst, ueRecfg, cell, ue, errInfo)
-RgrUeRecfg     *ueRecfg;
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgSchErrInfo   *errInfo;
+   RgrUeRecfg     *ueRecfg;
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ue;
+   RgSchErrInfo   *errInfo;
 #endif
 {
    RgrUeSecCellCfg   *ueSCellDedCfg = NULLP;
@@ -1848,97 +1848,97 @@ RgSchErrInfo   *errInfo;
    TRC2(rgSCHCfgVldtRgrUeSCellRecfg);
 
    RGSCHDBGPRM(inst, (rgSchPBuf(inst), "VALIDATE RGR UE SCELL RECONFIG: cellId %d "
-            "oldUeId %d cell %p \n", ueRecfg->cellId, ueRecfg->oldCrnti));
+	    "oldUeId %d cell %p \n", ueRecfg->cellId, ueRecfg->oldCrnti));
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_SCELL_RECFG;
 
    if((ueRecfg->ueSCellCfgInfo.numSCells > RGR_MAX_SCELL_PER_UE) ||
-         (ueRecfg->ueSCellCfgInfo.numSCells < 1))
+	 (ueRecfg->ueSCellCfgInfo.numSCells < 1))
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Invalid number of SCELL "
-               " in SCELL Recfg\n"));
+	       " in SCELL Recfg\n"));
       RETVALUE(RFAILED);
    }
-   
+
    for(U8 idx = 0; idx < ueRecfg->ueSCellCfgInfo.numSCells; idx++)
    {
       ueSCellDedCfg = &ueRecfg->ueSCellCfgInfo.ueSCellDedCfg[idx];
       if(ROK != rgSchUtlVldtCellId(inst, ueSCellDedCfg->sCellId))
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCellId is out of range"));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCellId is out of range"));
+	 RETVALUE(RFAILED);
       }
       /* Validate existence of sec cell */
       sCell = rgSchUtlGetCellCb(inst, ueSCellDedCfg->sCellId);
       if(NULLP == sCell )
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCell doesnt exists"));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCell doesnt exists"));
+	 RETVALUE(RFAILED);
       }
 
       /* validate the range of serv cell index */
       if((ueSCellDedCfg->sCellIdx < 1) ||
-            (ueSCellDedCfg->sCellIdx > RGR_MAX_SCELL_PER_UE))
+	    (ueSCellDedCfg->sCellIdx > RGR_MAX_SCELL_PER_UE))
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid Serv Cell Idx %d\n",
-                  ueSCellDedCfg->sCellIdx));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid Serv Cell Idx %d\n",
+		  ueSCellDedCfg->sCellIdx));
+	 RETVALUE(RFAILED);
       }
 
       /* Is this sec cell alredy confiured */
       if(NULLP != ue->cellInfo[ueSCellDedCfg->sCellIdx])
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Secll with id %d already added\n",
-                  ueSCellDedCfg->sCellIdx));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Secll with id %d already added\n",
+		  ueSCellDedCfg->sCellIdx));
+	 RETVALUE(RFAILED);
       }
 
       /* Validate CQI config  params */
       if((rgSCHCfgVldtUeCqiModeCfg(sCell, &ueSCellDedCfg->ueSCellDlCqiCfg)) != ROK)
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Invalid CQI Mode "
-                  " configuration for Ue %d\n",ue->ueId));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Invalid CQI Mode "
+		  " configuration for Ue %d\n",ue->ueId));
+	 RETVALUE(RFAILED);
       }
 #ifdef TFU_UPGRADE
       /*  1. Validate UE Aperiodic CQI related parameters */
       if( ROK != rgSCHCfgVldtRgrUeACqiCfg (sCell, ue->ueId,
-               &ueSCellDedCfg->ueSCellDlCqiCfg.aprdCqiCfg, ueSCellDedCfg->txMode,
-               errInfo ))
+	       &ueSCellDedCfg->ueSCellDlCqiCfg.aprdCqiCfg, ueSCellDedCfg->txMode,
+	       errInfo ))
       {
-         RGSCHDBGERR(sCell->instIdx, (rgSchPBuf(sCell->instIdx),
-                  "rgSCHCfgVldtCqiSrSrsUeCfg: Invalid Aperiodic CQI configuration\n"));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERR(sCell->instIdx, (rgSchPBuf(sCell->instIdx),
+		  "rgSCHCfgVldtCqiSrSrsUeCfg: Invalid Aperiodic CQI configuration\n"));
+	 RETVALUE(RFAILED);
       }
 
 #ifdef LTEMAC_HDFDD
       if( ROK != rgSCHCfgVldtRgrUePCqiCfg (sCell, ue->ueId,
-               &ueSCellDedCfg->ueSCellDlCqiCfg.prdCqiCfg, ueRecfg->isHdFddEnbld, 
-               ueSCellDedCfg->txMode, errInfo ))
+	       &ueSCellDedCfg->ueSCellDlCqiCfg.prdCqiCfg, ueRecfg->isHdFddEnbld, 
+	       ueSCellDedCfg->txMode, errInfo ))
 #else
-      if( ROK != rgSCHCfgVldtRgrUePCqiCfg (sCell, ue->ueId,
-               &ueSCellDedCfg->ueSCellDlCqiCfg.prdCqiCfg,
-               ueSCellDedCfg->txMode, 
-               errInfo )) 
+	 if( ROK != rgSCHCfgVldtRgrUePCqiCfg (sCell, ue->ueId,
+		  &ueSCellDedCfg->ueSCellDlCqiCfg.prdCqiCfg,
+		  ueSCellDedCfg->txMode, 
+		  errInfo )) 
 #endif
-      {
-         RGSCHDBGERR(sCell->instIdx, (rgSchPBuf(sCell->instIdx),
-                     "rgSCHCfgVldtCqiSrSrsUeCfg: Invalid Periodic CQI configuration\n"));
-         RETVALUE(RFAILED);
-      }
+	 {
+	    RGSCHDBGERR(sCell->instIdx, (rgSchPBuf(sCell->instIdx),
+		     "rgSCHCfgVldtCqiSrSrsUeCfg: Invalid Periodic CQI configuration\n"));
+	    RETVALUE(RFAILED);
+	 }
 
       if((ueSCellDedCfg->txMode.txModeEnum < RGR_UE_TM_1) ||
-            (ueSCellDedCfg->txMode.txModeEnum > RGR_UE_TM_9))
+	    (ueSCellDedCfg->txMode.txModeEnum > RGR_UE_TM_9))
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCELL Invalid transmission mode for"
-                  " UE %d\n", (U8)ueSCellDedCfg->txMode.txModeEnum));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCELL Invalid transmission mode for"
+		  " UE %d\n", (U8)ueSCellDedCfg->txMode.txModeEnum));
+	 RETVALUE(RFAILED);
       }
 #endif
    }
 
    errInfo->errCause = RGSCHERR_NONE;
    RGSCHDBGINFO(inst, (rgSchPBuf(inst), "RGR Ue SCell Reconfig validation done: "
-            "cellId %d oldUeId %d\n", ueRecfg->cellId, ue->ueId));
+	    "cellId %d oldUeId %d\n", ueRecfg->cellId, ue->ueId));
    RETVALUE(ROK);
 }  /* rgSCHCfgVldtRgrUeSCellRecfg */
 
@@ -1961,17 +1961,17 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellCfgUeCfgRollBack
+   PRIVATE S16 rgSCHSCellCfgUeCfgRollBack
 (
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgrUeRecfg   *ueRecfg
-)
+ RgSchCellCb  *cell,
+ RgSchUeCb    *ue,
+ RgrUeRecfg   *ueRecfg
+ )
 #else
 PRIVATE S16 rgSCHSCellCfgUeCfgRollBack(cell, ue, ueRecfg)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgrUeRecfg   *ueRecfg;
+   RgSchCellCb  *cell;
+   RgSchUeCb    *ue;
+   RgrUeRecfg   *ueRecfg;
 #endif
 {
    Inst                inst = cell->instIdx;
@@ -1980,14 +1980,14 @@ RgrUeRecfg   *ueRecfg;
    RgSchCmnCell        *cellSch   = NULLP;
 
    TRC2(rgSCHSCellCfgUeCfgRollBack);
-   
+
    RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), 
-     "--------------------------------------------------------------------\n"
-     "UE SCell config roll back at SCH: rnti (%u) cell(%u)\n"
-     "--------------------------------------------------------------------\n",
-     ue->ueId, cell->cellId));
-  
-  /* Free all Added scell in this transaction */
+	    "--------------------------------------------------------------------\n"
+	    "UE SCell config roll back at SCH: rnti (%u) cell(%u)\n"
+	    "--------------------------------------------------------------------\n",
+	    ue->ueId, cell->cellId));
+
+   /* Free all Added scell in this transaction */
    for(U8 idx = 0; idx < ueRecfg->ueSCellCfgInfo.numSCells; idx++)
    {
       sCellInfoCfg = &ueRecfg->ueSCellCfgInfo.ueSCellDedCfg[idx];
@@ -1997,27 +1997,27 @@ RgrUeRecfg   *ueRecfg;
        * delte it*/
       if (NULLP != sCellInfo)
       {
-         /* Clear Scheduler specific list for this UE from the 
-          * corresponding CELL */
-         cellSch = RG_SCH_CMN_GET_CELL(sCellInfo->cell);
-         cellSch->apisDl->rgSCHDlUeReset(sCellInfo->cell, sCellInfo->ue);
-         
-         /* Delete harq Entity of Scell*/
-         rgSCHDhmDelHqEnt(cell, &(sCellInfo->hqEnt));
-         
-         rgSCHUtlFreeSBuf(inst, (Data**)&(sCellInfo),
-               sizeof(RgSchUeCellInfo));
-         
-         ue->cellInfo[(sCellInfoCfg->sCellIdx)] = NULLP;
-         ue->numSCells--;
+	 /* Clear Scheduler specific list for this UE from the 
+	  * corresponding CELL */
+	 cellSch = RG_SCH_CMN_GET_CELL(sCellInfo->cell);
+	 cellSch->apisDl->rgSCHDlUeReset(sCellInfo->cell, sCellInfo->ue);
+
+	 /* Delete harq Entity of Scell*/
+	 rgSCHDhmDelHqEnt(cell, &(sCellInfo->hqEnt));
+
+	 rgSCHUtlFreeSBuf(inst, (Data**)&(sCellInfo),
+	       sizeof(RgSchUeCellInfo));
+
+	 ue->cellInfo[(sCellInfoCfg->sCellIdx)] = NULLP;
+	 ue->numSCells--;
 #ifdef LTE_ADV
-         if (ue->numSCells == 0)
-         {
-            ue->allocCmnUlPdcch = TRUE;
-            /* As there is no SCell left so DCI 0 size at UE specific search space 
-             * will be recalculated as the CSI is reduced to 1 bit */
-            rgSCHUtlUpdUeDciSize(cell, ue, FALSE);
-         }
+	 if (ue->numSCells == 0)
+	 {
+	    ue->allocCmnUlPdcch = TRUE;
+	    /* As there is no SCell left so DCI 0 size at UE specific search space 
+	     * will be recalculated as the CSI is reduced to 1 bit */
+	    rgSCHUtlUpdUeDciSize(cell, ue, FALSE);
+	 }
 #endif
       }
    }
@@ -2052,33 +2052,33 @@ RgrUeRecfg   *ueRecfg;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUeRecfg
+   PUBLIC S16 rgSCHCfgVldtRgrUeRecfg
 (
-Inst           inst,
-RgrUeRecfg     *ueRecfg,
-RgSchCellCb    **cell,
-RgSchUeCb      **ue,
-RgSchErrInfo   *errInfo
-)
+ Inst           inst,
+ RgrUeRecfg     *ueRecfg,
+ RgSchCellCb    **cell,
+ RgSchUeCb      **ue,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrUeRecfg(inst, ueRecfg, cell, ue, errInfo)
-Inst           inst;
-RgrUeRecfg     *ueRecfg;
-RgSchCellCb    **cell;
-RgSchUeCb      **ue;
-RgSchErrInfo   *errInfo;
+   Inst           inst;
+   RgrUeRecfg     *ueRecfg;
+   RgSchCellCb    **cell;
+   RgSchUeCb      **ue;
+   RgSchErrInfo   *errInfo;
 #endif
 {
 
    TRC2(rgSCHCfgVldtRgrUeRecfg);
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_RECFG;
-   
+
    if (((*cell) == NULLP) ||
-       ((*cell)->cellId != ueRecfg->cellId))
+	 ((*cell)->cellId != ueRecfg->cellId))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,
-                "Cell does not exist for OLD CRNTI:%d",ueRecfg->oldCrnti);
+	    "Cell does not exist for OLD CRNTI:%d",ueRecfg->oldCrnti);
       RETVALUE(RFAILED);
    }
 
@@ -2086,7 +2086,7 @@ RgSchErrInfo   *errInfo;
    if ((*ue = rgSCHDbmGetUeCb(*cell, ueRecfg->oldCrnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"OLD CRNTI:%d does not exist", 
-            ueRecfg->oldCrnti);
+	    ueRecfg->oldCrnti);
       RETVALUE(RFAILED);
    }
 
@@ -2096,8 +2096,8 @@ RgSchErrInfo   *errInfo;
       S16 ret = rgSCHCfgVldtRgrUeSCellRecfg(ueRecfg,*cell, *ue, errInfo);
       if ( ret != ROK)
       {
-         RGSCHDBGERR(inst,(rgSchPBuf(inst), "Ue SCell Recfg Validation FAILED\n"));
-         RETVALUE(RFAILED);
+	 RGSCHDBGERR(inst,(rgSchPBuf(inst), "Ue SCell Recfg Validation FAILED\n"));
+	 RETVALUE(RFAILED);
       }
       errInfo->errCause = RGSCHERR_NONE;
       RETVALUE(ROK);
@@ -2108,113 +2108,113 @@ RgSchErrInfo   *errInfo;
    {
       if (rgSCHDbmGetUeCb(*cell, ueRecfg->newCrnti) != NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"NEW CRNTI:%d already exists", 
-              ueRecfg->newCrnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"NEW CRNTI:%d already exists", 
+	       ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
       }
    }
 
    if ((ueRecfg->ueRecfgTypes & RGR_UE_CSG_PARAM_RECFG) &&\
-       ((*ue)->csgMmbrSta == ueRecfg->csgMmbrSta))
+	 ((*ue)->csgMmbrSta == ueRecfg->csgMmbrSta))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"UE ID [%d] invalid CSG Membership reconfig :%d ", 
-              ueRecfg->newCrnti, (U8)ueRecfg->csgMmbrSta);
+	    ueRecfg->newCrnti, (U8)ueRecfg->csgMmbrSta);
       RETVALUE(RFAILED);
    }
    /* Validate values */
    if ((ueRecfg->ueRecfgTypes & RGR_UE_TXMODE_RECFG) &&
-         (ueRecfg->txMode.pres == TRUE) &&
-         ((ueRecfg->txMode.txModeEnum < RGR_UE_TM_1) ||
-          (ueRecfg->txMode.txModeEnum > RGR_UE_TM_7)))
+	 (ueRecfg->txMode.pres == TRUE) &&
+	 ((ueRecfg->txMode.txModeEnum < RGR_UE_TM_1) ||
+	  (ueRecfg->txMode.txModeEnum > RGR_UE_TM_7)))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid transmission mode %d"
-            "for NEW CRNTI:%d", (U8)ueRecfg->txMode.txModeEnum,ueRecfg->newCrnti);
+	    "for NEW CRNTI:%d", (U8)ueRecfg->txMode.txModeEnum,ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 #ifndef TFU_UPGRADE
    if ((ueRecfg->ueRecfgTypes & RGR_UE_PRD_DLCQI_RECFG) &&
-         (((ueRecfg->prdDlCqiRecfg.k < 1) || (ueRecfg->prdDlCqiRecfg.k > 4)) ||
-         ((ueRecfg->prdDlCqiRecfg.cqiPmiCfgIdx < 1) || 
-         (ueRecfg->prdDlCqiRecfg.cqiPmiCfgIdx > 1024))))
+	 (((ueRecfg->prdDlCqiRecfg.k < 1) || (ueRecfg->prdDlCqiRecfg.k > 4)) ||
+	  ((ueRecfg->prdDlCqiRecfg.cqiPmiCfgIdx < 1) || 
+	   (ueRecfg->prdDlCqiRecfg.cqiPmiCfgIdx > 1024))))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid Periodic CQI INFO"
-               "OLD CRNTI:%d NEW CRNTI:%d",(U8)ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	    "OLD CRNTI:%d NEW CRNTI:%d",(U8)ueRecfg->oldCrnti,ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 #endif
    if ((ueRecfg->ueRecfgTypes & RGR_UE_ULHARQ_RECFG) &&
-         (ueRecfg->ueUlHqRecfg.maxUlHqTx < RGSCH_MIN_HQ_TX))
+	 (ueRecfg->ueUlHqRecfg.maxUlHqTx < RGSCH_MIN_HQ_TX))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid Uplink HARQ config %d"
-          "for NEW CRNTI:%d", ueRecfg->ueUlHqRecfg.maxUlHqTx,ueRecfg->newCrnti);
+	    "for NEW CRNTI:%d", ueRecfg->ueUlHqRecfg.maxUlHqTx,ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 #ifndef TFU_UPGRADE
    if ((ueRecfg->ueRecfgTypes & RGR_UE_PRD_DLCQI_RECFG) &&
-         (ueRecfg->prdDlCqiRecfg.prdModeEnum > RGR_PRD_CQI_MOD21))
+	 (ueRecfg->prdDlCqiRecfg.prdModeEnum > RGR_PRD_CQI_MOD21))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid periodic mode config for"
-          " DL CQI %d NEW CRNTI:%d", (U8)ueRecfg->prdDlCqiRecfg.prdModeEnum,ueRecfg->newCrnti);
+	    " DL CQI %d NEW CRNTI:%d", (U8)ueRecfg->prdDlCqiRecfg.prdModeEnum,ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 #else
    if ((ueRecfg->ueRecfgTypes & RGR_UE_PCQI_RECFG) &&
-       (ueRecfg->cqiCfg.cqiSetup.prdModeEnum > RGR_PRD_CQI_MOD21))
+	 (ueRecfg->cqiCfg.cqiSetup.prdModeEnum > RGR_PRD_CQI_MOD21))
    {
-     RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid periodic mode config for "
-            "DL CQI %d for NEW CRNTI:%d",(U8)ueRecfg->cqiCfg.cqiSetup.prdModeEnum,ueRecfg->newCrnti);
-     RETVALUE(RFAILED);
+      RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid periodic mode config for "
+	    "DL CQI %d for NEW CRNTI:%d",(U8)ueRecfg->cqiCfg.cqiSetup.prdModeEnum,ueRecfg->newCrnti);
+      RETVALUE(RFAILED);
    }
 #endif /* TFU_UPGRADE */
    /* Validate UE Category */
    if (ueRecfg->ueCatEnum > CM_LTE_UE_CAT_8)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid category %d for NEW CRNTI:%d",
-               (U8)ueRecfg->ueCatEnum,ueRecfg->newCrnti);
+	    (U8)ueRecfg->ueCatEnum,ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 
    /* Validate UE Access Stratum Release */
    if ((ueRecfg->ueRecfgTypes & RGR_UE_UE_ACCESS_STRATUM_REL_RECFG) && \
-         (ueRecfg->accessStratumRls > RGR_REL_11))
+	 (ueRecfg->accessStratumRls > RGR_REL_11))
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Invalid Access Stratum Release %u for UE\n",
-               ueRecfg->accessStratumRls));
+	       ueRecfg->accessStratumRls));
       RETVALUE(RFAILED);
    }
    RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), "Configured Access Stratum Release %u\n", \
-            ueRecfg->accessStratumRls));
+	    ueRecfg->accessStratumRls));
 
    if ((ueRecfg->ueRecfgTypes & RGR_UE_APRD_DLCQI_RECFG) && 
-         ((ueRecfg->aprdDlCqiRecfg.pres == TRUE) &&
-          ((ueRecfg->aprdDlCqiRecfg.aprdModeEnum > RGR_APRD_CQI_MOD31) ||
-          (*cell)->bwCfg.dlTotalBw <= 7)))
+	 ((ueRecfg->aprdDlCqiRecfg.pres == TRUE) &&
+	  ((ueRecfg->aprdDlCqiRecfg.aprdModeEnum > RGR_APRD_CQI_MOD31) ||
+	   (*cell)->bwCfg.dlTotalBw <= 7)))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid aperiodic mode config for"
-          " DL CQI %d for NEW CRNTI:%d", (U8)ueRecfg->aprdDlCqiRecfg.aprdModeEnum,ueRecfg->newCrnti);
+	    " DL CQI %d for NEW CRNTI:%d", (U8)ueRecfg->aprdDlCqiRecfg.aprdModeEnum,ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
    if ((ueRecfg->ueRecfgTypes & RGR_UE_ULPWR_RECFG) &&
-         (rgSCHCfgVldtUePwrCfg(*cell, &ueRecfg->ueUlPwrRecfg) != ROK))
+	 (rgSCHCfgVldtUePwrCfg(*cell, &ueRecfg->ueUlPwrRecfg) != ROK))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid PUSCH Group power"
-           " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
+	    " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
- 
-   
+
+
    if ((ueRecfg->ueRecfgTypes & RGR_UE_ACKNACK_MEASGAP_RECFG) &&
-      (rgSCHCfgVldtUeMeasGapAckNakRepRecfg(*cell, ueRecfg) != ROK))
+	 (rgSCHCfgVldtUeMeasGapAckNakRepRecfg(*cell, ueRecfg) != ROK))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid MeasGap/AckNackRep"
-            " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
+	    " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 #ifdef LTEMAC_SPS
    if(rgSCHCfgVldtSpsReCfg(*cell, *ue, ueRecfg)!= ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid SPS"
-           " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
+	    " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 #endif
@@ -2223,26 +2223,26 @@ RgSchErrInfo   *errInfo;
    if ( ROK != rgSCHCfgVldtCqiSrSrsUeReCfg(*cell, *ue, ueRecfg,  errInfo))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid ACQI, PCQI/SR/SRS "
-               "Re-configuration for NEW CRNTI:%d",ueRecfg->newCrnti);
+	    "Re-configuration for NEW CRNTI:%d",ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 #endif
    if ((ueRecfg->ueRecfgTypes & RGR_UE_DRX_RECFG) &&
-      (rgSCHCfgVldtDrxUeCfg(*cell, &(ueRecfg->ueDrxRecfg)) != ROK))
+	 (rgSCHCfgVldtDrxUeCfg(*cell, &(ueRecfg->ueDrxRecfg)) != ROK))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid drxParams"
-            " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
+	    " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 
-/* ccpu00117452 - MOD - Changed macro name from
-   RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
+   /* ccpu00117452 - MOD - Changed macro name from
+      RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
    /* Validate DL Power Control Config parameters */
    if(rgSCHCfgVldtCqiReptReCfg(*cell, ueRecfg)!= ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid DL Power Control"
-           " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
+	    " Reconfiguration for NEW CRNTI:%d",ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 #endif /* End of RGR_CQI_REPT */
@@ -2281,23 +2281,23 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrLchRecfg
+   PUBLIC S16 rgSCHCfgVldtRgrLchRecfg
 (
-Inst           inst,
-RgrLchRecfg    *lcRecfg,
-RgSchCellCb    **cell,
-RgSchUeCb      **ue,
-RgSchDlLcCb    **dlLc,
-RgSchErrInfo   *errInfo
-)
+ Inst           inst,
+ RgrLchRecfg    *lcRecfg,
+ RgSchCellCb    **cell,
+ RgSchUeCb      **ue,
+ RgSchDlLcCb    **dlLc,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrLchRecfg(inst, lcRecfg, cell, ue, dlLc, errInfo)
-Inst            inst;
-RgrLchRecfg     *lcRecfg;
-RgSchCellCb     **cell;
-RgSchUeCb       **ue;
-RgSchDlLcCb     **dlLc;
-RgSchErrInfo    *errInfo;
+   Inst            inst;
+   RgrLchRecfg     *lcRecfg;
+   RgSchCellCb     **cell;
+   RgSchUeCb       **ue;
+   RgSchDlLcCb     **dlLc;
+   RgSchErrInfo    *errInfo;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrLchRecfg);
@@ -2305,10 +2305,10 @@ RgSchErrInfo    *errInfo;
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_LC_RECFG;
 
    if (((*cell) == NULLP) ||
-       ((*cell)->cellId != lcRecfg->cellId))
+	 ((*cell)->cellId != lcRecfg->cellId))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcRecfg->cellId,"Cell does not exist " 
-                "for CRNTI:%d LCID:%d",lcRecfg->crnti,lcRecfg->lcId);
+	    "for CRNTI:%d LCID:%d",lcRecfg->crnti,lcRecfg->lcId);
       RETVALUE(RFAILED);
    }
 
@@ -2316,14 +2316,14 @@ RgSchErrInfo    *errInfo;
    if ((*ue = rgSCHDbmGetUeCb(*cell, lcRecfg->crnti)) == NULLP)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcRecfg->cellId,"UEID does not exist"
-         "dedicated logical channel for CRNTI:%d LCID:%d",lcRecfg->crnti,lcRecfg->lcId);
+	    "dedicated logical channel for CRNTI:%d LCID:%d",lcRecfg->crnti,lcRecfg->lcId);
       RETVALUE(RFAILED);
    }
-   
+
    if ((*dlLc = rgSCHDbmGetDlDedLcCb((*ue), lcRecfg->lcId)) == NULLP)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcRecfg->cellId,"Dedicated DL LC does not "
-               "exist for CRNTI:%d LCID:%d",lcRecfg->crnti,lcRecfg->lcId);
+	    "exist for CRNTI:%d LCID:%d",lcRecfg->crnti,lcRecfg->lcId);
       RETVALUE(RFAILED);
    }
 
@@ -2355,39 +2355,39 @@ RgSchErrInfo    *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUeReset
+   PUBLIC S16 rgSCHCfgVldtRgrUeReset
 (
-Inst         inst,
-RgrRst       *reset,
-RgSchCellCb  *cell,
-RgSchUeCb    **ue,
-RgSchErrInfo *errInfo
-)
+ Inst         inst,
+ RgrRst       *reset,
+ RgSchCellCb  *cell,
+ RgSchUeCb    **ue,
+ RgSchErrInfo *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrUeReset(inst, reset, cell, ue, errInfo)
-Inst         inst;
-RgrRst       *reset;
-RgSchCellCb  *cell;
-RgSchUeCb    **ue;
-RgSchErrInfo *errInfo;
+   Inst         inst;
+   RgrRst       *reset;
+   RgSchCellCb  *cell;
+   RgSchUeCb    **ue;
+   RgSchErrInfo *errInfo;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrUeReset);
-   
+
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_RESET;
-   
+
    if ((cell == NULLP) || (cell->cellId != reset->cellId))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,reset->cellId,"CELL does not exist for CRNTI:%d",
-               reset->crnti);
+	    reset->crnti);
       RETVALUE(RFAILED);
    }
    /* Fetch the Ue  */
    if ((*ue = rgSCHDbmGetUeCb(&(*cell), reset->crnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,reset->cellId,"UE does not exist for CRNTI:%d",
-               reset->crnti);
+	    reset->crnti);
       RETVALUE(RFAILED);
    }
 
@@ -2395,7 +2395,7 @@ RgSchErrInfo *errInfo;
 
    RETVALUE(ROK);
 }  /* rgSCHCfgVldtRgrUeReset */
-   
+
 
 /**
  * @brief Validates the logical channel reconfiguration request from
@@ -2425,21 +2425,21 @@ RgSchErrInfo *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrLcgRecfg
+   PUBLIC S16 rgSCHCfgVldtRgrLcgRecfg
 (
-Inst           inst,
-RgrLcgRecfg    *lcgRecfg,
-RgSchCellCb    *cell,
-RgSchUeCb      **ue,
-RgSchErrInfo   *errInfo
-)
+ Inst           inst,
+ RgrLcgRecfg    *lcgRecfg,
+ RgSchCellCb    *cell,
+ RgSchUeCb      **ue,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrLcgRecfg(inst, lcgRecfg, cell, ue, errInfo)
-Inst            inst;
-RgrLcgRecfg     *lcgRecfg;
-RgSchCellCb     *cell;
-RgSchUeCb       **ue;
-RgSchErrInfo    *errInfo;
+   Inst            inst;
+   RgrLcgRecfg     *lcgRecfg;
+   RgSchCellCb     *cell;
+   RgSchUeCb       **ue;
+   RgSchErrInfo    *errInfo;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrLcgRecfg);
@@ -2447,10 +2447,10 @@ RgSchErrInfo    *errInfo;
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_LCG_RECFG;
 
    if (((cell) == NULLP) ||
-       ((cell)->cellId != lcgRecfg->cellId))
+	 ((cell)->cellId != lcgRecfg->cellId))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcgRecfg->cellId,"Cell does not exist for" 
-                "CRNTI:%d LCGID:%d",lcgRecfg->crnti,lcgRecfg->ulRecfg.lcgId);
+	    "CRNTI:%d LCGID:%d",lcgRecfg->crnti,lcgRecfg->ulRecfg.lcgId);
       RETVALUE(RFAILED);
    }
 
@@ -2458,22 +2458,22 @@ RgSchErrInfo    *errInfo;
    if ((*ue = rgSCHDbmGetUeCb(&(*cell), lcgRecfg->crnti)) == NULLP)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcgRecfg->cellId,"UE does not exist for "
-                "dedicated logical channel group CRNTI:%d LCGID:%d",
-                lcgRecfg->crnti,lcgRecfg->ulRecfg.lcgId);
+	    "dedicated logical channel group CRNTI:%d LCGID:%d",
+	    lcgRecfg->crnti,lcgRecfg->ulRecfg.lcgId);
       RETVALUE(RFAILED);
    }
    if (lcgRecfg->ulRecfg.lcgId > (RGSCH_MAX_LCG_PER_UE - 1))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcgRecfg->cellId,"Invalid lcgId for uplink logical"
-                "channel CRNTI:%d LCGID:%d",
-                lcgRecfg->crnti,lcgRecfg->ulRecfg.lcgId);
+	    "channel CRNTI:%d LCGID:%d",
+	    lcgRecfg->crnti,lcgRecfg->ulRecfg.lcgId);
       RETVALUE(RFAILED);
    }
-   
+
    if ((lcgRecfg->ulRecfg.gbr != 0) && (lcgRecfg->ulRecfg.mbr < lcgRecfg->ulRecfg.gbr))
    {
       RGSCHDBGINFO(inst, (rgSchPBuf(inst), "Dedicated Logical Group %d validation failed"
-               " for ue %d for cell %d\n", lcgCfg->ulInfo.lcgId, lcgCfg->crnti, lcgCfg->cellId));
+	       " for ue %d for cell %d\n", lcgCfg->ulInfo.lcgId, lcgCfg->crnti, lcgCfg->cellId));
       RETVALUE(RFAILED);
    }
    errInfo->errCause = RGSCHERR_NONE;
@@ -2493,15 +2493,15 @@ RgSchErrInfo    *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHDynCfiCfg
+   PRIVATE S16 rgSCHDynCfiCfg
 (
-RgSchCellCb   *cell,
-RgrCellCfg    *cellCfg
-)
+ RgSchCellCb   *cell,
+ RgrCellCfg    *cellCfg
+ )
 #else
 PRIVATE S16 rgSCHDynCfiCfg(cell, cellCfg)
-RgSchCellCb   *cell;
-RgrCellCfg    *cellCfg;
+   RgSchCellCb   *cell;
+   RgrCellCfg    *cellCfg;
 #endif  
 {
    U8        cfi; 
@@ -2518,15 +2518,15 @@ RgrCellCfg    *cellCfg;
 
    /* Initializing Failure Sample Period */
    cell->dynCfiCb.failSamplePrd = (RGSCH_CFI_TTI_MON_INTRVL *
-                     RGSCH_CFI_STEP_UP_TTI_PRCNTG)/100;
+	 RGSCH_CFI_STEP_UP_TTI_PRCNTG)/100;
    /* Initializing Number of Failure Samples */
    cell->dynCfiCb.numFailSamples = (RGSCH_CFI_TTI_MON_INTRVL/
-                                    cell->dynCfiCb.failSamplePrd);
+	 cell->dynCfiCb.failSamplePrd);
    cell->dynCfiCb.maxCfi = RGSCH_MAX_CFI_VAL;
    /* Allocating memory for CCE failure average array based on 
     * monitoring interval and CCE failure sample period */
    if((rgSCHUtlAllocSBuf(cell->instIdx, (Data**)&(cell->dynCfiCb.cceFailSamples),
-               (cell->dynCfiCb.numFailSamples * sizeof(U16)))) != ROK)
+	       (cell->dynCfiCb.numFailSamples * sizeof(U16)))) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Memory allocation FAILED for cell");
       RETVALUE(RFAILED);
@@ -2552,11 +2552,11 @@ RgrCellCfg    *cellCfg;
    {   
       for(mphIdx = 0; mphIdx < maxMPhich; mphIdx++)
       {   
-         cell->dynCfiCb.cfi2NCceTbl[mphIdx][cfi] = 
-            rgSCHUtlCalcNCce(cell->bwCfg.dlTotalBw,
-               cell->phichCfg.ngEnum, cfi, mphIdx,
-               cell->numTxAntPorts,
-               cell->isCpDlExtend);
+	 cell->dynCfiCb.cfi2NCceTbl[mphIdx][cfi] = 
+	    rgSCHUtlCalcNCce(cell->bwCfg.dlTotalBw,
+		  cell->phichCfg.ngEnum, cfi, mphIdx,
+		  cell->numTxAntPorts,
+		  cell->isCpDlExtend);
       }
    }
 #else   
@@ -2564,11 +2564,11 @@ RgrCellCfg    *cellCfg;
    for(cfi = 1; cfi < RG_SCH_CMN_MAX_CFI; cfi++)
    {   
       /* CFI Index starts from 1 so that there can be a direct mapping from 
-         actual CFI value to cfi Index. mPhich index will always be set 
-         as 0 for FDD */
+	 actual CFI value to cfi Index. mPhich index will always be set 
+	 as 0 for FDD */
       cell->dynCfiCb.cfi2NCceTbl[0][cfi] = 
-            rgSCHUtlCalcNCce(cell->bwCfg.dlTotalBw, cell->phichCfg.ngEnum,
-                  cfi, cell->numTxAntPorts, cell->isCpDlExtend);
+	 rgSCHUtlCalcNCce(cell->bwCfg.dlTotalBw, cell->phichCfg.ngEnum,
+	       cfi, cell->numTxAntPorts, cell->isCpDlExtend);
    }
 
    /* Calculate the number of CCEs in the cell */
@@ -2586,16 +2586,16 @@ RgrCellCfg    *cellCfg;
 
 #ifdef LTE_TDD   
    numDlSf = rgSchTddNumDlSubfrmTbl[ulDlCfgIdx][9] * 
-               (RGSCH_CFI_TTI_MON_INTRVL/10);
+      (RGSCH_CFI_TTI_MON_INTRVL/10);
    cell->dynCfiCb.cfiStepUpTtiCnt = 
-               (RGSCH_CFI_STEP_UP_TTI_PRCNTG * numDlSf)/100;
+      (RGSCH_CFI_STEP_UP_TTI_PRCNTG * numDlSf)/100;
    cell->dynCfiCb.cfiStepDownTtiCnt = 
-               (RGSCH_CFI_STEP_DOWN_TTI_PERCNTG * numDlSf)/100;
+      (RGSCH_CFI_STEP_DOWN_TTI_PERCNTG * numDlSf)/100;
 #else
    cell->dynCfiCb.cfiStepUpTtiCnt = (RGSCH_CFI_STEP_UP_TTI_PRCNTG * 
-                                     RGSCH_CFI_TTI_MON_INTRVL)/100;
+	 RGSCH_CFI_TTI_MON_INTRVL)/100;
    cell->dynCfiCb.cfiStepDownTtiCnt = (RGSCH_CFI_STEP_DOWN_TTI_PERCNTG * 
-                                     RGSCH_CFI_TTI_MON_INTRVL)/100;
+	 RGSCH_CFI_TTI_MON_INTRVL)/100;
 #endif   
 
    RETVALUE(ROK);
@@ -2624,17 +2624,17 @@ RgrCellCfg    *cellCfg;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrSchedEnbCfg
+   PUBLIC S16 rgSCHCfgRgrSchedEnbCfg
 (
-Inst            inst,
-SpId            spId,
-RgrSchedEnbCfg *schedEnbCfg,
-RgSchErrInfo   *errInfo
-)
+ Inst            inst,
+ SpId            spId,
+ RgrSchedEnbCfg *schedEnbCfg,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrSchedEnbCfg(inst, spId, schedEnbCfg, errInfo)
-Inst             inst,
-SpId             spId;
+   Inst             inst,
+   SpId             spId;
 RgrSchedEnbCfg  *schedEnbCfg;
 RgSchErrInfo    *errInfo;
 #endif
@@ -2646,10 +2646,10 @@ RgSchErrInfo    *errInfo;
 
    rgSchCb[inst].rgrSchedEnbCfg = *schedEnbCfg;
    RGSCHDBGPRM(inst, (rgSchPBuf(inst),"\ndlSchdType %d ulSchdType %d dlTptCoeffi %d"
-           "dlFairCoeffi %d  ulTptCoeffi %d ulFairCoeffi %d\n",
-         schedEnbCfg->dlSchdType, schedEnbCfg->ulSchdType, schedEnbCfg->dlSchInfo.dlPfs.tptCoeffi,
-         schedEnbCfg->dlSchInfo.dlPfs.fairCoeffi, schedEnbCfg->ulSchInfo.ulPfs.tptCoeffi,
-         schedEnbCfg->ulSchInfo.ulPfs.fairCoeffi));
+	    "dlFairCoeffi %d  ulTptCoeffi %d ulFairCoeffi %d\n",
+	    schedEnbCfg->dlSchdType, schedEnbCfg->ulSchdType, schedEnbCfg->dlSchInfo.dlPfs.tptCoeffi,
+	    schedEnbCfg->dlSchInfo.dlPfs.fairCoeffi, schedEnbCfg->ulSchInfo.ulPfs.tptCoeffi,
+	    schedEnbCfg->ulSchInfo.ulPfs.fairCoeffi));
 
 #ifdef RG_5GTF
    rgSchCb[inst].rgSchDynTdd.isDynTddEnbld = schedEnbCfg->isDynTddEnbld;
@@ -2657,7 +2657,7 @@ RgSchErrInfo    *errInfo;
 # if 0
    if(RGR_SCH_TYPE_PFS == schedEnbCfg->dlSchdType)
    {
-     rgSCHEnbPfsDlCfg(inst, errInfo);
+      rgSCHEnbPfsDlCfg(inst, errInfo);
    }
 #endif
    errInfo->errCause = RGSCHERR_NONE;
@@ -2680,15 +2680,15 @@ RgSchErrInfo    *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCH5gtfCellCfg
+   PUBLIC S16 rgSCH5gtfCellCfg
 (
-RgSchCellCb   *cell,
-RgrCellCfg    *cellCfg
-)
+ RgSchCellCb   *cell,
+ RgrCellCfg    *cellCfg
+ )
 #else
 PUBLIC S16 rgSCH5gtfCellCfg(cell, cellCfg)
-RgSchCellCb   *cell;
-RgrCellCfg    *cellCfg;
+   RgSchCellCb   *cell;
+   RgrCellCfg    *cellCfg;
 #endif
 {
    U8           idx;
@@ -2710,8 +2710,8 @@ RgrCellCfg    *cellCfg;
    cell->cell5gtfCb.numCCs = cellCfg->Cell5gtfCfg.numOfCC;
    cell->cell5gtfCb.bwPerCC = cellCfg->Cell5gtfCfg.bwPerCC;
    printf("\ncell cfg at schd,numUes:%u,uepergrp:%u,uegrppertti:%u,numCC:%u,bwPerc:%u cfi %u\n",
-         cell->cell5gtfCb.numUes,cell->cell5gtfCb.uePerGrpPerTti,cell->cell5gtfCb.ueGrpPerTti,
-         cell->cell5gtfCb.numCCs,cell->cell5gtfCb.bwPerCC, cell->cell5gtfCb.cfi);
+	 cell->cell5gtfCb.numUes,cell->cell5gtfCb.uePerGrpPerTti,cell->cell5gtfCb.ueGrpPerTti,
+	 cell->cell5gtfCb.numCCs,cell->cell5gtfCb.bwPerCC, cell->cell5gtfCb.cfi);
    RETVALUE(ROK);
 }
 #endif
@@ -2744,19 +2744,19 @@ EXTERN U16 gWrMaxUlItbs;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrCellCfg
+   PUBLIC S16 rgSCHCfgRgrCellCfg
 (
-RgSchCb       *instCb,
-SpId          spId,
-RgrCellCfg    *cellCfg,
-RgSchErrInfo  *errInfo
-)
+ RgSchCb       *instCb,
+ SpId          spId,
+ RgrCellCfg    *cellCfg,
+ RgSchErrInfo  *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrCellCfg(instCb, spId, cellCfg, errInfo)
-RgSchCb       *instCb;
-SpId           spId;
-RgrCellCfg    *cellCfg;
-RgSchErrInfo  *errInfo;
+   RgSchCb       *instCb;
+   SpId           spId;
+   RgrCellCfg    *cellCfg;
+   RgSchErrInfo  *errInfo;
 #endif
 {
    S16          ret;
@@ -2770,12 +2770,12 @@ RgSchErrInfo  *errInfo;
    TRC2(rgSCHCfgRgrCellCfg);
 
    errInfo->errCause = RGSCHERR_CFG_RGR_CELL_CFG;
-   
+
    cmMemset((U8*)&pst, (U8)0, sizeof(Pst));
-    
+
    /* Allocate the scheduler's cell control block */
    if((ret = rgSCHUtlAllocSBuf(inst, (Data**)&cell, sizeof(RgSchCellCb))) 
-         != ROK)
+	 != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Memory allocation FAILED for cell");
       RETVALUE(RFAILED);
@@ -2784,10 +2784,10 @@ RgSchErrInfo  *errInfo;
    if(cellCfg->emtcEnable)
    {
       if((ret = rgSCHEmtcCellAlloc(cell)) 
-            != ROK)
+	    != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Memory allocation FAILED for emtc cell");
-         RETVALUE(RFAILED);
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Memory allocation FAILED for emtc cell");
+	 RETVALUE(RFAILED);
       }
    }
 #endif
@@ -2804,11 +2804,11 @@ RgSchErrInfo  *errInfo;
       rgSCHCfgFreeCellCb(cell);
       RETVALUE(RFAILED);
    }
-/* LTE_ADV_FLAG_REMOVED_START */
+   /* LTE_ADV_FLAG_REMOVED_START */
    if(cellCfg->rgrLteAdvCfg.pres & RGR_ABS)
    {
       cell->lteAdvCb.absCfg =
-         cellCfg->rgrLteAdvCfg.absCfg;
+	 cellCfg->rgrLteAdvCfg.absCfg;
       cmMemset((U8*)cell->lteAdvCb.absLoadInfo, 0, sizeof(U32)*RGR_ABS_PATTERN_LEN);
       cell->lteAdvCb.absLoadTtiCnt = 0;
    }
@@ -2816,14 +2816,14 @@ RgSchErrInfo  *errInfo;
    if(cellCfg->rgrLteAdvCfg.pres & RGR_SFR)
    {
       cell->lteAdvCb.sfrCfg =
-         cellCfg->rgrLteAdvCfg.sfrCfg;
+	 cellCfg->rgrLteAdvCfg.sfrCfg;
    }
    if(cellCfg->rgrLteAdvCfg.pres & RGR_DSFR)
    {
       cell->lteAdvCb.dsfrCfg =
-         cellCfg->rgrLteAdvCfg.dsfrCfg;
+	 cellCfg->rgrLteAdvCfg.dsfrCfg;
    }
-/* LTE_ADV_FLAG_REMOVED_END */
+   /* LTE_ADV_FLAG_REMOVED_END */
 
 #ifdef EMTC_ENABLE
    cell->emtcEnable = cellCfg->emtcEnable;	
@@ -2860,22 +2860,22 @@ RgSchErrInfo  *errInfo;
    cmMemset((U8 *)&cell->siCb, 0, sizeof(RgSchSiCb));
 #endif
    /*Fix: Added Guard Pool for RNTI which will contain RNTIs 
-       *for UEs deleted from Scheduler but not yet from MAC*/
+    *for UEs deleted from Scheduler but not yet from MAC*/
    cmLListInit(&cell->rntiDb.rntiGuardPool);
 
    /* Initialize the inWindow to sync with scheduler time when ticks starts */
 #ifdef LTEMAC_HDFDD
-      cell->siCb.inWindow = (cellCfg->siCfg.siWinSize - 
-            (RG_SCH_CMN_DL_DELTA + RG_SCH_CMN_HARQ_INTERVAL));
+   cell->siCb.inWindow = (cellCfg->siCfg.siWinSize - 
+	 (RG_SCH_CMN_DL_DELTA + RG_SCH_CMN_HARQ_INTERVAL));
 #else
-      cell->siCb.inWindow = (cellCfg->siCfg.siWinSize - 
-            (RG_SCH_CMN_DL_DELTA));
+   cell->siCb.inWindow = (cellCfg->siCfg.siWinSize - 
+	 (RG_SCH_CMN_DL_DELTA));
 #endif
-     
-      if(cell->siCb.inWindow < 0)
-      { 
-         cell->siCb.inWindow = 0;
-      }
+
+   if(cell->siCb.inWindow < 0)
+   { 
+      cell->siCb.inWindow = 0;
+   }
    cell->macPreambleSet = cellCfg->macPreambleSet;
    cell->phichCfg = cellCfg->phichCfg;
 
@@ -2890,7 +2890,7 @@ RgSchErrInfo  *errInfo;
       cell->srsCfg.srsCfgPrdEnum = cellCfg->srsCfg.srsCfgPrdEnum;
       cell->srsCfg.srsBwEnum = cellCfg->srsCfg.srsBwEnum;
       cell->srsCfg.srsTxOffst =
-         rgSrsTxOffstTbl[cellCfg->srsCfg.srsSubFrameCfg];
+	 rgSrsTxOffstTbl[cellCfg->srsCfg.srsSubFrameCfg];
       /*ccpu00116923 - ADD - Srs Present support */
 #ifdef TFU_UPGRADE
       cell->srsCfg.srsSubFrameCfg = cellCfg->srsCfg.srsSubFrameCfg;
@@ -2911,17 +2911,17 @@ RgSchErrInfo  *errInfo;
    if(ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Rgr cell Config failed at "
-       "Scheduler for cell");
+	    "Scheduler for cell");
       rgSCHCfgFreeCellCb(cell);
       RETVALUE(RFAILED);
    }   
    /* Updating Auto TM Mode enable/diable flag */
    cell->isAutoCfgModeEnb = cellCfg->isAutoCfgModeEnb;
    {
-     if(cell->isAutoCfgModeEnb)
-     {
-        RLOG0(L_INFO,"Auto Mode Cfg enabled durint cell cfg\n");
-     }
+      if(cell->isAutoCfgModeEnb)
+      {
+	 RLOG0(L_INFO,"Auto Mode Cfg enabled durint cell cfg\n");
+      }
    }
    /* CPU OvrLoad State Initialization */
 #ifdef XEON_LMT_ITBS
@@ -2950,22 +2950,22 @@ RgSchErrInfo  *errInfo;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Rgr cell Config failed at "
-       "Scheduler for cell ");
+	    "Scheduler for cell ");
       rgSCHCfgFreeCellCb(cell);
       RETVALUE(RFAILED);
    }
 
    /* Invoke DHM to update DHM specific information */
    rgSCHDhmRgrCellCfg(cell, cellCfg, errInfo);
-  
+
 
    /* Initialize RNTI DB */
    ret = rgSCHDbmRntiDbInit(cell, cellCfg->macRnti.startRnti,
-         cellCfg->macRnti.size);
+	 cellCfg->macRnti.size);
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Rgr Cell Config failed at"
-          " RNTI DB init for cell");
+	    " RNTI DB init for cell");
       rgSCHCfgFreeCellCb(cell);
       RETVALUE(RFAILED);
    }
@@ -2980,7 +2980,7 @@ RgSchErrInfo  *errInfo;
    if((ret = rgSCHUtlGetSfAlloc(cell)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Memory allocation FAILED for "
-               "cell");
+	    "cell");
       rgSCHCfgFreeCellCb(cell);
       RETVALUE(RFAILED);
    }
@@ -2995,7 +2995,7 @@ RgSchErrInfo  *errInfo;
    if((ret = rgSCHUtlGetRlsHqAlloc(cell)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Memory allocation FAILED for"
-               "cell");
+	    "cell");
       rgSCHCfgFreeCellCb(cell);
       RETVALUE(RFAILED);
    }
@@ -3007,7 +3007,7 @@ RgSchErrInfo  *errInfo;
    cell->tfuSap = &(instCb->tfuSap[spId]);
 
    /* CaDev Start */
-      instCb->cells[Idx1] = cell;
+   instCb->cells[Idx1] = cell;
    /* CaDev End */
 
    /* rg001.201: Added for sending TTI tick to RRM */
@@ -3029,7 +3029,7 @@ RgSchErrInfo  *errInfo;
    if (rgSCHDrxCellCfg(cell,cellCfg) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Drx Memory allocation FAILED for"
-         " cell");
+	    " cell");
       rgSCHCfgFreeCellCb(cell);
       RETVALUE(RFAILED);
    }
@@ -3067,7 +3067,7 @@ RgSchErrInfo  *errInfo;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Rgr Cell Config failed at"
-          " Initializing the LAA Cell Control Cb");
+	    " Initializing the LAA Cell Control Cb");
       rgSCHCfgFreeCellCb(cell);
       RETVALUE(RFAILED);
    }
@@ -3079,15 +3079,15 @@ RgSchErrInfo  *errInfo;
 
 #ifdef EMTC_ENABLE
 
-	if(cell->emtcEnable)
-	{	
-   	  if (rgSCHCfgEmtcCellCfg(cell,&(cellCfg->emtcCellCfg)) != ROK)
-   	  {
-      		 RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"EMTC Config Failed"
-         				  " cell");
-      		 RETVALUE(RFAILED);
-   	  }
-	}
+   if(cell->emtcEnable)
+   {	
+      if (rgSCHCfgEmtcCellCfg(cell,&(cellCfg->emtcCellCfg)) != ROK)
+      {
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"EMTC Config Failed"
+	       " cell");
+	 RETVALUE(RFAILED);
+      }
+   }
 #endif
 
 #ifdef RG_5GTF
@@ -3128,17 +3128,17 @@ RgSchErrInfo  *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrUeCfg
+   PUBLIC S16 rgSCHCfgRgrUeCfg
 (
-RgSchCellCb  *cell,
-RgrUeCfg     *ueCfg,
-RgSchErrInfo *errInfo
-)
+ RgSchCellCb  *cell,
+ RgrUeCfg     *ueCfg,
+ RgSchErrInfo *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrUeCfg(cell, ueCfg, errInfo)
-RgSchCellCb  *cell;
-RgrUeCfg     *ueCfg;
-RgSchErrInfo *errInfo;
+   RgSchCellCb  *cell;
+   RgrUeCfg     *ueCfg;
+   RgSchErrInfo *errInfo;
 #endif
 {
    S16          ret;
@@ -3158,355 +3158,355 @@ RgSchErrInfo *errInfo;
 #endif
    TRC2(rgSCHCfgRgrUeCfg);
 
-  do {
-     errInfo->errCause = RGSCHERR_CFG_RGR_UE_CFG;
-     /* RACHO : Check for raCb only if preamble Id not provded */
+   do {
+      errInfo->errCause = RGSCHERR_CFG_RGR_UE_CFG;
+      /* RACHO : Check for raCb only if preamble Id not provded */
 #ifndef PRE_DEF_UE_CTX
-     if (ueCfg->dedPreambleId.pres == NOTPRSNT)
-     {
-        if ((raCb = rgSCHDbmGetRaCb(cell, ueCfg->crnti)) == NULLP)
-        {
-           RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"No RaCb exists for"
-                    "CRNTI:%d ",ueCfg->crnti);
-           break;
-        }
-     }
+      if (ueCfg->dedPreambleId.pres == NOTPRSNT)
+      {
+	 if ((raCb = rgSCHDbmGetRaCb(cell, ueCfg->crnti)) == NULLP)
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"No RaCb exists for"
+		  "CRNTI:%d ",ueCfg->crnti);
+	    break;
+	 }
+      }
 #endif
 
-     /* Allocate the Ue control block */
-     if (((rgSCHUtlAllocSBuf(inst, (Data **)&ue, sizeof(RgSchUeCb))) != ROK) ||
-            ((U8 *)ue == NULLP))
-     {
-        RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId, "Memory allocation"
-           " FAILED for CRNTI:%d", ueCfg->crnti);
-        break;
-     }
+      /* Allocate the Ue control block */
+      if (((rgSCHUtlAllocSBuf(inst, (Data **)&ue, sizeof(RgSchUeCb))) != ROK) ||
+	    ((U8 *)ue == NULLP))
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId, "Memory allocation"
+	       " FAILED for CRNTI:%d", ueCfg->crnti);
+	 break;
+      }
 
-     /* Inititialize Ue control block */
-     ue->ueId = ueCfg->crnti;
-     ue->cell = cell;
-     /*ccpu00117778- Initialize Transmission Indices upon UE CB creation */
+      /* Inititialize Ue control block */
+      ue->ueId = ueCfg->crnti;
+      ue->cell = cell;
+      /*ccpu00117778- Initialize Transmission Indices upon UE CB creation */
 #ifdef LA
-   ue->lastRprdAckNackTime.sfn = cell->crntTime.sfn;
-   ue->lastRprdAckNackTime.subframe = cell->crntTime.slot;
-   ue->ueIdle = FALSE; 
+      ue->lastRprdAckNackTime.sfn = cell->crntTime.sfn;
+      ue->lastRprdAckNackTime.subframe = cell->crntTime.slot;
+      ue->ueIdle = FALSE; 
 #endif
 
-   /* Allocate the Ue control block */
-   if (((rgSCHUtlAllocSBuf(inst, (Data **)&(ue->cellInfo[RGSCH_PCELL_INDEX]),
-                  sizeof(RgSchUeCellInfo))) != ROK))
-   {
+      /* Allocate the Ue control block */
+      if (((rgSCHUtlAllocSBuf(inst, (Data **)&(ue->cellInfo[RGSCH_PCELL_INDEX]),
+		     sizeof(RgSchUeCellInfo))) != ROK))
+      {
 #ifndef ALIGN_64BIT
-      RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%lu]SCellIdx :Memomy allocation "
-               "Failed while Adding SCell Information\n", idx));
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%lu]SCellIdx :Memomy allocation "
+		  "Failed while Adding SCell Information\n", idx));
 #else
-      RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%u]SCellIdx :Memomy allocation "
-               "Failed while Adding SCell Information\n", idx));
+	 RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "[%u]SCellIdx :Memomy allocation "
+		  "Failed while Adding SCell Information\n", idx));
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
 
-   ue->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cell)] = RGSCH_PCELL_INDEX;
-   ue->cellInfo[RGSCH_PCELL_INDEX]->cell = cell;
-   ue->cellInfo[RGSCH_PCELL_INDEX]->ue = ue;
+      ue->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cell)] = RGSCH_PCELL_INDEX;
+      ue->cellInfo[RGSCH_PCELL_INDEX]->cell = cell;
+      ue->cellInfo[RGSCH_PCELL_INDEX]->ue = ue;
 #ifdef LTE_ADV
-   ue->cellInfo[RGSCH_PCELL_INDEX]->sCellState = RG_SCH_SCELL_ACTIVE;
-   ue->cellInfo[RGSCH_PCELL_INDEX]->sCellIdx = RGSCH_PCELL_INDEX;
-   ue->cellInfo[RGSCH_PCELL_INDEX]->sCellId = cell->cellId;
+      ue->cellInfo[RGSCH_PCELL_INDEX]->sCellState = RG_SCH_SCELL_ACTIVE;
+      ue->cellInfo[RGSCH_PCELL_INDEX]->sCellIdx = RGSCH_PCELL_INDEX;
+      ue->cellInfo[RGSCH_PCELL_INDEX]->sCellId = cell->cellId;
 
-   if (ROK != rgSCHLaaInitDlRbAllocCb(cell, 
-            &ue->cellInfo[RGSCH_PCELL_INDEX]->dlAllocCb))
-   {
-      RETVALUE(RFAILED);
-   }
+      if (ROK != rgSCHLaaInitDlRbAllocCb(cell, 
+	       &ue->cellInfo[RGSCH_PCELL_INDEX]->dlAllocCb))
+      {
+	 RETVALUE(RFAILED);
+      }
 #endif
 #ifdef TFU_UPGRADE
-     cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ue,cell);
-     cqiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
-     cqiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
-     ue->srsCb.nSrsTrIdx = RG_SCH_INVALID_IDX;
-     ue->srCb.nSrTrIdx = RG_SCH_INVALID_IDX;
+      cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ue,cell);
+      cqiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
+      cqiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
+      ue->srsCb.nSrsTrIdx = RG_SCH_INVALID_IDX;
+      ue->srCb.nSrTrIdx = RG_SCH_INVALID_IDX;
 #endif
-   /* LTE_ADV_FLAG_REMOVED_START */
-   /* While doing UE configuration for SFR at SCH, by default 
-    * CC UE power is configured as LOW */
-   ue->lteAdvUeCb.isCCUePHigh = FALSE;
-   /* LTE_ADV_FLAG_REMOVED_END */
+      /* LTE_ADV_FLAG_REMOVED_START */
+      /* While doing UE configuration for SFR at SCH, by default 
+       * CC UE power is configured as LOW */
+      ue->lteAdvUeCb.isCCUePHigh = FALSE;
+      /* LTE_ADV_FLAG_REMOVED_END */
 
-     /* Initialize the lists of the UE */
-     if((rgSCHDbmInitUe(ue)) != ROK)
-     {
-        RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"DBM initialization "
-           "failed for CRNTI:%d", ueCfg->crnti);
-        break;
-     }
+      /* Initialize the lists of the UE */
+      if((rgSCHDbmInitUe(ue)) != ROK)
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"DBM initialization "
+	       "failed for CRNTI:%d", ueCfg->crnti);
+	 break;
+      }
 #ifdef EMTC_ENABLE
-     if(raCb != NULLP)
-     {
-        if(TRUE == raCb->isEmtcRaCb)
-        { 
-           ue->isEmtcUe = TRUE;
-           if (rgSCHUtlUpdUeEmtcInfo(cell, ueCfg, ue) != ROK)
-           {
-              RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"EMTC UE Cfg"
-                    "failed for CRNTI:%d", ueCfg->crnti);
-              break;
-           }
-        }
-     } 
+      if(raCb != NULLP)
+      {
+	 if(TRUE == raCb->isEmtcRaCb)
+	 { 
+	    ue->isEmtcUe = TRUE;
+	    if (rgSCHUtlUpdUeEmtcInfo(cell, ueCfg, ue) != ROK)
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"EMTC UE Cfg"
+		     "failed for CRNTI:%d", ueCfg->crnti);
+	       break;
+	    }
+	 }
+      } 
 #endif
 
-     /* Initialize scheduler related information for UE */
-     if(rgSCHUtlRgrUeCfg(cell, ue, ueCfg, errInfo) != ROK)
-     {
-        RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Scheduler handling "
-                 "failed in config for CRNTI:%d", ueCfg->crnti);
-        break;
-     }
+      /* Initialize scheduler related information for UE */
+      if(rgSCHUtlRgrUeCfg(cell, ue, ueCfg, errInfo) != ROK)
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Scheduler handling "
+	       "failed in config for CRNTI:%d", ueCfg->crnti);
+	 break;
+      }
 
-     ret = rgSCHUhmHqEntInit(cell, ue);
-     if (ret != ROK)
-     {
-        RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"UHM HARQ Ent Init "
-           "Failed for CRNTI:%d", ueCfg->crnti);
-        break;
-     }
+      ret = rgSCHUhmHqEntInit(cell, ue);
+      if (ret != ROK)
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"UHM HARQ Ent Init "
+	       "Failed for CRNTI:%d", ueCfg->crnti);
+	 break;
+      }
 
-     /* Initialize RAM related information for UE 
-      * RACHO: if preamble Id is present in ueCfg then raCb will be NULL
-      * so rgSCHRamRgrUeCfg should take care of creating raCb */
-   if ((ueCfg->dedPreambleId.pres == NOTPRSNT) && (NULLP != raCb) )
-     {
-        if((rgSCHRamRgrUeCfg(cell, ue, raCb, errInfo)) != ROK)
-        {
-           RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Random access "
-              "handling config failed for CRNTI:%d", ueCfg->crnti);
-           break;
-        }
-     }
-     else /* if HO Ue */
-     {
-        RG_SCH_CMN_GET_UE_HQE(ue, cell) = rgSCHDhmHqEntInit(cell);
-        hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
-        if (hqEnt == NULLP)
-        {
-           RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Hq Entity Initialization "
-                    "failed in config for CRNTI:%d", ueCfg->crnti);
-           break;
-        }
+      /* Initialize RAM related information for UE 
+       * RACHO: if preamble Id is present in ueCfg then raCb will be NULL
+       * so rgSCHRamRgrUeCfg should take care of creating raCb */
+      if ((ueCfg->dedPreambleId.pres == NOTPRSNT) && (NULLP != raCb) )
+      {
+	 if((rgSCHRamRgrUeCfg(cell, ue, raCb, errInfo)) != ROK)
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Random access "
+		  "handling config failed for CRNTI:%d", ueCfg->crnti);
+	    break;
+	 }
+      }
+      else /* if HO Ue */
+      {
+	 RG_SCH_CMN_GET_UE_HQE(ue, cell) = rgSCHDhmHqEntInit(cell);
+	 hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
+	 if (hqEnt == NULLP)
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Hq Entity Initialization "
+		  "failed in config for CRNTI:%d", ueCfg->crnti);
+	    break;
+	 }
 #ifdef EMTC_ENABLE
-        rgSCHEmtcHqPAlloc(cell, hqEnt);
+	 rgSCHEmtcHqPAlloc(cell, hqEnt);
 #endif
-        hqEnt->ue = ue;
-        /* Fix : syed Assign hqEnt to UE only if msg4 is done */
+	 hqEnt->ue = ue;
+	 /* Fix : syed Assign hqEnt to UE only if msg4 is done */
 
-        rgSCHCmnDlInitHqEnt(cell, hqEnt);
+	 rgSCHCmnDlInitHqEnt(cell, hqEnt);
 
-        /* For Hand-In UE Request Aper CQI report
-         * immediately */
-        if (ueCfg->ueDlCqiCfg.aprdCqiCfg.pres)
-        {
-           /* Set APCQI for Pcell only*/
-           ue->dl.reqForCqi = RG_SCH_APCQI_SERVING_CC;
-        }
-     }
-     /* CA dev Start */
+	 /* For Hand-In UE Request Aper CQI report
+	  * immediately */
+	 if (ueCfg->ueDlCqiCfg.aprdCqiCfg.pres)
+	 {
+	    /* Set APCQI for Pcell only*/
+	    ue->dl.reqForCqi = RG_SCH_APCQI_SERVING_CC;
+	 }
+      }
+      /* CA dev Start */
 #ifdef LTE_TDD
-     maxDlSubframes = rgSchTddNumDlSubfrmTbl[ulDlCfgIdx][RGSCH_NUM_SUB_FRAMES-1];
-     maxSubframes = 2 * maxDlSubframes;
-     ue->dl.numHqDlSfInfo = maxSubframes;
-     rgSCHUtlAllocSBuf(cell->instIdx,
-           (Data **)&ue->dl.dlSfHqInfo, sizeof(RgSchDlHqInfo) * (ue->dl.numHqDlSfInfo));
+      maxDlSubframes = rgSchTddNumDlSubfrmTbl[ulDlCfgIdx][RGSCH_NUM_SUB_FRAMES-1];
+      maxSubframes = 2 * maxDlSubframes;
+      ue->dl.numHqDlSfInfo = maxSubframes;
+      rgSCHUtlAllocSBuf(cell->instIdx,
+	    (Data **)&ue->dl.dlSfHqInfo, sizeof(RgSchDlHqInfo) * (ue->dl.numHqDlSfInfo));
 
 #else
-     ue->dl.numHqDlSfInfo = RGSCH_NUM_DL_slotS;
+      ue->dl.numHqDlSfInfo = RGSCH_NUM_DL_slotS;
 #endif
 #ifndef RG_5GTF 
-     for (idx =0;idx < ue->dl.numHqDlSfInfo; idx++)
-     {
-        cmLListInit(&ue->dl.dlSfHqInfo[idx].hqPLst);
-        ue->dl.dlSfHqInfo[idx].dlSfUeLnk.node = NULLP;
+      for (idx =0;idx < ue->dl.numHqDlSfInfo; idx++)
+      {
+	 cmLListInit(&ue->dl.dlSfHqInfo[idx].hqPLst);
+	 ue->dl.dlSfHqInfo[idx].dlSfUeLnk.node = NULLP;
 
-     } 
+      } 
 #else
-     {
-        U8 cellIdx=0;
-        for (cellIdx = 0;cellIdx < MAX_5GTF_CELL ; cellIdx++)
-        {
-           for (idx =0;idx < ue->dl.numHqDlSfInfo; idx++)
-           {
-              cmLListInit(&ue->dl.dlSfHqInfo[cellIdx][idx].hqPLst);
-              ue->dl.dlSfHqInfo[cellIdx][idx].dlSfUeLnk.node = NULLP;
-           }
-        }
-     }
+      {
+	 U8 cellIdx=0;
+	 for (cellIdx = 0;cellIdx < MAX_5GTF_CELL ; cellIdx++)
+	 {
+	    for (idx =0;idx < ue->dl.numHqDlSfInfo; idx++)
+	    {
+	       cmLListInit(&ue->dl.dlSfHqInfo[cellIdx][idx].hqPLst);
+	       ue->dl.dlSfHqInfo[cellIdx][idx].dlSfUeLnk.node = NULLP;
+	    }
+	 }
+      }
 #endif
 #ifdef LTE_ADV
-     rgSCHLaaInitDlHqInfo(cell, ue);
+      rgSCHLaaInitDlHqInfo(cell, ue);
 #endif
-     /* CA dev End */
+      /* CA dev End */
 
-     /* Initialize lcgIds to Invalid */
-     for (lcgCnt = 0; lcgCnt < RGSCH_MAX_LCG_PER_UE; lcgCnt++)
-     {
-        ue->ul.lcgArr[lcgCnt].lcgId = RGSCH_INVALID_LCG_ID;
-     }
-     if(raCb != NULLP)
-     {
-        rgSCHCfgRgrUePhrMsg3(cell,raCb,ue,errInfo);
-        /* Moved this code out of rgSCHCfgRgrUePhrMsg3()
-         * as it was not the appropriate place to 
-         * do this. */
-        if (raCb->raState == RGSCH_RA_MSG4_DONE)
-        {
-           RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-                 "RNTI:%d RaCb deleted as Msg4 transmission is done",
-                 raCb->tmpCrnti);
-           rgSCHRamDelRaCb(cell, raCb, FALSE);
-        }
-     }
-     /* Initialize uplink HARQ related information for UE */
-     rgSCHUhmRgrUeCfg(cell, ue, ueCfg);
-     cmInitTimers(&ue->bsrTmr, 1);
+      /* Initialize lcgIds to Invalid */
+      for (lcgCnt = 0; lcgCnt < RGSCH_MAX_LCG_PER_UE; lcgCnt++)
+      {
+	 ue->ul.lcgArr[lcgCnt].lcgId = RGSCH_INVALID_LCG_ID;
+      }
+      if(raCb != NULLP)
+      {
+	 rgSCHCfgRgrUePhrMsg3(cell,raCb,ue,errInfo);
+	 /* Moved this code out of rgSCHCfgRgrUePhrMsg3()
+	  * as it was not the appropriate place to 
+	  * do this. */
+	 if (raCb->raState == RGSCH_RA_MSG4_DONE)
+	 {
+	    RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
+		  "RNTI:%d RaCb deleted as Msg4 transmission is done",
+		  raCb->tmpCrnti);
+	    rgSCHRamDelRaCb(cell, raCb, FALSE);
+	 }
+      }
+      /* Initialize uplink HARQ related information for UE */
+      rgSCHUhmRgrUeCfg(cell, ue, ueCfg);
+      cmInitTimers(&ue->bsrTmr, 1);
 #ifdef RGR_V1
-     /* Added periodic BSR timer */
-     cmInitTimers(&ue->bsrTmr, 1);
+      /* Added periodic BSR timer */
+      cmInitTimers(&ue->bsrTmr, 1);
 
-     /* Fix - Added proper configuration from U-ARM */
-     if(ueCfg->ueBsrTmrCfg.isPrdBsrTmrPres == TRUE)
-     {
-        ue->ul.bsrTmrCfg.isPrdBsrTmrPres = TRUE;
-        ue->ul.bsrTmrCfg.prdBsrTmr       = ueCfg->ueBsrTmrCfg.prdBsrTmr;
-        ue->ul.bsrTmrCfg.retxBsrTmr      = ueCfg->ueBsrTmrCfg.retxBsrTmr;
-     }
-    
+      /* Fix - Added proper configuration from U-ARM */
+      if(ueCfg->ueBsrTmrCfg.isPrdBsrTmrPres == TRUE)
+      {
+	 ue->ul.bsrTmrCfg.isPrdBsrTmrPres = TRUE;
+	 ue->ul.bsrTmrCfg.prdBsrTmr       = ueCfg->ueBsrTmrCfg.prdBsrTmr;
+	 ue->ul.bsrTmrCfg.retxBsrTmr      = ueCfg->ueBsrTmrCfg.retxBsrTmr;
+      }
+
 #endif
-     /* Initialize downlink HARQ related information for UE */
-     rgSCHDhmRgrUeCfg(cell, ue, ueCfg, errInfo);
+      /* Initialize downlink HARQ related information for UE */
+      rgSCHDhmRgrUeCfg(cell, ue, ueCfg, errInfo);
 
-     /* Initialize MeasureGap and Acknack Rep Information for UE */
-     if((rgSCHMeasGapANRepUeCfg(cell, ue, ueCfg)) != ROK)
-     {
-        RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Measurement Gap and"
-                 " AckNack Rep failed in Config for CRNTI:%d", ueCfg->crnti);
-        break;
-     }
+      /* Initialize MeasureGap and Acknack Rep Information for UE */
+      if((rgSCHMeasGapANRepUeCfg(cell, ue, ueCfg)) != ROK)
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Measurement Gap and"
+	       " AckNack Rep failed in Config for CRNTI:%d", ueCfg->crnti);
+	 break;
+      }
 
 
 #ifdef LTE_TDD
-     if((rgSCHUtlAllocUeANFdbkInfo(ue,RGSCH_PCELL_INDEX)) != ROK)
-     {
-        RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Memomy allocation "
-                 "Failed while UE related Ack Nack Information for CRNTI:%d",
-                 ueCfg->crnti);
-        break;
-     }
-     ue->dl.ackNackMode = ueCfg->ackNackModeEnum;
+      if((rgSCHUtlAllocUeANFdbkInfo(ue,RGSCH_PCELL_INDEX)) != ROK)
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"Memomy allocation "
+	       "Failed while UE related Ack Nack Information for CRNTI:%d",
+	       ueCfg->crnti);
+	 break;
+      }
+      ue->dl.ackNackMode = ueCfg->ackNackModeEnum;
 #endif /* LTE_TDD */
 
-     /* Insert Ue */
-     rgSCHDbmInsUeCb(cell, ue);
+      /* Insert Ue */
+      rgSCHDbmInsUeCb(cell, ue);
 
 #ifdef TFU_UPGRADE
-     /*  Int ialize APeriodic CQI/PMI/RI Information for UE */
+      /*  Int ialize APeriodic CQI/PMI/RI Information for UE */
 
-   RGSCHDBGPRM(cell->instIdx,(rgSchPBuf(cell->instIdx), 
-            "\n rgSCHCfgRgrUeCfg : CellID=%d  UeId =%d  AcqiCfg Pres =%d",
-            cell->cellId, ue->ueId, ueCfg->ueDlCqiCfg.aprdCqiCfg.pres));
+      RGSCHDBGPRM(cell->instIdx,(rgSchPBuf(cell->instIdx), 
+	       "\n rgSCHCfgRgrUeCfg : CellID=%d  UeId =%d  AcqiCfg Pres =%d",
+	       cell->cellId, ue->ueId, ueCfg->ueDlCqiCfg.aprdCqiCfg.pres));
 
       /*Store Trigger Set Bit String to UE */
-      
+
       ret = rgSCHCfgACqiUeCfg(cell,ue, (RG_SCH_CMN_GET_ACQICB(ue,cell)),ue->mimoInfo.txMode,
-           &ueCfg->ueDlCqiCfg.aprdCqiCfg, ue->ueCatEnum);
+	    &ueCfg->ueDlCqiCfg.aprdCqiCfg, ue->ueCatEnum);
 
-     ue->cqiRiWritIdx = 0;
-     ue->cqiRiReadIdx = 0;
-     /*   Initialize Periodic CQI/PMI, RI Information for UE  */
-     ret = rgSCHCfgPCqiUeCfg(cell, ue, &ueCfg->ueDlCqiCfg.prdCqiCfg, 
-           ue->ueCatEnum);
+      ue->cqiRiWritIdx = 0;
+      ue->cqiRiReadIdx = 0;
+      /*   Initialize Periodic CQI/PMI, RI Information for UE  */
+      ret = rgSCHCfgPCqiUeCfg(cell, ue, &ueCfg->ueDlCqiCfg.prdCqiCfg, 
+	    ue->ueCatEnum);
 
-     /*   Initialize UL SRS Information for UE  */
-     ret = rgSCHCfgSrsUeCfg(cell, ue, &ueCfg->srsCfg);
+      /*   Initialize UL SRS Information for UE  */
+      ret = rgSCHCfgSrsUeCfg(cell, ue, &ueCfg->srsCfg);
 
-     /*   Initialize SR Information for UE  */
-     ret = rgSCHCfgSrUeCfg(cell, ue, &ueCfg->srCfg);
+      /*   Initialize SR Information for UE  */
+      ret = rgSCHCfgSrUeCfg(cell, ue, &ueCfg->srCfg);
 #endif 
 
 #ifdef LTEMAC_HDFDD
-     if (rgSCHHdFddUeCfg(cell, ue, ueCfg->isHdFddEnbld) != ROK)
-     {
-        RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,
-                 "Could not do HD-FDD config for CRNTI:%d",ueCfg->crnti);
-        break;
-     }
+      if (rgSCHHdFddUeCfg(cell, ue, ueCfg->isHdFddEnbld) != ROK)
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,
+	       "Could not do HD-FDD config for CRNTI:%d",ueCfg->crnti);
+	 break;
+      }
 
 #endif /* LTEMAC_HDFDD */
-     /* ccpu00117452 - MOD - Changed macro name from
-        RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
+      /* ccpu00117452 - MOD - Changed macro name from
+	 RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
-     ue->cqiReptCfgInfo.numColltdCqiRept =
-        ueCfg->ueCqiReptCfg.numColltdCqiRept;
+      ue->cqiReptCfgInfo.numColltdCqiRept =
+	 ueCfg->ueCqiReptCfg.numColltdCqiRept;
 #endif /* End of RGR_CQI_REPT */
 #ifdef TFU_UPGRADE
-     RG_SCH_CMN_GET_PA(ue,cell).pres = FALSE;
-     if (RG_SCH_UE_CFG_ISPAPRSNT(ueCfg->uePdschDedCfg.uepACfg))
-     {
-        RG_SCH_CMN_GET_PA(ue,cell).pres = TRUE;
-        RG_SCH_CMN_GET_PA(ue,cell).val = ueCfg->uePdschDedCfg.uepACfg.pA;
-     }
+      RG_SCH_CMN_GET_PA(ue,cell).pres = FALSE;
+      if (RG_SCH_UE_CFG_ISPAPRSNT(ueCfg->uePdschDedCfg.uepACfg))
+      {
+	 RG_SCH_CMN_GET_PA(ue,cell).pres = TRUE;
+	 RG_SCH_CMN_GET_PA(ue,cell).val = ueCfg->uePdschDedCfg.uepACfg.pA;
+      }
 #endif
-     ue->isDrxEnabled = ueCfg->ueDrxCfg.isDrxEnabled;
+      ue->isDrxEnabled = ueCfg->ueDrxCfg.isDrxEnabled;
 
-     if ( ue->isDrxEnabled )
-     {
-        if((rgSCHDrxUeCfg(cell,ue,ueCfg)) != ROK )
-        {
-           RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"DRX configuration failed",
-                     ueCfg->crnti);
-           break;
-        }
-     }
+      if ( ue->isDrxEnabled )
+      {
+	 if((rgSCHDrxUeCfg(cell,ue,ueCfg)) != ROK )
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,ueCfg->cellId,"DRX configuration failed",
+		  ueCfg->crnti);
+	    break;
+	 }
+      }
 
-     /* LTE_ADV_FLAG_REMOVED_START */
-     if ((cell->lteAdvCb.sfrCfg.status == RGR_ENABLE) ||    \
-        (cell->lteAdvCb.absCfg.status == RGR_ENABLE))
-     {
-        ue->lteAdvUeCb.rgrLteAdvUeCfg = ueCfg->ueLteAdvCfg;
-     }   
-     /* LTE_ADV_FLAG_REMOVED_END */
+      /* LTE_ADV_FLAG_REMOVED_START */
+      if ((cell->lteAdvCb.sfrCfg.status == RGR_ENABLE) ||    \
+	    (cell->lteAdvCb.absCfg.status == RGR_ENABLE))
+      {
+	 ue->lteAdvUeCb.rgrLteAdvUeCfg = ueCfg->ueLteAdvCfg;
+      }   
+      /* LTE_ADV_FLAG_REMOVED_END */
 
 #ifdef TENB_STATS
-     ue->tenbStats = TSL2AllocUeStatsBlk(ue->ueId);
-     ue->tenbStats->stats.rnti = ue->ueId;
+      ue->tenbStats = TSL2AllocUeStatsBlk(ue->ueId);
+      ue->tenbStats->stats.rnti = ue->ueId;
 #endif
 #ifdef LTE_ADV
-     /*Update A Value for PCell TBs*/
-     ue->f1bCsAVal = rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode); 
-     RLOG_ARG1(L_ERROR,DBG_CELLID, ueCfg->cellId,
-            "\n UeCfg A value is %d\n",ue->f1bCsAVal);
+      /*Update A Value for PCell TBs*/
+      ue->f1bCsAVal = rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode); 
+      RLOG_ARG1(L_ERROR,DBG_CELLID, ueCfg->cellId,
+	    "\n UeCfg A value is %d\n",ue->f1bCsAVal);
 #endif
-     errInfo->errCause = RGSCHERR_NONE;
+      errInfo->errCause = RGSCHERR_NONE;
 
-     ue->accessStratumRls = ueCfg->accessStratumRls;
-     if (ue->numSCells > 0)
-     {
-        /* 2 bit CSI */
-        rgSCHUtlUpdUeDciSize(cell, ue, TRUE);
-     }
-     else
-     {
-        /* 1 bit CSI Access Stratum Release Change */
-        rgSCHUtlUpdUeDciSize(cell, ue, FALSE);
-     }
+      ue->accessStratumRls = ueCfg->accessStratumRls;
+      if (ue->numSCells > 0)
+      {
+	 /* 2 bit CSI */
+	 rgSCHUtlUpdUeDciSize(cell, ue, TRUE);
+      }
+      else
+      {
+	 /* 1 bit CSI Access Stratum Release Change */
+	 rgSCHUtlUpdUeDciSize(cell, ue, FALSE);
+      }
 
-     RETVALUE(ROK);
-  }while(0);
+      RETVALUE(ROK);
+   }while(0);
 
-  if (ue)
-  {
-     rgSCHCfgFreeUeCb(cell, ue);
-  }
-  RETVALUE(RFAILED);
+   if (ue)
+   {
+      rgSCHCfgFreeUeCb(cell, ue);
+   }
+   RETVALUE(RFAILED);
 }  /* rgSCHCfgRgrUeCfg */
 
 /**
@@ -3525,19 +3525,19 @@ RgSchErrInfo *errInfo;
  *  @param[out] RgSchErrInfo *errInfo
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHCfgRgrUePhrMsg3
+   PRIVATE Void rgSCHCfgRgrUePhrMsg3
 (
-RgSchCellCb  *cell,
-RgSchRaCb    *raCb,
-RgSchUeCb    *ue,
-RgSchErrInfo *errInfo
-)
+ RgSchCellCb  *cell,
+ RgSchRaCb    *raCb,
+ RgSchUeCb    *ue,
+ RgSchErrInfo *errInfo
+ )
 #else
 PRIVATE Void rgSCHCfgRgrUePhrMsg3(cell, raCb, ue, errInfo)
-RgSchCellCb  *cell;
-RgSchRaCb    *raCb;
-RgSchUeCb    *ue;
-RgSchErrInfo *errInfo;
+   RgSchCellCb  *cell;
+   RgSchRaCb    *raCb;
+   RgSchUeCb    *ue;
+   RgSchErrInfo *errInfo;
 #endif
 {
 
@@ -3569,15 +3569,15 @@ RgSchErrInfo *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDynCfiReCfg
+   PUBLIC Void rgSCHDynCfiReCfg
 (
-RgSchCellCb   *cell,
-Bool          isDynCfiEnb
-)
+ RgSchCellCb   *cell,
+ Bool          isDynCfiEnb
+ )
 #else
 PUBLIC Void rgSCHDynCfiReCfg(cell, isDynCfiEnb)
-RgSchCellCb   *cell;
-Bool          isDynCfiEnb;
+   RgSchCellCb   *cell;
+   Bool          isDynCfiEnb;
 #endif 
 {            
    U8                idx;
@@ -3599,7 +3599,7 @@ Bool          isDynCfiEnb;
 
       for(idx = 0; idx < cell->dynCfiCb.numFailSamples; idx++)
       {
-         cell->dynCfiCb.cceFailSamples[idx] = 0;
+	 cell->dynCfiCb.cceFailSamples[idx] = 0;
       }   
 
       cell->dynCfiCb.cceUsed             = 0;
@@ -3629,62 +3629,62 @@ Bool          isDynCfiEnb;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrCellRecfg
+   PUBLIC S16 rgSCHCfgRgrCellRecfg
 (
-RgSchCellCb   *cell,
-RgrCellRecfg  *cellRecfg,
-RgSchErrInfo  *errInfo
-)
+ RgSchCellCb   *cell,
+ RgrCellRecfg  *cellRecfg,
+ RgSchErrInfo  *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrCellRecfg(cell, cellRecfg, errInfo)
-RgSchCellCb   *cell;
-RgrCellRecfg  *cellRecfg;
-RgSchErrInfo  *errInfo;
+   RgSchCellCb   *cell;
+   RgrCellRecfg  *cellRecfg;
+   RgSchErrInfo  *errInfo;
 #endif
 {
    S16      ret;
    Inst    inst = cell->instIdx;
-/* LTE_ADV_FLAG_REMOVED_START */
+   /* LTE_ADV_FLAG_REMOVED_START */
    U8      i = 0;
    U16     len; /* dsfr_pal_fixes ** 21-March-2013 ** SKS */
-/* LTE_ADV_FLAG_REMOVED_END */
-   
+   /* LTE_ADV_FLAG_REMOVED_END */
+
    TRC2(rgSCHCfgRgrCellRecfg);
 
 
    errInfo->errCause = RGSCHERR_CFG_RGR_CELL_RECFG;
-   
+
    /* Invoke scheduler to update scheduler specific information */
    ret =  rgSCHUtlRgrCellRecfg(cell, cellRecfg, errInfo);
    if (ret != ROK)
    {
-     RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId, "RGR Cell re-configuration failed "
-          "at Scheduler ");
+      RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId, "RGR Cell re-configuration failed "
+	    "at Scheduler ");
       RETVALUE(RFAILED);
    }
-   
+
    /* Invoke DHM to update DHM specific information */
    rgSCHDhmRgrCellRecfg(cell, cellRecfg, errInfo);
 
-      /* PUCCH Reconfiguration */
+   /* PUCCH Reconfiguration */
    if (cellRecfg->recfgTypes & RGR_CELL_PUCCH_RECFG)
    {
       cell->pucchCfg = cellRecfg->pucchRecfg;
    }
- 
+
    /* SRS Reconfiguration */
    if (cellRecfg->recfgTypes & RGR_CELL_SRS_RECFG)
    {
       cell->srsCfg.isSrsCfgPres = cellRecfg->srsRecfg.isSrsCfgSetup;
       if(cellRecfg->srsRecfg.isSrsCfgSetup)
       {
-         cell->srsCfg.srsCfgPrdEnum = cellRecfg->srsRecfg.srsCfgPrdEnum;
-         cell->srsCfg.srsBwEnum = cellRecfg->srsRecfg.srsBwEnum;
-         cell->srsCfg.srsTxOffst =
-            rgSrsTxOffstTbl[cellRecfg->srsRecfg.srsSubFrameCfg];
-         /*ccpu00116923 - ADD - Srs Present support */
+	 cell->srsCfg.srsCfgPrdEnum = cellRecfg->srsRecfg.srsCfgPrdEnum;
+	 cell->srsCfg.srsBwEnum = cellRecfg->srsRecfg.srsBwEnum;
+	 cell->srsCfg.srsTxOffst =
+	    rgSrsTxOffstTbl[cellRecfg->srsRecfg.srsSubFrameCfg];
+	 /*ccpu00116923 - ADD - Srs Present support */
 #ifdef TFU_UPGRADE
-         cell->srsCfg.srsSubFrameCfg = cellRecfg->srsRecfg.srsSubFrameCfg;
+	 cell->srsCfg.srsSubFrameCfg = cellRecfg->srsRecfg.srsSubFrameCfg;
 #endif
       }
    }
@@ -3711,7 +3711,7 @@ RgSchErrInfo  *errInfo;
 #ifdef EMTC_ENABLE
       if(cell->emtcEnable)
       {
-      rgSchEmtcUpdSiCfg(cell, cellRecfg);
+	 rgSchEmtcUpdSiCfg(cell, cellRecfg);
       }
 #endif
    }
@@ -3722,136 +3722,136 @@ RgSchErrInfo  *errInfo;
    {
       if (cellRecfg->cntrlCmdCfg.cmdType == RGR_CNTRL_CMD_RACH_OVRLD)
       {
-         cell->overLoadBackOffEnab = cellRecfg->cntrlCmdCfg.cmdDesc.rachOvrLd.backOffEnb;
-         cell->overLoadBackOffval = cellRecfg->cntrlCmdCfg.cmdDesc.rachOvrLd.backOffVal;
+	 cell->overLoadBackOffEnab = cellRecfg->cntrlCmdCfg.cmdDesc.rachOvrLd.backOffEnb;
+	 cell->overLoadBackOffval = cellRecfg->cntrlCmdCfg.cmdDesc.rachOvrLd.backOffVal;
       }
       else if (cellRecfg->cntrlCmdCfg.cmdType == RGR_CNTRL_CMD_CPU_OVRLD)
       {
-         if( ROK != rgSCHUtlResetCpuOvrLdState(cell, cellRecfg->cntrlCmdCfg.cmdDesc.\
-                                          cpuOvrLd.instruction))
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID, cellRecfg->cellId,
-               "Invalid CPU OvrLd Ins %d for cell", 
-	       cellRecfg->cntrlCmdCfg.cmdDesc.cpuOvrLd.instruction);
-            RETVALUE(RFAILED);
-         }
+	 if( ROK != rgSCHUtlResetCpuOvrLdState(cell, cellRecfg->cntrlCmdCfg.cmdDesc.\
+		  cpuOvrLd.instruction))
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID, cellRecfg->cellId,
+		  "Invalid CPU OvrLd Ins %d for cell", 
+		  cellRecfg->cntrlCmdCfg.cmdDesc.cpuOvrLd.instruction);
+	    RETVALUE(RFAILED);
+	 }
       }
    }
 
-/* LTE_ADV_FLAG_REMOVED_START */
+   /* LTE_ADV_FLAG_REMOVED_START */
    if (cellRecfg->recfgTypes & RGR_CELL_LTEA_FEATURE_RECFG)
    {
       if(cellRecfg->rgrLteAdvCfg.pres & RGR_ABS)
       {
-         cell->lteAdvCb.absCfg =
-            cellRecfg->rgrLteAdvCfg.absCfg;         
+	 cell->lteAdvCb.absCfg =
+	    cellRecfg->rgrLteAdvCfg.absCfg;         
       }
       if(cellRecfg->rgrLteAdvCfg.pres & RGR_SFR)
       {
-         cmMemcpy((U8 *)&cell->lteAdvCb.sfrCfg, (U8 *)&cellRecfg->rgrLteAdvCfg.sfrCfg,
-               sizeof(RgrSfrConfig));
-         /* dsfr_pal_fixes ** 21-March-2013 ** SKS */
-         if (cellRecfg->rgrLteAdvCfg.sfrCfg.status == RGR_ENABLE)
-         {
-            for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
-            {
-               /*initialise the pools of CC and CE*/
-               if(rgSchSFRTotalPoolInit(cell, cell->subFrms[i]))
-               {
-                  RETVALUE(RFAILED);
-               }
-            }
-         }
-         else
-         {
-            for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
-            {
-               /*initialise the pools of CC and CE*/
-               rgSchSFRTotalPoolFree(&cell->subFrms[i]->sfrTotalPoolInfo, cell);
-            }
+	 cmMemcpy((U8 *)&cell->lteAdvCb.sfrCfg, (U8 *)&cellRecfg->rgrLteAdvCfg.sfrCfg,
+	       sizeof(RgrSfrConfig));
+	 /* dsfr_pal_fixes ** 21-March-2013 ** SKS */
+	 if (cellRecfg->rgrLteAdvCfg.sfrCfg.status == RGR_ENABLE)
+	 {
+	    for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
+	    {
+	       /*initialise the pools of CC and CE*/
+	       if(rgSchSFRTotalPoolInit(cell, cell->subFrms[i]))
+	       {
+		  RETVALUE(RFAILED);
+	       }
+	    }
+	 }
+	 else
+	 {
+	    for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
+	    {
+	       /*initialise the pools of CC and CE*/
+	       rgSchSFRTotalPoolFree(&cell->subFrms[i]->sfrTotalPoolInfo, cell);
+	    }
 
-            if (cell->lteAdvCb.dsfrCfg.status == RGR_ENABLE)
-            {
-               /* releasing rntp info val from each subframe */ 
-               for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
-               {
-                  rgSchDSFRRntpInfoFree(&cell->subFrms[i]->rntpInfo, cell, cell->bwCfg.dlTotalBw);
-               }
+	    if (cell->lteAdvCb.dsfrCfg.status == RGR_ENABLE)
+	    {
+	       /* releasing rntp info val from each subframe */ 
+	       for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
+	       {
+		  rgSchDSFRRntpInfoFree(&cell->subFrms[i]->rntpInfo, cell, cell->bwCfg.dlTotalBw);
+	       }
 
-               /* releasing RNTP Aggregation Info from CellCb*/
-               rgSchDSFRRntpInfoFree(&cell->rntpAggrInfo, cell, cell->bwCfg.dlTotalBw); 
+	       /* releasing RNTP Aggregation Info from CellCb*/
+	       rgSchDSFRRntpInfoFree(&cell->rntpAggrInfo, cell, cell->bwCfg.dlTotalBw); 
 
-               cell->lteAdvCb.dsfrCfg.status = RGR_DISABLE;
-            }
-         }
+	       cell->lteAdvCb.dsfrCfg.status = RGR_DISABLE;
+	    }
+	 }
       }
       /* dsfr_pal_fixes ** 21-March-2013 ** SKS ** Start */
       if(cellRecfg->rgrLteAdvCfg.pres & RGR_DSFR)
       {
-         cell->lteAdvCb.dsfrCfg =
-            cellRecfg->rgrLteAdvCfg.dsfrCfg;
-         if (cell->lteAdvCb.dsfrCfg.status == RGR_ENABLE)
-         {
-            for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
-            {
-               /*initialise the pools of CC and CE*/
-               if(rgSchDSFRRntpInfoInit(&cell->subFrms[i]->rntpInfo,cell,cell->bwCfg.dlTotalBw))
-               {
-                  RETVALUE(RFAILED);
-               }
-            }
-            /*Calculating the length of RNTP array based on Dl Bandwidth */
-            len = (U16)((cell->bwCfg.dlTotalBw % 8 == 0) ? (cell->bwCfg.dlTotalBw/8) : (cell->bwCfg.dlTotalBw/8 + 1)); /* KW fix for LTE_ADV */
-            if(cell->rntpAggrInfo.pres == NOTPRSNT)
-            {   
-               if((rgSCHUtlAllocSBuf(inst, (Data**)&(cell->rntpAggrInfo.val),
-                           (len * sizeof(U8)))) != ROK)
-               {
-                  RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,
-                            "Memory allocation FAILED for RNTP Alloc");
-                  RETVALUE(RFAILED);
-               }
-               cell->rntpAggrInfo.pres = PRSNT_NODEF;
-               cell->rntpAggrInfo.len  = len; 
-            }
-         }
-         /* in case if DSFR is disabled, need to free RNTP pattern val*/
-         else
-         {
-            /* releasing rntp info val from each subframe */ 
-            for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
-            {
-               rgSchDSFRRntpInfoFree(&cell->subFrms[i]->rntpInfo, cell, cell->bwCfg.dlTotalBw);
-            }
+	 cell->lteAdvCb.dsfrCfg =
+	    cellRecfg->rgrLteAdvCfg.dsfrCfg;
+	 if (cell->lteAdvCb.dsfrCfg.status == RGR_ENABLE)
+	 {
+	    for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
+	    {
+	       /*initialise the pools of CC and CE*/
+	       if(rgSchDSFRRntpInfoInit(&cell->subFrms[i]->rntpInfo,cell,cell->bwCfg.dlTotalBw))
+	       {
+		  RETVALUE(RFAILED);
+	       }
+	    }
+	    /*Calculating the length of RNTP array based on Dl Bandwidth */
+	    len = (U16)((cell->bwCfg.dlTotalBw % 8 == 0) ? (cell->bwCfg.dlTotalBw/8) : (cell->bwCfg.dlTotalBw/8 + 1)); /* KW fix for LTE_ADV */
+	    if(cell->rntpAggrInfo.pres == NOTPRSNT)
+	    {   
+	       if((rgSCHUtlAllocSBuf(inst, (Data**)&(cell->rntpAggrInfo.val),
+			   (len * sizeof(U8)))) != ROK)
+	       {
+		  RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,
+			"Memory allocation FAILED for RNTP Alloc");
+		  RETVALUE(RFAILED);
+	       }
+	       cell->rntpAggrInfo.pres = PRSNT_NODEF;
+	       cell->rntpAggrInfo.len  = len; 
+	    }
+	 }
+	 /* in case if DSFR is disabled, need to free RNTP pattern val*/
+	 else
+	 {
+	    /* releasing rntp info val from each subframe */ 
+	    for(i = 0; i < RGSCH_NUM_DL_slotS; i++)
+	    {
+	       rgSchDSFRRntpInfoFree(&cell->subFrms[i]->rntpInfo, cell, cell->bwCfg.dlTotalBw);
+	    }
 
-            /* releasing RNTP Aggregation Info from CellCb*/
-            rgSchDSFRRntpInfoFree(&cell->rntpAggrInfo, cell, cell->bwCfg.dlTotalBw);
-         }   
+	    /* releasing RNTP Aggregation Info from CellCb*/
+	    rgSchDSFRRntpInfoFree(&cell->rntpAggrInfo, cell, cell->bwCfg.dlTotalBw);
+	 }   
       }
       /* dsfr_pal_fixes ** 21-March-2013 ** SKS ** End */
    }
-/* LTE_ADV_FLAG_REMOVED_END */
+   /* LTE_ADV_FLAG_REMOVED_END */
 
    /* Dynamic CFI cell Reconfiguration */
    if(cellRecfg->recfgTypes & RGR_CELL_DYN_CFI_RECFG)
    {
       if(cell->dynCfiCb.isDynCfiEnb != cellRecfg->isDynCfiEnb)
       {
-         if(cell->dynCfiCb.switchOvrInProgress)  
-         {
-            cell->dynCfiCb.dynCfiRecfgPend = TRUE;
-         }  
-         else
-         { 
-            cell->dynCfiCb.isDynCfiEnb = cellRecfg->isDynCfiEnb;
-            rgSCHDynCfiReCfg(cell, cellRecfg->isDynCfiEnb); 
-         }
+	 if(cell->dynCfiCb.switchOvrInProgress)  
+	 {
+	    cell->dynCfiCb.dynCfiRecfgPend = TRUE;
+	 }  
+	 else
+	 { 
+	    cell->dynCfiCb.isDynCfiEnb = cellRecfg->isDynCfiEnb;
+	    rgSCHDynCfiReCfg(cell, cellRecfg->isDynCfiEnb); 
+	 }
       }   
       else
       {
-         /* To hanlde the case where reconfiguration comes for disabling 
-          * and then enabling before switchover period expires */
-         cell->dynCfiCb.dynCfiRecfgPend = FALSE;
+	 /* To hanlde the case where reconfiguration comes for disabling 
+	  * and then enabling before switchover period expires */
+	 cell->dynCfiCb.dynCfiRecfgPend = FALSE;
       }   
    }   
    /* Dynamic config of AUTO chnage flag */
@@ -3859,14 +3859,14 @@ RgSchErrInfo  *errInfo;
    {
       if(cell->isAutoCfgModeEnb != cellRecfg->isAutoCfgModeEnb)
       {
-         cell->isAutoCfgModeEnb = cellRecfg->isAutoCfgModeEnb;
+	 cell->isAutoCfgModeEnb = cellRecfg->isAutoCfgModeEnb;
       }
    }
    {
-     if(cell->isAutoCfgModeEnb)
-     {
-        RLOG0(L_INFO,"Auto Mode Cfg enabled durint cell recfg\n");
-     }
+      if(cell->isAutoCfgModeEnb)
+      {
+	 RLOG0(L_INFO,"Auto Mode Cfg enabled durint cell recfg\n");
+      }
    }
 
    if (cellRecfg->recfgTypes & RGR_CELL_CSG_PARAM_RECFG)
@@ -3874,7 +3874,7 @@ RgSchErrInfo  *errInfo;
       cell->minDlResNonCsg = cellRecfg->csgParamCfg.minDlResNonCsg;
       cell->minUlResNonCsg = cellRecfg->csgParamCfg.minUlResNonCsg;
    }
-  
+
    errInfo->errCause = RGSCHERR_NONE;
    RETVALUE(ROK);
 }  /* rgSCHCfgRgrCellRecfg */
@@ -3902,19 +3902,19 @@ RgSchErrInfo  *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgRgrUeRecfgRntiChg
+   PRIVATE S16 rgSCHCfgRgrUeRecfgRntiChg
 (
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgrUeRecfg     *ueRecfg,
-RgSchErrInfo   *errInfo
-)
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ue,
+ RgrUeRecfg     *ueRecfg,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PRIVATE S16 rgSCHCfgRgrUeRecfgRntiChg(cell, ue, ueRecfg, errInfo)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgrUeRecfg     *ueRecfg;
-RgSchErrInfo   *errInfo;
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ue;
+   RgrUeRecfg     *ueRecfg;
+   RgSchErrInfo   *errInfo;
 #endif
 {
 #ifdef LTE_ADV
@@ -3925,7 +3925,7 @@ RgSchErrInfo   *errInfo;
    RgSchRaCb    *oldRaCb;
    RgSchDlHqEnt **hqEnt = &(RG_SCH_CMN_GET_UE_HQE(ue, cell));
    U8           idx;
-    
+
    TRC2(rgSCHCfgRgrUeRecfgRntiChg);
 
    /* Handle CRNTI change in reconfiguration */
@@ -3935,22 +3935,22 @@ RgSchErrInfo   *errInfo;
       CmLteRnti      oldRnti = 0;
       if ((raCb = rgSCHDbmGetRaCb(cell, ueRecfg->newCrnti)) == NULLP)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"UEID:No RaCb exists while"
-              "Reconfig for OLD CRNTI:%d NEW CRNTI:%d",ueRecfg->oldCrnti,ueRecfg->newCrnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"UEID:No RaCb exists while"
+	       "Reconfig for OLD CRNTI:%d NEW CRNTI:%d",ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
       }
 
       /* rntiLnk does not exist for a HandIn UE. Hence this check. */
       if(ue->rntiLnk)
       {
-         oldRntiLnk = ue->rntiLnk;
+	 oldRntiLnk = ue->rntiLnk;
       }
       else
       {
-    	 /* Fix : syed HO UE does not have a valid ue->rntiLnk */
-         oldRnti = ue->ueId;
+	 /* Fix : syed HO UE does not have a valid ue->rntiLnk */
+	 oldRnti = ue->ueId;
       }
-     
+
       RLOG2(L_INFO,"UE ID CHNG OLD %d new %d",ueRecfg->oldCrnti, ueRecfg->newCrnti); 
 
       /* Fix : syed Deleting Old DL HqEnt. It would be assigned after
@@ -3961,9 +3961,9 @@ RgSchErrInfo   *errInfo;
       ret = rgSCHRamRgrUeCfg(cell, ue, raCb, errInfo);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"RAM Handling for UE Reconfig failed"
-              "for OLD CRNTI:%d NEW CRNTI:%d",ueRecfg->oldCrnti,ueRecfg->newCrnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"RAM Handling for UE Reconfig failed"
+	       "for OLD CRNTI:%d NEW CRNTI:%d",ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
       }
       /* Delete Ue from the ue list */
       rgSCHDbmDelUeCb(cell, ue);
@@ -3971,38 +3971,38 @@ RgSchErrInfo   *errInfo;
 #ifdef LTE_ADV
       if (ue->numSCells)
       {
-         for ( sCellIdx = 1; sCellIdx < CM_LTE_MAX_CELLS; sCellIdx++)
-         {
-            if(ue->cellInfo[sCellIdx] != NULLP)
-            {
-               rgSCHDbmDelUeCb(ue->cellInfo[sCellIdx]->cell, ue);
-            }
-         }
+	 for ( sCellIdx = 1; sCellIdx < CM_LTE_MAX_CELLS; sCellIdx++)
+	 {
+	    if(ue->cellInfo[sCellIdx] != NULLP)
+	    {
+	       rgSCHDbmDelUeCb(ue->cellInfo[sCellIdx]->cell, ue);
+	    }
+	 }
       }
 #endif
 
       /* Inititialize Ue control block */
       ue->ueId = ueRecfg->newCrnti;
       RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
-            "Changing RNTI from %d to %d",
-            ueRecfg->oldCrnti, 
-            ueRecfg->newCrnti);
+	    "Changing RNTI from %d to %d",
+	    ueRecfg->oldCrnti, 
+	    ueRecfg->newCrnti);
 #ifdef EMTC_ENABLE 
       if(ue->isEmtcUe)
       {
-         rgSCHUtlUpdEmtcY(ue);
+	 rgSCHUtlUpdEmtcY(ue);
       }
 #endif
-      
+
       /* Fix ccpu00122631: PCell_Reest: Updating new Rnti in all the cells
        * dlAllocCb 
        */
       for(idx = 0; idx < CM_LTE_MAX_CELLS; idx++)
       {
-         if(ue->cellInfo[idx])
-         {
-            ue->cellInfo[idx]->dlAllocCb.rnti = ueRecfg->newCrnti;
-         }
+	 if(ue->cellInfo[idx])
+	 {
+	    ue->cellInfo[idx]->dlAllocCb.rnti = ueRecfg->newCrnti;
+	 }
       }
 
       rgSCHUtlRecMsg3Alloc(cell, ue, raCb);
@@ -4010,23 +4010,23 @@ RgSchErrInfo   *errInfo;
       /* If raCb received PHR, update scheduler */
       if(raCb->phr.pres == TRUE)
       {
-         ue->macCeRptTime = raCb->msg3AllocTime; 
-         rgSCHUtlUpdPhr(cell, ue, raCb->phr.val, errInfo);
+	 ue->macCeRptTime = raCb->msg3AllocTime; 
+	 rgSCHUtlUpdPhr(cell, ue, raCb->phr.val, errInfo);
       }
 
 #ifdef RGR_V2  /* Acc Fix */
-     if(TRUE == ue->isDrxEnabled)
-     {
-         ueRecfg->ueDrxRecfg.isDrxEnabled = TRUE;
-         ret = rgSCHDrxUeReCfg(cell,ue,ueRecfg);  
+      if(TRUE == ue->isDrxEnabled)
+      {
+	 ueRecfg->ueDrxRecfg.isDrxEnabled = TRUE;
+	 ret = rgSCHDrxUeReCfg(cell,ue,ueRecfg);  
 
-         if ( ret != ROK )
-         {
-             RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"UE DRX re-est failed"
-              "for OLD CRNTI:%d NEW CRNTI:%d",ueRecfg->oldCrnti,ueRecfg->newCrnti);
-             RETVALUE(RFAILED);
-         }
-     }
+	 if ( ret != ROK )
+	 {
+	    RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"UE DRX re-est failed"
+		  "for OLD CRNTI:%d NEW CRNTI:%d",ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	    RETVALUE(RFAILED);
+	 }
+      }
 #endif /* Acc Fix */
 
       /* Re-insert updated Ue */
@@ -4035,13 +4035,13 @@ RgSchErrInfo   *errInfo;
 #ifdef LTE_ADV
       if (ue->numSCells)
       {
-         for ( sCellIdx = 1; sCellIdx < CM_LTE_MAX_CELLS; sCellIdx++)
-         {
-            if(ue->cellInfo[sCellIdx] != NULLP)
-            {
-               rgSCHDbmInsUeCb(ue->cellInfo[sCellIdx]->cell, ue);
-            }
-         }
+	 for ( sCellIdx = 1; sCellIdx < CM_LTE_MAX_CELLS; sCellIdx++)
+	 {
+	    if(ue->cellInfo[sCellIdx] != NULLP)
+	    {
+	       rgSCHDbmInsUeCb(ue->cellInfo[sCellIdx]->cell, ue);
+	    }
+	 }
       }
 #endif
 
@@ -4057,36 +4057,36 @@ RgSchErrInfo   *errInfo;
        * for msg4 */
       if (raCb->raState == RGSCH_RA_MSG4_DONE)
       {
-         RLOG_ARG1(L_DEBUG,DBG_CELLID,ueRecfg->cellId,
-               "RNTI:%d with RaCb deleted as Msg4 transmission is done", 
-               raCb->tmpCrnti);
-         rgSCHRamDelRaCb(cell, raCb, FALSE);
+	 RLOG_ARG1(L_DEBUG,DBG_CELLID,ueRecfg->cellId,
+	       "RNTI:%d with RaCb deleted as Msg4 transmission is done", 
+	       raCb->tmpCrnti);
+	 rgSCHRamDelRaCb(cell, raCb, FALSE);
       }
       /* Fix : syed moving the UL CQI initialization to UERESET */
 
       /* Release Older rnti */
       if(oldRntiLnk)
       {
-         /* This is the rare case in which back to back reestablishment is 
-          * happening and previous re-est was not done completely (MSG4 was 
-          * not done) for an UE, and again re-est is triggered for the same 
-          * UE. We are deleting the old RA CB for the previous re-est which 
-          * still exist due to MSG4 not transmitted successfully */
-         if ((oldRaCb = rgSCHDbmGetRaCb(cell, oldRntiLnk->rnti)) != NULLP)
-         {
-            rgSCHRamDelRaCb(cell, oldRaCb, FALSE);
-         }
+	 /* This is the rare case in which back to back reestablishment is 
+	  * happening and previous re-est was not done completely (MSG4 was 
+	  * not done) for an UE, and again re-est is triggered for the same 
+	  * UE. We are deleting the old RA CB for the previous re-est which 
+	  * still exist due to MSG4 not transmitted successfully */
+	 if ((oldRaCb = rgSCHDbmGetRaCb(cell, oldRntiLnk->rnti)) != NULLP)
+	 {
+	    rgSCHRamDelRaCb(cell, oldRaCb, FALSE);
+	 }
 
-         rgSCHUtlRlsRnti(cell, oldRntiLnk, TRUE, ueRecfg->newCrnti);
+	 rgSCHUtlRlsRnti(cell, oldRntiLnk, TRUE, ueRecfg->newCrnti);
       }
       else
       {
-    	 /* Fix : syed HO UE does not have a valid ue->rntiLnk */
-	     /* Just indicate to MAC, no need to release at SCH */
-         RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
-               "HO OldRnti:%d RLS and NewRnti:%d CHNG IND TO MAC",
-               oldRnti, ueRecfg->newCrnti);
-         rgSCHUtlIndRntiRls2Mac(cell, oldRnti, TRUE, ueRecfg->newCrnti);
+	 /* Fix : syed HO UE does not have a valid ue->rntiLnk */
+	 /* Just indicate to MAC, no need to release at SCH */
+	 RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
+	       "HO OldRnti:%d RLS and NewRnti:%d CHNG IND TO MAC",
+	       oldRnti, ueRecfg->newCrnti);
+	 rgSCHUtlIndRntiRls2Mac(cell, oldRnti, TRUE, ueRecfg->newCrnti);
       }
    }
    RETVALUE(ROK);
@@ -4118,26 +4118,26 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrUeRecfg
+   PUBLIC S16 rgSCHCfgRgrUeRecfg
 (
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgrUeRecfg     *ueRecfg,
-RgSchErrInfo   *errInfo
-)
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ue,
+ RgrUeRecfg     *ueRecfg,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrUeRecfg(cell, ue, ueRecfg, errInfo)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgrUeRecfg     *ueRecfg;
-RgSchErrInfo   *errInfo;
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ue;
+   RgrUeRecfg     *ueRecfg;
+   RgSchErrInfo   *errInfo;
 #endif
 {
    S16          ret;
 #ifdef LTE_ADV
    Bool dciChange = TRUE;
 #endif
-   
+
    TRC2(rgSCHCfgRgrUeRecfg);
 
    errInfo->errCause = RGSCHERR_CFG_RGR_UE_RECFG;
@@ -4148,7 +4148,7 @@ RgSchErrInfo   *errInfo;
       dciChange = FALSE;
    }
    if ((ueRecfg->ueRecfgTypes & RGR_UE_UE_ACCESS_STRATUM_REL_RECFG) && \
-         (ue->accessStratumRls != ueRecfg->accessStratumRls))
+	 (ue->accessStratumRls != ueRecfg->accessStratumRls))
    {
       ue->accessStratumRls = ueRecfg->accessStratumRls;
       dciChange = TRUE;
@@ -4163,24 +4163,24 @@ RgSchErrInfo   *errInfo;
       ret = rgSCHSCellCfgUeCfg(cell, ue, ueRecfg, errInfo);
       if( ret != ROK)
       {
-         errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_SCELL_RECFG;
-         /*FH: SCell config failed for a scell index hence revert all successful
-          * Scell config and send negative confirmation to APP*/
-         rgSCHSCellCfgUeCfgRollBack(cell, ue, ueRecfg);
-         RETVALUE(RFAILED);
+	 errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_SCELL_RECFG;
+	 /*FH: SCell config failed for a scell index hence revert all successful
+	  * Scell config and send negative confirmation to APP*/
+	 rgSCHSCellCfgUeCfgRollBack(cell, ue, ueRecfg);
+	 RETVALUE(RFAILED);
       }
    }
    if (dciChange == TRUE)
    {
       if (ue->numSCells > 0)
       {
-         /* 2 bit CSI */
-         rgSCHUtlUpdUeDciSize(cell, ue, TRUE);
+	 /* 2 bit CSI */
+	 rgSCHUtlUpdUeDciSize(cell, ue, TRUE);
       }
       else
       {
-         /* 1 bit CSI Access Stratum Release Change */
-         rgSCHUtlUpdUeDciSize(cell, ue, FALSE);
+	 /* 1 bit CSI Access Stratum Release Change */
+	 rgSCHUtlUpdUeDciSize(cell, ue, FALSE);
       }
    }
    if (ueRecfg->ueRecfgTypes & RGR_UE_SCELL_PUCCH_RECFG)
@@ -4188,13 +4188,13 @@ RgSchErrInfo   *errInfo;
       ret = rgSCHSCellCfgUePucchReCfg(cell, ue, ueRecfg, errInfo);
       if( ret != ROK)
       {
-         errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_SCELL_PUCCH_RECFG;
-         RETVALUE(RFAILED);
+	 errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_SCELL_PUCCH_RECFG;
+	 RETVALUE(RFAILED);
       }
    }
 #else
    if ((ueRecfg->ueRecfgTypes & RGR_UE_UE_ACCESS_STRATUM_REL_RECFG) && \
-         (ue->accessStratumRls != ueRecfg->accessStratumRls))
+	 (ue->accessStratumRls != ueRecfg->accessStratumRls))
    {
       ue->accessStratumRls = ueRecfg->accessStratumRls;
       rgSCHUtlUpdUeDciSize(cell, ue, FALSE);
@@ -4207,10 +4207,10 @@ RgSchErrInfo   *errInfo;
       ret = rgSCHUtlRgrUeRecfg(cell, ue, ueRecfg, errInfo);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,
-             "Scheduler handling while reconfig failed"
-              "for OLD CRNTI:%d NEW CRNTI:%d",ueRecfg->oldCrnti,ueRecfg->newCrnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,
+	       "Scheduler handling while reconfig failed"
+	       "for OLD CRNTI:%d NEW CRNTI:%d",ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
       }
 
       /* Update uplink HARQ related information for UE */
@@ -4219,40 +4219,40 @@ RgSchErrInfo   *errInfo;
       /* Update TA related information for UE */
       if (ueRecfg->ueRecfgTypes & RGR_UE_TATMR_RECFG)
       {
-         rgSCHCfgUeTaRecfg(cell, ue, ueRecfg, errInfo);
+	 rgSCHCfgUeTaRecfg(cell, ue, ueRecfg, errInfo);
       }
 
       /*Update Measurement Gap and AckNack Details */
       /* After merging from 2.2 */
       if (ueRecfg->ueRecfgTypes & RGR_UE_ACKNACK_MEASGAP_RECFG)
       {
-         ret = rgSCHMeasGapANRepUeRecfg(cell, ue, ueRecfg);
-         if (ret != ROK)
-         {
-            RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Measurement Gap and"
-                     "AckNack Rep Recfg failed for OLD CRNTI:%d NEW CRNTI:%d",
-                      ueRecfg->oldCrnti,ueRecfg->newCrnti);
-            RETVALUE(RFAILED);
-         }
+	 ret = rgSCHMeasGapANRepUeRecfg(cell, ue, ueRecfg);
+	 if (ret != ROK)
+	 {
+	    RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Measurement Gap and"
+		  "AckNack Rep Recfg failed for OLD CRNTI:%d NEW CRNTI:%d",
+		  ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	    RETVALUE(RFAILED);
+	 }
       }
       if (ueRecfg->ueRecfgTypes & RGR_UE_BSRTMR_RECFG)
       {
-         cmInitTimers(&ue->bsrTmr, 1);
-         ue->ul.bsrTmrCfg = ueRecfg->ueBsrTmrRecfg;
-         if ((ue->ul.bsrTmrCfg.isPrdBsrTmrPres) && 
-               (ue->ul.bsrTmrCfg.prdBsrTmr == 0xFFFF))
-         {
-            ue->ul.bsrTmrCfg.isPrdBsrTmrPres = FALSE;
-         }
+	 cmInitTimers(&ue->bsrTmr, 1);
+	 ue->ul.bsrTmrCfg = ueRecfg->ueBsrTmrRecfg;
+	 if ((ue->ul.bsrTmrCfg.isPrdBsrTmrPres) && 
+	       (ue->ul.bsrTmrCfg.prdBsrTmr == 0xFFFF))
+	 {
+	    ue->ul.bsrTmrCfg.isPrdBsrTmrPres = FALSE;
+	 }
       }
    }
 
    if (RFAILED == rgSCHCfgRgrUeRecfgRntiChg (cell, ue, ueRecfg, errInfo))
    {
-       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"RNTI change "
-               "failed for OLD CRNTI:%d NEW CRNTI:%d",
-                ueRecfg->oldCrnti,ueRecfg->newCrnti);
-       RETVALUE(RFAILED);
+      RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"RNTI change "
+	    "failed for OLD CRNTI:%d NEW CRNTI:%d",
+	    ueRecfg->oldCrnti,ueRecfg->newCrnti);
+      RETVALUE(RFAILED);
    }
 
 #ifdef TFU_UPGRADE
@@ -4260,13 +4260,13 @@ RgSchErrInfo   *errInfo;
    if ( ueRecfg->ueRecfgTypes & RGR_UE_APRD_DLCQI_RECFG ) 
    {
       ret = rgSCHCfgAcqiUeReCfg(cell, ue, &ueRecfg->aprdDlCqiRecfg, 
-            ue->ueCatEnum);
+	    ue->ueCatEnum);
    }
    /*   Re-Initialize Periodic CQI/PMI, RI Information for UE  */
    if ( ueRecfg->ueRecfgTypes & RGR_UE_PCQI_RECFG) 
    {
       ret = rgSCHCfgPCqiUeReCfg(cell, ue, &ueRecfg->cqiCfg, 
-            ue->ueCatEnum);
+	    ue->ueCatEnum);
    }
    /*   Re-Initialize UL SRS Information for UE  */
    if ( ueRecfg->ueRecfgTypes & RGR_UE_SRS_RECFG) 
@@ -4283,30 +4283,30 @@ RgSchErrInfo   *errInfo;
 #ifdef LTEMAC_HDFDD  
    if(ueRecfg->isHdFddEnbld)
    {
-        ret = rgSCHHdFddUeCfg(cell, ue, ueRecfg->isHdFddEnbld);
-        if (ret != ROK)
-        {
-           errInfo->errCause = RGSCHERR_HDFDD_SPSCFGRD;
-           RETVALUE(ret);
-        }
+      ret = rgSCHHdFddUeCfg(cell, ue, ueRecfg->isHdFddEnbld);
+      if (ret != ROK)
+      {
+	 errInfo->errCause = RGSCHERR_HDFDD_SPSCFGRD;
+	 RETVALUE(ret);
+      }
    }
 #endif /* LTEMAC_HDFDD */
 #ifdef RGR_V2
-  if ( ueRecfg->ueRecfgTypes & RGR_UE_DRX_RECFG)
-  {
-     ret = rgSCHDrxUeReCfg(cell,ue,ueRecfg);  
+   if ( ueRecfg->ueRecfgTypes & RGR_UE_DRX_RECFG)
+   {
+      ret = rgSCHDrxUeReCfg(cell,ue,ueRecfg);  
 
-     if ( ret != ROK )
-     {
-        RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"UE DRX reconfig failed"
-               "failed for OLD CRNTI:%d NEW CRNTI:%d",
-                ueRecfg->oldCrnti,ueRecfg->newCrnti);
-        RETVALUE(RFAILED);
-     }
-  }
+      if ( ret != ROK )
+      {
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"UE DRX reconfig failed"
+	       "failed for OLD CRNTI:%d NEW CRNTI:%d",
+	       ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
+      }
+   }
 #endif  
-/* ccpu00117452 - MOD - Changed macro name from
-   RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
+   /* ccpu00117452 - MOD - Changed macro name from
+      RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
    /* CQI Reporting (N)  Re-configuration */
    if(ueRecfg->ueRecfgTypes & RGR_UE_CQIREPT_RECFG)
@@ -4314,40 +4314,40 @@ RgSchErrInfo   *errInfo;
       ret = rgSCHCfgUeCqiReptReCfg(cell, ue, ueRecfg);
       if(ret != OK)
       {
-         errInfo->errCause = RGSCHERR_CQIREPT;
-         RETVALUE(ret);
+	 errInfo->errCause = RGSCHERR_CQIREPT;
+	 RETVALUE(ret);
       }
    }
 #endif /* End of RGR_CQI_REPT */
 #ifdef TFU_UPGRADE
    /* pA Re-configuration */
    if((ueRecfg->ueRecfgTypes & RGR_UE_PA_RECFG) &&
-         RG_SCH_UE_CFG_ISPAPRSNT(ueRecfg->uePdschDedCfg.uepACfg))
+	 RG_SCH_UE_CFG_ISPAPRSNT(ueRecfg->uePdschDedCfg.uepACfg))
    {
       RG_SCH_CMN_GET_PA(ue,cell).pres = TRUE;
       RG_SCH_CMN_GET_PA(ue,cell).val = ueRecfg->uePdschDedCfg.uepACfg.pA;
    }
 #endif
 
-/* LTE_ADV_FLAG_REMOVED_START */
+   /* LTE_ADV_FLAG_REMOVED_START */
    if(ueRecfg->ueRecfgTypes & RGR_UE_LTEA_RECFG)
    {
       if(ueRecfg->ueLteAdvCfg.pres & RGR_ABS)
       {
-         ue->lteAdvUeCb.rgrLteAdvUeCfg.isAbsUe = ueRecfg->ueLteAdvCfg.isAbsUe;
+	 ue->lteAdvUeCb.rgrLteAdvUeCfg.isAbsUe = ueRecfg->ueLteAdvCfg.isAbsUe;
       }
 
       if(ueRecfg->ueLteAdvCfg.pres & RGR_SFR)
       {
-         ue->lteAdvUeCb.rgrLteAdvUeCfg.isUeCellEdge = ueRecfg->ueLteAdvCfg.isUeCellEdge;
+	 ue->lteAdvUeCb.rgrLteAdvUeCfg.isUeCellEdge = ueRecfg->ueLteAdvCfg.isUeCellEdge;
       }
    }
-/* LTE_ADV_FLAG_REMOVED_END */
+   /* LTE_ADV_FLAG_REMOVED_END */
 #ifdef EMTC_ENABLE
    if(ueRecfg->ueRecfgTypes & RGR_UE_EMTC_DPLXMODE_RECFG)
    {
       rgSCHEmtcHdFddUeCfg (cell, ue,
-               ueRecfg->emtcUeRecfg.isHdFddEnbld);
+	    ueRecfg->emtcUeRecfg.isHdFddEnbld);
    }
    if(ueRecfg->ueRecfgTypes & RGR_UE_EMTC_PO_TRIGGER)
    {
@@ -4385,21 +4385,21 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrLchRecfg
+   PUBLIC S16 rgSCHCfgRgrLchRecfg
 (
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgSchDlLcCb    *dlLc,
-RgrLchRecfg    *lcRecfg,
-RgSchErrInfo   *errInfo
-)
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ue,
+ RgSchDlLcCb    *dlLc,
+ RgrLchRecfg    *lcRecfg,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrLchRecfg(cell, ue, dlLc, lcRecfg, errInfo)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgSchDlLcCb    *dlLc;
-RgrLchRecfg    *lcRecfg;
-RgSchErrInfo   *errInfo;
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ue;
+   RgSchDlLcCb    *dlLc;
+   RgrLchRecfg    *lcRecfg;
+   RgSchErrInfo   *errInfo;
 #endif
 {
    S16     ret = ROK;
@@ -4412,7 +4412,7 @@ RgSchErrInfo   *errInfo;
    if (ret != ROK)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcRecfg->cellId,"Scheduler handling for LC Recfg"
-              " failed for CRNTI:%d LCID:%d",lcRecfg->crnti,lcRecfg->lcId);
+	    " failed for CRNTI:%d LCID:%d",lcRecfg->crnti,lcRecfg->lcId);
       RETVALUE(RFAILED);
    }
 
@@ -4442,19 +4442,19 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrLcgRecfg
+   PUBLIC S16 rgSCHCfgRgrLcgRecfg
 (
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgrLcgRecfg    *lcgRecfg,
-RgSchErrInfo   *errInfo
-)
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ue,
+ RgrLcgRecfg    *lcgRecfg,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrLcgRecfg(cell, ue, lcgRecfg, errInfo)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgrLcgRecfg    *lcgRecfg;
-RgSchErrInfo   *errInfo;
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ue;
+   RgrLcgRecfg    *lcgRecfg;
+   RgSchErrInfo   *errInfo;
 #endif
 {
    S16     ret = ROK;
@@ -4462,7 +4462,7 @@ RgSchErrInfo   *errInfo;
    TRC2(rgSCHCfgRgrLcgRecfg);
 
    errInfo->errCause = RGSCHERR_CFG_RGR_LCG_RECFG;
-  
+
    /*Added for handling LCG ReConfig if the LCG was deleted */
    ue->ul.lcgArr[lcgRecfg->ulRecfg.lcgId].lcgId = lcgRecfg->ulRecfg.lcgId;
 
@@ -4471,7 +4471,7 @@ RgSchErrInfo   *errInfo;
    if (ret != ROK)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcgRecfg->cellId,"Scheduler handling for LCG Recfg"
-              " failed for CRNTI:%d LCGID:%d",lcgRecfg->crnti,lcgRecfg->ulRecfg.lcgId);
+	    " failed for CRNTI:%d LCGID:%d",lcgRecfg->crnti,lcgRecfg->ulRecfg.lcgId);
       RETVALUE(RFAILED);
    }
 
@@ -4500,19 +4500,19 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrUeReset
+   PUBLIC S16 rgSCHCfgRgrUeReset
 (
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgrRst         *reset,
-RgSchErrInfo   *errInfo
-)
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ue,
+ RgrRst         *reset,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrUeReset(cell, ue, reset, errInfo)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgrRst         *reset;
-RgSchErrInfo   *errInfo;
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ue;
+   RgrRst         *reset;
+   RgSchErrInfo   *errInfo;
 #endif
 {
    U32     idx;
@@ -4522,12 +4522,12 @@ RgSchErrInfo   *errInfo;
 
 
    errInfo->errCause = RGSCHERR_CFG_RGR_UE_RESET;
-  
+
    /* Setting BO of Each Logical Channel of the UE to 0 */
    for (idx = 0; idx < RGSCH_MAX_LC_PER_UE; idx++)
    {
       if(ue->dl.lcCb[idx] != NULLP)
-         ue->dl.lcCb[idx]->bo = 0;
+	 ue->dl.lcCb[idx]->bo = 0;
    }
 
    /* Reset the totalBo */
@@ -4536,7 +4536,7 @@ RgSchErrInfo   *errInfo;
    /* ccpu00129899 */
    if(ue->drxCb != NULLP)
    {
-     (Void)rgSCHDrxUeDel(cell,ue);
+      (Void)rgSCHDrxUeDel(cell,ue);
    }
 
    /* ccpu00140894- Stop TXMode transiition timer if it is running*/
@@ -4571,11 +4571,11 @@ RgSchErrInfo   *errInfo;
    /* [ccpu00127141] Resetting TA related parameters */
    ue->dl.taCb.ta = RGSCH_NO_TA_RQD;
    ue->dl.taCb.state = RGSCH_TA_IDLE;
-   
+
    /*[ccpu00121813]-ADD-Initializing outstanding TA value */
    ue->dl.taCb.outStndngTa = FALSE;
    ue->dl.taCb.outStndngTaval = RGSCH_NO_TA_RQD;
-   
+
    if (ue->dl.taCb.cfgTaTmr)
    {
       rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_TA, ue->dl.taCb.cfgTaTmr);
@@ -4612,17 +4612,17 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrCellDel
+   PUBLIC S16 rgSCHCfgRgrCellDel
 (
-RgSchCellCb    *cell,
-RgrDel         *cellDelInfo,
-RgSchErrInfo   *errInfo
-)
+ RgSchCellCb    *cell,
+ RgrDel         *cellDelInfo,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrCellDel(cell, cellDelInfo, errInfo)
-RgSchCellCb    *cell;
-RgrDel         *cellDelInfo;
-RgSchErrInfo   *errInfo;
+   RgSchCellCb    *cell;
+   RgrDel         *cellDelInfo;
+   RgSchErrInfo   *errInfo;
 #endif
 { 
    TRC2(rgSCHCfgRgrCellDel);
@@ -4633,7 +4633,7 @@ RgSchErrInfo   *errInfo;
    if (cell->cellId != cellDelInfo->u.cellDel.cellId)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellDelInfo->u.cellDel.cellId, 
-                "Cell does not exist");
+	    "Cell does not exist");
       RETVALUE(RFAILED);
    }
 
@@ -4666,17 +4666,17 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrUeDel
+   PUBLIC S16 rgSCHCfgRgrUeDel
 (
-RgSchCellCb         *cell,
-RgrDel              *ueDelInfo,
-RgSchErrInfo        *errInfo
-)
+ RgSchCellCb         *cell,
+ RgrDel              *ueDelInfo,
+ RgSchErrInfo        *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrUeDel(cell, ueDelInfo, errInfo)
-RgSchCellCb         *cell;
-RgrDel              *ueDelInfo;
-RgSchErrInfo        *errInfo;
+   RgSchCellCb         *cell;
+   RgrDel              *ueDelInfo;
+   RgSchErrInfo        *errInfo;
 #endif
 {
    RgSchUeCb        *ue;
@@ -4692,23 +4692,23 @@ RgSchErrInfo        *errInfo;
    if (cell->cellId != ueDelInfo->u.ueDel.cellId)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueDelInfo->u.ueDel.cellId, 
-                "Cell does not exist CRNTI:%d",
-                ueDelInfo->u.ueDel.crnti);
+	    "Cell does not exist CRNTI:%d",
+	    ueDelInfo->u.ueDel.crnti);
       RETVALUE(RFAILED);
    }
    if ((ue = rgSCHDbmGetUeCb(cell, ueDelInfo->u.ueDel.crnti)) == NULLP)
    {
       if((raCb = rgSCHDbmGetRaCb(cell, ueDelInfo->u.ueDel.crnti)) == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,ueDelInfo->u.ueDel.cellId,
-                  "RaCb does not exist for CRNTI:%d",ueDelInfo->u.ueDel.crnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,ueDelInfo->u.ueDel.cellId,
+	       "RaCb does not exist for CRNTI:%d",ueDelInfo->u.ueDel.crnti);
+	 RETVALUE(RFAILED);
       }
       else
       {
-         /* This happens in case of Msg4 rejection */
-         raCb->toDel = TRUE;
-         RETVALUE(ROK);
+	 /* This happens in case of Msg4 rejection */
+	 raCb->toDel = TRUE;
+	 RETVALUE(ROK);
       }
    }
    else
@@ -4716,72 +4716,72 @@ RgSchErrInfo        *errInfo;
 #ifdef LTE_ADV
       if(ueDelInfo->u.ueScellRel.ueDelTypes & RGR_UE_SCELL_DEL_RECFG)
       {
-         for(U8 idx = 0; idx < ueDelInfo->u.ueScellRel.ueSCellRelCfgInfo.numSCells; idx++)
-         {
-            if(NULLP != (secCellCb = (RgSchCellCb *)rgSchUtlGetCellCb(inst, \
-                        ueDelInfo->u.ueScellRel.ueSCellRelCfgInfo.ueSCellRelDedCfg[idx].sCellId)))
-            {
-               rgSCHUtlSndUeSCellDel2Mac(secCellCb, ue->ueId);
-               rgSCHSCellDelUeSCell(cell,ue,ueDelInfo->u.ueScellRel.ueSCellRelCfgInfo.ueSCellRelDedCfg[idx].sCellIdx);
-               ue->numSCells--;
-               if ( ue->numSCells == 0)
-               {
-                  ue->allocCmnUlPdcch = TRUE;
-               }
-            }
-         }
-         if (ue->numSCells == 0)
-         {
-            /* As there is no SCell left so DCI 0 size at UE specific search space 
-             * will be recalculated as the CSI is reduced to 1 bit */
-            rgSCHUtlUpdUeDciSize(cell, ue, FALSE);
-         }
+	 for(U8 idx = 0; idx < ueDelInfo->u.ueScellRel.ueSCellRelCfgInfo.numSCells; idx++)
+	 {
+	    if(NULLP != (secCellCb = (RgSchCellCb *)rgSchUtlGetCellCb(inst, \
+			ueDelInfo->u.ueScellRel.ueSCellRelCfgInfo.ueSCellRelDedCfg[idx].sCellId)))
+	    {
+	       rgSCHUtlSndUeSCellDel2Mac(secCellCb, ue->ueId);
+	       rgSCHSCellDelUeSCell(cell,ue,ueDelInfo->u.ueScellRel.ueSCellRelCfgInfo.ueSCellRelDedCfg[idx].sCellIdx);
+	       ue->numSCells--;
+	       if ( ue->numSCells == 0)
+	       {
+		  ue->allocCmnUlPdcch = TRUE;
+	       }
+	    }
+	 }
+	 if (ue->numSCells == 0)
+	 {
+	    /* As there is no SCell left so DCI 0 size at UE specific search space 
+	     * will be recalculated as the CSI is reduced to 1 bit */
+	    rgSCHUtlUpdUeDciSize(cell, ue, FALSE);
+	 }
       }
       else
 #endif
       {
-         /* Delete Ue from the UE list of CELL*/
-         rgSCHDbmDelUeCb(cell, ue);
+	 /* Delete Ue from the UE list of CELL*/
+	 rgSCHDbmDelUeCb(cell, ue);
 
 #ifdef LTE_L2_MEAS
-         rgSCHDbmDelL2MUe(cell, ue);
+	 rgSCHDbmDelL2MUe(cell, ue);
 #endif
 
-         /* Call MeasGap and AckNakRep processing module */
-         rgSCHMeasGapANRepUeDel(cell, ue, TRUE);
+	 /* Call MeasGap and AckNakRep processing module */
+	 rgSCHMeasGapANRepUeDel(cell, ue, TRUE);
 
-         /* ccpu00140894- Stop TXMode transiition timer if it is running*/
-         if (ue->txModeTransTmr.tmrEvnt != TMR_NONE)
-         {
-            rgSCHTmrStopTmr(cell, RG_SCH_TMR_TXMODE_TRNSTN, ue);
-         }
+	 /* ccpu00140894- Stop TXMode transiition timer if it is running*/
+	 if (ue->txModeTransTmr.tmrEvnt != TMR_NONE)
+	 {
+	    rgSCHTmrStopTmr(cell, RG_SCH_TMR_TXMODE_TRNSTN, ue);
+	 }
 
-         /* Call DRX module to remove UEs from various
-          * lists it maintain 
-          */
-         /* ccpu00129899 */
-         if(ue->drxCb != NULLP)
-         {
-            (Void)rgSCHDrxUeDel(cell,ue);
-            /* Free Ue */
-         }
-         /*Fix: If RA CB exists, delete it*/
-         if((raCb = rgSCHDbmGetRaCb(cell, ueDelInfo->u.ueDel.crnti)) != NULLP)
-         {
-            /* Fix : syed RNTI was getting released twice, once by racb del 
-             * and subsequently by ueDel. Let it get released by ueDel alone */       
-            rgSCHRamDelRaCb(cell, raCb, FALSE);
-         }
+	 /* Call DRX module to remove UEs from various
+	  * lists it maintain 
+	  */
+	 /* ccpu00129899 */
+	 if(ue->drxCb != NULLP)
+	 {
+	    (Void)rgSCHDrxUeDel(cell,ue);
+	    /* Free Ue */
+	 }
+	 /*Fix: If RA CB exists, delete it*/
+	 if((raCb = rgSCHDbmGetRaCb(cell, ueDelInfo->u.ueDel.crnti)) != NULLP)
+	 {
+	    /* Fix : syed RNTI was getting released twice, once by racb del 
+	     * and subsequently by ueDel. Let it get released by ueDel alone */       
+	    rgSCHRamDelRaCb(cell, raCb, FALSE);
+	 }
 #ifdef EMTC_ENABLE
-         if(ue->isEmtcUe)
-         {
-            rgSCHEmtcUeDel(cell, ue);
-         }
+	 if(ue->isEmtcUe)
+	 {
+	    rgSCHEmtcUeDel(cell, ue);
+	 }
 #endif
 
-         rgSCHCfgFreeUeCb(cell, ue);
+	 rgSCHCfgFreeUeCb(cell, ue);
 
-         errInfo->errCause = RGSCHERR_NONE;
+	 errInfo->errCause = RGSCHERR_NONE;
 
       }
       RETVALUE(ROK);
@@ -4809,17 +4809,17 @@ RgSchErrInfo        *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrLcDel
+   PUBLIC S16 rgSCHCfgRgrLcDel
 (
-RgSchCellCb    *cell,
-RgrDel         *lcDelInfo,
-RgSchErrInfo   *errInfo
-)
+ RgSchCellCb    *cell,
+ RgrDel         *lcDelInfo,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrLcDel(cell, lcDelInfo, errInfo)
-RgSchCellCb    *cell;
-RgrDel         *lcDelInfo;
-RgSchErrInfo   *errInfo;
+   RgSchCellCb    *cell;
+   RgrDel         *lcDelInfo;
+   RgSchErrInfo   *errInfo;
 #endif
 {
    RgSchUeCb    *ue;
@@ -4838,7 +4838,7 @@ RgSchErrInfo   *errInfo;
    if (cell->cellId != lcDelInfo->u.lchDel.cellId)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,  "Cell does not exist %d",
-                  lcDelInfo->u.lchDel.cellId);
+	    lcDelInfo->u.lchDel.cellId);
       RETVALUE(RFAILED);
    }
 
@@ -4846,24 +4846,24 @@ RgSchErrInfo   *errInfo;
    if ((ue = rgSCHDbmGetUeCb(cell, lcDelInfo->u.lchDel.crnti)) == NULLP)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcDelInfo->u.lchDel.cellId, 
-                "UE does not exist for CRNTI:%d LCID:%d",
-               lcDelInfo->u.lchDel.crnti,lcDelInfo->u.lchDel.lcId);
+	    "UE does not exist for CRNTI:%d LCID:%d",
+	    lcDelInfo->u.lchDel.crnti,lcDelInfo->u.lchDel.lcId);
       RETVALUE(RFAILED);
    }
    if (lcDelInfo->u.lchDel.lcgId > 3)
    {
       RLOG_ARG3(L_ERROR,DBG_CELLID,lcDelInfo->u.lchDel.cellId, 
-                "[%d]UEID:For LC %d, LCGid %d is invalid",
-               lcDelInfo->u.lchDel.crnti,lcDelInfo->u.lchDel.lcId,
-               lcDelInfo->u.lchDel.lcgId);
+	    "[%d]UEID:For LC %d, LCGid %d is invalid",
+	    lcDelInfo->u.lchDel.crnti,lcDelInfo->u.lchDel.lcId,
+	    lcDelInfo->u.lchDel.lcgId);
       RETVALUE(RFAILED);
    }
    if ((dlLc = rgSCHDbmGetDlDedLcCb(ue, lcDelInfo->u.lchDel.lcId))
-         == NULLP)
+	 == NULLP)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcDelInfo->u.lchDel.cellId,
-                "LC does not exist for CRNTI:%d LCID:%d",
-               lcDelInfo->u.lchDel.crnti, lcDelInfo->u.lchDel.lcId);
+	    "LC does not exist for CRNTI:%d LCID:%d",
+	    lcDelInfo->u.lchDel.crnti, lcDelInfo->u.lchDel.lcId);
       RETVALUE(RFAILED);
    }
    rgSCHUtlRgrLcDel(cell, ue, lcDelInfo->u.lchDel.lcId,lcDelInfo->u.lchDel.lcgId); 
@@ -4874,11 +4874,11 @@ RgSchErrInfo   *errInfo;
    {
       if(ue->totalBo >= dlLc->bo)
       {
-         ue->totalBo -= dlLc->bo;
+	 ue->totalBo -= dlLc->bo;
       }
       else
       {
-        ue->totalBo = 0; /* this scenario should not occur */
+	 ue->totalBo = 0; /* this scenario should not occur */
       }
    }
    rgSCHDbmDelDlDedLcCb(ue, dlLc);
@@ -4892,18 +4892,18 @@ RgSchErrInfo   *errInfo;
       ue->ul.lcCb[lcId -1].isValid = FALSE;
 
       if((ulLc->qciCb->ulUeCount) &&
-            (ue->ulActiveLCs & (1 << (ulLc->qciCb->qci -1))))
+	    (ue->ulActiveLCs & (1 << (ulLc->qciCb->qci -1))))
       {
-         ulLc->qciCb->ulUeCount--;
-         ue->ulActiveLCs &= ~(1 << (ulLc->qciCb->qci -1));
+	 ulLc->qciCb->ulUeCount--;
+	 ue->ulActiveLCs &= ~(1 << (ulLc->qciCb->qci -1));
       }
       /* Shifting LCs in LCG Array because of LC deletion */
       for (idx = ulLc->lcgArrIdx +1; idx < ulLc->lcg->numLch;
-               idx++)
+	    idx++)
       {
-         ulLc->lcg->lcArray[idx -1] =
-            ulLc->lcg->lcArray[idx];
-         ulLc->lcg->lcArray[idx -1]->lcgArrIdx = idx -1;
+	 ulLc->lcg->lcArray[idx -1] =
+	    ulLc->lcg->lcArray[idx];
+	 ulLc->lcg->lcArray[idx -1]->lcgArrIdx = idx -1;
       }
       ulLc->lcg->numLch--;
       ulLc->lcg->lcArray[idx -1] = NULLP;
@@ -4937,17 +4937,17 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrLcgDel
+   PUBLIC S16 rgSCHCfgRgrLcgDel
 (
-RgSchCellCb    *cell,
-RgrDel         *lcDelInfo,
-RgSchErrInfo   *errInfo
-)
+ RgSchCellCb    *cell,
+ RgrDel         *lcDelInfo,
+ RgSchErrInfo   *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrLcgDel(cell, lcDelInfo, errInfo)
-RgSchCellCb    *cell;
-RgrDel         *lcDelInfo;
-RgSchErrInfo   *errInfo;
+   RgSchCellCb    *cell;
+   RgrDel         *lcDelInfo;
+   RgSchErrInfo   *errInfo;
 #endif
 {
    RgSchUeCb    *ue = NULLP;
@@ -4967,8 +4967,8 @@ RgSchErrInfo   *errInfo;
    if (cell->cellId != lcDelInfo->u.lcgDel.cellId)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcDelInfo->u.lchDel.cellId,
-                "CELL does not exist for CRNTI:%d LCGID:%d",
-               lcDelInfo->u.lchDel.crnti,lcDelInfo->u.lchDel.lcId);
+	    "CELL does not exist for CRNTI:%d LCGID:%d",
+	    lcDelInfo->u.lchDel.crnti,lcDelInfo->u.lchDel.lcId);
       RETVALUE(RFAILED);
    }
 
@@ -4976,8 +4976,8 @@ RgSchErrInfo   *errInfo;
    if ((ue = rgSCHDbmGetUeCb(cell, lcDelInfo->u.lcgDel.crnti)) == NULLP)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcDelInfo->u.lchDel.cellId,
-                "UE does not exist for CRNTI:%d LCGID:%d",
-               lcDelInfo->u.lchDel.crnti,lcDelInfo->u.lchDel.lcId);
+	    "UE does not exist for CRNTI:%d LCGID:%d",
+	    lcDelInfo->u.lchDel.crnti,lcDelInfo->u.lchDel.lcId);
       RETVALUE(RFAILED);
    }
 
@@ -4989,27 +4989,27 @@ RgSchErrInfo   *errInfo;
    /* Since LCs are being deleted, if any of them are contributing
       to Active UE count for a QCI, decrease the count */
    for (lcCount =0; (lcCount < RGSCH_MAX_LC_PER_UE) && 
-         (lcCount < ue->ul.lcgArr[lcgId].numLch) ; lcCount++)
+	 (lcCount < ue->ul.lcgArr[lcgId].numLch) ; lcCount++)
    {
       if (ue->ul.lcgArr[lcgId].lcArray[lcCount])
       {
-         if((ue->ul.lcgArr[lcgId].
-                  lcArray[lcCount]->qciCb->ulUeCount) &&
-            (ue->ulActiveLCs &
-             (1 << ((ue->ul.lcgArr[lcgId].
-                    lcArray[lcCount])->qciCb->qci -1))))
-            {
-               /* L2_COUNTERS */
-               ue->ul.lcgArr[lcgId].
-                  lcArray[lcCount]->qciCb->ulUeCount--;
-               ue->ulActiveLCs &= ~(1 << 
-                     (ue->ul.lcgArr[lcgId].
-                      lcArray[lcCount]->qciCb->qci -1));
-            }
+	 if((ue->ul.lcgArr[lcgId].
+		  lcArray[lcCount]->qciCb->ulUeCount) &&
+	       (ue->ulActiveLCs &
+		(1 << ((ue->ul.lcgArr[lcgId].
+			lcArray[lcCount])->qciCb->qci -1))))
+	 {
+	    /* L2_COUNTERS */
+	    ue->ul.lcgArr[lcgId].
+	       lcArray[lcCount]->qciCb->ulUeCount--;
+	    ue->ulActiveLCs &= ~(1 << 
+		  (ue->ul.lcgArr[lcgId].
+		   lcArray[lcCount]->qciCb->qci -1));
+	 }
       }
    }
 #endif
-   
+
    errInfo->errCause = RGSCHERR_NONE;
    RETVALUE(ROK);
 }  /* rgSCHCfgRgrLcgDel */
@@ -5033,21 +5033,21 @@ RgSchErrInfo   *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrLcCfg
+   PUBLIC S16 rgSCHCfgVldtRgrLcCfg
 (
-Inst             inst,
-RgrLchCfg     *lcCfg,
-RgSchCellCb      **cell,
-RgSchUeCb        **ue,
-RgSchErrInfo     *errInfo
-)
+ Inst             inst,
+ RgrLchCfg     *lcCfg,
+ RgSchCellCb      **cell,
+ RgSchUeCb        **ue,
+ RgSchErrInfo     *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrLcCfg(inst, lcCfg, cell, ue, errInfo)
-Inst             inst;
-RgrLchCfg     *lcCfg;
-RgSchCellCb      **cell;
-RgSchUeCb        **ue;
-RgSchErrInfo     *errInfo;
+   Inst             inst;
+   RgrLchCfg     *lcCfg;
+   RgSchCellCb      **cell;
+   RgSchUeCb        **ue;
+   RgSchErrInfo     *errInfo;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrLcCfg);
@@ -5056,10 +5056,10 @@ RgSchErrInfo     *errInfo;
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_DED_LC_CFG;
 
    if (((*cell) == NULLP) ||
-       ((*cell)->cellId != lcCfg->cellId))
+	 ((*cell)->cellId != lcCfg->cellId))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcCfg->cellId,"Cell does not existi for "
-               "CRNTI:%d LCID:%d",lcCfg->crnti, lcCfg->lcId);
+	    "CRNTI:%d LCID:%d",lcCfg->crnti, lcCfg->lcId);
       RETVALUE(RFAILED);
    }
 
@@ -5067,23 +5067,23 @@ RgSchErrInfo     *errInfo;
    if ((*ue = rgSCHDbmGetUeCb(*cell, lcCfg->crnti)) == NULLP)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcCfg->cellId,"UE does not exist for dedicated"
-         " logical channel CRNTI:%d LCID:%d", lcCfg->crnti, lcCfg->lcId);
+	    " logical channel CRNTI:%d LCID:%d", lcCfg->crnti, lcCfg->lcId);
       RETVALUE(RFAILED);
    }
 
    /* Validate logical channel Id */
    if ((lcCfg->lcId < RGSCH_DEDLC_MIN_LCID)
-            ||(lcCfg->lcId > RGSCH_DEDLC_MAX_LCID))
+	 ||(lcCfg->lcId > RGSCH_DEDLC_MAX_LCID))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcCfg->cellId,"Invalid logical channel Id:%d"
-               "for CRNTI:%d",lcCfg->lcId,lcCfg->crnti);
+	    "for CRNTI:%d",lcCfg->lcId,lcCfg->crnti);
       RETVALUE(RFAILED);
    }
 
    if (lcCfg->lcType != CM_LTE_LCH_DTCH && lcCfg->lcType != CM_LTE_LCH_DCCH)
    {
       RLOG_ARG3(L_ERROR,DBG_CELLID,lcCfg->cellId,"Invalid logical channel Type %d"
-               "CRNTI:%d LCID:%d",lcCfg->lcType,lcCfg->crnti, lcCfg->lcId);
+	    "CRNTI:%d LCID:%d",lcCfg->lcType,lcCfg->crnti, lcCfg->lcId);
       RETVALUE(RFAILED);
    }
 
@@ -5107,21 +5107,21 @@ RgSchErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrLcgCfg
+   PUBLIC S16 rgSCHCfgVldtRgrLcgCfg
 (
-Inst             inst,
-RgrLcgCfg        *lcgCfg,
-RgSchCellCb      **cell,
-RgSchUeCb        **ue,
-RgSchErrInfo     *errInfo
-)
+ Inst             inst,
+ RgrLcgCfg        *lcgCfg,
+ RgSchCellCb      **cell,
+ RgSchUeCb        **ue,
+ RgSchErrInfo     *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrLcgCfg(inst, lcgCfg, cell, ue, errInfo)
-Inst             inst;
-RgrLcgCfg        *lcgCfg;
-RgSchCellCb      **cell;
-RgSchUeCb        **ue;
-RgSchErrInfo     *errInfo;
+   Inst             inst;
+   RgrLcgCfg        *lcgCfg;
+   RgSchCellCb      **cell;
+   RgSchUeCb        **ue;
+   RgSchErrInfo     *errInfo;
 #endif
 {
    TRC2(rgSCHCfgVldtRgrLcgCfg);
@@ -5130,10 +5130,10 @@ RgSchErrInfo     *errInfo;
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_DED_LCG_CFG;
 
    if (((*cell) == NULLP) ||
-       ((*cell)->cellId != lcgCfg->cellId))
+	 ((*cell)->cellId != lcgCfg->cellId))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcgCfg->cellId,"Cell does not exist for"
-               "CRNTI:%d LCGID:%d",lcgCfg->crnti,lcgCfg->ulInfo.lcgId);
+	    "CRNTI:%d LCGID:%d",lcgCfg->crnti,lcgCfg->ulInfo.lcgId);
       RETVALUE(RFAILED);
    }
 
@@ -5141,15 +5141,15 @@ RgSchErrInfo     *errInfo;
    if ((*ue = rgSCHDbmGetUeCb(*cell, lcgCfg->crnti)) == NULLP)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcgCfg->cellId,"UE does not exist for "
-        "dedicated logical channel CRNTI:%d LCGID:%d", lcgCfg->crnti, lcgCfg->ulInfo.lcgId);
+	    "dedicated logical channel CRNTI:%d LCGID:%d", lcgCfg->crnti, lcgCfg->ulInfo.lcgId);
       RETVALUE(RFAILED);
    }
-   
+
    if ((lcgCfg->ulInfo.gbr != 0) && (lcgCfg->ulInfo.mbr < lcgCfg->ulInfo.gbr))
    {
-     RETVALUE(RFAILED);
+      RETVALUE(RFAILED);
    }
-   
+
    RETVALUE(ROK);
 }  /* rgSCHCfgVldtRgrLcgCfg */
 
@@ -5170,17 +5170,17 @@ RgSchErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtRgrCellPwrCfg
+   PRIVATE S16 rgSCHCfgVldtRgrCellPwrCfg
 (
-Inst             inst,
-RgrCellCfg       *cellCfg,
-RgSchErrInfo     *errInfo
-)
+ Inst             inst,
+ RgrCellCfg       *cellCfg,
+ RgSchErrInfo     *errInfo
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtRgrCellPwrCfg(inst, cellCfg, errInfo)
-Inst             inst;
-RgrCellCfg       *cellCfg;
-RgSchErrInfo     *errInfo;
+   Inst             inst;
+   RgrCellCfg       *cellCfg;
+   RgSchErrInfo     *errInfo;
 #endif
 {
    UNUSED(inst);
@@ -5217,17 +5217,17 @@ RgSchErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtRgrCmnLcCfg
+   PRIVATE S16 rgSCHCfgVldtRgrCmnLcCfg
 (
-Inst             inst,
-RgrCellCfg       *cellCfg,
-RgSchErrInfo     *errInfo
-)
+ Inst             inst,
+ RgrCellCfg       *cellCfg,
+ RgSchErrInfo     *errInfo
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtRgrCmnLcCfg(inst, cellCfg, errInfo)
-Inst             inst;
-RgrCellCfg       *cellCfg;
-RgSchErrInfo     *errInfo;
+   Inst             inst;
+   RgrCellCfg       *cellCfg;
+   RgSchErrInfo     *errInfo;
 #endif
 {
    U8            idx;
@@ -5239,97 +5239,97 @@ RgSchErrInfo     *errInfo;
    TRC2(rgSCHCfgVldtRgrCmnLcCfg);
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_CMN_LC_CFG;
-   
+
    for (idx = 0; idx < cellCfg->numCmnLcs; idx++)
    {
       lcCfg = &(cellCfg->cmnLcCfg[idx]);
       /* Validate downlink info */
       if (lcCfg->dir & RGR_DIR_TX)
       {
-         if (lcCfg->lcType == CM_LTE_LCH_BCCH)
-         {
-            if (lcCfg->dlTrchType == CM_LTE_TRCH_DL_SCH)
-            {
-               if(cnt == 0)
-               {
-                  bitMask |= RGSCH_BCCH_DLSCH_CFG1;
-                  cnt++;
-               }
-               else
-               {
+	 if (lcCfg->lcType == CM_LTE_LCH_BCCH)
+	 {
+	    if (lcCfg->dlTrchType == CM_LTE_TRCH_DL_SCH)
+	    {
+	       if(cnt == 0)
+	       {
+		  bitMask |= RGSCH_BCCH_DLSCH_CFG1;
+		  cnt++;
+	       }
+	       else
+	       {
 
-                  if((
-                     (cellCfg->siCfg.siWinSize == 1)  ||
-                     (cellCfg->siCfg.siWinSize == 2)  ||
-                     (cellCfg->siCfg.siWinSize == 5)  ||
-                     (cellCfg->siCfg.siWinSize == 10) ||
-                     (cellCfg->siCfg.siWinSize == 15) ||
-                     (cellCfg->siCfg.siWinSize == 20) ||
-                     (cellCfg->siCfg.siWinSize == 40)) &&
-                     (cellCfg->siCfg.retxCnt>0)
-                    )
-                  {
-                     bitMask |= RGSCH_BCCH_DLSCH_CFG2;
-                  }
-                  else
-                  {
-                     RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,
-                           "Invalid si config for cell");
-                     RETVALUE(RFAILED);
-                  }
-               }
-            }
-            else if (lcCfg->dlTrchType == CM_LTE_TRCH_BCH)
-            {
-               bitMask |= RGSCH_BCCH_BCH_CFG;
-            }
-            else
-            {
-               RLOG_ARG1(L_ERROR,DBG_CELLID, cellCfg->cellId,
-                     "Invalid transport channel %d for cell", lcCfg->dlTrchType);
-               RETVALUE(RFAILED);
-            }
-         }
-         else if (lcCfg->lcType == CM_LTE_LCH_PCCH)
-         {
-            bitMask |= RGSCH_PCCH_CFG;
-         }
-         else if (lcCfg->lcType == CM_LTE_LCH_CCCH)
-         {
-            bitMask |= RGSCH_DL_CCCH_CFG;
-         }
-         dirVld = TRUE;
+		  if((
+			   (cellCfg->siCfg.siWinSize == 1)  ||
+			   (cellCfg->siCfg.siWinSize == 2)  ||
+			   (cellCfg->siCfg.siWinSize == 5)  ||
+			   (cellCfg->siCfg.siWinSize == 10) ||
+			   (cellCfg->siCfg.siWinSize == 15) ||
+			   (cellCfg->siCfg.siWinSize == 20) ||
+			   (cellCfg->siCfg.siWinSize == 40)) &&
+			(cellCfg->siCfg.retxCnt>0)
+		    )
+		  {
+		     bitMask |= RGSCH_BCCH_DLSCH_CFG2;
+		  }
+		  else
+		  {
+		     RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,
+			   "Invalid si config for cell");
+		     RETVALUE(RFAILED);
+		  }
+	       }
+	    }
+	    else if (lcCfg->dlTrchType == CM_LTE_TRCH_BCH)
+	    {
+	       bitMask |= RGSCH_BCCH_BCH_CFG;
+	    }
+	    else
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID, cellCfg->cellId,
+		     "Invalid transport channel %d for cell", lcCfg->dlTrchType);
+	       RETVALUE(RFAILED);
+	    }
+	 }
+	 else if (lcCfg->lcType == CM_LTE_LCH_PCCH)
+	 {
+	    bitMask |= RGSCH_PCCH_CFG;
+	 }
+	 else if (lcCfg->lcType == CM_LTE_LCH_CCCH)
+	 {
+	    bitMask |= RGSCH_DL_CCCH_CFG;
+	 }
+	 dirVld = TRUE;
       }
 
       /* Validate uplink info */
       if (lcCfg->dir & RGR_DIR_RX)
       {
-         /* Uplink CCCH */
-         if (lcCfg->lcType != CM_LTE_LCH_CCCH)
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID, cellCfg->cellId,"Invalid UL common lcType %d "
-             "for cell", lcCfg->lcType);
-            RETVALUE(RFAILED);
-         }
-         else
-         {
-            bitMask |= RGSCH_UL_CCCH_CFG;
-         }
-         dirVld = TRUE;
+	 /* Uplink CCCH */
+	 if (lcCfg->lcType != CM_LTE_LCH_CCCH)
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID, cellCfg->cellId,"Invalid UL common lcType %d "
+		  "for cell", lcCfg->lcType);
+	    RETVALUE(RFAILED);
+	 }
+	 else
+	 {
+	    bitMask |= RGSCH_UL_CCCH_CFG;
+	 }
+	 dirVld = TRUE;
       }
 
       /* Invalid direction */
       if (!dirVld)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID, cellCfg->cellId,"Invalid Direction %d", 
-            lcCfg->dir);
-         RETVALUE(RFAILED);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID, cellCfg->cellId,"Invalid Direction %d", 
+	       lcCfg->dir);
+	 RETVALUE(RFAILED);
       }
    }
    if (bitMask != RGSCH_CELL_ACTIVE_CFG)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID, cellCfg->cellId,
-                "Invalid Common channel config for cell");
+	    "Invalid Common channel config for cell");
       RETVALUE(RFAILED);
    }
 
@@ -5354,37 +5354,37 @@ RgSchErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtUeCqiModeCfg
+   PRIVATE S16 rgSCHCfgVldtUeCqiModeCfg
 (
-RgSchCellCb       *cell,
-RgrUeDlCqiCfg     *ueDlCqiCfg
-)
+ RgSchCellCb       *cell,
+ RgrUeDlCqiCfg     *ueDlCqiCfg
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtUeCqiModeCfg(cell, ueDlCqiCfg)
-RgSchCellCb       *cell;
-RgrUeDlCqiCfg     *ueDlCqiCfg;
+   RgSchCellCb       *cell;
+   RgrUeDlCqiCfg     *ueDlCqiCfg;
 #endif
 {
-   
-    TRC2(rgSCHCfgVldtUeCqiModeCfg)
+
+   TRC2(rgSCHCfgVldtUeCqiModeCfg)
 
 #ifndef TFU_UPGRADE
-   if((ueDlCqiCfg->prdCqiCfg.cqiPmiCfgIdx < 1) || 
-         (ueDlCqiCfg->prdCqiCfg.cqiPmiCfgIdx > 1024))
-   {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-                  "Invalid Periodic CQI Info");
-      RETVALUE(RFAILED);
-   }
+      if((ueDlCqiCfg->prdCqiCfg.cqiPmiCfgIdx < 1) || 
+	    (ueDlCqiCfg->prdCqiCfg.cqiPmiCfgIdx > 1024))
+      {
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
+	       "Invalid Periodic CQI Info");
+	 RETVALUE(RFAILED);
+      }
 #endif
    /* Validate UE Aperiodic CQI mode */
    if ((ueDlCqiCfg->aprdCqiCfg.pres == TRUE) &&
-       ((ueDlCqiCfg->aprdCqiCfg.aprdModeEnum > RGR_APRD_CQI_MOD31) ||
-        (cell->bwCfg.dlTotalBw <= 7)))
+	 ((ueDlCqiCfg->aprdCqiCfg.aprdModeEnum > RGR_APRD_CQI_MOD31) ||
+	  (cell->bwCfg.dlTotalBw <= 7)))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                  "Invalid Aperiodic mode config for DL CQI",
-            ueDlCqiCfg->aprdCqiCfg.aprdModeEnum);
+	    "Invalid Aperiodic mode config for DL CQI",
+	    ueDlCqiCfg->aprdCqiCfg.aprdModeEnum);
       RETVALUE(RFAILED);
    }
 #ifndef TFU_UPGRADE
@@ -5392,34 +5392,34 @@ RgrUeDlCqiCfg     *ueDlCqiCfg;
    if (ueDlCqiCfg->prdCqiCfg.prdModeEnum > RGR_PRD_CQI_MOD21)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                  "Invalid periodic mode config for DL CQI",
-                  ueDlCqiCfg->prdCqiCfg.prdModeEnum);
+	    "Invalid periodic mode config for DL CQI",
+	    ueDlCqiCfg->prdCqiCfg.prdModeEnum);
       RETVALUE(RFAILED);
    }
    /* Validate K value in periodic CQI Config */
    if(((ueDlCqiCfg->prdCqiCfg.prdModeEnum == RGR_PRD_CQI_MOD20) ||
-            (ueDlCqiCfg->prdCqiCfg.prdModeEnum == RGR_PRD_CQI_MOD21)) && 
-         ((ueDlCqiCfg->prdCqiCfg.k < 1)||
-            (ueDlCqiCfg->prdCqiCfg.k > 4)))
+	    (ueDlCqiCfg->prdCqiCfg.prdModeEnum == RGR_PRD_CQI_MOD21)) && 
+	 ((ueDlCqiCfg->prdCqiCfg.k < 1)||
+	  (ueDlCqiCfg->prdCqiCfg.k > 4)))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-                  "Invalid K for Subband CQI reporting");
+	    "Invalid K for Subband CQI reporting");
       RETVALUE(RFAILED);
    }
 #else
    if ((ueDlCqiCfg->prdCqiCfg.type == 1) &&
-       (ueDlCqiCfg->prdCqiCfg.cqiSetup.prdModeEnum > RGR_PRD_CQI_MOD21))
+	 (ueDlCqiCfg->prdCqiCfg.cqiSetup.prdModeEnum > RGR_PRD_CQI_MOD21))
    {
-     RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                 "Invalid periodic mode config for DL CQI",
-                 ueDlCqiCfg->prdCqiCfg.cqiSetup.prdModeEnum);
-     RETVALUE(RFAILED);
+      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
+	    "Invalid periodic mode config for DL CQI",
+	    ueDlCqiCfg->prdCqiCfg.cqiSetup.prdModeEnum);
+      RETVALUE(RFAILED);
    }
 
 #endif
-   
+
    RETVALUE(ROK);
-      
+
 }
 /***********************************************************
  *
@@ -5438,73 +5438,73 @@ RgrUeDlCqiCfg     *ueDlCqiCfg;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtUeMeasGapAckNakRepCfg
+   PRIVATE S16 rgSCHCfgVldtUeMeasGapAckNakRepCfg
 (
-RgSchCellCb       *cell,
-RgrUeCfg          *ueCfg
-)
+ RgSchCellCb       *cell,
+ RgrUeCfg          *ueCfg
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtUeMeasGapAckNakRepCfg(cell, ueCfg)
-RgSchCellCb       *cell;
-RgrUeCfg          *ueCfg;
+   RgSchCellCb       *cell;
+   RgrUeCfg          *ueCfg;
 #endif
 {
 
    TRC2(rgSCHCfgVldtUeMeasGapAckNakRepCfg)
-      
+
 #ifdef LTE_TDD
-   if ((ueCfg->ackNackModeEnum == RGR_TDD_ACKNACK_MODE_MULT) &&
-         (ueCfg->ueAckNackCfg.isAckNackEnabled == TRUE))
-   {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId,"TDD ACK NACK Multiplexing Mode"
-      "is not allowed when Ack/Nack is Enabled: %d CRNTI:%d",
-       ueCfg->ueAckNackCfg.ackNackRepFactor,ueCfg->crnti);
-      RETVALUE(RFAILED);
-   }
+      if ((ueCfg->ackNackModeEnum == RGR_TDD_ACKNACK_MODE_MULT) &&
+	    (ueCfg->ueAckNackCfg.isAckNackEnabled == TRUE))
+      {
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId,"TDD ACK NACK Multiplexing Mode"
+	       "is not allowed when Ack/Nack is Enabled: %d CRNTI:%d",
+	       ueCfg->ueAckNackCfg.ackNackRepFactor,ueCfg->crnti);
+	 RETVALUE(RFAILED);
+      }
 #endif /* LTE_TDD */
    /* Validate AckNackRep Factor */
    if((ueCfg->ueAckNackCfg.isAckNackEnabled == FALSE) &&
-         (!ueCfg->ueMesGapCfg.isMesGapEnabled))
+	 (!ueCfg->ueMesGapCfg.isMesGapEnabled))
    {
       RETVALUE(ROK);
    }
 
    if(ueCfg->ueAckNackCfg.isAckNackEnabled)
    {
-   if ( (ueCfg->ueAckNackCfg.ackNackRepFactor < RGR_ACKNACK_REPFACT_N2)
-         || (ueCfg->ueAckNackCfg.ackNackRepFactor > RGR_ACKNACK_REPFACT_N6))
-   {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId, "Invalid ACK NACK REP Factor:%d CRNTI:%d",
-               ueCfg->ueAckNackCfg.ackNackRepFactor,ueCfg->crnti);
-      RETVALUE(RFAILED);
-   }
+      if ( (ueCfg->ueAckNackCfg.ackNackRepFactor < RGR_ACKNACK_REPFACT_N2)
+	    || (ueCfg->ueAckNackCfg.ackNackRepFactor > RGR_ACKNACK_REPFACT_N6))
+      {
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId, "Invalid ACK NACK REP Factor:%d CRNTI:%d",
+	       ueCfg->ueAckNackCfg.ackNackRepFactor,ueCfg->crnti);
+	 RETVALUE(RFAILED);
+      }
    }
    if(ueCfg->ueMesGapCfg.isMesGapEnabled)
    {
-   switch(ueCfg->ueMesGapCfg.gapPrd)
-   {
-      case RG_MEAS_GAPPRD_40:
-         if(ueCfg->ueMesGapCfg.gapOffst >= RG_MEAS_GAPPRD_40)
-         {
-            RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId,"Invalid GAP Offset:%d CRNTI:%d",
-                     ueCfg->ueMesGapCfg.gapOffst,ueCfg->crnti);
-            RETVALUE(RFAILED);
-         }
-         break;
-      case RG_MEAS_GAPPRD_80:
-         if(ueCfg->ueMesGapCfg.gapOffst >= RG_MEAS_GAPPRD_80)
-         {
-            RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId,"Invalid GAP Offset:%d CRNTI:%d",
-                     ueCfg->ueMesGapCfg.gapOffst,ueCfg->crnti);
-            RETVALUE(RFAILED);
-         }
-         break;
-         default:
-         { 
-            RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId,"Invalid GAP Periodicity Settings:%d"
-                      "CRNTI:%d", ueCfg->ueMesGapCfg.gapPrd,ueCfg->crnti);
-            RETVALUE(RFAILED);
-         }
+      switch(ueCfg->ueMesGapCfg.gapPrd)
+      {
+	 case RG_MEAS_GAPPRD_40:
+	    if(ueCfg->ueMesGapCfg.gapOffst >= RG_MEAS_GAPPRD_40)
+	    {
+	       RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId,"Invalid GAP Offset:%d CRNTI:%d",
+		     ueCfg->ueMesGapCfg.gapOffst,ueCfg->crnti);
+	       RETVALUE(RFAILED);
+	    }
+	    break;
+	 case RG_MEAS_GAPPRD_80:
+	    if(ueCfg->ueMesGapCfg.gapOffst >= RG_MEAS_GAPPRD_80)
+	    {
+	       RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId,"Invalid GAP Offset:%d CRNTI:%d",
+		     ueCfg->ueMesGapCfg.gapOffst,ueCfg->crnti);
+	       RETVALUE(RFAILED);
+	    }
+	    break;
+	 default:
+	    { 
+	       RLOG_ARG2(L_ERROR,DBG_CELLID,ueCfg->cellId,"Invalid GAP Periodicity Settings:%d"
+		     "CRNTI:%d", ueCfg->ueMesGapCfg.gapPrd,ueCfg->crnti);
+	       RETVALUE(RFAILED);
+	    }
       }
    }
 
@@ -5529,62 +5529,62 @@ RgrUeCfg          *ueCfg;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtUeMeasGapAckNakRepRecfg
+   PRIVATE S16 rgSCHCfgVldtUeMeasGapAckNakRepRecfg
 (
-RgSchCellCb       *cell,
-RgrUeRecfg        *ueRecfg
-)
+ RgSchCellCb       *cell,
+ RgrUeRecfg        *ueRecfg
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtUeMeasGapAckNakRepRecfg(cell, ueRecfg)
-RgSchCellCb       *cell;
-RgrUeRecfg        *ueRecfg;
+   RgSchCellCb       *cell;
+   RgrUeRecfg        *ueRecfg;
 #endif
 {
 
    TRC2(rgSCHCfgVldtUeMeasGapAckNakRepRecfg)
-   if((ueRecfg->ueAckNackRecfg.isAckNackEnabled == FALSE) &&
-          (!ueRecfg->ueMeasGapRecfg.isMesGapEnabled))
-   {
-      RETVALUE(ROK);
-   }
+      if((ueRecfg->ueAckNackRecfg.isAckNackEnabled == FALSE) &&
+	    (!ueRecfg->ueMeasGapRecfg.isMesGapEnabled))
+      {
+	 RETVALUE(ROK);
+      }
 
    if(ueRecfg->ueAckNackRecfg.isAckNackEnabled )
    {
-   /* Validate AckNackRep Factor */
-   if ( (ueRecfg->ueAckNackRecfg.ackNackRepFactor < RGR_ACKNACK_REPFACT_N2)
-         || (ueRecfg->ueAckNackRecfg.ackNackRepFactor > RGR_ACKNACK_REPFACT_N6))
-   {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid ACK NACK REP Factor:%d"
-               "NEW CRNTI:%d",ueRecfg->ueAckNackRecfg.ackNackRepFactor,ueRecfg->newCrnti);
-      RETVALUE(RFAILED);
-   }
+      /* Validate AckNackRep Factor */
+      if ( (ueRecfg->ueAckNackRecfg.ackNackRepFactor < RGR_ACKNACK_REPFACT_N2)
+	    || (ueRecfg->ueAckNackRecfg.ackNackRepFactor > RGR_ACKNACK_REPFACT_N6))
+      {
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid ACK NACK REP Factor:%d"
+	       "NEW CRNTI:%d",ueRecfg->ueAckNackRecfg.ackNackRepFactor,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
+      }
    }
    if(ueRecfg->ueMeasGapRecfg.isMesGapEnabled)
    {
-   switch(ueRecfg->ueMeasGapRecfg.gapPrd)
-   {
-      case RG_MEAS_GAPPRD_40:
-         if(ueRecfg->ueMeasGapRecfg.gapOffst >= RG_MEAS_GAPPRD_40)
-         {
-            RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid GAP Offset:%d"
-                     "NEW CRNTI:%d",ueRecfg->ueMeasGapRecfg.gapOffst,ueRecfg->newCrnti);
-            RETVALUE(RFAILED);
-         }
-         break;
-      case RG_MEAS_GAPPRD_80:
-         if(ueRecfg->ueMeasGapRecfg.gapOffst >= RG_MEAS_GAPPRD_80)
-         {
-            RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid GAP Offset:%d"
-                     "NEW CRNTI:%d",ueRecfg->ueMeasGapRecfg.gapOffst,ueRecfg->newCrnti);
-            RETVALUE(RFAILED);
-         }
-         break;
-         default:
-         { 
-            RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid GAP Periodicity Settings:%d"
-                     "NEW CRNTI:%d",ueRecfg->ueMeasGapRecfg.gapPrd,ueRecfg->newCrnti);
-            RETVALUE(RFAILED);
-         }
+      switch(ueRecfg->ueMeasGapRecfg.gapPrd)
+      {
+	 case RG_MEAS_GAPPRD_40:
+	    if(ueRecfg->ueMeasGapRecfg.gapOffst >= RG_MEAS_GAPPRD_40)
+	    {
+	       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid GAP Offset:%d"
+		     "NEW CRNTI:%d",ueRecfg->ueMeasGapRecfg.gapOffst,ueRecfg->newCrnti);
+	       RETVALUE(RFAILED);
+	    }
+	    break;
+	 case RG_MEAS_GAPPRD_80:
+	    if(ueRecfg->ueMeasGapRecfg.gapOffst >= RG_MEAS_GAPPRD_80)
+	    {
+	       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid GAP Offset:%d"
+		     "NEW CRNTI:%d",ueRecfg->ueMeasGapRecfg.gapOffst,ueRecfg->newCrnti);
+	       RETVALUE(RFAILED);
+	    }
+	    break;
+	 default:
+	    { 
+	       RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid GAP Periodicity Settings:%d"
+		     "NEW CRNTI:%d",ueRecfg->ueMeasGapRecfg.gapPrd,ueRecfg->newCrnti);
+	       RETVALUE(RFAILED);
+	    }
       }
    }
 
@@ -5609,15 +5609,15 @@ RgrUeRecfg        *ueRecfg;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtUeDlSpsCfg
+   PRIVATE S16 rgSCHCfgVldtUeDlSpsCfg
 (
-RgSchCellCb       *cell,
-RgrUeSpsDlCfg     *dlSpsCfg
-)
+ RgSchCellCb       *cell,
+ RgrUeSpsDlCfg     *dlSpsCfg
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtUeDlSpsCfg(cell, dlSpsCfg)
-RgSchCellCb       *cell;
-RgrUeSpsDlCfg     *dlSpsCfg;
+   RgSchCellCb       *cell;
+   RgrUeSpsDlCfg     *dlSpsCfg;
 #endif
 {
 
@@ -5627,10 +5627,10 @@ RgrUeSpsDlCfg     *dlSpsCfg;
 
    /* peridicity validation done in SPS module */
    if ((dlSpsCfg->numPucchVal > RG_SCH_MAX_NUM_N1PUCCH_PER_UE) ||
-         (dlSpsCfg->numPucchVal == 0))
+	 (dlSpsCfg->numPucchVal == 0))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid number of n1Pucch values"
-               " in DL SPS Config");
+	    " in DL SPS Config");
       RETVALUE(RFAILED);
    }
 
@@ -5639,21 +5639,21 @@ RgrUeSpsDlCfg     *dlSpsCfg;
       if (dlSpsCfg->n1PucchVal[idx] > RG_SCH_MAX_N1PUCCH_VAL)
       {
 #ifdef ALIGN_64BIT
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid N1Pucch value"
-                  " in DL SPS Config %u", dlSpsCfg->n1PucchVal[idx]);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid N1Pucch value"
+	       " in DL SPS Config %u", dlSpsCfg->n1PucchVal[idx]);
 #else
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid N1Pucch value"
-                  " in DL SPS Config %lu", dlSpsCfg->n1PucchVal[idx]);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid N1Pucch value"
+	       " in DL SPS Config %lu", dlSpsCfg->n1PucchVal[idx]);
 #endif
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
    }
    /* SPS_TODO: check will change for TDD */
    if ((dlSpsCfg->numSpsHqProc == 0) ||
-         (dlSpsCfg->numSpsHqProc > RGSCH_MAX_DL_HQ_PROC))
+	 (dlSpsCfg->numSpsHqProc > RGSCH_MAX_DL_HQ_PROC))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid number of SPS HARQ procs"
-               " in DL SPS Config");
+	    " in DL SPS Config");
       RETVALUE(RFAILED);
    }
 
@@ -5678,15 +5678,15 @@ RgrUeSpsDlCfg     *dlSpsCfg;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtUePwrCfg
+   PRIVATE S16 rgSCHCfgVldtUePwrCfg
 (
-RgSchCellCb       *cell,
-RgrUeUlPwrCfg     *pwrCfg
-)
+ RgSchCellCb       *cell,
+ RgrUeUlPwrCfg     *pwrCfg
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtUePwrCfg(cell, pwrCfg)
-RgSchCellCb       *cell;
-RgrUeUlPwrCfg     *pwrCfg;
+   RgSchCellCb       *cell;
+   RgrUeUlPwrCfg     *pwrCfg;
 #endif
 {
 
@@ -5698,22 +5698,22 @@ RgrUeUlPwrCfg     *pwrCfg;
       /* Fix */
       if (pwrCfg->uePuschPwr.pres)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Accumulation configutation"
-              " not in sync with group power configuration");
-         RETVALUE(RFAILED);
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Accumulation configutation"
+	       " not in sync with group power configuration");
+	 RETVALUE(RFAILED);
       }
    }
 
    if (rgSCHCfgVldtUeGrpPwrCfg(cell, &pwrCfg->uePuschPwr) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid PUSCH Group power"
-           " configuration");
+	    " configuration");
       RETVALUE(RFAILED);
    }
    if (rgSCHCfgVldtUeGrpPwrCfg(cell, &pwrCfg->uePucchPwr) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid PUSCH Group power"
-           " configuration");
+	    " configuration");
       RETVALUE(RFAILED);
    }
 
@@ -5737,27 +5737,27 @@ RgrUeUlPwrCfg     *pwrCfg;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtUeGrpPwrCfg
+   PRIVATE S16 rgSCHCfgVldtUeGrpPwrCfg
 (
-RgSchCellCb       *cell,
-RgrUeGrpPwrCfg *grpPwrCfg
-)
+ RgSchCellCb       *cell,
+ RgrUeGrpPwrCfg *grpPwrCfg
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtUeGrpPwrCfg(cell, grpPwrCfg)
-RgSchCellCb       *cell;
-RgrUeGrpPwrCfg *grpPwrCfg;
+   RgSchCellCb       *cell;
+   RgrUeGrpPwrCfg *grpPwrCfg;
 #endif
 {
 
    TRC2(rgSCHCfgVldtUeGrpPwrCfg);
 
    if ((grpPwrCfg->pres) &&
-       (((grpPwrCfg->tpcRnti > cell->rntiDb.rntiStart) &&
-        ((grpPwrCfg->tpcRnti <
-                     (cell->rntiDb.rntiStart + cell->rntiDb.maxRntis))))))
+	 (((grpPwrCfg->tpcRnti > cell->rntiDb.rntiStart) &&
+	   ((grpPwrCfg->tpcRnti <
+	     (cell->rntiDb.rntiStart + cell->rntiDb.maxRntis))))))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid Uplink Group power " 
-             "configuration");
+	    "configuration");
       RETVALUE(RFAILED);
    }
 
@@ -5783,79 +5783,79 @@ RgrUeGrpPwrCfg *grpPwrCfg;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtSpsReCfg
+   PRIVATE S16 rgSCHCfgVldtSpsReCfg
 (
-RgSchCellCb       *cell,
-RgSchUeCb         *ue,
-RgrUeRecfg        *ueRecfg
-)
+ RgSchCellCb       *cell,
+ RgSchUeCb         *ue,
+ RgrUeRecfg        *ueRecfg
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtSpsReCfg(cell, ue, ueRecfg)
-RgSchCellCb       *cell;
-RgSchUeCb         *ue;
-RgrUeRecfg     *ueRecfg;
+   RgSchCellCb       *cell;
+   RgSchUeCb         *ue;
+   RgrUeRecfg     *ueRecfg;
 #endif
 {
 
    TRC2(rgSCHCfgVldtSpsReCfg);
    if ((ueRecfg->ueRecfgTypes & RGR_UE_DLSPS_RECFG) &&
-         (ueRecfg->ueSpsRecfg.dlSpsCfg.isDlSpsEnabled)) 
+	 (ueRecfg->ueSpsRecfg.dlSpsCfg.isDlSpsEnabled)) 
    {
       /* Validating SPS RNTI */ 
       if (((ueRecfg->ueSpsRecfg.spsRnti >=  cell->rntiDb.rntiStart) && 
-          (ueRecfg->ueSpsRecfg.spsRnti<=
-          (cell->rntiDb.rntiStart+cell->rntiDb.maxRntis)))||
-          (ueRecfg->ueSpsRecfg.spsRnti == RGSCH_SI_RNTI) ||
-          (ueRecfg->ueSpsRecfg.spsRnti == RGSCH_P_RNTI))
+	       (ueRecfg->ueSpsRecfg.spsRnti<=
+		(cell->rntiDb.rntiStart+cell->rntiDb.maxRntis)))||
+	    (ueRecfg->ueSpsRecfg.spsRnti == RGSCH_SI_RNTI) ||
+	    (ueRecfg->ueSpsRecfg.spsRnti == RGSCH_P_RNTI))
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid SPS RNTI "
-                  " in DL SPS Recfg OLD CRNTI:%d NEW CCRNTI:%d",
-                  ueRecfg->oldCrnti,ueRecfg->newCrnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid SPS RNTI "
+	       " in DL SPS Recfg OLD CRNTI:%d NEW CCRNTI:%d",
+	       ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
       }
       if (rgSCHCfgVldtUeDlSpsCfg(cell, &ueRecfg->ueSpsRecfg.dlSpsCfg) != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid DL SPS configuration"
-                  " for the OLD CRNTI:%d NEW CRNTI:%d",
-                  ueRecfg->oldCrnti,ueRecfg->newCrnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid DL SPS configuration"
+	       " for the OLD CRNTI:%d NEW CRNTI:%d",
+	       ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
       }
    }
 
 #if RG_SPS_UNUSED 
    if(ueRecfg->ueSpsRecfg.dlSpsCfg.isDlSpsEnabled)
    {
-     if (ueRecfg->ueRecfgTypes & RGR_UE_DRX_RECFG)
-     {
-     /* ccpu00117035 - MOD - changed instIdx to inst */
-     /* ccpu00117035 - MOD - changed ueID to oldCrnti*/
-      RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId, 
-               " DRX reconfig not supported DL SPS enabled for OLD CRNTI:%d NEW CRNTI:%d", 
-                  ueRecfg->oldCrnti,ueRecfg->newCrnti);
-      RETVALUE(RFAILED);
-     }
+      if (ueRecfg->ueRecfgTypes & RGR_UE_DRX_RECFG)
+      {
+	 /* ccpu00117035 - MOD - changed instIdx to inst */
+	 /* ccpu00117035 - MOD - changed ueID to oldCrnti*/
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId, 
+	       " DRX reconfig not supported DL SPS enabled for OLD CRNTI:%d NEW CRNTI:%d", 
+	       ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
+      }
    }
 #endif
-/* ccpu00117627 - ADD - SPS recfg validation against HDFDD */
+   /* ccpu00117627 - ADD - SPS recfg validation against HDFDD */
 #ifdef LTEMAC_HDFDD
    if(ueRecfg->ueSpsRecfg.dlSpsCfg.isDlSpsEnabled)
    {
       if(ue->hdFddEnbld == TRUE)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,
-                  "DL SPS is not supported for HDFDD enabled for OLD CRNTI:%d NEW CRNTI:%d",
-                  ueRecfg->oldCrnti,ueRecfg->newCrnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,
+	       "DL SPS is not supported for HDFDD enabled for OLD CRNTI:%d NEW CRNTI:%d",
+	       ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
       }
    }
    if(ueRecfg->ueSpsRecfg.ulSpsCfg.isUlSpsEnabled)
    {
       if(ue->hdFddEnbld == TRUE)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,
-                  "UL SPS is not supported for HDFDD enabled for OLD CRNTI:%d NEW CRNTI:%d",
-                  ueRecfg->oldCrnti,ueRecfg->newCrnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,ueRecfg->cellId,
+	       "UL SPS is not supported for HDFDD enabled for OLD CRNTI:%d NEW CRNTI:%d",
+	       ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	 RETVALUE(RFAILED);
       }
    }
 #endif
@@ -5883,15 +5883,15 @@ RgrUeRecfg     *ueRecfg;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtCqiReptReCfg
+   PRIVATE S16 rgSCHCfgVldtCqiReptReCfg
 (
-RgSchCellCb       *cell,
-RgrUeRecfg     *ueRecfg
-)
+ RgSchCellCb       *cell,
+ RgrUeRecfg     *ueRecfg
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtCqiReptReCfg(cell, ueRecfg)
-RgSchCellCb       *cell;
-RgrUeRecfg     *ueRecfg;
+   RgSchCellCb       *cell;
+   RgrUeRecfg     *ueRecfg;
 #endif
 {
 
@@ -5900,8 +5900,8 @@ RgrUeRecfg     *ueRecfg;
    if (ueRecfg->ueCqiReptCfg.numColltdCqiRept > RGR_CQIRPTS_MAXN)
    {
       RLOG_ARG3(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalide numColltdCqiRept,"
-               "MAX supported %d for OLD CRNTI:%d NEW CRNTI:%d",RGR_CQIRPTS_MAXN,
-                  ueRecfg->oldCrnti,ueRecfg->newCrnti);
+	    "MAX supported %d for OLD CRNTI:%d NEW CRNTI:%d",RGR_CQIRPTS_MAXN,
+	    ueRecfg->oldCrnti,ueRecfg->newCrnti);
       RETVALUE(RFAILED);
    }
 
@@ -5927,19 +5927,19 @@ RgrUeRecfg     *ueRecfg;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrLchCfg
+   PUBLIC S16 rgSCHCfgRgrLchCfg
 (
-RgSchCellCb      *cell,
-RgSchUeCb        *ue,
-RgrLchCfg     *lcCfg,
-RgSchErrInfo     *errInfo
-)
+ RgSchCellCb      *cell,
+ RgSchUeCb        *ue,
+ RgrLchCfg     *lcCfg,
+ RgSchErrInfo     *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrLchCfg(cell, ue, lcCfg, errInfo)
-RgSchCellCb      *cell;
-RgSchUeCb        *ue;
-RgrLchCfg     *lcCfg;
-RgSchErrInfo     *errInfo;
+   RgSchCellCb      *cell;
+   RgSchUeCb        *ue;
+   RgrLchCfg     *lcCfg;
+   RgSchErrInfo     *errInfo;
 #endif
 {
    S16       ret;
@@ -5955,16 +5955,16 @@ RgSchErrInfo     *errInfo;
 
    /* Allocate the downlink logical channel control block */
    if((ret = rgSCHUtlAllocSBuf(inst, (Data**)&dlLc, 
-               sizeof(RgSchDlLcCb))) != ROK)
+	       sizeof(RgSchDlLcCb))) != ROK)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcCfg->cellId,"Memory allocation FAILED for "
-               "Downlink LCId:%d CRNTI:%d", lcCfg->lcId,lcCfg->crnti);
+	    "Downlink LCId:%d CRNTI:%d", lcCfg->lcId,lcCfg->crnti);
       RETVALUE(RFAILED);
    }
    if ((U8 *)dlLc == NULLP)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,lcCfg->cellId,"Memory allocation FAILED for "
-               "Downlink LCID:%d CRNTI:%d", lcCfg->lcId,lcCfg->crnti);
+	    "Downlink LCID:%d CRNTI:%d", lcCfg->lcId,lcCfg->crnti);
       RETVALUE(RFAILED);
    }
    dlLc->lcId   = lcCfg->lcId;
@@ -5973,7 +5973,7 @@ RgSchErrInfo     *errInfo;
 #endif
 
    rgSCHDbmInsDlDedLcCb(ue, dlLc);
-   
+
    ret = rgSCHUtlRgrLcCfg(cell, ue, dlLc, lcCfg, errInfo);
 
    if (ret != ROK)
@@ -5981,31 +5981,31 @@ RgSchErrInfo     *errInfo;
       /* ROLLBACK */
       if (dlLc)
       {
-         rgSCHDbmDelDlDedLcCb(ue, dlLc);
-         rgSCHCfgFreeDlDedLcCb(cell, ue, dlLc);
+	 rgSCHDbmDelDlDedLcCb(ue, dlLc);
+	 rgSCHCfgFreeDlDedLcCb(cell, ue, dlLc);
       }
 
       RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,"Dedicated logical channel "
-        "configuration failed at SCH:UEID:%d LCID:%d CRNTI:%d",
-        ue->ueId, lcCfg->lcId,lcCfg->crnti);
+	    "configuration failed at SCH:UEID:%d LCID:%d CRNTI:%d",
+	    ue->ueId, lcCfg->lcId,lcCfg->crnti);
       RETVALUE(RFAILED);
    }
 #ifdef LTE_L2_MEAS
    RGSCH_ARRAY_BOUND_CHECK(inst, ue->ul.lcCb, (lcCfg->lcId -1));
    if ( !lcCfg->lcId || 
-         (TRUE == ue->ul.lcCb[lcCfg->lcId -1].isValid))
+	 (TRUE == ue->ul.lcCb[lcCfg->lcId -1].isValid))
    {
       /* ROLLBACK */
       if (dlLc)
       {
-         rgSCHDbmDelDlDedLcCb(ue, dlLc);
-         rgSCHCfgFreeDlDedLcCb(cell, ue, dlLc);
+	 rgSCHDbmDelDlDedLcCb(ue, dlLc);
+	 rgSCHCfgFreeDlDedLcCb(cell, ue, dlLc);
       }
 
       RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,"Dedicated logical channel "
-        "configuration failed at SCH: UL LC CB already existing"
-        " UEID:%d LCID:%d CRNTI:%d",
-        ue->ueId, lcCfg->lcId,lcCfg->crnti);
+	    "configuration failed at SCH: UL LC CB already existing"
+	    " UEID:%d LCID:%d CRNTI:%d",
+	    ue->ueId, lcCfg->lcId,lcCfg->crnti);
       RETVALUE(RFAILED);
    }
 
@@ -6027,7 +6027,7 @@ RgSchErrInfo     *errInfo;
    dlLc->qciCb->qci = lcCfg->dlInfo.dlQos.qci;
    if(lcCfg->lcType == CM_LTE_LCH_DTCH)
    {
-     rgSchAddToL2Meas(cell,dlLc); /*LTE_L2_MEAS_PHASE2*/
+      rgSchAddToL2Meas(cell,dlLc); /*LTE_L2_MEAS_PHASE2*/
    }
 #endif /* LTE_L2_MEAS */
 
@@ -6052,25 +6052,25 @@ RgSchErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRgrLcgCfg
+   PUBLIC S16 rgSCHCfgRgrLcgCfg
 (
-RgSchCellCb      *cell,
-RgSchUeCb        *ue,
-RgrLcgCfg        *lcgCfg,
-RgSchErrInfo     *errInfo
-)
+ RgSchCellCb      *cell,
+ RgSchUeCb        *ue,
+ RgrLcgCfg        *lcgCfg,
+ RgSchErrInfo     *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgRgrLcgCfg(cell, ue, lcgCfg, errInfo)
-RgSchCellCb      *cell;
-RgSchUeCb        *ue;
-RgrLcgCfg        *lcgCfg;
-RgSchErrInfo     *errInfo;
+   RgSchCellCb      *cell;
+   RgSchUeCb        *ue;
+   RgrLcgCfg        *lcgCfg;
+   RgSchErrInfo     *errInfo;
 #endif
 {
    S16          ret = ROK;
 
 #ifdef RG_UNUSED
-//#ifdef LTE_L2_MEAS
+   //#ifdef LTE_L2_MEAS
    U32          idx;
    RgSchUlLcCb  *ulLc; 
 #endif
@@ -6084,33 +6084,33 @@ RgSchErrInfo     *errInfo;
    if (ret != ROK)
    {
       RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,"Dedicated logical channel "
-        "configuration failed at SCH: UEID:%d LCGID:%d CRNTI:%d",
-        ue->ueId, lcgCfg->ulInfo.lcgId,lcgCfg->crnti);
+	    "configuration failed at SCH: UEID:%d LCGID:%d CRNTI:%d",
+	    ue->ueId, lcgCfg->ulInfo.lcgId,lcgCfg->crnti);
       /* Roll back lcgCfg */
       ue->ul.lcgArr[lcgCfg->ulInfo.lcgId].lcgId = RGSCH_INVALID_LCG_ID;
       rgSCHUtlRgrLcgDel(cell, ue, lcgCfg->ulInfo.lcgId);
       RETVALUE(RFAILED);
    }
 #ifdef RG_UNUSED
-//#ifdef LTE_L2_MEAS
+   //#ifdef LTE_L2_MEAS
    /* Copy all info of UL LCH in cfg to ulLcgCb */
    for (idx = 0; idx < lcgCfg->ulInfo.numLch; idx++)
    {
       /* Allocate the uplink logical channel control block */
       if((ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data**)&ulLc, 
-                  sizeof(RgSchUlLcCb))) != ROK)
+		  sizeof(RgSchUlLcCb))) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Memory allocation FAILED for ");
-         RETVALUE(RFAILED);
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Memory allocation FAILED for ");
+	 RETVALUE(RFAILED);
       }
       if ((U8 *)ulLc == NULLP)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Memory allocation FAILED for ");
-         RETVALUE(RFAILED);
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Memory allocation FAILED for ");
+	 RETVALUE(RFAILED);
       }
       /* Create UL LC context to maintain LCG to LC mapping and 
-         LC and QCI mapping, this is for L2 Counters :UL ACTIVE UE 
-         PER QCI */
+	 LC and QCI mapping, this is for L2 Counters :UL ACTIVE UE 
+	 PER QCI */
       ulLc->lcId = lcgCfg->ulInfo.lchUlCfg[idx].lcId;
       ulLc->qciCb = &(cell->qciArray[lcgCfg->ulInfo.lchUlCfg[idx].qci]);
       ulLc->qciCb->qci = lcgCfg->ulInfo.lchUlCfg[idx].qci;
@@ -6146,17 +6146,17 @@ RgSchErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgRgrCmnLcCfg
+   PRIVATE S16 rgSCHCfgRgrCmnLcCfg
 (
-RgSchCellCb           *cell,
-RgrCmnLchCfg          *lcCfg,
-RgSchErrInfo          *errInfo
-)
+ RgSchCellCb           *cell,
+ RgrCmnLchCfg          *lcCfg,
+ RgSchErrInfo          *errInfo
+ )
 #else
 PRIVATE S16 rgSCHCfgRgrCmnLcCfg(cell, lcCfg, errInfo)
-RgSchCellCb         *cell;
-RgrCmnLchCfg        *lcCfg;
-RgSchErrInfo        *errInfo;
+   RgSchCellCb         *cell;
+   RgrCmnLchCfg        *lcCfg;
+   RgSchErrInfo        *errInfo;
 #endif
 {
    RgSchClcDlLcCb cmnLcCb;
@@ -6172,12 +6172,12 @@ RgSchErrInfo        *errInfo;
       /* UL and DL CCCH configuration */
       if (lcCfg->dir & RGR_DIR_TX)
       {
-         cell->dlCcchId = lcCfg->lcId;
+	 cell->dlCcchId = lcCfg->lcId;
       }
 
       if (lcCfg->dir & RGR_DIR_RX)
       {
-         cell->ulCcchId = lcCfg->lcId;
+	 cell->ulCcchId = lcCfg->lcId;
       }
    }
    else
@@ -6186,19 +6186,19 @@ RgSchErrInfo        *errInfo;
       rgSCHDbmInitCmnLcBoLst(&cmnLcCb);
       if (lcCfg->lcType == CM_LTE_LCH_BCCH)
       {
-         /* BCCH on BCH and DLSCH configuration */
-         if (lcCfg->dlTrchType == CM_LTE_TRCH_DL_SCH)
-         {
-            rgSCHDbmInsBcchOnDlsch(cell, &cmnLcCb);
-         }
-         else
-         {
-            rgSCHDbmInsBcchOnBch(cell, &cmnLcCb);
-         }
+	 /* BCCH on BCH and DLSCH configuration */
+	 if (lcCfg->dlTrchType == CM_LTE_TRCH_DL_SCH)
+	 {
+	    rgSCHDbmInsBcchOnDlsch(cell, &cmnLcCb);
+	 }
+	 else
+	 {
+	    rgSCHDbmInsBcchOnBch(cell, &cmnLcCb);
+	 }
       }
       else  /* PCCH configuration */
       {
-         rgSCHDbmInsPcch(cell, &cmnLcCb);
+	 rgSCHDbmInsPcch(cell, &cmnLcCb);
       }
    }
 
@@ -6224,17 +6224,17 @@ RgSchErrInfo        *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHCfgFreeDlDedLcCb
+   PRIVATE Void rgSCHCfgFreeDlDedLcCb
 (
-RgSchCellCb      *cell,
-RgSchUeCb        *ue,
-RgSchDlLcCb      *dlLc
-)
+ RgSchCellCb      *cell,
+ RgSchUeCb        *ue,
+ RgSchDlLcCb      *dlLc
+ )
 #else
 PRIVATE Void rgSCHCfgFreeDlDedLcCb(cell, ue, dlLc)
-RgSchCellCb      *cell;
-RgSchUeCb        *ue;
-RgSchDlLcCb      *dlLc;
+   RgSchCellCb      *cell;
+   RgSchUeCb        *ue;
+   RgSchDlLcCb      *dlLc;
 #endif
 {
    Inst    inst = cell->instIdx;
@@ -6248,8 +6248,8 @@ RgSchDlLcCb      *dlLc;
    rgSCHUtlFreeSBuf(inst, (Data **)&dlLc, sizeof(*dlLc));
 
 
-  /* Stack Crash problem for TRACE5 changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 changes. Added the return below */
+   RETVOID;
 
 }  /* rgSCHCfgFreeDlDedLcCb */
 
@@ -6271,17 +6271,17 @@ RgSchDlLcCb      *dlLc;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHCfgFreeDlCmnLcCb
+   PRIVATE Void rgSCHCfgFreeDlCmnLcCb
 (
-RgSchClcDlLcCb   *cmnDlLc
-)
+ RgSchClcDlLcCb   *cmnDlLc
+ )
 #else
 PRIVATE Void rgSCHCfgFreeDlCmnLcCb(cmnDlLc)
-RgSchClcDlLcCb      *cmnDlLc;
+   RgSchClcDlLcCb      *cmnDlLc;
 #endif
 {
    TRC2(rgSCHCfgFreeDlCmnLcCb);
- 
+
    cmMemset((U8*)cmnDlLc, 0, sizeof(*cmnDlLc));
    cmnDlLc->lcId = RGSCH_INVALID_LC_ID;
    RETVOID;
@@ -6305,13 +6305,13 @@ RgSchClcDlLcCb      *cmnDlLc;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgSCHCfgFreeCellCb
+   PUBLIC Void rgSCHCfgFreeCellCb
 (
-RgSchCellCb      *cell
-)
+ RgSchCellCb      *cell
+ )
 #else
 PUBLIC Void rgSCHCfgFreeCellCb(cell)
-RgSchCellCb      *cell;
+   RgSchCellCb      *cell;
 #endif
 {
    Inst    inst = cell->instIdx;
@@ -6320,29 +6320,29 @@ RgSchCellCb      *cell;
    RgSchWarningSiInfo *warningSi;
    RgSchWarningSiPdu  *warningSiPdu;
    U8                  idx;
- 
+
    TRC2(rgSCHCfgFreeCellCb);
    /* ccpu00132385- SI Warning PDUs which are not processed need to be deleted */
    /* Search for used index in WarningSi */
    for(idx = 0; idx < RGR_MAX_NUM_WARNING_SI; idx++)
    {
       if(cell->siCb.warningSi[idx].siId == 0)
-        continue;
+	 continue;
       cell->siCb.siCtx.siId = cell->siCb.warningSi[idx].siId;
       warningSi = (RgSchWarningSiInfo *) cell->siCb.
-                  siArray[cell->siCb.siCtx.siId-1].si; 
+	 siArray[cell->siCb.siCtx.siId-1].si; 
       if(warningSi != NULLP)
       {
-         /* ccpu00136659: CMAS ETWS design change */
-         while (CM_LLIST_FIRST_NODE(&warningSi->warningSiMsg.segLstCp, node))
-         {
-            warningSiPdu = (RgSchWarningSiPdu *)node->node;
-            pdu = warningSiPdu->pdu;
-            /* ccpu00136659: CMAS ETWS design change */
-            cmLListDelFrm(&warningSi->warningSiMsg.segLstCp, node);
-            RGSCH_FREE_MSG(pdu);
-         }
-         cell->siCb.siArray[cell->siCb.siCtx.siId-1].si = NULLP;
+	 /* ccpu00136659: CMAS ETWS design change */
+	 while (CM_LLIST_FIRST_NODE(&warningSi->warningSiMsg.segLstCp, node))
+	 {
+	    warningSiPdu = (RgSchWarningSiPdu *)node->node;
+	    pdu = warningSiPdu->pdu;
+	    /* ccpu00136659: CMAS ETWS design change */
+	    cmLListDelFrm(&warningSi->warningSiMsg.segLstCp, node);
+	    RGSCH_FREE_MSG(pdu);
+	 }
+	 cell->siCb.siArray[cell->siCb.siCtx.siId-1].si = NULLP;
       }
    }
    /* Free lists of the cell */
@@ -6351,10 +6351,10 @@ RgSchCellCb      *cell;
    rgSCHCfgFreeSpsUeLst(cell);
 #endif /* LTEMAC_SPS */
 #ifdef EMTC_ENABLE
-      if ( TRUE == cell->emtcEnable )
-      {
-         rgSCHEmtcCellDel(cell);
-      }
+   if ( TRUE == cell->emtcEnable )
+   {
+      rgSCHEmtcCellDel(cell);
+   }
 #endif
    rgSCHRamFreeCell(cell);
 
@@ -6379,7 +6379,7 @@ RgSchCellCb      *cell;
    (Void)rgSCHDrxCellDel(cell);
 
    rgSCHUtlFreeSBuf(inst, (Data**)&(cell->dynCfiCb.cceFailSamples),
-               (cell->dynCfiCb.numFailSamples * sizeof(U16)));
+	 (cell->dynCfiCb.numFailSamples * sizeof(U16)));
 
 #ifdef TENB_STATS
    TSL2DeallocCellStatsBlk(cell->cellId); 
@@ -6398,13 +6398,13 @@ RgSchCellCb      *cell;
 #endif
    /* De-allocate the Cell */
    /* ccpu00117052 - MOD - Passing double pointer
-   for proper NULLP assignment*/
+      for proper NULLP assignment*/
    rgSCHUtlFreeSBuf(inst, (Data **)&cell, sizeof(*cell));
 
- 
 
-  /* Stack Crash problem for TRACE5 changes. Added the return below */
-  RETVOID;
+
+   /* Stack Crash problem for TRACE5 changes. Added the return below */
+   RETVOID;
 
 }  /* rgSCHCfgFreeCellCb */
 
@@ -6426,15 +6426,15 @@ RgSchCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHCfgFreeUeCb
+   PRIVATE Void rgSCHCfgFreeUeCb
 (
-RgSchCellCb    *cell,
-RgSchUeCb      *ue
-)
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ue
+ )
 #else
 PRIVATE Void rgSCHCfgFreeUeCb(cell, ue)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ue;
 #endif
 {
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
@@ -6455,12 +6455,12 @@ RgSchUeCb      *ue;
    {
       if(ue->ul.lcCb[lcCnt].isValid == TRUE) 
       {
-         lcgId = ue->ul.lcCb[lcCnt].lcg->lcgId;
-         if (lcgId <=3)
-         {
-            rgSCHUtlRgrLcDel(cell, ue, ue->ul.lcCb[lcCnt].lcId,lcgId); 
-            ue->ul.lcCb[lcCnt].isValid = FALSE;
-         }
+	 lcgId = ue->ul.lcCb[lcCnt].lcg->lcgId;
+	 if (lcgId <=3)
+	 {
+	    rgSCHUtlRgrLcDel(cell, ue, ue->ul.lcCb[lcCnt].lcId,lcgId); 
+	    ue->ul.lcCb[lcCnt].isValid = FALSE;
+	 }
       }
    }
 
@@ -6474,11 +6474,11 @@ RgSchUeCb      *ue;
    if ( ue->drxCb != NULLP)
    {
       /* free drxCb */
-   /* ccpu00117052 - MOD - Passing double pointer
-   for proper NULLP assignment*/
+      /* ccpu00117052 - MOD - Passing double pointer
+	 for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(cell->instIdx,
-            (Data**)(&(ue->drxCb)),
-            sizeof(RgSchDrxUeCb));
+	    (Data**)(&(ue->drxCb)),
+	    sizeof(RgSchDrxUeCb));
    }
 
    ue->drxCb = (RgSchDrxUeCb *)NULLP;
@@ -6495,18 +6495,18 @@ RgSchUeCb      *ue;
       /* Just indicate to MAC, no need to release at SCH */
       rgSCHUtlIndRntiRls2Mac(cell, ue->ueId, FALSE, 0);
    }
-/* rg009.201. Added changes of TFU_UPGRADE */
+   /* rg009.201. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
-    rgSCHCfgPCqiSrsSrUeDel(cell,ue); 
+   rgSCHCfgPCqiSrsSrUeDel(cell,ue); 
 #endif 
 #ifdef LTEMAC_HDFDD
-    rgSCHHdFddUeDel(cell, ue);
+   rgSCHHdFddUeDel(cell, ue);
 #endif
 #ifdef TENB_STATS
-    if (ue->tenbStats)
-    {
-       TSL2DeallocUeStatsBlk(ue->ueId, ue->tenbStats); 
-    }
+   if (ue->tenbStats)
+   {
+      TSL2DeallocUeStatsBlk(ue->ueId, ue->tenbStats); 
+   }
 #endif
 
    /* CA TODO Some handling needed while SCell Delete*/
@@ -6515,7 +6515,7 @@ RgSchUeCb      *ue;
    rgSCHSCellRmvFrmActLst(cell, ue);
    rgSCHSCellDelUe(cell,ue);
 #endif
-   
+
 #ifdef LTE_ADV
    rgSCHLaaDeInitDlRbAllocCb(cell, &ue->cellInfo[RGSCH_PCELL_INDEX]->dlAllocCb);
 #endif
@@ -6523,7 +6523,7 @@ RgSchUeCb      *ue;
    rgSCHUtlFreeSBuf(inst, (Data **)&ue->cellInfo[0], sizeof(RgSchUeCellInfo));
    /* De-allocate the Ue */
    /* ccpu00117052 - MOD - Passing double pointer
-   for proper NULLP assignment*/
+      for proper NULLP assignment*/
 #ifdef EMTC_ENABLE
    if(ue->isEmtcUe)
    {
@@ -6532,8 +6532,8 @@ RgSchUeCb      *ue;
 #endif
    rgSCHUtlFreeSBuf(inst, (Data **)&ue, sizeof(*ue));
 
-  /* Stack Crash problem for TRACE5 changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 changes. Added the return below */
+   RETVOID;
 
 }  /* rgSCHCfgFreeUeCb */
 
@@ -6554,13 +6554,13 @@ RgSchUeCb      *ue;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHCfgFreeRgrCfgLst
+   PRIVATE Void rgSCHCfgFreeRgrCfgLst
 (
-RgSchCellCb      *cell
-)
+ RgSchCellCb      *cell
+ )
 #else
 PRIVATE Void rgSCHCfgFreeRgrCfgLst(cell)
-RgSchCellCb      *cell;
+   RgSchCellCb      *cell;
 #endif
 {
    RgSchCfgElem  *rgCfgElem;
@@ -6572,8 +6572,8 @@ RgSchCellCb      *cell;
    while ((rgCfgElem = rgSCHDbmGetNextCrntRgrCfgElem(cell, NULLP)) != NULLP)
    {
       rgSCHDbmDelCrntRgrCfgElem(cell, rgCfgElem);
-   /* ccpu00117052 - MOD - Passing double pointer
-   for proper NULLP assignment*/
+      /* ccpu00117052 - MOD - Passing double pointer
+	 for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(inst, (Data **)&rgCfgElem, sizeof(*rgCfgElem));
    }
 
@@ -6581,14 +6581,14 @@ RgSchCellCb      *cell;
    while ((rgCfgElem = rgSCHDbmGetNextPndngRgrCfgElem(cell, NULLP)) != NULLP)
    {
       rgSCHDbmDelPndngRgrCfgElem(cell, rgCfgElem);
-   /* ccpu00117052 - MOD - Passing double pointer
-   for proper NULLP assignment*/
+      /* ccpu00117052 - MOD - Passing double pointer
+	 for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(inst, (Data **)&rgCfgElem, sizeof(*rgCfgElem));
    }
 
 
-  /* Stack Crash problem for TRACE5 changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 changes. Added the return below */
+   RETVOID;
 
 }  /* rgSCHCfgFreeRgrCfgLst */
 
@@ -6610,13 +6610,13 @@ RgSchCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHCfgFreeCmnLcLst
+   PRIVATE Void rgSCHCfgFreeCmnLcLst
 (
-RgSchCellCb      *cell
-)
+ RgSchCellCb      *cell
+ )
 #else
 PRIVATE Void rgSCHCfgFreeCmnLcLst(cell)
-RgSchCellCb      *cell;
+   RgSchCellCb      *cell;
 #endif
 {
    RgSchClcDlLcCb *dlCmnLc;
@@ -6641,8 +6641,8 @@ RgSchCellCb      *cell;
    }
 
 
-  /* Stack Crash problem for TRACE5 changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 changes. Added the return below */
+   RETVOID;
 
 }  /* rgSCHCfgFreeCmnLcLst */
 
@@ -6664,13 +6664,13 @@ RgSchCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHCfgFreeUeLst
+   PRIVATE Void rgSCHCfgFreeUeLst
 (
-RgSchCellCb      *cell
-)
+ RgSchCellCb      *cell
+ )
 #else
 PRIVATE Void rgSCHCfgFreeUeLst(cell)
-RgSchCellCb      *cell;
+   RgSchCellCb      *cell;
 #endif
 {
    RgSchUeCb     *ue;
@@ -6688,10 +6688,10 @@ RgSchCellCb      *cell;
 #ifdef LTE_ADV
       if(ue->cell != cell)
       {
-         continue;
+	 continue;
       }
 #endif
-      
+
       /* Call MeasGap and AckNakRep processing module */
       rgSCHMeasGapANRepUeDel(cell, ue, TRUE);
 
@@ -6712,8 +6712,8 @@ RgSchCellCb      *cell;
    }   
 #endif
 
-  /* Stack Crash problem for TRACE5 changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 changes. Added the return below */
+   RETVOID;
 
 }  /* rgSCHCfgFreeUeLst */
 
@@ -6735,13 +6735,13 @@ RgSchCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHCfgFreeSpsUeLst
+   PRIVATE Void rgSCHCfgFreeSpsUeLst
 (
-RgSchCellCb      *cell
-)
+ RgSchCellCb      *cell
+ )
 #else
 PRIVATE Void rgSCHCfgFreeSpsUeLst(cell)
-RgSchCellCb      *cell;
+   RgSchCellCb      *cell;
 #endif
 {
    RgSchUeCb     *ue;
@@ -6778,15 +6778,15 @@ RgSchCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtRgrCellSiCfg
+   PRIVATE S16 rgSCHCfgVldtRgrCellSiCfg
 (
-Inst             inst,
-RgrSiCfg         *siCfg
-)
+ Inst             inst,
+ RgrSiCfg         *siCfg
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtRgrCellSiCfg(inst, siCfg)
-Inst             inst;
-RgrSiCfg       *siCfg;
+   Inst             inst;
+   RgrSiCfg       *siCfg;
 #endif
 {
    U8   idx; /* idx for iteration */
@@ -6798,7 +6798,7 @@ RgrSiCfg       *siCfg;
 
 #ifndef LTE_TDD
    /* Check that retxCnt value should be <= value of siWinSize.
-   This validation is only applicable for FDD mode. */
+      This validation is only applicable for FDD mode. */
    if(siCfg->retxCnt > siCfg->siWinSize) 
    {
       RLOG0(L_ERROR,"retxCnt is greater than siWinSize, validation failed");
@@ -6821,22 +6821,22 @@ RgrSiCfg       *siCfg;
    for(idx = 0;idx < siCfg->numSi;idx++)
    {
       siCfg->minPeriodicity =     RGSCH_MIN(siCfg->minPeriodicity, 
-            siCfg->siPeriodicity[idx]);
-         /* Set the siPeriodicity as a multiple of 80 subframes */
-         switch(siCfg->siPeriodicity[idx])
-         {
-            case RGR_SI_PERD_8:
-            case RGR_SI_PERD_16:
-            case RGR_SI_PERD_32:
-            case RGR_SI_PERD_64:
-            case RGR_SI_PERD_128:
-            case RGR_SI_PERD_256:
-            case RGR_SI_PERD_512:
-               continue;
+	    siCfg->siPeriodicity[idx]);
+      /* Set the siPeriodicity as a multiple of 80 subframes */
+      switch(siCfg->siPeriodicity[idx])
+      {
+	 case RGR_SI_PERD_8:
+	 case RGR_SI_PERD_16:
+	 case RGR_SI_PERD_32:
+	 case RGR_SI_PERD_64:
+	 case RGR_SI_PERD_128:
+	 case RGR_SI_PERD_256:
+	 case RGR_SI_PERD_512:
+	    continue;
 
-         default:
-            RLOG0(L_ERROR,"Validation for SI Periodicity in SI-CFG failed");
-            RETVALUE(RFAILED);
+	 default:
+	    RLOG0(L_ERROR,"Validation for SI Periodicity in SI-CFG failed");
+	    RETVALUE(RFAILED);
       }
    }
 
@@ -6860,7 +6860,7 @@ RgrSiCfg       *siCfg;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtRgrCellLteAdvCfg
+   PRIVATE S16 rgSCHCfgVldtRgrCellLteAdvCfg
 (
  Inst                     inst,
  RgrLteAdvancedCellConfig *lteAdvCfg,
@@ -6884,21 +6884,21 @@ PRIVATE S16 rgSCHCfgVldtRgrCellLteAdvCfg(inst, lteAdvCfg, dlTotalBw)
    {
       if(lteAdvCfg->sfrCfg.cellEdgeRbRange.startRb > lteAdvCfg->sfrCfg.cellEdgeRbRange.endRb)
       {
-         RLOG0(L_ERROR,"Invalid configuration of cell edge bandwidth for SFR feature");
-         RETVALUE(RFAILED);
+	 RLOG0(L_ERROR,"Invalid configuration of cell edge bandwidth for SFR feature");
+	 RETVALUE(RFAILED);
       }
 
       if(lteAdvCfg->sfrCfg.cellEdgeRbRange.endRb >= dlTotalBw)
       {
-         RLOG0(L_ERROR,"Invalid configuration of cell edge end RB for SFR feature");
-         RETVALUE(RFAILED);
+	 RLOG0(L_ERROR,"Invalid configuration of cell edge end RB for SFR feature");
+	 RETVALUE(RFAILED);
       }
-         
+
 #ifdef TFU_UPGRADE      
       if(lteAdvCfg->sfrCfg.pwrThreshold.pLow >= lteAdvCfg->sfrCfg.pwrThreshold.pHigh)
       {
-         RLOG0(L_ERROR,"Invalid configuration of power threshold for SFR feature");
-         RETVALUE(RFAILED);
+	 RLOG0(L_ERROR,"Invalid configuration of power threshold for SFR feature");
+	 RETVALUE(RFAILED);
       }
 #endif      
    }
@@ -6906,22 +6906,22 @@ PRIVATE S16 rgSCHCfgVldtRgrCellLteAdvCfg(inst, lteAdvCfg, dlTotalBw)
    if((lteAdvCfg->pres & RGR_ABS) && (RGR_ENABLE == lteAdvCfg->absCfg.status))
    {
       if((RGR_ABS_MUTE != lteAdvCfg->absCfg.absPatternType) && 
-            (RGR_ABS_TRANSMIT != lteAdvCfg->absCfg.absPatternType)) 
+	    (RGR_ABS_TRANSMIT != lteAdvCfg->absCfg.absPatternType)) 
       {
-         RLOG0(L_ERROR,"Invalid configuration of ABS pattern type");
-         RETVALUE(RFAILED);
+	 RLOG0(L_ERROR,"Invalid configuration of ABS pattern type");
+	 RETVALUE(RFAILED);
       }
 
-       cmMemcpy(temp,  (U8 *) lteAdvCfg->absCfg.absPattern,RGR_ABS_PATTERN_LEN);
-      
-       /* Added validation for ABS pattern len */
+      cmMemcpy(temp,  (U8 *) lteAdvCfg->absCfg.absPattern,RGR_ABS_PATTERN_LEN);
+
+      /* Added validation for ABS pattern len */
       for(idx = 0; idx < RGR_ABS_PATTERN_LEN; idx++)
       {   
-         if((temp[idx] != 1) && (temp[idx] != 0))
-        {
-         RLOG0(L_ERROR,"Invalid configuration of ABS pattern type");
-         RETVALUE(RFAILED);
-        }
+	 if((temp[idx] != 1) && (temp[idx] != 0))
+	 {
+	    RLOG0(L_ERROR,"Invalid configuration of ABS pattern type");
+	    RETVALUE(RFAILED);
+	 }
       }
    }
 
@@ -6946,15 +6946,15 @@ PRIVATE S16 rgSCHCfgVldtRgrCellLteAdvCfg(inst, lteAdvCfg, dlTotalBw)
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtRgrCellCsgParamCfg
+   PRIVATE S16 rgSCHCfgVldtRgrCellCsgParamCfg
 (
-Inst                     inst,
-RgrCellCsgParamCfg       *csgParam
-)
+ Inst                     inst,
+ RgrCellCsgParamCfg       *csgParam
+ )
 #else
 PRIVATE S16 rgSCHCfgVldtRgrCellCsgParamCfg(inst, csgParam)
-Inst                     inst;
-RgrCellCsgParamCfg       *csgParam;
+   Inst                     inst;
+   RgrCellCsgParamCfg       *csgParam;
 #endif
 {
 
@@ -6965,13 +6965,13 @@ RgrCellCsgParamCfg       *csgParam;
    if(csgParam->minDlResNonCsg > 100)
    {
       RLOG0(L_ERROR,"Invalid Configuration of minimum DL resources "
-            "for NON-CSG");
+	    "for NON-CSG");
       RETVALUE(RFAILED);
    }
    if(csgParam->minUlResNonCsg > 100)
    {
       RLOG0(L_ERROR,"Invalid Configuration of minimum UL resources "
-            "for NON-CSG");
+	    "for NON-CSG");
       RETVALUE(RFAILED);
    }
    RETVALUE(ROK);
@@ -7001,19 +7001,19 @@ RgrCellCsgParamCfg       *csgParam;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrSiCfg
+   PUBLIC S16 rgSCHCfgVldtRgrSiCfg
 (
-Inst         inst,
-RgrSiCfgReqInfo *siCfg,
-RgSchCellCb      *cell,
-RgSchErrInfo *errInfo
-)
+ Inst         inst,
+ RgrSiCfgReqInfo *siCfg,
+ RgSchCellCb      *cell,
+ RgSchErrInfo *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrSiCfg(inst, siCfg, cell, errInfo)
-Inst         inst;
-RgrSiCfgReqInfo *siCfg;
-RgSchCellCb      *cell;
-RgSchErrInfo *errInfo;
+   Inst         inst;
+   RgrSiCfgReqInfo *siCfg;
+   RgSchCellCb      *cell;
+   RgSchErrInfo *errInfo;
 #endif
 {
    MsgLen  msgLen = 0;
@@ -7029,18 +7029,18 @@ RgSchErrInfo *errInfo;
    {
       /*ccpu00140789*/
       case RGR_SI_STOP:
-         numSi = (cell->siCb.siBitMask & RGSCH_SI_SICFG_UPD) ?
-              cell->siCb.newSiCfg.numSi : cell->siCfg.numSi;
-         if((siCfg->siId < RGSCH_SI_SIID_LOWER_LMT) ||
-                 (siCfg->siId > numSi))
-         {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid SI Id value"
-                     " specified");
-            RETVALUE(RFAILED);
-         }
-         errInfo->errCause = RGSCHERR_NONE;
-         RETVALUE(ROK);
-      break;
+	 numSi = (cell->siCb.siBitMask & RGSCH_SI_SICFG_UPD) ?
+	    cell->siCb.newSiCfg.numSi : cell->siCfg.numSi;
+	 if((siCfg->siId < RGSCH_SI_SIID_LOWER_LMT) ||
+	       (siCfg->siId > numSi))
+	 {
+	    RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid SI Id value"
+		  " specified");
+	    RETVALUE(RFAILED);
+	 }
+	 errInfo->errCause = RGSCHERR_NONE;
+	 RETVALUE(ROK);
+	 break;
       case RGR_SI_CFG_TYPE_MIB:      /* SI CFG Type MIB */
       case RGR_SI_CFG_TYPE_SIB1:     /* SI CFG TYPE SIB1 */
       case RGR_SI_CFG_TYPE_SIB1_PWS: /* SI CFG TYPE SIB1_PWS */
@@ -7049,49 +7049,49 @@ RgSchErrInfo *errInfo;
       case RGR_SI_CFG_EMTC_TYPE_SIB1_BR:
       case RGR_SI_CFG_EMTC_TYPE_SIB1_BR_PER:
 #endif
-         break;
+	 break;
 
       case RGR_SI_CFG_TYPE_SI:    /* SI CFG TYPE SI */
-         /*Check that value of SI should be less than equal 
-           to configured numSi parameter value */
-         /* Added siId validation for lower limit */
-         numSi = (cell->siCb.siBitMask & RGSCH_SI_SICFG_UPD) ? 
-            cell->siCb.newSiCfg.numSi : cell->siCfg.numSi;
-         if((siCfg->siId < RGSCH_SI_SIID_LOWER_LMT) || 
-               (siCfg->siId > numSi))
-         {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid SI Id value"
-                     " specified");
-            RETVALUE(RFAILED);
-         }
+	 /*Check that value of SI should be less than equal 
+	   to configured numSi parameter value */
+	 /* Added siId validation for lower limit */
+	 numSi = (cell->siCb.siBitMask & RGSCH_SI_SICFG_UPD) ? 
+	    cell->siCb.newSiCfg.numSi : cell->siCfg.numSi;
+	 if((siCfg->siId < RGSCH_SI_SIID_LOWER_LMT) || 
+	       (siCfg->siId > numSi))
+	 {
+	    RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid SI Id value"
+		  " specified");
+	    RETVALUE(RFAILED);
+	 }
 
-         if(siCfg->siId > ((cell->siCfg.minPeriodicity * 10)/cell->siCfg.siWinSize))
-         {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "SiId can not be scheduled ");
-            RETVALUE(RFAILED);
-         }
-         break;
+	 if(siCfg->siId > ((cell->siCfg.minPeriodicity * 10)/cell->siCfg.siWinSize))
+	 {
+	    RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "SiId can not be scheduled ");
+	    RETVALUE(RFAILED);
+	 }
+	 break;
 
 #ifdef EMTC_ENABLE
       case RGR_SI_CFG_EMTC_TYPE_SI:
       case RGR_SI_CFG_EMTC_TYPE_SI_PER:
-         if(ROK != rgEmtcvalidateSiCfg(siCfg,cell))
-         {
-            RETVALUE(RFAILED);
-         } 
-         break;
+	 if(ROK != rgEmtcvalidateSiCfg(siCfg,cell))
+	 {
+	    RETVALUE(RFAILED);
+	 } 
+	 break;
 #endif
       default:
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid cfgType "
-                      "parameter value");
-         RETVALUE(RFAILED);
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid cfgType "
+	       "parameter value");
+	 RETVALUE(RFAILED);
    }
 
    /*Validate the specified pdu */
    if(NULLP == siCfg->pdu)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid NULLP pdu "
-                   "specified");
+	    "specified");
       RETVALUE(RFAILED);
    }
 
@@ -7100,7 +7100,7 @@ RgSchErrInfo *errInfo;
    if(0 == msgLen)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid pdu "
-                   "specified");
+	    "specified");
       RETVALUE(RFAILED);
    }
 
@@ -7136,7 +7136,7 @@ RgSchErrInfo *errInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrLoadInf
+   PUBLIC S16 rgSCHCfgVldtRgrLoadInf
 (
  Inst              inst,
  RgrLoadInfReqInfo *loadInfReq,
@@ -7159,7 +7159,7 @@ PUBLIC S16 rgSCHCfgVldtRgrLoadInf(inst, loadInfReq, cell, errInfo)
 
    /* Validate if the CC startRb which we have received from DSFR lies in CE sub-band of the receiving eNB */
    if((loadInfReq->rgrCcPHighStartRb >= cell->lteAdvCb.sfrCfg.cellEdgeRbRange.startRb) && 
-         (loadInfReq->rgrCcPHighStartRb <= cell->lteAdvCb.sfrCfg.cellEdgeRbRange.endRb))
+	 (loadInfReq->rgrCcPHighStartRb <= cell->lteAdvCb.sfrCfg.cellEdgeRbRange.endRb))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid rgrCcPHighStartRb received specified");
       RETVALUE(RFAILED);
@@ -7167,7 +7167,7 @@ PUBLIC S16 rgSCHCfgVldtRgrLoadInf(inst, loadInfReq, cell, errInfo)
 
    /* Validate if the CC endRb which we have received from DSFR lies in CE sub-band of the receiving eNB */
    if((loadInfReq->rgrCcPHighEndRb >= cell->lteAdvCb.sfrCfg.cellEdgeRbRange.startRb) && 
-         (loadInfReq->rgrCcPHighEndRb <= cell->lteAdvCb.sfrCfg.cellEdgeRbRange.endRb))
+	 (loadInfReq->rgrCcPHighEndRb <= cell->lteAdvCb.sfrCfg.cellEdgeRbRange.endRb))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid rgrCcPHighEndRb received specified");
       RETVALUE(RFAILED);
@@ -7187,7 +7187,7 @@ PUBLIC S16 rgSCHCfgVldtRgrLoadInf(inst, loadInfReq, cell, errInfo)
  *                                                                   *
  *********************************************************************/
 
- /*
+/*
  * @brief Validates the Tx Mode and PUSCH Mode configuration.
  *
  * @details
@@ -7211,7 +7211,7 @@ PUBLIC S16 rgSCHCfgVldtRgrLoadInf(inst, loadInfReq, cell, errInfo)
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrTxmodePuschMode 
+   PUBLIC S16 rgSCHCfgVldtRgrTxmodePuschMode 
 (
  RgSchCellCb     *cellCb,
  RgrTxMode       txMde,
@@ -7230,22 +7230,22 @@ PUBLIC S16 rgSCHCfgVldtRgrTxmodePuschMode(cellCb, txMde, puschMode,errInfo)
 
 
    if (txMde == RGR_UE_TM_1 ||  txMde == RGR_UE_TM_2 ||
-         txMde == RGR_UE_TM_3 || txMde == RGR_UE_TM_7)
+	 txMde == RGR_UE_TM_3 || txMde == RGR_UE_TM_7)
    {
       if (puschMode == RGR_APRD_CQI_MOD12 ||
-            puschMode == RGR_APRD_CQI_MOD22  ||
-            puschMode == RGR_APRD_CQI_MOD31)
+	    puschMode == RGR_APRD_CQI_MOD22  ||
+	    puschMode == RGR_APRD_CQI_MOD31)
       {
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
    }
 
    if (txMde == RGR_UE_TM_4 ||  txMde == RGR_UE_TM_6)
    {
       if (puschMode == RGR_APRD_CQI_MOD20 ||
-            puschMode == RGR_APRD_CQI_MOD30)
+	    puschMode == RGR_APRD_CQI_MOD30)
       {
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
    }
 
@@ -7253,7 +7253,7 @@ PUBLIC S16 rgSCHCfgVldtRgrTxmodePuschMode(cellCb, txMde, puschMode,errInfo)
    {
       if (puschMode != RGR_APRD_CQI_MOD31)
       {
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
    }
 #ifdef LTE_ADV
@@ -7271,7 +7271,7 @@ PUBLIC S16 rgSCHCfgVldtRgrTxmodePuschMode(cellCb, txMde, puschMode,errInfo)
    RETVALUE(ROK);
 }/*rgSCHCfgVldtRgrTxmodePuschMode ends*/
 
- /*
+/*
  * @brief Validates the UE ACQI configuration request from RRM to MAC.
  *
  * @details
@@ -7297,7 +7297,7 @@ PUBLIC S16 rgSCHCfgVldtRgrTxmodePuschMode(cellCb, txMde, puschMode,errInfo)
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUeACqiCfg 
+   PUBLIC S16 rgSCHCfgVldtRgrUeACqiCfg 
 (
  RgSchCellCb        *cellCb,
  CmLteRnti          crnti,  
@@ -7323,21 +7323,21 @@ PUBLIC S16 rgSCHCfgVldtRgrUeACqiCfg(cellCb, crnti, acqiCfg,txMode, errInfo)
    {
       if(txMode.pres == TRUE)
       {
-         txMde = txMode.txModeEnum;
-         puschMode = acqiCfg->aprdModeEnum;
-         if ( ROK != rgSCHCfgVldtRgrTxmodePuschMode(cellCb, txMde,
-                  puschMode, errInfo))
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
-                     "Invalid Aperiodic CQI configuration CRNTI:%d",crnti);
-            RETVALUE(RFAILED);
-         } 
+	 txMde = txMode.txModeEnum;
+	 puschMode = acqiCfg->aprdModeEnum;
+	 if ( ROK != rgSCHCfgVldtRgrTxmodePuschMode(cellCb, txMde,
+		  puschMode, errInfo))
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
+		  "Invalid Aperiodic CQI configuration CRNTI:%d",crnti);
+	    RETVALUE(RFAILED);
+	 } 
       }
    }
    RETVALUE(ROK);
 }
 
- /*
+/*
  * @brief Validates the Tx Mode and PUCCH Mode configuration.
  *
  * @details
@@ -7361,12 +7361,12 @@ PUBLIC S16 rgSCHCfgVldtRgrUeACqiCfg(cellCb, crnti, acqiCfg,txMode, errInfo)
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrTxmodePucchMode 
+   PUBLIC S16 rgSCHCfgVldtRgrTxmodePucchMode 
 (
-   RgSchCellCb     *cellCb,
-   RgrTxMode       txMde,
-   RgrPrdCqiMode   pucchMode,
-   RgSchErrInfo    *errInfo
+ RgSchCellCb     *cellCb,
+ RgrTxMode       txMde,
+ RgrPrdCqiMode   pucchMode,
+ RgSchErrInfo    *errInfo
  )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrTxmodePucchMode(cellCb, txMde, pucchMode,errInfo)
@@ -7377,24 +7377,24 @@ PUBLIC S16 rgSCHCfgVldtRgrTxmodePucchMode(cellCb, txMde, pucchMode,errInfo)
 #endif
 {
    TRC2(rgSCHCfgVldtRgrTxmodePucchMode);
-   
 
-  if (pucchMode == RGR_PRD_CQI_MOD10 || pucchMode == RGR_PRD_CQI_MOD20 )
-  {
-   if (txMde ==RGR_UE_TM_4 || txMde ==RGR_UE_TM_5 || txMde ==RGR_UE_TM_6)
+
+   if (pucchMode == RGR_PRD_CQI_MOD10 || pucchMode == RGR_PRD_CQI_MOD20 )
    {
-      RETVALUE(RFAILED);
+      if (txMde ==RGR_UE_TM_4 || txMde ==RGR_UE_TM_5 || txMde ==RGR_UE_TM_6)
+      {
+	 RETVALUE(RFAILED);
+      }
    }
-  }
-  else if (pucchMode == RGR_PRD_CQI_MOD11 || pucchMode == RGR_PRD_CQI_MOD21)
-  {
-     if (txMde ==RGR_UE_TM_1 || txMde ==RGR_UE_TM_2 || txMde ==RGR_UE_TM_3 \
-             || txMde ==RGR_UE_TM_7)
+   else if (pucchMode == RGR_PRD_CQI_MOD11 || pucchMode == RGR_PRD_CQI_MOD21)
    {
-      RETVALUE(RFAILED);
+      if (txMde ==RGR_UE_TM_1 || txMde ==RGR_UE_TM_2 || txMde ==RGR_UE_TM_3 \
+	    || txMde ==RGR_UE_TM_7)
+      {
+	 RETVALUE(RFAILED);
+      }
    }
-  }
-  /* TODO:: Tm8 and TM9 validation needs to be added */
+   /* TODO:: Tm8 and TM9 validation needs to be added */
    RETVALUE(ROK);
 }
 
@@ -7424,7 +7424,7 @@ PUBLIC S16 rgSCHCfgVldtRgrTxmodePucchMode(cellCb, txMde, pucchMode,errInfo)
  */
 #ifdef LTEMAC_HDFDD
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg 
+   PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg 
 (
  RgSchCellCb        *cellCb,
  CmLteRnti          crnti,  
@@ -7435,7 +7435,7 @@ PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg
  )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg(cellCb, crnti, cqiCfg, hdFdd, 
-       txMode, errInfo)
+      txMode, errInfo)
    RgSchCellCb        *cellCb;
    CmLteRnti          crnti; 
    RgrUePrdDlCqiCfg   *cqiCfg;
@@ -7445,14 +7445,14 @@ PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg(cellCb, crnti, cqiCfg, hdFdd,
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg 
-   (
-    RgSchCellCb        *cellCb,
-    CmLteRnti          crnti,  
-    RgrUePrdDlCqiCfg   *cqiCfg,  
-    RgrUeTxModeCfg     txMode,
-    RgSchErrInfo       *errInfo
-   )
+   PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg 
+(
+ RgSchCellCb        *cellCb,
+ CmLteRnti          crnti,  
+ RgrUePrdDlCqiCfg   *cqiCfg,  
+ RgrUeTxModeCfg     txMode,
+ RgSchErrInfo       *errInfo
+ )
 #else
 PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg(cellCb, crnti, cqiCfg,  txMode, errInfo)
    RgSchCellCb        *cellCb;
@@ -7467,7 +7467,7 @@ PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg(cellCb, crnti, cqiCfg,  txMode, errInfo)
    RgrPrdCqiMode pucchMode; 
 
    TRC2(rgSCHCfgVldtRgrUePCqiCfg);
-   
+
    txMde = RGR_UE_TM_1;
    pucchMode = RGR_PRD_CQI_MOD20;
    if ( RGR_SCH_PCQI_SETUP == cqiCfg->type )
@@ -7475,152 +7475,152 @@ PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg(cellCb, crnti, cqiCfg,  txMode, errInfo)
       /*1. Validate for Tx Mode and PUCCH Mode combination*/
       if(txMode.pres == TRUE)
       {
-         txMde = txMode.txModeEnum;
-         pucchMode = cqiCfg->cqiSetup.prdModeEnum;
-         if ( ROK != rgSCHCfgVldtRgrTxmodePucchMode(cellCb, txMde,
-                  pucchMode, errInfo))
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
-                     "Invalid Tx Mode-PUCCH Mode combination CRNTI:%d",crnti);
-            RETVALUE(RFAILED);
-         } 
+	 txMde = txMode.txModeEnum;
+	 pucchMode = cqiCfg->cqiSetup.prdModeEnum;
+	 if ( ROK != rgSCHCfgVldtRgrTxmodePucchMode(cellCb, txMde,
+		  pucchMode, errInfo))
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
+		  "Invalid Tx Mode-PUCCH Mode combination CRNTI:%d",crnti);
+	    RETVALUE(RFAILED);
+	 } 
       }
 
       /*2. Validate for PCQI Reporting Type and PUCCH Mode combination*/
       if((cqiCfg->cqiSetup.cqiRepType==1) && 
-              ((pucchMode == RGR_PRD_CQI_MOD20) ||
-               (pucchMode == RGR_PRD_CQI_MOD21)))
+	    ((pucchMode == RGR_PRD_CQI_MOD20) ||
+	     (pucchMode == RGR_PRD_CQI_MOD21)))
       {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
-                     "Invalid Reporting Type-PUCCH Mode combination CRNTI:%d",crnti);
-            RETVALUE(RFAILED);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
+	       "Invalid Reporting Type-PUCCH Mode combination CRNTI:%d",crnti);
+	 RETVALUE(RFAILED);
       }
 
       if((cqiCfg->cqiSetup.cqiRepType==2) && 
-              ((pucchMode == RGR_PRD_CQI_MOD10) ||
-               (pucchMode == RGR_PRD_CQI_MOD11)))
+	    ((pucchMode == RGR_PRD_CQI_MOD10) ||
+	     (pucchMode == RGR_PRD_CQI_MOD11)))
       {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
-                     "Invalid Reporting Type-PUCCH Mode combination CRNTI:%d",crnti);
-            RETVALUE(RFAILED);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
+	       "Invalid Reporting Type-PUCCH Mode combination CRNTI:%d",crnti);
+	 RETVALUE(RFAILED);
       }
 
       /*3. Validate CQI/PMI and RI Configuration related parameter values */
       /*TODO- To be compared with configured n2Pucch Index*/
       if (cqiCfg->cqiSetup.cqiPResIdx > RG_SCH_PUCCH_RES_MAX_SUPP ) 
       {
-         RLOG_ARG3(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                  "Not Supported or Invalid CQI-PUCCH resourceIndex=%d Cfg Val=%d CRNTI:%d", 
-                  RG_SCH_PUCCH_RES_MAX_SUPP, cqiCfg->type,crnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG3(L_ERROR,DBG_CELLID,cellCb->cellId,  
+	       "Not Supported or Invalid CQI-PUCCH resourceIndex=%d Cfg Val=%d CRNTI:%d", 
+	       RG_SCH_PUCCH_RES_MAX_SUPP, cqiCfg->type,crnti);
+	 RETVALUE(RFAILED);
       } 
 
 #ifdef LTEMAC_HDFDD
       if(hdFdd)
       {
-         if((cqiCfg->cqiSetup.cqiPCfgIdx > RG_SCH_ICQI_MAX_SUPP)||
-               (cqiCfg->cqiSetup.cqiPCfgIdx < 7) ||
-               (cqiCfg->cqiSetup.cqiPCfgIdx == 317))
-         {
-            RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                     "Not Supported or Invalid Cfg CQI Min Index Sup =%d"
-                     "Max Index Sup=%d  Cfg Val=%d CRNTI:%d", RG_SCH_ICQI_MIN_SUPP, 
-                     RG_SCH_ICQI_MAX_SUPP, cqiCfg->type,crnti);
-            RETVALUE(RFAILED);
-         }
+	 if((cqiCfg->cqiSetup.cqiPCfgIdx > RG_SCH_ICQI_MAX_SUPP)||
+	       (cqiCfg->cqiSetup.cqiPCfgIdx < 7) ||
+	       (cqiCfg->cqiSetup.cqiPCfgIdx == 317))
+	 {
+	    RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
+		  "Not Supported or Invalid Cfg CQI Min Index Sup =%d"
+		  "Max Index Sup=%d  Cfg Val=%d CRNTI:%d", RG_SCH_ICQI_MIN_SUPP, 
+		  RG_SCH_ICQI_MAX_SUPP, cqiCfg->type,crnti);
+	    RETVALUE(RFAILED);
+	 }
       }
       else 
       {
-         if((cqiCfg->cqiSetup.cqiPCfgIdx > RG_SCH_ICQI_MAX_SUPP)||
-               (cqiCfg->cqiSetup.cqiPCfgIdx == 317))
-         {
-            RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                     "Not Supported or Invalid Cfg CQI Min Index Sup =%d "
-                     "Max Index Sup=%d  Cfg Val=%d CRNTI:%d", RG_SCH_ICQI_MIN_SUPP, 
-                     RG_SCH_ICQI_MAX_SUPP, cqiCfg->type,crnti);
-            RETVALUE(RFAILED);
-         }
+	 if((cqiCfg->cqiSetup.cqiPCfgIdx > RG_SCH_ICQI_MAX_SUPP)||
+	       (cqiCfg->cqiSetup.cqiPCfgIdx == 317))
+	 {
+	    RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
+		  "Not Supported or Invalid Cfg CQI Min Index Sup =%d "
+		  "Max Index Sup=%d  Cfg Val=%d CRNTI:%d", RG_SCH_ICQI_MIN_SUPP, 
+		  RG_SCH_ICQI_MAX_SUPP, cqiCfg->type,crnti);
+	    RETVALUE(RFAILED);
+	 }
       }
 #else
       if((cqiCfg->cqiSetup.cqiPCfgIdx > RG_SCH_ICQI_MAX_SUPP)||
-            (cqiCfg->cqiSetup.cqiPCfgIdx == 317))
+	    (cqiCfg->cqiSetup.cqiPCfgIdx == 317))
       {
-         RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                  "Not Supported or Invalid Cfg CQI Min Index Sup =%d"
-                  "Max Index Sup=%d  Cfg Val=%d CRNTI;%d", RG_SCH_ICQI_MIN_SUPP, 
-                  RG_SCH_ICQI_MAX_SUPP, cqiCfg->type,crnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
+	       "Not Supported or Invalid Cfg CQI Min Index Sup =%d"
+	       "Max Index Sup=%d  Cfg Val=%d CRNTI;%d", RG_SCH_ICQI_MIN_SUPP, 
+	       RG_SCH_ICQI_MAX_SUPP, cqiCfg->type,crnti);
+	 RETVALUE(RFAILED);
       }
 #endif
 
       if((cqiCfg->cqiSetup.cqiRepType < RGR_UE_PCQI_WB_REP) ||
-            (cqiCfg->cqiSetup.cqiRepType > RGR_UE_PCQI_SB_REP))
+	    (cqiCfg->cqiSetup.cqiRepType > RGR_UE_PCQI_SB_REP))
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                  "Invalid Cfg CQI Report"
-                  "ModeCfg Val=%d CRNTI:%d", cqiCfg->type,crnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId,  
+	       "Invalid Cfg CQI Report"
+	       "ModeCfg Val=%d CRNTI:%d", cqiCfg->type,crnti);
+	 RETVALUE(RFAILED);
       }
 
       if((cqiCfg->cqiSetup.cqiRepType == RGR_UE_PCQI_SB_REP) && 
-            ((cqiCfg->cqiSetup.k < RG_SCH_CQI_K_MIN) ||
-            (cqiCfg->cqiSetup.k > RG_SCH_CQI_K_MAX)))
+	    ((cqiCfg->cqiSetup.k < RG_SCH_CQI_K_MIN) ||
+	     (cqiCfg->cqiSetup.k > RG_SCH_CQI_K_MAX)))
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                  "Invalid CQI Cfg K Cfg Val=%d CRNTI:%d", cqiCfg->type,crnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId,  
+	       "Invalid CQI Cfg K Cfg Val=%d CRNTI:%d", cqiCfg->type,crnti);
+	 RETVALUE(RFAILED);
       }
 
       if((cqiCfg->cqiSetup.cqiRepType == RGR_UE_PCQI_SB_REP) && 
-            (cellCb->bwCfg.dlTotalBw <= 7))
+	    (cellCb->bwCfg.dlTotalBw <= 7))
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                  "Invalid Periodic CQI mode Cfg for dlTotalBw (%d) for CRNTI:%d", 
-                  cellCb->bwCfg.dlTotalBw, crnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId,  
+	       "Invalid Periodic CQI mode Cfg for dlTotalBw (%d) for CRNTI:%d", 
+	       cellCb->bwCfg.dlTotalBw, crnti);
+	 RETVALUE(RFAILED);
       }
 
 #ifndef LTE_TDD
       if (cqiCfg->cqiSetup.cqiPCfgIdx == RG_SCH_ICQI_RESV_FDD ) 
       {  
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId, 
-                  "Reserved value Cfg =%d CRNTI:%d", 
-                  cqiCfg->cqiSetup.cqiPResIdx,crnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId, 
+	       "Reserved value Cfg =%d CRNTI:%d", 
+	       cqiCfg->cqiSetup.cqiPResIdx,crnti);
+	 RETVALUE(RFAILED);
       }
 #endif
 
       /* 4. Check RI Configuration values */
-       if(cqiCfg->cqiSetup.riEna == TRUE)
+      if(cqiCfg->cqiSetup.riEna == TRUE)
       {
-         if(txMode.pres == TRUE)
-         {
-            if((txMde != RGR_UE_TM_3)  
-            && (txMde != RGR_UE_TM_4) 
-            && (txMde != RGR_UE_TM_8) 
+	 if(txMode.pres == TRUE)
+	 {
+	    if((txMde != RGR_UE_TM_3)  
+		  && (txMde != RGR_UE_TM_4) 
+		  && (txMde != RGR_UE_TM_8) 
 #ifdef LTE_ADV
-            && (txMde != RGR_UE_TM_9)
+		  && (txMde != RGR_UE_TM_9)
 #endif
-             )
-            {
-               RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId, 
-                  "Invalid Transmission Mode =%d CRNTI:%d",
-                  txMde,crnti);
-               RETVALUE(RFAILED);
-            }
-         }
-         
-         if(cqiCfg->cqiSetup.riCfgIdx > RG_SCH_IRI_MAX_SUPP)
-         {
-          RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId, 
-                  "Invalid Index RI value Cfg =%d CRNTI:%d",
-                  cqiCfg->cqiSetup.riCfgIdx,crnti);
-          RETVALUE(RFAILED);
-         }
+	      )
+	    {
+	       RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		     "Invalid Transmission Mode =%d CRNTI:%d",
+		     txMde,crnti);
+	       RETVALUE(RFAILED);
+	    }
+	 }
+
+	 if(cqiCfg->cqiSetup.riCfgIdx > RG_SCH_IRI_MAX_SUPP)
+	 {
+	    RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "Invalid Index RI value Cfg =%d CRNTI:%d",
+		  cqiCfg->cqiSetup.riCfgIdx,crnti);
+	    RETVALUE(RFAILED);
+	 }
       }
    }
 
-  
+
    RETVALUE(ROK);
 }
 
@@ -7649,7 +7649,7 @@ PUBLIC S16 rgSCHCfgVldtRgrUePCqiCfg(cellCb, crnti, cqiCfg,  txMode, errInfo)
  */
 #ifdef LTEMAC_HDFDD
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUeUlSrsCfg 
+   PUBLIC S16 rgSCHCfgVldtRgrUeUlSrsCfg 
 (
  RgSchCellCb       *cellCb,
  CmLteRnti         crnti,  
@@ -7667,7 +7667,7 @@ PUBLIC S16 rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, crnti, srsCfg, hdFdd, errInfo)
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUeUlSrsCfg 
+   PUBLIC S16 rgSCHCfgVldtRgrUeUlSrsCfg 
 (
  RgSchCellCb       *cellCb,
  CmLteRnti         crnti,  
@@ -7686,7 +7686,7 @@ PUBLIC S16 rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, crnti, srsCfg,  errInfo)
    U16    srsPeri=0;
    U16    srsOffset=0;
    U8     srsSubframe=0;
-   
+
    TRC2(rgSCHCfgVldtRgrUeUlSrsCfg);
 
 
@@ -7696,9 +7696,9 @@ PUBLIC S16 rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, crnti, srsCfg,  errInfo)
       /*ccpu00130768 - ADD - if cell specific SRS is not configured*/
       if(cellCb->srsCfg.isSrsCfgPres == FALSE)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
-              "Cell specific SRS is not configured CRNTI:%d",crnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
+	       "Cell specific SRS is not configured CRNTI:%d",crnti);
+	 RETVALUE(RFAILED);
       }
 
       /*  1. Validate SRS Configuration related parameter values  */
@@ -7706,125 +7706,125 @@ PUBLIC S16 rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, crnti, srsCfg,  errInfo)
 #ifdef LTEMAC_HDFDD
       if(hdFdd)
       {
-         if ( (srsCfg->srsSetup.srsCfgIdx < 7) || 
-               (srsCfg->srsSetup.srsCfgIdx > RG_SCH_ISRS_MAX_SUPP) )
-         {
-            RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
-                     "Not Supported or Invalid Cfg "
-                     "SRS Min Index Sup =%d   Max Index Sup=%d  Cfg Val=%d CRNTI:%d",
-                     RG_SCH_ISRS_MIN_SUPP, RG_SCH_ISRS_MAX_SUPP,
-                     srsCfg->srsSetup.srsCfgIdx,crnti);
-            RETVALUE(RFAILED);
-         }
+	 if ( (srsCfg->srsSetup.srsCfgIdx < 7) || 
+	       (srsCfg->srsSetup.srsCfgIdx > RG_SCH_ISRS_MAX_SUPP) )
+	 {
+	    RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "Not Supported or Invalid Cfg "
+		  "SRS Min Index Sup =%d   Max Index Sup=%d  Cfg Val=%d CRNTI:%d",
+		  RG_SCH_ISRS_MIN_SUPP, RG_SCH_ISRS_MAX_SUPP,
+		  srsCfg->srsSetup.srsCfgIdx,crnti);
+	    RETVALUE(RFAILED);
+	 }
       }
       else
       {
-         if ( srsCfg->srsSetup.srsCfgIdx > RG_SCH_ISRS_MAX_SUPP )
-         {
-            RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
-                     "Not Supported or Invalid Cfg"
-                     "SRS Min Index Sup =%d   Max Index Sup=%d  Cfg Val=%d CRNTI:%d",
-                     RG_SCH_ISRS_MIN_SUPP, RG_SCH_ISRS_MAX_SUPP,
-                     srsCfg->srsSetup.srsCfgIdx,crnti);
-            RETVALUE(RFAILED);
-         }
+	 if ( srsCfg->srsSetup.srsCfgIdx > RG_SCH_ISRS_MAX_SUPP )
+	 {
+	    RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "Not Supported or Invalid Cfg"
+		  "SRS Min Index Sup =%d   Max Index Sup=%d  Cfg Val=%d CRNTI:%d",
+		  RG_SCH_ISRS_MIN_SUPP, RG_SCH_ISRS_MAX_SUPP,
+		  srsCfg->srsSetup.srsCfgIdx,crnti);
+	    RETVALUE(RFAILED);
+	 }
 
       }
 #else
       if ( srsCfg->srsSetup.srsCfgIdx > RG_SCH_ISRS_MAX_SUPP )
       {
-         RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
-                  "Not Supported or Invalid Cfg" 
-                  "SRS Min Index Sup =%d   Max Index Sup=%d  Cfg Val=%d CRNTI:%d",
-                  RG_SCH_ISRS_MIN_SUPP, RG_SCH_ISRS_MAX_SUPP,
-                  srsCfg->srsSetup.srsCfgIdx,crnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
+	       "Not Supported or Invalid Cfg" 
+	       "SRS Min Index Sup =%d   Max Index Sup=%d  Cfg Val=%d CRNTI:%d",
+	       RG_SCH_ISRS_MIN_SUPP, RG_SCH_ISRS_MAX_SUPP,
+	       srsCfg->srsSetup.srsCfgIdx,crnti);
+	 RETVALUE(RFAILED);
       }
 #endif
 #ifdef LTE_TDD
       /* Compute SRS Offset and Periodicity */
       rgSCHUtlGetCfgPerOff( RG_SCH_TDD_SRS_TBL, 
-            srsCfg->srsSetup.srsCfgIdx,
-            &srsPeri, &srsOffset);  
+	    srsCfg->srsSetup.srsCfgIdx,
+	    &srsPeri, &srsOffset);  
 #else
       rgSCHUtlGetCfgPerOff( RG_SCH_FDD_SRS_TBL, 
-            srsCfg->srsSetup.srsCfgIdx,
-            &srsPeri, &srsOffset);     
+	    srsCfg->srsSetup.srsCfgIdx,
+	    &srsPeri, &srsOffset);     
 #endif
-       srsSubframe = srsOffset%RGSCH_NUM_SUB_FRAMES;
+      srsSubframe = srsOffset%RGSCH_NUM_SUB_FRAMES;
 #ifdef LTE_TDD   
       if(rgSchTddCellSpSrsSubfrmTbl[cellCb->srsCfg.srsSubFrameCfg][srsSubframe] == FALSE)   {      
 #else   
-      if(rgSchFddCellSpSrsSubfrmTbl[cellCb->srsCfg.srsSubFrameCfg][srsSubframe] == FALSE)   {
+	 if(rgSchFddCellSpSrsSubfrmTbl[cellCb->srsCfg.srsSubFrameCfg][srsSubframe] == FALSE)   {
 #endif
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId, 
-               "UE specific SRS is not occuring in Cell specific SRS subframe"
-               "srs Cfg Idx =%d CRNTI:%d",
-               srsCfg->srsSetup.srsCfgIdx,crnti);
-         RETVALUE(RFAILED);
-      }
+	    RLOG_ARG2(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "UE specific SRS is not occuring in Cell specific SRS subframe"
+		  "srs Cfg Idx =%d CRNTI:%d",
+		  srsCfg->srsSetup.srsCfgIdx,crnti);
+	    RETVALUE(RFAILED);
+	 }
 
 
-      if ( srsCfg->srsSetup.fDomPosi > RG_SCH_SRS_FREQDOM_POS_MAX )
-      {
-         RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
-                  "Not Supported or Invalid Cfg" 
-                  "SRS Min Freq Domain Position =%d"   
-                  "Max Freq Domain Position =%d  Cfg Val=%d CRNTI:%d",
-                  RG_SCH_SRS_FREQDOM_POS_MIN, RG_SCH_SRS_FREQDOM_POS_MAX,
-                  srsCfg->srsSetup.srsCfgIdx,crnti);
-         RETVALUE(RFAILED);
-      }
+	 if ( srsCfg->srsSetup.fDomPosi > RG_SCH_SRS_FREQDOM_POS_MAX )
+	 {
+	    RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "Not Supported or Invalid Cfg" 
+		  "SRS Min Freq Domain Position =%d"   
+		  "Max Freq Domain Position =%d  Cfg Val=%d CRNTI:%d",
+		  RG_SCH_SRS_FREQDOM_POS_MIN, RG_SCH_SRS_FREQDOM_POS_MAX,
+		  srsCfg->srsSetup.srsCfgIdx,crnti);
+	    RETVALUE(RFAILED);
+	 }
 
-      if ( srsCfg->srsSetup.txComb > RG_SCH_SRS_TXCOMB_MAX )
-      {
-         RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
-                  "Not Supported or Invalid Cfg" 
-                  "SRS Min TX Comb =%d   Max TX Comb =%d  Cfg Val=%d CRNTI:%d",
-                  RG_SCH_SRS_TXCOMB_MIN, RG_SCH_SRS_TXCOMB_MAX,
-                  srsCfg->srsSetup.srsCfgIdx,crnti);
-         RETVALUE(RFAILED);
+	 if ( srsCfg->srsSetup.txComb > RG_SCH_SRS_TXCOMB_MAX )
+	 {
+	    RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "Not Supported or Invalid Cfg" 
+		  "SRS Min TX Comb =%d   Max TX Comb =%d  Cfg Val=%d CRNTI:%d",
+		  RG_SCH_SRS_TXCOMB_MIN, RG_SCH_SRS_TXCOMB_MAX,
+		  srsCfg->srsSetup.srsCfgIdx,crnti);
+	    RETVALUE(RFAILED);
+	 }
       }
+      RETVALUE(ROK);
    }
-   RETVALUE(ROK);
-}
 
-/*
- * @brief Validates the UE SR Re/configuration request from RRM to MAC.
- *
- * @details
- *
- *     Function : rgSCHCfgVldtRgrUeSrCfg 
- *
- *     Processing Steps:
- *      - Validate the UE re/configuration request from RRC to MAC at CFG:
- *        validate the value range for SR values.
- *      - If validated successfully,
- *        - Return ROK.
- *      - Else 
- *        - Return RFAILED.
- *
- *  @param[in] RgSchCellCb      *cellCb,
- *  @param[in] CmLteRnti        crnti,  
- *  @param[in] RgrUeSrCfg       *srCfg,  
- *  @param[out] RgSchErrInfo    *errInfo
- *  @return  S16
- *      -# ROK
- *      -# RFAILED
- */
+   /*
+    * @brief Validates the UE SR Re/configuration request from RRM to MAC.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgVldtRgrUeSrCfg 
+    *
+    *     Processing Steps:
+    *      - Validate the UE re/configuration request from RRC to MAC at CFG:
+    *        validate the value range for SR values.
+    *      - If validated successfully,
+    *        - Return ROK.
+    *      - Else 
+    *        - Return RFAILED.
+    *
+    *  @param[in] RgSchCellCb      *cellCb,
+    *  @param[in] CmLteRnti        crnti,  
+    *  @param[in] RgrUeSrCfg       *srCfg,  
+    *  @param[out] RgSchErrInfo    *errInfo
+    *  @return  S16
+    *      -# ROK
+    *      -# RFAILED
+    */
 #ifdef LTEMAC_HDFDD 
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUeSrCfg 
-(
- RgSchCellCb      *cellCb,
- CmLteRnti        crnti,  
- RgrUeSrCfg       *srCfg,
- Bool             hdFdd,
- RgSchErrInfo     *errInfo
- )
+   PUBLIC S16 rgSCHCfgVldtRgrUeSrCfg 
+      (
+       RgSchCellCb      *cellCb,
+       CmLteRnti        crnti,  
+       RgrUeSrCfg       *srCfg,
+       Bool             hdFdd,
+       RgSchErrInfo     *errInfo
+      )
 #else
-PUBLIC S16 rgSCHCfgVldtRgrUeSrCfg(cellCb, crnti, srCfg, hdFdd, errInfo)
-   RgSchCellCb    *cellCb;
+      PUBLIC S16 rgSCHCfgVldtRgrUeSrCfg(cellCb, crnti, srCfg, hdFdd, errInfo)
+      RgSchCellCb    *cellCb;
    CmLteRnti      crnti; 
    RgrUeSrCfg     *srCfg;
    Bool           hdFdd;
@@ -7832,307 +7832,307 @@ PUBLIC S16 rgSCHCfgVldtRgrUeSrCfg(cellCb, crnti, srCfg, hdFdd, errInfo)
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtRgrUeSrCfg 
-(
- RgSchCellCb      *cellCb,
- CmLteRnti        crnti,  
- RgrUeSrCfg       *srCfg,  
- RgSchErrInfo     *errInfo
- )
+   PUBLIC S16 rgSCHCfgVldtRgrUeSrCfg 
+      (
+       RgSchCellCb      *cellCb,
+       CmLteRnti        crnti,  
+       RgrUeSrCfg       *srCfg,  
+       RgSchErrInfo     *errInfo
+      )
 #else
-PUBLIC S16 rgSCHCfgVldtRgrUeSrCfg(cellCb, crnti, srCfg, errInfo)
-   RgSchCellCb    *cellCb;
+      PUBLIC S16 rgSCHCfgVldtRgrUeSrCfg(cellCb, crnti, srCfg, errInfo)
+      RgSchCellCb    *cellCb;
    CmLteRnti      crnti; 
    RgrUeSrCfg     *srCfg;
    RgSchErrInfo   *errInfo;
 #endif
 #endif
-{
-
-   TRC2(rgSCHCfgVldtRgrUeSrCfg);
-
-
-
-   if ( RGR_SCH_SR_SETUP == srCfg->type )
    {
-      /* 1. Validate SR Configuration related parameter values  */
+
+      TRC2(rgSCHCfgVldtRgrUeSrCfg);
+
+
+
+      if ( RGR_SCH_SR_SETUP == srCfg->type )
+      {
+	 /* 1. Validate SR Configuration related parameter values  */
 #ifdef LTEMAC_HDFDD
-      if(hdFdd)
-      {
-         if (( srCfg->srSetup.srResIdx > RG_SCH_SR_RES_IDX   ) ||
-               ( srCfg->srSetup.srCfgIdx < 5 ) ||
-               ( srCfg->srSetup.srCfgIdx > RG_SCH_ISR_MAX_SUPP )) 
-         {
-            RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                     "Invalid SR Index Cfg =%d"
-                      "Max Supp=%d,Min Supp=%d CRNTI:%d", srCfg->srSetup.srCfgIdx, 
-                     RG_SCH_ISR_MAX_SUPP, RG_SCH_ISR_MIN_SUPP,crnti);
+	 if(hdFdd)
+	 {
+	    if (( srCfg->srSetup.srResIdx > RG_SCH_SR_RES_IDX   ) ||
+		  ( srCfg->srSetup.srCfgIdx < 5 ) ||
+		  ( srCfg->srSetup.srCfgIdx > RG_SCH_ISR_MAX_SUPP )) 
+	    {
+	       RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
+		     "Invalid SR Index Cfg =%d"
+		     "Max Supp=%d,Min Supp=%d CRNTI:%d", srCfg->srSetup.srCfgIdx, 
+		     RG_SCH_ISR_MAX_SUPP, RG_SCH_ISR_MIN_SUPP,crnti);
 
-            RETVALUE(RFAILED);
-         }
-      }
-      else
-      {
-         if (( srCfg->srSetup.srResIdx > RG_SCH_SR_RES_IDX   ) ||
-               ( srCfg->srSetup.srCfgIdx > RG_SCH_ISR_MAX_SUPP )) 
-         {
-            RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                     "Invalid SR Index Cfg =%d" 
-                      "Max Supp=%d,Min Supp=%d CRNTI:%d", srCfg->srSetup.srCfgIdx, 
-                     RG_SCH_ISR_MAX_SUPP, RG_SCH_ISR_MIN_SUPP,crnti);
+	       RETVALUE(RFAILED);
+	    }
+	 }
+	 else
+	 {
+	    if (( srCfg->srSetup.srResIdx > RG_SCH_SR_RES_IDX   ) ||
+		  ( srCfg->srSetup.srCfgIdx > RG_SCH_ISR_MAX_SUPP )) 
+	    {
+	       RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
+		     "Invalid SR Index Cfg =%d" 
+		     "Max Supp=%d,Min Supp=%d CRNTI:%d", srCfg->srSetup.srCfgIdx, 
+		     RG_SCH_ISR_MAX_SUPP, RG_SCH_ISR_MIN_SUPP,crnti);
 
-            RETVALUE(RFAILED);
-         }
-      }
+	       RETVALUE(RFAILED);
+	    }
+	 }
 #else
-      if (( srCfg->srSetup.srResIdx > RG_SCH_SR_RES_IDX   ) ||
-            ( srCfg->srSetup.srCfgIdx > RG_SCH_ISR_MAX_SUPP )) 
-      {
-         RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
-                  "Invalid SR Index Cfg =%d"
-                  "Max Supp=%d,Min Supp=%d CRNTI:%d", srCfg->srSetup.srCfgIdx, 
-                  RG_SCH_ISR_MAX_SUPP, RG_SCH_ISR_MIN_SUPP,crnti);
+	 if (( srCfg->srSetup.srResIdx > RG_SCH_SR_RES_IDX   ) ||
+	       ( srCfg->srSetup.srCfgIdx > RG_SCH_ISR_MAX_SUPP )) 
+	 {
+	    RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,  
+		  "Invalid SR Index Cfg =%d"
+		  "Max Supp=%d,Min Supp=%d CRNTI:%d", srCfg->srSetup.srCfgIdx, 
+		  RG_SCH_ISR_MAX_SUPP, RG_SCH_ISR_MIN_SUPP,crnti);
 
-         RETVALUE(RFAILED);
-      }
+	    RETVALUE(RFAILED);
+	 }
 #endif
-   } 
-   RETVALUE(ROK);
-}
+      } 
+      RETVALUE(ROK);
+   }
 
 
-/*
- * @brief Validates the UE Aperiodic & Periodic  CQI, PMI, RI, SRS and SR Configuration 
- *             request from RRM to MAC.
- *
- * @details
- *
- *     Function :rgSCHCfgVldtCqiSrSrsUeCfg 
- *
- *     Processing Steps:
- *      - Validate the UE configuration request from RRC to MAC at CFG:
- *        validate the value range for Aperiodic & Periodic CQI, PMI, RI , SRS and SR values.
- *      - If validated successfully,
- *        - Return ROK.
- *      - Else 
- *        - Return RFAILED.
- *
- *  @param[in]  RgSchCellCb  *cellCb
- *  @param[in]  RgrUeCfg     *ueCfg
- *  @param[out] RgSchErrInfo *errInfo
- *  @return  S16
- *      -# ROK
- *      -# RFAILED
- */
+   /*
+    * @brief Validates the UE Aperiodic & Periodic  CQI, PMI, RI, SRS and SR Configuration 
+    *             request from RRM to MAC.
+    *
+    * @details
+    *
+    *     Function :rgSCHCfgVldtCqiSrSrsUeCfg 
+    *
+    *     Processing Steps:
+    *      - Validate the UE configuration request from RRC to MAC at CFG:
+    *        validate the value range for Aperiodic & Periodic CQI, PMI, RI , SRS and SR values.
+    *      - If validated successfully,
+    *        - Return ROK.
+    *      - Else 
+    *        - Return RFAILED.
+    *
+    *  @param[in]  RgSchCellCb  *cellCb
+    *  @param[in]  RgrUeCfg     *ueCfg
+    *  @param[out] RgSchErrInfo *errInfo
+    *  @return  S16
+    *      -# ROK
+    *      -# RFAILED
+    */
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtCqiSrSrsUeCfg 
-(
- RgSchCellCb       *cellCb,  
- RgrUeCfg          *ueCfg,  
- RgSchErrInfo      *errInfo
- )
+   PRIVATE S16 rgSCHCfgVldtCqiSrSrsUeCfg 
+      (
+       RgSchCellCb       *cellCb,  
+       RgrUeCfg          *ueCfg,  
+       RgSchErrInfo      *errInfo
+      )
 #else
-PRIVATE S16  rgSCHCfgVldtCqiSrSrsUeCfg(cellCb, ueCfg,  errInfo)
-   RgSchCellCb     *cellCb;  
+      PRIVATE S16  rgSCHCfgVldtCqiSrSrsUeCfg(cellCb, ueCfg,  errInfo)
+      RgSchCellCb     *cellCb;  
    RgrUeCfg        *ueCfg;
    RgSchErrInfo    *errInfo;
 #endif
-{
-
-   TRC2(rgSCHCfgVldtCqiSrSrsUeCfg);
-
-
-   /*  1. Validate UE Aperiodic CQI related parameters */
-   if ( ROK != rgSCHCfgVldtRgrUeACqiCfg (cellCb, ueCfg->crnti,
-            &ueCfg->ueDlCqiCfg.aprdCqiCfg, ueCfg->txMode, errInfo ))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
-       "Invalid Aperiodic CQI configuration CRNTI:%d",ueCfg->crnti);
-      RETVALUE(RFAILED);
+
+      TRC2(rgSCHCfgVldtCqiSrSrsUeCfg);
+
+
+      /*  1. Validate UE Aperiodic CQI related parameters */
+      if ( ROK != rgSCHCfgVldtRgrUeACqiCfg (cellCb, ueCfg->crnti,
+	       &ueCfg->ueDlCqiCfg.aprdCqiCfg, ueCfg->txMode, errInfo ))
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
+	       "Invalid Aperiodic CQI configuration CRNTI:%d",ueCfg->crnti);
+	 RETVALUE(RFAILED);
+      }
+
+      /*  1. Validate UE Periodic CQI/PMI, SRS and SR related parameters */
+#ifdef LTEMAC_HDFDD
+      if ( ROK != rgSCHCfgVldtRgrUePCqiCfg (cellCb, ueCfg->crnti,
+	       &ueCfg->ueDlCqiCfg.prdCqiCfg, ueCfg->isHdFddEnbld, 
+	       ueCfg->txMode, errInfo ))
+#else
+	 if ( ROK != rgSCHCfgVldtRgrUePCqiCfg (cellCb, ueCfg->crnti,
+		  &ueCfg->ueDlCqiCfg.prdCqiCfg, ueCfg->txMode, errInfo ))
+#endif
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "Invalid Periodic CQI configuration CRNTI:%d",ueCfg->crnti);
+	    RETVALUE(RFAILED);
+	 }
+
+      /*  2. Validate SRS Configuration related parameter values  */
+#ifdef LTEMAC_HDFDD
+      if ( ROK != rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, ueCfg->crnti, &ueCfg->srsCfg,
+	       ueCfg->isHdFddEnbld, errInfo ))
+#else
+	 if ( ROK != rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, ueCfg->crnti, 
+		  &ueCfg->srsCfg, errInfo ))
+#endif
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "Invalid SRS  configuration CRNTI:%d",ueCfg->crnti);
+	    RETVALUE(RFAILED);
+	 } 
+
+      /*  3. Validate SR Configuration related parameter values  */
+#ifdef LTEMAC_HDFDD
+      if ( ROK != rgSCHCfgVldtRgrUeSrCfg (cellCb, ueCfg->crnti, &ueCfg->srCfg,
+	       ueCfg->isHdFddEnbld, errInfo))
+#else
+	 if ( ROK != rgSCHCfgVldtRgrUeSrCfg (cellCb, ueCfg->crnti, 
+		  &ueCfg->srCfg, errInfo))
+#endif
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "Invalid SR  configuration CRNTI:%d",ueCfg->crnti);
+	    RETVALUE(RFAILED);
+	 }
+
+      RETVALUE(ROK);
+
    }
 
-   /*  1. Validate UE Periodic CQI/PMI, SRS and SR related parameters */
-#ifdef LTEMAC_HDFDD
-   if ( ROK != rgSCHCfgVldtRgrUePCqiCfg (cellCb, ueCfg->crnti,
-            &ueCfg->ueDlCqiCfg.prdCqiCfg, ueCfg->isHdFddEnbld, 
-            ueCfg->txMode, errInfo ))
-#else
-      if ( ROK != rgSCHCfgVldtRgrUePCqiCfg (cellCb, ueCfg->crnti,
-             &ueCfg->ueDlCqiCfg.prdCqiCfg, ueCfg->txMode, errInfo ))
-#endif
-      {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
-          "Invalid Periodic CQI configuration CRNTI:%d",ueCfg->crnti);
-         RETVALUE(RFAILED);
-      }
-
-   /*  2. Validate SRS Configuration related parameter values  */
-#ifdef LTEMAC_HDFDD
-   if ( ROK != rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, ueCfg->crnti, &ueCfg->srsCfg,
-            ueCfg->isHdFddEnbld, errInfo ))
-#else
-      if ( ROK != rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, ueCfg->crnti, 
-                  &ueCfg->srsCfg, errInfo ))
-#endif
-      {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
-           "Invalid SRS  configuration CRNTI:%d",ueCfg->crnti);
-         RETVALUE(RFAILED);
-      } 
-
-   /*  3. Validate SR Configuration related parameter values  */
-#ifdef LTEMAC_HDFDD
-   if ( ROK != rgSCHCfgVldtRgrUeSrCfg (cellCb, ueCfg->crnti, &ueCfg->srCfg,
-            ueCfg->isHdFddEnbld, errInfo))
-#else
-      if ( ROK != rgSCHCfgVldtRgrUeSrCfg (cellCb, ueCfg->crnti, 
-                  &ueCfg->srCfg, errInfo))
-#endif
-      {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
-            "Invalid SR  configuration CRNTI:%d",ueCfg->crnti);
-         RETVALUE(RFAILED);
-      }
-
-   RETVALUE(ROK);
-
-}
 
 
-
-/*****************************************************************
- *   UE PCQI, RI, SRS and SR Re Configuration  Validation Functions  *
- *                                                                *
- ******************************************************************/
-/*
- * @brief Validates the UE Periodic CQI, PMI, RI, SRS and SR 
- * Re-configuration request from RRM to MAC.
- *
- * @details
- *
- *     Function : rgSCHCfgVldtCqiSrSrsUeReCfg 
- *
- *     Processing Steps:
- *      - Validate the UE Re configuration request from RRC to MAC at CFG:
- *        validate the value range for Periodic CQI, PMI, RI, SRS and SR values.
- *      - If validated successfully,
- *        - Return ROK.
- *      - Else 
- *        - Return RFAILED.
- *
- *  @param[in]   RgSchCellCb *cellCb
- *  @param[in]   RgSchUeCb   *ueCb
- *  @param[in]  RgrUeCfg     *ueCfg
- *  @param[out] RgSchErrInfo *errInfo
- *  @return  S16
- *      -# ROK
- *      -# RFAILED
- */
+   /*****************************************************************
+    *   UE PCQI, RI, SRS and SR Re Configuration  Validation Functions  *
+    *                                                                *
+    ******************************************************************/
+   /*
+    * @brief Validates the UE Periodic CQI, PMI, RI, SRS and SR 
+    * Re-configuration request from RRM to MAC.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgVldtCqiSrSrsUeReCfg 
+    *
+    *     Processing Steps:
+    *      - Validate the UE Re configuration request from RRC to MAC at CFG:
+    *        validate the value range for Periodic CQI, PMI, RI, SRS and SR values.
+    *      - If validated successfully,
+    *        - Return ROK.
+    *      - Else 
+    *        - Return RFAILED.
+    *
+    *  @param[in]   RgSchCellCb *cellCb
+    *  @param[in]   RgSchUeCb   *ueCb
+    *  @param[in]  RgrUeCfg     *ueCfg
+    *  @param[out] RgSchErrInfo *errInfo
+    *  @return  S16
+    *      -# ROK
+    *      -# RFAILED
+    */
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtCqiSrSrsUeReCfg 
-(
- RgSchCellCb          *cellCb,
- RgSchUeCb            *ueCb,
- RgrUeRecfg           *ueReCfg,  
- RgSchErrInfo         *errInfo
- )
+   PRIVATE S16 rgSCHCfgVldtCqiSrSrsUeReCfg 
+      (
+       RgSchCellCb          *cellCb,
+       RgSchUeCb            *ueCb,
+       RgrUeRecfg           *ueReCfg,  
+       RgSchErrInfo         *errInfo
+      )
 #else
-PRIVATE S16 rgSCHCfgVldtCqiSrSrsUeReCfg(cellCb, ueCb, ueReCfg, errInfo)
-   RgSchCellCb          *cellCb;  
+      PRIVATE S16 rgSCHCfgVldtCqiSrSrsUeReCfg(cellCb, ueCb, ueReCfg, errInfo)
+      RgSchCellCb          *cellCb;  
    RgSchUeCb            *ueCb;
    RgrUeRecfg           *ueReCfg;
    RgSchErrInfo         *errInfo;
 #endif
-{
-   RgrUeTxModeCfg     txMode;
-   TRC3(rgSCHCfgVldtCqiSrSrsUeReCfg);
-
-   txMode.pres = TRUE;
-   txMode.tmTrnstnState = RGR_TXMODE_RECFG_CMPLT;
-   if ((ueReCfg->ueRecfgTypes & RGR_UE_TXMODE_RECFG) &&
-       (ueReCfg->txMode.pres == TRUE)) 
    {
-      txMode.txModeEnum = ueReCfg->txMode.txModeEnum;
-   }
-   else
-   {
-      txMode.txModeEnum = ueCb->mimoInfo.txMode;
-   }
+      RgrUeTxModeCfg     txMode;
+      TRC3(rgSCHCfgVldtCqiSrSrsUeReCfg);
 
-   /*    1. Validate UE CQI/PMI, SRS and SR related parameters */
-
-   if ( ueReCfg->ueRecfgTypes & RGR_UE_APRD_DLCQI_RECFG ) 
-   { 
-      if ( ROK != rgSCHCfgVldtRgrUeACqiCfg (cellCb, ueReCfg->oldCrnti,     
-               &ueReCfg->aprdDlCqiRecfg, txMode, errInfo ))
+      txMode.pres = TRUE;
+      txMode.tmTrnstnState = RGR_TXMODE_RECFG_CMPLT;
+      if ((ueReCfg->ueRecfgTypes & RGR_UE_TXMODE_RECFG) &&
+	    (ueReCfg->txMode.pres == TRUE)) 
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
-         "Invalid Aperiodic CQI configuration OLD CRNTI:%d",ueReCfg->oldCrnti);
-         RETVALUE(RFAILED);
+	 txMode.txModeEnum = ueReCfg->txMode.txModeEnum;
       }
-   }
+      else
+      {
+	 txMode.txModeEnum = ueCb->mimoInfo.txMode;
+      }
+
+      /*    1. Validate UE CQI/PMI, SRS and SR related parameters */
+
+      if ( ueReCfg->ueRecfgTypes & RGR_UE_APRD_DLCQI_RECFG ) 
+      { 
+	 if ( ROK != rgSCHCfgVldtRgrUeACqiCfg (cellCb, ueReCfg->oldCrnti,     
+		  &ueReCfg->aprdDlCqiRecfg, txMode, errInfo ))
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		  "Invalid Aperiodic CQI configuration OLD CRNTI:%d",ueReCfg->oldCrnti);
+	    RETVALUE(RFAILED);
+	 }
+      }
 
 
-   /*    2. Validate UE CQI/PMI, SRS and SR related parameters */
+      /*    2. Validate UE CQI/PMI, SRS and SR related parameters */
 
-   if ( ueReCfg->ueRecfgTypes & RGR_UE_PCQI_RECFG ) 
-   { 
+      if ( ueReCfg->ueRecfgTypes & RGR_UE_PCQI_RECFG ) 
+      { 
 #ifdef LTEMAC_HDFDD   
-      if ( ROK != rgSCHCfgVldtRgrUePCqiCfg (cellCb, ueReCfg->oldCrnti,     
-               &ueReCfg->cqiCfg, ueReCfg->isHdFddEnbld, txMode, errInfo ))
+	 if ( ROK != rgSCHCfgVldtRgrUePCqiCfg (cellCb, ueReCfg->oldCrnti,     
+		  &ueReCfg->cqiCfg, ueReCfg->isHdFddEnbld, txMode, errInfo ))
 #else
-         if ( ROK != rgSCHCfgVldtRgrUePCqiCfg (cellCb, ueReCfg->oldCrnti,     
-                  &ueReCfg->cqiCfg, txMode, errInfo ))
+	    if ( ROK != rgSCHCfgVldtRgrUePCqiCfg (cellCb, ueReCfg->oldCrnti,     
+		     &ueReCfg->cqiCfg, txMode, errInfo ))
 #endif
 
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
-            "Invalid Periodic CQI configuration OLD CRNTI:%d",ueReCfg->oldCrnti);
-            RETVALUE(RFAILED);
-         }
-   }
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		     "Invalid Periodic CQI configuration OLD CRNTI:%d",ueReCfg->oldCrnti);
+	       RETVALUE(RFAILED);
+	    }
+      }
 
-   if(ueReCfg->ueRecfgTypes & RGR_UE_SRS_RECFG )
-   {
+      if(ueReCfg->ueRecfgTypes & RGR_UE_SRS_RECFG )
+      {
 #ifdef LTEMAC_HDFDD
-      if ( ROK != rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, ueReCfg->oldCrnti,
-               &ueReCfg->srsCfg, ueReCfg->isHdFddEnbld, errInfo ))
+	 if ( ROK != rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, ueReCfg->oldCrnti,
+		  &ueReCfg->srsCfg, ueReCfg->isHdFddEnbld, errInfo ))
 #else
-         if ( ROK != rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, ueReCfg->oldCrnti,
-                  &ueReCfg->srsCfg, errInfo ))
+	    if ( ROK != rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, ueReCfg->oldCrnti,
+		     &ueReCfg->srsCfg, errInfo ))
 #endif
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
-              "Invalid SRS  configuration OLD CRNTI:%d",ueReCfg->oldCrnti);
-            RETVALUE(RFAILED);
-         } 
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		     "Invalid SRS  configuration OLD CRNTI:%d",ueReCfg->oldCrnti);
+	       RETVALUE(RFAILED);
+	    } 
 
-   }
+      }
 
-   if ( ueReCfg->ueRecfgTypes & RGR_UE_SR_RECFG )
-   {
+      if ( ueReCfg->ueRecfgTypes & RGR_UE_SR_RECFG )
+      {
 #ifdef LTEMAC_HDFDD
-      if ( ROK != rgSCHCfgVldtRgrUeSrCfg (cellCb, ueReCfg->oldCrnti, 
-            &ueReCfg->srCfg, ueReCfg->isHdFddEnbld, errInfo))
+	 if ( ROK != rgSCHCfgVldtRgrUeSrCfg (cellCb, ueReCfg->oldCrnti, 
+		  &ueReCfg->srCfg, ueReCfg->isHdFddEnbld, errInfo))
 #else
-         if ( ROK != rgSCHCfgVldtRgrUeSrCfg (cellCb, ueReCfg->oldCrnti, 
-            &ueReCfg->srCfg, errInfo))
+	    if ( ROK != rgSCHCfgVldtRgrUeSrCfg (cellCb, ueReCfg->oldCrnti, 
+		     &ueReCfg->srCfg, errInfo))
 #endif
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
-                     "Invalid SR configuration OLD CRNTI:%d",ueReCfg->oldCrnti);
-            RETVALUE(RFAILED);
-         }
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, 
+		     "Invalid SR configuration OLD CRNTI:%d",ueReCfg->oldCrnti);
+	       RETVALUE(RFAILED);
+	    }
+      }
+
+      RETVALUE(ROK);
    }
 
-   RETVALUE(ROK);
-}
 
-
-/*****************************************************************
- *   UE ACQI, PCQI, RI, SRS SR Configuration Functions      *
- *                                                                *
- ******************************************************************/
+   /*****************************************************************
+    *   UE ACQI, PCQI, RI, SRS SR Configuration Functions      *
+    *                                                                *
+    ******************************************************************/
    /**
     * @brief Handles Aperiodic CQI , PMI, RI  configuration for a UE.
     *
@@ -8157,2286 +8157,2286 @@ PRIVATE S16 rgSCHCfgVldtCqiSrSrsUeReCfg(cellCb, ueCb, ueReCfg, errInfo)
     *
     **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgACqiUeCfg
-(
-RgSchCellCb        *cellCb, 
-RgSchUeCb          *ue, 
-RgSchUeACqiCb      *acqiCb,
-RgrTxMode           ueTxMode,
-RgrUeAprdDlCqiCfg  *aCqiCfg,
-CmLteUeCategory     ueCat
-)
+   PUBLIC S16 rgSCHCfgACqiUeCfg
+      (
+       RgSchCellCb        *cellCb, 
+       RgSchUeCb          *ue, 
+       RgSchUeACqiCb      *acqiCb,
+       RgrTxMode           ueTxMode,
+       RgrUeAprdDlCqiCfg  *aCqiCfg,
+       CmLteUeCategory     ueCat
+      )
 #else
-PUBLIC S16 rgSCHCfgACqiUeCfg(cellCb,ue,acqiCb ueTxMode, aCqiCfg, ueCat)
-RgSchCellCb       *cellCb; 
-RgSchUeCb          *ue; 
-RgSchUeACqiCb     *acqiCb;
-RgrTxMode          ueTxMode;
-RgrUeAprdDlCqiCfg *aCqiCfg;
-CmLteUeCategory   ueCat;
+      PUBLIC S16 rgSCHCfgACqiUeCfg(cellCb,ue,acqiCb ueTxMode, aCqiCfg, ueCat)
+      RgSchCellCb       *cellCb; 
+   RgSchUeCb          *ue; 
+   RgSchUeACqiCb     *acqiCb;
+   RgrTxMode          ueTxMode;
+   RgrUeAprdDlCqiCfg *aCqiCfg;
+   CmLteUeCategory   ueCat;
 #endif
-{
-   U8     M;  /*Num of Subbands -- Applicable only for Mode 2-0 and 2-2*/
-   U8     k;  /*SubBand Size (RB)  -- 
-              Holds different values depending on Mode*/
-   U8     cqiPmiSzR1;   /*CQIPMI Size for Rank =1*/
-   U8     cqiPmiSzRn1; /*CQIPMI Size for Rank > 1*/
-
-   TRC3(rgSCHCfgACqiUeCfg);
-
-   cqiPmiSzR1 = 0;
-   cqiPmiSzRn1 = 0;
-   
-   acqiCb->aCqiCfg.pres = aCqiCfg->pres;
-   acqiCb->aCqiCfg.aprdModeEnum = aCqiCfg->aprdModeEnum;
-
-   if(aCqiCfg->pres)
    {
+      U8     M;  /*Num of Subbands -- Applicable only for Mode 2-0 and 2-2*/
+      U8     k;  /*SubBand Size (RB)  -- 
+		   Holds different values depending on Mode*/
+      U8     cqiPmiSzR1;   /*CQIPMI Size for Rank =1*/
+      U8     cqiPmiSzRn1; /*CQIPMI Size for Rank > 1*/
+
+      TRC3(rgSCHCfgACqiUeCfg);
+
+      cqiPmiSzR1 = 0;
+      cqiPmiSzRn1 = 0;
+
+      acqiCb->aCqiCfg.pres = aCqiCfg->pres;
+      acqiCb->aCqiCfg.aprdModeEnum = aCqiCfg->aprdModeEnum;
+
+      if(aCqiCfg->pres)
+      {
 #ifdef LTE_ADV
-      /*Store Trigger Set Bit String to UE */
-      RgSchUeCellInfo *pCellInfo = RG_SCH_CMN_GET_PCELL_INFO(ue);
-      pCellInfo->acqiCb.aCqiCfg.triggerSet1 = aCqiCfg->triggerSet1;
-      pCellInfo->acqiCb.aCqiCfg.triggerSet2 = aCqiCfg->triggerSet2;
+	 /*Store Trigger Set Bit String to UE */
+	 RgSchUeCellInfo *pCellInfo = RG_SCH_CMN_GET_PCELL_INFO(ue);
+	 pCellInfo->acqiCb.aCqiCfg.triggerSet1 = aCqiCfg->triggerSet1;
+	 pCellInfo->acqiCb.aCqiCfg.triggerSet2 = aCqiCfg->triggerSet2;
 #endif
 
 
-      switch(aCqiCfg->aprdModeEnum)
-      {
-         case RGR_APRD_CQI_MOD12:
-         case RGR_APRD_CQI_MOD30:
-         case RGR_APRD_CQI_MOD31:
-            RG_SCH_GET_CQI_K_VAL(cellCb->bwCfg.dlTotalBw, k);
-            acqiCb->N = RGSCH_CEIL(cellCb->bwCfg.dlTotalBw, k);
-            acqiCb->k = k;
-            break;
+	 switch(aCqiCfg->aprdModeEnum)
+	 {
+	    case RGR_APRD_CQI_MOD12:
+	    case RGR_APRD_CQI_MOD30:
+	    case RGR_APRD_CQI_MOD31:
+	       RG_SCH_GET_CQI_K_VAL(cellCb->bwCfg.dlTotalBw, k);
+	       acqiCb->N = RGSCH_CEIL(cellCb->bwCfg.dlTotalBw, k);
+	       acqiCb->k = k;
+	       break;
 
-         case RGR_APRD_CQI_MOD20:
-         case RGR_APRD_CQI_MOD22:
-            RG_SCH_GET_SBCQI_M_K_VAL(cellCb->bwCfg.dlTotalBw, M, k);
-            acqiCb->N = RGSCH_CEIL(cellCb->bwCfg.dlTotalBw, k);
-            acqiCb->k = k;
-            acqiCb->M = M;
-            acqiCb->L = RgSCHUeAcqi2022LBitWidth[M-1][acqiCb->N-1];
-            break;
+	    case RGR_APRD_CQI_MOD20:
+	    case RGR_APRD_CQI_MOD22:
+	       RG_SCH_GET_SBCQI_M_K_VAL(cellCb->bwCfg.dlTotalBw, M, k);
+	       acqiCb->N = RGSCH_CEIL(cellCb->bwCfg.dlTotalBw, k);
+	       acqiCb->k = k;
+	       acqiCb->M = M;
+	       acqiCb->L = RgSCHUeAcqi2022LBitWidth[M-1][acqiCb->N-1];
+	       break;
 
-         default:
-            break; 
+	    default:
+	       break; 
+	 }
+	 if((ueTxMode == RGR_UE_TM_3) || 
+	       (ueTxMode == RGR_UE_TM_4))
+	 {
+	    if(cellCb->numTxAntPorts ==2)
+	    {
+	       acqiCb->riNumBits = 1;
+	    }
+	    else if(cellCb->numTxAntPorts ==4)
+	    {
+	       if(ueCat == CM_LTE_UE_CAT_8)
+	       {
+		  acqiCb->riNumBits = 3;
+	       }
+	       else if(ueCat >= CM_LTE_UE_CAT_5)  
+	       {
+		  acqiCb->riNumBits = 2;
+	       }
+	       else
+	       {
+		  acqiCb->riNumBits = 1;
+	       }
+	    }
+	 }
+	 rgSCHCfgUtlFetchAcqiBitSz(acqiCb, cellCb->numTxAntPorts, 
+	       &cqiPmiSzR1, &cqiPmiSzRn1);
+	 acqiCb->cqiPmiSzR1  = cqiPmiSzR1;
+	 acqiCb->cqiPmiSzRn1 = cqiPmiSzRn1;
       }
-      if((ueTxMode == RGR_UE_TM_3) || 
-         (ueTxMode == RGR_UE_TM_4))
-      {
-         if(cellCb->numTxAntPorts ==2)
-         {
-            acqiCb->riNumBits = 1;
-         }
-         else if(cellCb->numTxAntPorts ==4)
-         {
-            if(ueCat == CM_LTE_UE_CAT_8)
-            {
-               acqiCb->riNumBits = 3;
-            }
-            else if(ueCat >= CM_LTE_UE_CAT_5)  
-            {
-               acqiCb->riNumBits = 2;
-            }
-            else
-            {
-               acqiCb->riNumBits = 1;
-            }
-         }
-      }
-      rgSCHCfgUtlFetchAcqiBitSz(acqiCb, cellCb->numTxAntPorts, 
-            &cqiPmiSzR1, &cqiPmiSzRn1);
-      acqiCb->cqiPmiSzR1  = cqiPmiSzR1;
-      acqiCb->cqiPmiSzRn1 = cqiPmiSzRn1;
+      acqiCb->cqiReqField = TRUE;
+#ifdef LTE_ADV
+      rgSchCmnSetCqiReqField(RG_SCH_CMN_GET_SCELL_INFO(ue, cellCb),ue,&acqiCb->cqiReqField);
+#endif
+
+      RETVALUE(ROK);
    }
-   acqiCb->cqiReqField = TRUE;
-#ifdef LTE_ADV
-   rgSchCmnSetCqiReqField(RG_SCH_CMN_GET_SCELL_INFO(ue, cellCb),ue,&acqiCb->cqiReqField);
-#endif
-   
-   RETVALUE(ROK);
-}
 
-/**
- * @brief Handles Periodic CQI , PMI, RI  configuration for a UE.
- *
- * @details
- *
- *     Function : rgSCHCfgPCqiUeCfg 
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by SCH_GOM at UE configuration. It shall do the
- *      validations for the spec-defined values.
- *        
- *     Processing Steps:
- *     - For UE-specific Periodic CQI  related configuration, 
- *      - If Periodic CQI/PMI is configured,
- *        - Update UE with the configured values.
- - Compute and Update next occurance of CQI/PMI or RI Tranmission instance.
- - Update the CQI offset and CQI perodicity information
- - Add Ue to cell's list  
- *        
- *
- *     - For UE-specific Periodic RI  related configuration, 
- *      - If Periodic RI is configured,
- *        - Update UE with the configured values.
- - Compute and Update next occurance of RI Tranmission instance.
- - Update the  RI offset and RI perodicity information
- *      
- *
- *     - Return ROK
- *
- *  @param[in]  RgSchCellCb  *cell
- *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  RgrUePrdDlCqiCfg *cqiCfg
- *  @param[in]  CmLteUeCategory   ueCat
- *  @return  S16
- *      -# ROK
- *
- **/
+   /**
+    * @brief Handles Periodic CQI , PMI, RI  configuration for a UE.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgPCqiUeCfg 
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by SCH_GOM at UE configuration. It shall do the
+    *      validations for the spec-defined values.
+    *        
+    *     Processing Steps:
+    *     - For UE-specific Periodic CQI  related configuration, 
+    *      - If Periodic CQI/PMI is configured,
+    *        - Update UE with the configured values.
+    - Compute and Update next occurance of CQI/PMI or RI Tranmission instance.
+    - Update the CQI offset and CQI perodicity information
+    - Add Ue to cell's list  
+    *        
+    *
+    *     - For UE-specific Periodic RI  related configuration, 
+    *      - If Periodic RI is configured,
+    *        - Update UE with the configured values.
+    - Compute and Update next occurance of RI Tranmission instance.
+    - Update the  RI offset and RI perodicity information
+    *      
+    *
+    *     - Return ROK
+    *
+    *  @param[in]  RgSchCellCb  *cell
+    *  @param[in]  RgSchUeCb    *ue
+    *  @param[in]  RgrUePrdDlCqiCfg *cqiCfg
+    *  @param[in]  CmLteUeCategory   ueCat
+    *  @return  S16
+    *      -# ROK
+    *
+    **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgPCqiUeCfg
-(
- RgSchCellCb         *cellCb, 
- RgSchUeCb           *ueCb, 
- RgrUePrdDlCqiCfg    *cqiCfg,
- CmLteUeCategory     ueCat
- )
+   PUBLIC S16 rgSCHCfgPCqiUeCfg
+      (
+       RgSchCellCb         *cellCb, 
+       RgSchUeCb           *ueCb, 
+       RgrUePrdDlCqiCfg    *cqiCfg,
+       CmLteUeCategory     ueCat
+      )
 #else
-PUBLIC S16 rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
-   RgSchCellCb       *cellCb; 
+      PUBLIC S16 rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
+      RgSchCellCb       *cellCb; 
    RgSchUeCb         *ueCb; 
    RgrUePrdDlCqiCfg  *cqiCfg;
    CmLteUeCategory   ueCat;
 #endif
-{  
-   CmLteTimingInfo timingInfo;
-   U16    crntTime;           
-   U16    cqiTrInstTime; 
-   U8     j;  /*Bandwidth Parts*/
-   U8     temp; 
-   U8     loop;
-   RgSchUePCqiCb *cqiCb = NULLP;
-   TRC3(rgSCHCfgPCqiUeCfg);
+   {  
+      CmLteTimingInfo timingInfo;
+      U16    crntTime;           
+      U16    cqiTrInstTime; 
+      U8     j;  /*Bandwidth Parts*/
+      U8     temp; 
+      U8     loop;
+      RgSchUePCqiCb *cqiCb = NULLP;
+      TRC3(rgSCHCfgPCqiUeCfg);
 
-   crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)+
-                  (cellCb->crntTime.slot);
-   cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
-   cqiCb->servCellInfo = ueCb->cellInfo[0];
-   /* Periodic CQI is setup  */
-   if (cqiCfg->type == RGR_SCH_PCQI_SETUP)
-   {   
-      for(loop = 0; loop < MAX_CQI_RI_RPT_BUFF;loop++)
-      {
-         ueCb->rawCqiBitW[loop].type = TFU_RECP_REQ_INVLD; /* setting invalid  type*/
-      }
-      /*  1. Copy the Received CQI Cfg parameters to ueCb  */
-      cmMemcpy((U8 *)&cqiCb->cqiCfg, (U8 *)cqiCfg, 
-            sizeof(RgrUePrdDlCqiCfg));
+      crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)+
+	 (cellCb->crntTime.slot);
+      cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
+      cqiCb->servCellInfo = ueCb->cellInfo[0];
+      /* Periodic CQI is setup  */
+      if (cqiCfg->type == RGR_SCH_PCQI_SETUP)
+      {   
+	 for(loop = 0; loop < MAX_CQI_RI_RPT_BUFF;loop++)
+	 {
+	    ueCb->rawCqiBitW[loop].type = TFU_RECP_REQ_INVLD; /* setting invalid  type*/
+	 }
+	 /*  1. Copy the Received CQI Cfg parameters to ueCb  */
+	 cmMemcpy((U8 *)&cqiCb->cqiCfg, (U8 *)cqiCfg, 
+	       sizeof(RgrUePrdDlCqiCfg));
 
-      /*  2. Compute Periodic CQI Periodicity and subframe offset   */
+	 /*  2. Compute Periodic CQI Periodicity and subframe offset   */
 #ifndef LTE_TDD           
-      rgSCHUtlGetCfgPerOff(RG_SCH_FDD_PCQI_TBL, cqiCfg->cqiSetup.cqiPCfgIdx,
-            &cqiCb->cqiPeri, &cqiCb->cqiOffset);      
+	 rgSCHUtlGetCfgPerOff(RG_SCH_FDD_PCQI_TBL, cqiCfg->cqiSetup.cqiPCfgIdx,
+	       &cqiCb->cqiPeri, &cqiCb->cqiOffset);      
 #else
-      rgSCHUtlGetCfgPerOff( RG_SCH_TDD_PCQI_TBL, 
-            cqiCfg->cqiSetup.cqiPCfgIdx,
-            &cqiCb->cqiPeri, &cqiCb->cqiOffset);    
+	 rgSCHUtlGetCfgPerOff( RG_SCH_TDD_PCQI_TBL, 
+	       cqiCfg->cqiSetup.cqiPCfgIdx,
+	       &cqiCb->cqiPeri, &cqiCb->cqiOffset);    
 #endif
-      RLOG_ARG3(L_DEBUG,DBG_CELLID,cellCb->cellId,
-            "rgSCHCfgPCqiUeCfg(): UEID:%d CQI Peri=%d, CQI Offset=%d",
-            ueCb->ueId,
-            cqiCb->cqiPeri,
-            cqiCb->cqiOffset);
+	 RLOG_ARG3(L_DEBUG,DBG_CELLID,cellCb->cellId,
+	       "rgSCHCfgPCqiUeCfg(): UEID:%d CQI Peri=%d, CQI Offset=%d",
+	       ueCb->ueId,
+	       cqiCb->cqiPeri,
+	       cqiCb->cqiOffset);
 
 
-      cqiTrInstTime = ((cqiCb->cqiPeri+crntTime) - cqiCb->cqiOffset)
-         %cqiCb->cqiPeri;
-      cqiCb->nCqiTrIdx = (crntTime + 
-            (cqiCb->cqiPeri - cqiTrInstTime));
-      /* Introduced timing delta for reception req
-       * in FDD*/
-      if(cqiCb->nCqiTrIdx  <= (crntTime + TFU_RECPREQ_DLDELTA))
-      {
-         cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx + cqiCb->cqiPeri;
-      }
+	 cqiTrInstTime = ((cqiCb->cqiPeri+crntTime) - cqiCb->cqiOffset)
+	    %cqiCb->cqiPeri;
+	 cqiCb->nCqiTrIdx = (crntTime + 
+	       (cqiCb->cqiPeri - cqiTrInstTime));
+	 /* Introduced timing delta for reception req
+	  * in FDD*/
+	 if(cqiCb->nCqiTrIdx  <= (crntTime + TFU_RECPREQ_DLDELTA))
+	 {
+	    cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx + cqiCb->cqiPeri;
+	 }
 
-      /* To handle the SFN wrap around case */
-      cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx % (RGSCH_MAX_SFN * RGSCH_NUM_SUB_FRAMES_5G);
+	 /* To handle the SFN wrap around case */
+	 cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx % (RGSCH_MAX_SFN * RGSCH_NUM_SUB_FRAMES_5G);
 
-      timingInfo.sfn =  cqiCb->nCqiTrIdx/RGSCH_NUM_SUB_FRAMES_5G;
-      timingInfo.slot =  cqiCb->nCqiTrIdx % RGSCH_NUM_SUB_FRAMES_5G;
+	 timingInfo.sfn =  cqiCb->nCqiTrIdx/RGSCH_NUM_SUB_FRAMES_5G;
+	 timingInfo.slot =  cqiCb->nCqiTrIdx % RGSCH_NUM_SUB_FRAMES_5G;
 
-      cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx
-           %RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
+	 cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx
+	    %RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
 
 #ifdef EMTC_ENABLE
-	  /*CQI Repetition configuration*/
-      if(ueCb->isEmtcUe)
-      {
-          rgSchfillPucchCqiRepNumCountemtc(cqiCb, ueCb);
-      }
+	 /*CQI Repetition configuration*/
+	 if(ueCb->isEmtcUe)
+	 {
+	    rgSchfillPucchCqiRepNumCountemtc(cqiCb, ueCb);
+	 }
 #endif
 
-      if(RGR_UE_PCQI_SB_REP == cqiCfg->cqiSetup.cqiRepType)
-      {
-         U8     k;  /*SubBand Size (RB) */
-         RG_SCH_GET_CQI_J_VAL(cellCb->bwCfg.dlTotalBw, j);
-         RG_SCH_GET_CQI_K_VAL(cellCb->bwCfg.dlTotalBw, k);
-         cqiCb->J = j; /*Number of Bandwidth Parts*/
-         /*h: reporting instances required for a complete CQI/PMI report */
-         /*j:Number of bandwidth parts; k: Subband Size*/
-         cqiCb->h = (cqiCb->cqiCfg.cqiSetup.k *j )+1; 
-         /* ccpu00140905- L-size is coming as 3 for 100Rbs where it should be 2*/
-         temp = RGSCH_CEIL(cellCb->bwCfg.dlTotalBw, (j*k));
-         cqiCb->label = (temp & (temp-1)) ?
-            (1+ rgSCHUtlLog32bitNbase2(temp)) : rgSCHUtlLog32bitNbase2(temp);
+	 if(RGR_UE_PCQI_SB_REP == cqiCfg->cqiSetup.cqiRepType)
+	 {
+	    U8     k;  /*SubBand Size (RB) */
+	    RG_SCH_GET_CQI_J_VAL(cellCb->bwCfg.dlTotalBw, j);
+	    RG_SCH_GET_CQI_K_VAL(cellCb->bwCfg.dlTotalBw, k);
+	    cqiCb->J = j; /*Number of Bandwidth Parts*/
+	    /*h: reporting instances required for a complete CQI/PMI report */
+	    /*j:Number of bandwidth parts; k: Subband Size*/
+	    cqiCb->h = (cqiCb->cqiCfg.cqiSetup.k *j )+1; 
+	    /* ccpu00140905- L-size is coming as 3 for 100Rbs where it should be 2*/
+	    temp = RGSCH_CEIL(cellCb->bwCfg.dlTotalBw, (j*k));
+	    cqiCb->label = (temp & (temp-1)) ?
+	       (1+ rgSCHUtlLog32bitNbase2(temp)) : rgSCHUtlLog32bitNbase2(temp);
 
-         rgSCHTomUtlPcqiSbCalcBpIdx(timingInfo,ueCb, cqiCb); 
-      }
+	    rgSCHTomUtlPcqiSbCalcBpIdx(timingInfo,ueCb, cqiCb); 
+	 }
 #ifdef LTE_ADV
+	 else
+	 {
+	    cqiCb->prioLvl = RG_SCH_CQI_PRIO_LVL_1;
+	 }
+#endif
+
+	 /*    Place the UE in cellCb->tIUeLstCp  */
+	 cqiCb->cqiLstEnt.node=(PTR) cqiCb;
+#ifdef LTE_ADV
+	 cqiCb->isCqiIgnoByCollsn = FALSE;
+	 cqiCb->isRiIgnoByCollsn = FALSE;
+#endif
+
+
+	 cmLListAdd2Tail(&cellCb->pCqiSrsSrLst[cqiCb->nCqiTrIdx].cqiLst,
+	       &cqiCb->cqiLstEnt);  
+
+
+	 /* 4. Rank Indicator Cfg handler */
+	 rgSCHCfgRiUeCfg(cellCb, ueCb, cqiCfg, ueCat);
+      }
       else
-      {
-         cqiCb->prioLvl = RG_SCH_CQI_PRIO_LVL_1;
-      }
-#endif
-
-      /*    Place the UE in cellCb->tIUeLstCp  */
-      cqiCb->cqiLstEnt.node=(PTR) cqiCb;
-#ifdef LTE_ADV
-      cqiCb->isCqiIgnoByCollsn = FALSE;
-      cqiCb->isRiIgnoByCollsn = FALSE;
-#endif
-
-
-      cmLListAdd2Tail(&cellCb->pCqiSrsSrLst[cqiCb->nCqiTrIdx].cqiLst,
-            &cqiCb->cqiLstEnt);  
-
-
-      /* 4. Rank Indicator Cfg handler */
-      rgSCHCfgRiUeCfg(cellCb, ueCb, cqiCfg, ueCat);
-   }
-   else
-   { 
-      cqiCb->cqiCfg.type =  RGR_SCH_PCQI_REL;
-      if(cqiCb->nCqiTrIdx != RG_SCH_INVALID_IDX)
-      {
-         cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiCb->nCqiTrIdx].cqiLst,\
-               &cqiCb->cqiLstEnt);
+      { 
+	 cqiCb->cqiCfg.type =  RGR_SCH_PCQI_REL;
+	 if(cqiCb->nCqiTrIdx != RG_SCH_INVALID_IDX)
+	 {
+	    cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiCb->nCqiTrIdx].cqiLst,\
+		  &cqiCb->cqiLstEnt);
+	 } 
+	 if(cqiCb->nRiTrIdx != RG_SCH_INVALID_IDX)
+	 {
+	    cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst, \
+		  &cqiCb->riLstEnt);
+	    RG_SCH_RECORD(&cqiCb->histElem,RGSCH_ACTION_DEL,
+		  &cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst);
+	 }
+	 cqiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
+	 cqiCb->nRiTrIdx   = RG_SCH_INVALID_IDX;
+	 cqiCb->riDist   = RG_SCH_INVALID_IDX; 
       } 
-      if(cqiCb->nRiTrIdx != RG_SCH_INVALID_IDX)
-      {
-         cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst, \
-               &cqiCb->riLstEnt);
-          RG_SCH_RECORD(&cqiCb->histElem,RGSCH_ACTION_DEL,
-            &cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst);
-      }
-      cqiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
-      cqiCb->nRiTrIdx   = RG_SCH_INVALID_IDX;
-      cqiCb->riDist   = RG_SCH_INVALID_IDX; 
-   } 
-   ueCb->nPCqiCb = cqiCb;
-   ueCb->nPRiCb = cqiCb;
-   RETVALUE(ROK);
-}
+      ueCb->nPCqiCb = cqiCb;
+      ueCb->nPRiCb = cqiCb;
+      RETVALUE(ROK);
+   }
 
-/**
- * @brief Handles Periodic  RI  configuration for a UE.
- *
- * @details
- *
- *     Function : rgSCHCfgRiUeCfg 
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by SCH_GOM at UE configuration. It shall do the
- *      validations for the spec-defined values.
- *        
- *     Processing Steps:
- *     - For UE-specific Periodic RI  related configuration, 
- *      - If Periodic RI is configured,
- *        - Update UE with the configured values.
- - Compute and Update next occurance of RI Tranmission instance.
- - Update the  RI offset and RI perodicity information
- *
- *     - Return ROK
- *
- *  @param[in]  RgSchCellCb  *cell
- *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  RgrUePrdDlCqiCfg *cqiCfg
- *  @param[in]  CmLteUeCategory   ueCat
- *  @return  S16
- *      -# ROK
- *
- **/
+   /**
+    * @brief Handles Periodic  RI  configuration for a UE.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgRiUeCfg 
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by SCH_GOM at UE configuration. It shall do the
+    *      validations for the spec-defined values.
+    *        
+    *     Processing Steps:
+    *     - For UE-specific Periodic RI  related configuration, 
+    *      - If Periodic RI is configured,
+    *        - Update UE with the configured values.
+    - Compute and Update next occurance of RI Tranmission instance.
+    - Update the  RI offset and RI perodicity information
+    *
+    *     - Return ROK
+    *
+    *  @param[in]  RgSchCellCb  *cell
+    *  @param[in]  RgSchUeCb    *ue
+    *  @param[in]  RgrUePrdDlCqiCfg *cqiCfg
+    *  @param[in]  CmLteUeCategory   ueCat
+    *  @return  S16
+    *      -# ROK
+    *
+    **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgRiUeCfg
-(
- RgSchCellCb        *cellCb, 
- RgSchUeCb          *ueCb, 
- RgrUePrdDlCqiCfg   *cqiCfg,
- CmLteUeCategory    ueCat
- )
+   PUBLIC S16 rgSCHCfgRiUeCfg
+      (
+       RgSchCellCb        *cellCb, 
+       RgSchUeCb          *ueCb, 
+       RgrUePrdDlCqiCfg   *cqiCfg,
+       CmLteUeCategory    ueCat
+      )
 #else
-PUBLIC S16 rgSCHCfgRiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
-   RgSchCellCb       *cellCb; 
+      PUBLIC S16 rgSCHCfgRiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
+      RgSchCellCb       *cellCb; 
    RgSchUeCb         *ueCb; 
    RgrUePrdDlCqiCfg  *cqiCfg;
    CmLteUeCategory   ueCat;
 #endif
-{
-   U16     crntTime;  
-   U16     riTrInsTime;  
-   U8      j; /*Bandwidth parts. Valid for Modes 2-0, 2-1*/         
-   U16     periodicity; 
-   U16    tempIdx; 
-   RgSchUePCqiCb *cqiCb = NULLP;
-
-   TRC3(rgSCHCfgRiUeCfg);
-
-
-
-   crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
-      +(cellCb->crntTime.slot);
-   cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
-   /* 1. Rank Indicator is enabled  */
-   if(cqiCfg->cqiSetup.riEna)
    {
+      U16     crntTime;  
+      U16     riTrInsTime;  
+      U8      j; /*Bandwidth parts. Valid for Modes 2-0, 2-1*/         
+      U16     periodicity; 
+      U16    tempIdx; 
+      RgSchUePCqiCb *cqiCb = NULLP;
 
-      rgSCHUtlGetCfgPerOff(RG_SCH_RI_TBL, 
-            cqiCfg->cqiSetup.riCfgIdx,
-            &cqiCb->riPeri, &cqiCb->riOffset);
+      TRC3(rgSCHCfgRiUeCfg);
 
-      RLOG_ARG3(L_DEBUG,DBG_CELLID,cellCb->cellId,
-            "rgSCHCfgRiUeCfg(): RI Peri=%d, RI Offset=%d UEID:%d", 
-            cqiCb->riPeri, cqiCb->riOffset,ueCb->ueId);
 
-      cqiCb->perRiVal = 1;
-      cqiCb->invalidateCqi = FALSE;
 
-      if(RGR_UE_PCQI_WB_REP == cqiCfg->cqiSetup.cqiRepType)
+      crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
+	 +(cellCb->crntTime.slot);
+      cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
+      /* 1. Rank Indicator is enabled  */
+      if(cqiCfg->cqiSetup.riEna)
       {
-         /* 
-            1. wideband RI reporting is configured 
-            (Mode 1-0 or 1-1)
-            (10*sfn+floor(subframe)-Noffsetcqi-NoffsetRI )Mod(NCqiperiod
-          *MriPeriod)=0  
-          */ 
-         periodicity = cqiCb->cqiPeri * cqiCb->riPeri; 
+
+	 rgSCHUtlGetCfgPerOff(RG_SCH_RI_TBL, 
+	       cqiCfg->cqiSetup.riCfgIdx,
+	       &cqiCb->riPeri, &cqiCb->riOffset);
+
+	 RLOG_ARG3(L_DEBUG,DBG_CELLID,cellCb->cellId,
+	       "rgSCHCfgRiUeCfg(): RI Peri=%d, RI Offset=%d UEID:%d", 
+	       cqiCb->riPeri, cqiCb->riOffset,ueCb->ueId);
+
+	 cqiCb->perRiVal = 1;
+	 cqiCb->invalidateCqi = FALSE;
+
+	 if(RGR_UE_PCQI_WB_REP == cqiCfg->cqiSetup.cqiRepType)
+	 {
+	    /* 
+	       1. wideband RI reporting is configured 
+	       (Mode 1-0 or 1-1)
+	       (10*sfn+floor(subframe)-Noffsetcqi-NoffsetRI )Mod(NCqiperiod
+	     *MriPeriod)=0  
+	     */ 
+	    periodicity = cqiCb->cqiPeri * cqiCb->riPeri; 
+	 }
+	 else
+	 {
+	    /*
+	     *  Where Widesband and Subband RI reporting is configured
+	     *   (Mode 2-0 or 2-1 )
+	     *   (10*sfn+floor(subframe)-Noffsetcqi-NoffsetRI )
+	     *   Mod(H. NCqiperiod *MriPeriod )=0 
+	     *   where H= J * K +1;  J=Number of bandwidth parts(BW/subsize). 
+	     *   K is RGR interf input 
+	     */
+
+	    RG_SCH_GET_CQI_J_VAL(cellCb->bwCfg.dlTotalBw, j);
+	    cqiCb->h = (cqiCb->cqiCfg.cqiSetup.k *j )+1;  
+	    periodicity = cqiCb->h * cqiCb->cqiPeri * 
+	       cqiCb->riPeri; 
+	 }
+
+	 /* In case of SFN wraparound, the SB CQI reporting cycle breaks
+	  * and RI->WB CQI->SBCQI.. should resume. RI is repositioned 
+	  * accordingly. WBCQI handling is naturally accomplished */
+	 if (periodicity >= RGSCH_MAX_SUBFRM_5G)
+	 {
+	    periodicity = cqiCb->cqiOffset - cqiCb->riOffset + 
+	       RGSCH_MAX_SUBFRM_5G - (crntTime);
+	    tempIdx = crntTime + periodicity;
+	    printf("CHECK_SID - periodicity %d tempIdx %d\n", periodicity, tempIdx);
+	 }
+	 else
+	 {
+	    if ((crntTime + TFU_RECPREQ_DLDELTA + periodicity) > 
+		  (RGSCH_MAX_SUBFRM_5G - 1))
+	    {
+	       riTrInsTime = (periodicity - cqiCb->cqiOffset + cqiCb->riOffset) % periodicity; 
+	       tempIdx = RGSCH_MAX_SUBFRM_5G + (periodicity - riTrInsTime);
+	    }
+	    else
+	    {
+	       riTrInsTime = ((periodicity +crntTime )- \
+		     cqiCb->cqiOffset + cqiCb->riOffset)\
+			     % periodicity;
+	       tempIdx = (crntTime + (periodicity -riTrInsTime));
+	    }
+	 }
+	 if (tempIdx <= (crntTime + TFU_RECPREQ_DLDELTA))
+	 {
+	    tempIdx = tempIdx + periodicity; 
+	 }
+	 cqiCb->nRiTrIdx = tempIdx 
+	    % RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
+	 if(periodicity >= RG_SCH_PCQI_SRS_SR_TRINS_SIZE)
+	 {  
+	    cqiCb->riDist = rgSCHUtlFindDist((U16)(crntTime + TFU_RECPREQ_DLDELTA),
+		  (U16) tempIdx);
+	 }
+	 else
+	 {
+	    cqiCb->riDist =0; 
+	 }
+	 if(ueCb->mimoInfo.txMode == RGR_UE_TM_3 
+	       || ueCb->mimoInfo.txMode == RGR_UE_TM_4)
+	 {
+	    if (cellCb->numTxAntPorts ==2)
+	    {
+	       cqiCb->riNumBits = 1;
+	    }
+	    else if(cellCb->numTxAntPorts ==4)
+	    {
+	       if(ueCat == CM_LTE_UE_CAT_8)
+	       {
+		  cqiCb->riNumBits = 3;
+	       }
+	       else if(ueCat >= CM_LTE_UE_CAT_5)  
+	       {
+		  cqiCb->riNumBits = 2;
+	       }
+	       else
+	       {
+		  cqiCb->riNumBits = 1;
+	       }
+	    }
+	 }
+	 /*    Place the UE in cellCb->tIUeLstCp  */
+	 cqiCb->riLstEnt.node=(PTR) cqiCb;
+
+	 cmLListAdd2Tail(&cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst,
+	       &cqiCb->riLstEnt);  
+	 RG_SCH_RECORD(&cqiCb->histElem,RGSCH_ACTION_ADD,
+	       &cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst);
+
+
       }
       else
       {
-         /*
-         *  Where Widesband and Subband RI reporting is configured
-         *   (Mode 2-0 or 2-1 )
-         *   (10*sfn+floor(subframe)-Noffsetcqi-NoffsetRI )
-         *   Mod(H. NCqiperiod *MriPeriod )=0 
-         *   where H= J * K +1;  J=Number of bandwidth parts(BW/subsize). 
-         *   K is RGR interf input 
-         */
-
-         RG_SCH_GET_CQI_J_VAL(cellCb->bwCfg.dlTotalBw, j);
-         cqiCb->h = (cqiCb->cqiCfg.cqiSetup.k *j )+1;  
-         periodicity = cqiCb->h * cqiCb->cqiPeri * 
-                                  cqiCb->riPeri; 
+	 cqiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
+	 cqiCb->riDist   = RG_SCH_INVALID_IDX; 
       }
 
-      /* In case of SFN wraparound, the SB CQI reporting cycle breaks
-       * and RI->WB CQI->SBCQI.. should resume. RI is repositioned 
-       * accordingly. WBCQI handling is naturally accomplished */
-      if (periodicity >= RGSCH_MAX_SUBFRM_5G)
-      {
-         periodicity = cqiCb->cqiOffset - cqiCb->riOffset + 
-                       RGSCH_MAX_SUBFRM_5G - (crntTime);
-         tempIdx = crntTime + periodicity;
-			printf("CHECK_SID - periodicity %d tempIdx %d\n", periodicity, tempIdx);
-      }
-      else
-      {
-         if ((crntTime + TFU_RECPREQ_DLDELTA + periodicity) > 
-                            (RGSCH_MAX_SUBFRM_5G - 1))
-         {
-            riTrInsTime = (periodicity - cqiCb->cqiOffset + cqiCb->riOffset) % periodicity; 
-            tempIdx = RGSCH_MAX_SUBFRM_5G + (periodicity - riTrInsTime);
-         }
-         else
-         {
-            riTrInsTime = ((periodicity +crntTime )- \
-               cqiCb->cqiOffset + cqiCb->riOffset)\
-                       % periodicity;
-            tempIdx = (crntTime + (periodicity -riTrInsTime));
-         }
-      }
-      if (tempIdx <= (crntTime + TFU_RECPREQ_DLDELTA))
-      {
-         tempIdx = tempIdx + periodicity; 
-      }
-      cqiCb->nRiTrIdx = tempIdx 
-         % RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
-      if(periodicity >= RG_SCH_PCQI_SRS_SR_TRINS_SIZE)
-      {  
-         cqiCb->riDist = rgSCHUtlFindDist((U16)(crntTime + TFU_RECPREQ_DLDELTA),
-                (U16) tempIdx);
-      }
-      else
-      {
-         cqiCb->riDist =0; 
-      }
-      if(ueCb->mimoInfo.txMode == RGR_UE_TM_3 
-            || ueCb->mimoInfo.txMode == RGR_UE_TM_4)
-      {
-         if (cellCb->numTxAntPorts ==2)
-         {
-            cqiCb->riNumBits = 1;
-         }
-         else if(cellCb->numTxAntPorts ==4)
-         {
-            if(ueCat == CM_LTE_UE_CAT_8)
-            {
-               cqiCb->riNumBits = 3;
-            }
-            else if(ueCat >= CM_LTE_UE_CAT_5)  
-            {
-               cqiCb->riNumBits = 2;
-            }
-            else
-            {
-               cqiCb->riNumBits = 1;
-            }
-         }
-      }
-      /*    Place the UE in cellCb->tIUeLstCp  */
-      cqiCb->riLstEnt.node=(PTR) cqiCb;
-
-      cmLListAdd2Tail(&cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst,
-            &cqiCb->riLstEnt);  
-      RG_SCH_RECORD(&cqiCb->histElem,RGSCH_ACTION_ADD,
-         &cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst);
-     
+      RETVALUE(ROK);
 
    }
-   else
-   {
-      cqiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
-      cqiCb->riDist   = RG_SCH_INVALID_IDX; 
-   }
 
-   RETVALUE(ROK);
-
-}
-
-/* @brief Handles SRS configuration for a UE.
- *
- * @details
- *
- *     Function : rgSCHCfgSrsUeCfg 
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by SCH_GOM at UE configuration. It shall do the
- *      validations for the spec-defined values.
- *        
- *     Processing Steps:
- *     - For UE-specific SRS  related configuration, 
- *      - If SRS is configured,
- *        - Update UE with the configured values.
- - Compute and Update next occurance of SRS Tranmission instance.
- - Update the  SRS offset and SRS perodicity information
- - Add Ue to cell's srs list
- *      - else
- *        - next occurance transmission instance of SRS  = RG_SCH_INVALID_IDX
- *
- *     - Return ROK
- *
- *  @param[in]  RgSchCellCb  *cell
- *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  RgrUeUlSrsCfg   *srsCfg
- *
- *  @return  S16
- *      -# ROK
- *      -# RFAILED
- */
+   /* @brief Handles SRS configuration for a UE.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgSrsUeCfg 
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by SCH_GOM at UE configuration. It shall do the
+    *      validations for the spec-defined values.
+    *        
+    *     Processing Steps:
+    *     - For UE-specific SRS  related configuration, 
+    *      - If SRS is configured,
+    *        - Update UE with the configured values.
+    - Compute and Update next occurance of SRS Tranmission instance.
+    - Update the  SRS offset and SRS perodicity information
+    - Add Ue to cell's srs list
+    *      - else
+    *        - next occurance transmission instance of SRS  = RG_SCH_INVALID_IDX
+    *
+    *     - Return ROK
+    *
+    *  @param[in]  RgSchCellCb  *cell
+    *  @param[in]  RgSchUeCb    *ue
+    *  @param[in]  RgrUeUlSrsCfg   *srsCfg
+    *
+    *  @return  S16
+    *      -# ROK
+    *      -# RFAILED
+    */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgSrsUeCfg
-(
- RgSchCellCb     *cellCb,
- RgSchUeCb       *ueCb,
- RgrUeUlSrsCfg   *srsCfg 
- )
+   PUBLIC S16 rgSCHCfgSrsUeCfg
+      (
+       RgSchCellCb     *cellCb,
+       RgSchUeCb       *ueCb,
+       RgrUeUlSrsCfg   *srsCfg 
+      )
 #else
-PUBLIC S16 rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg)
-   RgSchCellCb     *cellCb;
+      PUBLIC S16 rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg)
+      RgSchCellCb     *cellCb;
    RgSchUeCb       *ueCb;
    RgrUeUlSrsCfg   *srsCfg;
 #endif
-{
-   U16      srsTrInsTime;
-   U16      crntTime;  
-   U16      tempIdx;
-
-   TRC3(rgSCHCfgSrsUeCfg);
-
-
-   crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
-      +(cellCb->crntTime.slot);
-
-   if(RGR_SCH_SRS_SETUP == srsCfg->type) 
    {
-      /*  1. Copy the Received Cfg parameters to local cb  */
-      cmMemcpy((U8 *)&ueCb->srsCb.srsCfg, (U8 *)srsCfg, sizeof(RgrUeUlSrsCfg));
+      U16      srsTrInsTime;
+      U16      crntTime;  
+      U16      tempIdx;
+
+      TRC3(rgSCHCfgSrsUeCfg);
+
+
+      crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
+	 +(cellCb->crntTime.slot);
+
+      if(RGR_SCH_SRS_SETUP == srsCfg->type) 
+      {
+	 /*  1. Copy the Received Cfg parameters to local cb  */
+	 cmMemcpy((U8 *)&ueCb->srsCb.srsCfg, (U8 *)srsCfg, sizeof(RgrUeUlSrsCfg));
 
 #ifndef LTE_TDD
-      /* 2.  Compute SRS Offset and Periodicity */
-      rgSCHUtlGetCfgPerOff( RG_SCH_FDD_SRS_TBL, 
-            srsCfg->srsSetup.srsCfgIdx,
-            &ueCb->srsCb.peri, &ueCb->srsCb.offset);      
+	 /* 2.  Compute SRS Offset and Periodicity */
+	 rgSCHUtlGetCfgPerOff( RG_SCH_FDD_SRS_TBL, 
+	       srsCfg->srsSetup.srsCfgIdx,
+	       &ueCb->srsCb.peri, &ueCb->srsCb.offset);      
 #else
-      rgSCHUtlGetCfgPerOff( RG_SCH_TDD_SRS_TBL, 
-            srsCfg->srsSetup.srsCfgIdx,
-            &ueCb->srsCb.peri, &ueCb->srsCb.offset);      
+	 rgSCHUtlGetCfgPerOff( RG_SCH_TDD_SRS_TBL, 
+	       srsCfg->srsSetup.srsCfgIdx,
+	       &ueCb->srsCb.peri, &ueCb->srsCb.offset);      
 #endif       
 
-      RLOG_ARG3(L_DEBUG,DBG_CELLID,cellCb->cellId,
-            "rgSCHCfgSrsUeCfg(): SRS Peri=%d, SRS Offset=%d UEID:%d", 
-            ueCb->srsCb.peri,ueCb->srsCb.offset,ueCb->ueId);
+	 RLOG_ARG3(L_DEBUG,DBG_CELLID,cellCb->cellId,
+	       "rgSCHCfgSrsUeCfg(): SRS Peri=%d, SRS Offset=%d UEID:%d", 
+	       ueCb->srsCb.peri,ueCb->srsCb.offset,ueCb->ueId);
 
-      /*  3. Compute next Tranmission index for SRS */ 
-      /*     Referenence: 36.213 Section:8.2
-             i. SRS transmission instances for TDD with  period > 2 and for FDD are 
-             ((10*sfn +Ksrs-suframeoffset))/mod(periodicity))  
-             FDD: Ksrs is 0...9
-             TDD: Ksrs Table 8.2-3: 
-             ii.The SRS transmission instances for TDD (periodicity == 2)
-             (Ksrs-Toffset)mod(5)==0.  Note: This is not supported now  
-      */ 
+	 /*  3. Compute next Tranmission index for SRS */ 
+	 /*     Referenence: 36.213 Section:8.2
+		i. SRS transmission instances for TDD with  period > 2 and for FDD are 
+		((10*sfn +Ksrs-suframeoffset))/mod(periodicity))  
+FDD: Ksrs is 0...9
+TDD: Ksrs Table 8.2-3: 
+ii.The SRS transmission instances for TDD (periodicity == 2)
+(Ksrs-Toffset)mod(5)==0.  Note: This is not supported now  
+	  */ 
 
-      srsTrInsTime = ((ueCb->srsCb.peri+crntTime) - ueCb->srsCb.offset)
-         %ueCb->srsCb.peri;
-     tempIdx = (crntTime + (ueCb->srsCb.peri - srsTrInsTime));
+	 srsTrInsTime = ((ueCb->srsCb.peri+crntTime) - ueCb->srsCb.offset)
+	    %ueCb->srsCb.peri;
+	 tempIdx = (crntTime + (ueCb->srsCb.peri - srsTrInsTime));
 #ifdef LTE_TDD
-      if (tempIdx  <=  (crntTime + TFU_DELTA))
+	 if (tempIdx  <=  (crntTime + TFU_DELTA))
 #else
-      if (tempIdx  <=  (crntTime + TFU_RECPREQ_DLDELTA))
+	    if (tempIdx  <=  (crntTime + TFU_RECPREQ_DLDELTA))
 #endif
-      {
-         tempIdx = tempIdx + ueCb->srsCb.peri;
-      }
-      ueCb->srsCb.nSrsTrIdx =(U16) (tempIdx 
-         % RG_SCH_PCQI_SRS_SR_TRINS_SIZE);
-      if(ueCb->srsCb.peri >= RG_SCH_PCQI_SRS_SR_TRINS_SIZE)
-      {
+	    {
+	       tempIdx = tempIdx + ueCb->srsCb.peri;
+	    }
+	 ueCb->srsCb.nSrsTrIdx =(U16) (tempIdx 
+	       % RG_SCH_PCQI_SRS_SR_TRINS_SIZE);
+	 if(ueCb->srsCb.peri >= RG_SCH_PCQI_SRS_SR_TRINS_SIZE)
+	 {
 #ifdef LTE_TDD
-         ueCb->srsCb.srsDist = rgSCHUtlFindDist((U8)(crntTime+TFU_DELTA), 
-                                                    (U16)tempIdx); 
+	    ueCb->srsCb.srsDist = rgSCHUtlFindDist((U8)(crntTime+TFU_DELTA), 
+		  (U16)tempIdx); 
 #else
-         ueCb->srsCb.srsDist = rgSCHUtlFindDist((U8)(crntTime + TFU_RECPREQ_DLDELTA), 
-                                                    (U16)tempIdx); 
+	    ueCb->srsCb.srsDist = rgSCHUtlFindDist((U8)(crntTime + TFU_RECPREQ_DLDELTA), 
+		  (U16)tempIdx); 
 #endif
+	 }
+	 else
+	 {
+	    ueCb->srsCb.srsDist = 0; 
+	 }
+
+	 /*UE Tx Antenna Selection - START*/
+	 if(ueCb->ul.ulTxAntSel.pres == TRUE )
+	 {
+	    /*for both partial and full sounding bandwidth, 
+	      and when frequency hopping is disabled */
+	    ueCb->srsCb.selectedAnt = (crntTime/ueCb->srsCb.peri)%2; 
+	 }
+	 else
+	 {
+	    /* TS 36.213 specifies that if Tx Antenna Selection is 
+	       disabled/not supported then its Port 0*/
+	    ueCb->srsCb.selectedAnt=0; 
+	 }
+	 ueCb->validTxAnt = ueCb->srsCb.selectedAnt; 
+	 /*UE Tx Antenna Selection - ENDS*/
+
+	 ueCb->srsCb.srsLstEnt.node=(PTR)ueCb;
+	 cmLListAdd2Tail(&cellCb->pCqiSrsSrLst[ueCb->srsCb.nSrsTrIdx].srsLst,
+	       &ueCb->srsCb.srsLstEnt);  
+
+
       }
       else
       {
-         ueCb->srsCb.srsDist = 0; 
+	 /*  SRS Release / Not configured */
+	 ueCb->srsCb.srsCfg.type = RGR_SCH_SRS_REL;
+	 if(ueCb->srsCb.nSrsTrIdx != RG_SCH_INVALID_IDX)
+	 {
+	    cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srsCb.nSrsTrIdx].srsLst,
+		  &ueCb->srsCb.srsLstEnt);
+	 }
+	 ueCb->srsCb.nSrsTrIdx = RG_SCH_INVALID_IDX; 
+	 ueCb->srsCb.srsLstEnt.node =(PTR) NULLP;
       }
 
-      /*UE Tx Antenna Selection - START*/
-      if(ueCb->ul.ulTxAntSel.pres == TRUE )
-      {
-          /*for both partial and full sounding bandwidth, 
-           and when frequency hopping is disabled */
-         ueCb->srsCb.selectedAnt = (crntTime/ueCb->srsCb.peri)%2; 
-      }
-      else
-      {
-         /* TS 36.213 specifies that if Tx Antenna Selection is 
-            disabled/not supported then its Port 0*/
-         ueCb->srsCb.selectedAnt=0; 
-      }
-      ueCb->validTxAnt = ueCb->srsCb.selectedAnt; 
-      /*UE Tx Antenna Selection - ENDS*/
-
-      ueCb->srsCb.srsLstEnt.node=(PTR)ueCb;
-      cmLListAdd2Tail(&cellCb->pCqiSrsSrLst[ueCb->srsCb.nSrsTrIdx].srsLst,
-            &ueCb->srsCb.srsLstEnt);  
-
-
-   }
-   else
-   {
-      /*  SRS Release / Not configured */
-      ueCb->srsCb.srsCfg.type = RGR_SCH_SRS_REL;
-      if(ueCb->srsCb.nSrsTrIdx != RG_SCH_INVALID_IDX)
-      {
-         cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srsCb.nSrsTrIdx].srsLst,
-               &ueCb->srsCb.srsLstEnt);
-      }
-      ueCb->srsCb.nSrsTrIdx = RG_SCH_INVALID_IDX; 
-      ueCb->srsCb.srsLstEnt.node =(PTR) NULLP;
+      RETVALUE(ROK);
    }
 
-   RETVALUE(ROK);
-}
 
-
-/* * @brief Handles SR configuration for a UE.
- *
- * @details
- *
- *     Function : rgSCHCfgSrUeCfg 
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by SCH_GOM at UE configuration. It shall do the
- *      validations for the spec-defined values.
- *        
- *      - If SR is configured,
- *        - Update UE with the configured values.
- - Compute and Update next occurance of SR Tranmission instance.
- - Update the  SR offset and SR perodicity information
- - Add Ue to cell->tIUeLstCp[n]  
- *      - else
- *        - next occurance transmission instance of SR = RG_INVALID_SR_ID
- *
- *
- *     - Return ROK
- *
- *  @param[in]  RgSchCellCb  *cell
- *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  RgrUeSrCfg       *srCfg
- *
- *  @return  S16
- *      -# ROK
- *      -# RFAILED
- */
+   /* * @brief Handles SR configuration for a UE.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgSrUeCfg 
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by SCH_GOM at UE configuration. It shall do the
+    *      validations for the spec-defined values.
+    *        
+    *      - If SR is configured,
+    *        - Update UE with the configured values.
+    - Compute and Update next occurance of SR Tranmission instance.
+    - Update the  SR offset and SR perodicity information
+    - Add Ue to cell->tIUeLstCp[n]  
+    *      - else
+    *        - next occurance transmission instance of SR = RG_INVALID_SR_ID
+    *
+    *
+    *     - Return ROK
+    *
+    *  @param[in]  RgSchCellCb  *cell
+    *  @param[in]  RgSchUeCb    *ue
+    *  @param[in]  RgrUeSrCfg       *srCfg
+    *
+    *  @return  S16
+    *      -# ROK
+    *      -# RFAILED
+    */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgSrUeCfg
-(
- RgSchCellCb      *cellCb,
- RgSchUeCb        *ueCb,
- RgrUeSrCfg       *srCfg
- )
+   PUBLIC S16 rgSCHCfgSrUeCfg
+      (
+       RgSchCellCb      *cellCb,
+       RgSchUeCb        *ueCb,
+       RgrUeSrCfg       *srCfg
+      )
 #else
-PUBLIC S16 rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg)
-   RgSchCellCb    *cellCb;
+      PUBLIC S16 rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg)
+      RgSchCellCb    *cellCb;
    RgSchUeCb      *ueCb;
    RgrUeSrCfg     *srCfg;
 #endif
-{
-   U16     srTrInsTime;
-   U16     crntTime;
-
-   TRC3(rgSCHCfgSrUeCfg);
-
-
-   crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
-      +(cellCb->crntTime.slot);
-   if(srCfg->type == RGR_SCH_SR_SETUP) 
    {
-      /*  1. Copy the Received Cfg parameters to local cb  */
-      cmMemcpy((U8 *)&ueCb->srCb.srCfg, (U8 *)srCfg, sizeof(RgrUeSrCfg));
+      U16     srTrInsTime;
+      U16     crntTime;
+
+      TRC3(rgSCHCfgSrUeCfg);
 
 
-      /*  2. Compute SR periodicity and offset */
-      rgSCHUtlGetCfgPerOff( RG_SCH_SR_TBL, 
-            srCfg->srSetup.srCfgIdx,
-            &ueCb->srCb.peri, &ueCb->srCb.offset);
-    
-      RLOG_ARG4(L_DEBUG,DBG_CELLID,cellCb->cellId ,
-            "SR Config: idx(%u), period (%u) offset (%u) UEID:%d",
-            srCfg->srSetup.srCfgIdx,
-            ueCb->srCb.peri, 
-            ueCb->srCb.offset,
-            ueCb->ueId);
+      crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
+	 +(cellCb->crntTime.slot);
+      if(srCfg->type == RGR_SCH_SR_SETUP) 
+      {
+	 /*  1. Copy the Received Cfg parameters to local cb  */
+	 cmMemcpy((U8 *)&ueCb->srCb.srCfg, (U8 *)srCfg, sizeof(RgrUeSrCfg));
+
+
+	 /*  2. Compute SR periodicity and offset */
+	 rgSCHUtlGetCfgPerOff( RG_SCH_SR_TBL, 
+	       srCfg->srSetup.srCfgIdx,
+	       &ueCb->srCb.peri, &ueCb->srCb.offset);
+
+	 RLOG_ARG4(L_DEBUG,DBG_CELLID,cellCb->cellId ,
+	       "SR Config: idx(%u), period (%u) offset (%u) UEID:%d",
+	       srCfg->srSetup.srCfgIdx,
+	       ueCb->srCb.peri, 
+	       ueCb->srCb.offset,
+	       ueCb->ueId);
 #ifdef EMTC_ENABLE
-      if(ueCb->isEmtcUe)
-      {
-         rgSchfillPucchSrRepNumCountemtc(ueCb);
-      }
+	 if(ueCb->isEmtcUe)
+	 {
+	    rgSchfillPucchSrRepNumCountemtc(ueCb);
+	 }
 #endif
-      /*   3. Compute Next Transmission Instance */
+	 /*   3. Compute Next Transmission Instance */
 
-      srTrInsTime = ((ueCb->srCb.peri+crntTime) - ueCb->srCb.offset)
-         %ueCb->srCb.peri;
-      ueCb->srCb.nSrTrIdx = (crntTime + (ueCb->srCb.peri- srTrInsTime)); 
+	 srTrInsTime = ((ueCb->srCb.peri+crntTime) - ueCb->srCb.offset)
+	    %ueCb->srCb.peri;
+	 ueCb->srCb.nSrTrIdx = (crntTime + (ueCb->srCb.peri- srTrInsTime)); 
 #ifdef LTE_TDD
-      if (ueCb->srCb.nSrTrIdx  <= (crntTime + TFU_DELTA))
+	 if (ueCb->srCb.nSrTrIdx  <= (crntTime + TFU_DELTA))
 #else
-      if (ueCb->srCb.nSrTrIdx  <= (crntTime + TFU_RECPREQ_DLDELTA))
+	    if (ueCb->srCb.nSrTrIdx  <= (crntTime + TFU_RECPREQ_DLDELTA))
 #endif
-      {
-         ueCb->srCb.nSrTrIdx = ueCb->srCb.nSrTrIdx +  ueCb->srCb.peri;
+	    {
+	       ueCb->srCb.nSrTrIdx = ueCb->srCb.nSrTrIdx +  ueCb->srCb.peri;
+	    }
+	 ueCb->srCb.nSrTrIdx = ueCb->srCb.nSrTrIdx 
+	    % RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
+	 ueCb->srCb.srLstEnt.node= (PTR) ueCb;
+
+	 /* 4. Place UE in Cell SR Tranmisison Instance List  */
+	 cmLListAdd2Tail(&cellCb->pCqiSrsSrLst[ueCb->srCb.nSrTrIdx].srLst,
+	       &ueCb->srCb.srLstEnt);  
       }
-      ueCb->srCb.nSrTrIdx = ueCb->srCb.nSrTrIdx 
-         % RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
-      ueCb->srCb.srLstEnt.node= (PTR) ueCb;
-
-      /* 4. Place UE in Cell SR Tranmisison Instance List  */
-      cmLListAdd2Tail(&cellCb->pCqiSrsSrLst[ueCb->srCb.nSrTrIdx].srLst,
-            &ueCb->srCb.srLstEnt);  
-   }
-   else
-   {
-      ueCb->srCb.srCfg.type =  RGR_SCH_SR_REL;
-
-      if(ueCb->srCb.nSrTrIdx != RG_SCH_INVALID_IDX)
+      else
       {
-         cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srCb.nSrTrIdx].srLst,
-               &ueCb->srCb.srLstEnt);
+	 ueCb->srCb.srCfg.type =  RGR_SCH_SR_REL;
+
+	 if(ueCb->srCb.nSrTrIdx != RG_SCH_INVALID_IDX)
+	 {
+	    cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srCb.nSrTrIdx].srLst,
+		  &ueCb->srCb.srLstEnt);
+	 }
+	 ueCb->srCb.nSrTrIdx = RG_SCH_INVALID_IDX; 
+	 ueCb->srCb.srLstEnt.node = (PTR)NULLP;
       }
-      ueCb->srCb.nSrTrIdx = RG_SCH_INVALID_IDX; 
-      ueCb->srCb.srLstEnt.node = (PTR)NULLP;
+
+      RETVALUE(ROK);
    }
 
-   RETVALUE(ROK);
-}
+
+   /*****************************************************************
+    *    UE PCQI, RI, SRS and SR       Re Configuration Functions    *
+    *                                                                *
+    ******************************************************************/
 
 
-/*****************************************************************
- *    UE PCQI, RI, SRS and SR       Re Configuration Functions    *
- *                                                                *
- ******************************************************************/
-
-
-/* * @brief Handles Periodic CQI, PMI, RI  Re-configuration for a UE.
- *
- * @details
- *
- *     Function : rgSCHCfgPCqiUeReCfg 
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by SCH_GOM at UE Re configuration. It shall do the
- *      validations for the spec-defined values.
- *        
- *     Processing Steps:
- *     - For UE-specific Periodic CQI  related configuration, 
- *      - If Periodic CQI/PMI is re configured(first time enabled),
- *          - Update UE with the configured values.
- *         - Compute and Update next occurance of CQI/PMI or RI Tranmission 
- *         instance.
- *         - Update the CQI offset and CQI perodicity information
- *         - Add Ue to cell's list 
- *      - If Periodic CQI/PMI is re configured(modify),
- *         - Update UE with the configured values.
- *         - Del Ue from cell->tIUeLstCp list 
- *          - Compute and Update next occurance of CQI/PMI or RI Tranmission
- *          instance.
- *         - Update the CQI offset and CQI perodicity information
- *         - Add Ue to cell's list
- *      - If Periodic CQI/PMI is re configured(disabled),
- *        - Update UE with the configured values.
- *         - Del Ue from cell's list  
- *         - Update next occurance of CQI/PMI or RI Tranmission instance.
- *        - next occurance of CQI/PMI = RG_INVALID_CQIPMI_ID
- *
- *     - For UE-specific Periodic RI  related configuration, 
- *      - If Periodic RI is configured(first time enabled),
- *        - Update UE with the configured values.
- *          - Compute and Update next occurance of RI Tranmission instance.
- *         - Update the  RI offset and RI perodicity information
- *      - If Periodic RI is configured(modify),
- *        - Update UE with the configured values.
- *         - Compute and Update next occurance of RI Tranmission instance.
- *         - Update the  RI offset and RI perodicity information
- *      - else
- *        - next occurance of RI  = RG_INVALID_CQIPMI_ID
- *
- *     - Return ROK
- *
- *  @param[in]  RgSchCellCb  *cell
- *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  RgrUeCfg     *ueCfg
- *
- *  @return  S16
- *      -# ROK
- *
- */
+   /* * @brief Handles Periodic CQI, PMI, RI  Re-configuration for a UE.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgPCqiUeReCfg 
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by SCH_GOM at UE Re configuration. It shall do the
+    *      validations for the spec-defined values.
+    *        
+    *     Processing Steps:
+    *     - For UE-specific Periodic CQI  related configuration, 
+    *      - If Periodic CQI/PMI is re configured(first time enabled),
+    *          - Update UE with the configured values.
+    *         - Compute and Update next occurance of CQI/PMI or RI Tranmission 
+    *         instance.
+    *         - Update the CQI offset and CQI perodicity information
+    *         - Add Ue to cell's list 
+    *      - If Periodic CQI/PMI is re configured(modify),
+    *         - Update UE with the configured values.
+    *         - Del Ue from cell->tIUeLstCp list 
+    *          - Compute and Update next occurance of CQI/PMI or RI Tranmission
+    *          instance.
+    *         - Update the CQI offset and CQI perodicity information
+    *         - Add Ue to cell's list
+    *      - If Periodic CQI/PMI is re configured(disabled),
+    *        - Update UE with the configured values.
+    *         - Del Ue from cell's list  
+    *         - Update next occurance of CQI/PMI or RI Tranmission instance.
+    *        - next occurance of CQI/PMI = RG_INVALID_CQIPMI_ID
+    *
+    *     - For UE-specific Periodic RI  related configuration, 
+    *      - If Periodic RI is configured(first time enabled),
+    *        - Update UE with the configured values.
+    *          - Compute and Update next occurance of RI Tranmission instance.
+    *         - Update the  RI offset and RI perodicity information
+    *      - If Periodic RI is configured(modify),
+    *        - Update UE with the configured values.
+    *         - Compute and Update next occurance of RI Tranmission instance.
+    *         - Update the  RI offset and RI perodicity information
+    *      - else
+    *        - next occurance of RI  = RG_INVALID_CQIPMI_ID
+    *
+    *     - Return ROK
+    *
+    *  @param[in]  RgSchCellCb  *cell
+    *  @param[in]  RgSchUeCb    *ue
+    *  @param[in]  RgrUeCfg     *ueCfg
+    *
+    *  @return  S16
+    *      -# ROK
+    *
+    */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgPCqiUeReCfg
-(
- RgSchCellCb        *cellCb, 
- RgSchUeCb          *ueCb, 
- RgrUePrdDlCqiCfg   *cqiCfg,
- CmLteUeCategory      ueCat
- )
+   PUBLIC S16 rgSCHCfgPCqiUeReCfg
+      (
+       RgSchCellCb        *cellCb, 
+       RgSchUeCb          *ueCb, 
+       RgrUePrdDlCqiCfg   *cqiCfg,
+       CmLteUeCategory      ueCat
+      )
 #else
-PUBLIC S16  rgSCHCfgPCqiUeReCfg(cellCb, ueCb, cqiCfg, ueCat)
-   RgSchCellCb       *cellCb; 
+      PUBLIC S16  rgSCHCfgPCqiUeReCfg(cellCb, ueCb, cqiCfg, ueCat)
+      RgSchCellCb       *cellCb; 
    RgSchUeCb         *ueCb; 
    RgrUePrdDlCqiCfg  *cqiCfg;
    CmLteUeCategory  ueCat;
 #endif
-{
-
-   RgSchUePCqiCb *cqiCb = NULLP;
-   TRC3(rgSCHCfgPCqiUeReCfg);
-
-   cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
-   /* Fix: ccpu00124008 Fix for incorrect check causing missed CQI reception instance */
-   if((cqiCfg->type == RGR_SCH_PCQI_SETUP) &&
-         (cqiCb->cqiCfg.type != RGR_SCH_PCQI_SETUP))
-   {
-      /* 1. cqi is in Release (Disable) state,  Recfg is allowing Setup (Enable)
-      */
-      rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat);
-
-   }
-   else if((cqiCfg->type == RGR_SCH_PCQI_SETUP) &&
-         (cqiCb->cqiCfg.type == RGR_SCH_PCQI_SETUP ))
    {
 
-      /*
-         2. Present is SETUP(Enable) state,  Recfg is modifying SETUP(Enable)
+      RgSchUePCqiCb *cqiCb = NULLP;
+      TRC3(rgSCHCfgPCqiUeReCfg);
 
-         2.1 Delete UE from the cqiList 
-         2.2 Set next occurance Transmission instace to "INVALID"
-         2.3 Compute Next occurance Transmission instace 
-         2.4 Placed ue in Transmission instance list.
-         */    
-      if(cqiCb->nCqiTrIdx != RG_SCH_INVALID_IDX )
-         cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiCb->nCqiTrIdx].cqiLst,
-               &cqiCb->cqiLstEnt); 
-
-      if(cqiCb->nRiTrIdx != RG_SCH_INVALID_IDX )
+      cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
+      /* Fix: ccpu00124008 Fix for incorrect check causing missed CQI reception instance */
+      if((cqiCfg->type == RGR_SCH_PCQI_SETUP) &&
+	    (cqiCb->cqiCfg.type != RGR_SCH_PCQI_SETUP))
       {
-         cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst,
-               &cqiCb->riLstEnt); 
-         RG_SCH_RECORD(&cqiCb->histElem,RGSCH_ACTION_DEL,
-            &cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst);
+	 /* 1. cqi is in Release (Disable) state,  Recfg is allowing Setup (Enable)
+	  */
+	 rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat);
+
+      }
+      else if((cqiCfg->type == RGR_SCH_PCQI_SETUP) &&
+	    (cqiCb->cqiCfg.type == RGR_SCH_PCQI_SETUP ))
+      {
+
+	 /*
+	    2. Present is SETUP(Enable) state,  Recfg is modifying SETUP(Enable)
+
+	    2.1 Delete UE from the cqiList 
+	    2.2 Set next occurance Transmission instace to "INVALID"
+	    2.3 Compute Next occurance Transmission instace 
+	    2.4 Placed ue in Transmission instance list.
+	  */    
+	 if(cqiCb->nCqiTrIdx != RG_SCH_INVALID_IDX )
+	    cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiCb->nCqiTrIdx].cqiLst,
+		  &cqiCb->cqiLstEnt); 
+
+	 if(cqiCb->nRiTrIdx != RG_SCH_INVALID_IDX )
+	 {
+	    cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst,
+		  &cqiCb->riLstEnt); 
+	    RG_SCH_RECORD(&cqiCb->histElem,RGSCH_ACTION_DEL,
+		  &cellCb->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst);
+	 }
+
+
+	 cqiCb->cqiLstEnt.next = NULLP;
+	 cqiCb->cqiLstEnt.prev  = NULLP;
+	 cqiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
+	 cqiCb->nRiTrIdx  = RG_SCH_INVALID_IDX;
+	 cqiCb->riDist    = RG_SCH_INVALID_IDX;
+
+	 rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat);
+      }
+      else
+      {
+	 /* Present is SETUP(Enable) state,  Recfg is Release(Disable)  */
+	 rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat);
       }
 
-
-      cqiCb->cqiLstEnt.next = NULLP;
-      cqiCb->cqiLstEnt.prev  = NULLP;
-      cqiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
-      cqiCb->nRiTrIdx  = RG_SCH_INVALID_IDX;
-      cqiCb->riDist    = RG_SCH_INVALID_IDX;
-
-      rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat);
-   }
-   else
-   {
-      /* Present is SETUP(Enable) state,  Recfg is Release(Disable)  */
-      rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat);
+      /* ccpu00140578:: */
+      cqiCb->riRecpPrcsd = FALSE;
+      RETVALUE(ROK);
    }
 
-   /* ccpu00140578:: */
-   cqiCb->riRecpPrcsd = FALSE;
-   RETVALUE(ROK);
-}
 
-
-/* * @brief Handles SRS  Re-configuration for a UE.
- *
- * @details
- *
- *     Function : rgSCHCfgSrsUeReCfg 
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by SCH_GOM at UE Re configuration. It shall do the
- *      validations for the spec-defined values.
- *        
- *     Processing Steps:
- *     - For UE-specific SRS  related re configuration, 
- *      - If SRS is configured modified(First time Enabled),
- *        - Update UE with the configured values.
- *         - Compute and Update next occurance of SRS Tranmission instance.
- *        - Update the  SRS offset and SRS perodicity information
- *        - Add Ue to cell's list  
- *      - If SRS is configured modified(Changed offset or index ),
- *      - Delete UE from cell->tIUeLstCp[n] if present  
- *      - Update UE with the configured values.
- *      - Compute and Update next occurance of SRS Tranmission instance.
- *      - Update the  SRS offset and SRS perodicity information
- *      - Add Ue to cell's list  
- *      - If SRS is configured modified(disabled),
- *      - Delete UE from cell->tIUeLstCp[n] if present  
- *        - Update next occurance of SRS Tranmission instance to "INVALID".
- *        - Update the  SRS offset and SRS perodicity information "INVALID"
- *      - else
- *        - ROK 
- *
- *     - Return ROK
- *
- *  @param[in]  RgSchCellCb  *cell
- *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  RgrUeUlSrsCfg    *srsCfg
- *
- *  @return  S16
- *      -# ROK
- *      -# RFAILED
- */
+   /* * @brief Handles SRS  Re-configuration for a UE.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgSrsUeReCfg 
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by SCH_GOM at UE Re configuration. It shall do the
+    *      validations for the spec-defined values.
+    *        
+    *     Processing Steps:
+    *     - For UE-specific SRS  related re configuration, 
+    *      - If SRS is configured modified(First time Enabled),
+    *        - Update UE with the configured values.
+    *         - Compute and Update next occurance of SRS Tranmission instance.
+    *        - Update the  SRS offset and SRS perodicity information
+    *        - Add Ue to cell's list  
+    *      - If SRS is configured modified(Changed offset or index ),
+    *      - Delete UE from cell->tIUeLstCp[n] if present  
+    *      - Update UE with the configured values.
+    *      - Compute and Update next occurance of SRS Tranmission instance.
+    *      - Update the  SRS offset and SRS perodicity information
+    *      - Add Ue to cell's list  
+    *      - If SRS is configured modified(disabled),
+    *      - Delete UE from cell->tIUeLstCp[n] if present  
+    *        - Update next occurance of SRS Tranmission instance to "INVALID".
+    *        - Update the  SRS offset and SRS perodicity information "INVALID"
+    *      - else
+    *        - ROK 
+    *
+    *     - Return ROK
+    *
+    *  @param[in]  RgSchCellCb  *cell
+    *  @param[in]  RgSchUeCb    *ue
+    *  @param[in]  RgrUeUlSrsCfg    *srsCfg
+    *
+    *  @return  S16
+    *      -# ROK
+    *      -# RFAILED
+    */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgSrsUeReCfg
-(
- RgSchCellCb        *cellCb, 
- RgSchUeCb          *ueCb, 
- RgrUeUlSrsCfg      *srsCfg
- )
+   PUBLIC S16 rgSCHCfgSrsUeReCfg
+      (
+       RgSchCellCb        *cellCb, 
+       RgSchUeCb          *ueCb, 
+       RgrUeUlSrsCfg      *srsCfg
+      )
 #else
-PUBLIC S16 rgSCHCfgSrsUeReCfg(cellCb, ueCb, srsCfg)
-   RgSchCellCb      *cellCb; 
+      PUBLIC S16 rgSCHCfgSrsUeReCfg(cellCb, ueCb, srsCfg)
+      RgSchCellCb      *cellCb; 
    RgSchUeCb        *ueCb; 
    RgrUeUlSrsCfg    *srsCfg;
 #endif
-{
-
-   TRC3(rgSCHCfgSrsUeReCfg);
-
-
-
-   if(( RGR_SCH_SRS_SETUP == srsCfg->type) ||
-         ( RGR_SCH_SRS_SETUP != ueCb->srsCb.srsCfg.type ))
-   {
-      /*     1. Present is Release(Disable) state,  Recfg is allowing
-       *     SETUP(Enable)  */
-      rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg);
-   } 
-   else if (( RGR_SCH_SRS_SETUP == srsCfg->type ) &&
-         ( RGR_SCH_SRS_SETUP  == ueCb->srsCb.srsCfg.type))
    {
 
-      /*     2. Present is SETUP(Eanble) state,  Recfg is modifying SETUP(Enable) 
+      TRC3(rgSCHCfgSrsUeReCfg);
 
-             2.1 Delete UE from the cqiList 
-             2.2 Set next occurance Transmission instance to "INVALID"
-             2.3 Compute Next occurance Transmission instance 
-             2.4 Placed ue in Transmission instance list.
-             */ 
-      if (ueCb->srsCb.nSrsTrIdx != RG_SCH_INVALID_IDX)
+
+
+      if(( RGR_SCH_SRS_SETUP == srsCfg->type) ||
+	    ( RGR_SCH_SRS_SETUP != ueCb->srsCb.srsCfg.type ))
       {
-         cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srsCb.nSrsTrIdx].srsLst,
-               &ueCb->srsCb.srsLstEnt);
-         ueCb->srsCb.nSrsTrIdx = RG_SCH_INVALID_IDX;
+	 /*     1. Present is Release(Disable) state,  Recfg is allowing
+	  *     SETUP(Enable)  */
+	 rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg);
+      } 
+      else if (( RGR_SCH_SRS_SETUP == srsCfg->type ) &&
+	    ( RGR_SCH_SRS_SETUP  == ueCb->srsCb.srsCfg.type))
+      {
+
+	 /*     2. Present is SETUP(Eanble) state,  Recfg is modifying SETUP(Enable) 
+
+		2.1 Delete UE from the cqiList 
+		2.2 Set next occurance Transmission instance to "INVALID"
+		2.3 Compute Next occurance Transmission instance 
+		2.4 Placed ue in Transmission instance list.
+	  */ 
+	 if (ueCb->srsCb.nSrsTrIdx != RG_SCH_INVALID_IDX)
+	 {
+	    cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srsCb.nSrsTrIdx].srsLst,
+		  &ueCb->srsCb.srsLstEnt);
+	    ueCb->srsCb.nSrsTrIdx = RG_SCH_INVALID_IDX;
+	 }
+
+	 rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg);
       }
+      else
+      {
+	 /* 3. Present is SETUP(Enable) state,  Recfg is Release(Disable)*/ 
+	 rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg);
+      }
+      /* ccpu00140578:: */
+      ueCb->srsCb.srsRecpPrcsd = FALSE;
 
-      rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg);
+      RETVALUE(ROK);
    }
-   else
-   {
-      /* 3. Present is SETUP(Enable) state,  Recfg is Release(Disable)*/ 
-      rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg);
-   }
-   /* ccpu00140578:: */
-   ueCb->srsCb.srsRecpPrcsd = FALSE;
 
-   RETVALUE(ROK);
-}
-
-/* @brief Handles  SR Re-configuration for a UE.
- *
- * @details
- *
- *     Function : rgSCHCfgSrUeReCfg 
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by SCH_GOM at UE Re configuration. 
- *      It shall do the validations for the spec-defined values.
- *        
- *     Processing Steps:
- *     - For UE-specific SR  related re configuration, 
- *      - If SR is configured modified(First time Enabled),
- *        - Update UE with the configured values.
- *          - Compute and Update next occurance of SR Tranmission instance.
- *         - Update the  SR offset and SR perodicity information
- *         - Add Ue to cell->tIUeLstCp[n]  
- *      - If SR is configured modified(Changed offset or index ),
- *      - Delete UE from cell->tIUeLstCp[n] if present  
- *       - Update UE with the configured values.
- *       - Compute and Update next occurance of SR Tranmission instance.
- *       - Update the  SR offset and SR perodicity information
- *       - Add Ue to cell->tIUeLstCp[n]  
- *      - If SR is configured modified(disabled),
- *      - Delete UE from cell->tIUeLstCp[n] if present  
- *         - Update next occurance of SR Tranmission instance to "INVALID".
- *         - Update the  SR offset and SR perodicity information "INVALID"
- *      - else
- *        - ROK 
- *
- *
- *
- *     - Return ROK
- *
- *  @param[in]  RgSchCellCb  *cell
- *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  RgrUeCfg     *ueCfg
- *
- *  @return  S16
- *      -# ROK
- *      -# RFAILED
- */
+   /* @brief Handles  SR Re-configuration for a UE.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgSrUeReCfg 
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by SCH_GOM at UE Re configuration. 
+    *      It shall do the validations for the spec-defined values.
+    *        
+    *     Processing Steps:
+    *     - For UE-specific SR  related re configuration, 
+    *      - If SR is configured modified(First time Enabled),
+    *        - Update UE with the configured values.
+    *          - Compute and Update next occurance of SR Tranmission instance.
+    *         - Update the  SR offset and SR perodicity information
+    *         - Add Ue to cell->tIUeLstCp[n]  
+    *      - If SR is configured modified(Changed offset or index ),
+    *      - Delete UE from cell->tIUeLstCp[n] if present  
+    *       - Update UE with the configured values.
+    *       - Compute and Update next occurance of SR Tranmission instance.
+    *       - Update the  SR offset and SR perodicity information
+    *       - Add Ue to cell->tIUeLstCp[n]  
+    *      - If SR is configured modified(disabled),
+    *      - Delete UE from cell->tIUeLstCp[n] if present  
+    *         - Update next occurance of SR Tranmission instance to "INVALID".
+    *         - Update the  SR offset and SR perodicity information "INVALID"
+    *      - else
+    *        - ROK 
+    *
+    *
+    *
+    *     - Return ROK
+    *
+    *  @param[in]  RgSchCellCb  *cell
+    *  @param[in]  RgSchUeCb    *ue
+    *  @param[in]  RgrUeCfg     *ueCfg
+    *
+    *  @return  S16
+    *      -# ROK
+    *      -# RFAILED
+    */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgSrUeReCfg
-(
- RgSchCellCb    *cellCb, 
- RgSchUeCb      *ueCb, 
- RgrUeSrCfg     *srCfg
- )
+   PUBLIC S16 rgSCHCfgSrUeReCfg
+      (
+       RgSchCellCb    *cellCb, 
+       RgSchUeCb      *ueCb, 
+       RgrUeSrCfg     *srCfg
+      )
 #else
-PUBLIC S16 rgSCHCfgSrUeReCfg(cellCb, ueCb, srCfg)
-   RgSchCellCb   *cellCb; 
+      PUBLIC S16 rgSCHCfgSrUeReCfg(cellCb, ueCb, srCfg)
+      RgSchCellCb   *cellCb; 
    RgSchUeCb     *ueCb; 
    RgrUeSrCfg    *srCfg;
 #endif
-{
-   TRC3(rgSCHCfgSrUeReCfg);
-
-
-   /* Fix : syed Incorrect check for SR RECFG */
-   if((srCfg->type == RGR_SCH_SR_SETUP) &&
-         (ueCb->srCb.srCfg.type != RGR_SCH_SR_SETUP))
    {
-      /*
-         1. Present is Release(Disable) state,  Recfg is allowing SETUP(Enable) 
-         */
-      rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg);
-   } 
-   else if((srCfg->type == RGR_SCH_SR_SETUP) &&
-         (ueCb->srCb.srCfg.type == RGR_SCH_SR_SETUP))
-   {
+      TRC3(rgSCHCfgSrUeReCfg);
 
-      /*   2. Present is SETUP(Eanble) state,  Recfg is modifying SETUP(Enable) 
 
-           2.1 Delete UE from the cqiList 
-           2.2 Compute Next occurance Transmission instace 
-           */      
-      if(ueCb->srCb.nSrTrIdx != RG_SCH_INVALID_IDX )
+      /* Fix : syed Incorrect check for SR RECFG */
+      if((srCfg->type == RGR_SCH_SR_SETUP) &&
+	    (ueCb->srCb.srCfg.type != RGR_SCH_SR_SETUP))
       {
-         cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srCb.nSrTrIdx].srLst, 
-               &ueCb->srCb.srLstEnt);
-         ueCb->srCb.nSrTrIdx = RG_SCH_INVALID_IDX;
+	 /*
+	    1. Present is Release(Disable) state,  Recfg is allowing SETUP(Enable) 
+	  */
+	 rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg);
+      } 
+      else if((srCfg->type == RGR_SCH_SR_SETUP) &&
+	    (ueCb->srCb.srCfg.type == RGR_SCH_SR_SETUP))
+      {
+
+	 /*   2. Present is SETUP(Eanble) state,  Recfg is modifying SETUP(Enable) 
+
+	      2.1 Delete UE from the cqiList 
+	      2.2 Compute Next occurance Transmission instace 
+	  */      
+	 if(ueCb->srCb.nSrTrIdx != RG_SCH_INVALID_IDX )
+	 {
+	    cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srCb.nSrTrIdx].srLst, 
+		  &ueCb->srCb.srLstEnt);
+	    ueCb->srCb.nSrTrIdx = RG_SCH_INVALID_IDX;
+	 }
+	 rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg);
+
       }
-      rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg);
+      else
+      {
+	 /* 3. Present is SETUP(Enable) state,  Recfg is Release(Disable) */
+	 rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg);
+      }
 
+      RETVALUE(ROK);
    }
-   else
-   {
-      /* 3. Present is SETUP(Enable) state,  Recfg is Release(Disable) */
-      rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg);
-   }
 
-   RETVALUE(ROK);
-}
-
-/* @brief Handles  ACQI Re-configuration for a UE.
- *
- * @details
- *
- *     Function : rgSCHCfgAcqiUeReCfg 
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by SCH_GOM at UE Re configuration. 
- *      It shall do the validations for the spec-defined values.
- *        
- *     Processing Steps:
- *     - For UE-specific ACQI  related re configuration, 
- *          - Check if the ACQI Mode has been changed from the
- *             existing Configuration.
- *     - If the configuration has been changed,
- *          - Call Aperiodic Config function to change the config
- *      - else
- *        - ROK 
- *
- *
- *     - Return ROK
- *
- *  @param[in]  RgSchCellCb  *cell
- *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  RgrUeAprdDlCqiCfg   *acqiCfg
- *
- *  @return  S16
- *      -# ROK
- *      -# RFAILED
- */
+   /* @brief Handles  ACQI Re-configuration for a UE.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgAcqiUeReCfg 
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by SCH_GOM at UE Re configuration. 
+    *      It shall do the validations for the spec-defined values.
+    *        
+    *     Processing Steps:
+    *     - For UE-specific ACQI  related re configuration, 
+    *          - Check if the ACQI Mode has been changed from the
+    *             existing Configuration.
+    *     - If the configuration has been changed,
+    *          - Call Aperiodic Config function to change the config
+    *      - else
+    *        - ROK 
+    *
+    *
+    *     - Return ROK
+    *
+    *  @param[in]  RgSchCellCb  *cell
+    *  @param[in]  RgSchUeCb    *ue
+    *  @param[in]  RgrUeAprdDlCqiCfg   *acqiCfg
+    *
+    *  @return  S16
+    *      -# ROK
+    *      -# RFAILED
+    */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgAcqiUeReCfg
-(
- RgSchCellCb    *cellCb, 
- RgSchUeCb      *ueCb, 
- RgrUeAprdDlCqiCfg   *acqiCfg,
- CmLteUeCategory   ueCat
- )
+   PUBLIC S16 rgSCHCfgAcqiUeReCfg
+      (
+       RgSchCellCb    *cellCb, 
+       RgSchUeCb      *ueCb, 
+       RgrUeAprdDlCqiCfg   *acqiCfg,
+       CmLteUeCategory   ueCat
+      )
 #else
-PUBLIC S16 rgSCHCfgAcqiUeReCfg(cellCb, ueCb, acqiCfg, ueCat)
-   RgSchCellCb   *cellCb; 
+      PUBLIC S16 rgSCHCfgAcqiUeReCfg(cellCb, ueCb, acqiCfg, ueCat)
+      RgSchCellCb   *cellCb; 
    RgSchUeCb     *ueCb; 
    RgrUeAprdDlCqiCfg   *acqiCfg;
    CmLteUeCategory   ueCat;
 #endif
-{
-   TRC3(rgSCHCfgAcqiUeReCfg);
+   {
+      TRC3(rgSCHCfgAcqiUeReCfg);
 
-   RETVALUE(rgSCHCfgACqiUeCfg(cellCb,ueCb,(RG_SCH_CMN_GET_ACQICB(ueCb,cellCb))
-                                    ,ueCb->mimoInfo.txMode, acqiCfg, ueCat));
+      RETVALUE(rgSCHCfgACqiUeCfg(cellCb,ueCb,(RG_SCH_CMN_GET_ACQICB(ueCb,cellCb))
+	       ,ueCb->mimoInfo.txMode, acqiCfg, ueCat));
 
-}
+   }
 
-/*****************************************************************
- *   UE PCQI, RI, SRS and SR Configuration  Delete                *
- *                                                                *
- *****************************************************************/
+   /*****************************************************************
+    *   UE PCQI, RI, SRS and SR Configuration  Delete                *
+    *                                                                *
+    *****************************************************************/
 
-/* @brief Free Periodic CQI/PMI/RI, SRS and SR transmission instance 
- * related data structures of this UE from CellCb 
- *
- * @details
- *
- *     Function : rgSCHCfgPCqiSrsSrUeDel
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by SCH_GOM at Ue deletion.
- *
- *     Processing Steps:
- *      - For SRS Transmission Instance
- *       - if (srsTxInst!= RG_INVALID)
- *        - Remove from the cellCb->tIUeLstCp[srsTxInst*3+2]
- *       - else
- *        - Nothing to do
- *      - For SR Transmission Instance
- *       - if (srTxInst!= RG_INVALID)
- *        - Remove from the cellCb->tIUeLstCp[srTxInst*3+1]
- *       - else
- *        - Nothing to do
- *      - For Periodic CQI/PMI RI  Transmission Instance
- *       - if (pCqiTxInst!= RG_INVALID)
- *        - Remove from the cellCb->tIUeLstCp[srTxInst*3+0]
- *       - else
- *        - Nothing to do
- *      - Return ROK
- *  @param[in]  RgSchCellCb  *cell
- *  @param[in]  RgSchUeCb    *ue
- *
- *  @return  S16
- *      -# ROK
- */
+   /* @brief Free Periodic CQI/PMI/RI, SRS and SR transmission instance 
+    * related data structures of this UE from CellCb 
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgPCqiSrsSrUeDel
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by SCH_GOM at Ue deletion.
+    *
+    *     Processing Steps:
+    *      - For SRS Transmission Instance
+    *       - if (srsTxInst!= RG_INVALID)
+    *        - Remove from the cellCb->tIUeLstCp[srsTxInst*3+2]
+    *       - else
+    *        - Nothing to do
+    *      - For SR Transmission Instance
+    *       - if (srTxInst!= RG_INVALID)
+    *        - Remove from the cellCb->tIUeLstCp[srTxInst*3+1]
+    *       - else
+    *        - Nothing to do
+    *      - For Periodic CQI/PMI RI  Transmission Instance
+    *       - if (pCqiTxInst!= RG_INVALID)
+    *        - Remove from the cellCb->tIUeLstCp[srTxInst*3+0]
+    *       - else
+    *        - Nothing to do
+    *      - Return ROK
+    *  @param[in]  RgSchCellCb  *cell
+    *  @param[in]  RgSchUeCb    *ue
+    *
+    *  @return  S16
+    *      -# ROK
+    */
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgPCqiSrsSrUeDel 
-(
- RgSchCellCb      *cellCb,
- RgSchUeCb        *ueCb
- )
+   PUBLIC S16 rgSCHCfgPCqiSrsSrUeDel 
+      (
+       RgSchCellCb      *cellCb,
+       RgSchUeCb        *ueCb
+      )
 #else
-PUBLIC S16 rgSCHCfgPCqiSrsSrUeDel(cellCb, ueCb)
-   RgSchCellCb    *cellCb;
+      PUBLIC S16 rgSCHCfgPCqiSrsSrUeDel(cellCb, ueCb)
+      RgSchCellCb    *cellCb;
    RgSchUeCb      *ueCb;
 #endif
-{
+   {
 #ifdef LTE_ADV
-   U32 cellIdx;
-   U32 sCellCnt = 0;
+      U32 cellIdx;
+      U32 sCellCnt = 0;
 #endif
-   RgSchUePCqiCb *cqiRiCb = NULLP;
-   TRC3(rgSCHCfgPCqiSrsSrUeDel);
+      RgSchUePCqiCb *cqiRiCb = NULLP;
+      TRC3(rgSCHCfgPCqiSrsSrUeDel);
 
-   cqiRiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
+      cqiRiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
 
 
 
-   /* Delete SRS Transmission Instance  */
-   if (ueCb->srsCb.nSrsTrIdx != RG_SCH_INVALID_IDX)
-   {
-      cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srsCb.nSrsTrIdx].srsLst,
-            &ueCb->srsCb.srsLstEnt); 
-      ueCb->srsCb.nSrsTrIdx = RG_SCH_INVALID_IDX;
-   }
-
-   /* Delete SR Transmission Instance  */
-   if (ueCb->srCb.nSrTrIdx != RG_SCH_INVALID_IDX)
-   {
-      cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srCb.nSrTrIdx].srLst,
-            &ueCb->srCb.srLstEnt); 
-      ueCb->srCb.nSrTrIdx = RG_SCH_INVALID_IDX;
-   }
-
-   /* Delete Periodic CQI/PMI  Transmission Instance  */
-   if (cqiRiCb->nCqiTrIdx != RG_SCH_INVALID_IDX)
-   {
-      cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiRiCb->nCqiTrIdx].cqiLst, 
-            &cqiRiCb->cqiLstEnt); 
-      cqiRiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
-
-      /* Delete Periodic  RI  Transmission Instance  */
-
-      if (cqiRiCb->nRiTrIdx != RG_SCH_INVALID_IDX)
+      /* Delete SRS Transmission Instance  */
+      if (ueCb->srsCb.nSrsTrIdx != RG_SCH_INVALID_IDX)
       {
-         cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst, 
-               &cqiRiCb->riLstEnt); 
-         RG_SCH_RECORD(&cqiRiCb->histElem,RGSCH_ACTION_DEL,
-            &cellCb->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst);
-         cqiRiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
+	 cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srsCb.nSrsTrIdx].srsLst,
+	       &ueCb->srsCb.srsLstEnt); 
+	 ueCb->srsCb.nSrsTrIdx = RG_SCH_INVALID_IDX;
       }
-   }
+
+      /* Delete SR Transmission Instance  */
+      if (ueCb->srCb.nSrTrIdx != RG_SCH_INVALID_IDX)
+      {
+	 cmLListDelFrm(&cellCb->pCqiSrsSrLst[ueCb->srCb.nSrTrIdx].srLst,
+	       &ueCb->srCb.srLstEnt); 
+	 ueCb->srCb.nSrTrIdx = RG_SCH_INVALID_IDX;
+      }
+
+      /* Delete Periodic CQI/PMI  Transmission Instance  */
+      if (cqiRiCb->nCqiTrIdx != RG_SCH_INVALID_IDX)
+      {
+	 cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiRiCb->nCqiTrIdx].cqiLst, 
+	       &cqiRiCb->cqiLstEnt); 
+	 cqiRiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
+
+	 /* Delete Periodic  RI  Transmission Instance  */
+
+	 if (cqiRiCb->nRiTrIdx != RG_SCH_INVALID_IDX)
+	 {
+	    cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst, 
+		  &cqiRiCb->riLstEnt); 
+	    RG_SCH_RECORD(&cqiRiCb->histElem,RGSCH_ACTION_DEL,
+		  &cellCb->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst);
+	    cqiRiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
+	 }
+      }
 
 #ifdef LTE_ADV
-   for (cellIdx =1; cellIdx <= RG_SCH_MAX_SCELL; cellIdx++)
-   {
-      /* If a serving cell is configured */
-      if(ueCb->cellInfo[cellIdx] != NULLP)
+      for (cellIdx =1; cellIdx <= RG_SCH_MAX_SCELL; cellIdx++)
       {
-         /* If the serving cell is in ACTIVE state and 
-            If it is not the same serving cell as cqiRiCb for which 
-            collision is being checked */
-         cqiRiCb = &ueCb->cellInfo[cellIdx]->cqiCb;
-         /* Delete Periodic CQI/PMI  Transmission Instance  */
-         if (cqiRiCb->nCqiTrIdx != RG_SCH_INVALID_IDX)
-         {
-            cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiRiCb->nCqiTrIdx].cqiLst, 
-                  &cqiRiCb->cqiLstEnt); 
-            cqiRiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
+	 /* If a serving cell is configured */
+	 if(ueCb->cellInfo[cellIdx] != NULLP)
+	 {
+	    /* If the serving cell is in ACTIVE state and 
+	       If it is not the same serving cell as cqiRiCb for which 
+	       collision is being checked */
+	    cqiRiCb = &ueCb->cellInfo[cellIdx]->cqiCb;
+	    /* Delete Periodic CQI/PMI  Transmission Instance  */
+	    if (cqiRiCb->nCqiTrIdx != RG_SCH_INVALID_IDX)
+	    {
+	       cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiRiCb->nCqiTrIdx].cqiLst, 
+		     &cqiRiCb->cqiLstEnt); 
+	       cqiRiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
 
-            /* Delete Periodic  RI  Transmission Instance  */
+	       /* Delete Periodic  RI  Transmission Instance  */
 
-            if (cqiRiCb->nRiTrIdx != RG_SCH_INVALID_IDX)
-            {
-               cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst, 
-                     &cqiRiCb->riLstEnt); 
-               RG_SCH_RECORD(&cqiRiCb->histElem,RGSCH_ACTION_DEL,
-                  &cellCb->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst);
-               cqiRiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
-            }
-         }
-         sCellCnt++;
-         /* If all of the num of configured scells are checked then break */
-         if (sCellCnt == ueCb->numSCells)
-         {
-            break;
-         }   
+	       if (cqiRiCb->nRiTrIdx != RG_SCH_INVALID_IDX)
+	       {
+		  cmLListDelFrm(&cellCb->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst, 
+			&cqiRiCb->riLstEnt); 
+		  RG_SCH_RECORD(&cqiRiCb->histElem,RGSCH_ACTION_DEL,
+			&cellCb->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst);
+		  cqiRiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
+	       }
+	    }
+	    sCellCnt++;
+	    /* If all of the num of configured scells are checked then break */
+	    if (sCellCnt == ueCb->numSCells)
+	    {
+	       break;
+	    }   
+	 }
       }
-   }
 #endif
 
-   RETVALUE(ROK);
-}
+      RETVALUE(ROK);
+   }
 
 
-/* @brief Search the cfgIdx in given table and retrive periodicity & offset
- * @details
- *
- *     Function : rgSCHUtlGetCfgPerOff 
- *
- *     Invoking Module Processing:
- *      - This shall be invoked by Cfg Module 
- *
- *     Processing Steps:
- *          binary search for given entry in table
- *          find the periodicty, offset for a given config index from the table
- *      - Return ROK
- *  @param[in]  RgSchPerTbl tbl
- *  @param[in]  U16      cfgIdx
- *  @param[out] U16     *peri 
- *  @param[out] U16     *offset 
- *
- *  @return  S16
- *      -# ROK
- *
- */
+   /* @brief Search the cfgIdx in given table and retrive periodicity & offset
+    * @details
+    *
+    *     Function : rgSCHUtlGetCfgPerOff 
+    *
+    *     Invoking Module Processing:
+    *      - This shall be invoked by Cfg Module 
+    *
+    *     Processing Steps:
+    *          binary search for given entry in table
+    *          find the periodicty, offset for a given config index from the table
+    *      - Return ROK
+    *  @param[in]  RgSchPerTbl tbl
+    *  @param[in]  U16      cfgIdx
+    *  @param[out] U16     *peri 
+    *  @param[out] U16     *offset 
+    *
+    *  @return  S16
+    *      -# ROK
+    *
+    */
 #ifdef ANSI
-PUBLIC S16 rgSCHUtlGetCfgPerOff
-(
- RgSchPerTbl     tbl,
- U16             cfgIdx, 
- U16             *peri, 
- U16             *offset
- )
+   PUBLIC S16 rgSCHUtlGetCfgPerOff
+      (
+       RgSchPerTbl     tbl,
+       U16             cfgIdx, 
+       U16             *peri, 
+       U16             *offset
+      )
 #else
-PUBLIC S16 rgSCHUtlGetCfgPerOff ( tbl, cfgIdx, peri, offset)
-   RgSchPerTbl   tbl;
+      PUBLIC S16 rgSCHUtlGetCfgPerOff ( tbl, cfgIdx, peri, offset)
+      RgSchPerTbl   tbl;
    U16           cfgIdx;
    U16           *peri; 
    U16           *offset;
 #endif
-{
-   U8     mid;
-   U8     min = 0;
-   U8     max = 0;
-   CONSTANT RgSchUePCqiSrsSrCfgIdxTbl* table;
-   TRC3(rgSCHUtlGetCfgPerOff);
-  
-   /* Added the function instead of the MACRO to get the 
-    * periodicity table */
-   table = rgSCHCfgUtlGetPcqiSrsSrRiTbl ( tbl,&min,&max );
-   do{
-      mid = (min+max)/2;
-      if (( cfgIdx >= table[mid].min) &&
-            ( cfgIdx <= table[mid].max))
-      {
-         *peri = table[mid].peri;
-         *offset = cfgIdx - table[mid].offset;
-         break;
-      } 
-
-      if ( cfgIdx > table[mid].min)
-      {
-         min = mid+1;
-      }
-      else
-      {
-         max = mid-1;
-      }
-
-   }while( min <= max );
-
-   RETVALUE(ROK);
-} 
-
-
-/***********************************************************
- *
- *     Func : rgSCHCfgUtlFetchAcqiBitSz
- *
- *
- *     Desc : Fetch the CQI/PMI bits for a UE based on the mode and store them 
- *                for decoding. 
- *
- *     Ret  : Void
- *            ROK - RETVOID
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgSCHCfgUtlFetchAcqiBitSz
-(
- RgSchUeACqiCb      *acqiCb,
- U8                numTxAnt,
- U8*               cqiPmiSzR1,
- U8*               cqiPmiSzRn1
- )
-#else
-PRIVATE  Void rgSCHCfgUtlFetchAcqiBitSz(acqiCb, numTxAnt, cqiPmiSzR1, cqiPmiSzRn1)
- RgSchUeACqiCb      *acqiCb;
- U8                numTxAnt;
- U8*               cqiPmiSzR1;
- U8*               cqiPmiSzRn1;
-#endif
-{
-
-   U32               confRepMode;
-
-                     
-   TRC3(rgSCHCfgUtlFetchAcqiBitSz);
-
-   confRepMode = acqiCb->aCqiCfg.aprdModeEnum;
-   switch(confRepMode)
    {
-      case RGR_APRD_CQI_MOD12:
-         {
-            if(numTxAnt == 2)
-            {
-               *cqiPmiSzR1 = 4 + 2*acqiCb->N;
-               *cqiPmiSzRn1 = 8+ acqiCb->N;
-            }
-            else if(numTxAnt == 4)
-            {
-               *cqiPmiSzR1 = 4 + 4*acqiCb->N;
-               *cqiPmiSzRn1 = 8 + 4*acqiCb->N;
-            }
-         }
-         break;
+      U8     mid;
+      U8     min = 0;
+      U8     max = 0;
+      CONSTANT RgSchUePCqiSrsSrCfgIdxTbl* table;
+      TRC3(rgSCHUtlGetCfgPerOff);
 
-      case RGR_APRD_CQI_MOD20:
-         {
-            *cqiPmiSzR1 = 6 + acqiCb->L;
-            *cqiPmiSzRn1 = 6  + acqiCb->L;
-         }
-         break;
+      /* Added the function instead of the MACRO to get the 
+       * periodicity table */
+      table = rgSCHCfgUtlGetPcqiSrsSrRiTbl ( tbl,&min,&max );
+      do{
+	 mid = (min+max)/2;
+	 if (( cfgIdx >= table[mid].min) &&
+	       ( cfgIdx <= table[mid].max))
+	 {
+	    *peri = table[mid].peri;
+	    *offset = cfgIdx - table[mid].offset;
+	    break;
+	 } 
 
-      case RGR_APRD_CQI_MOD22:
-         {
-            if(numTxAnt == 2)
-            {
-               *cqiPmiSzR1 = 10 + acqiCb->L;
-               *cqiPmiSzRn1 = 14 + acqiCb->L;
-            }
-            else if(numTxAnt == 4)
-            {
-               *cqiPmiSzR1 = 14 + acqiCb->L;
-               *cqiPmiSzRn1 = 20 + acqiCb->L;
-            }
-         }
-         break;
+	 if ( cfgIdx > table[mid].min)
+	 {
+	    min = mid+1;
+	 }
+	 else
+	 {
+	    max = mid-1;
+	 }
 
-      case RGR_APRD_CQI_MOD30:
-         {
-            *cqiPmiSzR1 = 4 + 2*acqiCb->N;
-            *cqiPmiSzRn1 = 4 + 2*acqiCb->N;
-         }
-         break;
+      }while( min <= max );
 
-      case RGR_APRD_CQI_MOD31:
-         {
-            if(numTxAnt == 2)
-            {
-               *cqiPmiSzR1 = 6 + 2*acqiCb->N;
-               *cqiPmiSzRn1 = 9 + 4*acqiCb->N;
-            }
-            else if(numTxAnt == 4)
-            {
-               *cqiPmiSzR1 = 8 + 2*acqiCb->N;
-               *cqiPmiSzRn1 = 12 + 4*acqiCb->N;
-            }
-         }
-         break;
-      default:
-         break;
+      RETVALUE(ROK);
+   } 
+
+
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgUtlFetchAcqiBitSz
+    *
+    *
+    *     Desc : Fetch the CQI/PMI bits for a UE based on the mode and store them 
+    *                for decoding. 
+    *
+    *     Ret  : Void
+    *            ROK - RETVOID
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
+#ifdef ANSI
+   PRIVATE Void rgSCHCfgUtlFetchAcqiBitSz
+      (
+       RgSchUeACqiCb      *acqiCb,
+       U8                numTxAnt,
+       U8*               cqiPmiSzR1,
+       U8*               cqiPmiSzRn1
+      )
+#else
+      PRIVATE  Void rgSCHCfgUtlFetchAcqiBitSz(acqiCb, numTxAnt, cqiPmiSzR1, cqiPmiSzRn1)
+      RgSchUeACqiCb      *acqiCb;
+   U8                numTxAnt;
+   U8*               cqiPmiSzR1;
+   U8*               cqiPmiSzRn1;
+#endif
+   {
+
+      U32               confRepMode;
+
+
+      TRC3(rgSCHCfgUtlFetchAcqiBitSz);
+
+      confRepMode = acqiCb->aCqiCfg.aprdModeEnum;
+      switch(confRepMode)
+      {
+	 case RGR_APRD_CQI_MOD12:
+	    {
+	       if(numTxAnt == 2)
+	       {
+		  *cqiPmiSzR1 = 4 + 2*acqiCb->N;
+		  *cqiPmiSzRn1 = 8+ acqiCb->N;
+	       }
+	       else if(numTxAnt == 4)
+	       {
+		  *cqiPmiSzR1 = 4 + 4*acqiCb->N;
+		  *cqiPmiSzRn1 = 8 + 4*acqiCb->N;
+	       }
+	    }
+	    break;
+
+	 case RGR_APRD_CQI_MOD20:
+	    {
+	       *cqiPmiSzR1 = 6 + acqiCb->L;
+	       *cqiPmiSzRn1 = 6  + acqiCb->L;
+	    }
+	    break;
+
+	 case RGR_APRD_CQI_MOD22:
+	    {
+	       if(numTxAnt == 2)
+	       {
+		  *cqiPmiSzR1 = 10 + acqiCb->L;
+		  *cqiPmiSzRn1 = 14 + acqiCb->L;
+	       }
+	       else if(numTxAnt == 4)
+	       {
+		  *cqiPmiSzR1 = 14 + acqiCb->L;
+		  *cqiPmiSzRn1 = 20 + acqiCb->L;
+	       }
+	    }
+	    break;
+
+	 case RGR_APRD_CQI_MOD30:
+	    {
+	       *cqiPmiSzR1 = 4 + 2*acqiCb->N;
+	       *cqiPmiSzRn1 = 4 + 2*acqiCb->N;
+	    }
+	    break;
+
+	 case RGR_APRD_CQI_MOD31:
+	    {
+	       if(numTxAnt == 2)
+	       {
+		  *cqiPmiSzR1 = 6 + 2*acqiCb->N;
+		  *cqiPmiSzRn1 = 9 + 4*acqiCb->N;
+	       }
+	       else if(numTxAnt == 4)
+	       {
+		  *cqiPmiSzR1 = 8 + 2*acqiCb->N;
+		  *cqiPmiSzRn1 = 12 + 4*acqiCb->N;
+	       }
+	    }
+	    break;
+	 default:
+	    break;
+      }
+      RETVOID;
    }
-   RETVOID;
-}
-/* Added the function rgSCHCfgUtlGetPcqiCrsSrRiTbl to be used
- * instead of the MACRO RG_SCH_GET_PERIODICITY_TBL */
-/***********************************************************
- *
- *     Func : rgSCHCfgUtlGetPcqiCrsSrRiTbl
- *
- *
- *     Desc :  Get the Srs Cqi Crs Ri Table 
- *
- *     Ret  : Void
- *            ROK - RETVOID
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
+   /* Added the function rgSCHCfgUtlGetPcqiCrsSrRiTbl to be used
+    * instead of the MACRO RG_SCH_GET_PERIODICITY_TBL */
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgUtlGetPcqiCrsSrRiTbl
+    *
+    *
+    *     Desc :  Get the Srs Cqi Crs Ri Table 
+    *
+    *     Ret  : Void
+    *            ROK - RETVOID
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
 
 #ifdef ANSI
-PRIVATE CONSTANT RgSchUePCqiSrsSrCfgIdxTbl *  rgSCHCfgUtlGetPcqiSrsSrRiTbl
-(
-   RgSchPerTbl tblType, 
-   U8* min, 
-   U8* max
-)
+   PRIVATE CONSTANT RgSchUePCqiSrsSrCfgIdxTbl *  rgSCHCfgUtlGetPcqiSrsSrRiTbl
+      (
+       RgSchPerTbl tblType, 
+       U8* min, 
+       U8* max
+      )
 #else
-PRIVATE CONSTANT RgSchUePCqiSrsSrCfgIdxTbl *  rgSCHCfgUtlGetPcqiSrsSrRiTbl(tblType, min, max)
-   RgSchPerTbl tblType; 
+      PRIVATE CONSTANT RgSchUePCqiSrsSrCfgIdxTbl *  rgSCHCfgUtlGetPcqiSrsSrRiTbl(tblType, min, max)
+      RgSchPerTbl tblType; 
    U8* min; 
    U8* max;
 #endif
-{
-    CONSTANT RgSchUePCqiSrsSrCfgIdxTbl * table;
-    TRC3(rgSCHCfgUtlGetPcqiCrsSrRiTbl);
-    
-    switch (tblType)
-    {
+   {
+      CONSTANT RgSchUePCqiSrsSrCfgIdxTbl * table;
+      TRC3(rgSCHCfgUtlGetPcqiCrsSrRiTbl);
 
-        case RG_SCH_FDD_PCQI_TBL:
-        {
-            table = rgSchUePCqiCfgIdxFddTbl;
-            * min = 0;
-            * max=RG_SCH_CQIPMI_CFGIDX_MAX_FDD;
-            break;
-        }
-        case RG_SCH_TDD_PCQI_TBL:
-        {
-            table = rgSchUeCqiPmiCfgIdxTddTbl;
-            * min = 0;
-            * max=RG_SCH_CQIPMI_CFGIDX_MAX_TDD;
-            break;
-        }
-        case RG_SCH_RI_TBL:
-        {
-            table = rgSchUeRiCfgIdxTbl;
-            * min = 0;
-            * max=RG_SCH_RI_CFGIDX_MAX;
-            break;
-        }
-        case RG_SCH_FDD_SRS_TBL:
-        {
-            table = rgSchUeSrsCfgIdxFddTbl;
-            * min = 0;
-            * max=RG_SCH_SRS_ISRS_INDX_MAX_FDD;
-            break;
-        }
-        case RG_SCH_TDD_SRS_TBL:
-        {
-            table = rgSchUeSrsCfgIdxTddTbl;
-            * min = 0;
-            * max=RG_SCH_SRS_ISRS_INDX_MAX_TDD;
-            break;
-        }
-        case RG_SCH_SR_TBL:
-        {
-            table = rgSchUeSrCfgIdxTbl;
-            * min = 0;
-            * max=RG_SCH_ISR_INDX_MAX;
-            break;
-        }
-        default:
-        {
-            table = (CONSTANT RgSchUePCqiSrsSrCfgIdxTbl *) 0;
-            * min = 0;
-            * max = 0;
-            break;
-        }
+      switch (tblType)
+      {
 
-    }
-    RETVALUE ( table );
-}
-/* #endif */
+	 case RG_SCH_FDD_PCQI_TBL:
+	    {
+	       table = rgSchUePCqiCfgIdxFddTbl;
+	       * min = 0;
+	       * max=RG_SCH_CQIPMI_CFGIDX_MAX_FDD;
+	       break;
+	    }
+	 case RG_SCH_TDD_PCQI_TBL:
+	    {
+	       table = rgSchUeCqiPmiCfgIdxTddTbl;
+	       * min = 0;
+	       * max=RG_SCH_CQIPMI_CFGIDX_MAX_TDD;
+	       break;
+	    }
+	 case RG_SCH_RI_TBL:
+	    {
+	       table = rgSchUeRiCfgIdxTbl;
+	       * min = 0;
+	       * max=RG_SCH_RI_CFGIDX_MAX;
+	       break;
+	    }
+	 case RG_SCH_FDD_SRS_TBL:
+	    {
+	       table = rgSchUeSrsCfgIdxFddTbl;
+	       * min = 0;
+	       * max=RG_SCH_SRS_ISRS_INDX_MAX_FDD;
+	       break;
+	    }
+	 case RG_SCH_TDD_SRS_TBL:
+	    {
+	       table = rgSchUeSrsCfgIdxTddTbl;
+	       * min = 0;
+	       * max=RG_SCH_SRS_ISRS_INDX_MAX_TDD;
+	       break;
+	    }
+	 case RG_SCH_SR_TBL:
+	    {
+	       table = rgSchUeSrCfgIdxTbl;
+	       * min = 0;
+	       * max=RG_SCH_ISR_INDX_MAX;
+	       break;
+	    }
+	 default:
+	    {
+	       table = (CONSTANT RgSchUePCqiSrsSrCfgIdxTbl *) 0;
+	       * min = 0;
+	       * max = 0;
+	       break;
+	    }
+
+      }
+      RETVALUE ( table );
+   }
+   /* #endif */
 #endif /* TFU_UPGRADE */
 
-/***********************************************************
- *
- *     Func : rgSCHCfgVldtDrxUeCfg
- *
- *
- *     Desc : Validates UE DRX Timers Configuration recieved from RRC.
- *
- *     Ret  : S16
- *            ROK - Success
- *            RFAILED - Failed
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgVldtDrxUeCfg
+    *
+    *
+    *     Desc : Validates UE DRX Timers Configuration recieved from RRC.
+    *
+    *     Ret  : S16
+    *            ROK - Success
+    *            RFAILED - Failed
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtDrxUeCfg
-(
-RgSchCellCb       *cell,
-RgrUeDrxCfg       *ueDrxCfg
-)
+   PRIVATE S16 rgSCHCfgVldtDrxUeCfg
+      (
+       RgSchCellCb       *cell,
+       RgrUeDrxCfg       *ueDrxCfg
+      )
 #else
-PRIVATE S16 rgSCHCfgVldtDrxUeCfg(cell, ueDrxCfg)
-RgSchCellCb       *cell;
-RgrUeDrxCfg       *ueDrxCfg;
+      PRIVATE S16 rgSCHCfgVldtDrxUeCfg(cell, ueDrxCfg)
+      RgSchCellCb       *cell;
+   RgrUeDrxCfg       *ueDrxCfg;
 #endif
-{
-   TRC2(rgSCHCfgVldtDrxUeCfg)
-
-
-   if (ueDrxCfg->isDrxEnabled == FALSE)
    {
+      TRC2(rgSCHCfgVldtDrxUeCfg)
+
+
+	 if (ueDrxCfg->isDrxEnabled == FALSE)
+	 {
+	    RETVALUE(ROK);
+	 }
+
+#ifdef LTEMAC_R9
+      if ( ueDrxCfg->cqiMask.pres )
+      {
+	 if ( ueDrxCfg->cqiMask.val != RGR_DRX_SETUP )
+	 {
+#ifdef ALIGN_64BIT
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid cqiMask configuration (%d)",
+		  ueDrxCfg->cqiMask.val);
+#else
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid cqiMask configuration(%ld)",
+		  ueDrxCfg->cqiMask.val);
+#endif
+	    RETVALUE(RFAILED);
+	 }
+      }
+#endif /*LTEMAC_R9*/
+#ifdef EMTC_ENABLE
+      if(ueDrxCfg->isEmtcUe)
+      {
+	 if(ueDrxCfg->drxOnDurTmrR13Pres)
+	 {
+	    if ( rgSCHEmtcCfgVldtDrxOnDurCfg(ueDrxCfg->drxOnDurTmr) != ROK )
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid onDurTimer configuration(%d)",
+		     ueDrxCfg->drxOnDurTmr);
+	       RETVALUE(RFAILED);
+	    }
+	 }
+	 else
+	 {
+	    if (rgSCHCfgVldtDrxOnDurCfg(ueDrxCfg->drxOnDurTmr) != ROK )
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid onDurTimer configuration(%d) for EMTC",
+		     ueDrxCfg->drxOnDurTmr);
+	       RETVALUE(RFAILED);
+	    }
+
+	 }
+      }
+      else
+#endif
+      {
+	 if ( rgSCHCfgVldtDrxOnDurCfg(ueDrxCfg->drxOnDurTmr) != ROK )
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid onDurTimer configuration(%d) for EMTC",
+		  ueDrxCfg->drxOnDurTmr);
+	    RETVALUE(RFAILED);
+	 }
+      }
+
+      if ( rgSCHCfgVldtDrxInActvCfg(ueDrxCfg->drxInactvTmr) != ROK )
+      {
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid Inactivity configuration(%d)",
+	       ueDrxCfg->drxInactvTmr);
+	 RETVALUE(RFAILED);
+      }
+#ifdef EMTC_ENABLE
+      if(ueDrxCfg->isEmtcUe)
+      {
+	 if(ueDrxCfg->drxRetxTmrR13Pres)
+	 {
+	    if ( rgSCHEmtcCfgVldtDrxReTxCfg(ueDrxCfg->drxRetxTmr) != ROK )
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid DrxReTX configuration(%d) for EMTC",
+		     ueDrxCfg->drxRetxTmr);
+	       RETVALUE(RFAILED);
+	    }
+	 }
+	 else
+	 {
+	    if (rgSCHCfgVldtDrxReTxCfg(ueDrxCfg->drxRetxTmr) != ROK )
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid DrxReTX configuration(%d)",
+		     ueDrxCfg->drxRetxTmr);
+	       RETVALUE(RFAILED);
+	    }
+
+	 }
+      }
+      else
+#endif
+      {
+	 if ( rgSCHCfgVldtDrxReTxCfg(ueDrxCfg->drxRetxTmr) != ROK )
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid DrxReTX configuration(%d)",
+		  ueDrxCfg->drxRetxTmr);
+	    RETVALUE(RFAILED);
+	 }
+      }
+#ifdef EMTC_ENABLE
+      if(ueDrxCfg->isEmtcUe)
+      {
+	 if ( rgSCHEmtcCfgVldtDrxUlReTxCfg(ueDrxCfg->emtcDrxUlRetxTmr) != ROK )
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid DrxReTX configuration(%d) for EMTC",
+		  ueDrxCfg->drxRetxTmr);
+	    RETVALUE(RFAILED);
+	 }
+
+      }
+#endif
+
+      if ( rgSCHCfgVldtDrxLngCycCfg(ueDrxCfg->drxLongCycleOffst) != ROK )
+      {
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid LongCycle configuration");
+	 RETVALUE(RFAILED);
+      }
+
+      if ( ueDrxCfg->drxLongCycleOffst.longDrxCycle < ueDrxCfg->drxOnDurTmr ) 
+      {
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid combination of Long DRX Cycle " 
+	       " and onDuration timer values");
+	 RETVALUE(RFAILED);
+      }
+
+#ifdef LTE_TDD
+      if( rgSCHCfgVldtTddDrxCycCfg(cell, ueDrxCfg->drxLongCycleOffst.longDrxCycle, 
+	       ueDrxCfg->drxOnDurTmr, ueDrxCfg->drxLongCycleOffst.drxStartOffst) != ROK)
+      {
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid combination of Long DRX Cycle " 
+	       " and onDuration timer values");
+	 RETVALUE(RFAILED);
+      }
+#endif
+
+      if( TRUE == ueDrxCfg->drxShortDrx.pres )
+      { 
+	 if ( ueDrxCfg->drxShortDrx.shortDrxCycle < ueDrxCfg->drxOnDurTmr )
+	 {
+	    RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid combination of short DRX "
+		  "Cycle and onDuration timer values");
+	    RETVALUE(RFAILED);
+	 }
+
+	 if ( (ueDrxCfg->drxLongCycleOffst.longDrxCycle %
+		  ueDrxCfg->drxShortDrx.shortDrxCycle) != 0)
+	 {
+	    RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId," Long DRX cycle is not multiple of "
+		  "short DRX cycle");
+	    RETVALUE(RFAILED);
+	 }
+
+	 if ( rgSCHCfgVldtDrxShrtCycCfg(ueDrxCfg->drxShortDrx) != ROK )
+	 {
+	    RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid Short Cycle configuration");
+	    RETVALUE(RFAILED);
+	 }
+
+#ifdef LTE_TDD
+	 if( rgSCHCfgVldtTddDrxCycCfg(cell, ueDrxCfg->drxShortDrx.shortDrxCycle, 
+		  ueDrxCfg->drxOnDurTmr, 
+		  ueDrxCfg->drxLongCycleOffst.drxStartOffst % 
+		  ueDrxCfg->drxShortDrx.shortDrxCycle) != ROK)
+	 { 
+	    RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid combination of Long DRX Cycle " 
+		  " and onDuration timer values");
+	    RETVALUE(RFAILED);
+	 }
+#endif
+      }
+
+      RETVALUE(ROK);
+   }/*rgSCHCfgVldtDrxUeCfg*/
+
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgVldtDrxOnDurCfg
+    *
+    *
+    *     Desc : Validates UE DRX On Duration configuration 
+    *            recieved from RRC.
+    *
+    *     Ret  : S16
+    *            ROK - Success
+    *            RFAILED - Failed
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
+#ifdef ANSI
+   PRIVATE S16 rgSCHCfgVldtDrxOnDurCfg
+      (
+       U8      onDurTmr 
+      )
+#else
+      PRIVATE S16 rgSCHCfgVldtDrxOnDurCfg(onDurTmr)
+      U8      onDurTmr;
+#endif
+   {
+      TRC2(rgSCHCfgVldtDrxOnDurCfg)
+
+	 switch ( onDurTmr )
+	 {
+	    case RGR_DRX_PRD_1PSF:
+	    case RGR_DRX_PRD_2PSF:
+	    case RGR_DRX_PRD_3PSF:
+	    case RGR_DRX_PRD_4PSF:
+	    case RGR_DRX_PRD_5PSF:
+	    case RGR_DRX_PRD_6PSF:
+	    case RGR_DRX_PRD_8PSF:
+	    case RGR_DRX_PRD_10PSF:
+	    case RGR_DRX_PRD_20PSF:
+	    case RGR_DRX_PRD_30PSF:
+	    case RGR_DRX_PRD_40PSF:
+	    case RGR_DRX_PRD_50PSF:
+	    case RGR_DRX_PRD_60PSF:
+	    case RGR_DRX_PRD_80PSF:
+	    case RGR_DRX_PRD_100PSF:
+	    case RGR_DRX_PRD_200PSF:
+	       break;
+
+	    default:
+	       {
+		  RETVALUE(RFAILED);
+	       }
+	 }/*switch(onDurTmr)*/
+
+      RETVALUE(ROK);
+   }/*rgSCHCfgVldtOnDurCfg*/
+
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgVldtDrxInActvCfg
+    *
+    *
+    *     Desc : Validates UE DRX InActivity configuration 
+    *            recieved from RRC.
+    *
+    *     Ret  : S16
+    *            ROK - Success
+    *            RFAILED - Failed
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
+#ifdef ANSI
+   PRIVATE S16 rgSCHCfgVldtDrxInActvCfg
+      (
+       U16      inActvTmr
+      )
+#else
+      PRIVATE S16 rgSCHCfgVldtDrxInActvCfg(inActvTmr)
+      U16      inActvTmr;
+#endif
+   {
+      TRC2(rgSCHCfgVldtDrxInActvCfg)
+
+	 switch ( inActvTmr )
+	 {
+	    case RGR_DRX_PRD_1PSF:
+	    case RGR_DRX_PRD_2PSF:
+	    case RGR_DRX_PRD_3PSF:
+	    case RGR_DRX_PRD_4PSF:
+	    case RGR_DRX_PRD_5PSF:
+	    case RGR_DRX_PRD_6PSF:
+	    case RGR_DRX_PRD_8PSF:
+	    case RGR_DRX_PRD_10PSF:
+	    case RGR_DRX_PRD_20PSF:
+	    case RGR_DRX_PRD_30PSF:
+	    case RGR_DRX_PRD_40PSF:
+	    case RGR_DRX_PRD_50PSF:
+	    case RGR_DRX_PRD_60PSF:
+	    case RGR_DRX_PRD_80PSF:
+	    case RGR_DRX_PRD_100PSF:
+	    case RGR_DRX_PRD_200PSF:
+	    case RGR_DRX_PRD_300PSF:
+	    case RGR_DRX_PRD_500PSF:
+	    case RGR_DRX_PRD_750PSF:
+	    case RGR_DRX_PRD_1280PSF:
+	    case RGR_DRX_PRD_1920PSF:
+	    case RGR_DRX_PRD_2560PSF:
+	       break;
+
+	    default:
+	       {
+		  RETVALUE(RFAILED);
+	       }
+	 }/*switch(InactvTmr)*/
+
+      RETVALUE(ROK);
+   }/*rgSCHCfgVldtDrxInActvCfg*/
+
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgVldtDrxReTxCfg
+    *
+    *
+    *     Desc : Validates DRX ReTx timer  configuration 
+    *            recieved from RRC.
+    *
+    *     Ret  : S16
+    *            ROK - Success
+    *            RFAILED - Failed
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
+#ifdef ANSI
+   PRIVATE S16 rgSCHCfgVldtDrxReTxCfg
+      (
+       U8       reTxTmr
+      )
+#else
+      PRIVATE S16 rgSCHCfgVldtDrxReTxCfg(reTxTmr)
+      U8       reTxTmr;
+#endif
+   {
+      TRC2(rgSCHCfgVldtDrxReTxCfg)
+
+	 switch ( reTxTmr )
+	 {
+	    case RGR_DRX_PRD_1PSF:
+	    case RGR_DRX_PRD_2PSF:
+	    case RGR_DRX_PRD_4PSF:
+	    case RGR_DRX_PRD_6PSF:
+	    case RGR_DRX_PRD_8PSF:
+	    case RGR_DRX_PRD_16PSF:
+	    case RGR_DRX_PRD_24PSF:
+	    case RGR_DRX_PRD_33PSF:
+	       break;
+
+	    default:
+	       {
+		  RETVALUE(RFAILED);
+	       }
+	 }/*switch(drxRetxTmr)*/
+
+      RETVALUE(ROK);
+   }/*rgSCHCfgVldtDrxReTxCfg*/
+
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgVldtDrxShrtCycCfg
+    *
+    *
+    *     Desc : Validates DRX Short Cycle timer  configuration 
+    *            recieved from RRC.
+    *
+    *     Ret  : S16
+    *            ROK - Success
+    *
+    *            RFAILED - Failed
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
+#ifdef ANSI
+   PRIVATE S16 rgSCHCfgVldtDrxLngCycCfg
+      (
+       RgrDrxLongCycleOffst       lngCycleOffst
+      )
+#else
+      PRIVATE S16 rgSCHCfgVldtDrxLngCycCfg(lngCycleOffst)
+      RgrDrxLongCycleOffst       lngCycleOffst;
+#endif
+   {
+      TRC2(rgSCHCfgVldtDrxLngCycCfg)
+
+	 if ( rgSCHCfgVldtDrxLngCyclTmrs(lngCycleOffst.longDrxCycle) != ROK )
+	 {
+	    RETVALUE(RFAILED);
+	 }
+
+      if ( lngCycleOffst.drxStartOffst >= lngCycleOffst.longDrxCycle ) 
+      {
+	 RETVALUE(RFAILED);  
+      }
+
+      RETVALUE(ROK);
+   }/*rgSCHCfgVldtDrxLngCycCfg*/
+
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgVldtDrxLngCyclTmrs
+    *
+    *
+    *     Desc : Validates DRX Long Cycle timer values 
+    *            recieved from RRC.
+    *
+    *     Ret  : S16
+    *            ROK - Success
+    *
+    *            RFAILED - Failed
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
+#ifdef ANSI
+   PRIVATE S16 rgSCHCfgVldtDrxLngCyclTmrs
+      (
+       U16      val 
+      )
+#else
+      PRIVATE S16 rgSCHCfgVldtDrxLngCyclTmrs(val)
+      U16      val;
+#endif
+   {
+      TRC2(rgSCHCfgVldtDrxLngCyclTmrs)
+
+	 switch ( val )
+	 {
+	    case RGR_DRX_PRD_10SF:
+	    case RGR_DRX_PRD_20SF:
+	    case RGR_DRX_PRD_32SF:
+	    case RGR_DRX_PRD_40SF:
+	    case RGR_DRX_PRD_64SF:
+	    case RGR_DRX_PRD_80SF:
+	    case RGR_DRX_PRD_128SF:
+	    case RGR_DRX_PRD_160SF:
+	    case RGR_DRX_PRD_256SF:
+	    case RGR_DRX_PRD_320SF:
+	    case RGR_DRX_PRD_512SF:
+	    case RGR_DRX_PRD_640SF:
+	    case RGR_DRX_PRD_1024SF:
+	    case RGR_DRX_PRD_1280SF:
+	    case RGR_DRX_PRD_2048SF:
+	    case RGR_DRX_PRD_2560SF:
+	       break;
+
+	    default:
+	       {
+		  RETVALUE(RFAILED);
+	       }
+	 }/*switch(longDrxCycle)*/
+
+      RETVALUE(ROK);
+   }/*rgSCHCfgVldtDrxLngCyclTmrs*/
+
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgVldtDrxShrtCycCfg
+    *
+    *
+    *     Desc : Validates DRX Short Cycle timer  configuration 
+    *            recieved from RRC.
+    *
+    *     Ret  : S16
+    *            ROK - Success
+    *
+    *            RFAILED - Failed
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
+#ifdef ANSI
+   PRIVATE S16 rgSCHCfgVldtDrxShrtCycCfg
+      (
+       RgrDrxShortDrx      shrtCycCfg 
+      )
+#else
+      PRIVATE S16 rgSCHCfgVldtDrxShrtCycCfg(shrtCycCfg)
+      RgrDrxShortDrx      shrtCycCfg;
+#endif
+   {
+      TRC2(rgSCHCfgVldtDrxShrtCycCfg)
+
+	 switch(shrtCycCfg.shortDrxCycle)
+	 {
+	    case RGR_DRX_PRD_2SF:
+	    case RGR_DRX_PRD_5SF:
+	    case RGR_DRX_PRD_8SF:
+	    case RGR_DRX_PRD_10SF:
+	    case RGR_DRX_PRD_16SF:
+	    case RGR_DRX_PRD_20SF:
+	    case RGR_DRX_PRD_32SF:
+	    case RGR_DRX_PRD_40SF:
+	    case RGR_DRX_PRD_64SF:
+	    case RGR_DRX_PRD_80SF:
+	    case RGR_DRX_PRD_128SF:
+	    case RGR_DRX_PRD_160SF:
+	    case RGR_DRX_PRD_256SF:
+	    case RGR_DRX_PRD_320SF:
+	    case RGR_DRX_PRD_640SF:
+	       break;
+
+	    default:
+	       {
+		  RETVALUE(RFAILED);
+	       }
+
+	 }/*switch(shortDrxCycle)*/
+
+      if ( (shrtCycCfg.drxShortCycleTmr < RGR_DRX_SHRTCYCLE_MIN) ||
+	    (shrtCycCfg.drxShortCycleTmr > RGR_DRX_SHRTCYCLE_MAX)
+	 )
+      {
+	 RETVALUE(RFAILED);
+      }
+
       RETVALUE(ROK);
    }
 
-#ifdef LTEMAC_R9
-   if ( ueDrxCfg->cqiMask.pres )
-   {
-      if ( ueDrxCfg->cqiMask.val != RGR_DRX_SETUP )
-      {
-#ifdef ALIGN_64BIT
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid cqiMask configuration (%d)",
-                  ueDrxCfg->cqiMask.val);
-#else
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid cqiMask configuration(%ld)",
-                  ueDrxCfg->cqiMask.val);
-#endif
-         RETVALUE(RFAILED);
-      }
-   }
-#endif /*LTEMAC_R9*/
-#ifdef EMTC_ENABLE
-   if(ueDrxCfg->isEmtcUe)
-   {
-      if(ueDrxCfg->drxOnDurTmrR13Pres)
-      {
-         if ( rgSCHEmtcCfgVldtDrxOnDurCfg(ueDrxCfg->drxOnDurTmr) != ROK )
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid onDurTimer configuration(%d)",
-               ueDrxCfg->drxOnDurTmr);
-            RETVALUE(RFAILED);
-         }
-       }
-         else
-         {
-            if (rgSCHCfgVldtDrxOnDurCfg(ueDrxCfg->drxOnDurTmr) != ROK )
-            {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid onDurTimer configuration(%d) for EMTC",
-               ueDrxCfg->drxOnDurTmr);
-               RETVALUE(RFAILED);
-            }
-
-         }
-    }
-   else
-#endif
-   {
-      if ( rgSCHCfgVldtDrxOnDurCfg(ueDrxCfg->drxOnDurTmr) != ROK )
-      {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid onDurTimer configuration(%d) for EMTC",
-               ueDrxCfg->drxOnDurTmr);
-         RETVALUE(RFAILED);
-      }
-   }
-
-   if ( rgSCHCfgVldtDrxInActvCfg(ueDrxCfg->drxInactvTmr) != ROK )
-   {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid Inactivity configuration(%d)",
-               ueDrxCfg->drxInactvTmr);
-      RETVALUE(RFAILED);
-   }
-#ifdef EMTC_ENABLE
-   if(ueDrxCfg->isEmtcUe)
-   {
-      if(ueDrxCfg->drxRetxTmrR13Pres)
-      {
-         if ( rgSCHEmtcCfgVldtDrxReTxCfg(ueDrxCfg->drxRetxTmr) != ROK )
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid DrxReTX configuration(%d) for EMTC",
-               ueDrxCfg->drxRetxTmr);
-            RETVALUE(RFAILED);
-         }
-      }
-         else
-         {
-            if (rgSCHCfgVldtDrxReTxCfg(ueDrxCfg->drxRetxTmr) != ROK )
-            {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid DrxReTX configuration(%d)",
-               ueDrxCfg->drxRetxTmr);
-               RETVALUE(RFAILED);
-            }
-
-         }
-    }
-   else
-#endif
-   {
-      if ( rgSCHCfgVldtDrxReTxCfg(ueDrxCfg->drxRetxTmr) != ROK )
-      {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid DrxReTX configuration(%d)",
-               ueDrxCfg->drxRetxTmr);
-         RETVALUE(RFAILED);
-      }
-   }
-#ifdef EMTC_ENABLE
-   if(ueDrxCfg->isEmtcUe)
-   {
-      if ( rgSCHEmtcCfgVldtDrxUlReTxCfg(ueDrxCfg->emtcDrxUlRetxTmr) != ROK )
-      {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid DrxReTX configuration(%d) for EMTC",
-               ueDrxCfg->drxRetxTmr);
-         RETVALUE(RFAILED);
-      }
-
-   }
-#endif
-
-   if ( rgSCHCfgVldtDrxLngCycCfg(ueDrxCfg->drxLongCycleOffst) != ROK )
-   {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid LongCycle configuration");
-      RETVALUE(RFAILED);
-   }
-
-   if ( ueDrxCfg->drxLongCycleOffst.longDrxCycle < ueDrxCfg->drxOnDurTmr ) 
-   {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid combination of Long DRX Cycle " 
-              " and onDuration timer values");
-      RETVALUE(RFAILED);
-   }
-
-#ifdef LTE_TDD
-   if( rgSCHCfgVldtTddDrxCycCfg(cell, ueDrxCfg->drxLongCycleOffst.longDrxCycle, 
-       ueDrxCfg->drxOnDurTmr, ueDrxCfg->drxLongCycleOffst.drxStartOffst) != ROK)
-   {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid combination of Long DRX Cycle " 
-              " and onDuration timer values");
-      RETVALUE(RFAILED);
-   }
-#endif
-  
-   if( TRUE == ueDrxCfg->drxShortDrx.pres )
-   { 
-      if ( ueDrxCfg->drxShortDrx.shortDrxCycle < ueDrxCfg->drxOnDurTmr )
-      {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid combination of short DRX "
-                 "Cycle and onDuration timer values");
-         RETVALUE(RFAILED);
-      }
-
-      if ( (ueDrxCfg->drxLongCycleOffst.longDrxCycle %
-               ueDrxCfg->drxShortDrx.shortDrxCycle) != 0)
-      {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId," Long DRX cycle is not multiple of "
-                 "short DRX cycle");
-         RETVALUE(RFAILED);
-      }
-
-      if ( rgSCHCfgVldtDrxShrtCycCfg(ueDrxCfg->drxShortDrx) != ROK )
-      {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid Short Cycle configuration");
-         RETVALUE(RFAILED);
-      }
-
-#ifdef LTE_TDD
-      if( rgSCHCfgVldtTddDrxCycCfg(cell, ueDrxCfg->drxShortDrx.shortDrxCycle, 
-             ueDrxCfg->drxOnDurTmr, 
-             ueDrxCfg->drxLongCycleOffst.drxStartOffst % 
-             ueDrxCfg->drxShortDrx.shortDrxCycle) != ROK)
-      { 
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid combination of Long DRX Cycle " 
-                 " and onDuration timer values");
-         RETVALUE(RFAILED);
-      }
-#endif
-   }
-   
-   RETVALUE(ROK);
-}/*rgSCHCfgVldtDrxUeCfg*/
-      
-/***********************************************************
- *
- *     Func : rgSCHCfgVldtDrxOnDurCfg
- *
- *
- *     Desc : Validates UE DRX On Duration configuration 
- *            recieved from RRC.
- *
- *     Ret  : S16
- *            ROK - Success
- *            RFAILED - Failed
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
+   /**
+    * @brief Handler for TA related UE Reconfiguration.
+    *
+    * @details
+    *
+    *     Function : rgSCHCfgUeTaRecfg
+    *     
+    *     This function shall fetch the TA timer related information into the
+    *     respective ueCb from the UE configuration as provided by the 
+    *     upper layers. 
+    *           
+    *  @param[in]  RgSchCellCb   *cell 
+    *  @param[in]  RgSchUeCb     *ueCb 
+    *  @param[in]  RgrUeCfg      *ueCfg 
+    *  @param[out] RgSchErrInfo  *errInfo 
+    *  @return     S16
+    *      -# ROK 
+    *      -# RFAILED 
+    **/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtDrxOnDurCfg
-(
-U8      onDurTmr 
-)
-#else
-PRIVATE S16 rgSCHCfgVldtDrxOnDurCfg(onDurTmr)
-U8      onDurTmr;
-#endif
-{
-   TRC2(rgSCHCfgVldtDrxOnDurCfg)
-
-   switch ( onDurTmr )
-   {
-      case RGR_DRX_PRD_1PSF:
-      case RGR_DRX_PRD_2PSF:
-      case RGR_DRX_PRD_3PSF:
-      case RGR_DRX_PRD_4PSF:
-      case RGR_DRX_PRD_5PSF:
-      case RGR_DRX_PRD_6PSF:
-      case RGR_DRX_PRD_8PSF:
-      case RGR_DRX_PRD_10PSF:
-      case RGR_DRX_PRD_20PSF:
-      case RGR_DRX_PRD_30PSF:
-      case RGR_DRX_PRD_40PSF:
-      case RGR_DRX_PRD_50PSF:
-      case RGR_DRX_PRD_60PSF:
-      case RGR_DRX_PRD_80PSF:
-      case RGR_DRX_PRD_100PSF:
-      case RGR_DRX_PRD_200PSF:
-         break;
-
-      default:
-         {
-            RETVALUE(RFAILED);
-         }
-   }/*switch(onDurTmr)*/
-
-   RETVALUE(ROK);
-}/*rgSCHCfgVldtOnDurCfg*/
-
-/***********************************************************
- *
- *     Func : rgSCHCfgVldtDrxInActvCfg
- *
- *
- *     Desc : Validates UE DRX InActivity configuration 
- *            recieved from RRC.
- *
- *     Ret  : S16
- *            ROK - Success
- *            RFAILED - Failed
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
-#ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtDrxInActvCfg
-(
-U16      inActvTmr
-)
-#else
-PRIVATE S16 rgSCHCfgVldtDrxInActvCfg(inActvTmr)
-U16      inActvTmr;
-#endif
-{
-   TRC2(rgSCHCfgVldtDrxInActvCfg)
-
-   switch ( inActvTmr )
-   {
-      case RGR_DRX_PRD_1PSF:
-      case RGR_DRX_PRD_2PSF:
-      case RGR_DRX_PRD_3PSF:
-      case RGR_DRX_PRD_4PSF:
-      case RGR_DRX_PRD_5PSF:
-      case RGR_DRX_PRD_6PSF:
-      case RGR_DRX_PRD_8PSF:
-      case RGR_DRX_PRD_10PSF:
-      case RGR_DRX_PRD_20PSF:
-      case RGR_DRX_PRD_30PSF:
-      case RGR_DRX_PRD_40PSF:
-      case RGR_DRX_PRD_50PSF:
-      case RGR_DRX_PRD_60PSF:
-      case RGR_DRX_PRD_80PSF:
-      case RGR_DRX_PRD_100PSF:
-      case RGR_DRX_PRD_200PSF:
-      case RGR_DRX_PRD_300PSF:
-      case RGR_DRX_PRD_500PSF:
-      case RGR_DRX_PRD_750PSF:
-      case RGR_DRX_PRD_1280PSF:
-      case RGR_DRX_PRD_1920PSF:
-      case RGR_DRX_PRD_2560PSF:
-         break;
-
-      default:
-         {
-            RETVALUE(RFAILED);
-         }
-   }/*switch(InactvTmr)*/
-
-   RETVALUE(ROK);
-}/*rgSCHCfgVldtDrxInActvCfg*/
-
-/***********************************************************
- *
- *     Func : rgSCHCfgVldtDrxReTxCfg
- *
- *
- *     Desc : Validates DRX ReTx timer  configuration 
- *            recieved from RRC.
- *
- *     Ret  : S16
- *            ROK - Success
- *            RFAILED - Failed
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
-#ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtDrxReTxCfg
-(
-U8       reTxTmr
-)
-#else
-PRIVATE S16 rgSCHCfgVldtDrxReTxCfg(reTxTmr)
-U8       reTxTmr;
-#endif
-{
-   TRC2(rgSCHCfgVldtDrxReTxCfg)
-
-   switch ( reTxTmr )
-   {
-      case RGR_DRX_PRD_1PSF:
-      case RGR_DRX_PRD_2PSF:
-      case RGR_DRX_PRD_4PSF:
-      case RGR_DRX_PRD_6PSF:
-      case RGR_DRX_PRD_8PSF:
-      case RGR_DRX_PRD_16PSF:
-      case RGR_DRX_PRD_24PSF:
-      case RGR_DRX_PRD_33PSF:
-         break;
-
-      default:
-         {
-            RETVALUE(RFAILED);
-         }
-   }/*switch(drxRetxTmr)*/
-
-   RETVALUE(ROK);
-}/*rgSCHCfgVldtDrxReTxCfg*/
-
-/***********************************************************
- *
- *     Func : rgSCHCfgVldtDrxShrtCycCfg
- *
- *
- *     Desc : Validates DRX Short Cycle timer  configuration 
- *            recieved from RRC.
- *
- *     Ret  : S16
- *            ROK - Success
- *
- *            RFAILED - Failed
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
-#ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtDrxLngCycCfg
-(
-RgrDrxLongCycleOffst       lngCycleOffst
-)
-#else
-PRIVATE S16 rgSCHCfgVldtDrxLngCycCfg(lngCycleOffst)
-RgrDrxLongCycleOffst       lngCycleOffst;
-#endif
-{
-   TRC2(rgSCHCfgVldtDrxLngCycCfg)
-
-   if ( rgSCHCfgVldtDrxLngCyclTmrs(lngCycleOffst.longDrxCycle) != ROK )
-   {
-      RETVALUE(RFAILED);
-   }
-
-   if ( lngCycleOffst.drxStartOffst >= lngCycleOffst.longDrxCycle ) 
-   {
-      RETVALUE(RFAILED);  
-   }
-
-   RETVALUE(ROK);
-}/*rgSCHCfgVldtDrxLngCycCfg*/
-
-/***********************************************************
- *
- *     Func : rgSCHCfgVldtDrxLngCyclTmrs
- *
- *
- *     Desc : Validates DRX Long Cycle timer values 
- *            recieved from RRC.
- *
- *     Ret  : S16
- *            ROK - Success
- *
- *            RFAILED - Failed
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
-#ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtDrxLngCyclTmrs
-(
-U16      val 
-)
-#else
-PRIVATE S16 rgSCHCfgVldtDrxLngCyclTmrs(val)
-U16      val;
-#endif
-{
-   TRC2(rgSCHCfgVldtDrxLngCyclTmrs)
-
-   switch ( val )
-   {
-      case RGR_DRX_PRD_10SF:
-      case RGR_DRX_PRD_20SF:
-      case RGR_DRX_PRD_32SF:
-      case RGR_DRX_PRD_40SF:
-      case RGR_DRX_PRD_64SF:
-      case RGR_DRX_PRD_80SF:
-      case RGR_DRX_PRD_128SF:
-      case RGR_DRX_PRD_160SF:
-      case RGR_DRX_PRD_256SF:
-      case RGR_DRX_PRD_320SF:
-      case RGR_DRX_PRD_512SF:
-      case RGR_DRX_PRD_640SF:
-      case RGR_DRX_PRD_1024SF:
-      case RGR_DRX_PRD_1280SF:
-      case RGR_DRX_PRD_2048SF:
-      case RGR_DRX_PRD_2560SF:
-         break;
-
-      default:
-         {
-            RETVALUE(RFAILED);
-         }
-   }/*switch(longDrxCycle)*/
-
-   RETVALUE(ROK);
-}/*rgSCHCfgVldtDrxLngCyclTmrs*/
-
-/***********************************************************
- *
- *     Func : rgSCHCfgVldtDrxShrtCycCfg
- *
- *
- *     Desc : Validates DRX Short Cycle timer  configuration 
- *            recieved from RRC.
- *
- *     Ret  : S16
- *            ROK - Success
- *
- *            RFAILED - Failed
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
-#ifdef ANSI
-PRIVATE S16 rgSCHCfgVldtDrxShrtCycCfg
-(
-RgrDrxShortDrx      shrtCycCfg 
-)
-#else
-PRIVATE S16 rgSCHCfgVldtDrxShrtCycCfg(shrtCycCfg)
-RgrDrxShortDrx      shrtCycCfg;
-#endif
-{
-   TRC2(rgSCHCfgVldtDrxShrtCycCfg)
-
-   switch(shrtCycCfg.shortDrxCycle)
-   {
-      case RGR_DRX_PRD_2SF:
-      case RGR_DRX_PRD_5SF:
-      case RGR_DRX_PRD_8SF:
-      case RGR_DRX_PRD_10SF:
-      case RGR_DRX_PRD_16SF:
-      case RGR_DRX_PRD_20SF:
-      case RGR_DRX_PRD_32SF:
-      case RGR_DRX_PRD_40SF:
-      case RGR_DRX_PRD_64SF:
-      case RGR_DRX_PRD_80SF:
-      case RGR_DRX_PRD_128SF:
-      case RGR_DRX_PRD_160SF:
-      case RGR_DRX_PRD_256SF:
-      case RGR_DRX_PRD_320SF:
-      case RGR_DRX_PRD_640SF:
-         break;
-
-      default:
-         {
-            RETVALUE(RFAILED);
-         }
-
-   }/*switch(shortDrxCycle)*/
-
-   if ( (shrtCycCfg.drxShortCycleTmr < RGR_DRX_SHRTCYCLE_MIN) ||
-         (shrtCycCfg.drxShortCycleTmr > RGR_DRX_SHRTCYCLE_MAX)
+   PRIVATE Void rgSCHCfgUeTaRecfg
+      (
+       RgSchCellCb       *cell,
+       RgSchUeCb         *ueCb,
+       RgrUeRecfg        *ueCfg,
+       RgSchErrInfo      *err
       )
-   {
-      RETVALUE(RFAILED);
-   }
-
-   RETVALUE(ROK);
-}
-
-/**
- * @brief Handler for TA related UE Reconfiguration.
- *
- * @details
- *
- *     Function : rgSCHCfgUeTaRecfg
- *     
- *     This function shall fetch the TA timer related information into the
- *     respective ueCb from the UE configuration as provided by the 
- *     upper layers. 
- *           
- *  @param[in]  RgSchCellCb   *cell 
- *  @param[in]  RgSchUeCb     *ueCb 
- *  @param[in]  RgrUeCfg      *ueCfg 
- *  @param[out] RgSchErrInfo  *errInfo 
- *  @return     S16
- *      -# ROK 
- *      -# RFAILED 
- **/
-#ifdef ANSI
-PRIVATE Void rgSCHCfgUeTaRecfg
-(
-RgSchCellCb       *cell,
-RgSchUeCb         *ueCb,
-RgrUeRecfg        *ueCfg,
-RgSchErrInfo      *err
-)
 #else
-PRIVATE Void rgSCHCfgUeTaRecfg(cell, ueCb, ueCfg, err)
-RgSchCellCb       *cell;
-RgSchUeCb         *ueCb;
-RgrUeRecfg        *ueCfg;
-RgSchErrInfo      *err;
+      PRIVATE Void rgSCHCfgUeTaRecfg(cell, ueCb, ueCfg, err)
+      RgSchCellCb       *cell;
+   RgSchUeCb         *ueCb;
+   RgrUeRecfg        *ueCfg;
+   RgSchErrInfo      *err;
 #endif
-{
-   TRC2(rgSCHCfgUeTaRecfg)
-
-   UNUSED(err);
-
-   /* Update the TA related information */
-   
-   if (ueCfg->ueTaTmrRecfg.pres)
    {
-      /* Configuring taTmr with 30 deficit, to enable eNodeB sending
-       * TA command before the expiry of TA at UE. Also considering for 
-       * possible retx for this TA command */
-      /* [ccpu00121813]-ADD-Added chk if tatmr val > 30 */
-      if(ueCfg->ueTaTmrRecfg.taTmr > 30)
-      {
-         ueCb->dl.taCb.cfgTaTmr = ueCfg->ueTaTmrRecfg.taTmr - 30;
-      }
-       /* If TA Timer is running. Stop it and then start it*/
-      if (ueCb->taTmr.tmrEvnt != TMR_NONE)
-      {
-         rgSCHTmrStopTmr(cell, ueCb->taTmr.tmrEvnt, ueCb);
-         rgSCHTmrStartTmr(cell, ueCb, RG_SCH_TMR_TA, ueCb->dl.taCb.cfgTaTmr);
-      }
-      else
-      {
-         rgSCHTmrStartTmr(cell, ueCb, RG_SCH_TMR_TA, ueCb->dl.taCb.cfgTaTmr);
-      }
-   }
-   RETVOID;
-}  /* rgSCHCfgUeTaRecfg */
+      TRC2(rgSCHCfgUeTaRecfg)
 
-/* ccpu00117452 - MOD - Changed macro name from
-   RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
+	 UNUSED(err);
+
+      /* Update the TA related information */
+
+      if (ueCfg->ueTaTmrRecfg.pres)
+      {
+	 /* Configuring taTmr with 30 deficit, to enable eNodeB sending
+	  * TA command before the expiry of TA at UE. Also considering for 
+	  * possible retx for this TA command */
+	 /* [ccpu00121813]-ADD-Added chk if tatmr val > 30 */
+	 if(ueCfg->ueTaTmrRecfg.taTmr > 30)
+	 {
+	    ueCb->dl.taCb.cfgTaTmr = ueCfg->ueTaTmrRecfg.taTmr - 30;
+	 }
+	 /* If TA Timer is running. Stop it and then start it*/
+	 if (ueCb->taTmr.tmrEvnt != TMR_NONE)
+	 {
+	    rgSCHTmrStopTmr(cell, ueCb->taTmr.tmrEvnt, ueCb);
+	    rgSCHTmrStartTmr(cell, ueCb, RG_SCH_TMR_TA, ueCb->dl.taCb.cfgTaTmr);
+	 }
+	 else
+	 {
+	    rgSCHTmrStartTmr(cell, ueCb, RG_SCH_TMR_TA, ueCb->dl.taCb.cfgTaTmr);
+	 }
+      }
+      RETVOID;
+   }  /* rgSCHCfgUeTaRecfg */
+
+   /* ccpu00117452 - MOD - Changed macro name from
+      RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #if ((defined (RGR_CQI_REPT)) && (defined (RGR_V2)))
-/***********************************************************
- *
- *     Func : rgSCHCfgUeCqiReptReCfg
- *
- *
- *     Desc : Reconfiguration of PUSH N CQI Reporting 
- *
- *     Ret  : RFAILED in case of failure
- *            ROK if success
- *
- *     Notes:
- *
- *     File :
- *
- **********************************************************/
+   /***********************************************************
+    *
+    *     Func : rgSCHCfgUeCqiReptReCfg
+    *
+    *
+    *     Desc : Reconfiguration of PUSH N CQI Reporting 
+    *
+    *     Ret  : RFAILED in case of failure
+    *            ROK if success
+    *
+    *     Notes:
+    *
+    *     File :
+    *
+    **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHCfgUeCqiReptReCfg
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgrUeRecfg     *ueRecfg
-)
+   PRIVATE S16 rgSCHCfgUeCqiReptReCfg
+      (
+       RgSchCellCb    *cell,
+       RgSchUeCb      *ue,
+       RgrUeRecfg     *ueRecfg
+      )
 #else
-PRIVATE  S16 rgSCHCfgUeCqiReptReCfg(cell, ue, ueRecfg)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgrUeRecfg     *ueRecfg;
+      PRIVATE  S16 rgSCHCfgUeCqiReptReCfg(cell, ue, ueRecfg)
+      RgSchCellCb    *cell;
+   RgSchUeCb      *ue;
+   RgrUeRecfg     *ueRecfg;
 #endif
-{
-   S16 retVal;
-   TRC3(rgSCHCfgUeCqiReptReCfg)
-
-   /* Check has it been disabled */
-   if(ueRecfg->ueCqiReptCfg.numColltdCqiRept)
    {
-    /* Check if we need to send CQI reports collagted so far and send if so */
-      if(ue->schCqiInfo.cqiCount >=
-              ueRecfg->ueCqiReptCfg.numColltdCqiRept)
-      {
-         RgrStaIndInfo *staInfo;
-      /* if yes, Send StaInd to RRM */
-         retVal = rgSCHUtlAllocSBuf (cell->instIdx,(Data**)&staInfo,
-                  sizeof(RgrStaIndInfo));
-         if(retVal != ROK)
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "Could not allocate memory for sending StaInd OLD CRNTI:%d",ueRecfg->oldCrnti);
-            RETVALUE(retVal);
-         }
+      S16 retVal;
+      TRC3(rgSCHCfgUeCqiReptReCfg)
 
-      /* Fill StaInd for sending collated N CQI rpeort                        */
-         rgSCHUtlFillSndStaInd(cell, ue, staInfo,
-               ueRecfg->ueCqiReptCfg.numColltdCqiRept);
-      }
-   }
-   else
-   {
-      ue->schCqiInfo.cqiCount = 0;
-   }
+	 /* Check has it been disabled */
+	 if(ueRecfg->ueCqiReptCfg.numColltdCqiRept)
+	 {
+	    /* Check if we need to send CQI reports collagted so far and send if so */
+	    if(ue->schCqiInfo.cqiCount >=
+		  ueRecfg->ueCqiReptCfg.numColltdCqiRept)
+	    {
+	       RgrStaIndInfo *staInfo;
+	       /* if yes, Send StaInd to RRM */
+	       retVal = rgSCHUtlAllocSBuf (cell->instIdx,(Data**)&staInfo,
+		     sizeof(RgrStaIndInfo));
+	       if(retVal != ROK)
+	       {
+		  RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
+			"Could not allocate memory for sending StaInd OLD CRNTI:%d",ueRecfg->oldCrnti);
+		  RETVALUE(retVal);
+	       }
 
-   ue->cqiReptCfgInfo.numColltdCqiRept =
-      ueRecfg->ueCqiReptCfg.numColltdCqiRept;
-   RETVALUE(ROK);
-} /* End of rgSCHCfgUeCqiReptReCfg */
+	       /* Fill StaInd for sending collated N CQI rpeort                        */
+	       rgSCHUtlFillSndStaInd(cell, ue, staInfo,
+		     ueRecfg->ueCqiReptCfg.numColltdCqiRept);
+	    }
+	 }
+	 else
+	 {
+	    ue->schCqiInfo.cqiCount = 0;
+	 }
+
+      ue->cqiReptCfgInfo.numColltdCqiRept =
+	 ueRecfg->ueCqiReptCfg.numColltdCqiRept;
+      RETVALUE(ROK);
+   } /* End of rgSCHCfgUeCqiReptReCfg */
 #endif /* End of RGR_CQI_REPT */
-/*This function Added Ue in ongoing L2 Meas*/
-/*LTE_L2_MEAS_PHASE2*/
+   /*This function Added Ue in ongoing L2 Meas*/
+   /*LTE_L2_MEAS_PHASE2*/
 #ifdef LTE_L2_MEAS
-PRIVATE S16 rgSchAddToL2Meas(RgSchCellCb *cellCb,RgSchDlLcCb *dlLc)
-{
-   CmLList             *lnk;
-   U16       idx;
-   RgSchL2MeasCb       *measCb = NULLP;
-   lnk = cellCb->l2mList.first;
-
-   while(lnk != NULLP)
+   PRIVATE S16 rgSchAddToL2Meas(RgSchCellCb *cellCb,RgSchDlLcCb *dlLc)
    {
-      /* Get the MeasCb : RgSchL2MeasCb */
-      measCb = (RgSchL2MeasCb *)lnk->node;
-      if (measCb->measReq.measType & LRG_L2MEAS_AVG_PRB_PER_QCI_DL)
-      {
-         for(idx = 0;idx < measCb->measReq.avgPrbQciDl.numQci;idx++)
-         {
-            if(measCb->measReq.avgPrbQciDl.qci[idx] == dlLc->qciCb->qci)
-            {
-               break; /*exit from for loop*/
-            } 
-         }	
-         if(idx  == measCb->measReq.avgPrbQciDl.numQci)
-         {
-            measCb->measReq.avgPrbQciDl.qci[measCb->measReq.avgPrbQciDl.numQci++] = dlLc->qciCb->qci;
-         }		
-      }
-      lnk = lnk->next;
-   }/*End of while loop*/
+      CmLList             *lnk;
+      U16       idx;
+      RgSchL2MeasCb       *measCb = NULLP;
+      lnk = cellCb->l2mList.first;
 
-   RETVALUE(ROK);
-}
+      while(lnk != NULLP)
+      {
+	 /* Get the MeasCb : RgSchL2MeasCb */
+	 measCb = (RgSchL2MeasCb *)lnk->node;
+	 if (measCb->measReq.measType & LRG_L2MEAS_AVG_PRB_PER_QCI_DL)
+	 {
+	    for(idx = 0;idx < measCb->measReq.avgPrbQciDl.numQci;idx++)
+	    {
+	       if(measCb->measReq.avgPrbQciDl.qci[idx] == dlLc->qciCb->qci)
+	       {
+		  break; /*exit from for loop*/
+	       } 
+	    }	
+	    if(idx  == measCb->measReq.avgPrbQciDl.numQci)
+	    {
+	       measCb->measReq.avgPrbQciDl.qci[measCb->measReq.avgPrbQciDl.numQci++] = dlLc->qciCb->qci;
+	    }		
+	 }
+	 lnk = lnk->next;
+      }/*End of while loop*/
+
+      RETVALUE(ROK);
+   }
 #endif
 #ifdef LTE_ADV
-/**
- * @brief UE SCell Buffer Free 
- *
- * @details
- *
- *     Function : rgSCHSCellFreeBuf
- *
- *     This functions will free allocated memory 
- *     for UE secondart cellCB
- *     
- *
- *  @param[in]  Inst         inst 
- *  @param[in]  RgSchUeCb    *ue
- *  @param[int] RgrUeRecfg   *ueRecfg
- *  @param[out] U8           idx 
- *  @return  VOID
- **/
+   /**
+    * @brief UE SCell Buffer Free 
+    *
+    * @details
+    *
+    *     Function : rgSCHSCellFreeBuf
+    *
+    *     This functions will free allocated memory 
+    *     for UE secondart cellCB
+    *     
+    *
+    *  @param[in]  Inst         inst 
+    *  @param[in]  RgSchUeCb    *ue
+    *  @param[int] RgrUeRecfg   *ueRecfg
+    *  @param[out] U8           idx 
+    *  @return  VOID
+    **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellFreeBuf
-(
-Inst         inst,         
-RgSchUeCb    *ue,
-RgrUeRecfg   *ueRecfg,
-U8           idx
-)
+   PUBLIC Void rgSCHSCellFreeBuf
+      (
+       Inst         inst,         
+       RgSchUeCb    *ue,
+       RgrUeRecfg   *ueRecfg,
+       U8           idx
+      )
 #else
-PUBLIC Void rgSCHSCellFreeBuf(inst ,ue, ueRecfg, idx)
-Inst         inst;         
-RgSchUeCb    *ue;
-RgrUeRecfg   *ueRecfg;
-U8           idx;
+      PUBLIC Void rgSCHSCellFreeBuf(inst ,ue, ueRecfg, idx)
+      Inst         inst;         
+   RgSchUeCb    *ue;
+   RgrUeRecfg   *ueRecfg;
+   U8           idx;
 #endif
-{
-   RgSchUeCellInfo *sCellInfo = NULLP;
-   RgrUeSecCellCfg *sCellInfoRecfg = NULLP;
-   
-   TRC2(rgSCHSCellFreeBuf);
-
-   for(U8 i = 0; i <= idx; i++)
    {
-      sCellInfoRecfg = &ueRecfg->ueSCellCfgInfo.ueSCellDedCfg[i]; 
-      sCellInfo = ue->cellInfo[(sCellInfoRecfg->sCellIdx)];
-      
-      if (NULLP != sCellInfo)
-      {
-         rgSCHUtlFreeSBuf(inst, (Data**)&(sCellInfo),
-               sizeof(RgSchUeCellInfo));
-         ue->cellInfo[(sCellInfoRecfg->sCellIdx)] = NULLP;
+      RgSchUeCellInfo *sCellInfo = NULLP;
+      RgrUeSecCellCfg *sCellInfoRecfg = NULLP;
 
-      } 
+      TRC2(rgSCHSCellFreeBuf);
+
+      for(U8 i = 0; i <= idx; i++)
+      {
+	 sCellInfoRecfg = &ueRecfg->ueSCellCfgInfo.ueSCellDedCfg[i]; 
+	 sCellInfo = ue->cellInfo[(sCellInfoRecfg->sCellIdx)];
+
+	 if (NULLP != sCellInfo)
+	 {
+	    rgSCHUtlFreeSBuf(inst, (Data**)&(sCellInfo),
+		  sizeof(RgSchUeCellInfo));
+	    ue->cellInfo[(sCellInfoRecfg->sCellIdx)] = NULLP;
+
+	 } 
+      }
+      RETVOID;
    }
-   RETVOID;
-}
 #endif
-/**********************************************************************
- 
-         End of file
-**********************************************************************/
+   /**********************************************************************
+
+     End of file
+    **********************************************************************/

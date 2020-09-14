@@ -56,7 +56,7 @@ typedef struct rlcDlUeCb RlcDlUeCb;
 */
 typedef struct kwPduMap
 {
-  KwSn   sn;     /*!< Mapped PDU's SN */
+   KwSn   sn;     /*!< Mapped PDU's SN */
 }KwPduMap;
 
 /** 
@@ -81,14 +81,14 @@ typedef struct kwPduMap
  *        - sduId       : Unique identity for the SDU
  *        - rcvdSz      : Length of this SDU which is received by the peer
  *        - isSegmented : Whether this SDU is segmented into multiple PDUs
-*/
+ */
 typedef struct kwSdu                        
 {
    CmLList   lstEnt;     /*!< List entry for SDU */
    Buffer    *mBuf;      /*!< SDU buffer */ 
    MsgLen    sduSz;      /*!< Buffer Size */
    MsgLen    actSz;      /*!< Actual buffer Size */
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    KwSduSnMap  *snMap;   /*!< Sdu and the list of SN it maps to */
 #endif /* LTE_L2_MEAS */
@@ -97,27 +97,27 @@ typedef struct kwSdu
    {
       struct   _t 
       {
-         U16         sfn;        /*!< Sub frame number for BCCH/PCCH */
-         U16         slot;   /*!< Subframe number */
-         CmLteRnti   rnti;       /*!< RNTI for CCCH */
+	 U16         sfn;        /*!< Sub frame number for BCCH/PCCH */
+	 U16         slot;   /*!< Subframe number */
+	 CmLteRnti   rnti;       /*!< RNTI for CCCH */
 #ifdef EMTC_ENABLE
-         U8          emtcDiReason; /*!< DI reason */
-         U8          pnb;       /*!<narrow band on which Ue performs Paging*/
+	 U8          emtcDiReason; /*!< DI reason */
+	 U8          pnb;       /*!<narrow band on which Ue performs Paging*/
 #endif
       }tm;   /*!< SDU for TM mode */
 
       struct   _u
       {
-         U32    sduId;         /*!< SDU Identifier */
-         Bool   isSegmented;   /*!< Flag to indicate if the SDU is segmented */
+	 U32    sduId;         /*!< SDU Identifier */
+	 Bool   isSegmented;   /*!< Flag to indicate if the SDU is segmented */
       }um;   /*!< SDU for UM mode */
 
       struct   _a
       {
-         U32        sduId;                    /*!< SDU Identifier */
-         MsgLen     rcvdSz;                   /*!< Recvd SDU Size from peer */
-         Bool       isSegmented;              /*!< Is SDU segmented */
-         KwSn        sn;                       /*!< SN assigned to this SDU*/
+	 U32        sduId;                    /*!< SDU Identifier */
+	 MsgLen     rcvdSz;                   /*!< Recvd SDU Size from peer */
+	 Bool       isSegmented;              /*!< Is SDU segmented */
+	 KwSn        sn;                       /*!< SN assigned to this SDU*/
       }am;   /*!< SDU for AM mode */
    }mode;   /*!< RLC mode specific SDUs */
    /* Discard new changes starts */
@@ -134,7 +134,7 @@ typedef struct kwSdu
  *
  * @details
  *    - sduQ : Queue of SDUs
-*/
+ */
 typedef struct kwTm
 {
    CmLListCp sduQ; /*!< SDU queue for TM */
@@ -148,7 +148,7 @@ typedef struct kwTm
  *    - bo         : Size of the buffers at RLC
  *    - estHdrSz   : Size for all the headers as estimated by RLC
  *    - staPduPrst : Whether RLC wants to send a STATUS PDU or not
-*/
+ */
 typedef struct kwBoRep
 {
    S32    bo;            /*!< Buffer occupancy */
@@ -165,13 +165,13 @@ typedef struct kwBoRep
  *    - pduSz   : Sum total of sizes of all the PDUs being sent
  *    - pduInfo : Information about each PDU
  *    - boRep   : Current buffer occupancy report
-*/
+ */
 typedef struct kwDatReq
 {
    MsgLen      pduSz;         /*!< PDU(s) size indicated by MAC */ 
    KwPduInfo   pduInfo;       /*!< PDU Information for lChs within UE */
    KwBoRep     boRep;         /*!< BO report */ 
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    KwLchMapInfo lchMapInfo;   /*!< Logical channel mapping info */
    U32          totMacGrant;
@@ -179,7 +179,7 @@ typedef struct kwDatReq
 }KwDatReq;
 
 /** @defgroup ummode UM Module Info 
-*/
+ */
 
 /** @addtogroup ummode */
 /*@{*/
@@ -200,7 +200,7 @@ typedef struct kwDatReq
  *                    0x3ff for 5-bit and 10-bit sequence numbers respectively
  *    - numLi       : Number of length indicators to be sent in the next pdu
  *    - li          : Values of the lenght indicators
-*/
+ */
 typedef struct kwUmDl
 {
    CmLListCp   sduQ;            /*!< SDU queue for UM */
@@ -219,7 +219,7 @@ typedef struct kwUmDl
  * @details
  *    - sduSz  : Size of the SDU or part of it
  *    - sdu    : Pointer to the SDU
-*/
+ */
 typedef struct kwSduMap
 {
    /*MsgLen   actSz;*/         /*!< SDU Size */
@@ -246,7 +246,7 @@ typedef struct kwSduMap
  *    - pendingReTrans   : TRUE if this node is to be re-transmitted else FALSE
  *    - numSdu           : Number of SDUs this PDU/segment carries
  *    - sduMap           : Infomation about the SDUs this node carries
-*/
+ */
 typedef struct kwRetx
 {
    CmLList    lstEnt;              /*!< List entry for Retransmission PDU */
@@ -272,7 +272,7 @@ typedef struct kwRetx
  *    - amHdr  : The AM Header for the PDU segment
  *    - KwSduMap :SDU map info for this PDU 
  *
-*/
+ */
 typedef struct rlcDlPduInfo
 {
    CmLList   lstEnt;               /*!< List entry for PDU list */
@@ -292,7 +292,7 @@ typedef struct rlcDlPduInfo
  *    - sn     : SN of this RLC SDU
  *    - rlsLnk : Link to store on release list, used for
  *    - pduLst : It contains all PDUs of a particular SN
-*/
+ */
 typedef struct kwTx
 {
    CmLList     lnk;                /**< Link to the TX buffer list*/
@@ -326,7 +326,7 @@ typedef struct kwTx
  *    - nxtRetx        : Next node to be re-transmitted
  *    - txNext         : 5GNR - TX_Next - Send state variable,( in LTE VT(S)) 
  *    - txNextAck      : 5GNR - TX_Next_Ack- Acknowledgement state variable
-                       : (in LTE VT(A))     
+ : (in LTE VT(A))     
  *    - pduWoPoll      : Number of PDUs sent without sending a poll bit
  *    - byteWoPoll     : Number of bytes sent without sending a poll bit
  *    - pollSn         : The sequence number on which the last poll bit was sent
@@ -335,7 +335,7 @@ typedef struct kwTx
  *                       reached or not
  *    - pStaPdu        : Stores the control pdu (information required to
  *                       create the STATUS PDU) passed from AM uplink
-*/
+ */
 typedef struct kwAmDl
 {
    CmLListCp        sduQ;             /*!< SDU queue */
@@ -352,7 +352,7 @@ typedef struct kwAmDl
 #ifndef LTE_TDD 
    CmLListCp        *txBufLst;       /*!< Transmission buffer list of type KwTx */
 #else
-//   KwTx             *txBuf[1024];          /*!< Transmission buffer */
+   //   KwTx             *txBuf[1024];          /*!< Transmission buffer */
 #endif
    CmLListCp        retxLst;          /*!< Retransmission PDU list */
    KwRetx           *nxtRetx;         /*!< Next node to be retransmitted */
@@ -362,7 +362,7 @@ typedef struct kwAmDl
    S32              byteWoPoll;       /*!< Byte without poll bit counter */
    KwSn             pollSn;           /*!< Poll SN */
    Buffer           *mBuf;            /*!< this can be removed later 
-                                           Stores the Control Pdu */
+					Stores the Control Pdu */
    Bool             maxReTxReached;   /*!< Set when the DL MAX Retx exceeded */
    KwUdxDlStaPdu*   pStaPdu;          /*!< The Control Pdu passed from UL*/
    U8               snLen;           /*!< Sequence number length:12 bit or 18 bit : 5GNR RLC */
@@ -397,7 +397,7 @@ typedef struct kwAmDl
  *      - amDl         : Acknowledged Mode downlink information
  *    - rlsLnk         : Link list used to free the RbCb
  *    - cleanupStarted : Whether cleanup of RB is in progress or not
-*/
+ */
 typedef struct _rlcDlRbCb
 {
    U8              qci;                /*!< qci of the RB */
@@ -407,12 +407,12 @@ typedef struct _rlcDlRbCb
    CmLListCp       sduSnMapQ;          /*!< SDU SN map queue for UM */
 
    KwL2MeasIpThruput l2MeasIpThruput;  /*!< Holds related parameter for
-                                                 DL/UL ip throughput>*/
+					 DL/UL ip throughput>*/
 #endif                                                 
 
    /* Discard new changes starts */
    S16             discTmrInt;        /*!< The discard time in milli 
-                                           seconds for an PDCP SDU for this RB */
+					seconds for an PDCP SDU for this RB */
    /* Discard new changes ends */
    CmLteRlcId     rlcId;           /*!< RLC Identifier */
    KwLchInfo      lch;             /*!< Logical Channel Info  */
@@ -441,7 +441,7 @@ typedef struct _rlcDlRbCb
  *
  * @details
  *    - dlRbCb   : Pointer to the downlink Radio Bearer
-*/
+ */
 typedef struct rlcDlLch
 {
    RlcDlRbCb *dlRbCb;   /*!< Pointer to Downlink RbCb */
@@ -456,7 +456,7 @@ typedef struct rlcDlLch
  *    - cellId    : Identity of the cell
  *    - rbCb      : Radio Bearers in the cell
  *    - lCh       : Logical Channels in the cell
-*/
+ */
 typedef struct rlcDlCellCb
 {
    CmHashListEnt   cellHlEnt;                 /*!< Hash list entry for CellCb */
@@ -495,12 +495,12 @@ typedef struct kwL2MeasTb
 {
    U8              numLcId;       /* number of logical channels in this TbCb */
    KwContSduLst    sduInfo[KW_MAX_ACTV_DRB]; /*!< Contained sduLst for 
-                                               outstanding sdu */
+					       outstanding sdu */
    U8              numLchInfo;
    KwlchInfo       lchInfo[KW_MAX_ACTV_DRB]; /* Holds the LC info details 
-                                                  used for DL delay L2 Meas*/
+						used for DL delay L2 Meas*/
    U32             txSegSduCnt; /*!< This holds the no.of partially 
-                                     transmitted SDU per TB which can be used for UU loss Meas*/
+				  transmitted SDU per TB which can be used for UU loss Meas*/
 }KwL2MeasTb;
 #endif
 
@@ -514,7 +514,7 @@ typedef struct kwL2MeasTb
  *    - srbCb   : Signaling Radio Bearers configured for the UE
  *    - drbCb   : Data Radio Bearers configured for the UE
  *    - lCh     : Logical Channels in the UE
-*/
+ */
 struct rlcDlUeCb
 {
    CmHashListEnt   ueHlEnt;                   /*!< Hash list entry for UeCb */
@@ -523,7 +523,7 @@ struct rlcDlUeCb
    RlcDlRbCb        *srbCb[KW_MAX_SRB_PER_UE]; /*!< SRB RbCbs within a UE */ 
    RlcDlRbCb        *drbCb[KW_MAX_DRB_PER_UE]; /*!< DRB RbCbs within a UE */ 
    RlcDlLch         lCh[KW_MAX_LCH_PER_UE];    /*!< Array of Logical channels */
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    U16           numActRb[LKW_MAX_QCI];     /*!< number of RBs Active */
    U8            tbIdx;                /*!< TBIDx for  measTbCb */
@@ -541,45 +541,45 @@ struct rlcDlUeCb
  *                    Configuration Functions 
  ***************************************************************************/ 
 EXTERN S16 rlcCfgAddDlRb ARGS ((RlcCb *gCb, 
-                              CmLteRnti ueId, 
-                              CmLteCellId cellId, 
-                              RlcEntCfgInfo *entCfg, 
-                              RlcEntCfgCfmInfo *entCfm));
+	 CmLteRnti ueId, 
+	 CmLteCellId cellId, 
+	 RlcEntCfgInfo *entCfg, 
+	 RlcEntCfgCfmInfo *entCfm));
 
 EXTERN S16 rlcCfgReCfgDlRb ARGS ((RlcCb *gCb, 
-                                 CmLteRnti ueId, 
-                                 CmLteCellId cellId, 
-                                 RlcEntCfgInfo *entCfg, 
-                                 RlcEntCfgCfmInfo *entCfm));
+	 CmLteRnti ueId, 
+	 CmLteCellId cellId, 
+	 RlcEntCfgInfo *entCfg, 
+	 RlcEntCfgCfmInfo *entCfm));
 
 EXTERN S16 rlcCfgDelDlRb ARGS ((RlcCb *gCb, 
-                               CmLteRnti ueId, 
-                               CmLteCellId cellId, 
-                               RlcEntCfgInfo *entCfg, 
-                               RlcEntCfgCfmInfo *entCfm));
+	 CmLteRnti ueId, 
+	 CmLteCellId cellId, 
+	 RlcEntCfgInfo *entCfg, 
+	 RlcEntCfgCfmInfo *entCfm));
 
 EXTERN S16 rlcCfgDelDlUe ARGS ((RlcCb *gCb, 
-                               CmLteRnti ueId, 
-                               CmLteCellId cellId, 
-                               RlcEntCfgInfo *entCfg, 
-                               RlcEntCfgCfmInfo *entCfm));
+	 CmLteRnti ueId, 
+	 CmLteCellId cellId, 
+	 RlcEntCfgInfo *entCfg, 
+	 RlcEntCfgCfmInfo *entCfm));
 
 EXTERN S16 rlcCfgReEstDlRb ARGS ((RlcCb *gCb, 
-                                 CmLteRnti ueId, 
-                                 CmLteCellId cellId, 
-                                 Bool sndReEst,
-                                 RlcEntCfgInfo *entCfg, 
-                                 RlcEntCfgCfmInfo *entCfm));
+	 CmLteRnti ueId, 
+	 CmLteCellId cellId, 
+	 Bool sndReEst,
+	 RlcEntCfgInfo *entCfg, 
+	 RlcEntCfgCfmInfo *entCfm));
 
 EXTERN S16 rlcCfgDelDlCell ARGS ((RlcCb *gCb, 
-                                 CmLteCellId cellId, 
-                                 RlcEntCfgInfo *entCfg,
-                                 RlcEntCfgCfmInfo *entCfm));
+	 CmLteCellId cellId, 
+	 RlcEntCfgInfo *entCfg,
+	 RlcEntCfgCfmInfo *entCfm));
 
 EXTERN S16 rlcCfgDlUeIdChng ARGS ((RlcCb *gCb, 
-                                  CkwUeInfo *ueInfo, 
-                                  CkwUeInfo *newUeInfo, 
-                                  CmStatus  *status));
+	 CkwUeInfo *ueInfo, 
+	 CkwUeInfo *newUeInfo, 
+	 CmStatus  *status));
 
 /****************************************************************************
  *                    DBM module Functions 
@@ -589,42 +589,42 @@ EXTERN S16 kwDbmDlInit ARGS ((RlcCb *gCb));
 EXTERN Void kwDbmDlDeInit ARGS ((RlcCb *gCb));
 
 EXTERN S16 kwDbmCreateDlUeCb ARGS ((RlcCb *gCb,     
-                                    CmLteRnti ueId,   
-                                    CmLteCellId cellId,
-                                    RlcDlUeCb **ueCb));
+	 CmLteRnti ueId,   
+	 CmLteCellId cellId,
+	 RlcDlUeCb **ueCb));
 
 EXTERN S16 kwDbmFetchDlUeCb ARGS ((RlcCb *gCb,        
-                                   CmLteRnti ueId,      
-                                   CmLteCellId cellId,     
-                                   RlcDlUeCb **ueCb));
+	 CmLteRnti ueId,      
+	 CmLteCellId cellId,     
+	 RlcDlUeCb **ueCb));
 
 EXTERN Void kwDbmDelDlUeCb ARGS ((RlcCb *gCb,       
-                                  RlcDlUeCb *ueCb, 
-                                  Bool abortFlag));
+	 RlcDlUeCb *ueCb, 
+	 Bool abortFlag));
 
 EXTERN Void kwDbmDelAllDlUe ARGS ((RlcCb *gCb));
 
 EXTERN S16 kwDbmCreateDlCellCb ARGS ((RlcCb *gCb,      
-                                      CmLteCellId cellId,   
-                                      RlcDlCellCb **cellCb));
+	 CmLteCellId cellId,   
+	 RlcDlCellCb **cellCb));
 
 EXTERN S16 kwDbmFetchDlCellCb ARGS ((RlcCb *gCb, 
-                                     CmLteCellId cellId, 
-                                     RlcDlCellCb **cellCb));
+	 CmLteCellId cellId, 
+	 RlcDlCellCb **cellCb));
 
 EXTERN Void kwDbmDelDlCellCb ARGS ((RlcCb *gCb, RlcDlCellCb *cellCb));
 
 EXTERN Void kwDbmDelAllDlCell ARGS ((RlcCb *gCb));
 
 EXTERN Void kwDbmFetchDlRbCbByRbId ARGS ((RlcCb *gCb, 
-                                          CmLteRlcId *rlcId, 
-                                          RlcDlRbCb **rbCb));
+	 CmLteRlcId *rlcId, 
+	 RlcDlRbCb **rbCb));
 
 EXTERN Void kwDbmFetchDlRbCbFromLchId ARGS ((RlcCb *gCb,       
-                                             CmLteRnti ueId,     
-                                             CmLteCellId cellId,    
-                                             CmLteLcId lcId,      
-                                             RlcDlRbCb **rbCb));
+	 CmLteRnti ueId,     
+	 CmLteCellId cellId,    
+	 CmLteLcId lcId,      
+	 RlcDlRbCb **rbCb));
 
 EXTERN Void kwDbmDelAllDlRb ARGS ((RlcCb *gCb, RlcDlRbCb **rbCbLst, U8 numRbCb));
 
@@ -641,13 +641,13 @@ EXTERN Void kwDbmDelAllDlL2MeasTbFrmUe ARGS ((RlcCb *gCb, RlcDlUeCb *ueCb));
  *                    Transparent Mode Functions 
  ***************************************************************************/
 EXTERN Void kwTmmQSdu ARGS ((RlcCb *gCb,
-                            RlcDlRbCb *rbCb,
-                            KwuDatReqInfo *datReqInfo,
-                            Buffer *mBuf));
+	 RlcDlRbCb *rbCb,
+	 KwuDatReqInfo *datReqInfo,
+	 Buffer *mBuf));
 EXTERN Void kwTmmSndToLi ARGS ((RlcCb     *gCb,
-                                SuId     suId,
-                                RlcDlRbCb *rbCb, 
-                                RguCStaIndInfo *staInd));
+	 SuId     suId,
+	 RlcDlRbCb *rbCb, 
+	 RguCStaIndInfo *staInd));
 
 EXTERN Void rlcDlTmmReEstablish ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
 
@@ -655,16 +655,16 @@ EXTERN Void rlcDlTmmReEstablish ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
  *                    Unacknowledged Mode Functions 
  ***************************************************************************/
 EXTERN Void kwUmmQSdu ARGS ((RlcCb *gCb, 
-                             RlcDlRbCb *rbCb,
-                             KwuDatReqInfo *datReq, 
-                             Buffer *mBuf));
+	 RlcDlRbCb *rbCb,
+	 KwuDatReqInfo *datReq, 
+	 Buffer *mBuf));
 
 EXTERN Void kwUmmDiscSdu ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, U32 sduId));
 
 EXTERN Void rlcDlUmmReEstablish ARGS ((RlcCb *gCb, 
-                                      CmLteRlcId rlcId, 
-                                      Bool sndReEst,
-                                      RlcDlRbCb *rbCb));
+	 CmLteRlcId rlcId, 
+	 Bool sndReEst,
+	 RlcDlRbCb *rbCb));
 
 EXTERN Void kwUmmProcessSdus ARGS ((RlcCb *gCb,RlcDlRbCb *rbCb,KwDatReq *datReq));
 
@@ -679,22 +679,22 @@ EXTERN S32 kwAmmCalculateBo ARGS ((KwAmDl *amDl));
 EXTERN Void kwAmmSendDStaRsp ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, KwAmDl *amDl));
 
 EXTERN Void kwAmmQSdu ARGS((RlcCb *gCb,
-                            RlcDlRbCb *rbCb,
-                            Buffer *mBuf, 
-                            KwuDatReqInfo *datReq));
+	 RlcDlRbCb *rbCb,
+	 Buffer *mBuf, 
+	 KwuDatReqInfo *datReq));
 
 EXTERN Void kwAmmProcessSdus ARGS((RlcCb *gCb, 
-                                   RlcDlRbCb *rbCb, 
-                                   KwDatReq *kwDatReq,
-                                   Bool staPduPres));
+	 RlcDlRbCb *rbCb, 
+	 KwDatReq *kwDatReq,
+	 Bool staPduPres));
 
 EXTERN Void kwAmmDlReEstablish ARGS((RlcCb *gCb, 
-                                     CmLteRlcId rlcId, 
-                                     RlcDlRbCb *rbCb));
+	 CmLteRlcId rlcId, 
+	 RlcDlRbCb *rbCb));
 
 EXTERN Void kwAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
-                                        RlcDlRbCb  *rbCb,
-                                        KwUdxStaPdu *pStaPdu));
+	 RlcDlRbCb  *rbCb,
+	 KwUdxStaPdu *pStaPdu));
 
 EXTERN S16 kwAmmDiscSdu ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, U32 sduId));
 
@@ -707,27 +707,27 @@ EXTERN Void kwAmmFreeDlRbCb ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
  ***************************************************************************/
 
 EXTERN Void kwUtlStoreTxBuf ARGS ((CmLListCp        *txBufLst,
-                                    KwTx       *txBuf,
-                                    KwSn              sn
-                                   ));
+	 KwTx       *txBuf,
+	 KwSn              sn
+	 ));
 EXTERN KwTx* kwUtlGetTxBuf ARGS ((CmLListCp        *txBufLst,
-                                  KwSn              sn
-                                  ));
+	 KwSn              sn
+	 ));
 EXTERN Void kwUtlDelTxBuf ARGS ((CmLListCp        *txBufLst,
-                                  KwTx            *txBuf,
-                                  RlcCb              *gCb
-                                  ));
+	 KwTx            *txBuf,
+	 RlcCb              *gCb
+	 ));
 EXTERN Void kwUtlRemovTxBuf ARGS ((CmLListCp      *txBufLst,
-                                  KwTx            *txBuf,
-                                  RlcCb              *gCb
-                                  ));
+	 KwTx            *txBuf,
+	 RlcCb              *gCb
+	 ));
 
 EXTERN S16 kwUtlSndDStaRsp ARGS ((RlcCb *gCb,
-                                  RlcDlRbCb *rbCb,
-                                  S32 bo,
-                                  S32 estHdrSz,
-                                  Bool staPduPrsnt,
-                                  U32 staPduBo));
+	 RlcDlRbCb *rbCb,
+	 S32 bo,
+	 S32 estHdrSz,
+	 Bool staPduPrsnt,
+	 U32 staPduBo));
 
 #ifdef LTE_L2_MEAS_RLC
 EXTERN Void kwUtlEmptySduQ ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, CmLListCp *sduQ));
@@ -736,16 +736,16 @@ EXTERN Void kwUtlEmptySduQ ARGS ((RlcCb *gCb,CmLListCp *sduQ));
 #endif /* LTE_L2_MEAS */
 
 EXTERN Void kwUtlCalcLiForSdu ARGS ((RlcCb *gCb,
-                                     U16 numLi, 
-                                     MsgLen msgLen,
-                                     S16 *pduSz));
+	 U16 numLi, 
+	 MsgLen msgLen,
+	 S16 *pduSz));
 
 EXTERN S16 kwUtlSndToLi ARGS ((RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo));
 
 EXTERN Void kwUtlIncrementKwuStsSduTx ARGS((KwKwuSapCb *kwuSap));
 
 EXTERN Void kwUtlIncrementGenStsBytesAndPdusSent ARGS((KwGenSts *genSts, 
-                                                       Buffer *pdu));
+	 Buffer *pdu));
 
 EXTERN Void kwUtlFreeDlMemory ARGS ((RlcCb *gCb));
 
@@ -788,59 +788,59 @@ EXTERN Void rlcDlUtlResetReestInProgress ARGS ((RlcDlRbCb *rbCb));
 EXTERN Void rlcDlUtlResetReestInProgress ARGS (( RlcDlRbCb *rbCb));
 
 EXTERN Void rlcDlUtlSetReestInProgressForAllRBs ARGS ((RlcCb *gCb, RlcDlUeCb
-         *ueCb));
+	 *ueCb));
 EXTERN Void rlcDlUtlSetReestInProgressForRB ARGS (( RlcCb *gCb, RlcDlRbCb *rbCb));
 
 #ifdef LTE_L2_MEAS
 EXTERN Void kwUtlUpdateContainedSduLst ARGS ((
-U8  sduIdx, 
-KwContSduLst  *contSduLst
-));
+	 U8  sduIdx, 
+	 KwContSduLst  *contSduLst
+	 ));
 EXTERN Void kwUtlUpdateOutStandingSduLst ARGS ((
-KwL2MeasDlIpTh   *dlIpThPut, 
-U8               sduIdx, 
-MsgLen           sduLen, 
-U32              sduId,
-Bool             newIdx
-));
+	 KwL2MeasDlIpTh   *dlIpThPut, 
+	 U8               sduIdx, 
+	 MsgLen           sduLen, 
+	 U32              sduId,
+	 Bool             newIdx
+	 ));
 EXTERN Void kwUtlUpdateBurstSdus ARGS((
-RlcCb            *gCb,         
-RlcDlRbCb        *rbCb,
-KwContSduLst    *contSduLst,
-S32             dataVol,
-U32             schPduSz
-));
+	 RlcCb            *gCb,         
+	 RlcDlRbCb        *rbCb,
+	 KwContSduLst    *contSduLst,
+	 S32             dataVol,
+	 U32             schPduSz
+	 ));
 
 EXTERN KwL2MeasTb * kwUtlGetCurMeasTb ARGS((
-RlcCb     *gCb,
-RlcDlRbCb *rbCb
-));
+	 RlcCb     *gCb,
+	 RlcDlRbCb *rbCb
+	 ));
 
 EXTERN S16 kwUtlSndDlL2MeasNCfm ARGS((RlcCb *gCb,
-                                      KwL2MeasReqEvt *measReqEvt,
-                                      KwL2MeasCfmEvt *measCfmEvt));
+	 KwL2MeasReqEvt *measReqEvt,
+	 KwL2MeasCfmEvt *measCfmEvt));
 
 EXTERN S16 kwUtlSndDlL2MeasCfm  ARGS ((RlcCb *gCb, KwL2MeasEvtCb *measEvtCb));
 
 EXTERN S16 kwUtlProcHarqInd  ARGS (( RlcCb *gCb, RguHarqStatusInd *staInd, RlcDlUeCb *ueCb, 
-                                     U8 tbIdx));
+	 U8 tbIdx));
 EXTERN Void kwUtlResetDlL2MeasInKwRb ARGS ((RlcCb *gCb,
-                                            KwL2MeasCb *measCb,
-                                            U8 measType));
+	 KwL2MeasCb *measCb,
+	 U8 measType));
 
 EXTERN S16 KwMiLkwL2MeasStopCfm ARGS((Pst *pst, U8  measType,U8  status));
 
 EXTERN S16 kwUtlValidateIpThL2Meas ARGS((KwL2MeasReqEvt *measReqEvt, 
-                                     KwL2MeasCfmEvt *measCfmEvt)); 
-                                    
+	 KwL2MeasCfmEvt *measCfmEvt)); 
+
 EXTERN S16 kwFetchLchInfo ARGS ((KwL2MeasReqEvt *measReqEvt,
-                                 KwL2MeasCfmEvt *measCfmEvt,
-                                 U16             ueId,
-                                 CmLteLcId *lChId,
-                                 U8 *numLch));
+	 KwL2MeasCfmEvt *measCfmEvt,
+	 U16             ueId,
+	 CmLteLcId *lChId,
+	 U8 *numLch));
 
 EXTERN S16 kwUtlNotifyMacUlIp ARGS ((KwL2MeasCb *measCb,U16 ueIdx, Bool enable,
-                                    CmLteLcId  *lChId, U8 *numLCh));
+	 CmLteLcId  *lChId, U8 *numLCh));
 #endif
 EXTERN Void kwUtlFreeDlMem ARGS(( Void));
 #ifdef __cplusplus
@@ -851,6 +851,6 @@ EXTERN Void kwUtlFreeDlMem ARGS(( Void));
 
   
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

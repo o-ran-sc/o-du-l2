@@ -216,7 +216,7 @@ PUBLIC Void rgSCHDhmHqEntReset(hqE)
    RgSchDlHqProcCb   *hqP;
    U8                i;
    TRC2(rgSCHDhmHqEntReset)
-   cmLListInit(&hqE->inUse);     
+      cmLListInit(&hqE->inUse);     
    cmLListInit(&hqE->free);      
    for (i=0; i < hqE->numHqPrcs; i++)
    {
@@ -276,20 +276,20 @@ PUBLIC Void rgSCHDhmHqEntReset(hqE)
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmAssgnUeHqEntFrmRaCb 
+   PUBLIC Void rgSCHDhmAssgnUeHqEntFrmRaCb 
 (
-RgSchUeCb       *ue,
-RgSchRaCb       *raCb
-)
+ RgSchUeCb       *ue,
+ RgSchRaCb       *raCb
+ )
 #else
 PUBLIC Void rgSCHDhmAssgnUeHqEntFrmRaCb(ue, raCb)
-RgSchUeCb       *ue;
-RgSchRaCb       *raCb;
+   RgSchUeCb       *ue;
+   RgSchRaCb       *raCb;
 #endif
 {
    TRC2(rgSCHDhmAssgnUeHqEntFrmRaCb)
 
-   ue->cellInfo[0]->hqEnt = raCb->dlHqE;
+      ue->cellInfo[0]->hqEnt = raCb->dlHqE;
    ue->cellInfo[0]->hqEnt->ue = ue;
    /* Update the DL Harq related information */
    ue->cellInfo[0]->hqEnt->maxHqTx = ue->cell->dlHqCfg.maxDlHqTx;
@@ -298,7 +298,7 @@ RgSchRaCb       *raCb;
    ue->dl.dlInactvMask &= ~(RG_HQENT_INACTIVE);
    ue->ul.ulInactvMask &= ~(RG_HQENT_INACTIVE);
    rgSCHCmnDlInitHqEnt(ue->cell, ue->cellInfo[0]->hqEnt);
-   
+
    RETVOID;
 }
 
@@ -318,40 +318,40 @@ RgSchRaCb       *raCb;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmDelHqEnt 
+   PUBLIC Void rgSCHDhmDelHqEnt 
 (
-RgSchCellCb       *cell,
-RgSchDlHqEnt      **hqE
-)
+ RgSchCellCb       *cell,
+ RgSchDlHqEnt      **hqE
+ )
 #else
 PUBLIC Void rgSCHDhmDelHqEnt(cell, hqE)
-RgSchCellCb       *cell;
-RgSchDlHqEnt      **hqE;
+   RgSchCellCb       *cell;
+   RgSchDlHqEnt      **hqE;
 #endif
 {
    TRC2(rgSCHDhmDelHqEnt)
 
-   if (!(*hqE))
-   {
-      RETVOID;    
-   }
+      if (!(*hqE))
+      {
+	 RETVOID;    
+      }
 
    rgSCHCmnDlDeInitHqEnt(cell, *hqE);
 
    rgSCHUtlFreeSBuf(cell->instIdx, (Data **)hqE, 
-       sizeof(RgSchDlHqEnt));
-   
+	 sizeof(RgSchDlHqEnt));
+
    RETVOID;
 }
 
 #ifdef ANSI
-PUBLIC RgSchDlHqEnt *rgSCHDhmHqEntInit
+   PUBLIC RgSchDlHqEnt *rgSCHDhmHqEntInit
 (
-RgSchCellCb           *cell
-)
+ RgSchCellCb           *cell
+ )
 #else
 PUBLIC RgSchDlHqEnt *rgSCHDhmHqEntInit(cell)
-RgSchCellCb           *cell;
+   RgSchCellCb           *cell;
 #endif
 {
    RgSchDlHqEnt      *hqE;
@@ -359,21 +359,21 @@ RgSchCellCb           *cell;
 
    TRC2(rgSCHDhmHqEntInit)
 
-   /* Init the HARQ data structure */
-   if (rgSCHUtlAllocSBuf(inst, (Data **)&hqE, sizeof(RgSchDlHqEnt)) != ROK)
-   {
-      RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
-                                         "rgSCHDhmHqEntInit hqE alloc fail"); 
-      RETVALUE(NULLP);
-   }
+      /* Init the HARQ data structure */
+      if (rgSCHUtlAllocSBuf(inst, (Data **)&hqE, sizeof(RgSchDlHqEnt)) != ROK)
+      {
+	 RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
+	       "rgSCHDhmHqEntInit hqE alloc fail"); 
+	 RETVALUE(NULLP);
+      }
 #ifdef LTE_TDD
    /* Init the HARQ processes */
    hqE->numHqPrcs = rgSchTddDlNumHarqProcTbl[cell->ulDlCfgIdx];
    if (rgSCHUtlAllocSBuf(inst, (Data **)&hqE->procs, 
-                           hqE->numHqPrcs * sizeof(RgSchDlHqProcCb)) != ROK)
+	    hqE->numHqPrcs * sizeof(RgSchDlHqProcCb)) != ROK)
    {
       RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
-                                         "rgSCHDhmHqEntInit hqP alloc fail in hqE"); 
+	    "rgSCHDhmHqEntInit hqP alloc fail in hqE"); 
       RETVALUE(NULLP);
    }
 #else
@@ -386,7 +386,7 @@ RgSchCellCb           *cell;
 
    /* Initialize maximum tranmission counter */
    hqE->maxHqTx = cell->dlHqCfg.maxDlHqTx;
-   
+
 
    /* MW_WORKAROUND for ccpu00122893 */
    rgSCHDhmHqEntReset(hqE); 
@@ -423,19 +423,19 @@ RgSchCellCb           *cell;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmGetAvlHqProc
+   PUBLIC S16 rgSCHDhmGetAvlHqProc
 (
-RgSchCellCb           *cell,
-RgSchUeCb               *ue,
-CmLteTimingInfo         timingInfo,
-RgSchDlHqProcCb         **hqP
-)
+ RgSchCellCb           *cell,
+ RgSchUeCb               *ue,
+ CmLteTimingInfo         timingInfo,
+ RgSchDlHqProcCb         **hqP
+ )
 #else
 PUBLIC S16 rgSCHDhmGetAvlHqProc (cell, ue, timingInfo, hqP)
-RgSchCellCb           *cell;
-RgSchUeCb               *ue;
-CmLteTimingInfo         timingInfo;
-RgSchDlHqProcCb         **hqP;
+   RgSchCellCb           *cell;
+   RgSchUeCb               *ue;
+   CmLteTimingInfo         timingInfo;
+   RgSchDlHqProcCb         **hqP;
 #endif
 {
    RgSchDlHqEnt         *hqE = NULLP;
@@ -444,11 +444,11 @@ RgSchDlHqProcCb         **hqP;
    TRC2(rgSCHDhmGetAvlHqProc);
 
    hqE      = RG_SCH_CMN_GET_UE_HQE(ue, cell);
- 
+
    if (hqE == NULLP)
    {   
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHDhmGetAvlHqProc hqE NULL ue %d"
-                           , ue->ueId);     
+	    , ue->ueId);     
       RETVALUE(RFAILED);
    }
 
@@ -457,9 +457,9 @@ RgSchDlHqProcCb         **hqP;
 
    if (NULLP == tmp)
    {
-    RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,
-                        "rgSCHDhmGetAvlHqProc free %ld inUse %ld ue %d"
-                                           , hqE->free.count, hqE->inUse.count, ue->ueId);
+      RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,
+	    "rgSCHDhmGetAvlHqProc free %ld inUse %ld ue %d"
+	    , hqE->free.count, hqE->inUse.count, ue->ueId);
       /* No Harq Process available in the free queue. */
       RETVALUE(RFAILED);
    }
@@ -473,17 +473,17 @@ RgSchDlHqProcCb         **hqP;
    {
       while (tmpHqProc->procId < ue->dl.dlSpsCfg.numSpsHqProc)
       {
-         CM_LLIST_NEXT_NODE(&(hqE->free), tmp);
-         if (!tmp)
-         {
-            break;
-         }
-         tmpHqProc = (RgSchDlHqProcCb *)(tmp->node);
+	 CM_LLIST_NEXT_NODE(&(hqE->free), tmp);
+	 if (!tmp)
+	 {
+	    break;
+	 }
+	 tmpHqProc = (RgSchDlHqProcCb *)(tmp->node);
       }
       if (!tmp)
       {
-         /* No Harq Process available in the free queue. */
-         RETVALUE(RFAILED);
+	 /* No Harq Process available in the free queue. */
+	 RETVALUE(RFAILED);
       }
    }
 #endif
@@ -503,7 +503,7 @@ RgSchDlHqProcCb         **hqP;
    rgSCHDhmHqPAdd2InUseLst(tmpHqProc);
 
    *hqP = tmpHqProc;
-   
+
 #ifdef LTE_ADV
    rgSCHLaaResetDlHqProcCb(tmpHqProc);
 #endif
@@ -548,32 +548,32 @@ RgSchDlHqProcCb         **hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqTbRetx
+   PUBLIC Void rgSCHDhmHqTbRetx
 (
-RgSchDlHqEnt            *hqE,
-CmLteTimingInfo         timingInfo,
-RgSchDlHqProcCb         *hqP,
-U8                      tbIdx
-)
+ RgSchDlHqEnt            *hqE,
+ CmLteTimingInfo         timingInfo,
+ RgSchDlHqProcCb         *hqP,
+ U8                      tbIdx
+ )
 #else
 PUBLIC Void rgSCHDhmHqTbRetx(hqE, timingInfo, hqP, tbIdx)
-RgSchDlHqEnt            *hqE;
-CmLteTimingInfo         timingInfo;
-RgSchDlHqProcCb         *hqP;
-U8                      tbIdx;
+   RgSchDlHqEnt            *hqE;
+   CmLteTimingInfo         timingInfo;
+   RgSchDlHqProcCb         *hqP;
+   U8                      tbIdx;
 #endif
 {
    U8 othrTbIdx = tbIdx ^ 1;
    TRC2(rgSCHDhmHqTbRetx)
 
-   hqP->tbInfo[tbIdx].timingInfo = timingInfo;
+      hqP->tbInfo[tbIdx].timingInfo = timingInfo;
 
    if (hqE->msg4Proc == hqP)
    {
-       RETVOID;
+      RETVOID;
    }
    /* fix for ccpu00118633 No Hq proc Avl end*/
-      
+
    /* Extra:check if Harq process is already linked to in-use
       Queue by means of other TB handling. */
    if (hqP->tbInfo[othrTbIdx].state != HQ_TB_WAITING)
@@ -581,12 +581,12 @@ U8                      tbIdx;
       /*Fix FIXME */
       if (hqE->msg4Proc != hqP)
       {
-         //cmLListAdd2Tail(&hqE->inUse, &hqP->lnk);
-         rgSCHDhmHqPAdd2InUseLst(hqP);
+	 //cmLListAdd2Tail(&hqE->inUse, &hqP->lnk);
+	 rgSCHDhmHqPAdd2InUseLst(hqP);
       }
    }
 
-    hqP->tbInfo[tbIdx].cntrRetxAllocFail = 0;
+   hqP->tbInfo[tbIdx].cntrRetxAllocFail = 0;
 
    RETVOID;
 } /* rgSCHDhmHqTbRetx */
@@ -616,13 +616,13 @@ U8                      tbIdx;
  *
  **/
 #ifdef ANSI
-PUBLIC RgSchDlHqProcCb * rgSCHDhmLastSchedHqProc
+   PUBLIC RgSchDlHqProcCb * rgSCHDhmLastSchedHqProc
 (
-RgSchDlHqEnt            *hqE
-)
+ RgSchDlHqEnt            *hqE
+ )
 #else
 PUBLIC RgSchDlHqProcCb * rgSCHDhmLastSchedHqProc(hqE)
-RgSchDlHqEnt            *hqE;
+   RgSchDlHqEnt            *hqE;
 #endif
 {
    TRC2(rgSCHDhmLastSchedHqProc);
@@ -662,17 +662,17 @@ RgSchDlHqEnt            *hqE;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmGetCcchSduHqProc
+   PUBLIC S16 rgSCHDhmGetCcchSduHqProc
 (
-RgSchUeCb               *ueCb,
-CmLteTimingInfo         timingInfo,
-RgSchDlHqProcCb         **hqP
-)
+ RgSchUeCb               *ueCb,
+ CmLteTimingInfo         timingInfo,
+ RgSchDlHqProcCb         **hqP
+ )
 #else
 PUBLIC S16 rgSCHDhmGetCcchSduHqProc (ueCb, timingInfo, hqP)
-RgSchUeCb               *ueCb;
-CmLteTimingInfo         timingInfo;
-RgSchDlHqProcCb         **hqP;
+   RgSchUeCb               *ueCb;
+   CmLteTimingInfo         timingInfo;
+   RgSchDlHqProcCb         **hqP;
 #endif
 {
    RgSchDlHqProcCb      *tmpHqProc;
@@ -681,7 +681,7 @@ RgSchDlHqProcCb         **hqP;
 
    TRC2(rgSCHDhmGetCcchSduHqProc)
 
-   hqE = ueCb->cellInfo[0]->hqEnt;
+      hqE = ueCb->cellInfo[0]->hqEnt;
    CM_LLIST_FIRST_NODE(&(hqE->free), tmp);
    if (NULLP == tmp)
    {
@@ -705,7 +705,7 @@ RgSchDlHqProcCb         **hqP;
    hqE->ccchSduProc         = tmpHqProc;
    //cmLListAdd2Tail(&hqE->inUse, &tmpHqProc->lnk);
    rgSCHDhmHqPAdd2InUseLst(tmpHqProc);
-   
+
    RETVALUE(ROK);
 } /* rgSCHDhmGetCcchSduHqProc */
 #endif
@@ -736,15 +736,15 @@ RgSchDlHqProcCb         **hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmGetMsg4HqProc
+   PUBLIC S16 rgSCHDhmGetMsg4HqProc
 (
-RgSchRaCb               *raCb,
-CmLteTimingInfo         timingInfo
-)
+ RgSchRaCb               *raCb,
+ CmLteTimingInfo         timingInfo
+ )
 #else
 PUBLIC S16 rgSCHDhmGetMsg4HqProc (raCb, timingInfo)
-RgSchRaCb               *raCb;
-CmLteTimingInfo         timingInfo;
+   RgSchRaCb               *raCb;
+   CmLteTimingInfo         timingInfo;
 #endif
 {
    RgSchDlHqProcCb      *tmpHqProc;
@@ -753,7 +753,7 @@ CmLteTimingInfo         timingInfo;
 
    TRC2(rgSCHDhmGetMsg4HqProc)
 
-   hqE = raCb->dlHqE;
+      hqE = raCb->dlHqE;
    CM_LLIST_FIRST_NODE(&(hqE->free), tmp);
    if (NULLP == tmp)
    {
@@ -792,17 +792,17 @@ CmLteTimingInfo         timingInfo;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRlsHqpTb
+   PUBLIC Void rgSCHDhmRlsHqpTb
 (
-RgSchDlHqProcCb         *hqP,
-U8                      tbIdx,
-Bool                    togNdi
-) 
+ RgSchDlHqProcCb         *hqP,
+ U8                      tbIdx,
+ Bool                    togNdi
+ ) 
 #else
 PUBLIC Void rgSCHDhmRlsHqpTb(hqP, tbIdx, togNdi) 
-RgSchDlHqProcCb         *hqP;
-U8                      tbIdx;
-Bool                    togNdi;
+   RgSchDlHqProcCb         *hqP;
+   U8                      tbIdx;
+   Bool                    togNdi;
 #endif
 {
    RgSchDlHqEnt         *hqE;
@@ -818,9 +818,9 @@ Bool                    togNdi;
 
    TRC2(rgSCHDhmRlsHqpTb)
 
-   /* Reset all tbInfo values */
+      /* Reset all tbInfo values */
 
-   hqE = hqP->hqE;
+      hqE = hqP->hqE;
 
 #ifdef MAC_SCH_STATS
    if (hqP->hqE->ue != NULLP)
@@ -835,28 +835,28 @@ Bool                    togNdi;
       static U32 retxCnt1      = 0;
 
       RG_SCH_CMN_DL_TBS_TO_MCS(tbs, \
-            hqRetxStats.dlCqiStat[(cqi - 1)].mcs);
+	    hqRetxStats.dlCqiStat[(cqi - 1)].mcs);
 
       switch (numDlRetx)
       {
-         case 1:
-            hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_1++;
-            break;
-         case 2:
-            hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_2++;
-            break;
-         case 3:
-            hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_3++;
-            break;
-         case 4:
-            hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_4++;
-            break;
+	 case 1:
+	    hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_1++;
+	    break;
+	 case 2:
+	    hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_2++;
+	    break;
+	 case 3:
+	    hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_3++;
+	    break;
+	 case 4:
+	    hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_4++;
+	    break;
       }
       hqRetxStats.dlCqiStat[(cqi - 1)].totalTx = \
-             hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_1 + \
-            (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_2 * 2) + \
-            (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_3 * 3) + \
-            (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_4 * 4); 
+						 hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_1 + \
+						 (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_2 * 2) + \
+						 (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_3 * 3) + \
+						 (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_4 * 4); 
 
       retxCnt1 += numDlRetx;
    }
@@ -873,20 +873,20 @@ Bool                    togNdi;
    for (numLch =0; numLch < hqP->tbInfo[tbIdx].numLch; numLch++)
    {
       if (NULLP != (lcCb = rgSCHDbmGetDlDedLcCb( hqP->hqE->ue,
-                  hqP->tbInfo[tbIdx].lchSchdDataArr[numLch].lcId)))
+		  hqP->tbInfo[tbIdx].lchSchdDataArr[numLch].lcId)))
       {
-         if (lcCb->lcType == CM_LTE_LCH_DTCH)
-         {
-            if (hqP->hqE->ue->qciActiveLCs[lcCb->qciCb->qci])
-            {
-               hqP->hqE->ue->qciActiveLCs[lcCb->qciCb->qci]--;
-            }
+	 if (lcCb->lcType == CM_LTE_LCH_DTCH)
+	 {
+	    if (hqP->hqE->ue->qciActiveLCs[lcCb->qciCb->qci])
+	    {
+	       hqP->hqE->ue->qciActiveLCs[lcCb->qciCb->qci]--;
+	    }
 
-            if (!(hqP->hqE->ue->qciActiveLCs[lcCb->qciCb->qci]))
-            {
-               lcCb->qciCb->dlUeCount--;
-            }
-         }
+	    if (!(hqP->hqE->ue->qciActiveLCs[lcCb->qciCb->qci]))
+	    {
+	       lcCb->qciCb->dlUeCount--;
+	    }
+	 }
       }
    }
 #endif
@@ -940,12 +940,12 @@ Bool                    togNdi;
        * in inUse list, Hence need not to delete from inUse list*/
       if(NULLP == hqP->tbInfo[tbIdx].ccchSchdInfo.retxLnk.node)
       {
-         //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
-         rgSCHDhmHqPDelFrmInUseLst(hqP);
+	 //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
+	 rgSCHDhmHqPDelFrmInUseLst(hqP);
       }
       else
       {
-         hqP->tbInfo[tbIdx].ccchSchdInfo.retxLnk.node = NULLP;
+	 hqP->tbInfo[tbIdx].ccchSchdInfo.retxLnk.node = NULLP;
       }
       hqP->pdcch    = NULLP;
       hqP->subFrm   = NULLP;
@@ -955,62 +955,62 @@ Bool                    togNdi;
       RETVOID;
    }
 #endif
-      
+
    /* extra:check if other TB is also free for allocation then 
     * add it to FREE List */
    switch(hqP->tbInfo[othrTbIdx].state)
    {
       case HQ_TB_ACKED:
-         /* Remove the element from the inUse Queue */
-         /* Freeing up the HARQ proc blocked for
-          * indefinite time in case of Retx */
-         if (hqP->tbInfo[tbIdx].cntrRetxAllocFail != RG_SCH_MAX_RETX_ALLOC_FAIL)
-         {
-            //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
-            rgSCHDhmHqPDelFrmInUseLst(hqP);
-         }
-         hqP->pdcch   = NULLP;
-         hqP->subFrm  = NULLP;
+	 /* Remove the element from the inUse Queue */
+	 /* Freeing up the HARQ proc blocked for
+	  * indefinite time in case of Retx */
+	 if (hqP->tbInfo[tbIdx].cntrRetxAllocFail != RG_SCH_MAX_RETX_ALLOC_FAIL)
+	 {
+	    //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
+	    rgSCHDhmHqPDelFrmInUseLst(hqP);
+	 }
+	 hqP->pdcch   = NULLP;
+	 hqP->subFrm  = NULLP;
 #ifdef EMTC_ENABLE
-rgEmtcsetNullSubFrm(hqP);
+	 rgEmtcsetNullSubFrm(hqP);
 #endif
-         /* Add the proc to the free list */
-         //cmLListAdd2Tail(&hqE->free, &hqP->lnk);
-         rgSCHDhmHqPAdd2FreeLst(hqP);
+	 /* Add the proc to the free list */
+	 //cmLListAdd2Tail(&hqE->free, &hqP->lnk);
+	 rgSCHDhmHqPAdd2FreeLst(hqP);
 #ifdef LAA_DBG
-         if (hqE->free.count > 8)
-         {
-            int *p = NULL;
-            printf("Crashing invalid hq count after free \n");
-            printf("Crashing %d \n", *p);
-            *p = 10;
-         }
+	 if (hqE->free.count > 8)
+	 {
+	    int *p = NULL;
+	    printf("Crashing invalid hq count after free \n");
+	    printf("Crashing %d \n", *p);
+	    *p = 10;
+	 }
 #endif
 #ifdef LTEMAC_SPS
-         cmnHqDl = RG_SCH_CMN_GET_DL_HQP(hqP);
-         if (cmnHqDl) 
-         {
-            cmnHqDl->spsAction = 0;
-            cmnHqDl->isSpsActv = FALSE;
-            cmnHqDl->isSpsSvcSchd = FALSE;
-         }
+	 cmnHqDl = RG_SCH_CMN_GET_DL_HQP(hqP);
+	 if (cmnHqDl) 
+	 {
+	    cmnHqDl->spsAction = 0;
+	    cmnHqDl->isSpsActv = FALSE;
+	    cmnHqDl->isSpsSvcSchd = FALSE;
+	 }
 #endif
-         break;
-         case HQ_TB_NACKED:
-         /* Remove the element from the inUse Queue */
-         /* Freeing up the HARQ proc blocked for
-          * indefinite time in case of Retx */
-         if (hqP->tbInfo[othrTbIdx].cntrRetxAllocFail == 0)
-         {
-            //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
-            rgSCHDhmHqPDelFrmInUseLst(hqP);
-         }
-         break;
-         case HQ_TB_WAITING:
-            /* Do nothing */
-         break;
+	 break;
+      case HQ_TB_NACKED:
+	 /* Remove the element from the inUse Queue */
+	 /* Freeing up the HARQ proc blocked for
+	  * indefinite time in case of Retx */
+	 if (hqP->tbInfo[othrTbIdx].cntrRetxAllocFail == 0)
+	 {
+	    //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
+	    rgSCHDhmHqPDelFrmInUseLst(hqP);
+	 }
+	 break;
+      case HQ_TB_WAITING:
+	 /* Do nothing */
+	 break;
    }
-   
+
    hqP->tbInfo[tbIdx].cntrRetxAllocFail = 0;
 
    RETVOID;
@@ -1033,13 +1033,13 @@ rgEmtcsetNullSubFrm(hqP);
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRlsHqProc
+   PUBLIC Void rgSCHDhmRlsHqProc
 (
-RgSchDlHqProcCb         *hqP
-)
+ RgSchDlHqProcCb         *hqP
+ )
 #else
 PUBLIC Void rgSCHDhmRlsHqProc(hqP)
-RgSchDlHqProcCb         *hqP;
+   RgSchDlHqProcCb         *hqP;
 #endif
 {
 
@@ -1047,48 +1047,48 @@ RgSchDlHqProcCb         *hqP;
 
 
 #ifdef MAC_SCH_STATS
-    /* THIS FUNCTION IS NOT CALLED */
-   if (hqP->hqE->ue != NULLP)
-   {
-      RgSchUeCb      *ueCb  = hqP->hqE->ue;
-      RgSchCmnUe     *cmnUe = (RgSchCmnUe*)ueCb->sch;
-      RgSchCmnDlUe   *dlUe  = RG_SCH_CMN_GET_DL_UE(ueCb,hqE->cell);/*CA dev*/
-      U8             cqi    = dlUe->mimoInfo.cwInfo[0].cqi;
-      /* to get retransmission, decreasing transmission counter */
-      U16            numDlRetx = hqP->tbInfo[0].txCntr-1; 
-      U8             tbs       = dlUe->mimoInfo.cwInfo[0].iTbs[0];
-
-      RG_SCH_CMN_DL_TBS_TO_MCS(tbs, hqRetxStats.dlCqiStat[(cqi - 1)].mcs);
-
-      switch (numDlRetx)
+      /* THIS FUNCTION IS NOT CALLED */
+      if (hqP->hqE->ue != NULLP)
       {
-         case 1:
-            hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_1++;
-            break;
-         case 2:
-            hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_2++;
-            break;
-         case 3:
-            hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_3++;
-            break;
-         case 4:
-            hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_4++;
-            break;
+	 RgSchUeCb      *ueCb  = hqP->hqE->ue;
+	 RgSchCmnUe     *cmnUe = (RgSchCmnUe*)ueCb->sch;
+	 RgSchCmnDlUe   *dlUe  = RG_SCH_CMN_GET_DL_UE(ueCb,hqE->cell);/*CA dev*/
+	 U8             cqi    = dlUe->mimoInfo.cwInfo[0].cqi;
+	 /* to get retransmission, decreasing transmission counter */
+	 U16            numDlRetx = hqP->tbInfo[0].txCntr-1; 
+	 U8             tbs       = dlUe->mimoInfo.cwInfo[0].iTbs[0];
+
+	 RG_SCH_CMN_DL_TBS_TO_MCS(tbs, hqRetxStats.dlCqiStat[(cqi - 1)].mcs);
+
+	 switch (numDlRetx)
+	 {
+	    case 1:
+	       hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_1++;
+	       break;
+	    case 2:
+	       hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_2++;
+	       break;
+	    case 3:
+	       hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_3++;
+	       break;
+	    case 4:
+	       hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_4++;
+	       break;
+	 }
+	 hqRetxStats.dlCqiStat[(cqi - 1)].totalTx = \
+						    hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_1 + \
+						    (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_2 * 2) + \
+						    (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_3 * 3) + \
+						    (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_4 * 4);
       }
-      hqRetxStats.dlCqiStat[(cqi - 1)].totalTx = \
-             hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_1 + \
-            (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_2 * 2) + \
-            (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_3 * 3) + \
-            (hqRetxStats.dlCqiStat[(cqi - 1)].numOfHQ_4 * 4);
-   }
 #endif /* MAC_SCH_STATS */
-      hqP->pdcch   = NULLP;
-      hqP->subFrm  = NULLP;
+   hqP->pdcch   = NULLP;
+   hqP->subFrm  = NULLP;
 #ifdef EMTC_ENABLE
-rgEmtcsetNullSubFrm(hqP);
+   rgEmtcsetNullSubFrm(hqP);
 #endif
-      rgSCHDhmHqPDelFrmInUseLst(hqP);
-      rgSCHDhmHqPAdd2FreeLst(hqP);
+   rgSCHDhmHqPDelFrmInUseLst(hqP);
+   rgSCHDhmHqPAdd2FreeLst(hqP);
 #ifdef TFU_UPGRADE
    hqP->tbCnt = 0;
 #endif
@@ -1115,25 +1115,25 @@ rgEmtcsetNullSubFrm(hqP);
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmGetHqProcFrmId
+   PUBLIC S16 rgSCHDhmGetHqProcFrmId
 (
-RgSchCellCb           *cell,
-RgSchUeCb               *ue,
-U8                      idx,
-RgSchDlHqProcCb         **hqP
-)
+ RgSchCellCb           *cell,
+ RgSchUeCb               *ue,
+ U8                      idx,
+ RgSchDlHqProcCb         **hqP
+ )
 #else
 PUBLIC S16 rgSCHDhmGetHqProcFrmId(cell, ue, idx, hqP)
-RgSchCellCb           *cell;
-RgSchUeCb               *ue;
-U8                      idx;
-RgSchDlHqProcCb         **hqP;
+   RgSchCellCb           *cell;
+   RgSchUeCb               *ue;
+   U8                      idx;
+   RgSchDlHqProcCb         **hqP;
 #endif
 {
    RgSchDlHqEnt         *hqE;
    TRC2(rgSCHDhmGetHqProcFrmId)
 
-   hqE      = RG_SCH_CMN_GET_UE_HQE(ue, cell);
+      hqE      = RG_SCH_CMN_GET_UE_HQE(ue, cell);
    /* Pick the proc based on the index provided */
    *hqP = &(hqE->procs[idx]);
 
@@ -1154,16 +1154,16 @@ RgSchDlHqProcCb         **hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC RgSchDlHqProcCb* rgSCHDhmSpsDlGetHqProc
+   PUBLIC RgSchDlHqProcCb* rgSCHDhmSpsDlGetHqProc
 (
-RgSchCellCb           *cell,
-RgSchUeCb               *ue,
-CmLteTimingInfo         timingInfo
-)
+ RgSchCellCb           *cell,
+ RgSchUeCb               *ue,
+ CmLteTimingInfo         timingInfo
+ )
 #else
 PUBLIC RgSchDlHqProcCb* rgSCHDhmSpsDlGetHqProc(cell, ue, timingInfo)
-RgSchCellCb           *cell,
-RgSchUeCb               *ue;
+   RgSchCellCb           *cell,
+   RgSchUeCb               *ue;
 CmLteTimingInfo         timingInfo;
 #endif
 {
@@ -1185,7 +1185,7 @@ CmLteTimingInfo         timingInfo;
    }
 
    idx = ((timingInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G + timingInfo.slot)/
-         ue->dl.dlSpsCfg.dlSpsPrdctyEnum) % ue->dl.dlSpsCfg.numSpsHqProc;
+	 ue->dl.dlSpsCfg.dlSpsPrdctyEnum) % ue->dl.dlSpsCfg.numSpsHqProc;
 
 
    hqProc = (RgSchDlHqProcCb *)(tmp->node);
@@ -1196,7 +1196,7 @@ CmLteTimingInfo         timingInfo;
       CM_LLIST_NEXT_NODE(&(hqE->free), tmp);
       if (!tmp)
       {
-         break;
+	 break;
       }
       hqProc = (RgSchDlHqProcCb *)(tmp->node);
    }
@@ -1243,19 +1243,19 @@ CmLteTimingInfo         timingInfo;
  *      -# None.
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDhmFdbkIndHndlTa
+   PRIVATE Void rgSCHDhmFdbkIndHndlTa
 (
-RgSchDlHqProcCb   *hqP,
-U8                tbIdx,
-U8                fdbk,
-Bool              maxHqRetxReached
-)
+ RgSchDlHqProcCb   *hqP,
+ U8                tbIdx,
+ U8                fdbk,
+ Bool              maxHqRetxReached
+ )
 #else
 PRIVATE Void rgSCHDhmFdbkIndHndlTa(hqP, tbIdx, fdbk,maxHqRetxReached)
-RgSchDlHqProcCb   *hqP;
-U8                tbIdx;
-U8                fdbk;
-Bool              maxHqRetxReached;
+   RgSchDlHqProcCb   *hqP;
+   U8                tbIdx;
+   U8                fdbk;
+   Bool              maxHqRetxReached;
 #endif
 {
    RgSchUeCb      *ueCb;
@@ -1263,58 +1263,58 @@ Bool              maxHqRetxReached;
 
    TRC2(rgSCHDhmFdbkIndHndlTa)
 
-   ueCb  = hqP->hqE->ue;
+      ueCb  = hqP->hqE->ue;
    cell  = ueCb->cell;
    switch(fdbk)
    {
       case TRUE:
-         /*ccpu00130018 -ADD - To prevent duplicate insert into the TA list*/  
-         hqP->tbInfo[tbIdx].taSnt =  FALSE;
-         /* To prevent duplicate inserts of ueCb into TA list */
-         if (ueCb->taLnk.node == NULLP)
-         {
-            ueCb->taLnk.node         =  (PTR)ueCb;
-            cmLListAdd2Tail(&cell->taUeLst, &ueCb->taLnk);
-         }
-         else
-         { 
+	 /*ccpu00130018 -ADD - To prevent duplicate insert into the TA list*/  
+	 hqP->tbInfo[tbIdx].taSnt =  FALSE;
+	 /* To prevent duplicate inserts of ueCb into TA list */
+	 if (ueCb->taLnk.node == NULLP)
+	 {
+	    ueCb->taLnk.node         =  (PTR)ueCb;
+	    cmLListAdd2Tail(&cell->taUeLst, &ueCb->taLnk);
+	 }
+	 else
+	 { 
 #ifdef DEBUGP            
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Trying to add CRNTI:%d into TA"
-                     "ACK List twice", ueCb->ueId);
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Trying to add CRNTI:%d into TA"
+		  "ACK List twice", ueCb->ueId);
 #endif            
-         } 
-         break;
+	 } 
+	 break;
 
       case FALSE:
-         /* If Ta was sent and its the final NACK, then reset only the 
-          * taState to IDLE and not the value */
-         /* Changed handling in case maxhqretx is reached for TA */
-         if(TRUE == maxHqRetxReached)
-         {
-            hqP->tbInfo[tbIdx].taSnt    =  FALSE;
-            hqP->hqE->ue->dl.taCb.state =  RGSCH_TA_IDLE;
+	 /* If Ta was sent and its the final NACK, then reset only the 
+	  * taState to IDLE and not the value */
+	 /* Changed handling in case maxhqretx is reached for TA */
+	 if(TRUE == maxHqRetxReached)
+	 {
+	    hqP->tbInfo[tbIdx].taSnt    =  FALSE;
+	    hqP->hqE->ue->dl.taCb.state =  RGSCH_TA_IDLE;
 
-            rgSCHUtlReTxTa(cell, ueCb);
-            RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId, 
-                  "Nack Rcvd for TA. Max Tries Attempted");
-         }
-         break;
+	    rgSCHUtlReTxTa(cell, ueCb);
+	    RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId, 
+		  "Nack Rcvd for TA. Max Tries Attempted");
+	 }
+	 break;
       case TFU_HQFDB_DTX:
-         /* If Ta was sent and its the final NACK, then reset only the 
-          * taState to IDLE and not the value */
-         if(TRUE == maxHqRetxReached)
-         {
-            hqP->tbInfo[tbIdx].taSnt    =  FALSE;
-            hqP->hqE->ue->dl.taCb.state =  RGSCH_TA_IDLE;
+	 /* If Ta was sent and its the final NACK, then reset only the 
+	  * taState to IDLE and not the value */
+	 if(TRUE == maxHqRetxReached)
+	 {
+	    hqP->tbInfo[tbIdx].taSnt    =  FALSE;
+	    hqP->hqE->ue->dl.taCb.state =  RGSCH_TA_IDLE;
 
-            /*ccpu00131191 and ccpu00131317 - Fix for RRC Reconfig failure
-             * issue for VoLTE call */
-            rgSCHUtlDlTARpt(cell, ueCb);
-         }
-         break;
+	    /*ccpu00131191 and ccpu00131317 - Fix for RRC Reconfig failure
+	     * issue for VoLTE call */
+	    rgSCHUtlDlTARpt(cell, ueCb);
+	 }
+	 break;
 
       default:
-         break;
+	 break;
    }
 
    RETVOID;
@@ -1336,22 +1336,22 @@ Bool              maxHqRetxReached;
  *      -# None.
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmSchdTa
+   PUBLIC Void rgSCHDhmSchdTa
 (
-RgSchUeCb         *ueCb,
-RgSchDlHqTbCb     *tbInfo
-)
+ RgSchUeCb         *ueCb,
+ RgSchDlHqTbCb     *tbInfo
+ )
 #else
 PUBLIC Void rgSCHDhmSchdTa(ueCb, tbInfo)
-RgSchUeCb         *ueCb;
-RgSchDlHqTbCb     *tbInfo;
+   RgSchUeCb         *ueCb;
+   RgSchDlHqTbCb     *tbInfo;
 #endif
 {
 
    TRC2(rgSCHDhmSchdTa)
 
-   ueCb->dl.taCb.state = RGSCH_TA_SCHEDULED;
-    ueCb->dl.taCb.numRemSf  =  2; 
+      ueCb->dl.taCb.state = RGSCH_TA_SCHEDULED;
+   ueCb->dl.taCb.numRemSf  =  2; 
    tbInfo->schdTa.pres    = PRSNT_NODEF;
    tbInfo->schdTa.val     = ueCb->dl.taCb.ta;
 
@@ -1378,28 +1378,28 @@ RgSchDlHqTbCb     *tbInfo;
  *  @return     S16
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHDhmHqProcByFdbkTime
+   PRIVATE S16 rgSCHDhmHqProcByFdbkTime
 (
-RgSchDlHqEnt            *hqE,
-CmLteTimingInfo         timeInfo,
-Bool                    *isMsg4,
-RgSchDlHqProcCb         **hqPrcs,
-U8                      *numTbs,
-S8                      *tbStrtIdx,
-U8                      *cntHqPrcs,
-RgSchCellCb             *cell
-)
+ RgSchDlHqEnt            *hqE,
+ CmLteTimingInfo         timeInfo,
+ Bool                    *isMsg4,
+ RgSchDlHqProcCb         **hqPrcs,
+ U8                      *numTbs,
+ S8                      *tbStrtIdx,
+ U8                      *cntHqPrcs,
+ RgSchCellCb             *cell
+ )
 #else
 PRIVATE S16 rgSCHDhmHqProcByFdbkTime(hqE, timeInfo, isMsg4, hqPrcs,
-                                     numTbs, tbStrtIdx, cntHqPrcs)
-RgSchDlHqEnt            *hqE;
-CmLteTimingInfo         timeInfo;
-Bool                    *isMsg4;
-RgSchDlHqProcCb         **hqPrcs;
-U8                      *numTbs;
-S8                      *tbStrtIdx;
-U8                      *cntHqPrcs;
-RgSchCellCb             *cell;
+      numTbs, tbStrtIdx, cntHqPrcs)
+   RgSchDlHqEnt            *hqE;
+   CmLteTimingInfo         timeInfo;
+   Bool                    *isMsg4;
+   RgSchDlHqProcCb         **hqPrcs;
+   U8                      *numTbs;
+   S8                      *tbStrtIdx;
+   U8                      *cntHqPrcs;
+   RgSchCellCb             *cell;
 #endif
 {
    RgSchDlHqTbCb        *tbCb;
@@ -1418,12 +1418,12 @@ RgSchCellCb             *cell;
    {
       if (RGSCH_TIMEINFO_SAME(hqE->msg4Proc->tbInfo[0].fdbkTime, timeInfo))
       {
-          *isMsg4 = TRUE;
-          hqPrcs[*cntHqPrcs] = hqE->msg4Proc;
-          tbStrtIdx[*cntHqPrcs] = 0;
-          numTbs[*cntHqPrcs] = 1;
-          (*cntHqPrcs)++;
-          RETVALUE(ROK);
+	 *isMsg4 = TRUE;
+	 hqPrcs[*cntHqPrcs] = hqE->msg4Proc;
+	 tbStrtIdx[*cntHqPrcs] = 0;
+	 numTbs[*cntHqPrcs] = 1;
+	 (*cntHqPrcs)++;
+	 RETVALUE(ROK);
       }
    }
    ascIdx = rgSchTddDlAscSetIdxKTbl[cell->ulDlCfgIdx][timeInfo.slot];
@@ -1440,62 +1440,62 @@ RgSchCellCb             *cell;
       node = lnk->first;
       while (node)
       {
-         hqP = (RgSchDlHqProcCb*)node->node;
-         node = node->next; 
+	 hqP = (RgSchDlHqProcCb*)node->node;
+	 node = node->next; 
 
-         numTbs[*cntHqPrcs] = 0;
-         tbStrtIdx[*cntHqPrcs] = -1;
-         for (i = 0; i < 2; i++)
-         {
-            /* Extra:check which TB is waiting for feedback */
-            if (hqP->tbInfo[i].state == HQ_TB_WAITING)
-            {
-               if (tbStrtIdx[*cntHqPrcs] == -1)
-               {
-                  tbStrtIdx[*cntHqPrcs] = i;
-               }
-               numTbs[*cntHqPrcs]++;
-            }
-         }
-         if (numTbs[*cntHqPrcs] > 0)
-         {
-            hqPrcs[*cntHqPrcs] = hqP;
-            (*cntHqPrcs)++;
-         }
+	 numTbs[*cntHqPrcs] = 0;
+	 tbStrtIdx[*cntHqPrcs] = -1;
+	 for (i = 0; i < 2; i++)
+	 {
+	    /* Extra:check which TB is waiting for feedback */
+	    if (hqP->tbInfo[i].state == HQ_TB_WAITING)
+	    {
+	       if (tbStrtIdx[*cntHqPrcs] == -1)
+	       {
+		  tbStrtIdx[*cntHqPrcs] = i;
+	       }
+	       numTbs[*cntHqPrcs]++;
+	    }
+	 }
+	 if (numTbs[*cntHqPrcs] > 0)
+	 {
+	    hqPrcs[*cntHqPrcs] = hqP;
+	    (*cntHqPrcs)++;
+	 }
       }
 
       /* AN REP Hq Procs */
       node = cell->subFrms[dlIdx]->ackNakRepQ.first;
       while(node)
       {
-         tbCb = (RgSchDlHqTbCb *)(node->node);
-         hqP = tbCb->hqP;
+	 tbCb = (RgSchDlHqTbCb *)(node->node);
+	 hqP = tbCb->hqP;
 
-         numTbs[*cntHqPrcs] = 0;
-         tbStrtIdx[*cntHqPrcs] = -1;
-         for (i = 0; i < 2; i++)
-         {
-            /* Extra:check which TB is waiting for feedback */
-            if (hqP->tbInfo[i].state == HQ_TB_WAITING)
-            {
-               if (tbStrtIdx[*cntHqPrcs] == -1)
-               {
-                  tbStrtIdx[*cntHqPrcs] = i;
-               }
-               numTbs[*cntHqPrcs]++;
-            }
-         }
-         if (numTbs[*cntHqPrcs] == 2)
-         {
-            node = node->next;
-         }
-         if (numTbs[*cntHqPrcs] > 0)
-         {
-            hqPrcs[*cntHqPrcs] = hqP;
-            (*cntHqPrcs)++;
-         }
+	 numTbs[*cntHqPrcs] = 0;
+	 tbStrtIdx[*cntHqPrcs] = -1;
+	 for (i = 0; i < 2; i++)
+	 {
+	    /* Extra:check which TB is waiting for feedback */
+	    if (hqP->tbInfo[i].state == HQ_TB_WAITING)
+	    {
+	       if (tbStrtIdx[*cntHqPrcs] == -1)
+	       {
+		  tbStrtIdx[*cntHqPrcs] = i;
+	       }
+	       numTbs[*cntHqPrcs]++;
+	    }
+	 }
+	 if (numTbs[*cntHqPrcs] == 2)
+	 {
+	    node = node->next;
+	 }
+	 if (numTbs[*cntHqPrcs] > 0)
+	 {
+	    hqPrcs[*cntHqPrcs] = hqP;
+	    (*cntHqPrcs)++;
+	 }
 
-         node = node->next;
+	 node = node->next;
       }
    }
 
@@ -1521,31 +1521,31 @@ RgSchCellCb             *cell;
  *      -# NULLP 
  **/
 #ifdef ANSI
-PUBLIC RgSchDlHqProcCb *rgSCHDhmHqProcByTime
+   PUBLIC RgSchDlHqProcCb *rgSCHDhmHqProcByTime
 (
-RgSchDlHqEnt            *hqE,
-CmLteTimingInfo         timeInfo,
-Bool                    *isMsg4,
-RgSchDlSf               *sf
-)
+ RgSchDlHqEnt            *hqE,
+ CmLteTimingInfo         timeInfo,
+ Bool                    *isMsg4,
+ RgSchDlSf               *sf
+ )
 #else
 PUBLIC RgSchDlHqProcCb *rgSCHDhmHqProcByTime(hqE, timeInfo,
-                                              isMsg4,sf)
-RgSchDlHqEnt            *hqE;
-CmLteTimingInfo         timeInfo;
-Bool                    *isMsg4;
-RgSchDlSf               *sf;
+      isMsg4,sf)
+   RgSchDlHqEnt            *hqE;
+   CmLteTimingInfo         timeInfo;
+   Bool                    *isMsg4;
+   RgSchDlSf               *sf;
 #endif
 {
    if (hqE->msg4Proc)
    {
       if (RGSCH_TIMEINFO_SAME(hqE->msg4Proc->tbInfo[0].timingInfo, timeInfo))
       {
-          *isMsg4    = TRUE;
-          RETVALUE(hqE->msg4Proc);
+	 *isMsg4    = TRUE;
+	 RETVALUE(hqE->msg4Proc);
       }
    }
-   
+
    RETVALUE(NULLP);
 }
 #endif
@@ -1569,19 +1569,19 @@ RgSchDlSf               *sf;
  *      
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqTbTrnsFail
+   PUBLIC Void rgSCHDhmHqTbTrnsFail
 (
-RgSchCellCb             *cell,
-RgSchDlHqProcCb         *hqP,
-U8                      tbCnt,
-Bool                    *isMaxRetx
-)
+ RgSchCellCb             *cell,
+ RgSchDlHqProcCb         *hqP,
+ U8                      tbCnt,
+ Bool                    *isMaxRetx
+ )
 #else
 PUBLIC Void rgSCHDhmHqTbTrnsFail(cell, hqP, tbCnt, isMaxRetx)
-RgSchCellCb             *cell;
-RgSchDlHqProcCb         *hqP;
-U8                      tbCnt;
-Bool                    *isMaxRetx;
+   RgSchCellCb             *cell;
+   RgSchDlHqProcCb         *hqP;
+   U8                      tbCnt;
+   Bool                    *isMaxRetx;
 #endif
 {
    RgSchDlHqEnt         *hqE;
@@ -1589,7 +1589,7 @@ Bool                    *isMaxRetx;
 
    TRC2(rgSCHDhmHqTbTrnsFail)
 
-   hqE = hqP->hqE;
+      hqE = hqP->hqE;
 
    /* Fetch the maximum number of harq transmissions */
    if (hqE->msg4Proc == hqP)
@@ -1597,11 +1597,11 @@ Bool                    *isMaxRetx;
 #ifdef RGR_V1
       if(hqP->hqE->raCb->expiryTime.sfn == RGSCH_CONTRES_EXP)
       {
-         RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-               "rgSCHDhmHqTbTrnsFail contRes exp(): tmpCRNTI = %u",
-               hqP->hqE->raCb->tmpCrnti);
-         rgSCHRamMsg4Done(cell, (RgSchRaCb *)hqP->hqE->raCb);
-         RETVOID;
+	 RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
+	       "rgSCHDhmHqTbTrnsFail contRes exp(): tmpCRNTI = %u",
+	       hqP->hqE->raCb->tmpCrnti);
+	 rgSCHRamMsg4Done(cell, (RgSchRaCb *)hqP->hqE->raCb);
+	 RETVOID;
       }
 #endif
       maxHqTx  = cell->dlHqCfg.maxMsg4HqTx;
@@ -1621,11 +1621,11 @@ Bool                    *isMaxRetx;
       static U32 retxCnt    = 0;
 
       {
-         ++retxCnt;
-         hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].numOfNacks++;
+	 ++retxCnt;
+	 hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].numOfNacks++;
       }
       RG_SCH_CMN_DL_TBS_TO_MCS(tbs, 
-               (hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].mcs));
+	    (hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].mcs));
    }
 #endif /* MAC_SCH_STATS */ 
 
@@ -1639,51 +1639,51 @@ Bool                    *isMaxRetx;
       if((hqE->ue != NULLP) && (hqE->ue->isDrxEnabled == TRUE))
       {
 
-         /*If DRX is enabled for the UE, we need to start the HARQ RTT timer
-          * for the UE. Addtion to the retransmission queue will be done on
-          * HARQ RTT timer expiry.--*/
-         switch(hqP->tbInfo[tbCnt ^ 1].state)
-         {
-            case HQ_TB_ACKED:
-               /*As the first TB is ACKED we have not started HARQ RTT for the
-                * HqP, so start it here.*/
-               //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
-               rgSCHDhmHqPDelFrmInUseLst(hqP);
-               /* CA Dev Start */
-               rgSCHDrxStartHarqRTTTmr(hqP->hqE->ue->cell, hqP, tbCnt);
-               /* CA Dev End*/
+	 /*If DRX is enabled for the UE, we need to start the HARQ RTT timer
+	  * for the UE. Addtion to the retransmission queue will be done on
+	  * HARQ RTT timer expiry.--*/
+	 switch(hqP->tbInfo[tbCnt ^ 1].state)
+	 {
+	    case HQ_TB_ACKED:
+	       /*As the first TB is ACKED we have not started HARQ RTT for the
+		* HqP, so start it here.*/
+	       //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
+	       rgSCHDhmHqPDelFrmInUseLst(hqP);
+	       /* CA Dev Start */
+	       rgSCHDrxStartHarqRTTTmr(hqP->hqE->ue->cell, hqP, tbCnt);
+	       /* CA Dev End*/
 #ifdef LTEMAC_SPS
-               /* Integration fix */   
-               /* Setting cntrRetxAllocFail to MAX value here */
-               /* Since the hqP entry is already deleted from inUse list of HqEntity
-                  setting the value here will ensure the entry is not deleted
-                  again during release harq proc */
-               if ( (hqP->sch != (RgSchCmnDlHqProc *)NULLP) && 
-                     (RG_SCH_CMN_SPS_DL_IS_SPS_HQP(hqP)))
-               {
-                  hqP->tbInfo[0].cntrRetxAllocFail = RG_SCH_MAX_RETX_ALLOC_FAIL;
-                  if (hqP->tbInfo[1].txCntr)
-                  {
-                     hqP->tbInfo[1].cntrRetxAllocFail = RG_SCH_MAX_RETX_ALLOC_FAIL;
-                  }
-               }
+	       /* Integration fix */   
+	       /* Setting cntrRetxAllocFail to MAX value here */
+	       /* Since the hqP entry is already deleted from inUse list of HqEntity
+		  setting the value here will ensure the entry is not deleted
+		  again during release harq proc */
+	       if ( (hqP->sch != (RgSchCmnDlHqProc *)NULLP) && 
+		     (RG_SCH_CMN_SPS_DL_IS_SPS_HQP(hqP)))
+	       {
+		  hqP->tbInfo[0].cntrRetxAllocFail = RG_SCH_MAX_RETX_ALLOC_FAIL;
+		  if (hqP->tbInfo[1].txCntr)
+		  {
+		     hqP->tbInfo[1].cntrRetxAllocFail = RG_SCH_MAX_RETX_ALLOC_FAIL;
+		  }
+	       }
 #endif
-               break;
-            case HQ_TB_NACKED:
-               /*As the first TB is NACKED we have already started HARQ RTT for the
-                * HqP, so dont start it here, just delete from in use queue.*/
-               //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
-               rgSCHDhmHqPDelFrmInUseLst(hqP);
-               break;
-            case HQ_TB_WAITING:
-               /*As this is the first TB to be fed back and is NACKED start
-                * the HARQ RTT here.*/
-               /* CA Dev Start */
-               rgSCHDrxStartHarqRTTTmr(hqP->hqE->ue->cell, hqP,tbCnt);
-               /* CA Dev End*/
-               break;
-         }
-         RETVOID;
+	       break;
+	    case HQ_TB_NACKED:
+	       /*As the first TB is NACKED we have already started HARQ RTT for the
+		* HqP, so dont start it here, just delete from in use queue.*/
+	       //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
+	       rgSCHDhmHqPDelFrmInUseLst(hqP);
+	       break;
+	    case HQ_TB_WAITING:
+	       /*As this is the first TB to be fed back and is NACKED start
+		* the HARQ RTT here.*/
+	       /* CA Dev Start */
+	       rgSCHDrxStartHarqRTTTmr(hqP->hqE->ue->cell, hqP,tbCnt);
+	       /* CA Dev End*/
+	       break;
+	 }
+	 RETVOID;
       }
       /* extra:check if already removed as part of other TB processing
        * then donot remove from InUse Q */
@@ -1692,30 +1692,30 @@ Bool                    *isMaxRetx;
        * it is fedback for all its TBs */
       switch(hqP->tbInfo[tbCnt ^ 1].state)
       {
-         case HQ_TB_ACKED:
-            /*Fix for ccpu00113296 - Do not delete for Msg4 Harq Entities*/
-            if(hqE->msg4Proc != hqP)
-            {
-              //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
-              rgSCHDhmHqPDelFrmInUseLst(hqP);
-            }
-            /* Retransmission needs to be done. Add to the scheduler Q */
-            rgSCHUtlDlProcAddToRetx(hqP->hqE->cell, hqP);
-            break;
-         case HQ_TB_NACKED:
-            /*Fix for ccpu00113296 - Do not delete for Msg4 Harq Entities*/
-            if(hqE->msg4Proc != hqP)
-            {
-              //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
-              rgSCHDhmHqPDelFrmInUseLst(hqP);
-            }
-            break;
-         case HQ_TB_WAITING:
-            /* Retransmission needs to be done. Add to the scheduler Q */
-            /* CA Dev Start*/
-            rgSCHUtlDlProcAddToRetx(hqP->hqE->cell, hqP);
-            /* CA Dev End*/
-            break;
+	 case HQ_TB_ACKED:
+	    /*Fix for ccpu00113296 - Do not delete for Msg4 Harq Entities*/
+	    if(hqE->msg4Proc != hqP)
+	    {
+	       //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
+	       rgSCHDhmHqPDelFrmInUseLst(hqP);
+	    }
+	    /* Retransmission needs to be done. Add to the scheduler Q */
+	    rgSCHUtlDlProcAddToRetx(hqP->hqE->cell, hqP);
+	    break;
+	 case HQ_TB_NACKED:
+	    /*Fix for ccpu00113296 - Do not delete for Msg4 Harq Entities*/
+	    if(hqE->msg4Proc != hqP)
+	    {
+	       //cmLListDelFrm(&hqE->inUse, &hqP->lnk);
+	       rgSCHDhmHqPDelFrmInUseLst(hqP);
+	    }
+	    break;
+	 case HQ_TB_WAITING:
+	    /* Retransmission needs to be done. Add to the scheduler Q */
+	    /* CA Dev Start*/
+	    rgSCHUtlDlProcAddToRetx(hqP->hqE->cell, hqP);
+	    /* CA Dev End*/
+	    break;
       }
       *isMaxRetx = FALSE; 
    }
@@ -1724,22 +1724,22 @@ Bool                    *isMaxRetx;
       /* Failure Notification */
       if (hqE->msg4Proc == hqP)
       {
-       /* SR_RACH_STATS : MSG4 Max Retx Fail*/
-         rgNumMsg4FailMaxRetx++;
+	 /* SR_RACH_STATS : MSG4 Max Retx Fail*/
+	 rgNumMsg4FailMaxRetx++;
 #ifdef TENB_STATS
-         hqE->cell->tenbStats->sch.msg4Fail ++;
+	 hqE->cell->tenbStats->sch.msg4Fail ++;
 #endif
 
-         /* Perform RAM MSG4 done processing */
-         RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-               "rgSCHDhmHqTbTrnsFail(): hq max retx fail: tmpCRNTI = %u",
-               hqP->hqE->raCb->tmpCrnti);
-         rgSCHRamMsg4Done(cell, (RgSchRaCb *)hqP->hqE->raCb);
+	 /* Perform RAM MSG4 done processing */
+	 RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
+	       "rgSCHDhmHqTbTrnsFail(): hq max retx fail: tmpCRNTI = %u",
+	       hqP->hqE->raCb->tmpCrnti);
+	 rgSCHRamMsg4Done(cell, (RgSchRaCb *)hqP->hqE->raCb);
       }
       else
       {
-         /* Release the Harq Proc */
-         rgSCHDhmRlsHqpTb(hqP, tbCnt, TRUE);
+	 /* Release the Harq Proc */
+	 rgSCHDhmRlsHqpTb(hqP, tbCnt, TRUE);
       }
       *isMaxRetx = TRUE; 
    }
@@ -1748,7 +1748,7 @@ Bool                    *isMaxRetx;
 } /* rgSCHDhmHqTbTrnsFail */
 
 PUBLIC U32 rgHqRvStats[2][4][2] = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}}, 
-                                   {{0, 0}, {0, 0}, {0, 0}, {0, 0}}};
+   {{0, 0}, {0, 0}, {0, 0}, {0, 0}}};
 #ifdef LTE_TDD
 #ifdef LTE_ADV
 /** * @brief Function to decode the position of HarqFb for M=1.
@@ -1766,7 +1766,7 @@ PUBLIC U32 rgHqRvStats[2][4][2] = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}},
  *  @return     RETVOID
  **/
 #ifdef ANSI
-PRIVATE Void rgSchGetHqFdbkPosForM1
+   PRIVATE Void rgSchGetHqFdbkPosForM1
 (
  RgSchUeCb            *ue,
  RgSchDlHqProcCb      *hqP,
@@ -1777,12 +1777,12 @@ PRIVATE Void rgSchGetHqFdbkPosForM1
  )
 #else
 PRIVATE Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
- RgSchUeCb            *ue;
- RgSchDlHqProcCb      *hqP;
- U8                   *isAck;
- RgTfuHqInfo          *fdbk;
- U8                   tbIdx;
- RgSchTddANInfo       *anInfo;
+   RgSchUeCb            *ue;
+   RgSchDlHqProcCb      *hqP;
+   U8                   *isAck;
+   RgTfuHqInfo          *fdbk;
+   U8                   tbIdx;
+   RgSchTddANInfo       *anInfo;
 #endif
 {
    if((ue != NULLP))
@@ -1792,77 +1792,77 @@ PRIVATE Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
        * of servCellIdx as per 36.212 section 5.2.26*/
       switch(ue->f1bCsAVal)
       {
-         case RG_SCH_A_VAL_2:
-            {
-               if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
-               {
-                  *isAck = fdbk->isAck[1];/*SCell*/
-               }
-               else
-               {
-                  *isAck = fdbk->isAck[0];/*PCell*/
-               }
-               break;
-            }
-         case RG_SCH_A_VAL_3:
-            {
-                  if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
-                  {
-                     U8 cellIdx = rgSchUtlGetServCellIdx(hqP->hqE->cell->instIdx,
-                           hqP->hqE->cell->cellId,
-                           hqP->hqE->ue);
+	 case RG_SCH_A_VAL_2:
+	    {
+	       if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
+	       {
+		  *isAck = fdbk->isAck[1];/*SCell*/
+	       }
+	       else
+	       {
+		  *isAck = fdbk->isAck[0];/*PCell*/
+	       }
+	       break;
+	    }
+	 case RG_SCH_A_VAL_3:
+	    {
+	       if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
+	       {
+		  U8 cellIdx = rgSchUtlGetServCellIdx(hqP->hqE->cell->instIdx,
+			hqP->hqE->cell->cellId,
+			hqP->hqE->ue);
 
-                     if(rgSCHUtlGetMaxTbSupp(ue->cellInfo[cellIdx]->txMode.txModeEnum) > 1)
-                     {/*SCell - mimo mode*/
-                        if(TRUE == fdbk->isPusch)
-                        {
-                           *isAck = fdbk->isAck[tbIdx + 1];
-                        }
-                        else
-                        {
-                           *isAck = fdbk->isAck[tbIdx];
-                        }
-                     }
-                     else
-                     {/*SCell - siso mode*/
-                        *isAck = fdbk->isAck[2];
-                     }
-                  }else
-                  {
-                     if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
-                     {/*Primary Cell - mimo mode*/
-                        *isAck = fdbk->isAck[tbIdx];
-                     }
-                     else
-                     {/*Primary Cell - siso mode*/
-                        if((TRUE == fdbk->isPusch) && (FALSE == anInfo->isSpsOccasion))
-                        {
-                           /* If fdbk is on PUSCH but its not an SPS occasion*/
-                           *isAck = fdbk->isAck[0];
-                        }
-                        else
-                        {
-                           /* If fdbk is on PUCCH or its an SPS occasion*/
-                           *isAck = fdbk->isAck[2];
-                        }
-                     }
-                  }
-               break;
-            }
-         case RG_SCH_A_VAL_4:
-            {
-               if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
-               {
-                  *isAck = fdbk->isAck[tbIdx + 2];
-               }
-               else
-               {
-                  *isAck = fdbk->isAck[tbIdx];
-               }
-               break;
-            }
-         default:
-            break;
+		  if(rgSCHUtlGetMaxTbSupp(ue->cellInfo[cellIdx]->txMode.txModeEnum) > 1)
+		  {/*SCell - mimo mode*/
+		     if(TRUE == fdbk->isPusch)
+		     {
+			*isAck = fdbk->isAck[tbIdx + 1];
+		     }
+		     else
+		     {
+			*isAck = fdbk->isAck[tbIdx];
+		     }
+		  }
+		  else
+		  {/*SCell - siso mode*/
+		     *isAck = fdbk->isAck[2];
+		  }
+	       }else
+	       {
+		  if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
+		  {/*Primary Cell - mimo mode*/
+		     *isAck = fdbk->isAck[tbIdx];
+		  }
+		  else
+		  {/*Primary Cell - siso mode*/
+		     if((TRUE == fdbk->isPusch) && (FALSE == anInfo->isSpsOccasion))
+		     {
+			/* If fdbk is on PUSCH but its not an SPS occasion*/
+			*isAck = fdbk->isAck[0];
+		     }
+		     else
+		     {
+			/* If fdbk is on PUCCH or its an SPS occasion*/
+			*isAck = fdbk->isAck[2];
+		     }
+		  }
+	       }
+	       break;
+	    }
+	 case RG_SCH_A_VAL_4:
+	    {
+	       if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
+	       {
+		  *isAck = fdbk->isAck[tbIdx + 2];
+	       }
+	       else
+	       {
+		  *isAck = fdbk->isAck[tbIdx];
+	       }
+	       break;
+	    }
+	 default:
+	    break;
       }
    }
    RETVOID;
@@ -1884,7 +1884,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
  *  @return     RETVOID
  **/
 #ifdef ANSI
-PRIVATE Void rgSchGetHqFdbkPosForM234
+   PRIVATE Void rgSchGetHqFdbkPosForM234
 (
  RgSchUeCb            *ue,
  RgSchDlHqProcCb      *hqP,
@@ -1897,14 +1897,14 @@ PRIVATE Void rgSchGetHqFdbkPosForM234
  )
 #else
 PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
- RgSchUeCb            *ue;
- RgSchDlHqProcCb      *hqP;
- U8                  *isAck;
- RgTfuHqInfo          *fdbk;
- U8                   tbIdx;
- RgSchTddANInfo       *anInfo;
- U8                    M;
- CmLteTimingInfo      timeInfo;
+   RgSchUeCb            *ue;
+   RgSchDlHqProcCb      *hqP;
+   U8                  *isAck;
+   RgTfuHqInfo          *fdbk;
+   U8                   tbIdx;
+   RgSchTddANInfo       *anInfo;
+   U8                    M;
+   CmLteTimingInfo      timeInfo;
 #endif
 {
    U8                   fdbkIdx;
@@ -1919,114 +1919,114 @@ PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
 
       if(TRUE == fdbk->isPusch)
       {
-         if(TRUE == isSCell) 
-         {/*SCell*/
-            if (anInfo->wUlDai == 3)
-            {
-               incr = anInfo->wUlDai;
-            }
-            else
-            {
-               incr = M;
-            }
-            if(1 == anInfo->ulDai)
-            {
-               fdbkIdx = (hqP->tbInfo[tbIdx].dai - 1) + 
-                  hqP->tbInfo[tbIdx].tbIdx + incr;
-            }
-            else
-            {
-               fdbkIdx = (hqP->tbInfo[tbIdx].dai - 1) + incr;
-            }
-         }
-         else
-         {/*PCell*/
-            if(1 == anInfo->ulDai)
-            {
-               if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
-               {
-                  fdbkIdx = (hqP->tbInfo[tbIdx].dai - 1) + (hqP->tbInfo[tbIdx].tbIdx);
-               }
-               else
-               {
-                  fdbkIdx = (hqP->tbInfo[tbIdx].dai) - 1; 
-               }
-            }
-            else
-            {
-               fdbkIdx = (hqP->tbInfo[tbIdx].dai) - 1; 
-            }
-         }
+	 if(TRUE == isSCell) 
+	 {/*SCell*/
+	    if (anInfo->wUlDai == 3)
+	    {
+	       incr = anInfo->wUlDai;
+	    }
+	    else
+	    {
+	       incr = M;
+	    }
+	    if(1 == anInfo->ulDai)
+	    {
+	       fdbkIdx = (hqP->tbInfo[tbIdx].dai - 1) + 
+		  hqP->tbInfo[tbIdx].tbIdx + incr;
+	    }
+	    else
+	    {
+	       fdbkIdx = (hqP->tbInfo[tbIdx].dai - 1) + incr;
+	    }
+	 }
+	 else
+	 {/*PCell*/
+	    if(1 == anInfo->ulDai)
+	    {
+	       if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
+	       {
+		  fdbkIdx = (hqP->tbInfo[tbIdx].dai - 1) + (hqP->tbInfo[tbIdx].tbIdx);
+	       }
+	       else
+	       {
+		  fdbkIdx = (hqP->tbInfo[tbIdx].dai) - 1; 
+	       }
+	    }
+	    else
+	    {
+	       fdbkIdx = (hqP->tbInfo[tbIdx].dai) - 1; 
+	    }
+	 }
       }
       else
       {/*PUCCH*/
-         if(TRUE == isSCell) 
-         {
-            /* pucchFdbkIdx is set to DAI hence -1 to get index */
-            fdbkIdx = ((hqP->tbInfo[tbIdx].pucchFdbkIdx) + M -1); 
-         }
-         else
-         {
-            if(M > 2)
-            {
-               /* SPS occasion feedback in case of M > 2 will
-                * be always present in the index 0*/
+	 if(TRUE == isSCell) 
+	 {
+	    /* pucchFdbkIdx is set to DAI hence -1 to get index */
+	    fdbkIdx = ((hqP->tbInfo[tbIdx].pucchFdbkIdx) + M -1); 
+	 }
+	 else
+	 {
+	    if(M > 2)
+	    {
+	       /* SPS occasion feedback in case of M > 2 will
+		* be always present in the index 0*/
 #ifdef LTEMAC_SPS
-               if(hqP->spsN1PucchRes.pres == TRUE)
-               {/* SPS occasion hq proc */
-                  fdbkIdx = 0;
-               }else 
+	       if(hqP->spsN1PucchRes.pres == TRUE)
+	       {/* SPS occasion hq proc */
+		  fdbkIdx = 0;
+	       }else 
 #endif
-               if((NULLP != pCellAnInfo) && 
-                     (pCellAnInfo->dlDai != pCellAnInfo->ulDai))
-               {
-                  fdbkIdx = hqP->tbInfo[tbIdx].pucchFdbkIdx; 
-               }else
-               {/* NO SPS occasion was present in the bundle*/
-                  fdbkIdx = hqP->tbInfo[tbIdx].pucchFdbkIdx - 1; 
-               }
-            }
-            else
-            {
-               fdbkIdx = hqP->tbInfo[tbIdx].pucchFdbkIdx - 1; 
-            }
-         }
+		  if((NULLP != pCellAnInfo) && 
+			(pCellAnInfo->dlDai != pCellAnInfo->ulDai))
+		  {
+		     fdbkIdx = hqP->tbInfo[tbIdx].pucchFdbkIdx; 
+		  }else
+		  {/* NO SPS occasion was present in the bundle*/
+		     fdbkIdx = hqP->tbInfo[tbIdx].pucchFdbkIdx - 1; 
+		  }
+	    }
+	    else
+	    {
+	       fdbkIdx = hqP->tbInfo[tbIdx].pucchFdbkIdx - 1; 
+	    }
+	 }
       }
       *isAck = fdbk->isAck[fdbkIdx];
 #ifdef DLHQ_STATS
       static RgSchDlHqProcCb      *temp = NULLP;
       if (temp != hqP->tbInfo[tbIdx].hqP)
       {
-         statsCnt = statsCnt % 10000;
-         dlHqStats[statsCnt].cellId = hqP->hqE->cell->cellId;
-         dlHqStats[statsCnt].sfn = hqP->tbInfo[tbIdx].timingInfo.sfn; 
-         dlHqStats[statsCnt].sf = hqP->tbInfo[tbIdx].timingInfo.slot; 
-         dlHqStats[statsCnt].ack = *isAck;
-         dlHqStats[statsCnt].fdbkIdx = fdbkIdx;
-         dlHqStats[statsCnt].ue = hqP->hqE->ue->ueId;;
-         if (anInfo)
-            dlHqStats[statsCnt].ulDai = incr;
-         if(TRUE == fdbk->isPusch)
-         {
-            dlHqStats[statsCnt].dlDai = hqP->tbInfo[tbIdx].dai;
-         }
-         else
-         {
-            dlHqStats[statsCnt].dlDai = hqP->tbInfo[tbIdx].pucchFdbkIdx;
-         }
-         if (*isAck != 1)
-         {
-            dlHqStats[statsCnt].ack0 = fdbk->isAck[0];
-            dlHqStats[statsCnt].ack1 = fdbk->isAck[1];
-            dlHqStats[statsCnt].ack2 = fdbk->isAck[2];
-            dlHqStats[statsCnt].ack3 = fdbk->isAck[3];
-            dlHqStats[statsCnt].ack4 = fdbk->isAck[4];
-            dlHqStats[statsCnt].ack5 = fdbk->isAck[5];
-            dlHqStats[statsCnt].ack6 = fdbk->isAck[6];
-            dlHqStats[statsCnt].ack7 = fdbk->isAck[7];
-         }
-         statsCnt++; 
-         temp = hqP->tbInfo[tbIdx].hqP;
+	 statsCnt = statsCnt % 10000;
+	 dlHqStats[statsCnt].cellId = hqP->hqE->cell->cellId;
+	 dlHqStats[statsCnt].sfn = hqP->tbInfo[tbIdx].timingInfo.sfn; 
+	 dlHqStats[statsCnt].sf = hqP->tbInfo[tbIdx].timingInfo.slot; 
+	 dlHqStats[statsCnt].ack = *isAck;
+	 dlHqStats[statsCnt].fdbkIdx = fdbkIdx;
+	 dlHqStats[statsCnt].ue = hqP->hqE->ue->ueId;;
+	 if (anInfo)
+	    dlHqStats[statsCnt].ulDai = incr;
+	 if(TRUE == fdbk->isPusch)
+	 {
+	    dlHqStats[statsCnt].dlDai = hqP->tbInfo[tbIdx].dai;
+	 }
+	 else
+	 {
+	    dlHqStats[statsCnt].dlDai = hqP->tbInfo[tbIdx].pucchFdbkIdx;
+	 }
+	 if (*isAck != 1)
+	 {
+	    dlHqStats[statsCnt].ack0 = fdbk->isAck[0];
+	    dlHqStats[statsCnt].ack1 = fdbk->isAck[1];
+	    dlHqStats[statsCnt].ack2 = fdbk->isAck[2];
+	    dlHqStats[statsCnt].ack3 = fdbk->isAck[3];
+	    dlHqStats[statsCnt].ack4 = fdbk->isAck[4];
+	    dlHqStats[statsCnt].ack5 = fdbk->isAck[5];
+	    dlHqStats[statsCnt].ack6 = fdbk->isAck[6];
+	    dlHqStats[statsCnt].ack7 = fdbk->isAck[7];
+	 }
+	 statsCnt++; 
+	 temp = hqP->tbInfo[tbIdx].hqP;
       }
 #endif
    }/*ue*/
@@ -2058,25 +2058,25 @@ PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmHqFdbkInd
+   PUBLIC S16 rgSCHDhmHqFdbkInd
 (
-Void                 *cb,
-U8                   cbType,
-RgSchCellCb          *cellCb,
-CmLteTimingInfo      timeInfo,
-TfuHqInfo            *fdbk,
-RgInfRlsHqInfo       *rlsHqBufs,
-RgSchErrInfo         *err
-)
+ Void                 *cb,
+ U8                   cbType,
+ RgSchCellCb          *cellCb,
+ CmLteTimingInfo      timeInfo,
+ TfuHqInfo            *fdbk,
+ RgInfRlsHqInfo       *rlsHqBufs,
+ RgSchErrInfo         *err
+ )
 #else
 PUBLIC S16 rgSCHDhmHqFdbkInd(cb, cbType, cellCb, timeInfo, fdbk, rlsHqBufs, err)
-Void                    *cb;
-U8                      cbType;
-RgSchCellCb             *cellCb;
-CmLteTimingInfo         timeInfo;
-TfuHqInfo               *fdbk;
-RgInfRlsHqInfo          *rlsHqBufs;
-RgSchErrInfo            *err;
+   Void                    *cb;
+   U8                      cbType;
+   RgSchCellCb             *cellCb;
+   CmLteTimingInfo         timeInfo;
+   TfuHqInfo               *fdbk;
+   RgInfRlsHqInfo          *rlsHqBufs;
+   RgSchErrInfo            *err;
 #endif
 {
    RgSchCellCb *sCell = NULLP;
@@ -2127,36 +2127,36 @@ RgSchErrInfo            *err;
 #ifdef LTE_ADV
    U8                  sCellActCePres = 0;
 #endif
-/* LTEMAC_SPS_AN_MUX*/
+   /* LTEMAC_SPS_AN_MUX*/
    RgrSchFrmt1b3TypEnum uciFrmtTyp  = RG_SCH_UCI_FORMAT1A_1B; 
    TRC2(rgSCHDhmHqFdbkInd)
 
-   if (cbType == RGSCH_HQ_FDB_IND_CB_TYPE_RA_CB)
-   {
-      raCb     = (RgSchRaCb *)(cb);
-      ackNackMode = RGR_TDD_ACKNACK_MODE_BUNDL;
-      hqE      = raCb->dlHqE;
-      /* ccpu00139061 Fix */
-      rnti     = raCb->tmpCrnti;
-   }
-   else
-   {
-      ue       = (RgSchUeCb *)(cb);
-      ackNackMode = ue->dl.ackNackMode;
-      hqE      = RG_SCH_CMN_GET_UE_HQE(ue, cellCb);
-      rnti     = ue->ueId;
+      if (cbType == RGSCH_HQ_FDB_IND_CB_TYPE_RA_CB)
+      {
+	 raCb     = (RgSchRaCb *)(cb);
+	 ackNackMode = RGR_TDD_ACKNACK_MODE_BUNDL;
+	 hqE      = raCb->dlHqE;
+	 /* ccpu00139061 Fix */
+	 rnti     = raCb->tmpCrnti;
+      }
+      else
+      {
+	 ue       = (RgSchUeCb *)(cb);
+	 ackNackMode = ue->dl.ackNackMode;
+	 hqE      = RG_SCH_CMN_GET_UE_HQE(ue, cellCb);
+	 rnti     = ue->ueId;
 #ifdef LTEMAC_SPS_AN_MUX
-      isPusch = fdbk->isPusch;
+	 isPusch = fdbk->isPusch;
 #endif
 
 #ifdef LTEMAC_SPS      
-      if (RGSCH_TIMEINFO_SAME(timeInfo, ue->relPdcchFbkTiming))
-      {
-         hasRelPdcch = TRUE;
-      }
+	 if (RGSCH_TIMEINFO_SAME(timeInfo, ue->relPdcchFbkTiming))
+	 {
+	    hasRelPdcch = TRUE;
+	 }
 #endif
-   }
-   
+      }
+
 #if ((defined LTEMAC_SPS_AN_MUX) || (defined LTE_ADV))
    ascIdx = rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][timeInfo.slot];
    noFdbks = ascIdx.numFdbkSubfrms;
@@ -2168,26 +2168,26 @@ RgSchErrInfo            *err;
    {
       for(idx=0; idx<noFdbks; idx++)
       {
-         /* ccpu00133109: Removed RGSCHSUBFRMCRNTTIME as it is not giving proper output 
-          * if diff is more than 10. Instead using RGSCHDECRFRMCRNTTIME() as it is 
-          * serving the purpose */
-          RGSCHDECRFRMCRNTTIME(timeInfo,schdSfTime[idx],ascIdx.subfrmNum[idx]);
+	 /* ccpu00133109: Removed RGSCHSUBFRMCRNTTIME as it is not giving proper output 
+	  * if diff is more than 10. Instead using RGSCHDECRFRMCRNTTIME() as it is 
+	  * serving the purpose */
+	 RGSCHDECRFRMCRNTTIME(timeInfo,schdSfTime[idx],ascIdx.subfrmNum[idx]);
       }
    }
 #endif
 
    rgSCHDhmHqProcByFdbkTime(hqE, timeInfo, &isMsg4, hqPrcs, numTb, \
-                            tbStrtIdx, &hqCnt,hqE->cell);
+	 tbStrtIdx, &hqCnt,hqE->cell);
    /* Fetch the harqProc from the inUse list */
 #ifdef LTEMAC_SPS
    if ((FALSE == hasRelPdcch) && (hqCnt == 0))
 #endif
-   if(hqCnt == 0)
-   {
-      err->errType   = RGSCHERR_DHM_FDBK_IND;
-      err->errCause  = RGSCHERR_DHM_FDBK_IND_INVALID_CB;
-      RETVALUE(RFAILED);
-   }
+      if(hqCnt == 0)
+      {
+	 err->errType   = RGSCHERR_DHM_FDBK_IND;
+	 err->errCause  = RGSCHERR_DHM_FDBK_IND_INVALID_CB;
+	 RETVALUE(RFAILED);
+      }
 
    /* ccpu00147469 : This code is moved below as here this code always try to
     * get the primary cell aninfo. it is due to hqE->cell->cellId as it is
@@ -2204,387 +2204,387 @@ RgSchErrInfo            *err;
 
 #ifdef LTEMAC_SPS_AN_MUX
    /* Check if feedback came on configured UL SPS grant in Muxing mode */
-  if((ackNackMode == RGR_TDD_ACKNACK_MODE_MULT) && 
-        (isPusch == TRUE) )
+   if((ackNackMode == RGR_TDD_ACKNACK_MODE_MULT) && 
+	 (isPusch == TRUE) )
    {
       hIdx = 0;
       /* Pick the valid feedbacks out of M feedbacks */
       for(idx=0; idx<noFdbks; idx++)
       {
-         /* Skip the feedback if hqProc[idx] did not transmit in schdSf[idx] 
-          * and no release pdcch is sent in prevTime */
-         /* TODO: SPS_TDD: Check this while testing */
-         if ((hqPrcs[hIdx] && !RGSCH_TIMEINFO_SAME(hqPrcs[hIdx]->\
-                     tbInfo[(S16)(tbStrtIdx[hIdx])].timingInfo,\
-                        schdSfTime[idx])) &&
-               !RGSCH_TIMEINFO_SAME(ue->relPdcchTxTime, schdSfTime[idx]))
-         { 
-            /* Discard the feedback which is corresponding to a subframe in
-             * which no DL transmission took place */
-            tmpIdx = idx+1;
-            while(tmpIdx < noFdbks)
-            {
-               fdbk->isAck[tmpIdx-1] = fdbk->isAck[tmpIdx];
-               fdbk->isAck[tmpIdx-1] = fdbk->isAck[tmpIdx];
-               tmpIdx++;
-            }
-            rcvCnt--;
-            ++hIdx;
-         }
+	 /* Skip the feedback if hqProc[idx] did not transmit in schdSf[idx] 
+	  * and no release pdcch is sent in prevTime */
+	 /* TODO: SPS_TDD: Check this while testing */
+	 if ((hqPrcs[hIdx] && !RGSCH_TIMEINFO_SAME(hqPrcs[hIdx]->\
+		     tbInfo[(S16)(tbStrtIdx[hIdx])].timingInfo,\
+		     schdSfTime[idx])) &&
+	       !RGSCH_TIMEINFO_SAME(ue->relPdcchTxTime, schdSfTime[idx]))
+	 { 
+	    /* Discard the feedback which is corresponding to a subframe in
+	     * which no DL transmission took place */
+	    tmpIdx = idx+1;
+	    while(tmpIdx < noFdbks)
+	    {
+	       fdbk->isAck[tmpIdx-1] = fdbk->isAck[tmpIdx];
+	       fdbk->isAck[tmpIdx-1] = fdbk->isAck[tmpIdx];
+	       tmpIdx++;
+	    }
+	    rcvCnt--;
+	    ++hIdx;
+	 }
       } /* end of for loop */
    } /* end of configured UL SPS grant check */
 #endif   
 #ifdef CA_DBG
-  {
-     if(ue)
-     {
-        gHqFdbkCount++;
-     }
-  }
+   {
+      if(ue)
+      {
+	 gHqFdbkCount++;
+      }
+   }
 
 #endif   
 
-  for(idx=0;idx < hqCnt; idx++)
-  {
-     /* Fix for CR ccpu00147469: Get the anInfo for each harq proc */
-     if(ue)
-     {
+   for(idx=0;idx < hqCnt; idx++)
+   {
+      /* Fix for CR ccpu00147469: Get the anInfo for each harq proc */
+      if(ue)
+      {
 #ifdef LTE_ADV
-        U8 servCellIdx = rgSchUtlGetServCellIdx(hqPrcs[idx]->hqE->cell->instIdx,
-        hqPrcs[idx]->hqE->cell->cellId,ue);
+	 U8 servCellIdx = rgSchUtlGetServCellIdx(hqPrcs[idx]->hqE->cell->instIdx,
+	       hqPrcs[idx]->hqE->cell->cellId,ue);
 
-        if(ue->cellInfo[servCellIdx]->sCellState != RG_SCH_SCELL_ACTIVE)  
-        {
-           continue; 
-        }
-        anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &timeInfo,servCellIdx);
+	 if(ue->cellInfo[servCellIdx]->sCellState != RG_SCH_SCELL_ACTIVE)  
+	 {
+	    continue; 
+	 }
+	 anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &timeInfo,servCellIdx);
 #else
-        anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &timeInfo,RGSCH_PCELL_INDEX);
+	 anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &timeInfo,RGSCH_PCELL_INDEX);
 #endif
-        if(anInfo == NULLP)
-        {
-           RGSCHDBGINFO(cellCb->instIdx,(rgSchPBuf(cellCb->instIdx), 
-                    "Ack Rcvd. No Ack/Nack feedback available \n"));
-           RETVALUE(RFAILED);
-        }
-     }
+	 if(anInfo == NULLP)
+	 {
+	    RGSCHDBGINFO(cellCb->instIdx,(rgSchPBuf(cellCb->instIdx), 
+		     "Ack Rcvd. No Ack/Nack feedback available \n"));
+	    RETVALUE(RFAILED);
+	 }
+      }
 
-     sCell = hqPrcs[idx]->hqE->cell;
-     rlsHqBufs = &(sCell->rlsHqArr[sCell->crntHqIdx]);
-     rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs = 0;
-     for (tbCnt = tbStrtIdx[idx]; (tbCnt-tbStrtIdx[idx]) < numTb[idx]; tbCnt++)
-     {
-        /* Fix : syed MultiUe per TTI crash in TA List. */
-        hqRls = FALSE;
-        maxHqRetxReached = FALSE;
-        /* Remove the harq process from the subframe */
-        sf = rgSCHUtlSubFrmGet(cellCb, hqPrcs[idx]->tbInfo[tbCnt].timingInfo);
+      sCell = hqPrcs[idx]->hqE->cell;
+      rlsHqBufs = &(sCell->rlsHqArr[sCell->crntHqIdx]);
+      rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs = 0;
+      for (tbCnt = tbStrtIdx[idx]; (tbCnt-tbStrtIdx[idx]) < numTb[idx]; tbCnt++)
+      {
+	 /* Fix : syed MultiUe per TTI crash in TA List. */
+	 hqRls = FALSE;
+	 maxHqRetxReached = FALSE;
+	 /* Remove the harq process from the subframe */
+	 sf = rgSCHUtlSubFrmGet(cellCb, hqPrcs[idx]->tbInfo[tbCnt].timingInfo);
 
-        if(NULLP != ue)
-        {
-           uciFrmtTyp = ue->dl.dlSfHqInfo[cellCb->cellId][sf->dlIdx].uciFrmtTyp;
-        }
+	 if(NULLP != ue)
+	 {
+	    uciFrmtTyp = ue->dl.dlSfHqInfo[cellCb->cellId][sf->dlIdx].uciFrmtTyp;
+	 }
 
-        if(uciFrmtTyp != RG_SCH_UCI_FORMAT1B_CS)
-        {
-           if((fdbk->hqFdbkMode != TFU_ACK_NACK_SPECIAL_BUNDLING)&&
-                 (RGR_TDD_ACKNACK_MODE_MULT == ackNackMode))
-           {
-              isAck = fdbk->isAck[hqPrcs[idx]->tbInfo[tbCnt].m];
-           }
-           else
-           {
-              /* TODO: review for TM4 and CA interaction */
-              if((TRUE == hqPrcs[idx]->cwSwpEnabled) && (1 < numTb[idx]))
-              {
-                 isAck = fdbk->isAck[!tbCnt];
-              }
-              else
-              {
-                 isAck = fdbk->isAck[tbCnt];
-              } 
-           }
-        }
+	 if(uciFrmtTyp != RG_SCH_UCI_FORMAT1B_CS)
+	 {
+	    if((fdbk->hqFdbkMode != TFU_ACK_NACK_SPECIAL_BUNDLING)&&
+		  (RGR_TDD_ACKNACK_MODE_MULT == ackNackMode))
+	    {
+	       isAck = fdbk->isAck[hqPrcs[idx]->tbInfo[tbCnt].m];
+	    }
+	    else
+	    {
+	       /* TODO: review for TM4 and CA interaction */
+	       if((TRUE == hqPrcs[idx]->cwSwpEnabled) && (1 < numTb[idx]))
+	       {
+		  isAck = fdbk->isAck[!tbCnt];
+	       }
+	       else
+	       {
+		  isAck = fdbk->isAck[tbCnt];
+	       } 
+	    }
+	 }
 #ifdef LTE_ADV
-        else
-        {
-              if(1 == noFdbks)
-              {/* M == 1 case */
-                 rgSchGetHqFdbkPosForM1(ue, hqPrcs[idx], &isAck, fdbk, tbCnt, anInfo); 
-              }
-              else
-              {
-                 rgSchGetHqFdbkPosForM234(ue, hqPrcs[idx], &isAck, fdbk, tbCnt, anInfo, noFdbks, timeInfo); 
-              }
-        }
+	 else
+	 {
+	    if(1 == noFdbks)
+	    {/* M == 1 case */
+	       rgSchGetHqFdbkPosForM1(ue, hqPrcs[idx], &isAck, fdbk, tbCnt, anInfo); 
+	    }
+	    else
+	    {
+	       rgSchGetHqFdbkPosForM234(ue, hqPrcs[idx], &isAck, fdbk, tbCnt, anInfo, noFdbks, timeInfo); 
+	    }
+	 }
 #endif
 
 #ifdef BRDCM
-         /* revanth tweakin AN PUSCH to ACK always */
-         if (hqPrcs[idx]->isPuschFdbk)
-         {
-            isAck = 1;
-         }
+	 /* revanth tweakin AN PUSCH to ACK always */
+	 if (hqPrcs[idx]->isPuschFdbk)
+	 {
+	    isAck = 1;
+	 }
 #endif
 
-         hqPrcs[idx]->tbInfo[tbCnt].isAckNackDtx = isAck;
-         if(cellCb->ulDlCfgIdx != 5)
-         {
-            rgSCHUtlGetNxtDlSfInfo(hqPrcs[idx]->tbInfo[tbCnt].timingInfo,\
-                                   cellCb, sf, &nxtDlsf, &nxtfrm);
-         }
-         /* Keep a tab on how many ACKs or NACKs we have received */
-         if (isAck == TFU_HQFDB_ACK)
-         {
-            hqPrcs[idx]->tbInfo[tbCnt].ackCount += 1; /* Ack counter */ 
-            rgHqRvStats[tbCnt][hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv][0]++;
+	 hqPrcs[idx]->tbInfo[tbCnt].isAckNackDtx = isAck;
+	 if(cellCb->ulDlCfgIdx != 5)
+	 {
+	    rgSCHUtlGetNxtDlSfInfo(hqPrcs[idx]->tbInfo[tbCnt].timingInfo,\
+		  cellCb, sf, &nxtDlsf, &nxtfrm);
+	 }
+	 /* Keep a tab on how many ACKs or NACKs we have received */
+	 if (isAck == TFU_HQFDB_ACK)
+	 {
+	    hqPrcs[idx]->tbInfo[tbCnt].ackCount += 1; /* Ack counter */ 
+	    rgHqRvStats[tbCnt][hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv][0]++;
 #ifdef TENB_STATS
-            sCell->tenbStats->sch.dlAckNack[tbCnt]\
-               [hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv]++;
+	    sCell->tenbStats->sch.dlAckNack[tbCnt]\
+	       [hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv]++;
 #endif
-            /* Do not update the Ul Trans Time in case of raCb */
-            if (ue)
-            { 
-               rgSCHUtlHdlUlTransInd(cellCb, ue, timeInfo);
+	    /* Do not update the Ul Trans Time in case of raCb */
+	    if (ue)
+	    { 
+	       rgSCHUtlHdlUlTransInd(cellCb, ue, timeInfo);
 #ifdef TENB_STATS
-               ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlAckNackCnt[tbCnt] ++;
+	       ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlAckNackCnt[tbCnt] ++;
 #endif
-            }
-         }
-         else if (isAck == TFU_HQFDB_NACK)
-         {
-            hqPrcs[idx]->tbInfo[tbCnt].nackCount += 1; /* Nack Counter */ 
-            rgHqRvStats[tbCnt][hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv][1]++;
+	    }
+	 }
+	 else if (isAck == TFU_HQFDB_NACK)
+	 {
+	    hqPrcs[idx]->tbInfo[tbCnt].nackCount += 1; /* Nack Counter */ 
+	    rgHqRvStats[tbCnt][hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv][1]++;
 #ifdef TENB_STATS
-            sCell->tenbStats->sch.dlNack[tbCnt]\
-               [hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv]++;
-            sCell->tenbStats->sch.dlAckNack[tbCnt]\
-               [hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv]++;
+	    sCell->tenbStats->sch.dlNack[tbCnt]\
+	       [hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv]++;
+	    sCell->tenbStats->sch.dlAckNack[tbCnt]\
+	       [hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv]++;
 #endif
-            /* Do not update the Ul Trans Time in case of raCb */
-            if (ue)
-            { 
-               rgSCHUtlHdlUlTransInd(cellCb, ue, timeInfo);
+	    /* Do not update the Ul Trans Time in case of raCb */
+	    if (ue)
+	    { 
+	       rgSCHUtlHdlUlTransInd(cellCb, ue, timeInfo);
 #ifdef TENB_STATS
-               ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlNackCnt[tbCnt] ++;
-               ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlAckNackCnt[tbCnt] ++;
+	       ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlNackCnt[tbCnt] ++;
+	       ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlAckNackCnt[tbCnt] ++;
 #endif
-            }
+	    }
 #ifdef LTE_L2_MEAS           
-            if(hqPrcs[idx]->tbInfo[tbCnt].txCntr == 1)
-            {
-               cellCb->dlUlTbCnt.tbTransDlFaulty++; 
-            }   
+	    if(hqPrcs[idx]->tbInfo[tbCnt].txCntr == 1)
+	    {
+	       cellCb->dlUlTbCnt.tbTransDlFaulty++; 
+	    }   
 #endif            
-         }
-         else
-         {
-            hqPrcs[idx]->tbInfo[tbCnt].dtxCount += 1;  /* DTX Counter*/
+	 }
+	 else
+	 {
+	    hqPrcs[idx]->tbInfo[tbCnt].dtxCount += 1;  /* DTX Counter*/
 #ifdef TENB_STATS
-            sCell->tenbStats->sch.dlDtx[tbCnt]\
-               [hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv]++;
-            if (ue)
-            {
-               ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlDtxCnt[tbCnt] ++;
-            }
+	    sCell->tenbStats->sch.dlDtx[tbCnt]\
+	       [hqPrcs[idx]->tbInfo[tbCnt].dlGrnt.rv]++;
+	    if (ue)
+	    {
+	       ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlDtxCnt[tbCnt] ++;
+	    }
 #endif
 #ifdef LTE_L2_MEAS           
-            if(hqPrcs[idx]->tbInfo[tbCnt].txCntr == 1)
-            {
-               cellCb->dlUlTbCnt.tbTransDlFaulty++; 
-            }   
+	    if(hqPrcs[idx]->tbInfo[tbCnt].txCntr == 1)
+	    {
+	       cellCb->dlUlTbCnt.tbTransDlFaulty++; 
+	    }   
 #endif            
-         }
+	 }
 #ifdef CA_DBG
-         if(ue && RG_SCH_IS_CELL_SEC(ue,hqPrcs[idx]->hqE->cell))
-         {
-            if(isAck == TFU_HQFDB_ACK)
-            {
-               gSCellTb1AckCount++;
-               gSCellTb2AckCount++;
-            }else if(isAck == TFU_HQFDB_NACK)
-            {
-               gSCellTb1NackCount++;
-               gSCellTb2NackCount++;
-            }else
-            {
-               gSCellTb1DtxCount++;
-               gSCellTb2DtxCount++;
-            }
-         }
-         else
-         {
-            if(isAck == TFU_HQFDB_ACK)
-            {
-               gPCellTb1AckCount++;
-               gPCellTb2AckCount++;
-            }else if(isAck == TFU_HQFDB_NACK)
-            {
-               gPCellTb1NackCount++;
-               gPCellTb2NackCount++;
-            }else
-            {
-               gPCellTb1DtxCount++;
-               gPCellTb2DtxCount++;
-            }
-         }
+	 if(ue && RG_SCH_IS_CELL_SEC(ue,hqPrcs[idx]->hqE->cell))
+	 {
+	    if(isAck == TFU_HQFDB_ACK)
+	    {
+	       gSCellTb1AckCount++;
+	       gSCellTb2AckCount++;
+	    }else if(isAck == TFU_HQFDB_NACK)
+	    {
+	       gSCellTb1NackCount++;
+	       gSCellTb2NackCount++;
+	    }else
+	    {
+	       gSCellTb1DtxCount++;
+	       gSCellTb2DtxCount++;
+	    }
+	 }
+	 else
+	 {
+	    if(isAck == TFU_HQFDB_ACK)
+	    {
+	       gPCellTb1AckCount++;
+	       gPCellTb2AckCount++;
+	    }else if(isAck == TFU_HQFDB_NACK)
+	    {
+	       gPCellTb1NackCount++;
+	       gPCellTb2NackCount++;
+	    }else
+	    {
+	       gPCellTb1DtxCount++;
+	       gPCellTb2DtxCount++;
+	    }
+	 }
 #endif
-         /* Check if this is repeating UE */
-         if (hqPrcs[idx]->tbInfo[tbCnt].fbkRepCntr != 0)
-         {
-            rgSCHUtlDlHqPTbRmvFrmTx(sf, hqPrcs[idx], tbCnt, TRUE);
-            /* Check if last repetition */
-            if (--hqPrcs[idx]->tbInfo[tbCnt].fbkRepCntr)
-            {
-               RGSCH_NULL_CHECK(cellCb->instIdx, nxtDlsf);
-               /* Update feedback time for this hqP TB so that 
-                * next subframe its picked up */
-               RGSCH_UPD_HQAN_FDBKTIME(&hqPrcs[idx]->tbInfo[tbCnt],\
-                                       nxtDlsf, nxtfrm);
-               RGSCH_NULL_CHECK(cellCb->instIdx, anInfo);
-               RGSCH_UPD_ANINFO_WITH_HQ(anInfo, &hqPrcs[idx]->tbInfo[tbCnt]);
-               anUpd = TRUE;
-               continue;
-            }
-            /* For a repeating UE take the decision here */
-            /* For a repeating UE take the decision here */
-            if (((hqPrcs[idx]->tbInfo[tbCnt].ackCount) > (hqPrcs[idx]->tbInfo[tbCnt].nackCount)) && 
-               ((hqPrcs[idx]->tbInfo[tbCnt].ackCount) > (hqPrcs[idx]->tbInfo[tbCnt].dtxCount)))
-            {
-               isAck = TFU_HQFDB_ACK; 
-            }
-            else if (((hqPrcs[idx]->tbInfo[tbCnt].dtxCount) > (hqPrcs[idx]->tbInfo[tbCnt].nackCount)) && 
-                  ((hqPrcs[idx]->tbInfo[tbCnt].dtxCount) > (hqPrcs[idx]->tbInfo[tbCnt].ackCount)))
-            {
-               isAck = TFU_HQFDB_DTX; 
-            }
-            else
-            {
-               isAck = TFU_HQFDB_NACK; 
-            }
-            hqPrcs[idx]->tbInfo[tbCnt].isAckNackDtx = isAck;
-         }
-         else
-         {
-            rgSCHUtlDlHqPTbRmvFrmTx(sf, hqPrcs[idx], tbCnt, FALSE);
-         }
+	 /* Check if this is repeating UE */
+	 if (hqPrcs[idx]->tbInfo[tbCnt].fbkRepCntr != 0)
+	 {
+	    rgSCHUtlDlHqPTbRmvFrmTx(sf, hqPrcs[idx], tbCnt, TRUE);
+	    /* Check if last repetition */
+	    if (--hqPrcs[idx]->tbInfo[tbCnt].fbkRepCntr)
+	    {
+	       RGSCH_NULL_CHECK(cellCb->instIdx, nxtDlsf);
+	       /* Update feedback time for this hqP TB so that 
+		* next subframe its picked up */
+	       RGSCH_UPD_HQAN_FDBKTIME(&hqPrcs[idx]->tbInfo[tbCnt],\
+		     nxtDlsf, nxtfrm);
+	       RGSCH_NULL_CHECK(cellCb->instIdx, anInfo);
+	       RGSCH_UPD_ANINFO_WITH_HQ(anInfo, &hqPrcs[idx]->tbInfo[tbCnt]);
+	       anUpd = TRUE;
+	       continue;
+	    }
+	    /* For a repeating UE take the decision here */
+	    /* For a repeating UE take the decision here */
+	    if (((hqPrcs[idx]->tbInfo[tbCnt].ackCount) > (hqPrcs[idx]->tbInfo[tbCnt].nackCount)) && 
+		  ((hqPrcs[idx]->tbInfo[tbCnt].ackCount) > (hqPrcs[idx]->tbInfo[tbCnt].dtxCount)))
+	    {
+	       isAck = TFU_HQFDB_ACK; 
+	    }
+	    else if (((hqPrcs[idx]->tbInfo[tbCnt].dtxCount) > (hqPrcs[idx]->tbInfo[tbCnt].nackCount)) && 
+		  ((hqPrcs[idx]->tbInfo[tbCnt].dtxCount) > (hqPrcs[idx]->tbInfo[tbCnt].ackCount)))
+	    {
+	       isAck = TFU_HQFDB_DTX; 
+	    }
+	    else
+	    {
+	       isAck = TFU_HQFDB_NACK; 
+	    }
+	    hqPrcs[idx]->tbInfo[tbCnt].isAckNackDtx = isAck;
+	 }
+	 else
+	 {
+	    rgSCHUtlDlHqPTbRmvFrmTx(sf, hqPrcs[idx], tbCnt, FALSE);
+	 }
 #ifdef LTEMAC_SPS
-         if (((isAck == TFU_HQ_NACK) || (isAck == TFU_HQ_ACK)) &&
-               ((hqPrcs[idx]->sch != (RgSchCmnDlHqProc *)NULLP) &&
-                (RG_SCH_CMN_SPS_DL_IS_SPS_TX_HQP(hqPrcs[idx])))
-            )
-         {
-            /* ACK or NACK received for SPS ACTV PDCCH
-             * Hence consider SPS ACTVN PDCCH received successfully */
-            rgSCHUtlDlProcAck(cellCb, hqPrcs[idx]);
-         }
+	 if (((isAck == TFU_HQ_NACK) || (isAck == TFU_HQ_ACK)) &&
+	       ((hqPrcs[idx]->sch != (RgSchCmnDlHqProc *)NULLP) &&
+		(RG_SCH_CMN_SPS_DL_IS_SPS_TX_HQP(hqPrcs[idx])))
+	    )
+	 {
+	    /* ACK or NACK received for SPS ACTV PDCCH
+	     * Hence consider SPS ACTVN PDCCH received successfully */
+	    rgSCHUtlDlProcAck(cellCb, hqPrcs[idx]);
+	 }
 #endif
-         if(TFU_HQFDB_ACK == isAck)
-         {
-            /* SPS_REVIEW */
-            if (isMsg4 == TRUE)
-            {
-               if (raCb == NULLP)
-               {
-                  raCb = rgSCHDbmGetRaCb(cellCb, rnti);
-               }
-               /* Inform Random Access Module regarding the ack received */
-               if (raCb != NULLP)
-               {
-                  /*RRC Connection Setup failure issue where RRC connection
-                   * setup was not reaching UE due to message 4 HARQ failure */
+	 if(TFU_HQFDB_ACK == isAck)
+	 {
+	    /* SPS_REVIEW */
+	    if (isMsg4 == TRUE)
+	    {
+	       if (raCb == NULLP)
+	       {
+		  raCb = rgSCHDbmGetRaCb(cellCb, rnti);
+	       }
+	       /* Inform Random Access Module regarding the ack received */
+	       if (raCb != NULLP)
+	       {
+		  /*RRC Connection Setup failure issue where RRC connection
+		   * setup was not reaching UE due to message 4 HARQ failure */
 #ifdef XEON_SPECIFIC_CHANGES
-                  CM_LOG_DEBUG(CM_LOG_ID_SCH, "Msg4 Harq SUCCESS for UE(%d)\n", rnti);
+		  CM_LOG_DEBUG(CM_LOG_ID_SCH, "Msg4 Harq SUCCESS for UE(%d)\n", rnti);
 #endif 
-                  rgSCHRamMsg4Done(cellCb, raCb);
-               }
-            }
-            else /*ccpu00114124- HARQ Release for Msg4 */
-            {
+		  rgSCHRamMsg4Done(cellCb, raCb);
+	       }
+	    }
+	    else /*ccpu00114124- HARQ Release for Msg4 */
+	    {
 #ifdef DL_LA
-               /*Update feedback history for every Tx/Retx */
-                  rgSCHDhmUpdateAckNackHistory(sCell, ue, isAck, tbCnt);
+	       /*Update feedback history for every Tx/Retx */
+	       rgSCHDhmUpdateAckNackHistory(sCell, ue, isAck, tbCnt);
 #endif
-               RGSCH_NULL_CHECK(cellCb->instIdx, ue);
-               RG_UPD_ACQI_TRIG_WT(ue, sCell, isAck);
+	       RGSCH_NULL_CHECK(cellCb->instIdx, ue);
+	       RG_UPD_ACQI_TRIG_WT(ue, sCell, isAck);
 #ifdef LTE_ADV
-               /* Store activation CE presence as it is required later to start
-                *activation delay timer */
-               sCellActCePres = hqPrcs[idx]->tbInfo[tbCnt].schdSCellActCe.pres; 
+	       /* Store activation CE presence as it is required later to start
+		*activation delay timer */
+	       sCellActCePres = hqPrcs[idx]->tbInfo[tbCnt].schdSCellActCe.pres; 
 #endif
-               rgSCHDhmRlsHqpTb(hqPrcs[idx], tbCnt, TRUE);
-            }
-            hqRls = TRUE;
-         }
-         else
-         {
-            /* If this Msg4 DTX, there will be 
-             * no DlHqProc as it has its own HarqProc */
-             /* SPS_REVIEW */
-            {
-               rgSCHDhmHqTbTrnsFail(cellCb, hqPrcs[idx], tbCnt, &hqRls);
-               maxHqRetxReached = hqRls;
+	       rgSCHDhmRlsHqpTb(hqPrcs[idx], tbCnt, TRUE);
+	    }
+	    hqRls = TRUE;
+	 }
+	 else
+	 {
+	    /* If this Msg4 DTX, there will be 
+	     * no DlHqProc as it has its own HarqProc */
+	    /* SPS_REVIEW */
+	    {
+	       rgSCHDhmHqTbTrnsFail(cellCb, hqPrcs[idx], tbCnt, &hqRls);
+	       maxHqRetxReached = hqRls;
 #ifdef DL_LA
-               if ((isMsg4 == FALSE))
-               {
-                  /*Update feedback history for every Tx/Retx */
-                  rgSCHDhmUpdateAckNackHistory(sCell, ue, isAck, tbCnt);
-               }
+	       if ((isMsg4 == FALSE))
+	       {
+		  /*Update feedback history for every Tx/Retx */
+		  rgSCHDhmUpdateAckNackHistory(sCell, ue, isAck, tbCnt);
+	       }
 #endif
-               if (isMsg4 == FALSE)
-               {
-                  RGSCH_NULL_CHECK(cellCb->instIdx, ue);
-                  RG_UPD_ACQI_TRIG_WT(ue, sCell, isAck);
-               }
-            }
-         }
+	       if (isMsg4 == FALSE)
+	       {
+		  RGSCH_NULL_CHECK(cellCb->instIdx, ue);
+		  RG_UPD_ACQI_TRIG_WT(ue, sCell, isAck);
+	       }
+	    }
+	 }
 
-         if(TRUE == hqRls)
-         {
-     /* MS_WORKAROUND: to increase Harq Fail Counter .
-       The status field is required for tracking the number of harq faliures at MAC*/
-         if (isAck)
-         {
-            rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
-               rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = TRUE;
-         }
-         else
-         {
-            rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
-               rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = FALSE;
-         }
-            rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].tbId[\
-            rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = tbCnt + 1;
-            rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs++;
-         }
+	 if(TRUE == hqRls)
+	 {
+	    /* MS_WORKAROUND: to increase Harq Fail Counter .
+	       The status field is required for tracking the number of harq faliures at MAC*/
+	    if (isAck)
+	    {
+	       rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
+		  rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = TRUE;
+	    }
+	    else
+	    {
+	       rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
+		  rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = FALSE;
+	    }
+	    rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].tbId[\
+	       rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = tbCnt + 1;
+	    rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs++;
+	 }
 
-         /* Handle the TA */
-         if (hqPrcs[idx]->tbInfo[tbCnt].taSnt == TRUE)
-         {
-            rgSCHDhmFdbkIndHndlTa(hqPrcs[idx], tbCnt, isAck, maxHqRetxReached);
-         }
+	 /* Handle the TA */
+	 if (hqPrcs[idx]->tbInfo[tbCnt].taSnt == TRUE)
+	 {
+	    rgSCHDhmFdbkIndHndlTa(hqPrcs[idx], tbCnt, isAck, maxHqRetxReached);
+	 }
 #ifdef LTE_ADV
-         /* Handle Scell activation */
-         if (TRUE == sCellActCePres)
-         {
-            /* Primary Cellcb needs to be retrived
-             * if the feedback is coming on pusch of 
-             * sec cell. THis needs to be considered
-             * while UL_CA*/
-            rgSCHSCellHndlFdbkInd(hqPrcs[idx], tbCnt, isAck, maxHqRetxReached);
-         }
+	 /* Handle Scell activation */
+	 if (TRUE == sCellActCePres)
+	 {
+	    /* Primary Cellcb needs to be retrived
+	     * if the feedback is coming on pusch of 
+	     * sec cell. THis needs to be considered
+	     * while UL_CA*/
+	    rgSCHSCellHndlFdbkInd(hqPrcs[idx], tbCnt, isAck, maxHqRetxReached);
+	 }
 #endif
       }
-     if (hqRls == FALSE)
-     {
-        hqPrcs[idx]->cwSwpEnabled = FALSE;
-     }
+      if (hqRls == FALSE)
+      {
+	 hqPrcs[idx]->cwSwpEnabled = FALSE;
+      }
       if(rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs)
       {
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
-            hqPrcs[idx]->procId;
-         rlsHqBufs->numUes++;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
+	    hqPrcs[idx]->procId;
+	 rlsHqBufs->numUes++;
       }
 #ifdef BRDCM
       hqPrcs[idx]->isPuschFdbk = 0;
@@ -2592,120 +2592,120 @@ RgSchErrInfo            *err;
    }
 
 #ifdef LTEMAC_SPS
-  /*it is possible for some TDD configurations (like TDD cfg 5) 
-   * to have multiple feedback for 13 subframes before. It is 
-   * possible in such a case to have a release sent after data
-   * thus running into a situation where we are receiving feedback
-   * for both data and relese pdcch 
-   */
-/*
-   if ( (hqCnt == 0) ||
-        (hasRelPdcch && rcvCnt > hqCnt)
+   /*it is possible for some TDD configurations (like TDD cfg 5) 
+    * to have multiple feedback for 13 subframes before. It is 
+    * possible in such a case to have a release sent after data
+    * thus running into a situation where we are receiving feedback
+    * for both data and relese pdcch 
+    */
+   /*
+      if ( (hqCnt == 0) ||
+      (hasRelPdcch && rcvCnt > hqCnt)
       ) 
-      */
+    */
    if (ue && hasRelPdcch)   
    {
       /* Bool found      = FALSE; */
-      
+
       sf = rgSCHUtlSubFrmGet(cellCb, ue->relPdcchTxTime);
 
       /*
-      if ( !sf->relPdcch)
-      {
-         found = FALSE;
-      } 
-      */
+	 if ( !sf->relPdcch)
+	 {
+	 found = FALSE;
+	 } 
+       */
 
-      
+
 #if ((defined LTEMAC_SPS_AN_MUX) || (defined LTE_ADV))
       if(ackNackMode == RGR_TDD_ACKNACK_MODE_MULT)
       {
-         CmLteTimingInfo txTime;
-         U8   ulDlCfgIdx = 0;
-         U8   maxFdbks   = 0;
-         U8   itr        = 0;
+	 CmLteTimingInfo txTime;
+	 U8   ulDlCfgIdx = 0;
+	 U8   maxFdbks   = 0;
+	 U8   itr        = 0;
 
-         ulDlCfgIdx  = cellCb->ulDlCfgIdx;
+	 ulDlCfgIdx  = cellCb->ulDlCfgIdx;
 
-         maxFdbks = rgSchTddDlAscSetIdxKTbl[ulDlCfgIdx]
-            [timeInfo.slot].
-            numFdbkSubfrms;
+	 maxFdbks = rgSchTddDlAscSetIdxKTbl[ulDlCfgIdx]
+	    [timeInfo.slot].
+	    numFdbkSubfrms;
 
-         for(itr=0; itr< maxFdbks; itr++)
-         {
+	 for(itr=0; itr< maxFdbks; itr++)
+	 {
 #ifdef LTE_ADV
-            /* Handling the case of only SPS release pdcch
-             * and no other scheduling in both the serving cells
-             * */
-            if(ue->uciFrmtTyp == RG_SCH_UCI_FORMAT1B_CS)
-            {/* Using the sorted K table */
-               RGSCHDECRFRMCRNTTIME (timeInfo, txTime, 
-                     rgSchTddDlHqPucchResCalTbl[ulDlCfgIdx][timeInfo.slot].subfrmNum[itr]);
-            }else
+	    /* Handling the case of only SPS release pdcch
+	     * and no other scheduling in both the serving cells
+	     * */
+	    if(ue->uciFrmtTyp == RG_SCH_UCI_FORMAT1B_CS)
+	    {/* Using the sorted K table */
+	       RGSCHDECRFRMCRNTTIME (timeInfo, txTime, 
+		     rgSchTddDlHqPucchResCalTbl[ulDlCfgIdx][timeInfo.slot].subfrmNum[itr]);
+	    }else
 #endif
-            {
-               RGSCHDECRFRMCRNTTIME (timeInfo, txTime, 
-                     rgSchTddDlAscSetIdxKTbl[ulDlCfgIdx][timeInfo.slot].subfrmNum[itr]);
-            }
+	    {
+	       RGSCHDECRFRMCRNTTIME (timeInfo, txTime, 
+		     rgSchTddDlAscSetIdxKTbl[ulDlCfgIdx][timeInfo.slot].subfrmNum[itr]);
+	    }
 
-            if (RGSCH_TIMEINFO_SAME (txTime, ue->relPdcchTxTime))
-            {
+	    if (RGSCH_TIMEINFO_SAME (txTime, ue->relPdcchTxTime))
+	    {
 #ifdef LTE_ADV
-               if((ue->uciFrmtTyp == RG_SCH_UCI_FORMAT1B_CS)&&
-                     (maxFdbks == 1))
-               {/* M == 1 case */
-                  if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
-                  {
-                     isAck = fdbk->isAck[0];
-                  }else
-                  {
-                     isAck = fdbk->isAck[2];
-                  }
-               }
-               else
-                  /* M > 1 same below logic apply. 
-                     If SPS occasion and rel pdcch is present
-                     SPS occasion after SPS release cannot 
-                     happen in a bundle
-                     */
+	       if((ue->uciFrmtTyp == RG_SCH_UCI_FORMAT1B_CS)&&
+		     (maxFdbks == 1))
+	       {/* M == 1 case */
+		  if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
+		  {
+		     isAck = fdbk->isAck[0];
+		  }else
+		  {
+		     isAck = fdbk->isAck[2];
+		  }
+	       }
+	       else
+		  /* M > 1 same below logic apply. 
+		     If SPS occasion and rel pdcch is present
+		     SPS occasion after SPS release cannot 
+		     happen in a bundle
+		   */
 #endif
-               {
-                  isAck = fdbk->isAck[itr];
-               }
-               
-               rgSCHUtlDlRelPdcchFbk(cellCb, ue, isAck);
+	       {
+		  isAck = fdbk->isAck[itr];
+	       }
 
-               RGSCH_NULL_CHECK(cellCb->instIdx, sf->relPdcch);
-               /* Remove release PDCCH from the subframe */
-               rgSCHUtlPdcchPut(cellCb, &sf->pdcchInfo, sf->relPdcch);
-               sf->relPdcch = NULLP;
-               /* found = TRUE; */
-               break;
-            }
+	       rgSCHUtlDlRelPdcchFbk(cellCb, ue, isAck);
 
-         }
+	       RGSCH_NULL_CHECK(cellCb->instIdx, sf->relPdcch);
+	       /* Remove release PDCCH from the subframe */
+	       rgSCHUtlPdcchPut(cellCb, &sf->pdcchInfo, sf->relPdcch);
+	       sf->relPdcch = NULLP;
+	       /* found = TRUE; */
+	       break;
+	    }
+
+	 }
       }
       else
 #endif
       {
-         RGSCH_NULL_CHECK(cellCb->instIdx, sf->relPdcch);
-         /* Remove release PDCCH from the subframe */
-         rgSCHUtlPdcchPut(cellCb, &sf->pdcchInfo, sf->relPdcch);
-         sf->relPdcch = NULLP;
-         /* found = TRUE; */
-         rgSCHUtlDlRelPdcchFbk(cellCb, ue, fdbk->isAck[0]);
+	 RGSCH_NULL_CHECK(cellCb->instIdx, sf->relPdcch);
+	 /* Remove release PDCCH from the subframe */
+	 rgSCHUtlPdcchPut(cellCb, &sf->pdcchInfo, sf->relPdcch);
+	 sf->relPdcch = NULLP;
+	 /* found = TRUE; */
+	 rgSCHUtlDlRelPdcchFbk(cellCb, ue, fdbk->isAck[0]);
       }
       /*
-         if ( found == FALSE ) 
-         {
-         RGSCH_NULL_CHECK(cellCb->instIdx, ue);
-         RLOG_ARG3(L_ERROR,DBG_CELLID,cellCb->cellId,"CRNTI:%d"
-         " NO HARQ proc available for feedback:timeInfo:snf %d,slot %d",
-         ue->ueId,timeInfo.sfn, timeInfo.slot);
-         err->errType   = RGSCHERR_DHM_FDBK_IND;
-         err->errCause  = RGSCHERR_DHM_FDBK_IND_INVALID_CB;
-         RETVALUE(RFAILED);
-         }
+	 if ( found == FALSE ) 
+	 {
+	 RGSCH_NULL_CHECK(cellCb->instIdx, ue);
+	 RLOG_ARG3(L_ERROR,DBG_CELLID,cellCb->cellId,"CRNTI:%d"
+	 " NO HARQ proc available for feedback:timeInfo:snf %d,slot %d",
+	 ue->ueId,timeInfo.sfn, timeInfo.slot);
+	 err->errType   = RGSCHERR_DHM_FDBK_IND;
+	 err->errCause  = RGSCHERR_DHM_FDBK_IND_INVALID_CB;
+	 RETVALUE(RFAILED);
+	 }
        */
    }/*if(hqCnt==0)*/
 #endif /* LTEMAC_SPS */
@@ -2719,17 +2719,17 @@ RgSchErrInfo            *err;
       /* TODO:: Initi the anInfo all the serving cells */
       for(idx = 0; idx <= RG_SCH_MAX_SCELL; idx++)
       {
-         if(ue->cellInfo[idx])
-         {
-            anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &timeInfo,idx);
-            /* Fix for CR ccpu00147693: If anInfo is there then initialize it
-             * else don't do anything. basically continue for next serving
-             * cell*/
-            if(anInfo)
-            {
-               rgSCHUtlInitUeANFdbkInfo(anInfo);
-            }
-         }
+	 if(ue->cellInfo[idx])
+	 {
+	    anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &timeInfo,idx);
+	    /* Fix for CR ccpu00147693: If anInfo is there then initialize it
+	     * else don't do anything. basically continue for next serving
+	     * cell*/
+	    if(anInfo)
+	    {
+	       rgSCHUtlInitUeANFdbkInfo(anInfo);
+	    }
+	 }
       }
 #else
       rgSCHUtlInitUeANFdbkInfo(anInfo);
@@ -2757,33 +2757,33 @@ RgSchErrInfo            *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmPrcFdbkForTb
+   PUBLIC S16 rgSCHDhmPrcFdbkForTb
 (
-RgSchCellCb          *cell,
-RgSchUeCb            *ue,
-RgSchDlHqProcCb      *hqP,
-RgSchDlSf            *sf,
-Bool                 isMsg4,
-U16                  rnti,
-U8                   tbCnt,
-CmLteTimingInfo      timingInfo,
-U8                   isAck,
-RgInfRlsHqInfo       *rlsHqBufs,
-RgSchErrInfo         *err
-)
+ RgSchCellCb          *cell,
+ RgSchUeCb            *ue,
+ RgSchDlHqProcCb      *hqP,
+ RgSchDlSf            *sf,
+ Bool                 isMsg4,
+ U16                  rnti,
+ U8                   tbCnt,
+ CmLteTimingInfo      timingInfo,
+ U8                   isAck,
+ RgInfRlsHqInfo       *rlsHqBufs,
+ RgSchErrInfo         *err
+ )
 #else
 PUBLIC S16 rgSCHDhmPrcFdbkForTb(cell, ue, hqP, sf, isMsg4, rnti, tbCnt, timingInfo, isAck, rlsHqBufs, err)
-RgSchCellCb             *cell;
-RgSchUeCb               *ue;
-RgSchDlHqProcCb         *hqP;
-RgSchDlSf               *sf;
-Bool                    isMsg4;
-U16                     rnti;
-U8                      tbCnt;
-CmLteTimingInfo         timingInfo;
-U8                      isAck;
-RgInfRlsHqInfo          *rlsHqBufs;
-RgSchErrInfo            *err;
+   RgSchCellCb             *cell;
+   RgSchUeCb               *ue;
+   RgSchDlHqProcCb         *hqP;
+   RgSchDlSf               *sf;
+   Bool                    isMsg4;
+   U16                     rnti;
+   U8                      tbCnt;
+   CmLteTimingInfo         timingInfo;
+   U8                      isAck;
+   RgInfRlsHqInfo          *rlsHqBufs;
+   RgSchErrInfo            *err;
 #endif
 {
 #ifdef DEBUGP
@@ -2805,10 +2805,10 @@ RgSchErrInfo            *err;
 #endif
 
    TRC2(rgSCHDhmPrcFdbkForTb)
-   if (ue)
-   {
-      ueDl     = RG_SCH_CMN_GET_DL_UE(ue,cell);
-   }
+      if (ue)
+      {
+	 ueDl     = RG_SCH_CMN_GET_DL_UE(ue,cell);
+      }
    hqRls   = FALSE;
    /* Fix : syed MultiUe per TTI crash in TA List. */
    maxHqRetxReached = FALSE;
@@ -2818,7 +2818,7 @@ RgSchErrInfo            *err;
     * when cwSwap flag is considered. */
 
    RGSCHDBGINFO(inst, (rgSchPBuf(inst), "rgSCHDhmHqFdbkInd():\
-            tbCnt=%d , isAck=%d",tbCnt,isAck));
+	    tbCnt=%d , isAck=%d",tbCnt,isAck));
    if (isAck == TFU_HQFDB_ACK)
    {
       hqP->tbInfo[tbCnt].ackCount += 1; /* Ack counter */
@@ -2827,16 +2827,16 @@ RgSchErrInfo            *err;
       /* Do not update the Ul Trans Time in case of raCb */
       if (ue)
       { 
-         rgSCHUtlHdlUlTransInd(cell, ue, timingInfo);
+	 rgSCHUtlHdlUlTransInd(cell, ue, timingInfo);
 #ifdef TENB_STATS
-         ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlAckNackCnt[tbCnt]++;
+	 ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlAckNackCnt[tbCnt]++;
 #endif
 
       }
 
 #ifdef TENB_STATS
       sCell->tenbStats->sch.dlAckNack[tbCnt]\
-         [hqP->tbInfo[tbCnt].dlGrnt.rv]++;
+	 [hqP->tbInfo[tbCnt].dlGrnt.rv]++;
 
 #endif
 
@@ -2845,48 +2845,48 @@ RgSchErrInfo            *err;
    {
       hqP->tbInfo[tbCnt].nackCount += 1; /* Nack Counter */
       RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), "<HARQ> HqP[%d:%d] NACKED "
-               "ue(%d)\n", hqP->procId, tbCnt, hqP->hqE->ue->ueId));
+	       "ue(%d)\n", hqP->procId, tbCnt, hqP->hqE->ue->ueId));
       rgHqRvStats[tbCnt][hqP->tbInfo[tbCnt].dlGrnt.rv][1]++;
       /* Do not update the Ul Trans Time in case of raCb */
 
 #ifdef TENB_STATS
       sCell->tenbStats->sch.dlAckNack[tbCnt]\
-         [hqP->tbInfo[tbCnt].dlGrnt.rv]++;
-      
+	 [hqP->tbInfo[tbCnt].dlGrnt.rv]++;
+
       sCell->tenbStats->sch.dlNack[tbCnt]\
-         [hqP->tbInfo[tbCnt].dlGrnt.rv]++;
+	 [hqP->tbInfo[tbCnt].dlGrnt.rv]++;
 
 
 #endif
 
       if (ue)
       { 
-         rgSCHUtlHdlUlTransInd(cell, ue, timingInfo);
+	 rgSCHUtlHdlUlTransInd(cell, ue, timingInfo);
 #ifdef TENB_STATS
-         ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlAckNackCnt[tbCnt]++;
-         ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlNackCnt[tbCnt] ++;
+	 ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlAckNackCnt[tbCnt]++;
+	 ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlNackCnt[tbCnt] ++;
 #endif
       }
       /* Added Dl TB count for NACKED data*/
 #ifdef LTE_L2_MEAS
       if(hqP->tbInfo[tbCnt].txCntr == 1)
       {   
-         cell->dlUlTbCnt.tbTransDlFaulty++;
+	 cell->dlUlTbCnt.tbTransDlFaulty++;
       }   
 #endif         
    }
    else
    {
       RGSCHDBGINFONEW(inst,(rgSchPBuf(inst),"<HARQ> HqP[%d:%d] DTXED UE(%d)\n",
-               hqP->procId, tbCnt,hqP->hqE->ue->ueId));
+	       hqP->procId, tbCnt,hqP->hqE->ue->ueId));
       hqP->tbInfo[tbCnt].dtxCount += 1;  /* DTX Counter*/
 
 #ifdef TENB_STATS
       sCell->tenbStats->sch.dlDtx[tbCnt]\
-         [hqP->tbInfo[tbCnt].dlGrnt.rv]++;
+	 [hqP->tbInfo[tbCnt].dlGrnt.rv]++;
       if (ue)
       {
-         ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlDtxCnt[tbCnt]++;
+	 ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(sCell)].dlDtxCnt[tbCnt]++;
       }
 #endif
 
@@ -2895,7 +2895,7 @@ RgSchErrInfo            *err;
 #ifdef LTE_L2_MEAS
       if(hqP->tbInfo[tbCnt].txCntr == 1)
       {   
-         cell->dlUlTbCnt.tbTransDlFaulty++;
+	 cell->dlUlTbCnt.tbTransDlFaulty++;
       }
 #endif         
    }
@@ -2905,16 +2905,16 @@ RgSchErrInfo            *err;
    {
       if((rgSCHDhmProcHqFdbkAckNackRep(hqP,sf,tbCnt,&isAck)) != ROK)
       {
-         RETVALUE(ret);
+	 RETVALUE(ret);
       }
    }
    else
    {
-     /* For a Normal UE take the decision here */
-     hqP->tbInfo[tbCnt].isAckNackDtx = isAck;
-     {
-         rgSCHUtlDlHqPTbRmvFrmTx(sf, hqP, tbCnt, FALSE);
-     }
+      /* For a Normal UE take the decision here */
+      hqP->tbInfo[tbCnt].isAckNackDtx = isAck;
+      {
+	 rgSCHUtlDlHqPTbRmvFrmTx(sf, hqP, tbCnt, FALSE);
+      }
    }
    /* Process either the ACK received or max retries have occurred */
    /* Assuming for Repetition that 2 ACKs and 2 NACKs make an NACK */
@@ -2922,98 +2922,98 @@ RgSchErrInfo            *err;
    {
       if (isMsg4 == TRUE) 
       {
-         /* SR_RACH_STATS : MSG4 ACK*/
-         rgNumMsg4Ack++;
+	 /* SR_RACH_STATS : MSG4 ACK*/
+	 rgNumMsg4Ack++;
 
-         if (raCb == NULLP)
-         {
-            raCb = rgSCHDbmGetRaCb(cell, rnti);
-         }
-         RGSCHDBGINFO(cell->instIdx,
-               (rgSchPBuf(cell->instIdx), "Ack Rcvd. FdbkInd for Msg4Done\n"));
-         /* Inform Random Access Module regarding the ack received */
-         if (raCb != NULLP)
-         {
-            /*RRC Connection Setup failure issue where RRC connection 
-             * setup was not reaching UE due to message 4 HARQ failure */
-            printf("\nMSG4 Ack ,calling rgSCHRamMsg4Done\n");
-            ret = rgSCHRamMsg4Done(cell, raCb);
-            hqFreed = TRUE;
-         }
-         else
-         {
-            printf("\nraCb is NULLP\n");
-         }
+	 if (raCb == NULLP)
+	 {
+	    raCb = rgSCHDbmGetRaCb(cell, rnti);
+	 }
+	 RGSCHDBGINFO(cell->instIdx,
+	       (rgSchPBuf(cell->instIdx), "Ack Rcvd. FdbkInd for Msg4Done\n"));
+	 /* Inform Random Access Module regarding the ack received */
+	 if (raCb != NULLP)
+	 {
+	    /*RRC Connection Setup failure issue where RRC connection 
+	     * setup was not reaching UE due to message 4 HARQ failure */
+	    printf("\nMSG4 Ack ,calling rgSCHRamMsg4Done\n");
+	    ret = rgSCHRamMsg4Done(cell, raCb);
+	    hqFreed = TRUE;
+	 }
+	 else
+	 {
+	    printf("\nraCb is NULLP\n");
+	 }
       }
       else /*ccpu00114124- HARQ Release for Msg4 */
       {
-         RGSCH_NULL_CHECK(cell->instIdx, ueDl);
-         /* Push this harq process back to the free queue */
-         ueDl->mimoInfo.cwInfo[tbCnt].ackCnt++;
+	 RGSCH_NULL_CHECK(cell->instIdx, ueDl);
+	 /* Push this harq process back to the free queue */
+	 ueDl->mimoInfo.cwInfo[tbCnt].ackCnt++;
 #ifdef DL_LA
-         if(hqP->tbInfo[tbCnt].txCntr == 1)
-         {
-            rgSCHDhmUpdateAckNackHistory(sCell, ue, isAck, tbCnt);
-         } 
+	 if(hqP->tbInfo[tbCnt].txCntr == 1)
+	 {
+	    rgSCHDhmUpdateAckNackHistory(sCell, ue, isAck, tbCnt);
+	 } 
 #endif
-         RGSCH_NULL_CHECK(cell->instIdx, ue);
-         RG_UPD_ACQI_TRIG_WT(ue, sCell,isAck);
-         rgSCHDhmRlsHqpTb(hqP, tbCnt, TRUE);
+	 RGSCH_NULL_CHECK(cell->instIdx, ue);
+	 RG_UPD_ACQI_TRIG_WT(ue, sCell,isAck);
+	 rgSCHDhmRlsHqpTb(hqP, tbCnt, TRUE);
       }
       hqRls = TRUE;
    }
    else
    {
       {
-         if(!isMsg4)
-         {
-            RGSCH_NULL_CHECK(cell->instIdx, ueDl);
-            ueDl->mimoInfo.cwInfo[tbCnt].nackCnt++;
+	 if(!isMsg4)
+	 {
+	    RGSCH_NULL_CHECK(cell->instIdx, ueDl);
+	    ueDl->mimoInfo.cwInfo[tbCnt].nackCnt++;
 #ifdef DL_LA
-            if(hqP->tbInfo[tbCnt].txCntr == 1)
-            {
-               rgSCHDhmUpdateAckNackHistory(sCell, ue, isAck, tbCnt);
-            }
+	    if(hqP->tbInfo[tbCnt].txCntr == 1)
+	    {
+	       rgSCHDhmUpdateAckNackHistory(sCell, ue, isAck, tbCnt);
+	    }
 #endif
-            RGSCH_NULL_CHECK(cell->instIdx, ue);
-            RG_UPD_ACQI_TRIG_WT(ue, sCell, isAck);
-         }
-         else
-         { 
+	    RGSCH_NULL_CHECK(cell->instIdx, ue);
+	    RG_UPD_ACQI_TRIG_WT(ue, sCell, isAck);
+	 }
+	 else
+	 { 
 #ifdef XEON_SPECIFIC_CHANGES
-            CM_LOG_DEBUG(CM_LOG_ID_SCH,"Msg4 Harq FAILURE for UE(%d)\n", rnti);
+	    CM_LOG_DEBUG(CM_LOG_ID_SCH,"Msg4 Harq FAILURE for UE(%d)\n", rnti);
 #endif
-            rgNumMsg4Nack++;
-         }
-         rgSCHDhmHqTbTrnsFail(cell, hqP, tbCnt, &hqRls);
-         maxHqRetxReached = hqRls;
+	    rgNumMsg4Nack++;
+	 }
+	 rgSCHDhmHqTbTrnsFail(cell, hqP, tbCnt, &hqRls);
+	 maxHqRetxReached = hqRls;
       }
    }
 
    if(hqRls == TRUE)
    {
       /* MS_WORKAROUND: to increase Harq Fail Counter .
-         The status field is required for tracking the number of harq faliures at MAC*/
+	 The status field is required for tracking the number of harq faliures at MAC*/
       if (isAck)
       {
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
-            rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = TRUE;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
+	    rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = TRUE;
       }
 #ifdef LTE_L2_MEAS
       else if(maxHqRetxReached)
       {
-         /* this is to differentiat the NACK with data loss used for UU loss L2 meas */
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
-            rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = 0xFF; /* RGU_NACK_LOSS; */
+	 /* this is to differentiat the NACK with data loss used for UU loss L2 meas */
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
+	    rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = 0xFF; /* RGU_NACK_LOSS; */
       }
 #endif
       else
       {
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
-            rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = FALSE;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].status[\
+	    rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = FALSE;
       }
       rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].tbId[\
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = tbCnt + 1;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs] = tbCnt + 1;
       rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs++;
    }
 
@@ -3039,7 +3039,7 @@ RgSchErrInfo            *err;
  *  @return     RETVOID
  **/
 #ifdef ANSI
-PUBLIC Void rgSchGetHqFdbkPos
+   PUBLIC Void rgSchGetHqFdbkPos
 (
  RgSchCellCb          *cell,
  RgSchUeCb            *ue,
@@ -3050,12 +3050,12 @@ PUBLIC Void rgSchGetHqFdbkPos
  )
 #else
 PUBLIC Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
- RgSchCellCb          *cell;
- RgSchUeCb            *ue;
- RgSchDlHqProcCb      *hqP;
- RgrSchFrmt1b3TypEnum uciFrmtTyp;
- U8                  *isAck;
- RgTfuHqInfo          *fdbk;
+   RgSchCellCb          *cell;
+   RgSchUeCb            *ue;
+   RgSchDlHqProcCb      *hqP;
+   RgrSchFrmt1b3TypEnum uciFrmtTyp;
+   U8                  *isAck;
+   RgTfuHqInfo          *fdbk;
 #endif
 {
    if(uciFrmtTyp != RG_SCH_UCI_FORMAT1B_CS)
@@ -3080,139 +3080,139 @@ PUBLIC Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
        * of servCellIdx as per 36.212 section 5.2.26*/
       switch(ue->f1bCsAVal)
       {/* A Value */
-         case RG_SCH_A_VAL_2:
-            {
-               if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
-               {
-                  isAck[0] = fdbk->isAck[1];/*SCell*/
-                  isAck[1] = fdbk->isAck[1];/*SCell*/
-               }
-               else
-               {
-                  isAck[0] = fdbk->isAck[0];/*PCell*/
-                  isAck[1] = fdbk->isAck[0];/*PCell*/
-               }
-               break;
-            }
-         case RG_SCH_A_VAL_3:
-            {
-               if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
-               {
+	 case RG_SCH_A_VAL_2:
+	    {
+	       if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
+	       {
+		  isAck[0] = fdbk->isAck[1];/*SCell*/
+		  isAck[1] = fdbk->isAck[1];/*SCell*/
+	       }
+	       else
+	       {
+		  isAck[0] = fdbk->isAck[0];/*PCell*/
+		  isAck[1] = fdbk->isAck[0];/*PCell*/
+	       }
+	       break;
+	    }
+	 case RG_SCH_A_VAL_3:
+	    {
+	       if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
+	       {
 #ifdef LTE_ADV
-                  U8 servCellIdx = rgSchUtlGetServCellIdx(hqP->hqE->cell->instIdx,
-                        hqP->hqE->cell->cellId,
-                        ue);
+		  U8 servCellIdx = rgSchUtlGetServCellIdx(hqP->hqE->cell->instIdx,
+			hqP->hqE->cell->cellId,
+			ue);
 
-                  if(rgSCHUtlGetMaxTbSupp(ue->cellInfo[servCellIdx]->txMode.txModeEnum) > 1)
+		  if(rgSCHUtlGetMaxTbSupp(ue->cellInfo[servCellIdx]->txMode.txModeEnum) > 1)
 #else
-                     if(rgSCHUtlGetMaxTbSupp(ue->cellInfo[RGSCH_PCELL_INDEX]->txMode.txModeEnum) > 1)
+		     if(rgSCHUtlGetMaxTbSupp(ue->cellInfo[RGSCH_PCELL_INDEX]->txMode.txModeEnum) > 1)
 #endif
-                     {  /* Sec cell is in mimo mode */
-                        /* use 0 and 1 for sec in case of pucch
-                         * and 1 and 2 in case of PUSCH as the primary cell is in
-                         * siso case as A =3 */
-                        if(!fdbk->isPusch)
-                        {
-                           isAck[0] = fdbk->isAck[0];
-                           isAck[1] = fdbk->isAck[1];
-                        }else
-                        {/* PUSCH as per 36.212 serction 5.2.26*/
-                           isAck[0] = fdbk->isAck[1];
-                           isAck[1] = fdbk->isAck[2];
-                        }
-                     }else
-                     {/* sec cell is in siso */
-                        isAck[0] = fdbk->isAck[2];
-                     }
-               }else
-               {
-                  if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
-                  {/* primay cell is in mimo
-                      use 0 and 1 */
-                     isAck[0] = fdbk->isAck[0];
-                     isAck[1] = fdbk->isAck[1];
-                  }else
-                  {
-                     if(!fdbk->isPusch)
-                     {
-                        isAck[0] = fdbk->isAck[2];
-                     }else
-                     {/* PUSCH as per 36.212 serction 5.2.26*/
-                        isAck[0] = fdbk->isAck[0];
-                     }
-                  }
-               }
-               break;
-            }
-         case RG_SCH_A_VAL_4:
-            {
-               if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
-               {
-                  isAck[0] = fdbk->isAck[2];
-                  isAck[1] = fdbk->isAck[3];
+		     {  /* Sec cell is in mimo mode */
+			/* use 0 and 1 for sec in case of pucch
+			 * and 1 and 2 in case of PUSCH as the primary cell is in
+			 * siso case as A =3 */
+			if(!fdbk->isPusch)
+			{
+			   isAck[0] = fdbk->isAck[0];
+			   isAck[1] = fdbk->isAck[1];
+			}else
+			{/* PUSCH as per 36.212 serction 5.2.26*/
+			   isAck[0] = fdbk->isAck[1];
+			   isAck[1] = fdbk->isAck[2];
+			}
+		     }else
+		     {/* sec cell is in siso */
+			isAck[0] = fdbk->isAck[2];
+		     }
+	       }else
+	       {
+		  if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
+		  {/* primay cell is in mimo
+		      use 0 and 1 */
+		     isAck[0] = fdbk->isAck[0];
+		     isAck[1] = fdbk->isAck[1];
+		  }else
+		  {
+		     if(!fdbk->isPusch)
+		     {
+			isAck[0] = fdbk->isAck[2];
+		     }else
+		     {/* PUSCH as per 36.212 serction 5.2.26*/
+			isAck[0] = fdbk->isAck[0];
+		     }
+		  }
+	       }
+	       break;
+	    }
+	 case RG_SCH_A_VAL_4:
+	    {
+	       if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
+	       {
+		  isAck[0] = fdbk->isAck[2];
+		  isAck[1] = fdbk->isAck[3];
 #ifdef CA_DBG
-                  {
-                     if(isAck[0] == TFU_HQFDB_ACK)
-                     {
-                        gSCellTb1AckCount++;
-                     }else if(isAck[0] == TFU_HQFDB_NACK)
-                     {
-                        gSCellTb1NackCount++;
-                     }else
-                     {
-                        gSCellTb1DtxCount++;
-                     }
+		  {
+		     if(isAck[0] == TFU_HQFDB_ACK)
+		     {
+			gSCellTb1AckCount++;
+		     }else if(isAck[0] == TFU_HQFDB_NACK)
+		     {
+			gSCellTb1NackCount++;
+		     }else
+		     {
+			gSCellTb1DtxCount++;
+		     }
 
-                     if(isAck[1] == TFU_HQFDB_ACK)
-                     {
-                        gSCellTb2AckCount++;
-                     }else if(isAck[1] == TFU_HQFDB_NACK)
-                     {
-                        gSCellTb2NackCount++;
-                     }else
-                     {
-                        gSCellTb2DtxCount++;
-                     }
+		     if(isAck[1] == TFU_HQFDB_ACK)
+		     {
+			gSCellTb2AckCount++;
+		     }else if(isAck[1] == TFU_HQFDB_NACK)
+		     {
+			gSCellTb2NackCount++;
+		     }else
+		     {
+			gSCellTb2DtxCount++;
+		     }
 
-                  }
+		  }
 #endif
-               }
-               else
-               {
-                  isAck[0] = fdbk->isAck[0];
-                  isAck[1] = fdbk->isAck[1];
+	       }
+	       else
+	       {
+		  isAck[0] = fdbk->isAck[0];
+		  isAck[1] = fdbk->isAck[1];
 #ifdef CA_DBG
-                  {
-                     if(isAck[0] == TFU_HQFDB_ACK)
-                     {
-                        gPCellTb1AckCount++;
-                     }else if(isAck[0] == TFU_HQFDB_NACK)
-                     {
-                        gPCellTb1NackCount++;
-                     }else
-                     {
-                        gPCellTb1DtxCount++;
-                     }
+		  {
+		     if(isAck[0] == TFU_HQFDB_ACK)
+		     {
+			gPCellTb1AckCount++;
+		     }else if(isAck[0] == TFU_HQFDB_NACK)
+		     {
+			gPCellTb1NackCount++;
+		     }else
+		     {
+			gPCellTb1DtxCount++;
+		     }
 
-                     if(isAck[1] == TFU_HQFDB_ACK)
-                     {
-                        gPCellTb2AckCount++;
-                     }else if(isAck[1] == TFU_HQFDB_NACK)
-                     {
-                        gPCellTb2NackCount++;
-                     }else
-                     {
-                        gPCellTb2DtxCount++;
-                     }
+		     if(isAck[1] == TFU_HQFDB_ACK)
+		     {
+			gPCellTb2AckCount++;
+		     }else if(isAck[1] == TFU_HQFDB_NACK)
+		     {
+			gPCellTb2NackCount++;
+		     }else
+		     {
+			gPCellTb2DtxCount++;
+		     }
 
-                  }
+		  }
 #endif
 
-               }
-               break;
-            }
-         default:
-            break;
+	       }
+	       break;
+	    }
+	 default:
+	    break;
       }
    }
 #endif
@@ -3220,7 +3220,7 @@ PUBLIC Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
 }/* End of rgSchGetHqFdbkPos */
 #ifdef LTE_ADV
 #ifdef ANSI
-PUBLIC Void rgSchGetHqFdbkPosFormat3
+   PUBLIC Void rgSchGetHqFdbkPosFormat3
 (
  RgSchDlHqProcCb      *hqP,
  U8                   *isAck,
@@ -3228,9 +3228,9 @@ PUBLIC Void rgSchGetHqFdbkPosFormat3
  )
 #else
 PUBLIC Void rgSchGetHqFdbkPosFormat3(hqP,isAck,fdbk)
- RgSchDlHqProcCb      *hqP;
- U8                  *isAck;
- TfuHqFdbk           *fdbk;
+   RgSchDlHqProcCb      *hqP;
+   U8                  *isAck;
+   TfuHqFdbk           *fdbk;
 #endif
 {
    U8 cellIdx = RG_SCH_CMN_GET_CELL_IDX_FROM_HQP(hqP);
@@ -3260,21 +3260,21 @@ PUBLIC Void rgSchGetHqFdbkPosFormat3(hqP,isAck,fdbk)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhm5gtfHqFdbkInd 
+   PUBLIC S16 rgSCHDhm5gtfHqFdbkInd 
 (
-RgSchUeCb            *ue,
-RgSchCellCb          *cell,
-CmLteTimingInfo      timingInfo,
-TfuHqFdbk            fdbk,
-RgSchErrInfo         *err
-)
+ RgSchUeCb            *ue,
+ RgSchCellCb          *cell,
+ CmLteTimingInfo      timingInfo,
+ TfuHqFdbk            fdbk,
+ RgSchErrInfo         *err
+ )
 #else
 PUBLIC S16 rgSCHDhm5gtfHqFdbkInd(ue, cell, timingInfo, fdbk, err)
-RgSchUeCb            *ue;
-RgSchCellCb          *cell;
-CmLteTimingInfo      timingInfo;
-TfuHqFdbk            fdbk;
-RgSchErrInfo         *err;
+   RgSchUeCb            *ue;
+   RgSchCellCb          *cell;
+   CmLteTimingInfo      timingInfo;
+   TfuHqFdbk            fdbk;
+   RgSchErrInfo         *err;
 #endif
 {
    RgSchDlHqProcCb      *hqP = NULLP;   
@@ -3290,7 +3290,7 @@ RgSchErrInfo         *err;
 
    TRC2(rgSCHDhm5gtfHqFdbkInd)
 
-   RGSCHDECRFRMCRNTTIME(timingInfo, timingInfo, 4); 
+      RGSCHDECRFRMCRNTTIME(timingInfo, timingInfo, 4); 
 
    sf = rgSCHUtlSubFrmGet(cell, timingInfo);
 
@@ -3310,15 +3310,15 @@ RgSchErrInfo         *err;
 
       if (HQ_TB_WAITING == hqP->tbInfo[0].state)
       {
-         rgSCHDhmPrcFdbkForTb(cell, ue, hqP, sf, isMsg4, rnti, 0, 
-            timingInfo, fdbk, rlsHqBufs, err);
+	 rgSCHDhmPrcFdbkForTb(cell, ue, hqP, sf, isMsg4, rnti, 0, 
+	       timingInfo, fdbk, rlsHqBufs, err);
       }
       if(rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs)
       {
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
-            (U8)procId;
-         rlsHqBufs->numUes++;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
+	    (U8)procId;
+	 rlsHqBufs->numUes++;
       }
       hqPCount--;
    }
@@ -3348,25 +3348,25 @@ RgSchErrInfo         *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmHqFdbkInd
+   PUBLIC S16 rgSCHDhmHqFdbkInd
 (
-Void                 *cb, 
-U8                   cbType,
-RgSchCellCb          *cell,
-CmLteTimingInfo      timingInfo,
-RgTfuHqInfo          *fdbk,
-RgInfRlsHqInfo       *rlsHqBufs,
-RgSchErrInfo         *err
-)
+ Void                 *cb, 
+ U8                   cbType,
+ RgSchCellCb          *cell,
+ CmLteTimingInfo      timingInfo,
+ RgTfuHqInfo          *fdbk,
+ RgInfRlsHqInfo       *rlsHqBufs,
+ RgSchErrInfo         *err
+ )
 #else
 PUBLIC S16 rgSCHDhmHqFdbkInd(cb, cbType, cell, timingInfo, fdbk, rlsHqBufs, err)
-Void                    *cb;
-U8                      cbType;
-RgSchCellCb             *cell;
-CmLteTimingInfo         timingInfo;
-RgTfuHqInfo             *fdbk;
-RgInfRlsHqInfo          *rlsHqBufs;
-RgSchErrInfo            *err;
+   Void                    *cb;
+   U8                      cbType;
+   RgSchCellCb             *cell;
+   CmLteTimingInfo         timingInfo;
+   RgTfuHqInfo             *fdbk;
+   RgInfRlsHqInfo          *rlsHqBufs;
+   RgSchErrInfo            *err;
 #endif
 {
    RgSchDlHqTbCb        *tbCb;
@@ -3374,7 +3374,7 @@ RgSchErrInfo            *err;
    RgSchDlHqProcCb      *hqP = NULLP;   
    CmLList              *node = NULLP;
    CmLListCp            *lnk; 
-  /* Create and Initialize Ue it so that Its not Deferenced Unnecessarily */
+   /* Create and Initialize Ue it so that Its not Deferenced Unnecessarily */
    RgSchUeCb            *ue = NULLP;
 
    S16                  ret = ROK;
@@ -3382,7 +3382,7 @@ RgSchErrInfo            *err;
    Bool                 isMsg4 = FALSE;
    RgSchRaCb            *raCb = NULLP;
    U16                  rnti=0;
-  /* Added Insure Fixes Of UR.Initialized procId  */
+   /* Added Insure Fixes Of UR.Initialized procId  */
    U16                  procId=0;
    /* DTX Change: Bool is converted into U8*/
    U8                   isAck[2]={0}; /*Changed to Array of 2*/
@@ -3402,11 +3402,11 @@ RgSchErrInfo            *err;
 
    TRC2(rgSCHDhmHqFdbkInd)
 
-   /* Get the subframe associated with the feedback */
-   /* ccpu00133109: Removed RGSCHSUBFRMCRNTTIME as it is not giving proper output 
-    * if diff is more than 10. Instead using RGSCHDECRFRMCRNTTIME() as it is 
-    * serving the purpose */
-   RGSCHDECRFRMCRNTTIME(timingInfo, timingInfo, 4); 
+      /* Get the subframe associated with the feedback */
+      /* ccpu00133109: Removed RGSCHSUBFRMCRNTTIME as it is not giving proper output 
+       * if diff is more than 10. Instead using RGSCHDECRFRMCRNTTIME() as it is 
+       * serving the purpose */
+      RGSCHDECRFRMCRNTTIME(timingInfo, timingInfo, 4); 
 
    sf = rgSCHUtlSubFrmGet(cell, timingInfo);
    if (cbType == RGSCH_HQ_FDB_IND_CB_TYPE_RA_CB)
@@ -3414,10 +3414,10 @@ RgSchErrInfo            *err;
       raCb     = (RgSchRaCb *)(cb);
       hqE      = raCb->dlHqE;
       hqP      = rgSCHDhmHqProcByTime(hqE, timingInfo, &isMsg4,\
-                                      sf);
+	    sf);
       if(hqP)
       {
-         hqPCount = 1;
+	 hqPCount = 1;
       }
       rnti     = raCb->tmpCrnti;
    }
@@ -3426,7 +3426,7 @@ RgSchErrInfo            *err;
       ue       = (RgSchUeCb *)(cb);
       hqE      = RG_SCH_CMN_GET_UE_HQE(ue, cell);
       {
-         lnk      = &ue->dl.dlSfHqInfo[cell->cellId][sf->dlIdx].hqPLst;
+	 lnk      = &ue->dl.dlSfHqInfo[cell->cellId][sf->dlIdx].hqPLst;
       }
       node     = lnk->first; 
       hqPCount = lnk->count;
@@ -3463,15 +3463,15 @@ RgSchErrInfo            *err;
 
       if (fdbk->isAck[0] == TFU_HQFDB_ACK)
       {
-         hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].numOfAcks++;
+	 hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].numOfAcks++;
       }
       else
       {
-         ++retxCnt;
-         hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].numOfNacks++;
+	 ++retxCnt;
+	 hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].numOfNacks++;
       }
       RG_SCH_CMN_DL_TBS_TO_MCS(tbs, 
-               (hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].mcs));
+	    (hqFailStats.dlCqiStat[(dlUe->mimoInfo.cwInfo[0].cqi - 1)].mcs));
    }
 #endif /* MAC_SCH_STATS */
 
@@ -3483,61 +3483,61 @@ RgSchErrInfo            *err;
    {
       if (RGSCH_TIMEINFO_SAME(fdbkRcptTime, ue->relPdcchFbkTiming))
       {
-         sf = rgSCHUtlSubFrmGet(cell, timingInfo);
+	 sf = rgSCHUtlSubFrmGet(cell, timingInfo);
 
 #ifdef LTE_ADV
-         if(uciFrmtTyp == RG_SCH_UCI_FORMAT1B_CS)
-         {/* Feedback for SPS Release on PCell
-             If Pcell is in mimo, feedback index will be 0
-             else 2 */
-            if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
-            {
-               isAck[0] = fdbk->isAck[0];
-            }else
-            {
-               isAck[0] = fdbk->isAck[2];
-            }
+	 if(uciFrmtTyp == RG_SCH_UCI_FORMAT1B_CS)
+	 {/* Feedback for SPS Release on PCell
+	     If Pcell is in mimo, feedback index will be 0
+	     else 2 */
+	    if(rgSCHUtlGetMaxTbSupp(ue->mimoInfo.txMode) > 1)
+	    {
+	       isAck[0] = fdbk->isAck[0];
+	    }else
+	    {
+	       isAck[0] = fdbk->isAck[2];
+	    }
 
-            /* Not releasing pdcch here
-             * as it is already done at the time of
-             * reception req */
-            rgSCHUtlDlRelPdcchFbk(cell, ue, isAck[0]);
-         }
-         else
+	    /* Not releasing pdcch here
+	     * as it is already done at the time of
+	     * reception req */
+	    rgSCHUtlDlRelPdcchFbk(cell, ue, isAck[0]);
+	 }
+	 else
 #endif
-         {
-            if (!sf->relPdcch)
-            {
-               RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId, 
-                  "CRNTI:%d NO HARQ proc available for feedback: TimingInfo: "
-                  "sfn %d slot %d", ue->ueId, timingInfo.sfn,
-                  timingInfo.slot);
-               RETVALUE(RFAILED);
-            }
+	 {
+	    if (!sf->relPdcch)
+	    {
+	       RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId, 
+		     "CRNTI:%d NO HARQ proc available for feedback: TimingInfo: "
+		     "sfn %d slot %d", ue->ueId, timingInfo.sfn,
+		     timingInfo.slot);
+	       RETVALUE(RFAILED);
+	    }
 
-            isAck[0] = fdbk->isAck[0];
-            /* Note: Since relPdcchFbkTimimg matches with the recieved
-             * feedback, assumed that feedback is for release PDCCH */
-            rgSCHUtlDlRelPdcchFbk(cell, ue, isAck[0]);
+	    isAck[0] = fdbk->isAck[0];
+	    /* Note: Since relPdcchFbkTimimg matches with the recieved
+	     * feedback, assumed that feedback is for release PDCCH */
+	    rgSCHUtlDlRelPdcchFbk(cell, ue, isAck[0]);
 
-            /* Remove release PDCCH from the subframe */
-            rgSCHUtlPdcchPut(cell, &sf->pdcchInfo, sf->relPdcch);
-            sf->relPdcch = NULLP;
-            RETVALUE(ROK);
-         }
+	    /* Remove release PDCCH from the subframe */
+	    rgSCHUtlPdcchPut(cell, &sf->pdcchInfo, sf->relPdcch);
+	    sf->relPdcch = NULLP;
+	    RETVALUE(ROK);
+	 }
       }
    }
 #endif /* LTEMAC_SPS */
-   
+
    /* Remove the harq process from the subframe */
    sf = rgSCHUtlSubFrmGet(cell, timingInfo);
    RG_SCH_ADD_TO_CRNT_TIME(timingInfo, timingInfo, 1);
-   
+
 #ifdef CA_DBG
    {
       if(ue)
       {
-         gHqFdbkCount++;
+	 gHqFdbkCount++;
       }
    }
 
@@ -3546,9 +3546,9 @@ RgSchErrInfo            *err;
    {
       if(cbType != RGSCH_HQ_FDB_IND_CB_TYPE_RA_CB)
       {
-         hqP = (RgSchDlHqProcCb *)node->node;
-         node = node->next;
-         rlsHqBufs = &(hqP->hqE->cell->rlsHqArr[hqP->hqE->cell->crntHqIdx]);
+	 hqP = (RgSchDlHqProcCb *)node->node;
+	 node = node->next;
+	 rlsHqBufs = &(hqP->hqE->cell->rlsHqArr[hqP->hqE->cell->crntHqIdx]);
       }
       procId = hqP->procId;
 
@@ -3559,27 +3559,27 @@ RgSchErrInfo            *err;
 #ifdef LTE_ADV
       if (uciFrmtTyp == RG_SCH_UCI_FORMAT3)
       {
-         rgSchGetHqFdbkPosFormat3(hqP,isAck,format3Ack); 
+	 rgSchGetHqFdbkPosFormat3(hqP,isAck,format3Ack); 
       }
       else
 #endif
       {
-         rgSchGetHqFdbkPos(cell,ue,hqP, uciFrmtTyp, isAck,fdbk); 
+	 rgSchGetHqFdbkPos(cell,ue,hqP, uciFrmtTyp, isAck,fdbk); 
       }
       for (tbCnt = 0; tbCnt < 2; tbCnt++)
       {
-         if (HQ_TB_WAITING == hqP->tbInfo[tbCnt].state)
-         {
-            rgSCHDhmPrcFdbkForTb(cell, ue, hqP, sf, isMsg4, rnti, tbCnt, 
-                  timingInfo, isAck[tbCnt], rlsHqBufs, err);
-         }
+	 if (HQ_TB_WAITING == hqP->tbInfo[tbCnt].state)
+	 {
+	    rgSCHDhmPrcFdbkForTb(cell, ue, hqP, sf, isMsg4, rnti, tbCnt, 
+		  timingInfo, isAck[tbCnt], rlsHqBufs, err);
+	 }
       }
       if(rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs)
       {
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
-            (U8)procId;
-         rlsHqBufs->numUes++;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
+	    (U8)procId;
+	 rlsHqBufs->numUes++;
       }
       hqPCount--;
    }
@@ -3595,17 +3595,17 @@ RgSchErrInfo            *err;
       rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs = 0;
       if (HQ_TB_WAITING == tbCb->state)
       {
-         isAck[0] = fdbk->isAck[tbCb->tbIdx];
-         rgSCHDhmPrcFdbkForTb(cell, ue, hqP, sf, isMsg4, rnti, tbCb->tbIdx,
-               timingInfo, isAck[0], rlsHqBufs, err);
+	 isAck[0] = fdbk->isAck[tbCb->tbIdx];
+	 rgSCHDhmPrcFdbkForTb(cell, ue, hqP, sf, isMsg4, rnti, tbCb->tbIdx,
+	       timingInfo, isAck[0], rlsHqBufs, err);
       }
       hqP->cwSwpEnabled = FALSE;
       if(rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].numOfTBs)
       {
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
-         rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
-            (U8)procId;
-         rlsHqBufs->numUes++;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
+	 rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
+	    (U8)procId;
+	 rlsHqBufs->numUes++;
       }
       hqPCount--;
       node = node->next;
@@ -3636,24 +3636,24 @@ RgSchErrInfo            *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRgrUeCfg
+   PUBLIC Void rgSCHDhmRgrUeCfg
 (
-RgSchCellCb       *cell,
-RgSchUeCb         *ueCb,
-RgrUeCfg          *ueCfg,
-RgSchErrInfo      *err
-)
+ RgSchCellCb       *cell,
+ RgSchUeCb         *ueCb,
+ RgrUeCfg          *ueCfg,
+ RgSchErrInfo      *err
+ )
 #else
 PUBLIC Void rgSCHDhmRgrUeCfg(cell, ueCb, ueCfg, err)
-RgSchCellCb       *cell;
-RgSchUeCb         *ueCb;
-RgrUeCfg          *ueCfg;
-RgSchErrInfo      *err;
+   RgSchCellCb       *cell;
+   RgSchUeCb         *ueCb;
+   RgrUeCfg          *ueCfg;
+   RgSchErrInfo      *err;
 #endif
 {
    TRC2(rgSCHDhmRgrUeCfg)
 
-   UNUSED(err);
+      UNUSED(err);
 
    /* Initialize the TA Timer */
    cmInitTimers(&ueCb->taTmr, 1);
@@ -3662,11 +3662,11 @@ RgSchErrInfo      *err;
    ueCb->dl.taCb.state = RGSCH_TA_IDLE;
    /* Corrected default value of TA as per 36.213, 4.2.3 */
    ueCb->dl.taCb.ta = RGSCH_NO_TA_RQD;
-  
+
    /*[ccpu00121813]-ADD-Initializing outstanding TA value */
    ueCb->dl.taCb.outStndngTa = FALSE;
    ueCb->dl.taCb.outStndngTaval = RGSCH_NO_TA_RQD;
-   
+
    /* Start TA timer only if cfgd as FINITE value */
    if (ueCfg->ueTaTmrCfg.pres)
    {
@@ -3676,7 +3676,7 @@ RgSchErrInfo      *err;
       /*[ccpu00121813]-ADD-Added chk if tatmr val > 30 */
       if(ueCfg->ueTaTmrCfg.taTmr > 30)
       {
-         ueCb->dl.taCb.cfgTaTmr = ueCfg->ueTaTmrCfg.taTmr - 30; 
+	 ueCb->dl.taCb.cfgTaTmr = ueCfg->ueTaTmrCfg.taTmr - 30; 
       }
       rgSCHTmrStartTmr (cell, ueCb, RG_SCH_TMR_TA, ueCb->dl.taCb.cfgTaTmr);
    }
@@ -3704,17 +3704,17 @@ RgSchErrInfo      *err;
  *                -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRgrCellCfg
+   PUBLIC Void rgSCHDhmRgrCellCfg
 (
-RgSchCellCb    *cell,
-RgrCellCfg     *cellCfg,
-RgSchErrInfo   *err
-)
+ RgSchCellCb    *cell,
+ RgrCellCfg     *cellCfg,
+ RgSchErrInfo   *err
+ )
 #else
 PUBLIC Void rgSCHDhmRgrCellCfg(cell, cellCfg, err)
-RgSchCellCb    *cell;
-RgrCellCfg     *cellCfg;
-RgSchErrInfo   *err;
+   RgSchCellCb    *cell;
+   RgrCellCfg     *cellCfg;
+   RgSchErrInfo   *err;
 #endif
 {
    RgSchDlHqEnt         *hqE;
@@ -3725,24 +3725,24 @@ RgSchErrInfo   *err;
 
    TRC2(rgSCHDhmRgrCellCfg)
 
-   UNUSED(err);
+      UNUSED(err);
 
    pUeCb = NULLP;
-   
+
    cell->dlHqCfg = cellCfg->dlHqCfg;
    for (;;)
    {
       ret = cmHashListGetNext(&(cell->ueLst), pUeCb, &nUeCb);
       if (ret != ROK)
       {
-         break;
+	 break;
       }
       else
       {
-         pUeCb = nUeCb;
-         /* Update the DL Harq related information */
-         hqE   = RG_SCH_CMN_GET_UE_HQE(((RgSchUeCb*)nUeCb), cell);
-         hqE->maxHqTx = cell->dlHqCfg.maxDlHqTx;
+	 pUeCb = nUeCb;
+	 /* Update the DL Harq related information */
+	 hqE   = RG_SCH_CMN_GET_UE_HQE(((RgSchUeCb*)nUeCb), cell);
+	 hqE->maxHqTx = cell->dlHqCfg.maxDlHqTx;
       }
    }
    /* Initializing the list for ueCbs that would have ta */
@@ -3765,8 +3765,8 @@ RgSchErrInfo   *err;
 
    for (idx = 0; idx < RGSCH_UE_TQ_SIZE; idx++)
    {
-     cell->tq[idx].first = NULLP;
-     cell->tq[idx].tail  = NULLP;
+      cell->tq[idx].first = NULLP;
+      cell->tq[idx].tail  = NULLP;
    }
    RETVOID;
 }  /* rgSCHDhmRgrCellCfg */
@@ -3791,17 +3791,17 @@ RgSchErrInfo   *err;
  *                -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRgrCellRecfg
+   PUBLIC Void rgSCHDhmRgrCellRecfg
 (
-RgSchCellCb    *cell,
-RgrCellRecfg   *cellRecfg,
-RgSchErrInfo   *err
-)
+ RgSchCellCb    *cell,
+ RgrCellRecfg   *cellRecfg,
+ RgSchErrInfo   *err
+ )
 #else
 PUBLIC Void rgSCHDhmRgrCellRecfg(cell, cellRecfg, err)
-RgSchCellCb    *cell;
-RgrCellRecfg   *cellRecfg;
-RgSchErrInfo   *err;
+   RgSchCellCb    *cell;
+   RgrCellRecfg   *cellRecfg;
+   RgSchErrInfo   *err;
 #endif
 {
    RgSchDlHqEnt         *hqE;
@@ -3811,10 +3811,10 @@ RgSchErrInfo   *err;
 
    TRC2(rgSCHDhmRgrCellRecfg)
 
-   UNUSED(err);
+      UNUSED(err);
 
    pUeCb = NULLP;
-   
+
    /* Update the cell with recieved configuration */
    if (cellRecfg->recfgTypes & RGR_CELL_DL_HARQ_RECFG)
    {
@@ -3822,18 +3822,18 @@ RgSchErrInfo   *err;
 
       for (;;)
       {
-         ret = cmHashListGetNext(&(cell->ueLst), pUeCb, &nUeCb);
-         if (ret != ROK)
-         {
-            break;
-         }
-         else
-         {
-            pUeCb = nUeCb;
-            /* Update the DL Harq related information */
-            hqE      = RG_SCH_CMN_GET_UE_HQE(((RgSchUeCb*)nUeCb), cell);
-            hqE->maxHqTx = cell->dlHqCfg.maxDlHqTx;
-         }
+	 ret = cmHashListGetNext(&(cell->ueLst), pUeCb, &nUeCb);
+	 if (ret != ROK)
+	 {
+	    break;
+	 }
+	 else
+	 {
+	    pUeCb = nUeCb;
+	    /* Update the DL Harq related information */
+	    hqE      = RG_SCH_CMN_GET_UE_HQE(((RgSchUeCb*)nUeCb), cell);
+	    hqE->maxHqTx = cell->dlHqCfg.maxDlHqTx;
+	 }
       }
    }
    RETVOID;
@@ -3854,23 +3854,23 @@ RgSchErrInfo   *err;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmFreeUe
+   PUBLIC Void rgSCHDhmFreeUe
 (
-RgSchUeCb          *ueCb
-)
+ RgSchUeCb          *ueCb
+ )
 #else
 PUBLIC Void rgSCHDhmFreeUe(ueCb)
-RgSchUeCb          *ueCb;
+   RgSchUeCb          *ueCb;
 #endif
 {
 
    TRC2(rgSCHDhmFreeUe)
 
-   /* If TA Timer is running. Stop it */
-   if (ueCb->taTmr.tmrEvnt != TMR_NONE)
-   {
-      rgSCHTmrStopTmr(ueCb->cell, ueCb->taTmr.tmrEvnt, ueCb);
-   }
+      /* If TA Timer is running. Stop it */
+      if (ueCb->taTmr.tmrEvnt != TMR_NONE)
+      {
+	 rgSCHTmrStopTmr(ueCb->cell, ueCb->taTmr.tmrEvnt, ueCb);
+      }
 
    /* ccpu00118357 - ADD - stop the periodic BSR timer so it 
     * doesn't expire after UE is deleted */
@@ -3881,7 +3881,7 @@ RgSchUeCb          *ueCb;
    }
 #endif /* ifdef RGR_V1*/
 
-   
+
    if (RG_SCH_CMN_GET_UE_HQE(ueCb, ueCb->cell))
    {
       rgSCHDhmDelHqEnt(ueCb->cell, &(RG_SCH_CMN_GET_UE_HQE(ueCb, ueCb->cell)));
@@ -3924,76 +3924,76 @@ RgSchUeCb          *ueCb;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmUpdTa
+   PUBLIC Void rgSCHDhmUpdTa
 (
-RgSchCellCb    *cell,
-RgSchUeCb      *ueCb,
-U8             ta
-)
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ueCb,
+ U8             ta
+ )
 #else
 PUBLIC Void rgSCHDhmUpdTa(cell, ueCb, ta)
-RgSchCellCb    *cell;
-RgSchUeCb      *ueCb;
-U8             ta;
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ueCb;
+   U8             ta;
 #endif
 {
    TRC2(rgSCHDhmUpdTa)
 
-   if (ueCb->dl.taCb.state == RGSCH_TA_IDLE)
-   {
-      ueCb->dl.taCb.state     =  RGSCH_TA_TOBE_SCHEDULED;
-      ueCb->dl.taCb.numRemSf  =  2;
-      rgSCHUtlDlTARpt(cell, ueCb);  
-      /* If TA Timer is running. Stop it */
-      if (ueCb->taTmr.tmrEvnt != TMR_NONE)
+      if (ueCb->dl.taCb.state == RGSCH_TA_IDLE)
       {
-         rgSCHTmrStopTmr(cell, ueCb->taTmr.tmrEvnt, ueCb);
+	 ueCb->dl.taCb.state     =  RGSCH_TA_TOBE_SCHEDULED;
+	 ueCb->dl.taCb.numRemSf  =  2;
+	 rgSCHUtlDlTARpt(cell, ueCb);  
+	 /* If TA Timer is running. Stop it */
+	 if (ueCb->taTmr.tmrEvnt != TMR_NONE)
+	 {
+	    rgSCHTmrStopTmr(cell, ueCb->taTmr.tmrEvnt, ueCb);
+	 }
+
+	 /* SR_RACH_STATS : TA MODIFIED */
+	 if (ueCb->dl.taCb.ta != ta)
+	 {
+	    rgNumTAModified++;
+	 }
+	 ueCb->dl.taCb.ta        =  ta;
       }
-	  
-	  /* SR_RACH_STATS : TA MODIFIED */
-      if (ueCb->dl.taCb.ta != ta)
+      else
       {
-         rgNumTAModified++;
+	 /* [ccpu00121813]-ADD-Updating outstanding values 
+	  * TA which gets transmitted at N gets applied at UE at N+6,once TA
+	  * has been scheduled,further TA values get stored in outstndngTaval.
+	  * Once TA gets applied at UE or when NACK/DTX is rcvd for maxhqretx times
+	  * then schedule the outstanding TA val if present */
+	 ueCb->dl.taCb.outStndngTa    =  TRUE;
+	 ueCb->dl.taCb.outStndngTaval =  ta;
       }
-      ueCb->dl.taCb.ta        =  ta;
-   }
-   else
-   {
-      /* [ccpu00121813]-ADD-Updating outstanding values 
-      * TA which gets transmitted at N gets applied at UE at N+6,once TA
-      * has been scheduled,further TA values get stored in outstndngTaval.
-      * Once TA gets applied at UE or when NACK/DTX is rcvd for maxhqretx times
-      * then schedule the outstanding TA val if present */
-      ueCb->dl.taCb.outStndngTa    =  TRUE;
-      ueCb->dl.taCb.outStndngTaval =  ta;
-   }
 
    RETVOID;
 }  /* rgSCHDhmUpdTa */
 
- /** @brief This function handles the TA timer expiry.
-  *
-  * @details
-  *
-  *     Function: This function handled the TA Expiry.
-  *
-  *         Processing steps:
-  *         - 
-  *
-  *
-  * @param[in] RgSchUeCb  *ueCb  
-  *
-  * @return Void
-  *      -#None.
-  */
+/** @brief This function handles the TA timer expiry.
+ *
+ * @details
+ *
+ *     Function: This function handled the TA Expiry.
+ *
+ *         Processing steps:
+ *         - 
+ *
+ *
+ * @param[in] RgSchUeCb  *ueCb  
+ *
+ * @return Void
+ *      -#None.
+ */
 #ifdef ANSI
-PUBLIC Void rgSCHDhmProcTAExp 
+   PUBLIC Void rgSCHDhmProcTAExp 
 (
  RgSchUeCb  *ueCb
  )
 #else
 PUBLIC Void rgSCHDhmProcTAExp (ueCb)
- RgSchUeCb  *ueCb;
+   RgSchUeCb  *ueCb;
 #endif
 {
    TRC2(rgSCHDhmProcTAExp);
@@ -4023,26 +4023,26 @@ PUBLIC Void rgSCHDhmProcTAExp (ueCb)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmAddLcData
+   PUBLIC S16 rgSCHDhmAddLcData
 (
-Inst               inst,
-RgSchLchAllocInfo  *lchData,
-RgSchDlHqTbCb      *tbInfo
-)
+ Inst               inst,
+ RgSchLchAllocInfo  *lchData,
+ RgSchDlHqTbCb      *tbInfo
+ )
 #else
 PUBLIC S16 rgSCHDhmAddLcData(inst, lchData, tbInfo)
-Inst               inst;
-RgSchLchAllocInfo  *lchData;
-RgSchDlHqTbCb      *tbInfo;
+   Inst               inst;
+   RgSchLchAllocInfo  *lchData;
+   RgSchDlHqTbCb      *tbInfo;
 #endif
 {
 
    TRC2(rgSCHDhmAddLcData)
 
-   if(tbInfo->numLch >= RGSCH_MAX_NUM_DED_LC)
-   {
-     RETVALUE(RFAILED);
-   } 
+      if(tbInfo->numLch >= RGSCH_MAX_NUM_DED_LC)
+      {
+	 RETVALUE(RFAILED);
+      } 
 
    tbInfo->lchSchdDataArr[tbInfo->numLch]   = *lchData;
 
@@ -4070,15 +4070,15 @@ RgSchDlHqTbCb      *tbInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmTddRlsSubFrm
+   PUBLIC S16 rgSCHDhmTddRlsSubFrm
 (
-RgSchCellCb          *cellCb,
-CmLteTimingInfo      uciTimingInfo
-)
+ RgSchCellCb          *cellCb,
+ CmLteTimingInfo      uciTimingInfo
+ )
 #else
 PUBLIC S16 rgSCHDhmTddRlsSubFrm(cellCb, uciTimingInfo)
-RgSchCellCb          *cellCb;
-CmLteTimingInfo      uciTimingInfo;
+   RgSchCellCb          *cellCb;
+   CmLteTimingInfo      uciTimingInfo;
 #endif
 {
    CmLteTimingInfo         dlSfTime;
@@ -4088,7 +4088,7 @@ CmLteTimingInfo      uciTimingInfo;
 
    TRC2(rgSCHDhmTddRlsSubFrm)
 
-   ascIdx = 
+      ascIdx = 
       rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][uciTimingInfo.slot];
    noFdbks = ascIdx.numFdbkSubfrms;
    for(i=0; i < noFdbks; i++)
@@ -4127,15 +4127,15 @@ U32 macDtx = 0;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmRlsDlsfHqProc
+   PUBLIC S16 rgSCHDhmRlsDlsfHqProc
 (
-RgSchCellCb          *cellCb,
-CmLteTimingInfo      uciTimingInfo
-)
+ RgSchCellCb          *cellCb,
+ CmLteTimingInfo      uciTimingInfo
+ )
 #else
 PUBLIC S16 rgSCHDhmRlsDlsfHqProc(cellCb, uciTimingInfo)
-RgSchCellCb          *cellCb;
-CmLteTimingInfo      uciTimingInfo;
+   RgSchCellCb          *cellCb;
+   CmLteTimingInfo      uciTimingInfo;
 #endif
 {
    RgSchDlSf               *dlSf;
@@ -4156,7 +4156,7 @@ CmLteTimingInfo      uciTimingInfo;
    RgSchUeCb               *ue = NULLP;
    TRC2(rgSCHDhmRlsDlsfHqProc)
 
-   ascIdx = 
+      ascIdx = 
       rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][uciTimingInfo.slot];
    noFdbks = ascIdx.numFdbkSubfrms;
    for(i=0; i < noFdbks; i++)
@@ -4172,7 +4172,7 @@ CmLteTimingInfo      uciTimingInfo;
       dlSf = rgSCHUtlSubFrmGet (cellCb, dlSfTime);
       if(cellCb->ulDlCfgIdx != 5)
       {
-         rgSCHUtlGetNxtDlSfInfo(dlSfTime, cellCb, dlSf, &nxtDlsf, &nxtfrm);
+	 rgSCHUtlGetNxtDlSfInfo(dlSfTime, cellCb, dlSf, &nxtDlsf, &nxtfrm);
       }
       /* Subframe is present. Delete all the harq associations from 
        * this subframe.
@@ -4182,215 +4182,215 @@ CmLteTimingInfo      uciTimingInfo;
       node = dlSf->msg4HqPLst.first;
       while (node)
       {
-         tmpHqProc = (RgSchDlHqProcCb *)(node->node);
-         node = node->next;
-         tmpHqProc->cwSwpEnabled = FALSE;
-         if (HQ_TB_WAITING == tmpHqProc->tbInfo[0].state)
-         {
-            tbCb = &tmpHqProc->tbInfo[0];
+	 tmpHqProc = (RgSchDlHqProcCb *)(node->node);
+	 node = node->next;
+	 tmpHqProc->cwSwpEnabled = FALSE;
+	 if (HQ_TB_WAITING == tmpHqProc->tbInfo[0].state)
+	 {
+	    tbCb = &tmpHqProc->tbInfo[0];
 
-            /* Fix : syed MultiUe per TTI crash in TA List. */
-            maxRetx = FALSE;
+	    /* Fix : syed MultiUe per TTI crash in TA List. */
+	    maxRetx = FALSE;
 
-            tbCb->dtxCount++;
-            tbCb->isAckNackDtx = TFU_HQFDB_DTX;
+	    tbCb->dtxCount++;
+	    tbCb->isAckNackDtx = TFU_HQFDB_DTX;
 
 
-            rgSCHUtlDlHqPTbRmvFrmTx(dlSf, tmpHqProc, tbCb->tbIdx, FALSE);
+	    rgSCHUtlDlHqPTbRmvFrmTx(dlSf, tmpHqProc, tbCb->tbIdx, FALSE);
 
-            /* Delete the Harq Association. Release the Harq Process */
-            rgSCHDhmHqTbTrnsFail(cellCb, tmpHqProc, tbCb->tbIdx, &maxRetx);
+	    /* Delete the Harq Association. Release the Harq Process */
+	    rgSCHDhmHqTbTrnsFail(cellCb, tmpHqProc, tbCb->tbIdx, &maxRetx);
 
-            if (tbCb->taSnt == TRUE)
-            {
-               /* [ccpu00127148] Correcting the check */
-               if (TRUE == maxRetx)
-               {
-                  tbCb->taSnt                  =  FALSE;
-                  RGSCH_NULL_CHECK(cellCb->instIdx, ue)
-                     ue->dl.taCb.state = RGSCH_TA_IDLE;
+	    if (tbCb->taSnt == TRUE)
+	    {
+	       /* [ccpu00127148] Correcting the check */
+	       if (TRUE == maxRetx)
+	       {
+		  tbCb->taSnt                  =  FALSE;
+		  RGSCH_NULL_CHECK(cellCb->instIdx, ue)
+		     ue->dl.taCb.state = RGSCH_TA_IDLE;
 
-                  rgSCHUtlReTxTa(cellCb, ue);
-               }
-            }
-         }
+		  rgSCHUtlReTxTa(cellCb, ue);
+	       }
+	    }
+	 }
       } 
 
       node = dlSf->ueLst.first;
       while (node)
       {
 #ifdef TFU_TDD
-         macDtx++;
+	 macDtx++;
 #endif
-         ue = (RgSchUeCb *)(node->node);
-         node = node->next;
-         if (NULLP != ue)
-         {
-            hqPNode = ue->dl.dlSfHqInfo[cellCb->cellId][dlSf->dlIdx].hqPLst.first;
-            while (hqPNode)
-            {
-               tmpHqProc = (RgSchDlHqProcCb *)hqPNode->node;
-               hqPNode = hqPNode->next;
-               for (idx = 0 ;idx < 2; idx++)
-               {
-                  if (HQ_TB_WAITING == tmpHqProc->tbInfo[idx].state)
-                  {
-                     tbCb = &tmpHqProc->tbInfo[idx];
+	 ue = (RgSchUeCb *)(node->node);
+	 node = node->next;
+	 if (NULLP != ue)
+	 {
+	    hqPNode = ue->dl.dlSfHqInfo[cellCb->cellId][dlSf->dlIdx].hqPLst.first;
+	    while (hqPNode)
+	    {
+	       tmpHqProc = (RgSchDlHqProcCb *)hqPNode->node;
+	       hqPNode = hqPNode->next;
+	       for (idx = 0 ;idx < 2; idx++)
+	       {
+		  if (HQ_TB_WAITING == tmpHqProc->tbInfo[idx].state)
+		  {
+		     tbCb = &tmpHqProc->tbInfo[idx];
 
-                     /* Fix : syed MultiUe per TTI crash in TA List. */
-                     maxRetx = FALSE;
+		     /* Fix : syed MultiUe per TTI crash in TA List. */
+		     maxRetx = FALSE;
 
-                     tbCb->dtxCount++;
-                     tbCb->isAckNackDtx = TFU_HQFDB_DTX;
+		     tbCb->dtxCount++;
+		     tbCb->isAckNackDtx = TFU_HQFDB_DTX;
 
 
-                     /* Update feedback time for this process so that 
-                      * next subframe its picked up */
+		     /* Update feedback time for this process so that 
+		      * next subframe its picked up */
 #ifdef LTE_ADV
-                     U8 servCellIdx = rgSchUtlGetServCellIdx(
-                           tmpHqProc->hqE->cell->instIdx,
-                           tmpHqProc->hqE->cell->cellId,
-                           ue);
-                     anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &tbCb->fdbkTime,servCellIdx);
+		     U8 servCellIdx = rgSchUtlGetServCellIdx(
+			   tmpHqProc->hqE->cell->instIdx,
+			   tmpHqProc->hqE->cell->cellId,
+			   ue);
+		     anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &tbCb->fdbkTime,servCellIdx);
 #else
-                     anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &tbCb->fdbkTime,RGSCH_PCELL_INDEX);
+		     anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &tbCb->fdbkTime,RGSCH_PCELL_INDEX);
 #endif
-                     if(anInfo == NULLP)
-                     {
-                        RGSCHDBGERR(cellCb->instIdx, (rgSchPBuf(cellCb->instIdx), 
-                                 "Ack/Nack Info is NULL, Processing %dth feedback slot for DTX" 
-                                 "received on SFN [%d] and SF [%d]\n",i, uciTimingInfo.sfn, 
-                                 uciTimingInfo.slot));
-                     }
-                     else  if (tbCb->fbkRepCntr == 0)
-                     {
-                        /* Initialise the Ack/Nack feedback */
-                        anInfo->dlDai--;
-                        if(!(anInfo->dlDai))
-                        {
-                           rgSCHUtlInitUeANFdbkInfo(anInfo);
-                        }
-                     }
-                     else
-                     {
-                        /* Update feedback time for this process so that
-                         *              * next subframe its picked up */
-                        RGSCH_NULL_CHECK(cellCb->instIdx, nxtDlsf); 
-                        RGSCH_UPD_HQAN_FDBKTIME(tbCb, nxtDlsf, nxtfrm);
-                        RGSCH_UPD_ANINFO_WITH_HQ(anInfo, tbCb);
-                        rgSCHUtlDlHqPTbRmvFrmTx(dlSf, tmpHqProc, tbCb->tbIdx, TRUE);
-                        tbCb->fbkRepCntr--;
-                        continue;
+		     if(anInfo == NULLP)
+		     {
+			RGSCHDBGERR(cellCb->instIdx, (rgSchPBuf(cellCb->instIdx), 
+				 "Ack/Nack Info is NULL, Processing %dth feedback slot for DTX" 
+				 "received on SFN [%d] and SF [%d]\n",i, uciTimingInfo.sfn, 
+				 uciTimingInfo.slot));
+		     }
+		     else  if (tbCb->fbkRepCntr == 0)
+		     {
+			/* Initialise the Ack/Nack feedback */
+			anInfo->dlDai--;
+			if(!(anInfo->dlDai))
+			{
+			   rgSCHUtlInitUeANFdbkInfo(anInfo);
+			}
+		     }
+		     else
+		     {
+			/* Update feedback time for this process so that
+			 *              * next subframe its picked up */
+			RGSCH_NULL_CHECK(cellCb->instIdx, nxtDlsf); 
+			RGSCH_UPD_HQAN_FDBKTIME(tbCb, nxtDlsf, nxtfrm);
+			RGSCH_UPD_ANINFO_WITH_HQ(anInfo, tbCb);
+			rgSCHUtlDlHqPTbRmvFrmTx(dlSf, tmpHqProc, tbCb->tbIdx, TRUE);
+			tbCb->fbkRepCntr--;
+			continue;
 
-                     }
-                     rgSCHUtlDlHqPTbRmvFrmTx(dlSf, tmpHqProc, tbCb->tbIdx, FALSE);
-                     /*ccpu000119494-ADD- for SPS, call SPS specific DTX handler */
+		     }
+		     rgSCHUtlDlHqPTbRmvFrmTx(dlSf, tmpHqProc, tbCb->tbIdx, FALSE);
+		     /*ccpu000119494-ADD- for SPS, call SPS specific DTX handler */
 
-                     {
-                        /* Delete the Harq Association. Release the Harq Process */
-                        rgSCHDhmHqTbTrnsFail(cellCb, tmpHqProc, tbCb->tbIdx, &maxRetx);
-                     }
-                     if (tbCb->taSnt == TRUE)
-                     {
-                        /* [ccpu00127148] Correcting the check */
-                        if (TRUE == maxRetx)
-                        {
-                           tbCb->taSnt                  =  FALSE;
-                           RGSCH_NULL_CHECK(cellCb->instIdx, ue)
-                              ue->dl.taCb.state = RGSCH_TA_IDLE;
+		     {
+			/* Delete the Harq Association. Release the Harq Process */
+			rgSCHDhmHqTbTrnsFail(cellCb, tmpHqProc, tbCb->tbIdx, &maxRetx);
+		     }
+		     if (tbCb->taSnt == TRUE)
+		     {
+			/* [ccpu00127148] Correcting the check */
+			if (TRUE == maxRetx)
+			{
+			   tbCb->taSnt                  =  FALSE;
+			   RGSCH_NULL_CHECK(cellCb->instIdx, ue)
+			      ue->dl.taCb.state = RGSCH_TA_IDLE;
 
-                           rgSCHUtlReTxTa(cellCb, ue);
+			   rgSCHUtlReTxTa(cellCb, ue);
 
-                           RLOG_ARG0(L_DEBUG,DBG_CELLID,cellCb->cellId,
-                                   "Nack/DTX Rcvd for TA. Max Tries Attempted");
-                        }
-                     }
-                  }
-               }
-            }
-         }
+			   RLOG_ARG0(L_DEBUG,DBG_CELLID,cellCb->cellId,
+				 "Nack/DTX Rcvd for TA. Max Tries Attempted");
+			}
+		     }
+		  }
+	       }
+	    }
+	 }
       }
 
       node = dlSf->ackNakRepQ.first;
       while (node)
       {
-         tbCb = (RgSchDlHqTbCb *)(node->node);
-         tmpHqProc = tbCb->hqP;
-         /* [ccpu00121813]-ADD-Fetch ueCb */
-         ue = tmpHqProc->hqE->ue;
-         /* Fix : syed MultiUe per TTI crash in TA List. */
-         maxRetx = FALSE;
-         
-         tbCb->dtxCount++;
+	 tbCb = (RgSchDlHqTbCb *)(node->node);
+	 tmpHqProc = tbCb->hqP;
+	 /* [ccpu00121813]-ADD-Fetch ueCb */
+	 ue = tmpHqProc->hqE->ue;
+	 /* Fix : syed MultiUe per TTI crash in TA List. */
+	 maxRetx = FALSE;
+
+	 tbCb->dtxCount++;
 #ifdef TENB_STATS
-         tmpHqProc->hqE->cell->tenbStats->sch.dlDtx[tbCb->tbIdx][tbCb->dlGrnt.rv]++;
-         ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(tmpHqProc->hqE->cell)].dlDtxCnt[tbCb->tbIdx] ++;
+	 tmpHqProc->hqE->cell->tenbStats->sch.dlDtx[tbCb->tbIdx][tbCb->dlGrnt.rv]++;
+	 ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(tmpHqProc->hqE->cell)].dlDtxCnt[tbCb->tbIdx] ++;
 #endif
 
-         node = node->next;
-         /* If This is not the last repetition */
-         if (tbCb->fbkRepCntr > 1)
-         {
-            /* Update feedback time for this process so that 
-             * next subframe its picked up */
+	 node = node->next;
+	 /* If This is not the last repetition */
+	 if (tbCb->fbkRepCntr > 1)
+	 {
+	    /* Update feedback time for this process so that 
+	     * next subframe its picked up */
 #ifdef LTE_ADV
-            U8 servCellIdx = rgSchUtlGetServCellIdx(
-                  tmpHqProc->hqE->cell->instIdx,
-                  tmpHqProc->hqE->cell->cellId,
-                  ue);
-            anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &tbCb->fdbkTime,servCellIdx);
+	    U8 servCellIdx = rgSchUtlGetServCellIdx(
+		  tmpHqProc->hqE->cell->instIdx,
+		  tmpHqProc->hqE->cell->cellId,
+		  ue);
+	    anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &tbCb->fdbkTime,servCellIdx);
 #else
-            anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &tbCb->fdbkTime,0);
+	    anInfo = rgSCHUtlGetUeANFdbkInfo(ue, &tbCb->fdbkTime,0);
 #endif
-            if(anInfo == NULLP)
-            {
-               RETVALUE(RFAILED);
-            }
-            RGSCH_NULL_CHECK(cellCb->instIdx, nxtDlsf);
-            RGSCH_UPD_HQAN_FDBKTIME(tbCb, nxtDlsf, nxtfrm);
-            RGSCH_UPD_ANINFO_WITH_HQ(anInfo, tbCb);
-            rgSCHUtlDlHqPTbRmvFrmTx(dlSf,tmpHqProc,tbCb->tbIdx, TRUE);
-            tbCb->fbkRepCntr--;
-            continue;
-         }
-         else
-         {
-            rgSCHUtlDlHqPTbRmvFrmTx(dlSf,tmpHqProc,tbCb->tbIdx, TRUE);
+	    if(anInfo == NULLP)
+	    {
+	       RETVALUE(RFAILED);
+	    }
+	    RGSCH_NULL_CHECK(cellCb->instIdx, nxtDlsf);
+	    RGSCH_UPD_HQAN_FDBKTIME(tbCb, nxtDlsf, nxtfrm);
+	    RGSCH_UPD_ANINFO_WITH_HQ(anInfo, tbCb);
+	    rgSCHUtlDlHqPTbRmvFrmTx(dlSf,tmpHqProc,tbCb->tbIdx, TRUE);
+	    tbCb->fbkRepCntr--;
+	    continue;
+	 }
+	 else
+	 {
+	    rgSCHUtlDlHqPTbRmvFrmTx(dlSf,tmpHqProc,tbCb->tbIdx, TRUE);
 
-            if (((tbCb->nackCount + tbCb->dtxCount) >= tbCb->ackCount))
-            {
-               /*even if one NACK, we consider the feedback
-                * on a whole as NACk */
-               if ( tbCb->nackCount != 0 )
-               {
-                  tbCb->isAckNackDtx = TFU_HQFDB_NACK;
-               }
-               else
-               {
-                  tbCb->isAckNackDtx = TFU_HQFDB_DTX;
-               }
-              
-            {
-               /* Delete the Harq Association. Release the Harq Process */
-              rgSCHDhmHqTbTrnsFail(cellCb, tmpHqProc, tbCb->tbIdx, &maxRetx);
-            }
-           }/*if(((tbCb->nackCount+....*/
-         }/*else....*/
+	    if (((tbCb->nackCount + tbCb->dtxCount) >= tbCb->ackCount))
+	    {
+	       /*even if one NACK, we consider the feedback
+		* on a whole as NACk */
+	       if ( tbCb->nackCount != 0 )
+	       {
+		  tbCb->isAckNackDtx = TFU_HQFDB_NACK;
+	       }
+	       else
+	       {
+		  tbCb->isAckNackDtx = TFU_HQFDB_DTX;
+	       }
 
-         if (tbCb->taSnt == TRUE)
-         {
-            /* [ccpu00127148] Correcting the check */
-            if (TRUE == maxRetx)
-            {
-               tbCb->taSnt                  =  FALSE;
-               ue->dl.taCb.state = RGSCH_TA_IDLE;
-               
-               rgSCHUtlReTxTa(cellCb, ue); 
-               RLOG_ARG0(L_DEBUG,DBG_CELLID,cellCb->cellId,
-                     "Nack/DTX Rcvd for TA. Max Tries Attempted");
-               
-             }
-         }
+	       {
+		  /* Delete the Harq Association. Release the Harq Process */
+		  rgSCHDhmHqTbTrnsFail(cellCb, tmpHqProc, tbCb->tbIdx, &maxRetx);
+	       }
+	    }/*if(((tbCb->nackCount+....*/
+	 }/*else....*/
+
+	 if (tbCb->taSnt == TRUE)
+	 {
+	    /* [ccpu00127148] Correcting the check */
+	    if (TRUE == maxRetx)
+	    {
+	       tbCb->taSnt                  =  FALSE;
+	       ue->dl.taCb.state = RGSCH_TA_IDLE;
+
+	       rgSCHUtlReTxTa(cellCb, ue); 
+	       RLOG_ARG0(L_DEBUG,DBG_CELLID,cellCb->cellId,
+		     "Nack/DTX Rcvd for TA. Max Tries Attempted");
+
+	    }
+	 }
       }
    }
    RETVALUE(ROK);
@@ -4414,15 +4414,15 @@ CmLteTimingInfo      uciTimingInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmRlsDlsfHqProc
+   PUBLIC S16 rgSCHDhmRlsDlsfHqProc
 (
-RgSchCellCb          *cell,
-CmLteTimingInfo      timingInfo
-)
+ RgSchCellCb          *cell,
+ CmLteTimingInfo      timingInfo
+ )
 #else
 PUBLIC S16 rgSCHDhmRlsDlsfHqProc(cell, timingInfo)
-RgSchCellCb          *cell;
-CmLteTimingInfo      timingInfo;
+   RgSchCellCb          *cell;
+   CmLteTimingInfo      timingInfo;
 #endif
 {
    RgSchDlSf         *sf;
@@ -4437,12 +4437,12 @@ CmLteTimingInfo      timingInfo;
 
    TRC2(rgSCHDhmRlsDlsfHqProc)
 
-   /* Fetch the current timing info. Modify it to Last sf to be rlsd.*/
-   /* ccpu00133109: Removed RGSCHSUBFRMCRNTTIME as it is not giving proper 
-    * output if diff is more than 10. Instead using RGSCHDECRFRMCRNTTIME() 
-    * as it is serving the purpose */
-   RGSCHDECRFRMCRNTTIME(timingInfo, frm, RG_SCH_CMN_HARQ_INTERVAL); 
-   
+      /* Fetch the current timing info. Modify it to Last sf to be rlsd.*/
+      /* ccpu00133109: Removed RGSCHSUBFRMCRNTTIME as it is not giving proper 
+       * output if diff is more than 10. Instead using RGSCHDECRFRMCRNTTIME() 
+       * as it is serving the purpose */
+      RGSCHDECRFRMCRNTTIME(timingInfo, frm, RG_SCH_CMN_HARQ_INTERVAL); 
+
 
    /* Get the required Last subframe */
    sf = rgSCHUtlSubFrmGet(cell, frm);
@@ -4455,34 +4455,34 @@ CmLteTimingInfo      timingInfo;
       tmpHqProc = (RgSchDlHqProcCb *)(node->node);
       if (HQ_TB_WAITING == tmpHqProc->tbInfo[0].state)
       {
-         tbCb = &tmpHqProc->tbInfo[0];
-         /* Fix : syed MultiUe per TTI crash in TA List. */
-         maxRetx = FALSE;
+	 tbCb = &tmpHqProc->tbInfo[0];
+	 /* Fix : syed MultiUe per TTI crash in TA List. */
+	 maxRetx = FALSE;
 
-         RGSCHDBGINFO(cell->instIdx, (rgSchPBuf(cell->instIdx),"\n rgSCHDhmRlsDlsfHqProc():\
-                  txCntr=%d tmpHqProc=%d",tbCb->txCntr,tmpHqProc->procId));
+	 RGSCHDBGINFO(cell->instIdx, (rgSchPBuf(cell->instIdx),"\n rgSCHDhmRlsDlsfHqProc():\
+		  txCntr=%d tmpHqProc=%d",tbCb->txCntr,tmpHqProc->procId));
 
-         tbCb->dtxCount++;
-         if ((tmpHqProc->hqE->msg4Proc == tmpHqProc) || 
-               (tmpHqProc->hqE->ccchSduProc == tmpHqProc))
-         {
-            tbCb->isAckNackDtx = TFU_HQFDB_NACK;
-            rgNumMsg4Dtx++;
-         }
+	 tbCb->dtxCount++;
+	 if ((tmpHqProc->hqE->msg4Proc == tmpHqProc) || 
+	       (tmpHqProc->hqE->ccchSduProc == tmpHqProc))
+	 {
+	    tbCb->isAckNackDtx = TFU_HQFDB_NACK;
+	    rgNumMsg4Dtx++;
+	 }
 
-         node = node->next;
-         if (tbCb->fbkRepCntr != 0)
-         {
-            /* Update timingInfo for this hqP so that next subframe its picked up */
-            RG_SCH_ADD_TO_CRNT_TIME(tbCb->timingInfo, tbCb->timingInfo, 1);
-            rgSCHUtlDlHqPTbRmvFrmTx(sf,tmpHqProc,tbCb->tbIdx, TRUE);
-            tbCb->fbkRepCntr--;
-            continue;
-         }
-         rgSCHUtlDlHqPTbRmvFrmTx(sf,tmpHqProc,tbCb->tbIdx, FALSE);
+	 node = node->next;
+	 if (tbCb->fbkRepCntr != 0)
+	 {
+	    /* Update timingInfo for this hqP so that next subframe its picked up */
+	    RG_SCH_ADD_TO_CRNT_TIME(tbCb->timingInfo, tbCb->timingInfo, 1);
+	    rgSCHUtlDlHqPTbRmvFrmTx(sf,tmpHqProc,tbCb->tbIdx, TRUE);
+	    tbCb->fbkRepCntr--;
+	    continue;
+	 }
+	 rgSCHUtlDlHqPTbRmvFrmTx(sf,tmpHqProc,tbCb->tbIdx, FALSE);
 
-         /* Delete the Harq Association. Release the Harq Process */
-         rgSCHDhmHqTbTrnsFail(cell, tmpHqProc, tbCb->tbIdx, &maxRetx);
+	 /* Delete the Harq Association. Release the Harq Process */
+	 rgSCHDhmHqTbTrnsFail(cell, tmpHqProc, tbCb->tbIdx, &maxRetx);
 
       }
    } 
@@ -4496,60 +4496,60 @@ CmLteTimingInfo      timingInfo;
       node = node->next;
       if(ue != NULLP)
       {
-         hqPNode = ue->dl.dlSfHqInfo[cell->cellId][sf->dlIdx].hqPLst.first;
+	 hqPNode = ue->dl.dlSfHqInfo[cell->cellId][sf->dlIdx].hqPLst.first;
 
-         while (hqPNode)
-         {
-            tmpHqProc = (RgSchDlHqProcCb *)hqPNode->node;
-            tmpHqProc->cwSwpEnabled = FALSE;
-            hqPNode = hqPNode->next;
-            for (idx = 0 ;idx < 2; idx++)
-            {
-               if (HQ_TB_WAITING == tmpHqProc->tbInfo[idx].state)
-               {
-                  tbCb = &tmpHqProc->tbInfo[idx];
-                  /* Fix : syed MultiUe per TTI crash in TA List. */
-                  maxRetx = FALSE;
+	 while (hqPNode)
+	 {
+	    tmpHqProc = (RgSchDlHqProcCb *)hqPNode->node;
+	    tmpHqProc->cwSwpEnabled = FALSE;
+	    hqPNode = hqPNode->next;
+	    for (idx = 0 ;idx < 2; idx++)
+	    {
+	       if (HQ_TB_WAITING == tmpHqProc->tbInfo[idx].state)
+	       {
+		  tbCb = &tmpHqProc->tbInfo[idx];
+		  /* Fix : syed MultiUe per TTI crash in TA List. */
+		  maxRetx = FALSE;
 
-                  RGSCHDBGINFO(cell->instIdx, (rgSchPBuf(cell->instIdx),"\n rgSCHDhmRlsDlsfHqProc():\
-                           txCntr=%d tmpHqProc=%d",tbCb->txCntr,tmpHqProc->procId));
+		  RGSCHDBGINFO(cell->instIdx, (rgSchPBuf(cell->instIdx),"\n rgSCHDhmRlsDlsfHqProc():\
+			   txCntr=%d tmpHqProc=%d",tbCb->txCntr,tmpHqProc->procId));
 
-                  tbCb->dtxCount++;
-                  if ((tmpHqProc->hqE->msg4Proc == tmpHqProc) || 
-                        (tmpHqProc->hqE->ccchSduProc == tmpHqProc))
-                  {
-                     tbCb->isAckNackDtx = TFU_HQFDB_NACK;
-                     rgNumMsg4Dtx++;
-                  }
-                  else
-                  {
-                     tbCb->isAckNackDtx = TFU_HQFDB_DTX;
-                  }
+		  tbCb->dtxCount++;
+		  if ((tmpHqProc->hqE->msg4Proc == tmpHqProc) || 
+			(tmpHqProc->hqE->ccchSduProc == tmpHqProc))
+		  {
+		     tbCb->isAckNackDtx = TFU_HQFDB_NACK;
+		     rgNumMsg4Dtx++;
+		  }
+		  else
+		  {
+		     tbCb->isAckNackDtx = TFU_HQFDB_DTX;
+		  }
 
-                  rgSCHUtlDlHqPTbRmvFrmTx(sf,tmpHqProc,idx, FALSE);
+		  rgSCHUtlDlHqPTbRmvFrmTx(sf,tmpHqProc,idx, FALSE);
 
-                  {
-                     /* Delete the Harq Association. Release the Harq Process */
-                     rgSCHDhmHqTbTrnsFail(cell, tmpHqProc, tbCb->tbIdx, &maxRetx);
-                  }
-                  if (tbCb->taSnt == TRUE)
-                  {
-                     /* [ccpu00127148] Correcting the check */
-                     if (TRUE == maxRetx)
-                     {
-                        tbCb->taSnt                  =  FALSE;
-                        ue->dl.taCb.state = RGSCH_TA_IDLE;
+		  {
+		     /* Delete the Harq Association. Release the Harq Process */
+		     rgSCHDhmHqTbTrnsFail(cell, tmpHqProc, tbCb->tbIdx, &maxRetx);
+		  }
+		  if (tbCb->taSnt == TRUE)
+		  {
+		     /* [ccpu00127148] Correcting the check */
+		     if (TRUE == maxRetx)
+		     {
+			tbCb->taSnt                  =  FALSE;
+			ue->dl.taCb.state = RGSCH_TA_IDLE;
 
-                        rgSCHUtlReTxTa(cell, ue); 
-                        RGSCHDBGINFO(cell->instIdx, (rgSchPBuf(cell->instIdx), 
-                                 "Nack/DTX Rcvd for TA. Max Tries Attempted\n"));
-                     }
-                  }
-                  RgSchCmnDlUe *ueDl = RG_SCH_CMN_GET_DL_UE(ue,cell);
-                  ueDl->mimoInfo.cwInfo[tbCb->tbIdx].dtxCnt++;
-               }
-            }
-         }
+			rgSCHUtlReTxTa(cell, ue); 
+			RGSCHDBGINFO(cell->instIdx, (rgSchPBuf(cell->instIdx), 
+				 "Nack/DTX Rcvd for TA. Max Tries Attempted\n"));
+		     }
+		  }
+		  RgSchCmnDlUe *ueDl = RG_SCH_CMN_GET_DL_UE(ue,cell);
+		  ueDl->mimoInfo.cwInfo[tbCb->tbIdx].dtxCnt++;
+	       }
+	    }
+	 }
       }
    }
    /*CA Dev End*/
@@ -4580,22 +4580,22 @@ CmLteTimingInfo      timingInfo;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmMarkSpsHqProc
+   PUBLIC S16 rgSCHDhmMarkSpsHqProc
 (
-RgSchUeCb               *ue,
-U8                      idx
-)
+ RgSchUeCb               *ue,
+ U8                      idx
+ )
 #else
 PUBLIC S16 rgSCHDhmMarkSpsHqProc(ue, idx)
-RgSchUeCb               *ue;
-U8                      idx;
+   RgSchUeCb               *ue;
+   U8                      idx;
 #endif
 {
    RgSchDlHqProcCb      *hqP;
    TRC2(rgSCHDhmMarkSpsHqProc)
 
-   /* Pick the proc based on the index provided */
-   rgSCHDhmGetHqProcFrmId(ue->cell, ue, idx, &hqP);
+      /* Pick the proc based on the index provided */
+      rgSCHDhmGetHqProcFrmId(ue->cell, ue, idx, &hqP);
 
    RETVALUE(ROK);
 } /* rgSCHDhmMarkSpsHqProc */
@@ -4622,56 +4622,56 @@ U8                      idx;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep
+   PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep
 (
-RgSchDlHqProcCb      *hqP,
-RgSchDlSf            *sf,
-U8                   tbCnt,
-U8                   *isAck
-)
+ RgSchDlHqProcCb      *hqP,
+ RgSchDlSf            *sf,
+ U8                   tbCnt,
+ U8                   *isAck
+ )
 #else
 PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep(hqP,sf,tbCnt,isAck)
-RgSchDlHqProcCb      *hqP;
-RgSchDlSf            *sf;
-U8                   tbCnt;
-U8                   *isAck;
+   RgSchDlHqProcCb      *hqP;
+   RgSchDlSf            *sf;
+   U8                   tbCnt;
+   U8                   *isAck;
 #endif
 {
-    TRC2(rgSCHDhmProcHqFdbkAckNackRep)
+   TRC2(rgSCHDhmProcHqFdbkAckNackRep)
       /* Check if this is repeating UE */
-    rgSCHUtlDlHqPTbRmvFrmTx(sf, hqP, tbCnt, TRUE);
-    /* Check if last repetition */
-    if (--hqP->tbInfo[tbCnt].fbkRepCntr)
-    {
-        /* Update timingInfo for this hqP so that next subframe its picked up */
-        RG_SCH_ADD_TO_CRNT_TIME(hqP->tbInfo[tbCnt].timingInfo, \
-                               hqP->tbInfo[tbCnt].timingInfo, 1);
-        RETVALUE(RFAILED);
-    }
-    
-    /* Take decision here based on the number
-     * of DTX's,NACK's and ACK's received
-     */
-    if (((hqP->tbInfo[tbCnt].ackCount) > (hqP->tbInfo[tbCnt].nackCount) + 
-                (hqP->tbInfo[tbCnt].dtxCount)))
-    {
-        *isAck = TFU_HQFDB_ACK; 
-    }
-    /*even a single NACK indicates that UE received
-     * the transmission. 
-     */
-    else if ( hqP->tbInfo[tbCnt].nackCount != 0 )
-    {
-        *isAck = TFU_HQFDB_NACK;
-    }
-    else
-    {
-        *isAck = TFU_HQFDB_DTX;
-    }
-      
-       
-    hqP->tbInfo[tbCnt].isAckNackDtx = *isAck; 
-    RETVALUE(ROK);
+      rgSCHUtlDlHqPTbRmvFrmTx(sf, hqP, tbCnt, TRUE);
+   /* Check if last repetition */
+   if (--hqP->tbInfo[tbCnt].fbkRepCntr)
+   {
+      /* Update timingInfo for this hqP so that next subframe its picked up */
+      RG_SCH_ADD_TO_CRNT_TIME(hqP->tbInfo[tbCnt].timingInfo, \
+	    hqP->tbInfo[tbCnt].timingInfo, 1);
+      RETVALUE(RFAILED);
+   }
+
+   /* Take decision here based on the number
+    * of DTX's,NACK's and ACK's received
+    */
+   if (((hqP->tbInfo[tbCnt].ackCount) > (hqP->tbInfo[tbCnt].nackCount) + 
+	    (hqP->tbInfo[tbCnt].dtxCount)))
+   {
+      *isAck = TFU_HQFDB_ACK; 
+   }
+   /*even a single NACK indicates that UE received
+    * the transmission. 
+    */
+   else if ( hqP->tbInfo[tbCnt].nackCount != 0 )
+   {
+      *isAck = TFU_HQFDB_NACK;
+   }
+   else
+   {
+      *isAck = TFU_HQFDB_DTX;
+   }
+
+
+   hqP->tbInfo[tbCnt].isAckNackDtx = *isAck; 
+   RETVALUE(ROK);
 }
 #endif /* ifndef LTE_TDD */
 
@@ -4692,15 +4692,15 @@ U8                   *isAck;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmDlRetxAllocFail 
+   PUBLIC S16 rgSCHDhmDlRetxAllocFail 
 (
-RgSchUeCb               *ue,
-RgSchDlHqProcCb         *hqP
-)
+ RgSchUeCb               *ue,
+ RgSchDlHqProcCb         *hqP
+ )
 #else
 PUBLIC S16 rgSCHDhmDlRetxAllocFail(ue, hqP)
-RgSchUeCb               *ue;
-RgSchDlHqProcCb         *hqP;
+   RgSchUeCb               *ue;
+   RgSchDlHqProcCb         *hqP;
 #endif
 {
    RgSchCellCb      *cell;
@@ -4714,7 +4714,7 @@ RgSchDlHqProcCb         *hqP;
    cell = hqP->hqE->cell;
    cellSch = RG_SCH_CMN_GET_CELL(cell);
    rlsHqInfo = &(cell->rlsHqArr[cell->crntHqIdx]);
- 
+
    /* If retx was attempted for 1st TB, increment its retx alloc fail counter */
    if (hqP->tbInfo[0].state == HQ_TB_NACKED)
    {
@@ -4736,11 +4736,11 @@ RgSchDlHqProcCb         *hqP;
    {
       if (hqP->hqE->msg4Proc == hqP)
       {
-         hqP->tbInfo[0].txCntr = cell->dlHqCfg.maxMsg4HqTx;
+	 hqP->tbInfo[0].txCntr = cell->dlHqCfg.maxMsg4HqTx;
       }
       else
       {
-         hqP->tbInfo[0].txCntr = hqP->hqE->maxHqTx;
+	 hqP->tbInfo[0].txCntr = hqP->hqE->maxHqTx;
       }
 
       rgSCHDhmHqTbTrnsFail(cell, hqP, hqP->tbInfo[0].tbIdx, &maxRetx);
@@ -4748,21 +4748,21 @@ RgSchDlHqProcCb         *hqP;
 #ifdef LTE_L2_MEAS
       if (maxRetx)
       {
-      rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].status[\
-               rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = 0xFF; /* RGU_NACK_LOSS */;
+	 rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].status[\
+	    rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = 0xFF; /* RGU_NACK_LOSS */;
       }
       else
       {
-      rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].status[\
-               rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = FALSE;
+	 rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].status[\
+	    rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = FALSE;
       }
 #else
       rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].status[\
-               rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = FALSE;
+	 rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = FALSE;
 #endif
 
       rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].tbId[\
-               rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = 1;
+	 rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = 1;
       rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs++;
    }
 
@@ -4771,26 +4771,26 @@ RgSchDlHqProcCb         *hqP;
    {
       if (hqP->hqE->msg4Proc == hqP)
       {
-         hqP->tbInfo[1].txCntr = cell->dlHqCfg.maxMsg4HqTx;
+	 hqP->tbInfo[1].txCntr = cell->dlHqCfg.maxMsg4HqTx;
       }
       else
       {
-         hqP->tbInfo[1].txCntr = hqP->hqE->maxHqTx;
+	 hqP->tbInfo[1].txCntr = hqP->hqE->maxHqTx;
       }
 
       rgSCHDhmHqTbTrnsFail(cell, hqP, hqP->tbInfo[1].tbIdx, &maxRetx);
 
       rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].status[\
-               rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = FALSE;
+	 rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = FALSE;
       rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].tbId[\
-               rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = 2;
+	 rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs] = 2;
       rlsHqInfo->ueHqInfo[rlsHqInfo->numUes].numOfTBs++;
    }
 
    /* MS_WORKAROUND for ccpu00122892 Temp fix for erroeneous RETX Harq release by rgSCHCmnDlAllocRetxRb */
-   
+
    if ((hqP->tbInfo[0].state != HQ_TB_NACKED) &&
-       (hqP->tbInfo[1].state != HQ_TB_NACKED))    
+	 (hqP->tbInfo[1].state != HQ_TB_NACKED))    
    {
       cellSch->apisDl->rgSCHDlProcRmvFrmRetx(cell, ue, hqP);
    }
@@ -4812,27 +4812,27 @@ RgSchDlHqProcCb         *hqP;
 
 #ifdef DL_LA
 #ifdef ANSI
-PRIVATE S16 rgSCHDhmUpdateAckNackHistory
+   PRIVATE S16 rgSCHDhmUpdateAckNackHistory
 (
-RgSchCellCb             *cell,
-RgSchUeCb               *ueCb,
-U8                      hqfdbk,
-U8                      tbCnt
-)
+ RgSchCellCb             *cell,
+ RgSchUeCb               *ueCb,
+ U8                      hqfdbk,
+ U8                      tbCnt
+ )
 #else
 PRIVATE S16 rgSCHDhmUpdateAckNackHistory(cell, ueCb, hqfdbk, tbCnt)
-(
-RgSchCellCb             *cell;
-RgSchUeCb               *ueCb;
-U8                      hqfdbk;
-U8                      tbCnt;
-)
+   (
+    RgSchCellCb             *cell;
+    RgSchUeCb               *ueCb;
+    U8                      hqfdbk;
+    U8                      tbCnt;
+   )
 #endif
 {
    RgSchCmnDlUe  *ueDl;
-   
+
    ueDl = RG_SCH_CMN_GET_DL_UE(ueCb,cell);
-   
+
    /*
     * If fdbk is ack update totalNoOfAck and ackNackHistory for 
     * current idx
@@ -4846,30 +4846,30 @@ U8                      tbCnt;
       ueDl->laCb[tbCnt].deltaiTbs = ueDl->laCb[tbCnt].deltaiTbs - DL_LA_STEPDOWN; 
    }
    /*
-   printf("deltaiTbs[%d] cqibasediTbs[%d] iTbs[%d] tbCnt[%d]\n", 
-           ueDl->laCb[tbCnt].deltaiTbs, ueDl->laCb[tbCnt].cqiBasediTbs, 
-           (ueDl->laCb[tbCnt].deltaiTbs + ueDl->laCb[tbCnt].cqiBasediTbs)/100,
-           tbCnt);
-   */
+      printf("deltaiTbs[%d] cqibasediTbs[%d] iTbs[%d] tbCnt[%d]\n", 
+      ueDl->laCb[tbCnt].deltaiTbs, ueDl->laCb[tbCnt].cqiBasediTbs, 
+      (ueDl->laCb[tbCnt].deltaiTbs + ueDl->laCb[tbCnt].cqiBasediTbs)/100,
+      tbCnt);
+    */
    rgSCHDhmUpdBlerBasediTbsEff(cell, ueCb, tbCnt); 
 
    RETVALUE(ROK);
 }
 
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmUpdBlerBasediTbsEff
+   PUBLIC S16 rgSCHDhmUpdBlerBasediTbsEff
 (
-RgSchCellCb             *cell,
-RgSchUeCb               *ueCb,
-U8                      tbCnt
-)
+ RgSchCellCb             *cell,
+ RgSchUeCb               *ueCb,
+ U8                      tbCnt
+ )
 #else
 PUBLIC S16 rgSCHDhmUpdBlerBasediTbsEff(cell, ueCb, tbCnt)
-(
-RgSchCellCb             *cell;
-RgSchUeCb               *ueCb;
-U8                      tbCnt;
-)
+   (
+    RgSchCellCb             *cell;
+    RgSchUeCb               *ueCb;
+    U8                      tbCnt;
+   )
 #endif
 {
    S32            iTbs;
@@ -4881,7 +4881,7 @@ U8                      tbCnt;
 
    ueDl = RG_SCH_CMN_GET_DL_UE(ueCb,cell);
    iTbs =  (ueDl->laCb[tbCnt].deltaiTbs + ueDl->laCb[tbCnt].cqiBasediTbs)/100; 
- 
+
    if (iTbs > maxiTbs)
    {
       ueDl->laCb[tbCnt].deltaiTbs = (maxiTbs * 100) - ueDl->laCb[tbCnt].cqiBasediTbs;
@@ -4895,8 +4895,8 @@ U8                      tbCnt;
    else
    {
       ueDl->mimoInfo.cwInfo[tbCnt].iTbs[0] = RGSCH_MIN(((ueDl->laCb[tbCnt].cqiBasediTbs +\
-                                                         ueDl->laCb[tbCnt].deltaiTbs)/100),  
-		                                       ueCb->cell->thresholds.maxDlItbs);
+		  ueDl->laCb[tbCnt].deltaiTbs)/100),  
+	    ueCb->cell->thresholds.maxDlItbs);
    }
 #ifdef RG_5GTF
    ueCb->ue5gtfCb.mcs = ueDl->mimoInfo.cwInfo[tbCnt].iTbs[0];
@@ -4940,40 +4940,40 @@ U8                      tbCnt;
  *
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDhmPrcSplBundlFdbk
+   PRIVATE Void rgSCHDhmPrcSplBundlFdbk
 (
-RgSchCellCb  *cell,
-TfuHqInfo    *fdbk,
-U8            hqCnt
-)
+ RgSchCellCb  *cell,
+ TfuHqInfo    *fdbk,
+ U8            hqCnt
+ )
 #else
 PRIVATE Void rgSCHDhmPrcSplBundlFdbk(cell, fdbk, hqCnt)
-(
-RgSchCellCb  *cell;
-TfuHqInfo    *fdbk;
-U8            hqCnt;
-)
+   (
+    RgSchCellCb  *cell;
+    TfuHqInfo    *fdbk;
+    U8            hqCnt;
+   )
 #endif
 {
    U8       numOfAcks;
-   
+
    TRC2(rgSCHDhmPrcSplBundlFdbk);
 
    /* Num of ACKs reported by UE */
    numOfAcks = fdbk->isAck[0];
 
    if(fdbk->isAck[0] == TFU_HQFDB_NACK || 
-      fdbk->isAck[0] == TFU_HQFDB_DTX)
+	 fdbk->isAck[0] == TFU_HQFDB_DTX)
    {
       /* NACK/DTX CASE */
    } 
    else 
    {
       RGSCH_ARRAY_BOUND_CHECK(cell->instIdx, 
-            rgSchNumOfAcksToAckNack[(hqCnt-1)], (numOfAcks - 1));
+	    rgSchNumOfAcksToAckNack[(hqCnt-1)], (numOfAcks - 1));
 
       fdbk->isAck[0] = rgSchNumOfAcksToAckNack[(hqCnt-1)]
-                                                 [(numOfAcks-1)];  
+	 [(numOfAcks-1)];  
    }
    /* The Hq Fdbk is a combined Ack/Nack for multiple Codewords within
       the PDSCH trasnmission (spatial bundling). So we have 
@@ -4986,7 +4986,7 @@ U8            hqCnt;
 #else
    fdbk->isAck[1] = fdbk->isAck[0]; 
 #endif
-   
+
    RETVOID;
 }
 #endif
@@ -5006,25 +5006,25 @@ U8            hqCnt;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqPAdd2FreeLst
+   PUBLIC Void rgSCHDhmHqPAdd2FreeLst
 (
-RgSchDlHqProcCb         *hqP
-)
+ RgSchDlHqProcCb         *hqP
+ )
 #else
 PUBLIC Void rgSCHDhmHqPAdd2FreeLst(hqP)
-RgSchDlHqProcCb         *hqP;
+   RgSchDlHqProcCb         *hqP;
 #endif
 {
    TRC2(rgSCHDhmHqPAdd2FreeLst)
 
 #ifdef LAA_DBG
-   if (hqP->hqPLst)
-   {
-      int *p = NULL;
-      printf("Crashing already part of free lst\n");
-      printf("Crashing %d \n", *p);
-      *p = 10;
-   }
+      if (hqP->hqPLst)
+      {
+	 int *p = NULL;
+	 printf("Crashing already part of free lst\n");
+	 printf("Crashing %d \n", *p);
+	 *p = 10;
+      }
 #endif
    cmLListAdd2Tail(&hqP->hqE->free, &hqP->lnk);
    hqP->hqPLst = &hqP->hqE->free;
@@ -5063,25 +5063,25 @@ RgSchDlHqProcCb         *hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqPAdd2InUseLst
+   PUBLIC Void rgSCHDhmHqPAdd2InUseLst
 (
-RgSchDlHqProcCb         *hqP
-)
+ RgSchDlHqProcCb         *hqP
+ )
 #else
 PUBLIC Void rgSCHDhmHqPAdd2InUseLst(hqP)
-RgSchDlHqProcCb         *hqP;
+   RgSchDlHqProcCb         *hqP;
 #endif
 {
    TRC2(rgSCHDhmHqPAdd2InUseLst)
 
 #ifdef LAA_DBG
-   if (hqP->hqPLst)
-   {
-      int *p = NULL;
-      printf("Crashing already part of inuse lst\n");
-      printf("Crashing %d \n", *p);
-      *p = 10;
-   }
+      if (hqP->hqPLst)
+      {
+	 int *p = NULL;
+	 printf("Crashing already part of inuse lst\n");
+	 printf("Crashing %d \n", *p);
+	 *p = 10;
+      }
 #endif
    cmLListAdd2Tail(&hqP->hqE->inUse, &hqP->lnk);
    hqP->hqPLst = &hqP->hqE->inUse;
@@ -5115,25 +5115,25 @@ RgSchDlHqProcCb         *hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqPDelFrmFreeLst
+   PUBLIC Void rgSCHDhmHqPDelFrmFreeLst
 (
-RgSchDlHqProcCb         *hqP
-)
+ RgSchDlHqProcCb         *hqP
+ )
 #else
 PUBLIC Void rgSCHDhmHqPDelFrmFreeLst(hqP)
-RgSchDlHqProcCb         *hqP;
+   RgSchDlHqProcCb         *hqP;
 #endif
 {
    TRC2(rgSCHDhmHqPDelFrmFreeLst)
 
 #ifdef LAA_DBG
-   if (!hqP->hqPLst)
-   {
-      int *p = NULL;
-      printf("Crashing not part of any lst\n");
-      printf("Crashing %d \n", *p);
-      *p = 10;
-   }
+      if (!hqP->hqPLst)
+      {
+	 int *p = NULL;
+	 printf("Crashing not part of any lst\n");
+	 printf("Crashing %d \n", *p);
+	 *p = 10;
+      }
 #endif
 #ifdef LAA_DBG
    if (hqP->hqPLst != &hqP->hqE->free)
@@ -5178,26 +5178,26 @@ RgSchDlHqProcCb         *hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqPDelFrmInUseLst
+   PUBLIC Void rgSCHDhmHqPDelFrmInUseLst
 (
-RgSchDlHqProcCb         *hqP
-)
+ RgSchDlHqProcCb         *hqP
+ )
 #else
 PUBLIC Void rgSCHDhmHqPDelFrmInUseLst(hqP)
-RgSchDlHqProcCb         *hqP;
+   RgSchDlHqProcCb         *hqP;
 #endif
 {
    TRC2(rgSCHDhmHqPDelFrmInUseLst)
 
 #ifdef LAA_DBG
-   if (!hqP->hqPLst)
-   {
-      int *p = NULL;
-      printf("Crashing not part of any lst\n");
-      printf("Crashing %d \n", *p);
-      *p = 10;
+      if (!hqP->hqPLst)
+      {
+	 int *p = NULL;
+	 printf("Crashing not part of any lst\n");
+	 printf("Crashing %d \n", *p);
+	 *p = 10;
 
-   }
+      }
 #endif
 #ifdef LAA_DBG
    if (hqP->hqPLst != &hqP->hqE->inUse)
@@ -5227,6 +5227,6 @@ RgSchDlHqProcCb         *hqP;
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

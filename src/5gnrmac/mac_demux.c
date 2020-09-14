@@ -109,7 +109,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	       length = rxDataPdu[idx];
 	       if(fBit)
 	       {
-	          pduLen--;
+		  pduLen--;
 		  idx++;
 		  length = (length << 8) & rxDataPdu[idx];
 	       }
@@ -122,11 +122,11 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 		  return RFAILED;
 	       }
 	       pduLen--;
-               idx++;
+	       idx++;
 	       memcpy(pdu, &rxDataPdu[idx], length);
 	       pduLen -= length;
 	       idx = idx + length;
-	       
+
 	       /* Send UL Data to RLC */
 	       ret = macProcUlData(cellId, rxDataIndPdu->rnti, slotInfo, lcId, length, pdu);
 
@@ -182,7 +182,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	       ret = macProcShortBsr(macCb.macCell[cellIdx]->cellId, crnti, lcgId, bufferSize);
 	       pduLen--;
 	       idx++;
-	
+
 	       break;
 	    }
 
@@ -191,7 +191,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 
 	 case MAC_LCID_PADDING :
 	    break;
-	 
+
 	 default:
 	    {
 	       DU_LOG("\nMAC : Invalid LC Id %d", lcId);

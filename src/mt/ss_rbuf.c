@@ -47,37 +47,37 @@ SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
 
 PUBLIC Void SsRngBufEnable(Void)
 {
-  ssRngBufStatus = TRUE;
+   ssRngBufStatus = TRUE;
 }
 
 
 PUBLIC Void SsRngBufDisable(Void)
 {
-  ssRngBufStatus = FALSE;
+   ssRngBufStatus = FALSE;
 
 }
 /*
 Func: SCreateSRngBuf
 Desc: Creates Ring Buffer for the given Id.
-      Ring Structure is allocated from given 
-      Region and Pool
-*/
+Ring Structure is allocated from given 
+Region and Pool
+ */
 #ifdef ANSI
-PUBLIC S16 SCreateSRngBuf
+   PUBLIC S16 SCreateSRngBuf
 (
-U32 id,  
-Region region,
-Pool pool,
-U32 elmSize,
-U32 rngSize
-)
+ U32 id,  
+ Region region,
+ Pool pool,
+ U32 elmSize,
+ U32 rngSize
+ )
 #else
 PUBLIC S16 SCreateSRngBuf (id, region, pool, elmSize, rngSize)
-U32 id; 
-Region region;
-Pool pool;
-U32 elmSize;
-U32 rngSize;
+   U32 id; 
+   Region region;
+   Pool pool;
+   U32 elmSize;
+   U32 rngSize;
 #endif
 {
    SsRngBuf* ring;
@@ -94,12 +94,12 @@ U32 rngSize;
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, id, 
-            "Failed to Create Ring Buffer Id Ring already exist");
+	    "Failed to Create Ring Buffer Id Ring already exist");
 #endif
       RETVALUE(RFAILED);
    }
    /* Get Element Size */
-   
+
    /* Get Ring Size    */
    /* Allocate memory for Ring structure */
    ring = (SsRngBuf* )malloc(sizeof(SsRngBuf));
@@ -108,11 +108,11 @@ U32 rngSize;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "Allocating Ring  Failed!!!")
 #endif
-      RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
    }
 #if (ERRCLASS & ERRCLS_DEBUG)
-      SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ring, 
-            "Failed to Create Ring Buffer Id Ring already exist");
+   SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ring, 
+	 "Failed to Create Ring Buffer Id Ring already exist");
 #endif
 
    ring->size  = rngSize; /* No empty elem */
@@ -123,96 +123,96 @@ U32 rngSize;
    /* Allocate elements memory */
    ring->elem  = calloc(ring->size, ring->type);
    if(ring->elem == NULLP)
-    {
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "Allocating Ring  Failed!!!")
 #endif
-      free(ring);
+	 free(ring);
       RETVALUE(RFAILED);
-    }
-    /* Update Buffer Id Table */
-    SsRngInfoTbl[id].r_addr   = ring;
-    SsRngInfoTbl[id].rngState = SS_RNG_CREATED;
-    SsRngInfoTbl[id].n_write  = 0;
-    SsRngInfoTbl[id].n_read   = 0;
+   }
+   /* Update Buffer Id Table */
+   SsRngInfoTbl[id].r_addr   = ring;
+   SsRngInfoTbl[id].rngState = SS_RNG_CREATED;
+   SsRngInfoTbl[id].n_write  = 0;
+   SsRngInfoTbl[id].n_read   = 0;
 
 #ifndef ALIGN_64BIT
-    printf("Ring Buffer Created with id =%ld rSize:%ld eSize:%ld %lx\n",id,ring->size,ring->type,(PTR)ring);
+   printf("Ring Buffer Created with id =%ld rSize:%ld eSize:%ld %lx\n",id,ring->size,ring->type,(PTR)ring);
 #else
-    printf("Ring Buffer Created with id =%d rSize:%d eSize:%d %lx\n",id,ring->size,ring->type,(PTR)ring);
+   printf("Ring Buffer Created with id =%d rSize:%d eSize:%d %lx\n",id,ring->size,ring->type,(PTR)ring);
 #endif
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 }
 
 /*
 Func: SAttachSRngBuf
 Desc: Attach the calling Entity to a ring buffer 
-      as consumer(Rx) or producer (Tx)
-*/
+as consumer(Rx) or producer (Tx)
+ */
 #ifdef ANSI
-PUBLIC S16 SAttachSRngBuf
+   PUBLIC S16 SAttachSRngBuf
 (
-U32 id,  
-U32 ent,
-U32 txRx
-)
+ U32 id,  
+ U32 ent,
+ U32 txRx
+ )
 #else
 PUBLIC S16 SAttachSRngBuf (id, ent, txRx)
-U32 id;
-U32 ent;
-U32 txRx;
+   U32 id;
+   U32 ent;
+   U32 txRx;
 #endif
 {
-    /* Retrive Buffer from Global Info Table */
-    if( id >= SS_RNG_BUF_MAX)
-    {
+   /* Retrive Buffer from Global Info Table */
+   if( id >= SS_RNG_BUF_MAX)
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, id, "Invalid RBUF ID");
 #endif
-       RETVALUE(RFAILED);
-    }
-    if(SsRngInfoTbl[id].rngState < SS_RNG_CREATED)
-    {
+      RETVALUE(RFAILED);
+   }
+   if(SsRngInfoTbl[id].rngState < SS_RNG_CREATED)
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, id, 
-            "Attach Request in Invalid Ring ID");
+	    "Attach Request in Invalid Ring ID");
 #endif
 #ifndef ALIGN_64BIT
-       printf("Attach Request in Invalid Ring State %ld id%ld \n",
-         SsRngInfoTbl[id].rngState,id);
+      printf("Attach Request in Invalid Ring State %ld id%ld \n",
+	    SsRngInfoTbl[id].rngState,id);
 #else
-       printf("Attach Request in Invalid Ring State %d id%d \n",
-         SsRngInfoTbl[id].rngState,id);
+      printf("Attach Request in Invalid Ring State %d id%d \n",
+	    SsRngInfoTbl[id].rngState,id);
 #endif
-       RETVALUE(RFAILED);
-    }
-    if(txRx == SS_RNG_TX)
-    {
-        SsRngInfoTbl[id].txEnt = ent;
-        SsRngInfoTbl[id].rngState = SS_RNG_TX_ATTACHED;
-    }
-    else if(txRx == SS_RNG_RX)
-    {
-        SsRngInfoTbl[id].rxEnt = ent;
-        SsRngInfoTbl[id].rngState = SS_RNG_RX_ATTACHED;
-    }
-    RETVALUE(ROK);
+      RETVALUE(RFAILED);
+   }
+   if(txRx == SS_RNG_TX)
+   {
+      SsRngInfoTbl[id].txEnt = ent;
+      SsRngInfoTbl[id].rngState = SS_RNG_TX_ATTACHED;
+   }
+   else if(txRx == SS_RNG_RX)
+   {
+      SsRngInfoTbl[id].rxEnt = ent;
+      SsRngInfoTbl[id].rngState = SS_RNG_RX_ATTACHED;
+   }
+   RETVALUE(ROK);
 }
 /* 
 Func: SConnectSRngBuf
 Desc: Establish a pipe between producer and consumer
 
-*/
+ */
 #ifdef ANSI
-PUBLIC S16 SConnectSRngBuf
+   PUBLIC S16 SConnectSRngBuf
 (
-U32 id,  
-U32 rxEnt
-)
+ U32 id,  
+ U32 rxEnt
+ )
 #else
 PUBLIC S16 SConnectSRngBuf (id, rxEnt)
-U32 id;
-U32 rxEnt;
+   U32 id;
+   U32 rxEnt;
 #endif
 {
    /* Send to Reciever ENT*/ 
@@ -222,21 +222,21 @@ U32 rxEnt;
 /*
 Func: IsFull
 Desc: Checks if Ring is full
-*/
+ */
 inline static S16 IsFull(SsRngBuf* rBuf)
 {
 #if 1
    if((rBuf->write+1) == rBuf->read)
    {
-     return 1;
+      return 1;
    }
    if((rBuf->write+1) == (rBuf->read + rBuf->size))
    {
-     return 1;
+      return 1;
    }
    if((rBuf->write + 1) > rBuf->size )
    {
-     return 1;
+      return 1;
    }
    return 0;
 #endif
@@ -244,7 +244,7 @@ inline static S16 IsFull(SsRngBuf* rBuf)
 /*
 Func: IsEmpty
 Desc: Checks if ring is empty
-*/
+ */
 inline static S16 IsEmpty(SsRngBuf* rBuf)
 {
    /* write == read implies Buffer is empty*/
@@ -258,17 +258,17 @@ PUBLIC S16 isRngEmpty(U32 id)
 /*
 Func: SEnqSRngBuf
 Desc: Perform Queue operation on Ring bufer
-*/
+ */
 #ifdef ANSI
-PUBLIC S16 SEnqSRngBuf 
+   PUBLIC S16 SEnqSRngBuf 
 (
-U32 id, 
-Void* elem
-)
+ U32 id, 
+ Void* elem
+ )
 #else
 PUBLIC S16 SEnqSRngBuf(id,elem) 
-U32 id;
-Void* elem;
+   U32 id;
+   Void* elem;
 #endif
 {
    U8* w_ptr;
@@ -280,8 +280,8 @@ Void* elem;
    SsRngBuf* ring = SsRngInfoTbl[id].r_addr;
    if (IsFull(ring))
    {
-        SsRngInfoTbl[id].nWriteFail++;
-        RETVALUE(RFAILED);
+      SsRngInfoTbl[id].nWriteFail++;
+      RETVALUE(RFAILED);
    }
    /* TBD Avoid multiplication for optimisation */
    w_ptr = (U8*)ring->elem + (ring->write * ring->type);
@@ -293,42 +293,42 @@ Void* elem;
       (U8*)element++;
    }
    /* Increment write index */
-    wrIndex = ring->write + 1 ;
-    ring->write = (wrIndex == ring->size)?0: wrIndex;
+   wrIndex = ring->write + 1 ;
+   ring->write = (wrIndex == ring->size)?0: wrIndex;
    /* Update Statistics */
    SsRngInfoTbl[id].n_write++;
    RETVALUE(ROK);
 }
 
 #ifdef ANSI
-PUBLIC S16 SGetNumElemInRng
+   PUBLIC S16 SGetNumElemInRng
 (
-U32 id
-)
+ U32 id
+ )
 #else
 PUBLIC S16 SGetNumElemInRng (id)
-U32 id;
+   U32 id;
 #endif
 {
 
    S16 freeDist = (SsRngInfoTbl[id].n_write- SsRngInfoTbl[id].n_read);
 
-	RETVALUE(freeDist);
+   RETVALUE(freeDist);
 }
 /*
 Func: SDeqSRngBuf
 Desc: Perform DeQueue operation on Ring bufer
-*/
+ */
 #ifdef ANSI
-PUBLIC S16 SDeqSRngBuf
+   PUBLIC S16 SDeqSRngBuf
 (
-U32 id,
-Void *elem
-)
+ U32 id,
+ Void *elem
+ )
 #else
 PUBLIC S16 SDeqSRngBuf (id,elem)
-U8 id;
-Void *elem;
+   U8 id;
+   Void *elem;
 #endif
 {
    U8* r_ptr;
@@ -339,8 +339,8 @@ Void *elem;
    SsRngBuf* ring  = SsRngInfoTbl[id].r_addr;
    if(IsEmpty(ring))
    {  
-       SsRngInfoTbl[id].nReadFail++;
-       RETVALUE(RFAILED);
+      SsRngInfoTbl[id].nReadFail++;
+      RETVALUE(RFAILED);
    }
    r_ptr = (U8*)ring->elem + (ring->read * ring->type);
    for(i=0; i<ring->type; i++)
@@ -357,17 +357,17 @@ Void *elem;
 }
 
 #ifdef ANSI
-PUBLIC S16 SDestroySRngBuf 
+   PUBLIC S16 SDestroySRngBuf 
 (
-U32 id,
-Region region,
-Pool pool
-)
+ U32 id,
+ Region region,
+ Pool pool
+ )
 #else
 PUBLIC S16 SDestroySRngBuf(id, region, pool)
-U32 id;
-Region region;
-Pool pool;
+   U32 id;
+   Region region;
+   Pool pool;
 #endif
 {
    /* Retrive Buffer from Id */
@@ -376,7 +376,7 @@ Pool pool;
    {   
       //SPutSBuf(region, pool, (Data *)ring->elem, (ring->size * ring->type));
       //SPutSBuf(region, pool, (Data *)ring, sizeof(SsRngBuf));
-      
+
       free(ring->elem); /* OK if null */ 
       free(ring); /* OK if null */ 
 
@@ -388,16 +388,16 @@ Pool pool;
 }
 
 #ifdef ANSI
-PUBLIC S16 SPrintSRngStats
+   PUBLIC S16 SPrintSRngStats
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC S16 SPrintSRngStats ()
-Void;
+   Void;
 #endif
 {
-U32 i; 
+   U32 i; 
 
    Txt   prntBuf[100];
 
@@ -409,51 +409,51 @@ U32 i;
       if(SsRngInfoTbl[i].r_addr != 0 )
       {
 #ifndef ALIGN_64BIT
-         sprintf(prntBuf,"\n=======Ring %ld Stats========\n",i);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"r_addr      = %lx\n", (PTR)SsRngInfoTbl[i].r_addr);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"txEnt       = %lx\n", (PTR)SsRngInfoTbl[i].txEnt);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"rxEnt       = %lx\n", (PTR)SsRngInfoTbl[i].rxEnt);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"n_write     = %lu\n", SsRngInfoTbl[i].n_write);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"n_read      = %lu\n", SsRngInfoTbl[i].n_read);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"nWriteFail  = %lu\n", SsRngInfoTbl[i].nWriteFail);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"nReadFail   = %lu\n", SsRngInfoTbl[i].nReadFail);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"pktDrop     = %lu\n", SsRngInfoTbl[i].pktDrop);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"State       = %lu\n\n", SsRngInfoTbl[i].rngState);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"nPktProc    = %lu\n\n", SsRngInfoTbl[i].nPktProc);
-         SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"\n=======Ring %ld Stats========\n",i);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"r_addr      = %lx\n", (PTR)SsRngInfoTbl[i].r_addr);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"txEnt       = %lx\n", (PTR)SsRngInfoTbl[i].txEnt);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"rxEnt       = %lx\n", (PTR)SsRngInfoTbl[i].rxEnt);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"n_write     = %lu\n", SsRngInfoTbl[i].n_write);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"n_read      = %lu\n", SsRngInfoTbl[i].n_read);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"nWriteFail  = %lu\n", SsRngInfoTbl[i].nWriteFail);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"nReadFail   = %lu\n", SsRngInfoTbl[i].nReadFail);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"pktDrop     = %lu\n", SsRngInfoTbl[i].pktDrop);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"State       = %lu\n\n", SsRngInfoTbl[i].rngState);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"nPktProc    = %lu\n\n", SsRngInfoTbl[i].nPktProc);
+	 SDisplay(0, prntBuf);
 #else
-         sprintf(prntBuf,"\n=======Ring %d Stats========\n",i);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"r_addr      = %lx\n", (PTR)SsRngInfoTbl[i].r_addr);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"txEnt       = %lx\n", (PTR)SsRngInfoTbl[i].txEnt);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"rxEnt       = %lx\n", (PTR)SsRngInfoTbl[i].rxEnt);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"n_write     = %u\n", SsRngInfoTbl[i].n_write);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"n_read      = %u\n", SsRngInfoTbl[i].n_read);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"nWriteFail  = %u\n", SsRngInfoTbl[i].nWriteFail);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"nReadFail   = %u\n", SsRngInfoTbl[i].nReadFail);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"pktDrop     = %u\n", SsRngInfoTbl[i].pktDrop);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"State       = %u\n\n", SsRngInfoTbl[i].rngState);
-         SDisplay(0, prntBuf);
-         sprintf(prntBuf,"nPktProc    = %u\n\n", SsRngInfoTbl[i].nPktProc);
-         SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"\n=======Ring %d Stats========\n",i);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"r_addr      = %lx\n", (PTR)SsRngInfoTbl[i].r_addr);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"txEnt       = %lx\n", (PTR)SsRngInfoTbl[i].txEnt);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"rxEnt       = %lx\n", (PTR)SsRngInfoTbl[i].rxEnt);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"n_write     = %u\n", SsRngInfoTbl[i].n_write);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"n_read      = %u\n", SsRngInfoTbl[i].n_read);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"nWriteFail  = %u\n", SsRngInfoTbl[i].nWriteFail);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"nReadFail   = %u\n", SsRngInfoTbl[i].nReadFail);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"pktDrop     = %u\n", SsRngInfoTbl[i].pktDrop);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"State       = %u\n\n", SsRngInfoTbl[i].rngState);
+	 SDisplay(0, prntBuf);
+	 sprintf(prntBuf,"nPktProc    = %u\n\n", SsRngInfoTbl[i].nPktProc);
+	 SDisplay(0, prntBuf);
 
 #endif
       }
@@ -462,13 +462,13 @@ U32 i;
 }
 
 #ifdef ANSI
-PUBLIC Void* SRngGetWIndx
+   PUBLIC Void* SRngGetWIndx
 (
-U32 rngId
-)
+ U32 rngId
+ )
 #else
 PUBLIC Void* SRngGetWIndx (rngId)
-U32 rngId;
+   U32 rngId;
 #endif
 {
    /* Retrive Buffer from Id*/
@@ -485,13 +485,13 @@ U32 rngId;
 }
 
 #ifdef ANSI
-PUBLIC Void* SRngGetRIndx
+   PUBLIC Void* SRngGetRIndx
 (
-U32 rngId
-)
+ U32 rngId
+ )
 #else
 PUBLIC Void* SRngGetRIndx (rngId)
-U32 rngId;
+   U32 rngId;
 #endif
 {
    /* Retrive Buffer from Id*/
@@ -508,13 +508,13 @@ U32 rngId;
 }
 
 #ifdef ANSI
-PUBLIC Void SRngIncrWIndx
+   PUBLIC Void SRngIncrWIndx
 (
-U32 rngId
-)
+ U32 rngId
+ )
 #else
 PUBLIC Void SRngIncrWIndx (rngId)
-U32 rngId;
+   U32 rngId;
 #endif
 {
    U32 wrIndex;
@@ -527,13 +527,13 @@ U32 rngId;
 }
 
 #ifdef ANSI
-PUBLIC Void SRngIncrRIndx
+   PUBLIC Void SRngIncrRIndx
 (
-U32 rngId
-)
+ U32 rngId
+ )
 #else
 PUBLIC Void SRngIncrRIndx (rngId)
-U32 rngId;
+   U32 rngId;
 #endif
 {
    U32 rdIndex;
@@ -549,7 +549,7 @@ U32 rngId;
 S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType)
 {
    S16 ret1 = ROK;
-   
+
    Void *elem = NULLP;
 
    RgKwFreeInfo *bufFreeInfo = NULLP;
@@ -580,5 +580,5 @@ S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType)
 
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

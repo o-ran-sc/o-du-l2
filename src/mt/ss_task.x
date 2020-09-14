@@ -58,9 +58,8 @@ typedef struct ssTTskEntry
 {
    SsdTTskEntry dep;                    /* implementation specific */
 
-
    Bool         used;                   /* entry is used? */
-/* ss029.103: addition: procId added */ 
+   /* ss029.103: addition: procId added */ 
 #ifdef SS_MULTIPLE_PROCS
    ProcId       proc;                   /* task processor ID */
 #endif /* SS_MULTIPLE_PROCS */
@@ -75,26 +74,26 @@ typedef struct ssTTskEntry
 
 
    SsIdx        nxt;                    /* table implementation */
-/* ss029.103: addition: TAPA task control block (user level) added */ 
+   /* ss029.103: addition: TAPA task control block (user level) added */ 
 #ifdef SS_MULTIPLE_PROCS
    Void         *xxCb;                  /* protocol control block */
 #endif /* SS_MULTIPLE_PROCS */
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
    Bool         hstReg;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-/* ss001.301: additions */
-/* ss002.301: Modifications */
+   /* ss001.301: additions */
+   /* ss002.301: Modifications */
 #ifdef SS_THREAD_PROFILE
    Bool        updated;
    Event       curEvent;
    U32         curEvtTime;
    U64         totTime;
 #endif /* SS_THREAD_PROFILE */
-	/* ss02.301 */
-	ActvTsk     cbTsk; /* call back function pointer */
+   /* ss02.301 */
+   ActvTsk     cbTsk; /* call back function pointer */
 
 } SsTTskEntry;
 
@@ -139,5 +138,5 @@ struct ssSTskEntry
   
 /********************************************************************30**
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

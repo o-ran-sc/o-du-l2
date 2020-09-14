@@ -163,10 +163,10 @@ S16 units;                  /* period units*/
 PFS16 tmrFnct;              /* timer function, typically SActvTmr */
 #endif
 {
-	S16 ret;
-	/* ss015.301 - Enclosed all timer activation functions in a union. */
-	SsTmrActvFn ssTmrActvFn;
-	/* ss041.103 - Moved handling to STmrRegHndlr */
+   S16 ret;
+   /* ss015.301 - Enclosed all timer activation functions in a union. */
+   SsTmrActvFn ssTmrActvFn;
+   /* ss041.103 - Moved handling to STmrRegHndlr */
 
    TRC1(SRegCfgTmr);
 
@@ -180,23 +180,23 @@ PFS16 tmrFnct;              /* timer function, typically SActvTmr */
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PUBLIC S16 SRegCfgTmr
+   PUBLIC S16 SRegCfgTmr
 (
-ProcId proc,                /* processor */
-Ent ent,                    /* entity */
-Inst inst,                  /* instance */
-S16 period,                 /* period */
-S16 units,                  /* period units */
-PAIFTMRS16 tmrFnct               /* timer function, typically SActvTmr */
-)
+ ProcId proc,                /* processor */
+ Ent ent,                    /* entity */
+ Inst inst,                  /* instance */
+ S16 period,                 /* period */
+ S16 units,                  /* period units */
+ PAIFTMRS16 tmrFnct               /* timer function, typically SActvTmr */
+ )
 #else
 PUBLIC S16 SRegCfgTmr(proc, ent, inst, period, units, tmrFnct)
-ProcId proc;                /* processor */
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PAIFTMRS16 tmrFnct;              /* timer function, typically SActvTmr */
+   ProcId proc;                /* processor */
+   Ent ent;                    /* entity */
+   Inst inst;                  /* instance */
+   S16 period;                 /* period */
+   S16 units;                  /* period units*/
+   PAIFTMRS16 tmrFnct;              /* timer function, typically SActvTmr */
 #endif
 
 {
@@ -221,40 +221,40 @@ PAIFTMRS16 tmrFnct;              /* timer function, typically SActvTmr */
 /* ss041.103 - New function for MT timer reg */
 #ifdef SS_MT_TMR
 /*
-*
-*       Fun:   Register Configurable Timer Task - timer
-*
-*       Desc:  This function is used to register a timer function for the
-*              layer. The system services will periodically invoke the
-*              function passed to it. The timer function will be used by the
-*              layer to manage the layers internal protocol timers.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: By invoking this function, Ent and Inst are passed in the
-*              timer activation function.
-*
-*       File:  ss_timer.c
-*
-*/
+ *
+ *       Fun:   Register Configurable Timer Task - timer
+ *
+ *       Desc:  This function is used to register a timer function for the
+ *              layer. The system services will periodically invoke the
+ *              function passed to it. The timer function will be used by the
+ *              layer to manage the layers internal protocol timers.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: By invoking this function, Ent and Inst are passed in the
+ *              timer activation function.
+ *
+ *       File:  ss_timer.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SRegCfgTmrMt
+   PUBLIC S16 SRegCfgTmrMt
 (
-Ent ent,                    /* entity */
-Inst inst,                  /* instance */
-S16 period,                 /* period */
-S16 units,                  /* period units */
-PAIFTMRS16 tmrFnctMt        /* timer function, typically SActvTmr */
-)
+ Ent ent,                    /* entity */
+ Inst inst,                  /* instance */
+ S16 period,                 /* period */
+ S16 units,                  /* period units */
+ PAIFTMRS16 tmrFnctMt        /* timer function, typically SActvTmr */
+ )
 #else
 PUBLIC S16 SRegCfgTmrMt(ent, inst, period, units, tmrFnctMt)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PAIFTMRS16 tmrFnctMt;       /* timer function, typically SActvTmr */
+   Ent ent;                    /* entity */
+   Inst inst;                  /* instance */
+   S16 period;                 /* period */
+   S16 units;                  /* period units*/
+   PAIFTMRS16 tmrFnctMt;       /* timer function, typically SActvTmr */
 #endif
 {
    S16 ret;
@@ -274,22 +274,22 @@ PAIFTMRS16 tmrFnctMt;       /* timer function, typically SActvTmr */
 
 /* ss041.103 - Function for timer registration handling */
 /*
-*
-*       Fun:   Timer registration handler function
-*
-*       Desc:  This function is called by the timer registration interface
-*              functions, and does the actual handling for timer
-*              registration.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_timer.c
-*
-*/
+ *
+ *       Fun:   Timer registration handler function
+ *
+ *       Desc:  This function is called by the timer registration interface
+ *              functions, and does the actual handling for timer
+ *              registration.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_timer.c
+ *
+ */
 
 /* ss015.301 Changed the timer activation function type as all timer activation
  * functions are enclosed in a union.
@@ -298,46 +298,46 @@ PAIFTMRS16 tmrFnctMt;       /* timer function, typically SActvTmr */
 #ifndef SS_MULTIPLE_PROCS
 
 #ifdef ANSI
-PRIVATE S16 STmrRegHndlr
+   PRIVATE S16 STmrRegHndlr
 (
-Ent ent,                    /* entity */
-Inst inst,                  /* instance */
-S16 period,                 /* period */
-S16 units,                  /* period units */
-SsTmrActvFn ssTmrActvFn               /* timer function, typically SActvTmr */
-)
+ Ent ent,                    /* entity */
+ Inst inst,                  /* instance */
+ S16 period,                 /* period */
+ S16 units,                  /* period units */
+ SsTmrActvFn ssTmrActvFn               /* timer function, typically SActvTmr */
+ )
 #else
 PRIVATE S16 STmrRegHndlr(ent, inst, period, units, ssTmrActvFn)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-SsTmrActvFn ssTmrActvFn;              /* timer function, typically SActvTmr */
+   Ent ent;                    /* entity */
+   Inst inst;                  /* instance */
+   S16 period;                 /* period */
+   S16 units;                  /* period units*/
+   SsTmrActvFn ssTmrActvFn;              /* timer function, typically SActvTmr */
 #endif
-/* ss015.301: Removed the timer handler prototypes guarded
- * under SS_MT_TMR and handled mtFlag in existing timer handlers.
- */
+   /* ss015.301: Removed the timer handler prototypes guarded
+    * under SS_MT_TMR and handled mtFlag in existing timer handlers.
+    */
 
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PRIVATE S16 STmrRegHndlr
+   PRIVATE S16 STmrRegHndlr
 (
-ProcId proc,                /* processor */
-Ent ent,                    /* entity */
-Inst inst,                  /* instance */
-S16 period,                 /* period */
-S16 units,                  /* period units */
-SsTmrActvFn ssTmrActvFn     /* timer function */
-)
+ ProcId proc,                /* processor */
+ Ent ent,                    /* entity */
+ Inst inst,                  /* instance */
+ S16 period,                 /* period */
+ S16 units,                  /* period units */
+ SsTmrActvFn ssTmrActvFn     /* timer function */
+ )
 #else
 PRIVATE S16 STmrRegHndlr(proc, ent, inst, period, units, ssTmrActvFn)
-ProcId proc;                /* processor */
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-SsTmrActvFn ssTmrActvFn;         /* timer function */
+   ProcId proc;                /* processor */
+   Ent ent;                    /* entity */
+   Inst inst;                  /* instance */
+   S16 period;                 /* period */
+   S16 units;                  /* period units*/
+   SsTmrActvFn ssTmrActvFn;         /* timer function */
 #endif
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -387,13 +387,13 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 
    if(ssTmrActvFn.mtFlag == TRUE) 
    { 
-   /* ss015.301 Enclosed all timer activation functions in a union. */
+      /* ss015.301 Enclosed all timer activation functions in a union. */
 #ifndef SS_MULTIPLE_PROCS
 #ifdef SS_MT_TMR
       if (ssTmrActvFn.actvFnc.tmrActvFnMt == NULLP)  
       {
-         SSLOGERROR(ERRCLS_INT_PAR, ESS532, ERRZERO, "Null pointer");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS532, ERRZERO, "Null pointer");
+	 RETVALUE(RFAILED);
       }
 #else
       RETVALUE(RFAILED);
@@ -406,8 +406,8 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    { 
       if (ssTmrActvFn.actvFnc.tmrActvFn == NULLP)  
       {
-          SSLOGERROR(ERRCLS_INT_PAR, ESS532, ERRZERO, "Null pointer");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS532, ERRZERO, "Null pointer");
+	 RETVALUE(RFAILED);
       }
    } 
 
@@ -418,7 +418,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    if (procIdIdx == SS_INV_PROCID_IDX)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS533, ERRZERO,
-                     "Could not find proc id index");
+	    "Could not find proc id index");
       RETVALUE(RFAILED);
    }
 #endif /* SS_MULTIPLE_PROCS */
@@ -430,33 +430,33 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    if (ret != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS534, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
       RETVALUE(RFAILED);
    }
 
 #ifdef SS_MULTIPLE_PROCS
    if (osCp.tTskIds[procIdIdx][ent][inst] == SS_TSKNC)
 #else /* SS_MULTIPLE_PROCS */
-   if (osCp.tTskIds[ent][inst] == SS_TSKNC)
+      if (osCp.tTskIds[ent][inst] == SS_TSKNC)
 #endif /* SS_MULTIPLE_PROCS */
-   {
-      if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
       {
+	 if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      SSLOGERROR(ERRCLS_DEBUG, ESS535, ERRZERO,
-                     "Could not release the semaphore");
-      RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS535, ERRZERO,
+		  "Could not release the semaphore");
+	    RETVALUE(RFAILED);
 #endif
+	 }
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS536, ERRZERO, "Unknown task");
+	 RETVALUE(RFAILED);
       }
-      SSLOGERROR(ERRCLS_INT_PAR, ESS536, ERRZERO, "Unknown task");
-      RETVALUE(RFAILED);
-   }
    if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS537, ERRZERO,
-                     "Could not release the semaphore");
-   RETVALUE(RFAILED);
+	    "Could not release the semaphore");
+      RETVALUE(RFAILED);
 #endif
    }
 
@@ -469,7 +469,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS538, (ErrVal) ret,
-                     "Could not lock timer table");
+	    "Could not lock timer table");
 #endif
       RETVALUE(ret);
    }
@@ -481,9 +481,9 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
       if ( SUnlock(&osCp.tmrTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS539, ERRZERO,
-                     "Could not unlock the semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS539, ERRZERO,
+	       "Could not unlock the semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -500,39 +500,39 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    {   
       if ((osCp.tmrTbl[i].ownerEnt == ent)
 #ifdef SS_MULTIPLE_PROCS
-            &&  (osCp.tmrTbl[i].ownerProc == proc)
+	    &&  (osCp.tmrTbl[i].ownerProc == proc)
 #endif /* SS_MULTIPLE_PROCS */
-            && (osCp.tmrTbl[i].ownerInst == inst)
-            /* ss041.103 - Added mtFlag check */
-            /* ss015.301 Enclosed all timer activation functions in a union. */
+	    && (osCp.tmrTbl[i].ownerInst == inst)
+	    /* ss041.103 - Added mtFlag check */
+	    /* ss015.301 Enclosed all timer activation functions in a union. */
 #ifndef SS_MULTIPLE_PROCS
 #ifdef SS_MT_TMR
-            && (osCp.tmrTbl[i].ssTmrActvFn.mtFlag == ssTmrActvFn.mtFlag)
-            && ((ssTmrActvFn.mtFlag == FALSE
-                  && osCp.tmrTbl[i].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn)  
-               || osCp.tmrTbl[i].ssTmrActvFn.actvFnc.tmrActvFnMt == ssTmrActvFn.actvFnc.tmrActvFnMt)
+	    && (osCp.tmrTbl[i].ssTmrActvFn.mtFlag == ssTmrActvFn.mtFlag)
+	    && ((ssTmrActvFn.mtFlag == FALSE
+		  && osCp.tmrTbl[i].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn)  
+	       || osCp.tmrTbl[i].ssTmrActvFn.actvFnc.tmrActvFnMt == ssTmrActvFn.actvFnc.tmrActvFnMt)
 #else
-            && (osCp.tmrTbl[i].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn)
+	    && (osCp.tmrTbl[i].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn)
 #endif
 #else
-            && (osCp.tmrTbl[i].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn)
+	    && (osCp.tmrTbl[i].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn)
 #endif
-            && (osCp.tmrTbl[i].interval == (U32) ((period * SS_TICKS_SEC) / units)))
+	    && (osCp.tmrTbl[i].interval == (U32) ((period * SS_TICKS_SEC) / units)))
       {
-         /* is this timer in use ? (unexpired) */
-         if (osCp.tmrTbl[i].used == TRUE)
-         {  
-            /* to prevent the same timer to be registered with SS  UNLOCK and */
-            /* then RFAIL */
-            if (SUnlock(&osCp.tmrTblLock) != ROK)
-            {
+	 /* is this timer in use ? (unexpired) */
+	 if (osCp.tmrTbl[i].used == TRUE)
+	 {  
+	    /* to prevent the same timer to be registered with SS  UNLOCK and */
+	    /* then RFAIL */
+	    if (SUnlock(&osCp.tmrTblLock) != ROK)
+	    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-   SSLOGERROR(ERRCLS_DEBUG, ESS541, ERRZERO, "Could not unlock the semaphore");
-   RETVALUE(RFAILED);
+	       SSLOGERROR(ERRCLS_DEBUG, ESS541, ERRZERO, "Could not unlock the semaphore");
+	       RETVALUE(RFAILED);
 #endif
-            }
-            RETVALUE(RFAILED);
-         }
+	    }
+	    RETVALUE(RFAILED);
+	 }
       }
    }
 #endif
@@ -597,7 +597,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS542, ERRZERO,
-                     "Could not unlock the semaphore");
+	    "Could not unlock the semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -608,38 +608,38 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 
 
 /*
-*
-*       Fun:   SDeregCfgTmr  
-*
-*       Desc:  This function is used to deregister a timer function.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_timer.c
-*
-*/
+ *
+ *       Fun:   SDeregCfgTmr  
+ *
+ *       Desc:  This function is used to deregister a timer function.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_timer.c
+ *
+ */
 /* ss029.103: addition: procId added and timer function type modified */ 
 #ifndef SS_MULTIPLE_PROCS
 
 #ifdef ANSI
-PUBLIC S16 SDeregCfgTmr
+   PUBLIC S16 SDeregCfgTmr
 (
-Ent ent,                    /* entity */
-Inst inst,                  /* instance */
-S16 period,                 /* period */
-S16 units,                  /* period units */
-PFS16 tmrFnct               /* timer function */
-)
+ Ent ent,                    /* entity */
+ Inst inst,                  /* instance */
+ S16 period,                 /* period */
+ S16 units,                  /* period units */
+ PFS16 tmrFnct               /* timer function */
+ )
 #else
 PUBLIC S16 SDeregCfgTmr(ent, inst, period, units, tmrFnct)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PFS16 tmrFnct;              /* timer function */
+   Ent ent;                    /* entity */
+   Inst inst;                  /* instance */
+   S16 period;                 /* period */
+   S16 units;                  /* period units*/
+   PFS16 tmrFnct;              /* timer function */
 #endif
 {
    S16 ret;
@@ -659,23 +659,23 @@ PFS16 tmrFnct;              /* timer function */
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PUBLIC S16 SDeregCfgTmr
+   PUBLIC S16 SDeregCfgTmr
 (
-ProcId proc,                /* processor */
-Ent ent,                    /* entity */
-Inst inst,                  /* instance */
-S16 period,                 /* period */
-S16 units,                  /* period units */
-PAIFTMRS16 tmrFnct               /* timer function */
-)
+ ProcId proc,                /* processor */
+ Ent ent,                    /* entity */
+ Inst inst,                  /* instance */
+ S16 period,                 /* period */
+ S16 units,                  /* period units */
+ PAIFTMRS16 tmrFnct               /* timer function */
+ )
 #else
 PUBLIC S16 SDeregCfgTmr(proc, ent, inst, period, units, tmrFnct)
-ProcId proc;                /* processor */
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PAIFTMRS16 tmrFnct;              /* timer function */
+   ProcId proc;                /* processor */
+   Ent ent;                    /* entity */
+   Inst inst;                  /* instance */
+   S16 period;                 /* period */
+   S16 units;                  /* period units*/
+   PAIFTMRS16 tmrFnct;              /* timer function */
 #endif
 {
    S16 ret;
@@ -700,35 +700,35 @@ PAIFTMRS16 tmrFnct;              /* timer function */
 #ifndef SS_MULTIPLE_PROCS
 #ifdef SS_MT_TMR
 /*
-*
-*       Fun:   SDeregCfgTmrMt
-*
-*       Desc:  This function is used to deregister an MT timer function.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_timer.c
-*
-*/
+ *
+ *       Fun:   SDeregCfgTmrMt
+ *
+ *       Desc:  This function is used to deregister an MT timer function.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_timer.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SDeregCfgTmrMt
+   PUBLIC S16 SDeregCfgTmrMt
 (
-Ent ent,                    /* entity */
-Inst inst,                  /* instance */
-S16 period,                 /* period */
-S16 units,                  /* period units */
-PAIFTMRS16 tmrFnctMt               /* timer function */
-)
+ Ent ent,                    /* entity */
+ Inst inst,                  /* instance */
+ S16 period,                 /* period */
+ S16 units,                  /* period units */
+ PAIFTMRS16 tmrFnctMt               /* timer function */
+ )
 #else
 PUBLIC S16 SDeregCfgTmrMt(ent, inst, period, units, tmrFnctMt)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PAIFTMRS16 tmrFnctMt;              /* timer function */
+   Ent ent;                    /* entity */
+   Inst inst;                  /* instance */
+   S16 period;                 /* period */
+   S16 units;                  /* period units*/
+   PAIFTMRS16 tmrFnctMt;              /* timer function */
 #endif
 {
    S16 ret;
@@ -750,19 +750,19 @@ PAIFTMRS16 tmrFnctMt;              /* timer function */
 
 /* ss041.103 - Addition of STmrDeregHndlr */
 /*
-*
-*       Fun:   STmrDeregHndlr  
-*
-*       Desc:  This function is used to deregister a timer function.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_timer.c
-*
-*/
+ *
+ *       Fun:   STmrDeregHndlr  
+ *
+ *       Desc:  This function is used to deregister a timer function.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_timer.c
+ *
+ */
 /* ss029.103: addition: procId added and timer function type modified */ 
 
 /* ss015.301 Changed the timer activation function type as all timer activation
@@ -770,49 +770,49 @@ PAIFTMRS16 tmrFnctMt;              /* timer function */
  */
 #ifndef SS_MULTIPLE_PROCS
 #ifdef ANSI
-PRIVATE S16 STmrDeregHndlr
+   PRIVATE S16 STmrDeregHndlr
 (
-Ent ent,                    /* entity */
-Inst inst,                  /* instance */
-S16 period,                 /* period */
-S16 units,                  /* period units */
-SsTmrActvFn ssTmrActvFn           /* timer function */
-)
+ Ent ent,                    /* entity */
+ Inst inst,                  /* instance */
+ S16 period,                 /* period */
+ S16 units,                  /* period units */
+ SsTmrActvFn ssTmrActvFn           /* timer function */
+ )
 #else
-/* ss017.301: Modified the prototype of STmrDeregHndlr for Non-ANSI
- * compilation.
- */
+   /* ss017.301: Modified the prototype of STmrDeregHndlr for Non-ANSI
+    * compilation.
+    */
 PRIVATE S16 STmrDeregHndlr(ent, inst, period, units, ssTmrActvFn)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-SsTmrActvFn ssTmrActvFn;          /* timer function */
+   Ent ent;                    /* entity */
+   Inst inst;                  /* instance */
+   S16 period;                 /* period */
+   S16 units;                  /* period units*/
+   SsTmrActvFn ssTmrActvFn;          /* timer function */
 #endif
-/* ss015.301: Removed the timer handler prototypes guarded under SS_MT_TMR
- * and handled mtFlag in existing timer handlers.
- */
+   /* ss015.301: Removed the timer handler prototypes guarded under SS_MT_TMR
+    * and handled mtFlag in existing timer handlers.
+    */
 
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PRIVATE S16 STmrDeregHndlr
+   PRIVATE S16 STmrDeregHndlr
 (
-ProcId proc,                /* processor */
-Ent ent,                    /* entity */
-Inst inst,                  /* instance */
-S16 period,                 /* period */
-S16 units,                  /* period units */
-SsTmrActvFn ssTmrActvFn          /* timer function */
-)
+ ProcId proc,                /* processor */
+ Ent ent,                    /* entity */
+ Inst inst,                  /* instance */
+ S16 period,                 /* period */
+ S16 units,                  /* period units */
+ SsTmrActvFn ssTmrActvFn          /* timer function */
+ )
 #else
 PRIVATE S16 STmrDeregHndlr(proc, ent, inst, period, units, ssTmrActvFn)
-ProcId proc;                /* processor */
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-SsTmrActvFn ssTmrActvFn;         /* timer function */
+   ProcId proc;                /* processor */
+   Ent ent;                    /* entity */
+   Inst inst;                  /* instance */
+   S16 period;                 /* period */
+   S16 units;                  /* period units*/
+   SsTmrActvFn ssTmrActvFn;         /* timer function */
 #endif
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -865,27 +865,27 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    {
 #ifndef SS_MULTIPLE_PROCS
 #ifdef SS_MT_TMR
-   if (ssTmrActvFn.actvFnc.tmrActvFnMt == NULLP)  
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS547, ERRZERO, "Null pointer");
+      if (ssTmrActvFn.actvFnc.tmrActvFnMt == NULLP)  
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS547, ERRZERO, "Null pointer");
+	 RETVALUE(RFAILED);
+      }
+#else
       RETVALUE(RFAILED);
-   }
-#else
-    RETVALUE(RFAILED);
 #endif
 #else
-    RETVALUE(RFAILED);
+      RETVALUE(RFAILED);
 #endif
- 
+
    }
    else
    {
-   if (ssTmrActvFn.actvFnc.tmrActvFn == NULLP)  
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS547, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      if (ssTmrActvFn.actvFnc.tmrActvFn == NULLP)  
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS547, ERRZERO, "Null pointer");
+	 RETVALUE(RFAILED);
+      }
    }
-  }
 
 #ifdef SS_MULTIPLE_PROCS
    /* check if the procId has been registered with SSI */
@@ -894,7 +894,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    if (procIdIdx == SS_INV_PROCID_IDX)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS548, ERRZERO,
-                     "Could not find proc id index");
+	    "Could not find proc id index");
       RETVALUE(RFAILED);
    }
 #endif /* SS_MULTIPLE_PROCS */
@@ -905,35 +905,35 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    if (ret != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS549, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
       RETVALUE(RFAILED);
    }
 
 #ifdef SS_MULTIPLE_PROCS
    if (osCp.tTskIds[procIdIdx][ent][inst] == SS_TSKNC)
 #else /* SS_MULTIPLE_PROCS */
-   if (osCp.tTskIds[ent][inst] == SS_TSKNC)
+      if (osCp.tTskIds[ent][inst] == SS_TSKNC)
 #endif /* SS_MULTIPLE_PROCS */
-   {
-      if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
       {
+	 if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS550, ERRZERO,
-                     "Could not release the semaphore");
-         RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS550, ERRZERO,
+		  "Could not release the semaphore");
+	    RETVALUE(RFAILED);
 #endif
+	 }
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS551, ERRZERO, "Unknown task");
+	 RETVALUE(RFAILED);
       }
-      SSLOGERROR(ERRCLS_INT_PAR, ESS551, ERRZERO, "Unknown task");
-      RETVALUE(RFAILED);
-   }
    if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS552, ERRZERO,
-                     "Could not release the semaphore");
+	    "Could not release the semaphore");
       RETVALUE(RFAILED);
 #endif
-    }
+   }
 
 #endif
 
@@ -944,7 +944,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS553, (ErrVal) ret,
-                     "Could not lock timer table");
+	    "Could not lock timer table");
 #endif
       RETVALUE(ret);
    }
@@ -961,29 +961,29 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
       /* ss029.103: addition: multiple procId related changes */ 
       if (osCp.tmrTbl[idx].ownerEnt == ent
 #ifdef SS_MULTIPLE_PROCS
-            &&  osCp.tmrTbl[idx].ownerProc == proc 
+	    &&  osCp.tmrTbl[idx].ownerProc == proc 
 #endif /* SS_MULTIPLE_PROCS */
-            &&  osCp.tmrTbl[idx].ownerInst == inst
+	    &&  osCp.tmrTbl[idx].ownerInst == inst
 #ifndef SS_MULTIPLE_PROCS
 #ifdef SS_MT_TMR
-           /*
-	    *  ss015.301 - Modifed as timer activation functions
-	    *  enclosed in a union. 
-	    */
-            &&  osCp.tmrTbl[idx].ssTmrActvFn.mtFlag == ssTmrActvFn.mtFlag
-            && ((ssTmrActvFn.mtFlag == FALSE
-                  &&  osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn)
-               || osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFnMt == ssTmrActvFn.actvFnc.tmrActvFnMt)
+	    /*
+	     *  ss015.301 - Modifed as timer activation functions
+	     *  enclosed in a union. 
+	     */
+	    &&  osCp.tmrTbl[idx].ssTmrActvFn.mtFlag == ssTmrActvFn.mtFlag
+	    && ((ssTmrActvFn.mtFlag == FALSE
+		  &&  osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn)
+	       || osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFnMt == ssTmrActvFn.actvFnc.tmrActvFnMt)
 #else
-            &&  osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn
+	    &&  osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn
 #endif
 #else
-            &&  osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn
+	    &&  osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn
 #endif
-            &&  osCp.tmrTbl[idx].interval == (U32) ((period * SS_TICKS_SEC) / units))
-      {
-         break;
-      }
+	    &&  osCp.tmrTbl[idx].interval == (U32) ((period * SS_TICKS_SEC) / units))
+	    {
+	       break;
+	    }
    }
 
    if (idx == SS_MAX_TMRS)
@@ -991,9 +991,9 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
       if ( SUnlock(&osCp.tmrTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS554, ERRZERO,
-                     "Could not unlock the semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS554, ERRZERO,
+	       "Could not unlock the semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -1040,7 +1040,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS556, ERRZERO,
-                     "Could not unlock the semaphore");
+	    "Could not unlock the semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -1050,5 +1050,5 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -68,749 +68,749 @@ SuId suId;
 SpId spId;
 #endif
 {
-    S16 ret1;
-    Buffer *mBuf;
-    mBuf = NULLP;
-    TRC3(cmPkCkwBndReq)
+   S16 ret1;
+   Buffer *mBuf;
+   mBuf = NULLP;
+   TRC3(cmPkCkwBndReq)
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
-    {
+      if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW001, (ErrVal)0, "SGetMsg() failed");
-       }
+	 if(ret1 != ROK)
+	 {
+	    SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+		  __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+		  (ErrVal)ECKW001, (ErrVal)0, "SGetMsg() failed");
+	 }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
-    CMCHKPKLOG(SPkS16, spId, mBuf, ECKW002, pst);
-    CMCHKPKLOG(SPkS16, suId, mBuf, ECKW003, pst);
-    pst->event = (Event) CKW_EVT_BND_REQ;
+	 RETVALUE(ret1);
+      }
+   CMCHKPKLOG(SPkS16, spId, mBuf, ECKW002, pst);
+   CMCHKPKLOG(SPkS16, suId, mBuf, ECKW003, pst);
+   pst->event = (Event) CKW_EVT_BND_REQ;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+   RETVALUE(SPstTsk(pst,mBuf));
 } /*end of function cmPkCkwBndReq*/
 
 /*
-*
-*    Fun:    cmPkCkwUbndReq
-*
-*    Desc:    pack the primitive CkwUbndReq
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkCkwUbndReq
+ *
+ *    Desc:    pack the primitive CkwUbndReq
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwUbndReq
+   PUBLIC S16 cmPkCkwUbndReq
 (
-Pst *pst,
-SpId spId,
-Reason reason
-)
+ Pst *pst,
+ SpId spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 cmPkCkwUbndReq(pst, spId, reason)
-Pst *pst;
-SpId spId;
-Reason reason;
+   Pst *pst;
+   SpId spId;
+   Reason reason;
 #endif
 {
-    S16 ret1;
-    Buffer *mBuf;
-    mBuf = NULLP;
-    TRC3(cmPkCkwUbndReq)
+   S16 ret1;
+   Buffer *mBuf;
+   mBuf = NULLP;
+   TRC3(cmPkCkwUbndReq)
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
-    {
+      if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW004, (ErrVal)0, "SGetMsg() failed");
-       }
+	 if(ret1 != ROK)
+	 {
+	    SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+		  __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+		  (ErrVal)ECKW004, (ErrVal)0, "SGetMsg() failed");
+	 }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
-    CMCHKPKLOG(SPkS16, reason, mBuf, ECKW005, pst);
-    CMCHKPKLOG(SPkS16, spId, mBuf, ECKW006, pst);
-    pst->event = (Event) CKW_EVT_UBND_REQ;
+	 RETVALUE(ret1);
+      }
+   CMCHKPKLOG(SPkS16, reason, mBuf, ECKW005, pst);
+   CMCHKPKLOG(SPkS16, spId, mBuf, ECKW006, pst);
+   pst->event = (Event) CKW_EVT_UBND_REQ;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+   RETVALUE(SPstTsk(pst,mBuf));
 } /*end of function cmPkCkwUbndReq*/
 
 /*
-*
-*    Fun:    cmPkCkwBndCfm
-*
-*    Desc:    pack the primitive CkwBndCfm
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkCkwBndCfm
+ *
+ *    Desc:    pack the primitive CkwBndCfm
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwBndCfm
+   PUBLIC S16 cmPkCkwBndCfm
 (
-Pst *pst,
-SuId suId,
-U8 status
-)
+ Pst *pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 cmPkCkwBndCfm(pst, suId, status)
-Pst *pst;
-SuId suId;
-U8 status;
+   Pst *pst;
+   SuId suId;
+   U8 status;
 #endif
 {
-    S16 ret1;
-    Buffer *mBuf;
-    mBuf = NULLP;
-    TRC3(cmPkCkwBndCfm)
+   S16 ret1;
+   Buffer *mBuf;
+   mBuf = NULLP;
+   TRC3(cmPkCkwBndCfm)
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
-    {
+      if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW007, (ErrVal)0, "SGetMsg() failed");
-       }
+	 if(ret1 != ROK)
+	 {
+	    SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+		  __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+		  (ErrVal)ECKW007, (ErrVal)0, "SGetMsg() failed");
+	 }
 
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
-    CMCHKPKLOG(SPkU8, status, mBuf, ECKW008, pst);
-    CMCHKPKLOG(SPkS16, suId, mBuf, ECKW009, pst);
-    pst->event = (Event) CKW_EVT_BND_CFM;
+	 RETVALUE(ret1);
+      }
+   CMCHKPKLOG(SPkU8, status, mBuf, ECKW008, pst);
+   CMCHKPKLOG(SPkS16, suId, mBuf, ECKW009, pst);
+   pst->event = (Event) CKW_EVT_BND_CFM;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+   RETVALUE(SPstTsk(pst,mBuf));
 } /*end of function cmPkCkwBndCfm*/
 
 
 /*
-*
-*    Fun:    cmPkRlcTmInfo
-*
-*    Desc:    pack the structure RlcTmInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkRlcTmInfo
+ *
+ *    Desc:    pack the structure RlcTmInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkRlcTmInfo
+   PUBLIC S16 cmPkRlcTmInfo
 (
-RlcTmInfo      *param,
-Buffer         *mBuf
-)
+ RlcTmInfo      *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmPkRlcTmInfo(param, mBuf)
-RlcTmInfo      *param;
-Buffer         *mBuf;
+   RlcTmInfo      *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkRlcTmInfo)
+   TRC3(cmPkRlcTmInfo)
 
-    CMCHKPK(SPkU32, param->dl.buffSize, mBuf);
+      CMCHKPK(SPkU32, param->dl.buffSize, mBuf);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmPkRlcTmInfo */
 
 
 /*
-*
-*    Fun:    cmPkRlcUmInfo
-*
-*    Desc:    pack the structure RlcUmInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkRlcUmInfo
+ *
+ *    Desc:    pack the structure RlcUmInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkRlcUmInfo
+   PUBLIC S16 cmPkRlcUmInfo
 (
-RlcEntCfgInfo  *param,
-Buffer         *mBuf
-)
+ RlcEntCfgInfo  *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmPkRlcUmInfo(param, mBuf)
-RlcEntCfgInfo  *param;
-Buffer         *mBuf;
+   RlcEntCfgInfo  *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkRlcUmInfo)
+   TRC3(cmPkRlcUmInfo)
 
-    switch(param->dir)
-    {
-       case CKW_CFG_DIR_DL:
-          {
-             CMCHKPK(SPkU8, param->m.umInfo.dl.snLen, mBuf);
-             break;
-          }
-       case CKW_CFG_DIR_UL:
-          {
-             CMCHKPK(SPkU8, param->m.umInfo.ul.reOrdTmr, mBuf);
-             CMCHKPK(SPkU8, param->m.umInfo.ul.snLen, mBuf);
-             break;
-          }
-       /* Patch ckw_c_001.main_3 */
-       case CKW_CFG_DIR_BOTH:
-          {
-             CMCHKPK(SPkU8, param->m.umInfo.dl.snLen, mBuf);
-             CMCHKPK(SPkU8, param->m.umInfo.ul.reOrdTmr, mBuf);
-             CMCHKPK(SPkU8, param->m.umInfo.ul.snLen, mBuf);
-             break;
-          }
-    }
+      switch(param->dir)
+      {
+	 case CKW_CFG_DIR_DL:
+	    {
+	       CMCHKPK(SPkU8, param->m.umInfo.dl.snLen, mBuf);
+	       break;
+	    }
+	 case CKW_CFG_DIR_UL:
+	    {
+	       CMCHKPK(SPkU8, param->m.umInfo.ul.reOrdTmr, mBuf);
+	       CMCHKPK(SPkU8, param->m.umInfo.ul.snLen, mBuf);
+	       break;
+	    }
+	    /* Patch ckw_c_001.main_3 */
+	 case CKW_CFG_DIR_BOTH:
+	    {
+	       CMCHKPK(SPkU8, param->m.umInfo.dl.snLen, mBuf);
+	       CMCHKPK(SPkU8, param->m.umInfo.ul.reOrdTmr, mBuf);
+	       CMCHKPK(SPkU8, param->m.umInfo.ul.snLen, mBuf);
+	       break;
+	    }
+      }
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmPkRlcUmInfo */
 
 
 /*
-*
-*    Fun:    cmPkRlcAmInfo
-*
-*    Desc:    pack the structure RlcAmInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkRlcAmInfo
+ *
+ *    Desc:    pack the structure RlcAmInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkRlcAmInfo
+   PUBLIC S16 cmPkRlcAmInfo
 (
-RlcAmInfo      *param,
-Buffer         *mBuf
-)
+ RlcAmInfo      *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmPkRlcAmInfo(param, mBuf)
-RlcAmInfo      *param;
-Buffer         *mBuf;
+   RlcAmInfo      *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkRlcAmInfo)
+   TRC3(cmPkRlcAmInfo)
 
-    /* UP LINK */
-    CMCHKPK(SPkU8, param->ul.reOrdTmr, mBuf);
-    CMCHKPK(SPkU16, param->ul.staProhTmr, mBuf);
-    CMCHKPK(SPkU8, param->ul.snLen, mBuf);
+      /* UP LINK */
+      CMCHKPK(SPkU8, param->ul.reOrdTmr, mBuf);
+   CMCHKPK(SPkU16, param->ul.staProhTmr, mBuf);
+   CMCHKPK(SPkU8, param->ul.snLen, mBuf);
 
-    /* DOWN LINK */
-    CMCHKPK(SPkU8, param->dl.maxRetx, mBuf);
-    CMCHKPK(SPkS32, param->dl.pollByte, mBuf);
-    CMCHKPK(SPkS16, param->dl.pollPdu, mBuf);
-    CMCHKPK(SPkU16, param->dl.pollRetxTmr, mBuf);
-    CMCHKPK(SPkU8, param->dl.snLen, mBuf);
+   /* DOWN LINK */
+   CMCHKPK(SPkU8, param->dl.maxRetx, mBuf);
+   CMCHKPK(SPkS32, param->dl.pollByte, mBuf);
+   CMCHKPK(SPkS16, param->dl.pollPdu, mBuf);
+   CMCHKPK(SPkU16, param->dl.pollRetxTmr, mBuf);
+   CMCHKPK(SPkU8, param->dl.snLen, mBuf);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmPkRlcAmInfo */
 
 
 /*
-*
-*    Fun:    cmPkCkwLInfo
-*
-*    Desc:    pack the structure CkwLChInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkCkwLInfo
+ *
+ *    Desc:    pack the structure CkwLChInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwLChInfo
+   PUBLIC S16 cmPkCkwLChInfo
 (
-CkwLChInfo     *param,
-Buffer         *mBuf
-)
+ CkwLChInfo     *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmPkCkwLChInfo(param, mBuf)
-CkwLChInfo     *param;
-Buffer         *mBuf;
+   CkwLChInfo     *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkCkwLChInfo)
+   TRC3(cmPkCkwLChInfo)
 
-    CMCHKPK(SPkU8, param->type, mBuf);
-    CMCHKPK(SPkU8, param->lChId, mBuf);
+      CMCHKPK(SPkU8, param->type, mBuf);
+   CMCHKPK(SPkU8, param->lChId, mBuf);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmPkCkwLChInfo */
 
 
 /*
-*
-*    Fun:    cmPkRlcEntCfgInfo
-*
-*    Desc:    pack the structure RlcEntCfgInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkRlcEntCfgInfo
+ *
+ *    Desc:    pack the structure RlcEntCfgInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkRlcEntCfgInfo
+   PUBLIC S16 cmPkRlcEntCfgInfo
 (
-RlcEntCfgInfo  *param,
-Buffer         *mBuf
-)
+ RlcEntCfgInfo  *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmPkRlcEntCfgInfo(param, mBuf)
-RlcEntCfgInfo  *param;
-Buffer         *mBuf;
+   RlcEntCfgInfo  *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkRlcEntCfgInfo)
+   TRC3(cmPkRlcEntCfgInfo)
 
-    switch(param->entMode)
-    {
-       case CM_LTE_MODE_TM:
-          {
-             CMCHKPK(cmPkRlcTmInfo, &(param->m.tmInfo), mBuf);
-             break;
-          }
-       case CM_LTE_MODE_UM:
-          {
-             CMCHKPK(cmPkRlcUmInfo, param, mBuf);
-             break;
-          }
-       case CM_LTE_MODE_AM:
-          {
-             CMCHKPK(cmPkRlcAmInfo, &(param->m.amInfo), mBuf);
-             break;
-          }
-    }
+      switch(param->entMode)
+      {
+	 case CM_LTE_MODE_TM:
+	    {
+	       CMCHKPK(cmPkRlcTmInfo, &(param->m.tmInfo), mBuf);
+	       break;
+	    }
+	 case CM_LTE_MODE_UM:
+	    {
+	       CMCHKPK(cmPkRlcUmInfo, param, mBuf);
+	       break;
+	    }
+	 case CM_LTE_MODE_AM:
+	    {
+	       CMCHKPK(cmPkRlcAmInfo, &(param->m.amInfo), mBuf);
+	       break;
+	    }
+      }
 
-    /* Logical Channel Information */
-    switch(param->entMode)
-    {
-       case CM_LTE_MODE_TM:
-          {
-             CMCHKPK(cmPkCkwLChInfo, &(param->lCh[0]), mBuf);
-             break;
-          }
-       /* ccpu00128195: Packing lCh[0] and lCh[1] for UM bearer as well */
-       case CM_LTE_MODE_UM:
-       case CM_LTE_MODE_AM:
-          {
-             CMCHKPK(cmPkCkwLChInfo, &(param->lCh[1]), mBuf);
-             CMCHKPK(cmPkCkwLChInfo, &(param->lCh[0]), mBuf);
-             break;
-          }
-    }
+   /* Logical Channel Information */
+   switch(param->entMode)
+   {
+      case CM_LTE_MODE_TM:
+	 {
+	    CMCHKPK(cmPkCkwLChInfo, &(param->lCh[0]), mBuf);
+	    break;
+	 }
+	 /* ccpu00128195: Packing lCh[0] and lCh[1] for UM bearer as well */
+      case CM_LTE_MODE_UM:
+      case CM_LTE_MODE_AM:
+	 {
+	    CMCHKPK(cmPkCkwLChInfo, &(param->lCh[1]), mBuf);
+	    CMCHKPK(cmPkCkwLChInfo, &(param->lCh[0]), mBuf);
+	    break;
+	 }
+   }
 
 #ifdef TENB_MULT_CELL_SUPPRT
-    CMCHKPK(SPkS16, param->rguSapId, mBuf);
+   CMCHKPK(SPkS16, param->rguSapId, mBuf);
 #endif
-    CMCHKPK(SPkS16, param->discardTmr, mBuf);
-    CMCHKPK(SPkU8, param->dir, mBuf);
-    CMCHKPK(cmPkLteRlcMode, param->entMode, mBuf);
-    CMCHKPK(SPkU8, param->qci, mBuf);
-    CMCHKPK(SPkU8, param->rbType, mBuf);
-    CMCHKPK(SPkU8, param->rbId, mBuf);
-    CMCHKPK(SPkU8, param->cfgType, mBuf);
+   CMCHKPK(SPkS16, param->discardTmr, mBuf);
+   CMCHKPK(SPkU8, param->dir, mBuf);
+   CMCHKPK(cmPkLteRlcMode, param->entMode, mBuf);
+   CMCHKPK(SPkU8, param->qci, mBuf);
+   CMCHKPK(SPkU8, param->rbType, mBuf);
+   CMCHKPK(SPkU8, param->rbId, mBuf);
+   CMCHKPK(SPkU8, param->cfgType, mBuf);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmPkRlcEntCfgInfo */
 
 
 /*
-*
-*    Fun:    cmPkRlcCfgInfo
-*
-*    Desc:    pack the structure RlcCfgInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkRlcCfgInfo
+ *
+ *    Desc:    pack the structure RlcCfgInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkRlcCfgInfo
+   PUBLIC S16 cmPkRlcCfgInfo
 (
-RlcCfgInfo     *param,
-Pst            *pst,
-Buffer         *mBuf
-)
+ RlcCfgInfo     *param,
+ Pst            *pst,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmPkRlcCfgInfo(param, pst, mBuf)
-RlcCfgInfo     *param;
-Pst            *pst;
-Buffer         *mBuf;
+   RlcCfgInfo     *param;
+   Pst            *pst;
+   Buffer         *mBuf;
 #endif
 {
    S16 idx;
 
    TRC3(cmPkRlcCfgInfo)
 
-    for (idx = param->numEnt-1; idx >= 0; idx--)
-    {
-       CMCHKPK(cmPkRlcEntCfgInfo, &(param->entCfg[idx]), mBuf);
-    }
+      for (idx = param->numEnt-1; idx >= 0; idx--)
+      {
+	 CMCHKPK(cmPkRlcEntCfgInfo, &(param->entCfg[idx]), mBuf);
+      }
 
-    CMCHKPK(SPkU8, param->numEnt, mBuf);
-    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
-    CMCHKPKLOG(SPkU32, param->transId, mBuf, ECKW010, pst);
+   CMCHKPK(SPkU8, param->numEnt, mBuf);
+   CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
+   CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
+   CMCHKPKLOG(SPkU32, param->transId, mBuf, ECKW010, pst);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmPkRlcCfgInfo */
 
 
 /*
-*
-*    Fun:    cmPkRlcEntCfgCfmInfo
-*
-*    Desc:    pack the structure RlcEntCfgInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkRlcEntCfgCfmInfo
+ *
+ *    Desc:    pack the structure RlcEntCfgInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkRlcEntCfgCfmInfo
+   PUBLIC S16 cmPkRlcEntCfgCfmInfo
 (
-RlcEntCfgCfmInfo  *param,
-Buffer            *mBuf
-)
+ RlcEntCfgCfmInfo  *param,
+ Buffer            *mBuf
+ )
 #else
 PUBLIC S16 cmPkRlcEntCfgCfmInfo(param, mBuf)
-RlcEntCfgCfmInfo  *param;
-Buffer            *mBuf;
+   RlcEntCfgCfmInfo  *param;
+   Buffer            *mBuf;
 #endif
 {
-    TRC3(cmPkRlcEntCfgCfmInfo)
+   TRC3(cmPkRlcEntCfgCfmInfo)
 
-    CMCHKPK(cmPkCmStatus, &(param->status), mBuf);
-    CMCHKPK(SPkU8, param->rbType, mBuf);
-    CMCHKPK(SPkU8, param->rbId, mBuf);
+      CMCHKPK(cmPkCmStatus, &(param->status), mBuf);
+   CMCHKPK(SPkU8, param->rbType, mBuf);
+   CMCHKPK(SPkU8, param->rbId, mBuf);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmPkRlcEntCfgCfmInfo */
 
 
 /*
-*
-*    Fun:    cmPkRlcCfgCfmInfo
-*
-*    Desc:    pack the structure RlcCfgCfmInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkRlcCfgCfmInfo
+ *
+ *    Desc:    pack the structure RlcCfgCfmInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkRlcCfgCfmInfo
+   PUBLIC S16 cmPkRlcCfgCfmInfo
 (
-RlcCfgCfmInfo  *param,
-Pst            *pst,
-Buffer         *mBuf
-)
+ RlcCfgCfmInfo  *param,
+ Pst            *pst,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmPkRlcCfgCfmInfo(param, pst, mBuf)
-RlcCfgCfmInfo  *param;
-Pst            *pst;
-Buffer         *mBuf;
+   RlcCfgCfmInfo  *param;
+   Pst            *pst;
+   Buffer         *mBuf;
 #endif
 {
-    S16         idx;
+   S16         idx;
 
-    TRC3(cmPkRlcCfgCfmInfo)
+   TRC3(cmPkRlcCfgCfmInfo)
 
-    for (idx = param->numEnt-1; idx >= 0; idx--)
-    {
-       CMCHKPK(cmPkRlcEntCfgCfmInfo, &(param->entCfgCfm[(U8)idx]), mBuf);
-    }
+      for (idx = param->numEnt-1; idx >= 0; idx--)
+      {
+	 CMCHKPK(cmPkRlcEntCfgCfmInfo, &(param->entCfgCfm[(U8)idx]), mBuf);
+      }
 
-    CMCHKPK(SPkU8, param->numEnt, mBuf);
-    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
-    CMCHKPKLOG(SPkU32, param->transId, mBuf, ECKW014, pst);
+   CMCHKPK(SPkU8, param->numEnt, mBuf);
+   CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
+   CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
+   CMCHKPKLOG(SPkU32, param->transId, mBuf, ECKW014, pst);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmPkRlcCfgCfmInfo */
 
 
 /*
-*
-*    Fun:    cmPkRlcCfgCfm
-*
-*    Desc:    pack the primitive KwUiRlcCfgCfm
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkRlcCfgCfm
+ *
+ *    Desc:    pack the primitive KwUiRlcCfgCfm
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkRlcCfgCfm
+   PUBLIC S16 cmPkRlcCfgCfm
 (
-Pst               *pst,
-SuId              suId,
-RlcCfgCfmInfo     *cfgCfmInfo
-)
+ Pst               *pst,
+ SuId              suId,
+ RlcCfgCfmInfo     *cfgCfmInfo
+ )
 #else
 PUBLIC S16 cmPkRlcCfgCfm(pst, suId, cfgCfmInfo)
-Pst               *pst;
-SuId              suId;
-RlcCfgCfmInfo     *cfgCfmInfo;
+   Pst               *pst;
+   SuId              suId;
+   RlcCfgCfmInfo     *cfgCfmInfo;
 #endif
 {
-    S16 ret1;
-    Buffer *mBuf;
-    mBuf = NULLP;
-    TRC3(cmPkRlcCfgCfm)
+   S16 ret1;
+   Buffer *mBuf;
+   mBuf = NULLP;
+   TRC3(cmPkRlcCfgCfm)
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
-    {
+      if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW015, (ErrVal)0, "SGetMsg() failed");
-       }
+	 if(ret1 != ROK)
+	 {
+	    SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+		  __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+		  (ErrVal)ECKW015, (ErrVal)0, "SGetMsg() failed");
+	 }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
+	 RETVALUE(ret1);
+      }
 
-    switch(pst->selector)
-    {
+   switch(pst->selector)
+   {
 #ifdef LCCKW
-       case ODU_SELECTOR_LC:
-          {
-             ret1 = cmPkRlcCfgCfmInfo( (cfgCfmInfo), pst, mBuf);
+      case ODU_SELECTOR_LC:
+	 {
+	    ret1 = cmPkRlcCfgCfmInfo( (cfgCfmInfo), pst, mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
-             if(ret1 != ROK)
-             {
-                SPutMsg(mBuf);
-                SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                      __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-                      (ErrVal)ECKW016, (ErrVal)ret1, "Packing failure");
-                RETVALUE( ret1 );
-             }
+	    if(ret1 != ROK)
+	    {
+	       SPutMsg(mBuf);
+	       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+		     __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+		     (ErrVal)ECKW016, (ErrVal)ret1, "Packing failure");
+	       RETVALUE( ret1 );
+	    }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-             if (SPutSBuf(pst->region, pst->pool, (Data *)cfgCfmInfo,
-                      sizeof(RlcCfgCfmInfo)) != ROK)
-             {
-                SPutMsg(mBuf);
-                RETVALUE(RFAILED);
-             }
+	    if (SPutSBuf(pst->region, pst->pool, (Data *)cfgCfmInfo,
+		     sizeof(RlcCfgCfmInfo)) != ROK)
+	    {
+	       SPutMsg(mBuf);
+	       RETVALUE(RFAILED);
+	    }
 
-             break;
-          }
+	    break;
+	 }
 #endif /* LCCKW */
-    }
+   }
 
-    CMCHKPKLOG(SPkS16, suId, mBuf, ECKW017, pst);
-    pst->event = (Event) CKW_EVT_CFG_CFM;
+   CMCHKPKLOG(SPkS16, suId, mBuf, ECKW017, pst);
+   pst->event = (Event) CKW_EVT_CFG_CFM;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+   RETVALUE(SPstTsk(pst,mBuf));
 } /* cmPkRlcCfgCfm */
 
 /*
-*
-*    Fun:    cmPkCkwUeInfo
-*
-*    Desc:   pack the primitive KwUiCkwUeInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:  None
-*
-*    File:   ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkCkwUeInfo
+ *
+ *    Desc:   pack the primitive KwUiCkwUeInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:  None
+ *
+ *    File:   ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwUeInfo
+   PUBLIC S16 cmPkCkwUeInfo
 (
-CkwUeInfo *param,
-Buffer    *mBuf
-)
+ CkwUeInfo *param,
+ Buffer    *mBuf
+ )
 #else
 PUBLIC S16 cmPkCkwUeInfo(param, mBuf)
-CkwUeInfo *param;
-Buffer    *mBuf;
+   CkwUeInfo *param;
+   Buffer    *mBuf;
 #endif
 {
    TRC2(cmPkCkwUeInfo)
 
-   CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
+      CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
 
    RETVALUE(ROK);
 }
 
 /*
-*
-*    Fun:    cmPkCkwUeIdChgReq
-*
-*    Desc:   pack the primitive KwUiCkwUeIdChgReq
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:  None
-*
-*    File:   ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkCkwUeIdChgReq
+ *
+ *    Desc:   pack the primitive KwUiCkwUeIdChgReq
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:  None
+ *
+ *    File:   ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwUeIdChgReq
+   PUBLIC S16 cmPkCkwUeIdChgReq
 (
-Pst               *pst,
-SpId              spId,
-U32               transId,
-CkwUeInfo         *ueInfo,
-CkwUeInfo         *newUeInfo
-)
+ Pst               *pst,
+ SpId              spId,
+ U32               transId,
+ CkwUeInfo         *ueInfo,
+ CkwUeInfo         *newUeInfo
+ )
 #else
 PUBLIC S16 cmPkCkwUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
-Pst               *pst;
-SpId              spId;
-U32               transId;
-CkwUeInfo         *ueInfo;
-CkwUeInfo         *newUeInfo;
+   Pst               *pst;
+   SpId              spId;
+   U32               transId;
+   CkwUeInfo         *ueInfo;
+   CkwUeInfo         *newUeInfo;
 #endif
 {
-    S16    ret1;
-    Buffer *mBuf = NULLP;
+   S16    ret1;
+   Buffer *mBuf = NULLP;
 
-    TRC3(cmPkCkwUeIdChgReq)
+   TRC3(cmPkCkwUeIdChgReq)
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
-    {
+      if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW018, (ErrVal)0, "SGetMsg() failed");
-       }
+	 if(ret1 != ROK)
+	 {
+	    SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+		  __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+		  (ErrVal)ECKW018, (ErrVal)0, "SGetMsg() failed");
+	 }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
-    }
+	 RETVALUE(ret1);
+      }
 
-    CMCHKPK(cmPkCkwUeInfo, newUeInfo, mBuf);
-    if (SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo,
-             sizeof(CkwUeInfo)) != ROK)
-    {
-       SPutMsg(mBuf);
-       RETVALUE(RFAILED);
-    }
-    CMCHKPK(cmPkCkwUeInfo, ueInfo, mBuf);
-    if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo,
-             sizeof(CkwUeInfo)) != ROK)
-    {
-       SPutMsg(mBuf);
-       RETVALUE(RFAILED);
-    }
-    CMCHKPKLOG(SPkU32, transId, mBuf, ECKW019, pst);
-    CMCHKPKLOG(SPkS16, spId, mBuf, ECKW020, pst);
-    pst->event = (Event) CKW_EVT_UEIDCHG_REQ;
+   CMCHKPK(cmPkCkwUeInfo, newUeInfo, mBuf);
+   if (SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo,
+	    sizeof(CkwUeInfo)) != ROK)
+   {
+      SPutMsg(mBuf);
+      RETVALUE(RFAILED);
+   }
+   CMCHKPK(cmPkCkwUeInfo, ueInfo, mBuf);
+   if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo,
+	    sizeof(CkwUeInfo)) != ROK)
+   {
+      SPutMsg(mBuf);
+      RETVALUE(RFAILED);
+   }
+   CMCHKPKLOG(SPkU32, transId, mBuf, ECKW019, pst);
+   CMCHKPKLOG(SPkS16, spId, mBuf, ECKW020, pst);
+   pst->event = (Event) CKW_EVT_UEIDCHG_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+   RETVALUE(SPstTsk(pst, mBuf));
 
 } /* cmPkCkwUeIdChgReq */
 
 /*
-*
-*    Fun:    cmPkCkwUeIdChgCfm
-*
-*    Desc:   pack the primitive KwUiCkwUeIdChgCfm
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:  None
-*
-*    File:   ckw.c
-*
-*/
+ *
+ *    Fun:    cmPkCkwUeIdChgCfm
+ *
+ *    Desc:   pack the primitive KwUiCkwUeIdChgCfm
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:  None
+ *
+ *    File:   ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkCkwUeIdChgCfm
+   PUBLIC S16 cmPkCkwUeIdChgCfm
 (
-Pst               *pst,
-SuId              suId,
-U32               transId,
-CkwUeInfo         *ueInfo,
-CmStatus          status
-)
+ Pst               *pst,
+ SuId              suId,
+ U32               transId,
+ CkwUeInfo         *ueInfo,
+ CmStatus          status
+ )
 #else
 PUBLIC S16 cmPkCkwUeIdChgCfm(pst, suId, transId, ueInfo, status)
-Pst               *pst;
-SuId              suId;
-U32               transId;
-CkwUeInfo         *ueInfo;
-CmStatus          status;
+   Pst               *pst;
+   SuId              suId;
+   U32               transId;
+   CkwUeInfo         *ueInfo;
+   CmStatus          status;
 #endif
 {
-    S16    ret1;
-    Buffer *mBuf = NULLP;
+   S16    ret1;
+   Buffer *mBuf = NULLP;
 
-    TRC3(cmPkCkwUeIdChgCfm)
+   TRC3(cmPkCkwUeIdChgCfm)
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
-    {
+      if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW021, (ErrVal)0, "SGetMsg() failed");
-       }
+	 if(ret1 != ROK)
+	 {
+	    SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+		  __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+		  (ErrVal)ECKW021, (ErrVal)0, "SGetMsg() failed");
+	 }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
-    }
-    
-    CMCHKPK(cmPkCmStatus, &status, mBuf); 
-    CMCHKPK(cmPkCkwUeInfo, ueInfo, mBuf);
-    if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo,
-             sizeof(CkwUeInfo)) != ROK)
-    {
-       SPutMsg(mBuf);
-       RETVALUE(RFAILED);
-    }
-    CMCHKPKLOG(SPkU32, transId, mBuf, ECKW022, pst);
-    CMCHKPKLOG(SPkS16, suId, mBuf, ECKW023, pst);
-    pst->event = (Event) CKW_EVT_UEIDCHG_CFM;
+	 RETVALUE(ret1);
+      }
 
-    RETVALUE(SPstTsk(pst, mBuf));
+   CMCHKPK(cmPkCmStatus, &status, mBuf); 
+   CMCHKPK(cmPkCkwUeInfo, ueInfo, mBuf);
+   if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo,
+	    sizeof(CkwUeInfo)) != ROK)
+   {
+      SPutMsg(mBuf);
+      RETVALUE(RFAILED);
+   }
+   CMCHKPKLOG(SPkU32, transId, mBuf, ECKW022, pst);
+   CMCHKPKLOG(SPkS16, suId, mBuf, ECKW023, pst);
+   pst->event = (Event) CKW_EVT_UEIDCHG_CFM;
+
+   RETVALUE(SPstTsk(pst, mBuf));
 
 } /* cmPkCkwUeIdChgCfm */
 
@@ -820,772 +820,772 @@ CmStatus          status;
  *****************************************************************************/
 
 /*
-*
-*    Fun:    cmUnpkCkwBndReq
-*
-*    Desc:    unpack the primitive CkwBndReq
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkCkwBndReq
+ *
+ *    Desc:    unpack the primitive CkwBndReq
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwBndReq
+   PUBLIC S16 cmUnpkCkwBndReq
 (
-CkwBndReq      func,
-Pst            *pst,
-Buffer         *mBuf
-)
+ CkwBndReq      func,
+ Pst            *pst,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCkwBndReq(func, pst, mBuf)
-CkwBndReq      func;
-Pst            *pst;
-Buffer         *mBuf;
+   CkwBndReq      func;
+   Pst            *pst;
+   Buffer         *mBuf;
 #endif
 {
-    SuId       suId = 0;
-    SpId       spId = 0;
-    
-    TRC3(cmUnpkCkwBndReq)
+   SuId       suId = 0;
+   SpId       spId = 0;
 
-    CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, ECKW024, pst);
-    CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, ECKW025, pst);
-    SPutMsg(mBuf);
+   TRC3(cmUnpkCkwBndReq)
 
-    RETVALUE((*func)(pst, suId, spId));
+      CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, ECKW024, pst);
+   CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, ECKW025, pst);
+   SPutMsg(mBuf);
+
+   RETVALUE((*func)(pst, suId, spId));
 } /*end of function cmUnpkCkwBndReq*/
 
 /*
-*
-*    Fun:    cmUnpkCkwUbndReq
-*
-*    Desc:    unpack the primitive CkwUbndReq
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkCkwUbndReq
+ *
+ *    Desc:    unpack the primitive CkwUbndReq
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwUbndReq
+   PUBLIC S16 cmUnpkCkwUbndReq
 (
-CkwUbndReq     func,
-Pst            *pst,
-Buffer         *mBuf
-)
+ CkwUbndReq     func,
+ Pst            *pst,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCkwUbndReq(func, pst, mBuf)
-CkwUbndReq     func;
-Pst            *pst;
-Buffer         *mBuf;
+   CkwUbndReq     func;
+   Pst            *pst;
+   Buffer         *mBuf;
 #endif
 {
-    SpId       spId = 0;
-    Reason     reason = 0;
-    
-    TRC3(cmUnpkCkwUbndReq)
+   SpId       spId = 0;
+   Reason     reason = 0;
 
-    CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, ECKW026, pst);
-    CMCHKUNPKLOG(SUnpkS16, &reason, mBuf, ECKW027, pst);
-    SPutMsg(mBuf);
-    RETVALUE((*func)(pst, spId, reason));
+   TRC3(cmUnpkCkwUbndReq)
+
+      CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, ECKW026, pst);
+   CMCHKUNPKLOG(SUnpkS16, &reason, mBuf, ECKW027, pst);
+   SPutMsg(mBuf);
+   RETVALUE((*func)(pst, spId, reason));
 } /*end of function cmUnpkCkwUbndReq*/
 
 /*
-*
-*    Fun:    cmUnpkCkwBndCfm
-*
-*    Desc:    unpack the primitive CkwBndCfm
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkCkwBndCfm
+ *
+ *    Desc:    unpack the primitive CkwBndCfm
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwBndCfm
+   PUBLIC S16 cmUnpkCkwBndCfm
 (
-CkwBndCfm      func,
-Pst            *pst,
-Buffer         *mBuf
-)
+ CkwBndCfm      func,
+ Pst            *pst,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCkwBndCfm(func, pst, mBuf)
-CkwBndCfm      func;
-Pst            *pst;
-Buffer         *mBuf;
+   CkwBndCfm      func;
+   Pst            *pst;
+   Buffer         *mBuf;
 #endif
 {
-    SuId       suId = 0;
-    U8         status = 0;
-    
-    TRC3(cmUnpkCkwBndCfm)
+   SuId       suId = 0;
+   U8         status = 0;
 
-    CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, ECKW028, pst);
-    CMCHKUNPKLOG(SUnpkU8, &status, mBuf, ECKW029, pst);
-    SPutMsg(mBuf);
+   TRC3(cmUnpkCkwBndCfm)
 
-    RETVALUE((*func)(pst, suId, status));
+      CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, ECKW028, pst);
+   CMCHKUNPKLOG(SUnpkU8, &status, mBuf, ECKW029, pst);
+   SPutMsg(mBuf);
+
+   RETVALUE((*func)(pst, suId, status));
 } /*end of function cmUnpkCkwBndCfm*/
 
 
 /*
-*
-*    Fun:    cmUnpkRlcTmInfo
-*
-*    Desc:    pack the structure RlcTmInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkRlcTmInfo
+ *
+ *    Desc:    pack the structure RlcTmInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkRlcTmInfo
+   PUBLIC S16 cmUnpkRlcTmInfo
 (
-RlcTmInfo      *param,
-Buffer         *mBuf
-)
+ RlcTmInfo      *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRlcTmInfo(param, mBuf)
-RlcTmInfo      *param;
-Buffer         *mBuf;
+   RlcTmInfo      *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcTmInfo)
+   TRC3(cmUnpkRlcTmInfo)
 
-    CMCHKUNPK(SUnpkU32, &(param->dl.buffSize), mBuf);
+      CMCHKUNPK(SUnpkU32, &(param->dl.buffSize), mBuf);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmUnpkRlcTmInfo */
 
 
 /*
-*
-*    Fun:    cmUnpkRlcUmInfo
-*
-*    Desc:    pack the structure RlcUmInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkRlcUmInfo
+ *
+ *    Desc:    pack the structure RlcUmInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkRlcUmInfo
+   PUBLIC S16 cmUnpkRlcUmInfo
 (
-RlcEntCfgInfo  *param,
-Buffer         *mBuf
-)
+ RlcEntCfgInfo  *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRlcUmInfo(param, mBuf)
-RlcEntCfgInfo  *param;
-Buffer         *mBuf;
+   RlcEntCfgInfo  *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcUmInfo)
+   TRC3(cmUnpkRlcUmInfo)
 
-    switch(param->dir)
-    {
-       case CKW_CFG_DIR_DL:
-          {
-             CMCHKUNPK(SUnpkU8, &(param->m.umInfo.dl.snLen), mBuf);
-             break;
-          }
-       case CKW_CFG_DIR_UL:
-          {
-             CMCHKUNPK(SUnpkU8, &(param->m.umInfo.ul.snLen), mBuf);
-             CMCHKUNPK(SUnpkU8, &(param->m.umInfo.ul.reOrdTmr), mBuf);
-             break;
-          }
-       /* Patch ckw_c_001.main_3 */
-       case CKW_CFG_DIR_BOTH:
-          {
-             CMCHKUNPK(SUnpkU8, &(param->m.umInfo.ul.snLen), mBuf);
-             CMCHKUNPK(SUnpkU8, &(param->m.umInfo.ul.reOrdTmr), mBuf);
-             CMCHKUNPK(SUnpkU8, &(param->m.umInfo.dl.snLen), mBuf);
-             break;
-          }
-    }
+      switch(param->dir)
+      {
+	 case CKW_CFG_DIR_DL:
+	    {
+	       CMCHKUNPK(SUnpkU8, &(param->m.umInfo.dl.snLen), mBuf);
+	       break;
+	    }
+	 case CKW_CFG_DIR_UL:
+	    {
+	       CMCHKUNPK(SUnpkU8, &(param->m.umInfo.ul.snLen), mBuf);
+	       CMCHKUNPK(SUnpkU8, &(param->m.umInfo.ul.reOrdTmr), mBuf);
+	       break;
+	    }
+	    /* Patch ckw_c_001.main_3 */
+	 case CKW_CFG_DIR_BOTH:
+	    {
+	       CMCHKUNPK(SUnpkU8, &(param->m.umInfo.ul.snLen), mBuf);
+	       CMCHKUNPK(SUnpkU8, &(param->m.umInfo.ul.reOrdTmr), mBuf);
+	       CMCHKUNPK(SUnpkU8, &(param->m.umInfo.dl.snLen), mBuf);
+	       break;
+	    }
+      }
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmUnpkRlcUmInfo */
 
 
 /*
-*
-*    Fun:    cmUnpkRlcAmInfo
-*
-*    Desc:    pack the structure RlcAmInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkRlcAmInfo
+ *
+ *    Desc:    pack the structure RlcAmInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkRlcAmInfo
+   PUBLIC S16 cmUnpkRlcAmInfo
 (
-RlcAmInfo      *param,
-Buffer         *mBuf
-)
+ RlcAmInfo      *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRlcAmInfo(param, mBuf)
-RlcAmInfo      *param;
-Buffer         *mBuf;
+   RlcAmInfo      *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcAmInfo)
+   TRC3(cmUnpkRlcAmInfo)
 
-    /* DOWN LINK */
-    CMCHKUNPK(SUnpkU8, &(param->dl.snLen), mBuf);
-    CMCHKUNPK(SUnpkU16, &(param->dl.pollRetxTmr), mBuf);
-    CMCHKUNPK(SUnpkS16, &(param->dl.pollPdu), mBuf);
-    CMCHKUNPK(SUnpkS32, &(param->dl.pollByte), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->dl.maxRetx), mBuf);
+      /* DOWN LINK */
+      CMCHKUNPK(SUnpkU8, &(param->dl.snLen), mBuf);
+   CMCHKUNPK(SUnpkU16, &(param->dl.pollRetxTmr), mBuf);
+   CMCHKUNPK(SUnpkS16, &(param->dl.pollPdu), mBuf);
+   CMCHKUNPK(SUnpkS32, &(param->dl.pollByte), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->dl.maxRetx), mBuf);
 
-    /* UP LINK */
-    CMCHKUNPK(SUnpkU8, &(param->ul.snLen), mBuf);
-    CMCHKUNPK(SUnpkU16, &(param->ul.staProhTmr), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->ul.reOrdTmr), mBuf);
+   /* UP LINK */
+   CMCHKUNPK(SUnpkU8, &(param->ul.snLen), mBuf);
+   CMCHKUNPK(SUnpkU16, &(param->ul.staProhTmr), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->ul.reOrdTmr), mBuf);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmUnpkRlcAmInfo */
 
 
 /*
-*
-*    Fun:    cmUnpkCkwLChInfo
-*
-*    Desc:    pack the structure CkwLChInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkCkwLChInfo
+ *
+ *    Desc:    pack the structure CkwLChInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwLChInfo
+   PUBLIC S16 cmUnpkCkwLChInfo
 (
-CkwLChInfo     *param,
-Buffer         *mBuf
-)
+ CkwLChInfo     *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCkwLChInfo(param, mBuf)
-CkwLChInfo     *param;
-Buffer         *mBuf;
+   CkwLChInfo     *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkCkwLChInfo)
+   TRC3(cmUnpkCkwLChInfo)
 
-    CMCHKUNPK(SUnpkU8, &(param->lChId), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->type), mBuf);
+      CMCHKUNPK(SUnpkU8, &(param->lChId), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->type), mBuf);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmUnpkCkwLChInfo */
 
 
 /*
-*
-*    Fun:    cmUnpkRlcEntCfgCfmInfo
-*
-*    Desc:    unpack the structure RlcEntCfgInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkRlcEntCfgCfmInfo
+ *
+ *    Desc:    unpack the structure RlcEntCfgInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkRlcEntCfgCfmInfo
+   PUBLIC S16 cmUnpkRlcEntCfgCfmInfo
 (
-RlcEntCfgCfmInfo  *param,
-Buffer            *mBuf
-)
+ RlcEntCfgCfmInfo  *param,
+ Buffer            *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRlcEntCfgCfmInfo(param, mBuf)
-RlcEntCfgCfmInfo  *param;
-Buffer            *mBuf;
+   RlcEntCfgCfmInfo  *param;
+   Buffer            *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcEntCfgCfmInfo)
+   TRC3(cmUnpkRlcEntCfgCfmInfo)
 
-    CMCHKUNPK(SUnpkU8, &(param->rbId), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->rbType), mBuf);
-    CMCHKUNPK(cmUnpkCmStatus, &(param->status), mBuf);
+      CMCHKUNPK(SUnpkU8, &(param->rbId), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->rbType), mBuf);
+   CMCHKUNPK(cmUnpkCmStatus, &(param->status), mBuf);
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmUnpkRlcEntCfgCfmInfo */
 
 
 /*
-*
-*    Fun:    cmUnpkRlcCfgCfmInfo
-*
-*    Desc:    pack the structure RlcCfgCfmInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkRlcCfgCfmInfo
+ *
+ *    Desc:    pack the structure RlcCfgCfmInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkRlcCfgCfmInfo
+   PUBLIC S16 cmUnpkRlcCfgCfmInfo
 (
-RlcCfgCfmInfo  *param,
-Pst            *pst,
-Buffer         *mBuf
-)
+ RlcCfgCfmInfo  *param,
+ Pst            *pst,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRlcCfgCfmInfo(param, pst, mBuf)
-RlcCfgCfmInfo  *param;
-Pst            *pst;
-Buffer         *mBuf;
+   RlcCfgCfmInfo  *param;
+   Pst            *pst;
+   Buffer         *mBuf;
 #endif
 {
-    U8         idx;
+   U8         idx;
 
-    TRC3(cmUnpkRlcCfgCfmInfo)
+   TRC3(cmUnpkRlcCfgCfmInfo)
 
-    CMCHKUNPKLOG(SUnpkU32, &(param->transId), mBuf, ECKW030, pst);
-    CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
-    CMCHKUNPK(cmUnpkLteCellId, &(param->cellId), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->numEnt), mBuf);
+      CMCHKUNPKLOG(SUnpkU32, &(param->transId), mBuf, ECKW030, pst);
+   CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
+   CMCHKUNPK(cmUnpkLteCellId, &(param->cellId), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->numEnt), mBuf);
 
-    for (idx = 0; idx < param->numEnt; idx++)
-    {
-       CMCHKUNPK(cmUnpkRlcEntCfgCfmInfo, &(param->entCfgCfm[idx]), mBuf);
-    }
+   for (idx = 0; idx < param->numEnt; idx++)
+   {
+      CMCHKUNPK(cmUnpkRlcEntCfgCfmInfo, &(param->entCfgCfm[idx]), mBuf);
+   }
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmUnpkRlcCfgCfmInfo */
 
 
 /*
-*
-*    Fun:    cmUnpkRlcEntCfgInfo
-*
-*    Desc:    pack the structure RlcEntCfgCfmInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkRlcEntCfgInfo
+ *
+ *    Desc:    pack the structure RlcEntCfgCfmInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkRlcEntCfgInfo
+   PUBLIC S16 cmUnpkRlcEntCfgInfo
 (
-RlcEntCfgInfo  *param,
-Buffer         *mBuf
-)
+ RlcEntCfgInfo  *param,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRlcEntCfgInfo(param, mBuf)
-RlcEntCfgInfo  *param;
-Buffer         *mBuf;
+   RlcEntCfgInfo  *param;
+   Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcEntCfgInfo)
+   TRC3(cmUnpkRlcEntCfgInfo)
 
-    CMCHKUNPK(SUnpkU8, &(param->cfgType), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->rbId), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->rbType), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->qci), mBuf);
-    CMCHKUNPK(cmUnpkLteRlcMode, &(param->entMode), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->dir), mBuf);
-    CMCHKUNPK(SUnpkS16, &(param->discardTmr), mBuf);
+      CMCHKUNPK(SUnpkU8, &(param->cfgType), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->rbId), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->rbType), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->qci), mBuf);
+   CMCHKUNPK(cmUnpkLteRlcMode, &(param->entMode), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->dir), mBuf);
+   CMCHKUNPK(SUnpkS16, &(param->discardTmr), mBuf);
 #ifdef TENB_MULT_CELL_SUPPRT
-    CMCHKUNPK(SUnpkS16, &(param->rguSapId), mBuf);
+   CMCHKUNPK(SUnpkS16, &(param->rguSapId), mBuf);
 #endif
 
-    /* Logical Channel Information */
-    switch(param->entMode)
-    {
-       case CM_LTE_MODE_TM:
-          {
-             CMCHKUNPK(cmUnpkCkwLChInfo, &(param->lCh[0]), mBuf);
-             break;
-          }
-       /* ccpu00128195: Unpacking lCh[0] and lCh[1] for UM bearer as well */
-       case CM_LTE_MODE_UM:
-       case CM_LTE_MODE_AM:
-          {
-             CMCHKUNPK(cmUnpkCkwLChInfo, &(param->lCh[0]), mBuf);
-             CMCHKUNPK(cmUnpkCkwLChInfo, &(param->lCh[1]), mBuf);
-             break;
-          }
-    }
+   /* Logical Channel Information */
+   switch(param->entMode)
+   {
+      case CM_LTE_MODE_TM:
+	 {
+	    CMCHKUNPK(cmUnpkCkwLChInfo, &(param->lCh[0]), mBuf);
+	    break;
+	 }
+	 /* ccpu00128195: Unpacking lCh[0] and lCh[1] for UM bearer as well */
+      case CM_LTE_MODE_UM:
+      case CM_LTE_MODE_AM:
+	 {
+	    CMCHKUNPK(cmUnpkCkwLChInfo, &(param->lCh[0]), mBuf);
+	    CMCHKUNPK(cmUnpkCkwLChInfo, &(param->lCh[1]), mBuf);
+	    break;
+	 }
+   }
 
-    /* TM/UM/AM Info */
-    switch(param->entMode)
-    {
-       case CM_LTE_MODE_TM:
-          {
-             CMCHKUNPK(cmUnpkRlcTmInfo, &(param->m.tmInfo), mBuf);
-             break;
-          }
-       case CM_LTE_MODE_UM:
-          {
-             CMCHKUNPK(cmUnpkRlcUmInfo, param, mBuf);
-             break;
-          }
-       case CM_LTE_MODE_AM:
-          {
-             CMCHKUNPK(cmUnpkRlcAmInfo, &(param->m.amInfo), mBuf);
-             break;
-          }
-    }
+   /* TM/UM/AM Info */
+   switch(param->entMode)
+   {
+      case CM_LTE_MODE_TM:
+	 {
+	    CMCHKUNPK(cmUnpkRlcTmInfo, &(param->m.tmInfo), mBuf);
+	    break;
+	 }
+      case CM_LTE_MODE_UM:
+	 {
+	    CMCHKUNPK(cmUnpkRlcUmInfo, param, mBuf);
+	    break;
+	 }
+      case CM_LTE_MODE_AM:
+	 {
+	    CMCHKUNPK(cmUnpkRlcAmInfo, &(param->m.amInfo), mBuf);
+	    break;
+	 }
+   }
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmUnpkRlcEntCfgInfo */
 
 
 /*
-*
-*    Fun:    cmUnpkRlcCfgInfo
-*
-*    Desc:    unpack the structure RlcCfgInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkRlcCfgInfo
+ *
+ *    Desc:    unpack the structure RlcCfgInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkRlcCfgInfo
+   PUBLIC S16 cmUnpkRlcCfgInfo
 (
-RlcCfgInfo     *param,
-Pst            *pst,
-Buffer         *mBuf
-)
+ RlcCfgInfo     *param,
+ Pst            *pst,
+ Buffer         *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRlcCfgInfo(param, pst, mBuf)
-RlcCfgInfo     *param;
-Pst            *pst;
-Buffer         *mBuf;
+   RlcCfgInfo     *param;
+   Pst            *pst;
+   Buffer         *mBuf;
 #endif
 {
-    U8         idx;
+   U8         idx;
 
-    TRC3(cmUnpkRlcCfgInfo)
+   TRC3(cmUnpkRlcCfgInfo)
 
-    CMCHKUNPKLOG(SUnpkU32, &(param->transId), mBuf, ECKW031, pst);
-    CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
-    CMCHKUNPK(cmUnpkLteCellId, &(param->cellId), mBuf);
-    CMCHKUNPK(SUnpkU8, &(param->numEnt), mBuf);
+      CMCHKUNPKLOG(SUnpkU32, &(param->transId), mBuf, ECKW031, pst);
+   CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
+   CMCHKUNPK(cmUnpkLteCellId, &(param->cellId), mBuf);
+   CMCHKUNPK(SUnpkU8, &(param->numEnt), mBuf);
 
-    for (idx = 0; idx < param->numEnt; idx++)
-    {
-       CMCHKUNPKLOG(cmUnpkRlcEntCfgInfo,&(param->entCfg[idx]), mBuf, ECKW032, pst);
-    }
+   for (idx = 0; idx < param->numEnt; idx++)
+   {
+      CMCHKUNPKLOG(cmUnpkRlcEntCfgInfo,&(param->entCfg[idx]), mBuf, ECKW032, pst);
+   }
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* cmUnpkRlcCfgInfo */
 
 
 /*
-*
-*    Fun:    cmUnpkRlcCfgCfm
-*
-*    Desc:    unpack the primitive KwUiRlcCfgCfm
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkRlcCfgCfm
+ *
+ *    Desc:    unpack the primitive KwUiRlcCfgCfm
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkRlcCfgCfm
+   PUBLIC S16 cmUnpkRlcCfgCfm
 (
-RlcCfgCfm         func,
-Pst               *pst,
-Buffer            *mBuf
-)
+ RlcCfgCfm         func,
+ Pst               *pst,
+ Buffer            *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRlcCfgCfm(func, pst, mBuf)
-RlcCfgCfm         func;
-Pst               *pst;
-Buffer            *mBuf;
+   RlcCfgCfm         func;
+   Pst               *pst;
+   Buffer            *mBuf;
 #endif
 {
-    S16 ret1;
-    SuId             suId = 0;
-    RlcCfgCfmInfo    *cfgCfmInfo = NULLP;
-    
-    TRC3(cmUnpkRlcCfgCfm)
+   S16 ret1;
+   SuId             suId = 0;
+   RlcCfgCfmInfo    *cfgCfmInfo = NULLP;
 
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&cfgCfmInfo,\
-                sizeof(RlcCfgCfmInfo))) != ROK)
-    {
+   TRC3(cmUnpkRlcCfgCfm)
+
+      if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&cfgCfmInfo,\
+		  sizeof(RlcCfgCfmInfo))) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW035, (ErrVal)0, "SGetMsg() failed");
-       }
+	 if(ret1 != ROK)
+	 {
+	    SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+		  __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+		  (ErrVal)ECKW035, (ErrVal)0, "SGetMsg() failed");
+	 }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
+	 RETVALUE(ret1);
+      }
 
-    cmMemset((U8 *)cfgCfmInfo, 0, sizeof(RlcCfgCfmInfo));
+   cmMemset((U8 *)cfgCfmInfo, 0, sizeof(RlcCfgCfmInfo));
 
-    CMCHKUNPK(SUnpkS16, &suId, mBuf);
+   CMCHKUNPK(SUnpkS16, &suId, mBuf);
 
-    switch(pst->selector)
-    {
+   switch(pst->selector)
+   {
 #ifdef LCCKW
-       case ODU_SELECTOR_LC:
-       {
-          ret1 = cmUnpkRlcCfgCfmInfo( (cfgCfmInfo), pst, mBuf);
+      case ODU_SELECTOR_LC:
+	 {
+	    ret1 = cmUnpkRlcCfgCfmInfo( (cfgCfmInfo), pst, mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
-          if(ret1 != ROK)
-          {
-             SPutMsg(mBuf);
-             SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
-                   __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
-                  (ErrVal)ECKW036, (ErrVal)ret1, "Unpacking failure");
-             RETVALUE( ret1 );
-          }
+	    if(ret1 != ROK)
+	    {
+	       SPutMsg(mBuf);
+	       SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
+		     __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
+		     (ErrVal)ECKW036, (ErrVal)ret1, "Unpacking failure");
+	       RETVALUE( ret1 );
+	    }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
-          break;
-       }
+	    break;
+	 }
 #endif /* LCCKW */
-    }
-    SPutMsg(mBuf);
+   }
+   SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, cfgCfmInfo));
+   RETVALUE((*func)(pst, suId, cfgCfmInfo));
 } /* cmUnpkRlcCfgCfm */
 
 /*
-*
-*    Fun:    cmUnpkCkwUeInfo
-*
-*    Desc:   Unpack the primitive KwUiCkwUeInfo
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:  None
-*
-*    File:   ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkCkwUeInfo
+ *
+ *    Desc:   Unpack the primitive KwUiCkwUeInfo
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:  None
+ *
+ *    File:   ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwUeInfo
+   PUBLIC S16 cmUnpkCkwUeInfo
 (
-CkwUeInfo *param,
-Buffer    *mBuf
-)
+ CkwUeInfo *param,
+ Buffer    *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCkwUeInfo(param, mBuf)
-CkwUeInfo *param;
-Buffer    *mBuf;
+   CkwUeInfo *param;
+   Buffer    *mBuf;
 #endif
 {
    TRC2(cmUnpkCkwUeInfo)
 
-   CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
+      CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &(param->cellId), mBuf);
 
    RETVALUE(ROK);
 }
 
 /*
-*
-*    Fun:    cmUnpkCkwUeIdChgReq
-*
-*    Desc:    unpack the primitive KwUiCkwUeIdChgReq
-*
-*    Ret:    ROK  -ok
-*
-*    Notes:    None
-*
-*    File:     ckw.c
-*
-*/
+ *
+ *    Fun:    cmUnpkCkwUeIdChgReq
+ *
+ *    Desc:    unpack the primitive KwUiCkwUeIdChgReq
+ *
+ *    Ret:    ROK  -ok
+ *
+ *    Notes:    None
+ *
+ *    File:     ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwUeIdChgReq
+   PUBLIC S16 cmUnpkCkwUeIdChgReq
 (
-CkwUeIdChgReq     func,
-Pst               *pst,
-Buffer            *mBuf
-)
+ CkwUeIdChgReq     func,
+ Pst               *pst,
+ Buffer            *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCkwUeIdChgReq(func, pst, mBuf)
-CkwUeIdChgReq     func;
-Pst               *pst;
-Buffer            *mBuf;
+   CkwUeIdChgReq     func;
+   Pst               *pst;
+   Buffer            *mBuf;
 #endif
 {
-    S16       ret1;
-    SpId      spId = 0;
-    U32       transId = 0;
-    CkwUeInfo *ueInfo = NULLP;
-    CkwUeInfo *newUeInfo = NULLP;
-    
-    TRC3(cmUnpkCkwUeIdChgReq)
+   S16       ret1;
+   SpId      spId = 0;
+   U32       transId = 0;
+   CkwUeInfo *ueInfo = NULLP;
+   CkwUeInfo *newUeInfo = NULLP;
+
+   TRC3(cmUnpkCkwUeIdChgReq)
 
 
-    CMCHKUNPK(SUnpkS16, &(spId), mBuf);
-    CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, ECKW037, pst);
+      CMCHKUNPK(SUnpkS16, &(spId), mBuf);
+   CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, ECKW037, pst);
 
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo,\
-                sizeof(CkwUeInfo))) != ROK)
-    {
+   if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo,\
+	       sizeof(CkwUeInfo))) != ROK)
+   {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /*MBUF_FIXX*/
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW038, (ErrVal)0, "SGetMsg() failed");
-      
+      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECKW038, (ErrVal)0, "SGetMsg() failed");
+
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
+      RETVALUE(ret1);
+   }
 
-    cmMemset((U8 *)ueInfo, 0, sizeof(CkwUeInfo));
+   cmMemset((U8 *)ueInfo, 0, sizeof(CkwUeInfo));
 
-    ret1 = cmUnpkCkwUeInfo((ueInfo), mBuf);
+   ret1 = cmUnpkCkwUeInfo((ueInfo), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
-    if(ret1 != ROK)
-    {
-       SPutMsg(mBuf);
-       SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
-             (ErrVal)ECKW039, (ErrVal)ret1, "Unpacking failure");
-       RETVALUE( ret1 );
-    }
+   if(ret1 != ROK)
+   {
+      SPutMsg(mBuf);
+      SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
+	    (ErrVal)ECKW039, (ErrVal)ret1, "Unpacking failure");
+      RETVALUE( ret1 );
+   }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
 
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&newUeInfo,\
-                sizeof(CkwUeInfo))) != ROK)
-    {
+   if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&newUeInfo,\
+	       sizeof(CkwUeInfo))) != ROK)
+   {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-       /*MBUF_FIXX*/
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW040, (ErrVal)0, "SGetMsg() failed");
-       
+      /*MBUF_FIXX*/
+      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECKW040, (ErrVal)0, "SGetMsg() failed");
+
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
+      RETVALUE(ret1);
+   }
 
-    cmMemset((U8 *)newUeInfo, 0, sizeof(CkwUeInfo));
+   cmMemset((U8 *)newUeInfo, 0, sizeof(CkwUeInfo));
 
-    ret1 = cmUnpkCkwUeInfo((newUeInfo), mBuf);
+   ret1 = cmUnpkCkwUeInfo((newUeInfo), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
-    if(ret1 != ROK)
-    {
-       SPutMsg(mBuf);
-       SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
-             (ErrVal)ECKW041, (ErrVal)ret1, "Unpacking failure");
-       RETVALUE( ret1 );
-    }
+   if(ret1 != ROK)
+   {
+      SPutMsg(mBuf);
+      SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
+	    (ErrVal)ECKW041, (ErrVal)ret1, "Unpacking failure");
+      RETVALUE( ret1 );
+   }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
 
-    SPutMsg(mBuf);
+   SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, transId, ueInfo, newUeInfo));
+   RETVALUE((*func)(pst, spId, transId, ueInfo, newUeInfo));
 
 } /* cmUnpkCkwUeIdChgReq */
 
 /*
-*
-*    Fun:     cmUnpkCkwUeIdChgCfm
-*
-*    Desc:    unpack the primitive KwUiCkwUeIdChgCfm
-*
-*    Ret:     ROK  -ok
-*
-*    Notes:   None
-*
-*    File:    ckw.c
-*
-*/
+ *
+ *    Fun:     cmUnpkCkwUeIdChgCfm
+ *
+ *    Desc:    unpack the primitive KwUiCkwUeIdChgCfm
+ *
+ *    Ret:     ROK  -ok
+ *
+ *    Notes:   None
+ *
+ *    File:    ckw.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCkwUeIdChgCfm
+   PUBLIC S16 cmUnpkCkwUeIdChgCfm
 (
-CkwUeIdChgCfm     func,
-Pst               *pst,
-Buffer            *mBuf
-)
+ CkwUeIdChgCfm     func,
+ Pst               *pst,
+ Buffer            *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCkwUeIdChgCfm(func, pst, mBuf)
-CkwUeIdChgCfm     func;
-Pst               *pst;
-Buffer            *mBuf;
+   CkwUeIdChgCfm     func;
+   Pst               *pst;
+   Buffer            *mBuf;
 #endif
 {
-    S16       ret1;
-    SuId      suId = 0;
-    U32       transId = 0;
-    CkwUeInfo *ueInfo = NULLP;
-    CmStatus  status;
-    
-    TRC3(cmUnpkCkwUeIdChgCfm)
+   S16       ret1;
+   SuId      suId = 0;
+   U32       transId = 0;
+   CkwUeInfo *ueInfo = NULLP;
+   CmStatus  status;
 
-    cmMemset((U8 *)&status, (U8)0, (PTR)sizeof(CmStatus));
+   TRC3(cmUnpkCkwUeIdChgCfm)
 
-    CMCHKUNPK(SUnpkS16, &suId, mBuf);
-    CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, ECKW042, pst);
+      cmMemset((U8 *)&status, (U8)0, (PTR)sizeof(CmStatus));
 
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo,\
-                sizeof(CkwUeInfo))) != ROK)
-    {
+   CMCHKUNPK(SUnpkS16, &suId, mBuf);
+   CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, ECKW042, pst);
+
+   if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo,\
+	       sizeof(CkwUeInfo))) != ROK)
+   {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-       if(ret1 != ROK)
-       {
-          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)ECKW043, (ErrVal)0, "SGetMsg() failed");
-       }
+      if(ret1 != ROK)
+      {
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECKW043, (ErrVal)0, "SGetMsg() failed");
+      }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
-    }
+      RETVALUE(ret1);
+   }
 
-    cmMemset((U8 *)ueInfo, 0, sizeof(CkwUeInfo));
+   cmMemset((U8 *)ueInfo, 0, sizeof(CkwUeInfo));
 
-    ret1 = cmUnpkCkwUeInfo((ueInfo), mBuf);
+   ret1 = cmUnpkCkwUeInfo((ueInfo), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
-    if(ret1 != ROK)
-    {
-       SPutMsg(mBuf);
-       SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
-             __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
-             (ErrVal)ECKW044, (ErrVal)ret1, "Unpacking failure");
-       RETVALUE( ret1 );
-    }
+   if(ret1 != ROK)
+   {
+      SPutMsg(mBuf);
+      SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
+	    (ErrVal)ECKW044, (ErrVal)ret1, "Unpacking failure");
+      RETVALUE( ret1 );
+   }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
 
-    CMCHKUNPK(cmUnpkCmStatus, &status, mBuf);
+   CMCHKUNPK(cmUnpkCmStatus, &status, mBuf);
 
-    SPutMsg(mBuf);
+   SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, transId, ueInfo, status));
+   RETVALUE((*func)(pst, suId, transId, ueInfo, status));
 
 } /* cmUnpkCkwUeIdChgCfm */
 
@@ -1596,5 +1596,5 @@ Buffer            *mBuf;
 
   
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

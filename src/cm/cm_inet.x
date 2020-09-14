@@ -421,46 +421,46 @@ typedef struct cmInetSctpNotification
    {
       struct  
       {
-         U16 state;
-         U16 error;
-         U16 outStreams;
-         U16 inStreams;
-         U32 assocId;
-         U8  *info;
+	 U16 state;
+	 U16 error;
+	 U16 outStreams;
+	 U16 inStreams;
+	 U32 assocId;
+	 U8  *info;
       }assocChange;
       struct  
       {
-         CmInetNetAddr addr;
-         S32           state;
-         S32           error;
-         U32           assocId;
+	 CmInetNetAddr addr;
+	 S32           state;
+	 S32           error;
+	 U32           assocId;
       }paddrChange;
       struct 
       {
-         U16 error;
-         U32 assocId;
-         U8  *data;
+	 U16 error;
+	 U32 assocId;
+	 U8  *data;
       }remoteErr;
       struct 
       {
-         U32 error;
-         CmInetSctpSndRcvInfo info;
-         U32 assocId;
-         U8  *data;
+	 U32 error;
+	 CmInetSctpSndRcvInfo info;
+	 U32 assocId;
+	 U8  *data;
       }sndFailed;
       struct 
       {
-         U32 assocId;
+	 U32 assocId;
       }shutdownEvt;
       struct 
       {
-         U32 adaptationInd;
-         U32 assocId;
+	 U32 adaptationInd;
+	 U32 assocId;
       }adaptationEvt;
       struct 
       {
-         U32 indication;
-         U32 assocId;
+	 U32 indication;
+	 U32 assocId;
       }pdapiEvt;
    }u;
 }CmInetSctpNotification;
@@ -534,7 +534,7 @@ typedef struct cmInetSctpStatus
 }CmInetSctpStatus;
 
 /*cm_inet_x_001.main_24 Updated for the support of configurable RTO parameters, 
-                        HBeat value Max retransmissions (Init, Path, Association)*/
+  HBeat value Max retransmissions (Init, Path, Association)*/
 typedef struct cmInetSctpRtoInfo
 {
    U32   assocId;
@@ -607,7 +607,7 @@ typedef struct addrinfo  CmInetAddrInfo;
 #ifdef CM_INET2  
 #ifdef IPV6_SUPPORTED
 EXTERN S16 cmInetSocket ARGS((U8 type, CmInetFd *sockFd, U8 protocol,
-                              U8 family));
+	 U8 family));
 #else
 EXTERN S16 cmInetSocket ARGS((U8 type, CmInetFd *sockFd, U8 protocol));
 #endif /* IPV6_SUPPORTED */
@@ -616,68 +616,68 @@ EXTERN S16 cmInetSocket ARGS((U8 type, CmInetFd *sockFd));
 #endif  /* CM_INET2 */ 
 
 /* cm_inet_x_001.main_22 1. Added new interface - cmInetFlushRecvBuf()
-                               to flush the data from socket receive buffer. */
+   to flush the data from socket receive buffer. */
 #ifdef CM_INET_FLUSH_RECV_BUF
 EXTERN S16 cmInetFlushRecvBuf ARGS((CmInetFd *sockFd,
-                               MsgLen *len,
-                               S32 flags));
+	 MsgLen *len,
+	 S32 flags));
 #endif /* CM_INET_FLUSH_RECV_BUF*/
 
 EXTERN S16 cmInetBind ARGS((CmInetFd *sockFd, CmInetAddr *myAddr));
 EXTERN S16 cmInetConnect ARGS((CmInetFd *sockFd, CmInetAddr *servAddr));
 EXTERN S16 cmInetListen ARGS((CmInetFd *sockFd, S16 backLog));
 EXTERN S16 cmInetAccept ARGS((CmInetFd *sockFd, CmInetAddr *fromAddr, 
-                              CmInetFd *newSockFd));
+	 CmInetFd *newSockFd));
 #ifdef IPV6_OPTS_SUPPORTED
 #ifdef LOCAL_INTF
 EXTERN S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
-                               CmInetMemInfo *info, Buffer **mPtr, 
-                               MsgLen *len, CmInetIpHdrParm *ipHdrParams,
-                               CmInetLocalInf  *localIf, S32 flags));
+	 CmInetMemInfo *info, Buffer **mPtr, 
+	 MsgLen *len, CmInetIpHdrParm *ipHdrParams,
+	 CmInetLocalInf  *localIf, S32 flags));
 #else
 EXTERN S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
-                               CmInetMemInfo *info, Buffer **mPtr, 
-                               MsgLen *len, CmInetIpHdrParm *ipHdrParams,
-                               S32 flags));
+	 CmInetMemInfo *info, Buffer **mPtr, 
+	 MsgLen *len, CmInetIpHdrParm *ipHdrParams,
+	 S32 flags));
 #endif /* LOCAL_INTF */
 #else
 #ifdef LOCAL_INTF
 EXTERN S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
-                               CmInetMemInfo *info, Buffer **mPtr, 
-                               MsgLen *len, CmInetLocalInf  *localIf,
-                               S32 flags));
+	 CmInetMemInfo *info, Buffer **mPtr, 
+	 MsgLen *len, CmInetLocalInf  *localIf,
+	 S32 flags));
 #else
 EXTERN S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
-                               CmInetMemInfo *info, Buffer **mPtr, 
-                               MsgLen *len, S32 flags));
+	 CmInetMemInfo *info, Buffer **mPtr, 
+	 MsgLen *len, S32 flags));
 #endif /* LOCAL_INTF */
 #endif /* IPV6_OPTS_SUPPORTED */
 EXTERN S16 cmInetSendDscpMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
-                               CmInetMemInfo *info, Buffer *mBuf, MsgLen *len,
-                               CmInetIpHdrParm *ipHdrParams, S16 flags));
+	 CmInetMemInfo *info, Buffer *mBuf, MsgLen *len,
+	 CmInetIpHdrParm *ipHdrParams, S16 flags));
 
 #ifdef IPV6_OPTS_SUPPORTED
 EXTERN S16 cmInetSendMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
-                               CmInetMemInfo *info, Buffer *mBuf, MsgLen *len,
-                               CmInetIpHdrParm *ipHdrParams, S16 flags));
+	 CmInetMemInfo *info, Buffer *mBuf, MsgLen *len,
+	 CmInetIpHdrParm *ipHdrParams, S16 flags));
 #else
 EXTERN S16 cmInetSendMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
-                               CmInetMemInfo *info, Buffer *mBuf, MsgLen *len,
-                               S16 flags));
+	 CmInetMemInfo *info, Buffer *mBuf, MsgLen *len,
+	 S16 flags));
 #endif /* IPV6_OPTS_SUPPORTED */
 EXTERN S16 cmInetPeek ARGS((CmInetFd *sockFd, CmInetAddr *fromAddr, 
-                            CmInetMemInfo *info, MsgLen dataPos, 
-                            MsgLen dataLen, U8 *data));
+	 CmInetMemInfo *info, MsgLen dataPos, 
+	 MsgLen dataLen, U8 *data));
 /* cm_inet_x_001.main_26: Added new function declaration cmInetPeekNew() */ 
 EXTERN S16 cmInetPeekNew ARGS((CmInetFd *sockFd, CmInetAddr *fromAddr, 
-                            CmInetMemInfo *info, MsgLen dataPos, 
-                            MsgLen dataLen, U8 *data)); 
+	 CmInetMemInfo *info, MsgLen dataPos, 
+	 MsgLen dataLen, U8 *data)); 
 EXTERN S16 cmInetClose ARGS((CmInetFd *sockFd));
 EXTERN S16 cmInetShutdown ARGS((CmInetFd *sockFd, S32 howTo));
 EXTERN S16 cmInetSelect ARGS((CmInetFdSet *readFdS, CmInetFdSet *writeFdS, 
-                              U32 *mSecTimeout, S16 *numFdS));
+	 U32 *mSecTimeout, S16 *numFdS));
 EXTERN S16 cmInetSetOpt ARGS((CmInetFd *sockFd, U32 level, U32 type, 
-                             Ptr value));
+	 Ptr value));
 EXTERN S16 cmInetGetNumRead ARGS((CmInetFd *sockFd, U32 *dataLen));
 #ifndef SS_PS
 EXTERN S16 cmInetGetHostByName ARGS((S8 *hostName, CmInetIpAddrTbl *addrTbl));
@@ -691,10 +691,10 @@ EXTERN S16 cmInetPton6 ARGS((CmInetIpAddr6 *address6, S8 *asciiAddr));
 #endif /*  SS_PS */
 /* Function prototypes to peek into file descriptor set. */
 #if (defined(WIN32) || defined(SUNOS) || defined(SS_LINUX) || defined(SS_VW) \
-     || defined(HPOS))
+      || defined(HPOS))
 EXTERN S16 cmInetFdSetInfoInit ARGS((CmInetFdSetInfo *fdSetInfo));
 EXTERN S16 cmInetGetFd ARGS((CmInetFdSetInfo *fdSetInfo, CmInetFdSet *fdSet,
-                             CmInetFdType *sockFd));
+	 CmInetFdType *sockFd));
 #endif /* WIN32 | SUNOS | SS_LINUX | SS_VW | HPOS */
 
 EXTERN S16 cmInetGetMemSize      ARGS((S32 *size));
@@ -703,9 +703,9 @@ EXTERN S16 cmInetDeInit          ARGS((Void));
 EXTERN S16 cmInetGetSockName     ARGS((CmInetFd *sockFd, CmInetAddr *locAddr));
 
 EXTERN S16 cmInetConvertStrToIpAddr ARGS((U16 len, U8 *val,
-                                          CmInetNetAddr *address));
+	 CmInetNetAddr *address));
 EXTERN S16 cmInetAsciiToIpv4 ARGS((U8 numBytes, U8 *ipv4Addr,
-                                   U16 len, U8 *val));
+	 U16 len, U8 *val));
 
 
 /* cm_inet_x_001.main_29 Poll Implementation Changes */
@@ -723,34 +723,34 @@ EXTERN S16 cmInetNtop ARGS((U8 type,Void *address,S8 *asciiAddr,U32 len));
 /* cm_inet_x_001.main_21:Added wrapper function for getaddrinfo and freeaddrinfo */
 #if (!defined(SS_VW) && !defined(SS_PS) && !defined(WIN32))
 EXTERN S32 cmInetGetAddrInfo ARGS((CONSTANT S8* node, CONSTANT S8* service, 
-                                   CONSTANT CmInetAddrInfo *hints, CmInetAddrInfo **res));
+	 CONSTANT CmInetAddrInfo *hints, CmInetAddrInfo **res));
 EXTERN Void cmInetFreeAddrInfo ARGS((CmInetAddrInfo *res));
 #endif /* SS_VW | SS_PS | WIN32 */
 
 /*cm_inet_x_001.main_23 Updated for TUCL 2.1 Release (Kernel SCTP Support) */
 #ifdef CM_LKSCTP
 EXTERN S16 cmInetSctpBindx     ARGS((CmInetFd *sockFd, 
-                                     CmInetNetAddrLst *addrLst, 
-                                     U16 port));
+	 CmInetNetAddrLst *addrLst, 
+	 U16 port));
 EXTERN S16 cmInetSctpConnectx  ARGS((CmInetFd *sockFd, CmInetNetAddr *primAddr, 
-                                     CmInetNetAddrLst *addrLst, 
-                                     U16 port));
+	 CmInetNetAddrLst *addrLst, 
+	 U16 port));
 EXTERN S16 cmInetSctpPeelOff   ARGS((CmInetFd *sockFd, U32 assocId, 
-                                     CmInetFdType *assocFd));
+	 CmInetFdType *assocFd));
 EXTERN S16 cmInetSctpSendMsg   ARGS((CmInetFd *sockFd, CmInetNetAddr *dstAddr, 
-                                     U16 port, CmInetMemInfo *info, 
-                                     Buffer *mBuf, MsgLen *len, U16 strmId,
-                                     Bool unorderFlg, U16 ttl, U32 ppId, 
-                                     U32 context));
+	 U16 port, CmInetMemInfo *info, 
+	 Buffer *mBuf, MsgLen *len, U16 strmId,
+	 Bool unorderFlg, U16 ttl, U32 ppId, 
+	 U32 context));
 EXTERN S16 cmInetSctpRecvMsg  ARGS((CmInetFd *sockFd, CmInetNetAddr *srcAddr, 
-                                    U16 *port, CmInetMemInfo *info, 
-                                    Buffer **mBuf, MsgLen *len, 
-                                    CmInetSctpSndRcvInfo *sinfo, U32 *flag,
-                                    CmInetSctpNotification *ntfy));
+	 U16 *port, CmInetMemInfo *info, 
+	 Buffer **mBuf, MsgLen *len, 
+	 CmInetSctpSndRcvInfo *sinfo, U32 *flag,
+	 CmInetSctpNotification *ntfy));
 EXTERN S16 cmInetSctpGetPAddrs ARGS((CmInetFd *sockFd, U32 assocId, 
-                                     CmInetNetAddrLst *addrlst));
+	 CmInetNetAddrLst *addrlst));
 EXTERN S16 cmInetGetOpt        ARGS((CmInetFd *sockFd, U32 level, U32 type,
-                                     Ptr value)); 
+	 Ptr value)); 
 
 /*cm_inet_x_001.main_25: Added new funcion */
 EXTERN S16 cmInetShutDownSctp ARGS((CmInetFd *sockFd));
@@ -764,5 +764,5 @@ EXTERN S16 cmInetAbortSctpAssoc ARGS((CmInetFd *sockFd, UConnId assocId));
 #endif /* __CMINETX__ */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

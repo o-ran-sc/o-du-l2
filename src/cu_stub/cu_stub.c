@@ -64,7 +64,7 @@ void sctpNtfyInd(CmInetSctpNotification *ntfy)
 
 void init_log()
 {
-	openlog("CU_STUB",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
+   openlog("CU_STUB",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
 }
 /*******************************************************************
  *
@@ -98,7 +98,7 @@ S16 tst()
 
    /* Initializing SCTP global parameters */
    sctpActvInit();
- 
+
    /* Start CU-SCTP to listen on incoming connection */
    sctpCfgReq();
    sctpStartReq();
@@ -132,10 +132,10 @@ void readCuCfg()
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
    //U32 ipv6_int = inet_addr(DU_IP_V6_ADDR);
- 
+
    cuCfgParams.cuId = CU_ID;
    strcpy(cuCfgParams.cuName, CU_NAME);
- 
+
    /* DU IP Address and Port*/
    cuCfgParams.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
    cuCfgParams.sctpParams.duIpAddr.ipV6Pres = false;
@@ -171,5 +171,5 @@ void readCuCfg()
 
 } /* End of readCuCfg */
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

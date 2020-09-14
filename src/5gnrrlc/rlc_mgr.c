@@ -81,8 +81,8 @@ uint8_t SendRlcUlUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
       ret = (*rlcUlUeCreateRspOpts[pst->selector])(pst, ueCreateRsp);
       if(ret)
       {
-         DU_LOG("RLC: Failed at SendRlcUlUeCreateRspToDu()");
-         RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCreateRsp, sizeof(RlcUeCfgRsp));
+	 DU_LOG("RLC: Failed at SendRlcUlUeCreateRspToDu()");
+	 RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCreateRsp, sizeof(RlcUeCfgRsp));
 	 ret = RFAILED;
       }
    }
@@ -90,5 +90,5 @@ uint8_t SendRlcUlUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
 } /* end of SendRlcUlUeCreateRspToDu */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

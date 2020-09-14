@@ -101,22 +101,22 @@ PRIVATE Void kwBndTmrExpiry(PTR cb);
  * @param[in] tmrEvnt   Timer event to be started
  *
  * @return  Void
-*/
+ */
 #ifdef ANSI
-PUBLIC Void kwStartTmr
+   PUBLIC Void kwStartTmr
 (
-RlcCb  *gCb,
-PTR   cb,          
-S16   tmrEvnt     
-)
+ RlcCb  *gCb,
+ PTR   cb,          
+ S16   tmrEvnt     
+ )
 #else
 PUBLIC Void kwStartTmr (gCb,cb, tmrEvnt)
-RlcCb  *gCb;
-PTR   cb;        
-S16   tmrEvnt;  
+   RlcCb  *gCb;
+   PTR   cb;        
+   S16   tmrEvnt;  
 #endif
 {
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    KwL2MeasEvtCb *measEvtCb = NULLP;
 #endif
@@ -126,83 +126,83 @@ S16   tmrEvnt;
 
    TRC2(kwStartTmr)
 
-   /* kw002.201 Adjusting the wait time as per timeRes configured by layer manager */
-   switch (tmrEvnt)
-   {
-      case KW_EVT_UMUL_REORD_TMR:
+      /* kw002.201 Adjusting the wait time as per timeRes configured by layer manager */
+      switch (tmrEvnt)
       {
-         KwUmUl* umUl = &(((RlcUlRbCb *)cb)->m.umUl);
-         /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         KW_TMR_CALCUATE_WAIT(arg.wait, umUl->reOrdTmrInt, gCb->genCfg.timeRes);
+	 case KW_EVT_UMUL_REORD_TMR:
+	    {
+	       KwUmUl* umUl = &(((RlcUlRbCb *)cb)->m.umUl);
+	       /* kw005.201 Changed wait calculation ccpu00117634*/ 
+	       KW_TMR_CALCUATE_WAIT(arg.wait, umUl->reOrdTmrInt, gCb->genCfg.timeRes);
 
-         arg.timers = &umUl->reOrdTmr;
-         arg.max = KW_MAX_UM_TMR;
-         break;
-      }
-      case KW_EVT_AMUL_REORD_TMR:
-      {
-         KwAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
-         /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         KW_TMR_CALCUATE_WAIT(arg.wait, amUl->reOrdTmrInt, gCb->genCfg.timeRes);         
+	       arg.timers = &umUl->reOrdTmr;
+	       arg.max = KW_MAX_UM_TMR;
+	       break;
+	    }
+	 case KW_EVT_AMUL_REORD_TMR:
+	    {
+	       KwAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
+	       /* kw005.201 Changed wait calculation ccpu00117634*/ 
+	       KW_TMR_CALCUATE_WAIT(arg.wait, amUl->reOrdTmrInt, gCb->genCfg.timeRes);         
 
-         arg.timers = &amUl->reOrdTmr;
-         arg.max = KW_MAX_AM_TMR;
-         break;
-      }
-      case KW_EVT_AMUL_STA_PROH_TMR:
-      {
-         KwAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
-         /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         KW_TMR_CALCUATE_WAIT(arg.wait,
-                              amUl->staProhTmrInt,
-                              gCb->genCfg.timeRes);                  
+	       arg.timers = &amUl->reOrdTmr;
+	       arg.max = KW_MAX_AM_TMR;
+	       break;
+	    }
+	 case KW_EVT_AMUL_STA_PROH_TMR:
+	    {
+	       KwAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
+	       /* kw005.201 Changed wait calculation ccpu00117634*/ 
+	       KW_TMR_CALCUATE_WAIT(arg.wait,
+		     amUl->staProhTmrInt,
+		     gCb->genCfg.timeRes);                  
 
-         arg.timers = &amUl->staProhTmr;
-         arg.max = KW_MAX_AM_TMR;
-         break;
-      } 
-      case KW_EVT_AMDL_POLL_RETX_TMR:
-      {
-         KwAmDl* amDl = &(((RlcDlRbCb *)cb)->m.amDl);
-         /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         KW_TMR_CALCUATE_WAIT(arg.wait, 
-                              amDl->pollRetxTmrInt, 
-                              gCb->genCfg.timeRes);                  
+	       arg.timers = &amUl->staProhTmr;
+	       arg.max = KW_MAX_AM_TMR;
+	       break;
+	    } 
+	 case KW_EVT_AMDL_POLL_RETX_TMR:
+	    {
+	       KwAmDl* amDl = &(((RlcDlRbCb *)cb)->m.amDl);
+	       /* kw005.201 Changed wait calculation ccpu00117634*/ 
+	       KW_TMR_CALCUATE_WAIT(arg.wait, 
+		     amDl->pollRetxTmrInt, 
+		     gCb->genCfg.timeRes);                  
 
-         arg.timers = &amDl->pollRetxTmr;
-         arg.max = KW_MAX_AM_TMR;
-         break;
-      } 
-      case KW_EVT_WAIT_BNDCFM:
-      {
-         KwRguSapCb* rguSap = (KwRguSapCb *)cb;
-         /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         KW_TMR_CALCUATE_WAIT(arg.wait, rguSap->bndTmrInt, gCb->genCfg.timeRes);                  
+	       arg.timers = &amDl->pollRetxTmr;
+	       arg.max = KW_MAX_AM_TMR;
+	       break;
+	    } 
+	 case KW_EVT_WAIT_BNDCFM:
+	    {
+	       KwRguSapCb* rguSap = (KwRguSapCb *)cb;
+	       /* kw005.201 Changed wait calculation ccpu00117634*/ 
+	       KW_TMR_CALCUATE_WAIT(arg.wait, rguSap->bndTmrInt, gCb->genCfg.timeRes);                  
 
-         arg.timers = &rguSap->bndTmr;
-         arg.max = KW_MAX_RGUSAP_TMR;
-         break;
-      }
-/* kw005.201 added support for L2 Measurement */
+	       arg.timers = &rguSap->bndTmr;
+	       arg.max = KW_MAX_RGUSAP_TMR;
+	       break;
+	    }
+	    /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-      case KW_EVT_L2_TMR:
-      {
-         measEvtCb = (KwL2MeasEvtCb *)cb;
-         /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         KW_TMR_CALCUATE_WAIT(arg.wait, 
-                              measEvtCb->l2TmrCfg.val, 
-                              gCb->genCfg.timeRes);                  
+	 case KW_EVT_L2_TMR:
+	    {
+	       measEvtCb = (KwL2MeasEvtCb *)cb;
+	       /* kw005.201 Changed wait calculation ccpu00117634*/ 
+	       KW_TMR_CALCUATE_WAIT(arg.wait, 
+		     measEvtCb->l2TmrCfg.val, 
+		     gCb->genCfg.timeRes);                  
 
-         arg.timers = &measEvtCb->l2Tmr;
-         arg.max = KW_L2_MAX_TIMERS;
-         break;
-      }
+	       arg.timers = &measEvtCb->l2Tmr;
+	       arg.max = KW_L2_MAX_TIMERS;
+	       break;
+	    }
 #endif
-      default:
-      {
-         RLOG0(L_ERROR, "Invalid tmr Evnt");
-      }
-   } 
+	 default:
+	    {
+	       RLOG0(L_ERROR, "Invalid tmr Evnt");
+	    }
+      } 
 
    if(arg.wait != 0)
    {
@@ -227,76 +227,76 @@ S16   tmrEvnt;
  * @param[in] tmrType   Timer event to be started
  *
  * @return  Void
-*/
+ */
 #ifdef ANSI
-PUBLIC Void kwStopTmr
+   PUBLIC Void kwStopTmr
 (
-RlcCb   *gCb,
-PTR    cb,
-U8     tmrType
-)
+ RlcCb   *gCb,
+ PTR    cb,
+ U8     tmrType
+ )
 #else
 PUBLIC Void kwStopTmr (gCb, cb, tmrType)
-RlcCb   *gCb;
-PTR    cb; 
-U8     tmrType;
+   RlcCb   *gCb;
+   PTR    cb; 
+   U8     tmrType;
 #endif
 {
    CmTmrArg   arg;
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    KwL2MeasEvtCb *measEvtCb = NULLP;
 #endif
    TRC2(kwStopTmr)
 
-   arg.timers = NULLP;
+      arg.timers = NULLP;
 
    switch (tmrType)
    {
       case KW_EVT_UMUL_REORD_TMR:
-      {
-         arg.timers  = &((RlcUlRbCb *)cb)->m.umUl.reOrdTmr;
-         arg.max = KW_MAX_UM_TMR;
-         break;
-      }
+	 {
+	    arg.timers  = &((RlcUlRbCb *)cb)->m.umUl.reOrdTmr;
+	    arg.max = KW_MAX_UM_TMR;
+	    break;
+	 }
       case KW_EVT_AMUL_REORD_TMR:
-      {
-         arg.timers = &((RlcUlRbCb *)cb)->m.amUl.reOrdTmr;
-         arg.max = KW_MAX_AM_TMR;
-         break;
-      }
+	 {
+	    arg.timers = &((RlcUlRbCb *)cb)->m.amUl.reOrdTmr;
+	    arg.max = KW_MAX_AM_TMR;
+	    break;
+	 }
       case KW_EVT_AMUL_STA_PROH_TMR:
-      {
-         arg.timers = &((RlcUlRbCb *)cb)->m.amUl.staProhTmr;
-         arg.max = KW_MAX_AM_TMR;
-         break;
-      } 
+	 {
+	    arg.timers = &((RlcUlRbCb *)cb)->m.amUl.staProhTmr;
+	    arg.max = KW_MAX_AM_TMR;
+	    break;
+	 } 
       case KW_EVT_AMDL_POLL_RETX_TMR:
-      {
-         arg.timers = &((RlcDlRbCb *)cb)->m.amDl.pollRetxTmr;
-         arg.max = KW_MAX_AM_TMR;
-         break;
-      } 
+	 {
+	    arg.timers = &((RlcDlRbCb *)cb)->m.amDl.pollRetxTmr;
+	    arg.max = KW_MAX_AM_TMR;
+	    break;
+	 } 
       case KW_EVT_WAIT_BNDCFM:
-      {
-         arg.timers = &((KwRguSapCb *)cb)->bndTmr;
-         arg.max = KW_MAX_RGUSAP_TMR;
-         break;
-      }
-/* kw005.201 added support for L2 Measurement */
+	 {
+	    arg.timers = &((KwRguSapCb *)cb)->bndTmr;
+	    arg.max = KW_MAX_RGUSAP_TMR;
+	    break;
+	 }
+	 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
       case KW_EVT_L2_TMR:
-      {
-         measEvtCb = (KwL2MeasEvtCb *)cb;
-         arg.timers   = &measEvtCb->l2Tmr;
-         arg.max  = KW_L2_MAX_TIMERS;
-         break;
-      }
+	 {
+	    measEvtCb = (KwL2MeasEvtCb *)cb;
+	    arg.timers   = &measEvtCb->l2Tmr;
+	    arg.max  = KW_L2_MAX_TIMERS;
+	    break;
+	 }
 #endif
       default:
-      {
-         RLOG0(L_ERROR, "Invalid tmr Evnt");
-      }
+	 {
+	    RLOG0(L_ERROR, "Invalid tmr Evnt");
+	 }
    } 
    if (tmrType != TMR0)
    {
@@ -308,7 +308,7 @@ U8     tmrType;
       arg.tNum   = 0;
       cmRmvCbTq(&arg);
    }
-   
+
    RETVOID;
 }
 
@@ -324,65 +324,65 @@ U8     tmrType;
  * @param[in] tmrEvnt   Timer event to be started
  *
  * @return  Void
-*/
+ */
 #ifdef ANSI
-PUBLIC Void kwTmrExpiry
+   PUBLIC Void kwTmrExpiry
 (
-PTR   cb,
-S16   tmrEvnt 
-)
+ PTR   cb,
+ S16   tmrEvnt 
+ )
 #else
 PUBLIC Void kwTmrExpiry (cb, tmrEvnt)
-PTR   cb;
-S16   tmrEvnt;
+   PTR   cb;
+   S16   tmrEvnt;
 #endif
 {
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
    TRC2(kwTmrExpiry)
 
-   switch (tmrEvnt)
-   {
-      case KW_EVT_UMUL_REORD_TMR:
+      switch (tmrEvnt)
       {
-         RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
-         kwUmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
+	 case KW_EVT_UMUL_REORD_TMR:
+	    {
+	       RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
+	       kwUmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
-         break;
-      }
-      case KW_EVT_AMUL_REORD_TMR:
-      {
-         RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
-         kwAmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
-         break;
-      }
-      case KW_EVT_AMUL_STA_PROH_TMR:
-      {
-         RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
-         kwAmmStaProTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
+	       break;
+	    }
+	 case KW_EVT_AMUL_REORD_TMR:
+	    {
+	       RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
+	       kwAmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
+	       break;
+	    }
+	 case KW_EVT_AMUL_STA_PROH_TMR:
+	    {
+	       RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
+	       kwAmmStaProTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
-         break;
-      }
-      case KW_EVT_AMDL_POLL_RETX_TMR:
-      {
-         RlcDlRbCb *dlRbCb = (RlcDlRbCb *)cb;
-         RlcCb *gCb = RLC_GET_RLCCB(dlRbCb->inst);
-         
-         kwAmmPollRetxTmrExp(gCb, dlRbCb);
+	       break;
+	    }
+	 case KW_EVT_AMDL_POLL_RETX_TMR:
+	    {
+	       RlcDlRbCb *dlRbCb = (RlcDlRbCb *)cb;
+	       RlcCb *gCb = RLC_GET_RLCCB(dlRbCb->inst);
 
-         gCb->genSts.protTimeOut++;
-         break;
+	       kwAmmPollRetxTmrExp(gCb, dlRbCb);
+
+	       gCb->genSts.protTimeOut++;
+	       break;
+	    }
+	 case KW_EVT_WAIT_BNDCFM:
+	    {
+	       kwBndTmrExpiry(cb);
+	       break;
+	    }
+	    /* kw005.201 L2 Measurement support */
+	 default:
+	    {
+	       break;
+	    }
       }
-      case KW_EVT_WAIT_BNDCFM:
-      {
-         kwBndTmrExpiry(cb);
-         break;
-      }
-      /* kw005.201 L2 Measurement support */
-      default:
-      {
-         break;
-      }
-   }
 
    RETVOID;
 }
@@ -398,54 +398,54 @@ S16   tmrEvnt;
  * @return  Bool indicating whether the timer is running or not
  *      -# ROK 
  *      -# RFAILED 
-*/
+ */
 #ifdef ANSI
-PUBLIC Bool kwChkTmr
+   PUBLIC Bool kwChkTmr
 (
-RlcCb   *gCb,
-PTR    cb,
-S16    tmrEvnt
-)
+ RlcCb   *gCb,
+ PTR    cb,
+ S16    tmrEvnt
+ )
 #else
 PUBLIC Bool kwChkTmr(gCb,cb, tmrEvnt)
-RlcCb   *gCb;
-PTR    cb;
-S16    tmrEvnt;
+   RlcCb   *gCb;
+   PTR    cb;
+   S16    tmrEvnt;
 #endif
 {
    TRC2(kwChkTmr)
 
-   switch (tmrEvnt)
-   {
-      case KW_EVT_UMUL_REORD_TMR:
+      switch (tmrEvnt)
       {
-         return (((RlcUlRbCb *)cb)->m.umUl.reOrdTmr.tmrEvnt == 
-                  KW_EVT_UMUL_REORD_TMR);
-      }
-      case KW_EVT_AMUL_REORD_TMR:
-      {
-         return (((RlcUlRbCb *)cb)->m.amUl.reOrdTmr.tmrEvnt == 
-                  KW_EVT_AMUL_REORD_TMR);
-      }
-      case KW_EVT_AMUL_STA_PROH_TMR:
-      {
-         return (((RlcUlRbCb *)cb)->m.amUl.staProhTmr.tmrEvnt == 
-                  KW_EVT_AMUL_STA_PROH_TMR);
+	 case KW_EVT_UMUL_REORD_TMR:
+	    {
+	       return (((RlcUlRbCb *)cb)->m.umUl.reOrdTmr.tmrEvnt == 
+		     KW_EVT_UMUL_REORD_TMR);
+	    }
+	 case KW_EVT_AMUL_REORD_TMR:
+	    {
+	       return (((RlcUlRbCb *)cb)->m.amUl.reOrdTmr.tmrEvnt == 
+		     KW_EVT_AMUL_REORD_TMR);
+	    }
+	 case KW_EVT_AMUL_STA_PROH_TMR:
+	    {
+	       return (((RlcUlRbCb *)cb)->m.amUl.staProhTmr.tmrEvnt == 
+		     KW_EVT_AMUL_STA_PROH_TMR);
+	    } 
+	 case KW_EVT_AMDL_POLL_RETX_TMR:
+	    {
+	       return (((RlcDlRbCb *)cb)->m.amDl.pollRetxTmr.tmrEvnt == 
+		     KW_EVT_AMDL_POLL_RETX_TMR);
+	    } 
+	 case KW_EVT_WAIT_BNDCFM:
+	    {
+	       return (((KwRguSapCb *)cb)->bndTmr.tmrEvnt == KW_EVT_WAIT_BNDCFM);
+	    }
+	 default:
+	    {
+	       RLOG0(L_ERROR, "Invalid tmr Evnt");
+	    }
       } 
-      case KW_EVT_AMDL_POLL_RETX_TMR:
-      {
-         return (((RlcDlRbCb *)cb)->m.amDl.pollRetxTmr.tmrEvnt == 
-                  KW_EVT_AMDL_POLL_RETX_TMR);
-      } 
-      case KW_EVT_WAIT_BNDCFM:
-      {
-         return (((KwRguSapCb *)cb)->bndTmr.tmrEvnt == KW_EVT_WAIT_BNDCFM);
-      }
-      default:
-      {
-         RLOG0(L_ERROR, "Invalid tmr Evnt");
-      }
-   } 
 
    RETVALUE(FALSE);
 }
@@ -461,57 +461,57 @@ S16    tmrEvnt;
  * @param[in] cb  Pointer to the Rgu sap
  *
  * @return  Void
-*/
+ */
 #ifdef ANSI
-PRIVATE Void kwBndTmrExpiry
+   PRIVATE Void kwBndTmrExpiry
 (
-PTR cb
-)
+ PTR cb
+ )
 #else
 PRIVATE Void kwBndTmrExpiry(cb)
-PTR cb;
+   PTR cb;
 #endif
 {
    KwRguSapCb *rguSapCb; 
 
    TRC2(kwBndTmrExpiry)
 
-   rguSapCb = (KwRguSapCb *) cb;
+      rguSapCb = (KwRguSapCb *) cb;
 
    if (rguSapCb->state == KW_SAP_BINDING)
    {
       if (rguSapCb->retryCnt < KW_MAX_SAP_BND_RETRY)
       {
-         /* start timer to wait for bind confirm */
-         kwStartTmr(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
-                    (PTR)rguSapCb, 
-                    KW_EVT_WAIT_BNDCFM);
-         
-         /* Send bind request */
-         rguSapCb->retryCnt++;
-         KwLiRguBndReq (&rguSapCb->pst, rguSapCb->suId, rguSapCb->spId);
+	 /* start timer to wait for bind confirm */
+	 kwStartTmr(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
+	       (PTR)rguSapCb, 
+	       KW_EVT_WAIT_BNDCFM);
+
+	 /* Send bind request */
+	 rguSapCb->retryCnt++;
+	 KwLiRguBndReq (&rguSapCb->pst, rguSapCb->suId, rguSapCb->spId);
       }
       else
       {
-         rguSapCb->retryCnt = 0;
-         rguSapCb->state = KW_SAP_CFG;
+	 rguSapCb->retryCnt = 0;
+	 rguSapCb->state = KW_SAP_CFG;
 
-         /* Send alarm to the layer manager */
+	 /* Send alarm to the layer manager */
 #ifdef LTE_L2_MEAS
-         kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
-                        LCM_CATEGORY_INTERFACE, 
-                        LCM_EVENT_BND_FAIL,
-                        LCM_CAUSE_TMR_EXPIRED, 
-                        0, 
-                        0, 
-                        0);
+	 kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
+	       LCM_CATEGORY_INTERFACE, 
+	       LCM_EVENT_BND_FAIL,
+	       LCM_CAUSE_TMR_EXPIRED, 
+	       0, 
+	       0, 
+	       0);
 #else
-         kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
-                        LCM_CATEGORY_INTERFACE, 
-                        LCM_EVENT_BND_FAIL,
-                        LCM_CAUSE_TMR_EXPIRED, 
-                        0, /* suId */
-                        0 /* ueId */);
+	 kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
+	       LCM_CATEGORY_INTERFACE, 
+	       LCM_EVENT_BND_FAIL,
+	       LCM_CAUSE_TMR_EXPIRED, 
+	       0, /* suId */
+	       0 /* ueId */);
 #endif
       }
    }
@@ -522,6 +522,6 @@ PTR cb;
 
   
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

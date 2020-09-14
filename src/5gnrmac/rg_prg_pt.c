@@ -104,27 +104,27 @@ PRIVATE CONSTANT RgSMacPMacCfgCfm RgPrgSMacPMacCfgCfmMt[RG_PRG_MAX] =
 };
 
 /**
-* @brief Config confirm from SMac to PMac for Ue Cell Config Req 
-*
-* @details
-*
-*     Function :RgPrgSMacPMacCfg
-*
-*  @param[in]   Pst              *pst
-*  @param[in]   RgPrgCfgCfmInfo  *cfmCfm
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Config confirm from SMac to PMac for Ue Cell Config Req 
+ *
+ * @details
+ *
+ *     Function :RgPrgSMacPMacCfg
+ *
+ *  @param[in]   Pst              *pst
+ *  @param[in]   RgPrgCfgCfmInfo  *cfmCfm
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgPrgSMacPMacCfg
+   PUBLIC S16 RgPrgSMacPMacCfg
 (
  Pst             *pst,
  RgPrgCfgCfmInfo *cfgCfm
-)
+ )
 #else
 PUBLIC S16 RgPrgSMacPMacCfg(pst, cfgCfm)
- Pst             *pst;
- RgPrgCfgCfmInfo *cfgCfm;
+   Pst             *pst;
+   RgPrgCfgCfmInfo *cfgCfm;
 #endif
 {
 
@@ -144,27 +144,27 @@ PRIVATE CONSTANT RgUeSCellDelReq RgPrgPMacSMacUeSCellDelReqMt[RG_PRG_MAX] =
 };
 
 /**
-* @brief Ue SCell delete Req/Ue Id change Req from PMac to SMac
-*
-* @details
-*
-*     Function : RgPrgPMacSMacUeSCellDel 
-*
-*  @param[in]   Pst                 *pst
-*  @param[in]   RgPrgUeSCellDelInfo *ueSCellDelInfo;
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Ue SCell delete Req/Ue Id change Req from PMac to SMac
+ *
+ * @details
+ *
+ *     Function : RgPrgPMacSMacUeSCellDel 
+ *
+ *  @param[in]   Pst                 *pst
+ *  @param[in]   RgPrgUeSCellDelInfo *ueSCellDelInfo;
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellDel
+   PUBLIC S16 RgPrgPMacSMacUeSCellDel
 (
  Pst                 *pst,
  RgPrgUeSCellDelInfo *ueSCellDelInfo
-)
+ )
 #else
 PUBLIC S16 RgPrgPMacSMacUeSCellDel(pst, ueSCellDelInfo)
- Pst                 *pst;
- RgPrgUeSCellDelInfo *ueSCellDelInfo;
+   Pst                 *pst;
+   RgPrgUeSCellDelInfo *ueSCellDelInfo;
 #endif
 {
 
@@ -179,7 +179,7 @@ PUBLIC S16 RgPrgPMacSMacUeSCellDel(pst, ueSCellDelInfo)
 PRIVATE CONSTANT RgPrgUeScellModLchReq RgPrgPMacSMacUeScellModLchReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
-  cmPkPrgPMacSMacUeSCellLchModReq,
+   cmPkPrgPMacSMacUeSCellLchModReq,
 #else
    RgPrgPMacSMacUeSCellLchModReq
 #endif
@@ -187,27 +187,27 @@ PRIVATE CONSTANT RgPrgUeScellModLchReq RgPrgPMacSMacUeScellModLchReqMt[RG_PRG_MA
 
 
 /**
-* @brief Ue Lch Reconfig Req from PMac to SMac 
-*
-* @details
-*
-*     Function : RgPrgPMacSMacUeScellLchMod
-*
-*  @param[in]   Pst                      *pst
-*  @param[in]   RgPrgUeSCellLchModInfo   *lchCfgInfo
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Ue Lch Reconfig Req from PMac to SMac 
+ *
+ * @details
+ *
+ *     Function : RgPrgPMacSMacUeScellLchMod
+ *
+ *  @param[in]   Pst                      *pst
+ *  @param[in]   RgPrgUeSCellLchModInfo   *lchCfgInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeScellLchMod
+   PUBLIC S16 RgPrgPMacSMacUeScellLchMod
 (
  Pst                      *pst,
  RgPrgUeSCellLchModInfo   *lchCfgInfo
-)
+ )
 #else
 PUBLIC S16 RgPrgPMacSMacUeScellLchMod(pst, lchCfgInfo)
- Pst                      *pst;
- RgPrgUeSCellLchModInfo   *lchCfgInfo;
+   Pst                      *pst;
+   RgPrgUeSCellLchModInfo   *lchCfgInfo;
 #endif
 {
 
@@ -221,7 +221,7 @@ PUBLIC S16 RgPrgPMacSMacUeScellLchMod(pst, lchCfgInfo)
 PRIVATE CONSTANT RgPrgUeScellDelLchReq RgPrgPMacSMacUeScellDelLchReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
-  cmPkPrgPMacSMacUeSCellLchDelReq,
+   cmPkPrgPMacSMacUeSCellLchDelReq,
 #else
    RgPrgPMacSMacUeSCellLchDelReq
 #endif
@@ -229,27 +229,27 @@ PRIVATE CONSTANT RgPrgUeScellDelLchReq RgPrgPMacSMacUeScellDelLchReqMt[RG_PRG_MA
 
 
 /**
-* @brief Delete Lch Req from PMac to SMac 
-*
-* @details
-*
-*     Function : RgPrgPMacSMacUeScellLchDel
-*
-*  @param[in]   Pst                      *pst
-*  @param[in]   RgPrgUeSCellLchDelInfo   *delLcCb
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Delete Lch Req from PMac to SMac 
+ *
+ * @details
+ *
+ *     Function : RgPrgPMacSMacUeScellLchDel
+ *
+ *  @param[in]   Pst                      *pst
+ *  @param[in]   RgPrgUeSCellLchDelInfo   *delLcCb
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeScellLchDel
+   PUBLIC S16 RgPrgPMacSMacUeScellLchDel
 (
  Pst                       *pst,
  RgPrgUeSCellLchDelInfo    *delLcCb
-)
+ )
 #else
 PUBLIC S16 RgPrgPMacSMacUeScellLchDel(pst, delLcCb)
- Pst                       *pst;
- RgPrgUeSCellLchDelInfo    *delLcCb;
+   Pst                       *pst;
+   RgPrgUeSCellLchDelInfo    *delLcCb;
 #endif
 {
 
@@ -263,7 +263,7 @@ PUBLIC S16 RgPrgPMacSMacUeScellLchDel(pst, delLcCb)
 PRIVATE CONSTANT RgPrgUeScellAddLchReq RgPrgPMacSMacUeScellAddLchReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
-  cmPkPrgPMacSMacUeSCellLchAddReq,
+   cmPkPrgPMacSMacUeSCellLchAddReq,
 #else
    RgPrgPMacSMacUeSCellLchAddReq
 #endif
@@ -271,27 +271,27 @@ PRIVATE CONSTANT RgPrgUeScellAddLchReq RgPrgPMacSMacUeScellAddLchReqMt[RG_PRG_MA
 
 
 /**
-* @brief Ue Lch config Req from PMac to SMac 
-*
-* @details
-*
-*     Function : RgPrgPMacSMacUeScellLchAdd
-*
-*  @param[in]   Pst                      *pst
-*  @param[in]   RgPrgUeSCellLchAddInfo   *lchCfgInfo
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Ue Lch config Req from PMac to SMac 
+ *
+ * @details
+ *
+ *     Function : RgPrgPMacSMacUeScellLchAdd
+ *
+ *  @param[in]   Pst                      *pst
+ *  @param[in]   RgPrgUeSCellLchAddInfo   *lchCfgInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeScellLchAdd
+   PUBLIC S16 RgPrgPMacSMacUeScellLchAdd
 (
  Pst                      *pst,
  RgPrgUeSCellLchAddInfo   *lchCfgInfo
-)
+ )
 #else
 PUBLIC S16 RgPrgPMacSMacUeScellLchAdd(pst, lchCfgInfo)
- Pst                      *pst;
- RgPrgUeSCellLchAddInfo   *lchCfgInfo;
+   Pst                      *pst;
+   RgPrgUeSCellLchAddInfo   *lchCfgInfo;
 #endif
 {
 
@@ -303,6 +303,6 @@ PUBLIC S16 RgPrgPMacSMacUeScellLchAdd(pst, lchCfgInfo)
 #endif /* LTE_ADV */
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

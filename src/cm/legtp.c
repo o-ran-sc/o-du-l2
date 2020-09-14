@@ -41,7 +41,7 @@ S16 packEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
 {
    SPkU16(cfm.status, mBuf);
    SPkU16(cfm.reason, mBuf);
-   
+
    RETVALUE(ROK);
 }
 
@@ -145,7 +145,7 @@ S16 unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
 
    SUnpkU32(&(egtpCfg.maxTunnelId), mBuf);
    SUnpkU32(&(egtpCfg.minTunnelId), mBuf);
-  
+
    SUnpkU16(&(egtpCfg.destPort), mBuf);
    cmUnpkBool(&(egtpCfg.destIp.ipV4Pres), mBuf);
    if(egtpCfg.destIp.ipV4Pres)
@@ -159,9 +159,9 @@ S16 unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
    {
       SUnpkU32(&(egtpCfg.localIp.ipV4Addr), mBuf);
    }
-   
+
    SPutMsg(mBuf);
- 
+
    RETVALUE((*func)(pst, egtpCfg));
 }
 
@@ -187,13 +187,13 @@ S16 unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
 S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
-  
+
    if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
       RETVALUE(RFAILED);
    }
- 
+
    packEgtpCfmStatus(cfm, mBuf); 
    SPstTsk(pst, mBuf); 
    RETVALUE(ROK); 
@@ -216,11 +216,11 @@ S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm)
  *         RFAILED - failure
  *
  ******************************************************************/
- 
+
 S16 unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
 {
    CmStatus cfm;
-   
+
    cmMemset((U8 *)&cfm, 0, sizeof(CmStatus));
    unpackEgtpCfmStatus(&cfm, mBuf);
 
@@ -242,17 +242,17 @@ S16 unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
  * @return ROK     - success
  *         RFAILED - failure
  *
-  *******************************************************************/ 
+ *******************************************************************/ 
 S16 packEgtpSrvOpenReq(Pst *pst)
 {
    Buffer *mBuf;
- 
+
    if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       RETVALUE(RFAILED);
    }
-  
+
    SPstTsk(pst, mBuf);
    RETVALUE(ROK);
 }
@@ -276,7 +276,7 @@ S16 packEgtpSrvOpenReq(Pst *pst)
  ******************************************************************/
 S16 unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf)
 {
-    RETVALUE((*func)(pst));
+   RETVALUE((*func)(pst));
 }
 
 
@@ -299,13 +299,13 @@ S16 unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf)
 S16 packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
- 
+
    if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
       RETVALUE(RFAILED);
    }
- 
+
    packEgtpCfmStatus(cfm, mBuf); 
    SPstTsk(pst, mBuf);
    RETVALUE(ROK);
@@ -332,7 +332,7 @@ S16 packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
 S16 unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf)
 {
    CmStatus cfm;
-    
+
    cmMemset((U8 *)&cfm, 0, sizeof(CmStatus));
    unpackEgtpCfmStatus(&cfm, mBuf);
 
@@ -437,13 +437,13 @@ S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
       printf("\nEGTP : Failed to allocate memory");
       RETVALUE(RFAILED);
    }
-    
+
    SPkU8(tnlEvt.action, mBuf);
    SPkU32(tnlEvt.lclTeid, mBuf);
    SPkU32(tnlEvt.remTeid, mBuf);
-   
+
    packEgtpCfmStatus(tnlEvt.cfmStatus, mBuf);
-    
+
    SPstTsk(pst, mBuf);
    RETVALUE(ROK);
 
@@ -470,16 +470,16 @@ S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
 S16 unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
 {
    EgtpTnlEvt tnlEvt;
- 
+
    cmMemset((U8 *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
    unpackEgtpCfmStatus(&(tnlEvt.cfmStatus), mBuf); 
    SUnpkU32(&(tnlEvt.remTeid), mBuf);
    SUnpkU32(&(tnlEvt.lclTeid), mBuf);
    SUnpkU8(&(tnlEvt.action), mBuf);
- 
+
    RETVALUE((* func)(tnlEvt));
- 
+
 }
 
 /*******************************************************************
@@ -510,7 +510,7 @@ S16 packEgtpSlotInd(Pst *pst)
 
    SPstTsk(pst, mBuf);
    RETVALUE(ROK);
- 
+
 }
 
 /*******************************************************************
@@ -528,8 +528,8 @@ S16 packEgtpSlotInd(Pst *pst)
  * @return ROK     - success
  *         RFAILED - failure
  *
-******************************************************************/
+ ******************************************************************/
 S16 unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf)
 {
-    RETVALUE((*func)());
+   RETVALUE((*func)());
 }

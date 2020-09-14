@@ -42,15 +42,15 @@ typedef enum
    int16_t _ret;                                             \
    _ret = SGetSBufWls(0, 0, (Data **)&_datPtr, _size);       \
    if(_ret == ROK)                                           \
-      cmMemset((U8*)_datPtr, 0, _size);                      \
+   cmMemset((U8*)_datPtr, 0, _size);                      \
    else                                                      \
-      _datPtr = NULLP;                                       \
+   _datPtr = NULLP;                                       \
 }                                                              
 
 /* free a static buffer from WLS memory*/
 #define WLS_MEM_FREE(_datPtr, _size)                         \
    if(_datPtr)                                               \
-      SPutSBufWls(0, 0, (Data *)_datPtr, _size);
+SPutSBufWls(0, 0, (Data *)_datPtr, _size);
 
 typedef struct wlsBlockToFree
 {

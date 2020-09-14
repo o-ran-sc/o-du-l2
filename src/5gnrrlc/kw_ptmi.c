@@ -221,104 +221,104 @@ PRIVATE CONSTANT LkwL2MeasStopCfm KwMiLkwL2MeasStopCfmMt[] =
  *                         LKW Interface Mt functions
  ***************************************************************************/
 /**
-   @brief
-   This function is called by the KwMiRlcConfigReq function for responding
-   to configuration requests.The cfm field in the KwMngmt  structure contains
- the response value.
+  @brief
+  This function is called by the KwMiRlcConfigReq function for responding
+  to configuration requests.The cfm field in the KwMngmt  structure contains
+  the response value.
 
-   - This function calls the mapping matrix for sending the configuration
-     confirmation.
-   - The actual function called depends on the coupling at the LKW interface.
-   - For a loosely coupled interface, a common packing function is called.
-   - The packing function packs the parameter in a message buffer and posts
-     the message to the target task.
-   - For a tightly coupled interface, the actual function called depends on
-     the layer manager API provided.
+  - This function calls the mapping matrix for sending the configuration
+  confirmation.
+  - The actual function called depends on the coupling at the LKW interface.
+  - For a loosely coupled interface, a common packing function is called.
+  - The packing function packs the parameter in a message buffer and posts
+  the message to the target task.
+  - For a tightly coupled interface, the actual function called depends on
+  the layer manager API provided.
 
-*/
+ */
 #ifdef ANSI
-PUBLIC S16 KwMiRlcConfigCfm
+   PUBLIC S16 KwMiRlcConfigCfm
 (
-Pst        *pst,                /* post structure */
-KwMngmt    *cfm                 /* Layer Management structure */
-)
+ Pst        *pst,                /* post structure */
+ KwMngmt    *cfm                 /* Layer Management structure */
+ )
 #else
 PUBLIC S16 KwMiRlcConfigCfm(pst, cfm)
-Pst        *pst;                /* post structure */
-KwMngmt    *cfm;                /* Layer Management structure */
+   Pst        *pst;                /* post structure */
+   KwMngmt    *cfm;                /* Layer Management structure */
 #endif
 {
    TRC3(KwMiRlcConfigCfm);
 
    /* jump to specific primitive depending on configured selector */
    (*kwMiRlcConfigCfmMt[pst->selector])(pst, cfm);
-   
+
    RETVALUE(ROK);
 }
 
 
 /**
-   @brief
-   This function is called by the KwMiLkwCntrlReq function to send a control confirm to the layer management module.
+  @brief
+  This function is called by the KwMiLkwCntrlReq function to send a control confirm to the layer management module.
 
-   - This function calls the mapping matrix for sending the control confirmation.
-   - Actual function called depends on the coupling of the LKW interface.
-   - For a loosely coupled interface, a common packing function is called.
-   - The packing function packs the parameter in a message buffer and posts the
-     message to the target task.
-   - For a tightly coupled interface, the actual function called depends on the
-     layer manager API provided.
+  - This function calls the mapping matrix for sending the control confirmation.
+  - Actual function called depends on the coupling of the LKW interface.
+  - For a loosely coupled interface, a common packing function is called.
+  - The packing function packs the parameter in a message buffer and posts the
+  message to the target task.
+  - For a tightly coupled interface, the actual function called depends on the
+  layer manager API provided.
 
-*/
+ */
 #ifdef ANSI
-PUBLIC S16 KwMiLkwCntrlCfm
+   PUBLIC S16 KwMiLkwCntrlCfm
 (
-Pst *pst,                    /* post structure */
-KwMngmt *cfm                 /* configure */
-)
+ Pst *pst,                    /* post structure */
+ KwMngmt *cfm                 /* configure */
+ )
 #else
 PUBLIC S16 KwMiLkwCntrlCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-KwMngmt *cfm;                /* confirm */
+   Pst *pst;                    /* post structure */
+   KwMngmt *cfm;                /* confirm */
 #endif
 {
    TRC3(KwMiLkwCntrlCfm)
 
-   /* jump to specific primitive depending on configured selector */
-   (*kwMiLkwCntrlCfmMt[pst->selector])(pst, cfm);
+      /* jump to specific primitive depending on configured selector */
+      (*kwMiLkwCntrlCfmMt[pst->selector])(pst, cfm);
 
    RETVALUE(ROK);
 
 } /* end of KwMiLkwCntrlCfm */
 
 /**
-   @brief
-   Description:
-   - This function can be used by RLC to send unsolicited status information
-     to the layer manager, when the unsolicited status flag is enabled by the
-     layer manager through a previous control request.
+  @brief
+Description:
+- This function can be used by RLC to send unsolicited status information
+to the layer manager, when the unsolicited status flag is enabled by the
+layer manager through a previous control request.
 
-   - This function calls the mapping matrix for sending the unsolicited status
-     indication.The actual function called depends on the coupling of the
-     LKW interface.
+- This function calls the mapping matrix for sending the unsolicited status
+indication.The actual function called depends on the coupling of the
+LKW interface.
 
-   - For a loosely coupled interface, a common packing function is called. The
-     packing function packs the parameter in a message buffer and posts the
-     message to the target task.
+- For a loosely coupled interface, a common packing function is called. The
+packing function packs the parameter in a message buffer and posts the
+message to the target task.
 
-   - For a tightly coupled interface, the actual function called depends on
-     the layer manager API provided.
-*/
+- For a tightly coupled interface, the actual function called depends on
+the layer manager API provided.
+ */
 #ifdef ANSI
-PUBLIC S16 KwMiLkwStaInd
+   PUBLIC S16 KwMiLkwStaInd
 (
-Pst     *pst,                /* post structure */
-KwMngmt *usta                /* unsolicited status */
-)
+ Pst     *pst,                /* post structure */
+ KwMngmt *usta                /* unsolicited status */
+ )
 #else
 PUBLIC S16 KwMiLkwStaInd(pst, usta)
-Pst     *pst;                /* post structure */
-KwMngmt *usta;               /* unsolicited status */
+   Pst     *pst;                /* post structure */
+   KwMngmt *usta;               /* unsolicited status */
 #endif
 {
    TRC3(KwMiLkwStaInd);
@@ -331,32 +331,32 @@ KwMngmt *usta;               /* unsolicited status */
 
 
 /**
-   @brief
-   - This function is called by the KwMiLkwStaReq function to send
-      the requested status information to the layer manager.
+  @brief
+  - This function is called by the KwMiLkwStaReq function to send
+  the requested status information to the layer manager.
 
-   - This function calls the mapping matrix for sending the status
-      confirmation. The actual function called depends on the coupling
-      of the LKW interface.
+  - This function calls the mapping matrix for sending the status
+  confirmation. The actual function called depends on the coupling
+  of the LKW interface.
 
-   - For a loosely coupled interface, a common packing function is called.
-      The packing function packs the parameter in a message buffer and
-      posts the message to the target task.
+  - For a loosely coupled interface, a common packing function is called.
+  The packing function packs the parameter in a message buffer and
+  posts the message to the target task.
 
-   - For a tightly coupled interface, the actual function called depends
-      on the layer manager API provided.
+  - For a tightly coupled interface, the actual function called depends
+  on the layer manager API provided.
 
-*/
+ */
 #ifdef ANSI
-PUBLIC S16 KwMiLkwStaCfm
+   PUBLIC S16 KwMiLkwStaCfm
 (
-Pst *pst,                    /* post structure */
-KwMngmt *cfm                 /* solicited status confirmation */
-)
+ Pst *pst,                    /* post structure */
+ KwMngmt *cfm                 /* solicited status confirmation */
+ )
 #else
 PUBLIC S16 KwMiLkwStaCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-KwMngmt *cfm;                /* solicited status confirmation */
+   Pst *pst;                    /* post structure */
+   KwMngmt *cfm;                /* solicited status confirmation */
 #endif
 {
    TRC3(KwMiLkwStaCfm);
@@ -370,34 +370,34 @@ KwMngmt *cfm;                /* solicited status confirmation */
 
 
 /**
-   @brief
-   - This function is called by the KwMiLkwStsReq function for responding
-      to statistics requests.
+  @brief
+  - This function is called by the KwMiLkwStsReq function for responding
+  to statistics requests.
 
-   - This function calls the mapping matrix for sending the statistics
-      confirmation. The actual function called depends on the coupling
-      of the LKW interface.
+  - This function calls the mapping matrix for sending the statistics
+  confirmation. The actual function called depends on the coupling
+  of the LKW interface.
 
-   - For a loosely coupled interface, a common packing function is called.
-      The packing function packs the parameter in a message buffer and
-      posts the message to the target task.
+  - For a loosely coupled interface, a common packing function is called.
+  The packing function packs the parameter in a message buffer and
+  posts the message to the target task.
 
-   - For a tightly coupled interface, the actual function called depends
-      on the layer manager API provided.
+  - For a tightly coupled interface, the actual function called depends
+  on the layer manager API provided.
 
-*/
+ */
 #ifdef ANSI
-PUBLIC S16 KwMiLkwStsCfm
+   PUBLIC S16 KwMiLkwStsCfm
 (
-Pst *pst,                    /* post structure */
-Action action,               /* action */
-KwMngmt *cfm                 /* statistics confirmation */
-)
+ Pst *pst,                    /* post structure */
+ Action action,               /* action */
+ KwMngmt *cfm                 /* statistics confirmation */
+ )
 #else
 PUBLIC S16 KwMiLkwStsCfm(pst, action, cfm)
-Pst *pst;                    /* post structure */
-Action action;               /* action */
-KwMngmt *cfm;                /* statistics confirmation */
+   Pst *pst;                    /* post structure */
+   Action action;               /* action */
+   KwMngmt *cfm;                /* statistics confirmation */
 #endif
 {
    TRC3(KwMiLkwStsCfm);
@@ -410,34 +410,34 @@ KwMngmt *cfm;                /* statistics confirmation */
 } /* end of KwMiLkwStsCfm */
 
 /**
-   @brief
-   - This function can be used by RLC module to send unsolicited trace
-      indications to the layer manager, when tracing is enabled by the
-      layer manager through a previous control request.
+  @brief
+  - This function can be used by RLC module to send unsolicited trace
+  indications to the layer manager, when tracing is enabled by the
+  layer manager through a previous control request.
 
-   - This function calls the mapping matrix for sending the trace indication.
-      The actual function called depends on the coupling of the LKW interface.
+  - This function calls the mapping matrix for sending the trace indication.
+  The actual function called depends on the coupling of the LKW interface.
 
-   - For a loosely coupled interface, a common packing function is called.
-      The packing function packs the parameter in a message buffer and posts
-      the message to the target task.
+  - For a loosely coupled interface, a common packing function is called.
+  The packing function packs the parameter in a message buffer and posts
+  the message to the target task.
 
-   - For a tightly coupled interface, the actual function called depends on
-      the layer manager API provided.
+  - For a tightly coupled interface, the actual function called depends on
+  the layer manager API provided.
 
-*/
+ */
 #ifdef ANSI
-PUBLIC S16 KwMiLkwTrcInd
+   PUBLIC S16 KwMiLkwTrcInd
 (
-Pst *pst,                    /* post structure */
-KwMngmt *trc,                /* trace indication */
-Buffer *mBuf                 /* message buffer */
-)
+ Pst *pst,                    /* post structure */
+ KwMngmt *trc,                /* trace indication */
+ Buffer *mBuf                 /* message buffer */
+ )
 #else
 PUBLIC S16 KwMiLkwTrcInd(pst, trc, mBuf)
-Pst *pst;                    /* post structure */
-KwMngmt *trc;                /* trace indication */
-Buffer *mBuf;                /* message buffer */
+   Pst *pst;                    /* post structure */
+   KwMngmt *trc;                /* trace indication */
+   Buffer *mBuf;                /* message buffer */
 #endif
 {
    TRC3(KwMiLkwTrcInd);
@@ -453,21 +453,21 @@ Buffer *mBuf;                /* message buffer */
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC S16 KwMiLkwL2MeasCfm
+   PUBLIC S16 KwMiLkwL2MeasCfm
 (
-Pst * pst,
-KwL2MeasCfmEvt *measEvt
-)
+ Pst * pst,
+ KwL2MeasCfmEvt *measEvt
+ )
 #else
 PUBLIC S16 KwMiLkwL2MeasCfm(pst, measEvt)
-Pst * pst;
-KwL2MeasCfmEvt *measEvt;
+   Pst * pst;
+   KwL2MeasCfmEvt *measEvt;
 #endif
 {
 
    TRC3(KwMiLkwL2MeasCfm)
 
-   (*KwMiLkwL2MeasCfmMt[pst->selector])(pst, measEvt);
+      (*KwMiLkwL2MeasCfmMt[pst->selector])(pst, measEvt);
 
    RETVALUE(ROK);
 
@@ -475,21 +475,21 @@ KwL2MeasCfmEvt *measEvt;
 #ifdef ANSI
 PUBLIC S16 KwMiLkwL2MeasStopCfm
 (  
-Pst *pst,
-U8  measType,
-U8  status
-)
+ Pst *pst,
+ U8  measType,
+ U8  status
+ )
 #else
 PUBLIC S16 KwMiLkwL2MeasStopCfm(pst, measType,status)
-Pst *pst;
-U8  measType;
-U8  status;
+   Pst *pst;
+   U8  measType;
+   U8  status;
 #endif
 {
 
    TRC3(KwMiLkwL2MeasStopCfm)
 
-   (*KwMiLkwL2MeasStopCfmMt[pst->selector])(pst, measType,status);
+      (*KwMiLkwL2MeasStopCfmMt[pst->selector])(pst, measType,status);
 
    RETVALUE(ROK);
 
@@ -517,25 +517,25 @@ U8  status;
  */
 
 #ifdef ANSI
-PUBLIC S16 PtMiRlcConfigCfm
+   PUBLIC S16 PtMiRlcConfigCfm
 (
-Pst *pst,                    /* post structure */
-KwMngmt *cfm                 /* Layer Management structure */
-)
+ Pst *pst,                    /* post structure */
+ KwMngmt *cfm                 /* Layer Management structure */
+ )
 #else
 PUBLIC S16 PtMiRlcConfigCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-KwMngmt *cfm;                /* Layer Management structure */
+   Pst *pst;                    /* post structure */
+   KwMngmt *cfm;                /* Layer Management structure */
 #endif
 {
    TRC3(PtMiRlcConfigCfm)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(cfm);
 
    TRC2(PtMiRlcConfigCfm() : function is not implemented)
 
-   RETVALUE(ROK);
+			     RETVALUE(ROK);
 } /* end of PtMiRlcConfigCfm */
 
 /*
@@ -555,15 +555,15 @@ KwMngmt *cfm;                /* Layer Management structure */
  */
 
 #ifdef ANSI
-PRIVATE S16 PtMiLkwCntrlCfm
+   PRIVATE S16 PtMiLkwCntrlCfm
 (
-Pst *pst,                 /* Post structure */
-KwMngmt *cfm              /* Layer Management structure */
-)
+ Pst *pst,                 /* Post structure */
+ KwMngmt *cfm              /* Layer Management structure */
+ )
 #else
 PRIVATE S16 PtMiLkwCntrlCfm(pst, cfm)
-Pst *pst;                 /* Post structure */
-KwMngmt *cfm;             /* Layer Management structure */
+   Pst *pst;                 /* Post structure */
+   KwMngmt *cfm;             /* Layer Management structure */
 #endif
 {
    TRC3(PtMiLkwCntrlCfm);
@@ -573,7 +573,7 @@ KwMngmt *cfm;             /* Layer Management structure */
 
    TRC2(PtMiLkwCntrlCfm() :  function is not implemented)
 
-   RETVALUE(ROK);
+			     RETVALUE(ROK);
 } /* end of PtMiLkwCntrlCfm */
 
 
@@ -592,25 +592,25 @@ KwMngmt *cfm;             /* Layer Management structure */
  *
  */
 #ifdef ANSI
-PRIVATE S16 PtMiLkwStaInd
+   PRIVATE S16 PtMiLkwStaInd
 (
-Pst *pst,                    /* post structure */
-KwMngmt *usta                /* unsolicited status */
-)
+ Pst *pst,                    /* post structure */
+ KwMngmt *usta                /* unsolicited status */
+ )
 #else
 PRIVATE S16 PtMiLkwStaInd(pst, usta)
-Pst *pst;                    /* post structure */
-KwMngmt *usta;               /* unsolicited status */
+   Pst *pst;                    /* post structure */
+   KwMngmt *usta;               /* unsolicited status */
 #endif
 {
    TRC3(PtMiLkwStaInd)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(usta);
 
    TRC2(PtMiLkwStaInd() : function is not implemented)
 
-   RETVALUE(ROK);
+			  RETVALUE(ROK);
 } /* end of PtMiLkwStaInd */
 
 
@@ -629,20 +629,20 @@ KwMngmt *usta;               /* unsolicited status */
  *
  */
 #ifdef ANSI
-PRIVATE S16 PtMiLkwStaCfm
+   PRIVATE S16 PtMiLkwStaCfm
 (
-Pst *pst,                    /* post structure */
-KwMngmt *cfm                 /* solicited status confirmation */
-)
+ Pst *pst,                    /* post structure */
+ KwMngmt *cfm                 /* solicited status confirmation */
+ )
 #else
 PRIVATE S16 PtMiLkwStaCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-KwMngmt *cfm;                /* solicited status confirmation */
+   Pst *pst;                    /* post structure */
+   KwMngmt *cfm;                /* solicited status confirmation */
 #endif
 {
    TRC3(PtMiLkwStaCfm)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(cfm);
 
    RETVALUE(ROK);
@@ -664,22 +664,22 @@ KwMngmt *cfm;                /* solicited status confirmation */
  *
  */
 #ifdef ANSI
-PRIVATE S16 PtMiLkwStsCfm
+   PRIVATE S16 PtMiLkwStsCfm
 (
-Pst *pst,                    /* post structure */
-Action action,               /* action */
-KwMngmt *cfm                 /* statistics confirmation */
-)
+ Pst *pst,                    /* post structure */
+ Action action,               /* action */
+ KwMngmt *cfm                 /* statistics confirmation */
+ )
 #else
 PRIVATE S16 PtMiLkwStsCfm(pst, action, cfm)
-Pst *pst;                    /* post structure */
-Action action;               /* action */
-KwMngmt *cfm;                /* statistics confirmation */
+   Pst *pst;                    /* post structure */
+   Action action;               /* action */
+   KwMngmt *cfm;                /* statistics confirmation */
 #endif
 {
    TRC3(PtMiLkwStsCfm)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(action);
    UNUSED(cfm);
 
@@ -702,22 +702,22 @@ KwMngmt *cfm;                /* statistics confirmation */
  *
  */
 #ifdef ANSI
-PRIVATE S16 PtMiLkwTrcInd
+   PRIVATE S16 PtMiLkwTrcInd
 (
-Pst *pst,                    /* post structure */
-KwMngmt *trc,                /* trace indication */
-Buffer *mBuf                 /* message buffer */
-)
+ Pst *pst,                    /* post structure */
+ KwMngmt *trc,                /* trace indication */
+ Buffer *mBuf                 /* message buffer */
+ )
 #else
 PRIVATE S16 PtMiLkwTrcInd(pst, trc, mBuf)
-Pst *pst;                    /* post structure */
-KwMngmt *trc;                /* trace indication */
-Buffer *mBuf;                /* message buffer */
+   Pst *pst;                    /* post structure */
+   KwMngmt *trc;                /* trace indication */
+   Buffer *mBuf;                /* message buffer */
 #endif
 {
    TRC3(PtMiLkwTrcInd)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(trc);
    UNUSED(mBuf);
 
@@ -727,44 +727,44 @@ Buffer *mBuf;                /* message buffer */
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PRIVATE S16 PtMiLkwL2MeasCfm
+   PRIVATE S16 PtMiLkwL2MeasCfm
 (
-Pst * pst,
-KwL2MeasCfmEvt * measEvt
-)
+ Pst * pst,
+ KwL2MeasCfmEvt * measEvt
+ )
 #else
 PRIVATE S16 PtMiLkwL2MeasCfm(pst, measEvt)
-Pst * pst;
-KwL2MeasCfmEvt * measEvt;
+   Pst * pst;
+   KwL2MeasCfmEvt * measEvt;
 #endif
 {
 
    TRC3(PtMiLkwL2MeasCfm)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(measEvt);
 
    RETVALUE(ROK);
 
 }
 #ifdef ANSI
-PRIVATE S16 PtMiLkwL2MeasStopCfm
+   PRIVATE S16 PtMiLkwL2MeasStopCfm
 (
-Pst * pst,
-U8 measType,
-U8 status
-)
+ Pst * pst,
+ U8 measType,
+ U8 status
+ )
 #else
 PRIVATE S16 PtMiLkwL2MeasStopCfm(pst, measType,status)
-Pst * pst;
-U8  measType;
-U8  status;
+   Pst * pst;
+   U8  measType;
+   U8  status;
 #endif
 {
 
    TRC3(PtMiLkwL2MeasStopCfm)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(measType);
    UNUSED(status);
 
@@ -777,5 +777,5 @@ U8  status;
 
 /********************************************************************30**
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

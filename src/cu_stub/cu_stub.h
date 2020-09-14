@@ -32,31 +32,31 @@
 {                                                               \
    S16 _ret;                                                    \
    _ret = SGetSBuf(CU_APP_MEM_REG, CU_POOL,                  \
-                     (Data **)&_datPtr, _size);                  \
+	 (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
+   cmMemset((U8*)_datPtr, 0, _size);                         \
    else                                                         \
-      _datPtr = NULLP;                                          \
+   _datPtr = NULLP;                                          \
 }
- 
+
 /* free a static buffer */
 #define CU_FREE(_datPtr, _size)                                 \
    SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
-         (Data *)_datPtr, _size);
+	 (Data *)_datPtr, _size);
 
 
 typedef struct ipAddr
 {
- Bool ipV4Pres;
- U32  ipV4Addr;
- Bool ipV6Pres;
- U8   ipV6Addr[MAX_IPV6_LEN];
+   Bool ipV4Pres;
+   U32  ipV4Addr;
+   Bool ipV6Pres;
+   U8   ipV6Addr[MAX_IPV6_LEN];
 }SctpIpAddr;
 
 typedef struct RrcVersion
 {
-  U8    rrcVer;     /* Latest RRC Version */
-  U32   extRrcVer;  /* Latest RRC version extended */
+   U8    rrcVer;     /* Latest RRC Version */
+   U32   extRrcVer;  /* Latest RRC version extended */
 }RrcVersion;
 
 typedef struct egtpParams
@@ -95,5 +95,5 @@ void sctpNtfyInd(CmInetSctpNotification *ntfy);
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -40,13 +40,13 @@
 uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
 {
    Buffer *mBuf = NULLP;
- 
+
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
       if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nRLC : Memory allocation failed at packDuRlcUeCreateReq");
-         return RFAILED;
+	 DU_LOG("\nRLC : Memory allocation failed at packDuRlcUeCreateReq");
+	 return RFAILED;
       }
       /* pack the address of the structure */
       CMCHKPK(cmPkPtr,(PTR)ueCfg, mBuf);
@@ -57,7 +57,7 @@ uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
       return RFAILED;
    }
 
-    return SPstTsk(pst,mBuf);
+   return SPstTsk(pst,mBuf);
 }
 
 /*******************************************************************
@@ -119,13 +119,13 @@ uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf)
 uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
 {
    Buffer *mBuf = NULLP;
- 
+
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
       if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nRLC : Memory allocation failed at packRlcUlDuUeCreateRsp");
-         return RFAILED;
+	 DU_LOG("\nRLC : Memory allocation failed at packRlcUlDuUeCreateRsp");
+	 return RFAILED;
       }
       /* pack the address of the structure */
       CMCHKPK(cmPkPtr,(PTR)ueCfg, mBuf);
@@ -136,7 +136,7 @@ uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
       return RFAILED;
    }
 
-    return SPstTsk(pst,mBuf);
+   return SPstTsk(pst,mBuf);
 }
 
 /*******************************************************************
@@ -202,8 +202,8 @@ uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
    {
       if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nRLC : Memory allocation failed at packRlcUlRrcMsgToDu");
-         return RFAILED;
+	 DU_LOG("\nRLC : Memory allocation failed at packRlcUlRrcMsgToDu");
+	 return RFAILED;
       }
       /* pack the address of the structure */
       CMCHKPK(cmPkPtr,(PTR)ulRrcMsgInfo, mBuf);
@@ -254,5 +254,5 @@ uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf)
 
 
 /**********************************************************************
-         End of file
-***********************************************************************/
+  End of file
+ ***********************************************************************/

@@ -120,10 +120,10 @@ U8     status;
    TRC3(KwLiRguBndCfm)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (pst->dstInst >= MAX_RLC_INSTANCES)
-   {
-      RETVALUE (RFAILED);
-   }
+      if (pst->dstInst >= MAX_RLC_INSTANCES)
+      {
+	 RETVALUE (RFAILED);
+      }
 #endif
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
@@ -133,7 +133,7 @@ U8     status;
    if (tRlcCb->init.cfgDone != TRUE)
    {
       RLOG0(L_FATAL,"General configuration not done");
-      
+
       KW_SEND_SAPID_ALARM(tRlcCb,suId,LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_STATE);
 
       RETVALUE(RFAILED);
@@ -142,7 +142,7 @@ U8     status;
    if ((suId >= tRlcCb->genCfg.maxRguSaps) || (suId < 0))
    {
       RLOG0(L_ERROR, "Invalid suId");
-      
+
       KW_SEND_SAPID_ALARM(tRlcCb,suId, LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
 
       RETVALUE(RFAILED);
@@ -150,38 +150,38 @@ U8     status;
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    rguSap = (tRlcCb->genCfg.rlcMode == LKW_RLC_MODE_DL) ?
-            &(tRlcCb->u.dlCb->rguDlSap[suId]) : &(tRlcCb->u.ulCb->rguUlSap[suId]);
+      &(tRlcCb->u.dlCb->rguDlSap[suId]) : &(tRlcCb->u.ulCb->rguUlSap[suId]);
 
    RLOG1(L_DEBUG, "KwLiRguBndCfm: For RGU SAP state=%d", rguSap->state)
 
-   switch (rguSap->state)
-   {
-      case KW_SAP_BINDING:
+      switch (rguSap->state)
       {
-         kwStopTmr (tRlcCb,(PTR)rguSap, KW_EVT_WAIT_BNDCFM);
+	 case KW_SAP_BINDING:
+	    {
+	       kwStopTmr (tRlcCb,(PTR)rguSap, KW_EVT_WAIT_BNDCFM);
 
-         rguSap->retryCnt = 0;
-          
-         if (status == CM_BND_OK)
-         {
-            rguSap->state = KW_SAP_BND;
-            event = LCM_EVENT_BND_OK;
-            cause = LKW_CAUSE_SAP_BNDENB;
-         }
-         else
-         {
-            rguSap->state = KW_SAP_CFG;
-            event = LCM_EVENT_BND_FAIL;
-            cause = LKW_CAUSE_UNKNOWN;
-         }
+	       rguSap->retryCnt = 0;
 
-         break;
+	       if (status == CM_BND_OK)
+	       {
+		  rguSap->state = KW_SAP_BND;
+		  event = LCM_EVENT_BND_OK;
+		  cause = LKW_CAUSE_SAP_BNDENB;
+	       }
+	       else
+	       {
+		  rguSap->state = KW_SAP_CFG;
+		  event = LCM_EVENT_BND_FAIL;
+		  cause = LKW_CAUSE_UNKNOWN;
+	       }
+
+	       break;
+	    }
+	 default:
+	    event = LKW_EVENT_RGU_BND_CFM;
+	    cause = LCM_CAUSE_INV_STATE;
+	    break;
       }
-      default:
-         event = LKW_EVENT_RGU_BND_CFM;
-         cause = LCM_CAUSE_INV_STATE;
-         break;
-   }
 
    /* Send an alarm with proper event and cause */
    KW_SEND_SAPID_ALARM(tRlcCb, suId, event, cause);
@@ -205,7 +205,7 @@ U8     status;
  *    -# ROK 
  *    -# RFAILED 
  *
-*/
+ */
 
 uint8_t RlcProcUlData(Pst *pst, RlcMacData *ulData)
 {
@@ -224,9 +224,9 @@ uint8_t RlcProcUlData(Pst *pst, RlcMacData *ulData)
       dLchData[idx].lcId = idx;
       dLchData[idx].pdu.numPdu = 0;
    }
-   
+
    dLchPduPres = FALSE;
-  
+
    /* Seggregate PDUs received on common and dedicated channels
     * and call common channel's handler */
    for(idx = 0; idx< ulData->numPdu; idx++)
@@ -265,7 +265,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcMacData *ulData)
 	 dLchData[lcId].pdu.numPdu++; 
       }
    }
- 
+
    /* If any PDU received on dedicated logical channel, copy into RguDDatIndInfo
     * and call its handler */ 
    if(dLchPduPres)
@@ -284,11 +284,11 @@ uint8_t RlcProcUlData(Pst *pst, RlcMacData *ulData)
       dLchUlDat->numLch = numDLch;
       KwLiRguDDatInd(pst, 0, dLchUlDat);
    }
-    
+
 
    RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcMacData));
    RETVALUE(ROK);
-   
+
 }/* End of RlcProcUlData */
 
 PUBLIC int   rlcDDatIndRcvd;
@@ -308,19 +308,19 @@ PUBLIC int   rlcCDatIndRcvd;
  *    -# ROK 
  *    -# RFAILED 
  *
-*/
+ */
 #ifdef ANSI
-PUBLIC S16 KwLiRguCDatInd
+   PUBLIC S16 KwLiRguCDatInd
 (
-Pst              *pst,   
-SuId             suId,  
-RguCDatIndInfo   *datInd
-)
+ Pst              *pst,   
+ SuId             suId,  
+ RguCDatIndInfo   *datInd
+ )
 #else
 PUBLIC S16 KwLiRguCDatInd(pst,suId,datInd)
-Pst              *pst; 
-SuId             suId;
-RguCDatIndInfo   *datInd;
+   Pst              *pst; 
+   SuId             suId;
+   RguCDatIndInfo   *datInd;
 #endif
 {
    RlcUlRbCb   *rbCb; 
@@ -330,11 +330,11 @@ RguCDatIndInfo   *datInd;
    TRC3(KwLiRguCDatInd)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (pst->dstInst >= MAX_RLC_INSTANCES)
-   {
-      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguCDatIndInfo));
-      RETVALUE (RFAILED);
-   }
+      if (pst->dstInst >= MAX_RLC_INSTANCES)
+      {
+	 RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguCDatIndInfo));
+	 RETVALUE (RFAILED);
+      }
 #endif
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
@@ -353,7 +353,7 @@ RguCDatIndInfo   *datInd;
    if(KW_MAX_LCH_PER_CELL <= datInd->lcId)
    {
       RLOG_ARG1(L_ERROR,DBG_LCID,datInd->lcId, "Invalid LcId, Max is [%d]",
-         KW_MAX_LCH_PER_CELL);
+	    KW_MAX_LCH_PER_CELL);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguCDatIndInfo));
       RETVALUE(RFAILED);
    }
@@ -364,7 +364,7 @@ RguCDatIndInfo   *datInd;
    if (!rbCb)
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,datInd->cellId, "LcId [%d] not found",
-         datInd->lcId);
+	    datInd->lcId);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguCDatIndInfo));
       RETVALUE(RFAILED);
    }
@@ -397,39 +397,39 @@ RguCDatIndInfo   *datInd;
  *    -# ROK 
  *    -# RFAILED 
  *
-*/
- 
+ */
+
 #ifdef ANSI
-PUBLIC S16 KwLiRguDDatInd
+   PUBLIC S16 KwLiRguDDatInd
 (
-Pst              *pst,   
-SuId             suId,  
-RguDDatIndInfo   *datInd
-)
+ Pst              *pst,   
+ SuId             suId,  
+ RguDDatIndInfo   *datInd
+ )
 #else
 PUBLIC S16 KwLiRguDDatInd(pst, suId, datInd)
-Pst              *pst; 
-SuId             suId;
-RguDDatIndInfo   *datInd;
+   Pst              *pst; 
+   SuId             suId;
+   RguDDatIndInfo   *datInd;
 #endif
 {
    TRC3(KwLiRguDDatInd)
 
-   rlcDDatIndRcvd++;
+      rlcDDatIndRcvd++;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
-       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguDDatIndInfo));
-       RETVALUE (RFAILED);
+      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguDDatIndInfo));
+      RETVALUE (RFAILED);
    }
 #endif
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (((RlcCb*)RLC_GET_RLCCB(pst->dstInst))->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
-       RLOG1(L_DEBUG,"KwLiRguDDatInd(pst, suId(%d))recieved in DL Inst",suId);
-       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguDDatIndInfo));
-       RETVALUE(RFAILED);
+      RLOG1(L_DEBUG,"KwLiRguDDatInd(pst, suId(%d))recieved in DL Inst",suId);
+      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datInd, sizeof(RguDDatIndInfo));
+      RETVALUE(RFAILED);
    }
 #endif
    kwUtlRcvFrmLi(RLC_GET_RLCCB(pst->dstInst),datInd);
@@ -474,42 +474,42 @@ PUBLIC uint16_t RlcMacProcSchedRep(Pst *pst, SuId suId, RlcMacSchedRepInfo *schR
 
    for(idx=0; idx < schRep->nmbLch; idx++)
    {
-       /* If it is common channel, fill status indication information 
-        * and trigger the handler for each common lch separately */
-       if(schRep->lchSta[idx].commCh)
-       {
-          RLC_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, cLchSchInfo, sizeof(RguCStaIndInfo));
-          cmMemset((U8*)cLchSchInfo, (U8)0, sizeof(RguCStaIndInfo)); 
+      /* If it is common channel, fill status indication information 
+       * and trigger the handler for each common lch separately */
+      if(schRep->lchSta[idx].commCh)
+      {
+	 RLC_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, cLchSchInfo, sizeof(RguCStaIndInfo));
+	 cmMemset((U8*)cLchSchInfo, (U8)0, sizeof(RguCStaIndInfo)); 
 
-          cLchSchInfo->cellId  = schRep->cellId;
-          cLchSchInfo->lcId    = schRep->lchSta[idx].lchStaInd.lcId;
-          //cLchSchInfo->transId = schRep->timeToTx;  /* TODO : fill transId suing timeToTx */
-          cLchSchInfo->rnti    = schRep->rnti;
+	 cLchSchInfo->cellId  = schRep->cellId;
+	 cLchSchInfo->lcId    = schRep->lchSta[idx].lchStaInd.lcId;
+	 //cLchSchInfo->transId = schRep->timeToTx;  /* TODO : fill transId suing timeToTx */
+	 cLchSchInfo->rnti    = schRep->rnti;
 
-          KwLiRguCStaInd(pst, suId, cLchSchInfo);
-          
-       }
-       else
-       {
-          /* Fill status info structure if at least one dedicated channel 
-           * scheduling report is received */
-          if(nmbDLch == 0)
-          {
-             RLC_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, dLchSchInfo, sizeof(RguDStaIndInfo));
+	 KwLiRguCStaInd(pst, suId, cLchSchInfo);
 
-             dLchSchInfo->cellId = schRep->cellId;
-             dLchSchInfo->nmbOfUeGrantPerTti = 1;
-             dLchSchInfo->staInd[0].rnti = schRep->rnti;
-             //dLchSchInfo->staInd[0].transId = schRep->timeToTx;  /* TODO : fill transId suing timeToTx */
-             dLchSchInfo->staInd[0].nmbOfTbs = 1;
-             //dLchSchInfo->staInd[0].fillCrlPdu = /* TODO : Check the value needed to be filled */
-          }
+      }
+      else
+      {
+	 /* Fill status info structure if at least one dedicated channel 
+	  * scheduling report is received */
+	 if(nmbDLch == 0)
+	 {
+	    RLC_SHRABL_STATIC_BUF_ALLOC(pst->region, pst->pool, dLchSchInfo, sizeof(RguDStaIndInfo));
 
-          /* Fill logical channel scheduling info */
-          cmMemcpy((U8 *)&dLchSchInfo->staInd[0].staIndTb[0].lchStaInd[nmbDLch], (U8 *)&schRep->lchSta[idx].lchStaInd, sizeof(RguLchStaInd));
-          nmbDLch++;
+	    dLchSchInfo->cellId = schRep->cellId;
+	    dLchSchInfo->nmbOfUeGrantPerTti = 1;
+	    dLchSchInfo->staInd[0].rnti = schRep->rnti;
+	    //dLchSchInfo->staInd[0].transId = schRep->timeToTx;  /* TODO : fill transId suing timeToTx */
+	    dLchSchInfo->staInd[0].nmbOfTbs = 1;
+	    //dLchSchInfo->staInd[0].fillCrlPdu = /* TODO : Check the value needed to be filled */
+	 }
 
-       }
+	 /* Fill logical channel scheduling info */
+	 cmMemcpy((U8 *)&dLchSchInfo->staInd[0].staIndTb[0].lchStaInd[nmbDLch], (U8 *)&schRep->lchSta[idx].lchStaInd, sizeof(RguLchStaInd));
+	 nmbDLch++;
+
+      }
 
    }
 
@@ -519,7 +519,7 @@ PUBLIC uint16_t RlcMacProcSchedRep(Pst *pst, SuId suId, RlcMacSchedRepInfo *schR
       dLchSchInfo->staInd[0].staIndTb[0].nmbLch = nmbDLch;
       KwLiRguDStaInd(pst, suId, dLchSchInfo);
    }
-   
+
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, schRep, sizeof(RlcMacSchedRepInfo));
 
    RETVALUE(ROK);
@@ -542,19 +542,19 @@ PUBLIC uint16_t RlcMacProcSchedRep(Pst *pst, SuId suId, RlcMacSchedRepInfo *schR
  *    -# ROK 
  *    -# RFAILED 
  *
-*/ 
+ */ 
 #ifdef ANSI
-PUBLIC S16 KwLiRguCStaInd
+   PUBLIC S16 KwLiRguCStaInd
 (
-Pst              *pst,  
-SuId             suId,
-RguCStaIndInfo   *staInd  
-)
+ Pst              *pst,  
+ SuId             suId,
+ RguCStaIndInfo   *staInd  
+ )
 #else
 PUBLIC S16 KwLiRguCStaInd(pst,suId,staInd)
-Pst              *pst;   
-SuId             suId; 
-RguCStaIndInfo   *staInd; 
+   Pst              *pst;   
+   SuId             suId; 
+   RguCStaIndInfo   *staInd; 
 #endif
 {
    RlcDlRbCb   *rbCb;  
@@ -563,11 +563,11 @@ RguCStaIndInfo   *staInd;
    TRC3(KwLiRguCStaInd)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (pst->dstInst >= MAX_RLC_INSTANCES)
-   {
-      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
-      RETVALUE (RFAILED);
-   }
+      if (pst->dstInst >= MAX_RLC_INSTANCES)
+      {
+	 RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
+	 RETVALUE (RFAILED);
+      }
 #endif
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
@@ -577,19 +577,19 @@ RguCStaIndInfo   *staInd;
    if ((suId >= tRlcCb->genCfg.maxRguSaps) || (suId < 0))
    {
       KWLOGERROR(tRlcCb,
-            ERRCLS_INT_PAR, 
-            EKW040, 
-            (ErrVal) suId,
-            "KwLiRguCStaInd: Invalid RGU suId\n");
+	    ERRCLS_INT_PAR, 
+	    EKW040, 
+	    (ErrVal) suId,
+	    "KwLiRguCStaInd: Invalid RGU suId\n");
       RETVALUE(RFAILED); 
    }
    if (tRlcCb->genCfg.rlcMode == LKW_RLC_MODE_UL)
    {
-       RLOG_ARG1(L_ERROR,DBG_LCID,staInd->lcId,
-             "Received in RLC UL CELLID:%d",
-             staInd->cellId);
-       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
-       RETVALUE(RFAILED);
+      RLOG_ARG1(L_ERROR,DBG_LCID,staInd->lcId,
+	    "Received in RLC UL CELLID:%d",
+	    staInd->cellId);
+      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
+      RETVALUE(RFAILED);
    }
 #endif
 
@@ -600,9 +600,9 @@ RguCStaIndInfo   *staInd;
    if(KW_MAX_LCH_PER_CELL < staInd->lcId)
    {
       RLOG_ARG2(L_ERROR,DBG_LCID,staInd->lcId, 
-            "Invalid LcId, Max is [%d] CELLID:%d",
-            KW_MAX_LCH_PER_CELL,
-            staInd->cellId);
+	    "Invalid LcId, Max is [%d] CELLID:%d",
+	    KW_MAX_LCH_PER_CELL,
+	    staInd->cellId);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
       RETVALUE(RFAILED);
    }
@@ -612,8 +612,8 @@ RguCStaIndInfo   *staInd;
    if(!rbCb)                                               
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,staInd->cellId, 
-            "LcId [%d] not found CELLID:%d",
-            staInd->lcId);
+	    "LcId [%d] not found CELLID:%d",
+	    staInd->lcId);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguCStaIndInfo));
       RETVALUE(RFAILED);
    }
@@ -621,10 +621,10 @@ RguCStaIndInfo   *staInd;
    /* Dispatch to TM Module */
    rbCb->transId = staInd->transId;
    /* ccpu00136940 */
-  /* If trace flag is enabled send the trace indication */
+   /* If trace flag is enabled send the trace indication */
    if(tRlcCb->init.trc == TRUE)
    {
-     /* Populate the trace params */
+      /* Populate the trace params */
       kwLmmSendTrc(tRlcCb,EVTRGUCSTAIND, NULLP);
    }                            
    kwTmmSndToLi(tRlcCb, suId, rbCb, staInd);
@@ -658,30 +658,30 @@ RguCStaIndInfo   *staInd;
  *    -# ROK 
  *    -# RFAILED 
  *
-*/ 
+ */ 
 #ifdef ANSI
-PUBLIC S16 KwLiRguDStaInd
+   PUBLIC S16 KwLiRguDStaInd
 (
-Pst              *pst,  
-SuId             suId,
-RguDStaIndInfo   *staInd 
-)
+ Pst              *pst,  
+ SuId             suId,
+ RguDStaIndInfo   *staInd 
+ )
 #else
 PUBLIC S16 KwLiRguDStaInd(pst, suId, staInd)
-Pst              *pst; 
-SuId             suId; 
-RguDStaIndInfo   *staInd; 
+   Pst              *pst; 
+   SuId             suId; 
+   RguDStaIndInfo   *staInd; 
 #endif
 {
    RlcCb        *gCb;
    TRC3(KwLiRguDStaInd)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (pst->dstInst >= MAX_RLC_INSTANCES)
-   {
-      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguDStaIndInfo));
-      RETVALUE (RFAILED);
-   }
+      if (pst->dstInst >= MAX_RLC_INSTANCES)
+      {
+	 RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguDStaIndInfo));
+	 RETVALUE (RFAILED);
+      }
 #endif
 
    gCb = RLC_GET_RLCCB(pst->dstInst);
@@ -689,17 +689,17 @@ RguDStaIndInfo   *staInd;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (((RlcCb*)RLC_GET_RLCCB(pst->dstInst))->genCfg.rlcMode == LKW_RLC_MODE_UL)
    {
-       RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"Received in RLC UL ");
-       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguDStaIndInfo));
-       RETVALUE(RFAILED);
+      RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"Received in RLC UL ");
+      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, staInd, sizeof(RguDStaIndInfo));
+      RETVALUE(RFAILED);
    }
    if ((suId >= gCb->genCfg.maxRguSaps) || (suId < 0))
    {
       KWLOGERROR(gCb,
-            ERRCLS_INT_PAR, 
-            EKW040, 
-            (ErrVal) suId,
-            "KwLiRguDStaInd: Invalid RGU suId\n");
+	    ERRCLS_INT_PAR, 
+	    EKW040, 
+	    (ErrVal) suId,
+	    "KwLiRguDStaInd: Invalid RGU suId\n");
       RETVALUE(RFAILED); 
    }
 #endif
@@ -727,19 +727,19 @@ RguDStaIndInfo   *staInd;
  *    -# ROK 
  *    -# RFAILED 
  *
-*/ 
+ */ 
 #ifdef ANSI
-PUBLIC S16 KwLiRguFlowCntrlInd
+   PUBLIC S16 KwLiRguFlowCntrlInd
 (
-Pst              *pst,  
-SuId             suId,
-RguFlowCntrlInd *flowCntrlInd
-)
+ Pst              *pst,  
+ SuId             suId,
+ RguFlowCntrlInd *flowCntrlInd
+ )
 #else
 PUBLIC S16 KwLiRguFlowCntrlInd(pst, suId, flowCntrlInd)
-Pst              *pst; 
-SuId             suId; 
-RguFlowCntrlInd  *flowCntrlInd; 
+   Pst              *pst; 
+   SuId             suId; 
+   RguFlowCntrlInd  *flowCntrlInd; 
 #endif
 {
    RlcCb       *tRlcCb; 
@@ -752,35 +752,35 @@ RguFlowCntrlInd  *flowCntrlInd;
    {
       for (lcIdx = 0; lcIdx < flowCntrlInd->ueFlowCntrlInfo[idx].numLcs; lcIdx++)  
       {
-         RguLcFlowCntrlInfo *lcInfo = &(flowCntrlInd->ueFlowCntrlInfo[idx].lcInfo[lcIdx]); 
-         kwDbmFetchDlRbCbFromLchId(tRlcCb, flowCntrlInd->ueFlowCntrlInfo[idx].ueId, flowCntrlInd->cellId, lcInfo->lcId, &rbCb);
-         if (rbCb)
-         {
-           
-            if (lcInfo->pktAdmitCnt == 0) /* Special case */
-            {
-               kwUtlTrigPdbFlowCntrl(tRlcCb, rbCb, lcInfo->pktAdmitCnt);
-               continue;
-            }
-            if (rbCb->mode == CM_LTE_MODE_AM)
-            {
-               if ((rbCb->m.amDl.retxLst.count != 0) || 
-                   ((rbCb->m.amDl.bo == 0) || 
-                    (rbCb->m.amDl.bo < lcInfo->maxBo4FlowCtrl)))
-               {
-                  continue;
-               }
-            }
-            else /* UM */
-            {
-               if ((rbCb->m.umDl.bo == 0) ||
-                   (rbCb->m.umDl.bo < lcInfo->maxBo4FlowCtrl))
-               {
-                  continue;
-               }
-            }
-            kwUtlTrigPdbFlowCntrl(tRlcCb, rbCb, lcInfo->pktAdmitCnt);
-         }
+	 RguLcFlowCntrlInfo *lcInfo = &(flowCntrlInd->ueFlowCntrlInfo[idx].lcInfo[lcIdx]); 
+	 kwDbmFetchDlRbCbFromLchId(tRlcCb, flowCntrlInd->ueFlowCntrlInfo[idx].ueId, flowCntrlInd->cellId, lcInfo->lcId, &rbCb);
+	 if (rbCb)
+	 {
+
+	    if (lcInfo->pktAdmitCnt == 0) /* Special case */
+	    {
+	       kwUtlTrigPdbFlowCntrl(tRlcCb, rbCb, lcInfo->pktAdmitCnt);
+	       continue;
+	    }
+	    if (rbCb->mode == CM_LTE_MODE_AM)
+	    {
+	       if ((rbCb->m.amDl.retxLst.count != 0) || 
+		     ((rbCb->m.amDl.bo == 0) || 
+		      (rbCb->m.amDl.bo < lcInfo->maxBo4FlowCtrl)))
+	       {
+		  continue;
+	       }
+	    }
+	    else /* UM */
+	    {
+	       if ((rbCb->m.umDl.bo == 0) ||
+		     (rbCb->m.umDl.bo < lcInfo->maxBo4FlowCtrl))
+	       {
+		  continue;
+	       }
+	    }
+	    kwUtlTrigPdbFlowCntrl(tRlcCb, rbCb, lcInfo->pktAdmitCnt);
+	 }
       }
    }
    RETVALUE(ROK);
@@ -811,17 +811,17 @@ RguFlowCntrlInd  *flowCntrlInd;
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwLiRguHqStaInd
+   PUBLIC S16 KwLiRguHqStaInd
 (
-Pst                *pst, 
-SuId               suId,
-RguHarqStatusInd   *staInd 
-)
+ Pst                *pst, 
+ SuId               suId,
+ RguHarqStatusInd   *staInd 
+ )
 #else
 PUBLIC S16 KwLiRguHqStaInd(pst,suId,staInd)
-Pst                *pst;  
-SuId               suId; 
-RguHarqStatusInd   *staInd;
+   Pst                *pst;  
+   SuId               suId; 
+   RguHarqStatusInd   *staInd;
 #endif
 {
 
@@ -833,7 +833,7 @@ RguHarqStatusInd   *staInd;
 
    TRC3(KwLiRguHqStaInd)
 
-   tRlcCb = RLC_GET_RLCCB(pst->dstInst);
+      tRlcCb = RLC_GET_RLCCB(pst->dstInst);
    ueKey.cellId = staInd->cellId;
    ueKey.ueId   = staInd->ueId;
 
@@ -858,5 +858,5 @@ RguHarqStatusInd   *staInd;
 #endif /* __cplusplus */
 
 /********************************************************************30**
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

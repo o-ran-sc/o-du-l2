@@ -77,11 +77,11 @@ uint8_t fillMacCellGroupCfg(MacCellGrpCfg macCellGrp, SchMacCellGrpCfg  *macCell
    for(idx = 0; idx < schedReqCfg->addModListCount; idx++)
    {
       schedReqCfg->addModList[idx].schedReqId = \
-         macCellGrp.schReqCfg.addModList[idx].schedReqId;
+						macCellGrp.schReqCfg.addModList[idx].schedReqId;
       schedReqCfg->addModList[idx].srProhibitTmr = \
-         macCellGrp.schReqCfg.addModList[idx].srProhibitTmr;
+						   macCellGrp.schReqCfg.addModList[idx].srProhibitTmr;
       schedReqCfg->addModList[idx].srTransMax = \
-	 macCellGrp.schReqCfg.addModList[idx].srTransMax;
+						macCellGrp.schReqCfg.addModList[idx].srTransMax;
    }
    schedReqCfg->relListCount = macCellGrp.schReqCfg.relListCount;
 
@@ -97,9 +97,9 @@ uint8_t fillMacCellGroupCfg(MacCellGrpCfg macCellGrp, SchMacCellGrpCfg  *macCell
    for(idx = 0; idx < tagCfg->addModListCount; idx++)
    {
       tagCfg->addModList[idx].tagId = \
-         macCellGrp.tagCfg.addModList[idx].tagId;
+				      macCellGrp.tagCfg.addModList[idx].tagId;
       tagCfg->addModList[idx].timeAlignmentTmr = \
-	 macCellGrp.tagCfg.addModList[idx].timeAlignTimer;
+						 macCellGrp.tagCfg.addModList[idx].timeAlignTimer;
    }
    tagCfg->relListCount = macCellGrp.tagCfg.relListCount;
 
@@ -167,7 +167,7 @@ uint8_t fillPdschServCellCfg(PdschServCellCfg macPdschCfg, SchPdschServCellCfg *
    }
 
    schPdschCfg->numHarqProcForPdsch = \
-      macPdschCfg.numHarqProcForPdsch;
+				      macPdschCfg.numHarqProcForPdsch;
 
    schPdschCfg->maxCodeBlkGrpPerTb = NULL;
    if(macPdschCfg.maxCodeBlkGrpPerTb)
@@ -212,9 +212,9 @@ uint8_t fillInitalUlBwpPuschCfg(PuschCfg macPuschCfg, SchPuschCfg *schPuschCfg)
    uint8_t   idx;
 
    schPuschCfg->dmrsUlCfgForPuschMapTypeA.addPos = \
-      macPuschCfg.dmrsUlCfgForPuschMapTypeA.addPos;
+						   macPuschCfg.dmrsUlCfgForPuschMapTypeA.addPos;
    schPuschCfg->dmrsUlCfgForPuschMapTypeA.transPrecodDisabled.scramblingId0 = \
-      macPuschCfg.dmrsUlCfgForPuschMapTypeA.transPrecodDisabled.scramblingId0;
+									      macPuschCfg.dmrsUlCfgForPuschMapTypeA.transPrecodDisabled.scramblingId0;
    schPuschCfg->resourceAllocType = macPuschCfg.resourceAllocType;
 
    schPuschCfg->numTimeDomRsrcAlloc = macPuschCfg.numTimeDomRsrcAlloc;
@@ -227,13 +227,13 @@ uint8_t fillInitalUlBwpPuschCfg(PuschCfg macPuschCfg, SchPuschCfg *schPuschCfg)
    for(idx = 0; idx < schPuschCfg->numTimeDomRsrcAlloc; idx++)
    {
       schPuschCfg->timeDomRsrcAllocList[idx].k2 = \
-         macPuschCfg.timeDomRsrcAllocList[idx].k2;
+						  macPuschCfg.timeDomRsrcAllocList[idx].k2;
       schPuschCfg->timeDomRsrcAllocList[idx].mappingType = \
-	 macPuschCfg.timeDomRsrcAllocList[idx].mappingType;
+							   macPuschCfg.timeDomRsrcAllocList[idx].mappingType;
       schPuschCfg->timeDomRsrcAllocList[idx].startSymbol = \
-         macPuschCfg.timeDomRsrcAllocList[idx].startSymbol; 
+							   macPuschCfg.timeDomRsrcAllocList[idx].startSymbol; 
       schPuschCfg->timeDomRsrcAllocList[idx].symbolLength = \
-	 macPuschCfg.timeDomRsrcAllocList[idx].symbolLength;
+							    macPuschCfg.timeDomRsrcAllocList[idx].symbolLength;
    }
 
    schPuschCfg->transformPrecoder = macPuschCfg.transformPrecoder;
@@ -309,17 +309,17 @@ uint8_t fillInitDlBwpPdcchCfg(PdcchConfig macPdcchCfg, SchPdcchConfig *schPdcchC
    for(idx = 0; idx < schPdcchCfg->numCRsetToAddMod; idx++)
    {
       schPdcchCfg->cRSetToAddModList[idx].cRSetId = \
-         macPdcchCfg.cRSetToAddModList[idx].cRSetId;
+						    macPdcchCfg.cRSetToAddModList[idx].cRSetId;
       memcpy(&schPdcchCfg->cRSetToAddModList[idx].freqDomainRsrc,\
-	 &macPdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+	    &macPdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
       schPdcchCfg->cRSetToAddModList[idx].duration = \
-         macPdcchCfg.cRSetToAddModList[idx].duration;
+						     macPdcchCfg.cRSetToAddModList[idx].duration;
       schPdcchCfg->cRSetToAddModList[idx].cceRegMappingType = \
-	 macPdcchCfg.cRSetToAddModList[idx].cceRegMappingType;
+							      macPdcchCfg.cRSetToAddModList[idx].cceRegMappingType;
       schPdcchCfg->cRSetToAddModList[idx].precoderGranularity = \
-	 macPdcchCfg.cRSetToAddModList[idx].precoderGranularity;
+								macPdcchCfg.cRSetToAddModList[idx].precoderGranularity;
       schPdcchCfg->cRSetToAddModList[idx].dmrsScramblingId = \
-	 macPdcchCfg.cRSetToAddModList[idx].dmrsScramblingId;
+							     macPdcchCfg.cRSetToAddModList[idx].dmrsScramblingId;
    }
 
    schPdcchCfg->numCRsetToRel = macPdcchCfg.numCRsetToRel;
@@ -346,28 +346,28 @@ uint8_t fillInitDlBwpPdcchCfg(PdcchConfig macPdcchCfg, SchPdcchConfig *schPdcchC
    for(idx = 0; idx < schPdcchCfg->numSearchSpcToAddMod; idx++)
    {
       schPdcchCfg->searchSpcToAddModList[idx].searchSpaceId = \
-         macPdcchCfg.searchSpcToAddModList[idx].searchSpaceId;
+							      macPdcchCfg.searchSpcToAddModList[idx].searchSpaceId;
       schPdcchCfg->searchSpcToAddModList[idx].cRSetId = \
-	 macPdcchCfg.searchSpcToAddModList[idx].cRSetId;
+							macPdcchCfg.searchSpcToAddModList[idx].cRSetId;
       schPdcchCfg->searchSpcToAddModList[idx].mSlotPeriodicityAndOffset = \
-	 macPdcchCfg.searchSpcToAddModList[idx].mSlotPeriodicityAndOffset;
+									  macPdcchCfg.searchSpcToAddModList[idx].mSlotPeriodicityAndOffset;
       memcpy(&schPdcchCfg->searchSpcToAddModList[idx].mSymbolsWithinSlot,
-	 &macPdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, \
-	 MONITORING_SYMB_WITHIN_SLOT_SIZE);
+	    &macPdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, \
+	    MONITORING_SYMB_WITHIN_SLOT_SIZE);
       schPdcchCfg->searchSpcToAddModList[idx].numCandidatesAggLevel1 = \
-	 macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1;
+								       macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1;
       schPdcchCfg->searchSpcToAddModList[idx].numCandidatesAggLevel2 = \
-	 macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel2;
+								       macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel2;
       schPdcchCfg->searchSpcToAddModList[idx].numCandidatesAggLevel4 = \
-	 macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel4;
+								       macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel4;
       schPdcchCfg->searchSpcToAddModList[idx].numCandidatesAggLevel8 = \
-	 macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel8;
+								       macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel8;
       schPdcchCfg->searchSpcToAddModList[idx].numCandidatesAggLevel16 = \
-	 macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel16;
+									macPdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel16;
       schPdcchCfg->searchSpcToAddModList[idx].searchSpaceType = \
-	 macPdcchCfg.searchSpcToAddModList[idx].searchSpaceType;
+								macPdcchCfg.searchSpcToAddModList[idx].searchSpaceType;
       schPdcchCfg->searchSpcToAddModList[idx].ueSpecificDciFormat = \
-	 macPdcchCfg.searchSpcToAddModList[idx].ueSpecificDciFormat;
+								    macPdcchCfg.searchSpcToAddModList[idx].ueSpecificDciFormat;
    }
 
    schPdcchCfg->numSearchSpcToRel = macPdcchCfg.numSearchSpcToRel;
@@ -407,7 +407,7 @@ uint8_t fillInitDlBwpPdschCfg(PdschConfig macPdschCfg, SchPdschConfig *schPdschC
    uint8_t   idx;
 
    schPdschCfg->dmrsDlCfgForPdschMapTypeA.addPos = \
-       macPdschCfg.dmrsDlCfgForPdschMapTypeA.addPos;
+						   macPdschCfg.dmrsDlCfgForPdschMapTypeA.addPos;
    schPdschCfg->resourceAllocType = macPdschCfg.resourceAllocType;
    schPdschCfg->numTimeDomRsrcAlloc = macPdschCfg.numTimeDomRsrcAlloc;
    if(schPdschCfg->numTimeDomRsrcAlloc > MAX_NUM_DL_ALLOC)
@@ -420,11 +420,11 @@ uint8_t fillInitDlBwpPdschCfg(PdschConfig macPdschCfg, SchPdschConfig *schPdschC
    for(idx = 0; idx < schPdschCfg->numTimeDomRsrcAlloc; idx++)
    {
       schPdschCfg->timeDomRsrcAllociList[idx].mappingType = \
-         macPdschCfg.timeDomRsrcAllociList[idx].mappingType;
+							    macPdschCfg.timeDomRsrcAllociList[idx].mappingType;
       schPdschCfg->timeDomRsrcAllociList[idx].startSymbol = \
-         macPdschCfg.timeDomRsrcAllociList[idx].startSymbol;
+							    macPdschCfg.timeDomRsrcAllociList[idx].startSymbol;
       schPdschCfg->timeDomRsrcAllociList[idx].symbolLength = \
-         macPdschCfg.timeDomRsrcAllociList[idx].symbolLength;
+							     macPdschCfg.timeDomRsrcAllociList[idx].symbolLength;
    }
 
    schPdschCfg->rbgSize = macPdschCfg.rbgSize;
@@ -737,7 +737,7 @@ uint8_t createUeCb(MacUeCfg *ueCfg)
    ueCb->crnti = ueCfg->crnti;
    ueCb->cellCb = macCb.macCell[cellIdx];
    ueCb->dlInfo.dlHarqEnt.numHarqProcs = \
-      ueCfg->spCellCfg.servCellCfg.pdschServCellCfg.numHarqProcForPdsch; 
+					 ueCfg->spCellCfg.servCellCfg.pdschServCellCfg.numHarqProcForPdsch; 
    ueCb->state = UE_STATE_ACTIVE;
 
    /* Fill BSR info */

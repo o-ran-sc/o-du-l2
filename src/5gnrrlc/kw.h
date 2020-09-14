@@ -105,8 +105,8 @@
 #define RLC_ALLOC(_cb,_buf, _size)                                   \
 {                                                                   \
    SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf,       \
-                (Size) _size);                                     \
-      cmMemset((U8 *)(_buf), 0, _size);                             \
+	 (Size) _size);                                     \
+   cmMemset((U8 *)(_buf), 0, _size);                             \
 }
 
 #define KW_RMV_SDU(_cb,_sduQ,_sdu)                    \
@@ -118,15 +118,15 @@
 
 #define RLC_FREE(_cb,_buf, _size)                          \
 {                                                         \
-      (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
-            (Data *) _buf, (Size) _size);                 \
-      _buf = NULLP;                                       \
+   (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
+	 (Data *) _buf, (Size) _size);                 \
+   _buf = NULLP;                                       \
 }
 
 #define RLC_FREE_BUF(_buf)           \
 {                                   \
-      SPutMsg(_buf);                \
-      _buf = NULLP;                 \
+   SPutMsg(_buf);                \
+   _buf = NULLP;                 \
 }
 
 #else
@@ -136,28 +136,28 @@
    if (_buf != NULLP)                                     \
    {                                                      \
       (Void) SPutStaticBuffer(_region, _pool,             \
-            (Data *) _buf, (Size) _size, 0);                 \
+	    (Data *) _buf, (Size) _size, 0);                 \
       _buf = NULLP;                                       \
    }                                                      \
 }
 
 #define RLC_FREE_SHRABL_BUF_WC(_region, _pool,_buf, _size) \
 {                                                         \
-  (Void) SPutStaticBuffer(_region, _pool,                 \
-        (Data *) _buf, (Size) _size, 0);                 \
-  _buf = NULLP;                                       \
+   (Void) SPutStaticBuffer(_region, _pool,                 \
+	 (Data *) _buf, (Size) _size, 0);                 \
+   _buf = NULLP;                                       \
 }
 
 #define RLC_ALLOC_SHRABL_BUF_WC(_region, _pool,_buf, _size)           \
 {                                                                    \
- SGetStaticBuffer(_region, _pool, (Data **)&_buf,                    \
-                (Size) _size, 0);                                    \
+   SGetStaticBuffer(_region, _pool, (Data **)&_buf,                    \
+	 (Size) _size, 0);                                    \
 }
 
 #define RLC_ALLOC_SHRABL_BUF(_region, _pool,_buf, _size)              \
 {                                                                    \
- if (SGetStaticBuffer(_region, _pool, (Data **)&_buf,                \
-                (Size) _size, 0) == ROK)                                \
+   if (SGetStaticBuffer(_region, _pool, (Data **)&_buf,                \
+	    (Size) _size, 0) == ROK)                                \
    {                                                                 \
       cmMemset((U8 *)(_buf), 0, _size);                              \
    }                                                                 \
@@ -169,8 +169,8 @@
 /* Allocate function */
 #define RLC_ALLOC(_cb,_buf, _size)                                    \
 {                                                                    \
- if (SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf,      \
-                (Size) _size) == ROK)                                \
+   if (SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf,      \
+	    (Size) _size) == ROK)                                \
    {                                                                 \
       cmMemset((U8 *)(_buf), 0, _size);                              \
    }                                                                 \
@@ -181,7 +181,7 @@
 }
 
 #define RLC_ALLOC_WC(_cb,_buf, _size)  \
-           SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf, (Size) _size)     
+   SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf, (Size) _size)     
 
 #define KW_RMV_SDU(_cb,_sduQ,_sdu)              \
 {                                               \
@@ -198,7 +198,7 @@
    if (_buf != NULLP)                                     \
    {                                                      \
       (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
-            (Data *) _buf, (Size) _size);                 \
+	    (Data *) _buf, (Size) _size);                 \
       _buf = NULLP;                                       \
    }                                                      \
 }
@@ -209,7 +209,7 @@
    {                                \
       SPutMsg(_buf);                \
    }                                \
-      _buf = NULLP;                 \
+   _buf = NULLP;                 \
 }
 #endif
 
@@ -218,9 +218,9 @@
 
 #define RLC_FREE_WC(_cb,_buf, _size)                       \
 {                                                         \
-      (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
-            (Data *) _buf, (Size) _size);                 \
-      _buf = NULLP; /*assigning NULLP after free*/ \
+   (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
+	 (Data *) _buf, (Size) _size);                 \
+   _buf = NULLP; /*assigning NULLP after free*/ \
 }
 
 /* kw002.201 Freeing from region of pst */
@@ -229,7 +229,7 @@
    if (_buf != NULLP)                                     \
    {                                                      \
       (Void) SPutSBuf(_region, _pool,                     \
-                      (Data *) _buf, (Size) _size);       \
+	    (Data *) _buf, (Size) _size);       \
       _buf = NULLP;                                       \
    }                                                      \
 }
@@ -241,15 +241,15 @@
    if (_buf != NULLP)                                              \
    {                                                               \
       (Void) SPutStaticBuffer(_region, _pool,                      \
-                      (Data *) _buf, (Size) _size, 0);             \
+	    (Data *) _buf, (Size) _size, 0);             \
       _buf = NULLP;                                                \
    }                                                               \
 }
 
 #define RLC_SHRABL_STATIC_BUF_ALLOC(_region, _pool, _buf, _size)     \
 {                                                                        \
- SGetStaticBuffer(_region, _pool, (Data **)&_buf,      \
-                (Size) _size, 0);                                        \
+   SGetStaticBuffer(_region, _pool, (Data **)&_buf,      \
+	 (Size) _size, 0);                                        \
 }
 
 #else
@@ -259,15 +259,15 @@
    if (_buf != NULLP)                                              \
    {                                                               \
       (Void) SPutSBuf(_region, _pool,                      \
-                      (Data *) _buf, (Size) _size);             \
+	    (Data *) _buf, (Size) _size);             \
       _buf = NULLP;                                                \
    }                                                               \
 }
 
 #define RLC_SHRABL_STATIC_BUF_ALLOC(_region, _pool, _buf, _size)     \
 {                                                                        \
- SGetSBuf(_region, _pool, (Data **)&_buf,      \
-                (Size) _size);                                        \
+   SGetSBuf(_region, _pool, (Data **)&_buf,      \
+	 (Size) _size);                                        \
 }
 #endif /* SS_LOCKLESS_MEMORY */
 
@@ -278,15 +278,15 @@
    if (_buf != NULLP)                                              \
    {                                                               \
       (Void) SPutStaticBuffer(_region, _pool,                      \
-                      (Data *) _buf, (Size) _size, 0);             \
+	    (Data *) _buf, (Size) _size, 0);             \
       _buf = NULLP;                                                \
    }                                                               \
 }
 
 #define RLC_SHRABL_STATIC_BUF_ALLOC(_region, _pool, _buf, _size)     \
 {                                                                        \
- SGetStaticBuffer(_region, _pool, (Data **)&_buf,      \
-                (Size) _size, 0);                                        \
+   SGetStaticBuffer(_region, _pool, (Data **)&_buf,      \
+	 (Size) _size, 0);                                        \
 }
 #endif
 
@@ -359,7 +359,7 @@
 #define KW_DIR_BOTH      3     /*!< Both Downlink and Unlink */
 
 #define KW_DEF_SEQ_NUM 0 /**< Sequence number to pick in case of duplicate
-                              entries in hash list searches*/
+			   entries in hash list searches*/
 
 /**
  * @def KW_MIN
@@ -369,7 +369,7 @@
  * @param[in] x    First number
  * @param[in] y    Second number
  *
-*/
+ */
 #define KW_MIN(x,y) (x) < (y) ? (x) : (y)
 
 /**
@@ -379,7 +379,7 @@
  *
  * @param[in] _inst    Instance Id
  *
-*/
+ */
 #define RLC_GET_RLCCB(_inst) rlcCb[_inst]                              
 
 #define KW_ADD_SDU            1     /*!< Add SDU. */
@@ -418,10 +418,10 @@
  * @param[in] _rbType    Type of the Radio Bearer; SRB or DRB
  * @param[in] _rbId      RB Id of the RB to be validated
  *
-*/ 
+ */ 
 #define KW_VALIDATE_UE_RBID(_rbType, _rbId)                     \
-       ((_rbType == CM_LTE_SRB && _rbId < KW_MAX_SRB_PER_UE) || \
-       (_rbType == CM_LTE_DRB && _rbId < KW_MAX_DRB_PER_UE))
+   ((_rbType == CM_LTE_SRB && _rbId < KW_MAX_SRB_PER_UE) || \
+    (_rbType == CM_LTE_DRB && _rbId < KW_MAX_DRB_PER_UE))
 
 /*******************************************************************************
  *                              UIM Defines 
@@ -432,14 +432,14 @@
    if (_chkSpId != _sap->spId)                                               \
    {                                                                         \
       KWLOGERROR(_cb,ERRCLS_DEBUG, EKWxxx, (ErrVal) RFAILED,                 \
-            "Sap Id Validation Failed.");                                    \
+	    "Sap Id Validation Failed.");                                    \
       _ret = RFAILED;                                                        \
    }                                                                         \
    /* SAP state validation */                                                \
    if(_sap->state != KW_SAP_BND)                                             \
    {                                                                         \
       KWLOGERROR(_cb,ERRCLS_INT_PAR, EKWXXX, (ErrVal) RFAILED,               \
-            "Sap State Invalid.");                                           \
+	    "Sap State Invalid.");                                           \
       KW_SEND_SAPID_ALARM(_cb,0, LCM_EVENT_UI_INV_EVT, LCM_CAUSE_INV_STATE); \
       _ret = RFAILED;                                                        \
    }                                                                         \
@@ -451,7 +451,7 @@
    if(_sap->state != KW_SAP_BND)                                             \
    {                                                                         \
       KWLOGERROR(_cb,ERRCLS_INT_PAR, EKWXXX, (ErrVal) RFAILED,               \
-            "Sap State Invalid.");                                           \
+	    "Sap State Invalid.");                                           \
       KW_SEND_SAPID_ALARM(_cb,0, LCM_EVENT_UI_INV_EVT, LCM_CAUSE_INV_STATE); \
       _ret = RFAILED;                                                        \
    }                                                                         \
@@ -488,10 +488,10 @@
  * @param[in] _ueCb      Pointer to the UECb for which to get the RB
  * @param[out] _rbCb     Pointer to the found RbCb
  *
-*/
+ */
 #define KW_DBM_GET_RBCB_FROM_UECB(_rbId, _rbType, _ueCb, _rbCb)            \
-           (_rbCb) = ((_rbType) == CM_LTE_SRB) ? (_ueCb)->srbCb[(_rbId)] : \
-                                                 (_ueCb)->drbCb[(_rbId)];     
+   (_rbCb) = ((_rbType) == CM_LTE_SRB) ? (_ueCb)->srbCb[(_rbId)] : \
+(_ueCb)->drbCb[(_rbId)];     
 /**
  * @def KW_DBM_GET_CELL_RBCB
  *
@@ -502,9 +502,9 @@
  * @param[in] _rbCbLst      Pointer to array of RBCbs
  * @param[out] _rbCb        Pointer to the found RbCb
  *
-*/
+ */
 #define KW_DBM_GET_CELL_RBCB(_rbId, _rbCbLst, _rbCb) \
-           (_rbCb) = (_rbCbLst)[(_rbId)]; 
+   (_rbCb) = (_rbCbLst)[(_rbId)]; 
 
 /*******************************************************************************
  *                              UMM Defines 
@@ -514,15 +514,15 @@
 
 /* Sequence Number length defines */
 #define KW_UM_CFG_5BIT_SN_LEN      1 /**< UM 5-bit Sequence number length 
-                                          in bytes*/   
+				       in bytes*/   
 #define KW_UM_CFG_10BIT_SN_LEN     2 /**< UM 10-bit Sequence number length 
-                                          in bytes*/
+				       in bytes*/
 /* 5GNR */
 /* Sequence Number length defines */
 #define KW_AM_CFG_12BIT_SN_LEN      1 /**< AM 12-bit Sequence number length 
-                                          in bytes*/   
+					in bytes*/   
 #define KW_AM_CFG_18BIT_SN_LEN      2 /**< AM 18-bit Sequence number length 
-                                          in bytes*/
+					in bytes*/
 
 /**
  * @def KW_RMV_MAC_HDR_SZ
@@ -531,7 +531,7 @@
  *
  * @param[in,out] _pduSz        Size of the pdu 
  *
-*/
+ */
 #define KW_RMV_MAC_HDR_SZ(_pduSz) (_pduSz) -= ((_pduSz) > 127) ? 3 : 2;
 
 /**
@@ -544,10 +544,10 @@
  * @param[in] _val               Value of the state variable 
  * @param[in] _kwUmUl        Um Uplink control block
  *
-*/ 
+ */ 
 #define KW_UM_GET_VALUE(_val,_kwUmUl)  \
-     (((_val) - ((_kwUmUl).vrUh - (_kwUmUl).umWinSz)) & ((_kwUmUl).modBitMask))
-     
+   (((_val) - ((_kwUmUl).vrUh - (_kwUmUl).umWinSz)) & ((_kwUmUl).modBitMask))
+
 /*******************************************************************************
  *                              AMM Defines 
  ******************************************************************************/ 
@@ -621,9 +621,9 @@
 #define KW_SN_POS_18BIT                0x03
 #define KW_AM_GET_WIN_SZ(_snLen)       ((KW_AM_CFG_12BIT_SN_LEN == (_snLen)) ? (2048) : (131072)) /* 5GNR */
 #define KW_RCV_BUF_BIN_SIZE 512   /* Could be increased to avoid the search time.
-                                      with the memory trade-off */
+				     with the memory trade-off */
 #define KW_TX_BUF_BIN_SIZE 512   /* Could be increased to avoid the search time.
-                                      with the memory trade-off */
+				    with the memory trade-off */
 
 #define KW_SDU_LST                     1
 #define KW_SEG_LST                     2
@@ -638,33 +638,33 @@
    /*CM_LLIST_FIRST_NODE(&(lstCp), tmpNode);*/      \
    /*if (tmpNode != NULLP)*/                        \
    if((tmpNode=cmLListFirst(&lstCp)))            \
-      nod = (KwSdu *)tmpNode->node;             \
+   nod = (KwSdu *)tmpNode->node;             \
    else                                         \
-      nod = NULLP;                              \
+   nod = NULLP;                              \
 }                                                          
 
-                                                           
+
 #define KW_LLIST_FIRST_SEG(lstCp, nod)         \
 {                                              \
    CmLList *tmpNode;                           \
    /*CM_LLIST_FIRST_NODE(&(lstCp), tmpNode);*/     \
    /*if (tmpNode != NULLP)*/                       \
    if((tmpNode=cmLListFirst(&lstCp)))            \
-      nod = (KwSeg *)tmpNode->node;            \
+   nod = (KwSeg *)tmpNode->node;            \
    else                                        \
-      nod = NULLP;                             \
+   nod = NULLP;                             \
 }                                                          
 
-                                                           
+
 #define KW_LLIST_FIRST_RETX(lstCp, nod)        \
 {                                              \
    CmLList *tmpNode;                           \
    /*CM_LLIST_FIRST_NODE(&(lstCp), tmpNode);*/     \
    /*if (tmpNode != NULLP)*/                       \
    if((tmpNode=cmLListFirst(&lstCp)))            \
-      nod = (KwRetx *)tmpNode->node;           \
+   nod = (KwRetx *)tmpNode->node;           \
    else                                        \
-      nod = NULLP;                             \
+   nod = NULLP;                             \
 }
 
 #define KW_LLIST_NEXT_SDU(lstCp, nod)          \
@@ -673,9 +673,9 @@
    /*CM_LLIST_NEXT_NODE(&(lstCp), tmpNode);*/      \
    /*if (tmpNode != NULLP)  */                     \
    if((tmpNode = cmLListNext(&lstCp)))          \
-      nod = (KwSdu *)tmpNode->node;            \
+   nod = (KwSdu *)tmpNode->node;            \
    else                                        \
-      nod = NULLP;                             \
+   nod = NULLP;                             \
 }                                              
 
 
@@ -686,21 +686,21 @@
    /*CM_LLIST_NEXT_NODE(&(lstCp), tmpNode);*/      \
    /*if (tmpNode != NULLP)*/                       \
    if((tmpNode = cmLListNext(&lstCp)))           \
-      nod = (KwSeg *)tmpNode->node;            \
+   nod = (KwSeg *)tmpNode->node;            \
    else                                        \
-      nod = NULLP;                             \
+   nod = NULLP;                             \
 }      
 
-                                        
+
 #define KW_LLIST_NEXT_RETX(lstCp, nod)         \
 {                                              \
    CmLList *tmpNode;                           \
    /*CM_LLIST_NEXT_NODE(&(lstCp), tmpNode);*/      \
    /*if (tmpNode != NULLP) */                      \
    if ((tmpNode = cmLListNext(&lstCp)))          \
-      nod = (KwRetx *)tmpNode->node;           \
+   nod = (KwRetx *)tmpNode->node;           \
    else                                        \
-      nod = NULLP;                             \
+   nod = NULLP;                             \
 }
 
 
@@ -710,9 +710,9 @@
    cmLListLast(&lstCp);                        \
    tempNode = cmLListCrnt(&lstCp);             \
    if (tempNode != NULLP)                      \
-      nod = (KwRetx *)tempNode->node;          \
+   nod = (KwRetx *)tempNode->node;          \
    else                                        \
-      nod = NULLP;                             \
+   nod = NULLP;                             \
 }
 
 #define KW_LLIST_LAST_SEG(lstCp, nod)          \
@@ -721,9 +721,9 @@
    cmLListLast(&lstCp);                        \
    tempNode = cmLListCrnt(&lstCp);             \
    if (tempNode != NULLP)                      \
-      nod = (KwSeg *)tempNode->node;           \
+   nod = (KwSeg *)tempNode->node;           \
    else                                        \
-      nod = NULLP;                             \
+   nod = NULLP;                             \
 }
 
 #define KW_LLIST_LAST_SDU(lstCp, nod)          \
@@ -732,9 +732,9 @@
    cmLListLast(&lstCp);                        \
    tempNode = cmLListCrnt(&lstCp);             \
    if (tempNode != NULLP)                      \
-      nod = (KwSdu *)tempNode->node;           \
+   nod = (KwSdu *)tempNode->node;           \
    else                                        \
-      nod = NULLP;                             \
+   nod = NULLP;                             \
 }
 
 #define CM_LLIST_INS_AFT_CRNT(lstCp, nod)      \
@@ -784,17 +784,17 @@
  *
  * @param[in] _amDl     AM Downlink control block
  *
-*/ 
+ */ 
 #define KW_AM_IS_TRANS_WIN_STALLED(_amDl)  \
-     ((((_amDl)->txNext - (_amDl)->txNextAck) & _amDl->snModMask) >= (KW_AM_GET_WIN_SZ(_amDl->snLen)))
+   ((((_amDl)->txNext - (_amDl)->txNextAck) & _amDl->snModMask) >= (KW_AM_GET_WIN_SZ(_amDl->snLen)))
 
 #ifdef TENB_STATS
 #define KW_AM_TRANS_WIN_SIZE(_amDl)  \
-     (((_amDl)->txNext - (_amDl)->txNextAck) & _amDl->snModMask)
+   (((_amDl)->txNext - (_amDl)->txNextAck) & _amDl->snModMask)
 #endif
 
 #define KW_AM_IS_POLL_BIT_SET(_amDl) \
-  (AMDL.pollSn == ((AMDL.txNext - 1) & AMDL.snModMask))
+   (AMDL.pollSn == ((AMDL.txNext - 1) & AMDL.snModMask))
 
 #define KW_FILL_CNTRL_INFO(cntrlInfo, _val, _len, _idx, _eb)\
 {                                                           \
@@ -805,10 +805,10 @@
 }
 #define KW_FILL_PREV_IDX(cntrlInfo, _e1Idx, _e1eb, _idx, _eb) \
 {                                                                     \
-  _e1Idx = cntrlInfo.e1Idx;                                           \
-  _e1eb  = cntrlInfo.e1eb;                                            \
-  _idx   = cntrlInfo.idx;                                             \
-  _eb    = cntrlInfo.emtBits;                                         \
+   _e1Idx = cntrlInfo.e1Idx;                                           \
+   _e1eb  = cntrlInfo.e1eb;                                            \
+   _idx   = cntrlInfo.idx;                                             \
+   _eb    = cntrlInfo.emtBits;                                         \
 }
 
 #define KW_FILL_HDR_ARGS(hdrInfo, _val, _len)  \
@@ -836,18 +836,18 @@
 #define KW_UPD_POLL_BIT(_gCb, _retx, _poll)                \
 {                                                          \
    U8 fHdr;                                                \
-                                                           \
+   \
    if (_poll != _retx->amHdr.p)                            \
    {                                                       \
       /* Get the first byte of the buffer */               \
       SRemPreMsg((Data *)&fHdr, _retx->seg);               \
       if (_poll == TRUE)                                   \
       {                                                    \
-         fHdr = fHdr | KW_POLL_SET;                        \
+	 fHdr = fHdr | KW_POLL_SET;                        \
       }                                                    \
       else                                                 \
       {                                                    \
-         fHdr = fHdr & KW_POLL_UNSET;                      \
+	 fHdr = fHdr & KW_POLL_UNSET;                      \
       }                                                    \
       /* Concatenated updated hdr to the mBuf */           \
       SAddPreMsg ((Data)fHdr, _retx->seg);                 \
@@ -877,19 +877,19 @@
  * @param[in] _sn       The sequence number to be checked
  * @param[in] _amUl     AM Uplink control block
  *
-*/
+ */
 #define KW_AM_CHK_SN_WITHIN_RECV_WINDOW(_sn, _amUl)          \
-  ((((_sn) - (_amUl->rxNext)) & (_amUl->snModMask)) < (((_amUl->vrMr) - (_amUl->rxNext)) & (_amUl->snModMask))) 
+   ((((_sn) - (_amUl->rxNext)) & (_amUl->snModMask)) < (((_amUl->vrMr) - (_amUl->rxNext)) & (_amUl->snModMask))) 
 
 #define KW_POWER(x, y)  x << (y-1); 
 
 #ifndef L2_OPTMZ
 #define kwCpyMsg(_cb,x, y) \
-      (SAddMsgRef((x), KW_GET_MEM_REGION(_cb), KW_GET_MEM_POOL(_cb), (y)))
+   (SAddMsgRef((x), KW_GET_MEM_REGION(_cb), KW_GET_MEM_POOL(_cb), (y)))
 #else
 /* L2 optimization for mUe/Tti: Removing dup buf*/
 #define kwCpyMsg(_cb,x, y) \
-      (SIncMsgRef((x), KW_GET_MEM_REGION(_cb), KW_GET_MEM_POOL(_cb), (y)))
+   (SIncMsgRef((x), KW_GET_MEM_REGION(_cb), KW_GET_MEM_POOL(_cb), (y)))
 #endif
 
 //      printf("Copy Msg %x \n",x);
@@ -899,13 +899,13 @@
  ******************************************************************************/
 #define KW_DBG_SUB_MASK   DBGMASK_MI             /**< Use for sub-mask */
 #define KW_DBGMASK_DETAIL (KW_DBG_SUB_MASK << 0) /**< Parameters, It will give
-                                                      in depth info */
+						   in depth info */
 #define KW_DBGMASK_BRIEF  (KW_DBG_SUB_MASK << 1) /**< Info, It will give info at
-                                                    entry and exit places along
-                                                   with certain state changes */
+						   entry and exit places along
+						   with certain state changes */
 #define KW_DBGMASK_ERROR  (KW_DBG_SUB_MASK << 2) /**< Error information */
 #define KW_DBGMASK_FATAL  (KW_DBG_SUB_MASK << 3) /**< FATAL errors like memory
-                                                    resource failure etc., */
+						   resource failure etc., */
 
 #define KW_DBG_MDL_MASK (KW_DBG_SUB_MASK << 4)
 
@@ -919,15 +919,15 @@
 #define KW_DBGMASK_INF        (KW_DBG_MDL_MASK << 7)    /**< UI, LI */
 #define KW_DBGMASK_DUT        (KW_DBG_MDL_MASK << 8)    /**< DBM, UTL, TMR */
 #define KW_DBGMASK_MBUF_PRNT  (KW_DBG_MDL_MASK << 9)    /**< MBUF, useful in
-                                                             integrated 
-                                                             testing */
+							  integrated 
+							  testing */
 #define KW_DBGMASK_MEM_INFO   (KW_DBG_MDL_MASK << 10)   /**< Print SSI memory
-                                                             information*/
+							  information*/
 #define KW_DBGMASK_UDX        (KW_DBG_MDL_MASK << 11)   /**< UDX interface */
 
 #ifdef DEBUGP
 #define KW_PRNT_BORDER                                   \
-do                                                       \
+   do                                                       \
 {                                                        \
    KW_PRNT((_kwPBuf, "\n==========================\n")); \
 }while(0)
@@ -962,34 +962,34 @@ do                                                       \
    cmMemset((U8 *)(&dt), 0, sizeof(DateTime));                \
    SGetDateTime(&dt);                                         \
    sprintf(_buf, "date: %02d/%02d/%04d time: %02d:%02d:%02d", \
-     (int)dt.month,(int)dt.day,(int)dt.year + 1900,           \
-     (int)dt.hour,(int)dt.min,(int)dt.sec);                   \
+	 (int)dt.month,(int)dt.day,(int)dt.year + 1900,           \
+	 (int)dt.hour,(int)dt.min,(int)dt.sec);                   \
    KW_PRNT(_cb,(_cb->init.prntBuf,("[%s]", _buf)));           \
 }
 
 #define KW_PRNT_MBUF(_cb,_mBufPtr)                          \
-do                                                          \
+   do                                                          \
 {                                                           \
    if(_cb->init.dbgMask & (KW_DBGMASK_MBUF_PRNT))           \
    {                                                        \
-     KW_PRNT_HLINE(_cb,("\nMessage Buffer Contents:\n"));   \
-     SPrntMsg ((Buffer *)_mBufPtr, 0, 0);                   \
+      KW_PRNT_HLINE(_cb,("\nMessage Buffer Contents:\n"));   \
+      SPrntMsg ((Buffer *)_mBufPtr, 0, 0);                   \
    }                                                        \
 }while(0)
 
 #define KW_PRNT_MEMINFO(_cb)                                  \
-do                                                            \
+   do                                                            \
 {                                                             \
    U32  _memInfo;                                             \
    if(_cb->init.dbgMask & (KW_DBGMASK_MEM_INFO))              \
    {                                                          \
-     KW_PRNT_HLINE(_cb,("\nMemory Information:\n"));          \
-     SRegInfoShow(0, &_memInfo);                              \
+      KW_PRNT_HLINE(_cb,("\nMemory Information:\n"));          \
+      SRegInfoShow(0, &_memInfo);                              \
    }                                                          \
 }while(0)
 
 #define KWDBGP_INTERNAL(_cb,_mask,...)           \
-do                                               \
+   do                                               \
 {                                                \
    if (!((_cb->init.dbgMask & _mask) ^ _mask))   \
    {                                             \
@@ -1005,7 +1005,7 @@ do                                               \
 
 #define KWDBGP_BRIEF(_cb, ...) \
    KWDBGP_INTERNAL(_cb,(KW_DBGMASK_BRIEF | KW_MODULE),__VA_ARGS__)   
-   
+
 #else  /* DEBUGP */ 
 #define KW_PRNT_HLINE(_cb,_pMsg)
 #define KW_PRNT(_cb,_prntbuf)
@@ -1092,6 +1092,6 @@ do                                               \
 #endif /* __KWH__ */
   
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

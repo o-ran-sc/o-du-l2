@@ -57,12 +57,12 @@ U32 macHeader[2];
 
 #define RG_ADD_DBuf(_dBuf,_size,_mBuf)\
 { \
-  SsMsgInfo *mInfo = NULLP; \
-  mInfo = (SsMsgInfo *)_mBuf->b_rptr; \
-  ssGetDBufOfSize(mInfo->region,_size, &_dBuf); \
-  SUpdMsg(_mBuf, _dBuf,0);\
-  _dBuf->b_wptr = _dBuf->b_rptr =  (_dBuf->b_datap->db_base + 5);\
-  MacPtrAddress = (U32)_dBuf->b_wptr;\
+   SsMsgInfo *mInfo = NULLP; \
+   mInfo = (SsMsgInfo *)_mBuf->b_rptr; \
+   ssGetDBufOfSize(mInfo->region,_size, &_dBuf); \
+   SUpdMsg(_mBuf, _dBuf,0);\
+   _dBuf->b_wptr = _dBuf->b_rptr =  (_dBuf->b_datap->db_base + 5);\
+   MacPtrAddress = (U32)_dBuf->b_wptr;\
 }
 #endif
 
@@ -75,7 +75,7 @@ U32 macHeader[2];
 
 #define RG_MAX_NUM_DED_LC 10       /* maximum dedicated logical channels in a UE */
 #define RG_MAX_NUM_CMN_LC 5       /* maximum number of common logical 
-                                     channels in a cell */
+				     channels in a cell */
 #define RG_MAX_LCG_PER_UE 4
 #define RG_CON_RES_ID_SZ  6
 #define RG_MAX_RA_RNTI   60
@@ -98,9 +98,9 @@ U32 macHeader[2];
 #define RG_TQ_SIZE                    10   /* Timing Queue Size */
 #define RG_MAX_TIMER     RG_MAX_LOWERSAP   /* MAX number of MAC timers */
 #define RG_NMB_CELL_HASHBIN           10   /* Number of Hash Bins for cell hash
-                                              table */
+					      table */
 #define RG_NMB_UE_HASHBIN             10   /* Number of Hash Bins for UE hash
-                                              table */        
+					      table */        
 #define RG_BNDREQ_TMR    1    /* Bind Request timer event value */
 #define RG_MAX_BNDRETRY  2    /* Max number of Bind Retries for TFU SAP */
 
@@ -124,13 +124,13 @@ U32 macHeader[2];
 #define RG_QM_QPSK         4    /*!< Qm value for QPSK */
 #define RG_QM_64QAM        6    /*!< Qm value for 64QAM */
 #define RG_MIN_SRS_SFCFG_IDX 0  /*!< Minimum value for SRS subframe 
-                                     configurtion index */
+				  configurtion index */
 #define RG_MAX_SRS_SFCFG_IDX 15  /*!< Maximum value for SRS subframe 
-                                     configurtion index */
+				   configurtion index */
 #define RG_MAX_SRS_TX_OFFSET 8    /*!< Maximum number of SRS transmission 
-                                    offsets per cell */
+				    offsets per cell */
 #define RG_MIN_MAC_RNTI      10   /*!< Minimum value of RNTI to be managed by 
-                                    MAC */
+				    MAC */
 
 /* HARQ related MACROs */
 #define RG_NUM_DL_HQ_PROC 8
@@ -213,19 +213,19 @@ U32 macHeader[2];
 
 /* Random access related MACROs */
 #define RG_MAX_RA_PREAMBLE_FMT 3 /*!< Maximun value of Random access preamble 
-                                      format */
+				   format */
 #define RG_MAX_RA_WINSIZE    10  /*!< Maximum size of Random access response 
-                                      window in subframes */
+				   window in subframes */
 #define RG_MIN_RA_WINSIZE    2   /*!< Minimum size of Random access response 
-                                      window in subframes */
+				   window in subframes */
 #define RG_MIN_NUM_RA_PREAMBLE 4 /*!< Minimum number of Random access 
-                                      preambles */
+				   preambles */
 #define RG_MAX_NUM_RA_PREAMBLE 64 /*!< Maximim number of Random access 
-                                      preambles */
+				    preambles */
 #define RG_NUM_RA_RB     6
 
 #define RG_MAX_RA_RSP_ALLOC    4 /*!< Maximum number of Random access
-                                      allocations */
+				   allocations */
 #define RG_CRG_CFG 1          /* CRG configuration element */
 #define RG_RGR_CFG 2          /* RGR configuration element */
 
@@ -247,8 +247,8 @@ U32 macHeader[2];
 /* Free shared memory, received through LWLC */
 #define MAC_FREE_MEM(_region, _pool, _datPtr, _size)         \
    if(_datPtr)                                               \
-       SPutSBuf(_region, _pool,(Data *)_datPtr, _size);      \
-   _datPtr = NULL;
+SPutSBuf(_region, _pool,(Data *)_datPtr, _size);      \
+_datPtr = NULL;
 
 #define RG_LCG_ISCFGD(lcg) ((lcg)->lcgId != RG_INVALID_LCG_ID)
 /* Corrected the check for dlCcchId */
@@ -257,23 +257,23 @@ U32 macHeader[2];
 /* After merging from 2.1 to 2.2 */
 #define RG_CALC_SF_DIFF(_time1, _time2)\
    (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) < (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)?\
-     ((_time1.sfn+RG_MAX_SFN)*RG_NUM_SUB_FRAMES_5G+_time1.slot) -\
-       (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot) : \
-     (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) - (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)
+((_time1.sfn+RG_MAX_SFN)*RG_NUM_SUB_FRAMES_5G+_time1.slot) -\
+(_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot) : \
+(_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) - (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)
 /*LTE_L2_MEAS_PHASE2*/
 #define RG_CALC_SFN_SF_DIFF(_time1,_sfnCycle, _time2)\
-(((_time1.sfn+RG_MAX_SFN * _sfnCycle)*RG_NUM_SUB_FRAMES_5G) + _time1.slot -\
-(_time2.sfn*RG_NUM_SUB_FRAMES_5G + _time2.slot))
+   (((_time1.sfn+RG_MAX_SFN * _sfnCycle)*RG_NUM_SUB_FRAMES_5G) + _time1.slot -\
+    (_time2.sfn*RG_NUM_SUB_FRAMES_5G + _time2.slot))
 
 #define RG_EXT_LCID(_lcId, _byte) {\
-      (_lcId) = (_byte) & RG_LCID_MASK; \
+   (_lcId) = (_byte) & RG_LCID_MASK; \
 }
 #define RG_EXT_FORMT_BIT(_fmtBit, _byte) {\
-      (_fmtBit) = ((_byte) >> RG_LCID_LEN) & 0x01; \
+   (_fmtBit) = ((_byte) >> RG_LCID_LEN) & 0x01; \
 }
 
 #define RG_EXT_EXTN_BIT(_extnBit, _byte) {\
-      (_extnBit) = ((_byte) >> RG_LCID_LEN) & 0x01; \
+   (_extnBit) = ((_byte) >> RG_LCID_LEN) & 0x01; \
 }
 
 #ifndef MS_MBUF_CORRUPTION
@@ -281,27 +281,27 @@ U32 macHeader[2];
 #endif
 
 #define RG_PACK_PAD(_padBuf,_size,_sduBuf) { \
-  Buffer *sduEnd = NULLP; \
-  SsMsgInfo *mInfo = NULLP; \
-  mInfo = (SsMsgInfo *)_sduBuf->b_rptr; \
-  ssGetDBufOfSize(mInfo->region,_size, &_padBuf); \
-  if (_padBuf == NULLP) \
-  { \
-    RLOG0(L_ERROR, "RGERR_MUX_BLD_CEHDR_FAIL");\
-    RETVALUE(RFAILED);\
-  } \
-  if (mInfo->endptr == NULLP) { \
-    sduEnd = _sduBuf; \
-    }\
-  else \
-  {  \
-    sduEnd = mInfo->endptr; \
-  } \
-  sduEnd->b_cont = _padBuf; \
-  padBuf->b_wptr += _size; \
-  mInfo = (SsMsgInfo *)_sduBuf->b_rptr; \
-  mInfo->endptr = _padBuf; \
-  mInfo->len += _size; \
+   Buffer *sduEnd = NULLP; \
+   SsMsgInfo *mInfo = NULLP; \
+   mInfo = (SsMsgInfo *)_sduBuf->b_rptr; \
+   ssGetDBufOfSize(mInfo->region,_size, &_padBuf); \
+   if (_padBuf == NULLP) \
+   { \
+      RLOG0(L_ERROR, "RGERR_MUX_BLD_CEHDR_FAIL");\
+      RETVALUE(RFAILED);\
+   } \
+   if (mInfo->endptr == NULLP) { \
+      sduEnd = _sduBuf; \
+   }\
+   else \
+   {  \
+      sduEnd = mInfo->endptr; \
+   } \
+   sduEnd->b_cont = _padBuf; \
+   padBuf->b_wptr += _size; \
+   mInfo = (SsMsgInfo *)_sduBuf->b_rptr; \
+   mInfo->endptr = _padBuf; \
+   mInfo->len += _size; \
 }
 
 #define RG_PACK_SDU(_sdusBuf, _sduBuf, _ret) {\
@@ -318,43 +318,43 @@ U32 macHeader[2];
 
 #define RGADDTOCRNTTIME(crntTime, toFill, incr)          \
    if ((crntTime.slot + incr) > (RG_NUM_SUB_FRAMES_5G - 1))   \
-      toFill.sfn = (crntTime.sfn + 1);      \
-   else                                                  \
-      toFill.sfn = crntTime.sfn;                              \
-   toFill.slot = (crntTime.slot + incr) % RG_NUM_SUB_FRAMES_5G; \
-   if (toFill.sfn >= RG_MAX_SFN) \
-   { \
-      toFill.sfn%=RG_MAX_SFN; \
-   } \
+toFill.sfn = (crntTime.sfn + 1);      \
+else                                                  \
+toFill.sfn = crntTime.sfn;                              \
+toFill.slot = (crntTime.slot + incr) % RG_NUM_SUB_FRAMES_5G; \
+if (toFill.sfn >= RG_MAX_SFN) \
+{ \
+   toFill.sfn%=RG_MAX_SFN; \
+} \
 
 #define RGSUBFRMCRNTTIME(crntTime, toFill, dcr)    \
 {                                                  \
    if (crntTime.sfn == 0)                          \
-{                                                  \
-   if ((crntTime.slot - (dcr)) < 0)              \
-   {                                               \
-      toFill.sfn = RG_MAX_SFN - 1;                 \
-   }                                               \
-   else                                            \
-   {                                               \
-   toFill.sfn = crntTime.sfn;                      \
-   }                                               \
-}                                                  \
-else                                               \
-{                                                  \
-   if ((crntTime.slot - (dcr)) < 0)              \
-   {                                               \
-   toFill.sfn = crntTime.sfn - 1;                  \
-   }                                               \
-   else                                            \
-   toFill.sfn = crntTime.sfn;                      \
-}                                                  \
-toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAMES_5G);                                   \
+   {                                                  \
+      if ((crntTime.slot - (dcr)) < 0)              \
+      {                                               \
+	 toFill.sfn = RG_MAX_SFN - 1;                 \
+      }                                               \
+      else                                            \
+      {                                               \
+	 toFill.sfn = crntTime.sfn;                      \
+      }                                               \
+   }                                                  \
+   else                                               \
+   {                                                  \
+      if ((crntTime.slot - (dcr)) < 0)              \
+      {                                               \
+	 toFill.sfn = crntTime.sfn - 1;                  \
+      }                                               \
+      else                                            \
+      toFill.sfn = crntTime.sfn;                      \
+   }                                                  \
+   toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAMES_5G);                                   \
 }
 
 #define RGCPYTIMEINFO(src, dst)  \
    dst.sfn    = src.sfn;     \
-   dst.slot   = src.slot;
+dst.slot   = src.slot;
 #define RG_TIMEINFO_SAME(x, y) ((x.sfn == y.sfn) && (x.slot == y.slot))
 
 
@@ -363,9 +363,9 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 /* Debug Prints for MAC */
 #ifdef DEBUGP
 #define RGDBGERRNEW(_inst,_args)          \
-                  DBGP(&rgCb[_inst].rgInit, RGLAYERNAME, DBGMASK_ERR, _args)
+   DBGP(&rgCb[_inst].rgInit, RGLAYERNAME, DBGMASK_ERR, _args)
 #define RGDBGINFONEW(_inst,_args)         \
-                  DBGP(&rgCb[_inst].rgInit, RGLAYERNAME, DBGMASK_INFO, _args)
+   DBGP(&rgCb[_inst].rgInit, RGLAYERNAME, DBGMASK_INFO, _args)
 #else
 #define RGDBGERRNEW(_inst,_args) 
 #define RGDBGINFONEW(_inst,_args)
@@ -377,16 +377,16 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 #ifdef ERRCLS_KW
 #define RG_NULL_CHECK(_inst, _ptr )     \
    if((_ptr) == NULLP)  \
-   {                                               \
-      RGDBGERRNEW(_inst, (rgPBuf(_inst),"Null Pointer detected"));\
-      SExit();\
-   }
+{                                               \
+   RGDBGERRNEW(_inst, (rgPBuf(_inst),"Null Pointer detected"));\
+   SExit();\
+}
 #define RG_ARRAY_BOUND_CHECK(_inst, _array, _idxVal)     \
    if((_idxVal) >= (sizeof(_array)/sizeof(_array[0]))) \
-   {                                               \
-      RGDBGERRNEW(_inst, (rgPBuf(_inst),"Array Bound Check Failed"));\
-      SExit();\
-   }
+{                                               \
+   RGDBGERRNEW(_inst, (rgPBuf(_inst),"Array Bound Check Failed"));\
+   SExit();\
+}
 #else
 #define RG_NULL_CHECK(_inst, _ptr )     
 #define RG_ARRAY_BOUND_CHECK(_inst, _array, _idxVal)     
@@ -437,12 +437,12 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
    {\
       for(pduIdx = 0; pduIdx < _tb->lchInfo[lchIdx].numPdu; pduIdx++)\
       {\
-          if(_tb->lchInfo[lchIdx].mBuf[pduIdx] != NULL)\
-          {\
-            SPutMsg(_tb->lchInfo[lchIdx].mBuf[pduIdx]);\
-            _tb->lchInfo[lchIdx].freeBuff = FALSE;\
-          }\
-          _tb->lchInfo[lchIdx].mBuf[pduIdx] = NULL;\
+	 if(_tb->lchInfo[lchIdx].mBuf[pduIdx] != NULL)\
+	 {\
+	    SPutMsg(_tb->lchInfo[lchIdx].mBuf[pduIdx]);\
+	    _tb->lchInfo[lchIdx].freeBuff = FALSE;\
+	 }\
+	 _tb->lchInfo[lchIdx].mBuf[pduIdx] = NULL;\
       }\
       _tb->lchInfo[lchIdx].numPdu = 0;\
    }\
@@ -461,12 +461,12 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
    {\
       for(pduIdx = 0; pduIdx < 4; pduIdx++)\
       {\
-          if(_tb->lchInfo[lchIdx].freeBuff == TRUE)\
-          {\
-            SPutMsg(_tb->lchInfo[lchIdx].mBuf[pduIdx]);\
-            _tb->lchInfo[lchIdx].freeBuff = FALSE;\
-          }\
-          _tb->lchInfo[lchIdx].mBuf[pduIdx] = NULL;\
+	 if(_tb->lchInfo[lchIdx].freeBuff == TRUE)\
+	 {\
+	    SPutMsg(_tb->lchInfo[lchIdx].mBuf[pduIdx]);\
+	    _tb->lchInfo[lchIdx].freeBuff = FALSE;\
+	 }\
+	 _tb->lchInfo[lchIdx].mBuf[pduIdx] = NULL;\
       }\
       _tb->lchInfo[lchIdx].numPdu = 0;\
    }\
@@ -496,13 +496,13 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
    {\
       for (idx6=0; idx6 < _datReq.datReqTb[idx5].nmbLch; idx6++)\
       {\
-         for (idx7=0; \
-               idx7 < _datReq.datReqTb[idx5].lchData[idx6].pdu.numPdu; \
-               idx7++)\
-         {\
-            RG_FREE_MSG(_datReq.datReqTb[idx5].\
-                  lchData[idx6].pdu.mBuf[idx7]);\
-         }\
+	 for (idx7=0; \
+	       idx7 < _datReq.datReqTb[idx5].lchData[idx6].pdu.numPdu; \
+	       idx7++)\
+	 {\
+	    RG_FREE_MSG(_datReq.datReqTb[idx5].\
+		  lchData[idx6].pdu.mBuf[idx7]);\
+	 }\
       }\
    }\
 }
@@ -581,7 +581,7 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 
 /* Structure member offset computation macro    */
 #define OffsetOf(type, field)                                                 \
-         (PTR) (&(((type *) NULLP)->field))
+   (PTR) (&(((type *) NULLP)->field))
 
 #define RG_MAX_SUBFRAMES_IN_SFN        9
 #define RG_MAX_SFN                     1024
@@ -607,15 +607,15 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 #endif
 
 #define RG_CALC_SF_DIFF(_time1, _time2)\
-      (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) < (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)?\
-     ((_time1.sfn+RG_MAX_SFN)*RG_NUM_SUB_FRAMES_5G+_time1.slot) -\
-       (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot) : \
-     (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) - (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)
+   (_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) < (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)?\
+((_time1.sfn+RG_MAX_SFN)*RG_NUM_SUB_FRAMES_5G+_time1.slot) -\
+(_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot) : \
+(_time1.sfn*RG_NUM_SUB_FRAMES_5G+_time1.slot) - (_time2.sfn*RG_NUM_SUB_FRAMES_5G+_time2.slot)
 
 #define RG_TTI_CYCLE_INVLD                0xFFFFFFFF     
 #define RG_CALC_TTI_CNT(_cellCb, _ttiCnt)\
-     _ttiCnt = (RG_NUM_SUB_FRAMES_5G * (_cellCb->crntTime.sfn + (_cellCb->ttiCycle * 1024)) )+\
-               _cellCb->crntTime.slot;
+   _ttiCnt = (RG_NUM_SUB_FRAMES_5G * (_cellCb->crntTime.sfn + (_cellCb->ttiCycle * 1024)) )+\
+_cellCb->crntTime.slot;
 #endif /* LTE_L2_MEAS */
 
 /* Tuned according to TDD Cfg Mode2 and 2UE/TTI.
@@ -661,12 +661,12 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 /* Note: Any changes to these enums should reflect to */
 /** @details Enums for special argument
  *
-*/
+ */
 typedef enum
 {
    RG_DIAG_NA
 } RgDiagSplArg;
- 
+
 #ifdef SS_DIAG 
 #define RG_DIAG_LVL0(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)                        \
 {                                                                                                \
@@ -678,7 +678,7 @@ typedef enum
 
 /** @details Macro definition for LTE-MAC error logs
  *  
-*/
+ */
 #define RG_DIAG_LVL1(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)            \
 {                                                                 \
    if(rgCb[_inst].rgInit.logMask & SS_DIAG_LVL1)                             \
@@ -689,7 +689,7 @@ typedef enum
 
 /** @details Macro definition for LTE-MAC critical logs
  *  
-*/
+ */
 #define RG_DIAG_LVL2(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)       \
 {                                                              \
    if(rgCb[_inst].rgInit.logMask & SS_DIAG_LVL2)                            \
@@ -700,7 +700,7 @@ typedef enum
 
 /** @details Macro definition for LTE-MAC logs 
  *  
-*/
+ */
 #define RG_DIAG_LVL3(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)        \
 {                                                              \
    if(rgCb[_inst].rgInit.logMask & SS_DIAG_LVL3)                            \
@@ -711,7 +711,7 @@ typedef enum
 
 /** @details Macro definition for LTE-MAC logs
  *  
-*/
+ */
 #define RG_DIAG_LVL4(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)        \
 {                                                              \
    if(rgCb[_inst].rgInit.logMask & SS_DIAG_LVL4)                            \
@@ -719,7 +719,7 @@ typedef enum
       ssDiagFix(_tknId, _splArgEnum, ENTRG, rgCb[_inst].rgInit.inst, SS_DIAG_LVL4, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
    }                                                              \
 }
-  
+
 #else
 
 #define RG_DIAG_LVL0(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)                        \
@@ -728,28 +728,28 @@ typedef enum
 
 /** @details Macro definition for LTE-MAC error logs
  *  
-*/
+ */
 #define RG_DIAG_LVL1(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)            \
 {                                                                 \
 }
 
 /** @details Macro definition for LTE-MAC critical logs
  *  
-*/
+ */
 #define RG_DIAG_LVL2(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)       \
 {                                                              \
 }
 
 /** @details Macro definition for LTE-MAC logs 
  *  
-*/
+ */
 #define RG_DIAG_LVL3(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)        \
 {                                                              \
 }
 
 /** @details Macro definition for LTE-MAC logs
  *  
-*/
+ */
 #define RG_DIAG_LVL4(_inst,_tknId, _splArgEnum, _splArg, _string, _arg1, _arg2, _arg3, _arg4)        \
 {                                                              \
 }
@@ -757,5 +757,5 @@ typedef enum
 #endif /* __RGH__ */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

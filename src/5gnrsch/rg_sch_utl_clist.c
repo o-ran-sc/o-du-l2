@@ -62,7 +62,7 @@ RgSchRrCListCp *lCp;               /* list control point */
 #endif
 {
    TRC2(rgSCHRrCListInit);
-   
+
    lCp->first = (RgSchRrCList *)NULLP;
    lCp->crnt  = (RgSchRrCList *)NULLP;
    lCp->count = 0;
@@ -83,7 +83,7 @@ RgSchRrCListCp *lCp;               /* list control point */
  *        File:  rr_clist.c
  */
 #ifdef ANSI
-PUBLIC Void rgSCHRrCListAdd2Crnt
+   PUBLIC Void rgSCHRrCListAdd2Crnt
 (
  RgSchRrCListCp *lCp,               /* list control point */
  RgSchRrCList   *node               /* node to be added */
@@ -123,28 +123,28 @@ PUBLIC Void rgSCHRrCListAdd2Crnt(lCp, node)
 /* LTE_ADV_FLAG_REMOVED_END */
 
 /*
-*
-*       Fun:   rgSCHRrCListAdd2Tail
-*
-*       Desc:  adds node to linked list after last.
-*
-*       Ret:   ROK   - ok
-*
-*       Notes: None
-*
-*       File:  rr_clist.c
-*
-*/
+ *
+ *       Fun:   rgSCHRrCListAdd2Tail
+ *
+ *       Desc:  adds node to linked list after last.
+ *
+ *       Ret:   ROK   - ok
+ *
+ *       Notes: None
+ *
+ *       File:  rr_clist.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void rgSCHRrCListAdd2Tail
+   PUBLIC Void rgSCHRrCListAdd2Tail
 (
-RgSchRrCListCp *lCp,               /* list control point */
-RgSchRrCList   *node               /* node to be added */
-)
+ RgSchRrCListCp *lCp,               /* list control point */
+ RgSchRrCList   *node               /* node to be added */
+ )
 #else 
 PUBLIC Void rgSCHRrCListAdd2Tail(lCp, node)
-RgSchRrCListCp *lCp;               /* list control point */
-RgSchRrCList   *node;              /* node to be added */
+   RgSchRrCListCp *lCp;               /* list control point */
+   RgSchRrCList   *node;              /* node to be added */
 #endif
 {
    TRC2(rgSCHRrCListAdd2Tail);
@@ -153,7 +153,7 @@ RgSchRrCList   *node;              /* node to be added */
    if (lCp == (RgSchRrCListCp *)NULLP)
       RETVOID;
 #endif
- 
+
    lCp->count++;
 
    if(!lCp->first)
@@ -176,34 +176,34 @@ RgSchRrCList   *node;              /* node to be added */
 } /* end of rgSCHRrCListAdd2Tail */
 
 /*
-*
-*       Fun:   rgSCHRrCListDelFrm
-*
-*       Desc:  remove node pointed to by nodePtr from list and return node.
-*              nodePtr could be anywhere in the list.
-*              - resets crnt to NULLP.
-*
-*       Ret:   pointer
-*
-*       Notes: None
-*
-*       File:  rr_clist.c
-*
-*/
+ *
+ *       Fun:   rgSCHRrCListDelFrm
+ *
+ *       Desc:  remove node pointed to by nodePtr from list and return node.
+ *              nodePtr could be anywhere in the list.
+ *              - resets crnt to NULLP.
+ *
+ *       Ret:   pointer
+ *
+ *       Notes: None
+ *
+ *       File:  rr_clist.c
+ *
+ */
 #ifdef ANSI
-PUBLIC RgSchRrCList *rgSCHRrCListDelFrm
+   PUBLIC RgSchRrCList *rgSCHRrCListDelFrm
 (
-RgSchRrCListCp *lCp,                /* list control pointer */
-RgSchRrCList *node                  /* node to be removed */
-)
+ RgSchRrCListCp *lCp,                /* list control pointer */
+ RgSchRrCList *node                  /* node to be removed */
+ )
 #else 
 PUBLIC RgSchRrCList *rgSCHRrCListDelFrm(lCp, node)
-RgSchRrCListCp *lCp;               /* list control pointer */
-RgSchRrCList *node;                /* node to be removed */
+   RgSchRrCListCp *lCp;               /* list control pointer */
+   RgSchRrCList *node;                /* node to be removed */
 #endif
 {
    TRC2(rgSCHRrCListDelFrm);
-  
+
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
       RETVALUE(NULLP);
@@ -217,14 +217,14 @@ RgSchRrCList *node;                /* node to be removed */
    {
       if(lCp->first == node)
       {
-         lCp->first = lCp->crnt = (RgSchRrCList *)NULLP;
-         lCp->count = 0;
-         node->next = node->prev = (RgSchRrCList *)NULLP;
-         RETVALUE(node);
+	 lCp->first = lCp->crnt = (RgSchRrCList *)NULLP;
+	 lCp->count = 0;
+	 node->next = node->prev = (RgSchRrCList *)NULLP;
+	 RETVALUE(node);
       }
       RETVALUE(NULLP);
    }
-   
+
    if (lCp->first == node)
    {
       lCp->first->prev->next = node->next;
@@ -232,11 +232,11 @@ RgSchRrCList *node;                /* node to be removed */
       lCp->first = node->next;
       if(lCp->crnt == node)
       {
-         lCp->crnt = node->next;
+	 lCp->crnt = node->next;
       }
       node->next = node->prev = (RgSchRrCList *)NULLP;
-       /* Adding this check and guarding the decrement of counter when
-       node is deleted with reshuffling */
+      /* Adding this check and guarding the decrement of counter when
+	 node is deleted with reshuffling */
       lCp->count--;
       RETVALUE(node);
    }
@@ -256,29 +256,29 @@ RgSchRrCList *node;                /* node to be removed */
 } /* end of rgSCHRrCListDelFrm */
 
 /*
-*
-*       Fun:   rgSCHRrCListInsrtAtCrnt
-*
-*       Desc:  Inserting the given node at CuRRENT and Moving present CURRENT 
-*              node to next.
-*
-*       Ret:   None
-*
-*       Notes: None
-*
-*       File:  rr_clist.c
-*
-*/
+ *
+ *       Fun:   rgSCHRrCListInsrtAtCrnt
+ *
+ *       Desc:  Inserting the given node at CuRRENT and Moving present CURRENT 
+ *              node to next.
+ *
+ *       Ret:   None
+ *
+ *       Notes: None
+ *
+ *       File:  rr_clist.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void rgSCHRrCListInsrtAtCrnt
+   PUBLIC Void rgSCHRrCListInsrtAtCrnt
 (
-RgSchRrCListCp *lCp,                /* list control pointer */
-RgSchRrCList *node                  /* node to be removed */
-)
+ RgSchRrCListCp *lCp,                /* list control pointer */
+ RgSchRrCList *node                  /* node to be removed */
+ )
 #else 
 PUBLIC Void rgSCHRrCListInsrtAtCrnt(lCp, node)
-RgSchRrCListCp *lCp;               /* list control pointer */
-RgSchRrCList *node;                /* node to be inserted */
+   RgSchRrCListCp *lCp;               /* list control pointer */
+   RgSchRrCList *node;                /* node to be inserted */
 #endif
 {
    RgSchRrCList *crnt;
@@ -303,6 +303,6 @@ RgSchRrCList *node;                /* node to be inserted */
 }
 
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

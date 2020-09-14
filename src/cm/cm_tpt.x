@@ -123,7 +123,7 @@ typedef struct cmTptAddr
 #endif
    }u;
 } CmTptAddr;
- 
+
 /*cm_tpt_x_001.main_12 Updated for TUCL 2.1 Release (Kernel SCTP Support) */
 #ifdef CM_LKSCTP
 /* Array of Transport Addresses */
@@ -162,7 +162,7 @@ typedef struct cmSockOpts
 #endif /* CM_INET2 */
       CmNetAddr     lclAddr;     /* local outgoing interface */
       U32           value;       /* option value */
-/*cm_tpt_x_001.main_12 Updated for TUCL 2.1 Release (Kernel SCTP Support) */
+      /*cm_tpt_x_001.main_12 Updated for TUCL 2.1 Release (Kernel SCTP Support) */
 #ifdef CM_LKSCTP
       CmSockLinger           sockLinger;
       CmSctpEvent            sctpEvent;
@@ -170,8 +170,8 @@ typedef struct cmSockOpts
       CmSctpPrimAddr         sctpPrimAddr;
       CmSctpPeerAddrInfo     sctpPeerAddrInfo;
       CmSctpStatus           sctpStatus;
-/*cm_tpt_x_001.main_13 Updated for the support of configurable RTO parameters, 
-                        HBeat value Max retransmissions (Init, Path, Association)*/
+      /*cm_tpt_x_001.main_13 Updated for the support of configurable RTO parameters, 
+	HBeat value Max retransmissions (Init, Path, Association)*/
       CmSctpRtoInfo          sctpRtoInfo;
       CmSctpInitMsg          sctpInitMsg;
       CmSctpAssocParams      sctpPeerAssocParams;
@@ -221,7 +221,7 @@ typedef struct cmTptParam
 #ifdef CM_TLS
       TlsTptParam  tlsParam;       /* TLS parameters */
 #endif
-/*cm_tpt_x_001.main_12 Updated for TUCL 2.1 Release (Kernel SCTP Support) */
+      /*cm_tpt_x_001.main_12 Updated for TUCL 2.1 Release (Kernel SCTP Support) */
 #ifdef CM_LKSCTP
       SctpSockParam  sctpParam;    /* LKSCTP parameters */
 #endif
@@ -302,7 +302,7 @@ typedef struct cmIpv6ExtHdr
 typedef struct cmIpv6HdrParm
 {
    TknU8    ttl;                   /* Set the hop limit */
-   
+
    /* added new field */
    CmNetAddr srcAddr6; /* src addr to set on send pkt(IPv6) */
 
@@ -324,7 +324,7 @@ typedef struct cmIpHdrParm
       CmIpv6HdrParm  hdrParmIpv6;  /* IPv6 header parameters */
 #endif /* IPV6_SUPPORTED */
    }u;
-   
+
 } CmIpHdrParm;
 
 /* IPv4 header */
@@ -351,10 +351,10 @@ typedef struct cmIpv6Hdr
    {
       struct ip6_hdrctl
       {
-         U32      ip6_un1_flow;
-         U16      ip6_un1_plen;
-         U8       ip6_un1_nxt;
-         U8       ip6_un1_hlim;
+	 U32      ip6_un1_flow;
+	 U16      ip6_un1_plen;
+	 U8       ip6_un1_nxt;
+	 U8       ip6_un1_hlim;
       } ip6_un1;
       U8    ip6_un2_vfc;
    } ip6_ctlun;
@@ -377,7 +377,7 @@ typedef struct cmIcmpv4Filter
    U8    allMsg;                   /* Flag to listen to ICMP messages */
    U8    protocol;                 /* ICMP packets with protocol only */
    U8    num;                      /* Number of valid type - code 
-                                    * combinations in the error array */
+				    * combinations in the error array */
    CmIcmpError icmpError[CM_MAX_ICMP_ERROR]; /* Error type & Code array */
 
 }CmIcmpv4Filter;
@@ -388,7 +388,7 @@ typedef struct cmIcmpv6Filter
    U8    icmpMsgFlag;              /* Flag to listen to any ICMP msgs */
    U8    allMsg;                   /* Flag to listen to all ICMP messages */
    U8    num;                      /* Number of valid type - code 
-                                    * combinations in the error array */
+				    * combinations in the error array */
    CmIcmpError icmpError[CM_MAX_ICMP_ERROR]; /* Error type & Code array */
 
 } CmIcmpv6Filter; 
@@ -397,14 +397,14 @@ typedef struct cmIcmpv6Filter
 /* ICMP filter paramters */
 typedef struct cmIcmpFilter 
 {
-  U8 type;                        /* ICMP version */
-  union 
-  {
-    CmIcmpv4Filter icmpv4Filter;  /* ICMPv4 filter structure */
+   U8 type;                        /* ICMP version */
+   union 
+   {
+      CmIcmpv4Filter icmpv4Filter;  /* ICMPv4 filter structure */
 #ifdef IPV6_SUPPORTED
-    CmIcmpv6Filter icmpv6Filter;  /* ICMPv6 filter structure */
+      CmIcmpv6Filter icmpv6Filter;  /* ICMPv6 filter structure */
 #endif /* IPV6_SUPPORTED */
-  }u;
+   }u;
 
 } CmIcmpFilter; 
 
@@ -414,26 +414,26 @@ typedef struct cmIcmpv4Hdr
    U8    icmpType;                /* Type of message */
    U8    icmpCode;                /* Message code */
    U16   chkSum;                  /* Ones complement cksum of struct */
-   
+
    union 
    {
       U8   ihPptr;                /* ICMP parameter problem */
       U32  rdrctAddr;             /* ICMP redirect address */
       struct idSeq 
       {
-         S16   icdId;             /* Identifier */                          
-         S16   icdSeq;            /* Sequence Number */
+	 S16   icdId;             /* Identifier */                          
+	 S16   icdSeq;            /* Sequence Number */
       } u1;
       U32 ihVoid;                 
    } u2;
-   
+
    union 
    {
       struct idTime
       {
-         U32  itOtime;            /* Original time stamp */
-         U32  itRtime;            /* Received time stamp */
-         U32  itTtime;            /* Transmit time stamp */
+	 U32  itOtime;            /* Original time stamp */
+	 U32  itRtime;            /* Received time stamp */
+	 U32  itTtime;            /* Transmit time stamp */
       } s;
       CmIpv4Hdr icmpIpHdr;        /* IP header */
       U32     id_mask;
@@ -483,10 +483,10 @@ EXTERN S16 cmUnpkCmTptParam     ARGS((CmTptParam *unpkParam, Buffer *mBuf));
 EXTERN S16 cmPkCmIpHdrParm     ARGS((CmIpHdrParm *pkParam, Buffer *mBuf));
 
 /* changed to include meminfo required to hold IPv6 
-                         extension headers */
+   extension headers */
 #ifdef IPV6_OPTS_SUPPORTED
 EXTERN S16 cmUnpkCmIpHdrParm    ARGS((CmIpHdrParm *unpkParam, Buffer *mBuf, 
-                                     Mem *memInfo));
+	 Mem *memInfo));
 #else
 EXTERN S16 cmUnpkCmIpHdrParm    ARGS((CmIpHdrParm *unpkParam, Buffer *mBuf));
 #endif
@@ -505,23 +505,23 @@ EXTERN S16 cmUnpkCmIcmpFilter   ARGS((CmIcmpFilter *unpkParam, Buffer *mBuf));
 EXTERN S16 cmPkCmIpv6ExtHdr     ARGS((CmIpv6ExtHdr *pkParam, Buffer *mBuf));
 EXTERN S16 cmPkCmIpv6RtHdr      ARGS((CmIpv6RtHdr *pkParam, Buffer *mBuf));
 EXTERN S16 cmUnpkCmIpv6RtHdr    ARGS((CmIpv6RtHdr *unpkParam, Buffer *mBuf, 
-                                     Mem *memInfo));
+	 Mem *memInfo));
 EXTERN S16 cmUnpkCmIpv6ExtHdr   ARGS((CmIpv6ExtHdr *unpkParam, Buffer *mBuf, 
-                                     Mem *memInfo));
+	 Mem *memInfo));
 EXTERN S16 cmPkCmIpv6DestOptsArr ARGS((CmIpv6DestOptsArr *pkParam, 
-                                      Buffer *mBuf));
+	 Buffer *mBuf));
 EXTERN S16 cmPkCmIpv6DestOptsHdr ARGS((CmIpv6DestOptsHdr *pkParam, 
-                                      Buffer *mBuf));
+	 Buffer *mBuf));
 EXTERN S16 cmUnpkCmIpv6DestOptsHdr ARGS((CmIpv6DestOptsHdr *unpkParam, 
-                                      Buffer *mBuf, Mem *memInfo));
+	 Buffer *mBuf, Mem *memInfo));
 EXTERN S16 cmUnpkCmIpv6DestOptsArr ARGS((CmIpv6DestOptsArr *unpkParam, 
-                                      Buffer *mBuf, Mem *memInfo));
+	 Buffer *mBuf, Mem *memInfo));
 EXTERN S16 cmPkCmIpv6HBHHdrArr  ARGS((CmIpv6HBHHdrArr *pkParam, Buffer *mBuf));
 EXTERN S16 cmPkCmIpv6HBHHdr     ARGS((CmIpv6HBHHdr *pkParam, Buffer *mBuf));
 EXTERN S16 cmUnpkCmIpv6HBHHdr   ARGS((CmIpv6HBHHdr *unpkParam, Buffer *mBuf, 
-                                     Mem *memInfo));
+	 Mem *memInfo));
 EXTERN S16 cmUnpkCmIpv6HBHHdrArr ARGS((CmIpv6HBHHdrArr *unpkParam, 
-                                      Buffer *mBuf, Mem *memInfo));
+	 Buffer *mBuf, Mem *memInfo));
 #endif /* IPV6_OPTS_SUPPORTED */
 #endif  /* CM_INET2 */ 
 
@@ -532,5 +532,5 @@ EXTERN S16 cmUnpkCmIpv6HBHHdrArr ARGS((CmIpv6HBHHdrArr *unpkParam,
 #endif /* __CMTPTX__ */
 
 /********************************************************************30**
-         End of file
-*********************************************************************31*/
+  End of file
+ *********************************************************************31*/

@@ -30,24 +30,24 @@
 {                                                               \
    S16 _ret;                                                    \
    _ret = SGetSBuf(RIC_APP_MEM_REG, RIC_POOL,                  \
-                     (Data **)&_datPtr, _size);                  \
+	 (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \
-      cmMemset((uint8_t*)_datPtr, 0, _size);                         \
+   cmMemset((uint8_t*)_datPtr, 0, _size);                         \
    else                                                         \
-      _datPtr = NULLP;                                          \
+   _datPtr = NULLP;                                          \
 }
- 
+
 /* free a static buffer */
 #define RIC_FREE(_datPtr, _size)                                 \
    SPutSBuf(RIC_APP_MEM_REG, RIC_POOL,                         \
-         (Data *)_datPtr, _size);
+	 (Data *)_datPtr, _size);
 
 typedef struct ipAddr
 {
- bool ipV4Pres;
- uint32_t  ipV4Addr;
- bool ipV6Pres;
- uint8_t   ipV6Addr[MAX_IPV6_LEN];
+   bool ipV4Pres;
+   uint32_t  ipV4Addr;
+   bool ipV6Pres;
+   uint8_t   ipV6Addr[MAX_IPV6_LEN];
 }SctpIpAddr;
 
 typedef struct RicSctpParams
@@ -74,5 +74,5 @@ void sctpNtfyInd(CmInetSctpNotification *ntfy);
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

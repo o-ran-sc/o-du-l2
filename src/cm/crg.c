@@ -74,17 +74,17 @@ SpId spId;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG001, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG001, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG002, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG002, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -92,8 +92,8 @@ SpId spId;
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG003, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG003, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -104,52 +104,52 @@ SpId spId;
 
 
 /**
-* @brief Request from RRC to MAC to bind the interface saps
-*
-* @details
-*
-*     Function : cmUnpkCrgBndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   SpId  spId
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from RRC to MAC to bind the interface saps
+ *
+ * @details
+ *
+ *     Function : cmUnpkCrgBndReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   SpId  spId
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgBndReq
+   PUBLIC S16 cmUnpkCrgBndReq
 (
-CrgBndReq func,
-Pst *pst,
-Buffer *mBuf
-)
+ CrgBndReq func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgBndReq(func, pst, mBuf)
-CrgBndReq func;
-Pst *pst;
-Buffer *mBuf;
+   CrgBndReq func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    SpId spId;
-   
+
    TRC3(cmUnpkCrgBndReq)
 
-   if (SUnpkS16(&suId, mBuf) != ROK) {
-      SPutMsg(mBuf);
+      if (SUnpkS16(&suId, mBuf) != ROK) {
+	 SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG004, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG004, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    if (SUnpkS16(&spId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG005, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG005, (ErrVal)0, "Packing failed");
 #endif
       RETVALUE(RFAILED);
    }
@@ -159,49 +159,49 @@ Buffer *mBuf;
 
 
 /**
-* @brief Confirmation from MAC to RRC for the bind/Unbind 
+ * @brief Confirmation from MAC to RRC for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : cmPkCrgBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : cmPkCrgBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgBndCfm
+   PUBLIC S16 cmPkCrgBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 cmPkCrgBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
    Buffer *mBuf = NULLP;
    TRC3(cmPkCrgBndCfm)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG006, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG006, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    if (SPkU8(status, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG007, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG007, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -209,8 +209,8 @@ U8 status;
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG008, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG008, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -221,53 +221,53 @@ U8 status;
 
 
 /**
-* @brief Confirmation from MAC to RRC for the bind/Unbind 
+ * @brief Confirmation from MAC to RRC for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : cmUnpkCrgBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : cmUnpkCrgBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgBndCfm
+   PUBLIC S16 cmUnpkCrgBndCfm
 (
-CrgBndCfm func,
-Pst *pst,
-Buffer *mBuf
-)
+ CrgBndCfm func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgBndCfm(func, pst, mBuf)
-CrgBndCfm func;
-Pst *pst;
-Buffer *mBuf;
+   CrgBndCfm func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    U8 status;
-   
+
    TRC3(cmUnpkCrgBndCfm)
 
-   if (SUnpkS16(&suId, mBuf) != ROK) {
-      SPutMsg(mBuf);
+      if (SUnpkS16(&suId, mBuf) != ROK) {
+	 SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG009, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG009, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    if (SUnpkU8(&status, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG010, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG010, (ErrVal)0, "Packing failed");
 #endif
       RETVALUE(RFAILED);
    }
@@ -277,48 +277,48 @@ Buffer *mBuf;
 
 
 /**
-* @brief Request from RRC to MAC to Unbind the interface saps
-*
-* @details
-*
-*     Function : cmPkCrgUbndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   Reason  reason
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from RRC to MAC to Unbind the interface saps
+ *
+ * @details
+ *
+ *     Function : cmPkCrgUbndReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   Reason  reason
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgUbndReq
+   PUBLIC S16 cmPkCrgUbndReq
 (
-Pst* pst,
-SpId spId,
-Reason reason
-)
+ Pst* pst,
+ SpId spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 cmPkCrgUbndReq(pst, spId, reason)
-Pst* pst;
-SpId spId;
-Reason reason;
+   Pst* pst;
+   SpId spId;
+   Reason reason;
 #endif
 {
    Buffer *mBuf = NULLP;
    TRC3(cmPkCrgUbndReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG011, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG011, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    if (SPkS16(reason, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG012, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG012, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -326,8 +326,8 @@ Reason reason;
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG013, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG013, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -338,52 +338,52 @@ Reason reason;
 
 
 /**
-* @brief Request from RRC to MAC to Unbind the interface saps
-*
-* @details
-*
-*     Function : cmUnpkCrgUbndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   Reason  reason
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from RRC to MAC to Unbind the interface saps
+ *
+ * @details
+ *
+ *     Function : cmUnpkCrgUbndReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   Reason  reason
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgUbndReq
+   PUBLIC S16 cmUnpkCrgUbndReq
 (
-CrgUbndReq func,
-Pst *pst,
-Buffer *mBuf
-)
+ CrgUbndReq func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgUbndReq(func, pst, mBuf)
-CrgUbndReq func;
-Pst *pst;
-Buffer *mBuf;
+   CrgUbndReq func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SpId spId;
    Reason reason;
-   
+
    TRC3(cmUnpkCrgUbndReq)
 
-   if (SUnpkS16(&spId, mBuf) != ROK) {
-      SPutMsg(mBuf);
+      if (SUnpkS16(&spId, mBuf) != ROK) {
+	 SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG014, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG014, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    if (SUnpkS16(&reason, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG015, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG015, (ErrVal)0, "Packing failed");
 #endif
       RETVALUE(RFAILED);
    }
@@ -393,64 +393,64 @@ Buffer *mBuf;
 
 
 /**
-* @brief Configuration Request from RRC to MAC for 
+ * @brief Configuration Request from RRC to MAC for 
  * configuring Cell/Ue/Lc
-*
-* @details
-*
-*     Function : cmPkCrgCfgReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   CrgCfgTransId  transId
-*  @param[in]   CrgCfgReqInfo  *  cfgReqInfo
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : cmPkCrgCfgReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   CrgCfgTransId  transId
+ *  @param[in]   CrgCfgReqInfo  *  cfgReqInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgCfgReq
+   PUBLIC S16 cmPkCrgCfgReq
 (
-Pst* pst,
-SpId spId,
-CrgCfgTransId transId,
-CrgCfgReqInfo  * cfgReqInfo
-)
+ Pst* pst,
+ SpId spId,
+ CrgCfgTransId transId,
+ CrgCfgReqInfo  * cfgReqInfo
+ )
 #else
 PUBLIC S16 cmPkCrgCfgReq(pst, spId, transId, cfgReqInfo)
-Pst* pst;
-SpId spId;
-CrgCfgTransId transId;
-CrgCfgReqInfo  * cfgReqInfo;
+   Pst* pst;
+   SpId spId;
+   CrgCfgTransId transId;
+   CrgCfgReqInfo  * cfgReqInfo;
 #endif
 {
    Buffer *mBuf = NULLP;
    TRC3(cmPkCrgCfgReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG016, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG016, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CrgCfgReqInfo));
-      RETVALUE(RFAILED);
-   }
+	 SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CrgCfgReqInfo));
+	 RETVALUE(RFAILED);
+      }
    if (cmPkCrgCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG017, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG017, (ErrVal)0, "Packing failed");
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CrgCfgReqInfo));
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-/* crg_c_001.main_5: MOD - Updating ERR code */
+   /* crg_c_001.main_5: MOD - Updating ERR code */
    if (cmPkCrgCfgTransId(&transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG018, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG018, (ErrVal)0, "Packing failed");
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CrgCfgReqInfo));
       SPutMsg(mBuf);
@@ -459,8 +459,8 @@ CrgCfgReqInfo  * cfgReqInfo;
    if (SPkS16(spId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG019, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG019, (ErrVal)0, "Packing failed");
 #endif
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CrgCfgReqInfo));
       SPutMsg(mBuf);
@@ -469,8 +469,8 @@ CrgCfgReqInfo  * cfgReqInfo;
    if (SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CrgCfgReqInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG020, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG020, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -481,75 +481,75 @@ CrgCfgReqInfo  * cfgReqInfo;
 
 
 /**
-* @brief Configuration Request from RRC to MAC for 
+ * @brief Configuration Request from RRC to MAC for 
  * configuring Cell/Ue/Lc
-*
-* @details
-*
-*     Function : cmUnpkCrgCfgReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   CrgCfgTransId  transId
-*  @param[in]   CrgCfgReqInfo  *  cfgReqInfo
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : cmUnpkCrgCfgReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   CrgCfgTransId  transId
+ *  @param[in]   CrgCfgReqInfo  *  cfgReqInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgCfgReq
+   PUBLIC S16 cmUnpkCrgCfgReq
 (
-CrgCfgReq func,
-Pst *pst,
-Buffer *mBuf
-)
+ CrgCfgReq func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgCfgReq(func, pst, mBuf)
-CrgCfgReq func;
-Pst *pst;
-Buffer *mBuf;
+   CrgCfgReq func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SpId spId;
    CrgCfgTransId transId;
    CrgCfgReqInfo *cfgReqInfo;
-   
+
    TRC3(cmUnpkCrgCfgReq)
 
-   if (SUnpkS16(&spId, mBuf) != ROK) {
-      SPutMsg(mBuf);
+      if (SUnpkS16(&spId, mBuf) != ROK) {
+	 SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG021, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG021, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    if (cmUnpkCrgCfgTransId(&transId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG022, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG022, (ErrVal)0, "Packing failed");
 #endif
       RETVALUE(RFAILED);
    }
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&cfgReqInfo, sizeof(CrgCfgReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG023, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG023, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
    }
-    
+
    if (cmUnpkCrgCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CrgCfgReqInfo));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG024, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG024, (ErrVal)0, "Packing failed");
 #endif
       RETVALUE(RFAILED);
    }
@@ -559,52 +559,52 @@ Buffer *mBuf;
 
 
 /**
-* @brief Configuration Confirm from MAC to RRC
-*
-* @details
-*
-*     Function : cmPkCrgCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   CrgCfgTransId  transId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configuration Confirm from MAC to RRC
+ *
+ * @details
+ *
+ *     Function : cmPkCrgCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   CrgCfgTransId  transId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgCfgCfm
+   PUBLIC S16 cmPkCrgCfgCfm
 (
-Pst* pst,
-SuId suId,
-CrgCfgTransId transId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ CrgCfgTransId transId,
+ U8 status
+ )
 #else
 PUBLIC S16 cmPkCrgCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-CrgCfgTransId transId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   CrgCfgTransId transId;
+   U8 status;
 #endif
 {
    Buffer *mBuf = NULLP;
    TRC3(cmPkCrgCfgCfm)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG025, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG025, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
-   }
-/* crg_c_001.main_5 - ADD - Added the packing for status. */
+	 RETVALUE(RFAILED);
+      }
+   /* crg_c_001.main_5 - ADD - Added the packing for status. */
    if (SPkU8(status, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG026, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG026, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -612,8 +612,8 @@ U8 status;
    if (cmPkCrgCfgTransId(&transId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG027, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG027, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -621,8 +621,8 @@ U8 status;
    if (SPkS16(suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG028, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG028, (ErrVal)0, "Packing failed");
 #endif
       SPutMsg(mBuf);
       RETVALUE(RFAILED);
@@ -633,54 +633,54 @@ U8 status;
 
 
 /**
-* @brief Configuration Confirm from MAC to RRC
-*
-* @details
-*
-*     Function : cmUnpkCrgCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   CrgCfgTransId  transId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configuration Confirm from MAC to RRC
+ *
+ * @details
+ *
+ *     Function : cmUnpkCrgCfgCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   CrgCfgTransId  transId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgCfgCfm
+   PUBLIC S16 cmUnpkCrgCfgCfm
 (
-CrgCfgCfm func,
-Pst *pst,
-Buffer *mBuf
-)
+ CrgCfgCfm func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgCfgCfm(func, pst, mBuf)
-CrgCfgCfm func;
-Pst *pst;
-Buffer *mBuf;
+   CrgCfgCfm func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    CrgCfgTransId transId;
    U8 status;
-   
+
    TRC3(cmUnpkCrgCfgCfm)
 
-   if (SUnpkS16(&suId, mBuf) != ROK) {
-      SPutMsg(mBuf);
+      if (SUnpkS16(&suId, mBuf) != ROK) {
+	 SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG029, (ErrVal)0, "Packing failed");
+	 SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
+	       __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	       (ErrVal)ECRG029, (ErrVal)0, "Packing failed");
 #endif
-      RETVALUE(RFAILED);
-   }
+	 RETVALUE(RFAILED);
+      }
    if (cmUnpkCrgCfgTransId(&transId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG030, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG030, (ErrVal)0, "Packing failed");
 #endif
       RETVALUE(RFAILED);
    }
@@ -688,8 +688,8 @@ Buffer *mBuf;
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ECRG031, (ErrVal)0, "Packing failed");
+	    __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
+	    (ErrVal)ECRG031, (ErrVal)0, "Packing failed");
 #endif
       RETVALUE(RFAILED);
    }
@@ -699,114 +699,114 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgCfgTransId
-*
-*
-*     Desc : Transaction ID between MAC and RRC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgCfgTransId
+ *
+ *
+ *     Desc : Transaction ID between MAC and RRC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgCfgTransId
+   PUBLIC S16 cmPkCrgCfgTransId
 (
-CrgCfgTransId *param,
-Buffer *mBuf
-)
+ CrgCfgTransId *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgCfgTransId(param, mBuf)
-CrgCfgTransId *param;
-Buffer *mBuf;
+   CrgCfgTransId *param;
+   Buffer *mBuf;
 #endif
 {
 
    S32 i;
    TRC3(cmPkCrgCfgTransId)
 
-   for (i=CRG_CFG_TRANSID_SIZE-1; i >= 0; i--) {
-      CMCHKPK(SPkU8, param->trans[i], mBuf);
-   }
+      for (i=CRG_CFG_TRANSID_SIZE-1; i >= 0; i--) {
+	 CMCHKPK(SPkU8, param->trans[i], mBuf);
+      }
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgCfgTransId
-*
-*
-*     Desc : Transaction ID between MAC and RRC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgCfgTransId
+ *
+ *
+ *     Desc : Transaction ID between MAC and RRC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgCfgTransId
+   PUBLIC S16 cmUnpkCrgCfgTransId
 (
-CrgCfgTransId *param,
-Buffer *mBuf
-)
+ CrgCfgTransId *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgCfgTransId(param, mBuf)
-CrgCfgTransId *param;
-Buffer *mBuf;
+   CrgCfgTransId *param;
+   Buffer *mBuf;
 #endif
 {
 
    S32 i;
    TRC3(cmUnpkCrgCfgTransId)
 
-   for (i=0; i<CRG_CFG_TRANSID_SIZE; i++) {
-      CMCHKUNPK(SUnpkU8, &param->trans[i], mBuf);
-   }
+      for (i=0; i<CRG_CFG_TRANSID_SIZE; i++) {
+	 CMCHKUNPK(SUnpkU8, &param->trans[i], mBuf);
+      }
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgBwCfg
-*
-*
-*     Desc : Bandwidth configuration per cell
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgBwCfg
+ *
+ *
+ *     Desc : Bandwidth configuration per cell
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgBwCfg
+   PUBLIC S16 cmPkCrgBwCfg
 (
-CrgBwCfg *param,
-Buffer *mBuf
-)
+ CrgBwCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgBwCfg(param, mBuf)
-CrgBwCfg *param;
-Buffer *mBuf;
+   CrgBwCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgBwCfg)
 
-   CMCHKPK(SPkU8, param->ulTotalBw, mBuf);
+      CMCHKPK(SPkU8, param->ulTotalBw, mBuf);
    CMCHKPK(SPkU8, param->dlTotalBw, mBuf);
    RETVALUE(ROK);
 }
@@ -814,36 +814,36 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgBwCfg
-*
-*
-*     Desc : Bandwidth configuration per cell
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgBwCfg
+ *
+ *
+ *     Desc : Bandwidth configuration per cell
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgBwCfg
+   PUBLIC S16 cmUnpkCrgBwCfg
 (
-CrgBwCfg *param,
-Buffer *mBuf
-)
+ CrgBwCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgBwCfg(param, mBuf)
-CrgBwCfg *param;
-Buffer *mBuf;
+   CrgBwCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgBwCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->dlTotalBw, mBuf);
+      CMCHKUNPK(SUnpkU8, &param->dlTotalBw, mBuf);
    CMCHKUNPK(SUnpkU8, &param->ulTotalBw, mBuf);
    RETVALUE(ROK);
 }
@@ -851,109 +851,109 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgRachCfg
-*
-*
-*     Desc : RACH configuration per cell
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgRachCfg
+ *
+ *
+ *     Desc : RACH configuration per cell
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgRachCfg
+   PUBLIC S16 cmPkCrgRachCfg
 (
-CrgRachCfg *param,
-Buffer *mBuf
-)
+ CrgRachCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgRachCfg(param, mBuf)
-CrgRachCfg *param;
-Buffer *mBuf;
+   CrgRachCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgRachCfg)
 
-   CMCHKPK(SPkU8, param->maxMsg3Tx, mBuf);
+      CMCHKPK(SPkU8, param->maxMsg3Tx, mBuf);
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgRachCfg
-*
-*
-*     Desc : RACH configuration per cell
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgRachCfg
+ *
+ *
+ *     Desc : RACH configuration per cell
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgRachCfg
+   PUBLIC S16 cmUnpkCrgRachCfg
 (
-CrgRachCfg *param,
-Buffer *mBuf
-)
+ CrgRachCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgRachCfg(param, mBuf)
-CrgRachCfg *param;
-Buffer *mBuf;
+   CrgRachCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgRachCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->maxMsg3Tx, mBuf);
+      CMCHKUNPK(SUnpkU8, &param->maxMsg3Tx, mBuf);
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgCellCfg
-*
-*
-*     Desc : Cell configuration
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgCellCfg
+ *
+ *
+ *     Desc : Cell configuration
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgCellCfg
+   PUBLIC S16 cmPkCrgCellCfg
 (
-CrgCellCfg *param,
-Buffer *mBuf
-)
+ CrgCellCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgCellCfg(param, mBuf)
-CrgCellCfg *param;
-Buffer *mBuf;
+   CrgCellCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgCellCfg)
 
 #ifdef EMTC_ENABLE
-   CMCHKPK(SPkU8, param->emtcEnable, mBuf);
+      CMCHKPK(SPkU8, param->emtcEnable, mBuf);
 #endif
 #ifdef TENB_MULT_CELL_SUPPRT
    CMCHKPK(SPkS16, param->rguDlSapId, mBuf);
@@ -968,36 +968,36 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgCellCfg
-*
-*
-*     Desc : Cell configuration
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgCellCfg
+ *
+ *
+ *     Desc : Cell configuration
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgCellCfg
+   PUBLIC S16 cmUnpkCrgCellCfg
 (
-CrgCellCfg *param,
-Buffer *mBuf
-)
+ CrgCellCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgCellCfg(param, mBuf)
-CrgCellCfg *param;
-Buffer *mBuf;
+   CrgCellCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgCellCfg)
 
-   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
+      CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkCrgRachCfg, &param->rachCfg, mBuf);
    CMCHKUNPK(cmUnpkCrgBwCfg, &param->bwCfg, mBuf);
 #ifdef TENB_MULT_CELL_SUPPRT
@@ -1013,65 +1013,65 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgUeUlHqCfg
-*
-*
-*     Desc : Uplink HARQ configuration per UE
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgUeUlHqCfg
+ *
+ *
+ *     Desc : Uplink HARQ configuration per UE
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgUeUlHqCfg
+   PUBLIC S16 cmPkCrgUeUlHqCfg
 (
-CrgUeUlHqCfg *param,
-Buffer *mBuf
-)
+ CrgUeUlHqCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgUeUlHqCfg(param, mBuf)
-CrgUeUlHqCfg *param;
-Buffer *mBuf;
+   CrgUeUlHqCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgUeUlHqCfg)
 
-   CMCHKPK(SPkU8, param->maxUlHqTx, mBuf);
+      CMCHKPK(SPkU8, param->maxUlHqTx, mBuf);
    RETVALUE(ROK);
 }
 
 #ifdef LTE_ADV
 /***********************************************************
-*
-*     Func : cmPkCrgUeSCellCfg
-*
-*
-*     Desc : Secondary Cell information of the UE
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgUeSCellCfg
+ *
+ *
+ *     Desc : Secondary Cell information of the UE
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkCrgUeSCellCfg
+   PRIVATE S16 cmPkCrgUeSCellCfg
 (
-CrgUeSCellInfo *param,
-Buffer *mBuf
-)
+ CrgUeSCellInfo *param,
+ Buffer *mBuf
+ )
 #else
 PRIVATE S16 cmPkCrgUeSCellCfg(param, mBuf)
-CrgUeSCellInfo *param;
-Buffer *mBuf;
+   CrgUeSCellInfo *param;
+   Buffer *mBuf;
 #endif
 {
    CMCHKPK(SPkS16, param->rguDlSapId, mBuf);
@@ -1082,30 +1082,30 @@ Buffer *mBuf;
    RETVALUE(ROK);
 }
 /***********************************************************
-*
-*     Func : cmUnpkCrgUeSCellCfg
-*
-*
-*     Desc : Secondary Cell information of the UE
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgUeSCellCfg
+ *
+ *
+ *     Desc : Secondary Cell information of the UE
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkCrgUeSCellCfg
+   PRIVATE S16 cmUnpkCrgUeSCellCfg
 (
-CrgUeSCellInfo *param,
-Buffer *mBuf
-)
+ CrgUeSCellInfo *param,
+ Buffer *mBuf
+ )
 #else
 PRIVATE S16 cmUnpkCrgUeSCellCfg(param, mBuf)
-CrgUeSCellInfo *param;
-Buffer *mBuf;
+   CrgUeSCellInfo *param;
+   Buffer *mBuf;
 #endif
 {
    CMCHKUNPK(SUnpkU16, &param->sCellId, mBuf);
@@ -1115,30 +1115,30 @@ Buffer *mBuf;
    RETVALUE(ROK);
 }
 /***********************************************************
-*
-*     Func : cmPkCrgUeSecCellInfo
-*
-*
-*     Desc : Secondary Cell information of the UE
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgUeSecCellInfo
+ *
+ *
+ *     Desc : Secondary Cell information of the UE
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgUeSecCellInfo
+   PUBLIC S16 cmPkCrgUeSecCellInfo
 (
-CrgUeSecCellInfo *param,
-Buffer *mBuf
-)
+ CrgUeSecCellInfo *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgUeSecCellInfo(param, mBuf)
-CrgUeSecCellInfo *param;
-Buffer *mBuf;
+   CrgUeSecCellInfo *param;
+   Buffer *mBuf;
 #endif
 {
    S8 idx;
@@ -1154,30 +1154,30 @@ Buffer *mBuf;
 }
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgUeSecCellInfo
-*
-*
-*     Desc : Secondary Cell information of the UE
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgUeSecCellInfo
+ *
+ *
+ *     Desc : Secondary Cell information of the UE
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgUeSecCellInfo
+   PUBLIC S16 cmUnpkCrgUeSecCellInfo
 (
-CrgUeSecCellInfo *param,
-Buffer *mBuf
-)
+ CrgUeSecCellInfo *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgUeSecCellInfo(param, mBuf)
-CrgUeSecCellInfo *param;
-Buffer *mBuf;
+   CrgUeSecCellInfo *param;
+   Buffer *mBuf;
 #endif
 {
    U8 idx;
@@ -1189,7 +1189,7 @@ Buffer *mBuf;
 
       for(idx = 0; idx < param->numSCells; idx++)
       {
-         CMCHKUNPK(cmUnpkCrgUeSCellCfg, &param->ueSCellCfg[idx],mBuf);
+	 CMCHKUNPK(cmUnpkCrgUeSCellCfg, &param->ueSCellCfg[idx],mBuf);
       }
    }
 
@@ -1200,72 +1200,72 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgUeUlHqCfg
-*
-*
-*     Desc : Uplink HARQ configuration per UE
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgUeUlHqCfg
+ *
+ *
+ *     Desc : Uplink HARQ configuration per UE
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgUeUlHqCfg
+   PUBLIC S16 cmUnpkCrgUeUlHqCfg
 (
-CrgUeUlHqCfg *param,
-Buffer *mBuf
-)
+ CrgUeUlHqCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgUeUlHqCfg(param, mBuf)
-CrgUeUlHqCfg *param;
-Buffer *mBuf;
+   CrgUeUlHqCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgUeUlHqCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->maxUlHqTx, mBuf);
+      CMCHKUNPK(SUnpkU8, &param->maxUlHqTx, mBuf);
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgUeCfg
-*
-*
-*     Desc : UE configuration
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgUeCfg
+ *
+ *
+ *     Desc : UE configuration
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgUeCfg
+   PUBLIC S16 cmPkCrgUeCfg
 (
-CrgUeCfg *param,
-Buffer *mBuf
-)
+ CrgUeCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgUeCfg(param, mBuf)
-CrgUeCfg *param;
-Buffer *mBuf;
+   CrgUeCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgUeCfg)
 #ifdef TENB_MULT_CELL_SUPPRT
-   CMCHKPK(SPkS16, param->rguDlSapId, mBuf);
+      CMCHKPK(SPkS16, param->rguDlSapId, mBuf);
    CMCHKPK(SPkS16, param->rguUlSapId, mBuf);
 #endif
    CMCHKPK(SPkU32, param->txMode.tm, mBuf);
@@ -1279,37 +1279,37 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgUeCfg
-*
-*
-*     Desc : UE configuration
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgUeCfg
+ *
+ *
+ *     Desc : UE configuration
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgUeCfg
+   PUBLIC S16 cmUnpkCrgUeCfg
 (
-CrgUeCfg *param,
-Buffer *mBuf
-)
+ CrgUeCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgUeCfg(param, mBuf)
-CrgUeCfg *param;
-Buffer *mBuf;
+   CrgUeCfg *param;
+   Buffer *mBuf;
 #endif
 {
    U32 tmpEnum;
-   
+
    TRC3(cmUnpkCrgUeCfg)
 
-   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
+      CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
    CMCHKUNPK(cmUnpkCrgUeUlHqCfg, &param->ueUlHqCfg, mBuf);
    CMCHKUNPK(SUnpkU8, &param->txMode.pres, mBuf);
@@ -1325,108 +1325,108 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgDlLchCfg
-*
-*
-*     Desc : Logical channel configuration info for downlink logical channels
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgDlLchCfg
+ *
+ *
+ *     Desc : Logical channel configuration info for downlink logical channels
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgDlLchCfg
+   PUBLIC S16 cmPkCrgDlLchCfg
 (
-CrgDlLchCfg *param,
-Buffer *mBuf
-)
+ CrgDlLchCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgDlLchCfg(param, mBuf)
-CrgDlLchCfg *param;
-Buffer *mBuf;
+   CrgDlLchCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgDlLchCfg)
 
-   CMCHKPK(SPkU8, param->dlTrchType, mBuf);
+      CMCHKPK(SPkU8, param->dlTrchType, mBuf);
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgDlLchCfg
-*
-*
-*     Desc : Logical channel configuration info for downlink logical channels
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgDlLchCfg
+ *
+ *
+ *     Desc : Logical channel configuration info for downlink logical channels
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgDlLchCfg
+   PUBLIC S16 cmUnpkCrgDlLchCfg
 (
-CrgDlLchCfg *param,
-Buffer *mBuf
-)
+ CrgDlLchCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgDlLchCfg(param, mBuf)
-CrgDlLchCfg *param;
-Buffer *mBuf;
+   CrgDlLchCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgDlLchCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->dlTrchType, mBuf);
+      CMCHKUNPK(SUnpkU8, &param->dlTrchType, mBuf);
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgUlLchCfg
-*
-*
-*     Desc : Logical channel configuration info for uplink logical channels
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgUlLchCfg
+ *
+ *
+ *     Desc : Logical channel configuration info for uplink logical channels
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgUlLchCfg
+   PUBLIC S16 cmPkCrgUlLchCfg
 (
-CrgUlLchCfg *param,
-Buffer *mBuf
-)
+ CrgUlLchCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgUlLchCfg(param, mBuf)
-CrgUlLchCfg *param;
-Buffer *mBuf;
+   CrgUlLchCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgUlLchCfg)
 
-   CMCHKPK(SPkU8, param->lcgId, mBuf);
+      CMCHKPK(SPkU8, param->lcgId, mBuf);
    CMCHKPK(SPkU8, param->ulTrchType, mBuf);
    RETVALUE(ROK);
 }
@@ -1434,36 +1434,36 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgUlLchCfg
-*
-*
-*     Desc : Logical channel configuration info for uplink logical channels
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgUlLchCfg
+ *
+ *
+ *     Desc : Logical channel configuration info for uplink logical channels
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgUlLchCfg
+   PUBLIC S16 cmUnpkCrgUlLchCfg
 (
-CrgUlLchCfg *param,
-Buffer *mBuf
-)
+ CrgUlLchCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgUlLchCfg(param, mBuf)
-CrgUlLchCfg *param;
-Buffer *mBuf;
+   CrgUlLchCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgUlLchCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->ulTrchType, mBuf);
+      CMCHKUNPK(SUnpkU8, &param->ulTrchType, mBuf);
    CMCHKUNPK(SUnpkU8, &param->lcgId, mBuf);
    RETVALUE(ROK);
 }
@@ -1471,37 +1471,37 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgLchCfg
-*
-*
-*     Desc : Logical channel configuration info for common and dedicated channels
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgLchCfg
+ *
+ *
+ *     Desc : Logical channel configuration info for common and dedicated channels
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgLchCfg
+   PUBLIC S16 cmPkCrgLchCfg
 (
-CrgLchCfg *param,
-Buffer *mBuf
-)
+ CrgLchCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgLchCfg(param, mBuf)
-CrgLchCfg *param;
-Buffer *mBuf;
+   CrgLchCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgLchCfg)
-/* crg_c_001.main_5 - ADD - Added the packing for LTE_L2_MEAS. */
+      /* crg_c_001.main_5 - ADD - Added the packing for LTE_L2_MEAS. */
 #ifdef LTE_L2_MEAS
-   CMCHKPK(SPkU8, param->qci, mBuf);
+      CMCHKPK(SPkU8, param->qci, mBuf);
 #endif
    CMCHKPK(cmPkCrgUlLchCfg, &param->ulInfo, mBuf);
    CMCHKPK(cmPkCrgDlLchCfg, &param->dlInfo, mBuf);
@@ -1516,43 +1516,43 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgLchCfg
-*
-*
-*     Desc : Logical channel configuration info for common and dedicated channels
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgLchCfg
+ *
+ *
+ *     Desc : Logical channel configuration info for common and dedicated channels
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgLchCfg
+   PUBLIC S16 cmUnpkCrgLchCfg
 (
-CrgLchCfg *param,
-Buffer *mBuf
-)
+ CrgLchCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgLchCfg(param, mBuf)
-CrgLchCfg *param;
-Buffer *mBuf;
+   CrgLchCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgLchCfg)
 
-   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
+      CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(cmUnpkLteLcType, &param->lcType, mBuf);
    CMCHKUNPK(SUnpkU8, &param->dir, mBuf);
    CMCHKUNPK(cmUnpkCrgDlLchCfg, &param->dlInfo, mBuf);
    CMCHKUNPK(cmUnpkCrgUlLchCfg, &param->ulInfo, mBuf);
-/* crg_c_001.main_5 - ADD - Added the unpacking for LTE_L2_MEAS. */
+   /* crg_c_001.main_5 - ADD - Added the unpacking for LTE_L2_MEAS. */
 #ifdef LTE_L2_MEAS
    CMCHKUNPK(SUnpkU8, &param->qci, mBuf);
 #endif
@@ -1562,47 +1562,47 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgCfg
-*
-*
-*     Desc : Basic configuration info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgCfg
+ *
+ *
+ *     Desc : Basic configuration info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgCfg
+   PUBLIC S16 cmPkCrgCfg
 (
-CrgCfg *param,
-Buffer *mBuf
-)
+ CrgCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgCfg(param, mBuf)
-CrgCfg *param;
-Buffer *mBuf;
+   CrgCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgCfg)
 
       switch(param->cfgType) {
-         case CRG_LCH_CFG:
-            CMCHKPK(cmPkCrgLchCfg, &param->u.lchCfg, mBuf);
-            break;
-         case CRG_UE_CFG:
-            CMCHKPK(cmPkCrgUeCfg, &param->u.ueCfg, mBuf);
-            break;
-         case CRG_CELL_CFG:
-            CMCHKPK(cmPkCrgCellCfg, &param->u.cellCfg, mBuf);
-            break;
-         default :
-            RETVALUE(RFAILED);
+	 case CRG_LCH_CFG:
+	    CMCHKPK(cmPkCrgLchCfg, &param->u.lchCfg, mBuf);
+	    break;
+	 case CRG_UE_CFG:
+	    CMCHKPK(cmPkCrgUeCfg, &param->u.ueCfg, mBuf);
+	    break;
+	 case CRG_CELL_CFG:
+	    CMCHKPK(cmPkCrgCellCfg, &param->u.cellCfg, mBuf);
+	    break;
+	 default :
+	    RETVALUE(RFAILED);
       }
    CMCHKPK(SPkU8, param->cfgType, mBuf);
    RETVALUE(ROK);
@@ -1611,85 +1611,85 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgCfg
-*
-*
-*     Desc : Basic configuration info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgCfg
+ *
+ *
+ *     Desc : Basic configuration info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgCfg
+   PUBLIC S16 cmUnpkCrgCfg
 (
-CrgCfg *param,
-Buffer *mBuf
-)
+ CrgCfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgCfg(param, mBuf)
-CrgCfg *param;
-Buffer *mBuf;
+   CrgCfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgCfg)
 
-   CMCHKUNPK(SUnpkU8, &param->cfgType, mBuf);
-      switch(param->cfgType) {
-         case CRG_CELL_CFG:
-            CMCHKUNPK(cmUnpkCrgCellCfg, &param->u.cellCfg, mBuf);
-            break;
-         case CRG_UE_CFG:
-            CMCHKUNPK(cmUnpkCrgUeCfg, &param->u.ueCfg, mBuf);
-            break;
-         case CRG_LCH_CFG:
-            CMCHKUNPK(cmUnpkCrgLchCfg, &param->u.lchCfg, mBuf);
-            break;
-         default :
-            RETVALUE(RFAILED);
-      }
+      CMCHKUNPK(SUnpkU8, &param->cfgType, mBuf);
+   switch(param->cfgType) {
+      case CRG_CELL_CFG:
+	 CMCHKUNPK(cmUnpkCrgCellCfg, &param->u.cellCfg, mBuf);
+	 break;
+      case CRG_UE_CFG:
+	 CMCHKUNPK(cmUnpkCrgUeCfg, &param->u.ueCfg, mBuf);
+	 break;
+      case CRG_LCH_CFG:
+	 CMCHKUNPK(cmUnpkCrgLchCfg, &param->u.lchCfg, mBuf);
+	 break;
+      default :
+	 RETVALUE(RFAILED);
+   }
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgCellRecfg
-*
-*
-*     Desc : Cell reconfiguration info
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgCellRecfg
+ *
+ *
+ *     Desc : Cell reconfiguration info
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgCellRecfg
+   PUBLIC S16 cmPkCrgCellRecfg
 (
-CrgCellRecfg *param,
-Buffer *mBuf
-)
+ CrgCellRecfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgCellRecfg(param, mBuf)
-CrgCellRecfg *param;
-Buffer *mBuf;
+   CrgCellRecfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgCellRecfg)
 
-   CMCHKPK(cmPkCrgRachCfg, &param->rachRecfg, mBuf);
+      CMCHKPK(cmPkCrgRachCfg, &param->rachRecfg, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    RETVALUE(ROK);
 }
@@ -1697,36 +1697,36 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgCellRecfg
-*
-*
-*     Desc : Cell reconfiguration info
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgCellRecfg
+ *
+ *
+ *     Desc : Cell reconfiguration info
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgCellRecfg
+   PUBLIC S16 cmUnpkCrgCellRecfg
 (
-CrgCellRecfg *param,
-Buffer *mBuf
-)
+ CrgCellRecfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgCellRecfg(param, mBuf)
-CrgCellRecfg *param;
-Buffer *mBuf;
+   CrgCellRecfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgCellRecfg)
 
-   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
+      CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkCrgRachCfg, &param->rachRecfg, mBuf);
    RETVALUE(ROK);
 }
@@ -1734,43 +1734,43 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgUeRecfg
-*
-*
-*     Desc : UE reconfiguration info
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgUeRecfg
+ *
+ *
+ *     Desc : UE reconfiguration info
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgUeRecfg
+   PUBLIC S16 cmPkCrgUeRecfg
 (
-CrgUeRecfg *param,
-Buffer *mBuf
-)
+ CrgUeRecfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgUeRecfg(param, mBuf)
-CrgUeRecfg *param;
-Buffer *mBuf;
+   CrgUeRecfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgUeRecfg)
 #ifdef LTE_ADV
-   if(TRUE == param->crgSCellCfg.isSCellCfgPres)
-   {
-      CMCHKPK(cmPkCrgUeSecCellInfo, &param->crgSCellCfg, mBuf);
-   }
-   else
-   {
-      CMCHKPK(SPkU8, param->crgSCellCfg.isSCellCfgPres, mBuf);
-   }
+      if(TRUE == param->crgSCellCfg.isSCellCfgPres)
+      {
+	 CMCHKPK(cmPkCrgUeSecCellInfo, &param->crgSCellCfg, mBuf);
+      }
+      else
+      {
+	 CMCHKPK(SPkU8, param->crgSCellCfg.isSCellCfgPres, mBuf);
+      }
 #endif /* LTE_ADV */
    CMCHKPK(SPkU32, param->txMode.tm, mBuf);
    CMCHKPK(SPkU8, param->txMode.pres, mBuf);
@@ -1784,43 +1784,43 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgUeRecfg
-*
-*
-*     Desc : UE reconfiguration info
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgUeRecfg
+ *
+ *
+ *     Desc : UE reconfiguration info
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgUeRecfg
+   PUBLIC S16 cmUnpkCrgUeRecfg
 (
-CrgUeRecfg *param,
-Buffer *mBuf
-)
+ CrgUeRecfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgUeRecfg(param, mBuf)
-CrgUeRecfg *param;
-Buffer *mBuf;
+   CrgUeRecfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgUeRecfg)
 
-   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
+      CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->oldCrnti, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->newCrnti, mBuf);
    CMCHKUNPK(cmUnpkCrgUeUlHqCfg, &param->ueUlHqRecfg, mBuf);
    CMCHKUNPK(SUnpkU8, &param->txMode.pres, mBuf);
    CMCHKUNPK(SUnpkU32, (U32 *)&param->txMode.tm, mBuf);
 #ifdef LTE_ADV 
-      CMCHKUNPK(cmUnpkCrgUeSecCellInfo, &param->crgSCellCfg, mBuf);
+   CMCHKUNPK(cmUnpkCrgUeSecCellInfo, &param->crgSCellCfg, mBuf);
 #endif /* LTE_ADV */
    RETVALUE(ROK);
 }
@@ -1828,30 +1828,30 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgLchRecfg
-*
-*
-*     Desc : Logical channel reconfiguration info for dedicated channels only
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgLchRecfg
+ *
+ *
+ *     Desc : Logical channel reconfiguration info for dedicated channels only
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgLchRecfg
+   PUBLIC S16 cmPkCrgLchRecfg
 (
-CrgLchRecfg *param,
-Buffer *mBuf
-)
+ CrgLchRecfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgLchRecfg(param, mBuf)
-CrgLchRecfg *param;
-Buffer *mBuf;
+   CrgLchRecfg *param;
+   Buffer *mBuf;
 #endif
 {
 
@@ -1867,86 +1867,86 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgLchRecfg
-*
-*
-*     Desc : Logical channel reconfiguration info for dedicated channels only
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgLchRecfg
+ *
+ *
+ *     Desc : Logical channel reconfiguration info for dedicated channels only
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgLchRecfg
+   PUBLIC S16 cmUnpkCrgLchRecfg
 (
-CrgLchRecfg *param,
-Buffer *mBuf
-)
+ CrgLchRecfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgLchRecfg(param, mBuf)
-CrgLchRecfg *param;
-Buffer *mBuf;
+   CrgLchRecfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgLchRecfg)
 
-   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
+      CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
-      CMCHKUNPK(SUnpkU8, &param->ulRecfg.lcgId, mBuf);
+   CMCHKUNPK(SUnpkU8, &param->ulRecfg.lcgId, mBuf);
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgRecfg
-*
-*
-*     Desc : Basic reconfiguration info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgRecfg
+ *
+ *
+ *     Desc : Basic reconfiguration info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgRecfg
+   PUBLIC S16 cmPkCrgRecfg
 (
-CrgRecfg *param,
-Buffer *mBuf
-)
+ CrgRecfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgRecfg(param, mBuf)
-CrgRecfg *param;
-Buffer *mBuf;
+   CrgRecfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgRecfg)
 
       switch(param->recfgType) {
-         case CRG_LCH_CFG:
-            CMCHKPK(cmPkCrgLchRecfg, &param->u.lchRecfg, mBuf);
-            break;
-         case CRG_UE_CFG:
-            CMCHKPK(cmPkCrgUeRecfg, &param->u.ueRecfg, mBuf);
-            break;
-         case CRG_CELL_CFG:
-            CMCHKPK(cmPkCrgCellRecfg, &param->u.cellRecfg, mBuf);
-            break;
-         default :
-            RETVALUE(RFAILED);
+	 case CRG_LCH_CFG:
+	    CMCHKPK(cmPkCrgLchRecfg, &param->u.lchRecfg, mBuf);
+	    break;
+	 case CRG_UE_CFG:
+	    CMCHKPK(cmPkCrgUeRecfg, &param->u.ueRecfg, mBuf);
+	    break;
+	 case CRG_CELL_CFG:
+	    CMCHKPK(cmPkCrgCellRecfg, &param->u.cellRecfg, mBuf);
+	    break;
+	 default :
+	    RETVALUE(RFAILED);
       }
    CMCHKPK(SPkU8, param->recfgType, mBuf);
    RETVALUE(ROK);
@@ -1955,100 +1955,100 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgRecfg
-*
-*
-*     Desc : Basic reconfiguration info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgRecfg
+ *
+ *
+ *     Desc : Basic reconfiguration info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgRecfg
+   PUBLIC S16 cmUnpkCrgRecfg
 (
-CrgRecfg *param,
-Buffer *mBuf
-)
+ CrgRecfg *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgRecfg(param, mBuf)
-CrgRecfg *param;
-Buffer *mBuf;
+   CrgRecfg *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgRecfg)
 
-   CMCHKUNPK(SUnpkU8, &param->recfgType, mBuf);
-      switch(param->recfgType) {
-         case CRG_CELL_CFG:
-            CMCHKUNPK(cmUnpkCrgCellRecfg, &param->u.cellRecfg, mBuf);
-            break;
-         case CRG_UE_CFG:
-            CMCHKUNPK(cmUnpkCrgUeRecfg, &param->u.ueRecfg, mBuf);
-            break;
-         case CRG_LCH_CFG:
-            CMCHKUNPK(cmUnpkCrgLchRecfg, &param->u.lchRecfg, mBuf);
-            break;
-         default :
-            RETVALUE(RFAILED);
-      }
+      CMCHKUNPK(SUnpkU8, &param->recfgType, mBuf);
+   switch(param->recfgType) {
+      case CRG_CELL_CFG:
+	 CMCHKUNPK(cmUnpkCrgCellRecfg, &param->u.cellRecfg, mBuf);
+	 break;
+      case CRG_UE_CFG:
+	 CMCHKUNPK(cmUnpkCrgUeRecfg, &param->u.ueRecfg, mBuf);
+	 break;
+      case CRG_LCH_CFG:
+	 CMCHKUNPK(cmUnpkCrgLchRecfg, &param->u.lchRecfg, mBuf);
+	 break;
+      default :
+	 RETVALUE(RFAILED);
+   }
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgDel
-*
-*
-*     Desc : Basic Delete info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgDel
+ *
+ *
+ *     Desc : Basic Delete info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgDel
+   PUBLIC S16 cmPkCrgDel
 (
-CrgDel *param,
-Buffer *mBuf
-)
+ CrgDel *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgDel(param, mBuf)
-CrgDel *param;
-Buffer *mBuf;
+   CrgDel *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgDel)
 
       switch(param->delType) {
-         case CRG_LCH_CFG:
-            CMCHKPK(SPkU8, param->u.lchDel.dir, mBuf);
-            CMCHKPK(cmPkLteLcId, param->u.lchDel.lcId, mBuf);
-            CMCHKPK(cmPkLteRnti, param->u.lchDel.crnti, mBuf);
-            CMCHKPK(cmPkLteCellId, param->u.lchDel.cellId, mBuf);
-         break;
-         case CRG_UE_CFG:
-            CMCHKPK(cmPkLteRnti, param->u.ueDel.crnti, mBuf);
-            CMCHKPK(cmPkLteCellId, param->u.ueDel.cellId, mBuf);
-         break;
-         case CRG_CELL_CFG:
-            CMCHKPK(cmPkLteCellId, param->u.cellDel.cellId, mBuf);
-         break;
-         default :
-            RETVALUE(RFAILED);
+	 case CRG_LCH_CFG:
+	    CMCHKPK(SPkU8, param->u.lchDel.dir, mBuf);
+	    CMCHKPK(cmPkLteLcId, param->u.lchDel.lcId, mBuf);
+	    CMCHKPK(cmPkLteRnti, param->u.lchDel.crnti, mBuf);
+	    CMCHKPK(cmPkLteCellId, param->u.lchDel.cellId, mBuf);
+	    break;
+	 case CRG_UE_CFG:
+	    CMCHKPK(cmPkLteRnti, param->u.ueDel.crnti, mBuf);
+	    CMCHKPK(cmPkLteCellId, param->u.ueDel.cellId, mBuf);
+	    break;
+	 case CRG_CELL_CFG:
+	    CMCHKPK(cmPkLteCellId, param->u.cellDel.cellId, mBuf);
+	    break;
+	 default :
+	    RETVALUE(RFAILED);
       }
    CMCHKPK(SPkU8, param->delType, mBuf);
    RETVALUE(ROK);
@@ -2057,89 +2057,89 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgDel
-*
-*
-*     Desc : Basic Delete info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgDel
+ *
+ *
+ *     Desc : Basic Delete info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgDel
+   PUBLIC S16 cmUnpkCrgDel
 (
-CrgDel *param,
-Buffer *mBuf
-)
+ CrgDel *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgDel(param, mBuf)
-CrgDel *param;
-Buffer *mBuf;
+   CrgDel *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgDel)
 
-   CMCHKUNPK(SUnpkU8, &param->delType, mBuf);
-      switch(param->delType) {
-         case CRG_CELL_CFG:
-            CMCHKUNPK(cmUnpkLteCellId, &param->u.cellDel.cellId, mBuf);
-         break;
-         case CRG_UE_CFG:
-            CMCHKUNPK(cmUnpkLteCellId, &param->u.ueDel.cellId, mBuf);
-            CMCHKUNPK(cmUnpkLteRnti, &param->u.ueDel.crnti, mBuf);
-         break;
-         case CRG_LCH_CFG:
-            CMCHKUNPK(cmUnpkLteCellId, &param->u.lchDel.cellId, mBuf);
-            CMCHKUNPK(cmUnpkLteRnti, &param->u.lchDel.crnti, mBuf);
-            CMCHKUNPK(cmUnpkLteLcId, &param->u.lchDel.lcId, mBuf);
-            CMCHKUNPK(SUnpkU8, &param->u.lchDel.dir, mBuf);
-         break;
-         default :
-            RETVALUE(RFAILED);
-      }
+      CMCHKUNPK(SUnpkU8, &param->delType, mBuf);
+   switch(param->delType) {
+      case CRG_CELL_CFG:
+	 CMCHKUNPK(cmUnpkLteCellId, &param->u.cellDel.cellId, mBuf);
+	 break;
+      case CRG_UE_CFG:
+	 CMCHKUNPK(cmUnpkLteCellId, &param->u.ueDel.cellId, mBuf);
+	 CMCHKUNPK(cmUnpkLteRnti, &param->u.ueDel.crnti, mBuf);
+	 break;
+      case CRG_LCH_CFG:
+	 CMCHKUNPK(cmUnpkLteCellId, &param->u.lchDel.cellId, mBuf);
+	 CMCHKUNPK(cmUnpkLteRnti, &param->u.lchDel.crnti, mBuf);
+	 CMCHKUNPK(cmUnpkLteLcId, &param->u.lchDel.lcId, mBuf);
+	 CMCHKUNPK(SUnpkU8, &param->u.lchDel.dir, mBuf);
+	 break;
+      default :
+	 RETVALUE(RFAILED);
+   }
    RETVALUE(ROK);
 }
 
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgRst
-*
-*
-*     Desc : UE RESET info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgRst
+ *
+ *
+ *     Desc : UE RESET info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgRst
+   PUBLIC S16 cmPkCrgRst
 (
-CrgRst *param,
-Buffer *mBuf
-)
+ CrgRst *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgRst(param, mBuf)
-CrgRst *param;
-Buffer *mBuf;
+   CrgRst *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgRst)
 
-   CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
+      CMCHKPK(cmPkLteRnti, param->crnti, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    RETVALUE(ROK);
 }
@@ -2147,36 +2147,36 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgRst
-*
-*
-*     Desc : UE RESET info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgRst
+ *
+ *
+ *     Desc : UE RESET info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgRst
+   PUBLIC S16 cmUnpkCrgRst
 (
-CrgRst *param,
-Buffer *mBuf
-)
+ CrgRst *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgRst(param, mBuf)
-CrgRst *param;
-Buffer *mBuf;
+   CrgRst *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgRst)
 
-   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
+      CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
    RETVALUE(ROK);
 }
@@ -2184,50 +2184,50 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkCrgCfgReqInfo
-*
-*
-*     Desc : Config/Reconfig/Delete info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkCrgCfgReqInfo
+ *
+ *
+ *     Desc : Config/Reconfig/Delete info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCrgCfgReqInfo
+   PUBLIC S16 cmPkCrgCfgReqInfo
 (
-CrgCfgReqInfo *param,
-Buffer *mBuf
-)
+ CrgCfgReqInfo *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCrgCfgReqInfo(param, mBuf)
-CrgCfgReqInfo *param;
-Buffer *mBuf;
+   CrgCfgReqInfo *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmPkCrgCfgReqInfo)
 
       switch(param->action) {
-         case CRG_RESET:
-            CMCHKPK(cmPkCrgRst, &param->u.rstInfo, mBuf);
-            break;
-         case CRG_DELETE:
-            CMCHKPK(cmPkCrgDel, &param->u.delInfo, mBuf);
-            break;
-         case CRG_RECONFIG:
-            CMCHKPK(cmPkCrgRecfg, &param->u.recfgInfo, mBuf);
-            break;
-         case CRG_CONFIG:
-            CMCHKPK(cmPkCrgCfg, &param->u.cfgInfo, mBuf);
-            break;
-         default :
-            RETVALUE(RFAILED);
+	 case CRG_RESET:
+	    CMCHKPK(cmPkCrgRst, &param->u.rstInfo, mBuf);
+	    break;
+	 case CRG_DELETE:
+	    CMCHKPK(cmPkCrgDel, &param->u.delInfo, mBuf);
+	    break;
+	 case CRG_RECONFIG:
+	    CMCHKPK(cmPkCrgRecfg, &param->u.recfgInfo, mBuf);
+	    break;
+	 case CRG_CONFIG:
+	    CMCHKPK(cmPkCrgCfg, &param->u.cfgInfo, mBuf);
+	    break;
+	 default :
+	    RETVALUE(RFAILED);
       }
    CMCHKPK(SPkU8, param->action, mBuf);
    RETVALUE(ROK);
@@ -2236,56 +2236,56 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkCrgCfgReqInfo
-*
-*
-*     Desc : Config/Reconfig/Delete info for MAC
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkCrgCfgReqInfo
+ *
+ *
+ *     Desc : Config/Reconfig/Delete info for MAC
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCrgCfgReqInfo
+   PUBLIC S16 cmUnpkCrgCfgReqInfo
 (
-CrgCfgReqInfo *param,
-Buffer *mBuf
-)
+ CrgCfgReqInfo *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkCrgCfgReqInfo(param, mBuf)
-CrgCfgReqInfo *param;
-Buffer *mBuf;
+   CrgCfgReqInfo *param;
+   Buffer *mBuf;
 #endif
 {
 
    TRC3(cmUnpkCrgCfgReqInfo)
 
-   CMCHKUNPK(SUnpkU8, &param->action, mBuf);
-      switch(param->action) {
-         case CRG_CONFIG:
-            CMCHKUNPK(cmUnpkCrgCfg, &param->u.cfgInfo, mBuf);
-            break;
-         case CRG_RECONFIG:
-            CMCHKUNPK(cmUnpkCrgRecfg, &param->u.recfgInfo, mBuf);
-            break;
-         case CRG_DELETE:
-            CMCHKUNPK(cmUnpkCrgDel, &param->u.delInfo, mBuf);
-            break;
-         case CRG_RESET:
-            CMCHKUNPK(cmUnpkCrgRst, &param->u.rstInfo, mBuf);
-            break;
-         default :
-            RETVALUE(RFAILED);
-      }
+      CMCHKUNPK(SUnpkU8, &param->action, mBuf);
+   switch(param->action) {
+      case CRG_CONFIG:
+	 CMCHKUNPK(cmUnpkCrgCfg, &param->u.cfgInfo, mBuf);
+	 break;
+      case CRG_RECONFIG:
+	 CMCHKUNPK(cmUnpkCrgRecfg, &param->u.recfgInfo, mBuf);
+	 break;
+      case CRG_DELETE:
+	 CMCHKUNPK(cmUnpkCrgDel, &param->u.delInfo, mBuf);
+	 break;
+      case CRG_RESET:
+	 CMCHKUNPK(cmUnpkCrgRst, &param->u.rstInfo, mBuf);
+	 break;
+      default :
+	 RETVALUE(RFAILED);
+   }
    RETVALUE(ROK);
 }
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

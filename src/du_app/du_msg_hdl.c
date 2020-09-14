@@ -364,7 +364,7 @@ S16 duProcCfgComplete()
 	    duCb.cfgCellLst[nci-1] = cell;
 	    duCb.numCfgCells++;
 	 }
-      }
+   }
    if(ret != RFAILED)
    {
       //Start layer configs
@@ -1598,27 +1598,27 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 
    if(macCellCfgCfm->rsp == ROK)  
    {
-	for(actvCellIdx = 0 ; actvCellIdx <duCb.numActvCells ; actvCellIdx++)
-	{
-	    if(macCellCfgCfm->cellId == duCb.actvCellLst[actvCellIdx]->cellId)
-	    {
-	        duCb.duMacCellCfg = NULLP;
-	        /* Build and send GNB-DU config update */
-	        ret = BuildAndSendDUConfigUpdate();
+      for(actvCellIdx = 0 ; actvCellIdx <duCb.numActvCells ; actvCellIdx++)
+      {
+	 if(macCellCfgCfm->cellId == duCb.actvCellLst[actvCellIdx]->cellId)
+	 {
+	    duCb.duMacCellCfg = NULLP;
+	    /* Build and send GNB-DU config update */
+	    ret = BuildAndSendDUConfigUpdate();
 
-                /* TODO: Trigger cell start req once cell up slot ind is received*/
-	        /* Build and Send Cell Start Req to MAC */
-	        ret = duBuildAndSendMacCellStartReq();
+	    /* TODO: Trigger cell start req once cell up slot ind is received*/
+	    /* Build and Send Cell Start Req to MAC */
+	    ret = duBuildAndSendMacCellStartReq();
 
-	    }  
-	}
-    }
-    else
-    {
-	DU_LOG("\nMac cell cfg failed");
-	ret = RFAILED;
-    }
-    return ret;
+	 }  
+      }
+   }
+   else
+   {
+      DU_LOG("\nMac cell cfg failed");
+      ret = RFAILED;
+   }
+   return ret;
 }
 
 /*******************************************************************
@@ -1842,10 +1842,10 @@ uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
 {
    DuUeCb   ueCb;
-   
+
    ueCb = duCb.actvCellLst[ulRrcMsgInfo->cellId -1]->ueCb[ulRrcMsgInfo->ueIdx -1];
    BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, \
-      ulRrcMsgInfo->rrcMsg);
+	 ulRrcMsgInfo->rrcMsg);
 
    DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo->rrcMsg, ulRrcMsgInfo->msgLen);
    DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));

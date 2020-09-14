@@ -189,7 +189,7 @@
 /** @name RGR_CQI_REPT */
 /** @{ */
 /*rgr_h_001.main_8 ccpu00117452 - MOD - Changed macro name from
-   RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
+  RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
 #define RGR_UE_CQIREPT_RECFG     (1<<18)
 #endif
@@ -294,7 +294,7 @@
 /** @} */
 /* Activation time limit in terms of number of frames */
 #define RGR_ACTV_WIN_SIZE 20 /*!< Size of activation time window
-                                (in terms of number of frames) */
+			       (in terms of number of frames) */
 
 /* rgr_h_001.main_3-ADD-Added for SI Enhancement. */
 /** @name RGR_SI_SCH */
@@ -320,7 +320,7 @@
    RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
 #define RGR_CQIRPTS_MAXN     16  /*!< Maximum number of CQI report collation
-                                      allowed */
+				   allowed */
 #endif
 #define RGR_MAX_DL_CQI_SUBBAND   13 /*!< Maximum number of Sub-Bands */
 /** @} */
@@ -419,5 +419,5 @@
 
 /**********************************************************************
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -63,10 +63,10 @@ typedef struct rguDBoReport
 #ifdef CCPU_OPT
    U16  estRlcHdrSz;       /*!< Estimated RLC header size */
    Bool staPduPrsnt;       /*!< Indicates whether the BO includes
-                                a status PDU as well */
+			     a status PDU as well */
 #endif
    U32  staPduBo;          /*!< Indicates the Status PDU BO. 
-                                This is included in bo */
+			     This is included in bo */
    U32  oldestSduArrTime;
 } RguDBoReport;
 
@@ -83,9 +83,9 @@ typedef struct rguCDatReqInfo
    U8              pnb;            /*Paging narrowBand on which UE performs Paging*/
 #endif
    union{
-   CmLteTimingInfo timeToTx;        /*!< Actual time when PHY transmits
-                                         this, applicable to BCCH and PCCH only */
-   CmLteRnti rnti;                  /*!< Temporary CRNTI:Applicable for CCCH. */
+      CmLteTimingInfo timeToTx;        /*!< Actual time when PHY transmits
+					 this, applicable to BCCH and PCCH only */
+      CmLteRnti rnti;                  /*!< Temporary CRNTI:Applicable for CCCH. */
    }u;
    Buffer          *pdu;            /*!< PDU to be transmitted */
 } RguCDatReqInfo;
@@ -100,7 +100,7 @@ typedef struct rguLchDatReq
    Bool         setMaxUlPrio;
 #ifdef L2_OPTMZ
    Bool         freeBuff;            /*!< TRUE if Buffer is to be freed by MAC
-                                          It is set for UM bearer*/
+				       It is set for UM bearer*/
 #endif
 } RguLchDatReq;
 
@@ -131,9 +131,9 @@ typedef struct rguHarqStatusInd
    CmLteCellId   cellId;                    /*!< Cell Id*/
    CmLteRnti     ueId;                      /*!< ue Id*/
    U8            numTbs;                    /*!< Number of Tbs present */
- 
+
    U32           tbId[RGU_MAX_TB];          /*!< tbId provided by RLC in
-                                                 DatReq  */                                                                                 
+					      DatReq  */                                                                                 
    U16           status[RGU_MAX_TB];        /*!< Status back to RLC ACK/NACK*/
 } RguHarqStatusInd;
 
@@ -142,8 +142,8 @@ typedef struct rguHarqStatusInd
  *  */
 typedef struct rguHarqStaInd
 {
-    RguHarqStatusInd  hqStatusInd;            
-    Pst               pst;
+   RguHarqStatusInd  hqStatusInd;            
+   Pst               pst;
 } RguHarqStaInd;
 
 /*
@@ -156,9 +156,9 @@ typedef struct rguL2MUlThrpMeasReqInfo
    CmLteRnti     rnti;                      /*!< UE Id*/
    U8            numLcId;                   /*!< Number of LC Ids configured */
    U8            lcId[RGU_MAX_LC];          /*!< LC ID indices that are 
-                                              configured */
+					      configured */
    Bool          enbMeas;                   /*!< Indication to enable/disable 
-                                               measurement for the LC ID*/
+					      measurement for the LC ID*/
 } RguL2MUlThrpMeasReqInfo;
 
 #endif /* LTE_L2_MEAS */
@@ -168,13 +168,13 @@ typedef struct rguL2MUlThrpMeasReqInfo
 typedef struct rguDatReqTb
 {
    U8           nmbLch;              /*!< Number of logical channels of a UE 
-                                          that have data for this TB */
+				       that have data for this TB */
    RguLchDatReq lchData[RGU_MAX_LC]; /*!< Data Buffers and BO of  
-                                          logical channels for this TB */
-/* rgu_x_001.main_3 - ADD - L2M Support */
+				       logical channels for this TB */
+   /* rgu_x_001.main_3 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
    U32          tbId;                /*!< RLC's internal tbId maintained
-                                          per UE */  
+				       per UE */  
 #endif /* LTE_L2_MEAS */
 }RguDatReqTb;
 
@@ -258,7 +258,7 @@ typedef struct rguDDatIndInfo
    CmLteCellId  cellId;              /*!< CELL ID */
    CmLteRnti    rnti;                /*!< UE ID */
    U8           numLch;              /*!< Number of logical channels within
-                                       the UE that has data */
+				       the UE that has data */
    RguLchDatInd lchData[RGU_MAX_LC]; /*!< Data buffers of logical channels */
 #ifdef LTE_L2_MEAS
    U32          ttiCnt;              /*!< The Current TTI in the Cell */
@@ -280,10 +280,10 @@ typedef struct rguCStaRspInfo
    U8          pnb;            /*paging narrowBand on which UE will perform paging*/
 #endif
    union                        /*!< lcType in the primitive is 
-                                     the union selector */
+				  the union selector */
    {
       CmLteTimingInfo timeToTx; /*!< Timing info for the BO, applicable for
-                                   BCCH and PCCH */
+				  BCCH and PCCH */
       CmLteRnti       rnti;     /*!< Temporary CRNTI, only for CCCH */
    } u;
 } RguCStaRspInfo;
@@ -322,7 +322,7 @@ typedef struct rguLchStaInd
 {
    CmLteLcId   lcId;         /*!< Logical channel ID */
    S16         totBufSize;  /*!< Total buffer size in bytes 
-                                scheduled by MAC */
+			      scheduled by MAC */
 } RguLchStaInd;
 
 /**
@@ -331,9 +331,9 @@ typedef struct rguLchStaInd
 typedef struct rguStaIndTb
 {
    U8           nmbLch;               /*!< Number of logical channels scheduled
-                                           for this TB */
+					for this TB */
    RguLchStaInd lchStaInd[RGU_MAX_LC];/*!< Buffer size allocated for scheduled 
-                                           logical channels for this TB */
+					logical channels for this TB */
 #ifdef LTE_L2_MEAS
    U32          tbId;                /*!< RLC internal TB id */                                           
    U16          status;              /*!< Status back to RLC ACK/NACK/RGU_NACK_LOSS */
@@ -366,9 +366,9 @@ typedef struct rguDStaIndInfo
  */
 typedef struct rguLcFlowCntrlInfo
 {
-  CmLteLcId   lcId; 
-  U32         pktAdmitCnt; 
-  U32         maxBo4FlowCtrl; /*!< MAX BO of Queued SDUs at RLC beyond which Flow is Controlled */
+   CmLteLcId   lcId; 
+   U32         pktAdmitCnt; 
+   U32         maxBo4FlowCtrl; /*!< MAX BO of Queued SDUs at RLC beyond which Flow is Controlled */
 }RguLcFlowCntrlInfo;
 
 /**
@@ -376,9 +376,9 @@ typedef struct rguLcFlowCntrlInfo
  */
 typedef struct rguUeFlowCntrlInfo 
 {
-  CmLteRnti            ueId;
-  U32                  numLcs;
-  RguLcFlowCntrlInfo   lcInfo[RGU_MAX_LC];
+   CmLteRnti            ueId;
+   U32                  numLcs;
+   RguLcFlowCntrlInfo   lcInfo[RGU_MAX_LC];
 }RguUeFlowCntrlInfo;  
 
 /**
@@ -392,9 +392,9 @@ typedef struct rguFlowCntrlInd
 }RguFlowCntrlInd;  
 typedef struct rguInfoRingElem 
 {
-  SpId         spId;
-  U8           event;
-  Void         *msg;
+   SpId         spId;
+   U8           event;
+   Void         *msg;
 }RguInfoRingElem;
 
 /* Buffer occupancy status information */
@@ -443,112 +443,112 @@ typedef struct rlcMacData
 
 
 /***********************************************************************
-          type definitions for upper layer interface - RLC primitives
+  type definitions for upper layer interface - RLC primitives
  ***********************************************************************/
 /** @brief Bind Request from RLC to MAC to bind the interface SAPs */
 typedef S16 (*RguBndReq) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId));
 /** @brief Unbind Request from RLC to MAC to unbind the interface SAPs */
 typedef S16 (*RguUbndReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason));
 /** @brief Bind Confirmation from MAC to RLC for the bind/unbind 
  * request for the interface SAPs */
 typedef S16 (*RguBndCfm) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status));
 /** @brief Data Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
 typedef S16 (*RguCDatReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguCDatReqInfo  *    datReq));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguCDatReqInfo  *    datReq));
 /** @brief Data Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission */
 typedef S16 (*RguDDatReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguDDatReqInfo       *datReq));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguDDatReqInfo       *datReq));
 
 typedef uint16_t (*RlcMacDlData) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RlcMacData           *dlData));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RlcMacData           *dlData));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels */
 typedef S16 (*RguCDatInd) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguCDatIndInfo  *    datInd));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguCDatIndInfo  *    datInd));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels */
 typedef S16 (*RguDDatInd) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguDDatIndInfo       *datInd));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguDDatIndInfo       *datInd));
 
 typedef uint8_t (*RlcMacUlDataFunc) ARGS((
-   Pst*                 pst,
-   RlcMacData           *ulData));
+	 Pst*                 pst,
+	 RlcMacData           *ulData));
 /** @brief Status Response from RLC to MAC to 
  * inform the BO report for common channels */
 typedef S16 (*RguCStaRsp) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguCStaRspInfo  *    staRsp));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguCStaRspInfo  *    staRsp));
 /** @brief Status Repsonse from RLC to MAC to 
  * inform the BO report for dedicated channels */
 typedef S16 (*RguDStaRsp) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguDStaRspInfo  *    staRsp));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguDStaRspInfo  *    staRsp));
 
 typedef uint16_t (*RlcMacBoStatus) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RlcMacBOStatus       *boStatus));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RlcMacBOStatus       *boStatus));
 
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC */
 typedef S16 (*RguCStaInd) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguCStaIndInfo  *    staInd));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguCStaIndInfo  *    staInd));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC */
 typedef S16 (*RguDStaInd) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguDStaIndInfo *    staInd));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguDStaIndInfo *    staInd));
 
 typedef uint16_t (*RlcMacSchedRep) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RlcMacSchedRepInfo       *schRep));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RlcMacSchedRepInfo       *schRep));
 
 typedef S16 (*RguFlowCntrlIndInfo) ARGS((
-   Pst                  *pst,
-   SuId                 suId,
-   RguFlowCntrlInd      *flowCntrlInd));
+	 Pst                  *pst,
+	 SuId                 suId,
+	 RguFlowCntrlInd      *flowCntrlInd));
 
 /* rgu_x_001.main_3 - ADD - L2M & R9 Support */
 #ifdef LTE_L2_MEAS
 /** @brief HARQ Status Indication from MAC to RLC  
  * as a response to Data Req primitive from RLC */
 typedef S16 (*RguHqStaInd) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguHarqStatusInd     *harqStatusInd));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguHarqStatusInd     *harqStatusInd));
 /** @brief LCID measurement status from RLC to MAC  
  * so as to provide Timing Info in DDatInd */
 typedef S16 (*RguL2MUlThrpMeasReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguL2MUlThrpMeasReqInfo  *l2mUlThrpMeasReq));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguL2MUlThrpMeasReqInfo  *l2mUlThrpMeasReq));
 
 #endif /* LTE_L2_MEAS */
 
@@ -559,14 +559,14 @@ typedef S16 (*RguL2MUlThrpMeasReq) ARGS((
  * @param suId SAP ID of the service user.
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguBndReq ARGS((Pst* pst,SuId suId,SpId spId));
 /** @brief Unbind Request from RLC to MAC to unbind the interface SAPs 
  * @param pst Pointer to the post structure.
  * @param spId SAP ID of the service provider.
  * @param reason Reason for unbind request.
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguUbndReq ARGS((Pst* pst,SpId spId,Reason reason));
 /** @brief Bind Confirmation from MAC to RLC for the bind and unbind 
  * request for the interface SAPs 
@@ -574,7 +574,7 @@ EXTERN S16 RgUiRguUbndReq ARGS((Pst* pst,SpId spId,Reason reason));
  * @param suId SAP ID of the service user.
  * @param status Status of the bind request. 
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguBndCfm ARGS((Pst* pst,SuId suId,U8 status));
 /** @brief Data Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission 
@@ -582,7 +582,7 @@ EXTERN S16 RgUiRguBndCfm ARGS((Pst* pst,SuId suId,U8 status));
  * @param spId SAP ID of the service provider.
  * @param datReq Data request for common channels (BCCH, PCCH and CCCH).
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguCDatReq ARGS((Pst* pst,SpId spId,RguCDatReqInfo *datReq));
 /** @brief Data Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission 
@@ -590,7 +590,7 @@ EXTERN S16 RgUiRguCDatReq ARGS((Pst* pst,SpId spId,RguCDatReqInfo *datReq));
  * @param spId SAP ID of the service provider.
  * @param datReq Data request for dedicated channels (DCCH and DTCH).
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguDDatReq ARGS((Pst* pst,SpId spId,RguDDatReqInfo  *datReq));
 
 EXTERN uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData);
@@ -601,7 +601,7 @@ EXTERN uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData);
  * @param suId SAP ID of the service user.
  * @param datInd Data indication on CCCH.
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguCDatInd ARGS((Pst* pst,SuId suId,RguCDatIndInfo  *datInd));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
@@ -609,7 +609,7 @@ EXTERN S16 RgUiRguCDatInd ARGS((Pst* pst,SuId suId,RguCDatIndInfo  *datInd));
  * @param suId SAP ID of the service user.
  * @param datInd Data indication on dedicated channels (DCCH and DTCH).
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguDDatInd ARGS((Pst* pst,SuId suId,RguDDatIndInfo  *datInd));
 /** @brief Status Response from RLC to MAC to 
  * inform the BO report for common channels
@@ -617,7 +617,7 @@ EXTERN S16 RgUiRguDDatInd ARGS((Pst* pst,SuId suId,RguDDatIndInfo  *datInd));
  * @param spId SAP ID of the service provider.
  * @param staRsp Status response for common channels (BCCH, PCCH and CCCH).
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguCStaRsp ARGS((Pst* pst,SpId spId,RguCStaRspInfo  *staRsp));
 /** @brief Status Response from RLC to MAC to 
  * inform the BO report for dedicated channels
@@ -625,7 +625,7 @@ EXTERN S16 RgUiRguCStaRsp ARGS((Pst* pst,SpId spId,RguCStaRspInfo  *staRsp));
  * @param spId SAP ID of the service provider.
  * @param staRsp Status response for dedicated channels (DCCH and DTCH).
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguDStaRsp ARGS((Pst* pst,SpId spId,RguDStaRspInfo  *staRsp));
 
 EXTERN uint16_t MacRlcProcBOStatus(Pst* pst, SpId spId, RlcMacBOStatus* boStatus);
@@ -636,7 +636,7 @@ EXTERN uint16_t MacRlcProcBOStatus(Pst* pst, SpId spId, RlcMacBOStatus* boStatus
  * @param suId SAP ID of the service user.
  * @param staInd Status indication on common channels (BCCH, PCCH and CCCH).
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguCStaInd ARGS((Pst* pst,SuId suId,RguCStaIndInfo  *staInd));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
@@ -644,18 +644,18 @@ EXTERN S16 RgUiRguCStaInd ARGS((Pst* pst,SuId suId,RguCStaIndInfo  *staInd));
  * @param suId SAP ID of the service user.
  * @param staInd Status indication on dedicated channels (DCCH and DTCH).
  * @return ROK/RFAILED
-*/
+ */
 EXTERN S16 RgUiRguDStaInd ARGS((Pst* pst,SuId suId,RguDStaIndInfo  *staInd));
 /** @brief flow control indication from MAC to RLC */  
 EXTERN S16 RgUiRguFlowCntrlInd ARGS((Pst *pst, SuId suId, 
-RguFlowCntrlInd *flowCntrlInd)); 
+	 RguFlowCntrlInd *flowCntrlInd)); 
 /*rgu_x_001.main_3 - ADD - L2M & R9 Support */
 #ifdef LTE_L2_MEAS
 /** @brief HARQ Status Indication from MAC to RLC  
  * as a response to the Data Req from RLC.
  * Informs HARQ feedback for the TB with sn mapping info. */
 EXTERN S16 RgUiRguHqStaInd ARGS((Pst* pst,SuId suId,
-RguHarqStatusInd *harqStatusInd));
+	 RguHarqStatusInd *harqStatusInd));
 
 
 
@@ -663,7 +663,7 @@ RguHarqStatusInd *harqStatusInd));
  * When the status is ON then Timing Info for data bursts 
  * shall be captured and provided to RLC on DDatInd. */
 EXTERN S16 RgUiRguL2MUlThrpMeasReq ARGS((Pst* pst,SpId spId,
-RguL2MUlThrpMeasReqInfo  *l2mUlThrpMeasReq));
+	 RguL2MUlThrpMeasReqInfo  *l2mUlThrpMeasReq));
 
 #endif /* LTE_L2_MEAS */
 
@@ -672,507 +672,507 @@ RguL2MUlThrpMeasReqInfo  *l2mUlThrpMeasReq));
 #ifdef KW
 /** @brief Request from RLC to MAC to bind the interface saps */
 EXTERN S16 KwLiRguBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 /** @brief Request from RLC to MAC to Unbind the interface saps */
 EXTERN S16 KwLiRguUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
 EXTERN S16 KwLiRguBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
 EXTERN S16 KwLiRguCDatReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguCDatReqInfo  *    datReq
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguCDatReqInfo  *    datReq
+	 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission */
 EXTERN S16 RlcMacSendDlData ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RlcMacData  *    datReq
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RlcMacData  *    datReq
+	 ));
 
 /** @brief Handler toprocess UL data from MAC and
  * forwarding to appropriate common/dedicated
  * channel's handler */
 EXTERN uint8_t RlcProcUlData ARGS((
-   Pst*           pst,
-   RlcMacData   *ulData
-));
+	 Pst*           pst,
+	 RlcMacData   *ulData
+	 ));
 
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
 EXTERN S16 KwLiRguCDatInd ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguCDatIndInfo  *    datInd
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguCDatIndInfo  *    datInd
+	 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
 EXTERN S16 KwLiRguDDatInd ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguDDatIndInfo  *    datInd
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguDDatIndInfo  *    datInd
+	 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for common channels*/
 EXTERN S16 KwLiRguCStaRsp ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguCStaRspInfo  *    staRsp
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguCStaRspInfo  *    staRsp
+	 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for dedicated channels*/
 EXTERN S16 RlcMacSendBOStatus ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RlcMacBOStatus*      boSta
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RlcMacBOStatus*      boSta
+	 ));
 
 /**@brief Primitive invoked from MAC to RLC to
  * inform scheduling result for logical channels */
 EXTERN uint16_t RlcMacProcSchedRep ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RlcMacSchedRepInfo       *schRep
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RlcMacSchedRepInfo       *schRep
+	 ));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels. */
 EXTERN S16 KwLiRguCStaInd ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguCStaIndInfo  *    staInd
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguCStaIndInfo  *    staInd
+	 ));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels. */
 EXTERN S16 KwLiRguDStaInd ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguDStaIndInfo  *    staInd
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguDStaIndInfo  *    staInd
+	 ));
 
 #ifdef LTE_L2_MEAS
 /** @brief HARQ Status Indication from MAC to RLC  
  * as a response to the Data Req from RLC.
  * Informs HARQ feedback for the PDU with sn. */
 EXTERN S16 KwLiRguHqStaInd ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguHarqStatusInd     *harqStatusInd));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguHarqStatusInd     *harqStatusInd));
 
 
 /** @brief Request for measuring the timing Info for a LC from RLC to MAC  
  * When the status is ON then Timing Info for data bursts 
  * shall be captured and provided to RLC on DDatInd. */
 EXTERN S16 KwLiRguL2MUlThrpMeasReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq));
 
 #endif /* LTE_L2_MEAS */
 
 /** @brief flowCntrl Indication from MAC to RLC  */
 EXTERN S16 KwLiRguFlowCntrlInd ARGS((
-Pst              *pst, 
-SuId             suId, 
-RguFlowCntrlInd  *flowCntrlInd
-));
+	 Pst              *pst, 
+	 SuId             suId, 
+	 RguFlowCntrlInd  *flowCntrlInd
+	 ));
 #endif
 
 #ifdef LCRGU
 /** @brief Request from RLC to MAC to bind the interface saps */
 EXTERN S16 cmPkRguBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 /** @brief Request from RLC to MAC to bind the interface saps */
 EXTERN S16 cmUnpkRguBndReq ARGS((
-   RguBndReq            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RguBndReq            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Request from RLC to MAC to Unbind the interface saps */
 EXTERN S16 cmPkRguUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 /** @brief Request from RLC to MAC to Unbind the interface saps */
 EXTERN S16 cmUnpkRguUbndReq ARGS((
-   RguUbndReq           func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RguUbndReq           func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
 EXTERN S16 cmPkRguBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
 EXTERN S16 cmUnpkRguBndCfm ARGS((
-   RguBndCfm            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RguBndCfm            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
 EXTERN S16 cmPkRguCDatReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguCDatReqInfo  *    datReq
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguCDatReqInfo  *    datReq
+	 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
 EXTERN S16 cmUnpkRguCDatReq ARGS((
-   RguCDatReq           func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RguCDatReq           func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission */
 EXTERN uint16_t packDlData ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RlcMacData      *    datReq
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RlcMacData      *    datReq
+	 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on 
  * dedicated channel for transmission */
 EXTERN S16 unpackDlData ARGS((
-   RlcMacDlData         func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RlcMacDlData         func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
 EXTERN S16 cmPkRguCDatInd ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguCDatIndInfo  *    datInd
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguCDatIndInfo  *    datInd
+	 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
 EXTERN S16 cmUnpkRguCDatInd ARGS((
-   RguCDatInd           func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RguCDatInd           func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
 EXTERN uint8_t packRlcUlData ARGS((
-   Pst*                 pst,
-   RlcMacData  *    ulData
-));
+	 Pst*                 pst,
+	 RlcMacData  *    ulData
+	 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
 EXTERN uint8_t unpackRcvdUlData ARGS((
-   RlcMacUlDataFunc     func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RlcMacUlDataFunc     func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for common channels*/
 EXTERN S16 cmPkRguCStaRsp ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguCStaRspInfo  *    staRsp
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguCStaRspInfo  *    staRsp
+	 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for common channels*/
 EXTERN S16 cmUnpkRguCStaRsp ARGS((
-   RguCStaRsp           func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RguCStaRsp           func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for dedicated channels*/
 EXTERN uint16_t packBOStatus ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RlcMacBOStatus*      boStatus
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RlcMacBOStatus*      boStatus
+	 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for dedicated channels*/
 EXTERN uint16_t unpackBOStatus ARGS((
-   RlcMacBoStatus       func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RlcMacBoStatus       func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels. */
 EXTERN S16 cmPkRguCStaInd ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RguCStaIndInfo  *    staInd
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RguCStaIndInfo  *    staInd
+	 ));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels. */
 EXTERN S16 cmUnpkRguCStaInd ARGS((
-   RguCStaInd           func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RguCStaInd           func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels. */
 EXTERN S16 packSchedRep ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RlcMacSchedRepInfo   *staInd
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 RlcMacSchedRepInfo   *staInd
+	 ));
 EXTERN S16 cmPkRguFlowCntrlInfo ARGS((
-RguFlowCntrlInd *param, 
-Buffer           *mBuf
-));
+	 RguFlowCntrlInd *param, 
+	 Buffer           *mBuf
+	 ));
 EXTERN S16 cmPkRguUeFlowCntrlInfo ARGS((
-RguUeFlowCntrlInfo *param,
-Buffer           *mBuf
-));
+	 RguUeFlowCntrlInfo *param,
+	 Buffer           *mBuf
+	 ));
 EXTERN S16 cmPkRguLcFlowCntrlInfo ARGS((
-RguLcFlowCntrlInfo *param,
-Buffer           *mBuf
-));
+	 RguLcFlowCntrlInfo *param,
+	 Buffer           *mBuf
+	 ));
 EXTERN S16 cmUnpkRguLcFlowCntrlInfo ARGS((
-RguLcFlowCntrlInfo *param,
-Buffer           *mBuf
-));
+	 RguLcFlowCntrlInfo *param,
+	 Buffer           *mBuf
+	 ));
 EXTERN S16 cmUnpkRguUeFlowCntrlInfo ARGS((
-RguUeFlowCntrlInfo *param,
-Buffer           *mBuf
-));
+	 RguUeFlowCntrlInfo *param,
+	 Buffer           *mBuf
+	 ));
 EXTERN S16 cmUnpkRguFlowCntrlInfo ARGS((
-RguFlowCntrlInd *param, 
-Buffer           *mBuf
-));
+	 RguFlowCntrlInd *param, 
+	 Buffer           *mBuf
+	 ));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels. */
 EXTERN S16 unpackSchedRep ARGS((
-   RlcMacSchedRep       func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RlcMacSchedRep       func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkRguPduInfo ARGS((
-   RguPduInfo           *param,
-   Buffer               *mBuf
-));
+	 RguPduInfo           *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguPduInfo ARGS((
-   RguPduInfo           *param,
-   Buffer               *mBuf
-));
+	 RguPduInfo           *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkRguDBoReport ARGS((
-   RguDBoReport         *param,
-   Buffer               *mBuf
-));
+	 RguDBoReport         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguDBoReport ARGS((
-   RguDBoReport         *param,
-   Buffer               *mBuf
-));
+	 RguDBoReport         *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkRguCDatReqInfo ARGS((
-   RguCDatReqInfo       *param,
-   Buffer               *mBuf
-));
+	 RguCDatReqInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguCDatReqInfo ARGS((
-   RguCDatReqInfo       *param,
-   Buffer               *mBuf
-));
+	 RguCDatReqInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkRguLchDatReq ARGS((
-   RguLchDatReq         *param,
-   Buffer               *mBuf
-));
+	 RguLchDatReq         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguLchDatReq ARGS((
-   RguLchDatReq         *param,
-   Buffer               *mBuf
-));
+	 RguLchDatReq         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkRguDatReqTb ARGS((
-   RguDatReqTb          *param,
-   Buffer               *mBuf
-));
+	 RguDatReqTb          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkRguStaIndTb ARGS((
-   RguStaIndTb          *param,
-   Buffer               *mBuf
-));
+	 RguStaIndTb          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguStaIndTb ARGS((
-   RguStaIndTb          *param,
-   Buffer               *mBuf
-));
+	 RguStaIndTb          *param,
+	 Buffer               *mBuf
+	 ));
 /* rgu_x_001.main_3 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
 EXTERN S16 cmPkRguDDatReqInfo ARGS((
-   Pst                  *pst,
-   RguDDatReqInfo       *param,
-   Buffer               *mBuf
-));
+	 Pst                  *pst,
+	 RguDDatReqInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguDDatReqInfo ARGS((
-   Pst                  *pst,
-   RguDDatReqInfo       *param,
-   Buffer               *mBuf
-));
+	 Pst                  *pst,
+	 RguDDatReqInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguDatReqTb ARGS((
-   Pst                  *pst,
-   RguDatReqTb          *param,
-   Buffer               *mBuf
-));
+	 Pst                  *pst,
+	 RguDatReqTb          *param,
+	 Buffer               *mBuf
+	 ));
 #else
 EXTERN S16 cmPkRguDDatReqInfo ARGS((
-   RguDDatReqInfo       *param,
-   Buffer               *mBuf
-));
+	 RguDDatReqInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguDDatReqInfo ARGS((
-   RguDDatReqInfo       *param,
-   Buffer               *mBuf
-));
+	 RguDDatReqInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguDatReqTb ARGS((
-   RguDatReqTb          *param,
-   Buffer               *mBuf
-));
+	 RguDatReqTb          *param,
+	 Buffer               *mBuf
+	 ));
 #endif
 EXTERN S16 cmPkRguCDatIndInfo ARGS((
-   RguCDatIndInfo       *param,
-   Buffer               *mBuf
-));
+	 RguCDatIndInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguCDatIndInfo ARGS((
-   RguCDatIndInfo       *param,
-   Buffer               *mBuf
-));
+	 RguCDatIndInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkRguLchDatInd ARGS((
-   RguLchDatInd         *param,
-   Buffer               *mBuf
-));
+	 RguLchDatInd         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguLchDatInd ARGS((
-   RguLchDatInd         *param,
-   Buffer               *mBuf
-));
+	 RguLchDatInd         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 packRlcMacDataInfo ARGS((
-   RlcMacData         *param,
-   Buffer               *mBuf
-));
+	 RlcMacData         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 unpackRlcMacDataInfo ARGS((
-   RlcMacData       *param,
-   Buffer               *mBuf
-));
+	 RlcMacData       *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkRguCStaRspInfo ARGS((
-   RguCStaRspInfo       *param,
-   Buffer               *mBuf
-));
+	 RguCStaRspInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguCStaRspInfo ARGS((
-   RguCStaRspInfo       *param,
-   Buffer               *mBuf
-));
+	 RguCStaRspInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 packBOStatusInfo ARGS((
-   RlcMacBOStatus       *param,
-   Buffer               *mBuf
-));
+	 RlcMacBOStatus       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 unpackBOStatusInfo ARGS((
-   RlcMacBOStatus       *param,
-   Buffer               *mBuf
-));
+	 RlcMacBOStatus       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkRguCStaIndInfo ARGS((
-   RguCStaIndInfo       *param,
-   Buffer               *mBuf
-));
+	 RguCStaIndInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguCStaIndInfo ARGS((
-   RguCStaIndInfo       *param,
-   Buffer               *mBuf
-));
+	 RguCStaIndInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkRguLchStaInd ARGS((
-   RguLchStaInd         *param,
-   Buffer               *mBuf
-));
+	 RguLchStaInd         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkRguLchStaInd ARGS((
-   RguLchStaInd         *param,
-   Buffer               *mBuf
-));
+	 RguLchStaInd         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 packSchedRepInfo ARGS((
-   RlcMacSchedRepInfo   *param,
-   Buffer               *mBuf
-));
+	 RlcMacSchedRepInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 unpackSchedRepInfo ARGS((
-   RlcMacSchedRepInfo   *param,
-   Buffer               *mBuf
-));
-  
+	 RlcMacSchedRepInfo   *param,
+	 Buffer               *mBuf
+	 ));
+
 /*rgu_x_001.main_3 - ADD - L2M  & R9 Support */
 #ifdef LTE_L2_MEAS
 /** @brief Request from MAC to RLC for forwarding HARQ Status */
 
 EXTERN S16 cmPkRguHqStaInd ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguHarqStatusInd     *harqStatusInd));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguHarqStatusInd     *harqStatusInd));
 
 /** @brief Request from MAC to RLC forwarding HARQ status  */
 EXTERN S16 cmUnpkRguHqStaInd ARGS((
-   RguHqStaInd          func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RguHqStaInd          func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 
 /** @brief Primitive invoked from RLC to MAC to 
  *  * inform the On/Off Status of LC Id*/
 EXTERN S16 cmPkRguL2MUlThrpMeasReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RguL2MUlThrpMeasReqInfo*    measReq
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 RguL2MUlThrpMeasReqInfo*    measReq
+	 ));
 
 /** @brief Primitive invoked from RLC to MAC to 
  *  * inform the On/Off Status of LC Id*/
 EXTERN S16 cmUnpkRguL2MUlThrpMeasReq ARGS((
-   RguL2MUlThrpMeasReq  func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 RguL2MUlThrpMeasReq  func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkRguL2MUlThrpMeasReqInfo ARGS((
-   RguL2MUlThrpMeasReqInfo *param,
-   Buffer               *mBuf
-));
+	 RguL2MUlThrpMeasReqInfo *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmUnpkRguL2MUlThrpMeasReqInfo ARGS((
-   RguL2MUlThrpMeasReqInfo       *param,
-   Buffer               *mBuf
-));
+	 RguL2MUlThrpMeasReqInfo       *param,
+	 Buffer               *mBuf
+	 ));
 
 #endif /* LTE_L2_MEAS */
 EXTERN S16 cmUnpkRguFlowCntrlInd ARGS((
-   RguFlowCntrlIndInfo  func,
-   Pst                  *pst,
-   Buffer               *mBuf
- ));
+	 RguFlowCntrlIndInfo  func,
+	 Pst                  *pst,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkRguFlowCntrlInd ARGS((
-   Pst* pst,
-   SuId suId,
-   RguFlowCntrlInd  *flowCntrlInd
- ));
+	 Pst* pst,
+	 SuId suId,
+	 RguFlowCntrlInd  *flowCntrlInd
+	 ));
 #endif
 
 #ifdef __cplusplus
@@ -1182,5 +1182,5 @@ EXTERN S16 cmPkRguFlowCntrlInd ARGS((
 
 /********************************************************************30**
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

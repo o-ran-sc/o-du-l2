@@ -205,15 +205,15 @@ S16 readMacCfg()
    duCfgParam.macCellCfg.prachCfg.fdm[0].numUnusedRootSeq = NUM_UNUSED_ROOT_SEQ;
    if(duCfgParam.macCellCfg.prachCfg.fdm[0].numUnusedRootSeq != 0)
    {
-	DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq, 
-	NUM_UNUSED_ROOT_SEQ * sizeof(uint8_t));
-        if(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq == NULLP)
-	{
-	    DU_LOG("\nDU_APP : Memory allocation failed");
-	    RETVALUE(RFAILED);
-	}
-	*(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq) = UNUSED_ROOT_SEQ;
-    }
+      DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq, 
+	    NUM_UNUSED_ROOT_SEQ * sizeof(uint8_t));
+      if(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq == NULLP)
+      {
+	 DU_LOG("\nDU_APP : Memory allocation failed");
+	 RETVALUE(RFAILED);
+      }
+      *(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq) = UNUSED_ROOT_SEQ;
+   }
    duCfgParam.macCellCfg.prachCfg.ssbPerRach = SSB_PER_RACH;
    duCfgParam.macCellCfg.prachCfg.prachMultCarrBand = PRACH_MULT_CARRIER_BAND;
    duCfgParam.macCellCfg.prachCfg.raContResTmr = RA_CONT_RES_TIMER;
@@ -395,7 +395,7 @@ S16 fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    pdcchCfg.searchSpcId = PDCCH_SEARCH_SPACE_ID;
    pdcchCfg.ctrlRsrcSetId = PDCCH_CTRL_RSRC_SET_ID;
    pdcchCfg.monitorSlotPrdAndOffPresent = \
-      SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
+					  SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
    //pdcchCfg.monitorSlotPrdAndOff = \
    SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
    pdcchCfg.monitorSymbolsInSlot[0] = 128;
@@ -416,13 +416,13 @@ S16 fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    pdschCfg.present = BWP_DownlinkCommon__pdsch_ConfigCommon_PR_setup;
    pdschCfg.k0 = PDSCH_K0;
    pdschCfg.mapType = \
-      PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
+		      PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
    pdschCfg.sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
    srvCellCfgComm->dlCfg.pdschCfg = pdschCfg;
 
    /* Configuring BCCH Config for SIB1 */
    srvCellCfgComm->dlCfg.bcchCfg.modPrdCoeff = \
-      BCCH_Config__modificationPeriodCoeff_n16;
+					       BCCH_Config__modificationPeriodCoeff_n16;
 
    /* Configuring PCCH Config for SIB1 */
    pcchCfg.dfltPagingCycle = PagingCycle_rf64;
@@ -451,7 +451,7 @@ S16 fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    rachCfg.raRspWindow = RACH_ConfigGeneric__ra_ResponseWindow_sl20;
    rachCfg.numRaPreamble = NUM_RA_PREAMBLE;
    rachCfg.ssbPerRachOccPresent = \
-      RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one;
+				  RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one;
    rachCfg.numSsbPerRachOcc = SSB_PER_RACH;
    rachCfg.contResTimer = RACH_ConfigCommon__ra_ContentionResolutionTimer_sf64;
    rachCfg.rsrpThreshSsb = RSRP_THRESHOLD_SSB;
@@ -571,13 +571,13 @@ S16 readCfg()
    sib1.ranac = DU_RANAC;
    sib1.cellIdentity = CELL_IDENTITY;
    sib1.cellResvdForOpUse =\
-      PLMN_IdentityInfo__cellReservedForOperatorUse_notReserved;
+			   PLMN_IdentityInfo__cellReservedForOperatorUse_notReserved;
    sib1.connEstFailCnt = ConnEstFailureControl__connEstFailCount_n3;
    sib1.connEstFailOffValidity =\
-      ConnEstFailureControl__connEstFailOffsetValidity_s120;
+				ConnEstFailureControl__connEstFailOffsetValidity_s120;
    sib1.siSchedInfo.winLen = SI_SchedulingInfo__si_WindowLength_s5;
    sib1.siSchedInfo.broadcastSta = \
-      SchedulingInfo__si_BroadcastStatus_broadcasting;
+				   SchedulingInfo__si_BroadcastStatus_broadcasting;
    sib1.siSchedInfo.preiodicity = SchedulingInfo__si_Periodicity_rf8;
    sib1.siSchedInfo.sibType = SIB_TypeInfo__type_sibType2;
    sib1.siSchedInfo.sibValTag = SIB1_VALUE_TAG;

@@ -46,25 +46,25 @@
 {                                                               \
    int _ret;                                                    \
    _ret = SGetSBuf(DU_APP_MEM_REGION, DU_POOL,                  \
-                    (Data **)&_datPtr, _size);                  \
+	 (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
+   cmMemset((U8*)_datPtr, 0, _size);                         \
    else                                                         \
-      _datPtr = NULLP;                                          \
+   _datPtr = NULLP;                                          \
 }
 
 /* free a static buffer */
 #define DU_FREE(_datPtr, _size)                                 \
    if(_datPtr)                                                  \
-      SPutSBuf(DU_APP_MEM_REGION, DU_POOL,                      \
-         (Data *)_datPtr, _size);
+SPutSBuf(DU_APP_MEM_REGION, DU_POOL,                      \
+      (Data *)_datPtr, _size);
 
 /* Allocate shared memory to be used for LWLC
  * during inter-layer communication */
 #define DU_ALLOC_SHRABL_BUF(_buf, _size)                     \
 {                                                            \
    if(SGetStaticBuffer(DU_APP_MEM_REGION, DU_POOL,           \
-      (Data **)&_buf, (Size) _size, 0) == ROK)               \
+	    (Data **)&_buf, (Size) _size, 0) == ROK)               \
    {                                                         \
       cmMemset((U8 *)(_buf), 0, _size);                      \
    }                                                         \
@@ -80,8 +80,8 @@
    if (_buf != NULLP)                                           \
    {                                                            \
       (Void) SPutStaticBuffer(_region, _pool,                   \
-           (Data *) _buf, (Size) _size, 0);                     \
-       _buf = NULLP;                                            \
+	    (Data *) _buf, (Size) _size, 0);                     \
+      _buf = NULLP;                                            \
    }                                                            \
 }
 
@@ -122,5 +122,5 @@
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

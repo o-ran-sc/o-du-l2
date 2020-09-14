@@ -40,5 +40,5 @@ uint8_t SendE2APMsg(Region , Pool );
 void E2APMsgHdlr(Buffer *mBuf);
 uint8_t deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg, E2setupRequest_t *e2SetupReq, uint8_t idx);
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

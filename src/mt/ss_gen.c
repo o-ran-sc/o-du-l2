@@ -150,13 +150,13 @@ PUBLIC void DumpSSIDemandQDebugInformation()
    for(i = 0; i < osCp.numSTsks; i++)
    {
       SsSTskEntry* tskEntry = &(osCp.sTskTbl[i]);
-      
+
       for(j = 0; j < SS_MAX_NUM_DQ; j++)
       {
 #ifndef ALIGN_64BIT
-         RTLIN_DUMP_DEBUG("Task[%lu] Q[%lu] QSize = %lu region=%d\n", i, j, tskEntry->dQ.queue[j].crntSize,tskEntry->region);
+	 RTLIN_DUMP_DEBUG("Task[%lu] Q[%lu] QSize = %lu region=%d\n", i, j, tskEntry->dQ.queue[j].crntSize,tskEntry->region);
 #else
-         RTLIN_DUMP_DEBUG("Task[%u] Q[%u] QSize = %u region=%d\n", i, j, tskEntry->dQ.queue[j].crntSize,tskEntry->region);
+	 RTLIN_DUMP_DEBUG("Task[%u] Q[%u] QSize = %u region=%d\n", i, j, tskEntry->dQ.queue[j].crntSize,tskEntry->region);
 #endif
       }
    }
@@ -176,7 +176,7 @@ PUBLIC Void mtSigSegvHndlr()
       SsSTskEntry* tskEntry = &(osCp.sTskTbl[i]);
       if((tskEntry->dep.tId != pthread_self()) && (tskEntry->dep.tId != 0))
       {
-          pthread_kill(tskEntry->dep.tId, SIGUSR2);
+	 pthread_kill(tskEntry->dep.tId, SIGUSR2);
       }
    }
 
@@ -192,7 +192,7 @@ PUBLIC Void mtSigUsr2Hndlr()
    pthread_mutex_unlock(&dumpingLock);  
 
    sleep(5);
-   
+
    exit(0);
 }
 
@@ -200,27 +200,27 @@ PUBLIC Void mtSigUsr2Hndlr()
 
 
 /*
-*
-*       Fun:   System Services initialization function
-*
-*       Desc:  This is the general initialization function for
-*              all System Services implementations. It initializes
-*              all the common global data structures and calls the
-*              implementation-specific initialization and start
-*              functions.
-*
-*       Ret:   Void
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   System Services initialization function
+ *
+ *       Desc:  This is the general initialization function for
+ *              all System Services implementations. It initializes
+ *              all the common global data structures and calls the
+ *              implementation-specific initialization and start
+ *              functions.
+ *
+ *       Ret:   Void
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SInit
+   PUBLIC S16 SInit
 (
-void
-)
+ void
+ )
 #else
 PUBLIC S16 SInit()
 #endif
@@ -238,22 +238,22 @@ PUBLIC S16 SInit()
 #ifdef SS_DRVR_SUPPORT
    SsDrvrTskEntry *drvrTsk;
 #endif
-/* ss002.301 : Modications */
+   /* ss002.301 : Modications */
    TRC1(SInit);
 
    osCp.configFilePath = "/mnt/tmp/configFile";
 
    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
- 
+
    /* ss019.103 - Modified for correct initialization of OS control point */
    /* start initializing OS control point */
-/* ss029.103: modification: multiple procId related changes */ 
+   /* ss029.103: modification: multiple procId related changes */ 
 #ifndef SS_MULTIPLE_PROCS
-/* ss004.301: Cavium changes */
+   /* ss004.301: Cavium changes */
 #ifdef SS_SEUM_CAVIUM
-		  osCp.procId = cvmx_get_core_num();
+   osCp.procId = cvmx_get_core_num();
 #else
-		  osCp.procId = SS_PROC_ID;
+   osCp.procId = SS_PROC_ID;
 #endif /* SS_SEUM_CAVIUM */
 #else /* SS_MULTIPLE_PROCS */
    for (i = 0; i < SS_MAX_PROCS; i++)
@@ -264,21 +264,21 @@ PUBLIC S16 SInit()
 
 #ifdef SS_THR_REG_MAP
    cmMemset(osCp.threadMemoryRegionMap, SS_INVALID_THREAD_REG_MAP, 
-            (sizeof(Region) * SS_MAX_THREAD_REGION_MAP));
+	 (sizeof(Region) * SS_MAX_THREAD_REGION_MAP));
    ssRegMainThread();
 #endif
 
    /* implementation specific general initialization */
    ret = ssdInitGen();
    if (ret != ROK)
-	{
-   /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-	  sprintf(prntBufLoc,"\n SInit(): ssdInitGen failed to initialize\
-	  							implementation specific general information \n");
+   {
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): ssdInitGen failed to initialize\
+	    implementation specific general information \n");
       SDisplay(1,prntBufLoc);
       RETVALUE(RFAILED);
-	}
- 
+   }
+
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
    InitializeForStaticMemLeak();
 #endif
@@ -304,16 +304,16 @@ PUBLIC S16 SInit()
       /* zero the pool information */
       reg->numPools = 0;
       for (j = 0;  j < SS_MAX_POOLS_PER_REG;  j++)
-         reg->poolTbl[j].type = SS_POOL_UND;
+	 reg->poolTbl[j].type = SS_POOL_UND;
 
       /* find this region ID in the region configuration structure */
       for (j = 0;  j < cfgNumRegs;  j++)
-         if (cfgRegInfo[j].region == i)
-            break;
+	 if (cfgRegInfo[j].region == i)
+	    break;
 
       /* this region is not configured */
       if (j == cfgNumRegs)
-         continue;
+	 continue;
 
       /* Load the configuration information into the region table.
        *  Note, the region still has to be registered, for it to
@@ -321,9 +321,9 @@ PUBLIC S16 SInit()
        */
       for (k = 0;  k < cfgRegInfo[j].numPools;  k++)
       {
-         reg->poolTbl[k].type = cfgRegInfo[j].pools[k].type;
-         if (reg->poolTbl[k].type == SS_POOL_DYNAMIC)
-            reg->poolTbl[k].u.dpool.size = cfgRegInfo[j].pools[k].size;
+	 reg->poolTbl[k].type = cfgRegInfo[j].pools[k].type;
+	 if (reg->poolTbl[k].type == SS_POOL_DYNAMIC)
+	    reg->poolTbl[k].u.dpool.size = cfgRegInfo[j].pools[k].size;
       }
    }
 
@@ -347,16 +347,16 @@ PUBLIC S16 SInit()
       /* zero the pool information */
       reg->numPools = 0;
       for (j = 0;  j < SS_MAX_POOLS_PER_REG;  j++)
-         reg->poolTbl[j].type = SS_POOL_UND;
+	 reg->poolTbl[j].type = SS_POOL_UND;
 
       /* find this region ID in the region configuration structure */
       for (j = 0;  j < cfgNumRegs;  j++)
-         if (cfgRegInfo[j].region == i)
-            break;
+	 if (cfgRegInfo[j].region == i)
+	    break;
 
       /* this region is not configured */
       if (j == cfgNumRegs)
-         continue;
+	 continue;
 
       /* Load the configuration information into the region table.
        *  Note, the region still has to be registered, for it to
@@ -364,43 +364,43 @@ PUBLIC S16 SInit()
        */
       for (k = 0;  k < cfgRegInfo[j].numPools;  k++)
       {
-         reg->poolTbl[k].type = cfgRegInfo[j].pools[k].type;
-         if (reg->poolTbl[k].type == SS_POOL_DYNAMIC)
-            reg->poolTbl[k].u.dpool.size = cfgRegInfo[j].pools[k].size;
+	 reg->poolTbl[k].type = cfgRegInfo[j].pools[k].type;
+	 if (reg->poolTbl[k].type == SS_POOL_DYNAMIC)
+	    reg->poolTbl[k].u.dpool.size = cfgRegInfo[j].pools[k].size;
       }
    }
 
    ret = ssInitSema(&osCp.regionTblSem, SS_MAX_STSKS);
    if (ret != ROK)
-	{
-    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-	  sprintf(prntBufLoc,"\n SInit(): Could not initialize the region Table Semaphore \n");
+   {
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): Could not initialize the region Table Semaphore \n");
       SDisplay(1,prntBufLoc);
-	  goto cleanup0;
-	}
+      goto cleanup0;
+   }
 
    /* implementation specific memory initialization */
    ret = ssdInitMem();
    if (ret != ROK)
-	{
-    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-	  sprintf(prntBufLoc,"\n SInit(): Memory initialization failed \n");
+   {
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): Memory initialization failed \n");
       SDisplay(1,prntBufLoc);
-	  goto cleanup1;
-	}
+      goto cleanup1;
+   }
 
 
    /* initialize TAPA and system task information */
-/* ss029.103: modification: multiple procId related changes */ 
+   /* ss029.103: modification: multiple procId related changes */ 
 #ifndef SS_MULTIPLE_PROCS
    for (i = 0;  i < SS_MAX_ENT;  i++)
       for (j = 0;  j < SS_MAX_INST;  j++)
-         osCp.tTskIds[i][j] = SS_TSKNC;
+	 osCp.tTskIds[i][j] = SS_TSKNC;
 #else /* SS_MULTIPLE_PROCS */
    for (i = 0;  i < SS_MAX_PROCS;  i++)
       for (j = 0;  j < SS_MAX_ENT;  j++)
-         for (k = 0;  k < SS_MAX_INST;  k++)
-            osCp.tTskIds[i][j][k] = SS_TSKNC;
+	 for (k = 0;  k < SS_MAX_INST;  k++)
+	    osCp.tTskIds[i][j][k] = SS_TSKNC;
 #endif /* SS_MULTIPLE_PROCS */
 
    for (i = 0;  i < SS_MAX_TTSKS;  i++)
@@ -415,7 +415,7 @@ PUBLIC S16 SInit()
       tTsk->initTsk = NULLP;
       tTsk->actvTsk = NULLP;
       tTsk->sTsk = NULLP;
-/* ss029.103: addition: TAPA task control block added */
+      /* ss029.103: addition: TAPA task control block added */
 #ifdef SS_MULTIPLE_PROCS
       tTsk->xxCb = NULLP;
 #endif /* SS_MULTIPLE_PROCS */
@@ -428,25 +428,25 @@ PUBLIC S16 SInit()
 
    ret = ssInitSema(&osCp.tTskTblSem, SS_MAX_STSKS);
    if (ret != ROK)
-	{
-    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-	  sprintf(prntBufLoc,"\n SInit(): Could not initialize the tTask table Semaphore \n");
+   {
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): Could not initialize the tTask table Semaphore \n");
       SDisplay(1,prntBufLoc);
-	  goto cleanup2;
-	}
+      goto cleanup2;
+   }
 
 #ifdef SS_MULTICORE_SUPPORT
-  /* check whether number of system tasks is
-   * equal to number of (regions-1).
-   * The last region is meant for timer task
-   * which under the current feature has as entry
-   * in system task table.
-   */
-  if(SS_MAX_STSKS > SS_MAX_REGS)
-  {
-    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+   /* check whether number of system tasks is
+    * equal to number of (regions-1).
+    * The last region is meant for timer task
+    * which under the current feature has as entry
+    * in system task table.
+    */
+   if(SS_MAX_STSKS > SS_MAX_REGS)
+   {
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
       goto cleanup3;
-  }
+   }
 #endif
 
    /* initialize system task information */
@@ -458,19 +458,19 @@ PUBLIC S16 SInit()
       sTsk->termPend = FALSE;
       sTsk->tskPrior = 0;
       for (j = 0;  j < SS_MAX_TTSKS;  j++)
-         sTsk->tTsks[j] = SS_INVALID_IDX;
+	 sTsk->tTsks[j] = SS_INVALID_IDX;
       sTsk->numTTsks = 0;
 
       sTsk->nxt = i + 1;
-/* ss002.301 : Modifications */
+      /* ss002.301 : Modifications */
 #ifdef SS_MULTICORE_SUPPORT
       if(i == 0)
       {
-         sTsk->region = (SS_MAX_REGS - 1);
+	 sTsk->region = (SS_MAX_REGS - 1);
       }
       else
       {
-         sTsk->region = i-1;
+	 sTsk->region = i-1;
       }
 #endif
    }
@@ -481,22 +481,22 @@ PUBLIC S16 SInit()
    ret = SInitLock(&osCp.sTskTblLock, SS_STSKTBL_LOCK);
    if (ret != ROK)
    {
-    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-	  sprintf(prntBufLoc,"\n SInit(): Could not initialize the tTask table Semaphore \n");
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): Could not initialize the tTask table Semaphore \n");
       SDisplay(1,prntBufLoc);
       goto cleanup3;
    }
 
-	/* ss028.103 - Addition of lock for mBuf reference count */
-	/* ss007.301 moving the mBufRefLock from common to per region */
-	/* SInitLock(&osCp.mBufRefLock, SS_LOCK_MUTEX);*/
+   /* ss028.103 - Addition of lock for mBuf reference count */
+   /* ss007.301 moving the mBufRefLock from common to per region */
+   /* SInitLock(&osCp.mBufRefLock, SS_LOCK_MUTEX);*/
 
    /* implementation specific task initialization */
    ret = ssdInitTsk();
    if (ret != ROK)
    {
-    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-	  sprintf(prntBufLoc,"\n SInit(): implementation specific task initialization Failed \n");
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): implementation specific task initialization Failed \n");
       SDisplay(1,prntBufLoc);
       goto cleanup4;
    }
@@ -521,22 +521,22 @@ PUBLIC S16 SInit()
    /* implementation specific driver initialization */
    ret = ssdInitDrvr();
    if (ret != ROK)
-	{
-    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-	  sprintf(prntBufLoc,"\n SInit(): ssdInitDrvr failed \n");
+   {
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): ssdInitDrvr failed \n");
       SDisplay(1,prntBufLoc);
-	  goto cleanup5;
-	}
+      goto cleanup5;
+   }
 #endif
 
-	/*ss004.301: Cavium Changes */
+   /*ss004.301: Cavium Changes */
 #ifdef SS_SEUM_CAVIUM
-	ret = ssInitRcvWork();
-	if (ret != ROK)
-	{
-    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-	  goto cleanup6;
-	}
+   ret = ssInitRcvWork();
+   if (ret != ROK)
+   {
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      goto cleanup6;
+   }
 #endif /* SS_SEUM_CAVIUM */
 
 
@@ -548,17 +548,17 @@ PUBLIC S16 SInit()
    for (i = 4;  i < 256;  i++)
    {
       if (i >= 128  &&  i <= 255)
-         osCp.dmndQLookupTbl[i] = 7;
+	 osCp.dmndQLookupTbl[i] = 7;
       if (i >= 64  &&  i <= 127)
-         osCp.dmndQLookupTbl[i] = 6;
+	 osCp.dmndQLookupTbl[i] = 6;
       if (i >= 32  &&  i <= 63)
-         osCp.dmndQLookupTbl[i] = 5;
+	 osCp.dmndQLookupTbl[i] = 5;
       if (i >= 16  &&  i <= 31)
-         osCp.dmndQLookupTbl[i] = 4;
+	 osCp.dmndQLookupTbl[i] = 4;
       if (i >= 8  &&  i <= 15)
-         osCp.dmndQLookupTbl[i] = 3;
+	 osCp.dmndQLookupTbl[i] = 3;
       if (i >= 4  &&  i <= 7)
-         osCp.dmndQLookupTbl[i] = 2;
+	 osCp.dmndQLookupTbl[i] = 2;
    }
 
 
@@ -593,18 +593,18 @@ PUBLIC S16 SInit()
    ret = SInitLock(&osCp.tmrTblLock, SS_TMRTBL_LOCK);
    if (ret != ROK)
    {
-    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-       goto cleanup6;
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      goto cleanup6;
    }
 
    /* implementation specific timer initialization */
    ret = ssdInitTmr();
    if (ret != ROK)
    {
-       /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-       sprintf(prntBufLoc,"\n SInit(): Could not initialize the timer \n");
-       SDisplay(1,prntBufLoc);
-       goto cleanup7;
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): Could not initialize the timer \n");
+      SDisplay(1,prntBufLoc);
+      goto cleanup7;
    }
 
    /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
@@ -613,28 +613,28 @@ PUBLIC S16 SInit()
    ret = ssdInitLog();
    if (ret != ROK)
    {
-       /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-       sprintf(prntBufLoc,"\n SInit(): Could not initialize the Logging streams \n");
-       SDisplay(1,prntBufLoc);
-       goto cleanup8;
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): Could not initialize the Logging streams \n");
+      SDisplay(1,prntBufLoc);
+      goto cleanup8;
    }
 
 #ifdef SS_LOGGER_SUPPORT /* ss001.301: additions */
    /* Initialize the lock, return on failure */
    if( SInitLock(&(osCp.logger.bufLock),SS_LOCK_MUTEX) != ROK)
    {
-       /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-       sprintf(prntBufLoc,"\n SInit(): Could not initialize the Logger Buffer Lock  \n");
-       SDisplay(1,prntBufLoc);
-       goto cleanup9;
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      sprintf(prntBufLoc,"\n SInit(): Could not initialize the Logger Buffer Lock  \n");
+      SDisplay(1,prntBufLoc);
+      goto cleanup9;
    } /* if */
-   
+
    /* Initialize the logger configuration flag */
    osCp.logger.configured = FALSE;
    /* Ss002.301 : Initialised */
    osCp.logger.started = FALSE;
 #endif /* SS_LOGGER_SUPPORT */
-/* ss001.301: additions */
+   /* ss001.301: additions */
 
 #ifdef SS_HISTOGRAM_SUPPORT
    /* Here we are filling all the tapa entity Ids, which will be
@@ -649,7 +649,7 @@ PUBLIC S16 SInit()
    cmCfgrTskReg((U8 *)"task_info.t");
 #endif /* SS_FBSED_TSK_REG  */
 
-/*ss011.301 : RMIOS release related changes*/
+   /*ss011.301 : RMIOS release related changes*/
 #ifdef SS_RMIOS
    spInit();
 #endif
@@ -658,7 +658,7 @@ PUBLIC S16 SInit()
    ret = tst();
    if (ret != ROK)
    {
-       /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
       goto cleanup10;
    }
 
@@ -670,8 +670,8 @@ PUBLIC S16 SInit()
    RETVALUE(ROK);
 
 
-/* clean up code */
-/*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+   /* clean up code */
+   /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
 cleanup10:
 #ifdef SS_LOGGER_SUPPORT 
    /* ss005.301: Deinitialize the logging at the end */
@@ -695,29 +695,29 @@ cleanup4:
    SDestroyLock(&osCp.sTskTblLock);
 cleanup3:
    if ( (ssDestroySema(&osCp.tTskTblSem)) != ROK)
-      {
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS012, ERRZERO,
-                         "Could not destroy the Semaphore");
-        /* ss005.301: Changes, clean the threads and exit */
+      SSLOGERROR(ERRCLS_DEBUG, ESS012, ERRZERO,
+	    "Could not destroy the Semaphore");
+      /* ss005.301: Changes, clean the threads and exit */
 #endif
-      }
+   }
 
 cleanup2:
    ssdDeinitMem();
 cleanup1:
-	/* ss007.301 destroying the per region mBufRefLock */
-	for (i= 0;i<SS_MAX_REGS;i++)
-	{
-	  SDestroyLock(&osCp.regionTbl[i].mBufRefLock);
-	}
+   /* ss007.301 destroying the per region mBufRefLock */
+   for (i= 0;i<SS_MAX_REGS;i++)
+   {
+      SDestroyLock(&osCp.regionTbl[i].mBufRefLock);
+   }
    /* ss006.13: addition */
    if ( (ssDestroySema(&osCp.regionTblSem)) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS013, ERRZERO,
-               "Could not destroy the Semaphore");
-       /* ss005.301: Changes, clean the threads and exit */
+      SSLOGERROR(ERRCLS_DEBUG, ESS013, ERRZERO,
+	    "Could not destroy the Semaphore");
+      /* ss005.301: Changes, clean the threads and exit */
 #endif
    }
 cleanup0:
@@ -730,31 +730,31 @@ cleanup0:
 
 /* ss033.103: Added SDeInit API to free all the resources */
 /*
-*
-*       Fun:   System Services de-initialization function
-*
-*       Desc:  This is the de-initialization function for System 
-*              Services implementations. It releases all the common
-*              global data structures.
-*
-*       Ret:   Void
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   System Services de-initialization function
+ *
+ *       Desc:  This is the de-initialization function for System 
+ *              Services implementations. It releases all the common
+ *              global data structures.
+ *
+ *       Ret:   Void
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SDeInit
+   PUBLIC S16 SDeInit
 (
-void
-)
+ void
+ )
 #else
 PUBLIC S16 SDeInit()
 #endif
 {
-  /* ss007.301 */
-  U16    regCnt;
+   /* ss007.301 */
+   U16    regCnt;
 
    TRC1(SDeInit);
 
@@ -772,9 +772,9 @@ PUBLIC S16 SDeInit()
    if ((ssDestroySema(&osCp.tTskTblSem)) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-    SSLOGERROR(ERRCLS_DEBUG, ESS014, ERRZERO,
-                      "Could not destroy the Semaphore");
-    RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS014, ERRZERO,
+	    "Could not destroy the Semaphore");
+      RETVALUE(RFAILED);
 
 #endif
    }
@@ -785,20 +785,20 @@ PUBLIC S16 SDeInit()
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS015, ERRZERO,
-                      "Could not destroy the Semaphore");
+	    "Could not destroy the Semaphore");
       RETVALUE(RFAILED);
 
 #endif
    }
 
-	ssdDeinitGen();
-	/* ss007.301 destroying the per region mBufRefLock */
-	for (regCnt = 0;  regCnt < SS_MAX_REGS;  regCnt++)
-	{
-	  SDestroyLock(&osCp.regionTbl[regCnt].mBufRefLock);
-	}
+   ssdDeinitGen();
+   /* ss007.301 destroying the per region mBufRefLock */
+   for (regCnt = 0;  regCnt < SS_MAX_REGS;  regCnt++)
+   {
+      SDestroyLock(&osCp.regionTbl[regCnt].mBufRefLock);
+   }
 
-	/* ss005.301: Deinitialize the logging at the end */
+   /* ss005.301: Deinitialize the logging at the end */
 #ifdef SS_LOGGER_SUPPORT 
    SDestroyLock(&(osCp.logger.bufLock));
 #endif /* SS_LOGGER_SUPPORT */
@@ -809,13 +809,13 @@ PUBLIC S16 SDeInit()
 /* ss001.301: additions */
 #ifdef SS_LOGGER_SUPPORT 
 #ifdef ANSI
-PUBLIC S16 SWrtLogBuf
+   PUBLIC S16 SWrtLogBuf
 (
-Txt *buf                        /* buffer */
-)
+ Txt *buf                        /* buffer */
+ )
 #else
 PUBLIC S16 SWrtLogBuf(buf)
-Txt *buf;                       /* buffer */
+   Txt *buf;                       /* buffer */
 #endif
 {
    S16 bufSz;
@@ -850,39 +850,39 @@ Txt *buf;                       /* buffer */
 }
 #endif /* SS_LOGGER_SUPPORT  */
 /*
-*
-*       Fun:   SPrint
-*
-*       Desc:  Print a string.
-*
-*              This function should be used for debugging only.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Text buffer should be null terminated.
-*
-*              SDisplay will replace SPrint.
-*
-*              Typical usage consists of a call to sprintf to
-*              format the string into a buffer followed by a
-*              call to SPrint
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SPrint
+ *
+ *       Desc:  Print a string.
+ *
+ *              This function should be used for debugging only.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Text buffer should be null terminated.
+ *
+ *              SDisplay will replace SPrint.
+ *
+ *              Typical usage consists of a call to sprintf to
+ *              format the string into a buffer followed by a
+ *              call to SPrint
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SPrint
+   PUBLIC S16 SPrint
 (
-Txt *buf                        /* buffer */
-)
+ Txt *buf                        /* buffer */
+ )
 #else
 PUBLIC S16 SPrint(buf)
-Txt *buf;                       /* buffer */
+   Txt *buf;                       /* buffer */
 #endif
 {
    TRC1(SPrint);
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
    SDisplay(0, buf);
 #ifdef SS_LOGGER_SUPPORT 
    SWrtLogBuf(buf);
@@ -894,30 +894,30 @@ Txt *buf;                       /* buffer */
 
 
 /*
-*
-*       Fun:   SError
-*
-*       Desc:  Invoked by layer when an unrecoverable
-*              software error is detected. This function should
-*              never return.
-*
-*       Ret:   None
-*
-*       Notes: None
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SError
+ *
+ *       Desc:  Invoked by layer when an unrecoverable
+ *              software error is detected. This function should
+ *              never return.
+ *
+ *       Ret:   None
+ *
+ *       Notes: None
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SError
+   PUBLIC S16 SError
 (
-Seq seq,                    /* sequence */
-Reason reason               /* reason */
-)
+ Seq seq,                    /* sequence */
+ Reason reason               /* reason */
+ )
 #else
 PUBLIC S16 SError(seq, reason)
-Seq seq;                    /* sequence */
-Reason reason;              /* reason */
+   Seq seq;                    /* sequence */
+   Reason reason;              /* reason */
 #endif
 {
    S16 ret;
@@ -930,8 +930,8 @@ Reason reason;              /* reason */
 
    SGetDateTime(&dt);
    sprintf(errBuf, "\n\ndate: %02d/%02d/%04d time: %02d:%02d:%02d\n",
-          (int)dt.month,(int)dt.day,(int)dt.year + 1900,
-          (int)dt.hour,(int)dt.min,(int)dt.sec);
+	 (int)dt.month,(int)dt.day,(int)dt.year + 1900,
+	 (int)dt.hour,(int)dt.min,(int)dt.sec);
    SPrint(errBuf);
 
 
@@ -943,43 +943,43 @@ Reason reason;              /* reason */
 
 
 /*
-*
-*       Fun:   SLogError
-*
-*       Desc:  Invoked by layer to log an error.
-*
-*       Ret:   None
-*
-*       Notes: None
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SLogError
+ *
+ *       Desc:  Invoked by layer to log an error.
+ *
+ *       Ret:   None
+ *
+ *       Notes: None
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void SLogError
+   PUBLIC Void SLogError
 (
-Ent ent,                    /* Calling layer's entity id */
-Inst inst,                  /* Calling layer's instance id */
-ProcId procId,              /* Calling layer's processor id */
-Txt *file,                  /* file name where error occured */
-S32 line,                   /* line in file where error occured */
-ErrCls errCls,              /* error class */
-ErrCode errCode,            /* layer unique error code */
-ErrVal errVal,              /* error value */
-Txt *errDesc                /* description of error */
-)
+ Ent ent,                    /* Calling layer's entity id */
+ Inst inst,                  /* Calling layer's instance id */
+ ProcId procId,              /* Calling layer's processor id */
+ Txt *file,                  /* file name where error occured */
+ S32 line,                   /* line in file where error occured */
+ ErrCls errCls,              /* error class */
+ ErrCode errCode,            /* layer unique error code */
+ ErrVal errVal,              /* error value */
+ Txt *errDesc                /* description of error */
+ )
 #else
 PUBLIC Void SLogError(ent, inst, procId, file, line,
-                        errCls, errCode, errVal, errDesc)
-Ent ent;                    /* Calling layer's entity id */
-Inst inst;                  /* Calling layer's instance id */
-ProcId procId;              /* Calling layer's processor id */
-Txt *file;                  /* file name where error occured */
-S32 line;                   /* line in file where error occured */
-ErrCls errCls;              /* error class */
-ErrCode errCode;            /* layer unique error code */
-ErrVal errVal;              /* error value */
-Txt *errDesc;               /* description of error */
+      errCls, errCode, errVal, errDesc)
+   Ent ent;                    /* Calling layer's entity id */
+   Inst inst;                  /* Calling layer's instance id */
+   ProcId procId;              /* Calling layer's processor id */
+   Txt *file;                  /* file name where error occured */
+   S32 line;                   /* line in file where error occured */
+   ErrCls errCls;              /* error class */
+   ErrCode errCode;            /* layer unique error code */
+   ErrVal errVal;              /* error value */
+   Txt *errDesc;               /* description of error */
 #endif
 {
    DateTime dt;
@@ -988,22 +988,22 @@ Txt *errDesc;               /* description of error */
 
    TRC1(SLogError);
 
-/*ss014.301: SSI-4GMX related changes*/
+   /*ss014.301: SSI-4GMX related changes*/
 #ifndef SS_4GMX_LCORE
    SGetDateTime(&dt);
    sprintf(errBuf, "\n\ndate: %02d/%02d/%04d time: %02d:%02d:%02d\n",
-          (int)dt.month,(int)dt.day,(int)dt.year + 1900,
-          (int)dt.hour,(int)dt.min,(int)dt.sec);
+	 (int)dt.month,(int)dt.day,(int)dt.year + 1900,
+	 (int)dt.hour,(int)dt.min,(int)dt.sec);
    SDisplay(0,errBuf);
 #endif
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_LOGGER_SUPPORT 
    SWrtLogBuf(errBuf);
 #endif /* SS_LOGGER_SUPPORT  */
 
    ssdLogError(ent, inst, procId, file, line,
-                     errCls, errCode, errVal, errDesc);
+	 errCls, errCode, errVal, errDesc);
 
 
    RETVOID;
@@ -1014,23 +1014,23 @@ Txt *errDesc;               /* description of error */
 #ifndef SS_MULTIPLE_PROCS
 
 /*
-*
-*       Fun:   SFndProcId
-*
-*       Desc:  This function finds the local processor ID.
-*
-*       Ret:   local processor id
-*
-*       Notes:
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SFndProcId
+ *
+ *       Desc:  This function finds the local processor ID.
+ *
+ *       Ret:   local processor id
+ *
+ *       Notes:
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC ProcId SFndProcId
+   PUBLIC ProcId SFndProcId
 (
-void
-)
+ void
+ )
 #else
 PUBLIC ProcId SFndProcId()
 #endif
@@ -1042,26 +1042,26 @@ PUBLIC ProcId SFndProcId()
 
 
 /*
-*
-*       Fun:   SSetProcId
-*
-*       Desc:  This function stores the local processor ID.
-*
-*       Ret:   Void
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SSetProcId
+ *
+ *       Desc:  This function stores the local processor ID.
+ *
+ *       Ret:   Void
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void SSetProcId
+   PUBLIC Void SSetProcId
 (
-ProcId procId
-)
+ ProcId procId
+ )
 #else
 PUBLIC Void SSetProcId(procId)
-ProcId procId;
+   ProcId procId;
 #endif
 {
    TRC1(SSetProcId);
@@ -1077,26 +1077,26 @@ ProcId procId;
 #ifdef SS_MULTIPLE_PROCS
 
 /*
-*
-*       Fun:   SGetProcIdIdx
-*
-*       Desc:  This function finds index of procId in the process id table 
-*
-*       Ret:   ROK/RFAILED 
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SGetProcIdIdx
+ *
+ *       Desc:  This function finds index of procId in the process id table 
+ *
+ *       Ret:   ROK/RFAILED 
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC U16 SGetProcIdIdx
+   PUBLIC U16 SGetProcIdIdx
 (
-ProcId proc
-)
+ ProcId proc
+ )
 #else
 PUBLIC U16 SGetProcIdIdx(proc)
-ProcId proc; 
+   ProcId proc; 
 #endif
 {
    U16 i;
@@ -1108,38 +1108,38 @@ ProcId proc;
 
    for (i = idx; i < SS_MAX_PROCS; i++)
       if (osCp.procLst.procId[i] == proc)
-         return i;
+	 return i;
 
    /* search upto idx */
    for (i = 0; i < idx; i++)
       if (osCp.procLst.procId[i] == proc)
-         return i;
+	 return i;
 
    RETVALUE(SS_INV_PROCID_IDX);
 } /* SGetProcIdIdx */
 
 
 /*
-*
-*       Fun:   SInsProcId
-*
-*       Desc:  This function inserts procId in the process id table 
-*
-*       Ret:   ROK/RFAILED 
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SInsProcId
+ *
+ *       Desc:  This function inserts procId in the process id table 
+ *
+ *       Ret:   ROK/RFAILED 
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 SInsProcId
+   PRIVATE S16 SInsProcId
 (
-ProcId proc
-)
+ ProcId proc
+ )
 #else
 PRIVATE S16 SInsProcId(proc)
-ProcId proc; 
+   ProcId proc; 
 #endif
 {
    U16 i;
@@ -1152,18 +1152,18 @@ ProcId proc;
    for (i = idx; i < SS_MAX_PROCS; i++)
       if (osCp.procLst.procId[i] == SS_INV_PROCID)
       {
-         osCp.procLst.procId[i] = proc;
-         osCp.procLst.free--;
-         RETVALUE(ROK);
+	 osCp.procLst.procId[i] = proc;
+	 osCp.procLst.free--;
+	 RETVALUE(ROK);
       }
 
    /* search for free entry upto idx */
    for (i = 0; i < idx; i++)
       if (osCp.procLst.procId[i] == SS_INV_PROCID)
       {
-         osCp.procLst.procId[i] = proc;
-         osCp.procLst.free--;
-         RETVALUE(ROK);
+	 osCp.procLst.procId[i] = proc;
+	 osCp.procLst.free--;
+	 RETVALUE(ROK);
       }
 
    RETVALUE(RFAILED);
@@ -1171,26 +1171,26 @@ ProcId proc;
 
 
 /*
-*
-*       Fun:   SRemProcId
-*
-*       Desc:  This function inserts procId in the process id table 
-*
-*       Ret:   ROK/RFAILED 
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SRemProcId
+ *
+ *       Desc:  This function inserts procId in the process id table 
+ *
+ *       Ret:   ROK/RFAILED 
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 SRemProcId
+   PRIVATE S16 SRemProcId
 (
-ProcId proc
-)
+ ProcId proc
+ )
 #else
 PRIVATE S16 SRemProcId(proc)
-ProcId proc; 
+   ProcId proc; 
 #endif
 {
    U16 i;
@@ -1203,18 +1203,18 @@ ProcId proc;
    for (i = idx; i < SS_MAX_PROCS; i++)
       if (osCp.procLst.procId[i] == proc)
       {
-         osCp.procLst.procId[i] = SS_INV_PROCID;
-         osCp.procLst.free++;
-         RETVALUE(ROK);
+	 osCp.procLst.procId[i] = SS_INV_PROCID;
+	 osCp.procLst.free++;
+	 RETVALUE(ROK);
       }
 
    /* search upto idx */
    for (i = 0; i < idx; i++)
       if (osCp.procLst.procId[i] == proc)
       {
-         osCp.procLst.procId[i] = SS_INV_PROCID;
-         osCp.procLst.free++;
-         RETVALUE(ROK);
+	 osCp.procLst.procId[i] = SS_INV_PROCID;
+	 osCp.procLst.free++;
+	 RETVALUE(ROK);
       }
 
    RETVALUE(RFAILED);
@@ -1222,23 +1222,23 @@ ProcId proc;
 
 
 /*
-*
-*       Fun:   SLockOsCp
-*
-*       Desc:  This function locks OsCp 
-*
-*       Ret:   ROK/RFAILED 
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SLockOsCp
+ *
+ *       Desc:  This function locks OsCp 
+ *
+ *       Ret:   ROK/RFAILED 
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 SLockOsCp
+   PRIVATE S16 SLockOsCp
 (
-Void
-)
+ Void
+ )
 #else
 PRIVATE S16 SLockOsCp(Void)
 #endif
@@ -1251,7 +1251,7 @@ PRIVATE S16 SLockOsCp(Void)
    if (ret != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS016, ERRZERO,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
       RETVALUE(RFAILED);
    }
 
@@ -1261,15 +1261,15 @@ PRIVATE S16 SLockOsCp(Void)
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS017, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS018, ERRZERO,
-                      "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS018, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -1282,23 +1282,23 @@ PRIVATE S16 SLockOsCp(Void)
 
 
 /*
-*
-*       Fun:   SULockOsCp
-*
-*       Desc:  This function locks OsCp 
-*
-*       Ret:   ROK/RFAILED 
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SULockOsCp
+ *
+ *       Desc:  This function locks OsCp 
+ *
+ *       Ret:   ROK/RFAILED 
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 SULockOsCp
+   PRIVATE S16 SULockOsCp
 (
-Void
-)
+ Void
+ )
 #else
 PRIVATE S16 SULockOsCp(Void)
 #endif
@@ -1312,7 +1312,7 @@ PRIVATE S16 SULockOsCp(Void)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS019, ERRZERO,
-                      "Could not give the Semaphore");
+	    "Could not give the Semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -1324,28 +1324,28 @@ PRIVATE S16 SULockOsCp(Void)
 
 
 /*
-*
-*       Fun:   SAddProcIdLst
-*
-*       Desc:  This function adds given proc ids to the list 
-*
-*       Ret:   ROK/RFAILED 
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SAddProcIdLst
+ *
+ *       Desc:  This function adds given proc ids to the list 
+ *
+ *       Ret:   ROK/RFAILED 
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SAddProcIdLst
+   PUBLIC S16 SAddProcIdLst
 (
-U16 numPIds,
-ProcId *pIdLst
-)
+ U16 numPIds,
+ ProcId *pIdLst
+ )
 #else
 PUBLIC S16 SAddProcIdLst(numPIds, pIdLst)
-U16 numPIds;
-ProcId *pIdLst;
+   U16 numPIds;
+   ProcId *pIdLst;
 #endif
 {
    U16 i;
@@ -1358,7 +1358,7 @@ ProcId *pIdLst;
    if (numPIds > SS_MAX_PROCS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS020, ERRZERO, "number of proc Ids exceeds\
- limit");
+	    limit");
       RETVALUE(RFAILED);
    }
 
@@ -1367,13 +1367,13 @@ ProcId *pIdLst;
    {
       if (pIdLst[i] == SS_INV_PROCID)
       {
-         SSLOGERROR(ERRCLS_INT_PAR, ESS021, ERRZERO, "Invalid proc Ids");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS021, ERRZERO, "Invalid proc Ids");
+	 RETVALUE(RFAILED);
       }
    }
 
 #endif
-   
+
    if (SLockOsCp() != ROK)
       RETVALUE(RFAILED);
 
@@ -1381,15 +1381,15 @@ ProcId *pIdLst;
    for (i = 0; i < numPIds; i++)
       if (SGetProcIdIdx(pIdLst[i]) != SS_INV_PROCID_IDX)
       {
-         SSLOGERROR(ERRCLS_INT_PAR, ESS022, ERRZERO, "Duplicate proc id");
-         (Void) SULockOsCp();
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS022, ERRZERO, "Duplicate proc id");
+	 (Void) SULockOsCp();
+	 RETVALUE(RFAILED);
       }
 
    if (numPIds > osCp.procLst.free)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS023, ERRZERO, "Total number of proc id \
-exceeds");
+	    exceeds");
       (Void) SULockOsCp();
       RETVALUE(RFAILED);
    }
@@ -1403,11 +1403,11 @@ exceeds");
       if (SInsProcId(pIdLst[i]) == RFAILED)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS024, ERRZERO,
-                      "Could not insert the proc id");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS024, ERRZERO,
+	       "Could not insert the proc id");
 #endif
-         (Void) SULockOsCp();
-         RETVALUE(RFAILED);
+	 (Void) SULockOsCp();
+	 RETVALUE(RFAILED);
       }
    }
 
@@ -1420,28 +1420,28 @@ exceeds");
 
 
 /*
-*
-*       Fun:   SRemProcIdLst
-*
-*       Desc:  This function adds given proc ids to the list 
-*
-*       Ret:   ROK/RFAILED 
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SRemProcIdLst
+ *
+ *       Desc:  This function adds given proc ids to the list 
+ *
+ *       Ret:   ROK/RFAILED 
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SRemProcIdLst
+   PUBLIC S16 SRemProcIdLst
 (
-U16 numPIds,
-ProcId *pIdLst
-)
+ U16 numPIds,
+ ProcId *pIdLst
+ )
 #else
 PUBLIC S16 SRemProcIdLst(numPIds, pIdLst)
-U16 numPIds;
-ProcId *pIdLst;
+   U16 numPIds;
+   ProcId *pIdLst;
 #endif
 {
    U16 i;
@@ -1468,8 +1468,8 @@ ProcId *pIdLst;
    {
       if (SGetProcIdIdx(pIdLst[i]) == SS_INV_PROCID_IDX)
       {
-         (Void) SULockOsCp();
-         RETVALUE(RFAILED);
+	 (Void) SULockOsCp();
+	 RETVALUE(RFAILED);
       }
    }
 
@@ -1485,28 +1485,28 @@ ProcId *pIdLst;
 
 
 /*
-*
-*       Fun:   SGetProcIdLst
-*
-*       Desc:  This function retrieves proc Id list 
-*
-*       Ret:   ROK/RFAILED 
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SGetProcIdLst
+ *
+ *       Desc:  This function retrieves proc Id list 
+ *
+ *       Ret:   ROK/RFAILED 
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SGetProcIdLst
+   PUBLIC S16 SGetProcIdLst
 (
-U16 *numPIds,
-ProcId *pIdLst
-)
+ U16 *numPIds,
+ ProcId *pIdLst
+ )
 #else
 PUBLIC S16 SGetProcIdLst(numPIds, pIdLst)
-U16 *numPIds;
-ProcId *pIdLst;
+   U16 *numPIds;
+   ProcId *pIdLst;
 #endif
 {
    U16 i;
@@ -1528,7 +1528,7 @@ ProcId *pIdLst;
    for (i = 0; i < SS_MAX_PROCS; i++)
    {
       if (osCp.procLst.procId[i] != PROCNC)
-         pIdLst[count++] = osCp.procLst.procId[i];
+	 pIdLst[count++] = osCp.procLst.procId[i];
    }
 
    *numPIds = count;
@@ -1544,33 +1544,33 @@ ProcId *pIdLst;
 
 
 /*
-*
-*       Fun:   SGetXxCb
-*
-*       Desc:  This function retrieves protocol layer control block for given proc,
-*              ent and inst IDs
-*
-*       Ret:   ROK/RFAILED 
-*
-*       Notes: 
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SGetXxCb
+ *
+ *       Desc:  This function retrieves protocol layer control block for given proc,
+ *              ent and inst IDs
+ *
+ *       Ret:   ROK/RFAILED 
+ *
+ *       Notes: 
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SGetXxCb
+   PUBLIC S16 SGetXxCb
 (
-ProcId proc,
-Ent ent,
-Inst inst,
-Void **xxCb
-)
+ ProcId proc,
+ Ent ent,
+ Inst inst,
+ Void **xxCb
+ )
 #else
 PUBLIC S16 SGetXxCb(proc, ent, inst, xxCb)
-ProcId proc;
-Ent ent;
-Inst inst;
-Void **xxCb;
+   ProcId proc;
+   Ent ent;
+   Inst inst;
+   Void **xxCb;
 #endif
 {
    U16 procIdIdx;
@@ -1585,7 +1585,7 @@ Void **xxCb;
       RETVALUE(RFAILED);
    }
 #endif 
-   
+
    /* 
     * ss030.103: delete: locking/unlocking removed as it causes
     * deadlock/blockage in some cases
@@ -1621,452 +1621,452 @@ Void **xxCb;
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 /*
-*
-*       Fun:   SFillEntIds
-*
-*       Desc:  It is static data base contains all entity Ids of tapa task.
-*              This Data base is used to find the entity id using two letter
-*              prifix product code.
-*
-*       Ret:   ROK/RFAILED
-*
-*       Notes:
-*
-*       File:  ss_gen.c
-*
-*/
+ *
+ *       Fun:   SFillEntIds
+ *
+ *       Desc:  It is static data base contains all entity Ids of tapa task.
+ *              This Data base is used to find the entity id using two letter
+ *              prifix product code.
+ *
+ *       Ret:   ROK/RFAILED
+ *
+ *       Notes:
+ *
+ *       File:  ss_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SFillEntIds
+   PUBLIC S16 SFillEntIds
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC S16 SFillEntIds(Void)
 #endif
 {
 
    U8 entInfo[26][26] = {
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTAA, ENTAB, ENTAC, ENTNC, ENTAE, ENTAF, ENTNC, ENTAH, ENTNC, ENTNC, ENTNC,
-                  /* A */   ENTAL, ENTAM, ENTNC, ENTNC, ENTAP, ENTAQ, ENTAR, ENTAS, ENTNC, ENTAU, ENTNC,
-                            ENTAW, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTAA, ENTAB, ENTAC, ENTNC, ENTAE, ENTAF, ENTNC, ENTAH, ENTNC, ENTNC, ENTNC,
+	 /* A */   ENTAL, ENTAM, ENTNC, ENTNC, ENTAP, ENTAQ, ENTAR, ENTAS, ENTNC, ENTAU, ENTNC,
+	 ENTAW, ENTNC, ENTNC, ENTNC},
 
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTBD, ENTNC, ENTNC, ENTNC, ENTNC, ENTBI, ENTNC, ENTNC,
-                  /* B */   ENTNC, ENTBM, ENTNC, ENTNC, ENTNC, ENTNC, ENTBR, ENTBS, ENTNC, ENTNC, ENTBV,
-                            ENTBW, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTCC, ENTNC, ENTNC, ENTNC, ENTNC, ENTCH, ENTNC, ENTNC, ENTNC,
-                  /* C */   ENTCL, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTCS, ENTNC, ENTCU, ENTCV,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTDB, ENTNC, ENTNC, ENTNC, ENTNC, ENTDG, ENTNC, ENTDI, ENTNC, ENTDK,
-                  /* D */   ENTNC, ENTDM, ENTDN, ENTNC, ENTDP, ENTNC, ENTNC, ENTNC, ENTDT, ENTDU, ENTDV,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTNC, ENTEC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* E */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTER, ENTES, ENTNC, ENTNC, ENTEV,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTFA, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* F */   ENTNC, ENTFM, ENTFN, ENTNC, ENTFP, ENTNC, ENTFR, ENTNC, ENTNC, ENTFU, ENTNC,
-                            ENTFW, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTGA, ENTGB, ENTGC, ENTGD, ENTGE, ENTGF, ENTGG, ENTGH, ENTGI, ENTNC, ENTNC,
-                  /* G */   ENTGL, ENTGM, ENTGN, ENTGO, ENTGP, ENTNC, ENTGR, ENTGS, ENTGT, ENTGU, ENTNC,
-                            ENTGW, ENTGX, ENTGY, ENTGZ},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTHC, ENTNC, ENTHE, ENTNC, ENTHG, ENTNC, ENTHI, ENTNC, ENTNC,
-                  /* H */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTHR, ENTHS, ENTNC, ENTHU, ENTNC,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTIA, ENTIB, ENTNC, ENTID, ENTIE, ENTNC, ENTNC, ENTNC, ENTII, ENTNC, ENTNC,
-                  /* I */   ENTNC, ENTIM, ENTIN, ENTNC, ENTNC, ENTIQ, ENTNC, ENTIS, ENTIT, ENTIU, ENTNC,
-                            ENTIW, ENTIX, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* J */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* K */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                            ENTKW, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTLA, ENTLB, ENTLC, ENTLD, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTLK,
-                  /* L */   ENTNC, ENTLM, ENTLN, ENTNC, ENTNC, ENTNC, ENTLR, ENTNC, ENTLT, ENTLU, ENTLV,
-                            ENTNC, ENTLX, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTMA, ENTNC, ENTMC, ENTMD, ENTME, ENTNC, ENTMG, ENTNC, ENTNC, ENTNC, ENTMK,
-                  /* M */   ENTML, ENTMM, ENTNC, ENTNC, ENTNC, ENTNC, ENTMR, ENTMS, ENTMT, ENTMU, ENTMV,
-                            ENTMW, ENTMX, ENTNC, ENTMZ},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTND, ENTNC, ENTNF, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* N */   ENTNC, ENTNM, ENTNC, ENTNC, ENTNP, ENTNC, ENTNC, ENTNS, ENTNC, ENTNC, ENTNV,
-                            ENTNW, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTOD, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* O */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTPA, ENTNC, ENTNC, ENTPD, ENTNC, ENTNC, ENTNC, ENTPH, ENTNC, ENTNC, ENTNC,
-                  /* P */   ENTPL, ENTNC, ENTPN, ENTNC, ENTPN, ENTPQ, ENTPR, ENTNC, ENTNC, ENTPU, ENTPV,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTQC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTQI, ENTNC, ENTNC,
-                  /* Q */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                            ENTQW, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTRA, ENTNC, ENTNC, ENTRD, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* R */   ENTRL, ENTRM, ENTRN, ENTNC, ENTRP, ENTNC, ENTRR, ENTNC, ENTRT, ENTRU, ENTNC,
-                            ENTNC, ENTRX, ENTRY, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTSA, ENTSB, ENTSC, ENTSD, ENTSE, ENTSF, ENTSG, ENTSH, ENTSI, ENTNC, ENTNC,
-                  /* S */   ENTNC, ENTSM, ENTSN, ENTSO, ENTSP, ENTNC, ENTSR, ENTSS, ENTST, ENTSU, ENTSV,
-                            ENTNC, ENTNC, ENTNC, ENTSZ},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTTC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* T */   ENTNC, ENTTM, ENTNC, ENTNC, ENTTP, ENTNC, ENTNC, ENTTS, ENTTT, ENTTU, ENTNC,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTUD, ENTNC, ENTNC, ENTNC, ENTUH, ENTNC, ENTNC, ENTNC,
-                  /* U */   ENTUL, ENTUM, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTUS, ENTNC, ENTNC, ENTNC,
-                            ENTNC, ENTNC, ENTNC, ENTUZ},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTVF, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* V */   ENTNC, ENTVM, ENTNC, ENTVO, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTVU, ENTNC,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTWC, ENTWD, ENTNC, ENTNC, ENTNC, ENTNC, ENTWI, ENTNC, ENTNC,
-                  /* W */   ENTNC, ENTNC, ENTWN, ENTNC, ENTNC, ENTNC, ENTNC, ENTWS, ENTNC, ENTWU, ENTNC,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTXG, ENTNC, ENTXI, ENTNC, ENTNC,
-                  /* X */   ENTNC, ENTXM, ENTXN, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTXU, ENTNC,
-                            ENTNC, ENTXX, ENTXY, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* Y */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                            ENTNC, ENTNC, ENTNC, ENTNC},
-                           /* A      B      C      D      E      F      G      H      I      J      K  *
-                              L      M      N      O      P      Q      R      S      T      U      V  *
-                              W      X      Y      Z */
-                           {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                  /* Z */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                            ENTNC, ENTNC, ENTNC, ENTNC}
-                        };
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTBD, ENTNC, ENTNC, ENTNC, ENTNC, ENTBI, ENTNC, ENTNC,
+	 /* B */   ENTNC, ENTBM, ENTNC, ENTNC, ENTNC, ENTNC, ENTBR, ENTBS, ENTNC, ENTNC, ENTBV,
+	 ENTBW, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTCC, ENTNC, ENTNC, ENTNC, ENTNC, ENTCH, ENTNC, ENTNC, ENTNC,
+	 /* C */   ENTCL, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTCS, ENTNC, ENTCU, ENTCV,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTDB, ENTNC, ENTNC, ENTNC, ENTNC, ENTDG, ENTNC, ENTDI, ENTNC, ENTDK,
+	 /* D */   ENTNC, ENTDM, ENTDN, ENTNC, ENTDP, ENTNC, ENTNC, ENTNC, ENTDT, ENTDU, ENTDV,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTNC, ENTEC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* E */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTER, ENTES, ENTNC, ENTNC, ENTEV,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTFA, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* F */   ENTNC, ENTFM, ENTFN, ENTNC, ENTFP, ENTNC, ENTFR, ENTNC, ENTNC, ENTFU, ENTNC,
+	 ENTFW, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTGA, ENTGB, ENTGC, ENTGD, ENTGE, ENTGF, ENTGG, ENTGH, ENTGI, ENTNC, ENTNC,
+	 /* G */   ENTGL, ENTGM, ENTGN, ENTGO, ENTGP, ENTNC, ENTGR, ENTGS, ENTGT, ENTGU, ENTNC,
+	 ENTGW, ENTGX, ENTGY, ENTGZ},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTHC, ENTNC, ENTHE, ENTNC, ENTHG, ENTNC, ENTHI, ENTNC, ENTNC,
+	 /* H */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTHR, ENTHS, ENTNC, ENTHU, ENTNC,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTIA, ENTIB, ENTNC, ENTID, ENTIE, ENTNC, ENTNC, ENTNC, ENTII, ENTNC, ENTNC,
+	 /* I */   ENTNC, ENTIM, ENTIN, ENTNC, ENTNC, ENTIQ, ENTNC, ENTIS, ENTIT, ENTIU, ENTNC,
+	 ENTIW, ENTIX, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* J */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* K */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 ENTKW, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTLA, ENTLB, ENTLC, ENTLD, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTLK,
+	 /* L */   ENTNC, ENTLM, ENTLN, ENTNC, ENTNC, ENTNC, ENTLR, ENTNC, ENTLT, ENTLU, ENTLV,
+	 ENTNC, ENTLX, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTMA, ENTNC, ENTMC, ENTMD, ENTME, ENTNC, ENTMG, ENTNC, ENTNC, ENTNC, ENTMK,
+	 /* M */   ENTML, ENTMM, ENTNC, ENTNC, ENTNC, ENTNC, ENTMR, ENTMS, ENTMT, ENTMU, ENTMV,
+	 ENTMW, ENTMX, ENTNC, ENTMZ},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTND, ENTNC, ENTNF, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* N */   ENTNC, ENTNM, ENTNC, ENTNC, ENTNP, ENTNC, ENTNC, ENTNS, ENTNC, ENTNC, ENTNV,
+	 ENTNW, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTOD, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* O */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTPA, ENTNC, ENTNC, ENTPD, ENTNC, ENTNC, ENTNC, ENTPH, ENTNC, ENTNC, ENTNC,
+	 /* P */   ENTPL, ENTNC, ENTPN, ENTNC, ENTPN, ENTPQ, ENTPR, ENTNC, ENTNC, ENTPU, ENTPV,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTQC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTQI, ENTNC, ENTNC,
+	 /* Q */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 ENTQW, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTRA, ENTNC, ENTNC, ENTRD, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* R */   ENTRL, ENTRM, ENTRN, ENTNC, ENTRP, ENTNC, ENTRR, ENTNC, ENTRT, ENTRU, ENTNC,
+	 ENTNC, ENTRX, ENTRY, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTSA, ENTSB, ENTSC, ENTSD, ENTSE, ENTSF, ENTSG, ENTSH, ENTSI, ENTNC, ENTNC,
+	 /* S */   ENTNC, ENTSM, ENTSN, ENTSO, ENTSP, ENTNC, ENTSR, ENTSS, ENTST, ENTSU, ENTSV,
+	 ENTNC, ENTNC, ENTNC, ENTSZ},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTTC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* T */   ENTNC, ENTTM, ENTNC, ENTNC, ENTTP, ENTNC, ENTNC, ENTTS, ENTTT, ENTTU, ENTNC,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTUD, ENTNC, ENTNC, ENTNC, ENTUH, ENTNC, ENTNC, ENTNC,
+	 /* U */   ENTUL, ENTUM, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTUS, ENTNC, ENTNC, ENTNC,
+	 ENTNC, ENTNC, ENTNC, ENTUZ},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTVF, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* V */   ENTNC, ENTVM, ENTNC, ENTVO, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTVU, ENTNC,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTWC, ENTWD, ENTNC, ENTNC, ENTNC, ENTNC, ENTWI, ENTNC, ENTNC,
+	 /* W */   ENTNC, ENTNC, ENTWN, ENTNC, ENTNC, ENTNC, ENTNC, ENTWS, ENTNC, ENTWU, ENTNC,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTXG, ENTNC, ENTXI, ENTNC, ENTNC,
+	 /* X */   ENTNC, ENTXM, ENTXN, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTXU, ENTNC,
+	 ENTNC, ENTXX, ENTXY, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* Y */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 ENTNC, ENTNC, ENTNC, ENTNC},
+      /* A      B      C      D      E      F      G      H      I      J      K  *
+	 L      M      N      O      P      Q      R      S      T      U      V  *
+	 W      X      Y      Z */
+      {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 /* Z */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
+	 ENTNC, ENTNC, ENTNC, ENTNC}
+   };
 
    /*ss013.301 :Adding  TRC MACRO*/
    TRC2(SFillEntIds)
-            memcpy((U8*)osCp.entId, (U8*)entInfo, sizeof(entInfo));
+      memcpy((U8*)osCp.entId, (U8*)entInfo, sizeof(entInfo));
 
    RETVALUE(ROK);
 } /* SFillEntIds */
 
 
 /*
-*
-*       Fun:   SGetEntInd 
-*
-*       Desc:  This function gives the entity Id depending in the 
-*              file name. This function uses the first two letter
-*              of file name to find the entity id. 
-*              
-*              
-*
-*       Ret:   ROK		OK
-*              RFAILED		Region not registered
-*
-*
-*/
+ *
+ *       Fun:   SGetEntInd 
+ *
+ *       Desc:  This function gives the entity Id depending in the 
+ *              file name. This function uses the first two letter
+ *              of file name to find the entity id. 
+ *              
+ *              
+ *
+ *       Ret:   ROK		OK
+ *              RFAILED		Region not registered
+ *
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SGetEntInd 
+   PUBLIC S16 SGetEntInd 
 (
-Ent      *entId,
-U8       *fileName
-)
+ Ent      *entId,
+ U8       *fileName
+ )
 #else
 PUBLIC S16 SGetEntInd(entId, fileName)
-Ent      *entId;
-U8       *fileName;
+   Ent      *entId;
+   U8       *fileName;
 #endif
 {
 
 
-	U8   *letter = NULLP;
+   U8   *letter = NULLP;
    /* ss002.301 Additions */
-	S8   *strippedName = NULLP;
-	U8   count = 0;
-	U8   tempIdx = 0;
-	U8   firstIdx = 0;
-	U8   secondIdx = 0;
+   S8   *strippedName = NULLP;
+   U8   count = 0;
+   U8   tempIdx = 0;
+   U8   firstIdx = 0;
+   U8   secondIdx = 0;
 
    TRC1(SGetEntInd);
 
    /* ss002.301 Additions */
-	if ((strippedName = strrchr((const char *)fileName, '/')))
-	{
-	   fileName = (U8 *)strippedName + 1;
-	}
+   if ((strippedName = strrchr((const char *)fileName, '/')))
+   {
+      fileName = (U8 *)strippedName + 1;
+   }
 
-	if(fileName[0] =='l' && fileName[3] == '.')
+   if(fileName[0] =='l' && fileName[3] == '.')
    { 
-	   /* Usally layer manager interface files starts
-		 * with l. so leave the first letter and take
-		 * other two letter.
-		 * Eg. Layer manger inteface file name for TUCL is lhi.c.
-		 * so here we leave l and we take hi to get the entity Id. */
+      /* Usally layer manager interface files starts
+       * with l. so leave the first letter and take
+       * other two letter.
+       * Eg. Layer manger inteface file name for TUCL is lhi.c.
+       * so here we leave l and we take hi to get the entity Id. */
       letter = ++fileName; 
-	} 
-	else
-	{ 
-	   letter = fileName;
-	   /* Handle exceptional file names */
-	   switch(letter[0])
-	   {
-	      case 'g':
-		     if (letter[1] == 'g' && letter[2] == 'u')
-		     {
-		        *entId = ENTGT;
-			     RETVALUE(ROK);
-		     }
-		   default: 
-			     break;
+   } 
+   else
+   { 
+      letter = fileName;
+      /* Handle exceptional file names */
+      switch(letter[0])
+      {
+	 case 'g':
+	    if (letter[1] == 'g' && letter[2] == 'u')
+	    {
+	       *entId = ENTGT;
+	       RETVALUE(ROK);
+	    }
+	 default: 
+	    break;
 
-	   }
-	}
+      }
+   }
 
 
    /* here first two charactes of file name should be alphabets.
-	 * if any one of the letter is non alphabet then we return ENTNC 
-	 * as an entity Id */
+    * if any one of the letter is non alphabet then we return ENTNC 
+    * as an entity Id */
    /* Eg. In fileName l4_ptui.c, second letter is numeral. so we consider
-	 * this file belogs to entity Id ENTNC. */
-	for(count = 0; count < 2; count++)
-	{
-		/* ss002.301 - Optimizations */
-	    if(letter[count] < 'a' || letter[count] > 'z')
-	    {
-		   *entId = ENTNC;
-		   RETVALUE(ROK);
-	    }
-	    else
-	    {
-		   tempIdx = letter[count] - 'a';
-	    }
-		 if(count == 0)
-		 {
-		 	firstIdx = tempIdx;
-		 }/* End of if */
-		 else
-		 {
-		 	secondIdx = tempIdx;
-		 }/* End of else */
-	} /* End of for */
-	/* First two letter of file name are alphabets the get the 
-	 * entity id from the static data base which is loaded in sFillEntIds() */
-	*entId = osCp.entId[firstIdx][secondIdx];
-	RETVALUE(ROK);
+    * this file belogs to entity Id ENTNC. */
+   for(count = 0; count < 2; count++)
+   {
+      /* ss002.301 - Optimizations */
+      if(letter[count] < 'a' || letter[count] > 'z')
+      {
+	 *entId = ENTNC;
+	 RETVALUE(ROK);
+      }
+      else
+      {
+	 tempIdx = letter[count] - 'a';
+      }
+      if(count == 0)
+      {
+	 firstIdx = tempIdx;
+      }/* End of if */
+      else
+      {
+	 secondIdx = tempIdx;
+      }/* End of else */
+   } /* End of for */
+   /* First two letter of file name are alphabets the get the 
+    * entity id from the static data base which is loaded in sFillEntIds() */
+   *entId = osCp.entId[firstIdx][secondIdx];
+   RETVALUE(ROK);
 } /* SGetEntInd */
 
 #endif /* SS_HISTOGRAM_SUPPORT */
 #ifdef SS_LOCK_SUPPORT
 /* ss002.301 Readwrite lock additions */
 /*
-*
-*       Fun:   SLockNew 
-*
-*       Desc:  This function is used to aquire the read write lock
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SLockNew 
+ *
+ *       Desc:  This function is used to aquire the read write lock
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 #ifdef ANSI
 PUBLIC S16 SLockNew 
 (
-SLockInfo *lockId,
-U8         lockType
+ SLockInfo *lockId,
+ U8         lockType
 
-)
+ )
 #else
 PUBLIC S16 SLockNew(lockId, lockType)
-SLockInfo *lockId;
-U8         lockType;
+   SLockInfo *lockId;
+   U8         lockType;
 #endif
 {
    S16    retVal = ROK;
 
-  TRC1(SLockNew);
+   TRC1(SLockNew);
 
-  if((retVal = ssdLockNew(lockId, lockType)) != ROK) 
-  {
-    SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SLockNew(): Failed to aquire the lock\n");
-    RETVALUE(RFAILED);
-  }
+   if((retVal = ssdLockNew(lockId, lockType)) != ROK) 
+   {
+      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SLockNew(): Failed to aquire the lock\n");
+      RETVALUE(RFAILED);
+   }
    RETVALUE(ROK);
 }
 
 /*
-*
-*       Fun:   SInitLockNew 
-*
-*       Desc:  This function is used to aquire the read write lock
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SInitLockNew 
+ *
+ *       Desc:  This function is used to aquire the read write lock
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SInitLockNew 
+   PUBLIC S16 SInitLockNew 
 (
-SLockInfo *lockId,
-U8         lockType
-)
+ SLockInfo *lockId,
+ U8         lockType
+ )
 #else
 PUBLIC S16 SInitLockNew(lockId, lockType)
-SLockInfo *lockId;
-U8         lockType;
+   SLockInfo *lockId;
+   U8         lockType;
 #endif
 {
    S16    retVal = ROK;
 
-  TRC1(SInitLockNew);
+   TRC1(SInitLockNew);
 
-  if((retVal = ssdInitLockNew(lockId, lockType)) != ROK) 
-  {
-    SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SInitLockNew(): Initialization of lock Failed\n");
-    RETVALUE(RFAILED);
-  }
+   if((retVal = ssdInitLockNew(lockId, lockType)) != ROK) 
+   {
+      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SInitLockNew(): Initialization of lock Failed\n");
+      RETVALUE(RFAILED);
+   }
    RETVALUE(ROK);
 }
 
 /*
-*
-*       Fun:   SUnlockNew 
-*
-*       Desc:  This function is used to Unlock the read write lock 
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SUnlockNew 
+ *
+ *       Desc:  This function is used to Unlock the read write lock 
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SUnlockNew 
+   PUBLIC S16 SUnlockNew 
 (
-SLockInfo *lockId,
-U8         lockType
-)
+ SLockInfo *lockId,
+ U8         lockType
+ )
 #else
 PUBLIC S16 SUnlockNew(lockId, lockType)
-SLockInfo *lockId;
-U8         lockType;
+   SLockInfo *lockId;
+   U8         lockType;
 #endif
 {
    S16    retVal = ROK;
 
-  TRC1(SUnlockNew);
+   TRC1(SUnlockNew);
 
-  if((retVal = ssdUnlockNew(lockId, lockType)) != ROK) 
-  {
-    SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SUnlockNew(): Failed to release the lock\n");
-    RETVALUE(RFAILED);
-  }
+   if((retVal = ssdUnlockNew(lockId, lockType)) != ROK) 
+   {
+      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SUnlockNew(): Failed to release the lock\n");
+      RETVALUE(RFAILED);
+   }
    RETVALUE(ROK);
 }
 
 /*
-*
-*       Fun:   SDestroyLockNew 
-*
-*       Desc:  This function is used to destroy the read write lock 
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SDestroyLockNew 
+ *
+ *       Desc:  This function is used to destroy the read write lock 
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SDestroyLockNew 
+   PUBLIC S16 SDestroyLockNew 
 (
-SLockInfo *lockId,
-U8         lockType
-)
+ SLockInfo *lockId,
+ U8         lockType
+ )
 #else
 PUBLIC S16 SDestroyLockNew(lockId, lockType)
-SLockInfo *lockId;
-U8         lockType;
+   SLockInfo *lockId;
+   U8         lockType;
 #endif
 {
    S16    retVal = ROK;
 
-  TRC1(SDestroyLockNew);
+   TRC1(SDestroyLockNew);
 
-  if((retVal = ssdDestroyLockNew(lockId, lockType)) != ROK) 
-  {
-    SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SDestroyLockNew(): Failed to destroy the lock\n");
-    RETVALUE(RFAILED);
-  }
+   if((retVal = ssdDestroyLockNew(lockId, lockType)) != ROK) 
+   {
+      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SDestroyLockNew(): Failed to destroy the lock\n");
+      RETVALUE(RFAILED);
+   }
    RETVALUE(ROK);
 }
 #endif /* SS_LOCK_SUPPORT */
@@ -2086,12 +2086,12 @@ void PrintStaticMemAllocInfo(StaticMemAllocInfo* memAllocInfo, FILE *opFile)
    {
       if(memAllocInfo->allocations[i].ptr)
       {
-         fprintf(opFile, "p = %p f = %s l = %ld s = %ld a = %ld\n",
-                          memAllocInfo->allocations[i].ptr, 
-                          memAllocInfo->allocations[i].file, 
-                          memAllocInfo->allocations[i].lineNo, 
-                          memAllocInfo->allocations[i].size, 
-                          memAllocInfo->allocations[i].age);
+	 fprintf(opFile, "p = %p f = %s l = %ld s = %ld a = %ld\n",
+	       memAllocInfo->allocations[i].ptr, 
+	       memAllocInfo->allocations[i].file, 
+	       memAllocInfo->allocations[i].lineNo, 
+	       memAllocInfo->allocations[i].size, 
+	       memAllocInfo->allocations[i].age);
       }
    }
 
@@ -2126,7 +2126,7 @@ U32 GetNextFreeIdx(StaticMemAllocInfo * memAllocInfo)
    }
 
    memAllocInfo->nextFreeIdx = newNextFreeIdx;
-   
+
    return toBeReturned;
 }
 
@@ -2141,20 +2141,20 @@ void FreeIdx(U8* ptr, U32 idx, StaticMemAllocInfo* memAllocInfo,U32 size, char* 
    /*printf("FreeIdx... idx = %d nexFree = %d\n",idx, memAllocInfo->nextFreeIdx);*/
    memAllocInfo->allocations[idx].listInfo.nextIdx = memAllocInfo->nextFreeIdx;
    if((ptr != memAllocInfo->allocations[idx].ptr) ||
-      (size != memAllocInfo->allocations[idx].size))
+	 (size != memAllocInfo->allocations[idx].size))
    {
 #ifdef XEON_SPECIFIC_CHANGES
-CRASH_ENB
+      CRASH_ENB
 #endif   
-      
-      printf("Freeing wrong ptr stored = %p trying to free %p freeing size (%ld)"
-            "allocated size(%ld) from %s:%ld\n",
-              memAllocInfo->allocations[idx].ptr, 
-              ptr,
-              size,
-              memAllocInfo->allocations[idx].size,
-              file,
-              line);
+
+	 printf("Freeing wrong ptr stored = %p trying to free %p freeing size (%ld)"
+	       "allocated size(%ld) from %s:%ld\n",
+	       memAllocInfo->allocations[idx].ptr, 
+	       ptr,
+	       size,
+	       memAllocInfo->allocations[idx].size,
+	       file,
+	       line);
       printf("Allocation was done from %s:%ld\n",memAllocInfo->allocations[idx].file, memAllocInfo->allocations[idx].lineNo);
       printf("***********************************************************\n");
       CRASH_ENB
@@ -2191,9 +2191,9 @@ void InitializeForStaticMemLeak()
    StaticMemLeakFileArr[3] = fopen("region3.log","w");
 
    if(StaticMemLeakFileArr[0] == NULL ||
-         StaticMemLeakFileArr[1] == NULL ||
-         StaticMemLeakFileArr[2] == NULL ||
-         StaticMemLeakFileArr[3] == NULL)
+	 StaticMemLeakFileArr[1] == NULL ||
+	 StaticMemLeakFileArr[2] == NULL ||
+	 StaticMemLeakFileArr[3] == NULL)
    {
       int *p = 0;
       printf("Could not open files for Static Mem Leak detection logging :( crashing...\n");
@@ -2233,10 +2233,10 @@ PUBLIC void DumpStaticMemLeakFiles()
  *
  */
 #ifdef ANSI
-PUBLIC S16 SReInitTmr
+   PUBLIC S16 SReInitTmr
 (
-void
-)
+ void
+ )
 #else
 PUBLIC S16 SReInitTmr()
 #endif
@@ -2249,9 +2249,9 @@ PUBLIC S16 SReInitTmr()
    ret = ssdReInitTmr();
    if (ret != ROK)
    {
-       /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
-    SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SReInitTmr(): Failed to Restart the Tmr\n");
-    RETVALUE(RFAILED);
+      /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
+      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SReInitTmr(): Failed to Restart the Tmr\n");
+      RETVALUE(RFAILED);
    }
    RETVALUE(ROK);
 }
@@ -2275,5 +2275,5 @@ PUBLIC S8* SGetConfigPath(Void)
 }
 
 /**********************************************************************
-         End of file
+  End of file
  **********************************************************************/

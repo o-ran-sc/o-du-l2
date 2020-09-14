@@ -36,18 +36,18 @@
 {                                                               \
    S16 _ret;                                                    \
    _ret = SGetSBuf(RIC_APP_MEM_REG, RIC_POOL,                  \
-                    (Data **)&_datPtr, _size);                  \
+	 (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
+   cmMemset((U8*)_datPtr, 0, _size);                         \
    else                                                         \
-      _datPtr = NULLP;                                          \
+   _datPtr = NULLP;                                          \
 }
 
 /* free a static buffer */
 #define RIC_FREE(_datPtr, _size)                                 \
    if(_datPtr)                                                  \
-      SPutSBuf(RIC_APP_MEM_REG, RIC_POOL,                      \
-         (Data *)_datPtr, _size);
+SPutSBuf(RIC_APP_MEM_REG, RIC_POOL,                      \
+      (Data *)_datPtr, _size);
 
 
 
@@ -56,5 +56,5 @@ S16 BuildAndSendE2SetupReq();
 S16 SendE2APMsg(Region , Pool );
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

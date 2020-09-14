@@ -55,7 +55,7 @@ typedef struct ssDrvrTskEntry
    ProcId       high;                   /* processor ID -- high */
 
    SLockId      lock;                   /* to serialize calls to the
-                                           activation function */
+					   activation function */
 
 } SsDrvrTskEntry;
 
@@ -72,5 +72,5 @@ typedef struct ssDrvrTskEntry
   
 /********************************************************************30**
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

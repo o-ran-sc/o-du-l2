@@ -142,7 +142,7 @@ U8                   cqi;
    RgSchCmnUlUe   *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
    S32            iTbs;
    U8             maxiTbs = rgSchCmnUlCqiToTbsTbl[cell->isCpUlExtend]
-                                                 [ueUl->maxUlCqi];
+      [ueUl->maxUlCqi];
 #endif
 
    TRC2(rgSCHUhmProcDatInd);
@@ -151,7 +151,7 @@ U8                   cqi;
    if (hqProc == NULLP)
    {
       printf("UE[%d] failed to find UL HqProc for [%d:%d]\n",
-		      ue->ueId, frm.sfn, frm.slot);
+	    ue->ueId, frm.sfn, frm.slot);
       RETVOID;
    }
    hqProc->rcvdCrcInd = TRUE;
@@ -163,7 +163,7 @@ U8                   cqi;
 
       if (iTbs > maxiTbs)
       {
-         ueUl->ulLaCb.deltaiTbs = (maxiTbs * 100) - ueUl->ulLaCb.cqiBasediTbs;
+	 ueUl->ulLaCb.deltaiTbs = (maxiTbs * 100) - ueUl->ulLaCb.cqiBasediTbs;
       }
 
    }
@@ -186,7 +186,7 @@ U8                   cqi;
       cell->tenbStats->sch.ulTtlTpt +=(hqProc->alloc->grnt.datSz << 3);//pverma
    }
 #endif
-   
+
    RETVOID;
 }  /* rgSCHUhmProcDatInd */
 
@@ -206,13 +206,13 @@ U8                   cqi;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcMsg3DatInd
+   PUBLIC Void rgSCHUhmProcMsg3DatInd
 (
-RgSchUlHqProcCb *hqProc
-)
+ RgSchUlHqProcCb *hqProc
+ )
 #else
 PUBLIC Void rgSCHUhmProcMsg3DatInd(hqProc)
-RgSchUlHqProcCb *hqProc;
+   RgSchUlHqProcCb *hqProc;
 #endif
 {
    TRC2(rgSCHUhmProcMsg3DatInd);
@@ -238,13 +238,13 @@ RgSchUlHqProcCb *hqProc;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcMsg3Failure
+   PUBLIC Void rgSCHUhmProcMsg3Failure
 (
-RgSchUlHqProcCb *hqProc
-)
+ RgSchUlHqProcCb *hqProc
+ )
 #else
 PUBLIC Void rgSCHUhmProcMsg3Failure(hqProc)
-RgSchUlHqProcCb *hqProc;
+   RgSchUlHqProcCb *hqProc;
 #endif
 {
    TRC2(rgSCHUhmProcMsg3Failure);
@@ -281,37 +281,37 @@ RgSchUlHqProcCb *hqProc;
  **/
 #ifndef MAC_SCH_STATS
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcHqFailure
+   PUBLIC Void rgSCHUhmProcHqFailure
 (
-RgSchCellCb          *cell,
-RgSchUeCb            *ue,
-CmLteTimingInfo      frm,
-TknU8                rv
-)
+ RgSchCellCb          *cell,
+ RgSchUeCb            *ue,
+ CmLteTimingInfo      frm,
+ TknU8                rv
+ )
 #else
 PUBLIC Void rgSCHUhmProcHqFailure(cell, ue, frm, rv)
-RgSchCellCb          *cell;
-RgSchUeCb            *ue;
-CmLteTimingInfo      frm;
-TknU8                rv;
+   RgSchCellCb          *cell;
+   RgSchUeCb            *ue;
+   CmLteTimingInfo      frm;
+   TknU8                rv;
 #endif
 #else /* MAC_SCH_STATS */
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcHqFailure
+   PUBLIC Void rgSCHUhmProcHqFailure
 (
-RgSchCellCb          *cell,
-RgSchUeCb            *ue,
-CmLteTimingInfo      frm,
-TknU8                rv,
-U8                   cqi
-)
+ RgSchCellCb          *cell,
+ RgSchUeCb            *ue,
+ CmLteTimingInfo      frm,
+ TknU8                rv,
+ U8                   cqi
+ )
 #else
 PUBLIC Void rgSCHUhmProcHqFailure(cell, ue, frm, rv, cqi)
-RgSchCellCb          *cell;
-RgSchUeCb            *ue;
-CmLteTimingInfo      frm;
-TknU8                rv;
-U8                   cqi;
+   RgSchCellCb          *cell;
+   RgSchUeCb            *ue;
+   CmLteTimingInfo      frm;
+   TknU8                rv;
+   U8                   cqi;
 #endif
 #endif /* MAC_SCH_STATS */
 {
@@ -326,7 +326,7 @@ U8                   cqi;
    if (hqProc == NULLP)
    {
       printf("UE[%d] failed to find UL HqProc for [%d:%d]\n",
-		      ue->ueId, frm.sfn, frm.slot);
+	    ue->ueId, frm.sfn, frm.slot);
       RETVOID;
    }
 #ifdef UL_LA
@@ -336,7 +336,7 @@ U8                   cqi;
 
       if (iTbs < 0)
       {
-         ueUl->ulLaCb.deltaiTbs = -(ueUl->ulLaCb.cqiBasediTbs);
+	 ueUl->ulLaCb.deltaiTbs = -(ueUl->ulLaCb.cqiBasediTbs);
       }
 
    } 
@@ -387,17 +387,17 @@ U8                   cqi;
  *      -# NULL
  **/
 #ifdef ANSI
-PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlHqProc
+   PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlHqProc
 (
-RgSchCellCb      *cell,
-RgSchUeCb        *ue, 
-U8               idx
-)
+ RgSchCellCb      *cell,
+ RgSchUeCb        *ue, 
+ U8               idx
+ )
 #else
 PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlHqProc(cell, ue, idx)
-RgSchCellCb      *cell;
-RgSchUeCb        *ue; 
-U8               idx;
+   RgSchCellCb      *cell;
+   RgSchUeCb        *ue; 
+   U8               idx;
 #endif
 {
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
@@ -430,17 +430,17 @@ U8               idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmNewTx
+   PUBLIC Void rgSCHUhmNewTx
 (
-RgSchUlHqProcCb *hqProc,
-U8              maxHqRetx,
-RgSchUlAlloc    *alloc
-)
+ RgSchUlHqProcCb *hqProc,
+ U8              maxHqRetx,
+ RgSchUlAlloc    *alloc
+ )
 #else
 PUBLIC Void rgSCHUhmNewTx(hqProc, maxHqRetx, alloc)
-RgSchUlHqProcCb *hqProc;
-U8              maxHqRetx;
-RgSchUlAlloc    *alloc;
+   RgSchUlHqProcCb *hqProc;
+   U8              maxHqRetx;
+   RgSchUlAlloc    *alloc;
 #endif
 {
    TRC2(rgSCHUhmNewTx);
@@ -477,15 +477,15 @@ RgSchUlAlloc    *alloc;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmFreeProc
+   PUBLIC Void rgSCHUhmFreeProc
 (
-RgSchUlHqProcCb *hqProc,
-RgSchCellCb      *cell
-)
+ RgSchUlHqProcCb *hqProc,
+ RgSchCellCb      *cell
+ )
 #else
 PUBLIC Void rgSCHUhmFreeProc(hqProc, cell)
-RgSchUlHqProcCb *hqProc;
-RgSchCellCb      *cell;
+   RgSchUlHqProcCb *hqProc;
+   RgSchCellCb      *cell;
 #endif
 {
 #ifdef LTE_L2_MEAS
@@ -500,54 +500,54 @@ RgSchCellCb      *cell;
       ueCb = hqProc->alloc->ue;
       if (ueCb && cell)
       {
-         U32 nonLcg0ReportedBs = ((RgSchCmnLcg *)(ueCb->ul.lcgArr[1].sch))->reportedBs + \
-                               ((RgSchCmnLcg *)(ueCb->ul.lcgArr[2].sch))->reportedBs + \
-                               ((RgSchCmnLcg *)(ueCb->ul.lcgArr[3].sch))->reportedBs;
-         ((RgUeUlHqCb*)hqProc->hqEnt)->numBusyHqProcs--;
-         if (! ((RgUeUlHqCb*)hqProc->hqEnt)->numBusyHqProcs && !(nonLcg0ReportedBs))
-         {
-            while (ueCb->ulActiveLCs)
-            {
-               if (ueCb->ulActiveLCs & 0x1)
-               {
-                  cell->qciArray[qci].ulUeCount--;
-               }
-               qci++;
-               ueCb->ulActiveLCs >>= 1;
-            }
-         }
+	 U32 nonLcg0ReportedBs = ((RgSchCmnLcg *)(ueCb->ul.lcgArr[1].sch))->reportedBs + \
+				 ((RgSchCmnLcg *)(ueCb->ul.lcgArr[2].sch))->reportedBs + \
+				 ((RgSchCmnLcg *)(ueCb->ul.lcgArr[3].sch))->reportedBs;
+	 ((RgUeUlHqCb*)hqProc->hqEnt)->numBusyHqProcs--;
+	 if (! ((RgUeUlHqCb*)hqProc->hqEnt)->numBusyHqProcs && !(nonLcg0ReportedBs))
+	 {
+	    while (ueCb->ulActiveLCs)
+	    {
+	       if (ueCb->ulActiveLCs & 0x1)
+	       {
+		  cell->qciArray[qci].ulUeCount--;
+	       }
+	       qci++;
+	       ueCb->ulActiveLCs >>= 1;
+	    }
+	 }
       }
    }
 #endif
 
 
- if(hqProc && (RgUeUlHqCb*)hqProc->hqEnt)
- {
+   if(hqProc && (RgUeUlHqCb*)hqProc->hqEnt)
+   {
 
 #ifdef UL_ADPT_DBG 
-    printf("\n\n########HARQ FREED HARQPROC ID (%d )after rgSCHUhmFreeProc inuse %ld free %ld \n",hqProc->alloc->grnt.hqProcId, (CmLListCp *)(&((RgUeUlHqCb*)hqProc->hqEnt)->inUse)->count,(CmLListCp *) (&((RgUeUlHqCb*)hqProc->hqEnt)->free)->count);
+      printf("\n\n########HARQ FREED HARQPROC ID (%d )after rgSCHUhmFreeProc inuse %ld free %ld \n",hqProc->alloc->grnt.hqProcId, (CmLListCp *)(&((RgUeUlHqCb*)hqProc->hqEnt)->inUse)->count,(CmLListCp *) (&((RgUeUlHqCb*)hqProc->hqEnt)->free)->count);
 #endif
-   hqProc->alloc = NULLP;
-   hqProc->ulSfIdx = RGSCH_INVALID_INFO;
-   /*ccpu00116293 - Correcting relation between UL slot and DL slot based on RG_UL_DELTA*/
-   hqProc->isRetx  = FALSE;
-   hqProc->remTx = 0; /*Reseting the remTx value to 0*/
+      hqProc->alloc = NULLP;
+      hqProc->ulSfIdx = RGSCH_INVALID_INFO;
+      /*ccpu00116293 - Correcting relation between UL slot and DL slot based on RG_UL_DELTA*/
+      hqProc->isRetx  = FALSE;
+      hqProc->remTx = 0; /*Reseting the remTx value to 0*/
 #ifdef EMTC_ENABLE
-   RG_SCH_EMTC_SET_ISDTX_TO_FALSE(hqProc);
+      RG_SCH_EMTC_SET_ISDTX_TO_FALSE(hqProc);
 #endif
-   cmLListDelFrm(&((RgUeUlHqCb*)hqProc->hqEnt)->inUse,&hqProc->lnk);
-   cmLListAdd2Tail(&((RgUeUlHqCb*)hqProc->hqEnt)->free, &hqProc->lnk);
+      cmLListDelFrm(&((RgUeUlHqCb*)hqProc->hqEnt)->inUse,&hqProc->lnk);
+      cmLListAdd2Tail(&((RgUeUlHqCb*)hqProc->hqEnt)->free, &hqProc->lnk);
 
-   /*
-   printf("after rgSCHUhmFreeProc inuse %ld free %ld \n", 
-        (CmLListCp *)(&((RgUeUlHqCb*)hqProc->hqEnt)->inUse)->count,
-         (CmLListCp *) (&((RgUeUlHqCb*)hqProc->hqEnt)->free)->count);
-   */
- }
- else
- {
-     printf("\nhqEnt is NULL\n");
- }
+      /*
+	 printf("after rgSCHUhmFreeProc inuse %ld free %ld \n", 
+	 (CmLListCp *)(&((RgUeUlHqCb*)hqProc->hqEnt)->inUse)->count,
+	 (CmLListCp *) (&((RgUeUlHqCb*)hqProc->hqEnt)->free)->count);
+       */
+   }
+   else
+   {
+      printf("\nhqEnt is NULL\n");
+   }
    RETVOID;
 }  /* rgSCHUhmFreeProc */
 
@@ -569,15 +569,15 @@ RgSchCellCb      *cell;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmRetx
+   PUBLIC Void rgSCHUhmRetx
 (
-RgSchUlHqProcCb *hqProc,
-RgSchUlAlloc    *alloc
-)
+ RgSchUlHqProcCb *hqProc,
+ RgSchUlAlloc    *alloc
+ )
 #else
 PUBLIC Void rgSCHUhmRetx(hqProc, alloc) 
-RgSchUlHqProcCb *hqProc;
-RgSchUlAlloc    *alloc;
+   RgSchUlHqProcCb *hqProc;
+   RgSchUlAlloc    *alloc;
 #endif
 {
    TRC2(rgSCHUhmRetx);
@@ -609,22 +609,22 @@ RgSchUlAlloc    *alloc;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmRgrUeCfg
+   PUBLIC Void rgSCHUhmRgrUeCfg
 (
-RgSchCellCb       *cellCb,
-RgSchUeCb         *ueCb,
-RgrUeCfg          *ueCfg
-)
+ RgSchCellCb       *cellCb,
+ RgSchUeCb         *ueCb,
+ RgrUeCfg          *ueCfg
+ )
 #else
 PUBLIC Void rgSCHUhmRgrUeCfg(cellCb, ueCb, ueCfg) 
-RgSchCellCb       *cellCb;
-RgSchUeCb         *ueCb;
-RgrUeCfg          *ueCfg;
+   RgSchCellCb       *cellCb;
+   RgSchUeCb         *ueCb;
+   RgrUeCfg          *ueCfg;
 #endif
 {
    U8 i;
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ueCb, cellCb);
-   
+
    TRC2(rgSCHUhmRgrUeCfg);
 
    ueUl->hqEnt.maxHqRetx = ((ueCfg->ueUlHqCfg.maxUlHqTx) - 1);
@@ -675,17 +675,17 @@ RgrUeCfg          *ueCfg;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmRgrUeRecfg
+   PUBLIC Void rgSCHUhmRgrUeRecfg
 (
-RgSchCellCb       *cellCb,
-RgSchUeCb         *ueCb,
-RgrUeRecfg        *ueRecfg
-)
+ RgSchCellCb       *cellCb,
+ RgSchUeCb         *ueCb,
+ RgrUeRecfg        *ueRecfg
+ )
 #else
 PUBLIC Void rgSCHUhmRgrUeRecfg(cellCb, ueCb, ueRecfg) 
-RgSchCellCb       *cellCb;
-RgSchUeCb         *ueCb;
-RgrUeRecfg        *ueRecfg;
+   RgSchCellCb       *cellCb;
+   RgSchUeCb         *ueCb;
+   RgrUeRecfg        *ueRecfg;
 #endif
 {
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ueCb, cellCb);
@@ -716,24 +716,24 @@ RgrUeRecfg        *ueRecfg;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmFreeUe
+   PUBLIC Void rgSCHUhmFreeUe
 (
-RgSchCellCb       *cellCb,
-RgUeUlHqCb        *hqEnt
-)
+ RgSchCellCb       *cellCb,
+ RgUeUlHqCb        *hqEnt
+ )
 #else
 PUBLIC Void rgSCHUhmFreeUe(cellCb, hqEnt) 
-RgSchCellCb       *cellCb;
-RgUeUlHqCb       *hqEnt;
+   RgSchCellCb       *cellCb;
+   RgUeUlHqCb       *hqEnt;
 #endif
 {
    TRC2(rgSCHUhmFreeUe);
 #ifdef LTE_TDD
    /* ccpu00117052 - MOD - Passing double pointer
-   for proper NULLP assignment*/
+      for proper NULLP assignment*/
    rgSCHUtlFreeSBuf(cellCb->instIdx, 
-                  (Data **)(&(hqEnt->hqProcCb)),
-                  hqEnt->numHqPrcs * sizeof(RgSchUlHqProcCb));
+	 (Data **)(&(hqEnt->hqProcCb)),
+	 hqEnt->numHqPrcs * sizeof(RgSchUlHqProcCb));
 #endif
 
    RETVOID;
@@ -741,34 +741,34 @@ RgUeUlHqCb       *hqEnt;
 
 
 /**
-* @brief Handler for appending the PHICH information in to the dlSf.
-*
-* @details
-*
-*     Function: rgSCHUhmAppendPhich
-*     
-*     Invoked by: TOM
-*
-*     Processing Steps:
-*      - Set PhichInfo in DlSf for each Hq
-*
-*  @param[in] *RgSchCellCb
-*  @param[in] CmLteTimingInfo
-*  @param[in] idx
-*  @return  Void
-*/
+ * @brief Handler for appending the PHICH information in to the dlSf.
+ *
+ * @details
+ *
+ *     Function: rgSCHUhmAppendPhich
+ *     
+ *     Invoked by: TOM
+ *
+ *     Processing Steps:
+ *      - Set PhichInfo in DlSf for each Hq
+ *
+ *  @param[in] *RgSchCellCb
+ *  @param[in] CmLteTimingInfo
+ *  @param[in] idx
+ *  @return  Void
+ */
 #ifdef ANSI
-PUBLIC S16 rgSCHUhmAppendPhich
+   PUBLIC S16 rgSCHUhmAppendPhich
 (
-RgSchCellCb            *cellCb,
-CmLteTimingInfo        frm,
-U8                     idx
-)
+ RgSchCellCb            *cellCb,
+ CmLteTimingInfo        frm,
+ U8                     idx
+ )
 #else
 PUBLIC S16 rgSCHUhmAppendPhich (cellCb, frm, idx)
-RgSchCellCb            *cellCb;
-CmLteTimingInfo        frm;
-U8                     idx;
+   RgSchCellCb            *cellCb;
+   CmLteTimingInfo        frm;
+   U8                     idx;
 #endif
 {
    U8              nDmrs;
@@ -785,84 +785,84 @@ U8                     idx;
    TRC2(rgSCHUhmAppendPhich)
 
 #ifdef RG_5GTF
-   RETVALUE(ROK);
+      RETVALUE(ROK);
 #endif
    if(cellUl->hqFdbkIdx[idx] != RGSCH_INVALID_INFO)
    {
       ulAlloc = rgSCHUtlFirstHqFdbkAlloc (cellCb, idx);
       while (ulAlloc)
       {
-         /*ccpu00106104 MOD added check for ACKNACK rep*/
-         /*added check for acknack so that adaptive retx considers ue 
-           inactivity due to ack nack repetition*/
-         if((ulAlloc->ue != NULLP) && ((TRUE != ulAlloc->forMsg3) &&
-                  ((ulAlloc->ue->measGapCb.isMeasuring == TRUE) ||
-                   (ulAlloc->ue->ackNakRepCb.isAckNakRep == TRUE))))
-         {
-            /* Mark the UE for retransmission */
-            /* If UE is measuring then we should not be sending PHICH unless msg3 */
-            /*UE assumes ack, if nack then do adaptive re-transmission*/
-            /*ulAlloc->hqProc->rcvdCrcInd = FALSE;--*/
-            ulAlloc = rgSCHUtlNextHqFdbkAlloc (cellCb, ulAlloc, idx);
-            continue;
-         }
+	 /*ccpu00106104 MOD added check for ACKNACK rep*/
+	 /*added check for acknack so that adaptive retx considers ue 
+	   inactivity due to ack nack repetition*/
+	 if((ulAlloc->ue != NULLP) && ((TRUE != ulAlloc->forMsg3) &&
+		  ((ulAlloc->ue->measGapCb.isMeasuring == TRUE) ||
+		   (ulAlloc->ue->ackNakRepCb.isAckNakRep == TRUE))))
+	 {
+	    /* Mark the UE for retransmission */
+	    /* If UE is measuring then we should not be sending PHICH unless msg3 */
+	    /*UE assumes ack, if nack then do adaptive re-transmission*/
+	    /*ulAlloc->hqProc->rcvdCrcInd = FALSE;--*/
+	    ulAlloc = rgSCHUtlNextHqFdbkAlloc (cellCb, ulAlloc, idx);
+	    continue;
+	 }
 #ifdef LTE_TDD
-         if (rgSCHUtlGetPhichInfo (ulAlloc->hqProc, &rbStart, &nDmrs, &iPhich) != ROK)
+	 if (rgSCHUtlGetPhichInfo (ulAlloc->hqProc, &rbStart, &nDmrs, &iPhich) != ROK)
 #else
-            if (rgSCHUtlGetPhichInfo (ulAlloc->hqProc, &rbStart, &nDmrs) != ROK)
+	    if (rgSCHUtlGetPhichInfo (ulAlloc->hqProc, &rbStart, &nDmrs) != ROK)
 #endif
-            {
-               RETVALUE (RFAILED);
-            }
-         if(nDmrs != RGSCH_INVALID_NDMRS)
-         {
-            if(cellCb->dynCfiCb.switchOvrInProgress)
-            {
-               ulAlloc->hqProc->rcvdCrcInd = TRUE;
-            }    
+	    {
+	       RETVALUE (RFAILED);
+	    }
+	 if(nDmrs != RGSCH_INVALID_NDMRS)
+	 {
+	    if(cellCb->dynCfiCb.switchOvrInProgress)
+	    {
+	       ulAlloc->hqProc->rcvdCrcInd = TRUE;
+	    }    
 
-            if(ulAlloc->hqProc->rcvdCrcInd) 
-            {
+	    if(ulAlloc->hqProc->rcvdCrcInd) 
+	    {
 #ifdef LTE_TDD
-               rgSCHUtlAddPhich (cellCb, frm, TRUE, nDmrs, rbStart, iPhich);
+	       rgSCHUtlAddPhich (cellCb, frm, TRUE, nDmrs, rbStart, iPhich);
 #else
-               rgSCHUtlAddPhich (cellCb, frm, TRUE, nDmrs, rbStart, ulAlloc->forMsg3);
+	       rgSCHUtlAddPhich (cellCb, frm, TRUE, nDmrs, rbStart, ulAlloc->forMsg3);
 #endif
-            }
-            /* Sending NACK in PHICH for failed UL TX */
-            else
-            {
+	    }
+	    /* Sending NACK in PHICH for failed UL TX */
+	    else
+	    {
 #ifdef LTE_TDD
-               rgSCHUtlAddPhich (cellCb, frm, FALSE, nDmrs, rbStart, iPhich);
+	       rgSCHUtlAddPhich (cellCb, frm, FALSE, nDmrs, rbStart, iPhich);
 #else
 #ifdef LTEMAC_HDFDD
-               if (ulAlloc->ue != NULLP && ulAlloc->ue->hdFddEnbld)
-               {
-                  rgSCHCmnHdFddChkNackAllow( cellCb, ulAlloc->ue, frm, &allwNack);
-                  /* Present implementaion of non-HDFDD does not send phich req
-                     incase of NACK. So commented this part to maintain same right
-                     now.*/
+	       if (ulAlloc->ue != NULLP && ulAlloc->ue->hdFddEnbld)
+	       {
+		  rgSCHCmnHdFddChkNackAllow( cellCb, ulAlloc->ue, frm, &allwNack);
+		  /* Present implementaion of non-HDFDD does not send phich req
+		     incase of NACK. So commented this part to maintain same right
+		     now.*/
 
-                  if (allwNack)
-                  {
-                     rgSCHUtlAddPhich (cellCb, frm, FALSE, nDmrs, rbStart, ulAlloc->forMsg3);
-                  }
-                  else
-                  {
-                     rgSCHUtlAddPhich (cellCb, frm, TRUE, nDmrs, rbStart, ulAlloc->forMsg3);
-                  }
-               }
-               else
-               {
-                  rgSCHUtlAddPhich (cellCb, frm, FALSE, nDmrs, rbStart, ulAlloc->forMsg3);
-               }
+		  if (allwNack)
+		  {
+		     rgSCHUtlAddPhich (cellCb, frm, FALSE, nDmrs, rbStart, ulAlloc->forMsg3);
+		  }
+		  else
+		  {
+		     rgSCHUtlAddPhich (cellCb, frm, TRUE, nDmrs, rbStart, ulAlloc->forMsg3);
+		  }
+	       }
+	       else
+	       {
+		  rgSCHUtlAddPhich (cellCb, frm, FALSE, nDmrs, rbStart, ulAlloc->forMsg3);
+	       }
 #else
-               rgSCHUtlAddPhich (cellCb, frm, FALSE, nDmrs, rbStart, ulAlloc->forMsg3);
+	       rgSCHUtlAddPhich (cellCb, frm, FALSE, nDmrs, rbStart, ulAlloc->forMsg3);
 #endif/* LTEMAC_HDFDD */
 #endif
-            }
-         }
-         ulAlloc = rgSCHUtlNextHqFdbkAlloc (cellCb, ulAlloc, idx);
+	    }
+	 }
+	 ulAlloc = rgSCHUtlNextHqFdbkAlloc (cellCb, ulAlloc, idx);
       }
    }
    RETVALUE(ROK);
@@ -887,15 +887,15 @@ U8                     idx;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHUhmHqEntInit
+   PUBLIC S16 rgSCHUhmHqEntInit
 (
-RgSchCellCb       *cellCb,
-RgSchUeCb           *ueCb
-)
+ RgSchCellCb       *cellCb,
+ RgSchUeCb           *ueCb
+ )
 #else
 PUBLIC S16 rgSCHUhmHqEntInit(cellCb, ueCb)
-RgSchCellCb       *cellCb;
-RgSchUeCb           *ueCb;
+   RgSchCellCb       *cellCb;
+   RgSchUeCb           *ueCb;
 #endif
 {
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ueCb, cellCb);
@@ -905,15 +905,15 @@ RgSchUeCb           *ueCb;
    TRC2(rgSCHUhmHqEntInit)
 
 #ifndef LTE_TDD
-   /* Init the HARQ processes */
-   ueUl->hqEnt.numHqPrcs = RGSCH_NUM_UL_HQ_PROC;
+      /* Init the HARQ processes */
+      ueUl->hqEnt.numHqPrcs = RGSCH_NUM_UL_HQ_PROC;
 #else
    /* Init the HARQ processes */
    ueUl->hqEnt.numHqPrcs = 
-                        rgSchTddUlNumHarqProcTbl[ueCb->cell->ulDlCfgIdx];
+      rgSchTddUlNumHarqProcTbl[ueCb->cell->ulDlCfgIdx];
    if (rgSCHUtlAllocSBuf(inst, (Data **)&ueUl->hqEnt.hqProcCb, 
-                           ueUl->hqEnt.numHqPrcs * \
-                           sizeof(RgSchUlHqProcCb)) != ROK)
+	    ueUl->hqEnt.numHqPrcs * \
+	    sizeof(RgSchUlHqProcCb)) != ROK)
    {
       RETVALUE(RFAILED);
    }
@@ -949,17 +949,17 @@ RgSchUeCb           *ueCb;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHUhmGetAvlHqProc
+   PUBLIC S16 rgSCHUhmGetAvlHqProc
 (
-RgSchCellCb           *cell,
-RgSchUeCb               *ue,
-RgSchUlHqProcCb         **hqP
-)
+ RgSchCellCb           *cell,
+ RgSchUeCb               *ue,
+ RgSchUlHqProcCb         **hqP
+ )
 #else
 PUBLIC S16 rgSCHUhmGetAvlHqProc (cell, ue, hqP)
-RgSchCellCb           *cell;
-RgSchUeCb             *ue;
-RgSchUlHqProcCb       **hqP;
+   RgSchCellCb           *cell;
+   RgSchUeCb             *ue;
+   RgSchUlHqProcCb       **hqP;
 #endif
 {
    RgSchCmnUlCell    *cellUl = RG_SCH_CMN_GET_UL_CELL(cell);
@@ -971,16 +971,16 @@ RgSchUlHqProcCb       **hqP;
    TRC2(rgSCHUhmGetAvlHqProc);
 
    hqE = &ueUl->hqEnt;
- 
+
    CM_LLIST_FIRST_NODE(&(hqE->free), tmp);
 
    if (NULLP == tmp)
    {
       //RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,
-       //                "rgSCHUhmGetAvlHqProc free %ld inUse %ld ue %d"
-        //                                   , hqE->free.count, hqE->inUse.count, ue->ueId);
+      //                "rgSCHUhmGetAvlHqProc free %ld inUse %ld ue %d"
+      //                                   , hqE->free.count, hqE->inUse.count, ue->ueId);
       //printf("5GTF_ERROR rgSCHUhmGetAvlHqProc cellId %d  %ld inUse %ld ue %d"
-                              //, cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId);
+      //, cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId);
       /* No Harq Process available in the free queue. */
       RETVALUE(RFAILED);
    }
@@ -994,12 +994,12 @@ RgSchUlHqProcCb       **hqP;
    cmLListAdd2Tail(&hqE->inUse, &tmpHqProc->lnk);
 
 #ifdef UL_ADPT_DBG 
-         printf("rgSCHUhmGetAvlHqProc cellId %d  free %ld inUse %ld ue %d time (%d %d)\n",cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId,cellUl->schdTime.sfn,cellUl->schdTime.slot);
+   printf("rgSCHUhmGetAvlHqProc cellId %d  free %ld inUse %ld ue %d time (%d %d)\n",cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId,cellUl->schdTime.sfn,cellUl->schdTime.slot);
 #endif         
    tmpHqProc->schdTime = cellUl->schdTime;
 
    *hqP = tmpHqProc;
-   
+
    RETVALUE(ROK);
 } /* rgSCHUhmGetAvlHqProc */
 
@@ -1022,17 +1022,17 @@ RgSchUlHqProcCb       **hqP;
  *      -# NULL
  **/
 #ifdef ANSI
-PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlProcByTime 
+   PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlProcByTime 
 (
-RgSchCellCb      *cell,
-RgSchUeCb        *ue, 
-CmLteTimingInfo  frm
-)
+ RgSchCellCb      *cell,
+ RgSchUeCb        *ue, 
+ CmLteTimingInfo  frm
+ )
 #else
 PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlProcByTime(cell, ue, frm)
-RgSchCellCb      *cell;
-RgSchUeCb        *ue; 
-CmLteTimingInfo  frm;
+   RgSchCellCb      *cell;
+   RgSchUeCb        *ue; 
+   CmLteTimingInfo  frm;
 #endif
 {
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
@@ -1049,8 +1049,8 @@ CmLteTimingInfo  frm;
       //   printf("compare rgSCHUhmGetUlProcByTime time (%d %d) CRC time (%d %d) proc->procId %d \n",proc->schdTime.sfn,proc->schdTime.slot,frm.sfn,frm.slot ,proc->procId);
       if (RGSCH_TIMEINFO_SAME(proc->schdTime, frm))
       {
-        // printf("Harq timing Matched rgSCHUhmGetUlProcByTime time (%d %d) proc->procId %d \n",proc->schdTime.sfn,proc->schdTime.slot, proc->procId);
-         RETVALUE(proc);
+	 // printf("Harq timing Matched rgSCHUhmGetUlProcByTime time (%d %d) proc->procId %d \n",proc->schdTime.sfn,proc->schdTime.slot, proc->procId);
+	 RETVALUE(proc);
       }
    }
 
@@ -1060,6 +1060,6 @@ CmLteTimingInfo  frm;
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

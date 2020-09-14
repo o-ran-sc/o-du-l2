@@ -68,11 +68,11 @@ struct cmMmMapBkt
 struct cmMmBlkSetElement
 {
    CmLList    memSetNode;     /* Linked list of the first pointer of the 
-                                 bucket */
+				 bucket */
    U32        numFreeBlks;    /* Number of Free Blocks avilable in the current
-                                 set */
+				 set */
    CmMmEntry  *nextBktPtr;    /* Address of the first bucket which will be
-                                 used for the allocation */
+				 used for the allocation */
 };
 
 /* The following structure is used for the storing the buckets/pools
@@ -84,9 +84,9 @@ struct cmMmGlobalBktCb
    U8           poolId;          /* Pool Id */
    Size         size;            /* Size of the pool */
    CmLListCp    listValidBktSet; /* LList Cp used to store the nodes of memory element
-                                    node which holds valid pointers */
+				    node which holds valid pointers */
    CmLListCp    listFreeBktSet;  /* LList Cp used to store the nodes of memory element
-                                    node which holds invalid information */
+				    node which holds invalid information */
    CmMmEntry    *startAddr;      /* Starting address */
    CmMmEntry    *next;           /* Next address which will be allocated */
    U32          numBlks;          /* Total number of buckets configured */
@@ -94,7 +94,7 @@ struct cmMmGlobalBktCb
    U32          bktFailCnt;      /* bucket alloc failure count */
    U32          bktNoFitCnt;     /* number of blocks not fit */
    SLockId      bucketLock;      /* Lock used for the allocation/freeing of
-                                    the set of buckets */
+				    the set of buckets */
 };
 
 /* The following structure is used for the storing the buckets/pools
@@ -113,10 +113,10 @@ struct cmMmDynBktCb
    U32               numBkt;                   /* Total number of buckets configured */
    U16               bucketSetSize;            /* Size of bucket sets */
    U16               blkSetRelThreshold;       /* Upper threshold of bucket count upon
-                                                  reaching will free the set to global region */
+						  reaching will free the set to global region */
    U16               blkSetAcquireThreshold;   /* Lower threshold of bucket count upon
-                                                  reaching will request the set from
-                                                  global region */
+						  reaching will request the set from
+						  global region */
    U32               bktFailCnt;                /* bucket alloc failure count */
    U32               bktNoFitCnt;               /* number of blocks not fit */
 };
@@ -166,28 +166,28 @@ struct cmMmGlobRegCb
 typedef struct cmMmRegCfg    CmMmRegCfg;
 typedef struct cmMmBktCfg    CmMmBktCfg;
 
- 
+
 typedef struct   cmMmRegCb     CmMmRegCb;
 typedef struct   cmMmHeapCb    CmMmHeapCb;
 typedef struct   cmMmBkt       CmMmBkt;
 typedef struct   cmHEntry      CmHEntry;
 /* cm_mem_x_001.main_9 - addition of new data types for providing 
-* header for memory blocks in buckets and a hash list to maintain
-* size vs. numAttempts statistics 
-*/
- /* cm_mem_x_001.main_11: Additions */
+ * header for memory blocks in buckets and a hash list to maintain
+ * size vs. numAttempts statistics 
+ */
+/* cm_mem_x_001.main_11: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 typedef struct cmHstGrmHashListCp   CmHstGrmHashListCp;
 typedef struct cmHstGrmHashListEnt  CmHstGrmHashListEnt;
 typedef struct cmMemEntries         CmMemEntries;
 #endif /* SS_HISTOGRAM_SUPPORT */
- 
+
 /* forward definitions */
 
 
 /************************************************************************
-      Common Memory Manager Configuration Data Structures
-************************************************************************/
+  Common Memory Manager Configuration Data Structures
+ ************************************************************************/
 
 /* Bucket configuration structure. */
 struct cmMmBktCfg
@@ -202,19 +202,19 @@ struct cmMmRegCfg
    Size      size;          /* Size of the memory */
    Data     *vAddr;         /* Start address of the memory */
    U8        lType;         /* Lock Type to be used */
- 
+
    U8        chFlag;        /* Flag defines the memory region characteristics */
    Data     *pAddr;         /* Physical address of the memory block: Valid 
-                               if CMM_REG_PHY_VALID bit of chFlag is set */
+			       if CMM_REG_PHY_VALID bit of chFlag is set */
    Size      bktQnSize;     /* Quatum size of the memory block */
    U16       numBkts;       /* Number of buckets in the Bucket Pool */
- 
+
    CmMmBktCfg  bktCfg[CMM_MAX_BKT_ENT];  /* Bucket configuration structure */
 };
- 
+
 /************************************************************************
-      Common Memory Manager Implementation Data Structures
-************************************************************************/
+  Common Memory Manager Implementation Data Structures
+ ************************************************************************/
 /* cm_mem_x_001.main_11: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 struct cmMemEntries /* Entry information */
@@ -262,7 +262,7 @@ struct cmMmBlkHdr
 /* Memory bucket structure */
 struct cmMmBkt                /* Bucket Structure */
 {
-/* cm_mem_x_001.main_9 - addition of next block pointer */
+   /* cm_mem_x_001.main_9 - addition of next block pointer */
 #ifdef SSI_DEBUG_LEVEL1
    CmMmBlkHdr   *nextBlk;   /* pointer to the next memory block header */
 #else
@@ -275,7 +275,7 @@ struct cmMmBkt                /* Bucket Structure */
    SLockId      bktLock;      /* Lock to protect the bucket pool */ 
    U32          bktFailCnt;   /* bucket alloc failure count */
    U32          bktNoFitCnt;  /* number of blocks not fit */
-/* cm_mem_x_001.main_9 - addition of statistics related data */
+   /* cm_mem_x_001.main_9 - addition of statistics related data */
 #ifdef SSI_DEBUG_LEVEL1
    Data         *bktStartPtr;   /* maintains the start address of the memory block in the bucket */
    StsCntr      numAllocAttempts;   /* total number of allocation attempts */
@@ -284,9 +284,9 @@ struct cmMmBkt                /* Bucket Structure */
    Size         dynamicMemUsed;   /* amount of memory used for dynamic allocations */
    U8           trampleCount;   /* incremented everytime a trampling is detected in any block of the bucket */
 #endif /*SSI_DEBUG_LEVEL1*/
-/* cm_mem_x_001.main_11: Additions */
+   /* cm_mem_x_001.main_11: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-  CmHstGrmHashListCp hstGrmHashListCp;
+   CmHstGrmHashListCp hstGrmHashListCp;
 #endif /* SS_HISTOGRAM_SUPPORT */
 };
 
@@ -296,15 +296,15 @@ struct cmMmBkt                /* Bucket Structure */
 /* Heap entry structure linked in the heap control block */ 
 struct cmHEntry
 {
-/* cm_mem_x_001.main_9 - addition to provide trampling and double-free detections support */
+   /* cm_mem_x_001.main_9 - addition to provide trampling and double-free detections support */
 #ifdef SSI_DEBUG_LEVEL1
-  /* trSignature shall always be maintianed as the first element in this structure */
-  U8         trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
-  U32        memFlags;          /* flag to maintain the memory status */
-  Size       requestedSize;     /* size of the heap entry block */
+   /* trSignature shall always be maintianed as the first element in this structure */
+   U8         trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
+   U32        memFlags;          /* flag to maintain the memory status */
+   Size       requestedSize;     /* size of the heap entry block */
 #endif /* SSI_DEBUG_LEVEL1 */
-  CmHEntry  *next;             /* Pointer to the next entry block */
-  Size       size;             /* size of the heap entry block */
+   CmHEntry  *next;             /* Pointer to the next entry block */
+   Size       size;             /* size of the heap entry block */
 };
 
 /* Heap control block */
@@ -322,17 +322,17 @@ struct cmMmHeapCb
    U16       numFailure;       /* Number of allocation failure */
 #endif
    U32       heapAllocCnt;     /* Number of blocks from heap */
-/* cm_mem_x_001.main_9 - addition of statistics related data */
+   /* cm_mem_x_001.main_9 - addition of statistics related data */
 #ifdef SSI_DEBUG_LEVEL1
    Size     staticHeapMemUsed; /* amount of heap memory used for static allocations */
    Size     dynamicHeapMemUsed; /* amount of heap memory used for dynamic allocations */
    Size     nextOffset; /* Offset to the next pointer in structure CmHEntry */
-                        /* Update this in cmMmHeapInit if cmHEntry is changed */
+   /* Update this in cmMmHeapInit if cmHEntry is changed */
    StsCntr      numAllocAttempts;   /* total number of allocation attempts in heap */
    StsCntr      numDeallocAttempts;   /* total number of de-allocation attempts in heap */
    U8	    trampleCount;	/* incremented everytime a trampling is detected in any block of the heap */
 #endif /* SSI_DEBUG_LEVEL1 */
- /* cm_mem_x_001.main_11: Additions */
+   /* cm_mem_x_001.main_11: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT
    /* Hash list to support Heap Block histogram */
    CmHstGrmHashListCp heapHstGrmHashListCp;
@@ -364,8 +364,8 @@ struct cmMmRegCb
 
    U8           chFlag;        /* Flag defines the region characteristics */
    Data        *pAddr;         /* Physical address of the memory block.
-                                  Valid if CMM_REG_PHY_VALID bit is set */
- 
+				  Valid if CMM_REG_PHY_VALID bit is set */
+
    Size         bktSize;       /* Size of the memory used for the bucket pool */
    U16          bktQnPwr;      /* Quantum size of the bucket pool */
    Size         bktMaxBlkSize; /* Maximum size of block in the bucket pool */
@@ -373,11 +373,11 @@ struct cmMmRegCb
 
    CmMmMapBkt   mapTbl[CMM_MAX_MAP_ENT]; /* size-to-bucket map table */
    CmMmBkt      bktTbl[CMM_MAX_BKT_ENT]; /* Pointer to the memory bkt tbl */
- 
+
    Bool         heapFlag;      /* Set to true if the heap pool is configured */
    Size         heapSize;      /* Size of the heap pool */
    CmMmHeapCb   heapCb;        /* Heap pool control block */
-/* cm_mem_x_001.main_9 - addition of hash list control point in region control block */
+   /* cm_mem_x_001.main_9 - addition of hash list control point in region control block */
 #ifdef SSI_DEBUG_LEVEL1
    CmMmHashListCp hashListCp;  /* hast list to maintain the size statistics */
 #endif /* SSI_DEBUG_LEVEL1 */
@@ -387,7 +387,7 @@ struct cmMmRegCb
 
 };
 
- /* cm_mem_x_001.main_11: Additions */
+/* cm_mem_x_001.main_11: Additions */
 #ifdef SS_MEM_LEAK_STS
 typedef struct _memHash
 {
@@ -424,9 +424,9 @@ typedef struct _memUsrMdlStr
 #ifdef SS_MEM_LEAK_SOL
 typedef struct backtrace
 {
-  Void   **bt_buffer;
-  S32    bt_maxcount;
-  S32    bt_actcount;
+   Void   **bt_buffer;
+   S32    bt_maxcount;
+   S32    bt_actcount;
 } Backtrace_t;
 #endif /* SS_MEM_LEAK_SOL */
 
@@ -434,23 +434,23 @@ typedef struct backtrace
 
 
 /* functions prototypes */
- 
+
 EXTERN S16 cmMmRegInit   ARGS((
-                         Region region, 
-                         CmMmRegCb *regCb, 
-                         CmMmRegCfg *cfg));
+	 Region region, 
+	 CmMmRegCb *regCb, 
+	 CmMmRegCfg *cfg));
 EXTERN S16 cmMmRegDeInit ARGS(( CmMmRegCb *regCb));
- /* cm_mem_x_001.main_11: Additions */
+/* cm_mem_x_001.main_11: Additions */
 #ifdef SS_MEM_LEAK_STS
 EXTERN Void cmInitMemLeakMdl    ARGS((Void));
 /* cm_mem_x_001.main_12 : Additions */
 EXTERN Void cmDeinitMemLeakMdl    ARGS((Void));
 EXTERN Void cmStorAllocBlk      ARGS((U32 addr, Size reqSz, Size allocSz,
-                                      U16 bktIdx));
+	 U16 bktIdx));
 EXTERN Void cmRlsAllocBlk       ARGS((U32 addr));
 EXTERN U8   cmMemGetModuleId    ARGS((S8 **funNm, S32 traceSize));
 EXTERN S16  cmMemGetStrMtchIdx  ARGS((U8 strtIdx, U8 endIdx,
-                                      S8 *str, S8 **strLst));
+	 S8 *str, S8 **strLst));
 EXTERN Void cmMemOpenMemLkFile  ARGS((S8 *arg));
 EXTERN Void SLogLkInfo          ARGS((Void));
 EXTERN Void SFlushLkInfo        ARGS((Void));
@@ -488,9 +488,9 @@ EXTERN S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem)
 EXTERN S16 ssPutDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem));
 #else
 EXTERN S16 ssPutDynMemBlkSet ARGS((U8 bktIdx,CmMmBlkSetElement *dynMemSetElem,
-                                   U32 doNotBlockForLock));
+	 U32 doNotBlockForLock));
 EXTERN S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem,
-                                   U32 doNotBlockForLock));
+	 U32 doNotBlockForLock));
 #endif /* USE_MALLOC */
 #endif /* SS_LOCKLESS_MEMORY */
 #ifdef __cplusplus
@@ -502,6 +502,6 @@ EXTERN S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem,
 #endif
 
 /**********************************************************************
-         End of file
-*********************************************************************/
+  End of file
+ *********************************************************************/
 

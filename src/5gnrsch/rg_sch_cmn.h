@@ -301,28 +301,28 @@ extern "C" {
  * and Tbs. Set all parameters same as Init TX except RV(only for NACKED) and
  * MCS.  */
 #define RG_SCH_CMN_GET_MCS_FOR_RETX(tb, retxMcs) do {\
-      if ((tb->isAckNackDtx == TFU_HQFDB_DTX)) { \
-         retxMcs = tb->dlGrnt.iMcs; \
+   if ((tb->isAckNackDtx == TFU_HQFDB_DTX)) { \
+      retxMcs = tb->dlGrnt.iMcs; \
+   } \
+   else { \
+      if (tb->dlGrnt.iMcs < 29) {\
+	 U8 _iTbs;\
+	 RG_SCH_CMN_DL_MCS_TO_TBS(tb->dlGrnt.iMcs, _iTbs);\
+	 RG_SCH_CMN_ITBS_TO_RETX_IMCS(_iTbs, retxMcs); \
       } \
-      else { \
-         if (tb->dlGrnt.iMcs < 29) {\
-            U8 _iTbs;\
-            RG_SCH_CMN_DL_MCS_TO_TBS(tb->dlGrnt.iMcs, _iTbs);\
-            RG_SCH_CMN_ITBS_TO_RETX_IMCS(_iTbs, retxMcs); \
-         } \
-         else {\
-            retxMcs = tb->dlGrnt.iMcs; \
-         }\
+      else {\
+	 retxMcs = tb->dlGrnt.iMcs; \
       }\
+   }\
 }while(0)
 
 #define RG_SCH_CMN_DL_TBS_TO_MCS_DTX(proc, iTbs, imcs) do {\
-      if ((proc->isAckNackDtx == TFU_HQFDB_DTX)) { \
-         RG_SCH_CMN_DL_TBS_TO_MCS(iTbs, imcs); \
-      } \
-      else { \
-         RG_SCH_CMN_ITBS_TO_RETX_IMCS(iTbs, imcs); \
-      } \
+   if ((proc->isAckNackDtx == TFU_HQFDB_DTX)) { \
+      RG_SCH_CMN_DL_TBS_TO_MCS(iTbs, imcs); \
+   } \
+   else { \
+      RG_SCH_CMN_ITBS_TO_RETX_IMCS(iTbs, imcs); \
+   } \
 }while(0)
 
 #define RG_SCH_CMN_UL_IS_CQI_VALID(cqi) ((cqi) > 0 && (cqi) < RG_SCH_CMN_UL_NUM_CQI)
@@ -479,14 +479,14 @@ extern "C" {
    for(_sfNum=RGSCH_NUM_SUB_FRAMES-1; _sfNum >= 0; _sfNum--) \
    { \
       if(rgSchTddUlDlSubfrmTbl[(cell)->ulDlCfgIdx][_sfNum] == \
-            RG_SCH_TDD_UL_SUBFRAME) \
+	    RG_SCH_TDD_UL_SUBFRAME) \
       { \
-         break; \
+	 break; \
       } \
    } \
    (raArrSz) = (_sfNum + ((RgSchCmnCell *)(cell)->sc.sch)->dl.numRaSubFrms \
-                + RG_SCH_CMN_RARSP_WAIT_PRD +  \
-                (cell)->rachCfg.raWinSize - 1) / RGSCH_NUM_SUB_FRAMES + 1; \
+	 + RG_SCH_CMN_RARSP_WAIT_PRD +  \
+	 (cell)->rachCfg.raWinSize - 1) / RGSCH_NUM_SUB_FRAMES + 1; \
 }
 
 /* Resource allocation type MACROs */
@@ -510,7 +510,7 @@ extern "C" {
 #define RG_SCH_CMN_SPS_DL_REACTV_FREQ (1 << 1)
 #define RG_SCH_CMN_SPS_DL_REACTV_TIME (1 << 2)
 #define RG_SCH_CMN_SPS_DL_REACTV \
-(RG_SCH_CMN_SPS_DL_REACTV_FREQ | RG_SCH_CMN_SPS_DL_REACTV_TIME) 
+   (RG_SCH_CMN_SPS_DL_REACTV_FREQ | RG_SCH_CMN_SPS_DL_REACTV_TIME) 
 #define RG_SCH_CMN_SPS_DL_REL    (1 << 3)
 #define RG_SCH_CMN_SPS_DL_MAX_N1PUCCH_IDX_PER_UE 4
 /* Number of 32 bit bitmasks for marking measurement gap for SPS */
@@ -559,12 +559,12 @@ extern "C" {
    {\
       if ((_allocedBitmask & (1 << (31 -_pos))))\
       {\
-         continue;\
+	 continue;\
       }\
       else\
       {\
-         *_startPos = _pos;\
-         break;\
+	 *_startPos = _pos;\
+	 break;\
       }\
    }\
 }
@@ -614,37 +614,37 @@ extern "C" {
    switch((_prdEnum)) \
    { \
       case RGR_SPS_PRD_10SF: \
-         (_prd) = (RgrSpsPrd)10; \
-         break; \
+			     (_prd) = (RgrSpsPrd)10; \
+      break; \
       case RGR_SPS_PRD_20SF: \
-         (_prd) = (RgrSpsPrd)20; \
-         break; \
+			     (_prd) = (RgrSpsPrd)20; \
+      break; \
       case RGR_SPS_PRD_32SF: \
-         (_prd) = (RgrSpsPrd)30; \
-         break; \
+			     (_prd) = (RgrSpsPrd)30; \
+      break; \
       case RGR_SPS_PRD_40SF: \
-         (_prd) = (RgrSpsPrd)40; \
-         break; \
+			     (_prd) = (RgrSpsPrd)40; \
+      break; \
       case RGR_SPS_PRD_64SF: \
-         (_prd) =(RgrSpsPrd)60; \
-         break; \
+			     (_prd) =(RgrSpsPrd)60; \
+      break; \
       case RGR_SPS_PRD_80SF: \
-         (_prd) = (RgrSpsPrd)80; \
-         break; \
+			     (_prd) = (RgrSpsPrd)80; \
+      break; \
       case RGR_SPS_PRD_128SF: \
-         (_prd) = (RgrSpsPrd)120; \
-         break; \
+			      (_prd) = (RgrSpsPrd)120; \
+      break; \
       case RGR_SPS_PRD_160SF: \
-         (_prd) = (RgrSpsPrd)160; \
-         break; \
+			      (_prd) = (RgrSpsPrd)160; \
+      break; \
       case RGR_SPS_PRD_320SF: \
-         (_prd) = (RgrSpsPrd)320; \
-         break; \
+			      (_prd) = (RgrSpsPrd)320; \
+      break; \
       case RGR_SPS_PRD_640SF: \
-         (_prd) = (RgrSpsPrd)640; \
-         break; \
+			      (_prd) = (RgrSpsPrd)640; \
+      break; \
       default:\
-         (_prd) = RGR_SPS_PRD_INVALID;\
+	      (_prd) = RGR_SPS_PRD_INVALID;\
    } \
 }
 #endif /*LTE_TDD*/
@@ -664,7 +664,7 @@ extern "C" {
 
 #ifdef LTE_ADV
 #define RG_SCH_CMN_IS_SCELL_ACTV(_ue,_sCellIdx) (((_ue)->cellInfo[_sCellIdx] != NULLP) && \
-         ((_ue)->cellInfo[_sCellIdx]->sCellState == RG_SCH_SCELL_ACTIVE))
+      ((_ue)->cellInfo[_sCellIdx]->sCellState == RG_SCH_SCELL_ACTIVE))
 
 /* As per spec 36.133 sec 7.7.3*/
 #define RG_SCH_CMN_MAX_SCELL_ACT_DELAY 24
@@ -680,13 +680,13 @@ extern "C" {
 /* DL allocation MACROs */
 
 #define RG_SCH_CMN_GET_ALLOCCB_FRM_UE(_ue,_cell) &(((_ue)->cellInfo[(_ue)->cellIdToCellIdxMap\
-               [RG_SCH_CELLINDEX(_cell)]])->dlAllocCb); 
+	 [RG_SCH_CELLINDEX(_cell)]])->dlAllocCb); 
 #define RG_SCH_CMN_GET_ALLOCCB_FRM_RACB(_raCb) &((_raCb)->rbAllocInfo); 
 #define RG_SCH_CMN_INIT_SCHD_LNK(_schdLstLnk, _node)\
 {\
-      (_schdLstLnk)->node = (PTR)_node;\
-      (_schdLstLnk)->prev = NULLP;\
-      (_schdLstLnk)->next = NULLP;\
+   (_schdLstLnk)->node = (PTR)_node;\
+   (_schdLstLnk)->prev = NULLP;\
+   (_schdLstLnk)->next = NULLP;\
 }
 
 /* Changes for MIMO feature addition */
@@ -711,13 +711,13 @@ extern "C" {
 
 /* Bit Masks to Force Transmit diversity scheme */
 #define RG_SCH_CMN_TD_RI_1         0x01 /* Transmit Diversity due to RI==1 in case
-                                           of TM3 */
+					   of TM3 */
 #define RG_SCH_CMN_TD_NO_PMI       0x02 /* Transmit Diversity due to No PMI */
 #define RG_SCH_CMN_TD_TXMODE_RECFG 0x04 /* Transmit Diversity due to TXMODE ReCfg */
 #define RG_SCH_CMN_TD_TXSCHEME_CHNG 0x08 /* Transmit Diversity due to TX scheme
-                                            change */
+					    change */
 #define RG_SCH_CMN_TD_LAA_SINGLE_TB 0x10 /* Transmit Diversity due to one LAA TB 
-                                            scheduled */
+					    scheduled */
 
 #define RG_SCH_MAX_UL_TX_ANT 2
 
@@ -734,21 +734,21 @@ extern "C" {
  * than actual UE cateogry.*/
 #define RG_SCH_CMN_GET_UE_CTGY(ue) ((RG_SCH_CMN_GET_CMN_UE(ue))->ueCat + 1)
 /*ccpu00117270-ADD-END*/
-   
+
 #define RG_SCH_CMN_UPD_RBS_TO_ADD(_CELL,_DLSF,_ALLCINFO,_RBSREQ,_RBSTOADD) \
 {\
-          U8  addtlRbsAvl;\
-          addtlRbsAvl = rgSCHCmnFindNumAddtlRbsAvl(_CELL,_DLSF,_ALLCINFO);\
-          if(_RBSREQ > addtlRbsAvl)\
-          {\
-              _RBSTOADD = addtlRbsAvl;\
-          }\
-          else\
-          {\
-              _RBSTOADD = _RBSREQ;\
-          }\
+   U8  addtlRbsAvl;\
+   addtlRbsAvl = rgSCHCmnFindNumAddtlRbsAvl(_CELL,_DLSF,_ALLCINFO);\
+   if(_RBSREQ > addtlRbsAvl)\
+   {\
+      _RBSTOADD = addtlRbsAvl;\
+   }\
+   else\
+   {\
+      _RBSTOADD = _RBSREQ;\
+   }\
 }
-   /* ccpu00126002 ADD macro added to check wrap around when index is reached 
+/* ccpu00126002 ADD macro added to check wrap around when index is reached 
    MAX_CQI_RI_RPT_BUFF*/
 #define RG_SCH_INCR_CQIRI_INDEX(idx)\
 {\
@@ -766,10 +766,10 @@ extern "C" {
 {\
    if(0 == idx)\
    {\
-     idx = (MAX_CQI_RI_RPT_BUFF -1 );\
+      idx = (MAX_CQI_RI_RPT_BUFF -1 );\
    }\
    else\
-     (idx)--;\
+   (idx)--;\
    if(0 > idx)\
    {\
       printf("\n Invalid CQI write index:%d ",idx);\
@@ -813,7 +813,7 @@ extern "C" {
 #define RG_SCH_CFI_STEP_UP(_cell, _cellSch, _currCfi)\
 {                                       \
    _cellSch->dl.newCfi = ((_currCfi) < _cell->dynCfiCb.maxCfi) ?  \
-                          (_currCfi + 1):_cell->dynCfiCb.maxCfi;      \
+   (_currCfi + 1):_cell->dynCfiCb.maxCfi;      \
    _cell->dynCfiCb.cfiIncr++;            \
 }   
 
@@ -825,13 +825,13 @@ extern "C" {
 
 #define RG_SCH_UPDT_CW2_CQI(_cqiCw1,_cqiCw2,_diffCqi)\
    if (_cqiCw1 > rgSchCmnDlCqiDiffOfst[_diffCqi]) \
-   {\
-      _cqiCw2 = _cqiCw1 - rgSchCmnDlCqiDiffOfst[_diffCqi]; \
-   } \
-   else \
-   { \
-      _cqiCw2 = 1; \
-   }
+{\
+   _cqiCw2 = _cqiCw1 - rgSchCmnDlCqiDiffOfst[_diffCqi]; \
+} \
+else \
+{ \
+   _cqiCw2 = 1; \
+}
 
 #ifdef DL_LA
 /* TM Mode Step Up/Down Factor macros */
@@ -846,9 +846,9 @@ extern "C" {
 
 #define RG_SCH_FILL_RGM_TRANSMODE_IND(_ueId, _cellId, _mode, _txModChgInd)\
 {\
-  _txModChgInd->usCrnti = _ueId;\
-  _txModChgInd->bCellId = _cellId;\
-  _txModChgInd->eMode = _mode - 1;\
+   _txModChgInd->usCrnti = _ueId;\
+   _txModChgInd->bCellId = _cellId;\
+   _txModChgInd->eMode = _mode - 1;\
 }
 #endif
 #ifdef __cplusplus
@@ -858,5 +858,5 @@ extern "C" {
 
 /********************************************************************30**
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -51,18 +51,16 @@ typedef struct {
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
 
 typedef struct {
-  SCpuInfo cpuInfo; /* the info about the cores/threads per core */
+   SCpuInfo cpuInfo; /* the info about the cores/threads per core */
+   /* the currently used core */
+   U32 currentCore;
 
-
-  /* the currently used core */
-  U32 currentCore;
-  
-  /*COMMENT: add the thread id for use on hyperthreading machines */
-  struct {
-    U32 thrs;                     /* available no. of threads per core */
-    S8 exclusive;                 /* exclusive flag */
-    SSTskId tskPerCoreLst[SS_MAX_THREADS_PER_CORE]; /* System tasks running on this core */
-  } coreInfo[SS_MAX_CORES];
+   /*COMMENT: add the thread id for use on hyperthreading machines */
+   struct {
+      U32 thrs;                     /* available no. of threads per core */
+      S8 exclusive;                 /* exclusive flag */
+      SSTskId tskPerCoreLst[SS_MAX_THREADS_PER_CORE]; /* System tasks running on this core */
+   } coreInfo[SS_MAX_CORES];
 } SMultiCoreInfo;
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
 
@@ -127,34 +125,34 @@ EXTERN S16 SStopHrtBt(void);
 /* Logger Info */
 typedef struct sloggerInfo
 {
-     Bool            started;      /* flag to indicate logger status */
+   Bool            started;      /* flag to indicate logger status */
 
-     Bool            configured;   /* flag to indicate whether logger is configured */
+   Bool            configured;   /* flag to indicate whether logger is configured */
 
-     Bool            opt;               /* write to file/socket based on the flags provided*/      
-   
-     FILE*           filep;
-     S8              filePath[SS_MAX_PATH];
-   
-     S32             socketdes;
-     struct sockaddr_in remoteAddr;
-   
-     U16             curNumFlush;
-     U16             maxNumFlush;
-     
-     S8              buffer[SS_MAX_LOGBUF_SIZE];
-     U32             maxBufSiz;        /*The size of this is determined by the 
-                                            system on which its running.*/
-     U32             curBufSiz;
-     SLockId         bufLock;            /* lock for global buffer access */
+   Bool            opt;               /* write to file/socket based on the flags provided*/      
+
+   FILE*           filep;
+   S8              filePath[SS_MAX_PATH];
+
+   S32             socketdes;
+   struct sockaddr_in remoteAddr;
+
+   U16             curNumFlush;
+   U16             maxNumFlush;
+
+   S8              buffer[SS_MAX_LOGBUF_SIZE];
+   U32             maxBufSiz;        /*The size of this is determined by the 
+				       system on which its running.*/
+   U32             curBufSiz;
+   SLockId         bufLock;            /* lock for global buffer access */
 } SLoggerInfo;
 #endif /*  SS_LOGGER_SUPPORT  */
 
 #ifdef INTEL_WLS
 typedef struct _MtWls
 {
-  Void   *intf;
-  Void   *allocAddr;
+   Void   *intf;
+   Void   *allocAddr;
 }SsMtWls;
 #endif   /* INTEL_WLS */
 
@@ -171,22 +169,22 @@ typedef struct _MtNtl
 /* SS control point */
 typedef struct ssos
 {
-   
+
    SsdOs                dep;                    /* implementation specific */
 
-/* ss029.103: modification: 
-   with multiple procId support, SSI shall keep list of registered procIds  */
+   /* ss029.103: modification: 
+      with multiple procId support, SSI shall keep list of registered procIds  */
 #ifndef SS_MULTIPLE_PROCS
    ProcId               procId;                 /* processor ID */
 
-    /* TAPA task info */
+   /* TAPA task info */
    SsIdx                tTskIds[SS_MAX_ENT][SS_MAX_INST];
 #else
    ProcIdLst            procLst;                /* processor ID list */
    SsIdx                tTskIds[SS_MAX_PROCS][SS_MAX_ENT][SS_MAX_INST];
    /* TAPA task info */
 #endif /* SS_MULTIPLE_PROCS */
-                                               /* index table */
+   /* index table */
    SsTTskEntry          tTskTbl[SS_MAX_TTSKS];  /* task table */
    SsCntr               numTTsks;               /* count of tasks */
    SsIdx                nxtTTskEntry;           /* next available slot */
@@ -216,7 +214,7 @@ typedef struct ssos
 
    /* driver task info */
    SsDrvrTskEntry       drvrTskTbl[SS_MAX_DRVRTSKS];
-                                                /* task table */
+   /* task table */
    SsCntr               numDrvrTsks;            /* count of tasks */
 
 #endif  /* SS_DRVR_SUPPORT */
@@ -249,10 +247,10 @@ typedef struct ssos
    SsSemaId             regionTblSem;               /* lock for table access */
 
    /* ss028.103 - Addition of lock for mBuf reference count */
-	/* ss007.301 - moved the lock to RegionTbl */
+   /* ss007.301 - moved the lock to RegionTbl */
    /* SLockId              mBufRefLock; */            /* lock for mBuf ref access */
 
-/*ss013.301 : changes for SS_AFFINITY_SUPPORT*/
+   /*ss013.301 : changes for SS_AFFINITY_SUPPORT*/
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
    /* the Information about the CPU */
    SMultiCoreInfo mCInfo;
@@ -261,7 +259,7 @@ typedef struct ssos
 
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_WATCHDOG 
    SsWdCp                wdCp;
 #endif /* SS_WATCHDOG */
@@ -271,9 +269,9 @@ typedef struct ssos
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 #ifdef SS_LOGGER_SUPPORT
- SLoggerInfo logger;
+   SLoggerInfo logger;
 #endif /*  SS_LOGGER_SUPPORT  */
- S8          *configFilePath;
+   S8          *configFilePath;
 #ifdef INTEL_WLS
    SsMtWls   wls;
 #endif
@@ -353,7 +351,7 @@ EXTERN S16 ssdRegTmr ARGS((SsTmrEntry *));
 EXTERN S16 ssdDeregTmr ARGS((SsTmrEntry *));
 EXTERN S16 ssdError ARGS((Seq, Reason));
 EXTERN Void ssdLogError ARGS((Ent, Inst, ProcId, Txt *, S32, \
-                              ErrCls, ErrCode, ErrVal, Txt *));
+	 ErrCls, ErrCode, ErrVal, Txt *));
 
 EXTERN Void mtTmrHdlrPublic ARGS ((void)); 
 
@@ -381,7 +379,7 @@ EXTERN U16 SGetProcIdIdx ARGS((ProcId proc));
 /* multi-core support */
 /*ss013.301 : changes for SS_AFFINITY_SUPPORT*/
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
- 
+
 EXTERN S16 ssdSetAffinity ARGS((SSTskId *tskId, U32 coreId));
 EXTERN S16 ssdGetAffinity ARGS((SSTskId *tskId, U32 *coreId));
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
@@ -467,6 +465,6 @@ EXTERN void mtSigUsr2Hndlr ARGS((void));
 
 
 /********************************************************************30**
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

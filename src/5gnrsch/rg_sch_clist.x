@@ -57,15 +57,15 @@ struct rgSchRrCListCp
 
 EXTERN Void         rgSCHRrCListInit     ARGS ((RgSchRrCListCp *lList));
 EXTERN Void         rgSCHRrCListAdd2Tail ARGS ((RgSchRrCListCp *lList, \
-                                                    RgSchRrCList *node));
+	 RgSchRrCList *node));
 /* Renamed functions to start with rgSCH */
 EXTERN RgSchRrCList *rgSCHRrCListDelFrm   ARGS ((RgSchRrCListCp *lList, \
-                                                    RgSchRrCList *node));
+	 RgSchRrCList *node));
 EXTERN Void         rgSCHRrCListInsrtAtCrnt ARGS ((RgSchRrCListCp *lList, \
-                                                    RgSchRrCList *node));
+	 RgSchRrCList *node));
 /* LTE_ADV_FLAG_REMOVED_START */
 EXTERN Void rgSCHRrCListAdd2Crnt ARGS ((RgSchRrCListCp *lList, \
-                                        RgSchRrCList   *node));
+	 RgSchRrCList   *node));
 /* LTE_ADV_FLAG_REMOVED_END */
 
 
@@ -76,6 +76,6 @@ EXTERN Void rgSCHRrCListAdd2Crnt ARGS ((RgSchRrCListCp *lList, \
 #endif /* __RRCLIST__ */
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

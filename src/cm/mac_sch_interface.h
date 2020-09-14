@@ -724,19 +724,19 @@ typedef struct format0_0
 
 typedef struct format0_1
 {
-/* TBD */
+   /* TBD */
 
 }Format0_1;
 
 typedef struct format1_0
 {
-/* TBD */
+   /* TBD */
 
 }Format1_0;
 
 typedef struct format1_1
 {
-/* TBD */
+   /* TBD */
 }Format1_1;
 
 typedef struct dciInfo
@@ -1269,13 +1269,13 @@ typedef uint8_t (*SchUeCfgRspFunc) ARGS((
 	 SchUeCfgRsp *cfgRsp));       /* Scheduler UE Cfg response */
 
 typedef uint8_t (*MacSchSlotIndFunc) ARGS((
-         Pst         *pst,          /* Post structure */
+	 Pst         *pst,          /* Post structure */
 	 SlotIndInfo *slotInd));    /* Slot Info */
 
 typedef uint8_t (*MacSchBsrFunc)       ARGS((
-   Pst                  *pst,
-   UlBufferStatusRptInd *bsrInd
-));
+	 Pst                  *pst,
+	 UlBufferStatusRptInd *bsrInd
+	 ));
 
 typedef uint8_t (*MacSchSrUciIndFunc) ARGS(( 
 	 Pst         *pst,         /* Post structure */

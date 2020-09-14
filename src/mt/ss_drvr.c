@@ -114,12 +114,12 @@ ISTsk isTsk;                    /* interrupt service function */
    S16 ret;
 #if (ERRCLASS & ERRCLS_INT_PAR)
 
-/* ss029.103: modification: multiple procId related changes */ 
+   /* ss029.103: modification: multiple procId related changes */ 
 #ifndef SS_MULTIPLE_PROCS
    ProcId thisProcId;
 #endif
 
-/* ss029.103: modification: multiple procId related changes */ 
+   /* ss029.103: modification: multiple procId related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    U16 count;
    U16 i;
@@ -132,7 +132,7 @@ ISTsk isTsk;                    /* interrupt service function */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
 
-/* ss029.103: modification: multiple procId related changes */ 
+   /* ss029.103: modification: multiple procId related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    if (SGetProcIdLst(&count, procIdLst) != ROK)
    {
@@ -144,8 +144,8 @@ ISTsk isTsk;                    /* interrupt service function */
    {
       if (procIdLst[i] >= low  &&  procIdLst[i] <= high)
       {
-       SSLOGERROR(ERRCLS_INT_PAR, ESS002, ERRZERO, "Invalid procId range");
-       RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS002, ERRZERO, "Invalid procId range");
+	 RETVALUE(RFAILED);
       }
    }
 #else /* SS_MULTIPLE_PROCS */
@@ -174,7 +174,7 @@ ISTsk isTsk;                    /* interrupt service function */
    if (osCp.drvrTskTbl[channel].used == TRUE)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS006, ERRZERO,
-                  "Driver task already registered");
+	    "Driver task already registered");
       RETVALUE(RFAILED);
    }
 #endif
@@ -228,31 +228,31 @@ ISTsk isTsk;                    /* interrupt service function */
 
 /*  ss001.301: Additions */
 /*
-*
-*       Fun:   SDeregDrvrTsk
-*
-*       Desc:  This function is used to de-register a driver task.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_drvr.c 
-*
-*/
+ *
+ *       Fun:   SDeregDrvrTsk
+ *
+ *       Desc:  This function is used to de-register a driver task.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_drvr.c 
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SDeregDrvrTsk
+   PUBLIC S16 SDeregDrvrTsk
 (
-Inst channel                   /* channel instance */
-)
+ Inst channel                   /* channel instance */
+ )
 #else
 PUBLIC S16 SDeregDrvrTsk(channel)
-Inst channel;
+   Inst channel;
 #endif
 {
-	/* ss002.301 Modifications */
+   /* ss002.301 Modifications */
    TRC1(SRegDrvrTsk);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -266,7 +266,7 @@ Inst channel;
    if (osCp.drvrTskTbl[channel].used != TRUE)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS477, ERRZERO,
-                  "Driver task is not registered");
+	    "Driver task is not registered");
       RETVALUE(RFAILED);
    }
 #endif
@@ -275,8 +275,8 @@ Inst channel;
    if(SLock(&osCp.drvrTskTbl[channel].lock) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS477, ERRZERO,
-                     "Could not lock driver task lock");
+      SSLOGERROR(ERRCLS_DEBUG, ESS477, ERRZERO,
+	    "Could not lock driver task lock");
 #endif
       RETVALUE(RFAILED);
    }
@@ -293,8 +293,8 @@ Inst channel;
    if(SUnlock(&osCp.drvrTskTbl[channel].lock) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS477, ERRZERO,
-                     "Could not unlock driver task lock");
+      SSLOGERROR(ERRCLS_DEBUG, ESS477, ERRZERO,
+	    "Could not unlock driver task lock");
 #endif
       RETVALUE(RFAILED);
    }
@@ -304,5 +304,5 @@ Inst channel;
 }
 #endif /* SS_DRVR_SUPPORT */
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

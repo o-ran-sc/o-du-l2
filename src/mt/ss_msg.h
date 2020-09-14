@@ -65,31 +65,31 @@ extern "C" {
 
 /* utility macros */
 #define FIND_OFFSET(current, idx)   \
+{ \
+   MsgLen bufSiz; \
+   while (idx) \
    { \
-      MsgLen bufSiz; \
-      while (idx) \
-      { \
-         bufSiz = (current->b_wptr - current->b_rptr); \
-         if (bufSiz > idx) \
-            break; \
-         idx -= bufSiz; \
-         current = current->b_cont; \
-      } \
-   }
- 
+      bufSiz = (current->b_wptr - current->b_rptr); \
+      if (bufSiz > idx) \
+      break; \
+      idx -= bufSiz; \
+      current = current->b_cont; \
+   } \
+}
+
 #define FIND_OFFSET_AND_PREV(previous, current, idx)   \
+{ \
+   MsgLen bufSiz; \
+   while (idx) \
    { \
-      MsgLen bufSiz; \
-      while (idx) \
-      { \
-         bufSiz = (current->b_wptr - current->b_rptr); \
-         if (bufSiz > idx) \
-            break; \
-         idx -= bufSiz; \
-         previous = current; \
-         current = current->b_cont; \
-      } \
-   }
+      bufSiz = (current->b_wptr - current->b_rptr); \
+      if (bufSiz > idx) \
+      break; \
+      idx -= bufSiz; \
+      previous = current; \
+      current = current->b_cont; \
+   } \
+}
 
 #ifdef __cplusplus
 }
@@ -97,9 +97,9 @@ extern "C" {
 
 #endif /* __SSMSGH__ */
 
- 
+
 
 /********************************************************************30**
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

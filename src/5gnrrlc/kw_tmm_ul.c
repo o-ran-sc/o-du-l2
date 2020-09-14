@@ -89,15 +89,15 @@ U8 rrcMsgType
 #ifndef CA_PAL_5GTF 
    U8 rrcUeCapabilityInfo[12] ={0x38, 0x01, 0x00, 0x80, 0x1b, 0xff, 0x0c, 0x00, 0x20, 0x00, 0x80, 0x00};
 #else
-  /* U8 rrcUeCapabilityInfo[44] ={0x38,0x01,0x02,0x84,0x9b,0xff,0x0c,0x00,0x20,0x00,0x80,0x1f,0xfe,0xf4,0x4f,0xe0,0x40,0x03,0x80,0x11,0x04,0x0c,0x20,0x88,0x20,0x7f,0xff,0xff,0xff,0xf3,0xff,0x81,0xff,0xff,0xff,0xff,0x7f,0xf0,0x3f,0xff,0xff,0xff,0xe0,0x00};
-*/
-U8 rrcUeCapabilityInfo[] = 
-{
- 0x38,0x01,0x03,0x34,0x9b,0xff,0x0c,0x00,0x20,0x00,0x80,0x1f,0xfe,0xf4,0x4f,0xe0
- ,0x40,0x09,0x80,0x11,0x04,0x0c,0x20,0x88,0x20,0x63,0x04,0x41,0x03,0x20,0x22,0x08
- ,0x19,0x61,0x10,0x40,0xff,0xff,0xff,0xff,0xe7,0xff,0x03,0xff,0xff,0xff,0xfe,0xff
- ,0xe0,0x7f,0xff,0xff,0xff,0xc0,0x00
-};
+   /* U8 rrcUeCapabilityInfo[44] ={0x38,0x01,0x02,0x84,0x9b,0xff,0x0c,0x00,0x20,0x00,0x80,0x1f,0xfe,0xf4,0x4f,0xe0,0x40,0x03,0x80,0x11,0x04,0x0c,0x20,0x88,0x20,0x7f,0xff,0xff,0xff,0xf3,0xff,0x81,0xff,0xff,0xff,0xff,0x7f,0xf0,0x3f,0xff,0xff,0xff,0xe0,0x00};
+    */
+   U8 rrcUeCapabilityInfo[] = 
+   {
+      0x38,0x01,0x03,0x34,0x9b,0xff,0x0c,0x00,0x20,0x00,0x80,0x1f,0xfe,0xf4,0x4f,0xe0
+	 ,0x40,0x09,0x80,0x11,0x04,0x0c,0x20,0x88,0x20,0x63,0x04,0x41,0x03,0x20,0x22,0x08
+	 ,0x19,0x61,0x10,0x40,0xff,0xff,0xff,0xff,0xe7,0xff,0x03,0xff,0xff,0xff,0xfe,0xff
+	 ,0xe0,0x7f,0xff,0xff,0xff,0xc0,0x00
+   };
 
 #endif
    U8 rrcSecurityModeComplete[2] ={0x28, 0x80};
@@ -109,115 +109,115 @@ U8 rrcUeCapabilityInfo[] =
 #ifdef PJ
    Pst ulPst2 ={100,100,217,0,216,0,PRIOR0,0,68,0,1,0,0};
 #endif
-  TRC2(kwTmmRcvFrmLi) 
+   TRC2(kwTmmRcvFrmLi) 
 
-  if(1 == rrcMsgType)
-  {
+      if(1 == rrcMsgType)
+      {
 
-   KwuDatIndInfo datIndInfoTmp;
-   datIndInfo = &datIndInfoTmp;
-   datIndInfo->rlcId.rbId = 5;
-   datIndInfo->rlcId.rbType = 0;
-   datIndInfo->rlcId.ueId = 0;
-   datIndInfo->rlcId.cellId = 1;
-   datIndInfo->tCrnti = crnti;
-   datIndInfo->isOutOfSeq = 16;
+	 KwuDatIndInfo datIndInfoTmp;
+	 datIndInfo = &datIndInfoTmp;
+	 datIndInfo->rlcId.rbId = 5;
+	 datIndInfo->rlcId.rbType = 0;
+	 datIndInfo->rlcId.ueId = 0;
+	 datIndInfo->rlcId.cellId = 1;
+	 datIndInfo->tCrnti = crnti;
+	 datIndInfo->isOutOfSeq = 16;
 
-   SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
-  
-   SAddPstMsgMult(rrcConReq,6,pdu);
+	 SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
 
-   RLOG1(L_INFO,"Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
-   printf("Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
-   KwUiKwuDatInd(&ulPst1, datIndInfo, pdu);
- }
- else if(2 == rrcMsgType)
- {
+	 SAddPstMsgMult(rrcConReq,6,pdu);
+
+	 RLOG1(L_INFO,"Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
+	 printf("Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
+	 KwUiKwuDatInd(&ulPst1, datIndInfo, pdu);
+      }
+      else if(2 == rrcMsgType)
+      {
 #ifdef PJ
-    CmLtePdcpId pdcpId;
-    pdcpId.cellId = 1;
-    pdcpId.ueId = crnti;
-    pdcpId.rbId = 1;
-    pdcpId.rbType = 0;
+	 CmLtePdcpId pdcpId;
+	 pdcpId.cellId = 1;
+	 pdcpId.ueId = crnti;
+	 pdcpId.rbId = 1;
+	 pdcpId.rbType = 0;
 #endif   
-    SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
-  
-    SAddPstMsgMult(rrcConSetupComplete,34,pdu);
+	 SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
 
-    RLOG1(L_INFO,"Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
-    printf("Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
+	 SAddPstMsgMult(rrcConSetupComplete,34,pdu);
+
+	 RLOG1(L_INFO,"Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
+	 printf("Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
 #ifdef PJ
-    PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
+	 PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #endif
- }
- 
- else if(3 == rrcMsgType)
- {
+      }
+
+      else if(3 == rrcMsgType)
+      {
 #ifdef PJ
-    CmLtePdcpId pdcpId;
-    pdcpId.cellId = 1;
-    pdcpId.ueId = crnti;
-    pdcpId.rbId = 1;
-    pdcpId.rbType = 0;
+	 CmLtePdcpId pdcpId;
+	 pdcpId.cellId = 1;
+	 pdcpId.ueId = crnti;
+	 pdcpId.rbId = 1;
+	 pdcpId.rbType = 0;
 #endif   
-    SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
-  
+	 SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
+
 #ifndef CA_PAL_5GTF 
-    SAddPstMsgMult(rrcUeCapabilityInfo,12,pdu);
+	 SAddPstMsgMult(rrcUeCapabilityInfo,12,pdu);
 #else    
-    SAddPstMsgMult(rrcUeCapabilityInfo,sizeof(rrcUeCapabilityInfo),pdu);
+	 SAddPstMsgMult(rrcUeCapabilityInfo,sizeof(rrcUeCapabilityInfo),pdu);
 #endif
-    RLOG1(L_INFO,"Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
-    printf("Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
+	 RLOG1(L_INFO,"Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
+	 printf("Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
 #ifdef PJ
-    PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
+	 PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #endif
 
- }
- else if(4 == rrcMsgType)
- {
+      }
+      else if(4 == rrcMsgType)
+      {
 #ifdef PJ
-    CmLtePdcpId pdcpId;
-    pdcpId.cellId = 1;
-    pdcpId.ueId = crnti;
-    pdcpId.rbId = 1;
-    pdcpId.rbType = 0;
+	 CmLtePdcpId pdcpId;
+	 pdcpId.cellId = 1;
+	 pdcpId.ueId = crnti;
+	 pdcpId.rbId = 1;
+	 pdcpId.rbType = 0;
 #endif
-   
-    SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
-  
-    SAddPstMsgMult(rrcSecurityModeComplete,2,pdu);
 
-    RLOG1(L_INFO,"Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
-    printf("Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
-#ifdef PJ
-    PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
-#endif
- }
- else if(5 == rrcMsgType)
- {
-#ifdef PJ
-    CmLtePdcpId pdcpId;
-    pdcpId.cellId = 1;
-    pdcpId.ueId = crnti;
-    pdcpId.rbId = 1;
-    pdcpId.rbType = 0;
-#endif
-   
-    SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
-  
-    SAddPstMsgMult(rrcReconfigComplete,2,pdu);
+	 SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
 
-    RLOG1(L_INFO,"Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
-    printf("Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
+	 SAddPstMsgMult(rrcSecurityModeComplete,2,pdu);
+
+	 RLOG1(L_INFO,"Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
+	 printf("Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
 #ifdef PJ
-    PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
+	 PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
+#endif
+      }
+      else if(5 == rrcMsgType)
+      {
+#ifdef PJ
+	 CmLtePdcpId pdcpId;
+	 pdcpId.cellId = 1;
+	 pdcpId.ueId = crnti;
+	 pdcpId.rbId = 1;
+	 pdcpId.rbType = 0;
+#endif
+
+	 SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
+
+	 SAddPstMsgMult(rrcReconfigComplete,2,pdu);
+
+	 RLOG1(L_INFO,"Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
+	 printf("Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
+#ifdef PJ
+	 PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #ifdef EG_GEN_LOAD_5GTF
-    loadStart=1;
+	 loadStart=1;
 #endif
 #endif
- }
- RETVOID;
+      }
+   RETVOID;
 }
 #endif 
 /** @addtogroup tmmode */
@@ -246,33 +246,33 @@ U8 rrcUeCapabilityInfo[] =
  */
 #ifdef CCPU_OPT
 #ifdef ANSI
-PUBLIC Void kwTmmRcvFrmLi
+   PUBLIC Void kwTmmRcvFrmLi
 (
-RlcCb        *gCb,
-RlcUlRbCb    *rbCb,  
-CmLteRnti   tCrnti,  
-Buffer      *pdu      
-)
+ RlcCb        *gCb,
+ RlcUlRbCb    *rbCb,  
+ CmLteRnti   tCrnti,  
+ Buffer      *pdu      
+ )
 #else
 PUBLIC Void kwTmmRcvFrmLi(gCb,rbCb, tCrnti, pdu)
-RlcCb        *gCb;
-RlcUlRbCb    *rbCb;  
-CmLteRnti   tCrnti; 
-Buffer      *pdu;  
+   RlcCb        *gCb;
+   RlcUlRbCb    *rbCb;  
+   CmLteRnti   tCrnti; 
+   Buffer      *pdu;  
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void kwTmmRcvFrmLi
+   PUBLIC Void kwTmmRcvFrmLi
 (
-RlcCb       *gCb,
-RlcUlRbCb   *rbCb,         
-Buffer     *pdu            
-)
+ RlcCb       *gCb,
+ RlcUlRbCb   *rbCb,         
+ Buffer     *pdu            
+ )
 #else
 PUBLIC Void kwTmmRcvFrmLi(gCb,rbCb, pdu)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb;         
-Buffer     *pdu;         
+   RlcCb       *gCb;
+   RlcUlRbCb   *rbCb;         
+   Buffer     *pdu;         
 #endif
 #endif 
 {
@@ -280,10 +280,10 @@ Buffer     *pdu;
    uint16_t         msgLen;
    uint16_t         copyLen;    /* Number of bytes copied */
    Pst              pst;
- 
+
    TRC2(kwTmmRcvFrmLi) 
 
-   gCb->genSts.pdusRecv++;
+      gCb->genSts.pdusRecv++;
    SFndLenMsg(pdu, (MsgLen *)&msgLen);
    gCb->genSts.bytesRecv += msgLen;
    /* If trace flag is enabled send the trace indication */
@@ -292,37 +292,37 @@ Buffer     *pdu;
       /* Populate the trace params */
       kwLmmSendTrc(gCb, EVENT_UL_RRC_MSG_TRANS_TO_DU, pdu);
    }
-  
+
    /* Filling UL RRC Message Info */
    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
-      ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
+	 ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
    if (ulRrcMsgInfo)
    {
       ulRrcMsgInfo->cellId = rbCb->rlcId.cellId;
       ulRrcMsgInfo->ueIdx = rbCb->rlcId.ueId;
       ulRrcMsgInfo->lcId = rbCb->lch.lChId;
       RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
-         ulRrcMsgInfo->rrcMsg, msgLen);
+	    ulRrcMsgInfo->rrcMsg, msgLen);
       if (ulRrcMsgInfo->rrcMsg)
       {
-         SCpyMsgFix(pdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
-         ulRrcMsgInfo->msgLen = msgLen;
+	 SCpyMsgFix(pdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
+	 ulRrcMsgInfo->msgLen = msgLen;
 
-         /* Sending UL RRC Message transfeer to DU APP */
-         memset(&pst, 0, sizeof(Pst));
-         FILL_PST_RLC_TO_DUAPP(pst, SFndProcId(), RLC_UL_INST, EVENT_UL_RRC_MSG_TRANS_TO_DU);
-         rlcSendUlRrcMsgToDu(&pst, ulRrcMsgInfo);
+	 /* Sending UL RRC Message transfeer to DU APP */
+	 memset(&pst, 0, sizeof(Pst));
+	 FILL_PST_RLC_TO_DUAPP(pst, SFndProcId(), RLC_UL_INST, EVENT_UL_RRC_MSG_TRANS_TO_DU);
+	 rlcSendUlRrcMsgToDu(&pst, ulRrcMsgInfo);
       }
       else
       {
-         DU_LOG("\nRLC : Memory allocation failed");
+	 DU_LOG("\nRLC : Memory allocation failed");
       }
    }
    else
    {
       DU_LOG("\nRLC : Memory allocation failed");
    }
- 
+
    RETVOID;
 }
 
@@ -340,20 +340,20 @@ Buffer     *pdu;
  *       
  **/
 #ifdef ANSI
-PUBLIC Void kwTmmUlReEstablish
+   PUBLIC Void kwTmmUlReEstablish
 (
-RlcCb        *gCb,
-RlcUlRbCb    *rbCb        
-)
+ RlcCb        *gCb,
+ RlcUlRbCb    *rbCb        
+ )
 #else
 PUBLIC Void kwTmmUlReEstablish(rbCb)
-RlcCb        *gCb;
-KwRbCb      *rbCb;          
+   RlcCb        *gCb;
+   KwRbCb      *rbCb;          
 #endif
 {
    TRC2(rlcUlTmmReEstablish)
 
-   RLOG_ARG0(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,"do nothing for TMM for ReEstablish");
+      RLOG_ARG0(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,"do nothing for TMM for ReEstablish");
    RETVOID;
 }
 
@@ -362,5 +362,5 @@ KwRbCb      *rbCb;
 #endif
 /*@}*/
 /********************************************************************30**
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

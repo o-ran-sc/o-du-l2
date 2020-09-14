@@ -54,12 +54,12 @@ EgtpGlobalCb egtpCb;
  ***************************************************************************/
 S16 egtpActvInit(Ent entity, Inst inst, Region region, Reason reason)
 {
-  DU_LOG("\n\nEGTP : Initializing");
+   DU_LOG("\n\nEGTP : Initializing");
 
-  cmMemset ((U8 *)&egtpCb, 0, sizeof(EgtpGlobalCb));
-  protType = CM_INET_PROTO_UDP;
+   cmMemset ((U8 *)&egtpCb, 0, sizeof(EgtpGlobalCb));
+   protType = CM_INET_PROTO_UDP;
 
-  return ROK;
+   return ROK;
 }
 
 
@@ -89,61 +89,61 @@ S16 egtpActvTsk(Pst *pst, Buffer *mBuf)
    switch(pst->srcEnt)
    {
       case ENTDUAPP:
-      {
-         switch(pst->event)
-         {
-            case EVTCFGREQ:
-            {
-               ret = unpackEgtpCfgReq(egtpCfgReq, pst, mBuf);
-               break;
-            }
-            case EVTSRVOPENREQ:
-            {
-               ret = unpackEgtpSrvOpenReq(egtpSrvOpenReq, pst, mBuf);
-               break;
-            }
-            case EVTTNLMGMTREQ:
-            {
-               ret = unpackEgtpTnlMgmtReq(egtpTnlMgmtReq, pst, mBuf);
-               break;
-            }
-            case EVTSLOTIND:
-            {
-               ret = unpackEgtpSlotInd(egtpSlotInd, pst, mBuf);
-               SPutMsg(mBuf);
-               break;
-            }
-            default:
-            {
-               DU_LOG("\nEGTP : Invalid event %d", pst->event);
-               SPutMsg(mBuf);
-               ret = RFAILED;
-            }
-         }
-         break;
-      }
+	 {
+	    switch(pst->event)
+	    {
+	       case EVTCFGREQ:
+		  {
+		     ret = unpackEgtpCfgReq(egtpCfgReq, pst, mBuf);
+		     break;
+		  }
+	       case EVTSRVOPENREQ:
+		  {
+		     ret = unpackEgtpSrvOpenReq(egtpSrvOpenReq, pst, mBuf);
+		     break;
+		  }
+	       case EVTTNLMGMTREQ:
+		  {
+		     ret = unpackEgtpTnlMgmtReq(egtpTnlMgmtReq, pst, mBuf);
+		     break;
+		  }
+	       case EVTSLOTIND:
+		  {
+		     ret = unpackEgtpSlotInd(egtpSlotInd, pst, mBuf);
+		     SPutMsg(mBuf);
+		     break;
+		  }
+	       default:
+		  {
+		     DU_LOG("\nEGTP : Invalid event %d", pst->event);
+		     SPutMsg(mBuf);
+		     ret = RFAILED;
+		  }
+	    }
+	    break;
+	 }
       case ENTKW:
-      {
-         switch(pst->event)
-         {
-            case EVTDATIND:
-            {
-               //TODO
-               break;
-            }
-            default:
-            {
-               DU_LOG("\nEGTP : Invalid event %d", pst->event);
-               ret = RFAILED;
-            }
-         }
-         break;
-      }
+	 {
+	    switch(pst->event)
+	    {
+	       case EVTDATIND:
+		  {
+		     //TODO
+		     break;
+		  }
+	       default:
+		  {
+		     DU_LOG("\nEGTP : Invalid event %d", pst->event);
+		     ret = RFAILED;
+		  }
+	    }
+	    break;
+	 }
       default:
-      {
-         DU_LOG("\nEGTP : Invalid source entity %d", pst->srcEnt);
-         ret = RFAILED;
-      }
+	 {
+	    DU_LOG("\nEGTP : Invalid source entity %d", pst->srcEnt);
+	    ret = RFAILED;
+	 }
    }
    SExitTsk();
    return ret;
@@ -231,7 +231,7 @@ S16 egtpFillRspPst(Pst *pst, Pst *rspPst)
    rspPst->dstProcId = pst->srcProcId;
    rspPst->selector = ODU_SELECTOR_LC;
    rspPst->pool= DU_POOL;
-    
+
    return ROK;
 }
 
@@ -261,17 +261,17 @@ S16 egtpSrvOpenReq(Pst *pst)
    U8 sockType;     /* Socket type */
 
    DU_LOG("\nEGTP : Received EGTP open server request");
- 
+
    sockType = CM_INET_DGRAM;
    ret = egtpSrvOpenPrc(sockType, &(egtpCb.recvTptSrvr));
-	/* Opening and Binding receiver socket */
+   /* Opening and Binding receiver socket */
    if(ret != ROK)
    {
       DU_LOG("\nEGTP : Failed while opening receiver transport server");
       return ret;
    }
    /* Opening and Binding sender socket */
-	ret = egtpSrvOpenPrc(sockType, &(egtpCb.dstCb.sendTptSrvr));
+   ret = egtpSrvOpenPrc(sockType, &(egtpCb.dstCb.sendTptSrvr));
    if(ret != ROK)
    {
       DU_LOG("\nEGTP : Failed while opening sender transport server");
@@ -312,7 +312,7 @@ S16 egtpSrvOpenPrc(U8 sockType, EgtpTptSrvr *server)
 {
    S8 ret=ROK;
    ret = cmInetSocket(sockType, &(server->sockFd), protType); 
-	if(ret != ROK)
+   if(ret != ROK)
    {  
       DU_LOG("\nEGTP : Failed to open UDP socket");
       return ret;
@@ -323,7 +323,7 @@ S16 egtpSrvOpenPrc(U8 sockType, EgtpTptSrvr *server)
       DU_LOG("\nEGTP : Failed to bind socket");
       return ret;
    }
-   
+
    return ret;
 }
 
@@ -342,7 +342,7 @@ S16 egtpSrvOpenPrc(U8 sockType, EgtpTptSrvr *server)
  * @return ROK     - success
  *         RFAILED - failure
  *
- 
+
  * ***************************************************************************/
 S16 egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 {
@@ -353,25 +353,25 @@ S16 egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
    switch(tnlEvt.action)
    {
       case EGTP_TNL_MGMT_ADD:
-      {
-         ret = egtpTnlAdd(tnlEvt);
-         break;
-      }
+	 {
+	    ret = egtpTnlAdd(tnlEvt);
+	    break;
+	 }
       case EGTP_TNL_MGMT_MOD:
-      {
-         ret = egtpTnlMod(tnlEvt);
-         break;
-      }
+	 {
+	    ret = egtpTnlMod(tnlEvt);
+	    break;
+	 }
       case EGTP_TNL_MGMT_DEL:
-      {
-         ret = egtpTnlDel(tnlEvt);
-         break;
-      }
+	 {
+	    ret = egtpTnlDel(tnlEvt);
+	    break;
+	 }
       default:
-      {
-         DU_LOG("\nEGTP : Invalid tunnel management action[%d]", tnlEvt.action);
-         ret = LCM_REASON_INVALID_ACTION;
-      }
+	 {
+	    DU_LOG("\nEGTP : Invalid tunnel management action[%d]", tnlEvt.action);
+	    ret = LCM_REASON_INVALID_ACTION;
+	 }
    }
 
    if(ret == ROK)
@@ -443,7 +443,7 @@ S16 egtpTnlAdd(EgtpTnlEvt tnlEvt)
    preDefHdr.extHdr.pdcpNmb.pres = FALSE;
    preDefHdr.extHdr.udpPort.pres = FALSE;
    preDefHdr.nPdu.pres = FALSE;
-  
+
    egtpEncodeHdr((U8 *)teidCb->preEncodedHdr.hdr, &preDefHdr, &(teidCb->preEncodedHdr.cnt));
 
    return ROK;
@@ -478,7 +478,7 @@ S16 egtpTnlMod(EgtpTnlEvt tnlEvt)
       printf("\nTunnel id not found");
       RETVALUE(RFAILED);
    }  
-   
+
    teidCb->teId = tnlEvt.lclTeid;
    teidCb->remTeId = tnlEvt.remTeid;
 #endif
@@ -505,7 +505,7 @@ S16 egtpTnlDel(EgtpTnlEvt tnlEvt)
    EgtpTeIdCb     *teidCb = NULLP;
 
    DU_LOG("\nEGTP : Tunnel deletion : Local Teid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
-   
+
    cmHashListFind(&(egtpCb.dstCb.teIdLst), (U8 *)&(tnlEvt.lclTeid), sizeof(U32), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
@@ -553,7 +553,7 @@ S16 egtpHdlDatInd(EgtpMsg egtpMsg)
       DU_LOG("\nEGTP : Tunnel id[%d] not configured", egtpMsg.msgHdr.teId);
       return LCM_REASON_INVALID_PAR_VAL;
    }
-   
+
    msgHdr = &(egtpMsg.msgHdr);
 
    hdrLen = teidCb->preEncodedHdr.cnt;
@@ -634,7 +634,7 @@ S16 egtpEncodeHdr(U8 *preEncodedHdr, EgtpMsgHdr *preDefHdr, U8 *hdrIdx)
    U8         cnt     = EGTP_MAX_HDR_LEN;  /* Stores the position */
    Bool       extPres = FALSE;             /* Flag for indication of S, E or P presense flag */
    U16        nwWord = 0;
-   
+
    /* Encoding header */
    tmpByte |= EGTP_MASK_BIT6;   /* Setting 6th LSB of 1st byte as version */
    tmpByte |= EGTP_MASK_BIT5;   /* Setting 5th LSB of 1st byte as protocol type */
@@ -701,7 +701,7 @@ S16 egtpEncodeHdr(U8 *preEncodedHdr, EgtpMsgHdr *preDefHdr, U8 *hdrIdx)
       preEncodedHdr[--cnt] = GetHiByte(preDefHdr->extHdr.udpPort.val);
       preEncodedHdr[--cnt] = GetLoByte(preDefHdr->extHdr.udpPort.val);
    }
- 
+
    if(preDefHdr->extHdr.pdcpNmb.pres)
    {
       preEncodedHdr[--cnt] = EGTP_EXT_HDR_PDCP_TYPE;
@@ -709,7 +709,7 @@ S16 egtpEncodeHdr(U8 *preEncodedHdr, EgtpMsgHdr *preDefHdr, U8 *hdrIdx)
       preEncodedHdr[--cnt] = GetHiByte(preDefHdr->extHdr.pdcpNmb.val);
       preEncodedHdr[--cnt] = GetLoByte(preDefHdr->extHdr.pdcpNmb.val);
    }
- 
+
    if(tmpByte & EGTP_MASK_BIT3)
    {
       preEncodedHdr[--cnt] = 0;
@@ -818,7 +818,7 @@ S16 egtpRecvMsg()
    nMsg = 0;
    memInfo.region = DU_APP_MEM_REGION;
    memInfo.pool   = DU_POOL;
-    
+
    fromAddr.port = egtpCb.dstCb.dstPort;
    fromAddr.address = egtpCb.dstCb.dstIp;
 
@@ -828,13 +828,13 @@ S16 egtpRecvMsg()
       ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &fromAddr, &memInfo, &recvBuf, &bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {  
-         DU_LOG("\nEGTP : Received DL Message[%d]\n", nMsg+1);
-         SPrntMsg(recvBuf, 0 ,0);
-         egtpHdlRecvData(recvBuf);
+	 DU_LOG("\nEGTP : Received DL Message[%d]\n", nMsg+1);
+	 SPrntMsg(recvBuf, 0 ,0);
+	 egtpHdlRecvData(recvBuf);
       }
       nMsg++;
    }
-   
+
    return ROK;
 }
 
@@ -860,17 +860,17 @@ S16 egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    U8       extHdrType = 0;       /* Holds the Extension hdr type */
    U8       extHdrLen = 0;        /* Extension hdr length */
    Bool     extPres = FALSE;      /* Flag for indication of S, E or P presense flag */
- 
+
    SFndLenMsg(mBuf, &bufLen);
- 
+
    /* Decode first byte and storing in temporary variable */
    SRemPreMsg(&tmpByte[0], mBuf);
 
    /* Extracting version fro 1st byte */
    version = tmpByte[0] >> 5;
-   
+
    DU_LOG("\nEGTP : Version %d", version);
- 
+
    /* Decode message type */
    SRemPreMsg((Data*)&(egtpMsg->msgHdr.msgType), mBuf);
    DU_LOG("\nEGTP : msgType %d", egtpMsg->msgHdr.msgType);
@@ -953,45 +953,45 @@ S16 egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
       SRemPreMsg(&extHdrType, mBuf);
       while( 0 != extHdrType)
       {
-         switch (extHdrType)
-         {
-            case EGTP_EXT_HDR_UDP_TYPE:
-            {
-               SRemPreMsg(&extHdrLen, mBuf);
-               if(extHdrLen == 0x01)
-               {
-                  /************************************************************
-                   * UDP Port is 2 bytes. So decode next 2 bytes from msg hdr
-                  * and perform OR operation on them 
-                  *************************************************************/
-                  egtpMsg->msgHdr.extHdr.udpPort.pres = TRUE;
-                  SRemPreMsg(&tmpByte[1], mBuf);
-                  SRemPreMsg(&tmpByte[2], mBuf);
-                  egtpMsg->msgHdr.extHdr.udpPort.val = (tmpByte[1] << 8) | tmpByte[2];
-               }
-               break;
-            }
+	 switch (extHdrType)
+	 {
+	    case EGTP_EXT_HDR_UDP_TYPE:
+	       {
+		  SRemPreMsg(&extHdrLen, mBuf);
+		  if(extHdrLen == 0x01)
+		  {
+		     /************************************************************
+		      * UDP Port is 2 bytes. So decode next 2 bytes from msg hdr
+		      * and perform OR operation on them 
+		      *************************************************************/
+		     egtpMsg->msgHdr.extHdr.udpPort.pres = TRUE;
+		     SRemPreMsg(&tmpByte[1], mBuf);
+		     SRemPreMsg(&tmpByte[2], mBuf);
+		     egtpMsg->msgHdr.extHdr.udpPort.val = (tmpByte[1] << 8) | tmpByte[2];
+		  }
+		  break;
+	       }
 
-            case EGTP_EXT_HDR_PDCP_TYPE:
-            {
-               SRemPreMsg(&extHdrLen, mBuf);
-               if(extHdrLen == 0x01)
-               {
-                  /*************************************************************
-                   * PDCP num is 2 bytes. So decode next 2 bytes from msg hdr
-                   * and perform OR operation on them 
-                   ************************************************************/
-                  egtpMsg->msgHdr.extHdr.pdcpNmb.pres = TRUE;
-                  SRemPreMsg(&tmpByte[1], mBuf);
-                  SRemPreMsg(&tmpByte[2], mBuf);
-                  egtpMsg->msgHdr.extHdr.pdcpNmb.val = (tmpByte[1] << 8) | tmpByte[2];
-               }
-               break;
-            }
-         } /* End of switch */
- 
-         SRemPreMsg(&extHdrType, mBuf);
- 
+	    case EGTP_EXT_HDR_PDCP_TYPE:
+	       {
+		  SRemPreMsg(&extHdrLen, mBuf);
+		  if(extHdrLen == 0x01)
+		  {
+		     /*************************************************************
+		      * PDCP num is 2 bytes. So decode next 2 bytes from msg hdr
+		      * and perform OR operation on them 
+		      ************************************************************/
+		     egtpMsg->msgHdr.extHdr.pdcpNmb.pres = TRUE;
+		     SRemPreMsg(&tmpByte[1], mBuf);
+		     SRemPreMsg(&tmpByte[2], mBuf);
+		     egtpMsg->msgHdr.extHdr.pdcpNmb.val = (tmpByte[1] << 8) | tmpByte[2];
+		  }
+		  break;
+	       }
+	 } /* End of switch */
+
+	 SRemPreMsg(&extHdrType, mBuf);
+
       } /* End of while */
    }  
    /****************************************************************************
@@ -1010,7 +1010,7 @@ S16 egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    SPrntMsg(mBuf, 0, 0);
 
    /* Forward the data to duApp/RLC */
- 
+
    return ROK;
 
 }

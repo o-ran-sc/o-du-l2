@@ -339,31 +339,31 @@
  * represented in big endian representation within the data stream) 
  */
 #define CM_INET_PEEK_U16(_sockFd, _fromAddr, _info, _pos, _word, _ret)  \
+{  \
+   U8 _tempWord[2];  \
+   \
+   _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(U16), _tempWord);  \
+   if (_ret == ROK)  \
    {  \
-      U8 _tempWord[2];  \
-      \
-      _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(U16), _tempWord);  \
-      if (_ret == ROK)  \
-      {  \
-         _word = ((_tempWord[0] << 8) + (_tempWord[1]));  \
-      }  \
-   }
+      _word = ((_tempWord[0] << 8) + (_tempWord[1]));  \
+   }  \
+}
 
 /* 
  * peeks a U32 from the given position (it is supposed that the U32 is 
  * represented in big endian representation within the data stream)
  */
 #define CM_INET_PEEK_U32(_sockFd, _fromAddr, _info, _pos, _long, _ret)  \
+{  \
+   U8 _tempLong[4];  \
+   \
+   _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(U32), _tempLong);  \
+   if (_ret == ROK)  \
    {  \
-      U8 _tempLong[4];  \
-      \
-      _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(U32), _tempLong);  \
-      if (_ret == ROK)  \
-      {  \
-         _long = ((_tempLong[0] << 24) + (_tempLong[1] << 16)  \
-                + (_tempLong[2] << 8) + _tempLong[3]);  \
-      }  \
-   }
+      _long = ((_tempLong[0] << 24) + (_tempLong[1] << 16)  \
+	    + (_tempLong[2] << 8) + _tempLong[3]);  \
+   }  \
+}
 
 /* tests if socket descriptor is invalide */
 #ifdef WIN32 
@@ -374,15 +374,15 @@
 
 /* tests if two socket descriptor are equal */
 #define CM_INET_SOCK_SAME(_s1, _s2, _ret)  \
+{  \
+   _ret = FALSE;  \
+   if ((_s1->fd == _s2->fd) &&  \
+	 (_s1->blocking == _s2->blocking) &&  \
+	 (_s1->type == _s2->type))  \
    {  \
-      _ret = FALSE;  \
-      if ((_s1->fd == _s2->fd) &&  \
-          (_s1->blocking == _s2->blocking) &&  \
-          (_s1->type == _s2->type))  \
-      {  \
-         _ret = TRUE;  \
-      }  \
-   }
+      _ret = TRUE;  \
+   }  \
+}
 
 /* set socket descriptor to an invalid (uninitialized) value */
 #ifdef WIN32 
@@ -401,48 +401,48 @@
    if( _hdrParmIpv6->ipv6ExtHdr.hbhHdrPrsnt) \
    { \
       for(numOpts = _hdrParmIpv6->ipv6ExtHdr.hbhOptsArr.numHBHOpts;  \
-          numOpts > 0; numOpts--) \
+	    numOpts > 0; numOpts--) \
       { \
-         if (_hdrParmIpv6->ipv6ExtHdr.hbhOptsArr.hbhOpts[numOpts - 1].length) \
-            SPutSBuf(_region, _pool, (Data *)_hdrParmIpv6->ipv6ExtHdr. \
-                 hbhOptsArr.hbhOpts[numOpts - 1].value, (Size)(_hdrParmIpv6-> \
-                 ipv6ExtHdr.hbhOptsArr.hbhOpts[numOpts - 1].length)); \
-            SPutSBuf(_region, _pool, (Data *)&_hdrParmIpv6->ipv6ExtHdr. \
-                 hbhOptsArr.hbhOpts[numOpts - 1], \
-                 (Size)sizeof(CmInetIpv6HBHHdr)); \
+	 if (_hdrParmIpv6->ipv6ExtHdr.hbhOptsArr.hbhOpts[numOpts - 1].length) \
+	 SPutSBuf(_region, _pool, (Data *)_hdrParmIpv6->ipv6ExtHdr. \
+	       hbhOptsArr.hbhOpts[numOpts - 1].value, (Size)(_hdrParmIpv6-> \
+		  ipv6ExtHdr.hbhOptsArr.hbhOpts[numOpts - 1].length)); \
+	 SPutSBuf(_region, _pool, (Data *)&_hdrParmIpv6->ipv6ExtHdr. \
+	       hbhOptsArr.hbhOpts[numOpts - 1], \
+	       (Size)sizeof(CmInetIpv6HBHHdr)); \
       } \
    } \
    if(_hdrParmIpv6->ipv6ExtHdr.destOptsPrsnt) \
    { \
       for(numOpts = _hdrParmIpv6->ipv6ExtHdr.destOptsArr.numDestOpts; \
-          numOpts > 0; numOpts--) \
+	    numOpts > 0; numOpts--) \
       { \
-         SPutSBuf(_region, _pool, (Data *)_hdrParmIpv6->ipv6ExtHdr. \
-                destOptsArr.destOpts[numOpts - 1].value, (Size)(_hdrParmIpv6-> \
-                ipv6ExtHdr.destOptsArr.destOpts[numOpts - 1].length)); \
-         SPutSBuf(_region, _pool, (Data *)&_hdrParmIpv6->ipv6ExtHdr. \
-                destOptsArr.destOpts[numOpts - 1], \
-                (Size)sizeof(CmInetIpv6DestOptsHdr)); \
+	 SPutSBuf(_region, _pool, (Data *)_hdrParmIpv6->ipv6ExtHdr. \
+	       destOptsArr.destOpts[numOpts - 1].value, (Size)(_hdrParmIpv6-> \
+		  ipv6ExtHdr.destOptsArr.destOpts[numOpts - 1].length)); \
+	 SPutSBuf(_region, _pool, (Data *)&_hdrParmIpv6->ipv6ExtHdr. \
+	       destOptsArr.destOpts[numOpts - 1], \
+	       (Size)sizeof(CmInetIpv6DestOptsHdr)); \
       } \
    } \
    if( _hdrParmIpv6->ipv6ExtHdr.rtOptsPrsnt) \
    { \
       SPutSBuf(_region, _pool, \
-               (Data *)_hdrParmIpv6->ipv6ExtHdr.rtOptsArr.ipv6Addrs, \
-               (Size)(_hdrParmIpv6->ipv6ExtHdr.rtOptsArr.numAddrs * 16)); \
+	    (Data *)_hdrParmIpv6->ipv6ExtHdr.rtOptsArr.ipv6Addrs, \
+	    (Size)(_hdrParmIpv6->ipv6ExtHdr.rtOptsArr.numAddrs * 16)); \
    } \
 }
 /* Use the function for HBH options for destinations options as both ext
  * header has similar format */
-  
+
 #define cmInet6BuildRecvDstOptsArr(cmsgPtr, cmsg_len, destOptsArr, hdrId, info) \
-        cmInet6BuildRecvHopOptsArr(cmsgPtr, cmsg_len, \
-                              (CmInetIpv6HBHHdrArr *)destOptsArr, hdrId, info)
+   cmInet6BuildRecvHopOptsArr(cmsgPtr, cmsg_len, \
+	 (CmInetIpv6HBHHdrArr *)destOptsArr, hdrId, info)
 
 #define cmInet6BuildSendDestOpts(destOptsArr, cmsgData, curMsgIdx, hdrId) \
-        cmInet6BuildSendHBHOpts((CmInetIpv6HBHHdrArr *)destOptsArr, \
-                                 cmsgData, curMsgIdx, hdrId)
-   
+   cmInet6BuildSendHBHOpts((CmInetIpv6HBHHdrArr *)destOptsArr, \
+	 cmsgData, curMsgIdx, hdrId)
+
 #endif /* IPV6_OPTS_SUPPORTED */
 
 #ifdef IPV6_SUPPORTED
@@ -490,9 +490,9 @@
 
 #ifdef SS_VW
 #define CM_COPY_VWIPADDR(vwIpAddr, addr) \
-   { \
-      (Void)cmMemcpy((U8 *)addr, (U8 *)&vwIpAddr, sizeof(S32)); \
-   }
+{ \
+   (Void)cmMemcpy((U8 *)addr, (U8 *)&vwIpAddr, sizeof(S32)); \
+}
 #endif
 
 /* Changes for peeking into the file descriptor set */
@@ -513,15 +513,15 @@
 {                                                                         \
    if ((_asciiVal >='a') && (_asciiVal <='f'))                            \
    {                                                                      \
-     _intVal = (16 * _intVal) + (_asciiVal - 'a' +10 );                   \
+      _intVal = (16 * _intVal) + (_asciiVal - 'a' +10 );                   \
    }                                                                      \
    else if ((_asciiVal >='A') && (_asciiVal <= 'F'))                      \
    {                                                                      \
-     _intVal = (16 * _intVal) + (_asciiVal - 'A' +10 );                   \
+      _intVal = (16 * _intVal) + (_asciiVal - 'A' +10 );                   \
    }                                                                      \
    else                                                                   \
    {                                                                      \
-     _intVal = (16 * _intVal) + (_asciiVal - '0');                        \
+      _intVal = (16 * _intVal) + (_asciiVal - '0');                        \
    }                                                                      \
 }
 
@@ -536,7 +536,7 @@
 {                                                                         \
    U16     _hiWord;                                                       \
    U16     _loWord;                                                       \
-                                                                          \
+   \
    _hiWord = 0;                                                           \
    _loWord = 0;                                                           \
    _hiWord = PutHiByte(_hiWord, (_str[0]));                               \
@@ -550,7 +550,7 @@
 /* cm_inet_h_001.main_27: Added error codes*/
 #define CMINETLOGERROR(errCls, errCode, errVal, errDesc) \
    SLogError(ENTNC, INSTNC, 0, __FILE__, __LINE__, \
-	              errCls, errCode, errVal, errDesc )
+	 errCls, errCode, errVal, errDesc )
 
 #define ECMINET		0
 #define ECMINET001	(ECMINET + 1)     /*cm_inet.c : 819*/
@@ -631,5 +631,5 @@
 
 #endif /* __CMINETH__ */
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

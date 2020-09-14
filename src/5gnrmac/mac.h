@@ -243,7 +243,7 @@ void buildAndSendMuxPdu(SlotIndInfo currTimingInfo);
 uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint16_t rrcContSize, uint8_t *rrcContainer);
 uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t bufferSize);
 uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
-   uint8_t lcId, uint16_t pduLen, uint8_t *pdu);
+      uint8_t lcId, uint16_t pduLen, uint8_t *pdu);
 #endif
 /**********************************************************************
   End of file

@@ -86,33 +86,33 @@ PRIVATE struct
 
 
 /*
-*     Interface functions (System Services--non-STREAMS interface)
-*/
- 
+ *     Interface functions (System Services--non-STREAMS interface)
+ */
+
 
 /*
-*
-*       Fun:   ssStrmCfg
-*
-*       Desc:  Configures the STREAMS system.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssStrmCfg
+ *
+ *       Desc:  Configures the STREAMS system.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 ssStrmCfg
+   PUBLIC S16 ssStrmCfg
 (
-Region mdRegId,                 /* region for message and data blocks */
-Region datRegId                 /* region for data buffers */
-)
+ Region mdRegId,                 /* region for message and data blocks */
+ Region datRegId                 /* region for data buffers */
+ )
 #else
 PUBLIC S16 ssStrmCfg(mdRegId, datRegId)
-Region mdRegId;                 /* region for message and data blocks */
-Region datRegId;                /* region for data buffers */
+   Region mdRegId;                 /* region for message and data blocks */
+   Region datRegId;                /* region for data buffers */
 #endif
 {
    TRC1(ssStrmCfg);
@@ -127,41 +127,41 @@ Region datRegId;                /* region for data buffers */
 
 
 /*
-*     STREAMS interface functions
-*
-*       All these assume that ssStrmCfg() has been called first, with
-*       valid parameters.
-*/
- 
+ *     STREAMS interface functions
+ *
+ *       All these assume that ssStrmCfg() has been called first, with
+ *       valid parameters.
+ */
+
 
 /*
-*
-*       Fun:   ssAdjMsg
-*
-*       Desc:  Trim abs(len) bytes from a message. If len is less than
-*              0, trim from the tail, otherwise from the head. Operates
-*              only on blocks of the same type. Does not remove emptied
-*              message blocks.
-*
-*
-*       Ret:   1        - ok
-*              0        - failure
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssAdjMsg
+ *
+ *       Desc:  Trim abs(len) bytes from a message. If len is less than
+ *              0, trim from the tail, otherwise from the head. Operates
+ *              only on blocks of the same type. Does not remove emptied
+ *              message blocks.
+ *
+ *
+ *       Ret:   1        - ok
+ *              0        - failure
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S32 ssAdjMsg
+   PUBLIC S32 ssAdjMsg
 (
-SsMblk *mp,                     /* message */
-S32 len                         /* bytes to remove */
-)
+ SsMblk *mp,                     /* message */
+ S32 len                         /* bytes to remove */
+ )
 #else
 PUBLIC S32 ssAdjMsg(mp, len)
-SsMblk *mp;                     /* message */
-S32 len;                        /* bytes to remove */
+   SsMblk *mp;                     /* message */
+   S32 len;                        /* bytes to remove */
 #endif
 {
    S32 n;                       /* counter */
@@ -197,20 +197,20 @@ S32 len;                        /* bytes to remove */
       type = bp->b_datap->db_type;
       while (bp  &&  bp->b_datap->db_type == type)
       {
-         n = bp->b_wptr - bp->b_rptr;
-         if (n > 0)
-         {
-            size += n;
-         }
+	 n = bp->b_wptr - bp->b_rptr;
+	 if (n > 0)
+	 {
+	    size += n;
+	 }
 
-         bp = bp->b_cont;
+	 bp = bp->b_cont;
       }
 
 
       /* if we can't trim len bytes, fail */
       if (len > size)
       {
-         RETVALUE(0);
+	 RETVALUE(0);
       }
 
 
@@ -218,20 +218,20 @@ S32 len;                        /* bytes to remove */
       bp = mp;
       for (; ;)
       {
-         n = bp->b_wptr - bp->b_rptr;
+	 n = bp->b_wptr - bp->b_rptr;
 
-         if (n >= len)
-         {
-            bp->b_rptr += len;
-            break;
-         }
-         else if (n > 0)
-         {
-            bp->b_rptr += len;
-            len -= n;
-         }
+	 if (n >= len)
+	 {
+	    bp->b_rptr += len;
+	    break;
+	 }
+	 else if (n > 0)
+	 {
+	    bp->b_rptr += len;
+	    len -= n;
+	 }
 
-         bp = bp->b_cont;
+	 bp = bp->b_cont;
       }
    }
    else                         /* trim from the tail */
@@ -243,22 +243,22 @@ S32 len;                        /* bytes to remove */
       type = bp->b_datap->db_type;
       while (bp)
       {
-         if (bp->b_datap->db_type == type)
-         {
-            n = bp->b_wptr - bp->b_rptr;
-            if (n > 0)
-            {
-               size += n;
-            }
-         }
-         else
-         {
-            type = bp->b_datap->db_type;
-            first = bp;
-            size = 0;
-         }
+	 if (bp->b_datap->db_type == type)
+	 {
+	    n = bp->b_wptr - bp->b_rptr;
+	    if (n > 0)
+	    {
+	       size += n;
+	    }
+	 }
+	 else
+	 {
+	    type = bp->b_datap->db_type;
+	    first = bp;
+	    size = 0;
+	 }
 
-         bp = bp->b_cont;
+	 bp = bp->b_cont;
       }
 
 
@@ -266,30 +266,30 @@ S32 len;                        /* bytes to remove */
       size += len;
       if (size < 0)
       {
-         RETVALUE(0);
+	 RETVALUE(0);
       }
 
 
       /* do the trimming */
       while (first)
       {
-         n = first->b_wptr - first->b_rptr;
+	 n = first->b_wptr - first->b_rptr;
 
-         if (size <= 0)
-         {
-            first->b_rptr = first->b_wptr;
-         }
-         else if (n > 0)
-         {
-            if (n > size)
-            {
-               first->b_wptr = first->b_rptr + size;
-            }
+	 if (size <= 0)
+	 {
+	    first->b_rptr = first->b_wptr;
+	 }
+	 else if (n > 0)
+	 {
+	    if (n > size)
+	    {
+	       first->b_wptr = first->b_rptr + size;
+	    }
 
-            size -= n;
-         }
+	    size -= n;
+	 }
 
-         first = first->b_cont;
+	 first = first->b_cont;
       }
    }
 
@@ -299,32 +299,32 @@ S32 len;                        /* bytes to remove */
 
 
 /*
-*
-*       Fun:   ssAllocB
-*
-*       Desc:  Returns a pointer to a message block of type M_DATA
-*              in which the data buffer is of at least the specified
-*              size.
-*
-*
-*       Ret:   non-NULL - success
-*              NULL     - failure
-*
-*       Notes: The parameter pri is unused.
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssAllocB
+ *
+ *       Desc:  Returns a pointer to a message block of type M_DATA
+ *              in which the data buffer is of at least the specified
+ *              size.
+ *
+ *
+ *       Ret:   non-NULL - success
+ *              NULL     - failure
+ *
+ *       Notes: The parameter pri is unused.
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC SsMblk *ssAllocB
+   PUBLIC SsMblk *ssAllocB
 (
-S32 size,                       /* required size */
-U32 pri                         /* message priority */
-)
+ S32 size,                       /* required size */
+ U32 pri                         /* message priority */
+ )
 #else
 PUBLIC SsMblk *ssAllocB(size, pri)
-S32 size;                       /* required size */
-U32 pri;                        /* message priority */
+   S32 size;                       /* required size */
+   U32 pri;                        /* message priority */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
@@ -346,7 +346,7 @@ U32 pri;                        /* message priority */
 
    /* allocate a single block for the mblock and the dblock */
    m = (sizeof(SsMblk) + sizeof(SsDblk));
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
    r = SAlloc(strmCfg.mdRegion, &m, 0, (Data **)&bp, __LINE__, (U8*)__FILE__, ENTNC);
 #else
@@ -366,7 +366,7 @@ U32 pri;                        /* message priority */
    if (size > 0)
    {
       n = size;
-/* ss001.301: additions */
+      /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
       r = SAlloc(strmCfg.datRegion, &n, 0, &dat, __LINE__, (U8*)__FILE__, ENTNC);
 #else
@@ -375,16 +375,16 @@ U32 pri;                        /* message priority */
       if (r != ROK)
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-         SSLOGERROR(ERRCLS_ADD_RES, ESS327, (ErrVal) r, "SAlloc() failed");
+	 SSLOGERROR(ERRCLS_ADD_RES, ESS327, (ErrVal) r, "SAlloc() failed");
 #endif
 
-/* ss001.301: additions */
+	 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-         SFree(strmCfg.mdRegion, (Data *)bp, m, __LINE__, (U8*)__FILE__, ENTNC);
+	 SFree(strmCfg.mdRegion, (Data *)bp, m, __LINE__, (U8*)__FILE__, ENTNC);
 #else
-         SFree(strmCfg.mdRegion, (Data *)bp, m);
+	 SFree(strmCfg.mdRegion, (Data *)bp, m);
 #endif /* SS_HISTOGRAM_SUPPORT */
-         RETVALUE(NULLP);
+	 RETVALUE(NULLP);
       }
    }
    /* we _can_ allocate a message with an empty data block */
@@ -402,29 +402,29 @@ U32 pri;                        /* message priority */
 
 
 /*
-*
-*       Fun:   ssCopyB
-*
-*       Desc:  Copies the contents of the specified message block
-*              into a newly-allocated message block of at least
-*              the same size. Calls ssAllocB().
-*
-*       Ret:   non-NULL - ok
-*              NULL     - failure
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssCopyB
+ *
+ *       Desc:  Copies the contents of the specified message block
+ *              into a newly-allocated message block of at least
+ *              the same size. Calls ssAllocB().
+ *
+ *       Ret:   non-NULL - ok
+ *              NULL     - failure
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC SsMblk *ssCopyB
+   PUBLIC SsMblk *ssCopyB
 (
-SsMblk *mp                      /* message block */
-)
+ SsMblk *mp                      /* message block */
+ )
 #else
 PUBLIC SsMblk *ssCopyB(mp)
-SsMblk *mp;                     /* message block */
+   SsMblk *mp;                     /* message block */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
@@ -463,7 +463,7 @@ SsMblk *mp;                     /* message block */
       ptr = mp->b_rptr;
       while (ptr != mp->b_wptr)
       {
-         *bp->b_wptr++ = *ptr++;
+	 *bp->b_wptr++ = *ptr++;
       }
    }
 
@@ -473,29 +473,29 @@ SsMblk *mp;                     /* message block */
 
 
 /*
-*
-*       Fun:   ssCopyMsg
-*
-*       Desc:  Uses ssCopyB to copy the message blocks contained in
-*              the specified message to newly allocated blocks and
-*              links those blocks into a new message.
-*
-*       Ret:   non-NULL - ok
-*              NULL     - failure
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssCopyMsg
+ *
+ *       Desc:  Uses ssCopyB to copy the message blocks contained in
+ *              the specified message to newly allocated blocks and
+ *              links those blocks into a new message.
+ *
+ *       Ret:   non-NULL - ok
+ *              NULL     - failure
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC SsMblk *ssCopyMsg
+   PUBLIC SsMblk *ssCopyMsg
 (
-SsMblk *mp                      /* message block */
-)
+ SsMblk *mp                      /* message block */
+ )
 #else
 PUBLIC SsMblk *ssCopyMsg(mp)
-SsMblk *mp;                     /* message block */
+   SsMblk *mp;                     /* message block */
 #endif
 {
    SsMblk *first;               /* first mblk in message */
@@ -537,11 +537,11 @@ SsMblk *mp;                     /* message block */
       if (bp->b_cont == NULLP)
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-         SSLOGERROR(ERRCLS_ADD_RES, ESS332, ERRZERO, "ssCopyB() failed");
+	 SSLOGERROR(ERRCLS_ADD_RES, ESS332, ERRZERO, "ssCopyB() failed");
 #endif
 
-         ssFreeMsg(first);
-         RETVALUE(NULLP);
+	 ssFreeMsg(first);
+	 RETVALUE(NULLP);
       }
 
       bp = bp->b_cont;
@@ -553,30 +553,30 @@ SsMblk *mp;                     /* message block */
 
 
 /*
-*
-*       Fun:   ssDupB
-*
-*       Desc:  Duplicates the specified message block, copying it
-*              into a newly-allocated message block. Increments
-*              the reference count of the data block that is pointed
-*              at by the original message block descriptor.
-*
-*       Ret:   non-NULL - ok
-*              NULL     - failure
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssDupB
+ *
+ *       Desc:  Duplicates the specified message block, copying it
+ *              into a newly-allocated message block. Increments
+ *              the reference count of the data block that is pointed
+ *              at by the original message block descriptor.
+ *
+ *       Ret:   non-NULL - ok
+ *              NULL     - failure
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC SsMblk *ssDupB
+   PUBLIC SsMblk *ssDupB
 (
-SsMblk *mp                      /* message block */
-)
+ SsMblk *mp                      /* message block */
+ )
 #else
 PUBLIC SsMblk *ssDupB(mp)
-SsMblk *mp;                     /* message block */
+   SsMblk *mp;                     /* message block */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
@@ -613,20 +613,20 @@ SsMblk *mp;                     /* message block */
 
 
 
- /* ss002.13: addition */
+   /* ss002.13: addition */
 
 
- /* ss003.13: addition */
+   /* ss003.13: addition */
    SMemCpy( (Void *)bp, (Void *)mp, (size_t)sizeof(SsMblk));
 
 
    /* ss028.103 - Addition of lock for mBuf reference count */
-	/* ss006.301 - use the mBufRefLock for the DFLT_REGION */
+   /* ss006.301 - use the mBufRefLock for the DFLT_REGION */
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if(SLock(&mp->b_datap->dBufLock) != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS335, ERRZERO,
-                     "Could not lock the mBuf Ref Lock");
+	    "Could not lock the mBuf Ref Lock");
       RETVALUE(NULLP);
    }
 #endif
@@ -635,13 +635,13 @@ SsMblk *mp;                     /* message block */
    mp->b_datap->db_ref++;
    mp->b_datap->shared = TRUE;
 
-	/* ss006.301 - use the mBufRefLock for the DFLT_REGION */
+   /* ss006.301 - use the mBufRefLock for the DFLT_REGION */
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if ( SUnlock(&mp->b_datap->dBufLock) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS336, ERRZERO,
-                      "Could not give the Semaphore");
+	    "Could not give the Semaphore");
       RETVALUE(NULLP);
 #endif
    }
@@ -652,29 +652,29 @@ SsMblk *mp;                     /* message block */
 
 
 /*
-*
-*       Fun:   ssDupMsg
-*
-*       Desc:  Calls ssDupB to duplicate the specified message by
-*              copying all message block descriptors and then linking
-*              the new message blocks together to form a new message.
-*
-*       Ret:   non-NULL - ok
-*              NULL     - failure
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssDupMsg
+ *
+ *       Desc:  Calls ssDupB to duplicate the specified message by
+ *              copying all message block descriptors and then linking
+ *              the new message blocks together to form a new message.
+ *
+ *       Ret:   non-NULL - ok
+ *              NULL     - failure
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC SsMblk *ssDupMsg
+   PUBLIC SsMblk *ssDupMsg
 (
-SsMblk *mp                      /* message block */
-)
+ SsMblk *mp                      /* message block */
+ )
 #else
 PUBLIC SsMblk *ssDupMsg(mp)
-SsMblk *mp;                     /* message block */
+   SsMblk *mp;                     /* message block */
 #endif
 {
    SsMblk *first;               /* first mblk in message */
@@ -707,11 +707,11 @@ SsMblk *mp;                     /* message block */
       if (bp->b_cont == NULLP)
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-         SSLOGERROR(ERRCLS_ADD_RES, ESS338, ERRZERO, "ssDupB() failed");
+	 SSLOGERROR(ERRCLS_ADD_RES, ESS338, ERRZERO, "ssDupB() failed");
 #endif
 
-         ssFreeMsg(first);
-         RETVALUE(NULLP);
+	 ssFreeMsg(first);
+	 RETVALUE(NULLP);
       }
 
       bp = bp->b_cont;
@@ -723,34 +723,34 @@ SsMblk *mp;                     /* message block */
 
 
 /*
-*
-*       Fun:   ssESBAlloc
-*
-*       Desc:  Allocates message and data blocks that point directly
-*              at a client-supplied buffer.
-*
-*       Ret:   non-NULL - ok
-*              NULL     - failure
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssESBAlloc
+ *
+ *       Desc:  Allocates message and data blocks that point directly
+ *              at a client-supplied buffer.
+ *
+ *       Ret:   non-NULL - ok
+ *              NULL     - failure
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC SsMblk *ssESBAlloc
+   PUBLIC SsMblk *ssESBAlloc
 (
-U8 *base,                       /* client supplied data buffer */
-S32 size,                       /* size of data buffer */
-S32 pri,                        /* message priority */
-SsFrtn *fr_rtn                  /* free routine */
-)
+ U8 *base,                       /* client supplied data buffer */
+ S32 size,                       /* size of data buffer */
+ S32 pri,                        /* message priority */
+ SsFrtn *fr_rtn                  /* free routine */
+ )
 #else
 PUBLIC SsMblk *ssESBAlloc(base, size, pri, fr_rtn)
-U8 *base;                       /* client supplied data buffer */
-S32 size;                       /* size of data buffer */
-S32 pri;                        /* message priority */
-SsFrtn *fr_rtn;                 /* free routine */
+   U8 *base;                       /* client supplied data buffer */
+   S32 size;                       /* size of data buffer */
+   S32 pri;                        /* message priority */
+   SsFrtn *fr_rtn;                 /* free routine */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
@@ -775,7 +775,7 @@ SsFrtn *fr_rtn;                 /* free routine */
 
    /* allocate space for an mblock and a dblock */
    m = (sizeof(SsMblk) + sizeof(SsDblk));
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
    r = SAlloc(strmCfg.mdRegion, &m, 0, (Data **)&bp, __LINE__, (U8*)__FILE__, ENTNC);
 #else
@@ -797,7 +797,7 @@ SsFrtn *fr_rtn;                 /* free routine */
 
    /* use the generic set-up-message function to initialize everything */
    SS_STRM_INITB(bp, (SsDblk *)(((U8 *)bp) + sizeof(SsMblk)),
-                  base, size, fr_rtn);
+	 base, size, fr_rtn);
 
 
    RETVALUE(bp);
@@ -805,29 +805,29 @@ SsFrtn *fr_rtn;                 /* free routine */
 
 
 /*
-*
-*       Fun:   ssFreeB
-*
-*       Desc:  Deallocates the specified message block descriptor
-*              and frees the corresponding data block if the
-*              reference count is equal to 1. If not, the reference
-*              count is decremented.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssFreeB
+ *
+ *       Desc:  Deallocates the specified message block descriptor
+ *              and frees the corresponding data block if the
+ *              reference count is equal to 1. If not, the reference
+ *              count is decremented.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void ssFreeB
+   PUBLIC Void ssFreeB
 (
-SsMblk *mp                      /* message block */
-)
+ SsMblk *mp                      /* message block */
+ )
 #else
 PUBLIC Void ssFreeB(mp)
-SsMblk *mp;                     /* message block */
+   SsMblk *mp;                     /* message block */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
@@ -870,10 +870,10 @@ SsMblk *mp;                     /* message block */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS342, ERRZERO,
-                  "Zero reference count in ssFreeB; logic failure");
+	    "Zero reference count in ssFreeB; logic failure");
 #endif
 
-/* ss001.301: additions */
+      /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
       SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (U8*)__FILE__, ENTNC);
 #else
@@ -887,12 +887,12 @@ SsMblk *mp;                     /* message block */
    }
 
    /* ss028.103 - Addition of lock for mBuf reference count */
-	/* ss006.301 - use the mBufRefLock for the DFLT_REGION */
+   /* ss006.301 - use the mBufRefLock for the DFLT_REGION */
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if(SLock(&mp->b_datap->dBufLock) != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS343, ERRZERO,
-                     "Could not lock the mBuf Ref Lock");
+	    "Could not lock the mBuf Ref Lock");
       RETVOID;
    }
 #endif
@@ -900,13 +900,13 @@ SsMblk *mp;                     /* message block */
    /* decrement reference count of the dblock */
    mp->b_datap->db_ref--;
 
-	/* ss006.301 - use the mBufRefLock for the DFLT_REGION */
+   /* ss006.301 - use the mBufRefLock for the DFLT_REGION */
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if ( SUnlock(&mp->b_datap->dBufLock) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS344, ERRZERO,
-                      "Could not give the Semaphore");
+	    "Could not give the Semaphore");
       RETVOID;
 #endif
    }
@@ -922,28 +922,28 @@ SsMblk *mp;                     /* message block */
        *  otherwise, we've allocated the data buffer and so we free it.
        */
 #ifndef SS_DBUF_REFLOCK_DISABLE
-       SDestroyLock(&mp->b_datap->dBufLock);
+      SDestroyLock(&mp->b_datap->dBufLock);
 #endif
-/* ss008.301 */
+      /* ss008.301 */
 #ifdef SS_DBLK_FREE_RTN 
       if (mp->b_datap->db_frtnp)
       {
-         (*(mp->b_datap->db_frtnp->free_func))(mp->b_datap->db_frtnp->free_arg);
+	 (*(mp->b_datap->db_frtnp->free_func))(mp->b_datap->db_frtnp->free_arg);
       }
       else
 #endif      
-      if (mp->b_datap->db_base != NULLP)
-      {
-/* ss001.301: additions */
+	 if (mp->b_datap->db_base != NULLP)
+	 {
+	    /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-         SFree(strmCfg.datRegion, mp->b_datap->db_base,
-                  (Size)(mp->b_datap->db_lim - mp->b_datap->db_base), 
-						__LINE__, (U8*)__FILE__, ENTNC);
+	    SFree(strmCfg.datRegion, mp->b_datap->db_base,
+		  (Size)(mp->b_datap->db_lim - mp->b_datap->db_base), 
+		  __LINE__, (U8*)__FILE__, ENTNC);
 #else
-         SFree(strmCfg.datRegion, mp->b_datap->db_base,
-                  (Size)(mp->b_datap->db_lim - mp->b_datap->db_base));
+	    SFree(strmCfg.datRegion, mp->b_datap->db_base,
+		  (Size)(mp->b_datap->db_lim - mp->b_datap->db_base));
 #endif /* SS_HISTOGRAM_SUPPORT */
-      }
+	 }
 
 
       /*  if the dblock is in this header, we free this header
@@ -953,16 +953,16 @@ SsMblk *mp;                     /* message block */
 
       if (mp->b_datap != ((SsDblk *)(mp + sizeof(SsMblk))))
       {
-         bp = (SsMblk *)(mp->b_datap - sizeof (SsMblk));
-/* ss001.301: additions */
+	 bp = (SsMblk *)(mp->b_datap - sizeof (SsMblk));
+	 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-         SFree(strmCfg.mdRegion, (Data *)bp, size, __LINE__, (U8*)__FILE__, ENTNC);
+	 SFree(strmCfg.mdRegion, (Data *)bp, size, __LINE__, (U8*)__FILE__, ENTNC);
 #else
-         SFree(strmCfg.mdRegion, (Data *)bp, size);
+	 SFree(strmCfg.mdRegion, (Data *)bp, size);
 #endif /* SS_HISTOGRAM_SUPPORT */
       }
 
-/* ss001.301: additions */
+      /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
       SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (U8*)__FILE__, ENTNC);
 #else
@@ -979,15 +979,15 @@ SsMblk *mp;                     /* message block */
 
       if (mp->b_datap == (SsDblk *)(mp + sizeof(SsMblk)))
       {
-         mp->b_datap = NULLP;
+	 mp->b_datap = NULLP;
       }
       else
       {
-/* ss001.301: additions */
+	 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-         SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (U8*)__FILE__, ENTNC);
+	 SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (U8*)__FILE__, ENTNC);
 #else
-         SFree(strmCfg.mdRegion, (Data *)mp, size);
+	 SFree(strmCfg.mdRegion, (Data *)mp, size);
 #endif /* SS_HISTOGRAM_SUPPORT */
       }
    }
@@ -997,28 +997,28 @@ SsMblk *mp;                     /* message block */
 
 
 /*
-*
-*       Fun:   ssFreeMsg
-*
-*       Desc:  Calls ssFreeB to free all message blocks and their
-*              corresponding data blocks for the specified
-*              message.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssFreeMsg
+ *
+ *       Desc:  Calls ssFreeB to free all message blocks and their
+ *              corresponding data blocks for the specified
+ *              message.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void ssFreeMsg
+   PUBLIC Void ssFreeMsg
 (
-SsMblk *mp                      /* message block */
-)
+ SsMblk *mp                      /* message block */
+ )
 #else
 PUBLIC Void ssFreeMsg(mp)
-SsMblk *mp;                     /* message block */
+   SsMblk *mp;                     /* message block */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
@@ -1040,29 +1040,29 @@ SsMblk *mp;                     /* message block */
 
 
 /*
-*
-*       Fun:   ssLinkB
-*
-*       Desc:  Puts the second specified message at the tail of
-*              the first specified message.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssLinkB
+ *
+ *       Desc:  Puts the second specified message at the tail of
+ *              the first specified message.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void ssLinkB
+   PUBLIC Void ssLinkB
 (
-SsMblk *mp,                     /* first message block */
-SsMblk *bp                      /* second message block */
-)
+ SsMblk *mp,                     /* first message block */
+ SsMblk *bp                      /* second message block */
+ )
 #else
 PUBLIC Void ssLinkB(mp, bp)
-SsMblk *mp;                     /* first message block */
-SsMblk *bp;                     /* second message block */
+   SsMblk *mp;                     /* first message block */
+   SsMblk *bp;                     /* second message block */
 #endif
 {
    TRC1(ssLinkB);
@@ -1092,27 +1092,27 @@ SsMblk *bp;                     /* second message block */
 
 
 /*
-*
-*       Fun:   ssMsgDSize
-*
-*       Desc:  Returns the number of bytes of data in the
-*              specified message.
-*
-*       Ret:   S32      - number of bytes
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssMsgDSize
+ *
+ *       Desc:  Returns the number of bytes of data in the
+ *              specified message.
+ *
+ *       Ret:   S32      - number of bytes
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S32 ssMsgDSize
+   PUBLIC S32 ssMsgDSize
 (
-SsMblk *mp                      /* message block */
-)
+ SsMblk *mp                      /* message block */
+ )
 #else
 PUBLIC S32 ssMsgDSize(mp)
-SsMblk *mp;                     /* message block */
+   SsMblk *mp;                     /* message block */
 #endif
 {
    S32 n;                       /* temporary */
@@ -1128,11 +1128,11 @@ SsMblk *mp;                     /* message block */
    {
       if (mp->b_datap->db_type == SS_M_DATA)
       {
-         n = mp->b_wptr - mp->b_rptr;
-         if (n > 0)
-         {
-            size += n;
-         }
+	 n = mp->b_wptr - mp->b_rptr;
+	 if (n > 0)
+	 {
+	    size += n;
+	 }
       }
 
       mp = mp->b_cont;
@@ -1144,31 +1144,31 @@ SsMblk *mp;                     /* message block */
 
 
 /*
-*
-*       Fun:   ssPullupMsg
-*
-*       Desc:  Concatenates and aligns the first 'len' bytes
-*              of the specified message into a single, contiguous
-*              message block.
-*
-*       Ret:   1        - success
-*              0        - failure
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssPullupMsg
+ *
+ *       Desc:  Concatenates and aligns the first 'len' bytes
+ *              of the specified message into a single, contiguous
+ *              message block.
+ *
+ *       Ret:   1        - success
+ *              0        - failure
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S32 ssPullupMsg
+   PUBLIC S32 ssPullupMsg
 (
-SsMblk *mp,                     /* message block */
-S32 len                         /* number of bytes to align */
-)
+ SsMblk *mp,                     /* message block */
+ S32 len                         /* number of bytes to align */
+ )
 #else
 PUBLIC S32 ssPullupMsg(mp, len)
-SsMblk *mp;                     /* message block */
-S32 len;                        /* number of bytes to align */
+   SsMblk *mp;                     /* message block */
+   S32 len;                        /* number of bytes to align */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
@@ -1178,7 +1178,7 @@ S32 len;                        /* number of bytes to align */
    U8 *lim;                     /* for swapping data buffers */
    U8 *rptr;                    /* for swapping data buffers */
    U8 *wptr;                    /* for swapping data buffers */
-	/* ss008.301 */
+   /* ss008.301 */
 #ifdef SS_DBLK_FREE_RTN
    SsFrtn *frtn;                /* for swapping data buffers */
 #endif   
@@ -1197,7 +1197,7 @@ S32 len;                        /* number of bytes to align */
       SSLOGERROR(ERRCLS_INT_PAR, ESS346, ERRZERO, "Null pointer");
       RETVALUE(0);
    }
-   
+
    if (len < -1)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS347, len, "Invalid length");
@@ -1215,7 +1215,7 @@ S32 len;                        /* number of bytes to align */
       n = bp->b_wptr - bp->b_rptr;
       if (n > 0)
       {
-         mLen += n;
+	 mLen += n;
       }
 
       bp = bp->b_cont;
@@ -1261,9 +1261,9 @@ S32 len;                        /* number of bytes to align */
       /* if this buffer is of a different type, we just skip over it */
       if (bp->b_datap->db_type != newbp->b_datap->db_type)
       {
-         prev = bp;
-         bp = bp->b_cont;
-         continue;
+	 prev = bp;
+	 bp = bp->b_cont;
+	 continue;
       }
 
 
@@ -1271,14 +1271,14 @@ S32 len;                        /* number of bytes to align */
       n = bp->b_wptr - bp->b_rptr;
       if (n > 0)
       {
-         n = m = MIN(n, len);
-         while (m > 0)
-         {
-            *newbp->b_wptr++ = *bp->b_rptr++;
-            m--;
-         }
+	 n = m = MIN(n, len);
+	 while (m > 0)
+	 {
+	    *newbp->b_wptr++ = *bp->b_rptr++;
+	    m--;
+	 }
 
-         len -= n;
+	 len -= n;
       }
 
 
@@ -1291,14 +1291,14 @@ S32 len;                        /* number of bytes to align */
 
       if (prev != NULLP  &&  bp->b_rptr == bp->b_wptr)
       {
-         prev->b_cont = bp->b_cont;
-         bp->b_cont = NULLP;
-         ssFreeB(bp);
-         bp = prev->b_cont;
+	 prev->b_cont = bp->b_cont;
+	 bp->b_cont = NULLP;
+	 ssFreeB(bp);
+	 bp = prev->b_cont;
       }
       else
       {
-         prev = bp;
+	 prev = bp;
       }
    }
 
@@ -1315,7 +1315,7 @@ S32 len;                        /* number of bytes to align */
    wptr = mp->b_wptr;
    base = mp->b_datap->db_base;
    lim = mp->b_datap->db_lim;
-/* ss008.301 */
+   /* ss008.301 */
 #ifdef SS_DBLK_FREE_RTN
    frtn = mp->b_datap->db_frtnp;
 #endif   
@@ -1324,7 +1324,7 @@ S32 len;                        /* number of bytes to align */
    mp->b_wptr = newbp->b_wptr;
    mp->b_datap->db_base = newbp->b_datap->db_base;
    mp->b_datap->db_lim = newbp->b_datap->db_lim;
-/* ss008.301 */
+   /* ss008.301 */
 #ifdef SS_DBLK_FREE_RTN
    mp->b_datap->db_frtnp = NULLP;
 #endif  
@@ -1333,7 +1333,7 @@ S32 len;                        /* number of bytes to align */
    newbp->b_wptr = wptr;
    newbp->b_datap->db_base = base;
    newbp->b_datap->db_lim = lim;
-/* ss008.301 */
+   /* ss008.301 */
 #ifdef SS_DBLK_FREE_RTN
    newbp->b_datap->db_frtnp = frtn;
 #endif   
@@ -1346,32 +1346,32 @@ S32 len;                        /* number of bytes to align */
 
 
 /*
-*
-*       Fun:   ssRmvB
-*
-*       Desc:  Removes the specified message block from the
-*              specified message and restores the linkage of
-*              the remaining blocks in the message.
-*
-*       Ret:   non-NULL - pointer to the head of the new message
-*              -1       - specified message block not found in message
-*              NULL     - failure
-*
-*       Notes: The block removed is not freed.
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssRmvB
+ *
+ *       Desc:  Removes the specified message block from the
+ *              specified message and restores the linkage of
+ *              the remaining blocks in the message.
+ *
+ *       Ret:   non-NULL - pointer to the head of the new message
+ *              -1       - specified message block not found in message
+ *              NULL     - failure
+ *
+ *       Notes: The block removed is not freed.
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC SsMblk *ssRmvB
+   PUBLIC SsMblk *ssRmvB
 (
-SsMblk *mp,                     /* message */
-SsMblk *bp                      /* message block */
-)
+ SsMblk *mp,                     /* message */
+ SsMblk *bp                      /* message block */
+ )
 #else
 PUBLIC SsMblk *ssRmvB(mp, bp)
-SsMblk *mp;                     /* message */
-SsMblk *bp;                     /* message block */
+   SsMblk *mp;                     /* message */
+   SsMblk *bp;                     /* message block */
 #endif
 {
    SsMblk *rp;                  /* mblk that will be returned */
@@ -1403,19 +1403,19 @@ SsMblk *bp;                     /* message block */
    {
       for (; ;)
       {
-         if (mp == NULLP)
-         {
-            RETVALUE((SsMblk *)-1);
-         }
-         else if (mp->b_cont == bp)
-         {
-            mp->b_cont = bp->b_cont;
-            break;
-         }
-         else
-         {
-            mp = mp->b_cont;
-         }
+	 if (mp == NULLP)
+	 {
+	    RETVALUE((SsMblk *)-1);
+	 }
+	 else if (mp->b_cont == bp)
+	 {
+	    mp->b_cont = bp->b_cont;
+	    break;
+	 }
+	 else
+	 {
+	    mp = mp->b_cont;
+	 }
       }
    }
 
@@ -1429,32 +1429,32 @@ SsMblk *bp;                     /* message block */
 
 
 /*
-*
-*       Fun:   ssTestB
-*
-*       Desc:  Checks for the availability of a message buffer
-*              of the specified size without actually retrieving
-*              the buffer.
-*
-*       Ret:   1        - buffer is available
-*              0        - not available
-*
-*       Notes: Is currently a hack that allocates a message and
-*              frees it.
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssTestB
+ *
+ *       Desc:  Checks for the availability of a message buffer
+ *              of the specified size without actually retrieving
+ *              the buffer.
+ *
+ *       Ret:   1        - buffer is available
+ *              0        - not available
+ *
+ *       Notes: Is currently a hack that allocates a message and
+ *              frees it.
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S32 ssTestB
+   PUBLIC S32 ssTestB
 (
-S32 size,                       /* size required */
-U32 pri                         /* priority of the message buffer */
-)
+ S32 size,                       /* size required */
+ U32 pri                         /* priority of the message buffer */
+ )
 #else
 PUBLIC S32 ssTestB(size, pri)
-S32 size;                       /* size required */
-U32 pri;                        /* priority of the message buffer */
+   S32 size;                       /* size required */
+   U32 pri;                        /* priority of the message buffer */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
@@ -1476,29 +1476,29 @@ U32 pri;                        /* priority of the message buffer */
 
 
 /*
-*
-*       Fun:   ssUnlinkB
-*
-*       Desc:  Removes the first message block pointed at
-*              by the specified message and returns a pointer
-*              to the head of the resultant message.
-*
-*       Ret:   non-NULL - head of the new message
-*              NULL     - failure
-*
-*       Notes:
-*
-*       File:  ss_strm.c
-*
-*/
+ *
+ *       Fun:   ssUnlinkB
+ *
+ *       Desc:  Removes the first message block pointed at
+ *              by the specified message and returns a pointer
+ *              to the head of the resultant message.
+ *
+ *       Ret:   non-NULL - head of the new message
+ *              NULL     - failure
+ *
+ *       Notes:
+ *
+ *       File:  ss_strm.c
+ *
+ */
 #ifdef ANSI
-PUBLIC SsMblk *ssUnlinkB
+   PUBLIC SsMblk *ssUnlinkB
 (
-SsMblk *mp                      /* message */
-)
+ SsMblk *mp                      /* message */
+ )
 #else
 PUBLIC SsMblk *ssUnlinkB(mp)
-SsMblk *mp;                     /* message */
+   SsMblk *mp;                     /* message */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
@@ -1525,5 +1525,5 @@ SsMblk *mp;                     /* message */
 } /* ssUnlinkB */
 
 /**********************************************************************
-         End of file
+  End of file
  **********************************************************************/

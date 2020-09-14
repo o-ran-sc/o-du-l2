@@ -71,7 +71,7 @@ CmLListCp *lCp;               /* list control point */
 #endif
 {
    TRC3(cmLListInit);
-   
+
    lCp->first = (CmLList *)NULLP;
    lCp->last  = (CmLList *)NULLP;
    lCp->crnt  = (CmLList *)NULLP;
@@ -84,28 +84,28 @@ CmLListCp *lCp;               /* list control point */
 
 /*insert before head*/
 /*
-*
-*       Fun:   cmLListAdd2Head
-*
-*       Desc:  adds node to linked list before head.
-*
-*       Ret:   ROK   - ok
-*
-*       Notes: None
-*
-*       File:  cm_llist.c
-*
-*/
+ *
+ *       Fun:   cmLListAdd2Head
+ *
+ *       Desc:  adds node to linked list before head.
+ *
+ *       Ret:   ROK   - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_llist.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmLListAdd2Head
+   PUBLIC Void cmLListAdd2Head
 (
-CmLListCp *lCp,               /* list control point */
-CmLList   *node               /* node to be added */
-)
+ CmLListCp *lCp,               /* list control point */
+ CmLList   *node               /* node to be added */
+ )
 #else 
 PUBLIC Void cmLListAdd2Head(lCp, node)
-CmLListCp *lCp;               /* list control point */
-CmLList   *node;              /* node to be added */
+   CmLListCp *lCp;               /* list control point */
+   CmLList   *node;              /* node to be added */
 #endif
 {
    TRC3(cmLListAdd2Head);
@@ -114,47 +114,47 @@ CmLList   *node;              /* node to be added */
    if (lCp == (CmLListCp *)NULLP)
       RETVOID;
 #endif
- 
+
    lCp->count++;
 
    node->next = lCp->first;
    node->prev = NULLP;
    lCp->first = lCp->crnt = node;
-   
+
    if (!node->next)
    {
       lCp->last = node;
       RETVOID;
    }
-   
+
    node->next->prev = node;
    RETVOID;
 } /* end of cmLListAdd2Head */
 
 
 /*
-*
-*       Fun:   cmLListAdd2Tail
-*
-*       Desc:  adds node to linked list after last.
-*
-*       Ret:   ROK   - ok
-*
-*       Notes: None
-*
-*       File:  cm_llist.c
-*
-*/
+ *
+ *       Fun:   cmLListAdd2Tail
+ *
+ *       Desc:  adds node to linked list after last.
+ *
+ *       Ret:   ROK   - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_llist.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmLListAdd2Tail
+   PUBLIC Void cmLListAdd2Tail
 (
-CmLListCp *lCp,               /* list control point */
-CmLList   *node               /* node to be added */
-)
+ CmLListCp *lCp,               /* list control point */
+ CmLList   *node               /* node to be added */
+ )
 #else 
 PUBLIC Void cmLListAdd2Tail(lCp, node)
-CmLListCp *lCp;               /* list control point */
-CmLList   *node;              /* node to be added */
+   CmLListCp *lCp;               /* list control point */
+   CmLList   *node;              /* node to be added */
 #endif
 {
    TRC3(cmLListAdd2Tail);
@@ -163,47 +163,47 @@ CmLList   *node;              /* node to be added */
    if (lCp == (CmLListCp *)NULLP)
       RETVOID;
 #endif
- 
+
    lCp->count++;
 
    node->prev = lCp->last;
    node->next = NULLP;
    lCp->last = lCp->crnt = node;
-   
+
    if (!node->prev)
    {
       lCp->first = node;
       RETVOID;
    }
-   
+
    node->prev->next = node;
    RETVOID;
 } /* end of cmLListAdd2Tail */
 
 
 /*
-*
-*       Fun:   cmLListInsCrnt
-*
-*       Desc:  adds node to linked list before crnt.
-*
-*       Ret:   ROK   - ok
-*
-*       Notes: None
-*
-*       File:  cm_llist.c
-*
-*/
+ *
+ *       Fun:   cmLListInsCrnt
+ *
+ *       Desc:  adds node to linked list before crnt.
+ *
+ *       Ret:   ROK   - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_llist.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmLListInsCrnt
+   PUBLIC Void cmLListInsCrnt
 (
-CmLListCp *lCp,               /* list control point */
-CmLList   *node               /* node to be added */
-)
+ CmLListCp *lCp,               /* list control point */
+ CmLList   *node               /* node to be added */
+ )
 #else 
 PUBLIC Void cmLListInsCrnt(lCp, node)
-CmLListCp *lCp;               /* list control point */
-CmLList   *node;              /* node to be added */
+   CmLListCp *lCp;               /* list control point */
+   CmLList   *node;              /* node to be added */
 #endif
 {
    TRC3(cmLListInsCrnt);
@@ -212,14 +212,14 @@ CmLList   *node;              /* node to be added */
    if (!lCp)
       RETVOID;
 #endif
- 
+
    lCp->count++;
 
    if (lCp->count == 1)
    {
-     lCp->crnt = lCp->first = lCp->last = node;
-     node->next = NULLP;
-     RETVOID;
+      lCp->crnt = lCp->first = lCp->last = node;
+      node->next = NULLP;
+      RETVOID;
    }
 
    node->next = lCp->crnt;
@@ -227,38 +227,38 @@ CmLList   *node;              /* node to be added */
    if (node->prev)
       node->prev->next = node;
    node->next->prev = node;
-   
+
    if (lCp->first == lCp->crnt)
       lCp->first = node;
    lCp->crnt = node;
-   
+
    RETVOID;
 } /* end of cmLListInsCrnt */
 
 /* cm_llist_c_001.main_7 - Add function */
 /*
-*
-*       Fun:   cmLListInsAfterCrnt
-*
-*       Desc:  adds node to linked list after crnt.
-*
-*       Ret:   ROK   - ok
-*
-*       Notes: None
-*
-*       File:  cm_llist.c
-*
-*/
+ *
+ *       Fun:   cmLListInsAfterCrnt
+ *
+ *       Desc:  adds node to linked list after crnt.
+ *
+ *       Ret:   ROK   - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_llist.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmLListInsAfterCrnt
+   PUBLIC Void cmLListInsAfterCrnt
 (
-CmLListCp *lCp,               /* list control point */
-CmLList   *node               /* node to be added */
-)
+ CmLListCp *lCp,               /* list control point */
+ CmLList   *node               /* node to be added */
+ )
 #else 
 PUBLIC Void cmLListInsAfterCrnt(lCp, node)
-CmLListCp *lCp;               /* list control point */
-CmLList   *node;              /* node to be added */
+   CmLListCp *lCp;               /* list control point */
+   CmLList   *node;              /* node to be added */
 #endif
 {
    TRC3(cmLListInsAfterCrnt);
@@ -267,13 +267,13 @@ CmLList   *node;              /* node to be added */
    if (!lCp)
       RETVOID;
 #endif
- 
+
    lCp->count++;
 
    if (lCp->count == 1)
    {
-     lCp->crnt = lCp->first = lCp->last = node;
-     RETVOID;
+      lCp->crnt = lCp->first = lCp->last = node;
+      RETVOID;
    }
 
    node->prev = lCp->crnt;
@@ -281,45 +281,45 @@ CmLList   *node;              /* node to be added */
    if (node->next)
       node->next->prev = node;
    node->prev->next = node;
-  
+
    if (lCp->last == lCp->crnt)
       lCp->last = node;
    lCp->crnt = node;
-   
+
    RETVOID;
 } /* end of cmLListInsAfterCrnt */
 
 
 
 /*
-*
-*       Fun:   cmLListDelFrm
-*
-*       Desc:  remove node pointed to by nodePtr from list and return node.
-*              nodePtr could be anywhere in the list.
-*              - resets crnt to NULLP.
-*
-*       Ret:   pointer
-*
-*       Notes: None
-*
-*       File:  cm_llist.c
-*
-*/
+ *
+ *       Fun:   cmLListDelFrm
+ *
+ *       Desc:  remove node pointed to by nodePtr from list and return node.
+ *              nodePtr could be anywhere in the list.
+ *              - resets crnt to NULLP.
+ *
+ *       Ret:   pointer
+ *
+ *       Notes: None
+ *
+ *       File:  cm_llist.c
+ *
+ */
 #ifdef ANSI
-PUBLIC CmLList *cmLListDelFrm
+   PUBLIC CmLList *cmLListDelFrm
 (
-CmLListCp *lCp,                /* list control pointer */
-CmLList *node                  /* node to be removed */
-)
+ CmLListCp *lCp,                /* list control pointer */
+ CmLList *node                  /* node to be removed */
+ )
 #else 
 PUBLIC CmLList *cmLListDelFrm(lCp, node)
-CmLListCp *lCp;               /* list control pointer */
-CmLList *node;                /* node to be removed */
+   CmLListCp *lCp;               /* list control pointer */
+   CmLList *node;                /* node to be removed */
 #endif
 {
    TRC3(cmLListDelFrm);
-  
+
 #ifdef ERRCHK
    /* cm_llist_c_001.main_8 : added null check for node */
    if (lCp == (CmLListCp *)NULLP || lCp->count == 0 || !node)
@@ -334,22 +334,22 @@ CmLList *node;                /* node to be removed */
       lCp->count = 0;
       RETVALUE(node);
    }
-   
+
    lCp->count--;
    lCp->crnt = (CmLList *)NULLP;
    if (lCp->first == node)
    {
       if (node->next)
-         node->next->prev = (CmLList *)NULLP;
+	 node->next->prev = (CmLList *)NULLP;
       lCp->first = node->next;
       node->next = node->prev = (CmLList *)NULLP;
       RETVALUE(node);
    }
-   
+
    if (lCp->last == node)
    {
       if (node->prev)
-         node->prev->next = (CmLList *)NULLP;
+	 node->prev->next = (CmLList *)NULLP;
       lCp->last = node->prev;
       node->next = node->prev = (CmLList *)NULLP;
       RETVALUE(node);
@@ -363,21 +363,21 @@ CmLList *node;                /* node to be removed */
 
 
 /*--
-  *
-  *       Fun:   cmLListCatLList
-  *
-  *       Desc:  adds a linked list to the end of the first list. list2 is 
-  *              added at the end of list1
-  *
-  *       Ret:   ROK   - ok
-  *
-  *       Notes: None
-  *
-  *       File:  cm_llist.c
-  *
-  --*/
+ *
+ *       Fun:   cmLListCatLList
+ *
+ *       Desc:  adds a linked list to the end of the first list. list2 is 
+ *              added at the end of list1
+ *
+ *       Ret:   ROK   - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_llist.c
+ *
+ --*/
 #ifdef ANSI
-PUBLIC Void cmLListCatLList
+   PUBLIC Void cmLListCatLList
 (
  CmLListCp *list1,              /*-- list control point --*/
  CmLListCp *list2               /*-- node to be added --*/
@@ -419,5 +419,5 @@ PUBLIC Void cmLListCatLList(list1, list2)
 } /*-- end of cmLListCatLList --*/
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

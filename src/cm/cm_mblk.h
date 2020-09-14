@@ -39,64 +39,64 @@
 
 #define CM_INIT_MEMCP(_memCp,_maxSize,_sMem) \
 { \
-  _memCp->first = NULLP; \
-  _memCp->last = NULLP; \
-  _memCp->count = 0;\
-  _memCp->memCb.maxSize = _maxSize;\
-  _memCp->memCb.memAllocated = 0; \
-  _memCp->memCb.initPtr = NULLP; \
-  _memCp->memCb.runPtr = NULLP; \
-  _memCp->memCb.sMem.region = _sMem->region; \
-  _memCp->memCb.sMem.pool = _sMem->pool; \
+   _memCp->first = NULLP; \
+   _memCp->last = NULLP; \
+   _memCp->count = 0;\
+   _memCp->memCb.maxSize = _maxSize;\
+   _memCp->memCb.memAllocated = 0; \
+   _memCp->memCb.initPtr = NULLP; \
+   _memCp->memCb.runPtr = NULLP; \
+   _memCp->memCb.sMem.region = _sMem->region; \
+   _memCp->memCb.sMem.pool = _sMem->pool; \
 }
 
 #define CM_INIT_MEMCPVAR(_memCp) \
 { \
-  _memCp->first = NULLP; \
-  _memCp->last = NULLP; \
-  _memCp->count = 0;\
-  _memCp->memCb.memAllocated = 0; \
-  _memCp->memCb.initPtr = NULLP; \
-  _memCp->memCb.runPtr = NULLP; \
+   _memCp->first = NULLP; \
+   _memCp->last = NULLP; \
+   _memCp->count = 0;\
+   _memCp->memCb.memAllocated = 0; \
+   _memCp->memCb.initPtr = NULLP; \
+   _memCp->memCb.runPtr = NULLP; \
 }
 
 #ifdef ALIGN_64BIT
 #define CM_ALIGN_SIZE(_size) \
 { \
-  if( (_size % CM_ALIGNBOUNDARY_EIGHT) ) \
-     _size = _size + ( CM_ALIGNBOUNDARY_EIGHT -  \
-                  (_size % CM_ALIGNBOUNDARY_EIGHT)); \
+   if( (_size % CM_ALIGNBOUNDARY_EIGHT) ) \
+   _size = _size + ( CM_ALIGNBOUNDARY_EIGHT -  \
+	 (_size % CM_ALIGNBOUNDARY_EIGHT)); \
 }
 #else
 #define CM_ALIGN_SIZE(_size) \
 { \
-  if( (_size % CM_ALIGNBOUNDARY_FOUR) ) \
-    _size = _size + ( CM_ALIGNBOUNDARY_FOUR -  \
-                  (_size % CM_ALIGNBOUNDARY_FOUR)); \
+   if( (_size % CM_ALIGNBOUNDARY_FOUR) ) \
+   _size = _size + ( CM_ALIGNBOUNDARY_FOUR -  \
+	 (_size % CM_ALIGNBOUNDARY_FOUR)); \
 }
 #endif  /* ALIGN_64BIT */
 
 #define CMCHKUNPKPTR(func, val, ptr, mBuf) \
-   { \
-      S16 ret; \
-      if ((ret = func(val, ptr, mBuf)) != ROK) \
-         RETVALUE(ret); \
-   }
+{ \
+   S16 ret; \
+   if ((ret = func(val, ptr, mBuf)) != ROK) \
+   RETVALUE(ret); \
+}
 
 #define CMGETMBLK(ptr, size, pptr) \
+{ \
+   S16 ret; \
+   ret = cmGetMem( ptr, size, pptr); \
+   if (ret != ROK) \
    { \
-      S16 ret; \
-      ret = cmGetMem( ptr, size, pptr); \
-      if (ret != ROK) \
-      { \
-          RETVALUE(RFAILED); \
-      } \
-   }
+      RETVALUE(RFAILED); \
+   } \
+}
 
 #endif /* __CMMBLKH__ */
 
  
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

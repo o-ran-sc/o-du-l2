@@ -111,33 +111,33 @@ KwDatIndInfo   *datIndInfo;
    KwPduInfo   *pduInfo;   /* PDU Information */
    RlcUlRbCb    *rbCb;      /* RB Control Block */
    RlcUlUeCb    *ueCb;      /* UE Control Block */
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 
    TRC2(kwUtlRcvFrmLi)
 
 
    ueCb = NULLP;
-   
+
    /* fetch UeCb  */
    if( ROK != kwDbmFetchUlUeCb(gCb,datIndInfo->rnti,datIndInfo->cellId,&(ueCb)))
    {
       /* Fetch UeCb failed */
       RLOG_ARG1(L_ERROR,DBG_CELLID,datIndInfo->cellId,
-               "UEID:%d UeCb not found",
-               datIndInfo->rnti);
+	    "UEID:%d UeCb not found",
+	    datIndInfo->rnti);
       /* free the buffers inside the datIndInfo */
       U32 i,j;
       for(i = 0; i< datIndInfo->numLch; i++)
       {
-         for(j = 0; j < datIndInfo->lchData[i].pdu.numPdu; j++)
-         {
-            if(datIndInfo->lchData[i].pdu.mBuf[j])
-            {
-               RLC_FREE_BUF_WC(datIndInfo->lchData[i].pdu.mBuf[j]);
-            }
-         }
+	 for(j = 0; j < datIndInfo->lchData[i].pdu.numPdu; j++)
+	 {
+	    if(datIndInfo->lchData[i].pdu.mBuf[j])
+	    {
+	       RLC_FREE_BUF_WC(datIndInfo->lchData[i].pdu.mBuf[j]);
+	    }
+	 }
       }
-      
+
       RETVALUE(RFAILED);
    }
 
@@ -163,15 +163,15 @@ KwDatIndInfo   *datIndInfo;
        */
       if(rbCb == NULLP)
       {
-         U32 j;
-         for(j = 0; j < pduInfo->numPdu; j++)
-         {
-            if(pduInfo->mBuf[j])
-            {
-               RLC_FREE_BUF_WC(pduInfo->mBuf[j]);
-            }
-         }
-         continue;
+	 U32 j;
+	 for(j = 0; j < pduInfo->numPdu; j++)
+	 {
+	    if(pduInfo->mBuf[j])
+	    {
+	       RLC_FREE_BUF_WC(pduInfo->mBuf[j]);
+	    }
+	 }
+	 continue;
       }
 
 #ifdef SS_RBUF
@@ -179,20 +179,20 @@ KwDatIndInfo   *datIndInfo;
 #endif
       if ( rbCb->mode == CM_LTE_MODE_UM )
       {
-/* kw005.201 added support for L2 Measurement */
+	 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-         kwUmmProcessPdus(gCb,rbCb, pduInfo, datIndInfo->ttiCnt);
+	 kwUmmProcessPdus(gCb,rbCb, pduInfo, datIndInfo->ttiCnt);
 #else
-         kwUmmProcessPdus(gCb,rbCb,pduInfo);
+	 kwUmmProcessPdus(gCb,rbCb,pduInfo);
 #endif
       }
       else if (rbCb->mode == CM_LTE_MODE_AM )
       {
-/* kw005.201 added support for L2 Measurement */
+	 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-         kwAmmProcessPdus(gCb,rbCb,  pduInfo, datIndInfo->ttiCnt);
+	 kwAmmProcessPdus(gCb,rbCb,  pduInfo, datIndInfo->ttiCnt);
 #else
-         kwAmmProcessPdus(gCb,rbCb,pduInfo);
+	 kwAmmProcessPdus(gCb,rbCb,pduInfo);
 #endif
       }
    }
@@ -215,17 +215,17 @@ KwDatIndInfo   *datIndInfo;
  *      -# ROK 
  */
 #ifdef ANSI
-PUBLIC S16 kwUtlSndDatInd
+   PUBLIC S16 kwUtlSndDatInd
 (
-RlcCb       *gCb,
-RlcUlRbCb   *rbCb,                   
-Buffer     *sdu                    
-)
+ RlcCb       *gCb,
+ RlcUlRbCb   *rbCb,                   
+ Buffer     *sdu                    
+ )
 #else
 PUBLIC S16 kwUtlSndDatInd(gCb,rbCb,sdu)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb;                  
-Buffer     *sdu;                    
+   RlcCb       *gCb;
+   RlcUlRbCb   *rbCb;                  
+   Buffer     *sdu;                    
 #endif
 {
 #ifndef KW_PDCP
@@ -237,17 +237,17 @@ Buffer     *sdu;
 
 
 #ifndef KW_PDCP
-   /* Creating static memory for KwuDatIndInfo. #else will be 
-    * removed once the testing is done on all platforms */
-   datIndInfo = &datIndInfoTmp;
+      /* Creating static memory for KwuDatIndInfo. #else will be 
+       * removed once the testing is done on all platforms */
+      datIndInfo = &datIndInfoTmp;
 
 #if (ERRCLASS & ERRCLS_ADD_RES )
    if ( datIndInfo == NULLP  )
    {
       RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
-               "Memory allocation failed UEID:%d CELLID:%d",
-               rbCb->rlcId.ueId,
-               rbCb->rlcId.cellId);
+	    "Memory allocation failed UEID:%d CELLID:%d",
+	    rbCb->rlcId.ueId,
+	    rbCb->rlcId.cellId);
       RLC_FREE_BUF(sdu);
       RETVALUE(RFAILED);
    }
@@ -258,7 +258,7 @@ Buffer     *sdu;
     * If packets are in-sequence set flag as TRUE else FALSE */
    datIndInfo->isOutOfSeq = rbCb->m.amUl.isOutOfSeq; 
 #endif /* KW_PDCP */
-   
+
    /* If trace flag is enabled send the trace indication */
    if(gCb->init.trc == TRUE)
    {
@@ -283,17 +283,17 @@ PRIVATE Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
 
       for(i = 0; i< windSz; i++)
       {
-         if(ulRbCb->m.umUl.recBuf[i] != NULLP)
-         {
-            pdusInReceptionBuffer++;
-         }
+	 if(ulRbCb->m.umUl.recBuf[i] != NULLP)
+	 {
+	    pdusInReceptionBuffer++;
+	 }
       }
-      
+
       RLOG_ARG3(L_DEBUG,DBG_RBID,ulRbCb->rlcId.rbId,
-               "UM UL UEID:%d CELLID:%d Reception Buffer size = %d", 
-                       (int)ulRbCb->rlcId.ueId,
-                       (int)ulRbCb->rlcId.cellId,
-                       (int)pdusInReceptionBuffer);
+	    "UM UL UEID:%d CELLID:%d Reception Buffer size = %d", 
+	    (int)ulRbCb->rlcId.ueId,
+	    (int)ulRbCb->rlcId.cellId,
+	    (int)pdusInReceptionBuffer);
    }
    else if(ulRbCb->mode == CM_LTE_MODE_AM)
    {
@@ -301,24 +301,24 @@ PRIVATE Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
       U32 pdusInReceptionBuffer = 0;
       U32 totalSegs = 0;
       U32 windSz  = KW_AM_GET_WIN_SZ(ulRbCb->m.amUl.snLen) << 1;
-      
+
       for(i = 0; i< windSz; i++)
       {
-         KwAmRecBuf *recBuf = kwUtlGetRecBuf(ulRbCb->m.amUl.recBufLst, i);
-         if(recBuf != NULLP)
-         {
-            pdusInReceptionBuffer++;
-            totalSegs += (recBuf->segLst.count);
-         }
+	 KwAmRecBuf *recBuf = kwUtlGetRecBuf(ulRbCb->m.amUl.recBufLst, i);
+	 if(recBuf != NULLP)
+	 {
+	    pdusInReceptionBuffer++;
+	    totalSegs += (recBuf->segLst.count);
+	 }
       }
 
       RLOG_ARG4(L_DEBUG,DBG_RBID,ulRbCb->rlcId.rbId,
-                "AM UL UEID:%d CELLID:%d Reception Buf size = %d"
-                "total segs = %d", 
-                       (int)ulRbCb->rlcId.ueId,
-                       (int)ulRbCb->rlcId.cellId,
-                       (int)pdusInReceptionBuffer, 
-                       (int)totalSegs);
+	    "AM UL UEID:%d CELLID:%d Reception Buf size = %d"
+	    "total segs = %d", 
+	    (int)ulRbCb->rlcId.ueId,
+	    (int)ulRbCb->rlcId.cellId,
+	    (int)pdusInReceptionBuffer, 
+	    (int)totalSegs);
    }
 }
 
@@ -330,25 +330,25 @@ Void DumpRLCUlDebugInformation(Void)
 
    /* Until no more ueCb is ueLstCp hash list get and delete ueCb */
    while (ROK == cmHashListGetNext(&ulCb->ueLstCp, 
-                                   (PTR) ueCb, 
-                                   (PTR *)&ueCb))
+	    (PTR) ueCb, 
+	    (PTR *)&ueCb))
    {
       U32 i;
       for(i = 0; i< KW_MAX_SRB_PER_UE; i++)
       {
-         RlcUlRbCb* ulRbCb = ueCb->srbCb[i]; 
-         if(ulRbCb != NULLP)
-         {
-            dumpRLCUlRbInformation(ulRbCb);
-         }
+	 RlcUlRbCb* ulRbCb = ueCb->srbCb[i]; 
+	 if(ulRbCb != NULLP)
+	 {
+	    dumpRLCUlRbInformation(ulRbCb);
+	 }
       }
       for(i = 0; i< KW_MAX_DRB_PER_UE; i++)
       {
-         RlcUlRbCb* ulRbCb = ueCb->drbCb[i]; 
-         if(ulRbCb != NULLP)
-         {
-            dumpRLCUlRbInformation(ulRbCb);
-         }
+	 RlcUlRbCb* ulRbCb = ueCb->drbCb[i]; 
+	 if(ulRbCb != NULLP)
+	 {
+	    dumpRLCUlRbInformation(ulRbCb);
+	 }
       }
    }
 }
@@ -404,17 +404,17 @@ S16 kwUtlL2MeasUlInit(RlcCb *gCb)
  *
  */
 #ifdef ANSI
-PUBLIC  Void kwUtlCalUlIpThrPutIncTTI
+   PUBLIC  Void kwUtlCalUlIpThrPutIncTTI
 (
-RlcCb                  *gCb,
-RlcUlRbCb              *rbCb,
-U32                   ttiCnt
-)
+ RlcCb                  *gCb,
+ RlcUlRbCb              *rbCb,
+ U32                   ttiCnt
+ )
 #else
 PUBLIC Void kwUtlCalUlIpThrPutIncTTI(gCb, rbCb, ttiCnt)
-RlcCb                  *gCb;
-RlcUlRbCb              *rbCb;
-U32                   ttiCnt;
+   RlcCb                  *gCb;
+   RlcUlRbCb              *rbCb;
+   U32                   ttiCnt;
 #endif
 {
    VOLATILE U32     startTime = 0;
@@ -424,16 +424,16 @@ U32                   ttiCnt;
       SStartTask(&startTime, PID_RLC_IP_TPT_INCTTI);
 #ifndef ALIGN_64BIT
    RLOG_ARG4(L_UNUSED, DBG_RBID,rbCb->rlcId.rbId,"Log for ul ip throughput:"
-         "RB_MeasOn:%d ttiCnt :%ld UEID:%d CELLID:%d", 
-         rbCb->rbL2Cb.measOn,ttiCnt,
-         rbCb->rlcId.ueId,
-         rbCb->rlcId.cellId);
+	 "RB_MeasOn:%d ttiCnt :%ld UEID:%d CELLID:%d", 
+	 rbCb->rbL2Cb.measOn,ttiCnt,
+	 rbCb->rlcId.ueId,
+	 rbCb->rlcId.cellId);
 #else
    RLOG_ARG4(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, "Log for ul ip throughput:"
-         "RB_MeasOn:%d ttiCnt :%d UEID:%d CELLID:%d", 
-         rbCb->rbL2Cb.measOn,ttiCnt,
-         rbCb->rlcId.ueId,
-         rbCb->rlcId.cellId);
+	 "RB_MeasOn:%d ttiCnt :%d UEID:%d CELLID:%d", 
+	 rbCb->rbL2Cb.measOn,ttiCnt,
+	 rbCb->rlcId.ueId,
+	 rbCb->rlcId.cellId);
 #endif
 
    /*Check if UL IP throughput measurement is ON for this RB or not*/
@@ -441,24 +441,24 @@ U32                   ttiCnt;
    {
       if (TRUE  == rbCb->ueCb->isUlBurstActive)
       {
-         if (ttiCnt < rbCb->l2MeasIpThruput.prevTtiCnt)
-         {
-            /*Removed Error Print*/
-         }
-         if (rbCb->l2MeasIpThruput.prevTtiCnt != 0)
-         {
-            rbCb->rbL2Cb.l2Sts[KW_L2MEAS_UL_IP]->ulIpThruput.timeSummation += 
-               (ttiCnt - rbCb->l2MeasIpThruput.prevTtiCnt);
-         }
-         else
-         {
-            rbCb->ueCb->firstPacketTTI = ttiCnt;
-         }
-         rbCb->l2MeasIpThruput.prevTtiCnt = ttiCnt;
+	 if (ttiCnt < rbCb->l2MeasIpThruput.prevTtiCnt)
+	 {
+	    /*Removed Error Print*/
+	 }
+	 if (rbCb->l2MeasIpThruput.prevTtiCnt != 0)
+	 {
+	    rbCb->rbL2Cb.l2Sts[KW_L2MEAS_UL_IP]->ulIpThruput.timeSummation += 
+	       (ttiCnt - rbCb->l2MeasIpThruput.prevTtiCnt);
+	 }
+	 else
+	 {
+	    rbCb->ueCb->firstPacketTTI = ttiCnt;
+	 }
+	 rbCb->l2MeasIpThruput.prevTtiCnt = ttiCnt;
       }
       else
       {
-         rbCb->l2MeasIpThruput.prevTtiCnt = 0;
+	 rbCb->l2MeasIpThruput.prevTtiCnt = 0;
       }
    }   
 
@@ -483,13 +483,13 @@ U32                   ttiCnt;
  *
  */
 #ifdef ANSI
-PUBLIC  Void kwUtlCalUlIpThrPut
+   PUBLIC  Void kwUtlCalUlIpThrPut
 (
-RlcCb                  *gCb,
-RlcUlRbCb              *rbCb,
-Buffer                *pdu,
-U32                   ttiCnt
-)
+ RlcCb                  *gCb,
+ RlcUlRbCb              *rbCb,
+ Buffer                *pdu,
+ U32                   ttiCnt
+ )
 #else
 PUBLIC Void kwUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt)
    RlcCb                  *gCb;
@@ -503,14 +503,14 @@ PUBLIC Void kwUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt)
    TRC2(kwUtlCalUlIpThrPut)
 
 
-   /*starting Task*/
-   SStartTask(&startTime, PID_RLC_IP_TPT_INCVOL);
+      /*starting Task*/
+      SStartTask(&startTime, PID_RLC_IP_TPT_INCVOL);
 
    /*Check if UL IP throughput measurement is ON for this RB or not*/
    if(KW_MEAS_IS_UL_IP_MEAS_ON_FOR_RB(gCb, rbCb) &&              
-         (TRUE  == rbCb->ueCb->isUlBurstActive) &&
-         (rbCb->ueCb->firstPacketTTI) &&
-         (ttiCnt != rbCb->ueCb->firstPacketTTI))
+	 (TRUE  == rbCb->ueCb->isUlBurstActive) &&
+	 (rbCb->ueCb->firstPacketTTI) &&
+	 (ttiCnt != rbCb->ueCb->firstPacketTTI))
    {
       SFndLenMsg(pdu, &rlcSduSz);
 
@@ -540,34 +540,34 @@ PUBLIC Void kwUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt)
  */
 
 #ifdef ANSI
-PUBLIC S16 kwUtlHdlL2TmrExp
+   PUBLIC S16 kwUtlHdlL2TmrExp
 (
-RlcCb          *gCb,
-KwL2MeasEvtCb *measEvtCb
-)
+ RlcCb          *gCb,
+ KwL2MeasEvtCb *measEvtCb
+ )
 #else
 PUBLIC S16 kwUtlHdlL2TmrExp(measEvtCb)
-RlcCb          *gCb;
-KwL2MeasEvtCb *measEvtCb;
+   RlcCb          *gCb;
+   KwL2MeasEvtCb *measEvtCb;
 #endif
 {
    TRC3(kwUtlHdlL2TmrExp)
 
 #ifdef LTE_L2_MEAS_RLC
-   U16             qciIdx;
+      U16             qciIdx;
    KwL2MeasCb     *measCb;
-   
+
    /* Clean up the RB data structures */
    if((measEvtCb->measCb.measType & LKW_L2MEAS_ACT_UE) &&
-      (measEvtCb->measCb.val.nonIpThMeas.numSamples))
+	 (measEvtCb->measCb.val.nonIpThMeas.numSamples))
    {
       measCb = &measEvtCb->measCb;
 
       for(qciIdx = 0; qciIdx < measCb->val.nonIpThMeas.numQci;qciIdx++)
       {
-         measCb->val.nonIpThMeas.measData[measCb->val.nonIpThMeas.qci[qciIdx]].actUe.numActvUe   +=   
-                     rlcCb.kwL2Cb.numActUe[measCb->val.nonIpThMeas.qci[qciIdx]];
-         measCb->val.nonIpThMeas.measData[measCb->val.nonIpThMeas.qci[qciIdx]].actUe.sampOc++;
+	 measCb->val.nonIpThMeas.measData[measCb->val.nonIpThMeas.qci[qciIdx]].actUe.numActvUe   +=   
+	    rlcCb.kwL2Cb.numActUe[measCb->val.nonIpThMeas.qci[qciIdx]];
+	 measCb->val.nonIpThMeas.measData[measCb->val.nonIpThMeas.qci[qciIdx]].actUe.sampOc++;
       }
       measEvtCb->val.nonIpThMeas.measCb.numSamples--;
       kwStartTmr(gCb, (PTR)measEvtCb, KW_EVT_L2_TMR); 
@@ -596,15 +596,15 @@ KwL2MeasEvtCb *measEvtCb;
  */
 
 #ifdef ANSI
-PUBLIC S16 kwUtlSndUlL2MeasCfm
+   PUBLIC S16 kwUtlSndUlL2MeasCfm
 (
-RlcCb                  *gCb,
-KwL2MeasEvtCb         *measEvtCb
-)
+ RlcCb                  *gCb,
+ KwL2MeasEvtCb         *measEvtCb
+ )
 #else
 PUBLIC S16 kwUtlSndUlL2MeasCfm(gCb, measEvtCb)
-RlcCb                  *gCb;
-KwL2MeasEvtCb         *measEvtCb;
+   RlcCb                  *gCb;
+   KwL2MeasEvtCb         *measEvtCb;
 #endif
 {
    U32                     qciIdx;
@@ -621,64 +621,64 @@ KwL2MeasEvtCb         *measEvtCb;
 
    TRC3(kwUtlSndUlL2MeasCfm)
 
-   /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
+      /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
 #ifndef ALIGN_64BIT
-   RLOG1(L_DEBUG,"kwUtlSndUlL2MeasCfm(transId(%ld))", measEvtCb->transId);
+      RLOG1(L_DEBUG,"kwUtlSndUlL2MeasCfm(transId(%ld))", measEvtCb->transId);
 #else
    RLOG1(L_DEBUG,"kwUtlSndUlL2MeasCfm(transId(%d))", measEvtCb->transId);
 #endif
 
    /* Clean up the RB data structures */
    measCb = &measEvtCb->measCb;
-   
+
    cmMemset((U8*)&measCfmEvt, 0, sizeof(KwL2MeasCfmEvt));
    measCfmEvt.transId = measEvtCb->transId;
 
    measCfmEvt.measType = measCb->measType;
    measCfmEvt.status.status = LCM_PRIM_OK;
    measCfmEvt.status.reason = LCM_REASON_NOT_APPL;
-   
+
    if( measCb->measType & LKW_L2MEAS_UL_IP)
    {
       KwL2MeasCbUeMeasInfo *pUeInfoLstCb  = measCb->val.ipThMeas.ueInfoLst;
       KwL2MeasCfmUeInfoLst *pUeInfoLstCfm = measCfmEvt.val.ipThMeas.ueInfoLst;
       for(cntr = 0;(cntr < measCb->val.ipThMeas.numUes) && (cntr < gCb->genCfg.maxUe);cntr++)        
       {
-         pUeInfoLstCfm[cfmIdx].numCfm = 0;
-         if (pUeInfoLstCb[cntr].isValid == TRUE)
-         {
-            pUeInfoLstCfm[cfmIdx].ueId = pUeInfoLstCb[cntr].ueId;
-            pUeInfoLstCfm[cfmIdx].cellId = pUeInfoLstCb[cntr].cellId;
+	 pUeInfoLstCfm[cfmIdx].numCfm = 0;
+	 if (pUeInfoLstCb[cntr].isValid == TRUE)
+	 {
+	    pUeInfoLstCfm[cfmIdx].ueId = pUeInfoLstCb[cntr].ueId;
+	    pUeInfoLstCfm[cfmIdx].cellId = pUeInfoLstCb[cntr].cellId;
 
-            for(qciIdx = 0; qciIdx < pUeInfoLstCb[cntr].numQci; qciIdx++)
-            {
-               qci = pUeInfoLstCb[cntr].qci[qciIdx];
-               pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].qci = qci;
+	    for(qciIdx = 0; qciIdx < pUeInfoLstCb[cntr].numQci; qciIdx++)
+	    {
+	       qci = pUeInfoLstCb[cntr].qci[qciIdx];
+	       pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].qci = qci;
 
-               if(measCb->measType & LKW_L2MEAS_UL_IP)
-               {
-                  ulDataVol = pUeInfoLstCb[cntr].measData[qci].ulIpThruput.volSummation;
-                  ulTime = pUeInfoLstCb[cntr].measData[qci].ulIpThruput.timeSummation;
-                  if(0 == ulTime)
-                  {
-                     pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.ulIpThPut = 0;
-                  }
-                  else
-                  {
-                     pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.ulIpThPut = (ulDataVol / ulTime);
+	       if(measCb->measType & LKW_L2MEAS_UL_IP)
+	       {
+		  ulDataVol = pUeInfoLstCb[cntr].measData[qci].ulIpThruput.volSummation;
+		  ulTime = pUeInfoLstCb[cntr].measData[qci].ulIpThruput.timeSummation;
+		  if(0 == ulTime)
+		  {
+		     pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.ulIpThPut = 0;
+		  }
+		  else
+		  {
+		     pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.ulIpThPut = (ulDataVol / ulTime);
 
-                     /* Converting it to kbps */
-                     pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.ulIpThPut *= 8;
+		     /* Converting it to kbps */
+		     pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.ulIpThPut *= 8;
 
-                  }
-                  /* Reset the values after reporting to Application */
-                  pUeInfoLstCb[cntr].measData[qci].ulIpThruput.volSummation = 0;
-                  pUeInfoLstCb[cntr].measData[qci].ulIpThruput.timeSummation = 0;
-               }
-               pUeInfoLstCfm[cfmIdx].numCfm++;
-            }
-            cfmIdx++;
-         }
+		  }
+		  /* Reset the values after reporting to Application */
+		  pUeInfoLstCb[cntr].measData[qci].ulIpThruput.volSummation = 0;
+		  pUeInfoLstCb[cntr].measData[qci].ulIpThruput.timeSummation = 0;
+	       }
+	       pUeInfoLstCfm[cfmIdx].numCfm++;
+	    }
+	    cfmIdx++;
+	 }
       }
       measCfmEvt.val.ipThMeas.numUes = cfmIdx; 
    }
@@ -690,7 +690,7 @@ KwL2MeasEvtCb         *measEvtCb;
  * @brief Handler for Sending Negative confirm .
  *
  *
-  @b Description
+ @b Description
  *        This function is called when the l2 measurement cannot be started
  *        This function sends  negative confirm for all the requests
  *
@@ -704,22 +704,22 @@ KwL2MeasEvtCb         *measEvtCb;
  */
 
 #ifdef ANSI
-PUBLIC S16 kwUtlSndUlL2MeasNCfm
+   PUBLIC S16 kwUtlSndUlL2MeasNCfm
 (
-RlcCb           *gCb,
-KwL2MeasReqEvt *measReqEvt,
-KwL2MeasCfmEvt *measCfmEvt
-)
+ RlcCb           *gCb,
+ KwL2MeasReqEvt *measReqEvt,
+ KwL2MeasCfmEvt *measCfmEvt
+ )
 #else
 PUBLIC S16 kwUtlSndUlL2MeasNCfm(gCb, measReqEvt, measCfmEvt)
-RlcCb           *gCb;
-KwL2MeasReqEvt *measReqEvt;
-KwL2MeasCfmEvt *measCfmEvt;
+   RlcCb           *gCb;
+   KwL2MeasReqEvt *measReqEvt;
+   KwL2MeasCfmEvt *measCfmEvt;
 #endif
 {
    TRC3(kwUtlSndUlL2MeasNCfm)
 
-   KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
+      KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
    RETVALUE(ROK);
 } /* kwUtlSndL2MeasNCfm */
 
@@ -734,24 +734,24 @@ KwL2MeasCfmEvt *measCfmEvt;
  *  @param[in]  measReqEvt L2 measurement request received from layer manager.
  *  @param[out] measCfmEvt L2 measurement confirm to be prepared.
  *  @param[out] lChId      List of LCh for the given Ue corresponding to QCIs
-                           given in measurement request.
+ given in measurement request.
  *  @param[out] numLCh     Number of LCh in array lChId.
  **/
 
 #ifdef ANSI
-PUBLIC S16 kwUtlValidateL2Meas
+   PUBLIC S16 kwUtlValidateL2Meas
 (
-KwL2MeasReqEvt *measReqEvt,
-KwL2MeasCfmEvt *measCfmEvt,
-CmLteLcId      *lChId,
-U8             *numLCh
-)
+ KwL2MeasReqEvt *measReqEvt,
+ KwL2MeasCfmEvt *measCfmEvt,
+ CmLteLcId      *lChId,
+ U8             *numLCh
+ )
 #else
 PUBLIC S16 kwUtlValidateL2Meas(measReqEvt, measCfmEvt, lChId, numLCh)
-KwL2MeasReqEvt *measReqEvt;
-KwL2MeasCfmEvt *measCfmEvt;
-CmLteLcId      *lChId;
-U8             *numLCh;
+   KwL2MeasReqEvt *measReqEvt;
+   KwL2MeasCfmEvt *measCfmEvt;
+   CmLteLcId      *lChId;
+   U8             *numLCh;
 #endif
 {
    U8      measType;
@@ -772,15 +772,15 @@ U8             *numLCh;
 
 
    TRC3(kwUtlValidateL2Meas)
-   
-   idx = 0;
+
+      idx = 0;
    rbCb = NULLP;
    ret = ROK;
    measType = measReqEvt->measReq.measType;
    /* Check for the range of measType */
    /* LKW_L2MEAS_DL_IP+ LKW_L2MEAS_UL_IP = 0x0030*/
    if((measType == 0x00) ||
-       measType > 0x30)
+	 measType > 0x30)
    {
       measCfmEvt->transId = measReqEvt->transId;
       measCfmEvt->measType = measType;
@@ -814,7 +814,7 @@ U8             *numLCh;
 
    /* Check that number of samples should be a non-zero value */
    if(((measType & LKW_L2MEAS_ACT_UE) &&
-      (measReqEvt->measReq.val.nonIpThMeas.numSamples == 0)))
+	    (measReqEvt->measReq.val.nonIpThMeas.numSamples == 0)))
    {
       measCfmEvt->transId = measReqEvt->transId;
       measCfmEvt->measType = measType;
@@ -825,8 +825,8 @@ U8             *numLCh;
    /* Check that measurement period  should be completely divisible *
     * number of sample.                                             */
    if(((measType & LKW_L2MEAS_ACT_UE) &&
-      ((measReqEvt->measPeriod % 
-        measReqEvt->measReq.val.nonIpThMeas.numSamples) != 0)))
+	    ((measReqEvt->measPeriod % 
+	      measReqEvt->measReq.val.nonIpThMeas.numSamples) != 0)))
    {
       measCfmEvt->transId = measReqEvt->transId;
       measCfmEvt->measType = measType;
@@ -843,11 +843,11 @@ U8             *numLCh;
    {
       qci = qciVal[qciIdx];
       ret = cmHashListFind(&(rlcCb.kwL2Cb.qciHlCp), 
-            (U8 *)&qci, (U16)sizeof(qci), 0, (PTR *)&rbCb);
+	    (U8 *)&qci, (U16)sizeof(qci), 0, (PTR *)&rbCb);
       if(ret != ROK)
       {
-         measCfmEvt->val.nonIpThMeas.measCfm[measCfmEvt->val.nonIpThMeas.numCfm].qci = qci;
-         measCfmEvt->val.nonIpThMeas.numCfm++;
+	 measCfmEvt->val.nonIpThMeas.measCfm[measCfmEvt->val.nonIpThMeas.numCfm].qci = qci;
+	 measCfmEvt->val.nonIpThMeas.numCfm++;
 
       }
    }
@@ -862,15 +862,15 @@ U8             *numLCh;
    {
       for(qciIdx = 0; qciIdx < numQci; qciIdx++)
       {
-         if(rlcCb.kwL2Cb.measOn[qci] & measReqEvt->measReq.measType)
-         {
-            /* measurement is already ongoing */
-            measCfmEvt->status.status = LCM_PRIM_NOK;
-            measCfmEvt->status.reason = LKW_CAUSE_MEAS_ALREADY_ENA;
-            measCfmEvt->val.nonIpThMeas.measCfm[measCfmEvt->val.nonIpThMeas.numCfm].qci = qci;
-            measCfmEvt->measType = measType;
-            measCfmEvt->val.nonIpThMeas.numCfm++;
-         }
+	 if(rlcCb.kwL2Cb.measOn[qci] & measReqEvt->measReq.measType)
+	 {
+	    /* measurement is already ongoing */
+	    measCfmEvt->status.status = LCM_PRIM_NOK;
+	    measCfmEvt->status.reason = LKW_CAUSE_MEAS_ALREADY_ENA;
+	    measCfmEvt->val.nonIpThMeas.measCfm[measCfmEvt->val.nonIpThMeas.numCfm].qci = qci;
+	    measCfmEvt->measType = measType;
+	    measCfmEvt->val.nonIpThMeas.numCfm++;
+	 }
       }
    }
    if(measCfmEvt->val.nonIpThMeas.numCfm > 0)
@@ -884,15 +884,15 @@ U8             *numLCh;
 #endif
 
 #ifdef ANSI
-PUBLIC S16 kwUtlValidateIpThL2Meas
+   PUBLIC S16 kwUtlValidateIpThL2Meas
 (
-KwL2MeasReqEvt *measReqEvt,
-KwL2MeasCfmEvt *measCfmEvt
-)
+ KwL2MeasReqEvt *measReqEvt,
+ KwL2MeasCfmEvt *measCfmEvt
+ )
 #else
 PUBLIC S16 kwUtlValidateIpThL2Meas(measReqEvt, measCfmEvt)
-KwL2MeasReqEvt *measReqEvt;
-KwL2MeasCfmEvt *measCfmEvt;
+   KwL2MeasReqEvt *measReqEvt;
+   KwL2MeasCfmEvt *measCfmEvt;
 #endif
 {
    U8      measType;
@@ -900,12 +900,12 @@ KwL2MeasCfmEvt *measCfmEvt;
    U8         msbNibble = 0;
 
    TRC3(kwUtlValidateIpThL2Meas)
-   
-   measType = measReqEvt->measReq.measType;
+
+      measType = measReqEvt->measReq.measType;
    /* Check for the range of measType */
    /* LKW_L2MEAS_DL_IP+ LKW_L2MEAS_UL_IP = 0x0030*/
    if((measType == 0x00) ||
-       measType > 0x30)
+	 measType > 0x30)
    {
       measCfmEvt->transId = measReqEvt->transId;
       measCfmEvt->measType = measType;
@@ -945,17 +945,17 @@ KwL2MeasCfmEvt *measCfmEvt;
  */
 #ifdef ANSI
 
-PUBLIC Void kwUtlResetUlL2MeasInKwRb
+   PUBLIC Void kwUtlResetUlL2MeasInKwRb
 (
-RlcCb       *gCb,
-KwL2MeasCb *measCb,
-U8             measType
-)
+ RlcCb       *gCb,
+ KwL2MeasCb *measCb,
+ U8             measType
+ )
 #else
 PUBLIC Void kwUtlResetUlL2MeasInKwRb(measCb, measType)
-RlcCb       *gCb;
-KwL2MeasCb *measCb;
-U8             measType;
+   RlcCb       *gCb;
+   KwL2MeasCb *measCb;
+   U8             measType;
 #endif
 {
    U32           rbIdx;
@@ -969,31 +969,31 @@ U8             measType;
    {
       for(ueIdx = 0; ueIdx < measCb->val.ipThMeas.numUes; ueIdx++)
       {           
-         if (measCb->val.ipThMeas.ueInfoLst[ueIdx].isValid == TRUE)
-         {
-            for (qciIdx =0; qciIdx < measCb->val.ipThMeas.ueInfoLst[ueIdx].numQci; qciIdx++)
-            {
-               if (measType & LKW_L2MEAS_UL_IP)
-               {
-                  measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[qciIdx].ulIpThruput.volSummation = 0;
-                  measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[qciIdx].ulIpThruput.timeSummation = 0;
-               }
-            }
+	 if (measCb->val.ipThMeas.ueInfoLst[ueIdx].isValid == TRUE)
+	 {
+	    for (qciIdx =0; qciIdx < measCb->val.ipThMeas.ueInfoLst[ueIdx].numQci; qciIdx++)
+	    {
+	       if (measType & LKW_L2MEAS_UL_IP)
+	       {
+		  measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[qciIdx].ulIpThruput.volSummation = 0;
+		  measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[qciIdx].ulIpThruput.timeSummation = 0;
+	       }
+	    }
 
-            if(ROK  != kwDbmFetchUlUeCb(gCb, measCb->val.ipThMeas.ueInfoLst[ueIdx].ueId,
-                     measCb->val.ipThMeas.ueInfoLst[ueIdx].cellId, &ueCb))
-            {
-               continue;
-            }
+	    if(ROK  != kwDbmFetchUlUeCb(gCb, measCb->val.ipThMeas.ueInfoLst[ueIdx].ueId,
+		     measCb->val.ipThMeas.ueInfoLst[ueIdx].cellId, &ueCb))
+	    {
+	       continue;
+	    }
 
-            for (rbIdx = 0; rbIdx < KW_MAX_DRB_PER_UE; rbIdx++)
-            {
-               if (ueCb->drbCb[rbIdx])
-               {
-                  ueCb->drbCb[rbIdx]->rbL2Cb.measOn &= ~measType;
-               }
-            }
-         }
+	    for (rbIdx = 0; rbIdx < KW_MAX_DRB_PER_UE; rbIdx++)
+	    {
+	       if (ueCb->drbCb[rbIdx])
+	       {
+		  ueCb->drbCb[rbIdx]->rbL2Cb.measOn &= ~measType;
+	       }
+	    }
+	 }
       }
    }
 } /* kwUtlResetUlL2MeasInKwRb */
@@ -1015,50 +1015,50 @@ U8             measType;
  *      -# ROK
  */
 #ifdef ANSI
-PUBLIC Void kwUtlPlcMeasDatInL2Sts
+   PUBLIC Void kwUtlPlcMeasDatInL2Sts
 (
-KwL2Cntr       *measData, 
-KwL2MeasRbCb   *rbL2Cb,
-U8             measType
-)
+ KwL2Cntr       *measData, 
+ KwL2MeasRbCb   *rbL2Cb,
+ U8             measType
+ )
 #else
 PUBLIC Void kwUtlPlcMeasDatInL2Sts(measData, rbL2Cb, measType)
-KwL2Cntr       *measData; 
-KwL2MeasRbCb   *rbL2Cb;
-U8             measType;
+   KwL2Cntr       *measData; 
+   KwL2MeasRbCb   *rbL2Cb;
+   U8             measType;
 #endif
 {
    TRC3(kwUtlPlcMeasDatInL2Sts)
-   
-   /* We should check the number of measType in the request. This can be done 
-    * by looking at each bit in the measType. Also store the measData in the 
-    * correct index of l2Sts in RbCb.
-    * */
 
-    if(measType & LKW_L2MEAS_ACT_UE)
-    {
-         rbL2Cb->l2Sts[KW_L2MEAS_ACT_UE] = measData;
-    }
-    if(measType & LKW_L2MEAS_UU_LOSS)
-    {
-         rbL2Cb->l2Sts[KW_L2MEAS_UU_LOSS] = measData;
-    }
-    if(measType & LKW_L2MEAS_DL_IP )
-    {
-         rbL2Cb->l2Sts[KW_L2MEAS_DL_IP] = measData;
-    }
-    if(measType & LKW_L2MEAS_UL_IP)
-    {
-         rbL2Cb->l2Sts[KW_L2MEAS_UL_IP] = measData;
-    }
-    if(measType & LKW_L2MEAS_DL_DISC)
-    {
-         rbL2Cb->l2Sts[KW_L2MEAS_DL_DISC] = measData;
-    }
-    if(measType & LKW_L2MEAS_DL_DELAY)
-    {
-         rbL2Cb->l2Sts[KW_L2MEAS_DL_DELAY] = measData;
-    }
+      /* We should check the number of measType in the request. This can be done 
+       * by looking at each bit in the measType. Also store the measData in the 
+       * correct index of l2Sts in RbCb.
+       * */
+
+      if(measType & LKW_L2MEAS_ACT_UE)
+      {
+	 rbL2Cb->l2Sts[KW_L2MEAS_ACT_UE] = measData;
+      }
+   if(measType & LKW_L2MEAS_UU_LOSS)
+   {
+      rbL2Cb->l2Sts[KW_L2MEAS_UU_LOSS] = measData;
+   }
+   if(measType & LKW_L2MEAS_DL_IP )
+   {
+      rbL2Cb->l2Sts[KW_L2MEAS_DL_IP] = measData;
+   }
+   if(measType & LKW_L2MEAS_UL_IP)
+   {
+      rbL2Cb->l2Sts[KW_L2MEAS_UL_IP] = measData;
+   }
+   if(measType & LKW_L2MEAS_DL_DISC)
+   {
+      rbL2Cb->l2Sts[KW_L2MEAS_DL_DISC] = measData;
+   }
+   if(measType & LKW_L2MEAS_DL_DELAY)
+   {
+      rbL2Cb->l2Sts[KW_L2MEAS_DL_DELAY] = measData;
+   }
 }/* End of kwUtlPlcMeasDatInL2Sts */
 #endif /* LTE_L2_MEAS */
 
@@ -1078,24 +1078,24 @@ U8             measType;
  *  @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlStoreRecBuf 
+   PUBLIC Void kwUtlStoreRecBuf 
 (
-CmLListCp        *recBufLst,
-KwAmRecBuf       *recBuf,
-KwSn              sn
-)
+ CmLListCp        *recBufLst,
+ KwAmRecBuf       *recBuf,
+ KwSn              sn
+ )
 #else
 PUBLIC Void kwUtlStoreRecBuf(recBufLst, recBuf, sn)
-CmLListCp        *recBufLst;
-KwAmRecBuf       *recBuf;
-KwSn              sn;
+   CmLListCp        *recBufLst;
+   KwAmRecBuf       *recBuf;
+   KwSn              sn;
 #endif
 {
    U32             hashKey; 
 
    TRC3(kwUtlStoreRecBuf)
-   
-   hashKey = (sn % KW_RCV_BUF_BIN_SIZE ); 
+
+      hashKey = (sn % KW_RCV_BUF_BIN_SIZE ); 
    recBuf->lnk.node = (PTR)recBuf;
    cmLListAdd2Tail(&(recBufLst[hashKey]), &recBuf->lnk);
 
@@ -1117,15 +1117,15 @@ KwSn              sn;
  *  @return  Void
  */
 #ifdef ANSI
-PUBLIC KwAmRecBuf* kwUtlGetRecBuf 
+   PUBLIC KwAmRecBuf* kwUtlGetRecBuf 
 (
-CmLListCp        *recBufLst,
-KwSn             sn
-)
+ CmLListCp        *recBufLst,
+ KwSn             sn
+ )
 #else
 PUBLIC KwAmRecBuf* kwUtlGetRecBuf(recBufLst, sn)
-CmLListCp        *recBufLst;
-KwSn             sn;
+   CmLListCp        *recBufLst;
+   KwSn             sn;
 #endif
 {
    U32                 hashKey; 
@@ -1135,8 +1135,8 @@ KwSn             sn;
 
    TRC3(kwUtlGetRecBuf)
 
-   hashKey = (sn % KW_RCV_BUF_BIN_SIZE ); 
- 
+      hashKey = (sn % KW_RCV_BUF_BIN_SIZE ); 
+
    recBufLstCp = &recBufLst[hashKey];
    CM_LLIST_FIRST_NODE(recBufLstCp, node);
    while(node)
@@ -1144,7 +1144,7 @@ KwSn             sn;
       recBuf = (KwAmRecBuf *) node->node;
       if(recBuf->amHdr.sn == sn)
       {
-         RETVALUE(recBuf);
+	 RETVALUE(recBuf);
       }
       CM_LLIST_NEXT_NODE(recBufLstCp, node);
    }
@@ -1165,17 +1165,17 @@ KwSn             sn;
  *  @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlDelRecBuf 
+   PUBLIC Void kwUtlDelRecBuf 
 (
-CmLListCp        *recBufLst,
-KwAmRecBuf       *recBuf,
-RlcCb              *gCb                              
-)
+ CmLListCp        *recBufLst,
+ KwAmRecBuf       *recBuf,
+ RlcCb              *gCb                              
+ )
 #else
 PUBLIC Void kwUtlDelRecBuf(recBufLst, recBufi, gCb)
-CmLListCp        *recBufLst;
-KwAmRecBuf       *recBuf;
-RlcCb             *gCb;                              
+   CmLListCp        *recBufLst;
+   KwAmRecBuf       *recBuf;
+   RlcCb             *gCb;                              
 #endif
 {
    U32                 hashKey; 
@@ -1183,8 +1183,8 @@ RlcCb             *gCb;
 
    TRC3(kwUtlDelRecBuf)
 
-   hashKey = (recBuf->amHdr.sn % KW_RCV_BUF_BIN_SIZE ); 
- 
+      hashKey = (recBuf->amHdr.sn % KW_RCV_BUF_BIN_SIZE ); 
+
    recBufLstCp = &recBufLst[hashKey];
    cmLListDelFrm(recBufLstCp, &recBuf->lnk);
    RLC_FREE_WC(gCb, recBuf, sizeof(KwAmRecBuf));
@@ -1196,5 +1196,5 @@ RlcCb             *gCb;
 
 
 /********************************************************************30**
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

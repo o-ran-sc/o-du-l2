@@ -55,7 +55,7 @@ const char* g_splStr[DBG_MAX_IDs] =
    "RBID", 
    "LCID", 
    "LCGID", 
-	"TRNSID"
+   "TRNSID"
 };
 
 void hextostr(char* p, PSTR h, int hexlen)
@@ -66,5 +66,5 @@ void hextostr(char* p, PSTR h, int hexlen)
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

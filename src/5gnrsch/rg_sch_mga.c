@@ -201,17 +201,17 @@ RgrUeCfg    *ueCfg;
  **/
 
 #ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepUeRecfg
+   PUBLIC S16 rgSCHMeasGapANRepUeRecfg
 (
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgrUeRecfg     *ueRecfg
-)
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ue,
+ RgrUeRecfg     *ueRecfg
+ )
 #else
 PUBLIC S16 rgSCHMeasGapANRepUeRecfg(cell, ue, ueRecfg)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgrUeRecfg     *ueRecfg;
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ue;
+   RgrUeRecfg     *ueRecfg;
 #endif
 {
    RgrUeMeasGapCfg         *reCfg;
@@ -228,9 +228,9 @@ RgrUeRecfg     *ueRecfg;
    /* Removed extra comments
     * Check this once again Check to see if anything changed or not */
    if ((reCfg->isMesGapEnabled == TRUE) &&
-         (ueMeasCb->isMesGapEnabled == TRUE) &&
-         (reCfg->gapPrd == ueMeasCb->gapPrd) &&
-         (reCfg->gapOffst == ueMeasCb->gapOffst))
+	 (ueMeasCb->isMesGapEnabled == TRUE) &&
+	 (reCfg->gapPrd == ueMeasCb->gapPrd) &&
+	 (reCfg->gapOffst == ueMeasCb->gapOffst))
    {
       /* Nothing changed hence nothing to do */
    }
@@ -238,32 +238,32 @@ RgrUeRecfg     *ueRecfg;
    {
       if (reCfg->isMesGapEnabled)
       {
-         if (ueMeasCb->isMesGapEnabled)
-         {
-            rgSCHMeasGapANRepUtlRmvUe (cell, ue);
-         } 
-         else
-         {
-            cmInitTimers (&ueMeasCb->measGapTmr, 1);
-            cmInitTimers (&ueMeasCb->measGapUlInactvTmr, 1);
-            cmInitTimers (&ueMeasCb->measGapDlInactvTmr, 1);
-         } 
+	 if (ueMeasCb->isMesGapEnabled)
+	 {
+	    rgSCHMeasGapANRepUtlRmvUe (cell, ue);
+	 } 
+	 else
+	 {
+	    cmInitTimers (&ueMeasCb->measGapTmr, 1);
+	    cmInitTimers (&ueMeasCb->measGapUlInactvTmr, 1);
+	    cmInitTimers (&ueMeasCb->measGapDlInactvTmr, 1);
+	 } 
 
-         /* Add to the correct Measurement gap queue */
-         rgSCHMeasGapANRepUtlAddUe (cell, ue, reCfg);
+	 /* Add to the correct Measurement gap queue */
+	 rgSCHMeasGapANRepUtlAddUe (cell, ue, reCfg);
 
-         ueMeasCb->gapPrd = reCfg->gapPrd;
-         ueMeasCb->gapOffst = reCfg->gapOffst;
-         ueMeasCb->isMesGapEnabled = TRUE;
+	 ueMeasCb->gapPrd = reCfg->gapPrd;
+	 ueMeasCb->gapOffst = reCfg->gapOffst;
+	 ueMeasCb->isMesGapEnabled = TRUE;
       } /* if new config has Measurement gap enabled */
       else
       {
-         if (ueMeasCb->isMesGapEnabled)
-         {
-            /* check if return value needed or not */
-            rgSCHMeasGapANRepUtlRmvUe (cell, ue);
-            ueMeasCb->isMesGapEnabled = FALSE;
-         } 
+	 if (ueMeasCb->isMesGapEnabled)
+	 {
+	    /* check if return value needed or not */
+	    rgSCHMeasGapANRepUtlRmvUe (cell, ue);
+	    ueMeasCb->isMesGapEnabled = FALSE;
+	 } 
       } /* if new config has Measurement gap disabled */
    } /* For MeasGap configuration */
 
@@ -271,17 +271,17 @@ RgrUeRecfg     *ueRecfg;
    {
       if (!ackNakRepCb->isAckNackEnabled)
       {
-         ackNakRepCb->isAckNackEnabled = TRUE;
-         /* Timers need to be init immediately after config*/
-         cmInitTimers (&ue->ackNakRepCb.ackNakRepUlInactvTmr, 1);
-         cmInitTimers (&ue->ackNakRepCb.ackNakRepDlInactvTmr, 1);
-         cmInitTimers (&ue->ackNakRepCb.ackNakRepTmr, 1);
+	 ackNakRepCb->isAckNackEnabled = TRUE;
+	 /* Timers need to be init immediately after config*/
+	 cmInitTimers (&ue->ackNakRepCb.ackNakRepUlInactvTmr, 1);
+	 cmInitTimers (&ue->ackNakRepCb.ackNakRepDlInactvTmr, 1);
+	 cmInitTimers (&ue->ackNakRepCb.ackNakRepTmr, 1);
       } /* repetition was disabled */
       ackNakRepCb->pucchRes   = ackNackReCfg->pucchAckNackRep;
       ackNakRepCb->cfgRepCnt  = ackNackReCfg->ackNackRepFactor;
       if (ackNakRepCb->repCntr == 0)
       {
-         ackNakRepCb->repCntr = ackNackReCfg->ackNackRepFactor;
+	 ackNakRepCb->repCntr = ackNackReCfg->ackNackRepFactor;
       }
    } /* repetition enabled in re configuration */
    else
@@ -292,33 +292,33 @@ RgrUeRecfg     *ueRecfg;
    RETVALUE(ROK);
 }
 
- /** @brief This function is a utility to add the UE to the correct Measurement
-  * queue present in the cellCb.
-  *
-  * @details
-  *
-  *     Function: 
-  *
-  *         Processing steps:
-  *         - 
-  *
-  *
-  * @param  
-  * @param 
-  * @return 
-  */
+/** @brief This function is a utility to add the UE to the correct Measurement
+ * queue present in the cellCb.
+ *
+ * @details
+ *
+ *     Function: 
+ *
+ *         Processing steps:
+ *         - 
+ *
+ *
+ * @param  
+ * @param 
+ * @return 
+ */
 #ifdef ANSI
-PRIVATE S16 rgSCHMeasGapANRepUtlAddUe 
+   PRIVATE S16 rgSCHMeasGapANRepUtlAddUe 
 (
-RgSchCellCb       *cell,
-RgSchUeCb          *ue,
-RgrUeMeasGapCfg    *cfg
-)
+ RgSchCellCb       *cell,
+ RgSchUeCb          *ue,
+ RgrUeMeasGapCfg    *cfg
+ )
 #else
 PRIVATE S16 rgSCHMeasGapANRepUtlAddUe (cell, ue, cfg)
-RgSchCellCb         *cell;
-RgSchUeCb            *ue;
-RgrUeMeasGapCfg      *cfg;
+   RgSchCellCb         *cell;
+   RgSchUeCb            *ue;
+   RgrUeMeasGapCfg      *cfg;
 #endif
 {
 
@@ -327,50 +327,50 @@ RgrUeMeasGapCfg      *cfg;
    switch (cfg->gapPrd)
    {
       case RG_MEAS_GAPPRD_40:
-         /* Insert the UE into the linked list based on the gap Offset */
-         ue->measGapCb.measQLnk.node = (PTR)ue;
-         cmLListAdd2Tail (&(cell->measGapCb.gapPrd40Q[cfg->gapOffst]), 
-               &(ue->measGapCb.measQLnk));
-         break;
+	 /* Insert the UE into the linked list based on the gap Offset */
+	 ue->measGapCb.measQLnk.node = (PTR)ue;
+	 cmLListAdd2Tail (&(cell->measGapCb.gapPrd40Q[cfg->gapOffst]), 
+	       &(ue->measGapCb.measQLnk));
+	 break;
       case RG_MEAS_GAPPRD_80:
-         ue->measGapCb.measQLnk.node = (PTR)ue;
-         cmLListAdd2Tail (&(cell->measGapCb.gapPrd80Q[cfg->gapOffst]), 
-               &(ue->measGapCb.measQLnk));
-         break;
+	 ue->measGapCb.measQLnk.node = (PTR)ue;
+	 cmLListAdd2Tail (&(cell->measGapCb.gapPrd80Q[cfg->gapOffst]), 
+	       &(ue->measGapCb.measQLnk));
+	 break;
       default:
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-                  "rgSCHMeasGapANRepUeRecfg() Incorrect GAP Period"
-                  "CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
+	       "rgSCHMeasGapANRepUeRecfg() Incorrect GAP Period"
+	       "CRNTI:%d",ue->ueId);
+	 RETVALUE(RFAILED);
    }
    RETVALUE(ROK);
 } /* end of rgSCHMeasGapANRepUtlAddUe */ 
 
 
- /** @brief This function is a utility function to remove the ue from the measQ
-  * preset in tthe cell Cb.
-  *
-  * @details
-  *
-  *     Function: 
-  *
-  *         Processing steps:
-  *         - 
-  *
-  * @param  
-  * @param 
-  * @return 
-  */
+/** @brief This function is a utility function to remove the ue from the measQ
+ * preset in tthe cell Cb.
+ *
+ * @details
+ *
+ *     Function: 
+ *
+ *         Processing steps:
+ *         - 
+ *
+ * @param  
+ * @param 
+ * @return 
+ */
 #ifdef ANSI
-PRIVATE S16 rgSCHMeasGapANRepUtlRmvUe 
+   PRIVATE S16 rgSCHMeasGapANRepUtlRmvUe 
 (
-RgSchCellCb       *cell,
-RgSchUeCb          *ue
-)
+ RgSchCellCb       *cell,
+ RgSchUeCb          *ue
+ )
 #else
 PRIVATE S16 rgSCHMeasGapANRepUtlRmvUe (cell, ue)
-RgSchCellCb       *cell;
-RgSchUeCb          *ue;
+   RgSchCellCb       *cell;
+   RgSchUeCb          *ue;
 #endif
 {
 
@@ -379,17 +379,17 @@ RgSchUeCb          *ue;
    switch (ue->measGapCb.gapPrd)
    {
       case RG_MEAS_GAPPRD_40:
-         /* Remove from the existing list */
-         cmLListDelFrm (&(cell->measGapCb.gapPrd40Q[ue->measGapCb.gapOffst]), 
-               &(ue->measGapCb.measQLnk));
-         ue->measGapCb.measQLnk.node = NULLP;
-         break;
+	 /* Remove from the existing list */
+	 cmLListDelFrm (&(cell->measGapCb.gapPrd40Q[ue->measGapCb.gapOffst]), 
+	       &(ue->measGapCb.measQLnk));
+	 ue->measGapCb.measQLnk.node = NULLP;
+	 break;
       case RG_MEAS_GAPPRD_80:
-         /* Remove from the existing list */
-         cmLListDelFrm (&(cell->measGapCb.gapPrd80Q[ue->measGapCb.gapOffst]), 
-               &(ue->measGapCb.measQLnk));
-         ue->measGapCb.measQLnk.node = NULLP;
-         break;
+	 /* Remove from the existing list */
+	 cmLListDelFrm (&(cell->measGapCb.gapPrd80Q[ue->measGapCb.gapOffst]), 
+	       &(ue->measGapCb.measQLnk));
+	 ue->measGapCb.measQLnk.node = NULLP;
+	 break;
    }
    RETVALUE(ROK);
 } /* end of rgSCHMeasGapANRepUtlRmvUe */ 
@@ -424,17 +424,17 @@ RgSchUeCb          *ue;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepUeDel
+   PUBLIC Void rgSCHMeasGapANRepUeDel
 (
-RgSchCellCb *cell,
-RgSchUeCb   *ue,
-Bool        isUeDel
-)
+ RgSchCellCb *cell,
+ RgSchUeCb   *ue,
+ Bool        isUeDel
+ )
 #else
 PUBLIC Void rgSCHMeasGapANRepUeDel(cell, ue, isUeDel)
-RgSchCellCb *cell;
-RgSchUeCb   *ue;
-Bool        isUeDel;
+   RgSchCellCb *cell;
+   RgSchUeCb   *ue;
+   Bool        isUeDel;
 #endif
 {
 
@@ -447,7 +447,7 @@ Bool        isUeDel;
       /* Must stop the timer if its running */
       if (ue->measGapCb.isMeasuring)
       {
-         rgSCHTmrStopTmr (cell, RG_SCH_TMR_MEASGAP, ue);
+	 rgSCHTmrStopTmr (cell, RG_SCH_TMR_MEASGAP, ue);
       }
 
       ue->measGapCb.isMesGapEnabled = FALSE;
@@ -458,11 +458,11 @@ Bool        isUeDel;
    {
       if (ue->dl.dlInactvMask & RG_MEASGAP_INACTIVE)
       {
-         rgSCHTmrStopTmr (cell, RG_SCH_TMR_DL_MEASGAP, ue);
+	 rgSCHTmrStopTmr (cell, RG_SCH_TMR_DL_MEASGAP, ue);
       }
       if (ue->dl.dlInactvMask & RG_ACKNAKREP_INACTIVE)
       {
-         rgSCHTmrStopTmr (cell, RG_SCH_TMR_DL_ACKNACK, ue);
+	 rgSCHTmrStopTmr (cell, RG_SCH_TMR_DL_ACKNACK, ue);
       }
       ue->dl.dlInactvLnk.node = NULLP;
    }
@@ -470,11 +470,11 @@ Bool        isUeDel;
    {
       if (ue->ul.ulInactvMask & RG_MEASGAP_INACTIVE)
       {
-         rgSCHTmrStopTmr (cell, RG_SCH_TMR_UL_MEASGAP, ue);
+	 rgSCHTmrStopTmr (cell, RG_SCH_TMR_UL_MEASGAP, ue);
       }
       if (ue->ul.ulInactvMask & RG_ACKNAKREP_INACTIVE)
       {
-         rgSCHTmrStopTmr (cell, RG_SCH_TMR_UL_ACKNACK, ue);
+	 rgSCHTmrStopTmr (cell, RG_SCH_TMR_UL_ACKNACK, ue);
       }
       ue->ul.ulInactvLnk.node = NULLP;
    }
@@ -488,32 +488,32 @@ Bool        isUeDel;
    RETVOID;
 }
 
- /** @brief This function deletes the UEs information related to ACK NACK
-  * repetition.
-  *
-  * @details
-  *
-  *     Function: 
-  *
-  *         Processing steps:
-  *         - Mainly we need to remove the UEs hqProcs from the ackNackQ(s)
-  *         present in the subframes.
-  *
-  *
-  * @param  
-  * @param 
-  * @return 
-  */
+/** @brief This function deletes the UEs information related to ACK NACK
+ * repetition.
+ *
+ * @details
+ *
+ *     Function: 
+ *
+ *         Processing steps:
+ *         - Mainly we need to remove the UEs hqProcs from the ackNackQ(s)
+ *         present in the subframes.
+ *
+ *
+ * @param  
+ * @param 
+ * @return 
+ */
 #ifdef ANSI
-PRIVATE S16 rgSchAckNackRepUtlRmvUe
+   PRIVATE S16 rgSchAckNackRepUtlRmvUe
 (
  RgSchCellCb      *cell,
  RgSchUeCb        *ue
  )
 #else
 PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
- RgSchCellCb      *cell;
- RgSchUeCb        *ue;
+   RgSchCellCb      *cell;
+   RgSchUeCb        *ue;
 #endif
 {
 
@@ -533,20 +533,20 @@ PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
       /* Starting from index 1 as index 0 isn't used */
       for (repIdx = 1; repIdx < ue->ackNakRepCb.cfgRepCnt; repIdx++)
       {
-         for (tbCnt = 0; tbCnt < 2; tbCnt++)
-         {
-            if ((hqP->tbInfo[tbCnt].crntSubfrm[repIdx] != NULLP) &&
-                  (hqP->tbInfo[tbCnt].anRepLnk[repIdx].node != NULLP))
-            {
-               cmLListDelFrm(&((hqP->tbInfo[tbCnt].crntSubfrm[repIdx])->\
-               ackNakRepQ), &hqP->tbInfo[tbCnt].anRepLnk[repIdx]);
-               hqP->tbInfo[tbCnt].anRepLnk[repIdx].node = NULLP;
-               hqP->tbInfo[tbCnt].crntSubfrm[repIdx] = NULLP;
-            }
-         }
+	 for (tbCnt = 0; tbCnt < 2; tbCnt++)
+	 {
+	    if ((hqP->tbInfo[tbCnt].crntSubfrm[repIdx] != NULLP) &&
+		  (hqP->tbInfo[tbCnt].anRepLnk[repIdx].node != NULLP))
+	    {
+	       cmLListDelFrm(&((hqP->tbInfo[tbCnt].crntSubfrm[repIdx])->\
+			ackNakRepQ), &hqP->tbInfo[tbCnt].anRepLnk[repIdx]);
+	       hqP->tbInfo[tbCnt].anRepLnk[repIdx].node = NULLP;
+	       hqP->tbInfo[tbCnt].crntSubfrm[repIdx] = NULLP;
+	    }
+	 }
       }
    }
- 
+
    RETVALUE(ROK);
 } /* end of */ 
 
@@ -618,13 +618,13 @@ PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
  **/
 
 #ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepTtiHndl
+   PUBLIC S16 rgSCHMeasGapANRepTtiHndl
 (
-RgSchCellCb *cell
-)
+ RgSchCellCb *cell
+ )
 #else
 PUBLIC S16 rgSCHMeasGapANRepTtiHndl(cell)
-RgSchCellCb *cell;
+   RgSchCellCb *cell;
 #endif
 {
    U8               offset;
@@ -682,33 +682,33 @@ RgSchCellCb *cell;
    RETVALUE(ROK);
 }
 
- /** @brief This function Marks the UE as ackNakRep so that Reception request
-  * isnt sent for any other thing than HARQ.
-  *
-  * @details
-  *
-  *     Function: 
-  *
-  *         Processing steps:
-  *         - Loop through HARQ procs of the DlSf.
-  *         - If the UE is a repeating one 
-  *           - Mark as ackNakRep = TRUE
-  *           - Start the timer 
-  *
-  * @param  RgSchCellCb *cell
-  * @param  CmLListCp   *ackNakRepQ
-  * @return Void
-  */
+/** @brief This function Marks the UE as ackNakRep so that Reception request
+ * isnt sent for any other thing than HARQ.
+ *
+ * @details
+ *
+ *     Function: 
+ *
+ *         Processing steps:
+ *         - Loop through HARQ procs of the DlSf.
+ *         - If the UE is a repeating one 
+ *           - Mark as ackNakRep = TRUE
+ *           - Start the timer 
+ *
+ * @param  RgSchCellCb *cell
+ * @param  CmLListCp   *ackNakRepQ
+ * @return Void
+ */
 #ifdef ANSI
-PRIVATE Void rgSchAckNackRepUtlHdlTti
+   PRIVATE Void rgSchAckNackRepUtlHdlTti
 (
-RgSchCellCb *cell,
-CmLListCp   *ackNackRepQ
-)
+ RgSchCellCb *cell,
+ CmLListCp   *ackNackRepQ
+ )
 #else
 PRIVATE Void rgSchAckNackRepUtlHdlTti (cell, ackNackRepQ)
-RgSchCellCb *cell;
-CmLListCp   *ackNackRepQ;
+   RgSchCellCb *cell;
+   CmLListCp   *ackNackRepQ;
 #endif
 {
    CmLList           *node;
@@ -722,9 +722,9 @@ CmLListCp   *ackNackRepQ;
       ue = (RgSchUeCb *)(node->node);
       if ((NULLP != ue) && (ue->ackNakRepCb.isAckNackEnabled))
       {
-         ue->ackNakRepCb.isAckNakRep = TRUE;
-         rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_ACKNACK_REP, 
-               ue->ackNakRepCb.repCntr);
+	 ue->ackNakRepCb.isAckNakRep = TRUE;
+	 rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_ACKNACK_REP, 
+	       ue->ackNakRepCb.repCntr);
       }
       node = node->next;
    } /* end of while */
@@ -732,30 +732,30 @@ CmLListCp   *ackNackRepQ;
 } /* end of */ 
 
 
- /** @brief This function 
-  *
-  * @details
-  *
-  *     Function: 
-  *
-  *         Processing steps:
-  *         - 
-  *
-  *
-  * @param  
-  * @param 
-  * @return 
-  */
+/** @brief This function 
+ *
+ * @details
+ *
+ *     Function: 
+ *
+ *         Processing steps:
+ *         - 
+ *
+ *
+ * @param  
+ * @param 
+ * @return 
+ */
 #ifdef ANSI
-PRIVATE Void rgSCHMeasGapANRepUtlHdlTti
+   PRIVATE Void rgSCHMeasGapANRepUtlHdlTti
 (
-RgSchCellCb *cell,
-CmLListCp   *measGapQ
-)
+ RgSchCellCb *cell,
+ CmLListCp   *measGapQ
+ )
 #else
 PRIVATE Void rgSCHMeasGapANRepUtlHdlTti (cell, measGapQ)
-RgSchCellCb *cell;
-CmLListCp   *measGapQ;
+   RgSchCellCb *cell;
+   CmLListCp   *measGapQ;
 #endif
 {
    CmLList           *node;
@@ -822,15 +822,15 @@ CmLListCp   *measGapQ;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepGetDlInactvUe
+   PUBLIC S16 rgSCHMeasGapANRepGetDlInactvUe
 (
-RgSchCellCb *cell,
-CmLListCp   *dlInactvUeLst
-)
+ RgSchCellCb *cell,
+ CmLListCp   *dlInactvUeLst
+ )
 #else
 PUBLIC S16 rgSCHMeasGapANRepGetDlInactvUe(cell, dlInactvUeLst)
-RgSchCellCb *cell;
-CmLListCp   *dlInactvUeLst;
+   RgSchCellCb *cell;
+   CmLListCp   *dlInactvUeLst;
 #endif
 {
    U8                offset;
@@ -856,7 +856,7 @@ CmLListCp   *dlInactvUeLst;
 #ifdef LTE_TDD
    RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, ackNakTime, RG_DL_DELTA);
    if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][ackNakTime.subframe] !=
-         RG_SCH_TDD_DL_SUBFRAME)
+	 RG_SCH_TDD_DL_SUBFRAME)
    {
       RETVALUE(ROK);
    }
@@ -865,9 +865,9 @@ CmLListCp   *dlInactvUeLst;
    if(dlSf->dlFdbkInfo.sfnOffset > 0)
    {
       harqFdbkOffset =  
-         (dlSf->dlFdbkInfo.sfnOffset - 1) * RGSCH_NUM_SUB_FRAMES+ \
-         RGSCH_NUM_SUB_FRAMES - ackNakTime.subframe + \
-         dlSf->dlFdbkInfo.subframe;
+	 (dlSf->dlFdbkInfo.sfnOffset - 1) * RGSCH_NUM_SUB_FRAMES+ \
+	 RGSCH_NUM_SUB_FRAMES - ackNakTime.subframe + \
+	 dlSf->dlFdbkInfo.subframe;
    }
    else
    {
@@ -890,7 +890,7 @@ CmLListCp   *dlInactvUeLst;
       cmLListAdd2Tail (dlInactvUeLst, &(ue->dl.dlInactvLnk));
       /* Start timer */
       rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_DL_MEASGAP, 
-            (RG_SCH_MEAS_GAP_LEN + harqFdbkOffset));
+	    (RG_SCH_MEAS_GAP_LEN + harqFdbkOffset));
       node = node->next;
    }
 
@@ -908,7 +908,7 @@ CmLListCp   *dlInactvUeLst;
       cmLListAdd2Tail (dlInactvUeLst, &(ue->dl.dlInactvLnk));
       /* Start timer */
       rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_DL_MEASGAP, 
-            (RG_SCH_MEAS_GAP_LEN + harqFdbkOffset));
+	    (RG_SCH_MEAS_GAP_LEN + harqFdbkOffset));
       node = node->next;
    }
 
@@ -930,15 +930,15 @@ CmLListCp   *dlInactvUeLst;
 #else
    if(0 == RG_DL_DELTA)
    {
-     /* Go to the subframe being scheduled */
-     RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, ackNakTime, RG_DL_DELTA);
-     /* Go to the previous subframe */
-     RGSCHDECRFRMCRNTTIME(ackNakTime, ackNakTime, 1);
+      /* Go to the subframe being scheduled */
+      RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, ackNakTime, RG_DL_DELTA);
+      /* Go to the previous subframe */
+      RGSCHDECRFRMCRNTTIME(ackNakTime, ackNakTime, 1);
    }
    else
    {
-     RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, ackNakTime,
-           (RG_DL_DELTA - 1));
+      RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, ackNakTime,
+	    (RG_DL_DELTA - 1));
    }
    dlSf = rgSCHUtlSubFrmGet (cell, ackNakTime);
 #endif
@@ -952,32 +952,32 @@ CmLListCp   *dlInactvUeLst;
       hqNode = ue->dl.dlSfHqInfo[cell->cellId][dlSf->dlIdx].hqPLst.first;
       while (hqNode)
       {
-         hqP = (RgSchDlHqProcCb *)hqNode->node;
-         hqNode = hqNode->next;
-         for (i = 0;(i<2) && (hqP->tbInfo[i].state == HQ_TB_WAITING);i++)
-         {
-            tbCb = &hqP->tbInfo[i];
-            if (tbCb->fbkRepCntr > 0)
-            {
-               ue->dl.dlInactvMask |= RG_ACKNAKREP_INACTIVE;
-               /* Check if already added to the list */
-               if (!(ue->dl.dlInactvMask & RG_MEASGAP_INACTIVE))
-               {
-                  /* Add to the inactv list */
-                  ue->dl.dlInactvLnk.node = (PTR)ue;
-                  cmLListAdd2Tail (dlInactvUeLst, &(ue->dl.dlInactvLnk));
-               }
-               /* Start timer */
+	 hqP = (RgSchDlHqProcCb *)hqNode->node;
+	 hqNode = hqNode->next;
+	 for (i = 0;(i<2) && (hqP->tbInfo[i].state == HQ_TB_WAITING);i++)
+	 {
+	    tbCb = &hqP->tbInfo[i];
+	    if (tbCb->fbkRepCntr > 0)
+	    {
+	       ue->dl.dlInactvMask |= RG_ACKNAKREP_INACTIVE;
+	       /* Check if already added to the list */
+	       if (!(ue->dl.dlInactvMask & RG_MEASGAP_INACTIVE))
+	       {
+		  /* Add to the inactv list */
+		  ue->dl.dlInactvLnk.node = (PTR)ue;
+		  cmLListAdd2Tail (dlInactvUeLst, &(ue->dl.dlInactvLnk));
+	       }
+	       /* Start timer */
 #ifdef LTE_TDD
-               repCntr = rgSCHAckNakRepFindUlDuration(cell, dlSf, ackNakTime, 
-                     (U8)(ue->ackNakRepCb.repCntr - 1));
-               rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_DL_ACKNACK, repCntr);
+	       repCntr = rgSCHAckNakRepFindUlDuration(cell, dlSf, ackNakTime, 
+		     (U8)(ue->ackNakRepCb.repCntr - 1));
+	       rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_DL_ACKNACK, repCntr);
 #else
-               rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_DL_ACKNACK, 
-                     (ue->ackNakRepCb.repCntr - 1));
+	       rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_DL_ACKNACK, 
+		     (ue->ackNakRepCb.repCntr - 1));
 #endif
-            }
-         }
+	    }
+	 }
       }
    }
    RETVALUE(ROK);
@@ -1029,15 +1029,15 @@ CmLListCp   *dlInactvUeLst;
  **/
 
 #ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepGetUlInactvUe
+   PUBLIC S16 rgSCHMeasGapANRepGetUlInactvUe
 (
-RgSchCellCb *cell,
-CmLListCp   *ulInactvUeLst
-)
+ RgSchCellCb *cell,
+ CmLListCp   *ulInactvUeLst
+ )
 #else
 PUBLIC S16 rgSCHMeasGapANRepGetUlInactvUe(cell, ulInactvUeLst)
-RgSchCellCb *cell;
-CmLListCp   *ulInactvUeLst;
+   RgSchCellCb *cell;
+   CmLListCp   *ulInactvUeLst;
 #endif
 {
 
@@ -1062,7 +1062,7 @@ CmLListCp   *ulInactvUeLst;
 
    /*ccpu00139481- Meas Gap should be monitored in UL with TFU_ULCNTRL_DLDELTA*/
    schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + \
-               TFU_ULCNTRL_DLDELTA;
+	       TFU_ULCNTRL_DLDELTA;
 #ifndef LTE_TDD
    pdcchToPuschGap = RGSCH_PDCCH_PUSCH_DELTA;
 #else
@@ -1077,22 +1077,22 @@ CmLListCp   *ulInactvUeLst;
       node = queue->first;
       while (node)
       {
-         ue = (RgSchUeCb*)node->node;
-         if(!(ue->ul.ulInactvMask & RG_MEASGAP_INACTIVE))
-         {
-         ue->ul.ulInactvMask |= RG_MEASGAP_INACTIVE;
-         /* Add to the inactv list */
-         ue->ul.ulInactvLnk.node = (PTR)ue;
-         cmLListAdd2Tail (ulInactvUeLst, &(ue->ul.ulInactvLnk));
-         /* Start timer Note the timer is started for a value GAP_LEN +
-          * RG_SCH_CMN_HARQ_INTERVAL. The "4"
-          * is added because for UE to transmit, the PDCCH must be sent 4 subframes
-          * ahead - UE cant read PDCCH format0 if it is in measurement gap. */
-         rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_MEASGAP, 
-               (RG_SCH_MEAS_GAP_LEN + pdcchToPuschGap - idx));
-   //printf("Starting Meas Gap 40 @ DL TTI- (%d:%d) K-%d offset-%d Len %d \n", ackNakTime.sfn, ackNakTime.subframe, harqFdbkOffset, offset, RG_SCH_MEAS_GAP_LEN + harqFdbkOffset-idx);
-         }
-         node = node->next;
+	 ue = (RgSchUeCb*)node->node;
+	 if(!(ue->ul.ulInactvMask & RG_MEASGAP_INACTIVE))
+	 {
+	    ue->ul.ulInactvMask |= RG_MEASGAP_INACTIVE;
+	    /* Add to the inactv list */
+	    ue->ul.ulInactvLnk.node = (PTR)ue;
+	    cmLListAdd2Tail (ulInactvUeLst, &(ue->ul.ulInactvLnk));
+	    /* Start timer Note the timer is started for a value GAP_LEN +
+	     * RG_SCH_CMN_HARQ_INTERVAL. The "4"
+	     * is added because for UE to transmit, the PDCCH must be sent 4 subframes
+	     * ahead - UE cant read PDCCH format0 if it is in measurement gap. */
+	    rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_MEASGAP, 
+		  (RG_SCH_MEAS_GAP_LEN + pdcchToPuschGap - idx));
+	    //printf("Starting Meas Gap 40 @ DL TTI- (%d:%d) K-%d offset-%d Len %d \n", ackNakTime.sfn, ackNakTime.subframe, harqFdbkOffset, offset, RG_SCH_MEAS_GAP_LEN + harqFdbkOffset-idx);
+	 }
+	 node = node->next;
       }
 
       /* Calc offset for Measurement gap 80 */
@@ -1102,19 +1102,19 @@ CmLListCp   *ulInactvUeLst;
       node = queue->first;
       while (node)
       {
-         ue = (RgSchUeCb*)node->node;
-         if(!(ue->ul.ulInactvMask & RG_MEASGAP_INACTIVE))
-         {
-         ue->ul.ulInactvMask |= RG_MEASGAP_INACTIVE;
-         /* Add to the inactv list */
-         ue->ul.ulInactvLnk.node = (PTR)ue;
-         cmLListAdd2Tail (ulInactvUeLst, &(ue->ul.ulInactvLnk));
-         /* Start timer */
-         rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_MEASGAP, 
-               (RG_SCH_MEAS_GAP_LEN + pdcchToPuschGap - idx));
-   //printf("Starting Meas Gap 80 @ DL TTI- (%d:%d) K-%d offset-%d Len %d \n", ackNakTime.sfn, ackNakTime.subframe, harqFdbkOffset, offset, RG_SCH_MEAS_GAP_LEN + harqFdbkOffset-idx);
-         }
-         node = node->next;
+	 ue = (RgSchUeCb*)node->node;
+	 if(!(ue->ul.ulInactvMask & RG_MEASGAP_INACTIVE))
+	 {
+	    ue->ul.ulInactvMask |= RG_MEASGAP_INACTIVE;
+	    /* Add to the inactv list */
+	    ue->ul.ulInactvLnk.node = (PTR)ue;
+	    cmLListAdd2Tail (ulInactvUeLst, &(ue->ul.ulInactvLnk));
+	    /* Start timer */
+	    rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_MEASGAP, 
+		  (RG_SCH_MEAS_GAP_LEN + pdcchToPuschGap - idx));
+	    //printf("Starting Meas Gap 80 @ DL TTI- (%d:%d) K-%d offset-%d Len %d \n", ackNakTime.sfn, ackNakTime.subframe, harqFdbkOffset, offset, RG_SCH_MEAS_GAP_LEN + harqFdbkOffset-idx);
+	 }
+	 node = node->next;
       }
    }
    /* Calc offset for ACK NACK repetition */
@@ -1130,7 +1130,7 @@ CmLListCp   *ulInactvUeLst;
    }
    RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, ackNakTime, TFU_DELTA);
    if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][ackNakTime.subframe] !=
-         RG_SCH_TDD_DL_SUBFRAME)
+	 RG_SCH_TDD_DL_SUBFRAME)
    {
       RETVALUE(ROK);
    }
@@ -1149,32 +1149,32 @@ CmLListCp   *ulInactvUeLst;
       hqNode = ue->dl.dlSfHqInfo[cell->cellId][dlSf->dlIdx].hqPLst.first;
       while (hqNode)
       {
-         hqP = (RgSchDlHqProcCb *)hqNode->node;
-         hqNode = hqNode->next;
-         for (i = 0;(i<2) && (hqP->tbInfo[i].state == HQ_TB_WAITING);i++)
-         {
-            tbCb = &hqP->tbInfo[i];
-            if (tbCb->fbkRepCntr > 0)
-            {
-               ue->ul.ulInactvMask |= RG_ACKNAKREP_INACTIVE;
-               /* Check if already added to the list */
-               if (!(ue->ul.ulInactvMask & RG_MEASGAP_INACTIVE))
-               {
-                  /* Add to the inactv list */
-                  ue->ul.ulInactvLnk.node = (PTR)ue;
-                  cmLListAdd2Tail (ulInactvUeLst, &(ue->ul.ulInactvLnk));
-               }
-               /* Start timer */
+	 hqP = (RgSchDlHqProcCb *)hqNode->node;
+	 hqNode = hqNode->next;
+	 for (i = 0;(i<2) && (hqP->tbInfo[i].state == HQ_TB_WAITING);i++)
+	 {
+	    tbCb = &hqP->tbInfo[i];
+	    if (tbCb->fbkRepCntr > 0)
+	    {
+	       ue->ul.ulInactvMask |= RG_ACKNAKREP_INACTIVE;
+	       /* Check if already added to the list */
+	       if (!(ue->ul.ulInactvMask & RG_MEASGAP_INACTIVE))
+	       {
+		  /* Add to the inactv list */
+		  ue->ul.ulInactvLnk.node = (PTR)ue;
+		  cmLListAdd2Tail (ulInactvUeLst, &(ue->ul.ulInactvLnk));
+	       }
+	       /* Start timer */
 #ifdef LTE_TDD
-               repCntr = rgSCHAckNakRepFindUlDuration(cell, dlSf, ackNakTime, 
-                     ue->ackNakRepCb.repCntr);
-               rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_ACKNACK, repCntr);
+	       repCntr = rgSCHAckNakRepFindUlDuration(cell, dlSf, ackNakTime, 
+		     ue->ackNakRepCb.repCntr);
+	       rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_ACKNACK, repCntr);
 #else
-               rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_ACKNACK, 
-                     (ue->ackNakRepCb.repCntr));
+	       rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_ACKNACK, 
+		     (ue->ackNakRepCb.repCntr));
 #endif
-            }
-         }
+	    }
+	 }
       }
    }
    RETVALUE(ROK);
@@ -1208,15 +1208,15 @@ CmLListCp   *ulInactvUeLst;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepDlInactvTmrExpry
+   PUBLIC Void rgSCHMeasGapANRepDlInactvTmrExpry
 (
-RgSchUeCb *ue,
-U8         tmrEvnt
-)
+ RgSchUeCb *ue,
+ U8         tmrEvnt
+ )
 #else
 PUBLIC Void rgSCHMeasGapANRepDlInactvTmrExpry(ue, tmrEvnt)
-RgSchUeCb *ue;
-U8         tmrEvnt;
+   RgSchUeCb *ue;
+   U8         tmrEvnt;
 #endif
 {
 
@@ -1226,11 +1226,11 @@ U8         tmrEvnt;
    switch (tmrEvnt)
    {
       case RG_SCH_TMR_DL_MEASGAP:
-         RG_SCH_CMN_DL_UPDT_INACTV_MASK ( cell, ue, RG_MEASGAP_INACTIVE);
-         break;
+	 RG_SCH_CMN_DL_UPDT_INACTV_MASK ( cell, ue, RG_MEASGAP_INACTIVE);
+	 break;
       case RG_SCH_TMR_DL_ACKNACK:
-         RG_SCH_CMN_DL_UPDT_INACTV_MASK ( cell, ue, RG_ACKNAKREP_INACTIVE);
-         break;
+	 RG_SCH_CMN_DL_UPDT_INACTV_MASK ( cell, ue, RG_ACKNAKREP_INACTIVE);
+	 break;
    }
    if (!ue->dl.dlInactvMask)
    {
@@ -1268,15 +1268,15 @@ U8         tmrEvnt;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepUlInactvTmrExpry
+   PUBLIC Void rgSCHMeasGapANRepUlInactvTmrExpry
 (
-RgSchUeCb *ue,
-U8         tmrEvnt
-)
+ RgSchUeCb *ue,
+ U8         tmrEvnt
+ )
 #else
 PUBLIC Void rgSCHMeasGapANRepUlInactvTmrExpry(ue, tmrEvnt)
-RgSchUeCb *ue;
-U8         tmrEvnt;
+   RgSchUeCb *ue;
+   U8         tmrEvnt;
 #endif
 {
    RgSchCellCb       *cell = ue->cell;
@@ -1285,11 +1285,11 @@ U8         tmrEvnt;
    switch (tmrEvnt)
    {
       case RG_SCH_TMR_UL_MEASGAP:
-         RG_SCH_CMN_UL_UPDT_INACTV_MASK ( cell, ue, RG_MEASGAP_INACTIVE);
-         break;
+	 RG_SCH_CMN_UL_UPDT_INACTV_MASK ( cell, ue, RG_MEASGAP_INACTIVE);
+	 break;
       case RG_SCH_TMR_UL_ACKNACK:
-         RG_SCH_CMN_UL_UPDT_INACTV_MASK ( cell, ue, RG_ACKNAKREP_INACTIVE);
-         break;
+	 RG_SCH_CMN_UL_UPDT_INACTV_MASK ( cell, ue, RG_ACKNAKREP_INACTIVE);
+	 break;
    }
    if (!ue->ul.ulInactvMask)
    {
@@ -1322,13 +1322,13 @@ U8         tmrEvnt;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepTmrExpry
+   PUBLIC Void rgSCHMeasGapANRepTmrExpry
 (
-RgSchUeCb *ue
-)
+ RgSchUeCb *ue
+ )
 #else
 PUBLIC Void rgSCHMeasGapANRepTmrExpry(ue)
-RgSchUeCb *ue;
+   RgSchUeCb *ue;
 #endif
 {
 
@@ -1363,13 +1363,13 @@ RgSchUeCb *ue;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHAckNakRepTmrExpry
+   PUBLIC Void rgSCHAckNakRepTmrExpry
 (
-RgSchUeCb *ue
-)
+ RgSchUeCb *ue
+ )
 #else
 PUBLIC Void rgSCHAckNakRepTmrExpry(ue)
-RgSchUeCb *ue;
+   RgSchUeCb *ue;
 #endif
 {
 
@@ -1414,15 +1414,15 @@ RgSchUeCb *ue;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHAckNakRepAddToQ
+   PUBLIC Void rgSCHAckNakRepAddToQ
 (
-RgSchCellCb       *cell,
-RgSchDlSf         *crntDlSf
-)
+ RgSchCellCb       *cell,
+ RgSchDlSf         *crntDlSf
+ )
 #else
 PUBLIC Void rgSCHAckNakRepAddToQ(cell, crntDlSf)
-RgSchCellCb          *cell;
-RgSchDlSf            *crntDlSf;
+   RgSchCellCb          *cell;
+   RgSchDlSf            *crntDlSf;
 #endif
 {
    RgSchUeCb         *ue;
@@ -1442,20 +1442,20 @@ RgSchDlSf            *crntDlSf;
       hqNode = ue->dl.dlSfHqInfo[cell->cellId][crntDlSf->dlIdx].hqPLst.first;
       while (hqNode)
       {
-         hqP = (RgSchDlHqProcCb *)hqNode->node;
-         hqNode = hqNode->next;
-         for (i = 0;(i<2) && (hqP->tbInfo[i].state == HQ_TB_WAITING);i++)
-         {
-            tbCb = &hqP->tbInfo[i];
-            /* Add UEs that have enabled ACK NACK repetition */
-            if (ue->ackNakRepCb.isAckNackEnabled)
-            {
-               tbCb->fbkRepCntr = ue->ackNakRepCb.cfgRepCnt;
-               tbCb->fbkRecpRepCntr = ue->ackNakRepCb.cfgRepCnt;
-               /* Removed init of timers as the init will be happening during
-                * config or timer expiry*/
-            }
-         }
+	 hqP = (RgSchDlHqProcCb *)hqNode->node;
+	 hqNode = hqNode->next;
+	 for (i = 0;(i<2) && (hqP->tbInfo[i].state == HQ_TB_WAITING);i++)
+	 {
+	    tbCb = &hqP->tbInfo[i];
+	    /* Add UEs that have enabled ACK NACK repetition */
+	    if (ue->ackNakRepCb.isAckNackEnabled)
+	    {
+	       tbCb->fbkRepCntr = ue->ackNakRepCb.cfgRepCnt;
+	       tbCb->fbkRecpRepCntr = ue->ackNakRepCb.cfgRepCnt;
+	       /* Removed init of timers as the init will be happening during
+		* config or timer expiry*/
+	    }
+	 }
       }
    }
    RETVOID;
@@ -1483,19 +1483,19 @@ RgSchDlSf            *crntDlSf;
  **/
 
 #ifdef ANSI
-PRIVATE U8 rgSCHAckNakRepFindUlDuration
+   PRIVATE U8 rgSCHAckNakRepFindUlDuration
 (
-RgSchCellCb       *cell,
-RgSchDlSf         *dlSf,
-CmLteTimingInfo   repTime,
-U8                repCnt
-)
+ RgSchCellCb       *cell,
+ RgSchDlSf         *dlSf,
+ CmLteTimingInfo   repTime,
+ U8                repCnt
+ )
 #else
 PRIVATE U8 rgSCHAckNakRepFindUlDuration(cell, dlSf, repTime, repCnt)
-RgSchCellCb       *cell;
-RgSchDlSf         *dlSf;
-CmLteTimingInfo   repTime;
-U8                repCnt;
+   RgSchCellCb       *cell;
+   RgSchDlSf         *dlSf;
+   CmLteTimingInfo   repTime;
+   U8                repCnt;
 #endif
 {
    CmLteTimingInfo   ulfrm;
@@ -1506,24 +1506,24 @@ U8                repCnt;
    S8                diff;
 
    TRC2(rgSCHAckNakRepFindUlDuration)
-   rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, repTime, &noSubfrms);
+      rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, repTime, &noSubfrms);
    RG_SCH_ADD_TO_CRNT_TIME(repTime, ulfrm, noSubfrms);
    diff = repCnt-1;
    idx = ulfrm.subframe;
    while(diff)
-      {
+   {
       idx = (idx + 1) % RGSCH_NUM_SUB_FRAMES;
-         if(rgSchTddUlDlSubfrmTbl[ulDlCfgIdx][idx] ==
-                                    RG_SCH_TDD_UL_SUBFRAME)
-         {
-            diff--;
-         }
-      rem++;
+      if(rgSchTddUlDlSubfrmTbl[ulDlCfgIdx][idx] ==
+	    RG_SCH_TDD_UL_SUBFRAME)
+      {
+	 diff--;
       }
+      rem++;
+   }
    noSubfrms += rem;
 
    RETVALUE(noSubfrms);
-   }
+}
 
 /**
  * @brief Finds the number of subframes used for ACK-NACK cycle
@@ -1545,36 +1545,36 @@ U8                repCnt;
  **/
 
 #ifdef ANSI
-PRIVATE Void rgSCHAckNakRepGetUlOffsetFrmDl 
+   PRIVATE Void rgSCHAckNakRepGetUlOffsetFrmDl 
 (
-RgSchDlSf         *dlSf,
-CmLteTimingInfo   crntDlTime,
-U8                *noSubfrms 
-)
+ RgSchDlSf         *dlSf,
+ CmLteTimingInfo   crntDlTime,
+ U8                *noSubfrms 
+ )
 #else
 PRIVATE Void rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, crntDlTime, noSubfrms)
-RgSchDlSf         *dlSf;
-CmLteTimingInfo   crntDlTime;
-U8                *noSubfrms;
+   RgSchDlSf         *dlSf;
+   CmLteTimingInfo   crntDlTime;
+   U8                *noSubfrms;
 #endif
-         {
+{
    TRC2(rgSCHAckNakRepGetUlOffsetFrmDl)
 
-   if(dlSf->dlFdbkInfo.sfnOffset != 0)
-            {
-      *noSubfrms = (dlSf->dlFdbkInfo.sfnOffset - 1) * RGSCH_NUM_SUB_FRAMES;
-      *noSubfrms = *noSubfrms + RGSCH_NUM_SUB_FRAMES - crntDlTime.subframe;
-      *noSubfrms = *noSubfrms + dlSf->dlFdbkInfo.subframe;
+      if(dlSf->dlFdbkInfo.sfnOffset != 0)
+      {
+	 *noSubfrms = (dlSf->dlFdbkInfo.sfnOffset - 1) * RGSCH_NUM_SUB_FRAMES;
+	 *noSubfrms = *noSubfrms + RGSCH_NUM_SUB_FRAMES - crntDlTime.subframe;
+	 *noSubfrms = *noSubfrms + dlSf->dlFdbkInfo.subframe;
       }
-   else
-   {
-      *noSubfrms = dlSf->dlFdbkInfo.subframe - crntDlTime.subframe;
-   }
+      else
+      {
+	 *noSubfrms = dlSf->dlFdbkInfo.subframe - crntDlTime.subframe;
+      }
    RETVOID;
 }
 #endif
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

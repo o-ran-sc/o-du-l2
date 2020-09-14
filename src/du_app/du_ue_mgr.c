@@ -266,7 +266,7 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 		  for(idx2 = 0; idx2 < dlCcchMsgSize; idx2++)
 		  {
 		     dlCcchMsg[idx2] = \
-		        dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf[idx2];
+				       dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf[idx2];
 		  }
 	       }
 	       else
@@ -415,25 +415,25 @@ void fillInitDlBwp(InitialDlBwp *initDlBwp)
 	 if(initDlBwp->pdcchCfg.numCRsetToAddMod <= MAX_NUM_CRSET)
 	 {
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cRSetId = \
-	       PDCCH_CTRL_RSRC_SET_ONE_ID;
+								 PDCCH_CTRL_RSRC_SET_ONE_ID;
 	    memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
-	       FREQ_DOM_RSRC_SIZE); 
+		  FREQ_DOM_RSRC_SIZE); 
 	    coreset0EndPrb = CORESET0_END_PRB;
 	    coreset1StartPrb = coreset0EndPrb +6;
 	    coreset1NumPrb = CORESET1_NUM_PRB;
 	    /* calculate the PRBs */
 	    schAllocFreqDomRscType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
 	    memcpy(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, freqDomainResource,
-	       FREQ_DOM_RSRC_SIZE);
+		  FREQ_DOM_RSRC_SIZE);
 
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].duration = \
-	       PDCCH_CTRL_RSRC_SET_ONE_DURATION;
+								  PDCCH_CTRL_RSRC_SET_ONE_DURATION;
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cceRegMappingType = \
-	       CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED;
+									   CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED;
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].precoderGranularity = \
-	       ALL_CONTIGUOUS_RBS;
+									     ALL_CONTIGUOUS_RBS;
 	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].dmrsScramblingId = \
-	       SCRAMBLING_ID;
+									  SCRAMBLING_ID;
 	 }
 	 initDlBwp->pdcchCfg.numCRsetToRel = 0;
 	 /* Filling Serach Space */
@@ -442,29 +442,29 @@ void fillInitDlBwp(InitialDlBwp *initDlBwp)
 	 if(initDlBwp->pdcchCfg.numSearchSpcToAddMod <= MAX_NUM_CRSET)
 	 {
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceId =\
-	       PDCCH_SRCH_SPC_TWO_ID;
+									  PDCCH_SRCH_SPC_TWO_ID;
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].cRSetId = \
-	       PDCCH_CTRL_RSRC_SET_ONE_ID;
+								     PDCCH_CTRL_RSRC_SET_ONE_ID;
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].\
 	       mSlotPeriodicityAndOffset = SLOTPERIODICITYANDOFFSET_PR_SL1;
 	    memset(initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, 0,\
-	       MONITORING_SYMB_WITHIN_SLOT_SIZE);
+		  MONITORING_SYMB_WITHIN_SLOT_SIZE);
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot[idx] =\
-	       PDCCH_SYMBOL_WITHIN_SLOT;
+										    PDCCH_SYMBOL_WITHIN_SLOT;
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1 =\
-	       AGGREGATIONLEVEL_N8; 
+										   AGGREGATIONLEVEL_N8; 
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel2 =\
-	       AGGREGATIONLEVEL_N8; 
+										   AGGREGATIONLEVEL_N8; 
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel4 =\
-	       AGGREGATIONLEVEL_N4; 
+										   AGGREGATIONLEVEL_N4; 
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel8 =\
-	       AGGREGATIONLEVEL_N2; 
+										   AGGREGATIONLEVEL_N2; 
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel16 =\
-	       AGGREGATIONLEVEL_N1;
+										    AGGREGATIONLEVEL_N1;
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceType = \
-	       SEARCHSPACETYPE_PR_UE_SPECIFIC;
+									     SEARCHSPACETYPE_PR_UE_SPECIFIC;
 	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].ueSpecificDciFormat =\
-	       PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT;
+										PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT;
 
 	    initDlBwp->pdcchCfg.numSearchSpcToRel = 0;
 
@@ -478,11 +478,11 @@ void fillInitDlBwp(InitialDlBwp *initDlBwp)
 	 initDlBwp->pdschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
 	 initDlBwp->pdschCfg.numTimeDomRsrcAlloc = 1;
 	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = \
-	    MAPPING_TYPEA;
+								      MAPPING_TYPEA;
 	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 
 	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].symbolLength = PDSCH_LENGTH_SYMBOL;
 	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = \
-	    calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
+									       calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
 	 initDlBwp->pdschCfg.rbgSize = RBG_SIZE_CONFIG1;
 	 initDlBwp->pdschCfg.numCodeWordsSchByDci = CODEWORDS_SCHED_BY_DCI_N1;
 	 initDlBwp->pdschCfg.bundlingType = TYPE_STATIC_BUNDLING;
@@ -524,11 +524,11 @@ void fillInitUlBwp(InitialUlBwp *initUlBwp)
 	 {
 	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2;
 	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType =\
-	       MAPPING_TYPEA;
+								       MAPPING_TYPEA;
 	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbol = PUSCH_START_SYMBOL;
 	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].symbolLength = PUSCH_LENGTH_SYMBOL;
 	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
-	       calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
+										calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
 	 }
 	 initUlBwp->puschCfg.transformPrecoder = TRANSFORM_PRECODER_DISABLED;
       }
@@ -568,7 +568,7 @@ void fillSpCellGrpInfo(SpCellCfg *spCell)
       spCell->servCellCfg.pdschServCellCfg.codeBlkGrpFlushInd = NULLP;
       spCell->servCellCfg.pdschServCellCfg.xOverhead = NULLP;
       spCell->servCellCfg.pdschServCellCfg.numHarqProcForPdsch =\
-         NUM_HARQ_PROC_FOR_PDSCH_N_16;
+								NUM_HARQ_PROC_FOR_PDSCH_N_16;
       /* Filling Initial UL Bwp*/
       fillInitUlBwp(&spCell->servCellCfg.initUlBwp);
       spCell->servCellCfg.numUlBwpToAdd     = 0; 
@@ -746,7 +746,7 @@ void fillLcCfgList(LcCfg *lcCfgInfo)
  *
  *****************************************************************/
 void fillMacUeCfg(uint16_t cellId, uint8_t ueIdx,\
-  uint16_t crnti, MacUeCfg *ueCfg)
+      uint16_t crnti, MacUeCfg *ueCfg)
 {
    uint8_t idx;
    ueCfg->cellId       = cellId;
@@ -792,7 +792,7 @@ void fillAmInfo(AmBearerCfg *amCfg)
    amCfg->dlAmCfg.pollPdu     = POLL_PDU_TMR_INFINITY;
    amCfg->dlAmCfg.pollByte    = POLL_BYTES_INFINITY;
    amCfg->dlAmCfg.maxRetxTh   = RETX_TH_8;   
- 
+
    /* UL AM */
    amCfg->ulAmCfg.snLenUl     = AM_SIZE_12;
    amCfg->ulAmCfg.reAssemTmr  = RE_ASM_40MS; 
@@ -886,25 +886,25 @@ void fillRlcBearerCfg(uint16_t cellId, uint8_t ueIdx, RlcUeCfg *ueCfg)
       ueCfg->rlcBearerCfg[idx].rlcMode      = RLC_AM;
       switch(ueCfg->rlcBearerCfg[idx].rlcMode)
       {
-         case RLC_AM:
+	 case RLC_AM:
 	    memset(&ueCfg->rlcBearerCfg[idx].u.amCfg, 0, sizeof(AmBearerCfg));
-            fillAmInfo(&ueCfg->rlcBearerCfg[idx].u.amCfg);
-            break;
-         case RLC_UM_BI_DIRECTIONAL:
+	    fillAmInfo(&ueCfg->rlcBearerCfg[idx].u.amCfg);
+	    break;
+	 case RLC_UM_BI_DIRECTIONAL:
 	    memset(&ueCfg->rlcBearerCfg[idx].u.umBiDirCfg, 0, sizeof(UmBiDirBearerCfg));
-            fillUmBiDirInfo(&ueCfg->rlcBearerCfg[idx].u.umBiDirCfg);
-            break;
-         case RLC_UM_UNI_DIRECTIONAL_UL:
+	    fillUmBiDirInfo(&ueCfg->rlcBearerCfg[idx].u.umBiDirCfg);
+	    break;
+	 case RLC_UM_UNI_DIRECTIONAL_UL:
 	    memset(&ueCfg->rlcBearerCfg[idx].u.umUniDirUlCfg, 0, sizeof(UmUniDirUlBearerCfg));
-            fillUmUniDirUlInfo(&ueCfg->rlcBearerCfg[idx].u.umUniDirUlCfg);
-            break;
-         case RLC_UM_UNI_DIRECTIONAL_DL:
+	    fillUmUniDirUlInfo(&ueCfg->rlcBearerCfg[idx].u.umUniDirUlCfg);
+	    break;
+	 case RLC_UM_UNI_DIRECTIONAL_DL:
 	    memset(&ueCfg->rlcBearerCfg[idx].u.umUniDirDlCfg, 0, sizeof(UmUniDirDlBearerCfg));
-            fillUmUniDirDlInfo(&ueCfg->rlcBearerCfg[idx].u.umUniDirDlCfg);
-            break;
-         default :
-            DU_LOG("\nDU_APP: Rlc Mode invalid %d", ueCfg->rlcBearerCfg[idx].rlcMode);
-            break;
+	    fillUmUniDirDlInfo(&ueCfg->rlcBearerCfg[idx].u.umUniDirDlCfg);
+	    break;
+	 default :
+	    DU_LOG("\nDU_APP: Rlc Mode invalid %d", ueCfg->rlcBearerCfg[idx].rlcMode);
+	    break;
       }
    }
 }
@@ -944,17 +944,17 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 
 	 /* Filling Mac Ue Config */ 
 	 memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg, 0, sizeof(MacUeCfg));
-         ret = duBuildAndSendUeCreateReqToMac(ueCcchCtxt->cellId, ueIdx, ueCcchCtxt->crnti,\
-                &duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg);
-         if(ret)
-            DU_LOG("\nDU_APP: Failed to send UE create request to MAC");
-         
+	 ret = duBuildAndSendUeCreateReqToMac(ueCcchCtxt->cellId, ueIdx, ueCcchCtxt->crnti,\
+	       &duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg);
+	 if(ret)
+	    DU_LOG("\nDU_APP: Failed to send UE create request to MAC");
+
 	 /* Filling Rlc Ue Config */
-         memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].rlcUeCfg, 0, sizeof(RlcUeCfg));
-         ret = duBuildAndSendUeCreateReqToRlc(ueCcchCtxt->cellId, ueIdx, \
-                &duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].rlcUeCfg);
-         if(ret)
-            DU_LOG("\nDU_APP: Failed to send UE create request to RLC");
+	 memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].rlcUeCfg, 0, sizeof(RlcUeCfg));
+	 ret = duBuildAndSendUeCreateReqToRlc(ueCcchCtxt->cellId, ueIdx, \
+	       &duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].rlcUeCfg);
+	 if(ret)
+	    DU_LOG("\nDU_APP: Failed to send UE create request to RLC");
 
 	 duCb.actvCellLst[cellIdx]->numActvUes++;
 	 memset(ueCcchCtxt, 0, sizeof(UeCcchCtxt));
@@ -981,7 +981,7 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
  * ****************************************************************/
 
 uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx,\
-   uint16_t crnti, MacUeCfg *duMacUeCfg)
+      uint16_t crnti, MacUeCfg *duMacUeCfg)
 {
    uint8_t ret = ROK;
    MacUeCfg *macUeCfg = NULLP;
@@ -1071,7 +1071,7 @@ uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t ueIdx, RlcUeCfg 
    RlcUeCfg *rlcUeCfg = NULLP;
    Pst pst;
    memset(&pst, 0, sizeof(Pst));
-  
+
    fillRlcBearerCfg(cellId, ueIdx, duRlcUeCfg);
    FILL_PST_DUAPP_TO_RLC(pst, RLC_UL_INST, EVENT_RLC_UL_UE_CREATE_REQ);
 
@@ -1086,9 +1086,9 @@ uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t ueIdx, RlcUeCfg 
       ret = (*packRlcUlUeCreateReqOpts[pst.selector])(&pst, rlcUeCfg);
       if(ret)
       {
-         DU_LOG("\nDU_APP : Failure in sending Ue Create Req to RLC");
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rlcUeCfg, sizeof(RlcUeCfg));
-         ret = RFAILED;
+	 DU_LOG("\nDU_APP : Failure in sending Ue Create Req to RLC");
+	 DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rlcUeCfg, sizeof(RlcUeCfg));
+	 ret = RFAILED;
       }
    }
    else
@@ -1127,12 +1127,12 @@ uint8_t DuProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
    {
       if(cfgRsp->result == RLC_DU_APP_RSP_OK)
       {
-         DU_LOG("\nDU_APP: RLC UE Create Response : SUCCESS [UE IDX:%d]", cfgRsp->ueIdx);
+	 DU_LOG("\nDU_APP: RLC UE Create Response : SUCCESS [UE IDX:%d]", cfgRsp->ueIdx);
       }
       else
       {
-         DU_LOG("\nDU_APP: RLC UE Create Response : FAILED [UE IDX:%d, REASON :%d]",\
-	    cfgRsp->ueIdx, cfgRsp->reason);
+	 DU_LOG("\nDU_APP: RLC UE Create Response : FAILED [UE IDX:%d, REASON :%d]",\
+	       cfgRsp->ueIdx, cfgRsp->reason);
 	 ret = RFAILED;
       }
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));

@@ -46,28 +46,28 @@
 {                                                               \
    S16 _ret;                                                    \
    _ret = SGetSBuf(CU_APP_MEM_REG, CU_POOL,                  \
-                    (Data **)&_datPtr, _size);                  \
+	 (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
+   cmMemset((U8*)_datPtr, 0, _size);                         \
    else                                                         \
-      _datPtr = NULLP;                                          \
+   _datPtr = NULLP;                                          \
 }
 
 /* free a static buffer */
 #define CU_FREE(_datPtr, _size)                                 \
    if(_datPtr)                                                  \
-      SPutSBuf(CU_APP_MEM_REG, CU_POOL,                      \
-         (Data *)_datPtr, _size);
+SPutSBuf(CU_APP_MEM_REG, CU_POOL,                      \
+      (Data *)_datPtr, _size);
 
 
 typedef struct f1apDb
 {
    OCTET_STRING_t duToCuContainer;
 }F1apMsgDb;
-  
+
 F1apMsgDb f1apMsgDb;
 void F1APMsgHdlr(Buffer *mBuf);
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -86,17 +86,17 @@ S16 sctpActvTsk(Pst *pst, Buffer *mBuf)
    switch(pst->srcEnt)
    {
       case ENTDUAPP:
-         {
-            switch(pst->event)
-            {
-               case EVTSTARTPOLL:
-               {
-                  sctpSockPoll();
-                  break;
-               } 
-            }
-            break;
-         }
+	 {
+	    switch(pst->event)
+	    {
+	       case EVTSTARTPOLL:
+		  {
+		     sctpSockPoll();
+		     break;
+		  } 
+	    }
+	    break;
+	 }
    }
    SExitTsk();
    return ROK;
@@ -150,9 +150,9 @@ S16 duCheckReqStatus(CmStatus *cfm)
 S16 duSctpCfgReq(SctpParams sctpCfg)
 {
    S16 ret = ROK;
-	CmStatus cfm;
+   CmStatus cfm;
 
-/* Fill F1 Params */
+   /* Fill F1 Params */
    f1Params.destIpAddr.ipV4Pres  = sctpCfg.cuIpAddr.ipV4Pres;
    f1Params.destIpAddr.ipV4Addr  = sctpCfg.cuIpAddr.ipV4Addr;
    f1Params.destPort             = sctpCfg.cuPort;
@@ -163,7 +163,7 @@ S16 duSctpCfgReq(SctpParams sctpCfg)
    fillDestNetAddr(&f1Params.destIpNetAddr, &f1Params.destIpAddr);
    fillAddrLst(&f1Params.destAddrLst, &f1Params.destIpAddr);
 
-/* Fill RIC Params */
+   /* Fill RIC Params */
    ricParams.destIpAddr.ipV4Pres = sctpCfg.ricIpAddr.ipV4Pres;
    ricParams.destIpAddr.ipV4Addr = sctpCfg.ricIpAddr.ipV4Addr;
    ricParams.destPort            = sctpCfg.ricPort;
@@ -174,13 +174,13 @@ S16 duSctpCfgReq(SctpParams sctpCfg)
    fillDestNetAddr(&ricParams.destIpNetAddr, &ricParams.destIpAddr);
    fillAddrLst(&ricParams.destAddrLst, &ricParams.destIpAddr);
 
-/* Fill AddressList */
+   /* Fill AddressList */
    fillAddrLst(&localAddrLst, &sctpCfg.duIpAddr);
 
-/* Set polling to FALSE */
+   /* Set polling to FALSE */
    pollingState = FALSE;  
 
-/* Fill Cfm Status */
+   /* Fill Cfm Status */
    cfm.status = LCM_PRIM_OK;
    cfm.reason = LCM_REASON_NOT_APPL;
 
@@ -283,17 +283,17 @@ S16 establishReq(DuSctpDestCb *paramPtr)
    { 
       if(ret != ROK)
       {
-         DU_LOG("\nSCTP : Failed while establishing Req at DU");
-         ret = RFAILED;
+	 DU_LOG("\nSCTP : Failed while establishing Req at DU");
+	 ret = RFAILED;
       }
       else 
       {
-         ret = cmInetSctpConnectx(&paramPtr->sockFd, &paramPtr->destIpNetAddr, &paramPtr->destAddrLst, paramPtr->destPort);
-         /* 115 error_code indicates that Operation is in progress and hence ignored if SctpConnect failed due to this */
-         if(ret == 18)             
-         {
-           ret = ROK; 
-         }
+	 ret = cmInetSctpConnectx(&paramPtr->sockFd, &paramPtr->destIpNetAddr, &paramPtr->destAddrLst, paramPtr->destPort);
+	 /* 115 error_code indicates that Operation is in progress and hence ignored if SctpConnect failed due to this */
+	 if(ret == 18)             
+	 {
+	    ret = ROK; 
+	 }
       }
    }
    if((ret == ROK) & (paramPtr->itfState == DU_SCTP_DOWN))
@@ -307,7 +307,7 @@ S16 establishReq(DuSctpDestCb *paramPtr)
       pollingState = TRUE;
       duFillSctpPst(&pst, EVTSTARTPOLL);
    }
-   
+
    RETVALUE(ret);
 }
 
@@ -333,7 +333,7 @@ S16 establishReq(DuSctpDestCb *paramPtr)
 S16 duSctpAssocReq(U8 itfType)
 {
    S16 ret = ROK;
-	CmStatus cfm;
+   CmStatus cfm;
    DuSctpDestCb *paramPtr = NULLP;
 
    DU_ALLOC(paramPtr, sizeof(DuSctpDestCb));
@@ -345,22 +345,22 @@ S16 duSctpAssocReq(U8 itfType)
    switch(itfType)
    {
       case F1_INTERFACE:
-      {
-         paramPtr = &f1Params;
-         ret = establishReq(paramPtr);
-         break;
-      }
+	 {
+	    paramPtr = &f1Params;
+	    ret = establishReq(paramPtr);
+	    break;
+	 }
       case E2_INTERFACE:
-      {
-         paramPtr = &ricParams;
-         ret = establishReq(paramPtr);
-         break;
-      }
+	 {
+	    paramPtr = &ricParams;
+	    ret = establishReq(paramPtr);
+	    break;
+	 }
       default:
-      {
-         DU_LOG("\nSCTP : Invalid Interface Type");
-         break;
-      }
+	 {
+	    DU_LOG("\nSCTP : Invalid Interface Type");
+	    break;
+	 }
    }  
    if(ret != ROK)
    { 
@@ -434,8 +434,8 @@ S16 duFillSctpPst(Pst *pst, Event event)
  * ****************************************************************/
 S16 sctpSetSockOpts(CmInetFd *sock_Fd)
 {
-    S16 ret = ROK;
-    CmSctpEvent sctpEvent;
+   S16 ret = ROK;
+   CmSctpEvent sctpEvent;
 
    sctpEvent.dataIoEvent          = TRUE;
    sctpEvent.associationEvent     = TRUE;
@@ -448,7 +448,7 @@ S16 sctpSetSockOpts(CmInetFd *sock_Fd)
 
    if((ret = cmInetSetOpt(sock_Fd, CM_SOCKOPT_LEVEL_SCTP, CM_SOCKOPT_OPT_SCTP_EVENTS, &sctpEvent) != ROK))
    {
-     ret = RFAILED;
+      ret = RFAILED;
    }
 
    RETVALUE(ret);
@@ -520,63 +520,63 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
    switch(ntfy->header.nType)
    {
       case CM_INET_SCTP_ASSOC_CHANGE :
-         DU_LOG("\nSCTP : Assoc change notification received");
-         switch(ntfy->u.assocChange.state)
-         {
-            case CM_INET_SCTP_COMM_UP:
-               DU_LOG("Event : COMMUNICATION UP");
-               *itfState = DU_SCTP_UP;
-               break;
-            case CM_INET_SCTP_COMM_LOST:
-               DU_LOG("Event : COMMUNICATION LOST");
-               *itfState = DU_SCTP_DOWN;
-               break;
-            case CM_INET_SCTP_RESTART:
-               DU_LOG("Event : SCTP RESTART");
-               *itfState = DU_SCTP_DOWN;
-               break;
-            case CM_INET_SCTP_SHUTDOWN_COMP: /* association gracefully shutdown */
-               DU_LOG("Event : SHUTDOWN COMPLETE");
-               *itfState = DU_SCTP_DOWN;
-               break;
-            case CM_INET_SCTP_CANT_STR_ASSOC:
-               DU_LOG("Event : CANT START ASSOC");
-               *itfState = DU_SCTP_DOWN;
-               break;
-            default:
-               DU_LOG("\nInvalid event");
-               break;
-         }
-         break;
+	 DU_LOG("\nSCTP : Assoc change notification received");
+	 switch(ntfy->u.assocChange.state)
+	 {
+	    case CM_INET_SCTP_COMM_UP:
+	       DU_LOG("Event : COMMUNICATION UP");
+	       *itfState = DU_SCTP_UP;
+	       break;
+	    case CM_INET_SCTP_COMM_LOST:
+	       DU_LOG("Event : COMMUNICATION LOST");
+	       *itfState = DU_SCTP_DOWN;
+	       break;
+	    case CM_INET_SCTP_RESTART:
+	       DU_LOG("Event : SCTP RESTART");
+	       *itfState = DU_SCTP_DOWN;
+	       break;
+	    case CM_INET_SCTP_SHUTDOWN_COMP: /* association gracefully shutdown */
+	       DU_LOG("Event : SHUTDOWN COMPLETE");
+	       *itfState = DU_SCTP_DOWN;
+	       break;
+	    case CM_INET_SCTP_CANT_STR_ASSOC:
+	       DU_LOG("Event : CANT START ASSOC");
+	       *itfState = DU_SCTP_DOWN;
+	       break;
+	    default:
+	       DU_LOG("\nInvalid event");
+	       break;
+	 }
+	 break;
       case CM_INET_SCTP_PEER_ADDR_CHANGE :
-         DU_LOG("\nSCTP : Peer Address Change notificarion received");
-         /* Need to add handler */
-         break;
+	 DU_LOG("\nSCTP : Peer Address Change notificarion received");
+	 /* Need to add handler */
+	 break;
       case CM_INET_SCTP_REMOTE_ERROR :
-         DU_LOG("\nSCTP : Remote Error notification received");
-         break;
+	 DU_LOG("\nSCTP : Remote Error notification received");
+	 break;
       case CM_INET_SCTP_SEND_FAILED :
-         DU_LOG("\nSCTP : Send Failed notification received\n");
-         break;
+	 DU_LOG("\nSCTP : Send Failed notification received\n");
+	 break;
       case CM_INET_SCTP_SHUTDOWN_EVENT : /* peer socket gracefully closed */
-         DU_LOG("\nSCTP : Shutdown Event notification received\n");
-         *itfState = DU_SCTP_DOWN;
-         exit(0);
-         break;
+	 DU_LOG("\nSCTP : Shutdown Event notification received\n");
+	 *itfState = DU_SCTP_DOWN;
+	 exit(0);
+	 break;
       case CM_INET_SCTP_ADAPTATION_INDICATION :
-         DU_LOG("\nSCTP : Adaptation Indication received\n");
-         break;
+	 DU_LOG("\nSCTP : Adaptation Indication received\n");
+	 break;
       case CM_INET_SCTP_PARTIAL_DELIVERY_EVENT:
-         DU_LOG("\nSCTP : Partial Delivery Event received\n");
-         break;
+	 DU_LOG("\nSCTP : Partial Delivery Event received\n");
+	 break;
       default:
-         DU_LOG("\nSCTP : Invalid sctp notification type\n");
-         break;
+	 DU_LOG("\nSCTP : Invalid sctp notification type\n");
+	 break;
    }
 
    /* Pack notification and send to APP */
    DU_LOG("\nSCTP : Forwarding received message to duApp");
-    
+
    cmMemset((U8 *)&(pst), 0, sizeof(Pst));
    pst.srcEnt = (Ent)ENTSCTP;
    pst.srcInst = (Inst)SCTP_INST;
@@ -588,7 +588,7 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
    pst.selector = ODU_SELECTOR_LC;
    pst.pool= DU_POOL;
    pst.region = DU_APP_MEM_REGION;
-   
+
    if(cmPkSctpNtfy(&pst, ntfy) != ROK)
    {
       DU_LOG("\nSCTP : Failed to pack SCTP notification");
@@ -629,54 +629,54 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
    {
       CM_INET_FD_CLR(sockFd, &pollParams->readFd);
       ret = cmInetSctpRecvMsg(sockFd, &pollParams->addr, &pollParams->port, memInfo, &(pollParams->mBuf), &pollParams->bufLen, &pollParams->info, &pollParams->flag, &pollParams->ntfy);
-        
+
       if(ret != ROK)
       {
-         DU_LOG("\n SCTP: Failed to receive sctp msg for sockFd[%d]\n", sockFd->fd);
-         recvMsgSet = RFAILED;
+	 DU_LOG("\n SCTP: Failed to receive sctp msg for sockFd[%d]\n", sockFd->fd);
+	 recvMsgSet = RFAILED;
       }
       else
       {
-         if((((pollParams->flag & CM_INET_SCTP_MSG_NOTIFICATION) != 0)) && ret == ROK)
-         {
-            if(pollParams->port == f1Params.destPort)
-            {
-               f1Params.assocId = pollParams->ntfy.u.assocChange.assocId;
-               DU_LOG("\nSCTP : AssocId assigned to F1Params from PollParams [%d]\n", f1Params.assocId);
-               ret = sctpNtfyHdlr(&pollParams->ntfy, &f1Params.itfState);
-            }
-            else if(pollParams->port == ricParams.destPort)
-            {
-               ricParams.assocId = pollParams->ntfy.u.assocChange.assocId;
-               DU_LOG("\nSCTP : AssocId assigned to ricParams from PollParams [%d]\n", ricParams.assocId);
-               ret = sctpNtfyHdlr(&pollParams->ntfy, &ricParams.itfState);
-            }
-            else
-            {
-               DU_LOG("\nSCTP : Failed to fill AssocId\n");
-               RETVALUE(RFAILED);
-            }
-            if(ret != ROK)
-            {
-               DU_LOG("\nSCTP : Failed to process sctp notify msg\n");
-            }
-         }
-         else if(f1Params.itfState & (pollParams->port == f1Params.destPort))
-         {  
-            sendToDuApp(pollParams->mBuf, EVENT_CU_DATA);
-         }
-         else if(ricParams.itfState & (pollParams->port == ricParams.destPort))
-         {  
-            sendToDuApp(pollParams->mBuf, EVENT_RIC_DATA);
-         }
+	 if((((pollParams->flag & CM_INET_SCTP_MSG_NOTIFICATION) != 0)) && ret == ROK)
+	 {
+	    if(pollParams->port == f1Params.destPort)
+	    {
+	       f1Params.assocId = pollParams->ntfy.u.assocChange.assocId;
+	       DU_LOG("\nSCTP : AssocId assigned to F1Params from PollParams [%d]\n", f1Params.assocId);
+	       ret = sctpNtfyHdlr(&pollParams->ntfy, &f1Params.itfState);
+	    }
+	    else if(pollParams->port == ricParams.destPort)
+	    {
+	       ricParams.assocId = pollParams->ntfy.u.assocChange.assocId;
+	       DU_LOG("\nSCTP : AssocId assigned to ricParams from PollParams [%d]\n", ricParams.assocId);
+	       ret = sctpNtfyHdlr(&pollParams->ntfy, &ricParams.itfState);
+	    }
+	    else
+	    {
+	       DU_LOG("\nSCTP : Failed to fill AssocId\n");
+	       RETVALUE(RFAILED);
+	    }
+	    if(ret != ROK)
+	    {
+	       DU_LOG("\nSCTP : Failed to process sctp notify msg\n");
+	    }
+	 }
+	 else if(f1Params.itfState & (pollParams->port == f1Params.destPort))
+	 {  
+	    sendToDuApp(pollParams->mBuf, EVENT_CU_DATA);
+	 }
+	 else if(ricParams.itfState & (pollParams->port == ricParams.destPort))
+	 {  
+	    sendToDuApp(pollParams->mBuf, EVENT_RIC_DATA);
+	 }
 
-         else
-         {
-            SPutMsg(pollParams->mBuf);
-         }
+	 else
+	 {
+	    SPutMsg(pollParams->mBuf);
+	 }
       }
-  }
-  RETVALUE(ROK);
+   }
+   RETVALUE(ROK);
 }
 /*******************************************************************
  *
@@ -727,17 +727,17 @@ S16 sctpSockPoll()
    {
       if(f1Params.itfState)
       {
-         if((ret = processPolling(&f1PollParams, &f1Params.sockFd, timeout_Ptr, &memInfo, f1Params.recvMsgSet)) != ROK)
-         {
-            DU_LOG("\nSCTP : Failed to RecvMsg for F1\n");
-         }
+	 if((ret = processPolling(&f1PollParams, &f1Params.sockFd, timeout_Ptr, &memInfo, f1Params.recvMsgSet)) != ROK)
+	 {
+	    DU_LOG("\nSCTP : Failed to RecvMsg for F1\n");
+	 }
       }
       if(ricParams.itfState)
       {
-         if((ret = processPolling(&e2PollParams, &ricParams.sockFd, timeout_Ptr, &memInfo, ricParams.recvMsgSet)) != ROK)
-         {
-            DU_LOG("\nSCTP : Failed to RecvMsg for E2\n");
-         }
+	 if((ret = processPolling(&e2PollParams, &ricParams.sockFd, timeout_Ptr, &memInfo, ricParams.recvMsgSet)) != ROK)
+	 {
+	    DU_LOG("\nSCTP : Failed to RecvMsg for E2\n");
+	 }
       }
    };
    RETVALUE(ret);
@@ -764,7 +764,7 @@ S16 sctpSend(Buffer *mBuf, U8 itfType)
    U8               ret;
    MsgLen           len;          /* number of actually sent octets */
    CmInetMemInfo    memInfo;                        
-   
+
    memInfo.region = DU_APP_MEM_REGION;               
    memInfo.pool   = DU_POOL;
 
@@ -790,5 +790,5 @@ S16 sctpSend(Buffer *mBuf, U8 itfType)
 } /* End of sctpSend */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -48,14 +48,14 @@ struct ssdatab
 {
    U8                   db_ref;                 /* reference count */
    U8                   db_type;                /* type of data block */
-	/* ss006.301 */
+   /* ss006.301 */
    Bool                 shared;                 /* is this data block shared ? */
 #ifndef  SS_DBUF_REFLOCK_DISABLE
    SLockId              dBufLock;              /* Lock per Dbuf */
 #endif
    U8                   *db_base;               /* base of data buffer */
    U8                   *db_lim;                /* limit of data buffer */
-	/* ss008.301 - deprecating for normal OS, useful for Cavium/RMI OS*/
+   /* ss008.301 - deprecating for normal OS, useful for Cavium/RMI OS*/
 #ifdef SS_DBLK_FREE_RTN
    struct ssfree_rtn    *db_frtnp;             /* free routine */
 #endif /* SS_DBLK_FREE_RTN */
@@ -102,5 +102,5 @@ PUBLIC SsMblk   *ssUnlinkB ARGS((SsMblk *));
 #endif  /*  __SSSTRMX__  */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

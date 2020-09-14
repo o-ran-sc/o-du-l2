@@ -130,8 +130,8 @@ Size    size;               /* size */
 
    TRC2(rgAllocShrablSBuf)
 
-   /* Initialize the param to NULLP */
-   *pData = NULLP;
+      /* Initialize the param to NULLP */
+      *pData = NULLP;
 
    if (size == 0)
    {
@@ -141,22 +141,22 @@ Size    size;               /* size */
    /* allocate buffer */
    if (SGetStaticBuffer(rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, pData, size, 0) != ROK)
    {
-     dgn.type = LRG_USTA_DGNVAL_MEM;
-     dgn.u.mem.region = rgCb[inst].rgInit.region;
-     dgn.u.mem.pool = rgCb[inst].rgInit.pool;
-     /*  Send an alarm to Layer Manager */
-     rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
-                                       LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
+      dgn.type = LRG_USTA_DGNVAL_MEM;
+      dgn.u.mem.region = rgCb[inst].rgInit.region;
+      dgn.u.mem.pool = rgCb[inst].rgInit.pool;
+      /*  Send an alarm to Layer Manager */
+      rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
+	    LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
       RGLOGERROR(inst,ERRCLS_DEBUG, ERG028, 0, "Unable to Allocate Buffer");
       RETVALUE(RFAILED);
    }
 
 #ifndef ALIGN_64BIT
    RGDBGINFO(inst,(rgPBuf(inst), "SGetSBuf(Region (%d), Pool (%d), Size (%ld)), Data (0x%p))\n",
-             rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData));
+	    rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData));
 #else
    RGDBGINFO(inst,(rgPBuf(inst), "SGetSBuf(Region (%d), Pool (%d), Size (%d)), Data (0x%p))\n",
-             rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData));
+	    rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData));
 #endif
 
    /* zero out the allocated memory */
@@ -185,25 +185,25 @@ Size    size;               /* size */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgAllocSBuf
+   PUBLIC S16 rgAllocSBuf
 (
-Inst    inst,
-Data    **pData,            /* Pointer of the data to be returned */
-Size    size                /* size */
-)
+ Inst    inst,
+ Data    **pData,            /* Pointer of the data to be returned */
+ Size    size                /* size */
+ )
 #else
 PUBLIC S16 rgAllocSBuf(inst,pData, size)
-Inst    inst;
-Data    **pData;            /* Pointer of the data to be returned */
-Size    size;               /* size */
+   Inst    inst;
+   Data    **pData;            /* Pointer of the data to be returned */
+   Size    size;               /* size */
 #endif
 {
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
 
    TRC2(rgAllocSBuf)
 
-   /* Initialize the param to NULLP */
-   *pData = NULLP;
+      /* Initialize the param to NULLP */
+      *pData = NULLP;
 
    if (size == 0)
    {
@@ -216,12 +216,12 @@ Size    size;               /* size */
 #endif /* */
    if (SGetSBuf(rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, pData, size) != ROK)
    {
-     dgn.type = LRG_USTA_DGNVAL_MEM;
-     dgn.u.mem.region = rgCb[inst].rgInit.region;
-     dgn.u.mem.pool = rgCb[inst].rgInit.pool;
-     /*  Send an alarm to Layer Manager */
-     rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
-                                       LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
+      dgn.type = LRG_USTA_DGNVAL_MEM;
+      dgn.u.mem.region = rgCb[inst].rgInit.region;
+      dgn.u.mem.pool = rgCb[inst].rgInit.pool;
+      /*  Send an alarm to Layer Manager */
+      rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
+	    LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
       RGLOGERROR(inst,ERRCLS_DEBUG, ERG028, 0, "Unable to Allocate Buffer");
       RETVALUE(RFAILED);
    }
@@ -234,33 +234,33 @@ Size    size;               /* size */
 } /* end of rgAllocSBuf */
 
 /*
-*
-*       Fun:   rgFreeSharableSBuf
-*
-*       Desc:  The argument to rgFreeSBuf() is a pointer to a block
-*              previously allocated by rgAllocSBuf() and size. It 
-*              deallocates the memory. 
-*
-*       Ret:   RETVOID
-*
-*       Notes: ccpu00117052 - MOD- changed the Data parameter from 
-*                             pointer to address of pointer so that
-*                             the freed memory could be set to NULLP
-*
-*       File:  rg_utl.c
-*/
+ *
+ *       Fun:   rgFreeSharableSBuf
+ *
+ *       Desc:  The argument to rgFreeSBuf() is a pointer to a block
+ *              previously allocated by rgAllocSBuf() and size. It 
+ *              deallocates the memory. 
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: ccpu00117052 - MOD- changed the Data parameter from 
+ *                             pointer to address of pointer so that
+ *                             the freed memory could be set to NULLP
+ *
+ *       File:  rg_utl.c
+ */
 #ifdef ANSI
-PUBLIC Void rgFreeSharableSBuf
+   PUBLIC Void rgFreeSharableSBuf
 (
-Inst inst,
-Data **data,         /* address of pointer to data */
-Size size            /* size */
-)
+ Inst inst,
+ Data **data,         /* address of pointer to data */
+ Size size            /* size */
+ )
 #else
 PUBLIC Void rgFreeSharableSBuf(inst,data, size)
-Inst inst;
-Data **data;         /* address of pointer to data */
-Size size;          /* size */
+   Inst inst;
+   Data **data;         /* address of pointer to data */
+   Size size;          /* size */
 #endif
 {
 
@@ -268,10 +268,10 @@ Size size;          /* size */
 
    TRC2(rgFreeSharableBuf)
 
-   if ((data == NULLP) || (*data == NULLP) || (size == 0))
-   {
-      RETVOID;
-   }
+      if ((data == NULLP) || (*data == NULLP) || (size == 0))
+      {
+	 RETVOID;
+      }
 
    /* Deallocate buffer */
    ret = SPutStaticBuffer(rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, *data, size, SS_SHARABLE_MEMORY);
@@ -290,33 +290,33 @@ Size size;          /* size */
 
 
 /*
-*
-*       Fun:   rgFreeSBuf
-*
-*       Desc:  The argument to rgFreeSBuf() is a pointer to a block
-*              previously allocated by rgAllocSBuf() and size. It 
-*              deallocates the memory. 
-*
-*       Ret:   RETVOID
-*
-*       Notes: ccpu00117052 - MOD- changed the Data parameter from 
-*                             pointer to address of pointer so that
-*                             the freed memory could be set to NULLP
-*
-*       File:  rg_utl.c
-*/
+ *
+ *       Fun:   rgFreeSBuf
+ *
+ *       Desc:  The argument to rgFreeSBuf() is a pointer to a block
+ *              previously allocated by rgAllocSBuf() and size. It 
+ *              deallocates the memory. 
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: ccpu00117052 - MOD- changed the Data parameter from 
+ *                             pointer to address of pointer so that
+ *                             the freed memory could be set to NULLP
+ *
+ *       File:  rg_utl.c
+ */
 #ifdef ANSI
-PUBLIC Void rgFreeSBuf
+   PUBLIC Void rgFreeSBuf
 (
-Inst inst,
-Data **data,         /* address of pointer to data */
-Size size            /* size */
-)
+ Inst inst,
+ Data **data,         /* address of pointer to data */
+ Size size            /* size */
+ )
 #else
 PUBLIC Void rgFreeSBuf(inst,data, size)
-Inst  inst;
-Data **data;         /* address of pointer to data */
-Size size;          /* size */
+   Inst  inst;
+   Data **data;         /* address of pointer to data */
+   Size size;          /* size */
 #endif
 {
 
@@ -324,10 +324,10 @@ Size size;          /* size */
 
    TRC2(rgFreeSBuf)
 
-   if ((data == NULLP) || (*data == NULLP) || (size == 0))
-   {
-      RETVOID;
-   }
+      if ((data == NULLP) || (*data == NULLP) || (size == 0))
+      {
+	 RETVOID;
+      }
 
 
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
@@ -366,15 +366,15 @@ Size size;          /* size */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgGetMsg
+   PUBLIC S16 rgGetMsg
 (
-Inst    inst,
-Buffer  **mBuf            /* Message Buffer pointer be returned */
-)
+ Inst    inst,
+ Buffer  **mBuf            /* Message Buffer pointer be returned */
+ )
 #else
 PUBLIC S16 rgGetMsg(inst,mBuf)
-Inst    inst;
-Buffer  **mBuf;           /* Message Buffer pointer be returned */
+   Inst    inst;
+   Buffer  **mBuf;           /* Message Buffer pointer be returned */
 #endif
 {
    S16         ret;
@@ -382,7 +382,7 @@ Buffer  **mBuf;           /* Message Buffer pointer be returned */
    TRC2(rgGetMsg)
 
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
-   MS_BUF_ADD_ALLOC_CALLER();
+      MS_BUF_ADD_ALLOC_CALLER();
 #endif /* */
    ret = SGetMsg(RG_GET_MEM_REGION(rgCb[inst]), RG_GET_MEM_POOL(rgCb[inst]), mBuf);
 
@@ -395,7 +395,7 @@ Buffer  **mBuf;           /* Message Buffer pointer be returned */
 
       /*  Send an alarm to Layer Manager */
       rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_DMEM_ALLOC_FAIL,
-                                       LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
+	    LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
       RGLOGERROR(inst,ERRCLS_DEBUG, ERG030, 0, "Unable to Allocate Buffer");
       RETVALUE(RFAILED);
    }
@@ -419,33 +419,33 @@ Buffer  **mBuf;           /* Message Buffer pointer be returned */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgFillDgnParams
+   PUBLIC Void rgFillDgnParams
 (
-Inst        inst,
-RgUstaDgn   *dgn,
-U8          dgnType
-)
+ Inst        inst,
+ RgUstaDgn   *dgn,
+ U8          dgnType
+ )
 #else
 PUBLIC Void rgFillDgnParams(inst,dgn, dgnType)
-Inst        inst;
-RgUstaDgn   *dgn;
-U8          dgnType;
+   Inst        inst;
+   RgUstaDgn   *dgn;
+   U8          dgnType;
 #endif
 {
 
    TRC2(rgFillDgnParams)
 
-   switch(dgnType)
-   {
-      case LRG_USTA_DGNVAL_MEM:
-         dgn->type = (U8) LRG_USTA_DGNVAL_MEM;
-         dgn->u.mem.region  = rgCb[inst].rgInit.region;
-         dgn->u.mem.pool    = rgCb[inst].rgInit.pool;
-      break;
+      switch(dgnType)
+      {
+	 case LRG_USTA_DGNVAL_MEM:
+	    dgn->type = (U8) LRG_USTA_DGNVAL_MEM;
+	    dgn->u.mem.region  = rgCb[inst].rgInit.region;
+	    dgn->u.mem.pool    = rgCb[inst].rgInit.pool;
+	    break;
 
-      default:
-      break;
-   }
+	 default:
+	    break;
+      }
 
    RETVOID;
 } /* end of rgFillDgnParams */
@@ -468,19 +468,19 @@ U8          dgnType;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgUpdtRguDedSts
+   PUBLIC Void rgUpdtRguDedSts
 (
-Inst           inst,
-RgUpSapCb     *rguDlSap,
-U8             stsType,   /* Statistics type to update */
-RgRguDedDatReq *datReq    /* DatReq pointer */
-)
+ Inst           inst,
+ RgUpSapCb     *rguDlSap,
+ U8             stsType,   /* Statistics type to update */
+ RgRguDedDatReq *datReq    /* DatReq pointer */
+ )
 #else
 PUBLIC Void rgUpdtRguDedSts(inst,rguDlSap,stsType, datReq)
-Inst           inst;
-RgUpSapCb     *rguDlSap;
-U8             stsType;   /* Statistics type to update */
-RgRguDedDatReq *datReq;   /* DatReq pointer */
+   Inst           inst;
+   RgUpSapCb     *rguDlSap;
+   U8             stsType;   /* Statistics type to update */
+   RgRguDedDatReq *datReq;   /* DatReq pointer */
 #endif
 {
    U8 idx1,idx2;
@@ -490,42 +490,42 @@ RgRguDedDatReq *datReq;   /* DatReq pointer */
    TRC2(rgUpdtRguDedSts)
 
 
-   switch(stsType)
-   {
-      case RG_RGU_SDU_RCVD:
-      for(idx = 0; idx < datReq->nmbOfUeGrantPerTti; idx++)
+      switch(stsType)
       {
-         RguDDatReqPerUe *datReqPerUe = &datReq->datReq[idx];
-         for (idx1 = 0; idx1 < datReqPerUe->nmbOfTbs; idx1++) 
-         {
-            for(idx2 = 0; idx2 < datReqPerUe->datReqTb[idx1].nmbLch; idx2++) 
-            {
-               rguDlSap->sapSts.numPduRcvd +=
-                  datReqPerUe->datReqTb[idx1].lchData[idx2].pdu.numPdu;
-            }
-         }
+	 case RG_RGU_SDU_RCVD:
+	    for(idx = 0; idx < datReq->nmbOfUeGrantPerTti; idx++)
+	    {
+	       RguDDatReqPerUe *datReqPerUe = &datReq->datReq[idx];
+	       for (idx1 = 0; idx1 < datReqPerUe->nmbOfTbs; idx1++) 
+	       {
+		  for(idx2 = 0; idx2 < datReqPerUe->datReqTb[idx1].nmbLch; idx2++) 
+		  {
+		     rguDlSap->sapSts.numPduRcvd +=
+			datReqPerUe->datReqTb[idx1].lchData[idx2].pdu.numPdu;
+		  }
+	       }
+	    }
+
+	    break;
+	 case RG_RGU_SDU_DROP:
+	    for(idx = 0; idx < datReq->nmbOfUeGrantPerTti; idx++)
+	    {
+	       RguDDatReqPerUe *datReqPerUe = &datReq->datReq[idx];
+	       for (idx1 = 0; idx1 < datReqPerUe->nmbOfTbs; idx1++) 
+	       {
+		  for(idx2 = 0; idx2 < datReqPerUe->datReqTb[idx1].nmbLch; idx2++) 
+		  {
+		     rguDlSap->sapSts.numPduRcvd +=
+			datReqPerUe->datReqTb[idx1].lchData[idx2].pdu.numPdu;
+		     rguDlSap->sapSts.numPduDrop +=
+			datReqPerUe->datReqTb[idx1].lchData[idx2].pdu.numPdu;
+		  }
+	       }
+	    }
+
+	    break;
       }
 
-         break;
-      case RG_RGU_SDU_DROP:
-      for(idx = 0; idx < datReq->nmbOfUeGrantPerTti; idx++)
-      {
-         RguDDatReqPerUe *datReqPerUe = &datReq->datReq[idx];
-         for (idx1 = 0; idx1 < datReqPerUe->nmbOfTbs; idx1++) 
-         {
-            for(idx2 = 0; idx2 < datReqPerUe->datReqTb[idx1].nmbLch; idx2++) 
-            {
-               rguDlSap->sapSts.numPduRcvd +=
-                  datReqPerUe->datReqTb[idx1].lchData[idx2].pdu.numPdu;
-               rguDlSap->sapSts.numPduDrop +=
-                  datReqPerUe->datReqTb[idx1].lchData[idx2].pdu.numPdu;
-            }
-         }
-      }
-
-         break;
-   }
-   
    RETVOID;
 } /* rgUpdtRguDedSts */
 
@@ -547,34 +547,34 @@ RgRguDedDatReq *datReq;   /* DatReq pointer */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgUpdtRguCmnSts
+   PUBLIC Void rgUpdtRguCmnSts
 (
-Inst           inst,
-RgUpSapCb     *rguDlSap,
-U8             stsType   /* Statistics type to update */
-)
+ Inst           inst,
+ RgUpSapCb     *rguDlSap,
+ U8             stsType   /* Statistics type to update */
+ )
 #else
 PUBLIC Void rgUpdtRguCmnSts(inst,rguDlSap,stsType)
-Inst           inst;
-RgUpSapCb     *rguDlSap;
-U8             stsType;   /* Statistics type to update */
+   Inst           inst;
+   RgUpSapCb     *rguDlSap;
+   U8             stsType;   /* Statistics type to update */
 #endif
 {
    TRC2(rgUpdtRguCmnSts)
 
 
 
-   switch(stsType)
-   {
-      case RG_RGU_SDU_RCVD:
-         rguDlSap->sapSts.numPduRcvd ++;
-         break;
-      case RG_RGU_SDU_DROP:
-         rguDlSap->sapSts.numPduRcvd ++;
-         rguDlSap->sapSts.numPduDrop ++;
-         break;
-   }
-   
+      switch(stsType)
+      {
+	 case RG_RGU_SDU_RCVD:
+	    rguDlSap->sapSts.numPduRcvd ++;
+	    break;
+	 case RG_RGU_SDU_DROP:
+	    rguDlSap->sapSts.numPduRcvd ++;
+	    rguDlSap->sapSts.numPduDrop ++;
+	    break;
+      }
+
    RETVOID;
 } /* rgUpdtRguCmnSts */
 
@@ -597,15 +597,15 @@ U8             stsType;   /* Statistics type to update */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgUpdtCellCnt
+   PUBLIC Void rgUpdtCellCnt
 (
-Inst inst,
-U8 updtType
-)
+ Inst inst,
+ U8 updtType
+ )
 #else
 PUBLIC Void rgUpdtCellCnt(inst,updtType)
-Inst inst;
-U8 updtType;
+   Inst inst;
+   U8 updtType;
 #endif
 {
    TRC2(rgUpdtCellCnt);
@@ -613,13 +613,13 @@ U8 updtType;
    switch (updtType)
    {
       case RG_CFG_ADD:
-         rgCb[inst].genSts.numCellCfg++;
-         break;
+	 rgCb[inst].genSts.numCellCfg++;
+	 break;
       case RG_CFG_DEL:
-         rgCb[inst].genSts.numCellCfg--;
-         break;
+	 rgCb[inst].genSts.numCellCfg--;
+	 break;
       default:
-         break;
+	 break;
    }
 
    RETVOID;
@@ -644,15 +644,15 @@ U8 updtType;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgUpdtUeCnt
+   PUBLIC Void rgUpdtUeCnt
 (
-Inst inst,
-U8 updtType
-)
+ Inst inst,
+ U8 updtType
+ )
 #else
 PUBLIC Void rgUpdtUeCnt (inst,updtType)
-Inst inst;
-U8 updtType;
+   Inst inst;
+   U8 updtType;
 #endif
 {
    TRC2(rgUpdtUeCnt);
@@ -660,43 +660,43 @@ U8 updtType;
    switch (updtType)
    {
       case RG_CFG_ADD:
-         rgCb[inst].genSts.numUeCfg++;
-         break;
+	 rgCb[inst].genSts.numUeCfg++;
+	 break;
       case RG_CFG_DEL:
-         rgCb[inst].genSts.numUeCfg--;
-         break;
+	 rgCb[inst].genSts.numUeCfg--;
+	 break;
       default:
-         break;
+	 break;
    }
    RETVOID;
 } /* rgUpdtUeCnt */
 
 /*
-*
-*       Fun:   rgAllocEventMem
-*
-*       Desc:  This function allocates event memory 
-*
-*       Ret:   ROK      - on success
-*              RFAILED  - on failure
-*
-*       Notes: None
-*
-*       File:  rg_utl.c
-*
-*/
+ *
+ *       Fun:   rgAllocEventMem
+ *
+ *       Desc:  This function allocates event memory 
+ *
+ *       Ret:   ROK      - on success
+ *              RFAILED  - on failure
+ *
+ *       Notes: None
+ *
+ *       File:  rg_utl.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 rgAllocEventMem
+   PUBLIC S16 rgAllocEventMem
 (
-Inst     inst,
-Ptr       *memPtr,
-Size      memSize
-)
+ Inst     inst,
+ Ptr       *memPtr,
+ Size      memSize
+ )
 #else
 PUBLIC S16 rgAllocEventMem(inst,memPtr, memSize)
-Inst     inst;
-Ptr       *memPtr;
-Size      memSize;
+   Inst     inst;
+   Ptr       *memPtr;
+   Size      memSize;
 #endif
 {
    Mem              sMem;
@@ -704,14 +704,14 @@ Size      memSize;
 
    TRC2(rgAllocEventMem)
 
-   sMem.region = rgCb[inst].rgInit.region;
+      sMem.region = rgCb[inst].rgInit.region;
    sMem.pool = rgCb[inst].rgInit.pool;
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (memSize<= 0)
    {
       RGLOGERROR(inst,ERRCLS_INT_PAR, ERG031, memSize,
-                   "rgAllocEventMem(): memSize invalid\n");
+	    "rgAllocEventMem(): memSize invalid\n");
       RETVALUE (RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
@@ -726,12 +726,12 @@ Size      memSize;
 #ifdef TFU_ALLOC_EVENT_NO_INIT
    if(ROK != cmAllocEvntNoInit(memSize, TFU_MAX_MEMBLK_SIZE, &sMem, memPtr))
 #else
-   if(ROK != cmAllocEvnt(memSize, TFU_MAX_MEMBLK_SIZE, &sMem, memPtr))
+      if(ROK != cmAllocEvnt(memSize, TFU_MAX_MEMBLK_SIZE, &sMem, memPtr))
 #endif /* */
-   {
-      RLOG0(L_ERROR,"cmAllocEvnt Failed"); 
-      RETVALUE(RFAILED);
-   }
+      {
+	 RLOG0(L_ERROR,"cmAllocEvnt Failed"); 
+	 RETVALUE(RFAILED);
+      }
 
    /*stoping Task*/
    SStopTask(startTime, PID_MACUTL_CMALLCEVT);
@@ -740,40 +740,40 @@ Size      memSize;
 } /* end of rgAllocEventMem*/
 
 /*
-*
-*       Fun:   rgGetEventMem
-*
-*       Desc:  This function allocates event memory 
-*
-*       Ret:   ROK      - on success
-*              RFAILED  - on failure
-*
-*       Notes: None
-*
-*       File:  rg_utl.c
-*
-*/
+ *
+ *       Fun:   rgGetEventMem
+ *
+ *       Desc:  This function allocates event memory 
+ *
+ *       Ret:   ROK      - on success
+ *              RFAILED  - on failure
+ *
+ *       Notes: None
+ *
+ *       File:  rg_utl.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 rgGetEventMem
+   PUBLIC S16 rgGetEventMem
 (
-Inst      inst,
-Ptr       *ptr,
-Size      len,
-Ptr       memCp
-)
+ Inst      inst,
+ Ptr       *ptr,
+ Size      len,
+ Ptr       memCp
+ )
 #else
 PUBLIC S16 rgGetEventMem(inst,ptr, len, memCp)
-Inst      inst;
-Ptr       *ptr;
-Size      len;
-Ptr       memCp;
+   Inst      inst;
+   Ptr       *ptr;
+   Size      len;
+   Ptr       memCp;
 #endif
 {
    S16   ret;
 
    TRC2(rgGetEventMem)
 #ifdef TFU_ALLOC_EVENT_NO_INIT
-   ret = cmGetMemNoInit(memCp, len, (Ptr *)ptr);
+      ret = cmGetMemNoInit(memCp, len, (Ptr *)ptr);
 #else
    ret = cmGetMem(memCp, len, (Ptr *)ptr);
 #endif /* */
@@ -798,17 +798,17 @@ Ptr       memCp;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgGetPstToInst
+   PUBLIC Void rgGetPstToInst
 (
-Pst           *pst,
-Inst          srcInst,
-Inst          dstInst
-)
+ Pst           *pst,
+ Inst          srcInst,
+ Inst          dstInst
+ )
 #else
 PUBLIC Void rgGetPstToInst (pst, srcInst, dstInst)
-Pst           *pst;
-Inst          srcInst;
-Inst          dstInst;
+   Pst           *pst;
+   Inst          srcInst;
+   Inst          dstInst;
 #endif
 {
    TRC2(rgGetPstToInst);
@@ -852,15 +852,15 @@ Inst          dstInst;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgSchMacLcgRegReq
+   PUBLIC S16 RgSchMacLcgRegReq
 (
-Pst            *pst,
-RgInfLcgRegReq *lcgRegReq
-)
+ Pst            *pst,
+ RgInfLcgRegReq *lcgRegReq
+ )
 #else
 PUBLIC S16 RgSchMacLcgRegReq (pst, lcgRegReq)
-Pst            *pst;
-RgInfLcgRegReq *lcgRegReq;
+   Pst            *pst;
+   RgInfLcgRegReq *lcgRegReq;
 #endif
 {
    Inst       inst;
@@ -874,9 +874,9 @@ RgInfLcgRegReq *lcgRegReq;
    cell   = rgCb[inst].cell;
    /* Fetch the cell and then the UE */
    if((cell == NULLP) ||
-      (cell->cellId != lcgRegReq->cellId))
+	 (cell->cellId != lcgRegReq->cellId))
    {
-      
+
       RLOG_ARG0(L_ERROR,DBG_CELLID,lcgRegReq->cellId,"Cell does not exist ");
       RETVALUE(RFAILED);
    }
@@ -884,7 +884,7 @@ RgInfLcgRegReq *lcgRegReq;
    if ((ue = rgDBMGetUeCb(cell, lcgRegReq->crnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,cell->cellId,"CRNTI:%d does not exist", 
-		         lcgRegReq->crnti);
+	    lcgRegReq->crnti);
       RETVALUE(RFAILED);
    }
    ue->ul.lcgArr[lcgRegReq->lcgId].isGbr = lcgRegReq->isGbr;
@@ -911,15 +911,15 @@ RgInfLcgRegReq *lcgRegReq;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgSchMacUlSpsResetReq
+   PUBLIC S16 RgSchMacUlSpsResetReq
 (
-Pst            *pst,
-RgInfUlSpsReset *ulSpsResetInfo
-)
+ Pst            *pst,
+ RgInfUlSpsReset *ulSpsResetInfo
+ )
 #else
 PUBLIC S16 RgSchMacUlSpsResetReq (pst, lcInfo)
-Pst            *pst;
-RgInfUlSpsReset *ulSpsResetInfo;
+   Pst            *pst;
+   RgInfUlSpsReset *ulSpsResetInfo;
 #endif
 {
    Inst       inst;
@@ -933,9 +933,9 @@ RgInfUlSpsReset *ulSpsResetInfo;
    cell   = rgCb[inst].cell;
    /* Fetch the cell and then the UE */
    if((cell == NULLP)||
-      (cell->cellId != ulSpsResetInfo->cellId))
+	 (cell->cellId != ulSpsResetInfo->cellId))
    {
-      
+
       RLOG_ARG0(L_ERROR, DBG_CELLID,ulSpsResetInfo->cellId,"Cell does not exist ");
       RETVALUE(RFAILED);
    }
@@ -943,7 +943,7 @@ RgInfUlSpsReset *ulSpsResetInfo;
    if ((ue = rgDBMGetUeCb(cell, ulSpsResetInfo->crnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,cell->cellId,"CRNTI:%d does not exist", 
-		      ulSpsResetInfo->crnti);
+	    ulSpsResetInfo->crnti);
       RETVALUE(RFAILED);
    }
 
@@ -981,15 +981,15 @@ RgInfUlSpsReset *ulSpsResetInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcRegReq
+   PUBLIC S16 RgSchMacSpsLcRegReq
 (
-Pst            *pst,
-RgInfSpsLcInfo *lcInfo
-)
+ Pst            *pst,
+ RgInfSpsLcInfo *lcInfo
+ )
 #else
 PUBLIC S16 RgSchMacSpsLcRegReq (pst, lcInfo)
-Pst            *pst;
-RgInfSpsLcInfo *lcInfo;
+   Pst            *pst;
+   RgInfSpsLcInfo *lcInfo;
 #endif
 {
    Inst       inst;
@@ -1004,9 +1004,9 @@ RgInfSpsLcInfo *lcInfo;
    cell   = rgCb[inst].cell;
    /* Fetch the cell and then the UE */
    if((cell == NULLP) ||
-      (cell->cellId != lcInfo->cellId))
+	 (cell->cellId != lcInfo->cellId))
    {
-      
+
       RLOG_ARG0(L_ERROR,DBG_CELLID,lcInfo->cellId, "Cell does not exist ");
       RETVALUE(RFAILED);
    }
@@ -1014,7 +1014,7 @@ RgInfSpsLcInfo *lcInfo;
    if ((ue = rgDBMGetUeCb(cell, lcInfo->crnti)) == NULLP)
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID,cell->cellId,"CRNTI:%d does not exist", 
-		      lcInfo->crnti);
+	    lcInfo->crnti);
       RETVALUE(RFAILED);
    }
 
@@ -1032,7 +1032,7 @@ RgInfSpsLcInfo *lcInfo;
    if (rgDBMInsSpsUeCb(cell, ue) == RFAILED)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-	            "Ue insertion into SPS list failed SPS CRNTI:%d", ue->spsRnti);
+	    "Ue insertion into SPS list failed SPS CRNTI:%d", ue->spsRnti);
       RETVALUE(RFAILED);
    } 
 
@@ -1064,17 +1064,17 @@ RgInfSpsLcInfo *lcInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcDeregReq
+   PUBLIC S16 RgSchMacSpsLcDeregReq
 (
-Pst            *pst,
-CmLteCellId    cellId,
-CmLteRnti      crnti
-)
+ Pst            *pst,
+ CmLteCellId    cellId,
+ CmLteRnti      crnti
+ )
 #else
 PUBLIC S16 RgSchMacSpsLcDeregReq (pst, cellId, crnti)
-Pst            *pst;
-CmLteCellId    cellId;
-CmLteRnti      crnti;
+   Pst            *pst;
+   CmLteCellId    cellId;
+   CmLteRnti      crnti;
 #endif
 {
    Inst       inst;
@@ -1088,9 +1088,9 @@ CmLteRnti      crnti;
    cell   = rgCb[inst].cell;
    /* Fetch the cell and then the UE */
    if((cell == NULLP) ||
-      (cell->cellId != cellId))
+	 (cell->cellId != cellId))
    {
-      
+
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellId, "Cell does not exist ");
       RETVALUE(RFAILED);
    }
@@ -1105,7 +1105,7 @@ CmLteRnti      crnti;
 
    /* Delete UE from the SPS UE List */
    rgDBMDelSpsUeCb(cell, ue);
-   
+
    RETVALUE(ROK); 
 } /* end of RgSchMacSpsLcDeregReq */
 
@@ -1132,19 +1132,19 @@ CmLteRnti      crnti;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgUtlHndlCrntiChng 
+   PRIVATE S16 rgUtlHndlCrntiChng 
 (
-Inst            inst,
-RgCellCb        *cell,
-CmLteRnti       rnti,
-CmLteRnti       newRnti
-)
+ Inst            inst,
+ RgCellCb        *cell,
+ CmLteRnti       rnti,
+ CmLteRnti       newRnti
+ )
 #else
 PRIVATE S16 rgUtlHndlCrntiChng(inst,cell, rnti, newRnti)
-Inst            inst;
-RgCellCb        *cell;
-CmLteRnti       rnti;
-CmLteRnti       newRnti;
+   Inst            inst;
+   RgCellCb        *cell;
+   CmLteRnti       rnti;
+   CmLteRnti       newRnti;
 #endif
 {
    RgUeCb         *ue = NULLP;
@@ -1152,13 +1152,13 @@ CmLteRnti       newRnti;
 
    TRC3(rgUtlHndlCrntiChng)
 
-   ue = rgDBMGetUeCb(cell, rnti);
+      ue = rgDBMGetUeCb(cell, rnti);
    newUe = rgDBMGetUeCbFromRachLst(cell, newRnti);
    if ((ue == NULLP) || (newUe == NULLP))
    {
       RLOG_ARG4(L_ERROR,DBG_CELLID,cell->cellId,
-         		"RNTI:%d Failed to get UECB[%lu:%lu] or NEW RNTI:%d", 
-               rnti, ((PTR)ue), ((PTR)newUe), newRnti);
+	    "RNTI:%d Failed to get UECB[%lu:%lu] or NEW RNTI:%d", 
+	    rnti, ((PTR)ue), ((PTR)newUe), newRnti);
       RETVALUE(RFAILED);
    }
 #ifdef XEON_SPECIFIC_CHANGES
@@ -1169,12 +1169,12 @@ CmLteRnti       newRnti;
    ue->ueId = newRnti;
 
    cmMemcpy((U8*)&(ue->contResId), (U8*)&(newUe->contResId), 
-		   sizeof(newUe->contResId));
+	 sizeof(newUe->contResId));
    /* Fix : syed MSG4 might be RETXing need to store the
     * HARQ context. */
    rgDHMFreeUe(inst,&ue->dl.hqEnt);
    ue->dl.hqEnt = newUe->dl.hqEnt;
-       
+
    rgDBMInsUeCb(cell, ue);
 
    rgDBMDelUeCbFromRachLst(cell, newUe);
@@ -1200,15 +1200,15 @@ CmLteRnti       newRnti;
  *  @return  ROK is SUCCESS 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDelUeFrmAllSCell
+   PUBLIC S16 rgDelUeFrmAllSCell
 (
-RgCellCb      *cell,
-RgUeCb        *ue
-)
+ RgCellCb      *cell,
+ RgUeCb        *ue
+ )
 #else
 PUBLIC S16 rgDelUeFrmAllSCell(cell, ue)
-RgCellCb      *cell;
-RgUeCb        *ue;
+   RgCellCb      *cell;
+   RgUeCb        *ue;
 #endif
 {
    Inst        inst     = cell->macInst - RG_INST_START;
@@ -1219,25 +1219,25 @@ RgUeCb        *ue;
 
    TRC2(rgDelUeFrmAllSCell)
 
-   /* To Delete the SCells if exisits for that UE */
-   for(idx = 0; idx < RG_MAX_SCELL_PER_UE ; idx++)
-   {
-      if(TRUE == ue->sCelInfo[idx].isSCellAdded)
+      /* To Delete the SCells if exisits for that UE */
+      for(idx = 0; idx < RG_MAX_SCELL_PER_UE ; idx++)
       {
-         sCellInstIdx = ue->sCelInfo[idx].macInst - RG_INST_START;
+	 if(TRUE == ue->sCelInfo[idx].isSCellAdded)
+	 {
+	    sCellInstIdx = ue->sCelInfo[idx].macInst - RG_INST_START;
 
-         rgGetPstToInst(&dstInstPst, inst, sCellInstIdx);
-         ueSCellDelInfo.ueId = ue->ueId;
-         ueSCellDelInfo.sCellId = ue->sCelInfo[idx].sCellId;
+	    rgGetPstToInst(&dstInstPst, inst, sCellInstIdx);
+	    ueSCellDelInfo.ueId = ue->ueId;
+	    ueSCellDelInfo.sCellId = ue->sCelInfo[idx].sCellId;
 
-         /* Filling same ueId in newRnti so that SMAC will check if newRnti
-          *and old UeId is same that means its a UeSCell delete request*/
-         ueSCellDelInfo.newRnti = ue->ueId;
+	    /* Filling same ueId in newRnti so that SMAC will check if newRnti
+	     *and old UeId is same that means its a UeSCell delete request*/
+	    ueSCellDelInfo.newRnti = ue->ueId;
 
-         RgPrgPMacSMacUeSCellDel(&dstInstPst, &ueSCellDelInfo);
-         ue->sCelInfo[idx].isSCellAdded = FALSE;
-      } /* loop of if */
-   } /* loop of for */
+	    RgPrgPMacSMacUeSCellDel(&dstInstPst, &ueSCellDelInfo);
+	    ue->sCelInfo[idx].isSCellAdded = FALSE;
+	 } /* loop of if */
+      } /* loop of for */
 
    RETVALUE(ROK);
 } /* rgDelUeFrmAllSCell */
@@ -1257,41 +1257,41 @@ RgUeCb        *ue;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUtlVltdAddSCellCfg
+   PUBLIC S16 rgUtlVltdAddSCellCfg
 (
  RgPrgUeSCellCfgInfo *ueSCellCb,
  RgCellCb    *cell,
  Inst        inst
-)
+ )
 #else
 PUBLIC S16 rgUtlVltdAddSCellCfg(ueSCellCb, cell, inst)
- RgPrgUeSCellCfgInfo *ueSCellCb;
- RgCellCb    *cell;
- Inst        inst;
+   RgPrgUeSCellCfgInfo *ueSCellCb;
+   RgCellCb    *cell;
+   Inst        inst;
 #endif
 {
-  S16 ret = ROK; 
-  
-  TRC3(rgUtlVltdAddSCellCfg)
-  
-     /* To Validate the CellID presence */
-  if((cell == NULLP) ||
-        (cell->cellId != ueSCellCb->cellId))
-  {
-     RGDBGERRNEW(inst, (rgPBuf(inst),
-              "[%d]Sec Cell does not exit %d\n",
-              ueSCellCb->ueId, ueSCellCb->cellId));
-     ret = RFAILED;
-  }
+   S16 ret = ROK; 
+
+   TRC3(rgUtlVltdAddSCellCfg)
+
+      /* To Validate the CellID presence */
+      if((cell == NULLP) ||
+	    (cell->cellId != ueSCellCb->cellId))
+      {
+	 RGDBGERRNEW(inst, (rgPBuf(inst),
+		  "[%d]Sec Cell does not exit %d\n",
+		  ueSCellCb->ueId, ueSCellCb->cellId));
+	 ret = RFAILED;
+      }
 #ifdef TENB_MULT_CELL_SUPPRT
    if((ueSCellCb->rguDlSapId > rgCb[inst].numRguSaps) ||
-      (ueSCellCb->rguUlSapId > rgCb[inst].numRguSaps))
+	 (ueSCellCb->rguUlSapId > rgCb[inst].numRguSaps))
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "Invald Sap Id: DL %d UL %d for ueId %d failed\n",
-               ueSCellCb->rguDlSapId,
-               ueSCellCb->rguUlSapId,
-               ueSCellCb->cellId));
-     ret = RFAILED;
+	       ueSCellCb->rguDlSapId,
+	       ueSCellCb->rguUlSapId,
+	       ueSCellCb->cellId));
+      ret = RFAILED;
    }
 #endif
    RETVALUE(ret);
@@ -1316,17 +1316,17 @@ PUBLIC S16 rgUtlVltdAddSCellCfg(ueSCellCb, cell, inst)
  *      -# ROK 
  **/
 #ifdef ANSI
-PRIVATE S16 rgUtlSndCrntiChngReq2AllSMacs
+   PRIVATE S16 rgUtlSndCrntiChngReq2AllSMacs
 (
-RgCellCb        *cell,
-CmLteRnti       rnti,
-CmLteRnti       newRnti
-)
+ RgCellCb        *cell,
+ CmLteRnti       rnti,
+ CmLteRnti       newRnti
+ )
 #else
 PRIVATE S16 rgUtlSndCrntiChngReq2AllSMacs(cell, rnti, newRnti)
-RgCellCb        *cell;
-CmLteRnti       rnti;
-CmLteRnti       newRnti;
+   RgCellCb        *cell;
+   CmLteRnti       rnti;
+   CmLteRnti       newRnti;
 #endif
 {
    Inst                inst = cell->macInst - RG_INST_START;
@@ -1336,17 +1336,17 @@ CmLteRnti       newRnti;
    RgUeCb              *ue;
    U8                  idx;
 #ifdef L2_OPTMZ
-TfuDelDatReqInfo delDatReq;
+   TfuDelDatReqInfo delDatReq;
 #endif
 
    TRC2(rgUtlSndCrntiChngReq2AllSMacs)
 
-   /* use newRnti to get UeCb in PMac because rnti is already changed in PMac*/
-   ue = rgDBMGetUeCb(cell, newRnti);
+      /* use newRnti to get UeCb in PMac because rnti is already changed in PMac*/
+      ue = rgDBMGetUeCb(cell, newRnti);
    if (ue == NULLP)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst),"[%d]RNTI:Failed to get ueCb \
-               newRnti=%d\n", rnti, newRnti));
+	       newRnti=%d\n", rnti, newRnti));
       RETVALUE(RFAILED);
    }
    /* For all added SCells, prepare and send ueIdChngReq */
@@ -1354,26 +1354,26 @@ TfuDelDatReqInfo delDatReq;
    {
       if(TRUE == ue->sCelInfo[idx].isSCellAdded)
       {
-         sCellInstIdx = ue->sCelInfo[idx].macInst - RG_INST_START;
+	 sCellInstIdx = ue->sCelInfo[idx].macInst - RG_INST_START;
 
-         rgGetPstToInst(&dstInstPst, inst, sCellInstIdx);
-         /* fill old rnti*/
-         ueIdChngReq.ueId = rnti;
-         ueIdChngReq.sCellId = ue->sCelInfo[idx].sCellId;
-         
-         /* Filling newRnti so that SMAC can check if old ueId and new UeId
-          *(newRnti) is different then its a UeId change request from PMAC.
-          * RgPrgPMacSMacUeSCellDelReq is being reused for UeId change req
-          * from PMAC to SMAC*/
-         ueIdChngReq.newRnti = newRnti;
-         
-         /* Re-using UeSCellDelReq API for UeId change*/
-         RgPrgPMacSMacUeSCellDel(&dstInstPst, &ueIdChngReq);
+	 rgGetPstToInst(&dstInstPst, inst, sCellInstIdx);
+	 /* fill old rnti*/
+	 ueIdChngReq.ueId = rnti;
+	 ueIdChngReq.sCellId = ue->sCelInfo[idx].sCellId;
+
+	 /* Filling newRnti so that SMAC can check if old ueId and new UeId
+	  *(newRnti) is different then its a UeId change request from PMAC.
+	  * RgPrgPMacSMacUeSCellDelReq is being reused for UeId change req
+	  * from PMAC to SMAC*/
+	 ueIdChngReq.newRnti = newRnti;
+
+	 /* Re-using UeSCellDelReq API for UeId change*/
+	 RgPrgPMacSMacUeSCellDel(&dstInstPst, &ueIdChngReq);
 #ifdef L2_OPTMZ
-      /* Sending delDatReq to CL to clear the Pdus for old UeId present in CL*/
-      delDatReq.cellId = ueIdChngReq.sCellId;
-      delDatReq.ueId = ueIdChngReq.ueId;
-      rgLIMTfuDelDatReq(sCellInstIdx, &delDatReq);
+	 /* Sending delDatReq to CL to clear the Pdus for old UeId present in CL*/
+	 delDatReq.cellId = ueIdChngReq.sCellId;
+	 delDatReq.ueId = ueIdChngReq.ueId;
+	 rgLIMTfuDelDatReq(sCellInstIdx, &delDatReq);
 #endif
 
       } /* loop of if */
@@ -1400,15 +1400,15 @@ TfuDelDatReqInfo delDatReq;
  *  @return  Void 
  **/
 #ifdef ANSI
-PRIVATE Void rgUtlHndlCrntiRls
+   PRIVATE Void rgUtlHndlCrntiRls
 (
-RgCellCb        *cell,
-RgInfRlsRnti    *rlsRnti
-)
+ RgCellCb        *cell,
+ RgInfRlsRnti    *rlsRnti
+ )
 #else
 PRIVATE Void rgUtlHndlCrntiRls(cell, rlsRnti)
-RgCellCb        *cell;
-CmLteRnti       *rlsRnti;
+   RgCellCb        *cell;
+   CmLteRnti       *rlsRnti;
 #endif
 {
    Inst           inst = cell->macInst - RG_INST_START;
@@ -1419,53 +1419,53 @@ CmLteRnti       *rlsRnti;
 
    TRC3(rgUtlHndlCrntiRls)
 
-   if ((ue = rgDBMGetUeCb(cell, rlsRnti->rnti)) == NULLP)
-   {
-      /* Check in RachLst */
-      if((ue=rgDBMGetUeCbFromRachLst (cell, rlsRnti->rnti)) != NULLP)
+      if ((ue = rgDBMGetUeCb(cell, rlsRnti->rnti)) == NULLP)
       {
-         /* Delete Ue from the UE list */
-         rgDBMDelUeCbFromRachLst(cell, ue);
+	 /* Check in RachLst */
+	 if((ue=rgDBMGetUeCbFromRachLst (cell, rlsRnti->rnti)) != NULLP)
+	 {
+	    /* Delete Ue from the UE list */
+	    rgDBMDelUeCbFromRachLst(cell, ue);
 
-         /* Free Ue */
-         rgRAMFreeUeCb(inst,ue);
+	    /* Free Ue */
+	    rgRAMFreeUeCb(inst,ue);
+	 }
+	 else
+	 {
+	    RLOG_ARG1(L_WARNING,DBG_CELLID,cell->cellId,
+		  "RNTI:%d No ueCb found in RachLst",rlsRnti->rnti);
+	 }
       }
       else
       {
-         RLOG_ARG1(L_WARNING,DBG_CELLID,cell->cellId,
-                   "RNTI:%d No ueCb found in RachLst",rlsRnti->rnti);
-      }
-   }
-   else
-   {
 #ifdef LTE_ADV
-      if(FALSE == rlsRnti->isUeSCellDel)
-      {
-         rgDelUeFrmAllSCell(cell, ue);
-      }
+	 if(FALSE == rlsRnti->isUeSCellDel)
+	 {
+	    rgDelUeFrmAllSCell(cell, ue);
+	 }
 #endif /* LTE_ADV */
 
-      /* Delete Ue from the UE list */
-      rgDBMDelUeCb(cell, ue);
+	 /* Delete Ue from the UE list */
+	 rgDBMDelUeCb(cell, ue);
 #ifdef LTEMAC_SPS
-      spsUeCb = rgDBMGetSpsUeCb (cell, ue->spsRnti);
-      if (spsUeCb)
-      {
-         rgDBMDelSpsUeCb(cell, spsUeCb);
-      }
+	 spsUeCb = rgDBMGetSpsUeCb (cell, ue->spsRnti);
+	 if (spsUeCb)
+	 {
+	    rgDBMDelSpsUeCb(cell, spsUeCb);
+	 }
 #endif
 
-      /* Free Ue */
-      rgCFGFreeUeCb(cell, ue);	   
-      /* MS_REMOVE : syed Check in RachLst */
-      {
-         if((ue=rgDBMGetUeCbFromRachLst (cell, rlsRnti->rnti)) != NULLP)
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-	      	      	"RNTI:%d STALE UE is still present", rlsRnti->rnti);         
-         }
+	 /* Free Ue */
+	 rgCFGFreeUeCb(cell, ue);	   
+	 /* MS_REMOVE : syed Check in RachLst */
+	 {
+	    if((ue=rgDBMGetUeCbFromRachLst (cell, rlsRnti->rnti)) != NULLP)
+	    {
+	       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
+		     "RNTI:%d STALE UE is still present", rlsRnti->rnti);         
+	    }
+	 }
       }
-   }
 
    RETVOID;
 } /* end of rgUtlHndlCrntiRls */
@@ -1490,28 +1490,28 @@ CmLteRnti       *rlsRnti;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRlsRntiReq
+   PUBLIC S16 RgSchMacRlsRntiReq
 (
-Pst                 *pst,
-RgInfRlsRnti        *rlsRnti
-)
+ Pst                 *pst,
+ RgInfRlsRnti        *rlsRnti
+ )
 #else
 PUBLIC S16 RgSchMacRlsRntiReq(pst, rlsRnti)
-Pst                 *pst;
-RgInfRlsRnti        *rlsRnti;
+   Pst                 *pst;
+   RgInfRlsRnti        *rlsRnti;
 #endif
 {
-//   Pst            schPst;
-//   RgInfUeDelInd  ueDelInd;
+   //   Pst            schPst;
+   //   RgInfUeDelInd  ueDelInd;
    Inst           macInst;
    RgCellCb       *cell;
 #ifdef L2_OPTMZ
-TfuDelDatReqInfo delDatReq;
+   TfuDelDatReqInfo delDatReq;
 #endif
 
    TRC3(RgSchMacRlsRntiReq)
 
-   RG_IS_INST_VALID(pst->dstInst);
+      RG_IS_INST_VALID(pst->dstInst);
    macInst   = pst->dstInst - RG_INST_START;
    cell   = rgCb[macInst].cell;
 
@@ -1521,12 +1521,12 @@ TfuDelDatReqInfo delDatReq;
    }
 
    if((cell == NULLP) ||
-      (cell->cellId != rlsRnti->cellId))
+	 (cell->cellId != rlsRnti->cellId))
    {
-      
+
       RLOG_ARG1(L_ERROR,DBG_CELLID,rlsRnti->cellId,
-               "No cellCb found with cellId for RNTI:%d", 
-		         rlsRnti->rnti);
+	    "No cellCb found with cellId for RNTI:%d", 
+	    rlsRnti->rnti);
       RETVALUE(RFAILED);
    }
    /* Fix : syed Clearing UE context when SCH indicates to do so
@@ -1538,10 +1538,10 @@ TfuDelDatReqInfo delDatReq;
        * is dummy */	   
       if (rgUtlHndlCrntiChng(macInst,cell, rlsRnti->rnti, rlsRnti->newRnti) != ROK)	   
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,rlsRnti->cellId,
-	                "CRNTI change failed for RNTI:%d new RNTI:%d",
-                   rlsRnti->rnti,rlsRnti->newRnti);
-         RETVALUE(RFAILED);
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,rlsRnti->cellId,
+	       "CRNTI change failed for RNTI:%d new RNTI:%d",
+	       rlsRnti->rnti,rlsRnti->newRnti);
+	 RETVALUE(RFAILED);
       }
 
 #ifdef LTE_ADV
@@ -1550,8 +1550,8 @@ TfuDelDatReqInfo delDatReq;
        */
       if(rgUtlSndCrntiChngReq2AllSMacs(cell, rlsRnti->rnti, rlsRnti->newRnti) != ROK)
       {
-         /* TODO: do we need to send DelInd to SCH in failure case*/ 
-         RETVALUE(RFAILED);
+	 /* TODO: do we need to send DelInd to SCH in failure case*/ 
+	 RETVALUE(RFAILED);
       }
 #endif
 #ifdef L2_OPTMZ
@@ -1587,10 +1587,10 @@ TfuDelDatReqInfo delDatReq;
 
 #ifdef L2_OPTMZ
 #ifdef ANSI
-PUBLIC Bool RgUtlIsTbMuxed
+   PUBLIC Bool RgUtlIsTbMuxed
 (
  TfuDatReqTbInfo *tb
-)
+ )
 #else
 PUBLIC Bool RgUtlIsTbMuxed()
    TfuDatReqTbInfo *tb
@@ -1603,6 +1603,6 @@ PUBLIC Bool RgUtlIsTbMuxed()
 #endif
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

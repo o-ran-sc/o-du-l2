@@ -98,7 +98,7 @@ typedef RguLchMapInfo KwLchMapInfo;
 
 
 /** @defgroup ummode UM Module Info 
-*/
+ */
 /** 
  * @brief  Structure to hold an Unacknowledged Mode header
  *
@@ -107,7 +107,7 @@ typedef RguLchMapInfo KwLchMapInfo;
  *    - sn    : Sequence number
  *    - numLi : Number of length indicators in the following array (li)
  *    - li    : Length indicators
-*/
+ */
 typedef struct kwUmHdr
 {
    U8     fi;              /*!< Framing Info */
@@ -130,7 +130,7 @@ typedef struct kwUmHdr
  *    - so    : Segment offset
  *    - numLi : Number of length indicators in the following array (li)
  *    - li    : Length indicators
-*/
+ */
 typedef struct kwAmHdr
 {
    U8     dc;              /*!< Data/Control PDU */
@@ -177,7 +177,7 @@ typedef struct kwExtHdr
  * @details
  *    - lChId    : Logical channel Id
  *    - lChType  : Logical channel type 
-*/ 
+ */ 
 typedef struct kwLchInfo
 {
    CmLteLcId     lChId;     /*!< Logical channel Id */
@@ -200,7 +200,7 @@ typedef struct kwL2Cntr
    {
       U32  dLoss;            /*!< Total number of lost packets */  
       U32  posPkts;          /*!< Total number of positively acknowlegded 
-                                  packets */
+			       packets */
    }uuLoss;
    struct                    /*!< For DL IP throughput */
    {
@@ -262,14 +262,14 @@ typedef struct kwTbSnMap
 typedef struct kwL2MeasCbUeMeasInfo
 {
    CmLteRnti   ueId;                    /*!< UE ID (Used only for IP Throughput
-                                             in UL/DL */
+					  in UL/DL */
    CmLteCellId cellId;                  /*!< UE ID (Used only for IP Throughput
-                                             in UL/DL */
+					  in UL/DL */
    Bool        isValid;                 /*! < is this UE entry valid */
    U8          numLcId;                 /*!< Holds the number of LCh for which Ul Ip
-                                             measurement is ON */
+					  measurement is ON */
    U8          lcId[KW_MAX_LCH_PER_UE]; /*!< Holds the list of LCh for which Ul ip
-                                             measurement is ON */
+					  measurement is ON */
    KwL2Cntr    measData[LKW_MAX_QCI];
    U16         numQci;                  /*!< number of valid qcI */
    U8          qci[LKW_MAX_QCI];        /*!< list of valid qcI */
@@ -345,9 +345,9 @@ typedef enum _dlIpThrputState
 }DlIpThrputState;
 
 /** 
-* @struct kwL2MeasSduLst
-* Structure to hold parameters of 
-* burst sdus in DL for a RB */
+ * @struct kwL2MeasSduLst
+ * Structure to hold parameters of 
+ * burst sdus in DL for a RB */
 typedef struct kwOutStngSduInfo
 {
    U32       sduId;            /*!< SDU Id of sdu */
@@ -356,9 +356,9 @@ typedef struct kwOutStngSduInfo
 }KwOutStngSduInfo;
 
 /** 
-* @struct kwL2MeasDlIpTh
-* Structure to hold parameters for DL ip 
-* throughput for a RB */
+ * @struct kwL2MeasDlIpTh
+ * Structure to hold parameters for DL ip 
+ * throughput for a RB */
 typedef struct kwL2MeasDlIpTh
 {
    Bool            isBurstAct;            /*!< Set to TRUE when burst is active in DL */
@@ -369,13 +369,13 @@ typedef struct kwL2MeasDlIpTh
 }KwL2MeasDlIpTh;
 
 /** 
-* @struct kwL2MeasIpThruput
-* Structure to hold parameters for UL/DL ip 
-* throughput for a RB */
+ * @struct kwL2MeasIpThruput
+ * Structure to hold parameters for UL/DL ip 
+ * throughput for a RB */
 typedef struct kwL2MeasIpThruput
 {
    U32             dataVol;                 /*!< Holds volume of new data in bytes
-                                              for UL IP throughput */
+					      for UL IP throughput */
    U32             ttiCnt;                  /*!< Holds ttiCnt received from MAC in UL */
    U32             prevTtiCnt;        /*!< Holds previous ttiCnt received from MAC in UL */
    KwL2MeasDlIpTh  dlIpTh;
@@ -389,7 +389,7 @@ typedef struct kwL2MeasIpThruput
  * @details
  *    - ueId    : UE Id
  *    - cellId  : Cell Id 
-*/
+ */
 typedef struct kwUeKey
 {
    CmLteRnti     ueId;     /*!< UE Id */
@@ -405,7 +405,7 @@ typedef struct kwUeKey
  *    - suId  : Service user Id
  *    - state : State of the SAP
  *    - sts   : SAP specific statistics 
-*/
+ */
 typedef struct kwCkwSapCb
 {
    Pst           pst;     /*!< Service user post structure */
@@ -424,7 +424,7 @@ typedef struct kwCkwSapCb
  *    - suId  : Service user Id
  *    - state : State of the SAP
  *    - sts   : SAP specific statistics 
-*/
+ */
 typedef struct kwKwuSapCb
 {
    Pst           pst;     /*!< Service user post structure */
@@ -445,7 +445,7 @@ typedef struct kwKwuSapCb
  *    - bndTmr    : Bind Timer
  *    - bndTmrInt : Timer Interval
  *    - retryCnt  : Bind Retry Count
-*/
+ */
 typedef struct kwRguSapCb
 {
    Pst       pst;         /*!< Service user post structure */
@@ -468,7 +468,7 @@ typedef struct kwRguSapCb
  *    - bndTmr    : Bind Timer
  *    - bndTmrInt : Timer Interval
  *    - retryCnt  : Bind Retry Count
-*/
+ */
 typedef struct kwUdxUlSapCb
 {
    Pst       pst;         /*!< Service user post structure */
@@ -488,7 +488,7 @@ typedef struct kwUdxUlSapCb
  *    - spId      : Service provider Id
  *    - suId      : Service user Id
  *    - state     : State of the SAP
-*/
+ */
 typedef struct kwUdxDlSapCb
 {
    Pst    pst;     /*!< Service user post structure */
@@ -506,7 +506,7 @@ typedef struct kwUdxDlSapCb
  *    - txLst   : Stores to be released AM Mode TX PDUs
  *    - reTxLst : Stores to be released AM Re TX PDU's
  *    - rbLst   : List of AM DL RBs to be freed 
-*/
+ */
 typedef struct rlcDlDataToBeFreed
 {
    CmLListCp   sduLst;     /*!< Queue of SDU's to be freed  */
@@ -574,7 +574,7 @@ typedef struct rlcUlCb
    CmHashListCp   cellLstCp;      /*!< Hashlist of CellCb */
    CmHashListCp   ueLstCp;        /*!< Hashlist of UeCb */
    CmHashListCp   transIdLstCp;   /*!< Hashlist of cfg trans */
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    KwL2Cb        kwL2Cb; /*!< Control Block for L2 Measurements in RLC */
 #endif /* LTE_L2_MEAS */
@@ -631,12 +631,12 @@ EXTERN Bool kwChkTmr ARGS((RlcCb *gCb,PTR cb, S16 tmrEvnt));
 
 #ifdef LTE_L2_MEAS
 EXTERN Void kwLmmSendAlarm ARGS (( RlcCb *gCb,
-                                   U16 category, 
-                                   U16 event, 
-                                   U16 cause, 
-                                   SuId suId, 
-                                   U32 ueId, 
-                                   U8 qci));
+	 U16 category, 
+	 U16 event, 
+	 U16 cause, 
+	 SuId suId, 
+	 U32 ueId, 
+	 U8 qci));
 
 EXTERN S16 KwMiRlcDlL2MeasReq ARGS (( Pst *pst, KwL2MeasReqEvt *measReqEvt ));
 EXTERN S16 KwMiRlcDlL2MeasSendReq ARGS((Pst *pst,U8 measType));
@@ -645,15 +645,15 @@ EXTERN S16 KwMiRlcUlL2MeasReq ARGS (( Pst *pst, KwL2MeasReqEvt *measReqEvt ));
 EXTERN S16 KwMiRlcUlL2MeasSendReq ARGS((Pst *pst,U8 measType));
 EXTERN S16 KwMiRlcUlL2MeasStopReq ARGS((Pst *pst,U8 measType));
 EXTERN Void kwUtlPlcMeasDatInL2Sts ARGS((KwL2Cntr *measData, 
-                                         KwL2MeasRbCb *rbL2Cb,
-                                         U8 measType));
+	 KwL2MeasRbCb *rbL2Cb,
+	 U8 measType));
 #else /* LTE_L2_MEAS */
 EXTERN Void kwLmmSendAlarm ARGS ((RlcCb *gCb,
-                                  U16 category, 
-                                  U16 event, 
-                                  U16 cause, 
-                                  SuId suId, 
-                                  U32 ueId));
+	 U16 category, 
+	 U16 event, 
+	 U16 cause, 
+	 SuId suId, 
+	 U32 ueId));
 #endif /* LTE_L2_MEAS */
 
 #ifdef __cplusplus
@@ -664,6 +664,6 @@ EXTERN Void kwLmmSendAlarm ARGS ((RlcCb *gCb,
 
   
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

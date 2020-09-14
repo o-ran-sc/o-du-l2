@@ -77,9 +77,9 @@ typedef struct ssEventInfo
    {
       struct
       {
-         SsIdx tmrIdx;                          /* timer index */
-         Bool  inUse;                           /* message in use? */
-         Bool  dynBuf;                          /* dynamic buffer? */
+	 SsIdx tmrIdx;                          /* timer index */
+	 Bool  inUse;                           /* message in use? */
+	 Bool  dynBuf;                          /* dynamic buffer? */
       } tmr;                                    /* for timer events */
    } u;
 } SsEventInfo;
@@ -108,9 +108,9 @@ typedef struct ssMsgInfo
 
 #endif /* __SSMSGX__ */
 
- 
+
 
 /********************************************************************30**
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

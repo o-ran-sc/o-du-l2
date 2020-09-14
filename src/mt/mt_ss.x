@@ -150,15 +150,15 @@ typedef struct mtMemCfg
 #ifdef SS_LOCK_SUPPORT
 typedef struct sLockInfo
 {
-  union
-  {
+   union
+   {
 #ifdef SS_RDWR_LOCK_SUPPORT
-   pthread_rwlock_t rdWrLockId;
+      pthread_rwlock_t rdWrLockId;
 #endif /* SS_RDWR_LOCK_SUPPORT */
 #ifdef SS_REC_LOCK_SUPPORT
-	pthread_mutex_t  recurLock;
+      pthread_mutex_t  recurLock;
 #endif /* SS_REC_LOCK_SUPPORT */
-  }l;
+   }l;
 }SLockInfo;
 #endif /* SS_LOCK_SUPPORT */
 
@@ -169,5 +169,5 @@ extern U32 gt[128];
 
 /********************************************************************30**
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -81,13 +81,13 @@ RgPrgUeSCellCfgInfo    *ueSCellCfgInfo;
 
    TRC2(cmPkPrgPMacSMacUeSCellCfgReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
-   
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
+
    if(SAddPstMsgMult((Data *)ueSCellCfgInfo, sizeof(RgPrgUeSCellCfgInfo),\
-            mBuf) != ROK)
+	    mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
@@ -111,28 +111,28 @@ RgPrgUeSCellCfgInfo    *ueSCellCfgInfo;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkPrgPMacSMacUeSCellCfgReq
+   PUBLIC S16 cmUnpkPrgPMacSMacUeSCellCfgReq
 (
-RgPrgUeSCellCfgReq   func,
-Pst                  *pst,
-Buffer               *mBuf
-)
+ RgPrgUeSCellCfgReq   func,
+ Pst                  *pst,
+ Buffer               *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkPrgPMacSMacUeSCellCfgReq(func, pst, mBuf)
-RgPrgUeSCellCfgReq   func;
-Pst                  *pst;
-Buffer               *mBuf;
+   RgPrgUeSCellCfgReq   func;
+   Pst                  *pst;
+   Buffer               *mBuf;
 #endif
 {
    RgPrgUeSCellCfgInfo    ueSCellCfgInfo;
-   
+
    TRC2(cmUnpkPrgPMacSMacUeSCellCfgReq)
 
-   if(SRemPreMsgMult((Data *)&ueSCellCfgInfo, sizeof(RgPrgUeSCellCfgInfo), mBuf) != ROK)
-   {
-      RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if(SRemPreMsgMult((Data *)&ueSCellCfgInfo, sizeof(RgPrgUeSCellCfgInfo), mBuf) != ROK)
+      {
+	 RGPRG_FREE_MSG(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    RGPRG_FREE_MSG(mBuf);
    RETVALUE((*func)(pst, &ueSCellCfgInfo));
@@ -152,26 +152,26 @@ Buffer               *mBuf;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmPkPrgSMacPMacCfgCfm
+   PUBLIC S16 cmPkPrgSMacPMacCfgCfm
 (
-Pst               *pst,
-RgPrgCfgCfmInfo   *cfgCfm
-)
+ Pst               *pst,
+ RgPrgCfgCfmInfo   *cfgCfm
+ )
 #else
 PUBLIC S16 cmPkPrgSMacPMacCfgCfm(pst, cfgCfm)
-Pst                *pst;
-RgPrgCfgCfmInfo    *cfgCfm;
+   Pst                *pst;
+   RgPrgCfgCfmInfo    *cfgCfm;
 #endif
 {
    Buffer *mBuf = NULLP;
 
    TRC2(cmPkPrgSMacPMacCfgCfm)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
-   
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
+
    if(SAddPstMsgMult((Data *)cfgCfm, sizeof(RgPrgCfgCfmInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
@@ -180,25 +180,25 @@ RgPrgCfgCfmInfo    *cfgCfm;
    switch(cfgCfm->event)
    {
       case EVTPRGUESCELLLCHMODCFM : /*cfm for Lch recfg */ 
-      {
-         pst->event = (Event) EVTPRGUESCELLLCHMODCFM;
-      }
-      break;
+	 {
+	    pst->event = (Event) EVTPRGUESCELLLCHMODCFM;
+	 }
+	 break;
       case EVTPRGUESCELLCFGCFM : /*cfm for Adding Scell */ 
-      {
-         pst->event = (Event) EVTPRGUESCELLCFGCFM;
-      }
-      break;
+	 {
+	    pst->event = (Event) EVTPRGUESCELLCFGCFM;
+	 }
+	 break;
       case EVTPRGUESCELLLCHDELCFM : /* cfm for deleting Lch */
-      {
-         pst->event = (Event) EVTPRGUESCELLLCHDELCFM;
-      }
-      break;
+	 {
+	    pst->event = (Event) EVTPRGUESCELLLCHDELCFM;
+	 }
+	 break;
       case EVTPRGUESCELLLCHADDCFM: /* cfm for adding of LCh */
-      {
-         pst->event = (Event) EVTPRGUESCELLLCHADDCFM;
-      }
-      break;
+	 {
+	    pst->event = (Event) EVTPRGUESCELLLCHADDCFM;
+	 }
+	 break;
    }
    RETVALUE(SPstTsk(pst,mBuf));
 }
@@ -218,28 +218,28 @@ RgPrgCfgCfmInfo    *cfgCfm;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkPrgSMacPMacCfgCfm
+   PUBLIC S16 cmUnpkPrgSMacPMacCfgCfm
 (
-RgSMacPMacCfgCfm    func,
-Pst                 *pst,
-Buffer              *mBuf
-)
+ RgSMacPMacCfgCfm    func,
+ Pst                 *pst,
+ Buffer              *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkPrgSMacPMacCfgCfm(func, pst, mBuf)
-RgSMacPMacCfgCfm    func;
-Pst                 *pst;
-Buffer              *mBuf;
+   RgSMacPMacCfgCfm    func;
+   Pst                 *pst;
+   Buffer              *mBuf;
 #endif
 {
    RgPrgCfgCfmInfo   cfgCfm;
-   
+
    TRC2(cmUnpkPrgSMacPMacCfgCfm)
 
-   if(SRemPreMsgMult((Data *)&cfgCfm, sizeof(RgPrgCfgCfmInfo), mBuf) != ROK)
-   {
-      RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if(SRemPreMsgMult((Data *)&cfgCfm, sizeof(RgPrgCfgCfmInfo), mBuf) != ROK)
+      {
+	 RGPRG_FREE_MSG(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    RGPRG_FREE_MSG(mBuf);
    RETVALUE((*func)(pst, &cfgCfm));
@@ -259,28 +259,28 @@ Buffer              *mBuf;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmPkPrgPMacSMacUeSCellDelReq
+   PUBLIC S16 cmPkPrgPMacSMacUeSCellDelReq
 (
-Pst                   *pst,
-RgPrgUeSCellDelInfo   *ueSCellDelInfo
-)
+ Pst                   *pst,
+ RgPrgUeSCellDelInfo   *ueSCellDelInfo
+ )
 #else
 PUBLIC S16 cmPkPrgPMacSMacUeSCellDelReq(pst, ueSCellDelInfo)
-Pst                    *pst;
-RgPrgUeSCellDelInfo    *ueSCellDelInfo;
+   Pst                    *pst;
+   RgPrgUeSCellDelInfo    *ueSCellDelInfo;
 #endif
 {
    Buffer *mBuf = NULLP;
 
    TRC2(cmPkPrgPMacSMacUeSCellDelReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
-   
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
+
    if(SAddPstMsgMult((Data *)ueSCellDelInfo, sizeof(RgPrgUeSCellDelInfo), mBuf)\
-         != ROK)
+	 != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
@@ -305,29 +305,29 @@ RgPrgUeSCellDelInfo    *ueSCellDelInfo;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkPrgPMacSMacUeSCellDelReq
+   PUBLIC S16 cmUnpkPrgPMacSMacUeSCellDelReq
 (
-RgUeSCellDelReq    func,
-Pst                *pst,
-Buffer             *mBuf
-)
+ RgUeSCellDelReq    func,
+ Pst                *pst,
+ Buffer             *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkPrgPMacSMacUeSCellDelReq(func, pst, mBuf)
-RgUeSCellDelReq  func;
-Pst              *pst;
-Buffer           *mBuf;
+   RgUeSCellDelReq  func;
+   Pst              *pst;
+   Buffer           *mBuf;
 #endif
 {
-  RgPrgUeSCellDelInfo ueSCellDelInfo;
-   
+   RgPrgUeSCellDelInfo ueSCellDelInfo;
+
    TRC2(cmUnpkPrgPMacSMacUeSCellDelReq)
 
-   if(SRemPreMsgMult((Data *)&ueSCellDelInfo, sizeof(RgPrgUeSCellDelInfo),\
-            mBuf) != ROK)
-   {
-      RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if(SRemPreMsgMult((Data *)&ueSCellDelInfo, sizeof(RgPrgUeSCellDelInfo),\
+	       mBuf) != ROK)
+      {
+	 RGPRG_FREE_MSG(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    RGPRG_FREE_MSG(mBuf);
    RETVALUE((*func)(pst, &ueSCellDelInfo));
@@ -347,28 +347,28 @@ Buffer           *mBuf;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmPkPrgPMacSMacUeSCellLchAddReq
+   PUBLIC S16 cmPkPrgPMacSMacUeSCellLchAddReq
 (
-Pst                      *pst,
-RgPrgUeSCellLchAddInfo   *lchCfgInfo,
-)
+ Pst                      *pst,
+ RgPrgUeSCellLchAddInfo   *lchCfgInfo,
+ )
 #else
 PUBLIC S16 cmPkPrgPMacSMacUeSCellLchAddReq(pst, lchCfgInfo)
-Pst                       *pst;
-RgPrgUeSCellLchAddInfo    *lchCfgInfo;
+   Pst                       *pst;
+   RgPrgUeSCellLchAddInfo    *lchCfgInfo;
 #endif
 {
    Buffer *mBuf = NULLP;
 
    TRC2(cmPkPrgPMacSMacUeSCellLchAddReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
-   
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
+
    if(SAddPstMsgMult((Data *)lchCfgInfo, sizeof(RgPrgUeSCellLchAddInfo),\
-            mBuf) != ROK)
+	    mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
@@ -393,28 +393,28 @@ RgPrgUeSCellLchAddInfo    *lchCfgInfo;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkPrgPMacSMacUeSCellLchAddReq
+   PUBLIC S16 cmUnpkPrgPMacSMacUeSCellLchAddReq
 (
-RgPrgUeSCellLchAddInfo       func,
-Pst                          *pst,
-Buffer                       *mBuf
-)
+ RgPrgUeSCellLchAddInfo       func,
+ Pst                          *pst,
+ Buffer                       *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkPrgPMacSMacUeSCellLchAddReq(func, pst, mBuf)
-RgPrgUeSCellLchAddInfo       func;
-Pst                          *pst;
-Buffer                       *mBuf;
+   RgPrgUeSCellLchAddInfo       func;
+   Pst                          *pst;
+   Buffer                       *mBuf;
 #endif
 {
    RgPrgLchRecfgInfo    lchCfgInfo;
-   
+
    TRC2(cmUnpkPrgPMacSMacUeSCellLchAddReq)
 
-   if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchAddInfo), mBuf) != ROK)
-   {
-      RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchAddInfo), mBuf) != ROK)
+      {
+	 RGPRG_FREE_MSG(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    RGPRG_FREE_MSG(mBuf);
    RETVALUE((*func)(pst, &lchCfgInfo));
@@ -434,28 +434,28 @@ Buffer                       *mBuf;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmPkPrgPMacSMacUeSCellLchDelReq
+   PUBLIC S16 cmPkPrgPMacSMacUeSCellLchDelReq
 (
-Pst                       *pst,
-RgPrgUeSCellLchDelInfo    *delLcCb
-)
+ Pst                       *pst,
+ RgPrgUeSCellLchDelInfo    *delLcCb
+ )
 #else
 PUBLIC S16 cmPkPrgPMacSMacUeSCellLchDelReq(pst, delLcCb)
-Pst                       *pst;
-RgPrgUeSCellLchDelInfo    *delLcCb;
+   Pst                       *pst;
+   RgPrgUeSCellLchDelInfo    *delLcCb;
 #endif
 {
    Buffer *mBuf = NULLP;
 
    TRC2(cmPkPrgPMacSMacUeSCellLchDelReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
-   
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
+
    if(SAddPstMsgMult((Data *)delLcCb, sizeof(RgPrgUeSCellLchDelInfo),\
-            mBuf) != ROK)
+	    mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
@@ -480,28 +480,28 @@ RgPrgUeSCellLchDelInfo    *delLcCb;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmPkPrgPMacSMacUeSCellLchModReq
+   PUBLIC S16 cmPkPrgPMacSMacUeSCellLchModReq
 (
-Pst                      *pst,
-RgPrgUeSCellLchModInfo   *lchCfgInfo
-)
+ Pst                      *pst,
+ RgPrgUeSCellLchModInfo   *lchCfgInfo
+ )
 #else
 PUBLIC S16 cmPkPrgPMacSMacUeSCellLchModReq(pst, lchCfgInfo)
-Pst                       *pst;
-RgPrgUeSCellLchModInfo    *lchCfgInfo;
+   Pst                       *pst;
+   RgPrgUeSCellLchModInfo    *lchCfgInfo;
 #endif
 {
    Buffer *mBuf = NULLP;
 
    TRC2(cmPkPrgPMacSMacUeSCellLchModReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
-   
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
+
    if(SAddPstMsgMult((Data *)lchCfgInfo, sizeof(RgPrgUeSCellLchModInfo),\
-            mBuf) != ROK)
+	    mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
       RETVALUE(RFAILED);
@@ -527,28 +527,28 @@ RgPrgUeSCellLchModInfo    *lchCfgInfo;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkPrgPMacSMacUeSCellLchModReq
+   PUBLIC S16 cmUnpkPrgPMacSMacUeSCellLchModReq
 (
-RgPrgUeScellModLchReq   func,
-Pst                     *pst,
-Buffer                  *mBuf
-)
+ RgPrgUeScellModLchReq   func,
+ Pst                     *pst,
+ Buffer                  *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkPrgPMacSMacAddLchCfgReq(func, pst, mBuf)
-RgPrgUeScellModLchReq   func;
-Pst                     *pst;
-Buffer                  *mBuf;
+   RgPrgUeScellModLchReq   func;
+   Pst                     *pst;
+   Buffer                  *mBuf;
 #endif
 {
    RgPrgUeSCellLchModInfo   lchCfgInfo;
-   
+
    TRC2(cmUnpkPrgPMacSMacAddLchCfgReq)
 
-   if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchModInfo), mBuf) != ROK)
-   {
-      RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchModInfo), mBuf) != ROK)
+      {
+	 RGPRG_FREE_MSG(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    RGPRG_FREE_MSG(mBuf);
    RETVALUE((*func)(pst, &lchCfgInfo));
@@ -570,28 +570,28 @@ Buffer                  *mBuf;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkPrgPMacSMacUeSCellLchDelReq
+   PUBLIC S16 cmUnpkPrgPMacSMacUeSCellLchDelReq
 (
-RgPrgUeScellDelLchReq   func,
-Pst                     *pst,
-Buffer                  *mBuf
-)
+ RgPrgUeScellDelLchReq   func,
+ Pst                     *pst,
+ Buffer                  *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkPrgPMacSMacUeSCellLchDelReq(func, pst, mBuf)
-RgPrgUeScellDelLchReq   func;
-Pst                     *pst;
-Buffer                  *mBuf;
+   RgPrgUeScellDelLchReq   func;
+   Pst                     *pst;
+   Buffer                  *mBuf;
 #endif
 {
    RgPrgUeSCellLchDelInfo   lchCfgInfo;
-   
+
    TRC2(cmUnpkPrgPMacSMacUeSCellLchDelReq)
 
-   if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchDelInfo), mBuf) != ROK)
-   {
-      RGPRG_FREE_MSG(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchDelInfo), mBuf) != ROK)
+      {
+	 RGPRG_FREE_MSG(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    RGPRG_FREE_MSG(mBuf);
    RETVALUE((*func)(pst, &lchCfgInfo));
@@ -601,6 +601,6 @@ Buffer                  *mBuf;
 #endif /*LTE_ADV*/
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

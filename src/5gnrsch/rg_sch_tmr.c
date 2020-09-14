@@ -117,67 +117,67 @@ U32         tmrVal;
    switch (tmrEvnt)
    {
       case RG_SCH_TMR_ACKNACK_REP:
-         arg.timers = &(ue->ackNakRepCb.ackNakRepTmr);
-         RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx, 
-            "Hit AckNackRep timer");
-         break;
+	 arg.timers = &(ue->ackNakRepCb.ackNakRepTmr);
+	 RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx, 
+	       "Hit AckNackRep timer");
+	 break;
       case RG_SCH_TMR_MEASGAP:
-         arg.timers = &(ue->measGapCb.measGapTmr);
-         break;
+	 arg.timers = &(ue->measGapCb.measGapTmr);
+	 break;
       case RG_SCH_TMR_UL_ACKNACK:
-         arg.timers = &(ue->ackNakRepCb.ackNakRepUlInactvTmr);
-         break;
+	 arg.timers = &(ue->ackNakRepCb.ackNakRepUlInactvTmr);
+	 break;
       case RG_SCH_TMR_DL_ACKNACK:
-         arg.timers = &(ue->ackNakRepCb.ackNakRepDlInactvTmr);
-         break;
+	 arg.timers = &(ue->ackNakRepCb.ackNakRepDlInactvTmr);
+	 break;
       case RG_SCH_TMR_UL_MEASGAP:
-         arg.timers = &(ue->measGapCb.measGapUlInactvTmr);
-         break;
+	 arg.timers = &(ue->measGapCb.measGapUlInactvTmr);
+	 break;
       case RG_SCH_TMR_DL_MEASGAP:
-         arg.timers = &(ue->measGapCb.measGapDlInactvTmr);
-         break;
+	 arg.timers = &(ue->measGapCb.measGapDlInactvTmr);
+	 break;
       case RG_SCH_TMR_TA:
-         arg.timers = &(ue->taTmr);
-         break;
-	/*MS_WORKAROUND for CR FIXME */
+	 arg.timers = &(ue->taTmr);
+	 break;
+	 /*MS_WORKAROUND for CR FIXME */
 #ifndef RGR_V1
       case RG_SCH_TMR_BSR:
-         {
-            arg.timers = &(ue->bsrTmr);
-            break;
-         }
+	 {
+	    arg.timers = &(ue->bsrTmr);
+	    break;
+	 }
 #else
       case RG_SCH_TMR_BSR:
-         {
+	 {
 #ifdef NO_BSR_SR_5GTF
-            RETVOID;
+	    RETVOID;
 #endif
-            arg.timers = &(ue->bsrTmr);
-            break;
-         }
+	    arg.timers = &(ue->bsrTmr);
+	    break;
+	 }
 #endif
       case RG_SCH_TMR_TXMODE_TRNSTN:
-         {
-            arg.timers = &(ue->txModeTransTmr);
-            break;
-         }
+	 {
+	    arg.timers = &(ue->txModeTransTmr);
+	    break;
+	 }
 #ifdef LTE_ADV
       case RG_SCH_TMR_SCELL_DEACT:
-         {
-            arg.timers = &(sCellCb->deactTmr);
-            break;
-         }
+	 {
+	    arg.timers = &(sCellCb->deactTmr);
+	    break;
+	 }
       case RG_SCH_TMR_SCELL_ACT_DELAY:
-         {
-            sCellCb = (RgSchUeCellInfo *)cb;
-            arg.timers = &(sCellCb->actDelayTmr);
-            break;
-         }
+	 {
+	    sCellCb = (RgSchUeCellInfo *)cb;
+	    arg.timers = &(sCellCb->actDelayTmr);
+	    break;
+	 }
 #endif
       default:
-         RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx,  
-            "rgSCHTmrStartTmr() Incorrect Timer event");
-         RETVOID;
+	 RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx,  
+	       "rgSCHTmrStartTmr() Incorrect Timer event");
+	 RETVOID;
    }
 
    arg.tqCp = &(cell->tqCp);
@@ -192,32 +192,32 @@ U32         tmrVal;
 
 } /* end of */ 
 
- /** @brief This function stops the timer.
-  *
-  * @details
-  *
-  *     Function: rgSCHTmrStopTmr 
-  *
-  *         Processing steps:
-  *         - Stops timer at scheduler. 
-  *
-  *   @param[in]  RgSchCellCb    *cell
-  *   @param[in]  S16            tmrEvnt
-  *   @param[in]  Ptr            cb
-  *   @return  Void
-  */
+/** @brief This function stops the timer.
+ *
+ * @details
+ *
+ *     Function: rgSCHTmrStopTmr 
+ *
+ *         Processing steps:
+ *         - Stops timer at scheduler. 
+ *
+ *   @param[in]  RgSchCellCb    *cell
+ *   @param[in]  S16            tmrEvnt
+ *   @param[in]  Ptr            cb
+ *   @return  Void
+ */
 #ifdef ANSI
-PUBLIC Void rgSCHTmrStopTmr
+   PUBLIC Void rgSCHTmrStopTmr
 (
-RgSchCellCb   *cell,
-S16           tmrEvnt,
-Ptr           cb
-)
+ RgSchCellCb   *cell,
+ S16           tmrEvnt,
+ Ptr           cb
+ )
 #else
 PUBLIC Void rgSCHTmrStopTmr (cell, tmrEvnt, cb)
-RgSchCellCb   *cell;
-S16           tmrEvnt;
-Ptr           cb;
+   RgSchCellCb   *cell;
+   S16           tmrEvnt;
+   Ptr           cb;
 #endif
 {
    CmTmrArg          arg;
@@ -245,68 +245,68 @@ Ptr           cb;
    switch (tmrEvnt)
    {
       case RG_SCH_TMR_ACKNACK_REP:
-         arg.timers = &(ue->ackNakRepCb.ackNakRepTmr);
-         break;
+	 arg.timers = &(ue->ackNakRepCb.ackNakRepTmr);
+	 break;
       case RG_SCH_TMR_MEASGAP:
-         arg.timers = &(ue->measGapCb.measGapTmr);
-         break;
+	 arg.timers = &(ue->measGapCb.measGapTmr);
+	 break;
       case RG_SCH_TMR_UL_ACKNACK:
-         arg.timers = &(ue->ackNakRepCb.ackNakRepUlInactvTmr);
-         break;
+	 arg.timers = &(ue->ackNakRepCb.ackNakRepUlInactvTmr);
+	 break;
       case RG_SCH_TMR_DL_ACKNACK:
-         arg.timers = &(ue->ackNakRepCb.ackNakRepDlInactvTmr);
-         break;
+	 arg.timers = &(ue->ackNakRepCb.ackNakRepDlInactvTmr);
+	 break;
       case RG_SCH_TMR_UL_MEASGAP:
-         arg.timers = &(ue->measGapCb.measGapUlInactvTmr);
-         break;
+	 arg.timers = &(ue->measGapCb.measGapUlInactvTmr);
+	 break;
       case RG_SCH_TMR_DL_MEASGAP:
-         arg.timers = &(ue->measGapCb.measGapDlInactvTmr);
-         break;
+	 arg.timers = &(ue->measGapCb.measGapDlInactvTmr);
+	 break;
       case RG_SCH_TMR_TA:
-         arg.timers = &(ue->taTmr);
-         break;
-	 	/*MS_WORKAROUND for CR FIXME */
+	 arg.timers = &(ue->taTmr);
+	 break;
+	 /*MS_WORKAROUND for CR FIXME */
 #ifndef RGR_V1
       case RG_SCH_TMR_BSR:
 
-         {
-            arg.timers = &(ue->bsrTmr);
-            break;
-         }
+	 {
+	    arg.timers = &(ue->bsrTmr);
+	    break;
+	 }
 #else
       case RG_SCH_TMR_BSR:
-         {
+	 {
 #ifdef NO_BSR_SR_5GTF
-            RETVOID;
+	    RETVOID;
 #endif
-            arg.timers = &(ue->bsrTmr);
-            break;
-         }
+	    arg.timers = &(ue->bsrTmr);
+	    break;
+	 }
 
 #endif
       case RG_SCH_TMR_TXMODE_TRNSTN:
-         {
-            arg.timers = &(ue->txModeTransTmr);
-            break;
-         }
+	 {
+	    arg.timers = &(ue->txModeTransTmr);
+	    break;
+	 }
 #ifdef LTE_ADV
       case RG_SCH_TMR_SCELL_DEACT:
-         {
-            arg.timers = &(sCellCb->deactTmr);
-            break;
-         }
+	 {
+	    arg.timers = &(sCellCb->deactTmr);
+	    break;
+	 }
       case RG_SCH_TMR_SCELL_ACT_DELAY:
-         {
-            sCellCb = (RgSchUeCellInfo *)cb;
-            arg.timers = &(sCellCb->actDelayTmr);
-            break;
-         }
+	 {
+	    sCellCb = (RgSchUeCellInfo *)cb;
+	    arg.timers = &(sCellCb->actDelayTmr);
+	    break;
+	 }
 #endif
 
       default:
-         RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx,  
-            "rgSCHTmrStopTmr() Incorrect Timer event");
-         RETVOID;
+	 RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx,  
+	       "rgSCHTmrStopTmr() Incorrect Timer event");
+	 RETVOID;
    }
 
    arg.tqCp = &(cell->tqCp);
@@ -320,29 +320,29 @@ Ptr           cb;
    RETVOID;
 } /* end of */ 
 
- /** @brief This function handles timer expiry.
-  *
-  * @details
-  *
-  *     Function: rgSCHTmrProcTmr
-  *
-  *         Processing steps:
-  *         - Handles processing on timer expiry at scheduler.
-  *
-  *   @param[in]  Ptr            cb
-  *   @param[in]  S16            tmrEvnt
-  *   @return  Void
-  */
+/** @brief This function handles timer expiry.
+ *
+ * @details
+ *
+ *     Function: rgSCHTmrProcTmr
+ *
+ *         Processing steps:
+ *         - Handles processing on timer expiry at scheduler.
+ *
+ *   @param[in]  Ptr            cb
+ *   @param[in]  S16            tmrEvnt
+ *   @return  Void
+ */
 #ifdef ANSI
-PUBLIC Void rgSCHTmrProcTmr 
+   PUBLIC Void rgSCHTmrProcTmr 
 (
-Ptr         cb,
-S16         tmrEvnt
-)
+ Ptr         cb,
+ S16         tmrEvnt
+ )
 #else
 PUBLIC Void rgSCHTmrProcTmr (cb, tmrEvnt)
-Ptr         cb;
-S16         tmrEvnt;
+   Ptr         cb;
+   S16         tmrEvnt;
 #endif
 {
    RgSchUeCb      *ue = NULLP;
@@ -369,76 +369,76 @@ S16         tmrEvnt;
    switch (tmrEvnt)
    {
       case RG_SCH_TMR_ACKNACK_REP:
-         rgSCHAckNakRepTmrExpry (ue);
-         break;
+	 rgSCHAckNakRepTmrExpry (ue);
+	 break;
       case RG_SCH_TMR_MEASGAP:
-         rgSCHMeasGapANRepTmrExpry (ue);
-         break;
+	 rgSCHMeasGapANRepTmrExpry (ue);
+	 break;
       case RG_SCH_TMR_UL_MEASGAP:
       case RG_SCH_TMR_UL_ACKNACK:
-         rgSCHMeasGapANRepUlInactvTmrExpry (ue, (U8)tmrEvnt);
-         break;
+	 rgSCHMeasGapANRepUlInactvTmrExpry (ue, (U8)tmrEvnt);
+	 break;
       case RG_SCH_TMR_DL_ACKNACK:
       case RG_SCH_TMR_DL_MEASGAP:
-         rgSCHMeasGapANRepDlInactvTmrExpry (ue, (U8)tmrEvnt);
-         break;
+	 rgSCHMeasGapANRepDlInactvTmrExpry (ue, (U8)tmrEvnt);
+	 break;
       case RG_SCH_TMR_TA:
 #ifdef EMTC_ENABLE
-         /*TODO Needto handle TA Timer expiry for EMTC UE*/
-         if(TRUE == ue->isEmtcUe)
-         {
-            RLOG0(L_INFO,"TA Timer Expiry is not handled for EMTC UE\n");
-            break;
-         }
+	 /*TODO Needto handle TA Timer expiry for EMTC UE*/
+	 if(TRUE == ue->isEmtcUe)
+	 {
+	    RLOG0(L_INFO,"TA Timer Expiry is not handled for EMTC UE\n");
+	    break;
+	 }
 #endif
-         rgSCHDhmProcTAExp (ue);
-         break;
-	 	/*MS_WORKAROUND for CR FIXME */
+	 rgSCHDhmProcTAExp (ue);
+	 break;
+	 /*MS_WORKAROUND for CR FIXME */
 #ifndef RGR_V1
       case RG_SCH_TMR_BSR:
-         {
-            rgSCHCmnBsrTmrExpry(ue);
-         }
-         break;
+	 {
+	    rgSCHCmnBsrTmrExpry(ue);
+	 }
+	 break;
 #else
       case RG_SCH_TMR_BSR:
-         {
-            rgSCHCmnBsrTmrExpry(ue);
-         }
-         break;
+	 {
+	    rgSCHCmnBsrTmrExpry(ue);
+	 }
+	 break;
 
 #endif
       case RG_SCH_TMR_TXMODE_TRNSTN:
-         {
-            ue->txModeTransCmplt = TRUE;
-            break;
-         }
+	 {
+	    ue->txModeTransCmplt = TRUE;
+	    break;
+	 }
 #ifdef LTE_ADV
       case RG_SCH_TMR_SCELL_DEACT:
-         {
-            rgSCHSCellDeactTmrExpry(sCellCb);
-            break;
-         }
+	 {
+	    rgSCHSCellDeactTmrExpry(sCellCb);
+	    break;
+	 }
       case RG_SCH_TMR_SCELL_ACT_DELAY:
-         {
-            sCellCb = (RgSchUeCellInfo *)cb;
-            rgSCHSCellActivation(sCellCb);
-            break;
-         }
+	 {
+	    sCellCb = (RgSchUeCellInfo *)cb;
+	    rgSCHSCellActivation(sCellCb);
+	    break;
+	 }
 #endif
       default:
-        if(ue)
-        {
-           RLOG_ARG0(L_ERROR,DBG_INSTID,ue->cell->instIdx,  
-                 "rgSCHTmrProcTmr() Incorrect Timer event");
-        }
-         RETVOID;
+	 if(ue)
+	 {
+	    RLOG_ARG0(L_ERROR,DBG_INSTID,ue->cell->instIdx,  
+		  "rgSCHTmrProcTmr() Incorrect Timer event");
+	 }
+	 RETVOID;
    }
    RETVOID;
 } /* end of */ 
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

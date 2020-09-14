@@ -66,5 +66,5 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
 #endif
 
 /**********************************************************************
-         End of file
+  End of file
  **********************************************************************/

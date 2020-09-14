@@ -36,7 +36,7 @@ void *GenerateTicks(void *arg)
    while(1)
    {
       nanosleep(&req, (struct timespec *)NULL);
-      
+
       /* Send Slot indication indication to lower mac */
       l1BuildAndSendSlotIndication();
    }
@@ -52,7 +52,7 @@ void l1HdlSlotIndicaion(bool stopSlotInd)
       ret = pthread_create(&thread, NULL, GenerateTicks, NULL);
       if(ret)
       {
-         DU_LOG("\nPHY_STUB: Unable to create thread");
+	 DU_LOG("\nPHY_STUB: Unable to create thread");
       }
    }
    else
@@ -60,11 +60,11 @@ void l1HdlSlotIndicaion(bool stopSlotInd)
       ret = pthread_cancel(thread);
       if(ret)
       {
-         DU_LOG("\nPHY_STUB: Unable to stop thread");
+	 DU_LOG("\nPHY_STUB: Unable to stop thread");
       }
    }
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

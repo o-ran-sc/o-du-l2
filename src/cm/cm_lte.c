@@ -113,30 +113,30 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkLteRlcId
-*
-*
-*     Desc : RLC Identifier
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkLteRlcId
+ *
+ *
+ *     Desc : RLC Identifier
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLteRlcId
+   PUBLIC S16 cmUnpkLteRlcId
 (
-CmLteRlcId *param,
-Buffer *mBuf
-)
+ CmLteRlcId *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkLteRlcId(param, mBuf)
-CmLteRlcId *param;
-Buffer *mBuf;
+   CmLteRlcId *param;
+   Buffer *mBuf;
 #endif
 {
 
@@ -152,30 +152,30 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkLteTimingInfo
-*
-*
-*     Desc : LTE Timing Info
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkLteTimingInfo
+ *
+ *
+ *     Desc : LTE Timing Info
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkLteTimingInfo
+   PUBLIC S16 cmPkLteTimingInfo
 (
-CmLteTimingInfo *param,
-Buffer *mBuf
-)
+ CmLteTimingInfo *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkLteTimingInfo(param, mBuf)
-CmLteTimingInfo *param;
-Buffer *mBuf;
+   CmLteTimingInfo *param;
+   Buffer *mBuf;
 #endif
 {
 
@@ -190,30 +190,30 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkLteTimingInfo
-*
-*
-*     Desc : LTE Timing Info
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkLteTimingInfo
+ *
+ *
+ *     Desc : LTE Timing Info
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLteTimingInfo
+   PUBLIC S16 cmUnpkLteTimingInfo
 (
-CmLteTimingInfo *param,
-Buffer *mBuf
-)
+ CmLteTimingInfo *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkLteTimingInfo(param, mBuf)
-CmLteTimingInfo *param;
-Buffer *mBuf;
+   CmLteTimingInfo *param;
+   Buffer *mBuf;
 #endif
 {
 
@@ -228,30 +228,30 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmPkLtePdcpId
-*
-*
-*     Desc : PDCP Id
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmPkLtePdcpId
+ *
+ *
+ *     Desc : PDCP Id
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkLtePdcpId
+   PUBLIC S16 cmPkLtePdcpId
 (
-CmLtePdcpId *param,
-Buffer *mBuf
-)
+ CmLtePdcpId *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkLtePdcpId(param, mBuf)
-CmLtePdcpId *param;
-Buffer *mBuf;
+   CmLtePdcpId *param;
+   Buffer *mBuf;
 #endif
 {
 
@@ -267,30 +267,30 @@ Buffer *mBuf;
 
 
 /***********************************************************
-*
-*     Func : cmUnpkLtePdcpId
-*
-*
-*     Desc : PDCP Id
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : cmUnpkLtePdcpId
+ *
+ *
+ *     Desc : PDCP Id
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLtePdcpId
+   PUBLIC S16 cmUnpkLtePdcpId
 (
-CmLtePdcpId *param,
-Buffer *mBuf
-)
+ CmLtePdcpId *param,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkLtePdcpId(param, mBuf)
-CmLtePdcpId *param;
-Buffer *mBuf;
+   CmLtePdcpId *param;
+   Buffer *mBuf;
 #endif
 {
 
@@ -304,13 +304,13 @@ Buffer *mBuf;
 }
 #ifdef LTE_L2_MEAS 
 #ifdef ANSI
-PUBLIC S16 cmUpdateSsiMemInfo
+   PUBLIC S16 cmUpdateSsiMemInfo
 (
-CmLteMemInfo *mInfo
-)
+ CmLteMemInfo *mInfo
+ )
 #else
 PUBLIC S16 cmUpdateSsiMemInfo(mInfo)
-CmLteMemInfo *mInfo;
+   CmLteMemInfo *mInfo;
 #endif
 {
    U8   numReg = 0;
@@ -328,43 +328,43 @@ CmLteMemInfo *mInfo;
 
       if(mInfo->regInfo[idxReg].isGenMemInfoUpdated == TRUE)
       {
-         for(idxPool=0; idxPool<numPool; idxPool++)
-         {
-            mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed = dbgInfo.bktDbgTbl[idxPool].numAlloc;
-            if(mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed > mInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed)
-               mInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed = mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed;
-         }
+	 for(idxPool=0; idxPool<numPool; idxPool++)
+	 {
+	    mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed = dbgInfo.bktDbgTbl[idxPool].numAlloc;
+	    if(mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed > mInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed)
+	       mInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed = mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed;
+	 }
       }
       else
       {
-      mInfo->regInfo[idxReg].numPools = numPool;
-      mInfo->regInfo[idxReg].regionId = idxReg;
-      mInfo->regInfo[idxReg].regionType = 0;
+	 mInfo->regInfo[idxReg].numPools = numPool;
+	 mInfo->regInfo[idxReg].regionId = idxReg;
+	 mInfo->regInfo[idxReg].regionType = 0;
 
-      for(idxPool=0; idxPool<numPool; idxPool++)
-      {
-         mInfo->regInfo[idxReg].poolInfo[idxPool].totAvailable = dbgInfo.bktDbgTbl[idxPool].numBlks;
-         mInfo->regInfo[idxReg].poolInfo[idxPool].poolSize = dbgInfo.bktDbgTbl[idxPool].size;
-         mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed = dbgInfo.bktDbgTbl[idxPool].numAlloc;
-         if(mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed > mInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed)
-            mInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed = mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed;
-      }
-         mInfo->regInfo[idxReg].isGenMemInfoUpdated = TRUE; 
+	 for(idxPool=0; idxPool<numPool; idxPool++)
+	 {
+	    mInfo->regInfo[idxReg].poolInfo[idxPool].totAvailable = dbgInfo.bktDbgTbl[idxPool].numBlks;
+	    mInfo->regInfo[idxReg].poolInfo[idxPool].poolSize = dbgInfo.bktDbgTbl[idxPool].size;
+	    mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed = dbgInfo.bktDbgTbl[idxPool].numAlloc;
+	    if(mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed > mInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed)
+	       mInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed = mInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed;
+	 }
+	 mInfo->regInfo[idxReg].isGenMemInfoUpdated = TRUE; 
       }
    }
    RETVALUE(ROK);
 }
 
 #ifdef ANSI
-PUBLIC S16 cmFillMemUtilizationMeas
+   PUBLIC S16 cmFillMemUtilizationMeas
 (
  CmLteMemInfo *memoryInfo,
-CmLteMemInfo *memInfo
-)
+ CmLteMemInfo *memInfo
+ )
 #else
 PUBLIC S16 cmFillMemUtilizationMeas(memoryInfo,memInfo)
-CmLteMemInfo *memoryInfo;
-CmLteMemInfo *memInfo;
+   CmLteMemInfo *memoryInfo;
+   CmLteMemInfo *memInfo;
 #endif
 {
    U8 idxReg = 0;
@@ -381,23 +381,23 @@ CmLteMemInfo *memInfo;
 
       for(idxPool=0; idxPool < numPool; idxPool++)
       {
-         memoryInfo->regInfo[idxReg].poolInfo[idxPool].totAvailable = memInfo->regInfo[idxReg].poolInfo[idxPool].totAvailable;
-         memoryInfo->regInfo[idxReg].poolInfo[idxPool].poolSize = memInfo->regInfo[idxReg].poolInfo[idxPool].poolSize;
-         memoryInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed = memInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed;
-         memoryInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed  = memInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed;
+	 memoryInfo->regInfo[idxReg].poolInfo[idxPool].totAvailable = memInfo->regInfo[idxReg].poolInfo[idxPool].totAvailable;
+	 memoryInfo->regInfo[idxReg].poolInfo[idxPool].poolSize = memInfo->regInfo[idxReg].poolInfo[idxPool].poolSize;
+	 memoryInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed = memInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed;
+	 memoryInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed  = memInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed;
       }
    }
    RETVALUE(ROK);
 }
 
 #ifdef ANSI
-PUBLIC S16 cmClearMemUtilizationCounter
+   PUBLIC S16 cmClearMemUtilizationCounter
 (
-CmLteMemInfo *memInfo
-)
+ CmLteMemInfo *memInfo
+ )
 #else
 PUBLIC S16 cmClearMemUtilizationCounter(memInfo)
-CmLteMemInfo *memInfo;
+   CmLteMemInfo *memInfo;
 #endif
 {
    U8 idxReg = 0;
@@ -413,23 +413,23 @@ CmLteMemInfo *memInfo;
 
       for(idxPool=0; idxPool<numPool; idxPool++)
       {
-         memInfo->regInfo[idxReg].poolInfo[idxPool].totAvailable = 0;
-         memInfo->regInfo[idxReg].poolInfo[idxPool].poolSize = 0;
-         memInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed = 0;
-         memInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed  = 0;
+	 memInfo->regInfo[idxReg].poolInfo[idxPool].totAvailable = 0;
+	 memInfo->regInfo[idxReg].poolInfo[idxPool].poolSize = 0;
+	 memInfo->regInfo[idxReg].poolInfo[idxPool].crntUsed = 0;
+	 memInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed  = 0;
       }
    }
    RETVALUE(ROK);
 }
 
 #ifdef ANSI
-PUBLIC S16 cmClearCpuUtilizationCounter
+   PUBLIC S16 cmClearCpuUtilizationCounter
 (
-CmCpuStatsInfo *cpuInfo
-)
+ CmCpuStatsInfo *cpuInfo
+ )
 #else
 PUBLIC S16 cmClearCpuUtilizationCounter(cpuInfo)
-CmCpuStatsInfo *cpuInfo
+   CmCpuStatsInfo *cpuInfo
 #endif
 {
    U8 idx= 0;
@@ -444,15 +444,15 @@ CmCpuStatsInfo *cpuInfo
 }
 
 #ifdef ANSI
-PUBLIC S16 cmFillCpuUtilizationMeas
+   PUBLIC S16 cmFillCpuUtilizationMeas
 (
-CmLteCpuInfo *cpuMeasInfo,
-CmCpuStatsInfo *cpuInfo
-)
+ CmLteCpuInfo *cpuMeasInfo,
+ CmCpuStatsInfo *cpuInfo
+ )
 #else
 PUBLIC S16 cmFillCpuUtilizationMeas(cpuMeasInfo,cpuInfo)
-CmLteCpuInfo *cpuMeasInfo;
-CmCpuStatsInfo *cpuInfo;
+   CmLteCpuInfo *cpuMeasInfo;
+   CmCpuStatsInfo *cpuInfo;
 #endif
 {
    U8 idx= 0;
@@ -492,16 +492,16 @@ PUBLIC Void cmUpdateTtiCounters(U32 ttiProcessingTime)
 
 PUBLIC Void cmResetTtiCounters(Void)
 {
-	ttiProc.totTtiProcessingTime = 0;
-	ttiProc.numOfTti = 0;
-	ttiProc.maxTtiProcessingTime = 0;
-	ttiProc.ttiStretchCount = 0;
-	ttiProc.ttiThresholdExceedCount = 0;
-	ttiProc.phyReptTtiStretchCount = 0;
-	RETVOID;
+   ttiProc.totTtiProcessingTime = 0;
+   ttiProc.numOfTti = 0;
+   ttiProc.maxTtiProcessingTime = 0;
+   ttiProc.ttiStretchCount = 0;
+   ttiProc.ttiThresholdExceedCount = 0;
+   ttiProc.phyReptTtiStretchCount = 0;
+   RETVOID;
 }
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

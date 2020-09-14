@@ -149,21 +149,21 @@ static int RLOG_MODULE_ID=4096;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDUXInsSdu
+   PRIVATE S16 rgDUXInsSdu
 (
-Inst        inst,
-RgMacPdu    *pdu,
-RgMacSdu    **sdu,
-U8          lcId,
-U16         sduLen,
-RgErrInfo   *err
-)
+ Inst        inst,
+ RgMacPdu    *pdu,
+ RgMacSdu    **sdu,
+ U8          lcId,
+ U16         sduLen,
+ RgErrInfo   *err
+ )
 #else
 PRIVATE S16 rgDUXInsSdu(inst,pdu, sdu, lcId, sduLen, err)
-Inst        inst;
-RgMacPdu    *pdu;
-RgMacSdu    **sdu,
-U8          lcId;
+   Inst        inst;
+   RgMacPdu    *pdu;
+   RgMacSdu    **sdu,
+   U8          lcId;
 U16         sduLen;
 RgErrInfo   *err;
 #endif
@@ -173,7 +173,7 @@ RgErrInfo   *err;
 
    TRC2(rgDUXInsSdu)
 
-   RG_DUX_ALLOC(pdu, sizeof(RgMacSdu), sduAloc, ret);
+      RG_DUX_ALLOC(pdu, sizeof(RgMacSdu), sduAloc, ret);
    if(ret != ROK)
    {
       RLOG1(L_ERROR, "Allocation of RgSubHdr failed for LCID:%d",lcId);
@@ -209,32 +209,32 @@ RgErrInfo   *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDUXExtSubHdr
+   PRIVATE S16 rgDUXExtSubHdr
 (
-Inst        inst,
-RgMacPdu    *pdu,
-Buffer      *mBuf,
-U8          *lcId,
-U16         *len,
-RgErrInfo   *err
-)
+ Inst        inst,
+ RgMacPdu    *pdu,
+ Buffer      *mBuf,
+ U8          *lcId,
+ U16         *len,
+ RgErrInfo   *err
+ )
 #else
 PRIVATE S16 rgDUXExtSubHdr(inst,pdu, mBuf, lcId,
-len, err)
-Inst        inst;
-RgMacPdu    *pdu;
-Buffer      *mBuf;
-U8          *lcId;
-U16         *len;
-RgErrInfo   *err;
+      len, err)
+   Inst        inst;
+   RgMacPdu    *pdu;
+   Buffer      *mBuf;
+   U8          *lcId;
+   U16         *len;
+   RgErrInfo   *err;
 #endif
 {
    U8             byte;
    U8             fmt=0;
- 
+
    TRC2(rgDUXExtSubHdr)
 
-   *len = 0;   
+      *len = 0;   
    if(SUnpkU8(&byte,mBuf) != ROK)
    {
       RLOG0(L_ERROR, "SUnpkU8 failed");
@@ -250,20 +250,20 @@ RgErrInfo   *err;
       RG_EXT_FORMT_BIT(fmt,byte);
       if(SUnpkU8(&byte, mBuf) != ROK)
       {
-         RLOG0(L_ERROR, "SUnpkU8 failed");
-         err->errCause = RGERR_DUX_UNPACK_FAILURE;
-         RETVALUE(RFAILED);
+	 RLOG0(L_ERROR, "SUnpkU8 failed");
+	 err->errCause = RGERR_DUX_UNPACK_FAILURE;
+	 RETVALUE(RFAILED);
       }
       *len = byte;
       if(fmt)
       {
-         if(SUnpkU8(&byte,mBuf) != ROK)
-         {
-            RLOG0(L_ERROR, "SUnpkU8 failed");
-            err->errCause = RGERR_DUX_UNPACK_FAILURE;
-            RETVALUE(RFAILED);
-         }
-         *len = (*len << 8) | byte;
+	 if(SUnpkU8(&byte,mBuf) != ROK)
+	 {
+	    RLOG0(L_ERROR, "SUnpkU8 failed");
+	    err->errCause = RGERR_DUX_UNPACK_FAILURE;
+	    RETVALUE(RFAILED);
+	 }
+	 *len = (*len << 8) | byte;
       }
    }
    RETVALUE(ROK);
@@ -293,25 +293,25 @@ RgErrInfo   *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDUXExtCe
+   PRIVATE S16 rgDUXExtCe
 (
-Inst        inst,
-RgMacPdu    *pdu,
-RgInfCeInfo  *ceInfo,
-Buffer       *mBuf,
-U8          lcId,
-U16         subPduLen,
-RgErrInfo    *err
-)
+ Inst        inst,
+ RgMacPdu    *pdu,
+ RgInfCeInfo  *ceInfo,
+ Buffer       *mBuf,
+ U8          lcId,
+ U16         subPduLen,
+ RgErrInfo    *err
+ )
 #else
 PRIVATE S16 rgDUXExtCe(inst,pdu, ceInfo, mBuf,lcId,subPduLen, err)
-Inst        inst;
-RgMacPdu    *pdu;
-RgInfCeInfo  *ceInfo;
-Buffer       *mBuf;
-U8          lcId;
-U16         subPduLen;
-RgErrInfo    *err;
+   Inst        inst;
+   RgMacPdu    *pdu;
+   RgInfCeInfo  *ceInfo;
+   Buffer       *mBuf;
+   U8          lcId;
+   U16         subPduLen;
+   RgErrInfo    *err;
 #endif
 {
    S16            ret;
@@ -321,146 +321,146 @@ RgErrInfo    *err;
    switch(lcId)
    {
       case RG_EXT_PHR_LCID:
-         {
-            U8 Ci;
-            U8 sCellIdx;
-            U8 extPhrOctet;
-            U8 extPhrPCmax;
-            RgInfExtPhrCEInfo *extPhr;
+	 {
+	    U8 Ci;
+	    U8 sCellIdx;
+	    U8 extPhrOctet;
+	    U8 extPhrPCmax;
+	    RgInfExtPhrCEInfo *extPhr;
 
-            RG_UNPACK_EXT_PHR_CI(&Ci,mBuf,ret);
-            if(ret != ROK)
-            {
-               RLOG1(L_ERROR,"Unpacking of EXT PHR failed LCID:%d",lcId);
-               err->errCause = RGERR_DUX_UNPACK_FAILURE;
-               RETVALUE(RFAILED);
-            }
+	    RG_UNPACK_EXT_PHR_CI(&Ci,mBuf,ret);
+	    if(ret != ROK)
+	    {
+	       RLOG1(L_ERROR,"Unpacking of EXT PHR failed LCID:%d",lcId);
+	       err->errCause = RGERR_DUX_UNPACK_FAILURE;
+	       RETVALUE(RFAILED);
+	    }
 
-            /* Not handling Type 2 PHR report as simultaneous PUSCH/PUCCH
-               is not supported as of now */
-            extPhr = &ceInfo->ces.extPhr;
-            extPhr->numServCells = 0;
+	    /* Not handling Type 2 PHR report as simultaneous PUSCH/PUCCH
+	       is not supported as of now */
+	    extPhr = &ceInfo->ces.extPhr;
+	    extPhr->numServCells = 0;
 
-            /* Setting first BIT as PCELL field even though reserved is always
-               reported by UE */
-            Ci |= 0x1;
-            for (sCellIdx = 0; (Ci && sCellIdx < CM_LTE_MAX_CELLS); sCellIdx++)
-            {
-               if (Ci & 0x1)
-               {
-                  extPhr->servCellPhr[extPhr->numServCells].sCellIdx = sCellIdx;
-                  RG_UNPACK_EXT_PHR(&extPhrOctet,mBuf,ret);
-                  if(ret != ROK)
-                  {
-                     RLOG1(L_ERROR,"Unpacking of EXT PHR failed LCID:%d",lcId);
-                     err->errCause = RGERR_DUX_UNPACK_FAILURE;
-                     RETVALUE(RFAILED);
-                  }
+	    /* Setting first BIT as PCELL field even though reserved is always
+	       reported by UE */
+	    Ci |= 0x1;
+	    for (sCellIdx = 0; (Ci && sCellIdx < CM_LTE_MAX_CELLS); sCellIdx++)
+	    {
+	       if (Ci & 0x1)
+	       {
+		  extPhr->servCellPhr[extPhr->numServCells].sCellIdx = sCellIdx;
+		  RG_UNPACK_EXT_PHR(&extPhrOctet,mBuf,ret);
+		  if(ret != ROK)
+		  {
+		     RLOG1(L_ERROR,"Unpacking of EXT PHR failed LCID:%d",lcId);
+		     err->errCause = RGERR_DUX_UNPACK_FAILURE;
+		     RETVALUE(RFAILED);
+		  }
 
-                  /* extPhrOctet: Bits : 7 6 5 4 3 2 1 0
-                   *                     P V x x x x x x
-                   *                         <6x Bit phr>
-                   */
-                  /* P : P Back off applied or not */
-                  extPhr->servCellPhr[extPhr->numServCells].phr = (extPhrOctet & 0x3F);
-                  extPhr->servCellPhr[extPhr->numServCells].pBackOff = 
-                     ((extPhrOctet >> 7) & 0x01);
+		  /* extPhrOctet: Bits : 7 6 5 4 3 2 1 0
+		   *                     P V x x x x x x
+		   *                         <6x Bit phr>
+		   */
+		  /* P : P Back off applied or not */
+		  extPhr->servCellPhr[extPhr->numServCells].phr = (extPhrOctet & 0x3F);
+		  extPhr->servCellPhr[extPhr->numServCells].pBackOff = 
+		     ((extPhrOctet >> 7) & 0x01);
 
-                  /* V: Virtual PCMAX or Real Tx PCMAX */
-                  if (extPhrOctet & 0x40)
-                  {
-                     extPhr->servCellPhr[extPhr->numServCells].pCmax = RG_REF_PCMAX;
-                  }
-                  else
-                  {
-                     RG_UNPACK_EXT_PHR(&extPhrPCmax,mBuf,ret);
-                     if(ret != ROK)
-                     {
-                        RLOG1(L_ERROR,"Unpacking of EXT PHR failed LCID:%d",lcId);
-                        err->errCause = RGERR_DUX_UNPACK_FAILURE;
-                        RETVALUE(RFAILED);
-                     }
-                     extPhr->servCellPhr[extPhr->numServCells].pCmax = (extPhrPCmax & 0x3F);
-                  }
-                  extPhr->numServCells++;
-               }
-               Ci >>= 1;
-            }
+		  /* V: Virtual PCMAX or Real Tx PCMAX */
+		  if (extPhrOctet & 0x40)
+		  {
+		     extPhr->servCellPhr[extPhr->numServCells].pCmax = RG_REF_PCMAX;
+		  }
+		  else
+		  {
+		     RG_UNPACK_EXT_PHR(&extPhrPCmax,mBuf,ret);
+		     if(ret != ROK)
+		     {
+			RLOG1(L_ERROR,"Unpacking of EXT PHR failed LCID:%d",lcId);
+			err->errCause = RGERR_DUX_UNPACK_FAILURE;
+			RETVALUE(RFAILED);
+		     }
+		     extPhr->servCellPhr[extPhr->numServCells].pCmax = (extPhrPCmax & 0x3F);
+		  }
+		  extPhr->numServCells++;
+	       }
+	       Ci >>= 1;
+	    }
 
-            ceInfo->bitMask |= RG_EXT_PHR_CE_PRSNT;
-         }
-         break;
+	    ceInfo->bitMask |= RG_EXT_PHR_CE_PRSNT;
+	 }
+	 break;
 
       case RG_PHR_LCID:
-         {
-            RG_UNPACK_PHR(&ceInfo->ces.phr,mBuf,ret);
-            if(ret != ROK)
-            {
-               RLOG1(L_ERROR,"Unpacking of PHR failed LCID:%d",lcId);
-               err->errCause = RGERR_DUX_UNPACK_FAILURE;
-               RETVALUE(RFAILED);
-            }
-            ceInfo->bitMask |= RG_PHR_CE_PRSNT;
-         }
-         break;
+	 {
+	    RG_UNPACK_PHR(&ceInfo->ces.phr,mBuf,ret);
+	    if(ret != ROK)
+	    {
+	       RLOG1(L_ERROR,"Unpacking of PHR failed LCID:%d",lcId);
+	       err->errCause = RGERR_DUX_UNPACK_FAILURE;
+	       RETVALUE(RFAILED);
+	    }
+	    ceInfo->bitMask |= RG_PHR_CE_PRSNT;
+	 }
+	 break;
       case RG_TRUNC_BSR_LCID:
-         {
-            RG_UNPACK_TRUNC_BSR(&ceInfo->ces.bsr.truncBsr,mBuf,ret);
-            if(ret != ROK)
-            {
-               RLOG1(L_ERROR,"Unpacking of Trunc BSR failed LCID:%d",lcId);
-               err->errCause = RGERR_DUX_UNPACK_FAILURE;
-               RETVALUE(RFAILED);
-            }
-            ceInfo->bitMask |= RG_TRUNC_BSR_CE_PRSNT;
-         }
-         break;
+	 {
+	    RG_UNPACK_TRUNC_BSR(&ceInfo->ces.bsr.truncBsr,mBuf,ret);
+	    if(ret != ROK)
+	    {
+	       RLOG1(L_ERROR,"Unpacking of Trunc BSR failed LCID:%d",lcId);
+	       err->errCause = RGERR_DUX_UNPACK_FAILURE;
+	       RETVALUE(RFAILED);
+	    }
+	    ceInfo->bitMask |= RG_TRUNC_BSR_CE_PRSNT;
+	 }
+	 break;
       case RG_SHORT_BSR_LCID:
-         {
-            RG_UNPACK_SHORT_BSR(&ceInfo->ces.bsr.shortBsr,mBuf,ret);
-            if(ret != ROK)
-            {
-               RLOG1(L_ERROR,"Unpacking of Short BSR failed LCID:%d",lcId);
-               err->errCause = RGERR_DUX_UNPACK_FAILURE;
-               RETVALUE(RFAILED);
-            }
-            ceInfo->bitMask |= RG_SHORT_BSR_CE_PRSNT;
-         }
-         break;
+	 {
+	    RG_UNPACK_SHORT_BSR(&ceInfo->ces.bsr.shortBsr,mBuf,ret);
+	    if(ret != ROK)
+	    {
+	       RLOG1(L_ERROR,"Unpacking of Short BSR failed LCID:%d",lcId);
+	       err->errCause = RGERR_DUX_UNPACK_FAILURE;
+	       RETVALUE(RFAILED);
+	    }
+	    ceInfo->bitMask |= RG_SHORT_BSR_CE_PRSNT;
+	 }
+	 break;
       case RG_LONG_BSR_LCID:
-         {
-            U8 longBsr[3] = {0}; /* KW_FIXX */
-            RG_UNPACK_LONG_BSR(longBsr,mBuf,ret);
-            if(ret != ROK)
-            {
-               RLOG1(L_ERROR,"Unpacking of Long BSR failed LCID:%d",lcId);
-               err->errCause = RGERR_DUX_UNPACK_FAILURE;
-               RETVALUE(RFAILED);
-            }
-            RG_EXT_BS(longBsr, 
-                  ceInfo->ces.bsr.longBsr.bs1, 
-                  ceInfo->ces.bsr.longBsr.bs2, 
-                  ceInfo->ces.bsr.longBsr.bs3, 
-                  ceInfo->ces.bsr.longBsr.bs4);
-            ceInfo->bitMask |= RG_LONG_BSR_CE_PRSNT;
-         }
-         break;
+	 {
+	    U8 longBsr[3] = {0}; /* KW_FIXX */
+	    RG_UNPACK_LONG_BSR(longBsr,mBuf,ret);
+	    if(ret != ROK)
+	    {
+	       RLOG1(L_ERROR,"Unpacking of Long BSR failed LCID:%d",lcId);
+	       err->errCause = RGERR_DUX_UNPACK_FAILURE;
+	       RETVALUE(RFAILED);
+	    }
+	    RG_EXT_BS(longBsr, 
+		  ceInfo->ces.bsr.longBsr.bs1, 
+		  ceInfo->ces.bsr.longBsr.bs2, 
+		  ceInfo->ces.bsr.longBsr.bs3, 
+		  ceInfo->ces.bsr.longBsr.bs4);
+	    ceInfo->bitMask |= RG_LONG_BSR_CE_PRSNT;
+	 }
+	 break;
       case RG_CRNTI_LCID:
-         {
-            RG_UNPACK_CRNTI(&ceInfo->ces.cRnti,mBuf,ret);
-            if(ret != ROK)
-            {
-               RLOG1(L_ERROR,"Unpacking of C-RNTI failed LCID:%d",lcId);
-               err->errCause = RGERR_DUX_UNPACK_FAILURE;
-               RETVALUE(RFAILED);
-            }
-            ceInfo->bitMask |= RG_CRNTI_CE_PRSNT;
-         }
-         break;
+	 {
+	    RG_UNPACK_CRNTI(&ceInfo->ces.cRnti,mBuf,ret);
+	    if(ret != ROK)
+	    {
+	       RLOG1(L_ERROR,"Unpacking of C-RNTI failed LCID:%d",lcId);
+	       err->errCause = RGERR_DUX_UNPACK_FAILURE;
+	       RETVALUE(RFAILED);
+	    }
+	    ceInfo->bitMask |= RG_CRNTI_CE_PRSNT;
+	 }
+	 break;
       default:
-         RLOG1(L_ERROR, "Invalid LCID:%u received",lcId); 
-         err->errCause = RGERR_DUX_INV_LCID_RX;
-         RETVALUE(RFAILED);
+	 RLOG1(L_ERROR, "Invalid LCID:%u received",lcId); 
+	 err->errCause = RGERR_DUX_INV_LCID_RX;
+	 RETVALUE(RFAILED);
    }
    RETVALUE(ROK);
 } /* rgDUXExtCe  */
@@ -490,25 +490,25 @@ RgErrInfo    *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDUXExtSdu
+   PRIVATE S16 rgDUXExtSdu
 (
-Inst        inst,
-RgMacPdu    *pdu,
-RgInfCeInfo  *ceInfo,
-Buffer      **mBuf,
-U8          lcId,
-U16         subPduLen,
-RgErrInfo   *err
-)
+ Inst        inst,
+ RgMacPdu    *pdu,
+ RgInfCeInfo  *ceInfo,
+ Buffer      **mBuf,
+ U8          lcId,
+ U16         subPduLen,
+ RgErrInfo   *err
+ )
 #else
 PRIVATE S16 rgDUXExtSdu(inst,pdu, ceInfo,mBuf,lcId,subPduLen,err)
-Inst        inst;
-RgMacPdu    *pdu;
-RgInfCeInfo  *ceInfo;
-Buffer      **mBuf;
-U8          lcId;
-U16         subPduLen;
-RgErrInfo   *err;
+   Inst        inst;
+   RgMacPdu    *pdu;
+   RgInfCeInfo  *ceInfo;
+   Buffer      **mBuf;
+   U8          lcId;
+   U16         subPduLen;
+   RgErrInfo   *err;
 #endif
 {
    S16         ret;
@@ -518,10 +518,10 @@ RgErrInfo   *err;
 
    TRC2(rgDUXExtSdu)
 
-   if(lcId == RG_CCCH_LCID)
-   {
-      ceInfo->bitMask |= RG_CCCH_SDU_PRSNT;
-   }
+      if(lcId == RG_CCCH_LCID)
+      {
+	 ceInfo->bitMask |= RG_CCCH_SDU_PRSNT;
+      }
 
    if(rgDUXInsSdu(inst,pdu, &sdu,lcId, subPduLen, err) != ROK)
    {
@@ -534,10 +534,10 @@ RgErrInfo   *err;
       ret = SSegMsg(tmpBuf1,subPduLen,&tmpBuf2);
       if((ret != ROK) && (!((ret == ROKDNA) )))
       {
-         RG_FREE_MSG(tmpBuf1);
-         RLOG0(L_ERROR,"SSegMsg failed");
-         err->errCause = RGERR_DUX_RLC_PDU_CREAT_FAIL;
-         RETVALUE(RFAILED);
+	 RG_FREE_MSG(tmpBuf1);
+	 RLOG0(L_ERROR,"SSegMsg failed");
+	 err->errCause = RGERR_DUX_RLC_PDU_CREAT_FAIL;
+	 RETVALUE(RFAILED);
       }
       sdu->mBuf = tmpBuf1;
       *mBuf = tmpBuf2;
@@ -568,21 +568,21 @@ RgErrInfo   *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDUXDemuxData
+   PUBLIC S16 rgDUXDemuxData
 (
-Inst          inst,
-RgMacPdu      *pdu,
-RgInfCeInfo   *ceInfo,
-Buffer        **mBuf,
-RgErrInfo     *err
-)
+ Inst          inst,
+ RgMacPdu      *pdu,
+ RgInfCeInfo   *ceInfo,
+ Buffer        **mBuf,
+ RgErrInfo     *err
+ )
 #else
 PUBLIC S16 rgDUXDemuxData(inst,pdu, ceInfo, mBuf, err)
-Inst          inst;
-RgMacPdu      *pdu;
-RgInfCeInfo   *ceInfo;
-Buffer        **mBuf;
-RgErrInfo     *err;
+   Inst          inst;
+   RgMacPdu      *pdu;
+   RgInfCeInfo   *ceInfo;
+   Buffer        **mBuf;
+   RgErrInfo     *err;
 #endif
 {
    U8          lcId;
@@ -590,7 +590,7 @@ RgErrInfo     *err;
    MsgLen      len;  
    TRC2(rgDUXDemuxData)
 
-   ceInfo->bitMask = 0x0000;
+      ceInfo->bitMask = 0x0000;
 
    /* Initialize the sdu list */
    cmLListInit(&pdu->sduLst);
@@ -603,52 +603,52 @@ RgErrInfo     *err;
    do
    {
       /* UL Message format  order : 
-           PduSubHdr+SubPDU,PduSubHdr+SubPDU,...CeSubHdr+Ce,CeSubPdu+Ce,...,PADSubHdr+PAD */
+	 PduSubHdr+SubPDU,PduSubHdr+SubPDU,...CeSubHdr+Ce,CeSubPdu+Ce,...,PADSubHdr+PAD */
       /* Extract the Sub headers */
       if(rgDUXExtSubHdr(inst,pdu, *mBuf, &lcId, 
-               &subPduLen, err) != ROK)
+	       &subPduLen, err) != ROK)
       {
-         RG_FREE_MSG(*mBuf);	      
-         RLOG0(L_ERROR, "Failed to extract pad sub headers");
-         RETVALUE(RFAILED);
+	 RG_FREE_MSG(*mBuf);	      
+	 RLOG0(L_ERROR, "Failed to extract pad sub headers");
+	 RETVALUE(RFAILED);
       }
       if(lcId == RG_PAD_LCID)
       { /*at end of MAC PDU,  Padding started */ 
-         RG_FREE_MSG(*mBuf);	      
-         RETVALUE(ROK);
+	 RG_FREE_MSG(*mBuf);	      
+	 RETVALUE(ROK);
       }
       if(lcId <= RG_DEDLC_MAX_LCID)
       {
-         /* Extract the sdus */
-         if(rgDUXExtSdu(inst,pdu,ceInfo, mBuf,lcId,subPduLen, err) != ROK)
-         {
-            /* Fix : syed rgDUXExtSdu would have segmented mBuf and hence
-             * will be responsible for freeing mBuf */
-            *mBuf = NULLP;
-            RLOG0(L_ERROR, "failed to Extract the sdus");
-            RETVALUE(RFAILED);
-         }
-         if(*mBuf == NULLP) /* if message read completes then return */
-         {
-            RETVALUE(ROK);
-         }
+	 /* Extract the sdus */
+	 if(rgDUXExtSdu(inst,pdu,ceInfo, mBuf,lcId,subPduLen, err) != ROK)
+	 {
+	    /* Fix : syed rgDUXExtSdu would have segmented mBuf and hence
+	     * will be responsible for freeing mBuf */
+	    *mBuf = NULLP;
+	    RLOG0(L_ERROR, "failed to Extract the sdus");
+	    RETVALUE(RFAILED);
+	 }
+	 if(*mBuf == NULLP) /* if message read completes then return */
+	 {
+	    RETVALUE(ROK);
+	 }
       }
       else
       {
-         /* Extract the ces */
-         if(rgDUXExtCe(inst,pdu,ceInfo,*mBuf, lcId,subPduLen, err) != ROK)
-         {
-            RG_FREE_MSG(*mBuf);	      
-            RLOG0(L_ERROR, " failed to Extract the ces");
-            RETVALUE(RFAILED);
-         }
+	 /* Extract the ces */
+	 if(rgDUXExtCe(inst,pdu,ceInfo,*mBuf, lcId,subPduLen, err) != ROK)
+	 {
+	    RG_FREE_MSG(*mBuf);	      
+	    RLOG0(L_ERROR, " failed to Extract the ces");
+	    RETVALUE(RFAILED);
+	 }
       }
       if(SFndLenMsg(*mBuf,&len) != ROK)
       {
-         RG_FREE_MSG(*mBuf);
-         RLOG0(L_ERROR,"mBuf length check failed");
-         err->errCause = RGERR_DUX_UNPACK_FAILURE;
-         RETVALUE(RFAILED);
+	 RG_FREE_MSG(*mBuf);
+	 RLOG0(L_ERROR,"mBuf length check failed");
+	 err->errCause = RGERR_DUX_UNPACK_FAILURE;
+	 RETVALUE(RFAILED);
       }
    }while(len);
 
@@ -657,6 +657,6 @@ RgErrInfo     *err;
 }  /* rgDUXDemuxData */
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

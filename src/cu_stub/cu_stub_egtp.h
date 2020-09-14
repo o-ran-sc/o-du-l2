@@ -68,7 +68,7 @@ typedef struct egtpExtHdr
    TknU16   udpPort;                       /**< UDP Port */
    TknU16   pdcpNmb;                       /**< PDCP Number */
 }EgtpExtHdr;
- 
+
 /*Structure for MsgHdr */
 typedef struct egtpMsgHdr
 {
@@ -78,7 +78,7 @@ typedef struct egtpMsgHdr
    U32        teId;                         /**< Tunnel Endpoint Id */
    U8         msgType;                      /**< eGTP-U Message Type */
 }EgtpMsgHdr;
- 
+
 typedef struct egtpMsg
 {
    EgtpMsgHdr msgHdr;

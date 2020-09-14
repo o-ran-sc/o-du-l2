@@ -133,46 +133,46 @@ U8                 maxHqProcs;
 
    TRC2(rgDHMHqEntInit)
 
-   hqE->numHqProcs = maxHqProcs;
+      hqE->numHqProcs = maxHqProcs;
    /* for each harq process */
    for (idx1 = 0; idx1 < hqE->numHqProcs; idx1++)
    {
       if (rgAllocSBuf(inst,(Data **)&(hqE->procs[idx1]),sizeof(RgDlHqProcCb)) != ROK) 
       {
-         while(idx1--)
-         {
-            rgFreeSBuf(inst,(Data **)&(hqE->procs[idx1]), sizeof(RgDlHqProcCb));
-         }
-         RLOG0(L_ERROR, "Memory Alloc Failure for RgDlHqProcCb");        
-         RETVALUE(RFAILED);
+	 while(idx1--)
+	 {
+	    rgFreeSBuf(inst,(Data **)&(hqE->procs[idx1]), sizeof(RgDlHqProcCb));
+	 }
+	 RLOG0(L_ERROR, "Memory Alloc Failure for RgDlHqProcCb");        
+	 RETVALUE(RFAILED);
       }
 
       hqE->procs[idx1]->procId      = idx1;
       for(idx2 = 0; idx2 < RG_MAX_TB_PER_UE; idx2++)
       {
 #ifndef L2_OPTMZ
-         hqE->procs[idx1]->tbInfo[idx2].tb = NULLP;
+	 hqE->procs[idx1]->tbInfo[idx2].tb = NULLP;
 #else
-         Buffer *tmpMBuf;
-         /* L2 optimization for mUe/Tti: Allocating buffers for macHdr, macCes
-          * and macPadding. These buffers shall not be released by MAC/CL.
-          * However, Only rPtr and wPtr will be reset while release of hq proc
-          */
-         tmpMBuf = hqE->procs[idx1]->tbInfo[idx2].tb.macHdr;
-         rgGetMsg(inst, &tmpMBuf);
-         RG_ADD_DBuf(hdrDBuf, RG_MAC_HDR_SIZE, tmpMBuf);
-         hqE->procs[idx1]->tbInfo[idx2].tb.macHdr = tmpMBuf;
-         macHeader[idx2] = MacPtrAddress;
+	 Buffer *tmpMBuf;
+	 /* L2 optimization for mUe/Tti: Allocating buffers for macHdr, macCes
+	  * and macPadding. These buffers shall not be released by MAC/CL.
+	  * However, Only rPtr and wPtr will be reset while release of hq proc
+	  */
+	 tmpMBuf = hqE->procs[idx1]->tbInfo[idx2].tb.macHdr;
+	 rgGetMsg(inst, &tmpMBuf);
+	 RG_ADD_DBuf(hdrDBuf, RG_MAC_HDR_SIZE, tmpMBuf);
+	 hqE->procs[idx1]->tbInfo[idx2].tb.macHdr = tmpMBuf;
+	 macHeader[idx2] = MacPtrAddress;
 
-         tmpMBuf = hqE->procs[idx1]->tbInfo[idx2].tb.macCes;
-         rgGetMsg(inst, &tmpMBuf);
-         RG_ADD_DBuf(ceDBuf, RG_MAC_CE_SIZE, tmpMBuf);
-         hqE->procs[idx1]->tbInfo[idx2].tb.macCes = tmpMBuf;
+	 tmpMBuf = hqE->procs[idx1]->tbInfo[idx2].tb.macCes;
+	 rgGetMsg(inst, &tmpMBuf);
+	 RG_ADD_DBuf(ceDBuf, RG_MAC_CE_SIZE, tmpMBuf);
+	 hqE->procs[idx1]->tbInfo[idx2].tb.macCes = tmpMBuf;
 
-         hqE->procs[idx1]->tbInfo[idx2].tb.padSize = 0;
+	 hqE->procs[idx1]->tbInfo[idx2].tb.padSize = 0;
 #endif
 #ifdef LTE_L2_MEAS
-         hqE->procs[idx1]->tbId[idx2] = RGU_INVALID_TBID;
+	 hqE->procs[idx1]->tbId[idx2] = RGU_INVALID_TBID;
 #endif
       }
 
@@ -198,34 +198,34 @@ U8                 maxHqProcs;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgDHMUeReset
+   PUBLIC Void rgDHMUeReset
 (
-RgCellCb *cell,
-RgDlHqEnt          *hqE
-)
+ RgCellCb *cell,
+ RgDlHqEnt          *hqE
+ )
 #else
 PUBLIC Void rgDHMUeReset(cell, hqE)
-RgCellCb *cell;
-RgDlHqEnt          *hqE;
+   RgCellCb *cell;
+   RgDlHqEnt          *hqE;
 #endif
 {
    U8       i = 0;
 
    TRC2(rgDHMUeReset)
 
-   if(hqE->procs[0])
-   {
-      /* Free all the TB memory associated with HARQ */
-      for (i=0; i < hqE->numHqProcs; i++)
+      if(hqE->procs[0])
       {
-         rgDHMRlsHqProcTB(cell, hqE->procs[i], 1);
-         rgDHMRlsHqProcTB(cell, hqE->procs[i], 2);
+	 /* Free all the TB memory associated with HARQ */
+	 for (i=0; i < hqE->numHqProcs; i++)
+	 {
+	    rgDHMRlsHqProcTB(cell, hqE->procs[i], 1);
+	    rgDHMRlsHqProcTB(cell, hqE->procs[i], 2);
 
 #ifdef LTE_ADV
-         rgDHMFreeSavedHqP((cell->macInst - RG_INST_START), hqE, i);
+	    rgDHMFreeSavedHqP((cell->macInst - RG_INST_START), hqE, i);
 #endif
+	 }
       }
-   }
    RETVOID;
 } /* rgDHMUeReset*/
 
@@ -246,32 +246,32 @@ RgDlHqEnt          *hqE;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgDHMHdlBufFree
+   PUBLIC Void rgDHMHdlBufFree
 (
-Inst inst,
-Buffer **mBuf
-)
+ Inst inst,
+ Buffer **mBuf
+ )
 #else
 PUBLIC Void rgDHMHdlBufFree(Inst inst, Buffer **mBuf)
-Inst inst;
+   Inst inst;
 #endif
 {
    RgCb *rgCbP = &rgCb[inst];
    TRC2(rgDHMHdlBufFree)
 
-   if (rgCbP->bufCnt < RG_MAX_DFRD_FREE_BUFS)
-   {
-      if (*mBuf)
+      if (rgCbP->bufCnt < RG_MAX_DFRD_FREE_BUFS)
       {
-         rgCbP->bufToFree[rgCbP->bufCnt] = *mBuf;
-         rgCbP->bufCnt++;
-         *mBuf = NULLP;
+	 if (*mBuf)
+	 {
+	    rgCbP->bufToFree[rgCbP->bufCnt] = *mBuf;
+	    rgCbP->bufCnt++;
+	    *mBuf = NULLP;
+	 }
       }
-   }
-   else
-   {
-      RG_FREE_MSG(*mBuf);
-   }
+      else
+      {
+	 RG_FREE_MSG(*mBuf);
+      }
    RETVOID;
 }
 /**
@@ -293,13 +293,13 @@ Inst inst;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgDHMFreeTbBufs
+   PUBLIC Void rgDHMFreeTbBufs
 (
-Inst inst
-)
+ Inst inst
+ )
 #else
 PUBLIC Void rgDHMFreeTbBufs(inst)
-Inst inst;
+   Inst inst;
 #endif
 {
    RgCb *rgCbP = &rgCb[inst];
@@ -308,14 +308,14 @@ Inst inst;
 
    TRC2(rgDHMFreeTbBufs)
 
-   if (rgCbP->bufCnt < RG_MAX_FREE_BUFS_PERTTI)
-   {
-      end = 0;
-   }
-   else
-   {
-      end = rgCbP->bufCnt - RG_MAX_FREE_BUFS_PERTTI;
-   }
+      if (rgCbP->bufCnt < RG_MAX_FREE_BUFS_PERTTI)
+      {
+	 end = 0;
+      }
+      else
+      {
+	 end = rgCbP->bufCnt - RG_MAX_FREE_BUFS_PERTTI;
+      }
    while (start != end)
    {
       start--;
@@ -326,13 +326,13 @@ Inst inst;
 } /* rgDHMFreeTbBufs */
 
 #ifdef ANSI
-PUBLIC Void rgDHMFreeAllTbBufs
+   PUBLIC Void rgDHMFreeAllTbBufs
 (
-Inst inst
-)
+ Inst inst
+ )
 #else
 PUBLIC Void rgDHMFreeAllTbBufs(inst)
-Inst inst;
+   Inst inst;
 #endif
 {
    RgCb *rgCbP = &rgCb[inst];
@@ -341,11 +341,11 @@ Inst inst;
 
    TRC2(rgDHMFreeAllTbBufs)
 
-   while (start != end)
-   {
-      start--;
-      SPutMsg(rgCbP->bufToFree[start]);
-   }
+      while (start != end)
+      {
+	 start--;
+	 SPutMsg(rgCbP->bufToFree[start]);
+      }
    rgCbP->bufCnt = end;
    RETVOID;
 } /* rgDHMFreeTbBufs */
@@ -368,32 +368,32 @@ Inst inst;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgDHMRlsHqProcTB
+   PUBLIC S16 rgDHMRlsHqProcTB
 (
-RgCellCb             *cell,
-RgDlHqProcCb         *hqP,
-U8                   tbIndex
-)
+ RgCellCb             *cell,
+ RgDlHqProcCb         *hqP,
+ U8                   tbIndex
+ )
 #else
 PUBLIC S16 rgDHMRlsHqProcTB(cell, hqP, tbIndex)
-RgCellCb             *cell;
-RgDlHqProcCb         *hqP;
-U8                   tbIndex;
+   RgCellCb             *cell;
+   RgDlHqProcCb         *hqP;
+   U8                   tbIndex;
 #endif
 {
-    U8                    idx;
+   U8                    idx;
 #ifdef L2_OPTMZ
-    RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
+   RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
    // U32 lchIdx, pduIdx;
 #endif
 
    TRC2(rgDHMRlsHqProcTB)
 
-   if((tbIndex > RG_MAX_TB_PER_UE) ||
-      (tbIndex == 0))
-   {
-      RETVALUE(RFAILED);
-   }
+      if((tbIndex > RG_MAX_TB_PER_UE) ||
+	    (tbIndex == 0))
+      {
+	 RETVALUE(RFAILED);
+      }
 
    hqP->tbInfo[tbIndex-1].numSchLch = 0;
 #ifndef L2_OPTMZ
@@ -424,12 +424,12 @@ U8                   tbIndex;
    for(idx = 0; idx < 2; idx++)
    {
       if (hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk.node != NULLP)
-   {
-         cmLListDelFrm(&hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sf->tbs,
-               &(hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk));
-         hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk.node  = (PTR)NULLP;
-      printf("\nrgDHMRlsHqProcTB:: hqP %p \n", (Void *)hqP);
-   }
+      {
+	 cmLListDelFrm(&hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sf->tbs,
+	       &(hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk));
+	 hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk.node  = (PTR)NULLP;
+	 printf("\nrgDHMRlsHqProcTB:: hqP %p \n", (Void *)hqP);
+      }
       hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sf = NULLP;
    }
    /* Fix : syed It is better to reset these feilds
@@ -459,23 +459,23 @@ U8                   tbIndex;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgDHMGetHqProcFrmId
+   PUBLIC S16 rgDHMGetHqProcFrmId
 (
-RgUeCb               *ue,
-U8                   idx,
-RgDlHqProcCb         **hqP
-)
+ RgUeCb               *ue,
+ U8                   idx,
+ RgDlHqProcCb         **hqP
+ )
 #else
 PUBLIC S16 rgDHMGetHqProcFrmId(ue, idx, hqP)
-RgUeCb               *ue;
-U8                   idx;
-RgDlHqProcCb         **hqP;
+   RgUeCb               *ue;
+   U8                   idx;
+   RgDlHqProcCb         **hqP;
 #endif
 {
    TRC2(rgDHMGetHqProcFrmId)
 
-   /* Pick the proc based on the index provided */
-   *hqP = (ue->dl.hqEnt.procs[idx]);
+      /* Pick the proc based on the index provided */
+      *hqP = (ue->dl.hqEnt.procs[idx]);
 
    RETVALUE(ROK);
 } /* rgDHMGetHqProcFrmId */
@@ -501,21 +501,21 @@ RgDlHqProcCb         **hqP;
  *      -#RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDHMSndDatReq
+   PUBLIC S16 rgDHMSndDatReq
 (
-RgCellCb        *cellCb,
-RgDlSf          *dlSf,
-RgTfuDatReqInfo *datInfo,
-RgDlHqProcCb   *hqP,
-RgErrInfo      *err 
-)
+ RgCellCb        *cellCb,
+ RgDlSf          *dlSf,
+ RgTfuDatReqInfo *datInfo,
+ RgDlHqProcCb   *hqP,
+ RgErrInfo      *err 
+ )
 #else
 PUBLIC S16 rgDHMSndDatReq(cellCb, dlSf, datInfo, hqP, err)
-RgCellCb        *cellCb;
-RgDlSf          *dlSf;
-RgTfuDatReqInfo *datInfo;
-RgDlHqProcCb    *hqP;
-RgErrInfo       *err;
+   RgCellCb        *cellCb;
+   RgDlSf          *dlSf;
+   RgTfuDatReqInfo *datInfo;
+   RgDlHqProcCb    *hqP;
+   RgErrInfo       *err;
 #endif
 {
    U8 i;
@@ -527,96 +527,96 @@ RgErrInfo       *err;
    Bool  dataAvlblUe;
 
    TRC2(rgDHMSndDatReq)
-  
-   dataAvlblUe = TRUE;
+
+      dataAvlblUe = TRUE;
    for(i=0;i< RG_MAX_TB_PER_UE;i++)
    {
-         /* printf("\nDHMSndDatReq1: Rnti %d dlSfSchdTime(sfn sf) : (%d %d)\n"
-                "macCell(sfn sf): (%d %d) tbTimingInfo(sfn sf): (%d %d)\n"
-                "dlSf %p dlSf->tbs.count %d hqp %p tb %p\n",
-                             hqP->tbInfo[i].pdcch.rnti,
-                             dlSf->schdTime.sfn, dlSf->schdTime.slot,
-                             cellCb->crntTime.sfn, cellCb->crntTime.slot,
-                             hqP->tbInfo[i].timingInfo.sfn, 
-                             hqP->tbInfo[i].timingInfo.slot,
-                             (Void *)dlSf, dlSf->tbs.count,
-                             (Void *)hqP,
-                             (Void *)hqP->tbInfo[i].tb);*/
+      /* printf("\nDHMSndDatReq1: Rnti %d dlSfSchdTime(sfn sf) : (%d %d)\n"
+	 "macCell(sfn sf): (%d %d) tbTimingInfo(sfn sf): (%d %d)\n"
+	 "dlSf %p dlSf->tbs.count %d hqp %p tb %p\n",
+	 hqP->tbInfo[i].pdcch.rnti,
+	 dlSf->schdTime.sfn, dlSf->schdTime.slot,
+	 cellCb->crntTime.sfn, cellCb->crntTime.slot,
+	 hqP->tbInfo[i].timingInfo.sfn, 
+	 hqP->tbInfo[i].timingInfo.slot,
+	 (Void *)dlSf, dlSf->tbs.count,
+	 (Void *)hqP,
+	 (Void *)hqP->tbInfo[i].tb);*/
       /* Mukesh :: in case of rpepetiton this is not rerd*/
       if (hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf)
       {
-         /* Check if data from RLC had been received and got muxed. */
+	 /* Check if data from RLC had been received and got muxed. */
 #ifndef L2_OPTMZ
-         if (hqP->tbInfo[i].tb == NULLP) 
+	 if (hqP->tbInfo[i].tb == NULLP) 
 #else
-         if (!(hqP->tbInfo[i].tb.tbPres)) 
+	    if (!(hqP->tbInfo[i].tb.tbPres)) 
 #endif
-         {
+	    {
 #ifndef LTE_ADV
-            if (hqP->tbInfo[i].schdTa.pres == TRUE ||
-                  hqP->tbInfo[i].contResCe == PRSNT_NODEF)
+	       if (hqP->tbInfo[i].schdTa.pres == TRUE ||
+		     hqP->tbInfo[i].contResCe == PRSNT_NODEF)
 #else
-            if ((hqP->tbInfo[i].schdTa.pres == TRUE) ||
-                 (hqP->tbInfo[i].contResCe == PRSNT_NODEF) ||
-                 (hqP->tbInfo[i].sCellActCe.pres == TRUE))
+		  if ((hqP->tbInfo[i].schdTa.pres == TRUE) ||
+			(hqP->tbInfo[i].contResCe == PRSNT_NODEF) ||
+			(hqP->tbInfo[i].sCellActCe.pres == TRUE))
 #endif
-            {
-               /* Data not received but ta needs to be sent. */
-               /* MUX TA and send it */
-               bldPdu.datReq    =  NULLP;
-               //bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
-               bldPdu.schdTbSz  =  hqP->tbInfo[i].tbSz;
-               bldPdu.ta        =  hqP->tbInfo[i].schdTa;
+		  {
+		     /* Data not received but ta needs to be sent. */
+		     /* MUX TA and send it */
+		     bldPdu.datReq    =  NULLP;
+		     //bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
+		     bldPdu.schdTbSz  =  hqP->tbInfo[i].tbSz;
+		     bldPdu.ta        =  hqP->tbInfo[i].schdTa;
 #ifdef LTE_ADV
-               bldPdu.sCellActCe= hqP->tbInfo[i].sCellActCe;
+		     bldPdu.sCellActCe= hqP->tbInfo[i].sCellActCe;
 #endif
-               /* changes for CR timer implementation*/
-               bldPdu.contResId =  hqP->tbInfo[i].contResId;
-               if (ROK != rgMUXBldPdu(inst,&bldPdu, &(hqP->tbInfo[i].tb), err))  
-               {
-                  RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst);
-                  RLOG4(L_ERROR, "MUXing failed for:  time: %d/%d\
-                  procId %d ueId %d", hqP->tbInfo[i].timingInfo.sfn,
-                  hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
-                  hqP->tbInfo[i].pdcch.rnti);
+		     /* changes for CR timer implementation*/
+		     bldPdu.contResId =  hqP->tbInfo[i].contResId;
+		     if (ROK != rgMUXBldPdu(inst,&bldPdu, &(hqP->tbInfo[i].tb), err))  
+		     {
+			RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst);
+			RLOG4(L_ERROR, "MUXing failed for:  time: %d/%d\
+			      procId %d ueId %d", hqP->tbInfo[i].timingInfo.sfn,
+			      hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
+			      hqP->tbInfo[i].pdcch.rnti);
 
-                  RETVALUE(RFAILED);
-               }
-            }
-            else   
-            {
+			RETVALUE(RFAILED);
+		     }
+		  }
+		  else   
+		  {
 #ifdef LTEMAC_RGU_PAD
-               /* Data not received from RLC. Padding at MAC */
-               bldPdu.datReq    =  NULLP;
-               //bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
-               bldPdu.schdTbSz  =  hqP->tbInfo[i].tbSz;
-               bldPdu.ta        =  hqP->tbInfo[i].schdTa;
+		     /* Data not received from RLC. Padding at MAC */
+		     bldPdu.datReq    =  NULLP;
+		     //bldPdu.reqType   =  EVENT_SLOT_IND_TO_MAC;
+		     bldPdu.schdTbSz  =  hqP->tbInfo[i].tbSz;
+		     bldPdu.ta        =  hqP->tbInfo[i].schdTa;
 #ifdef LTE_ADV
-               bldPdu.sCellActCe= hqP->tbInfo[i].sCellActCe;
+		     bldPdu.sCellActCe= hqP->tbInfo[i].sCellActCe;
 #endif
-               bldPdu.ta.val    =  0;
-               bldPdu.contResId =  NULLP;
+		     bldPdu.ta.val    =  0;
+		     bldPdu.contResId =  NULLP;
 
-               if (ROK != rgMUXBldPdu(inst,&bldPdu, &(hqP->tbInfo[i].tb), err))  
-               {
-                  RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst);
-                  RLOG4(L_ERROR, "MUXing failed for:  time: %d/%d\
-                  procId %d ueId %d", hqP->tbInfo[i].timingInfo.sfn,
-                  hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
-                  hqP->tbInfo[i].pdcch.rnti);
-                  
-                  RETVALUE(RFAILED);
-               }
+		     if (ROK != rgMUXBldPdu(inst,&bldPdu, &(hqP->tbInfo[i].tb), err))  
+		     {
+			RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst);
+			RLOG4(L_ERROR, "MUXing failed for:  time: %d/%d\
+			      procId %d ueId %d", hqP->tbInfo[i].timingInfo.sfn,
+			      hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
+			      hqP->tbInfo[i].pdcch.rnti);
+
+			RETVALUE(RFAILED);
+		     }
 #else
-               /*Padding is not done so data for this UE will not be
-                 included.*/
-               dataAvlblUe = FALSE;
+		     /*Padding is not done so data for this UE will not be
+		       included.*/
+		     dataAvlblUe = FALSE;
 #endif
-            }
-         }
-         else
-         {
-         }
+		  }
+	    }
+	    else
+	    {
+	    }
       }
       //else
       {
@@ -632,19 +632,19 @@ RgErrInfo       *err;
       rgDHMRlsHqProcTB(cellCb, hqP, 1);
       if(2 == hqP->numOfTBs)
       {
-         rgDHMRlsHqProcTB(cellCb, hqP, 2);
+	 rgDHMRlsHqProcTB(cellCb, hqP, 2);
       }
-      
+
       RETVALUE(ROK);
    }
 
    if (rgGetEventMem(inst,(Ptr *)&datReq, sizeof(TfuDatReqPduInfo),
-            &(datInfo->memCp)) != ROK)
+	    &(datInfo->memCp)) != ROK)
    {
       RETVALUE(RFAILED);
    }
    /* Fill the TFU Dat Req with information from Harq Proc */
-  
+
    rgDHMBldTfuDatReq(cellCb, dlSf, hqP, datReq);
 
    /* MS_WORKAROUND for ccpu00122894 */
@@ -652,11 +652,11 @@ RgErrInfo       *err;
    {
       if (hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf)
       {
-         cmLListDelFrm(&dlSf->tbs, &(hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk));
-         hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk.node = NULLP;
-         
-        
-        hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf = NULLP;
+	 cmLListDelFrm(&dlSf->tbs, &(hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk));
+	 hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk.node = NULLP;
+
+
+	 hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf = NULLP;
       }
    }
    cmLListAdd2Tail(&datInfo->pdus, &(datReq->lnk));
@@ -686,24 +686,24 @@ RgErrInfo       *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDHMHndlDedDatReq
+   PUBLIC S16 rgDHMHndlDedDatReq
 (
-Inst           inst,
-RgDlHqProcCb   *hqProc,
-RgRguDDatReqPerUe *datReq,
-RgDlSf            *dlSf,
-RgErrInfo      *err
-)
+ Inst           inst,
+ RgDlHqProcCb   *hqProc,
+ RgRguDDatReqPerUe *datReq,
+ RgDlSf            *dlSf,
+ RgErrInfo      *err
+ )
 #else
 PUBLIC S16 rgDHMHndlDedDatReq(inst,hqProc, datReq, dlSf, err)
-Inst           inst;
-RgDlHqProcCb   *hqProc;
-RgRguDDatReqPerUe *datReq;
-RgDlSf            *dlSf;
-RgErrInfo      *err;
+   Inst           inst;
+   RgDlHqProcCb   *hqProc;
+   RgRguDDatReqPerUe *datReq;
+   RgDlSf            *dlSf;
+   RgErrInfo      *err;
 #endif
 {
-//   U32            len;
+   //   U32            len;
    U8             i;
    U8             j;
    RgBldPduInfo   bldPdu;
@@ -719,16 +719,16 @@ RgErrInfo      *err;
     * has been sent earlier on the harq proc.
     */
    if((datReq->nmbOfTbs > RG_MAX_TB_PER_UE) ||
-         (tbIndex == 0))
+	 (tbIndex == 0))
    {
       /* release corresponding TBs from SF tbs List */
       for(j=0;j<datReq->nmbOfTbs;j++)
       {
-         if (!(tbIndex & (j+1)))
-         {
-            j++;
-         } 
-         rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
+	 if (!(tbIndex & (j+1)))
+	 {
+	    j++;
+	 } 
+	 rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
       }
       RETVALUE(RFAILED);
    }
@@ -740,21 +740,21 @@ RgErrInfo      *err;
        * 11 corresponds two TBs of UE */
       if (!(tbIndex & (i+1)))
       {
-          continue;
+	 continue;
       }
       if (hqProc->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk.node == NULLP)
       {
-         /* release corresponding TBs from SF tbs List */
-         for(j=0;j<datReq->nmbOfTbs;j++)
-         {
-            if (!(tbIndex & (j+1)))
-            {
-               j++;
-            }
-            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
-            printf("\nrgDHMHndlDedDatReq:: hqP %p \n", (Void *)hqProc);
-         }
-         RETVALUE(RFAILED);
+	 /* release corresponding TBs from SF tbs List */
+	 for(j=0;j<datReq->nmbOfTbs;j++)
+	 {
+	    if (!(tbIndex & (j+1)))
+	    {
+	       j++;
+	    }
+	    rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
+	    printf("\nrgDHMHndlDedDatReq:: hqP %p \n", (Void *)hqProc);
+	 }
+	 RETVALUE(RFAILED);
 
       }
 #ifndef L2_OPTMZ
@@ -766,7 +766,7 @@ RgErrInfo      *err;
       tb = &hqProc->tbInfo[i].tb;
       if (tb->tbPres == TRUE)
       {
-         RG_FREE_TB(tb);
+	 RG_FREE_TB(tb);
       }
 #endif
       bldPdu.datReq    =  datReq;
@@ -787,26 +787,26 @@ RgErrInfo      *err;
 #endif 
       if(rgMUXBldPdu(inst,&bldPdu, &(hqProc->tbInfo[i].tb), err) != ROK)
       {
-         RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst);
-         RLOG4(L_ERROR, "MUXing failed for:  time: %d/%d\
-               procId %d ueId %d", hqProc->tbInfo[i].timingInfo.sfn,
-               hqProc->tbInfo[i].timingInfo.slot, hqProc->procId, 
-               hqProc->tbInfo[i].pdcch.rnti);
+	 RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst);
+	 RLOG4(L_ERROR, "MUXing failed for:  time: %d/%d\
+	       procId %d ueId %d", hqProc->tbInfo[i].timingInfo.sfn,
+	       hqProc->tbInfo[i].timingInfo.slot, hqProc->procId, 
+	       hqProc->tbInfo[i].pdcch.rnti);
 
-         /* release corresponding TBs from SF tbs List */
-         for(j=0;j<datReq->nmbOfTbs;j++)
-         {
-            if (!(tbIndex & (j+1)))
-            {
-               j++;
-            }
-            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
-         }
-         RETVALUE(RFAILED);
+	 /* release corresponding TBs from SF tbs List */
+	 for(j=0;j<datReq->nmbOfTbs;j++)
+	 {
+	    if (!(tbIndex & (j+1)))
+	    {
+	       j++;
+	    }
+	    rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
+	 }
+	 RETVALUE(RFAILED);
       }
       /*
-      SFndLenMsg(hqProc->tbInfo[i].tb, &len);
-      */
+	 SFndLenMsg(hqProc->tbInfo[i].tb, &len);
+       */
    }
    RETVALUE(ROK);
 }  /* rgDHMHndlDedDatReq */
@@ -832,19 +832,19 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDHMHndlCmnDatReq
+   PUBLIC S16 rgDHMHndlCmnDatReq
 (
-Inst           inst,
-RgDlHqProcCb   *hqProc,
-RgRguCmnDatReq *datReq,
-RgErrInfo      *err
-)
+ Inst           inst,
+ RgDlHqProcCb   *hqProc,
+ RgRguCmnDatReq *datReq,
+ RgErrInfo      *err
+ )
 #else
 PUBLIC S16 rgDHMHndlCmnDatReq(inst,hqProc, datReq, err)
-Inst           inst;
-RgDlHqProcCb   *hqProc;
-RgRguCmnDatReq *datReq;
-RgErrInfo      *err;
+   Inst           inst;
+   RgDlHqProcCb   *hqProc;
+   RgRguCmnDatReq *datReq;
+   RgErrInfo      *err;
 #endif
 {
    RgUstaDgn      dgn;
@@ -855,16 +855,16 @@ RgErrInfo      *err;
 #ifndef L2_OPTMZ
       if (hqProc->tbInfo[0].tb != NULLP)
 #else
-      /* If numLch is non zero means HQ Proc is busy*/
-      if (hqProc->tbInfo[0].tb.tbPres)
+	 /* If numLch is non zero means HQ Proc is busy*/
+	 if (hqProc->tbInfo[0].tb.tbPres)
 #endif
-      {
-         /* datReq discarded. Generate an alarm */
-         rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_HARQ); 
-         rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
-               LRG_CAUSE_HQ_PROC_BUSY, &dgn);
-         RETVALUE(RFAILED);
-      }
+	 {
+	    /* datReq discarded. Generate an alarm */
+	    rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_HARQ); 
+	    rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
+		  LRG_CAUSE_HQ_PROC_BUSY, &dgn);
+	    RETVALUE(RFAILED);
+	 }
 
    bldPdu.datReq    =  datReq;
    bldPdu.reqType   =  EVTRGUCDATREQ;
@@ -880,9 +880,9 @@ RgErrInfo      *err;
    {
       RLOG1(L_ERROR, "MUXing failed for:  MacInst %d", inst); 
       RLOG4(L_ERROR, "MUXing failed for: time: %d/%d\
-               procId %d ueId %d", hqProc->tbInfo[0].timingInfo.sfn,
-            hqProc->tbInfo[0].timingInfo.slot, hqProc->procId, 
-            hqProc->tbInfo[0].pdcch.rnti);
+	    procId %d ueId %d", hqProc->tbInfo[0].timingInfo.sfn,
+	    hqProc->tbInfo[0].timingInfo.slot, hqProc->procId, 
+	    hqProc->tbInfo[0].pdcch.rnti);
 
       RG_FREE_MSG(datReq->pdu);
       RETVALUE(RFAILED);
@@ -913,21 +913,21 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
- RgUeCb  *gUe =NULLP;
+RgUeCb  *gUe =NULLP;
 #ifdef ANSI
-PUBLIC S16 rgDHMSndConsolidatedStaInd
+   PUBLIC S16 rgDHMSndConsolidatedStaInd
 (
-RgCellCb        *cell,
-RgInfUeInfo     *ueInfo,
-CmLteTimingInfo timingInfo,
-RgErrInfo       *err
-)
+ RgCellCb        *cell,
+ RgInfUeInfo     *ueInfo,
+ CmLteTimingInfo timingInfo,
+ RgErrInfo       *err
+ )
 #else
 PUBLIC S16 rgDHMSndConsolidatedStaInd(cell, ueInfo, timingInfo, err)
-RgCellCb        *cell;
-RgInfUeInfo     *ueInfo;
-CmLteTimingInfo timingInfo;
-RgErrInfo       *err;
+   RgCellCb        *cell;
+   RgInfUeInfo     *ueInfo;
+   CmLteTimingInfo timingInfo;
+   RgErrInfo       *err;
 #endif
 {
    SuId            rguDlSpId;/*need to use spID instead of suID*/
@@ -937,7 +937,7 @@ RgErrInfo       *err;
    U8              tbIndex=0,idx1;
    RgDlSf          *dlSf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
    Inst            inst = cell->macInst - RG_INST_START;
-//   Bool            isDStaReqrd = FALSE;
+   //   Bool            isDStaReqrd = FALSE;
    RgRguDedStaInd  *dStaInd[rgCb[inst].numRguSaps] ;
    RgUpSapCb      *rguDlSap[rgCb[inst].numRguSaps];
 
@@ -955,7 +955,7 @@ RgErrInfo       *err;
 #endif
 
    TRC2(rgDHMSndConsolidatedStaInd)
-   cmMemset ((U8 *)dStaInd, 0, (sizeof(RgRguDedStaInd *) * rgCb[inst].numRguSaps));
+      cmMemset ((U8 *)dStaInd, 0, (sizeof(RgRguDedStaInd *) * rgCb[inst].numRguSaps));
    cmMemset ((U8 *)rguDlSap, 0, (sizeof(RgUpSapCb  *) * rgCb[inst].numRguSaps));
 
    /* Send StaInd for the scheduled UEs */
@@ -966,15 +966,15 @@ RgErrInfo       *err;
 #endif
       if((ue=rgDBMGetUeCb (cell, ueInfo->allocInfo[ueIdx].rnti)) == NULLP)
       {
-         /* Check in RachLst */
-         if((ue=rgDBMGetUeCbFromRachLst (cell, 
-                     ueInfo->allocInfo[ueIdx].rnti)) == NULLP)
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"CRNTI:%d No ueCb found", 
-                      ueInfo->allocInfo[ueIdx].rnti);
-            /*Fix: If one UE is not present dont return, look for the next.*/
-            continue;
-         }
+	 /* Check in RachLst */
+	 if((ue=rgDBMGetUeCbFromRachLst (cell, 
+		     ueInfo->allocInfo[ueIdx].rnti)) == NULLP)
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"CRNTI:%d No ueCb found", 
+		  ueInfo->allocInfo[ueIdx].rnti);
+	    /*Fix: If one UE is not present dont return, look for the next.*/
+	    continue;
+	 }
       }
 
 
@@ -985,260 +985,260 @@ RgErrInfo       *err;
       /* Fix : syed Avoid sending data for a RETX
        * if initial TX data processing was unsuccessful */
       if((allocInfo->tbInfo[0].isReTx == TRUE) &&
-            (hqP->tbInfo[0].tbSz == 0)) 
+	    (hqP->tbInfo[0].tbSz == 0)) 
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-               "CRNTI:%d RETX hqP(%d) tb(0) for a failed New Tx", 
-                  allocInfo->rnti, hqP->procId);        
-         continue;
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
+	       "CRNTI:%d RETX hqP(%d) tb(0) for a failed New Tx", 
+	       allocInfo->rnti, hqP->procId);        
+	 continue;
       }
       if((allocInfo->tbInfo[1].isReTx == TRUE) &&
-            (hqP->tbInfo[1].tbSz == 0)) 
+	    (hqP->tbInfo[1].tbSz == 0)) 
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-                   "CRNTI:%d RETX hqP(%d) tb(1) for a failed New Tx", 
-                  allocInfo->rnti, hqP->procId);        
-         continue;
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
+	       "CRNTI:%d RETX hqP(%d) tb(1) for a failed New Tx", 
+	       allocInfo->rnti, hqP->procId);        
+	 continue;
       }
 
       if(ue->rguDlSap != NULLP)
       {
-          rguDlSpId = ue->rguDlSap->sapCfg.spId;
+	 rguDlSpId = ue->rguDlSap->sapCfg.spId;
       }else
       {/* UeCb is from rachList */
-          rguDlSpId = cell->rguDlSap->sapCfg.spId;
+	 rguDlSpId = cell->rguDlSap->sapCfg.spId;
       }
 
 
       for(idx=allocInfo->tbStrtIdx;((idx-allocInfo->tbStrtIdx) <\
-               allocInfo->nmbOfTBs); idx++)
+	       allocInfo->nmbOfTBs); idx++)
       {
-         RguCStaIndInfo  *cStaInd;
+	 RguCStaIndInfo  *cStaInd;
 #ifdef TFU_UPGRADE
-         /* LTE_ADV_FLAG_REMOVED_START */
-         hqP->tbInfo[idx].isEnbSFR = allocInfo->isEnbSFR;
-         /* update pA value */
-         hqP->tbInfo[idx].pa = allocInfo->pa;
-         /* LTE_ADV_FLAG_REMOVED_END */
+	 /* LTE_ADV_FLAG_REMOVED_START */
+	 hqP->tbInfo[idx].isEnbSFR = allocInfo->isEnbSFR;
+	 /* update pA value */
+	 hqP->tbInfo[idx].pa = allocInfo->pa;
+	 /* LTE_ADV_FLAG_REMOVED_END */
 #endif
 
-         hqP->numOfTBs =  allocInfo->nmbOfTBs;
-         hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk.node = (PTR)hqP;
-         hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.slot % 2].sf = dlSf;
-         cmLListAdd2Tail(&dlSf->tbs,&(hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk));
-         /* Changes as part of performance testing*/
-         /*   hqP->numOfTBs++;*/
-         hqP->tbInfo[idx].doa = allocInfo->doa;
-         hqP->tbInfo[idx].txMode = allocInfo->txMode;
-         hqP->tbInfo[idx].puschRptUsd = allocInfo->puschRptUsd;
-         hqP->tbInfo[idx].puschPmiInfo = allocInfo->puschPmiInfo;
+	 hqP->numOfTBs =  allocInfo->nmbOfTBs;
+	 hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk.node = (PTR)hqP;
+	 hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.slot % 2].sf = dlSf;
+	 cmLListAdd2Tail(&dlSf->tbs,&(hqP->tbInfo[idx].sfLnkInfo[dlSf->schdTime.slot % 2].sfLnk));
+	 /* Changes as part of performance testing*/
+	 /*   hqP->numOfTBs++;*/
+	 hqP->tbInfo[idx].doa = allocInfo->doa;
+	 hqP->tbInfo[idx].txMode = allocInfo->txMode;
+	 hqP->tbInfo[idx].puschRptUsd = allocInfo->puschRptUsd;
+	 hqP->tbInfo[idx].puschPmiInfo = allocInfo->puschPmiInfo;
 #ifdef LTEMAC_SPS
-         hqP->tbInfo[idx].pdcch.rnti = allocInfo->pdcchRnti;
+	 hqP->tbInfo[idx].pdcch.rnti = allocInfo->pdcchRnti;
 #else
-         hqP->tbInfo[idx].pdcch.rnti = allocInfo->rnti;
+	 hqP->tbInfo[idx].pdcch.rnti = allocInfo->rnti;
 #endif
-         if(allocInfo->tbInfo[idx].isReTx == TRUE)
-         {
-            hqP->tbInfo[idx].pdcch.dci = allocInfo->dciInfo;
-            continue;
-         }
+	 if(allocInfo->tbInfo[idx].isReTx == TRUE)
+	 {
+	    hqP->tbInfo[idx].pdcch.dci = allocInfo->dciInfo;
+	    continue;
+	 }
 
-         hqP->tbInfo[idx].timingInfo = timingInfo;
-         hqP->tbInfo[idx].pdcch.dci = allocInfo->dciInfo;
+	 hqP->tbInfo[idx].timingInfo = timingInfo;
+	 hqP->tbInfo[idx].pdcch.dci = allocInfo->dciInfo;
 #ifndef L2_OPTMZ
-         RG_FREE_MSG(hqP->tbInfo[idx].tb);
+	 RG_FREE_MSG(hqP->tbInfo[idx].tb);
 #else
-         /* L2 optimization for mUe/Tti: Pre-allocated mBuf pointers(macHdr, 
-          * macCes and MacPad) of harq TB need to be reset to db_base
-          */
-         tb = &(hqP->tbInfo[idx].tb);
-         if (tb->tbPres == TRUE)
-         {
-            RG_FREE_TB(tb);
-         }
+	 /* L2 optimization for mUe/Tti: Pre-allocated mBuf pointers(macHdr, 
+	  * macCes and MacPad) of harq TB need to be reset to db_base
+	  */
+	 tb = &(hqP->tbInfo[idx].tb);
+	 if (tb->tbPres == TRUE)
+	 {
+	    RG_FREE_TB(tb);
+	 }
 #endif
-         hqP->tbInfo[idx].tbSz = allocInfo->tbInfo[idx].schdTbSz; 
+	 hqP->tbInfo[idx].tbSz = allocInfo->tbInfo[idx].schdTbSz; 
 
-         hqP->tbInfo[idx].schdTa.pres = allocInfo->tbInfo[idx].ta.pres;
-         hqP->tbInfo[idx].schdTa.val  = allocInfo->tbInfo[idx].ta.val;
+	 hqP->tbInfo[idx].schdTa.pres = allocInfo->tbInfo[idx].ta.pres;
+	 hqP->tbInfo[idx].schdTa.val  = allocInfo->tbInfo[idx].ta.val;
 
 #ifdef LTE_ADV
-         hqP->tbInfo[idx].sCellActCe.pres = allocInfo->tbInfo[idx].sCellActCe.pres;
-         hqP->tbInfo[idx].sCellActCe.val  = allocInfo->tbInfo[idx].sCellActCe.val;
+	 hqP->tbInfo[idx].sCellActCe.pres = allocInfo->tbInfo[idx].sCellActCe.pres;
+	 hqP->tbInfo[idx].sCellActCe.val  = allocInfo->tbInfo[idx].sCellActCe.val;
 #endif
 
 #ifdef LTE_ADV 
-         if(( hqPAdded == TRUE) || (ROK == rgLaaPushHqPToScellLst(allocInfo,cell,timingInfo)))
-         {
-            hqPAdded = TRUE;
-            continue;
-         }
+	 if(( hqPAdded == TRUE) || (ROK == rgLaaPushHqPToScellLst(allocInfo,cell,timingInfo)))
+	 {
+	    hqPAdded = TRUE;
+	    continue;
+	 }
 #endif
-         if (allocInfo->tbInfo[idx].schdDat[0].lcId == RG_CCCH_LCID)        
-         {
+	 if (allocInfo->tbInfo[idx].schdDat[0].lcId == RG_CCCH_LCID)        
+	 {
 #ifndef L2_OPTMZ
-            RG_FREE_MSG(hqP->tbInfo[idx].tb);
+	    RG_FREE_MSG(hqP->tbInfo[idx].tb);
 #else
-           /* L2 optimization for mUe/Tti: Pre-allocated mBuf pointers(macHdr, 
-            * macCes and MacPad) of harq TB need to be reset to db_base
-            */
-           tb = &(hqP->tbInfo[idx].tb);
+	    /* L2 optimization for mUe/Tti: Pre-allocated mBuf pointers(macHdr, 
+	     * macCes and MacPad) of harq TB need to be reset to db_base
+	     */
+	    tb = &(hqP->tbInfo[idx].tb);
 
-           if (tb->tbPres == TRUE)
-           {
-              RG_FREE_TB(tb);
-           }
+	    if (tb->tbPres == TRUE)
+	    {
+	       RG_FREE_TB(tb);
+	    }
 #endif
-            hqP->tbInfo[0].contResCe  = allocInfo->tbInfo[0].contResCe;
-            if(allocInfo->tbInfo[0].contResCe)
-            {
-               hqP->tbInfo[0].contResId = &ue->contResId;
-            }
+	    hqP->tbInfo[0].contResCe  = allocInfo->tbInfo[0].contResCe;
+	    if(allocInfo->tbInfo[0].contResCe)
+	    {
+	       hqP->tbInfo[0].contResId = &ue->contResId;
+	    }
 
 
-            if(allocInfo->tbInfo[idx].numSchLch == 0)
-            {
-               RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
-                        "UEID:%d MSG4 with only contResId hqP(%d)",
-               			allocInfo->rnti,
-                     	hqP->procId);
-               hqP->tbInfo[idx].numSchLch = 0;
-               continue;
-            }
+	    if(allocInfo->tbInfo[idx].numSchLch == 0)
+	    {
+	       RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
+		     "UEID:%d MSG4 with only contResId hqP(%d)",
+		     allocInfo->rnti,
+		     hqP->procId);
+	       hqP->tbInfo[idx].numSchLch = 0;
+	       continue;
+	    }
 
-            /* Increamenting the tbIndex instead of
-               assigning it to constant */
-            tbIndex++;
+	    /* Increamenting the tbIndex instead of
+	       assigning it to constant */
+	    tbIndex++;
 
 
-            hqP->tbInfo[idx].numSchLch = 1;
-            hqP->tbInfo[idx].schdData[0].lcId = 
-               allocInfo->tbInfo[idx].schdDat[0].lcId;
-            hqP->tbInfo[idx].schdData[0].schdSz = 
-               allocInfo->tbInfo[idx].schdDat[0].numBytes;
+	    hqP->tbInfo[idx].numSchLch = 1;
+	    hqP->tbInfo[idx].schdData[0].lcId = 
+	       allocInfo->tbInfo[idx].schdDat[0].lcId;
+	    hqP->tbInfo[idx].schdData[0].schdSz = 
+	       allocInfo->tbInfo[idx].schdDat[0].numBytes;
 
-           // if(cStaInd == NULLP)
-            {
-               if ((rgAllocShrablSBuf(inst,(Data**)&cStaInd, sizeof(RguCStaIndInfo))) != ROK)
-               {
-                  err->errType  = RGERR_DHM_SND_STA_IND;
-                  err->errCause = RG_DHM_MEM_ALLOC_FAIL;
-                  RETVALUE(RFAILED); 
-               }
-            }
+	    // if(cStaInd == NULLP)
+	    {
+	       if ((rgAllocShrablSBuf(inst,(Data**)&cStaInd, sizeof(RguCStaIndInfo))) != ROK)
+	       {
+		  err->errType  = RGERR_DHM_SND_STA_IND;
+		  err->errCause = RG_DHM_MEM_ALLOC_FAIL;
+		  RETVALUE(RFAILED); 
+	       }
+	    }
 
-            idx1 = (hqP->procId << 2) | tbIndex;
-            
-            cStaInd->cellId    = cell->cellId;
-            cStaInd->rnti      = allocInfo->rnti;
-            cStaInd->lcId      = cell->dlCcchId;
-            cStaInd->transId   = (timingInfo.sfn << 16) | 
-                                 (timingInfo.slot << 8) | idx1;
-               /* ADD Changes for Downlink UE Timing Optimization */
+	    idx1 = (hqP->procId << 2) | tbIndex;
+
+	    cStaInd->cellId    = cell->cellId;
+	    cStaInd->rnti      = allocInfo->rnti;
+	    cStaInd->lcId      = cell->dlCcchId;
+	    cStaInd->transId   = (timingInfo.sfn << 16) | 
+	       (timingInfo.slot << 8) | idx1;
+	    /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-            dlSf->remDatReqCnt++;
+	    dlSf->remDatReqCnt++;
 #endif
-            RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId,
-		               "RNTI:%d UE:MSG4 grant for CCCH hqP(%d) LCID:%d",
-                     allocInfo->rnti, 
-                     hqP->procId,
-		               cStaInd->lcId);       
-            /* Fix : syed Avoid return param for interface prim and
-             * proceed for other UEs. For the failed UE, MAC shall
-             * do padding. */
-            rgUIMSndCmnStaInd(cell->macInst,cell->rguDlSap,cStaInd);
-            break;
-         }
-         else
-         {
-            tbIndex+=idx+1;
+	    RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId,
+		  "RNTI:%d UE:MSG4 grant for CCCH hqP(%d) LCID:%d",
+		  allocInfo->rnti, 
+		  hqP->procId,
+		  cStaInd->lcId);       
+	    /* Fix : syed Avoid return param for interface prim and
+	     * proceed for other UEs. For the failed UE, MAC shall
+	     * do padding. */
+	    rgUIMSndCmnStaInd(cell->macInst,cell->rguDlSap,cStaInd);
+	    break;
+	 }
+	 else
+	 {
+	    tbIndex+=idx+1;
 #ifndef L2_OPTMZ
-            RG_FREE_MSG(hqP->tbInfo[idx].tb);
+	    RG_FREE_MSG(hqP->tbInfo[idx].tb);
 #else
-            /* L2 optimization for mUe/Tti: Pre-allocated mBuf pointers(macHdr, 
-             * macCes and MacPad) of harq TB need to be reset to db_base
-             */
-            tb = &(hqP->tbInfo[idx].tb);
-            if (tb->tbPres == TRUE)
-            {  
-               RG_FREE_TB(tb);
-            }
+	    /* L2 optimization for mUe/Tti: Pre-allocated mBuf pointers(macHdr, 
+	     * macCes and MacPad) of harq TB need to be reset to db_base
+	     */
+	    tb = &(hqP->tbInfo[idx].tb);
+	    if (tb->tbPres == TRUE)
+	    {  
+	       RG_FREE_TB(tb);
+	    }
 #endif
 
-            if((NULLP == dStaInd[rguDlSpId]) && (allocInfo->tbInfo[idx].numSchLch))
-            {
-               if ((rgAllocShrablSBuf (inst,(Data**)&dStaInd[rguDlSpId], sizeof(RguDStaIndInfo))) != ROK)
-               {
-                  err->errType  = RGERR_DHM_SND_STA_IND;
-                  err->errCause = RG_DHM_MEM_ALLOC_FAIL;
-                  /* Need to return as memory allocation will fail for other UEs also*/
-                  RETVALUE(RFAILED);
-               }
-               dStaInd[rguDlSpId]->nmbOfUeGrantPerTti = 0;
-               rguDlSap[rguDlSpId] = ue->rguDlSap;
-               activeSapCnt++;
-            }
+	    if((NULLP == dStaInd[rguDlSpId]) && (allocInfo->tbInfo[idx].numSchLch))
+	    {
+	       if ((rgAllocShrablSBuf (inst,(Data**)&dStaInd[rguDlSpId], sizeof(RguDStaIndInfo))) != ROK)
+	       {
+		  err->errType  = RGERR_DHM_SND_STA_IND;
+		  err->errCause = RG_DHM_MEM_ALLOC_FAIL;
+		  /* Need to return as memory allocation will fail for other UEs also*/
+		  RETVALUE(RFAILED);
+	       }
+	       dStaInd[rguDlSpId]->nmbOfUeGrantPerTti = 0;
+	       rguDlSap[rguDlSpId] = ue->rguDlSap;
+	       activeSapCnt++;
+	    }
 
-            for (lcIdx = 0; 
-                  lcIdx < allocInfo->tbInfo[idx].numSchLch; lcIdx++)
-            {
-               hqP->tbInfo[idx].schdData[lcIdx].lcId = 
-                  allocInfo->tbInfo[idx].schdDat[lcIdx].lcId;
-               if (hqP->tbInfo[idx].schdData[lcIdx].lcId == 0)
-               {
-                  RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, 
-                        "CCCH grant in DStaInd for LCID:%d CRNTI:%d",
-                        hqP->tbInfo[idx].schdData[lcIdx].lcId,allocInfo->rnti);
-               }
-               hqP->tbInfo[idx].schdData[lcIdx].schdSz = 
-                  allocInfo->tbInfo[idx].schdDat[lcIdx].numBytes;
-               if(dStaInd[rguDlSpId])
-               {
-                  dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].staIndTb[idx].\
-                  lchStaInd[lcIdx].lcId = allocInfo->tbInfo[idx].\
-                  schdDat[lcIdx].lcId;
-                  dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].staIndTb[idx].\
-                  lchStaInd[lcIdx].totBufSize = allocInfo->tbInfo[idx].\
-                  schdDat[lcIdx].numBytes;
-               }
+	    for (lcIdx = 0; 
+		  lcIdx < allocInfo->tbInfo[idx].numSchLch; lcIdx++)
+	    {
+	       hqP->tbInfo[idx].schdData[lcIdx].lcId = 
+		  allocInfo->tbInfo[idx].schdDat[lcIdx].lcId;
+	       if (hqP->tbInfo[idx].schdData[lcIdx].lcId == 0)
+	       {
+		  RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, 
+			"CCCH grant in DStaInd for LCID:%d CRNTI:%d",
+			hqP->tbInfo[idx].schdData[lcIdx].lcId,allocInfo->rnti);
+	       }
+	       hqP->tbInfo[idx].schdData[lcIdx].schdSz = 
+		  allocInfo->tbInfo[idx].schdDat[lcIdx].numBytes;
+	       if(dStaInd[rguDlSpId])
+	       {
+		  dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].staIndTb[idx].\
+		     lchStaInd[lcIdx].lcId = allocInfo->tbInfo[idx].\
+		     schdDat[lcIdx].lcId;
+		  dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].staIndTb[idx].\
+		     lchStaInd[lcIdx].totBufSize = allocInfo->tbInfo[idx].\
+		     schdDat[lcIdx].numBytes;
+	       }
 
-               lchBufSize+=allocInfo->tbInfo[idx].schdDat[lcIdx].numBytes;
-            }
-            hqP->tbInfo[idx].numSchLch = 
-               allocInfo->tbInfo[idx].numSchLch;
-            if(dStaInd[rguDlSpId])
-            {
-               dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].staIndTb[idx].nmbLch =
-                  allocInfo->tbInfo[idx].numSchLch;
+	       lchBufSize+=allocInfo->tbInfo[idx].schdDat[lcIdx].numBytes;
+	    }
+	    hqP->tbInfo[idx].numSchLch = 
+	       allocInfo->tbInfo[idx].numSchLch;
+	    if(dStaInd[rguDlSpId])
+	    {
+	       dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].staIndTb[idx].nmbLch =
+		  allocInfo->tbInfo[idx].numSchLch;
 #ifdef LTE_L2_MEAS
-               dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].staIndTb[idx].tbId =
-                  hqP->tbId[idx]; 
+	       dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].staIndTb[idx].tbId =
+		  hqP->tbId[idx]; 
 #endif
-            }
-            lchBufSize=0;
-         }
+	    }
+	    lchBufSize=0;
+	 }
       }
       //if((dStaInd) && (tbIndex) && (isDStaReqrd == TRUE))
       if((dStaInd[rguDlSpId]) && (tbIndex))
       {
-         idx1 = (hqP->procId << 2) | tbIndex;
-         /* Create RguDStaInd struct and send to UIM */
-         dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].rnti    = allocInfo->rnti;
-         /*
-            dStaInd->transId = (hqP->timingInfo.sfn << 16) | 
-            (hqP->timingInfo.slot << 8) | hqP->procId;
-          */
-         dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].transId = (timingInfo.sfn << 16) | 
-            (timingInfo.slot << 8) | idx1;
-         dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].nmbOfTbs = hqP->numOfTBs;
+	 idx1 = (hqP->procId << 2) | tbIndex;
+	 /* Create RguDStaInd struct and send to UIM */
+	 dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].rnti    = allocInfo->rnti;
+	 /*
+	    dStaInd->transId = (hqP->timingInfo.sfn << 16) | 
+	    (hqP->timingInfo.slot << 8) | hqP->procId;
+	  */
+	 dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].transId = (timingInfo.sfn << 16) | 
+	    (timingInfo.slot << 8) | idx1;
+	 dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].nmbOfTbs = hqP->numOfTBs;
 #ifdef LTE_ADV
-         dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].fillCtrlPdu = allocInfo->fillCtrlPdu;
+	 dStaInd[rguDlSpId]->staInd[dStaInd[rguDlSpId]->nmbOfUeGrantPerTti].fillCtrlPdu = allocInfo->fillCtrlPdu;
 #endif        
-         /*increment num of UE as staInd is prepared for it */
-         dStaInd[rguDlSpId]->nmbOfUeGrantPerTti++;
-         /* ADD Changes for Downlink UE Timing Optimization */
+	 /*increment num of UE as staInd is prepared for it */
+	 dStaInd[rguDlSpId]->nmbOfUeGrantPerTti++;
+	 /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-         dlSf->remDatReqCnt++;
+	 dlSf->remDatReqCnt++;
 #endif
       }
       //isDStaReqrd = FALSE;
@@ -1249,15 +1249,15 @@ RgErrInfo       *err;
    {
       if(dStaInd[idx] != NULLP)
       {
-         dStaInd[idx]->cellId  = cell->cellId;
-         /* Fix : syed Avoid return param for interface prim and
-          * proceed for other UEs. For the failed UE, MAC shall
-          * do padding. */
-         rgUIMSndDedStaInd(inst,rguDlSap[idx],dStaInd[idx]);
-   
-         staIndCnt++;
-         if(staIndCnt == activeSapCnt)
-            break;/* all valid staind are considered */
+	 dStaInd[idx]->cellId  = cell->cellId;
+	 /* Fix : syed Avoid return param for interface prim and
+	  * proceed for other UEs. For the failed UE, MAC shall
+	  * do padding. */
+	 rgUIMSndDedStaInd(inst,rguDlSap[idx],dStaInd[idx]);
+
+	 staIndCnt++;
+	 if(staIndCnt == activeSapCnt)
+	    break;/* all valid staind are considered */
       }
 
    }
@@ -1282,19 +1282,19 @@ RgErrInfo       *err;
  **/
 //U8 crashFlag = 0;
 #ifdef ANSI
-PRIVATE Void rgDHMBldTfuDatReq
+   PRIVATE Void rgDHMBldTfuDatReq
 (
-RgCellCb           *cellCb,
-RgDlSf             *dlSf,
-RgDlHqProcCb       *hqP,
-RgTfuDatReqPduInfo *datReq
-)
+ RgCellCb           *cellCb,
+ RgDlSf             *dlSf,
+ RgDlHqProcCb       *hqP,
+ RgTfuDatReqPduInfo *datReq
+ )
 #else
 PRIVATE Void rgDHMBldTfuDatReq(cellCb, dlSf, hqP, datReq)
-RgCellCb           *cellCb;
-RgDlSf             *dlSf;
-RgDlHqProcCb       *hqP;
-RgTfuDatReqPduInfo *datReq;
+   RgCellCb           *cellCb;
+   RgDlSf             *dlSf;
+   RgDlHqProcCb       *hqP;
+   RgTfuDatReqPduInfo *datReq;
 #endif
 {
 
@@ -1312,8 +1312,8 @@ RgTfuDatReqPduInfo *datReq;
    U32 lchIdx, pduIdx;
 #endif
    TRC2(rgDHMBldTfuDatReq)
- 
-   datReq->nmbOfTBs = 0;
+
+      datReq->nmbOfTBs = 0;
 #ifndef L2_OPTMZ
 #if !(!(defined TENB_ACC) && !(defined LTE_PAL_ENB))
    inst = cellCb->macInst - RG_INST_START;
@@ -1329,106 +1329,106 @@ RgTfuDatReqPduInfo *datReq;
    datReq->mBuf[1] = 0;
 #endif    
 #endif
- 
+
    for(i=0;i<RG_MAX_TB_PER_UE;i++)
    {
 #ifndef L2_OPTMZ
       if ((hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf) &&
-          (hqP->tbInfo[i].tb != NULLP))
+	    (hqP->tbInfo[i].tb != NULLP))
 #else
-      if ((hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf) &&
-           RgUtlIsTbMuxed(&(hqP->tbInfo[i].tb)))
+	 if ((hqP->tbInfo[i].sfLnkInfo[dlSf->schdTime.slot % 2].sf == dlSf) &&
+	       RgUtlIsTbMuxed(&(hqP->tbInfo[i].tb)))
 #endif
-      {
+	 {
 
-         datReq->rnti           =  hqP->tbInfo[i].pdcch.rnti;
-         datReq->dciInfo        =  hqP->tbInfo[i].pdcch.dci;
-         datReq->doa            =  hqP->tbInfo[i].doa;
-         datReq->transMode      =  hqP->tbInfo[i].txMode;
-         datReq->puschRptUsd    =  hqP->tbInfo[i].puschRptUsd;
-         datReq->puschPmiInfo   =  hqP->tbInfo[i].puschPmiInfo;
-         /*MS_WORKAROUND  for ccpu00123904*/
-         if (hqP->tbInfo[i].schdTa.pres)
-         {
-            datReq->isTApres       =  TRUE; 
-         }
+	    datReq->rnti           =  hqP->tbInfo[i].pdcch.rnti;
+	    datReq->dciInfo        =  hqP->tbInfo[i].pdcch.dci;
+	    datReq->doa            =  hqP->tbInfo[i].doa;
+	    datReq->transMode      =  hqP->tbInfo[i].txMode;
+	    datReq->puschRptUsd    =  hqP->tbInfo[i].puschRptUsd;
+	    datReq->puschPmiInfo   =  hqP->tbInfo[i].puschPmiInfo;
+	    /*MS_WORKAROUND  for ccpu00123904*/
+	    if (hqP->tbInfo[i].schdTa.pres)
+	    {
+	       datReq->isTApres       =  TRUE; 
+	    }
 #ifdef   TFU_UPGRADE
-         /* update pA value */
-         datReq->pa             =  hqP->tbInfo[i].pa;
+	    /* update pA value */
+	    datReq->pa             =  hqP->tbInfo[i].pa;
 #endif
-         /* LTE_ADV_FLAG_REMOVED_START */
-         datReq->isEnbSFR       =  hqP->tbInfo[i].isEnbSFR;
-         /* LTE_ADV_FLAG_REMOVED_END */
+	    /* LTE_ADV_FLAG_REMOVED_START */
+	    datReq->isEnbSFR       =  hqP->tbInfo[i].isEnbSFR;
+	    /* LTE_ADV_FLAG_REMOVED_END */
 #ifndef L2_OPTMZ
 #if (!(defined TENB_ACC) && !(defined LTE_PAL_ENB))  /* ABHI */ /* This is only temp fix. It needs to be removed
-                                after rebasing to MAC CCB */
+								   after rebasing to MAC CCB */
 #ifdef BRDCM
-         datReq->mBuf[i] = hqP->tbInfo[i].tb;
+	    datReq->mBuf[i] = hqP->tbInfo[i].tb;
 #else
-         /* Intel Tdd- Commenting out the Optimization for direct Access of 
-          * mBuf Index */
-         /*Proper clean-up needed as this needs long stability tests
-          * in all SoCs*/
+	    /* Intel Tdd- Commenting out the Optimization for direct Access of 
+	     * mBuf Index */
+	    /*Proper clean-up needed as this needs long stability tests
+	     * in all SoCs*/
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
-         SIncMsgRef(hqP->tbInfo[i].tb, RG_GET_MEM_REGION(rgCb[inst]),
-               RG_GET_MEM_POOL(rgCb[inst]), &datReq->mBuf[i]); 
+	    SIncMsgRef(hqP->tbInfo[i].tb, RG_GET_MEM_REGION(rgCb[inst]),
+		  RG_GET_MEM_POOL(rgCb[inst]), &datReq->mBuf[i]); 
 #else
-         datReq->mBuf[i] = hqP->tbInfo[i].tb;
+	    datReq->mBuf[i] = hqP->tbInfo[i].tb;
 #endif
 #endif/*BRDCM*/
 #else
-         SIncMsgRef(hqP->tbInfo[i].tb, RG_GET_MEM_REGION(rgCb[inst]),
-               RG_GET_MEM_POOL(rgCb[inst]), &datReq->mBuf[i]);
+	    SIncMsgRef(hqP->tbInfo[i].tb, RG_GET_MEM_REGION(rgCb[inst]),
+		  RG_GET_MEM_POOL(rgCb[inst]), &datReq->mBuf[i]);
 #endif
-         {
-            MsgLen   dbgBufLen;
-            if(SFndLenMsg(datReq->mBuf[i], &dbgBufLen))
-            {
-               if(dbgBufLen == 0)
-               {              
-                  RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,
-			                  "RNTI:%d SFN:%d slot:%d tbIdx:%d Sdu Length 0 ",
-                    	      datReq->rnti,
-            			      hqP->tbInfo[i].timingInfo.sfn,
-			                  hqP->tbInfo[i].timingInfo.slot,i);
-                  RLOG_ARG3(L_ERROR,DBG_CELLID,cellCb->cellId,
-                   	      "taPres [%d] numOfTbs [%d] format[%d]",
-                   	      datReq->isTApres, 
-                           hqP->numOfTBs, 
-                           datReq->dciInfo.format);  
-               }              
-            }  
-         }
+	    {
+	       MsgLen   dbgBufLen;
+	       if(SFndLenMsg(datReq->mBuf[i], &dbgBufLen))
+	       {
+		  if(dbgBufLen == 0)
+		  {              
+		     RLOG_ARG4(L_ERROR,DBG_CELLID,cellCb->cellId,
+			   "RNTI:%d SFN:%d slot:%d tbIdx:%d Sdu Length 0 ",
+			   datReq->rnti,
+			   hqP->tbInfo[i].timingInfo.sfn,
+			   hqP->tbInfo[i].timingInfo.slot,i);
+		     RLOG_ARG3(L_ERROR,DBG_CELLID,cellCb->cellId,
+			   "taPres [%d] numOfTbs [%d] format[%d]",
+			   datReq->isTApres, 
+			   hqP->numOfTBs, 
+			   datReq->dciInfo.format);  
+		  }              
+	       }  
+	    }
 #else
-         /* L2 optimization for mUe/Tti: Removing SIncMsgRef to avoid additional
-          * mBuf allocation. MAC header, MAC Ces, MAC PDU per LCH per TB Per UE
-          * and MAC padding Mbufs are being sent to CL. Populating these Ptrs
-          * From TB Info to TfuDatReq
-          */
-         datReq->tbInfo[i].tbPres =  TRUE;
-         datReq->tbInfo[i].tbSize =  hqP->tbInfo[i].tbSz;
-         datReq->tbInfo[i].macHdr =  hqP->tbInfo[i].tb.macHdr;
-         datReq->tbInfo[i].macCes =  hqP->tbInfo[i].tb.macCes;
-         datReq->tbInfo[i].numLch =  hqP->tbInfo[i].tb.numLch;
-         for(lchIdx = 0; lchIdx < hqP->tbInfo[i].tb.numLch; lchIdx++)
-         {
-            datReq->tbInfo[i].lchInfo[lchIdx].numPdu = hqP->tbInfo[i].tb.\
-                                                       lchInfo[lchIdx].numPdu;
-            for(pduIdx = 0; pduIdx < hqP->tbInfo[i].tb.lchInfo[lchIdx].numPdu;\
-                  pduIdx++)
-            {
-               datReq->tbInfo[i].lchInfo[lchIdx].mBuf[pduIdx] =
-                  hqP->tbInfo[i].tb.lchInfo[lchIdx].mBuf[pduIdx];
-            }
-         }
-        // datReq->tbInfo[i].macPad  =  hqP->tbInfo[i].tb.macPad;
-         datReq->tbInfo[i].padSize =  hqP->tbInfo[i].tb.padSize;
-        // prc_trace_format_string(0x40,3,"TfuDatReq:RNTI=%d TbIdx=%d TbSize=%d PdSz=(%d) macHdraddr: (%p) macCEAddr: (%p) noLch=(%d)",datReq->rnti, i,
-          //     hqP->tbInfo[i].tbSz, datReq->tbInfo[i].padSize, datReq->tbInfo[i].macHdr, datReq->tbInfo[i].macCes, datReq->tbInfo[i].numLch);
+	    /* L2 optimization for mUe/Tti: Removing SIncMsgRef to avoid additional
+	     * mBuf allocation. MAC header, MAC Ces, MAC PDU per LCH per TB Per UE
+	     * and MAC padding Mbufs are being sent to CL. Populating these Ptrs
+	     * From TB Info to TfuDatReq
+	     */
+	    datReq->tbInfo[i].tbPres =  TRUE;
+	    datReq->tbInfo[i].tbSize =  hqP->tbInfo[i].tbSz;
+	    datReq->tbInfo[i].macHdr =  hqP->tbInfo[i].tb.macHdr;
+	    datReq->tbInfo[i].macCes =  hqP->tbInfo[i].tb.macCes;
+	    datReq->tbInfo[i].numLch =  hqP->tbInfo[i].tb.numLch;
+	    for(lchIdx = 0; lchIdx < hqP->tbInfo[i].tb.numLch; lchIdx++)
+	    {
+	       datReq->tbInfo[i].lchInfo[lchIdx].numPdu = hqP->tbInfo[i].tb.\
+							  lchInfo[lchIdx].numPdu;
+	       for(pduIdx = 0; pduIdx < hqP->tbInfo[i].tb.lchInfo[lchIdx].numPdu;\
+		     pduIdx++)
+	       {
+		  datReq->tbInfo[i].lchInfo[lchIdx].mBuf[pduIdx] =
+		     hqP->tbInfo[i].tb.lchInfo[lchIdx].mBuf[pduIdx];
+	       }
+	    }
+	    // datReq->tbInfo[i].macPad  =  hqP->tbInfo[i].tb.macPad;
+	    datReq->tbInfo[i].padSize =  hqP->tbInfo[i].tb.padSize;
+	    // prc_trace_format_string(0x40,3,"TfuDatReq:RNTI=%d TbIdx=%d TbSize=%d PdSz=(%d) macHdraddr: (%p) macCEAddr: (%p) noLch=(%d)",datReq->rnti, i,
+	    //     hqP->tbInfo[i].tbSz, datReq->tbInfo[i].padSize, datReq->tbInfo[i].macHdr, datReq->tbInfo[i].macCes, datReq->tbInfo[i].numLch);
 
 #endif
-         datReq->nmbOfTBs++;
-      }
+	    datReq->nmbOfTBs++;
+	 }
    }
    RETVOID;
 }  /* rgDHMBldTfuDatReq */
@@ -1452,15 +1452,15 @@ RgTfuDatReqPduInfo *datReq;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgDHMFreeHqProcTB
+   PUBLIC S16 rgDHMFreeHqProcTB
 (
-RgDlHqProcCb         *hqP,
-U8                   tbIndex
-)
+ RgDlHqProcCb         *hqP,
+ U8                   tbIndex
+ )
 #else
 PUBLIC S16 rgDHMFreeHqProcTB(hqP, tbIndex)
-RgDlHqProcCb         *hqP;
-U8                   tbIndex;
+   RgDlHqProcCb         *hqP;
+   U8                   tbIndex;
 #endif
 {
    RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
@@ -1468,11 +1468,11 @@ U8                   tbIndex;
 
    TRC2(rgDHMFreeHqProcTB)
 
-   if((tbIndex > RG_MAX_TB_PER_UE) ||
-      (tbIndex == 0))
-   {
-      RETVALUE(RFAILED);
-   }
+      if((tbIndex > RG_MAX_TB_PER_UE) ||
+	    (tbIndex == 0))
+      {
+	 RETVALUE(RFAILED);
+      }
 
    tb = &(hqP->tbInfo[tbIndex-1].tb);
    RG_FREE_MSG(tb->macHdr);
@@ -1481,12 +1481,12 @@ U8                   tbIndex;
    for(idx = 0; idx < 2; idx++)
    {
       if (hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk.node != NULLP)
-   {
-         cmLListDelFrm(&hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sf->tbs,
-               &(hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk));
-         hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk.node  = (PTR)NULLP;
-      printf("\nrgDHMFreeHqProcTB:: hqP %p \n", (Void *)hqP);
-   }
+      {
+	 cmLListDelFrm(&hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sf->tbs,
+	       &(hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk));
+	 hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sfLnk.node  = (PTR)NULLP;
+	 printf("\nrgDHMFreeHqProcTB:: hqP %p \n", (Void *)hqP);
+      }
       hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sf = NULLP;
    }
    RETVALUE(ROK);
@@ -1511,42 +1511,42 @@ U8                   tbIndex;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgDHMFreeUe
+   PUBLIC Void rgDHMFreeUe
 (
-Inst               inst,
-RgDlHqEnt          *hqE
-)
+ Inst               inst,
+ RgDlHqEnt          *hqE
+ )
 #else
 PUBLIC Void rgDHMFreeUe(inst,hqE)
-Inst               inst;
-RgDlHqEnt          *hqE;
+   Inst               inst;
+   RgDlHqEnt          *hqE;
 #endif
 {
    U8             i;
    TRC2(rgDHMFreeUe)
 
-   if(hqE->procs)
-   {
-      /* Free all the memory associated with HARQ */
-      for (i=0; i < hqE->numHqProcs; i++)
+      if(hqE->procs)
       {
+	 /* Free all the memory associated with HARQ */
+	 for (i=0; i < hqE->numHqProcs; i++)
+	 {
 #ifndef L2_OPTMZ
-         rgDHMRlsHqProcTB(rgCb[inst].cell, hqE->procs[i], 1);
-         rgDHMRlsHqProcTB(rgCb[inst].cell, hqE->procs[i], 2);
+	    rgDHMRlsHqProcTB(rgCb[inst].cell, hqE->procs[i], 1);
+	    rgDHMRlsHqProcTB(rgCb[inst].cell, hqE->procs[i], 2);
 #else
-         rgDHMFreeHqProcTB(hqE->procs[i], 1);
-         rgDHMFreeHqProcTB(hqE->procs[i], 2);
+	    rgDHMFreeHqProcTB(hqE->procs[i], 1);
+	    rgDHMFreeHqProcTB(hqE->procs[i], 2);
 #endif
-         
-         rgFreeSBuf(inst,(Data **)&(hqE->procs[i]), sizeof(RgDlHqProcCb));
-#ifdef LTE_ADV
-         rgDHMFreeSavedHqP(inst,hqE,i);
-#endif
-      }
 
-      /*ccpu00117052 - MOD - Passing double pointer for proper NULLP
-                            assignment */
-   }
+	    rgFreeSBuf(inst,(Data **)&(hqE->procs[i]), sizeof(RgDlHqProcCb));
+#ifdef LTE_ADV
+	    rgDHMFreeSavedHqP(inst,hqE,i);
+#endif
+	 }
+
+	 /*ccpu00117052 - MOD - Passing double pointer for proper NULLP
+	   assignment */
+      }
 
    RETVOID;
 
@@ -1569,15 +1569,15 @@ RgDlHqEnt          *hqE;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRstHqEntReq
+   PUBLIC S16 RgSchMacRstHqEntReq
 (
-Pst*                 pst,    
-RgInfResetHqEnt*     hqEntInfo
-)
+ Pst*                 pst,    
+ RgInfResetHqEnt*     hqEntInfo
+ )
 #else
 PUBLIC S16 RgSchMacRstHqEntReq(pst, hqEntInfo)
-Pst*                 pst;
-RgInfResetHqEnt*     hqEntInfo;
+   Pst*                 pst;
+   RgInfResetHqEnt*     hqEntInfo;
 #endif
 {
    Inst      inst;
@@ -1587,17 +1587,17 @@ RgInfResetHqEnt*     hqEntInfo;
    inst = pst->dstInst - RG_INST_START;
 
    if (((cell = rgCb[inst].cell) == NULLP) ||
-       (rgCb[inst].cell->cellId != hqEntInfo->cellId))
+	 (rgCb[inst].cell->cellId != hqEntInfo->cellId))
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "For user [%d]Cell does not exist %d\n",
-                hqEntInfo->crnti,hqEntInfo->cellId));
+	       hqEntInfo->crnti,hqEntInfo->cellId));
       RETVALUE(RFAILED);
    }
 
    if ((ue = rgDBMGetUeCb(cell, hqEntInfo->crnti)) == NULLP)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UE does not exist for this hqEntInfo\n",
-                       hqEntInfo->crnti));
+	       hqEntInfo->crnti));
       RETVALUE(RFAILED);
    }
 
@@ -1627,15 +1627,15 @@ U32 gSaveVal;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRlsHqReq
+   PUBLIC S16 RgSchMacRlsHqReq
 (
-Pst                 *pst,
-RgInfRlsHqInfo      *rlshqUeInfo
-)
+ Pst                 *pst,
+ RgInfRlsHqInfo      *rlshqUeInfo
+ )
 #else
 PUBLIC S16 RgSchMacRlsHqReq(pst, rlshqUeInfo)
-Pst                 *pst;
-RgInfRlsHqInfo      *rlshqUeInfo;
+   Pst                 *pst;
+   RgInfRlsHqInfo      *rlshqUeInfo;
 #endif
 {
    Inst           inst;
@@ -1649,10 +1649,10 @@ RgInfRlsHqInfo      *rlshqUeInfo;
    Bool              isValidTbId = FALSE;
 #endif
    U32        startTime=0;
-   
+
    TRC2(RgSchMacRlsHqReq)
 
-   RG_IS_INST_VALID(pst->dstInst);
+      RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    cell  = rgCb[inst].cell;
    /*starting Task*/
@@ -1664,11 +1664,11 @@ RgInfRlsHqInfo      *rlshqUeInfo;
    }
 
    if((cell  == NULLP)
-      ||( cell->cellId != rlshqUeInfo->cellId))
+	 ||( cell->cellId != rlshqUeInfo->cellId))
    {
-       
+
       RLOG_ARG0(L_ERROR,DBG_CELLID,rlshqUeInfo->cellId,
-                "No cellCb found with cellId");
+	    "No cellCb found with cellId");
       RETVALUE(RFAILED);
    }
 
@@ -1681,35 +1681,35 @@ RgInfRlsHqInfo      *rlshqUeInfo;
    {
       if((ue=rgDBMGetUeCb (cell, rlshqUeInfo->ueHqInfo[idx1].rnti)) == NULLP)
       {
-         /* Check in RachLst */
-         if((ue=rgDBMGetUeCbFromRachLst (cell, 
-                     rlshqUeInfo->ueHqInfo[idx1].rnti)) == NULLP)
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,rlshqUeInfo->cellId, "CRNTI:%d No ueCb found",
-                     rlshqUeInfo->ueHqInfo[idx1].rnti);
-            continue;
-         }
+	 /* Check in RachLst */
+	 if((ue=rgDBMGetUeCbFromRachLst (cell, 
+		     rlshqUeInfo->ueHqInfo[idx1].rnti)) == NULLP)
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,rlshqUeInfo->cellId, "CRNTI:%d No ueCb found",
+		  rlshqUeInfo->ueHqInfo[idx1].rnti);
+	    continue;
+	 }
       }
 #ifdef LTE_ADV
 #ifdef LAA_DBG
-     if ((rlshqUeInfo->ueHqInfo[idx1].rlsOperationType && !gSaveVal) || (rlshqUeInfo->ueHqInfo[idx1].hqProcId > 8))
+      if ((rlshqUeInfo->ueHqInfo[idx1].rlsOperationType && !gSaveVal) || (rlshqUeInfo->ueHqInfo[idx1].hqProcId > 8))
       {
-         int *p = NULL;
-         RLOG_ARG1(L_INFO," SPURIOUS CALLL !!!! procId %d \n", rlshqUeInfo->ueHqInfo[idx1].hqProcId);
+	 int *p = NULL;
+	 RLOG_ARG1(L_INFO," SPURIOUS CALLL !!!! procId %d \n", rlshqUeInfo->ueHqInfo[idx1].hqProcId);
 
 
-       printf ("RgSchMacRlsHqReq cell %d : numUes %d idx %d rnti %d hqProc %d numTbs %d tbid[0] %d tbid[1] %d rlsopr %d \n",
-      cell->cellId,
-       rlshqUeInfo->numUes,
-       idx1,
-       rlshqUeInfo->ueHqInfo[idx1].rnti,
-       rlshqUeInfo->ueHqInfo[idx1].hqProcId,
-       rlshqUeInfo->ueHqInfo[idx1].numOfTBs,
-       rlshqUeInfo->ueHqInfo[idx1].tbId[0],
-       rlshqUeInfo->ueHqInfo[idx1].tbId[1],
-       rlshqUeInfo->ueHqInfo[idx1].rlsOperationType);
-      
-         *p = 10; 
+	 printf ("RgSchMacRlsHqReq cell %d : numUes %d idx %d rnti %d hqProc %d numTbs %d tbid[0] %d tbid[1] %d rlsopr %d \n",
+	       cell->cellId,
+	       rlshqUeInfo->numUes,
+	       idx1,
+	       rlshqUeInfo->ueHqInfo[idx1].rnti,
+	       rlshqUeInfo->ueHqInfo[idx1].hqProcId,
+	       rlshqUeInfo->ueHqInfo[idx1].numOfTBs,
+	       rlshqUeInfo->ueHqInfo[idx1].tbId[0],
+	       rlshqUeInfo->ueHqInfo[idx1].tbId[1],
+	       rlshqUeInfo->ueHqInfo[idx1].rlsOperationType);
+
+	 *p = 10; 
       }
 #endif
       gSaveVal = 0;
@@ -1719,17 +1719,17 @@ RgInfRlsHqInfo      *rlshqUeInfo;
 
       if (RGINF_RLS_HQ_DEL_TB == rlshqUeInfo->ueHqInfo[idx1].rlsOperationType)
       {
-         /* If REQ is to DEL the saved TBs no need to free the HqP as it's already
-            freed up earlier */
-         continue;
+	 /* If REQ is to DEL the saved TBs no need to free the HqP as it's already
+	    freed up earlier */
+	 continue;
       }
 #endif /* LTE_ADV */
       rgDHMGetHqProcFrmId(ue,rlshqUeInfo->ueHqInfo[idx1].hqProcId,&hqP);
       if(rlshqUeInfo->ueHqInfo[idx1].status[0] != TRUE)
       {
-         rgCb[inst].genSts.numHarqFail++;
+	 rgCb[inst].genSts.numHarqFail++;
       }
-     
+
 #ifdef LTE_L2_MEAS
       hqStaInd.cellId = cell->cellId;
       hqStaInd.ueId = rlshqUeInfo->ueHqInfo[idx1].rnti;
@@ -1739,44 +1739,44 @@ RgInfRlsHqInfo      *rlshqUeInfo;
       for(idx2=0; idx2 < rlshqUeInfo->ueHqInfo[idx1].numOfTBs; idx2++)
       {
 #ifdef LTE_L2_MEAS
-         /* Fill the hq sta Ind stucture. Need to send the Status Ind for only
-          those TBID's reported by Scheduler*/
-            tbId = rlshqUeInfo->ueHqInfo[idx1].tbId[idx2];
-            if (hqP->tbId[tbId-1] != RGU_INVALID_TBID)
-            {
-            /* Fill the correct Sn Map corresponding to the TBID */
-            hqStaInd.tbId[idx2] = hqP->tbId[tbId-1];
-            hqStaInd.status[idx2] = rlshqUeInfo->ueHqInfo[idx1].status[idx2];
-               isValidTbId = TRUE;
-            }
+	 /* Fill the hq sta Ind stucture. Need to send the Status Ind for only
+	    those TBID's reported by Scheduler*/
+	 tbId = rlshqUeInfo->ueHqInfo[idx1].tbId[idx2];
+	 if (hqP->tbId[tbId-1] != RGU_INVALID_TBID)
+	 {
+	    /* Fill the correct Sn Map corresponding to the TBID */
+	    hqStaInd.tbId[idx2] = hqP->tbId[tbId-1];
+	    hqStaInd.status[idx2] = rlshqUeInfo->ueHqInfo[idx1].status[idx2];
+	    isValidTbId = TRUE;
+	 }
 #endif
-         if(rgDHMRlsHqProcTB(cell, hqP, 
-               rlshqUeInfo->ueHqInfo[idx1].tbId[idx2]) != ROK)
-         {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,rlshqUeInfo->cellId,
-                  "CRNTI:%d Failure in releasing hq TB",
-                  rlshqUeInfo->ueHqInfo[idx1].rnti);
-            continue;
-         }
+	 if(rgDHMRlsHqProcTB(cell, hqP, 
+		  rlshqUeInfo->ueHqInfo[idx1].tbId[idx2]) != ROK)
+	 {
+	    RLOG_ARG1(L_ERROR,DBG_CELLID,rlshqUeInfo->cellId,
+		  "CRNTI:%d Failure in releasing hq TB",
+		  rlshqUeInfo->ueHqInfo[idx1].rnti);
+	    continue;
+	 }
       }
 
 #ifdef LTE_L2_MEAS
 
-         if (isValidTbId)
-         {
-            if(ue->rguDlSap)
-            {
-               RgUiRguHqStaInd(&(ue->rguDlSap->sapCfg.sapPst),
-                     ue->rguDlSap->sapCfg.suId,
-                     &hqStaInd);
-            }
-            else
-            {/* Ue is from rach list*/
-               RgUiRguHqStaInd(&(cell->rguDlSap->sapCfg.sapPst),
-                     cell->rguDlSap->sapCfg.suId,
-                     &hqStaInd);
-            }
-         }
+      if (isValidTbId)
+      {
+	 if(ue->rguDlSap)
+	 {
+	    RgUiRguHqStaInd(&(ue->rguDlSap->sapCfg.sapPst),
+		  ue->rguDlSap->sapCfg.suId,
+		  &hqStaInd);
+	 }
+	 else
+	 {/* Ue is from rach list*/
+	    RgUiRguHqStaInd(&(cell->rguDlSap->sapCfg.sapPst),
+		  cell->rguDlSap->sapCfg.suId,
+		  &hqStaInd);
+	 }
+      }
 #endif
    } /* end of ues loop */
 
@@ -1788,6 +1788,6 @@ RgInfRlsHqInfo      *rlshqUeInfo;
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

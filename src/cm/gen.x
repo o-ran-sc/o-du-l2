@@ -56,15 +56,15 @@ typedef struct entityId           /* entity id */
 } EntityId;
 
 /* element id */
- 
+
 typedef S16 Elmnt;                /* element */
- 
+
 typedef S16 ElmntInst1;           /* element instance 1 */
- 
+
 typedef S16 ElmntInst2;           /* element instance 2 */
- 
+
 typedef S16 ElmntInst3;           /* element instance 3 */
-  
+
 typedef struct elmntId            /* element id */
 {
    Elmnt elmnt;                   /* element */
@@ -132,7 +132,7 @@ typedef struct pst                /* parameters for SPstTsk */
 } Pst;
 
 /* systemId structure */
-  
+
 typedef struct systemId           /* system id */
 {
    S16 mVer;                      /* main version */
@@ -252,12 +252,12 @@ typedef struct tskInit            /* task initialization */
    SLockId dbgLock;               /* write lock for the log files */
    Bool lyrMtFlag;                /* Layer is Multithreaded or not flag */
 #endif
-   
+
 } TskInit;
 
 
 typedef S32 Cntr;                 /* counter */
- 
+
 typedef U32 StsCntr;              /* Statistics counter */
 
 typedef S16 LnkNmb;               /* link number */
@@ -275,7 +275,7 @@ typedef S16 SpInstId;             /* service provider instance id */
 typedef U16 PortId;               /* port id */
 
 typedef U8 Sapi;                  /* service access point id */
- 
+
 typedef U8 Tei;                   /* terminal endpoint id */
 
 typedef U8 Ces;                   /* connection endpoint suffix */
@@ -297,15 +297,15 @@ typedef U8 Dgn;                   /* diagnostic code */
 typedef S16 Action;               /* action */
 
 typedef S16 SeqS16;               /* signed 16 bit sequence number */
- 
+
 typedef U16 SeqU16;               /* unsigned 16 bit sequence number */
- 
+
 typedef S32 SeqS24;               /* signed 24 bit sequence number */
- 
+
 typedef U32 SeqU24;               /* unsigned 24 bit sequence number */
- 
+
 typedef U8 SetUpArb;              /* set up arbitration (PASSIVE/ACTIVE) */
- 
+
 typedef U8 EvntType;              /* event type */
 
 typedef U8 State;                 /* state */
@@ -329,7 +329,7 @@ typedef U32 BitState;             /* Sa Bit ID and Value */
 typedef U8  CChanId;               /* V5UA Channel ID */
 
 typedef U16 MibOpCode;            /* Op code for Mib Request MIB_REQUEST_GET,
-                                     MIB_REQUEST_GET_FIRST, MIB_REQUEST */
+				     MIB_REQUEST_GET_FIRST, MIB_REQUEST */
 
 typedef U16 MibStatus;            /* Status returned in Mib Cfm */
 
@@ -369,7 +369,7 @@ typedef struct atmQos             /* ATM quality of service */
 } AtmQos;
 
 /* Vitual channel structure */
- 
+
 typedef struct amVccId             /* virtual channel connection identifier */
 {
    AtmVpci  vpci;                  /* virtual path connection identifier */
@@ -487,19 +487,19 @@ typedef U32 LlcId;               /* LLC id */
 #ifndef CMFILE_REORG_1
 
 /* q.93b typedefs */
- 
+
 typedef S32 AmInstId;             /* service user/provider instance id */
 typedef U16 AmEndptRefType;       /* endpoint reference */
 typedef U32 AmSeqNmb;             /* sequence number */
- 
+
 /* q.saal typedefs */
- 
+
 typedef U16 AsErrorCode;          /* q.saal error code (Q.SAAL1 Appendix 1) */
 
 /* ume typedefs */
 
 typedef U32 UmInteger;            /* ume integer */
- 
+
 typedef struct umObjId            /* ume object identifier */
 {
    Data length;                   /* length of string */
@@ -780,7 +780,7 @@ typedef struct tknStrXL           /* token string extra long */
 #endif
    U8   *val;                     /* string value (use allocated memory) */
 } TknStrXL;
- 
+
 typedef struct tknStr4            /* token string */
 {
    U8   pres;                     /* present flag */
@@ -919,12 +919,12 @@ typedef struct srvClass           /* service class */
    {                                                    
       struct                      /* frame relay */                                
       {                                                 
-         Bool cr;                 /* command response bit */
-         Bool de;                 /* discard eligibility bit */ 
+	 Bool cr;                 /* command response bit */
+	 Bool de;                 /* discard eligibility bit */ 
       } fr;                                             
       struct                      /* mac */
       {                                                 
-         Prior prior;             /* priority */            
+	 Prior prior;             /* priority */            
       } ma;                                             
    } s;                                                 
 } SrvClass;                                              
@@ -944,14 +944,14 @@ typedef struct _ip           /* ip header */
    IpAddr ip_src;           /* source address */
    IpAddr ip_dst;           /* dest address */
 } Ip;
- 
+
 
 /* ATM structures */
- 
+
 #ifndef CMFILE_REORG_1
 
 /* info elements that can be used for routing calls */
- 
+
 typedef struct amCdPtySad       /* Called Party Sub Address Tokens */
 {
    ElmtHdr eh;                  /* element header */
@@ -959,14 +959,14 @@ typedef struct amCdPtySad       /* Called Party Sub Address Tokens */
    TknU8   typeSad;             /* type of sub address */
    TknStrS  sadInfo;            /* address/number information */
 } AmCdPtySad;
- 
+
 typedef struct amBHiLyrInfo     /* Broadband High Layer Information Tokens */
 {
    ElmtHdr eh;                  /* element header */
    TknU8   hiLyrInfoType;       /* high layer information type */
    TknStrS  hiLyrInfo;          /* high layer information */
 } AmBHiLyrInfo;
- 
+
 typedef struct amBBearCap       /* Broadband Bearer Capability Tokens */
 {
    ElmtHdr eh;                  /* element header */
@@ -1172,22 +1172,22 @@ typedef struct amNBearCap       /* Narrowband Bearer Capability Tokens */
    TknU8 usrRate;               /* user rate */
    TknU8 negot;                 /* negotiation */
    TknU8 syncAsync;             /* synchronous/asynchronous */
-/*------------------------------------------------------------------------*/
-/* The following six tokens represent a uinon of octets 5b.1 and 5b.2 of  */
-/* the Narrow Band Bearer Capability.                                     */
-/*------------------------------------------------------------------------*/
+   /*------------------------------------------------------------------------*/
+   /* The following six tokens represent a uinon of octets 5b.1 and 5b.2 of  */
+   /* the Narrow Band Bearer Capability.                                     */
+   /*------------------------------------------------------------------------*/
    TknU8 FlcRx_BandNeg;         /* flow control on reception or 
-                                   inband/outband negotiation */
+				   inband/outband negotiation */
    TknU8 FlcTx_Assgn;           /* flow control on transmission or 
-                                   assignor/assignee*/
+				   assignor/assignee*/
    TknU8 NicRx_LLINeg;          /* network independent clock on reception or 
-                                   logical link identifier negotiation */
+				   logical link identifier negotiation */
    TknU8 NicTx_Mode;            /* network independent clock on transmission or
-                                   mode of operation */
+				   mode of operation */
    TknU8 Rate_MFrm;             /* intermediate rate (low bit) or Multi 
-                                   frame support */
+				   frame support */
    TknU8 Rate_Hdr;              /* intermediate rate (high bit) or rate 
-                                   adaptation Hdr/ no Headr */
+				   adaptation Hdr/ no Headr */
    TknU8 parity;                /* parity information */
    TknU8 nmbDatBits;            /* number of data bits excluding parity bit */
    TknU8 nmbStopBits;           /* number of stop bits */
@@ -1217,22 +1217,22 @@ typedef struct amNLoLyrComp     /* Narrowband Low Layer Compatibility Tokens */
    TknU8 usrRate;               /* user rate */
    TknU8 negot;                 /* negotiation */
    TknU8 syncAsync;             /* synchronous/asynchronous */
-/*------------------------------------------------------------------------*/
-/* The following six tokens represent a uinon of octets 5b.1 and 5b.2 of  */
-/* the Narrow Band Lower Layer Compatibility                              */
-/*------------------------------------------------------------------------*/
+   /*------------------------------------------------------------------------*/
+   /* The following six tokens represent a uinon of octets 5b.1 and 5b.2 of  */
+   /* the Narrow Band Lower Layer Compatibility                              */
+   /*------------------------------------------------------------------------*/
    TknU8 FlcRx_BandNeg;         /* flow control on reception or 
-                                   inband/outband negotiation */
+				   inband/outband negotiation */
    TknU8 FlcTx_Assgn;           /* flow control on transmission or 
-                                   assignor/assignee*/
+				   assignor/assignee*/
    TknU8 NicRx_LLINeg;          /* network independent clock on reception or 
-                                   logical link identifier negotiation */
+				   logical link identifier negotiation */
    TknU8 NicTx_Mode;            /* network independent clock on transmission or
-                                   mode of operation */
+				   mode of operation */
    TknU8 Rate_MFrm;             /* intermediate rate (low bit) or Multi 
-                                   frame support */
+				   frame support */
    TknU8 Rate_Hdr;              /* intermediate rate (high bit) or rate 
-                                   adaptation Hdr/ no Headr */
+				   adaptation Hdr/ no Headr */
    TknU8 parity;                /* parity information */
    TknU8 nmbDatBits;            /* number of data bits excluding parity bit */
    TknU8 nmbStopBits;           /* number of stop bits */
@@ -1355,26 +1355,26 @@ typedef struct amExtQosParam       /* Extended QOS parameter */
    ElmtHdr eh;                     /* element header */
    TknU8   origin;                 /* origin of this IE */
    TknU8   accFwdPpCDVId;          /* acceptable forward  peak-to-peak cell 
-                                    * delay variation identifier */
+				    * delay variation identifier */
    TknU32  accFwdPpCDV;            /* acceptable forward  peak-to-peak cell
-                                    * delay variation */
+				    * delay variation */
    TknU8   accBwdPpCDVId;          /* acceptable backward peak-to-peak cell
-                                    * delay variation identifier */
+				    * delay variation identifier */
    TknU32  accBwdPpCDV;            /* acceptable backward peak-to-peak cell
-                                    * delay variation */
+				    * delay variation */
    TknU8   cumFwdPpCDVId;          /* cumulative forward  peak-to-peak cell
-                                    * delay variation identifier */
+				    * delay variation identifier */
    TknU32  cumFwdPpCDV;            /* cumulative forward  peak-to-peak cell
-                                    * delay variation */
+				    * delay variation */
    TknU8   cumBwdPpCDVId;          /* cumulative backward peak-to-peak cell
-                                    * delay variation identifier */
+				    * delay variation identifier */
    TknU32  cumBwdPpCDV;            /* cumulative backward peak-to-peak cell
-                                    * delay variation */
+				    * delay variation */
    TknU8   accFwdCLRId;            /* acceptable forward  cell loss ratio
-                                    * identifier */
+				    * identifier */
    TknU8   accFwdCLR;              /* acceptable forward  cell loss ratio */
    TknU8   accBwdCLRId;            /* acceptable backward cell loss ratio 
-                                    * identifier */
+				    * identifier */
    TknU8   accBwdCLR;              /* acceptable backward cell loss ratio */
 } AmExtQosParam;
 
@@ -1442,7 +1442,7 @@ typedef struct amCdPtyNmb       /* Called Party Number Tokens */
 
 #endif /* CMFILE_REORG_1 */
 
- 
+
 
 /* management structures */
 
@@ -1463,7 +1463,7 @@ typedef struct mem                /* memory */
    Pool pool;                     /* pool */
    U16 spare;                     /* spare for alignment */
 } Mem;  
-   
+
 typedef Mem MemoryId;             /* memory id */
 
 
@@ -1505,7 +1505,7 @@ typedef struct asyncCfg         /* asynchronous configuration */
 
 
 /* dateTime structure */
-  
+
 typedef struct dateTime           /* date and time */
 {
    U8 month;                      /* month */
@@ -1539,9 +1539,9 @@ typedef struct cmAlarm
    U16 event;        /* alarm event */
    U16 cause;        /* alarm cause */
 }CmAlarm;    
-  
+
 /* duration structure */
-  
+
 typedef struct duration           /* duration */
 {
    U8 days;                       /* days */
@@ -1716,6 +1716,6 @@ void * mtGetWlsHdl();
 
   
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

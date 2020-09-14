@@ -42,22 +42,22 @@ EXTERN "C" {
 typedef struct kwGenCfg
 {
    Pst               lmPst;         /*!< Post structure for communicating
-                                      with LM. */
+				      with LM. */
    U32               maxUe;         /*!< Maximum number of UEs supported
-                                      by RLC. */
+				      by RLC. */
    U16               maxKwuSaps;    /*!< Maximum KWU SAPs. */
-/* Supported by SPLIT Architecture */
+   /* Supported by SPLIT Architecture */
    U16               maxUdxSaps;    /*!< Maximum Udx SAPs. */
-/* Supported by SPLIT Architecture ends */
+   /* Supported by SPLIT Architecture ends */
    Ticks             timeRes;       /*!< Time resolution. */
-/* Supported by SPLIT Architecture */
+   /* Supported by SPLIT Architecture */
    U8                rlcMode;       /*!< RLC_DL or RLC_UL */
-/* Supported by SPLIT Architecture ends */
+   /* Supported by SPLIT Architecture ends */
    U16               maxRguSaps;    /*!< Maximum RGU SAPs. */
 }KwGenCfg;
 
 /** @brief
-    SAP Configuration Structure */
+  SAP Configuration Structure */
 typedef struct kwSapCfg
 {
    Selector          selector;      /*!< Selector for LC/TC. */
@@ -72,8 +72,8 @@ typedef struct kwSapCfg
 }KwSapCfg;
 
 /** @brief 
-*   Configuration Structure 
-*/
+ *   Configuration Structure 
+ */
 typedef struct rlcCfg
 {
    union
@@ -84,7 +84,7 @@ typedef struct rlcCfg
 }RlcCfg;
 
 /** @brief 
-    General Statistics Structure */
+  General Statistics Structure */
 typedef struct kwGenSts
 {
    CntrSts           numUe;         /*!< Total number of UEs. */
@@ -96,13 +96,13 @@ typedef struct kwGenSts
    CntrSts           unexpPdusRecv; /*!< Unexpected PDU received. */
    CntrSts           errorPdusRecv; /*!< Format error pdus received. */
    CntrSts           protTimeOut;   /*!< Number of protocol time outs leading
-                                         to retransmission. */
+				      to retransmission. */
    CntrSts           numOfRb;       /*!< Total number of RBs in RLC. */
    CntrSts           numSduDisc;    /*!< Number of SDUs discarded. */
 }KwGenSts;
 
 /** @brief 
-    RLC Upper SAP statistics */
+  RLC Upper SAP statistics */
 typedef struct kwKwuSapSts 
 {
    /* lkw_x_001.main_2, changed from suId to spId */
@@ -112,14 +112,14 @@ typedef struct kwKwuSapSts
 }KwKwuSapSts;
 
 /** @brief 
-           RRC Control SAP Statistics */
+  RRC Control SAP Statistics */
 typedef struct kwCkwCntSts
 {
    CntrSts           statMsgs;      /*!< Number of Status Messages send. */
 }KwCkwCntSts;
 
 /** @brief 
-    Statistics Structure */
+  Statistics Structure */
 typedef struct kwSts
 {
    DateTime dt;                     /*!< Date and Time structure. */
@@ -132,7 +132,7 @@ typedef struct kwSts
 }KwSts;
 
 /** @brief 
-            MAC Upper SAP Status Structure */
+  MAC Upper SAP Status Structure */
 typedef struct kwRguSapSta
 {
    SuId              suId;          /*!< Service user ID. */
@@ -140,7 +140,7 @@ typedef struct kwRguSapSta
 }KwRguSapSta;
 
 /** @brief 
-    RLC Upper SAP Status Structure */
+  RLC Upper SAP Status Structure */
 typedef struct kwKwuSapSta
 {
    SpId              spId;          /*!< Service provider ID. */
@@ -148,7 +148,7 @@ typedef struct kwKwuSapSta
 }KwKwuSapSta;
 
 /** @brief 
-    RRC Control SAP Status Structure */
+  RRC Control SAP Status Structure */
 typedef struct kwCkwCntSapSta
 {
    SpId              spId;          /*!< Service provider ID. */
@@ -156,7 +156,7 @@ typedef struct kwCkwCntSapSta
 }KwCkwCntSapSta;
 
 /** @brief 
-    Status Structure */
+  Status Structure */
 typedef struct kwSSta
 {
    DateTime          dt;            /*!< Date and Time structure. */
@@ -170,7 +170,7 @@ typedef struct kwSSta
 }KwSSta;
 
 /** @brief 
-    Trace Control Structure */
+  Trace Control Structure */
 typedef struct kwTrcCntrl
 {
    U8                trcMask;       /*!< Trace mask. */
@@ -178,15 +178,15 @@ typedef struct kwTrcCntrl
 }KwTrcCntrl;
 
 /** @brief 
-    Debug Control Structure */
+  Debug Control Structure */
 typedef struct kwDbgCntrl
 {
    U32               dbgMask;       /*!< Debug mask. Assign non zero value to enable 
-                                         and zero to disable debug */
+				      and zero to disable debug */
 }KwDbgCntrl;
 
 /** @brief 
-    SAP Control Structure */
+  SAP Control Structure */
 typedef struct kwSapCntrl
 {
    SuId              suId;          /*!< Service user ID. */
@@ -194,7 +194,7 @@ typedef struct kwSapCntrl
 }KwSapCntrl;
 
 /** @brief 
-    Control Structure */
+  Control Structure */
 typedef struct kwCntrl
 {
    DateTime          dt;            /*!< Date and Time structure. */
@@ -212,30 +212,30 @@ typedef struct kwCntrl
 }KwCntrl;
 
 /** @brief 
-    Unsolicited Status Structure */
+  Unsolicited Status Structure */
 typedef struct kwUSta
 {
    DateTime          dt;            /*!< Date and Time structure. */
    CmAlarm           alarm;         /*!< Alarm. */
    SuId              suId;          /*!< Service user ID. */
    U32               ueId;          /*!< Urnti UE ID. */
-  /* lkw_x_001.main_2, added support for L2 measurement */
+   /* lkw_x_001.main_2, added support for L2 measurement */
 #ifdef LTE_L2_MEAS
    U8                qci;           /*!< Qci value */
 #endif
 }KwUSta;
 
 /** @brief 
-    Trace Structure */
+  Trace Structure */
 typedef struct kwTrc
 {
    DateTime          dt;            /*!< Date and Time structure. */
    U16               event;         /*!< Event. Events defined in the differenct RLC
-                                         interfaces are pssible values here.*/
+				      interfaces are pssible values here.*/
 }KwTrc;
 
 /** @brief 
-    Layer Management Structure */
+  Layer Management Structure */
 typedef struct _kwMngmt
 {
    Header            hdr;           /*!< Common header. */
@@ -258,28 +258,28 @@ typedef struct _kwMngmt
 typedef struct kwL2MeasReqInfo
 {
    U8        measType;          /*!< Measurement type, bit 1 to 4 (LSB nibble) 
-                                  will be used for non IP Throughput and 
-                                  bit 5 and 6 will be used for DL and UL 
-                                  Ipthroughput respectively */
+				  will be used for non IP Throughput and 
+				  bit 5 and 6 will be used for DL and UL 
+				  Ipthroughput respectively */
    union
    {
       struct 
       {
-         U16          numSamples;       /*!<Sampling period: */
-         U8           numQci;           /*!<number of qCI to take measurement for */
-         U8           qci[LKW_MAX_QCI]; /*!<QCI for the measurement */
+	 U16          numSamples;       /*!<Sampling period: */
+	 U8           numQci;           /*!<number of qCI to take measurement for */
+	 U8           qci[LKW_MAX_QCI]; /*!<QCI for the measurement */
       }nonIpThMeas;
 
       struct 
       {
-         U16 numUes;
-         struct 
-         {
-            U8           numQci;           /*!<number of qCI to take measurement for */
-            U8           qci[LKW_MAX_QCI]; /*!<QCI for the measurement */
-            CmLteRnti    ueId;             /*!< UE ID (Used only for IP Throughput in UL/DL */
-            CmLteCellId  cellId;           /*!< Cell ID (Used only for IP Throughput in UL/DL */
-         }ueInfoLst[LKW_MAX_UE];
+	 U16 numUes;
+	 struct 
+	 {
+	    U8           numQci;           /*!<number of qCI to take measurement for */
+	    U8           qci[LKW_MAX_QCI]; /*!<QCI for the measurement */
+	    CmLteRnti    ueId;             /*!< UE ID (Used only for IP Throughput in UL/DL */
+	    CmLteCellId  cellId;           /*!< Cell ID (Used only for IP Throughput in UL/DL */
+	 }ueInfoLst[LKW_MAX_UE];
       }ipThMeas;
 
    }val;
@@ -301,18 +301,18 @@ typedef struct kwL2MeasCfmInfo
    {
       struct
       {
-         U32   numActUe;   /*!< num of Active UEs*/
-         U32   uuLoss;     /*!< Uu Loss Rate */
-         /* Discard new changes starts */
-         U32   dlDiscRate; /*!< DL Discard rate to be reported */
-         /* Discard new changes ends */
-         U32  dlSduDelay;
+	 U32   numActUe;   /*!< num of Active UEs*/
+	 U32   uuLoss;     /*!< Uu Loss Rate */
+	 /* Discard new changes starts */
+	 U32   dlDiscRate; /*!< DL Discard rate to be reported */
+	 /* Discard new changes ends */
+	 U32  dlSduDelay;
       }nonIpThrput;
 
       struct              /*!< Structure for IP throughput*/
       {
-         F32   dlIpThPut; /*!< Scheduled DL IP throughput */
-         F32   ulIpThPut; /*!< Scheduled UL IP throughput */
+	 F32   dlIpThPut; /*!< Scheduled DL IP throughput */
+	 F32   ulIpThPut; /*!< Scheduled UL IP throughput */
       }ipThrput;
 
    }val;
@@ -350,10 +350,10 @@ typedef struct kwL2MeasCfmEvt
    U32             transId; /*!< Transaction id */
    CmStatus        status;  /*!< Status is for all QCIs */
    U8              measType; /*!< Measurement type, bit 1 to 4 (LSB nibble) 
-                               will be used for non IP Throughput and 
-                               bit 5 and 6 will be used for DL and UL 
-                               Ipthroughput respectively. It is same for
-                               all qci in this Cfm event. */
+			       will be used for non IP Throughput and 
+			       bit 5 and 6 will be used for DL and UL 
+			       Ipthroughput respectively. It is same for
+			       all qci in this Cfm event. */
    KwL2MeasCfmIpNonIp val;
 }KwL2MeasCfmEvt;
 
@@ -388,128 +388,128 @@ typedef S16 (*LkwL2MeasStopCfm)   ARGS((Pst *pst, U8 measType,U8 status));
 /* Layer primitives */
 /** @details This function processes configuration requests received from the layer manager.The configuration requests are general configuration, or configuration of RGU, KWU, and CKW SAPs. The type of the configuration request is determined from the elmId field in the header of the layer manager message.This function is called by the layer manager to configure RLC.
 
-@param[in] pst  - Pointer to post structure
-@param[in] cfg  - Configuration management structure
-@return ROK if success , RFAILED if failure
+  @param[in] pst  - Pointer to post structure
+  @param[in] cfg  - Configuration management structure
+  @return ROK if success , RFAILED if failure
 
-*/
+ */
 EXTERN S16 KwMiRlcConfigReq ARGS((Pst *pst, KwMngmt *cfg));
 
 /**
-@details This function is called by the KwMiRlcConfigReq function for responding to configuration requests.The cfm field in the KwMngmt  structure contains the response value.
+  @details This function is called by the KwMiRlcConfigReq function for responding to configuration requests.The cfm field in the KwMngmt  structure contains the response value.
 
-@param[in] pst  - Pointer to post structure
-@param[in] cfm  - Configuration management structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst  - Pointer to post structure
+  @param[in] cfm  - Configuration management structure
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiRlcConfigCfm ARGS((Pst *pst, KwMngmt *cfgCfm));
 
 /**
-@details
-The layer manager initiates and uses the management-control procedure to control
-RLC elements.The RLC control request primitive (KwMiLkwCntrlReq) is called
-more than once and at any time after the management-configuration procedure.The
-control request primitive is confirmed by a KwMiLkwCntrlCfm primitive.
+  @details
+  The layer manager initiates and uses the management-control procedure to control
+  RLC elements.The RLC control request primitive (KwMiLkwCntrlReq) is called
+  more than once and at any time after the management-configuration procedure.The
+  control request primitive is confirmed by a KwMiLkwCntrlCfm primitive.
 
-@param[in] pst  - Pointer to post structure
-@param[in] cntl - Configuration management structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst  - Pointer to post structure
+  @param[in] cntl - Configuration management structure
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiLkwCntrlReq ARGS((Pst *pst, KwMngmt *cntl));
 
 /**
-@details
-This function is called by the KwMiLkwCntrlReq function to send a control confirm to the layer management module.
+  @details
+  This function is called by the KwMiLkwCntrlReq function to send a control confirm to the layer management module.
 
-@param[in] pst  - Pointer to post structure
-@param[in] cfm  - Configuration management structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst  - Pointer to post structure
+  @param[in] cfm  - Configuration management structure
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiLkwCntrlCfm ARGS((Pst *pst, KwMngmt *cntlCfm));
 
 /**
-@details
-This function processes solicited status requests received from the layer manager.The layer manager can request status information regarding the system ID, RGSA
-P,KWSAP, or CKSAP.
+  @details
+  This function processes solicited status requests received from the layer manager.The layer manager can request status information regarding the system ID, RGSA
+  P,KWSAP, or CKSAP.
 
-@param[in] pst  - Pointer to post structure
-@param[in] cfg  - Configuration management structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst  - Pointer to post structure
+  @param[in] cfg  - Configuration management structure
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiLkwStaReq ARGS((Pst *pst, KwMngmt *staInd));
 
 /**
-@details
-This function is called by the KwMiLkwStaReq function to send the requested stat
-us information to the layer manager.
+  @details
+  This function is called by the KwMiLkwStaReq function to send the requested stat
+  us information to the layer manager.
 
-@param[in] pst   - Pointer to post structure
-@param[in] stacfm - Configuration management structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst   - Pointer to post structure
+  @param[in] stacfm - Configuration management structure
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiLkwStaCfm ARGS((Pst *pst, KwMngmt *staCfm));
 
 /**
-@details
-This function processes statistics requests received from the layer manager. After collecting the statistics, this function calls the statistics confirm function to send the statistics to the layer manager.
+  @details
+  This function processes statistics requests received from the layer manager. After collecting the statistics, this function calls the statistics confirm function to send the statistics to the layer manager.
 
-@param[in] pst   - Pointer to post structure  
-@param[in] acton - action 
-@param[in] sts   - Configuration management structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst   - Pointer to post structure  
+  @param[in] acton - action 
+  @param[in] sts   - Configuration management structure
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiLkwStsReq ARGS((Pst *pst, Action, KwMngmt *sts));
 /**
-@details
-This function is called by the KwMiLkwStsReq function for responding to statisti
-cs requests.
+  @details
+  This function is called by the KwMiLkwStsReq function for responding to statisti
+  cs requests.
 
-@param[in] pst   - Pointer to post structure
-@param[in] action - action 
-@param[in] cfg  - Configuration management structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst   - Pointer to post structure
+  @param[in] action - action 
+  @param[in] cfg  - Configuration management structure
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiLkwStsCfm ARGS((Pst *pst, Action action, KwMngmt *stsCfm));
 /**
-@details
-This function is used by RLC module to send unsolicited trace indications to
-the layer manager, when tracing is enabled by the layer manager through a previous control request.
+  @details
+  This function is used by RLC module to send unsolicited trace indications to
+  the layer manager, when tracing is enabled by the layer manager through a previous control request.
 
-@param[in] pst  - Pointer to post structure
-@param[in] cfg  - Configuration management structure
-@param[in] buf  - buffer 
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst  - Pointer to post structure
+  @param[in] cfg  - Configuration management structure
+  @param[in] buf  - buffer 
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiLkwTrcInd ARGS ((Pst *pst, KwMngmt *trc, Buffer *mBuf));
 
 /**
-@details This function is used by RLC to send unsolicited status information to the layer manager, when the unsolicited status flag is enabled by the layer manager through a previous control request.
+  @details This function is used by RLC to send unsolicited status information to the layer manager, when the unsolicited status flag is enabled by the layer manager through a previous control request.
 
-@param[in] pst  - Pointer to post structure
-@param[in] staReq - Configuration management structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst  - Pointer to post structure
+  @param[in] staReq - Configuration management structure
+  @return ROK if success , RFAILED if failure
+ */
 /* lkw_x_001.main_2, added support for L2 measurement */
 #ifdef LTE_L2_MEAS
 /**
-@details This function is called by the Layer Manger function to request 
-for Measurement  responding to statisti cs requests.
+  @details This function is called by the Layer Manger function to request 
+  for Measurement  responding to statisti cs requests.
 
-@param[in] pst  - Pointer to post structure
-@param[in] measEvt - Measurement Request structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst  - Pointer to post structure
+  @param[in] measEvt - Measurement Request structure
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiLkwL2MeasReq ARGS((Pst *pst, KwL2MeasReqEvt *measEvt));
 EXTERN S16 KwMiLkwL2MeasStopReq ARGS((Pst *pst,U8 measType));
 EXTERN S16 KwMiLkwL2MeasSendReq ARGS((Pst *pst,U8 measType));
 /**
-@details This function can be used by PDCP to send the measurement values
-after doing L2 measurement that was requested by the layer manager.
+  @details This function can be used by PDCP to send the measurement values
+  after doing L2 measurement that was requested by the layer manager.
 
-@param[in] pst  - Pointer to post structure
-@param[in] measEvt - Measurement confirmation structure
-@return ROK if success , RFAILED if failure
-*/
+  @param[in] pst  - Pointer to post structure
+  @param[in] measEvt - Measurement confirmation structure
+  @return ROK if success , RFAILED if failure
+ */
 EXTERN S16 KwMiLkwL2MeasCfm ARGS((Pst *pst, KwL2MeasCfmEvt *measCfm));
 EXTERN S16 KwMiLkwL2MeasStopCfm ARGS((Pst *pst, U8 measType, U8 status));
 #endif /*  LTE_L2_MEAS */
@@ -517,90 +517,90 @@ EXTERN S16 KwMiLkwL2MeasStopCfm ARGS((Pst *pst, U8 measType, U8 status));
 EXTERN S16 KwMiLkwStaInd ARGS((Pst *pst, KwMngmt *staReq));
 
 EXTERN Void kwSendLmAlarm ARGS ((
-      U16 category,
-      U16  event,
-      U16 cause,
-      SuId suId,
-      U32 ueId));
+	 U16 category,
+	 U16  event,
+	 U16 cause,
+	 SuId suId,
+	 U32 ueId));
 
 #ifdef SM
 EXTERN S16 SmMiRlcConfigCfm   ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 SmMiLkwCntrlCfm ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 SmMiLkwStaInd   ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 SmMiLkwStaCfm   ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 SmMiLkwStsCfm   ARGS((
-       Pst *,
-       Action,
-       KwMngmt *
-       ));
+	 Pst *,
+	 Action,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 SmMiLkwTrcInd   ARGS((
-       Pst *,
-       KwMngmt *,
-       Buffer *
-       ));
+	 Pst *,
+	 KwMngmt *,
+	 Buffer *
+	 ));
 
 EXTERN S16 SmMiLkwStsReq   ARGS((
-       Pst *,
-       Action,
-       KwMngmt *
-       ));
+	 Pst *,
+	 Action,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 SmMiLkwStaReq   ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 SmMiLkwCntrlReq ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 SmMiRlcConfigReq   ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 /* lkw_x_001.main_2, added support for L2 measurement */
 #ifdef LTE_L2_MEAS
 EXTERN S16 SmMiLkwL2MeasReq   ARGS((
-         Pst *,
-         KwL2MeasReqEvt *
-         ));
+	 Pst *,
+	 KwL2MeasReqEvt *
+	 ));
 EXTERN S16 SmMiLkwL2MeasStopReq ARGS((
-       Pst            *pst,
-       U8             measType
-      ));
+	 Pst            *pst,
+	 U8             measType
+	 ));
 
 EXTERN S16 SmMiLkwL2MeasSendReq ARGS((
-         Pst            *pst,
-         U8             measType
-         ));
+	 Pst            *pst,
+	 U8             measType
+	 ));
 EXTERN S16 SmMiLkwL2MeasCfm   ARGS((
-         Pst *,
-         KwL2MeasCfmEvt *
-         ));
+	 Pst *,
+	 KwL2MeasCfmEvt *
+	 ));
 EXTERN S16 SmMiLkwL2MeasStopCfm ARGS((
-         Pst     *pst,          
-         U8      measType,
-         U8      status
-         ));
+	 Pst     *pst,          
+	 U8      measType,
+	 U8      status
+	 ));
 #endif /*  LTE_L2_MEAS */
 #endif
 
@@ -610,184 +610,184 @@ EXTERN S16 smKwActvTsk     ARGS((Pst *pst, Buffer *mBuf));
 /* pack/unpack functions */
 #ifdef LCLKW 
 EXTERN S16 packRlcConfigReq     ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 packRlcConfigCfm     ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 
 EXTERN S16 cmPkLkwCntrlReq   ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 cmPkLkwCntrlCfm   ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 cmPkLkwStaInd     ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 cmPkLkwStaReq     ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 cmPkLkwStaCfm     ARGS((
-       Pst *,
-       KwMngmt *
-       ));
+	 Pst *,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 cmPkLkwStsReq     ARGS((
-       Pst *,
-       Action,
-       KwMngmt *
-       ));
+	 Pst *,
+	 Action,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 cmPkLkwStsCfm     ARGS((
-       Pst *,
-       Action,
-       KwMngmt *
-       ));
+	 Pst *,
+	 Action,
+	 KwMngmt *
+	 ));
 
 EXTERN S16 cmPkLkwTrcInd     ARGS((
-       Pst *,
-       KwMngmt *,
-       Buffer *
-       ));
+	 Pst *,
+	 KwMngmt *,
+	 Buffer *
+	 ));
 
 EXTERN S16 unpackRlcConfigReq   ARGS((
-       RlcConfigReq,
-       Pst *,
-       Buffer *
-       ));
+	 RlcConfigReq,
+	 Pst *,
+	 Buffer *
+	 ));
 
 EXTERN S16 unpackRlcConfigCfm   ARGS((
-       RlcConfigCfm,
-       Pst *,
-       Buffer *
-       ));
+	 RlcConfigCfm,
+	 Pst *,
+	 Buffer *
+	 ));
 
 EXTERN S16 cmUnpkLkwCntrlReq ARGS((
-       RlcConfigReq,
-       Pst *,
-       Buffer *
-       ));
+	 RlcConfigReq,
+	 Pst *,
+	 Buffer *
+	 ));
 
 EXTERN S16 cmUnpkLkwCntrlCfm ARGS((
-       RlcConfigCfm,
-       Pst *,
-       Buffer *
-       ));
+	 RlcConfigCfm,
+	 Pst *,
+	 Buffer *
+	 ));
 
 EXTERN S16 cmUnpkLkwStaInd   ARGS((
-       LkwStaInd,
-       Pst *,
-       Buffer *
-       ));
+	 LkwStaInd,
+	 Pst *,
+	 Buffer *
+	 ));
 
 EXTERN S16 cmUnpkLkwStaReq   ARGS((
-       LkwStaReq,
-       Pst *,
-       Buffer *
-       ));
+	 LkwStaReq,
+	 Pst *,
+	 Buffer *
+	 ));
 
 EXTERN S16 cmUnpkLkwStaCfm   ARGS((
-       LkwStaCfm,
-       Pst *,
-       Buffer *
-       ));
+	 LkwStaCfm,
+	 Pst *,
+	 Buffer *
+	 ));
 
 EXTERN S16 cmUnpkLkwStsReq   ARGS((
-       LkwStsReq,
-       Pst *,
-       Buffer *
-       ));
+	 LkwStsReq,
+	 Pst *,
+	 Buffer *
+	 ));
 
 EXTERN S16 cmUnpkLkwStsCfm   ARGS((
-       LkwStsCfm,
-       Pst *, Buffer *
-       ));
+	 LkwStsCfm,
+	 Pst *, Buffer *
+	 ));
 
 
 EXTERN S16 cmUnpkLkwTrcInd   ARGS((
-       LkwTrcInd,
-       Pst *,
-       Buffer *));
+	 LkwTrcInd,
+	 Pst *,
+	 Buffer *));
 
 /* lkw_x_001.main_2, added support for L2 measurement */
 #ifdef LTE_L2_MEAS
 EXTERN S16 cmPkLkwL2MeasReq ARGS((
-         Pst * pst,
-         KwL2MeasReqEvt * measReqEvt
-         ));
+	 Pst * pst,
+	 KwL2MeasReqEvt * measReqEvt
+	 ));
 EXTERN S16 cmUnpkLkwL2MeasReq ARGS((
-         LkwL2MeasReq func,
-         Pst *pst,
-         Buffer *mBuf
-         ));
+	 LkwL2MeasReq func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkLkwL2MeasCfm ARGS((
-         Pst * pst,
-         KwL2MeasCfmEvt *measCfmEvt
-         ));
+	 Pst * pst,
+	 KwL2MeasCfmEvt *measCfmEvt
+	 ));
 EXTERN S16 cmUnpkLkwL2MeasCfm ARGS((
-         LkwL2MeasCfm func,
-         Pst *pst,
-         Buffer *mBuf
-         ));
+	 LkwL2MeasCfm func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkKwL2MeasReqInfo ARGS((
-         KwL2MeasReqInfo * measReqInfo,
-         Buffer *mBuf
-         ));
+	 KwL2MeasReqInfo * measReqInfo,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkKwL2MeasReqInfo ARGS((
-         KwL2MeasReqInfo * measReqInfo,
-         Buffer *mBuf
-         ));
+	 KwL2MeasReqInfo * measReqInfo,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkKwL2MeasCfmInfo ARGS((
-         KwL2MeasCfmInfo * measCfmInfo,
-         Buffer *mBuf,
-         U8 measType
-         ));
+	 KwL2MeasCfmInfo * measCfmInfo,
+	 Buffer *mBuf,
+	 U8 measType
+	 ));
 EXTERN S16 cmUnpkKwL2MeasCfmInfo ARGS((
-         KwL2MeasCfmInfo * measCfmInfo,
-         Buffer *mBuf,
-         U8 measType
-         ));
+	 KwL2MeasCfmInfo * measCfmInfo,
+	 Buffer *mBuf,
+	 U8 measType
+	 ));
 EXTERN S16 cmPkLkwL2MeasStopReq ARGS((
-         Pst * pst,
-         U8 measType
-         ));
+	 Pst * pst,
+	 U8 measType
+	 ));
 EXTERN S16 cmUnpkLkwL2MeasStopReq ARGS((
-         LkwL2MeasStopReq func,
-         Pst *pst,
-         Buffer *mBuf
-         ));
+	 LkwL2MeasStopReq func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkLkwL2MeasSendReq ARGS((
-         Pst * pst,
-         U8 measType
-         ));
+	 Pst * pst,
+	 U8 measType
+	 ));
 EXTERN S16 cmUnpkLkwL2MeasSendReq ARGS((
-         LkwL2MeasSendReq func,
-         Pst *pst,
-         Buffer *mBuf
-         ));
+	 LkwL2MeasSendReq func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkLkwL2MeasStopCfm ARGS((
-         Pst * pst,
-         U8 measType,
-         U8 status
-         ));
+	 Pst * pst,
+	 U8 measType,
+	 U8 status
+	 ));
 EXTERN S16 cmUnpkLkwL2MeasStopCfm ARGS((
-         LkwL2MeasStopCfm func,
-         Pst *pst,
-         Buffer *mBuf
-         ));
+	 LkwL2MeasStopCfm func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 #endif /*  LTE_L2_MEAS */
 
 #endif
@@ -799,5 +799,5 @@ EXTERN S16 cmUnpkLkwL2MeasStopCfm ARGS((
 
   
 /********************************************************************30**
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

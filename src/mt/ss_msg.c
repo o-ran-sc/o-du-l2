@@ -218,13 +218,13 @@ EXTERN pthread_t tmpRegTidMap[20];
 {                                                         \
    U8  _regCnt;                                           \
    _region = 0xFF;                                        \
-                                                          \
+   \
    for(_regCnt = 0; _regCnt < 12; _regCnt++)              \
    {                                                      \
       if(tmpRegTidMap[_regCnt] == pthread_self())         \
       {                                                   \
-         _region = _regCnt;                               \
-         break;                                           \
+	 _region = _regCnt;                               \
+	 break;                                           \
       }                                                   \
    }                                                      \
 }
@@ -233,45 +233,45 @@ EXTERN pthread_t tmpRegTidMap[20];
 extern S32 clusterMode;
 #endif
 /*
-*
-*       Fun:   ssGetDBufOfSize
-*
-*       Desc:  This function gets a message buffer from specified region and
-*              size
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: message is created. message is returned via message buffer
-*              pointer. Buffer type is SS_M_DATA.
-*              return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   ssGetDBufOfSize
+ *
+ *       Desc:  This function gets a message buffer from specified region and
+ *              size
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: message is created. message is returned via message buffer
+ *              pointer. Buffer type is SS_M_DATA.
+ *              return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 ssGetDBufOfSizeNew
+   PUBLIC S16 ssGetDBufOfSizeNew
 (
-Region region,
-Size size,
-Buffer **dBuf,
-char* file,
-U32 line
-)
+ Region region,
+ Size size,
+ Buffer **dBuf,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 ssGetDBufOfSize
+   PUBLIC S16 ssGetDBufOfSize
 (
-Region region,
-Size size,
-Buffer **dBuf
-)
+ Region region,
+ Size size,
+ Buffer **dBuf
+ )
 #else
 PUBLIC S16 ssGetDBufOfSize(region, size, dBuf)
-Region region;
-Size size;
-Buffer **dBuf;
+   Region region;
+   Size size;
+   Buffer **dBuf;
 #endif
 #endif
 {
@@ -282,24 +282,24 @@ Buffer **dBuf;
    TRC1(ssGetDBufOfSize)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check buffer pointer */
-   if (!dBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS047, ERRZERO, "ssGetDBufOfSize : Null\
-                 Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check buffer pointer */
+      if (!dBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS047, ERRZERO, "ssGetDBufOfSize : Null\
+	       Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS048, ERRZERO, "ssGetDBufOfSize : Invalid\
-                region id");
+	    region id");
       RETVALUE(RFAILED);
    }
- 
+
    if (size <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS049, ERRZERO, "ssGetDBufOfSize : Invalid\
-                 size");
+	    size");
       RETVALUE(RFAILED);
    }
 #endif
@@ -309,87 +309,87 @@ Buffer **dBuf;
 #ifdef SS_HISTOGRAM_SUPPORT 
    if (SAlloc(region, &mdsize, 0, (Data **) dBuf, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
 #else
-   if (SAlloc(region, &mdsize, 0, (Data **) dBuf) != ROK)
+      if (SAlloc(region, &mdsize, 0, (Data **) dBuf) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
-   {
-      RETVALUE(ROUTRES);
-   }
+      {
+	 RETVALUE(ROUTRES);
+      }
    data = (Data *) (*dBuf) + MDBSIZE;
    size = mdsize - MDBSIZE;
- 
+
    dptr = (SsDblk*) (((Data *) (*dBuf)) + MBSIZE);
- 
+
    INITB((*dBuf), dptr, data, size, NULLP)
 #ifndef SS_DBUF_REFLOCK_DISABLE
-   if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
-   {
-      SSLOGERROR(ERRCLS_DEBUG, ESS056, ERRZERO,"Falied to initalize lock");
-   }
+      if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
+      {
+	 SSLOGERROR(ERRCLS_DEBUG, ESS056, ERRZERO,"Falied to initalize lock");
+      }
 #endif
-   
+
    RETVALUE(ROK);
 } /* ssGetDBufOfSize */
 
 
 /*
-*
-*       Fun:   SGetMsgNew
-*
-*       Desc:  This function gets a message
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: message is created. message is set to type SS_M_PROTO.
-*              message is returned via message buffer pointer.
-*              return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetMsgNew
+ *
+ *       Desc:  This function gets a message
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: message is created. message is set to type SS_M_PROTO.
+ *              message is returned via message buffer pointer.
+ *              return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef ANSI
-PUBLIC S16 SGetMsgNew
+   PUBLIC S16 SGetMsgNew
 (
-Region region,              /* region id */
-Pool pool,                  /* pool id */
-Buffer **mBuf,              /* pointer to message buffer */
-U32    line,
-U8     *fileName
-)
+ Region region,              /* region id */
+ Pool pool,                  /* pool id */
+ Buffer **mBuf,              /* pointer to message buffer */
+ U32    line,
+ U8     *fileName
+ )
 #else
 PUBLIC S16 SGetMsgNew(region, pool, mBuf, line, fileName)
-Region region;              /* region id */
-Pool pool;                  /* pool id */
-Buffer **mBuf;              /* pointer to message buffer */
-U32    line;
-U8     *fileName;
+   Region region;              /* region id */
+   Pool pool;                  /* pool id */
+   Buffer **mBuf;              /* pointer to message buffer */
+   U32    line;
+   U8     *fileName;
 #endif
 #else /* SS_HISTOGRAM_SUPPORT */
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SGetMsgNew
+   PUBLIC S16 SGetMsgNew
 (
-Region region,              /* region id */
-Pool pool,                  /* pool id */
-Buffer **mBuf,              /* pointer to message buffer */
-char* file,
-U32 line
-)
+ Region region,              /* region id */
+ Pool pool,                  /* pool id */
+ Buffer **mBuf,              /* pointer to message buffer */
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SGetMsg
+   PUBLIC S16 SGetMsg
 (
-Region region,              /* region id */
-Pool pool,                  /* pool id */
-Buffer **mBuf              /* pointer to message buffer */
-)
+ Region region,              /* region id */
+ Pool pool,                  /* pool id */
+ Buffer **mBuf              /* pointer to message buffer */
+ )
 #else
 PUBLIC S16 SGetMsg(region, pool, mBuf)
-Region region;              /* region id */
-Pool pool;                  /* pool id */
-Buffer **mBuf;              /* pointer to message buffer */
+   Region region;              /* region id */
+   Pool pool;                  /* pool id */
+   Buffer **mBuf;              /* pointer to message buffer */
 #endif
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -398,9 +398,9 @@ Buffer **mBuf;              /* pointer to message buffer */
    Size size = MSGSIZE;
    SsDblk *dptr;
    Data *data;
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-	Ent entId = 0;
+   Ent entId = 0;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
    /* ss021.103 - Addition of return value */
@@ -414,7 +414,7 @@ Buffer **mBuf;              /* pointer to message buffer */
    TRC1(SGetMsgNew)
 
 #ifdef XEON_SPECIFIC_CHANGES
-   region = 0;
+      region = 0;
    pool   = 0;
 #endif
 
@@ -428,17 +428,17 @@ Buffer **mBuf;              /* pointer to message buffer */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS051, ERRZERO, "SGetMsg : Invalid region\
-                                                   id");
+	    id");
       RETVALUE(RFAILED);
    }
- 
+
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS052, ERRZERO, "SGetMsg : Invalid pool id");
       RETVALUE(RFAILED);
    }
 
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    /* ss021.103 - Addition to check if region is registered */
@@ -449,7 +449,7 @@ Buffer **mBuf;              /* pointer to message buffer */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS053, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -460,72 +460,72 @@ Buffer **mBuf;              /* pointer to message buffer */
    /* verify that this region is present */
    if (osCp.regionTbl[region].used == FALSE)
    {
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+      /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
       if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS054, ERRZERO,
-                  "Could not release semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS054, ERRZERO,
+	       "Could not release semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS055, region, "Region not registered");
       RETVALUE(RFAILED);
    }
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS056, ERRZERO,
-                  "Could not release semaphore");
+	    "Could not release semaphore");
       RETVALUE(RFAILED);
 #endif
    }
 #endif
 #endif
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    SGetEntInd(&entId, fileName);
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-/* ss012.13: Addition */
+   /* ss012.13: Addition */
 #ifdef SS_M_PROTO_REGION
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
    if (SAlloc(region, &size, 0, (Data**) mBuf, line, fileName, entId) != ROK)
 #else
-   if (SAlloc(region, &size, 0, (Data**) mBuf) != ROK)
+      if (SAlloc(region, &size, 0, (Data**) mBuf) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
-   {
-      SSLOGERROR(ERRCLS_DEBUG, ESS058, ERRZERO, "SGetMsg:Failed in SAlloc");
-      RETVALUE(ROUTRES);
-   }
+      {
+	 SSLOGERROR(ERRCLS_DEBUG, ESS058, ERRZERO, "SGetMsg:Failed in SAlloc");
+	 RETVALUE(ROUTRES);
+      }
 #else /* SS_M_PROTO_REGION */  
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    if (SAlloc(SS_DFLT_REGION, &size, 0, (Data**) mBuf, line, fileName, entId) != ROK)
 #else
-   if (SAlloc(region, &size, 0, (Data**) mBuf) != ROK)
+      if (SAlloc(region, &size, 0, (Data**) mBuf) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
-   {
-      SSLOGERROR(ERRCLS_DEBUG, ESS059, ERRZERO, "SGetMsg:Failed in SAlloc");
-      RETVALUE(ROUTRES);
-   }
+      {
+	 SSLOGERROR(ERRCLS_DEBUG, ESS059, ERRZERO, "SGetMsg:Failed in SAlloc");
+	 RETVALUE(ROUTRES);
+      }
 #endif /* SS_M_PROTO_REGION */
 
    dptr = (SsDblk*) (((Data *) (*mBuf)) + MBSIZE);
    data = (Data*) (((Data *) (*mBuf)) + MDBSIZE);
- 
+
    /* INITB initialises and sets up the message blk */
    INITB((*mBuf), dptr, data, sizeof(SsMsgInfo), NULLP)
 
-   (*mBuf)->b_datap->db_type = SS_M_PROTO;
+      (*mBuf)->b_datap->db_type = SS_M_PROTO;
    (*mBuf)->b_wptr = (*mBuf)->b_rptr + sizeof(SsMsgInfo);
 
    /* initialise message info of mBuf */
@@ -542,7 +542,7 @@ Buffer **mBuf;              /* pointer to message buffer */
    {
       if(clusterMode == RADIO_CLUSTER_MODE)
       {
-         (*mBuf)->refCnt = 1;
+	 (*mBuf)->refCnt = 1;
       }
    }
 #endif
@@ -553,64 +553,64 @@ Buffer **mBuf;              /* pointer to message buffer */
 S16 SSetMBufPool(Buffer *mBuf, Pool pool)
 {
 
-    SsMsgInfo *minfo;
+   SsMsgInfo *minfo;
 
-    minfo = (SsMsgInfo*) mBuf->b_rptr; 
-    minfo->pool   = pool;
+   minfo = (SsMsgInfo*) mBuf->b_rptr; 
+   minfo->pool   = pool;
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } 
 #endif
 
 /* #ifdef SS_LOCKLESS_MEMORY */
 
 /*
-*
-*       Fun:   SPutMsgNew
-*
-*       Desc:  This function deallocates a message back.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: all data attached to message is returned to memory.
-*              message is returned to memory. return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SPutMsgNew
+ *
+ *       Desc:  This function deallocates a message back.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: all data attached to message is returned to memory.
+ *              message is returned to memory. return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef ANSI
-PUBLIC S16 SPutMsgNew
+   PUBLIC S16 SPutMsgNew
 (
-Buffer *mBuf,
-U32    line,
-U8     *fileName
-)
+ Buffer *mBuf,
+ U32    line,
+ U8     *fileName
+ )
 #else
 PUBLIC S16 SPutMsgNew(mBuf, line, fileName)
-Buffer *mBuf;
-U32    line;
-U8     *fileName;
+   Buffer *mBuf;
+   U32    line;
+   U8     *fileName;
 #endif
 #else /* SS_HISTOGRAM_SUPPORT */
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SPutMsgNew
+   PUBLIC S16 SPutMsgNew
 (
-Buffer *mBuf,
-char* file,
-U32 line
-)
+ Buffer *mBuf,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SPutMsg
+   PUBLIC S16 SPutMsg
 (
-Buffer *mBuf
-)
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SPutMsg(mBuf)
-Buffer *mBuf;
+   Buffer *mBuf;
 #endif
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -621,25 +621,25 @@ Buffer *mBuf;
    U8     tmpThrReg;
 #endif
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-	Ent entId = 0;
+   Ent entId = 0;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
    TRC1(SPutMsgNew)
 
 #ifdef L2_OPTMZ
-//#ifdef RADIO_CLUSTER
+      //#ifdef RADIO_CLUSTER
       if(clusterMode == RADIO_CLUSTER_MODE)
       {
-         if(mBuf->refCnt)
-         {
-            mBuf->refCnt -= 1;
-         }
-         if (mBuf->refCnt > 0)
-         {
-            RETVALUE(ROK);
-         }
+	 if(mBuf->refCnt)
+	 {
+	    mBuf->refCnt -= 1;
+	 }
+	 if (mBuf->refCnt > 0)
+	 {
+	    RETVALUE(ROK);
+	 }
       }
 #endif
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
@@ -650,23 +650,23 @@ Buffer *mBuf;
       {
 
 #ifdef MAC_FREE_RING_BUF
-         if(pthread_self() == gMacTId)
-         //if(pthread_equal(pthread_self(),gMacTId))
-         {
-            if(ROK == mtAddBufToRing(SS_RNG_BUF_MAC_FREE_RING,(Void *)mBuf,0))
-            {
-               RETVALUE(ROK);
-            }
-         }
+	 if(pthread_self() == gMacTId)
+	    //if(pthread_equal(pthread_self(),gMacTId))
+	 {
+	    if(ROK == mtAddBufToRing(SS_RNG_BUF_MAC_FREE_RING,(Void *)mBuf,0))
+	    {
+	       RETVALUE(ROK);
+	    }
+	 }
 #endif
 #ifdef RLC_FREE_RING_BUF
-         else if(pthread_self() == gRlcTId)
-         {
-            if(ROK == mtAddBufToRing(SS_RNG_BUF_RLC_FREE_RING,(Void *)mBuf,0))
-            {
-               RETVALUE(ROK);
-            }
-         }
+	 else if(pthread_self() == gRlcTId)
+	 {
+	    if(ROK == mtAddBufToRing(SS_RNG_BUF_RLC_FREE_RING,(Void *)mBuf,0))
+	    {
+	       RETVALUE(ROK);
+	    }
+	 }
 #endif
       }
    }
@@ -681,18 +681,18 @@ Buffer *mBuf;
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS061, ERRZERO, "SPutMsg: Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
 #endif
 
 #ifdef SS_MEM_WL_DEBUG
    CM_MEM_GET_REGION(tmpThrReg)
-   if(tmpThrReg == 0xFF)
-   {
-      printf("\n Not able to get region \n");
-      RETVALUE(RFAILED);
-   }
+      if(tmpThrReg == 0xFF)
+      {
+	 printf("\n Not able to get region \n");
+	 RETVALUE(RFAILED);
+      }
 #endif
 
    /* get the message info */
@@ -709,32 +709,32 @@ Buffer *mBuf;
 #endif
    }
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    SGetEntInd(&entId, fileName);
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-/* ss012.13: Addition */
+   /* ss012.13: Addition */
 #ifdef SS_M_PROTO_REGION
    /* ss021.103 - Addition to check return value of SFree */
 #ifdef SS_HISTOGRAM_SUPPORT
    if (SFree(minfo->region, (Data *) mBuf, MSGSIZE, line, fileName, entId) == RFAILED)
 #else
 #ifdef SS_MEM_WL_DEBUG
-   if (SFree(tmpThrReg, (Data *) mBuf, MSGSIZE) == RFAILED)
+      if (SFree(tmpThrReg, (Data *) mBuf, MSGSIZE) == RFAILED)
 #else
-   if (SFree(minfo->region, (Data *) mBuf, MSGSIZE) == RFAILED)
+	 if (SFree(minfo->region, (Data *) mBuf, MSGSIZE) == RFAILED)
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
-      RETVALUE(RFAILED);
+	    RETVALUE(RFAILED);
 #else /* SS_M_PROTO_REGION */
    /* ss021.103 - Addition to check return value of SFree */
 #ifdef SS_HISTOGRAM_SUPPORT
    if (SFree(SS_DFLT_REGION, (Data *) mBuf, MSGSIZE, line, fileName, entId) == RFAILED)
 #else
-   if (SFree(minfo->region, (Data *) mBuf, MSGSIZE) == RFAILED)
+      if (SFree(minfo->region, (Data *) mBuf, MSGSIZE) == RFAILED)
 #endif /* SS_HISTOGRAM_SUPPORT */
-      RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
 #endif /* SS_M_PROTO_REGION */
 
    RETVALUE(ROK);
@@ -742,49 +742,49 @@ Buffer *mBuf;
 
 #ifdef SS_LOCKLESS_MEMORY
 /*
-*
-*       Fun:   SPutStaticBuffer
-*
-*       Desc:  Returns a buffer to the specified static pool in the
-*              specified memory region.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SPutStaticBuffer
+ *
+ *       Desc:  Returns a buffer to the specified static pool in the
+ *              specified memory region.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_msg.c
+ *
+ */
 /* ss001.301: additions */
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SPutStaticBufferNew
+   PUBLIC S16 SPutStaticBufferNew
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data *ptr,                      /* pointer to buffer */
-Size size,                      /* size */
-U8   memType,                    /* memory type used if shareable or not */
-char* file,
-U32 line
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data *ptr,                      /* pointer to buffer */
+ Size size,                      /* size */
+ U8   memType,                    /* memory type used if shareable or not */
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SPutStaticBuffer
+   PUBLIC S16 SPutStaticBuffer
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data *ptr,                      /* pointer to buffer */
-Size size,                      /* size */
-U8   memType                    /* memory type used if shareable or not */
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data *ptr,                      /* pointer to buffer */
+ Size size,                      /* size */
+ U8   memType                    /* memory type used if shareable or not */
+ )
 #else
 PUBLIC S16 SPutStaticBuffer(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
-U8   memType;                   /* memory type used if shareable or not */
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data *ptr;                      /* pointer to buffer */
+   Size size;                      /* size */
+   U8   memType;                   /* memory type used if shareable or not */
 #endif
 #endif
 {
@@ -827,36 +827,36 @@ U8   memType;                   /* memory type used if shareable or not */
       if(clusterMode == RADIO_CLUSTER_MODE)
       {
 #ifdef MAC_FREE_RING_BUF
-         if(pthread_self() == gMacTId)
-         //if(pthread_equal(pthread_self(),gMacTId))
-         {
-            if(ROK == mtAddBufToRing(SS_RNG_BUF_MAC_FREE_RING,(Void *)ptr,1))
-            {
-               RETVALUE(ROK);
-            }
-         }
+	 if(pthread_self() == gMacTId)
+	    //if(pthread_equal(pthread_self(),gMacTId))
+	 {
+	    if(ROK == mtAddBufToRing(SS_RNG_BUF_MAC_FREE_RING,(Void *)ptr,1))
+	    {
+	       RETVALUE(ROK);
+	    }
+	 }
 #endif
 #ifdef RLC_FREE_RING_BUF
-         else if(pthread_self() == gRlcTId)
-         {
-            if(ROK == mtAddBufToRing(SS_RNG_BUF_RLC_FREE_RING,(Void *)ptr,1))
-            {
-               RETVALUE(ROK);
-            }
-         }
+	 else if(pthread_self() == gRlcTId)
+	 {
+	    if(ROK == mtAddBufToRing(SS_RNG_BUF_RLC_FREE_RING,(Void *)ptr,1))
+	    {
+	       RETVALUE(ROK);
+	    }
+	 }
       }
    }
 #endif
 #endif
    region = SS_GET_THREAD_MEM_REGION();
-   
+
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* verify that this region is present */
    if (((memType == SS_NON_SHARABLE_MEMORY) && 
-       (osCp.regionTbl[region].used == FALSE)) ||
-       ((memType == SS_SHARABLE_MEMORY) && 
-       (osCp.dynRegionTbl[region].used == FALSE)))
+	    (osCp.regionTbl[region].used == FALSE)) ||
+	 ((memType == SS_SHARABLE_MEMORY) && 
+	  (osCp.dynRegionTbl[region].used == FALSE)))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS218, region, "Region not registered");
       RETVALUE(ret);
@@ -867,14 +867,14 @@ U8   memType;                   /* memory type used if shareable or not */
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if(memType == SS_NON_SHARABLE_MEMORY)
    {
-    #ifndef T2K_MEM_LEAK_DBG
-    ret = (osCp.regionTbl[region].free)
-                 (osCp.regionTbl[region].regCb, ptr, size);
-    #else
-    ret = (osCp.regionTbl[region].free)
-                 (osCp.regionTbl[region].regCb, ptr, size, file, line);
-   
-    #endif
+#ifndef T2K_MEM_LEAK_DBG
+      ret = (osCp.regionTbl[region].free)
+	 (osCp.regionTbl[region].regCb, ptr, size);
+#else
+      ret = (osCp.regionTbl[region].free)
+	 (osCp.regionTbl[region].regCb, ptr, size, file, line);
+
+#endif
    }
    else if(memType == SS_SHARABLE_MEMORY)
    {
@@ -882,10 +882,10 @@ U8   memType;                   /* memory type used if shareable or not */
 
 #ifndef T2K_MEM_LEAK_DBG
       ret = (osCp.dynRegionTbl[region].free)
-              (osCp.dynRegionTbl[region].regCb, ptr, size);
+	 (osCp.dynRegionTbl[region].regCb, ptr, size);
 #else
       ret = (osCp.dynRegionTbl[region].free)
-              (osCp.dynRegionTbl[region].regCb, ptr, size,file,line);
+	 (osCp.dynRegionTbl[region].regCb, ptr, size,file,line);
 #endif
 #ifndef SS_DBUF_REFLOCK_DISABLE
    }
@@ -895,51 +895,51 @@ U8   memType;                   /* memory type used if shareable or not */
 }
 
 /*
-*
-*       Fun:   SGetStaticBuffer
-*
-*       Desc:  Allocates a buffer from the specified static memory pool
-*              in the specified region. Depending on the type wheather 
-*              the buffer is sharable or non-sharable indicated by the 
-*              memType prameter allocation region is choosen
-*              done
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: 
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetStaticBuffer
+ *
+ *       Desc:  Allocates a buffer from the specified static memory pool
+ *              in the specified region. Depending on the type wheather 
+ *              the buffer is sharable or non-sharable indicated by the 
+ *              memType prameter allocation region is choosen
+ *              done
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: 
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SGetStaticBufferNew
+   PUBLIC S16 SGetStaticBufferNew
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data **ptr,                     /* pointer to buffer */
-Size size,                      /* size requested */
-U8   memType,                    /* memory type used if shareable or not */
-char* file,
-U32 line
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data **ptr,                     /* pointer to buffer */
+ Size size,                      /* size requested */
+ U8   memType,                    /* memory type used if shareable or not */
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SGetStaticBuffer
+   PUBLIC S16 SGetStaticBuffer
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data **ptr,                     /* pointer to buffer */
-Size size,                      /* size requested */
-U8   memType                    /* memory type used if shareable or not */
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data **ptr,                     /* pointer to buffer */
+ Size size,                      /* size requested */
+ U8   memType                    /* memory type used if shareable or not */
+ )
 #else
 PUBLIC S16 SGetStaticBuffer(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
-U8   memType;                   /* memory type used if shareable or not */
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data **ptr;                     /* pointer to buffer */
+   Size size;                      /* size requested */
+   U8   memType;                   /* memory type used if shareable or not */
 #endif
 #endif
 {
@@ -980,9 +980,9 @@ U8   memType;                   /* memory type used if shareable or not */
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* verify that this region is present */
    if (((memType == SS_NON_SHARABLE_MEMORY) && 
-       (osCp.regionTbl[region].used == FALSE)) ||
-       ((memType == SS_SHARABLE_MEMORY) && 
-       (osCp.dynRegionTbl[region].used == FALSE)))
+	    (osCp.regionTbl[region].used == FALSE)) ||
+	 ((memType == SS_SHARABLE_MEMORY) && 
+	  (osCp.dynRegionTbl[region].used == FALSE)))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS218, region, "Region not registered");
       RETVALUE(ret);
@@ -996,17 +996,17 @@ U8   memType;                   /* memory type used if shareable or not */
    if (region == SS_STATIC_REGION)
       flags = 1;
 #endif
-   
+
    /* call the memory manager, to allocate this memory */
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if(memType == SS_NON_SHARABLE_MEMORY)
    {
 #ifndef T2K_MEM_LEAK_DBG
       ret = (osCp.regionTbl[region].alloc)
-                 (osCp.regionTbl[region].regCb, &size, flags, ptr);
+	 (osCp.regionTbl[region].regCb, &size, flags, ptr);
 #else
       ret = (osCp.regionTbl[region].alloc)
-                 (osCp.regionTbl[region].regCb, &size, flags, ptr, file,line);
+	 (osCp.regionTbl[region].regCb, &size, flags, ptr, file,line);
 #endif
    }
    else if(memType == SS_SHARABLE_MEMORY)
@@ -1014,10 +1014,10 @@ U8   memType;                   /* memory type used if shareable or not */
 #endif
 #ifndef T2K_MEM_LEAK_DBG
       ret = (osCp.dynRegionTbl[region].alloc)
-              (osCp.dynRegionTbl[region].regCb, &size, flags, ptr);
+	 (osCp.dynRegionTbl[region].regCb, &size, flags, ptr);
 #else
       ret = (osCp.dynRegionTbl[region].alloc)
-              (osCp.dynRegionTbl[region].regCb, &size, flags, ptr,file,line);
+	 (osCp.dynRegionTbl[region].regCb, &size, flags, ptr,file,line);
 #endif
 #ifndef SS_DBUF_REFLOCK_DISABLE
    }
@@ -1030,52 +1030,52 @@ U8   memType;                   /* memory type used if shareable or not */
 #ifdef INTEL_WLS 
 #ifndef SS_LOCKLESS_MEMORY
 #ifdef ANSI
-PUBLIC S16 SGetStaticBuffer
+   PUBLIC S16 SGetStaticBuffer
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data **ptr,                     /* pointer to buffer */
-Size size,                      /* size requested */
-U8   memType                    /* memory type used if shareable or not */
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data **ptr,                     /* pointer to buffer */
+ Size size,                      /* size requested */
+ U8   memType                    /* memory type used if shareable or not */
+ )
 #else
 PUBLIC S16 SGetStaticBuffer(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
-U8   memType;                   /* memory type used if shareable or not */
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data **ptr;                     /* pointer to buffer */
+   Size size;                      /* size requested */
+   U8   memType;                   /* memory type used if shareable or not */
 #endif
 {
-    S16  ret;
+   S16  ret;
 
-    ret = SGetSBuf(region, pool, ptr, size);
+   ret = SGetSBuf(region, pool, ptr, size);
 
-    RETVALUE(ret);
+   RETVALUE(ret);
 }
 
 
 #ifdef ANSI
-PUBLIC S16 SPutStaticBuffer
+   PUBLIC S16 SPutStaticBuffer
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data *ptr,                      /* pointer to buffer */
-Size size,                      /* size */
-U8   memType                    /* memory type used if shareable or not */
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data *ptr,                      /* pointer to buffer */
+ Size size,                      /* size */
+ U8   memType                    /* memory type used if shareable or not */
+ )
 #else
 PUBLIC S16 SPutStaticBuffer(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
-U8   memType;                   /* memory type used if shareable or not */
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data *ptr;                      /* pointer to buffer */
+   Size size;                      /* size */
+   U8   memType;                   /* memory type used if shareable or not */
 #endif
 {
 
    S16   ret;
- 
+
    ret = SPutSBuf(region, pool, ptr, size);
 
    RETVALUE(ret);
@@ -1083,72 +1083,72 @@ U8   memType;                   /* memory type used if shareable or not */
 }
 #endif
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SGetSBufWls1
+   PUBLIC S16 SGetSBufWls1
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data **ptr,                     /* pointer to buffer */
-Size size,                       /* size requested */
-char* file,
-U32 line
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data **ptr,                     /* pointer to buffer */
+ Size size,                       /* size requested */
+ char* file,
+ U32 line
+ )
 #else
-PUBLIC S16 SGetSBufWls
+   PUBLIC S16 SGetSBufWls
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data **ptr,                     /* pointer to buffer */
-Size size                       /* size requested */
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data **ptr,                     /* pointer to buffer */
+ Size size                       /* size requested */
+ )
 #endif
 {
-    S16   ret;
+   S16   ret;
 #ifndef SS_LOCKLESS_MEMORY
-    U32   flags = 0;
+   U32   flags = 0;
 #endif
 
 #ifdef SS_LOCKLESS_MEMORY
-    region = SS_GET_THREAD_MEM_REGION();
-    ret    = SAlloc(region, &size, 0, ptr);
+   region = SS_GET_THREAD_MEM_REGION();
+   ret    = SAlloc(region, &size, 0, ptr);
 #else
-    region = 0;
+   region = 0;
 #ifdef T2K_MEM_LEAK_DBG
-    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, &size, flags, ptr,file,line);
+   ret = (osCp.regionTbl[region].alloc)
+      (osCp.regionTbl[region].regCb, &size, flags, ptr,file,line);
 #else
-    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, &size, flags, ptr);
+   ret = (osCp.regionTbl[region].alloc)
+      (osCp.regionTbl[region].regCb, &size, flags, ptr);
 #endif
 #endif
 
-    RETVALUE(ret);
+   RETVALUE(ret);
 }
 
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SPutSBufWls1
+   PUBLIC S16 SPutSBufWls1
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data *ptr,                      /* pointer to buffer */
-Size size,                      /* size */
-char* file,
-U32 line
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data *ptr,                      /* pointer to buffer */
+ Size size,                      /* size */
+ char* file,
+ U32 line
+ )
 #else
-PUBLIC S16 SPutSBufWls
+   PUBLIC S16 SPutSBufWls
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data *ptr,                      /* pointer to buffer */
-Size size                      /* size */
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data *ptr,                      /* pointer to buffer */
+ Size size                      /* size */
+ )
 #endif
 {
    S16   ret;
 
 #ifdef SS_LOCKLESS_MEMORY
-    region = SS_GET_THREAD_MEM_REGION();
-    ret    = SFree(region, ptr, size);
+   region = SS_GET_THREAD_MEM_REGION();
+   ret    = SFree(region, ptr, size);
 #else
    region = 0;
 #ifdef T2K_MEM_LEAK_DBG
@@ -1165,79 +1165,79 @@ Size size                      /* size */
 
 
 /*
-*
-*       Fun:   SGetSBufNew
-*
-*       Desc:  Allocates a buffer from the specified static memory pool
-*              in the specified region.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: The new memory management scheme eliminates the concept
-*              of pools. This call maps directly to a call to the memory
-*              manager.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetSBufNew
+ *
+ *       Desc:  Allocates a buffer from the specified static memory pool
+ *              in the specified region.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: The new memory management scheme eliminates the concept
+ *              of pools. This call maps directly to a call to the memory
+ *              manager.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef ANSI
-PUBLIC S16 SGetSBufNew
+   PUBLIC S16 SGetSBufNew
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data **ptr,                     /* pointer to buffer */
-Size size,                       /* size requested */
-U32    line,
-U8     *fileName
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data **ptr,                     /* pointer to buffer */
+ Size size,                       /* size requested */
+ U32    line,
+ U8     *fileName
+ )
 #else
 PUBLIC S16 SGetSBufNew(region, pool, ptr, size, line, fileName)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
-U32    line;
-U8     *fileName;
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data **ptr;                     /* pointer to buffer */
+   Size size;                      /* size requested */
+   U32    line;
+   U8     *fileName;
 #endif
 #else /* SS_HISTOGRAM_SUPPORT */
 #if (defined(SSI_STATIC_MEM_LEAK_DETECTION) || defined(T2K_MEM_LEAK_DBG))
 #ifdef ANSI
-PUBLIC S16 SGetSBuf1
+   PUBLIC S16 SGetSBuf1
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data **ptr,                     /* pointer to buffer */
-Size size,                       /* size requested */
-char* file,
-U32 line
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data **ptr,                     /* pointer to buffer */
+ Size size,                       /* size requested */
+ char* file,
+ U32 line
+ )
 #else
 PUBLIC S16 SGetSBuf1(region, pool, ptr, size, file, line)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
-char* file;
-U32 line;
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data **ptr;                     /* pointer to buffer */
+   Size size;                      /* size requested */
+   char* file;
+   U32 line;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 SGetSBuf
+   PUBLIC S16 SGetSBuf
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data **ptr,                     /* pointer to buffer */
-Size size                       /* size requested */
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data **ptr,                     /* pointer to buffer */
+ Size size                       /* size requested */
+ )
 #else
 PUBLIC S16 SGetSBuf(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data **ptr;                     /* pointer to buffer */
+   Size size;                      /* size requested */
 #endif
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -1249,8 +1249,8 @@ Size size;                      /* size requested */
 #endif
 
 #ifdef SS_HISTOGRAM_SUPPORT
-	Ent entId = 0;
-	Bool hstReg = FALSE;
+   Ent entId = 0;
+   Bool hstReg = FALSE;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
    TRC1(SGetSBufNew);
@@ -1274,7 +1274,7 @@ Size size;                      /* size requested */
       SSLOGERROR(ERRCLS_INT_PAR, ESS212, pool, "Invalid pool");
       RETVALUE(RFAILED);
    }
-/* ss008.13: addition */
+   /* ss008.13: addition */
    /* validate data pointer */
    if (ptr == NULLP)
    {
@@ -1289,7 +1289,7 @@ Size size;                      /* size requested */
       RETVALUE(RFAILED);
    }
 #endif
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef RGL_SPECIFIC_CHANGES
    region = SS_GET_THREAD_MEM_REGION();
@@ -1302,7 +1302,7 @@ Size size;                      /* size requested */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS216, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -1316,13 +1316,13 @@ Size size;                      /* size requested */
    {
 
 #ifndef SS_PERF
-/* ss006.13: addition */
+      /* ss006.13: addition */
       if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS217, ERRZERO,
-                  "Could not release semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS217, ERRZERO,
+	       "Could not release semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -1341,41 +1341,41 @@ Size size;                      /* size requested */
       flags = 1;
 #endif
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 
-      SGetEntInd(&entId, fileName);
-      /* Get the Information from the oscp that the tapa task with the entity 
-         id (entid) is registed for histogram or not */
-      SGetHstGrmInfo(&entId, &hstReg);
+   SGetEntInd(&entId, fileName);
+   /* Get the Information from the oscp that the tapa task with the entity 
+      id (entid) is registed for histogram or not */
+   SGetHstGrmInfo(&entId, &hstReg);
    /* call the memory manager, to allocate this memory */
 #ifdef SSI_DEBUG_LEVEL1
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, &size, flags, ptr, 
-                SS_STATIC_MEM_FLAG, line, fileName, entId, hstReg);
+      (osCp.regionTbl[region].regCb, &size, flags, ptr, 
+       SS_STATIC_MEM_FLAG, line, fileName, entId, hstReg);
 #else
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, &size, flags, ptr, 
-                line, fileName, entId, hstReg);
+      (osCp.regionTbl[region].regCb, &size, flags, ptr, 
+       line, fileName, entId, hstReg);
 #endif /* SSI_DEBUG_LEVEL1 */
 
 #else 
-   
+
    /* call the memory manager, to allocate this memory */
-/* ss036.103 - addition for passing additional parameter memType as static */
+   /* ss036.103 - addition for passing additional parameter memType as static */
 #ifdef SSI_DEBUG_LEVEL1
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, &size, flags, ptr, SS_STATIC_MEM_FLAG);
+      (osCp.regionTbl[region].regCb, &size, flags, ptr, SS_STATIC_MEM_FLAG);
 #else
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
    /* Static mem leak detection changes */
    tmpSize = size + 4;
 #ifdef T2K_MEM_LEAK_DBG
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, &tmpSize, flags, ptr, file, line);
+      (osCp.regionTbl[region].regCb, &tmpSize, flags, ptr, file, line);
 #else
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, &tmpSize, flags, ptr);
+      (osCp.regionTbl[region].regCb, &tmpSize, flags, ptr);
 #endif
    /*size = tmpSize - 4;*/
    {
@@ -1393,11 +1393,11 @@ Size size;                      /* size requested */
       /*printf("region = %d idx = %d ptr = %p *ptr = %p actual = %p allocated = %p content = %d\n",region, idx, ptr, *ptr, actualPtr, allocatedPtr, *((U32*)allocatedPtr));*/
 
       LogForStaticMemLeak(&SMemLeakInfo[region],
-                          file,
-                          line,
-                          size,
-                          *ptr,
-                          idx);
+	    file,
+	    line,
+	    size,
+	    *ptr,
+	    idx);
 #ifdef XEON_SPECIFIC_CHANGES
       pthread_mutex_unlock(&(memLock));
 #endif      
@@ -1405,10 +1405,10 @@ Size size;                      /* size requested */
 #else
 #ifndef T2K_MEM_LEAK_DBG
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, &size, flags, ptr);
+      (osCp.regionTbl[region].regCb, &size, flags, ptr);
 #else
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, &size, flags, ptr, file, line);
+      (osCp.regionTbl[region].regCb, &size, flags, ptr, file, line);
 #endif
 
 #endif
@@ -1419,24 +1419,24 @@ Size size;                      /* size requested */
    /* release the semaphore we took */
 
 #ifndef SS_PERF
-/* ss006.13: addition */
+   /* ss006.13: addition */
    if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS219, ERRZERO,
-                  "Could not release semaphore");
+	    "Could not release semaphore");
       RETVALUE(RFAILED);
 #endif
    }
 #endif
-/* ss036.103 - Addition to handle the memory trampling return value
-* This in turn might invoke SRegMemErrHdlr  
-*/
+   /* ss036.103 - Addition to handle the memory trampling return value
+    * This in turn might invoke SRegMemErrHdlr  
+    */
 #ifdef SSI_DEBUG_LEVEL1
-    if (ret == RTRAMPLINGNOK)
-    {
-       SRegMemErrHdlr( region, *ptr, ret);
-    }
+   if (ret == RTRAMPLINGNOK)
+   {
+      SRegMemErrHdlr( region, *ptr, ret);
+   }
 #endif /* SSI_DEBUG_LEVEL1 */
 
    RETVALUE(ret);
@@ -1444,77 +1444,77 @@ Size size;                      /* size requested */
 
 
 /*
-*
-*       Fun:   SPutSBufNew
-*
-*       Desc:  Returns a buffer to the specified static pool in the
-*              specified memory region.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SPutSBufNew
+ *
+ *       Desc:  Returns a buffer to the specified static pool in the
+ *              specified memory region.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_msg.c
+ *
+ */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef ANSI
-PUBLIC S16 SPutSBufNew
+   PUBLIC S16 SPutSBufNew
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data *ptr,                      /* pointer to buffer */
-Size size,                      /* size */
-U32    line,
-U8     *fileName
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data *ptr,                      /* pointer to buffer */
+ Size size,                      /* size */
+ U32    line,
+ U8     *fileName
+ )
 #else
 PUBLIC S16 SPutSBufNew(region, pool, ptr, size, line, fileName)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
-U32    line;
-U8     *fileName;
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data *ptr;                      /* pointer to buffer */
+   Size size;                      /* size */
+   U32    line;
+   U8     *fileName;
 #endif
 #else  /* SS_HISTOGRAM_SUPPORT  */
 #if (defined(SSI_STATIC_MEM_LEAK_DETECTION) || defined(T2K_MEM_LEAK_DBG))
 #ifdef ANSI
-PUBLIC S16 SPutSBuf1
+   PUBLIC S16 SPutSBuf1
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data *ptr,                      /* pointer to buffer */
-Size size,                      /* size */
-char* file,
-U32 line
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data *ptr,                      /* pointer to buffer */
+ Size size,                      /* size */
+ char* file,
+ U32 line
+ )
 #else
 PUBLIC S16 SPutSBuf1(region, pool, ptr, size, file, line)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
-char* file;
-U32 line;
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data *ptr;                      /* pointer to buffer */
+   Size size;                      /* size */
+   char* file;
+   U32 line;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 SPutSBuf
+   PUBLIC S16 SPutSBuf
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Data *ptr,                      /* pointer to buffer */
-Size size                      /* size */
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Data *ptr,                      /* pointer to buffer */
+ Size size                      /* size */
+ )
 #else
 PUBLIC S16 SPutSBuf(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Data *ptr;                      /* pointer to buffer */
+   Size size;                      /* size */
 #endif
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -1522,8 +1522,8 @@ Size size;                      /* size */
    S16 ret;
 
 #ifdef SS_HISTOGRAM_SUPPORT
-	Ent entId = 0;
-	Bool hstReg = FALSE;
+   Ent entId = 0;
+   Bool hstReg = FALSE;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
    TRC1(SPutSBufNew);
@@ -1548,7 +1548,7 @@ Size size;                      /* size */
       SSLOGERROR(ERRCLS_INT_PAR, ESS221, pool, "Invalid pool");
       RETVALUE(RFAILED);
    }
-/* ss008.13: addition */
+   /* ss008.13: addition */
    /* validate data pointer */
    if (ptr == NULLP)
    {
@@ -1563,7 +1563,7 @@ Size size;                      /* size */
       RETVALUE(RFAILED);
    }
 #endif
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 #ifndef RGL_SPECIFIC_CHANGES
    region = SS_GET_THREAD_MEM_REGION();
 #endif
@@ -1575,7 +1575,7 @@ Size size;                      /* size */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS225, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -1588,13 +1588,13 @@ Size size;                      /* size */
    {
 #ifndef SS_PERF
 
-/* ss006.13: addition */
+      /* ss006.13: addition */
       if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS226, ERRZERO,
-                  "Could not release semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS226, ERRZERO,
+	       "Could not release semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 #endif
@@ -1604,7 +1604,7 @@ Size size;                      /* size */
 #endif
 
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
-/* Static mem leak detection changes */
+   /* Static mem leak detection changes */
    {
 #ifdef XEON_SPECIFIC_CHANGES
       pthread_mutex_lock(&(memLock));
@@ -1615,19 +1615,19 @@ Size size;                      /* size */
       pthread_mutex_unlock(&(memLock));
 #endif      
    }
-/* Static mem leak detection changes */
+   /* Static mem leak detection changes */
 #endif
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-     SGetEntInd(&entId, fileName);
-    /* Get the Information from the oscp that the tapa task with the entity 
-       id (entid) is registed for histogram or not */
-      SGetHstGrmInfo(&entId, &hstReg);
+   SGetEntInd(&entId, fileName);
+   /* Get the Information from the oscp that the tapa task with the entity 
+      id (entid) is registed for histogram or not */
+   SGetHstGrmInfo(&entId, &hstReg);
 
    /* call the memory manager to free this memory */
    ret = (osCp.regionTbl[region].free)(osCp.regionTbl[region].regCb, ptr, size,
-                                               line, fileName, entId, hstReg);
+	 line, fileName, entId, hstReg);
 #else
    /* call the memory manager to free this memory */
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
@@ -1644,30 +1644,30 @@ Size size;                      /* size */
 #endif
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    /* release the semaphore we took */
 
-/* ss006.13: addition */
+   /* ss006.13: addition */
    if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS228, ERRZERO,
-                  "Could not release semaphore");
+	    "Could not release semaphore");
       RETVALUE(RFAILED);
 #endif
    }
 #endif
-/* ss036.103 - addition to handle double free and trampling return values
-* This might invoke SRegMemErrHdlr 
-*/
+   /* ss036.103 - addition to handle double free and trampling return values
+    * This might invoke SRegMemErrHdlr 
+    */
 #ifdef SSI_DEBUG_LEVEL1
-    /* handle the double free error here by calling the OS specific error handling function */
-    if ((ret == RDBLFREE) || (ret == RTRAMPLINGNOK))
-    {
-       SRegMemErrHdlr( region,  ptr,  ret);
-    }
+   /* handle the double free error here by calling the OS specific error handling function */
+   if ((ret == RDBLFREE) || (ret == RTRAMPLINGNOK))
+   {
+      SRegMemErrHdlr( region,  ptr,  ret);
+   }
 #endif /* SSI_DEBUG_LEVEL1 */
 
    RETVALUE(ret);
@@ -1675,31 +1675,31 @@ Size size;                      /* size */
 
 
 /*
-*
-*       Fun:   SInitMsg
-*
-*       Desc:  This function deallocates a message back and then
-*              reinitializes the message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: all data attached to message is returned to memory.
-*              message is set to empty. message is not returned to
-*              memory. return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SInitMsg
+ *
+ *       Desc:  This function deallocates a message back and then
+ *              reinitializes the message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: all data attached to message is returned to memory.
+ *              message is set to empty. message is not returned to
+ *              memory. return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef ANSI
-PUBLIC S16 SInitMsg
+   PUBLIC S16 SInitMsg
 (
-Buffer *mBuf
-)
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SInitMsg(mBuf)
-Buffer *mBuf;
+   Buffer *mBuf;
 #endif
 {
    SsMsgInfo *minfo;
@@ -1709,16 +1709,16 @@ Buffer *mBuf;
    TRC1(SInitMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer */
-   if (mBuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS062, ERRZERO, "SInitMsg: Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer */
+      if (mBuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS062, ERRZERO, "SInitMsg: Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS063, ERRZERO, "SInitMsg: Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -1738,11 +1738,11 @@ Buffer *mBuf;
    while ((tmp = mBuf->b_cont))
    {
       mBuf->b_cont = tmp->b_cont;
-/* #ifdef YYYY */
+      /* #ifdef YYYY */
 #if 1
 #ifdef T2K_MEM_LEAK_DBG
-   char * file = __FILE__;
-   U32  line   = __LINE__;
+      char * file = __FILE__;
+      U32  line   = __LINE__;
 #endif
 
       (Void) SPutDBuf(tmpRegId, minfo->pool, tmp);
@@ -1763,28 +1763,28 @@ Buffer *mBuf;
  * byte order while adding the data bytes to the beginning of the message.
  */
 /*
-*
-*       Fun:   SAddPreMsgMultInOrder
-*
-*       Desc:  This function copies consecutive bytes of data to the
-*              beginning of a message and keeps the bytes order preserved.
-*
-*       Ret:   ROK      - Appended the bytes to the beginning of the message.
-*              RFAILED  - Failed to append the bytes.
-*              ROUTRES  - Out of resources - Possibly insufficient memory.
-*
-*       Notes: If the message is empty,data is placed in the message. Message
-*              length is incremented. Return is ROK.
-*
-*              If the message is not empty,data is read by source pointer
-*              and appended at the beginning of the message.
-*              Message length is incremented. Return is ROK.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAddPreMsgMultInOrder
+ *
+ *       Desc:  This function copies consecutive bytes of data to the
+ *              beginning of a message and keeps the bytes order preserved.
+ *
+ *       Ret:   ROK      - Appended the bytes to the beginning of the message.
+ *              RFAILED  - Failed to append the bytes.
+ *              ROUTRES  - Out of resources - Possibly insufficient memory.
+ *
+ *       Notes: If the message is empty,data is placed in the message. Message
+ *              length is incremented. Return is ROK.
+ *
+ *              If the message is not empty,data is read by source pointer
+ *              and appended at the beginning of the message.
+ *              Message length is incremented. Return is ROK.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SAddPreMsgMultInOrder
+   PUBLIC S16 SAddPreMsgMultInOrder
 (
  Data *src,
  MsgLen cnt,
@@ -1792,9 +1792,9 @@ PUBLIC S16 SAddPreMsgMultInOrder
  )
 #else
 PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
-    Data *src;
-    MsgLen cnt;
-    Buffer *mBuf;
+   Data *src;
+   MsgLen cnt;
+   Buffer *mBuf;
 #endif
 {
    SsMsgInfo *minfo;   /* Message info */
@@ -1811,30 +1811,30 @@ PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
       /* check message buffer */
-   if (mBuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS070, ERRZERO, "SAddPreMsgMultInOrder:\
-                                                   Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (mBuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS070, ERRZERO, "SAddPreMsgMultInOrder:\
+	       Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check source */
    if (src == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS071, ERRZERO, "SAddPreMsgMultInOrder:\
-                                                   Null Buffer");
+	    Null Buffer");
       RETVALUE(RFAILED);
    }
    /* check count */
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS072, ERRZERO, "SAddPreMsgMultInOrder:\
-                                                   Invalid count");
+	    Invalid count");
       RETVALUE(RFAILED);
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS073, ERRZERO, "SAddPreMsgMultInOrder:\
-                                                   Incorrect buffer type");
+	    Incorrect buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -1854,7 +1854,7 @@ PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
    revSrc = src + cnt ;
 
    if ((tmp = mBuf->b_cont) && (tmp->b_datap->db_ref == 1) &&
-         (tmp->b_datap->db_base < tmp->b_rptr))
+	 (tmp->b_datap->db_base < tmp->b_rptr))
    {
       /* store the offset of the read pointer of tmp */
       offset = tmp->b_rptr - tmp->b_datap->db_base;
@@ -1874,8 +1874,8 @@ PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
 
       if (!cnt)
       {
-         minfo->len += len;
-         RETVALUE(ROK);
+	 minfo->len += len;
+	 RETVALUE(ROK);
       }
    }
    newblk = prevblk = NULLP;
@@ -1884,32 +1884,32 @@ PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
       /* allocate a message blk */
       if (SGetDBuf(minfo->region, minfo->pool, &curblk) != ROK)
       {
-         while ((curblk = prevblk))
-         {
-            prevblk = prevblk->b_cont;
+	 while ((curblk = prevblk))
+	 {
+	    prevblk = prevblk->b_cont;
 #ifdef T2K_MEM_LEAK_DBG
-   char * file = __FILE__;
-   U32  line   = __LINE__;
+	    char * file = __FILE__;
+	    U32  line   = __LINE__;
 #endif
 
-            (Void) SPutDBuf(minfo->region, minfo->pool, curblk);
-         }
+	    (Void) SPutDBuf(minfo->region, minfo->pool, curblk);
+	 }
 
-         if (tmp)
-         {
-            tmp->b_rptr = tmp->b_datap->db_base + offset;
-         }
+	 if (tmp)
+	 {
+	    tmp->b_rptr = tmp->b_datap->db_base + offset;
+	 }
 
-         RETVALUE(ROUTRES);
+	 RETVALUE(ROUTRES);
       }
       /* attach curblk in the newblk chain */
       if (prevblk)
       { 
-         curblk->b_cont = prevblk; /* stack them up */
+	 curblk->b_cont = prevblk; /* stack them up */
       }
       else
       {
-         newblk = curblk;
+	 newblk = curblk;
       }
       prevblk = curblk;
 
@@ -1950,38 +1950,38 @@ PUBLIC S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
    RETVALUE(ROK);
 }
 /*
-*
-*       Fun:   SAddPreMsg
-*
-*       Desc:  This function copies one byte of data to the
-*              beginning of a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: if message is empty: data is placed in the message. message
-*              length is incremented. return is ok.
-*
-*              if message is not empty: data is placed in front of all
-*              other data in message. message length is incremented.
-*              return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAddPreMsg
+ *
+ *       Desc:  This function copies one byte of data to the
+ *              beginning of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: if message is empty: data is placed in the message. message
+ *              length is incremented. return is ok.
+ *
+ *              if message is not empty: data is placed in front of all
+ *              other data in message. message length is incremented.
+ *              return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SAddPreMsg
+   PUBLIC S16 SAddPreMsg
 (
-Data data,
-Buffer *mBuf
-)
+ Data data,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SAddPreMsg (data, mBuf)
-Data data;
-Buffer *mBuf;
+   Data data;
+   Buffer *mBuf;
 #endif
 {
    SsMsgInfo *minfo;
@@ -1991,16 +1991,16 @@ Buffer *mBuf;
    TRC1(SAddPreMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer */
-   if (!mBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS064, ERRZERO, "SAddPreMsg: Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer */
+      if (!mBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS064, ERRZERO, "SAddPreMsg: Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS065, ERRZERO, "SAddPreMsg: Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED); 
    }
 #endif
@@ -2011,26 +2011,26 @@ Buffer *mBuf;
 #ifdef LONG_MSG
    if (minfo->len == 0x7FFFFFFF)
 #else
-   if (minfo->len == 0x7FFF)
+      if (minfo->len == 0x7FFF)
 #endif
-   {
-      RETVALUE(ROUTRES);
-   }
-      
+      {
+	 RETVALUE(ROUTRES);
+      }
+
    /*
     * allocate a message blk using SGetDBuf(), if there are no data blks in the
     * message, mBuf, or if the reference count of the first data blk is greater
     * than 1, or if there is no space to append databytes in front of the read
     * pointer of the first data blk
-   */
+    */
    if (!(tmp = mBuf->b_cont) || (tmp->b_datap->db_ref > 1) ||
-        (tmp->b_rptr == tmp->b_datap->db_base))
+	 (tmp->b_rptr == tmp->b_datap->db_base))
    {
       if (SGetDBuf(minfo->region, minfo->pool, &newb) != ROK)
       {
-         SSLOGERROR(ERRCLS_DEBUG, ESS066, ERRZERO, "SAddPreMsg:Failed in\
-                    SGetDBuf");
-         RETVALUE(ROUTRES);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS066, ERRZERO, "SAddPreMsg:Failed in\
+	       SGetDBuf");
+	 RETVALUE(ROUTRES);
       }
       /* set the read and write pointers to end of data buffer */
       /* subsequent prepends have all the buffer to insert data into */
@@ -2043,7 +2043,7 @@ Buffer *mBuf;
 
       /* if endptr of mBuf is NULLP, set it to newb */
       if (tmp == NULLP)
-         minfo->endptr = newb;
+	 minfo->endptr = newb;
       tmp = newb;
    }
    /* insert data, increment length */
@@ -2054,79 +2054,79 @@ Buffer *mBuf;
 }
 
 /*
-*
-*       Fun:   SAddPstMsg
-*
-*       Desc:  This function copies one byte of data to the
-*              end of a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: if message is empty: data is placed in the message. message
-*              length is incremented. return is ok.
-*
-*              if message is not empty: data is placed in back of all
-*              other data in message. message length is incremented.
-*              return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAddPstMsg
+ *
+ *       Desc:  This function copies one byte of data to the
+ *              end of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: if message is empty: data is placed in the message. message
+ *              length is incremented. return is ok.
+ *
+ *              if message is not empty: data is placed in back of all
+ *              other data in message. message length is incremented.
+ *              return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SAddPstMsg
+   PUBLIC S16 SAddPstMsg
 (
-Data data,
-Buffer *mBuf
-)
+ Data data,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SAddPstMsg (data, mBuf)
-Data data;
-Buffer *mBuf;
+   Data data;
+   Buffer *mBuf;
 #endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
    Buffer *newb;
- 
+
    TRC1(SAddPstMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer */
-   if (!mBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS067, ERRZERO, "SAddPstMsg: Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer */
+      if (!mBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS067, ERRZERO, "SAddPstMsg: Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS068, ERRZERO, "SAddPstMsg: Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
 
    /* get the message info */
    minfo = (SsMsgInfo *) mBuf->b_rptr;
- 
+
    if (!(tmp = minfo->endptr) || (tmp->b_datap->db_ref > 1) ||
-        (tmp->b_wptr == tmp->b_datap->db_lim))
+	 (tmp->b_wptr == tmp->b_datap->db_lim))
    {
       if (SGetDBuf(minfo->region, minfo->pool, &newb) != ROK)
       {
-         SSLOGERROR(ERRCLS_DEBUG, ESS069, ERRZERO, "SAddPstMsg: Failed in\
-                                                    SGetDBuf()");
-         RETVALUE(ROUTRES);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS069, ERRZERO, "SAddPstMsg: Failed in\
+	       SGetDBuf()");
+	 RETVALUE(ROUTRES);
       }
 
       /* append newb to the end of the mBuf chain */
       if (tmp)
-         tmp->b_cont = newb;
+	 tmp->b_cont = newb;
       else
-         mBuf->b_cont = newb;
+	 mBuf->b_cont = newb;
 
       /* set the endptr of mBuf to newb */
       minfo->endptr = newb;
@@ -2141,56 +2141,56 @@ Buffer *mBuf;
 }
 
 /*
-*
-*       Fun:   SAddPreMsgMult
-*
-*       Desc:  This function copies consecutive bytes of data to the
-*              beginning of a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: if message is empty: data is placed in the message. message
-*              length is incremented. return is ok.
-*
-*              if message is not empty: data is read by source pointer,
-*              data is placed in front of all other data in message.
-*              message length is incremented. return is ok.
-*
-*              the first byte of data pointed to by the source pointer will
-*              be placed at the front of the message first, the last byte of
-*              data pointed to by the source pointer will be placed at the
-*              front of the message last (i.e. it will become the first
-*              byte of the message).
-*
-*       File:  ss_msg.c
-*
-*/
- 
+ *
+ *       Fun:   SAddPreMsgMult
+ *
+ *       Desc:  This function copies consecutive bytes of data to the
+ *              beginning of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: if message is empty: data is placed in the message. message
+ *              length is incremented. return is ok.
+ *
+ *              if message is not empty: data is read by source pointer,
+ *              data is placed in front of all other data in message.
+ *              message length is incremented. return is ok.
+ *
+ *              the first byte of data pointed to by the source pointer will
+ *              be placed at the front of the message first, the last byte of
+ *              data pointed to by the source pointer will be placed at the
+ *              front of the message last (i.e. it will become the first
+ *              byte of the message).
+ *
+ *       File:  ss_msg.c
+ *
+ */
+
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SAddPreMsgMult1
+   PUBLIC S16 SAddPreMsgMult1
 (
-Data *src,
-MsgLen cnt,
-Buffer *mBuf,
-char   *file,
-U32    line
-)
+ Data *src,
+ MsgLen cnt,
+ Buffer *mBuf,
+ char   *file,
+ U32    line
+ )
 
 #else
 #ifdef ANSI
-PUBLIC S16 SAddPreMsgMult
+   PUBLIC S16 SAddPreMsgMult
 (
-Data *src,
-MsgLen cnt,
-Buffer *mBuf
-)
+ Data *src,
+ MsgLen cnt,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SAddPreMsgMult(src, cnt, mBuf)
-Data *src;
-MsgLen cnt;
-Buffer *mBuf;
+   Data *src;
+   MsgLen cnt;
+   Buffer *mBuf;
 #endif
 #endif
 {
@@ -2207,12 +2207,12 @@ Buffer *mBuf;
    TRC1(SAddPreMsgMult)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer */
-   if (mBuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS070, ERRZERO, "SAddPreMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer */
+      if (mBuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS070, ERRZERO, "SAddPreMsgMult:Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check source */
    if (src == NULLP)
    {
@@ -2223,13 +2223,13 @@ Buffer *mBuf;
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS072, ERRZERO, "SAddPreMsgMult: Invalid\
-                                                   count");
+	    count");
       RETVALUE(RFAILED);
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS073, ERRZERO, "SAddPreMsgMult: Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -2239,11 +2239,11 @@ Buffer *mBuf;
 
    /* store cnt in length */
    len = cnt;
-/* ss014.13: Addition */
+   /* ss014.13: Addition */
    offset = 0;
 
    if ((tmp = mBuf->b_cont) && (tmp->b_datap->db_ref == 1) &&
-       (tmp->b_datap->db_base < tmp->b_rptr))
+	 (tmp->b_datap->db_base < tmp->b_rptr))
    {
       /* store the offset of the read pointer of tmp */
       offset = tmp->b_rptr - tmp->b_datap->db_base;
@@ -2256,11 +2256,11 @@ Buffer *mBuf;
 
       /* copy data */
       while (numBytes--)
-         *--tmp->b_rptr = *src++;
+	 *--tmp->b_rptr = *src++;
       if (!cnt)
       {
-         minfo->len += len;
-         RETVALUE(ROK);
+	 minfo->len += len;
+	 RETVALUE(ROK);
       }
    }
    newblk = prevblk = NULLP;
@@ -2269,24 +2269,24 @@ Buffer *mBuf;
       /* allocate a message blk */
       if (SGetDBuf(minfo->region, minfo->pool, &curblk) != ROK)
       {
-         while ((curblk = prevblk))
-         {
-            prevblk = prevblk->b_cont;
-            (Void) SPutDBuf(minfo->region, minfo->pool, curblk);
-         }
+	 while ((curblk = prevblk))
+	 {
+	    prevblk = prevblk->b_cont;
+	    (Void) SPutDBuf(minfo->region, minfo->pool, curblk);
+	 }
 
-         if (tmp)
-         {
-            tmp->b_rptr = tmp->b_datap->db_base + offset;
-         }
+	 if (tmp)
+	 {
+	    tmp->b_rptr = tmp->b_datap->db_base + offset;
+	 }
 
-         RETVALUE(ROUTRES);
+	 RETVALUE(ROUTRES);
       }
       /* attach curblk in the newblk chain */
       if (prevblk)
-         curblk->b_cont = prevblk; /* stack them up */
+	 curblk->b_cont = prevblk; /* stack them up */
       else
-         newblk = curblk;
+	 newblk = curblk;
       prevblk = curblk;
 
       /* set the read and write pointers to the end of the data buffer */
@@ -2301,7 +2301,7 @@ Buffer *mBuf;
       cnt -= numBytes;
 
       while (numBytes--)
-         *--rptr = *src++;
+	 *--rptr = *src++;
       curblk->b_rptr = rptr;
    }
 
@@ -2320,55 +2320,55 @@ Buffer *mBuf;
 }
 
 /*
-*
-*       Fun:   SAddPstMsgMult
-*
-*       Desc:  This function copies consecutive bytes of data to the
-*              end of a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: if message is empty: data is placed in the message. message
-*              length is incremented. return is ok.
-*
-*              if message is not empty: data is read by source pointer,
-*              data is placed in back of all other data in message.
-*              message length is incremented. return is ok.
-*
-*              the first byte of data pointed to by the source pointer will
-*              be placed at the back of the message first, the last byte of
-*              data pointed to by the source pointer will be placed at the
-*              back of the message last (i.e. it will become the last
-*              byte of the message).
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAddPstMsgMult
+ *
+ *       Desc:  This function copies consecutive bytes of data to the
+ *              end of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: if message is empty: data is placed in the message. message
+ *              length is incremented. return is ok.
+ *
+ *              if message is not empty: data is read by source pointer,
+ *              data is placed in back of all other data in message.
+ *              message length is incremented. return is ok.
+ *
+ *              the first byte of data pointed to by the source pointer will
+ *              be placed at the back of the message first, the last byte of
+ *              data pointed to by the source pointer will be placed at the
+ *              back of the message last (i.e. it will become the last
+ *              byte of the message).
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SAddPstMsgMult1
+   PUBLIC S16 SAddPstMsgMult1
 (
-Data *src,
-MsgLen cnt,
-Buffer *mBuf,
-char   *file,
-U32    line
-)
+ Data *src,
+ MsgLen cnt,
+ Buffer *mBuf,
+ char   *file,
+ U32    line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SAddPstMsgMult
+   PUBLIC S16 SAddPstMsgMult
 (
-Data *src,
-MsgLen cnt,
-Buffer *mBuf
-)
+ Data *src,
+ MsgLen cnt,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SAddPstMsgMult(src, cnt, mBuf)
-Data *src;
-MsgLen cnt;
-Buffer *mBuf;
+   Data *src;
+   MsgLen cnt;
+   Buffer *mBuf;
 #endif
 #endif
 {
@@ -2385,12 +2385,12 @@ Buffer *mBuf;
    TRC1(SAddPstMsgMult)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer */
-   if (mBuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS074, ERRZERO, "SAddPstMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer */
+      if (mBuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS074, ERRZERO, "SAddPstMsgMult:Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check source */
    if (src == NULLP)
    {
@@ -2401,28 +2401,28 @@ Buffer *mBuf;
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS076, ERRZERO, "SAddPstMsgMult:Invalid\
-                                                   count");
+	    count");
       RETVALUE(RFAILED);
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS077, ERRZERO, "SAddPstMsgMult: Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
- 
+
    /* get the SsMsgInfo of mBuf */
    minfo = (SsMsgInfo*) mBuf->b_rptr;
 
    /* store cnt in len */
    len = cnt;
 
-/* ss014.13: Addition */
+   /* ss014.13: Addition */
    offset = 0;
 
    if ((tmp = minfo->endptr) && (tmp->b_datap->db_ref == 1) &&
-       (tmp->b_datap->db_lim > tmp->b_wptr))
+	 (tmp->b_datap->db_lim > tmp->b_wptr))
    {
       /* store offset of the write pointer */
       /* incase subsequent allocations fail, offset is read reset to original */
@@ -2435,9 +2435,9 @@ Buffer *mBuf;
       cnt -= numBytes;
 
 
-/* ss002.13: addition */
+      /* ss002.13: addition */
 
-  /* ss004.13: addition */
+      /* ss004.13: addition */
       SMemCpy((Void *) tmp->b_wptr, (Void *) src, (size_t) numBytes);
 
       tmp->b_wptr += numBytes;
@@ -2445,8 +2445,8 @@ Buffer *mBuf;
 
       if (!cnt)
       {
-         minfo->len += len;
-         RETVALUE(ROK);
+	 minfo->len += len;
+	 RETVALUE(ROK);
       }
    }
 
@@ -2457,25 +2457,25 @@ Buffer *mBuf;
       /* allocate a message blk */
       if (SGetDBuf(minfo->region, minfo->pool, &curblk) != ROK)
       {
-         while ((curblk = newblk))
-         {
-            newblk = newblk->b_cont;
-            (Void) SPutDBuf(minfo->region, minfo->pool, curblk);
-         }
+	 while ((curblk = newblk))
+	 {
+	    newblk = newblk->b_cont;
+	    (Void) SPutDBuf(minfo->region, minfo->pool, curblk);
+	 }
 
-         if (tmp)
-         {
-            tmp->b_wptr = tmp->b_datap->db_lim - offset;
-         }
+	 if (tmp)
+	 {
+	    tmp->b_wptr = tmp->b_datap->db_lim - offset;
+	 }
 
-         RETVALUE(ROUTRES);
+	 RETVALUE(ROUTRES);
       }
 
       /* insert curblk in the newblk chain */
       if (prevblk)
-         prevblk->b_cont = curblk; /* stack them down */
+	 prevblk->b_cont = curblk; /* stack them down */
       else
-         newblk = curblk;
+	 newblk = curblk;
       prevblk = curblk;
 
       /* copy data */
@@ -2486,14 +2486,14 @@ Buffer *mBuf;
       cnt -= numBytes;
 
 
-/* ss002.13: addition */
-/* ss003.13: addition */
+      /* ss002.13: addition */
+      /* ss003.13: addition */
       SMemCpy( (Void *) wptr, (Void *) src, (size_t) numBytes);
 
       src = src + numBytes;
 
       curblk->b_wptr +=  numBytes;  
- }
+   }
    /* insert newblk chain into mBuf */
    if (tmp)
       tmp->b_cont = newblk;
@@ -2512,38 +2512,38 @@ Buffer *mBuf;
 
 
 /*
-*
-*       Fun:   SRemPreMsg
-*
-*       Desc:  This function copies and then removes one byte of
-*              data from the beginning of a message.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: if message is empty: message is unchanged. return is ok,
-*              data not available.
-*
-*              if message is not empty: data is removed from front of
-*              message, data is returned via pointer to data. message
-*              length is decremented. return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SRemPreMsg
+ *
+ *       Desc:  This function copies and then removes one byte of
+ *              data from the beginning of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: if message is empty: message is unchanged. return is ok,
+ *              data not available.
+ *
+ *              if message is not empty: data is removed from front of
+ *              message, data is returned via pointer to data. message
+ *              length is decremented. return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SRemPreMsg
+   PUBLIC S16 SRemPreMsg
 (
-Data *dataPtr,
-Buffer *mBuf
-)
+ Data *dataPtr,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SRemPreMsg(dataPtr, mBuf)
-Data *dataPtr;
-Buffer *mBuf;
+   Data *dataPtr;
+   Buffer *mBuf;
 #endif
 {
    SsMsgInfo *minfo;
@@ -2556,12 +2556,12 @@ Buffer *mBuf;
    TRC1(SRemPreMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!dataPtr)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS078, ERRZERO, "SRemPreMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!dataPtr)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS078, ERRZERO, "SRemPreMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check message buffer */
    if (!mBuf)
    {
@@ -2571,7 +2571,7 @@ Buffer *mBuf;
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS080, ERRZERO, "SRemPreMsg : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -2599,38 +2599,38 @@ Buffer *mBuf;
 }
 
 /*
-*
-*       Fun:   SRemPstMsg
-*
-*       Desc:  This function copies and then removes one byte of
-*              data from the end of a message.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: if message is empty: message is unchanged. return is ok,
-*              data not available.
-*
-*              if message is not empty: data is removed from back of
-*              message, data is returned via pointer to data. message
-*              length is decremented. return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SRemPstMsg
+ *
+ *       Desc:  This function copies and then removes one byte of
+ *              data from the end of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: if message is empty: message is unchanged. return is ok,
+ *              data not available.
+ *
+ *              if message is not empty: data is removed from back of
+ *              message, data is returned via pointer to data. message
+ *              length is decremented. return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 
 #ifdef ANSI
-PUBLIC S16 SRemPstMsg
+   PUBLIC S16 SRemPstMsg
 (
-Data *dataPtr,              /* pointer to data */
-Buffer *mBuf
-)
+ Data *dataPtr,              /* pointer to data */
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SRemPstMsg(dataPtr, mBuf)
-Data *dataPtr;              /* pointer to data */
-Buffer *mBuf;               /* message buffer */
+   Data *dataPtr;              /* pointer to data */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -2644,12 +2644,12 @@ Buffer *mBuf;               /* message buffer */
    TRC1(SRemPstMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (dataPtr == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS081, ERRZERO, "SRemPstMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (dataPtr == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS081, ERRZERO, "SRemPstMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check message buffer */
    if (mBuf == NULLP)
    {
@@ -2659,7 +2659,7 @@ Buffer *mBuf;               /* message buffer */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS083, ERRZERO, "SRemPstMsg : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -2677,15 +2677,15 @@ Buffer *mBuf;               /* message buffer */
    if (last->b_rptr == last->b_wptr)
    {
       for (tmp = mBuf; tmp->b_cont != last;)
-         tmp = tmp->b_cont;
+	 tmp = tmp->b_cont;
       tmp->b_cont = NULLP;
       (Void) SPutDBuf(minfo->region, minfo->pool, last);
 
       /* update endptr */
       if (mBuf->b_cont)
-         minfo->endptr = tmp;
+	 minfo->endptr = tmp;
       else
-         minfo->endptr = NULLP;
+	 minfo->endptr = NULLP;
    }
    /* update SsMsgInfo */
    minfo->len--;
@@ -2695,46 +2695,46 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   SRemPreMsgMult
-*
-*       Desc:  This function copies and then removes consecutive bytes of
-*              data from the beginning of a message.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: if message is empty: message is unchanged. return is ok,
-*              data not available.
-*
-*              if the destination buffer is NULL, data is not copied.
-*
-*              if message is not empty: data is removed from front of
-*              message, data is returned by destination pointer. message
-*              length is decremented. return is ok.
-*
-*              the first byte of data read from the message will be placed
-*              in the destination buffer first (i.e. this was the first byte
-*              of the message), the last byte of data read from the message
-*              will be placed in the destination buffer last.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SRemPreMsgMult
+ *
+ *       Desc:  This function copies and then removes consecutive bytes of
+ *              data from the beginning of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: if message is empty: message is unchanged. return is ok,
+ *              data not available.
+ *
+ *              if the destination buffer is NULL, data is not copied.
+ *
+ *              if message is not empty: data is removed from front of
+ *              message, data is returned by destination pointer. message
+ *              length is decremented. return is ok.
+ *
+ *              the first byte of data read from the message will be placed
+ *              in the destination buffer first (i.e. this was the first byte
+ *              of the message), the last byte of data read from the message
+ *              will be placed in the destination buffer last.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef ANSI
-PUBLIC S16 SRemPreMsgMult
+   PUBLIC S16 SRemPreMsgMult
 (
-Data *dst,                  /* destination */
-MsgLen cnt,                 /* count */
-Buffer *mBuf
-)
+ Data *dst,                  /* destination */
+ MsgLen cnt,                 /* count */
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SRemPreMsgMult(dst, cnt, mBuf)
-Data *dst;                  /* destination */
-MsgLen cnt;                 /* count */
-Buffer *mBuf;               /* message buffer */
+   Data *dst;                  /* destination */
+   MsgLen cnt;                 /* count */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -2747,16 +2747,16 @@ Buffer *mBuf;               /* message buffer */
 
    TRC1(SRemPreMsgMult)
 
-   /* ss023.103 - Modification of SRemPreMsgMult for bug fix */
+      /* ss023.103 - Modification of SRemPreMsgMult for bug fix */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check count */
-   if (cnt <= 0)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS084, ERRZERO, "SRemPreMsgMult:Invalid\
-                                                   count");
-      RETVALUE(RFAILED);
-   }
+      /* check count */
+      if (cnt <= 0)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS084, ERRZERO, "SRemPreMsgMult:Invalid\
+	       count");
+	 RETVALUE(RFAILED);
+      }
    /* check message buffer */
    if (!mBuf)
    {
@@ -2769,7 +2769,7 @@ Buffer *mBuf;               /* message buffer */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS086, ERRZERO, "SRemPreMsgMult : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -2798,16 +2798,16 @@ Buffer *mBuf;               /* message buffer */
       if (dst != NULLP)
       {
 
-        SMemCpy( (Void *) dst, (Void *) tmp->b_rptr,  (size_t) numBytes);
-        dst += numBytes;
+	 SMemCpy( (Void *) dst, (Void *) tmp->b_rptr,  (size_t) numBytes);
+	 dst += numBytes;
       }
-      
+
       tmp->b_rptr += numBytes;
 
       if (tmp->b_rptr == tmp->b_wptr)
       {
-         mBuf->b_cont = tmp->b_cont;
-        (Void) SPutDBuf(minfo->region, minfo->pool, tmp);
+	 mBuf->b_cont = tmp->b_cont;
+	 (Void) SPutDBuf(minfo->region, minfo->pool, tmp);
       }
    }
    /* update SsMsgInfo */
@@ -2818,46 +2818,46 @@ Buffer *mBuf;               /* message buffer */
 }
 
 /*
-*
-*       Fun:   SRemPstMsgMult
-*
-*       Desc:  This function copies and then removes consecutive bytes of
-*              data from the end of a message.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: if message is empty: message is unchanged. return is ok,
-*              data not available.
-*
-*              if the destination buffer is NULL, data is not copied.
-*
-*              if message is not empty: data is removed from front of
-*              message, data is returned by destination pointer. message
-*              length is decremented. return is ok.
-*
-*              the first byte of data read from the message will be placed
-*              in the destination buffer first (i.e. this was the last byte
-*              of the message), the last byte of data read from the message
-*              will be placed in the destination buffer last.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SRemPstMsgMult
+ *
+ *       Desc:  This function copies and then removes consecutive bytes of
+ *              data from the end of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: if message is empty: message is unchanged. return is ok,
+ *              data not available.
+ *
+ *              if the destination buffer is NULL, data is not copied.
+ *
+ *              if message is not empty: data is removed from front of
+ *              message, data is returned by destination pointer. message
+ *              length is decremented. return is ok.
+ *
+ *              the first byte of data read from the message will be placed
+ *              in the destination buffer first (i.e. this was the last byte
+ *              of the message), the last byte of data read from the message
+ *              will be placed in the destination buffer last.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef ANSI
-PUBLIC S16 SRemPstMsgMult
+   PUBLIC S16 SRemPstMsgMult
 (
-Data *dst,                  /* destination */
-MsgLen cnt,                 /* count */
-Buffer *mBuf
-)
+ Data *dst,                  /* destination */
+ MsgLen cnt,                 /* count */
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SRemPstMsgMult(dst, cnt, mBuf)
-Data *dst;                  /* destination */
-MsgLen cnt;                 /* count */
-Buffer *mBuf;               /* message buffer */
+   Data *dst;                  /* destination */
+   MsgLen cnt;                 /* count */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -2874,13 +2874,13 @@ Buffer *mBuf;               /* message buffer */
    TRC1(SRemPstMsgMult)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check count */
-   if (cnt <= 0)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS087, ERRZERO, "SRemPstMsgMult:Invalid\
-                                                   count");
-      RETVALUE(RFAILED);
-   }
+      /* check count */
+      if (cnt <= 0)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS087, ERRZERO, "SRemPstMsgMult:Invalid\
+	       count");
+	 RETVALUE(RFAILED);
+      }
    /* check message buffer */
    if (mBuf == NULLP)
    {
@@ -2890,17 +2890,17 @@ Buffer *mBuf;               /* message buffer */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS089, ERRZERO, "SRemPstMsgMult : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
    /* ss021.103 - Addition to check dst data pointer */
    /* check data pointer */
    /* ss022.103 - Removed check for NULL destination pointer */
 #endif
- 
+
    /* get the SsMsgInfo */
    minfo = (SsMsgInfo*) mBuf->b_rptr;
- 
+
    /* check if data present */
    if (minfo->len < cnt)
       RETVALUE(ROKDNA);
@@ -2915,8 +2915,8 @@ Buffer *mBuf;               /* message buffer */
    /* determine blk containing offset, and prev node */
    FIND_OFFSET_AND_PREV(prev, tmp, count)
 
-   if (dst != NULLP)
-      dst += cnt;
+      if (dst != NULLP)
+	 dst += cnt;
 
    while (cnt)
    {
@@ -2930,15 +2930,15 @@ Buffer *mBuf;               /* message buffer */
       cptr = tmp->b_wptr;
       if (dst != NULLP)
       {
-         while (numBytes--)
-            *--dst = *cptr++;
+	 while (numBytes--)
+	    *--dst = *cptr++;
       }
 
       if (tmp->b_rptr == tmp->b_wptr)
       {
-         prev->b_cont = tmp->b_cont;
-         (Void) SPutDBuf(minfo->region, minfo->pool, tmp);
-         tmp = prev;
+	 prev->b_cont = tmp->b_cont;
+	 (Void) SPutDBuf(minfo->region, minfo->pool, tmp);
+	 tmp = prev;
       }
       prev = tmp;
       tmp = tmp->b_cont;
@@ -2954,45 +2954,45 @@ Buffer *mBuf;               /* message buffer */
 }
 
 /*
-*
-*       Fun:   SExamMsg
-*
-*       Desc:  This function copies one byte of data from a message
-*              without modifying the message.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: index is 0 based and indicates location in message
-*
-*              if index is less than the length of the message:
-*              message is unchanged and data is examined at specified
-*              index and returned via pointer to data. message length
-*              is unchanged. return is ok.
-*
-*              if index is greater than or equal to
-*              the length of the message: message is unchanged and 0
-*              is returned via pointer to data. return is ok, data
-*              not available.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SExamMsg
+ *
+ *       Desc:  This function copies one byte of data from a message
+ *              without modifying the message.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: index is 0 based and indicates location in message
+ *
+ *              if index is less than the length of the message:
+ *              message is unchanged and data is examined at specified
+ *              index and returned via pointer to data. message length
+ *              is unchanged. return is ok.
+ *
+ *              if index is greater than or equal to
+ *              the length of the message: message is unchanged and 0
+ *              is returned via pointer to data. return is ok, data
+ *              not available.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 
 #ifdef ANSI
-PUBLIC S16 SExamMsg
+   PUBLIC S16 SExamMsg
 (
-Data *dataPtr,              /* pointer to data */
-Buffer *mBuf,               /* message buffer */
-MsgLen idx
-)
+ Data *dataPtr,              /* pointer to data */
+ Buffer *mBuf,               /* message buffer */
+ MsgLen idx
+ )
 #else
 PUBLIC S16 SExamMsg(dataPtr, mBuf, idx)
-Data *dataPtr;              /* pointer to data */
-Buffer *mBuf;               /* message buffer */
-MsgLen idx;                 /* index */
+   Data *dataPtr;              /* pointer to data */
+   Buffer *mBuf;               /* message buffer */
+   MsgLen idx;                 /* index */
 #endif
 {
    SsMsgInfo *minfo;
@@ -3001,12 +3001,12 @@ MsgLen idx;                 /* index */
    TRC1(SExamMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!dataPtr)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS090, ERRZERO, "SExamMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!dataPtr)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS090, ERRZERO, "SExamMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check message buffer */
    if (!mBuf)
    {
@@ -3022,11 +3022,11 @@ MsgLen idx;                 /* index */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS093, ERRZERO, "SExamMsg : Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
 #endif
- 
+
    /* get the SsMsgInfo */
    minfo = (SsMsgInfo*) mBuf->b_rptr;
 
@@ -3041,7 +3041,7 @@ MsgLen idx;                 /* index */
    /* determine offset */
    FIND_OFFSET(tmp, idx)
 
-   *dataPtr = *(tmp->b_rptr + idx);
+      *dataPtr = *(tmp->b_rptr + idx);
 
    RETVALUE(ROK);
 }
@@ -3049,63 +3049,63 @@ MsgLen idx;                 /* index */
 
 /* s002.301 */
 /*
-*
-*       Fun:   SGetDataFrmMsg
-*
-*       Desc:  This function copies requested byte of data from a message
-*              without modifying the message.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: index is 0 based and indicates location in message
-*
-*              if index is less than the length of the message:
-*              message is unchanged and data is examined at specified
-*              index and returned via pointer to data. message length
-*              is unchanged. return is ok.
-*
-*              if index is greater than or equal to
-*              the length of the message: message is unchanged and 0
-*              is returned via pointer to data. return is ok, data
-*              not available.
-*
-*       File:  sm_msg.c
-*
-*/
+ *
+ *       Fun:   SGetDataFrmMsg
+ *
+ *       Desc:  This function copies requested byte of data from a message
+ *              without modifying the message.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: index is 0 based and indicates location in message
+ *
+ *              if index is less than the length of the message:
+ *              message is unchanged and data is examined at specified
+ *              index and returned via pointer to data. message length
+ *              is unchanged. return is ok.
+ *
+ *              if index is greater than or equal to
+ *              the length of the message: message is unchanged and 0
+ *              is returned via pointer to data. return is ok, data
+ *              not available.
+ *
+ *       File:  sm_msg.c
+ *
+ */
 
 
 #ifdef ANSI
-PUBLIC S16 SGetDataFrmMsg 
+   PUBLIC S16 SGetDataFrmMsg 
 (
-Buffer *mBuf,               /* message buffer */
-Data *dataPtr,              /* pointer to data */
-MsgLen idx,
-MsgLen dataLen
-)
+ Buffer *mBuf,               /* message buffer */
+ Data *dataPtr,              /* pointer to data */
+ MsgLen idx,
+ MsgLen dataLen
+ )
 #else
 PUBLIC S16 SGetDataFrmMsg(mBuf, dataPtr, idx, dataLen)
-Buffer *mBuf;               /* message buffer */
-Data *dataPtr;              /* pointer to data */
-MsgLen idx;                 /* index */
-MsgLen dataLen;
+   Buffer *mBuf;               /* message buffer */
+   Data *dataPtr;              /* pointer to data */
+   MsgLen idx;                 /* index */
+   MsgLen dataLen;
 #endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
-	MsgLen offSetLen;
-	Data   *tmpDataPtr = dataPtr;
+   MsgLen offSetLen;
+   Data   *tmpDataPtr = dataPtr;
 
    TRC1(SGetDataFrmMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!dataPtr)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS090, ERRZERO, "SGetDataFrmMsg: Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!dataPtr)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS090, ERRZERO, "SGetDataFrmMsg: Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check message buffer */
    if (!mBuf)
    {
@@ -3121,11 +3121,11 @@ MsgLen dataLen;
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS093, ERRZERO, "SGetDataFrmMsg: Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
 #endif
- 
+
    /* get the SsMsgInfo */
    minfo = (SsMsgInfo*) mBuf->b_rptr;
 
@@ -3139,61 +3139,61 @@ MsgLen dataLen;
 
    /* determine offset */
    if(tmp == NULLP)
-	{
-		RETVALUE(ROKDNA);	
-	}
-	else
-	{
-	  FIND_OFFSET(tmp, idx)
-		 offSetLen = ((tmp->b_wptr - (tmp->b_rptr + idx)));
+   {
+      RETVALUE(ROKDNA);	
+   }
+   else
+   {
+      FIND_OFFSET(tmp, idx)
+	 offSetLen = ((tmp->b_wptr - (tmp->b_rptr + idx)));
 
-	  for(;(offSetLen < dataLen && tmp != NULLP);)
-	  {
-		 SMemCpy((Void *)tmpDataPtr, (Void *)(tmp->b_rptr + idx), (size_t)offSetLen);
-		 dataLen = dataLen - offSetLen;
-		 tmp = tmp->b_cont;
-		 idx = 0;
-		 tmpDataPtr = tmpDataPtr + offSetLen;
-		 offSetLen = tmp->b_wptr - tmp->b_rptr;
-	  }
-	  if( tmp == NULLP )
-	  {
-	    RETVALUE(ROKDNA);	
-	  }
-     SMemCpy((Void *)tmpDataPtr, (Void *)(tmp->b_rptr + idx), (size_t)dataLen);
-	}
+      for(;(offSetLen < dataLen && tmp != NULLP);)
+      {
+	 SMemCpy((Void *)tmpDataPtr, (Void *)(tmp->b_rptr + idx), (size_t)offSetLen);
+	 dataLen = dataLen - offSetLen;
+	 tmp = tmp->b_cont;
+	 idx = 0;
+	 tmpDataPtr = tmpDataPtr + offSetLen;
+	 offSetLen = tmp->b_wptr - tmp->b_rptr;
+      }
+      if( tmp == NULLP )
+      {
+	 RETVALUE(ROKDNA);	
+      }
+      SMemCpy((Void *)tmpDataPtr, (Void *)(tmp->b_rptr + idx), (size_t)dataLen);
+   }
 
    RETVALUE(ROK);
 } /* End of SGetDataFrmMsg() */
 
 /*
-*
-*       Fun:   SFndLenMsg
-*
-*       Desc:  This function determines the length of data within
-*              a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: length of message is determined, message is unchanged
-*              and length is returned via pointer to length. return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SFndLenMsg
+ *
+ *       Desc:  This function determines the length of data within
+ *              a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: length of message is determined, message is unchanged
+ *              and length is returned via pointer to length. return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 
 #ifdef ANSI
-PUBLIC S16 SFndLenMsg
+   PUBLIC S16 SFndLenMsg
 (
-REG1 Buffer *mBuf,          /* message buffer */
-MsgLen *lngPtr
-)
+ REG1 Buffer *mBuf,          /* message buffer */
+ MsgLen *lngPtr
+ )
 #else
 PUBLIC S16 SFndLenMsg(mBuf, lngPtr)
-REG1 Buffer *mBuf;          /* message buffer */
-MsgLen *lngPtr;             /* pointer to length */
+   REG1 Buffer *mBuf;          /* message buffer */
+   MsgLen *lngPtr;             /* pointer to length */
 #endif
 {
    SsMsgInfo *minfo;
@@ -3201,12 +3201,12 @@ MsgLen *lngPtr;             /* pointer to length */
    TRC1(SFndLenMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer */
-   if (mBuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS094, ERRZERO, "SFndLenMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer */
+      if (mBuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS094, ERRZERO, "SFndLenMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check length pointer */
    if (lngPtr == NULLP)
    {
@@ -3216,11 +3216,11 @@ MsgLen *lngPtr;             /* pointer to length */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS096, ERRZERO, "SFndLenMsg : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
- 
+
    /* get the SsMsgInfo */
    minfo = (SsMsgInfo*) mBuf->b_rptr;
 
@@ -3234,63 +3234,63 @@ MsgLen *lngPtr;             /* pointer to length */
 /* #ifdef SS_LOCKLESS_MEMORY */
 
 /*
-*
-*       Fun:   SSegMsg
-*
-*       Desc:  This function will segment one specified message into two
-*              messages.
-*
-*       Ret:   ROK     - ok
-*              ROKDNA  - ok, data not available
-*              RFAILED - failed, general (optional)
-*              ROUTRES - failed, out of resources (optional)
-*
-*       Notes: message 1 is the original message.
-*
-*              message 2 is the new message.
-*
-*              index is 0 based and indicates location in message 1
-*              from which message 2 will be created.
-*
-*              if index is equal to 0: message 2 is created and all data
-*              attached to message 1 is moved to message 2. message 1
-*              is not returned to memory. return is ok.
-*
-*              if index is not equal to 0 and less than the length of
-*              the message minus 1: message 2 is created, all data
-*              attached to message 1 from index (inclusive) is moved to
-*              message 2. message 1 contains data from index 0 to index
-*              minus 1. return is ok.
-*
-*              if index is not equal to 0 and greater than or equal to
-*              the length of the message minus 1: message 1 is unchanged.
-*              message 2 is set to null. return is ok, data not available.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SSegMsg
+ *
+ *       Desc:  This function will segment one specified message into two
+ *              messages.
+ *
+ *       Ret:   ROK     - ok
+ *              ROKDNA  - ok, data not available
+ *              RFAILED - failed, general (optional)
+ *              ROUTRES - failed, out of resources (optional)
+ *
+ *       Notes: message 1 is the original message.
+ *
+ *              message 2 is the new message.
+ *
+ *              index is 0 based and indicates location in message 1
+ *              from which message 2 will be created.
+ *
+ *              if index is equal to 0: message 2 is created and all data
+ *              attached to message 1 is moved to message 2. message 1
+ *              is not returned to memory. return is ok.
+ *
+ *              if index is not equal to 0 and less than the length of
+ *              the message minus 1: message 2 is created, all data
+ *              attached to message 1 from index (inclusive) is moved to
+ *              message 2. message 1 contains data from index 0 to index
+ *              minus 1. return is ok.
+ *
+ *              if index is not equal to 0 and greater than or equal to
+ *              the length of the message minus 1: message 1 is unchanged.
+ *              message 2 is set to null. return is ok, data not available.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SSegMsgNew
+   PUBLIC S16 SSegMsgNew
 (
-Buffer *mBuf1,              /* message 1 */
-MsgLen idx,                 /* index */
-Buffer **mBuf2,
-char* file,
-U32 line
-)
+ Buffer *mBuf1,              /* message 1 */
+ MsgLen idx,                 /* index */
+ Buffer **mBuf2,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SSegMsg
+   PUBLIC S16 SSegMsg
 (
-Buffer *mBuf1,              /* message 1 */
-MsgLen idx,                 /* index */
-Buffer **mBuf2
-)
+ Buffer *mBuf1,              /* message 1 */
+ MsgLen idx,                 /* index */
+ Buffer **mBuf2
+ )
 #else
 PUBLIC S16 SSegMsg(mBuf1, idx, mBuf2)
-Buffer *mBuf1;              /* message 1 */
-MsgLen idx;                 /* index */
-Buffer **mBuf2;             /* message 2 */
+   Buffer *mBuf1;              /* message 1 */
+   MsgLen idx;                 /* index */
+   Buffer **mBuf2;             /* message 2 */
 #endif
 #endif
 {
@@ -3303,12 +3303,12 @@ Buffer **mBuf2;             /* message 2 */
    TRC1(SSegMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer 1 */
-   if (mBuf1 == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS097, ERRZERO, "SSegMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer 1 */
+      if (mBuf1 == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS097, ERRZERO, "SSegMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check message buffer 2 */
    if (mBuf2 == NULLP)
    {
@@ -3323,7 +3323,7 @@ Buffer **mBuf2;             /* message 2 */
    if (mBuf1->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS100, ERRZERO, "SSegMsg : Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -3375,124 +3375,124 @@ Buffer **mBuf2;             /* message 2 */
 
    FIND_OFFSET_AND_PREV(prev, tmp, idx)
 
-   /* segmented at the start of a blk */
-   if (!idx)
-   {
-      (*mBuf2)->b_cont = tmp;
-      prev->b_cont = NULLP;
-      minfo1->endptr = prev;
-   }
-   else
-   {
+      /* segmented at the start of a blk */
+      if (!idx)
+      {
+	 (*mBuf2)->b_cont = tmp;
+	 prev->b_cont = NULLP;
+	 minfo1->endptr = prev;
+      }
+      else
+      {
 #ifndef SS_MULTICORE_SUPPORT
-      /* allocate a message blk without a data blk */
-      /* ssDupB internally increments the reference count */
+	 /* allocate a message blk without a data blk */
+	 /* ssDupB internally increments the reference count */
 #ifdef SS_M_PROTO_REGION
-      if (!(next = DupMsg(minfo1->region, tmp)))
+	 if (!(next = DupMsg(minfo1->region, tmp)))
 #else
-      if (!(next = ssDupB(tmp)))
+	    if (!(next = ssDupB(tmp)))
 #endif /* SS_M_PROTO_REGION */
-      {
-         /* reset length */
-         minfo1->len += minfo2->len;
-         (Void) SPutMsg(*mBuf2);
-         RETVALUE(ROUTRES);
-      }
+	    {
+	       /* reset length */
+	       minfo1->len += minfo2->len;
+	       (Void) SPutMsg(*mBuf2);
+	       RETVALUE(ROUTRES);
+	    }
 
-      (*mBuf2)->b_cont = next;
+	 (*mBuf2)->b_cont = next;
 
-      tmp->b_cont = NULLP;
+	 tmp->b_cont = NULLP;
 
-      tmp->b_wptr = tmp->b_rptr + idx;
-      next->b_rptr = tmp->b_wptr;
+	 tmp->b_wptr = tmp->b_rptr + idx;
+	 next->b_rptr = tmp->b_wptr;
 
-      /* If the index was in the last mblk of the message, the
-       *  end pointer of the new message needs to be set to the
-       *  dup'ped mblk. Otherwise, the end pointer of the first
-       *  message will be set to the mblk in which the index
-       *  was found, and the end pointer of the new message can
-       *  remain where it is.
-       */
-      if (minfo1->endptr == tmp)
-      {
-         minfo2->endptr = next;
-      }
-      else
-      {
-         minfo1->endptr = tmp;
-      }
+	 /* If the index was in the last mblk of the message, the
+	  *  end pointer of the new message needs to be set to the
+	  *  dup'ped mblk. Otherwise, the end pointer of the first
+	  *  message will be set to the mblk in which the index
+	  *  was found, and the end pointer of the new message can
+	  *  remain where it is.
+	  */
+	 if (minfo1->endptr == tmp)
+	 {
+	    minfo2->endptr = next;
+	 }
+	 else
+	 {
+	    minfo1->endptr = tmp;
+	 }
 #else /*SS_MULTICORE_SUPPORT*/
-/* 
- * SDeRegTTsk patch
- */
+	 /* 
+	  * SDeRegTTsk patch
+	  */
 #ifdef SS_M_PROTO_REGION
-		if (!(next = DupMsg(minfo1->region, tmp)))
+	 if (!(next = DupMsg(minfo1->region, tmp)))
 #else
-		  if (!(next = ssDupB(tmp)))
+	    if (!(next = ssDupB(tmp)))
 #endif /* SS_M_PROTO_REGION */
-      {
-         /* reset length */
-         minfo1->len += minfo2->len;
-         (Void) SPutMsg(*mBuf2);
-         RETVALUE(ROUTRES);
-      }
-      (*mBuf2)->b_cont = next;
-      tmp->b_wptr = tmp->b_rptr + idx;
-      next->b_rptr += idx;
-      prev = tmp;
-      tmp = tmp->b_cont;
-      /* copy rest of the blocks */
-      if(tmp)
-      {
-         next->b_cont = tmp;
-         prev->b_cont = NULLP;
-         minfo2->endptr = minfo1->endptr; 
-         minfo1->endptr = prev;
-      }
-      else
-      {
-         next->b_cont = NULLP;
-         minfo2->endptr = next;
-      }
+	    {
+	       /* reset length */
+	       minfo1->len += minfo2->len;
+	       (Void) SPutMsg(*mBuf2);
+	       RETVALUE(ROUTRES);
+	    }
+	 (*mBuf2)->b_cont = next;
+	 tmp->b_wptr = tmp->b_rptr + idx;
+	 next->b_rptr += idx;
+	 prev = tmp;
+	 tmp = tmp->b_cont;
+	 /* copy rest of the blocks */
+	 if(tmp)
+	 {
+	    next->b_cont = tmp;
+	    prev->b_cont = NULLP;
+	    minfo2->endptr = minfo1->endptr; 
+	    minfo1->endptr = prev;
+	 }
+	 else
+	 {
+	    next->b_cont = NULLP;
+	    minfo2->endptr = next;
+	 }
 
 #endif /*SS_MULTICORE_SUPPORT*/
-   }
+      }
 
    RETVALUE(ROK);
 }
 
 /*
-*
-*       Fun:   SCpyFixMsg
-*
-*       Desc:  This function copies data from a fixed buffer to a
-*              message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: None
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SCpyFixMsg
+ *
+ *       Desc:  This function copies data from a fixed buffer to a
+ *              message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef ANSI
-PUBLIC S16 SCpyFixMsg
+   PUBLIC S16 SCpyFixMsg
 (
-Data *srcBuf,               /* source buffer */
-Buffer *dstMbuf,            /* destination message buffer */
-MsgLen dstIdx,              /* destination index */
-MsgLen cnt,                 /* count */
-MsgLen *cCnt
-)
+ Data *srcBuf,               /* source buffer */
+ Buffer *dstMbuf,            /* destination message buffer */
+ MsgLen dstIdx,              /* destination index */
+ MsgLen cnt,                 /* count */
+ MsgLen *cCnt
+ )
 #else
 PUBLIC S16 SCpyFixMsg(srcBuf, dstMbuf, dstIdx, cnt, cCnt)
-Data *srcBuf;               /* source buffer */
-Buffer *dstMbuf;            /* destination message buffer */
-MsgLen dstIdx;              /* destination index */
-MsgLen cnt;                 /* count */
-MsgLen *cCnt;               /* copied count */
+   Data *srcBuf;               /* source buffer */
+   Buffer *dstMbuf;            /* destination message buffer */
+   MsgLen dstIdx;              /* destination index */
+   MsgLen cnt;                 /* count */
+   MsgLen *cCnt;               /* copied count */
 #endif
 {
    S16 ret;
@@ -3502,12 +3502,12 @@ MsgLen *cCnt;               /* copied count */
    TRC1(SCpyFixMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check source message buffer */
-   if (srcBuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS102, ERRZERO, "SCpyFixMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check source message buffer */
+      if (srcBuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS102, ERRZERO, "SCpyFixMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check destination message buffer */
    if (dstMbuf == NULLP)
    {
@@ -3529,7 +3529,7 @@ MsgLen *cCnt;               /* copied count */
    if (dstMbuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS106, ERRZERO, "SCpyFixMsg : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -3544,31 +3544,31 @@ MsgLen *cCnt;               /* copied count */
       RETVALUE(RFAILED);
    }
 
-/* ss021.103 - Addition test if message length will exceed max msg length */
+   /* ss021.103 - Addition test if message length will exceed max msg length */
 #if (ERRCLASS & ERRCLS_INT_PAR)
 #ifdef LONG_MSG
    if (minfo->len > 0x7FFFFFFF - cnt)
 #else
-   if (minfo->len > 0x7FFF - cnt)
+      if (minfo->len > 0x7FFF - cnt)
 #endif
-   {
-      *cCnt = 0;
+      {
+	 *cCnt = 0;
 
-      SSLOGERROR(ERRCLS_INT_PAR, ESS108, ERRZERO, "SCpyFixMsg : msgLen + cnt > maxS16");
-      RETVALUE(ROUTRES);
-   }
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS108, ERRZERO, "SCpyFixMsg : msgLen + cnt > maxS16");
+	 RETVALUE(ROUTRES);
+      }
 #endif
-   
+
    /* add data at the start of dst buffer */
    if (!dstIdx)
    {
       if ((ret = SAddPreMsgMult(srcBuf, cnt, dstMbuf)) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS109, ERRZERO, "SCpyFixMsg : Failed in\
-                                                    SAddPreMsgMult");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS109, ERRZERO, "SCpyFixMsg : Failed in\
+	       SAddPreMsgMult");
 #endif
-         RETVALUE(ret);
+	 RETVALUE(ret);
       }
       *cCnt = cnt;
 
@@ -3580,7 +3580,7 @@ MsgLen *cCnt;               /* copied count */
    {
       if ((ret = SAddPstMsgMult(srcBuf, cnt, dstMbuf)) != ROK)
       {
-         RETVALUE(ret);
+	 RETVALUE(ret);
       }
       *cCnt = cnt;
 
@@ -3617,37 +3617,37 @@ MsgLen *cCnt;               /* copied count */
 }
 
 /*
-*
-*       Fun:   SCpyMsgFix
-*
-*       Desc:  This function copies data from a message
-*              into a fixed buffer.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: None
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SCpyMsgFix
+ *
+ *       Desc:  This function copies data from a message
+ *              into a fixed buffer.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef ANSI
-PUBLIC S16 SCpyMsgFix
+   PUBLIC S16 SCpyMsgFix
 (
-Buffer *srcMbuf,            /* source message buffer */
-MsgLen srcIdx,              /* source index */
-MsgLen cnt,                 /* count */
-Data *dstBuf,               /* destination buffer */
-MsgLen *cCnt
-)
+ Buffer *srcMbuf,            /* source message buffer */
+ MsgLen srcIdx,              /* source index */
+ MsgLen cnt,                 /* count */
+ Data *dstBuf,               /* destination buffer */
+ MsgLen *cCnt
+ )
 #else
 PUBLIC S16 SCpyMsgFix(srcMbuf, srcIdx, cnt, dstBuf, cCnt)
-Buffer *srcMbuf;            /* source message buffer */
-MsgLen srcIdx;              /* source index */
-MsgLen cnt;                 /* count */
-Data *dstBuf;               /* destination buffer */
-MsgLen *cCnt;               /* copied count */
+   Buffer *srcMbuf;            /* source message buffer */
+   MsgLen srcIdx;              /* source index */
+   MsgLen cnt;                 /* count */
+   Data *dstBuf;               /* destination buffer */
+   MsgLen *cCnt;               /* copied count */
 #endif
 {
    Data *cptr;
@@ -3658,12 +3658,12 @@ MsgLen *cCnt;               /* copied count */
    TRC1(SCpyMsgFix)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check source message buffer */
-   if (srcMbuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS110, ERRZERO, "SCpyMsgFix : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check source message buffer */
+      if (srcMbuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS110, ERRZERO, "SCpyMsgFix : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check destination message buffer */
    if (dstBuf == NULLP)
    {
@@ -3675,7 +3675,7 @@ MsgLen *cCnt;               /* copied count */
       SSLOGERROR(ERRCLS_INT_PAR, ESS112, ERRZERO, "SCpyMsgFix : Invalid Index");
       RETVALUE(RFAILED);
    }
- 
+
    if (srcIdx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS113, ERRZERO, "SCpyMsgFix : Invalid Index");
@@ -3689,7 +3689,7 @@ MsgLen *cCnt;               /* copied count */
    if (srcMbuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS115, ERRZERO, "SCpyMsgFix : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -3709,7 +3709,7 @@ MsgLen *cCnt;               /* copied count */
    /* get to the srcIdx-th offset */
    FIND_OFFSET(tmp, srcIdx)
 
-   *cCnt = cnt;
+      *cCnt = cnt;
 
    /* set cptr to the read ptr of tmp + offset */
    cptr = tmp->b_rptr + srcIdx;
@@ -3724,9 +3724,9 @@ MsgLen *cCnt;               /* copied count */
 
       /* copy data */
 
-/* ss002.13 addition */
+      /* ss002.13 addition */
 
-   /* ss003.13 addition */
+      /* ss003.13 addition */
       SMemCpy((Void *) dstBuf, (Void *) cptr, (size_t) numBytes);
 
       cptr += numBytes;
@@ -3735,57 +3735,57 @@ MsgLen *cCnt;               /* copied count */
 
       /* get the next blk */
       if ((tmp = tmp->b_cont))
-         /* set cptr to the read ptr of tmp */
-         cptr = tmp->b_rptr;
+	 /* set cptr to the read ptr of tmp */
+	 cptr = tmp->b_rptr;
       else
-         break;
+	 break;
    }
 
    RETVALUE(ROK);
 }
 
 /*
-*
-*       Fun:   SCpyMsgMsg
-*
-*       Desc:  This function is used to copy a message into
-*              a new region and or pool of memory.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SCpyMsgMsg
+ *
+ *       Desc:  This function is used to copy a message into
+ *              a new region and or pool of memory.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SCpyMsgMsgNew
+   PUBLIC S16 SCpyMsgMsgNew
 (
-Buffer *srcBuf,
-Region dstRegion,
-Pool dstPool,
-Buffer **dstBuf,
-char* file,
-U32 line
-)
+ Buffer *srcBuf,
+ Region dstRegion,
+ Pool dstPool,
+ Buffer **dstBuf,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SCpyMsgMsg
+   PUBLIC S16 SCpyMsgMsg
 (
-Buffer *srcBuf,
-Region dstRegion,
-Pool dstPool,
-Buffer **dstBuf
-)
+ Buffer *srcBuf,
+ Region dstRegion,
+ Pool dstPool,
+ Buffer **dstBuf
+ )
 #else
 PUBLIC S16 SCpyMsgMsg(srcBuf, dstRegion, dstPool, dstBuf)
-Buffer *srcBuf;
-Region dstRegion;
-Pool dstPool;
-Buffer **dstBuf;
+   Buffer *srcBuf;
+   Region dstRegion;
+   Pool dstPool;
+   Buffer **dstBuf;
 #endif
 #endif
 {
@@ -3795,43 +3795,43 @@ Buffer **dstBuf;
    Buffer *curblk;
    Buffer *newblk;
    Buffer *prevblk;
- 
+
    /* ss021.103 - Addition of return value */
 #ifndef SS_PERF
 #if (ERRCLASS & ERRCLS_INT_PAR)
    S16 ret;
 #endif
 #endif
- 
+
    TRC1(SCpyMsgMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!srcBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS116, ERRZERO, "SCpyMsgMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!srcBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS116, ERRZERO, "SCpyMsgMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (srcBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS117, ERRZERO, "SCpyMsgMsg : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
    /* ss021.103 - Addition to validate region and pool */
    if (dstRegion >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS118, ERRZERO, 
-                 "SCpyMsgMsg : Invalid region id");
+	    "SCpyMsgMsg : Invalid region id");
       RETVALUE(RFAILED);
    }
- 
+
    if (dstPool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS119, ERRZERO, 
-                 "SCpyMsgMsg : Invalid pool id");
+	    "SCpyMsgMsg : Invalid pool id");
       RETVALUE(RFAILED);
    }
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    /* ss021.103 - Addition to check if region is valid */
@@ -3842,7 +3842,7 @@ Buffer **dstBuf;
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS120, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -3857,9 +3857,9 @@ Buffer **dstBuf;
       if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS121, ERRZERO,
-                  "Could not release semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS121, ERRZERO,
+	       "Could not release semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 #endif
@@ -3867,14 +3867,14 @@ Buffer **dstBuf;
       RETVALUE(RFAILED);
    }
 #endif
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS123, ERRZERO,
-                  "Could not release semaphore");
+	    "Could not release semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -3905,90 +3905,90 @@ Buffer **dstBuf;
    /* if srcBuf and dstBuf belong to the same region, increment the reference
     * count
     */
-      newblk = NULLP;
-      curblk = NULLP;
-      prevblk = NULLP;
+   newblk = NULLP;
+   curblk = NULLP;
+   prevblk = NULLP;
 
-      while (tmp)
-      {
+   while (tmp)
+   {
 #ifdef SS_M_PROTO_REGION 
-         if ((curblk = DupMsg(dstRegion,tmp)) == NULLP)
+      if ((curblk = DupMsg(dstRegion,tmp)) == NULLP)
 #else
-         if ((curblk = ssDupB(tmp)) == NULLP)
+	 if ((curblk = ssDupB(tmp)) == NULLP)
 #endif /* SS_M_PROTO_REGION */
-         {
-            while (newblk)
-            {
-               curblk = newblk->b_cont;
-               (Void) SPutDBuf(minfo1->region, minfo1->pool, newblk);
-               newblk = curblk;
-            }
-            printf("Failed to get the buffer of size %s %d\n", __FILE__, __LINE__);
-            (Void) SPutMsg(*dstBuf);
-            RETVALUE(ROUTRES);
-         }
+	 {
+	    while (newblk)
+	    {
+	       curblk = newblk->b_cont;
+	       (Void) SPutDBuf(minfo1->region, minfo1->pool, newblk);
+	       newblk = curblk;
+	    }
+	    printf("Failed to get the buffer of size %s %d\n", __FILE__, __LINE__);
+	    (Void) SPutMsg(*dstBuf);
+	    RETVALUE(ROUTRES);
+	 }
 
-         if (!prevblk)
-            newblk = curblk;
-         else
-            prevblk->b_cont = curblk;
-         prevblk = curblk;
+      if (!prevblk)
+	 newblk = curblk;
+      else
+	 prevblk->b_cont = curblk;
+      prevblk = curblk;
 
-         tmp = tmp->b_cont;
-      }
-      if (curblk)
-         curblk->b_cont = NULLP;
+      tmp = tmp->b_cont;
+   }
+   if (curblk)
+      curblk->b_cont = NULLP;
 
-      minfo2->len = minfo1->len;
-      minfo2->endptr = curblk;
-      (*dstBuf)->b_cont = newblk;
+   minfo2->len = minfo1->len;
+   minfo2->endptr = curblk;
+   (*dstBuf)->b_cont = newblk;
 
-      RETVALUE(ROK);
+   RETVALUE(ROK);
 }
 
 
 
 /*
-*
-*       Fun:   SAddMsgRef
-*
-*       Desc:  This function is used to copy a message into
-*              a new region and or pool of memory.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAddMsgRef
+ *
+ *       Desc:  This function is used to copy a message into
+ *              a new region and or pool of memory.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SAddMsgRefNew
+   PUBLIC S16 SAddMsgRefNew
 (
-Buffer *srcBuf,
-Region dstRegion,
-Pool dstPool,
-Buffer **dstBuf,
-char* file,
-U32 line
-)
+ Buffer *srcBuf,
+ Region dstRegion,
+ Pool dstPool,
+ Buffer **dstBuf,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SAddMsgRef
+   PUBLIC S16 SAddMsgRef
 (
-Buffer *srcBuf,
-Region dstRegion,
-Pool dstPool,
-Buffer **dstBuf
-)
+ Buffer *srcBuf,
+ Region dstRegion,
+ Pool dstPool,
+ Buffer **dstBuf
+ )
 #else
 PUBLIC S16 SAddMsgRef(srcBuf, dstRegion, dstPool, dstBuf)
-Buffer *srcBuf;
-Region dstRegion;
-Pool dstPool;
-Buffer **dstBuf;
+   Buffer *srcBuf;
+   Region dstRegion;
+   Pool dstPool;
+   Buffer **dstBuf;
 #endif
 #endif
 {
@@ -4005,15 +4005,15 @@ Buffer **dstBuf;
    TRC1(SAddMsgRef)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!srcBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS126, ERRZERO, "SAddMsgRef : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!srcBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS126, ERRZERO, "SAddMsgRef : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (srcBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS127, ERRZERO, "SAddMsgRef : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -4051,31 +4051,31 @@ Buffer **dstBuf;
       while (tmp)
       {
 #ifdef SS_M_PROTO_REGION 
-         if ((curblk = DupMsg(dstRegion, tmp)) == NULLP)
+	 if ((curblk = DupMsg(dstRegion, tmp)) == NULLP)
 #else
-         if ((curblk = ssDupB(tmp)) == NULLP)
+	    if ((curblk = ssDupB(tmp)) == NULLP)
 #endif /* SS_M_PROTO_REGION */
-         {
-            while (newblk)
-            {
-               curblk = newblk->b_cont;
-               (Void) SPutDBuf(minfo1->region, minfo1->pool, newblk);
-               newblk = curblk;
-            }
-            (Void) SPutMsg(*dstBuf);
-            RETVALUE(ROUTRES);
-         }
+	    {
+	       while (newblk)
+	       {
+		  curblk = newblk->b_cont;
+		  (Void) SPutDBuf(minfo1->region, minfo1->pool, newblk);
+		  newblk = curblk;
+	       }
+	       (Void) SPutMsg(*dstBuf);
+	       RETVALUE(ROUTRES);
+	    }
 
-         if (!prevblk)
-            newblk = curblk;
-         else
-            prevblk->b_cont = curblk;
-         prevblk = curblk;
+	 if (!prevblk)
+	    newblk = curblk;
+	 else
+	    prevblk->b_cont = curblk;
+	 prevblk = curblk;
 
-         tmp = tmp->b_cont;
+	 tmp = tmp->b_cont;
       }
       if (curblk)
-         curblk->b_cont = NULLP;
+	 curblk->b_cont = NULLP;
 
       minfo2->len = minfo1->len;
       minfo2->endptr = curblk;
@@ -4087,10 +4087,10 @@ Buffer **dstBuf;
    /* allocate a data buffer */
    if (ssGetDBufOfSize(dstRegion, minfo1->len, &dBuf) != ROK)
    {
-/* ss016.13: addition */
+      /* ss016.13: addition */
       (Void) SPutMsg(*dstBuf);
       SSLOGERROR(ERRCLS_DEBUG, ESS129, ERRZERO, "SAddMsgRef : ssGetDBufOfSize\
-                 failed");
+	    failed");
       RETVALUE(ROUTRES);
    }
    dBuf->b_datap->db_type = SS_M_DATA;
@@ -4100,7 +4100,7 @@ Buffer **dstBuf;
       numBytes = tmp->b_wptr - tmp->b_rptr;
       cptr = tmp->b_rptr;
       while (numBytes--)
-         *dBuf->b_wptr++ = *cptr++;
+	 *dBuf->b_wptr++ = *cptr++;
       tmp = tmp->b_cont;
    }
    minfo2->len = minfo1->len;
@@ -4113,41 +4113,41 @@ Buffer **dstBuf;
 /* ss012.13: Addition */
 #ifdef SS_M_PROTO_REGION 
 /*
-*
-*       Fun:   DupMsg
-*
-*       Desc:  Duplicates the specified message block, copying it
-*              into a newly-allocated message block. Increments
-*              the reference count of the data block that is pointed
-*              at by the original message block descriptor.
-*
-*       Ret:   non-NULL - ok
-*              NULL     - failure
-*
-*       Notes:
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   DupMsg
+ *
+ *       Desc:  Duplicates the specified message block, copying it
+ *              into a newly-allocated message block. Increments
+ *              the reference count of the data block that is pointed
+ *              at by the original message block descriptor.
+ *
+ *       Ret:   non-NULL - ok
+ *              NULL     - failure
+ *
+ *       Notes:
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE Buffer *DupMsgNew
+   PRIVATE Buffer *DupMsgNew
 (
-Region region,              /* region id */
-Buffer *mp,                  /* message block */
-char* file,
-U32 line
-)
+ Region region,              /* region id */
+ Buffer *mp,                  /* message block */
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PRIVATE Buffer *DupMsg
+   PRIVATE Buffer *DupMsg
 (
-Region region,              /* region id */
-Buffer *mp                  /* message block */
-)
+ Region region,              /* region id */
+ Buffer *mp                  /* message block */
+ )
 #else
 PRIVATE Buffer *DupMsg(region, mp)
-Region region;              /* region id */
-Buffer *mp;                 /* message block */
+   Region region;              /* region id */
+   Buffer *mp;                 /* message block */
 #endif
 #endif
 {
@@ -4165,23 +4165,23 @@ Buffer *mp;                 /* message block */
       RETVALUE(NULLP);
    }
 
-  if (region >= SS_MAX_REGS)
+   if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS131, ERRZERO, "DupMsg : Invalid region\
-                                                   id");
+	    id");
       RETVALUE(NULLP);
    }
 #endif
 
 
-/* allocate a single block for the mblock and the dblock */
+   /* allocate a single block for the mblock and the dblock */
 #if 1
    m = (sizeof(SsMblk) + sizeof(SsDblk));
 #else
    numBytes = mp->b_wptr - mp->b_rptr;
    m = MDBSIZE + numBytes;
 #endif /* SS_MULTICORE_SUPPORT */
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    r = SAlloc(region, &m, 0, (Data **)&bp, __LINE__, (U8*) __FILE__, ENTNC);
 #else
@@ -4193,9 +4193,9 @@ Buffer *mp;                 /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS132, (ErrVal) r, "SAlloc() failed");
 #endif
 
-     RETVALUE(NULLP);
+      RETVALUE(NULLP);
    }
-/* generic set-up-message function */
+   /* generic set-up-message function */
 #if 1
 #ifndef SS_DBUF_REFLOCK_DISABLE
    SS_STRM_INITB(bp, (SsDblk *)(((U8 *)bp) + sizeof(SsMblk)), NULLP, 0, NULLP);
@@ -4217,7 +4217,7 @@ Buffer *mp;                 /* message block */
    if((SLock(&(mp->b_datap->dBufLock))) != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS335, ERRZERO,
-                     "Could not lock the mBuf Ref Lock");
+	    "Could not lock the mBuf Ref Lock");
       RETVALUE(NULLP);
    }
 #endif
@@ -4229,7 +4229,7 @@ Buffer *mp;                 /* message block */
    if((SUnlock(&(mp->b_datap->dBufLock))) != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS335, ERRZERO,
-                     "Could not lock the mBuf Ref Lock");
+	    "Could not lock the mBuf Ref Lock");
       RETVALUE(NULLP);
    }
 #endif
@@ -4240,49 +4240,49 @@ Buffer *mp;                 /* message block */
 #endif /* SS_M_PROTO_REGION */
 
 /*
-*
-*       Fun:   SGetDBuf
-*
-*       Desc:  This function allocates a buffer from the dynamic
-*              memory pool indicated by the caller.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: The dynamic memory pools are used to create and
-*              manipulate messages.
-*
-*              SGetDBuf is never called by a protocol layer.
-*
-*              SGetDBuf assumes that interrupts are already disabled.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetDBuf
+ *
+ *       Desc:  This function allocates a buffer from the dynamic
+ *              memory pool indicated by the caller.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: The dynamic memory pools are used to create and
+ *              manipulate messages.
+ *
+ *              SGetDBuf is never called by a protocol layer.
+ *
+ *              SGetDBuf assumes that interrupts are already disabled.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SGetDBufNew
+   PUBLIC S16 SGetDBufNew
 (
-Region region,              /* region id */
-Pool pool,                  /* pool id */
-Buffer **bufPtr,
-char* file,
-U32 line
-)
+ Region region,              /* region id */
+ Pool pool,                  /* pool id */
+ Buffer **bufPtr,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SGetDBuf
+   PUBLIC S16 SGetDBuf
 (
-Region region,              /* region id */
-Pool pool,                  /* pool id */
-Buffer **bufPtr
-)
+ Region region,              /* region id */
+ Pool pool,                  /* pool id */
+ Buffer **bufPtr
+ )
 #else
 PUBLIC S16 SGetDBuf(region, pool, bufPtr)
-Region region;              /* region id */
-Pool pool;                  /* pool id */
-Buffer **bufPtr;            /* pointer to buffer */
+   Region region;              /* region id */
+   Pool pool;                  /* pool id */
+   Buffer **bufPtr;            /* pointer to buffer */
 #endif
 #endif
 {
@@ -4299,35 +4299,35 @@ Buffer **bufPtr;            /* pointer to buffer */
 #else
    SsRegionEntry *regp;
 #endif /* SS_LOCKLESS_MEMORY */
-      /* ss021.103 - Addition of return value */
+   /* ss021.103 - Addition of return value */
 #ifndef SS_PERF
 #if (ERRCLASS & ERRCLS_INT_PAR)
    S16 ret;
 #endif
 #endif
-   
+
    TRC1(SGetDBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check buffer pointer */
-   if (!bufPtr)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS133, ERRZERO, "SGetDBuf : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check buffer pointer */
+      if (!bufPtr)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS133, ERRZERO, "SGetDBuf : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS134, ERRZERO, "SGetDBuf : Invalid region\
-                                                   id");
+	    id");
       RETVALUE(RFAILED);
    }
- 
+
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS135, ERRZERO, "SGetDBuf : Invalid pool id");
       RETVALUE(RFAILED);
    }
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    /* ss021.103 - Addition to check if region is registered */
@@ -4338,7 +4338,7 @@ Buffer **bufPtr;            /* pointer to buffer */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS136, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -4350,15 +4350,15 @@ Buffer **bufPtr;            /* pointer to buffer */
    /* verify that this region is present */
    if (osCp.regionTbl[region].used == FALSE)
    {
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+      /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
       if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS137, ERRZERO,
-                  "Could not release semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS137, ERRZERO,
+	       "Could not release semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 #endif
@@ -4366,14 +4366,14 @@ Buffer **bufPtr;            /* pointer to buffer */
       RETVALUE(RFAILED);
    }
 #endif
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS139, ERRZERO,
-                  "Could not release semaphore");
+	    "Could not release semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -4400,74 +4400,74 @@ Buffer **bufPtr;            /* pointer to buffer */
 #endif /* SS_LOCKLESS_MEMORY */
 
    /* ss006.301 : optimized this function */
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-    if (SAlloc(region, &mdsize, 0, (Data **) bufPtr, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
+   if (SAlloc(region, &mdsize, 0, (Data **) bufPtr, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
 #else
-    if (SAlloc(region, &mdsize, 0, (Data **) bufPtr) != ROK)
+      if (SAlloc(region, &mdsize, 0, (Data **) bufPtr) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
-    {
-       RETVALUE(ROUTRES);
-    }
-    data = (Data *) (*bufPtr) + MDBSIZE;
-    size = mdsize - MDBSIZE;
+      {
+	 RETVALUE(ROUTRES);
+      }
+   data = (Data *) (*bufPtr) + MDBSIZE;
+   size = mdsize - MDBSIZE;
 
    dptr = (SsDblk*) (((Data *) (*bufPtr)) + MBSIZE);
 
    INITB((*bufPtr), dptr, data, size, NULLP)
 #ifndef SS_DBUF_REFLOCK_DISABLE
-   if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
-   {
-      printf("Falied to destroy lock\n");
-   }
+      if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
+      {
+	 printf("Falied to destroy lock\n");
+      }
 #endif
 
    RETVALUE(ROK);
 }
 
 /*
-*
-*       Fun:   SPutDBuf
-*
-*       Desc:  This function deallocates a buffer back to the
-*              dynamic memory pool indicated by the caller.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: The dynamic memory pools are used to create and
-*              manipulate messages.
-*
-*              SPutDBuf is never called by a protocol layer.
-*
-*              SPutDBuf assumes that interrupts are already disabled.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SPutDBuf
+ *
+ *       Desc:  This function deallocates a buffer back to the
+ *              dynamic memory pool indicated by the caller.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: The dynamic memory pools are used to create and
+ *              manipulate messages.
+ *
+ *              SPutDBuf is never called by a protocol layer.
+ *
+ *              SPutDBuf assumes that interrupts are already disabled.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SPutDBufNew
+   PUBLIC S16 SPutDBufNew
 (
-Region region,
-Pool pool,
-Buffer *buf,
-char* file,
-U32 line
-)
+ Region region,
+ Pool pool,
+ Buffer *buf,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SPutDBuf
+   PUBLIC S16 SPutDBuf
 (
-Region region,
-Pool pool,
-Buffer *buf
-)
+ Region region,
+ Pool pool,
+ Buffer *buf
+ )
 #else
 PUBLIC S16 SPutDBuf(region, pool, buf)
-Region region;
-Pool pool;
-Buffer *buf;
+   Region region;
+   Pool pool;
+   Buffer *buf;
 #endif
 #endif
 {
@@ -4477,25 +4477,25 @@ Buffer *buf;
 #if (defined(SS_USE_ZBC_MEMORY) && defined (TENB_DPDK_BUF))
    Data  *dpdkBuf;
 #endif   
- 
+
    TRC2(SPutDBuf);
- 
+
    /* ss021.103 - Addition of ret initialization */
    ret = ROK;
- 
+
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS141, ERRZERO, "SPutDBuf:Invalid region");
       RETVALUE(RFAILED);
    }
- 
+
    if (pool >= SS_MAX_POOLS_PER_REG)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS142, ERRZERO, "SPutDBuf:Invalid pool");
       RETVALUE(RFAILED);
    }
- 
+
    if (buf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS143, ERRZERO, "SPutDBuf:Null pointer");
@@ -4505,11 +4505,11 @@ Buffer *buf;
    if ( (buf->b_datap->db_type != SS_M_DATA) && (buf->b_datap->db_type != SS_M_PROTO))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS144, ERRZERO, "SPutDBuf:Incorrect\
-                 buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
-/* ss016.13: Addition */
+   /* ss016.13: Addition */
    dptr = buf->b_datap; 
 
 #ifdef SS_USE_ZBC_MEMORY
@@ -4532,17 +4532,17 @@ Buffer *buf;
 #endif /* SS_USE_ZBC_MEMORY */
 
    /* ss028.103 - Addition of lock for mBuf reference count */
-    /* ss006.301 : optimized this funciton */
+   /* ss006.301 : optimized this funciton */
 #if 1
    if(!dptr->shared)
    {
 #ifndef SS_DBUF_REFLOCK_DISABLE
-       SDestroyLock(&dptr->dBufLock);
+      SDestroyLock(&dptr->dBufLock);
 #endif
       /* if the data block is not shared, free the buffer, checks not reqd */
 #ifdef SS_HISTOGRAM_SUPPORT 
       ret = SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base
-         , __LINE__, (U8*) __FILE__, ENTNC);
+	    , __LINE__, (U8*) __FILE__, ENTNC);
 #else
       ret =  SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -4550,50 +4550,50 @@ Buffer *buf;
    else
    {
 #ifndef SS_DBUF_REFLOCK_DISABLE
-        if((ret=SLock(&dptr->dBufLock)))
-   	{
-      	   SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,
-                "Could not lock the mBuf Ref Lock");
-      	   RETVALUE(RFAILED);
-   	}
+      if((ret=SLock(&dptr->dBufLock)))
+      {
+	 SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,
+	       "Could not lock the mBuf Ref Lock");
+	 RETVALUE(RFAILED);
+      }
 #endif
       --dptr->db_ref;
       /* if buffer's message blk is obtained during dupb */
       if (buf != (SsMblk *) (((Data*) dptr) - MBSIZE))
       {
-        
-         SsDblk* dupdptr = (SsDblk *)((U8 *)buf + MBSIZE);
-         dupdptr->db_ref--;
-         if(dupdptr->db_ref == 0)
-         {
+
+	 SsDblk* dupdptr = (SsDblk *)((U8 *)buf + MBSIZE);
+	 dupdptr->db_ref--;
+	 if(dupdptr->db_ref == 0)
+	 {
 
 #ifdef SS_HISTOGRAM_SUPPORT 
-         ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, ENTNC);
+	    ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, ENTNC);
 #else
-         ret = SFree(region, (Data *) buf, MDBSIZE);
+	    ret = SFree(region, (Data *) buf, MDBSIZE);
 
 #endif /* SS_HISTOGRAM_SUPPORT */
-         }
-         buf = (SsMblk *) (((Data*) dptr) - MBSIZE);
+	 }
+	 buf = (SsMblk *) (((Data*) dptr) - MBSIZE);
       }
       /* if reference count falls to zero */
       if (!dptr->db_ref)
       {
 #ifndef SS_DBUF_REFLOCK_DISABLE
-        ret = SUnlock(&dptr->dBufLock) ;
-        if((SDestroyLock(&dptr->dBufLock)) != 0)
-        {
-            printf("Falied to destroy lock\n");
-        }
+	 ret = SUnlock(&dptr->dBufLock) ;
+	 if((SDestroyLock(&dptr->dBufLock)) != 0)
+	 {
+	    printf("Falied to destroy lock\n");
+	 }
 #endif
-      /* free buffer to region */
+	 /* free buffer to region */
 #ifdef SS_HISTOGRAM_SUPPORT 
-         ret = SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base
-         , __LINE__, (U8*) __FILE__, ENTNC);
+	 ret = SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base
+	       , __LINE__, (U8*) __FILE__, ENTNC);
 #else
-         ret =  SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base);
+	 ret =  SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base);
 #endif /* SS_HISTOGRAM_SUPPORT */
-         RETVALUE(ret);
+	 RETVALUE(ret);
       }
 #ifndef SS_DBUF_REFLOCK_DISABLE
       ret = SUnlock(&(dptr->dBufLock));
@@ -4603,7 +4603,7 @@ Buffer *buf;
    /* If MultiCore Support enabled, Dblk never be shared */
 #ifdef SS_HISTOGRAM_SUPPORT 
    ret = SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base
-         , __LINE__, (U8*) __FILE__, ENTNC);
+	 , __LINE__, (U8*) __FILE__, ENTNC);
 #else
    ret =  SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -4616,44 +4616,44 @@ Buffer *buf;
 
 
 /*
-*
-*       Fun:   SCatMsg
-*
-*       Desc:  This function will concatenate the two specified messages
-*              into one message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: if order equal M1M2: all data attached to message 2 is
-*              moved to the end of message 1. message 2 is set to empty.
-*              message 1 length is increased by length of message 2.
-*              message 2 length is set to zero. message 2 is not returned
-*              to memory. return is ok.
-*
-*              if order equal M2M1: all data attached to message 2 is
-*              moved to the front of message 1. message 2 is set to empty.
-*              message 1 length is increased by length of message 2.
-*              message 2 length is set to zero. message 2 is not returned
-*              to memory. return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SCatMsg
+ *
+ *       Desc:  This function will concatenate the two specified messages
+ *              into one message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: if order equal M1M2: all data attached to message 2 is
+ *              moved to the end of message 1. message 2 is set to empty.
+ *              message 1 length is increased by length of message 2.
+ *              message 2 length is set to zero. message 2 is not returned
+ *              to memory. return is ok.
+ *
+ *              if order equal M2M1: all data attached to message 2 is
+ *              moved to the front of message 1. message 2 is set to empty.
+ *              message 1 length is increased by length of message 2.
+ *              message 2 length is set to zero. message 2 is not returned
+ *              to memory. return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 
 #ifdef ANSI
-PUBLIC S16 SCatMsg
+   PUBLIC S16 SCatMsg
 (
-Buffer *mBuf1,              /* message 1 */
-Buffer *mBuf2,              /* message 2 */
-Order order
-)
+ Buffer *mBuf1,              /* message 1 */
+ Buffer *mBuf2,              /* message 2 */
+ Order order
+ )
 #else
 PUBLIC S16 SCatMsg(mBuf1, mBuf2, order)
-Buffer *mBuf1;              /* message 1 */
-Buffer *mBuf2;              /* message 2 */
-Order order;                /* order */
+   Buffer *mBuf1;              /* message 1 */
+   Buffer *mBuf2;              /* message 2 */
+   Order order;                /* order */
 #endif
 {
    SsMsgInfo *minfo1;
@@ -4664,12 +4664,12 @@ Order order;                /* order */
    TRC1(SCatMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer 1 */
-   if (mBuf1 == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS148, ERRZERO, "SCatMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer 1 */
+      if (mBuf1 == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS148, ERRZERO, "SCatMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check message buffer 2 */
    if (mBuf2 == NULLP)
    {
@@ -4689,10 +4689,10 @@ Order order;                /* order */
       RETVALUE(RFAILED);
    }
    if ((mBuf1->b_datap->db_type != SS_M_PROTO) ||
-       (mBuf2->b_datap->db_type != SS_M_PROTO))
+	 (mBuf2->b_datap->db_type != SS_M_PROTO))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS152, ERRZERO, 
-                                         "SCatMsg : Incorrect buffer type");
+	    "SCatMsg : Incorrect buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -4704,25 +4704,25 @@ Order order;                /* order */
    minfo1 = (SsMsgInfo*) mBuf1->b_rptr;
    minfo2 = (SsMsgInfo*) mBuf2->b_rptr;
 
-/* ss021.103 - Addition to test max length of message is not exceeded */
+   /* ss021.103 - Addition to test max length of message is not exceeded */
 #if (ERRCLASS & ERRCLS_INT_PAR)
 #ifdef LONG_MSG
    if (minfo1->len > 0x7FFFFFFF - minfo2->len)
 #else
-   if (minfo1->len > 0x7FFF - minfo2->len)
+      if (minfo1->len > 0x7FFF - minfo2->len)
 #endif
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS153, ERRZERO, "SCpyFixMsg : messages too big");
-      RETVALUE(ROUTRES);
-   }
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS153, ERRZERO, "SCpyFixMsg : messages too big");
+	 RETVALUE(ROUTRES);
+      }
 #endif
-   
+
    if (minfo1->region != minfo2->region)
    {
       /* duplicate mBuf2 from the region/pool of mBuf1, initialise mBuf2 */
-/*ss015.13: addition */
+      /*ss015.13: addition */
       if (SCpyMsgMsg(mBuf2, minfo1->region, minfo1->pool, &newb) != ROK)
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
 
       minfo2 = (SsMsgInfo*) newb->b_rptr;
    }
@@ -4737,28 +4737,28 @@ Order order;                /* order */
    else
    {
       if (order == M1M2)
-      /* attach newb after mBuf1 */
+	 /* attach newb after mBuf1 */
       {
-         minfo1->endptr->b_cont = newb->b_cont;
-         minfo1->endptr = minfo2->endptr;
+	 minfo1->endptr->b_cont = newb->b_cont;
+	 minfo1->endptr = minfo2->endptr;
       }
       else
       {
-         if (order == M2M1)
-         /* attach newb before mBuf1 */
-         {
-            minfo2->endptr->b_cont = mBuf1->b_cont;
-            mBuf1->b_cont = newb->b_cont;
-         }
-         else /* invalid order */
-         {
+	 if (order == M2M1)
+	    /* attach newb before mBuf1 */
+	 {
+	    minfo2->endptr->b_cont = mBuf1->b_cont;
+	    mBuf1->b_cont = newb->b_cont;
+	 }
+	 else /* invalid order */
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS154, ERRZERO, "SCatMsg:Invalid order");
+	    SSLOGERROR(ERRCLS_DEBUG, ESS154, ERRZERO, "SCatMsg:Invalid order");
 #endif
-            if (newb && (newb != mBuf2))
-               (Void) SPutMsg(newb);
-            RETVALUE(RFAILED);
-         }
+	    if (newb && (newb != mBuf2))
+	       (Void) SPutMsg(newb);
+	    RETVALUE(RFAILED);
+	 }
       }
    }
    minfo1->len += minfo2->len;
@@ -4766,7 +4766,7 @@ Order order;                /* order */
 
    minfo2->endptr = NULLP;
    minfo2->len = 0;
- 
+
    newb->b_cont = NULLP;
 
    if (newb != mBuf2)
@@ -4779,42 +4779,42 @@ Order order;                /* order */
 }
 
 /*
-*
-*       Fun:   SRepMsg
-*
-*       Desc:  This function replaces one byte of data in a message.
-*
-*       Ret:   ROK      - ok
-*              ROKDNA   - ok, data not available
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: index is 0 based and indicates location in message
-*
-*               if index is less than the length of the message:
-*              data is replaced at specified index. message length
-*              is unchanged. return is ok.
-*
-*              if index is greater than or equal to
-*              the length of the message: message is unchanged.
-*              return is ok, data not available.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SRepMsg
+ *
+ *       Desc:  This function replaces one byte of data in a message.
+ *
+ *       Ret:   ROK      - ok
+ *              ROKDNA   - ok, data not available
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: index is 0 based and indicates location in message
+ *
+ *               if index is less than the length of the message:
+ *              data is replaced at specified index. message length
+ *              is unchanged. return is ok.
+ *
+ *              if index is greater than or equal to
+ *              the length of the message: message is unchanged.
+ *              return is ok, data not available.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 
 #ifdef ANSI
-PUBLIC S16 SRepMsg
+   PUBLIC S16 SRepMsg
 (
-Data data,                  /* data */
-Buffer *mBuf,               /* message buffer */
-MsgLen idx
-)
+ Data data,                  /* data */
+ Buffer *mBuf,               /* message buffer */
+ MsgLen idx
+ )
 #else
 PUBLIC S16 SRepMsg(data, mBuf, idx)
-Data data;                  /* data */
-Buffer *mBuf;               /* message buffer */
-MsgLen idx;                 /* index */
+   Data data;                  /* data */
+   Buffer *mBuf;               /* message buffer */
+   MsgLen idx;                 /* index */
 #endif
 {
    SsMsgInfo *minfo;
@@ -4826,7 +4826,7 @@ MsgLen idx;                 /* index */
    TRC1(SRepMsg)
 
 #ifdef T2K_MEM_LEAK_DBG
-   char* file = __FILE__;
+      char* file = __FILE__;
    U32 line = __LINE__;
 #endif
 #if ( ERRCLASS & ERRCLS_INT_PAR)
@@ -4844,7 +4844,7 @@ MsgLen idx;                 /* index */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS157, ERRZERO, "SRepMsg : Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -4862,61 +4862,61 @@ MsgLen idx;                 /* index */
 
    FIND_OFFSET_AND_PREV(prev, tmp, idx)
 
-   /* if ref cnt is greater than 1, duplicate tmp */
-   if (tmp->b_datap->db_ref > 1)
-   {
-      /* allocate a message blk of message size of tmp */
-      numBytes = tmp->b_wptr - tmp->b_rptr;
-      if (ssGetDBufOfSize(minfo->region, numBytes, &newb) != ROK)
+      /* if ref cnt is greater than 1, duplicate tmp */
+      if (tmp->b_datap->db_ref > 1)
       {
-         SSLOGERROR(ERRCLS_DEBUG, ESS158, ERRZERO, "SRepMsg : ssGetDBufOfSize\
-                    failed");
-         RETVALUE(RFAILED);
+	 /* allocate a message blk of message size of tmp */
+	 numBytes = tmp->b_wptr - tmp->b_rptr;
+	 if (ssGetDBufOfSize(minfo->region, numBytes, &newb) != ROK)
+	 {
+	    SSLOGERROR(ERRCLS_DEBUG, ESS158, ERRZERO, "SRepMsg : ssGetDBufOfSize\
+		  failed");
+	    RETVALUE(RFAILED);
+	 }
+	 while (numBytes--)
+	    *newb->b_wptr++ = *tmp->b_rptr++;
+
+	 newb->b_cont = tmp->b_cont;
+	 prev->b_cont = newb;
+	 if (minfo->endptr == tmp)
+	    minfo->endptr = newb;
+
+	 /* free tmp */
+	 (Void) SPutDBuf(minfo->region, minfo->pool, tmp);
+	 tmp = newb;
       }
-      while (numBytes--)
-         *newb->b_wptr++ = *tmp->b_rptr++;
-
-      newb->b_cont = tmp->b_cont;
-      prev->b_cont = newb;
-      if (minfo->endptr == tmp)
-         minfo->endptr = newb;
-
-      /* free tmp */
-      (Void) SPutDBuf(minfo->region, minfo->pool, tmp);
-      tmp = newb;
-   }
    *(tmp->b_rptr + idx) = data;
 
    RETVALUE(ROK);
 }
 
 /*
-*
-*       Fun:   SUpdMsg
-*
-*       Desc:  Update a message with a new dBuf
-*
-*       Ret:   ROK/RFAILED
-*
-*       Notes:
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SUpdMsg
+ *
+ *       Desc:  Update a message with a new dBuf
+ *
+ *       Ret:   ROK/RFAILED
+ *
+ *       Notes:
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 
 #ifdef ANSI
-PUBLIC S16 SUpdMsg
+   PUBLIC S16 SUpdMsg
 (
-Buffer *mBuf,                   /* message buffer */
-Buffer *dBuf,                   /* data buffer */
-MsgLen dLen
-)
+ Buffer *mBuf,                   /* message buffer */
+ Buffer *dBuf,                   /* data buffer */
+ MsgLen dLen
+ )
 #else
 PUBLIC S16 SUpdMsg(mBuf, dBuf, dLen)
-Buffer *mBuf;                   /* message buffer */
-Buffer *dBuf;                   /* data buffer */
-MsgLen dLen;                    /* data length */
+   Buffer *mBuf;                   /* message buffer */
+   Buffer *dBuf;                   /* data buffer */
+   MsgLen dLen;                    /* data length */
 #endif
 {
    SsMsgInfo *minfo;
@@ -4924,11 +4924,11 @@ MsgLen dLen;                    /* data length */
    TRC1(SUpdMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!mBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS159, ERRZERO, "SUpdMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!mBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS159, ERRZERO, "SUpdMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (!dBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS160, ERRZERO, "SUpdMsg : Null Buffer");
@@ -4940,10 +4940,10 @@ MsgLen dLen;                    /* data length */
       RETVALUE(RFAILED);
    }
    if ((mBuf->b_datap->db_type != SS_M_PROTO) ||
-       (dBuf->b_datap->db_type != SS_M_DATA))
+	 (dBuf->b_datap->db_type != SS_M_DATA))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS162, ERRZERO, "SUpdMsg : Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -4951,7 +4951,7 @@ MsgLen dLen;                    /* data length */
    /* get the message info of mBuf */
    minfo = (SsMsgInfo*) (mBuf)->b_rptr;
 
-  /* accept zero length data */
+   /* accept zero length data */
 
    /* buffer offset out of bounds */
    if ((dBuf->b_rptr + dLen) > dBuf->b_datap->db_lim)
@@ -4978,36 +4978,36 @@ MsgLen dLen;                    /* data length */
 }
 
 /*
-*
-*       Fun:   SAddDBufPst
-*
-*       Desc:  This function queues a data buffer to the
-*              back of the specified message buffer .
-*
-*       Ret:   ROK     - ok
-*              RFAILED - failed, general (optional)
-*
-*       Notes: if queue is empty: buffer is placed in the queue.
-*              queue length is incremented.
-*
-*              if queue is not empty: buffer is placed behind all
-*              other buffers in queue. queue length is incremented.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAddDBufPst
+ *
+ *       Desc:  This function queues a data buffer to the
+ *              back of the specified message buffer .
+ *
+ *       Ret:   ROK     - ok
+ *              RFAILED - failed, general (optional)
+ *
+ *       Notes: if queue is empty: buffer is placed in the queue.
+ *              queue length is incremented.
+ *
+ *              if queue is not empty: buffer is placed behind all
+ *              other buffers in queue. queue length is incremented.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SAddDBufPst
+   PUBLIC S16 SAddDBufPst
 (
-Buffer *mBuf,                   /* message buffer */
-Buffer *dBuf
-)
+ Buffer *mBuf,                   /* message buffer */
+ Buffer *dBuf
+ )
 #else
 PUBLIC S16 SAddDBufPst(mBuf, dBuf)
-Buffer *mBuf;                   /* message buffer */
-Buffer *dBuf;                   /* data buffer */
+   Buffer *mBuf;                   /* message buffer */
+   Buffer *dBuf;                   /* data buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -5015,17 +5015,17 @@ Buffer *dBuf;                   /* data buffer */
    TRC1(SAddDBufPst)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check buffer queue */
-   if (!mBuf || !dBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS164, ERRZERO, "SAddDBufPst : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check buffer queue */
+      if (!mBuf || !dBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS164, ERRZERO, "SAddDBufPst : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if ((mBuf->b_datap->db_type != SS_M_PROTO) ||
-       (dBuf->b_datap->db_type != SS_M_DATA))
+	 (dBuf->b_datap->db_type != SS_M_DATA))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS165, ERRZERO, "SAddDBufPst : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -5035,7 +5035,7 @@ Buffer *dBuf;                   /* data buffer */
       RETVALUE(ROK);
 
    minfo = (SsMsgInfo*) (mBuf)->b_rptr;
- 
+
    /* attach dBuf at the end of mBuf */
    if (minfo->endptr)
       minfo->endptr->b_cont = dBuf;
@@ -5051,36 +5051,36 @@ Buffer *dBuf;                   /* data buffer */
 }
 
 /*
-*
-*       Fun:   SAddDBufPre
-*
-*       Desc:  This function queues a data buffer to the
-*              front of the specified message buffer.
-*
-*       Ret:   ROK     - ok
-*              RFAILED - failed, general (optional)
-*
-*       Notes: if buffer queue is empty: buffer is placed in the queue. queue
-*              length is incremented.
-*
-*              if buffer queue is not empty: buffer is placed in front of all
-*              other buffers in queue. queue length is incremented.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAddDBufPre
+ *
+ *       Desc:  This function queues a data buffer to the
+ *              front of the specified message buffer.
+ *
+ *       Ret:   ROK     - ok
+ *              RFAILED - failed, general (optional)
+ *
+ *       Notes: if buffer queue is empty: buffer is placed in the queue. queue
+ *              length is incremented.
+ *
+ *              if buffer queue is not empty: buffer is placed in front of all
+ *              other buffers in queue. queue length is incremented.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SAddDBufPre
+   PUBLIC S16 SAddDBufPre
 (
-Buffer *mBuf,                    /* message buffer */
-Buffer *dBuf
-)
+ Buffer *mBuf,                    /* message buffer */
+ Buffer *dBuf
+ )
 #else
 PUBLIC S16 SAddDBufPre(mBuf, dBuf)
-Buffer *mBuf;                    /* message buffer */
-Buffer *dBuf;                    /* data buffer */
+   Buffer *mBuf;                    /* message buffer */
+   Buffer *dBuf;                    /* data buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -5089,25 +5089,25 @@ Buffer *dBuf;                    /* data buffer */
    TRC1(SAddDBufPre)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check buffer queue */
-   if (!mBuf || !dBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS166, ERRZERO, "SAddDBufPre : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check buffer queue */
+      if (!mBuf || !dBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS166, ERRZERO, "SAddDBufPre : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if ((mBuf->b_datap->db_type != SS_M_PROTO) ||
-       (dBuf->b_datap->db_type != SS_M_DATA))
+	 (dBuf->b_datap->db_type != SS_M_DATA))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS167, ERRZERO, "SAddDBufPre : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
- 
+
    /* no data, return */
    if (dBuf->b_wptr == dBuf->b_rptr)
       RETVALUE(ROK);
- 
+
    minfo = (SsMsgInfo*) (mBuf)->b_rptr;
 
    tmp = mBuf->b_cont;
@@ -5123,40 +5123,40 @@ Buffer *dBuf;                    /* data buffer */
 
    RETVALUE(ROK);
 }
- 
-/*
-*
-*       Fun:   SRemDBufPre
-*
-*       Desc:  This function dequeues a data buffer from
-*              the front of the specified message buffer.
-*
-*       Ret:   ROK     - ok
-*              ROKDNA  - ok, data not available
-*              RFAILED - failed, general (optional)
-*
-*       Notes: if queue is empty: pointer to buffer is set to null and
-*              return is ok, data not available. queue length is unchanged.
-*
-*              if queue is not empty: pointer to buffer is set to first
-*              buffer in queue, first buffer in queue is removed and
-*              return is ok. queue length is decremented.
-*
-*       File:  ss_msg.c
-*
-*/
 
- 
+/*
+ *
+ *       Fun:   SRemDBufPre
+ *
+ *       Desc:  This function dequeues a data buffer from
+ *              the front of the specified message buffer.
+ *
+ *       Ret:   ROK     - ok
+ *              ROKDNA  - ok, data not available
+ *              RFAILED - failed, general (optional)
+ *
+ *       Notes: if queue is empty: pointer to buffer is set to null and
+ *              return is ok, data not available. queue length is unchanged.
+ *
+ *              if queue is not empty: pointer to buffer is set to first
+ *              buffer in queue, first buffer in queue is removed and
+ *              return is ok. queue length is decremented.
+ *
+ *       File:  ss_msg.c
+ *
+ */
+
+
 #ifdef ANSI
-PUBLIC S16 SRemDBufPre
+   PUBLIC S16 SRemDBufPre
 (
-Buffer *mBuf,                   /* message buffer */
-Buffer **dBufPtr
-)
+ Buffer *mBuf,                   /* message buffer */
+ Buffer **dBufPtr
+ )
 #else
 PUBLIC S16 SRemDBufPre(mBuf, dBufPtr)
-Buffer *mBuf;                   /* message buffer */
-Buffer **dBufPtr;               /* pointer to data buffer */
+   Buffer *mBuf;                   /* message buffer */
+   Buffer **dBufPtr;               /* pointer to data buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -5164,12 +5164,12 @@ Buffer **dBufPtr;               /* pointer to data buffer */
    TRC1(SRemDBufPre)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check buffer pointer */
-   if (dBufPtr == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS168, ERRZERO, "SRemDBufPre : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check buffer pointer */
+      if (dBufPtr == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS168, ERRZERO, "SRemDBufPre : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check queue */
    if (mBuf == NULLP)
    {
@@ -5179,7 +5179,7 @@ Buffer **dBufPtr;               /* pointer to data buffer */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS170, ERRZERO, "SRemDBufPre : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -5202,38 +5202,38 @@ Buffer **dBufPtr;               /* pointer to data buffer */
 }
 
 /*
-*
-*       Fun:   SRemDBufPst
-*
-*       Desc:  This function dequeues a data or message buffer from the
-*              back of the specified message buffer.
-*
-*       Ret:   ROK     - ok
-*              ROKDNA  - ok, data not available
-*              RFAILED - failed, general (optional)
-*
-*       Notes: if queue is empty: pointer to buffer is set to null and
-*              return is ok, data not available. queue length is unchanged.
-*
-*              if queue is not empty: pointer to buffer is set to last
-*              buffer in queue, last buffer in queue is removed and
-*              return is ok. queue length is decremented.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SRemDBufPst
+ *
+ *       Desc:  This function dequeues a data or message buffer from the
+ *              back of the specified message buffer.
+ *
+ *       Ret:   ROK     - ok
+ *              ROKDNA  - ok, data not available
+ *              RFAILED - failed, general (optional)
+ *
+ *       Notes: if queue is empty: pointer to buffer is set to null and
+ *              return is ok, data not available. queue length is unchanged.
+ *
+ *              if queue is not empty: pointer to buffer is set to last
+ *              buffer in queue, last buffer in queue is removed and
+ *              return is ok. queue length is decremented.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SRemDBufPst
+   PUBLIC S16 SRemDBufPst
 (
-Buffer *mBuf,                   /* message buffer */
-Buffer **dBufPtr
-)
+ Buffer *mBuf,                   /* message buffer */
+ Buffer **dBufPtr
+ )
 #else
 PUBLIC S16 SRemDBufPst(mBuf, dBufPtr)
-Buffer *mBuf;                   /* message buffer */
-Buffer **dBufPtr;               /* pointer to data buffer */
+   Buffer *mBuf;                   /* message buffer */
+   Buffer **dBufPtr;               /* pointer to data buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -5242,12 +5242,12 @@ Buffer **dBufPtr;               /* pointer to data buffer */
    TRC1(SRemDBufPst)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check buffer pointer */
-   if (!dBufPtr)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS171, ERRZERO, "SRemDBufPst : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check buffer pointer */
+      if (!dBufPtr)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS171, ERRZERO, "SRemDBufPst : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check message */
    if (!mBuf)
    {
@@ -5257,13 +5257,13 @@ Buffer **dBufPtr;               /* pointer to data buffer */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS173, ERRZERO, "SRemDBufPst : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
- 
+
    minfo = (SsMsgInfo*) (mBuf)->b_rptr;
- 
+
    /* no data blk, return */
    if ((*dBufPtr = minfo->endptr) == NULLP)
    {
@@ -5284,28 +5284,28 @@ Buffer **dBufPtr;               /* pointer to data buffer */
 }
 
 /*
-*
-*       Fun:   SInitNxtDBuf
-*
-*       Desc:  Initialize next Data Buffer Id
-*
-*       Ret:   ROK/RFAILED
-*
-*       Notes: Must be called prior to SGetNxtDBuf
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SInitNxtDBuf
+ *
+ *       Desc:  Initialize next Data Buffer Id
+ *
+ *       Ret:   ROK/RFAILED
+ *
+ *       Notes: Must be called prior to SGetNxtDBuf
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SInitNxtDBuf
+   PUBLIC S16 SInitNxtDBuf
 (
-Buffer *mBuf
-)
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SInitNxtDBuf(mBuf)
-Buffer *mBuf;                   /* message buffer */
+   Buffer *mBuf;                   /* message buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -5313,15 +5313,15 @@ Buffer *mBuf;                   /* message buffer */
    TRC1(SInitNxtDBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!mBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS174, ERRZERO, "SInitNxtDBuf : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!mBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS174, ERRZERO, "SInitNxtDBuf : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS175, ERRZERO, "SInitNxtDBuf : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -5335,30 +5335,30 @@ Buffer *mBuf;                   /* message buffer */
 }
 
 /*
-*
-*       Fun:   SGetNxtDBuf
-*
-*       Desc:  Get next dBuf in message chain
-*
-*       Ret:   ROK/RFAILED
-*
-*       Notes: Must be called after SInitNxtDBuf
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetNxtDBuf
+ *
+ *       Desc:  Get next dBuf in message chain
+ *
+ *       Ret:   ROK/RFAILED
+ *
+ *       Notes: Must be called after SInitNxtDBuf
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SGetNxtDBuf
+   PUBLIC S16 SGetNxtDBuf
 (
-Buffer *mBuf,                   /* message buffer */
-Buffer **dBuf
-)
+ Buffer *mBuf,                   /* message buffer */
+ Buffer **dBuf
+ )
 #else
 PUBLIC S16 SGetNxtDBuf(mBuf, dBuf)
-Buffer *mBuf;                   /* message buffer */
-Buffer **dBuf;                  /* data buffer return */
+   Buffer *mBuf;                   /* message buffer */
+   Buffer **dBuf;                  /* data buffer return */
 #endif
 {
    SsMsgInfo *minfo;
@@ -5366,11 +5366,11 @@ Buffer **dBuf;                  /* data buffer return */
    TRC1(SGetNxtDBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!mBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS176, ERRZERO, "SGetNxtDBuf : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!mBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS176, ERRZERO, "SGetNxtDBuf : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (!dBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS177, ERRZERO, "SGetNxtDBuf : Null Buffer");
@@ -5379,7 +5379,7 @@ Buffer **dBuf;                  /* data buffer return */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS178, ERRZERO, "SGetNxtDBuf : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -5397,27 +5397,27 @@ Buffer **dBuf;                  /* data buffer return */
 }
 
 /*
-*
-*       Fun:   SChkNxtDBuf
-*
-*       Desc:  check if next data buffer exists.
-*
-*       Ret:   ROK/ROKDNA/RFAILED
-*
-*       Notes: doesn't modify nxtDBuf
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SChkNxtDBuf
+ *
+ *       Desc:  check if next data buffer exists.
+ *
+ *       Ret:   ROK/ROKDNA/RFAILED
+ *
+ *       Notes: doesn't modify nxtDBuf
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef ANSI
-PUBLIC S16 SChkNxtDBuf
+   PUBLIC S16 SChkNxtDBuf
 (
-Buffer *mBuf
-)
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SChkNxtDBuf(mBuf)
-Buffer *mBuf;                   /* message buffer */
+   Buffer *mBuf;                   /* message buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -5425,15 +5425,15 @@ Buffer *mBuf;                   /* message buffer */
    TRC1(SChkNxtDBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!mBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS179, ERRZERO, "SChkNxtDBuf : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!mBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS179, ERRZERO, "SChkNxtDBuf : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS180, ERRZERO, "SChkNxtDBuf : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS */
@@ -5448,47 +5448,47 @@ Buffer *mBuf;                   /* message buffer */
 }
 
 /*
-*
-*       Fun:   SGetDataRx
-*
-*       Desc:  Given a data buffer, return a pointer to the
-*              data payload, and the length of the payload
-*
-*
-*       Ret:   ROK ok
-*              RFAILED error
-*
-*       Notes: This assumes an uninitialized dBuf
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetDataRx
+ *
+ *       Desc:  Given a data buffer, return a pointer to the
+ *              data payload, and the length of the payload
+ *
+ *
+ *       Ret:   ROK ok
+ *              RFAILED error
+ *
+ *       Notes: This assumes an uninitialized dBuf
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SGetDataRx
+   PUBLIC S16 SGetDataRx
 (
-Buffer *dBuf,                   /* data buffer */
-MsgLen pad,                     /* pad */
-Data **retDatPtr,               /* return data pointer */
-MsgLen *retDatLen
-)
+ Buffer *dBuf,                   /* data buffer */
+ MsgLen pad,                     /* pad */
+ Data **retDatPtr,               /* return data pointer */
+ MsgLen *retDatLen
+ )
 #else
 PUBLIC S16 SGetDataRx(dBuf, pad, retDatPtr, retDatLen)
-Buffer *dBuf;                   /* data buffer */
-MsgLen pad;                     /* pad */
-Data **retDatPtr;               /* return data pointer */
-MsgLen *retDatLen;              /* return data length */
+   Buffer *dBuf;                   /* data buffer */
+   MsgLen pad;                     /* pad */
+   Data **retDatPtr;               /* return data pointer */
+   MsgLen *retDatLen;              /* return data length */
 #endif
 {
    TRC1(SGetDataRx)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!dBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS181, ERRZERO, "SGetDataRx : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!dBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS181, ERRZERO, "SGetDataRx : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (!retDatLen || (pad < 0))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS182, ERRZERO, "SGetDataRx : Null Buffer");
@@ -5502,7 +5502,7 @@ MsgLen *retDatLen;              /* return data length */
    if (dBuf->b_datap->db_type != SS_M_DATA)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS184, ERRZERO, "SGetDataRx : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif /* ERRCLASS */
@@ -5511,7 +5511,7 @@ MsgLen *retDatLen;              /* return data length */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS185, ERRZERO, "SGetDataRx : Reference\
-                                                 count > 1");
+	    count > 1");
 #endif
       RETVALUE(RFAILED);
    }
@@ -5532,46 +5532,46 @@ MsgLen *retDatLen;              /* return data length */
 }
 
 /*
-*
-*       Fun:   SGetDataTx
-*
-*       Desc:  Given a data buffer, return a pointer to the
-*              data payload, and the length of the payload
-*
-*
-*       Ret:   ROK ok
-*              RFAILED error
-*
-*       Notes: This assumes an initialized dBuf
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetDataTx
+ *
+ *       Desc:  Given a data buffer, return a pointer to the
+ *              data payload, and the length of the payload
+ *
+ *
+ *       Ret:   ROK ok
+ *              RFAILED error
+ *
+ *       Notes: This assumes an initialized dBuf
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SGetDataTx
+   PUBLIC S16 SGetDataTx
 (
-Buffer *dBuf,                   /* data buffer */
-Data **retDatPtr,               /* return data pointer */
-MsgLen *retDatLen               /* return data length */
-)
+ Buffer *dBuf,                   /* data buffer */
+ Data **retDatPtr,               /* return data pointer */
+ MsgLen *retDatLen               /* return data length */
+ )
 #else
 PUBLIC S16 SGetDataTx(dBuf, retDatPtr, retDatLen)
-Buffer *dBuf;                   /* data buffer */
-Data **retDatPtr;               /* return data pointer */
-MsgLen *retDatLen;              /* return data length */
+   Buffer *dBuf;                   /* data buffer */
+   Data **retDatPtr;               /* return data pointer */
+   MsgLen *retDatLen;              /* return data length */
 #endif
 {
    TRC1(SGetDataTx)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* ss021.103 - Modification to check parameters */
-   if (!retDatPtr)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS187, ERRZERO, "SGetDataTx : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* ss021.103 - Modification to check parameters */
+      if (!retDatPtr)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS187, ERRZERO, "SGetDataTx : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (!dBuf)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS188, ERRZERO, "SGetDataTx : Null Buffer");
@@ -5586,7 +5586,7 @@ MsgLen *retDatLen;              /* return data length */
    if (dBuf->b_datap->db_type != SS_M_DATA)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS190, ERRZERO, "SGetDataTx : Incorrect\
-                                                   buffer type");
+	    buffer type");
       *retDatPtr = (Data *)NULLP;
       RETVALUE(RFAILED);
    }
@@ -5610,31 +5610,31 @@ MsgLen *retDatLen;              /* return data length */
 #ifndef SS_ENABLE_MACROS
 
 /*
-*
-*       Fun:   SGetBufRegionPool
-*
-*       Desc:  returns the region and pool of the message buffer
-*
-*       Ret:   ROK on success
-*              RFAILED on error
-*
-*       Notes: None
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetBufRegionPool
+ *
+ *       Desc:  returns the region and pool of the message buffer
+ *
+ *       Ret:   ROK on success
+ *              RFAILED on error
+ *
+ *       Notes: None
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SGetBufRegionPool
+   PUBLIC S16 SGetBufRegionPool
 (
-Buffer *mBuf,                   /* message buffer */
-Region *region,                 /* region */
-Pool   *pool                    /* pool */
-)
+ Buffer *mBuf,                   /* message buffer */
+ Region *region,                 /* region */
+ Pool   *pool                    /* pool */
+ )
 #else
 PUBLIC S16 SGetBufRegionPool(mBuf, region, pool)
-Buffer *mBuf;                   /* message buffer */
-Region *region;                 /* region */
-Pool   *pool;                   /* pool */
+   Buffer *mBuf;                   /* message buffer */
+   Region *region;                 /* region */
+   Pool   *pool;                   /* pool */
 #endif
 {
    SsMsgInfo *mInfo;            /* message info pointer */
@@ -5643,22 +5643,22 @@ Pool   *pool;                   /* pool */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
 
-   if (mBuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS192, ERRZERO, 
-                 "SGetBufRegionPool : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (mBuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS192, ERRZERO, 
+	       "SGetBufRegionPool : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if ((region == NULLP) && (pool == NULLP))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS193, ERRZERO, 
-                 "SGetBufRegionPool : Null region and pool pointers");
+	    "SGetBufRegionPool : Null region and pool pointers");
       RETVALUE(RFAILED);
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS194, ERRZERO, 
-                 "SUpdMsg : Incorrect buffer type");
+	    "SUpdMsg : Incorrect buffer type");
       RETVALUE(RFAILED);
    }
 #endif /* (ERRCLASS & ERRCLS_INT_PAR */
@@ -5668,7 +5668,7 @@ Pool   *pool;                   /* pool */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS195, ERRZERO, 
-                 "SGetBufRegionPool : mBuf's control data is null");
+	    "SGetBufRegionPool : mBuf's control data is null");
 #endif
       RETVALUE(RFAILED);
    }
@@ -5684,31 +5684,31 @@ Pool   *pool;                   /* pool */
 #endif /* SS_ENABLE_MACROS */
 
 /*
-*
-*       Fun:   SCompressMsg
-*
-*       Desc:  This function is used to compress a message into
-*              the minimum number of data buffers needed.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SCompressMsg
+ *
+ *       Desc:  This function is used to compress a message into
+ *              the minimum number of data buffers needed.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
- 
+
 #ifdef ANSI
-PUBLIC S16 SCompressMsg
+   PUBLIC S16 SCompressMsg
 (
-Buffer *mBuf
-)
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SCompressMsg(mBuf)
-Buffer *mBuf;                    /* message buffer */
+   Buffer *mBuf;                    /* message buffer */
 #endif
 {
    SsMsgInfo *minfo;
@@ -5725,15 +5725,15 @@ Buffer *mBuf;                    /* message buffer */
    TRC1(SCompressMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!mBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS196, ERRZERO, "SCompressMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!mBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS196, ERRZERO, "SCompressMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS197, ERRZERO, "SCompressMsg : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -5749,7 +5749,7 @@ Buffer *mBuf;                    /* message buffer */
    if ((ret = ssGetDBufOfSize(minfo->region, minfo->len, &dBuf)) != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS198, ERRZERO, "SAddMsgRef : ssGetDBufOfSize\
-                 failed");
+	    failed");
       RETVALUE(RFAILED);
    }
    dBuf->b_datap->db_type = SS_M_DATA;
@@ -5761,7 +5761,7 @@ Buffer *mBuf;                    /* message buffer */
 
       /* copy data */
 
-/* ss002.13: addition */
+      /* ss002.13: addition */
       /* ss003.13: addition */
       SMemCpy( (Void *)dBuf->b_wptr, (Void *)tmp->b_rptr, (size_t)numBytes);
 
@@ -5781,65 +5781,65 @@ Buffer *mBuf;                    /* message buffer */
 }
 
 /*
-*
-*       Fun:   SPrntMsg
-*
-*       Desc:  This function prints the contents of a message. The
-*              following information is printed: queue length,
-*              message length, direction, hexadecimal and ASCII
-*              (if appropriate) values of all bytes in the message.
-*
-*              This function should be used for debugging only.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  ss_msg.c
-*
-*/
-  
+ *
+ *       Fun:   SPrntMsg
+ *
+ *       Desc:  This function prints the contents of a message. The
+ *              following information is printed: queue length,
+ *              message length, direction, hexadecimal and ASCII
+ *              (if appropriate) values of all bytes in the message.
+ *
+ *              This function should be used for debugging only.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  ss_msg.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SPrntMsg
+   PUBLIC S16 SPrntMsg
 (
-Buffer *mBuf,               /* message buffer */
-S16 src,                    /* source id */
-S16 dst                     /* destination id */
-)
+ Buffer *mBuf,               /* message buffer */
+ S16 src,                    /* source id */
+ S16 dst                     /* destination id */
+ )
 #else
 PUBLIC S16 SPrntMsg(mBuf, src, dst)
-Buffer *mBuf;               /* message buffer */
-S16 src;                    /* source id */
-S16 dst;                    /* destination id */
+   Buffer *mBuf;               /* message buffer */
+   S16 src;                    /* source id */
+   S16 dst;                    /* destination id */
 #endif
 {
    QLen qlen;               /* queue length */
-	MsgLen mlen;             /* message length */
-/*
- * SDeRegTTsk patch
- */
-	/* ss038.103 : 102061 Changed to MsgLen from S16 */
-	MsgLen i;                /* counter */
-	S16 j;                   /* counter */
+   MsgLen mlen;             /* message length */
+   /*
+    * SDeRegTTsk patch
+    */
+   /* ss038.103 : 102061 Changed to MsgLen from S16 */
+   MsgLen i;                /* counter */
+   S16 j;                   /* counter */
    S16 k;                   /* counter */
    U8 data;                 /* data */
    U8 tdata[16] = {0};            /* temporary data */
    S8 prntBuf[256];         /* print buffer */
    Buffer *tmp;             /* buffer ptr */
    Data *cptr;
-/* ss012.13: Addition */
+   /* ss012.13: Addition */
    Data reg;
 
 
    TRC1(SPrntMsg)
 
-   if (mBuf == NULLP)
-   {
-      sprintf(prntBuf,"\nmsg: empty\n");
-      SPrint(prntBuf);
-      SPrint( (S8*)"\n\n");
-      RETVALUE(ROK);
-   }
+      if (mBuf == NULLP)
+      {
+	 sprintf(prntBuf,"\nmsg: empty\n");
+	 SPrint(prntBuf);
+	 SPrint( (S8*)"\n\n");
+	 RETVALUE(ROK);
+      }
 
    for (qlen = 0, tmp = mBuf->b_cont; tmp; qlen++)
       tmp = tmp->b_cont;
@@ -5847,7 +5847,7 @@ S16 dst;                    /* destination id */
    reg = ((SsMsgInfo*)(mBuf->b_rptr))->region;
    /*ss013.301: Fixed Warnings for 32/64 bit compilation*/
    sprintf(prntBuf,"\nmsg: qlen: %04d mlen: %04d   %02d-->%02d region: %02d\n",
-           (U16)qlen,(U16)mlen,src,dst,reg);
+	 (U16)qlen,(U16)mlen,src,dst,reg);
    SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
    printf("%s\n", prntBuf);
@@ -5873,61 +5873,61 @@ S16 dst;                    /* destination id */
       j = 0;
       for( j = 0; j < 16; j++)
       {
-         if( i < mlen )
-         { 
-            /* print hex */
-            tdata[j]=data;
-            sprintf( prntBuf,"%02x ",(U16) data);
-            SPrint( prntBuf);
+	 if( i < mlen )
+	 { 
+	    /* print hex */
+	    tdata[j]=data;
+	    sprintf( prntBuf,"%02x ",(U16) data);
+	    SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("%s\n", prntBuf);
+	    printf("%s\n", prntBuf);
 #endif   
-            if (cptr == tmp->b_wptr)
-            {
-               tmp = tmp->b_cont;
-               if (tmp)
-                  cptr = tmp->b_rptr;
-            }
-       /* ss024.103 - Modification to fix bug */
-            i++;
-       if ( i < mlen )
-               data = *cptr++;
-         }
-         else
-         {
-            sprintf( prntBuf,"   ");
-            SPrint( prntBuf );
+	    if (cptr == tmp->b_wptr)
+	    {
+	       tmp = tmp->b_cont;
+	       if (tmp)
+		  cptr = tmp->b_rptr;
+	    }
+	    /* ss024.103 - Modification to fix bug */
+	    i++;
+	    if ( i < mlen )
+	       data = *cptr++;
+	 }
+	 else
+	 {
+	    sprintf( prntBuf,"   ");
+	    SPrint( prntBuf );
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("%s\n", prntBuf);
+	    printf("%s\n", prntBuf);
 #endif   
-         }
+	 }
       } 
       for (k = 0; k < 16; k++)
       {
-         if( (i >= mlen) && (k>=(mlen%16)) && mlen%16 != 0)
-            break;
-         if (AIsAscii(tdata[k]))
-         {
-            /* print character if printable */
-            sprintf(prntBuf,"%c",tdata[k]);
-            SPrint( prntBuf);
+	 if( (i >= mlen) && (k>=(mlen%16)) && mlen%16 != 0)
+	    break;
+	 if (AIsAscii(tdata[k]))
+	 {
+	    /* print character if printable */
+	    sprintf(prntBuf,"%c",tdata[k]);
+	    SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("%s\n", prntBuf);
+	    printf("%s\n", prntBuf);
 #endif   
-         }
-         else
-         {
-            /* print . if non printable */
-            SPrint((S8*) ".");
+	 }
+	 else
+	 {
+	    /* print . if non printable */
+	    SPrint((S8*) ".");
 #ifdef XEON_SPECIFIC_CHANGES
-   printf(".");
+	    printf(".");
 #endif   
-         }
+	 }
       }
       sprintf(prntBuf,"\n     ");
       SPrint(prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("%s\n", prntBuf);
+      printf("%s\n", prntBuf);
 #endif   
    }
    RETVALUE(ROK);
@@ -5937,36 +5937,36 @@ S16 dst;                    /* destination id */
 
 
 /*
-*
-*       Fun:   SGetPstMsgMult
-*
-*       Desc:  This function allocates consecutive bytes of data at the
-*              end of a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: if message is empty: message length is incremented.
-*              return is ok.
-*
-*              if message is not empty: space is allocated in back of
-*              all other data in message.  message length is incremented.
-*              return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetPstMsgMult
+ *
+ *       Desc:  This function allocates consecutive bytes of data at the
+ *              end of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: if message is empty: message length is incremented.
+ *              return is ok.
+ *
+ *              if message is not empty: space is allocated in back of
+ *              all other data in message.  message length is incremented.
+ *              return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SGetPstMsgMult
+   PUBLIC S16 SGetPstMsgMult
 (
-MsgLen cnt,                 /* count */
-Buffer *mBuf                /* message buffer */
-)
+ MsgLen cnt,                 /* count */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SGetPstMsgMult(cnt, mBuf)
-MsgLen cnt;                 /* count */
-Buffer *mBuf;               /* message buffer */
+   MsgLen cnt;                 /* count */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Buffer *tmp;
@@ -5978,11 +5978,11 @@ Buffer *mBuf;               /* message buffer */
    TRC1(SGetPstMsgMult)
 
 #if ( ERRCLASS & ERRCLS_INT_PAR )
-   /* check message buffer */
-   if (mBuf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer */
+      if (mBuf == NULLP)
+      {
+	 RETVALUE(RFAILED);
+      }
    /* check count */
    if (cnt <= 0)
    {
@@ -6000,7 +6000,7 @@ Buffer *mBuf;               /* message buffer */
    avail = 0;
 
    if ((tmp = minfo->endptr) && (tmp->b_datap->db_ref == 1) &&
-       ((avail = tmp->b_datap->db_lim - tmp->b_wptr)))
+	 ((avail = tmp->b_datap->db_lim - tmp->b_wptr)))
    {
       numBytes = MIN(cnt, avail);
 
@@ -6008,19 +6008,19 @@ Buffer *mBuf;               /* message buffer */
       minfo->len += numBytes;
 
 
-/* ss002.13 addition */
-/* ss003.13 addition */
+      /* ss002.13 addition */
+      /* ss003.13 addition */
       SMemSet( (Void *)tmp->b_wptr, (Data)'\0', (size_t)numBytes);
 
       tmp->b_wptr += numBytes;
       if (!cnt)
-         RETVALUE(ROK);
+	 RETVALUE(ROK);
    }
    if (ssGetDBufOfSize(minfo->region, cnt, &newb) != ROK)
    {
       /* ss027.103 - Modification to fix bug in SGetPstMsgMult */
       if ((avail) && (tmp))
-         tmp->b_wptr = tmp->b_datap->db_lim - avail;
+	 tmp->b_wptr = tmp->b_datap->db_lim - avail;
       minfo->len -= avail;
       RETVALUE(ROUTRES);
    }
@@ -6028,7 +6028,7 @@ Buffer *mBuf;               /* message buffer */
    minfo->len += cnt;
 
 
-/* ss002.13: addition */
+   /* ss002.13: addition */
    /* ss003.13: addition */
    SMemSet( (Void *)newb->b_wptr, (Data)'\0', (size_t)cnt);
 
@@ -6046,43 +6046,43 @@ Buffer *mBuf;               /* message buffer */
 }
 
 /*
-*
-*       Fun:   SChkMsg
-*
-*       Desc:  Check Message
-*
-*       Ret:   ROK on success
-*              RFAILED on error
-*
-*       Notes: Check that the first buffer in a message
-*              contains at least two bytes. This check is required
-*              by 68302/68360 processors to insure accurate fisu
-*              generation.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SChkMsg
+ *
+ *       Desc:  Check Message
+ *
+ *       Ret:   ROK on success
+ *              RFAILED on error
+ *
+ *       Notes: Check that the first buffer in a message
+ *              contains at least two bytes. This check is required
+ *              by 68302/68360 processors to insure accurate fisu
+ *              generation.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SChkMsg
+   PUBLIC S16 SChkMsg
 (
-Buffer *mBuf
-)
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SChkMsg(mBuf)
-Buffer *mBuf;
+   Buffer *mBuf;
 #endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
 
    TRC1(SChkMsg)
- 
+
 #if ( ERRCLASS & ERRCLS_INT_PAR )
-   /* check message buffer */
-   if (mBuf == NULLP)
-   {
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer */
+      if (mBuf == NULLP)
+      {
+	 RETVALUE(RFAILED);
+      }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       RETVALUE(RFAILED);
@@ -6104,27 +6104,27 @@ Buffer *mBuf;
 }
 
 /*
-*
-*       Fun:   SAlignDBufEven
-*
-*       Desc:  align data portion of a data buffer on an even
-*              byte boundary.
-*
-*       Ret:   ROK/RFAILED
-*
-*       Notes: required for SS7 microcode on the 68302
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAlignDBufEven
+ *
+ *       Desc:  align data portion of a data buffer on an even
+ *              byte boundary.
+ *
+ *       Ret:   ROK/RFAILED
+ *
+ *       Notes: required for SS7 microcode on the 68302
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SAlignDBufEven
+   PUBLIC S16 SAlignDBufEven
 (
-Buffer *dBuf                      /* data buffer */
-)
+ Buffer *dBuf                      /* data buffer */
+ )
 #else
 PUBLIC S16 SAlignDBufEven(dBuf)
-Buffer *dBuf;                   /* data buffer  */
+   Buffer *dBuf;                   /* data buffer  */
 #endif
 {
    MsgLen len;
@@ -6133,22 +6133,22 @@ Buffer *dBuf;                   /* data buffer  */
    TRC1(SAlignDBufEven)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!dBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS199, ERRZERO, "SAlignDBufEven : Null\
-                 Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!dBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS199, ERRZERO, "SAlignDBufEven : Null\
+	       Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (dBuf->b_datap->db_type != SS_M_DATA)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS200, ERRZERO, "SAlignDBufEven : Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
 
    src = dBuf->b_rptr;
-/* ss008.13: addition */
+   /* ss008.13: addition */
    if (!((PTR)src % (PTR)2))
       RETVALUE(ROK);
 
@@ -6161,47 +6161,47 @@ Buffer *dBuf;                   /* data buffer  */
    {
       dBuf->b_wptr = --dBuf->b_rptr;
       while (len--)
-         *dBuf->b_wptr++ = *src++;
+	 *dBuf->b_wptr++ = *src++;
    }
    else
       if (dBuf->b_datap->db_lim > dBuf->b_wptr)
       {
-         src = dBuf->b_wptr - 1;
-         dBuf->b_rptr = ++dBuf->b_wptr;
-         while (len--)
-            *--dBuf->b_rptr = *src--;
+	 src = dBuf->b_wptr - 1;
+	 dBuf->b_rptr = ++dBuf->b_wptr;
+	 while (len--)
+	    *--dBuf->b_rptr = *src--;
       }
       else
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
 
    RETVALUE(ROK);
 }
 
 /* ss004.13: addition */
 /*
-*
-*       Fun:   SAlignDBuf
-*
-*       Desc:  Align data portion of a data buffer on the specified 
-*              boundary. No restriction is imposed on the alignment.
-*
-*       Ret:   ROK/RFAILED
-*
-*       Notes: required by drivers (68360, 860)
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAlignDBuf
+ *
+ *       Desc:  Align data portion of a data buffer on the specified 
+ *              boundary. No restriction is imposed on the alignment.
+ *
+ *       Ret:   ROK/RFAILED
+ *
+ *       Notes: required by drivers (68360, 860)
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SAlignDBuf
+   PUBLIC S16 SAlignDBuf
 (
-Buffer *dBuf,                      /* data buffer */
-U32    align                       /* alignemnt required */
-)
+ Buffer *dBuf,                      /* data buffer */
+ U32    align                       /* alignemnt required */
+ )
 #else
 PUBLIC S16 SAlignDBuf(dBuf, align)
-Buffer *dBuf;                      /* data buffer  */
-U32    align;                      /* alignemnt required */
+   Buffer *dBuf;                      /* data buffer  */
+   U32    align;                      /* alignemnt required */
 #endif
 {
    MsgLen len;
@@ -6212,24 +6212,24 @@ U32    align;                      /* alignemnt required */
    TRC1(SAlignDBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!dBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS201, ERRZERO, "SAlignDBuf: Null\
-                 Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!dBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS201, ERRZERO, "SAlignDBuf: Null\
+	       Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (dBuf->b_datap->db_type != SS_M_DATA)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS202, ERRZERO, "SAlignDBuf: Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
 
    src = dBuf->b_rptr;
-/* ss008.13: addition */
+   /* ss008.13: addition */
    upShift = (PTR)src % (PTR)align; /* no. of bytes by which to shift up
-                                     * the read and write pointers */
+				     * the read and write pointers */
 
    if (!upShift)
       RETVALUE(ROK);
@@ -6238,7 +6238,7 @@ U32    align;                      /* alignemnt required */
       RETVALUE(RFAILED);
 
    downShift = align - upShift;   /* no of bytes by which to shift down
-                                   * the read and write pointers */
+				   * the read and write pointers */
    len = dBuf->b_wptr - dBuf->b_rptr;
 
    if (dBuf->b_datap->db_base <= (dBuf->b_rptr - upShift))
@@ -6254,14 +6254,14 @@ U32    align;                      /* alignemnt required */
    {
       if (dBuf->b_datap->db_lim > dBuf->b_wptr + downShift)
       {
-         src = dBuf->b_wptr - 1;
-         dBuf->b_wptr = dBuf->b_wptr + downShift;
-         dBuf->b_rptr = dBuf->b_wptr;
-         while (len--)
-            *--dBuf->b_rptr = *src--;
+	 src = dBuf->b_wptr - 1;
+	 dBuf->b_wptr = dBuf->b_wptr + downShift;
+	 dBuf->b_rptr = dBuf->b_wptr;
+	 while (len--)
+	    *--dBuf->b_rptr = *src--;
       }
       else
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
    }
 
    RETVALUE(ROK);
@@ -6269,34 +6269,34 @@ U32    align;                      /* alignemnt required */
 
 
 /*
-*
-*       Fun:   SGetSMem
-*
-*       Desc:  Allocates a static buffer pool within the specified
-*              memory region.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: The new memory management scheme makes this function
-*              meaningless. It merely sets the pool ID to zero and
-*              returns.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetSMem
+ *
+ *       Desc:  Allocates a static buffer pool within the specified
+ *              memory region.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: The new memory management scheme makes this function
+ *              meaningless. It merely sets the pool ID to zero and
+ *              returns.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SGetSMem
+   PUBLIC S16 SGetSMem
 (
-Region region,                  /* region ID */
-Size size,                      /* size */
-Pool *pool                      /* pointer to pool ID */
-)
+ Region region,                  /* region ID */
+ Size size,                      /* size */
+ Pool *pool                      /* pointer to pool ID */
+ )
 #else
 PUBLIC S16 SGetSMem(region, size, pool)
-Region region;                  /* region ID */
-Size size;                      /* size */
-Pool *pool;                     /* pointer to pool ID */
+   Region region;                  /* region ID */
+   Size size;                      /* size */
+   Pool *pool;                     /* pointer to pool ID */
 #endif
 {
    TRC1(SGetSMem);
@@ -6331,31 +6331,31 @@ Pool *pool;                     /* pointer to pool ID */
 
 
 /*
-*
-*       Fun:   SPutSMem
-*
-*       Desc:  Deallocates a static buffer pool within the specified
-*              memory region.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: The new memory management scheme makes this function
-*              meaningless. It does nothing.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SPutSMem
+ *
+ *       Desc:  Deallocates a static buffer pool within the specified
+ *              memory region.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: The new memory management scheme makes this function
+ *              meaningless. It does nothing.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SPutSMem
+   PUBLIC S16 SPutSMem
 (
-Region region,                  /* region ID */
-Pool pool                       /* pool ID */
-)
+ Region region,                  /* region ID */
+ Pool pool                       /* pool ID */
+ )
 #else
 PUBLIC S16 SPutSMem(region, pool)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
 #endif
 {
    /* ss021.103 - Addition of return value */
@@ -6389,7 +6389,7 @@ Pool pool;                      /* pool ID */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS207, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -6403,9 +6403,9 @@ Pool pool;                      /* pool ID */
       if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS208, ERRZERO,
-                  "Could not release semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS208, ERRZERO,
+	       "Could not release semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -6418,7 +6418,7 @@ Pool pool;                      /* pool ID */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS210, ERRZERO,
-                  "Could not release semaphore");
+	    "Could not release semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -6429,31 +6429,31 @@ Pool pool;                      /* pool ID */
 
 
 /*
-*
-*       Fun:   SChkRes
-*
-*       Desc:  Checks the available system resources (memory).
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SChkRes
+ *
+ *       Desc:  Checks the available system resources (memory).
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SChkRes
+   PUBLIC S16 SChkRes
 (
-Region region,                  /* region ID */
-Pool pool,                      /* pool ID */
-Status *status                  /* pointer to status */
-)
+ Region region,                  /* region ID */
+ Pool pool,                      /* pool ID */
+ Status *status                  /* pointer to status */
+ )
 #else
 PUBLIC S16 SChkRes(region, pool, status)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Status *status;                 /* pointer to status */
+   Region region;                  /* region ID */
+   Pool pool;                      /* pool ID */
+   Status *status;                 /* pointer to status */
 #endif
 {
    S16 ret;
@@ -6485,7 +6485,7 @@ Status *status;                 /* pointer to status */
       RETVALUE(RFAILED);
    }
 #endif
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    /* acquire one semaphore, to protect against deregistration */
@@ -6495,7 +6495,7 @@ Status *status;                 /* pointer to status */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS232, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -6507,13 +6507,13 @@ Status *status;                 /* pointer to status */
    if (osCp.regionTbl[region].used == FALSE)
    {
 
-/* ss006.13: addition */
+      /* ss006.13: addition */
       if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS233, ERRZERO,
-                  "Could not release semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS233, ERRZERO,
+	       "Could not release semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -6535,16 +6535,16 @@ Status *status;                 /* pointer to status */
    mctl.u.chkres.size = osCp.regionTbl[region].poolTbl[pool].u.dpool.size;
    mctl.u.chkres.status = status;
    ret = (osCp.regionTbl[region].ctl)
-             (osCp.regionTbl[region].regCb, SS_MEM_CHK_RES, &mctl);
+      (osCp.regionTbl[region].regCb, SS_MEM_CHK_RES, &mctl);
 #ifndef SS_PERF
    /* release the semaphore we took */
 
-/* ss006.13: addition */
+   /* ss006.13: addition */
    if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS236, ERRZERO,
-                  "Could not release semaphore");
+	    "Could not release semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -6554,32 +6554,32 @@ Status *status;                 /* pointer to status */
 }
 
 /*
-*
-*       Fun:   SSwapMsg
-*
-*       Desc:  This function will swap two message data contents.
-*              The original mBuf pointers are unchanged.
-*
-*       Ret:   ROK     - ok
-*              RFAILED - failed
-*
-*       Notes: 
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SSwapMsg
+ *
+ *       Desc:  This function will swap two message data contents.
+ *              The original mBuf pointers are unchanged.
+ *
+ *       Ret:   ROK     - ok
+ *              RFAILED - failed
+ *
+ *       Notes: 
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 
 #ifdef ANSI
-PUBLIC S16 SSwapMsg
+   PUBLIC S16 SSwapMsg
 (
-Buffer *mBuf1,              /* message 1 */
-Buffer *mBuf2               /* message 2 */
-)
+ Buffer *mBuf1,              /* message 1 */
+ Buffer *mBuf2               /* message 2 */
+ )
 #else
 PUBLIC S16 SSwapMsg(mBuf1, mBuf2)
-Buffer *mBuf1;              /* message 1 */
-Buffer *mBuf2;              /* message 2 */
+   Buffer *mBuf1;              /* message 1 */
+   Buffer *mBuf2;              /* message 2 */
 #endif
 {
    SsMsgInfo *minfop;
@@ -6590,16 +6590,16 @@ Buffer *mBuf2;              /* message 2 */
 #endif
    Buffer *tmp;
    U8 tmp2;
-   
+
    TRC1(SSwapMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer 1 */
-   if (mBuf1 == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS237, ERRZERO, "SSwapMsg : Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer 1 */
+      if (mBuf1 == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS237, ERRZERO, "SSwapMsg : Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check message buffer 2 */
    if (mBuf2 == NULLP)
    {
@@ -6609,13 +6609,13 @@ Buffer *mBuf2;              /* message 2 */
    if (mBuf1->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS239, ERRZERO, "SSwapMsg: Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
    if (mBuf2->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS240, ERRZERO, "SSwapMsg: Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
    minfo1 = (SsMsgInfo*) mBuf1->b_rptr;
@@ -6623,7 +6623,7 @@ Buffer *mBuf2;              /* message 2 */
    if (minfo1->region != minfo2->region)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS241, ERRZERO, "SSwapMsg: differnt regions\
-                                                   for messages");
+	    for messages");
       RETVALUE(RFAILED);
    }
 #endif
@@ -6641,7 +6641,7 @@ Buffer *mBuf2;              /* message 2 */
    mBuf1->b_cont = mBuf2->b_cont;
    mBuf2->b_cont = tmp;
 
-/* ss008.301 */
+   /* ss008.301 */
 #ifdef SS_DBLK_FREE_RTN 
    tmp = (Buffer *) mBuf1->b_datap->db_frtnp;
    mBuf1->b_datap->db_frtnp = mBuf2->b_datap->db_frtnp;
@@ -6654,7 +6654,7 @@ Buffer *mBuf2;              /* message 2 */
 
 
    minfop = & minfo;
-   
+
    SMemCpy((Void *) minfop, (Void *) (mBuf1->b_datap->db_base), (size_t)(sizeof(SsMsgInfo)));
    SMemCpy((Void *) (mBuf1->b_datap->db_base), (Void *) (mBuf2->b_datap->db_base), (size_t)(sizeof(SsMsgInfo)));
    SMemCpy((Void *) (mBuf2->b_datap->db_base), (Void *) minfop, (size_t)(sizeof(SsMsgInfo)));
@@ -6683,142 +6683,142 @@ Buffer *mBuf2;              /* message 2 */
  *
  */
 #ifdef ANSI
-PUBLIC S16 SConvPtrPhy
+   PUBLIC S16 SConvPtrPhy
 (
  Buffer  **mBuf
-)
+ )
 #else
 PUBLIC S16 SConvPtrPhy (mBuf)
-  Buffer **mBuf;
+   Buffer **mBuf;
 #endif
 {
 
-  Buffer      *curPtr;
-  Buffer      *nextPtr;
-  SsMsgInfo   *minfoPtr;
-  SsDblk      *dblkPtr;
-  SsFrtn      *frtnPtr;
+   Buffer      *curPtr;
+   Buffer      *nextPtr;
+   SsMsgInfo   *minfoPtr;
+   SsDblk      *dblkPtr;
+   SsFrtn      *frtnPtr;
 
-  TRC1(SConvPtrPhy);
+   TRC1(SConvPtrPhy);
 
 
-  /* check mBuf for NULLP */
-  if ( (mBuf == NULLP) || (*mBuf == NULLP ) )
-  {
-	 RETVALUE(RFAILED);
-  }
+   /* check mBuf for NULLP */
+   if ( (mBuf == NULLP) || (*mBuf == NULLP ) )
+   {
+      RETVALUE(RFAILED);
+   }
 
-  /* first block in Buffer is head */
-  curPtr = *mBuf;
-  nextPtr = curPtr->b_cont;
+   /* first block in Buffer is head */
+   curPtr = *mBuf;
+   nextPtr = curPtr->b_cont;
 
-  /* Get the physical address of the Pointer */
-  if(curPtr->b_cont)
-  {
-	 curPtr->b_cont = (Buffer*)cvmx_ptr_to_phys (curPtr->b_cont);
-  }
+   /* Get the physical address of the Pointer */
+   if(curPtr->b_cont)
+   {
+      curPtr->b_cont = (Buffer*)cvmx_ptr_to_phys (curPtr->b_cont);
+   }
 
-  if(curPtr->b_next)
-  {
-	 curPtr->b_next = (Buffer*)cvmx_ptr_to_phys (curPtr->b_next);
-  }
+   if(curPtr->b_next)
+   {
+      curPtr->b_next = (Buffer*)cvmx_ptr_to_phys (curPtr->b_next);
+   }
 
-  if(curPtr->b_prev)
-  {
-	 curPtr->b_prev = (Buffer*)cvmx_ptr_to_phys (curPtr->b_prev);
-  }
+   if(curPtr->b_prev)
+   {
+      curPtr->b_prev = (Buffer*)cvmx_ptr_to_phys (curPtr->b_prev);
+   }
 
-  /* Convert the pointers of Minfo to Physical addr */
-  minfoPtr = (SsMsgInfo*)curPtr->b_rptr;
+   /* Convert the pointers of Minfo to Physical addr */
+   minfoPtr = (SsMsgInfo*)curPtr->b_rptr;
 
-  if (minfoPtr->endptr)
-  {
-	 minfoPtr->endptr = (Buffer*)cvmx_ptr_to_phys (minfoPtr->endptr);
-  }
-  if (minfoPtr->next)
-  {
-	 minfoPtr->next = (Buffer*)cvmx_ptr_to_phys (minfoPtr->next);
-  }
+   if (minfoPtr->endptr)
+   {
+      minfoPtr->endptr = (Buffer*)cvmx_ptr_to_phys (minfoPtr->endptr);
+   }
+   if (minfoPtr->next)
+   {
+      minfoPtr->next = (Buffer*)cvmx_ptr_to_phys (minfoPtr->next);
+   }
 
-  curPtr->b_rptr = (U8*)cvmx_ptr_to_phys (curPtr->b_rptr);
+   curPtr->b_rptr = (U8*)cvmx_ptr_to_phys (curPtr->b_rptr);
 
-  curPtr->b_wptr = (U8*)cvmx_ptr_to_phys (curPtr->b_wptr);
+   curPtr->b_wptr = (U8*)cvmx_ptr_to_phys (curPtr->b_wptr);
 
-  /* Convert the pointers of Dblock to Physical addr */
-  dblkPtr = (SsDblk*)curPtr->b_datap;
+   /* Convert the pointers of Dblock to Physical addr */
+   dblkPtr = (SsDblk*)curPtr->b_datap;
 
-/* ss008.301 */
+   /* ss008.301 */
 #ifdef SS_DBLK_FREE_RTN 
-  frtnPtr = dblkPtr->db_frtnp;
-  if( frtnPtr != NULLP)
-  {
+   frtnPtr = dblkPtr->db_frtnp;
+   if( frtnPtr != NULLP)
+   {
+      if (frtnPtr->free_func)
+      {
+	 frtnPtr->free_func = (Void*)cvmx_ptr_to_phys (frtnPtr->free_func);
+      }
+      if (frtnPtr->free_arg)
+      {
+	 frtnPtr->free_arg = (S8*)cvmx_ptr_to_phys (frtnPtr->free_arg);
+      }
+
+      dblkPtr->db_frtnp = (SsFrtn*)cvmx_ptr_to_phys (dblkPtr->db_frtnp);
+   }
+#endif
+
+   dblkPtr->db_base = (U8*)cvmx_ptr_to_phys (dblkPtr->db_base);
+   dblkPtr->db_lim = (U8*)cvmx_ptr_to_phys (dblkPtr->db_lim);
+
+   curPtr->b_datap = (SsDblk*)cvmx_ptr_to_phys (curPtr->b_datap);
+
+   /* second block onwards  is dblk */
+   curPtr = nextPtr;
+
+   while(curPtr)
+   {
+      nextPtr = curPtr->b_cont;
+
+      /* Get the physical address of the Pointer */
+      if(curPtr->b_cont)
+      {
+	 curPtr->b_cont = (Buffer*)cvmx_ptr_to_phys (curPtr->b_cont);
+      }
+
+      curPtr->b_rptr = (U8*)cvmx_ptr_to_phys (curPtr->b_rptr);
+      curPtr->b_wptr = (U8*)cvmx_ptr_to_phys (curPtr->b_wptr);
+
+      /* Convert the pointers of Dblock to Physical addr */
+      dblkPtr = (SsDblk*)curPtr->b_datap;
+
+      /* ss008.301 */
+#ifdef SS_DBLK_FREE_RTN 
+      frtnPtr = dblkPtr->db_frtnp;
+      if( frtnPtr != NULLP)
+      {
 	 if (frtnPtr->free_func)
 	 {
-		frtnPtr->free_func = (Void*)cvmx_ptr_to_phys (frtnPtr->free_func);
+	    frtnPtr->free_func = (Void*)cvmx_ptr_to_phys (frtnPtr->free_func);
 	 }
 	 if (frtnPtr->free_arg)
 	 {
-		frtnPtr->free_arg = (S8*)cvmx_ptr_to_phys (frtnPtr->free_arg);
+	    frtnPtr->free_arg = (S8*)cvmx_ptr_to_phys (frtnPtr->free_arg);
 	 }
 
 	 dblkPtr->db_frtnp = (SsFrtn*)cvmx_ptr_to_phys (dblkPtr->db_frtnp);
-  }
-#endif
-
-  dblkPtr->db_base = (U8*)cvmx_ptr_to_phys (dblkPtr->db_base);
-  dblkPtr->db_lim = (U8*)cvmx_ptr_to_phys (dblkPtr->db_lim);
-
-  curPtr->b_datap = (SsDblk*)cvmx_ptr_to_phys (curPtr->b_datap);
-
-  /* second block onwards  is dblk */
-  curPtr = nextPtr;
-
-  while(curPtr)
-  {
-	 nextPtr = curPtr->b_cont;
-
-	 /* Get the physical address of the Pointer */
-	 if(curPtr->b_cont)
-	 {
-		curPtr->b_cont = (Buffer*)cvmx_ptr_to_phys (curPtr->b_cont);
-	 }
-
-	 curPtr->b_rptr = (U8*)cvmx_ptr_to_phys (curPtr->b_rptr);
-	 curPtr->b_wptr = (U8*)cvmx_ptr_to_phys (curPtr->b_wptr);
-
-	 /* Convert the pointers of Dblock to Physical addr */
-	 dblkPtr = (SsDblk*)curPtr->b_datap;
-
-/* ss008.301 */
-#ifdef SS_DBLK_FREE_RTN 
-	 frtnPtr = dblkPtr->db_frtnp;
-	 if( frtnPtr != NULLP)
-	 {
-		if (frtnPtr->free_func)
-		{
-		  frtnPtr->free_func = (Void*)cvmx_ptr_to_phys (frtnPtr->free_func);
-		}
-		if (frtnPtr->free_arg)
-		{
-		  frtnPtr->free_arg = (S8*)cvmx_ptr_to_phys (frtnPtr->free_arg);
-		}
-
-		dblkPtr->db_frtnp = (SsFrtn*)cvmx_ptr_to_phys (dblkPtr->db_frtnp);
-	 }
+      }
 #endif    
 
-	 dblkPtr->db_base = (U8*)cvmx_ptr_to_phys (dblkPtr->db_base);
-	 dblkPtr->db_lim = (U8*)cvmx_ptr_to_phys (dblkPtr->db_lim);
+      dblkPtr->db_base = (U8*)cvmx_ptr_to_phys (dblkPtr->db_base);
+      dblkPtr->db_lim = (U8*)cvmx_ptr_to_phys (dblkPtr->db_lim);
 
-	 curPtr->b_datap = (SsDblk*)cvmx_ptr_to_phys (curPtr->b_datap);
+      curPtr->b_datap = (SsDblk*)cvmx_ptr_to_phys (curPtr->b_datap);
 
-	 curPtr = nextPtr;
+      curPtr = nextPtr;
 
-  }
+   }
 
-  *mBuf = (Buffer*)cvmx_ptr_to_phys (*mBuf);
+   *mBuf = (Buffer*)cvmx_ptr_to_phys (*mBuf);
 
-  RETVALUE(ROK);
+   RETVALUE(ROK);
 
 } /* SConvPtrPhy */
 
@@ -6841,142 +6841,142 @@ PUBLIC S16 SConvPtrPhy (mBuf)
  *
  */
 #ifdef ANSI
-PUBLIC S16 SConvPhyPtr
+   PUBLIC S16 SConvPhyPtr
 (
  Buffer  **workPtr
  )
 #else
 PUBLIC S16 SConvPhyPtr (workPtr)
-  Buffer  **workPtr;
+   Buffer  **workPtr;
 #endif
 {
 
-  Buffer      *curPtr;
-  Buffer      *mBuf;
-  SsMsgInfo   *minfoPtr;
-  SsDblk      *dblkPtr;
-  SsFrtn      *frtnPtr;
+   Buffer      *curPtr;
+   Buffer      *mBuf;
+   SsMsgInfo   *minfoPtr;
+   SsDblk      *dblkPtr;
+   SsFrtn      *frtnPtr;
 
-  TRC1(SConvPhyPtr);
+   TRC1(SConvPhyPtr);
 
 
-  /* check workPtr for NULLP */
-  if ( (workPtr == NULLP) || (*workPtr == NULLP) )
-  {
-	 RETVALUE(RFAILED);
-  }
+   /* check workPtr for NULLP */
+   if ( (workPtr == NULLP) || (*workPtr == NULLP) )
+   {
+      RETVALUE(RFAILED);
+   }
 
-  /* Convert the buffer address to pointer */
-  mBuf = (Buffer*)cvmx_phys_to_ptr ((U64)(*workPtr));
+   /* Convert the buffer address to pointer */
+   mBuf = (Buffer*)cvmx_phys_to_ptr ((U64)(*workPtr));
 
-  curPtr = mBuf;
+   curPtr = mBuf;
 
-  /* first block is mblk */
-  if (curPtr->b_next)
-  {
-	 curPtr->b_next = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_next);
-  }
+   /* first block is mblk */
+   if (curPtr->b_next)
+   {
+      curPtr->b_next = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_next);
+   }
 
-  if (curPtr->b_prev)
-  {
-	 curPtr->b_prev = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_prev);
-  }
+   if (curPtr->b_prev)
+   {
+      curPtr->b_prev = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_prev);
+   }
 
-  if(curPtr->b_cont)
-  {
-	 curPtr->b_cont = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_cont);
-  }
+   if(curPtr->b_cont)
+   {
+      curPtr->b_cont = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_cont);
+   }
 
-  curPtr->b_rptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_rptr);
+   curPtr->b_rptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_rptr);
 
-  /* Get the pointer for minfo */
-  minfoPtr = (SsMsgInfo*)curPtr->b_rptr;
+   /* Get the pointer for minfo */
+   minfoPtr = (SsMsgInfo*)curPtr->b_rptr;
 
-  if (minfoPtr->endptr)
-  {
-	 minfoPtr->endptr = (Buffer*)cvmx_phys_to_ptr ((U64)minfoPtr->endptr);
-  }
-  if (minfoPtr->next)
-  {
-	 minfoPtr->next = (Buffer*)cvmx_phys_to_ptr ((U64)minfoPtr->next);
-  }
+   if (minfoPtr->endptr)
+   {
+      minfoPtr->endptr = (Buffer*)cvmx_phys_to_ptr ((U64)minfoPtr->endptr);
+   }
+   if (minfoPtr->next)
+   {
+      minfoPtr->next = (Buffer*)cvmx_phys_to_ptr ((U64)minfoPtr->next);
+   }
 
-  curPtr->b_wptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_wptr);
+   curPtr->b_wptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_wptr);
 
-  curPtr->b_datap = (SsDblk*)cvmx_phys_to_ptr ((U64)curPtr->b_datap);
+   curPtr->b_datap = (SsDblk*)cvmx_phys_to_ptr ((U64)curPtr->b_datap);
 
-  /* Get the Dblock pointers */
-  dblkPtr = (SsDblk*)curPtr->b_datap;
+   /* Get the Dblock pointers */
+   dblkPtr = (SsDblk*)curPtr->b_datap;
 
-/* ss008.301 */
+   /* ss008.301 */
 #ifdef SS_DBLK_FREE_RTN 
-  if (dblkPtr->db_frtnp)
-  {
+   if (dblkPtr->db_frtnp)
+   {
+      dblkPtr->db_frtnp = (SsFrtn*)cvmx_phys_to_ptr ((U64)dblkPtr->db_frtnp);
+      frtnPtr = dblkPtr->db_frtnp;
+
+      if (frtnPtr->free_func)
+      {
+	 frtnPtr->free_func = cvmx_phys_to_ptr ((U64)frtnPtr->free_func);
+      }
+      if (frtnPtr->free_arg)
+      {
+	 frtnPtr->free_arg = (S8*)cvmx_phys_to_ptr ((U64)frtnPtr->free_arg);
+      }
+   }
+#endif  
+
+   dblkPtr->db_base = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_base);
+   dblkPtr->db_lim = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_lim);
+
+   curPtr = curPtr->b_cont;
+
+   /* after the first block is dblk */
+   while(curPtr)
+   {
+      if(curPtr->b_cont)
+      {
+	 curPtr->b_cont = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_cont);
+      }
+
+      curPtr->b_rptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_rptr);
+
+      curPtr->b_wptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_wptr);
+
+      curPtr->b_datap = (SsDblk*)cvmx_phys_to_ptr ((U64)curPtr->b_datap);
+
+      /* Get the Dblock pointers */
+      dblkPtr = (SsDblk*)curPtr->b_datap;
+
+      /* ss008.301 */
+#ifdef SS_DBLK_FREE_RTN 
+      if (dblkPtr->db_frtnp)
+      {
 	 dblkPtr->db_frtnp = (SsFrtn*)cvmx_phys_to_ptr ((U64)dblkPtr->db_frtnp);
-    frtnPtr = dblkPtr->db_frtnp;
+
+	 frtnPtr = dblkPtr->db_frtnp;
 
 	 if (frtnPtr->free_func)
 	 {
-		frtnPtr->free_func = cvmx_phys_to_ptr ((U64)frtnPtr->free_func);
+	    frtnPtr->free_func = cvmx_phys_to_ptr ((U64)frtnPtr->free_func);
 	 }
 	 if (frtnPtr->free_arg)
 	 {
-		frtnPtr->free_arg = (S8*)cvmx_phys_to_ptr ((U64)frtnPtr->free_arg);
+	    frtnPtr->free_arg = (S8*)cvmx_phys_to_ptr ((U64)frtnPtr->free_arg);
 	 }
-  }
-#endif  
-
-  dblkPtr->db_base = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_base);
-  dblkPtr->db_lim = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_lim);
-
-  curPtr = curPtr->b_cont;
-
-  /* after the first block is dblk */
-  while(curPtr)
-  {
-	 if(curPtr->b_cont)
-	 {
-		curPtr->b_cont = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_cont);
-	 }
-
-	 curPtr->b_rptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_rptr);
-
-	 curPtr->b_wptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_wptr);
-
-	 curPtr->b_datap = (SsDblk*)cvmx_phys_to_ptr ((U64)curPtr->b_datap);
-
-	 /* Get the Dblock pointers */
-	 dblkPtr = (SsDblk*)curPtr->b_datap;
-
-/* ss008.301 */
-#ifdef SS_DBLK_FREE_RTN 
-	 if (dblkPtr->db_frtnp)
-	 {
-		dblkPtr->db_frtnp = (SsFrtn*)cvmx_phys_to_ptr ((U64)dblkPtr->db_frtnp);
-
-      frtnPtr = dblkPtr->db_frtnp;
-
-		if (frtnPtr->free_func)
-		{
-		  frtnPtr->free_func = cvmx_phys_to_ptr ((U64)frtnPtr->free_func);
-		}
-		if (frtnPtr->free_arg)
-		{
-		  frtnPtr->free_arg = (S8*)cvmx_phys_to_ptr ((U64)frtnPtr->free_arg);
-		}
-	 }
+      }
 #endif    
 
-	 dblkPtr->db_base = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_base);
-	 dblkPtr->db_lim = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_lim);
+      dblkPtr->db_base = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_base);
+      dblkPtr->db_lim = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_lim);
 
-	 curPtr = curPtr->b_cont;
-  }
+      curPtr = curPtr->b_cont;
+   }
 
-  /* Place the converted buffer */
-  *workPtr = mBuf;
+   /* Place the converted buffer */
+   *workPtr = mBuf;
 
-  RETVALUE(ROK);
+   RETVALUE(ROK);
 
 } /* SConvPhyPtr */
 
@@ -6999,7 +6999,7 @@ PUBLIC S16 SConvPhyPtr (workPtr)
  *
  */
 #ifdef ANSI
-PUBLIC S16 SCpyFpaMsg
+   PUBLIC S16 SCpyFpaMsg
 (
  Buffer *srcBuf,
  Region dstRegion,
@@ -7008,129 +7008,129 @@ PUBLIC S16 SCpyFpaMsg
  )
 #else
 PUBLIC S16 SCpyFpaMsg (srcBuf, dstRegion, dstPool, dstBuf)
-  Buffer *srcBuf;
-  Region dstRegion;
-  Pool dstPool;
-  Buffer **dstBuf;
+   Buffer *srcBuf;
+   Region dstRegion;
+   Pool dstPool;
+   Buffer **dstBuf;
 #endif
 {
 
-  Size        numBytes;
-  Size        size;
-  S16         ret;
-  Buffer     *curPtr = NULLP;
-  Data       *dat = NULLP;
-  Buffer     *tmpblk = NULLP;
-  Buffer     *newblk = NULLP;
-  Buffer     *prevblk = NULLP;
-  SsMsgInfo  *minfoSrc = NULLP;
-  SsMsgInfo  *minfoDst = NULLP;
-  SsDblk     *dblkPtr = NULLP;
-  SsDblk     *dptr = NULLP;
+   Size        numBytes;
+   Size        size;
+   S16         ret;
+   Buffer     *curPtr = NULLP;
+   Data       *dat = NULLP;
+   Buffer     *tmpblk = NULLP;
+   Buffer     *newblk = NULLP;
+   Buffer     *prevblk = NULLP;
+   SsMsgInfo  *minfoSrc = NULLP;
+   SsMsgInfo  *minfoDst = NULLP;
+   SsDblk     *dblkPtr = NULLP;
+   SsDblk     *dptr = NULLP;
 
-  TRC1(SCpyFpaMsg);
+   TRC1(SCpyFpaMsg);
 
 
-  if ( srcBuf == (Buffer*)NULLP )
-  {
-	 RETVALUE(RFAILED);
-  }
+   if ( srcBuf == (Buffer*)NULLP )
+   {
+      RETVALUE(RFAILED);
+   }
 
-  if ((dstRegion >= SS_MAX_REGS) || (dstPool >= SS_MAX_POOLS_PER_REG))
-  {
-	 /* Free the source buffer and return failure */
-	 SPutFpaMsg(srcBuf);
-	 RETVALUE(RFAILED);
-  }
+   if ((dstRegion >= SS_MAX_REGS) || (dstPool >= SS_MAX_POOLS_PER_REG))
+   {
+      /* Free the source buffer and return failure */
+      SPutFpaMsg(srcBuf);
+      RETVALUE(RFAILED);
+   }
 
-  /* Allocate memory for destination buffer */
-  if(SGetMsg(dstRegion, dstPool, dstBuf) != ROK)
-  {
+   /* Allocate memory for destination buffer */
+   if(SGetMsg(dstRegion, dstPool, dstBuf) != ROK)
+   {
+      /* Free the source buffer and return failure */
+      SPutFpaMsg(srcBuf);
+      RETVALUE(ROUTRES);
+   }
+
+   /* get the minfo of dest and src buffers */
+   minfoSrc = (SsMsgInfo*) srcBuf->b_rptr;
+   minfoDst = (SsMsgInfo*) (*dstBuf)->b_rptr;
+
+   curPtr = srcBuf->b_cont;
+
+   /* Copy all the blocks associated with this Buffer */
+   while(curPtr)
+   {
+      /* Allocate the memeory for dblock */
+
+      dblkPtr = (SsDblk*)curPtr->b_datap;
+      numBytes = dblkPtr->db_lim - dblkPtr->db_base;
+      size = numBytes + MDBSIZE;
+
+      ret = SAlloc( dstRegion, &size, 0, (Data**)&tmpblk);
+
+      if(ret != ROK)
+      {
+	 /* Free all allocated buffers before returning */
+	 while (newblk)
+	 {
+	    tmpblk = newblk->b_cont;
+	    (Void) SPutDBuf(dstRegion, dstPool, newblk);
+	    newblk = tmpblk;
+	 }
+	 (Void) SPutMsg(*dstBuf);
 	 /* Free the source buffer and return failure */
 	 SPutFpaMsg(srcBuf);
 	 RETVALUE(ROUTRES);
-  }
+      }
 
-  /* get the minfo of dest and src buffers */
-  minfoSrc = (SsMsgInfo*) srcBuf->b_rptr;
-  minfoDst = (SsMsgInfo*) (*dstBuf)->b_rptr;
+      dat = (Data *)tmpblk + MDBSIZE;
+      dptr = (SsDblk*) (((Data *) tmpblk) + MBSIZE);
+      size -= MDBSIZE;
 
-  curPtr = srcBuf->b_cont;
-
-  /* Copy all the blocks associated with this Buffer */
-  while(curPtr)
-  {
-	 /* Allocate the memeory for dblock */
-
-	 dblkPtr = (SsDblk*)curPtr->b_datap;
-	 numBytes = dblkPtr->db_lim - dblkPtr->db_base;
-	 size = numBytes + MDBSIZE;
-
-	 ret = SAlloc( dstRegion, &size, 0, (Data**)&tmpblk);
-
-	 if(ret != ROK)
-	 {
-		/* Free all allocated buffers before returning */
-		while (newblk)
-		{
-		  tmpblk = newblk->b_cont;
-		  (Void) SPutDBuf(dstRegion, dstPool, newblk);
-		  newblk = tmpblk;
-		}
-		(Void) SPutMsg(*dstBuf);
-		/* Free the source buffer and return failure */
-		SPutFpaMsg(srcBuf);
-		RETVALUE(ROUTRES);
-	 }
-
-	 dat = (Data *)tmpblk + MDBSIZE;
-	 dptr = (SsDblk*) (((Data *) tmpblk) + MBSIZE);
-	 size -= MDBSIZE;
-
-	 /* Initialize the pointer and copy the data */
-	 INITB( tmpblk, dptr, dat, size, NULLP );
+      /* Initialize the pointer and copy the data */
+      INITB( tmpblk, dptr, dat, size, NULLP );
 #ifndef SS_DBUF_REFLOCK_DISABLE
-         SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX);
+      SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX);
 #endif
-	 numBytes = curPtr->b_wptr - curPtr->b_rptr;
-	 /* Copy the data part if its present */
-	 if (numBytes > 0 )
-	 {
-		SMemCpy( (Void *) tmpblk->b_wptr, (Void *) curPtr->b_rptr, numBytes);
-		tmpblk->b_wptr += numBytes;
-	 }
+      numBytes = curPtr->b_wptr - curPtr->b_rptr;
+      /* Copy the data part if its present */
+      if (numBytes > 0 )
+      {
+	 SMemCpy( (Void *) tmpblk->b_wptr, (Void *) curPtr->b_rptr, numBytes);
+	 tmpblk->b_wptr += numBytes;
+      }
 
-	 if (!prevblk)
-	 {
-		newblk = tmpblk;
-	 }
-	 else
-	 {
-		prevblk->b_cont = tmpblk;
-	 }
+      if (!prevblk)
+      {
+	 newblk = tmpblk;
+      }
+      else
+      {
+	 prevblk->b_cont = tmpblk;
+      }
 
-	 prevblk = tmpblk;
-	 curPtr = curPtr->b_cont;
-  }
+      prevblk = tmpblk;
+      curPtr = curPtr->b_cont;
+   }
 
-  if (tmpblk)
-  {
-	 tmpblk->b_cont = NULLP;
-  }
+   if (tmpblk)
+   {
+      tmpblk->b_cont = NULLP;
+   }
 
-  *minfoDst = *minfoSrc;
-  minfoDst->region = 0;
-  minfoDst->pool = 0;
-  minfoDst->len  = minfoSrc->len;
-  minfoDst->endptr  = tmpblk;
-  minfoDst->next = NULLP;
+   *minfoDst = *minfoSrc;
+   minfoDst->region = 0;
+   minfoDst->pool = 0;
+   minfoDst->len  = minfoSrc->len;
+   minfoDst->endptr  = tmpblk;
+   minfoDst->next = NULLP;
 
-  (*dstBuf)->b_cont = newblk;
+   (*dstBuf)->b_cont = newblk;
 
-  /* Free the source buffer after copying it */
-  SPutFpaMsg(srcBuf);
+   /* Free the source buffer after copying it */
+   SPutFpaMsg(srcBuf);
 
-  RETVALUE(ROK);
+   RETVALUE(ROK);
 
 } /* SCpyFpaMsg */
 
@@ -7154,168 +7154,168 @@ PUBLIC S16 SCpyFpaMsg (srcBuf, dstRegion, dstPool, dstBuf)
  *
  */
 #ifdef ANSI
-PUBLIC S16 SCpyMsgFpa
+   PUBLIC S16 SCpyMsgFpa
 (
  Buffer *srcBuf,
  Buffer **dstBuf
  )
 #else
 PUBLIC S16 SCpyMsgFpa (srcBuf, dstBuf)
-  Buffer *srcBuf;
-  Buffer **dstBuf;
+   Buffer *srcBuf;
+   Buffer **dstBuf;
 #endif
 {
 
-  Buffer     *curPtr = NULLP;
-  Data       *dat = NULLP;
-  Buffer     *tmpblk = NULLP;
-  Buffer     *prevblk = NULLP;
-  Buffer     *newblk = NULLP;
-  SsMsgInfo  *minfoSrc = NULLP;
-  SsMsgInfo  *minfoDst = NULLP;
-  SsDblk     *dblkPtr = NULLP;
-  SsDblk     *dptr = NULLP;
-  U32         numBytes;
-  Pool        pool;
+   Buffer     *curPtr = NULLP;
+   Data       *dat = NULLP;
+   Buffer     *tmpblk = NULLP;
+   Buffer     *prevblk = NULLP;
+   Buffer     *newblk = NULLP;
+   SsMsgInfo  *minfoSrc = NULLP;
+   SsMsgInfo  *minfoDst = NULLP;
+   SsDblk     *dblkPtr = NULLP;
+   SsDblk     *dptr = NULLP;
+   U32         numBytes;
+   Pool        pool;
 
-  TRC1(SCpyMsgFpa);
+   TRC1(SCpyMsgFpa);
 
 
-  if (srcBuf == (Buffer*)NULLP)
-  {
-	 RETVALUE(RFAILED);
-  }
+   if (srcBuf == (Buffer*)NULLP)
+   {
+      RETVALUE(RFAILED);
+   }
 
-  *dstBuf = (Buffer*)cvmx_fpa_alloc(SS_CVMX_POOL_0);
+   *dstBuf = (Buffer*)cvmx_fpa_alloc(SS_CVMX_POOL_0);
 
-  if ( *dstBuf == NULLP )
-  {
+   if ( *dstBuf == NULLP )
+   {
+      /* Free the source buffer before returning  */
+      SPutMsg(srcBuf);
+      RETVALUE(ROUTRES);
+   }
+
+   dat = (Data *)(*dstBuf) + MDBSIZE;
+   dptr = (SsDblk*) ((Data *)(*dstBuf) + MBSIZE);
+   numBytes = SS_CVMX_POOL_0_SIZE - MDBSIZE;
+
+   /* Initialize the pointers of new block */
+   INITB((*dstBuf), dptr, dat, numBytes, NULLP);
+
+   (*dstBuf)->b_datap->db_type = SS_M_PROTO;
+   (*dstBuf)->b_wptr = (*dstBuf)->b_rptr + sizeof(SsMsgInfo);
+
+   minfoSrc = (SsMsgInfo*) srcBuf->b_rptr;
+   minfoDst = (SsMsgInfo*) (*dstBuf)->b_rptr;
+   curPtr = srcBuf->b_cont;
+
+   while(curPtr)
+   {
+      dblkPtr = (SsDblk*)curPtr->b_datap;
+
+      /* Get the size required which is to be allocated */
+      numBytes = dblkPtr->db_lim - dblkPtr->db_base;
+      numBytes += MDBSIZE;
+
+      /* get the pool depending on the size need to be allocated */
+      switch(numBytes)
+      {
+	 case SS_CVMX_POOL_0_SIZE:
+
+	    pool = SS_CVMX_POOL_0;
+	    break;
+
+	 case SS_CVMX_POOL_1_SIZE:
+
+	    pool = SS_CVMX_POOL_1;
+	    break;
+
+	 case SS_CVMX_POOL_2_SIZE:
+
+	    pool = SS_CVMX_POOL_2;
+	    break;
+
+	 case SS_CVMX_POOL_3_SIZE:
+
+	    pool = SS_CVMX_POOL_3;
+	    break;
+
+	 default:
+	    /* size doesn't match, drop the mBuf and returning 
+	     * RFAILED */
+	    SSLOGERROR(ERRCLS_INT_PAR, ESS048, ERRZERO, "SCpyMsgFpa: Invalid\
+		  buffer size, dropping the message");
+
+	    (*dstBuf)->b_cont = newblk;
+	    SPutFpaMsg(*dstBuf);
+	    /* Free the source buffer before returning  */
+	    SPutMsg(srcBuf);
+	    RETVALUE(RFAILED);
+      }
+
+      /* Allocate for mBuf and copy both the header and contents */
+      tmpblk = (Buffer*)cvmx_fpa_alloc(pool);
+
+      if ( tmpblk == NULLP )
+      {
+	 /* Return error if fails to allocate memory */
+
+	 (*dstBuf)->b_cont = newblk;
+	 SPutFpaMsg(*dstBuf);
 	 /* Free the source buffer before returning  */
 	 SPutMsg(srcBuf);
 	 RETVALUE(ROUTRES);
-  }
+      }
 
-  dat = (Data *)(*dstBuf) + MDBSIZE;
-  dptr = (SsDblk*) ((Data *)(*dstBuf) + MBSIZE);
-  numBytes = SS_CVMX_POOL_0_SIZE - MDBSIZE;
+      dat = (Data *)tmpblk + MDBSIZE;
+      dptr = (SsDblk*) (((Data *) tmpblk) + MBSIZE);
+      numBytes -= MDBSIZE;
 
-  /* Initialize the pointers of new block */
-  INITB((*dstBuf), dptr, dat, numBytes, NULLP);
+      /* Initialize the pointers of new block */
+      INITB( tmpblk, dptr, dat, numBytes, NULLP );
 
-  (*dstBuf)->b_datap->db_type = SS_M_PROTO;
-  (*dstBuf)->b_wptr = (*dstBuf)->b_rptr + sizeof(SsMsgInfo);
+      numBytes = curPtr->b_wptr - curPtr->b_rptr;
+      /* Copy the message contents */
+      if (numBytes > 0 )
+      {
+	 SMemCpy( (Void *) tmpblk->b_wptr, (Void *) curPtr->b_rptr, numBytes);
+	 tmpblk->b_wptr += numBytes;
+      }
 
-  minfoSrc = (SsMsgInfo*) srcBuf->b_rptr;
-  minfoDst = (SsMsgInfo*) (*dstBuf)->b_rptr;
-  curPtr = srcBuf->b_cont;
+      /* Add the mew mBuf to the Buffer chain */
+      if (!prevblk)
+      {
+	 newblk = tmpblk;
+      }
+      else
+      {
+	 prevblk->b_cont = tmpblk;
+      }
 
-  while(curPtr)
-  {
-	 dblkPtr = (SsDblk*)curPtr->b_datap;
+      prevblk = tmpblk;
+      /* Get the next block */
+      curPtr = curPtr->b_cont;
+   }
 
-	 /* Get the size required which is to be allocated */
-	 numBytes = dblkPtr->db_lim - dblkPtr->db_base;
-	 numBytes += MDBSIZE;
+   /* Initialize the last mBuf */
+   if (tmpblk)
+   {
+      tmpblk->b_cont = NULLP;
+   }
 
-	 /* get the pool depending on the size need to be allocated */
-	 switch(numBytes)
-	 {
-		case SS_CVMX_POOL_0_SIZE:
+   *minfoDst = *minfoSrc;
+   minfoDst->region = 0;
+   minfoDst->pool = 0;
+   minfoDst->len  = minfoSrc->len;
+   minfoDst->endptr  = tmpblk;
+   minfoDst->next = NULLP;
 
-		  pool = SS_CVMX_POOL_0;
-		  break;
+   (*dstBuf)->b_cont = newblk;
 
-		case SS_CVMX_POOL_1_SIZE:
+   /* Free the source buffer after copying it */
+   SPutMsg(srcBuf);
 
-		  pool = SS_CVMX_POOL_1;
-		  break;
-
-		case SS_CVMX_POOL_2_SIZE:
-
-		  pool = SS_CVMX_POOL_2;
-		  break;
-
-		case SS_CVMX_POOL_3_SIZE:
-
-		  pool = SS_CVMX_POOL_3;
-		  break;
-
-		default:
-		  /* size doesn't match, drop the mBuf and returning 
-			* RFAILED */
-		  SSLOGERROR(ERRCLS_INT_PAR, ESS048, ERRZERO, "SCpyMsgFpa: Invalid\
-				buffer size, dropping the message");
-
-		  (*dstBuf)->b_cont = newblk;
-		  SPutFpaMsg(*dstBuf);
-		  /* Free the source buffer before returning  */
-		  SPutMsg(srcBuf);
-		  RETVALUE(RFAILED);
-	 }
-
-	 /* Allocate for mBuf and copy both the header and contents */
-	 tmpblk = (Buffer*)cvmx_fpa_alloc(pool);
-
-	 if ( tmpblk == NULLP )
-	 {
-		/* Return error if fails to allocate memory */
-
-		(*dstBuf)->b_cont = newblk;
-		SPutFpaMsg(*dstBuf);
-		/* Free the source buffer before returning  */
-		SPutMsg(srcBuf);
-		RETVALUE(ROUTRES);
-	 }
-
-	 dat = (Data *)tmpblk + MDBSIZE;
-	 dptr = (SsDblk*) (((Data *) tmpblk) + MBSIZE);
-	 numBytes -= MDBSIZE;
-
-	 /* Initialize the pointers of new block */
-	 INITB( tmpblk, dptr, dat, numBytes, NULLP );
-
-	 numBytes = curPtr->b_wptr - curPtr->b_rptr;
-	 /* Copy the message contents */
-	 if (numBytes > 0 )
-	 {
-		SMemCpy( (Void *) tmpblk->b_wptr, (Void *) curPtr->b_rptr, numBytes);
-		tmpblk->b_wptr += numBytes;
-	 }
-
-	 /* Add the mew mBuf to the Buffer chain */
-	 if (!prevblk)
-	 {
-		newblk = tmpblk;
-	 }
-	 else
-	 {
-		prevblk->b_cont = tmpblk;
-	 }
-
-	 prevblk = tmpblk;
-	 /* Get the next block */
-	 curPtr = curPtr->b_cont;
-  }
-
-  /* Initialize the last mBuf */
-  if (tmpblk)
-  {
-	 tmpblk->b_cont = NULLP;
-  }
-
-  *minfoDst = *minfoSrc;
-  minfoDst->region = 0;
-  minfoDst->pool = 0;
-  minfoDst->len  = minfoSrc->len;
-  minfoDst->endptr  = tmpblk;
-  minfoDst->next = NULLP;
-
-  (*dstBuf)->b_cont = newblk;
-
-  /* Free the source buffer after copying it */
-  SPutMsg(srcBuf);
-
-  RETVALUE(ROK);
+   RETVALUE(ROK);
 
 } /* SCpyMsgFpa */
 
@@ -7337,68 +7337,68 @@ PUBLIC S16 SCpyMsgFpa (srcBuf, dstBuf)
  *
  */
 #ifdef ANSI
-PUBLIC S16 SPutFpaMsg
+   PUBLIC S16 SPutFpaMsg
 (
  Buffer *fpaBuf
-)
+ )
 #else
 PUBLIC S16 SPutFpaMsg(fpaBuf)
-Buffer *fpaBuf;
+   Buffer *fpaBuf;
 #endif
 {
-  U16      size;
-  Buffer   *curBlk;
-  Buffer   *nextBlk;
-  SsDblk   *dblkPtr;
+   U16      size;
+   Buffer   *curBlk;
+   Buffer   *nextBlk;
+   SsDblk   *dblkPtr;
 
-  TRC1(SPutFpaMsg);
+   TRC1(SPutFpaMsg);
 
-  if( fpaBuf == NULLP )
-  {
-	 RETVALUE(ROK);
-  }
+   if( fpaBuf == NULLP )
+   {
+      RETVALUE(ROK);
+   }
 
-  curBlk = fpaBuf->b_cont;
+   curBlk = fpaBuf->b_cont;
 
-  while(curBlk)
-  {
-	 nextBlk = curBlk->b_cont;
+   while(curBlk)
+   {
+      nextBlk = curBlk->b_cont;
 
-	 dblkPtr = (SsDblk*)curBlk->b_datap;
+      dblkPtr = (SsDblk*)curBlk->b_datap;
 
-	 size = dblkPtr->db_lim - dblkPtr->db_base + MDBSIZE;
+      size = dblkPtr->db_lim - dblkPtr->db_base + MDBSIZE;
 
-	 /* Free the dblock according to its size */
-	 switch(size)
-	 {
-		case SS_CVMX_POOL_0_SIZE:
-		  cvmx_fpa_free(curBlk, SS_CVMX_POOL_0, 0);
-		  break;
+      /* Free the dblock according to its size */
+      switch(size)
+      {
+	 case SS_CVMX_POOL_0_SIZE:
+	    cvmx_fpa_free(curBlk, SS_CVMX_POOL_0, 0);
+	    break;
 
-		case SS_CVMX_POOL_1_SIZE:
-		  cvmx_fpa_free(curBlk, SS_CVMX_POOL_1, 0);
-		  break;
+	 case SS_CVMX_POOL_1_SIZE:
+	    cvmx_fpa_free(curBlk, SS_CVMX_POOL_1, 0);
+	    break;
 
-		case SS_CVMX_POOL_2_SIZE:
-		  cvmx_fpa_free(curBlk, SS_CVMX_POOL_2, 0);
-		  break;
+	 case SS_CVMX_POOL_2_SIZE:
+	    cvmx_fpa_free(curBlk, SS_CVMX_POOL_2, 0);
+	    break;
 
-		case SS_CVMX_POOL_3_SIZE:
-		  cvmx_fpa_free(curBlk, SS_CVMX_POOL_3, 0);
-		  break;
+	 case SS_CVMX_POOL_3_SIZE:
+	    cvmx_fpa_free(curBlk, SS_CVMX_POOL_3, 0);
+	    break;
 
-		default:
-		  SSLOGERROR(ERRCLS_INT_PAR, ESS048, ERRZERO, "SPutFpaMsg: Invalid\
-				buffer size, dropping the message");
-		  break;
-	 }
+	 default:
+	    SSLOGERROR(ERRCLS_INT_PAR, ESS048, ERRZERO, "SPutFpaMsg: Invalid\
+		  buffer size, dropping the message");
+	    break;
+      }
 
-	 curBlk = nextBlk;
-  }
+      curBlk = nextBlk;
+   }
 
-  cvmx_fpa_free(fpaBuf, SS_CVMX_POOL_0, 0);
+   cvmx_fpa_free(fpaBuf, SS_CVMX_POOL_0, 0);
 
-  RETVALUE(ROK);
+   RETVALUE(ROK);
 
 } /* SPutFpaMsg */
 
@@ -7406,37 +7406,37 @@ Buffer *fpaBuf;
 
 /* ss006.301 : new buffer management APIs, start */
 /*
-*
-*       Fun:   SCpyPartMsg
-*
-*       Desc:  This function is used to copy a portion of message(srcBuf) into
-*              another msg(dstBuf)
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional) - In this case
-*                         caller shall reclaim the resources allocated for dstBuf.
-*
-*       Notes: None
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SCpyPartMsg
+ *
+ *       Desc:  This function is used to copy a portion of message(srcBuf) into
+ *              another msg(dstBuf)
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional) - In this case
+ *                         caller shall reclaim the resources allocated for dstBuf.
+ *
+ *       Notes: None
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef ANSI
-PUBLIC S16 SCpyPartMsg
+   PUBLIC S16 SCpyPartMsg
 (
-Buffer *srcBuf,
-MsgLen idx,
-MsgLen cnt,
-Buffer *dstBuf
-)
+ Buffer *srcBuf,
+ MsgLen idx,
+ MsgLen cnt,
+ Buffer *dstBuf
+ )
 #else
 PUBLIC S16 SCpyPartMsg(srcBuf, idx, cnt, dstBuf)
-Buffer *srcBuf;
-MsgLen idx;
-MsgLen cnt;
-Buffer *dstBuf;
+   Buffer *srcBuf;
+   MsgLen idx;
+   MsgLen cnt;
+   Buffer *dstBuf;
 #endif
 {
    SsMsgInfo *sMinfo;
@@ -7447,19 +7447,19 @@ Buffer *dstBuf;
    MsgLen    sCnt;
    MsgLen    dCnt;
    MsgLen    numCpd;
- 
+
    TRC1(SCpyPartMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!srcBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Null src Buffer");
-      RETVALUE(RFAILED);
-   }
+      if (!srcBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Null src Buffer");
+	 RETVALUE(RFAILED);
+      }
    if (srcBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Incorrect\
-                                                   src buffer type");
+	    src buffer type");
       RETVALUE(RFAILED);
    }
    if(!dstBuf)
@@ -7470,7 +7470,7 @@ Buffer *dstBuf;
    if (dstBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Incorrect\
-                                                   dst buffer type");
+	    dst buffer type");
       RETVALUE(RFAILED);
    }
 #endif /* (ERRCLASS & ERRCLS_INT_PAR) */
@@ -7482,15 +7482,15 @@ Buffer *dstBuf;
    if (idx >= sMinfo->len)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SCpyPartMsg : Incorrect\
-                                                   idx value ");
+	    idx value ");
       RETVALUE(RFAILED);
    }
 
    sBuf = srcBuf->b_cont;
    FIND_OFFSET(sBuf, idx)
 
-   dPrev = dstBuf;
-/*-- ss008.301 */
+      dPrev = dstBuf;
+   /*-- ss008.301 */
    dBuf = (dMinfo->endptr) ? (dMinfo->endptr) : (dstBuf->b_cont);
    if(dMinfo->endptr)
    {
@@ -7498,8 +7498,8 @@ Buffer *dstBuf;
       crnt = dPrev->b_cont;
       while(crnt)
       {
-         dPrev = crnt;
-         crnt = crnt->b_cont;
+	 dPrev = crnt;
+	 crnt = crnt->b_cont;
       }
    }
    dCnt = 0;
@@ -7509,62 +7509,62 @@ Buffer *dstBuf;
       sCnt = sBuf->b_wptr - (sBuf->b_rptr + idx);
       if(dBuf)
       {
-         dCnt = dBuf->b_datap->db_lim - dBuf->b_wptr;
+	 dCnt = dBuf->b_datap->db_lim - dBuf->b_wptr;
       }
       else
       {
-         /* allocate a data buffer */
-         if (SGetDBuf(dMinfo->region, dMinfo->pool, &dBuf) != ROK)
-         {
-            SSLOGERROR(ERRCLS_DEBUG, ESS125, ERRZERO, "SCpyPartMsg : SGetDBuf\
-                 failed");
-            RETVALUE(ROUTRES);
-         }
-         dCnt = MIN(cnt, (dBuf->b_datap->db_lim - dBuf->b_datap->db_base));
-         dPrev->b_cont = dBuf;
-         dPrev = dBuf;
+	 /* allocate a data buffer */
+	 if (SGetDBuf(dMinfo->region, dMinfo->pool, &dBuf) != ROK)
+	 {
+	    SSLOGERROR(ERRCLS_DEBUG, ESS125, ERRZERO, "SCpyPartMsg : SGetDBuf\
+		  failed");
+	    RETVALUE(ROUTRES);
+	 }
+	 dCnt = MIN(cnt, (dBuf->b_datap->db_lim - dBuf->b_datap->db_base));
+	 dPrev->b_cont = dBuf;
+	 dPrev = dBuf;
       }
       if(sCnt > cnt) /* src Dblk has enough data to copy */
       {
-         if(dCnt < cnt)
-         {
-            SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr + idx), dCnt);
-            cnt -= dCnt;
-            dBuf->b_wptr += dCnt;
-            dBuf = dBuf->b_cont;
-            idx += dCnt;
-            numCpd += dCnt;
-         }
-         else
-         {
-            SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr + idx), cnt);
-            dBuf->b_wptr += cnt;
-            dBuf->b_cont = NULLP;
-            numCpd += cnt;
-            cnt = 0;
-            break;
-         }
+	 if(dCnt < cnt)
+	 {
+	    SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr + idx), dCnt);
+	    cnt -= dCnt;
+	    dBuf->b_wptr += dCnt;
+	    dBuf = dBuf->b_cont;
+	    idx += dCnt;
+	    numCpd += dCnt;
+	 }
+	 else
+	 {
+	    SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr + idx), cnt);
+	    dBuf->b_wptr += cnt;
+	    dBuf->b_cont = NULLP;
+	    numCpd += cnt;
+	    cnt = 0;
+	    break;
+	 }
       }
       else /* src dBlk has partial data to be copied */
       {
-         if(dCnt < sCnt)
-         {
-            SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr + idx), dCnt);
-            dBuf->b_wptr += dCnt;
-            dBuf = dBuf->b_cont;
-            cnt -= dCnt;
-            idx += dCnt;
-            numCpd += dCnt;
-         }
-         else
-         {
-            SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr + idx), sCnt);
-            dBuf->b_wptr += sCnt;
-            cnt -= sCnt;
-            sBuf = sBuf->b_cont;
-            numCpd += sCnt;
-            idx = 0;
-         }
+	 if(dCnt < sCnt)
+	 {
+	    SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr + idx), dCnt);
+	    dBuf->b_wptr += dCnt;
+	    dBuf = dBuf->b_cont;
+	    cnt -= dCnt;
+	    idx += dCnt;
+	    numCpd += dCnt;
+	 }
+	 else
+	 {
+	    SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr + idx), sCnt);
+	    dBuf->b_wptr += sCnt;
+	    cnt -= sCnt;
+	    sBuf = sBuf->b_cont;
+	    numCpd += sCnt;
+	    idx = 0;
+	 }
       }
    }
    /* update the msgLen in dstBuf */
@@ -7575,35 +7575,35 @@ Buffer *dstBuf;
 }
 
 /*
-*
-*       Fun:   SRepPartMsg
-*
-*       Desc:  This function is used to replace a portion of message(mBuf) with the
-*              given data
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: None
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SRepPartMsg
+ *
+ *       Desc:  This function is used to replace a portion of message(mBuf) with the
+ *              given data
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef ANSI
-PUBLIC S16 SRepPartMsg
+   PUBLIC S16 SRepPartMsg
 (
-Buffer *srcBuf,
-MsgLen idx,
-MsgLen cnt,
-Buffer *dstBuf
-)
+ Buffer *srcBuf,
+ MsgLen idx,
+ MsgLen cnt,
+ Buffer *dstBuf
+ )
 #else
 PUBLIC S16 SRepPartMsg(srcBuf, idx, cnt, dstBuf)
-Buffer *srcBuf;
-MsgLen idx;
-MsgLen cnt;
-Buffer *dstBuf;
+   Buffer *srcBuf;
+   MsgLen idx;
+   MsgLen cnt;
+   Buffer *dstBuf;
 #endif
 {
    SsMsgInfo *sMinfo;
@@ -7618,15 +7618,15 @@ Buffer *dstBuf;
    TRC1(SRepPartMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (!dstBuf)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Null dstBuf");
-      RETVALUE(RFAILED);
-   }
+      if (!dstBuf)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Null dstBuf");
+	 RETVALUE(RFAILED);
+      }
    if (dstBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Incorrect\
-                                                   dstBuf buffer type");
+	    dstBuf buffer type");
       RETVALUE(RFAILED);
    }
    if(!srcBuf)
@@ -7637,7 +7637,7 @@ Buffer *dstBuf;
    if (srcBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Incorrect\
-                                                   sBuf buffer type");
+	    sBuf buffer type");
       RETVALUE(RFAILED);
    }
 #endif  /* (ERRCLASS & ERRCLS_INT_PAR) */
@@ -7648,13 +7648,13 @@ Buffer *dstBuf;
    if(((idx + cnt) > dMinfo->len) || (cnt < sMinfo->len))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : Incorrect\
-                                                   cnt value ");
+	    cnt value ");
       RETVALUE(RFAILED);
    }
 
    dBuf = dstBuf->b_cont;
    FIND_OFFSET(dBuf, idx)
-   sBuf = srcBuf->b_cont;
+      sBuf = srcBuf->b_cont;
    sIdx = 0;
    while(cnt && dBuf && sBuf)
    {
@@ -7663,35 +7663,35 @@ Buffer *dstBuf;
       cpBytes = MIN(cnt, sCnt);
       cpBytes = MIN(cpBytes, dCnt);
       SMemCpy((void*)(dBuf->b_rptr + idx), (void*)(sBuf->b_rptr + sIdx), cpBytes);
-      
+
       if(cpBytes < cnt)
       {
-         if(cpBytes == sCnt)
-         {
-            /* move to next DBlk in srcBuf */
-            sBuf = sBuf->b_cont;
-            idx += cpBytes;
-            sIdx = 0;
-         }
-         else /* cpBytes equals dCnt */
-         {
-            /* move to the next DBlk in dstBuf */
-            dBuf = dBuf->b_cont;
-            idx = 0;
-            sIdx += cpBytes;
-         }
-         cnt -= cpBytes;
+	 if(cpBytes == sCnt)
+	 {
+	    /* move to next DBlk in srcBuf */
+	    sBuf = sBuf->b_cont;
+	    idx += cpBytes;
+	    sIdx = 0;
+	 }
+	 else /* cpBytes equals dCnt */
+	 {
+	    /* move to the next DBlk in dstBuf */
+	    dBuf = dBuf->b_cont;
+	    idx = 0;
+	    sIdx += cpBytes;
+	 }
+	 cnt -= cpBytes;
       }
       else
       {
-         cnt = 0;
-         break;
+	 cnt = 0;
+	 break;
       }
    }
    if(cnt)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SRepPartMsg : unable to replace\
-                                                    some bytes ");
+	    some bytes ");
       RETVALUE(RFAILED);
    }
 
@@ -7699,52 +7699,52 @@ Buffer *dstBuf;
 }
 
 /*
-*
-*       Fun:   SMovPartMsg
-*
-*       Desc:  This function will move a portion of the first msg to second msg
-*
-*       Ret:   ROK     - ok
-*              ROKDNA  - ok, data not available
-*              RFAILED - failed, general (optional)
-*              ROUTRES - failed, out of resources (optional)
-*
-*       Notes: message 1 is the message from which the segment will be copied 
-*
-*              message 2 is the updated message.
-*
-*              index is 0 based and indicates location in message 1
-*              up to which the data will be copied to message 2 
-*
-*              if index is equal to 0, message 1 will not be changed and no data 
-               shall be copied to message 2.
-*              message 1 is not returned to memory. return is ok.
-*
-*              if index is not equal to 0 and less than the length of
-*              the message minus 1: data upto index, shall be copied to message 2 
-*              and read/write pointers of message 1 will be updated accordingly              
-*
-*              if index is not equal to 0 and greater than or equal to
-*              the length of the message minus 1: all of the message 1 data.
-*              shall be copied to message 2. return is ok.
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SMovPartMsg
+ *
+ *       Desc:  This function will move a portion of the first msg to second msg
+ *
+ *       Ret:   ROK     - ok
+ *              ROKDNA  - ok, data not available
+ *              RFAILED - failed, general (optional)
+ *              ROUTRES - failed, out of resources (optional)
+ *
+ *       Notes: message 1 is the message from which the segment will be copied 
+ *
+ *              message 2 is the updated message.
+ *
+ *              index is 0 based and indicates location in message 1
+ *              up to which the data will be copied to message 2 
+ *
+ *              if index is equal to 0, message 1 will not be changed and no data 
+ shall be copied to message 2.
+ *              message 1 is not returned to memory. return is ok.
+ *
+ *              if index is not equal to 0 and less than the length of
+ *              the message minus 1: data upto index, shall be copied to message 2 
+ *              and read/write pointers of message 1 will be updated accordingly              
+ *
+ *              if index is not equal to 0 and greater than or equal to
+ *              the length of the message minus 1: all of the message 1 data.
+ *              shall be copied to message 2. return is ok.
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 
 #ifdef ANSI
-PUBLIC S16 SMovPartMsg
+   PUBLIC S16 SMovPartMsg
 (
-Buffer *srcBuf,              /* message 1 */
-MsgLen idx,                 /* index */
-Buffer *dstBuf              /* message 2 */
-)
+ Buffer *srcBuf,              /* message 1 */
+ MsgLen idx,                 /* index */
+ Buffer *dstBuf              /* message 2 */
+ )
 #else
 PUBLIC S16 SMovPartMsg(srcBuf, idx, dstBuf)
-Buffer *srcBuf;              /* message 1 */
-MsgLen idx;                 /* index */
-Buffer *dstBuf;             /* message 2 */
+   Buffer *srcBuf;              /* message 1 */
+   MsgLen idx;                 /* index */
+   Buffer *dstBuf;             /* message 2 */
 #endif
 {
    MsgLen     dCnt;
@@ -7762,12 +7762,12 @@ Buffer *dstBuf;             /* message 2 */
    TRC1(SMovPartMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer 1 */
-   if ((!srcBuf) || (!dstBuf ))
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS097, ERRZERO, "SMovPartMsg : Null Buffer (src or Dst)");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer 1 */
+      if ((!srcBuf) || (!dstBuf ))
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS097, ERRZERO, "SMovPartMsg : Null Buffer (src or Dst)");
+	 RETVALUE(RFAILED);
+      }
    if (idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS099, ERRZERO, "SMovPartMsg : Invalid index");
@@ -7776,7 +7776,7 @@ Buffer *dstBuf;             /* message 2 */
    if ((srcBuf->b_datap->db_type != SS_M_PROTO) || (dstBuf->b_datap->db_type != SS_M_PROTO)) 
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS100, ERRZERO, "SMovPartMsg : Incorrect buffer\
-                                                   type");
+	    type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -7808,63 +7808,63 @@ Buffer *dstBuf;             /* message 2 */
       sCnt = sBuf->b_wptr - sBuf->b_rptr;
       if(!dBuf)
       {
-         /* allocate a data buffer */
-         if (SGetDBuf(dMinfo->region, dMinfo->pool, &dBuf) != ROK)
-         {
-            SSLOGERROR(ERRCLS_DEBUG, ESS125, ERRZERO, "SCpyMsgPartMsg : SGetDBuf\
-                 failed");
-            RETVALUE(ROUTRES);
-         }
-         dCnt = MIN(idx, (dBuf->b_datap->db_lim - dBuf->b_datap->db_base));
-         dPrev->b_cont = dBuf;
-         dPrev = dBuf;
+	 /* allocate a data buffer */
+	 if (SGetDBuf(dMinfo->region, dMinfo->pool, &dBuf) != ROK)
+	 {
+	    SSLOGERROR(ERRCLS_DEBUG, ESS125, ERRZERO, "SCpyMsgPartMsg : SGetDBuf\
+		  failed");
+	    RETVALUE(ROUTRES);
+	 }
+	 dCnt = MIN(idx, (dBuf->b_datap->db_lim - dBuf->b_datap->db_base));
+	 dPrev->b_cont = dBuf;
+	 dPrev = dBuf;
       }
       else
       {
-         dCnt = dBuf->b_datap->db_lim - dBuf->b_wptr;
+	 dCnt = dBuf->b_datap->db_lim - dBuf->b_wptr;
       }
       if(sCnt > idx) /* src Dblk has enough data to copy */
       {
-         if(dCnt < idx)
-         {
-            SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr), dCnt);
-            dBuf->b_wptr += dCnt;
-            dBuf = dBuf->b_cont;
-            idx -= dCnt;
-            sBuf->b_rptr += dCnt;
-         }
-         else
-         {
-            SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr), idx);
-            dBuf->b_wptr += idx;
-            dBuf->b_cont = NULLP;
-            sBuf->b_rptr += idx;
-            idx = 0;
-            break;
-         }
+	 if(dCnt < idx)
+	 {
+	    SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr), dCnt);
+	    dBuf->b_wptr += dCnt;
+	    dBuf = dBuf->b_cont;
+	    idx -= dCnt;
+	    sBuf->b_rptr += dCnt;
+	 }
+	 else
+	 {
+	    SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr), idx);
+	    dBuf->b_wptr += idx;
+	    dBuf->b_cont = NULLP;
+	    sBuf->b_rptr += idx;
+	    idx = 0;
+	    break;
+	 }
       }
       else /* src dBlk has partial data to be copied */
       {
-         if(dCnt < sCnt)
-         {
-            SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr), dCnt);
-            dBuf->b_wptr += dCnt;
-            dBuf = dBuf->b_cont;
-            idx -= dCnt;
-            sBuf->b_rptr += dCnt;
-         }
-         else
-         {
-            Buffer *tmp;
-            SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr), sCnt);
-            dBuf->b_wptr += sCnt;
-            idx -= sCnt;
-            /* deallocate the sBuf here */
-            tmp = sBuf->b_cont;
-            /* printf("SMovPartMsg() sBuf is completely copied sBuf->b_cont(%p)\n", sBuf->b_cont); */
-            (Void)SPutDBuf(sMinfo->region, sMinfo->pool, sBuf);
-            srcBuf->b_cont = sBuf = tmp;
-         }
+	 if(dCnt < sCnt)
+	 {
+	    SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr), dCnt);
+	    dBuf->b_wptr += dCnt;
+	    dBuf = dBuf->b_cont;
+	    idx -= dCnt;
+	    sBuf->b_rptr += dCnt;
+	 }
+	 else
+	 {
+	    Buffer *tmp;
+	    SMemCpy((void*)dBuf->b_wptr, (void*)(sBuf->b_rptr), sCnt);
+	    dBuf->b_wptr += sCnt;
+	    idx -= sCnt;
+	    /* deallocate the sBuf here */
+	    tmp = sBuf->b_cont;
+	    /* printf("SMovPartMsg() sBuf is completely copied sBuf->b_cont(%p)\n", sBuf->b_cont); */
+	    (Void)SPutDBuf(sMinfo->region, sMinfo->pool, sBuf);
+	    srcBuf->b_cont = sBuf = tmp;
+	 }
       }
    }
    dMinfo->endptr = dBuf;
@@ -7873,7 +7873,7 @@ Buffer *dstBuf;             /* message 2 */
       sMinfo->len += idx;
       dMinfo->len -= idx;
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SMovPartMsg : unable to copy\
-                                                    some bytes ");
+	    some bytes ");
       RETVALUE(RFAILED);
    }
 
@@ -7881,45 +7881,45 @@ Buffer *dstBuf;             /* message 2 */
 }
 
 /*
-*
-*       Fun:   SPkMsgMult
-*
-*       Desc:  This function copies consecutive bytes of data to the
-*              beginning of a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: if message is empty: data is placed in the message. message
-*              length is incremented. return is ok.
-*
-*              if message is not empty: data is read by source pointer,
-*              data is placed in front of all other data in message.
-*              message length is incremented. return is ok.
-*
-*              the first byte of data pointed to by the source pointer 
-*              will be placed at the front of the message first (i.e. it 
-*              will become the first byte of the message) and the last 
-*              byte will be placed in front of the existing msg contents,
-*              i.e. order of the source is preserved.
-*
-*       File:  ss_msg.c
-*
-*/
- 
+ *
+ *       Fun:   SPkMsgMult
+ *
+ *       Desc:  This function copies consecutive bytes of data to the
+ *              beginning of a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: if message is empty: data is placed in the message. message
+ *              length is incremented. return is ok.
+ *
+ *              if message is not empty: data is read by source pointer,
+ *              data is placed in front of all other data in message.
+ *              message length is incremented. return is ok.
+ *
+ *              the first byte of data pointed to by the source pointer 
+ *              will be placed at the front of the message first (i.e. it 
+ *              will become the first byte of the message) and the last 
+ *              byte will be placed in front of the existing msg contents,
+ *              i.e. order of the source is preserved.
+ *
+ *       File:  ss_msg.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SPkMsgMult
+   PUBLIC S16 SPkMsgMult
 (
-Data *src,
-MsgLen cnt,
-Buffer *mBuf
-)
+ Data *src,
+ MsgLen cnt,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 SPkMsgMult(src, cnt, mBuf)
-Data *src;
-MsgLen cnt;
-Buffer *mBuf;
+   Data *src;
+   MsgLen cnt;
+   Buffer *mBuf;
 #endif
 {
    SsMsgInfo *minfo;   /* Message info */
@@ -7931,12 +7931,12 @@ Buffer *mBuf;
    TRC1(SPkMsgMult)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check message buffer */
-   if (mBuf == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS070, ERRZERO, "SPkMsgMult:Null Buffer");
-      RETVALUE(RFAILED);
-   }
+      /* check message buffer */
+      if (mBuf == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS070, ERRZERO, "SPkMsgMult:Null Buffer");
+	 RETVALUE(RFAILED);
+      }
    /* check source */
    if (src == NULLP)
    {
@@ -7947,13 +7947,13 @@ Buffer *mBuf;
    if (cnt <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS072, ERRZERO, "SPkMsgMult: Invalid\
-                                                   count");
+	    count");
       RETVALUE(RFAILED);
    }
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS073, ERRZERO, "SPkMsgMult: Incorrect\
-                                                   buffer type");
+	    buffer type");
       RETVALUE(RFAILED);
    }
 #endif
@@ -7961,11 +7961,11 @@ Buffer *mBuf;
    /* get the SsMsgInfo of mBuf */
    minfo = (SsMsgInfo*) mBuf->b_rptr;
 
-/* ss014.13: Addition */
+   /* ss014.13: Addition */
    offset = 0;
 
    if ((tmp = mBuf->b_cont) && (tmp->b_datap->db_ref == 1) &&
-       (tmp->b_datap->db_base < tmp->b_rptr))
+	 (tmp->b_datap->db_base < tmp->b_rptr))
    {
       /* store the offset of the read pointer of tmp */
       offset = tmp->b_rptr - tmp->b_datap->db_base;
@@ -7983,7 +7983,7 @@ Buffer *mBuf;
       minfo->len += numBytes;
       if (!cnt)
       {
-         RETVALUE(ROK);
+	 RETVALUE(ROK);
       }
    }
 
@@ -7991,7 +7991,7 @@ Buffer *mBuf;
    newblk = NULLP;
    if (ssGetDBufOfSize(minfo->region, cnt, &newblk) != ROK)
    {
-       RETVALUE(ROUTRES);
+      RETVALUE(ROUTRES);
    }
    newblk->b_datap->db_type = SS_M_DATA;
    newblk->b_rptr = newblk->b_datap->db_lim - cnt;
@@ -8007,34 +8007,34 @@ Buffer *mBuf;
 }
 /* ss006.301 : new buffer management APIs, end */
 /*
-*
-*       Fun:   SGetReadPtr 
-*
-*       Desc:  This function retunrs the pointer to the read the message from mBuf
-*              
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: 
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SGetReadPtr 
+ *
+ *       Desc:  This function retunrs the pointer to the read the message from mBuf
+ *              
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: 
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SGetReadPtr
+   PUBLIC S16 SGetReadPtr
 (
  Buffer *mBuf, 
  U8** data, 
  MsgLen *len
-)
+ )
 #else
 PUBLIC S16 SGetReadPtr (mBuf, data, len)
-Buffer *mBuf; 
-U8** data; 
-MsgLen *len;
+   Buffer *mBuf; 
+   U8** data; 
+   MsgLen *len;
 #endif 
 {
-/*   Buffer       *tmp; */
+   /*   Buffer       *tmp; */
 
    if (mBuf && mBuf->b_cont)
    {
@@ -8051,52 +8051,52 @@ MsgLen *len;
 }
 #ifdef SS_USE_ZBC_MEMORY
 /*
-*
-*       Fun:   SAttachPtrToBuf 
-*
-*       Desc:  This function attaches the Pointer provided into a new
-*              message buffer after allocating the same. It allocates
-*              header (M-Block) and an additional dBuf (D-Block) and attaches
-*              the provided pointer to it.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: 
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAttachPtrToBuf 
+ *
+ *       Desc:  This function attaches the Pointer provided into a new
+ *              message buffer after allocating the same. It allocates
+ *              header (M-Block) and an additional dBuf (D-Block) and attaches
+ *              the provided pointer to it.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: 
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SAttachPtrToBufNew
+   PUBLIC S16 SAttachPtrToBufNew
 (
-Region   region,
-Pool     pool,
-Data    *ptr,
-MsgLen   totalLen,
-Buffer** mBuf,
-char* file,
-U32 line
-)
+ Region   region,
+ Pool     pool,
+ Data    *ptr,
+ MsgLen   totalLen,
+ Buffer** mBuf,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SAttachPtrToBuf
+   PUBLIC S16 SAttachPtrToBuf
 (
-Region   region,
-Pool     pool,
-Data    *ptr,
-MsgLen   totalLen,
-Buffer** mBuf
-)
+ Region   region,
+ Pool     pool,
+ Data    *ptr,
+ MsgLen   totalLen,
+ Buffer** mBuf
+ )
 #else
 PUBLIC S16 SAttachPtrToBuf(region, pool, ptr, totalLen, mBuf)
-Region   region;
-Pool     pool;
-Data    *ptr;
-MsgLen   totalLen;
-Buffer** mBuf;
+   Region   region;
+   Pool     pool;
+   Data    *ptr;
+   MsgLen   totalLen;
+   Buffer** mBuf;
 #endif
 #endif
 {
@@ -8109,11 +8109,11 @@ Buffer** mBuf;
    TRC1(SAttachPtrToBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (ptr == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: Null PTR");
-      RETVALUE(RFAILED);
-   }
+      if (ptr == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: Null PTR");
+	 RETVALUE(RFAILED);
+      }
 #endif
 
 #ifdef XEON_SPECIFIC_CHANGES
@@ -8130,13 +8130,13 @@ Buffer** mBuf;
 #ifdef SS_HISTOGRAM_SUPPORT 
    if (SAlloc(region, &mdsize, 0, (Data **) &newblk, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
 #else
-   if (SAlloc(region, &mdsize, 0, (Data **) &newblk) != ROK)
+      if (SAlloc(region, &mdsize, 0, (Data **) &newblk) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
-   {
-       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SAlloc Failed");
-       SPutMsg(*mBuf);
-       RETVALUE(ROUTRES);
-   }
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SAlloc Failed");
+	 SPutMsg(*mBuf);
+	 RETVALUE(ROUTRES);
+      }
 
    (*mBuf)->b_cont = newblk;
 
@@ -8145,7 +8145,7 @@ Buffer** mBuf;
    INITB((newblk), dptr, (Data*) NULL, 0, NULLP)
 
 
-   newblk->b_datap->db_base = ptr;
+      newblk->b_datap->db_base = ptr;
    newblk->b_datap->db_lim = ptr + totalLen;
    newblk->b_rptr = newblk->b_datap->db_base;
    newblk->b_wptr = newblk->b_rptr + totalLen;
@@ -8168,49 +8168,49 @@ Buffer** mBuf;
 }
 
 /*
-*
-*       Fun:   SPutZbcDBuf
-*
-*       Desc:  This function deallocates a buffer back to the
-*              dynamic memory pool which is allocated for ZBC
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SPutZbcDBuf
+ *
+ *       Desc:  This function deallocates a buffer back to the
+ *              dynamic memory pool which is allocated for ZBC
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_msg.c
+ *
+ */
 
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16 SPutZbcDBufNew
+   PRIVATE S16 SPutZbcDBufNew
 (
-Region region,
-Buffer *buf,
-char* file,
-U32 line
-)
+ Region region,
+ Buffer *buf,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PRIVATE S16 SPutZbcDBuf
+   PRIVATE S16 SPutZbcDBuf
 (
-Region region,
-Buffer *buf
-)
+ Region region,
+ Buffer *buf
+ )
 #else
 PRIVATE S16 SPutZbcDBuf(region, buf)
-Region region;
-Buffer *buf;
+   Region region;
+   Buffer *buf;
 #endif
 #endif
 {
    register SsDblk *dptr;
    MsgLen          bufLen;
    S16             ret = ROK;
- 
+
    TRC2(SPutZbcDBuf);
- 
+
    dptr = buf->b_datap; 
    /* Get the length of the buffer */
    bufLen = buf->b_datap->db_lim - buf->b_datap->db_base;
@@ -8219,15 +8219,15 @@ Buffer *buf;
    if(!dptr->shared)
    {
 #ifndef SS_DBUF_REFLOCK_DISABLE
-       SDestroyLock(&dptr->dBufLock);
+      SDestroyLock(&dptr->dBufLock);
 #endif
 
-       /* Free the ZBC buffer first and then free the block allocated for the 
-        * D-Block */
+      /* Free the ZBC buffer first and then free the block allocated for the 
+       * D-Block */
 
 #ifdef SS_HISTOGRAM_SUPPORT 
       ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen, __LINE__, 
-                  (U8*) __FILE__, ENTNC);
+	    (U8*) __FILE__, ENTNC);
 #else
       ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -8235,7 +8235,7 @@ Buffer *buf;
       /* if the data block is not shared, free the buffer, checks not reqd */
 #ifdef SS_HISTOGRAM_SUPPORT 
       ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, 
-                  ENTNC);
+	    ENTNC);
 #else
       ret =  SFree(region, (Data *) buf, MDBSIZE);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -8245,48 +8245,48 @@ Buffer *buf;
    else
    {
 #ifndef SS_DBUF_REFLOCK_DISABLE
-        if((ret=SLock(&dptr->dBufLock)))
-   	{
-      	   SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,
-                "Could not lock the mBuf Ref Lock");
-      	   RETVALUE(RFAILED);
-   	}
+      if((ret=SLock(&dptr->dBufLock)))
+      {
+	 SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,
+	       "Could not lock the mBuf Ref Lock");
+	 RETVALUE(RFAILED);
+      }
 #endif
       --dptr->db_ref;
       /* if buffer's message blk is obtained during dupb */
       if (buf != (SsMblk *) (((Data*) dptr) - MBSIZE))
       {
 #ifdef SS_HISTOGRAM_SUPPORT 
-         ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, ENTNC);
+	 ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, ENTNC);
 #else
-         ret = SFree(region, (Data *) buf, MDBSIZE);
+	 ret = SFree(region, (Data *) buf, MDBSIZE);
 #endif /* SS_HISTOGRAM_SUPPORT */
-         buf = (SsMblk *) (((Data*) dptr) - MBSIZE);
+	 buf = (SsMblk *) (((Data*) dptr) - MBSIZE);
       }
       /* if reference count falls to zero */
       if (!dptr->db_ref)
       {
 #ifndef SS_DBUF_REFLOCK_DISABLE
-         ret = SUnlock(&dptr->dBufLock) ;
-         if((SDestroyLock(&dptr->dBufLock)) != 0)
-         {
-             printf("Falied to destroy lock\n");
-         }
+	 ret = SUnlock(&dptr->dBufLock) ;
+	 if((SDestroyLock(&dptr->dBufLock)) != 0)
+	 {
+	    printf("Falied to destroy lock\n");
+	 }
 #endif
 #ifdef SS_HISTOGRAM_SUPPORT 
-         ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen, __LINE__, 
-                   (U8*) __FILE__, ENTNC);
+	 ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen, __LINE__, 
+	       (U8*) __FILE__, ENTNC);
 #else
-         ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen);
+	 ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen);
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 #ifdef SS_HISTOGRAM_SUPPORT 
-         ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, 
-                  ENTNC);
+	 ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, 
+	       ENTNC);
 #else
-         ret =  SFree(region, (Data *) buf, MDBSIZE);
+	 ret =  SFree(region, (Data *) buf, MDBSIZE);
 #endif /* SS_HISTOGRAM_SUPPORT */
-          RETVALUE(ret);
+	 RETVALUE(ret);
       }
 #ifndef SS_DBUF_REFLOCK_DISABLE
       ret = SUnlock(&(dptr->dBufLock));
@@ -8300,54 +8300,54 @@ Buffer *buf;
 #ifdef INTEL_WLS
 
 /*
-*
-*       Fun:   SAttachPtrToMBuf 
-*
-*       Desc:  This function attaches the Pointer provided into a new
-*              message buffer after allocating the same. It allocates
-*              header (M-Block) and an additional dBuf (D-Block) and attaches
-*              the provided pointer to it.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: 
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAttachPtrToMBuf 
+ *
+ *       Desc:  This function attaches the Pointer provided into a new
+ *              message buffer after allocating the same. It allocates
+ *              header (M-Block) and an additional dBuf (D-Block) and attaches
+ *              the provided pointer to it.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: 
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SAttachPtrToMBuf1
+   PUBLIC S16 SAttachPtrToMBuf1
 (
-Region   region,
-Pool     pool,
-Data    *ptr,
-MsgLen   totalLen,
-MsgLen   ptrLen,
-Buffer** mBuf,
-char* file,
-U32 line
-)
+ Region   region,
+ Pool     pool,
+ Data    *ptr,
+ MsgLen   totalLen,
+ MsgLen   ptrLen,
+ Buffer** mBuf,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SAttachPtrToMBuf
+   PUBLIC S16 SAttachPtrToMBuf
 (
-Region   region,
-Pool     pool,
-Data    *ptr,
-MsgLen   totalLen,
-MsgLen   ptrLen,
-Buffer** mBuf
-)
+ Region   region,
+ Pool     pool,
+ Data    *ptr,
+ MsgLen   totalLen,
+ MsgLen   ptrLen,
+ Buffer** mBuf
+ )
 #else
 PUBLIC S16 SAttachPtrToMBuf(region, pool, ptr, totalLen, ptrLen, mBuf)
-Region   region;
-Pool     pool;
-Data    *ptr;
-MsgLen   totalLen;
-MsgLen   ptrLen;
-Buffer** mBuf;
+   Region   region;
+   Pool     pool;
+   Data    *ptr;
+   MsgLen   totalLen;
+   MsgLen   ptrLen;
+   Buffer** mBuf;
 #endif
 #endif
 {
@@ -8360,11 +8360,11 @@ Buffer** mBuf;
    TRC1(SAttachPtrToMBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (ptr == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: Null PTR");
-      RETVALUE(RFAILED);
-   }
+      if (ptr == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: Null PTR");
+	 RETVALUE(RFAILED);
+      }
 #endif
 
    if(SGetMsg(region, pool, mBuf) != ROK)
@@ -8379,13 +8379,13 @@ Buffer** mBuf;
 #ifdef SS_HISTOGRAM_SUPPORT 
    if (SAlloc(region, &mdsize, 0, (Data **) &newblk, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
 #else
-   if (SAlloc(region, &mdsize, 0, (Data **) &newblk) != ROK)
+      if (SAlloc(region, &mdsize, 0, (Data **) &newblk) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
-   {
-       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SAlloc Failed");
-       SPutMsg(*mBuf);
-       RETVALUE(ROUTRES);
-   }
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SAlloc Failed");
+	 SPutMsg(*mBuf);
+	 RETVALUE(ROUTRES);
+      }
 
    (*mBuf)->b_cont = newblk;
 
@@ -8394,7 +8394,7 @@ Buffer** mBuf;
    INITB((newblk), dptr, (Data*) NULL, 0, NULLP)
 
 
-   newblk->b_datap->db_base = ptr;
+      newblk->b_datap->db_base = ptr;
    newblk->b_datap->db_lim = ptr + ptrLen;
    newblk->b_rptr = newblk->b_datap->db_base;
    newblk->b_wptr = newblk->b_rptr + totalLen;
@@ -8420,11 +8420,11 @@ Buffer** mBuf;
 PUBLIC S16 SIncMsgRef(Buffer *srcBuf,Region dstRegion, Pool dstPool,Buffer **dstBuf)
 {
 #ifndef L2_OPTMZ 
-  RETVALUE(SAddMsgRef(srcBuf,dstRegion, dstPool,dstBuf));
+   RETVALUE(SAddMsgRef(srcBuf,dstRegion, dstPool,dstBuf));
 #else 
- *dstBuf = srcBuf;
+   *dstBuf = srcBuf;
 #endif 
-  RETVALUE(ROK);
+   RETVALUE(ROK);
 }
 #ifdef L2_OPTMZ
 PUBLIC Void SResetMBuf(Buffer *mbuf)
@@ -8441,8 +8441,8 @@ PUBLIC Void SResetMBuf(Buffer *mbuf)
    if(tmp)
    {
 
-    //    printf("SResetMBuf The write & read ptr is %p %p %p %p \n", tmp->b_wptr, tmp->b_rptr, tmp->b_datap->db_base, tmp->b_datap->db_lim );
-//      tmp->b_wptr = tmp->b_rptr = tmp->b_datap->db_base;
+      //    printf("SResetMBuf The write & read ptr is %p %p %p %p \n", tmp->b_wptr, tmp->b_rptr, tmp->b_datap->db_base, tmp->b_datap->db_lim );
+      //      tmp->b_wptr = tmp->b_rptr = tmp->b_datap->db_base;
       tmp->b_wptr = tmp->b_rptr = (tmp->b_datap->db_base + 5);
       tmp->b_datap->db_ref = 1;
       tmp->b_datap->shared = 0;
@@ -8456,57 +8456,57 @@ PUBLIC Void SResetMBuf(Buffer *mbuf)
 
 #ifdef INTEL_WLS
 /*
-*
-*       Fun:   SAttachWlsPtrToMBuf 
-*
-*       Desc:  This function attaches the Pointer provided into a new
-*              message buffer after allocating the same. It allocates
-*              header (M-Block) and an additional dBuf (D-Block) and attaches
-*              the provided pointer to it.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: 
-*
-*       File:  ss_msg.c
-*
-*/
+ *
+ *       Fun:   SAttachWlsPtrToMBuf 
+ *
+ *       Desc:  This function attaches the Pointer provided into a new
+ *              message buffer after allocating the same. It allocates
+ *              header (M-Block) and an additional dBuf (D-Block) and attaches
+ *              the provided pointer to it.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: 
+ *
+ *       File:  ss_msg.c
+ *
+ */
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SAttachWlsPtrToMBuf1
+   PUBLIC S16 SAttachWlsPtrToMBuf1
 (
-Region   region,
-Pool     pool,
-Data    *ptr,
-Data    *readPtr,
-MsgLen   totalLen,
-MsgLen   ptrLen,
-Buffer** mBuf,
-char* file,
-U32 line
-)
+ Region   region,
+ Pool     pool,
+ Data    *ptr,
+ Data    *readPtr,
+ MsgLen   totalLen,
+ MsgLen   ptrLen,
+ Buffer** mBuf,
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SAttachWlsPtrToMBuf
+   PUBLIC S16 SAttachWlsPtrToMBuf
 (
-Region   region,
-Pool     pool,
-Data    *ptr,
-Data    *readPtr,
-MsgLen   totalLen,
-MsgLen   ptrLen,
-Buffer** mBuf
-)
+ Region   region,
+ Pool     pool,
+ Data    *ptr,
+ Data    *readPtr,
+ MsgLen   totalLen,
+ MsgLen   ptrLen,
+ Buffer** mBuf
+ )
 #else
 PUBLIC S16 SAttachWlsPtrToMBuf(region, pool, ptr, readPtr, totalLen, ptrLen, mBuf)
-Region   region;
-Pool     pool;
-Data    *ptr;
-Data    *readPtr;
-MsgLen   totalLen;
-MsgLen   ptrLen;
-Buffer** mBuf;
+   Region   region;
+   Pool     pool;
+   Data    *ptr;
+   Data    *readPtr;
+   MsgLen   totalLen;
+   MsgLen   ptrLen;
+   Buffer** mBuf;
 #endif
 #endif
 {
@@ -8519,11 +8519,11 @@ Buffer** mBuf;
    TRC1(SAttachWlsPtrToMBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   if (ptr == NULLP)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: Null PTR");
-      RETVALUE(RFAILED);
-   }
+      if (ptr == NULLP)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: Null PTR");
+	 RETVALUE(RFAILED);
+      }
 #endif
 
    region = 0;
@@ -8538,13 +8538,13 @@ Buffer** mBuf;
 #ifdef SS_HISTOGRAM_SUPPORT 
    if (SAlloc(region, &mdsize, 0, (Data **) &newblk, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
 #else
-   if (SAlloc(region, &mdsize, 0, (Data **) &newblk) != ROK)
+      if (SAlloc(region, &mdsize, 0, (Data **) &newblk) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
-   {
-       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SAlloc Failed");
-       SPutMsg(*mBuf);
-       RETVALUE(ROUTRES);
-   }
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SAttachPtrToBuf: SAlloc Failed");
+	 SPutMsg(*mBuf);
+	 RETVALUE(ROUTRES);
+      }
 
    (*mBuf)->b_cont = newblk;
 
@@ -8553,7 +8553,7 @@ Buffer** mBuf;
    INITB((newblk), dptr, (Data*) NULL, 0, NULLP)
 
 
-   newblk->b_datap->db_base = ptr;
+      newblk->b_datap->db_base = ptr;
    newblk->b_datap->db_lim  = ptr + ptrLen;
    newblk->b_rptr           = readPtr;
    newblk->b_wptr           = newblk->b_rptr + totalLen;
@@ -8580,57 +8580,57 @@ Buffer** mBuf;
 
 extern U32 numeTti;
 
-PUBLIC S16 SGetSBufDpdk
+   PUBLIC S16 SGetSBufDpdk
 (
-Data **ptr,                     /* pointer to buffer */
-Size size                       /* size requested */
-)
+ Data **ptr,                     /* pointer to buffer */
+ Size size                       /* size requested */
+ )
 {
-    S16   ret=ROK;
-    
-    *ptr = ntl_alloc(mtGetNtlHdl(), size);
+   S16   ret=ROK;
 
-    RETVALUE(ret);
+   *ptr = ntl_alloc(mtGetNtlHdl(), size);
+
+   RETVALUE(ret);
 }
 
-PUBLIC S16 SPutSBufDpdk
+   PUBLIC S16 SPutSBufDpdk
 (
-Data *ptr                     /* pointer to buffer */
-)
+ Data *ptr                     /* pointer to buffer */
+ )
 {
-    S16   ret;
-    U32   flags = 0;
+   S16   ret;
+   U32   flags = 0;
 
-    ntl_free(mtGetNtlHdl(), ptr);
+   ntl_free(mtGetNtlHdl(), ptr);
 
-    RETVALUE(ret);
+   RETVALUE(ret);
 }
 
-PUBLIC S16 SDetachDpdkPtrFrmDBuf
+   PUBLIC S16 SDetachDpdkPtrFrmDBuf
 (
-Buffer     *mBuf,
-Data       **ptr
-)
+ Buffer     *mBuf,
+ Data       **ptr
+ )
 {
 
-    Buffer       *msgBlk;
-    SsMsgInfo    *minfo;
+   Buffer       *msgBlk;
+   SsMsgInfo    *minfo;
 
-    //msgBlk = mBuf->b_cont;
-    //*ptr   = msgBlk->b_rptr;;
-    *ptr   = mBuf->b_datap->db_base;;
+   //msgBlk = mBuf->b_cont;
+   //*ptr   = msgBlk->b_rptr;;
+   *ptr   = mBuf->b_datap->db_base;;
 
-    mBuf->b_cont = NULL;
+   mBuf->b_cont = NULL;
 
-    //minfo         = (SsMsgInfo*) mBuf->b_rptr;
-    //minfo->len    = 0;
+   //minfo         = (SsMsgInfo*) mBuf->b_rptr;
+   //minfo->len    = 0;
 
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 }
 
 
-PUBLIC S16 SDetachDpdkPtrFrmMBuf
+   PUBLIC S16 SDetachDpdkPtrFrmMBuf
 (
  Buffer     *mBuf,
  Data       **ptr
@@ -8647,9 +8647,9 @@ PUBLIC S16 SDetachDpdkPtrFrmMBuf
    if(msgBlk == NULLP)
    {
       *ptr = NULLP;
-       RETVALUE(RFAILED);
+      RETVALUE(RFAILED);
    }
-      
+
    dptr = msgBlk->b_datap;
    if(dptr->db_type != SS_MEM_TYPE_DPDK_ZBC)
    {
@@ -8669,25 +8669,25 @@ PUBLIC S16 SDetachDpdkPtrFrmMBuf
 
 
 #ifdef ANSI
-PUBLIC S16 SAttachDpdkPtrToMBuf
+   PUBLIC S16 SAttachDpdkPtrToMBuf
 (
-Region   region,
-Pool     pool,
-Data    *ptr,
-Data    *readPtr,
-MsgLen   msgLen,
-MsgLen   totalLen,
-Buffer** mBuf
-)
+ Region   region,
+ Pool     pool,
+ Data    *ptr,
+ Data    *readPtr,
+ MsgLen   msgLen,
+ MsgLen   totalLen,
+ Buffer** mBuf
+ )
 #else
 PUBLIC S16 SAttachDpdkPtrToMBuf(region, pool, ptr, readPtr, msgLen, totalLen, mBuf)
-Region   region;
-Pool     pool;
-Data    *ptr;
-Data    *readPtr;
-MsgLen   msgLen;
-MsgLen   totalLen;
-Buffer** mBuf;
+   Region   region;
+   Pool     pool;
+   Data    *ptr;
+   Data    *readPtr;
+   MsgLen   msgLen;
+   MsgLen   totalLen;
+   Buffer** mBuf;
 #endif
 {
 
@@ -8698,7 +8698,7 @@ Buffer** mBuf;
 
    SAttachWlsPtrToMBuf(region, pool, ptr, readPtr, msgLen, totalLen, mBuf);
    dptr = (SsDblk*) (((Data *) ((*mBuf)->b_cont)) + MBSIZE);
-   
+
    dptr->db_type = SS_MEM_TYPE_DPDK_ZBC;
 
    RETVALUE(ROK);
@@ -8709,6 +8709,6 @@ Buffer** mBuf;
 #endif /* INTEL_WLS */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
 

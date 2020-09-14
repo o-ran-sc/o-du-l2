@@ -49,7 +49,7 @@
 {                                                               \
    int _ret;                                                    \
    _ret = SGetSBuf(SCH_MEM_REGION, SCH_POOL,                    \
-          (Data **)&_datPtr, _size);                             \
+	 (Data **)&_datPtr, _size);                             \
    if(_ret == ROK)                                              \
    {                                                            \
       cmMemset((U8*)_datPtr, 0, _size);                         \
@@ -66,10 +66,10 @@
    if(_datPtr)                                                  \
    {                                                            \
       SPutSBuf(SCH_MEM_REGION, SCH_POOL,                        \
-            (Data *)_datPtr, _size);                            \
+	    (Data *)_datPtr, _size);                            \
    }                                                            \
 }
-                          
+
 /* Fill post structure for msg from SCH to MAC */
 #define FILL_PST_SCH_TO_MAC(_pst, _inst)                     \
 {                                                            \

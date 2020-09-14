@@ -57,24 +57,24 @@ extern pthread_mutex_t g_logmutex;
 extern THREAD_DATA* g_pCirList[RLOG_MAX_THREADS];
 void* rlAlloc(size_t mem_size)
 {
-	return malloc(mem_size);
+   return malloc(mem_size);
 }
 
 void rlFree(void* pMem)
 {
-	free(pMem);
+   free(pMem);
 }
 
 void* rlCalloc(size_t mem_size)
 {
-	return calloc(mem_size, 1);
+   return calloc(mem_size, 1);
 }
 
 void rlSetThreadSpecificData(const void *pThrData)
 {
-	int retVal = pthread_setspecific(g_threadkey, pThrData);
-	
-	if( retVal!=0 ) {
+   int retVal = pthread_setspecific(g_threadkey, pThrData);
+
+   if( retVal!=0 ) {
       fprintf(stderr, "Failed to associate the value with the key or invalid key");
       _exit(0);
    }
@@ -82,45 +82,45 @@ void rlSetThreadSpecificData(const void *pThrData)
 
 #ifdef RLOG_USE_CIRCULAR_BUFFER
 /*******************************************************************************************
-@param[in] pThreadData - Thread specific data
-@brief This function is called whenever thread is being destroyed. This function will delete 
-thread specific data allocated during thread registration.
-********************************************************************************************/
+  @param[in] pThreadData - Thread specific data
+  @brief This function is called whenever thread is being destroyed. This function will delete 
+  thread specific data allocated during thread registration.
+ ********************************************************************************************/
 void deInitThread(void* pThreadData)
 {
 
-	THREAD_DATA* pThrData = (THREAD_DATA*)(pThreadData);
+   THREAD_DATA* pThrData = (THREAD_DATA*)(pThreadData);
 
-	if( pThreadData == NULL )
-		return;
+   if( pThreadData == NULL )
+      return;
 
-	/* lock the mutex, to make sure no one is accessing this buffer */
-	pthread_mutex_lock(&g_logmutex);
+   /* lock the mutex, to make sure no one is accessing this buffer */
+   pthread_mutex_lock(&g_logmutex);
 
-	g_pCirList[pThrData->listIndex]  = NULL;
+   g_pCirList[pThrData->listIndex]  = NULL;
 
-	if( pThrData->logBuff != NULL )
-		rlFree(pThrData->logBuff);
+   if( pThrData->logBuff != NULL )
+      rlFree(pThrData->logBuff);
 
-	rlFree(pThreadData);
+   rlFree(pThreadData);
 
-	/* unlock the mutex */
-	pthread_mutex_unlock(&g_logmutex);
+   /* unlock the mutex */
+   pthread_mutex_unlock(&g_logmutex);
 }
 #endif
 
 void* rlGetThreadSpecData(void)
 {
-	return (void*) pthread_getspecific(g_threadkey);
+   return (void*) pthread_getspecific(g_threadkey);
 }
 
 void rlInitPlatformSpecific(void)
 {
 #ifdef RLOG_USE_CIRCULAR_BUFFER
-	pthread_key_create(&g_threadkey, &deInitThread);
+   pthread_key_create(&g_threadkey, &deInitThread);
 #endif
 }
 
 /**********************************************************************
-         End of file
+  End of file
  **********************************************************************/

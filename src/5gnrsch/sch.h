@@ -107,9 +107,9 @@ typedef struct schUlSlotInfo
 }SchUlSlotInfo;
 
 /**
-@brief
-* BSR info per slot per UE.
-*/
+  @brief
+ * BSR info per slot per UE.
+ */
 typedef struct bsrInfo
 {
    uint8_t    priority;  /* CG priority */

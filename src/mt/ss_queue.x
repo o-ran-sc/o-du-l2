@@ -42,7 +42,7 @@ typedef struct ssDmndQ
 {
    SsSemaId   dmndQSema;                        /* lock for queue access */
    SLockId    dmndQLock[SS_MAX_NUM_DQ];    /* lock for each byte in 
-                                                 * bitmask */
+					    * bitmask */
    Queue      queue[SS_MAX_NUM_DQ];             /* the queues */
 #ifndef TENB_RTLIN_CHANGES
    U8         bitMask[SS_DQ_BIT_MASK_LEN];      /* bit mask */
@@ -55,9 +55,9 @@ typedef struct ssDmndQ
 EXTERN S16  ssInitDmndQ       ARGS((SsDmndQ *queue));
 EXTERN S16  ssDestroyDmndQ    ARGS((SsDmndQ *queue));
 EXTERN S16  ssDmndQPut        ARGS((SsDmndQ *queue, Buffer *mBuf, \
-                                              Prior prior, Order order));
+	 Prior prior, Order order));
 EXTERN S16  ssDmndQGet        ARGS((SsDmndQ *queue, Buffer **mBuf, \
-                                                           Order order));
+	 Order order));
 EXTERN S16  ssDmndQWait     ARGS((SsDmndQ *queue));
 
 EXTERN S16  ssFndLenDmndQ     ARGS((SsDmndQ *queue, Prior prior, QLen *len));
@@ -71,6 +71,6 @@ EXTERN S16  ssFndLenDmndQ     ARGS((SsDmndQ *queue, Prior prior, QLen *len));
 
 
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

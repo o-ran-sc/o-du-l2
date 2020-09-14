@@ -153,7 +153,7 @@ SRegInfo *regInfo;              /* information about the region */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS030, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -196,29 +196,29 @@ SRegInfo *regInfo;              /* information about the region */
 
 
 /*
-*
-*       Fun:   SRegRegion
-*
-*       Desc:  Registers a memory region.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_mem.c
-*
-*/
+ *
+ *       Fun:   SRegRegion
+ *
+ *       Desc:  Registers a memory region.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SRegRegion
+   PUBLIC S16 SRegRegion
 (
-Region region,                  /* region ID */
-SRegInfo *regInfo               /* information about the region */
-)
+ Region region,                  /* region ID */
+ SRegInfo *regInfo               /* information about the region */
+ )
 #else
 PUBLIC S16 SRegRegion(region, regInfo)
-Region region;                  /* region ID */
-SRegInfo *regInfo;              /* information about the region */
+   Region region;                  /* region ID */
+   SRegInfo *regInfo;              /* information about the region */
 #endif
 {
    S16 ret;
@@ -251,7 +251,7 @@ SRegInfo *regInfo;              /* information about the region */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS030, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -292,27 +292,27 @@ SRegInfo *regInfo;              /* information about the region */
 
 
 /*
-*
-*       Fun:   SDeregRegion
-*
-*       Desc:  Deregisters a memory region.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_mem.c
-*
-*/
+ *
+ *       Fun:   SDeregRegion
+ *
+ *       Desc:  Deregisters a memory region.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SDeregRegion
+   PUBLIC S16 SDeregRegion
 (
-Region region                   /* region ID */
-)
+ Region region                   /* region ID */
+ )
 #else
 PUBLIC S16 SDeregRegion(region)
-Region region;                  /* region ID */
+   Region region;                  /* region ID */
 #endif
 {
    S16 ret;
@@ -338,7 +338,7 @@ Region region;                  /* region ID */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS033, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -378,77 +378,77 @@ Region region;                  /* region ID */
 
 
 /*
-*
-*       Fun:   SAlloc
-*
-*       Desc:  Allocates a block of memory of at least the specified
-*              size.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_mem.c
-*
-*/
+ *
+ *       Fun:   SAlloc
+ *
+ *       Desc:  Allocates a block of memory of at least the specified
+ *              size.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_mem.c
+ *
+ */
 /*ss003.301-gaurded under flag SS_FAP*/
 #ifndef SS_FAP
 /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef ANSI
-PUBLIC S16 SAlloc
+   PUBLIC S16 SAlloc
 (
-Region region,                  /* region ID */
-Size *size,                     /* size of block required/allocated */
-U32 flags,                      /* allocation flags */
-Data **ptr,                      /* filled with pointer to block */
-U32   line,
-U8    *fileName,
-U8    entId
-)
+ Region region,                  /* region ID */
+ Size *size,                     /* size of block required/allocated */
+ U32 flags,                      /* allocation flags */
+ Data **ptr,                      /* filled with pointer to block */
+ U32   line,
+ U8    *fileName,
+ U8    entId
+ )
 #else
 PUBLIC S16 SAlloc(region, size, flags, ptr, line, fileName, entId)
-Region region;                  /* region ID */
-Size *size;                     /* size of block required/allocated */
-U32 flags;                      /* allocation flags */
-Data **ptr;                     /* filled with pointer to block */
-U32   line;
-U8   *fileName;
-U8    entId;
+   Region region;                  /* region ID */
+   Size *size;                     /* size of block required/allocated */
+   U32 flags;                      /* allocation flags */
+   Data **ptr;                     /* filled with pointer to block */
+   U32   line;
+   U8   *fileName;
+   U8    entId;
 #endif
 #else
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SAllocNew
+   PUBLIC S16 SAllocNew
 (
-Region region,                  /* region ID */
-Size *size,                     /* size of block required/allocated */
-U32 flags,                      /* allocation flags */
-Data **ptr,                      /* filled with pointer to block */
-char* file,
-U32 line
-)
+ Region region,                  /* region ID */
+ Size *size,                     /* size of block required/allocated */
+ U32 flags,                      /* allocation flags */
+ Data **ptr,                      /* filled with pointer to block */
+ char* file,
+ U32 line
+ )
 #else
 #ifdef ANSI
-PUBLIC S16 SAlloc
+   PUBLIC S16 SAlloc
 (
-Region region,                  /* region ID */
-Size *size,                     /* size of block required/allocated */
-U32 flags,                      /* allocation flags */
-Data **ptr                      /* filled with pointer to block */
-)
+ Region region,                  /* region ID */
+ Size *size,                     /* size of block required/allocated */
+ U32 flags,                      /* allocation flags */
+ Data **ptr                      /* filled with pointer to block */
+ )
 #else
 PUBLIC S16 SAlloc(region, size, flags, ptr)
-Region region;                  /* region ID */
-Size *size;                     /* size of block required/allocated */
-U32 flags;                      /* allocation flags */
-Data **ptr;                     /* filled with pointer to block */
+   Region region;                  /* region ID */
+   Size *size;                     /* size of block required/allocated */
+   U32 flags;                      /* allocation flags */
+   Data **ptr;                     /* filled with pointer to block */
 #endif
 #endif
 #endif
 {
    S16 ret;
-/* ss001.301: Additions */
+   /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    Bool hstReg = FALSE;
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -473,7 +473,7 @@ Data **ptr;                     /* filled with pointer to block */
     */
    region = SS_GET_THREAD_MEM_REGION();
 #endif
-/* ss037.103 Removed the semaphore acquisition for performance enhancement */
+   /* ss037.103 Removed the semaphore acquisition for performance enhancement */
 #ifndef SS_PERF
    /* acquire one semaphore, to protect against deregistration */
    SS_ACQUIRE_SEMA(&osCp.regionTblSem, ret);
@@ -482,7 +482,7 @@ Data **ptr;                     /* filled with pointer to block */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS036, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -493,15 +493,15 @@ Data **ptr;                     /* filled with pointer to block */
    /* verify that this region is present */
    if (osCp.regionTbl[region].used == FALSE)
    {
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+      /* ss037.103 Removed the semaphore operation for performance enhancement */
 #ifndef SS_PERF
-/* ss006.13: addition */
+      /* ss006.13: addition */
       if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      SSLOGERROR(ERRCLS_DEBUG, ESS037, ERRZERO, 
-                  "Could not release the semaphore");
-      RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS037, ERRZERO, 
+	       "Could not release the semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 #endif
@@ -509,72 +509,72 @@ Data **ptr;                     /* filled with pointer to block */
       RETVALUE(RFAILED);
    }
 #endif
-/* ss001.301: Additions */
+   /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    SGetHstGrmInfo(&entId, &hstReg);
    /* call the memory manager, to allocate this memory */
    /* ss036.103 - addition for passing memType as dynamic */
 #ifdef SSI_DEBUG_LEVEL1
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, size, flags, ptr, 
-                SS_DYNAMIC_MEM_FLAG, line, fileName, entId, hstReg);
+      (osCp.regionTbl[region].regCb, size, flags, ptr, 
+       SS_DYNAMIC_MEM_FLAG, line, fileName, entId, hstReg);
 #else
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, size, flags, ptr, line, 
-                fileName, entId, hstReg);
+      (osCp.regionTbl[region].regCb, size, flags, ptr, line, 
+       fileName, entId, hstReg);
 #endif /* SSI_DEBUG_LEVEL1 */
 
 #else
 
    /* call the memory manager, to allocate this memory */
-/* ss036.103 - addition for passing memType as dynamic */
+   /* ss036.103 - addition for passing memType as dynamic */
 #ifdef SSI_DEBUG_LEVEL1
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, size, flags, ptr, SS_DYNAMIC_MEM_FLAG);
+      (osCp.regionTbl[region].regCb, size, flags, ptr, SS_DYNAMIC_MEM_FLAG);
 #else
 #ifdef SS_LOCKLESS_MEMORY
 #ifdef T2K_MEM_LEAK_DBG
    ret = (osCp.dynRegionTbl[region].alloc)
-               (osCp.dynRegionTbl[region].regCb, size, flags, ptr,file,line);
+      (osCp.dynRegionTbl[region].regCb, size, flags, ptr,file,line);
 #else
    ret = (osCp.dynRegionTbl[region].alloc)
-               (osCp.dynRegionTbl[region].regCb, size, flags, ptr);
+      (osCp.dynRegionTbl[region].regCb, size, flags, ptr);
 #endif
 #else
 #ifdef T2K_MEM_LEAK_DBG
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, size, flags, ptr,file,line);
+      (osCp.regionTbl[region].regCb, size, flags, ptr,file,line);
 #else
    ret = (osCp.regionTbl[region].alloc)
-               (osCp.regionTbl[region].regCb, size, flags, ptr);
+      (osCp.regionTbl[region].regCb, size, flags, ptr);
 #endif
 #endif /* SS_LOCKLESS_MEMORY */
 #endif /* SSI_DEBUG_LEVEL1 */
 
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    /* release the semaphore we took */
-/* ss006.13: addition */
+   /* ss006.13: addition */
    if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-     SSLOGERROR(ERRCLS_DEBUG, ESS039, ERRZERO, 
-                  "Could not release the semaphore");
-     RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS039, ERRZERO, 
+	    "Could not release the semaphore");
+      RETVALUE(RFAILED);
 #endif
    }
 #endif
-/* ss036.103 - Addition to handle the memory trampling return value
-* This in turn can call SRegMemErrHdlr 
-*/
+   /* ss036.103 - Addition to handle the memory trampling return value
+    * This in turn can call SRegMemErrHdlr 
+    */
 #ifdef SSI_DEBUG_LEVEL1
-    if (ret == RTRAMPLINGNOK)
-    {
-        SRegMemErrHdlr( region,  *ptr,  ret);
-    }
+   if (ret == RTRAMPLINGNOK)
+   {
+      SRegMemErrHdlr( region,  *ptr,  ret);
+   }
 #endif /* SSI_DEBUG_LEVEL1 */
 
    RETVALUE(ret);
@@ -582,70 +582,70 @@ Data **ptr;                     /* filled with pointer to block */
 
 
 /*
-*
-*       Fun:   SFree
-*
-*       Desc:  Frees a block of memory previously allocated by SAlloc().
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_mem.c
-*
-*/
+ *
+ *       Fun:   SFree
+ *
+ *       Desc:  Frees a block of memory previously allocated by SAlloc().
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_mem.c
+ *
+ */
 /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef ANSI
-PUBLIC S16 SFree
+   PUBLIC S16 SFree
 (
-Region region,                  /* region ID */
-Data *ptr,                      /* pointer to the allocated block */
-Size size,                      /* size of block */
-U32  line,
-U8   *fileName,
-U8   entId
-)
+ Region region,                  /* region ID */
+ Data *ptr,                      /* pointer to the allocated block */
+ Size size,                      /* size of block */
+ U32  line,
+ U8   *fileName,
+ U8   entId
+ )
 #else
 PUBLIC S16 SFree(region, ptr, size, line, fileName, entId)
-Region region;                  /* region ID */
-Data *ptr;                      /* pointer to the allocated block */
-Size size;                      /* size of block */
-U32  line;
-U8   *fileName;
-U8   entId;
+   Region region;                  /* region ID */
+   Data *ptr;                      /* pointer to the allocated block */
+   Size size;                      /* size of block */
+   U32  line;
+   U8   *fileName;
+   U8   entId;
 #endif
 #else
 #ifdef ANSI
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SFreeNew
+   PUBLIC S16 SFreeNew
 (
-Region region,                  /* region ID */
-Data *ptr,                      /* pointer to the allocated block */
-Size size,                       /* size of block */
-char* file,
-U32 line
-)
+ Region region,                  /* region ID */
+ Data *ptr,                      /* pointer to the allocated block */
+ Size size,                       /* size of block */
+ char* file,
+ U32 line
+ )
 #else
-PUBLIC S16 SFree
+   PUBLIC S16 SFree
 (
-Region region,                  /* region ID */
-Data *ptr,                      /* pointer to the allocated block */
-Size size                       /* size of block */
-)
+ Region region,                  /* region ID */
+ Data *ptr,                      /* pointer to the allocated block */
+ Size size                       /* size of block */
+ )
 #endif
 #else
 PUBLIC S16 SFree(region, ptr, size)
-Region region;                  /* region ID */
-Data *ptr;                      /* pointer to the allocated block */
-Size size;                      /* size of block */
+   Region region;                  /* region ID */
+   Data *ptr;                      /* pointer to the allocated block */
+   Size size;                      /* size of block */
 #endif
 #endif
 {
    S16 ret;
 
-/* ss001.301: Additions */
+   /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    Bool hstReg = FALSE;
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -672,7 +672,7 @@ Size size;                      /* size of block */
       RETVALUE(RFAILED);
    }
 
-/* ss021.103 - Addition to validate size and ptr */
+   /* ss021.103 - Addition to validate size and ptr */
    if (size <= NULLD)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS041, region, "Invalid size");
@@ -687,7 +687,7 @@ Size size;                      /* size of block */
    }
 
 #endif
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    /* acquire one semaphore, to protect against deregistration */
@@ -697,7 +697,7 @@ Size size;                      /* size of block */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS043, (ErrVal) ret,
-                  "Could not lock region table");
+	    "Could not lock region table");
 #endif
 
       RETVALUE(RFAILED);
@@ -708,29 +708,29 @@ Size size;                      /* size of block */
    if (osCp.regionTbl[region].used == FALSE)
    {
 #ifndef SS_PERF
-/* ss006.13: addition */
+      /* ss006.13: addition */
       if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS044, ERRZERO, 
-                  "Could not release the semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS044, ERRZERO, 
+	       "Could not release the semaphore");
+	 RETVALUE(RFAILED);
 #endif
-       }
+      }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS045, region, "Region not registered");
       RETVALUE(RFAILED);
    }
 #endif
 
-/* ss001.301: Additions */
+   /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    SGetHstGrmInfo(&entId, &hstReg);
 
    /* call the memory manager to free this memory */
    ret = (osCp.regionTbl[region].free)
-           (osCp.regionTbl[region].regCb, ptr, size, line, fileName, 
-            entId, hstReg);
+      (osCp.regionTbl[region].regCb, ptr, size, line, fileName, 
+       entId, hstReg);
 
 #else
 
@@ -751,29 +751,29 @@ Size size;                      /* size of block */
 
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-/* ss037.103 Removed the semaphore operation for performance enhancement */
+   /* ss037.103 Removed the semaphore operation for performance enhancement */
 
 #ifndef SS_PERF
    /* release the semaphore we took */
-/* ss006.13: addition */
+   /* ss006.13: addition */
    if( SS_RELEASE_SEMA(&osCp.regionTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS046, ERRZERO, 
-                  "Could not release the semaphore");
+	    "Could not release the semaphore");
       RETVALUE(RFAILED);
 #endif
-    }
+   }
 #endif
-/* ss036.103 - changes to handle double free and trmapling return values
-* This in turn may invoke SRegMemErrHdlr 
-*/
+   /* ss036.103 - changes to handle double free and trmapling return values
+    * This in turn may invoke SRegMemErrHdlr 
+    */
 #ifdef SSI_DEBUG_LEVEL1
-    /* handle the double free error here by calling the OS specific error handling function */
-    if ((ret == RDBLFREE) || (ret == RTRAMPLINGNOK))
-    {
-        SRegMemErrHdlr( region,  ptr,  ret);
-    }
+   /* handle the double free error here by calling the OS specific error handling function */
+   if ((ret == RDBLFREE) || (ret == RTRAMPLINGNOK))
+   {
+      SRegMemErrHdlr( region,  ptr,  ret);
+   }
 #endif /* SSI_DEBUG_LEVEL1 */
 
    RETVALUE(ret);
@@ -785,242 +785,242 @@ Size size;                      /* size of block */
 #ifdef SS_HISTOGRAM_SUPPORT 
 
 /*
-*
-*       Fun:  SHstGrmInfoShow 
-*
-*       Desc:  This function displays the memory usage information
-*              per Tapa task, which are registerd during initialization.
-*
-*
-*       Ret:   
-*              
-*
-*       Notes: A Sample Output from the function 
-*       Memory Histogram for the Tapa task = (Entity Id)117
-*       ------Region Id = 0-------
-*       -----------Bucket Id = 0-----------
-*
-*      File Name|   Line  | Bucket Alloc | Bytes Allocated | Bytes Wasted | Buckets Freed|Bytes Freed|
-*      lhi.c    |    413  |            4 |             512 |          224 |            0 |         0 |
-*      hi_acc1.c|    333  |            0 |               0 |            0 |            2 |       256 |
-*      hi_acc1.c|    209  |           13 |            1664 |          728 |            0 |         0 |
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:  SHstGrmInfoShow 
+ *
+ *       Desc:  This function displays the memory usage information
+ *              per Tapa task, which are registerd during initialization.
+ *
+ *
+ *       Ret:   
+ *              
+ *
+ *       Notes: A Sample Output from the function 
+ *       Memory Histogram for the Tapa task = (Entity Id)117
+ *       ------Region Id = 0-------
+ *       -----------Bucket Id = 0-----------
+ *
+ *      File Name|   Line  | Bucket Alloc | Bytes Allocated | Bytes Wasted | Buckets Freed|Bytes Freed|
+ *      lhi.c    |    413  |            4 |             512 |          224 |            0 |         0 |
+ *      hi_acc1.c|    333  |            0 |               0 |            0 |            2 |       256 |
+ *      hi_acc1.c|    209  |           13 |            1664 |          728 |            0 |         0 |
+ *
+ *       File:  mt_ss.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SHstGrmInfoShow 
+   PUBLIC S16 SHstGrmInfoShow 
 (
-Ent      *entId
-)
+ Ent      *entId
+ )
 #else
 PUBLIC S16 SHstGrmInfoShow(entId)
-Ent      *entId;
+   Ent      *entId;
 #endif
 {
-    /*ss012.301 : Increased Buffer size to fix segmentation fault*/
-    Txt   					prntBuf[511];  /* Buffer to print on the console */
-	U16   					ret = ROK;     /* return value */
-	Ent   					tapaTsk[SS_MAX_TTSKS]; /* List of tapa task */
-	U32   					tskCnt = 0;   /* Tapa task Count */
-	U32   					regCnt = 0;   /* Region count */
-	U32   					bktCnt = 0;   /* Bucket count in each region */
-	CmHstGrmHashListCp 	*hashListCp = NULLP; /* Hash List ponter of bucket */
-	U32                  binCnt = 0;   
-	U32                  entCnt = 0;
-	CmMemEntries        *entry = NULLP;
-	U32                  blkSize = 0;
-   
+   /*ss012.301 : Increased Buffer size to fix segmentation fault*/
+   Txt   					prntBuf[511];  /* Buffer to print on the console */
+   U16   					ret = ROK;     /* return value */
+   Ent   					tapaTsk[SS_MAX_TTSKS]; /* List of tapa task */
+   U32   					tskCnt = 0;   /* Tapa task Count */
+   U32   					regCnt = 0;   /* Region count */
+   U32   					bktCnt = 0;   /* Bucket count in each region */
+   CmHstGrmHashListCp 	*hashListCp = NULLP; /* Hash List ponter of bucket */
+   U32                  binCnt = 0;   
+   U32                  entCnt = 0;
+   CmMemEntries        *entry = NULLP;
+   U32                  blkSize = 0;
+
    TRC1(SRegInfoShow);
 
    memset(tapaTsk, ENTNC, sizeof(tapaTsk));
 
    if(entId == NULLP)
-	{
-	    /* If user is not asking for specific entity id then,
-		  * Take Tapa task entity id from the osCp structure and 
-		  * print the histogram for all tapa task */
-   	ret = SGetTapaTskEntIds(tapaTsk);
-	}/* End of if */
-	else
-	{
-	   /* If user asked for specific tapa task then print histogram 
-		 * for those tapa task */
-		for(tskCnt = 0; entId[tskCnt]; tskCnt++) 
-		{ 
-			tapaTsk[tskCnt] = entId[tskCnt];
-		}/* end of for */
-	}
+   {
+      /* If user is not asking for specific entity id then,
+       * Take Tapa task entity id from the osCp structure and 
+       * print the histogram for all tapa task */
+      ret = SGetTapaTskEntIds(tapaTsk);
+   }/* End of if */
+   else
+   {
+      /* If user asked for specific tapa task then print histogram 
+       * for those tapa task */
+      for(tskCnt = 0; entId[tskCnt]; tskCnt++) 
+      { 
+	 tapaTsk[tskCnt] = entId[tskCnt];
+      }/* end of for */
+   }
    for (tskCnt = 0; tapaTsk[tskCnt] != ENTNC; tskCnt++)
-	{
-   	sprintf(prntBuf, "\n\nMemory Histogram for the Tapa task = (Entity Id)%d\n", tapaTsk[tskCnt]);
-   	SPrint(prntBuf);
-	 	for (regCnt = 0; regCnt < osCp.numRegions; regCnt++)
-		{
-		   
-			CmMmRegCb* regCb = (CmMmRegCb*)osCp.regionTbl[regCnt].regCb;
+   {
+      sprintf(prntBuf, "\n\nMemory Histogram for the Tapa task = (Entity Id)%d\n", tapaTsk[tskCnt]);
+      SPrint(prntBuf);
+      for (regCnt = 0; regCnt < osCp.numRegions; regCnt++)
+      {
 
-   		sprintf(prntBuf, "------Region Id = %d-------\n", regCb->region);
-   		SPrint(prntBuf);
-         for (bktCnt = 0; bktCnt < regCb->numBkts; bktCnt++)
-			{
-						 /* ss002.301 - Compilation fixes */
-            /*ss013.301 Fix for compilation warnings  32/64 bit */                
-#ifdef ALIGN_64BIT
-   			sprintf(prntBuf, "-----------Bucket Id = %u-----------\n\n", bktCnt);
-#else
-   			sprintf(prntBuf, "-----------Bucket Id = %lu-----------\n\n", bktCnt);
-#endif
-   			SPrint(prntBuf);
-   			sprintf(prntBuf, "File Name         |   Line  | Bucket Alloc | Bytes Allocated | Bytes Wasted | Buckets Freed|Bytes Freed|\n");
-   			SPrint(prntBuf);
-			   hashListCp = &(regCb->bktTbl[bktCnt].hstGrmHashListCp);
-			   blkSize = regCb->bktTbl[bktCnt].size;
-			   for(binCnt = 0; binCnt < CMM_HIST_MAX_MEM_BIN; binCnt++)
-				{
-					for (entCnt = 0; entCnt < hashListCp->hashList[binCnt].numOfEntries; entCnt++)
-					{
-					    entry = &(hashListCp->hashList[binCnt].entries[entCnt]);   
-						 if(entry->entId == tapaTsk[tskCnt])
-						 {
-						 /* ss002.301 - Compilation fixes */
-                         /*ss013.301 Fix for compilation warnings  32/64 bit */                
-#ifdef ALIGN_64BIT
-						 	sprintf(prntBuf, 
-							   "%-18s|%7u  |%13u |%16u |%13u |%13u |%10u |\n", 
-                        entry->fileName, entry->line, entry->bucketAllocReq, 
-								(blkSize*entry->bucketAllocReq), entry->wastedBytes, 
-								entry->bucketFreeReq, (blkSize*entry->bucketFreeReq));
-#else
-						 	sprintf(prntBuf, 
-							   "%-18s|%7lu  |%13lu |%16lu |%13lu |%13lu |%10lu |\n", 
-                        entry->fileName, entry->line, entry->bucketAllocReq, 
-								(blkSize*entry->bucketAllocReq), entry->wastedBytes, 
-								entry->bucketFreeReq, (blkSize*entry->bucketFreeReq));
-#endif
-                     SPrint(prntBuf);
-						 }/* End of If */
-					}/* end of for. Entry count */
-				} /* End of for. Hash bin count */ 
-			 }
+	 CmMmRegCb* regCb = (CmMmRegCb*)osCp.regionTbl[regCnt].regCb;
 
-   			sprintf(prntBuf, "\n\n----------- Heap blocks -----------\n\n");
-   			SPrint(prntBuf);
-   			sprintf(prntBuf, "File Name         |   Line  | Heap Allocs  | Bytes Allocated | Bytes Wasted |  Heap Frees  |Bytes Freed|\n");
-   			SPrint(prntBuf);
-			   hashListCp = &(regCb->heapCb.heapHstGrmHashListCp);
-			   for(binCnt = 0; binCnt < CMM_HIST_MAX_MEM_BIN; binCnt++)
-				{
-					for (entCnt = 0; entCnt < hashListCp->hashList[binCnt].numOfEntries; entCnt++)
-					{
-					    entry = &(hashListCp->hashList[binCnt].entries[entCnt]);   
-						 if(entry->entId == tapaTsk[tskCnt])
-						 {
-						 /* ss002.301 - Compilation fixes */
-                         /*ss013.301 Fix for compilation warnings  32/64 bit */                
+	 sprintf(prntBuf, "------Region Id = %d-------\n", regCb->region);
+	 SPrint(prntBuf);
+	 for (bktCnt = 0; bktCnt < regCb->numBkts; bktCnt++)
+	 {
+	    /* ss002.301 - Compilation fixes */
+	    /*ss013.301 Fix for compilation warnings  32/64 bit */                
 #ifdef ALIGN_64BIT
-						 	sprintf(prntBuf, 
-							    "%-18s|%7u  |%13u |%16u |%13u |%13u |%10u |\n", 
-                     entry->fileName, entry->line, entry->bucketAllocReq, 
-							entry->allocBytes, entry->wastedBytes, 
-							entry->bucketFreeReq, entry->freedBytes);
+	    sprintf(prntBuf, "-----------Bucket Id = %u-----------\n\n", bktCnt);
 #else
-						 	sprintf(prntBuf, 
-							    "%-18s|%7lu  |%13lu |%16lu |%13lu |%13lu |%10lu |\n", 
-                     entry->fileName, entry->line, entry->bucketAllocReq, 
-							entry->allocBytes, entry->wastedBytes, 
-							entry->bucketFreeReq, entry->freedBytes);
+	    sprintf(prntBuf, "-----------Bucket Id = %lu-----------\n\n", bktCnt);
 #endif
-                     SPrint(prntBuf);
-						 }/* End of If */
-					}/* end of for. Entry count */
-				} /* End of for. Hash bin count */ 
-		 }/* End of for. Region Count */
-	} /* End of for (Tapa task)*/
+	    SPrint(prntBuf);
+	    sprintf(prntBuf, "File Name         |   Line  | Bucket Alloc | Bytes Allocated | Bytes Wasted | Buckets Freed|Bytes Freed|\n");
+	    SPrint(prntBuf);
+	    hashListCp = &(regCb->bktTbl[bktCnt].hstGrmHashListCp);
+	    blkSize = regCb->bktTbl[bktCnt].size;
+	    for(binCnt = 0; binCnt < CMM_HIST_MAX_MEM_BIN; binCnt++)
+	    {
+	       for (entCnt = 0; entCnt < hashListCp->hashList[binCnt].numOfEntries; entCnt++)
+	       {
+		  entry = &(hashListCp->hashList[binCnt].entries[entCnt]);   
+		  if(entry->entId == tapaTsk[tskCnt])
+		  {
+		     /* ss002.301 - Compilation fixes */
+		     /*ss013.301 Fix for compilation warnings  32/64 bit */                
+#ifdef ALIGN_64BIT
+		     sprintf(prntBuf, 
+			   "%-18s|%7u  |%13u |%16u |%13u |%13u |%10u |\n", 
+			   entry->fileName, entry->line, entry->bucketAllocReq, 
+			   (blkSize*entry->bucketAllocReq), entry->wastedBytes, 
+			   entry->bucketFreeReq, (blkSize*entry->bucketFreeReq));
+#else
+		     sprintf(prntBuf, 
+			   "%-18s|%7lu  |%13lu |%16lu |%13lu |%13lu |%10lu |\n", 
+			   entry->fileName, entry->line, entry->bucketAllocReq, 
+			   (blkSize*entry->bucketAllocReq), entry->wastedBytes, 
+			   entry->bucketFreeReq, (blkSize*entry->bucketFreeReq));
+#endif
+		     SPrint(prntBuf);
+		  }/* End of If */
+	       }/* end of for. Entry count */
+	    } /* End of for. Hash bin count */ 
+	 }
+
+	 sprintf(prntBuf, "\n\n----------- Heap blocks -----------\n\n");
+	 SPrint(prntBuf);
+	 sprintf(prntBuf, "File Name         |   Line  | Heap Allocs  | Bytes Allocated | Bytes Wasted |  Heap Frees  |Bytes Freed|\n");
+	 SPrint(prntBuf);
+	 hashListCp = &(regCb->heapCb.heapHstGrmHashListCp);
+	 for(binCnt = 0; binCnt < CMM_HIST_MAX_MEM_BIN; binCnt++)
+	 {
+	    for (entCnt = 0; entCnt < hashListCp->hashList[binCnt].numOfEntries; entCnt++)
+	    {
+	       entry = &(hashListCp->hashList[binCnt].entries[entCnt]);   
+	       if(entry->entId == tapaTsk[tskCnt])
+	       {
+		  /* ss002.301 - Compilation fixes */
+		  /*ss013.301 Fix for compilation warnings  32/64 bit */                
+#ifdef ALIGN_64BIT
+		  sprintf(prntBuf, 
+			"%-18s|%7u  |%13u |%16u |%13u |%13u |%10u |\n", 
+			entry->fileName, entry->line, entry->bucketAllocReq, 
+			entry->allocBytes, entry->wastedBytes, 
+			entry->bucketFreeReq, entry->freedBytes);
+#else
+		  sprintf(prntBuf, 
+			"%-18s|%7lu  |%13lu |%16lu |%13lu |%13lu |%10lu |\n", 
+			entry->fileName, entry->line, entry->bucketAllocReq, 
+			entry->allocBytes, entry->wastedBytes, 
+			entry->bucketFreeReq, entry->freedBytes);
+#endif
+		  SPrint(prntBuf);
+	       }/* End of If */
+	    }/* end of for. Entry count */
+	 } /* End of for. Hash bin count */ 
+      }/* End of for. Region Count */
+   } /* End of for (Tapa task)*/
 
 
    /* Print the memory information used at common, sample and ssi files. 
-	 we considerd common Sample file as invalid entity id. */
-  	sprintf(prntBuf, "\n\nMemory Histogram for the Tapa task = (Entity Id = ENTNC)%d\n", ENTNC);
-  	SPrint(prntBuf);
- 	for (regCnt = 0; regCnt < osCp.numRegions; regCnt++)
-	{
-		CmMmRegCb* regCb = (CmMmRegCb*)osCp.regionTbl[regCnt].regCb;
+      we considerd common Sample file as invalid entity id. */
+   sprintf(prntBuf, "\n\nMemory Histogram for the Tapa task = (Entity Id = ENTNC)%d\n", ENTNC);
+   SPrint(prntBuf);
+   for (regCnt = 0; regCnt < osCp.numRegions; regCnt++)
+   {
+      CmMmRegCb* regCb = (CmMmRegCb*)osCp.regionTbl[regCnt].regCb;
 
-  		sprintf(prntBuf, "------Region Id = %d-------\n", regCb->region);
-  		SPrint(prntBuf);
+      sprintf(prntBuf, "------Region Id = %d-------\n", regCb->region);
+      SPrint(prntBuf);
       for (bktCnt = 0; bktCnt < regCb->numBkts; bktCnt++)
-		{
-						 /* ss002.301 - Compilation fixes */
-            /*ss013.301 Fix for compilation warnings  32/64 bit */                
+      {
+	 /* ss002.301 - Compilation fixes */
+	 /*ss013.301 Fix for compilation warnings  32/64 bit */                
 #ifdef ALIGN_64BIT
-  			sprintf(prntBuf, "-----------Bucket Id = %u-----------\n\n", bktCnt);
+	 sprintf(prntBuf, "-----------Bucket Id = %u-----------\n\n", bktCnt);
 #else
-  			sprintf(prntBuf, "-----------Bucket Id = %lu-----------\n\n", bktCnt);
+	 sprintf(prntBuf, "-----------Bucket Id = %lu-----------\n\n", bktCnt);
 #endif
-  			SPrint(prntBuf);
-  			sprintf(prntBuf, "File Name         |   Line  | Bucket Alloc | Bytes Allocated | Bytes Wasted | Buckets Freed|Bytes Freed|\n");
-  			SPrint(prntBuf);
-		   hashListCp = &(regCb->bktTbl[bktCnt].hstGrmHashListCp);
-		   blkSize = regCb->bktTbl[bktCnt].size;
-		   for(binCnt = 0; binCnt < CMM_HIST_MAX_MEM_BIN; binCnt++)
-			{
-				for (entCnt = 0; entCnt < hashListCp->hashList[binCnt].numOfEntries; entCnt++)
-				{
-				    entry = &(hashListCp->hashList[binCnt].entries[entCnt]);   
-					 if(entry->entId == tapaTsk[tskCnt])
-					 {
-						 /* ss002.301 - Compilation fixes */
-            /*ss013.301 Fix for compilation warnings  32/64 bit */                
+	 SPrint(prntBuf);
+	 sprintf(prntBuf, "File Name         |   Line  | Bucket Alloc | Bytes Allocated | Bytes Wasted | Buckets Freed|Bytes Freed|\n");
+	 SPrint(prntBuf);
+	 hashListCp = &(regCb->bktTbl[bktCnt].hstGrmHashListCp);
+	 blkSize = regCb->bktTbl[bktCnt].size;
+	 for(binCnt = 0; binCnt < CMM_HIST_MAX_MEM_BIN; binCnt++)
+	 {
+	    for (entCnt = 0; entCnt < hashListCp->hashList[binCnt].numOfEntries; entCnt++)
+	    {
+	       entry = &(hashListCp->hashList[binCnt].entries[entCnt]);   
+	       if(entry->entId == tapaTsk[tskCnt])
+	       {
+		  /* ss002.301 - Compilation fixes */
+		  /*ss013.301 Fix for compilation warnings  32/64 bit */                
 #ifdef ALIGN_64BIT
-					 	sprintf(prntBuf, "%-18s|%7u  |%13u |%16u |%13u |%13u |%10u |\n", 
-                  entry->fileName, entry->line, entry->bucketAllocReq, (blkSize*entry->bucketAllocReq),
-						entry->wastedBytes, entry->bucketFreeReq, (blkSize*entry->bucketFreeReq));
+		  sprintf(prntBuf, "%-18s|%7u  |%13u |%16u |%13u |%13u |%10u |\n", 
+			entry->fileName, entry->line, entry->bucketAllocReq, (blkSize*entry->bucketAllocReq),
+			entry->wastedBytes, entry->bucketFreeReq, (blkSize*entry->bucketFreeReq));
 #else
-					 	sprintf(prntBuf, "%-18s|%7lu  |%13lu |%16lu |%13lu |%13lu |%10lu |\n", 
-                  entry->fileName, entry->line, entry->bucketAllocReq, (blkSize*entry->bucketAllocReq),
-						entry->wastedBytes, entry->bucketFreeReq, (blkSize*entry->bucketFreeReq));
+		  sprintf(prntBuf, "%-18s|%7lu  |%13lu |%16lu |%13lu |%13lu |%10lu |\n", 
+			entry->fileName, entry->line, entry->bucketAllocReq, (blkSize*entry->bucketAllocReq),
+			entry->wastedBytes, entry->bucketFreeReq, (blkSize*entry->bucketFreeReq));
 #endif
-                  SPrint(prntBuf);
-					 }/* End of If */
-				}/* end of for. Entry count */
-			} /* End of for. Hash bin count */ 
+		  SPrint(prntBuf);
+	       }/* End of If */
+	    }/* end of for. Entry count */
+	 } /* End of for. Hash bin count */ 
 
-		 }/* End of for. Bucket Count */
+      }/* End of for. Bucket Count */
 
-   		sprintf(prntBuf, "\n\n----------- Heap blocks -----------\n\n");
-   		SPrint(prntBuf);
-   		sprintf(prntBuf, "File Name         |   Line  | Heap Allocs  | Bytes Allocated | Bytes Wasted |  Heap Frees  |Bytes Freed|\n");
-   		SPrint(prntBuf);
-			hashListCp = &(regCb->heapCb.heapHstGrmHashListCp);
-			for(binCnt = 0; binCnt < CMM_HIST_MAX_MEM_BIN; binCnt++)
-			{
-					for (entCnt = 0; entCnt < hashListCp->hashList[binCnt].numOfEntries; entCnt++)
-					{
-					    entry = &(hashListCp->hashList[binCnt].entries[entCnt]);   
-						 if(entry->entId == tapaTsk[tskCnt])
-						 {
-						 /* ss002.301 - Compilation fixes */
-                         /*ss013.301 Fix for compilation warnings  32/64 bit */                
+      sprintf(prntBuf, "\n\n----------- Heap blocks -----------\n\n");
+      SPrint(prntBuf);
+      sprintf(prntBuf, "File Name         |   Line  | Heap Allocs  | Bytes Allocated | Bytes Wasted |  Heap Frees  |Bytes Freed|\n");
+      SPrint(prntBuf);
+      hashListCp = &(regCb->heapCb.heapHstGrmHashListCp);
+      for(binCnt = 0; binCnt < CMM_HIST_MAX_MEM_BIN; binCnt++)
+      {
+	 for (entCnt = 0; entCnt < hashListCp->hashList[binCnt].numOfEntries; entCnt++)
+	 {
+	    entry = &(hashListCp->hashList[binCnt].entries[entCnt]);   
+	    if(entry->entId == tapaTsk[tskCnt])
+	    {
+	       /* ss002.301 - Compilation fixes */
+	       /*ss013.301 Fix for compilation warnings  32/64 bit */                
 #ifdef ALIGN_64BIT
-						 	sprintf(prntBuf, 
-							    "%-18s|%7u  |%13u |%16u |%13u |%13u |%10u |\n", 
-                     entry->fileName, entry->line, entry->bucketAllocReq, 
-							entry->allocBytes, entry->wastedBytes, 
-							entry->bucketFreeReq, entry->freedBytes);
+	       sprintf(prntBuf, 
+		     "%-18s|%7u  |%13u |%16u |%13u |%13u |%10u |\n", 
+		     entry->fileName, entry->line, entry->bucketAllocReq, 
+		     entry->allocBytes, entry->wastedBytes, 
+		     entry->bucketFreeReq, entry->freedBytes);
 #else
-						 	sprintf(prntBuf, 
-							    "%-18s|%7lu  |%13lu |%16lu |%13lu |%13lu |%10lu |\n", 
-                     entry->fileName, entry->line, entry->bucketAllocReq, 
-							entry->allocBytes, entry->wastedBytes, 
-							entry->bucketFreeReq, entry->freedBytes);
+	       sprintf(prntBuf, 
+		     "%-18s|%7lu  |%13lu |%16lu |%13lu |%13lu |%10lu |\n", 
+		     entry->fileName, entry->line, entry->bucketAllocReq, 
+		     entry->allocBytes, entry->wastedBytes, 
+		     entry->bucketFreeReq, entry->freedBytes);
 #endif
-                     SPrint(prntBuf);
-						 }/* End of If */
-					}/* end of for. Entry count */
-			} /* End of for. Hash bin count */ 
+	       SPrint(prntBuf);
+	    }/* End of If */
+	 }/* end of for. Entry count */
+      } /* End of for. Hash bin count */ 
 
-	 }/* End of for. Region Count */
+   }/* End of for. Region Count */
 
    RETVALUE(ROK);
 }   
@@ -1029,5 +1029,5 @@ Ent      *entId;
 #endif /* SS_FAP */
 
 /**********************************************************************
-         End of file
+  End of file
  **********************************************************************/

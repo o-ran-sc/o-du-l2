@@ -417,7 +417,7 @@ int schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
  *  @return  void
  **/
 void fillSchSib1Cfg(Inst schInst, SchSib1Cfg *sib1SchCfg, uint16_t pci, \
-   uint8_t offsetPointA)
+      uint8_t offsetPointA)
 {
    uint8_t coreset0Idx = 0;
    uint8_t searchSpace0Idx = 0;

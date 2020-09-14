@@ -85,54 +85,54 @@ Buffer  *mBuf;                      /* message buffer       */
 {
    TRC2(rgHdlSMEvents)
 
-   switch(pst->event)
-   {
+      switch(pst->event)
+      {
 #ifdef LCRGMILRG
-      case EVTLRGCFGREQ:
-         /* Process a config. request */
-         cmUnpkLrgCfgReq(RgMiLrgCfgReq, pst, mBuf);
-         break;
-      case EVTMACSCHGENCFGREQ:
-         /* Process a config. request */
-         cmUnpkLrgSchCfgReq(MacSchGenCfgReq, pst, mBuf);
-         break;
-      case EVTLRGCNTRLREQ:
-         /* Process a control request */
-         cmUnpkLrgCntrlReq(RgMiLrgCntrlReq, pst, mBuf);
-         break;
-      case EVTLRGSSTAREQ:
-         /* Process a status request  */
-         cmUnpkLrgStaReq(RgMiLrgStaReq, pst, mBuf);
-         break;
-      case EVTLRGSTSREQ:
-         /* Process a statistics request */
-         cmUnpkLrgStsReq(RgMiLrgStsReq, pst, mBuf);
-         break;
+	 case EVTLRGCFGREQ:
+	    /* Process a config. request */
+	    cmUnpkLrgCfgReq(RgMiLrgCfgReq, pst, mBuf);
+	    break;
+	 case EVTMACSCHGENCFGREQ:
+	    /* Process a config. request */
+	    cmUnpkLrgSchCfgReq(MacSchGenCfgReq, pst, mBuf);
+	    break;
+	 case EVTLRGCNTRLREQ:
+	    /* Process a control request */
+	    cmUnpkLrgCntrlReq(RgMiLrgCntrlReq, pst, mBuf);
+	    break;
+	 case EVTLRGSSTAREQ:
+	    /* Process a status request  */
+	    cmUnpkLrgStaReq(RgMiLrgStaReq, pst, mBuf);
+	    break;
+	 case EVTLRGSTSREQ:
+	    /* Process a statistics request */
+	    cmUnpkLrgStsReq(RgMiLrgStsReq, pst, mBuf);
+	    break;
 #endif /* LCRGMILRG */
-      case EVENT_MAC_CELL_CONFIG_REQ:
-         /* Process MAC cell config */
-         unpackDuMacCellCfg(MacProcCellCfgReq, pst, mBuf);
-         break;
-      case EVENT_MAC_CELL_START_REQ:
-         /* Process MAC cell start request */
-         unpackMacCellStartReq(MacProcCellStartReq, pst, mBuf);
-         break;
-		case EVENT_MAC_CELL_STOP_REQ:
-			/* Process MAC cell stop request */
-			unpackMacCellStopReq(MacProcCellStopReq, pst, mBuf);
-			break;
-		case EVENT_MAC_DL_CCCH_IND:
-			/* Process DL CCCH Ind */
-			unpackMacDlCcchInd(MacProcDlCcchInd, pst, mBuf);
-			break;
-		case EVENT_MAC_UE_CREATE_REQ:
-		   /* Process Ue Create Request */
-			unpackMacUeCreateReq(MacProcUeCreateReq, pst, mBuf);
-			break;
-      default:
-         RG_FREE_MSG(mBuf);
-         break;
-   }
+	 case EVENT_MAC_CELL_CONFIG_REQ:
+	    /* Process MAC cell config */
+	    unpackDuMacCellCfg(MacProcCellCfgReq, pst, mBuf);
+	    break;
+	 case EVENT_MAC_CELL_START_REQ:
+	    /* Process MAC cell start request */
+	    unpackMacCellStartReq(MacProcCellStartReq, pst, mBuf);
+	    break;
+	 case EVENT_MAC_CELL_STOP_REQ:
+	    /* Process MAC cell stop request */
+	    unpackMacCellStopReq(MacProcCellStopReq, pst, mBuf);
+	    break;
+	 case EVENT_MAC_DL_CCCH_IND:
+	    /* Process DL CCCH Ind */
+	    unpackMacDlCcchInd(MacProcDlCcchInd, pst, mBuf);
+	    break;
+	 case EVENT_MAC_UE_CREATE_REQ:
+	    /* Process Ue Create Request */
+	    unpackMacUeCreateReq(MacProcUeCreateReq, pst, mBuf);
+	    break;
+	 default:
+	    RG_FREE_MSG(mBuf);
+	    break;
+      }
 }
 
 
@@ -151,36 +151,36 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  void
  **/
 #ifdef ANSI
-PRIVATE INLINE void rgHdlNHEvents
+   PRIVATE INLINE void rgHdlNHEvents
 (
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+ Pst     *pst,                       /* post structure       */
+ Buffer  *mBuf                       /* message buffer       */
+ )
 #else
 PRIVATE INLINE void rgHdlNHEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
+   Pst     *pst;                       /* post structure       */
+   Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
    TRC2(rgHdlNHEvents)
 
-   switch(pst->event)
-   {
+      switch(pst->event)
+      {
 #ifdef LCRGUICRG
-      case EVTCRGBNDREQ:
-         cmUnpkCrgBndReq(RgUiCrgBndReq, pst, mBuf);
-         break;
-      case EVTCRGUBNDREQ:
-         cmUnpkCrgUbndReq(RgUiCrgUbndReq, pst, mBuf);
-         break;
-      case EVTCRGCFGREQ:
-         cmUnpkCrgCfgReq(RgUiCrgCfgReq, pst, mBuf);
-         break;
+	 case EVTCRGBNDREQ:
+	    cmUnpkCrgBndReq(RgUiCrgBndReq, pst, mBuf);
+	    break;
+	 case EVTCRGUBNDREQ:
+	    cmUnpkCrgUbndReq(RgUiCrgUbndReq, pst, mBuf);
+	    break;
+	 case EVTCRGCFGREQ:
+	    cmUnpkCrgCfgReq(RgUiCrgCfgReq, pst, mBuf);
+	    break;
 #endif            
-      default:
-         RG_FREE_MSG(mBuf);
-         break;
-   }
+	 default:
+	    RG_FREE_MSG(mBuf);
+	    break;
+      }
 }
 
 /**
@@ -198,46 +198,46 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  void
  **/
 #ifdef ANSI
-PRIVATE INLINE void rgHdlKWEvents
+   PRIVATE INLINE void rgHdlKWEvents
 (
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+ Pst     *pst,                       /* post structure       */
+ Buffer  *mBuf                       /* message buffer       */
+ )
 #else
 PRIVATE INLINE void rgHdlKWEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
+   Pst     *pst;                       /* post structure       */
+   Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
    TRC2(rgHdlKWEvents)
 
-   switch(pst->event)
-   {
+      switch(pst->event)
+      {
 #ifdef LCRGUIRGU
-      case EVTRGUBNDREQ:
-         cmUnpkRguBndReq(RgUiRguBndReq, pst, mBuf);
-         break;
-      case EVTRGUUBNDREQ:
-         cmUnpkRguUbndReq(RgUiRguUbndReq, pst, mBuf);
-         break;
-      case EVTRLCDLDAT:
-         unpackDlData(MacRlcProcDlData, pst, mBuf);
-         break;
-      case EVTRLCBOSTA:
-         unpackBOStatus(MacRlcProcBOStatus, pst, mBuf);
-         break;
+	 case EVTRGUBNDREQ:
+	    cmUnpkRguBndReq(RgUiRguBndReq, pst, mBuf);
+	    break;
+	 case EVTRGUUBNDREQ:
+	    cmUnpkRguUbndReq(RgUiRguUbndReq, pst, mBuf);
+	    break;
+	 case EVTRLCDLDAT:
+	    unpackDlData(MacRlcProcDlData, pst, mBuf);
+	    break;
+	 case EVTRLCBOSTA:
+	    unpackBOStatus(MacRlcProcBOStatus, pst, mBuf);
+	    break;
 #ifdef LTE_L2_MEAS
 
-      case EVTRGUL2MULTHRPMEASREQ:
-         cmUnpkRguL2MUlThrpMeasReq(RgUiRguL2MUlThrpMeasReq, pst,mBuf);
-         break;
+	 case EVTRGUL2MULTHRPMEASREQ:
+	    cmUnpkRguL2MUlThrpMeasReq(RgUiRguL2MUlThrpMeasReq, pst,mBuf);
+	    break;
 
 #endif
 #endif            
-      default:
-         RG_FREE_MSG(mBuf);
-         break;
-   }
+	 default:
+	    RG_FREE_MSG(mBuf);
+	    break;
+      }
 }
 
 /**
@@ -255,38 +255,38 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  void
  **/
 #ifdef ANSI
-PRIVATE INLINE void rgHdlTFEvents
+   PRIVATE INLINE void rgHdlTFEvents
 (
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+ Pst     *pst,                       /* post structure       */
+ Buffer  *mBuf                       /* message buffer       */
+ )
 #else
 PRIVATE INLINE void rgHdlTFEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
+   Pst     *pst;                       /* post structure       */
+   Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
    TRC2(rgHdlTFEvents)
 
-   switch(pst->event)
-   {
+      switch(pst->event)
+      {
 #if  (defined(LCRGLITFU) || defined(LWLCRGLITFU))
-      case EVTTFUBNDCFM:
-         cmUnpkTfuBndCfm(RgLiTfuBndCfm, pst, mBuf);
-         break;
-      case EVTTFUDATIND:
-         cmUnpkTfuDatInd(RgLiTfuDatInd, pst, mBuf);
-         break;
+	 case EVTTFUBNDCFM:
+	    cmUnpkTfuBndCfm(RgLiTfuBndCfm, pst, mBuf);
+	    break;
+	 case EVTTFUDATIND:
+	    cmUnpkTfuDatInd(RgLiTfuDatInd, pst, mBuf);
+	    break;
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
-      case EVTTFUNONRTIND:
-         cmUnpkTfuNonRtInd(RgLiTfuNonRtInd, pst, mBuf);
-         break;
+	 case EVTTFUNONRTIND:
+	    cmUnpkTfuNonRtInd(RgLiTfuNonRtInd, pst, mBuf);
+	    break;
 #endif
 #endif            
-      default:
-         RG_FREE_MSG(mBuf);
-         break;
-   }
+	 default:
+	    RG_FREE_MSG(mBuf);
+	    break;
+      }
 }
 
 
@@ -305,109 +305,109 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  void
  **/
 #ifdef ANSI
-PRIVATE INLINE void rgHdlRGEvents
+   PRIVATE INLINE void rgHdlRGEvents
 (
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+ Pst     *pst,                       /* post structure       */
+ Buffer  *mBuf                       /* message buffer       */
+ )
 #else
 PRIVATE INLINE void rgHdlRGEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
+   Pst     *pst;                       /* post structure       */
+   Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
    TRC2(rgHdlRGEvents)
 
-   switch(pst->event)
-   {
+      switch(pst->event)
+      {
 #ifdef LCRG
-      case EVTINFCELLREGREQ:
-         cmUnpkSchMacCellRegReq(RgSchMacCellRegReq, pst, mBuf);
-         break;
-      case EVTINFSFALLOCREQ:
-         cmUnpkSchMacSfAllocReq(RgSchMacSfAllocReq, pst, mBuf);
-         break;
-      case EVTINFRLSHQREQ:
-         cmUnpkSchMacRlsHqReq(RgSchMacRlsHqReq, pst, mBuf);
-         break;
-      case EVTINFHQENTRESET:
-         cmUnpkSchMacRstHqEntReq(RgSchMacRstHqEntReq, pst, mBuf);
-         break;
-      case EVTINFRLSRNTIREQ:
-         cmUnpkSchMacRlsRntiReq(RgSchMacRlsRntiReq, pst, mBuf);
-         break;
+	 case EVTINFCELLREGREQ:
+	    cmUnpkSchMacCellRegReq(RgSchMacCellRegReq, pst, mBuf);
+	    break;
+	 case EVTINFSFALLOCREQ:
+	    cmUnpkSchMacSfAllocReq(RgSchMacSfAllocReq, pst, mBuf);
+	    break;
+	 case EVTINFRLSHQREQ:
+	    cmUnpkSchMacRlsHqReq(RgSchMacRlsHqReq, pst, mBuf);
+	    break;
+	 case EVTINFHQENTRESET:
+	    cmUnpkSchMacRstHqEntReq(RgSchMacRstHqEntReq, pst, mBuf);
+	    break;
+	 case EVTINFRLSRNTIREQ:
+	    cmUnpkSchMacRlsRntiReq(RgSchMacRlsRntiReq, pst, mBuf);
+	    break;
 #ifdef LTEMAC_SPS
-      case EVTINFSPSLCREG:
-         cmUnpkSchMacSpsLcRegReq(RgSchMacSpsLcRegReq, pst, mBuf);
-         break;
-      case EVTINFSPSLCDEREG:
-         cmUnpkSchMacSpsLcDeregReq(RgSchMacSpsLcDeregReq, pst, mBuf);
-         break;
-      case EVTINFSPSRESET:
-         cmUnpkSchMacUlSpsResetReq(RgSchMacUlSpsResetReq, pst, mBuf);
-         break;
+	 case EVTINFSPSLCREG:
+	    cmUnpkSchMacSpsLcRegReq(RgSchMacSpsLcRegReq, pst, mBuf);
+	    break;
+	 case EVTINFSPSLCDEREG:
+	    cmUnpkSchMacSpsLcDeregReq(RgSchMacSpsLcDeregReq, pst, mBuf);
+	    break;
+	 case EVTINFSPSRESET:
+	    cmUnpkSchMacUlSpsResetReq(RgSchMacUlSpsResetReq, pst, mBuf);
+	    break;
 #endif /* LTEMAC_SPS */
 #ifdef LTE_L2_MEAS
-      case EVTINFL2MEASREQ:
-         cmUnpkSchMacL2MeasReq(RgSchMacL2MeasReq, pst, mBuf);
-         break;
-      case EVTINFL2MEASSENDREQ :
-         cmUnpkSchMacL2MeasSendReq(RgSchMacL2MeasSendReq, pst , mBuf);
-         break;
-      case EVTINFL2MEASSTOPREQ:
-         cmUnpkSchMacL2MeasStopReq(RgSchMacL2MeasStopReq, pst , mBuf);
-         break;
+	 case EVTINFL2MEASREQ:
+	    cmUnpkSchMacL2MeasReq(RgSchMacL2MeasReq, pst, mBuf);
+	    break;
+	 case EVTINFL2MEASSENDREQ :
+	    cmUnpkSchMacL2MeasSendReq(RgSchMacL2MeasSendReq, pst , mBuf);
+	    break;
+	 case EVTINFL2MEASSTOPREQ:
+	    cmUnpkSchMacL2MeasStopReq(RgSchMacL2MeasStopReq, pst , mBuf);
+	    break;
 #endif/* LTE_L2_MEAS */
-      case EVTINFLCGREG:
-         cmUnpkSchMacLcgRegReq(RgSchMacLcgRegReq, pst, mBuf);
-         break;
+	 case EVTINFLCGREG:
+	    cmUnpkSchMacLcgRegReq(RgSchMacLcgRegReq, pst, mBuf);
+	    break;
 #endif            
 #if defined(LTE_ADV) && defined(LCPRG)
-      case EVTPRGUESCELLCFGREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellCfgReq(RgPrgPMacSMacUeSCellCfgReq, pst, mBuf);
-      }
-      break;
-      case EVTPRGUESCELLCFGCFM:
-      case EVTPRGUESCELLLCHMODCFM:
-      case EVTPRGUESCELLLCHDELCFMDEL:
-      case EVTPRGUESCELLLCHADDCFM:
-      {
-         cmUnpkPrgSMacPMacCfgCfm(RgPrgSMacPMacCfgCfm, pst, mBuf);
-      }
-      break;
-      case EVTPRGUESCELLDELREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellDelReq(RgPrgPMacSMacUeSCellDelReq, pst, mBuf);
-      }
-      break;
-      case EVTPRGUESCELLLCHMODREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellLchModReq(RgPrgPMacSMacUeSCellLchModReq, pst,
-                                           mBuf);
-      }
-      break;
-      case EVTPRGUESCELLLCHDELREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellLchDelReq(RgPrgPMacSMacUeSCellLchDelReq, pst,
-                                           mBuf);
-      }
-      break;
-      case EVTPRGUESCELLLCHADDREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellLchAddReq(RgPrgPMacSMacUeSCellLchAddReq, pst,
-                                           mBuf);
-      }
-      break;
+	 case EVTPRGUESCELLCFGREQ:
+	    {
+	       cmUnpkPrgPMacSMacUeSCellCfgReq(RgPrgPMacSMacUeSCellCfgReq, pst, mBuf);
+	    }
+	    break;
+	 case EVTPRGUESCELLCFGCFM:
+	 case EVTPRGUESCELLLCHMODCFM:
+	 case EVTPRGUESCELLLCHDELCFMDEL:
+	 case EVTPRGUESCELLLCHADDCFM:
+	    {
+	       cmUnpkPrgSMacPMacCfgCfm(RgPrgSMacPMacCfgCfm, pst, mBuf);
+	    }
+	    break;
+	 case EVTPRGUESCELLDELREQ:
+	    {
+	       cmUnpkPrgPMacSMacUeSCellDelReq(RgPrgPMacSMacUeSCellDelReq, pst, mBuf);
+	    }
+	    break;
+	 case EVTPRGUESCELLLCHMODREQ:
+	    {
+	       cmUnpkPrgPMacSMacUeSCellLchModReq(RgPrgPMacSMacUeSCellLchModReq, pst,
+		     mBuf);
+	    }
+	    break;
+	 case EVTPRGUESCELLLCHDELREQ:
+	    {
+	       cmUnpkPrgPMacSMacUeSCellLchDelReq(RgPrgPMacSMacUeSCellLchDelReq, pst,
+		     mBuf);
+	    }
+	    break;
+	 case EVTPRGUESCELLLCHADDREQ:
+	    {
+	       cmUnpkPrgPMacSMacUeSCellLchAddReq(RgPrgPMacSMacUeSCellLchAddReq, pst,
+		     mBuf);
+	    }
+	    break;
 
 #endif
-      default:
-      {
-         RG_FREE_MSG(mBuf);
-         break;
-      }
+	 default:
+	    {
+	       RG_FREE_MSG(mBuf);
+	       break;
+	    }
 
-   }
+      }
 }
 
 
@@ -431,48 +431,48 @@ Buffer  *mBuf;                      /* message buffer       */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgActvTsk
+   PUBLIC S16 rgActvTsk
 (
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+ Pst     *pst,                       /* post structure       */
+ Buffer  *mBuf                       /* message buffer       */
+ )
 #else
 PUBLIC S16 rgActvTsk(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
+   Pst     *pst;                       /* post structure       */
+   Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
    TRC2(rgActvTsk)
 
-   switch(pst->srcEnt)
-   {
-      /* The originator of this message is the stack manager,
-       * unpack and go to the respective primitive processing function */
-      case ENTDUAPP:
-          rgHdlSMEvents(pst, mBuf);
-           break;
-      case ENTNH:
-          rgHdlNHEvents(pst, mBuf);
-          break;
-      case ENTKW:
-          rgHdlKWEvents(pst, mBuf);
-          break;
-      case ENTTF:
-          rgHdlTFEvents(pst, mBuf);
-          break;
-      case ENTRG: /* When scheduler instance sends msg to MAC */
-          rgHdlRGEvents(pst, mBuf);
-          break;
-       default:
-          RG_FREE_MSG(mBuf);
-          break;
-   }
+      switch(pst->srcEnt)
+      {
+	 /* The originator of this message is the stack manager,
+	  * unpack and go to the respective primitive processing function */
+	 case ENTDUAPP:
+	    rgHdlSMEvents(pst, mBuf);
+	    break;
+	 case ENTNH:
+	    rgHdlNHEvents(pst, mBuf);
+	    break;
+	 case ENTKW:
+	    rgHdlKWEvents(pst, mBuf);
+	    break;
+	 case ENTTF:
+	    rgHdlTFEvents(pst, mBuf);
+	    break;
+	 case ENTRG: /* When scheduler instance sends msg to MAC */
+	    rgHdlRGEvents(pst, mBuf);
+	    break;
+	 default:
+	    RG_FREE_MSG(mBuf);
+	    break;
+      }
    SExitTsk();
    RETVALUE(ROK);
 }/* end of rgActvTsk */
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

@@ -155,47 +155,47 @@ RgSchDlHqTbCb     *tbInfo;
    /* -------------------------
     * | C7|C6|C5|C4|C3|C2|C1|R|
     * -------------------------*/
-    /* 1 for activation
-     * 0 for deactivation
-     * */
+   /* 1 for activation
+    * 0 for deactivation
+    * */
 
    for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if(ueCb->cellInfo[idx] != NULLP)
       {
-         switch(ueCb->cellInfo[idx]->sCellState)
-         {
-            case RG_SCH_SCELL_TOBE_ACTIVATED:
-            case RG_SCH_SCELL_ACTVTN_IN_PROG:
-               {
-                  ueCb->cellInfo[idx]->sCellState = RG_SCH_SCELL_ACTVTN_IN_PROG; 
-                  bitVal = 1;
-               }
-               break;
-            case RG_SCH_SCELL_ACTIVE:
-               {
-                  bitVal = 1;
-               }
-               break;
-            case RG_SCH_SCELL_TOBE_DEACTIVATED:
-            case RG_SCH_SCELL_DEACTVTN_IN_PROG:
-               {
-                  ueCb->cellInfo[idx]->sCellState = RG_SCH_SCELL_DEACTVTN_IN_PROG; 
-                  bitVal = 0;
-               }
-               break;
-            case RG_SCH_SCELL_INACTIVE:
-            case RG_SCH_SCELL_READY:
-               {
-                  bitVal = 0;
-               }
-               break;
-         }
+	 switch(ueCb->cellInfo[idx]->sCellState)
+	 {
+	    case RG_SCH_SCELL_TOBE_ACTIVATED:
+	    case RG_SCH_SCELL_ACTVTN_IN_PROG:
+	       {
+		  ueCb->cellInfo[idx]->sCellState = RG_SCH_SCELL_ACTVTN_IN_PROG; 
+		  bitVal = 1;
+	       }
+	       break;
+	    case RG_SCH_SCELL_ACTIVE:
+	       {
+		  bitVal = 1;
+	       }
+	       break;
+	    case RG_SCH_SCELL_TOBE_DEACTIVATED:
+	    case RG_SCH_SCELL_DEACTVTN_IN_PROG:
+	       {
+		  ueCb->cellInfo[idx]->sCellState = RG_SCH_SCELL_DEACTVTN_IN_PROG; 
+		  bitVal = 0;
+	       }
+	       break;
+	    case RG_SCH_SCELL_INACTIVE:
+	    case RG_SCH_SCELL_READY:
+	       {
+		  bitVal = 0;
+	       }
+	       break;
+	 }
       }
       if(1 == bitVal)
       {
-         sCellActDeactBitMask |= 1 << (idx);/* servCellIdx = idx + 1 */
-         bitVal = 0;
+	 sCellActDeactBitMask |= 1 << (idx);/* servCellIdx = idx + 1 */
+	 bitVal = 0;
       }
    }
    tbInfo->schdSCellActCe.pres    = PRSNT_NODEF;
@@ -221,15 +221,15 @@ RgSchDlHqTbCb     *tbInfo;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellAddToActDeactLst
+   PUBLIC Void rgSCHSCellAddToActDeactLst
 (
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue
-)
+ RgSchCellCb                *cell,
+ RgSchUeCb                  *ue
+ )
 #else
 PUBLIC Void rgSCHSCellAddToActDeactLst(cell, ue)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
+   RgSchCellCb                *cell;
+   RgSchUeCb                  *ue;
 #endif
 {
    RgSchCmnDlCell *cellCmnDl = RG_SCH_CMN_GET_DL_CELL(cell);
@@ -243,9 +243,9 @@ RgSchUeCb                  *ue;
    else
    {
       RGSCHDBGINFONEW(cell->instIdx,(rgSchPBuf(cell->instIdx),
-            "SCell is already added in the Act List: ueId(%u)\n", ue->ueId));
+	       "SCell is already added in the Act List: ueId(%u)\n", ue->ueId));
    }
-   
+
    RETVOID;
 }
 
@@ -266,15 +266,15 @@ RgSchUeCb                  *ue;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellRmvFrmActLst
+   PUBLIC Void rgSCHSCellRmvFrmActLst
 (
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue
-)
+ RgSchCellCb                *cell,
+ RgSchUeCb                  *ue
+ )
 #else
 PUBLIC Void rgSCHSCellRmvFrmActLst(cell, ue)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
+   RgSchCellCb                *cell;
+   RgSchUeCb                  *ue;
 #endif
 {
    RgSchCmnDlCell *cellCmnDl = RG_SCH_CMN_GET_DL_CELL(cell);
@@ -306,13 +306,13 @@ RgSchUeCb                  *ue;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellActivation
+   PUBLIC Void rgSCHSCellActivation
 (
-RgSchUeCellInfo  *sCellInfo
-)
+ RgSchUeCellInfo  *sCellInfo
+ )
 #else
 PUBLIC Void rgSCHSCellActivation(sCellInfo)
-RgSchUeCellInfo  *sCellInfo
+   RgSchUeCellInfo  *sCellInfo
 #endif
 {
    RgSchCellCb  *sCell = sCellInfo->cell;
@@ -347,146 +347,146 @@ RgSchUeCellInfo  *sCellInfo
    if(PRSNT_NODEF == ueCb->sCellDeactTmrVal.pres)
    {
       //rgSCHTmrStartTmr (sCell,sCellInfo ,RG_SCH_TMR_SCELL_DEACT,
-        //    ueCb->sCellDeactTmrVal.val);
+      //    ueCb->sCellDeactTmrVal.val);
    }
 
 #ifdef TFU_UPGRADE
    /* Start receiving CQI for this SCell for this UE */
    crntTime = (ueCb->cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)+
-                  (ueCb->cell->crntTime.slot);
+      (ueCb->cell->crntTime.slot);
 
    cqiCb = &sCellInfo->cqiCb;
    cqiCfg = &cqiCb->cqiCfg;
    if (cqiCfg->type == RGR_SCH_PCQI_SETUP)
    {
       cqiTrInstTime = ((cqiCb->cqiPeri+crntTime) - cqiCb->cqiOffset)
-         %cqiCb->cqiPeri;
+	 %cqiCb->cqiPeri;
       cqiCb->nCqiTrIdx = (crntTime + 
-            (cqiCb->cqiPeri - cqiTrInstTime));
+	    (cqiCb->cqiPeri - cqiTrInstTime));
       /* Introduced timing delta for reception req
        * in FDD*/
       if(cqiCb->nCqiTrIdx  <= (crntTime + TFU_RECPREQ_DLDELTA))
       {
-         cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx + cqiCb->cqiPeri;
+	 cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx + cqiCb->cqiPeri;
       }
 
       timingInfo.sfn =  cqiCb->nCqiTrIdx/RGSCH_NUM_SUB_FRAMES_5G;
       timingInfo.slot =  cqiCb->nCqiTrIdx%RGSCH_NUM_SUB_FRAMES_5G;
       if(cqiCb->cqiCfg.cqiSetup.cqiRepType == RGR_UE_PCQI_SB_REP)
       {
-         rgSCHTomUtlPcqiSbCalcBpIdx(timingInfo,ueCb,cqiCb); 
+	 rgSCHTomUtlPcqiSbCalcBpIdx(timingInfo,ueCb,cqiCb); 
       }
 
       cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx
-         %RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
+	 %RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
       RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), "CQI Config: idx(%u) Periodicity %u"
-               "Offset %u uePosInQ (%u)\n", cqiCfg->cqiSetup.cqiPCfgIdx,
-               cqiCb->cqiPeri, cqiCb->cqiOffset,cqiCb->nCqiTrIdx));
+	       "Offset %u uePosInQ (%u)\n", cqiCfg->cqiSetup.cqiPCfgIdx,
+	       cqiCb->cqiPeri, cqiCb->cqiOffset,cqiCb->nCqiTrIdx));
 
       cmLListAdd2Tail(&ueCb->cell->pCqiSrsSrLst[cqiCb->nCqiTrIdx].cqiLst,
-            &cqiCb->cqiLstEnt);  
+	    &cqiCb->cqiLstEnt);  
 
       rgSCHUtlSCellHndlCqiCollsn(cqiCb);
 
       RGSCHDBGINFO(inst,(rgSchPBuf(inst), 
-               "\n rgSCHCfgPCqiUeCfg():"
-               "  CrntTime=%d  Next CqiTrInstTime=%d  Index Stored at=%d  ",
-               crntTime, cqiTrInstTime, cqiCb->nCqiTrIdx));
+	       "\n rgSCHCfgPCqiUeCfg():"
+	       "  CrntTime=%d  Next CqiTrInstTime=%d  Index Stored at=%d  ",
+	       crntTime, cqiTrInstTime, cqiCb->nCqiTrIdx));
 
       if(cqiCfg->cqiSetup.riEna)
       {
-         cqiCb->perRiVal = 1;
-         cqiCb->invalidateCqi = FALSE;
+	 cqiCb->perRiVal = 1;
+	 cqiCb->invalidateCqi = FALSE;
 
-         if(RGR_UE_PCQI_WB_REP == cqiCfg->cqiSetup.cqiRepType)
-         {
-            /* 
-               1. wideband RI reporting is configured 
-               (Mode 1-0 or 1-1)
-               (10*sfn+floor(subframe)-Noffsetcqi-NoffsetRI )Mod(NCqiperiod
-             *MriPeriod)=0  
-             */ 
-            periodicity = cqiCb->cqiPeri * cqiCb->riPeri; 
-         }
-         else
-         {
-            /*
-             *  Where Widesband and Subband RI reporting is configured
-             *   (Mode 2-0 or 2-1 )
-             *   (10*sfn+floor(subframe)-Noffsetcqi-NoffsetRI )
-             *   Mod(H. NCqiperiod *MriPeriod )=0 
-             *   where H= J * K +1;  J=Number of bandwidth parts(BW/subsize). 
-             *   K is RGR interf input 
-             */
+	 if(RGR_UE_PCQI_WB_REP == cqiCfg->cqiSetup.cqiRepType)
+	 {
+	    /* 
+	       1. wideband RI reporting is configured 
+	       (Mode 1-0 or 1-1)
+	       (10*sfn+floor(subframe)-Noffsetcqi-NoffsetRI )Mod(NCqiperiod
+	     *MriPeriod)=0  
+	     */ 
+	    periodicity = cqiCb->cqiPeri * cqiCb->riPeri; 
+	 }
+	 else
+	 {
+	    /*
+	     *  Where Widesband and Subband RI reporting is configured
+	     *   (Mode 2-0 or 2-1 )
+	     *   (10*sfn+floor(subframe)-Noffsetcqi-NoffsetRI )
+	     *   Mod(H. NCqiperiod *MriPeriod )=0 
+	     *   where H= J * K +1;  J=Number of bandwidth parts(BW/subsize). 
+	     *   K is RGR interf input 
+	     */
 
-            RG_SCH_GET_CQI_J_VAL(sCell->bwCfg.dlTotalBw, j);
-            cqiCb->h = (cqiCb->cqiCfg.cqiSetup.k *j )+1;  
-            periodicity = cqiCb->h * cqiCb->cqiPeri * 
-               cqiCb->riPeri; 
+	    RG_SCH_GET_CQI_J_VAL(sCell->bwCfg.dlTotalBw, j);
+	    cqiCb->h = (cqiCb->cqiCfg.cqiSetup.k *j )+1;  
+	    periodicity = cqiCb->h * cqiCb->cqiPeri * 
+	       cqiCb->riPeri; 
 
-         }
+	 }
 
-         /* In case of SFN wraparound, the SB CQI reporting cycle breaks
-          * and RI->WB CQI->SBCQI.. should resume. RI is repositioned 
-          * accordingly. WBCQI handling is naturally accomplished */
-         if (periodicity >= RGSCH_MAX_SUBFRM_5G)
-         {
-            periodicity = cqiCb->cqiOffset - cqiCb->riOffset + 
-               RGSCH_MAX_SUBFRM_5G - (crntTime);
-            tempIdx = crntTime + periodicity;
-         }
-         else
-         {
-            riTrInsTime = ((periodicity +crntTime )- \
-                  cqiCb->cqiOffset + cqiCb->riOffset)\
-                          % periodicity;
-            tempIdx = (crntTime + (periodicity -riTrInsTime));
-         }
-         if (tempIdx <= (crntTime + TFU_RECPREQ_DLDELTA))
-         {
-            tempIdx = tempIdx + periodicity; 
-         }
-         cqiCb->nRiTrIdx = tempIdx 
-            % RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
-         if(periodicity >= RG_SCH_PCQI_SRS_SR_TRINS_SIZE)
-         {  
-            cqiCb->riDist = rgSCHUtlFindDist((U16)(crntTime + TFU_RECPREQ_DLDELTA),
-                  (U16) tempIdx);
-         }
-         else
-         {
-            cqiCb->riDist =0; 
-         }
+	 /* In case of SFN wraparound, the SB CQI reporting cycle breaks
+	  * and RI->WB CQI->SBCQI.. should resume. RI is repositioned 
+	  * accordingly. WBCQI handling is naturally accomplished */
+	 if (periodicity >= RGSCH_MAX_SUBFRM_5G)
+	 {
+	    periodicity = cqiCb->cqiOffset - cqiCb->riOffset + 
+	       RGSCH_MAX_SUBFRM_5G - (crntTime);
+	    tempIdx = crntTime + periodicity;
+	 }
+	 else
+	 {
+	    riTrInsTime = ((periodicity +crntTime )- \
+		  cqiCb->cqiOffset + cqiCb->riOffset)\
+			  % periodicity;
+	    tempIdx = (crntTime + (periodicity -riTrInsTime));
+	 }
+	 if (tempIdx <= (crntTime + TFU_RECPREQ_DLDELTA))
+	 {
+	    tempIdx = tempIdx + periodicity; 
+	 }
+	 cqiCb->nRiTrIdx = tempIdx 
+	    % RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
+	 if(periodicity >= RG_SCH_PCQI_SRS_SR_TRINS_SIZE)
+	 {  
+	    cqiCb->riDist = rgSCHUtlFindDist((U16)(crntTime + TFU_RECPREQ_DLDELTA),
+		  (U16) tempIdx);
+	 }
+	 else
+	 {
+	    cqiCb->riDist =0; 
+	 }
 
 
-         /* Start receiving RI for this SCell for this UE */
-         cmLListAdd2Tail(&ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst,
-               &cqiCb->riLstEnt);  
-         RG_SCH_RECORD(&cqiCb->histElem,RGSCH_ACTION_ADD,
-            &ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst);
+	 /* Start receiving RI for this SCell for this UE */
+	 cmLListAdd2Tail(&ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst,
+	       &cqiCb->riLstEnt);  
+	 RG_SCH_RECORD(&cqiCb->histElem,RGSCH_ACTION_ADD,
+	       &ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst);
 
-         rgSCHUtlSCellHndlRiCollsn(cqiCb);
-         /*werror*/
+	 rgSCHUtlSCellHndlRiCollsn(cqiCb);
+	 /*werror*/
 #ifndef BIT_64
-         RGSCHDBGINFONEW(inst,(rgSchPBuf(inst), "SCel RI cfg:"
-                  "idx %u period %u Offset %u posInQ(%u) riDist(%u)lst count"
-                  "%lu\n", cqiCfg->cqiSetup.riCfgIdx, cqiCb->riPeri,
-                  cqiCb->riOffset, cqiCb->nRiTrIdx, cqiCb->riDist, 
-                  ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst.count));
+	 RGSCHDBGINFONEW(inst,(rgSchPBuf(inst), "SCel RI cfg:"
+		  "idx %u period %u Offset %u posInQ(%u) riDist(%u)lst count"
+		  "%lu\n", cqiCfg->cqiSetup.riCfgIdx, cqiCb->riPeri,
+		  cqiCb->riOffset, cqiCb->nRiTrIdx, cqiCb->riDist, 
+		  ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst.count));
 #else
-         RGSCHDBGINFONEW(inst,(rgSchPBuf(inst), "SCel RI cfg:"
-                  "idx %u period %u Offset %u posInQ(%u) riDist(%u)lst count"
-                  "%u\n", cqiCfg->cqiSetup.riCfgIdx, cqiCb->riPeri,
-                  cqiCb->riOffset, cqiCb->nRiTrIdx, cqiCb->riDist, 
-                  ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst.count));
+	 RGSCHDBGINFONEW(inst,(rgSchPBuf(inst), "SCel RI cfg:"
+		  "idx %u period %u Offset %u posInQ(%u) riDist(%u)lst count"
+		  "%u\n", cqiCfg->cqiSetup.riCfgIdx, cqiCb->riPeri,
+		  cqiCb->riOffset, cqiCb->nRiTrIdx, cqiCb->riDist, 
+		  ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst.count));
 
 
 #endif
 
-         RGSCHDBGINFO(inst,(rgSchPBuf(inst),
-                  "\n rgSCHSCellActivation(): CrntTime=%d Next RiTrInstTime=%d"
-                  "Index Stored at=%d riDis=%d ",
-                  crntTime, riTrInsTime, cqiCb->nRiTrIdx, cqiCb->riDist));
+	 RGSCHDBGINFO(inst,(rgSchPBuf(inst),
+		  "\n rgSCHSCellActivation(): CrntTime=%d Next RiTrInstTime=%d"
+		  "Index Stored at=%d riDis=%d ",
+		  crntTime, riTrInsTime, cqiCb->nRiTrIdx, cqiCb->riDist));
       }
    }
 #endif
@@ -515,13 +515,13 @@ RgSchUeCellInfo  *sCellInfo
  *
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHCellClearScellLstOfCQI
+   PRIVATE Void rgSCHCellClearScellLstOfCQI
 (
-RgSchUeCellInfo *sCellInfo
-)
+ RgSchUeCellInfo *sCellInfo
+ )
 #else
 PRIVATE Void rgSCHCellClearScellLstOfCQI(sCellInfo)
-RgSchUeCellInfo *sCellInfo;
+   RgSchUeCellInfo *sCellInfo;
 #endif
 {
 
@@ -535,26 +535,26 @@ RgSchUeCellInfo *sCellInfo;
    if (cqiRiCb->nCqiTrIdx != RG_SCH_INVALID_IDX)
    {
       cmLListDelFrm(&ueCb->cell->pCqiSrsSrLst[cqiRiCb->nCqiTrIdx].cqiLst, 
-            &cqiRiCb->cqiLstEnt); 
+	    &cqiRiCb->cqiLstEnt); 
       cqiRiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
 
       if (ueCb->nPCqiCb == cqiRiCb)
       {
-         rgSCHUtlSCellHndlCqiCollsn(&ueCb->cellInfo[RGSCH_PCELL_INDEX]->cqiCb);
+	 rgSCHUtlSCellHndlCqiCollsn(&ueCb->cellInfo[RGSCH_PCELL_INDEX]->cqiCb);
       }
       /* Delete Periodic  RI  Transmission Instance  */
 
       if (cqiRiCb->nRiTrIdx != RG_SCH_INVALID_IDX)
       {
-         cmLListDelFrm(&ueCb->cell->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst, 
-               &cqiRiCb->riLstEnt); 
-         RG_SCH_RECORD(&cqiRiCb->histElem,RGSCH_ACTION_DEL,
-            &ueCb->cell->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst);
-         cqiRiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
-         if (ueCb->nPRiCb == cqiRiCb)
-         {
-            rgSCHUtlSCellHndlRiCollsn(&ueCb->cellInfo[RGSCH_PCELL_INDEX]->cqiCb);
-         }
+	 cmLListDelFrm(&ueCb->cell->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst, 
+	       &cqiRiCb->riLstEnt); 
+	 RG_SCH_RECORD(&cqiRiCb->histElem,RGSCH_ACTION_DEL,
+	       &ueCb->cell->pCqiSrsSrLst[cqiRiCb->nRiTrIdx].riLst);
+	 cqiRiCb->nRiTrIdx = RG_SCH_INVALID_IDX;
+	 if (ueCb->nPRiCb == cqiRiCb)
+	 {
+	    rgSCHUtlSCellHndlRiCollsn(&ueCb->cellInfo[RGSCH_PCELL_INDEX]->cqiCb);
+	 }
       }
    }
 
@@ -583,13 +583,13 @@ RgSchUeCellInfo *sCellInfo;
  *
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellDeActivation
+   PRIVATE S16 rgSCHSCellDeActivation
 (
-RgSchUeCellInfo *sCellInfo
-)
+ RgSchUeCellInfo *sCellInfo
+ )
 #else
 PRIVATE S16 rgSCHSCellDeActivation(sCellInfo)
-RgSchUeCellInfo *sCellInfo
+   RgSchUeCellInfo *sCellInfo
 #endif
 {
    RETVALUE(ROK);
@@ -615,7 +615,7 @@ RgSchUeCellInfo *sCellInfo
    if(sCellInfo->ue->isDrxEnabled)
    {   
       rgSCHDrxUeHqReset(sCellInfo->ue->cell, sCellInfo->ue, 
-                        sCellInfo->hqEnt, sCellInfo->sCellIdx);
+	    sCellInfo->hqEnt, sCellInfo->sCellIdx);
    }
 
    /* Flush the harqEntity at scheduler */
@@ -627,7 +627,7 @@ RgSchUeCellInfo *sCellInfo
 
 
    rgSCHSCellTrgMacHqEReset(inst,sCellInfo->sCellId,sCellInfo->ue->ueId);
-   
+
    sCellInfo->sCellState = RG_SCH_SCELL_READY;
 #ifdef TFU_UPGRADE
    rgSCHCellClearScellLstOfCQI(sCellInfo);
@@ -667,17 +667,17 @@ RgSchUeCellInfo *sCellInfo
  *
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellTrgMacHqEReset
+   PRIVATE S16 rgSCHSCellTrgMacHqEReset
 (
-Inst          inst,
-U16           secCellId,
-U16           rnti
-)
+ Inst          inst,
+ U16           secCellId,
+ U16           rnti
+ )
 #else
 PRIVATE S16 rgSCHSCellTrgMacHqEReset(inst,secCellId,rnti)
-Inst          inst;
-U16           secCellId;
-U16           rnti;
+   Inst          inst;
+   U16           secCellId;
+   U16           rnti;
 #endif
 {
    Pst               pst;
@@ -724,19 +724,19 @@ U16           rnti;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellHndlFdbkInd
+   PUBLIC Void rgSCHSCellHndlFdbkInd
 (
-RgSchDlHqProcCb   *hqP,
-U8                tbIdx,
-U8                fdbk,
-Bool              maxHqRetxReached
-)
+ RgSchDlHqProcCb   *hqP,
+ U8                tbIdx,
+ U8                fdbk,
+ Bool              maxHqRetxReached
+ )
 #else
 PUBLIC Void rgSCHSCellHndlFdbkInd(hqP, tbIdx, fdbk,maxHqRetxReached)
-RgSchDlHqProcCb   *hqP;
-U8                tbIdx;
-U8                fdbk;
-Bool              maxHqRetxReached;
+   RgSchDlHqProcCb   *hqP;
+   U8                tbIdx;
+   U8                fdbk;
+   Bool              maxHqRetxReached;
 #endif
 {
 
@@ -751,63 +751,63 @@ Bool              maxHqRetxReached;
    switch(fdbk)
    {
       case TFU_HQFDB_ACK:
-         {
-            hqP->tbInfo[tbIdx].schdSCellActCe.pres =  FALSE;
+	 {
+	    hqP->tbInfo[tbIdx].schdSCellActCe.pres =  FALSE;
 
-            for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
-            {
-               if(ueCb->cellInfo[idx] != NULLP) 
-               {
-                  if(ueCb->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTVTN_IN_PROG)
-                  {
+	    for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+	    {
+	       if(ueCb->cellInfo[idx] != NULLP) 
+	       {
+		  if(ueCb->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTVTN_IN_PROG)
+		  {
 #ifdef CA_DBG
-                     printf("\n starting delay timer...\n");
+		     printf("\n starting delay timer...\n");
 #endif                     
-                     rgSCHTmrStartTmr (cell,ueCb->cellInfo[idx] ,RG_SCH_TMR_SCELL_ACT_DELAY,
-                           RG_SCH_CMN_SCELL_ACT_DELAY_TMR);
-                  }
-                  else
-                  {
-                     if(ueCb->cellInfo[idx]->sCellState == RG_SCH_SCELL_DEACTVTN_IN_PROG)
-                     {
-                        sCellInfo = ueCb->cellInfo[idx];
-                        rgSCHSCellDeActivation(sCellInfo);
-                     }
-                  }
-               }
-            }
-         }
-         break;
+		     rgSCHTmrStartTmr (cell,ueCb->cellInfo[idx] ,RG_SCH_TMR_SCELL_ACT_DELAY,
+			   RG_SCH_CMN_SCELL_ACT_DELAY_TMR);
+		  }
+		  else
+		  {
+		     if(ueCb->cellInfo[idx]->sCellState == RG_SCH_SCELL_DEACTVTN_IN_PROG)
+		     {
+			sCellInfo = ueCb->cellInfo[idx];
+			rgSCHSCellDeActivation(sCellInfo);
+		     }
+		  }
+	       }
+	    }
+	 }
+	 break;
       case TFU_HQFDB_NACK:
       case TFU_HQFDB_DTX:
-         {
-            if(TRUE == maxHqRetxReached)
-            {
-               hqP->tbInfo[tbIdx].schdSCellActCe.pres =  FALSE;
-               for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
-               {
-                  if(ueCb->cellInfo[idx] != NULLP) 
-                  {
-                     if(ueCb->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTVTN_IN_PROG)
-                     {
-                        ueCb->cellInfo[idx]->sCellState = RG_SCH_SCELL_TOBE_ACTIVATED;
-                     }
-                     else
-                     {
-                        if(ueCb->cellInfo[idx]->sCellState == RG_SCH_SCELL_DEACTVTN_IN_PROG)
-                        {
-                           ueCb->cellInfo[idx]->sCellState = RG_SCH_SCELL_TOBE_DEACTIVATED;
-                        }
-                     }
-                  }
-                  /* Add to actDeactCe lst */
-                  rgSCHSCellAddToActDeactLst(cell,ueCb);
-               }
-            }
-         }
-         break;
+	 {
+	    if(TRUE == maxHqRetxReached)
+	    {
+	       hqP->tbInfo[tbIdx].schdSCellActCe.pres =  FALSE;
+	       for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+	       {
+		  if(ueCb->cellInfo[idx] != NULLP) 
+		  {
+		     if(ueCb->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTVTN_IN_PROG)
+		     {
+			ueCb->cellInfo[idx]->sCellState = RG_SCH_SCELL_TOBE_ACTIVATED;
+		     }
+		     else
+		     {
+			if(ueCb->cellInfo[idx]->sCellState == RG_SCH_SCELL_DEACTVTN_IN_PROG)
+			{
+			   ueCb->cellInfo[idx]->sCellState = RG_SCH_SCELL_TOBE_DEACTIVATED;
+			}
+		     }
+		  }
+		  /* Add to actDeactCe lst */
+		  rgSCHSCellAddToActDeactLst(cell,ueCb);
+	       }
+	    }
+	 }
+	 break;
       default:
-         break;
+	 break;
    }
    RETVOID;
 }
@@ -833,13 +833,13 @@ Bool              maxHqRetxReached;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellDeactTmrExpry
+   PUBLIC Void rgSCHSCellDeactTmrExpry
 (
-RgSchUeCellInfo *sCellInfo
-)
+ RgSchUeCellInfo *sCellInfo
+ )
 #else
 PUBLIC Void rgSCHSCellDeactTmrExpry(sCellInfo)
-RgSchUeCellInfo *sCellInfo;
+   RgSchUeCellInfo *sCellInfo;
 #endif
 {
 
@@ -850,12 +850,12 @@ RgSchUeCellInfo *sCellInfo;
       /* No doing Deactivaiton of LAA Cell */
       if (FALSE == rgSCHLaaSCellEnabled(sCellInfo->cell))
       {
-         rgSCHSCellTrigActDeact(sCellInfo->ue->cell, sCellInfo->ue, sCellInfo->sCellIdx, RGR_SCELL_DEACT);
+	 rgSCHSCellTrigActDeact(sCellInfo->ue->cell, sCellInfo->ue, sCellInfo->sCellIdx, RGR_SCELL_DEACT);
       }
       else
       {
-         printf (" !!!!!! Avoiding DEACT for UE %d because of LAA Cell !!!!!!!!!!!!! \n",
-         sCellInfo->ue->ueId);
+	 printf (" !!!!!! Avoiding DEACT for UE %d because of LAA Cell !!!!!!!!!!!!! \n",
+	       sCellInfo->ue->ueId);
       }
 
    }
@@ -890,17 +890,17 @@ RgSchUeCellInfo *sCellInfo;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHSCellTrigActDeact
+   PUBLIC S16 rgSCHSCellTrigActDeact
 (
-RgSchCellCb  *cell,
-RgSchUeCb    *ueCb,
-U8            sCellIdx,
-U8            action
-)
+ RgSchCellCb  *cell,
+ RgSchUeCb    *ueCb,
+ U8            sCellIdx,
+ U8            action
+ )
 #else
 PUBLIC S16 rgSCHSCellTrigActDeact(cell,ueCb,sCellIdx,action)
-RgSchCellCb  *cell,
-RgSchUeCb    *ueCb;
+   RgSchCellCb  *cell,
+   RgSchUeCb    *ueCb;
 U8            sCellIdx;
 U8            action;
 #endif
@@ -911,93 +911,93 @@ U8            action;
    TRC3(rgSCHSCellTrigActDeact);
 
    if((sCellIdx < 1) ||
-      (sCellIdx > RGR_MAX_SCELL_PER_UE))
+	 (sCellIdx > RGR_MAX_SCELL_PER_UE))
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid Serv Cell Idx %d\n", \
-               sCellIdx));
+	       sCellIdx));
       RETVALUE(RFAILED);
    }
 
    if(ueCb->cellInfo[sCellIdx] == NULLP)
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Serv Cell not added to this Ue Scell Idx %d ueId %d\n", \
-              sCellIdx,ueCb->ueId));
+	       sCellIdx,ueCb->ueId));
       RETVALUE(RFAILED);
    }
 
    switch (action)
    {
       case RGR_SCELL_READY:
-      {
-         if(ueCb->cellInfo[sCellIdx]->sCellState != RG_SCH_SCELL_INACTIVE)
-         {
-            RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid state %u for preparing SCell Idx %u for UE %u\n", \
-                     ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId));
-            ret = RFAILED;
-         }
-         else
-         {
-            ueCb->cellInfo[sCellIdx]->sCellState = RG_SCH_SCELL_READY;
-            //TODO_SID Activating the cell directly. Ignoring the ActCe procedure.
-            rgSCHSCellActivation(ueCb->cellInfo[sCellIdx]);
-            /* Setting allocCmnUlPdcch flag to FALSE, So that PDCCH allocation will be done 
-               from UE Searchspace */
-            ueCb->allocCmnUlPdcch = FALSE;
-            printf("\n***** SCellIdx=%d state Changed to %d State \n",sCellIdx, ueCb->cellInfo[sCellIdx]->sCellState);
-            printf("\n***** SCellInfo Addr=%p state Changed to RG_SCH_SCELL_READY\n",(void*)ueCb->cellInfo[sCellIdx]);
-         }
-         break;
-      }
+	 {
+	    if(ueCb->cellInfo[sCellIdx]->sCellState != RG_SCH_SCELL_INACTIVE)
+	    {
+	       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid state %u for preparing SCell Idx %u for UE %u\n", \
+			ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId));
+	       ret = RFAILED;
+	    }
+	    else
+	    {
+	       ueCb->cellInfo[sCellIdx]->sCellState = RG_SCH_SCELL_READY;
+	       //TODO_SID Activating the cell directly. Ignoring the ActCe procedure.
+	       rgSCHSCellActivation(ueCb->cellInfo[sCellIdx]);
+	       /* Setting allocCmnUlPdcch flag to FALSE, So that PDCCH allocation will be done 
+		  from UE Searchspace */
+	       ueCb->allocCmnUlPdcch = FALSE;
+	       printf("\n***** SCellIdx=%d state Changed to %d State \n",sCellIdx, ueCb->cellInfo[sCellIdx]->sCellState);
+	       printf("\n***** SCellInfo Addr=%p state Changed to RG_SCH_SCELL_READY\n",(void*)ueCb->cellInfo[sCellIdx]);
+	    }
+	    break;
+	 }
       case RGR_SCELL_ACT:
-      {
-         if(ueCb->cellInfo[sCellIdx]->sCellState != RG_SCH_SCELL_READY)
-         {
-            RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid state %u for activating SCell Idx %u for UE %u\n", \
-                     ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId));
-            ret = RFAILED;
-         }
-         else
-         {
-            ueCb->cellInfo[sCellIdx]->sCellState = RG_SCH_SCELL_TOBE_ACTIVATED;
-            if (NULLP == ueCb->sCellActLnk.node)
-            {
-               /* Add only if UE is not already present in the activation/deactivation list */
-               rgSCHSCellAddToActDeactLst(cell,ueCb);
-            }
-         }
-         break;
-      }
+	 {
+	    if(ueCb->cellInfo[sCellIdx]->sCellState != RG_SCH_SCELL_READY)
+	    {
+	       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid state %u for activating SCell Idx %u for UE %u\n", \
+			ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId));
+	       ret = RFAILED;
+	    }
+	    else
+	    {
+	       ueCb->cellInfo[sCellIdx]->sCellState = RG_SCH_SCELL_TOBE_ACTIVATED;
+	       if (NULLP == ueCb->sCellActLnk.node)
+	       {
+		  /* Add only if UE is not already present in the activation/deactivation list */
+		  rgSCHSCellAddToActDeactLst(cell,ueCb);
+	       }
+	    }
+	    break;
+	 }
       case RGR_SCELL_DEACT:
-      {
-         if(ueCb->cellInfo[sCellIdx]->sCellState != RG_SCH_SCELL_ACTIVE)
-         {
-            RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid state %u for deactivating SCell Idx %u for UE %u\n", \
-                     ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId));
-            ret = RFAILED;
-         }
-         else
-         {
-            ueCb->cellInfo[sCellIdx]->sCellState = RG_SCH_SCELL_TOBE_DEACTIVATED;
-            if (NULLP == ueCb->sCellActLnk.node)
-            {
-               /* Add only if UE is not already present in the activation/deactivation list */
-               rgSCHSCellAddToActDeactLst(cell,ueCb);
-            }
-         }
-         break;
-      }
+	 {
+	    if(ueCb->cellInfo[sCellIdx]->sCellState != RG_SCH_SCELL_ACTIVE)
+	    {
+	       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid state %u for deactivating SCell Idx %u for UE %u\n", \
+			ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId));
+	       ret = RFAILED;
+	    }
+	    else
+	    {
+	       ueCb->cellInfo[sCellIdx]->sCellState = RG_SCH_SCELL_TOBE_DEACTIVATED;
+	       if (NULLP == ueCb->sCellActLnk.node)
+	       {
+		  /* Add only if UE is not already present in the activation/deactivation list */
+		  rgSCHSCellAddToActDeactLst(cell,ueCb);
+	       }
+	    }
+	    break;
+	 }
       default:
-      {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid action received for SCell Idx %u for UE %u\n", \
-                  sCellIdx, ueCb->ueId));
-         ret = RFAILED;
-         break;
-      }
+	 {
+	    RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid action received for SCell Idx %u for UE %u\n", \
+		     sCellIdx, ueCb->ueId));
+	    ret = RFAILED;
+	    break;
+	 }
    }
    RETVALUE(ret);
 }
 
- 
+
 /**
  * @brief SCell Activation of selected cell
  *
@@ -1015,17 +1015,17 @@ U8            action;
  *
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellSelectForAct
+   PRIVATE S16 rgSCHSCellSelectForAct
 (
-RgSchCellCb  *cell,
-RgSchUeCb    *ueCb,
-U8           *sCellIdx
-)
+ RgSchCellCb  *cell,
+ RgSchUeCb    *ueCb,
+ U8           *sCellIdx
+ )
 #else
 PRIVATE S16 rgSCHSCellSelectForAct(cell, ueCb)
-RgSchCellCb  *cell;
-RgSchUeCb    *ueCb;
-U8           *sCellIdx;
+   RgSchCellCb  *cell;
+   RgSchUeCb    *ueCb;
+   U8           *sCellIdx;
 #endif
 {
    TRC3(rgSCHSCellSelectAndAct);
@@ -1033,9 +1033,9 @@ U8           *sCellIdx;
    for((*sCellIdx) = 1; (*sCellIdx) <= RG_SCH_MAX_SCELL; (*sCellIdx)++)
    {
       if((ueCb->cellInfo[(*sCellIdx)] != NULLP) &&
-            (ueCb->cellInfo[(*sCellIdx)]->sCellState == RG_SCH_SCELL_READY))
+	    (ueCb->cellInfo[(*sCellIdx)]->sCellState == RG_SCH_SCELL_READY))
       {
-         RETVALUE(ROK);
+	 RETVALUE(ROK);
       }
    }
    RETVALUE(RFAILED);
@@ -1059,17 +1059,17 @@ U8           *sCellIdx;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellSelectAndActDeAct
+   PUBLIC Void rgSCHSCellSelectAndActDeAct
 (
-RgSchCellCb  *pCell,
-RgSchUeCb    *ueCb,
-U8           action
-)
+ RgSchCellCb  *pCell,
+ RgSchUeCb    *ueCb,
+ U8           action
+ )
 #else
 PUBLIC Void rgSCHSCellSelectAndActDeAct(pCell, ueCb, action)
-RgSchCellCb  *pCell;
-RgSchUeCb    *ueCb;
-U8           action;
+   RgSchCellCb  *pCell;
+   RgSchUeCb    *ueCb;
+   U8           action;
 #endif
 {
    U8  sCellIdx = 0;
@@ -1078,26 +1078,26 @@ U8           action;
    switch (action)
    {
       case RGR_SCELL_ACT:
-         {
+	 {
 
-            if(((ret = rgSCHSCellSelectForAct(pCell, ueCb, &sCellIdx)) == ROK)
-                  && (sCellIdx == 0))
-               RETVOID;
-            break;
-         }
-         default:
-         RETVOID;
+	    if(((ret = rgSCHSCellSelectForAct(pCell, ueCb, &sCellIdx)) == ROK)
+		  && (sCellIdx == 0))
+	       RETVOID;
+	    break;
+	 }
+      default:
+	 RETVOID;
    }
    if ((ret != ROK) || 
-         (ROK != (rgSCHSCellTrigActDeact(pCell, ueCb, sCellIdx, action))))
+	 (ROK != (rgSCHSCellTrigActDeact(pCell, ueCb, sCellIdx, action))))
    {
       RGSCHDBGERR(pCell->instIdx,(rgSchPBuf(pCell->instIdx), "SCell Actication failed"
-               "for UE [%d] with SCellIdx [%d]\n", ueCb->ueId, sCellIdx));
+	       "for UE [%d] with SCellIdx [%d]\n", ueCb->ueId, sCellIdx));
    }
    RETVOID;
 }
 
- 
+
 /**
  * @brief Handling of Scell Deletion 
  *
@@ -1118,17 +1118,17 @@ U8           action;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellDelUeSCell
+   PUBLIC Void rgSCHSCellDelUeSCell
 (
-RgSchCellCb  *cellCb,
-RgSchUeCb    *ueCb,
-U8            sCellIdx
-)
+ RgSchCellCb  *cellCb,
+ RgSchUeCb    *ueCb,
+ U8            sCellIdx
+ )
 #else
 PUBLIC Void rgSCHSCellDelUeSCell(cellCb,ueCb,sCellIdx)
-RgSchCellCb  *cellCb;
-RgSchUeCb    *ueCb;
-U8            sCellIdx;
+   RgSchCellCb  *cellCb;
+   RgSchUeCb    *ueCb;
+   U8            sCellIdx;
 #endif
 {
    RgUeUlHqCb       *ulHqEnt;
@@ -1143,8 +1143,8 @@ U8            sCellIdx;
    if(sCellInfo == NULLP)
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Serv Cell not added to this Ue Scell Idx %d\
-               ueId %d\n",
-               sCellIdx,ueCb->ueId));
+	       ueId %d\n",
+	       sCellIdx,ueCb->ueId));
       RETVOID;
    }
 
@@ -1161,7 +1161,7 @@ U8            sCellIdx;
 
    /*Updating 1BCS Value*/
    ueCb->f1bCsAVal = (ueCb->f1bCsAVal - 
-         rgSCHUtlGetMaxTbSupp(sCellInfo->txMode.txModeEnum));
+	 rgSCHUtlGetMaxTbSupp(sCellInfo->txMode.txModeEnum));
 
 #ifdef LTE_TDD
    rgSCHUtlDelUeANFdbkInfo(ueCb,sCellIdx);
@@ -1178,10 +1178,10 @@ U8            sCellIdx;
    rgSCHUhmFreeUe(sCellInfo->cell, ulHqEnt);
 
    rgSCHUtlFreeSBuf(cellCb->instIdx,
-         (Data**)(&(sCellInfo)), (sizeof(RgSchUeCellInfo)));
+	 (Data**)(&(sCellInfo)), (sizeof(RgSchUeCellInfo)));
 
    ueCb->cellInfo[sCellIdx] = NULLP;
-   
+
    RETVOID;
 }
 
@@ -1205,15 +1205,15 @@ U8            sCellIdx;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHSCellDelUe
+   PUBLIC S16 rgSCHSCellDelUe
 (
-RgSchCellCb  *cellCb,
-RgSchUeCb    *ueCb
-)
+ RgSchCellCb  *cellCb,
+ RgSchUeCb    *ueCb
+ )
 #else
 PUBLIC S16 rgSCHSCellDelUe(cellCb,ueCb)
-RgSchCellCb  *cellCb;
-RgSchUeCb    *ueCb;
+   RgSchCellCb  *cellCb;
+   RgSchUeCb    *ueCb;
 #endif
 {
 
@@ -1260,23 +1260,23 @@ RgSchUeCb    *ueCb;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHSCellPCqiCfg
+   PUBLIC S16 rgSCHSCellPCqiCfg
 (
-RgSchCellCb  *priCellCb,
-RgSchCellCb  *secCellCb,
-RgSchUeCb    *ueCb,
-RgrUePrdDlCqiCfg  *cqiCfg,
-CmLteUeCategory   ueCat,
-U8            sCellIdx
-)
+ RgSchCellCb  *priCellCb,
+ RgSchCellCb  *secCellCb,
+ RgSchUeCb    *ueCb,
+ RgrUePrdDlCqiCfg  *cqiCfg,
+ CmLteUeCategory   ueCat,
+ U8            sCellIdx
+ )
 #else
 PUBLIC S16 rgSCHSCellPCqiCfg(priCellCb,secCellCb,ueCb,cqiCfg,ueCat,sCellIdx)
-RgSchCellCb       *priCellCb;
-RgSchCellCb       *secCellCb;
-RgSchUeCb         *ueCb;
-RgrUePrdDlCqiCfg  *cqiCfg;
-CmLteUeCategory    ueCat;
-U8                sCellIdx;
+   RgSchCellCb       *priCellCb;
+   RgSchCellCb       *secCellCb;
+   RgSchUeCb         *ueCb;
+   RgrUePrdDlCqiCfg  *cqiCfg;
+   CmLteUeCategory    ueCat;
+   U8                sCellIdx;
 #endif
 {
    U8     j;  /*Bandwidth Parts*/
@@ -1290,14 +1290,14 @@ U8                sCellIdx;
    TRC3(rgSCHSCellPCqiCfg);
 
    RGSCHDBGINFO(priCellCb->instIdx, (rgSchPBuf(priCellCb->instIdx), 
-            "rgSCHSCellPCqiCfg cellId =%d, ueId = %d, CfgType =%d\n",
-            secCellCb->cellId,  ueCb->ueId, cqiCfg->type));
-   
+	    "rgSCHSCellPCqiCfg cellId =%d, ueId = %d, CfgType =%d\n",
+	    secCellCb->cellId,  ueCb->ueId, cqiCfg->type));
+
    if((sCellIdx < 1) ||
-      (sCellIdx > RGR_MAX_SCELL_PER_UE))
+	 (sCellIdx > RGR_MAX_SCELL_PER_UE))
    {
       RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid Serv Cell Idx %d\n",
-               sCellIdx));
+	       sCellIdx));
       RETVALUE(RFAILED);
    }
 
@@ -1311,41 +1311,41 @@ U8                sCellIdx;
    {   
       /*  1. Copy the Received CQI Cfg parameters to ueCb  */
       cmMemcpy((U8 *)&cqiCb->cqiCfg, (U8 *)cqiCfg, 
-            sizeof(RgrUePrdDlCqiCfg));
+	    sizeof(RgrUePrdDlCqiCfg));
 
       /*  2. Compute Periodic CQI Periodicity and subframe offset   */
 #ifndef LTE_TDD           
       rgSCHUtlGetCfgPerOff(RG_SCH_FDD_PCQI_TBL, cqiCfg->cqiSetup.cqiPCfgIdx,
-            &cqiCb->cqiPeri, &cqiCb->cqiOffset);      
+	    &cqiCb->cqiPeri, &cqiCb->cqiOffset);      
 #else
       rgSCHUtlGetCfgPerOff( RG_SCH_TDD_PCQI_TBL, 
-            cqiCfg->cqiSetup.cqiPCfgIdx,
-            &cqiCb->cqiPeri, &cqiCb->cqiOffset);    
+	    cqiCfg->cqiSetup.cqiPCfgIdx,
+	    &cqiCb->cqiPeri, &cqiCb->cqiOffset);    
 #endif
 
 
       RGSCHDBGINFO(priCellCb->instIdx,(rgSchPBuf(priCellCb->instIdx), 
-               "\n rgSCHSCellPCqiCfg(): CQI Peri=%d, CQI Offset=%d", 
-               cqiCb->cqiPeri,cqiCb->cqiOffset));
+	       "\n rgSCHSCellPCqiCfg(): CQI Peri=%d, CQI Offset=%d", 
+	       cqiCb->cqiPeri,cqiCb->cqiOffset));
 
       if(RGR_UE_PCQI_SB_REP == cqiCfg->cqiSetup.cqiRepType)
       {
-         U8     k;  /*SubBand Size (RB) */
-         RG_SCH_GET_CQI_J_VAL(secCellCb->bwCfg.dlTotalBw, j);
-         RG_SCH_GET_CQI_K_VAL(secCellCb->bwCfg.dlTotalBw, k);
-         cqiCb->J = j; /*Number of Bandwidth Parts*/
-         /*h: reporting instances required for a complete CQI/PMI report */
-         /*j:Number of bandwidth parts; k: Subband Size*/
-         cqiCb->h = (cqiCb->cqiCfg.cqiSetup.k *j )+1; 
-         /* ccpu00140905- L-size is coming as 3 for 100Rbs where it should be 2*/
-         temp = RGSCH_CEIL(secCellCb->bwCfg.dlTotalBw, (j*k));
-         cqiCb->label = (temp & (temp-1)) ?
-            (1+ rgSCHUtlLog32bitNbase2(temp)) : rgSCHUtlLog32bitNbase2(temp);
+	 U8     k;  /*SubBand Size (RB) */
+	 RG_SCH_GET_CQI_J_VAL(secCellCb->bwCfg.dlTotalBw, j);
+	 RG_SCH_GET_CQI_K_VAL(secCellCb->bwCfg.dlTotalBw, k);
+	 cqiCb->J = j; /*Number of Bandwidth Parts*/
+	 /*h: reporting instances required for a complete CQI/PMI report */
+	 /*j:Number of bandwidth parts; k: Subband Size*/
+	 cqiCb->h = (cqiCb->cqiCfg.cqiSetup.k *j )+1; 
+	 /* ccpu00140905- L-size is coming as 3 for 100Rbs where it should be 2*/
+	 temp = RGSCH_CEIL(secCellCb->bwCfg.dlTotalBw, (j*k));
+	 cqiCb->label = (temp & (temp-1)) ?
+	    (1+ rgSCHUtlLog32bitNbase2(temp)) : rgSCHUtlLog32bitNbase2(temp);
       }
       else
       {
-         /* Wideband Cqi Rep Type */
-         cqiCb->prioLvl = RG_SCH_CQI_PRIO_LVL_1;
+	 /* Wideband Cqi Rep Type */
+	 cqiCb->prioLvl = RG_SCH_CQI_PRIO_LVL_1;
       }
       cqiCb->cqiLstEnt.node=(PTR)cqiCb;
       cqiCb->isCqiIgnoByCollsn = FALSE;
@@ -1355,40 +1355,40 @@ U8                sCellIdx;
       /* 1. Rank Indicator is enabled  */
       if(cqiCfg->cqiSetup.riEna)
       {
-         rgSCHUtlGetCfgPerOff(RG_SCH_RI_TBL, 
-               cqiCfg->cqiSetup.riCfgIdx,
-               &cqiCb->riPeri, &cqiCb->riOffset);
+	 rgSCHUtlGetCfgPerOff(RG_SCH_RI_TBL, 
+	       cqiCfg->cqiSetup.riCfgIdx,
+	       &cqiCb->riPeri, &cqiCb->riOffset);
 
-         RGSCHDBGINFO(priCellCb->instIdx,(rgSchPBuf(priCellCb->instIdx),
-                  "\n rgSCHSCellPCqiCfg(): RI Peri=%d, RI Offset=%d", 
-                  cqiCb->riPeri,cqiCb->riOffset));
+	 RGSCHDBGINFO(priCellCb->instIdx,(rgSchPBuf(priCellCb->instIdx),
+		  "\n rgSCHSCellPCqiCfg(): RI Peri=%d, RI Offset=%d", 
+		  cqiCb->riPeri,cqiCb->riOffset));
 
-         if(ueCb->cellInfo[sCellIdx]->txMode.txModeEnum == RGR_UE_TM_3 
-               || ueCb->cellInfo[sCellIdx]->txMode.txModeEnum == RGR_UE_TM_4)
-         {
-            if (secCellCb->numTxAntPorts ==2)
-            {
-               cqiCb->riNumBits = 1;
-            }
-            else if(secCellCb->numTxAntPorts ==4)
-            {
-               if(ueCat == CM_LTE_UE_CAT_8)
-               {
-                  cqiCb->riNumBits = 3;
-               }
-               else if((ueCat == CM_LTE_UE_CAT_5) || 
-                     (ueCat == CM_LTE_UE_CAT_6) || CM_LTE_UE_CAT_7)
-               {
-                  cqiCb->riNumBits = 2;
-               }
-               else
-               {
-                  cqiCb->riNumBits = 1;
-               }
-            }
-         }
-         cqiCb->riLstEnt.node=(PTR) cqiCb;
-         cqiCb->isRiIgnoByCollsn = FALSE;
+	 if(ueCb->cellInfo[sCellIdx]->txMode.txModeEnum == RGR_UE_TM_3 
+	       || ueCb->cellInfo[sCellIdx]->txMode.txModeEnum == RGR_UE_TM_4)
+	 {
+	    if (secCellCb->numTxAntPorts ==2)
+	    {
+	       cqiCb->riNumBits = 1;
+	    }
+	    else if(secCellCb->numTxAntPorts ==4)
+	    {
+	       if(ueCat == CM_LTE_UE_CAT_8)
+	       {
+		  cqiCb->riNumBits = 3;
+	       }
+	       else if((ueCat == CM_LTE_UE_CAT_5) || 
+		     (ueCat == CM_LTE_UE_CAT_6) || CM_LTE_UE_CAT_7)
+	       {
+		  cqiCb->riNumBits = 2;
+	       }
+	       else
+	       {
+		  cqiCb->riNumBits = 1;
+	       }
+	    }
+	 }
+	 cqiCb->riLstEnt.node=(PTR) cqiCb;
+	 cqiCb->isRiIgnoByCollsn = FALSE;
 
       }
    }
@@ -1402,7 +1402,7 @@ U8                sCellIdx;
    cqiCb->nRiTrIdx  = RG_SCH_INVALID_IDX;
    cqiCb->riDist    = RG_SCH_INVALID_IDX; 
    cqiCb->nCqiTrIdx = RG_SCH_INVALID_IDX;
- 
+
    RETVALUE(ROK);
 }
 #endif
@@ -1424,15 +1424,15 @@ U8                sCellIdx;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellDlUeReset
+   PUBLIC Void rgSCHSCellDlUeReset
 (
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue
-)
+ RgSchCellCb                *cell,
+ RgSchUeCb                  *ue
+ )
 #else
 PUBLIC Void rgSCHSCellDlUeReset(cell, ue)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
+   RgSchCellCb                *cell;
+   RgSchUeCb                  *ue;
 #endif
 {
    RgSchCmnCell *cellSch;
@@ -1442,10 +1442,10 @@ RgSchUeCb                  *ue;
    {
       if(ue->cellInfo[idx] != NULLP) 
       {
-         cellSch = RG_SCH_CMN_GET_CELL(ue->cellInfo[idx]->cell);
-         cellSch->apisDl->rgSCHDlUeReset(ue->cellInfo[idx]->cell, ue);
-         rgSCHSCellDeActivation(ue->cellInfo[idx]);
-         ue->cellInfo[idx]->sCellState = RG_SCH_SCELL_INACTIVE;
+	 cellSch = RG_SCH_CMN_GET_CELL(ue->cellInfo[idx]->cell);
+	 cellSch->apisDl->rgSCHDlUeReset(ue->cellInfo[idx]->cell, ue);
+	 rgSCHSCellDeActivation(ue->cellInfo[idx]);
+	 ue->cellInfo[idx]->sCellState = RG_SCH_SCELL_INACTIVE;
       }
    }
    RETVOID;
@@ -1469,17 +1469,17 @@ RgSchUeCb                  *ue;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellDlLcCfg
+   PUBLIC Void rgSCHSCellDlLcCfg
 (
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
+ RgSchCellCb                *cell,
+ RgSchUeCb                  *ue,
+ RgSchDlLcCb                *svc
+ )
 #else
 PUBLIC Void rgSCHSCellDlLcCfg(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
+   RgSchCellCb                *cell;
+   RgSchUeCb                  *ue;
+   RgSchDlLcCb                *svc;
 #endif
 {
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
@@ -1488,7 +1488,7 @@ RgSchDlLcCb                *svc;
    {
       if(ue->cellInfo[idx] != NULLP) 
       {
-         cellSch->apisDl->rgSCHRgrDlLcCfg(ue->cellInfo[idx]->cell, ue, svc,NULLP,NULLP);
+	 cellSch->apisDl->rgSCHRgrDlLcCfg(ue->cellInfo[idx]->cell, ue, svc,NULLP,NULLP);
       }
    }
    RETVOID;
@@ -1511,17 +1511,17 @@ RgSchDlLcCb                *svc;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellDlLcDel
+   PUBLIC Void rgSCHSCellDlLcDel
 (
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
+ RgSchCellCb                *cell,
+ RgSchUeCb                  *ue,
+ RgSchDlLcCb                *svc
+ )
 #else
 PUBLIC Void rgSCHSCellDlLcDel(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
+   RgSchCellCb                *cell;
+   RgSchUeCb                  *ue;
+   RgSchDlLcCb                *svc;
 #endif
 {
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
@@ -1530,7 +1530,7 @@ RgSchDlLcCb                *svc;
    {
       if(ue->cellInfo[idx] != NULLP) 
       {
-         cellSch->apisDl->rgSCHFreeDlLc(ue->cellInfo[idx]->cell, ue, svc);
+	 cellSch->apisDl->rgSCHFreeDlLc(ue->cellInfo[idx]->cell, ue, svc);
       }
    }
    RETVOID;
@@ -1553,17 +1553,17 @@ RgSchDlLcCb                *svc;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHSCellDlDedBoUpd
+   PUBLIC Void rgSCHSCellDlDedBoUpd
 (
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
+ RgSchCellCb                *cell,
+ RgSchUeCb                  *ue,
+ RgSchDlLcCb                *svc
+ )
 #else
 PUBLIC Void rgSCHSCellDlDedBoUpd(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
+   RgSchCellCb                *cell;
+   RgSchUeCb                  *ue;
+   RgSchDlLcCb                *svc;
 #endif
 {
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
@@ -1579,10 +1579,10 @@ RgSchDlLcCb                *svc;
    for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if((ue->cellInfo[idx] != NULLP) &&
-            (ue->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTIVE) &&
-           (ue->cellInfo[idx]->cell != cell))
+	    (ue->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTIVE) &&
+	    (ue->cellInfo[idx]->cell != cell))
       {
-         cellSch->apisDl->rgSCHDlDedBoUpd(ue->cellInfo[idx]->cell, ue, svc);
+	 cellSch->apisDl->rgSCHDlDedBoUpd(ue->cellInfo[idx]->cell, ue, svc);
       }
    }
    RETVOID;
@@ -1605,15 +1605,15 @@ RgSchDlLcCb                *svc;
  *
  **/
 #ifdef ANSI
-PRIVATE U8  rgSCHUtlSCellCmpCqiCfg
+   PRIVATE U8  rgSCHUtlSCellCmpCqiCfg
 (
-RgSchUePCqiCb *cqiCb1,
-RgSchUePCqiCb *cqiCb2
-)
+ RgSchUePCqiCb *cqiCb1,
+ RgSchUePCqiCb *cqiCb2
+ )
 #else
 PRIVATE U8  rgSCHUtlSCellCmpCqiCfg(cqiCb1, cqiCb2)
-RgSchUePCqiCb     *cqiCb1;
-RgSchUePCqiCb     *cqiCb2;
+   RgSchUePCqiCb     *cqiCb1;
+   RgSchUePCqiCb     *cqiCb2;
 #endif
 {
    RgSchUePCqiCb     *retCqiCb;
@@ -1638,15 +1638,15 @@ RgSchUePCqiCb     *cqiCb2;
    {
       if (cqiCb1->servCellInfo->sCellIdx > cqiCb2->servCellInfo->sCellIdx)
       {
-         cqiCb1->isCqiIgnoByCollsn = TRUE;
-         cqiCb2->isCqiIgnoByCollsn = FALSE;
-         retCqiCb = cqiCb2;
+	 cqiCb1->isCqiIgnoByCollsn = TRUE;
+	 cqiCb2->isCqiIgnoByCollsn = FALSE;
+	 retCqiCb = cqiCb2;
       }
       else
       {
-         cqiCb2->isCqiIgnoByCollsn = TRUE;
-         cqiCb1->isCqiIgnoByCollsn = FALSE;
-         retCqiCb = cqiCb1;
+	 cqiCb2->isCqiIgnoByCollsn = TRUE;
+	 cqiCb1->isCqiIgnoByCollsn = FALSE;
+	 retCqiCb = cqiCb1;
       }
    }
 
@@ -1669,13 +1669,13 @@ RgSchUePCqiCb     *cqiCb2;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHUtlSCellHndlCqiCollsn
+   PUBLIC S16 rgSCHUtlSCellHndlCqiCollsn
 (
-RgSchUePCqiCb *cqiCb
-)
+ RgSchUePCqiCb *cqiCb
+ )
 #else
 PUBLIC S16 rgSCHUtlSCellHndlCqiCollsn(cqiCb)
-RgSchUePCqiCb     *cqiCb;
+   RgSchUePCqiCb     *cqiCb;
 #endif
 {
    U32 nPCqiServCellIdx;
@@ -1695,7 +1695,7 @@ RgSchUePCqiCb     *cqiCb;
    RG_SCH_ADD_TO_CRNT_TIME(priCellCb->crntTime, timingInfo, TFU_DELTA);
 #else
    RG_SCH_ADD_TO_CRNT_TIME(priCellCb->crntTime, timingInfo,
-         TFU_RECPREQ_DLDELTA);
+	 TFU_RECPREQ_DLDELTA);
 #endif
 
    RG_SCH_GET_IDX_PCQISRSSR(timingInfo, crntSfIdx);
@@ -1716,43 +1716,43 @@ RgSchUePCqiCb     *cqiCb;
       /* If a serving cell is configured */
       if(ueCb->cellInfo[cellIdx] != NULLP)
       {
-         /* If the serving cell is in ACTIVE state and 
-            If it is not the same serving cell as cqiCb for which 
-            collision is being checked */
-         if ((ueCb->cellInfo[cellIdx]->sCellState == RG_SCH_SCELL_ACTIVE)&&
-               (cellIdx != cqiCb->servCellInfo->sCellIdx))
-         {
-            scellPCqiTrIdx = ueCb->cellInfo[cellIdx]->cqiCb.nCqiTrIdx;
+	 /* If the serving cell is in ACTIVE state and 
+	    If it is not the same serving cell as cqiCb for which 
+	    collision is being checked */
+	 if ((ueCb->cellInfo[cellIdx]->sCellState == RG_SCH_SCELL_ACTIVE)&&
+	       (cellIdx != cqiCb->servCellInfo->sCellIdx))
+	 {
+	    scellPCqiTrIdx = ueCb->cellInfo[cellIdx]->cqiCb.nCqiTrIdx;
 
-            /* Handle wrap around case */
-            if (scellPCqiTrIdx < crntSfIdx)
-            {
-               scellPCqiTrIdx += RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
-            }
-            
-            /* If cqiCb->isCqiIgnoByCollsn is TRUE then a higher prio cqiCb
-               is already found so need to compare */
-            if ((FALSE == ueCb->cellInfo[cellIdx]->cqiCb.isCqiIgnoByCollsn) &&
-                  (FALSE == cqiCb->isCqiIgnoByCollsn) && 
-                  (scellPCqiTrIdx == pCqiTrIdx))
-            {
-               /* Handle Collision */
-               /* set isCqiIgnoByCollsn to TRUE for low prio CQI Rep type */
-               nPCqiServCellIdx = rgSCHUtlSCellCmpCqiCfg(&ueCb->cellInfo[cellIdx]->cqiCb,cqiCb);
-            }
-            else if (scellPCqiTrIdx < minPCqiTrIdx)
-            {
-               minPCqiTrIdx = scellPCqiTrIdx;
-               nPCqiServCellIdx = cellIdx;
-            }
-         }
+	    /* Handle wrap around case */
+	    if (scellPCqiTrIdx < crntSfIdx)
+	    {
+	       scellPCqiTrIdx += RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
+	    }
 
-         /* If all of the num of configured scells are checked then break */
-         if (sCellCnt == ueCb->numSCells)
-         {
-            break;
-         }   
-         sCellCnt++;
+	    /* If cqiCb->isCqiIgnoByCollsn is TRUE then a higher prio cqiCb
+	       is already found so need to compare */
+	    if ((FALSE == ueCb->cellInfo[cellIdx]->cqiCb.isCqiIgnoByCollsn) &&
+		  (FALSE == cqiCb->isCqiIgnoByCollsn) && 
+		  (scellPCqiTrIdx == pCqiTrIdx))
+	    {
+	       /* Handle Collision */
+	       /* set isCqiIgnoByCollsn to TRUE for low prio CQI Rep type */
+	       nPCqiServCellIdx = rgSCHUtlSCellCmpCqiCfg(&ueCb->cellInfo[cellIdx]->cqiCb,cqiCb);
+	    }
+	    else if (scellPCqiTrIdx < minPCqiTrIdx)
+	    {
+	       minPCqiTrIdx = scellPCqiTrIdx;
+	       nPCqiServCellIdx = cellIdx;
+	    }
+	 }
+
+	 /* If all of the num of configured scells are checked then break */
+	 if (sCellCnt == ueCb->numSCells)
+	 {
+	    break;
+	 }   
+	 sCellCnt++;
       }
    }
 
@@ -1780,13 +1780,13 @@ RgSchUePCqiCb     *cqiCb;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHUtlSCellHndlRiCollsn
+   PUBLIC S16 rgSCHUtlSCellHndlRiCollsn
 (
-RgSchUePCqiCb *cqiCb
-)
+ RgSchUePCqiCb *cqiCb
+ )
 #else
 PUBLIC S16 rgSCHUtlSCellHndlRiCollsn(cqiCb)
-RgSchUePCqiCb     *cqiCb;
+   RgSchUePCqiCb     *cqiCb;
 #endif
 {
    U32 nPRiServCellIdx;
@@ -1805,7 +1805,7 @@ RgSchUePCqiCb     *cqiCb;
    RG_SCH_ADD_TO_CRNT_TIME(priCellCb->crntTime, timingInfo, TFU_DELTA);
 #else
    RG_SCH_ADD_TO_CRNT_TIME(priCellCb->crntTime, timingInfo,
-         TFU_RECPREQ_DLDELTA);
+	 TFU_RECPREQ_DLDELTA);
 #endif
 
    RG_SCH_GET_IDX_PCQISRSSR(timingInfo, crntSfIdx);
@@ -1827,51 +1827,51 @@ RgSchUePCqiCb     *cqiCb;
       /* If a serving cell is configured */
       if(ueCb->cellInfo[cellIdx] != NULLP)
       {
-         /* If the serving cell is in ACTIVE state and 
-            If it is not the same serving cell as cqiCb for which 
-            collision is being checked */
-         if ((ueCb->cellInfo[cellIdx]->sCellState == RG_SCH_SCELL_ACTIVE)&&
-               (cellIdx != cqiCb->servCellInfo->sCellIdx))
-         {
-            scellPRiTrIdx = ueCb->cellInfo[cellIdx]->cqiCb.nRiTrIdx + 
-               ueCb->cellInfo[cellIdx]->cqiCb.riDist * RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
+	 /* If the serving cell is in ACTIVE state and 
+	    If it is not the same serving cell as cqiCb for which 
+	    collision is being checked */
+	 if ((ueCb->cellInfo[cellIdx]->sCellState == RG_SCH_SCELL_ACTIVE)&&
+	       (cellIdx != cqiCb->servCellInfo->sCellIdx))
+	 {
+	    scellPRiTrIdx = ueCb->cellInfo[cellIdx]->cqiCb.nRiTrIdx + 
+	       ueCb->cellInfo[cellIdx]->cqiCb.riDist * RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
 
-            /* Handle wrap around case */
-            if (scellPRiTrIdx < crntSfIdx)
-            {
-               scellPRiTrIdx += RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
-            }
-            
-            /* If cqiCb->isRiIgnoByCollsn is TRUE then a higher prio cqiCb
-               is already found so need to compare */
-            if ((FALSE == ueCb->cellInfo[cellIdx]->cqiCb.isRiIgnoByCollsn) &&
-                  (FALSE == cqiCb->isRiIgnoByCollsn) && 
-                  (scellPRiTrIdx == pRiTrIdx))
-            {
-               /* Handle Collision */
-               /* set isRiIgnoByCollsn to TRUE for low prio CQI Rep type */
-               if (cqiCb->servCellInfo->sCellIdx < (ueCb->cellInfo[cellIdx]->sCellIdx))
-               {
-                  ueCb->cellInfo[cellIdx]->cqiCb.isRiIgnoByCollsn = TRUE;
-               }
-               else
-               {
-                  cqiCb->isRiIgnoByCollsn = TRUE;
-               }
-            }
-            else if (scellPRiTrIdx < minPRiTrIdx)
-            {
-               minPRiTrIdx = scellPRiTrIdx;
-               nPRiServCellIdx = cellIdx;
-            }
-         }
+	    /* Handle wrap around case */
+	    if (scellPRiTrIdx < crntSfIdx)
+	    {
+	       scellPRiTrIdx += RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
+	    }
 
-         /* If all of the num of configured scells are checked then break */
-         if (sCellCnt == ueCb->numSCells)
-         {
-            break;
-         }   
-         sCellCnt++;
+	    /* If cqiCb->isRiIgnoByCollsn is TRUE then a higher prio cqiCb
+	       is already found so need to compare */
+	    if ((FALSE == ueCb->cellInfo[cellIdx]->cqiCb.isRiIgnoByCollsn) &&
+		  (FALSE == cqiCb->isRiIgnoByCollsn) && 
+		  (scellPRiTrIdx == pRiTrIdx))
+	    {
+	       /* Handle Collision */
+	       /* set isRiIgnoByCollsn to TRUE for low prio CQI Rep type */
+	       if (cqiCb->servCellInfo->sCellIdx < (ueCb->cellInfo[cellIdx]->sCellIdx))
+	       {
+		  ueCb->cellInfo[cellIdx]->cqiCb.isRiIgnoByCollsn = TRUE;
+	       }
+	       else
+	       {
+		  cqiCb->isRiIgnoByCollsn = TRUE;
+	       }
+	    }
+	    else if (scellPRiTrIdx < minPRiTrIdx)
+	    {
+	       minPRiTrIdx = scellPRiTrIdx;
+	       nPRiServCellIdx = cellIdx;
+	    }
+	 }
+
+	 /* If all of the num of configured scells are checked then break */
+	 if (sCellCnt == ueCb->numSCells)
+	 {
+	    break;
+	 }   
+	 sCellCnt++;
       }
    }
 
@@ -1899,15 +1899,15 @@ RgSchUePCqiCb     *cqiCb;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHSCellIsActive
+   PUBLIC S16 rgSCHSCellIsActive
 (
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue
-)
+ RgSchCellCb                *cell,
+ RgSchUeCb                  *ue
+ )
 #else
 PUBLIC S16 rgSCHSCellIsActive(cell, ue)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
+   RgSchCellCb                *cell;
+   RgSchUeCb                  *ue;
 #endif
 {
    S16 retVal = RFAILED;
@@ -1916,11 +1916,11 @@ RgSchUeCb                  *ue;
    for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if((ue->cellInfo[idx] != NULLP) &&
-         (ue->cellInfo[idx]->cell->cellId == cell->cellId)&&
-         (ue->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTIVE)) 
+	    (ue->cellInfo[idx]->cell->cellId == cell->cellId)&&
+	    (ue->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTIVE)) 
       {
-         retVal = ROK;
-         break;
+	 retVal = ROK;
+	 break;
       }
    }
    RETVALUE(retVal);	
@@ -1941,25 +1941,25 @@ RgSchUeCb                  *ue;
  *      -#  TRUE
  **/
 #ifdef ANSI
-PUBLIC Bool rgSCHIsActvReqd 
+   PUBLIC Bool rgSCHIsActvReqd 
 (
-RgSchCellCb    *cell,
-RgSchUeCb      *ue
-)
+ RgSchCellCb    *cell,
+ RgSchUeCb      *ue
+ )
 #else
 PUBLIC Bool rgSCHIsActvReqd(cell, ue)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue
+   RgSchCellCb    *cell;
+   RgSchUeCb      *ue
 #endif
 {
    TRC2(rgSCHIsActvReqd)
-   /* Check if remBoCnt in this UE is greater than ZERO for sufficient number of
-    * Scheduling TTIs. If yes then We should activate a secondary cell to handle
-    * outstanding BO */
-   if(ue->remBoCnt == RG_SCH_ACTIVATION_COUNT)
-   {
-      RETVALUE(TRUE);
-   }
+      /* Check if remBoCnt in this UE is greater than ZERO for sufficient number of
+       * Scheduling TTIs. If yes then We should activate a secondary cell to handle
+       * outstanding BO */
+      if(ue->remBoCnt == RG_SCH_ACTIVATION_COUNT)
+      {
+	 RETVALUE(TRUE);
+      }
    RETVALUE(FALSE);
 }
 #endif/*LTE_ADV*/
@@ -1968,5 +1968,5 @@ RgSchUeCb      *ue
 
 /**********************************************************************
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -102,47 +102,47 @@ Buffer *mBuf;               /* message buffer */
 {
    S16 ret;                 /* return code */
    TRC1(SPkS8)
-   ret = SAddPreMsg((Data) val, mBuf);
+      ret = SAddPreMsg((Data) val, mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (ret != ROK)
       SSLOGERROR(ERRCLS_ADD_RES, ESS242, (ErrVal)ret, "SAddPreMsg() failed");
 #endif
    RETVALUE(ret);
 } /* end of SPkS8 */
-  
+
 
   
 /*
-*
-*       Fun:   SPkU8
-*
-*       Desc:  This function packs an unsigned 8 bit value into a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SPkU8
+ *
+ *       Desc:  This function packs an unsigned 8 bit value into a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SPkU8
+   PUBLIC S16 SPkU8
 (
-U8 val,                     /* value */
-Buffer *mBuf                /* message buffer */
-)
+ U8 val,                     /* value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SPkU8(val, mBuf)
-U8 val;                     /* value */
-Buffer *mBuf;               /* message buffer */
+   U8 val;                     /* value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    S16 ret;                 /* return code */
    TRC1(SPkU8)
-   ret = SAddPreMsg((Data) val, mBuf);
+      ret = SAddPreMsg((Data) val, mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (ret != ROK)
       SSLOGERROR(ERRCLS_ADD_RES, ESS243, (ErrVal)ret, "SAddPreMsg() failed");
@@ -151,31 +151,31 @@ Buffer *mBuf;               /* message buffer */
 } /* end of SPkU8 */
   
 /*
-*
-*       Fun:   SPkS16
-*
-*       Desc:  This function packs a signed 16 bit value into a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SPkS16
+ *
+ *       Desc:  This function packs a signed 16 bit value into a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SPkS16
+   PUBLIC S16 SPkS16
 (
-S16 val,                    /* value */
-Buffer *mBuf                /* message buffer */
-)
+ S16 val,                    /* value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SPkS16(val, mBuf)
-S16 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
+   S16 val;                    /* value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Data pkArray[2];         /* array for packing */
@@ -183,7 +183,7 @@ Buffer *mBuf;               /* message buffer */
 
    TRC1(SPkS16)
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-   pkArray[0] = (Data) GetHiByte(val);
+      pkArray[0] = (Data) GetHiByte(val);
    pkArray[1] = (Data) GetLoByte(val);
 #else                   /* forward compatibility, packing order */
    pkArray[1] = (Data) GetHiByte(val);
@@ -196,34 +196,34 @@ Buffer *mBuf;               /* message buffer */
 #endif
    RETVALUE(ret);
 } /* end of SPkS16 */
-  
+
   
 /*
-*
-*       Fun:   SPkU16
-*
-*       Desc:  This function packs an unsigned 16 bit value into a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SPkU16
+ *
+ *       Desc:  This function packs an unsigned 16 bit value into a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SPkU16
+   PUBLIC S16 SPkU16
 (
-U16 val,                    /* value */
-Buffer *mBuf                /* message buffer */
-)
+ U16 val,                    /* value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SPkU16(val, mBuf)
-U16 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
+   U16 val;                    /* value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Data pkArray[2];         /* array for packing */
@@ -231,7 +231,7 @@ Buffer *mBuf;               /* message buffer */
 
    TRC1(SPkU16)
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-   pkArray[0] = (Data) GetHiByte(val);
+      pkArray[0] = (Data) GetHiByte(val);
    pkArray[1] = (Data) GetLoByte(val);
 #else                       /* forward compatibility, packing order */
    pkArray[1] = (Data) GetHiByte(val);
@@ -244,43 +244,43 @@ Buffer *mBuf;               /* message buffer */
 #endif
    RETVALUE(ret);
 } /* end of SPkU16 */
-  
+
   
 /*
-*
-*       Fun:   SPkS32
-*
-*       Desc:  This function packs a signed 32 bit value into a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SPkS32
+ *
+ *       Desc:  This function packs a signed 32 bit value into a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SPkS32
+   PUBLIC S16 SPkS32
 (
-S32 val,                    /* value */
-Buffer *mBuf                /* message buffer */
-)
+ S32 val,                    /* value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SPkS32(val, mBuf)
-S32 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
+   S32 val;                    /* value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    U16 tmp;                 /* temporary value */
    Data pkArray[4];         /* packing array */
    S16 ret;                 /* return code */
-  
+
    TRC1(SPkS32)
 #ifndef FCSPKINT        /* backward compatibility, packing order */
-   tmp = (U16) GetHiWord(val);
+      tmp = (U16) GetHiWord(val);
    pkArray[0] = (Data) GetHiByte(tmp);
    pkArray[1] = (Data) GetLoByte(tmp);
    tmp = (U16) GetLoWord(val);
@@ -301,43 +301,43 @@ Buffer *mBuf;               /* message buffer */
 #endif
    RETVALUE(ret);
 } /* end of SPkS32 */
-  
+
   
 /*
-*
-*       Fun:   SPkU32
-*
-*       Desc:  This function packs an unsigned 32 bit value into a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SPkU32
+ *
+ *       Desc:  This function packs an unsigned 32 bit value into a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SPkU32
+   PUBLIC S16 SPkU32
 (
-U32 val,                    /* value */
-Buffer *mBuf                /* message buffer */
-)
+ U32 val,                    /* value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SPkU32(val, mBuf)
-U32 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
+   U32 val;                    /* value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    U16 tmp;                 /* temporary value */
    Data pkArray[4];         /* packing array */
    S16 ret;                 /* return code */
-  
+
    TRC1(SPkU32)
 #ifndef FCSPKINT        /* backward compatibility, packing order */
-   tmp = (U16) GetHiWord(val);
+      tmp = (U16) GetHiWord(val);
    pkArray[0] = (Data) GetHiByte(tmp);
    pkArray[1] = (Data) GetLoByte(tmp);
    tmp = (U16) GetLoWord(val);
@@ -362,31 +362,31 @@ Buffer *mBuf;               /* message buffer */
 /*ss038.103  1. Added Floating point support*/
 #ifdef SS_FLOAT
 /*
-*
-*       Fun:   SPkF32
-*
-*       Desc:  This function packs an 32 bit ieee-754 format float value into a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SPkF32
+ *
+ *       Desc:  This function packs an 32 bit ieee-754 format float value into a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SPkF32
+   PUBLIC S16 SPkF32
 (
-F32 val,                    /* value */
-Buffer *mBuf                /* message buffer */
-)
+ F32 val,                    /* value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SPkF32(val, mBuf)
-F32 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
+   F32 val;                    /* value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    S16  ret;                /* return code */
@@ -396,10 +396,10 @@ Buffer *mBuf;               /* message buffer */
    S32  kIdx = 0;           /* counters */
    S8   pkArray[15];        /* packing array */
 #endif /*FCSPKINT*/
-  
+
    TRC1(SPkF32)
 
-   sprintf(tmpArray, "%.7e", val);
+      sprintf(tmpArray, "%.7e", val);
 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
    ret = SAddPreMsgMult((Data*)tmpArray, (MsgLen) 15, mBuf);
@@ -421,31 +421,31 @@ Buffer *mBuf;               /* message buffer */
 } /* end of SPkF32 */
 
 /*
-*
-*       Fun:   SPkF64
-*
-*       Desc:  This function packs an 64 bit ieee-754 format float value into a message.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SPkF64
+ *
+ *       Desc:  This function packs an 64 bit ieee-754 format float value into a message.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SPkF64
+   PUBLIC S16 SPkF64
 (
-F64 val,                    /* value */
-Buffer *mBuf                /* message buffer */
-)
+ F64 val,                    /* value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SPkF64(val, mBuf)
-F64 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
+   F64 val;                    /* value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
 
@@ -456,10 +456,10 @@ Buffer *mBuf;               /* message buffer */
    S32  kIdx = 0;           /* counters */
    S8   pkArray[25];        /* packing array */
 #endif /*FCSPKINT*/
-  
+
    TRC1(SPkF64)
 
-   sprintf(tmpArray, "%.16le", val);
+      sprintf(tmpArray, "%.16le", val);
 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
    ret = SAddPreMsgMult((Data*)tmpArray, (MsgLen) 25, mBuf);
@@ -483,43 +483,43 @@ Buffer *mBuf;               /* message buffer */
 #endif /* SS_FLOAT */
   
 /*
-*
-*       Fun:   SUnpkS8
-*
-*       Desc:  This function unpacks a signed 8 bit value from a message.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SUnpkS8
+ *
+ *       Desc:  This function unpacks a signed 8 bit value from a message.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SUnpkS8
+   PUBLIC S16 SUnpkS8
 (
-S8 *val,                    /* pointer to value */
-Buffer *mBuf                /* message buffer */
-)
+ S8 *val,                    /* pointer to value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SUnpkS8(val, mBuf)
-S8 *val;                    /* pointer to value */
-Buffer *mBuf;               /* message buffer */
+   S8 *val;                    /* pointer to value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Data tmp;                /* temporary value */
    S16 ret;                 /* return code */
    TRC1(SUnpkS8)
 
-/* ss021.103 - Addition of data pointer check */
+      /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!val)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS250, ERRZERO, "SUnpkS8 : Null value");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!val)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS250, ERRZERO, "SUnpkS8 : Null value");
+	 RETVALUE(RFAILED);
+      }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    ret = SRemPreMsg(&tmp, mBuf);
@@ -530,46 +530,46 @@ Buffer *mBuf;               /* message buffer */
    *val = (S8) tmp;
    RETVALUE(ret);
 } /* end of SUnpkS8 */
-  
+
   
 /*
-*
-*       Fun:   SUnpkU8
-*
-*       Desc:  This function unpacks an unsigned 8 bit value from a message.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SUnpkU8
+ *
+ *       Desc:  This function unpacks an unsigned 8 bit value from a message.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SUnpkU8
+   PUBLIC S16 SUnpkU8
 (
-U8 *val,                    /* pointer to value */
-Buffer *mBuf                /* message buffer */
-)
+ U8 *val,                    /* pointer to value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SUnpkU8(val, mBuf)
-U8 *val;                    /* pointer to value */
-Buffer *mBuf;               /* message buffer */
+   U8 *val;                    /* pointer to value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Data tmp;                /* temporary value */
    S16 ret;                 /* return code */
    TRC1(SUnpkU8)
 
-/* ss021.103 - Addition of data pointer check */
+      /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!val)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS252, ERRZERO, "SUnpkU8 : Null value");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!val)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS252, ERRZERO, "SUnpkU8 : Null value");
+	 RETVALUE(RFAILED);
+      }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    ret = SRemPreMsg(&tmp, mBuf);
@@ -582,29 +582,29 @@ Buffer *mBuf;               /* message buffer */
 } /* end of SUnpkU8 */
   
 /*
-*
-*       Fun:   SUnpkS16
-*
-*       Desc:  This function unpacks a signed 16 bit value from a message.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SUnpkS16
+ *
+ *       Desc:  This function unpacks a signed 16 bit value from a message.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SUnpkS16
+   PUBLIC S16 SUnpkS16
 (
-S16 *val,                   /* pointer to value */
-Buffer *mBuf                /* message buffer */
-)
+ S16 *val,                   /* pointer to value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SUnpkS16(val, mBuf)
-S16 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
+   S16 *val;                   /* pointer to value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    U16 tmp16;               /* temporary value */
@@ -612,14 +612,14 @@ Buffer *mBuf;               /* message buffer */
    S16 ret;                 /* return code */
    TRC1(SUnpkS16)
 
-/* ss021.103 - Addition of data pointer check */
+      /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!val)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS254, ERRZERO, "SUnpkS16 : Null value");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!val)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS254, ERRZERO, "SUnpkS16 : Null value");
+	 RETVALUE(RFAILED);
+      }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    ret = SRemPreMsgMult(unpkArray, (MsgLen) 2, mBuf);
@@ -638,32 +638,32 @@ Buffer *mBuf;               /* message buffer */
    *val = (S16) tmp16;
    RETVALUE(ret);
 } /* end of SUnpkS16 */
-  
+
   
 /*
-*
-*       Fun:   SUnpkU16
-*
-*       Desc:  This function unpacks an unsigned 16 bit value from a message.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SUnpkU16
+ *
+ *       Desc:  This function unpacks an unsigned 16 bit value from a message.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SUnpkU16
+   PUBLIC S16 SUnpkU16
 (
-U16 *val,                   /* pointer to value */
-Buffer *mBuf                /* message buffer */
-)
+ U16 *val,                   /* pointer to value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SUnpkU16(val, mBuf)
-U16 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
+   U16 *val;                   /* pointer to value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    U16 tmp16;               /* temporary value */
@@ -671,14 +671,14 @@ Buffer *mBuf;               /* message buffer */
    S16 ret;                 /* return code */
    TRC1(SUnpkU16)
 
-/* ss021.103 - Addition of data pointer check */
+      /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!val)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS256, ERRZERO, "SUnpkU16 : Null value");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!val)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS256, ERRZERO, "SUnpkU16 : Null value");
+	 RETVALUE(RFAILED);
+      }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    ret = SRemPreMsgMult(unpkArray, (MsgLen) 2, mBuf);
@@ -697,32 +697,32 @@ Buffer *mBuf;               /* message buffer */
    *val = tmp16;
    RETVALUE(ret);
 } /* end of SUnpkU16 */
-  
+
   
 /*
-*
-*       Fun:   SUnpkS32
-*
-*       Desc:  This function unpacks a signed 32 bit value from a message.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SUnpkS32
+ *
+ *       Desc:  This function unpacks a signed 32 bit value from a message.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SUnpkS32
+   PUBLIC S16 SUnpkS32
 (
-S32 *val,                   /* pointer to value */
-Buffer *mBuf                /* message buffer */
-)
+ S32 *val,                   /* pointer to value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SUnpkS32(val, mBuf)
-S32 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
+   S32 *val;                   /* pointer to value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    U16 tmp16;               /* temporary value */
@@ -731,14 +731,14 @@ Buffer *mBuf;               /* message buffer */
    S16 ret;                 /* return code */
    TRC1(SUnpkS32)
 
-/* ss021.103 - Addition of data pointer check */
+      /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!val)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS258, ERRZERO, "SUnpkS32 : Null value");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!val)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS258, ERRZERO, "SUnpkS32 : Null value");
+	 RETVALUE(RFAILED);
+      }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    ret = SRemPreMsgMult(unpkArray, (MsgLen) 4, mBuf);
@@ -766,32 +766,32 @@ Buffer *mBuf;               /* message buffer */
    *val = (S32) tmp32;
    RETVALUE(ret);
 } /* end of SUnpkS32 */
-  
+
   
 /*
-*
-*       Fun:   SUnpkU32
-*
-*       Desc:  This function unpacks an unsigned 32 bit value from a message.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SUnpkU32
+ *
+ *       Desc:  This function unpacks an unsigned 32 bit value from a message.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SUnpkU32
+   PUBLIC S16 SUnpkU32
 (
-U32 *val,                   /* pointer to value */
-Buffer *mBuf                /* message buffer */
-)
+ U32 *val,                   /* pointer to value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SUnpkU32(val, mBuf)
-U32 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
+   U32 *val;                   /* pointer to value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    U16 tmp16;               /* temporary value */
@@ -802,14 +802,14 @@ Buffer *mBuf;               /* message buffer */
 #endif /* ERRCLASS */
    TRC1(SUnpkU32)
 
-/* ss021.103 - Addition of data pointer check */
+      /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!val)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS260, ERRZERO, "SUnpkU32 : Null value");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!val)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS260, ERRZERO, "SUnpkU32 : Null value");
+	 RETVALUE(RFAILED);
+      }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    ret = SRemPreMsgMult(unpkArray, (MsgLen) 4, mBuf);
@@ -842,29 +842,29 @@ Buffer *mBuf;               /* message buffer */
 /*ss038.103  1. Added Floating point support*/
 #ifdef SS_FLOAT
 /*
-*
-*       Fun:   SUnpkF32
-*
-*       Desc:  This function unpacks an 32 bit ieee-754 format float value from a message.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SUnpkF32
+ *
+ *       Desc:  This function unpacks an 32 bit ieee-754 format float value from a message.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SUnpkF32
+   PUBLIC S16 SUnpkF32
 (
-F32 *val,                   /* pointer to value */
-Buffer *mBuf                /* message buffer */
-)
+ F32 *val,                   /* pointer to value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SUnpkF32(val, mBuf)
-F32 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
+   F32 *val;                   /* pointer to value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    S16 ret;                 /* return code */
@@ -878,12 +878,12 @@ Buffer *mBuf;               /* message buffer */
    TRC1(SUnpkF32)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!val)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS262, ERRZERO, "SUnpkF32 : Null value");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!val)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS262, ERRZERO, "SUnpkF32 : Null value");
+	 RETVALUE(RFAILED);
+      }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    ret = SRemPreMsgMult((Data*)tmpArray, (MsgLen) 15, mBuf);
@@ -908,29 +908,29 @@ Buffer *mBuf;               /* message buffer */
 } /* end of SUnpkF32 */
 
 /*
-*
-*       Fun:   SUnpkF64
-*
-*       Desc:  This function unpacks an 64 bit ieee-754 format float value from a message.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  ss_pack.c
-*
-*/
-  
+ *
+ *       Fun:   SUnpkF64
+ *
+ *       Desc:  This function unpacks an 64 bit ieee-754 format float value from a message.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  ss_pack.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 SUnpkF64
+   PUBLIC S16 SUnpkF64
 (
-F64 *val,                   /* pointer to value */
-Buffer *mBuf                /* message buffer */
-)
+ F64 *val,                   /* pointer to value */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 SUnpkF64(val, mBuf)
-F64 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
+   F64 *val;                   /* pointer to value */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
 
@@ -945,12 +945,12 @@ Buffer *mBuf;               /* message buffer */
    TRC1(SUnpkF64)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   /* check data pointer */
-   if (!val)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS264, ERRZERO, "SUnpkF64 : Null value");
-      RETVALUE(RFAILED);
-   }
+      /* check data pointer */
+      if (!val)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS264, ERRZERO, "SUnpkF64 : Null value");
+	 RETVALUE(RFAILED);
+      }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    ret = SRemPreMsgMult((Data*)tmpArray, (MsgLen) 25, mBuf);
@@ -976,5 +976,5 @@ Buffer *mBuf;               /* message buffer */
 #endif /* SS_FLOAT */
 
 /**********************************************************************
-         End of file
+  End of file
  **********************************************************************/

@@ -99,43 +99,43 @@ Void PrintRLCStats(Void)
    RlcCb* ulInst = rlcCb[0]; 
 
    RLOG4(L_ALWAYS,"RLC Stats: PDUs Sent = (%ld), PdusRext = (%ld), TimeOut = (%ld), SduDiscarded = (%ld)",
-                     dlInst->genSts.pdusSent,
-                     dlInst->genSts.pdusRetx,
-                     dlInst->genSts.protTimeOut,
-                     dlInst->genSts.numSduDisc);
+	 dlInst->genSts.pdusSent,
+	 dlInst->genSts.pdusRetx,
+	 dlInst->genSts.protTimeOut,
+	 dlInst->genSts.numSduDisc);
    RLOG3(L_ALWAYS,"RLC Stats: PDUs Rcvd = (%ld), unexpPdus = (%ld), errorPdus = (%ld)",
-                     ulInst->genSts.pdusRecv,
-                     ulInst->genSts.unexpPdusRecv,
-                     ulInst->genSts.errorPdusRecv);
+	 ulInst->genSts.pdusRecv,
+	 ulInst->genSts.unexpPdusRecv,
+	 ulInst->genSts.errorPdusRecv);
    RLOG4(L_ALWAYS,"RLC Stats: AMDL: "
-                     "StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu ",
-                     gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
-                     gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
+	 "StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu ",
+	 gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
+	 gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
    RLOG3(L_ALWAYS,"RLC Stats: AMDL: "
-                     "DRB:%lu MaxRetx:%lu RetransPdus:%lu", 
-                     gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
-                     gRlcStats.amRlcStats.numDLRetransPdus);
+	 "DRB:%lu MaxRetx:%lu RetransPdus:%lu", 
+	 gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
+	 gRlcStats.amRlcStats.numDLRetransPdus);
    RLOG4(L_ALWAYS,"RLC Stats: AMUL: "
-                     " PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
-                     gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
-                     gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
+	 " PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
+	 gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
+	 gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
 
    RTLIN_DUMP_DEBUG("RLC Stats: PDUs Sent = (%ld), PdusRext = (%ld), TimeOut = (%ld), SduDiscarded = (%ld)\n",
-                     dlInst->genSts.pdusSent,
-                     dlInst->genSts.pdusRetx,
-                     dlInst->genSts.protTimeOut,
-                     dlInst->genSts.numSduDisc);
+	 dlInst->genSts.pdusSent,
+	 dlInst->genSts.pdusRetx,
+	 dlInst->genSts.protTimeOut,
+	 dlInst->genSts.numSduDisc);
    RTLIN_DUMP_DEBUG("RLC Stats: PDUs Rcvd = (%ld), unexpPdus = (%ld), errorPdus = (%ld)\n",
-                     ulInst->genSts.pdusRecv,
-                     ulInst->genSts.unexpPdusRecv,
-                     ulInst->genSts.errorPdusRecv);
+	 ulInst->genSts.pdusRecv,
+	 ulInst->genSts.unexpPdusRecv,
+	 ulInst->genSts.errorPdusRecv);
    RTLIN_DUMP_DEBUG("RLC Stats:"
-                    "AMDL: StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu DRB:%lu MaxRetx:%lu RetransPdus:%lu \n"
-                    "AMUL: PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu \n", 
-                     gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, gRlcStats.amRlcStats.numDLBytesUnused, 
-                     gRlcStats.amRlcStats.numDLPollTimerExpiresSrb, gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
-                     gRlcStats.amRlcStats.numDLRetransPdus, gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
-                     gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
+	 "AMDL: StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu DRB:%lu MaxRetx:%lu RetransPdus:%lu \n"
+	 "AMUL: PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu \n", 
+	 gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, gRlcStats.amRlcStats.numDLBytesUnused, 
+	 gRlcStats.amRlcStats.numDLPollTimerExpiresSrb, gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
+	 gRlcStats.amRlcStats.numDLRetransPdus, gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
+	 gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
 }
 #else
 Void PrintRLCStats(Void)
@@ -145,57 +145,57 @@ Void PrintRLCStats(Void)
 
    printf ("\n================================ RLC STATS ===========================\n");
    RLOG4(L_ALWAYS,"RLC Stats: PDUs Sent = (%ld), PdusRext = (%ld), TimeOut = (%ld), SduDiscarded = (%ld)",
-                     dlInst->genSts.pdusSent,
-                     dlInst->genSts.pdusRetx,
-                     dlInst->genSts.protTimeOut,
-                     dlInst->genSts.numSduDisc);
+	 dlInst->genSts.pdusSent,
+	 dlInst->genSts.pdusRetx,
+	 dlInst->genSts.protTimeOut,
+	 dlInst->genSts.numSduDisc);
    RLOG3(L_ALWAYS,"RLC Stats: PDUs Rcvd = (%ld), unexpPdus = (%ld), errorPdus = (%ld)",
-                     ulInst->genSts.pdusRecv,
-                     ulInst->genSts.unexpPdusRecv,
-                     ulInst->genSts.errorPdusRecv);
+	 ulInst->genSts.pdusRecv,
+	 ulInst->genSts.unexpPdusRecv,
+	 ulInst->genSts.errorPdusRecv);
    RLOG4(L_ALWAYS,"RLC Stats: AMDL: "
-                     "StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu ",
-                     gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
-                     gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
+	 "StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu ",
+	 gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
+	 gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
    RLOG3(L_ALWAYS,"RLC Stats: AMDL: "
-                     "DRB:%lu MaxRetx:%lu RetransPdus:%lu", 
-                     gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
-                     gRlcStats.amRlcStats.numDLRetransPdus);
+	 "DRB:%lu MaxRetx:%lu RetransPdus:%lu", 
+	 gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
+	 gRlcStats.amRlcStats.numDLRetransPdus);
    RLOG4(L_ALWAYS,"RLC Stats: AMUL: "
-                     " PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
-                     gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
-                     gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
- /*  RTLIN_DUMP_DEBUG("AM RLC Stats:"
-                    "AMDL: SDUs Tx :(%u) SDU Bytes Tx :(%u) SDUs Retx :(%u) MaxRetx:(%u) WindowStalls: (%u) \n"
-                    "AMUL: DropOutWinRx :(%u) SDUs Rx :(%u) SDU Bytes Rx :(%u) SDUNack Rx :(%u) Duplicate Pdu Rx :(%u) \n",
-                     gRlcStats.amRlcStats.numRlcAmCellSduTx, gRlcStats.amRlcStats.numRlcAmCellSduBytesTx,
-                     gRlcStats.amRlcStats.numRlcAmCellRetxPdu, gRlcStats.amRlcStats.numRlcAmMaxRetx, gRlcStats.amRlcStats.numRlcAmCellWinStall,
-                     gRlcStats.amRlcStats.numRlcAmCellDropOutWinRx, gRlcStats.amRlcStats.numRlcAmCellSduRx,
-                     gRlcStats.amRlcStats.numRlcAmCellSduBytesRx, gRlcStats.amRlcStats.numRlcAmCellNackRx, gRlcStats.amRlcStats.numRlcAmCellDupPduRx);
-*/
+	 " PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
+	 gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
+	 gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
+   /*  RTLIN_DUMP_DEBUG("AM RLC Stats:"
+       "AMDL: SDUs Tx :(%u) SDU Bytes Tx :(%u) SDUs Retx :(%u) MaxRetx:(%u) WindowStalls: (%u) \n"
+       "AMUL: DropOutWinRx :(%u) SDUs Rx :(%u) SDU Bytes Rx :(%u) SDUNack Rx :(%u) Duplicate Pdu Rx :(%u) \n",
+       gRlcStats.amRlcStats.numRlcAmCellSduTx, gRlcStats.amRlcStats.numRlcAmCellSduBytesTx,
+       gRlcStats.amRlcStats.numRlcAmCellRetxPdu, gRlcStats.amRlcStats.numRlcAmMaxRetx, gRlcStats.amRlcStats.numRlcAmCellWinStall,
+       gRlcStats.amRlcStats.numRlcAmCellDropOutWinRx, gRlcStats.amRlcStats.numRlcAmCellSduRx,
+       gRlcStats.amRlcStats.numRlcAmCellSduBytesRx, gRlcStats.amRlcStats.numRlcAmCellNackRx, gRlcStats.amRlcStats.numRlcAmCellDupPduRx);
+    */
    RTLIN_DUMP_DEBUG("RLC Stats: PDUs Sent = (%d), PdusRext = (%d), TimeOut = (%d), SduDiscarded = (%d)\n",
-                     dlInst->genSts.pdusSent,
-                     dlInst->genSts.pdusRetx,
-                     dlInst->genSts.protTimeOut,
-                     dlInst->genSts.numSduDisc);
+	 dlInst->genSts.pdusSent,
+	 dlInst->genSts.pdusRetx,
+	 dlInst->genSts.protTimeOut,
+	 dlInst->genSts.numSduDisc);
    RTLIN_DUMP_DEBUG("RLC Stats: PDUs Rcvd = (%d), unexpPdus = (%d), errorPdus = (%d)\n",
-                     ulInst->genSts.pdusRecv,
-                     ulInst->genSts.unexpPdusRecv,
-                     ulInst->genSts.errorPdusRecv);
+	 ulInst->genSts.pdusRecv,
+	 ulInst->genSts.unexpPdusRecv,
+	 ulInst->genSts.errorPdusRecv);
    RTLIN_DUMP_DEBUG("AMDL: StaPduSent:%u NacksInStaPdu:%u BytesUnused:%u PollTimerExpires SRB:%u DRB:%u MaxRetx:%u RetransPdus:%u \n"
-                    "      SDUs Tx :(%u) SDU Bytes Tx :(%u) SDUs Retx :(%u) WindowStalls: (%u) \n"
+	 "      SDUs Tx :(%u) SDU Bytes Tx :(%u) SDUs Retx :(%u) WindowStalls: (%u) \n"
 
-                    "AMUL: PdusDiscarded:%u ReOrdTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u \n"
-                    "      DropOutWinRx :(%u) SDUs Rx :(%u) SDU Bytes Rx :(%u) SDUNack Rx :(%u) Duplicate Pdu Rx:(%u) \n", 
-                     gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, gRlcStats.amRlcStats.numDLBytesUnused, 
-                     gRlcStats.amRlcStats.numDLPollTimerExpiresSrb, gRlcStats.amRlcStats.numDLPollTimerExpiresDrb,
-                     gRlcStats.amRlcStats.numDLMaxRetx, gRlcStats.amRlcStats.numDLRetransPdus,
-                     gRlcStats.amRlcStats.numRlcAmCellSduTx, gRlcStats.amRlcStats.numRlcAmCellSduBytesTx,
-                     gRlcStats.amRlcStats.numRlcAmCellRetxPdu, gRlcStats.amRlcStats.numRlcAmCellWinStall,
-                     gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
-                     gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd,
-                     gRlcStats.amRlcStats.numRlcAmCellDropOutWinRx, gRlcStats.amRlcStats.numRlcAmCellSduRx,
-                     gRlcStats.amRlcStats.numRlcAmCellSduBytesRx, gRlcStats.amRlcStats.numRlcAmCellNackRx, gRlcStats.amRlcStats.numRlcAmCellDupPduRx);
+	 "AMUL: PdusDiscarded:%u ReOrdTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u \n"
+	 "      DropOutWinRx :(%u) SDUs Rx :(%u) SDU Bytes Rx :(%u) SDUNack Rx :(%u) Duplicate Pdu Rx:(%u) \n", 
+	 gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, gRlcStats.amRlcStats.numDLBytesUnused, 
+	 gRlcStats.amRlcStats.numDLPollTimerExpiresSrb, gRlcStats.amRlcStats.numDLPollTimerExpiresDrb,
+	 gRlcStats.amRlcStats.numDLMaxRetx, gRlcStats.amRlcStats.numDLRetransPdus,
+	 gRlcStats.amRlcStats.numRlcAmCellSduTx, gRlcStats.amRlcStats.numRlcAmCellSduBytesTx,
+	 gRlcStats.amRlcStats.numRlcAmCellRetxPdu, gRlcStats.amRlcStats.numRlcAmCellWinStall,
+	 gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
+	 gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd,
+	 gRlcStats.amRlcStats.numRlcAmCellDropOutWinRx, gRlcStats.amRlcStats.numRlcAmCellSduRx,
+	 gRlcStats.amRlcStats.numRlcAmCellSduBytesRx, gRlcStats.amRlcStats.numRlcAmCellNackRx, gRlcStats.amRlcStats.numRlcAmCellDupPduRx);
 }
 #endif
 
@@ -217,17 +217,17 @@ Void PrintRLCStats(Void)
  *
  * ****************************************************************/
 #ifdef ANSI
-PUBLIC S16 KwLiRguDDatReq
+   PUBLIC S16 KwLiRguDDatReq
 (
-Pst               *post,
-SpId              spId,
-RguDDatReqInfo    *datReqInfo
-)
+ Pst               *post,
+ SpId              spId,
+ RguDDatReqInfo    *datReqInfo
+ )
 #else
 PUBLIC S16 KwLiRguDDatReq(post, spId, datReqInfo)
-Pst               *post;
-SpId              spId;
-RguDDatReqInfo    *datReqInfo;
+   Pst               *post;
+   SpId              spId;
+   RguDDatReqInfo    *datReqInfo;
 #endif
 {
    U8               ueIdx;      /* UE info list iterator */ 
@@ -241,9 +241,9 @@ RguDDatReqInfo    *datReqInfo;
 
    TRC3(KwLiRguDDatReq)
 
-   dlData = NULLP;
+      dlData = NULLP;
    RLC_ALLOC_SHRABL_BUF(post->region, post->pool,
-                       dlData, sizeof(RlcMacData));
+	 dlData, sizeof(RlcMacData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( datReqInfo == NULLP )
    {
@@ -265,28 +265,28 @@ RguDDatReqInfo    *datReqInfo;
 
       for(tbIdx = 0; tbIdx < datPerUe.nmbOfTbs; tbIdx++)
       {
-         datPerTb = datPerUe.datReqTb[tbIdx];
-         for(lchIdx = 0; lchIdx < datPerTb.nmbLch; lchIdx++)
-         {
-            datPerLch = datPerTb.lchData[lchIdx];
-            for(pduIdx = 0; pduIdx < datPerLch.pdu.numPdu; pduIdx++)
-            {
-               dlData->pduInfo[dlData->numPdu].commCh = FALSE;
-               dlData->pduInfo[dlData->numPdu].lcId = datPerLch.lcId;
-               dlData->pduInfo[dlData->numPdu].pduBuf = datPerLch.pdu.mBuf[pduIdx];
-               dlData->numPdu++;
-            }/* For per PDU */
-         }/* For Data per Lch */
+	 datPerTb = datPerUe.datReqTb[tbIdx];
+	 for(lchIdx = 0; lchIdx < datPerTb.nmbLch; lchIdx++)
+	 {
+	    datPerLch = datPerTb.lchData[lchIdx];
+	    for(pduIdx = 0; pduIdx < datPerLch.pdu.numPdu; pduIdx++)
+	    {
+	       dlData->pduInfo[dlData->numPdu].commCh = FALSE;
+	       dlData->pduInfo[dlData->numPdu].lcId = datPerLch.lcId;
+	       dlData->pduInfo[dlData->numPdu].pduBuf = datPerLch.pdu.mBuf[pduIdx];
+	       dlData->numPdu++;
+	    }/* For per PDU */
+	 }/* For Data per Lch */
       }/* For Data per Tb */
       RlcMacSendDlData(post, spId, dlData);
    } /* For Data per UE */
 
    /* Check if to be freed here */
-   
+
    RLC_FREE_SHRABL_BUF(post->region, 
-            post->pool, 
-            datReqInfo, sizeof(RguDDatReqInfo));
-   
+	 post->pool, 
+	 datReqInfo, sizeof(RguDDatReqInfo));
+
    RETVALUE(ROK);
 }/* End of KwLiRguDDatReq */
 
@@ -311,17 +311,17 @@ RguDDatReqInfo    *datReqInfo;
  *
  */
 #ifdef ANSI
-PUBLIC S16 kwUtlSndToLi
+   PUBLIC S16 kwUtlSndToLi
 (
-RlcCb            *gCb,
-SuId            suId,
-KwDStaIndInfo   *staIndInfo
-)
+ RlcCb            *gCb,
+ SuId            suId,
+ KwDStaIndInfo   *staIndInfo
+ )
 #else
 PUBLIC S16 kwUtlSndToLi(gCb, suId, staIndInfo)
-RlcCb            *gCb;
-SuId            suId;
-KwDStaIndInfo   *staIndInfo; 
+   RlcCb            *gCb;
+   SuId            suId;
+   KwDStaIndInfo   *staIndInfo; 
 #endif
 {
    RlcDlUeCb         *ueCb;         /* UE control block */
@@ -336,31 +336,31 @@ KwDStaIndInfo   *staIndInfo;
    RguDatReqTb      *datReqTb = NULLP;
    RguDStaIndPerUe  *staInd = NULLP;
 #ifdef LTE_L2_MEAS   
-    U32 grantPerLch[RGU_MAX_LC] = {0};
+   U32 grantPerLch[RGU_MAX_LC] = {0};
 #endif
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_LOSS_DELAY
    U8        snIdx1;
    U8        snIdx2;
 #endif /* LTE_L2_MEAS */
    U32 idx;
 
-//Debug
+   //Debug
    U32 staIndSz=0,datIndSz = 0;
    TRC2(kwUtlSndToLi)
 
 
-   datReqInfo = NULLP;
+      datReqInfo = NULLP;
    RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap->pst.region,
-                       gCb->u.dlCb->rguDlSap->pst.pool,
-                       datReqInfo,sizeof(RguDDatReqInfo));
+	 gCb->u.dlCb->rguDlSap->pst.pool,
+	 datReqInfo,sizeof(RguDDatReqInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      if ( datReqInfo == NULLP )
-      {
-         RLOG_ARG0(L_FATAL,DBG_CELLID,staIndInfo->cellId,
-                  "Memory allocation failed");
-         RETVALUE(RFAILED);
-      }
+   if ( datReqInfo == NULLP )
+   {
+      RLOG_ARG0(L_FATAL,DBG_CELLID,staIndInfo->cellId,
+	    "Memory allocation failed");
+      RETVALUE(RFAILED);
+   }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    for(idx = 0; idx < staIndInfo->nmbOfUeGrantPerTti; idx++)
    {
@@ -368,12 +368,12 @@ KwDStaIndInfo   *staIndInfo;
       /* Fetch Ue control block */
       if(ROK != kwDbmFetchDlUeCb(gCb,staInd->rnti,staIndInfo->cellId,&ueCb))
       {
-         /* Fetch UeCb failed */
-         RLOG_ARG1(L_ERROR, DBG_CELLID,staIndInfo->cellId, 
-                  "UeId[%u]:ueCb not found",
-                  staInd->rnti);
-         /* If ueCb is not found for current rnti then continue to look for next rnti*/
-         continue; 
+	 /* Fetch UeCb failed */
+	 RLOG_ARG1(L_ERROR, DBG_CELLID,staIndInfo->cellId, 
+	       "UeId[%u]:ueCb not found",
+	       staInd->rnti);
+	 /* If ueCb is not found for current rnti then continue to look for next rnti*/
+	 continue; 
       }
       /* kw002.201 Removed the allocation of KwDatReq */
       /* kw004.201 Used SSI function to initialize the variable */
@@ -381,156 +381,156 @@ KwDStaIndInfo   *staIndInfo;
       totNumPdu = 0;
       for (numTb = 0; numTb < staInd->nmbOfTbs; numTb++)
       {
-         staIndTb = &(staInd->staIndTb[numTb]);
-         datReqTb = &(datReqInfo->datReq[idx].datReqTb[numTb]);
+	 staIndTb = &(staInd->staIndTb[numTb]);
+	 datReqTb = &(datReqInfo->datReq[idx].datReqTb[numTb]);
 #ifdef LTE_L2_MEAS
-         ueCb->tbIdx = (ueCb->tbIdx+1) % KW_MAX_TB_PER_UE;
+	 ueCb->tbIdx = (ueCb->tbIdx+1) % KW_MAX_TB_PER_UE;
 #endif   
-         for (count = 0;count < staIndTb->nmbLch; count++)
-         {
+	 for (count = 0;count < staIndTb->nmbLch; count++)
+	 {
 #ifdef LTE_L2_MEAS
-            /*Calculate the total grant size from MAC */
-            if((staIndTb->lchStaInd[count].lcId >= RGU_MAX_LC) 
-                || (staIndTb->lchStaInd[count].lcId == 0))
-            {
-               /* TODO : Need to figure out why this is happening */
-               break;
-            }
-            else
-            {
-               grantPerLch[staIndTb->lchStaInd[count].lcId] += staIndTb->lchStaInd[count].totBufSize;
-            }
+	    /*Calculate the total grant size from MAC */
+	    if((staIndTb->lchStaInd[count].lcId >= RGU_MAX_LC) 
+		  || (staIndTb->lchStaInd[count].lcId == 0))
+	    {
+	       /* TODO : Need to figure out why this is happening */
+	       break;
+	    }
+	    else
+	    {
+	       grantPerLch[staIndTb->lchStaInd[count].lcId] += staIndTb->lchStaInd[count].totBufSize;
+	    }
 #endif   
-            rbCb = ueCb->lCh[staIndTb->lchStaInd[count].lcId - 1].dlRbCb;
+	    rbCb = ueCb->lCh[staIndTb->lchStaInd[count].lcId - 1].dlRbCb;
 
-            if (rbCb && (!rlcDlUtlIsReestInProgress(rbCb)))
-            { 
-//Debug
-               staIndSz += staIndTb->lchStaInd[count].totBufSize;
-               datReq.pduSz = staIndTb->lchStaInd[count].totBufSize;
+	    if (rbCb && (!rlcDlUtlIsReestInProgress(rbCb)))
+	    { 
+	       //Debug
+	       staIndSz += staIndTb->lchStaInd[count].totBufSize;
+	       datReq.pduSz = staIndTb->lchStaInd[count].totBufSize;
 #ifdef LTE_L2_MEAS            
-               datReq.totMacGrant = grantPerLch[staIndTb->lchStaInd[count].lcId];
+	       datReq.totMacGrant = grantPerLch[staIndTb->lchStaInd[count].lcId];
 #endif
-               kwUtlGetCurrTime(&datReq.boRep.oldestSduArrTime);
-               if ( CM_LTE_MODE_UM == rbCb->mode )
-               {
-                  kwUmmProcessSdus(gCb,rbCb,&datReq);
-               }
-               else if ( CM_LTE_MODE_AM == rbCb->mode )
-               {
-                  kwAmmProcessSdus(gCb,rbCb,&datReq,staInd->fillCtrlPdu);
-               }
+	       kwUtlGetCurrTime(&datReq.boRep.oldestSduArrTime);
+	       if ( CM_LTE_MODE_UM == rbCb->mode )
+	       {
+		  kwUmmProcessSdus(gCb,rbCb,&datReq);
+	       }
+	       else if ( CM_LTE_MODE_AM == rbCb->mode )
+	       {
+		  kwAmmProcessSdus(gCb,rbCb,&datReq,staInd->fillCtrlPdu);
+	       }
 #ifdef LTE_L2_MEAS            
-               grantPerLch[staIndTb->lchStaInd[count].lcId] = datReq.totMacGrant;
+	       grantPerLch[staIndTb->lchStaInd[count].lcId] = datReq.totMacGrant;
 #endif
-               if ( 0 == datReq.pduInfo.numPdu )
-               {
-                  continue;
-               }
-               totNumPdu += datReq.pduInfo.numPdu;
-               cmMemcpy((U8 *)(&(datReqTb->lchData[count].pdu)),
-                     (U8 *)(&(datReq.pduInfo)),sizeof(KwPduInfo));
+	       if ( 0 == datReq.pduInfo.numPdu )
+	       {
+		  continue;
+	       }
+	       totNumPdu += datReq.pduInfo.numPdu;
+	       cmMemcpy((U8 *)(&(datReqTb->lchData[count].pdu)),
+		     (U8 *)(&(datReq.pduInfo)),sizeof(KwPduInfo));
 
-//Debug
-               U8 numPdu = 0;
-               for (;numPdu < datReqTb->lchData[count].pdu.numPdu ; numPdu ++)
-               {
-                  MsgLen len = 0;
-                  SFndLenMsg(datReqTb->lchData[count].pdu.mBuf[numPdu],&len);
-                  datIndSz += len; 
-               }
-               datReqTb->lchData[count].setMaxUlPrio = FALSE;
-               if (KW_AM_IS_POLL_BIT_SET(AMDL) && 
-                   (AMDL.sduQ.count > 1))
-               { 
-                  /* Poll bit is set indicate to MAC*/
-                  datReqTb->lchData[count].setMaxUlPrio = TRUE;
-               }
-               datReqTb->lchData[count].boReport.bo = datReq.boRep.bo;
+	       //Debug
+	       U8 numPdu = 0;
+	       for (;numPdu < datReqTb->lchData[count].pdu.numPdu ; numPdu ++)
+	       {
+		  MsgLen len = 0;
+		  SFndLenMsg(datReqTb->lchData[count].pdu.mBuf[numPdu],&len);
+		  datIndSz += len; 
+	       }
+	       datReqTb->lchData[count].setMaxUlPrio = FALSE;
+	       if (KW_AM_IS_POLL_BIT_SET(AMDL) && 
+		     (AMDL.sduQ.count > 1))
+	       { 
+		  /* Poll bit is set indicate to MAC*/
+		  datReqTb->lchData[count].setMaxUlPrio = TRUE;
+	       }
+	       datReqTb->lchData[count].boReport.bo = datReq.boRep.bo;
 
 #ifdef CCPU_OPT
-               datReqTb->lchData[count].boReport.estRlcHdrSz = 
-                  datReq.boRep.estHdrSz;
-               datReqTb->lchData[count].boReport.staPduPrsnt = 
-                  datReq.boRep.staPduPrsnt;
+	       datReqTb->lchData[count].boReport.estRlcHdrSz = 
+		  datReq.boRep.estHdrSz;
+	       datReqTb->lchData[count].boReport.staPduPrsnt = 
+		  datReq.boRep.staPduPrsnt;
 #endif /* CCPU_OPT */
-               datReqTb->lchData[count].boReport.staPduBo = 
-                  datReq.boRep.staPduBo;
-               datReqTb->lchData[count].lcId = staIndTb->lchStaInd[count].lcId;
+	       datReqTb->lchData[count].boReport.staPduBo = 
+		  datReq.boRep.staPduBo;
+	       datReqTb->lchData[count].lcId = staIndTb->lchStaInd[count].lcId;
 
 #ifdef L2_OPTMZ
-               /* Set if Bearer is UM */
-               if ( CM_LTE_MODE_UM == rbCb->mode )
-               {
-                  datReqTb->lchData[count].freeBuff = TRUE;
-               }
-               else
-               {
-                  datReqTb->lchData[count].freeBuff = FALSE;
-               }
+	       /* Set if Bearer is UM */
+	       if ( CM_LTE_MODE_UM == rbCb->mode )
+	       {
+		  datReqTb->lchData[count].freeBuff = TRUE;
+	       }
+	       else
+	       {
+		  datReqTb->lchData[count].freeBuff = FALSE;
+	       }
 #endif
 
-               /* kw005.201 added support for L2 Measurement */
+	       /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_LOSS_DELAY
-               datReqTb->rguSnInfo->lchMap[count].lChId =
-                  staIndTb->lchStaInd[count].lcId;
-               /* In some cases L2 Measurement for few of the lcId may be off, 
-                * in this case we are assigning snList to 0xffff 
-                */
-               for(snIdx1 = 0; snIdx1 < RGU_MAX_PDU; snIdx1++)
-               {
-                  datReqTb->rguSnInfo->lchMap[count].snList[snIdx1] = 0xffff;
-               }
-               if(tbSnMap->numSn != 0)
-               {
-                  snIdx2 = 0;
-                  for(snIdx1=tbSnMap->prevNumSn;snIdx1 < tbSnMap->numSn;snIdx1++)
-                  {
-                     datReqTb->rguSnInfo->lchMap[count].snList[snIdx2++] = 
-                        tbSnMap->snSduMap[snIdx1].sn;
-                  }
-                  tbSnMap->prevNumSn = tbSnMap->numSn;
-               }
+	       datReqTb->rguSnInfo->lchMap[count].lChId =
+		  staIndTb->lchStaInd[count].lcId;
+	       /* In some cases L2 Measurement for few of the lcId may be off, 
+		* in this case we are assigning snList to 0xffff 
+		*/
+	       for(snIdx1 = 0; snIdx1 < RGU_MAX_PDU; snIdx1++)
+	       {
+		  datReqTb->rguSnInfo->lchMap[count].snList[snIdx1] = 0xffff;
+	       }
+	       if(tbSnMap->numSn != 0)
+	       {
+		  snIdx2 = 0;
+		  for(snIdx1=tbSnMap->prevNumSn;snIdx1 < tbSnMap->numSn;snIdx1++)
+		  {
+		     datReqTb->rguSnInfo->lchMap[count].snList[snIdx2++] = 
+			tbSnMap->snSduMap[snIdx1].sn;
+		  }
+		  tbSnMap->prevNumSn = tbSnMap->numSn;
+	       }
 #endif
-               datReqTb->lchData[count].boReport.oldestSduArrTime = 
-                                             datReq.boRep.oldestSduArrTime;
-               /* kw004.201 Used SSI function to initialize the variable */
-               cmMemset( (U8 *)&datReq, 0, sizeof(KwDatReq) ); 
-            }
-         }
+	       datReqTb->lchData[count].boReport.oldestSduArrTime = 
+		  datReq.boRep.oldestSduArrTime;
+	       /* kw004.201 Used SSI function to initialize the variable */
+	       cmMemset( (U8 *)&datReq, 0, sizeof(KwDatReq) ); 
+	    }
+	 }
 #ifdef LTE_L2_MEAS
-         if(ueCb->l2MeasTbCb[ueCb->tbIdx]!= NULLP)
-         {
-            datReqTb->tbId = ueCb->tbIdx;
-         }
-         else
-         {
-            datReqTb->tbId = KW_INVALID_TBID; 
-         }
+	 if(ueCb->l2MeasTbCb[ueCb->tbIdx]!= NULLP)
+	 {
+	    datReqTb->tbId = ueCb->tbIdx;
+	 }
+	 else
+	 {
+	    datReqTb->tbId = KW_INVALID_TBID; 
+	 }
 #endif
-         datReqTb->nmbLch = staIndTb->nmbLch;
-         /*adding the check to make sure that lcId is not sent as 0
-          * when no data is there in datReq */
-         if ( 0 == totNumPdu )
-         {
-            datReqTb->lchData[0].lcId = staIndTb->lchStaInd[0].lcId;
-         }
-         /* kw005.201 added support for L2 Measurement */
+	 datReqTb->nmbLch = staIndTb->nmbLch;
+	 /*adding the check to make sure that lcId is not sent as 0
+	  * when no data is there in datReq */
+	 if ( 0 == totNumPdu )
+	 {
+	    datReqTb->lchData[0].lcId = staIndTb->lchStaInd[0].lcId;
+	 }
+	 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_LOSS_DELAY
-         if(tbSnMap->numSn == 0)
-         {
-            RLC_FREE(tbSnMap,sizeof(KwTbSnMap));
-            RLC_FREE(datReqTb->rguSnInfo,sizeof(RguSnMapInfo));
-            datReqTb->rguSnInfo = NULLP;
-            rlcCb.kwL2Cb.curTbSnMap = NULLP;
-            datReqTb->snMapPres = FALSE;
-         }
-         else
-         {
-            cmHashListInsert(&(rlcCb.kwL2Cb.tbHlCp),(PTR)tbSnMap,
-                  (U8 *) &(tbSnMap->tbId), (U16)sizeof(tbSnMap->tbId));
-            rlcCb.kwL2Cb.curTbSnMap = NULLP;
-         }
+	 if(tbSnMap->numSn == 0)
+	 {
+	    RLC_FREE(tbSnMap,sizeof(KwTbSnMap));
+	    RLC_FREE(datReqTb->rguSnInfo,sizeof(RguSnMapInfo));
+	    datReqTb->rguSnInfo = NULLP;
+	    rlcCb.kwL2Cb.curTbSnMap = NULLP;
+	    datReqTb->snMapPres = FALSE;
+	 }
+	 else
+	 {
+	    cmHashListInsert(&(rlcCb.kwL2Cb.tbHlCp),(PTR)tbSnMap,
+		  (U8 *) &(tbSnMap->tbId), (U16)sizeof(tbSnMap->tbId));
+	    rlcCb.kwL2Cb.curTbSnMap = NULLP;
+	 }
 #endif /* LTE_L2_MEAS */
       }
       datReqInfo->datReq[idx].nmbOfTbs = staInd->nmbOfTbs;
@@ -547,7 +547,7 @@ KwDStaIndInfo   *staIndInfo;
    }
 
    rguSap = &(gCb->u.dlCb->rguDlSap[suId]);
-//Debug
+   //Debug
    KwLiRguDDatReq(&rguSap->pst,rguSap->spId,datReqInfo); 
    RETVALUE(ROK);
 }
@@ -573,35 +573,35 @@ KwDStaIndInfo   *staIndInfo;
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 kwUtlSndDStaRsp
+   PUBLIC S16 kwUtlSndDStaRsp
 (
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,     
-S32        bo,        
-S32        estHdrSz,  
-Bool       staPduPrsnt,
-U32        staPduBo
-)
+ RlcCb       *gCb,
+ RlcDlRbCb   *rbCb,     
+ S32        bo,        
+ S32        estHdrSz,  
+ Bool       staPduPrsnt,
+ U32        staPduBo
+ )
 #else
 PUBLIC S16 kwUtlSndDStaRsp(gCb,rbCb,bo,estHdrSz,staPduPrsnt,staPduBo)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;      
-S32        bo;         
-S32        estHdrSz;   
-Bool       staPduPrsnt;
-U32        staPduBo;
+   RlcCb       *gCb;
+   RlcDlRbCb   *rbCb;      
+   S32        bo;         
+   S32        estHdrSz;   
+   Bool       staPduPrsnt;
+   U32        staPduBo;
 #endif
 {
    RlcMacBOStatus   boStatus;      /* Buffer occupancy status information */
    KwRguSapCb       *rguSap;       /* MAC SAP Information */
    TRC3(kwUtlSndDStaRsp)
 #ifndef TENB_ACC
-   if ((rbCb->lastRprtdBoToMac > (U32)8000) && (rbCb->boUnRprtdCnt < (U32)5) 
-       && (!staPduPrsnt) && ((CM_LTE_MODE_AM == rbCb->mode ) && (AMDL.nxtRetx == NULLP)))
-   {
-      rbCb->boUnRprtdCnt++;
-      RETVALUE(ROK);
-   }
+      if ((rbCb->lastRprtdBoToMac > (U32)8000) && (rbCb->boUnRprtdCnt < (U32)5) 
+	    && (!staPduPrsnt) && ((CM_LTE_MODE_AM == rbCb->mode ) && (AMDL.nxtRetx == NULLP)))
+      {
+	 rbCb->boUnRprtdCnt++;
+	 RETVALUE(ROK);
+      }
 #endif
 
    rguSap = &(gCb->u.dlCb->rguDlSap[rbCb->rguSapId]);
@@ -647,29 +647,29 @@ U32        staPduBo;
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_RLC
 #ifdef ANSI
-PUBLIC Void kwUtlEmptySduQ
+   PUBLIC Void kwUtlEmptySduQ
 (
-RlcCb        *gCb, 
-RlcDlRbCb    *rbCb,
-CmLListCp   *sduQ 
-)
+ RlcCb        *gCb, 
+ RlcDlRbCb    *rbCb,
+ CmLListCp   *sduQ 
+ )
 #else
 PUBLIC Void kwUtlEmptySduQ(gCb,rbCb, sduQ)
-RlcCb        *gCb;
-RlcDlRbCb    *rbCb;
-CmLListCp   *sduQ;
+   RlcCb        *gCb;
+   RlcDlRbCb    *rbCb;
+   CmLListCp   *sduQ;
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void kwUtlEmptySduQ
+   PUBLIC Void kwUtlEmptySduQ
 (
-RlcCb        *gCb,
-CmLListCp   *sduQ 
-)
+ RlcCb        *gCb,
+ CmLListCp   *sduQ 
+ )
 #else
 PUBLIC Void kwUtlEmptySduQ(gCb,sduQ)
-RlcCb        *gCb;
-CmLListCp   *sduQ; 
+   RlcCb        *gCb;
+   CmLListCp   *sduQ; 
 #endif
 #endif
 {
@@ -679,7 +679,7 @@ CmLListCp   *sduQ;
    KwSduSnMap  *sduSnMap;              /* SDU Sn Map */
 
    TRC2(kwUtlEmptySduQ)
-   sduSnMapQ = NULLP;
+      sduSnMapQ = NULLP;
    firstSduSnMap = NULLP;
    sduSnMap = NULLP;
 
@@ -692,13 +692,13 @@ CmLListCp   *sduQ;
       sduSnMap = (KwSduSnMap *)firstSduSnMap->node;
       if(sduSnMap != NULLP)
       {
-         cmLListDelFrm(&(rbCb->sduSnMapQ), &(sduSnMap->lstEnt));
-         RLC_FREE(sduSnMap, sizeof(KwSduSnMap));
-         CM_LLIST_FIRST_NODE(sduSnMapQ, firstSduSnMap);
+	 cmLListDelFrm(&(rbCb->sduSnMapQ), &(sduSnMap->lstEnt));
+	 RLC_FREE(sduSnMap, sizeof(KwSduSnMap));
+	 CM_LLIST_FIRST_NODE(sduSnMapQ, firstSduSnMap);
       }
       else
       {
-         CM_LLIST_NEXT_NODE(sduSnMapQ, firstSduSnMap);
+	 CM_LLIST_NEXT_NODE(sduSnMapQ, firstSduSnMap);
       }
    }
 #endif
@@ -723,36 +723,36 @@ CmLListCp   *sduQ;
  * @return  void 
  */
 #ifdef ANSI
-PUBLIC Void kwUtlCalcLiForSdu
+   PUBLIC Void kwUtlCalcLiForSdu
 (
-RlcCb     *gCb,
-U16      numLi, 
-MsgLen   msgLen,
-S16      *pduSz 
-)
+ RlcCb     *gCb,
+ U16      numLi, 
+ MsgLen   msgLen,
+ S16      *pduSz 
+ )
 #else
 PUBLIC Void kwUtlCalcLiForSdu(gCb,numLi,msgLen,pduSz)
-RlcCb     *gCb;
-U16      numLi; 
-MsgLen   msgLen;
-S16      *pduSz;
+   RlcCb     *gCb;
+   U16      numLi; 
+   MsgLen   msgLen;
+   S16      *pduSz;
 #endif 
 {
    TRC2(kwUtlCalcLiForSdu)
 
-   if ( (*pduSz > msgLen)  && (msgLen < KW_2K_BYTE))
-   {
-      if(0 == (numLi & KW_BIT0)) /* check if number of LIs are odd or even */
-      {  
-         /* if number of LI's are even 2 bytes needed */
-         *pduSz -= 2;
-      }
-      else
+      if ( (*pduSz > msgLen)  && (msgLen < KW_2K_BYTE))
       {
-         /* if number of LI's are odd one byte needed */
-         *pduSz -= 1;
+	 if(0 == (numLi & KW_BIT0)) /* check if number of LIs are odd or even */
+	 {  
+	    /* if number of LI's are even 2 bytes needed */
+	    *pduSz -= 2;
+	 }
+	 else
+	 {
+	    /* if number of LI's are odd one byte needed */
+	    *pduSz -= 1;
+	 }
       }
-   }
    RETVOID;
 }
 
@@ -774,28 +774,28 @@ S16      *pduSz;
  * @return  void 
  */
 #ifdef ANSI
-PUBLIC Void rlcDlUtlSetReestInProgressForRB
+   PUBLIC Void rlcDlUtlSetReestInProgressForRB
 (
-RlcCb     *gCb,
-RlcDlRbCb *rbCb
-)
+ RlcCb     *gCb,
+ RlcDlRbCb *rbCb
+ )
 #else
 PUBLIC Void rlcDlUtlSetReestInProgressForRB(gCb,rbCb)
-RlcCb     *gCb;
-RlcDlRbCb *rbCb;
+   RlcCb     *gCb;
+   RlcDlRbCb *rbCb;
 #endif 
 {
    TRC2(rlcDlUtlSetReestInProgressForRB)
-      
-   rbCb->reestInProgress = TRUE;
-   
+
+      rbCb->reestInProgress = TRUE;
+
    if(rbCb->mode == CM_LTE_MODE_AM )
    {
       rbCb->m.amDl.estHdrSz = 0;
 
       if(kwChkTmr(gCb, (PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR))
       {
-         kwStopTmr(gCb, (PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);
+	 kwStopTmr(gCb, (PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);
       }
    }
    else
@@ -820,18 +820,18 @@ RlcDlRbCb *rbCb;
  *          FALSE : Re-establishment is not in progress
  */
 #ifdef ANSI
-PUBLIC Bool rlcDlUtlIsReestInProgress
+   PUBLIC Bool rlcDlUtlIsReestInProgress
 (
-RlcDlRbCb *rbCb
-)
+ RlcDlRbCb *rbCb
+ )
 #else
 PUBLIC Bool rlcDlUtlIsReestInProgress(rbCb)
-RlcDlRbCb *rbCb;
+   RlcDlRbCb *rbCb;
 #endif 
 {
    TRC2(rlcDlUtlSetReestInProgressForRB)
 
-   RETVALUE(rbCb->reestInProgress);
+      RETVALUE(rbCb->reestInProgress);
 }
 
 /**
@@ -844,18 +844,18 @@ RlcDlRbCb *rbCb;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void rlcDlUtlResetReestInProgress
+   PUBLIC Void rlcDlUtlResetReestInProgress
 (
-RlcDlRbCb *rbCb
-)
+ RlcDlRbCb *rbCb
+ )
 #else
 PUBLIC Void rlcDlUtlResetReestInProgress(rbCb)
-RlcDlRbCb *rbCb;
+   RlcDlRbCb *rbCb;
 #endif 
 {
    TRC2(rlcDlUtlSetReestInProgressForRB)
 
-   rbCb->reestInProgress = FALSE;
+      rbCb->reestInProgress = FALSE;
 }
 
 /**
@@ -872,48 +872,48 @@ RlcDlRbCb *rbCb;
  * @return  void 
  */
 #ifdef ANSI
-PUBLIC Void rlcDlUtlSetReestInProgressForAllRBs
+   PUBLIC Void rlcDlUtlSetReestInProgressForAllRBs
 (
-RlcCb     *gCb,
-RlcDlUeCb *ueCb
-)
+ RlcCb     *gCb,
+ RlcDlUeCb *ueCb
+ )
 #else
 PUBLIC Void rlcDlUtlSetReestInProgressForAllRBs(gCb,ueCb)
-RlcCb     *gCb;
-RlcDlUeCb *ueCb;
+   RlcCb     *gCb;
+   RlcDlUeCb *ueCb;
 #endif 
 {
    U32        rbIdx;
-   
+
    TRC2(rlcDlUtlSetReestInProgressForAllRBs)
 
-   for(rbIdx = 0;rbIdx < KW_MAX_SRB_PER_UE;rbIdx++)
-   {
-      if(ueCb->srbCb[rbIdx] != NULLP)
+      for(rbIdx = 0;rbIdx < KW_MAX_SRB_PER_UE;rbIdx++)
       {
-         if(ueCb->srbCb[rbIdx]->rlcId.rbId != 1)
-         {
-            rlcDlUtlSetReestInProgressForRB(gCb,ueCb->srbCb[rbIdx]); 
-         }
-         else
-         {
-            /* For SRB we just need to stop the poll re-transmit timer */
-            if(kwChkTmr(gCb, (PTR)ueCb->srbCb[rbIdx], KW_EVT_AMDL_POLL_RETX_TMR))
-            {
-               kwStopTmr(gCb, (PTR)ueCb->srbCb[rbIdx], KW_EVT_AMDL_POLL_RETX_TMR);
-            }
-         }
+	 if(ueCb->srbCb[rbIdx] != NULLP)
+	 {
+	    if(ueCb->srbCb[rbIdx]->rlcId.rbId != 1)
+	    {
+	       rlcDlUtlSetReestInProgressForRB(gCb,ueCb->srbCb[rbIdx]); 
+	    }
+	    else
+	    {
+	       /* For SRB we just need to stop the poll re-transmit timer */
+	       if(kwChkTmr(gCb, (PTR)ueCb->srbCb[rbIdx], KW_EVT_AMDL_POLL_RETX_TMR))
+	       {
+		  kwStopTmr(gCb, (PTR)ueCb->srbCb[rbIdx], KW_EVT_AMDL_POLL_RETX_TMR);
+	       }
+	    }
+	 }
       }
-   }
-   
+
    for(rbIdx = 0;rbIdx < KW_MAX_DRB_PER_UE;rbIdx++)
    {
       if(ueCb->drbCb[rbIdx] != NULLP)
       {
-         rlcDlUtlSetReestInProgressForRB(gCb,ueCb->drbCb[rbIdx]);
+	 rlcDlUtlSetReestInProgressForRB(gCb,ueCb->drbCb[rbIdx]);
       }
    }
-      
+
    RETVOID;
 }
 
@@ -927,13 +927,13 @@ RlcDlUeCb *ueCb;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlIncrementKwuStsSduTx
+   PUBLIC Void kwUtlIncrementKwuStsSduTx
 (
-KwKwuSapCb *kwuSap 
-)
+ KwKwuSapCb *kwuSap 
+ )
 #else
 PUBLIC Void kwUtlIncrementKwuStsSduTx(kwuSap)
-KwKwuSapCb *kwuSap;
+   KwKwuSapCb *kwuSap;
 #endif
 {
    kwuSap->sts.sduTx++;
@@ -951,15 +951,15 @@ KwKwuSapCb *kwuSap;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlIncrementGenStsBytesAndPdusSent
+   PUBLIC Void kwUtlIncrementGenStsBytesAndPdusSent
 (
-KwGenSts   *genSts,
-Buffer     *pdu   
-)
+ KwGenSts   *genSts,
+ Buffer     *pdu   
+ )
 #else
 PUBLIC Void kwUtlIncrementGenStsBytesAndPdusSent(genSts, pdu)
-KwGenSts   *genSts;
-Buffer     *pdu; 
+   KwGenSts   *genSts;
+   Buffer     *pdu; 
 #endif
 {
    MsgLen bytesSent;
@@ -980,22 +980,22 @@ Buffer     *pdu;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlInitToBeFreed
+   PUBLIC Void kwUtlInitToBeFreed
 (
-RlcCb                *gCb,
-RlcDlDataToBeFreed   *toBeFreed
-)
+ RlcCb                *gCb,
+ RlcDlDataToBeFreed   *toBeFreed
+ )
 #else
 PUBLIC Void kwUtlInitToBeFreed(gCb, toBeFreed)
-RlcCb                *gCb;
-RlcDlDataToBeFreed   *toBeFreed;
+   RlcCb                *gCb;
+   RlcDlDataToBeFreed   *toBeFreed;
 #endif
 {
    cmLListInit(&(toBeFreed->sduLst));
    cmLListInit(&(toBeFreed->rbLst));
    cmLListInit(&(toBeFreed->reTxLst));
    cmLListInit(&(toBeFreed->txLst));
-   
+
    RETVOID;
 }
 
@@ -1008,17 +1008,17 @@ RlcDlDataToBeFreed   *toBeFreed;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlInitializeSelfPst
+   PUBLIC Void kwUtlInitializeSelfPst
 (
-RlcCb *gCb  
-)
+ RlcCb *gCb  
+ )
 #else
 PUBLIC Void kwUtlInitializeSelfPst(gCb)
-RlcCb *gCb;
+   RlcCb *gCb;
 #endif
 {
    Pst *selfPst = &gCb->u.dlCb->selfPst;
-   
+
    RLC_MEM_SET(selfPst, 0, sizeof(Pst));
    selfPst->srcProcId = SFndProcId();
    selfPst->dstProcId = SFndProcId();
@@ -1039,13 +1039,13 @@ RlcCb *gCb;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlRaiseDlCleanupEvent
+   PUBLIC Void kwUtlRaiseDlCleanupEvent
 (
-RlcCb *gCb  
-)
+ RlcCb *gCb  
+ )
 #else
 PUBLIC Void kwUtlRaiseDlCleanupEvent(gCb)
-RlcCb *gCb;
+   RlcCb *gCb;
 #endif
 {
 #ifdef KWSELFPSTDLCLEAN
@@ -1068,15 +1068,15 @@ RlcCb *gCb;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlAddSduToBeFreedQueue
+   PUBLIC Void kwUtlAddSduToBeFreedQueue
 (
-RlcCb    *gCb,
-KwSdu   *sdu
-)
+ RlcCb    *gCb,
+ KwSdu   *sdu
+ )
 #else
 PUBLIC Void kwUtlAddSduToBeFreedQueue(gCb, sdu)
-RlcCb    *gCb;
-KwSdu   *sdu;
+   RlcCb    *gCb;
+   KwSdu   *sdu;
 #endif
 {
    cmLListAdd2Tail(&(gCb->u.dlCb->toBeFreed.sduLst), &(sdu->lstEnt));
@@ -1093,15 +1093,15 @@ KwSdu   *sdu;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlAddReTxPduToBeFreedQueue
+   PUBLIC Void kwUtlAddReTxPduToBeFreedQueue
 (
-RlcCb     *gCb,
-KwRetx   *retx
-)
+ RlcCb     *gCb,
+ KwRetx   *retx
+ )
 #else
 PUBLIC Void kwUtlAddReTxPduToBeFreedQueue(gCb, retx)
-RlcCb     *gCb;
-KwRetx   *retx;
+   RlcCb     *gCb;
+   KwRetx   *retx;
 #endif
 {
    cmLListAdd2Tail(&(gCb->u.dlCb->toBeFreed.reTxLst), &(retx->lstEnt));
@@ -1118,15 +1118,15 @@ KwRetx   *retx;
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlAddTxPduToBeFreedQueue
+   PUBLIC Void kwUtlAddTxPduToBeFreedQueue
 (
-RlcCb   *gCb,
-KwTx   *pdu
-)
+ RlcCb   *gCb,
+ KwTx   *pdu
+ )
 #else
 PUBLIC Void kwUtlAddTxPduToBeFreedQueue(gCb, pdu)
-RlcCb   *gCb;
-KwTx   *pdu;
+   RlcCb   *gCb;
+   KwTx   *pdu;
 #endif
 {
    pdu->rlsLnk.node = (PTR)pdu;
@@ -1151,17 +1151,17 @@ KwTx   *pdu;
  *     - FALSE if all the data has been freed
  */
 #ifdef ANSI
-PRIVATE Bool kwUtlFreeDlAmRbMemory
+   PRIVATE Bool kwUtlFreeDlAmRbMemory
 (
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-U32        *toBeFreed
-)
+ RlcCb       *gCb,
+ RlcDlRbCb   *rbCb,
+ U32        *toBeFreed
+ )
 #else
 PRIVATE Bool kwUtlFreeDlAmRbMemory(gCb, rbCb, toBeFreed)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-U32        *toBeFreed
+   RlcCb       *gCb;
+   RlcDlRbCb   *rbCb;
+   U32        *toBeFreed
 #endif
 {
    KwRetx   *retx;   /* retransmission buffer */
@@ -1171,7 +1171,7 @@ U32        *toBeFreed
    TRC2(kwUtlFreeDlAmRbMemory)
 
 
-   MODAMT(AMDL.txNext, mTxNext, AMDL.txNextAck,AMDL.snModMask);
+      MODAMT(AMDL.txNext, mTxNext, AMDL.txNextAck,AMDL.snModMask);
 
    /* TODO : to be checked changed from <= to < */
    while ((0 < mTxNext) && *toBeFreed)
@@ -1179,7 +1179,7 @@ U32        *toBeFreed
       txBuf =  kwUtlGetTxBuf(AMDL.txBufLst, AMDL.txNextAck);
       if (txBuf && txBuf->pduLst.first)
       {
-         while(txBuf->pduLst.first)
+	 while(txBuf->pduLst.first)
 	 {
 	    RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(txBuf->pduLst.first->node);
 	    RLC_FREE_BUF(pduInfo->pdu);
@@ -1187,10 +1187,10 @@ U32        *toBeFreed
 	    cmLListDelFrm(&txBuf->pduLst, txBuf->pduLst.first);
 	    RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
 	 }
-         kwUtlDelTxBuf(AMDL.txBufLst, txBuf, gCb);
-         if(gCb->u.dlCb->shutdownReceived == 0)
-         {   
-            (*toBeFreed)--;
+	 kwUtlDelTxBuf(AMDL.txBufLst, txBuf, gCb);
+	 if(gCb->u.dlCb->shutdownReceived == 0)
+	 {   
+	    (*toBeFreed)--;
 	 }
       }
       AMDL.txNextAck = (AMDL.txNextAck + 1) & AMDL.snModMask;
@@ -1200,9 +1200,9 @@ U32        *toBeFreed
    {
       RETVALUE(TRUE);
    }
-   
+
 #ifndef LTE_TDD 
-      RLC_FREE(gCb,AMDL.txBufLst, (KW_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
+   RLC_FREE(gCb,AMDL.txBufLst, (KW_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
 #endif
 
    KW_LLIST_FIRST_RETX(AMDL.retxLst, retx);
@@ -1217,8 +1217,8 @@ U32        *toBeFreed
       KW_LLIST_FIRST_RETX(AMDL.retxLst, retx);
       if(gCb->u.dlCb->shutdownReceived == 0)
       {
-      (*toBeFreed)--;
-   }
+	 (*toBeFreed)--;
+      }
 
    }
 
@@ -1230,9 +1230,9 @@ U32        *toBeFreed
       Pst *udxPst;
       udxPst = &gCb->u.dlCb->udxDlSap->pst;
       RLC_FREE_SHRABL_BUF_WC(udxPst->region,
-			    udxPst->pool,
-			    AMDL.pStaPdu, 
-			    sizeof(KwUdxDlStaPdu));
+	    udxPst->pool,
+	    AMDL.pStaPdu, 
+	    sizeof(KwUdxDlStaPdu));
       AMDL.pStaPdu = NULLP;
    }
 
@@ -1244,7 +1244,7 @@ U32        *toBeFreed
    {   
       (*toBeFreed)--;
    }
-   
+
    RETVALUE(FALSE);;
 } 
 
@@ -1257,13 +1257,13 @@ U32        *toBeFreed
  * @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlFreeDlMemory
+   PUBLIC Void kwUtlFreeDlMemory
 (
-RlcCb *gCb  
-)
+ RlcCb *gCb  
+ )
 #else
 PUBLIC Void kwUtlFreeDlMemory(gCb)
-RlcCb *gCb;
+   RlcCb *gCb;
 #endif
 {
    U32 toBeFreed; 
@@ -1286,92 +1286,92 @@ RlcCb *gCb;
       if ((pToBeFreed->txLst.count + pToBeFreed->reTxLst.count + pToBeFreed->sduLst.count) > (3 * KW_MAX_TO_BE_FREED))
       {
 #if !defined(KWSELFPSTDLCLEAN) && defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS)
-         if (isDatReqProcessed)
-         {
-            toBeFreed = (2 *KW_MAX_TO_BE_FREED);
-         }
-         else
+	 if (isDatReqProcessed)
+	 {
+	    toBeFreed = (2 *KW_MAX_TO_BE_FREED);
+	 }
+	 else
 #endif
-         {
-            toBeFreed = (3 *KW_MAX_TO_BE_FREED)/2;
-         }
+	 {
+	    toBeFreed = (3 *KW_MAX_TO_BE_FREED)/2;
+	 }
       }
       else
       {
-         toBeFreed = KW_MAX_TO_BE_FREED;
+	 toBeFreed = KW_MAX_TO_BE_FREED;
       }
    }   
    CmLListCp        *lst;
 
    gCb->u.dlCb->eventInQueue = FALSE; /* reset as we have received the event
-                                         and are processing it */
+					 and are processing it */
 
    /* Free from the ReTx list */
    lst  = &pToBeFreed->reTxLst;
 #ifndef L2_OPTMZ
    while((lst->first) && toBeFreed && (pToBeFreed->reTxLst.count > 100))
 #else
-   while((lst->first) && toBeFreed)
+      while((lst->first) && toBeFreed)
 #endif
-   {
-      KwRetx* seg = (KwRetx *)(lst->first->node);
-      cmLListDelFrm(lst, lst->first);
-      RLC_FREE_BUF_WC(seg->seg);
-      RLC_FREE_WC(gCb,seg, sizeof(KwRetx));
-      toBeFreed--;
-   }   
+      {
+	 KwRetx* seg = (KwRetx *)(lst->first->node);
+	 cmLListDelFrm(lst, lst->first);
+	 RLC_FREE_BUF_WC(seg->seg);
+	 RLC_FREE_WC(gCb,seg, sizeof(KwRetx));
+	 toBeFreed--;
+      }   
 
    /* Free from the Tx list */
    lst  = &pToBeFreed->txLst;
 #ifndef L2_OPTMZ
    while((lst->first) && toBeFreed && (pToBeFreed->txLst.count > 100))
 #else
-   while((lst->first) && toBeFreed)
+      while((lst->first) && toBeFreed)
 #endif
-   {
-      KwTx* pdu = (KwTx *)(lst->first->node);
-      cmLListDelFrm(lst, lst->first);
-      while(pdu->pduLst.first)
       {
-         RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(pdu->pduLst.first->node);
-         
-	 cmLListDelFrm(&pdu->pduLst, pdu->pduLst.first);
-	 RLC_FREE_BUF_WC(pduInfo->pdu);
-	 RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
+	 KwTx* pdu = (KwTx *)(lst->first->node);
+	 cmLListDelFrm(lst, lst->first);
+	 while(pdu->pduLst.first)
+	 {
+	    RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(pdu->pduLst.first->node);
+
+	    cmLListDelFrm(&pdu->pduLst, pdu->pduLst.first);
+	    RLC_FREE_BUF_WC(pduInfo->pdu);
+	    RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
+	 }
+	 RLC_FREE_WC(gCb,pdu, sizeof(KwTx));
+	 toBeFreed--;
       }
-      RLC_FREE_WC(gCb,pdu, sizeof(KwTx));
-      toBeFreed--;
-   }
 
    /* Free from the SDU queue */
    lst  = &pToBeFreed->sduLst;
 #ifndef L2_OPTMZ
    while((lst->first) && toBeFreed && (pToBeFreed->sduLst.count > 100))
 #else
-   while((lst->first) && toBeFreed)
+      while((lst->first) && toBeFreed)
 #endif
-   {
-      KwSdu* sdu = (KwSdu *)(lst->first->node);
-      KW_RMV_SDU(gCb, lst, sdu);
-      toBeFreed--;
-   }      
+      {
+	 KwSdu* sdu = (KwSdu *)(lst->first->node);
+	 KW_RMV_SDU(gCb, lst, sdu);
+	 toBeFreed--;
+      }      
 
    /* Free from the RBs */
    lst  = &pToBeFreed->rbLst;
 #ifndef L2_OPTMZ
    while((lst->first) && toBeFreed && (pToBeFreed->rbLst.count > 100))
 #else
-   while((lst->first) && toBeFreed)
+      while((lst->first) && toBeFreed)
 #endif
-   {
-      RlcDlRbCb* rbCb = (RlcDlRbCb *)(lst->first->node);
-      Bool moreToBeFreed = kwUtlFreeDlAmRbMemory(gCb, rbCb,&toBeFreed);
-      if(!moreToBeFreed)
       {
-         cmLListDelFrm(lst, lst->first);
-         RLC_FREE_WC(gCb, rbCb, sizeof(RlcDlRbCb));
-      }
-   } 
+	 RlcDlRbCb* rbCb = (RlcDlRbCb *)(lst->first->node);
+	 Bool moreToBeFreed = kwUtlFreeDlAmRbMemory(gCb, rbCb,&toBeFreed);
+	 if(!moreToBeFreed)
+	 {
+	    cmLListDelFrm(lst, lst->first);
+	    RLC_FREE_WC(gCb, rbCb, sizeof(RlcDlRbCb));
+	 }
+      } 
 
    if ((toBeFreed == 0) && !(gCb->u.dlCb->shutdownReceived))
    {
@@ -1426,21 +1426,21 @@ S16 kwUtlL2MeasDlInit(RlcCb *gCb)
  *
  */
 #ifdef ANSI
-PUBLIC Void kwUtlUpdateBurstSdus
+   PUBLIC Void kwUtlUpdateBurstSdus
 (
-RlcCb            *gCb,
-RlcDlRbCb        *rbCb,
-KwContSduLst    *contSduLst,
-S32             dataVol,
-U32             schPduSz
-)
+ RlcCb            *gCb,
+ RlcDlRbCb        *rbCb,
+ KwContSduLst    *contSduLst,
+ S32             dataVol,
+ U32             schPduSz
+ )
 #else
 PUBLIC Void  kwUtlUpdateBurstSdus (gCb, rbCb, contSduLst, dataVol, schPduSz)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-KwContSduLst    *contSduLst;
-S32             dataVol;
-U32             schPduSz;
+   RlcCb            *gCb;
+   RlcDlRbCb        *rbCb;
+   KwContSduLst    *contSduLst;
+   S32             dataVol;
+   U32             schPduSz;
 #endif
 {
 
@@ -1453,8 +1453,8 @@ U32             schPduSz;
    TRC2(kwUtlUpdateBurstSdus)
 
 
-   /*starting Task*/
-   SStartTask(&startTime, PID_RLC_DLIP_TPT_BURSTCALC);
+      /*starting Task*/
+      SStartTask(&startTime, PID_RLC_DLIP_TPT_BURSTCALC);
 
    l2MeasDlIpThruput = &rbCb->l2MeasIpThruput.dlIpTh;
 
@@ -1462,47 +1462,47 @@ U32             schPduSz;
    {
       if(dataVol > schPduSz)
       {
-         if(l2MeasDlIpThruput->isBurstAct == FALSE)
-         {
-            l2MeasDlIpThruput->burstStartTime = glblTtiCnt;
-            l2MeasDlIpThruput->isBurstAct = TRUE;
-            l2MeasDlIpThruput->burstEndSduId = 0;
-         }
-         else
-         {  /* This is the case when another burst started before RLC gets the 
-               l2MeasDlIpThruput->burstEndSduId = 0; */
-         }
+	 if(l2MeasDlIpThruput->isBurstAct == FALSE)
+	 {
+	    l2MeasDlIpThruput->burstStartTime = glblTtiCnt;
+	    l2MeasDlIpThruput->isBurstAct = TRUE;
+	    l2MeasDlIpThruput->burstEndSduId = 0;
+	 }
+	 else
+	 {  /* This is the case when another burst started before RLC gets the 
+	       l2MeasDlIpThruput->burstEndSduId = 0; */
+	 }
       }
       else
       {  /* Store the burstEndSduId here */
-         if((l2MeasDlIpThruput->isBurstAct == TRUE) &&
-               (!l2MeasDlIpThruput->burstEndSduId))
-         {
-            l2MeasDlIpThruput->burstEndSduId = 
-               l2MeasDlIpThruput->outStngSduArr[l2MeasDlIpThruput->lastSduIdx].sduId;
-         }
+	 if((l2MeasDlIpThruput->isBurstAct == TRUE) &&
+	       (!l2MeasDlIpThruput->burstEndSduId))
+	 {
+	    l2MeasDlIpThruput->burstEndSduId = 
+	       l2MeasDlIpThruput->outStngSduArr[l2MeasDlIpThruput->lastSduIdx].sduId;
+	 }
       }
       if(l2MeasDlIpThruput->isBurstAct == TRUE)
       {
-         l2MeasTb = kwUtlGetCurMeasTb(gCb,rbCb);
-         /* Get the lChId from index 0, because index 0 is always for DL */
-         if(l2MeasTb->numLcId >= KW_MAX_ACTV_DRB) 
-         {
-            /* ccpu00143043 */
-            RETVOID;
-         }
-         l2MeasTb->sduInfo[l2MeasTb->numLcId].lcId = rbCb->lch.lChId;
-         /* Copy all the sduIdx from sduInfo to tb sduInfo */
-         currTbIdx = l2MeasTb->sduInfo[l2MeasTb->numLcId].numSdus;
-         dstContSduLst = &l2MeasTb->sduInfo[l2MeasTb->numLcId];
-         /* ccpu00143043 */
-         for(idx = 0; ((idx < contSduLst->numSdus)
-                  && (currTbIdx < KW_L2MEAS_MAX_OUTSTNGSDU)) ; idx++)
-         {
-            dstContSduLst->sduIdx[currTbIdx++] = contSduLst->sduIdx[idx];
-         }
-         l2MeasTb->sduInfo[l2MeasTb->numLcId].numSdus += idx;
-         l2MeasTb->numLcId++;
+	 l2MeasTb = kwUtlGetCurMeasTb(gCb,rbCb);
+	 /* Get the lChId from index 0, because index 0 is always for DL */
+	 if(l2MeasTb->numLcId >= KW_MAX_ACTV_DRB) 
+	 {
+	    /* ccpu00143043 */
+	    RETVOID;
+	 }
+	 l2MeasTb->sduInfo[l2MeasTb->numLcId].lcId = rbCb->lch.lChId;
+	 /* Copy all the sduIdx from sduInfo to tb sduInfo */
+	 currTbIdx = l2MeasTb->sduInfo[l2MeasTb->numLcId].numSdus;
+	 dstContSduLst = &l2MeasTb->sduInfo[l2MeasTb->numLcId];
+	 /* ccpu00143043 */
+	 for(idx = 0; ((idx < contSduLst->numSdus)
+		  && (currTbIdx < KW_L2MEAS_MAX_OUTSTNGSDU)) ; idx++)
+	 {
+	    dstContSduLst->sduIdx[currTbIdx++] = contSduLst->sduIdx[idx];
+	 }
+	 l2MeasTb->sduInfo[l2MeasTb->numLcId].numSdus += idx;
+	 l2MeasTb->numLcId++;
       }/* End of isBurstAct */
    }/* End of if measOn */
 
@@ -1525,23 +1525,23 @@ U32             schPduSz;
  *  @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlUpdateContainedSduLst
+   PUBLIC Void kwUtlUpdateContainedSduLst
 (
-U8            sduIdx,
-KwContSduLst  *contSduLst
-)
+ U8            sduIdx,
+ KwContSduLst  *contSduLst
+ )
 #else
 PUBLIC Void kwUtlUpdateContainedSduLst(sduIdx, contSduLst)
-U8            sduIdx;
-KwContSduLst  *contSduLst;
+   U8            sduIdx;
+   KwContSduLst  *contSduLst;
 #endif
 {
    if (contSduLst->numSdus < KW_L2MEAS_MAX_OUTSTNGSDU)
    {
-    contSduLst->sduIdx[contSduLst->numSdus] = sduIdx;
-    contSduLst->numSdus++;
+      contSduLst->sduIdx[contSduLst->numSdus] = sduIdx;
+      contSduLst->numSdus++;
    }
-    RETVOID;
+   RETVOID;
 }
 
 /**
@@ -1563,75 +1563,75 @@ KwContSduLst  *contSduLst;
  *  @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlUpdateOutStandingSduLst
+   PUBLIC Void kwUtlUpdateOutStandingSduLst
 (
-KwL2MeasDlIpTh   *dlIpThPut, 
-U8               sduIdx, 
-MsgLen           sduLen, 
-U32              sduId,
-Bool             newIdx
-)
+ KwL2MeasDlIpTh   *dlIpThPut, 
+ U8               sduIdx, 
+ MsgLen           sduLen, 
+ U32              sduId,
+ Bool             newIdx
+ )
 #else
 PUBLIC Void kwUtlUpdateOutStandingSduLst(dlIpThPut, sduIdx, sduLen, sduId, newIdx)
-KwL2MeasDlIpTh   *dlIpThPut;
-U8               sduIdx;
-MsgLen           sduLen; 
-U32              sduId;
-Bool             newIdx;
+   KwL2MeasDlIpTh   *dlIpThPut;
+   U8               sduIdx;
+   MsgLen           sduLen; 
+   U32              sduId;
+   Bool             newIdx;
 #endif
 {
    if (sduIdx < KW_L2MEAS_MAX_OUTSTNGSDU)
    {
-   if(newIdx == TRUE)
-   {      
-     dlIpThPut->outStngSduArr[sduIdx].numTb = 0;
-   }
-   dlIpThPut->outStngSduArr[sduIdx].numTb++;
-   dlIpThPut->outStngSduArr[sduIdx].sduId = sduId;
-   dlIpThPut->outStngSduArr[sduIdx].sduLen = sduLen;
+      if(newIdx == TRUE)
+      {      
+	 dlIpThPut->outStngSduArr[sduIdx].numTb = 0;
+      }
+      dlIpThPut->outStngSduArr[sduIdx].numTb++;
+      dlIpThPut->outStngSduArr[sduIdx].sduId = sduId;
+      dlIpThPut->outStngSduArr[sduIdx].sduLen = sduLen;
    }
    RETVOID;
 }
 #ifdef ANSI
-PUBLIC KwL2MeasTb * kwUtlGetCurMeasTb
+   PUBLIC KwL2MeasTb * kwUtlGetCurMeasTb
 (
-RlcCb     *gCb,
-RlcDlRbCb *rbCb
-)
+ RlcCb     *gCb,
+ RlcDlRbCb *rbCb
+ )
 #else
 PUBLIC KwL2MeasTb * kwUtlGetCurMeasTb(gCb, rbCb)
-RlcCb     *gCb;
-RlcDlRbCb *rbCb;
+   RlcCb     *gCb;
+   RlcDlRbCb *rbCb;
 #endif
 {
    KwL2MeasTb  *curL2MeasTb;
    U16         idx;
 
    TRC3(kwUtlGetCurMeasTb)
-      
-   if((curL2MeasTb = rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx]) == NULLP)
+
+      if((curL2MeasTb = rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx]) == NULLP)
       {
-         /* Intentionally avoiding the RLC_ALLOC macro to avoid  memset */
-         if (SGetSBuf(gCb->init.region,
-                  gCb->init.pool,
-                  (Data **)&curL2MeasTb,
-                  (Size)sizeof(KwL2MeasTb)) != ROK)
-         {
-            RETVALUE(NULLP);
-         }
-         rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx] = curL2MeasTb;
-         /* Initialize the Meas Tb details */
-         curL2MeasTb->numLcId = 0;
-         curL2MeasTb->numLchInfo = 0;
-         curL2MeasTb->txSegSduCnt = 0;
-         for (idx = 0; idx < KW_MAX_ACTV_DRB; idx++)
-         {
-            curL2MeasTb->sduInfo[idx].numSdus = 0;
-         }
-         for (idx = 0; idx < KW_MAX_ACTV_DRB; idx++)
-         {
-            curL2MeasTb->lchInfo[idx].numSdus = 0;
-         }
+	 /* Intentionally avoiding the RLC_ALLOC macro to avoid  memset */
+	 if (SGetSBuf(gCb->init.region,
+		  gCb->init.pool,
+		  (Data **)&curL2MeasTb,
+		  (Size)sizeof(KwL2MeasTb)) != ROK)
+	 {
+	    RETVALUE(NULLP);
+	 }
+	 rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx] = curL2MeasTb;
+	 /* Initialize the Meas Tb details */
+	 curL2MeasTb->numLcId = 0;
+	 curL2MeasTb->numLchInfo = 0;
+	 curL2MeasTb->txSegSduCnt = 0;
+	 for (idx = 0; idx < KW_MAX_ACTV_DRB; idx++)
+	 {
+	    curL2MeasTb->sduInfo[idx].numSdus = 0;
+	 }
+	 for (idx = 0; idx < KW_MAX_ACTV_DRB; idx++)
+	 {
+	    curL2MeasTb->lchInfo[idx].numSdus = 0;
+	 }
       }
    RETVALUE(curL2MeasTb);
 }
@@ -1657,19 +1657,19 @@ RlcDlRbCb *rbCb;
  */
 
 #ifdef ANSI
-PUBLIC S16 kwUtlProcHarqInd
+   PUBLIC S16 kwUtlProcHarqInd
 (
-RlcCb             *gCb,
-RguHarqStatusInd *hqStaInd,
-RlcDlUeCb           *ueCb,
-U8               tbIdx
-)
+ RlcCb             *gCb,
+ RguHarqStatusInd *hqStaInd,
+ RlcDlUeCb           *ueCb,
+ U8               tbIdx
+ )
 #else
 PUBLIC S16 kwUtlProcHarqInd(gCb, hqStaInd, ueCb, tbIdx)
-RlcCb             *gCb;
-RguHarqStatusInd *hqStaInd;
-RlcDlUeCb           *ueCb;
-U8               tbIdx;
+   RlcCb             *gCb;
+   RguHarqStatusInd *hqStaInd;
+   RlcDlUeCb           *ueCb;
+   U8               tbIdx;
 #endif
 {
 #ifdef LTE_L2_MEAS
@@ -1690,8 +1690,8 @@ U8               tbIdx;
 
    TRC3(kwUtlProcHarqInd)
 
-   /*starting Task*/
-   SStartTask(&startTime, PID_RLC_DLIP_TPT_PRCHARQIND);
+      /*starting Task*/
+      SStartTask(&startTime, PID_RLC_DLIP_TPT_PRCHARQIND);
 
    ret = ROK;
    if(hqStaInd->tbId[tbIdx] >= KW_INVALID_TBID)
@@ -1712,138 +1712,138 @@ U8               tbIdx;
    {
       timeAddedFlag = FALSE;
       if((kwRbCb = ueCb->lCh[l2MeasTb->sduInfo[lcIdx].lcId - 1].dlRbCb)
-            == NULLP)
+	    == NULLP)
       {
-         continue;
+	 continue;
       }
       /* fix for DL IP stop*/
       if (!gCb->u.dlCb->kwL2Cb.measOn[kwRbCb->qci]
-            || (kwRbCb->rlcId.rbType == CM_LTE_SRB))
+	    || (kwRbCb->rlcId.rbType == CM_LTE_SRB))
       {
-         continue;
+	 continue;
       }
-      
+
       /* Get the outstanding SDUs using sdu index stored in Container sduList
        * and check for HARQ ACK/NACK */
       numSdus = l2MeasTb->sduInfo[lcIdx].numSdus;
       /* ccpu00143043 */
       if ((numSdus >= KW_L2MEAS_MAX_OUTSTNGSDU) || (numSdus == 0))
       {
-         break;
+	 break;
       }
       totlSduCnt += numSdus;
 
       if (KW_MEAS_IS_DL_IP_MEAS_ON_FOR_RB(gCb,kwRbCb))
       {
-         for(sduIndx = 0; sduIndx < numSdus; sduIndx++)
-         {
-            outStngSduArr =&(kwRbCb->l2MeasIpThruput.dlIpTh.outStngSduArr[\
-                  l2MeasTb->sduInfo[lcIdx].sduIdx[sduIndx]]);
-            if(hqStaInd->status[tbIdx] == TRUE)
-            {
-               /* If ACK is for burst End Sdu Id set burstActive 
-                * to FALSE  and accumulate time */
-               if((kwRbCb->l2MeasIpThruput.dlIpTh.burstEndSduId == 
-                        outStngSduArr->sduId) && (outStngSduArr->numTb == 1))
-               {
-                  kwRbCb->l2MeasIpThruput.dlIpTh.isBurstAct = FALSE;
-                  /*Update the l2Sts structure for calculating throughput*/
-                  kwRbCb->rbL2Cb.l2Sts[KW_L2MEAS_DL_IP]->dlIpThruput.volSummation
-                     += outStngSduArr->sduLen;
+	 for(sduIndx = 0; sduIndx < numSdus; sduIndx++)
+	 {
+	    outStngSduArr =&(kwRbCb->l2MeasIpThruput.dlIpTh.outStngSduArr[\
+		  l2MeasTb->sduInfo[lcIdx].sduIdx[sduIndx]]);
+	    if(hqStaInd->status[tbIdx] == TRUE)
+	    {
+	       /* If ACK is for burst End Sdu Id set burstActive 
+		* to FALSE  and accumulate time */
+	       if((kwRbCb->l2MeasIpThruput.dlIpTh.burstEndSduId == 
+			outStngSduArr->sduId) && (outStngSduArr->numTb == 1))
+	       {
+		  kwRbCb->l2MeasIpThruput.dlIpTh.isBurstAct = FALSE;
+		  /*Update the l2Sts structure for calculating throughput*/
+		  kwRbCb->rbL2Cb.l2Sts[KW_L2MEAS_DL_IP]->dlIpThruput.volSummation
+		     += outStngSduArr->sduLen;
 
-                  kwRbCb->rbL2Cb.l2Sts[KW_L2MEAS_DL_IP]->dlIpThruput.timeSummation
-                     += glblTtiCnt - kwRbCb->l2MeasIpThruput.dlIpTh.burstStartTime;
-                  outStngSduArr->sduId = 0;
-                  outStngSduArr->sduLen = 0;
-                  outStngSduArr->numTb = 0;
-                  kwRbCb->l2MeasIpThruput.dlIpTh.burstEndSduId = 0;
-               }
+		  kwRbCb->rbL2Cb.l2Sts[KW_L2MEAS_DL_IP]->dlIpThruput.timeSummation
+		     += glblTtiCnt - kwRbCb->l2MeasIpThruput.dlIpTh.burstStartTime;
+		  outStngSduArr->sduId = 0;
+		  outStngSduArr->sduLen = 0;
+		  outStngSduArr->numTb = 0;
+		  kwRbCb->l2MeasIpThruput.dlIpTh.burstEndSduId = 0;
+	       }
 
-               /* If burst is active and this sdu is only transmitted in single TB then
-                * accumulate volume  and clear the outstanding sduList */
-               if((kwRbCb->l2MeasIpThruput.dlIpTh.isBurstAct == TRUE) &&
-                     (--(outStngSduArr->numTb) == 0))
-               {
-                  kwRbCb->rbL2Cb.l2Sts[KW_L2MEAS_DL_IP]->dlIpThruput.volSummation
-                     += outStngSduArr->sduLen;
+	       /* If burst is active and this sdu is only transmitted in single TB then
+		* accumulate volume  and clear the outstanding sduList */
+	       if((kwRbCb->l2MeasIpThruput.dlIpTh.isBurstAct == TRUE) &&
+		     (--(outStngSduArr->numTb) == 0))
+	       {
+		  kwRbCb->rbL2Cb.l2Sts[KW_L2MEAS_DL_IP]->dlIpThruput.volSummation
+		     += outStngSduArr->sduLen;
 
-                  if(timeAddedFlag == FALSE)
-                  {
-                     kwRbCb->rbL2Cb.l2Sts[KW_L2MEAS_DL_IP]->dlIpThruput.timeSummation
-                        += glblTtiCnt - kwRbCb->l2MeasIpThruput.dlIpTh.burstStartTime;
-                     kwRbCb->l2MeasIpThruput.dlIpTh.burstStartTime = glblTtiCnt;
-                     timeAddedFlag = TRUE;
-                  }
-                  outStngSduArr->sduId = 0;
-                  outStngSduArr->sduLen = 0;
-               }
-            }/* End of status == TRUE */
-            else
-            {
-               if(kwRbCb->l2MeasIpThruput.dlIpTh.isBurstAct == TRUE)
-               {
-                  if((kwRbCb->l2MeasIpThruput.dlIpTh.burstEndSduId == 
-                           outStngSduArr->sduId))
-                  {
-                     kwRbCb->l2MeasIpThruput.dlIpTh.isBurstAct = FALSE;
-                     kwRbCb->l2MeasIpThruput.dlIpTh.burstEndSduId = 0;
-                  }
-                  /* Clear the outstanding sdu list */
-                  outStngSduArr->sduId = 0;
-                  outStngSduArr->sduLen = 0;
-                  outStngSduArr->numTb = 0;
-               }
-            }
-         }
+		  if(timeAddedFlag == FALSE)
+		  {
+		     kwRbCb->rbL2Cb.l2Sts[KW_L2MEAS_DL_IP]->dlIpThruput.timeSummation
+			+= glblTtiCnt - kwRbCb->l2MeasIpThruput.dlIpTh.burstStartTime;
+		     kwRbCb->l2MeasIpThruput.dlIpTh.burstStartTime = glblTtiCnt;
+		     timeAddedFlag = TRUE;
+		  }
+		  outStngSduArr->sduId = 0;
+		  outStngSduArr->sduLen = 0;
+	       }
+	    }/* End of status == TRUE */
+	    else
+	    {
+	       if(kwRbCb->l2MeasIpThruput.dlIpTh.isBurstAct == TRUE)
+	       {
+		  if((kwRbCb->l2MeasIpThruput.dlIpTh.burstEndSduId == 
+			   outStngSduArr->sduId))
+		  {
+		     kwRbCb->l2MeasIpThruput.dlIpTh.isBurstAct = FALSE;
+		     kwRbCb->l2MeasIpThruput.dlIpTh.burstEndSduId = 0;
+		  }
+		  /* Clear the outstanding sdu list */
+		  outStngSduArr->sduId = 0;
+		  outStngSduArr->sduLen = 0;
+		  outStngSduArr->numTb = 0;
+	       }
+	    }
+	 }
       } 
    }
 
    for(lcIdx = 0; ((lcIdx < l2MeasTb->numLchInfo) && (lcIdx < KW_MAX_ACTV_DRB)); lcIdx++)
    {
       if((kwRbCb = ueCb->lCh[l2MeasTb->lchInfo[lcIdx].lcId - 1].dlRbCb)
-            == NULLP)
+	    == NULLP)
       {
-         continue;
+	 continue;
       }
       numSdus = l2MeasTb->lchInfo[lcIdx].numSdus;
       if ( numSdus == 0 )
       {
-         continue;
+	 continue;
       }
       /* ccpu00143043 */
       if ((numSdus > KW_L2MEAS_MAX_OUTSTNGSDU) || (numSdus == 0))
       {
-         break;
+	 break;
       }
       /* Update stats */
       if(hqStaInd->status[tbIdx] == TRUE)
       {
-         for(sduIndx = 0; sduIndx < numSdus; sduIndx++)
-         {
-            delay = KW_TIME_DIFF(ackTime,l2MeasTb->lchInfo[lcIdx].sduInfo[sduIndx].arvlTime);
-            KW_UPD_PDCP_L2_DLDELAY_STS(gCb,kwRbCb, delay); 
-         }
-         /* Case of sduInfo not updated */
-         if (totlSduCnt == 0)
-         {
-            totlSduCnt = numSdus;
-         }
-         KW_UPD_L2_UU_LOSS_POS_PKTS(gCb,kwRbCb, (totlSduCnt + l2MeasTb->txSegSduCnt));
+	 for(sduIndx = 0; sduIndx < numSdus; sduIndx++)
+	 {
+	    delay = KW_TIME_DIFF(ackTime,l2MeasTb->lchInfo[lcIdx].sduInfo[sduIndx].arvlTime);
+	    KW_UPD_PDCP_L2_DLDELAY_STS(gCb,kwRbCb, delay); 
+	 }
+	 /* Case of sduInfo not updated */
+	 if (totlSduCnt == 0)
+	 {
+	    totlSduCnt = numSdus;
+	 }
+	 KW_UPD_L2_UU_LOSS_POS_PKTS(gCb,kwRbCb, (totlSduCnt + l2MeasTb->txSegSduCnt));
       }
       else
       {
-         /* Case of sduInfo not updated */
-         if (totlSduCnt == 0)
-         {
-            totlSduCnt = numSdus;
-         }
-         KW_UPD_L2_UU_LOSS_PKTS(gCb,kwRbCb, (totlSduCnt + l2MeasTb->txSegSduCnt));
+	 /* Case of sduInfo not updated */
+	 if (totlSduCnt == 0)
+	 {
+	    totlSduCnt = numSdus;
+	 }
+	 KW_UPD_L2_UU_LOSS_PKTS(gCb,kwRbCb, (totlSduCnt + l2MeasTb->txSegSduCnt));
       }
    }
    /* Free this tb, deallocate the memory */
    RLC_FREE(gCb, l2MeasTb, sizeof(KwL2MeasTb));
    ueCb->l2MeasTbCb[hqStaInd->tbId[tbIdx]] = NULLP;
-   
+
    /*stopping Task*/
    SStopTask(startTime, PID_RLC_DLIP_TPT_PRCHARQIND);
 
@@ -1867,15 +1867,15 @@ U8               tbIdx;
  */
 
 #ifdef ANSI
-PUBLIC S16 kwUtlSndDlL2MeasCfm
+   PUBLIC S16 kwUtlSndDlL2MeasCfm
 (
-RlcCb                  *gCb,
-KwL2MeasEvtCb         *measEvtCb
-)
+ RlcCb                  *gCb,
+ KwL2MeasEvtCb         *measEvtCb
+ )
 #else
 PUBLIC S16 kwUtlSndDlL2MeasCfm(gCb, measEvtCb)
-RlcCb                  *gCb;
-KwL2MeasEvtCb         *measEvtCb;
+   RlcCb                  *gCb;
+   KwL2MeasEvtCb         *measEvtCb;
 #endif
 {
    U32                     qciIdx;
@@ -1894,23 +1894,23 @@ KwL2MeasEvtCb         *measEvtCb;
 
    TRC3(kwUtlSndL2MeasCfm)
 
-   /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
+      /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
 #ifndef ALIGN_64BIT
-   RLOG1(L_DEBUG,"kwUtlSndL2MeasCfm(transId(%ld))", measEvtCb->transId);
+      RLOG1(L_DEBUG,"kwUtlSndL2MeasCfm(transId(%ld))", measEvtCb->transId);
 #else
    RLOG1(L_DEBUG,"kwUtlSndL2MeasCfm(transId(%d))", measEvtCb->transId);
 #endif
 
    /* Clean up the RB data structures */
    measCb = &measEvtCb->measCb;
-   
+
    cmMemset((U8*)&measCfmEvt, 0, sizeof(KwL2MeasCfmEvt));
    measCfmEvt.transId = measEvtCb->transId;
 
    measCfmEvt.measType = measCb->measType;
    measCfmEvt.status.status = LCM_PRIM_OK;
    measCfmEvt.status.reason = LCM_REASON_NOT_APPL;
-   
+
    if(measCb->measType & LKW_L2MEAS_DL_IP)
    {
       KwL2MeasCbUeMeasInfo *pUeInfoLstCb  = measCb->val.ipThMeas.ueInfoLst;
@@ -1918,38 +1918,38 @@ KwL2MeasEvtCb         *measEvtCb;
 
       for(cntr = 0;(cntr < measCb->val.ipThMeas.numUes) && (cntr < gCb->genCfg.maxUe);cntr++)        
       {
-         pUeInfoLstCfm[cfmIdx].numCfm = 0;
-         if (pUeInfoLstCb[cntr].isValid == TRUE)
-         {
-            pUeInfoLstCfm[cfmIdx].ueId = pUeInfoLstCb[cntr].ueId;
-            pUeInfoLstCfm[cfmIdx].cellId = pUeInfoLstCb[cntr].cellId;
-            for(qciIdx = 0; qciIdx < pUeInfoLstCb[cntr].numQci; qciIdx++)           
-            {
-               qci = pUeInfoLstCb[cntr].qci[qciIdx];
-               pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].qci = qci;
+	 pUeInfoLstCfm[cfmIdx].numCfm = 0;
+	 if (pUeInfoLstCb[cntr].isValid == TRUE)
+	 {
+	    pUeInfoLstCfm[cfmIdx].ueId = pUeInfoLstCb[cntr].ueId;
+	    pUeInfoLstCfm[cfmIdx].cellId = pUeInfoLstCb[cntr].cellId;
+	    for(qciIdx = 0; qciIdx < pUeInfoLstCb[cntr].numQci; qciIdx++)           
+	    {
+	       qci = pUeInfoLstCb[cntr].qci[qciIdx];
+	       pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].qci = qci;
 
-               dlDataVol = pUeInfoLstCb[cntr].measData[qci].dlIpThruput.volSummation;
-               dlTime = pUeInfoLstCb[cntr].measData[qci].dlIpThruput.timeSummation;
+	       dlDataVol = pUeInfoLstCb[cntr].measData[qci].dlIpThruput.volSummation;
+	       dlTime = pUeInfoLstCb[cntr].measData[qci].dlIpThruput.timeSummation;
 
-               if((0 == dlTime) || !(gCb->u.dlCb->kwL2Cb.measOn[qci] & LKW_L2MEAS_DL_IP) )
-               {
-                  pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.dlIpThPut = 0;
-               }
-               else
-               {
-                  pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.dlIpThPut = 
-                     (dlDataVol / dlTime);
-               }
-               pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.dlIpThPut *= 8;
+	       if((0 == dlTime) || !(gCb->u.dlCb->kwL2Cb.measOn[qci] & LKW_L2MEAS_DL_IP) )
+	       {
+		  pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.dlIpThPut = 0;
+	       }
+	       else
+	       {
+		  pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.dlIpThPut = 
+		     (dlDataVol / dlTime);
+	       }
+	       pUeInfoLstCfm[cfmIdx].measCfm[pUeInfoLstCfm[cfmIdx].numCfm].val.ipThrput.dlIpThPut *= 8;
 
-               /* Reset the values after reporting to Application */
-               pUeInfoLstCb[cntr].measData[qci].dlIpThruput.volSummation = 0;
-               pUeInfoLstCb[cntr].measData[qci].dlIpThruput.timeSummation = 0;
+	       /* Reset the values after reporting to Application */
+	       pUeInfoLstCb[cntr].measData[qci].dlIpThruput.volSummation = 0;
+	       pUeInfoLstCb[cntr].measData[qci].dlIpThruput.timeSummation = 0;
 
-               measCfmEvt.val.ipThMeas.ueInfoLst[cfmIdx].numCfm++;
-            }
-            cfmIdx++;
-         }
+	       measCfmEvt.val.ipThMeas.ueInfoLst[cfmIdx].numCfm++;
+	    }
+	    cfmIdx++;
+	 }
       }
       measCfmEvt.val.ipThMeas.numUes = cfmIdx; 
    }
@@ -1962,48 +1962,48 @@ KwL2MeasEvtCb         *measEvtCb;
 
       for(qciIdx = 0; qciIdx < LKW_MAX_QCI; qciIdx++)
       {
-         qci = measCb->val.nonIpThMeas.qci[qciIdx];
-         if (qci > 0)
-         {
-            pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].qci = qci;
+	 qci = measCb->val.nonIpThMeas.qci[qciIdx];
+	 if (qci > 0)
+	 {
+	    pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].qci = qci;
 
-            if(measCb->measType & LKW_L2MEAS_UU_LOSS)
-            {
-               dLoss = pMeasData[qci].uuLoss.dLoss;
-               posPkts = pMeasData[qci].uuLoss.posPkts;
-               if(((posPkts + dLoss) != 0))
-               {
-                  pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].val.nonIpThrput.uuLoss  =
-                     ((dLoss  * 1000000) / (posPkts + dLoss));
-               }
-               pMeasData[qci].uuLoss.dLoss = 0;
-               pMeasData[qci].uuLoss.posPkts = 0;
-            }
-            if(measCb->measType & LKW_L2MEAS_DL_DISC)
-            {
+	    if(measCb->measType & LKW_L2MEAS_UU_LOSS)
+	    {
+	       dLoss = pMeasData[qci].uuLoss.dLoss;
+	       posPkts = pMeasData[qci].uuLoss.posPkts;
+	       if(((posPkts + dLoss) != 0))
+	       {
+		  pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].val.nonIpThrput.uuLoss  =
+		     ((dLoss  * 1000000) / (posPkts + dLoss));
+	       }
+	       pMeasData[qci].uuLoss.dLoss = 0;
+	       pMeasData[qci].uuLoss.posPkts = 0;
+	    }
+	    if(measCb->measType & LKW_L2MEAS_DL_DISC)
+	    {
 
-               pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].val.nonIpThrput.dlDiscRate = 0;
-               if(pMeasData[qci].dlDisc.totSdus != 0)
-               {
-                  pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].val.nonIpThrput.dlDiscRate = 
-                     (((pMeasData[qci].dlDisc.discSdus)  * 1000000) / (pMeasData[qci].dlDisc.totSdus));
-               }
+	       pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].val.nonIpThrput.dlDiscRate = 0;
+	       if(pMeasData[qci].dlDisc.totSdus != 0)
+	       {
+		  pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].val.nonIpThrput.dlDiscRate = 
+		     (((pMeasData[qci].dlDisc.discSdus)  * 1000000) / (pMeasData[qci].dlDisc.totSdus));
+	       }
 
-               pMeasData[qci].dlDisc.totSdus = 0;
-               pMeasData[qci].dlDisc.discSdus = 0;
-            }
-            if(measCb->measType & LKW_L2MEAS_DL_DELAY)
-            {
-               if (pMeasData[qci].dlPjSduDelay.numSdus > 0)
-               {
-                  pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].val.nonIpThrput.dlSduDelay = 
-                    (pMeasData[qci].dlPjSduDelay.sduDelay / pMeasData[qci].dlPjSduDelay.numSdus);
-                  pMeasData[qci].dlPjSduDelay.sduDelay = 0;
-                  pMeasData[qci].dlPjSduDelay.numSdus = 0;
-               }
-            }
-            pMeasCfmNonIp->numCfm++;
-         }
+	       pMeasData[qci].dlDisc.totSdus = 0;
+	       pMeasData[qci].dlDisc.discSdus = 0;
+	    }
+	    if(measCb->measType & LKW_L2MEAS_DL_DELAY)
+	    {
+	       if (pMeasData[qci].dlPjSduDelay.numSdus > 0)
+	       {
+		  pMeasCfmNonIp->measCfm[pMeasCfmNonIp->numCfm].val.nonIpThrput.dlSduDelay = 
+		     (pMeasData[qci].dlPjSduDelay.sduDelay / pMeasData[qci].dlPjSduDelay.numSdus);
+		  pMeasData[qci].dlPjSduDelay.sduDelay = 0;
+		  pMeasData[qci].dlPjSduDelay.numSdus = 0;
+	       }
+	    }
+	    pMeasCfmNonIp->numCfm++;
+	 }
       }
    }
    /* Fix Klock warning */
@@ -2015,7 +2015,7 @@ KwL2MeasEvtCb         *measEvtCb;
  * @brief Handler for Sending Negative confirm .
  *
  *
-  @b Description
+ @b Description
  *        This function is called when the l2 measurement cannot be started
  *        This function sends  negative confirm for all the requests
  *
@@ -2027,22 +2027,22 @@ KwL2MeasEvtCb         *measEvtCb;
  */
 
 #ifdef ANSI
-PUBLIC S16 kwUtlSndDlL2MeasNCfm
+   PUBLIC S16 kwUtlSndDlL2MeasNCfm
 (
-RlcCb           *gCb,
-KwL2MeasReqEvt *measReqEvt,
-KwL2MeasCfmEvt *measCfmEvt
-)
+ RlcCb           *gCb,
+ KwL2MeasReqEvt *measReqEvt,
+ KwL2MeasCfmEvt *measCfmEvt
+ )
 #else
 PUBLIC S16 kwUtlSndDlL2MeasNCfm(gCb,measReqEvt, measCfmEvt)
-RlcCb           *gCb;
-KwL2MeasReqEvt *measReqEvt;
-KwL2MeasCfmEvt *measCfmEvt;
+   RlcCb           *gCb;
+   KwL2MeasReqEvt *measReqEvt;
+   KwL2MeasCfmEvt *measCfmEvt;
 #endif
 {
    TRC3(kwUtlSndDlL2MeasNCfm)
 
-   KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
+      KwMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
    RETVALUE(ROK);
 } /* kwUtlSndL2MeasNCfm */
 /**
@@ -2061,17 +2061,17 @@ KwL2MeasCfmEvt *measCfmEvt;
  */
 #ifdef ANSI
 
-PUBLIC Void kwUtlResetDlL2MeasInKwRb
+   PUBLIC Void kwUtlResetDlL2MeasInKwRb
 (
-RlcCb       *gCb,
-KwL2MeasCb *measCb,
-U8             measType
-)
+ RlcCb       *gCb,
+ KwL2MeasCb *measCb,
+ U8             measType
+ )
 #else
 PUBLIC Void kwUtlResetDlL2MeasInKwRb(gCb, measCb, measType)
-RlcCb       *gCb;
-KwL2MeasCb *measCb;
-U8             measType;
+   RlcCb       *gCb;
+   KwL2MeasCb *measCb;
+   U8             measType;
 #endif
 {
    U32           ueIdx;
@@ -2084,25 +2084,25 @@ U8             measType;
    {
       for(ueIdx = 0; ueIdx < measCb->val.ipThMeas.numUes; ueIdx++)
       {           
-         if (measCb->val.ipThMeas.ueInfoLst[ueIdx].isValid == TRUE)
-         {
-            for (qciIdx =0; qciIdx < measCb->val.ipThMeas.ueInfoLst[ueIdx].numQci; qciIdx++)
-            {
-               if (measType & LKW_L2MEAS_DL_IP)
-               {
-                  measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[qciIdx].dlIpThruput.volSummation = 0;
-                  measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[qciIdx].dlIpThruput.timeSummation = 0;
-                  gCb->u.dlCb->kwL2Cb.measOn[qciIdx] &= ~measType; 
-               }
-            }
+	 if (measCb->val.ipThMeas.ueInfoLst[ueIdx].isValid == TRUE)
+	 {
+	    for (qciIdx =0; qciIdx < measCb->val.ipThMeas.ueInfoLst[ueIdx].numQci; qciIdx++)
+	    {
+	       if (measType & LKW_L2MEAS_DL_IP)
+	       {
+		  measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[qciIdx].dlIpThruput.volSummation = 0;
+		  measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[qciIdx].dlIpThruput.timeSummation = 0;
+		  gCb->u.dlCb->kwL2Cb.measOn[qciIdx] &= ~measType; 
+	       }
+	    }
 
-            if(ROK  != kwDbmFetchDlUeCb(gCb,measCb->val.ipThMeas.ueInfoLst[ueIdx].ueId,
-                     measCb->val.ipThMeas.ueInfoLst[ueIdx].cellId, &ueCb))
-            {
-               continue;
-            }
+	    if(ROK  != kwDbmFetchDlUeCb(gCb,measCb->val.ipThMeas.ueInfoLst[ueIdx].ueId,
+		     measCb->val.ipThMeas.ueInfoLst[ueIdx].cellId, &ueCb))
+	    {
+	       continue;
+	    }
 
-         }
+	 }
       }
    }
    else
@@ -2110,25 +2110,25 @@ U8             measType;
       /* for now the only meas should be DL discard in this case */
       if (measCb->measType & LKW_L2MEAS_DL_DISC)
       {
-         U32 i;
-         for(i = 0; i < measCb->val.nonIpThMeas.numQci; i++)
-         {
-            U8 qciVal = measCb->val.nonIpThMeas.qci[i];
+	 U32 i;
+	 for(i = 0; i < measCb->val.nonIpThMeas.numQci; i++)
+	 {
+	    U8 qciVal = measCb->val.nonIpThMeas.qci[i];
 
-            measCb->val.nonIpThMeas.measData[qciVal].dlDisc.discSdus = 0;
-            measCb->val.nonIpThMeas.measData[qciVal].dlDisc.totSdus  = 0;
-         }
-         
+	    measCb->val.nonIpThMeas.measData[qciVal].dlDisc.discSdus = 0;
+	    measCb->val.nonIpThMeas.measData[qciVal].dlDisc.totSdus  = 0;
+	 }
+
       }
       if (measCb->measType & LKW_L2MEAS_DL_DELAY)
       {
-         U32 i;
-         for(i = 0; i < measCb->val.nonIpThMeas.numQci; i++)
-         {
-            U8 qciVal = measCb->val.nonIpThMeas.qci[i];
+	 U32 i;
+	 for(i = 0; i < measCb->val.nonIpThMeas.numQci; i++)
+	 {
+	    U8 qciVal = measCb->val.nonIpThMeas.qci[i];
 
-            measCb->val.nonIpThMeas.measData[qciVal].dlPjSduDelay.sduDelay = 0;
-         }
+	    measCb->val.nonIpThMeas.measData[qciVal].dlPjSduDelay.sduDelay = 0;
+	 }
       }
       measCb->val.nonIpThMeas.numQci = 0;
    }
@@ -2140,33 +2140,33 @@ PRIVATE Void dumpRLCDlRbInformation(RlcDlRbCb* dlRbCb)
    if(dlRbCb->mode == CM_LTE_MODE_UM)
    {
       RLOG_ARG3(L_DEBUG,DBG_RBID,dlRbCb->rlcId.rbId,
-               "UM Downlink UEID:%d CELLID:%d Q size = %d",
-                       dlRbCb->rlcId.ueId,
-                       dlRbCb->rlcId.cellId,
-                       (int)dlRbCb->m.umDl.sduQ.count);
+	    "UM Downlink UEID:%d CELLID:%d Q size = %d",
+	    dlRbCb->rlcId.ueId,
+	    dlRbCb->rlcId.cellId,
+	    (int)dlRbCb->m.umDl.sduQ.count);
    }
    else if(dlRbCb->mode == CM_LTE_MODE_AM)
    {
       U32 j, numTxPdus=0;
       for(j = 0; j <= (KW_AM_GET_WIN_SZ(dlRbCb->m.amDl.snLen)); j++)
       {
-         KwTx *txBuf = kwUtlGetTxBuf(dlRbCb->m.amDl.txBufLst, j);
-         if(txBuf != NULLP)
-         {
-            numTxPdus++;
-         }
+	 KwTx *txBuf = kwUtlGetTxBuf(dlRbCb->m.amDl.txBufLst, j);
+	 if(txBuf != NULLP)
+	 {
+	    numTxPdus++;
+	 }
       }
       RLOG_ARG4(L_DEBUG,DBG_RBID,dlRbCb->rlcId.rbId,
-               "AM Downlink UEID:%d CELLID:%d Sizes SDU Q = %d TX Q = %d ",
-                       dlRbCb->rlcId.ueId,
-                       dlRbCb->rlcId.cellId,
-                       (int)dlRbCb->m.amDl.sduQ.count,
-                       (int)numTxPdus);
+	    "AM Downlink UEID:%d CELLID:%d Sizes SDU Q = %d TX Q = %d ",
+	    dlRbCb->rlcId.ueId,
+	    dlRbCb->rlcId.cellId,
+	    (int)dlRbCb->m.amDl.sduQ.count,
+	    (int)numTxPdus);
       RLOG_ARG3(L_DEBUG,DBG_RBID,dlRbCb->rlcId.rbId,
-               "AM Downlink UEID:%d CELLID:%d RETX Q= %d",
-                       dlRbCb->rlcId.ueId,
-                       dlRbCb->rlcId.cellId,
-                       (int)dlRbCb->m.amDl.retxLst.count);
+	    "AM Downlink UEID:%d CELLID:%d RETX Q= %d",
+	    dlRbCb->rlcId.ueId,
+	    dlRbCb->rlcId.cellId,
+	    (int)dlRbCb->m.amDl.retxLst.count);
    }
 }
 
@@ -2181,25 +2181,25 @@ Void DumpRLCDlDebugInformation(Void)
    RTLIN_DUMP_DEBUG("===============\n");
    /* Until no more ueCb is ueLstCp hash list get and delete ueCb */
    while (ROK == cmHashListGetNext(&dlCb->ueLstCp, 
-                                   (PTR) ueCb, 
-                                   (PTR *)&ueCb))
+	    (PTR) ueCb, 
+	    (PTR *)&ueCb))
    {
       U32 i;
       for(i = 0; i< KW_MAX_SRB_PER_UE; i++)
       {
-         RlcDlRbCb* dlRbCb = ueCb->srbCb[i]; 
-         if( dlRbCb != NULLP)
-         {
-            dumpRLCDlRbInformation(dlRbCb);
-         }
+	 RlcDlRbCb* dlRbCb = ueCb->srbCb[i]; 
+	 if( dlRbCb != NULLP)
+	 {
+	    dumpRLCDlRbInformation(dlRbCb);
+	 }
       }
       for(i = 0; i< KW_MAX_DRB_PER_UE; i++)
       {
-         RlcDlRbCb* dlRbCb = ueCb->drbCb[i]; 
-         if( dlRbCb != NULLP)
-         {
-            dumpRLCDlRbInformation(dlRbCb);
-         }
+	 RlcDlRbCb* dlRbCb = ueCb->drbCb[i]; 
+	 if( dlRbCb != NULLP)
+	 {
+	    dumpRLCDlRbInformation(dlRbCb);
+	 }
       }
    }
 
@@ -2223,16 +2223,16 @@ Void DumpRLCDlDebugInformation(Void)
  */
 
 #ifdef ANSI
-void kwUtlFreeDlMem
+   void kwUtlFreeDlMem
 (
  Void
-)
+ )
 #else
 void kwUtlFreeDlMem()
-Void;
+   Void;
 #endif
 {
-  kwUtlFreeDlMemory(RLC_GET_RLCCB(KW_DL_INST));
+   kwUtlFreeDlMemory(RLC_GET_RLCCB(KW_DL_INST));
 }
 
 /**
@@ -2247,31 +2247,31 @@ Void;
  */
 
 #ifdef ANSI
-void kwUtlGetCurrTime
+   void kwUtlGetCurrTime
 (
  U32  *currTime
-)
+ )
 #else
 void kwUtlGetCurrTime(U32 *currTime)
-U32   *currTime;
+   U32   *currTime;
 #endif
 {
    TRC2(kwUtlGetCurrTime)
 
-   /* Need t define else part for PAL */
-   *currTime = SGetTtiCount();
+      /* Need t define else part for PAL */
+      *currTime = SGetTtiCount();
 }
 
 #if defined(MAC_RLC_HARQ_STA_RBUF) || defined (SS_RBUF)
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-void kwUtlDlBatchProcHqStaInd
+   void kwUtlDlBatchProcHqStaInd
 (
  Void
-)
+ )
 #else
 void kwUtlDlBatchProcHqStaInd()
-Void;
+   Void;
 #endif
 {
    /* Read from Ring Buffer and process PDCP packets */
@@ -2296,9 +2296,9 @@ Void;
       if((elmIndx = (Void *)SRngGetRIndx(SS_RNG_BUF_MAC_HARQ)) == NULLP)
       {
 #if defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS)
-         isDatReqProcessed = FALSE;
+	 isDatReqProcessed = FALSE;
 #endif
-         break;
+	 break;
       }
    }
 }
@@ -2317,17 +2317,17 @@ Void;
  *
  */
 #ifdef ANSI
-PUBLIC Void kwUtlTrigPdbFlowCntrl
+   PUBLIC Void kwUtlTrigPdbFlowCntrl
 (
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-U32        pktAdmitCnt
-)
+ RlcCb       *gCb,
+ RlcDlRbCb   *rbCb,
+ U32        pktAdmitCnt
+ )
 #else
 PUBLIC Void kwUtlTrigPdbFlowCntrl(gCb,rbCb,pktAdmitCnt)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-U32        pktAdmitCnt;
+   RlcCb       *gCb;
+   RlcDlRbCb   *rbCb;
+   U32        pktAdmitCnt;
 #endif
 {
    KwuFlowCntrlIndInfo    *flowCntrlInfo;
@@ -2336,9 +2336,9 @@ U32        pktAdmitCnt;
    kwuSap = gCb->u.dlCb->kwuDlSap + KW_UI_PDCP;
 
    RLC_SHRABL_STATIC_BUF_ALLOC(kwuSap->pst.region, 
-                              kwuSap->pst.pool, 
-                              flowCntrlInfo, 
-                              sizeof(KwuFlowCntrlIndInfo));
+	 kwuSap->pst.pool, 
+	 flowCntrlInfo, 
+	 sizeof(KwuFlowCntrlIndInfo));
    flowCntrlInfo->rlcId       = rbCb->rlcId;
    flowCntrlInfo->pktAdmitCnt = pktAdmitCnt;
    KwUiKwuFlowCntrlInd(&kwuSap->pst, kwuSap->suId, flowCntrlInfo);
@@ -2360,24 +2360,24 @@ U32        pktAdmitCnt;
  *  @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlStoreTxBuf 
+   PUBLIC Void kwUtlStoreTxBuf 
 (
-CmLListCp        *txBufLst,
-KwTx             *txBuf,
-KwSn              sn
-)
+ CmLListCp        *txBufLst,
+ KwTx             *txBuf,
+ KwSn              sn
+ )
 #else
 PUBLIC Void kwUtlStoreTxBuf(txBufLst, txBuf, sn)
-CmLListCp        *txBufLst;
-KwTx             *txBuf;
-KwSn              sn;
+   CmLListCp        *txBufLst;
+   KwTx             *txBuf;
+   KwSn              sn;
 #endif
 {
    U32             hashKey; 
 
    TRC3(kwUtlStoretxBuf)
-   //printf("S-sn(%d)\n", sn);
-   hashKey = (sn % KW_TX_BUF_BIN_SIZE );
+      //printf("S-sn(%d)\n", sn);
+      hashKey = (sn % KW_TX_BUF_BIN_SIZE );
    txBuf->sn = sn; 
    txBuf->lnk.node = (PTR)txBuf;
    cmLListAdd2Tail(&(txBufLst[hashKey]), &txBuf->lnk);
@@ -2400,15 +2400,15 @@ KwSn              sn;
  *  @return  Void
  */
 #ifdef ANSI
-PUBLIC KwTx* kwUtlGetTxBuf 
+   PUBLIC KwTx* kwUtlGetTxBuf 
 (
-CmLListCp        *txBufLst,
-KwSn             sn
-)
+ CmLListCp        *txBufLst,
+ KwSn             sn
+ )
 #else
 PUBLIC KwTx* kwUtlGetTxBuf(txBufLst, sn)
-CmLListCp        *txBufLst;
-KwSn             sn;
+   CmLListCp        *txBufLst;
+   KwSn             sn;
 #endif
 {
    U32                 hashKey; 
@@ -2417,10 +2417,10 @@ KwSn             sn;
    CmLList             *node = NULLP;
 
    TRC3(kwUtlGetTxBuf)
-   //printf("G-sn(%d)\n", sn);
+      //printf("G-sn(%d)\n", sn);
 
-   hashKey = (sn % KW_TX_BUF_BIN_SIZE ); 
- 
+      hashKey = (sn % KW_TX_BUF_BIN_SIZE ); 
+
    txBufLstCp = &txBufLst[hashKey];
    CM_LLIST_FIRST_NODE(txBufLstCp, node);
    while(node)
@@ -2428,7 +2428,7 @@ KwSn             sn;
       txBuf = (KwTx *) node->node;
       if(txBuf->sn == sn)
       {
-         RETVALUE(txBuf);
+	 RETVALUE(txBuf);
       }
       CM_LLIST_NEXT_NODE(txBufLstCp, node);
    }
@@ -2449,17 +2449,17 @@ KwSn             sn;
  *  @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlDelTxBuf 
+   PUBLIC Void kwUtlDelTxBuf 
 (
-CmLListCp        *txBufLst,
-KwTx            *txBuf,
-RlcCb              *gCb                              
-)
+ CmLListCp        *txBufLst,
+ KwTx            *txBuf,
+ RlcCb              *gCb                              
+ )
 #else
 PUBLIC Void kwUtlDelTxBuf(txBufLst, txBuf, gCb)
-CmLListCp        *txBufLst;
-KwTx             *txBuf;
-RlcCb             *gCb;                              
+   CmLListCp        *txBufLst;
+   KwTx             *txBuf;
+   RlcCb             *gCb;                              
 #endif
 {
    U32                 hashKey; 
@@ -2467,8 +2467,8 @@ RlcCb             *gCb;
 
    TRC3(kwUtlDelTxBuf)
 
-   hashKey = (txBuf->sn % KW_TX_BUF_BIN_SIZE ); 
- 
+      hashKey = (txBuf->sn % KW_TX_BUF_BIN_SIZE ); 
+
    txBufLstCp = &txBufLst[hashKey];
    //printf("D-sn(%d)\n", txBuf->hdr.sn);
    cmLListDelFrm(txBufLstCp, &txBuf->lnk);
@@ -2491,17 +2491,17 @@ RlcCb             *gCb;
  *  @return  Void
  */
 #ifdef ANSI
-PUBLIC Void kwUtlRemovTxBuf 
+   PUBLIC Void kwUtlRemovTxBuf 
 (
-CmLListCp        *txBufLst,
-KwTx            *txBuf,
-RlcCb              *gCb                              
-)
+ CmLListCp        *txBufLst,
+ KwTx            *txBuf,
+ RlcCb              *gCb                              
+ )
 #else
 PUBLIC Void kwUtlRemovTxBuf(txBufLst, txBuf, gCb)
-CmLListCp        *txBufLst;
-KwTx             *txBuf;
-RlcCb             *gCb;                              
+   CmLListCp        *txBufLst;
+   KwTx             *txBuf;
+   RlcCb             *gCb;                              
 #endif
 {
    U32                 hashKey; 
@@ -2509,8 +2509,8 @@ RlcCb             *gCb;
 
    TRC3(kwUtlRemovTxBuf)
 
-   hashKey = (txBuf->sn % KW_TX_BUF_BIN_SIZE ); 
- 
+      hashKey = (txBuf->sn % KW_TX_BUF_BIN_SIZE ); 
+
    txBufLstCp = &txBufLst[hashKey];
    //printf("D-sn(%d)\n", txBuf->hdr.sn);
    cmLListDelFrm(txBufLstCp, &txBuf->lnk);
@@ -2520,5 +2520,5 @@ RlcCb             *gCb;
 
 
 /********************************************************************30**
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

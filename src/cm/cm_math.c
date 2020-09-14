@@ -80,28 +80,28 @@ F64          val;
 
 #ifdef SS_FLOAT
 /*
-*
-*       Fun:   cmPow
-*
-*       Desc:  common primitive for computing the power of x raised to y.
-*
-*       Ret:   value of x raised to the power of y.
-*
-*       Notes: None
-*
-*       File:  cm_math.c
-*
-*/
+ *
+ *       Fun:   cmPow
+ *
+ *       Desc:  common primitive for computing the power of x raised to y.
+ *
+ *       Ret:   value of x raised to the power of y.
+ *
+ *       Notes: None
+ *
+ *       File:  cm_math.c
+ *
+ */
 #ifdef ANSI
-PUBLIC F64 cmPow
+   PUBLIC F64 cmPow
 (
-F64          x,
-F64          y
-)
+ F64          x,
+ F64          y
+ )
 #else
 PUBLIC F64 cmPow(x, y)
-F64           x;
-F64           y;
+   F64           x;
+   F64           y;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
@@ -112,27 +112,27 @@ F64           y;
 
 #ifdef SS_FLOAT
 /*
-*
-*       Fun:   cmFloor
-*
-*       Desc:  common primitive for computing the largest integral value 
-*              not greater than x.
-*
-*       Ret:   floor value of x 
-*
-*       Notes: None
-*
-*       File:  cm_math.c
-*
-*/
+ *
+ *       Fun:   cmFloor
+ *
+ *       Desc:  common primitive for computing the largest integral value 
+ *              not greater than x.
+ *
+ *       Ret:   floor value of x 
+ *
+ *       Notes: None
+ *
+ *       File:  cm_math.c
+ *
+ */
 #ifdef ANSI
-PUBLIC F64 cmFloor
+   PUBLIC F64 cmFloor
 (
-F64          x
-)
+ F64          x
+ )
 #else
 PUBLIC F64 cmFloor(x)
-F64           x;
+   F64           x;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
@@ -144,26 +144,26 @@ F64           x;
 
 #ifdef SS_FLOAT
 /*
-*
-*       Fun:   cmLog
-*
-*       Desc:  common primitive for computing the natural logrithm of x.
-*
-*       Ret:   loge(x)
-*
-*       Notes: None
-*
-*       File:  cm_math.c
-*
-*/
+ *
+ *       Fun:   cmLog
+ *
+ *       Desc:  common primitive for computing the natural logrithm of x.
+ *
+ *       Ret:   loge(x)
+ *
+ *       Notes: None
+ *
+ *       File:  cm_math.c
+ *
+ */
 #ifdef ANSI
-PUBLIC F64 cmLog
+   PUBLIC F64 cmLog
 (
-F64          x
-)
+ F64          x
+ )
 #else
 PUBLIC F64 cmLog(x)
-F64           x;
+   F64           x;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
@@ -175,26 +175,26 @@ F64           x;
 
 #ifdef SS_FLOAT
 /*
-*
-*       Fun:   cmLog10
-*
-*       Desc:  common primitive for computing the base 10 logrithm of x.
-*
-*       Ret:   log10(x)
-*
-*       Notes: None
-*
-*       File:  cm_math.c
-*
-*/
+ *
+ *       Fun:   cmLog10
+ *
+ *       Desc:  common primitive for computing the base 10 logrithm of x.
+ *
+ *       Ret:   log10(x)
+ *
+ *       Notes: None
+ *
+ *       File:  cm_math.c
+ *
+ */
 #ifdef ANSI
-PUBLIC F64 cmLog10
+   PUBLIC F64 cmLog10
 (
-F64          x
-)
+ F64          x
+ )
 #else
 PUBLIC F64 cmLog10(x)
-F64           x;
+   F64           x;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
@@ -204,5 +204,5 @@ F64           x;
 #endif /* SS_FLOAT */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -83,19 +83,19 @@ PUBLIC Void rgSCHCmnSpsInit ()
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsUeCfg
+   PUBLIC S16 rgSCHCmnSpsUeCfg
 (
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgrUeCfg           *ueCfg,
-RgSchErrInfo       *err
-)
+ RgSchCellCb        *cell,
+ RgSchUeCb          *ue,
+ RgrUeCfg           *ueCfg,
+ RgSchErrInfo       *err
+ )
 #else /* ANSI */
 PUBLIC S16 rgSCHCmnSpsUeCfg (cell, ue, ueCfg, err)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-RgrUeCfg           *ueCfg;
-RgSchErrInfo       *err;
+   RgSchCellCb        *cell;
+   RgSchUeCb          *ue;
+   RgrUeCfg           *ueCfg;
+   RgSchErrInfo       *err;
 #endif /* ANSI */
 {
 
@@ -115,19 +115,19 @@ RgSchErrInfo       *err;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsUeRecfg
+   PUBLIC S16 rgSCHCmnSpsUeRecfg
 (
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgrUeRecfg         *ueRecfg,
-RgSchErrInfo       *err
-)
+ RgSchCellCb        *cell,
+ RgSchUeCb          *ue,
+ RgrUeRecfg         *ueRecfg,
+ RgSchErrInfo       *err
+ )
 #else /* ANSI */
 PUBLIC S16 rgSCHCmnSpsUeRecfg (cell, ue, ueCfg, err)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-RgrUeRecfg         *ueRecfg;
-RgSchErrInfo       *err;
+   RgSchCellCb        *cell;
+   RgSchUeCb          *ue;
+   RgrUeRecfg         *ueRecfg;
+   RgSchErrInfo       *err;
 #endif /* ANSI */
 {
 
@@ -147,15 +147,15 @@ RgSchErrInfo       *err;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHCmnSpsUeDel
+   PUBLIC Void rgSCHCmnSpsUeDel
 (
-RgSchCellCb        *cell,
-RgSchUeCb          *ue
-)
+ RgSchCellCb        *cell,
+ RgSchUeCb          *ue
+ )
 #else /* ANSI */
 PUBLIC Void rgSCHCmnSpsUeDel (cell, ue)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
+   RgSchCellCb        *cell;
+   RgSchUeCb          *ue;
 #endif /* ANSI */
 {
 
@@ -174,17 +174,17 @@ RgSchUeCb          *ue;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsCellCfg
+   PUBLIC S16 rgSCHCmnSpsCellCfg
 (
-RgSchCellCb        *cell,
-RgrCellCfg         *cellCfg,
-RgSchErrInfo       *err
-)
+ RgSchCellCb        *cell,
+ RgrCellCfg         *cellCfg,
+ RgSchErrInfo       *err
+ )
 #else /* ANSI */
 PUBLIC S16 rgSCHCmnSpsCellCfg(cell, cellCfg, err)
-RgSchCellCb        *cell;
-RgrCellCfg         *cellCfg;
-RgSchErrInfo       *err;
+   RgSchCellCb        *cell;
+   RgrCellCfg         *cellCfg;
+   RgSchErrInfo       *err;
 #endif /* ANSI */
 {
 
@@ -203,13 +203,13 @@ RgSchErrInfo       *err;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHCmnSpsCellDel
+   PUBLIC Void rgSCHCmnSpsCellDel
 (
-RgSchCellCb        *cell
-)
+ RgSchCellCb        *cell
+ )
 #else /* ANSI */
 PUBLIC Void rgSCHCmnSpsCellDel (cell)
-RgSchCellCb        *cell;
+   RgSchCellCb        *cell;
 #endif /* ANSI */
 {
 
@@ -228,21 +228,21 @@ RgSchCellCb        *cell;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsDlLcCfg 
+   PUBLIC S16 rgSCHCmnSpsDlLcCfg 
 (
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgSchDlLcCb        *dlLc,
-RgrLchCfg          *lcCfg,
-RgSchErrInfo       *err
-)
+ RgSchCellCb        *cell,
+ RgSchUeCb          *ue,
+ RgSchDlLcCb        *dlLc,
+ RgrLchCfg          *lcCfg,
+ RgSchErrInfo       *err
+ )
 #else /* ANSI */
 PUBLIC S16 rgSCHCmnSpsDlLcCfg(cell, ue, dlLc, lcCfg, err)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-RgSchDlLcCb        *dlLc;
-RgrLchCfg          *lcCfg;
-RgSchErrInfo       *err
+   RgSchCellCb        *cell;
+   RgSchUeCb          *ue;
+   RgSchDlLcCb        *dlLc;
+   RgrLchCfg          *lcCfg;
+   RgSchErrInfo       *err
 #endif /* ANSI */
 {
 
@@ -252,51 +252,51 @@ RgSchErrInfo       *err
 
 Void rgSchCmnDlSfHqDel 
 ARGS((
-RgSchUeCb    *ue,
-RgSchCellCb  *cell
-))
+	 RgSchUeCb    *ue,
+	 RgSchCellCb  *cell
+     ))
 {
    TRC2(rgSchCmnDlSfHqDel);
    RETVOID;
 }
 
 S16 rgSCHCmnSpsDlLcRecfg ARGS((
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgSchDlLcCb        *dlLc,
-RgrLchRecfg        *lcRecfg,
-RgSchErrInfo       *err
-))
+	 RgSchCellCb        *cell,
+	 RgSchUeCb          *ue,
+	 RgSchDlLcCb        *dlLc,
+	 RgrLchRecfg        *lcRecfg,
+	 RgSchErrInfo       *err
+	 ))
 {
-   
+
    TRC2(rgSCHCmnSpsDlLcRecfg);
    return ROK;
 }
 
 Void rgSCHCmnSpsUlLcgDel ARGS(( 
-RgSchCellCb      *cell,
-RgSchUeCb        *ue,
-RgSchLcgCb       *lcg
-))
+	 RgSchCellCb      *cell,
+	 RgSchUeCb        *ue,
+	 RgSchLcgCb       *lcg
+	 ))
 {
    TRC2(rgSCHCmnSpsUlLcgDel);
    RETVOID;
 }
 
 Void rgSCHCmnSpsDlLcDel ARGS((
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgSchDlLcCb        *dlLc
-))
+	 RgSchCellCb        *cell,
+	 RgSchUeCb          *ue,
+	 RgSchDlLcCb        *dlLc
+	 ))
 {
    TRC2(rgSCHCmnSpsUlLcgDel);
    RETVOID;
 }
 
 S16 rgSCHCmnSpsUlTti ARGS((
-RgSchCellCb             *cell,
-RgSchCmnUlRbAllocInfo   *allocInfo
-))
+	 RgSchCellCb             *cell,
+	 RgSchCmnUlRbAllocInfo   *allocInfo
+	 ))
 {
 
    TRC2(rgSCHCmnSpsUlTti);
@@ -304,10 +304,10 @@ RgSchCmnUlRbAllocInfo   *allocInfo
 }
 
 Void rgSCHCmnSpsDlDedBoUpd ARGS((
-RgSchCellCb            *cell,
-RgSchUeCb              *ue,
-RgSchDlLcCb            *dlLc
-))
+	 RgSchCellCb            *cell,
+	 RgSchUeCb              *ue,
+	 RgSchDlLcCb            *dlLc
+	 ))
 {
 
    TRC2(rgSCHCmnSpsDlDedBoUpd);
@@ -315,9 +315,9 @@ RgSchDlLcCb            *dlLc
 }
 
 Void rgSCHCmnSpsDlProcAddToRetx ARGS((
-RgSchCellCb           *cell,
-RgSchDlHqProcCb       *hqP
-))
+	 RgSchCellCb           *cell,
+	 RgSchDlHqProcCb       *hqP
+	 ))
 {
 
    TRC2(rgSCHCmnSpsDlProcAddToRetx);
@@ -325,10 +325,10 @@ RgSchDlHqProcCb       *hqP
 }
 
 Void rgSCHCmnSpsDlCqiIndHndlr ARGS((
-RgSchCellCb          *cell,
-RgSchUeCb            *ue,
-CmLteTimingInfo      timingInfo
-))
+	 RgSchCellCb          *cell,
+	 RgSchUeCb            *ue,
+	 CmLteTimingInfo      timingInfo
+	 ))
 {
 
    TRC2(rgSCHCmnSpsDlCqiIndHndlr);
@@ -336,9 +336,9 @@ CmLteTimingInfo      timingInfo
 }
 
 S16 rgSCHCmnSpsUlCqiInd ARGS((
-RgSchCellCb          *cell,
-RgSchUeCb            *ue
-))
+	 RgSchCellCb          *cell,
+	 RgSchUeCb            *ue
+	 ))
 {
 
    TRC2(rgSCHCmnSpsUlCqiInd);
@@ -346,10 +346,10 @@ RgSchUeCb            *ue
 }
 
 S16 rgSCHCmnSpsBsrRpt ARGS((
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgSchLcgCb   *ulLcg
-))
+	 RgSchCellCb  *cell,
+	 RgSchUeCb    *ue,
+	 RgSchLcgCb   *ulLcg
+	 ))
 {
 
    TRC2(rgSCHCmnSpsBsrRpt);
@@ -357,9 +357,9 @@ RgSchLcgCb   *ulLcg
 }
 
 Void rgSCHCmnSpsPhrInd ARGS((
-RgSchCellCb         *cell,
-RgSchUeCb           *ue
-))
+	 RgSchCellCb         *cell,
+	 RgSchUeCb           *ue
+	 ))
 {
 
    TRC2(rgSCHCmnSpsPhrInd);
@@ -367,10 +367,10 @@ RgSchUeCb           *ue
 }
 
 Void rgSCHCmnSpsDlRelPdcchFbk ARGS((
-RgSchCellCb           *cell,
-RgSchUeCb             *ue,
-Bool                  isAck
-))
+	 RgSchCellCb           *cell,
+	 RgSchUeCb             *ue,
+	 Bool                  isAck
+	 ))
 {
 
    TRC2(rgSCHCmnSpsDlRelPdcchFbk);
@@ -378,9 +378,9 @@ Bool                  isAck
 }
 
 Void rgSCHCmnSpsDlProcAck ARGS((
-RgSchCellCb           *cell,
-RgSchDlHqProcCb       *hqP
-))
+	 RgSchCellCb           *cell,
+	 RgSchDlHqProcCb       *hqP
+	 ))
 {
 
    TRC2(rgSCHCmnSpsDlProcAck);
@@ -388,9 +388,9 @@ RgSchDlHqProcCb       *hqP
 }
 
 Void rgSCHCmnSpsDlUeReset ARGS((
-RgSchCellCb         *cell,
-RgSchUeCb           *ue
-))
+	 RgSchCellCb         *cell,
+	 RgSchUeCb           *ue
+	 ))
 {
 
    TRC2(rgSCHCmnSpsDlUeReset);
@@ -398,9 +398,9 @@ RgSchUeCb           *ue
 }
 
 Void rgSCHCmnSpsUlUeReset ARGS((
-RgSchCellCb         *cell,
-RgSchUeCb           *ue
-))
+	 RgSchCellCb         *cell,
+	 RgSchUeCb           *ue
+	 ))
 {
 
    TRC2(rgSCHCmnSpsUlUeReset);
@@ -408,10 +408,10 @@ RgSchUeCb           *ue
 }
 
 Void rgSCHCmnSpsUlProcRelInd ARGS((
-RgSchCellCb         *cell,
-RgSchUeCb           *ue,
-Bool                isExplRel
-))
+	 RgSchCellCb         *cell,
+	 RgSchUeCb           *ue,
+	 Bool                isExplRel
+	 ))
 {
 
    TRC2(rgSCHCmnSpsUlProcRelInd);
@@ -419,10 +419,10 @@ Bool                isExplRel
 }
 
 Void rgSCHCmnSpsUlProcActInd ARGS((
-RgSchCellCb         *cell,
-RgSchUeCb           *ue,
-U16                 spsSduSize
-))
+	 RgSchCellCb         *cell,
+	 RgSchUeCb           *ue,
+	 U16                 spsSduSize
+	 ))
 {
 
    TRC2(rgSCHCmnSpsUlProcActInd);
@@ -430,10 +430,10 @@ U16                 spsSduSize
 }
 
 S16 rgSCHCmnSpsUlProcCrcInd ARGS((
-RgSchCellCb          *cell,
-RgSchUeCb            *ue,
-CmLteTimingInfo      crcTime
-))
+	 RgSchCellCb          *cell,
+	 RgSchUeCb            *ue,
+	 CmLteTimingInfo      crcTime
+	 ))
 {
 
    TRC2(rgSCHCmnSpsUlProcActInd);
@@ -441,10 +441,10 @@ CmLteTimingInfo      crcTime
 }
 
 S16 rgSCHCmnSpsUlProcDtxInd ARGS((
-RgSchCellCb          *cell,
-RgSchUeCb            *ue,
-CmLteTimingInfo      dtxTime
-))
+	 RgSchCellCb          *cell,
+	 RgSchUeCb            *ue,
+	 CmLteTimingInfo      dtxTime
+	 ))
 {
 
    TRC2(rgSCHCmnSpsUlProcDtxInd);
@@ -452,10 +452,10 @@ CmLteTimingInfo      dtxTime
 }
 
 Void rgSCHCmnSpsDlUpdDlSfAllocWithSps ARGS((
-RgSchCellCb           *cell,
-CmLteTimingInfo       schdTime,
-RgSchDlSf             *dlSf
-))
+	 RgSchCellCb           *cell,
+	 CmLteTimingInfo       schdTime,
+	 RgSchDlSf             *dlSf
+	 ))
 {
 
    TRC2(rgSCHCmnSpsUlProcDtxInd);
@@ -467,6 +467,6 @@ RgSchDlSf             *dlSf
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

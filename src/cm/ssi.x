@@ -126,9 +126,9 @@ typedef struct chn                /* chain */
    Buffer *fwd;                   /* forward */
    Buffer *bck;                   /* backward */
 } Chn;
- 
+
 typedef Chn Chain;                /* chain */
- 
+
 /* queue - typdef'd earlier */
 
 struct ss_queue                   /* queue - typdef'd earlier */
@@ -137,53 +137,53 @@ struct ss_queue                   /* queue - typdef'd earlier */
    QLen crntSize;                 /* current size */
    QLen maxSize;                  /* maximum size */
 };
-  
+
 /* buffer - typedef'd earlier */
-  
+
 struct ss_buffer                  /* buffer - typdef'd earlier */
 {
    Chn chn;                       /* chain */
    Mem mem;                       /* memory */
    S8 bufType;                    /* buffer type */
    union {
-  
+
       struct
       {
-         MsgLen strtIdx;          /* start index */
-         MsgLen endIdx;           /* end index */
-         MsgLen size;             /* size */
-         Data data[DSIZE];        /* data */
+	 MsgLen strtIdx;          /* start index */
+	 MsgLen endIdx;           /* end index */
+	 MsgLen size;             /* size */
+	 Data data[DSIZE];        /* data */
       } dat;                      /* data buffer */
-  
+
       struct
       {
-         Queue bq;                /* buffer queue */
-         MsgLen msgLen;           /* message length */
-         S16 refCnt;              /* reference count */
-         Pst pst;                 /* post (optional) */
-         U32 wsU32[2];            /* workspace unsigned 32 bit values (optional) */
-         U16 wsU16[1];            /* workspace unsigned 16 bit values (optional) */
-         U8  wsU8[2];             /* workspace unsigned 8 bit values (optional) */
+	 Queue bq;                /* buffer queue */
+	 MsgLen msgLen;           /* message length */
+	 S16 refCnt;              /* reference count */
+	 Pst pst;                 /* post (optional) */
+	 U32 wsU32[2];            /* workspace unsigned 32 bit values (optional) */
+	 U16 wsU16[1];            /* workspace unsigned 16 bit values (optional) */
+	 U8  wsU8[2];             /* workspace unsigned 8 bit values (optional) */
       } msg;                      /* message buffer */
-  
+
       struct
       {
-         Buffer *entry[MAXEXTENT];/* entry */
+	 Buffer *entry[MAXEXTENT];/* entry */
       } ext;                      /* extension buffer */
- 
+
       struct
       {
-         Size size;               /* size */
+	 Size size;               /* size */
       } stc;                      /* static buffer */
- 
+
       struct
       {
-         MsgLen strtIdx;          /* start index */
-         MsgLen endIdx;           /* end index */
-         MsgLen size;             /* size */
-         Data *data;              /* data pointer */
+	 MsgLen strtIdx;          /* start index */
+	 MsgLen endIdx;           /* end index */
+	 MsgLen size;             /* size */
+	 Data *data;              /* data pointer */
       } dma;                      /* dma buffer */
- 
+
    } t;
 };
 
@@ -199,44 +199,44 @@ EXTERN  S16 msArgc;
 #ifndef CMFILE_REORG_1
 typedef struct ss_buffer Buffer;  /* forward definition - buffer */
 #endif
- 
+
 typedef struct sBuf SBuf;         /* forward definition - static buffer */
- 
+
 typedef struct ss_queue Queue;    /* forward definition - queue */
 
 /* buffer identifier */
 
 /* dynamic chain (4b ALIGNED) */
- 
+
 typedef struct dChn               /* dynamic chain */
 {
    Buffer *prev;                  /* previous */
    Buffer *crnt;                  /* current */
    Buffer *next;                  /* next */
 } DChn;
- 
+
 /* static chain (4b ALIGNED)*/
- 
+
 typedef struct sChn               /* static chain */
 {
    SBuf *fwd;                     /* forward */
 } SChn;
- 
+
 /* buffer queue (4b ALIGNED) */
-  
+
 typedef struct bufQ               /* buffer queue */
 {
    DChn dChn;                     /* dynamic chain */
    BufQLen crntSize;              /* current size */
 } BufQ;
 /* queue (4b ALIGNED) */
-  
+
 struct ss_queue                   /* queue - typdef'd earlier */
 {
    DChn dChn;                     /* dynamic chain */
    QLen crntSize;                 /* current size */
 };
-  
+
 /* 4Byte aligned */
 typedef struct ss_dat             /* data buffer */
 {
@@ -257,9 +257,9 @@ typedef struct ss_msg             /* message buffer */
    Pool pool;                     /* size (1b); Not used for MOS as of now */
    U8 spare;                      /* spare for alingment */
 } Msg;
-  
+
 /* buffer - typedef'd earlier */
-  
+
 struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    DChn dChn;                     /* dynamic chain */
@@ -273,7 +273,7 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 };
 
 /* static buffer - typedef'd earlier */
-  
+
 struct sBuf                       /* static buffer - typedef'd earlier */
 {
    SChn sChn;                     /* static chain */
@@ -293,15 +293,15 @@ EXTERN  S16 msArgc;
 /* psos typedefs, structures and prototypes */
 
 /* forward definitions */
- 
+
 #ifndef CMFILE_REORG_1
 typedef struct ss_buffer Buffer;  /* forward definition - buffer */
 #endif
- 
+
 typedef struct ss_queue Queue;       /* forward definition - queue */
 
 /* chain */
- 
+
 typedef struct chn                /* chain */
 {
    Buffer *fwd;                   /* forward */
@@ -318,47 +318,47 @@ struct ss_queue                   /* queue - typdef'd earlier */
 };
 
 /* buffer - typedef'd earlier */
-  
+
 struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    Chn chn;                       /* chain */
    Mem mem;                       /* memory */
    S8 bufType;                    /* buffer type */
    union {
-  
+
       struct
       {
-         MsgLen strtIdx;          /* start index */
-         MsgLen endIdx;           /* end index */
-         MsgLen size;             /* size */
-         Data data[DSIZE];        /* data */
+	 MsgLen strtIdx;          /* start index */
+	 MsgLen endIdx;           /* end index */
+	 MsgLen size;             /* size */
+	 Data data[DSIZE];        /* data */
       } dat;                      /* data buffer */
-  
+
       struct
       {
-         Queue bq;                /* buffer queue */
-         MsgLen msgLen;           /* message length */
-         S16 refCnt;              /* reference count */
+	 Queue bq;                /* buffer queue */
+	 MsgLen msgLen;           /* message length */
+	 S16 refCnt;              /* reference count */
       } msg;                      /* message buffer */
-  
+
       struct
       {
-         Buffer *entry[MAXEXTENT];/* entry */
+	 Buffer *entry[MAXEXTENT];/* entry */
       } ext;                      /* extension buffer */
- 
+
       struct
       {
-         Size size;               /* size */
+	 Size size;               /* size */
       } stc;                      /* static buffer */
 
       struct
       {
-         MsgLen strtIdx;          /* start index */
-         MsgLen endIdx;           /* end index */
-         MsgLen size;             /* size */
-         Data *data;              /* data pointer */
+	 MsgLen strtIdx;          /* start index */
+	 MsgLen endIdx;           /* end index */
+	 MsgLen size;             /* size */
+	 Data *data;              /* data pointer */
       } dma;                      /* dma buffer */
- 
+
    } t;
 };
 
@@ -367,11 +367,11 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 /* vrtxsa typedefs, structures and prototypes */
 
 /* forward definitions */
- 
+
 #ifndef CMFILE_REORG_1
 typedef struct ss_buffer Buffer;  /* forward definition - buffer */
 #endif
- 
+
 typedef struct ss_queue Queue;       /* forward definition - queue */
 
 /* buffer - typedef'd earlier */
@@ -387,7 +387,7 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 };
 
 /* chain */
- 
+
 typedef struct chn                /* chain */
 {
    Buffer *fwd;                   /* forward */
@@ -395,7 +395,7 @@ typedef struct chn                /* chain */
 } Chn;
 
 /* queue - typdef'd earlier */
- 
+
 struct ss_queue                   /* queue - typdef'd earlier */
 {
    Chn chn;                       /* chain */
@@ -408,11 +408,11 @@ struct ss_queue                   /* queue - typdef'd earlier */
 /* vxworks typedefs, structures and prototypes */
 
 /* forward definitions */
- 
+
 #ifndef CMFILE_REORG_1
 typedef struct ss_buffer Buffer;  /* forward definition - buffer */
 #endif
- 
+
 typedef struct ss_queue Queue;    /* forward definition - queue */
 
 typedef struct dChn               /* dynamic chain */
@@ -421,25 +421,25 @@ typedef struct dChn               /* dynamic chain */
    Buffer *crnt;                    /* current */
    Buffer *next;                    /* next */
 } DChn;
- 
+
 /* static chain (4b ALIGNED)*/
- 
+
 /* buffer queue (4b ALIGNED) */
-  
+
 typedef struct bufQ               /* buffer queue */
 {
    DChn dChn;                     /* dynamic chain */
    BufQLen crntSize;              /* current size */
 } BufQ;
-  
+
 /* queue (4b ALIGNED) */
-  
+
 struct ss_queue                   /* queue - typdef'd earlier */
 {
    DChn dChn;                     /* dynamic chain */
    QLen crntSize;                 /* current size */
 };
-  
+
 typedef struct ss_dat             /* data buffer */
 {
    MsgLen strtIdx;                /* start index */
@@ -458,9 +458,9 @@ typedef struct ss_msg             /* message buffer */
    Pool pool;                     /* pool id */
    U8 spare;                      /* spare */
 } Msg;
-  
+
 /* buffer - typedef'd earlier */
-  
+
 struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    DChn dChn;                     /* dynamic chain */
@@ -479,21 +479,21 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 #ifndef CMFILE_REORG_1
 typedef struct ss_buffer Buffer;  /* forward definition - buffer */
 #endif
- 
+
 typedef struct sBuf SBuf;         /* forward definition - static buffer */
- 
+
 typedef struct ss_queue Queue;    /* forward definition - queue */
 
 
 /* queue - typdef'd earlier */
- 
+
 struct ss_queue                   /* queue - typdef'd earlier */
 {
    S16 dummy;                     /* dummy placeholder */
 };
 
 /* buffer - typedef'd earlier */
-  
+
 struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    S32 sIdx;                      /* start index */
@@ -507,12 +507,12 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 #ifndef CMFILE_REORG_1
 typedef struct ss_buffer Buffer;  /* forward definition - buffer */
 #endif
- 
+
 typedef struct sBuf SBuf;         /* forward definition - static buffer */
- 
+
 typedef struct ss_queue Queue;    /* forward definition - queue */
 
- 
+
 typedef S16 RyBufId;
 /* dynamic chain (aligned) */
 typedef struct ryDChn                 /* dynamic chain */
@@ -534,7 +534,7 @@ struct ss_queue                   /* queue - typdef'd earlier */
 };
 
 /* buffer - typedef'd earlier */
-  
+
 struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    S32 sIdx;                      /* start index */
@@ -570,11 +570,11 @@ struct ss_queue {
 /* multi-threaded typedefs, structures and prototypes */
 
 /* forward definitions */
- 
+
 #ifndef CMFILE_REORG_1
 typedef struct ss_buffer Buffer;  /* forward definition - buffer */
 #endif
- 
+
 typedef struct ss_queue Queue;    /* forward definition - queue */
 
 typedef struct sBuf      SBuf;    /* forward definition - static buffer */
@@ -591,19 +591,19 @@ typedef struct sChn
 {
    SBuf *fwd;                     /* forward */
 } SChn;
- 
+
 /* static chain (4b ALIGNED)*/
- 
+
 /* buffer queue (4b ALIGNED) */
-  
+
 /* queue (4b ALIGNED) */
-  
+
 struct ss_queue                   /* queue - typdef'd earlier */
 {
    DChn dChn;                     /* dynamic chain */
    QLen crntSize;                 /* current size */
 };
-  
+
 typedef struct ss_dat             /* data buffer */
 {
    MsgLen strtIdx;                /* start index */
@@ -622,9 +622,9 @@ typedef struct ss_msg             /* message buffer */
    Pool pool;                     /* pool id */
    U8 spare;                      /* spare */
 } Msg;
-  
+
 /* buffer - typedef'd earlier */
-  
+
 struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    DChn dChn;                     /* dynamic chain */
@@ -638,7 +638,7 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 };
 
 /* static buffer - typedef'd earlier */
-  
+
 struct sBuf
 {
    SChn sChn;                     /* static chain */
@@ -663,22 +663,22 @@ typedef Void *(MtThrd) ARGS((Void *));
 /* portable typedefs, structures and prototypes */
 
 /* forward definitions */
- 
+
 #ifndef CMFILE_REORG_1
 typedef struct ss_buffer Buffer;  /* forward definition - buffer */
 #endif
- 
+
 typedef struct ss_queue Queue;       /* forward definition - queue */
 
 /* queue - typdef'd earlier */
- 
+
 struct ss_queue                   /* queue - typdef'd earlier */
 {
    S16 dummy;                     /* dummy placeholder */
 };
- 
+
 /* buffer - typedef'd earlier */
-  
+
 struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    S16 dummy;                     /* dummy placeholder */
@@ -754,14 +754,14 @@ typedef struct sMemCtl
    {
       struct
       {
-         Data *vaddr;               /* virtual address */
-         Data **paddr;              /* physical address */
+	 Data *vaddr;               /* virtual address */
+	 Data **paddr;              /* physical address */
       } vtop;
 
       struct
       {
-         Size size;                 /* size */
-         Status *status;            /* status */
+	 Size size;                 /* size */
+	 Status *status;            /* status */
       } chkres;
    } u;
 
@@ -807,7 +807,7 @@ typedef struct sRegInfo
 {
    Void         *regCb;            /* region control block pointer */
    U32          flags;             /* region characteristics flags  */
-/* ssi_x_001.main_64 Additions */
+   /* ssi_x_001.main_64 Additions */
 #ifdef SS_CAVIUM
    cvmx_arena_list_t  regArena;    /* arena for the region */
 #endif
@@ -856,20 +856,20 @@ typedef S32     SCondId;           /* condition Id */
 /* ssi_x_001.main_57 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT  
 /*
-typedef struct entInfo
-{
+   typedef struct entInfo
+   {
    U8                 entid;
-}EntInfo;
+   }EntInfo;
 
-typedef struct secondIndex
-{
-    EntInfo           info[26];
-}SecondIndex;
+   typedef struct secondIndex
+   {
+   EntInfo           info[26];
+   }SecondIndex;
 
-typedef struct firstIndex
-{
-    SecondIndex       info[26];
-}FirstIndex; */
+   typedef struct firstIndex
+   {
+   SecondIndex       info[26];
+   }FirstIndex; */
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 
@@ -881,21 +881,21 @@ typedef S16  (*PAIFS16) ARGS((Ent ent,Inst inst,Region region,Reason reason ));
 /* ssi_x_001.main_54 */
 /* ssi_x_001.main_53 */
 /* ssi_x_001.main_69: Removed the SS_MT_TMR guard from PAIFTMRS16
-                      timer activation function typedef. */
+   timer activation function typedef. */
 
 typedef S16  (*PAIFTMRS16) ARGS((Ent ent, Inst inst));
 #else
 typedef S16  (*PAIFS16) ARGS((ProcId proc, 
-                              Ent ent,
-                              Inst inst,
-                              Region region,
-                              Reason reason,
-                              Void **xxCb));
+	 Ent ent,
+	 Inst inst,
+	 Region region,
+	 Reason reason,
+	 Void **xxCb));
 
 /* time activation function typedef */
 typedef S16  (*PAIFTMRS16) ARGS((ProcId proc, 
-                                 Ent ent,
-                                 Inst inst));
+	 Ent ent,
+	 Inst inst));
 #endif /* SS_MULTIPLE_PROCS */
 
 #ifndef VX
@@ -921,7 +921,7 @@ struct uProc
    U16 isFlag;                        /* interrupt service flag */
    ISTsk isTsk;                       /* interrupt service task */
 };
- 
+
 
 #endif /* ENB_RELAY */
 
@@ -980,7 +980,7 @@ EXTERN  S16 SRemQueue ARGS((Buffer **bufPtr,Queue *q,QLen idx));
 EXTERN  S16 SGetDBufNew ARGS((Region region,Pool pool,Buffer * *bufPtr,char*,U32));
 EXTERN  S16 SPutDBufNew ARGS((Region region,Pool pool,Buffer *buf,char*,U32));
 EXTERN  S16 SAttachPtrToBufNew ARGS((Region   region, Pool     pool, Data
-         *ptr, MsgLen   totalLen, Buffer** mBuf, char* file, U32 line));
+	 *ptr, MsgLen   totalLen, Buffer** mBuf, char* file, U32 line));
 #define SAttachPtrToBuf(region,pool,ptr,totalLen,mBuf) SAttachPtrToBufNew(region,pool,ptr,totalLen,mBuf,__FILE__,__LINE__)
 #define SPutZbcDBuf(region,buf) SPutZbcDBufNew(region,buf,__FILE__,__LINE__)
 #elif SS_LIGHT_MEM_LEAK_STS
@@ -1122,22 +1122,22 @@ EXTERN  S16 SSegMsg ARGS((Buffer *mBuf1,MsgLen idx,Buffer **mBuf2));
 #endif
 EXTERN  S16 SSwapMsg ARGS((Buffer *mBuf1, Buffer *mBuf2));
 EXTERN  S16 SCpyMsgFix ARGS((Buffer *srcMbuf,MsgLen srcIdx,MsgLen cnt,
-            Data *dstBuf,MsgLen *cCnt));
+	 Data *dstBuf,MsgLen *cCnt));
 EXTERN  S16 SCpyFixMsg ARGS((Data *srcBuf,Buffer *dstMbuf,
-            MsgLen dstIdx,MsgLen cnt,MsgLen *cCnt));
+	 MsgLen dstIdx,MsgLen cnt,MsgLen *cCnt));
 EXTERN  S16 SCompressMsg ARGS((Buffer *mBuf));
 #ifdef T2K_MEM_LEAK_DBG
 #define SAddMsgRef(mBuf,region,pool,dstBuf) SAddMsgRefNew(mBuf,region,pool,dstBuf,__FILE__,__LINE__)
 #define SCpyMsgMsg(mBuf,region,pool, dstBuf) SCpyMsgMsgNew(mBuf,region,pool, dstBuf, __FILE__, __LINE__)
 EXTERN  S16 SAddMsgRefNew ARGS((Buffer *mBuf, Region region, Pool pool, 
-            Buffer **dstBuf,char*,U32));
+	 Buffer **dstBuf,char*,U32));
 EXTERN  S16 SCpyMsgMsgNew ARGS((Buffer *mBuf, Region region, Pool pool, 
-            Buffer **dstBuf,char* , U32));
+	 Buffer **dstBuf,char* , U32));
 #else
 EXTERN  S16 SCpyMsgMsg ARGS((Buffer *mBuf, Region region, Pool pool, 
-            Buffer **dstBuf));
+	 Buffer **dstBuf));
 EXTERN  S16 SAddMsgRef ARGS((Buffer *mBuf, Region region, Pool pool, 
-            Buffer **dstBuf));
+	 Buffer **dstBuf));
 EXTERN  S16 SIncMsgRef(Buffer *srcBuf, Region dstRegion, Pool dstPool, Buffer **dstBuf);
 
 #ifdef SS_RBUF
@@ -1152,9 +1152,9 @@ EXTERN  S16 SGetDateTime ARGS((DateTime *dt));
 #ifdef L2_OPTMZ
 EXTERN Void SResetMBuf ARGS ((Buffer *mBuf));
 #endif
- /* ssi_x_001.main_57 : Additions */
- /* ssi_x_001.main_58 : Additions */
- /* ssi_x_001.main_60 : Modifications */
+/* ssi_x_001.main_57 : Additions */
+/* ssi_x_001.main_58 : Additions */
+/* ssi_x_001.main_60 : Modifications */
 EXTERN  S16 SGetEpcTime ARGS((EpcTime *et));  
 /* ssi_x_001.main_48: Added Timestamp changes */
 EXTERN  S16 SGetTimeStamp ARGS(( S8    *ts));
@@ -1163,8 +1163,8 @@ EXTERN  S16 SGetRefTime ARGS((U32 refTime, U32 *sec, U32 *usec));
 EXTERN  S16 SRandom ARGS((Random *value));
 EXTERN  S16 SError ARGS((Seq seq,Reason reason));
 EXTERN  Void SLogError ARGS((Ent ent, Inst inst, ProcId procId, Txt *file,
-                       S32 line, ErrCls errCls, ErrCode errCode,
-                       ErrVal errVal, Txt *errDesc));
+	 S32 line, ErrCls errCls, ErrCode errCode,
+	 ErrVal errVal, Txt *errDesc));
 /* ssi_x_001.main_49 : added prototype for SGetSystemTsk() */
 EXTERN U32 SGetSystemTsk ARGS ((Void));
 /* changes to support multiple processors in single SSI */
@@ -1173,50 +1173,50 @@ EXTERN U32 SGetSystemTsk ARGS ((Void));
 #ifndef SS_MULTIPLE_PROCS
 EXTERN  S16 SRegInit ARGS((Ent ent,Inst inst,PAIFS16 initFnct));
 EXTERN  S16 SRegActvTsk ARGS((Ent ent,Inst inst,Ttype ttype,Prior prior,
-                              ActvTsk actvTsk));
+	 ActvTsk actvTsk));
 #endif /* SS_MULTIPLE_PROCS */
 
 /* multiple proc id changes: procId added and time function type modified */ 
 #ifndef SS_MULTIPLE_PROCS
 EXTERN  S16 SRegCfgTmr ARGS((Ent ent,
-                             Inst inst,
-                             S16 period,
-                             S16 units,
-                             PFS16 tmrFnct));
+	 Inst inst,
+	 S16 period,
+	 S16 units,
+	 PFS16 tmrFnct));
 #ifdef SS_MT_TMR
 /* ssi_x_001.main_53 */
 EXTERN  S16 SRegCfgTmrMt ARGS((Ent ent,
-                               Inst inst,
-                               S16 period,
-                               S16 units,
-                               PAIFTMRS16 tmrFnctMt));
+	 Inst inst,
+	 S16 period,
+	 S16 units,
+	 PAIFTMRS16 tmrFnctMt));
 #endif
 EXTERN  S16 SDeregCfgTmr ARGS((Ent ent,
-                               Inst inst,
-                               S16 period,
-                               S16 units,
-                               PFS16 tmrFnct));
+	 Inst inst,
+	 S16 period,
+	 S16 units,
+	 PFS16 tmrFnct));
 #ifdef SS_MT_TMR
 /* ssi_x_001.main_53 */
 EXTERN  S16 SDeregCfgTmrMt ARGS((Ent ent,
-                                 Inst inst,
-                                 S16 period,
-                                 S16 units,
-                                 PAIFTMRS16 tmrFnctMt));
+	 Inst inst,
+	 S16 period,
+	 S16 units,
+	 PAIFTMRS16 tmrFnctMt));
 #endif
 #else
 EXTERN  S16 SRegCfgTmr ARGS((ProcId proc, 
-                             Ent ent,
-                             Inst inst,
-                             S16 period,
-                             S16 units,
-                             PAIFTMRS16 tmrFnct));
+	 Ent ent,
+	 Inst inst,
+	 S16 period,
+	 S16 units,
+	 PAIFTMRS16 tmrFnct));
 EXTERN  S16 SDeregCfgTmr ARGS((ProcId proc, 
-                               Ent ent,
-                               Inst inst,
-                               S16 period,
-                               S16 units,
-                               PAIFTMRS16 tmrFnct));
+	 Ent ent,
+	 Inst inst,
+	 S16 period,
+	 S16 units,
+	 PAIFTMRS16 tmrFnct));
 #endif /* SS_MULTIPLE_PROCS */
 
 EXTERN  S16 SPstTsk ARGS((Pst *pst, Buffer *mBuf));
@@ -1227,7 +1227,7 @@ EXTERN  S16 SPstTskIcpu ARGS((Pst *pst, Buffer *mBuf));
 
 #ifdef ENB_RELAY
 EXTERN  S16 SRegDrvrTsk ARGS((Inst inst, ProcId low, ProcId high, 
-                              ActvTsk actvTsk, ISTsk isTsk));
+	 ActvTsk actvTsk, ISTsk isTsk));
 /*ssi_x_001.main_56*/
 EXTERN S16 SDeregDrvrTsk ARGS((Inst channel));
 #endif /* ENB_RELAY */
@@ -1239,12 +1239,12 @@ EXTERN  S16 SDeregRtrTsk ARGS((Route *, Cntr));
 
 #ifdef SS_USE_ZBC_MEMORY
 EXTERN S16 SAttachPtrToBuf ARGS((
-Region   region,
-Pool     pool,
-Data    *ptr,
-MsgLen   totalLen,
-Buffer** mBuf
-));
+	 Region   region,
+	 Pool     pool,
+	 Data    *ptr,
+	 MsgLen   totalLen,
+	 Buffer** mBuf
+	 ));
 #endif
 /* multi-core support ssi_x_001.main_55 */
 /*ssi_x_001.main_68 Added SS_AFFINITY_SUPPORT*/
@@ -1254,9 +1254,9 @@ typedef S8 SsAffinityMode;
 
 
 typedef struct {
-  U32 numCores;                   /* total number of cores available */
-  U32 threadsPerCore;             /* total number of threads available per core */
-  U32 threadRegister[SS_MAX_CORES]; /* available threads per core */
+   U32 numCores;                   /* total number of cores available */
+   U32 threadsPerCore;             /* total number of threads available per core */
+   U32 threadRegister[SS_MAX_CORES]; /* available threads per core */
 } SCpuInfo;
 
 EXTERN S16 SRegCpuInfo ARGS((SCpuInfo *cpuInfo));
@@ -1296,16 +1296,16 @@ EXTERN  S16 SGetVect ARGS((VectNmb vectNmb,PIF *vectFnct));
 EXTERN  S16 SPutVect ARGS((VectNmb vectNmb,PIF vectFnct));
 #ifdef WINNT_KERN
 EXTERN  S16 SPutIsrDpr ARGS((VectNmb vectNmb, Void *context, PIF isrFnct, 
-                             PIF dprFnct));
+	 PIF dprFnct));
 EXTERN  S16 SSyncInt   ARGS((U16 adapterNmb, PFVOID syncFnct, 
-                             Void *syncContext));
+	 Void *syncContext));
 #endif
 EXTERN  S16 SInitSema ARGS((Region region, Sema *sema));
 EXTERN  S16 SRelSema ARGS((Region region, Sema sema));
 EXTERN  S16 SGetSema ARGS((Region region, Sema sema));
 EXTERN  S16 SActvInit ARGS((Ent ent,Inst inst,Region region,Reason reason));
 EXTERN  S16 SActvTsk ARGS((Prior prior,Route route,Ent srcEnt,
-            Inst srcInst,Buffer *mBuf));
+	 Inst srcInst,Buffer *mBuf));
 EXTERN  S16 SActvTmr ARGS((void ));
 EXTERN  S16 SGetOpt ARGS((int argc,char **argv,char *opts));
 /* multiple proc id changes: 
@@ -1341,7 +1341,7 @@ EXTERN S16 SCondWait ARGS((MtMtxId mId,MtCondId cId));
 EXTERN S16 SCondSignal ARGS((MtCondId cId));
 EXTERN S16 SCondBroadcast ARGS((MtCondId cId));
 EXTERN S16 SGetThread ARGS((MtThrd thrd, MtThrdFlags thr_flgs, 
-                            Ptr arg, MtThrdId *thrdId));
+	 Ptr arg, MtThrdId *thrdId));
 EXTERN S16 SPutThread ARGS((MtThrdId thrdId));
 EXTERN Void SThreadYield ARGS((void));
 EXTERN Void SThreadExit ARGS((Ptr *status));
@@ -1355,32 +1355,32 @@ EXTERN Void SExit ARGS((Void));
 #ifndef SS_MULTIPLE_PROCS
 
 EXTERN S16 SRegTTsk ARGS((Ent ent, 
-                          Inst inst, 
-                          Ttype type, 
-                          Prior prior, 
-                          PAIFS16 initTsk, 
-                          ActvTsk actvTsk));
+	 Inst inst, 
+	 Ttype type, 
+	 Prior prior, 
+	 PAIFS16 initTsk, 
+	 ActvTsk actvTsk));
 /* ssi_x_001.main_60 */
 EXTERN S16 SRegCbTsk ARGS((Ent ent, 
-                          Inst inst, 
-                          ActvTsk actvTsk));
+	 Inst inst, 
+	 ActvTsk actvTsk));
 EXTERN S16 SDeregTTsk ARGS((Ent ent, Inst inst));
 
 #else
 
 EXTERN S16 SRegTTsk ARGS((ProcId proc, 
-                          Ent ent, 
-                          Inst inst, 
-                          Ttype type, 
-                          Prior prior, 
-                          PAIFS16 initTsk, 
-                          ActvTsk actvTsk));
+	 Ent ent, 
+	 Inst inst, 
+	 Ttype type, 
+	 Prior prior, 
+	 PAIFS16 initTsk, 
+	 ActvTsk actvTsk));
 EXTERN S16 SDeregTTsk ARGS((ProcId proc, Ent ent, Inst inst));
 
 EXTERN S16 SRegCbTsk ARGS((ProcId proc,
-								  Ent ent, 
-                          Inst inst, 
-                          ActvTsk actvTsk));
+	 Ent ent, 
+	 Inst inst, 
+	 ActvTsk actvTsk));
 #endif /* SS_MULTIPLE_PROCS */
 
 EXTERN S16 SCreateSTsk ARGS((SSTskPrior tskPrior, SSTskId *tskId));
@@ -1402,7 +1402,7 @@ EXTERN S16 SDeregRegion ARGS((Region region));
 EXTERN S16 SRegDynRegion ARGS((Region region, SRegInfo *regInfo)); 
 /*ssi_x_001.main_62-prototype for SAlloc and SFree, gaurded under flag*/
 #ifndef SS_FAP
- /* ssi_x_001.main_57 : Additions */
+/* ssi_x_001.main_57 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 EXTERN S16 SAlloc ARGS((Region region, Size *size, U32 flags, Data **ptr,U32 line, U8 *fileName, U8 entId));
 EXTERN S16 SFree ARGS((Region region, Data *ptr, Size size, U32 line, U8 *fileName, U8 entId));
@@ -1434,7 +1434,7 @@ EXTERN S16 SCondWait      ARGS((SMtxId mId,SCondId cId));
 EXTERN S16 SCondSignal    ARGS((SCondId cId));
 EXTERN S16 SCondBroadcast ARGS((SCondId cId));
 EXTERN S16 SGetThread     ARGS((SThrd thrd, S32 thr_flgs, 
-                                                 Ptr arg, SThrdId *thrdId));
+	 Ptr arg, SThrdId *thrdId));
 EXTERN S16 SPutThread     ARGS((SThrdId thrdId));
 EXTERN Void SThreadYield  ARGS((void));
 EXTERN Void SThreadExit   ARGS((Ptr status));
@@ -1478,30 +1478,30 @@ EXTERN S16 SRegIntrptHdlr ARGS((ProcId proc, Ent ent, Inst inst, PFS16 intrptAct
 /* procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 EXTERN S16 SRegTTsk ARGS((Ent ent, 
-                          Inst inst, 
-                          Ttype type, 
-                          Prior prior, 
-                          PAIFS16 initTsk, 
-                          ActvTsk actvTsk));
+	 Inst inst, 
+	 Ttype type, 
+	 Prior prior, 
+	 PAIFS16 initTsk, 
+	 ActvTsk actvTsk));
 /* ssi_x_001.main_60 */
 EXTERN S16 SRegCbTsk ARGS((Ent ent, 
-                          Inst inst, 
-                          ActvTsk actvTsk));
+	 Inst inst, 
+	 ActvTsk actvTsk));
 EXTERN S16 SDeregTTsk ARGS((Ent ent, Inst inst));
 EXTERN S16 SAttachTTsk ARGS((Ent ent, Inst inst, SSTskId tskId));
 EXTERN S16 SDetachTTsk ARGS((Ent ent, Inst inst));
 #else
 EXTERN S16 SRegTTsk ARGS((ProcId proc, 
-                          Ent ent, 
-                          Inst inst, 
-                          Ttype type, 
-                          Prior prior, 
-                          PAIFS16 initTsk, 
-                          ActvTsk actvTsk));
+	 Ent ent, 
+	 Inst inst, 
+	 Ttype type, 
+	 Prior prior, 
+	 PAIFS16 initTsk, 
+	 ActvTsk actvTsk));
 EXTERN S16 SRegCbTsk ARGS((ProcId proc,
-								  Ent ent, 
-                          Inst inst, 
-                          ActvTsk actvTsk));
+	 Ent ent, 
+	 Inst inst, 
+	 ActvTsk actvTsk));
 EXTERN S16 SDeregTTsk ARGS((ProcId proc, Ent ent, Inst inst));
 EXTERN S16 SAttachTTsk ARGS((ProcId proc, Ent ent, Inst inst, SSTskId tskId));
 EXTERN S16 SDetachTTsk ARGS((ProcId proc, Ent ent, Inst inst));
@@ -1533,23 +1533,23 @@ EXTERN S16 SGetProcIdLst ARGS((U16 *numPIds, ProcId *pIdLst));
 
   
 /* function prototypes */
- 
+
 /* stack manager initialization function */
 /* multiple proc id changes: procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 EXTERN S16 smActvInit ARGS((Ent ent, Inst inst, Region region, Reason reason));
 #else /* SS_MULTIPLE_PROCS */
 EXTERN S16 smActvInit ARGS((ProcId proc, 
-                            Ent ent, 
-                            Inst inst, 
-                            Region region, 
-                            Reason reason,
-                            Void **xxCb));
+	 Ent ent, 
+	 Inst inst, 
+	 Region region, 
+	 Reason reason,
+	 Void **xxCb));
 #endif /* SS_MULTIPLE_PROCS */
 
 /* stack manager external initialization function */
 EXTERN S16 smInitExt ARGS((void));
- 
+
 /* stack manager activation function */
 EXTERN S16 smActvTsk ARGS((Pst *pst, Buffer *mBuf));
 
@@ -1561,7 +1561,7 @@ EXTERN  S16 SGetDepSId ARGS((SystemId *s));
 #endif
 
 /* Macros... */
- 
+
 #define SS_INITDCHN(chn) (chn)->next = NULLP; (chn)->prev = NULLP
 #define SS_INITQUE(qu) \
    SS_INITDCHN(&(qu)->dChn); (qu)->crntSize = 0
@@ -1578,7 +1578,7 @@ EXTERN S16 WTLock         ARGS((SLockId *lock));
 EXTERN S16 WTUnlock       ARGS((SLockId *lock));
 EXTERN S16 WTDestroyLock  ARGS((SLockId *lock));
 #endif /* End of SS_WIN */
- /* ssi_x_001.main_57 : Additions */
+/* ssi_x_001.main_57 : Additions */
 #ifdef SS_LOGGER_SUPPORT  
 EXTERN S16 SRegLogCfg ARGS(( U8 mode, S8 *path, U32 size, S8 *IPA, U16 port));
 EXTERN S16 SWrtLogBuf ARGS(( Txt *buf ));
@@ -1633,9 +1633,9 @@ EXTERN S16 SStartTask ARGS((VOLATILE U32 *startTime, U32 tarkId));
 EXTERN S16 SStopTask ARGS((VOLATILE U32 startTime,U32 taskId));
 #ifdef MSPD_MLOG_NEW
 /* Removed for C++ Compilation
-EXTERN unsigned int MLogTask (unsigned int taskid, unsigned int resourceid , 
-                       unsigned int ticksstart,unsigned int ticksstop);
---*/
+   EXTERN unsigned int MLogTask (unsigned int taskid, unsigned int resourceid , 
+   unsigned int ticksstart,unsigned int ticksstop);
+   --*/
 #endif
 
 #if defined(MSPD) && defined(MSPD_DBG_ENABLE)
@@ -1738,6 +1738,6 @@ EXTERN void SEND_DBG_MSG(U8 *str, ...);
 
 
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

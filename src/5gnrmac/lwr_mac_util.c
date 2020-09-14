@@ -49,7 +49,7 @@ PUBLIC LwrMacCellCb * lwrMacGetCellCb
       printf("\n Invalid Cell Id [%d]. rgClUtlGetCellCb failed.", cellId);
       return NULLP;
    }
-   
+
    cellCb = &lwrMacCb.cellCb[cellId -1];
 
    return cellCb;

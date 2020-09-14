@@ -44,30 +44,30 @@ void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqD
       /* when the startPrb is not in this byteCount */
       if(startPrb/8)
       {
-         startPrb -= 8;
-         byteCount--;
-         continue;
+	 startPrb -= 8;
+	 byteCount--;
+	 continue;
       }
 
       /* max bytecount is 6 nearly equal to 45 bits*/
       if(byteCount >= 6)
-          break;
+	 break;
 
       /* when we are filling the second byte, then the start should be equal to 0 */
       if(firstByte)
-         startBit = startPrb;
+	 startBit = startPrb;
       else
-         startBit = 0;
+	 startBit = 0;
 
       /* calculate the number of bits to be set in this byte */
       if((remBits+startPrb) <= 8)
-         numBits = remBits;
+	 numBits = remBits;
       else
-         numBits = 8 - startBit;
+	 numBits = 8 - startBit;
 
       /* bit operation to set the bits */
-		SET_BITS_MSB((startBit % 8),numBits,freqDomain[byteCount])
-      firstByte = 0;
+      SET_BITS_MSB((startBit % 8),numBits,freqDomain[byteCount])
+	 firstByte = 0;
 
       /* the ramaining bits should be subtracted with the numBits set in this byte */
       remBits -= numBits;
@@ -78,5 +78,5 @@ void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqD
 
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

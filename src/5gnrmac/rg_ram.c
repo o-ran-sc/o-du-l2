@@ -99,7 +99,7 @@ RgUeCb      *ue;
    rgDHMFreeUe(inst,&ue->dl.hqEnt);
 
    /*ccpu00117052 - MOD - Passing double pointer for proper NULLP 
-                          assignment */
+     assignment */
    /* De-allocate the Ue */
    rgFreeSBuf(inst,(Data **)&ue, sizeof(*ue));
 
@@ -123,19 +123,19 @@ RgUeCb      *ue;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgRAMCreateUeCb
+   PUBLIC RgUeCb* rgRAMCreateUeCb
 (
-RgCellCb       *cell,
-CmLteRnti      tmpCrnti,
-Bool           insert,
-RgErrInfo      *err
-)
+ RgCellCb       *cell,
+ CmLteRnti      tmpCrnti,
+ Bool           insert,
+ RgErrInfo      *err
+ )
 #else
 PUBLIC RgUeCb* rgRAMCreateUeCb(cell, tmpCrnti, insert, err)
-RgCellCb       *cell;
-CmLteRnti      tmpCrnti;
-Bool           insert;
-RgErrInfo      *err;
+   RgCellCb       *cell;
+   CmLteRnti      tmpCrnti;
+   Bool           insert;
+   RgErrInfo      *err;
 #endif
 {
    Inst       inst = cell->macInst - RG_INST_START;
@@ -143,13 +143,13 @@ RgErrInfo      *err;
 
    TRC2(rgRAMCreateUeCb)
 
-   RLOG_ARG1(L_INFO,DBG_CELLID,cell->cellId,"CREATE UECB FOR CRNTI:%d",
-             tmpCrnti);
+      RLOG_ARG1(L_INFO,DBG_CELLID,cell->cellId,"CREATE UECB FOR CRNTI:%d",
+	    tmpCrnti);
    /* Allocate the Ue control block */
    if (rgAllocSBuf(inst,(Data **)&ueCb, sizeof(*ueCb)) != ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                "Memory allocation FAILED for CRNTI:%d",tmpCrnti);
+	    "Memory allocation FAILED for CRNTI:%d",tmpCrnti);
       err->errCause = RGERR_RAM_MEM_EXHAUST;
       RETVALUE(NULLP);
    }
@@ -159,7 +159,7 @@ RgErrInfo      *err;
 
    /* Initialize the lists of the UE */
    rgDBMInitUe(ueCb); 
-   
+
    if(insert == TRUE)
    {
       /* MS_FIX : Remove stale UEs if present */
@@ -172,8 +172,8 @@ RgErrInfo      *err;
       staleUe = rgDBMGetUeCbFromRachLst (cell, tmpCrnti);
       if (staleUe)
       {
-         rgDBMDelUeCbFromRachLst(cell, staleUe);
-         rgRAMFreeUeCb(inst,staleUe);
+	 rgDBMDelUeCbFromRachLst(cell, staleUe);
+	 rgRAMFreeUeCb(inst,staleUe);
       }
       rgDBMInsUeCbInRachLst(cell, ueCb);
    }
@@ -197,13 +197,13 @@ RgErrInfo      *err;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgRAMFreeCell
+   PUBLIC S16 rgRAMFreeCell
 (
-RgCellCb    *cell
-)
+ RgCellCb    *cell
+ )
 #else
 PUBLIC S16 rgRAMFreeCell(cell)
-RgCellCb    *cell;
+   RgCellCb    *cell;
 #endif
 {
    Inst    inst = cell->macInst - RG_INST_START;
@@ -244,19 +244,19 @@ RgCellCb    *cell;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgHndlRaResp
+   PUBLIC S16 rgHndlRaResp
 (
-RgCellCb            *cell,
-CmLteTimingInfo     timingInfo,
-RgInfRarInfo        *rarInfo,
-RgErrInfo           *err
-)
+ RgCellCb            *cell,
+ CmLteTimingInfo     timingInfo,
+ RgInfRarInfo        *rarInfo,
+ RgErrInfo           *err
+ )
 #else
 PUBLIC S16 rgHndlRaResp(cell, timingInfo, rarInfo, err)
-RgCellCb            *cell;
-CmLteTimingInfo     timingInfo;
-RgInfRarInfo        *rarInfo;
-RgErrInfo           *err;
+   RgCellCb            *cell;
+   CmLteTimingInfo     timingInfo;
+   RgInfRarInfo        *rarInfo;
+   RgErrInfo           *err;
 #endif
 {
    U8       idx1,idx2;
@@ -266,10 +266,10 @@ RgErrInfo           *err;
 
    TRC2(rgHndlRaResp)
 
-   if(NULLP == rarInfo->raRntiInfo)
-   {
-      RETVALUE(RFAILED);
-   }
+      if(NULLP == rarInfo->raRntiInfo)
+      {
+	 RETVALUE(RFAILED);
+      }
 
    idx = (timingInfo.slot % RG_NUM_SUB_FRAMES);
    dlSf = &cell->subFrms[idx];
@@ -278,46 +278,46 @@ RgErrInfo           *err;
    for(idx1 = 0; idx1 < rarInfo->numRaRntis; idx1++)
    {
       if(ROK == (rgMUXBldRarPdu(cell, 
-                     &rarInfo->raRntiInfo[idx1], &rarPdu, err)))
+		  &rarInfo->raRntiInfo[idx1], &rarPdu, err)))
       {
-         /* Create RaCbs for all the rapIds allocated */
-         for(idx2 = 0; idx2 < rarInfo->raRntiInfo[idx1].numCrnti; idx2++)
-         {
-            if(FALSE == rarInfo->raRntiInfo[idx1].crntiInfo[idx2].isContFree)
-            {
-               if(rgRAMCreateUeCb(cell,
-                  rarInfo->raRntiInfo[idx1].crntiInfo[idx2].tmpCrnti, 
-                  TRUE, err) == NULLP)
-               {
-                  RETVALUE(RFAILED);
-               }
-            }
-         }
-         /* Store the created RAR PDU */
-         dlSf->raRsp[dlSf->numRaRsp].pdcch.rnti = 
-            rarInfo->raRntiInfo[idx1].raRnti;
+	 /* Create RaCbs for all the rapIds allocated */
+	 for(idx2 = 0; idx2 < rarInfo->raRntiInfo[idx1].numCrnti; idx2++)
+	 {
+	    if(FALSE == rarInfo->raRntiInfo[idx1].crntiInfo[idx2].isContFree)
+	    {
+	       if(rgRAMCreateUeCb(cell,
+			rarInfo->raRntiInfo[idx1].crntiInfo[idx2].tmpCrnti, 
+			TRUE, err) == NULLP)
+	       {
+		  RETVALUE(RFAILED);
+	       }
+	    }
+	 }
+	 /* Store the created RAR PDU */
+	 dlSf->raRsp[dlSf->numRaRsp].pdcch.rnti = 
+	    rarInfo->raRntiInfo[idx1].raRnti;
 
-         dlSf->raRsp[dlSf->numRaRsp].pdcch.dci = 
-            rarInfo->raRntiInfo[idx1].dciInfo;
+	 dlSf->raRsp[dlSf->numRaRsp].pdcch.dci = 
+	    rarInfo->raRntiInfo[idx1].dciInfo;
 
-         dlSf->raRsp[dlSf->numRaRsp].rar = rarPdu;
-         /* ccpu00132314-ADD-Adding txPower offset for the PDSCH transmission */
-         dlSf->raRsp[dlSf->numRaRsp].txPwrOffset =
-               rarInfo->txPwrOffset;
+	 dlSf->raRsp[dlSf->numRaRsp].rar = rarPdu;
+	 /* ccpu00132314-ADD-Adding txPower offset for the PDSCH transmission */
+	 dlSf->raRsp[dlSf->numRaRsp].txPwrOffset =
+	    rarInfo->txPwrOffset;
 
-         dlSf->numRaRsp++;
+	 dlSf->numRaRsp++;
       }
       else
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RARNTI:%d Creation of RAR"
-                  "PDU for failed", rarInfo->raRntiInfo[idx1].raRnti);
-         continue;
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RARNTI:%d Creation of RAR"
+	       "PDU for failed", rarInfo->raRntiInfo[idx1].raRnti);
+	 continue;
       }
    } /* end of raRntis loop */
    RETVALUE(ROK);
 } /* end of rgHndlRaResp */
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

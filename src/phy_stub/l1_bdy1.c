@@ -442,7 +442,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 	     */
 	    uint8_t msg5[] = {1, msg5PduLen, 0, 0, 16, 0, 5, 223, 128, 16, 94, \
 	       64, 3, 64, 89, 61, 138, 64, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, \
-	       184, 56, 0, 0, 0, 0, 0};
+		  184, 56, 0, 0, 0, 0, 0};
 
 	    msg5PduLen += 2;  /* 2bytes of header */
 	    memcpy(pdu, &msg5, msg5PduLen);
@@ -767,7 +767,7 @@ uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu
       pduInfo->harqInfo.harqConfidenceLevel = CONFDC_LEVEL_GOOD;
       for(idx = 0; idx < pduInfo->harqInfo.numHarq; idx++)
       {
-         pduInfo->harqInfo.harqValue[idx] = HARQ_PASS;
+	 pduInfo->harqInfo.harqValue[idx] = HARQ_PASS;
       }
    }
    return ROK;
@@ -800,21 +800,21 @@ uint8_t fillUciPduInfo(fapi_uci_pdu_info_t *uciPdu, fapi_ul_pucch_pdu_t pucchPdu
    switch(uciPdu->pduType)
    {
       case UCI_IND_PUSCH:
-         break;
+	 break;
       case UCI_IND_PUCCH_F0F1:
-         {
-            fapi_uci_o_pucch_f0f1_t *pduInfo = NULLP;
+	 {
+	    fapi_uci_o_pucch_f0f1_t *pduInfo = NULLP;
 
-            pduInfo = &uciPdu->uci.uciPucchF0F1;
-            ret = fillPucchF0F1PduInfo(pduInfo, pucchPdu);
-            uciPdu->pduSize = sizeof(fapi_uci_o_pucch_f0f1_t);
-         }
-         break;
+	    pduInfo = &uciPdu->uci.uciPucchF0F1;
+	    ret = fillPucchF0F1PduInfo(pduInfo, pucchPdu);
+	    uciPdu->pduSize = sizeof(fapi_uci_o_pucch_f0f1_t);
+	 }
+	 break;
       case UCI_IND_PUCCH_F2F3F4:
-         break;
+	 break;
       default:
-         DU_LOG("\nPHY_STUB: Invalid Pdu Type %d", uciPdu->pduType);
-         break;
+	 DU_LOG("\nPHY_STUB: Invalid Pdu Type %d", uciPdu->pduType);
+	 break;
    }
    return ret;
 }
@@ -897,7 +897,7 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_ul_tti_req_t *ulTtiReq = NULLP;
-   
+
    DU_LOG("\nPHY STUB: Received UL TTI Request");
 
    ulTtiReq = (fapi_ul_tti_req_t *)msg;

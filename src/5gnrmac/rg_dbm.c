@@ -96,7 +96,7 @@ RgCellCb       *cellCb;
 #endif
 {
    S16 ret;
-   
+
    TRC2(rgDBMInitCell);
 
    /* Initialize ue list */
@@ -135,15 +135,15 @@ RgCellCb       *cellCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDBMInitUeCbLst
+   PRIVATE S16 rgDBMInitUeCbLst
 (
-RgCellCb       *cellCb,
-U16            numBins
-)
+ RgCellCb       *cellCb,
+ U16            numBins
+ )
 #else
 PRIVATE S16 rgDBMInitUeCbLst(cellCb, numBins)
-RgCellCb       *cellCb;
-U16            numBins;
+   RgCellCb       *cellCb;
+   U16            numBins;
 #endif
 {
    Inst inst = cellCb->macInst - RG_INST_START;
@@ -151,7 +151,7 @@ U16            numBins;
    TRC2(rgDBMInitUeCbLst)
 
    RETVALUE(cmHashListInit(&cellCb->ueLst, numBins, (U16)((PTR)&(ue.ueLstEnt) - (PTR)&ue), FALSE, 
-               CM_HASH_KEYTYPE_CONID, rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool));
+	       CM_HASH_KEYTYPE_CONID, rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool));
 
 }  /* rgDBMInitUeCbLst */
 
@@ -169,13 +169,13 @@ U16            numBins;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMDeInitUeCbLst
+   PUBLIC S16 rgDBMDeInitUeCbLst
 (
-RgCellCb       *cellCb
-)
+ RgCellCb       *cellCb
+ )
 #else
 PUBLIC S16 rgDBMDeInitUeCbLst(cellCb)
-RgCellCb       *cellCb;
+   RgCellCb       *cellCb;
 #endif
 {
    TRC2(rgDBMDeInitUeCbLst)
@@ -200,15 +200,15 @@ RgCellCb       *cellCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDBMInitSpsUeCbLst
+   PRIVATE S16 rgDBMInitSpsUeCbLst
 (
-RgCellCb       *cellCb,
-U16            numBins
-)
+ RgCellCb       *cellCb,
+ U16            numBins
+ )
 #else
 PRIVATE S16 rgDBMInitSpsUeCbLst(cellCb, numBins)
-RgCellCb       *cellCb;
-U16            numBins;
+   RgCellCb       *cellCb;
+   U16            numBins;
 #endif
 {
    Inst inst = cellCb->macInst - RG_INST_START;
@@ -216,7 +216,7 @@ U16            numBins;
    TRC2(rgDBMInitSpsUeCbLst)
 
    RETVALUE(cmHashListInit(&cellCb->spsUeLst, numBins, (U16) ((PTR) &(ue.spsUeLstEnt) - (PTR) &ue), FALSE, 
-               CM_HASH_KEYTYPE_CONID, rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool));
+	       CM_HASH_KEYTYPE_CONID, rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool));
 
 }  /* rgDBMInitSpsUeCbLst */
 
@@ -234,18 +234,18 @@ U16            numBins;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMDeInitSpsUeCbLst
+   PUBLIC S16 rgDBMDeInitSpsUeCbLst
 (
-RgCellCb       *cellCb
-)
+ RgCellCb       *cellCb
+ )
 #else
 PUBLIC S16 rgDBMDeInitSpsUeCbLst(cellCb)
-RgCellCb       *cellCb;
+   RgCellCb       *cellCb;
 #endif
 {
    TRC2(rgDBMDeInitSpsUeCbLst)
 
-   RETVALUE(cmHashListDeinit(&cellCb->spsUeLst));
+      RETVALUE(cmHashListDeinit(&cellCb->spsUeLst));
 
 }  /* rgDBMDeInitSpsUeCbLst */
 
@@ -266,21 +266,21 @@ RgCellCb       *cellCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMInsUeCb
+   PUBLIC S16 rgDBMInsUeCb
 (
-RgCellCb       *cellCb,
-RgUeCb         *ueCb
-)
+ RgCellCb       *cellCb,
+ RgUeCb         *ueCb
+ )
 #else
 PUBLIC S16 rgDBMInsUeCb(cellCb, ueCb)
-RgCellCb       *cellCb;
-RgUeCb         *ueCb;
+   RgCellCb       *cellCb;
+   RgUeCb         *ueCb;
 #endif
 {
    TRC2(rgDBMInsUeCb)
 
-   RETVALUE(cmHashListInsert(&cellCb->ueLst, (PTR)ueCb, 
-      (U8 *)&ueCb->ueId, (U16)sizeof(ueCb->ueId)));
+      RETVALUE(cmHashListInsert(&cellCb->ueLst, (PTR)ueCb, 
+	       (U8 *)&ueCb->ueId, (U16)sizeof(ueCb->ueId)));
 
 }  /* rgDBMInsUeCb */
 
@@ -300,21 +300,21 @@ RgUeCb         *ueCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMInsSpsUeCb
+   PUBLIC S16 rgDBMInsSpsUeCb
 (
-RgCellCb       *cellCb,
-RgUeCb         *ueCb
-)
+ RgCellCb       *cellCb,
+ RgUeCb         *ueCb
+ )
 #else
 PUBLIC S16 rgDBMInsSpsUeCb(cellCb, ueCb)
-RgCellCb       *cellCb;
-RgUeCb         *ueCb;
+   RgCellCb       *cellCb;
+   RgUeCb         *ueCb;
 #endif
 {
    TRC2(rgDBMInsSpsUeCb)
 
-   RETVALUE(cmHashListInsert(&cellCb->spsUeLst, (PTR)ueCb, 
-      (U8 *)&ueCb->spsRnti, (U16)sizeof(ueCb->spsRnti)));
+      RETVALUE(cmHashListInsert(&cellCb->spsUeLst, (PTR)ueCb, 
+	       (U8 *)&ueCb->spsRnti, (U16)sizeof(ueCb->spsRnti)));
 
 }  /* end of rgDBMInsSpsUeCb */
 
@@ -334,23 +334,23 @@ RgUeCb         *ueCb;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetUeCb
+   PUBLIC RgUeCb* rgDBMGetUeCb
 (
-RgCellCb       *cellCb, 
-CmLteRnti      ueId
-)
+ RgCellCb       *cellCb, 
+ CmLteRnti      ueId
+ )
 #else
 PUBLIC RgUeCb* rgDBMGetUeCb(cellCb, ueId)
-RgCellCb       *cellCb;
-CmLteRnti      ueId;
+   RgCellCb       *cellCb;
+   CmLteRnti      ueId;
 #endif
 {
    RgUeCb *ueCb = NULLP; 
 
    TRC2(rgDBMGetUeCb)
 
-   cmHashListFind(&cellCb->ueLst, (U8 *)&ueId,
-      sizeof(ueId), 0, (PTR *)&ueCb);
+      cmHashListFind(&cellCb->ueLst, (U8 *)&ueId,
+	    sizeof(ueId), 0, (PTR *)&ueCb);
    RETVALUE(ueCb);
 }  /* rgDBMGetUeCb */
 
@@ -369,23 +369,23 @@ CmLteRnti      ueId;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetSpsUeCb
+   PUBLIC RgUeCb* rgDBMGetSpsUeCb
 (
-RgCellCb       *cellCb, 
-CmLteRnti      spsRnti
-)
+ RgCellCb       *cellCb, 
+ CmLteRnti      spsRnti
+ )
 #else
 PUBLIC RgUeCb* rgDBMGetSpsUeCb(cellCb, spsRnti)
-RgCellCb       *cellCb;
-CmLteRnti      spsRnti;
+   RgCellCb       *cellCb;
+   CmLteRnti      spsRnti;
 #endif
 {
    RgUeCb *ueCb = NULLP; 
 
    TRC2(rgDBMGetSpsUeCb)
 
-   cmHashListFind(&cellCb->spsUeLst, (U8 *)&spsRnti,
-      sizeof(spsRnti), 0, (PTR *)&ueCb);
+      cmHashListFind(&cellCb->spsUeLst, (U8 *)&spsRnti,
+	    sizeof(spsRnti), 0, (PTR *)&ueCb);
    RETVALUE(ueCb);
 }  /* rgDBMGetSpsUeCb */
 
@@ -405,22 +405,22 @@ CmLteRnti      spsRnti;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetNextUeCb
+   PUBLIC RgUeCb* rgDBMGetNextUeCb
 (
-RgCellCb       *cellCb, 
-RgUeCb         *ueCb
-)
+ RgCellCb       *cellCb, 
+ RgUeCb         *ueCb
+ )
 #else
 PUBLIC RgUeCb* rgDBMGetNextUeCb(cellCb, ueCb)
-RgCellCb       *cellCb;
-RgUeCb         *ueCb;
+   RgCellCb       *cellCb;
+   RgUeCb         *ueCb;
 #endif
 {
    RgUeCb *nextUeCb = NULLP; 
 
    TRC2(rgDBMGetNextUeCb)
 
-   cmHashListGetNext(&cellCb->ueLst, (PTR) ueCb, (PTR *)&nextUeCb);
+      cmHashListGetNext(&cellCb->ueLst, (PTR) ueCb, (PTR *)&nextUeCb);
    RETVALUE(nextUeCb);
 }  /* rgDBMGetNextUeCb */
 
@@ -439,22 +439,22 @@ RgUeCb         *ueCb;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetNextSpsUeCb
+   PUBLIC RgUeCb* rgDBMGetNextSpsUeCb
 (
-RgCellCb       *cellCb, 
-RgUeCb         *ueCb
-)
+ RgCellCb       *cellCb, 
+ RgUeCb         *ueCb
+ )
 #else
 PUBLIC RgUeCb* rgDBMGetNextSpsUeCb(cellCb, ueCb)
-RgCellCb       *cellCb;
-RgUeCb         *ueCb;
+   RgCellCb       *cellCb;
+   RgUeCb         *ueCb;
 #endif
 {
    RgUeCb *nextUeCb = NULLP; 
 
    TRC2(rgDBMGetNextSpsUeCb)
 
-   cmHashListGetNext(&cellCb->spsUeLst, (PTR) ueCb, (PTR *)&nextUeCb);
+      cmHashListGetNext(&cellCb->spsUeLst, (PTR) ueCb, (PTR *)&nextUeCb);
    RETVALUE(nextUeCb);
 }  /* end of rgDBMGetNextSpsUeCb */
 
@@ -477,20 +477,20 @@ RgUeCb         *ueCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMDelUeCb
+   PUBLIC S16 rgDBMDelUeCb
 (
-RgCellCb       *cellCb,
-RgUeCb         *ueCb
-)
+ RgCellCb       *cellCb,
+ RgUeCb         *ueCb
+ )
 #else
 PUBLIC S16 rgDBMDelUeCb(cellCb, ueCb)
-RgCellCb       *cellCb;
-RgUeCb         *ueCb;
+   RgCellCb       *cellCb;
+   RgUeCb         *ueCb;
 #endif
 {
    TRC2(rgDBMDelUeCb)
 
-   RETVALUE(cmHashListDelete(&cellCb->ueLst, (PTR)ueCb));
+      RETVALUE(cmHashListDelete(&cellCb->ueLst, (PTR)ueCb));
 }  /* rgDBMDelUeCb */
 
 #ifdef LTEMAC_SPS
@@ -510,20 +510,20 @@ RgUeCb         *ueCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMDelSpsUeCb
+   PUBLIC S16 rgDBMDelSpsUeCb
 (
-RgCellCb       *cellCb,
-RgUeCb         *ueCb
-)
+ RgCellCb       *cellCb,
+ RgUeCb         *ueCb
+ )
 #else
 PUBLIC S16 rgDBMDelSpsUeCb(cellCb, ueCb)
-RgCellCb       *cellCb;
-RgUeCb         *ueCb;
+   RgCellCb       *cellCb;
+   RgUeCb         *ueCb;
 #endif
 {
    TRC2(rgDBMDelSpsUeCb)
 
-   RETVALUE(cmHashListDelete(&cellCb->spsUeLst, (PTR)ueCb));
+      RETVALUE(cmHashListDelete(&cellCb->spsUeLst, (PTR)ueCb));
 }  /* end of rgDBMDelSpsUeCb */
 
 #endif /* LTEMAC_SPS */
@@ -544,13 +544,13 @@ RgUeCb         *ueCb;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInitUe
+   PUBLIC Void rgDBMInitUe
 (
-RgUeCb       *ueCb
-)
+ RgUeCb       *ueCb
+ )
 #else
 PUBLIC Void rgDBMInitUe(ueCb)
-RgUeCb       *ueCb;
+   RgUeCb       *ueCb;
 #endif
 {
 #ifdef LTEMAC_SPS
@@ -587,17 +587,17 @@ RgUeCb       *ueCb;
  *  @return     Void 
  **/
 #ifdef ANSI
-PRIVATE Void rgDBMInitDedLcLst
+   PRIVATE Void rgDBMInitDedLcLst
 (
-RgUeCb       *ueCb
-)
+ RgUeCb       *ueCb
+ )
 #else
 PRIVATE Void rgDBMInitDedLcLst(ueCb)
-RgUeCb       *ueCb;
+   RgUeCb       *ueCb;
 #endif
 {
    U8 idx;
-   
+
    TRC2(rgDBMInitDedLcLst);
 
    for (idx = 0; idx < RG_MAX_LC_PER_UE; ++idx)
@@ -616,7 +616,7 @@ RgUeCb       *ueCb;
    }
 
    /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   RETVOID;
 } /* rgDBMInitDedLcLst */
 
 /**
@@ -635,19 +635,19 @@ RgUeCb       *ueCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PRIVATE Void rgDBMInitCmnLcLst
+   PRIVATE Void rgDBMInitCmnLcLst
 (
-RgCellCb       *cellCb
-)
+ RgCellCb       *cellCb
+ )
 #else
 PRIVATE Void rgDBMInitCmnLcLst(cellCb)
-RgCellCb       *cellCb;
+   RgCellCb       *cellCb;
 #endif
 {
    U8 idx;
-   
+
    TRC2(rgDBMInitCmnLcLst);
-   
+
    cellCb->bcchBchInfo.lcId = RG_INVALID_LC_ID;
    cellCb->pcchInfo.lcId = RG_INVALID_LC_ID;
 
@@ -659,7 +659,7 @@ RgCellCb       *cellCb;
    }
 
    /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   RETVOID;
 } /* rgDBMInitCmnLcLst */
 
 /**
@@ -678,19 +678,19 @@ RgCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMFreeCmnLcLst
+   PUBLIC Void rgDBMFreeCmnLcLst
 (
-RgCellCb       *cellCb
-)
+ RgCellCb       *cellCb
+ )
 #else
 PUBLIC Void rgDBMFreeCmnLcLst(cellCb)
-RgCellCb       *cellCb;
+   RgCellCb       *cellCb;
 #endif
 {
    U8 idx;
-   
+
    TRC2(rgDBMFreeCmnLcLst);
-   
+
    cellCb->bcchBchInfo.lcId = RG_INVALID_LC_ID;
    cellCb->pcchInfo.lcId = RG_INVALID_LC_ID;
 
@@ -702,7 +702,7 @@ RgCellCb       *cellCb;
    cellCb->numBcchDlschInfo = 0;
 
    /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   RETVOID;
 } /* rgDBMFreeCmnLcLst */
 
 /**
@@ -717,15 +717,15 @@ RgCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsDlDedLcCb
+   PUBLIC Void rgDBMInsDlDedLcCb
 (
-RgUeCb         *ueCb, 
-CmLteLcId        idx
-)
+ RgUeCb         *ueCb, 
+ CmLteLcId        idx
+ )
 #else
 PUBLIC Void rgDBMInsDlDedLcCb(ueCb, idx)
-RgUeCb         *ueCb; 
-CmLteLcId        idx;
+   RgUeCb         *ueCb; 
+   CmLteLcId        idx;
 #endif
 {
    TRC2(rgDBMInsDlDedLcCb);
@@ -733,8 +733,8 @@ CmLteLcId        idx;
    {
       ueCb->dl.lcCb[idx-1].lcId = idx;
    }
-  /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 Changes. Added the return below */
+   RETVOID;
 }  /* rgDBMInsDlDedLcCb */
 
 /**
@@ -749,24 +749,24 @@ CmLteLcId        idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMDelDlDedLcCb
+   PUBLIC Void rgDBMDelDlDedLcCb
 (
-RgUeCb         *ueCb, 
-RgDlLcCb       *dlLcCb 
-)
+ RgUeCb         *ueCb, 
+ RgDlLcCb       *dlLcCb 
+ )
 #else
 PUBLIC Void rgDBMDelDlDedLcCb(ueCb, dlLcCb)
-RgUeCb         *ueCb; 
-RgDlLcCb       *dlLcCb; 
+   RgUeCb         *ueCb; 
+   RgDlLcCb       *dlLcCb; 
 #endif
 {
    TRC2(rgDBMDelDlDedLcCb);
 
    ueCb->dl.lcCb[dlLcCb->lcId - 1].lcId = RG_INVALID_LC_ID;
 
-  /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
-  
+   /* Stack Crash problem for TRACE5 Changes. Added the return below */
+   RETVOID;
+
 }  /* rgDBMDelDlDedLcCb */
 
 /**
@@ -782,15 +782,15 @@ RgDlLcCb       *dlLcCb;
  *  @return  RgDlLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgDlLcCb* rgDBMGetDlDedLcCb
+   PUBLIC RgDlLcCb* rgDBMGetDlDedLcCb
 (
-RgUeCb         *ueCb, 
-CmLteLcId        idx
-)
+ RgUeCb         *ueCb, 
+ CmLteLcId        idx
+ )
 #else
 PUBLIC RgDlLcCb* rgDBMGetDlDedLcCb(ueCb, idx)
-RgUeCb         *ueCb; 
-CmLteLcId        idx;
+   RgUeCb         *ueCb; 
+   CmLteLcId        idx;
 #endif
 {
    TRC2(rgDBMGetDlDedLcCb);
@@ -823,33 +823,33 @@ CmLteLcId        idx;
  **/
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC Void rgDBMInsUlDedLcCb
+   PUBLIC Void rgDBMInsUlDedLcCb
 (
-RgUeCb         *ueCb, 
-CmLteLcId      idx,
-LteLcgId       gId,
-U8             qci
-)
+ RgUeCb         *ueCb, 
+ CmLteLcId      idx,
+ LteLcgId       gId,
+ U8             qci
+ )
 #else
 PUBLIC Void rgDBMInsUlDedLcCb(ueCb, idx, gId, qci)
-RgUeCb         *ueCb; 
-CmLteLcId      idx;
-LteLcgId       gId;
-U8             qci;
+   RgUeCb         *ueCb; 
+   CmLteLcId      idx;
+   LteLcgId       gId;
+   U8             qci;
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void rgDBMInsUlDedLcCb
+   PUBLIC Void rgDBMInsUlDedLcCb
 (
-RgUeCb         *ueCb, 
-CmLteLcId      idx,
-LteLcgId       gId
-)
+ RgUeCb         *ueCb, 
+ CmLteLcId      idx,
+ LteLcgId       gId
+ )
 #else
 PUBLIC Void rgDBMInsUlDedLcCb(ueCb, idx, gId)
-RgUeCb         *ueCb; 
-CmLteLcId      idx;
-LteLcgId       gId;
+   RgUeCb         *ueCb; 
+   CmLteLcId      idx;
+   LteLcgId       gId;
 #endif
 #endif
 {
@@ -869,8 +869,8 @@ LteLcgId       gId;
    ueCb->ul.lcgArr[gId].lcCount = ueCb->ul.lcgArr[gId].lcCount + 1;
 
 
-  /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 Changes. Added the return below */
+   RETVOID;
 
 }  /* rgDBMInsUlDedLcCb */
 
@@ -888,23 +888,23 @@ LteLcgId       gId;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMUpdUlDedLcCb
+   PUBLIC Void rgDBMUpdUlDedLcCb
 (
-RgUeCb         *ueCb, 
-RgUlLcCb       *ulLcCb,
-LteLcgId       gId
-)
+ RgUeCb         *ueCb, 
+ RgUlLcCb       *ulLcCb,
+ LteLcgId       gId
+ )
 #else
 PUBLIC Void rgDBMUpdUlDedLcCb(ueCb, ulLcCb, gId)
-RgUeCb         *ueCb; 
-RgUlLcCb       *ulLcCb; 
-LteLcgId       gId;
+   RgUeCb         *ueCb; 
+   RgUlLcCb       *ulLcCb; 
+   LteLcgId       gId;
 #endif
 {
    TRC2(rgDBMUpdUlDedLcCb);
 
    ueCb->ul.lcgArr[ulLcCb->lcgId].lcCount = 
-               ueCb->ul.lcgArr[ulLcCb->lcgId].lcCount - 1;
+      ueCb->ul.lcgArr[ulLcCb->lcgId].lcCount - 1;
    if(ueCb->ul.lcgArr[ulLcCb->lcgId].lcCount == 0)
    {
       ueCb->ul.lcgArr[ulLcCb->lcgId].lcgId = RG_INVALID_LCG_ID;
@@ -917,8 +917,8 @@ LteLcgId       gId;
    }
    ueCb->ul.lcgArr[gId].lcCount = ueCb->ul.lcgArr[gId].lcCount + 1;
 
-  /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 Changes. Added the return below */
+   RETVOID;
 }  /* rgDBMUpdUlDedLcCb */
 
 /**
@@ -934,21 +934,21 @@ LteLcgId       gId;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMDelUlDedLcCb
+   PUBLIC Void rgDBMDelUlDedLcCb
 (
-RgUeCb         *ueCb, 
-RgUlLcCb       *ulLcCb 
-)
+ RgUeCb         *ueCb, 
+ RgUlLcCb       *ulLcCb 
+ )
 #else
 PUBLIC Void rgDBMDelUlDedLcCb(ueCb, ulLcCb)
-RgUeCb         *ueCb; 
-RgUlLcCb       *ulLcCb; 
+   RgUeCb         *ueCb; 
+   RgUlLcCb       *ulLcCb; 
 #endif
 {
    TRC2(rgDBMDelUlDedLcCb);
 
    ueCb->ul.lcgArr[ulLcCb->lcgId].lcCount = 
-               ueCb->ul.lcgArr[ulLcCb->lcgId].lcCount - 1;
+      ueCb->ul.lcgArr[ulLcCb->lcgId].lcCount - 1;
    if(ueCb->ul.lcgArr[ulLcCb->lcgId].lcCount == 0)
    {
       ueCb->ul.lcgArr[ulLcCb->lcgId].lcgId = RG_INVALID_LCG_ID;
@@ -956,8 +956,8 @@ RgUlLcCb       *ulLcCb;
    ueCb->ul.lcCb[ulLcCb->lcId - 1].lcgId = RG_INVALID_LCG_ID;
    ueCb->ul.lcCb[ulLcCb->lcId - 1].lcId = RG_INVALID_LC_ID;
 
-  /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 Changes. Added the return below */
+   RETVOID;
 }  /* rgDBMDelUlDedLcCb */
 
 /**
@@ -974,23 +974,23 @@ RgUlLcCb       *ulLcCb;
  *  @return  RgUlLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgUlLcCb* rgDBMGetUlDedLcCb
+   PUBLIC RgUlLcCb* rgDBMGetUlDedLcCb
 (
-RgUeCb         *ueCb, 
-CmLteLcId        idx
-)
+ RgUeCb         *ueCb, 
+ CmLteLcId        idx
+ )
 #else
 PUBLIC RgUlLcCb* rgDBMGetUlDedLcCb(ueCb, idx)
-RgUeCb         *ueCb; 
-CmLteLcId        idx;
+   RgUeCb         *ueCb; 
+   CmLteLcId        idx;
 #endif
 {
    TRC2(rgDBMGetUlDedLcCb)
 
-   if (idx > RG_DEDLC_MAX_LCID || idx < RG_DEDLC_MIN_LCID)
-   {
-      RETVALUE(NULLP);
-   }
+      if (idx > RG_DEDLC_MAX_LCID || idx < RG_DEDLC_MIN_LCID)
+      {
+	 RETVALUE(NULLP);
+      }
    if(ueCb->ul.lcCb[idx-1].lcId == RG_INVALID_LC_ID)
    {
       RETVALUE(NULLP);
@@ -1015,25 +1015,25 @@ CmLteLcId        idx;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMChkCmnLcCb
+   PUBLIC S16 rgDBMChkCmnLcCb
 (
-RgCellCb       *cellCb, 
-CmLteLcId        lcId
-)
+ RgCellCb       *cellCb, 
+ CmLteLcId        lcId
+ )
 #else
 PUBLIC S16 rgDBMChkCmnLcCb(cellCb, lcId)
-RgCellCb       *cellCb;
-CmLteLcId        lcId;
+   RgCellCb       *cellCb;
+   CmLteLcId        lcId;
 #endif
 {
    U8 idx;
 
    TRC2(rgDBMChkCmnLcCb)
 
-   if(cellCb->bcchBchInfo.lcId == lcId)
-   {
-      RETVALUE(ROK);
-   } 
+      if(cellCb->bcchBchInfo.lcId == lcId)
+      {
+	 RETVALUE(ROK);
+      } 
    if(cellCb->pcchInfo.lcId == lcId)
    {
       RETVALUE(ROK);
@@ -1043,7 +1043,7 @@ CmLteLcId        lcId;
    {
       if(cellCb->bcchDlschInfo[idx].lcId == lcId)
       {
-         RETVALUE(ROK);
+	 RETVALUE(ROK);
       } 
    }
    RETVALUE(RFAILED);
@@ -1062,21 +1062,21 @@ CmLteLcId        lcId;
  *  @return  RgBcchBchLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgBcchBchLcCb* rgDBMGetBcchOnBch
+   PUBLIC RgBcchBchLcCb* rgDBMGetBcchOnBch
 (
-RgCellCb       *cellCb 
-)
+ RgCellCb       *cellCb 
+ )
 #else
 PUBLIC RgBcchBchLcCb* rgDBMGetBcchOnBch(cellCb)
-RgCellCb       *cellCb;
+   RgCellCb       *cellCb;
 #endif
 {
    TRC2(rgDBMGetBcchOnBch)
 
-   if(cellCb->bcchBchInfo.lcId != RG_INVALID_LC_ID)
-   {
-      RETVALUE(&(cellCb->bcchBchInfo));
-   }
+      if(cellCb->bcchBchInfo.lcId != RG_INVALID_LC_ID)
+      {
+	 RETVALUE(&(cellCb->bcchBchInfo));
+      }
    RETVALUE(NULLP);
 }  /* rgDBMGetBcchOnBch */
 
@@ -1094,28 +1094,28 @@ RgCellCb       *cellCb;
  *  @return  RgBcchDlschLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgBcchDlschLcCb* rgDBMGetBcchOnDlsch
+   PUBLIC RgBcchDlschLcCb* rgDBMGetBcchOnDlsch
 (
-RgCellCb       *cellCb,
-CmLteLcId      lcId
-)
+ RgCellCb       *cellCb,
+ CmLteLcId      lcId
+ )
 #else
 PUBLIC RgBcchDlschLcCb* rgDBMGetBcchOnDlsch(cellCb,lcId)
-RgCellCb       *cellCb;
-CmLteLcId      lcId;
+   RgCellCb       *cellCb;
+   CmLteLcId      lcId;
 #endif
 {
    U8 idx;
 
    TRC2(rgDBMGetBcchOnDlsch)
 
-   for (idx = 0; idx < RG_MAX_BCCH_DLSCH; idx++)
-   {
-      if(cellCb->bcchDlschInfo[idx].lcId == lcId)
+      for (idx = 0; idx < RG_MAX_BCCH_DLSCH; idx++)
       {
-         RETVALUE(&(cellCb->bcchDlschInfo[idx]));
+	 if(cellCb->bcchDlschInfo[idx].lcId == lcId)
+	 {
+	    RETVALUE(&(cellCb->bcchDlschInfo[idx]));
+	 }
       }
-   }
    RETVALUE(NULLP);
 }  /* rgDBMGetBcchOnDlsch */
 
@@ -1131,21 +1131,21 @@ CmLteLcId      lcId;
  *  @return  RgPcchLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgPcchLcCb* rgDBMGetPcch
+   PUBLIC RgPcchLcCb* rgDBMGetPcch
 (
-RgCellCb       *cellCb
-)
+ RgCellCb       *cellCb
+ )
 #else
 PUBLIC RgPcchLcCb* rgDBMGetPcch(cellCb)
-RgCellCb       *cellCb;
+   RgCellCb       *cellCb;
 #endif
 {
    TRC2(rgDBMGetPcch)
- 
-   if(cellCb->pcchInfo.lcId != RG_INVALID_LC_ID)
-   {
-      RETVALUE(&(cellCb->pcchInfo));
-   }
+
+      if(cellCb->pcchInfo.lcId != RG_INVALID_LC_ID)
+      {
+	 RETVALUE(&(cellCb->pcchInfo));
+      }
    RETVALUE(NULLP);
 }  /* rgDBMGetPcch */
 
@@ -1162,23 +1162,23 @@ RgCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsBcchOnBch
+   PUBLIC Void rgDBMInsBcchOnBch
 (
-RgCellCb       *cellCb, 
-CmLteLcId      idx
-)
+ RgCellCb       *cellCb, 
+ CmLteLcId      idx
+ )
 #else
 PUBLIC Void rgDBMInsBcchOnBch(cellCb, idx)
-RgCellCb       *cellCb;
-CmLteLcId      idx;
+   RgCellCb       *cellCb;
+   CmLteLcId      idx;
 #endif
 {
    TRC2(rgDBMInsBcchOnBch)
 
-   cellCb->bcchBchInfo.lcId = idx;
+      cellCb->bcchBchInfo.lcId = idx;
 
-  /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 Changes. Added the return below */
+   RETVOID;
 }  /* rgDBMInsBcchOnBch */
 
 /**
@@ -1194,24 +1194,24 @@ CmLteLcId      idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsBcchOnDlsch
+   PUBLIC Void rgDBMInsBcchOnDlsch
 (
-RgCellCb       *cellCb, 
-CmLteLcId      idx
-)
+ RgCellCb       *cellCb, 
+ CmLteLcId      idx
+ )
 #else
 PUBLIC Void rgDBMInsBcchOnDlsch(cellCb, idx)
-RgCellCb       *cellCb;
-CmLteLcId      idx;
+   RgCellCb       *cellCb;
+   CmLteLcId      idx;
 #endif
 {
    TRC2(rgDBMInsBcchOnDlsch)
 
-   cellCb->bcchDlschInfo[cellCb->numBcchDlschInfo].lcId = idx;
+      cellCb->bcchDlschInfo[cellCb->numBcchDlschInfo].lcId = idx;
    cellCb->numBcchDlschInfo++;
 
-  /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 Changes. Added the return below */
+   RETVOID;
 }  /* rgDBMInsBcchOnDlsch */
 
 
@@ -1227,23 +1227,23 @@ CmLteLcId      idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsPcch
+   PUBLIC Void rgDBMInsPcch
 (
-RgCellCb       *cellCb, 
-CmLteLcId      idx
-)
+ RgCellCb       *cellCb, 
+ CmLteLcId      idx
+ )
 #else
 PUBLIC Void rgDBMInsPcch(cellCb, idx)
-RgCellCb       *cellCb;
-CmLteLcId      idx;
+   RgCellCb       *cellCb;
+   CmLteLcId      idx;
 #endif
 {
    TRC2(rgDBMInsPcch)
 
-   cellCb->pcchInfo.lcId = idx;
+      cellCb->pcchInfo.lcId = idx;
 
-  /* Stack Crash problem for TRACE5 Changes. Added the return below */
-  RETVOID;
+   /* Stack Crash problem for TRACE5 Changes. Added the return below */
+   RETVOID;
 }  /* rgDBMInsPcch */
 
 /**
@@ -1258,18 +1258,18 @@ CmLteLcId      idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PRIVATE Void rgDBMInitRachLst
+   PRIVATE Void rgDBMInitRachLst
 (
-RgCellCb       *cellCb
-)
+ RgCellCb       *cellCb
+ )
 #else
 PRIVATE Void rgDBMInitRachLst(cellCb)
-RgCellCb       *cellCb;
+   RgCellCb       *cellCb;
 #endif
 {
    TRC2(rgDBMInitRachLst)
 
-   cmLListInit(&cellCb->raInfo.ueRachLst);
+      cmLListInit(&cellCb->raInfo.ueRachLst);
    RETVOID;
 }  /* rgDBMInitRachLst */
 
@@ -1286,20 +1286,20 @@ RgCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsUeCbInRachLst
+   PUBLIC Void rgDBMInsUeCbInRachLst
 (
-RgCellCb       *cellCb, 
-RgUeCb         *ueCb
-)
+ RgCellCb       *cellCb, 
+ RgUeCb         *ueCb
+ )
 #else
 PUBLIC Void rgDBMInsUeCbInRachLst(cellCb, ueCb)
-RgCellCb       *cellCb; 
-RgUeCb         *ueCb;
+   RgCellCb       *cellCb; 
+   RgUeCb         *ueCb;
 #endif
 {
    TRC2(rgDBMInsUeCbInRachLst)
 
-   cmLListAdd2Tail(&cellCb->raInfo.ueRachLst,&ueCb->rachLstEnt);
+      cmLListAdd2Tail(&cellCb->raInfo.ueRachLst,&ueCb->rachLstEnt);
 
    RETVOID;
 }  /* rgDBMInsUeCbInRachLst */
@@ -1317,27 +1317,27 @@ RgUeCb         *ueCb;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetUeCbFromRachLst
+   PUBLIC RgUeCb* rgDBMGetUeCbFromRachLst
 (
-RgCellCb       *cellCb, 
-CmLteRnti      key
-)
+ RgCellCb       *cellCb, 
+ CmLteRnti      key
+ )
 #else
 PUBLIC RgUeCb* rgDBMGetUeCbFromRachLst(cellCb, key)
-RgCellCb       *cellCb; 
-CmLteRnti      key;
+   RgCellCb       *cellCb; 
+   CmLteRnti      key;
 #endif
 {
    CmLList *tmpNode;
 
    TRC2(rgDBMGetUeCbFromRachLst)
 
-   CM_LLIST_FIRST_NODE(&cellCb->raInfo.ueRachLst,tmpNode);
+      CM_LLIST_FIRST_NODE(&cellCb->raInfo.ueRachLst,tmpNode);
    while(tmpNode)
    {
       if(((RgUeCb *)tmpNode->node)->ueId == key)
       {
-         RETVALUE((RgUeCb *)(tmpNode->node));
+	 RETVALUE((RgUeCb *)(tmpNode->node));
       }
       CM_LLIST_NEXT_NODE(&cellCb->raInfo.ueRachLst,tmpNode);
    }
@@ -1357,26 +1357,26 @@ CmLteRnti      key;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetNextUeCbFromRachLst
+   PUBLIC RgUeCb* rgDBMGetNextUeCbFromRachLst
 (
-RgCellCb       *cellCb,
-RgUeCb         *ueCb
-)
+ RgCellCb       *cellCb,
+ RgUeCb         *ueCb
+ )
 #else
 PUBLIC RgUeCb* rgDBMGetNextUeCbFromRachLst(cellCb, ueCb)
-RgCellCb       *cellCb; 
-RgUeCb         *ueCb;
+   RgCellCb       *cellCb; 
+   RgUeCb         *ueCb;
 #endif
 {
    TRC2(rgDBMGetNextUeCbFromRachLst)
 
-   if(!ueCb)
-   {
-      RETVALUE( cellCb->raInfo.ueRachLst.first ? 
-               (RgUeCb *)(cellCb->raInfo.ueRachLst.first->node) : NULLP );
-   }
+      if(!ueCb)
+      {
+	 RETVALUE( cellCb->raInfo.ueRachLst.first ? 
+	       (RgUeCb *)(cellCb->raInfo.ueRachLst.first->node) : NULLP );
+      }
    RETVALUE( ueCb->rachLstEnt.next ? 
-               (RgUeCb *)(ueCb->rachLstEnt.next->node) : NULLP );
+	 (RgUeCb *)(ueCb->rachLstEnt.next->node) : NULLP );
 }  /* rgDBMGetNextUeCbFromRachLst */
 
 /**
@@ -1392,24 +1392,24 @@ RgUeCb         *ueCb;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMDelUeCbFromRachLst
+   PUBLIC Void rgDBMDelUeCbFromRachLst
 (
-RgCellCb       *cellCb, 
-RgUeCb         *ueCb 
-)
+ RgCellCb       *cellCb, 
+ RgUeCb         *ueCb 
+ )
 #else
 PUBLIC Void rgDBMDelUeCbFromRachLst(cellCb, ueCb)
-RgCellCb       *cellCb; 
-RgUeCb         *ueCb;
+   RgCellCb       *cellCb; 
+   RgUeCb         *ueCb;
 #endif
 {
    TRC2(rgDBMDelUeCbFromRachLst)
 
-   cmLListDelFrm(&cellCb->raInfo.ueRachLst, &ueCb->rachLstEnt);
+      cmLListDelFrm(&cellCb->raInfo.ueRachLst, &ueCb->rachLstEnt);
    RETVOID;
 }  /* rgDBMDelUeCbFromRachLst */
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

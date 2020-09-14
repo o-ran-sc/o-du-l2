@@ -48,20 +48,20 @@ S16 SendF1APMsg(Region region, Pool pool)
    {
       if(SAddPstMsgMult((Data *)encBuf, encBufSize, mBuf) == ROK)
       {
-         SPrntMsg(mBuf, 0,0);
- 
-         if(sctpSend(mBuf) != ROK)
-         {
-            DU_LOG("\nF1AP : SCTP Send failed");
-            SPutMsg(mBuf);
-            RETVALUE(RFAILED);
-         }
+	 SPrntMsg(mBuf, 0,0);
+
+	 if(sctpSend(mBuf) != ROK)
+	 {
+	    DU_LOG("\nF1AP : SCTP Send failed");
+	    SPutMsg(mBuf);
+	    RETVALUE(RFAILED);
+	 }
       }
       else
       {
-         DU_LOG("\nF1AP : SAddPstMsgMult failed");
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+	 DU_LOG("\nF1AP : SAddPstMsgMult failed");
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
       }
       SPutMsg(mBuf);
    }
@@ -70,26 +70,26 @@ S16 SendF1APMsg(Region region, Pool pool)
       DU_LOG("\nF1AP : Failed to allocate memory");
       RETVALUE(RFAILED);
    }
- 
+
    RETVALUE(ROK);
 } /* SendF1APMsg */
 
 /*******************************************************************
-*
-* @brief Builds NRCell ID 
-*
-* @details
-*
-*    Function : BuildNrCellId
-*
-*    Functionality: Building the NR Cell ID
-*
-* @params[in] BIT_STRING_t *nrcell
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
- 
+ *
+ * @brief Builds NRCell ID 
+ *
+ * @details
+ *
+ *    Function : BuildNrCellId
+ *
+ *    Functionality: Building the NR Cell ID
+ *
+ * @params[in] BIT_STRING_t *nrcell
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
 S16 BuildNrCellId(BIT_STRING_t *nrcell)
 {
    U8 tmp;
@@ -129,9 +129,9 @@ S16 BuildAndSendF1SetupRsp()
    F1SetupResponse_t  *f1SetupRsp;
    GNB_CU_Name_t      *cuName;
    Cells_to_be_Activated_List_t *cellToActivate;
-	RRC_Version_t      *rrcVer;
-	asn_enc_rval_t     encRetVal; 
-	DU_LOG("\nF1AP : Building F1 Setup Response\n");
+   RRC_Version_t      *rrcVer;
+   asn_enc_rval_t     encRetVal; 
+   DU_LOG("\nF1AP : Building F1 Setup Response\n");
 
    /* Allocate the memory for F1SetupRequest_t */
    CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t)); 
@@ -153,7 +153,7 @@ S16 BuildAndSendF1SetupRsp()
    f1apMsg->choice.successfulOutcome->procedureCode = ProcedureCode_id_F1Setup;
    f1apMsg->choice.successfulOutcome->criticality = Criticality_reject;
    f1apMsg->choice.successfulOutcome->value.present = \
-         SuccessfulOutcome__value_PR_F1SetupResponse;
+						      SuccessfulOutcome__value_PR_F1SetupResponse;
    f1SetupRsp = &f1apMsg->choice.successfulOutcome->value.choice.F1SetupResponse;
 
    elementCnt = 4;
@@ -161,7 +161,7 @@ S16 BuildAndSendF1SetupRsp()
    f1SetupRsp->protocolIEs.list.size = elementCnt*sizeof(F1SetupResponseIEs_t *);
 
    CU_ALLOC(f1SetupRsp->protocolIEs.list.array, \
-         elementCnt * sizeof(F1SetupResponseIEs_t *));
+	 elementCnt * sizeof(F1SetupResponseIEs_t *));
    if(f1SetupRsp->protocolIEs.list.array == NULLP)
    {
       DU_LOG("\nF1AP : Memory allocation for F1ResponseIEs failed");
@@ -173,15 +173,15 @@ S16 BuildAndSendF1SetupRsp()
    for(idx=0; idx<elementCnt; idx++)
    {
       CU_ALLOC(f1SetupRsp->protocolIEs.list.array[idx], \
-            sizeof(F1SetupResponseIEs_t)); 
+	    sizeof(F1SetupResponseIEs_t)); 
       if(f1SetupRsp->protocolIEs.list.array[idx] == NULLP)
       {  
-         CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-               elementCnt * sizeof(F1SetupResponseIEs_t *));
-         CU_FREE(f1apMsg->choice.successfulOutcome, \
-               sizeof(SuccessfulOutcome_t));
-         CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array,\
+	       elementCnt * sizeof(F1SetupResponseIEs_t *));
+	 CU_FREE(f1apMsg->choice.successfulOutcome, \
+	       sizeof(SuccessfulOutcome_t));
+	 CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+	 RETVALUE(RFAILED);
       }    
    }
 
@@ -190,61 +190,61 @@ S16 BuildAndSendF1SetupRsp()
    f1SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_TransactionID;
    f1SetupRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
    f1SetupRsp->protocolIEs.list.array[idx]->value.present = \
-                                     F1SetupResponseIEs__value_PR_TransactionID;
+							    F1SetupResponseIEs__value_PR_TransactionID;
    f1SetupRsp->protocolIEs.list.array[idx]->value.choice.TransactionID =\
-                                                                       TRANS_ID;
+									TRANS_ID;
 
    /*CU Name*/
    idx++;
    f1SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_gNB_CU_Name;
    f1SetupRsp->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
    f1SetupRsp->protocolIEs.list.array[idx]->value.present = \
-                                       F1SetupResponseIEs__value_PR_GNB_CU_Name;
+							    F1SetupResponseIEs__value_PR_GNB_CU_Name;
    cuName = &f1SetupRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_Name;
    cuName->size = sizeof(cuCfgParams.cuName);
 
    CU_ALLOC(cuName->buf, sizeof(cuName->size)); 
    if(cuName->buf == NULLP)
+   {
+      for(idy=0; idy<elementCnt; idy++)
       {
-         for(idy=0; idy<elementCnt; idy++)
-         {
-            CU_FREE(f1SetupRsp->protocolIEs.list.array[idy],\
-                  sizeof(F1SetupResponseIEs_t));
-         }
-         CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-               elementCnt * sizeof(F1SetupResponseIEs_t *));
-         CU_FREE(f1apMsg->choice.successfulOutcome,\
-               sizeof(SuccessfulOutcome_t));
-         CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array[idy],\
+	       sizeof(F1SetupResponseIEs_t));
       }
+      CU_FREE(f1SetupRsp->protocolIEs.list.array,\
+	    elementCnt * sizeof(F1SetupResponseIEs_t *));
+      CU_FREE(f1apMsg->choice.successfulOutcome,\
+	    sizeof(SuccessfulOutcome_t));
+      CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+      RETVALUE(RFAILED);
+   }
    strcpy((char*)cuName->buf, (char*)cuCfgParams.cuName);
- 
+
    /*Cells to be activated list*/
    idx++;
    f1SetupRsp->protocolIEs.list.array[idx]->id = \
-                              ProtocolIE_ID_id_Cells_to_be_Activated_List ;
+						 ProtocolIE_ID_id_Cells_to_be_Activated_List ;
    f1SetupRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
    f1SetupRsp->protocolIEs.list.array[idx]->value.present = \
-                     F1SetupResponseIEs__value_PR_Cells_to_be_Activated_List;
+							    F1SetupResponseIEs__value_PR_Cells_to_be_Activated_List;
    cellToActivate = &f1SetupRsp->protocolIEs.list.array[idx]->value.choice.\
-                    Cells_to_be_Activated_List;
+		    Cells_to_be_Activated_List;
    cellCnt=1;
    cellToActivate->list.count = cellCnt;
    cellToActivate->list.size = \
-               cellCnt*sizeof(struct Cells_to_be_Activated_List_ItemIEs  *);
+			       cellCnt*sizeof(struct Cells_to_be_Activated_List_ItemIEs  *);
    CU_ALLOC(cellToActivate->list.array,\
-         sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
+	 sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
    if(cellToActivate->list.array == NULLP)
    {
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(idy=0; idy<elementCnt; idy++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[idy],\
-               sizeof(F1SetupResponseIEs_t));
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array[idy],\
+	       sizeof(F1SetupResponseIEs_t));
       }
       CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
+	    elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
@@ -252,91 +252,91 @@ S16 BuildAndSendF1SetupRsp()
    for(idy=0; idy<cellCnt; idy++)
    {
       CU_ALLOC(cellToActivate->list.array[idy],\
-            sizeof(struct Cells_to_be_Activated_List_ItemIEs ));
+	    sizeof(struct Cells_to_be_Activated_List_ItemIEs ));
       if(cellToActivate->list.array[idy] == NULLP)
       {
-         CU_FREE(cellToActivate->list.array,\
-               sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
-         CU_FREE(cuName->buf, sizeof(cuName->size));
-         for(idy=0; idy<elementCnt; idy++)
-         {
-            CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
-                  sizeof(F1SetupResponseIEs_t));
-         }
-         CU_FREE(f1SetupRsp->protocolIEs.list.array, \
-               elementCnt * sizeof(F1SetupResponseIEs_t *));
-         CU_FREE(f1apMsg->choice.successfulOutcome, \
-               sizeof(SuccessfulOutcome_t));
-         CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+	 CU_FREE(cellToActivate->list.array,\
+	       sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
+	 CU_FREE(cuName->buf, sizeof(cuName->size));
+	 for(idy=0; idy<elementCnt; idy++)
+	 {
+	    CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
+		  sizeof(F1SetupResponseIEs_t));
+	 }
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array, \
+	       elementCnt * sizeof(F1SetupResponseIEs_t *));
+	 CU_FREE(f1apMsg->choice.successfulOutcome, \
+	       sizeof(SuccessfulOutcome_t));
+	 CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+	 RETVALUE(RFAILED);
       }
    }
    cellToActivate->list.array[0]->id = \
-                              ProtocolIE_ID_id_Cells_to_be_Activated_List_Item;
+				       ProtocolIE_ID_id_Cells_to_be_Activated_List_Item;
    cellToActivate->list.array[0]->criticality = Criticality_ignore;
    cellToActivate->list.array[0]->value.present = \
-       Cells_to_be_Activated_List_ItemIEs__value_PR_Cells_to_be_Activated_List_Item;
+						  Cells_to_be_Activated_List_ItemIEs__value_PR_Cells_to_be_Activated_List_Item;
    cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.\
       nRCGI.pLMN_Identity.size = 3*sizeof(uint8_t);
    CU_ALLOC(cellToActivate->list.array[0]->\
-         value.choice.Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity.buf,\
-         3*sizeof(uint8_t));
+	 value.choice.Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity.buf,\
+	 3*sizeof(uint8_t));
    if(cellToActivate->list.array[0]->value.choice.\
-         Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity.buf == NULLP)
+	 Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity.buf == NULLP)
    {
 
       for(idy=0; idy<cellCnt; idy++)
       {
-         CU_FREE(cellToActivate->list.array[idy],\
-               sizeof(struct Cells_to_be_Activated_List_ItemIEs ));
+	 CU_FREE(cellToActivate->list.array[idy],\
+	       sizeof(struct Cells_to_be_Activated_List_ItemIEs ));
       }
 
       CU_FREE(cellToActivate->list.array,\
-            sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
+	    sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(idy=0; idy<elementCnt; idy++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
-               sizeof(F1SetupResponseIEs_t));
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
+	       sizeof(F1SetupResponseIEs_t));
       }
       CU_FREE(f1SetupRsp->protocolIEs.list.array, \
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
+	    elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, \
-            sizeof(SuccessfulOutcome_t));
+	    sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
    }
-    buildPlmnId(cuCfgParams.plmn , &cellToActivate->list.array[0]->value.choice.\
-         Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity);
+   buildPlmnId(cuCfgParams.plmn , &cellToActivate->list.array[0]->value.choice.\
+	 Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity);
    cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.\
       nRCGI.nRCellIdentity.size = 5;
    CU_ALLOC(cellToActivate->list.array[0]->value.choice.\
-         Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf,\
-         5*sizeof(uint8_t));
+	 Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf,\
+	 5*sizeof(uint8_t));
    if(cellToActivate->list.array[0]->value.choice.\
-       Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf == NULLP)
+	 Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf == NULLP)
    {
       CU_FREE(cellToActivate->list.array[0]->\
-          value.choice.Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity.buf,\
-          3*sizeof(uint8_t));
+	    value.choice.Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity.buf,\
+	    3*sizeof(uint8_t));
       for(idy=0; idy<cellCnt; idy++)
       {
-         CU_FREE(cellToActivate->list.array[idy],\
-               sizeof(struct Cells_to_be_Activated_List_ItemIEs ));
+	 CU_FREE(cellToActivate->list.array[idy],\
+	       sizeof(struct Cells_to_be_Activated_List_ItemIEs ));
       }
 
       CU_FREE(cellToActivate->list.array,\
-            sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
+	    sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(idy=0; idy<elementCnt; idy++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
-               sizeof(F1SetupResponseIEs_t));
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
+	       sizeof(F1SetupResponseIEs_t));
       }
       CU_FREE(f1SetupRsp->protocolIEs.list.array, \
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
+	    elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, \
-            sizeof(SuccessfulOutcome_t));
+	    sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
    }
@@ -344,10 +344,10 @@ S16 BuildAndSendF1SetupRsp()
    /* RRC Version */
    idx++;
    f1SetupRsp->protocolIEs.list.array[idx]->id = \
-                                        ProtocolIE_ID_id_GNB_CU_RRC_Version;
+						 ProtocolIE_ID_id_GNB_CU_RRC_Version;
    f1SetupRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
    f1SetupRsp->protocolIEs.list.array[idx]->value.present = \
-                                    F1SetupResponseIEs__value_PR_RRC_Version;
+							    F1SetupResponseIEs__value_PR_RRC_Version;
    rrcVer = &f1SetupRsp->protocolIEs.list.array[idx]->value.choice.RRC_Version;
    rrcVer->latest_RRC_Version.size = RRC_SIZE; 
 
@@ -357,17 +357,17 @@ S16 BuildAndSendF1SetupRsp()
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(idy=0; idy<elementCnt; idx++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
-               sizeof(F1SetupResponseIEs_t));
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
+	       sizeof(F1SetupResponseIEs_t));
       } 
       CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
+	    elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
    }
 
-  /* Need to check RRC Version */
+   /* Need to check RRC Version */
    rrcVer->latest_RRC_Version.buf[0] = cuCfgParams.rrcVersion.rrcVer; 
    rrcVer->latest_RRC_Version.bits_unused = 5; //TODO: pick from cuCfgParam. If not present, add it
    CU_ALLOC(rrcVer->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P81_t));
@@ -377,11 +377,11 @@ S16 BuildAndSendF1SetupRsp()
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(idy=0; idy<elementCnt; idy++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
-               sizeof(F1SetupResponseIEs_t));
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
+	       sizeof(F1SetupResponseIEs_t));
       } 
       CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
+	    elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
@@ -389,73 +389,73 @@ S16 BuildAndSendF1SetupRsp()
    rrcVer->iE_Extensions->list.count = 1;
    rrcVer->iE_Extensions->list.size = sizeof(struct RRC_Version_ExtIEs *);
    CU_ALLOC(rrcVer->iE_Extensions->list.array,\
-         sizeof(struct RRC_Version_ExtIEs *));
+	 sizeof(struct RRC_Version_ExtIEs *));
    if(rrcVer->iE_Extensions->list.array == NULLP)
    {
       CU_FREE(rrcVer->iE_Extensions,\
-            sizeof(ProtocolExtensionContainer_4624P81_t));
+	    sizeof(ProtocolExtensionContainer_4624P81_t));
       CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(U8));
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(idy=0; idy<elementCnt; idy++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
-               sizeof(F1SetupResponseIEs_t));
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
+	       sizeof(F1SetupResponseIEs_t));
       } 
       CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
+	    elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
    }
    CU_ALLOC(rrcVer->iE_Extensions->list.array[0],\
-         sizeof(struct RRC_Version_ExtIEs));
+	 sizeof(struct RRC_Version_ExtIEs));
    if(rrcVer->iE_Extensions->list.array[0] == NULLP)
    {
       CU_FREE(rrcVer->iE_Extensions->list.array,\
-            sizeof(struct RRC_Version_ExtIEs *));
+	    sizeof(struct RRC_Version_ExtIEs *));
       CU_FREE(rrcVer->iE_Extensions,\
-            sizeof(ProtocolExtensionContainer_4624P81_t));
+	    sizeof(ProtocolExtensionContainer_4624P81_t));
       CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(U8));
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(idy=0; idy<elementCnt; idy++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
-               sizeof(F1SetupResponseIEs_t));
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
+	       sizeof(F1SetupResponseIEs_t));
       } 
       CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
+	    elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
    }
    rrcVer->iE_Extensions->list.array[0]->id = \
-                                ProtocolIE_ID_id_latest_RRC_Version_Enhanced;
+					      ProtocolIE_ID_id_latest_RRC_Version_Enhanced;
    rrcVer->iE_Extensions->list.array[0]->criticality = Criticality_reject;
    rrcVer->iE_Extensions->list.array[0]->extensionValue.present = \
-             RRC_Version_ExtIEs__extensionValue_PR_Latest_RRC_Version_Enhanced;
+								  RRC_Version_ExtIEs__extensionValue_PR_Latest_RRC_Version_Enhanced;
    rrcVer->iE_Extensions->list.array[0]->extensionValue.choice.\
       Latest_RRC_Version_Enhanced.size = 3*sizeof(U8);
    CU_ALLOC(rrcVer->iE_Extensions->list.\
-         array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.buf,\
-         3*sizeof(U8));
+	 array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.buf,\
+	 3*sizeof(U8));
    if(rrcVer->iE_Extensions->list.\
-      array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.buf == NULLP)
+	 array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.buf == NULLP)
    {
       CU_FREE(rrcVer->iE_Extensions->list.array[0],\
-             sizeof(struct RRC_Version_ExtIEs));
+	    sizeof(struct RRC_Version_ExtIEs));
       CU_FREE(rrcVer->iE_Extensions->list.array,\
-            sizeof(struct RRC_Version_ExtIEs *));
+	    sizeof(struct RRC_Version_ExtIEs *));
       CU_FREE(rrcVer->iE_Extensions,\
-            sizeof(ProtocolExtensionContainer_4624P81_t));
+	    sizeof(ProtocolExtensionContainer_4624P81_t));
       CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(U8));
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(idy=0; idy<elementCnt; idy++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
-               sizeof(F1SetupResponseIEs_t));
+	 CU_FREE(f1SetupRsp->protocolIEs.list.array[idy], \
+	       sizeof(F1SetupResponseIEs_t));
       } 
       CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
+	    elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       RETVALUE(RFAILED);
@@ -488,24 +488,24 @@ S16 BuildAndSendF1SetupRsp()
    /* Check encode results */
    if(encRetVal.encoded == ENCODE_FAIL)
    {
-	   DU_LOG("\nF1AP : Could not encode F1SetupResponse structure (at %s)\n",\
-			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	   RETVALUE(RFAILED);   
+      DU_LOG("\nF1AP : Could not encode F1SetupResponse structure (at %s)\n",\
+	    encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+      RETVALUE(RFAILED);   
    } 
    else 
    {
-	   DU_LOG("\nF1AP : Created APER encoded buffer for F1SetupResponse\n");
-	   for(int i=0; i< encBufSize; i++)
-	   {
-		   printf("%x",encBuf[i]);
-	   } 
+      DU_LOG("\nF1AP : Created APER encoded buffer for F1SetupResponse\n");
+      for(int i=0; i< encBufSize; i++)
+      {
+	 printf("%x",encBuf[i]);
+      } 
    }
 
    /* Sending msg */
    if(SendF1APMsg(CU_APP_MEM_REG, CU_POOL) != ROK)
    {
-	   DU_LOG("\nF1AP : Sending F1 Setup Response failed");      
-	   RETVALUE(RFAILED);
+      DU_LOG("\nF1AP : Sending F1 Setup Response failed");      
+      RETVALUE(RFAILED);
    }
 
    RETVALUE(ROK);
@@ -582,10 +582,10 @@ S16 BuildAndSendDUUpdateAck()
       CU_ALLOC(gNBDuCfgAck->protocolIEs.list.array[idx], sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t));
       if(gNBDuCfgAck->protocolIEs.list.array[idx] == NULLP)
       {
-         CU_FREE(gNBDuCfgAck->protocolIEs.list.array, elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t *));
-         CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
-         CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-         RETVALUE(RFAILED);
+	 CU_FREE(gNBDuCfgAck->protocolIEs.list.array, elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t *));
+	 CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
+	 CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+	 RETVALUE(RFAILED);
       }
    }
 
@@ -597,7 +597,7 @@ S16 BuildAndSendDUUpdateAck()
    gNBDuCfgAck->protocolIEs.list.array[idx]->value.choice.TransactionID = TRANS_ID;
 
    xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
- 
+
    /* Encode the F1SetupRequest type as UPER */
    cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
    encBufSize = 0;
@@ -620,10 +620,10 @@ S16 BuildAndSendDUUpdateAck()
    } 
    else 
    {
-    DU_LOG("\nF1AP : Created APER encoded buffer for DuConfigUpdateAcknowledge\n");  
+      DU_LOG("\nF1AP : Created APER encoded buffer for DuConfigUpdateAcknowledge\n");  
       for(int i=0; i< encBufSize; i++)
       {
-         printf("%x",encBuf[i]);
+	 printf("%x",encBuf[i]);
       } 
    }
 
@@ -664,28 +664,28 @@ uint8_t fillRadioBearerConfig(SRB_ToAddModList_t *bearerCfg)
       elementCnt = 1;
       bearerCfg->list.count = elementCnt;
       bearerCfg->list.size =\
-           elementCnt * sizeof(SRB_ToAddMod_t *);
+			    elementCnt * sizeof(SRB_ToAddMod_t *);
       CU_ALLOC(bearerCfg->list.array, bearerCfg->list.size);
       if(bearerCfg->list.array != NULLP)
       {
-         for(idx = 0; idx < elementCnt; idx++)
-         {
-            CU_ALLOC(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
-            if(bearerCfg->list.array[idx] == NULLP)
-            {
-               for(ied = 0; ied < idx; ied++)
-               {
-                  CU_FREE(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
-               }
-               CU_FREE(bearerCfg->list.array, bearerCfg->list.size);
-               return RFAILED;
-            }
-         }
+	 for(idx = 0; idx < elementCnt; idx++)
+	 {
+	    CU_ALLOC(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
+	    if(bearerCfg->list.array[idx] == NULLP)
+	    {
+	       for(ied = 0; ied < idx; ied++)
+	       {
+		  CU_FREE(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
+	       }
+	       CU_FREE(bearerCfg->list.array, bearerCfg->list.size);
+	       return RFAILED;
+	    }
+	 }
       }
-		else
-		{
-		   return RFAILED;
-		}
+      else
+      {
+	 return RFAILED;
+      }
       idx = 0;
       bearerCfg->list.array[idx]->srb_Identity = SRB1;
    }
@@ -713,23 +713,23 @@ uint8_t fillMasterCellGroup(OCTET_STRING_t *masterCellGroup)
 {
    uint8_t ret = ROK;
    masterCellGroup->buf = NULLP;
-	if(f1apMsgDb.duToCuContainer.buf)
-	{
+   if(f1apMsgDb.duToCuContainer.buf)
+   {
       masterCellGroup->size = f1apMsgDb.duToCuContainer.size;
       CU_ALLOC(masterCellGroup->buf, masterCellGroup->size);
       if(masterCellGroup->buf != NULLP)
       {
-         memcpy(masterCellGroup->buf, f1apMsgDb.duToCuContainer.buf,\
-			  masterCellGroup->size);
+	 memcpy(masterCellGroup->buf, f1apMsgDb.duToCuContainer.buf,\
+	       masterCellGroup->size);
       }
-	   else
-	   {
-	      ret = RFAILED;
-	   }
-	}
-	else
-	{
-	   ret =  RFAILED;
+      else
+      {
+	 ret = RFAILED;
+      }
+   }
+   else
+   {
+      ret =  RFAILED;
    }
    return ret;
 }
@@ -757,19 +757,19 @@ uint8_t fillRRCSetupIE(RRCSetup_IEs_t *rrcSetupIE)
    if(rrcSetupIE)
    {
       CU_ALLOC(rrcSetupIE->radioBearerConfig.srb_ToAddModList, sizeof(SRB_ToAddModList_t));
-		if(rrcSetupIE->radioBearerConfig.srb_ToAddModList != NULLP)
-		{
-         ret = fillRadioBearerConfig(rrcSetupIE->radioBearerConfig.srb_ToAddModList);
-	   }		
+      if(rrcSetupIE->radioBearerConfig.srb_ToAddModList != NULLP)
+      {
+	 ret = fillRadioBearerConfig(rrcSetupIE->radioBearerConfig.srb_ToAddModList);
+      }		
       if(!ret)
       {
-         ret = fillMasterCellGroup(&rrcSetupIE->masterCellGroup);
+	 ret = fillMasterCellGroup(&rrcSetupIE->masterCellGroup);
       }
-		else
-		{
-		   CU_FREE(rrcSetupIE->radioBearerConfig.srb_ToAddModList, sizeof(SRB_ToAddModList_t));
-			ret = RFAILED;
-	   }
+      else
+      {
+	 CU_FREE(rrcSetupIE->radioBearerConfig.srb_ToAddModList, sizeof(SRB_ToAddModList_t));
+	 ret = RFAILED;
+      }
    }
    return ret;
 }
@@ -794,7 +794,7 @@ uint8_t fillRRCSetupIE(RRCSetup_IEs_t *rrcSetupIE)
 uint8_t	BuildDLRRCContainer(RRCContainer_t *rrcContainer)
 {
    uint8_t ret = ROK;
-	uint16_t idx2;
+   uint16_t idx2;
    DL_CCCH_Message_t dl_CCCH_Msg;
    asn_enc_rval_t        encRetVal;
 
@@ -805,83 +805,83 @@ uint8_t	BuildDLRRCContainer(RRCContainer_t *rrcContainer)
       CU_ALLOC(dl_CCCH_Msg.message.choice.c1 , sizeof(DL_CCCH_MessageType_t));
       if(dl_CCCH_Msg.message.choice.c1 != NULLP)
       {
-         dl_CCCH_Msg.message.choice.c1->present = DL_CCCH_MessageType__c1_PR_rrcSetup;
-         CU_ALLOC(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup, sizeof(RRCSetup_t));
-         if(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup != NULLP)
-         {
-            dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->rrc_TransactionIdentifier = 0;
-            dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->criticalExtensions.\
-              present = RRCSetup__criticalExtensions_PR_rrcSetup;
-				/* Fill RRC Setup IE */
-            CU_ALLOC(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->\
-              criticalExtensions.choice.rrcSetup, sizeof(RRCSetup_IEs_t));
-            if(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->\
-                criticalExtensions.choice.rrcSetup != NULLP)
-            {
-               ret = fillRRCSetupIE(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->\
-               criticalExtensions.choice.rrcSetup);
+	 dl_CCCH_Msg.message.choice.c1->present = DL_CCCH_MessageType__c1_PR_rrcSetup;
+	 CU_ALLOC(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup, sizeof(RRCSetup_t));
+	 if(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup != NULLP)
+	 {
+	    dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->rrc_TransactionIdentifier = 0;
+	    dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->criticalExtensions.\
+	       present = RRCSetup__criticalExtensions_PR_rrcSetup;
+	    /* Fill RRC Setup IE */
+	    CU_ALLOC(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->\
+		  criticalExtensions.choice.rrcSetup, sizeof(RRCSetup_IEs_t));
+	    if(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->\
+		  criticalExtensions.choice.rrcSetup != NULLP)
+	    {
+	       ret = fillRRCSetupIE(dl_CCCH_Msg.message.choice.c1->choice.rrcSetup->\
+		     criticalExtensions.choice.rrcSetup);
 
-               if(!ret)
-					{
-                  /* encode DL-CCCH message into RRC Container */
-                  xer_fprint(stdout, &asn_DEF_DL_CCCH_MessageType, &dl_CCCH_Msg);
-                  cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
-                  encBufSize = 0;
-                  encRetVal = aper_encode(&asn_DEF_DL_CCCH_MessageType, 0, &dl_CCCH_Msg, PrepFinalEncBuf, encBuf);
-                  /* Encode results */
-                  if(encRetVal.encoded == ENCODE_FAIL)
-                  {
-                     DU_LOG( "\n F1AP : Could not encode RRCContainer (at %s)\n",\
-                  	  encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-                  	  return RFAILED;
-                  }
-                  else
-                  {
-                     DU_LOG("\n F1AP : Created APER encoded buffer for RRCContainer\n");
-                  	for(int i = 0; i< encBufSize; i++)
-                  	{
-                  	   printf("%x",encBuf[i]);
-                  	}
-                     rrcContainer->size = encBufSize;
-                     CU_ALLOC(rrcContainer->buf, rrcContainer->size);
-                     if(rrcContainer->buf != NULLP)
-                     {
-                        memset(rrcContainer->buf, 0, encBufSize);
-	                     for(idx2 = 0; idx2 < encBufSize; idx2++)
-	                     {
-	                        rrcContainer->buf[idx2] =	encBuf[idx2];
-                        }
-                     }
-						}
-					}
-					else
-					{
-					   ret = RFAILED;
-					}
-            }
-				else
-				{
-	            DU_LOG("\nF1AP: Memory Alloc failed for RRC Setup Msg");
-               ret = RFAILED;
-				}
-         }
-			else
+	       if(!ret)
+	       {
+		  /* encode DL-CCCH message into RRC Container */
+		  xer_fprint(stdout, &asn_DEF_DL_CCCH_MessageType, &dl_CCCH_Msg);
+		  cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+		  encBufSize = 0;
+		  encRetVal = aper_encode(&asn_DEF_DL_CCCH_MessageType, 0, &dl_CCCH_Msg, PrepFinalEncBuf, encBuf);
+		  /* Encode results */
+		  if(encRetVal.encoded == ENCODE_FAIL)
+		  {
+		     DU_LOG( "\n F1AP : Could not encode RRCContainer (at %s)\n",\
+			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+		     return RFAILED;
+		  }
+		  else
+		  {
+		     DU_LOG("\n F1AP : Created APER encoded buffer for RRCContainer\n");
+		     for(int i = 0; i< encBufSize; i++)
+		     {
+			printf("%x",encBuf[i]);
+		     }
+		     rrcContainer->size = encBufSize;
+		     CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+		     if(rrcContainer->buf != NULLP)
+		     {
+			memset(rrcContainer->buf, 0, encBufSize);
+			for(idx2 = 0; idx2 < encBufSize; idx2++)
 			{
-	          DU_LOG("\nF1AP: Memory Alloc failed for RRC Msg");
-             ret = RFAILED;
+			   rrcContainer->buf[idx2] =	encBuf[idx2];
 			}
+		     }
+		  }
+	       }
+	       else
+	       {
+		  ret = RFAILED;
+	       }
+	    }
+	    else
+	    {
+	       DU_LOG("\nF1AP: Memory Alloc failed for RRC Setup Msg");
+	       ret = RFAILED;
+	    }
+	 }
+	 else
+	 {
+	    DU_LOG("\nF1AP: Memory Alloc failed for RRC Msg");
+	    ret = RFAILED;
+	 }
       }
-		else
-		{
-	      DU_LOG("\nF1AP: Memory Alloc failed for DL Ccch Msg choice");
-         ret = RFAILED;
-		}
+      else
+      {
+	 DU_LOG("\nF1AP: Memory Alloc failed for DL Ccch Msg choice");
+	 ret = RFAILED;
+      }
    }
-	else
-	{
-	   DU_LOG("\nF1AP: Memory Alloc failed for DlCcch Msg");
+   else
+   {
+      DU_LOG("\nF1AP: Memory Alloc failed for DlCcch Msg");
       ret = RFAILED;
-	}
+   }
    return ret;
 }
 
@@ -908,7 +908,7 @@ S16 BuildAndSendDLRRCMessageTransfer()
    uint8_t   elementCnt = 0;
    uint8_t  ieId;
    uint8_t  idx;
-	uint16_t idx2;
+   uint16_t idx2;
    F1AP_PDU_t  *f1apMsg = NULLP;
    DLRRCMessageTransfer_t  *dlRRCMsg = NULLP;
    asn_enc_rval_t   encRetVal;        /* Encoder return value */
@@ -924,7 +924,7 @@ S16 BuildAndSendDLRRCMessageTransfer()
 
    f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
    CU_ALLOC(f1apMsg->choice.initiatingMessage,
-      sizeof(InitiatingMessage_t));
+	 sizeof(InitiatingMessage_t));
    if(f1apMsg->choice.initiatingMessage == NULLP)
    {
       DU_LOG(" F1AP : Memory allocation for  F1AP-PDU failed");
@@ -956,17 +956,17 @@ S16 BuildAndSendDLRRCMessageTransfer()
       CU_ALLOC(dlRRCMsg->protocolIEs.list.array[idx], sizeof(DLRRCMessageTransferIEs_t));
       if(dlRRCMsg->protocolIEs.list.array[idx] == NULLP)
       {
-         for(ieId=0; ieId<idx; ieId++)
-         {
-             CU_FREE(dlRRCMsg->protocolIEs.list.array[ieId],\
-                       sizeof(DLRRCMessageTransferIEs_t));
-         }
-         CU_FREE(dlRRCMsg->protocolIEs.list.array,\
-           dlRRCMsg->protocolIEs.list.size);
-         CU_FREE(f1apMsg->choice.initiatingMessage,\
-           sizeof(InitiatingMessage_t));
-         CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-         return RFAILED;
+	 for(ieId=0; ieId<idx; ieId++)
+	 {
+	    CU_FREE(dlRRCMsg->protocolIEs.list.array[ieId],\
+		  sizeof(DLRRCMessageTransferIEs_t));
+	 }
+	 CU_FREE(dlRRCMsg->protocolIEs.list.array,\
+	       dlRRCMsg->protocolIEs.list.size);
+	 CU_FREE(f1apMsg->choice.initiatingMessage,\
+	       sizeof(InitiatingMessage_t));
+	 CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
+	 return RFAILED;
       }
    }
 
@@ -975,64 +975,64 @@ S16 BuildAndSendDLRRCMessageTransfer()
    dlRRCMsg->protocolIEs.list.array[idx]->id  = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
    dlRRCMsg->protocolIEs.list.array[idx]->criticality  =   Criticality_reject;
    dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
-                         DLRRCMessageTransferIEs__value_PR_GNB_CU_UE_F1AP_ID;
+							  DLRRCMessageTransferIEs__value_PR_GNB_CU_UE_F1AP_ID;
    dlRRCMsg->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = CU_ID;
- 
+
    /* GNB DU UE F1AP ID */
    idx++;
    dlRRCMsg->protocolIEs.list.array[idx]->id  = \
-                                   ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+						ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
    dlRRCMsg->protocolIEs.list.array[idx]->criticality  =   Criticality_reject;
    dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
-                         DLRRCMessageTransferIEs__value_PR_GNB_DU_UE_F1AP_ID;
+							  DLRRCMessageTransferIEs__value_PR_GNB_DU_UE_F1AP_ID;
    dlRRCMsg->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = DU_ID;
- 
+
    /* SRBID */
    idx++;
    dlRRCMsg->protocolIEs.list.array[idx]->id  = ProtocolIE_ID_id_SRBID;
    dlRRCMsg->protocolIEs.list.array[idx]->criticality  =   Criticality_reject;
    dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
-                                 DLRRCMessageTransferIEs__value_PR_SRBID;
+							  DLRRCMessageTransferIEs__value_PR_SRBID;
    dlRRCMsg->protocolIEs.list.array[idx]->value.choice.SRBID = SRB1;
-         
+
    /* RRCContainer */
    idx++;
    dlRRCMsg->protocolIEs.list.array[idx]->id  = ProtocolIE_ID_id_RRCContainer;
    dlRRCMsg->protocolIEs.list.array[idx]->criticality   = Criticality_reject;
    dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
-	                             DLRRCMessageTransferIEs__value_PR_RRCContainer;
-	BuildDLRRCContainer(&dlRRCMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer);
- 
+							  DLRRCMessageTransferIEs__value_PR_RRCContainer;
+   BuildDLRRCContainer(&dlRRCMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer);
+
    xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
- 
+
    /* Encode the F1SetupRequest type as APER */
    cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
    encBufSize = 0;
    encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
-       encBuf);
+	 encBuf);
    /* Encode results */
    if(encRetVal.encoded == ENCODE_FAIL)
    {
-     DU_LOG( "\n F1AP : Could not encode DL RRC Message Transfer structure (at %s)\n",\
-         encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-     RETVALUE(RFAILED);
+      DU_LOG( "\n F1AP : Could not encode DL RRC Message Transfer structure (at %s)\n",\
+	    encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+      RETVALUE(RFAILED);
    }
    else
    {
-     DU_LOG("\n F1AP : Created APER encoded buffer for DL RRC Message transfer\n");
-     for(int i=0; i< encBufSize; i++)
-     {
-       printf("%x",encBuf[i]);
-     }
+      DU_LOG("\n F1AP : Created APER encoded buffer for DL RRC Message transfer\n");
+      for(int i=0; i< encBufSize; i++)
+      {
+	 printf("%x",encBuf[i]);
+      }
    }
- 
+
    /* Sending  msg  */
    if(SendF1APMsg(CU_APP_MEM_REG,CU_POOL)  !=  ROK)
    {
-     DU_LOG("\n F1AP : Sending  DL RRC Message Transfer Failed");
-     return RFAILED;
+      DU_LOG("\n F1AP : Sending  DL RRC Message Transfer Failed");
+      return RFAILED;
    }
- 
+
    return ROK;
 }/* End of BuildAndSendDLRRCMessageTransfer */
 
@@ -1056,131 +1056,131 @@ S16 BuildAndSendDLRRCMessageTransfer()
  * ****************************************************************/
 S16 BuildAndSendUESetRsp()
 {
-	S16  ret;
-	U8   elementCnt;
-	U8   cellCnt;
-	U8   ieId;
-	U8   idx;
-	U8   drbCnt;
-	U8   drbId;
-	F1AP_PDU_t      						*f1apMsg = NULL;
+   S16  ret;
+   U8   elementCnt;
+   U8   cellCnt;
+   U8   ieId;
+   U8   idx;
+   U8   drbCnt;
+   U8   drbId;
+   F1AP_PDU_t      						*f1apMsg = NULL;
    UEContextSetupResponse_t			*ueSetRsp;
-	asn_enc_rval_t  						encRetVal;        /* Encoder return value */
+   asn_enc_rval_t  						encRetVal;        /* Encoder return value */
 
-	DU_LOG("\n F1AP : Building UE Context Setup Response\n");
+   DU_LOG("\n F1AP : Building UE Context Setup Response\n");
 
-	CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
-	if(f1apMsg == NULLP)
-	{
-		DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
-		RETVALUE(RFAILED);
-	}
+   CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+   if(f1apMsg == NULLP)
+   {
+      DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
+      RETVALUE(RFAILED);
+   }
 
-	f1apMsg->present = F1AP_PDU_PR_successfulOutcome;
-	CU_ALLOC(f1apMsg->choice.successfulOutcome,
-			sizeof(SuccessfulOutcome_t));
-	if(f1apMsg->choice.successfulOutcome == NULLP)
-	{
-		DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
-		CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
-	}
+   f1apMsg->present = F1AP_PDU_PR_successfulOutcome;
+   CU_ALLOC(f1apMsg->choice.successfulOutcome,
+	 sizeof(SuccessfulOutcome_t));
+   if(f1apMsg->choice.successfulOutcome == NULLP)
+   {
+      DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
+      CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
+      RETVALUE(RFAILED);
+   }
 
-	f1apMsg->choice.successfulOutcome->procedureCode = \
-													ProcedureCode_id_UEContextSetup;
-	f1apMsg->choice.successfulOutcome->criticality = Criticality_reject;
-	f1apMsg->choice.successfulOutcome->value.present = \
-		      		   SuccessfulOutcome__value_PR_UEContextSetupResponse;
-	ueSetRsp =
-		&f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
-	elementCnt = 2;
-	ueSetRsp->protocolIEs.list.count = elementCnt;
-	ueSetRsp->protocolIEs.list.size = \
-									elementCnt * sizeof(UEContextSetupResponse_t *);
+   f1apMsg->choice.successfulOutcome->procedureCode = \
+						      ProcedureCode_id_UEContextSetup;
+   f1apMsg->choice.successfulOutcome->criticality = Criticality_reject;
+   f1apMsg->choice.successfulOutcome->value.present = \
+						      SuccessfulOutcome__value_PR_UEContextSetupResponse;
+   ueSetRsp =
+      &f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
+   elementCnt = 2;
+   ueSetRsp->protocolIEs.list.count = elementCnt;
+   ueSetRsp->protocolIEs.list.size = \
+				     elementCnt * sizeof(UEContextSetupResponse_t *);
 
-	/* Initialize the UESetup members */
-	CU_ALLOC(ueSetRsp->protocolIEs.list.array, \
-				ueSetRsp->protocolIEs.list.size);
-	if(ueSetRsp->protocolIEs.list.array == NULLP)
-	{
-		DU_LOG(" F1AP : Memory allocation for UE Setup Response failed");
-		CU_FREE(f1apMsg->choice.successfulOutcome,
-				sizeof(SuccessfulOutcome_t));
-		CU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
-		RETVALUE(RFAILED);
-	}
+   /* Initialize the UESetup members */
+   CU_ALLOC(ueSetRsp->protocolIEs.list.array, \
+	 ueSetRsp->protocolIEs.list.size);
+   if(ueSetRsp->protocolIEs.list.array == NULLP)
+   {
+      DU_LOG(" F1AP : Memory allocation for UE Setup Response failed");
+      CU_FREE(f1apMsg->choice.successfulOutcome,
+	    sizeof(SuccessfulOutcome_t));
+      CU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
+      RETVALUE(RFAILED);
+   }
 
-	for(idx=0; idx<elementCnt; idx++)
-	{
-		CU_ALLOC(ueSetRsp->protocolIEs.list.array[idx],\
-										sizeof(UEContextSetupResponseIEs_t));
-		if(ueSetRsp->protocolIEs.list.array[idx] == NULLP)
-		{
-			for(ieId=0; ieId<idx; ieId++)
-			{
-				CU_FREE(ueSetRsp->protocolIEs.list.array[ieId],\
-						sizeof(UEContextSetupResponseIEs_t));
-			}
-			CU_FREE(ueSetRsp->protocolIEs.list.array,\
-						 ueSetRsp->protocolIEs.list.size);
-			CU_FREE(f1apMsg->choice.successfulOutcome,\
-												sizeof(SuccessfulOutcome_t));
-			CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-			RETVALUE(RFAILED);
-		}
-	}
+   for(idx=0; idx<elementCnt; idx++)
+   {
+      CU_ALLOC(ueSetRsp->protocolIEs.list.array[idx],\
+	    sizeof(UEContextSetupResponseIEs_t));
+      if(ueSetRsp->protocolIEs.list.array[idx] == NULLP)
+      {
+	 for(ieId=0; ieId<idx; ieId++)
+	 {
+	    CU_FREE(ueSetRsp->protocolIEs.list.array[ieId],\
+		  sizeof(UEContextSetupResponseIEs_t));
+	 }
+	 CU_FREE(ueSetRsp->protocolIEs.list.array,\
+	       ueSetRsp->protocolIEs.list.size);
+	 CU_FREE(f1apMsg->choice.successfulOutcome,\
+	       sizeof(SuccessfulOutcome_t));
+	 CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
+	 RETVALUE(RFAILED);
+      }
+   }
 
-	idx = 0;
+   idx = 0;
 
-	/*GNB CU UE F1AP ID*/
-	ueSetRsp->protocolIEs.list.array[idx]->id	= \
-					 			                 ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
-	ueSetRsp->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
-	ueSetRsp->protocolIEs.list.array[idx]->value.present = \
-		                 		UEContextSetupResponseIEs__value_PR_GNB_CU_UE_F1AP_ID;
-	ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = CU_ID;
-	
-	/*GNB DU UE F1AP ID*/
-	idx++;
-	ueSetRsp->protocolIEs.list.array[idx]->id	= \
-					 			                 ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
-	ueSetRsp->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
-	ueSetRsp->protocolIEs.list.array[idx]->value.present = \
-		                 		UEContextSetupResponseIEs__value_PR_GNB_DU_UE_F1AP_ID;
-	ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = DU_ID;
-	
+   /*GNB CU UE F1AP ID*/
+   ueSetRsp->protocolIEs.list.array[idx]->id	= \
+						  ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
+   ueSetRsp->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
+   ueSetRsp->protocolIEs.list.array[idx]->value.present = \
+							  UEContextSetupResponseIEs__value_PR_GNB_CU_UE_F1AP_ID;
+   ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = CU_ID;
 
-	xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
+   /*GNB DU UE F1AP ID*/
+   idx++;
+   ueSetRsp->protocolIEs.list.array[idx]->id	= \
+						  ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+   ueSetRsp->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
+   ueSetRsp->protocolIEs.list.array[idx]->value.present = \
+							  UEContextSetupResponseIEs__value_PR_GNB_DU_UE_F1AP_ID;
+   ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = DU_ID;
 
-	/* Encode the F1SetupRequest type as APER */
-	cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
-	encBufSize = 0;
-	encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
-			encBuf);
-	/* Encode results */
-	if(encRetVal.encoded == ENCODE_FAIL)
-	{
-		DU_LOG( "\n F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
-				encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-		RETVALUE(RFAILED);
-	}
-	else
-	{
-		DU_LOG("\n F1AP : Created APER encoded buffer for UE Context Setup Request\n");
-		for(int i=0; i< encBufSize; i++)
-		{
-			printf("%x",encBuf[i]);
-		}
-	}
 
-	/* Sending  msg  */
-	if(SendF1APMsg(CU_APP_MEM_REG,CU_POOL)	!=	ROK)
-	{
-		DU_LOG("\n F1AP : Sending	UE Context Setup Request Failed");
-		RETVALUE(RFAILED);
-	}
+   xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
-	RETVALUE(ROK);
+   /* Encode the F1SetupRequest type as APER */
+   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+   encBufSize = 0;
+   encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
+	 encBuf);
+   /* Encode results */
+   if(encRetVal.encoded == ENCODE_FAIL)
+   {
+      DU_LOG( "\n F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
+	    encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+      RETVALUE(RFAILED);
+   }
+   else
+   {
+      DU_LOG("\n F1AP : Created APER encoded buffer for UE Context Setup Request\n");
+      for(int i=0; i< encBufSize; i++)
+      {
+	 printf("%x",encBuf[i]);
+      }
+   }
+
+   /* Sending  msg  */
+   if(SendF1APMsg(CU_APP_MEM_REG,CU_POOL)	!=	ROK)
+   {
+      DU_LOG("\n F1AP : Sending	UE Context Setup Request Failed");
+      RETVALUE(RFAILED);
+   }
+
+   RETVALUE(ROK);
 }/* End of BuildAndSendUESetRsp */
 
 
@@ -1197,65 +1197,65 @@ uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
    {
       switch(initULRRCMsg->protocolIEs.list.array[idx]->id)
       {
-         case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
-         break;
-         case ProtocolIE_ID_id_NRCGI:
-         break;
-         case ProtocolIE_ID_id_C_RNTI:
-         break;
-         case ProtocolIE_ID_id_RRCContainer:
-         break;
-         case ProtocolIE_ID_id_DUtoCURRCContainer:
-			   {
-				   if((initULRRCMsg->protocolIEs.list.array[idx]->value.choice\
-					   .DUtoCURRCContainer.size > 0) && (initULRRCMsg->protocolIEs\
-						.list.array[idx]->value.choice.DUtoCURRCContainer.buf != NULLP))
-               {
-                  DU_LOG("\n Received Du to Cu RRC Container ");
-                  f1apMsgDb.duToCuContainer.size = initULRRCMsg->protocolIEs\
-                   .list.array[idx]->value.choice.DUtoCURRCContainer.size;
-                  CU_ALLOC(f1apMsgDb.duToCuContainer.buf, \
-						 f1apMsgDb.duToCuContainer.size);
-                  if(f1apMsgDb.duToCuContainer.buf != NULLP)
-                  { 
-                     memcpy(f1apMsgDb.duToCuContainer.buf, initULRRCMsg->protocolIEs\
-                      .list.array[idx]->value.choice.DUtoCURRCContainer.buf, f1apMsgDb\
-                      .duToCuContainer.size);
-                  }
-               }
-				   else
-				   {
-                  DU_LOG("\n Failed to receive Du to Cu RRC Container ");
-				   	ret = RFAILED;
-			      }
-               break;
-			   }
-         default:
-            DU_LOG("\n Invalid Event %ld", initULRRCMsg->protocolIEs.list.array[idx]->id);
-            break;
+	 case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+	    break;
+	 case ProtocolIE_ID_id_NRCGI:
+	    break;
+	 case ProtocolIE_ID_id_C_RNTI:
+	    break;
+	 case ProtocolIE_ID_id_RRCContainer:
+	    break;
+	 case ProtocolIE_ID_id_DUtoCURRCContainer:
+	    {
+	       if((initULRRCMsg->protocolIEs.list.array[idx]->value.choice\
+			.DUtoCURRCContainer.size > 0) && (initULRRCMsg->protocolIEs\
+			   .list.array[idx]->value.choice.DUtoCURRCContainer.buf != NULLP))
+	       {
+		  DU_LOG("\n Received Du to Cu RRC Container ");
+		  f1apMsgDb.duToCuContainer.size = initULRRCMsg->protocolIEs\
+						   .list.array[idx]->value.choice.DUtoCURRCContainer.size;
+		  CU_ALLOC(f1apMsgDb.duToCuContainer.buf, \
+			f1apMsgDb.duToCuContainer.size);
+		  if(f1apMsgDb.duToCuContainer.buf != NULLP)
+		  { 
+		     memcpy(f1apMsgDb.duToCuContainer.buf, initULRRCMsg->protocolIEs\
+			   .list.array[idx]->value.choice.DUtoCURRCContainer.buf, f1apMsgDb\
+			   .duToCuContainer.size);
+		  }
+	       }
+	       else
+	       {
+		  DU_LOG("\n Failed to receive Du to Cu RRC Container ");
+		  ret = RFAILED;
+	       }
+	       break;
+	    }
+	 default:
+	    DU_LOG("\n Invalid Event %ld", initULRRCMsg->protocolIEs.list.array[idx]->id);
+	    break;
       }
    }
-	if(!ret)
-	   ret = BuildAndSendDLRRCMessageTransfer();
+   if(!ret)
+      ret = BuildAndSendDLRRCMessageTransfer();
    return ret;
 }
 /*******************************************************************
-*
-* @brief Handles received F1AP message and sends back response  
-*
-* @details
-*
-*    Function : F1APMsgHdlr
-*
-*    Functionality:
-*         - Decodes received F1AP control message
-*         - Prepares response message, encodes and sends to SCTP
-*
-* @params[in] 
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
+ *
+ * @brief Handles received F1AP message and sends back response  
+ *
+ * @details
+ *
+ *    Function : F1APMsgHdlr
+ *
+ *    Functionality:
+ *         - Decodes received F1AP control message
+ *         - Prepares response message, encodes and sends to SCTP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 void F1APMsgHdlr(Buffer *mBuf)
 {
    int i;
@@ -1265,10 +1265,10 @@ void F1APMsgHdlr(Buffer *mBuf)
    F1AP_PDU_t *f1apMsg = NULLP;
    asn_dec_rval_t rval; /* Decoder return value */
    F1AP_PDU_t f1apasnmsg ;
- 
+
    DU_LOG("\nF1AP : Received F1AP message buffer");
    SPrntMsg(mBuf, 0,0);
- 
+
    /* Copy mBuf into char array to decode it */
    SFndLenMsg(mBuf, &recvBufLen);
    if(SGetSBuf(DFLT_REGION, DFLT_POOL, (Data **)&recvBuf, (Size)recvBufLen) != ROK)
@@ -1285,13 +1285,13 @@ void F1APMsgHdlr(Buffer *mBuf)
    printf("\nF1AP : Received flat buffer to be decoded : ");
    for(i=0; i< recvBufLen; i++)
    {
-        printf("%x",recvBuf[i]);
+      printf("%x",recvBuf[i]);
    }
 
    /* Decoding flat buffer into F1AP messsage */
    f1apMsg = &f1apasnmsg;
    memset(f1apMsg, 0, sizeof(F1AP_PDU_t));
- 
+
    rval = aper_decode(0, &asn_DEF_F1AP_PDU, (void **)&f1apMsg, recvBuf, recvBufLen, 0, 0);
    SPutSBuf(DFLT_REGION, DFLT_POOL, (Data *)recvBuf, (Size)recvBufLen);
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
@@ -1305,41 +1305,41 @@ void F1APMsgHdlr(Buffer *mBuf)
    switch(f1apMsg->present)
    {
       case F1AP_PDU_PR_initiatingMessage:
-      {
-         switch(f1apMsg->choice.initiatingMessage->value.present)
-         {
-            case InitiatingMessage__value_PR_F1SetupRequest:
-            {
-               DU_LOG("\nF1AP : F1 setup request received");
-               BuildAndSendF1SetupRsp();
-	       break;
-            }
+	 {
+	    switch(f1apMsg->choice.initiatingMessage->value.present)
+	    {
+	       case InitiatingMessage__value_PR_F1SetupRequest:
+		  {
+		     DU_LOG("\nF1AP : F1 setup request received");
+		     BuildAndSendF1SetupRsp();
+		     break;
+		  }
 
-            case InitiatingMessage__value_PR_GNBDUConfigurationUpdate:
-            {
-               DU_LOG("\nF1AP : GNB-DU config update received");
-               BuildAndSendDUUpdateAck();
-               break;
-            }
-            case InitiatingMessage__value_PR_InitialULRRCMessageTransfer:
-            {
-               DU_LOG("\nF1AP : Received InitialULRRCMessageTransfer");
-               procInitULRRCMsg(f1apMsg);
-               break;
-            }
-            default:
-            {
-               DU_LOG("\nF1AP : Invalid type of intiating message [%d]",f1apMsg->choice.initiatingMessage->value.present);
-               return;
-            }
-         }/* End of switch(initiatingMessage) */
-         break;
-      }
+	       case InitiatingMessage__value_PR_GNBDUConfigurationUpdate:
+		  {
+		     DU_LOG("\nF1AP : GNB-DU config update received");
+		     BuildAndSendDUUpdateAck();
+		     break;
+		  }
+	       case InitiatingMessage__value_PR_InitialULRRCMessageTransfer:
+		  {
+		     DU_LOG("\nF1AP : Received InitialULRRCMessageTransfer");
+		     procInitULRRCMsg(f1apMsg);
+		     break;
+		  }
+	       default:
+		  {
+		     DU_LOG("\nF1AP : Invalid type of intiating message [%d]",f1apMsg->choice.initiatingMessage->value.present);
+		     return;
+		  }
+	    }/* End of switch(initiatingMessage) */
+	    break;
+	 }
 
    }/* End of switch(f1apMsg->present) */
- 
+
 } /* End of F1APMsgHdlr */
- 
+
 /**********************************************************************
   End of file
  **********************************************************************/

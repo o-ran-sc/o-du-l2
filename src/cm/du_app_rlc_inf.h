@@ -419,7 +419,7 @@ typedef struct dlAmCfg
    PollPdu        pollPdu;             /* Used to trigger a poll for every pollPdu.*/
    PollBytes      pollByte;            /* Poll_Byte in bytes. */
    MaxRetxTh      maxRetxTh;           /* Max_Retx_Threshold */
- 
+
 }DlAmCfg;
 
 typedef struct dlUmCfg
@@ -503,18 +503,18 @@ typedef struct ulRrcMsgInfo
 /* Function Pointers */
 /* UE create Request from DU APP to RLC*/
 typedef uint8_t (*DuRlcUlUeCreateReq) ARGS((
-   Pst           *pst,
-   RlcUeCfg      *ueCfg ));
+	 Pst           *pst,
+	 RlcUeCfg      *ueCfg ));
 
 /* UE create Response from RLC to DU APP*/
 typedef uint8_t (*RlcUlDuUeCreateRsp) ARGS((
-   Pst          *pst,
-   RlcUeCfgRsp  *ueCfgRsp));
+	 Pst          *pst,
+	 RlcUeCfgRsp  *ueCfgRsp));
 
 /* UL RRC Message from RLC to DU APP */
 typedef uint8_t (*RlcUlRrcMsgToDuFunc) ARGS((
-   Pst           *pst,
-   RlcUlRrcMsgInfo *ulRrcMsgInfo));
+	 Pst           *pst,
+	 RlcUlRrcMsgInfo *ulRrcMsgInfo));
 
 /* Function Declarations */
 uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
@@ -530,5 +530,5 @@ uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf);
 #endif /* RLC_INF_H */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -97,43 +97,43 @@ SpId spId;
 
 
 /**
-* @brief Request from RRM to MAC to bind the interface saps
-*
-* @details
-*
-*     Function : cmUnpkLwLcRgmBndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   SpId  spId
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from RRM to MAC to bind the interface saps
+ *
+ * @details
+ *
+ *     Function : cmUnpkLwLcRgmBndReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   SpId  spId
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLwLcRgmBndReq
+   PUBLIC S16 cmUnpkLwLcRgmBndReq
 (
-RgmBndReq func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmBndReq func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkLwLcRgmBndReq(func, pst, mBuf)
-RgmBndReq func;
-Pst *pst;
-Buffer *mBuf;
+   RgmBndReq func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    SpId spId;
    S16  ret;
-   
+
    TRC3(cmUnpkLwLcRgmBndReq)
 
-   if (SUnpkS16(&suId, mBuf) != ROK) 
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if (SUnpkS16(&suId, mBuf) != ROK) 
+      {
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    if (SUnpkS16(&spId, mBuf) != ROK) 
    {
@@ -149,39 +149,39 @@ Buffer *mBuf;
 }
 
 /**
-* @brief Request from RRM to MAC to Unbind the interface saps
-*
-* @details
-*
-*     Function : cmPkLwLcRgmUbndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   Reason  reason
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from RRM to MAC to Unbind the interface saps
+ *
+ * @details
+ *
+ *     Function : cmPkLwLcRgmUbndReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   Reason  reason
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkLwLcRgmUbndReq
+   PUBLIC S16 cmPkLwLcRgmUbndReq
 (
-Pst* pst,
-SpId spId,
-Reason reason
-)
+ Pst* pst,
+ SpId spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 cmPkLwLcRgmUbndReq(pst, spId, reason)
-Pst* pst;
-SpId spId;
-Reason reason;
+   Pst* pst;
+   SpId spId;
+   Reason reason;
 #endif
 {
    Buffer *mBuf = NULLP;
    TRC3(cmPkLwLcRgmUbndReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
    if (SPkS16(reason, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
@@ -198,40 +198,40 @@ Reason reason;
 }
 
 /**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
+ * @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : cmPkLwLcRgmBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : cmPkLwLcRgmBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkLwLcRgmBndCfm
+   PUBLIC S16 cmPkLwLcRgmBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 cmPkLwLcRgmBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
    Buffer *mBuf = NULLP;
    TRC3(cmPkLwLcRgmBndCfm)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
@@ -245,49 +245,49 @@ U8 status;
       RETVALUE(RFAILED);
    }
 
-  pst->event = (Event) EVTRGMBNDCFM;
+   pst->event = (Event) EVTRGMBNDCFM;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
 
 /**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
+ * @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : cmUnpkLwLcRgmBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : cmUnpkLwLcRgmBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLwLcRgmBndCfm
+   PUBLIC S16 cmUnpkLwLcRgmBndCfm
 (
-RgmBndCfm func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmBndCfm func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkLwLcRgmBndCfm(func, pst, mBuf)
-RgmBndCfm func;
-Pst *pst;
-Buffer *mBuf;
+   RgmBndCfm func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    U8 status;
-   
+
    TRC3(cmUnpkLwLcRgmBndCfm)
 
-   if (SUnpkU8(&status, mBuf) != ROK) 
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if (SUnpkU8(&status, mBuf) != ROK) 
+      {
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
@@ -300,48 +300,48 @@ Buffer *mBuf;
 
 
 /**
-* @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
-*
-* @details
-*
-*     Function : cmPkLwLcRgmCfgPrbRprt
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   RgmPrbRprtCfg  *  prbRprtCfg
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
+ *
+ * @details
+ *
+ *     Function : cmPkLwLcRgmCfgPrbRprt
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   RgmPrbRprtCfg  *  prbRprtCfg
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkLwLcRgmCfgPrbRprt
+   PUBLIC S16 cmPkLwLcRgmCfgPrbRprt
 (
-Pst* pst,
-SpId spId,
-RgmPrbRprtCfg  * prbRprtCfg
-)
+ Pst* pst,
+ SpId spId,
+ RgmPrbRprtCfg  * prbRprtCfg
+ )
 #else
 PUBLIC S16 cmPkLwLcRgmCfgPrbRprt(pst, spId, prbRprtCfg)
-Pst* pst;
-SpId spId;
-RgmPrbRprtCfg  * prbRprtCfg;
+   Pst* pst;
+   SpId spId;
+   RgmPrbRprtCfg  * prbRprtCfg;
 #endif
 {
    Buffer *mBuf = NULLP;
    U32 len = sizeof(RgmPrbRprtCfg);
    TRC3(cmPkLwLcRgmCfgPrbRprt)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+	 RETVALUE(RFAILED);
+      }
+
+   if(cmPkPtr((PTR)prbRprtCfg, mBuf) != ROK)
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+      SPutMsg(mBuf); 
+      SPutSBuf(pst->region, pst->pool, (Data*)prbRprtCfg, len);
       RETVALUE(RFAILED);
    }
-
-    if(cmPkPtr((PTR)prbRprtCfg, mBuf) != ROK)
-    {
-       SPutMsg(mBuf); 
-       SPutSBuf(pst->region, pst->pool, (Data*)prbRprtCfg, len);
-       RETVALUE(RFAILED);
-    }
 
    if (SPkS16(spId, mBuf) != ROK) 
    {
@@ -356,43 +356,43 @@ RgmPrbRprtCfg  * prbRprtCfg;
 
 
 /**
-* @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
-*
-* @details
-*
-*     Function : cmUnpkLwLcRgmCfgPrbRprt
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   RgmPrbRprtCfg  *  prbRprtCfg
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
+ *
+ * @details
+ *
+ *     Function : cmUnpkLwLcRgmCfgPrbRprt
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   RgmPrbRprtCfg  *  prbRprtCfg
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLwLcRgmCfgPrbRprt
+   PUBLIC S16 cmUnpkLwLcRgmCfgPrbRprt
 (
-RgmCfgPrbRprtFptr func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmCfgPrbRprtFptr func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkLwLcRgmCfgPrbRprt(func, pst, mBuf)
-RgmCfgPrbRprtFptr func;
-Pst *pst;
-Buffer *mBuf;
+   RgmCfgPrbRprtFptr func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    S16 ret;
    SpId spId;
    RgmPrbRprtCfg *prbRprtCfg;
-   
+
    TRC3(cmUnpkLwLcRgmCfgPrbRprt)
 
-   if (SUnpkS16(&spId, mBuf) != ROK) 
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if (SUnpkS16(&spId, mBuf) != ROK) 
+      {
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    if (cmUnpkPtr((PTR *)&prbRprtCfg, mBuf) != ROK)
    {
@@ -409,40 +409,40 @@ Buffer *mBuf;
 
 
 /**
-* @brief PRB Usage Report Indication  from MAC to RRM 
-*
-* @details
-*
-*     Function : cmPkLwLcRgmPrbRprtInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgmPrbRprtInd  *  prbRprtInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief PRB Usage Report Indication  from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmPkLwLcRgmPrbRprtInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgmPrbRprtInd  *  prbRprtInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkLwLcRgmPrbRprtInd
+   PUBLIC S16 cmPkLwLcRgmPrbRprtInd
 (
-Pst* pst,
-SuId suId,
-RgmPrbRprtInd  * prbRprtInd
-)
+ Pst* pst,
+ SuId suId,
+ RgmPrbRprtInd  * prbRprtInd
+ )
 #else
 PUBLIC S16 cmPkLwLcRgmPrbRprtInd(pst, suId, prbRprtInd)
-Pst* pst;
-SuId suId;
-RgmPrbRprtInd  * prbRprtInd;
+   Pst* pst;
+   SuId suId;
+   RgmPrbRprtInd  * prbRprtInd;
 #endif
 {
    Buffer *mBuf = NULLP;
 
    TRC3(cmPkLwLcRgmPrbRprtInd)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
-      RETVALUE(RFAILED);
-   }
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+	 SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+	 RETVALUE(RFAILED);
+      }
 
    if(cmPkPtr((PTR)prbRprtInd, mBuf) != ROK)
    {
@@ -464,43 +464,43 @@ RgmPrbRprtInd  * prbRprtInd;
 
 
 /**
-* @brief PRB Usage Report Indication from MAC to RRM 
-*
-* @details
-*
-*     Function : cmUnpkLwLcRgmPrbRprtInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgmPrbRprtInd  *  prbRprtInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief PRB Usage Report Indication from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmUnpkLwLcRgmPrbRprtInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgmPrbRprtInd  *  prbRprtInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLwLcRgmPrbRprtInd
+   PUBLIC S16 cmUnpkLwLcRgmPrbRprtInd
 (
-RgmPrbRprtIndFptr func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmPrbRprtIndFptr func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkLwLcRgmPrbRprtInd(func, pst, mBuf)
-RgmPrbRprtIndFptr func;
-Pst *pst;
-Buffer *mBuf;
+   RgmPrbRprtIndFptr func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    RgmPrbRprtInd *prbRprtInd;
    S16 ret;
-   
+
    TRC3(cmUnpkLwLcRgmPrbRprtInd)
 
-   if (SUnpkS16(&suId, mBuf) != ROK) 
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if (SUnpkS16(&suId, mBuf) != ROK) 
+      {
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    if (cmUnpkPtr((PTR *)&prbRprtInd, mBuf) != ROK) 
    {
@@ -520,39 +520,39 @@ Buffer *mBuf;
 
 
 /**
-* @brief Request from RRM to MAC to bind the interface saps
-*
-* @details
-*
-*     Function : cmPkRgmBndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   SpId  spId
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from RRM to MAC to bind the interface saps
+ *
+ * @details
+ *
+ *     Function : cmPkRgmBndReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   SpId  spId
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkRgmBndReq
+   PUBLIC S16 cmPkRgmBndReq
 (
-Pst* pst,
-SuId suId,
-SpId spId
-)
+ Pst* pst,
+ SuId suId,
+ SpId spId
+ )
 #else
 PUBLIC S16 cmPkRgmBndReq(pst, suId, spId)
-Pst* pst;
-SuId suId;
-SpId spId;
+   Pst* pst;
+   SuId suId;
+   SpId spId;
 #endif
 {
    Buffer *mBuf = NULLP;
    TRC3(cmPkRgmBndReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
 
    if (SPkS16(spId, mBuf) != ROK) 
    {
@@ -572,43 +572,43 @@ SpId spId;
 
 
 /**
-* @brief Request from RRM to MAC to bind the interface saps
-*
-* @details
-*
-*     Function : cmUnpkRgmBndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   SpId  spId
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from RRM to MAC to bind the interface saps
+ *
+ * @details
+ *
+ *     Function : cmUnpkRgmBndReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   SpId  spId
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgmBndReq
+   PUBLIC S16 cmUnpkRgmBndReq
 (
-RgmBndReq func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmBndReq func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRgmBndReq(func, pst, mBuf)
-RgmBndReq func;
-Pst *pst;
-Buffer *mBuf;
+   RgmBndReq func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    SpId spId;
    S16  ret;
-   
+
    TRC3(cmUnpkRgmBndReq)
 
-   if (SUnpkS16(&suId, mBuf) != ROK) 
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if (SUnpkS16(&suId, mBuf) != ROK) 
+      {
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    if (SUnpkS16(&spId, mBuf) != ROK) 
    {
@@ -624,39 +624,39 @@ Buffer *mBuf;
 }
 
 /**
-* @brief Request from RRM to MAC to Unbind the interface saps
-*
-* @details
-*
-*     Function : cmPkRgmUbndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   Reason  reason
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from RRM to MAC to Unbind the interface saps
+ *
+ * @details
+ *
+ *     Function : cmPkRgmUbndReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   Reason  reason
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkRgmUbndReq
+   PUBLIC S16 cmPkRgmUbndReq
 (
-Pst* pst,
-SpId spId,
-Reason reason
-)
+ Pst* pst,
+ SpId spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 cmPkRgmUbndReq(pst, spId, reason)
-Pst* pst;
-SpId spId;
-Reason reason;
+   Pst* pst;
+   SpId spId;
+   Reason reason;
 #endif
 {
    Buffer *mBuf = NULLP;
    TRC3(cmPkRgmUbndReq)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
    if (SPkS16(reason, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
@@ -675,42 +675,42 @@ Reason reason;
 #if 1 
 
 /**
-* @brief Request from RRM to MAC to Unbind the interface saps
-*
-* @details
-*
-*     Function : cmUnpkRgmUbndReq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   Reason  reason
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from RRM to MAC to Unbind the interface saps
+ *
+ * @details
+ *
+ *     Function : cmUnpkRgmUbndReq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   Reason  reason
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgmUbndReq
+   PUBLIC S16 cmUnpkRgmUbndReq
 (
-RgmUbndReq func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmUbndReq func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRgmUbndReq(func, pst, mBuf)
-RgmUbndReq func;
-Pst *pst;
-Buffer *mBuf;
+   RgmUbndReq func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SpId spId;
    Reason reason;
-   
+
    TRC3(cmUnpkRgmUbndReq)
 
-   if (SUnpkS16(&spId, mBuf) != ROK) 
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if (SUnpkS16(&spId, mBuf) != ROK) 
+      {
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
+      }
    if (SUnpkS16(&reason, mBuf) != ROK)
    {
       SPutMsg(mBuf);
@@ -722,40 +722,40 @@ Buffer *mBuf;
 #endif
 
 /**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
+ * @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : cmPkRgmBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : cmPkRgmBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkRgmBndCfm
+   PUBLIC S16 cmPkRgmBndCfm
 (
-Pst* pst,
-SuId suId,
-U8 status
-)
+ Pst* pst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 cmPkRgmBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
+   Pst* pst;
+   SuId suId;
+   U8 status;
 #endif
 {
    Buffer *mBuf = NULLP;
    TRC3(cmPkRgmBndCfm)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
-   {
-      RETVALUE(RFAILED);
-   }
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 RETVALUE(RFAILED);
+      }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
@@ -769,49 +769,49 @@ U8 status;
       RETVALUE(RFAILED);
    }
 
-  pst->event = (Event) EVTRGMBNDCFM;
+   pst->event = (Event) EVTRGMBNDCFM;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 
 
 /**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
+ * @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps
-*
-* @details
-*
-*     Function : cmUnpkRgmBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   U8  status
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : cmUnpkRgmBndCfm
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   U8  status
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgmBndCfm
+   PUBLIC S16 cmUnpkRgmBndCfm
 (
-RgmBndCfm func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmBndCfm func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRgmBndCfm(func, pst, mBuf)
-RgmBndCfm func;
-Pst *pst;
-Buffer *mBuf;
+   RgmBndCfm func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    U8 status;
-   
+
    TRC3(cmUnpkRgmBndCfm)
 
-   if (SUnpkU8(&status, mBuf) != ROK) 
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if (SUnpkU8(&status, mBuf) != ROK) 
+      {
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
@@ -826,27 +826,27 @@ Buffer *mBuf;
 
 
 /**
-* @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
-*
-* @details
-*
-*     Function : cmPkCfgPrbRprt
-*
-*  @param[in]   RgmPrbRprtCfg  *prbRprtCfg
-*  @param[in]   Buffer *mBuf 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
+ *
+ * @details
+ *
+ *     Function : cmPkCfgPrbRprt
+ *
+ *  @param[in]   RgmPrbRprtCfg  *prbRprtCfg
+ *  @param[in]   Buffer *mBuf 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkCfgPrbRprt
+   PUBLIC S16 cmPkCfgPrbRprt
 (
-RgmPrbRprtCfg  * prbRprtCfg,
-Buffer *mBuf
-)
+ RgmPrbRprtCfg  * prbRprtCfg,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkCfgPrbRprt(prbRprtCfg, mBuf)
-RgmPrbRprtCfg  * prbRprtCfg;
-Buffer *mBuf;
+   RgmPrbRprtCfg  * prbRprtCfg;
+   Buffer *mBuf;
 #endif
 {
    TRC3(cmPkCfgPrbRprt);
@@ -856,27 +856,27 @@ Buffer *mBuf;
    RETVALUE(ROK);
 }
 /**
-* @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
-*
-* @details
-*
-*     Function : cmUnPkCfgPrbRprt
-*
-*  @param[in]   RgmPrbRprtCfg  *prbRprtCfg
-*  @param[in]   Buffer *mBuf 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
+ *
+ * @details
+ *
+ *     Function : cmUnPkCfgPrbRprt
+ *
+ *  @param[in]   RgmPrbRprtCfg  *prbRprtCfg
+ *  @param[in]   Buffer *mBuf 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnPkCfgPrbRprt
+   PUBLIC S16 cmUnPkCfgPrbRprt
 (
-RgmPrbRprtCfg  * prbRprtCfg,
-Buffer *mBuf
-)
+ RgmPrbRprtCfg  * prbRprtCfg,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnPkCfgPrbRprt(prbRprtCfg, mBuf)
-RgmPrbRprtCfg  * prbRprtCfg;
-Buffer *mBuf;
+   RgmPrbRprtCfg  * prbRprtCfg;
+   Buffer *mBuf;
 #endif
 {
    TRC3(cmUnPkCfgPrbRprt);
@@ -890,48 +890,48 @@ Buffer *mBuf;
 
 
 /**
-* @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
-*
-* @details
-*
-*     Function : cmPkRgmCfgPrbRprt
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   RgmPrbRprtCfg  *prbRprtCfg
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
+ *
+ * @details
+ *
+ *     Function : cmPkRgmCfgPrbRprt
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   RgmPrbRprtCfg  *prbRprtCfg
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkRgmCfgPrbRprt
+   PUBLIC S16 cmPkRgmCfgPrbRprt
 (
-Pst* pst,
-SpId spId,
-RgmPrbRprtCfg  * prbRprtCfg
-)
+ Pst* pst,
+ SpId spId,
+ RgmPrbRprtCfg  * prbRprtCfg
+ )
 #else
 PUBLIC S16 cmPkRgmCfgPrbRprt(pst, spId, prbRprtCfg)
-Pst* pst;
-SpId spId;
-RgmPrbRprtCfg  * prbRprtCfg;
+   Pst* pst;
+   SpId spId;
+   RgmPrbRprtCfg  * prbRprtCfg;
 #endif
 {
    Buffer *mBuf = NULLP;
    U32 len = sizeof(RgmPrbRprtCfg);
    TRC3(cmPkRgmCfgPrbRprt)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      {
+	 SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+	 RETVALUE(RFAILED);
+      }
+
+   if(cmPkCfgPrbRprt(prbRprtCfg, mBuf) != ROK)
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+      SPutMsg(mBuf); 
+      SPutSBuf(pst->region, pst->pool, (Data*)prbRprtCfg, len);
       RETVALUE(RFAILED);
    }
-
-    if(cmPkCfgPrbRprt(prbRprtCfg, mBuf) != ROK)
-    {
-       SPutMsg(mBuf); 
-       SPutSBuf(pst->region, pst->pool, (Data*)prbRprtCfg, len);
-       RETVALUE(RFAILED);
-    }
 
    if (SPkS16(spId, mBuf) != ROK) 
    {
@@ -949,40 +949,40 @@ RgmPrbRprtCfg  * prbRprtCfg;
 
 
 /**
-* @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
-*
-* @details
-*
-*     Function : cmUnpkRgmCfgPrbRprt
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SpId  spId
-*  @param[in]   RgmPrbRprtCfg  *  prbRprtCfg
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Configure the PRB Report Preparation Start/Stop from RRM to MAC 
+ *
+ * @details
+ *
+ *     Function : cmUnpkRgmCfgPrbRprt
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SpId  spId
+ *  @param[in]   RgmPrbRprtCfg  *  prbRprtCfg
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgmCfgPrbRprt
+   PUBLIC S16 cmUnpkRgmCfgPrbRprt
 (
-RgmCfgPrbRprtFptr func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmCfgPrbRprtFptr func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRgmCfgPrbRprt(func, pst, mBuf)
-RgmCfgPrbRprtFptr func;
-Pst *pst;
-Buffer *mBuf;
+   RgmCfgPrbRprtFptr func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SpId spId;
    RgmPrbRprtCfg *prbRprtCfg;
 
    TRC3(cmUnpkRgmCfgPrbRprt)
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&prbRprtCfg, sizeof(RgmPrbRprtCfg))) != ROK)
+      if ((SGetSBuf(pst->region, pst->pool, (Data **)&prbRprtCfg, sizeof(RgmPrbRprtCfg))) != ROK)
       {
-         SPutMsg(mBuf);
-         RETVALUE(RFAILED);
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
       }
 
    if (SUnpkS16(&spId, mBuf) != ROK) 
@@ -1003,28 +1003,28 @@ Buffer *mBuf;
 
 /* RRM_SP1_START */
 /**
-* @brief Packing of PRB Usage Report for qci for sending 
-*        to RRM from MAC 
-*
-* @details
-*
-*     Function : cmPkRgmPrbQciRpt 
-*
-*  @param[in]   RgmPrbRptPerQci * qciPrbRprt 
-*  @param[out]   Buffer *mBuf 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Packing of PRB Usage Report for qci for sending 
+ *        to RRM from MAC 
+ *
+ * @details
+ *
+ *     Function : cmPkRgmPrbQciRpt 
+ *
+ *  @param[in]   RgmPrbRptPerQci * qciPrbRprt 
+ *  @param[out]   Buffer *mBuf 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkRgmPrbQciRpt 
+   PUBLIC S16 cmPkRgmPrbQciRpt 
 (
  RgmPrbRptPerQci *qciPrbRprt,
  Buffer *mBuf
  )
 #else
 PUBLIC S16 cmPkRgmPrbQciRpt(qciPrbRprt, mBuf)
-RgmPrbRptPerQci *qciPrbRprt;
-Buffer *mBuf = NULLP;
+   RgmPrbRptPerQci *qciPrbRprt;
+   Buffer *mBuf = NULLP;
 #endif
 {
    CMCHKPK(SPkU8, qciPrbRprt->bQci, mBuf);
@@ -1035,27 +1035,27 @@ Buffer *mBuf = NULLP;
 }
 
 /**
-* @brief Unpacking of PRB Usage Report for qci received from MAC 
-*
-* @details
-*
-*     Function : cmUnpkRgmPrbQciRpt 
-*
-*  @param[out]   RgmPrbRptPerQci * qciPrbRprt 
-*  @param[in]   Buffer *mBuf 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Unpacking of PRB Usage Report for qci received from MAC 
+ *
+ * @details
+ *
+ *     Function : cmUnpkRgmPrbQciRpt 
+ *
+ *  @param[out]   RgmPrbRptPerQci * qciPrbRprt 
+ *  @param[in]   Buffer *mBuf 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgmPrbQciRpt 
+   PUBLIC S16 cmUnpkRgmPrbQciRpt 
 (
  RgmPrbRptPerQci *qciPrbRprt,
  Buffer *mBuf
  )
 #else
 PUBLIC S16 cmUnpkRgmPrbQciRpt(qciPrbRprt, mBuf)
-RgmPrbRptPerQci *qciPrbRprt;
-Buffer *mBuf = NULLP;
+   RgmPrbRptPerQci *qciPrbRprt;
+   Buffer *mBuf = NULLP;
 #endif
 {
    CMCHKUNPK(SUnpkU8, &qciPrbRprt->bAvgPrbDlUsage, mBuf);
@@ -1067,19 +1067,19 @@ Buffer *mBuf = NULLP;
 /* RRM_SP1_END */
 
 /**
-* @brief PRB Usage Report Indication  from MAC to RRM 
-*
-* @details
-*
-*     Function : cmPkPrbRprtInd
-*
-*  @param[in]   RgmPrbRprtInd  *  prbRprtInd
-*  @param[in]   Buffer *mBuf 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief PRB Usage Report Indication  from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmPkPrbRprtInd
+ *
+ *  @param[in]   RgmPrbRprtInd  *  prbRprtInd
+ *  @param[in]   Buffer *mBuf 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkPrbRprtInd
+   PUBLIC S16 cmPkPrbRprtInd
 (
  RgmPrbRprtInd  * prbRprtInd,
  Buffer *mBuf
@@ -1093,7 +1093,7 @@ PUBLIC S16 cmPkPrbRprtInd(prbRprtInd, mBuf)
    S32 idx = 0;
 
    TRC3(cmPkPrbRprtInd); 
-   
+
    /* RRM_SP1_START */
    for(idx = RGM_MAX_QCI_REPORTS-1; idx >= 0; idx--)
    {
@@ -1106,19 +1106,19 @@ PUBLIC S16 cmPkPrbRprtInd(prbRprtInd, mBuf)
 }
 
 /**
-* @brief PRB Usage Report Indication  from MAC to RRM 
-*
-* @details
-*
-*     Function : cmUnpkPrbRprtInd
-*
-*  @param[in]   RgmPrbRprtInd  *  prbRprtInd
-*  @param[in]   Buffer *mBuf 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief PRB Usage Report Indication  from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmUnpkPrbRprtInd
+ *
+ *  @param[in]   RgmPrbRprtInd  *  prbRprtInd
+ *  @param[in]   Buffer *mBuf 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkPrbRprtInd
+   PUBLIC S16 cmUnpkPrbRprtInd
 (
  RgmPrbRprtInd  * prbRprtInd,
  Buffer *mBuf
@@ -1148,40 +1148,40 @@ PUBLIC S16 cmUnpkPrbRprtInd(prbRprtInd, mBuf)
 
 
 /**
-* @brief PRB Usage Report Indication  from MAC to RRM 
-*
-* @details
-*
-*     Function : cmPkRgmPrbRprtInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgmPrbRprtInd  *  prbRprtInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief PRB Usage Report Indication  from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmPkRgmPrbRprtInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgmPrbRprtInd  *  prbRprtInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkRgmPrbRprtInd
+   PUBLIC S16 cmPkRgmPrbRprtInd
 (
-Pst* pst,
-SuId suId,
-RgmPrbRprtInd  * prbRprtInd
-)
+ Pst* pst,
+ SuId suId,
+ RgmPrbRprtInd  * prbRprtInd
+ )
 #else
 PUBLIC S16 cmPkRgmPrbRprtInd(pst, suId, prbRprtInd)
-Pst* pst;
-SuId suId;
-RgmPrbRprtInd  * prbRprtInd;
+   Pst* pst;
+   SuId suId;
+   RgmPrbRprtInd  * prbRprtInd;
 #endif
 {
    Buffer *mBuf = NULLP;
 
    TRC3(cmPkRgmPrbRprtInd)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
-      RETVALUE(RFAILED);
-   }
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+	 SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+	 RETVALUE(RFAILED);
+      }
 
    if(cmPkPrbRprtInd(prbRprtInd, mBuf) != ROK)
    {
@@ -1203,42 +1203,42 @@ RgmPrbRprtInd  * prbRprtInd;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 /**
-* @brief PRB Usage Report Indication from MAC to RRM 
-*
-* @details
-*
-*     Function : cmUnpkRgmPrbRprtInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgmPrbRprtInd  *  prbRprtInd
-*  @return   S16
-*      -# ROK
-**/
+ * @brief PRB Usage Report Indication from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmUnpkRgmPrbRprtInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgmPrbRprtInd  *  prbRprtInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgmPrbRprtInd
+   PUBLIC S16 cmUnpkRgmPrbRprtInd
 (
-RgmPrbRprtIndFptr func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmPrbRprtIndFptr func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRgmPrbRprtInd(func, pst, mBuf)
-RgmPrbRprtIndFptr func;
-Pst *pst;
-Buffer *mBuf;
+   RgmPrbRprtIndFptr func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    RgmPrbRprtInd prbRprtInd;
-   
+
    TRC3(cmUnpkRgmPrbRprtInd)
 
-   if (SUnpkS16(&suId, mBuf) != ROK) 
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if (SUnpkS16(&suId, mBuf) != ROK) 
+      {
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    if (cmUnpkPrbRprtInd(&prbRprtInd, mBuf) != ROK) 
    {
@@ -1251,19 +1251,19 @@ Buffer *mBuf;
 }
 
 /**
-* @brief Transmission Mode Change Indication  from MAC to RRM 
-*
-* @details
-*
-*     Function : cmPkTransModeInd
-*
-*  @param[in]   RgmTransModeInd *transModeInd
-*  @param[in]   Buffer *mBuf 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Transmission Mode Change Indication  from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmPkTransModeInd
+ *
+ *  @param[in]   RgmTransModeInd *transModeInd
+ *  @param[in]   Buffer *mBuf 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkTransModeInd
+   PUBLIC S16 cmPkTransModeInd
 (
  RgmTransModeInd *transModeInd,
  Buffer *mBuf
@@ -1282,19 +1282,19 @@ PUBLIC S16 cmPkTransModeInd(transModeInd, mBuf)
 }
 
 /**
-* @brief  Transmission Mode Change Indication from MAC to RRM 
-*
-* @details
-*
-*     Function : cmUnpkTransModeInd
-*
-*  @param[in]   RgmTransModeInd *transModeInd 
-*  @param[in]   Buffer *mBuf 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief  Transmission Mode Change Indication from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmUnpkTransModeInd
+ *
+ *  @param[in]   RgmTransModeInd *transModeInd 
+ *  @param[in]   Buffer *mBuf 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkTransModeInd
+   PUBLIC S16 cmUnpkTransModeInd
 (
  RgmTransModeInd *transModeInd,
  Buffer *mBuf
@@ -1314,40 +1314,40 @@ PUBLIC S16 cmUnpkTransModeInd(transModeInd, mBuf)
    RETVALUE(ROK);
 }
 /**
-* @brief Transmission Mode Change Indication  from MAC to RRM 
-*
-* @details
-*
-*     Function : cmPkRgmTransModeInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgmTransModeInd *transModeInd 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Transmission Mode Change Indication  from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmPkRgmTransModeInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgmTransModeInd *transModeInd 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmPkRgmTransModeInd 
+   PUBLIC S16 cmPkRgmTransModeInd 
 (
-Pst* pst,
-SuId suId,
-RgmTransModeInd *transModeInd
-)
+ Pst* pst,
+ SuId suId,
+ RgmTransModeInd *transModeInd
+ )
 #else
 PUBLIC S16 cmPkRgmTransModeInd(pst, suId, transModeInd)
-Pst* pst;
-SuId suId;
-RgmTransModeInd *transModeInd;
+   Pst* pst;
+   SuId suId;
+   RgmTransModeInd *transModeInd;
 #endif
 {
    Buffer *mBuf = NULLP;
 
    TRC3(cmPkRgmTransModeInd)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
-      RETVALUE(RFAILED);
-   }
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+	 SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
+	 RETVALUE(RFAILED);
+      }
 
    if(cmPkTransModeInd(transModeInd, mBuf) != ROK)
    {
@@ -1369,42 +1369,42 @@ RgmTransModeInd *transModeInd;
    RETVALUE(SPstTsk(pst,mBuf));
 }
 /**
-* @brief Transmission Mode Change Indication  from MAC to RRM 
-*
-* @details
-*
-*     Function : cmUnpkRgmTransModeInd
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgmTransModeInd *transModeInd 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Transmission Mode Change Indication  from MAC to RRM 
+ *
+ * @details
+ *
+ *     Function : cmUnpkRgmTransModeInd
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RgmTransModeInd *transModeInd 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgmTransModeInd
+   PUBLIC S16 cmUnpkRgmTransModeInd
 (
-RgmTransModeIndFptr func,
-Pst *pst,
-Buffer *mBuf
-)
+ RgmTransModeIndFptr func,
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkRgmTransModeInd(func, pst, mBuf)
-RgmTransModeIndFptr func;
-Pst *pst;
-Buffer *mBuf;
+   RgmTransModeIndFptr func;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    SuId suId;
    RgmTransModeInd transModeInd;
-   
+
    TRC3(cmUnpkRgmTransModeInd)
 
-   if (SUnpkS16(&suId, mBuf) != ROK) 
-   {
-      SPutMsg(mBuf);
-      RETVALUE(RFAILED);
-   }
+      if (SUnpkS16(&suId, mBuf) != ROK) 
+      {
+	 SPutMsg(mBuf);
+	 RETVALUE(RFAILED);
+      }
 
    if (cmUnpkTransModeInd(&transModeInd, mBuf) != ROK) 
    {
@@ -1416,7 +1416,7 @@ Buffer *mBuf;
    RETVALUE((*func)(pst, suId, &transModeInd));
 }
 /**********************************************************************
- 
-         End of file
- 
-**********************************************************************/
+
+  End of file
+
+ **********************************************************************/

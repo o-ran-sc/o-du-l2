@@ -130,7 +130,7 @@ RgRguDedDatReq *datReq;
 #if (ERRCLASS & ERRCLS_DEBUG)
    RgUstaDgn   dgn;      /* Alarm diagnostics structure */
 #endif
-/* ADD Changes for Downlink UE Timing Optimization */
+   /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
    S16 ret;
 #endif
@@ -140,25 +140,25 @@ RgRguDedDatReq *datReq;
    TRC2(rgROMDedDatReq)
 
 
-   if (((cell = rgCb[inst].cell) == NULLP) 
-       || (cell->cellId != datReq->cellId))
-   {
-#if (ERRCLASS & ERRCLS_INT_PAR)
-      /* Handle Cell fetch failure */
-      RGLOGERROR(inst,ERRCLS_INT_PAR,ERG001,(ErrVal)datReq->cellId,
-            "rgROMDedDatReq(): Invalid cell Id");
-#endif
-      err.errType = RGERR_ROM_DEDDATREQ;
-      err.errCause = RGERR_ROM_INV_CELL_ID;
-      if(cell != NULLP)
+      if (((cell = rgCb[inst].cell) == NULLP) 
+	    || (cell->cellId != datReq->cellId))
       {
-         /* Update stats */
-         rgUpdtRguDedSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP, datReq);
+#if (ERRCLASS & ERRCLS_INT_PAR)
+	 /* Handle Cell fetch failure */
+	 RGLOGERROR(inst,ERRCLS_INT_PAR,ERG001,(ErrVal)datReq->cellId,
+	       "rgROMDedDatReq(): Invalid cell Id");
+#endif
+	 err.errType = RGERR_ROM_DEDDATREQ;
+	 err.errCause = RGERR_ROM_INV_CELL_ID;
+	 if(cell != NULLP)
+	 {
+	    /* Update stats */
+	    rgUpdtRguDedSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP, datReq);
+	 }
+	 RETVALUE(RFAILED);
       }
-      RETVALUE(RFAILED);
-   }
 
-/* Add loop here to scan for all UEs in the consolidated DDatReq*/
+   /* Add loop here to scan for all UEs in the consolidated DDatReq*/
    for(idx = 0; idx < datReq->nmbOfUeGrantPerTti; idx++)
    {
 
@@ -167,60 +167,60 @@ RgRguDedDatReq *datReq;
       sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
       if( (sf->txDone == TRUE) ||
-            (!RG_TIMEINFO_SAME(sf->schdTime,timingInfo)))
+	    (!RG_TIMEINFO_SAME(sf->schdTime,timingInfo)))
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         /* Transmission is already done for this slot. This is a delayed
-          * datReq. So discard */
-         rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM);
-         rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
-               LRG_CAUSE_DELAYED_DATREQ, &dgn);
+	 /* Transmission is already done for this slot. This is a delayed
+	  * datReq. So discard */
+	 rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM);
+	 rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
+	       LRG_CAUSE_DELAYED_DATREQ, &dgn);
 #endif
-         err.errType = RGERR_ROM_DEDDATREQ;
-         err.errCause = RGERR_ROM_DELAYED_DATREQ;
-         /* Update stats */
-         rgUpdtRguDedSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP, datReq);
+	 err.errType = RGERR_ROM_DEDDATREQ;
+	 err.errCause = RGERR_ROM_DELAYED_DATREQ;
+	 /* Update stats */
+	 rgUpdtRguDedSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP, datReq);
 #ifdef CA_DBG
-         {
-            EXTERN U32 dbgDelayedDatReqInMac;
-            dbgDelayedDatReqInMac++;
-         }
+	 {
+	    EXTERN U32 dbgDelayedDatReqInMac;
+	    dbgDelayedDatReqInMac++;
+	 }
 #endif /* CA_DBG */         
 #ifndef L2_OPTMZ
-         RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
+	 RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
 #endif
-         continue;
-        // RETVALUE(RFAILED);
+	 continue;
+	 // RETVALUE(RFAILED);
       }
 
       if ((ue = rgDBMGetUeCb(cell, datReq->datReq[idx].rnti)) == NULLP)
       {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-            /* Handle Ue fetch failure */
-            RGLOGERROR(inst,ERRCLS_INT_PAR,ERG002,(ErrVal)datReq->datReq[idx].rnti,
-                  "rgROMDedDatReq(): Invalid ue Id");
+	 /* Handle Ue fetch failure */
+	 RGLOGERROR(inst,ERRCLS_INT_PAR,ERG002,(ErrVal)datReq->datReq[idx].rnti,
+	       "rgROMDedDatReq(): Invalid ue Id");
 #endif
-            err.errType = RGERR_ROM_DEDDATREQ;
-            err.errCause = RGERR_ROM_INV_UE_ID;
-            /* Update stats */
-            rgUpdtRguDedSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP, datReq);
-            /* ADD Changes for Downlink UE Timing Optimization */
+	 err.errType = RGERR_ROM_DEDDATREQ;
+	 err.errCause = RGERR_ROM_INV_UE_ID;
+	 /* Update stats */
+	 rgUpdtRguDedSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP, datReq);
+	 /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-            /* Trying to send the prev successful PDU's 
-             * if present */
-            ret = rgROMUpdDlSfRemDataCnt(cell, sf);
-            if(ret == RFAILED)
-            {
-               RLOG0(L_INFO, "Dropping due to no ue \n");
+	 /* Trying to send the prev successful PDU's 
+	  * if present */
+	 ret = rgROMUpdDlSfRemDataCnt(cell, sf);
+	 if(ret == RFAILED)
+	 {
+	    RLOG0(L_INFO, "Dropping due to no ue \n");
 #ifndef L2_OPTMZ
-               RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
+	    RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
 #endif
-               /* Return from here as above functions found more datReq than expected*/
-              /* RETVALUE(ret); */
-            }
+	    /* Return from here as above functions found more datReq than expected*/
+	    /* RETVALUE(ret); */
+	 }
 #endif
-            /* Conitnue for next UE */
-            continue;
+	 /* Conitnue for next UE */
+	 continue;
       }
 
       hqPId = (U8)(datReq->datReq[idx].transId);
@@ -230,29 +230,29 @@ RgRguDedDatReq *datReq;
 
       if (rgDHMHndlDedDatReq(inst,hqProc, &datReq->datReq[idx], sf, &err) == RFAILED)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,datReq->cellId,
-                   "Handling of Data request in DHM failedi RNTI:%d",
-                    datReq->datReq[idx].rnti);
-         err.errType = RGERR_ROM_DEDDATREQ;
-         /* errcause shall be filled in appropriately by DHM */
-         /* Update stats */
-         rgUpdtRguDedSts(inst,ue->rguDlSap,RG_RGU_SDU_DROP, datReq);
-         /* ADD Changes for Downlink UE Timing Optimization */
+	 RLOG_ARG1(L_ERROR,DBG_CELLID,datReq->cellId,
+	       "Handling of Data request in DHM failedi RNTI:%d",
+	       datReq->datReq[idx].rnti);
+	 err.errType = RGERR_ROM_DEDDATREQ;
+	 /* errcause shall be filled in appropriately by DHM */
+	 /* Update stats */
+	 rgUpdtRguDedSts(inst,ue->rguDlSap,RG_RGU_SDU_DROP, datReq);
+	 /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-         /* Trying to send the prev successful PDU's 
-          * if present */
-         ret = rgROMUpdDlSfRemDataCnt(cell, sf);
-         if(ret == RFAILED)
-         {
-         RLOG0(L_INFO, "Dropping due to no failure of remCnt update");
+	 /* Trying to send the prev successful PDU's 
+	  * if present */
+	 ret = rgROMUpdDlSfRemDataCnt(cell, sf);
+	 if(ret == RFAILED)
+	 {
+	    RLOG0(L_INFO, "Dropping due to no failure of remCnt update");
 #ifndef L2_OPTMZ
-            RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
+	    RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
 #endif
-            /* Return from here as above functions found more datReq than expected*/
-            //RETVALUE(ret);
-         }
+	    /* Return from here as above functions found more datReq than expected*/
+	    //RETVALUE(ret);
+	 }
 #endif
-         continue;
+	 continue;
       }
 
       /* Merging the updation of statistics of SDUs with for loop below */ 
@@ -268,41 +268,41 @@ RgRguDedDatReq *datReq;
       /* Fill the DStaRsp struct and send it to scheduler */
       for (idx1 = 0; idx1 < datReq->datReq[idx].nmbOfTbs; idx1++)
       {
-         for(idx2 = 0; idx2 < datReq->datReq[idx].datReqTb[idx1].nmbLch; idx2++)
-         {
-            /* Updating dedicated SDUs received statistics without 
-               additional function above for optimization */
-            ue->rguDlSap->sapSts.numPduRcvd +=
-               datReq->datReq[idx].datReqTb[idx1].lchData[idx2].pdu.numPdu;
+	 for(idx2 = 0; idx2 < datReq->datReq[idx].datReqTb[idx1].nmbLch; idx2++)
+	 {
+	    /* Updating dedicated SDUs received statistics without 
+	       additional function above for optimization */
+	    ue->rguDlSap->sapSts.numPduRcvd +=
+	       datReq->datReq[idx].datReqTb[idx1].lchData[idx2].pdu.numPdu;
 
-            boRpt.lcId    = datReq->datReq[idx].datReqTb[idx1].lchData[idx2].lcId; 
-            boRpt.bo      = datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.bo;
-            boRpt.oldestSduArrTime 
-               = datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.oldestSduArrTime;
-            boRpt.staPduBo = datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.staPduBo;
-            
-            boRpt.setMaxUlPrio= datReq->datReq[idx].datReqTb[idx1].lchData[idx2].setMaxUlPrio;
+	    boRpt.lcId    = datReq->datReq[idx].datReqTb[idx1].lchData[idx2].lcId; 
+	    boRpt.bo      = datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.bo;
+	    boRpt.oldestSduArrTime 
+	       = datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.oldestSduArrTime;
+	    boRpt.staPduBo = datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.staPduBo;
+
+	    boRpt.setMaxUlPrio= datReq->datReq[idx].datReqTb[idx1].lchData[idx2].setMaxUlPrio;
 #ifdef CCPU_OPT
-            boRpt.setMaxDlPrio= datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.staPduPrsnt;
+	    boRpt.setMaxDlPrio= datReq->datReq[idx].datReqTb[idx1].lchData[idx2].boReport.staPduPrsnt;
 #endif
-            RgMacSchDedBoUpdt(&schPst, &boRpt);
-         }
+	    RgMacSchDedBoUpdt(&schPst, &boRpt);
+	 }
       }
 
       /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-//       sf->remDatReqCnt -= datReqFailCnt;
+      //       sf->remDatReqCnt -= datReqFailCnt;
       /*Presently this function is not returning RFAILED, thus not checking
-        for failure condition.*/
+	for failure condition.*/
       ret = rgROMUpdDlSfRemDataCnt(cell, sf);
       if(ret == RFAILED)
       {
-         RLOG0(L_INFO, "\n Dropping due to no failure of remCnt update(1) \n");
+	 RLOG0(L_INFO, "\n Dropping due to no failure of remCnt update(1) \n");
 #ifndef L2_OPTMZ
-         RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
+	 RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
 #endif
-         /* Return from here as above functions found more datReq than expected*/
-        // RETVALUE(ret);
+	 /* Return from here as above functions found more datReq than expected*/
+	 // RETVALUE(ret);
       }
 #endif
    } /* for loop for num of Ue per TTI*/
@@ -331,21 +331,21 @@ RgRguDedDatReq *datReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgROMCmnDatReq
+   PUBLIC S16 rgROMCmnDatReq
 (
-Inst            inst,
-RgRguCmnDatReq *datReq
-)
+ Inst            inst,
+ RgRguCmnDatReq *datReq
+ )
 #else
 PUBLIC S16 rgROMCmnDatReq(inst,datReq)
-Inst            inst;
-RgRguCmnDatReq *datReq;
+   Inst            inst;
+   RgRguCmnDatReq *datReq;
 #endif
 {
    RgCellCb    *cell;
    RgErrInfo   err;
    S16         ret;
-/* ADD Changes for Downlink UE Timing Optimization */
+   /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
    CmLteTimingInfo timingInfo;
    RgDlSf   *sf;
@@ -353,21 +353,21 @@ RgRguCmnDatReq *datReq;
 
    TRC2(rgROMCmnDatReq)
 
-   ret = ROK;
+      ret = ROK;
    err.errType = RGERR_ROM_CMNDATREQ;
    if(((cell = rgCb[inst].cell) == NULLP)
-      ||(cell->cellId != datReq->cellId))
+	 ||(cell->cellId != datReq->cellId))
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
       /* Handle Cell fetch failure */
       RGLOGERROR(inst,ERRCLS_INT_PAR,ERG003,(ErrVal)datReq->cellId,
-                            "rgROMCmnDatReq(): Invalid cell Id");
+	    "rgROMCmnDatReq(): Invalid cell Id");
 #endif
       err.errCause = RGERR_ROM_INV_CELL_ID;
       /* Update stats */
       if(cell != NULLP)
       {
-         rgUpdtRguCmnSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP);
+	 rgUpdtRguCmnSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP);
       }
       RETVALUE(RFAILED);
    }
@@ -437,17 +437,17 @@ RgRguCmnDatReq *datReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMHndlCcchDatReq
+   PRIVATE S16 rgROMHndlCcchDatReq
 (
-RgCellCb       *cell,
-RgRguCmnDatReq *datReq,
-RgErrInfo      *err
-)
+ RgCellCb       *cell,
+ RgRguCmnDatReq *datReq,
+ RgErrInfo      *err
+ )
 #else
 PRIVATE S16 rgROMHndlCcchDatReq(cell, datReq, err)
-RgCellCb       *cell;
-RgRguCmnDatReq *datReq;
-RgErrInfo      *err;
+   RgCellCb       *cell;
+   RgRguCmnDatReq *datReq;
+   RgErrInfo      *err;
 #endif
 {
    Inst     inst = cell->macInst - RG_INST_START;
@@ -469,13 +469,13 @@ RgErrInfo      *err;
    {
       if ((ue = rgDBMGetUeCbFromRachLst(cell, datReq->u.rnti)) == NULLP)
       {
-   #if (ERRCLASS & ERRCLS_INT_PAR)
-         /* Handle Ue fetch failure */
-         RGLOGERROR(inst,ERRCLS_INT_PAR,ERG004,(ErrVal)datReq->u.rnti,
-                              "rgROMHndlCcchDatReq(): Invalid ue Id");
-   #endif
-         err->errCause = RGERR_ROM_INV_UE_ID;
-         RETVALUE(RFAILED);
+#if (ERRCLASS & ERRCLS_INT_PAR)
+	 /* Handle Ue fetch failure */
+	 RGLOGERROR(inst,ERRCLS_INT_PAR,ERG004,(ErrVal)datReq->u.rnti,
+	       "rgROMHndlCcchDatReq(): Invalid ue Id");
+#endif
+	 err->errCause = RGERR_ROM_INV_UE_ID;
+	 RETVALUE(RFAILED);
       }
    }
 
@@ -484,14 +484,14 @@ RgErrInfo      *err;
    sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
    if( (sf->txDone == TRUE) ||
-       (!RG_TIMEINFO_SAME(sf->schdTime,timingInfo)))
+	 (!RG_TIMEINFO_SAME(sf->schdTime,timingInfo)))
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       /* Transmission is already done for this slot. This is a delayed
        * datReq. So discard */
       rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM);
       rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
-                              LRG_CAUSE_DELAYED_DATREQ, &dgn);
+	    LRG_CAUSE_DELAYED_DATREQ, &dgn);
 #endif
       err->errCause = RGERR_ROM_DELAYED_DATREQ;
       RETVALUE(RFAILED);
@@ -502,20 +502,20 @@ RgErrInfo      *err;
 
    /* get harq process and invoke DHM */
    rgDHMGetHqProcFrmId(ue, hqPId, &hqProc);
- 
+
    /* Changed for CR timer implementation*/
    /* invoke DHM to process CCCH data */
    if (rgDHMHndlCmnDatReq(inst,hqProc, datReq, err) == RFAILED)
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-            "Handling of Data request in DHM failed RNTI:%d LCID:%d",
-            datReq->u.rnti,datReq->lcId);
+	    "Handling of Data request in DHM failed RNTI:%d LCID:%d",
+	    datReq->u.rnti,datReq->lcId);
       /* Release First TB */
       rgDHMRlsHqProcTB(cell, hqProc, 1);
       /* err shall be filled in appropriately by DHM */
       RETVALUE(RFAILED);
    }
- 
+
    RETVALUE(ROK); 
 } /* rgROMHndlCcchDatReq */
 
@@ -538,17 +538,17 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMHndlBcchPcchDatReq
+   PRIVATE S16 rgROMHndlBcchPcchDatReq
 (
-RgCellCb       *cell,
-RgRguCmnDatReq *datReq,
-RgErrInfo      *err
-)
+ RgCellCb       *cell,
+ RgRguCmnDatReq *datReq,
+ RgErrInfo      *err
+ )
 #else
 PRIVATE S16 rgROMHndlBcchPcchDatReq(cell, datReq, err)
-RgCellCb       *cell;
-RgRguCmnDatReq *datReq;
-RgErrInfo      *err;
+   RgCellCb       *cell;
+   RgRguCmnDatReq *datReq;
+   RgErrInfo      *err;
 #endif
 {
    Inst            inst = cell->macInst - RG_INST_START;
@@ -572,14 +572,14 @@ RgErrInfo      *err;
    sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
    if( (sf->txDone == TRUE) ||
-       (!RG_TIMEINFO_SAME(sf->schdTime,timingInfo)))
+	 (!RG_TIMEINFO_SAME(sf->schdTime,timingInfo)))
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       /* Transmission is already done for this slot. This is a delayed
        * datReq. So discard */
       rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM);
       rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
-                              LRG_CAUSE_DELAYED_DATREQ, &dgn);
+	    LRG_CAUSE_DELAYED_DATREQ, &dgn);
 #endif
       err->errCause = RGERR_ROM_DELAYED_DATREQ;
       RETVALUE(RFAILED);
@@ -593,7 +593,7 @@ RgErrInfo      *err;
       sf->bcch.tb = datReq->pdu;
 
       SCpyMsgMsg(datReq->pdu, RG_GET_MEM_REGION(rgCb[inst]),
-               RG_GET_MEM_POOL(rgCb[inst]), &bcch->tb);
+	    RG_GET_MEM_POOL(rgCb[inst]), &bcch->tb);
 
       RETVALUE(ROK);
    }
@@ -617,7 +617,7 @@ RgErrInfo      *err;
 
    /* Handle lcCb fetch failure */
    RGLOGERROR(inst,ERRCLS_INT_PAR,ERG005,(ErrVal)datReq->lcId,
-                  "rgROMHndlBcchPcchDatReq(): Invalid Lc Id");
+	 "rgROMHndlBcchPcchDatReq(): Invalid Lc Id");
    err->errCause = RGERR_ROM_INV_LC_ID;
 
    RETVALUE(RFAILED);
@@ -641,15 +641,15 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgROMDedStaRsp
+   PUBLIC S16 rgROMDedStaRsp
 (
-Inst           inst,
-RgRguDedStaRsp *staRsp
-)
+ Inst           inst,
+ RgRguDedStaRsp *staRsp
+ )
 #else
 PUBLIC S16 rgROMDedStaRsp(inst,staRsp)
-Inst           inst;
-RgRguDedStaRsp *staRsp;
+   Inst           inst;
+   RgRguDedStaRsp *staRsp;
 #endif
 {
    RgCellCb   *cell;
@@ -658,64 +658,64 @@ RgRguDedStaRsp *staRsp;
 
    TRC2(rgROMDedStaRsp)
 
-   /* Avoiding memset, as the variables of this are getting 
-      initialized */
+      /* Avoiding memset, as the variables of this are getting 
+	 initialized */
 
 
-   if(((cell = rgCb[inst].cell) != NULLP)
-      && (cell->cellId == staRsp->cellId))
-   {
-            Pst        schPst;
+      if(((cell = rgCb[inst].cell) != NULLP)
+	    && (cell->cellId == staRsp->cellId))
+      {
+	 Pst        schPst;
 #ifdef UNUSED_VAR
-    RgInfDedBoRpt boRpt
-	 boRpt.cellSapId  = cell->schInstMap.cellSapId;
-    boRpt.cellId  = staRsp->cellId;
+	 RgInfDedBoRpt boRpt
+	    boRpt.cellSapId  = cell->schInstMap.cellSapId;
+	 boRpt.cellId  = staRsp->cellId;
 	 boRpt.rnti    = staRsp->rnti; 
-    boRpt.lcId    = staRsp->lcId; 
+	 boRpt.lcId    = staRsp->lcId; 
 	 boRpt.bo      = staRsp->boReport.bo;
-    boRpt.oldestSduArrTime = staRsp->boReport.oldestSduArrTime;
-    boRpt.staPduBo = staRsp->boReport.staPduBo;
-    boRpt.oldestSduArrTime = staRsp->boReport.oldestSduArrTime;
+	 boRpt.oldestSduArrTime = staRsp->boReport.oldestSduArrTime;
+	 boRpt.staPduBo = staRsp->boReport.staPduBo;
+	 boRpt.oldestSduArrTime = staRsp->boReport.oldestSduArrTime;
 #endif
-				rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
-            schPst.event = 0;
-            //TODO: commented for compilation without SCH RgMacSchDedBoUpdt(&schPst, &boRpt);
-            RETVALUE(ROK);
-   }
+	 rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
+	 schPst.event = 0;
+	 //TODO: commented for compilation without SCH RgMacSchDedBoUpdt(&schPst, &boRpt);
+	 RETVALUE(ROK);
+      }
    RLOG_ARG2(L_ERROR,DBG_CELLID,staRsp->cellId,"Invalid cell for CRNTI:%d LCID:%d ",
-             staRsp->rnti,staRsp->lcId);
+	 staRsp->rnti,staRsp->lcId);
 
    RETVALUE(RFAILED);
 }  /* rgROMDedStaRsp */
 
 S16 RgMacSchBrdcmDedBoUpdtReq(
-Inst inst,
-CmLteCellId cellId,
-CmLteRnti rnti, 
-CmLteLcId lcId, 
-S32 bo 
-)
+      Inst inst,
+      CmLteCellId cellId,
+      CmLteRnti rnti, 
+      CmLteLcId lcId, 
+      S32 bo 
+      )
 {
 
-  RgCellCb   *cell;
-  //if ((cell = rgDBMGetCellCb(cellId)) != NULLP)
-  if (((cell = rgCb[inst].cell) != NULLP) &&
-        (cell->cellId == cellId))
- {
-     Pst        schPst;
+   RgCellCb   *cell;
+   //if ((cell = rgDBMGetCellCb(cellId)) != NULLP)
+   if (((cell = rgCb[inst].cell) != NULLP) &&
+	 (cell->cellId == cellId))
+   {
+      Pst        schPst;
 #ifdef UNUSED_VAR
-    RgInfDedBoRpt  boRpt;
-    boRpt.cellSapId  = cell->schInstMap.cellSapId;
-    boRpt.cellId     = cellId;
-    boRpt.rnti       = rnti; 
-    boRpt.lcId       = lcId; 
-    boRpt.bo         = bo;
+      RgInfDedBoRpt  boRpt;
+      boRpt.cellSapId  = cell->schInstMap.cellSapId;
+      boRpt.cellId     = cellId;
+      boRpt.rnti       = rnti; 
+      boRpt.lcId       = lcId; 
+      boRpt.bo         = bo;
 #endif
-     rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
-     schPst.event = 0;
-     //TODO: commented for compilation without SCH RgMacSchDedBoUpdtReq (&schPst,&boRpt);
-  }
-  RETVALUE(ROK);
+      rgGetPstToInst(&schPst,inst, cell->schInstMap.schInst);
+      schPst.event = 0;
+      //TODO: commented for compilation without SCH RgMacSchDedBoUpdtReq (&schPst,&boRpt);
+   }
+   RETVALUE(ROK);
 }
 /**
  * @brief Handler for StaRsp received on RGU for a common logical channel.
@@ -736,15 +736,15 @@ S32 bo
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgROMCmnStaRsp
+   PUBLIC S16 rgROMCmnStaRsp
 (
-Inst            inst, 
-RgRguCmnStaRsp *staRsp
-)
+ Inst            inst, 
+ RgRguCmnStaRsp *staRsp
+ )
 #else
 PUBLIC S16 rgROMCmnStaRsp(inst,staRsp)
-Inst            inst;
-RgRguCmnStaRsp *staRsp;
+   Inst            inst;
+   RgRguCmnStaRsp *staRsp;
 #endif
 {
    RgCellCb   *cell;
@@ -753,16 +753,16 @@ RgRguCmnStaRsp *staRsp;
    TRC2(rgROMCmnStaRsp)
 
 
-   if(((cell = rgCb[inst].cell) == NULLP)
-      || (cell->cellId != staRsp->cellId))
-   {
-      /* Handle Cell fetch failure */
-      RLOG_ARG2(L_ERROR,DBG_CELLID,staRsp->cellId,
-                "Invalid cell for CRNTI:%d LCID:%d",staRsp->u.rnti,staRsp->lcId);
-      err.errType = RGERR_ROM_CMNSTARSP;
-      err.errCause = RGERR_ROM_INV_CELL_ID;
-      RETVALUE(RFAILED);
-   }
+      if(((cell = rgCb[inst].cell) == NULLP)
+	    || (cell->cellId != staRsp->cellId))
+      {
+	 /* Handle Cell fetch failure */
+	 RLOG_ARG2(L_ERROR,DBG_CELLID,staRsp->cellId,
+	       "Invalid cell for CRNTI:%d LCID:%d",staRsp->u.rnti,staRsp->lcId);
+	 err.errType = RGERR_ROM_CMNSTARSP;
+	 err.errCause = RGERR_ROM_INV_CELL_ID;
+	 RETVALUE(RFAILED);
+      }
 
    /* handle status response on CCCH */
    if(staRsp->lcId == cell->dlCcchId)
@@ -773,7 +773,7 @@ RgRguCmnStaRsp *staRsp;
    {
       rgROMHndlBcchPcchStaRsp(cell, staRsp, &err); 
    }
-   
+
    RETVALUE(ROK);
 }  /* rgROMCmnStaRsp */
 
@@ -798,15 +798,15 @@ RgRguCmnStaRsp *staRsp;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgROML2MUlThrpMeasReq 
+   PUBLIC S16 rgROML2MUlThrpMeasReq 
 (
-Inst                  inst,
-RgRguL2MUlThrpMeasReq *measReq
-)
+ Inst                  inst,
+ RgRguL2MUlThrpMeasReq *measReq
+ )
 #else
 PUBLIC S16 rgROML2MUlThrpMeasReq(inst,measReq)
-Inst                  inst;
-RgRguL2MUlThrpMeasReq *measReq;
+   Inst                  inst;
+   RgRguL2MUlThrpMeasReq *measReq;
 #endif
 {
    RgCellCb   *cell;
@@ -817,29 +817,29 @@ RgRguL2MUlThrpMeasReq *measReq;
 
 
 
-   if(((cell = rgCb[inst].cell) != NULLP)
-      &&(cell->cellId == measReq->cellId))
-   {
-      if ((ue = rgDBMGetUeCb(cell, measReq->rnti)) != NULLP)
+      if(((cell = rgCb[inst].cell) != NULLP)
+	    &&(cell->cellId == measReq->cellId))
       {
-         for(loop=0; loop<measReq->numLcId;loop++)
-         {
-            if ((rgDBMGetUlDedLcCb(ue, measReq->lcId[loop])) != NULLP)
-            {
-               ue->ul.lcCb[measReq->lcId[loop]].measOn = measReq->enbMeas;
-               if(ue->ul.lcCb[measReq->lcId[loop]].measOn == FALSE)
-               {
-                  lcgId=ue->ul.lcCb[measReq->lcId[loop]].lcgId;
-                  ue->ul.lcgArr[lcgId].lcgBsInfo.outStndngBs = 0;
-                  ue->ul.lcgArr[lcgId].lcgBsInfo.firstDatSegRcvd = FALSE;
-               }
-            }
-         }
-         RETVALUE(ROK);
+	 if ((ue = rgDBMGetUeCb(cell, measReq->rnti)) != NULLP)
+	 {
+	    for(loop=0; loop<measReq->numLcId;loop++)
+	    {
+	       if ((rgDBMGetUlDedLcCb(ue, measReq->lcId[loop])) != NULLP)
+	       {
+		  ue->ul.lcCb[measReq->lcId[loop]].measOn = measReq->enbMeas;
+		  if(ue->ul.lcCb[measReq->lcId[loop]].measOn == FALSE)
+		  {
+		     lcgId=ue->ul.lcCb[measReq->lcId[loop]].lcgId;
+		     ue->ul.lcgArr[lcgId].lcgBsInfo.outStndngBs = 0;
+		     ue->ul.lcgArr[lcgId].lcgBsInfo.firstDatSegRcvd = FALSE;
+		  }
+	       }
+	    }
+	    RETVALUE(ROK);
+	 }
       }
-   }
    RLOG_ARG1(L_ERROR,DBG_CELLID,measReq->cellId,"Invalid cell CRNTI:%d",
-             measReq->rnti);
+	 measReq->rnti);
    RETVALUE(RFAILED);
 }  /* rgROML2MUlThrpMeasReq */
 
@@ -864,17 +864,17 @@ RgRguL2MUlThrpMeasReq *measReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMHndlCcchStaRsp
+   PRIVATE S16 rgROMHndlCcchStaRsp
 (
-RgCellCb       *cell,
-RgRguCmnStaRsp *staRsp,
-RgErrInfo      *err
-)
+ RgCellCb       *cell,
+ RgRguCmnStaRsp *staRsp,
+ RgErrInfo      *err
+ )
 #else
 PRIVATE S16 rgROMHndlCcchStaRsp(cell, staRsp, err)
-RgCellCb       *cell;
-RgRguCmnStaRsp *staRsp;
-RgErrInfo      *err;
+   RgCellCb       *cell;
+   RgRguCmnStaRsp *staRsp;
+   RgErrInfo      *err;
 #endif
 {
    Pst      schPst;
@@ -916,17 +916,17 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMHndlBcchPcchStaRsp
+   PRIVATE S16 rgROMHndlBcchPcchStaRsp
 (
-RgCellCb       *cell,
-RgRguCmnStaRsp *staRsp,
-RgErrInfo      *err
-)
+ RgCellCb       *cell,
+ RgRguCmnStaRsp *staRsp,
+ RgErrInfo      *err
+ )
 #else
 PRIVATE S16 rgROMHndlBcchPcchStaRsp(cell, staRsp, err)
-RgCellCb       *cell;
-RgRguCmnStaRsp *staRsp;
-RgErrInfo      *err;
+   RgCellCb       *cell;
+   RgRguCmnStaRsp *staRsp;
+   RgErrInfo      *err;
 #endif
 {
    Pst      schPst;
@@ -944,34 +944,34 @@ RgErrInfo      *err;
       RETVALUE(RFAILED);
    }
    /* MS_WORKAROUND : This is to ensure that the queue for BCH is not filled with old BO requests :
-         This assumes that BO is not received more than 4 frames in advance from the enodeb application */
+      This assumes that BO is not received more than 4 frames in advance from the enodeb application */
    if (cell->bcchBchInfo.lcId == staRsp->lcId)
    {
       U16 nextBchSfn;
 
       nextBchSfn = (cell->crntTime.sfn + 4 - (cell->crntTime.sfn%4)) % RG_MAX_SFN;
       if ((staRsp->u.timeToTx.sfn != nextBchSfn) ||
-         ((staRsp->u.timeToTx.sfn == cell->crntTime.sfn) && (cell->crntTime.slot >= 7)))
+	    ((staRsp->u.timeToTx.sfn == cell->crntTime.sfn) && (cell->crntTime.slot >= 7)))
       {
-        RETVALUE(ROK);
+	 RETVALUE(ROK);
       }
    }
-/*
-   boRpt.cellSapId     = cell->schInstMap.cellSapId;
-   boRpt.cellId     = staRsp->cellId;
-   boRpt.u.timeToTx = staRsp->u.timeToTx; 
-   boRpt.lcId       = staRsp->lcId; 
-   boRpt.lcType     = staRsp->lcType; 
-   boRpt.bo         = staRsp->bo;*/	
+   /*
+      boRpt.cellSapId     = cell->schInstMap.cellSapId;
+      boRpt.cellId     = staRsp->cellId;
+      boRpt.u.timeToTx = staRsp->u.timeToTx; 
+      boRpt.lcId       = staRsp->lcId; 
+      boRpt.lcType     = staRsp->lcType; 
+      boRpt.bo         = staRsp->bo;*/	
 #ifdef EMTC_ENABLE
-  if(cell->emtcEnable)
-  {
-     if(boRpt.lcType == CM_LTE_LCH_PCCH)
-     {
-        boRpt.emtcDIReason = staRsp->emtcDiReason;
-        boRpt.pnb = staRsp->pnb;
-     }
-  }
+   if(cell->emtcEnable)
+   {
+      if(boRpt.lcType == CM_LTE_LCH_PCCH)
+      {
+	 boRpt.emtcDIReason = staRsp->emtcDiReason;
+	 boRpt.pnb = staRsp->pnb;
+      }
+   }
 #endif
    rgGetPstToInst(&schPst,macInst, cell->schInstMap.schInst);
    //TODO: commented for compilation without SCH RgMacSchCmnBoUpdt(&schPst, &boRpt);
@@ -997,15 +997,15 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMUpdDlSfRemDataCnt
+   PRIVATE S16 rgROMUpdDlSfRemDataCnt
 (
-RgCellCb       *cellCb,
-RgDlSf         *dlSf
-)
+ RgCellCb       *cellCb,
+ RgDlSf         *dlSf
+ )
 #else
 PRIVATE S16 rgROMUpdDlSfRemDataCnt(cellCb, dlSf)
-RgCellCb       *cellCb;
-RgDlSf         *dlSf;
+   RgCellCb       *cellCb;
+   RgDlSf         *dlSf;
 #endif
 {
    RgErrInfo            err;
@@ -1016,30 +1016,30 @@ RgDlSf         *dlSf;
 
    if(!dlSf->remDatReqCnt)
    {
-       /*This is an error scenario of RLC generating more data          
-        * request than the allocation. Do nothing for this. */
+      /*This is an error scenario of RLC generating more data          
+       * request than the allocation. Do nothing for this. */
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
-            "RX new data while remDatReqCnt is 0 for cell");
+	    "RX new data while remDatReqCnt is 0 for cell");
       RETVALUE(RFAILED);
    }
 
    /*Decrement the remaining data request to be received countter
      for this SF.
      Check if this was the last pending data request for this DL SF.*/
-    /* Fix[ccpu00126310]: Tracks Data Requests from RLC for both loosely and tight coupled 
-     RLC-MAC */
+   /* Fix[ccpu00126310]: Tracks Data Requests from RLC for both loosely and tight coupled 
+      RLC-MAC */
    if((0 == --dlSf->remDatReqCnt) && !(dlSf->txDone) &&
-      (RG_TIMEINFO_SAME(cellCb->crntTime, dlSf->schdTime)) && (dlSf->statIndDone))
+	 (RG_TIMEINFO_SAME(cellCb->crntTime, dlSf->schdTime)) && (dlSf->statIndDone))
    {
       /*Check if we have already received a TTI for this Data,
-        if that is the case then we need to send TFU Data request 
-        to PHY */
+	if that is the case then we need to send TFU Data request 
+	to PHY */
 
       if (ROK != rgTOMUtlProcDlSf (dlSf, cellCb, &err))
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
-               "Unable to process downlink slot for cell");
-         err.errType = RGERR_ROM_DEDDATREQ;
+	 RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
+	       "Unable to process downlink slot for cell");
+	 err.errType = RGERR_ROM_DEDDATREQ;
       }
 
       /* Mark this frame as sent */
@@ -1051,6 +1051,6 @@ RgDlSf         *dlSf;
 #endif
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

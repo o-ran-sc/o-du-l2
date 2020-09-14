@@ -38,31 +38,31 @@ extern "C" {
 #endif
 
 typedef enum {
-	L_ALWAYS=0,
-	L_FATAL,
-	L_ERROR,
-	L_WARNING,
-	L_EVENT,
-	L_INFO,
-	L_DEBUG,
-	L_UNUSED,
-	L_MAX_LOG_LEVEL
+   L_ALWAYS=0,
+   L_FATAL,
+   L_ERROR,
+   L_WARNING,
+   L_EVENT,
+   L_INFO,
+   L_DEBUG,
+   L_UNUSED,
+   L_MAX_LOG_LEVEL
 } R_LOG_LEVEL;
 
 typedef enum {
-	DBG_CELLID,
+   DBG_CELLID,
    DBG_PEERID,
    DBG_ENBID,
- 	DBG_MMEID,
- 	DBG_CRNTI,
+   DBG_MMEID,
+   DBG_CRNTI,
    DBG_UEIDX,
- 	DBG_UEID,
- 	DBG_RBID,
- 	DBG_LCID,
- 	DBG_LCGID,
-	DBG_TRNSID,
+   DBG_UEID,
+   DBG_RBID,
+   DBG_LCID,
+   DBG_LCGID,
+   DBG_TRNSID,
    DBG_INSTID,
-	DBG_MAX_IDs
+   DBG_MAX_IDs
 } R_SPL_ARG;
 
 #ifdef USE_RLOG_DATA_TYPES
@@ -89,7 +89,7 @@ void logLev3(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr,
 void logLev4(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, U32, U32, U32, U32, ...);
 void logLevN(int logLevel, const char* modName, const char* file, int lineno, const char* fmtStr, ...);
 void logLevE(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, R_SPL_ARG splType,
-   U32 splVal, U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
+      U32 splVal, U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
 void logLevH(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, PSTR hexdump, int hexlen, ...);
 void logLevS(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, PSTR str, ...);
 #else
@@ -100,7 +100,7 @@ void logLev2( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, ...);
 void logLev3( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, ...);
 void logLev4( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
 void logLevE(LOGID logId, R_LOG_LEVEL logLevel, R_SPL_ARG splType, U32 splVal,
-U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
+      U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
 void logLevS( LOGID logId, R_LOG_LEVEL logLevel, const char* str, ...);
 #endif
 

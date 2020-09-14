@@ -43,18 +43,18 @@ typedef SsIdx           SsTmrId;
 /* ss015.301 Enclosed all timer activation functions in a union. */
 typedef union {
 #ifdef SS_MULTIPLE_PROCS
-    PAIFTMRS16        tmrActvFn;
+   PAIFTMRS16        tmrActvFn;
 #else
-    PAIFTMRS16        tmrActvFnMt;
-    PFS16             tmrActvFn;
+   PAIFTMRS16        tmrActvFnMt;
+   PFS16             tmrActvFn;
 #endif
 }pTmrActvFn;
 
 
 typedef struct ssTmrActvFn
 {
-    Bool                 mtFlag;                 /* TRUE if tmrActvFnMt to be used */
-    pTmrActvFn           actvFnc;
+   Bool                 mtFlag;                 /* TRUE if tmrActvFnMt to be used */
+   pTmrActvFn           actvFnc;
 }SsTmrActvFn;
 
 
@@ -67,7 +67,7 @@ typedef struct ssTmrEntry
 
    Bool         used;                   /* entry is used? */
    SsTmrId      tmrId;                  /* timer ID */
-/* ss029.103: addition: procId added */ 
+   /* ss029.103: addition: procId added */ 
 #ifdef SS_MULTIPLE_PROCS
    ProcId       ownerProc;              /* owner task processor ID */
 #endif /* SS_MULTIPLE_PROCS */
@@ -98,5 +98,5 @@ typedef struct ssTmrEntry
   
 /********************************************************************30**
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

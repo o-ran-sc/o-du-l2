@@ -64,15 +64,15 @@ extern "C" {
 
 typedef struct rgSchUeHdFddSfInfo
 {
-  U16             sfn;                   /*!< Store the sfn for updated state 
-                                              Default Value= 0xffff
-                                          */
-  U8              state;
-                                         /*!< 0x00= DFLT
-                                              0x01= DL DATA +(OPT:CNTRL INFO)
-                                              0x02= DL CNTRL
-                                              0x04= UL DATA+(OPT: CTNRL INFO) 
-                                         */ 
+   U16             sfn;                   /*!< Store the sfn for updated state 
+					    Default Value= 0xffff
+					   */
+   U8              state;
+   /*!< 0x00= DFLT
+     0x01= DL DATA +(OPT:CNTRL INFO)
+     0x02= DL CNTRL
+     0x04= UL DATA+(OPT: CTNRL INFO) 
+    */ 
 
 }RgSchUeHdFddSfInfo;
 
@@ -82,7 +82,7 @@ typedef struct rgSchUeHdFddSfInfo
 typedef struct rgSchUeHdFddCb
 {
    RgSchUeHdFddSfInfo    sf[RG_SCH_HDFDD_MAXSUB_INFO]; 
-    
+
    CmLList               hdFddLstEnt;  /*!< Linked list entity for HD-FDD List */
 
 }RgSchUeHdFddCb;
@@ -97,5 +97,5 @@ typedef struct rgSchUeHdFddCb
 
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

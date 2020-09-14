@@ -38,11 +38,11 @@ typedef enum
 void phyToMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
 #ifdef INTEL_FAPI
 void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, uint16_t tag, uint16_t
-length, uint16_t value, uint32_t *msgLen));
+	 length, uint16_t value, uint32_t *msgLen));
 void fillMsgHeader ARGS((fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen));
 #endif
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

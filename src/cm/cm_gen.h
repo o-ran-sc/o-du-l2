@@ -263,19 +263,19 @@
 #define CMPKTKNSTR(tknStr, mBuf)                   \
 {                                                  \
    Cntr i;                                         \
-                                                   \
+   \
    if(tknStr->pres)                                \
    {                                               \
       /* Value */                                  \
       for (i = 0; i < (S16) tknStr->len; i++)      \
       {                                            \
-         CMCHKPK(SPkU8, tknStr->val[i], mBuf);     \
+	 CMCHKPK(SPkU8, tknStr->val[i], mBuf);     \
       }                                            \
-                                                   \
+      \
       /* Length */                                 \
       CMCHKPK(SPkU8, tknStr->len, mBuf);           \
    }                                               \
-                                                   \
+   \
    /* Token Header */                              \
    CMCHKPK(SPkU8, tknStr->pres, mBuf);             \
 }
@@ -283,26 +283,26 @@
 #define CMUNPKTKNSTR(tknStr, mBuf)                                 \
 {                                                                  \
    Cntr i;                                                         \
-                                                                   \
+   \
    /* Token Header */                                              \
    CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);                        \
-                                                                   \
+   \
    if(tknStr->pres)                                                \
    {                                                               \
       /* Length */                                                 \
       CMCHKUNPK(SUnpkU8, &tknStr->len, mBuf);                      \
-                                                                   \
+      \
       /* Value */                                                  \
       for (i = 1; i <= (S16) tknStr->len; i++)                     \
       {                                                            \
-         CMCHKUNPK(SUnpkU8, &tknStr->val[tknStr->len - i], mBuf);  \
+	 CMCHKUNPK(SUnpkU8, &tknStr->val[tknStr->len - i], mBuf);  \
       }                                                            \
    }                                                               \
-                                                                   \
+   \
 }
 
 #endif /* __CMGENH__ */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

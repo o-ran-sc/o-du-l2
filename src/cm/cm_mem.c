@@ -267,8 +267,8 @@ MemLkInfo memLk;
 
 #ifdef T2K_MEM_LEAK_DBG
 typedef struct {
-U8  minBktSzBitMask;  /* minimum allocation size  in Log(x)base 2, where X is minimum bucket size in region */ 
-U16 minBktSzMins1; /* X-1   */
+   U8  minBktSzBitMask;  /* minimum allocation size  in Log(x)base 2, where X is minimum bucket size in region */ 
+   U16 minBktSzMins1; /* X-1   */
 }RegMinBktSzInfo;
 static RegMinBktSzInfo regMinBktSzInfo[SS_MAX_REGS] = {{8,0xFF},{7,0x7F},{7,0x7F},{7,0x7F}}; 
 RegionMemLeakInfo regMemLeakInfo; 
@@ -285,16 +285,16 @@ void InsertToT2kMemLeakInfo(U64 address, U32 size, U32 lineNo, char* fileName, R
 {
 
    T2kMeamLeakInfo *leakInfo;
-  /* if(!startMemLeak)
-   {
+   /* if(!startMemLeak)
+      {
       RETVOID;
-   }*/
+      }*/
 
    U32 index1 = getT2kMemLeakIndex(address,region);
 
    if(((U64)(address - regMemLeakInfo.regStartAddr[region]) & regMinBktSzInfo[region].minBktSzMins1) !=0)
    {
-     printf("address in InsertToT2kMemLeakInfo is %ld size = %d file is %s line is %d \n", address, size, fileName, lineNo);
+      printf("address in InsertToT2kMemLeakInfo is %ld size = %d file is %s line is %d \n", address, size, fileName, lineNo);
    }
 
    leakInfo = (((T2kMeamLeakInfo*)(regMemLeakInfo.gMemLeakInfo[region])) + index1);
@@ -311,17 +311,17 @@ void InsertToT2kMemLeakInfo(U64 address, U32 size, U32 lineNo, char* fileName, R
       //printf("InsertToT2kMemLeakInfo  the adress from List  Address = %x, index1 = %d   from File=%s, line=%d \n",address,index1,fileName,lineNo);
       if(smallTick++ == 4096)
       {
-         smallTick = 0;
-	      leakInfo->age = (++t2kMemAllocTick); 
+	 smallTick = 0;
+	 leakInfo->age = (++t2kMemAllocTick); 
       }
    }
    else
    {
-         printf("Something is wrong, trying to insert %ld index1 = %d file is %s line is %d \n",address, index1, fileName, lineNo);
-         printf("Address present :%ld, from File:%s, Line:%d, Size:%d, Age:%d",
-               leakInfo->address, leakInfo->fileName,
-               leakInfo->lineNo, leakInfo->size,
-               leakInfo->age);
+      printf("Something is wrong, trying to insert %ld index1 = %d file is %s line is %d \n",address, index1, fileName, lineNo);
+      printf("Address present :%ld, from File:%s, Line:%d, Size:%d, Age:%d",
+	    leakInfo->address, leakInfo->fileName,
+	    leakInfo->lineNo, leakInfo->size,
+	    leakInfo->age);
    }
 }
 
@@ -331,24 +331,24 @@ void RemoveFromT2kMemLeakInfo(U64 address, char *file, U32 line,Region region)
    T2kMeamLeakInfo *leakInfo;
 
    /* if(!startMemLeak)
-   {
+      {
       RETVALUE(ROK);
-   }*/
+      }*/
 
    U32 index1 = getT2kMemLeakIndex(address, region);
 
    if(index1 >= T2K_MEM_LEAK_INFO_TABLE_SIZE)
    {
       printf("index1 out of range = %d address is %ld file = %s line = %d. We are going to crash!!!\n",
-              index1,
-              address,
-              file,
-              line);
+	    index1,
+	    address,
+	    file,
+	    line);
    }
    leakInfo = (((T2kMeamLeakInfo*)(regMemLeakInfo.gMemLeakInfo[region])) + index1);
    if(leakInfo->address == address)
    {
-      
+
       leakInfo->address = 0;
       leakInfo->age = 0; 
       leakInfo->prevRemLineNo = leakInfo->lineNo;
@@ -358,16 +358,16 @@ void RemoveFromT2kMemLeakInfo(U64 address, char *file, U32 line,Region region)
    }
    else
    {
-         printf("Something is wrong, trying to remove %ld index1 = %d  from File=%s, line=%d address present is %ld region%d \n",address, index1, file,line,leakInfo->address,region);
+      printf("Something is wrong, trying to remove %ld index1 = %d  from File=%s, line=%d address present is %ld region%d \n",address, index1, file,line,leakInfo->address,region);
 
-         printf("\n Last Del file %s line %d\n",leakInfo->lastDelFileName,
-                 leakInfo->lastDelLineNum);
+      printf("\n Last Del file %s line %d\n",leakInfo->lastDelFileName,
+	    leakInfo->lastDelLineNum);
 
-         if(leakInfo->prevRemFileName != NULLP)
-         {
-            printf("Previous File:%s, Previous Line:%d\n",
-                  leakInfo->prevRemFileName, leakInfo->prevRemLineNo);
-         }
+      if(leakInfo->prevRemFileName != NULLP)
+      {
+	 printf("Previous File:%s, Previous Line:%d\n",
+	       leakInfo->prevRemFileName, leakInfo->prevRemLineNo);
+      }
    }
 }
 
@@ -375,7 +375,7 @@ void DumpT2kMemLeakInfoToFile()
 {
    int i,reg;
    T2kMeamLeakInfo *leakInfo;
-  
+
    FILE *fp = fopen("memLeakInfo_reg.txt","wb");
 
    if(fp == NULL)
@@ -390,21 +390,21 @@ void DumpT2kMemLeakInfoToFile()
 
       for(i = 0; i< T2K_MEM_LEAK_INFO_TABLE_SIZE; i++)
       {
-         leakInfo = (((T2kMeamLeakInfo*)(regMemLeakInfo.gMemLeakInfo[reg])) + i);
-         if(leakInfo->address != 0)
-         {
-            char* onlyFileName = rindex(leakInfo->fileName,'/');
-            if(onlyFileName == NULL)
-            {
-               onlyFileName = leakInfo->fileName;
-            }
+	 leakInfo = (((T2kMeamLeakInfo*)(regMemLeakInfo.gMemLeakInfo[reg])) + i);
+	 if(leakInfo->address != 0)
+	 {
+	    char* onlyFileName = rindex(leakInfo->fileName,'/');
+	    if(onlyFileName == NULL)
+	    {
+	       onlyFileName = leakInfo->fileName;
+	    }
 
-            fprintf(fp, "%ld  s=%d  a=%d  l=%d  f=%s\n",leakInfo->address,
-                  leakInfo->size,
-                  leakInfo->age,
-                  leakInfo->lineNo,
-                  onlyFileName);
-         }
+	    fprintf(fp, "%ld  s=%d  a=%d  l=%d  f=%s\n",leakInfo->address,
+		  leakInfo->size,
+		  leakInfo->age,
+		  leakInfo->lineNo,
+		  onlyFileName);
+	 }
       }
       fprintf(fp, "REGION %d LEAKS END\n",reg);
    }
@@ -423,7 +423,7 @@ PRIVATE U8 tryHeap=0;
 /* cm_mem_c_001.main_12 - addition for ssi enhancements prints */
 /* cm_mem_c_001.main_20 Additions */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(SS_HISTOGRAM_SUPPORT) || \
-    defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
+      defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
 #ifdef DEBUGP
 PRIVATE Txt dbgPrntBuf[200];        /* print buffer */
 #endif /* DEBUGP */
@@ -437,42 +437,42 @@ U32 cmDblFreeAttempts = 0;
 
 
 /*
-*
-*       Fun:   cmMmRegInit
-*
-*       Desc:  Configure the memory region for allocation. The function 
-*              registers the memory region with System Service by calling
-*              SRegRegion.
-*
-*
-*       Ret:   ROK     - successful, 
-*              RFAILED - unsuccessful.
-*
-*       Notes: The memory owner calls this function to initialize the memory 
-*              manager with the information of the memory region. Before 
-*              calling this function, the memory owner should allocate memory 
-*              for the memory region. The memory owner should also provide the 
-*              memory for the control block needed by the memory manager. The 
-*              memory owner should allocate the memory for the region control 
-*              block as cachable memory. This may increase the average 
-*              throughput in allocation and deallocation as the region control
-*              block is mostly accessed by the CMM.
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmRegInit
+ *
+ *       Desc:  Configure the memory region for allocation. The function 
+ *              registers the memory region with System Service by calling
+ *              SRegRegion.
+ *
+ *
+ *       Ret:   ROK     - successful, 
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: The memory owner calls this function to initialize the memory 
+ *              manager with the information of the memory region. Before 
+ *              calling this function, the memory owner should allocate memory 
+ *              for the memory region. The memory owner should also provide the 
+ *              memory for the control block needed by the memory manager. The 
+ *              memory owner should allocate the memory for the region control 
+ *              block as cachable memory. This may increase the average 
+ *              throughput in allocation and deallocation as the region control
+ *              block is mostly accessed by the CMM.
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmMmRegInit
+   PUBLIC S16 cmMmRegInit
 (
-Region       region,
-CmMmRegCb   *regCb,
-CmMmRegCfg  *cfg
-)
+ Region       region,
+ CmMmRegCb   *regCb,
+ CmMmRegCfg  *cfg
+ )
 #else
 PUBLIC S16 cmMmRegInit(region, regCb, cfg)
-Region       region;
-CmMmRegCb   *regCb;
-CmMmRegCfg  *cfg;
+   Region       region;
+   CmMmRegCb   *regCb;
+   CmMmRegCfg  *cfg;
 #endif
 {
    Data *memAddr;
@@ -482,7 +482,7 @@ CmMmRegCfg  *cfg;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    Size  lstQnSize;
    Size  bktBlkSize;
-	Txt   errMsg[256] = {'\0'};
+   Txt   errMsg[256] = {'\0'};
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
    U16            offset;
@@ -498,20 +498,20 @@ CmMmRegCfg  *cfg;
    {
       RETVALUE(RFAILED);
    }
-   
+
    /* Error check on the configuration fields */
    if ((!cfg->size) || (cfg->vAddr == NULLP) || 
-        (cfg->numBkts > CMM_MAX_BKT_ENT)) 
+	 (cfg->numBkts > CMM_MAX_BKT_ENT)) 
    {
       RETVALUE(RFAILED);
    }
    /* Check if the quantum size is power of 2 */
    if ((cfg->numBkts) &&
-       ((cfg->bktQnSize - 1) & (cfg->bktQnSize)))
+	 ((cfg->bktQnSize - 1) & (cfg->bktQnSize)))
    {
       /* cm_mem_c_001.main_20 Addition */
-		sprintf(errMsg,"\n cmMmRegInit() failed, check if BktQuantum size might not be power of 2 \n");
-		SPrint(errMsg);
+      sprintf(errMsg,"\n cmMmRegInit() failed, check if BktQuantum size might not be power of 2 \n");
+      SPrint(errMsg);
       RETVALUE(RFAILED);
    }
 
@@ -528,57 +528,57 @@ CmMmRegCfg  *cfg;
       /* check if bucket size is mutiple of quantum size */
       if (cfg->bktCfg[bktIdx].size % cfg->bktQnSize)
       {
-          /* cm_mem_c_001.main_20 Addition */
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+	 /* cm_mem_c_001.main_20 Addition */
+	 /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-			 sprintf(errMsg,"\n cmMmRegInit() failed, Bkt:%d size:%u not multiple of quantum size:%u\
-			 				\n",bktIdx,cfg->bktCfg[bktIdx].size,cfg->bktQnSize);
+	 sprintf(errMsg,"\n cmMmRegInit() failed, Bkt:%d size:%u not multiple of quantum size:%u\
+	       \n",bktIdx,cfg->bktCfg[bktIdx].size,cfg->bktQnSize);
 #else                     
-			 sprintf(errMsg,"\n cmMmRegInit() failed, Bkt:%d size:%lu not multiple of quantum size:%lu\
-			 				\n",bktIdx,cfg->bktCfg[bktIdx].size,cfg->bktQnSize);
+	 sprintf(errMsg,"\n cmMmRegInit() failed, Bkt:%d size:%lu not multiple of quantum size:%lu\
+	       \n",bktIdx,cfg->bktCfg[bktIdx].size,cfg->bktQnSize);
 #endif                     
-			 SPrint(errMsg);
-          RETVALUE(RFAILED);
+	 SPrint(errMsg);
+	 RETVALUE(RFAILED);
       }
 
       if ((bktBlkSize = cfg->bktCfg[bktIdx].size) < lstQnSize)
       {
-         /* 
-          * Two consecutive buckets are not separated by quantum size.
-          */
-          /* cm_mem_c_001.main_20 Addition */
-			 sprintf(errMsg,"\n cmMmRegInit() failed, Two consecutive buckets are not separated by quantum size \n");
-			 SPrint(errMsg);
-          RETVALUE(RFAILED);
+	 /* 
+	  * Two consecutive buckets are not separated by quantum size.
+	  */
+	 /* cm_mem_c_001.main_20 Addition */
+	 sprintf(errMsg,"\n cmMmRegInit() failed, Two consecutive buckets are not separated by quantum size \n");
+	 SPrint(errMsg);
+	 RETVALUE(RFAILED);
       }
       /* cm_mem_c_001.main_20 Addition */
-		if (((cfg->bktCfg[bktIdx].size) /\
-				cfg->bktQnSize) > CMM_MAX_MAP_ENT)
-		{
-   		  /* Error check whether the size of the mapping table is sufficient */
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+      if (((cfg->bktCfg[bktIdx].size) /\
+	       cfg->bktQnSize) > CMM_MAX_MAP_ENT)
+      {
+	 /* Error check whether the size of the mapping table is sufficient */
+	 /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-			  sprintf(errMsg,"\n cmMmRegInit() failed, check maxBucketSize/BktQuantumSize(%u)\
-				\n	should be less than CMM_MAX_MAP_ENT:%d \n",cfg->bktQnSize,CMM_MAX_MAP_ENT);
+	 sprintf(errMsg,"\n cmMmRegInit() failed, check maxBucketSize/BktQuantumSize(%u)\
+	       \n	should be less than CMM_MAX_MAP_ENT:%d \n",cfg->bktQnSize,CMM_MAX_MAP_ENT);
 #else                     
-			  sprintf(errMsg,"\n cmMmRegInit() failed, check maxBucketSize/BktQuantumSize(%lu)\
-				\n	should be less than CMM_MAX_MAP_ENT:%d \n",cfg->bktQnSize,CMM_MAX_MAP_ENT);
+	 sprintf(errMsg,"\n cmMmRegInit() failed, check maxBucketSize/BktQuantumSize(%lu)\
+	       \n	should be less than CMM_MAX_MAP_ENT:%d \n",cfg->bktQnSize,CMM_MAX_MAP_ENT);
 #endif                     
-				SPrint(errMsg);
-		  	  RETVALUE(RFAILED);
-		}
+	 SPrint(errMsg);
+	 RETVALUE(RFAILED);
+      }
 
 
       regCb->bktSize += (cfg->bktCfg[bktIdx].size * 
-                         cfg->bktCfg[bktIdx].numBlks); 
-    
+	    cfg->bktCfg[bktIdx].numBlks); 
+
       if (regCb->bktSize > cfg->size)
       {
-         /* Size of the memory region is less than the required size */
-		
-			sprintf(errMsg,"\n cmMmRegInit() failed, Size of the memory region is less than the required size \n");
-			SPrint(errMsg);
-         RETVALUE(RFAILED);
+	 /* Size of the memory region is less than the required size */
+
+	 sprintf(errMsg,"\n cmMmRegInit() failed, Size of the memory region is less than the required size \n");
+	 SPrint(errMsg);
+	 RETVALUE(RFAILED);
       }
 
       lstQnSize = ((bktBlkSize / cfg->bktQnSize) + 1) * cfg->bktQnSize;
@@ -601,27 +601,27 @@ CmMmRegCfg  *cfg;
       /* Out_of_board memory */
       regCb->regInfo.flags = CMM_REG_OUTBOARD;
    } 
-  else
+   else
    {
       regCb->regInfo.flags = 0;
    }
 
 
-/* Initialize the memory manager function handlers */
-  /*cm_mem_c_001.main_21-registering new alloc function for new region*/
+   /* Initialize the memory manager function handlers */
+   /*cm_mem_c_001.main_21-registering new alloc function for new region*/
 #ifdef SS_FAP  
-  if(region == SS_WL_REGION)
-  {
-     regCb->regInfo.alloc = cmAllocWL;
-     regCb->regInfo.free  = cmFreeWL;
-  }
-  else
+   if(region == SS_WL_REGION)
+   {
+      regCb->regInfo.alloc = cmAllocWL;
+      regCb->regInfo.free  = cmFreeWL;
+   }
+   else
 #endif
-  {
-     /* Initialize the memory manager function handlers */
-     regCb->regInfo.alloc = cmAlloc;
-     regCb->regInfo.free  = cmFree;
-  }
+   {
+      /* Initialize the memory manager function handlers */
+      regCb->regInfo.alloc = cmAlloc;
+      regCb->regInfo.free  = cmFree;
+   }
    regCb->regInfo.ctl   = cmCtl;
 
    /* Initialize the physical address */
@@ -641,49 +641,49 @@ CmMmRegCfg  *cfg;
    {
       /* Last bucket has the maximum size */
       regCb->bktMaxBlkSize = cfg->bktCfg[cfg->numBkts - 1].size;
-   
+
       /* Get the power of the bktQnSize */
       regCb->bktQnPwr = 0; 
       while( !((cfg->bktQnSize >> regCb->bktQnPwr) & 0x01))
       {
-         regCb->bktQnPwr++;
+	 regCb->bktQnPwr++;
       }
-    
+
       /* Initilaize the bktIndex of the map entries to FF */
       for ( lstMapIdx = 0; lstMapIdx < CMM_MAX_MAP_ENT; lstMapIdx++)
       {
-         regCb->mapTbl[lstMapIdx].bktIdx = 0xFF;
+	 regCb->mapTbl[lstMapIdx].bktIdx = 0xFF;
       }
-  
+
       lstMapIdx = 0;
       for ( bktIdx = 0; bktIdx < cfg->numBkts; bktIdx++)
       {
-         /* Allocate the lock for the bucket pool */
-         /* cm_mem_c_001.main_13 : Replaced SInitLock with WTInitLock for NT */
+	 /* Allocate the lock for the bucket pool */
+	 /* cm_mem_c_001.main_13 : Replaced SInitLock with WTInitLock for NT */
 #ifdef SS_WIN
-         if (WTInitLock (&(regCb->bktTbl[bktIdx].bktLock), cfg->lType) != ROK)
+	 if (WTInitLock (&(regCb->bktTbl[bktIdx].bktLock), cfg->lType) != ROK)
 #else
-         if (SInitLock (&(regCb->bktTbl[bktIdx].bktLock), cfg->lType) != ROK)
+	    if (SInitLock (&(regCb->bktTbl[bktIdx].bktLock), cfg->lType) != ROK)
 #endif
-         {
-            /* Free the initialzed lock for the earlier buckets. */
-            for ( ;bktIdx > 0;)
-            {
-               /* cm_mem_c_001.main_13: Replaced SDestroyLock with 
-                  WTDestroyLock for NT */
-               /*  cm_mem_c_001.main_24 fix for memory corruption*/
-               --bktIdx;
+	    {
+	       /* Free the initialzed lock for the earlier buckets. */
+	       for ( ;bktIdx > 0;)
+	       {
+		  /* cm_mem_c_001.main_13: Replaced SDestroyLock with 
+		     WTDestroyLock for NT */
+		  /*  cm_mem_c_001.main_24 fix for memory corruption*/
+		  --bktIdx;
 #ifdef SS_WIN
-               WTDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
+		  WTDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
 #else
-               SDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
+		  SDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
 #endif
-            }
+	       }
 
-            RETVALUE(RFAILED);
-         }
+	       RETVALUE(RFAILED);
+	    }
 
-         cmMmBktInit( &memAddr, regCb, cfg, bktIdx, &lstMapIdx); 
+	 cmMmBktInit( &memAddr, regCb, cfg, bktIdx, &lstMapIdx); 
       }
 
       /* Used while freeing the bktLock in cmMmRegDeInit */
@@ -694,118 +694,118 @@ CmMmRegCfg  *cfg;
     * Initialize the heap pool if size the memory region region is more
     * than the size of the bucket pool 
     */
-    regCb->heapSize = 0;
-    regCb->heapFlag = FALSE;
+   regCb->heapSize = 0;
+   regCb->heapFlag = FALSE;
 
-    /* Align the memory address */
-    memAddr = (Data *)(PTRALIGN(memAddr));
+   /* Align the memory address */
+   memAddr = (Data *)(PTRALIGN(memAddr));
 
-    regCb->heapSize = cfg->vAddr + cfg->size - memAddr;  
+   regCb->heapSize = cfg->vAddr + cfg->size - memAddr;  
 
-    /* 
-     * Round the heap size so that the heap size is multiple 
-     * of CMM_MINBUFSIZE 
-     */
-    regCb->heapSize -= (regCb->heapSize %  CMM_MINBUFSIZE);
+   /* 
+    * Round the heap size so that the heap size is multiple 
+    * of CMM_MINBUFSIZE 
+    */
+   regCb->heapSize -= (regCb->heapSize %  CMM_MINBUFSIZE);
 
-    if (regCb->heapSize)
-    {
-       /* Allocate the lock for the heap pool */
-       /* cm_mem_c_001.main_13 : Replaced SInitLock with WTInitLock for NT */
+   if (regCb->heapSize)
+   {
+      /* Allocate the lock for the heap pool */
+      /* cm_mem_c_001.main_13 : Replaced SInitLock with WTInitLock for NT */
 #ifdef SS_WIN
-       if (WTInitLock (&regCb->heapCb.heapLock, cfg->lType) != ROK)
+      if (WTInitLock (&regCb->heapCb.heapLock, cfg->lType) != ROK)
 #else
-       if (SInitLock (&regCb->heapCb.heapLock, cfg->lType) != ROK)
+	 if (SInitLock (&regCb->heapCb.heapLock, cfg->lType) != ROK)
 #endif
-       {
-	      bktIdx = cfg->numBkts;/* ccpu00125353: warning fix */
-          if (bktIdx != 0)
-          {
-             /* Free the initialzed locks of the buckets */
-             for (; bktIdx > 0;)
-             {
-                /* cm_mem_c_001.main_13: Replaced SDestroyLock with
-                   WTDestroyLock for NT */
-               /*  cm_mem_c_001.main_24 fix for memory corruption*/
-               --bktIdx;
+	 {
+	    bktIdx = cfg->numBkts;/* ccpu00125353: warning fix */
+	    if (bktIdx != 0)
+	    {
+	       /* Free the initialzed locks of the buckets */
+	       for (; bktIdx > 0;)
+	       {
+		  /* cm_mem_c_001.main_13: Replaced SDestroyLock with
+		     WTDestroyLock for NT */
+		  /*  cm_mem_c_001.main_24 fix for memory corruption*/
+		  --bktIdx;
 #ifdef SS_WIN
-                WTDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
+		  WTDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
 #else
-                SDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
+		  SDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
 #endif
-             }
-          }
+	       }
+	    }
 
-          RETVALUE(RFAILED);
-       }
-        
-       regCb->heapFlag = TRUE;
-       cmMmHeapInit(memAddr, &(regCb->heapCb), regCb->heapSize); 
-    }
+	    RETVALUE(RFAILED);
+	 }
 
-    /* Call SRegRegion to register the memory region with SSI */
-    if (SRegRegion(region, &regCb->regInfo) != ROK)
-    {
-       RETVALUE(RFAILED);
-    }
+      regCb->heapFlag = TRUE;
+      cmMmHeapInit(memAddr, &(regCb->heapCb), regCb->heapSize); 
+   }
 
-/* cm_mem_c_001.main_12 - addition for initializing the hash table */
+   /* Call SRegRegion to register the memory region with SSI */
+   if (SRegRegion(region, &regCb->regInfo) != ROK)
+   {
+      RETVALUE(RFAILED);
+   }
+
+   /* cm_mem_c_001.main_12 - addition for initializing the hash table */
 #ifdef SSI_DEBUG_LEVEL1
-    /* Initialize the region level hash table for debug info storage */
-    if (cmMmHashListInit(&regCb->hashListCp, CMM_STAT_HASH_TBL_LEN, region, 0) != ROK)
-    {
-       RETVALUE(RFAILED);
-    }
+   /* Initialize the region level hash table for debug info storage */
+   if (cmMmHashListInit(&regCb->hashListCp, CMM_STAT_HASH_TBL_LEN, region, 0) != ROK)
+   {
+      RETVALUE(RFAILED);
+   }
 #endif /* SSI_DEBUG_LEVEL1 */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
-    /* Initialize the hast list to maintain the SSI memory information for Broadcom */
-    offset = (U16)((PTR)(&ptrHdr.ent) - (PTR) &ptrHdr);
-    printf("###########offset is %d region %d\n", offset, region);
-    if(cmHashListInit(&regCb->brdcmSsiLstCp, 1000, offset, FALSE, 
-       CM_HASH_KEYTYPE_U32MOD, region, 0) != ROK)
-    {
-       RETVALUE(RFAILED);
-    }
+   /* Initialize the hast list to maintain the SSI memory information for Broadcom */
+   offset = (U16)((PTR)(&ptrHdr.ent) - (PTR) &ptrHdr);
+   printf("###########offset is %d region %d\n", offset, region);
+   if(cmHashListInit(&regCb->brdcmSsiLstCp, 1000, offset, FALSE, 
+	    CM_HASH_KEYTYPE_U32MOD, region, 0) != ROK)
+   {
+      RETVALUE(RFAILED);
+   }
 #endif /* SSI_DEBUG_LEVEL1 */
 
-    RETVALUE(ROK);
+   RETVALUE(ROK);
 } /* end of cmMmRegInit*/
 
 
 
 /*
-*
-*       Fun:   cmMmRegDeInit
-*
-*       Desc:  Deinitialize the memory region. The function call SDeregRegion
-*              to deregister the memory region with System Service.
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*       Notes: The memory owner calls this function to deinitialize the region.
-*              The memory manager does not return the memory to the system. 
-*              Before calling this function, the memory owner must be sure that 
-*              no layer is using any memory block from this region. On 
-*              successful return from the function, any request to the memory 
-*              manager to allocate/deallocate memory will fail. The memory owner
-*              can reuse the memory for other region or return the memory to the
-*              system memory pool.
-*
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmRegDeInit
+ *
+ *       Desc:  Deinitialize the memory region. The function call SDeregRegion
+ *              to deregister the memory region with System Service.
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: The memory owner calls this function to deinitialize the region.
+ *              The memory manager does not return the memory to the system. 
+ *              Before calling this function, the memory owner must be sure that 
+ *              no layer is using any memory block from this region. On 
+ *              successful return from the function, any request to the memory 
+ *              manager to allocate/deallocate memory will fail. The memory owner
+ *              can reuse the memory for other region or return the memory to the
+ *              system memory pool.
+ *
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmMmRegDeInit
+   PUBLIC S16 cmMmRegDeInit
 (
-CmMmRegCb   *regCb
-)
+ CmMmRegCb   *regCb
+ )
 #else
 PUBLIC S16 cmMmRegDeInit(regCb)
-CmMmRegCb   *regCb;
+   CmMmRegCb   *regCb;
 #endif
 {
    U16  bktIdx; 
@@ -813,7 +813,7 @@ CmMmRegCb   *regCb;
    TRC2(cmMmRegDeInit);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-  
+
    /* error check on parameters */
    if (regCb == NULLP)
    {
@@ -822,20 +822,20 @@ CmMmRegCb   *regCb;
 
 #endif
 
-/* cm_mem_c_001.main_12 - addition for deinitializing the hash table */
+   /* cm_mem_c_001.main_12 - addition for deinitializing the hash table */
 #ifdef SSI_DEBUG_LEVEL1
-    /* Deinitialize the hash table used for debug info storage at region level */
-    if (cmMmHashListDeinit(&regCb->hashListCp, regCb->region, 0) != ROK)
-    {
-        RETVALUE(RFAILED);
-    }
+   /* Deinitialize the hash table used for debug info storage at region level */
+   if (cmMmHashListDeinit(&regCb->hashListCp, regCb->region, 0) != ROK)
+   {
+      RETVALUE(RFAILED);
+   }
 #endif /* SSI_DEBUG_LEVEL1 */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
-    /* Deinitialize the hash table used for broadcom ssi instrumentation */
-    if (cmHashListDeinit(&regCb->brdcmSsiLstCp) != ROK)
-    {
-        RETVALUE(RFAILED);
-    }
+   /* Deinitialize the hash table used for broadcom ssi instrumentation */
+   if (cmHashListDeinit(&regCb->brdcmSsiLstCp) != ROK)
+   {
+      RETVALUE(RFAILED);
+   }
 #endif
 
    /* Call SDeregRegion first to deregister the memory region with SSI */
@@ -848,19 +848,19 @@ CmMmRegCb   *regCb;
       /* Free the initialzed locks of the buckets */
       for ( bktIdx = regCb->numBkts; bktIdx > 0;)
       {
-          /* cm_mem_c_001.main_13: Replaced SDestroyLock with
-             WTDestroyLock for NT */
-          /*  cm_mem_c_001.main_24 fix for memory corruption*/
-          --bktIdx;
+	 /* cm_mem_c_001.main_13: Replaced SDestroyLock with
+	    WTDestroyLock for NT */
+	 /*  cm_mem_c_001.main_24 fix for memory corruption*/
+	 --bktIdx;
 #ifdef SS_WIN
-          WTDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
+	 WTDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
 #else
-          SDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
+	 SDestroyLock(&(regCb->bktTbl[bktIdx].bktLock));
 #endif
-/*  cm_mem_c_001.main_15:Additions */
+	 /*  cm_mem_c_001.main_15:Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-   /* De-initialise the memory histogram hash list */
-   cmHstGrmHashListDeInit(&(regCb->bktTbl[bktIdx].hstGrmHashListCp));
+	 /* De-initialise the memory histogram hash list */
+	 cmHstGrmHashListDeInit(&(regCb->bktTbl[bktIdx].hstGrmHashListCp));
 #endif /* SS_HISTOGRAM_SUPPORT */
       }
    }
@@ -870,7 +870,7 @@ CmMmRegCb   *regCb;
       /* Heap pool is configured */
 
       /* cm_mem_c_001.main_13: Replaced SDestroyLock with
-         WTDestroyLock for NT */
+	 WTDestroyLock for NT */
 #ifdef SS_WIN
       WTDestroyLock(&regCb->heapCb.heapLock);
 #else
@@ -895,154 +895,154 @@ int regFreeBktSts[10][2][6]={{0}};
 #endif
 
 /*
-*
-*       Fun:   cmAlloc
-*
-*       Desc:  Allocate a memory block for the memory region.
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*       Notes: 
-*              The function allocates a memory block of size atleast equal to 
-*              the requested size. The size parameter will be updated with the 
-*              actual size of the memory block allocated for the request. The 
-*              CMM tries to allocate the memory block form the bucket pool. If
-*              there is no memory in the bucket the CMM allocates the memory 
-*              block form the heap pool. This function is always called by the
-*              System Service module.
-*    
-*              The caller of the function should try to use the out value of 
-*              the size while returning the memory block to the region. However 
-*              the current design of the memory manager does not enforce to pass
-*              the actual size of the memory block.  (Due to the SGetSBuf 
-*              semantics the layer will not able to pass the correct size of the
-*              memory block while calling SPutSBuf).
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmAlloc
+ *
+ *       Desc:  Allocate a memory block for the memory region.
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: 
+ *              The function allocates a memory block of size atleast equal to 
+ *              the requested size. The size parameter will be updated with the 
+ *              actual size of the memory block allocated for the request. The 
+ *              CMM tries to allocate the memory block form the bucket pool. If
+ *              there is no memory in the bucket the CMM allocates the memory 
+ *              block form the heap pool. This function is always called by the
+ *              System Service module.
+ *    
+ *              The caller of the function should try to use the out value of 
+ *              the size while returning the memory block to the region. However 
+ *              the current design of the memory manager does not enforce to pass
+ *              the actual size of the memory block.  (Due to the SGetSBuf 
+ *              semantics the layer will not able to pass the correct size of the
+ *              memory block while calling SPutSBuf).
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 /* cm_mem_c_001.main_12 - addition to accept new parameter memType(static/dynamic) */
 
 /* cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+   PRIVATE S16  cmAlloc
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     memType,
-U32     line,
-U8     *fileName,
-U8      entId,
-Bool    hstReg
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     memType,
+ U32     line,
+ U8     *fileName,
+ U8      entId,
+ Bool    hstReg
+ )
 #else
 PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, memType, line, fileName, entId, hstReg)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     memType;
-U32     line;
-U8     *fileName;
-U8      entId;
-Bool    hstReg;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     memType;
+   U32     line;
+   U8     *fileName;
+   U8      entId;
+   Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+   PRIVATE S16  cmAlloc
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     line,
-U8     *fileName,
-U8      entId,
-Bool    hstReg
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     line,
+ U8     *fileName,
+ U8      entId,
+ Bool    hstReg
+ )
 #else
 PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, line, fileName, entId, hstReg)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     line;
-U8     *fileName;
-U8      entId;
-Bool    hstReg;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     line;
+   U8     *fileName;
+   U8      entId;
+   Bool    hstReg;
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
 #else
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+   PRIVATE S16  cmAlloc
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     memType,
-U32     lineNo,
-U8     *funcName
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     memType,
+ U32     lineNo,
+ U8     *funcName
+ )
 #else
 PRIVATE S16  cmAlloc(regionCb, size, flags, ptr ,memType, lineNo, funcName)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     memType;
-U32     lineNo;
-U8     *funcName;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     memType;
+   U32     lineNo;
+   U8     *funcName;
 #endif
 #else /*SS_LIGHT_MEM_LEAK_STS */
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+   PRIVATE S16  cmAlloc
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     memType
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     memType
+ )
 #else
 PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, memType)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     memType;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     memType;
 #endif
 #else
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+   PRIVATE S16  cmAlloc
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     memType
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     memType
+ )
 #else
 PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, memType)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     memType;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     memType;
 #endif
 #else
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmAlloc
+   PRIVATE S16  cmAlloc
 (
  Void   *regionCb,
  Size   *size,
@@ -1053,69 +1053,69 @@ PRIVATE S16  cmAlloc
  )
 #else
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+   PRIVATE S16  cmAlloc
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr 
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr 
+ )
 #else
 PRIVATE S16  cmAlloc(regionCb, size, flags, ptr)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
 #endif
 #endif
 #endif /* BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1 */
 #endif /* SSI_DEBUG_LEVEL1 */
 #endif /*SS_LIGHT_MEM_LEAK_STS */
-/* cm_mem_c_001.main_15: Additions */
+   /* cm_mem_c_001.main_15: Additions */
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 {
-/* cm_mem_c_001.main_26 : Fixes for Compilation Warnings */
+   /* cm_mem_c_001.main_26 : Fixes for Compilation Warnings */
 #ifndef USE_PURE
    U16        idx;
    CmMmBkt   *bkt;
 #endif
    CmMmRegCb *regCb;
-/* cm_mem_c_001.main_26 : Fixes for Compilation Warnings */
+   /* cm_mem_c_001.main_26 : Fixes for Compilation Warnings */
 #ifndef USE_PURE
    U16        cnt;
 #endif
-/*   cm_mem_c_001.main_15 : Additions */
+   /*   cm_mem_c_001.main_15 : Additions */
 #if (defined(SS_MEM_LEAK_STS) || defined( BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
    Size       reqSz;
 #endif /* SS_MEM_LEAK_STS */
-/* cm_mem_c_001.main_12 - addition to hold the allocated block */
+   /* cm_mem_c_001.main_12 - addition to hold the allocated block */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1) || defined (SS_LIGHT_MEM_LEAK_STS))
    CmMmBlkHdr *alocBlk;
 #endif /* SSI_DEBUG_LEVEL1 */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
    CmMmBlkHdr    *ptrHdr;
 #endif
-/*   cm_mem_c_001.main_15 : Additions */
+   /*   cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-	S8 hstGrmBuf[256];
+   S8 hstGrmBuf[256];
 #endif /* SS_HISTOGRAM_SUPPORT */
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
-	 U16 memIndex=0;
-Data  *nextptr1;
-Data  *prevptr1;
-Data  **nextptr;
-Data  **prevptr;
-      nextptr=&nextptr1;
-      prevptr=&prevptr1;
+   U16 memIndex=0;
+   Data  *nextptr1;
+   Data  *prevptr1;
+   Data  **nextptr;
+   Data  **prevptr;
+   nextptr=&nextptr1;
+   prevptr=&prevptr1;
 #endif
 
    TRC2(cmAlloc);
-   
+
 #ifndef USE_MEMCAL
    UNUSED(flags);
 #endif
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #if (defined(SS_MEM_LEAK_STS) || defined( BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
    reqSz = *size;
 #endif /* SS_MEM_LEAK_STS */
@@ -1130,14 +1130,14 @@ Data  **prevptr;
       RETVALUE(RFAILED);
    }
 #endif
-  
-/* cm_mem_c_001.main_12 - addition for checking memType parameter */
+
+   /* cm_mem_c_001.main_12 - addition for checking memType parameter */
 #ifdef SSI_DEBUG_LEVEL1
 #if (ERRCLASS & ERRCLS_INT_PAR)
-      if ((memType != CMM_STATIC_MEM_FLAG) && (memType != CMM_DYNAMIC_MEM_FLAG))
-      {
-         RETVALUE(RFAILED);
-      }
+   if ((memType != CMM_STATIC_MEM_FLAG) && (memType != CMM_DYNAMIC_MEM_FLAG))
+   {
+      RETVALUE(RFAILED);
+   }
 #endif /* (ERRCLASS & ERRCLS_INT_PAR) */
 #endif /* SSI_DEBUG_LEVEL1 */
 
@@ -1146,7 +1146,7 @@ Data  **prevptr;
    if (flags)
       num_times++;
 
-/* cm_mem_c_001.main_12 - addition to insert the size into hash list */
+   /* cm_mem_c_001.main_12 - addition to insert the size into hash list */
 #ifdef SSI_DEBUG_LEVEL1
    /* Update the hash list */
    if (cmMmHashListInsert(&(regCb->hashListCp), *size) != ROK)
@@ -1154,13 +1154,13 @@ Data  **prevptr;
       /* display that, this entry could not be made in the hash list */
 #ifdef DEBUGP
       /* display an error message here */
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+      /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
       sprintf(dbgPrntBuf, "\n Could not make an entry for size %u in hash table of region %d \n",
-                           *size, regCb->region);
+	    *size, regCb->region);
 #else                           
       sprintf(dbgPrntBuf, "\n Could not make an entry for size %lu in hash table of region %d \n",
-                           *size, regCb->region);
+	    *size, regCb->region);
 #endif                           
       SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
@@ -1179,8 +1179,8 @@ Data  **prevptr;
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
-         /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+	 /* Some fatal error in the map table initialization. */
+	 RETVALUE(RFAILED);
       }
 #endif
 
@@ -1191,471 +1191,471 @@ Data  **prevptr;
       /* While loop is introduced to use the "break statement inside */
       while (cnt < 1)
       {
-         /*
-          * Check if the size request is not greater than the size available
-          * in the bucket
-          */
-         if (*size > bkt->size)
-         {
-            /* Try to go to the next bucket if available */
-            if((idx < (CMM_MAX_MAP_ENT - 1)) &&
-               (regCb->mapTbl[++idx].bktIdx != 0xFF))
-            {
-               bkt = &(regCb->bktTbl[regCb->mapTbl[idx].bktIdx]);
-            }
-            else
-            {
-               /* This is the last bucket, try to allocate from heap */
-               break;
-            }
-         }
+	 /*
+	  * Check if the size request is not greater than the size available
+	  * in the bucket
+	  */
+	 if (*size > bkt->size)
+	 {
+	    /* Try to go to the next bucket if available */
+	    if((idx < (CMM_MAX_MAP_ENT - 1)) &&
+		  (regCb->mapTbl[++idx].bktIdx != 0xFF))
+	    {
+	       bkt = &(regCb->bktTbl[regCb->mapTbl[idx].bktIdx]);
+	    }
+	    else
+	    {
+	       /* This is the last bucket, try to allocate from heap */
+	       break;
+	    }
+	 }
 
-         /* Acquire the bucket lock */
-         /* cm_mem_c_001.main_13 : Replaced SLock with WTLock for NT */
+	 /* Acquire the bucket lock */
+	 /* cm_mem_c_001.main_13 : Replaced SLock with WTLock for NT */
 #ifdef SS_WIN
-         (Void) WTLock(&(bkt->bktLock));
+	 (Void) WTLock(&(bkt->bktLock));
 #else
-         (Void) SLock(&(bkt->bktLock));
+	 (Void) SLock(&(bkt->bktLock));
 #endif
 #ifdef XEON_SPECIFIC_CHANGES         
-         CM_MEM_ALLOC_STS(regCb->region, idx); 
+	 CM_MEM_ALLOC_STS(regCb->region, idx); 
 #endif         
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         regCb->mapTbl[idx].numReq++;
+	 regCb->mapTbl[idx].numReq++;
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
-/* cm_mem_c_001.main_12 - addition for sanity check before allocation */
+	 /* cm_mem_c_001.main_12 - addition for sanity check before allocation */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
-      /* increment the allocation attempt counter at bucket level */
-      bkt->numAllocAttempts++;
+	 /* increment the allocation attempt counter at bucket level */
+	 bkt->numAllocAttempts++;
 
-      /* detect trampling if any and call sanity check. This is done for (bkt->nextBlk) as
-         the allocation is always from (bkt->nextBlk) */
-      if (bkt->nextBlk)
-      {
+	 /* detect trampling if any and call sanity check. This is done for (bkt->nextBlk) as
+	    the allocation is always from (bkt->nextBlk) */
+	 if (bkt->nextBlk)
+	 {
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         if(cmMmRegIsBlkSane(bkt->nextBlk, bkt->size) != ROK)
+	    if(cmMmRegIsBlkSane(bkt->nextBlk, bkt->size) != ROK)
 #else
-         if (cmMmRegIsBlkSane(bkt->nextBlk) != ROK)
+	       if (cmMmRegIsBlkSane(bkt->nextBlk) != ROK)
 #endif
-         {
-               /* detected a trampled memory block in this bucket */
+	       {
+		  /* detected a trampled memory block in this bucket */
 #ifdef DEBUGP
-               /* display an error message here */
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+		  /* display an error message here */
+		  /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-               sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %u bytes \n",
-                                    (void *)bkt->nextBlk, regCb->mapTbl[idx].bktIdx, *size);
+		  sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %u bytes \n",
+			(void *)bkt->nextBlk, regCb->mapTbl[idx].bktIdx, *size);
 #else                                    
-               sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %lu bytes \n",
-                                    (void *)bkt->nextBlk, regCb->mapTbl[idx].bktIdx, *size);
+		  sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %lu bytes \n",
+			(void *)bkt->nextBlk, regCb->mapTbl[idx].bktIdx, *size);
 #endif                                    
-               SDisplay(0, dbgPrntBuf);
+		  SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
-               abort();
+		  abort();
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-               if (cmMmBktSanityChk(bkt) == RTRAMPLINGNOK)
-               {
-                  /* Release the lock */
-                  /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+		  if (cmMmBktSanityChk(bkt) == RTRAMPLINGNOK)
+		  {
+		     /* Release the lock */
+		     /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-                  (Void) WTUnlock(&(bkt->bktLock));
+		     (Void) WTUnlock(&(bkt->bktLock));
 #else
-                  (Void) SUnlock(&(bkt->bktLock));
+		     (Void) SUnlock(&(bkt->bktLock));
 #endif
-                  /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
-                  RETVALUE(RTRAMPLINGNOK);
-               }
-               else
+		     /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
+		     RETVALUE(RTRAMPLINGNOK);
+		  }
+		  else
 #endif
-               {
-                  /* Release the lock */
-                  /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+		  {
+		     /* Release the lock */
+		     /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-                  (Void) WTUnlock(&(bkt->bktLock));
+		     (Void) WTUnlock(&(bkt->bktLock));
 #else
-                  (Void) SUnlock(&(bkt->bktLock));
+		     (Void) SUnlock(&(bkt->bktLock));
 #endif
-                  /* return RFAILED */
-                  RETVALUE(RFAILED);
-               }
-         }
-      }
-      *ptr = (Data *)(bkt->nextBlk) + (sizeof(CmMmBlkHdr)); /* ccpu00125353: warning fix */
+		     /* return RFAILED */
+		     RETVALUE(RFAILED);
+		  }
+	       }
+	 }
+	 *ptr = (Data *)(bkt->nextBlk) + (sizeof(CmMmBlkHdr)); /* ccpu00125353: warning fix */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
-      ptrHdr = (CmMmBlkHdr *)bkt->nextBlk;
+	 ptrHdr = (CmMmBlkHdr *)bkt->nextBlk;
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-      /* Initialize the elements with 0xAB */
-      cmMemset((U8 *)*ptr, 0xAB, *size);
+	 /* Initialize the elements with 0xAB */
+	 cmMemset((U8 *)*ptr, 0xAB, *size);
 #endif
-//      printf("Pointer allocated %8p size %d\n", *ptr, *size);
-      /* Store this pointer in hash list */
-      if ((bkt->nextBlk) && *ptr)
+	 //      printf("Pointer allocated %8p size %d\n", *ptr, *size);
+	 /* Store this pointer in hash list */
+	 if ((bkt->nextBlk) && *ptr)
 #elif SS_LIGHT_MEM_LEAK_STS
-      *ptr = (Data *)(bkt->nextBlk) + (sizeof(CmMmBlkHdr)); /* ccpu00125353: warning fix */
-      if ((bkt->nextBlk) && *ptr)
+	    *ptr = (Data *)(bkt->nextBlk) + (sizeof(CmMmBlkHdr)); /* ccpu00125353: warning fix */
+	 if ((bkt->nextBlk) && *ptr)
 #else
-         *ptr = bkt->next;/* ccpu00125353: warning fix */
-         if (*ptr != NULLP)
+	    *ptr = bkt->next;/* ccpu00125353: warning fix */
+	 if (*ptr != NULLP)
 #endif /* SSI_DEBUG_LEVEL1 */
-         {
-/* cm_mem_c_001.main_12 - addition for header */
+	 {
+	    /* cm_mem_c_001.main_12 - addition for header */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1) || defined (SS_LIGHT_MEM_LEAK_STS))
-      /* point to next block header */
-         alocBlk = bkt->nextBlk;
-         bkt->nextBlk = (CmMmBlkHdr *)(bkt->nextBlk->nextBlk);
+	    /* point to next block header */
+	    alocBlk = bkt->nextBlk;
+	    bkt->nextBlk = (CmMmBlkHdr *)(bkt->nextBlk->nextBlk);
 #else
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
-   if(bkt->size == 128)
-   {
-      memIndex = (*ptr - startPtr128) / 128;
-   }
-   if(bkt->size == 256)
-   {
-      memIndex = (*ptr - startPtr256) / 256;
-   }
+	    if(bkt->size == 128)
+	    {
+	       memIndex = (*ptr - startPtr128) / 128;
+	    }
+	    if(bkt->size == 256)
+	    {
+	       memIndex = (*ptr - startPtr256) / 256;
+	    }
 #if 1
-         if (*((U32 *)(*ptr + 4)) != 0xDEADDEAD && *((U32 *)(*ptr + 80)) != 0xDEADDEAD && *((U32 *)(*ptr + 24)) != 0xDEADDEAD)
-	 {
-          }
-   	    if(bkt->size == 256)
-          {  
-          }
+	    if (*((U32 *)(*ptr + 4)) != 0xDEADDEAD && *((U32 *)(*ptr + 80)) != 0xDEADDEAD && *((U32 *)(*ptr + 24)) != 0xDEADDEAD)
+	    {
+	    }
+	    if(bkt->size == 256)
+	    {  
+	    }
 	 }
 #endif
 #endif /* MS_MBUF_CORRUPTION */
 #ifdef SSI_MEM_CORR_PREVENTION
-            *(((U32 *)(*ptr)) + 2) = 0;
+	 *(((U32 *)(*ptr)) + 2) = 0;
 #endif
 
 #ifdef T2K_MEM_LEAK_DBG 
 
-            {
-               /* Lock before the transaction-start */
-               pthread_mutex_lock(&(regMemLeakInfo.memLock[regCb->region]));
-               InsertToT2kMemLeakInfo( (U64)*ptr,*size,line,file,regCb->region);
-               /* UnLock after the transaction */
-               pthread_mutex_unlock(&(regMemLeakInfo.memLock[regCb->region]));
-            }
+	 {
+	    /* Lock before the transaction-start */
+	    pthread_mutex_lock(&(regMemLeakInfo.memLock[regCb->region]));
+	    InsertToT2kMemLeakInfo( (U64)*ptr,*size,line,file,regCb->region);
+	    /* UnLock after the transaction */
+	    pthread_mutex_unlock(&(regMemLeakInfo.memLock[regCb->region]));
+	 }
 #endif   /* T2K_MEM_LEAK_DBG */ 
 
-            bkt->next = *((CmMmEntry **)(bkt->next));
+	 bkt->next = *((CmMmEntry **)(bkt->next));
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
-         *nextptr = bkt->next;
-         if (*((U32 *)(*nextptr + 4)) != 0xDEADDEAD && *((U32 *)(*nextptr + 80)) != 0xDEADDEAD && *((U32 *)(*nextptr + 24)) != 0xDEADDEAD)
+	 *nextptr = bkt->next;
+	 if (*((U32 *)(*nextptr + 4)) != 0xDEADDEAD && *((U32 *)(*nextptr + 80)) != 0xDEADDEAD && *((U32 *)(*nextptr + 24)) != 0xDEADDEAD)
 	 {
-            if(bkt->size == 128)
-               *prevptr = startPtr128 + ((memIndex-1)*128);
-            if(bkt->size == 256)
-               *prevptr = startPtr256 + ((memIndex-1)*256);
-            if(bkt->size == 128)
-               memIndex = (*nextptr - startPtr128) / 128;
-            if(bkt->size == 256)
-               memIndex = (*nextptr - startPtr256) / 256;
+	    if(bkt->size == 128)
+	       *prevptr = startPtr128 + ((memIndex-1)*128);
+	    if(bkt->size == 256)
+	       *prevptr = startPtr256 + ((memIndex-1)*256);
+	    if(bkt->size == 128)
+	       memIndex = (*nextptr - startPtr128) / 128;
+	    if(bkt->size == 256)
+	       memIndex = (*nextptr - startPtr256) / 256;
 	    nextptr1=NULLP;
 	    *nextptr1=9;
 	 }
-      if(bkt->size == 128)
-      {
-         memIndex = (*ptr - startPtr128) / 128;
-         cmMemInfo128[memIndex][0] = cmAllocCaller[MxGetCpuID()];
-      }
-      if(bkt->size == 256)
-      {
-         memIndex = (*ptr - startPtr256) / 256;
-         cmMemInfo256[memIndex][0] = cmAllocCaller[MxGetCpuID()];
-      }
-      cmAllocCaller[MxGetCpuID()] = NULLP;
-         *((U32 *)(*ptr + 4)) = 0x00000000;
-         *((U32 *)(*ptr + 124)) = 0;
-         *((U32 *)(*ptr + 24)) = 0x00000000;
-         *((U32 *)(*ptr + 44)) = 0x00000000;            
-         *((U32 *)(*ptr + 80)) = 0x00000000;
-         *((U32 *)(*ptr + 116)) = 0x00000000;
+	 if(bkt->size == 128)
+	 {
+	    memIndex = (*ptr - startPtr128) / 128;
+	    cmMemInfo128[memIndex][0] = cmAllocCaller[MxGetCpuID()];
+	 }
+	 if(bkt->size == 256)
+	 {
+	    memIndex = (*ptr - startPtr256) / 256;
+	    cmMemInfo256[memIndex][0] = cmAllocCaller[MxGetCpuID()];
+	 }
+	 cmAllocCaller[MxGetCpuID()] = NULLP;
+	 *((U32 *)(*ptr + 4)) = 0x00000000;
+	 *((U32 *)(*ptr + 124)) = 0;
+	 *((U32 *)(*ptr + 24)) = 0x00000000;
+	 *((U32 *)(*ptr + 44)) = 0x00000000;            
+	 *((U32 *)(*ptr + 80)) = 0x00000000;
+	 *((U32 *)(*ptr + 116)) = 0x00000000;
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
 
-/* cache_coherency_changes */
+	 /* cache_coherency_changes */
 #ifdef LOWERARM
-      MxDMB();
+	 MxDMB();
 #endif
-            /* 
-             * Increment the statistics variable of number of memory block 
-             * allocated 
-             */
-            bkt->numAlloc++;
-            if (bkt->numAlloc > bkt->maxAlloc)
-            {
-               bkt->maxAlloc = bkt->numAlloc;
-            }
+	 /* 
+	  * Increment the statistics variable of number of memory block 
+	  * allocated 
+	  */
+	 bkt->numAlloc++;
+	 if (bkt->numAlloc > bkt->maxAlloc)
+	 {
+	    bkt->maxAlloc = bkt->numAlloc;
+	 }
 #ifdef CM_MEM_OVERUSED
-            {
-               if (g_overused[bktIdx] == 0 && OVERUSED(bkt))
-               {
-                  g_overused[bktIdx] = 1;
-                  /*printf("cmAlloc: bktIdx %u overused %u numAlloc %u\n", bktIdx, g_overused[bktIdx], bkt->numAlloc); */
-               }
-            }
+	 {
+	    if (g_overused[bktIdx] == 0 && OVERUSED(bkt))
+	    {
+	       g_overused[bktIdx] = 1;
+	       /*printf("cmAlloc: bktIdx %u overused %u numAlloc %u\n", bktIdx, g_overused[bktIdx], bkt->numAlloc); */
+	    }
+	 }
 #endif
-/* cm_mem_c_001.main_12 - addition for header manipulation */
+	 /* cm_mem_c_001.main_12 - addition for header manipulation */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
-      /* update the size for which this memory block has been allocated */
-      alocBlk->requestedSize = *size;
-      /* update the memory block header */
-      CMM_RESET_FREE_FLAG(alocBlk->memFlags);
-      if (memType == CMM_STATIC_MEM_FLAG)
-      {
-         CMM_SET_STATIC_FLAG(alocBlk->memFlags);
-         /* add it to the static memory allocated */
-         bkt->staticMemUsed += bkt->size;
-      }
-      else
-      {
-         CMM_SET_DYNAMIC_FLAG(alocBlk->memFlags);
-         /* add it to the dynamic memory allocated */
-         bkt->dynamicMemUsed += bkt->size;
-      }
+	 /* update the size for which this memory block has been allocated */
+	 alocBlk->requestedSize = *size;
+	 /* update the memory block header */
+	 CMM_RESET_FREE_FLAG(alocBlk->memFlags);
+	 if (memType == CMM_STATIC_MEM_FLAG)
+	 {
+	    CMM_SET_STATIC_FLAG(alocBlk->memFlags);
+	    /* add it to the static memory allocated */
+	    bkt->staticMemUsed += bkt->size;
+	 }
+	 else
+	 {
+	    CMM_SET_DYNAMIC_FLAG(alocBlk->memFlags);
+	    /* add it to the dynamic memory allocated */
+	    bkt->dynamicMemUsed += bkt->size;
+	 }
 #elif SS_LIGHT_MEM_LEAK_STS 
-      alocBlk->requestedSize = *size;
-      alocBlk->lineNo        = lineNo;
-      alocBlk->currFuncName  = funcName;
-      if(gmemLkCb.isStarted == TRUE)
-      {
-         alocBlk->allocQueueIndx = cmStorAllocBlk(alocBlk);
-      }
+	 alocBlk->requestedSize = *size;
+	 alocBlk->lineNo        = lineNo;
+	 alocBlk->currFuncName  = funcName;
+	 if(gmemLkCb.isStarted == TRUE)
+	 {
+	    alocBlk->allocQueueIndx = cmStorAllocBlk(alocBlk);
+	 }
 #endif /* SSI_DEBUG_LEVEL1 */
 
-            if (((bkt->size - (*size)) >> regCb->bktQnPwr) && flags)
-            {
-               bkt->bktNoFitCnt++;
+	 if (((bkt->size - (*size)) >> regCb->bktQnPwr) && flags)
+	 {
+	    bkt->bktNoFitCnt++;
 #ifdef MEMCAL_DEBUG
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+	    /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-               sprintf(prntBuf,
-   "[MEM_CAL_CNTA] %u bytes request not fitted in bkt %d [size %u bytes] %u times\n", *size, regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktNoFitCnt++);
+	    sprintf(prntBuf,
+		  "[MEM_CAL_CNTA] %u bytes request not fitted in bkt %d [size %u bytes] %u times\n", *size, regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktNoFitCnt++);
 #else   
-               sprintf(prntBuf,
-   "[MEM_CAL_CNTA] %lu bytes request not fitted in bkt %d [size %lu bytes] %lu times\n", *size, regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktNoFitCnt++);
+	    sprintf(prntBuf,
+		  "[MEM_CAL_CNTA] %lu bytes request not fitted in bkt %d [size %lu bytes] %lu times\n", *size, regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktNoFitCnt++);
 #endif   
-               SDisplay(0, prntBuf);
+	    SDisplay(0, prntBuf);
 #endif
-            }
+	 }
 
 #ifdef MEMCAL_DEBUG
-            if (flags)
-            {
-               sprintf(prntBuf,
-    "SGetSBuf:%08lu:Size Bucket Id:%03d  Times:%05lu  Pointer: %8p\n",
-                    *size, regCb->mapTbl[idx].bktIdx, num_times, *ptr);
-               SDisplay(0, prntBuf);
-            }
+	 if (flags)
+	 {
+	    sprintf(prntBuf,
+		  "SGetSBuf:%08lu:Size Bucket Id:%03d  Times:%05lu  Pointer: %8p\n",
+		  *size, regCb->mapTbl[idx].bktIdx, num_times, *ptr);
+	    SDisplay(0, prntBuf);
+	 }
 #endif /* MEMCAL_DEBUG */
- /*  cm_mem_c_001.main_15 : Additions */
+	 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-            /* If If Tapa task (entId)is registerd for histogram then insert Memrory allocated
-             * information into the hash list */
-            if(hstReg)
-            {
-               if (cmHstGrmAllocInsert(&(bkt->hstGrmHashListCp), bkt->size, size, line, fileName, entId) != ROK)
-               {
-                 sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
-					  SPrint(hstGrmBuf);
-               }
-            }/* End of if */
+	 /* If If Tapa task (entId)is registerd for histogram then insert Memrory allocated
+	  * information into the hash list */
+	 if(hstReg)
+	 {
+	    if (cmHstGrmAllocInsert(&(bkt->hstGrmHashListCp), bkt->size, size, line, fileName, entId) != ROK)
+	    {
+	       sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
+	       SPrint(hstGrmBuf);
+	    }
+	 }/* End of if */
 
 #endif /* SS_HISTOGRAM_SUPPORT */
-        
-            /* Update the size parameter */
-            *size = bkt->size;
+
+	 /* Update the size parameter */
+	 *size = bkt->size;
 #ifdef SS_MEM_LEAK_STS
-        /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
-         cmStorAllocBlk((PTR)*ptr, (Size) reqSz, (Size) *size,
-                          regCb->mapTbl[idx].bktIdx);
+	 /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
+	 cmStorAllocBlk((PTR)*ptr, (Size) reqSz, (Size) *size,
+	       regCb->mapTbl[idx].bktIdx);
 #elif BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
-         cmStorAllocBlk(ptrHdr, (Size)reqSz, (Size) *size,
-                       regCb->mapTbl[idx].bktIdx, regCb);
+	 cmStorAllocBlk(ptrHdr, (Size)reqSz, (Size) *size,
+	       regCb->mapTbl[idx].bktIdx, regCb);
 #endif /* SS_MEM_LEAK_STS */
 
-      /* cm_mem_c_008.104 - Addition for memory calculator tool */
+	 /* cm_mem_c_008.104 - Addition for memory calculator tool */
 
-            /* Release the lock */
-            /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	 /* Release the lock */
+	 /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-            (Void) WTUnlock(&(bkt->bktLock));
+	 (Void) WTUnlock(&(bkt->bktLock));
 #else
-            (Void) SUnlock(&(bkt->bktLock));
+	 (Void) SUnlock(&(bkt->bktLock));
 #endif
 
-            RETVALUE(ROK);
-         }
-         else if (flags)
-         {
-            bkt->bktFailCnt++;
+	 RETVALUE(ROK);
+      }
+      else if (flags)
+      {
+	 bkt->bktFailCnt++;
 #ifdef MEMCAL_DEBUG
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+	 /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
- sprintf(prntBuf,
-            "[MEM_CAL_CNTB] Allocation failed in bucket %d [ size %u bytes], %u times\n", regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktFailCnt);
+	 sprintf(prntBuf,
+	       "[MEM_CAL_CNTB] Allocation failed in bucket %d [ size %u bytes], %u times\n", regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktFailCnt);
 #else            
- sprintf(prntBuf,
-            "[MEM_CAL_CNTB] Allocation failed in bucket %d [ size %lu bytes], %lu times\n", regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktFailCnt);
+	 sprintf(prntBuf,
+	       "[MEM_CAL_CNTB] Allocation failed in bucket %d [ size %lu bytes], %lu times\n", regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktFailCnt);
 #endif            
-            SDisplay(0, prntBuf);
+	 SDisplay(0, prntBuf);
 #endif
-         }
+      }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         regCb->mapTbl[idx].numFailure++;
+      regCb->mapTbl[idx].numFailure++;
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
-         /* Release the lock */
-         /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+      /* Release the lock */
+      /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-            (Void) WTUnlock(&(bkt->bktLock));
+      (Void) WTUnlock(&(bkt->bktLock));
 #else
-            (Void) SUnlock(&(bkt->bktLock));
+      (Void) SUnlock(&(bkt->bktLock));
 #endif
-         cnt = cnt + 1;
-      }
+      cnt = cnt + 1;
    }
-   else
+}
+else
+{
+   if (flags)
    {
-      if (flags)
-      {
-         regCb->heapCb.heapAllocCnt++;
+      regCb->heapCb.heapAllocCnt++;
 #ifdef MEMCAL_DEBUG
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+      /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-         sprintf(prntBuf,
-                 "[MEM_CAL_CNTC]  No bucket block configured for %u bytes \n Number of blocks allocated from heap = %u\n",*size,
-                 regCb->heapCb.heapAllocCnt);
+      sprintf(prntBuf,
+	    "[MEM_CAL_CNTC]  No bucket block configured for %u bytes \n Number of blocks allocated from heap = %u\n",*size,
+	    regCb->heapCb.heapAllocCnt);
 #else                 
-         sprintf(prntBuf,
-                 "[MEM_CAL_CNTC]  No bucket block configured for %lu bytes \n Number of blocks allocated from heap = %lu\n",*size,
-                 regCb->heapCb.heapAllocCnt);
+      sprintf(prntBuf,
+	    "[MEM_CAL_CNTC]  No bucket block configured for %lu bytes \n Number of blocks allocated from heap = %lu\n",*size,
+	    regCb->heapCb.heapAllocCnt);
 #endif                 
-         SDisplay(0, prntBuf);
+      SDisplay(0, prntBuf);
 #endif
-      }
    }
+}
 
-   /* Memory not available in the bucket pool */
-   if (regCb->heapFlag &&  (*size < regCb->heapSize))
-   {
+/* Memory not available in the bucket pool */
+if (regCb->heapFlag &&  (*size < regCb->heapSize))
+{
 #ifdef MEMCAL_DEBUG
-      if (flags) tryHeap = 1;
+   if (flags) tryHeap = 1;
 #endif
-      /* 
-       * The heap memory block is available. Allocate the memory block from
-       * heap pool.
-       */ 
-/* cm_mem_c_001.main_15: Additions */
+   /* 
+    * The heap memory block is available. Allocate the memory block from
+    * heap pool.
+    */ 
+   /* cm_mem_c_001.main_15: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT  
-/* cm_mem_c_001.main_12 - addition for passing an extra parameter */
+   /* cm_mem_c_001.main_12 - addition for passing an extra parameter */
 #ifdef SSI_DEBUG_LEVEL1
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, memType, line, fileName, entId, hstReg));
+   RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, memType, line, fileName, entId, hstReg));
 #else
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, line, fileName, entId, hstReg));
+   RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, line, fileName, entId, hstReg));
 #endif /* SSI_DEBUG_LEVEL1 */
 #else
-/* cm_mem_c_001.main_12 - addition for passing an extra parameter */
+   /* cm_mem_c_001.main_12 - addition for passing an extra parameter */
 #ifdef SSI_DEBUG_LEVEL1
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, memType));
+   RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, memType));
 #else
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size));
+   RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size));
 #endif /* SSI_DEBUG_LEVEL1 */
 #endif /* SS_HISTOGRAM_SUPPORT */
-   }
+}
 
-   /* No memory available */
-   RETVALUE(RFAILED);
+/* No memory available */
+RETVALUE(RFAILED);
 #else /* use pure is on */
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
-   *ptr = (Data*) MxHeapAlloc(SsiHeap, *size);
-   cmMemset((U8*)ptr, 0, *size);
+*ptr = (Data*) MxHeapAlloc(SsiHeap, *size);
+cmMemset((U8*)ptr, 0, *size);
 #else
-   *ptr = (Data*) malloc(*size);
+*ptr = (Data*) malloc(*size);
 #endif
-   if ( (*ptr) == NULLP)
-       RETVALUE(RFAILED);
+if ( (*ptr) == NULLP)
+   RETVALUE(RFAILED);
    avail_size -= *size;
    RETVALUE(ROK);
 #endif /* USE_PURE */
 
-} /* end of cmAlloc */
+   } /* end of cmAlloc */
 
 
 /*
-*
-*       Fun:   cmFree
-*
-*       Desc:  Return the memory block for the memory region.
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*       Notes: The user calls this function to return the previously allocated 
-*              memory block to the memory region. The memory manager does not 
-*              check the validity of the state of the memory block(like whether 
-*              it was allocated earlier). The caller must be sure that, the 
-*              address specified in the parameter 'ptr' is valid and was 
-*              allocated previously from same region.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmFree
+ *
+ *       Desc:  Return the memory block for the memory region.
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: The user calls this function to return the previously allocated 
+ *              memory block to the memory region. The memory manager does not 
+ *              check the validity of the state of the memory block(like whether 
+ *              it was allocated earlier). The caller must be sure that, the 
+ *              address specified in the parameter 'ptr' is valid and was 
+ *              allocated previously from same region.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PRIVATE S16  cmFree
+   PRIVATE S16  cmFree
 (
-Void   *regionCb,
-Data   *ptr, 
-Size    size,
-U32     lineNo,
-U8      *funcName
-)
+ Void   *regionCb,
+ Data   *ptr, 
+ Size    size,
+ U32     lineNo,
+ U8      *funcName
+ )
 #else
 PRIVATE S16  cmFree(regionCb, ptr, size, lineNo, funcName)
-Void   *regionCb;
-Data   *ptr;
-Size    size;
-U32     lineNo;
-U8      *funcName;
+   Void   *regionCb;
+   Data   *ptr;
+   Size    size;
+   U32     lineNo;
+   U8      *funcName;
 #endif
 #else /*SS_LIGHT_MEM_LEAK_STS */
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef ANSI
-PRIVATE S16  cmFree
+   PRIVATE S16  cmFree
 (
-Void   *regionCb,
-Data   *ptr,
-Size    size,
-U32     line,
-U8     *fileName,
-U8      entId,
-Bool    hstReg
-)
+ Void   *regionCb,
+ Data   *ptr,
+ Size    size,
+ U32     line,
+ U8     *fileName,
+ U8      entId,
+ Bool    hstReg
+ )
 #else
 PRIVATE S16  cmFree(regionCb, ptr, size, line, fileName, entId, hstReg)
-Void   *regionCb;
-Data   *ptr;
-Size    size;
-U32     line;
-U8     *fileName;
-U8      entId;
-Bool    hstReg;
+   Void   *regionCb;
+   Data   *ptr;
+   Size    size;
+   U32     line;
+   U8     *fileName;
+   U8      entId;
+   Bool    hstReg;
 #endif
 
 #else
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmFree
+   PRIVATE S16  cmFree
 (
  Void   *regionCb,
  Data   *ptr,
@@ -1665,43 +1665,43 @@ PRIVATE S16  cmFree
  )
 #else /* T2K_MEM_LEAK_DBG */
 #ifdef ANSI
-PRIVATE S16  cmFree
+   PRIVATE S16  cmFree
 (
-Void   *regionCb,
-Data   *ptr, 
-Size    size
-)
+ Void   *regionCb,
+ Data   *ptr, 
+ Size    size
+ )
 #else
 PRIVATE S16  cmFree(regionCb, ptr, size)
-Void   *regionCb;
-Data   *ptr;
-Size    size;
+   Void   *regionCb;
+   Data   *ptr;
+   Size    size;
 #endif
 #endif
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #endif /* SS_HISTOGRAM_SUPPORT */ 
 #endif /*SS_LIGHT_MEM_LEAK_STS */
 
 {
-/* cm_mem_c_001.main_26 : Fixes for Compilation Warnings */
+   /* cm_mem_c_001.main_26 : Fixes for Compilation Warnings */
 #ifndef USE_PURE
    U16        idx;
    CmMmBkt   *bkt;
 #endif
    CmMmRegCb *regCb;
-/* cm_mem_c_001.main_12 - addition for holding the free pointer */
+   /* cm_mem_c_001.main_12 - addition for holding the free pointer */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1) || defined (SS_LIGHT_MEM_LEAK_STS))
    CmMmBlkHdr *ptrHdr;
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
    CmMmBlkHdr *lastHdr;
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-	S8 hstGrmBuf[256];
+   S8 hstGrmBuf[256];
 #endif /* SS_HISTOGRAM_SUPPORT */
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption*/
-	 U16 memIndex=0;
+   U16 memIndex=0;
 #endif
 
    TRC2(cmFree);
@@ -1712,7 +1712,7 @@ Size    size;
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
    /* Check if the memory block is from the memory region */
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
-               ((CmMmRegCb *)regCb)->regInfo.size) 
+	 ((CmMmRegCb *)regCb)->regInfo.size) 
    {
       RETVALUE(RFAILED);
    }
@@ -1728,16 +1728,16 @@ Size    size;
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
    /* Check if the memory block is from the memory region */
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
-               ((CmMmRegCb *)regCb)->regInfo.size) 
+	 ((CmMmRegCb *)regCb)->regInfo.size) 
    {
       RETVALUE(RFAILED);
    }
 #endif
-	/* cm_mem_c_001.main_20 Addition */
-	if (ptr < regCb->regInfo.start)
-	{
-	  RETVALUE(RFAILED);
-	}
+   /* cm_mem_c_001.main_20 Addition */
+   if (ptr < regCb->regInfo.start)
+   {
+      RETVALUE(RFAILED);
+   }
 
 #endif
 
@@ -1749,9 +1749,9 @@ Size    size;
    {
 #ifdef T2K_MEM_LEAK_DBG
       {
-         pthread_mutex_lock(&(regMemLeakInfo.memLock[regCb->region]));
-         RemoveFromT2kMemLeakInfo((U64)ptr , file,line,regCb->region);
-         pthread_mutex_unlock(&(regMemLeakInfo.memLock[regCb->region]));
+	 pthread_mutex_lock(&(regMemLeakInfo.memLock[regCb->region]));
+	 RemoveFromT2kMemLeakInfo((U64)ptr , file,line,regCb->region);
+	 pthread_mutex_unlock(&(regMemLeakInfo.memLock[regCb->region]));
       }
 #endif
       /* The memory block was allocated from the bucket pool */
@@ -1762,8 +1762,8 @@ Size    size;
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
-         /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+	 /* Some fatal error in the map table initialization. */
+	 RETVALUE(RFAILED);
       }
 #endif
 
@@ -1777,10 +1777,10 @@ Size    size;
        * next bucket, otherwise buffer must have been allocated from heap
        * pool.
        */
-       if (size > bkt->size)
-       {
-          bkt = &(regCb->bktTbl[regCb->mapTbl[++idx].bktIdx]);
-       }
+      if (size > bkt->size)
+      {
+	 bkt = &(regCb->bktTbl[regCb->mapTbl[++idx].bktIdx]);
+      }
 
       /* Acquire the bucket lock */
       /* cm_mem_c_001.main_13 : Replaced SLock with WTLock for NT */
@@ -1790,14 +1790,14 @@ Size    size;
       (Void) SLock(&(bkt->bktLock));
 #endif
 #ifdef XEON_SPECIFIC_CHANGES         
-     CM_MEM_FREE_STS(regCb->region, idx);
+      CM_MEM_FREE_STS(regCb->region, idx);
 #endif    
-/* cache_coherency_changes */
+      /* cache_coherency_changes */
 #ifdef LOWERARM
       MxDMB();
 #endif
 
-/* cm_mem_c_001.main_12 - addition for sanity check and free */
+      /* cm_mem_c_001.main_12 - addition for sanity check and free */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
       /* increment the dealloc attempt counter at bucket level */
       bkt->numDeallocAttempts++;
@@ -1812,81 +1812,81 @@ Size    size;
       if(((ptrHdr->requestedSize - size) % size) != 0)
       {
 #ifdef DEBUGP
-         sprintf(dbgPrntBuf, "Passed size (%d) does not match with allocated \
-               size(%d) %8p, Bucket Id:%03d\n",
-               size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
+	 sprintf(dbgPrntBuf, "Passed size (%d) does not match with allocated \
+	       size(%d) %8p, Bucket Id:%03d\n",
+	       size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
 #endif
-         printf("Passed size (%d) does not match with allocated \
-               size(%d) %8p, Bucket Id:%03d\n",
-               size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
-         abort();
+	 printf("Passed size (%d) does not match with allocated \
+	       size(%d) %8p, Bucket Id:%03d\n",
+	       size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
+	 abort();
       }
       /* Validate the tail part to see if there is any over run */
-//      printf("Pointer free request %8p, size %d\n", ptr, size);
+      //      printf("Pointer free request %8p, size %d\n", ptr, size);
 #endif
 
       /* validate the block to be freed for trampling */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
       if(cmMmRegIsBlkSane(ptrHdr, bkt->size) != ROK)
 #else
-      if (cmMmRegIsBlkSane(ptrHdr) != ROK)
+	 if (cmMmRegIsBlkSane(ptrHdr) != ROK)
 #endif
-      {
-          /* Handle error case of Memory trampling */
+	 {
+	    /* Handle error case of Memory trampling */
 #ifdef  DEBUGP
-          /* display an error message here */
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+	    /* display an error message here */
+	    /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-          sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %u bytes \n",
-                               ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	    sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %u bytes \n",
+		  ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
 #else                               
-          sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %lu bytes \n",
-                               ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	    sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %lu bytes \n",
+		  ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
 #endif                               
-          SDisplay(0, dbgPrntBuf);
+	    SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
-          abort();
-           /* 
-           * if sanity check returns RTRAMPLINGOK then there is nothing to do
-           * as the memory blk is already invalidated in cmMmBktSanityChk
-           */
+	    abort();
+	    /* 
+	     * if sanity check returns RTRAMPLINGOK then there is nothing to do
+	     * as the memory blk is already invalidated in cmMmBktSanityChk
+	     */
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-           if (cmMmBktSanityChk(bkt) == RTRAMPLINGOK)
-           {
-              bkt->numAlloc--;
+	    if (cmMmBktSanityChk(bkt) == RTRAMPLINGOK)
+	    {
+	       bkt->numAlloc--;
 
-              /* Release the lock */
-              /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	       /* Release the lock */
+	       /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-              (Void) WTUnlock(&(bkt->bktLock));
+	       (Void) WTUnlock(&(bkt->bktLock));
 #else
-              (Void) SUnlock(&(bkt->bktLock));
+	       (Void) SUnlock(&(bkt->bktLock));
 #endif
 
-              RETVALUE(ROK);
-           }
-           else
+	       RETVALUE(ROK);
+	    }
+	    else
 #endif
-           {
-               /* 
-               * this is the case where in the entire bucket has been made unusable
-               * Release the lock 
-               */
-               /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	    {
+	       /* 
+		* this is the case where in the entire bucket has been made unusable
+		* Release the lock 
+		*/
+	       /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-               (Void) WTUnlock(&(bkt->bktLock));
+	       (Void) WTUnlock(&(bkt->bktLock));
 #else
-               (Void) SUnlock(&(bkt->bktLock));
+	       (Void) SUnlock(&(bkt->bktLock));
 #endif
 
-                /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-                RETVALUE(RTRAMPLINGNOK);
-           }
+	       /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
+	       RETVALUE(RTRAMPLINGNOK);
+	    }
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         printf("Memory signature is invalid\n");
-         abort();
+	    printf("Memory signature is invalid\n");
+	    abort();
 #endif
-      }
+	 }
 
       /* reset the size */
       ptrHdr->requestedSize = 0;
@@ -1897,93 +1897,93 @@ Size    size;
       /* check if the block to be freed is already having the state as FREE */
       if (CMM_IS_FREE(ptrHdr->memFlags))
       {
-            /* Handle double deallocation error case */
+	 /* Handle double deallocation error case */
 #ifdef DEBUGP
-            /* display an error message here */
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+	 /* display an error message here */
+	 /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-         sprintf(dbgPrntBuf, "Attempt to double deallocate memory at: %8p, Bucket Id:%03d, size %u bytes \n",
-                              ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	 sprintf(dbgPrntBuf, "Attempt to double deallocate memory at: %8p, Bucket Id:%03d, size %u bytes \n",
+	       ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
 #else                              
-         sprintf(dbgPrntBuf, "Attempt to double deallocate memory at: %8p, Bucket Id:%03d, size %lu bytes \n",
-                              ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	 sprintf(dbgPrntBuf, "Attempt to double deallocate memory at: %8p, Bucket Id:%03d, size %lu bytes \n",
+	       ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
 #endif                              
-         SDisplay(0, dbgPrntBuf);
+	 SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
 
-          /* Release the lock */
-          /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	 /* Release the lock */
+	 /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-          (Void) WTUnlock(&(bkt->bktLock));
+	 (Void) WTUnlock(&(bkt->bktLock));
 #else
-          (Void) SUnlock(&(bkt->bktLock));
+	 (Void) SUnlock(&(bkt->bktLock));
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         printf("Attempt to double deallocate memory at: %8p, Bucket Id:%03d,\
-                 size %u bytes \n", ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
-          abort();
+	 printf("Attempt to double deallocate memory at: %8p, Bucket Id:%03d,\
+	       size %u bytes \n", ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	 abort();
 #endif
-          /* handle RDBLFREE in SFree/SPutSBuf */
-          RETVALUE(RDBLFREE);
+	 /* handle RDBLFREE in SFree/SPutSBuf */
+	 RETVALUE(RDBLFREE);
       }
       if (CMM_IS_STATIC(ptrHdr->memFlags))
       {
-         CMM_SET_FREE_FLAG(ptrHdr->memFlags);
-         CMM_RESET_STATIC_FLAG(ptrHdr->memFlags);
-         /* deduct it from the static memory count */
-         bkt->staticMemUsed -= bkt->size;
+	 CMM_SET_FREE_FLAG(ptrHdr->memFlags);
+	 CMM_RESET_STATIC_FLAG(ptrHdr->memFlags);
+	 /* deduct it from the static memory count */
+	 bkt->staticMemUsed -= bkt->size;
       }
       else if (CMM_IS_DYNAMIC(ptrHdr->memFlags))
       {
-         CMM_SET_FREE_FLAG(ptrHdr->memFlags);
-         CMM_RESET_DYNAMIC_FLAG(ptrHdr->memFlags);
-         /* deduct it from the dynamic memory count */
-         bkt->dynamicMemUsed -= bkt->size;
+	 CMM_SET_FREE_FLAG(ptrHdr->memFlags);
+	 CMM_RESET_DYNAMIC_FLAG(ptrHdr->memFlags);
+	 /* deduct it from the dynamic memory count */
+	 bkt->dynamicMemUsed -= bkt->size;
       }
       else
       {
-         /* This is a case similar to trampled memory */
+	 /* This is a case similar to trampled memory */
 #ifdef  DEBUGP
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+	 /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-         sprintf(dbgPrntBuf, "Invalid memory flag: %u !!!\n", ptrHdr->memFlags);
+	 sprintf(dbgPrntBuf, "Invalid memory flag: %u !!!\n", ptrHdr->memFlags);
 #else         
-         sprintf(dbgPrntBuf, "Invalid memory flag: %lu !!!\n", ptrHdr->memFlags);
+	 sprintf(dbgPrntBuf, "Invalid memory flag: %lu !!!\n", ptrHdr->memFlags);
 #endif         
-         SDisplay(0, dbgPrntBuf);
+	 SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         if (cmMmBktSanityChk(bkt) == RTRAMPLINGOK)
-         {
-            /* do not add to the free list */
-            bkt->numAlloc--;
+	 if (cmMmBktSanityChk(bkt) == RTRAMPLINGOK)
+	 {
+	    /* do not add to the free list */
+	    bkt->numAlloc--;
 
-            /* Release the lock */
-            /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	    /* Release the lock */
+	    /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-            (Void) WTUnlock(&(bkt->bktLock));
+	    (Void) WTUnlock(&(bkt->bktLock));
 #else
-            (Void) SUnlock(&(bkt->bktLock));
+	    (Void) SUnlock(&(bkt->bktLock));
 #endif
-            RETVALUE(ROK);
-         }
-         else
+	    RETVALUE(ROK);
+	 }
+	 else
 #endif
-         {
-            /* 
-            * this is the case where in the entire bucket has been made unusable
-            * Release the lock 
-            */
-            /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	 {
+	    /* 
+	     * this is the case where in the entire bucket has been made unusable
+	     * Release the lock 
+	     */
+	    /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-            (Void) WTUnlock(&(bkt->bktLock));
+	    (Void) WTUnlock(&(bkt->bktLock));
 #else
-            (Void) SUnlock(&(bkt->bktLock));
+	    (Void) SUnlock(&(bkt->bktLock));
 #endif
 
-            /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-            RETVALUE(RTRAMPLINGNOK);
-         }
+	    /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
+	    RETVALUE(RTRAMPLINGNOK);
+	 }
       }
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
       /* Return the block to memory */
@@ -2003,7 +2003,7 @@ Size    size;
       ptrHdr->currFuncName  =  funcName;
       if(gmemLkCb.isStarted == TRUE)
       {
-         cmRlsAllocBlk(ptrHdr->allocQueueIndx);
+	 cmRlsAllocBlk(ptrHdr->allocQueueIndx);
       }
       ptrHdr->nextBlk = bkt->nextBlk;
       bkt->nextBlk = ptrHdr;
@@ -2013,137 +2013,137 @@ Size    size;
 #ifdef SSI_MEM_CORR_PREVENTION
       if (*(((U32 *)(ptr)) + 2) == 0xdeaddead)
       {
-         /* Do not free an already freed block to avoid corruption */
-         cmDblFreeAttempts++;
-         bkt->numAlloc++;
+	 /* Do not free an already freed block to avoid corruption */
+	 cmDblFreeAttempts++;
+	 bkt->numAlloc++;
       }
       else
       {
-         *((CmMmEntry **)bkt->last) = ptr;
-         bkt->last = (CmMmEntry *)ptr;
-         *((CmMmEntry **)ptr) = NULLP;
-         *(((U32 *)(ptr)) + 2) = 0xdeaddead;
+	 *((CmMmEntry **)bkt->last) = ptr;
+	 bkt->last = (CmMmEntry *)ptr;
+	 *((CmMmEntry **)ptr) = NULLP;
+	 *(((U32 *)(ptr)) + 2) = 0xdeaddead;
       }
 #else
       *((CmMmEntry **)ptr) =  bkt->next; 
       bkt->next = (CmMmEntry *)ptr;
 #endif
 #else
-     if(memFreeCount >= 125000)
-            memFreeCount = 0;
+      if(memFreeCount >= 125000)
+	 memFreeCount = 0;
       if(bkt->size == 128)
       {
-         Data *crashPtr=NULLP;
-         if(((ptr - startPtr128) % 128) != 0)
-         {
-            *crashPtr = 9;
-         }
-         memIndex = (ptr - startPtr128) / 128;
+	 Data *crashPtr=NULLP;
+	 if(((ptr - startPtr128) % 128) != 0)
+	 {
+	    *crashPtr = 9;
+	 }
+	 memIndex = (ptr - startPtr128) / 128;
       }
       if(bkt->size == 256)
       {
-         Data *crashPtr=NULLP;
-         if(((ptr - startPtr256) % 256) != 0)
-         {
-            *crashPtr = 9;
-         }
-         memIndex = (ptr - startPtr256) / 256;
+	 Data *crashPtr=NULLP;
+	 if(((ptr - startPtr256) % 256) != 0)
+	 {
+	    *crashPtr = 9;
+	 }
+	 memIndex = (ptr - startPtr256) / 256;
       }
       if(bkt->size == 512)
       {
-         Data *crashPtr=NULLP;
-         if(((ptr - startPtr512) % 512) != 0)
-         {
-            *crashPtr = 9;
-         }
+	 Data *crashPtr=NULLP;
+	 if(((ptr - startPtr512) % 512) != 0)
+	 {
+	    *crashPtr = 9;
+	 }
       }
       if(bkt->size == 768)
       {
-         Data *crashPtr=NULLP;
-         if(((ptr - startPtr768) % 768) != 0)
-         {
-            *crashPtr = 9;
-         }
+	 Data *crashPtr=NULLP;
+	 if(((ptr - startPtr768) % 768) != 0)
+	 {
+	    *crashPtr = 9;
+	 }
       }
       if(bkt->size == 1664)
       {
-         Data *crashPtr=NULLP;
-         if(((ptr - startPtr1664) % 1664) != 0)
-         {
-            *crashPtr = 9;
-         }
+	 Data *crashPtr=NULLP;
+	 if(((ptr - startPtr1664) % 1664) != 0)
+	 {
+	    *crashPtr = 9;
+	 }
       }
       if(bkt->size == 4800)
       {
-         Data *crashPtr=NULLP;
-         if(((ptr - startPtr4800) % 4800) != 0)
-         {
-            *crashPtr = 9;
-         }
+	 Data *crashPtr=NULLP;
+	 if(((ptr - startPtr4800) % 4800) != 0)
+	 {
+	    *crashPtr = 9;
+	 }
       }
       if(bkt->size == 9920)
       {
-         Data *crashPtr=NULLP;
-         if(((ptr - startPtr9920) % 9920) != 0)
-         {
-            *crashPtr = 9;
-         }
+	 Data *crashPtr=NULLP;
+	 if(((ptr - startPtr9920) % 9920) != 0)
+	 {
+	    *crashPtr = 9;
+	 }
       }
       if (*((U32 *)(ptr + 4)) != 0xDEADDEAD)
       {
-         *(U32 *)(ptr + 4) = 0xDEADDEAD;
+	 *(U32 *)(ptr + 4) = 0xDEADDEAD;
       }
       else
       {
-         Data *crashPtr=NULLP;
-         *crashPtr = 9;
+	 Data *crashPtr=NULLP;
+	 *crashPtr = 9;
       }
       if (*((U32 *)(ptr + 24)) != 0xDEADDEAD)
       {
-         *(U32 *)(ptr + 24) = 0xDEADDEAD;
+	 *(U32 *)(ptr + 24) = 0xDEADDEAD;
       }
       else
       {
-         Data *crashPtr=NULLP;
-         *crashPtr = 9;
+	 Data *crashPtr=NULLP;
+	 *crashPtr = 9;
       }
       if (*((U32 *)(ptr + 44)) != 0xDEADDEAD)
       {
-         *(U32 *)(ptr + 44) = 0xDEADDEAD;
+	 *(U32 *)(ptr + 44) = 0xDEADDEAD;
       }
       else
       {
-         Data *crashPtr=NULLP;
-         *crashPtr = 9;
+	 Data *crashPtr=NULLP;
+	 *crashPtr = 9;
       }
       if (*((U32 *)(ptr + 80)) != 0xDEADDEAD)
       {
-         *(U32 *)(ptr + 80) = 0xDEADDEAD;
+	 *(U32 *)(ptr + 80) = 0xDEADDEAD;
       }
       else
       {
-         Data *crashPtr=NULLP;
-         *crashPtr = 9;
-         /* Cause a crash to identify the caller */
+	 Data *crashPtr=NULLP;
+	 *crashPtr = 9;
+	 /* Cause a crash to identify the caller */
       }
       *(U32 *)(ptr + 124) = memFreeCount++;
       (*(U32 *)(ptr + 116)) = cmFreeCaller[MxGetCpuID()];
       if(bkt->size == 128)
       {
-         memIndex = (ptr - startPtr128) / 128;
-         cmMemInfo128[memIndex][1] = cmFreeCaller[MxGetCpuID()];
+	 memIndex = (ptr - startPtr128) / 128;
+	 cmMemInfo128[memIndex][1] = cmFreeCaller[MxGetCpuID()];
       }
       if(bkt->size == 256)
       {
-         memIndex = (ptr - startPtr256) / 256;
-         cmMemInfo256[memIndex][1] = cmFreeCaller[MxGetCpuID()];
+	 memIndex = (ptr - startPtr256) / 256;
+	 cmMemInfo256[memIndex][1] = cmFreeCaller[MxGetCpuID()];
       }
       cmFreeCaller[MxGetCpuID()] = NULLP;
 
       /* 
-      Reverted: Removed functionality to move freed buffer to end of free List in bucket.
-      This is impacting throughput.
-      */
+Reverted: Removed functionality to move freed buffer to end of free List in bucket.
+This is impacting throughput.
+       */
 #if 1
       *((CmMmEntry **)bkt->last) = ptr; 
       bkt->last = (CmMmEntry *)ptr;
@@ -2155,27 +2155,27 @@ Size    size;
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
 
-/* cache_coherency_changes */
+      /* cache_coherency_changes */
 #ifdef LOWERARM
       MxDMB();
 #endif
       /* 
-      * Decrement the statistics variable of number of memory block 
-      * allocated 
-      */
+       * Decrement the statistics variable of number of memory block 
+       * allocated 
+       */
       bkt->numAlloc--;
-/*  cm_mem_c_001.main_15 : Additions */
+      /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-        /* If If Tapa task (entId)is registerd for histogram then insert Memrory Freed
-         * information into the hash list */
-        if(hstReg)
-        {
-            if (cmHstGrmFreeInsert(&bkt->hstGrmHashListCp, bkt->size, line, fileName, entId) != ROK)
-            {
-                 sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
-					  SPrint(hstGrmBuf);
-            }
-         }/* End of if */
+      /* If If Tapa task (entId)is registerd for histogram then insert Memrory Freed
+       * information into the hash list */
+      if(hstReg)
+      {
+	 if (cmHstGrmFreeInsert(&bkt->hstGrmHashListCp, bkt->size, line, fileName, entId) != ROK)
+	 {
+	    sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
+	    SPrint(hstGrmBuf);
+	 }
+      }/* End of if */
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 #ifdef SS_MEM_LEAK_STS
@@ -2194,7 +2194,7 @@ Size    size;
    }
 
    /* The memory block was allocated from the heap pool */ 
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    RETVALUE(cmHeapFree (&(regCb->heapCb), ptr, size, line, fileName, entId, hstReg));
 #else
@@ -2202,7 +2202,7 @@ Size    size;
 #endif /* SS_HISTOGRAM_SUPPORT */
 #else /* use pure is on */
    TRC2(cmFree);
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+   /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    (Void)MxHeapFree(SsiHeap, ptr);
 #else
@@ -2251,134 +2251,134 @@ Size    size;
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+   PUBLIC S16  cmAllocNL
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     memType,
-U32     line,
-U8     *fileName,
-U8      entId,
-Bool    hstReg
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     memType,
+ U32     line,
+ U8     *fileName,
+ U8      entId,
+ Bool    hstReg
+ )
 #else
 PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr, memType, 
       line, fileName, entId, hstReg)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     memType;
-U32     line;
-U8     *fileName;
-U8      entId;
-Bool    hstReg;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     memType;
+   U32     line;
+   U8     *fileName;
+   U8      entId;
+   Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+   PUBLIC S16  cmAllocNL
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     line,
-U8     *fileName,
-U8      entId,
-Bool    hstReg
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     line,
+ U8     *fileName,
+ U8      entId,
+ Bool    hstReg
+ )
 #else
 PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr, line, 
       fileName, entId, hstReg)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     line;
-U8     *fileName;
-U8      entId;
-Bool    hstReg;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     line;
+   U8     *fileName;
+   U8      entId;
+   Bool    hstReg;
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
 
 #else
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+   PUBLIC S16  cmAllocNL
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     memType,
-U32     lineNo,
-U8     *funcName
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     memType,
+ U32     lineNo,
+ U8     *funcName
+ )
 #else
 PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr ,memType, lineNo, funcName)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     memType;
-U32     lineNo;
-U8     *funcName;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     memType;
+   U32     lineNo;
+   U8     *funcName;
 #endif
 #else /*SS_LIGHT_MEM_LEAK_STS */
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+   PUBLIC S16  cmAllocNL
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     memType
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     memType
+ )
 #else
 PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr, memType)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     memType;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     memType;
 #endif
 #else
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+   PUBLIC S16  cmAllocNL
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr,
-U32     memType
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr,
+ U32     memType
+ )
 #else
 PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr, memType)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
-U32     memType;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
+   U32     memType;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+   PUBLIC S16  cmAllocNL
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr 
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr 
+ )
 #else
 PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
 #endif
 #endif /* BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1 */
 #endif /* SSI_DEBUG_LEVEL1 */
@@ -2459,12 +2459,12 @@ Data  **ptr;
       /* display an error message here */
 #ifdef ALIGN_64BIT          
       sprintf(dbgPrntBuf, "\n Could not make an entry for size %u \
-            in hash table of region %d \n",
-            *size, regCb->region);
+	    in hash table of region %d \n",
+	    *size, regCb->region);
 #else                           
       sprintf(dbgPrntBuf, "\n Could not make an entry for size %lu \
-            in hash table of region %d \n",
-            *size, regCb->region);
+	    in hash table of region %d \n",
+	    *size, regCb->region);
 #endif                           
       SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
@@ -2483,8 +2483,8 @@ Data  **ptr;
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
-         /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+	 /* Some fatal error in the map table initialization. */
+	 RETVALUE(RFAILED);
       }
 #endif
 
@@ -2495,252 +2495,252 @@ Data  **ptr;
       /* While loop is introduced to use the "break statement inside */
       while (cnt < 1)
       {
-         /*
-          * Check if the size request is not greater than the size available
-          * in the bucket
-          */
-         if (*size > bkt->size)
-         {
-            /* Try to go to the next bucket if available */
-            if((idx < (CMM_MAX_MAP_ENT - 1)) &&
-                  (regCb->mapTbl[++idx].bktIdx != 0xFF))
-            {
-               bkt = &(regCb->bktTbl[regCb->mapTbl[idx].bktIdx]);
-            }
-            else
-            {
-               /* This is the last bucket, try to allocate from heap */
-               break;
-            }
-         }
+	 /*
+	  * Check if the size request is not greater than the size available
+	  * in the bucket
+	  */
+	 if (*size > bkt->size)
+	 {
+	    /* Try to go to the next bucket if available */
+	    if((idx < (CMM_MAX_MAP_ENT - 1)) &&
+		  (regCb->mapTbl[++idx].bktIdx != 0xFF))
+	    {
+	       bkt = &(regCb->bktTbl[regCb->mapTbl[idx].bktIdx]);
+	    }
+	    else
+	    {
+	       /* This is the last bucket, try to allocate from heap */
+	       break;
+	    }
+	 }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         regCb->mapTbl[idx].numReq++;
+	 regCb->mapTbl[idx].numReq++;
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
-         /* cm_mem_c_001.main_12 - addition for sanity check before allocation */
+	 /* cm_mem_c_001.main_12 - addition for sanity check before allocation */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
-         /* increment the allocation attempt counter at bucket level */
-         bkt->numAllocAttempts++;
+	 /* increment the allocation attempt counter at bucket level */
+	 bkt->numAllocAttempts++;
 
-         /* detect trampling if any and call sanity check. This is done for (bkt->nextBlk) as
-            the allocation is always from (bkt->nextBlk) */
-         if (bkt->nextBlk)
-         {
+	 /* detect trampling if any and call sanity check. This is done for (bkt->nextBlk) as
+	    the allocation is always from (bkt->nextBlk) */
+	 if (bkt->nextBlk)
+	 {
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-            if(cmMmRegIsBlkSane(bkt->nextBlk, bkt->size) != ROK)
+	    if(cmMmRegIsBlkSane(bkt->nextBlk, bkt->size) != ROK)
 #else
-            if (cmMmRegIsBlkSane(bkt->nextBlk) != ROK)
+	       if (cmMmRegIsBlkSane(bkt->nextBlk) != ROK)
 #endif
-            {
-               /* detected a trampled memory block in this bucket */
+	       {
+		  /* detected a trampled memory block in this bucket */
 #ifdef DEBUGP
-               /* display an error message here */
-               /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+		  /* display an error message here */
+		  /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-               sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, \
-                     size %u bytes \n",
-                     (void *)bkt->nextBlk, regCb->mapTbl[idx].bktIdx, *size);
+		  sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, \
+			size %u bytes \n",
+			(void *)bkt->nextBlk, regCb->mapTbl[idx].bktIdx, *size);
 #else                                    
-               sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, \
-                     size %lu bytes \n",
-                     (void *)bkt->nextBlk, regCb->mapTbl[idx].bktIdx, *size);
+		  sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, \
+			size %lu bytes \n",
+			(void *)bkt->nextBlk, regCb->mapTbl[idx].bktIdx, *size);
 #endif                                    
-               SDisplay(0, dbgPrntBuf);
+		  SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
-               abort();
+		  abort();
 
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-               if (cmMmBktSanityChk(bkt) == RTRAMPLINGNOK)
-               {
-                  /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
-                  RETVALUE(RTRAMPLINGNOK);
-               }
-               else
-               {
-                  /* return RFAILED */
-                  RETVALUE(RFAILED);
-               }
+		  if (cmMmBktSanityChk(bkt) == RTRAMPLINGNOK)
+		  {
+		     /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
+		     RETVALUE(RTRAMPLINGNOK);
+		  }
+		  else
+		  {
+		     /* return RFAILED */
+		     RETVALUE(RFAILED);
+		  }
 #endif
-            }
-         }
-         *ptr = (Data *)(bkt->nextBlk) + (sizeof(CmMmBlkHdr)); 
+	       }
+	 }
+	 *ptr = (Data *)(bkt->nextBlk) + (sizeof(CmMmBlkHdr)); 
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
-         ptrHdr = (CmMmBlkHdr *)bkt->nextBlk;
+	 ptrHdr = (CmMmBlkHdr *)bkt->nextBlk;
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         /* Initialize the elements with 0xAB */
-         cmMemset((U8 *)*ptr, 0xAB, *size);
+	 /* Initialize the elements with 0xAB */
+	 cmMemset((U8 *)*ptr, 0xAB, *size);
 #endif
-         if ((bkt->nextBlk) && *ptr)
+	 if ((bkt->nextBlk) && *ptr)
 #elif SS_LIGHT_MEM_LEAK_STS
-      *ptr = (Data *)(bkt->nextBlk) + (sizeof(CmMmBlkHdr)); /* ccpu00125353: warning fix */
-      if ((bkt->nextBlk) && *ptr)
+	    *ptr = (Data *)(bkt->nextBlk) + (sizeof(CmMmBlkHdr)); /* ccpu00125353: warning fix */
+	 if ((bkt->nextBlk) && *ptr)
 #else
-            *ptr = bkt->next;/* ccpu00125353: warning fix */
-         if (*ptr != NULLP)
+	    *ptr = bkt->next;/* ccpu00125353: warning fix */
+	 if (*ptr != NULLP)
 #endif /* SSI_DEBUG_LEVEL1 */
-         {
-            /* cm_mem_c_001.main_12 - addition for header */
+	 {
+	    /* cm_mem_c_001.main_12 - addition for header */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1) || defined (SS_LIGHT_MEM_LEAK_STS))
-            /* point to next block header */
-            alocBlk = bkt->nextBlk;
-            bkt->nextBlk = (CmMmBlkHdr *)(bkt->nextBlk->nextBlk);
+	    /* point to next block header */
+	    alocBlk = bkt->nextBlk;
+	    bkt->nextBlk = (CmMmBlkHdr *)(bkt->nextBlk->nextBlk);
 #else
 #ifdef SSI_MEM_CORR_PREVENTION
-            *(((U32 *)(*ptr)) + 2) = 0;
+	    *(((U32 *)(*ptr)) + 2) = 0;
 #endif
-            bkt->next = *((CmMmEntry **)(bkt->next));
+	    bkt->next = *((CmMmEntry **)(bkt->next));
 #endif /* SSI_DEBUG_LEVEL1 */
 
-            /* cache_coherency_changes */
+	    /* cache_coherency_changes */
 #ifdef LOWERARM
-            MxDMB();
+	    MxDMB();
 #endif
-            /* 
-             * Increment the statistics variable of number of memory block 
-             * allocated 
-             */
-            bkt->numAlloc++;
-            if (bkt->numAlloc > bkt->maxAlloc)
-            {
-               bkt->maxAlloc = bkt->numAlloc;
-            }
+	    /* 
+	     * Increment the statistics variable of number of memory block 
+	     * allocated 
+	     */
+	    bkt->numAlloc++;
+	    if (bkt->numAlloc > bkt->maxAlloc)
+	    {
+	       bkt->maxAlloc = bkt->numAlloc;
+	    }
 #ifdef CM_MEM_OVERUSED
-            {
-               if (g_overused[bktIdx] == 0 && OVERUSED(bkt))
-               {
-                  g_overused[bktIdx] = 1;
-               }
-            }
+	    {
+	       if (g_overused[bktIdx] == 0 && OVERUSED(bkt))
+	       {
+		  g_overused[bktIdx] = 1;
+	       }
+	    }
 #endif
-            /* cm_mem_c_001.main_12 - addition for header manipulation */
+	    /* cm_mem_c_001.main_12 - addition for header manipulation */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
-            /* update the size for which this memory block has been allocated */
-            alocBlk->requestedSize = *size;
-            /* update the memory block header */
-            CMM_RESET_FREE_FLAG(alocBlk->memFlags);
-            if (memType == CMM_STATIC_MEM_FLAG)
-            {
-               CMM_SET_STATIC_FLAG(alocBlk->memFlags);
-               /* add it to the static memory allocated */
-               bkt->staticMemUsed += bkt->size;
-            }
-            else
-            {
-               CMM_SET_DYNAMIC_FLAG(alocBlk->memFlags);
-               /* add it to the dynamic memory allocated */
-               bkt->dynamicMemUsed += bkt->size;
-            }
+	    /* update the size for which this memory block has been allocated */
+	    alocBlk->requestedSize = *size;
+	    /* update the memory block header */
+	    CMM_RESET_FREE_FLAG(alocBlk->memFlags);
+	    if (memType == CMM_STATIC_MEM_FLAG)
+	    {
+	       CMM_SET_STATIC_FLAG(alocBlk->memFlags);
+	       /* add it to the static memory allocated */
+	       bkt->staticMemUsed += bkt->size;
+	    }
+	    else
+	    {
+	       CMM_SET_DYNAMIC_FLAG(alocBlk->memFlags);
+	       /* add it to the dynamic memory allocated */
+	       bkt->dynamicMemUsed += bkt->size;
+	    }
 #elif SS_LIGHT_MEM_LEAK_STS 
-            alocBlk->requestedSize = *size;
-            alocBlk->lineNo        = lineNo;
-            alocBlk->currFuncName  = funcName;
-            if(gmemLkCb.isStarted == TRUE)
-            {
-               alocBlk->allocQueueIndx = cmStorAllocBlk(alocBlk);
-            }
+	    alocBlk->requestedSize = *size;
+	    alocBlk->lineNo        = lineNo;
+	    alocBlk->currFuncName  = funcName;
+	    if(gmemLkCb.isStarted == TRUE)
+	    {
+	       alocBlk->allocQueueIndx = cmStorAllocBlk(alocBlk);
+	    }
 #endif /* SSI_DEBUG_LEVEL1 */
 
-            if (((bkt->size - (*size)) >> regCb->bktQnPwr) && flags)
-            {
-               bkt->bktNoFitCnt++;
+	    if (((bkt->size - (*size)) >> regCb->bktQnPwr) && flags)
+	    {
+	       bkt->bktNoFitCnt++;
 #ifdef MEMCAL_DEBUG
 #ifdef ALIGN_64BIT          
-               sprintf(prntBuf,
-                     "[MEM_CAL_CNTA] %u bytes request not fitted in bkt %d \
-                     [size %u bytes] %u times\n", 
-                     *size, regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktNoFitCnt++);
+	       sprintf(prntBuf,
+		     "[MEM_CAL_CNTA] %u bytes request not fitted in bkt %d \
+		     [size %u bytes] %u times\n", 
+		     *size, regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktNoFitCnt++);
 #else   
-               sprintf(prntBuf,
-                     "[MEM_CAL_CNTA] %lu bytes request not fitted in bkt %d \
-                     [size %lu bytes] %lu times\n", 
-                     *size, regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktNoFitCnt++);
+	       sprintf(prntBuf,
+		     "[MEM_CAL_CNTA] %lu bytes request not fitted in bkt %d \
+		     [size %lu bytes] %lu times\n", 
+		     *size, regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktNoFitCnt++);
 #endif   
-               SDisplay(0, prntBuf);
+	       SDisplay(0, prntBuf);
 #endif
-            }
+	    }
 
 #ifdef MEMCAL_DEBUG
-            if (flags)
-            {
-               sprintf(prntBuf,
-                     "SGetSBuf:%08lu:Size Bucket Id:%03d Times:%05lu  Pointer: %8p\n",
-                     *size, regCb->mapTbl[idx].bktIdx, num_times, *ptr);
-               SDisplay(0, prntBuf);
-            }
+	    if (flags)
+	    {
+	       sprintf(prntBuf,
+		     "SGetSBuf:%08lu:Size Bucket Id:%03d Times:%05lu  Pointer: %8p\n",
+		     *size, regCb->mapTbl[idx].bktIdx, num_times, *ptr);
+	       SDisplay(0, prntBuf);
+	    }
 #endif /* MEMCAL_DEBUG */
-            /*  cm_mem_c_001.main_15 : Additions */
+	    /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-            if(hstReg)
-            {
-               if (cmHstGrmAllocInsert(&(bkt->hstGrmHashListCp), 
-                        bkt->size, size, line, fileName, entId) != ROK)
-               {
-                  sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
-                  SPrint(hstGrmBuf);
-               }
-            }/* End of if */
+	    if(hstReg)
+	    {
+	       if (cmHstGrmAllocInsert(&(bkt->hstGrmHashListCp), 
+			bkt->size, size, line, fileName, entId) != ROK)
+	       {
+		  sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
+		  SPrint(hstGrmBuf);
+	       }
+	    }/* End of if */
 
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-            /* Update the size parameter */
-            *size = bkt->size;
+	    /* Update the size parameter */
+	    *size = bkt->size;
 #ifdef SS_MEM_LEAK_STS
-            /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
-            cmStorAllocBlk((PTR)*ptr, (Size) reqSz, (Size) *size,
-                  regCb->mapTbl[idx].bktIdx);
+	    /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
+	    cmStorAllocBlk((PTR)*ptr, (Size) reqSz, (Size) *size,
+		  regCb->mapTbl[idx].bktIdx);
 #elif BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
-            cmStorAllocBlk(ptrHdr, (Size) reqSz, (Size) *size,
-                        regCb->mapTbl[idx].bktIdx, regCb);
+	    cmStorAllocBlk(ptrHdr, (Size) reqSz, (Size) *size,
+		  regCb->mapTbl[idx].bktIdx, regCb);
 #endif /* SS_MEM_LEAK_STS */
 
-            /* cm_mem_c_008.104 - Addition for memory calculator tool */
+	    /* cm_mem_c_008.104 - Addition for memory calculator tool */
 
-            RETVALUE(ROK);
-         }
-         else if (flags)
-         {
-            bkt->bktFailCnt++;
+	    RETVALUE(ROK);
+	 }
+	 else if (flags)
+	 {
+	    bkt->bktFailCnt++;
 #ifdef MEMCAL_DEBUG
 #ifdef ALIGN_64BIT          
-            sprintf(prntBuf,
-                  "[MEM_CAL_CNTB] Allocation failed in bucket %d [ size %u bytes], \
-                  %u times\n", regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktFailCnt);
+	    sprintf(prntBuf,
+		  "[MEM_CAL_CNTB] Allocation failed in bucket %d [ size %u bytes], \
+		  %u times\n", regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktFailCnt);
 #else            
-            sprintf(prntBuf,
-                  "[MEM_CAL_CNTB] Allocation failed in bucket %d [ size %lu bytes], \
-                  %lu times\n", regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktFailCnt);
+	    sprintf(prntBuf,
+		  "[MEM_CAL_CNTB] Allocation failed in bucket %d [ size %lu bytes], \
+		  %lu times\n", regCb->mapTbl[idx].bktIdx, bkt->size, bkt->bktFailCnt);
 #endif            
-            SDisplay(0, prntBuf);
+	    SDisplay(0, prntBuf);
 #endif
-         }
+	 }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         regCb->mapTbl[idx].numFailure++;
+	 regCb->mapTbl[idx].numFailure++;
 #endif /* (ERRCLASS & ERRCLS_DEBUG) */
 
-         cnt = cnt + 1;
+	 cnt = cnt + 1;
       }
    }
    else
    {
       if (flags)
       {
-         regCb->heapCb.heapAllocCnt++;
+	 regCb->heapCb.heapAllocCnt++;
 #ifdef MEMCAL_DEBUG
 #ifdef ALIGN_64BIT          
-         sprintf(prntBuf,
-               "[MEM_CAL_CNTC]  No bucket block configured for %u bytes \n \
-               Number of blocks allocated from heap = %u\n",*size,
-               regCb->heapCb.heapAllocCnt);
+	 sprintf(prntBuf,
+	       "[MEM_CAL_CNTC]  No bucket block configured for %u bytes \n \
+	       Number of blocks allocated from heap = %u\n",*size,
+	       regCb->heapCb.heapAllocCnt);
 #else                 
-         sprintf(prntBuf,
-               "[MEM_CAL_CNTC]  No bucket block configured for %lu bytes \n \
-               Number of blocks allocated from heap = %lu\n",*size,
-               regCb->heapCb.heapAllocCnt);
+	 sprintf(prntBuf,
+	       "[MEM_CAL_CNTC]  No bucket block configured for %lu bytes \n \
+	       Number of blocks allocated from heap = %lu\n",*size,
+	       regCb->heapCb.heapAllocCnt);
 #endif                 
-         SDisplay(0, prntBuf);
+	 SDisplay(0, prntBuf);
 #endif
       }
    }
@@ -2760,10 +2760,10 @@ Data  **ptr;
       /* cm_mem_c_001.main_12 - addition for passing an extra parameter */
 #ifdef SSI_DEBUG_LEVEL1
       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, 
-               memType, line, fileName, entId, hstReg));
+	       memType, line, fileName, entId, hstReg));
 #else
       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, 
-               line, fileName, entId, hstReg));
+	       line, fileName, entId, hstReg));
 #endif /* SSI_DEBUG_LEVEL1 */
 #else
       /* cm_mem_c_001.main_12 - addition for passing an extra parameter */
@@ -2795,85 +2795,85 @@ Data  **ptr;
 
 
 /*
-*
-*       Fun:   cmFreeNL
-*
-*       Desc:  Return the memory block for the memory region(No Lock).
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*       Notes: The user calls this function to return the previously allocated 
-*              memory block to the memory region. The memory manager does not 
-*              check the validity of the state of the memory block(like whether 
-*              it was allocated earlier). The caller must be sure that, the 
-*              address specified in the parameter 'ptr' is valid and was 
-*              allocated previously from same region.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmFreeNL
+ *
+ *       Desc:  Return the memory block for the memory region(No Lock).
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: The user calls this function to return the previously allocated 
+ *              memory block to the memory region. The memory manager does not 
+ *              check the validity of the state of the memory block(like whether 
+ *              it was allocated earlier). The caller must be sure that, the 
+ *              address specified in the parameter 'ptr' is valid and was 
+ *              allocated previously from same region.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PUBLIC S16  cmFreeNL
+   PUBLIC S16  cmFreeNL
 (
-Void   *regionCb,
-Data   *ptr, 
-Size    size,
-U32     lineNo,
-U8      *funcName
-)
+ Void   *regionCb,
+ Data   *ptr, 
+ Size    size,
+ U32     lineNo,
+ U8      *funcName
+ )
 #else
 PUBLIC S16  cmFreeNL(regionCb, ptr, size, lineNo, funcName)
-Void   *regionCb;
-Data   *ptr;
-Size    size;
-U32     lineNo;
-U8      *funcName;
+   Void   *regionCb;
+   Data   *ptr;
+   Size    size;
+   U32     lineNo;
+   U8      *funcName;
 #endif
 #else /*SS_LIGHT_MEM_LEAK_STS */
 
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef ANSI
-PUBLIC S16  cmFreeNL
+   PUBLIC S16  cmFreeNL
 (
-Void   *regionCb,
-Data   *ptr,
-Size    size,
-U32     line,
-U8     *fileName,
-U8      entId,
-Bool    hstReg
-)
+ Void   *regionCb,
+ Data   *ptr,
+ Size    size,
+ U32     line,
+ U8     *fileName,
+ U8      entId,
+ Bool    hstReg
+ )
 #else
 PUBLIC S16  cmFreeNL(regionCb, ptr, size, line, fileName, entId, hstReg)
-Void   *regionCb;
-Data   *ptr;
-Size    size;
-U32     line;
-U8     *fileName;
-U8      entId;
-Bool    hstReg;
+   Void   *regionCb;
+   Data   *ptr;
+   Size    size;
+   U32     line;
+   U8     *fileName;
+   U8      entId;
+   Bool    hstReg;
 #endif
 
 #else
 
 #ifdef ANSI
-PUBLIC S16  cmFreeNL
+   PUBLIC S16  cmFreeNL
 (
-Void   *regionCb,
-Data   *ptr, 
-Size    size
-)
+ Void   *regionCb,
+ Data   *ptr, 
+ Size    size
+ )
 #else
 PUBLIC S16  cmFreeNL(regionCb, ptr, size)
-Void   *regionCb;
-Data   *ptr;
-Size    size;
+   Void   *regionCb;
+   Data   *ptr;
+   Size    size;
 #endif
    /*  cm_mem_c_001.main_15 : Additions */
 #endif /* SS_HISTOGRAM_SUPPORT */ 
@@ -2905,7 +2905,7 @@ Size    size;
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
    /* Check if the memory block is from the memory region */
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
-         ((CmMmRegCb *)regCb)->regInfo.size) 
+	 ((CmMmRegCb *)regCb)->regInfo.size) 
    {
       RETVALUE(RFAILED);
    }
@@ -2920,7 +2920,7 @@ Size    size;
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
    /* Check if the memory block is from the memory region */
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
-         ((CmMmRegCb *)regCb)->regInfo.size) 
+	 ((CmMmRegCb *)regCb)->regInfo.size) 
    {
       RETVALUE(RFAILED);
    }
@@ -2947,8 +2947,8 @@ Size    size;
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
-         /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+	 /* Some fatal error in the map table initialization. */
+	 RETVALUE(RFAILED);
       }
 #endif
 
@@ -2964,7 +2964,7 @@ Size    size;
        */
       if (size > bkt->size)
       {
-         bkt = &(regCb->bktTbl[regCb->mapTbl[++idx].bktIdx]);
+	 bkt = &(regCb->bktTbl[regCb->mapTbl[++idx].bktIdx]);
       }
 
       /* cache_coherency_changes */
@@ -2987,12 +2987,12 @@ Size    size;
       if(((ptrHdr->requestedSize - size) % size) != 0)
       {
 #ifdef DEBUGP
-         sprintf(dbgPrntBuf, "Passed size (%d) does not match with allocated size(%d):%8p, Bucket Id:%03d\n",
-                 size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
+	 sprintf(dbgPrntBuf, "Passed size (%d) does not match with allocated size(%d):%8p, Bucket Id:%03d\n",
+	       size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
 #endif
-         printf("Passed size (%d) does not match with allocated size(%d):%8p, Bucket Id:%03d\n",
-                 size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
-         abort();
+	 printf("Passed size (%d) does not match with allocated size(%d):%8p, Bucket Id:%03d\n",
+	       size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
+	 abort();
       }
 #endif
 
@@ -3000,44 +3000,44 @@ Size    size;
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
       if(cmMmRegIsBlkSane(ptrHdr, bkt->size) != ROK)
 #else
-      if (cmMmRegIsBlkSane(ptrHdr) != ROK)
+	 if (cmMmRegIsBlkSane(ptrHdr) != ROK)
 #endif
-      {
-         /* Handle error case of Memory trampling */
+	 {
+	    /* Handle error case of Memory trampling */
 #ifdef  DEBUGP
-         /* display an error message here */
+	    /* display an error message here */
 #ifdef ALIGN_64BIT          
-         sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %u bytes \n",
-               ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	    sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %u bytes \n",
+		  ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
 #else                               
-         sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %lu bytes \n",
-               ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	    sprintf(dbgPrntBuf, "Memory Trampling at: %8p, Bucket Id:%03d, size %lu bytes \n",
+		  ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
 #endif                               
-         SDisplay(0, dbgPrntBuf);
+	    SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
-         abort();
-         /* 
-          * if sanity check returns RTRAMPLINGOK then there is nothing to do
-          * as the memory blk is already invalidated in cmMmBktSanityChk
-          */
+	    abort();
+	    /* 
+	     * if sanity check returns RTRAMPLINGOK then there is nothing to do
+	     * as the memory blk is already invalidated in cmMmBktSanityChk
+	     */
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         if (cmMmBktSanityChk(bkt) == RTRAMPLINGOK)
-         {
-            bkt->numAlloc--;
+	    if (cmMmBktSanityChk(bkt) == RTRAMPLINGOK)
+	    {
+	       bkt->numAlloc--;
 
-            RETVALUE(ROK);
-         }
-         else
-         {
-            /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-            RETVALUE(RTRAMPLINGNOK);
-         }
+	       RETVALUE(ROK);
+	    }
+	    else
+	    {
+	       /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
+	       RETVALUE(RTRAMPLINGNOK);
+	    }
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         printf("Memory signature is invalid\n");
-         abort();
+	    printf("Memory signature is invalid\n");
+	    abort();
 #endif
-      }
+	 }
       /* reset the size */
       ptrHdr->requestedSize = 0;
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
@@ -3047,70 +3047,70 @@ Size    size;
       /* check if the block to be freed is already having the state as FREE */
       if (CMM_IS_FREE(ptrHdr->memFlags))
       {
-         /* Handle double deallocation error case */
+	 /* Handle double deallocation error case */
 #ifdef DEBUGP
-         /* display an error message here */
-         /*cm_mem_c_001.main_23 Fix for specifier mismatch 
-          * warnings in 64BIT compilation*/          
+	 /* display an error message here */
+	 /*cm_mem_c_001.main_23 Fix for specifier mismatch 
+	  * warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-         sprintf(dbgPrntBuf, "Attempt to double deallocate memory at: %8p,"
-               "Bucket Id:%03d, size %u bytes \n",
-               ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	 sprintf(dbgPrntBuf, "Attempt to double deallocate memory at: %8p,"
+	       "Bucket Id:%03d, size %u bytes \n",
+	       ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
 #else                              
-         sprintf(dbgPrntBuf, "Attempt to double deallocate memory at: %8p,"
-               "Bucket Id:%03d, size %lu bytes \n",
-               ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	 sprintf(dbgPrntBuf, "Attempt to double deallocate memory at: %8p,"
+	       "Bucket Id:%03d, size %lu bytes \n",
+	       ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
 #endif                              
-         SDisplay(0, dbgPrntBuf);
+	 SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         printf("Attempt to double deallocate memory at: %8p, Bucket Id:%03d,\
-                 size %u bytes \n", ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
-          abort();
+	 printf("Attempt to double deallocate memory at: %8p, Bucket Id:%03d,\
+	       size %u bytes \n", ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
+	 abort();
 #endif
 
-         /* handle RDBLFREE in SFree/SPutSBuf */
-         RETVALUE(RDBLFREE);
+	 /* handle RDBLFREE in SFree/SPutSBuf */
+	 RETVALUE(RDBLFREE);
       }
       if (CMM_IS_STATIC(ptrHdr->memFlags))
       {
-         CMM_SET_FREE_FLAG(ptrHdr->memFlags);
-         CMM_RESET_STATIC_FLAG(ptrHdr->memFlags);
-         /* deduct it from the static memory count */
-         bkt->staticMemUsed -= bkt->size;
+	 CMM_SET_FREE_FLAG(ptrHdr->memFlags);
+	 CMM_RESET_STATIC_FLAG(ptrHdr->memFlags);
+	 /* deduct it from the static memory count */
+	 bkt->staticMemUsed -= bkt->size;
       }
       else if (CMM_IS_DYNAMIC(ptrHdr->memFlags))
       {
-         CMM_SET_FREE_FLAG(ptrHdr->memFlags);
-         CMM_RESET_DYNAMIC_FLAG(ptrHdr->memFlags);
-         /* deduct it from the dynamic memory count */
-         bkt->dynamicMemUsed -= bkt->size;
+	 CMM_SET_FREE_FLAG(ptrHdr->memFlags);
+	 CMM_RESET_DYNAMIC_FLAG(ptrHdr->memFlags);
+	 /* deduct it from the dynamic memory count */
+	 bkt->dynamicMemUsed -= bkt->size;
       }
       else
       {
-         /* This is a case similar to trampled memory */
+	 /* This is a case similar to trampled memory */
 #ifdef  DEBUGP
-         /*cm_mem_c_001.main_23 Fix for specifier 
-          * mismatch warnings in 64BIT compilation*/          
+	 /*cm_mem_c_001.main_23 Fix for specifier 
+	  * mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-         sprintf(dbgPrntBuf, "Invalid memory flag: %u !!!\n", ptrHdr->memFlags);
+	 sprintf(dbgPrntBuf, "Invalid memory flag: %u !!!\n", ptrHdr->memFlags);
 #else         
-         sprintf(dbgPrntBuf, "Invalid memory flag: %lu !!!\n", ptrHdr->memFlags);
+	 sprintf(dbgPrntBuf, "Invalid memory flag: %lu !!!\n", ptrHdr->memFlags);
 #endif         
-         SDisplay(0, dbgPrntBuf);
+	 SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         if (cmMmBktSanityChk(bkt) == RTRAMPLINGOK)
-         {
-            /* do not add to the free list */
-            bkt->numAlloc--;
-            RETVALUE(ROK);
-         }
-         else
-         {
-            /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-            RETVALUE(RTRAMPLINGNOK);
-         }
+	 if (cmMmBktSanityChk(bkt) == RTRAMPLINGOK)
+	 {
+	    /* do not add to the free list */
+	    bkt->numAlloc--;
+	    RETVALUE(ROK);
+	 }
+	 else
+	 {
+	    /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
+	    RETVALUE(RTRAMPLINGNOK);
+	 }
 #endif
       }
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
@@ -3131,7 +3131,7 @@ Size    size;
       ptrHdr->currFuncName  =  funcName;
       if(gmemLkCb.isStarted == TRUE)
       {
-         cmRlsAllocBlk(ptrHdr->allocQueueIndx);
+	 cmRlsAllocBlk(ptrHdr->allocQueueIndx);
       }
       ptrHdr->nextBlk = bkt->nextBlk;
       bkt->nextBlk = ptrHdr;
@@ -3140,16 +3140,16 @@ Size    size;
 #ifdef SSI_MEM_CORR_PREVENTION
       if (*(((U32 *)(ptr)) + 2) == 0xdeaddead)
       {
-         /* Do not free an already freed block to avoid corruption */
-         cmDblFreeAttempts++;
-         bkt->numAlloc++;
+	 /* Do not free an already freed block to avoid corruption */
+	 cmDblFreeAttempts++;
+	 bkt->numAlloc++;
       }
       else
       {
-         *((CmMmEntry **)bkt->last) = ptr;
-         bkt->last = (CmMmEntry *)ptr;
-         *((CmMmEntry **)ptr) = NULLP;
-         *(((U32 *)(ptr)) + 2) = 0xdeaddead;
+	 *((CmMmEntry **)bkt->last) = ptr;
+	 bkt->last = (CmMmEntry *)ptr;
+	 *((CmMmEntry **)ptr) = NULLP;
+	 *(((U32 *)(ptr)) + 2) = 0xdeaddead;
       }
 #else
       *((CmMmEntry **)ptr) =  bkt->next; 
@@ -3172,12 +3172,12 @@ Size    size;
        * information into the hash list */
       if(hstReg)
       {
-         if (cmHstGrmFreeInsert(&bkt->hstGrmHashListCp, bkt->size, 
-                  line, fileName, entId) != ROK)
-         {
-            sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
-            SPrint(hstGrmBuf);
-         }
+	 if (cmHstGrmFreeInsert(&bkt->hstGrmHashListCp, bkt->size, 
+		  line, fileName, entId) != ROK)
+	 {
+	    sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
+	    SPrint(hstGrmBuf);
+	 }
       }/* End of if */
 #endif /* SS_HISTOGRAM_SUPPORT */
 
@@ -3211,36 +3211,36 @@ Size    size;
 
 
 /*
-*
-*       Fun:   cmAllocWL
-*
-*       Desc: alloc without lock 
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmAllocWL
+ *
+ *       Desc: alloc without lock 
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 /*cm_mem_c_001.main_21-added new function*/
 /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
 #ifdef SS_FAP
 #ifdef ANSI
-PRIVATE S16  cmAllocWL
+   PRIVATE S16  cmAllocWL
 (
-Void   *regionCb,
-Size   *size,
-U32     flags,
-Data  **ptr 
-)
+ Void   *regionCb,
+ Size   *size,
+ U32     flags,
+ Data  **ptr 
+ )
 #else
 PRIVATE S16  cmAllocWL(regionCb, size, flags, ptr)
-Void   *regionCb;
-Size   *size;
-U32     flags;
-Data  **ptr;
+   Void   *regionCb;
+   Size   *size;
+   U32     flags;
+   Data  **ptr;
 #endif
 {
    U16        idx;
@@ -3262,7 +3262,7 @@ Data  **ptr;
       RETVALUE(RFAILED);
    }
 #endif
-  
+
    /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
 
 #ifndef USE_PURE
@@ -3281,27 +3281,27 @@ Data  **ptr;
       bkt = &(regCb->bktTbl[regCb->mapTbl[idx].bktIdx]); 
 
       {
-         /*
-          * Check if the size request is not greater than the size available
-          * in the bucket
-          */
-         /* cm_mem_c_001.main_23 combined If(*size <= bkt->size) and if(*ptr = bkt->next)*/
-         if ((*size <= bkt->size)&&(*ptr = bkt->next))
-         {
-            /* Try to go to the next bucket if available */
-            bkt->next = *((CmMmEntry **)(bkt->next));
+	 /*
+	  * Check if the size request is not greater than the size available
+	  * in the bucket
+	  */
+	 /* cm_mem_c_001.main_23 combined If(*size <= bkt->size) and if(*ptr = bkt->next)*/
+	 if ((*size <= bkt->size)&&(*ptr = bkt->next))
+	 {
+	    /* Try to go to the next bucket if available */
+	    bkt->next = *((CmMmEntry **)(bkt->next));
 
-            /* 
-             * Increment the statistics variable of number of memory block 
-             * allocated 
-             */
-            bkt->numAlloc++;
+	    /* 
+	     * Increment the statistics variable of number of memory block 
+	     * allocated 
+	     */
+	    bkt->numAlloc++;
 
-            /* Update the size parameter */
-            *size = bkt->size;
+	    /* Update the size parameter */
+	    *size = bkt->size;
 
-            RETVALUE(ROK);
-         }
+	    RETVALUE(ROK);
+	 }
       }
    }
 
@@ -3313,14 +3313,14 @@ Data  **ptr;
        * The heap memory block is available. Allocate the memory block from
        * heap pool.
        */ 
-       /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size));
+      /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
+      RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size));
    }
 
    /* No memory available */
    RETVALUE(RFAILED);
 #else /* use pure is on */
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+   /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    *ptr = (Data*) MxHeapAlloc(SsiHeap, *size);
    cmMemset((U8*)ptr, 0, *size);
@@ -3328,7 +3328,7 @@ Data  **ptr;
    *ptr = (Data*) malloc(*size);
 #endif
    if ( (*ptr) == NULLP)
-       RETVALUE(RFAILED);
+      RETVALUE(RFAILED);
    avail_size -= *size;
    RETVALUE(ROK);
 #endif /* USE_PURE */
@@ -3337,32 +3337,32 @@ Data  **ptr;
 
 
 /*
-*
-*       Fun:   cmfree
-*
-*       Desc: free without lock 
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmfree
+ *
+ *       Desc: free without lock 
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 
 #ifdef ANSI
-PRIVATE S16  cmFreeWL
+   PRIVATE S16  cmFreeWL
 (
-Void   *regionCb,
-Data   *ptr, 
-Size    size
-)
+ Void   *regionCb,
+ Data   *ptr, 
+ Size    size
+ )
 #else
 PRIVATE S16  cmFreeWL(regionCb, ptr, size)
-Void   *regionCb;
-Data   *ptr;
-Size    size;
+   Void   *regionCb;
+   Data   *ptr;
+   Size    size;
 #endif
 {
    U16        idx;
@@ -3385,7 +3385,7 @@ Size    size;
 
    /* Check if the memory block is from the memory region */
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
-               ((CmMmRegCb *)regCb)->regInfo.size) 
+	 ((CmMmRegCb *)regCb)->regInfo.size) 
    {
       RETVALUE(RFAILED);
    }
@@ -3406,8 +3406,8 @@ Size    size;
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
-         /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+	 /* Some fatal error in the map table initialization. */
+	 RETVALUE(RFAILED);
       }
 #endif
 
@@ -3421,19 +3421,19 @@ Size    size;
        * next bucket, otherwise buffer must have been allocated from heap
        * pool.
        */
-       if (size > bkt->size)
-       {
-          bkt = &(regCb->bktTbl[regCb->mapTbl[++idx].bktIdx]);
-       }
+      if (size > bkt->size)
+      {
+	 bkt = &(regCb->bktTbl[regCb->mapTbl[++idx].bktIdx]);
+      }
 
       /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
       *((CmMmEntry **)ptr) =  bkt->next; 
       bkt->next = (CmMmEntry *)ptr;
 
       /* 
-      * Decrement the statistics variable of number of memory block 
-      * allocated 
-      */
+       * Decrement the statistics variable of number of memory block 
+       * allocated 
+       */
       bkt->numAlloc--;
 
       RETVALUE(ROK);
@@ -3443,7 +3443,7 @@ Size    size;
    RETVALUE(cmHeapFree (&(regCb->heapCb), ptr, size));
 #else /* use pure is on */
    TRC2(cmFree);
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+   /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    (Void)MxHeapFree(SsiHeap, ptr);
 #else
@@ -3459,40 +3459,40 @@ Size    size;
 
 
 /*
-*
-*       Fun:   cmCtl
-*
-*       Desc:  Control request function. 
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*       Notes: The current semantics of the control function is defined for two 
-*              types of events: virtual address to physical address translation 
-*              and memory resource check. 
-*
-*              The physical address translation is valid only for the memory 
-*              region physically contiguous and non pagable.
-*
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmCtl
+ *
+ *       Desc:  Control request function. 
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: The current semantics of the control function is defined for two 
+ *              types of events: virtual address to physical address translation 
+ *              and memory resource check. 
+ *
+ *              The physical address translation is valid only for the memory 
+ *              region physically contiguous and non pagable.
+ *
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 
 #ifdef ANSI
-PRIVATE S16  cmCtl
+   PRIVATE S16  cmCtl
 (
-Void    *regionCb,
-Event    event, 
-SMemCtl *memCtl
-)
+ Void    *regionCb,
+ Event    event, 
+ SMemCtl *memCtl
+ )
 #else
 PRIVATE S16  cmCtl(regionCb, event, memCtl)
-Void    *regionCb;
-Event    event;
-SMemCtl *memCtl;
+   Void    *regionCb;
+   Event    event;
+   SMemCtl *memCtl;
 #endif
 {
    CmMmRegCb *regCb;
@@ -3514,84 +3514,84 @@ SMemCtl *memCtl;
    switch (event)
    {
       case SS_MEM_V_TO_P:
-      {
-         Size       offset;
-  
+	 {
+	    Size       offset;
+
 #if (ERRCLASS & ERRCLS_INT_PAR)
-         if ((memCtl->u.vtop.vaddr == NULLP) || 
-             (memCtl->u.vtop.paddr == NULLP))
-         {
-            RETVALUE(RFAILED);
-         }
+	    if ((memCtl->u.vtop.vaddr == NULLP) || 
+		  (memCtl->u.vtop.paddr == NULLP))
+	    {
+	       RETVALUE(RFAILED);
+	    }
 #endif
-   
-         /* Check if the virtual to physical address translation is valid */
-         if (regCb->chFlag & CMM_REG_PHY_VALID) 
-         {
-            offset = memCtl->u.vtop.vaddr - regCb->regInfo.start;
-            *(memCtl->u.vtop.paddr) = regCb->pAddr + offset;
-   
-            RETVALUE(ROK);
-         }
-         break;
-      }
+
+	    /* Check if the virtual to physical address translation is valid */
+	    if (regCb->chFlag & CMM_REG_PHY_VALID) 
+	    {
+	       offset = memCtl->u.vtop.vaddr - regCb->regInfo.start;
+	       *(memCtl->u.vtop.paddr) = regCb->pAddr + offset;
+
+	       RETVALUE(ROK);
+	    }
+	    break;
+	 }
 
       case SS_MEM_CHK_RES:
-      {
+	 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-         if (!(memCtl->u.chkres.size) || 
-            (memCtl->u.chkres.status == NULLP))
-         {
-            RETVALUE(RFAILED);
-         }
+	    if (!(memCtl->u.chkres.size) || 
+		  (memCtl->u.chkres.status == NULLP))
+	    {
+	       RETVALUE(RFAILED);
+	    }
 #endif
 #ifndef USE_PURE
-         /* Check if the Bucket pool is configured */
-         if (regCb->bktSize)
-         {
-            U16        idx;
-            CmMmBkt   *bkt;
-            U32        avlSize, totSize;
-            /* 
-             * The bucket pool is configured. The status value returned
-             * does reflect on the memory availabilty in the bucket pool. 
-             * The value does not consider the available memory in the
-             * heap pool. 
-             */
-             idx = ((memCtl->u.chkres.size - 1) >> regCb->bktQnPwr);
-             bkt = &(regCb->bktTbl[regCb->mapTbl[idx].bktIdx]); 
-             avlSize = (bkt->numBlks - bkt->numAlloc) * bkt->size;
-             avlSize += regCb->heapCb.avlSize;
-             totSize = (bkt->numBlks * bkt->size) + regCb->heapSize;
-             *(memCtl->u.chkres.status) = (avlSize/(totSize/10)); 
-         }
-         else
-         {
-            /* Bucket pool not configured */
+	    /* Check if the Bucket pool is configured */
+	    if (regCb->bktSize)
+	    {
+	       U16        idx;
+	       CmMmBkt   *bkt;
+	       U32        avlSize, totSize;
+	       /* 
+		* The bucket pool is configured. The status value returned
+		* does reflect on the memory availabilty in the bucket pool. 
+		* The value does not consider the available memory in the
+		* heap pool. 
+		*/
+	       idx = ((memCtl->u.chkres.size - 1) >> regCb->bktQnPwr);
+	       bkt = &(regCb->bktTbl[regCb->mapTbl[idx].bktIdx]); 
+	       avlSize = (bkt->numBlks - bkt->numAlloc) * bkt->size;
+	       avlSize += regCb->heapCb.avlSize;
+	       totSize = (bkt->numBlks * bkt->size) + regCb->heapSize;
+	       *(memCtl->u.chkres.status) = (avlSize/(totSize/10)); 
+	    }
+	    else
+	    {
+	       /* Bucket pool not configured */
 
-            /* 
-             * Find the percentage memory available in the heap pool. The value
-             * does not consider the fragmentation of the heap pool.
-             */
-            *(memCtl->u.chkres.status) = ((regCb->heapCb.avlSize) /
-                                          (regCb->heapSize/10)); 
-         }
+	       /* 
+		* Find the percentage memory available in the heap pool. The value
+		* does not consider the fragmentation of the heap pool.
+		*/
+	       *(memCtl->u.chkres.status) = ((regCb->heapCb.avlSize) /
+		     (regCb->heapSize/10)); 
+	    }
 
-         RETVALUE(ROK);
+	    RETVALUE(ROK);
 #else /* use pure is on */
-            *(memCtl->u.chkres.status) = ((avail_size) /
-                                          (regCb->regInfo.size/10));
-         RETVALUE(ROK);
+	    *(memCtl->u.chkres.status) = ((avail_size) /
+		  (regCb->regInfo.size/10));
+	    RETVALUE(ROK);
 #endif /* USE_PURE */
 
-      }
+	 }
 
       default:
-      {
-         /* No other event is supported currently */
-         RETVALUE(RFAILED);
-      }
+	 {
+	    /* No other event is supported currently */
+	    RETVALUE(RFAILED);
+	 }
    }
 
    /* shouldn't reach here */
@@ -3600,43 +3600,43 @@ SMemCtl *memCtl;
 
 
 /*
-*
-*       Fun:   cmMmBktInit
-*
-*       Desc:  Initialize the bucket and the map table.
-*
-*
-*       Ret:   ROK     - successful, 
-*              RFAILED - unsuccessful.
-*
-*       Notes: This function is called by the cmMmRegInit. 
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmBktInit
+ *
+ *       Desc:  Initialize the bucket and the map table.
+ *
+ *
+ *       Ret:   ROK     - successful, 
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: This function is called by the cmMmRegInit. 
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE Void cmMmBktInit
+   PRIVATE Void cmMmBktInit
 (
-Data      **memAddr,
-CmMmRegCb  *regCb,
-CmMmRegCfg *cfg,
-U16         bktIdx,
-U16        *lstMapIdx
-)
+ Data      **memAddr,
+ CmMmRegCb  *regCb,
+ CmMmRegCfg *cfg,
+ U16         bktIdx,
+ U16        *lstMapIdx
+ )
 #else
 PRIVATE Void cmMmBktInit (memAddr, regCb, cfg, bktIdx, lstMapIdx)
-Data      **memAddr;
-CmMmRegCb  *regCb;
-CmMmRegCfg *cfg;
-U16         bktIdx;
-U16        *lstMapIdx;
+   Data      **memAddr;
+   CmMmRegCb  *regCb;
+   CmMmRegCfg *cfg;
+   U16         bktIdx;
+   U16        *lstMapIdx;
 #endif
 {
    U32   cnt;
    U16   idx;
    U32   numBlks;
    Size  size;
-/* cm_mem_c_001.main_12 - addition for temporary variables */
+   /* cm_mem_c_001.main_12 - addition for temporary variables */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1) || defined (SS_LIGHT_MEM_LEAK_STS))
    CmMmBlkHdr **nextBlk;
 #ifdef SS_LIGHT_MEM_LEAK_STS
@@ -3660,7 +3660,7 @@ U16        *lstMapIdx;
    size = cfg->bktCfg[bktIdx].size; 
    numBlks = cfg->bktCfg[bktIdx].numBlks; 
 
-/* cm_mem_c_001.main_12 - addition for header initialization */
+   /* cm_mem_c_001.main_12 - addition for header initialization */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1) || defined (SS_LIGHT_MEM_LEAK_STS))
    /* Reset the next block pointer */
    regCb->bktTbl[bktIdx].nextBlk = NULLP;
@@ -3680,14 +3680,14 @@ U16        *lstMapIdx;
       /* initialize the memory block header */
       for (sigCnt=0; sigCnt < CMM_TRAMPLING_SIGNATURE_LEN; sigCnt++)
       {
-         (*nextBlk)->trSignature[sigCnt] = 0xAB;
+	 (*nextBlk)->trSignature[sigCnt] = 0xAB;
       }
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
       /* Initialize memory block tail */
       blkTail = (CmMmBlkTail *)(*memAddr + sizeof(CmMmBlkHdr) + size);
       for (sigCnt=0; sigCnt < CMM_TRAMPLING_SIGNATURE_LEN; sigCnt++)
       {
-         blkTail->trSignature[sigCnt] = 0xFE;
+	 blkTail->trSignature[sigCnt] = 0xFE;
       }
 #endif
       CMM_SET_FREE_FLAG((*nextBlk)->memFlags);
@@ -3709,8 +3709,8 @@ U16        *lstMapIdx;
 
    *nextBlk = NULLP;
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-    tmpMemAddr = (Data *)((*memAddr) - ((sizeof(CmMmBlkHdr)) + sizeof(U32) + size));
-    regCb->bktTbl[bktIdx].lastBlk = (CmMmBlkHdr *)tmpMemAddr;
+   tmpMemAddr = (Data *)((*memAddr) - ((sizeof(CmMmBlkHdr)) + sizeof(U32) + size));
+   regCb->bktTbl[bktIdx].lastBlk = (CmMmBlkHdr *)tmpMemAddr;
 #endif
 
 #else
@@ -3728,40 +3728,40 @@ U16        *lstMapIdx;
    {
       if(size == 128)
       {
-         startPtr128 = *memAddr;
-         regMemSize = regCb->regInfo.size;
-         uart_printf("size of all pool=%u\n", regMemSize);
-         uart_printf("startPtr128=%x\n", startPtr128);
+	 startPtr128 = *memAddr;
+	 regMemSize = regCb->regInfo.size;
+	 uart_printf("size of all pool=%u\n", regMemSize);
+	 uart_printf("startPtr128=%x\n", startPtr128);
       }
       if(size == 256)
       {
-         startPtr256 = *memAddr;
-         uart_printf("startPtr256=%x\n", startPtr256);
+	 startPtr256 = *memAddr;
+	 uart_printf("startPtr256=%x\n", startPtr256);
       }
       if(size == 512)
       {
-         startPtr512 = *memAddr;
-         uart_printf("startPtr512=%x\n", startPtr512);
+	 startPtr512 = *memAddr;
+	 uart_printf("startPtr512=%x\n", startPtr512);
       }
       if(size == 768)
       {
-         startPtr768 = *memAddr;
-         uart_printf("startPtr768=%x\n", startPtr768);
+	 startPtr768 = *memAddr;
+	 uart_printf("startPtr768=%x\n", startPtr768);
       }
       if(size == 1664)
       {
-         startPtr1664 = *memAddr;
-         uart_printf("startPtr1664=%x\n", startPtr1664);
+	 startPtr1664 = *memAddr;
+	 uart_printf("startPtr1664=%x\n", startPtr1664);
       }
       if(size == 4800)
       {
-         startPtr4800 = *memAddr;
-         uart_printf("startPtr4800=%x\n", startPtr4800);
+	 startPtr4800 = *memAddr;
+	 uart_printf("startPtr4800=%x\n", startPtr4800);
       }
       if(size == 9920)
       {
-         startPtr9920 = *memAddr;
-         uart_printf("startPtr9920=%x\n", startPtr9920);
+	 startPtr9920 = *memAddr;
+	 uart_printf("startPtr9920=%x\n", startPtr9920);
       }
    }
 #endif
@@ -3769,15 +3769,15 @@ U16        *lstMapIdx;
    {
       *next     = *memAddr;
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
-         (*(U32 *)(*next + 4)) = 0xdeaddead;
-         (*(U32 *)(*next + 124)) = 0;
-         (*(U32 *)(*next + 116)) = 0xdeaddead;
-         (*(U32 *)(*next + 24)) = 0xdeaddead;
-         (*(U32 *)(*next + 44)) = 0xdeaddead;            
-         (*(U32 *)(*next + 80)) = 0xdeaddead;
+      (*(U32 *)(*next + 4)) = 0xdeaddead;
+      (*(U32 *)(*next + 124)) = 0;
+      (*(U32 *)(*next + 116)) = 0xdeaddead;
+      (*(U32 *)(*next + 24)) = 0xdeaddead;
+      (*(U32 *)(*next + 44)) = 0xdeaddead;            
+      (*(U32 *)(*next + 80)) = 0xdeaddead;
 #endif
 #ifdef SSI_MEM_CORR_PREVENTION
-         *(((U32 *)(*next)) + 2) = 0xdeaddead;
+      *(((U32 *)(*next)) + 2) = 0xdeaddead;
 #endif
       next      = (CmMmEntry **)(*memAddr);
       *memAddr  = (*memAddr) + size;
@@ -3803,7 +3803,7 @@ U16        *lstMapIdx;
    {
       idx++;
    }
-   
+
    while ( *lstMapIdx < idx)
    {
       regCb->mapTbl[*lstMapIdx].bktIdx = bktIdx;
@@ -3822,10 +3822,10 @@ U16        *lstMapIdx;
    regCb->bktTbl[bktIdx].numAlloc = 0;
 
    /* Update the total bucket size */
-/* cm_mem_c_001.main_12 - addition for considering the header size */
+   /* cm_mem_c_001.main_12 - addition for considering the header size */
 #if (defined(SSI_DEBUG_LEVEL1) || defined (SS_LIGHT_MEM_LEAK_STS))
    regCb->bktSize += ((size + sizeof(CmMmBlkHdr)) * numBlks);
-/* Addition for considering the header size and tail */
+   /* Addition for considering the header size and tail */
 #elif BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
    regCb->bktSize += ((size + sizeof(CmMmBlkHdr) + sizeof(U32)) * numBlks);
 #else
@@ -3835,7 +3835,7 @@ U16        *lstMapIdx;
    regCb->bktTbl[bktIdx].bktFailCnt = 0;
    regCb->bktTbl[bktIdx].bktNoFitCnt = 0;
 
-/* cm_mem_c_001.main_12 - addition for statistics related variable initialization */
+   /* cm_mem_c_001.main_12 - addition for statistics related variable initialization */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
    /* Initialize other required pointers */
    regCb->bktTbl[bktIdx].bktStartPtr = (Data *)(regCb->bktTbl[bktIdx].nextBlk);
@@ -3845,7 +3845,7 @@ U16        *lstMapIdx;
    regCb->bktTbl[bktIdx].dynamicMemUsed = 0;
    regCb->bktTbl[bktIdx].trampleCount = 0;
 #endif /*SSI_DEBUG_LEVEL1*/
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    /* Initialise the memory histogram hash list */
    cmHstGrmHashListInit(&(regCb->bktTbl[bktIdx].hstGrmHashListCp));
@@ -3856,35 +3856,35 @@ U16        *lstMapIdx;
 
 
 /*
-*
-*       Fun:   cmMmHeapInit
-*
-*       Desc:  Initialize the heap pool. 
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*       Notes: This function is called by the cmMmRegInit. 
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmHeapInit
+ *
+ *       Desc:  Initialize the heap pool. 
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: This function is called by the cmMmRegInit. 
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE Void  cmMmHeapInit 
+   PRIVATE Void  cmMmHeapInit 
 (
-Data        *memAddr,
-CmMmHeapCb  *heapCb,
-Size         size 
-)
+ Data        *memAddr,
+ CmMmHeapCb  *heapCb,
+ Size         size 
+ )
 #else
 PRIVATE Void  cmMmHeapInit (memAddr, heapCb, size)
-Data        *memAddr;
-CmMmHeapCb  *heapCb;
-Size         size;
+   Data        *memAddr;
+   CmMmHeapCb  *heapCb;
+   Size         size;
 #endif
 {
-/* cm_mem_c_001.main_12 - addition for ssi enhancements */
+   /* cm_mem_c_001.main_12 - addition for ssi enhancements */
 #ifdef SSI_DEBUG_LEVEL1
    U16 idx;
 #endif /* SSI_DEBUG_LEVEL1 */
@@ -3898,7 +3898,7 @@ Size         size;
 
    heapCb->next       = (CmHEntry *)memAddr;
    heapCb->next->next = NULLP;
-/* cm_mem_c_001.main_12 - addition for header initialization */
+   /* cm_mem_c_001.main_12 - addition for header initialization */
 #ifdef SSI_DEBUG_LEVEL1
    heapCb->next->size = size - sizeof(CmHEntry);
    heapCb->next->requestedSize = 0;
@@ -3910,8 +3910,8 @@ Size         size;
    heapCb->staticHeapMemUsed = 0;
    heapCb->dynamicHeapMemUsed = 0;
    heapCb->nextOffset = sizeof(heapCb->next->trSignature) +
-                        sizeof(heapCb->next->memFlags) +
-                        sizeof(heapCb->next->requestedSize);
+      sizeof(heapCb->next->memFlags) +
+      sizeof(heapCb->next->requestedSize);
    heapCb->numAllocAttempts = 0;
    heapCb->numDeallocAttempts = 0;
    heapCb->trampleCount = 0;
@@ -3926,7 +3926,7 @@ Size         size;
 #endif
 
    heapCb->heapAllocCnt = 0;
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    /* Initialise the memory histogram hash list */
    cmHstGrmHashListInit(&(heapCb->heapHstGrmHashListCp));
@@ -3937,24 +3937,24 @@ Size         size;
 
 #ifndef USE_PURE
 /*
-*
-*       Fun:   cmHeapAlloc
-*
-*       Desc:  Allocates the memory block from the heap pool. 
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*       Notes: This function is called by the cmAlloc. cmAlloc calls this
-*              function when there is no memory block available in the bucket 
-*              and the  heap pool is configured.
-*
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmHeapAlloc
+ *
+ *       Desc:  Allocates the memory block from the heap pool. 
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: This function is called by the cmAlloc. cmAlloc calls this
+ *              function when there is no memory block available in the bucket 
+ *              and the  heap pool is configured.
+ *
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 /* cm_mem_c_001.main_12 - addition for taking another parameter memType(static/dynamic) */
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_4GMX_LCORE
@@ -3963,107 +3963,107 @@ EXTERN U8 ysCellConfigDone;
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc
+   PRIVATE S16  cmHeapAlloc
 (
-CmMmHeapCb  *heapCb,
-Data       **ptr,
-Size        *size,
-U32        memType,
-U32     line,
-U8     *fileName,
-U8      entId,
-Bool    hstReg
-)
+ CmMmHeapCb  *heapCb,
+ Data       **ptr,
+ Size        *size,
+ U32        memType,
+ U32     line,
+ U8     *fileName,
+ U8      entId,
+ Bool    hstReg
+ )
 #else
 PRIVATE S16  cmHeapAlloc (heapCb, ptr, size, memType, line, fileName, entId, hstReg)
-CmMmHeapCb  *heapCb;
-Data       **ptr;
-Size        *size;
-U32        memType;
-U32     line;
-U8     *fileName;
-U8      entId;
-Bool    hstReg;
+   CmMmHeapCb  *heapCb;
+   Data       **ptr;
+   Size        *size;
+   U32        memType;
+   U32     line;
+   U8     *fileName;
+   U8      entId;
+   Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc 
+   PRIVATE S16  cmHeapAlloc 
 (
-CmMmHeapCb  *heapCb,
-Data       **ptr,
-Size        *size,
-U32     line,
-U8     *fileName,
-U8      entId,
-Bool    hstReg
-)
+ CmMmHeapCb  *heapCb,
+ Data       **ptr,
+ Size        *size,
+ U32     line,
+ U8     *fileName,
+ U8      entId,
+ Bool    hstReg
+ )
 #else
 PRIVATE S16  cmHeapAlloc (heapCb, ptr, size, line, fileName, entId, hstReg)
-CmMmHeapCb  *heapCb;
-Data       **ptr;
-Size        *size;
-U32     line;
-U8     *fileName;
-U8      entId;
-Bool    hstReg;
+   CmMmHeapCb  *heapCb;
+   Data       **ptr;
+   Size        *size;
+   U32     line;
+   U8     *fileName;
+   U8      entId;
+   Bool    hstReg;
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
 #else
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc
+   PRIVATE S16  cmHeapAlloc
 (
-CmMmHeapCb  *heapCb,
-Data       **ptr,
-Size        *size,
-U32        memType
-)
+ CmMmHeapCb  *heapCb,
+ Data       **ptr,
+ Size        *size,
+ U32        memType
+ )
 #else
 PRIVATE S16  cmHeapAlloc (heapCb, ptr, size, memType)
-CmMmHeapCb  *heapCb;
-Data       **ptr;
-Size        *size;
-U32        memType;
+   CmMmHeapCb  *heapCb;
+   Data       **ptr;
+   Size        *size;
+   U32        memType;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc 
+   PRIVATE S16  cmHeapAlloc 
 (
-CmMmHeapCb  *heapCb,
-Data       **ptr,
-Size        *size 
-)
+ CmMmHeapCb  *heapCb,
+ Data       **ptr,
+ Size        *size 
+ )
 #else
 PRIVATE S16  cmHeapAlloc (heapCb, ptr, size)
-CmMmHeapCb  *heapCb;
-Data       **ptr;
-Size        *size;
+   CmMmHeapCb  *heapCb;
+   Data       **ptr;
+   Size        *size;
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #endif /* SS_HISTOGRAM_SUPPORT */ 
 {
    CmHEntry  *prvHBlk;    /* Previous heap block */
    CmHEntry  *curHBlk;    /* Current heap block */ 
    Size       tmpSize;
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_MEM_LEAK_STS 
    Size       reqSz;
 #endif /* SS_MEM_LEAK_STS */
-/* cm_mem_c_001.main_12 - addition for ssi enhancements */
+   /* cm_mem_c_001.main_12 - addition for ssi enhancements */
 #ifdef SSI_DEBUG_LEVEL1
    CmHEntry *alocHeapBlk;
    Size requestedSize;
    Size hdr;
    U16 idx;
 #endif /* SSI_DEBUG_LEVEL1 */
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-	S8 hstGrmBuf[256];
+   S8 hstGrmBuf[256];
 #endif /* SS_HISTOGRAM_SUPPORT */
 
    TRC2(cmHeapAlloc);
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
    /* Acquire the heap lock */ 
    /* cm_mem_c_001.main_13 : Replaced SLock with WTLock for NT */
 #ifdef SS_4GMX_LCORE
@@ -4085,7 +4085,7 @@ Size        *size;
 #ifdef SS_MEM_LEAK_STS
    reqSz = *size;
 #endif /* SS_MEM_LEAK_STS */
-/* cm_mem_c_001.main_12 - addition for manipulation of statistics related data */
+   /* cm_mem_c_001.main_12 - addition for manipulation of statistics related data */
 #ifdef SSI_DEBUG_LEVEL1
    heapCb->numAllocAttempts++;
    requestedSize = *size;
@@ -4093,21 +4093,21 @@ Size        *size;
 
    /* Roundup the requested size */
    *size = CMM_DATALIGN(*size, (heapCb->minSize));
-   
+
    /* Check if the available total size is adequate. */
    if ((*size) >= heapCb->avlSize)
    {
-/*  cm_mem_c_001.main_15 : Additions */
+      /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_WIN
-                        (Void) WTUnlock (&(heapCb->heapLock));
+      (Void) WTUnlock (&(heapCb->heapLock));
 #else
-                        (Void) SUnlock (&(heapCb->heapLock));
+      (Void) SUnlock (&(heapCb->heapLock));
 #endif
       RETVALUE(ROUTRES);
    }
 
 
-/* cm_mem_c_001.main_12 - addition for aligning the header size */
+   /* cm_mem_c_001.main_12 - addition for aligning the header size */
 #ifdef SSI_DEBUG_LEVEL1
    hdr = PTRALIGN(sizeof(CmHEntry));
 #endif /* SSI_DEBUG_LEVEL1 */
@@ -4117,14 +4117,14 @@ Size        *size;
     * greater than or equal to the requested size.
     *
     */ 
-/* cm_mem_c_001.main_12 - addition for accessing the heapCb->next */
+   /* cm_mem_c_001.main_12 - addition for accessing the heapCb->next */
 #ifdef SSI_DEBUG_LEVEL1
    prvHBlk = (CmHEntry *)((Data *)&(heapCb->next) - heapCb->nextOffset);
 #else
    prvHBlk = (CmHEntry *)&(heapCb->next);
 #endif /* SSI_DEBUG_LEVEL1 */
    for (curHBlk = prvHBlk->next; curHBlk; curHBlk = curHBlk->next,
-                                                   prvHBlk = prvHBlk->next)
+	 prvHBlk = prvHBlk->next)
    {
       /*
        * Since the size of the block is always multiple of CMM_MINBUFSIZE 
@@ -4135,162 +4135,162 @@ Size        *size;
        */
       if ((*size) <= curHBlk->size) 
       {
-/* cm_mem_c_001.main_12 - addition for block size calculation */
+	 /* cm_mem_c_001.main_12 - addition for block size calculation */
 #ifdef SSI_DEBUG_LEVEL1
-      tmpSize = curHBlk->size - (*size);
-      if (tmpSize != 0)
-         tmpSize = tmpSize - hdr;
-      if (tmpSize)
+	 tmpSize = curHBlk->size - (*size);
+	 if (tmpSize != 0)
+	    tmpSize = tmpSize - hdr;
+	 if (tmpSize)
 #else
-         /* cm_mem_c_001.main_28 : compilation warning fix */
-         tmpSize = (curHBlk->size - (*size));
-         if (tmpSize != 0)
+	    /* cm_mem_c_001.main_28 : compilation warning fix */
+	    tmpSize = (curHBlk->size - (*size));
+	 if (tmpSize != 0)
 #endif /* SSI_DEBUG_LEVEL1 */
-         {
-            /* Heap block of bigger size */
-/* cm_mem_c_001.main_12 - addition for allocating memory */
+	 {
+	    /* Heap block of bigger size */
+	    /* cm_mem_c_001.main_12 - addition for allocating memory */
 #ifdef SSI_DEBUG_LEVEL1
-            *ptr = (Data *)curHBlk + hdr + tmpSize + hdr;
-            alocHeapBlk = (CmHEntry *) ((Data *)curHBlk + hdr + tmpSize);
-            /*
-            * No need to look for memory trampling as this is a new block altogether
-            * Update the header only for this case as it is new block formed 
-            */
-            for (idx=0; idx < CMM_TRAMPLING_SIGNATURE_LEN; idx++)
-            {
-               alocHeapBlk->trSignature[idx] = 0xAB;
-            }
-            alocHeapBlk->size = *size;
+	    *ptr = (Data *)curHBlk + hdr + tmpSize + hdr;
+	    alocHeapBlk = (CmHEntry *) ((Data *)curHBlk + hdr + tmpSize);
+	    /*
+	     * No need to look for memory trampling as this is a new block altogether
+	     * Update the header only for this case as it is new block formed 
+	     */
+	    for (idx=0; idx < CMM_TRAMPLING_SIGNATURE_LEN; idx++)
+	    {
+	       alocHeapBlk->trSignature[idx] = 0xAB;
+	    }
+	    alocHeapBlk->size = *size;
 #else
-            *ptr = (Data *)curHBlk + tmpSize;             
+	    *ptr = (Data *)curHBlk + tmpSize;             
 #endif /* SSI_DEBUG_LEVEL1 */
-             curHBlk->size = tmpSize;
-         } 
-         else
-         {
-            /* Heap block is same size of the requested size */
-/* cm_mem_c_001.main_12 - addition for sanity check and allocation. This is a fresh block */
+	    curHBlk->size = tmpSize;
+	 } 
+	 else
+	 {
+	    /* Heap block is same size of the requested size */
+	    /* cm_mem_c_001.main_12 - addition for sanity check and allocation. This is a fresh block */
 #ifdef SSI_DEBUG_LEVEL1
-            /* look for memory trampling as this is a pure block*/
-            if (curHBlk)
-            {
-               if (cmMmRegIsBlkSane((CmMmBlkHdr *)curHBlk) != ROK)
-               {
-                     /* detected a trampled memory block in this bucket */
-                  #ifdef DEBUGP
-                     /* display an error message here */
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+	    /* look for memory trampling as this is a pure block*/
+	    if (curHBlk)
+	    {
+	       if (cmMmRegIsBlkSane((CmMmBlkHdr *)curHBlk) != ROK)
+	       {
+		  /* detected a trampled memory block in this bucket */
+#ifdef DEBUGP
+		  /* display an error message here */
+		  /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-                     sprintf(dbgPrntBuf, "Memory Trampling in heap at: %8p, size %u bytes \n", (void *)curHBlk, requestedSize);
+		  sprintf(dbgPrntBuf, "Memory Trampling in heap at: %8p, size %u bytes \n", (void *)curHBlk, requestedSize);
 #else                     
-                     sprintf(dbgPrntBuf, "Memory Trampling in heap at: %8p, size %lu bytes \n", (void *)curHBlk, requestedSize);
+		  sprintf(dbgPrntBuf, "Memory Trampling in heap at: %8p, size %lu bytes \n", (void *)curHBlk, requestedSize);
 #endif                     
-                     SDisplay(0, dbgPrntBuf);
-                  #endif /* DEBUGP */
+		  SDisplay(0, dbgPrntBuf);
+#endif /* DEBUGP */
 
-                     if (cmMmHeapSanityChk(heapCb) == RTRAMPLINGNOK)
-                     {
-                        /* Release the lock */
-                        /* cm_mem_c_001.main_13: Replaced SUnlock with
-                           WTUnlock for NT */
+		  if (cmMmHeapSanityChk(heapCb) == RTRAMPLINGNOK)
+		  {
+		     /* Release the lock */
+		     /* cm_mem_c_001.main_13: Replaced SUnlock with
+			WTUnlock for NT */
 #ifdef SS_WIN
-                        (Void) WTUnlock (&(heapCb->heapLock));
+		     (Void) WTUnlock (&(heapCb->heapLock));
 #else
-                        (Void) SUnlock (&(heapCb->heapLock));
+		     (Void) SUnlock (&(heapCb->heapLock));
 #endif
-                        /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
-                        RETVALUE(RTRAMPLINGNOK);
-                     }
-                     else
-                     {
-                        /* Release the lock */
-                        /* cm_mem_c_001.main_13: Replaced SUnlock with
-                           WTUnlock for NT */
+		     /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
+		     RETVALUE(RTRAMPLINGNOK);
+		  }
+		  else
+		  {
+		     /* Release the lock */
+		     /* cm_mem_c_001.main_13: Replaced SUnlock with
+			WTUnlock for NT */
 #ifdef SS_WIN
-                        (Void) WTUnlock (&(heapCb->heapLock));
+		     (Void) WTUnlock (&(heapCb->heapLock));
 #else
-                        (Void) SUnlock (&(heapCb->heapLock));
+		     (Void) SUnlock (&(heapCb->heapLock));
 #endif
-                        RETVALUE(RFAILED);
-                     }
-               }
-            }
+		     RETVALUE(RFAILED);
+		  }
+	       }
+	    }
 
-            *ptr = (Data *)curHBlk + hdr;
-            alocHeapBlk =  curHBlk;
-            *size = curHBlk->size;
+	    *ptr = (Data *)curHBlk + hdr;
+	    alocHeapBlk =  curHBlk;
+	    *size = curHBlk->size;
 #else
-            *ptr = (Data *)curHBlk;
+	    *ptr = (Data *)curHBlk;
 #endif /* SSI_DEBUG_LEVEL1 */
-             prvHBlk->next = curHBlk->next;
-         }
+	    prvHBlk->next = curHBlk->next;
+	 }
 
-/* cm_mem_c_001.main_12 - addition for header updation */
+	 /* cm_mem_c_001.main_12 - addition for header updation */
 #ifdef SSI_DEBUG_LEVEL1
-         /* update the header fields */
-         alocHeapBlk->requestedSize = requestedSize;
-         alocHeapBlk->memFlags = 0;
-         if (memType == CMM_STATIC_MEM_FLAG)
-         {
-            CMM_SET_STATIC_FLAG(alocHeapBlk->memFlags);
-            heapCb->staticHeapMemUsed += (*size + hdr);
-         }
-         else
-         {
-            CMM_SET_DYNAMIC_FLAG(alocHeapBlk->memFlags);
-            heapCb->dynamicHeapMemUsed += (*size + hdr);
-         }
-         heapCb->avlSize -= ((*size) + hdr);
+	 /* update the header fields */
+	 alocHeapBlk->requestedSize = requestedSize;
+	 alocHeapBlk->memFlags = 0;
+	 if (memType == CMM_STATIC_MEM_FLAG)
+	 {
+	    CMM_SET_STATIC_FLAG(alocHeapBlk->memFlags);
+	    heapCb->staticHeapMemUsed += (*size + hdr);
+	 }
+	 else
+	 {
+	    CMM_SET_DYNAMIC_FLAG(alocHeapBlk->memFlags);
+	    heapCb->dynamicHeapMemUsed += (*size + hdr);
+	 }
+	 heapCb->avlSize -= ((*size) + hdr);
 #else
-         heapCb->avlSize -= (*size); 
+	 heapCb->avlSize -= (*size); 
 #endif /* SSI_DEBUG_LEVEL1 */
 
 #ifdef MEMCAL_DEBUG
-        if (tryHeap)
-        {
-            sprintf(prntBuf,
-                 "SGetSBuf:%08lu:Size  Heap Alloc Times:%05lu  Pointer: %8p\n",
-                 *size, num_times, *ptr);
-            SDisplay(0, prntBuf);
-            tryHeap = 0;
-        }
+	 if (tryHeap)
+	 {
+	    sprintf(prntBuf,
+		  "SGetSBuf:%08lu:Size  Heap Alloc Times:%05lu  Pointer: %8p\n",
+		  *size, num_times, *ptr);
+	    SDisplay(0, prntBuf);
+	    tryHeap = 0;
+	 }
 #endif
-/*  cm_mem_c_001.main_15 : Additions */
+	 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_MEM_LEAK_STS 
-        /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
-         cmStorAllocBlk((PTR)*ptr, (Size) reqSz, (Size) *size, MT_MAX_BKTS);
+	 /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
+	 cmStorAllocBlk((PTR)*ptr, (Size) reqSz, (Size) *size, MT_MAX_BKTS);
 #endif /* SS_MEM_LEAK_STS */
-         /* Release the lock */
-/*  cm_mem_c_001.main_16 : cm_mem_c_001.main_18  Additions */
+	 /* Release the lock */
+	 /*  cm_mem_c_001.main_16 : cm_mem_c_001.main_18  Additions */
 #ifdef SS_WIN
-   (Void) WTUnlock (&(heapCb->heapLock));
+	 (Void) WTUnlock (&(heapCb->heapLock));
 #else
-   (Void) SUnlock (&(heapCb->heapLock));
+	 (Void) SUnlock (&(heapCb->heapLock));
 #endif
 
 #ifdef SS_HISTOGRAM_SUPPORT
-            /* If If Tapa task (entId)is registerd for histogram then insert Memrory allocated
-             * information into the hash list */
-            if(hstReg)
-            {
-               if (cmHstGrmAllocInsert(&(heapCb->heapHstGrmHashListCp), *size, size, line, fileName, entId) != ROK)
-               {
-                 sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
-					  SPrint(hstGrmBuf);
-               }
-            }/* End of if */
+	 /* If If Tapa task (entId)is registerd for histogram then insert Memrory allocated
+	  * information into the hash list */
+	 if(hstReg)
+	 {
+	    if (cmHstGrmAllocInsert(&(heapCb->heapHstGrmHashListCp), *size, size, line, fileName, entId) != ROK)
+	    {
+	       sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
+	       SPrint(hstGrmBuf);
+	    }
+	 }/* End of if */
 
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-         RETVALUE(ROK);
+	 RETVALUE(ROK);
       }
    }
 
-/* cm_mem_c_008.104 - Addition for memory calculator tool */
+   /* cm_mem_c_008.104 - Addition for memory calculator tool */
 #ifdef MEMCAL_DEBUG
-        tryHeap = 0;
+   tryHeap = 0;
 #endif
-   
+
 
    /* Release the lock */
    /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
@@ -4306,85 +4306,85 @@ Size        *size;
 
 
 /*
-*
-*       Fun:   cmHeapFree
-*
-*       Desc:  Return the memory block from the heap pool. 
-*
-*
-*       Ret:   ROK     - successful
-*              RFAILED - unsuccessful.
-*
-*       Notes: This function returns the memory block to the heap  pool. This 
-*              function is called by cmFree. The function does not check the 
-*              validity of the memory block. The caller must be sure that the 
-*              block was previously allocated and belongs to the heap pool. The 
-*              function maintain the sorting order of the memory block on the
-*              starting address of the block. This function also do compaction 
-*              if the neighbouring blocks are already in the heap. 
-*
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmHeapFree
+ *
+ *       Desc:  Return the memory block from the heap pool. 
+ *
+ *
+ *       Ret:   ROK     - successful
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: This function returns the memory block to the heap  pool. This 
+ *              function is called by cmFree. The function does not check the 
+ *              validity of the memory block. The caller must be sure that the 
+ *              block was previously allocated and belongs to the heap pool. The 
+ *              function maintain the sorting order of the memory block on the
+ *              starting address of the block. This function also do compaction 
+ *              if the neighbouring blocks are already in the heap. 
+ *
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT  
 #ifdef ANSI
-PRIVATE S16  cmHeapFree 
+   PRIVATE S16  cmHeapFree 
 (
-CmMmHeapCb  *heapCb,
-Data        *ptr,
-Size         size,
-U32     line,
-U8     *fileName,
-U8      entId,
-Bool    hstReg
-)
+ CmMmHeapCb  *heapCb,
+ Data        *ptr,
+ Size         size,
+ U32     line,
+ U8     *fileName,
+ U8      entId,
+ Bool    hstReg
+ )
 #else
 PRIVATE S16  cmHeapFree (heapCb, ptr, size, line, fileName, entId, hstReg)
-CmMmHeapCb  *heapCb;
-Data        *ptr;
-Size         size;
-U32     line;
-U8     *fileName;
-U8      entId;
-Bool    hstReg;
+   CmMmHeapCb  *heapCb;
+   Data        *ptr;
+   Size         size;
+   U32     line;
+   U8     *fileName;
+   U8      entId;
+   Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmHeapFree 
+   PRIVATE S16  cmHeapFree 
 (
-CmMmHeapCb  *heapCb,
-Data        *ptr,
-Size         size 
-)
+ CmMmHeapCb  *heapCb,
+ Data        *ptr,
+ Size         size 
+ )
 #else
 PRIVATE S16  cmHeapFree (heapCb, ptr, size)
-CmMmHeapCb  *heapCb;
-Data        *ptr;
-Size         size;
+   CmMmHeapCb  *heapCb;
+   Data        *ptr;
+   Size         size;
 #endif
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #endif /* SS_HISTOGRAM_SUPPORT */ 
 {
    CmHEntry  *p;    
    CmHEntry  *curHBlk;    /* Current heap block */ 
-/* cm_mem_c_001.main_12 - addition for ssi enhancements */
+   /* cm_mem_c_001.main_12 - addition for ssi enhancements */
 #ifdef SSI_DEBUG_LEVEL1
    Size  hdr;
 #endif /* SSI_DEBUG_LEVEL1 */
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    Size allocSize = size;
-	S8 hstGrmBuf[256];
+   S8 hstGrmBuf[256];
 #endif /* SS_HISTOGRAM_SUPPORT */
 
    TRC2(cmHeapFree);
 
    /* Roundup the requested size */
    size = CMM_DATALIGN(size, (heapCb->minSize));
-/*  cm_mem_c_001.main_15: Additions */
+   /*  cm_mem_c_001.main_15: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT  
    allocSize = size;
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -4398,7 +4398,7 @@ Size         size;
 #endif
 
    /* increase the avlSize */
-/* cm_mem_c_001.main_12 - addition for manipulation of statistics related data */
+   /* cm_mem_c_001.main_12 - addition for manipulation of statistics related data */
 #ifdef SSI_DEBUG_LEVEL1
    hdr = PTRALIGN(sizeof(CmHEntry));
    heapCb->avlSize += (size + hdr);
@@ -4406,13 +4406,13 @@ Size         size;
 #else
    heapCb->avlSize += size;
 #endif /* SSI_DEBUG_LEVEL1 */
-   
-/* cm_mem_c_001.main_12 - addition for pointing to the block */
+
+   /* cm_mem_c_001.main_12 - addition for pointing to the block */
 #ifdef SSI_DEBUG_LEVEL1
    p = (CmHEntry *)(ptr - hdr);
 #else
    p = (CmHEntry *)ptr; 
-/*  cm_mem_c_001.main_15 : Additions */
+   /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_MEM_LEAK_STS
    /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
    cmRlsAllocBlk((PTR)ptr);
@@ -4420,70 +4420,70 @@ Size         size;
 #endif /* SSI_DEBUG_LEVEL1 */
 
 
-/* cm_mem_c_001.main_12 - addition for sanity and double-free checks */
+   /* cm_mem_c_001.main_12 - addition for sanity and double-free checks */
 #ifdef SSI_DEBUG_LEVEL1
    /* look for memory trampling */
    if (cmMmRegIsBlkSane((CmMmBlkHdr *)p) != ROK)
    {
       /* detected a trampled memory block in heap */
-   #ifdef DEBUGP
+#ifdef DEBUGP
       /* display an error message here */
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+      /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
       sprintf(dbgPrntBuf, "Memory Trampling in heap at: %8p, size %u bytes \n", (void *)p, size);
 #else      
       sprintf(dbgPrntBuf, "Memory Trampling in heap at: %8p, size %lu bytes \n", (void *)p, size);
 #endif      
       SDisplay(0, dbgPrntBuf);
-   #endif /* DEBUGP */
+#endif /* DEBUGP */
 
       if (cmMmHeapSanityChk(heapCb) == RTRAMPLINGNOK)
       {
-         /* Release the lock */
-         /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	 /* Release the lock */
+	 /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-         (Void) WTUnlock (&(heapCb->heapLock));
+	 (Void) WTUnlock (&(heapCb->heapLock));
 #else
-         (Void) SUnlock (&(heapCb->heapLock));
+	 (Void) SUnlock (&(heapCb->heapLock));
 #endif
-         /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
-         RETVALUE(RTRAMPLINGNOK);
+	 /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
+	 RETVALUE(RTRAMPLINGNOK);
       }
       else
       {
-         /* do not add to the free heap */
-         heapCb->avlSize -= (size + hdr);
-         /* Release the heap lock */
-         /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	 /* do not add to the free heap */
+	 heapCb->avlSize -= (size + hdr);
+	 /* Release the heap lock */
+	 /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-         (Void) WTUnlock (&(heapCb->heapLock));
+	 (Void) WTUnlock (&(heapCb->heapLock));
 #else
-         (Void) SUnlock (&(heapCb->heapLock));
+	 (Void) SUnlock (&(heapCb->heapLock));
 #endif
 
-         RETVALUE(ROK);
+	 RETVALUE(ROK);
       }
    }
 
    /* look for any double free */
    if (CMM_IS_FREE(p->memFlags))
    {
-   #ifdef DEBUGP
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+#ifdef DEBUGP
+      /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
       sprintf(dbgPrntBuf, "DOUBLE FREE at %8p for size %u in HEAP \n", (void *)p, size);
 #else
       sprintf(dbgPrntBuf, "DOUBLE FREE at %8p for size %lu in HEAP \n", (void *)p, size);
 #endif      
       SDisplay(0, dbgPrntBuf);
-   #endif /* DEBUGP */
+#endif /* DEBUGP */
 
       heapCb->avlSize -= (size + hdr);
-/*  cm_mem_c_001.main_15 : Additions */
+      /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_WIN 
-         (Void) WTUnlock (&(heapCb->heapLock));
+      (Void) WTUnlock (&(heapCb->heapLock));
 #else
-         (Void) SUnlock (&(heapCb->heapLock));
+      (Void) SUnlock (&(heapCb->heapLock));
 #endif
 
       RETVALUE(RDBLFREE);
@@ -4498,185 +4498,185 @@ Size         size;
        */
       if (p > curHBlk)
       {
-         if (!(curHBlk->next) || 
-             (p < (curHBlk->next)))
-         {
-            /* Heap block should be inserted here */
+	 if (!(curHBlk->next) || 
+	       (p < (curHBlk->next)))
+	 {
+	    /* Heap block should be inserted here */
 
-            /* 
-             * Check if the block to be returned can be merged with the
-             * current block.
-             */
-/* cm_mem_c_001.main_12 - addition for header consideration */
+	    /* 
+	     * Check if the block to be returned can be merged with the
+	     * current block.
+	     */
+	    /* cm_mem_c_001.main_12 - addition for header consideration */
 #ifdef SSI_DEBUG_LEVEL1
-             if (((Data *)curHBlk + hdr + curHBlk->size) == (Data *)p)
+	    if (((Data *)curHBlk + hdr + curHBlk->size) == (Data *)p)
 #else
-             if (((Data *)curHBlk + curHBlk->size) == (Data *)p)
+	       if (((Data *)curHBlk + curHBlk->size) == (Data *)p)
 #endif /* SSI_DEBUG_LEVEL1 */
-             {
-                 /* Merge the block */
-/* cm_mem_c_001.main_12 - addition for updating statistics related data */
+	       {
+		  /* Merge the block */
+		  /* cm_mem_c_001.main_12 - addition for updating statistics related data */
 #ifdef SSI_DEBUG_LEVEL1
-                  /* update the flags */
-                  if (CMM_IS_STATIC(p->memFlags))
-                     heapCb->staticHeapMemUsed -= (size + hdr);
-                  else if (CMM_IS_DYNAMIC(p->memFlags))
-                     heapCb->dynamicHeapMemUsed -= (size + hdr);
-                  size = (curHBlk->size += (size + hdr));
+		  /* update the flags */
+		  if (CMM_IS_STATIC(p->memFlags))
+		     heapCb->staticHeapMemUsed -= (size + hdr);
+		  else if (CMM_IS_DYNAMIC(p->memFlags))
+		     heapCb->dynamicHeapMemUsed -= (size + hdr);
+		  size = (curHBlk->size += (size + hdr));
 #else
-                  size = (curHBlk->size += size);
+		  size = (curHBlk->size += size);
 #endif /*SSI_DEBUG_LEVEL1*/
-                  p = curHBlk;
-             }
-             else
-             {
-/* cm_mem_c_001.main_12 - addition for double-free check */
+		  p = curHBlk;
+	       }
+	       else
+	       {
+		  /* cm_mem_c_001.main_12 - addition for double-free check */
 #ifdef SSI_DEBUG_LEVEL1
-                /* Check for double deallocation in heap */
-                if ((Data *)p < ((Data *)curHBlk + curHBlk->size))
-                {
-                   /* Release the lock */
-                   /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+		  /* Check for double deallocation in heap */
+		  if ((Data *)p < ((Data *)curHBlk + curHBlk->size))
+		  {
+		     /* Release the lock */
+		     /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-                   (Void) WTUnlock (&(heapCb->heapLock));
+		     (Void) WTUnlock (&(heapCb->heapLock));
 #else
-                   (Void) SUnlock (&(heapCb->heapLock));
+		     (Void) SUnlock (&(heapCb->heapLock));
 #endif
 
-                   /* This block is already freed in the heap */
-                   RETVALUE(RDBLFREE);
-                }
-                /* update the flags as it is a new node */
-                if (CMM_IS_STATIC(p->memFlags))
-                {
-                   heapCb->staticHeapMemUsed -= (size + hdr);
-                   CMM_RESET_STATIC_FLAG(p->memFlags);
-                }
-                else if (CMM_IS_DYNAMIC(p->memFlags))
-                {
-                   heapCb->dynamicHeapMemUsed -= (size + hdr);
-                   CMM_RESET_DYNAMIC_FLAG(p->memFlags);
-                }
-                CMM_SET_FREE_FLAG(p->memFlags);
-                p->requestedSize = 0;
+		     /* This block is already freed in the heap */
+		     RETVALUE(RDBLFREE);
+		  }
+		  /* update the flags as it is a new node */
+		  if (CMM_IS_STATIC(p->memFlags))
+		  {
+		     heapCb->staticHeapMemUsed -= (size + hdr);
+		     CMM_RESET_STATIC_FLAG(p->memFlags);
+		  }
+		  else if (CMM_IS_DYNAMIC(p->memFlags))
+		  {
+		     heapCb->dynamicHeapMemUsed -= (size + hdr);
+		     CMM_RESET_DYNAMIC_FLAG(p->memFlags);
+		  }
+		  CMM_SET_FREE_FLAG(p->memFlags);
+		  p->requestedSize = 0;
 #endif /*SSI_DEBUG_LEVEL1*/
-                /* insert the block */
-                p->next = curHBlk->next;
-                p->size = size; 
-                curHBlk->next = p;
-             }
+		  /* insert the block */
+		  p->next = curHBlk->next;
+		  p->size = size; 
+		  curHBlk->next = p;
+	       }
 
-            /* Try to merge with the next block in the chain */
-/* cm_mem_c_001.main_12 - addition for ssi enhancements */
+	    /* Try to merge with the next block in the chain */
+	    /* cm_mem_c_001.main_12 - addition for ssi enhancements */
 #ifdef SSI_DEBUG_LEVEL1
-            if (((Data *)p + hdr + size) == (Data *)(p->next) && (p->next))
+	    if (((Data *)p + hdr + size) == (Data *)(p->next) && (p->next))
 #else
-            if (((Data *)p + size) == (Data *)(p->next) && (p->next))
+	       if (((Data *)p + size) == (Data *)(p->next) && (p->next))
 #endif /*SSI_DEBUG_LEVEL1*/
-            {
-               /* p->next can not be NULL */
-/* cm_mem_c_001.main_12 - addition for header consideration */
+	       {
+		  /* p->next can not be NULL */
+		  /* cm_mem_c_001.main_12 - addition for header consideration */
 #ifdef SSI_DEBUG_LEVEL1
-               p->size += (p->next->size + hdr);
+		  p->size += (p->next->size + hdr);
 #else
-               p->size += p->next->size; 
+		  p->size += p->next->size; 
 #endif /*SSI_DEBUG_LEVEL1*/
-               p->next  = p->next->next;
-            }
+		  p->next  = p->next->next;
+	       }
 
-            /* Release the lock */
-            /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	    /* Release the lock */
+	    /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-            (Void) WTUnlock (&(heapCb->heapLock));
+	    (Void) WTUnlock (&(heapCb->heapLock));
 #else
-            (Void) SUnlock (&(heapCb->heapLock));
+	    (Void) SUnlock (&(heapCb->heapLock));
 #endif
-/*  cm_mem_c_001.main_15 : Additions */             
+	    /*  cm_mem_c_001.main_15 : Additions */             
 #ifdef SS_HISTOGRAM_SUPPORT 
-        /* If If Tapa task (entId)is registerd for histogram then insert 
-		   Memrory Freed information into the hash list */
-        if(hstReg)
-        {
-            if (cmHstGrmFreeInsert(&heapCb->heapHstGrmHashListCp, allocSize, line, 
-				           fileName, entId) != ROK)
-            {
-               sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
-					SPrint(hstGrmBuf);
-            }
-         }/* End of if */
+	    /* If If Tapa task (entId)is registerd for histogram then insert 
+	       Memrory Freed information into the hash list */
+	    if(hstReg)
+	    {
+	       if (cmHstGrmFreeInsert(&heapCb->heapHstGrmHashListCp, allocSize, line, 
+			fileName, entId) != ROK)
+	       {
+		  sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
+		  SPrint(hstGrmBuf);
+	       }
+	    }/* End of if */
 #endif /* SS_HISTOGRAM_SUPPORT */
-            RETVALUE(ROK);
-         }
+	    RETVALUE(ROK);
+	 }
       }
       else if (p < curHBlk)
       {
-         /*
-         * Check if the block to be returned can be merged with the
-         * current block.
-         */
-/* cm_mem_c_001.main_12 - addition for header consideration */
+	 /*
+	  * Check if the block to be returned can be merged with the
+	  * current block.
+	  */
+	 /* cm_mem_c_001.main_12 - addition for header consideration */
 #ifdef SSI_DEBUG_LEVEL1
-         if (((Data *)p + hdr + size) == (Data *)curHBlk)
+	 if (((Data *)p + hdr + size) == (Data *)curHBlk)
 #else
-         if (((Data *)p + size) == (Data *)curHBlk)
+	    if (((Data *)p + size) == (Data *)curHBlk)
 #endif /* SSI_DEBUG_LEVEL1 */
-         {
-            /* Merge the block */
-/* cm_mem_c_001.main_12 - addition for header consideration */
+	    {
+	       /* Merge the block */
+	       /* cm_mem_c_001.main_12 - addition for header consideration */
 #ifdef SSI_DEBUG_LEVEL1
-            p->size = size + (curHBlk->size + hdr);
+	       p->size = size + (curHBlk->size + hdr);
 #else
-            p->size = size + curHBlk->size;
+	       p->size = size + curHBlk->size;
 #endif /* SSI_DEBUG_LEVEL1 */
-            p->next = curHBlk->next;
-         }
-         else
-         {
-            /* insert the block */
-            p->next = curHBlk;
-            p->size = size;
-         }
-/* cm_mem_c_001.main_12 - addition for header updation */
+	       p->next = curHBlk->next;
+	    }
+	    else
+	    {
+	       /* insert the block */
+	       p->next = curHBlk;
+	       p->size = size;
+	    }
+	 /* cm_mem_c_001.main_12 - addition for header updation */
 #ifdef SSI_DEBUG_LEVEL1
-         /* update the flags in both cases as they are new start nodes*/
-         if (CMM_IS_STATIC(p->memFlags))
-         {
-            heapCb->staticHeapMemUsed -= (size + hdr);
-            CMM_RESET_STATIC_FLAG(p->memFlags);
-         }
-         else if (CMM_IS_DYNAMIC(p->memFlags))
-         {
-            heapCb->dynamicHeapMemUsed -= (size + hdr);
-            CMM_RESET_DYNAMIC_FLAG(p->memFlags);
-         }
-         CMM_SET_FREE_FLAG(p->memFlags);
-         p->requestedSize = 0;
+	 /* update the flags in both cases as they are new start nodes*/
+	 if (CMM_IS_STATIC(p->memFlags))
+	 {
+	    heapCb->staticHeapMemUsed -= (size + hdr);
+	    CMM_RESET_STATIC_FLAG(p->memFlags);
+	 }
+	 else if (CMM_IS_DYNAMIC(p->memFlags))
+	 {
+	    heapCb->dynamicHeapMemUsed -= (size + hdr);
+	    CMM_RESET_DYNAMIC_FLAG(p->memFlags);
+	 }
+	 CMM_SET_FREE_FLAG(p->memFlags);
+	 p->requestedSize = 0;
 #endif /* SSI_DEBUG_LEVEL1 */
 
-         heapCb->next = p;
+	 heapCb->next = p;
 
-         /* Release the lock */
-         /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
+	 /* Release the lock */
+	 /* cm_mem_c_001.main_13: Replaced SUnlock with WTUnlock for NT */
 #ifdef SS_WIN
-         (Void) WTUnlock (&(heapCb->heapLock));
+	 (Void) WTUnlock (&(heapCb->heapLock));
 #else
-         (Void) SUnlock (&(heapCb->heapLock));
+	 (Void) SUnlock (&(heapCb->heapLock));
 #endif
-/*  cm_mem_c_001.main_15 : Additions */
+	 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT  
-        /* If If Tapa task (entId)is registerd for histogram then insert 
-		   Memrory Freed information into the hash list */
-        if(hstReg)
-        {
-            if (cmHstGrmFreeInsert(&heapCb->heapHstGrmHashListCp, allocSize, line, 
-				           fileName, entId) != ROK)
-            {
-               sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
-					SPrint(hstGrmBuf);
-            }
-         }/* End of if */
+	 /* If If Tapa task (entId)is registerd for histogram then insert 
+	    Memrory Freed information into the hash list */
+	 if(hstReg)
+	 {
+	    if (cmHstGrmFreeInsert(&heapCb->heapHstGrmHashListCp, allocSize, line, 
+		     fileName, entId) != ROK)
+	    {
+	       sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
+	       SPrint(hstGrmBuf);
+	    }
+	 }/* End of if */
 #endif /* SS_HISTOGRAM_SUPPORT */
-         RETVALUE(ROK);
+	 RETVALUE(ROK);
       }
 
    }
@@ -4688,17 +4688,17 @@ Size         size;
       p->next = NULLP;
       p->size = size;
 
-/* cm_mem_c_001.main_12 - addition for header updation */
+      /* cm_mem_c_001.main_12 - addition for header updation */
 #ifdef SSI_DEBUG_LEVEL1
       if (CMM_IS_STATIC(p->memFlags))
       {
-         heapCb->staticHeapMemUsed -= (size + hdr);
-         CMM_RESET_STATIC_FLAG(p->memFlags);
+	 heapCb->staticHeapMemUsed -= (size + hdr);
+	 CMM_RESET_STATIC_FLAG(p->memFlags);
       }
       else if (CMM_IS_DYNAMIC(p->memFlags))
       {
-         heapCb->dynamicHeapMemUsed -= (size + hdr);
-         CMM_RESET_DYNAMIC_FLAG(p->memFlags);
+	 heapCb->dynamicHeapMemUsed -= (size + hdr);
+	 CMM_RESET_DYNAMIC_FLAG(p->memFlags);
       }
       CMM_SET_FREE_FLAG(p->memFlags);
       p->requestedSize = 0;
@@ -4711,19 +4711,19 @@ Size         size;
 #else
       (Void) SUnlock (&(heapCb->heapLock));
 #endif
-/*  cm_mem_c_001.main_15 : Additions */
+      /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-        /* If If Tapa task (entId)is registerd for histogram then insert 
-		   Memrory Freed information into the hash list */
-        if(hstReg)
-        {
-            if (cmHstGrmFreeInsert(&heapCb->heapHstGrmHashListCp, allocSize, line, 
-				           fileName, entId) != ROK)
-            {
-               sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
-					SPrint(hstGrmBuf);
-            }
-         }/* End of if */
+      /* If If Tapa task (entId)is registerd for histogram then insert 
+	 Memrory Freed information into the hash list */
+      if(hstReg)
+      {
+	 if (cmHstGrmFreeInsert(&heapCb->heapHstGrmHashListCp, allocSize, line, 
+		  fileName, entId) != ROK)
+	 {
+	    sprintf(hstGrmBuf, "Unable to Insert into the histgram hash list\n");
+	    SPrint(hstGrmBuf);
+	 }
+      }/* End of if */
 #endif /* SS_HISTOGRAM_SUPPORT */
       RETVALUE(ROK);
    }
@@ -4741,72 +4741,72 @@ Size         size;
 #endif/*USE_PURE*/
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PUBLIC U32 cmGetFreeIndx
+   PUBLIC U32 cmGetFreeIndx
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC U32 cmGetFreeIndx(Void)
 #endif
 {
 
-    if(gmemLkCb.head == gmemLkCb.tail)
-    {
-       allocQueueEmptyCnt++;
-       RETVALUE(CM_MAX_ALLOC_ENTERIES);
-    }
-    else
-    {
-       U32 allocQIndx = gmemLkCb.queue[gmemLkCb.head];
-       gmemLkCb.head = (gmemLkCb.head +1) % CM_MAX_ALLOC_ENTERIES;
-       RETVALUE(allocQIndx);
-    }
- 
+   if(gmemLkCb.head == gmemLkCb.tail)
+   {
+      allocQueueEmptyCnt++;
+      RETVALUE(CM_MAX_ALLOC_ENTERIES);
+   }
+   else
+   {
+      U32 allocQIndx = gmemLkCb.queue[gmemLkCb.head];
+      gmemLkCb.head = (gmemLkCb.head +1) % CM_MAX_ALLOC_ENTERIES;
+      RETVALUE(allocQIndx);
+   }
+
 }
 #ifdef ANSI
-PUBLIC U32 cmPutFreeIndx
+   PUBLIC U32 cmPutFreeIndx
 (
-U32   allocQIndx
-)
+ U32   allocQIndx
+ )
 #else
 PUBLIC U32 cmPutFreeIndx(allocQIndx)
-U32   allocQIndx;
+   U32   allocQIndx;
 #endif
 
 {
-    U32 tmpTail = (gmemLkCb.tail+1)% CM_MAX_ALLOC_ENTERIES;
-    if(tmpTail == gmemLkCb.head)
-    {
-       allocQueueFullCnt++;
-       RETVALUE(RFAILED);
-    }
-    else
-    {
-       gmemLkCb.queue[gmemLkCb.tail]  = allocQIndx;
-       gmemLkCb.tail = tmpTail;
-       RETVALUE(ROK);
-    }
+   U32 tmpTail = (gmemLkCb.tail+1)% CM_MAX_ALLOC_ENTERIES;
+   if(tmpTail == gmemLkCb.head)
+   {
+      allocQueueFullCnt++;
+      RETVALUE(RFAILED);
+   }
+   else
+   {
+      gmemLkCb.queue[gmemLkCb.tail]  = allocQIndx;
+      gmemLkCb.tail = tmpTail;
+      RETVALUE(ROK);
+   }
 }
 /*
-*
-*       Fun:   cmInitMemLeakMdl
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmInitMemLeakMdl
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmInitMemLeak
+   PUBLIC Void cmInitMemLeak
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC Void cmInitMemLeak (Void)
 #endif
@@ -4843,10 +4843,10 @@ PUBLIC Void cmInitMemLeak (Void)
  * 
  **/
 #ifdef ANSI
-PUBLIC Void cmDeinitMemLeak
+   PUBLIC Void cmDeinitMemLeak
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC Void cmDeinitMemLeak (Void)
 #endif
@@ -4854,7 +4854,7 @@ PUBLIC Void cmDeinitMemLeak (Void)
    U32   indx;  
 
    TRC3(cmDeinitMemLeak);
- 
+
    for(indx = 0; indx < CM_MAX_ALLOC_ENTERIES; indx++)
    {
       gmemLkCb.allocInfo[indx].used  = FALSE;
@@ -4866,34 +4866,34 @@ PUBLIC Void cmDeinitMemLeak (Void)
    RETVOID;
 }
 /*
-*
-*       Fun:   cmStorAllocBlk
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmStorAllocBlk
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC U32 cmStorAllocBlk
+   PUBLIC U32 cmStorAllocBlk
 (
-Void    *addr
-)
+ Void    *addr
+ )
 #else
 PUBLIC U32 cmStorAllocBlk (addr)
-Void    *addr;
+   Void    *addr;
 #endif /* ANSI */
 
 {
    U32 allocQIndx;
 
-  (Void) SLock(&gmemLkCb.memLock);
+   (Void) SLock(&gmemLkCb.memLock);
    allocQIndx = cmGetFreeIndx();
    if(allocQIndx < CM_MAX_ALLOC_ENTERIES)
    { 
@@ -4901,69 +4901,69 @@ Void    *addr;
       gmemLkCb.allocInfo[allocQIndx].memAddr    = addr;
       gmemLkCb.allocInfo[allocQIndx].used       = TRUE;
    }
-  (Void) SUnlock(&(gmemLkCb.memLock));
-   
+   (Void) SUnlock(&(gmemLkCb.memLock));
+
    RETVALUE(allocQIndx);
 } /* cmStorAllocBlk */
 
 
 /*
-*
-*       Fun:   cmRlsAllocBlk
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmRlsAllocBlk
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmRlsAllocBlk
+   PUBLIC Void cmRlsAllocBlk
 (
-U32    allocQIndx
-)
+ U32    allocQIndx
+ )
 #else
 PUBLIC Void cmRlsAllocBlk(allocQIndx)
-U32    allocQIndx;
+   U32    allocQIndx;
 #endif
 {
    TRC3(cmRlsAllocBlk);
-   
+
    if(allocQIndx < CM_MAX_ALLOC_ENTERIES)
    {
       if(gmemLkCb.allocInfo[allocQIndx].used == TRUE)
       {
-         (Void) SLock(&gmemLkCb.memLock);
-         gmemLkCb.allocInfo[allocQIndx].used = FALSE;
-         cmPutFreeIndx(allocQIndx);
-         queueIndxFreeCnt++;
-         (Void) SUnlock(&(gmemLkCb.memLock));
+	 (Void) SLock(&gmemLkCb.memLock);
+	 gmemLkCb.allocInfo[allocQIndx].used = FALSE;
+	 cmPutFreeIndx(allocQIndx);
+	 queueIndxFreeCnt++;
+	 (Void) SUnlock(&(gmemLkCb.memLock));
       }
    }
    RETVOID;
 } /* cmRlsAllocBlk */
 
 /*
-*
-*       Fun:  cmStartStopLeakLog
-*
-*
-*       Ret:   Void
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:  cmStartStopLeakLog
+ *
+ *
+ *       Ret:   Void
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmStartStopLeakLog
+   PUBLIC Void cmStartStopLeakLog
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC Void cmStartStopLeakLog(Void)
 #endif
@@ -4983,28 +4983,28 @@ PUBLIC Void cmStartStopLeakLog(Void)
 }
 
 /*
-*
-*       Fun:  cmPrintLeakLog
-*
-*       Desc:  Prints leak log
-*
-*       Ret:   Void
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:  cmPrintLeakLog
+ *
+ *       Desc:  Prints leak log
+ *
+ *       Ret:   Void
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmPrintLeakLog
+   PUBLIC Void cmPrintLeakLog
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC Void cmPrintLeakLog(Void)
 #endif
 {
- 
+
    U32   indx;  
    CmMmBlkHdr *aBkt;
    static U32 leakCount =0; 
@@ -5018,17 +5018,17 @@ PUBLIC Void cmPrintLeakLog(Void)
    {
       if(gmemLkCb.allocInfo[indx].used == TRUE)
       {
-         leakCount++;
-         aBkt =(CmMmBlkHdr *)gmemLkCb.allocInfo[indx].memAddr;
-         printf("LeakCnt(%ld)Addr(0x%p)RqSz(%ld)",
-            leakCount,gmemLkCb.allocInfo[indx].memAddr, aBkt->requestedSize);
-         printf("LineNo(%ld)funcName(%s)\n",
-            aBkt->lineNo, aBkt->currFuncName);
-         gmemLkCb.allocInfo[indx].used = FALSE;
-         cmPutFreeIndx(indx);
+	 leakCount++;
+	 aBkt =(CmMmBlkHdr *)gmemLkCb.allocInfo[indx].memAddr;
+	 printf("LeakCnt(%ld)Addr(0x%p)RqSz(%ld)",
+	       leakCount,gmemLkCb.allocInfo[indx].memAddr, aBkt->requestedSize);
+	 printf("LineNo(%ld)funcName(%s)\n",
+	       aBkt->lineNo, aBkt->currFuncName);
+	 gmemLkCb.allocInfo[indx].used = FALSE;
+	 cmPutFreeIndx(indx);
       }
       //if(leakCount % 10 == 0)
-        // sleep(1);
+      // sleep(1);
    }
    printf("---- END OF LEAK LOG ----");
    SUnlock(&gmemLkCb.memLock);
@@ -5041,179 +5041,179 @@ PUBLIC Void cmPrintLeakLog(Void)
 
 #if (defined(SS_MEM_LEAK_STS) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2))
 /*
-*
-*       Fun:   cmRlsAllocBlk
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmRlsAllocBlk
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 #ifdef ANSI
-PUBLIC Void cmRlsAllocBlk
+   PUBLIC Void cmRlsAllocBlk
 (
-CmMmBlkHdr  *ptrHdr,
-CmMmRegCb *regCb
-)
+ CmMmBlkHdr  *ptrHdr,
+ CmMmRegCb *regCb
+ )
 #else
 PUBLIC Void cmRlsAllocBlk(ptrHdr, regCb)
-CmMmBlkHdr  *ptrHdr;
-CmMmRegCb *regCb;
+   CmMmBlkHdr  *ptrHdr;
+   CmMmRegCb *regCb;
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void cmRlsAllocBlk
-(
+   PUBLIC Void cmRlsAllocBlk
+   (
 #ifdef BIT_64
-U64    addr
+    U64    addr
 #else
-U32    addr
+    U32    addr
 #endif
-)
+   )
 #else
 PUBLIC Void cmRlsAllocBlk(addr)
 #ifdef BIT_64
-U64    addr;
+   U64    addr;
 #else
-U32    addr;
+   U32    addr;
 #endif
 #endif
 #endif
 {
-    Ptr           trace[CM_MAX_STACK_TRACE];
-    S8            **funcNm;
-    U8            idx;
-    U8            i;
-    S16           retVal;
-    S32           traceSize;
+   Ptr           trace[CM_MAX_STACK_TRACE];
+   S8            **funcNm;
+   U8            idx;
+   U8            i;
+   S16           retVal;
+   S32           traceSize;
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
-    MemAllocInfo  *memAllocInfo;
+   MemAllocInfo  *memAllocInfo;
 #endif
 
-    TRC3(cmRlsAllocBlk);
+   TRC3(cmRlsAllocBlk);
 
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 #ifdef BIT_64
-    retVal = cmHashListFind(&regCb->brdcmSsiLstCp,(U8 *)&ptrHdr,
-                   (U16)sizeof(U64), 0, (PTR *)&ptrHdr);                              
+   retVal = cmHashListFind(&regCb->brdcmSsiLstCp,(U8 *)&ptrHdr,
+	 (U16)sizeof(U64), 0, (PTR *)&ptrHdr);                              
 #else
-    retVal = cmHashListFind(&regCb->brdcmSsiLstCp,(U8 *)&ptrHdr,
-                   (U16)sizeof(U32), 0, (PTR *)&ptrHdr);                              
+   retVal = cmHashListFind(&regCb->brdcmSsiLstCp,(U8 *)&ptrHdr,
+	 (U16)sizeof(U32), 0, (PTR *)&ptrHdr);                              
 #endif
-    if(retVal == ROK)
-    {
-       cmHashListDelete(&regCb->brdcmSsiLstCp, (PTR)ptrHdr);
-    }
+   if(retVal == ROK)
+   {
+      cmHashListDelete(&regCb->brdcmSsiLstCp, (PTR)ptrHdr);
+   }
 #else
-    if( memLkCb.memLkMdlInit == FALSE)
-    {
+   if( memLkCb.memLkMdlInit == FALSE)
+   {
       RETVOID;
-    }
-    for(idx = 0; idx < CM_MEM_USR_MDL; idx++)
-    {
-       SLock(&memLkCb.memUsrMdl[idx][addr & 0x3].memLck);
+   }
+   for(idx = 0; idx < CM_MEM_USR_MDL; idx++)
+   {
+      SLock(&memLkCb.memUsrMdl[idx][addr & 0x3].memLck);
 #ifdef BIT_64
-       retVal = cmHashListFind(&memLkCb.memUsrMdl[idx][addr & 0x3].memHashCp,
-                               (U8 *)&addr, sizeof(U64), 0,
-                               (PTR *)&memAllocInfo);      
+      retVal = cmHashListFind(&memLkCb.memUsrMdl[idx][addr & 0x3].memHashCp,
+	    (U8 *)&addr, sizeof(U64), 0,
+	    (PTR *)&memAllocInfo);      
 #else
-       retVal = cmHashListFind(&memLkCb.memUsrMdl[idx][addr & 0x3].memHashCp,
-                               (U8 *)&addr, sizeof(U32), 0,
-                               (PTR *)&memAllocInfo);                              
+      retVal = cmHashListFind(&memLkCb.memUsrMdl[idx][addr & 0x3].memHashCp,
+	    (U8 *)&addr, sizeof(U32), 0,
+	    (PTR *)&memAllocInfo);                              
 #endif                 
-       if(retVal == ROK)
-       {
-         cmHashListDelete(&memLkCb.memUsrMdl[idx][addr & 0x3].memHashCp,
-                          (PTR)memAllocInfo);
-         SUnlock(&memLkCb.memUsrMdl[idx][addr & 0x3].memLck);
-         funcNm = (S8 **) memAllocInfo->backTrace;
+      if(retVal == ROK)
+      {
+	 cmHashListDelete(&memLkCb.memUsrMdl[idx][addr & 0x3].memHashCp,
+	       (PTR)memAllocInfo);
+	 SUnlock(&memLkCb.memUsrMdl[idx][addr & 0x3].memLck);
+	 funcNm = (S8 **) memAllocInfo->backTrace;
 #ifdef SS_MEM_LEAK_SOL
-         for(i = 0; i < memAllocInfo->bTrcSz; i++)
-         {
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+	 for(i = 0; i < memAllocInfo->bTrcSz; i++)
+	 {
+	    /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
-            MxHeapFree(SsiHeap, funcNm[i]);
+	    MxHeapFree(SsiHeap, funcNm[i]);
 #else
-            free(funcNm[i]);
+	    free(funcNm[i]);
 #endif
-         }
+	 }
 #endif /* SS_MEM_LEAK_SOL */
 #ifdef SS_MEM_LEAK_FREE_TRACE
-         {
+	 {
 
-            Txt   prntBuf[255];
-            sprintf( prntBuf, "\n==============================\n");
-            SPrint(prntBuf);
-            /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
+	    Txt   prntBuf[255];
+	    sprintf( prntBuf, "\n==============================\n");
+	    SPrint(prntBuf);
+	    /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
 #ifdef ALIGN_64BIT
-            sprintf( prntBuf, "Address: [%x]\n", addr);
+	    sprintf( prntBuf, "Address: [%x]\n", addr);
 #else
-            sprintf( prntBuf, "Address: [%lx]\n", addr);
+	    sprintf( prntBuf, "Address: [%lx]\n", addr);
 #endif
-            SPrint(prntBuf);
-            traceSize = backtrace(trace, CM_MAX_STACK_TRACE);
-            funcNm    = backtrace_symbols(trace, traceSize);
-            sprintf( prntBuf, "[bt] Execution path:\n");
-            SPrint(prntBuf);
-            for (i=0; i < traceSize; ++i)
-            {
-              sprintf( prntBuf, "[bt] %s\n", funcNm[i]);
-              SPrint(prntBuf);
-            }
-            sprintf( prntBuf, "\n==============================\n");
-            SPrint(prntBuf);
-         }
+	    SPrint(prntBuf);
+	    traceSize = backtrace(trace, CM_MAX_STACK_TRACE);
+	    funcNm    = backtrace_symbols(trace, traceSize);
+	    sprintf( prntBuf, "[bt] Execution path:\n");
+	    SPrint(prntBuf);
+	    for (i=0; i < traceSize; ++i)
+	    {
+	       sprintf( prntBuf, "[bt] %s\n", funcNm[i]);
+	       SPrint(prntBuf);
+	    }
+	    sprintf( prntBuf, "\n==============================\n");
+	    SPrint(prntBuf);
+	 }
 #endif   /* SS_MEM_LEAK_FREE_TRACE */
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+	 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
-         MxHeapFree(SsiHeap, funcNm);
-         MxHeapFree(SsiHeap, memAllocInfo);
+	 MxHeapFree(SsiHeap, funcNm);
+	 MxHeapFree(SsiHeap, memAllocInfo);
 #else
-         free(funcNm);
-         free(memAllocInfo);
+	 free(funcNm);
+	 free(memAllocInfo);
 #endif
-         break;
-       }
-       SUnlock(&memLkCb.memUsrMdl[idx][addr & 0x3].memLck);
-    }
+	 break;
+      }
+      SUnlock(&memLkCb.memUsrMdl[idx][addr & 0x3].memLck);
+   }
 
 #ifndef SS_MEM_LEAK_SOL
-     if(idx == CM_MEM_USR_MDL)
-     {
-       Txt   prntBuf[255];
-       sprintf( prntBuf,"\nPossible Double-Deallocation.\n");
-       SPrint(prntBuf);
-/*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
+   if(idx == CM_MEM_USR_MDL)
+   {
+      Txt   prntBuf[255];
+      sprintf( prntBuf,"\nPossible Double-Deallocation.\n");
+      SPrint(prntBuf);
+      /*cm_mem_c_001.main_23 Fix for specifier mismatch warnings in 64BIT compilation*/          
 #ifdef ALIGN_64BIT          
-       sprintf( prntBuf, "Address: [%u]\n", addr);
+      sprintf( prntBuf, "Address: [%u]\n", addr);
 #else       
-       sprintf( prntBuf, "Address: [%lu]\n", addr);
+      sprintf( prntBuf, "Address: [%lu]\n", addr);
 #endif       
-       SPrint(prntBuf);
-       traceSize = backtrace(trace, CM_MAX_STACK_TRACE);
-       funcNm    = backtrace_symbols(trace, traceSize);
-       sprintf( prntBuf,"[bt] Execution path:\n");
-       SPrint(prntBuf);
-       for (i=0; i < traceSize; ++i)
-       {
-             sprintf( prntBuf,"[bt] %s\n", funcNm[i]);
-             SPrint(prntBuf);
-       }
-       printf("\n==============================\n");
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+      SPrint(prntBuf);
+      traceSize = backtrace(trace, CM_MAX_STACK_TRACE);
+      funcNm    = backtrace_symbols(trace, traceSize);
+      sprintf( prntBuf,"[bt] Execution path:\n");
+      SPrint(prntBuf);
+      for (i=0; i < traceSize; ++i)
+      {
+	 sprintf( prntBuf,"[bt] %s\n", funcNm[i]);
+	 SPrint(prntBuf);
+      }
+      printf("\n==============================\n");
+      /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
-       MxHeapFree(SsiHeap, funcNm);
+      MxHeapFree(SsiHeap, funcNm);
 #else
-       free(funcNm);
+      free(funcNm);
 #endif
-     }
+   }
 #endif /* SS_MEM_LEAK_SOL */
 #endif/* BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1 */
    /*cm_mem_c_001.main_25 : */
@@ -5222,66 +5222,66 @@ U32    addr;
 
 
 /*
-*
-*       Fun:   cmStorAllocBlk
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmStorAllocBlk
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 #ifdef ANSI
-PUBLIC Void cmStorAllocBlk
+   PUBLIC Void cmStorAllocBlk
 (
-CmMmBlkHdr    *ptrHdr, 
-Size          reqSz,
-Size          allocSz,
-U16           bktIdx,
-CmMmRegCb     *regCb
-)
+ CmMmBlkHdr    *ptrHdr, 
+ Size          reqSz,
+ Size          allocSz,
+ U16           bktIdx,
+ CmMmRegCb     *regCb
+ )
 #else
 PUBLIC Void cmStorAllocBlk (ptrHdr, reqSz, allocSz, bktIdx, regCb)
-CmMmBlkHdr    *ptrHdr;
-Size          reqSz;
-Size          allocSz;
-U16           bktIdx;
-CmMmRegCb     *regCb;
+   CmMmBlkHdr    *ptrHdr;
+   Size          reqSz;
+   Size          allocSz;
+   U16           bktIdx;
+   CmMmRegCb     *regCb;
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void cmStorAllocBlk
+   PUBLIC Void cmStorAllocBlk
 (
 #ifdef BIT_64
-U64    addr,
+ U64    addr,
 #else
-U32    addr,
+ U32    addr,
 #endif
-Size   reqSz,
-Size   allocSz,
-U16    bktIdx
-)
+ Size   reqSz,
+ Size   allocSz,
+ U16    bktIdx
+ )
 #else
 PUBLIC Void cmStorAllocBlk (addr, reqSz, allocSz, bktIdx)
 #ifdef BIT_64
-U64    addr;
+   U64    addr;
 #else
-U32    addr;
+   U32    addr;
 #endif
-Size   reqSz;
-Size   allocSz;
-U16    bktIdx;
+   Size   reqSz;
+   Size   allocSz;
+   U16    bktIdx;
 #endif /* ANSI */
 #endif /* BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1 */
 {
 #ifndef SS_MEM_LEAK_SOL
-  void           *trace[CM_MAX_STACK_TRACE];
+   void           *trace[CM_MAX_STACK_TRACE];
 #endif  /* SS_MEM_LEAK_SOL */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
    U8            btrIdx;
@@ -5296,21 +5296,21 @@ U16    bktIdx;
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
    if( memLkCb.memLkMdlInit == FALSE)
    {
-     RETVOID;
+      RETVOID;
    }
 #endif
 #ifdef SS_MEM_LEAK_SOL
    /* I need to do this for solaris, because it does not implement 
     * backtrace. Here backtrace is my function. See below for the 
     * implementation. */
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+   /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    funcNm = (S8 **)MxHeapAlloc(SsiHeap, (sizeof(U32) * CM_MAX_STACK_TRACE));
    cmMemset((U8*)funcNm, 0, (sizeof(U32) * CM_MAX_STACK_TRACE));
 #else
    funcNm = (S8 **)calloc(1, (sizeof(U32) * CM_MAX_STACK_TRACE));
 #endif
-	/* SGetSBuf(DFLT_REGION, DFLT_POOL, &funcNm, sizeof(U32) * CM_MAX_STACK_TRACE); */
+   /* SGetSBuf(DFLT_REGION, DFLT_POOL, &funcNm, sizeof(U32) * CM_MAX_STACK_TRACE); */
    traceSize = backtrace((Void **)funcNm, CM_MAX_STACK_TRACE);
 #else /* SS_MEM_LEAK_SOL */
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
@@ -5324,7 +5324,7 @@ U16    bktIdx;
    (Void)SLock(&(memLkCb.memUsrMdl[moduleId][addr & 0x3].memLck)); 
 #endif
 
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+   /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 #ifdef SS_4GMX_LCORE
    allocInfo = (MemAllocInfo *)MxHeapAlloc(SsiHeap, sizeof(MemAllocInfo)); 
@@ -5333,7 +5333,7 @@ U16    bktIdx;
    allocInfo = (MemAllocInfo *)calloc(1, sizeof(MemAllocInfo));  
 #endif
 #endif
-	/* SGetSBuf(DFLT_REGION, DFLT_POOL, &allocInfo,  sizeof(MemAllocInfo)); */
+   /* SGetSBuf(DFLT_REGION, DFLT_POOL, &allocInfo,  sizeof(MemAllocInfo)); */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
    /* check if hashListCp is initialised yet */
    if ( regCb->brdcmSsiLstCp.nmbBins == 0)
@@ -5344,7 +5344,7 @@ U16    bktIdx;
    ptrHdr->allocSz    = allocSz;
    ptrHdr->bktIdx     = bktIdx;
    cmHashListInsert(&regCb->brdcmSsiLstCp, (PTR)ptrHdr,
-         (U8 *)&(ptrHdr), sizeof(PTR));
+	 (U8 *)&(ptrHdr), sizeof(PTR));
 #else
    allocInfo->memAddr    = addr;
    allocInfo->reqSz      = reqSz;
@@ -5354,8 +5354,8 @@ U16    bktIdx;
    allocInfo->moduleId   = moduleId;
    allocInfo->bTrcSz     = traceSize;
    cmHashListInsert(&memLkCb.memUsrMdl[moduleId][addr & 0x3].memHashCp, 
-                    (PTR)allocInfo, (U8 *)&(allocInfo->memAddr),
-                    sizeof(allocInfo->memAddr));
+	 (PTR)allocInfo, (U8 *)&(allocInfo->memAddr),
+	 sizeof(allocInfo->memAddr));
    memLkCb.memUsrMdl[moduleId][addr & 0x3].used = TRUE;
 
    (Void) SUnlock(&(memLkCb.memUsrMdl[moduleId][addr & 0x3].memLck));
@@ -5364,30 +5364,30 @@ U16    bktIdx;
 } /* cmStorAllocBlk */
 
 /*
-*
-   RETVOID;
-} /* cmStorAllocBlk */
+ *
+ RETVOID;
+ } /* cmStorAllocBlk */
 
 /*
-*
-*       Fun:   SLogLkInfo
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   SLogLkInfo
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void SLogLkInfo
+   PUBLIC Void SLogLkInfo
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC Void SLogLkInfo (Void)
 #endif
@@ -5416,37 +5416,37 @@ PUBLIC Void SLogLkInfo (Void)
    fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
    for(regionIdx = 0; regionIdx <  SS_MAX_REGS; regionIdx++)
    {
-//      tmpRegCb = mtCMMRegCb[regionIdx];
+      //      tmpRegCb = mtCMMRegCb[regionIdx];
       while(cmHashListGetNext(&tmpRegCb->brdcmSsiLstCp,
-               (PTR)oldBlkHdr, (PTR *)&newBlkHdr) == ROK)
+	       (PTR)oldBlkHdr, (PTR *)&newBlkHdr) == ROK)
       {
-         sprintf(prntBuf, "[LBIS]\n");
-         fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
+	 sprintf(prntBuf, "[LBIS]\n");
+	 fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
 #ifdef ALIGN_64BIT
-         sprintf(prntBuf, "Address: 0x%u\n", newBlkHdr);
+	 sprintf(prntBuf, "Address: 0x%u\n", newBlkHdr);
 #else
-         sprintf(prntBuf, "Address: 0x%lu\n", newBlkHdr);
+	 sprintf(prntBuf, "Address: 0x%lu\n", newBlkHdr);
 #endif
-         fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
-         sprintf(prntBuf, "Requested Size: %d\n", (S16)newBlkHdr->reqSz);
-         fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
-         sprintf(prntBuf, "Allocated Size: %d\n", (S16)newBlkHdr->allocSz);
-         fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
-         sprintf(prntBuf, "Bucket Idx: %d\n", newBlkHdr->bktIdx);
-         fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
-         sprintf(prntBuf,"Memory Allocation Path:\n");
-         fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
-         //funcNm = (S8 **)newBlkHdr->backTrace;
-         for(idx = 0; idx < BRDCM_MEM_LEAK_BTRACE; idx ++)
-         {
-          //  sprintf(prntBuf,"==> %p\n", newBlkHdr->backTrace[idx]);
-            fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
-         }
-         sprintf(prntBuf, "[LBIE]\n\n");
-         fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
-         fflush(memLk.fileLkLog);
-         oldBlkHdr = newBlkHdr;
-         newBlkHdr = NULLP;
+	 fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
+	 sprintf(prntBuf, "Requested Size: %d\n", (S16)newBlkHdr->reqSz);
+	 fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
+	 sprintf(prntBuf, "Allocated Size: %d\n", (S16)newBlkHdr->allocSz);
+	 fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
+	 sprintf(prntBuf, "Bucket Idx: %d\n", newBlkHdr->bktIdx);
+	 fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
+	 sprintf(prntBuf,"Memory Allocation Path:\n");
+	 fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
+	 //funcNm = (S8 **)newBlkHdr->backTrace;
+	 for(idx = 0; idx < BRDCM_MEM_LEAK_BTRACE; idx ++)
+	 {
+	    //  sprintf(prntBuf,"==> %p\n", newBlkHdr->backTrace[idx]);
+	    fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
+	 }
+	 sprintf(prntBuf, "[LBIE]\n\n");
+	 fwrite(prntBuf, strlen(prntBuf), 1, memLk.fileLkLog);
+	 fflush(memLk.fileLkLog);
+	 oldBlkHdr = newBlkHdr;
+	 newBlkHdr = NULLP;
       } 
    }
    sprintf(prntBuf, "\n------- END OF LEAK LOG -------\n");
@@ -5463,59 +5463,59 @@ PUBLIC Void SLogLkInfo (Void)
    TRC3(SLogLkInfo);
    if( memLkCb.memLkMdlInit == FALSE)
    {
-     RETVOID;
+      RETVOID;
    }
    sprintf(prntBuf, "\n------- START OF LEAK LOG -------\n");
    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
 
    for(memMdl = 0; memMdl < CM_MEM_USR_MDL; memMdl++)
    {
-	   for (hashIdx = 0; hashIdx < CM_MAX_HASH_PER_TSK; hashIdx++)
-		{
-         if(memLkCb.memUsrMdl[memMdl][hashIdx].used == FALSE)
-         {
-            continue;
-         }
-         oldMemInfo = NULLP;
-         newMemInfo = NULLP;
-         SLock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
-         while(cmHashListGetNext(&memLkCb.memUsrMdl[memMdl][hashIdx].memHashCp,
-                                 (PTR)oldMemInfo, (PTR *)&newMemInfo) == ROK)
-         {
-             sprintf(prntBuf, "[LBIS]\n");
-             fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
-             /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
+      for (hashIdx = 0; hashIdx < CM_MAX_HASH_PER_TSK; hashIdx++)
+      {
+	 if(memLkCb.memUsrMdl[memMdl][hashIdx].used == FALSE)
+	 {
+	    continue;
+	 }
+	 oldMemInfo = NULLP;
+	 newMemInfo = NULLP;
+	 SLock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
+	 while(cmHashListGetNext(&memLkCb.memUsrMdl[memMdl][hashIdx].memHashCp,
+		  (PTR)oldMemInfo, (PTR *)&newMemInfo) == ROK)
+	 {
+	    sprintf(prntBuf, "[LBIS]\n");
+	    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
+	    /* cm_mem_c_001.main_25 - Fixed compilation warnings 32/64 bit */
 #ifdef ALIGN_64BIT
-             sprintf(prntBuf, "Address: 0x%u\n", newMemInfo->memAddr);
+	    sprintf(prntBuf, "Address: 0x%u\n", newMemInfo->memAddr);
 #else
-             sprintf(prntBuf, "Address: 0x%lu\n", newMemInfo->memAddr);
+	    sprintf(prntBuf, "Address: 0x%lu\n", newMemInfo->memAddr);
 #endif
-             fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
-             sprintf(prntBuf, "Module Name: %s\n", 
-                     memUsrMdlStr[newMemInfo->moduleId].mdlStr);
-             fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
-             sprintf(prntBuf, "Requested Size: %d\n", (S16)newMemInfo->reqSz);
-             fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
-             sprintf(prntBuf, "Allocated Size: %d\n", (S16)newMemInfo->allocSz);
-             fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
-             sprintf(prntBuf, "Bucket Idx: %d\n", newMemInfo->bktIdx);
-             fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
-             sprintf(prntBuf,"Memory Allocation Path:\n");
-             fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
-             funcNm = (S8 **)newMemInfo->backTrace;
-             for(idx = 0; idx < newMemInfo->bTrcSz; idx ++)
-             {
-                sprintf(prntBuf,"==> %s\n", funcNm[idx]);
-                fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
-             }
-             sprintf(prntBuf, "[LBIE]\n\n");
-             fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
-             fflush(memLkCb.fileLkLog);
-             oldMemInfo = newMemInfo;
-             newMemInfo = NULLP;
-         } 
-         SUnlock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
-		}
+	    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
+	    sprintf(prntBuf, "Module Name: %s\n", 
+		  memUsrMdlStr[newMemInfo->moduleId].mdlStr);
+	    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
+	    sprintf(prntBuf, "Requested Size: %d\n", (S16)newMemInfo->reqSz);
+	    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
+	    sprintf(prntBuf, "Allocated Size: %d\n", (S16)newMemInfo->allocSz);
+	    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
+	    sprintf(prntBuf, "Bucket Idx: %d\n", newMemInfo->bktIdx);
+	    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
+	    sprintf(prntBuf,"Memory Allocation Path:\n");
+	    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
+	    funcNm = (S8 **)newMemInfo->backTrace;
+	    for(idx = 0; idx < newMemInfo->bTrcSz; idx ++)
+	    {
+	       sprintf(prntBuf,"==> %s\n", funcNm[idx]);
+	       fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
+	    }
+	    sprintf(prntBuf, "[LBIE]\n\n");
+	    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
+	    fflush(memLkCb.fileLkLog);
+	    oldMemInfo = newMemInfo;
+	    newMemInfo = NULLP;
+	 } 
+	 SUnlock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
+      }
    }
    sprintf(prntBuf, "\n------- END OF LEAK LOG -------\n");
    fwrite(prntBuf, strlen(prntBuf), 1, memLkCb.fileLkLog);
@@ -5528,44 +5528,44 @@ PUBLIC Void SLogLkInfo (Void)
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_MEM_LEAK_STS 
 /*
-*
-*       Fun:   cmInitMemLeakMdl
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmInitMemLeakMdl
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmInitMemLeakMdl
+   PUBLIC Void cmInitMemLeakMdl
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC Void cmInitMemLeakMdl (Void)
 #endif
 {
    U8   memMdl;
-	U8   hashIdx;
+   U8   hashIdx;
 
    TRC3(cmInitMemLeakMdl);
 
    memLkCb.memLkMdlInit = FALSE;
    for(memMdl = 0; memMdl < CM_MEM_USR_MDL; memMdl++)
    {
-	   for (hashIdx = 0; hashIdx < CM_MAX_HASH_PER_TSK; hashIdx++)
-		{
-       SInitLock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck, 1);
-       cmHashListInit(&memLkCb.memUsrMdl[memMdl][hashIdx].memHashCp,
-                      500, 0, FALSE, CM_HASH_KEYTYPE_U32MOD, 0, 0);
-       memLkCb.memUsrMdl[memMdl][hashIdx].used = FALSE;
-		}
+      for (hashIdx = 0; hashIdx < CM_MAX_HASH_PER_TSK; hashIdx++)
+      {
+	 SInitLock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck, 1);
+	 cmHashListInit(&memLkCb.memUsrMdl[memMdl][hashIdx].memHashCp,
+	       500, 0, FALSE, CM_HASH_KEYTYPE_U32MOD, 0, 0);
+	 memLkCb.memUsrMdl[memMdl][hashIdx].used = FALSE;
+      }
    }
    if(memLkCb.fileLkLog == NULLP)
    {
@@ -5592,54 +5592,54 @@ PUBLIC Void cmInitMemLeakMdl (Void)
  * 
  **/
 #ifdef ANSI
-PUBLIC Void cmDeinitMemLeakMdl
+   PUBLIC Void cmDeinitMemLeakMdl
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC Void cmDeinitMemLeakMdl (Void)
 #endif
 {
-  U8   memMdl;
-  U8   hashIdx;
+   U8   memMdl;
+   U8   hashIdx;
 
-  TRC3(cmDeinitMemLeakMdl);
+   TRC3(cmDeinitMemLeakMdl);
 
-  memLkCb.memLkMdlInit = FALSE;
-  for(memMdl = 0; memMdl < CM_MEM_USR_MDL; memMdl++)
-  {
-	 for (hashIdx = 0; hashIdx < CM_MAX_HASH_PER_TSK; hashIdx++)
-	 {
-		SDestroyLock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
-		cmHashListDeinit(&memLkCb.memUsrMdl[memMdl][hashIdx].memHashCp);
-		memLkCb.memUsrMdl[memMdl][hashIdx].used = FALSE;
-	 }
-  }
-  RETVOID;
+   memLkCb.memLkMdlInit = FALSE;
+   for(memMdl = 0; memMdl < CM_MEM_USR_MDL; memMdl++)
+   {
+      for (hashIdx = 0; hashIdx < CM_MAX_HASH_PER_TSK; hashIdx++)
+      {
+	 SDestroyLock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
+	 cmHashListDeinit(&memLkCb.memUsrMdl[memMdl][hashIdx].memHashCp);
+	 memLkCb.memUsrMdl[memMdl][hashIdx].used = FALSE;
+      }
+   }
+   RETVOID;
 }
 /*
-*
-*       Fun:   cmMemOpenMemLkFile
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMemOpenMemLkFile
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void cmMemOpenMemLkFile
+   PUBLIC Void cmMemOpenMemLkFile
 (
-S8 *arg
-)
+ S8 *arg
+ )
 #else
 PUBLIC Void cmMemOpenMemLkFile (arg)
-S8 *msOptArg;
+   S8 *msOptArg;
 #endif
 {
    TRC3(cmMemOpenMemLkFile);
@@ -5648,25 +5648,25 @@ S8 *msOptArg;
    RETVOID;
 }
 /*
-*
-*       Fun:   SFlushLkInfo
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   SFlushLkInfo
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void SFlushLkInfo
+   PUBLIC Void SFlushLkInfo
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC Void SFlushLkInfo (Void)
 #endif
@@ -5682,74 +5682,74 @@ PUBLIC Void SFlushLkInfo (Void)
    TRC3(SFlushLkInfo);
    if( memLkCb.memLkMdlInit == FALSE)
    {
-     RETVOID;
+      RETVOID;
    }
 
    for(memMdl = 0; memMdl < CM_MEM_USR_MDL; memMdl++)
    {
-	   for(hashIdx = 0; hashIdx < CM_MAX_HASH_PER_TSK; hashIdx++)
-		{
-         if(memLkCb.memUsrMdl[memMdl][hashIdx].used == FALSE)
-         {
-            continue;
-         }
-         newMemInfo = NULLP;
-         SLock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
-         while(cmHashListGetNext(&memLkCb.memUsrMdl[memMdl][hashIdx].memHashCp,
-                                 (PTR)NULLP, (PTR *)&newMemInfo) == ROK)
-         {
-             funcNm = (S8 **)newMemInfo->backTrace;
+      for(hashIdx = 0; hashIdx < CM_MAX_HASH_PER_TSK; hashIdx++)
+      {
+	 if(memLkCb.memUsrMdl[memMdl][hashIdx].used == FALSE)
+	 {
+	    continue;
+	 }
+	 newMemInfo = NULLP;
+	 SLock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
+	 while(cmHashListGetNext(&memLkCb.memUsrMdl[memMdl][hashIdx].memHashCp,
+		  (PTR)NULLP, (PTR *)&newMemInfo) == ROK)
+	 {
+	    funcNm = (S8 **)newMemInfo->backTrace;
 #ifdef SS_MEM_LEAK_SOL
-             for(i = 0; i < newMemInfo->bTrcSz; i++)
-             {
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+	    for(i = 0; i < newMemInfo->bTrcSz; i++)
+	    {
+	       /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
-                MxHeapFree(SsiHeap, funcNm[i]); 
+	       MxHeapFree(SsiHeap, funcNm[i]); 
 #else
-                free(funcNm[i]); 
+	       free(funcNm[i]); 
 #endif
-				    /* SPutSBuf(DFLT_REGION, DFLT_POOL, funcNm[i], sizeof(U32) * CM_MAX_STACK_TRACE); */
-             }
+	       /* SPutSBuf(DFLT_REGION, DFLT_POOL, funcNm[i], sizeof(U32) * CM_MAX_STACK_TRACE); */
+	    }
 #endif /* SS_MEM_LEAK_SOl */
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+	    /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
-             MxHeapFree(SsiHeap, funcNm);
-             MxHeapFree(SsiHeap, newMemInfo);
+	    MxHeapFree(SsiHeap, funcNm);
+	    MxHeapFree(SsiHeap, newMemInfo);
 #else
-             free(funcNm);
-             free(newMemInfo);
+	    free(funcNm);
+	    free(newMemInfo);
 #endif
-         }
-         SUnlock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
-		}
-    }
-    RETVOID;
+	 }
+	 SUnlock(&memLkCb.memUsrMdl[memMdl][hashIdx].memLck);
+      }
+   }
+   RETVOID;
 }
 /*
-*
-*       Fun:   cmMemGetModuleId
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMemGetModuleId
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC U8 cmMemGetModuleId
+   PUBLIC U8 cmMemGetModuleId
 (
-S8     **funNm,
-S32    traceSize
-)
+ S8     **funNm,
+ S32    traceSize
+ )
 #else
 PUBLIC U8 cmMemGetModuleId (funNm, traceSize)
-S8     **funNm;
-S32    traceSize;
+   S8     **funNm;
+   S32    traceSize;
 #endif /* ANSI */
 {
    U8    idx;
@@ -5760,77 +5760,77 @@ S32    traceSize;
    S16   mdlFunStrIdx;
 
    Txt   *memFn[]={"SGetMsg", "SGetSBuf", "SGetDBuf", NULLP};
-                 
+
    /*cm_mem_c_001.main_25 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC3(cmMemGetModuleId)
-   for(idx = 0; idx < traceSize; idx++)
-   {
-      memReqIdx = -1;
-      memStrIdx = 0;
-      while((memReqIdx < 0) && (memFn[memStrIdx] != NULLP))
+      for(idx = 0; idx < traceSize; idx++)
       {
-         memReqIdx = cmMemGetStrMtchIdx(0, traceSize, memFn[memStrIdx], 
-                                        funNm);
-         memStrIdx++;
+	 memReqIdx = -1;
+	 memStrIdx = 0;
+	 while((memReqIdx < 0) && (memFn[memStrIdx] != NULLP))
+	 {
+	    memReqIdx = cmMemGetStrMtchIdx(0, traceSize, memFn[memStrIdx], 
+		  funNm);
+	    memStrIdx++;
+	 }
+	 mdlFunStrIdx = 0;
+	 while(memUsrMdlStr[mdlFunStrIdx].fPStr != NULLP)
+	 {
+	    len = strlen((const S8 *)memUsrMdlStr[mdlFunStrIdx].fPStr);
+	    memReqIdx = cmMemGetStrMtchIdx((memReqIdx + 1), traceSize, 
+		  memUsrMdlStr[mdlFunStrIdx].fPStr,
+		  funNm);
+	    if(memReqIdx >= 0)
+	    {
+	       RETVALUE(mdlFunStrIdx);
+	    }
+	    mdlFunStrIdx++;
+	 }
+	 mdlFunStrIdx = 0;
+	 while(memUsrMdlStr[mdlFunStrIdx].fPStr != NULLP)
+	 {
+	    retVal = strcmp((const S8 *)"DEFAULT", 
+		  (const S8 *)memUsrMdlStr[mdlFunStrIdx].fPStr);
+	    if(retVal == NULLD)
+	    {
+	       RETVALUE(mdlFunStrIdx);
+	    } 
+	    mdlFunStrIdx++;
+	 }
       }
-      mdlFunStrIdx = 0;
-      while(memUsrMdlStr[mdlFunStrIdx].fPStr != NULLP)
-      {
-         len = strlen((const S8 *)memUsrMdlStr[mdlFunStrIdx].fPStr);
-         memReqIdx = cmMemGetStrMtchIdx((memReqIdx + 1), traceSize, 
-                                        memUsrMdlStr[mdlFunStrIdx].fPStr,
-                                        funNm);
-         if(memReqIdx >= 0)
-         {
-            RETVALUE(mdlFunStrIdx);
-         }
-         mdlFunStrIdx++;
-      }
-      mdlFunStrIdx = 0;
-      while(memUsrMdlStr[mdlFunStrIdx].fPStr != NULLP)
-      {
-          retVal = strcmp((const S8 *)"DEFAULT", 
-                               (const S8 *)memUsrMdlStr[mdlFunStrIdx].fPStr);
-         if(retVal == NULLD)
-         {
-            RETVALUE(mdlFunStrIdx);
-         } 
-         mdlFunStrIdx++;
-      }
-   }
 
    RETVALUE(0);
 } /* cmMemGetModuleId */
 
 /*
-*
-*       Fun:   cmMemGetStrMtchIdx
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMemGetStrMtchIdx
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmMemGetStrMtchIdx  
+   PUBLIC S16 cmMemGetStrMtchIdx  
 (
-U8 strtIdx, 
-U8 endIdx,
-S8 *str, 
-S8 **strLst
-)
+ U8 strtIdx, 
+ U8 endIdx,
+ S8 *str, 
+ S8 **strLst
+ )
 #else
 PUBLIC S16 cmMemGetStrMtchIdx(strtIdx, endIdx, str, strLst)
-U8 strtIdx;
-U8 endIdx;
-S8 *str;
-S8 **strLst;
+   U8 strtIdx;
+   U8 endIdx;
+   S8 *str;
+   S8 **strLst;
 #endif
 {
 
@@ -5850,59 +5850,59 @@ S8 **strLst;
    found = FALSE;
    for(;strtIdx < endIdx && !found; strtIdx++)
    {
-       idx = 0;
-       tempLen = strlen((const S8 *)strLst[strtIdx]);
-       if(tempLen < len)
-         continue;
+      idx = 0;
+      tempLen = strlen((const S8 *)strLst[strtIdx]);
+      if(tempLen < len)
+	 continue;
 
-       while(*(strLst[strtIdx] + idx + len) != '\0')
-       {
-         retVal = strncmp((const S8 *)cmpStr, 
-                         ((const S8 *)strLst[strtIdx] + idx), len);
-         if(0 == retVal)
-         {
-           found = TRUE;
-           break;
-         }
-         idx++;
-       }
+      while(*(strLst[strtIdx] + idx + len) != '\0')
+      {
+	 retVal = strncmp((const S8 *)cmpStr, 
+	       ((const S8 *)strLst[strtIdx] + idx), len);
+	 if(0 == retVal)
+	 {
+	    found = TRUE;
+	    break;
+	 }
+	 idx++;
+      }
    }
 
    if(!found)
    {
-     RETVALUE(-1); 
+      RETVALUE(-1); 
    }
    RETVALUE(strtIdx);
 
 }  /* cmMemGetStrMtchIdx */
 #ifdef SS_MEM_LEAK_SOL
 /*
-*
-*       Fun:   cmAddrToSymStr
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmAddrToSymStr
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S32 cmAddrToSymStr
+   PUBLIC S32 cmAddrToSymStr
 (
-Void   *pc, 
-S8     *buffer, 
-S32    size
-)
+ Void   *pc, 
+ S8     *buffer, 
+ S32    size
+ )
 #else
 PUBLIC S32 cmAddrToSymStr(pc, buffer, size)
-Void   *pc;
-S8     *buffer;
-S32    size;
+   Void   *pc;
+   S8     *buffer;
+   S32    size;
 #endif
 {
 
@@ -5913,117 +5913,117 @@ S32    size;
 
    if (dladdr1(pc, &info, (Void **)&sym, RTLD_DL_SYMENT) == 0)
    {
-       RETVALUE(snprintf(buffer, size, "[0x%p]", pc));
+      RETVALUE(snprintf(buffer, size, "[0x%p]", pc));
    }
 
    if ((info.dli_fname != NULLP && info.dli_sname != NULLP) &&
-       ((uintptr_t)pc - (uintptr_t)info.dli_saddr < sym->st_size))
+	 ((uintptr_t)pc - (uintptr_t)info.dli_saddr < sym->st_size))
    {
       RETVALUE(snprintf(buffer, size, "%s(%s+0x%x) [0x%p]",
-                       info.dli_fname,
-                       info.dli_sname,
-                       (unsigned long)pc - (unsigned long)info.dli_saddr, pc));
+	       info.dli_fname,
+	       info.dli_sname,
+	       (unsigned long)pc - (unsigned long)info.dli_saddr, pc));
    }
    else
    {
       RETVALUE(snprintf(buffer, size, "%s(0x%p [0x%p]",
-                      info.dli_fname,
-                      (unsigned long)pc - (unsigned long)info.dli_fbase, pc));
+	       info.dli_fname,
+	       (unsigned long)pc - (unsigned long)info.dli_fbase, pc));
    }
 
 } /* cmAddrToSymStr */
 
 /*
-*
-*       Fun:   cmLeakCallBack
-*
-*       Desc:  Initializes the memory leak detection module
-*
-*
-*       Ret:   RETVOID
-*
-*       Notes: This function initializes the memory leak detection module.
-*
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmLeakCallBack
+ *
+ *       Desc:  Initializes the memory leak detection module
+ *
+ *
+ *       Ret:   RETVOID
+ *
+ *       Notes: This function initializes the memory leak detection module.
+ *
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S32 cmLeakCallBack
+   PUBLIC S32 cmLeakCallBack
 (
-uintptr_t pc,
-S32       sigNo, 
-Void      *arg
-)
+ uintptr_t pc,
+ S32       sigNo, 
+ Void      *arg
+ )
 #else
 PUBLIC S32 cmLeakCallBack(pc, sigNo, arg)
-uintptr_t pc;
-S32       sigNo;
-Void      *arg;
+   uintptr_t pc;
+   S32       sigNo;
+   Void      *arg;
 #endif
 {
-    S8   *buffer;
-    TRC3(cmLeakCallBack);
+   S8   *buffer;
+   TRC3(cmLeakCallBack);
 
-    Backtrace_t *bt = (Backtrace_t *)arg;
-    if (bt->bt_actcount >= bt->bt_maxcount)
-         RETVALUE(-1);
-/*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
+   Backtrace_t *bt = (Backtrace_t *)arg;
+   if (bt->bt_actcount >= bt->bt_maxcount)
+      RETVALUE(-1);
+   /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
-    buffer = (S8 *)MxHeapAlloc(SsiHeap, 510); 
-    cmMemset((U8*)buffer, 0, 510);
+   buffer = (S8 *)MxHeapAlloc(SsiHeap, 510); 
+   cmMemset((U8*)buffer, 0, 510);
 #else
-    buffer = (S8 *)calloc(1, 510); 
+   buffer = (S8 *)calloc(1, 510); 
 #endif
-	 /* SGetSBuf(DFLT_REGION, DFLT_POOL, &buffer, 510); */
-    (void) cmAddrToSymStr((void *)pc, buffer, 505);
-    bt->bt_buffer[bt->bt_actcount++] = (S8 *)buffer;
+   /* SGetSBuf(DFLT_REGION, DFLT_POOL, &buffer, 510); */
+   (void) cmAddrToSymStr((void *)pc, buffer, 505);
+   bt->bt_buffer[bt->bt_actcount++] = (S8 *)buffer;
 
-    RETVALUE(0);
+   RETVALUE(0);
 } /* cmLeakCallBack */
 #endif /* SS_MEM_LEAK_SOL */
 
 #endif /* SS_MEM_LEAK_STS */
 /* cm_mem_c_001.main_12 - addition related to SSI enhancemens
-* These include sanity check functions for bucket and heap,
-* for printing several memory related statistics 
-*/
+ * These include sanity check functions for bucket and heap,
+ * for printing several memory related statistics 
+ */
 #if (defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1) || defined(SSI_DEBUG_LEVEL1))
 /*
-*
-*       Fun:   cmMmRegIsBlkSane
-*
-*       Desc:  Performs the sanity check for the memory block by checking its header.
-*
-*       Ret:   ROK - If no trampling is detected in the block
-*              RFAILED  - If trampling is detected in the block
-*
-*       Notes: This function performs the memory block sanity in a block.
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmRegIsBlkSane
+ *
+ *       Desc:  Performs the sanity check for the memory block by checking its header.
+ *
+ *       Ret:   ROK - If no trampling is detected in the block
+ *              RFAILED  - If trampling is detected in the block
+ *
+ *       Notes: This function performs the memory block sanity in a block.
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
 #ifdef ANSI
-PUBLIC S16 cmMmRegIsBlkSane
+   PUBLIC S16 cmMmRegIsBlkSane
 (
-CmMmBlkHdr *blkPtr,
-Size       size
-)
+ CmMmBlkHdr *blkPtr,
+ Size       size
+ )
 #else
 PUBLIC S16 cmMmRegIsBlkSane(blkPtr, size)
-CmMmBlkHdr *blkPtr;
-Size       size;
+   CmMmBlkHdr *blkPtr;
+   Size       size;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 cmMmRegIsBlkSane
+   PUBLIC S16 cmMmRegIsBlkSane
 (
-CmMmBlkHdr *blkPtr
-)
+ CmMmBlkHdr *blkPtr
+ )
 #else
 PUBLIC S16 cmMmRegIsBlkSane(blkPtr)
-CmMmBlkHdr *blkPtr;
+   CmMmBlkHdr *blkPtr;
 #endif
 #endif
 {
@@ -6037,7 +6037,7 @@ CmMmBlkHdr *blkPtr;
    {
       if (blkPtr->trSignature[sigCnt] != 0xAB)
       {
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
    }
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
@@ -6046,7 +6046,7 @@ CmMmBlkHdr *blkPtr;
    {
       if (tailPtr->trSignature[sigCnt] != 0xFE)
       {
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
    }
 #endif
@@ -6055,33 +6055,33 @@ CmMmBlkHdr *blkPtr;
 #endif
 #ifdef SSI_DEBUG_LEVEL1
 /*
-*
-*       Fun:   cmMmBktSanityChk
-*
-*       Desc:  Performs the sanity check for the memory blocks in a memory bucket.
-*              This API gets called when trampling is detected in a memory block.
-*
-*       Ret:   RTRAMPLINGNOK - Trampling, serious error
-*              RTRAMPLINGOK  - Trampling, but OK to proceed
-*
-*       Notes: This function performs the memory block sanity in a bucket. This
-*              function is called by cmAlloc and cmFree as part of error handling mechanism.
-*              Performs sanity check for the whole bucket by traversing each
-*              of the memory blocks using the pointer bktStartPtr.
-*              Keeps track of number of tramplings happened. If the count
-*              exceeds the threshold decided, then invalidates this bucket.
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmBktSanityChk
+ *
+ *       Desc:  Performs the sanity check for the memory blocks in a memory bucket.
+ *              This API gets called when trampling is detected in a memory block.
+ *
+ *       Ret:   RTRAMPLINGNOK - Trampling, serious error
+ *              RTRAMPLINGOK  - Trampling, but OK to proceed
+ *
+ *       Notes: This function performs the memory block sanity in a bucket. This
+ *              function is called by cmAlloc and cmFree as part of error handling mechanism.
+ *              Performs sanity check for the whole bucket by traversing each
+ *              of the memory blocks using the pointer bktStartPtr.
+ *              Keeps track of number of tramplings happened. If the count
+ *              exceeds the threshold decided, then invalidates this bucket.
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16  cmMmBktSanityChk
+   PRIVATE S16  cmMmBktSanityChk
 (
-CmMmBkt  *bkt
-)
+ CmMmBkt  *bkt
+ )
 #else
 PRIVATE S16  cmMmBktSanityChk(bkt)
-CmMmBkt  *bkt;
+   CmMmBkt  *bkt;
 #endif
 {
    CmMmBlkHdr *ptrBlk;
@@ -6093,57 +6093,57 @@ CmMmBkt  *bkt;
 
    /* scan the entire memory list of the bucket */
    for (blkCnt = 0, ptrBlk = (CmMmBlkHdr *)bkt->bktStartPtr;
-         blkCnt < (bkt->numBlks); blkCnt++)
+	 blkCnt < (bkt->numBlks); blkCnt++)
    {
       if (cmMmRegIsBlkSane(ptrBlk) != ROK)
       {
-         bkt->trampleCount++;
-         if (bkt->trampleCount > CMM_TRAMPLING_THRESHOLD)
-         {
-            /* Take action to invalidate the entire bucket */
-            RETVALUE(RTRAMPLINGNOK);
-         }
+	 bkt->trampleCount++;
+	 if (bkt->trampleCount > CMM_TRAMPLING_THRESHOLD)
+	 {
+	    /* Take action to invalidate the entire bucket */
+	    RETVALUE(RTRAMPLINGNOK);
+	 }
       }
       /* reach next memory block in this bucket manually */
       ptrBlk = (CmMmBlkHdr *)((Data *)ptrBlk + ((bkt->size) + (sizeof(CmMmBlkHdr))));
    }
 
- #ifdef  DEBUGP
+#ifdef  DEBUGP
    /* display an error message here */
    sprintf(dbgPrntBuf, " %d Memory tramplings detected in the bucket!\n", bkt->trampleCount);
    SDisplay(0, dbgPrntBuf);
- #endif /* DEBUGP */
+#endif /* DEBUGP */
 
    RETVALUE(RTRAMPLINGOK);
 }
 
 /*
-*
-*       Fun:   cmMmHeapSanityChk
-*
-*       Desc:  Performs the sanity check for the memory blocks in the memory heap.
-*              This API gets called when trampling is detected in heap(Alloc/Free).
-*
-*       Ret:   RTRAMPLINGNOK - Trampling, serious error
-*              RTRAMPLINGOK  - Trampling, but OK to proceed
-*
-*       Notes: This function performs the memory block sanity in the heap. This
-*              function is called by cmHeapAlloc and cmHeapFree as part of error
-*              handling mechanism. Keeps track of number of tramplings happened.
-*              If the count exceeds the threshold then return RTRAMPLINGNOK. If the
-*              count is less than threshold, then return RTRAMPLINGOK.
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmHeapSanityChk
+ *
+ *       Desc:  Performs the sanity check for the memory blocks in the memory heap.
+ *              This API gets called when trampling is detected in heap(Alloc/Free).
+ *
+ *       Ret:   RTRAMPLINGNOK - Trampling, serious error
+ *              RTRAMPLINGOK  - Trampling, but OK to proceed
+ *
+ *       Notes: This function performs the memory block sanity in the heap. This
+ *              function is called by cmHeapAlloc and cmHeapFree as part of error
+ *              handling mechanism. Keeps track of number of tramplings happened.
+ *              If the count exceeds the threshold then return RTRAMPLINGNOK. If the
+ *              count is less than threshold, then return RTRAMPLINGOK.
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16  cmMmHeapSanityChk
+   PRIVATE S16  cmMmHeapSanityChk
 (
-CmMmHeapCb  *heapCb
-)
+ CmMmHeapCb  *heapCb
+ )
 #else
 PRIVATE S16  cmMmHeapSanityChk(heapCb)
-CmMmHeapCb  *heapCb;
+   CmMmHeapCb  *heapCb;
 #endif
 {
 
@@ -6160,33 +6160,33 @@ CmMmHeapCb  *heapCb;
    RETVALUE(RTRAMPLINGOK);
 }
 /*
-*
-*       Fun:   cmMmHashFunc
-*
-*       Desc:  Computes the hash list index (bin number) for a specified
-*              key of type (x % 101).
-*
-*       return (idx % hash_table_size);
-*
-*       Ret:   ROK     - successful, *idx contains computed index
-*
-*       Notes: None.
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmHashFunc
+ *
+ *       Desc:  Computes the hash list index (bin number) for a specified
+ *              key of type (x % 101).
+ *
+ *       return (idx % hash_table_size);
+ *
+ *       Ret:   ROK     - successful, *idx contains computed index
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmMmHashFunc
+   PRIVATE S16 cmMmHashFunc
 (
-CmMmHashListCp *hashListCp,
-U32 key,
-U16 *idx
-)
+ CmMmHashListCp *hashListCp,
+ U32 key,
+ U16 *idx
+ )
 #else
 PRIVATE S16 cmMmHashFunc (hashListCp, key, idx)
-CmMmHashListCp *hashListCp; /* hash list control point */
-U32 key; /* key string */
-U16 *idx; /* idx to return */
+   CmMmHashListCp *hashListCp; /* hash list control point */
+   U32 key; /* key string */
+   U16 *idx; /* idx to return */
 #endif
 {
    TRC2(cmMmHashFunc);
@@ -6198,40 +6198,40 @@ U16 *idx; /* idx to return */
 } /* end of cmMmHashFunc () */
 
 /*
-*
-*       Fun:   cmMmHashListInit
-*
-*       Desc:  Initializes a hash list. Parameters are:
-*
-*              hashListCp   control point for hash list
-*              nmbBins      number of bins in the hash list. Storage will
-*                           be allocated for them from the indicated memory
-*                           region and pool.
-*              region
-*              pool         for allocating storage for bins.
-*
-*       Ret:   ROK      - initialization successful
-*              RFAILED  - initialization failed, lack of memory
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmHashListInit
+ *
+ *       Desc:  Initializes a hash list. Parameters are:
+ *
+ *              hashListCp   control point for hash list
+ *              nmbBins      number of bins in the hash list. Storage will
+ *                           be allocated for them from the indicated memory
+ *                           region and pool.
+ *              region
+ *              pool         for allocating storage for bins.
+ *
+ *       Ret:   ROK      - initialization successful
+ *              RFAILED  - initialization failed, lack of memory
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmMmHashListInit
+   PRIVATE S16 cmMmHashListInit
 (
-CmMmHashListCp *hashListCp,  /* hash list to initialize */
-U16          nmbBins,      /* number of hash list bins */
-Region       region,       /* memory region to allocate bins */
-Pool         pool          /* memory pool to allocate bins */
-)
+ CmMmHashListCp *hashListCp,  /* hash list to initialize */
+ U16          nmbBins,      /* number of hash list bins */
+ Region       region,       /* memory region to allocate bins */
+ Pool         pool          /* memory pool to allocate bins */
+ )
 #else
 PRIVATE S16 cmMmHashListInit(hashListCp, nmbBins, region, pool)
-CmMmHashListCp *hashListCp;  /* hash list to initialize */
-U16          nmbBins;      /* number of hash list bins */
-Region       region;       /* memory region to allocate bins */
-Pool         pool;         /* memory pool to allocate bins */
+   CmMmHashListCp *hashListCp;  /* hash list to initialize */
+   U16          nmbBins;      /* number of hash list bins */
+   Region       region;       /* memory region to allocate bins */
+   Pool         pool;         /* memory pool to allocate bins */
 #endif
 {
    U16 i;
@@ -6248,14 +6248,14 @@ Pool         pool;         /* memory pool to allocate bins */
    if (nmbBins)
    {
       if (SGetSBuf(region, pool, (Data **) &hashListCp->hashList,
-               (Size)(nmbBins * sizeof(CmMmHashListEnt))) != ROK)
-      RETVALUE(RFAILED);
+	       (Size)(nmbBins * sizeof(CmMmHashListEnt))) != ROK)
+	 RETVALUE(RFAILED);
 
       /* initialize bin pointers */
       hl = hashListCp->hashList;
       for(i = 0; i < nmbBins; i++)
       {
-         hl[i].size = hl[i].numAttempts = 0;
+	 hl[i].size = hl[i].numAttempts = 0;
       }
 
       /* initialize bin size */
@@ -6266,36 +6266,36 @@ Pool         pool;         /* memory pool to allocate bins */
 }
 
 /*
-*
-*       Fun:   cmMmHashListDeinit
-*
-*       Desc:  Deinitializes a hash list. Deallocates memory for bins
-*              and resets header fields. Parameters are:
-*
-*              hashListCp   control point for hash list
-*              region
-*              pool         for allocating storage for bins.
-*
-*       Ret:   ROK      - successful
-*              RFAILED - failure, invalid parameters
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmHashListDeinit
+ *
+ *       Desc:  Deinitializes a hash list. Deallocates memory for bins
+ *              and resets header fields. Parameters are:
+ *
+ *              hashListCp   control point for hash list
+ *              region
+ *              pool         for allocating storage for bins.
+ *
+ *       Ret:   ROK      - successful
+ *              RFAILED - failure, invalid parameters
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmMmHashListDeinit
+   PRIVATE S16 cmMmHashListDeinit
 (
-CmMmHashListCp *hashListCp,   /* hash list to deinitialize */
-Region       region,       /* memory region to allocate bins */
-Pool         pool          /* memory pool to allocate bins */
-)
+ CmMmHashListCp *hashListCp,   /* hash list to deinitialize */
+ Region       region,       /* memory region to allocate bins */
+ Pool         pool          /* memory pool to allocate bins */
+ )
 #else
 PRIVATE S16 cmMmHashListDeinit(hashListCp, region, pool)
-CmMmHashListCp *hashListCp;  /* hash list to deinitialize */
-Region       region;       /* memory region to allocate bins */
-Pool         pool;         /* memory pool to allocate bins */
+   CmMmHashListCp *hashListCp;  /* hash list to deinitialize */
+   Region       region;       /* memory region to allocate bins */
+   Pool         pool;         /* memory pool to allocate bins */
 #endif
 {
    TRC2(cmMmHashListDeinit);
@@ -6303,8 +6303,8 @@ Pool         pool;         /* memory pool to allocate bins */
    /* deallocate memory for bins */
    if (hashListCp->numOfbins)
       (Void) SPutSBuf(region, pool,
-                      (Data *) hashListCp->hashList,
-                      (Size) (hashListCp->numOfbins * sizeof(CmMmHashListEnt)));
+	    (Data *) hashListCp->hashList,
+	    (Size) (hashListCp->numOfbins * sizeof(CmMmHashListEnt)));
 
    /* deinitialize control point fields */
    hashListCp->hashList = NULLP;
@@ -6315,32 +6315,32 @@ Pool         pool;         /* memory pool to allocate bins */
 } /* end of cmMmHashListDeinit */
 
 /*
-*
-*       Fun:   cmMmHashListInsert
-*
-*       Desc:  Inserts a new entry in the hash list. Parameters are:
-*
-*              hashListCp   control point for hash list
-*              key          pointer to key string in the new entry
-*
-*       Ret:   ROK      - insertion successful
-*              RFAILED  - insertion failed (incorrect parameter values)
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmMmHashListInsert
+ *
+ *       Desc:  Inserts a new entry in the hash list. Parameters are:
+ *
+ *              hashListCp   control point for hash list
+ *              key          pointer to key string in the new entry
+ *
+ *       Ret:   ROK      - insertion successful
+ *              RFAILED  - insertion failed (incorrect parameter values)
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmMmHashListInsert
+   PRIVATE S16 cmMmHashListInsert
 (
-CmMmHashListCp *hashListCp,  /* hash list to add to */
-U32           key         /* pointer to key */
-)
+ CmMmHashListCp *hashListCp,  /* hash list to add to */
+ U32           key         /* pointer to key */
+ )
 #else
 PRIVATE S16 cmMmHashListInsert(hashListCp, key)
-CmMmHashListCp *hashListCp;  /* hash list to add to */
-U32           key;         /* pointer to key */
+   CmMmHashListCp *hashListCp;  /* hash list to add to */
+   U32           key;         /* pointer to key */
 #endif
 {
    CmMmHashListEnt *hashListEnt;    /* pointer to hash list entry header */
@@ -6372,27 +6372,27 @@ U32           key;         /* pointer to key */
       /* this hash is occupied, re-hash it using linear probing */
       for (i=idx; i < CMM_STAT_HASH_TBL_LEN; i++)
       {
-         if (hashListEnt[i].size == key)
-         {
-            hashListEnt[i].numAttempts++;
-            break;
-         }
+	 if (hashListEnt[i].size == key)
+	 {
+	    hashListEnt[i].numAttempts++;
+	    break;
+	 }
 
-         if (hashListEnt[i].numAttempts == 0)
-         {
-            hashListEnt[i].size = key;
-            hashListEnt[i].numAttempts++;
-            /* increment count of entries in hash list */
-            hashListCp->numOfEntries++;
-            break;
-         }
-   }
+	 if (hashListEnt[i].numAttempts == 0)
+	 {
+	    hashListEnt[i].size = key;
+	    hashListEnt[i].numAttempts++;
+	    /* increment count of entries in hash list */
+	    hashListCp->numOfEntries++;
+	    break;
+	 }
+      }
 
-   if (i == CMM_STAT_HASH_TBL_LEN)
-   {
-      /* there is no free slot for this key */
-      RETVALUE(RFAILED);
-   }
+      if (i == CMM_STAT_HASH_TBL_LEN)
+      {
+	 /* there is no free slot for this key */
+	 RETVALUE(RFAILED);
+      }
    }
 
    RETVALUE(ROK);
@@ -6402,122 +6402,122 @@ U32           key;         /* pointer to key */
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT  
 /*
-*
-*       Fun:   cmHstGrmHashListInit
-*
-*       Desc:  Initializes a hash list. Parameters are:
-*
-*              hashListCp   control point for hash list
-*       Ret:   ROK      - initialization successful
-*              RFAILED  - initialization failed, lack of memory
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmHstGrmHashListInit
+ *
+ *       Desc:  Initializes a hash list. Parameters are:
+ *
+ *              hashListCp   control point for hash list
+ *       Ret:   ROK      - initialization successful
+ *              RFAILED  - initialization failed, lack of memory
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmHashListInit
+   PRIVATE S16 cmHstGrmHashListInit
 (
-CmHstGrmHashListCp *hashListCp  /* hash list to initialize */
-)
+ CmHstGrmHashListCp *hashListCp  /* hash list to initialize */
+ )
 #else
 PRIVATE S16 cmHstGrmHashListInit(hashListCp)
-CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
+   CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 #endif
 {
    /*cm_mem_c_001.main_25 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmHstGrmHashListInit)
 #ifdef  DEBUGP
-   /* display an error message here */
-   /*cm_mem_c_001.main_25: Fixed Warnings for 32/64 bit compilation*/ 
+      /* display an error message here */
+      /*cm_mem_c_001.main_25: Fixed Warnings for 32/64 bit compilation*/ 
 #ifdef ALIGN_64BIT
-    sprintf(dbgPrntBuf, " %lu size of memory histogram hash List\n", sizeof(CmHstGrmHashListCp));
+      sprintf(dbgPrntBuf, " %lu size of memory histogram hash List\n", sizeof(CmHstGrmHashListCp));
 #else
-    sprintf(dbgPrntBuf, " %d size of memory histogram hash List\n", sizeof(CmHstGrmHashListCp));
+   sprintf(dbgPrntBuf, " %d size of memory histogram hash List\n", sizeof(CmHstGrmHashListCp));
 #endif
-    SDisplay(0, dbgPrntBuf);
+   SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
-    memset(hashListCp, 0, sizeof(CmHstGrmHashListCp));
-    RETVALUE(ROK);
+   memset(hashListCp, 0, sizeof(CmHstGrmHashListCp));
+   RETVALUE(ROK);
 }
 
 /*
-*
-*       Fun:   cmHstGrmHashListDeInit
-*
-*       Desc:  De-initializes a hash list. Parameters are:
-*
-*              hashListCp   control point for hash list
-*       Ret:   ROK      - initialization successful
-*              RFAILED  - initialization failed, lack of memory
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmHstGrmHashListDeInit
+ *
+ *       Desc:  De-initializes a hash list. Parameters are:
+ *
+ *              hashListCp   control point for hash list
+ *       Ret:   ROK      - initialization successful
+ *              RFAILED  - initialization failed, lack of memory
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmHashListDeInit
+   PRIVATE S16 cmHstGrmHashListDeInit
 (
-CmHstGrmHashListCp *hashListCp  /* hash list to initialize */
-)
+ CmHstGrmHashListCp *hashListCp  /* hash list to initialize */
+ )
 #else
 PRIVATE S16 cmHstGrmHashListDeInit(hashListCp)
-CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
+   CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 #endif
 {
    /*cm_mem_c_001.main_25 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmHstGrmHashListDeInit)
 #ifdef  DEBUGP
-   /* display an error message here */
-   /*cm_mem_c_001.main_25: Fixed Warnings for 32/64 bit compilation*/ 
+      /* display an error message here */
+      /*cm_mem_c_001.main_25: Fixed Warnings for 32/64 bit compilation*/ 
 #ifdef ALIGN_64BIT
-    sprintf(dbgPrntBuf, " %lu size of memory histogram hash List\n", sizeof(CmHstGrmHashListCp));
+      sprintf(dbgPrntBuf, " %lu size of memory histogram hash List\n", sizeof(CmHstGrmHashListCp));
 #else
-    sprintf(dbgPrntBuf, " %d size of memory histogram hash List\n", sizeof(CmHstGrmHashListCp));
+   sprintf(dbgPrntBuf, " %d size of memory histogram hash List\n", sizeof(CmHstGrmHashListCp));
 #endif
-    SDisplay(0, dbgPrntBuf);
+   SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
-    memset(hashListCp, 0, sizeof(CmHstGrmHashListCp));
-    RETVALUE(ROK);
+   memset(hashListCp, 0, sizeof(CmHstGrmHashListCp));
+   RETVALUE(ROK);
 }
 
 /*
-*
-*       Fun:   cmHstGrmFreeInsert
-*
-*       Desc:  Inserts a Freed information in into the hash list. Parameters are:
-*
-*              bkt : pointer to bucket for which memory is freed.
-*              line : Line where memory is freed.
-*              file : file where memory is freed.
-*              entId : Tapa task which releases the memory.
-*
-*       Ret:   ROK      - insertion successful
-*              RFAILED  - insertion failed (incorrect parameter values)
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmHstGrmFreeInsert
+ *
+ *       Desc:  Inserts a Freed information in into the hash list. Parameters are:
+ *
+ *              bkt : pointer to bucket for which memory is freed.
+ *              line : Line where memory is freed.
+ *              file : file where memory is freed.
+ *              entId : Tapa task which releases the memory.
+ *
+ *       Ret:   ROK      - insertion successful
+ *              RFAILED  - insertion failed (incorrect parameter values)
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmFreeInsert
+   PRIVATE S16 cmHstGrmFreeInsert
 (
-CmHstGrmHashListCp* hashListCp, /* hash list cp */
-U32        blkSz, /* size of the block freed */
-U32       line, /* Line number */
-U8        *fileName, /* file name */
-U8        entId    /* Tapa task which free the memory */
-)
+ CmHstGrmHashListCp* hashListCp, /* hash list cp */
+ U32        blkSz, /* size of the block freed */
+ U32       line, /* Line number */
+ U8        *fileName, /* file name */
+ U8        entId    /* Tapa task which free the memory */
+ )
 #else
 PRIVATE S16 cmHstGrmFreeInsert(hashListCp, blkSz, line, fileName, entId)
-CmHstGrmHashListCp* hashListCp; /* hash list cp */
-U32        blkSz; /* size of the block freed */
-U32       line; /* line number */
-U8        *fileName; /* file Name */
-U8        entId; /* Tapa task which frees the memory */
+   CmHstGrmHashListCp* hashListCp; /* hash list cp */
+   U32        blkSz; /* size of the block freed */
+   U32       line; /* line number */
+   U8        *fileName; /* file Name */
+   U8        entId; /* Tapa task which frees the memory */
 #endif
 {
    U32                    binIdx = 0; /* Bin index to insert the entry into the hash list */
@@ -6530,14 +6530,14 @@ U8        entId; /* Tapa task which frees the memory */
 
    /* check for the total number of entries in the hash list. *
     * If there is no place for new entry return failure */
-    cmHstGrmGetHashIdxAndKey(fileName, line, &binIdx, &key);
+   cmHstGrmGetHashIdxAndKey(fileName, line, &binIdx, &key);
 
    /* After comuting the hash bind and key, check the entity already *
       existing or not. if we found the entry then update the information */
    ret = cmHstGrmFindEntry(hashListCp, key, &binIdx, &entry);
    if(ret == ROK)
    {
-		entry->freedBytes += blkSz;
+      entry->freedBytes += blkSz;
       entry->bucketFreeReq++;
       RETVALUE(ROK);
    } /* End of if */
@@ -6545,8 +6545,8 @@ U8        entId; /* Tapa task which frees the memory */
    /* If hash list is full then print the error tna continue */
    if(hashListCp->totalNumEntries == (CMM_HIST_MAX_MEM_BIN * CMM_HIST_MAX_MEM_ENTRY_PER_BIN))
    {
-        printf("No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN \n");
-        RETVALUE(RFAILED);
+      printf("No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN \n");
+      RETVALUE(RFAILED);
    } /* End of if */
 
    /* Take the address of next free entry in the hash bin */
@@ -6554,7 +6554,7 @@ U8        entId; /* Tapa task which frees the memory */
 
    /* Increase the number of time frees called */
    entry->bucketFreeReq++;
-	entry->freedBytes += blkSz;
+   entry->freedBytes += blkSz;
 
    /* Fill the information into the entry structure */
    cmHstGrmFillEntry(entry, key, line, fileName, entId);
@@ -6569,40 +6569,40 @@ U8        entId; /* Tapa task which frees the memory */
 
 
 /*
-*
-*       Fun:  ret = cmHstGrmAllocInsert
-*
-*       Desc:  Inserts a memory allocated information in the hash list. Parameters are:
-*
-*              hashListCp   control point for hash list
-*              key          pointer to key string in the new entry
-*
-*       Ret:   ROK      - insertion successful
-*              RFAILED  - insertion failed (incorrect parameter values)
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:  ret = cmHstGrmAllocInsert
+ *
+ *       Desc:  Inserts a memory allocated information in the hash list. Parameters are:
+ *
+ *              hashListCp   control point for hash list
+ *              key          pointer to key string in the new entry
+ *
+ *       Ret:   ROK      - insertion successful
+ *              RFAILED  - insertion failed (incorrect parameter values)
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmAllocInsert
+   PRIVATE S16 cmHstGrmAllocInsert
 (
-CmHstGrmHashListCp     *hashListCp,
-U32       blkSz,
-U32       *reqSz,
-U32       line,
-U8        *fileName,
-U8        entId
-)
+ CmHstGrmHashListCp     *hashListCp,
+ U32       blkSz,
+ U32       *reqSz,
+ U32       line,
+ U8        *fileName,
+ U8        entId
+ )
 #else
 PRIVATE  S16 cmHstGrmAllocInsert(hashListCp, blkSz, reqSz, line, fileName, entId)
-CmHstGrmHashListCp     *hashListCp;
-U32       blkSz;
-U32       *reqSz;
-U32       line;
-U8        *fileName;
-U8        entId;
+   CmHstGrmHashListCp     *hashListCp;
+   U32       blkSz;
+   U32       *reqSz;
+   U32       line;
+   U8        *fileName;
+   U8        entId;
 #endif
 {
    U32                    binIdx = 0;
@@ -6622,7 +6622,7 @@ U8        entId;
 
    if(ret == ROK)
    {
-	   entry->allocBytes += blkSz;
+      entry->allocBytes += blkSz;
       entry->bucketAllocReq++;
       entry->wastedBytes += (blkSz - *reqSz);
       RETVALUE(ROK);
@@ -6630,8 +6630,8 @@ U8        entId;
 
    if(hashListCp->totalNumEntries == (CMM_HIST_MAX_MEM_BIN * CMM_HIST_MAX_MEM_ENTRY_PER_BIN))
    {
-        printf("No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN\n");
-        RETVALUE(RFAILED);
+      printf("No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN\n");
+      RETVALUE(RFAILED);
    } /* End of if */
 
    /* Take the address of next free entry in the hash bin */
@@ -6642,7 +6642,7 @@ U8        entId;
     * has requested and the byte the ssi allocated */
    entry->wastedBytes += (blkSz - *reqSz);
    entry->bucketAllocReq++;
-	entry->allocBytes += blkSz;
+   entry->allocBytes += blkSz;
 
    /* Fill the information into the entry structure */
    cmHstGrmFillEntry(entry, key, line, fileName, entId);
@@ -6657,36 +6657,36 @@ U8        entId;
 
 
 /*
-*
-*       Fun:   cmHstGrmGetHashIdxAndKey
-*
-*       Desc:  Finds an entry in the hash list. Parameters are:
-*
-*              hashListCp   control point for hash list
-*              key          pointer to key string in the new entry
-*
-*       Ret:   ROK      - insertion successful
-*              RFAILED  - insertion failed (incorrect parameter values)
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmHstGrmGetHashIdxAndKey
+ *
+ *       Desc:  Finds an entry in the hash list. Parameters are:
+ *
+ *              hashListCp   control point for hash list
+ *              key          pointer to key string in the new entry
+ *
+ *       Ret:   ROK      - insertion successful
+ *              RFAILED  - insertion failed (incorrect parameter values)
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmGetHashIdxAndKey
+   PRIVATE S16 cmHstGrmGetHashIdxAndKey
 (
-U8                 *fileName,
-U32                line,
-U32                *binIdx,
-U32                *key
-)
+ U8                 *fileName,
+ U32                line,
+ U32                *binIdx,
+ U32                *key
+ )
 #else
 PRIVATE  S16 cmHstGrmGetHashIdxAndKey(fileName, line, binIdx, key)
-U8                 *fileName;
-U32                line;
-U32                *binIdx;
-U32                *key;
+   U8                 *fileName;
+   U32                line;
+   U32                *binIdx;
+   U32                *key;
 #endif
 {
 
@@ -6696,49 +6696,49 @@ U32                *key;
    /* Calculate the key using file name and line number */
    for(i = 0 ; fileName[i] != '\0'; i++)
    {
-       *key += fileName[i];
+      *key += fileName[i];
    }/* End of for */
-       *key += line;
+   *key += line;
    *binIdx = ( *key % CMM_HIST_MAX_MEM_BIN);
    RETVALUE(ROK);
 } /* end of cmHstGrmFillEntry */
 
 /*
-*
-*       Fun:   cmHstGrmFillEntry
-*
-*       Desc:  Insert the entry into the hash list.
-*
-*              entry : Infornation which will be inserted into the hash list
-*              key   : Which will be used ti find the entry.
-*              line  : Line number
-*              fileName : File name
-*              entId   : Tapa task Id
-*
-*       Ret:   ROK      - insertion successful
-*              RFAILED  - insertion failed (incorrect parameter values)
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   cmHstGrmFillEntry
+ *
+ *       Desc:  Insert the entry into the hash list.
+ *
+ *              entry : Infornation which will be inserted into the hash list
+ *              key   : Which will be used ti find the entry.
+ *              line  : Line number
+ *              fileName : File name
+ *              entId   : Tapa task Id
+ *
+ *       Ret:   ROK      - insertion successful
+ *              RFAILED  - insertion failed (incorrect parameter values)
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmFillEntry
+   PRIVATE S16 cmHstGrmFillEntry
 (
-CmMemEntries       *entry,
-U32                key,
-U32                line,
-U8                 *fileName,
-U8                 entId
-)
+ CmMemEntries       *entry,
+ U32                key,
+ U32                line,
+ U8                 *fileName,
+ U8                 entId
+ )
 #else
 PRIVATE  S16 cmHstGrmFillEntry(entry, key, line, fileName, entId)
-CmMemEntries       *entry;
-U32                key;
-U32                line;
-U8                 *fileName;
-U8                 entId;
+   CmMemEntries       *entry;
+   U32                key;
+   U32                line;
+   U8                 *fileName;
+   U8                 entId;
 #endif
 {
 
@@ -6756,36 +6756,36 @@ U8                 entId;
 } /* end of cmHstGrmFillEntry */
 
 /*
-*
-*       Fun:  cmHstGrmFindEntry
-*
-*       Desc:  Finds an entry in the hash list. Parameters are:
-*
-*              hashListCp   control point for hash list
-*              key          pointer to key string in the new entry
-*
-*       Ret:   ROK      - insertion successful
-*              RFAILED  - insertion failed (incorrect parameter values)
-*
-*       Notes: None
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:  cmHstGrmFindEntry
+ *
+ *       Desc:  Finds an entry in the hash list. Parameters are:
+ *
+ *              hashListCp   control point for hash list
+ *              key          pointer to key string in the new entry
+ *
+ *       Ret:   ROK      - insertion successful
+ *              RFAILED  - insertion failed (incorrect parameter values)
+ *
+ *       Notes: None
+ *
+ *       File:  cm_mem.c
+ *
+ */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmFindEntry
+   PRIVATE S16 cmHstGrmFindEntry
 (
-CmHstGrmHashListCp  *hashListCp,
-U32                 key,
-U32                 *binIdx,
-CmMemEntries        **entry
-)
+ CmHstGrmHashListCp  *hashListCp,
+ U32                 key,
+ U32                 *binIdx,
+ CmMemEntries        **entry
+ )
 #else
 PRIVATE  S16 cmHstGrmFindEntry(hashListCp, key, binIdx, entry)
-CmHstGrmHashListCp  *hashListCp;
-U32                 key;
-U32                 *binIdx;
-CmMemEntries        **entry;
+   CmHstGrmHashListCp  *hashListCp;
+   U32                 key;
+   U32                 *binIdx;
+   CmMemEntries        **entry;
 #endif
 {
 
@@ -6802,35 +6802,35 @@ CmMemEntries        **entry;
       tmpBin = &(hashListCp->hashList[*binIdx]);
       for(numEnt = 0; numEnt < tmpBin->numOfEntries; numEnt++)
       {
-         /* If key supplied is matched with the stored key then
-          * return that entity */
-         if(tmpBin->entries[numEnt].key == key)
-         {
-            *entry = &(tmpBin->entries[numEnt]);
-            RETVALUE(ROK);
-         }/* End of if (tmpBin->entries[numEnt].key) */
+	 /* If key supplied is matched with the stored key then
+	  * return that entity */
+	 if(tmpBin->entries[numEnt].key == key)
+	 {
+	    *entry = &(tmpBin->entries[numEnt]);
+	    RETVALUE(ROK);
+	 }/* End of if (tmpBin->entries[numEnt].key) */
       }/* end of for (numEnt = 0) */
 
       /* Here we are checking for any room left in the bin. If the room *
-         exists its mean that there is no entry with the Key. so return *
-         failure.
-         If there is no room in the bin, then check the other bins to find *
-         the entry */
+	 exists its mean that there is no entry with the Key. so return *
+	 failure.
+	 If there is no room in the bin, then check the other bins to find *
+	 the entry */
       if(numEnt == CMM_HIST_MAX_MEM_ENTRY_PER_BIN)
       {
-        if(*binIdx == CMM_HIST_MAX_MEM_BIN)
-        {
-            *binIdx = 0;
-        }/* End of if (binIdx) */
-        else
-        {
-            *binIdx++;
-        }/* End of else (binIdx) */
+	 if(*binIdx == CMM_HIST_MAX_MEM_BIN)
+	 {
+	    *binIdx = 0;
+	 }/* End of if (binIdx) */
+	 else
+	 {
+	    *binIdx++;
+	 }/* End of else (binIdx) */
       } /* End of if (numEnt) */
       else
       {
-         printf ("Unable to find the entry in hash list\n");
-         RETVALUE(RFAILED);
+	 printf ("Unable to find the entry in hash list\n");
+	 RETVALUE(RFAILED);
       }/* End of else (numEnt) */
    }/* end of for (numBin = 0) */
 
@@ -6841,5 +6841,5 @@ CmMemEntries        **entry;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 /**********************************************************************
-         End of file
+  End of file
  **********************************************************************/

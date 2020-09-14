@@ -117,8 +117,8 @@ PRIVATE Void TSInfTrigL2Stats(region, pool)
 
    TRC2(TSInfTrigL2Stats)
 
-   SGetMsg(region, pool, &pBuf);
-//#if defined(SCH_STATS) || defined(TENB_STATS)
+      SGetMsg(region, pool, &pBuf);
+   //#if defined(SCH_STATS) || defined(TENB_STATS)
    pst.dstEnt = STATS_DSTENT;
    pst.dstInst = STATS_DSTINST;
    pst.selector = CL_DSTENT_SELECTOR;
@@ -133,67 +133,67 @@ PRIVATE Void TSInfTrigL2Stats(region, pool)
 }
 
 /*
-*
-*       Fun:   TSInfTrigStats
-*
-*       Desc:  Trigger Sending L2 Stats
-*
-*       Ret:   
-*
-*       Notes: None
-*
-*
-*/
+ *
+ *       Fun:   TSInfTrigStats
+ *
+ *       Desc:  Trigger Sending L2 Stats
+ *
+ *       Ret:   
+ *
+ *       Notes: None
+ *
+ *
+ */
 #ifdef ANSI
-PUBLIC Void TSInfTrigStats
+   PUBLIC Void TSInfTrigStats
 (
  Region    region,
  Pool      pool
-)
+ )
 #else
 PUBLIC Void TSInfTrigStats(region, pool)
- Region    region;
- Pool      pool;
+   Region    region;
+   Pool      pool;
 #endif
 {
    TRC2(TSInfTrigStats)
-//TODO
-   TSInfTrigL2Stats(region, pool);
+      //TODO
+      TSInfTrigL2Stats(region, pool);
 
    RETVOID;
 }
 
-         
+
 #ifdef ANSI
-PRIVATE Buffer* TSInfUtlAllocMsg
+   PRIVATE Buffer* TSInfUtlAllocMsg
 (
  Pst   *pst
-)
+ )
 #else
 PRIVATE Buffer* TSInfUtlAllocMsg(pst)
- Pst   *pst;
+   Pst   *pst;
 #endif
 {
    Buffer *mBuf; 
 
    TRC2(TSInfUtlAllocMsg)
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      printf("\n MBuf Allocation failed\n");
-   }
+      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+	 printf("\n MBuf Allocation failed\n");
+      }
    RETVALUE(mBuf);
 }
 
 #ifdef ANSI
-PRIVATE Void TSInfUtlPackUeInfo
+   PRIVATE Void TSInfUtlPackUeInfo
 (
  Buffer            *mBuf,
  TSInfL2UeStats     *stats
-)
+ )
 #else
 PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
- Buffer            *mBuf;
- TSInfL2UeStats     *stats; 
+   Buffer            *mBuf;
+   TSInfL2UeStats     *stats; 
 #endif
 {
    S32 i;
@@ -201,7 +201,7 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
 
    TRC2(TSInfUtlPackUeInfo)
 
-   CMCHKPK(SPkU32, stats->persistent.numDeactivation, mBuf);
+      CMCHKPK(SPkU32, stats->persistent.numDeactivation, mBuf);
    CMCHKPK(SPkU32, stats->persistent.numActivation, mBuf);
    CMCHKPK(SPkU32, stats->persistent.activatedSCells, mBuf);
 
@@ -231,11 +231,11 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
       CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlBo, mBuf);
       for (i=0; i<4; i++)
       {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].riCnt[i], mBuf);
+	 CMCHKPK(SPkU32, stats->nonPersistent.sch[k].riCnt[i], mBuf);
       }
       for (i=0; i<5; i++)
       {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlPdbLvl[i], mBuf);
+	 CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlPdbLvl[i], mBuf);
       }
       CMCHKPK(SPkU32, stats->nonPersistent.sch[k].cqiDropCnt, mBuf);
       CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlNumCw1iTbs, mBuf);
@@ -248,15 +248,15 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
       CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlSumCw0Cqi, mBuf);
       for (i=0; i<2; i++)
       {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlDtxCnt[i], mBuf);
+	 CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlDtxCnt[i], mBuf);
       }
       for (i=0; i<2; i++)
       {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlAckNackCnt[i], mBuf);
+	 CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlAckNackCnt[i], mBuf);
       }
       for (i=0; i<2; i++)
       {
-         CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlNackCnt[i], mBuf);
+	 CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlNackCnt[i], mBuf);
       }
       CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlPrbUsg, mBuf);
       CMCHKPK(SPkU32, stats->nonPersistent.sch[k].dlRetxOccns, mBuf);
@@ -267,22 +267,22 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
 }
 
 #ifdef ANSI
-PRIVATE Void TSInfUtlPackCellInfo
+   PRIVATE Void TSInfUtlPackCellInfo
 (
  Buffer              *mBuf,
  TSInfL2CellStats     *stats  
-)
+ )
 #else
 PRIVATE Void TSInfUtlPackCellInfo(mBuf, stats)
- Buffer              *mBuf;
- TSInfL2CellStats     *stats; 
+   Buffer              *mBuf;
+   TSInfL2CellStats     *stats; 
 #endif
 {
    S32 i,j;
 
    TRC2(TSInfUtlPackCellInfo)
 
-   CMCHKPK(SPkU32, stats->rlc.reOdrTmrExp, mBuf);
+      CMCHKPK(SPkU32, stats->rlc.reOdrTmrExp, mBuf);
    CMCHKPK(SPkU32, stats->rlc.maxRlcDrbRetxFail, mBuf);
    CMCHKPK(SPkU32, stats->rlc.maxRlcSrbRetxFail, mBuf);
 
@@ -346,21 +346,21 @@ PRIVATE Void TSInfUtlPackCellInfo(mBuf, stats)
    {
       for (j=3; j>=0; j--)
       {
-         CMCHKPK(SPkU32, stats->sch.dlDtx[i][j], mBuf);
+	 CMCHKPK(SPkU32, stats->sch.dlDtx[i][j], mBuf);
       }
    }
    for (i=1; i>=0; i--)
    {
       for (j=3; j>=0; j--)
       {
-         CMCHKPK(SPkU32, stats->sch.dlAckNack[i][j], mBuf);
+	 CMCHKPK(SPkU32, stats->sch.dlAckNack[i][j], mBuf);
       }
    }
    for (i=1; i>=0; i--)
    {
       for (j=3; j>=0; j--)
       {
-         CMCHKPK(SPkU32, stats->sch.dlNack[i][j], mBuf);
+	 CMCHKPK(SPkU32, stats->sch.dlNack[i][j], mBuf);
       }
    }
    for (i=3; i>=0; i--)
@@ -384,15 +384,15 @@ PRIVATE Void TSInfUtlPackCellInfo(mBuf, stats)
 }
 
 #ifdef ANSI
-PRIVATE Void TSInfUtlUnpkUeInfo
+   PRIVATE Void TSInfUtlUnpkUeInfo
 (
  Buffer            *mBuf,
  TSInfL2UeStats     *stats 
-)
+ )
 #else
 PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
- Buffer            *mBuf;
- TSInfL2UeStats     *stats; 
+   Buffer            *mBuf;
+   TSInfL2UeStats     *stats; 
 #endif
 {
    S32 i;
@@ -400,7 +400,7 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
 
    TRC2(TSInfUtlUnpkUeInfo)
 
-   CMCHKUNPK(SUnpkU32, &stats->rnti, mBuf);
+      CMCHKUNPK(SUnpkU32, &stats->rnti, mBuf);
 
    for (k = L2_STATS_MAX_CELLS; k > 0; k--)
    {
@@ -409,15 +409,15 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
       CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlPrbUsg, mBuf);
       for (i=1; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlNackCnt[i], mBuf);
+	 CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlNackCnt[i], mBuf);
       }
       for (i=1; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlAckNackCnt[i], mBuf);
+	 CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlAckNackCnt[i], mBuf);
       }
       for (i=1; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlDtxCnt[i], mBuf);
+	 CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlDtxCnt[i], mBuf);
       }
       CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlSumCw0Cqi, mBuf);
       CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlNumCw0Cqi, mBuf);
@@ -430,11 +430,11 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
       CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].cqiDropCnt, mBuf);
       for (i=4; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlPdbLvl[i], mBuf);
+	 CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlPdbLvl[i], mBuf);
       }
       for (i=3; i>=0; i--)
       {
-         CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].riCnt[i], mBuf);
+	 CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].riCnt[i], mBuf);
       }
       CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlBo, mBuf);
       CMCHKUNPK(SUnpkU32, &stats->nonPersistent.sch[k-1].dlTpt, mBuf);
@@ -467,15 +467,15 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
 }
 
 #ifdef ANSI
-PRIVATE Void TSInfUtlUnpkCellInfo
+   PRIVATE Void TSInfUtlUnpkCellInfo
 (
  Buffer              *mBuf,
  TSInfL2CellStats     *stats 
-)
+ )
 #else
 PRIVATE Void TSInfUtlUnpkCellInfo(mBuf, stats)
- Buffer              *mBuf;
- TSInfL2CellStats     *stats; 
+   Buffer              *mBuf;
+   TSInfL2CellStats     *stats; 
 #endif
 {
    S32 i,j;
@@ -502,21 +502,21 @@ PRIVATE Void TSInfUtlUnpkCellInfo(mBuf, stats)
    {
       for (j=0; j<4; j++)
       {
-         CMCHKUNPK(SUnpkU32, &stats->sch.dlNack[i][j], mBuf);
+	 CMCHKUNPK(SUnpkU32, &stats->sch.dlNack[i][j], mBuf);
       }
    }
    for (i=0; i<2; i++)
    {
       for (j=0; j<4; j++)
       {
-         CMCHKUNPK(SUnpkU32, &stats->sch.dlAckNack[i][j], mBuf);
+	 CMCHKUNPK(SUnpkU32, &stats->sch.dlAckNack[i][j], mBuf);
       }
    }
    for (i=0; i<2; i++)
    {
       for (j=0; j<4; j++)
       {
-         CMCHKUNPK(SUnpkU32, &stats->sch.dlDtx[i][j], mBuf);
+	 CMCHKUNPK(SUnpkU32, &stats->sch.dlDtx[i][j], mBuf);
       }
    }
    for (i=0; i<4; i++)
@@ -584,24 +584,24 @@ PRIVATE Void TSInfUtlUnpkCellInfo(mBuf, stats)
 }
 
 #ifdef ANSI
-PUBLIC Void TSInfPkSndL2UeStats
+   PUBLIC Void TSInfPkSndL2UeStats
 (
  Pst               *pst,
  SuId              suId,
  TSInfL2UeStats     *stats  
-)
+ )
 #else
 PUBLIC Void TSInfPkSndL2UeStats(pst, suId, stats)
- Pst               *pst;
- SuId              suId;
- TSInfL2UeStats     *stats;
+   Pst               *pst;
+   SuId              suId;
+   TSInfL2UeStats     *stats;
 #endif
 {
    Buffer *mBuf;
 
    TRC2(TSInfPkSndL2UeStats)
 
-   mBuf = TSInfUtlAllocMsg(pst);
+      mBuf = TSInfUtlAllocMsg(pst);
    TSInfUtlPackUeInfo(mBuf, stats);
    SPkS16(suId, mBuf);
    pst->event = (Event) EVTTENBL2UESTATS;
@@ -610,17 +610,17 @@ PUBLIC Void TSInfPkSndL2UeStats(pst, suId, stats)
 }
 
 #ifdef ANSI
-PUBLIC Void TSInfUnpkL2UeStats
+   PUBLIC Void TSInfUnpkL2UeStats
 (
  TSInfL2UeStatsInd   func,
  Pst                *pst,
  Buffer             *mBuf
-)
+ )
 #else
 PUBLIC Void TSInfUnpkL2UeStats(func, pst, mBuf)
- TSInfL2UeStatsInd   func;
- Pst                *pst;
- Buffer             *mBuf;
+   TSInfL2UeStatsInd   func;
+   Pst                *pst;
+   Buffer             *mBuf;
 #endif
 {
    SuId              suId;
@@ -628,7 +628,7 @@ PUBLIC Void TSInfUnpkL2UeStats(func, pst, mBuf)
 
    TRC2(TSInfUnpkL2UeStats)
 
-   SUnpkS16(&suId, mBuf);
+      SUnpkS16(&suId, mBuf);
    TSInfUtlUnpkUeInfo(mBuf, &stats);
    SPutMsg(mBuf);
    (*func)(pst, suId, &stats);
@@ -636,24 +636,24 @@ PUBLIC Void TSInfUnpkL2UeStats(func, pst, mBuf)
 }
 
 #ifdef ANSI
-PUBLIC Void TSInfPkSndL2CellStats
+   PUBLIC Void TSInfPkSndL2CellStats
 (
  Pst                 *pst,
  SuId                suId,
  TSInfL2CellStats   *stats 
-)
+ )
 #else
 PUBLIC Void TSInfPkSndL2CellStats(pst, suId, stats)
- Pst                 *pst;
- SuId                suId;
- TSInfL2Cellstats   *stats;
+   Pst                 *pst;
+   SuId                suId;
+   TSInfL2Cellstats   *stats;
 #endif
 {
    Buffer *mBuf;
 
    TRC2(TSInfPkSndL2CellStats)
 
-   mBuf = TSInfUtlAllocMsg(pst);
+      mBuf = TSInfUtlAllocMsg(pst);
    TSInfUtlPackCellInfo(mBuf, stats);
    SPkS16(suId, mBuf);
    pst->event = (Event) EVTTENBL2CELLSTATS;
@@ -662,17 +662,17 @@ PUBLIC Void TSInfPkSndL2CellStats(pst, suId, stats)
 }
 
 #ifdef ANSI
-PUBLIC Void TSInfUnpkL2CellStats
+   PUBLIC Void TSInfUnpkL2CellStats
 (
  TSInfL2CellStatsInd   func,
  Pst                *pst,
  Buffer             *mBuf
-)
+ )
 #else
 PUBLIC Void TSInfUnpkL2CellStats(func, pst, mBuf)
- TSInfL2CellStatsInd   func;
- Pst                *pst;
- Buffer             *mBuf;
+   TSInfL2CellStatsInd   func;
+   Pst                *pst;
+   Buffer             *mBuf;
 #endif
 {
    SuId                suId;
@@ -680,7 +680,7 @@ PUBLIC Void TSInfUnpkL2CellStats(func, pst, mBuf)
 
    TRC2(TSInfUnpkL2CellStats)
 
-   SUnpkS16(&suId, mBuf);
+      SUnpkS16(&suId, mBuf);
    TSInfUtlUnpkCellInfo(mBuf, &stats);
    SPutMsg(mBuf);
    (*func)(pst, suId, &stats);
@@ -689,5 +689,5 @@ PUBLIC Void TSInfUnpkL2CellStats(func, pst, mBuf)
 #endif /* TENB_STATS */
 
 /**********************************************************************
-         End of file
+  End of file
  **********************************************************************/

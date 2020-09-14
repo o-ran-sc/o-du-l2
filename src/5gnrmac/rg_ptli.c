@@ -165,7 +165,7 @@ PRIVATE CONSTANT TfuBndReq RgLiTfuBndReqMt[RG_MAX_TFU_PROV] =
 #ifdef LWLCRGLITFU
    cmPkTfuBndReq
 #else
-   PtLiTfuBndReq
+      PtLiTfuBndReq
 #endif
 };
 
@@ -190,7 +190,7 @@ PRIVATE CONSTANT TfuSchBndReq RgLiTfuSchBndReqMt[RG_MAX_TFU_PROV] =
 #ifdef LWLCRGLITFU
    cmPkTfuSchBndReq
 #else
-   PtLiTfuSchBndReq
+      PtLiTfuSchBndReq
 #endif
 };
 
@@ -215,7 +215,7 @@ PRIVATE CONSTANT TfuUbndReq RgLiTfuUbndReqMt[RG_MAX_TFU_PROV] =
 #ifdef LWLCRGLITFU
    cmPkTfuUbndReq
 #else
-   PtLiTfuUbndReq
+      PtLiTfuUbndReq
 #endif
 };
 
@@ -240,7 +240,7 @@ PRIVATE CONSTANT TfuSchUbndReq RgLiTfuSchUbndReqMt[RG_MAX_TFU_PROV] =
 #ifdef LWLCRGLITFU
    cmPkTfuSchUbndReq
 #else
-   PtLiTfuSchUbndReq
+      PtLiTfuSchUbndReq
 #endif
 };
 
@@ -279,23 +279,23 @@ PRIVATE CONSTANT TfuRecpReq RgLiTfuRecpReqMt[RG_MAX_TFU_PROV] =
 #ifdef LWLCRGLITFU
    cmPkTfuRecpReq
 #else
-   PtLiTfuRecpReq
+      PtLiTfuRecpReq
 #endif
 };
 
 /** @brief This Primitive is sent from Scheduler to PHY. It provides PHY with
-  * all the control information
-  * @details This primitive carries the information sent on the following
-  * channels - 
-  * -# PDCCH
-  * -# PHICH
-  * -# PCFICH
-  * 
-  * @param pst
-  * @param spId
-  * @param cntrlReq pointer to TfuCntrlReqInfo
-  * @return ROK/RFAILED
-  */
+ * all the control information
+ * @details This primitive carries the information sent on the following
+ * channels - 
+ * -# PDCCH
+ * -# PHICH
+ * -# PCFICH
+ * 
+ * @param pst
+ * @param spId
+ * @param cntrlReq pointer to TfuCntrlReqInfo
+ * @return ROK/RFAILED
+ */
 PRIVATE CONSTANT TfuCntrlReq RgLiTfuCntrlReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
@@ -311,22 +311,22 @@ PRIVATE CONSTANT TfuCntrlReq RgLiTfuCntrlReqMt[RG_MAX_TFU_PROV] =
 #ifdef LWLCRGLITFU
    cmPkTfuCntrlReq
 #else
-   PtLiTfuCntrlReq
+      PtLiTfuCntrlReq
 #endif
 };
 
 /** @brief This Primitive carries the Data PDUs from MAC to PHY for
-  * transmission. 
-  * @details The data being sent in this primitive is meant to be transmitted on
-  * the downlink channel PDSCH and PBCH (if present). To facilitate physical
-  * layer processing, requisite control information is also sent along with the
-  * data. 
-  * @sa TfUiTfuCntrlReq
-  * @param pst 
-  * @param spId
-  * @param tfuDatReq pointer to TfuDatReqInfo
-  * @return 
-  */
+ * transmission. 
+ * @details The data being sent in this primitive is meant to be transmitted on
+ * the downlink channel PDSCH and PBCH (if present). To facilitate physical
+ * layer processing, requisite control information is also sent along with the
+ * data. 
+ * @sa TfUiTfuCntrlReq
+ * @param pst 
+ * @param spId
+ * @param tfuDatReq pointer to TfuDatReqInfo
+ * @return 
+ */
 PRIVATE CONSTANT TfuDatReq RgLiTfuDatReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
@@ -342,22 +342,22 @@ PRIVATE CONSTANT TfuDatReq RgLiTfuDatReqMt[RG_MAX_TFU_PROV] =
 #ifdef LWLCRGLITFU
    cmPkTfuDatReq
 #else
-   PtLiTfuDatReq
+      PtLiTfuDatReq
 #endif
 };
 
 #ifdef L2_OPTMZ
 /** @brief This Primitive carries cellId and UeId for which datReq need to be deleted. 
-  * @details This primitive is used to send delDatReq to CL to delete the PDUs of 
-  * UE which has been deleted in MAC due to ueId change or anyother scenario
-  * NOTE:: This API is only supported for TC because race condition issue
-  *        happens only in case of TC
-  * @sa TfUiTfuDelDatReq
-  * @param pst 
-  * @param spId
-  * @param tfuDelDatReq pointer to TfuDelDatReqInfo
-  * @return 
-  */
+ * @details This primitive is used to send delDatReq to CL to delete the PDUs of 
+ * UE which has been deleted in MAC due to ueId change or anyother scenario
+ * NOTE:: This API is only supported for TC because race condition issue
+ *        happens only in case of TC
+ * @sa TfUiTfuDelDatReq
+ * @param pst 
+ * @param spId
+ * @param tfuDelDatReq pointer to TfuDelDatReqInfo
+ * @return 
+ */
 PRIVATE CONSTANT TfuDelDatReq RgLiTfuDelDatReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
@@ -383,179 +383,179 @@ PRIVATE CONSTANT TfuDelDatReq RgLiTfuDelDatReqMt[RG_MAX_TFU_PROV] =
 
 
 /***********************************************************
-*
-*     Func : RgLiTfuBndReq
-*
-*
-*     Desc : This API is used to send a Bind Request from MAC to PHY.
+ *
+ *     Func : RgLiTfuBndReq
+ *
+ *
+ *     Desc : This API is used to send a Bind Request from MAC to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service user.
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuBndReq
+   PUBLIC S16 RgLiTfuBndReq
 (
-Pst * pst,
-SuId suId,
-SpId spId
-)
+ Pst * pst,
+ SuId suId,
+ SpId spId
+ )
 #else
 PUBLIC S16 RgLiTfuBndReq(pst, suId, spId)
-Pst * pst;
-SuId suId;
-SpId spId;
+   Pst * pst;
+   SuId suId;
+   SpId spId;
 #endif
 {
 
    TRC3(RgLiTfuBndReq)
 
-   RETVALUE((*RgLiTfuBndReqMt[pst->selector])(pst, suId, spId));
+      RETVALUE((*RgLiTfuBndReqMt[pst->selector])(pst, suId, spId));
 
 }
 
 
 
 /***********************************************************
-*
-*     Func : RgLiTfuSchBndReq
-*
-*
-*     Desc : This API is used to send a Bind Request from Scheduler to PHY.
+ *
+ *     Func : RgLiTfuSchBndReq
+ *
+ *
+ *     Desc : This API is used to send a Bind Request from Scheduler to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service user.
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSchBndReq
+   PUBLIC S16 RgLiTfuSchBndReq
 (
-Pst * pst,
-SuId suId,
-SpId spId
-)
+ Pst * pst,
+ SuId suId,
+ SpId spId
+ )
 #else
 PUBLIC S16 RgLiTfuSchBndReq(pst, suId, spId)
-Pst * pst;
-SuId suId;
-SpId spId;
+   Pst * pst;
+   SuId suId;
+   SpId spId;
 #endif
 {
 
    TRC3(RgLiTfuSchBndReq)
 
-   RETVALUE((*RgLiTfuSchBndReqMt[pst->selector])(pst, suId, spId));
+      RETVALUE((*RgLiTfuSchBndReqMt[pst->selector])(pst, suId, spId));
 
 }
 
 
 
 /***********************************************************
-*
-*     Func : RgLiTfuUbndReq
-*
-*
-*     Desc : This API is used to send an Unbind Request from MAC to PHY.
+ *
+ *     Func : RgLiTfuUbndReq
+ *
+ *
+ *     Desc : This API is used to send an Unbind Request from MAC to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service provider.
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuUbndReq
+   PUBLIC S16 RgLiTfuUbndReq
 (
-Pst * pst,
-SpId spId,
-Reason reason
-)
+ Pst * pst,
+ SpId spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 RgLiTfuUbndReq(pst, spId, reason)
-Pst * pst;
-SpId spId;
-Reason reason;
+   Pst * pst;
+   SpId spId;
+   Reason reason;
 #endif
 {
 
    TRC3(RgLiTfuUbndReq)
 
-   RETVALUE((*RgLiTfuUbndReqMt[pst->selector])(pst, spId, reason));
+      RETVALUE((*RgLiTfuUbndReqMt[pst->selector])(pst, spId, reason));
 
 }
 
 
 
 /***********************************************************
-*
-*     Func : RgLiTfuSchUbndReq
-*
-*
-*     Desc : This API is used to send an Unbind Request from Scheduler to PHY.
+ *
+ *     Func : RgLiTfuSchUbndReq
+ *
+ *
+ *     Desc : This API is used to send an Unbind Request from Scheduler to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service provider.
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSchUbndReq
+   PUBLIC S16 RgLiTfuSchUbndReq
 (
-Pst * pst,
-SpId spId,
-Reason reason
-)
+ Pst * pst,
+ SpId spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 RgLiTfuSchUbndReq(pst, spId, reason)
-Pst * pst;
-SpId spId;
-Reason reason;
+   Pst * pst;
+   SpId spId;
+   Reason reason;
 #endif
 {
 
    TRC3(RgLiTfuSchUbndReq)
 
-   RETVALUE((*RgLiTfuSchUbndReqMt[pst->selector])(pst, spId, reason));
+      RETVALUE((*RgLiTfuSchUbndReqMt[pst->selector])(pst, spId, reason));
 
 }
 
 
 
 /***********************************************************
-*
-*     Func : RgLiTfuRecpReq
-*
-*
-*     Desc : This primitive is sent from Scheduler to PHY.
+ *
+ *     Func : RgLiTfuRecpReq
+ *
+ *
+ *     Desc : This primitive is sent from Scheduler to PHY.
  * @details This primitive provides PHY with all the information required by 
  * PHY to decode transmissions from the UE on either PUCCH or PUSCH.
  * -# On PUCCH UE can transmit the following
@@ -574,176 +574,176 @@ Reason reason;
  * @param spId SAP ID of the service provider.
  * @param recpReq Pointer to the TfuRecpReqInfo structure.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuRecpReq
+   PUBLIC S16 RgLiTfuRecpReq
 (
-Pst * pst,
-SpId spId,
-TfuRecpReqInfo * recpReq
-)
+ Pst * pst,
+ SpId spId,
+ TfuRecpReqInfo * recpReq
+ )
 #else
 PUBLIC S16 RgLiTfuRecpReq(pst, spId, recpReq)
-Pst * pst;
-SpId spId;
-TfuRecpReqInfo * recpReq;
+   Pst * pst;
+   SpId spId;
+   TfuRecpReqInfo * recpReq;
 #endif
 {
 
    TRC3(RgLiTfuRecpReq)
 
-   RETVALUE((*RgLiTfuRecpReqMt[pst->selector])(pst, spId, recpReq));
+      RETVALUE((*RgLiTfuRecpReqMt[pst->selector])(pst, spId, recpReq));
 
 }
 
 
 
 /***********************************************************
-*
-*     Func : RgLiTfuCntrlReq
-*
-*
-*     Desc : This Primitive is sent from Scheduler to PHY. It provides PHY with
-  * all the control information
-  * @details This primitive carries the information sent on the following
-  * channels - 
-  * -# PDCCH
-  * -# PHICH
-  * -# PCFICH
-  * 
-  * @param pst
-  * @param spId
-  * @param cntrlReq pointer to TfuCntrlReqInfo
-  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : RgLiTfuCntrlReq
+ *
+ *
+ *     Desc : This Primitive is sent from Scheduler to PHY. It provides PHY with
+ * all the control information
+ * @details This primitive carries the information sent on the following
+ * channels - 
+ * -# PDCCH
+ * -# PHICH
+ * -# PCFICH
+ * 
+ * @param pst
+ * @param spId
+ * @param cntrlReq pointer to TfuCntrlReqInfo
+ * @return ROK/RFAILED
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuCntrlReq
+   PUBLIC S16 RgLiTfuCntrlReq
 (
-Pst * pst,
-SpId spId,
-TfuCntrlReqInfo * cntrlReq
-)
+ Pst * pst,
+ SpId spId,
+ TfuCntrlReqInfo * cntrlReq
+ )
 #else
 PUBLIC S16 RgLiTfuCntrlReq(pst, spId, cntrlReq)
-Pst * pst;
-SpId spId;
-TfuCntrlReqInfo * cntrlReq;
+   Pst * pst;
+   SpId spId;
+   TfuCntrlReqInfo * cntrlReq;
 #endif
 {
 
    TRC3(RgLiTfuCntrlReq)
 
-   RETVALUE((*RgLiTfuCntrlReqMt[pst->selector])(pst, spId, cntrlReq));
+      RETVALUE((*RgLiTfuCntrlReqMt[pst->selector])(pst, spId, cntrlReq));
 
 }
 
 
 
 /***********************************************************
-*
-*     Func : RgLiTfuDatReq
-*
-*
-*     Desc : This Primitive carries the Data PDUs from MAC to PHY for
-  * transmission. 
-  * @details The data being sent in this primitive is meant to be transmitted on
-  * the downlink channel PDSCH and PBCH (if present). To facilitate physical
-  * layer processing, requisite control information is also sent along with the
-  * data. 
-  * @sa TfUiTfuCntrlReq
-  * @param pst 
-  * @param spId
-  * @param tfuDatReq pointer to TfuDatReqInfo
-  * @return
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : RgLiTfuDatReq
+ *
+ *
+ *     Desc : This Primitive carries the Data PDUs from MAC to PHY for
+ * transmission. 
+ * @details The data being sent in this primitive is meant to be transmitted on
+ * the downlink channel PDSCH and PBCH (if present). To facilitate physical
+ * layer processing, requisite control information is also sent along with the
+ * data. 
+ * @sa TfUiTfuCntrlReq
+ * @param pst 
+ * @param spId
+ * @param tfuDatReq pointer to TfuDatReqInfo
+ * @return
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuDatReq
+   PUBLIC S16 RgLiTfuDatReq
 (
-Pst * pst,
-SpId spId,
-TfuDatReqInfo * datReq
-)
+ Pst * pst,
+ SpId spId,
+ TfuDatReqInfo * datReq
+ )
 #else
 PUBLIC S16 RgLiTfuDatReq(pst, spId, datReq)
-Pst * pst;
-SpId spId;
-TfuDatReqInfo * datReq;
+   Pst * pst;
+   SpId spId;
+   TfuDatReqInfo * datReq;
 #endif
 {
 
    TRC3(RgLiTfuDatReq)
 
-   RETVALUE((*RgLiTfuDatReqMt[pst->selector])(pst, spId, datReq));
+      RETVALUE((*RgLiTfuDatReqMt[pst->selector])(pst, spId, datReq));
 
 }
 
 #ifdef L2_OPTMZ
 
 /***********************************************************
-*
-*     Func : RgLiTfuDelDatReq
-*
-*
-*     Desc : This Primitive is used to delete datReq in CL when there is ueId change. 
-  * @details: This primitive is required when L2_OPMZ flag is elabed. this is required
-  *           To delete datRq PDUs from CL for the Ue for which Ue Id got changed or
-  *           anyother similar scenario
-  * @sa TfUiTfuDelDatReq
-  * @param pst 
-  * @param spId
-  * @param tfuDelDatReq pointer to TfuDelDatReqInfo
-  * @return
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : RgLiTfuDelDatReq
+ *
+ *
+ *     Desc : This Primitive is used to delete datReq in CL when there is ueId change. 
+ * @details: This primitive is required when L2_OPMZ flag is elabed. this is required
+ *           To delete datRq PDUs from CL for the Ue for which Ue Id got changed or
+ *           anyother similar scenario
+ * @sa TfUiTfuDelDatReq
+ * @param pst 
+ * @param spId
+ * @param tfuDelDatReq pointer to TfuDelDatReqInfo
+ * @return
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuDelDatReq
+   PUBLIC S16 RgLiTfuDelDatReq
 (
-Pst * pst,
-SpId spId,
-TfuDelDatReqInfo * delDatReq
-)
+ Pst * pst,
+ SpId spId,
+ TfuDelDatReqInfo * delDatReq
+ )
 #else
 PUBLIC S16 RgLiTfuDelDatReq(pst, spId, delDatReq)
-Pst * pst;
-SpId spId;
-TfuDelDatReqInfo * delDatReq;
+   Pst * pst;
+   SpId spId;
+   TfuDelDatReqInfo * delDatReq;
 #endif
 {
 
    TRC3(RgLiTfuDelDatReq)
 
-   RETVALUE((*RgLiTfuDelDatReqMt[pst->selector])(pst, spId, delDatReq));
+      RETVALUE((*RgLiTfuDelDatReqMt[pst->selector])(pst, spId, delDatReq));
 
 }
 #endif /* L2_OPTMZ*/
@@ -755,42 +755,42 @@ TfuDelDatReqInfo * delDatReq;
 
 
 /***********************************************************
-*
-*     Func : PtLiTfuBndReq
-*
-*
-*     Desc : This API is used to send a Bind Request from MAC to PHY.
+ *
+ *     Func : PtLiTfuBndReq
+ *
+ *
+ *     Desc : This API is used to send a Bind Request from MAC to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service user.
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuBndReq
+   PUBLIC S16 PtLiTfuBndReq
 (
-Pst * pst,
-SuId suId,
-SpId spId
-)
+ Pst * pst,
+ SuId suId,
+ SpId spId
+ )
 #else
 PUBLIC S16 PtLiTfuBndReq(pst, suId, spId)
-Pst * pst;
-SuId suId;
-SpId spId;
+   Pst * pst;
+   SuId suId;
+   SpId spId;
 #endif
 {
 
    TRC3(PtLiTfuBndReq)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(suId);
    UNUSED(spId);
 
@@ -801,42 +801,42 @@ SpId spId;
 
 
 /***********************************************************
-*
-*     Func : PtLiTfuSchBndReq
-*
-*
-*     Desc : This API is used to send a Bind Request from Scheduler to PHY.
+ *
+ *     Func : PtLiTfuSchBndReq
+ *
+ *
+ *     Desc : This API is used to send a Bind Request from Scheduler to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service user.
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuSchBndReq
+   PUBLIC S16 PtLiTfuSchBndReq
 (
-Pst * pst,
-SuId suId,
-SpId spId
-)
+ Pst * pst,
+ SuId suId,
+ SpId spId
+ )
 #else
 PUBLIC S16 PtLiTfuSchBndReq(pst, suId, spId)
-Pst * pst;
-SuId suId;
-SpId spId;
+   Pst * pst;
+   SuId suId;
+   SpId spId;
 #endif
 {
 
    TRC3(PtLiTfuSchBndReq)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(suId);
    UNUSED(spId);
 
@@ -847,42 +847,42 @@ SpId spId;
 
 
 /***********************************************************
-*
-*     Func : PtLiTfuUbndReq
-*
-*
-*     Desc : This API is used to send an Unbind Request from MAC to PHY.
+ *
+ *     Func : PtLiTfuUbndReq
+ *
+ *
+ *     Desc : This API is used to send an Unbind Request from MAC to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service provider.
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuUbndReq
+   PUBLIC S16 PtLiTfuUbndReq
 (
-Pst * pst,
-SpId spId,
-Reason reason
-)
+ Pst * pst,
+ SpId spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 PtLiTfuUbndReq(pst, spId, reason)
-Pst * pst;
-SpId spId;
-Reason reason;
+   Pst * pst;
+   SpId spId;
+   Reason reason;
 #endif
 {
 
    TRC3(PtLiTfuUbndReq)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(spId);
    UNUSED(reason);
 
@@ -893,42 +893,42 @@ Reason reason;
 
 
 /***********************************************************
-*
-*     Func : PtLiTfuSchUbndReq
-*
-*
-*     Desc : This API is used to send an Unbind Request from Scheduler to PHY.
+ *
+ *     Func : PtLiTfuSchUbndReq
+ *
+ *
+ *     Desc : This API is used to send an Unbind Request from Scheduler to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service provider.
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuSchUbndReq
+   PUBLIC S16 PtLiTfuSchUbndReq
 (
-Pst * pst,
-SpId spId,
-Reason reason
-)
+ Pst * pst,
+ SpId spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 PtLiTfuSchUbndReq(pst, spId, reason)
-Pst * pst;
-SpId spId;
-Reason reason;
+   Pst * pst;
+   SpId spId;
+   Reason reason;
 #endif
 {
 
    TRC3(PtLiTfuSchUbndReq)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(spId);
    UNUSED(reason);
 
@@ -939,11 +939,11 @@ Reason reason;
 
 
 /***********************************************************
-*
-*     Func : PtLiTfuRecpReq
-*
-*
-*     Desc : This primitive is sent from Scheduler to PHY.
+ *
+ *     Func : PtLiTfuRecpReq
+ *
+ *
+ *     Desc : This primitive is sent from Scheduler to PHY.
  * @details This primitive provides PHY with all the information required by 
  * PHY to decode transmissions from the UE on either PUCCH or PUSCH.
  * -# On PUCCH UE can transmit the following
@@ -962,33 +962,33 @@ Reason reason;
  * @param spId SAP ID of the service provider.
  * @param recpReq Pointer to the TfuRecpReqInfo structure.
  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuRecpReq
+   PUBLIC S16 PtLiTfuRecpReq
 (
-Pst * pst,
-SpId spId,
-TfuRecpReqInfo * recpReq
-)
+ Pst * pst,
+ SpId spId,
+ TfuRecpReqInfo * recpReq
+ )
 #else
 PUBLIC S16 PtLiTfuRecpReq(pst, spId, recpReq)
-Pst * pst;
-SpId spId;
-TfuRecpReqInfo * recpReq;
+   Pst * pst;
+   SpId spId;
+   TfuRecpReqInfo * recpReq;
 #endif
 {
 
    TRC3(PtLiTfuRecpReq)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(spId);
    UNUSED(recpReq);
 
@@ -999,49 +999,49 @@ TfuRecpReqInfo * recpReq;
 
 
 /***********************************************************
-*
-*     Func : PtLiTfuCntrlReq
-*
-*
-*     Desc : This Primitive is sent from Scheduler to PHY. It provides PHY with
-  * all the control information
-  * @details This primitive carries the information sent on the following
-  * channels - 
-  * -# PDCCH
-  * -# PHICH
-  * -# PCFICH
-  * 
-  * @param pst
-  * @param spId
-  * @param cntrlReq pointer to TfuCntrlReqInfo
-  * @return ROK/RFAILED
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : PtLiTfuCntrlReq
+ *
+ *
+ *     Desc : This Primitive is sent from Scheduler to PHY. It provides PHY with
+ * all the control information
+ * @details This primitive carries the information sent on the following
+ * channels - 
+ * -# PDCCH
+ * -# PHICH
+ * -# PCFICH
+ * 
+ * @param pst
+ * @param spId
+ * @param cntrlReq pointer to TfuCntrlReqInfo
+ * @return ROK/RFAILED
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuCntrlReq
+   PUBLIC S16 PtLiTfuCntrlReq
 (
-Pst * pst,
-SpId spId,
-TfuCntrlReqInfo * cntrlReq
-)
+ Pst * pst,
+ SpId spId,
+ TfuCntrlReqInfo * cntrlReq
+ )
 #else
 PUBLIC S16 PtLiTfuCntrlReq(pst, spId, cntrlReq)
-Pst * pst;
-SpId spId;
-TfuCntrlReqInfo * cntrlReq;
+   Pst * pst;
+   SpId spId;
+   TfuCntrlReqInfo * cntrlReq;
 #endif
 {
 
    TRC3(PtLiTfuCntrlReq)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(spId);
    UNUSED(cntrlReq);
 
@@ -1052,48 +1052,48 @@ TfuCntrlReqInfo * cntrlReq;
 
 
 /***********************************************************
-*
-*     Func : PtLiTfuDatReq
-*
-*
-*     Desc : This Primitive carries the Data PDUs from MAC to PHY for
-  * transmission. 
-  * @details The data being sent in this primitive is meant to be transmitted on
-  * the downlink channel PDSCH and PBCH (if present). To facilitate physical
-  * layer processing, requisite control information is also sent along with the
-  * data. 
-  * @sa TfUiTfuCntrlReq
-  * @param pst 
-  * @param spId
-  * @param tfuDatReq pointer to TfuDatReqInfo
-  * @return
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : PtLiTfuDatReq
+ *
+ *
+ *     Desc : This Primitive carries the Data PDUs from MAC to PHY for
+ * transmission. 
+ * @details The data being sent in this primitive is meant to be transmitted on
+ * the downlink channel PDSCH and PBCH (if present). To facilitate physical
+ * layer processing, requisite control information is also sent along with the
+ * data. 
+ * @sa TfUiTfuCntrlReq
+ * @param pst 
+ * @param spId
+ * @param tfuDatReq pointer to TfuDatReqInfo
+ * @return
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuDatReq
+   PUBLIC S16 PtLiTfuDatReq
 (
-Pst * pst,
-SpId spId,
-TfuDatReqInfo * datReq
-)
+ Pst * pst,
+ SpId spId,
+ TfuDatReqInfo * datReq
+ )
 #else
 PUBLIC S16 PtLiTfuDatReq(pst, spId, datReq)
-Pst * pst;
-SpId spId;
-TfuDatReqInfo * datReq;
+   Pst * pst;
+   SpId spId;
+   TfuDatReqInfo * datReq;
 #endif
 {
 
    TRC3(PtLiTfuDatReq)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(spId);
    UNUSED(datReq);
 
@@ -1104,47 +1104,47 @@ TfuDatReqInfo * datReq;
 
 #ifdef L2_OPTMZ
 /***********************************************************
-*
-*     Func : PtLiTfuDelDatReq
-*
-*
-*   @brief This Primitive carries cellId and UeId for which datReq need to be deleted.
-  * @details This primitive is used to send delDatReq to CL to delete the PDUs of
-    * UE which has been deleted in MAC due to ueId change or anyother scenario
-    
-  * @details The data being sent in this primitive is meant to be transmitted on
-  * @sa TfUiTfuDelDatReq
-  * @param pst 
-  * @param spId
-  * @param tfuDelDatReq pointer to TfuDelDatReqInfo
-  * @return
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
+ *
+ *     Func : PtLiTfuDelDatReq
+ *
+ *
+ *   @brief This Primitive carries cellId and UeId for which datReq need to be deleted.
+ * @details This primitive is used to send delDatReq to CL to delete the PDUs of
+ * UE which has been deleted in MAC due to ueId change or anyother scenario
+
+ * @details The data being sent in this primitive is meant to be transmitted on
+ * @sa TfUiTfuDelDatReq
+ * @param pst 
+ * @param spId
+ * @param tfuDelDatReq pointer to TfuDelDatReqInfo
+ * @return
+ *
+ *
+ *     Ret  : S16
+ *
+ *     Notes:
+ *
+ *     File  : 
+ *
+ **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuDelDatReq
+   PUBLIC S16 PtLiTfuDelDatReq
 (
-Pst * pst,
-SpId spId,
-TfuDelDatReqInfo * delDatReq
-)
+ Pst * pst,
+ SpId spId,
+ TfuDelDatReqInfo * delDatReq
+ )
 #else
 PUBLIC S16 PtLiTfuDelDatReq(pst, spId, delDatReq)
-Pst * pst;
-SpId spId;
-TfuDelDatReqInfo * DelDatReq;
+   Pst * pst;
+   SpId spId;
+   TfuDelDatReqInfo * DelDatReq;
 #endif
 {
 
    TRC3(PtLiTfuDelDatReq)
 
-   UNUSED(pst);
+      UNUSED(pst);
    UNUSED(spId);
    UNUSED(delDatReq);
 
@@ -1160,6 +1160,6 @@ TfuDelDatReqInfo * DelDatReq;
 #endif /* __cplusplus */
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

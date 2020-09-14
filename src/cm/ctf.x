@@ -70,7 +70,7 @@ typedef enum {
 /**
  * @enum ctfDuplexMode
  * This element enumerates the duplex mode for the entire system at PHY. 
-*/
+ */
 typedef enum {
    CTF_DUPMODE_FDD=1,
    CTF_DUPMODE_TDD   
@@ -79,7 +79,7 @@ typedef enum {
 /**
  * @enum ctfSCSpacing
  * This element enumerates the sub-carrier spacing for configuration at PHY. 
-*/
+ */
 typedef enum {
    CTF_SC_SPACING_15KHZ,
    CTF_SC_SPACING_7DOT5KHZ   
@@ -88,7 +88,7 @@ typedef enum {
 /**
  * @enum ctfCPCfg
  * This element enumerates the cyclic prefix for use at PHY.
-*/
+ */
 typedef enum {
    CTF_CP_NORMAL,
    CTF_CP_EXTENDED   
@@ -97,7 +97,7 @@ typedef enum {
 /**
  * @brief
  * This element enumerates the number of antenna ports for configuration at PHY.
-*/
+ */
 typedef enum {
    CTF_AP_CNT_1 = 1,
    CTF_AP_CNT_2 = 2,
@@ -107,7 +107,7 @@ typedef enum {
 /**
  * @enum ctfPhichDuration
  * This element enumerates the duration for PHICH configuration at PHY.
-*/
+ */
 typedef enum {
    CTF_PHICH_DUR_NORMAL,
    CTF_PHICH_DUR_EXTENDED   
@@ -116,7 +116,7 @@ typedef enum {
 /**
  * @enum ctfPhichResource
  * This element enumerates the resources for PHICH configuration at PHY.
-*/
+ */
 typedef enum {
    CTF_PHICH_RSRC_ONESIXTH,
    CTF_PHICH_RSRC_HALF,
@@ -127,7 +127,7 @@ typedef enum {
 /**
  * @enum ctfPuschHoppingMode
  * This element enumerates the hopping mode for PUSCH configuration at PHY.
-*/
+ */
 typedef enum {
    CTF_PUSCH_HOPMODE_INTER_SUBFRM,
    CTF_PUSCH_HOPMODE_INTRAANDINTERSUBFRM   
@@ -136,7 +136,7 @@ typedef enum {
 /**
  * @enum ctfPucchDeltaShift
  * This element enumerates the delta shift for PUCCH configuration at PHY.
-*/
+ */
 typedef enum {
    CTF_PUCCH_DELTASHIFT1,
    CTF_PUCCH_DELTASHIFT2,
@@ -147,7 +147,7 @@ typedef enum {
  * @enum ctfPdschPaParam
  * This element enumerates the parameter PA for PDSCH configuration at PHY.
  * Each enum value maps to a PA value in dBs.
-*/
+ */
 typedef enum {
    CTF_PDSCH_PA_MINUS_6,
    CTF_PDSCH_PA_MINUS_4DOT77,
@@ -162,7 +162,7 @@ typedef enum {
 /**
  * @enum CtfCqiRptModeAperiodic
  * This element enumerates the Aperiodic CQI reporting configuration at PHY.
-*/
+ */
 typedef enum {
    CTF_CQI_RPT_MODE_APERIODIC_RM12, /*!< Corresponds to Mode 1-2 */
    CTF_CQI_RPT_MODE_APERIODIC_RM20, /*!< Corresponds to Mode 2-0 */
@@ -174,7 +174,7 @@ typedef enum {
 /**
  * @enum CtfUeTxAntSelectType 
  * This element enumerates the UE TX Antenna selection configuration at PHY.
-*/
+ */
 typedef enum {
    CTF_UE_TX_ANT_SELECT_CLOSEDLOOP, /*!< Closed loop selection */
    CTF_UE_TX_ANT_SELECT_OPENLOOP    /*!< Open loop selection */
@@ -183,7 +183,7 @@ typedef enum {
 /**
  * @enum CtfPucchRepFactor 
  * This element enumerates the repetition factors for PUCCH configuration.
-*/
+ */
 typedef enum {
    CTF_PUCCH_REP_FACTOR_N2,   /*!< Pucch repetition factor of 2 */
    CTF_PUCCH_REP_FACTOR_N4,   /*!< Pucch repetition factor of 4 */
@@ -192,21 +192,21 @@ typedef enum {
 
 #ifdef CTF_VER3
 /* ctf_x_001.main_4:115549: */
- /**
-  * @enum CtfTddAckNackFBMode
-  * This element enumerates the ACK/NACK feedback mode for TDD mode of
-  *  PUCCH configuration.
+/**
+ * @enum CtfTddAckNackFBMode
+ * This element enumerates the ACK/NACK feedback mode for TDD mode of
+ *  PUCCH configuration.
  */
- typedef enum {
-    CTF_PUCCH_TDD_ACKNACK_FB_MODE_BUNDLING, /*!< Bundling option */
-    CTF_PUCCH_TDD_ACKNACK_FB_MODE_MUXING    /*!< Multiplexing option */
- } CtfTddAckNackFBMode;
+typedef enum {
+   CTF_PUCCH_TDD_ACKNACK_FB_MODE_BUNDLING, /*!< Bundling option */
+   CTF_PUCCH_TDD_ACKNACK_FB_MODE_MUXING    /*!< Multiplexing option */
+} CtfTddAckNackFBMode;
 #endif /* CTF_VER3 */
 
 /**
  * @enum CtfUeTxAntMode 
  * This element enumerates the UE Transmission mode.
-*/
+ */
 typedef enum {
    CTF_UE_TX_ANT_MODE_TM1, /*!< Transmission Mode 1 */
    CTF_UE_TX_ANT_MODE_TM2, /*!< Transmission Mode 2 */
@@ -215,16 +215,16 @@ typedef enum {
    CTF_UE_TX_ANT_MODE_TM5, /*!< Transmission Mode 5 */
    CTF_UE_TX_ANT_MODE_TM6, /*!< Transmission Mode 6 */
    CTF_UE_TX_ANT_MODE_TM7 /*!< Transmission Mode 7 */
-/* ctf_x_001.main_2: Added transmission mode 8*/
+      /* ctf_x_001.main_2: Added transmission mode 8*/
 #ifdef CTF_VER1
-   ,CTF_UE_TX_ANT_MODE_TM8  /*!< Transmission Mode 8 */
+      ,CTF_UE_TX_ANT_MODE_TM8  /*!< Transmission Mode 8 */
 #endif
 } CtfUeTxAntMode;
 /* ctf_x_001.main_3:Added enum for CTF reconfiguration */
 /**
  * @enum CtfReCfgType 
  * This element enumerates the CTF reconfiguration type
-*/
+ */
 typedef enum {
    CTF_MAJOR_RECFG,   /*!< CTF Major reconfiguration */
    CTF_MINOR_RECFG   /*!< CTF Minor reconfiguration */
@@ -244,19 +244,19 @@ typedef struct ctfUeInfo {
  * @brief   Bandwidth Configuration.
  * @details This structure contains the uplink and downlink bandwidth 
  *          information for configuration at PHY.
-*/
+ */
 typedef struct ctfBwCfgInfo {
    Bool   pres;       /*!< Present field */
    CtfBandwidth   dlBw;       /*!< Downlink Bandwidth in RBs */
    CtfBandwidth   ulBw;       /*!< Uplink Bandwidth in RBs */
    U8             eUtraBand;  /*!< EUTRA Operating Band - 36.104 (5.5)
-                                   FDD:(1..14), TDD:(33..40) */
+FDD:(1..14), TDD:(33..40) */
 } CtfBwCfgInfo;
 
 /**
  * @brief   Transmission Scheme Configuration.
  * @details This structure contains the transmission scheme related information.
-*/
+ */
 typedef struct ctfTxSchemeCfg {
    Bool pres; /*!< Present field */
    CtfDuplexMode  duplexMode; /*!< Duplexing Mode: TDD/FDD */
@@ -268,7 +268,7 @@ typedef struct ctfTxSchemeCfg {
  * @brief   Antenna Ports configuration.
  * @details This structure contains the antenna configuration information for 
  *          configuration at PHY.
-*/
+ */
 typedef struct ctfAntennaCfgInfo {
    CtfAntennaPortsCount   antPortsCnt; /*!< Count of antenna ports */
 } CtfAntennaCfgInfo;
@@ -283,15 +283,15 @@ typedef struct ctfAntennaCfgInfo {
  *          -# PrachFreqOffset is the first physical resource block allocated to 
  *             the PRACH opportunity considered for preamble format 0, 1, 2 and 3.
  *             [Ref: 36.211, 5.7.1]
-*/
+ */
 typedef struct ctfPrachCfgInfo {
    Bool  pres;                   /*!< Indicates the presence of this info */
    U16   rootSequenceIndex;      /*!< Range (0..837) */
    U8    prachCfgIndex;          /*!< Prach Config Index (0..63) */
    U8    zeroCorrelationZoneCfg; /*!< Used for preamble sequence generation
-                                      (36.211, 5.7.2); FDD:0..15, TDD:0..6 */
+				   (36.211, 5.7.2); FDD:0..15, TDD:0..6 */
    Bool  highSpeedFlag;          /*!< TRUE: Restricted set, 
-                                      FALSE: Unrestricted Set */
+FALSE: Unrestricted Set */
    U8    prachFreqOffset;        /*!< Range(0..94) */
 } CtfPrachCfgInfo;
 
@@ -299,11 +299,11 @@ typedef struct ctfPrachCfgInfo {
  * @brief   PDSCH configuration.
  * @details This structure contains the PDSCH configuration information for 
  *          configuration at PHY.
-*/
+ */
 typedef struct ctfPdschCfgInfo {
    Bool           pres;       /*!< Indicates the presence of this info */
    S16             refSigPwr;  /*!< Provides downlink reference signal EPRE, 
-                                   in (-60..50)dBm */
+				 in (-60..50)dBm */
    U8             p_b;        /*!< Range(0..3) [36.213, 5.2] */ 
 } CtfPdschCfgInfo;
 
@@ -311,20 +311,20 @@ typedef struct ctfPdschCfgInfo {
  * @brief   Basic PUSCH configuration.
  * @details This structure contains the basic PUSCH configuration information for 
  *          configuration at PHY.
-*/
+ */
 typedef struct ctfPuschCfgBasic {
    U8                   noOfsubBands;  /*!< Number of sub-bands, (1..4) */
    CtfPuschHoppingMode  hoppingMode;   /*!< Hopping Mode */
    U8                   hoppingOffset; /*!< Hopping Offset(0..98) */
    Bool                 enable64QAM;   /*!< 64 QAM,TRUE: enabled, 
-                                                   FALSE: disabled */
+FALSE: disabled */
 } CtfPuschCfgBasic;
 
 /**
  * @brief   PUSCH Uplink Reference Signals configuration.
  * @details This structure contains the PUSCH configuration information for 
  *          uplink reference signals configuration at PHY.
-*/
+ */
 typedef struct ctfPuschUlRS {
    Bool  grpHopEnabled; /*!< Group hopping, TRUE: enabled, FALSE: disabled */
    Bool  seqHopEnabled; /*!< Sequence hopping, TRUE: enabled, FALSE: disabled */
@@ -336,7 +336,7 @@ typedef struct ctfPuschUlRS {
  * @brief   PUSCH configuration.
  * @details This structure contains the information for PUSCH 
  *          configuration at PHY.
-*/
+ */
 typedef struct ctfPuschCfgInfo {
    Bool              pres;          /*!< Indicates the presence of PUSCH configuration info */
    CtfPuschCfgBasic  puschBasicCfg; /*!< PUSCH basic configuration */
@@ -347,12 +347,12 @@ typedef struct ctfPuschCfgInfo {
  * @brief   PHICH configuration.
  * @details This structure contains the duration and resource information for
  *          PHICH configuration at PHY.
-*/
+ */
 typedef struct ctfPhichCfgInfo {
    Bool              pres;       /*!< Indicates the presence of PHICH 
-                                      configuration info */
+				   configuration info */
    CtfPhichDuration  duration;   /*!< PHICH duration, normal/extended, 
-                                      [36.211, 6.9.3-1] */
+				   [36.211, 6.9.3-1] */
    CtfPhichResource  resource;   /*!< PHICH Resource, Ng [36.211, 6.9] */
 } CtfPhichCfgInfo;
 
@@ -360,11 +360,11 @@ typedef struct ctfPhichCfgInfo {
  * @brief   PUCCH configuration.
  * @details This structure contains the information for PUCCH
  *          configuration at PHY.
-*/
+ */
 typedef struct ctfPucchCfgInfo {
    Bool  pres; /*!< Indicates the presence of PUCCH configuration info */
    U8    nRB;  /*!< Number of RBs that are available for use by 
-                    PUCCH formats (0..98) */
+		 PUCCH formats (0..98) */
    U8    nCS;  /*!< Number of cyclic shifts used for PUCCH formats (0..7) */
    U16   n1PUCCH; /*!< PUCCH resource for transmission of ACK/NACK (0..2047) */
    CtfPucchDeltaShift   deltaShift; /*!< PUCCH delta shift */
@@ -374,19 +374,19 @@ typedef struct ctfPucchCfgInfo {
  * @brief   SRS uplink configuration.
  * @details This structure contains the information for setting-up/release
  *          of uplink SRS configuration at PHY.
-*/
+ */
 typedef struct ctfSrsUlCfgInfo {
    Bool              pres;       /*!< Indicates the presence of UL SRS info */
    U8                srsCfgType; /*!< Setup/Release: The setup structure
-                                      is valid ,only if srcCfgType is setup. */
+				   is valid ,only if srcCfgType is setup. */
    struct srsSetupS
    {
       U8                srsBw;   /*!< SRS bandwidth config (0..7) */
       U8                sfCfg;   /*!< SRS sub-frame config (0..15) */
       Bool              srsANSimultTx; /*!< Simultaneous transmisson 
-                                            of SRS and ACK/NACK */
+					 of SRS and ACK/NACK */
       Bool              srsMaxUpPts;   /*!< SRS MaxUpPTS: TRUE/FALSE, 
-                                            This field is valid only for TDD */
+					 This field is valid only for TDD */
    } srsSetup;
 } CtfSrsUlCfgInfo;
 
@@ -394,13 +394,13 @@ typedef struct ctfSrsUlCfgInfo {
  * @brief   Subframe Configuration for TDD mode.
  * @details This structure contains the information for setting-up
  *          the subframe for TDD mode at PHY.
-*/
+ */
 typedef struct ctfTddSfCfgInfo {
    Bool  pres;             /*!< Indicates if this info is valid */
    U8    sfAssignment;     /*!< UL-DL subframe assignment : (0..6)
-                                36.211 Table 4.2-2 */
+			     36.211 Table 4.2-2 */
    U8    spclSfPatterns;   /*!< Special subframe configuration : (0..8)
-                                36.211 Table 4.2-1 */
+			     36.211 Table 4.2-1 */
 } CtfTddSfCfgInfo;
 
 /* ctf_x_001.main_4: Added support for vendor specific parameters */
@@ -412,8 +412,8 @@ typedef struct ctfTddSfCfgInfo {
  */
 
 typedef struct ctfVendorSpecific{
-  U16  buffLen ;  /*!<  Length of parameters in bytes */
-  U8  *paramBuffer ; /*!< parameter Buffer */
+   U16  buffLen ;  /*!<  Length of parameters in bytes */
+   U8  *paramBuffer ; /*!< parameter Buffer */
 } CtfVendorSpecific;
 #endif
 /* Cell specific configuration parameters */
@@ -422,21 +422,21 @@ typedef struct ctfVendorSpecific{
  * @brief   Unlicensed Cell Configuration Information.
  * @details This structure contains the information for setting-up
  *          of an unlicensed SDL cell and its associated resources at PHY.
-*/
+ */
 typedef struct ctfUnLicnsdCellCfg {
    U8            coExistMethod; /*!< Continuous/LTE-U/LAA */
    U8            lteOnPeriod; /*!< Percentage of time SDL
-                                   is active */
+				is active */
    U8            ccaMethod;   /*!< Clear channel assesment method */
    Bool          adaptiveTx;  /*!< Indicates if the duty cycle is 
-                                   adaptive or fixed */
+				adaptive or fixed */
    U16           transPeriod; /*!< Defines the duty cycle */
    U16           listenPrd;   /*!< Time duration in us for clear channel 
-                                   assessment */
+				assessment */
    S16           energyTh;    /*!< Energy threshold in dBFS */
    U16           scanTimePrd; /*!< Time period for RF channel scan */
    U16           activityTh;  /*!< Percentage of time for activity detection
-                                   to select different EARFCN */
+				to select different EARFCN */
    S32           txPowerLimit; /*! Reference Signal power for Unlicensed Cell */
    U8            numFreq;     /*!< Number of unlicensed channels */
    U32           earfcn[CTF_LTEU_MAX_EARFCN]; /*!< Unlicensed channels */
@@ -455,12 +455,12 @@ typedef struct ctfEmtcCElevelInfoLst {
    U8   emtcNumRepPerPreambleAtt;/*!< num of repetition per preamble attempt*/
 }CtfEmtcCElevelInfoLst;
 #endif
- 
+
 /**
  * @brief   Cell Configuration Information.
  * @details This structure contains the information for setting-up
  *          of a cell and its associated resources at PHY.
-*/
+ */
 typedef struct ctfCellCfgInfo {
    CmLteCellId       cellId;     /*!< Cell ID */
    U8                cellIdGrpId;/*!< Cell Identity Group ID (0..167) */
@@ -471,7 +471,7 @@ typedef struct ctfCellCfgInfo {
    U8                physCellId; /*!< Cell ID (0..2) */
    CtfBwCfgInfo      bwCfg;      /*!< Bandwidth configuration */
    CtfTxSchemeCfg    txCfg;      /*!< Basic transmission scheme 
-                                      configuration [36.300, 5.1.1] */
+				   configuration [36.300, 5.1.1] */
    CtfAntennaCfgInfo antennaCfg; /*!< Antenna configuration */
    CtfPrachCfgInfo   prachCfg;   /*!< PRACH configuration */
    CtfPdschCfgInfo   pdschCfg;   /*!< PDSCH configuration */
@@ -480,7 +480,7 @@ typedef struct ctfCellCfgInfo {
    CtfPucchCfgInfo   pucchCfg;   /*!< PUCCH configuration */
    CtfSrsUlCfgInfo   srsUlCfg;   /*!< SRS UL configuration, setup case */
    CtfTddSfCfgInfo   tddSfCfg;   /*!< SubFrame configuration for TDD only */
-   
+
    /*ctf_x_001.main_3: Adding the remaining parameters */
    U16               syncSigPowOs;              /*!< Synchronization signal power offset */
    Bool              syncSigPowOsPres;
@@ -522,15 +522,15 @@ typedef struct ctfCellCfgInfo {
    S16           secSigPwr;
    U16           dlEarfcn;
    U16           ulEarfcn;  
-/*Start Fix for CR ccpu00123185 */ 
+   /*Start Fix for CR ccpu00123185 */ 
    S16           pilotSigPwr;
-/*End Fix for CR ccpu00123185 */
+   /*End Fix for CR ccpu00123185 */
    /* Added parameter for rgu dynamic delta*/
    U8            numDlUePerTti;
    Bool          unLicnsdCfgPres; /*!< Flag to indicate unlicensed cell config */ 
    CtfUnLicnsdCfgInfo lteUCfg; /*!< Unlicensed carrier config */
 #ifdef EMTC_ENABLE
-	U8  				catMenabled;
+   U8  				catMenabled;
    U8             mPdcchStart;
    CtfEmtcCElevelInfoLst ceLevelInfo[CTF_MAX_CE_LEVEL];
 #endif
@@ -539,7 +539,7 @@ typedef struct ctfCellCfgInfo {
 /**
  * @enum CtfCellStatus 
  * This element enumerates the Cell Status for configuration at PHY.
-*/
+ */
 typedef enum {
    CTF_CELL_DOWN,    /*!< Cell DOWN selection */
    CTF_CELL_UP       /*!< Cell UP selection */
@@ -549,7 +549,7 @@ typedef enum {
  * @brief   Cell Re-configuration Information.
  * @details This structure contains the information for reconfiguration
  *          of a cell and its associated resources at PHY.
-*/
+ */
 typedef struct ctfCellRecfgInfo {
    CtfReCfgType      ctfReCfgType ;
    CmLteCellId       cellId;     /*!< Cell ID */
@@ -559,7 +559,7 @@ typedef struct ctfCellRecfgInfo {
    U8                physCellId; /*!< Cell ID (0..2) */
    CtfBwCfgInfo      bwCfg;      /*!< Bandwidth configuration */
    CtfTxSchemeCfg    txCfg;      /*!< Basic transmission scheme 
-                                      configuration [36.300, 5.1.1] */
+				   configuration [36.300, 5.1.1] */
    CtfAntennaCfgInfo antennaCfg; /*!< Antenna configuration */
    CmLteTimingInfo   actvnTime;  /*!< Activation time, only SFN is valid */
    CtfPrachCfgInfo   prachCfg;   /*!< PRACH configuration */
@@ -602,11 +602,11 @@ typedef struct ctfCellRecfgInfo {
    Bool              dataRepModePres ;
    U16               rachSrRepMode;             /*!< The reporting mode for RACH.indication and SR.indcation */
    Bool              rachSrRepModePres;
-/*Start Fix for CR ccpu00123185 */ 
+   /*Start Fix for CR ccpu00123185 */ 
    S16               pilotSigPwr;
    S16               priSigPwr;
    S16               secSigPwr;
-/*End Fix for CR ccpu00123185 */ 
+   /*End Fix for CR ccpu00123185 */ 
    CtfCellStatus     ctfCellStatus; 
 #ifdef ENABLE_API_LOG
    U8                enableAPILog;
@@ -619,7 +619,7 @@ typedef struct ctfCellRecfgInfo {
  * @brief   Dedicated PDSCH Configuration.
  * @details This structure contains the information for PDSCH configuration
  *          specific to an UE.
-*/
+ */
 typedef struct ctfDedPdschCfgInfo {
    Bool              pres; /*!< Indicates the presence of PDSCH configuration info */
    CtfPdschPaParam   pA;   /*!< Pa (in dB) */
@@ -629,7 +629,7 @@ typedef struct ctfDedPdschCfgInfo {
  * @brief   Dedicated PUCCH Configuration.
  * @details This structure contains the information for setting-up/release 
  *          PUCCH configuration specific to an UE.
-*/
+ */
 typedef struct ctfDedPucchCfgInfo {
    Bool              pres;             /*!< Indicates the presence of PUCCH info */
    U8                dedPucchCfgType;  /*!< Setup/Release */
@@ -638,19 +638,19 @@ typedef struct ctfDedPucchCfgInfo {
 #ifdef CTF_VER3
       /* ctf_x_001.main_4:115549: */
       Bool              repFactPres;   /*!< Indicates if repetition factor
-                                             is configured or not */
+					 is configured or not */
 #endif /* CTF_VER3 */
       CtfPucchRepFactor repFact;       /*!< ACK/NACK repetition factor */
       U16               n1PUCCHRep;    /*!< PUCCH resource to repeat the 
-                                            transmission of the corresponding 
-                                            ACK/NACK responce [36.213, 10.1] */
+					 transmission of the corresponding 
+					 ACK/NACK responce [36.213, 10.1] */
    } pucchSetup;
 #ifdef CTF_VER3
    /* ctf_x_001.main_4:115549: */
-    Bool                 tddAckNackCfgPres; /*! Present flag for TDD 
-                                                ACK/NACK config */
-    CtfTddAckNackFBMode  tddAckNackFBMode; /*!< TDD ACK/NACK Feedback Mode 
-                                                 (bundling, multiplexing) */
+   Bool                 tddAckNackCfgPres; /*! Present flag for TDD 
+					     ACK/NACK config */
+   CtfTddAckNackFBMode  tddAckNackFBMode; /*!< TDD ACK/NACK Feedback Mode 
+					    (bundling, multiplexing) */
 #endif /* CTF_VER3 */
 } CtfDedPucchCfgInfo;
 
@@ -658,15 +658,15 @@ typedef struct ctfDedPucchCfgInfo {
  * @brief   Dedicated PUSCH Configuration.
  * @details This structure contains the information for PUCCH 
  *          configuration specific to an UE.
-*/
+ */
 typedef struct ctfDedPuschCfgInfo {
    Bool     pres;             /*!< Indicates the presence of PUSCH info */
    U8       betaOffsetAckIdx; /*!< Beta offset ACK index, (0..15)
-                                   [36.213, Table 8.6.3.-1] */
+				[36.213, Table 8.6.3.-1] */
    U8       betaOffsetRiIdx;  /*!< Beta offset RI index, (0..15)
-                                   [36.213, Table 8.6.3.-2] */
+				[36.213, Table 8.6.3.-2] */
    U8       betaOffsetCqiIdx; /*!< Beta offset CQI index, (0..15)
-                                   [36.213, Table 8.6.3.-3] */
+				[36.213, Table 8.6.3.-3] */
 } CtfDedPuschCfgInfo;
 
 
@@ -675,7 +675,7 @@ typedef struct ctfDedPuschCfgInfo {
 /**
  * @enum ctfPmiRiRptSetup
  * This element enumerates the CQI PMI Report setup configuration at PHY.
-*/
+ */
 typedef enum ctfPmiRiRptSetup
 {
    CTF_CQI_PMI_RPT_SETUP  /*!< PMI Report setup */
@@ -684,7 +684,7 @@ typedef enum ctfPmiRiRptSetup
 /**
  * @struct ctfPmiRiRpt
  * This struct contains the  CQI PMI Report setup configuration at PHY.
-*/
+ */
 typedef struct ctfPmiRiRpt
 {
    Bool              pres;           /*!< Indicates presence of Pmi Ri Rpt */
@@ -694,7 +694,7 @@ typedef struct ctfPmiRiRpt
 /**
  * @enum ctfCqiMaskSetup
  * This element enumerates the CQI reporting setup configuration at PHY.
-*/
+ */
 typedef enum ctfCqiMaskSetup
 {
    CTF_CQI_RPT_SETUP  /*!< Cqi report setup */
@@ -703,7 +703,7 @@ typedef enum ctfCqiMaskSetup
 /**
  * @struct ctfCqiMask
  * This struct contains the CQI reporting setup configuration at PHY.
-*/
+ */
 typedef struct ctfCqiMask
 {
    Bool             pres;     /*!< Presence field */
@@ -719,10 +719,10 @@ typedef struct ctfCqiMask
  * @brief   APeriodic CQI Report Configuration.
  * @details This structure contains the information for Aperiodic CQI report
  *          related configuration specific to an UE.
-*/
+ */
 typedef struct ctfCqiReportModeAPeriodic {
-    Bool pres;
-    CtfCqiRptModeAperiodic aPeriodicRptMode; /*!<Aperiodic CQI report*/
+   Bool pres;
+   CtfCqiRptModeAperiodic aPeriodicRptMode; /*!<Aperiodic CQI report*/
 }CtfCqiRptModeAprd;
 #endif /* CTF_VER2 */
 
@@ -730,7 +730,7 @@ typedef struct ctfCqiReportModeAPeriodic {
  * @brief   Periodic CQI Report Configuration.
  * @details This structure contains the information for periodic CQI report
  *          related configuration specific to an UE.
-*/
+ */
 typedef struct ctfCqiRptModePeriodic {
 #ifdef CTF_VER2
    Bool  pres;
@@ -743,16 +743,16 @@ typedef struct ctfCqiRptModePeriodic {
       U8    formatIndicator;     /*!< Type: Wideband/Subband */
       struct subbandCqiS
       {
-         U8    k;                /*!< Range (1..4) */
+	 U8    k;                /*!< Range (1..4) */
       } subbandCqi;              /*!< Valid only if formatIndicator is Subband */
 
       Bool  riCfgPres;           /*!< RI Configuration index is present or absent */
       U16   riCfgIndx;           /*!< Range (0..1023) */
       Bool  simultaneousAckNack; /*!< Simultaneous ACK/NACK with CQI support
-                                      TRUE: YES, FALSE: NO */
-/* ctf_x_001.main_2: Added cqiMask*/
+TRUE: YES, FALSE: NO */
+      /* ctf_x_001.main_2: Added cqiMask*/
 #ifdef CTF_VER1
-   CtfCqiMask   cqiMask;         /*!< cqi mask */
+      CtfCqiMask   cqiMask;         /*!< cqi mask */
 #endif /* CTF_VER1 */
    } cqiSetup;                   /*!< Valid only if cqiPeriodicCfgType is Setup */
 } CtfCqiRptModePeriodic;
@@ -761,10 +761,10 @@ typedef struct ctfCqiRptModePeriodic {
  * @brief   CQI Report Configuration.
  * @details This structure contains the information for CQI report
  *          related configuration specific to an UE.
-*/
+ */
 typedef struct ctfCqiReportCfgInfo {
    Bool  pres;                /*!< Indicates the presence of this info  */
-/* ctf_x_001.main_2: period and aperiodic rpt both can be configured simultaneously*/
+   /* ctf_x_001.main_2: period and aperiodic rpt both can be configured simultaneously*/
 #ifdef CTF_VER2
    struct
    {
@@ -779,7 +779,7 @@ typedef struct ctfCqiReportCfgInfo {
       CtfCqiRptModePeriodic   periodicRpt;
    } reportMode;
 #endif /* CTF_VER2 */
-/* ctf_x_001.main_2: Added PmiRiRpt*/
+   /* ctf_x_001.main_2: Added PmiRiRpt*/
 #ifdef CTF_VER1
    CtfPmiRiRpt  pmiRiRpt;        /*!< Pmi Ri Report */
 #endif /* CTF_VER1 */
@@ -789,7 +789,7 @@ typedef struct ctfCqiReportCfgInfo {
  * @brief   Dedicated Uplink SRS Configuration.
  * @details This structure contains the information for setting-up/release
  *          UL SRS configuration specific to an UE.
-*/
+ */
 typedef struct ctfDedSrsUlCfgInfo {
    Bool     pres;             /*!< Indicates the presence of SRS UL info */
    U8       dedSrsUlCfgType;  /*!< Setup/Release */
@@ -799,7 +799,7 @@ typedef struct ctfDedSrsUlCfgInfo {
       U8       srsHopngBw;    /*!< SRS hopping bandwidth (0,1,2,3) */
       U8       freqDmnPos;    /*!< Frequency domain position (0..23) */
       Bool     duration;      /*!< Duration, FALSE: single, 
-                                             TRUE: indefinite */
+TRUE: indefinite */
       U16      srsCfgIdx;     /*!< SRS config index (0..1023) */
       U8       txComb;        /*!< transmission comb (0..1) */
       U8       cyclicShift;   /*!< Cyclic shift (0..7) */
@@ -810,14 +810,14 @@ typedef struct ctfDedSrsUlCfgInfo {
  * @brief   Dedicated SR Configuration
  * @details This structure contains the information for setting-up/release
  *          SR configuration specific to an UE at PHY.
-*/
+ */
 typedef struct ctfDedSRCfgInfo {
    Bool     pres;          /*!< Indicates the presence of SR info */
    U8       dedSRCfgType;  /*!< Setup/Release */
    struct dedSrSetupS
    {
       U16      srPUCCHRi;  /*!< SR PUCCH Resource Index, n(1)PUCCH,SRI 
-                                (0..2047) */
+			     (0..2047) */
       U8       srCfgIdx;   /*!< SR config index, Isr (0..155) */
    } dedSrSetup;           /*!< Valid only if dedSRCfgType is setup */
 } CtfDedSRCfgInfo;
@@ -829,7 +829,7 @@ typedef struct ctfDedSRCfgInfo {
  * @enum CtfCdBkSubsetRestnType
  * This element enumerates the Code Book Subset Restriction 
  * configuration at PHY for a UE.
-*/
+ */
 typedef enum ctfCdBkSubsetRestnType
 {
    N2TX_ANT_TM3,     /*!< 2 Antenna Ports for transmissiom mode 3*/
@@ -849,12 +849,12 @@ typedef enum ctfCdBkSubsetRestnType
  * @details This structure contains the information for 
  *          codeBookSubsetRestriction  configuration specific to 
  *          transmission mode of a UE Phy.
-*/
+ */
 typedef struct ctfDedAntCodeBookSubsetRestn
 {
-  CtfCdBkSubsetRestnType ctfCdBkRestType;
-  union
-  {
+   CtfCdBkSubsetRestnType ctfCdBkRestType;
+   union
+   {
       U8   n2TxAntTm3;     /*!< 2 Antenna Ports for transmissiom mode 3*/
       U8   n4TxAntTm3;     /*!< 4 Antenna Ports for transmissiom mode 3*/
       U8   n2TxAntTm4;     /*!< 2 Antenna Ports for transmissiom mode 4*/
@@ -863,7 +863,7 @@ typedef struct ctfDedAntCodeBookSubsetRestn
       U16  n4TxAntTm5;     /*!< 4 Antenna Ports for transmissiom mode 5*/
       U8   n2TxAntTm6;     /*!< 2 Antenna Ports for transmissiom mode 6*/
       U16  n4TxAntTm6;     /*!< 4 Antenna Ports for transmissiom mode 6*/
-  }codeBookSubsetRestn;
+   }codeBookSubsetRestn;
 }CtfDedAntCodeBkSubsetRes;
 #endif /* CTF_VER2 */
 
@@ -871,7 +871,7 @@ typedef struct ctfDedAntCodeBookSubsetRestn
  * @brief   Dedicated Antenna Configuration.
  * @details This structure contains the information for antenna related
  *          configuration specific to an UE at PHY.
-*/
+ */
 typedef struct ctfDedAntCfgInfo {
    Bool              pres;   /*!< Indicates the presence of antenna configuration info */
    CtfUeTxAntMode    txMode; /*!< Transmission Mode: 36.213, 7.1 */
@@ -879,7 +879,7 @@ typedef struct ctfDedAntCfgInfo {
    {
       U8                      cfgType;       /*!< Setup/Release */
       CtfUeTxAntSelectType    txAntSelect;   /*!< Closed/Open, valid only if
-                                                  cfgType is setup:36.213, 8.7 */
+					       cfgType is setup:36.213, 8.7 */
    } ueTxAntSelection;
 #ifdef CTF_VER2
    /*ctf_x_001.main_2 : Added CodeBookSubsetRestriction Parameter */
@@ -891,7 +891,7 @@ typedef struct ctfDedAntCfgInfo {
  * @brief   UE Category Configuration.
  * @details This structure contains the information for configuring
  *          the UE category at PHY.
-*/
+ */
 typedef struct ctfUeCatCfgInfo {
    Bool                 pres;       /*!< TRUE - indicates UE category is present */
    CmLteUeCategory      ueCategory; /*!< UE category */
@@ -907,11 +907,11 @@ typedef struct ctfHdr{
  * @brief   KeNB Information Configuration.
  * @details This structure contains the input information for
  *          deriving the AS security keys using HMAC-SHA256 KDF.
-*/
+ */
 typedef struct ctfKenbCfgInfo{
-           U8 pres;
-           U8 algoType;
-           U8 secKey[CTF_SEC_KEY_LEN];
+   U8 pres;
+   U8 algoType;
+   U8 secKey[CTF_SEC_KEY_LEN];
 }CtfKenbCfgInfo;
 
 #endif
@@ -920,7 +920,7 @@ typedef struct ctfKenbCfgInfo{
  * @brief   Dedicated Configuration Information.
  * @details This structure contains the information for configuration 
  *          of UE-specific physical channel resources at PHY.
-*/
+ */
 typedef struct ctfDedCfgInfo {
    CmLteCellId          cellId;     /*!< Cell ID */
    CmLteRnti            ueId;       /*!< UE ID */
@@ -942,8 +942,8 @@ typedef struct ctfDedCfgInfo {
 /** @brief Each Secondary cell configuration Info for a UE*/
 typedef struct ctfUeSecCellCfgInfo
 {
-  U8                   sCellIdx; /*!< This will be secondary cell Idx */
-  U16                  sCellId; /*!< This will be secondary cellId */
+   U8                   sCellIdx; /*!< This will be secondary cell Idx */
+   U16                  sCellId; /*!< This will be secondary cellId */
 }CtfUeSecCellCfgInfo;
 
 /** @brief Secondary cell action for a UE*/
@@ -958,34 +958,34 @@ typedef enum ctfScellAction
 /** @brief Secondary Cell Configuration for a UE*/
 typedef struct ctfSecCellCfgInfo
 {
-  U8                    numSCells;
-  CtfScellAction        sCellAction;
-  CtfUeSecCellCfgInfo   ueSCellDedCfg[CTF_MAX_SCELL_PER_UE];
+   U8                    numSCells;
+   CtfScellAction        sCellAction;
+   CtfUeSecCellCfgInfo   ueSCellDedCfg[CTF_MAX_SCELL_PER_UE];
 }CtfSecCellCfgInfo;
 
 /**
  * @brief   Dedicated Re-configuration Information.
  * @details This structure contains the information for re-configuration 
  *          of UE-specific physical channel resources at PHY.
-*/
+ */
 typedef struct ctfDedRecfgInfo {
    CmLteCellId          cellId;     /*!< Cell ID */
    CmLteRnti            ueId;       /*!< Old UE ID */
    /* ctf_x_001.main_4: ReEst Fix */
 #ifdef CTF_VER3
    CmLteRnti            newUeId;       /*!< If ueId is not getting reconfigured,
-                                            both ueId and newUeId shell hold same
-                                            value. If ueId is getting reconfigured 
-                                            then these two value should be different
-                                            from each other */
-  #else
-     CmLteRnti            newUeId;       /*!< If ueId is not getting reconfigured,
-                                            both ueId and newUeId shell hold same
-                                            value. If ueId is getting reconfigured 
-                                            then these two value should be different
-                                            from each other */
+					 both ueId and newUeId shell hold same
+					 value. If ueId is getting reconfigured 
+					 then these two value should be different
+					 from each other */
+#else
+   CmLteRnti            newUeId;       /*!< If ueId is not getting reconfigured,
+					 both ueId and newUeId shell hold same
+					 value. If ueId is getting reconfigured 
+					 then these two value should be different
+					 from each other */
 
-											
+
 #endif
 
    CtfUeCatCfgInfo      ueCatCfg;   /*!< UE Cateogry configuration */
@@ -995,11 +995,11 @@ typedef struct ctfDedRecfgInfo {
 #ifndef TFU_UPGRADE
    CtfDedSrsUlCfgInfo   srsUlCfg;   /*!< SRS UL configuration */
    CtfDedSRCfgInfo      dedSRCfg;   /*!< SR configuration */
-/*ctf_x_001.main_1*/ 
+   /*ctf_x_001.main_1*/ 
    CtfCqiReportCfgInfo  cqiRptCfg;  /*!< CQI report configuration */
 #endif /* TFU_UPGRADE */
    CtfDedAntCfgInfo     antInfo;    /*!< Antenna configuration */
-/*Amit */
+   /*Amit */
    CtfSecCellCfgInfo    sCellInfo;
 } CtfDedRecfgInfo;
 
@@ -1007,7 +1007,7 @@ typedef struct ctfDedRecfgInfo {
  * @brief   Cell Release Information.
  * @details This structure contains the information for release/removal 
  *          of a cell and its assocated resources at PHY.
-*/
+ */
 typedef struct ctfCellReleaseInfo {
    CmLteCellId cellId; /*!< Cell ID */
 } CtfCellReleaseInfo;
@@ -1016,7 +1016,7 @@ typedef struct ctfCellReleaseInfo {
  * @brief   Dedicated Release Information
  * @details This structure contains the information for release/removal 
  *          of dedicated/UE-specific configuration at PHY.
-*/
+ */
 typedef struct ctfDedReleaseInfo {
    CmLteCellId cellId;  /*!< Cell ID */
    CmLteRnti   ueId;    /*!< UE ID (rnti) */
@@ -1027,7 +1027,7 @@ typedef struct ctfDedReleaseInfo {
  * @brief   Configuration Information.
  * @details This structure contains the information for setting-up 
  *          cell or UE-specific configuration at PHY.
-*/
+ */
 typedef struct ctfCfgInfo {
    U8 cfgElem; /*!< Configuration element : Cell/UE */
    union
@@ -1041,7 +1041,7 @@ typedef struct ctfCfgInfo {
  * @brief   Re-configuration Information.
  * @details This structure contains the information for re-configuring 
  *          cell or UE-specific configuration at PHY.
-*/
+ */
 typedef struct ctfReCfgInfo {
    U8 cfgElem; /*!< Configuration element: Cell/UE */
    union
@@ -1055,7 +1055,7 @@ typedef struct ctfReCfgInfo {
  * @brief   Release Configuration Information.
  * @details This structure contains the information for releasing 
  *          cell or UE-specific configuration at PHY.
-*/
+ */
 typedef struct ctfReleaseInfo {
    U8 cfgElem; /*!< Configuration element : Cell/UE */
    union
@@ -1074,7 +1074,7 @@ typedef struct ctfReleaseInfo {
  *       the User to configure PHY layer for common/dedicated resources.
  *    -# It can contain Config/Reconfig/Release.
  *    -# The result of configuration is indicated in TfUiCtfCfgCfm. 
-*/
+ */
 typedef struct ctfCfgReqInfo {
    U8    cfgType; /*!< Configuration type: Config/Reconfig/Release */
    union
@@ -1083,7 +1083,7 @@ typedef struct ctfCfgReqInfo {
       CtfReCfgInfo   reCfg;   /*!< Cell/UE Reconfiguration information */
       CtfReleaseInfo release; /*!< Cell/UE Release information */
    } u;
-/* ctf_x_001.main_4: Added support for vendor specific parameters */
+   /* ctf_x_001.main_4: Added support for vendor specific parameters */
 #ifdef CTF_VER3
    CtfVendorSpecific  vendorParams ; /*!< Vendor Specific Parameter */ 
 #endif   
@@ -1091,28 +1091,28 @@ typedef struct ctfCfgReqInfo {
 
 #ifdef TENB_AS_SECURITY
 /********************************************************************************************************************************/
-                              /*START OF KEY DERIVATION FUNTION (KDF) REQUEST STRUCTURES*/
+/*START OF KEY DERIVATION FUNTION (KDF) REQUEST STRUCTURES*/
 /********************************************************************************************************************************/
 
 /*AS key generation input information structure*/
 typedef struct ctfAsKeyInfo{
-           U8 intgAlgoType;                /*!SNOW3g or AES used in key derivation as well */
-           U8 ciphAlgoType;                /*!SNOW3g or AES used in key derivation as well */
-           U8 secKey[CTF_SEC_KEY_LEN]; /*!< eNodeB key received in initial context setup */
+   U8 intgAlgoType;                /*!SNOW3g or AES used in key derivation as well */
+   U8 ciphAlgoType;                /*!SNOW3g or AES used in key derivation as well */
+   U8 secKey[CTF_SEC_KEY_LEN]; /*!< eNodeB key received in initial context setup */
 }CtfAsKeyInfo;
 
 /*Horizontal keNB derivation input information structure*/
 typedef struct ctfKenbStarInfo{
-           U16 dlCarrFreq;             /*!< DL UARFCN*/ 
-           U16 physCellId;             /*!< Physical cell ID*/
-           U8 secKey[CTF_SEC_KEY_LEN]; /*!< Current eNodeB key at App used to derive keNB*. Horizontal KD */
+   U16 dlCarrFreq;             /*!< DL UARFCN*/ 
+   U16 physCellId;             /*!< Physical cell ID*/
+   U8 secKey[CTF_SEC_KEY_LEN]; /*!< Current eNodeB key at App used to derive keNB*. Horizontal KD */
 }CtfKenbStarInfo;
 
 /*Vertical keNB derivation input information structure*/
 typedef struct ctfNhKeyInfo{
-           U16 dlCarrFreq;             /*!< DL UARFCN*/ 
-           U16 physCellId;             /*!< Physical cell ID*/
-           U8 secKey[CTF_SEC_KEY_LEN]; /*!< NH key provided by MME used to derive keNB*. Vertical KD */
+   U16 dlCarrFreq;             /*!< DL UARFCN*/ 
+   U16 physCellId;             /*!< Physical cell ID*/
+   U8 secKey[CTF_SEC_KEY_LEN]; /*!< NH key provided by MME used to derive keNB*. Vertical KD */
 }CtfNhKeyInfo;
 
 typedef struct ctfKdfReqInfo {
@@ -1126,29 +1126,29 @@ typedef struct ctfKdfReqInfo {
 } CtfKdfReqInfo;
 
 /********************************************************************************************************************************/
-                              /*END OF REQUEST STRUCTURES*/
+/*END OF REQUEST STRUCTURES*/
 /********************************************************************************************************************************/
 
 
 /********************************************************************************************************************************/
-                              /*START OF KEY DERIVATION FUNTION (KDF) CONFIRM STRUCTURES*/
+/*START OF KEY DERIVATION FUNTION (KDF) CONFIRM STRUCTURES*/
 /********************************************************************************************************************************/
 
 /*AS key generation output information structure*/
 typedef struct ctfAskeyCfmInfo{
-          U8 intKey[CTF_SEC_KEY_LEN]; /*!< eNodeB key received in initial context setup */
-          U8 upCiphKey[CTF_SEC_KEY_LEN]; /*!< eNodeB key received in initial context setup */
-          U8 cpCiphKey[CTF_SEC_KEY_LEN]; /*!< eNodeB key received in initial context setup */
+   U8 intKey[CTF_SEC_KEY_LEN]; /*!< eNodeB key received in initial context setup */
+   U8 upCiphKey[CTF_SEC_KEY_LEN]; /*!< eNodeB key received in initial context setup */
+   U8 cpCiphKey[CTF_SEC_KEY_LEN]; /*!< eNodeB key received in initial context setup */
 }CtfAskeyCfmInfo;
 
 /*Horizontal keNB derivation output information structure*/
 typedef struct ctfKenbStarCfmInfo{
-           U8 secKey[CTF_SEC_KEY_LEN]; /*!< Current eNodeB key at App used to derive keNB*. Horizontal KD */
+   U8 secKey[CTF_SEC_KEY_LEN]; /*!< Current eNodeB key at App used to derive keNB*. Horizontal KD */
 }CtfKenbStarCfmInfo;
 
 /*Vertical keNB derivation output information structure*/
 typedef struct ctfNhKeyCfmInfo{
-           U8 secKey[CTF_SEC_KEY_LEN]; /*!< NH key provided by MME used to derive keNB*. Vertical KD */
+   U8 secKey[CTF_SEC_KEY_LEN]; /*!< NH key provided by MME used to derive keNB*. Vertical KD */
 }CtfNhKeyCfmInfo;
 
 typedef struct ctfKdfCfmInfo {
@@ -1162,84 +1162,84 @@ typedef struct ctfKdfCfmInfo {
 } CtfKdfCfmInfo;
 #endif
 /********************************************************************************************************************************/
-                              /*START OF CNM REQUEST STRUCTURES*/
+/*START OF CNM REQUEST STRUCTURES*/
 /********************************************************************************************************************************/
 
 
 typedef struct ctfCnmVendorSpecificInfo{
-	U16        numOfVendorSpecifcParam;            /* Number of vendor specific parameters */
-	U32        vendorSpecifcParam[CTF_CNM_MAX_VENDOR_PARAMS]; /*List of vendor specific parameters */
+   U16        numOfVendorSpecifcParam;            /* Number of vendor specific parameters */
+   U32        vendorSpecifcParam[CTF_CNM_MAX_VENDOR_PARAMS]; /*List of vendor specific parameters */
 }CtfCnmVendorSpecificInfo;
 
 
 
 typedef struct ctfCnmCellSyncReq {
-	U16                      nbrEarfcn;            /*earfcn of the neighbour to be synced with*/ 				
-	U16                      nbrPCellId;           /*PCI of the neighbour to be synced with*/ 				
-	U8                       nbrTxAntCount;        /*Number of Anttennas of the neighbour to be synced with
-	                                                 Possible values 1,2,4 */ 				
-    U8                       nbrCellCp;            /* Cyclic perifx type of the neighbout cell 
-	                                                * 0 : Normal Cp, 1:Extended Cp */
-    U8                       nbrCellNRb;           /* Number of Resource blocks of the neighbour cell 
-	                                                * possible values 6,15,25,50,75,100 */
-    U8                       nbrSpecSfCfg;         /* Special Subframe configuraiton value of the neighbour cell */ 	
-    CtfCnmVendorSpecificInfo ctfCnmVendorSpecificInfo;
+   U16                      nbrEarfcn;            /*earfcn of the neighbour to be synced with*/ 				
+   U16                      nbrPCellId;           /*PCI of the neighbour to be synced with*/ 				
+   U8                       nbrTxAntCount;        /*Number of Anttennas of the neighbour to be synced with
+						    Possible values 1,2,4 */ 				
+   U8                       nbrCellCp;            /* Cyclic perifx type of the neighbout cell 
+						   * 0 : Normal Cp, 1:Extended Cp */
+   U8                       nbrCellNRb;           /* Number of Resource blocks of the neighbour cell 
+						   * possible values 6,15,25,50,75,100 */
+   U8                       nbrSpecSfCfg;         /* Special Subframe configuraiton value of the neighbour cell */ 	
+   CtfCnmVendorSpecificInfo ctfCnmVendorSpecificInfo;
 }CtfCnmCellSyncReq;
 
 
 typedef struct ctfCnmInitSyncReq {
-	U8                   searchType;           /*0: search for all cells.
-	                                             *1: search for strongest cell. 
-												 *2: Search for specific cell. */
-	U8                    mibRequest;           /*Flag to indicate if MIB information 
-	                      						of the searched cell should be 
-	                      						indicated in cell search response message.*/
-	U16                   earfcn;               /*earfcn to the searched for */ 				
-	U8                    measBandWidth;        /*Number of Rb */					 
-	U16                   numOfPciList;         /*Number of Pci to be searched for */
-	CtfCnmCellSyncReq     pciList[CTF_CNM_MAX_CELL_SEARCH];
+   U8                   searchType;           /*0: search for all cells.
+					       *1: search for strongest cell. 
+					       *2: Search for specific cell. */
+   U8                    mibRequest;           /*Flag to indicate if MIB information 
+						 of the searched cell should be 
+						 indicated in cell search response message.*/
+   U16                   earfcn;               /*earfcn to the searched for */ 				
+   U8                    measBandWidth;        /*Number of Rb */					 
+   U16                   numOfPciList;         /*Number of Pci to be searched for */
+   CtfCnmCellSyncReq     pciList[CTF_CNM_MAX_CELL_SEARCH];
 }CtfCnmInitSyncReq;
 /********************************************************************************************************************************/
-                              /*END OF REQUEST STRUCTURES*/
+/*END OF REQUEST STRUCTURES*/
 /********************************************************************************************************************************/
 /********************************************************************************************************************************/
-                              /*START OF CNM CONFIRM STRUCTURES*/
+/*START OF CNM CONFIRM STRUCTURES*/
 /********************************************************************************************************************************/
 
 typedef struct ctfCnmMibInfo {
-	U16      sfn;               /* The radio frame the data was received on */
-	U8       numTxAntennas;     /* Number of TX antennas of the cell */
-	U8       phichDuration;     /* The PHICH duration of the cell 0-Normal 1-Extended*/
-	U8       phichResource;     /* 0=1/6, 1=1/2 , 2=1 ,3=2 */ 
-	U8       dlSystemBandWidht; /*Possible values 6,15,25,50,75,100 */
+   U16      sfn;               /* The radio frame the data was received on */
+   U8       numTxAntennas;     /* Number of TX antennas of the cell */
+   U8       phichDuration;     /* The PHICH duration of the cell 0-Normal 1-Extended*/
+   U8       phichResource;     /* 0=1/6, 1=1/2 , 2=1 ,3=2 */ 
+   U8       dlSystemBandWidht; /*Possible values 6,15,25,50,75,100 */
 
 }CtfCnmMibInfo;
 
 
 typedef struct ctfCnmInitSyncInfo {
-	U16           pci;          /* Physical cell Id of the Cell */
-	U8            rsrp;         /* RSRP of the measured cell */
-	U8            mibValidFlag; /* 1=MIB present 0=MIB not present */
-	U16           localSfn;     /* The radio frame data was received on the local cell */
-	CtfCnmMibInfo ctfCnmMibInfo;/* MIB information */
-    CtfCnmVendorSpecificInfo ctfCnmVendorSpecificInfo;
+   U16           pci;          /* Physical cell Id of the Cell */
+   U8            rsrp;         /* RSRP of the measured cell */
+   U8            mibValidFlag; /* 1=MIB present 0=MIB not present */
+   U16           localSfn;     /* The radio frame data was received on the local cell */
+   CtfCnmMibInfo ctfCnmMibInfo;/* MIB information */
+   CtfCnmVendorSpecificInfo ctfCnmVendorSpecificInfo;
 }CtfCnmInitSyncInfo;
 
 
 typedef struct ctfCnmInitSyncRsp {
-	U8                 status;             /*RFAILURE or ROK */
-	U16                earfcn;             /*Frequency channel of the searched cell */
-	U8                 numOfNeighbourInfo; /* number of neighboure Cell search Info */
-	CtfCnmInitSyncInfo ctfCnmInitSyncInfo[CTF_CNM_MAX_CELL_SEARCH];
+   U8                 status;             /*RFAILURE or ROK */
+   U16                earfcn;             /*Frequency channel of the searched cell */
+   U8                 numOfNeighbourInfo; /* number of neighboure Cell search Info */
+   CtfCnmInitSyncInfo ctfCnmInitSyncInfo[CTF_CNM_MAX_CELL_SEARCH];
 }CtfCnmInitSyncRsp;
 
 typedef struct ctfCnmCellSyncRsp {
-	U8                 status;             /*RFAILURE or ROK */
+   U8                 status;             /*RFAILURE or ROK */
 }CtfCnmCellSyncRsp;
 
 typedef struct ctfCnmCellSyncInd {
-	U8                 status;             /*RFAILURE or ROK */
-    CtfCnmVendorSpecificInfo ctfCnmVendorSpecificInfo;
+   U8                 status;             /*RFAILURE or ROK */
+   CtfCnmVendorSpecificInfo ctfCnmVendorSpecificInfo;
 }CtfCnmCellSyncInd;
 
 /* Periodic REM for TPM */
@@ -1257,114 +1257,114 @@ typedef struct ctfPeriodicRemCellSearchRsp {
 /* Periodic REM for TPM End */
 
 /********************************************************************************************************************************/
-                              /*END OF CNM CONFIRM STRUCTURES*/
+/*END OF CNM CONFIRM STRUCTURES*/
 /********************************************************************************************************************************/
 /* 
  * Function Prototypes 
-*/
+ */
 /* Request from User to PHY to bind the CTF interface SAP. */
 typedef S16 (*CtfBndReq) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId));
 
 /* Confirmation from PHY to User for the bind request of the CTF interface SAP.
-*/
+ */
 typedef S16 (*CtfBndCfm) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status));
 
 /* Request from User to PHY to Unbind the CTF interface SAP. */
 typedef S16 (*CtfUbndReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason));
 
 /* Configuration Request from User to PHY for cell or dedicated configuration. 
-*/
+ */
 typedef S16 (*CtfCfgReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfCfgReqInfo*       cfgReqInfo));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfCfgReqInfo*       cfgReqInfo));
 
 /* Configuration Confirm from PHY to User. */
 typedef S16 (*CtfCfgCfm) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   U8                   status));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 U8                   status));
 
 /* EnodeB stop indication from PHY to User. */
 typedef S16 (*CtfEnbStopInd) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId));
 
 #ifdef TENB_AS_SECURITY
 typedef S16 (*CtfKdfReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfKdfReqInfo*       cfgReqInfo));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfKdfReqInfo*       cfgReqInfo));
 
 /* Configuration Confirm from PHY to User. */
 typedef S16 (*CtfKdfCfm) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   CtfKdfCfmInfo*       kdfCfmInfo,
-   U8                   status));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 CtfKdfCfmInfo*       kdfCfmInfo,
+	 U8                   status));
 #endif
 /* CNM start */
 typedef S16 (*CtfCnmInitSyncReqMsg) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId*        transId,
-   CtfCnmInitSyncReq*    cnmInitSyncReq));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId*        transId,
+	 CtfCnmInitSyncReq*    cnmInitSyncReq));
 
 typedef S16 (*CtfCnmInitSyncRspMsg) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId*       transId,
-   CtfCnmInitSyncRsp*   cnmInitSyncRsp));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId*       transId,
+	 CtfCnmInitSyncRsp*   cnmInitSyncRsp));
 
 typedef S16 (*CtfCnmCellSyncReqMsg) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId*        transId,
-   CtfCnmCellSyncReq*   cnmCellSyncReq));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId*        transId,
+	 CtfCnmCellSyncReq*   cnmCellSyncReq));
 
 typedef S16 (*CtfCnmCellSyncRspMsg) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId*       transId,
-   CtfCnmCellSyncRsp*   cnmCellSyncRsp));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId*       transId,
+	 CtfCnmCellSyncRsp*   cnmCellSyncRsp));
 
 typedef S16 (*CtfCnmCellSyncIndMsg) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId*       transId,
-   CtfCnmCellSyncInd*   cnmCellSyncInd));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId*       transId,
+	 CtfCnmCellSyncInd*   cnmCellSyncInd));
 
 /*CNM end */
 
 /* UE ID Change Request from User to PHY. */
 typedef S16 (*CtfUeIdChgReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   CtfUeInfo *          newUeInfo));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 CtfUeInfo *          newUeInfo));
 
 /* UE ID Change Confirm from PHY to User. */
 typedef S16 (*CtfUeIdChgCfm) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   CmStatus             status));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 CmStatus             status));
 
 /** 
  * @brief Bind Request from PHY User to bind the CTF interface SAP.
@@ -1392,12 +1392,12 @@ typedef S16 (*CtfUeIdChgCfm) ARGS((
  *  -# ROK on success
  *  -# RFAILED on failure
  *
-*/
+ */
 EXTERN S16 TfUiCtfBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 
 /** 
  * @brief Bind Confirm from PHY to User.
@@ -1424,12 +1424,12 @@ EXTERN S16 TfUiCtfBndReq ARGS((
  * -# ROK 
  * -# RFAILED 
  *
-*/
+ */
 EXTERN S16 TfUiCtfBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 
 /** 
  * @brief Unbind Request from PHY user.
@@ -1448,12 +1448,12 @@ EXTERN S16 TfUiCtfBndCfm ARGS((
  * -# ROK
  * -# RFAILED
  *
-*/
+ */
 EXTERN S16 TfUiCtfUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 
 /** 
  * @brief Configuration Request from User.
@@ -1480,13 +1480,13 @@ EXTERN S16 TfUiCtfUbndReq ARGS((
  *  -# ROK
  *  -# RFAILED
  *
-*/
+ */
 EXTERN S16 TfUiCtfCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfCfgReqInfo*       cfgReqInfo
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfCfgReqInfo*       cfgReqInfo
+	 ));
 
 /** 
  * @brief Configuration Confirm from PHY to user.
@@ -1511,13 +1511,13 @@ EXTERN S16 TfUiCtfCfgReq ARGS((
  *    -# ROK
  *    -# RFAILED
  *
-*/
+ */
 EXTERN S16 TfUiCtfCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 U8                   status
+	 ));
 
 /** 
  * @brief Configuration Request from User.
@@ -1538,13 +1538,13 @@ EXTERN S16 TfUiCtfCfgCfm ARGS((
  *  -# ROK
  *  -# RFAILED
  *
-*/
+ */
 EXTERN S16 TfUiCtfCnmCellSyncReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId *      transId,
-   CtfCnmCellSyncReq*   cfgReq
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId *      transId,
+	 CtfCnmCellSyncReq*   cfgReq
+	 ));
 
 /** 
  * @brief Configuration Confirm from PHY to user.
@@ -1569,13 +1569,13 @@ EXTERN S16 TfUiCtfCnmCellSyncReq ARGS((
  *    -# ROK
  *    -# RFAILED
  *
-*/
+ */
 EXTERN S16 TfUiCtfCnmCellSyncRsp ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId  *     transId,
-   CtfCnmCellSyncRsp *  cnmCellSyncRsp
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId  *     transId,
+	 CtfCnmCellSyncRsp *  cnmCellSyncRsp
+	 ));
 
 /** 
  * @brief Configuration Request from User.
@@ -1596,13 +1596,13 @@ EXTERN S16 TfUiCtfCnmCellSyncRsp ARGS((
  *  -# ROK
  *  -# RFAILED
  *
-*/
+ */
 EXTERN S16 TfUiCtfCnmInitSyncReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId *      transId,
-   CtfCnmInitSyncReq*   cfgReq
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId *      transId,
+	 CtfCnmInitSyncReq*   cfgReq
+	 ));
 
 /** 
  * @brief Configuration Confirm from PHY to user.
@@ -1627,13 +1627,13 @@ EXTERN S16 TfUiCtfCnmInitSyncReq ARGS((
  *    -# ROK
  *    -# RFAILED
  *
-*/
+ */
 EXTERN S16 TfUiCtfCnmInitSyncRsp ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId  *     transId,
-   CtfCnmInitSyncRsp *  cnmInitSyncRsp
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId  *     transId,
+	 CtfCnmInitSyncRsp *  cnmInitSyncRsp
+	 ));
 
 /** 
  * @brief Configuration Confirm from PHY to user.
@@ -1658,13 +1658,13 @@ EXTERN S16 TfUiCtfCnmInitSyncRsp ARGS((
  *    -# ROK
  *    -# RFAILED
  *
-*/
+ */
 EXTERN S16 TfUiCtfCnmCellSyncInd ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId  *     transId,
-   CtfCnmCellSyncInd *  cnmCellSyncInd
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId  *     transId,
+	 CtfCnmCellSyncInd *  cnmCellSyncInd
+	 ));
 
 /** 
  * @brief UE ID Change Request from User to PHY.
@@ -1682,14 +1682,14 @@ EXTERN S16 TfUiCtfCnmCellSyncInd ARGS((
  *  -# ROK
  *  -# RFAILED
  *
-*/
+ */
 EXTERN S16 TfUiCtfUeIdChgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   CtfUeInfo *          newUeInfo
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 CtfUeInfo *          newUeInfo
+	 ));
 
 /** 
  * @brief UE ID Change Confirm from PHY to user.
@@ -1714,321 +1714,321 @@ EXTERN S16 TfUiCtfUeIdChgReq ARGS((
  *    -# ROK
  *    -# RFAILED
  *
-*/
+ */
 /** UE ID Change Confirm from PHY to User. */
 EXTERN S16 TfUiCtfUeIdChgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   CmStatus             status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 CmStatus             status
+	 ));
 
 
 #ifdef NH
 /* Request from User to PHY to Bind the CTF interface SAPs. */
 EXTERN S16 NhLiCtfBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 /* Confirmation from PHY to User for the Bind/Unbind 
  * Request for the CTF interface SAP. */
 EXTERN S16 NhLiCtfBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 /* Request from User to PHY to Unbind the CTF interface SAP. */
 EXTERN S16 NhLiCtfUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 /* Configuration Request from User to PHY for 
  * cell or dedicated configuration. */
 EXTERN S16 NhLiCtfCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfCfgReqInfo*       cfgReqInfo
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfCfgReqInfo*       cfgReqInfo
+	 ));
 /* Configuration Confirm from PHY to User. */
 EXTERN S16 NhLiCtfCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   U8                   status 
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 U8                   status 
+	 ));
 /** UE ID Change Request from User to PHY. */
 EXTERN S16 NhLiCtfUeIdChgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   CtfUeInfo *          newUeInfo
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 CtfUeInfo *          newUeInfo
+	 ));
 /** UE ID Change Confirm from PHY to user. */
 EXTERN S16 NhLiCtfUeIdChgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   CmStatus             status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 CmStatus             status
+	 ));
 #endif /* NH */
 
 #ifdef LCCTF
 /* Request from User to PHY to Bind the CTF interface SAP. */
 EXTERN S16 cmPkCtfBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 /* Request from User to PHY to Bind the CTF interface SAP. */
 EXTERN S16 cmUnpkCtfBndReq ARGS((
-   CtfBndReq            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfBndReq            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /* Confirmation from PHY to user for the Bind/Unbind 
  * Request for the CTF interface SAP.
-*/
+ */
 EXTERN S16 cmPkCtfBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 /* Confirmation from PHY to User for the Bind/Unbind 
  * Request for the CTF interface SAP.
-*/
+ */
 EXTERN S16 cmUnpkCtfBndCfm ARGS((
-   CtfBndCfm            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfBndCfm            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /* Request from User to PHY to Unbind the CTF interface SAP. */
 EXTERN S16 cmPkCtfUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 /* Request from User to PHY to Unbind the interface SAPs. */
 EXTERN S16 cmUnpkCtfUbndReq ARGS((
-   CtfUbndReq           func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfUbndReq           func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /* Configuration Request from User to PHY for 
  * cell or dedicated configuration. 
-*/
+ */
 /* Cnm Start */
 EXTERN S16 cmPkCtfCnmCellSyncReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId  *     transId,
-   CtfCnmCellSyncReq *  ctfCnmCellSyncreq 
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId  *     transId,
+	 CtfCnmCellSyncReq *  ctfCnmCellSyncreq 
+	 ));
 
 EXTERN S16 cmUnpkCnmCellSyncReq ARGS((
-   CtfCnmCellSyncReqMsg func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfCnmCellSyncReqMsg func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCnmCellSyncRsp ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId  *     transId,
-   CtfCnmCellSyncRsp *  ctfCnmCellSyncrsp 
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId  *     transId,
+	 CtfCnmCellSyncRsp *  ctfCnmCellSyncrsp 
+	 ));
 
 EXTERN S16 cmUnpkCnmCellSyncRsp ARGS((
-   CtfCnmCellSyncRspMsg func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfCnmCellSyncRspMsg func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 
 
 EXTERN S16 cmPkCtfCnmCellSyncInd ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId  *     transId,
-   CtfCnmCellSyncInd *  ctfCnmCellSyncind
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId  *     transId,
+	 CtfCnmCellSyncInd *  ctfCnmCellSyncind
+	 ));
 
 EXTERN S16 cmUnpkCnmCellSyncInd ARGS((
-   CtfCnmCellSyncIndMsg func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfCnmCellSyncIndMsg func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCnmInitSyncReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId  *     transId,
-   CtfCnmInitSyncReq *  ctfCnmInitSyncreq
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId  *     transId,
+	 CtfCnmInitSyncReq *  ctfCnmInitSyncreq
+	 ));
 EXTERN S16 cmUnpkCnmInitSyncReq ARGS((
-   CtfCnmInitSyncReqMsg func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfCnmInitSyncReqMsg func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCnmInitSyncRsp ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId  *     transId,
-   CtfCnmInitSyncRsp *  ctfCnmInitSyncrsp
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId  *     transId,
+	 CtfCnmInitSyncRsp *  ctfCnmInitSyncrsp
+	 ));
 
 EXTERN S16 cmUnpkCnmInitSyncRsp ARGS((
-   CtfCnmInitSyncRspMsg func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfCnmInitSyncRspMsg func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 
 
 /* Cnm End */
 #ifdef TENB_AS_SECURITY
 EXTERN S16 cmPkCtfKdfReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfKdfReqInfo  *     kdfReqInfo
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfKdfReqInfo  *     kdfReqInfo
+	 ));
 /* Configuration Request from User to PHY for 
  * cell or dedicated configuration.
-*/
+ */
 EXTERN S16 cmUnpkCtfKdfReq ARGS((
-   CtfKdfReq            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfKdfReq            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /* Configuration Confirm from PHY to User. */
 EXTERN S16 cmPkCtfkdfCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   CtfKdfCfmInfo        *kdfCfmInfo,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 CtfKdfCfmInfo        *kdfCfmInfo,
+	 U8                   status
+	 ));
 /* Configuration Confirm from PHY to User. */
 EXTERN S16 cmUnpkCtfKdfCfm ARGS((
-   CtfKdfCfm            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfKdfCfm            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 
 #endif
 EXTERN S16 cmPkCtfCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfCfgReqInfo  *     cfgReqInfo
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfCfgReqInfo  *     cfgReqInfo
+	 ));
 /* Configuration Request from User to PHY for 
  * cell or dedicated configuration.
-*/
+ */
 EXTERN S16 cmUnpkCtfCfgReq ARGS((
-   CtfCfgReq            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfCfgReq            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /* Configuration Confirm from PHY to User. */
 EXTERN S16 cmPkCtfCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 U8                   status
+	 ));
 /* ENB-STOP Indication from PHY to User. */
 EXTERN S16 cmPkCtfEnbStopInd ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId
+	 ));
 /* Configuration Confirm from PHY to User. */
 EXTERN S16 cmUnpkCtfCfgCfm ARGS((
-   CtfCfgCfm            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfCfgCfm            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /* unpack ENB-STOP Indication from PHY to User. */
 EXTERN S16 cmUnpkCtfEnbStopInd ARGS((
-   CtfEnbStopInd        func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfEnbStopInd        func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** UE ID Change Request from User to PHY. */
 EXTERN S16 cmPkCtfUeIdChgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   CtfUeInfo *          newUeInfo
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 CtfUeInfo *          newUeInfo
+	 ));
 /** UE ID Change Request from User to PHY. */
 EXTERN S16 cmUnpkCtfUeIdChgReq ARGS((
-   CtfUeIdChgReq        func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfUeIdChgReq        func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** UE ID Change Confirm from PHY to User. */
 EXTERN S16 cmPkCtfUeIdChgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   CmStatus             status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 CmStatus             status
+	 ));
 /** UE ID Change Confirm from PHY to User. */
 EXTERN S16 cmUnpkCtfUeIdChgCfm ARGS((
-   CtfUeIdChgCfm        func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 CtfUeIdChgCfm        func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 
 /* Periodic REM Scan changes */
 
 typedef S16 (*CtfPerRemCellSrchRsp) ARGS((
-   Pst*                          pst,
-   SpId                          spId,
-   CtfCfgTransId*                transId,
-   CtfPeriodicRemCellSearchRsp*  sniffCellRsp));
+	 Pst*                          pst,
+	 SpId                          spId,
+	 CtfCfgTransId*                transId,
+	 CtfPeriodicRemCellSearchRsp*  sniffCellRsp));
 
 EXTERN S16 cmUnpkPerRemCellSrchRsp ARGS ((
-   CtfPerRemCellSrchRsp  func,
-   Pst*                  pst,
-   Buffer                *mBuf
-));
+	 CtfPerRemCellSrchRsp  func,
+	 Pst*                  pst,
+	 Buffer                *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfPerRemCellSrch ARGS ((
-CtfPeriodicRemCellSearchRsp *param,
-Buffer *mBuf
-));
+	 CtfPeriodicRemCellSearchRsp *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfPerRemScanCellInfo ARGS ((
-CtfPeriodicRemCellInfo *param,
-Buffer *mBuf
-));
+	 CtfPeriodicRemCellInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfPeriodicCellSearchRsp ARGS ((
-CtfPeriodicRemCellSearchRsp *param,
-Buffer *mBuf
-));
+	 CtfPeriodicRemCellSearchRsp *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfPeriodicRemCellSearchRsp ARGS ((
-Pst* pst,
-SpId spId,
-CtfCfgTransId *transId,
-CtfPeriodicRemCellSearchRsp *CellCfgRsp
-));
+	 Pst* pst,
+	 SpId spId,
+	 CtfCfgTransId *transId,
+	 CtfPeriodicRemCellSearchRsp *CellCfgRsp
+	 ));
 
 EXTERN S16 cmPkPerRemScanCellInfo ARGS ((
-CtfPeriodicRemCellInfo *param,
-Buffer *mBuf
-));
+	 CtfPeriodicRemCellInfo *param,
+	 Buffer *mBuf
+	 ));
 
 /* Periodic REM Scan changes End */
 #endif /* LCCTF */
@@ -2036,56 +2036,56 @@ Buffer *mBuf
 #ifdef DM
 /* Request from User to PHY to Bind the CTF interface SAP. */
 EXTERN S16 DmUiCtfBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 /* Confirmation from PHY to User for the Bind/Unbind 
  * Request for the CTF interface SAP.
-*/
+ */
 EXTERN S16 DmUiCtfBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 /* Request from User to PHY to Unbind the CTF interface SAP. */
 EXTERN S16 DmUiCtfUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 /* Configuration Request from User to PHY for 
  * cell or dedicated configuration.
-*/
+ */
 EXTERN S16 DmUiCtfCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfCfgReqInfo*       cfgReqInfo
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfCfgReqInfo*       cfgReqInfo
+	 ));
 /* Configuration Confirm from PHY to User. */
 EXTERN S16 DmUiCtfCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 U8                   status
+	 ));
 /** UE ID Change Request from User to PHY. */
 EXTERN S16 DmUiCtfUeIdChgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   CtfUeInfo *          newUeInfo
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 CtfUeInfo *          newUeInfo
+	 ));
 /** UE ID Change Confirm from PHY to user. */
 EXTERN S16 DmUiCtfUeIdChgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CtfCfgTransId        transId,
-   CtfUeInfo *          ueInfo,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 CtfCfgTransId        transId,
+	 CtfUeInfo *          ueInfo,
+	 U8                   status
+	 ));
 #endif /* DM */
 
 /*****************************************************************************
@@ -2093,589 +2093,589 @@ EXTERN S16 DmUiCtfUeIdChgCfm ARGS((
  ****************************************************************************/
 #ifdef LCCTF
 EXTERN S16 cmPkCtfCfgTransId ARGS((
-   CtfCfgTransId        *param,
-   Buffer               *mBuf
-));
+	 CtfCfgTransId        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfCfgTransId ARGS((
-   CtfCfgTransId        *param,
-   Buffer               *mBuf
-));
+	 CtfCfgTransId        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfUeInfo ARGS((
-   CtfUeInfo            *param,
-   Buffer               *mBuf
-));
+	 CtfUeInfo            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfUeInfo ARGS((
-   CtfUeInfo            *param,
-   Buffer               *mBuf
-));
+	 CtfUeInfo            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfBwCfgInfo ARGS((
-   CtfBwCfgInfo         *param,
-   Buffer               *mBuf
-));
+	 CtfBwCfgInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfBwCfgInfo ARGS((
-   CtfBwCfgInfo         *param,
-   Buffer               *mBuf
-));
+	 CtfBwCfgInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfTxSchemeCfg ARGS((
-   CtfTxSchemeCfg       *param,
-   Buffer               *mBuf
-));
+	 CtfTxSchemeCfg       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfTxSchemeCfg ARGS((
-   CtfTxSchemeCfg       *param,
-   Buffer               *mBuf
-));
+	 CtfTxSchemeCfg       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfAntennaCfgInfo ARGS((
-   CtfAntennaCfgInfo    *param,
-   Buffer               *mBuf
-));
+	 CtfAntennaCfgInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfAntennaCfgInfo ARGS((
-   CtfAntennaCfgInfo    *param,
-   Buffer               *mBuf
-));
+	 CtfAntennaCfgInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfPrachCfgInfo ARGS((
-   CtfPrachCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPrachCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfPrachCfgInfo ARGS((
-   CtfPrachCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPrachCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfPdschCfgInfo ARGS((
-   CtfPdschCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPdschCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfPdschCfgInfo ARGS((
-   CtfPdschCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPdschCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfPuschCfgBasic ARGS((
-   CtfPuschCfgBasic     *param,
-   Buffer               *mBuf
-));
+	 CtfPuschCfgBasic     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfPuschCfgBasic ARGS((
-   CtfPuschCfgBasic     *param,
-   Buffer               *mBuf
-));
+	 CtfPuschCfgBasic     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfPuschUlRS ARGS((
-   CtfPuschUlRS         *param,
-   Buffer               *mBuf
-));
+	 CtfPuschUlRS         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfPuschUlRS ARGS((
-   CtfPuschUlRS         *param,
-   Buffer               *mBuf
-));
+	 CtfPuschUlRS         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfPuschCfgInfo ARGS((
-   CtfPuschCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPuschCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfPuschCfgInfo ARGS((
-   CtfPuschCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPuschCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfPhichCfgInfo ARGS((
-   CtfPhichCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPhichCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfPhichCfgInfo ARGS((
-   CtfPhichCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPhichCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfPucchCfgInfo ARGS((
-   CtfPucchCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPucchCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfPucchCfgInfo ARGS((
-   CtfPucchCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfPucchCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfSrsUlCfgInfo ARGS((
-   CtfSrsUlCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfSrsUlCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfSrsUlCfgInfo ARGS((
-   CtfSrsUlCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfSrsUlCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfTddSfCfgInfo ARGS((
-   CtfTddSfCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfTddSfCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfTddSfCfgInfo ARGS((
-   CtfTddSfCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfTddSfCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfCellCfgInfo ARGS((
-   CtfCellCfgInfo       *param,
-   Buffer               *mBuf
-));
+	 CtfCellCfgInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfCellCfgInfo ARGS((
-   CtfCellCfgInfo       *param,
-   Buffer               *mBuf
-));
+	 CtfCellCfgInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfCellRecfgInfo ARGS((
-   CtfCellRecfgInfo     *param,
-   Buffer               *mBuf
-));
+	 CtfCellRecfgInfo     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfCellRecfgInfo ARGS((
-   CtfCellRecfgInfo     *param,
-   Buffer               *mBuf
-));
+	 CtfCellRecfgInfo     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfDedPdschCfgInfo ARGS((
-   CtfDedPdschCfgInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfDedPdschCfgInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfDedPdschCfgInfo ARGS((
-   CtfDedPdschCfgInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfDedPdschCfgInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfDedPucchCfgInfo ARGS((
-   CtfDedPucchCfgInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfDedPucchCfgInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfDedPucchCfgInfo ARGS((
-   CtfDedPucchCfgInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfDedPucchCfgInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfDedPuschCfgInfo ARGS((
-   CtfDedPuschCfgInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfDedPuschCfgInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfDedPuschCfgInfo ARGS((
-   CtfDedPuschCfgInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfDedPuschCfgInfo   *param,
+	 Buffer               *mBuf
+	 ));
 #ifndef TFU_UPGRADE
 EXTERN S16 cmPkCtfCqiRptModePeriodic ARGS((
-   CtfCqiRptModePeriodic *param,
-   Buffer               *mBuf
-));
+	 CtfCqiRptModePeriodic *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfCqiRptModePeriodic ARGS((
-   CtfCqiRptModePeriodic *param,
-   Buffer               *mBuf
-));
+	 CtfCqiRptModePeriodic *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfCqiReportCfgInfo ARGS((
-   CtfCqiReportCfgInfo  *param,
-   Buffer               *mBuf
-));
+	 CtfCqiReportCfgInfo  *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfCqiReportCfgInfo ARGS((
-   CtfCqiReportCfgInfo  *param,
-   Buffer               *mBuf
-));
+	 CtfCqiReportCfgInfo  *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfDedSrsUlCfgInfo ARGS((
-   CtfDedSrsUlCfgInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfDedSrsUlCfgInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfDedSrsUlCfgInfo ARGS((
-   CtfDedSrsUlCfgInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfDedSrsUlCfgInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfDedSRCfgInfo ARGS((
-   CtfDedSRCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfDedSRCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfDedSRCfgInfo ARGS((
-   CtfDedSRCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfDedSRCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 #endif /* TFU_UPGRADE */
 EXTERN S16 cmPkCtfDedAntCfgInfo ARGS((
-   CtfDedAntCfgInfo     *param,
-   Buffer               *mBuf
-));
+	 CtfDedAntCfgInfo     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfDedAntCfgInfo ARGS((
-   CtfDedAntCfgInfo     *param,
-   Buffer               *mBuf
-));
+	 CtfDedAntCfgInfo     *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfUeSecCellCfgInfo ARGS((
-CtfUeSecCellCfgInfo *param,
-Buffer *mBuf
-));
+	 CtfUeSecCellCfgInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfSecCellCfgInfo ARGS((
-CtfSecCellCfgInfo *param,
-Buffer *mBuf
-));
+	 CtfSecCellCfgInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfUeSecCellCfgInfo ARGS((
-CtfUeSecCellCfgInfo *param,
-Buffer *mBuf
-));
+	 CtfUeSecCellCfgInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfSecCellCfgInfo ARGS((
-CtfSecCellCfgInfo *param,
-Buffer *mBuf
-));
+	 CtfSecCellCfgInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfUeCatCfgInfo ARGS((
-   CtfUeCatCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfUeCatCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfUeCatCfgInfo ARGS((
-   CtfUeCatCfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfUeCatCfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfDedCfgInfo ARGS((
-   CtfDedCfgInfo        *param,
-   Buffer               *mBuf
-));
+	 CtfDedCfgInfo        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfDedCfgInfo ARGS((
-   CtfDedCfgInfo        *param,
-   Buffer               *mBuf
-));
+	 CtfDedCfgInfo        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfDedRecfgInfo ARGS((
-   CtfDedRecfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfDedRecfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfDedRecfgInfo ARGS((
-   CtfDedRecfgInfo      *param,
-   Buffer               *mBuf
-));
+	 CtfDedRecfgInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfCellReleaseInfo ARGS((
-   CtfCellReleaseInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfCellReleaseInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfCellReleaseInfo ARGS((
-   CtfCellReleaseInfo   *param,
-   Buffer               *mBuf
-));
+	 CtfCellReleaseInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfDedReleaseInfo ARGS((
-   CtfDedReleaseInfo    *param,
-   Buffer               *mBuf
-));
+	 CtfDedReleaseInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfDedReleaseInfo ARGS((
-   CtfDedReleaseInfo    *param,
-   Buffer               *mBuf
-));
+	 CtfDedReleaseInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfCfgInfo ARGS((
-   CtfCfgInfo           *param,
-   Buffer               *mBuf
-));
+	 CtfCfgInfo           *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfCfgInfo ARGS((
-   CtfCfgInfo           *param,
-   Buffer               *mBuf
-));
+	 CtfCfgInfo           *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfReCfgInfo ARGS((
-   CtfReCfgInfo         *param,
-   Buffer               *mBuf
-));
+	 CtfReCfgInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfReCfgInfo ARGS((
-   CtfReCfgInfo         *param,
-   Buffer               *mBuf
-));
+	 CtfReCfgInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfReleaseInfo ARGS((
-   CtfReleaseInfo       *param,
-   Buffer               *mBuf
-));
+	 CtfReleaseInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfReleaseInfo ARGS((
-   CtfReleaseInfo       *param,
-   Buffer               *mBuf
-));
+	 CtfReleaseInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkCtfCfgReqInfo ARGS((
-   CtfCfgReqInfo        *param,
-   Buffer               *mBuf
-));
+	 CtfCfgReqInfo        *param,
+	 Buffer               *mBuf
+	 ));
 /* ctf_x_001.main_4: Added support for vendor specific parameters */
 EXTERN S16 cmUnpkCtfCfgReqInfo ARGS((
-   Pst                  *pst,
-   CtfCfgReqInfo        *param,
-   Buffer               *mBuf
-));
+	 Pst                  *pst,
+	 CtfCfgReqInfo        *param,
+	 Buffer               *mBuf
+	 ));
 
 #ifdef CTF_VER3
 EXTERN S16 cmPkCtfVendorSpecParams ARGS((
-   CtfVendorSpecific *param,
-   Buffer *mBuf
-));
+	 CtfVendorSpecific *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfVendorSpecParams ARGS((
-    Pst*                 pst,
-    CtfVendorSpecific *param,
-    Buffer *mBuf
-));
+	 Pst*                 pst,
+	 CtfVendorSpecific *param,
+	 Buffer *mBuf
+	 ));
 #endif /* CTF_VER3*/
 
 /* Starts - Fix for CR ccpu00123185 */
 EXTERN S16 cmPkCtfCellPwrcfgInfo ARGS((
 
-    CtfCellRecfgInfo *param,
-    Buffer *mBuf
-));
+	 CtfCellRecfgInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCellStop ARGS((
-    CtfCellRecfgInfo *param,
-    Buffer *mBuf
-));
+	 CtfCellRecfgInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfCellPwrcfgInfo ARGS((
-    CtfCellRecfgInfo *param,
-    Buffer *mBuf
-));
+	 CtfCellRecfgInfo *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkCtfCellStop ARGS((
-    CtfCellRecfgInfo *param,
-    Buffer *mBuf
-));
+	 CtfCellRecfgInfo *param,
+	 Buffer *mBuf
+	 ));
 /* Ends - Fix for CR ccpu00123185 */
 #ifdef TENB_AS_SECURITY
 EXTERN S16 cmPkCtfNhKeyInfo ARGS(
-(
-CtfNhKeyInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfNhKeyInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmPkCtfKenbStarInfo ARGS(
-(
-CtfKenbStarInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfKenbStarInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmPkCtfAskeyInfo ARGS(
-(
-CtfAsKeyInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfAsKeyInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmPkCtfKdfReqInfo ARGS(
-(
-CtfKdfReqInfo *param,
-Buffer *mBuf
- ));
+      (
+       CtfKdfReqInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmPkCtfKdfReq ARGS(
-(
-Pst* pst,
-SpId spId,
-CtfCfgTransId transId,
-CtfKdfReqInfo* kdfReqInfo
-));
+      (
+       Pst* pst,
+       SpId spId,
+       CtfCfgTransId transId,
+       CtfKdfReqInfo* kdfReqInfo
+      ));
 EXTERN S16 cmUnpkCtfNhKeyInfo ARGS(
-(
-CtfNhKeyInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfNhKeyInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmUnpkCtfKenbStarInfo ARGS(
-(
-CtfKenbStarInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfKenbStarInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmUnpkCtfAskeyInfo ARGS(
-(
-CtfAsKeyInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfAsKeyInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmUnpkCtfKdfReqInfo ARGS(
-(
-CtfKdfReqInfo *param,
-Buffer *mBuf
- ));
+      (
+       CtfKdfReqInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmUnpkCtfKdfReq ARGS(
-(
-CtfKdfReq func,
-Pst *pst,
-Buffer *mBuf
-));
+      (
+       CtfKdfReq func,
+       Pst *pst,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmPkCtfNhKeyCfmInfo ARGS(
-(
-CtfNhKeyCfmInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfNhKeyCfmInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmPkCtfKenbStarCfmInfo ARGS(
-(
-CtfKenbStarCfmInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfKenbStarCfmInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmPkCtfAskeyCfmInfo ARGS(
-(
-CtfAskeyCfmInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfAskeyCfmInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmPkCtfKdfCfmInfo ARGS(
-(
-CtfKdfCfmInfo *param,
-Buffer *mBuf
- ));
+      (
+       CtfKdfCfmInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmPkCtfKdfCfm ARGS(
-(
-Pst* pst,
-SuId suId,
-CtfCfgTransId transId,
-CtfKdfCfmInfo *kdfCfmInfo,
-U8 status
-));
+      (
+       Pst* pst,
+       SuId suId,
+       CtfCfgTransId transId,
+       CtfKdfCfmInfo *kdfCfmInfo,
+       U8 status
+      ));
 EXTERN S16 cmUnpkCtfNhKeyCfmInfo ARGS(
-(
-CtfNhKeyCfmInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfNhKeyCfmInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmUnpkCtfKenbStarCfmInfo ARGS(
-(
-CtfKenbStarCfmInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfKenbStarCfmInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmUnpkCtfAskeyCfmInfo ARGS(
-(
-CtfAskeyCfmInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfAskeyCfmInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmUnpkCtfKdfCfmInfo ARGS(
-(
-CtfKdfCfmInfo *param,
-Buffer *mBuf
-));
+      (
+       CtfKdfCfmInfo *param,
+       Buffer *mBuf
+      ));
 EXTERN S16 cmUnpkCtfKdfCfm ARGS(
-(
-CtfKdfCfm func,
-Pst *pst,
-Buffer *mBuf
-));
+      (
+       CtfKdfCfm func,
+       Pst *pst,
+       Buffer *mBuf
+      ));
 #endif
 #endif /* LCCTF */
 
 EXTERN S16 UrUiCtfHandleSnfMsgs ARGS((
-Pst*                 pst,
-Buffer*              mBuf
-));
+	 Pst*                 pst,
+	 Buffer*              mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCnmVendorSpecificInfo ARGS((
-CtfCnmVendorSpecificInfo *param,
-Buffer *mBuf
-));
+	 CtfCnmVendorSpecificInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCtfCnmCellSyncReq ARGS((
-CtfCnmCellSyncReq *param,
-Buffer *mBuf
-));
+	 CtfCnmCellSyncReq *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfCnmVendorSpecificInfo ARGS((
-CtfCnmVendorSpecificInfo *param,
-Buffer *mBuf
-));
+	 CtfCnmVendorSpecificInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfCtfCnmCellSyncReq ARGS((
-CtfCnmCellSyncReq *param,
-Buffer *mBuf
-));
+	 CtfCnmCellSyncReq *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCnmCellSyncReq ARGS((
-Pst* pst,
-SpId spId,
-CtfCfgTransId *transId,
-CtfCnmCellSyncReq * cfgReqInfo
-));
+	 Pst* pst,
+	 SpId spId,
+	 CtfCfgTransId *transId,
+	 CtfCnmCellSyncReq * cfgReqInfo
+	 ));
 
 EXTERN S16 cmUnpkCtfCnmCellSyncReq ARGS((
-CtfCnmCellSyncReqMsg func,
-Pst *pst,
-Buffer *mBuf
-));
+	 CtfCnmCellSyncReqMsg func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCnmInitSyncReq ARGS((
-Pst* pst,
-SpId spId,
-CtfCfgTransId *transId,
-CtfCnmInitSyncReq * cfgReqInfo
-));
+	 Pst* pst,
+	 SpId spId,
+	 CtfCfgTransId *transId,
+	 CtfCnmInitSyncReq * cfgReqInfo
+	 ));
 
 EXTERN S16 cmUnpkCtfCnmInitSyncReq ARGS((
-CtfCnmInitSyncReqMsg func,
-Pst *pst,
-Buffer *mBuf
-));
+	 CtfCnmInitSyncReqMsg func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfctfCnmMibInfo ARGS((
-CtfCnmMibInfo *param,
-Buffer *mBuf
-));
+	 CtfCnmMibInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfctfCnmInitSyncInfo ARGS((
-CtfCnmInitSyncInfo *param,
-Buffer *mBuf
-));
+	 CtfCnmInitSyncInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCnmInitSyncRsp ARGS((
-Pst* pst,
-SpId spId,
-CtfCfgTransId *transId,
-CtfCnmInitSyncRsp * cfgRspInfo
-));
+	 Pst* pst,
+	 SpId spId,
+	 CtfCfgTransId *transId,
+	 CtfCnmInitSyncRsp * cfgRspInfo
+	 ));
 
 EXTERN S16 cmUnpkCtfctfCnmMibInfo ARGS((
-CtfCnmMibInfo *param,
-Buffer *mBuf
-));
+	 CtfCnmMibInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkctfCnmInitSyncInfo ARGS(( 
-CtfCnmInitSyncInfo *param,
-Buffer *mBuf
-));
+	 CtfCnmInitSyncInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfCnmInitSyncRspMsg ARGS((
-CtfCnmInitSyncRsp *param,
-Buffer *mBuf
-));
+	 CtfCnmInitSyncRsp *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfCnmInitSyncRsp ARGS((
-CtfCnmInitSyncRspMsg func,
-Pst *pst,
-Buffer *mBuf
-));
+	 CtfCnmInitSyncRspMsg func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCnmCellSyncRsp ARGS((
-Pst* pst,
-SpId spId,
-CtfCfgTransId *transId,
-CtfCnmCellSyncRsp * cfgRspInfo
-));
+	 Pst* pst,
+	 SpId spId,
+	 CtfCfgTransId *transId,
+	 CtfCnmCellSyncRsp * cfgRspInfo
+	 ));
 
 EXTERN S16 cmUnpkCtfCnmSyncRspMsg ARGS((
-CtfCnmCellSyncRsp *param,
-Buffer *mBuf
-));
+	 CtfCnmCellSyncRsp *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfCnmCellSyncRsp ARGS((
-CtfCnmCellSyncRspMsg func,
-Pst *pst,
-Buffer *mBuf
-));
+	 CtfCnmCellSyncRspMsg func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCnmCellSyncInd ARGS(( 
-Pst* pst,
-SpId spId,
-CtfCfgTransId *transId,
-CtfCnmCellSyncInd * cfgIndInfo
-));
+	 Pst* pst,
+	 SpId spId,
+	 CtfCfgTransId *transId,
+	 CtfCnmCellSyncInd * cfgIndInfo
+	 ));
 
 EXTERN S16 cmUnpkCtfCnmSyncIndMsg ARGS(( 
-CtfCnmCellSyncInd *param,
-Buffer *mBuf
-));
+	 CtfCnmCellSyncInd *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfCnmCellSyncInd ARGS((
-CtfCnmCellSyncIndMsg func,
-Pst *pst,
-Buffer *mBuf
-));
+	 CtfCnmCellSyncIndMsg func,
+	 Pst *pst,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfcfgReqInfo ARGS((
-CtfCnmInitSyncReq *param,
-Buffer *mBuf
-));
+	 CtfCnmInitSyncReq *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCtfsyncReqInfo ARGS((
-CtfCnmInitSyncReq *param,
-Buffer *mBuf
-));
+	 CtfCnmInitSyncReq *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfcfgRspInfo ARGS((
-CtfCnmInitSyncRsp *param,
-Buffer *mBuf
-));
+	 CtfCnmInitSyncRsp *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfCellSyncRsp ARGS((
-CtfCnmCellSyncRsp *param,
-Buffer *mBuf
-));
+	 CtfCnmCellSyncRsp *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkCtfcfgIndInfo ARGS((
-CtfCnmCellSyncInd *param,
-Buffer *mBuf
-));
+	 CtfCnmCellSyncInd *param,
+	 Buffer *mBuf
+	 ));
 
 #ifdef __cplusplus
 }
@@ -2683,5 +2683,5 @@ Buffer *mBuf
 #endif /* __CTF_X__ */
 
 /**********************************************************************
-         End of file
+  End of file
  **********************************************************************/

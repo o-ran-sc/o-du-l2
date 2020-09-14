@@ -196,62 +196,62 @@ extern "C" {
 /*ss014.301 SSI-4GMX specific changes*/    
 #ifndef SS_4GMX_LCORE
 #define SS_ACQUIRE_ALL_SEMA(s, ret) \
+{ \
+   S16 q; \
+   ret = ROK; \
+   for (q = 0;  q < SS_MAX_STSKS;  q++) \
    { \
-      S16 q; \
-      ret = ROK; \
-      for (q = 0;  q < SS_MAX_STSKS;  q++) \
-      { \
-         while ((ret = ssWaitSema(s) != ROK) && (errno == EINTR)) \
-            continue; \
-         if ( ret != ROK)\
-         {\
-             SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,\
-                        "Could not lock the Semaphore");\
-         }\
-         if (ret != ROK) \
-         { \
-            while (q > 0) \
-            { \
-               ret = ssPostSema(s); \
-               if ( ret != ROK)\
-               {\
-                   SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,\
-                           "Could not unlock the Semaphore");\
-               }\
-               q--; \
-            } \
-            break; \
-         } \
-      } \
-      if (q == 0) \
-         ret = RFAILED; \
-   }
-
-
-  /* ss006.13: addition */
-#define SS_RELEASE_ALL_SEMA(s) \
-   { \
-      S16 q; \
-      for (q = 0;  q < SS_MAX_STSKS;  q++) \
+      while ((ret = ssWaitSema(s) != ROK) && (errno == EINTR)) \
+      continue; \
+      if ( ret != ROK)\
       {\
-         if ( (ssPostSema(s)) != ROK)\
-         {\
-            SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,\
-                         "Could not unlock the Semaphore");\
-            RETVALUE(RFAILED);\
-         }\
+	 SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,\
+	       "Could not lock the Semaphore");\
       }\
-   }
+      if (ret != ROK) \
+      { \
+	 while (q > 0) \
+	 { \
+	    ret = ssPostSema(s); \
+	    if ( ret != ROK)\
+	    {\
+	       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,\
+		     "Could not unlock the Semaphore");\
+	    }\
+	    q--; \
+	 } \
+	 break; \
+      } \
+   } \
+   if (q == 0) \
+   ret = RFAILED; \
+}
+
+
+/* ss006.13: addition */
+#define SS_RELEASE_ALL_SEMA(s) \
+{ \
+   S16 q; \
+   for (q = 0;  q < SS_MAX_STSKS;  q++) \
+   {\
+      if ( (ssPostSema(s)) != ROK)\
+      {\
+	 SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,\
+	       "Could not unlock the Semaphore");\
+	 RETVALUE(RFAILED);\
+      }\
+   }\
+}
 
 /* ss040.103 changed how ssWaitSema is called */
 #define SS_ACQUIRE_SEMA(s, ret) \
    while ((ret = ssWaitSema(s) != ROK) && (errno == EINTR)) \
-      continue;\
+continue;\
 /* ss041.103 removed exta lines */
 
 
 
-  /* ss006.13: addition */
+/* ss006.13: addition */
 #define SS_RELEASE_SEMA(s) \
    ssPostSema(s)
 
@@ -265,18 +265,18 @@ extern "C" {
 #endif /* SS_MULTIPLE_PROCS */
 #else
 #define SS_ACQUIRE_ALL_SEMA(s, ret) \
-   { \
-      ret = ssWaitSema(s); \
-   }
+{ \
+   ret = ssWaitSema(s); \
+}
 
 
 #define SS_RELEASE_ALL_SEMA(s) \
-   { \
-         ssPostSema(s);\
-   }
+{ \
+   ssPostSema(s);\
+}
 
 #define SS_ACQUIRE_SEMA(s, ret) \
-      ret = ssWaitSema(s)
+   ret = ssWaitSema(s)
 
 #define SS_RELEASE_SEMA(s) \
    ssPostSema(s)
@@ -291,6 +291,6 @@ extern "C" {
 
 
 /********************************************************************30**
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

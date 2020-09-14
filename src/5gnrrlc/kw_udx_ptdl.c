@@ -130,17 +130,17 @@ U8   status;                    /* Status */
  *
  */
 #ifdef ANSI
-PRIVATE S16 PtDlUdxCfgCfm
+   PRIVATE S16 PtDlUdxCfgCfm
 (
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-RlcCfgCfmInfo *cfmInfo                    /* Status */
-)
+ Pst *pst,                       /* post structure */
+ SuId suId,                      /* Service User Id */
+ RlcCfgCfmInfo *cfmInfo                    /* Status */
+ )
 #else
 PRIVATE S16 PtDlUdxCfgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-RlcCfgCfmInfo *cfmInfo;        /* Status */
+   Pst           *pst;            /* post structure */
+   SuId          suId;            /* Service User Id */
+   RlcCfgCfmInfo *cfmInfo;        /* Status */
 #endif
 {
    TRC3(PtDlUdxCfgCfm)
@@ -170,47 +170,47 @@ RlcCfgCfmInfo *cfmInfo;        /* Status */
  *
  */
 #ifdef ANSI
-PRIVATE S16 PtDlUdxUeIdChgCfm
+   PRIVATE S16 PtDlUdxUeIdChgCfm
 (
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-U32       transId,
-CmStatus      status
-)
+ Pst *pst,                       /* post structure */
+ SuId suId,                      /* Service User Id */
+ U32       transId,
+ CmStatus      status
+ )
 #else
 PRIVATE S16 PtDlUdxUeIdChgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-U32           transId;
-CmStatus      status;
+   Pst           *pst;            /* post structure */
+   SuId          suId;            /* Service User Id */
+   U32           transId;
+   CmStatus      status;
 #endif
 {
    TRC3(PtDlUdxUeIdChgCfm)
 
-   RETVALUE(ROK);
+      RETVALUE(ROK);
 
 } /* end of rlcDlUdxBndCfm */
 
 
 
-PRIVATE S16  PtDlUdxStaUpdCfm
+   PRIVATE S16  PtDlUdxStaUpdCfm
 (
-Pst*                pst,
-SuId                suId,
-CmLteRlcId          *rlcId,
-KwUdxBufLst         *pBufLst
-)
+ Pst*                pst,
+ SuId                suId,
+ CmLteRlcId          *rlcId,
+ KwUdxBufLst         *pBufLst
+ )
 {
    TRC3(PtDlUdxStaUpdCfm);
    RETVALUE(ROK);
 }
 
-PRIVATE S16  PtDlUdxStaProhTmrStart
+   PRIVATE S16  PtDlUdxStaProhTmrStart
 (
-Pst*                pst,
-SuId                suId,
-CmLteRlcId          *rlcId
-)
+ Pst*                pst,
+ SuId                suId,
+ CmLteRlcId          *rlcId
+ )
 {
    TRC3(PtDlUdxStaProhTmrStart);
    RETVALUE(ROK);
@@ -315,23 +315,23 @@ PRIVATE CONSTANT UdxStaProhTmrStart rlcDlUdxStaProhTmrStartMt[UDX_MAX_SEL] =
  *
  */
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxBndCfm
+   PUBLIC S16 rlcDlUdxBndCfm
 (
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-U8   status                     /* Status */
-)
+ Pst *pst,                       /* post structure */
+ SuId suId,                      /* Service User Id */
+ U8   status                     /* Status */
+ )
 #else
 PUBLIC S16 rlcDlUdxBndCfm(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-U8   status;                    /* Status */
+   Pst *pst;                       /* post structure */
+   SuId suId;                      /* Service User Id */
+   U8   status;                    /* Status */
 #endif
 {
    TRC3(rlcDlUdxBndCfm)
 
-   /* jump to specific primitive depending on configured selector */
-   (*rlcDlUdxBndCfmMt[pst->selector])(pst, suId, status);
+      /* jump to specific primitive depending on configured selector */
+      (*rlcDlUdxBndCfmMt[pst->selector])(pst, suId, status);
 
    RETVALUE(ROK);
 
@@ -360,23 +360,23 @@ U8   status;                    /* Status */
  *
  */
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxCfgCfm
+   PUBLIC S16 rlcDlUdxCfgCfm
 (
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-RlcCfgCfmInfo *cfmInfo                    /* Status */
-)
+ Pst *pst,                       /* post structure */
+ SuId suId,                      /* Service User Id */
+ RlcCfgCfmInfo *cfmInfo                    /* Status */
+ )
 #else
 PUBLIC S16 rlcDlUdxCfgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-RlcCfgCfmInfo *cfmInfo;        /* Status */
+   Pst           *pst;            /* post structure */
+   SuId          suId;            /* Service User Id */
+   RlcCfgCfmInfo *cfmInfo;        /* Status */
 #endif
 {
    TRC3(rlcDlUdxCfgCfm)
 
-   /* jump to specific primitive depending on configured selector */
-   (*rlcDlUdxCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
+      /* jump to specific primitive depending on configured selector */
+      (*rlcDlUdxCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
 
    RETVALUE(ROK);
 
@@ -403,25 +403,25 @@ RlcCfgCfmInfo *cfmInfo;        /* Status */
  *
  */
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxUeIdChgCfm
+   PUBLIC S16 rlcDlUdxUeIdChgCfm
 (
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-U32           transId,
-CmStatus      status
-)
+ Pst *pst,                       /* post structure */
+ SuId suId,                      /* Service User Id */
+ U32           transId,
+ CmStatus      status
+ )
 #else
 PUBLIC S16 rlcDlUdxUeIdChgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-U32           transId;
-CmStatus      status;
+   Pst           *pst;            /* post structure */
+   SuId          suId;            /* Service User Id */
+   U32           transId;
+   CmStatus      status;
 #endif
 {
    TRC3(rlcDlUdxUeIdChgCfm)
 
-   /* jump to specific primitive depending on configured selector */
-   (*rlcDlUdxUeIdChgCfmMt[pst->selector])(pst, suId,transId,status);
+      /* jump to specific primitive depending on configured selector */
+      (*rlcDlUdxUeIdChgCfmMt[pst->selector])(pst, suId,transId,status);
 
    RETVALUE(ROK);
 
@@ -430,29 +430,29 @@ CmStatus      status;
 
 
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxStaProhTmrStart
+   PUBLIC S16 rlcDlUdxStaProhTmrStart
 (
-Pst                 *pst,                       /* post structure */
-SuId                suId,                      /* Service User Id */
-CmLteRlcId          *rlcId
-)
+ Pst                 *pst,                       /* post structure */
+ SuId                suId,                      /* Service User Id */
+ CmLteRlcId          *rlcId
+ )
 #else
 PUBLIC S16 rlcDlUdxStaProhTmrStart(pst, suId, rlcId)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-CmLteRlcId    *rlcId;
+   Pst           *pst;            /* post structure */
+   SuId          suId;            /* Service User Id */
+   CmLteRlcId    *rlcId;
 #endif
 {
    TRC3(rlcDlUdxStaProhTmrStart)
 
-   /* jump to specific primitive depending on configured selector */
-   (*rlcDlUdxStaProhTmrStartMt[pst->selector])(pst, suId, rlcId);
+      /* jump to specific primitive depending on configured selector */
+      (*rlcDlUdxStaProhTmrStartMt[pst->selector])(pst, suId, rlcId);
 
    RETVALUE(ROK);
 
 } /* end of rlcDlUdxBndCfm */
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

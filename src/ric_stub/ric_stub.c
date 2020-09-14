@@ -61,7 +61,7 @@ void sctpNtfyInd(CmInetSctpNotification *ntfy)
 
 void init_log()
 {
-	openlog("RIC_STUB",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
+   openlog("RIC_STUB",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
 }
 /*******************************************************************
  *
@@ -85,7 +85,7 @@ void init_log()
 S16 tst()
 {
    init_log();   
- 
+
    DU_LOG("\nStarting RIC_STUB");
    /* Read RIC configurations */
    readRicCfg();
@@ -121,10 +121,10 @@ void readRicCfg()
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
- 
+
    ricCfgParams.ricId = RIC_ID;
    strcpy(ricCfgParams.ricName, RIC_NAME);
- 
+
    /* DU IP Address and Port*/
    ricCfgParams.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
    ricCfgParams.sctpParams.duIpAddr.ipV6Pres = false;
@@ -142,8 +142,8 @@ void readRicCfg()
    ricCfgParams.plmn.mnc[0] = PLMN_MNC0;
    ricCfgParams.plmn.mnc[1] = PLMN_MNC1;
    ricCfgParams.plmn.mnc[2] = PLMN_MNC2;
-  
+
 } /* End of readCuCfg */
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

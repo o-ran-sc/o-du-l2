@@ -60,8 +60,8 @@ DuCfgParams duCfgParam;
 S16 duAppInit(SSTskId sysTskId)
 {
 	/* Register DU APP TAPA Task for DU */
-	if(SRegTTsk((Ent)ENTDUAPP, (Inst)DU_INST, (Ttype)TTNORM, (Prior)PRIOR0,
-            duActvInit, (ActvTsk)duActvTsk) != ROK)
+   if(SRegTTsk((Ent)ENTDUAPP, (Inst)DU_INST, (Ttype)TTNORM, (Prior)PRIOR0,
+	    duActvInit, (ActvTsk)duActvTsk) != ROK)
    {
       return RFAILED;
    }
@@ -72,7 +72,7 @@ S16 duAppInit(SSTskId sysTskId)
    }
 
    DU_LOG("\nDU_APP : DU APP created and registered \
-   to %d sys task", sysTskId);
+	 to %d sys task", sysTskId);
    return ROK;
 }
 
@@ -97,7 +97,7 @@ S16 egtpInit(SSTskId sysTskId)
 {
    /* Register DU APP TAPA Task for DU */
    if(SRegTTsk((Ent)ENTEGTP, (Inst)EGTP_INST, (Ttype)TTNORM, (Prior)PRIOR0,
-             egtpActvInit, (ActvTsk)egtpActvTsk) != ROK)
+	    egtpActvInit, (ActvTsk)egtpActvTsk) != ROK)
    {
       return RFAILED;
    }
@@ -106,12 +106,12 @@ S16 egtpInit(SSTskId sysTskId)
    {
       return RFAILED;
    }
- 
-    DU_LOG("\nDU_APP : EGTP created and registered \
-    to %d sys task", sysTskId);
-    return ROK;
+
+   DU_LOG("\nDU_APP : EGTP created and registered \
+	 to %d sys task", sysTskId);
+   return ROK;
 }
- 
+
 
 /*******************************************************************
  *
@@ -133,7 +133,7 @@ S16 sctpInit(SSTskId sysTskId)
 {
    /* Register SCTP TAPA Task */
    if(SRegTTsk((Ent)ENTSCTP, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
-            sctpActvInit, (ActvTsk)sctpActvTsk) != ROK)
+	    sctpActvInit, (ActvTsk)sctpActvTsk) != ROK)
    {
       return RFAILED;
    }
@@ -144,7 +144,7 @@ S16 sctpInit(SSTskId sysTskId)
    }
 
    DU_LOG("\nDU_APP : SCTP TAPA task created and registered to %d sys task", 
-         sysTskId);
+	 sysTskId);
    return ROK;
 }
 /*******************************************************************
@@ -167,7 +167,7 @@ S16 rlcDlInit(SSTskId sysTskId)
 {
    /* Register RLC DL TAPA Task */
    if(SRegTTsk((Ent)ENTKW, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
-            rlcDlActvInit, (ActvTsk)rlcDlActvTsk) != ROK)
+	    rlcDlActvInit, (ActvTsk)rlcDlActvTsk) != ROK)
    {
       return RFAILED;
    }
@@ -179,7 +179,7 @@ S16 rlcDlInit(SSTskId sysTskId)
 
    /* Register MAC TAPA Task */
    if(SRegTTsk((Ent)ENTRG, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
-            rgActvInit, (ActvTsk)rgActvTsk) != ROK)
+	    rgActvInit, (ActvTsk)rgActvTsk) != ROK)
    {
       return RFAILED;
    }
@@ -190,7 +190,7 @@ S16 rlcDlInit(SSTskId sysTskId)
    }
 
    DU_LOG("\nDU_APP : RLC DL and MAC TAPA task created and registered to \
-   %d sys task", sysTskId);
+	 %d sys task", sysTskId);
    return ROK;
 }
 
@@ -214,7 +214,7 @@ S16 rlcUlInit(SSTskId sysTskId)
 {
    /* Register RLC UL TAPA Task */
    if(SRegTTsk((Ent)ENTKW, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
-            rlcUlActvInit, (ActvTsk)rlcUlActvTsk) != ROK)
+	    rlcUlActvInit, (ActvTsk)rlcUlActvTsk) != ROK)
    {
       return RFAILED;
    }
@@ -224,7 +224,7 @@ S16 rlcUlInit(SSTskId sysTskId)
       return RFAILED;
    }
    DU_LOG("\nDU_APP : RLC UL TAPA task created and registered to \
-   %d sys task", sysTskId);
+	 %d sys task", sysTskId);
    return ROK;
 }
 
@@ -294,8 +294,8 @@ S16 commonInit()
 
    if(rlcUlInit(rlc_ul_stsk) != ROK)
    {
-     DU_LOG("\nDU_APP : RLC UL Tapa Task initialization failed");
-     return RFAILED;
+      DU_LOG("\nDU_APP : RLC UL Tapa Task initialization failed");
+      return RFAILED;
    } 
    return ROK;
 }
@@ -324,13 +324,13 @@ S16 duInit()
    {
       ret = RFAILED;
    } 
- 
+
    return ret;
 }
 
 void init_log()
 {
-	openlog("ODU",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
+   openlog("ODU",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
 }
 /*******************************************************************
  *
@@ -351,11 +351,11 @@ void init_log()
  * ****************************************************************/
 S16 tst(void)
 {
-	init_log();
+   init_log();
 
-	//Initialize TAPA layers
-	if(duInit() != ROK)
-	{
+   //Initialize TAPA layers
+   if(duInit() != ROK)
+   {
       return RFAILED;
    } 
 
@@ -367,5 +367,5 @@ S16 tst(void)
 }/* end of main()*/
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

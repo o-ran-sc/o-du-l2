@@ -138,46 +138,46 @@ SpId spId;
       /* Check the state of the SAP */
       switch (rgCb[inst].rguSap[spId].sapSta.sapState)
       {
-         case LRG_NOT_CFG: /* SAP Not configured */
-            RGDBGINFO(inst,(rgPBuf(inst), "SAP Not Configured\n"));
-            rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
-            ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_NOT_CFG,
-                  LCM_CAUSE_INV_SAP, &dgn);
-            RLOG0(L_DEBUG,"SAP Not Configured");
-            ret = RgUiRguBndCfm(&tmpPst, suId, CM_BND_NOK);
-            break;
-         case LRG_UNBND: /* SAP is not bound */
-            RLOG0(L_DEBUG,"SAP Not yet bound");
-            rgCb[inst].rguSap[spId].sapSta.sapState = LRG_BND;
-            rgCb[inst].rguSap[spId].sapCfg.suId = suId;
-            /* Send Bind Confirm with status as SUCCESS */
-            /*T2K - Passing spId as it is required to access the SAP CB*/
-            ret = rgUIMRguBndCfm(inst,spId, CM_BND_OK);
-            /* Indicate to Layer manager */ 
-            rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
-            ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_EVENT_RGUSAP_ENB,
-                  LCM_CAUSE_UNKNOWN, &dgn);
-            break;
-         case LRG_BND: /* SAP is already bound*/
-            RLOG0(L_DEBUG,"SAP already bound");
-            /*T2K - Passing spId as it is required to access the SAP CB*/
-            ret = rgUIMRguBndCfm(inst,spId, CM_BND_OK);
-            break;
-         default: /* Should Never Enter here */
+	 case LRG_NOT_CFG: /* SAP Not configured */
+	    RGDBGINFO(inst,(rgPBuf(inst), "SAP Not Configured\n"));
+	    rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
+	    ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_NOT_CFG,
+		  LCM_CAUSE_INV_SAP, &dgn);
+	    RLOG0(L_DEBUG,"SAP Not Configured");
+	    ret = RgUiRguBndCfm(&tmpPst, suId, CM_BND_NOK);
+	    break;
+	 case LRG_UNBND: /* SAP is not bound */
+	    RLOG0(L_DEBUG,"SAP Not yet bound");
+	    rgCb[inst].rguSap[spId].sapSta.sapState = LRG_BND;
+	    rgCb[inst].rguSap[spId].sapCfg.suId = suId;
+	    /* Send Bind Confirm with status as SUCCESS */
+	    /*T2K - Passing spId as it is required to access the SAP CB*/
+	    ret = rgUIMRguBndCfm(inst,spId, CM_BND_OK);
+	    /* Indicate to Layer manager */ 
+	    rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
+	    ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_EVENT_RGUSAP_ENB,
+		  LCM_CAUSE_UNKNOWN, &dgn);
+	    break;
+	 case LRG_BND: /* SAP is already bound*/
+	    RLOG0(L_DEBUG,"SAP already bound");
+	    /*T2K - Passing spId as it is required to access the SAP CB*/
+	    ret = rgUIMRguBndCfm(inst,spId, CM_BND_OK);
+	    break;
+	 default: /* Should Never Enter here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RGLOGERROR(inst,ERRCLS_INT_PAR, ERG008, (ErrVal)rgCb[inst].rguSap[spId].sapSta.sapState,
-                  "Invalid SAP State:RgUiRguBndReq failed\n");
+	    RGLOGERROR(inst,ERRCLS_INT_PAR, ERG008, (ErrVal)rgCb[inst].rguSap[spId].sapSta.sapState,
+		  "Invalid SAP State:RgUiRguBndReq failed\n");
 #endif
-            /*T2K - Passing spId as it is required to access the SAP CB*/
-            ret = rgUIMRguBndCfm(inst,spId, CM_BND_NOK);
-            break;
+	    /*T2K - Passing spId as it is required to access the SAP CB*/
+	    ret = rgUIMRguBndCfm(inst,spId, CM_BND_NOK);
+	    break;
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RGLOGERROR(inst,ERRCLS_INT_PAR, ERG009, (ErrVal)rgCb[inst].rguSap[spId].sapCfg.spId,
-            "Invalid SAP Id:RgUiRguBndReq failed\n");
+	    "Invalid SAP Id:RgUiRguBndReq failed\n");
 #endif
       /*T2K - Passing spId as it is required to access the SAP CB*/
       ret = rgUIMRguBndCfm(inst,spId, CM_BND_NOK);
@@ -204,49 +204,49 @@ SpId spId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguUbndReq
+   PUBLIC S16 RgUiRguUbndReq
 (
-Pst    *pst,
-SpId   spId,
-Reason reason
-)
+ Pst    *pst,
+ SpId   spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 RgUiRguUbndReq(pst, spId, reason)
-Pst    *pst;
-SpId   spId;
-Reason reason;
+   Pst    *pst;
+   SpId   spId;
+   Reason reason;
 #endif
 {
    Inst      inst;
    TRC3(RgUiRguUbndReq)
-   
 
-   RG_IS_INST_VALID(pst->dstInst);
+
+      RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /* SAP Id validation */
    if (spId == rgCb[inst].rguSap[spId].sapCfg.spId)
    {
       switch(rgCb[inst].rguSap[spId].sapSta.sapState)
       {
-         case LRG_BND: /* SAP is already bound*/
-            RLOG0(L_DEBUG,"SAP already bound");
-            /* setting SAP state to UN BOUND */
-            rgCb[inst].rguSap[spId].sapSta.sapState = LRG_UNBND;
-            break;
-         default:
+	 case LRG_BND: /* SAP is already bound*/
+	    RLOG0(L_DEBUG,"SAP already bound");
+	    /* setting SAP state to UN BOUND */
+	    rgCb[inst].rguSap[spId].sapSta.sapState = LRG_UNBND;
+	    break;
+	 default:
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-     RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguUbndReq failed",
-                  rgCb[inst].rguSap[spId].sapSta.sapState);
-       
+	    RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguUbndReq failed",
+		  rgCb[inst].rguSap[spId].sapSta.sapState);
+
 #endif
-            break;
+	    break;
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RGLOGERROR(inst,ERRCLS_INT_PAR, ERG011, (ErrVal)rgCb[inst].rguSap[spId].sapCfg.spId,
-            "Invalid SAP Id:RgUiRguUbndReq failed\n");
+	    "Invalid SAP Id:RgUiRguUbndReq failed\n");
 #endif
       RETVALUE(RFAILED);
    }
@@ -271,29 +271,29 @@ Reason reason;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMRguBndCfm
+   PUBLIC S16 rgUIMRguBndCfm
 (
-Inst inst,
-SpId spId,
-U8 status
-)
+ Inst inst,
+ SpId spId,
+ U8 status
+ )
 #else
 PUBLIC S16 rgUIMRguBndCfm(inst,spId, status)
-Inst          inst;
-SpId          spId;
-U8            status;
+   Inst          inst;
+   SpId          spId;
+   U8            status;
 #endif
 {
    S16  ret = ROK;
-   
-   TRC2(rgUIMRguBndCfm)
-   
 
-   ret = RgUiRguBndCfm(&rgCb[inst].rguSap[spId].sapCfg.sapPst, 
-                      rgCb[inst].rguSap[spId].sapCfg.suId, status);
+   TRC2(rgUIMRguBndCfm)
+
+
+      ret = RgUiRguBndCfm(&rgCb[inst].rguSap[spId].sapCfg.sapPst, 
+	    rgCb[inst].rguSap[spId].sapCfg.suId, status);
    if (ret != ROK)
    {
-      
+
       RLOG0(L_ERROR,"RgUiRguBndCfm Failed ");
       RETVALUE(ret);
    }
@@ -318,17 +318,17 @@ U8            status;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguDDatReq
+   PUBLIC S16 RgUiRguDDatReq
 (
-Pst             *pst,
-SpId            spId,
-RguDDatReqInfo  *datReq
-)
+ Pst             *pst,
+ SpId            spId,
+ RguDDatReqInfo  *datReq
+ )
 #else
 PUBLIC S16 RgUiRguDDatReq(pst, spId, datReq)
-Pst             *pst;
-SpId            spId;
-RguDDatReqInfo  *datReq;
+   Pst             *pst;
+   SpId            spId;
+   RguDDatReqInfo  *datReq;
 #endif
 {
    S16   ret = ROK;
@@ -339,11 +339,11 @@ RguDDatReqInfo  *datReq;
    U32   id2;
    U32   id3;
 #endif
-   
+
    TRC3(RgUiRguDDatReq)
 
 
-   RG_IS_INST_VALID(pst->dstInst);
+      RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 #ifndef NO_ERRCLS
    if (datReq == NULLP)
@@ -351,38 +351,38 @@ RguDDatReqInfo  *datReq;
       RLOG0(L_ERROR,"Input Message Buffer is NULL");
       RETVALUE(RFAILED);
    }
-   
+
    if(rgCb[inst].rguSap[spId].sapCfg.spId == spId)
    {
       switch (rgCb[inst].rguSap[spId].sapSta.sapState)
       {
-         case LRG_BND: /* SAP is bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
-            break;
-         default: /* Should never reach here */
+	 case LRG_BND: /* SAP is bound */
+	    RLOG0(L_DEBUG,"SAP is already bound");
+	    break;
+	 default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguDDatReq failed",
-                  rgCb[inst].rguSap[spId].sapSta.sapState);
+	    RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguDDatReq failed",
+		  rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
 #ifndef L2_OPTMZ
-            for(id3 = 0; id3 < datReq->nmbOfUeGrantPerTti; id3++)
-            {
-               RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[id3]);
-            }
+	    for(id3 = 0; id3 < datReq->nmbOfUeGrantPerTti; id3++)
+	    {
+	       RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[id3]);
+	    }
 #endif
-            RETVALUE(RFAILED);
+	    RETVALUE(RFAILED);
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RGLOGERROR(inst,ERRCLS_INT_PAR, ERG013, (ErrVal)spId,
-            "Invalid SAP Id:RgUiRguDDatReq failed\n");
+	    "Invalid SAP Id:RgUiRguDDatReq failed\n");
 #endif
 #ifndef L2_OPTMZ
       for(id3 = 0; id3 < datReq->nmbOfUeGrantPerTti; id3++)
       {
-         RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[id3]);
+	 RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[id3]);
       }
 #endif
       RETVALUE(RFAILED);
@@ -394,30 +394,30 @@ RguDDatReqInfo  *datReq;
    {
       for(id3 = 0; id3 < datReq->nmbOfUeGrantPerTti; id3++)
       {
-         RguDDatReqPerUe *datReqPerUe = &datReq->datReq[id3];
-         for (id = 0; id < datReqPerUe->nmbOfTbs; id++)
-         {
-            for (id1 = 0; id1 < datReqPerUe->datReqTb[id].nmbLch; id1++)
-            {
-               /* rgCb.rguSap.sapSts.numPduRcvd is updated by 
-                * rgROMDedDatReq -> rgUpdtRguDedSts function
-                * So numPduRcvd updation is commented here */
-               /* rgCb.rguSap.sapSts.numPduRcvd +=
-                  datReq->datReqTb[id].lchData[id1].pdu.numPdu; */
-               for (id2 = 0; id2 < datReqPerUe->datReqTb[id].lchData[id1].pdu.numPdu; id2++)
-               {
-                  RG_SEND_TRC_IND(inst,datReqPerUe->datReqTb[id].
-                        lchData[id1].pdu.mBuf[id2], EVTRGUDDATREQ);
-               }
-            }
-         }
+	 RguDDatReqPerUe *datReqPerUe = &datReq->datReq[id3];
+	 for (id = 0; id < datReqPerUe->nmbOfTbs; id++)
+	 {
+	    for (id1 = 0; id1 < datReqPerUe->datReqTb[id].nmbLch; id1++)
+	    {
+	       /* rgCb.rguSap.sapSts.numPduRcvd is updated by 
+		* rgROMDedDatReq -> rgUpdtRguDedSts function
+		* So numPduRcvd updation is commented here */
+	       /* rgCb.rguSap.sapSts.numPduRcvd +=
+		  datReq->datReqTb[id].lchData[id1].pdu.numPdu; */
+	       for (id2 = 0; id2 < datReqPerUe->datReqTb[id].lchData[id1].pdu.numPdu; id2++)
+	       {
+		  RG_SEND_TRC_IND(inst,datReqPerUe->datReqTb[id].
+			lchData[id1].pdu.mBuf[id2], EVTRGUDDATREQ);
+	       }
+	    }
+	 }
       }
    }
 #endif
 
    /* Call Ownership module for further processing */
    ret = rgROMDedDatReq(inst,datReq);
-    SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,sizeof(RguDDatReqInfo), SS_SHARABLE_MEMORY);
+   SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,sizeof(RguDDatReqInfo), SS_SHARABLE_MEMORY);
    datReq = NULLP;
    RETVALUE(ret);
 }  /* RgUiRguDDatReq */
@@ -440,26 +440,26 @@ RguDDatReqInfo  *datReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguCDatReq
+   PUBLIC S16 RgUiRguCDatReq
 (
-Pst             *pst,
-SpId            spId,
-RguCDatReqInfo  *datReq
-)
+ Pst             *pst,
+ SpId            spId,
+ RguCDatReqInfo  *datReq
+ )
 #else
 PUBLIC S16 RgUiRguCDatReq(pst, spId, datReq)
-Pst             *pst;
-SpId            spId;
-RguCDatReqInfo  *datReq;
+   Pst             *pst;
+   SpId            spId;
+   RguCDatReqInfo  *datReq;
 #endif
 {
    Inst  inst;
    S16   ret = ROK;
-   
+
    TRC3(RgUiRguCDatReq)
 
 
-   RG_IS_INST_VALID(pst->dstInst);
+      RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 #ifndef NO_ERRCLS
    if (datReq == NULLP)
@@ -467,20 +467,20 @@ RguCDatReqInfo  *datReq;
       RLOG0(L_ERROR,"Input Message Buffer is NULL");
       RETVALUE(RFAILED);
    }
-   
+
    if(rgCb[inst].rguSap[spId].sapCfg.spId == spId)
    {
       switch (rgCb[inst].rguSap[spId].sapSta.sapState)
       {
-         case LRG_BND: /* SAP is bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
-            break;
-         default: /* Should never reach here */
+	 case LRG_BND: /* SAP is bound */
+	    RLOG0(L_DEBUG,"SAP is already bound");
+	    break;
+	 default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCDatReq failed",
-                  rgCb[inst].rguSap[spId].sapSta.sapState);
+	    RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCDatReq failed",
+		  rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+	    RETVALUE(RFAILED);
       }
    }
    else
@@ -531,17 +531,17 @@ RguCDatReqInfo  *datReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguDStaRsp
+   PUBLIC S16 RgUiRguDStaRsp
 (
-Pst             *pst,
-SpId            spId,
-RguDStaRspInfo  *staRsp
-)
+ Pst             *pst,
+ SpId            spId,
+ RguDStaRspInfo  *staRsp
+ )
 #else
 PUBLIC S16 RgUiRguDStaRsp(pst, spId, staRsp)
-Pst             *pst;
-SpId            spId;
-RguDStaRspInfo  *staRsp;
+   Pst             *pst;
+   SpId            spId;
+   RguDStaRspInfo  *staRsp;
 #endif
 {
    Inst  inst;
@@ -551,7 +551,7 @@ RguDStaRspInfo  *staRsp;
 
    TRC3(RgUiRguDStaRsp)
 
-   RG_IS_INST_VALID(pst->dstInst);
+      RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /*starting Task*/
    SStartTask(&startTime, PID_MAC_STA_RSP);
@@ -560,7 +560,7 @@ RguDStaRspInfo  *staRsp;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,staRsp->cellId,
-                "Processing Of Status Response Failed");
+	    "Processing Of Status Response Failed");
    }
 
 
@@ -589,26 +589,26 @@ RguDStaRspInfo  *staRsp;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguCStaRsp
+   PUBLIC S16 RgUiRguCStaRsp
 (
-Pst             *pst,
-SpId            spId,
-RguCStaRspInfo  *staRsp
-)
+ Pst             *pst,
+ SpId            spId,
+ RguCStaRspInfo  *staRsp
+ )
 #else
 PUBLIC S16 RgUiRguCStaRsp(pst, spId, staRsp)
-Pst             *pst;
-SpId            spId;
-RguCStaRspInfo  *staRsp;
+   Pst             *pst;
+   SpId            spId;
+   RguCStaRspInfo  *staRsp;
 #endif
 {
    Inst  inst;
    S16   ret = ROK;
 
    TRC3(RgUiRguCStaRsp)
-   
 
-   RG_IS_INST_VALID(pst->dstInst);
+
+      RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 #ifndef NO_ERRCLS
    if (staRsp == NULLP)
@@ -621,15 +621,15 @@ RguCStaRspInfo  *staRsp;
    {
       switch (rgCb[inst].rguSap[spId].sapSta.sapState)
       {
-         case LRG_BND: /* SAP is bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
-            break;
-         default: /* Should never reach here */
+	 case LRG_BND: /* SAP is bound */
+	    RLOG0(L_DEBUG,"SAP is already bound");
+	    break;
+	 default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCStaRsp failed",
-                  rgCb[inst].rguSap[spId].sapSta.sapState);
+	    RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCStaRsp failed",
+		  rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+	    RETVALUE(RFAILED);
       }
    }
    else
@@ -672,17 +672,17 @@ RguCStaRspInfo  *staRsp;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguL2MUlThrpMeasReq 
+   PUBLIC S16 RgUiRguL2MUlThrpMeasReq 
 (
-Pst             *pst,
-SpId            spId,
-RguL2MUlThrpMeasReqInfo  *measReq
-)
+ Pst             *pst,
+ SpId            spId,
+ RguL2MUlThrpMeasReqInfo  *measReq
+ )
 #else
 PUBLIC S16 RgUiRguL2MUlThrpMeasReq(pst, spId, measReq)
-Pst             *pst;
-SpId            spId;
-RguL2MUlThrpMeasReqInfo  *measReq;
+   Pst             *pst;
+   SpId            spId;
+   RguL2MUlThrpMeasReqInfo  *measReq;
 #endif
 {
    Inst  inst;
@@ -690,9 +690,9 @@ RguL2MUlThrpMeasReqInfo  *measReq;
    S16   ret = ROK;
 
    TRC3(RgUiRguL2MUlThrpMeasReq)
-   
 
-   RG_IS_INST_VALID(pst->dstInst);
+
+      RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 #ifndef NO_ERRCLS
    if (measReq == NULLP)
@@ -705,15 +705,15 @@ RguL2MUlThrpMeasReqInfo  *measReq;
    {
       switch (rgCb[inst].rguSap[spId].sapSta.sapState)
       {
-         case LRG_BND: /* SAP is bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
-            break;
-         default: /* Should never reach here */
+	 case LRG_BND: /* SAP is bound */
+	    RLOG0(L_DEBUG,"SAP is already bound");
+	    break;
+	 default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguL2MUlThrpMeasReq failed",
-                  rgCb[inst].rguSap[spId].sapSta.sapState);
+	    RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguL2MUlThrpMeasReq failed",
+		  rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+	    RETVALUE(RFAILED);
       }
    }
    else
@@ -731,7 +731,7 @@ RguL2MUlThrpMeasReqInfo  *measReq;
       RLOG_ARG0(L_ERROR,DBG_CELLID,measReq->cellId,"Processing Of Meas Request Failed");
    }
 
-  SPutStaticBuffer(pst->region, pst->pool, (Data *)measReq,sizeof(RguL2MUlThrpMeasReqInfo) , SS_SHARABLE_MEMORY);
+   SPutStaticBuffer(pst->region, pst->pool, (Data *)measReq,sizeof(RguL2MUlThrpMeasReqInfo) , SS_SHARABLE_MEMORY);
    measReq= NULLP;
    RETVALUE(ret);
 }  /* RgUiRguL2MUlThrpMeasReq */
@@ -756,27 +756,27 @@ RguL2MUlThrpMeasReqInfo  *measReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMSndDedStaInd
+   PUBLIC S16 rgUIMSndDedStaInd
 (
-Inst         inst,
-RgUpSapCb    *rguSap,
-RgRguDedStaInd  *staInd
-)
+ Inst         inst,
+ RgUpSapCb    *rguSap,
+ RgRguDedStaInd  *staInd
+ )
 #else
 PUBLIC S16 rgUIMSndDedStaInd(inst,rguSap,staInd)
-Inst         inst;
-RgUpSapCb    *rguSap;
-RgRguDedStaInd  *staInd;
+   Inst         inst;
+   RgUpSapCb    *rguSap;
+   RgRguDedStaInd  *staInd;
 #endif
 {
    S16  ret = ROK;
-   
+
    TRC2(rgUIMSndDedStaInd)
-   
-   RGDBGPRM(inst,(rgPBuf(inst),"rgUIMSndDedStaInd(): staInd = %p;\n", (void *)staInd));
-   
+
+      RGDBGPRM(inst,(rgPBuf(inst),"rgUIMSndDedStaInd(): staInd = %p;\n", (void *)staInd));
+
    ret = RgUiRguDStaInd(&(rguSap->sapCfg.sapPst), rguSap->sapCfg.suId, 
-         staInd);
+	 staInd);
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"RgUiRguDStaInd Failed");
@@ -805,27 +805,27 @@ RgRguDedStaInd  *staInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMSndCmnStaInd
+   PUBLIC S16 rgUIMSndCmnStaInd
 (
-Inst            inst,
-RgUpSapCb    *rguDlSap,
-RgRguCmnStaInd  *staInd
-)
+ Inst            inst,
+ RgUpSapCb    *rguDlSap,
+ RgRguCmnStaInd  *staInd
+ )
 #else
 PUBLIC S16 rgUIMSndCmnStaInd(inst,rguDlSap,staInd)
-Inst          inst,
-RgUpSapCb    *rguDlSap,
-RgRguCmnStaInd  *staInd;
+   Inst          inst,
+   RgUpSapCb    *rguDlSap,
+   RgRguCmnStaInd  *staInd;
 #endif
 {
    S16  ret = ROK;
 
 
    TRC2(rgUIMSndCmnStaInd)
-   
 
-   ret = RgUiRguCStaInd(&(rguDlSap->sapCfg.sapPst), rguDlSap->sapCfg.suId, 
-         staInd);
+
+      ret = RgUiRguCStaInd(&(rguDlSap->sapCfg.sapPst), rguDlSap->sapCfg.suId, 
+	    staInd);
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"RgUiRguCStaInd Failed");
@@ -854,29 +854,29 @@ RgRguCmnStaInd  *staInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMSndDedDatInd
+   PUBLIC S16 rgUIMSndDedDatInd
 (
-Inst         inst,
-RgUpSapCb    *rguUlSap,
-RgRguDedDatInd  *datInd
-)
+ Inst         inst,
+ RgUpSapCb    *rguUlSap,
+ RgRguDedDatInd  *datInd
+ )
 #else
 PUBLIC S16 rgUIMSndDedDatInd(datInd)
-Inst         inst;
-RgUpSapCb    *rguUlSap;
-RgRguDedDatInd  *datInd;
+   Inst         inst;
+   RgUpSapCb    *rguUlSap;
+   RgRguDedDatInd  *datInd;
 #endif
 {
    S16  ret = ROK;
 
 
    TRC2(rgUIMSndDedDatInd)
-   
 
-   rguUlSap->sapSts.numPduTxmit += datInd->numLch;
+
+      rguUlSap->sapSts.numPduTxmit += datInd->numLch;
 #ifndef SS_RBUF
    ret = RgUiRguDDatInd(&(rguUlSap->sapCfg.sapPst), rguUlSap->sapCfg.suId, 
-         datInd);
+	 datInd);
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,datInd->cellId,"RgUiRguDdatInd Failed");
@@ -909,17 +909,17 @@ RgRguDedDatInd  *datInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMSndCmnDatInd
+   PUBLIC S16 rgUIMSndCmnDatInd
 (
-Inst         inst,
-RgUpSapCb    *rguUlSap,
-RgRguCmnDatInd  *datInd
-)
+ Inst         inst,
+ RgUpSapCb    *rguUlSap,
+ RgRguCmnDatInd  *datInd
+ )
 #else
 PUBLIC S16 rgUIMSndCmnDatInd(datInd)
-Inst         inst;
-RgUpSapCb    *rguUlSap;
-RgRguCmnDatInd  *datInd;
+   Inst         inst;
+   RgUpSapCb    *rguUlSap;
+   RgRguCmnDatInd  *datInd;
 #endif
 {
    S16  ret = ROK;
@@ -927,13 +927,13 @@ RgRguCmnDatInd  *datInd;
    TRC2(rgUIMSndCmnDatInd)
 
 
-   RGDBGPRM(inst,(rgPBuf(inst),"rgUIMSndCmnDatInd(): staInd = %p;\n", (void *)datInd));
+      RGDBGPRM(inst,(rgPBuf(inst),"rgUIMSndCmnDatInd(): staInd = %p;\n", (void *)datInd));
 
    rguUlSap->sapSts.numPduTxmit++;
 
    RGDBGPRM(inst,(rgPBuf(inst),"rgUIMSndCmnDatInd suId = %d\n", rguUlSap->sapCfg.suId));   
    ret = RgUiRguCDatInd(&(rguUlSap->sapCfg.sapPst), rguUlSap->sapCfg.suId, 
-         datInd);
+	 datInd);
    if (ret != ROK)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst),"RgUiRguCDatInd Failed\n"));
@@ -963,17 +963,17 @@ RgRguCmnDatInd  *datInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgBndReq
+   PUBLIC S16 RgUiCrgBndReq
 (
-Pst   *pst, 
-SuId  suId,
-SpId  spId
-)
+ Pst   *pst, 
+ SuId  suId,
+ SpId  spId
+ )
 #else
 PUBLIC S16 RgUiCrgBndReq(pst, suId, spId)
-Pst   *pst; 
-SuId  suId;
-SpId  spId;
+   Pst   *pst; 
+   SuId  suId;
+   SpId  spId;
 #endif
 {
    S16       ret = ROK;
@@ -984,7 +984,7 @@ SpId  spId;
    TRC3(RgUiCrgBndReq)
 
 
-   RG_IS_INST_VALID(pst->dstInst);
+      RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 
    tmpPst.prior       = pst->prior;
@@ -1006,45 +1006,45 @@ SpId  spId;
       /* Check the state of the SAP */
       switch (rgCb[inst].crgSap.sapSta.sapState)
       {
-         case LRG_NOT_CFG: /* SAP Not configured */
-            
-            rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
-            ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_NOT_CFG,
-                  LCM_CAUSE_INV_SAP, &dgn);
-            RLOG0(L_DEBUG,"SAP Not Configured");
-            ret = RgUiCrgBndCfm(&tmpPst, suId, CM_BND_NOK);
-            break;
-         case LRG_UNBND: /* SAP is not bound */
-            RLOG0(L_DEBUG,"SAP Not yet bound");
-            
-            rgCb[inst].crgSap.sapSta.sapState = LRG_BND;
-            rgCb[inst].crgSap.sapCfg.suId = suId;
-            /* Send Bind Confirm with status as SUCCESS */
-            ret = rgUIMCrgBndCfm(inst,suId, CM_BND_OK);
-            /* Indicate to Layer manager */
-            rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
-            ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_EVENT_CRGSAP_ENB,
-                  LCM_CAUSE_UNKNOWN, &dgn);
-            break;
-         case LRG_BND: /* SAP is already bound*/
-            RLOG0(L_DEBUG,"SAP is already bound");
-            
-            ret = rgUIMCrgBndCfm(inst,suId, CM_BND_OK);
-            break;
-         default: /* Should Never Enter here */
+	 case LRG_NOT_CFG: /* SAP Not configured */
+
+	    rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
+	    ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_NOT_CFG,
+		  LCM_CAUSE_INV_SAP, &dgn);
+	    RLOG0(L_DEBUG,"SAP Not Configured");
+	    ret = RgUiCrgBndCfm(&tmpPst, suId, CM_BND_NOK);
+	    break;
+	 case LRG_UNBND: /* SAP is not bound */
+	    RLOG0(L_DEBUG,"SAP Not yet bound");
+
+	    rgCb[inst].crgSap.sapSta.sapState = LRG_BND;
+	    rgCb[inst].crgSap.sapCfg.suId = suId;
+	    /* Send Bind Confirm with status as SUCCESS */
+	    ret = rgUIMCrgBndCfm(inst,suId, CM_BND_OK);
+	    /* Indicate to Layer manager */
+	    rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
+	    ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_EVENT_CRGSAP_ENB,
+		  LCM_CAUSE_UNKNOWN, &dgn);
+	    break;
+	 case LRG_BND: /* SAP is already bound*/
+	    RLOG0(L_DEBUG,"SAP is already bound");
+
+	    ret = rgUIMCrgBndCfm(inst,suId, CM_BND_OK);
+	    break;
+	 default: /* Should Never Enter here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgBndReq failed",
-                  rgCb[inst].crgSap.sapSta.sapState);
+	    RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgBndReq failed",
+		  rgCb[inst].crgSap.sapSta.sapState);
 #endif
-            ret = rgUIMCrgBndCfm(inst,suId, CM_BND_NOK);
-            break;
+	    ret = rgUIMCrgBndCfm(inst,suId, CM_BND_NOK);
+	    break;
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiCrgBndReq failed",
-           rgCb[inst].crgSap.sapCfg.spId);
+	    rgCb[inst].crgSap.sapCfg.spId);
 #endif
       ret = rgUIMCrgBndCfm(inst,suId, CM_BND_NOK);
    }
@@ -1071,49 +1071,49 @@ SpId  spId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgUbndReq
+   PUBLIC S16 RgUiCrgUbndReq
 (
-Pst    *pst,
-SpId   spId,
-Reason reason
-)
+ Pst    *pst,
+ SpId   spId,
+ Reason reason
+ )
 #else
 PUBLIC S16 RgUiCrgUbndReq(pst, spId, reason)
-Pst    *pst; 
-SpId   spId;
-Reason reason;
+   Pst    *pst; 
+   SpId   spId;
+   Reason reason;
 #endif
 {
    Inst      inst;
    TRC3(RgUiCrgUbndReq)
 
 
-   RG_IS_INST_VALID(pst->dstInst);
+      RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /* SAP Id validation */
    if (spId == rgCb[inst].crgSap.sapCfg.spId)
    {
       switch(rgCb[inst].crgSap.sapSta.sapState)
       {
-         case LRG_BND: /* SAP is already bound*/
-            /* setting SAP state to UN BOUND */
-            RLOG0(L_DEBUG, "SAP is already bound");
-            
-            rgCb[inst].crgSap.sapSta.sapState = LRG_UNBND;
-            break;
-         default:
+	 case LRG_BND: /* SAP is already bound*/
+	    /* setting SAP state to UN BOUND */
+	    RLOG0(L_DEBUG, "SAP is already bound");
+
+	    rgCb[inst].crgSap.sapSta.sapState = LRG_UNBND;
+	    break;
+	 default:
 #if (ERRCLASS & ERRCLS_ADD_RES)
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgUbndReq failed",
-                  rgCb[inst].crgSap.sapSta.sapState);
+	    RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgUbndReq failed",
+		  rgCb[inst].crgSap.sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+	    RETVALUE(RFAILED);
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiCrgUbndReq failed",
-            rgCb[inst].crgSap.sapCfg.spId);
+	    rgCb[inst].crgSap.sapCfg.spId);
 #endif
       RETVALUE(RFAILED);
    }
@@ -1139,27 +1139,27 @@ Reason reason;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMCrgBndCfm
+   PUBLIC S16 rgUIMCrgBndCfm
 (
-Inst  inst,
-SuId suId,
-U8 status
-)
+ Inst  inst,
+ SuId suId,
+ U8 status
+ )
 #else
 PUBLIC S16 rgUIMCrgBndCfm(inst,suId, status)
-Inst          inst;
-SuId          suId;
-U8            status;
+   Inst          inst;
+   SuId          suId;
+   U8            status;
 #endif
 {
    TRC2(rgUIMCrgBndCfm)
-   
 
-   if(RgUiCrgBndCfm(&(rgCb[inst].crgSap.sapCfg.sapPst), rgCb[inst].crgSap.sapCfg.suId, status) != ROK)
-   {
-      RLOG0(L_ERROR,"RgUiCrgBndCfm Failed ");
-      RETVALUE(RFAILED);
-   }
+
+      if(RgUiCrgBndCfm(&(rgCb[inst].crgSap.sapCfg.sapPst), rgCb[inst].crgSap.sapCfg.suId, status) != ROK)
+      {
+	 RLOG0(L_ERROR,"RgUiCrgBndCfm Failed ");
+	 RETVALUE(RFAILED);
+      }
 
    RETVALUE(ROK);
 }  /* rgUIMCrgBndCfm*/
@@ -1185,19 +1185,19 @@ U8            status;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgCfgReq
+   PUBLIC S16 RgUiCrgCfgReq
 (
-Pst           *pst, 
-SpId          spId,
-CrgCfgTransId transId,
-CrgCfgReqInfo *cfgReqInfo
-)
+ Pst           *pst, 
+ SpId          spId,
+ CrgCfgTransId transId,
+ CrgCfgReqInfo *cfgReqInfo
+ )
 #else
 PUBLIC S16 RgUiCrgCfgReq(pst, spId, transId, cfgReqInfo)
-Pst           *pst; 
-SpId          spId;
-CrgCfgTransId transId;
-CrgCfgReqInfo *cfgReqInfo;
+   Pst           *pst; 
+   SpId          spId;
+   CrgCfgTransId transId;
+   CrgCfgReqInfo *cfgReqInfo;
 #endif
 {
    Inst      inst;
@@ -1227,37 +1227,37 @@ CrgCfgReqInfo *cfgReqInfo;
    {
       switch(rgCb[inst].crgSap.sapSta.sapState)
       {
-         case LRG_BND: /* SAP is already bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
-            break;
-         default: /* Should never reach here */
+	 case LRG_BND: /* SAP is already bound */
+	    RLOG0(L_DEBUG,"SAP is already bound");
+	    break;
+	 default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgCfgReq failed",
-                  rgCb[inst].crgSap.sapSta.sapState);
+	    RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgCfgReq failed",
+		  rgCb[inst].crgSap.sapSta.sapState);
 #endif
-         SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
-               sizeof(CrgCfgReqInfo));
-         cfgReqInfo = NULLP;
+	    SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
+		  sizeof(CrgCfgReqInfo));
+	    cfgReqInfo = NULLP;
 
-            rgUIMCrgCfgCfm(inst,transId, cfmStatus);
-            RETVALUE(RFAILED);
+	    rgUIMCrgCfgCfm(inst,transId, cfmStatus);
+	    RETVALUE(RFAILED);
       }
    }
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiCrgCfgReq failed",
-            rgCb[inst].crgSap.sapCfg.spId);
+	    rgCb[inst].crgSap.sapCfg.spId);
 #endif
       SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
-            sizeof(CrgCfgReqInfo));
+	    sizeof(CrgCfgReqInfo));
       cfgReqInfo = NULLP;
       rgUIMCrgCfgCfm(inst,transId, cfmStatus); 
       RETVALUE(RFAILED);
    }
    ret = rgCOMCfgReq(inst,transId, cfgReqInfo);
    SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
-         sizeof(CrgCfgReqInfo));
+	 sizeof(CrgCfgReqInfo));
    cfgReqInfo = NULLP;
    if (ret != ROK)
    {
@@ -1287,25 +1287,25 @@ CrgCfgReqInfo *cfgReqInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMCrgCfgCfm
+   PUBLIC S16 rgUIMCrgCfgCfm
 (
-Inst      inst,
-CrgCfgTransId transId,
-U8            status
-)
+ Inst      inst,
+ CrgCfgTransId transId,
+ U8            status
+ )
 #else
 PUBLIC S16 rgUIMCrgCfgCfm(inst,transId, status)
-Inst      inst;
-CrgCfgTransId transId;
-U8            status;
+   Inst      inst;
+   CrgCfgTransId transId;
+   U8            status;
 #endif
 {
    S16  ret = ROK;
    U8   prntTrans[CRG_CFG_TRANSID_SIZE+1];
 
    TRC2(rgUIMCrgCfgCfm)
-   
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, CRG_CFG_TRANSID_SIZE);
+
+      cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, CRG_CFG_TRANSID_SIZE);
    prntTrans[CRG_CFG_TRANSID_SIZE] = '\0';
 
 
@@ -1321,22 +1321,22 @@ U8            status;
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
 
 #ifdef ANSI
-PUBLIC S16 rgBatchProc
+   PUBLIC S16 rgBatchProc
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC S16 rgBatchProc()
-Void;
+   Void;
 #endif
 {
-/* Read from Ring Buffer and process RLC BO Update */
+   /* Read from Ring Buffer and process RLC BO Update */
    Pst pst = {0};
    SpId spId = 0;
    RguDStaRspInfo  *staRsp;
    U32 elmIndx = 0;
 #ifndef LTE_ADV
-/* Fill pst */
+   /* Fill pst */
    pst.srcProcId = 1;
    pst.dstProcId = 1;
    pst.dstEnt = ENTRG;
@@ -1351,7 +1351,7 @@ Void;
    pst.selector = 2; /*SM_SELECTOR_LC */
 #else
 #endif
-  
+
    elmIndx = (U32)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
    while(NULLP != elmIndx)
    {
@@ -1366,13 +1366,13 @@ Void;
       SRngIncrRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
 
       if((elmIndx = (U32)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC)) == NULLP)
-      break;
+	 break;
    }
    RETVALUE(ROK);
 }
 #endif
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

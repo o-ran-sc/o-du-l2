@@ -68,7 +68,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
       if(dlSchedInfo->isBroadcastPres)
       {
 	 currDlSlot = &macCb.macCell[cellIdx]->\
-	    dlSlot[dlSchedInfo->schSlotValue.broadcastTime.slot];
+		      dlSlot[dlSchedInfo->schSlotValue.broadcastTime.slot];
 	 currDlSlot->dlInfo.isBroadcastPres = true;
 	 memcpy(&currDlSlot->dlInfo.brdcstAlloc, &dlSchedInfo->brdcstAlloc, sizeof(DlBrdcstAlloc));
       }
@@ -76,7 +76,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
       if(dlSchedInfo->rarAlloc != NULLP)
       {
 	 currDlSlot = &macCb.macCell[cellIdx]->\
-	    dlSlot[dlSchedInfo->schSlotValue.rarTime.slot];
+		      dlSlot[dlSchedInfo->schSlotValue.rarTime.slot];
 	 currDlSlot->dlInfo.rarAlloc = dlSchedInfo->rarAlloc;
 
 	 /* MUXing of RAR */
@@ -87,7 +87,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
       {
 	 Msg4Alloc *msg4Alloc = NULLP;
 	 currDlSlot = &macCb.macCell[cellIdx]->\
-	    dlSlot[dlSchedInfo->schSlotValue.msg4Time.slot];
+		      dlSlot[dlSchedInfo->schSlotValue.msg4Time.slot];
 	 currDlSlot->dlInfo.msg4Alloc = dlSchedInfo->msg4Alloc; /* copy msg4 alloc pointer in MAC slot info */
 	 msg4Alloc = dlSchedInfo->msg4Alloc;
 	 macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize = msg4Alloc->msg4PdschCfg.codeword[0].tbSize;
@@ -95,8 +95,8 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
       if(dlSchedInfo->ulGrant != NULLP)
       {
 	 currDlSlot = &macCb.macCell[cellIdx]->\
-	    dlSlot[dlSchedInfo->schSlotValue.ulDciTime.slot];
-         currDlSlot->dlInfo.ulGrant = dlSchedInfo->ulGrant;
+		      dlSlot[dlSchedInfo->schSlotValue.ulDciTime.slot];
+	 currDlSlot->dlInfo.ulGrant = dlSchedInfo->ulGrant;
       }
    }
    return ROK;
@@ -135,11 +135,11 @@ void fillMsg4Pdu(uint16_t cellId, Msg4Alloc *msg4Alloc)
 	 /* Forming Mux Pdu */
 	 macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu = NULLP;
 	 MAC_ALLOC(macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu, \
-	    macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize);
+	       macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize);
 	 if(macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu != NULLP)
 	 {
 	    memset(macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu, 0, \
-	       macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize);
+		  macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize);
 	    macMuxPdu(&msg4DlData, &macCeData, macCb.macCell[cellIdx]->macRaCb[0].msg4TxPdu,\
 		  macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize);
 
@@ -309,7 +309,7 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
 
    /* Trigger for UL TTI REQ */
    fillUlTtiReq(slotInd);
-   
+
    /* Trigger for UL DCI REQ */
    fillUlDciReq(slotInd);
 

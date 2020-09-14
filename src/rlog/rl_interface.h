@@ -140,25 +140,25 @@ extern void rlStopLogCountLimit(void);
 #define LOG_ARG0(_level, _fmtStr) \
 if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 { \
-	logLev0(g_logStr[_level],RLOG_MODULE_NAME, __FILE__,__LINE__, FMTSTR _fmtStr "\n\n", RLOG_FILE_ID); \
+   logLev0(g_logStr[_level],RLOG_MODULE_NAME, __FILE__,__LINE__, FMTSTR _fmtStr "\n\n", RLOG_FILE_ID); \
 }
 
 #define LOG_ARGN(_N, _level, _fmtStr, ...) \
-if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
+   if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 { \
-	logLev##_N(g_logStr[_level],RLOG_MODULE_NAME, __FILE__,__LINE__, FMTSTR _fmtStr "\n\n", ##__VA_ARGS__ , RLOG_FILE_ID); \
+   logLev##_N(g_logStr[_level],RLOG_MODULE_NAME, __FILE__,__LINE__, FMTSTR _fmtStr "\n\n", ##__VA_ARGS__ , RLOG_FILE_ID); \
 }
 
 #define LOG_SPL(_level, _splenum, _splArg, _fmtStr, ...) \
-if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
+   if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 { \
-	logLevE(g_logStr[_level],RLOG_MODULE_NAME, __FILE__,__LINE__, FMTSTR_S _fmtStr "\n\n", _splenum,_splArg, ##__VA_ARGS__, RLOG_FILE_ID); \
+   logLevE(g_logStr[_level],RLOG_MODULE_NAME, __FILE__,__LINE__, FMTSTR_S _fmtStr "\n\n", _splenum,_splArg, ##__VA_ARGS__, RLOG_FILE_ID); \
 }
 
 #define LOG_ARGX(_level, _fmtStr, ...) \
-if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
+   if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 { \
-	logLevN(_level,RLOG_MODULE_NAME, __FILE__,__LINE__, _fmtStr "\n\n", __VA_ARGS__, RLOG_FILE_ID); \
+   logLevN(_level,RLOG_MODULE_NAME, __FILE__,__LINE__, _fmtStr "\n\n", __VA_ARGS__, RLOG_FILE_ID); \
 } 
 
 #define RLOG0(_level, _lstr)				LOG_ARG0(_level, _lstr)
@@ -170,21 +170,21 @@ if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 #else /* BINARY LOGGING */
 
 #define LOG_ARG0(_level, _fmtStr) \
-if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
+   if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 { \
-	logLev0(_LOGID, _level, __FILE__,__LINE__, _fmtStr, RLOG_FILE_ID, RLOG_MODULE_NAME); \
+   logLev0(_LOGID, _level, __FILE__,__LINE__, _fmtStr, RLOG_FILE_ID, RLOG_MODULE_NAME); \
 }
 
 #define LOG_ARGN(_N, _level, _fmtStr, ...) \
-if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
+   if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 { \
-	logLev##_N(_LOGID, _level, ##__VA_ARGS__, __FILE__,__LINE__, _fmtStr, RLOG_FILE_ID, RLOG_MODULE_NAME); \
+   logLev##_N(_LOGID, _level, ##__VA_ARGS__, __FILE__,__LINE__, _fmtStr, RLOG_FILE_ID, RLOG_MODULE_NAME); \
 }
 
 #define LOG_SPL(_level, _splenum, _splArg, _fmtStr, ...) \
-if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
+   if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 { \
-	logLevE(_LOGID,_level,_splenum, _splArg, ##__VA_ARGS__, __FILE__,__LINE__, _fmtStr, RLOG_FILE_ID, RLOG_MODULE_NAME); \
+   logLevE(_LOGID,_level,_splenum, _splArg, ##__VA_ARGS__, __FILE__,__LINE__, _fmtStr, RLOG_FILE_ID, RLOG_MODULE_NAME); \
 }
 
 #define RLOG0(_level, _lstr) 				LOG_ARG0(_level, _lstr)
@@ -199,19 +199,19 @@ if( _level < g_logLevel || g_modMask & RLOG_MODULE_ID)\
 #define RLOG_HEX(_level, _lstr, _hexdata, _hexlen)		LOG_ARGN(H, _level, _lstr, _hexdata, _hexlen)
 
 #define RLOG_ARG0(_level, _splenum, _splArg, _lstr) \
-		LOG_SPL(_level, _splenum, _splArg, _lstr, 0, 0, 0, 0)
+   LOG_SPL(_level, _splenum, _splArg, _lstr, 0, 0, 0, 0)
 
 #define RLOG_ARG1(_level, _splenum, _splArg, _lstr, _arg1) \
-		LOG_SPL(_level, _splenum, _splArg, _lstr, _arg1, 0, 0, 0)
+   LOG_SPL(_level, _splenum, _splArg, _lstr, _arg1, 0, 0, 0)
 
 #define RLOG_ARG2(_level, _splenum, _splArg, _lstr, _arg1, _arg2) \
-		LOG_SPL(_level, _splenum, _splArg, _lstr, _arg1, _arg2, 0, 0)
+   LOG_SPL(_level, _splenum, _splArg, _lstr, _arg1, _arg2, 0, 0)
 
 #define RLOG_ARG3(_level, _splenum, _splArg, _lstr, _arg1, _arg2, _arg3) \
-		LOG_SPL(_level, _splenum, _splArg, _lstr, _arg1, _arg2, _arg3, 0)
+   LOG_SPL(_level, _splenum, _splArg, _lstr, _arg1, _arg2, _arg3, 0)
 
 #define RLOG_ARG4(_level, _splenum, _splArg, _lstr, _arg1, _arg2, _arg3, _arg4) \
-		LOG_SPL(_level, _splenum, _splArg, _lstr, _arg1, _arg2, _arg3, _arg4)
+   LOG_SPL(_level, _splenum, _splArg, _lstr, _arg1, _arg2, _arg3, _arg4)
 
 #endif /* WR_DBG_CIRLOG */
 #endif /* __RLOG_INTERFACE_H__*/

@@ -154,7 +154,7 @@ uint8_t procStopInd()
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_STOP_IND_TO_MAC);
 
    ret = (*sendStopIndOpts[pst.selector])(&pst, \
-      lwrMacCb.cellCb[0].cellId);
+	 lwrMacCb.cellCb[0].cellId);
    return ret;
 }
 /*******************************************************************
@@ -196,9 +196,9 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
       for(prmbleIdx=0; prmbleIdx<rachPdu->numPream; prmbleIdx++)
       {
 	 rachPdu->preamInfo[prmbleIdx].preamIdx = \
-	    fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].preambleIndex;
+						  fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].preambleIndex;
 	 rachPdu->preamInfo[prmbleIdx].timingAdv = \
-	    fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance;
+						   fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance;
       }
    }
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_RACH_IND_TO_MAC);
@@ -249,7 +249,7 @@ uint8_t procCrcInd(fapi_crc_ind_t  *fapiCrcInd)
       for(crcStatusIdx = 0; crcStatusIdx < crcIndInfo->numCb; crcStatusIdx++)
       {
 	 crcIndInfo->cbCrcStatus[crcStatusIdx] = \
-	    fapiCrcInd->crc[crcInfoIdx].cbCrcStatus[crcStatusIdx];
+						 fapiCrcInd->crc[crcInfoIdx].cbCrcStatus[crcStatusIdx];
       }
       crcIndInfo->ul_cqi  = fapiCrcInd->crc[crcInfoIdx].ul_cqi;
       crcIndInfo->timingAdvance = fapiCrcInd->crc[crcInfoIdx].timingAdvance;
@@ -335,7 +335,7 @@ uint8_t fillUciIndPucchF0F1(UciPucchF0F1 *pduInfo, fapi_uci_o_pucch_f0f1_t *fapi
 
    uint8_t harqIdx;
    uint8_t ret = ROK;
-   
+
    pduInfo->handle        = fapiPduInfo->handle;
    pduInfo->pduBitmap     = fapiPduInfo->pduBitmap;
    pduInfo->pucchFormat   = fapiPduInfo->pucchFormat;
@@ -356,7 +356,7 @@ uint8_t fillUciIndPucchF0F1(UciPucchF0F1 *pduInfo, fapi_uci_o_pucch_f0f1_t *fapi
       pduInfo->harqInfo.harqConfdcLevel = fapiPduInfo->harqInfo.harqConfidenceLevel;
       for(harqIdx = 0; harqIdx < pduInfo->harqInfo.numHarq; harqIdx++)
       {
-         pduInfo->harqInfo.harqValue[harqIdx] = fapiPduInfo->harqInfo.harqValue[harqIdx];
+	 pduInfo->harqInfo.harqValue[harqIdx] = fapiPduInfo->harqInfo.harqValue[harqIdx];
       }
    }
    return ret;
@@ -398,22 +398,22 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
       macUciInd.pdus[pduIdx].pduType = fapiUciInd->uciPdu[pduIdx].pduType;
       switch(macUciInd.pdus[pduIdx].pduType)
       {
-         case UCI_IND_PUSCH:
-         break;
-         case UCI_IND_PUCCH_F0F1:
-         {
-            UciPucchF0F1 *pduInfo = NULLP;
-            macUciInd.pdus[pduIdx].pduSize = fapiUciInd->uciPdu[pduIdx].pduSize;
-            pduInfo = &macUciInd.pdus[pduIdx].uci.uciPucchF0F1;
-            ret = fillUciIndPucchF0F1(pduInfo, &fapiUciInd->uciPdu[pduIdx].uci.uciPucchF0F1);
-         }
-         break;
-         case UCI_IND_PUCCH_F2F3F4:
-            break;
-         default:
-            DU_LOG("\nLWR_MAC: Invalid Pdu Type %d at procmacUciInd()", macUciInd.pdus[pduIdx].pduType);
+	 case UCI_IND_PUSCH:
+	    break;
+	 case UCI_IND_PUCCH_F0F1:
+	    {
+	       UciPucchF0F1 *pduInfo = NULLP;
+	       macUciInd.pdus[pduIdx].pduSize = fapiUciInd->uciPdu[pduIdx].pduSize;
+	       pduInfo = &macUciInd.pdus[pduIdx].uci.uciPucchF0F1;
+	       ret = fillUciIndPucchF0F1(pduInfo, &fapiUciInd->uciPdu[pduIdx].uci.uciPucchF0F1);
+	    }
+	    break;
+	 case UCI_IND_PUCCH_F2F3F4:
+	    break;
+	 default:
+	    DU_LOG("\nLWR_MAC: Invalid Pdu Type %d at procmacUciInd()", macUciInd.pdus[pduIdx].pduType);
 	    ret = RFAILED;
-            break;
+	    break;
       }
    }
    if(!ret)

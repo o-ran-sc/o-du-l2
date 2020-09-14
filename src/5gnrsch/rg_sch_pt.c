@@ -93,7 +93,7 @@ PRIVATE CONSTANT SfRecpInd RgMacSchSfRecpIndMt[RG_MAX_SCH] =
 #ifdef LCSCH
    cmPkMacSchSfRecpInd
 #else
-   RgMacSchSfRecpInd,
+      RgMacSchSfRecpInd,
 #endif
 };
 /*Fix: start: Inform UE delete to scheduler*/
@@ -102,7 +102,7 @@ PRIVATE CONSTANT UeDelInd RgMacSchUeDelIndMt[RG_MAX_SCH] =
 #ifdef LCSCH
    cmPkMacSchUeDelInd
 #else
-   RgMacSchUeDelInd,
+      RgMacSchUeDelInd,
 #endif
 };
 /*Fix: end: Inform UE delete to scheduler*/
@@ -197,7 +197,7 @@ PRIVATE CONSTANT L2MeasReq RgSchMacL2MeasReqMt[RG_MAX_SCH] =
 #ifdef LCSCH
    cmPkSchMacL2MeasReq
 #else
-   RgSchMacL2MeasReq
+      RgSchMacL2MeasReq
 #endif
 };
 /*Added for Rsys oam*/
@@ -206,7 +206,7 @@ PRIVATE CONSTANT L2MeasStopReq RgSchMacL2MeasStopReqMt[RG_MAX_SCH] =
 #ifdef LCSCH
    cmPkSchMacL2MeasStopReq
 #else
-   RgSchMacL2MeasStopReq
+      RgSchMacL2MeasStopReq
 #endif
 };
 
@@ -215,7 +215,7 @@ PRIVATE CONSTANT L2MeasSendReq RgSchMacL2MeasSendReqMt[RG_MAX_SCH] =
 #ifdef LCSCH
    cmPkSchMacL2MeasSendReq
 #else
-   RgSchMacL2MeasSendReq
+      RgSchMacL2MeasSendReq
 #endif
 };
 
@@ -224,7 +224,7 @@ PRIVATE CONSTANT L2MeasCfm RgMacSchL2MeasCfmMt[RG_MAX_SCH] =
 #ifdef LCSCH
    cmPkMacSchL2MeasCfm
 #else
-   RgMacSchL2MeasCfm
+      RgMacSchL2MeasCfm
 #endif
 };
 PRIVATE CONSTANT L2MeasStopCfm RgMacSchL2MeasStopCfmMt[RG_MAX_SCH] =
@@ -232,34 +232,34 @@ PRIVATE CONSTANT L2MeasStopCfm RgMacSchL2MeasStopCfmMt[RG_MAX_SCH] =
 #ifdef LCSCH
    cmPkMacSchL2MeasStopCfm
 #else
-   RgMacSchL2MeasStopCfm
+      RgMacSchL2MeasStopCfm
 #endif
 };
 #endif/*LTE_L2_MEAS*/
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
-*
-* @details
-*
-*     Function : RgSchMacCellReg
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgSchMacCellReg
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacCellReg
+   PUBLIC S16 RgSchMacCellReg
 (
-Pst* pst,
-RgInfCellReg*   regReq
-)
+ Pst* pst,
+ RgInfCellReg*   regReq
+ )
 #else
 PUBLIC S16 RgSchMacCellReg(pst, regReq)
-Pst* pst;
-RgInfCellReg*   regReq;
+   Pst* pst;
+   RgInfCellReg*   regReq;
 #endif
 {
 
@@ -269,29 +269,29 @@ RgInfCellReg*   regReq;
 }
 
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
-*
-* @details
-*
-*     Function : RgMacSchDedBoUpdt
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgMacSchDedBoUpdt
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchDedBoUpdt
+   PUBLIC S16 RgMacSchDedBoUpdt
 (
-Pst* pst,
-RgInfDedBoRpt*  boRpt
-)
+ Pst* pst,
+ RgInfDedBoRpt*  boRpt
+ )
 #else
 PUBLIC S16 RgMacSchDedBoUpdt(pst, boRpt)
-Pst* pst;
-RgInfDedBoRpt*  boRpt;
+   Pst* pst;
+   RgInfDedBoRpt*  boRpt;
 #endif
 {
 
@@ -301,29 +301,29 @@ RgInfDedBoRpt*  boRpt;
 }
 
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
-*
-* @details
-*
-*     Function : RgMacSchCmnBoUpdt
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgMacSchCmnBoUpdt
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchCmnBoUpdt
+   PUBLIC S16 RgMacSchCmnBoUpdt
 (
-Pst* pst,
-RgInfCmnBoRpt*  boRpt
-)
+ Pst* pst,
+ RgInfCmnBoRpt*  boRpt
+ )
 #else
 PUBLIC S16 RgMacSchCmnBoUpdt(pst, boRpt)
-Pst* pst;
-RgInfCmnBoRpt*  boRpt;
+   Pst* pst;
+   RgInfCmnBoRpt*  boRpt;
 #endif
 {
 
@@ -334,28 +334,28 @@ RgInfCmnBoRpt*  boRpt;
 
 /*Fix: start: Inform UE delete to scheduler*/
 /**
-* @brief This primitive is used to indicate deletion of UE
-*        at MAC to scheduler. 
-*
-* @details
-*
-*     Function : RgMacSchUeDel
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   RgInfSfDatInd*  ueDelInd 
-*  @return   S16
-*      -# ROK
-**/
+ * @brief This primitive is used to indicate deletion of UE
+ *        at MAC to scheduler. 
+ *
+ * @details
+ *
+ *     Function : RgMacSchUeDel
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   RgInfSfDatInd*  ueDelInd 
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchUeDel
+   PUBLIC S16 RgMacSchUeDel
 (
-Pst* pst,
-RgInfUeDelInd*  ueDelInd
-)
+ Pst* pst,
+ RgInfUeDelInd*  ueDelInd
+ )
 #else
 PUBLIC S16 RgMacSchUeDel(pst, datInd)
-Pst* pst;
-RgInfUeDelInd*  ueDelInd;
+   Pst* pst;
+   RgInfUeDelInd*  ueDelInd;
 #endif
 {
 
@@ -365,29 +365,29 @@ RgInfUeDelInd*  ueDelInd;
 }
 /*Fix: end: Inform UE delete to scheduler*/
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
-*
-* @details
-*
-*     Function : RgMacSchSfRecp
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgMacSchSfRecp
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchSfRecp
+   PUBLIC S16 RgMacSchSfRecp
 (
-Pst* pst,
-RgInfSfDatInd*  datInd
-)
+ Pst* pst,
+ RgInfSfDatInd*  datInd
+ )
 #else
 PUBLIC S16 RgMacSchSfRecp(pst, datInd)
-Pst* pst;
-RgInfSfDatInd*  datInd;
+   Pst* pst;
+   RgInfSfDatInd*  datInd;
 #endif
 {
 
@@ -397,29 +397,29 @@ RgInfSfDatInd*  datInd;
 }
 
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
-*
-* @details
-*
-*     Function : RgSchMacSfAlloc
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgSchMacSfAlloc
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSfAlloc
+   PUBLIC S16 RgSchMacSfAlloc
 (
-Pst* pst,
-RgInfSfAlloc*   resAllocReq
-)
+ Pst* pst,
+ RgInfSfAlloc*   resAllocReq
+ )
 #else
 PUBLIC S16 RgSchMacSfAlloc(pst, resAllocReq)
-Pst* pst;
-RgInfSfAlloc*   resAllocReq;
+   Pst* pst;
+   RgInfSfAlloc*   resAllocReq;
 #endif
 {
 
@@ -429,59 +429,59 @@ RgInfSfAlloc*   resAllocReq;
 }
 
 /**
-* @brief Trigger for resetting Harq Entity at MAC
-*
-* @details
-*
-*     Function : RgSchMacRstHqEnt
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   RgInfResetHqEnt *hqEntRstReq
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Trigger for resetting Harq Entity at MAC
+ *
+ * @details
+ *
+ *     Function : RgSchMacRstHqEnt
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   RgInfResetHqEnt *hqEntRstReq
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRstHqEnt
+   PUBLIC S16 RgSchMacRstHqEnt
 (
-Pst*                 pst,    
-RgInfResetHqEnt*     hqEntInfo
-)
+ Pst*                 pst,    
+ RgInfResetHqEnt*     hqEntInfo
+ )
 #else
 PUBLIC S16 RgSchMacRstHqEnt(pst, hqEntInfo)
-Pst*                 pst;
-RgInfResetHqEnt*     hqEntInfo;
+   Pst*                 pst;
+   RgInfResetHqEnt*     hqEntInfo;
 #endif
 {
 
    TRC3(RgSchMacRstHqEnt)
 
-   RETVALUE((*RgSchMacRstHqEntReqMt[0])(pst, hqEntInfo));
+      RETVALUE((*RgSchMacRstHqEntReqMt[0])(pst, hqEntInfo));
 }
 
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
-*
-* @details
-*
-*     Function : RgSchMacRlsHq
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgSchMacRlsHq
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRlsHq
+   PUBLIC S16 RgSchMacRlsHq
 (
-Pst* pst,
-RgInfRlsHqInfo* sfHqInfo
-)
+ Pst* pst,
+ RgInfRlsHqInfo* sfHqInfo
+ )
 #else
 PUBLIC S16 RgSchMacRlsHq(pst, sfHqInfo)
-Pst* pst;
-RgInfRlsHqInfo* sfHqInfo;
+   Pst* pst;
+   RgInfRlsHqInfo* sfHqInfo;
 #endif
 {
 
@@ -491,29 +491,29 @@ RgInfRlsHqInfo* sfHqInfo;
 }
 
 /**
-* @brief Data Indication from MAC to RLC to 
+ * @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels
-*
-* @details
-*
-*     Function : RgSchMacRlsRnti
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RguDDatIndInfo  *  datInd
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgSchMacRlsRnti
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   SuId  suId
+ *  @param[in]   RguDDatIndInfo  *  datInd
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRlsRnti
+   PUBLIC S16 RgSchMacRlsRnti
 (
-Pst* pst,
-RgInfRlsRnti*   rlsRnti
-)
+ Pst* pst,
+ RgInfRlsRnti*   rlsRnti
+ )
 #else
 PUBLIC S16 RgSchMacRlsRnti(pst, rlsRnti)
-Pst* pst;
-RgInfRlsRnti*   rlsRnti;
+   Pst* pst;
+   RgInfRlsRnti*   rlsRnti;
 #endif
 {
 
@@ -523,27 +523,27 @@ RgInfRlsRnti*   rlsRnti;
 }
 
 /**
-* @brief Request from SCH to MAC to register the GBR LCG of a UE
-*
-* @details
-*
-*     Function : RgSchMacLcgReg
-*
-*  @param[in]   Pst*           pst
-*  @param[in]   RgInfLcgRegReq *lcgRegReq
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from SCH to MAC to register the GBR LCG of a UE
+ *
+ * @details
+ *
+ *     Function : RgSchMacLcgReg
+ *
+ *  @param[in]   Pst*           pst
+ *  @param[in]   RgInfLcgRegReq *lcgRegReq
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacLcgReg
+   PUBLIC S16 RgSchMacLcgReg
 (
-Pst*                pst,
-RgInfLcgRegReq      *lcgRegReq
-)
+ Pst*                pst,
+ RgInfLcgRegReq      *lcgRegReq
+ )
 #else
 PUBLIC S16 RgSchMacLcgReg(pst, lcgRegReq)
-Pst*                pst;
-RgInfLcgRegReq       *lcgRegReq;
+   Pst*                pst;
+   RgInfLcgRegReq       *lcgRegReq;
 #endif
 {
 
@@ -554,28 +554,28 @@ RgInfLcgRegReq       *lcgRegReq;
 
 #ifdef LTEMAC_SPS
 /**
-* @brief Data Indication from MAC to SCH to 
+ * @brief Data Indication from MAC to SCH to 
  * indicate the arrival of the data on SPS logical channels
-*
-* @details
-*
-*     Function : RgMacSchSpsRel
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   RgInfSpsRelInfo* relInfo
-*  @return   S16
-*      -# ROK
-**/
+ *
+ * @details
+ *
+ *     Function : RgMacSchSpsRel
+ *
+ *  @param[in]   Pst*  pst
+ *  @param[in]   RgInfSpsRelInfo* relInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchSpsRel
+   PUBLIC S16 RgMacSchSpsRel
 (
-Pst*                pst,
-RgInfSpsRelInfo*    relInfo
-)
+ Pst*                pst,
+ RgInfSpsRelInfo*    relInfo
+ )
 #else
 PUBLIC S16 RgMacSchSpsRel(pst, relInfo)
-Pst*                pst;
-RgInfSpsRelInfo*    relInfo;
+   Pst*                pst;
+   RgInfSpsRelInfo*    relInfo;
 #endif
 {
 
@@ -585,27 +585,27 @@ RgInfSpsRelInfo*    relInfo;
 } /* end of RgMacSchSpsRel */
 
 /**
-* @brief Request from SCH to MAC to register the SPS logical channels of a UE
-*
-* @details
-*
-*     Function : RgSchMacSpsLcReg
-*
-*  @param[in]   Pst*           pst
-*  @param[in]   RgInfSpsLcInfo *lcInfo
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from SCH to MAC to register the SPS logical channels of a UE
+ *
+ * @details
+ *
+ *     Function : RgSchMacSpsLcReg
+ *
+ *  @param[in]   Pst*           pst
+ *  @param[in]   RgInfSpsLcInfo *lcInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcReg
+   PUBLIC S16 RgSchMacSpsLcReg
 (
-Pst*                pst,
-RgInfSpsLcInfo      *lcInfo
-)
+ Pst*                pst,
+ RgInfSpsLcInfo      *lcInfo
+ )
 #else
 PUBLIC S16 RgSchMacSpsLcReg(pst, lcInfo)
-Pst*                pst;
-RgInfSpsLcInfo      *lcInfo;
+   Pst*                pst;
+   RgInfSpsLcInfo      *lcInfo;
 #endif
 {
 
@@ -617,27 +617,27 @@ RgInfSpsLcInfo      *lcInfo;
 
 
 /**
-* @brief Request from SCH to MAC to reset UL SPS params
-*
-* @details
-*
-*     Function : RgSchMacUlSpsReset
-*
-*  @param[in]   Pst*           pst
-*  @param[in]   RgInfUlSpsReset *lcInfo
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from SCH to MAC to reset UL SPS params
+ *
+ * @details
+ *
+ *     Function : RgSchMacUlSpsReset
+ *
+ *  @param[in]   Pst*           pst
+ *  @param[in]   RgInfUlSpsReset *lcInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacUlSpsReset
+   PUBLIC S16 RgSchMacUlSpsReset
 (
-Pst*                pst,
-RgInfUlSpsReset      *ulSpsResetInfo
-)
+ Pst*                pst,
+ RgInfUlSpsReset      *ulSpsResetInfo
+ )
 #else
 PUBLIC S16 RgSchMacUlSpsReset(pst, ulSpsResetInfo)
-Pst*                pst;
-RgInfUlSpsReset      *ulSpsResetInfo;
+   Pst*                pst;
+   RgInfUlSpsReset      *ulSpsResetInfo;
 #endif
 {
 
@@ -649,29 +649,29 @@ RgInfUlSpsReset      *ulSpsResetInfo;
 
 
 /**
-* @brief Request from SCH to MAC to deregister the SPS logical channels of a UE
-*
-* @details
-*
-*     Function : RgSchMacSpsLcDereg
-*
-*  @param[in]   Pst*           pst
-*  @param[in]   RgInfSpsLcInfo *lcInfo
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from SCH to MAC to deregister the SPS logical channels of a UE
+ *
+ * @details
+ *
+ *     Function : RgSchMacSpsLcDereg
+ *
+ *  @param[in]   Pst*           pst
+ *  @param[in]   RgInfSpsLcInfo *lcInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcDereg
+   PUBLIC S16 RgSchMacSpsLcDereg
 (
-Pst*                pst,
-CmLteCellId         cellId,
-CmLteRnti           crnti
-)
+ Pst*                pst,
+ CmLteCellId         cellId,
+ CmLteRnti           crnti
+ )
 #else
 PUBLIC S16 RgSchMacSpsLcDereg(pst, cellId, crnti)
-Pst*                pst;
-CmLteCellId         cellId;
-CmLteRnti           crnti;
+   Pst*                pst;
+   CmLteCellId         cellId;
+   CmLteRnti           crnti;
 #endif
 {
 
@@ -683,27 +683,27 @@ CmLteRnti           crnti;
 #endif /* LTEMAC_SPS */
 #ifdef LTE_L2_MEAS
 /**
-* @brief Request from SCH to MAC for L2 Measurement
-*
-* @details
-*
-*     Function : RgSchMacL2Meas
-*
-*  @param[in]   Pst*           pst
-*  @param[in]   RgInfL2MeasReq *measInfo
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from SCH to MAC for L2 Measurement
+ *
+ * @details
+ *
+ *     Function : RgSchMacL2Meas
+ *
+ *  @param[in]   Pst*           pst
+ *  @param[in]   RgInfL2MeasReq *measInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacL2Meas
+   PUBLIC S16 RgSchMacL2Meas
 (
-Pst*                pst,
-RgInfL2MeasReq      *measInfo
-)
+ Pst*                pst,
+ RgInfL2MeasReq      *measInfo
+ )
 #else
 PUBLIC S16 RgSchMacL2Meas(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasReq      *measInfo;
+   Pst*                pst;
+   RgInfL2MeasReq      *measInfo;
 #endif
 {
 
@@ -713,57 +713,57 @@ RgInfL2MeasReq      *measInfo;
 } /* end of RgSchMacL2Meas */
 
 /**
-* @brief Request from SCH to MAC for Stopping L2 Measurement
-*
-* @details
-*
-*     Function : RgSchMacL2MeasStop
-*     
-*  @param[in]   Pst*           pst
-*  @param[in]   RgInfL2MeasReq *measInfo
-*  @return   S16
-*      -# ROK
-**/   
+ * @brief Request from SCH to MAC for Stopping L2 Measurement
+ *
+ * @details
+ *
+ *     Function : RgSchMacL2MeasStop
+ *     
+ *  @param[in]   Pst*           pst
+ *  @param[in]   RgInfL2MeasReq *measInfo
+ *  @return   S16
+ *      -# ROK
+ **/   
 #ifdef ANSI
 PUBLIC S16 RgSchMacL2MeasStop
 (       
-Pst*                pst,
-RgInfL2MeasStopReq *measInfo
-)     
+ Pst*                pst,
+ RgInfL2MeasStopReq *measInfo
+ )     
 #else 
 PUBLIC S16 RgSchMacL2MeasStop(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasStopReq *measInfo;
+   Pst*                pst;
+   RgInfL2MeasStopReq *measInfo;
 #endif
 {  
-     
+
    TRC3(RgSchMacL2MeasStop);
-        
+
    RETVALUE((*RgSchMacL2MeasStopReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 
 /**
-* @brief Request from SCH to MAC for Sending L2 Measurement
-*
-* @details
-*
-*     Function : RgSchMacL2MeasSend
-*     
-*  @param[in]   Pst*           pst
-*  @param[in]   RgInfL2MeasReq *measInfo
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from SCH to MAC for Sending L2 Measurement
+ *
+ * @details
+ *
+ *     Function : RgSchMacL2MeasSend
+ *     
+ *  @param[in]   Pst*           pst
+ *  @param[in]   RgInfL2MeasReq *measInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasSend
+   PUBLIC S16 RgSchMacL2MeasSend
 (
-Pst*                pst,
-RgInfL2MeasSndReq *measInfo
-)
+ Pst*                pst,
+ RgInfL2MeasSndReq *measInfo
+ )
 #else
 PUBLIC S16 RgSchMacL2MeasSend(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasSndReq *measInfo;
+   Pst*                pst;
+   RgInfL2MeasSndReq *measInfo;
 #endif
 {
 
@@ -773,27 +773,27 @@ RgInfL2MeasSndReq *measInfo;
 } /* end of RgSchMacL2MeasSend */
 
 /**
-* @brief Request from MAC to SCH for L2 Measurement
-*
-* @details
-*
-*     Function : RgMacSchL2Meas
-*
-*  @param[in]   Pst*           pst
-*  @param[in]   RgInfL2MeasCfm *measInfo
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from MAC to SCH for L2 Measurement
+ *
+ * @details
+ *
+ *     Function : RgMacSchL2Meas
+ *
+ *  @param[in]   Pst*           pst
+ *  @param[in]   RgInfL2MeasCfm *measInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchL2Meas
+   PUBLIC S16 RgMacSchL2Meas
 (
-Pst*                pst,
-RgInfL2MeasCfm      *measInfo
-)
+ Pst*                pst,
+ RgInfL2MeasCfm      *measInfo
+ )
 #else
 PUBLIC S16 RgMacSchL2Meas(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasCfm      *measInfo;
+   Pst*                pst;
+   RgInfL2MeasCfm      *measInfo;
 #endif
 {
 
@@ -802,36 +802,36 @@ RgInfL2MeasCfm      *measInfo;
    RETVALUE((*RgMacSchL2MeasCfmMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 /**
-* @brief Request from MAC to SCH for L2 Measurement
-*  
-* @details
-*
-*     Function : RgMacSchL2MeasStop
-*
-*  @param[in]   Pst*           pst
-*  @param[in]   RgInfL2MeasCfm *measInfo
-*  @return   S16
-*      -# ROK
-**/
+ * @brief Request from MAC to SCH for L2 Measurement
+ *  
+ * @details
+ *
+ *     Function : RgMacSchL2MeasStop
+ *
+ *  @param[in]   Pst*           pst
+ *  @param[in]   RgInfL2MeasCfm *measInfo
+ *  @return   S16
+ *      -# ROK
+ **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchL2MeasStop
+   PUBLIC S16 RgMacSchL2MeasStop
 (
-Pst*                pst,   
-RgInfL2MeasCfm      *measInfo
-)
+ Pst*                pst,   
+ RgInfL2MeasCfm      *measInfo
+ )
 #else
 PUBLIC S16 RgMacSchL2MeasStop(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasCfm      *measInfo;
+   Pst*                pst;
+   RgInfL2MeasCfm      *measInfo;
 #endif
 {
-    
+
    TRC3(RgMacSchL2MeasStop);
 
    RETVALUE((*RgMacSchL2MeasStopCfmMt[0])(pst, measInfo));
 } /* end of RgSchMacL2MeasStop*/
 #endif/*LTE_L2_MEAS*/
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

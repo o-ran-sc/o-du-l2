@@ -43,7 +43,6 @@ typedef struct ssRegionEntry
 {
    SsdRegionEntry dep;                          /* implementation specific */
 
-
    Bool         used;                           /* entry used? */
 
    Data         *start;                         /* start address */
@@ -59,14 +58,14 @@ typedef struct ssRegionEntry
    SsAlloc      alloc;                          /* allocator function */
    SsFree       free;                           /* de-allocator function */
    SsCtl        ctl;                            /* ctl function */
-	/* ss006.301 */
-	SLockId      mBufRefLock;                    /* per region lock used for 
-	                                               data block sharing */
+   /* ss006.301 */
+   SLockId      mBufRefLock;                    /* per region lock used for 
+						   data block sharing */
 } SsRegionEntry;
 
 /* ss036.103 - addition of data type to return the memory statistics data
-* this is used in SGetRegInfo 
-*/
+ * this is used in SGetRegInfo 
+ */
 typedef struct ssMemBktDbgInfo
 {
    Size         size;         /* Size of the block */
@@ -115,5 +114,5 @@ EXTERN S16 SGetHstGrmInfo ARGS((Ent *entId, Bool *hstReg));
   
 /********************************************************************30**
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

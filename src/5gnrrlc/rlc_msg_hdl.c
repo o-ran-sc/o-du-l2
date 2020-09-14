@@ -60,19 +60,19 @@ extern U16 getTransId();
 void fillRlcUlUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
 {
    uint8_t idx;
- 
+
    rlcCfgRsp->cellId = rlcCRsp->cellId;
    rlcCfgRsp->ueIdx  = rlcCRsp->ueId;
    for(idx = 0; idx < rlcCRsp->numEnt; idx++)
    {
       if(rlcCRsp->entCfgCfm[idx].status.status == CKW_CFG_CFM_OK)
       {
-         rlcCfgRsp->result = RLC_DU_APP_RSP_OK;
+	 rlcCfgRsp->result = RLC_DU_APP_RSP_OK;
 	 rlcCfgRsp->reason = rlcCRsp->entCfgCfm[idx].status.reason;
       }
       else
       {
-         rlcCfgRsp->result = RLC_DU_APP_RSP_NOK;
+	 rlcCfgRsp->result = RLC_DU_APP_RSP_NOK;
 	 rlcCfgRsp->reason = rlcCRsp->entCfgCfm[idx].status.reason;
       }
    }
@@ -100,24 +100,24 @@ void fillEntModeAndDir(uint8_t *entMode, uint8_t *direction, RlcMode rlcMode)
    switch(rlcMode)
    {
       case RLC_AM:
-         *entMode   = CM_LTE_MODE_AM;
-         *direction = RLC_CFG_DIR_BOTH;
-         break;
+	 *entMode   = CM_LTE_MODE_AM;
+	 *direction = RLC_CFG_DIR_BOTH;
+	 break;
       case RLC_UM_BI_DIRECTIONAL:
-         *entMode = CM_LTE_MODE_UM;
-         *direction = RLC_CFG_DIR_BOTH;
-         break;
+	 *entMode = CM_LTE_MODE_UM;
+	 *direction = RLC_CFG_DIR_BOTH;
+	 break;
       case RLC_UM_UNI_DIRECTIONAL_UL:
-         *entMode = CM_LTE_MODE_UM;
-         *direction = RLC_CFG_DIR_UL;
-         break;
+	 *entMode = CM_LTE_MODE_UM;
+	 *direction = RLC_CFG_DIR_UL;
+	 break;
       case RLC_UM_UNI_DIRECTIONAL_DL:
-         *entMode = CM_LTE_MODE_UM;
-         *direction = RLC_CFG_DIR_DL;
-         break;
+	 *entMode = CM_LTE_MODE_UM;
+	 *direction = RLC_CFG_DIR_DL;
+	 break;
       default : 
-         DU_LOG("\nRLC: Rlc Mode invalid %d", rlcMode);
-    break;
+	 DU_LOG("\nRLC: Rlc Mode invalid %d", rlcMode);
+	 break;
    }
 }
 /*******************************************************************
@@ -155,62 +155,62 @@ uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
       rlcUeCfg->cellId  = ueCfg->cellId;
       rlcUeCfg->numEnt  = ueCfg->numLcs;
       rlcUeCfg->transId = getTransId();
- 
+
       for(idx = 0; idx < ueCfg->numLcs; idx++)
       {
-         lChRbIdx = 0;
-         rlcUeCfg->entCfg[idx].rbId           = ueCfg->rlcBearerCfg[idx].rbId;
-         rlcUeCfg->entCfg[idx].rbType         = ueCfg->rlcBearerCfg[idx].rbType;   // SRB or DRB
-         rlcUeCfg->entCfg[idx].lCh[lChRbIdx].lChId   = ueCfg->rlcBearerCfg[idx].lcId;   
-         rlcUeCfg->entCfg[idx].lCh[lChRbIdx].type    = ueCfg->rlcBearerCfg[idx].lcType;
-         fillEntModeAndDir(&rlcUeCfg->entCfg[idx].entMode, &rlcUeCfg->entCfg[idx].dir,\
-            ueCfg->rlcBearerCfg[idx].rlcMode);
-         rlcUeCfg->entCfg[idx].cfgType        = CKW_CFG_ADD;
-         switch(rlcUeCfg->entCfg[idx].entMode)
-         {
+	 lChRbIdx = 0;
+	 rlcUeCfg->entCfg[idx].rbId           = ueCfg->rlcBearerCfg[idx].rbId;
+	 rlcUeCfg->entCfg[idx].rbType         = ueCfg->rlcBearerCfg[idx].rbType;   // SRB or DRB
+	 rlcUeCfg->entCfg[idx].lCh[lChRbIdx].lChId   = ueCfg->rlcBearerCfg[idx].lcId;   
+	 rlcUeCfg->entCfg[idx].lCh[lChRbIdx].type    = ueCfg->rlcBearerCfg[idx].lcType;
+	 fillEntModeAndDir(&rlcUeCfg->entCfg[idx].entMode, &rlcUeCfg->entCfg[idx].dir,\
+	       ueCfg->rlcBearerCfg[idx].rlcMode);
+	 rlcUeCfg->entCfg[idx].cfgType        = CKW_CFG_ADD;
+	 switch(rlcUeCfg->entCfg[idx].entMode)
+	 {
 
-            case CM_LTE_MODE_AM:
-            {
-               /* DL AM INFO */
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.snLen = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.snLenDl; 
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.pollRetxTmr = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.pollRetxTmr;
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.pollPdu = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.pollPdu; 
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.pollByte = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.pollByte; 
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.maxRetx = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.maxRetxTh;
+	    case CM_LTE_MODE_AM:
+	       {
+		  /* DL AM INFO */
+		  rlcUeCfg->entCfg[idx].m.amInfo.dl.snLen = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.snLenDl; 
+		  rlcUeCfg->entCfg[idx].m.amInfo.dl.pollRetxTmr = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.pollRetxTmr;
+		  rlcUeCfg->entCfg[idx].m.amInfo.dl.pollPdu = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.pollPdu; 
+		  rlcUeCfg->entCfg[idx].m.amInfo.dl.pollByte = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.pollByte; 
+		  rlcUeCfg->entCfg[idx].m.amInfo.dl.maxRetx = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.maxRetxTh;
 
-               /* UL AM INFO */
-	       lChRbIdx++;   //lChRbIdx = 1, indicates UL AM
-               rlcUeCfg->entCfg[idx].lCh[lChRbIdx].lChId   = ueCfg->rlcBearerCfg[idx].lcId;   
-               rlcUeCfg->entCfg[idx].lCh[lChRbIdx].type    = ueCfg->rlcBearerCfg[idx].lcType;
-               rlcUeCfg->entCfg[idx].m.amInfo.ul.snLen = ueCfg->rlcBearerCfg[idx].u.amCfg.ulAmCfg.snLenUl; 
-               rlcUeCfg->entCfg[idx].m.amInfo.ul.staProhTmr = ueCfg->rlcBearerCfg[idx].u.amCfg.ulAmCfg.statProhTmr;
-               rlcUeCfg->entCfg[idx].m.amInfo.ul.reOrdTmr = ueCfg->rlcBearerCfg[idx].u.amCfg.ulAmCfg.reAssemTmr;
-               break;
-            }
-            case CM_LTE_MODE_UM:
-            {
-               /* UL UM CONFIG */
-               rlcUeCfg->entCfg[idx].m.umInfo.ul.snLen = ueCfg->rlcBearerCfg[idx].u.umBiDirCfg.ulUmCfg.snLenUlUm; 
-               rlcUeCfg->entCfg[idx].m.umInfo.ul.reOrdTmr = ueCfg->rlcBearerCfg[idx].u.umBiDirCfg.ulUmCfg.reAssemTmr;
+		  /* UL AM INFO */
+		  lChRbIdx++;   //lChRbIdx = 1, indicates UL AM
+		  rlcUeCfg->entCfg[idx].lCh[lChRbIdx].lChId   = ueCfg->rlcBearerCfg[idx].lcId;   
+		  rlcUeCfg->entCfg[idx].lCh[lChRbIdx].type    = ueCfg->rlcBearerCfg[idx].lcType;
+		  rlcUeCfg->entCfg[idx].m.amInfo.ul.snLen = ueCfg->rlcBearerCfg[idx].u.amCfg.ulAmCfg.snLenUl; 
+		  rlcUeCfg->entCfg[idx].m.amInfo.ul.staProhTmr = ueCfg->rlcBearerCfg[idx].u.amCfg.ulAmCfg.statProhTmr;
+		  rlcUeCfg->entCfg[idx].m.amInfo.ul.reOrdTmr = ueCfg->rlcBearerCfg[idx].u.amCfg.ulAmCfg.reAssemTmr;
+		  break;
+	       }
+	    case CM_LTE_MODE_UM:
+	       {
+		  /* UL UM CONFIG */
+		  rlcUeCfg->entCfg[idx].m.umInfo.ul.snLen = ueCfg->rlcBearerCfg[idx].u.umBiDirCfg.ulUmCfg.snLenUlUm; 
+		  rlcUeCfg->entCfg[idx].m.umInfo.ul.reOrdTmr = ueCfg->rlcBearerCfg[idx].u.umBiDirCfg.ulUmCfg.reAssemTmr;
 
-               /* DL UM CONFIG */
-               rlcUeCfg->entCfg[idx].m.umInfo.dl.snLen = ueCfg->rlcBearerCfg[idx].u.umBiDirCfg.dlUmCfg.snLenDlUm; 
-               break;
-            }
-            default:
-               break;
-         }/* End of switch(entMode) */
+		  /* DL UM CONFIG */
+		  rlcUeCfg->entCfg[idx].m.umInfo.dl.snLen = ueCfg->rlcBearerCfg[idx].u.umBiDirCfg.dlUmCfg.snLenDlUm; 
+		  break;
+	       }
+	    default:
+	       break;
+	 }/* End of switch(entMode) */
       }
       ret = RlcProcCfgReq(pst, rlcUeCfg);
-      }
-      else
-      {
-         DU_LOG("\nRLC: Failed to allocate memory ");
-         ret = RFAILED;
-      }
-      RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
-      return ret;
+   }
+   else
+   {
+      DU_LOG("\nRLC: Failed to allocate memory ");
+      ret = RFAILED;
+   }
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
+   return ret;
 }
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

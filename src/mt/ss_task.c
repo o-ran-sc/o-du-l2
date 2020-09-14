@@ -216,7 +216,7 @@ PAIFS16 initFnct;           /* initialization function */
    if (ret != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS352, ERRZERO,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
       RETVALUE(RFAILED);
    }
 
@@ -226,7 +226,7 @@ PAIFS16 initFnct;           /* initialization function */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS353, ERRZERO,
-                 "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -244,9 +244,9 @@ PAIFS16 initFnct;           /* initialization function */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS355, ERRZERO,
-                      "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS355, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -258,15 +258,15 @@ PAIFS16 initFnct;           /* initialization function */
    {
       SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
       SSLOGERROR(ERRCLS_INT_PAR, ESS356, ERRZERO,
-                 "Entity and instance already registered");
+	    "Entity and instance already registered");
 
       /* ss025.103 - Addition of unlock around counting semaphore */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS357, ERRZERO,
-                         "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS357, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -311,7 +311,7 @@ PAIFS16 initFnct;           /* initialization function */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS358, ERRZERO,
-                      "Could not give the Semaphore");
+	    "Could not give the Semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -322,44 +322,44 @@ PAIFS16 initFnct;           /* initialization function */
 
 
 /*
-*
-*       Fun:   SRegActvTsk
-*
-*       Desc:  This function is used to register an activation function
-*              for the layer. The system services will invoke the
-*              function passed to it whenever a task buffer is received.
-*              The activation function will be used by the layer to receive
-*              messages from other entities.  It allows a priority to be
-*              associated with the task so that it can be preempted if
-*              necessary.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes: We pass NULLP for the initialization function, because
-*              it is assumed that whoever is using this call will also
-*              be calling SRegInit().
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   SRegActvTsk
+ *
+ *       Desc:  This function is used to register an activation function
+ *              for the layer. The system services will invoke the
+ *              function passed to it whenever a task buffer is received.
+ *              The activation function will be used by the layer to receive
+ *              messages from other entities.  It allows a priority to be
+ *              associated with the task so that it can be preempted if
+ *              necessary.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes: We pass NULLP for the initialization function, because
+ *              it is assumed that whoever is using this call will also
+ *              be calling SRegInit().
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SRegActvTsk
+   PUBLIC S16 SRegActvTsk
 (
-Ent ent,                       /* entity */
-Inst inst,                     /* instance */
-Ttype ttype,                   /* task type */
-Prior prior,                   /* task priority */
-ActvTsk actvTsk                /* activate task function */
-)
+ Ent ent,                       /* entity */
+ Inst inst,                     /* instance */
+ Ttype ttype,                   /* task type */
+ Prior prior,                   /* task priority */
+ ActvTsk actvTsk                /* activate task function */
+ )
 #else
 PUBLIC S16 SRegActvTsk(ent, inst, ttype, prior, actvTsk)
-Ent ent;                       /* entity */
-Inst inst;                     /* instance */
-Ttype ttype;                   /* task type */
-Prior prior;                   /* task priority */
-ActvTsk actvTsk;               /* activate task function */
+   Ent ent;                       /* entity */
+   Inst inst;                     /* instance */
+   Ttype ttype;                   /* task type */
+   Prior prior;                   /* task priority */
+   ActvTsk actvTsk;               /* activate task function */
 #endif
 {
    S16 ret;
@@ -407,7 +407,7 @@ ActvTsk actvTsk;               /* activate task function */
    if (ret != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS363, ERRZERO,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
       RETVALUE(RFAILED);
    }
 
@@ -418,14 +418,14 @@ ActvTsk actvTsk;               /* activate task function */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS364, ERRZERO,
-                         "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS364, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
- 
+
       SSLOGERROR(ERRCLS_DEBUG, ESS365, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
       RETVALUE(RFAILED);
    }
    /* ss021.103 - Modification for SRegInit not called yet */
@@ -437,19 +437,19 @@ ActvTsk actvTsk;               /* activate task function */
       /* check count of tasks */
       if (osCp.numTTsks == SS_MAX_TTSKS)
       {
-         SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
+	 SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
 
-         /* ss025.103 - Addition of unlock around counting semaphore */
-         if ( SUnlock(&osCp.sTskTblLock) != ROK)
-         {
+	 /* ss025.103 - Addition of unlock around counting semaphore */
+	 if ( SUnlock(&osCp.sTskTblLock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS366, ERRZERO,
-                         "Could not give the Semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS366, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-         }
-         SSLOGERROR(ERRCLS_INT_PAR, ESS367, ERRZERO, "Too many tasks");
-         RETVALUE(ROUTRES);
+	 }
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS367, ERRZERO, "Too many tasks");
+	 RETVALUE(ROUTRES);
       }
 #endif
 
@@ -480,7 +480,7 @@ ActvTsk actvTsk;               /* activate task function */
     */
 
    tTsk = &osCp.tTskTbl[osCp.tTskIds[ent][inst]];
-   
+
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (tTsk->actvTsk != (ActvTsk)NULLP)
    {
@@ -489,14 +489,14 @@ ActvTsk actvTsk;               /* activate task function */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS368, ERRZERO,
-                    "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS368, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS369, ERRZERO, 
-                 "ActvTask already registered");
+	    "ActvTask already registered");
       RETVALUE(RFAILED);
    }
 #endif
@@ -512,7 +512,7 @@ ActvTsk actvTsk;               /* activate task function */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS370, ERRZERO,
-                      "Could not give the Semaphore");
+	    "Could not give the Semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -531,7 +531,7 @@ ActvTsk actvTsk;               /* activate task function */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS371, (ErrVal) ret,
-                     "Could not create system task");
+	    "Could not create system task");
 #endif
 
       SDeregTTsk(ent, inst);
@@ -548,7 +548,7 @@ ActvTsk actvTsk;               /* activate task function */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS372, (ErrVal) ret,
-                     "Could not attach TAPA task to system task");
+	    "Could not attach TAPA task to system task");
 #endif
       SDestroySTsk(sTskId);
       SDeregTTsk(ent, inst);
@@ -558,32 +558,32 @@ ActvTsk actvTsk;               /* activate task function */
    RETVALUE(ret);
 
 } /* SRegActvTsk */
- 
+
 
 /*
-*
-*       Fun:   Deregister Initialize, task buffer and timer
-*
-*       Desc:  This function is used to deregister the initialization,
-*              activation and timer functions for a task.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Deregister Initialize, task buffer and timer
+ *
+ *       Desc:  This function is used to deregister the initialization,
+ *              activation and timer functions for a task.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SDeregInitTskTmr
+   PUBLIC S16 SDeregInitTskTmr
 (
-Ent ent,                       /* entity */
-Inst inst                      /* instance */
-)
+ Ent ent,                       /* entity */
+ Inst inst                      /* instance */
+ )
 #else
 PUBLIC S16 SDeregInitTskTmr(ent, inst)
-Ent ent;                       /* entity */
-Inst inst;                     /* instance */
+   Ent ent;                       /* entity */
+   Inst inst;                     /* instance */
 #endif
 {
    SsTTskEntry *tTsk;
@@ -612,7 +612,7 @@ Inst inst;                     /* instance */
    if (ret != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS374, ERRZERO,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
       RETVALUE(RFAILED);
    }
 
@@ -623,7 +623,7 @@ Inst inst;                     /* instance */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS375, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -641,9 +641,9 @@ Inst inst;                     /* instance */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS377, ERRZERO,
-                         "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS377, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -674,7 +674,7 @@ Inst inst;                     /* instance */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS378, ERRZERO,
-                      "Could not give the Semaphore");
+	    "Could not give the Semaphore");
       RETVALUE(RFAILED);
 #endif
    }
@@ -700,11 +700,11 @@ Inst inst;                     /* instance */
       {
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS379, (ErrVal) ret,
-                        "Could not lock system task table");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS379, (ErrVal) ret,
+	       "Could not lock system task table");
 #endif
 
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
 
       idx = (SsIdx) sTskId;
@@ -714,33 +714,33 @@ Inst inst;                     /* instance */
       if (sTsk->used != TRUE)
       {
 
-/* ss006.13: addition */
-         if ( SUnlock(&osCp.sTskTblLock) != ROK)
-         {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&osCp.sTskTblLock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS380, ERRZERO,
-                         "Could not give the Semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS380, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-         }
+	 }
 
-         RETVALUE(ROK);
+	 RETVALUE(ROK);
       }
 
       /* check if the system task is dying already */
       if (sTsk->termPend)
       {
 
-  /* ss006.13: addition */
-         if ( SUnlock(&osCp.sTskTblLock) != ROK)
-         {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&osCp.sTskTblLock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS381, ERRZERO,
-                         "Could not give the Semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS381, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-         }
-         RETVALUE(ROK);
+	 }
+	 RETVALUE(ROK);
       }
 
 
@@ -749,20 +749,20 @@ Inst inst;                     /* instance */
        */
       if (sTsk->numTTsks == 0)
       {
-         sTsk->termPend = TRUE;
-         destroySTsk = TRUE;
+	 sTsk->termPend = TRUE;
+	 destroySTsk = TRUE;
       }
 
 
       /* unlock */
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS382, ERRZERO,
-                      "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS382, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -771,18 +771,18 @@ Inst inst;                     /* instance */
        */
       if (destroySTsk)
       {
-         ret = ssdDestroySTsk(sTsk);
-         if (ret != ROK)
-         {
-            /* oops? */
+	 ret = ssdDestroySTsk(sTsk);
+	 if (ret != ROK)
+	 {
+	    /* oops? */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS383, (ErrVal) ret,
-                        "Could not destroy system task");
+	    SSLOGERROR(ERRCLS_DEBUG, ESS383, (ErrVal) ret,
+		  "Could not destroy system task");
 #endif
 
-            RETVALUE(RFAILED);
-         }
+	    RETVALUE(RFAILED);
+	 }
       }
    }
 
@@ -794,66 +794,66 @@ Inst inst;                     /* instance */
 
 
 /*
-*
-*       Fun:   Register a TAPA task
-*
-*       Desc:  This function is used to register a TAPA task,
-*              and its initialization and activation functions.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Register a TAPA task
+ *
+ *       Desc:  This function is used to register a TAPA task,
+ *              and its initialization and activation functions.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 /* ss029.103: modification: procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 
 #ifdef ANSI
-PUBLIC S16 SRegTTsk
+   PUBLIC S16 SRegTTsk
 (
-Ent ent,                        /* entity */
-Inst inst,                      /* instance */
-Ttype type,                     /* task type */
-Prior prior,                    /* task priority */
-PAIFS16 initTsk,                /* initialization function */
-ActvTsk actvTsk                 /* activation function */
-)
+ Ent ent,                        /* entity */
+ Inst inst,                      /* instance */
+ Ttype type,                     /* task type */
+ Prior prior,                    /* task priority */
+ PAIFS16 initTsk,                /* initialization function */
+ ActvTsk actvTsk                 /* activation function */
+ )
 #else
 PUBLIC S16 SRegTTsk(ent, inst, type, prior, initTsk, actvTsk)
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-Ttype type;                     /* task type */
-Prior prior;                    /* task priority */
-PAIFS16 initTsk;                /* initialization function */
-ActvTsk actvTsk;                /* activation function */
+   Ent ent;                        /* entity */
+   Inst inst;                      /* instance */
+   Ttype type;                     /* task type */
+   Prior prior;                    /* task priority */
+   PAIFS16 initTsk;                /* initialization function */
+   ActvTsk actvTsk;                /* activation function */
 #endif
 
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PUBLIC S16 SRegTTsk
+   PUBLIC S16 SRegTTsk
 (
-ProcId proc,                    /* processor */
-Ent ent,                        /* entity */
-Inst inst,                      /* instance */
-Ttype type,                     /* task type */
-Prior prior,                    /* task priority */
-PAIFS16 initTsk,                /* initialization function */
-ActvTsk actvTsk                 /* activation function */
-)
+ ProcId proc,                    /* processor */
+ Ent ent,                        /* entity */
+ Inst inst,                      /* instance */
+ Ttype type,                     /* task type */
+ Prior prior,                    /* task priority */
+ PAIFS16 initTsk,                /* initialization function */
+ ActvTsk actvTsk                 /* activation function */
+ )
 #else
 PUBLIC S16 SRegTTsk(proc, ent, inst, type, prior, initTsk, actvTsk)
-ProcId proc;                    /* processor */
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-Ttype type;                     /* task type */
-Prior prior;                    /* task priority */
-PAIFS16 initTsk;                /* initialization function */
-ActvTsk actvTsk;                /* activation function */
+   ProcId proc;                    /* processor */
+   Ent ent;                        /* entity */
+   Inst inst;                      /* instance */
+   Ttype type;                     /* task type */
+   Prior prior;                    /* task priority */
+   PAIFS16 initTsk;                /* initialization function */
+   ActvTsk actvTsk;                /* activation function */
 #endif
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -861,7 +861,7 @@ ActvTsk actvTsk;                /* activation function */
 {
    S16 ret = ROK;
    SsTTskEntry *tTsk;
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    U16 procIdIdx;
 #endif
@@ -872,7 +872,7 @@ ActvTsk actvTsk;                /* activation function */
 #if (ERRCLASS & ERRCLS_INT_PAR)
 
    /* check entity and instance ranges */
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    if ((proc == SS_INV_PROCID) || (ent >= SS_MAX_ENT) ||  (inst >= SS_MAX_INST))
    {
@@ -910,7 +910,7 @@ ActvTsk actvTsk;                /* activation function */
    }
 #endif
 
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    /* retrieve proc id index in the proc id table */
    procIdIdx = SGetProcIdIdx(proc); 
@@ -919,8 +919,8 @@ ActvTsk actvTsk;                /* activation function */
    if (procIdIdx == SS_INV_PROCID_IDX)
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-       SSLOGERROR(ERRCLS_INT_PAR, ESS389, ERRZERO,
-                     "Could not find proc table index");
+      SSLOGERROR(ERRCLS_INT_PAR, ESS389, ERRZERO,
+	    "Could not find proc table index");
 #endif
 
       RETVALUE(RFAILED);
@@ -942,7 +942,7 @@ ActvTsk actvTsk;                /* activation function */
    if (ret != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS390, ERRZERO,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
       RETVALUE(RFAILED);
    }
 
@@ -952,16 +952,16 @@ ActvTsk actvTsk;                /* activation function */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS391, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       /* ss025.103 - Addition of unlock around counting semaphore */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS392, ERRZERO,
-                      "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS392, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -980,9 +980,9 @@ ActvTsk actvTsk;                /* activation function */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS394, ERRZERO,
-                      "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS394, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -990,29 +990,29 @@ ActvTsk actvTsk;                /* activation function */
    }
 
    /* check if entity and instance already registered */
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    if (osCp.tTskIds[procIdIdx][ent][inst] != SS_TSKNC)
 #else
-   if (osCp.tTskIds[ent][inst] != SS_TSKNC)
+      if (osCp.tTskIds[ent][inst] != SS_TSKNC)
 #endif /* SS_MULTIPLE_PROCS */
-   {
-      SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
-      SSLOGERROR(ERRCLS_DEBUG, ESS395, ERRZERO,
-                  "Entity and instance already registered");
-
-      /* ss025.103 - Addition of unlock around counting semaphore */
-      if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
-#if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS396, ERRZERO,
-                      "Could not give the Semaphore");
-         RETVALUE(RFAILED);
-#endif
-      }
+	 SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS395, ERRZERO,
+	       "Entity and instance already registered");
 
-      RETVALUE(RFAILED);
-   }
+	 /* ss025.103 - Addition of unlock around counting semaphore */
+	 if ( SUnlock(&osCp.sTskTblLock) != ROK)
+	 {
+#if (ERRCLASS & ERRCLS_DEBUG)
+	    SSLOGERROR(ERRCLS_DEBUG, ESS396, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
+#endif
+	 }
+
+	 RETVALUE(RFAILED);
+      }
 #endif
 
 
@@ -1022,7 +1022,7 @@ ActvTsk actvTsk;                /* activation function */
     */
    tTsk = &osCp.tTskTbl[osCp.nxtTTskEntry];
    tTsk->used     = TRUE;
-/* ss029.103: addition: procId added */ 
+   /* ss029.103: addition: procId added */ 
 #ifdef SS_MULTIPLE_PROCS
    tTsk->proc     = proc;
 #endif /* SS_MULTIPLE_PROCS */
@@ -1034,12 +1034,12 @@ ActvTsk actvTsk;                /* activation function */
    tTsk->actvTsk  = actvTsk;
    tTsk->sTsk     = NULLP;
 
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
    tTsk->hstReg   = 0;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    osCp.tTskIds[procIdIdx][ent][inst] = osCp.nxtTTskEntry;
 #else
@@ -1059,13 +1059,13 @@ ActvTsk actvTsk;                /* activation function */
    /* ss024.103 - Modification for memory calculator tool */
    if (initTsk != NULLP)
    {
-/* ss029.103: addition: multiple procIds related changes */ 
+      /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
       SsIdx idx;
       Void *xxCb = NULLP;
 #endif /* SS_MULTIPLE_PROCS */
 
-/* ss029.103: addition: multiple procIds related changes */ 
+      /* ss029.103: addition: multiple procIds related changes */ 
 #ifndef SS_MULTIPLE_PROCS
 
 #ifndef USE_MEMCAL
@@ -1096,7 +1096,7 @@ ActvTsk actvTsk;                /* activation function */
       /* ss032.103 do a debug print if xxCb is NULLP */
       if (xxCb == NULLP)
       {
-         SSLOGERROR(ERRCLS_INT_PAR, ERRZERO, ERRZERO, "Null pointer");
+	 SSLOGERROR(ERRCLS_INT_PAR, ERRZERO, ERRZERO, "Null pointer");
       }
 #endif /* SS_MULTIPLE_PROCS */
    }
@@ -1109,66 +1109,66 @@ ActvTsk actvTsk;                /* activation function */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS397, ERRZERO,
-                      "Could not give the Semaphore");
+	    "Could not give the Semaphore");
 #endif
       RETVALUE(RFAILED);
    }
 
    RETVALUE(ROK);
 } /* SRegTTsk */
- /* ss002.301 Additions */
+/* ss002.301 Additions */
 /*
-*
-*       Fun:   Register a call back function with SSI
-*
-*       Desc:  This function is used to register a callback function
-*              
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  sm_task.c
-*
-**/
+ *
+ *       Fun:   Register a call back function with SSI
+ *
+ *       Desc:  This function is used to register a callback function
+ *              
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  sm_task.c
+ *
+ **/
 #ifndef SS_MULTIPLE_PROCS
 #ifdef ANSI
-PUBLIC S16 SRegCbTsk
+   PUBLIC S16 SRegCbTsk
 (
-Ent ent,                        /* entity */
-Inst inst,                      /* instance */
-ActvTsk cbTsk                   /* Callback Function */
-)
+ Ent ent,                        /* entity */
+ Inst inst,                      /* instance */
+ ActvTsk cbTsk                   /* Callback Function */
+ )
 #else
 PUBLIC S16 SRegCbTsk(ent, inst, cbTsk)
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-ActvTsk cbTsk;
+   Ent ent;                        /* entity */
+   Inst inst;                      /* instance */
+   ActvTsk cbTsk;
 #endif
 
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PUBLIC S16 SRegCbTsk 
+   PUBLIC S16 SRegCbTsk 
 (
-ProcId proc,                    /* processor */
-Ent ent,                        /* entity */
-Inst inst,                       /* instance */
-ActvTsk cbTsk 
-)
+ ProcId proc,                    /* processor */
+ Ent ent,                        /* entity */
+ Inst inst,                       /* instance */
+ ActvTsk cbTsk 
+ )
 #else
 PUBLIC S16 SRegCbTsk(proc, ent, inst, cbTsk)
-ProcId proc;                    /* processor */
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-ActvTsk cbTsk;
+   ProcId proc;                    /* processor */
+   Ent ent;                        /* entity */
+   Inst inst;                      /* instance */
+   ActvTsk cbTsk;
 #endif
 #endif /* SS_MULTIPLE_PROCS */
 {
    SsTTskEntry *tTsk;
    SsIdx idx;
-	S16   ret = ROK;
+   S16   ret = ROK;
 #ifdef SS_MULTIPLE_PROCS
    U16 procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
@@ -1197,8 +1197,8 @@ ActvTsk cbTsk;
    if (procIdIdx == SS_INV_PROCID_IDX)
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO,
-                     " SRegCbTsk() : Could not find proc table index");
+      SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO,
+	    " SRegCbTsk() : Could not find proc table index");
 #endif
 
       RETVALUE(RFAILED);
@@ -1211,7 +1211,7 @@ ActvTsk cbTsk;
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,
-                     "SRegCbTsk() : Could not lock TAPA task table");
+	    "SRegCbTsk() : Could not lock TAPA task table");
 #endif
       RETVALUE(RFAILED);
    }
@@ -1240,50 +1240,50 @@ ActvTsk cbTsk;
 
 
 /*
-*
-*       Fun:   Deregister TAPA task
-*
-*       Desc:  This function is used to deregister a TAPA task.
-*              All information about the task is removed from the
-*              task table.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Deregister TAPA task
+ *
+ *       Desc:  This function is used to deregister a TAPA task.
+ *              All information about the task is removed from the
+ *              task table.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 /* ss029.103: addition: procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 
 #ifdef ANSI
-PUBLIC S16 SDeregTTsk
+   PUBLIC S16 SDeregTTsk
 (
-Ent ent,                        /* entity */
-Inst inst                       /* instance */
-)
+ Ent ent,                        /* entity */
+ Inst inst                       /* instance */
+ )
 #else
 PUBLIC S16 SDeregTTsk(ent, inst)
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
+   Ent ent;                        /* entity */
+   Inst inst;                      /* instance */
 #endif
 
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PUBLIC S16 SDeregTTsk
+   PUBLIC S16 SDeregTTsk
 (
-ProcId proc,                    /* processor */
-Ent ent,                        /* entity */
-Inst inst                       /* instance */
-)
+ ProcId proc,                    /* processor */
+ Ent ent,                        /* entity */
+ Inst inst                       /* instance */
+ )
 #else
 PUBLIC S16 SDeregTTsk(proc, ent, inst)
-ProcId proc;                    /* processor */
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
+   ProcId proc;                    /* processor */
+   Ent ent;                        /* entity */
+   Inst inst;                      /* instance */
 #endif
 #endif /* SS_MULTIPLE_PROCS */
 {
@@ -1292,11 +1292,11 @@ Inst inst;                      /* instance */
    SsIdx        idx;
    SsTTskEntry *tTsk;
    SsTmrEntry  *tmr;
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    U16 procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
- /* ss002.301 Additions */
+   /* ss002.301 Additions */
    Buffer *mBuf;
    SsMsgInfo *mInfo;
 
@@ -1305,7 +1305,7 @@ Inst inst;                      /* instance */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check entity and instance ranges */
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    if ((proc == SS_INV_PROCID) || (ent >= SS_MAX_ENT) ||  (inst >= SS_MAX_INST))
    {
@@ -1322,7 +1322,7 @@ Inst inst;                      /* instance */
 
 #endif
 
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    /* Find the proc table index */
    procIdIdx = SGetProcIdIdx(proc);
@@ -1331,7 +1331,7 @@ Inst inst;                      /* instance */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS400, ERRZERO,
-                             "Could not find proc id index");
+	    "Could not find proc id index");
 #endif
       RETVALUE(RFAILED);
    }
@@ -1345,86 +1345,86 @@ Inst inst;                      /* instance */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS401, ERRZERO,
-                             "Could not lock timer table");
+	    "Could not lock timer table");
 #endif
       RETVALUE(RFAILED);
    }
 
    for (idx = 0;  idx < SS_MAX_TMRS;  idx++)
    {
-/* ss029.103: addition: multiple procIds related changes */ 
+      /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
       if ((osCp.tmrTbl[idx].ownerProc == proc) &&  
-          (osCp.tmrTbl[idx].ownerEnt == ent) &&  
-          (osCp.tmrTbl[idx].ownerInst == inst))
+	    (osCp.tmrTbl[idx].ownerEnt == ent) &&  
+	    (osCp.tmrTbl[idx].ownerInst == inst))
 #else /* SS_MULTIPLE_PROCS */
-      if ((osCp.tmrTbl[idx].ownerEnt == ent) &&  
-          (osCp.tmrTbl[idx].ownerInst == inst))
+	 if ((osCp.tmrTbl[idx].ownerEnt == ent) &&  
+	       (osCp.tmrTbl[idx].ownerInst == inst))
 #endif /* SS_MULTIPLE_PROCS */
-      {
-         /* shut down this timer */
-         tmr = &osCp.tmrTbl[idx];
-         if (ssdDeregTmr(tmr) == ROK)
-         {
-            tmr->used      = FALSE;
-            tmr->tmrId     = 0;
-/* ss029.103: addition: multiple procIds related changes */ 
+	 {
+	    /* shut down this timer */
+	    tmr = &osCp.tmrTbl[idx];
+	    if (ssdDeregTmr(tmr) == ROK)
+	    {
+	       tmr->used      = FALSE;
+	       tmr->tmrId     = 0;
+	       /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
-            tmr->ownerProc  = PROCNC;
-            /*
-             *  ss015.301 - Modifed in initialization as timer activation 
-             *  functions enclosed in a union. Also initialized the mtFlag
-             *  to FALSE 
-             */
+	       tmr->ownerProc  = PROCNC;
+	       /*
+		*  ss015.301 - Modifed in initialization as timer activation 
+		*  functions enclosed in a union. Also initialized the mtFlag
+		*  to FALSE 
+		*/
 #endif /* SS_MULTIPLE_PROCS */
-            tmr->ownerEnt  = ENTNC;
-            tmr->ownerInst = INSTNC;
-            tmr->interval  = 0;
-            tmr->ssTmrActvFn.actvFnc.tmrActvFn = NULLP;
+	       tmr->ownerEnt  = ENTNC;
+	       tmr->ownerInst = INSTNC;
+	       tmr->interval  = 0;
+	       tmr->ssTmrActvFn.actvFnc.tmrActvFn = NULLP;
 #ifndef SS_MULTIPLE_PROCS
 #ifdef SS_MT_TMR 
-            tmr->ssTmrActvFn.mtFlag = FALSE; 
-            tmr->ssTmrActvFn.actvFnc.tmrActvFnMt = NULLP;
+	       tmr->ssTmrActvFn.mtFlag = FALSE; 
+	       tmr->ssTmrActvFn.actvFnc.tmrActvFnMt = NULLP;
 #endif
 #endif
-            tmr->nxt = osCp.nxtTmrEntry;
-            osCp.nxtTmrEntry = (SsIdx)idx;
-            osCp.numTmrs--;
-         }
-         else
-         {
+	       tmr->nxt = osCp.nxtTmrEntry;
+	       osCp.nxtTmrEntry = (SsIdx)idx;
+	       osCp.numTmrs--;
+	    }
+	    else
+	    {
 
-  /* ss006.13: addition */
-          if ( SUnlock(&osCp.tmrTblLock) != ROK)
-          {
+	       /* ss006.13: addition */
+	       if ( SUnlock(&osCp.tmrTblLock) != ROK)
+	       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-             SSLOGERROR(ERRCLS_DEBUG, ESS402, ERRZERO,
-                      "Could not give the Semaphore");
-             RETVALUE(RFAILED);
+		  SSLOGERROR(ERRCLS_DEBUG, ESS402, ERRZERO,
+			"Could not give the Semaphore");
+		  RETVALUE(RFAILED);
 #endif
-          }
+	       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS403, ERRZERO,
-                        "Could not deregister task's timer(s)");
+	       SSLOGERROR(ERRCLS_DEBUG, ESS403, ERRZERO,
+		     "Could not deregister task's timer(s)");
 #endif
-            RETVALUE(RFAILED);
+	       RETVALUE(RFAILED);
 
-         }
-      }
+	    }
+	 }
    }
 
 
-  /* ss006.13: addition */
-          if ( SUnlock(&osCp.tmrTblLock) != ROK)
-          {
+   /* ss006.13: addition */
+   if ( SUnlock(&osCp.tmrTblLock) != ROK)
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
-             SSLOGERROR(ERRCLS_DEBUG, ESS404, ERRZERO,
-                      "Could not give the Semaphore");
-             RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS404, ERRZERO,
+	    "Could not give the Semaphore");
+      RETVALUE(RFAILED);
 #endif
-          }
- /* ss002.301 Additions */
+   }
+   /* ss002.301 Additions */
    /* Acquire the counting semaphore for all TAPA tasks. Once
     *  we have all of them, both SPstTsk() and SRegTTsk() cannot
     *  run, so we can do things to the TAPA task table.
@@ -1432,11 +1432,11 @@ Inst inst;                      /* instance */
    SS_ACQUIRE_ALL_SEMA(&osCp.tTskTblSem, ret);
    if (ret != ROK)
    {
- /* ss002.301 Additions */
+      /* ss002.301 Additions */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS411, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -1444,7 +1444,7 @@ Inst inst;                      /* instance */
 
 
    /* get out the TAPA task entry */
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    idx = osCp.tTskIds[procIdIdx][ent][inst];
 #else /* SS_MULTIPLE_PROCS */
@@ -1458,7 +1458,7 @@ Inst inst;                      /* instance */
       SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS412, ERRZERO, "Unknown task");
- /* ss002.301 Additions */
+      /* ss002.301 Additions */
       RETVALUE(RFAILED);
    }
 
@@ -1470,8 +1470,8 @@ Inst inst;                      /* instance */
    /*Check whether the thread calling this funtion is the same as the system task to which the 
      TAPA task detremined by passed entity and instance is attached*/
    /* 100178 */
-   
-/*ss014.301 SSI-4GMX specific changes*/   
+
+   /*ss014.301 SSI-4GMX specific changes*/   
 #ifndef SS_4GMX_LCORE
    if((tTsk->sTsk == NULLP) || (SS_CHECK_CUR_STSK(tTsk->sTsk)))
    { 
@@ -1484,52 +1484,52 @@ Inst inst;                      /* instance */
    }
    else
    {
-   	/*Allocate memory*/
-   	if (SGetMsg(SS_DFLT_REGION, SS_DFLT_POOL, &mBuf) != ROK)
-   	{
+      /*Allocate memory*/
+      if (SGetMsg(SS_DFLT_REGION, SS_DFLT_POOL, &mBuf) != ROK)
+      {
 
 #if (ERRCLASS & ERRCLASS_DEBUG)
-      	SSLOGERROR(ERRCLS_DEBUG, ESS415, ERRZERO, "Could not get a message");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS415, ERRZERO, "Could not get a message");
 #endif
 
-      	RETVALUE(RFAILED);
-   	}
+	 RETVALUE(RFAILED);
+      }
 
-   	/* Update message*/
-   	mInfo = (SsMsgInfo *)mBuf->b_rptr;
-   	mInfo->eventInfo.event = SS_EVNT_TTSK_TERM;
+      /* Update message*/
+      mInfo = (SsMsgInfo *)mBuf->b_rptr;
+      mInfo->eventInfo.event = SS_EVNT_TTSK_TERM;
 
-   	mInfo->pst.dstEnt = ent;
-   	mInfo->pst.dstInst = inst;
+      mInfo->pst.dstEnt = ent;
+      mInfo->pst.dstInst = inst;
 
-   	/* we dont care who is calling SDeregTTsk()
-      	so we dont fill srcEnt and dstInst in mInfo->pst */
- 
-	/* mt028.201: modification: multiple procs support related changes */
-	/* source proc id is not needed so we dont fill it */
+      /* we dont care who is calling SDeregTTsk()
+	 so we dont fill srcEnt and dstInst in mInfo->pst */
+
+      /* mt028.201: modification: multiple procs support related changes */
+      /* source proc id is not needed so we dont fill it */
 #ifndef SS_MULTIPLE_PROCS
-   	mInfo->pst.dstProcId = SFndProcId();
+      mInfo->pst.dstProcId = SFndProcId();
 #else /* SS_MULTIPLE_PROCS */
-    	mInfo->pst.dstProcId = proc;
+      mInfo->pst.dstProcId = proc;
 #endif /* SS_MULTIPLE_PROCS */
- /* ss002.301 Additions */
-   	mInfo->pst.selector = SEL_LC_NEW;
-   	mInfo->pst.region = DFLT_REGION;
-   	mInfo->pst.pool = DFLT_POOL;
-   	mInfo->pst.prior = PRIOR0;
-   	mInfo->pst.route = RTESPEC;
-   	mInfo->pst.event = 0;
-   /* write the timer message to the queue of the destination task */
-   	if (ssDmndQPutLast(&tTsk->sTsk->dQ, mBuf,
-               	(tTsk->tskPrior * SS_MAX_MSG_PRI) + PRIOR0) != ROK)
-   	{
-      	SS_RELEASE_SEMA(&osCp.tTskTblSem);
-      	SPutMsg(mBuf);
+      /* ss002.301 Additions */
+      mInfo->pst.selector = SEL_LC_NEW;
+      mInfo->pst.region = DFLT_REGION;
+      mInfo->pst.pool = DFLT_POOL;
+      mInfo->pst.prior = PRIOR0;
+      mInfo->pst.route = RTESPEC;
+      mInfo->pst.event = 0;
+      /* write the timer message to the queue of the destination task */
+      if (ssDmndQPutLast(&tTsk->sTsk->dQ, mBuf,
+	       (tTsk->tskPrior * SS_MAX_MSG_PRI) + PRIOR0) != ROK)
+      {
+	 SS_RELEASE_SEMA(&osCp.tTskTblSem);
+	 SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_DEBUG)
-      	SSLOGERROR(ERRCLS_INT_PAR, ESS416, ERRZERO, "Could not write to demand queue");
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS416, ERRZERO, "Could not write to demand queue");
 #endif
-      	RETVALUE(RFAILED);
-   	}
+	 RETVALUE(RFAILED);
+      }
    }
 #endif
 
@@ -1538,32 +1538,32 @@ Inst inst;                      /* instance */
 
 
 /*
-*
-*       Fun:   Create system task
-*
-*       Desc:  This function is used to create a system task. An
-*              entry is located in the system task table and the
-*              implementation-specific function is called.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Create system task
+ *
+ *       Desc:  This function is used to create a system task. An
+ *              entry is located in the system task table and the
+ *              implementation-specific function is called.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SCreateSTsk
+   PUBLIC S16 SCreateSTsk
 (
-SSTskPrior tskPrior,            /* task priority */
-SSTskId *tskId                  /* filled in with system task ID */
-)
+ SSTskPrior tskPrior,            /* task priority */
+ SSTskId *tskId                  /* filled in with system task ID */
+ )
 #else
 PUBLIC S16 SCreateSTsk(tskPrior, tskId)
-SSTskPrior tskPrior;            /* task priority */
-SSTskId *tskId;                 /* filled in with system task ID */
+   SSTskPrior tskPrior;            /* task priority */
+   SSTskId *tskId;                 /* filled in with system task ID */
 #endif
 {
    S16 ret;
@@ -1585,7 +1585,7 @@ SSTskId *tskId;                 /* filled in with system task ID */
    if (tskPrior > SS_LOWEST_STSK_PRIOR)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS418, ERRZERO,
-                     "Invalid system task priority");
+	    "Invalid system task priority");
       RETVALUE(RFAILED);
    }
 #endif
@@ -1598,7 +1598,7 @@ SSTskId *tskId;                 /* filled in with system task ID */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS419, (ErrVal) ret,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -1607,51 +1607,51 @@ SSTskId *tskId;                 /* filled in with system task ID */
 
 #ifdef SS_SINGLE_THREADED
    /* When singlethreaded, we only need to create one... */
-/* ss001.301: additions */
+   /* ss001.301: additions */
 #ifndef SS_WATCHDOG 
 #ifndef SS_MULTICORE_SUPPORT
    if (osCp.numSTsks == 1)
 #else
-   if (osCp.numSTsks == 2)
+      if (osCp.numSTsks == 2)
 #endif /* SS_MULTICORE_SUPPORT */
 #else
 #ifndef SS_MULTICORE_SUPPORT
-   if (osCp.numSTsks == 3)
+	 if (osCp.numSTsks == 3)
 #else      
-   if (osCp.numSTsks == 4)
+	    if (osCp.numSTsks == 4)
 #endif /* SS_MULTICORE_SUPPORT */
 #endif /* SS_WATCHDOG */
-   {
-/* ss001.301: additions */
+	    {
+	       /* ss001.301: additions */
 #ifndef SS_WATCHDOG 
 #ifndef SS_MULTICORE_SUPPORT
-      *tskId = 0;
-      osCp.sTskTbl[0].termPend = FALSE;
+	       *tskId = 0;
+	       osCp.sTskTbl[0].termPend = FALSE;
 #else
-      *tskId = 1;
-      osCp.sTskTbl[1].termPend = FALSE;
+	       *tskId = 1;
+	       osCp.sTskTbl[1].termPend = FALSE;
 #endif /* SS_MULTICORE_SUPPORT */
 #else
 #ifndef SS_MULTICORE_SUPPORT
-      *tskId = 2;
-      osCp.sTskTbl[2].termPend = FALSE;
+	       *tskId = 2;
+	       osCp.sTskTbl[2].termPend = FALSE;
 #else 
-      *tskId = 3;
-      osCp.sTskTbl[3].termPend = FALSE;
+	       *tskId = 3;
+	       osCp.sTskTbl[3].termPend = FALSE;
 #endif /* SS_MULTICORE_SUPPORT */
 #endif /* SS_WATCHDOG */
 
-  /* ss006.13: addition */
-      if ( SUnlock(&osCp.sTskTblLock) != ROK)
-      {
+	       /* ss006.13: addition */
+	       if ( SUnlock(&osCp.sTskTblLock) != ROK)
+	       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS420, ERRZERO,
-                       "Could not give the Semaphore");
-           RETVALUE(RFAILED);
+		  SSLOGERROR(ERRCLS_DEBUG, ESS420, ERRZERO,
+			"Could not give the Semaphore");
+		  RETVALUE(RFAILED);
 #endif
-      }
-      RETVALUE(ROK);
-   }
+	       }
+	       RETVALUE(ROK);
+	    }
 #endif /* SS_SINGLE_THREADED */
 
 
@@ -1659,13 +1659,13 @@ SSTskId *tskId;                 /* filled in with system task ID */
    if (osCp.numSTsks == SS_MAX_STSKS)
    {
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS421, ERRZERO,
-                       "Could not give the Semaphore");
-           RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS421, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -1683,25 +1683,25 @@ SSTskId *tskId;                 /* filled in with system task ID */
    /* store the system task priority */
    sTsk->tskPrior = tskPrior;
 
-/*ss014.301 SSI-4GMX specific changes*/   
+   /*ss014.301 SSI-4GMX specific changes*/   
 #ifndef SS_4GMX_LCORE
    /* initialize the demand queue */
    if (ssInitDmndQ(&sTsk->dQ) != ROK)
    {
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS423, ERRZERO,
-                       "Could not give the Semaphore");
-           RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS423, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS424, (ErrVal) ret,
-                  "Could not initialize demand queue");
+	    "Could not initialize demand queue");
 #endif
 
       RETVALUE(RFAILED);
@@ -1712,19 +1712,19 @@ SSTskId *tskId;                 /* filled in with system task ID */
    {
       ssDestroyDmndQ(&sTsk->dQ);
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS425, ERRZERO,
-                       "Could not give the Semaphore");
-           RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS425, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS426, (ErrVal) ret,
-                  "Could not initialize system task entry lock");
+	    "Could not initialize system task entry lock");
 #endif
 
       RETVALUE(RFAILED);
@@ -1737,26 +1737,26 @@ SSTskId *tskId;                 /* filled in with system task ID */
    {
       /* failed, clean up */
       SDestroyLock(&sTsk->lock);
-/*ss014.301 SSI-4GMX specific changes*/   
+      /*ss014.301 SSI-4GMX specific changes*/   
 #ifndef SS_4GMX_LCORE
       ssDestroyDmndQ(&sTsk->dQ);
 #endif
       sTsk->tskPrior = 0;
 
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS427, ERRZERO,
-                       "Could not give the Semaphore");
-           RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS427, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS428, (ErrVal) ret,
-                  "Could not create system task");
+	    "Could not create system task");
 #endif
 
       RETVALUE(RFAILED);
@@ -1775,15 +1775,15 @@ SSTskId *tskId;                 /* filled in with system task ID */
 #endif /* SS_LOCKLESS_MEMORY */
    /* unlock the system task table */
 
-  /* ss006.13: addition */
-      if ( SUnlock(&osCp.sTskTblLock) != ROK)
-      {
+   /* ss006.13: addition */
+   if ( SUnlock(&osCp.sTskTblLock) != ROK)
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS429, ERRZERO,
-                       "Could not give the Semaphore");
-           RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS429, ERRZERO,
+	    "Could not give the Semaphore");
+      RETVALUE(RFAILED);
 #endif
-      }
+   }
 
    RETVALUE(ROK);
 
@@ -1792,46 +1792,46 @@ SSTskId *tskId;                 /* filled in with system task ID */
 /* ss001.301: additions */
 #ifdef SS_LOGGER_SUPPORT 
 /*
-*
-*       Fun:   Register logger configuration 
-*
-*       Desc:  This function is used to configure the config information
-*              of the logger.The log file name, path and the size limits
-*              of the log file are updated in the SSI control block. 
-*
-*
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Register logger configuration 
+ *
+ *       Desc:  This function is used to configure the config information
+ *              of the logger.The log file name, path and the size limits
+ *              of the log file are updated in the SSI control block. 
+ *
+ *
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SRegLogCfg
+   PUBLIC S16 SRegLogCfg
 (
-U8 mode,
-S8 *path,
-U32 size,
-S8 *IPA,
-U16 port
-)
+ U8 mode,
+ S8 *path,
+ U32 size,
+ S8 *IPA,
+ U16 port
+ )
 #else
 PUBLIC S16 SRegLogCfg(mode, path, size, IPA, port)
-U8 mode;
-S8 *path;
-U32 size;
-S8 *IPA;
-U16 port
+   U8 mode;
+   S8 *path;
+   U32 size;
+   S8 *IPA;
+   U16 port
 #endif
 {
 
 #ifdef WIN32
    WSADATA wsaData;
-	U32 iRes;
+   U32 iRes;
 #endif
 
    /*ss013.301: Fixed Warnings for 32/64 bit compilation*/ 
@@ -1845,14 +1845,14 @@ U16 port
 
    /* Initialize the lock, return on failure */
    if( SInitLock(&(osCp.logger.bufLock),SS_LOCK_MUTEX) != ROK)
-	{
+   {
       RETVALUE(RFAILED);
    } /* if */
 
    SLock(&osCp.logger.bufLock);
 
-	/* Initialize the logger configuration flag */
-	osCp.logger.configured = FALSE;
+   /* Initialize the logger configuration flag */
+   osCp.logger.configured = FALSE;
 
    if( osCp.logger.started == TRUE)
    {
@@ -1860,92 +1860,92 @@ U16 port
       RETVALUE(RFAILED);
    }
 
-	/* set the mode of the logging */
-	switch (mode)
-	{
-	   case SS_LOG_TO_FILE: 
-		   osCp.logger.opt |= 0x01; 
-		   break;
-	   case SS_LOG_TO_SOCKET: 
-		   osCp.logger.opt |= 0x02; 
-		   break;
-	   case SS_LOG_ALL: 
-		default:  
-		   osCp.logger.opt |= 0x03; break;
-	}
-    
+   /* set the mode of the logging */
+   switch (mode)
+   {
+      case SS_LOG_TO_FILE: 
+	 osCp.logger.opt |= 0x01; 
+	 break;
+      case SS_LOG_TO_SOCKET: 
+	 osCp.logger.opt |= 0x02; 
+	 break;
+      case SS_LOG_ALL: 
+      default:  
+	 osCp.logger.opt |= 0x03; break;
+   }
+
    /*Open log file*/
-	if (osCp.logger.opt & 0x01)
-	{
+   if (osCp.logger.opt & 0x01)
+   {
       osCp.logger.filep = fopen(path, "wb");
       if(osCp.logger.filep == NULLP)
       {
-         SDisplay(0,"Error Opening Log File \n");
-         (Void)SUnlock(&(osCp.logger.bufLock));
-         RETVALUE(RFAILED);
+	 SDisplay(0,"Error Opening Log File \n");
+	 (Void)SUnlock(&(osCp.logger.bufLock));
+	 RETVALUE(RFAILED);
       }
       strcpy(osCp.logger.filePath,path);
-	}
+   }
 
    /*Open socket */
-	if (osCp.logger.opt & 0x02)
-	{
+   if (osCp.logger.opt & 0x02)
+   {
 #ifdef WIN32
-			if ((iRes = WSAStartup(MAKEWORD(2,2), &wsaData)) != NO_ERROR)
-			{
-			   SDisplay(0, "Error at WSAStartup!\n");
-            (Void)SUnlock(&(osCp.logger.bufLock));
-				RETVALUE(RFAILED);
-			}
+      if ((iRes = WSAStartup(MAKEWORD(2,2), &wsaData)) != NO_ERROR)
+      {
+	 SDisplay(0, "Error at WSAStartup!\n");
+	 (Void)SUnlock(&(osCp.logger.bufLock));
+	 RETVALUE(RFAILED);
+      }
 #endif
       osCp.logger.socketdes = socket(AF_INET, SOCK_DGRAM, 0);
       if(osCp.logger.socketdes == -1)
       {
-         SDisplay(0,"Error Opening Log Socket  \n");
+	 SDisplay(0,"Error Opening Log Socket  \n");
 #ifdef WIN32
-			WSACleanup();
+	 WSACleanup();
 #endif
-         (Void)SUnlock(&(osCp.logger.bufLock));
-         RETVALUE(RFAILED);
+	 (Void)SUnlock(&(osCp.logger.bufLock));
+	 RETVALUE(RFAILED);
       }
-		/* bind to local address */
-		localAddr.sin_family = AF_INET;
-		localAddr.sin_port = port;
-		localAddr.sin_addr.s_addr = INADDR_ANY;
-		if (bind(osCp.logger.socketdes, (struct sockaddr*)&localAddr, sizeof(struct sockaddr)) < 0)
-		{
-         SDisplay(0,"Error binding to local port \n");
+      /* bind to local address */
+      localAddr.sin_family = AF_INET;
+      localAddr.sin_port = port;
+      localAddr.sin_addr.s_addr = INADDR_ANY;
+      if (bind(osCp.logger.socketdes, (struct sockaddr*)&localAddr, sizeof(struct sockaddr)) < 0)
+      {
+	 SDisplay(0,"Error binding to local port \n");
 #ifdef WIN32
-			closesocket(osCp.logger.socketdes);
-			WSACleanup();
+	 closesocket(osCp.logger.socketdes);
+	 WSACleanup();
 #else
-			close(osCp.logger.socketdes);
+	 close(osCp.logger.socketdes);
 #endif
-         (Void)SUnlock(&(osCp.logger.bufLock));
-         RETVALUE(RFAILED);
-		}
-		/* remote address */
-		remoteAddr.sin_family = AF_INET;
-		remoteAddr.sin_port = htons(port);
-		if (!IPA)
-		{
-         SDisplay(0,"Invalid remote IP Address \n");
+	 (Void)SUnlock(&(osCp.logger.bufLock));
+	 RETVALUE(RFAILED);
+      }
+      /* remote address */
+      remoteAddr.sin_family = AF_INET;
+      remoteAddr.sin_port = htons(port);
+      if (!IPA)
+      {
+	 SDisplay(0,"Invalid remote IP Address \n");
 #ifdef WIN32
-			closesocket(osCp.logger.socketdes);
-			WSACleanup();
+	 closesocket(osCp.logger.socketdes);
+	 WSACleanup();
 #else
-			close(osCp.logger.socketdes);
+	 close(osCp.logger.socketdes);
 #endif
-         (Void)SUnlock(&(osCp.logger.bufLock));
-         RETVALUE(RFAILED);
-		}
-		remoteAddr.sin_addr.s_addr = inet_addr(IPA);
-		osCp.logger.remoteAddr = remoteAddr;
+	 (Void)SUnlock(&(osCp.logger.bufLock));
+	 RETVALUE(RFAILED);
+      }
+      remoteAddr.sin_addr.s_addr = inet_addr(IPA);
+      osCp.logger.remoteAddr = remoteAddr;
 
-	}
+   }
 
    cmMemset((U8*)osCp.logger.buffer, '\0', sizeof(osCp.logger.buffer));
-   
+
    osCp.logger.maxBufSiz = SS_MAX_LOGBUF_SIZE;
    osCp.logger.curBufSiz = 0;
 
@@ -1954,7 +1954,7 @@ U16 port
 
 
    osCp.logger.started = FALSE;
-	osCp.logger.configured = TRUE;
+   osCp.logger.configured = TRUE;
 
    (Void)SUnlock(&(osCp.logger.bufLock));
 
@@ -1962,26 +1962,26 @@ U16 port
 } /* SRegLogCfg */
 
 /*
-*
-*       Fun:   SFlushBufToLog
-*
-*       Desc:  This function is used flush the buffer to file/socket.
-*
-*       Ret:   ROK
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
---*/
+ *
+ *       Fun:   SFlushBufToLog
+ *
+ *       Desc:  This function is used flush the buffer to file/socket.
+ *
+ *       Ret:   ROK
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ --*/
 #ifdef ANSI
-PUBLIC S16 SFlushBufToLog 
+   PUBLIC S16 SFlushBufToLog 
 (
-S8 *logBuf
-)
+ S8 *logBuf
+ )
 #else
 PUBLIC S16 SFlushBufToLog(logBuf)
-S8 *logBuf
+   S8 *logBuf
 #endif
 {
    S8 *buffer;
@@ -1996,19 +1996,19 @@ S8 *logBuf
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC1(SFlushBufToLog)
 
-   buffer = logBuf;
+      buffer = logBuf;
 
-	if (osCp.logger.opt & 0x01)
-	{
+   if (osCp.logger.opt & 0x01)
+   {
       writeNum = fwrite(buffer, sizeof(U8), cmStrlen((U8 *)buffer), 
-		                  osCp.logger.filep);
-	}
-	if (osCp.logger.opt & 0x02)
-	{
+	    osCp.logger.filep);
+   }
+   if (osCp.logger.opt & 0x02)
+   {
       writeNum = sendto(osCp.logger.socketdes, buffer, cmStrlen((U8 *)buffer), 0, (struct sockaddr*)&osCp.logger.remoteAddr, sizeof(osCp.logger.remoteAddr));
       /*ss013.301 : Returned after sending to socket*/
       RETVALUE(ROK);
-	}
+   }
    osCp.logger.curNumFlush++;
    if(osCp.logger.curNumFlush == osCp.logger.maxNumFlush)
    {
@@ -2022,35 +2022,35 @@ S8 *logBuf
       osCp.logger.filep = fopen(newFileName, "wb");
       if(osCp.logger.filep == NULLP)
       {
-          /*MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Error Opening Log File. \n");*/
+	 /*MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Error Opening Log File. \n");*/
       }
 
       fclose(oldFileP);
    }
    /*SPutSBuf(DFLT_REGION,DFLT_POOL,
-            (Data *)buffer, (Size)(osCp.logger.maxBufSiz * sizeof(S8)));*/
- 
+     (Data *)buffer, (Size)(osCp.logger.maxBufSiz * sizeof(S8)));*/
+
    RETVALUE(ROK);
 } /* SFlushBufToLog */
 
 /*
-*
-*       Fun:   SCleanUp
-*
-*       Desc:  This function is used to clean up the logger info.
-*
-*       Ret:   task id
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
---*/
+ *
+ *       Fun:   SCleanUp
+ *
+ *       Desc:  This function is used to clean up the logger info.
+ *
+ *       Ret:   task id
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ --*/
 #ifdef ANSI
-PUBLIC S16 SCleanUp
+   PUBLIC S16 SCleanUp
 (
-Void
-)
+ Void
+ )
 #else
 PUBLIC S16 SCleanUp()
 #endif
@@ -2070,18 +2070,18 @@ PUBLIC S16 SCleanUp()
       osCp.logger.curBufSiz = 0;
 
    }
-	if (osCp.logger.opt & 0x01)
-	{
+   if (osCp.logger.opt & 0x01)
+   {
       fclose(osCp.logger.filep);
-	}
-	if (osCp.logger.opt & 0x02)
-	{
+   }
+   if (osCp.logger.opt & 0x02)
+   {
 #ifdef WIN32
       closesocket(osCp.logger.socketdes);
 #else
       close(osCp.logger.socketdes);
 #endif
-	}
+   }
    osCp.logger.started = FALSE;
 
    (Void)SUnlock(&(osCp.logger.bufLock));
@@ -2094,22 +2094,22 @@ PUBLIC S16 SCleanUp()
 } /* end of SCleanUp */
 
 /*
-*
-*       Fun:   Unregister the logger.
-*
-*       Desc:  This function is used to deregister a logger task. 
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Unregister the logger.
+ *
+ *       Desc:  This function is used to deregister a logger task. 
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SDeregLogCfg
+   PUBLIC S16 SDeregLogCfg
 (
 )
 #else
@@ -2119,7 +2119,7 @@ PUBLIC S16 SDeregLogCfg()
 
 
    TRC1(SDeregLogCfg);
- 
+
    SCleanUp();   
 
    RETVALUE(ROK);
@@ -2127,52 +2127,52 @@ PUBLIC S16 SDeregLogCfg()
 } /* SDeregLogCfg */
 
 /*
-*
-*       Fun:   SStartLogger
-*
-*       Desc:  To start logger.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   SStartLogger
+ *
+ *       Desc:  To start logger.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void SStartLogger
+   PUBLIC Void SStartLogger
 (
-void
-)
+ void
+ )
 #else
 PUBLIC Void SStartLogger()
 #endif
 {
-	if (osCp.logger.configured == TRUE)
-	{
+   if (osCp.logger.configured == TRUE)
+   {
       osCp.logger.started = TRUE;
-	}
+   }
 }
 
 
 /*
-*
-*       Fun:   SStopLogger
-*
-*       Desc:  To stop logging to file/socket.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   SStopLogger
+ *
+ *       Desc:  To stop logging to file/socket.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC Void SStopLogger
+   PUBLIC Void SStopLogger
 (
-void
-)
+ void
+ )
 #else
 PUBLIC Void SStopLogger()
 #endif
@@ -2186,43 +2186,43 @@ PUBLIC Void SStopLogger()
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
 
 /*
-*
-*       Fun:   Register the CPU information
-*
-*       Desc:  This function is used to register the number of cores
-*              present and the number of threads which can be run on
-*              each core.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Register the CPU information
+ *
+ *       Desc:  This function is used to register the number of cores
+ *              present and the number of threads which can be run on
+ *              each core.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SRegCpuInfo 
+   PUBLIC S16 SRegCpuInfo 
 (
-SCpuInfo *cpuInfo    /* Information about the cores/threads per core */
-)
+ SCpuInfo *cpuInfo    /* Information about the cores/threads per core */
+ )
 #else
 PUBLIC S16 SRegCpuInfo (cpuInfo)
-SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
+   SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
 #endif
 {
    U32 coreCount = 0;
 
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC1(SRegCpuInfo)
-   /* check the number of cores */
-   if ( cpuInfo->numCores > SS_MAX_CORES || 
-        cpuInfo->threadsPerCore > SS_MAX_THREADS_PER_CORE || 
-        cpuInfo->numCores < 1 || cpuInfo->threadsPerCore < 1 )
-   {
-       SSLOGERROR(ERRCLS_INT_PAR, ESS430, ERRZERO, "Invalid number of cores\n");
-       RETVALUE(RFAILED);
-   }
+      /* check the number of cores */
+      if ( cpuInfo->numCores > SS_MAX_CORES || 
+	    cpuInfo->threadsPerCore > SS_MAX_THREADS_PER_CORE || 
+	    cpuInfo->numCores < 1 || cpuInfo->threadsPerCore < 1 )
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS430, ERRZERO, "Invalid number of cores\n");
+	 RETVALUE(RFAILED);
+      }
 
    /* lock mCInfo */
    SLock(&osCp.mCILock);
@@ -2234,11 +2234,11 @@ SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
       U32 thrCnt = 0;
       for (;thrCnt < SS_MAX_THREADS_PER_CORE;thrCnt++)
       {
-         osCp.mCInfo.coreInfo[coreCount].tskPerCoreLst[thrCnt] = -1;
+	 osCp.mCInfo.coreInfo[coreCount].tskPerCoreLst[thrCnt] = -1;
       } /* for */
       osCp.mCInfo.coreInfo[coreCount].exclusive = FALSE;
       osCp.mCInfo.coreInfo[coreCount].thrs = osCp.mCInfo.cpuInfo.threadRegister[coreCount] 
-      = cpuInfo->threadRegister[coreCount];
+	 = cpuInfo->threadRegister[coreCount];
    }
    /* unlock mCInfo */
    SUnlock(&osCp.mCILock);
@@ -2250,97 +2250,97 @@ SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
 
 
 /*
-*
-*       Fun:   Get the current core/cpu affinity for a thread/lwp
-*
-*       Desc:  This function is used to get the current processor/core 
-*              affinity for a a system task (thread/lwp). It sets the 
-*              affinity based on the mode supplied by the caller. 
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Get the current core/cpu affinity for a thread/lwp
+ *
+ *       Desc:  This function is used to get the current processor/core 
+ *              affinity for a a system task (thread/lwp). It sets the 
+ *              affinity based on the mode supplied by the caller. 
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SGetAffinity
+   PUBLIC S16 SGetAffinity
 (
-SSTskId *tskId,                  /* filled in with system task ID */
-U32 *coreId                      /* the core/processor id to which the affinity is set */
-)
+ SSTskId *tskId,                  /* filled in with system task ID */
+ U32 *coreId                      /* the core/processor id to which the affinity is set */
+ )
 #else
 PUBLIC S16 SGetAffinity(tskId, coreId)
-SSTskId *tskId;                 /* filled in with system task ID */
-U32 *coreId;                    /* the core/processor id to which the affinity is set */
+   SSTskId *tskId;                 /* filled in with system task ID */
+   U32 *coreId;                    /* the core/processor id to which the affinity is set */
 #endif
 {
    S16 ret;
 
-    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
-    TRC1(SGetAffinity)
-    /* implementation specific */
-    ret = ssdGetAffinity(tskId, coreId);
+   /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
+   TRC1(SGetAffinity)
+      /* implementation specific */
+      ret = ssdGetAffinity(tskId, coreId);
 
-    if (ret != ROK)
-    {
-       SSLOGERROR(ERRCLS_INT_PAR, ESS431, ERRZERO, "Failed to get affinity\n");
-       RETVALUE(RFAILED);
-    } /* end if */
+   if (ret != ROK)
+   {
+      SSLOGERROR(ERRCLS_INT_PAR, ESS431, ERRZERO, "Failed to get affinity\n");
+      RETVALUE(RFAILED);
+   } /* end if */
 
    RETVALUE(ROK);
 } /* SGetAffinity */
 
 
 /*
-*
-*       Fun:   Set the core/cpu affinity for a thread/lwp
-*
-*       Desc:  This function is used to set processor/core affinity for a 
-*              a system task (thread/lwp). It sets the affinity based on the
-*              mode supplied by the caller. 
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Set the core/cpu affinity for a thread/lwp
+ *
+ *       Desc:  This function is used to set processor/core affinity for a 
+ *              a system task (thread/lwp). It sets the affinity based on the
+ *              mode supplied by the caller. 
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SSetAffinity
+   PUBLIC S16 SSetAffinity
 (
-SSTskId *tskId,                  /* filled in with system task ID */
-SsAffinityMode mode,             /* the mode according to which the affinty is set */
-U32 coreId,                      /* the core/processor id to which the affinity has to be set */
-SSTskId *tskAssociatedTskId      /* filled in with system task ID of the associated layer */
-)
+ SSTskId *tskId,                  /* filled in with system task ID */
+ SsAffinityMode mode,             /* the mode according to which the affinty is set */
+ U32 coreId,                      /* the core/processor id to which the affinity has to be set */
+ SSTskId *tskAssociatedTskId      /* filled in with system task ID of the associated layer */
+ )
 #else
 PUBLIC S16 SSetAffinity(tskId, mode, coreId, tskAssociatedTskId)
-SSTskId *tskId;                 /* filled in with system task ID */
-SsAffinityMode mode;            /* the mode according to which the affinty is set */
-U32 coreId;                     /* the core/processor id to which the affinity has to be set */
-SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associated layer */
+   SSTskId *tskId;                 /* filled in with system task ID */
+   SsAffinityMode mode;            /* the mode according to which the affinty is set */
+   U32 coreId;                     /* the core/processor id to which the affinity has to be set */
+   SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associated layer */
 #endif
 {
    S16 ret;
-  
+
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC1(SSetAffinity)
-   /* validate the mode */
-   if (mode < SS_AFFINITY_MODE_DEFAULT || 
-       mode > SS_AFFINITY_MODE_EXCL)
-   {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS432, ERRZERO, "Invalid mode for setting core affinity\n");
-      RETVALUE(RFAILED);
-   } /* end if */
+      /* validate the mode */
+      if (mode < SS_AFFINITY_MODE_DEFAULT || 
+	    mode > SS_AFFINITY_MODE_EXCL)
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS432, ERRZERO, "Invalid mode for setting core affinity\n");
+	 RETVALUE(RFAILED);
+      } /* end if */
 
    /* check the value of core id */
    if (SS_AFFINITY_MODE_SPECIFIC == mode && 
-       (coreId > osCp.mCInfo.cpuInfo.numCores || coreId < 0))
+	 (coreId > osCp.mCInfo.cpuInfo.numCores || coreId < 0))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS433, ERRZERO, "Invalid core id\n");
       RETVALUE(RFAILED);
@@ -2349,281 +2349,281 @@ SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associat
    /* set affinity according to the mode supplied */
    switch (mode)
    {
-       case SS_AFFINITY_MODE_DEFAULT:
-       {
-           U32 coreCounter = 0, coreIndex = 0;
-           S8 repeatFlag = 1;
-           SEARCH_FOR_CORE:
-              /*ss013.301: Fixed Warnings for 32/64 bit compilation*/ 
-              for (coreIndex = osCp.mCInfo.currentCore;  
-                   coreCounter < osCp.mCInfo.cpuInfo.numCores; 
-                   coreCounter++ )
-                  {
-                     /* again start from core 0 */ 
-                     ++coreIndex;
-                     coreIndex = (coreIndex)%osCp.mCInfo.cpuInfo.numCores;
-                     if (!osCp.mCInfo.coreInfo[coreIndex].exclusive 
-                         && osCp.mCInfo.cpuInfo.threadRegister[coreIndex])
-                     {
-                         if (osCp.mCInfo.coreInfo[coreIndex].thrs || !repeatFlag)  
-                         {
-                             /* call the implementation specific affinity function */
-                             ret = ssdSetAffinity(tskId, coreIndex); 
-     
-                             if (ret != ROK)
-                             {
-                                 SSLOGERROR(ERRCLS_INT_PAR, ESS434, ERRZERO, \
-                                            "Failed to set core affinity\n");
-                                 RETVALUE(RFAILED);
-                             } /* end if */
-  
-                             /* lock mCInfo */
-                             SLock(&osCp.mCILock);
+      case SS_AFFINITY_MODE_DEFAULT:
+	 {
+	    U32 coreCounter = 0, coreIndex = 0;
+	    S8 repeatFlag = 1;
+SEARCH_FOR_CORE:
+	    /*ss013.301: Fixed Warnings for 32/64 bit compilation*/ 
+	    for (coreIndex = osCp.mCInfo.currentCore;  
+		  coreCounter < osCp.mCInfo.cpuInfo.numCores; 
+		  coreCounter++ )
+	    {
+	       /* again start from core 0 */ 
+	       ++coreIndex;
+	       coreIndex = (coreIndex)%osCp.mCInfo.cpuInfo.numCores;
+	       if (!osCp.mCInfo.coreInfo[coreIndex].exclusive 
+		     && osCp.mCInfo.cpuInfo.threadRegister[coreIndex])
+	       {
+		  if (osCp.mCInfo.coreInfo[coreIndex].thrs || !repeatFlag)  
+		  {
+		     /* call the implementation specific affinity function */
+		     ret = ssdSetAffinity(tskId, coreIndex); 
 
-                             /* move the current core index */
-                             osCp.mCInfo.currentCore = (coreIndex+1)%osCp.mCInfo.cpuInfo.numCores;
-  
-                             /* save the tskId in tskList */
-                              osCp.mCInfo.coreInfo[coreIndex].tskPerCoreLst[
-                              osCp.mCInfo.cpuInfo.threadRegister[coreIndex] - 
-                              osCp.mCInfo.coreInfo[coreIndex].thrs] = *tskId;
+		     if (ret != ROK)
+		     {
+			SSLOGERROR(ERRCLS_INT_PAR, ESS434, ERRZERO, \
+			      "Failed to set core affinity\n");
+			RETVALUE(RFAILED);
+		     } /* end if */
 
-                             /* decrement the available thread count in the thread register */
-                              osCp.mCInfo.coreInfo[coreIndex].thrs--;
+		     /* lock mCInfo */
+		     SLock(&osCp.mCILock);
 
-                             /* unlock mCInfo */
-                              SUnlock(&osCp.mCILock);
-  
-                              break;
-                          } /* end if there are threads available in the core */    
-                      } /* end if the core is not exclusive flagged and 
-                           the core has threads for SSI use */
-                  } /* end for */
-                 if (coreCounter == osCp.mCInfo.cpuInfo.numCores && repeatFlag)
-                 {
-                     repeatFlag = 0;
-                     SSLOGERROR(ERRCLS_INT_PAR, ESS435, ERRZERO, "Overloading of threads per core!!\n");
-                     goto SEARCH_FOR_CORE; 
-                 } /* end if no thrs on cores available and overallocation is needed */
-              break;
-          } /* end case SS_AFFINITY_MODE_DEFAULT */
-          case SS_AFFINITY_MODE_SPECIFIC:
-          {
-              /* check if the core is used exclusively for any task */
-              if (osCp.mCInfo.coreInfo[coreId].exclusive)
-              {
-                  SSLOGERROR(ERRCLS_INT_PAR, ESS436, ERRZERO,\
-                             "Can not set core affinity, core is exclusively used for other task\n");
-                  RETVALUE(RFAILED);
-              } /* end if */
-              /* call the implementation specific affinity function with the core id supplied by caller */
-              ret = ssdSetAffinity(tskId, coreId);
+		     /* move the current core index */
+		     osCp.mCInfo.currentCore = (coreIndex+1)%osCp.mCInfo.cpuInfo.numCores;
 
-              if (ret != ROK)
-              {
-                  SSLOGERROR(ERRCLS_INT_PAR, ESS437, ERRZERO, "Failed to set core affinity\n");
-                  RETVALUE(RFAILED);
-              } /* end if */
+		     /* save the tskId in tskList */
+		     osCp.mCInfo.coreInfo[coreIndex].tskPerCoreLst[
+			osCp.mCInfo.cpuInfo.threadRegister[coreIndex] - 
+			   osCp.mCInfo.coreInfo[coreIndex].thrs] = *tskId;
 
-              /* lock mCInfo */
-              SLock(&osCp.mCILock);
+		     /* decrement the available thread count in the thread register */
+		     osCp.mCInfo.coreInfo[coreIndex].thrs--;
 
-              /* move the current core index */
-               osCp.mCInfo.currentCore = (coreId+1)%osCp.mCInfo.cpuInfo.numCores;
+		     /* unlock mCInfo */
+		     SUnlock(&osCp.mCILock);
 
-              /* save the tskId in tskList */
-              osCp.mCInfo.coreInfo[coreId].tskPerCoreLst[
-              osCp.mCInfo.cpuInfo.threadRegister[coreId] - 
-              osCp.mCInfo.coreInfo[coreId].thrs] = *tskId;
- 
-              /* decrement the available thread count in the thread register */
-              osCp.mCInfo.coreInfo[coreId].thrs--;
- 
-              /* unlock mCInfo */
-              SUnlock(&osCp.mCILock);
+		     break;
+		  } /* end if there are threads available in the core */    
+	       } /* end if the core is not exclusive flagged and 
+		    the core has threads for SSI use */
+	    } /* end for */
+	    if (coreCounter == osCp.mCInfo.cpuInfo.numCores && repeatFlag)
+	    {
+	       repeatFlag = 0;
+	       SSLOGERROR(ERRCLS_INT_PAR, ESS435, ERRZERO, "Overloading of threads per core!!\n");
+	       goto SEARCH_FOR_CORE; 
+	    } /* end if no thrs on cores available and overallocation is needed */
+	    break;
+	 } /* end case SS_AFFINITY_MODE_DEFAULT */
+      case SS_AFFINITY_MODE_SPECIFIC:
+	 {
+	    /* check if the core is used exclusively for any task */
+	    if (osCp.mCInfo.coreInfo[coreId].exclusive)
+	    {
+	       SSLOGERROR(ERRCLS_INT_PAR, ESS436, ERRZERO,\
+		     "Can not set core affinity, core is exclusively used for other task\n");
+	       RETVALUE(RFAILED);
+	    } /* end if */
+	    /* call the implementation specific affinity function with the core id supplied by caller */
+	    ret = ssdSetAffinity(tskId, coreId);
 
-              if (osCp.mCInfo.coreInfo[coreId].thrs < 0)
-              {
-                  SSLOGERROR(ERRCLS_INT_PAR, ESS438, ERRZERO, "Overloading of threads per core!!\n");
-              } /* end else */
+	    if (ret != ROK)
+	    {
+	       SSLOGERROR(ERRCLS_INT_PAR, ESS437, ERRZERO, "Failed to set core affinity\n");
+	       RETVALUE(RFAILED);
+	    } /* end if */
 
-             break;
-          } /* end case SS_AFFINITY_MODE_SPECIFIC */
-          case SS_AFFINITY_MODE_ASSOC:
-          {
-              /* search for the associated tsk id in osCp */
-              U32 coreIndex = 0, threadIndex = 0;
-              Bool tskNotFound = TRUE;
-              for (;tskNotFound && coreIndex < SS_MAX_CORES; coreIndex++)
-              {
-                  for (threadIndex = 0; threadIndex < SS_MAX_THREADS_PER_CORE; threadIndex++)
-                  {
-                      if (osCp.mCInfo.coreInfo[coreIndex].tskPerCoreLst[threadIndex] == *tskAssociatedTskId)
-                      {
-                          if (!osCp.mCInfo.coreInfo[coreIndex].exclusive)
-                          {
-                              /* set the affinity for the given task on to the core coreIndex */
-                              ret = ssdSetAffinity(tskId, coreIndex);
-                              if (ret != ROK)
-                              {
-                                  SSLOGERROR(ERRCLS_INT_PAR, ESS439, ERRZERO, "Failed to set core affinity\n");
-                                  RETVALUE(RFAILED);
-                              } /* end if */
-    
-                              /* lock mCInfo */
-                              SLock(&osCp.mCILock);
+	    /* lock mCInfo */
+	    SLock(&osCp.mCILock);
 
-                             /* move the current core index */
-                              osCp.mCInfo.currentCore = (coreIndex+1)%osCp.mCInfo.cpuInfo.numCores;
-    
-                             /* save the tskId in tskList */
-                             osCp.mCInfo.coreInfo[coreIndex].tskPerCoreLst[               
-                             osCp.mCInfo.cpuInfo.threadRegister[coreIndex] - 
-                             osCp.mCInfo.coreInfo[coreIndex].thrs] = *tskId;
- 
-                            /* decrement the available thread count in the thread register */
-                             osCp.mCInfo.coreInfo[coreIndex].thrs--;
- 
-                            /* unlock mCInfo */
-                            SUnlock(&osCp.mCILock);
+	    /* move the current core index */
+	    osCp.mCInfo.currentCore = (coreId+1)%osCp.mCInfo.cpuInfo.numCores;
 
-                            if (osCp.mCInfo.coreInfo[coreIndex].thrs < 0) 
-                            {
-                                SSLOGERROR(ERRCLS_INT_PAR, ESS440, ERRZERO, 
-                                           "Overloading of threads per core!!\n");
-                            } /* end if */
+	    /* save the tskId in tskList */
+	    osCp.mCInfo.coreInfo[coreId].tskPerCoreLst[
+	       osCp.mCInfo.cpuInfo.threadRegister[coreId] - 
+		  osCp.mCInfo.coreInfo[coreId].thrs] = *tskId;
 
-                         } /* end if */
-                         else
-                         {
-                             SSLOGERROR(ERRCLS_INT_PAR, ESS441, ERRZERO, 
-                                        "Can not set core affinity, core is exclusively used for other task\n");
-                             RETVALUE(RFAILED);
-                         } /* end else */
-                         tskNotFound = FALSE;
-                           break;
-                      } /* end if */
-                  } /* end inner for */
-               } /* end for */
+	    /* decrement the available thread count in the thread register */
+	    osCp.mCInfo.coreInfo[coreId].thrs--;
 
-               /* check if tskAssociatedTskId is valid or not */
-               if (coreIndex == SS_MAX_CORES)
-                {
-                    SSLOGERROR(ERRCLS_INT_PAR, ESS442, ERRZERO, "Invalid core id\n");
-                    RETVALUE(RFAILED);
-                } /* if */
-             break;
-          } /* end case SS_AFFINITY_MODE_ASSOC */
-          case SS_AFFINITY_MODE_EXCL:
-          {
-             /* check if any thread is already running on the core */
-             if (coreId != SS_DEFAULT_CORE && 
-                 osCp.mCInfo.coreInfo[coreId].thrs == osCp.mCInfo.cpuInfo.threadRegister[coreId] &&
-                !osCp.mCInfo.coreInfo[coreId].exclusive)
-              {
-                 /* call the implementation specific affinity function */
-                 ret = ssdSetAffinity(tskId, coreId);
-    
-                 if (ret != ROK)
-                 {
-                    SSLOGERROR(ERRCLS_INT_PAR, ESS443, ERRZERO, "Failed to set core affinity\n");
-                    RETVALUE(RFAILED);
-                 } /* end if */
+	    /* unlock mCInfo */
+	    SUnlock(&osCp.mCILock);
 
-                 /* lock mCInfo */
-                 SLock(&osCp.mCILock);
+	    if (osCp.mCInfo.coreInfo[coreId].thrs < 0)
+	    {
+	       SSLOGERROR(ERRCLS_INT_PAR, ESS438, ERRZERO, "Overloading of threads per core!!\n");
+	    } /* end else */
 
-                 /* set the exclusive flag so that the core will not be used for other system tasks */
-                  osCp.mCInfo.coreInfo[coreId].exclusive = TRUE;
- 
-                  /* save the tskId in tskList */
-                  osCp.mCInfo.coreInfo[coreId].tskPerCoreLst[osCp.mCInfo.cpuInfo.threadRegister[coreId] - 
-                  osCp.mCInfo.coreInfo[coreId].thrs] = *tskId;
+	    break;
+	 } /* end case SS_AFFINITY_MODE_SPECIFIC */
+      case SS_AFFINITY_MODE_ASSOC:
+	 {
+	    /* search for the associated tsk id in osCp */
+	    U32 coreIndex = 0, threadIndex = 0;
+	    Bool tskNotFound = TRUE;
+	    for (;tskNotFound && coreIndex < SS_MAX_CORES; coreIndex++)
+	    {
+	       for (threadIndex = 0; threadIndex < SS_MAX_THREADS_PER_CORE; threadIndex++)
+	       {
+		  if (osCp.mCInfo.coreInfo[coreIndex].tskPerCoreLst[threadIndex] == *tskAssociatedTskId)
+		  {
+		     if (!osCp.mCInfo.coreInfo[coreIndex].exclusive)
+		     {
+			/* set the affinity for the given task on to the core coreIndex */
+			ret = ssdSetAffinity(tskId, coreIndex);
+			if (ret != ROK)
+			{
+			   SSLOGERROR(ERRCLS_INT_PAR, ESS439, ERRZERO, "Failed to set core affinity\n");
+			   RETVALUE(RFAILED);
+			} /* end if */
 
-                  /* decrement the available thread count in the thread register */
-                  osCp.mCInfo.coreInfo[coreId].thrs--;
- 
-                 /* unlock mCInfo */
-                  SUnlock(&osCp.mCILock);
+			/* lock mCInfo */
+			SLock(&osCp.mCILock);
 
-             } /* end if */
-             else if (coreId == SS_DEFAULT_CORE)
-             {
-                 U32 coreCounter = 0;
-                 U32 coreIndex = 0;
-                 /*ss013.301: Fixed Warnings for 32/64 bit compilation*/ 
-                 for (coreIndex = osCp.mCInfo.currentCore;  
-                      coreCounter < osCp.mCInfo.cpuInfo.numCores; 
-                      coreCounter++)
-                     {
-                        ++coreIndex;
-                        coreIndex = (coreIndex)%osCp.mCInfo.cpuInfo.numCores;
-                        if (!osCp.mCInfo.coreInfo[coreIndex].exclusive 
-                            && osCp.mCInfo.cpuInfo.threadRegister[coreIndex])
-                        {
-                            if ( osCp.mCInfo.coreInfo[coreIndex].thrs == 
-                                 osCp.mCInfo.cpuInfo.threadRegister[coreIndex] &&
-                                 osCp.mCInfo.coreInfo[coreIndex].thrs)  
-                            {
-                               /* call the implementation specific affinity function */
-                                ret = ssdSetAffinity(tskId, coreIndex);
-        
-                                if (ret != ROK)
-                                 {
-                                    SSLOGERROR(ERRCLS_INT_PAR, ESS444, ERRZERO, "Failed to set core affinity\n");
-                                    RETVALUE(RFAILED);
-                                 } /* end if */
-     
-                                 /* lock mCInfo */
-                                 SLock(&osCp.mCILock);
+			/* move the current core index */
+			osCp.mCInfo.currentCore = (coreIndex+1)%osCp.mCInfo.cpuInfo.numCores;
 
-                                 /* move the current core index */
-                                 osCp.mCInfo.currentCore = (coreIndex+1)%osCp.mCInfo.cpuInfo.numCores;
-      
-                                 /* save the tskId in tskList */
-                                 osCp.mCInfo.coreInfo[coreIndex].tskPerCoreLst[               
-                                 osCp.mCInfo.cpuInfo.threadRegister[coreIndex] - 
-                                 osCp.mCInfo.coreInfo[coreIndex].thrs] = *tskId;
- 
-                                /* decrement the available thread count in the thread register */
-                                 osCp.mCInfo.coreInfo[coreIndex].thrs--;
- 
-                               /* set the exclusive flag so that the core will not 
-                                  be used for other system tasks */
-                                  osCp.mCInfo.coreInfo[coreIndex].exclusive = TRUE;
+			/* save the tskId in tskList */
+			osCp.mCInfo.coreInfo[coreIndex].tskPerCoreLst[               
+			   osCp.mCInfo.cpuInfo.threadRegister[coreIndex] - 
+			   osCp.mCInfo.coreInfo[coreIndex].thrs] = *tskId;
 
-                                  /* unlock mCInfo */
-                                  SUnlock(&osCp.mCILock);
+			/* decrement the available thread count in the thread register */
+			osCp.mCInfo.coreInfo[coreIndex].thrs--;
 
-                                  break;
-                               } /* end if there are threads available in the core */    
-                            } /* end if the core is not exclusive flagged and 
-                                 the core has threads for SSI use */
-                         } /* end for */
-                  if (coreCounter == osCp.mCInfo.cpuInfo.numCores)
-                  {
-                     SSLOGERROR(ERRCLS_INT_PAR, ESS445, ERRZERO, 
-                                "Failed to set core affinity, no threads on cores available\n");
-                     RETVALUE(RFAILED);
-                  } /* end if no thrs on cores available */
+			/* unlock mCInfo */
+			SUnlock(&osCp.mCILock);
 
-              } /* else if */
-              else
-              {
-                 SSLOGERROR(ERRCLS_INT_PAR, ESS446, ERRZERO, "Can not set exclusive affinity for the core\n");
-                 RETVALUE(RFAILED);
-              } /* end else */
-            break;
-         } /* end case SS_AFFINITY_MODE_EXCL */
-         default:
-         {
-            SSLOGERROR(ERRCLS_INT_PAR, ESS447, ERRZERO, "Invalid mode for setting core affinity\n");
-            RETVALUE(RFAILED);
-         } /* end default case */
-    } /* end of switch */
+			if (osCp.mCInfo.coreInfo[coreIndex].thrs < 0) 
+			{
+			   SSLOGERROR(ERRCLS_INT_PAR, ESS440, ERRZERO, 
+				 "Overloading of threads per core!!\n");
+			} /* end if */
 
-    RETVALUE(ROK);
-               
+		     } /* end if */
+		     else
+		     {
+			SSLOGERROR(ERRCLS_INT_PAR, ESS441, ERRZERO, 
+			      "Can not set core affinity, core is exclusively used for other task\n");
+			RETVALUE(RFAILED);
+		     } /* end else */
+		     tskNotFound = FALSE;
+		     break;
+		  } /* end if */
+	       } /* end inner for */
+	    } /* end for */
+
+	    /* check if tskAssociatedTskId is valid or not */
+	    if (coreIndex == SS_MAX_CORES)
+	    {
+	       SSLOGERROR(ERRCLS_INT_PAR, ESS442, ERRZERO, "Invalid core id\n");
+	       RETVALUE(RFAILED);
+	    } /* if */
+	    break;
+	 } /* end case SS_AFFINITY_MODE_ASSOC */
+      case SS_AFFINITY_MODE_EXCL:
+	 {
+	    /* check if any thread is already running on the core */
+	    if (coreId != SS_DEFAULT_CORE && 
+		  osCp.mCInfo.coreInfo[coreId].thrs == osCp.mCInfo.cpuInfo.threadRegister[coreId] &&
+		  !osCp.mCInfo.coreInfo[coreId].exclusive)
+	    {
+	       /* call the implementation specific affinity function */
+	       ret = ssdSetAffinity(tskId, coreId);
+
+	       if (ret != ROK)
+	       {
+		  SSLOGERROR(ERRCLS_INT_PAR, ESS443, ERRZERO, "Failed to set core affinity\n");
+		  RETVALUE(RFAILED);
+	       } /* end if */
+
+	       /* lock mCInfo */
+	       SLock(&osCp.mCILock);
+
+	       /* set the exclusive flag so that the core will not be used for other system tasks */
+	       osCp.mCInfo.coreInfo[coreId].exclusive = TRUE;
+
+	       /* save the tskId in tskList */
+	       osCp.mCInfo.coreInfo[coreId].tskPerCoreLst[osCp.mCInfo.cpuInfo.threadRegister[coreId] - 
+		  osCp.mCInfo.coreInfo[coreId].thrs] = *tskId;
+
+	       /* decrement the available thread count in the thread register */
+	       osCp.mCInfo.coreInfo[coreId].thrs--;
+
+	       /* unlock mCInfo */
+	       SUnlock(&osCp.mCILock);
+
+	    } /* end if */
+	    else if (coreId == SS_DEFAULT_CORE)
+	    {
+	       U32 coreCounter = 0;
+	       U32 coreIndex = 0;
+	       /*ss013.301: Fixed Warnings for 32/64 bit compilation*/ 
+	       for (coreIndex = osCp.mCInfo.currentCore;  
+		     coreCounter < osCp.mCInfo.cpuInfo.numCores; 
+		     coreCounter++)
+	       {
+		  ++coreIndex;
+		  coreIndex = (coreIndex)%osCp.mCInfo.cpuInfo.numCores;
+		  if (!osCp.mCInfo.coreInfo[coreIndex].exclusive 
+			&& osCp.mCInfo.cpuInfo.threadRegister[coreIndex])
+		  {
+		     if ( osCp.mCInfo.coreInfo[coreIndex].thrs == 
+			   osCp.mCInfo.cpuInfo.threadRegister[coreIndex] &&
+			   osCp.mCInfo.coreInfo[coreIndex].thrs)  
+		     {
+			/* call the implementation specific affinity function */
+			ret = ssdSetAffinity(tskId, coreIndex);
+
+			if (ret != ROK)
+			{
+			   SSLOGERROR(ERRCLS_INT_PAR, ESS444, ERRZERO, "Failed to set core affinity\n");
+			   RETVALUE(RFAILED);
+			} /* end if */
+
+			/* lock mCInfo */
+			SLock(&osCp.mCILock);
+
+			/* move the current core index */
+			osCp.mCInfo.currentCore = (coreIndex+1)%osCp.mCInfo.cpuInfo.numCores;
+
+			/* save the tskId in tskList */
+			osCp.mCInfo.coreInfo[coreIndex].tskPerCoreLst[               
+			   osCp.mCInfo.cpuInfo.threadRegister[coreIndex] - 
+			   osCp.mCInfo.coreInfo[coreIndex].thrs] = *tskId;
+
+			/* decrement the available thread count in the thread register */
+			osCp.mCInfo.coreInfo[coreIndex].thrs--;
+
+			/* set the exclusive flag so that the core will not 
+			   be used for other system tasks */
+			osCp.mCInfo.coreInfo[coreIndex].exclusive = TRUE;
+
+			/* unlock mCInfo */
+			SUnlock(&osCp.mCILock);
+
+			break;
+		     } /* end if there are threads available in the core */    
+		  } /* end if the core is not exclusive flagged and 
+		       the core has threads for SSI use */
+	       } /* end for */
+	       if (coreCounter == osCp.mCInfo.cpuInfo.numCores)
+	       {
+		  SSLOGERROR(ERRCLS_INT_PAR, ESS445, ERRZERO, 
+			"Failed to set core affinity, no threads on cores available\n");
+		  RETVALUE(RFAILED);
+	       } /* end if no thrs on cores available */
+
+	    } /* else if */
+	    else
+	    {
+	       SSLOGERROR(ERRCLS_INT_PAR, ESS446, ERRZERO, "Can not set exclusive affinity for the core\n");
+	       RETVALUE(RFAILED);
+	    } /* end else */
+	    break;
+	 } /* end case SS_AFFINITY_MODE_EXCL */
+      default:
+	 {
+	    SSLOGERROR(ERRCLS_INT_PAR, ESS447, ERRZERO, "Invalid mode for setting core affinity\n");
+	    RETVALUE(RFAILED);
+	 } /* end default case */
+   } /* end of switch */
+
+   RETVALUE(ROK);
+
 
 } /* SSetAffinity */
 
@@ -2633,29 +2633,29 @@ SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associat
 
 
 /*
-*
-*       Fun:   Destroy system task
-*
-*       Desc:  This function is used to destroy a system task. The
-*              entry is located in the system task table and the
-*              implementation-specific function is called.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Destroy system task
+ *
+ *       Desc:  This function is used to destroy a system task. The
+ *              entry is located in the system task table and the
+ *              implementation-specific function is called.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SDestroySTsk
+   PUBLIC S16 SDestroySTsk
 (
-SSTskId tskId                   /* system task to be destroyed */
-)
+ SSTskId tskId                   /* system task to be destroyed */
+ )
 #else
 PUBLIC S16 SDestroySTsk(tskId)
-SSTskId tskId;                  /* system task to be destroyed */
+   SSTskId tskId;                  /* system task to be destroyed */
 #endif
 {
    S16 ret;
@@ -2663,8 +2663,8 @@ SSTskId tskId;                  /* system task to be destroyed */
    SsIdx i;
    SsIdx idx;
    SsSTskEntry *sTsk;
-	/* ss002.301 Additions */
-/*ss013.301 : changes related to SS_AFFINITY_SUPPORT*/
+   /* ss002.301 Additions */
+   /*ss013.301 : changes related to SS_AFFINITY_SUPPORT*/
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
    U32 tskInd = 0;
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT*/
@@ -2690,7 +2690,7 @@ SSTskId tskId;                  /* system task to be destroyed */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS449, (ErrVal) ret,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -2709,35 +2709,35 @@ SSTskId tskId;                  /* system task to be destroyed */
    if (sTsk->used != TRUE)
    {
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS450, ERRZERO,
-                       "Could not give the Semaphore");
-           RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS450, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS451, (ErrVal) idx,
-                        "Invalid system task ID");
+	    "Invalid system task ID");
       RETVALUE(RFAILED);
    }
    else if (sTsk->termPend != FALSE)
    {
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS452, ERRZERO,
-                       "Could not give the Semaphore");
-           RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS452, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS453, (ErrVal) idx,
-                        "Invalid system task ID");
+	    "Invalid system task ID");
       RETVALUE(RFAILED);
    }
 #endif
@@ -2750,22 +2750,22 @@ SSTskId tskId;                  /* system task to be destroyed */
       if (ret != ROK)
       {
 
-  /* ss006.13: addition */
-         if ( SUnlock(&osCp.sTskTblLock) != ROK)
-         {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&osCp.sTskTblLock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-             SSLOGERROR(ERRCLS_DEBUG, ESS454, ERRZERO,
-                       "Could not give the Semaphore");
-             RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS454, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-         }
+	 }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS455, (ErrVal) ret,
-                        "Could not lock system task entry");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS455, (ErrVal) ret,
+	       "Could not lock system task entry");
 #endif
 
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
    }
 
@@ -2776,30 +2776,30 @@ SSTskId tskId;                  /* system task to be destroyed */
       if (!SS_CHECK_CUR_STSK(sTsk))
       {
 
-  /* ss006.13: addition */
-         if ( SUnlock(&sTsk->lock) != ROK)
-         {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&sTsk->lock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-             SSLOGERROR(ERRCLS_DEBUG, ESS456, ERRZERO,
-                       "Could not give the Semaphore");
-             RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS456, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-         }
+	 }
       }
 
-  /* ss006.13: addition */
-         if ( SUnlock(&osCp.sTskTblLock) != ROK)
-         {
+      /* ss006.13: addition */
+      if ( SUnlock(&osCp.sTskTblLock) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_DEBUG)
-             SSLOGERROR(ERRCLS_DEBUG, ESS457, ERRZERO,
-                       "Could not give the Semaphore");
-             RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS457, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
-         }
+      }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS458, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -2814,12 +2814,12 @@ SSTskId tskId;                  /* system task to be destroyed */
       /* detach all TAPA tasks that are attached here */
       for (i = 0;  i < SS_MAX_TTSKS;  i++)
       {
-         if (sTsk->tTsks[i] == SS_INVALID_IDX)
-            continue;
+	 if (sTsk->tTsks[i] == SS_INVALID_IDX)
+	    continue;
 
-         osCp.tTskTbl[sTsk->tTsks[i]].sTsk = NULLP;
-         sTsk->tTsks[i] = SS_INVALID_IDX;
-         sTsk->numTTsks--;
+	 osCp.tTskTbl[sTsk->tTsks[i]].sTsk = NULLP;
+	 sTsk->tTsks[i] = SS_INVALID_IDX;
+	 sTsk->numTTsks--;
       }
    }
 
@@ -2834,27 +2834,27 @@ SSTskId tskId;                  /* system task to be destroyed */
    if (!SS_CHECK_CUR_STSK(sTsk))
    {
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&sTsk->lock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS459, ERRZERO,
-                       "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS459, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
    }
 
 
-  /* ss006.13: addition */
+   /* ss006.13: addition */
    if ( SUnlock(&osCp.sTskTblLock) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-        SSLOGERROR(ERRCLS_DEBUG, ESS460, ERRZERO,
-                     "Could not give the Semaphore");
-        RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS460, ERRZERO,
+	    "Could not give the Semaphore");
+      RETVALUE(RFAILED);
 #endif
-    }
+   }
 
 
    /* We call this after unlocking because it is possible that the
@@ -2872,14 +2872,14 @@ SSTskId tskId;                  /* system task to be destroyed */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS461, (ErrVal) ret,
-                  "Could not destroy system task");
+	    "Could not destroy system task");
 #endif
 
       RETVALUE(RFAILED);
    }
-   
+
    /* multi-core support */
-/*ss013.301 : changes related to SS_AFFINITY_SUPPORT*/
+   /*ss013.301 : changes related to SS_AFFINITY_SUPPORT*/
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
 
    /* Remove CPU affinity if any */
@@ -2887,111 +2887,111 @@ SSTskId tskId;                  /* system task to be destroyed */
    {
       if (osCp.sTskTbl[tskInd].tskId == sTsk->tskId)
       {
-          /* search for the tskId in coreInfo */
-          U32 coreId = 0;
-          for (coreId = 0; coreId < SS_MAX_CORES; coreId++)
-          {
-             U32 thrId = 0;
-             for (thrId = 0; thrId < SS_MAX_THREADS_PER_CORE; thrId++)
-             {
-                if (sTsk->tskId == osCp.mCInfo.coreInfo[coreId].tskPerCoreLst[thrId])
-                 {
-                    /* lock mCInfo */
-                    SLock(&osCp.mCILock);
+	 /* search for the tskId in coreInfo */
+	 U32 coreId = 0;
+	 for (coreId = 0; coreId < SS_MAX_CORES; coreId++)
+	 {
+	    U32 thrId = 0;
+	    for (thrId = 0; thrId < SS_MAX_THREADS_PER_CORE; thrId++)
+	    {
+	       if (sTsk->tskId == osCp.mCInfo.coreInfo[coreId].tskPerCoreLst[thrId])
+	       {
+		  /* lock mCInfo */
+		  SLock(&osCp.mCILock);
 
-                    /* increment the available threads */
-                    osCp.mCInfo.coreInfo[coreId].thrs++;
+		  /* increment the available threads */
+		  osCp.mCInfo.coreInfo[coreId].thrs++;
 
-                    /* reset the thread id */
-                    osCp.mCInfo.coreInfo[coreId].tskPerCoreLst[thrId] = 0;
+		  /* reset the thread id */
+		  osCp.mCInfo.coreInfo[coreId].tskPerCoreLst[thrId] = 0;
 
-                    /* if exclusive flag is set then remove it */
-                   if (osCp.mCInfo.coreInfo[coreId].exclusive)
-                   {
-                      osCp.mCInfo.coreInfo[coreId].exclusive = FALSE;
-                   } /* end if excl set */
+		  /* if exclusive flag is set then remove it */
+		  if (osCp.mCInfo.coreInfo[coreId].exclusive)
+		  {
+		     osCp.mCInfo.coreInfo[coreId].exclusive = FALSE;
+		  } /* end if excl set */
 
-                   /* unlock mCInfo */
-                   SUnlock(&osCp.mCILock);
+		  /* unlock mCInfo */
+		  SUnlock(&osCp.mCILock);
 
-                   break;
-                } /* end if sTsk matched a thread */
-             } /* end for loop of thread Ids */
-          } /* for */
-          break;
+		  break;
+	       } /* end if sTsk matched a thread */
+	    } /* end for loop of thread Ids */
+	 } /* for */
+	 break;
       } /* end if */
    } /* end for */
 
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT*/
-/* end multi-core support */
+   /* end multi-core support */
 
    /* ss019.103 - added to release semaphore for system task */
 #ifndef NS
    if (ssPostSema(&osCp.dep.ssStarted) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-       SSLOGERROR(ERRCLS_DEBUG, ESS462, ERRZERO,
-                         "Could not unlock the Semaphore");
-       RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS462, ERRZERO,
+	    "Could not unlock the Semaphore");
+      RETVALUE(RFAILED);
 #endif
    }
 #endif
-   
+
    RETVALUE(ROK);
 } /* SDestroySTsk */
 
 
 
 /*
-*
-*       Fun:   Attach TAPA task
-*
-*       Desc:  This function is used to attach a TAPA task to a
-*              system task. The system task will begin to execute
-*              the TAPA task.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Attach TAPA task
+ *
+ *       Desc:  This function is used to attach a TAPA task to a
+ *              system task. The system task will begin to execute
+ *              the TAPA task.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 /* ss029.103: addition: procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 
 #ifdef ANSI
-PUBLIC S16 SAttachTTsk
+   PUBLIC S16 SAttachTTsk
 (
-Ent ent,                        /* entity ID of the task */
-Inst inst,                      /* instance ID of the task */
-SSTskId sTskId                  /* system task to use */
-)
+ Ent ent,                        /* entity ID of the task */
+ Inst inst,                      /* instance ID of the task */
+ SSTskId sTskId                  /* system task to use */
+ )
 #else
 PUBLIC S16 SAttachTTsk(ent, inst, sTskId)
-Ent ent;                        /* entity ID of the task */
-Inst inst;                      /* instance ID of the task */
-SSTskId sTskId;                 /* system task to use */
+   Ent ent;                        /* entity ID of the task */
+   Inst inst;                      /* instance ID of the task */
+   SSTskId sTskId;                 /* system task to use */
 #endif
 
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PUBLIC S16 SAttachTTsk
+   PUBLIC S16 SAttachTTsk
 (
-ProcId proc,                    /* processor ID of the task */
-Ent ent,                        /* entity ID of the task */
-Inst inst,                      /* instance ID of the task */
-SSTskId sTskId                  /* system task to use */
-)
+ ProcId proc,                    /* processor ID of the task */
+ Ent ent,                        /* entity ID of the task */
+ Inst inst,                      /* instance ID of the task */
+ SSTskId sTskId                  /* system task to use */
+ )
 #else
 PUBLIC S16 SAttachTTsk(proc, ent, inst, sTskId)
-ProcId proc;                    /* processor ID of the task */
-Ent ent;                        /* entity ID of the task */
-Inst inst;                      /* instance ID of the task */
-SSTskId sTskId;                 /* system task to use */
+   ProcId proc;                    /* processor ID of the task */
+   Ent ent;                        /* entity ID of the task */
+   Inst inst;                      /* instance ID of the task */
+   SSTskId sTskId;                 /* system task to use */
 #endif
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -3001,7 +3001,7 @@ SSTskId sTskId;                 /* system task to use */
    S16 i;
    SsIdx idx;
    SsSTskEntry *sTsk;
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    U16 procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
@@ -3018,7 +3018,7 @@ SSTskId sTskId;                 /* system task to use */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check entity and instance range */
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    /* check proc, entity and instance range */
    if ((proc == SS_INV_PROCID) || (ent >= SS_MAX_ENT) ||  (inst >= SS_MAX_INST))
@@ -3039,12 +3039,12 @@ SSTskId sTskId;                 /* system task to use */
    if ((SsIdx)sTskId >= SS_MAX_STSKS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS465, (ErrVal) sTskId,
-                  "Invalid system task ID");
+	    "Invalid system task ID");
       RETVALUE(RFAILED);
    }
 #endif
 
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    /* get the proc id idx */
    procIdIdx = SGetProcIdIdx(proc);
@@ -3053,7 +3053,7 @@ SSTskId sTskId;                 /* system task to use */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS466, ERRZERO,
-                             "Could not find proc id index");
+	    "Could not find proc id index");
 #endif
       RETVALUE(RFAILED);
    }
@@ -3066,7 +3066,7 @@ SSTskId sTskId;                 /* system task to use */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS467, (ErrVal) ret,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -3081,18 +3081,18 @@ SSTskId sTskId;                 /* system task to use */
    if (sTsk->used == FALSE)
    {
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS468, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS468, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS469, (ErrVal) sTskId,
-                     "Unknown system task ID");
+	    "Unknown system task ID");
       RETVALUE(RFAILED);
    }
 #endif
@@ -3105,22 +3105,22 @@ SSTskId sTskId;                 /* system task to use */
       if (ret != ROK)
       {
 
-  /* ss006.13: addition */
-        if ( SUnlock(&osCp.sTskTblLock) != ROK)
-        {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&osCp.sTskTblLock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS470, ERRZERO,
-                     "Could not give the Semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS470, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-        }
+	 }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS471, (ErrVal) ret,
-                        "Could not lock system task entry");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS471, (ErrVal) ret,
+	       "Could not lock system task entry");
 #endif
 
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
    }
 
@@ -3131,24 +3131,24 @@ SSTskId sTskId;                 /* system task to use */
       if (!SS_CHECK_CUR_STSK(sTsk))
       {
 
-  /* ss006.13: addition */
-        if ( SUnlock(&sTsk->lock) != ROK)
-        {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&sTsk->lock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS472, ERRZERO,
-                     "Could not give the Semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS472, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-        }
+	 }
       }
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS473, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS473, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -3163,31 +3163,31 @@ SSTskId sTskId;                 /* system task to use */
       if (!SS_CHECK_CUR_STSK(sTsk))
       {
 
-  /* ss006.13: addition */
-        if ( SUnlock(&sTsk->lock) != ROK)
-        {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&sTsk->lock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS474, ERRZERO,
-                     "Could not give the Semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS474, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-        }
+	 }
       }
 
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS475, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS475, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS476, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -3195,7 +3195,7 @@ SSTskId sTskId;                 /* system task to use */
 
 
    /* get the index of the TAPA task entry in the table */
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    idx = osCp.tTskIds[procIdIdx][ent][inst];
 #else /* SS_MULTIPLE_PROCS */
@@ -3210,24 +3210,24 @@ SSTskId sTskId;                 /* system task to use */
       if (!SS_CHECK_CUR_STSK(sTsk))
       {
 
-  /* ss006.13: addition */
-        if ( SUnlock(&sTsk->lock) != ROK)
-        {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&sTsk->lock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS477, ERRZERO,
-                     "Could not give the Semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS477, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-        }
+	 }
       }
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS478, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS478, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -3244,24 +3244,24 @@ SSTskId sTskId;                 /* system task to use */
       if (!SS_CHECK_CUR_STSK(sTsk))
       {
 
-  /* ss006.13: addition */
-        if ( SUnlock(&sTsk->lock) != ROK)
-        {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&sTsk->lock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS480, ERRZERO,
-                     "Could not give the Semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS480, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-        }
+	 }
       }
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS481, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS481, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -3276,24 +3276,24 @@ SSTskId sTskId;                 /* system task to use */
       if (!SS_CHECK_CUR_STSK(sTsk))
       {
 
-  /* ss006.13: addition */
-        if ( SUnlock(&sTsk->lock) != ROK)
-        {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&sTsk->lock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS482, ERRZERO,
-                     "Could not give the Semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS482, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-        }
+	 }
       }
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS483, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS483, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -3308,9 +3308,9 @@ SSTskId sTskId;                 /* system task to use */
    {
       if (sTsk->tTsks[i] == SS_INVALID_IDX)
       {
-         sTsk->tTsks[i] = idx;
-         sTsk->numTTsks++;
-         break;
+	 sTsk->tTsks[i] = idx;
+	 sTsk->numTTsks++;
+	 break;
       }
    }
 
@@ -3324,34 +3324,34 @@ SSTskId sTskId;                 /* system task to use */
    if(tTsk->initTsk != NULLP)
    {
 #ifndef SS_MULTIPLE_PROCS 
-       (Void)(tTsk->initTsk)(tTsk->ent, tTsk->inst, sTsk->region, PWR_UP);
+      (Void)(tTsk->initTsk)(tTsk->ent, tTsk->inst, sTsk->region, PWR_UP);
 #else
-          /* retrieve proc id index in the proc id table */
-        procIdIdx = SGetProcIdIdx(tTsk->proc);
+      /* retrieve proc id index in the proc id table */
+      procIdIdx = SGetProcIdIdx(tTsk->proc);
 
-        /* Check whether the proc id exist in the proc id table */
-        if (procIdIdx == SS_INV_PROCID_IDX)
-        {
+      /* Check whether the proc id exist in the proc id table */
+      if (procIdIdx == SS_INV_PROCID_IDX)
+      {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-                SSLOGERROR(ERRCLS_INT_PAR, ESS389, ERRZERO,
-                     "Could not find proc table index");
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS389, ERRZERO,
+	       "Could not find proc table index");
 #endif
 
-              RETVALUE(RFAILED);
-        }
-       (Void)(tTsk->initTsk)(tTsk->proc, tTsk->ent, tTsk->inst, sTsk->region, PWR_UP, &xxCb);
-       /* 
-        * store the control block. The control block may be NULL in some cases
-        */
-       idx = osCp.tTskIds[procIdIdx][tTsk->ent][tTsk->inst];
+	 RETVALUE(RFAILED);
+      }
+      (Void)(tTsk->initTsk)(tTsk->proc, tTsk->ent, tTsk->inst, sTsk->region, PWR_UP, &xxCb);
+      /* 
+       * store the control block. The control block may be NULL in some cases
+       */
+      idx = osCp.tTskIds[procIdIdx][tTsk->ent][tTsk->inst];
 #if (ERRCLASS & ERRCLS_INT_PAR)
-       if ( xxCb == NULLP )
-       {
-                SSLOGERROR(ERRCLS_INT_PAR, ERRZERO, ERRZERO,
-                                         "Null pointer");
-       }
+      if ( xxCb == NULLP )
+      {
+	 SSLOGERROR(ERRCLS_INT_PAR, ERRZERO, ERRZERO,
+	       "Null pointer");
+      }
 #endif
-        osCp.tTskTbl[idx].xxCb = xxCb;
+      osCp.tTskTbl[idx].xxCb = xxCb;
 #endif /* SS_MULTIPLE_PROCS */
    }
 #endif /* SS_MULTICORE_SUPPORT */
@@ -3366,24 +3366,24 @@ SSTskId sTskId;                 /* system task to use */
    if (!SS_CHECK_CUR_STSK(sTsk))
    {
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&sTsk->lock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS484, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS484, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
    }
 
-  /* ss006.13: addition */
+   /* ss006.13: addition */
    if ( SUnlock(&osCp.sTskTblLock) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-        SSLOGERROR(ERRCLS_DEBUG, ESS485, ERRZERO,
-                     "Could not give the Semaphore");
-        RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS485, ERRZERO,
+	    "Could not give the Semaphore");
+      RETVALUE(RFAILED);
 #endif
    }
 
@@ -3393,7 +3393,7 @@ SSTskId sTskId;                 /* system task to use */
     */
    if (ret != ROK)
    {
-/* ss029.103: addition: multiple procIds related changes */ 
+      /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
       SDetachTTsk(proc, ent, inst);
 #else /* SS_MULTIPLE_PROCS */
@@ -3408,50 +3408,50 @@ SSTskId sTskId;                 /* system task to use */
 
 
 /*
-*
-*       Fun:   Detach TAPA task
-*
-*       Desc:  This function is used to detach a TAPA task from a
-*              system task. The system task will stop executing
-*              the TAPA task.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Detach TAPA task
+ *
+ *       Desc:  This function is used to detach a TAPA task from a
+ *              system task. The system task will stop executing
+ *              the TAPA task.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 /* ss029.103: addition: procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 
 #ifdef ANSI
-PUBLIC S16 SDetachTTsk
+   PUBLIC S16 SDetachTTsk
 (
-Ent ent,                        /* entity ID of the task */
-Inst inst                       /* instance ID of the task */
-)
+ Ent ent,                        /* entity ID of the task */
+ Inst inst                       /* instance ID of the task */
+ )
 #else
 PUBLIC S16 SDetachTTsk(ent, inst)
-Ent ent;                        /* entity ID of the task */
-Inst inst;                      /* instance ID of the task */
+   Ent ent;                        /* entity ID of the task */
+   Inst inst;                      /* instance ID of the task */
 #endif
 
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PUBLIC S16 SDetachTTsk
+   PUBLIC S16 SDetachTTsk
 (
-ProcId proc,                    /* processor ID of the task */
-Ent ent,                        /* entity ID of the task */
-Inst inst                       /* instance ID of the task */
-)
+ ProcId proc,                    /* processor ID of the task */
+ Ent ent,                        /* entity ID of the task */
+ Inst inst                       /* instance ID of the task */
+ )
 #else
 PUBLIC S16 SDetachTTsk(proc, ent, inst)
-ProcId proc;                    /* processor ID of the task */
-Ent ent;                        /* entity ID of the task */
-Inst inst;                      /* instance ID of the task */
+   ProcId proc;                    /* processor ID of the task */
+   Ent ent;                        /* entity ID of the task */
+   Inst inst;                      /* instance ID of the task */
 #endif
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -3462,7 +3462,7 @@ Inst inst;                      /* instance ID of the task */
    SsIdx idx;
    SsTTskEntry *tTsk;
    SsSTskEntry *sTsk;
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    U16 procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
@@ -3472,7 +3472,7 @@ Inst inst;                      /* instance ID of the task */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check entity and instance ranges */
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    /* check entity and instance ranges */
    if ((proc == SS_INV_PROCID) || (ent >= SS_MAX_ENT) ||  (inst >= SS_MAX_INST))
@@ -3490,7 +3490,7 @@ Inst inst;                      /* instance ID of the task */
 #endif /* SS_MULTIPLE_PROCS */
 #endif
 
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    /* get the proc id idx */
    procIdIdx = SGetProcIdIdx(proc);
@@ -3499,7 +3499,7 @@ Inst inst;                      /* instance ID of the task */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS488, ERRZERO,
-                             "Could not find proc id index");
+	    "Could not find proc id index");
 #endif
       RETVALUE(RFAILED);
    }
@@ -3516,7 +3516,7 @@ Inst inst;                      /* instance ID of the task */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS489, (ErrVal) ret,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -3528,19 +3528,19 @@ Inst inst;                      /* instance ID of the task */
    if (ret != ROK)
    {
 
-  /* ss006.13: addition */
-    if ( SUnlock(&osCp.sTskTblLock) != ROK)
-    {
+      /* ss006.13: addition */
+      if ( SUnlock(&osCp.sTskTblLock) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_DEBUG)
-        SSLOGERROR(ERRCLS_DEBUG, ESS490, ERRZERO,
-                     "Could not give the Semaphore");
-        RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS490, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
-    }
+      }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS491, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -3552,31 +3552,31 @@ Inst inst;                      /* instance ID of the task */
     *  locked, coz we don't want the task to be found, but then
     *  be deregistered before we lock
     */
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    if (osCp.tTskIds[procIdIdx][ent][inst] == SS_TSKNC)
 #else /* SS_MULTIPLE_PROCS */
-   if (osCp.tTskIds[ent][inst] == SS_TSKNC)
+      if (osCp.tTskIds[ent][inst] == SS_TSKNC)
 #endif /* SS_MULTIPLE_PROCS */
-   {
-      SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
+      {
+	 SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
 
-  /* ss006.13: addition */
-     if ( SUnlock(&osCp.sTskTblLock) != ROK)
-     {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&osCp.sTskTblLock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-        SSLOGERROR(ERRCLS_DEBUG, ESS492, ERRZERO,
-                     "Could not give the Semaphore");
-        RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS492, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-     }
+	 }
 
-      SSLOGERROR(ERRCLS_INT_PAR, ESS493, ERRZERO, "Unknown task");
-      RETVALUE(RFAILED);
-   }
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS493, ERRZERO, "Unknown task");
+	 RETVALUE(RFAILED);
+      }
 #endif
 
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    idx = osCp.tTskIds[procIdIdx][ent][inst];
 #else /* SS_MULTIPLE_PROCS */
@@ -3590,15 +3590,15 @@ Inst inst;                      /* instance ID of the task */
    {
       SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
 
-  /* ss006.13: addition */
-     if ( SUnlock(&osCp.sTskTblLock) != ROK)
-     {
+      /* ss006.13: addition */
+      if ( SUnlock(&osCp.sTskTblLock) != ROK)
+      {
 #if (ERRCLASS & ERRCLS_DEBUG)
-        SSLOGERROR(ERRCLS_DEBUG, ESS494, ERRZERO,
-                     "Could not give the Semaphore");
-        RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS494, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
-     }
+      }
       RETVALUE(ROK);
    }
 
@@ -3623,22 +3623,22 @@ Inst inst;                      /* instance ID of the task */
       if (ret != ROK)
       {
 
-  /* ss006.13: addition */
-       if ( SUnlock(&osCp.sTskTblLock) != ROK)
-       {
+	 /* ss006.13: addition */
+	 if ( SUnlock(&osCp.sTskTblLock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS495, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS495, ERRZERO,
+		  "Could not give the Semaphore");
+	    RETVALUE(RFAILED);
 #endif
-       }
+	 }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS496, (ErrVal) ret,
-                        "Could not lock system task entry");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS496, (ErrVal) ret,
+	       "Could not lock system task entry");
 #endif
 
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
    }
 
@@ -3648,27 +3648,27 @@ Inst inst;                      /* instance ID of the task */
    if (ret != ROK)
    {
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&sTsk->lock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS497, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS497, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS498, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS498, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS499, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -3689,9 +3689,9 @@ Inst inst;                      /* instance ID of the task */
    {
       if (sTsk->tTsks[i] == idx)
       {
-         sTsk->tTsks[i] = SS_INVALID_IDX;
-         sTsk->numTTsks--;
-         break;
+	 sTsk->tTsks[i] = SS_INVALID_IDX;
+	 sTsk->numTTsks--;
+	 break;
       }
    }
 
@@ -3707,28 +3707,28 @@ Inst inst;                      /* instance ID of the task */
    if (!SS_CHECK_CUR_STSK(sTsk))
    {
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&sTsk->lock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS500, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS500, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
    }
 
    /* unlock the system task table */
 
-  /* ss006.13: addition */
-      if ( SUnlock(&osCp.sTskTblLock) != ROK)
-      {
+   /* ss006.13: addition */
+   if ( SUnlock(&osCp.sTskTblLock) != ROK)
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS501, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS501, ERRZERO,
+	    "Could not give the Semaphore");
+      RETVALUE(RFAILED);
 #endif
-      }
+   }
 
 
    /* If the implementation couldn't detach the task, we just
@@ -3745,32 +3745,32 @@ Inst inst;                      /* instance ID of the task */
 
 
 /*
-*
-*       Fun:   Post a message to a task
-*
-*       Desc:  This function is used to post a message to a TAPA
-*              task. The message is delivered to the demand queue
-*              of the system task that is running the specified
-*              destination task.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   Post a message to a task
+ *
+ *       Desc:  This function is used to post a message to a TAPA
+ *              task. The message is delivered to the demand queue
+ *              of the system task that is running the specified
+ *              destination task.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SPstTsk
+   PUBLIC S16 SPstTsk
 (
-Pst *pst,                       /* post information */
-Buffer *mBuf                    /* message to post */
-)
+ Pst *pst,                       /* post information */
+ Buffer *mBuf                    /* message to post */
+ )
 #else
 PUBLIC S16 SPstTsk(pst, mBuf)
-Pst *pst;                       /* post information */
-Buffer *mBuf;                   /* message to post */
+   Pst *pst;                       /* post information */
+   Buffer *mBuf;                   /* message to post */
 #endif
 {
    S16 r;
@@ -3792,25 +3792,25 @@ Buffer *mBuf;                   /* message to post */
 #if (defined(SS_RTR_SUPPORT))
    Route rte;
 #endif
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    U16 srcProcIdIdx;
    U16 dstProcIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
-/*ss004.301: Cavium changes */
+   /*ss004.301: Cavium changes */
 #ifdef SS_SEUM_CAVIUM
    Buffer  *wqBuf;
    S16     ret;
    cvmx_wqe_t *workPtr;
 #endif /* SS_SEUM_CAVIUM */
 
-	S16  retValue = 0; 
+   S16  retValue = 0; 
    Pst  tempPst;
 
 #ifdef MSPD_MLOG_NEW
    U32 t = MacGetTick();
 #endif
- 
+
    TRC1(SPstTsk);
 
 
@@ -3849,7 +3849,7 @@ Buffer *mBuf;                   /* message to post */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS505, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -3857,35 +3857,35 @@ Buffer *mBuf;                   /* message to post */
 #endif
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    if (pst->srcProcId == SS_INV_PROCID || pst->srcEnt >= SS_MAX_ENT       ||
-       pst->srcInst >= SS_MAX_INST     || pst->dstProcId == SS_INV_PROCID ||
-       pst->dstEnt >= SS_MAX_ENT       ||  pst->dstInst >= SS_MAX_INST)
+	 pst->srcInst >= SS_MAX_INST     || pst->dstProcId == SS_INV_PROCID ||
+	 pst->dstEnt >= SS_MAX_ENT       ||  pst->dstInst >= SS_MAX_INST)
 #else /* SS_MULTIPLE_PROCS */
-   if (pst->srcEnt >= SS_MAX_ENT       ||  pst->srcInst >= SS_MAX_INST    ||
-       pst->dstEnt >= SS_MAX_ENT       ||  pst->dstInst >= SS_MAX_INST)
+      if (pst->srcEnt >= SS_MAX_ENT       ||  pst->srcInst >= SS_MAX_INST    ||
+	    pst->dstEnt >= SS_MAX_ENT       ||  pst->dstInst >= SS_MAX_INST)
 #endif /* SS_MULTIPLE_PROCS */
-   {
-#ifndef TENB_RTLIN_CHANGES
- /* ss006.13: addition */
-      if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
       {
+#ifndef TENB_RTLIN_CHANGES
+	 /* ss006.13: addition */
+	 if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      SSLOGERROR(ERRCLS_DEBUG, ESS506, ERRZERO,
-                     "Could not release the semaphore");
-      RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS506, ERRZERO,
+		  "Could not release the semaphore");
+	    RETVALUE(RFAILED);
 #endif
+	 }
+#endif
+
+	 SPutMsg(mBuf);
+
+	 SSLOGERROR(ERRCLS_INT_PAR, ESS507, ERRZERO,
+	       "Invalid source/destination entity/instance");
+
+	 RETVALUE(RFAILED);
       }
-#endif
-
-      SPutMsg(mBuf);
-
-      SSLOGERROR(ERRCLS_INT_PAR, ESS507, ERRZERO,
-                  "Invalid source/destination entity/instance");
-
-      RETVALUE(RFAILED);
-   }
 #endif
 
    /* ss019.103 - modified for use with message router in virtual/physical
@@ -3898,7 +3898,7 @@ Buffer *mBuf;                   /* message to post */
       /* copy the Pst structure into a local duplicate */
       for (i = 0;  i < (S16)sizeof(Pst);  i++)
       {
-         *(((U8 *)(&nPst)) + i) = *(((U8 *) pst) + i);
+	 *(((U8 *)(&nPst)) + i) = *(((U8 *) pst) + i);
       }
       pst = &nPst;
 #ifdef SS_DRVR_SUPPORT
@@ -3910,25 +3910,25 @@ Buffer *mBuf;                   /* message to post */
       r = SLock(&osCp.rtrTskLocks[rte]);
       if (r != ROK)
       {
- /* ss006.13: addition */
+	 /* ss006.13: addition */
 #ifndef TENB_RTLIN_CHANGES
-         if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
-         {
+	 if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS508, ERRZERO,
-                     "Could not release the semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS508, ERRZERO,
+		  "Could not release the semaphore");
+	    RETVALUE(RFAILED);
 #endif
-          }
+	 }
 #endif
-         SPutMsg(mBuf);
+	 SPutMsg(mBuf);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS509, ERRZERO,
-                     "Could not lock router task entry");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS509, ERRZERO,
+	       "Could not lock router task entry");
 #endif
 
-         RETVALUE(RFAILED);
+	 RETVALUE(RFAILED);
       }
 
       /* call the router activation function */
@@ -3936,35 +3936,35 @@ Buffer *mBuf;                   /* message to post */
 
       /* unlock the router task entry */
 
-  /* ss006.13: addition */
+      /* ss006.13: addition */
       if ( SUnlock(&osCp.rtrTskLocks[rte]) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-          SSLOGERROR(ERRCLS_DEBUG, ESS510, ERRZERO,
-                     "Could not give the Semaphore");
-          RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS510, ERRZERO,
+	       "Could not give the Semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
       if (r == RFAILED  ||  r == ROKIGNORE)
       {
- /* ss006.13: addition */
+	 /* ss006.13: addition */
 #ifndef TENB_RTLIN_CHANGES
-         if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
-         {
+	 if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            SSLOGERROR(ERRCLS_DEBUG, ESS511, ERRZERO,
-                     "Could not release the semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS511, ERRZERO,
+		  "Could not release the semaphore");
+	    RETVALUE(RFAILED);
 #endif
-          }
+	 }
 #endif
-         RETVALUE((r == RFAILED) ? RFAILED : ROK);
+	 RETVALUE((r == RFAILED) ? RFAILED : ROK);
       }
    }
 #endif  /* SS_RTR_SUPPORT */
 
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
 
    /* get proc id index */
@@ -3978,15 +3978,15 @@ Buffer *mBuf;                   /* message to post */
       dstIdx = osCp.tTskIds[dstProcIdIdx][pst->dstEnt][pst->dstInst];
 
    if (((srcProcIdIdx != SS_INV_PROCID_IDX) && (srcIdx == SS_TSKNC)) || 
-       ((dstProcIdIdx != SS_INV_PROCID_IDX) && (dstIdx == SS_TSKNC)))
+	 ((dstProcIdIdx != SS_INV_PROCID_IDX) && (dstIdx == SS_TSKNC)))
    {
 #ifndef TENB_RTLIN_CHANGES
       if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      SSLOGERROR(ERRCLS_DEBUG, ESS512, ERRZERO,
-                     "Could not release the semaphore");
-      RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS512, ERRZERO,
+	       "Could not release the semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 #endif
@@ -4013,16 +4013,16 @@ Buffer *mBuf;                   /* message to post */
     *  source/destination TAPA task must be local.
     */
    if ((pst->srcProcId == osCp.procId  &&  srcIdx == SS_TSKNC) 
-      ||  (pst->dstProcId == osCp.procId  &&  dstIdx == SS_TSKNC))
+	 ||  (pst->dstProcId == osCp.procId  &&  dstIdx == SS_TSKNC))
    {
- /* ss006.13: addition */
+      /* ss006.13: addition */
 #ifndef TENB_RTLIN_CHANGES
       if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      SSLOGERROR(ERRCLS_DEBUG, ESS514, ERRZERO,
-                     "Could not release the semaphore");
-      RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS514, ERRZERO,
+	       "Could not release the semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 #endif
@@ -4042,157 +4042,157 @@ Buffer *mBuf;                   /* message to post */
     *  we need to find the driver task that will handle this
     *  message.
     */
-/* ss029.103: addition: multiple procIds related changes */ 
+   /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
    if (dstProcIdIdx == SS_INV_PROCID_IDX)
 #else /* SS_MULTIPLE_PROCS */
-   if (pst->dstProcId != osCp.procId)
+      if (pst->dstProcId != osCp.procId)
 #endif /* SS_MULTIPLE_PROCS */
-   {
-      /*  Need to optimize this search.
-       */
-      for (i = 0;  i < SS_MAX_DRVRTSKS;  i++)
       {
-         if (osCp.drvrTskTbl[i].used
-               &&  pst->dstProcId >= osCp.drvrTskTbl[i].low
-               &&  pst->dstProcId <= osCp.drvrTskTbl[i].high)
-         {
-            /* Copy the Pst structure into a local duplicate if not
-             *  already done.
-             */
-            if (!nPstUsed)
-            {
-               for (j = 0;  j < (S16)sizeof(Pst);  j++)
-               {
-                  *(((U8 *)(&nPst)) + j) = *(((U8 *) pst) + j);
-               }
-               pst = &nPst;
-               nPstUsed = TRUE;
-            }
+	 /*  Need to optimize this search.
+	  */
+	 for (i = 0;  i < SS_MAX_DRVRTSKS;  i++)
+	 {
+	    if (osCp.drvrTskTbl[i].used
+		  &&  pst->dstProcId >= osCp.drvrTskTbl[i].low
+		  &&  pst->dstProcId <= osCp.drvrTskTbl[i].high)
+	    {
+	       /* Copy the Pst structure into a local duplicate if not
+		*  already done.
+		*/
+	       if (!nPstUsed)
+	       {
+		  for (j = 0;  j < (S16)sizeof(Pst);  j++)
+		  {
+		     *(((U8 *)(&nPst)) + j) = *(((U8 *) pst) + j);
+		  }
+		  pst = &nPst;
+		  nPstUsed = TRUE;
+	       }
 
 
 #ifdef L2_L3_SPLIT           
-//if (clusterMode == NET_CLUSTER_MODE)
-{
+	       //if (clusterMode == NET_CLUSTER_MODE)
+	       {
 #endif
-            /* lock the driver task entry */
-            r = SLock(&osCp.drvrTskTbl[i].lock);
-            if (r != ROK)
-            {
- /* ss006.13: addition */
+		  /* lock the driver task entry */
+		  r = SLock(&osCp.drvrTskTbl[i].lock);
+		  if (r != ROK)
+		  {
+		     /* ss006.13: addition */
 #ifndef TENB_RTLIN_CHANGES
-               if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
-               {
+		     if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
+		     {
 #if (ERRCLASS & ERRCLS_DEBUG)
-                  SSLOGERROR(ERRCLS_DEBUG, ESS516, ERRZERO,
-                     "Could not release the semaphore");
-                  RETVALUE(RFAILED);
+			SSLOGERROR(ERRCLS_DEBUG, ESS516, ERRZERO,
+			      "Could not release the semaphore");
+			RETVALUE(RFAILED);
 #endif
-               }
+		     }
 #endif
-               SPutMsg(mBuf);
+		     SPutMsg(mBuf);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-               SSLOGERROR(ERRCLS_DEBUG, ESS517, ERRZERO,
-                           "Could not lock driver task entry");
+		     SSLOGERROR(ERRCLS_DEBUG, ESS517, ERRZERO,
+			   "Could not lock driver task entry");
 #endif
 
-               RETVALUE(RFAILED);
-            }
+		     RETVALUE(RFAILED);
+		  }
 #ifdef L2_L3_SPLIT
-}
+	       }
 #endif
-/*ss014.301 SSI-4GMX specific change*/
+	       /*ss014.301 SSI-4GMX specific change*/
 #ifndef SS_4GMX_LCORE
-            CMCHKPKLOG(cmPkInst, osCp.drvrTskTbl[i].channel, mBuf, ESS518, pst);
+	       CMCHKPKLOG(cmPkInst, osCp.drvrTskTbl[i].channel, mBuf, ESS518, pst);
 #endif
 
-            (osCp.drvrTskTbl[i].actvTsk)(pst, mBuf);
+	       (osCp.drvrTskTbl[i].actvTsk)(pst, mBuf);
 
-            /* unlock */
+	       /* unlock */
 #ifdef L2_L3_SPLIT           
-//if (clusterMode == NET_CLUSTER_MODE)
-{
+	       //if (clusterMode == NET_CLUSTER_MODE)
+	       {
 #endif
-             /* ss006.13: addition */
-            if ( SUnlock(&osCp.drvrTskTbl[i].lock) != ROK)
-            {
+		  /* ss006.13: addition */
+		  if ( SUnlock(&osCp.drvrTskTbl[i].lock) != ROK)
+		  {
 #if (ERRCLASS & ERRCLS_DEBUG)
-              SSLOGERROR(ERRCLS_DEBUG, ESS519, ERRZERO,
-                     "Could not give the Semaphore");
-              RETVALUE(RFAILED);
+		     SSLOGERROR(ERRCLS_DEBUG, ESS519, ERRZERO,
+			   "Could not give the Semaphore");
+		     RETVALUE(RFAILED);
 #endif
-            }
+		  }
 #ifdef L2_L3_SPLIT
-}
+	       }
 #endif
 
- /* ss006.13: addition */
+	       /* ss006.13: addition */
 #ifndef TENB_RTLIN_CHANGES
-            if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
-            {
+	       if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
+	       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-               SSLOGERROR(ERRCLS_DEBUG, ESS520, ERRZERO,
-                     "Could not release the semaphore");
-               RETVALUE(RFAILED);
+		  SSLOGERROR(ERRCLS_DEBUG, ESS520, ERRZERO,
+			"Could not release the semaphore");
+		  RETVALUE(RFAILED);
 #endif
-            }
+	       }
 #endif
-            RETVALUE(ROK);
-         }
-      }
+	       RETVALUE(ROK);
+	    }
+	 }
 
- /* ss006.13: addition */
+	 /* ss006.13: addition */
 #ifndef TENB_RTLIN_CHANGES
-      if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
-      {
+	 if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS521, ERRZERO,
-                     "Could not release the semaphore");
-            RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS521, ERRZERO,
+		  "Could not release the semaphore");
+	    RETVALUE(RFAILED);
 #endif
+	 }
+#endif
+	 SPutMsg(mBuf);
+
+#if (ERRCLASS & ERRCLS_DEBUG)
+	 SSLOGERROR(ERRCLS_DEBUG, ESS522, ERRZERO,
+	       "Could not find a driver task to handle this proc ID");
+#endif
+
+	 RETVALUE(RFAILED);
       }
-#endif
-      SPutMsg(mBuf);
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-      SSLOGERROR(ERRCLS_DEBUG, ESS522, ERRZERO,
-                  "Could not find a driver task to handle this proc ID");
-#endif
-
-      RETVALUE(RFAILED);
-   }
 #endif  /* SS_DRVR_SUPPORT */
- /* ss002.301 Modifications */
+   /* ss002.301 Modifications */
    /*  Write the message to the demand queue of the system
     *  task which is running the destination task
     */
    tTsk = &osCp.tTskTbl[dstIdx];
 
-	cmMemcpy((U8*)&tempPst, (U8*)pst, sizeof(Pst));
+   cmMemcpy((U8*)&tempPst, (U8*)pst, sizeof(Pst));
    if(tTsk->cbTsk != NULLP)
    {
       retValue = tTsk->cbTsk(&tempPst,mBuf);
-		if(retValue != ROK)
-		{
+      if(retValue != ROK)
+      {
 #ifndef TENB_RTLIN_CHANGES
-	      if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
-   	   {
+	 if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      		SSLOGERROR(ERRCLS_DEBUG, ESS512, ERRZERO,
-                     "Could not release the semaphore");
-      		RETVALUE(RFAILED);
+	    SSLOGERROR(ERRCLS_DEBUG, ESS512, ERRZERO,
+		  "Could not release the semaphore");
+	    RETVALUE(RFAILED);
 #endif
-      	}
+	 }
 #endif
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-      	SSLOGERROR(ERRCLS_DEBUG, ESS513, ERRZERO, "call back function failed\n");
+	 SSLOGERROR(ERRCLS_DEBUG, ESS513, ERRZERO, "call back function failed\n");
 #endif
-			RETVALUE(ROK);
-		}
+	 RETVALUE(ROK);
+      }
 #ifdef SS_MULTIPLE_PROCS
-		dstIdx = osCp.tTskIds[dstProcIdIdx][tempPst.dstEnt][tempPst.dstInst];
+      dstIdx = osCp.tTskIds[dstProcIdIdx][tempPst.dstEnt][tempPst.dstInst];
 #else
       dstIdx = osCp.tTskIds[tempPst.dstEnt][tempPst.dstInst];
 #endif 
@@ -4204,16 +4204,16 @@ Buffer *mBuf;                   /* message to post */
    for (i = 0;  i < (S16 )sizeof(Pst);  i++)
       *(((U8 *)(&msgInfo->pst)) + i) = *(((U8 *) &(tempPst)) + i);
 
-/* ss004.301 : Cavium cahnges */
+   /* ss004.301 : Cavium cahnges */
 #ifdef SS_SEUM_CAVIUM
    if (pst->dstProcId != osCp.procId)
    {
       if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS527, ERRZERO,
-   	    "Could not release the semaphore");
-         RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS527, ERRZERO,
+	       "Could not release the semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 
@@ -4221,8 +4221,8 @@ Buffer *mBuf;                   /* message to post */
       ret = SCpyMsgFpa(mBuf, &wqBuf);
       if( ret != ROK )
       {
-         /* No need to free the buffer, its already done in called fun */
-         RETVALUE(RFAILED);
+	 /* No need to free the buffer, its already done in called fun */
+	 RETVALUE(RFAILED);
       }
 
       /* Allocate for the mBuf */
@@ -4230,16 +4230,16 @@ Buffer *mBuf;                   /* message to post */
       workPtr = cvmx_fpa_alloc(SS_CVMX_WQE_POOL);
       if( workPtr == NULLP )
       {
-         SPutFpaMsg(wqBuf);
-         RETVALUE(RFAILED);
+	 SPutFpaMsg(wqBuf);
+	 RETVALUE(RFAILED);
       }
 
       /* Convert the pointers to physical address */
       ret = SConvPtrPhy(&wqBuf);
       if( ret != ROK )
       {
-         SPutFpaMsg(wqBuf);
-         RETVALUE(RFAILED);
+	 SPutFpaMsg(wqBuf);
+	 RETVALUE(RFAILED);
       }
 
       /* Assign the values for work ptr */
@@ -4251,7 +4251,7 @@ Buffer *mBuf;                   /* message to post */
       workPtr->packet_ptr.ptr = (Void*)wqBuf;
 
       cvmx_pow_work_submit(workPtr, workPtr->tag, workPtr->tag_type, \
-            workPtr->qos, workPtr->grp);
+	    workPtr->qos, workPtr->grp);
 
       RETVALUE(ROK);
    }
@@ -4266,14 +4266,14 @@ Buffer *mBuf;                   /* message to post */
 
    if (tTsk->sTsk == NULLP)
    {
- /* ss006.13: addition */
+      /* ss006.13: addition */
 #ifndef TENB_RTLIN_CHANGES
       if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS523, ERRZERO,
-                     "Could not release the semaphore");
-            RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS523, ERRZERO,
+	       "Could not release the semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 #endif
@@ -4281,7 +4281,7 @@ Buffer *mBuf;                   /* message to post */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS524, (ErrVal) 0,
-                 "Destination TAPA task is not attached");
+	    "Destination TAPA task is not attached");
 #endif
 
       RETVALUE(RFAILED);
@@ -4292,69 +4292,69 @@ Buffer *mBuf;                   /* message to post */
    msgInfo->pst.region = tTsk->sTsk->region;
 #endif /* SS_LOCKLESS_MEMORY */
 
-/*ss014.301 SSI-4GMX specific changes*/   
+   /*ss014.301 SSI-4GMX specific changes*/   
 #ifndef SS_4GMX_LCORE
    r = ssDmndQPutLast(&tTsk->sTsk->dQ, mBuf,
-                           ((prior * SS_MAX_MSG_PRI) + tempPst.prior));
+	 ((prior * SS_MAX_MSG_PRI) + tempPst.prior));
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
    {
       extern Bool g_usettitmr;
       if (g_usettitmr)
       {
-         if (tTsk->sTsk->tskPrior == PRIOR0)
-         {
-            SsTTskEntry *srctTsk;
-            srctTsk = &osCp.tTskTbl[srcIdx];
-            if ((srctTsk->sTsk == tTsk->sTsk)
+	 if (tTsk->sTsk->tskPrior == PRIOR0)
+	 {
+	    SsTTskEntry *srctTsk;
+	    srctTsk = &osCp.tTskTbl[srcIdx];
+	    if ((srctTsk->sTsk == tTsk->sTsk)
 #if defined(SPLIT_RLC_DL_TASK) && !defined(RLC_MAC_DAT_REQ_RBUF)
-                ||
-                ((pst->dstEnt == ENTRG) && 
-                 (pst->srcEnt == ENTKW) && 
-                 (pst->event == EVTRGUDDATREQ))
+		  ||
+		  ((pst->dstEnt == ENTRG) && 
+		   (pst->srcEnt == ENTKW) && 
+		   (pst->event == EVTRGUDDATREQ))
 #endif
-               )
+	       )
 #ifdef RGL_SPECIFIC_CHANGES
-               WLS_WakeUp(mtGetWlsHdl());
+	       WLS_WakeUp(mtGetWlsHdl());
 #else
-               tlPost(NULLP);
+	    tlPost(NULLP);
 #endif
-         }
+	 }
       }
       else if (tTsk->sTsk->tskPrior == PRIOR0)
 #ifdef RGL_SPECIFIC_CHANGES
-         WLS_WakeUp(mtGetWlsHdl());
+	 WLS_WakeUp(mtGetWlsHdl());
 #else
-         tlPost(NULLP);
+      tlPost(NULLP);
 #endif
    }
 #endif 
 #else
    if(tTsk->actvTsk != NULLP)
    {
-       if(tTsk->cbTsk != NULLP)
-       {
-           r = rbICorePstTsk(&tempPst, mBuf, tTsk);
-       }
-       else
-       {
-           r = rbICorePstTsk(pst, mBuf, tTsk);
-       }
+      if(tTsk->cbTsk != NULLP)
+      {
+	 r = rbICorePstTsk(&tempPst, mBuf, tTsk);
+      }
+      else
+      {
+	 r = rbICorePstTsk(pst, mBuf, tTsk);
+      }
    }
    else
    {
-       r = RFAILED;
+      r = RFAILED;
    }
 #endif
    if (r != ROK)
    {
- /* ss006.13: addition */
+      /* ss006.13: addition */
 #ifndef TENB_RTLIN_CHANGES
       if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           SSLOGERROR(ERRCLS_DEBUG, ESS525, ERRZERO,
-                     "Could not release the semaphore");
-            RETVALUE(RFAILED);
+	 SSLOGERROR(ERRCLS_DEBUG, ESS525, ERRZERO,
+	       "Could not release the semaphore");
+	 RETVALUE(RFAILED);
 #endif
       }
 #endif
@@ -4362,7 +4362,7 @@ Buffer *mBuf;                   /* message to post */
 
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SSLOGERROR(ERRCLS_ADD_RES, ESS526, (ErrVal) r,
-                     "Could not write to demand queue");
+	    "Could not write to demand queue");
 #endif
 
       RETVALUE(RFAILED);
@@ -4370,14 +4370,14 @@ Buffer *mBuf;                   /* message to post */
 
 
    /* unlock, we're done */
- /* ss006.13: addition */
+   /* ss006.13: addition */
 #ifndef TENB_RTLIN_CHANGES
    if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-        SSLOGERROR(ERRCLS_DEBUG, ESS527, ERRZERO,
-                  "Could not release the semaphore");
-        RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS527, ERRZERO,
+	    "Could not release the semaphore");
+      RETVALUE(RFAILED);
 #endif
    }
 #endif
@@ -4394,30 +4394,30 @@ Buffer *mBuf;                   /* message to post */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 /*
-*
-*       fun :  SGetTapaTskEntIds
-*
-*       Desc:  Get the tapa task entity id, which are registerd for SSI.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       fun :  SGetTapaTskEntIds
+ *
+ *       Desc:  Get the tapa task entity id, which are registerd for SSI.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 /* ss029.103: modification: procId added */
 
 #ifdef ANSI
-PUBLIC S16 SGetTapaTskEntIds
+   PUBLIC S16 SGetTapaTskEntIds
 (
-Ent *ent                        /* entity */
-)
+ Ent *ent                        /* entity */
+ )
 #else
 PUBLIC S16 SGetTapaTskEntIds(ent)
-Ent *ent;                        /* entity */
+   Ent *ent;                        /* entity */
 #endif
 {
 
@@ -4434,31 +4434,31 @@ Ent *ent;                        /* entity */
 } /* SGetTapaTskEntIds */
 
 /*
-*
-*       Fun:   SRegForHstGrm
-*
-*       Desc:  This function is used to register a TAPA task,
-*              for histogram facilty.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   SRegForHstGrm
+ *
+ *       Desc:  This function is used to register a TAPA task,
+ *              for histogram facilty.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 /* ss029.103: modification: procId added */
 
 #ifdef ANSI
-PUBLIC S16 SRegForHstGrm
+   PUBLIC S16 SRegForHstGrm
 (
-Ent ent                        /* entity */
-)
+ Ent ent                        /* entity */
+ )
 #else
 PUBLIC S16 SRegForHstGrm(ent)
-Ent ent;                        /* entity */
+   Ent ent;                        /* entity */
 #endif
 {
 
@@ -4472,7 +4472,7 @@ Ent ent;                        /* entity */
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS623, ERRZERO,
-                     "Could not lock TAPA task table");
+	    "Could not lock TAPA task table");
 #endif
 
       RETVALUE(RFAILED);
@@ -4482,48 +4482,48 @@ Ent ent;                        /* entity */
    {
       if(osCp.tTskTbl[tskCnt].ent == ent)
       {
-         osCp.tTskTbl[tskCnt].hstReg = TRUE;
-         break;
+	 osCp.tTskTbl[tskCnt].hstReg = TRUE;
+	 break;
       }
    }
 
    if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         SSLOGERROR(ERRCLS_DEBUG, ESS639, ERRZERO,
-                   "Could not release the semaphore");
-          RETVALUE(RFAILED);
+      SSLOGERROR(ERRCLS_DEBUG, ESS639, ERRZERO,
+	    "Could not release the semaphore");
+      RETVALUE(RFAILED);
 #endif
-    }
+   }
 
    RETVALUE(ROK);
 } /* SGetTapaTskEntIds */
 
 /*
-*
-*       Fun:   SGetHstGrmInfo
-*
-*       Desc : Get the Histogram registration for TAPA task
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*              ROUTRES  - failed, out of resources (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   SGetHstGrmInfo
+ *
+ *       Desc : Get the Histogram registration for TAPA task
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *              ROUTRES  - failed, out of resources (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SGetHstGrmInfo
+   PUBLIC S16 SGetHstGrmInfo
 (
-Ent   *entId,
-Bool  *hstReg                        /* entity */
-)
+ Ent   *entId,
+ Bool  *hstReg                        /* entity */
+ )
 #else
 PUBLIC S16 SGetHstGrmInfo(entId, hstReg)
-Ent   *entId;
-Bool  *hstReg;                        /* entity */
+   Ent   *entId;
+   Bool  *hstReg;                        /* entity */
 #endif
 {
 
@@ -4536,9 +4536,9 @@ Bool  *hstReg;                        /* entity */
    {
       if( *entId == osCp.tTskTbl[tskCnt].ent)
       {
-         *hstReg = osCp.tTskTbl[tskCnt].hstReg;
-         found = TRUE;
-          break;
+	 *hstReg = osCp.tTskTbl[tskCnt].hstReg;
+	 found = TRUE;
+	 break;
       }
    }
 
@@ -4555,36 +4555,36 @@ Bool  *hstReg;                        /* entity */
 
 #ifdef SS_WATCHDOG
 #ifdef ANSI
-PUBLIC S16 SInitWatchdog
+   PUBLIC S16 SInitWatchdog
 (
-U16 port
-)
+ U16 port
+ )
 #else
 PUBLIC S16 SInitWatchdog(port)
-U16 port;
+   U16 port;
 #endif
 {
- return ssdInitWatchDog(port);
+   return ssdInitWatchDog(port);
 }
 
 #ifdef ANSI
-PUBLIC S16 SRegCfgWd
+   PUBLIC S16 SRegCfgWd
 (
-U32 numNodes,
-U8  *addr[],
-U16 port[],
-U32 timeout,
-WdUserCallback callback,
-void *data
-)
+ U32 numNodes,
+ U8  *addr[],
+ U16 port[],
+ U32 timeout,
+ WdUserCallback callback,
+ void *data
+ )
 #else
 PUBLIC S16 SRegCfgWd(numNodes, addr, port, timeout, callback, data)
-U32 numNodes;
-U8  *addr[];
-U16 port[];
-U32 timeout;
-WdUserCallback callback;
-void *data;
+   U32 numNodes;
+   U8  *addr[];
+   U16 port[];
+   U32 timeout;
+   WdUserCallback callback;
+   void *data;
 #endif
 {
    Txt prntBuf[PRNTSZE];
@@ -4593,7 +4593,7 @@ void *data;
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC1(SRegCfgWd)
 
-   osCp.wdCp.globWd.timeout = timeout;
+      osCp.wdCp.globWd.timeout = timeout;
    osCp.wdCp.globWd.callback = callback;
    osCp.wdCp.globWd.data = data;
    osCp.wdCp.globWd.numNodes = numNodes;
@@ -4602,7 +4602,7 @@ void *data;
    for(i = 0; i < SS_MAX_WD_NODES && i < numNodes; i++)
    {
 #ifdef SS_WATCHDOG_IPV6
- /* ss002.301 Modifications */
+      /* ss002.301 Modifications */
       inet_pton(AF_INET6,(const char *)addr[i],osCp.wdCp.globWd.wdsta[i].addr);
 #else
       osCp.wdCp.globWd.wdsta[i].addr.s_addr = inet_addr((const char *)addr[i]);
@@ -4612,7 +4612,7 @@ void *data;
       SPrint(prntBuf);
    }
    SUnlock(&osCp.wdCp.wdLock);
- /* ss002.301 Compilation fixes */
+   /* ss002.301 Compilation fixes */
    /*ss013.301: Fixed Warnings for 32/64 bit compilation*/
 #ifdef ALIGN_64BIT
    sprintf(prntBuf, "Configured %d nodes with timeout %u for Watchdog\n", osCp.wdCp.globWd.numNodes, osCp.wdCp.globWd.timeout);
@@ -4625,13 +4625,13 @@ void *data;
 }
 
 #ifdef ANSI
-PUBLIC S16 SDeregCfgWd
+   PUBLIC S16 SDeregCfgWd
 (
-void
-)
+ void
+ )
 #else
 PUBLIC S16 SDeregCfgWd(void)
-void;
+   void;
 #endif
 {
    Txt prntBuf[PRNTSZE];
@@ -4640,7 +4640,7 @@ void;
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC1(SDeregCfgWd)
 
-   osCp.wdCp.globWd.timeout = 0;
+      osCp.wdCp.globWd.timeout = 0;
    osCp.wdCp.globWd.callback = 0;
    osCp.wdCp.globWd.data = 0;
    osCp.wdCp.globWd.numNodes = 0;
@@ -4648,11 +4648,11 @@ void;
    SLock(&osCp.wdCp.wdLock);
    for(i = 0; i < SS_MAX_WD_NODES; i++)
    {
-	   /* ss002.301 Modifications */
+      /* ss002.301 Modifications */
       sprintf(prntBuf, "Deregister [%s:%d] for watchdog\n", inet_ntoa(osCp.wdCp.globWd.wdsta[i
-].addr), osCp.wdCp.globWd.wdsta[i].port);
+      ].addr), osCp.wdCp.globWd.wdsta[i].port);
       osCp.wdCp.globWd.wdsta[i].addr.s_addr = 0;
-       osCp.wdCp.globWd.wdsta[i].port = 0;
+      osCp.wdCp.globWd.wdsta[i].port = 0;
       SPrint(prntBuf);
    }
    SUnlock(&osCp.wdCp.wdLock);
@@ -4664,13 +4664,13 @@ void;
 }
 
 #ifdef ANSI
-PUBLIC S16 SStartHrtBt
+   PUBLIC S16 SStartHrtBt
 (
-U8 timeInterval /* time interval */
-)
+ U8 timeInterval /* time interval */
+ )
 #else
 PUBLIC S16 SStartHrtBt(timeInterval)
-U8 timeInterval;
+   U8 timeInterval;
 #endif
 {
    TRC1(SStartHrtBt);
@@ -4682,13 +4682,13 @@ U8 timeInterval;
 }
 
 #ifdef ANSI
-PUBLIC S16 SStopHrtBt
+   PUBLIC S16 SStopHrtBt
 (
-void
-)
+ void
+ )
 #else
 PUBLIC S16 SStopHrtBt()
-void
+   void
 #endif
 {
    TRC1(SStopHrtBt);
@@ -4699,18 +4699,18 @@ void
 }
 
 #ifdef ANSI
-PUBLIC S16 watchDgActvTsk
+   PUBLIC S16 watchDgActvTsk
 (
-Pst *pst,                   /* post */
-Buffer *mBuf                /* message buffer */
-)
+ Pst *pst,                   /* post */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 watchDgActvTsk(pst, mBuf)
-Pst *pst;                   /* post */
-Buffer *mBuf;               /* message buffer */
+   Pst *pst;                   /* post */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
-/* ss002.301 Fixed warnings */
+   /* ss002.301 Fixed warnings */
 #ifdef DEBUGP
    DateTime dt;
    Txt prntBuf[PRNTSZE];
@@ -4718,24 +4718,24 @@ Buffer *mBuf;               /* message buffer */
 
    TRC3(watchDgActvTsk)
 #ifdef DEBUGP
-   SGetDateTime(&dt);
+      SGetDateTime(&dt);
    sprintf(prntBuf,"watchDgActvTsk: Time: %02d:%02d:%02d\n",dt.hour,dt.min, dt.sec
-);
+	 );
    SPrint(prntBuf);
 #endif /* DEBUGP */
-	RETVALUE(ROK);
+   RETVALUE(ROK);
 }
 
 #ifdef ANSI
-PUBLIC S16 watchDgRcvrActvTsk
+   PUBLIC S16 watchDgRcvrActvTsk
 (
-Pst *pst,                   /* post */
-Buffer *mBuf                /* message buffer */
-)
+ Pst *pst,                   /* post */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 watchDgRcvrActvTsk(pst, mBuf)
-Pst *pst;                   /* post */
-Buffer *mBuf;               /* message buffer */
+   Pst *pst;                   /* post */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
 #ifdef DEBUGP
@@ -4746,9 +4746,9 @@ Buffer *mBuf;               /* message buffer */
    S16			  err;
    struct sockaddr_in tmpaddr;
    Txt           hbMsg[SS_WD_HB_MSG_SIZE];
- /* ss002.301 Modifications */
+   /* ss002.301 Modifications */
 #ifdef SS_LINUX
-	socklen_t 	  socklen = sizeof(struct sockaddr);
+   socklen_t 	  socklen = sizeof(struct sockaddr);
 #else
    int           socklen = sizeof(struct sockaddr);
 #endif
@@ -4756,7 +4756,7 @@ Buffer *mBuf;               /* message buffer */
    TRC3(watchDgActvTsk)
 
 #ifdef DEBUGP
-   SGetDateTime(&dt);
+      SGetDateTime(&dt);
    sprintf(prntBuf,"watchDgRcvrActvTsk: Time: %02d:%02d:%02d\n",dt.hour, dt.min, dt.sec);
    SPrint(prntBuf);
 #endif /* DEBUGP */
@@ -4766,49 +4766,49 @@ Buffer *mBuf;               /* message buffer */
       err = recvfrom(osCp.wdCp.globWd.sock, hbMsg, SS_WD_HB_MSG_SIZE, 0, (struct sockaddr *)&tmpaddr, &socklen);
       if(err == -1)
       {
-         sprintf(prntBuf,"watchDgRcvrActvTsk: recvfrom failed, errno %d\n", errno);
-         SPrint(prntBuf);
-         continue;
+	 sprintf(prntBuf,"watchDgRcvrActvTsk: recvfrom failed, errno %d\n", errno);
+	 SPrint(prntBuf);
+	 continue;
       }
 
       if(strcmp(hbMsg, "<HB>REQ</HB>") == 0)
       {
-         /* Send back the reply */
+	 /* Send back the reply */
 #ifdef DEBUGP
-         sprintf(prntBuf,"watchDgRcvrActvTsk: Recvd HB REQ message from [%s:%d]\n", inet_ntoa(tmpaddr.sin_addr), ntohs(tmpaddr.sin_port));
-         SPrint(prntBuf);
+	 sprintf(prntBuf,"watchDgRcvrActvTsk: Recvd HB REQ message from [%s:%d]\n", inet_ntoa(tmpaddr.sin_addr), ntohs(tmpaddr.sin_port));
+	 SPrint(prntBuf);
 #endif /* DEBUGP */
 
-         strcpy(hbMsg, "<HB>RSP</HB>");
-         sendto(osCp.wdCp.globWd.sock, hbMsg, strlen(hbMsg), 0, (struct sockaddr *)&tmpaddr, sizeof(tmpaddr));
+	 strcpy(hbMsg, "<HB>RSP</HB>");
+	 sendto(osCp.wdCp.globWd.sock, hbMsg, strlen(hbMsg), 0, (struct sockaddr *)&tmpaddr, sizeof(tmpaddr));
       }
       else if(strcmp(hbMsg, "<HB>RSP</HB>") == 0)
       {
-         /* Got a HB RSP, set the status for the correcponding node */
+	 /* Got a HB RSP, set the status for the correcponding node */
 #ifdef DEBUGP
-         sprintf(prntBuf,"watchDgRcvrActvTsk: Recvd HB RSP message from [%s:%d]\n", inet_ntoa(tmpaddr.sin_addr), ntohs(tmpaddr.sin_port)); 
-         SPrint(prntBuf);
+	 sprintf(prntBuf,"watchDgRcvrActvTsk: Recvd HB RSP message from [%s:%d]\n", inet_ntoa(tmpaddr.sin_addr), ntohs(tmpaddr.sin_port)); 
+	 SPrint(prntBuf);
 #endif /* DEBUGP */
 
-         SLock(&osCp.wdCp.wdLock);
-         for(n = 0; n < osCp.wdCp.globWd.numNodes; n++)
-         {
-            if(osCp.wdCp.globWd.wdsta[n].addr.s_addr == tmpaddr.sin_addr.s_addr)
-            {
-               osCp.wdCp.globWd.wdsta[n].status = 1;
-            }
-         }
-         SUnlock(&osCp.wdCp.wdLock);
+	 SLock(&osCp.wdCp.wdLock);
+	 for(n = 0; n < osCp.wdCp.globWd.numNodes; n++)
+	 {
+	    if(osCp.wdCp.globWd.wdsta[n].addr.s_addr == tmpaddr.sin_addr.s_addr)
+	    {
+	       osCp.wdCp.globWd.wdsta[n].status = 1;
+	    }
+	 }
+	 SUnlock(&osCp.wdCp.wdLock);
       }
       else
       {
 #ifdef DEBUGP
-         sprintf(prntBuf,"watchDgRcvrActvTsk: Rcvd invalid message\n");
-         SPrint(prntBuf);
+	 sprintf(prntBuf,"watchDgRcvrActvTsk: Rcvd invalid message\n");
+	 SPrint(prntBuf);
 #endif /* DEBUGP */
       }
    }
-	RETVALUE(ROK);
+   RETVALUE(ROK);
 }
 
 #endif /* SS_WATCHDOG */
@@ -4816,68 +4816,68 @@ Buffer *mBuf;               /* message buffer */
 /* ss002.301 Modifications */
 #ifdef SS_THREAD_PROFILE
 /*
-*
-*       Fun:   SGetThrdProf
-*
-*       Desc:  This function gets the current profile of a system task
-*              The function sets the Entity, Instance, Event and time taken
-*              for that thread to execurte the activate function of
-*              that entity.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: This function may be called by the OS or Layer 1
-*              hardware drivers.
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SGetThrdProf
+ *
+ *       Desc:  This function gets the current profile of a system task
+ *              The function sets the Entity, Instance, Event and time taken
+ *              for that thread to execurte the activate function of
+ *              that entity.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: This function may be called by the OS or Layer 1
+ *              hardware drivers.
+ *
+ *       File:  mt_ss.c
+ *
+ */
 #ifdef SS_MULTIPLE_PROCS
 #ifdef ANSI
-PUBLIC S16 SGetThrdProf
+   PUBLIC S16 SGetThrdProf
 (
-SSTskId *sTskId,
-ProcId procId,
-Ent ent,                       /* entity */
-Inst inst,
-Event *curEvent,
-U32 *curEvtTime,
-U64 *totTime
-)
+ SSTskId *sTskId,
+ ProcId procId,
+ Ent ent,                       /* entity */
+ Inst inst,
+ Event *curEvent,
+ U32 *curEvtTime,
+ U64 *totTime
+ )
 #else
 PUBLIC S16 SGetThrdProf(sTskId, procId, ent, inst, evnt, curEvent, curEvtTime, totTime)
-SSTskId *sTskId;
-ProcId procId;
-Ent ent;                      /* entity */
-Inst inst;
-Event *curEvent;
-U32 *curEvtTime;
-U64 *totTime;
+   SSTskId *sTskId;
+   ProcId procId;
+   Ent ent;                      /* entity */
+   Inst inst;
+   Event *curEvent;
+   U32 *curEvtTime;
+   U64 *totTime;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 SGetThrdProf
+   PUBLIC S16 SGetThrdProf
 (
-SSTskId *sTskId,
-Ent ent,                       /* entity */
-Inst inst,
-Event *curEvent,
-U32 *curEvtTime,
-U64 *totTime
-)
+ SSTskId *sTskId,
+ Ent ent,                       /* entity */
+ Inst inst,
+ Event *curEvent,
+ U32 *curEvtTime,
+ U64 *totTime
+ )
 #else
 PUBLIC S16 SGetThrdProf(sTskId, ent, inst, curEvent,curEvtTime, totTime)
-SSTskId *sTskId;
-Ent ent;                      /* entity */
-Inst inst;
-Event *curEvent;
-U32 *curEvtTime;
-U64 *totTime;
+   SSTskId *sTskId;
+   Ent ent;                      /* entity */
+   Inst inst;
+   Event *curEvent;
+   U32 *curEvtTime;
+   U64 *totTime;
 #endif
 #endif /* SS_MULTIPLE_PROCS */
 {
-  S16 ret;
+   S16 ret;
    SsIdx idx;
    SsTTskEntry *tTsk;
 #ifdef SS_MULTIPLE_PROCS
@@ -4915,28 +4915,28 @@ U64 *totTime;
 
 
 #ifdef SS_MULTIPLE_PROCS
-    procIdIdx = SGetProcIdIdx(procId);
+   procIdIdx = SGetProcIdIdx(procId);
 
-    if (procIdIdx == SS_INV_PROCID_IDX)
-    {
+   if (procIdIdx == SS_INV_PROCID_IDX)
+   {
       RETVALUE(RFAILED);
-    }
+   }
 
-    idx = osCp.tTskIds[procIdIdx][ent][inst];
+   idx = osCp.tTskIds[procIdIdx][ent][inst];
 #else /* SS_MULTIPLE_PROCS */
-    idx = osCp.tTskIds[ent][inst];
+   idx = osCp.tTskIds[ent][inst];
 #endif /* SS_MULTIPLE_PROCS */
 
-    tTsk = &osCp.tTskTbl[idx];
-    if(tTsk == NULLP )
-    {
-             SUnlock(&osCp.sTskTblLock);
-             RETVALUE(RFAILED);
-    }
-    *curEvent      = osCp.tTskTbl[idx].curEvent;
-    *curEvtTime    = osCp.tTskTbl[idx].curEvtTime;
-    *totTime       = osCp.tTskTbl[idx].totTime;
-    *sTskId        = osCp.tTskTbl[idx].sTsk->tskId;
+   tTsk = &osCp.tTskTbl[idx];
+   if(tTsk == NULLP )
+   {
+      SUnlock(&osCp.sTskTblLock);
+      RETVALUE(RFAILED);
+   }
+   *curEvent      = osCp.tTskTbl[idx].curEvent;
+   *curEvtTime    = osCp.tTskTbl[idx].curEvtTime;
+   *totTime       = osCp.tTskTbl[idx].totTime;
+   *sTskId        = osCp.tTskTbl[idx].sTsk->tskId;
 
    SUnlock(&osCp.sTskTblLock);
    RETVALUE(ROK);
@@ -4945,26 +4945,26 @@ U64 *totTime;
 
 #ifdef SS_FBSED_TSK_REG
 /*
-*
-*       Fun:   SRegTskInfo
-*
-*       Desc:  This function is used to register tasks based on cfg file.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*
-*       File:  ss_task.c
-*
-*/
+ *
+ *       Fun:   SRegTskInfo
+ *
+ *       Desc:  This function is used to register tasks based on cfg file.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *
+ *       File:  ss_task.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 SRegTskInfo
+   PUBLIC S16 SRegTskInfo
 (
-U8 *cfgFile
-)
+ U8 *cfgFile
+ )
 #else
 PUBLIC S16 SRegTskInfo(cfgFile)
-U8 *cfgFile;
+   U8 *cfgFile;
 #endif
 {
    return cmCfgrTskReg(cfgFile); 
@@ -4972,5 +4972,5 @@ U8 *cfgFile;
 #endif /* SS_FBSED_TSK_REG */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

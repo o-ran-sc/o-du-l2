@@ -87,195 +87,195 @@ Buffer  *mBuf;                      /* message buffer       */
 {
    TRC2(schActvTsk)
 
-   switch(pst->srcEnt)
-   {
-      /* The originator of this message is the stack manager,
-       * unpack and go to the respective primitive processing function */
-      case ENTSM:
-         switch(pst->event)
-         {
+      switch(pst->srcEnt)
+      {
+	 /* The originator of this message is the stack manager,
+	  * unpack and go to the respective primitive processing function */
+	 case ENTSM:
+	    switch(pst->event)
+	    {
 #ifdef LCRGMILRG
-            case EVTMACSCHGENCFGREQ:
-               /* Process a config. request */
-               cmUnpkLrgSchCfgReq(SchProcGenCfgReq, pst, mBuf);
-               break;
-            case EVTLRGSCHCNTRLREQ:
-               /* Process a control request */
-               cmUnpkLrgSchCntrlReq(RgMiLrgSchCntrlReq, pst, mBuf);
-               break;
-            case EVTLRGSCHSTAIND:
-               /* Process a control request */
-               cmUnpkLrgSchStaInd(RgMiLrgSchStaInd, pst, mBuf);
-               break;
+	       case EVTMACSCHGENCFGREQ:
+		  /* Process a config. request */
+		  cmUnpkLrgSchCfgReq(SchProcGenCfgReq, pst, mBuf);
+		  break;
+	       case EVTLRGSCHCNTRLREQ:
+		  /* Process a control request */
+		  cmUnpkLrgSchCntrlReq(RgMiLrgSchCntrlReq, pst, mBuf);
+		  break;
+	       case EVTLRGSCHSTAIND:
+		  /* Process a control request */
+		  cmUnpkLrgSchStaInd(RgMiLrgSchStaInd, pst, mBuf);
+		  break;
 #ifdef LTE_L2_MEAS
-            case EVTLRGSCHL2MEASREQ:
-               /* Process L2 Measurement request */
-               cmUnpkLrgSchL2MeasReq(RgMiLrgSchL2MeasReq, pst, mBuf);
-               break;
-            case EVTLRGSCHL2MEASSTOPREQ:
-               /* Process L2 Measurement Stop request */
-               cmUnpkLrgSchL2MeasStopReq(RgMiLrgSchL2MeasStopReq, pst, mBuf);
-               break;
-            case EVTLRGSCHL2MEASSENDREQ:
-               /* Process L2 Measurement Send  request */
-               cmUnpkLrgSchL2MeasSendReq(RgMiLrgSchL2MeasSendReq, pst, mBuf);
-               break;
+	       case EVTLRGSCHL2MEASREQ:
+		  /* Process L2 Measurement request */
+		  cmUnpkLrgSchL2MeasReq(RgMiLrgSchL2MeasReq, pst, mBuf);
+		  break;
+	       case EVTLRGSCHL2MEASSTOPREQ:
+		  /* Process L2 Measurement Stop request */
+		  cmUnpkLrgSchL2MeasStopReq(RgMiLrgSchL2MeasStopReq, pst, mBuf);
+		  break;
+	       case EVTLRGSCHL2MEASSENDREQ:
+		  /* Process L2 Measurement Send  request */
+		  cmUnpkLrgSchL2MeasSendReq(RgMiLrgSchL2MeasSendReq, pst, mBuf);
+		  break;
 #endif
 #endif /* LCRGMILRG */
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
-         break;
-     case ENTNX:
-         switch(pst->event)
-         {
+	       default:
+		  RGSCH_FREE_MSG(mBuf);
+		  break;
+	    }
+	    break;
+	 case ENTNX:
+	    switch(pst->event)
+	    {
 #ifdef LCRGUIRGR
-            case EVTRGRBNDREQ:
-               cmUnpkRgrBndReq(RgUiRgrBndReq, pst, mBuf);
-               break;
-            case EVTRGRUBNDREQ:
-               cmUnpkRgrUbndReq(RgUiRgrUbndReq, pst, mBuf);
-               break;
+	       case EVTRGRBNDREQ:
+		  cmUnpkRgrBndReq(RgUiRgrBndReq, pst, mBuf);
+		  break;
+	       case EVTRGRUBNDREQ:
+		  cmUnpkRgrUbndReq(RgUiRgrUbndReq, pst, mBuf);
+		  break;
 #ifdef RGR_SI_SCH
-            case EVTRGRSICFGREQ:
-               cmUnpkRgrSiCfgReq(RgUiRgrSiCfgReq, pst, mBuf);
-               break;
-            case EVTRGRWARNINGSICFGREQ:
-               cmUnpkRgrWarningSiCfgReq(RgUiRgrWarningSiCfgReq, pst, mBuf);
-               break;
+	       case EVTRGRSICFGREQ:
+		  cmUnpkRgrSiCfgReq(RgUiRgrSiCfgReq, pst, mBuf);
+		  break;
+	       case EVTRGRWARNINGSICFGREQ:
+		  cmUnpkRgrWarningSiCfgReq(RgUiRgrWarningSiCfgReq, pst, mBuf);
+		  break;
 
-            case EVTRGRWARNINGSISTOPREQ:
-               cmUnpkRgrWarningSiStopReq(RgUiRgrWarningSiStopReq, pst, mBuf);
-               break;
+	       case EVTRGRWARNINGSISTOPREQ:
+		  cmUnpkRgrWarningSiStopReq(RgUiRgrWarningSiStopReq, pst, mBuf);
+		  break;
 #endif/*RGR_SI_SCH */
-               /* LTE_ADV_FLAG_REMOVED_START */
-            case EVTRGRLOADINFREQ:
-               cmUnpkRgrLoadInfReq(RgUiRgrLoadInfReq, pst, mBuf);
-               break;
-               /* LTE_ADV_FLAG_REMOVED_END */
+		  /* LTE_ADV_FLAG_REMOVED_START */
+	       case EVTRGRLOADINFREQ:
+		  cmUnpkRgrLoadInfReq(RgUiRgrLoadInfReq, pst, mBuf);
+		  break;
+		  /* LTE_ADV_FLAG_REMOVED_END */
 #endif            
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
-         break;
-      case ENTTF:
-         switch(pst->event)
-         {
-/*#ifdef LCRGLITFU L2Split */
+	       default:
+		  RGSCH_FREE_MSG(mBuf);
+		  break;
+	    }
+	    break;
+	 case ENTTF:
+	    switch(pst->event)
+	    {
+	       /*#ifdef LCRGLITFU L2Split */
 #if (defined(LCRGLITFU) || defined(LWLCRGLITFU)) 
-            case EVTTFUSCHBNDCFM:
-               cmUnpkTfuBndCfm(RgLiTfuSchBndCfm, pst, mBuf);
-               break;
-            case EVTTFURAREQIND:
-               cmUnpkTfuRaReqInd(RgLiTfuRaReqInd, pst, mBuf);
-               break;
-            case EVTTFUULCQIIND:
-               cmUnpkTfuUlCqiInd(RgLiTfuUlCqiInd, pst, mBuf);
-               break;
-            case EVTTFUHQIND:
-               cmUnpkTfuHqInd(RgLiTfuHqInd, pst, mBuf);
-               break;
-            case EVTTFUSRIND:
-               cmUnpkTfuSrInd(RgLiTfuSrInd, pst, mBuf);
-               break;
-            case EVTTFUDLCQIIND:
-               cmUnpkTfuDlCqiInd(RgLiTfuDlCqiInd, pst, mBuf);
-               break;
-            case EVTTFUCRCIND:
-               /*cmUnpkTfuCrcIndInfo(RgLiTfuCrcInd, pst, mBuf); */
-               cmUnpkTfuCrcInd(RgLiTfuCrcInd, pst, mBuf);
-               break;
-            case EVTTFUTIMINGADVIND:
-               cmUnpkTfuTimingAdvInd(RgLiTfuTimingAdvInd, pst, mBuf);
-               break;
-            case EVTTFUPUCCHDELPWR:
-               cmUnpkTfuPucchDeltaPwr(RgLiTfuPucchDeltaPwrInd, pst, mBuf);
-               break;
-            case EVTTFUDOAIND:
-               cmUnpkTfuDoaInd(RgLiTfuDoaInd, pst, mBuf);
-               break;
+	       case EVTTFUSCHBNDCFM:
+		  cmUnpkTfuBndCfm(RgLiTfuSchBndCfm, pst, mBuf);
+		  break;
+	       case EVTTFURAREQIND:
+		  cmUnpkTfuRaReqInd(RgLiTfuRaReqInd, pst, mBuf);
+		  break;
+	       case EVTTFUULCQIIND:
+		  cmUnpkTfuUlCqiInd(RgLiTfuUlCqiInd, pst, mBuf);
+		  break;
+	       case EVTTFUHQIND:
+		  cmUnpkTfuHqInd(RgLiTfuHqInd, pst, mBuf);
+		  break;
+	       case EVTTFUSRIND:
+		  cmUnpkTfuSrInd(RgLiTfuSrInd, pst, mBuf);
+		  break;
+	       case EVTTFUDLCQIIND:
+		  cmUnpkTfuDlCqiInd(RgLiTfuDlCqiInd, pst, mBuf);
+		  break;
+	       case EVTTFUCRCIND:
+		  /*cmUnpkTfuCrcIndInfo(RgLiTfuCrcInd, pst, mBuf); */
+		  cmUnpkTfuCrcInd(RgLiTfuCrcInd, pst, mBuf);
+		  break;
+	       case EVTTFUTIMINGADVIND:
+		  cmUnpkTfuTimingAdvInd(RgLiTfuTimingAdvInd, pst, mBuf);
+		  break;
+	       case EVTTFUPUCCHDELPWR:
+		  cmUnpkTfuPucchDeltaPwr(RgLiTfuPucchDeltaPwrInd, pst, mBuf);
+		  break;
+	       case EVTTFUDOAIND:
+		  cmUnpkTfuDoaInd(RgLiTfuDoaInd, pst, mBuf);
+		  break;
 #ifdef TFU_UPGRADE
-            case EVTTFURAWCQIIND:
-               cmUnpkTfuRawCqiInd(RgLiTfuRawCqiInd, pst, mBuf);
-               break;
-            case EVTTFUSRSIND:
-               cmUnpkTfuSrsInd(RgLiTfuSrsInd, pst, mBuf);
-               break;
+	       case EVTTFURAWCQIIND:
+		  cmUnpkTfuRawCqiInd(RgLiTfuRawCqiInd, pst, mBuf);
+		  break;
+	       case EVTTFUSRSIND:
+		  cmUnpkTfuSrsInd(RgLiTfuSrsInd, pst, mBuf);
+		  break;
 #endif 
-               /*LAA: Error Indication on SCell*/
-            case EVTTFUERRIND:
-               cmUnpkTfuErrInd(RgLiTfuErrInd, pst, mBuf);
-               break;
+		  /*LAA: Error Indication on SCell*/
+	       case EVTTFUERRIND:
+		  cmUnpkTfuErrInd(RgLiTfuErrInd, pst, mBuf);
+		  break;
 #endif            
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
-         break;
-      case ENTRG: /* When MAC sends a msg to Scheduler instance */
-         switch(pst->event)
-         {
+	       default:
+		  RGSCH_FREE_MSG(mBuf);
+		  break;
+	    }
+	    break;
+	 case ENTRG: /* When MAC sends a msg to Scheduler instance */
+	    switch(pst->event)
+	    {
 #ifdef LCSCH
-            case EVTINFDEDBOUPDTREQ:
-               cmUnpkMacSchDedBoUpdtReq(RgMacSchDedBoUpdtReq, pst, mBuf);
-               break;
-            case EVTINFCMNBOUPDTREQ:
-               cmUnpkMacSchCmnBoUpdtReq(RgMacSchCmnBoUpdtReq, pst, mBuf);
-               break;   
-            case EVTINFSFRECPIND:
-               cmUnpkMacSchSfRecpInd(RgMacSchSfRecpInd, pst, mBuf);
-               break;
-               /*Fix: start: Inform UE delete to scheduler*/
-            case EVTINFUEDELIND:
-               cmUnpkMacSchUeDelInd(RgMacSchUeDelInd, pst, mBuf);
-               break;
-            /*Fix: end: Inform UE delete to scheduler*/
+	       case EVTINFDEDBOUPDTREQ:
+		  cmUnpkMacSchDedBoUpdtReq(RgMacSchDedBoUpdtReq, pst, mBuf);
+		  break;
+	       case EVTINFCMNBOUPDTREQ:
+		  cmUnpkMacSchCmnBoUpdtReq(RgMacSchCmnBoUpdtReq, pst, mBuf);
+		  break;   
+	       case EVTINFSFRECPIND:
+		  cmUnpkMacSchSfRecpInd(RgMacSchSfRecpInd, pst, mBuf);
+		  break;
+		  /*Fix: start: Inform UE delete to scheduler*/
+	       case EVTINFUEDELIND:
+		  cmUnpkMacSchUeDelInd(RgMacSchUeDelInd, pst, mBuf);
+		  break;
+		  /*Fix: end: Inform UE delete to scheduler*/
 #ifdef LTE_L2_MEAS
-            case EVTINFL2MEASCFM:
-               cmUnpkMacSchL2MeasCfm(RgMacSchL2MeasCfm, pst, mBuf);
-               break;
-            case EVTINFL2MEASSTOPCFM:
-               cmUnpkMacSchL2MeasCfm(RgMacSchL2MeasStopCfm, pst, mBuf);
-               break;
+	       case EVTINFL2MEASCFM:
+		  cmUnpkMacSchL2MeasCfm(RgMacSchL2MeasCfm, pst, mBuf);
+		  break;
+	       case EVTINFL2MEASSTOPCFM:
+		  cmUnpkMacSchL2MeasCfm(RgMacSchL2MeasStopCfm, pst, mBuf);
+		  break;
 #endif
 #endif            
-            case EVENT_SLOT_IND_TO_SCH:
-               unpackMacSchSlotInd(MacSchSlotInd, pst, mBuf);
-               break;
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
-         break;
-      case ENTRM: /* When RRM sends msg to scheduler */
-         switch(pst->event)
-         {
-            case EVTRGMBNDREQ:
-               cmUnpkRgmBndReq(RgUiRgmBndReq, pst, mBuf); 
-               break;
-            case EVTRGMUBNDREQ:
-               cmUnpkRgmUbndReq(RgUiRgmUbndReq, pst, mBuf); 
-               break;
-            case EVTRGMCFGPRBRPRT:
-               cmUnpkRgmCfgPrbRprt(RgUiRgmCfgPrbRprt, pst, mBuf);
-               break;
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
-         break;
-      default:
-          RGSCH_FREE_MSG(mBuf);
-          break;
-   }
+	       case EVENT_SLOT_IND_TO_SCH:
+		  unpackMacSchSlotInd(MacSchSlotInd, pst, mBuf);
+		  break;
+	       default:
+		  RGSCH_FREE_MSG(mBuf);
+		  break;
+	    }
+	    break;
+	 case ENTRM: /* When RRM sends msg to scheduler */
+	    switch(pst->event)
+	    {
+	       case EVTRGMBNDREQ:
+		  cmUnpkRgmBndReq(RgUiRgmBndReq, pst, mBuf); 
+		  break;
+	       case EVTRGMUBNDREQ:
+		  cmUnpkRgmUbndReq(RgUiRgmUbndReq, pst, mBuf); 
+		  break;
+	       case EVTRGMCFGPRBRPRT:
+		  cmUnpkRgmCfgPrbRprt(RgUiRgmCfgPrbRprt, pst, mBuf);
+		  break;
+	       default:
+		  RGSCH_FREE_MSG(mBuf);
+		  break;
+	    }
+	    break;
+	 default:
+	    RGSCH_FREE_MSG(mBuf);
+	    break;
+      }
    SExitTsk();
    RETVALUE(ROK);
 }/* end of schActvTsk */
 
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

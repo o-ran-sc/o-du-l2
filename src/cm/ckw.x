@@ -49,13 +49,13 @@ EXTERN "C" {
 typedef struct ckwLChInfo
 {
    U8                   lChId;               /*!< Logical Channel ID.
-                                                  The allowed values are [1..10] */
+					       The allowed values are [1..10] */
    U8                   type;                /*!< Logical Channel Type - 
-                                                  BCCH/PCCH/CCCH/DTCH/DCCH */
+					       BCCH/PCCH/CCCH/DTCH/DCCH */
 }CkwLChInfo;
 
 /** @brief
-   Un-acknowledge Mode Information */
+  Un-acknowledge Mode Information */
 typedef struct rlcUmInfo
 {
    struct   _umDl
@@ -65,39 +65,39 @@ typedef struct rlcUmInfo
    struct   _umUl
    {
       U8                snLen;               /*!< Sequence Number length in bits.*/
-                                             /*!< Allowed values are 6 and 12*/
+      /*!< Allowed values are 6 and 12*/
       U8                reOrdTmr;            /*!< T_reordering Timer in msec */
    }ul;                                      /*!< Uplink */
 }RlcUmInfo;
 
 /** @brief
-   Acknowledge Mode Information */
+  Acknowledge Mode Information */
 typedef struct rlcAmInfo
 {
    struct   _amDl
    {
       U8                snLen;               /*!< Sequence Number length in
-                                               bits. Allowed values are 12 and 18 */
+					       bits. Allowed values are 12 and 18 */
       U16               pollRetxTmr;         /*!< T_poll_retransmit Timer in msec */
       S16               pollPdu;             /*!< Used to trigger a poll for every pollPdu.*/
-                                             /*!< This field indicates the number of PDUs */
+      /*!< This field indicates the number of PDUs */
       /* Patch ckw_x_001.main_5 */
-                                             /* !<For Infinite, RLC expects value 0xFFFF */
+      /* !<For Infinite, RLC expects value 0xFFFF */
       S32               pollByte;            /*!< Poll_Byte in bytes. */
-                                             /*!<For Infinite RLC expects value 0xFFFFFFFF */
+      /*!<For Infinite RLC expects value 0xFFFFFFFF */
       U8                maxRetx;             /*!< Max_Retx_Threshold */
    }dl;                                      /*!< Down link */
    struct   _amUl
    {
       U8                snLen;               /*!< Sequence Number length in
-                                               bits. Allowed values are 12 and 18 */
+					       bits. Allowed values are 12 and 18 */
       U16               staProhTmr;          /*!< T_status_prohibit Timer in msec*/
       U8                reOrdTmr;            /*!< T_reordering Timer in msec*/
    }ul;                                      /*!< Up link */
 }RlcAmInfo;
 
 /** @brief
-   Transparent Mode Information */
+  Transparent Mode Information */
 typedef union rlcTmInfo
 {
    struct   _tmDl
@@ -107,33 +107,33 @@ typedef union rlcTmInfo
 }RlcTmInfo;
 
 /** @brief
-   Entity Configuration Information */
+  Entity Configuration Information */
 typedef struct rlcEntCfgInfo
 {
    U8                   cfgType;             /*!< Type of Configuration - 
-                                             ADD/MODIFY/DELETE/RE-ESTABLISH/
-                                             DELTEUE */
+					       ADD/MODIFY/DELETE/RE-ESTABLISH/
+					       DELTEUE */
    U8                   rbId;                /* RB ID. The allowed
-                                                Values are [0..255] */
+						Values are [0..255] */
    U8                   rbType;              /* Type of the RB - can be SRB or DRB */
    U8                   qci;                 /*!< qCI value Associated with that RB */
    CkwLChInfo           lCh[CM_LTE_MAX_LOGCH_PER_RB];  /*!< Logical channel
-                                                        information
-                                                In case of AM mode: 
-                                                idx = 0 implies DL and
-                                                idx = 1 implies UL
-                                                In case of TM/UM idx 0 is only
-                                                applicable */
+							 information
+							 In case of AM mode: 
+							 idx = 0 implies DL and
+							 idx = 1 implies UL
+							 In case of TM/UM idx 0 is only
+							 applicable */
    CmLteRlcMode         entMode;             /*!< Entity mode: AM, UM or TM */
    U8                   dir;                 /*!< Direction: It can be either
-                                               UL / DL for TM mode 
-                                               UL / DL or BOTH for UM mode 
-                                               and for AM its always for both UL 
-                                               and DL. */
+					       UL / DL for TM mode 
+					       UL / DL or BOTH for UM mode 
+					       and for AM its always for both UL 
+					       and DL. */
    /* Supported by SPLIT Architecture */
    S16            discardTmr;  /*!< Discard timer. @n The value for this parameter is 
-                                expected in milli seconds. @n Value of infinity is also
-                                allowed and -1 must be passed for the same.  */
+				 expected in milli seconds. @n Value of infinity is also
+				 allowed and -1 must be passed for the same.  */
    SpId                 rguSapId;
    /* Supported by SPLIT Architecture ends */
    union
@@ -145,20 +145,20 @@ typedef struct rlcEntCfgInfo
 }RlcEntCfgInfo;
 
 /** @brief
-   Configuration Information from RRC to RLC */
+  Configuration Information from RRC to RLC */
 typedef struct rlcCfgInfo
 {
    U32                  transId;             /*!< Transaction Id */
    CmLteRnti            ueId;                /*!< UE ID */
    CmLteCellId          cellId;              /*!< Cell ID */
    U8                   numEnt;              /*!< Number of entities to
-                                               configure */
+					       configure */
    RlcEntCfgInfo        entCfg[CKW_MAX_ENT_CFG];  /*!< Array of Entities to be
-                                              configure */
+						    configure */
 }RlcCfgInfo;
 
 /** @brief
-   Entity Configuration Confirmation Information */
+  Entity Configuration Confirmation Information */
 typedef struct rlcEntCfgCfmInfo
 {
    U8                   rbId;                /*!< rb ID */
@@ -167,7 +167,7 @@ typedef struct rlcEntCfgCfmInfo
 }RlcEntCfgCfmInfo;
 
 /** @brief
-   Configuration Confirmation Informatin RLC to RRC */
+  Configuration Confirmation Informatin RLC to RRC */
 typedef struct rlcCfgCfmInfo
 {
    U32                  transId;             /*!< Transaction Id */
@@ -175,11 +175,11 @@ typedef struct rlcCfgCfmInfo
    CmLteCellId          cellId;              /*!< Cell ID */
    U8                   numEnt;              /*!< Number of entities configured */
    RlcEntCfgCfmInfo     entCfgCfm[CKW_MAX_ENT_CFG];   /*!< Array of Entity cfg
-                                                         confiramations */
+							confiramations */
 }RlcCfgCfmInfo;
 
 /** @brief
-     UE Id Information */
+  UE Id Information */
 typedef struct ckwUeInfo
 {
    CmLteRnti            ueId;               /*!< UE ID */
@@ -192,9 +192,9 @@ typedef S16 (*RlcCfgReq)     ARGS((Pst *pst, RlcCfgInfo *cfgInfo));
 typedef S16 (*RlcCfgCfm)     ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
 typedef S16 (*CkwUeIdChgReq) ARGS((Pst *pst, SpId spId, U32 transId, 
-                                   CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
+	 CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 typedef S16 (*CkwUeIdChgCfm) ARGS((Pst *pst, SuId suId, U32 transId, 
-                                   CkwUeInfo *ueInfo, CmStatus status));
+	 CkwUeInfo *ueInfo, CmStatus status));
 
 typedef S16 (*CkwBndReq)     ARGS((Pst *pst, SuId suId, SpId spId));
 typedef S16 (*CkwBndCfm)     ARGS((Pst *pst, SuId suId, U8 status));
@@ -260,11 +260,11 @@ EXTERN S16 KwUiCkwUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
  sends this primitive for the control of the RLC entity.
 
  * The different configuration allowed by RRC to RLC are:\n
-   CKW_CFG_ADD          -  Configures the new RLC entity\n
-   CKW_CFG_MODIFY       -  Modifies the RLC entity\n
-   CKW_CFG_DELETE       -  Deletes the RLC entity\n
-   CKW_CFG_REESTABLISH  -  Re-establilsh the RLC entity\n
-   CKW_CFG_DELETE_UE    -  Deletes the RLC entities per UE\n
+ CKW_CFG_ADD          -  Configures the new RLC entity\n
+ CKW_CFG_MODIFY       -  Modifies the RLC entity\n
+ CKW_CFG_DELETE       -  Deletes the RLC entity\n
+ CKW_CFG_REESTABLISH  -  Re-establilsh the RLC entity\n
+ CKW_CFG_DELETE_UE    -  Deletes the RLC entities per UE\n
 
 
  * @param[in] pst       -  Point to the pst structure
@@ -298,7 +298,7 @@ EXTERN S16 KwUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
 /**
  *@details This primitive is used by RRC to change the UeId for the existing UE
-           context.
+ context.
 
  * @param[in] pst       -  Point to the pst structure
  * @param[in] spId      -  The ID of the service provider SAP in the RLC layer. 
@@ -309,7 +309,7 @@ EXTERN S16 KwUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
  * @return ROK
  */
 EXTERN S16 KwUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId,
-                                   CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
+	 CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
 /**
  *@details This primitive is used by RLC to confirm the UeId change requested
@@ -334,75 +334,75 @@ EXTERN S16 KwUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId,
  * @return ROK
  */
 EXTERN S16 KwUiCkwUeIdChgCfm  ARGS((Pst *pst, SuId suId, U32 transId, 
-                                   CkwUeInfo *ueInfo, CmStatus status));
+	 CkwUeInfo *ueInfo, CmStatus status));
 
 /* RRC Extern declarations */
 #ifdef NH
 EXTERN S16 NhLiCkwBndReq ARGS((
-         Pst *pst,
-         SuId suId,
-         SpId spId));
+	 Pst *pst,
+	 SuId suId,
+	 SpId spId));
 
 EXTERN S16 NhLiCkwUbndReq ARGS((
-         Pst *pst,
-         SpId spId,
-         Reason reason));
+	 Pst *pst,
+	 SpId spId,
+	 Reason reason));
 
 EXTERN S16 NhLiCkwBndCfm ARGS((Pst *pst,
-         SuId suId,
-         U8 status));
+	 SuId suId,
+	 U8 status));
 
 EXTERN S16 NhLiRlcCfgReq ARGS((
-         Pst *pst,
-         SpId spId,
-         RlcCfgInfo *cfgInfo));
+	 Pst *pst,
+	 SpId spId,
+	 RlcCfgInfo *cfgInfo));
 
 EXTERN S16 NhLiRlcCfgCfm ARGS((Pst *pst,
-         SuId suId,
-         RlcCfgCfmInfo* cfmInfo));
+	 SuId suId,
+	 RlcCfgCfmInfo* cfmInfo));
 
 EXTERN S16 NhLiCkwUeIdChgReq ARGS((Pst *pst, 
-         SpId spId, U32 transId,
-         CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
+	 SpId spId, U32 transId,
+	 CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
 EXTERN S16 NhLiCkwUeIdChgCfm  ARGS((Pst *pst, 
-         SuId suId, U32 transId, 
-         CkwUeInfo *ueInfo, CmStatus status));
+	 SuId suId, U32 transId, 
+	 CkwUeInfo *ueInfo, CmStatus status));
 
 #endif /* NH */
 
 /* Dummy RRC Interface primitives */
 #ifdef DM
 EXTERN S16 DmUiCkwBndReq ARGS((
-         Pst *pst,
-         SuId suId,
-         SpId spId));
+	 Pst *pst,
+	 SuId suId,
+	 SpId spId));
 
 EXTERN S16 DmUiCkwUbndReq ARGS((
-         Pst *pst,
-         SpId spId,
-         Reason reason));
+	 Pst *pst,
+	 SpId spId,
+	 Reason reason));
 
 EXTERN S16 DmUiCkwBndCfm ARGS((Pst *pst,
-         SuId suId,
-         U8 status));
+	 SuId suId,
+	 U8 status));
 
 EXTERN S16 DmUiRlcCfgReq ARGS((
-         Pst *pst,
-         SpId spId,
-         RlcCfgInfo *cfgInfo));
+	 Pst *pst,
+	 SpId spId,
+	 RlcCfgInfo *cfgInfo));
 
 EXTERN S16 DmUiRlcCfgCfm ARGS((Pst *pst,
-         SuId suId,
-         RlcCfgCfmInfo* cfmInfo));
+	 SuId suId,
+	 RlcCfgCfmInfo* cfmInfo));
 
 EXTERN S16 DmUiCkwUeIdChgReq ARGS((Pst *pst, 
-         SpId spId, U32 transId,
-         CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
+	 SpId spId, U32 transId,
+	 CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
 EXTERN S16 DmUiCkwUeIdChgCfm  ARGS((Pst *pst, 
-         SuId suId, U32 transId, 
-         CkwUeInfo *ueInfo, CmStatus status));
+	 SuId suId, U32 transId, 
+	 CkwUeInfo *ueInfo, CmStatus status));
 
 #endif /* DM */
 
@@ -412,191 +412,191 @@ EXTERN S16 DmUiCkwUeIdChgCfm  ARGS((Pst *pst,
 #ifdef LCCKW
 /* Packing functions */
 EXTERN S16 cmPkRlcTmInfo ARGS ((
-RlcTmInfo      *param,
-Buffer         *mBuf
-));
+	 RlcTmInfo      *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmPkRlcUmInfo ARGS ((
-RlcEntCfgInfo  *param,
-Buffer         *mBuf
-));
+	 RlcEntCfgInfo  *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmPkRlcAmInfo ARGS ((
-RlcAmInfo      *param,
-Buffer         *mBuf
-));
+	 RlcAmInfo      *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmPkCkwLChInfo ARGS ((
-CkwLChInfo     *param,
-Buffer         *mBuf
-));
+	 CkwLChInfo     *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmPkRlcEntCfgInfo ARGS ((
-RlcEntCfgInfo  *param,
-Buffer         *mBuf
-));
+	 RlcEntCfgInfo  *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmPkRlcCfgInfo ARGS ((
-RlcCfgInfo     *param,
-Pst            *pst,
-Buffer         *mBuf
-));
+	 RlcCfgInfo     *param,
+	 Pst            *pst,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmPkRlcEntCfgCfmInfo ARGS ((
-RlcEntCfgCfmInfo  *param,
-Buffer            *mBuf
-));
+	 RlcEntCfgCfmInfo  *param,
+	 Buffer            *mBuf
+	 ));
 
 EXTERN S16 cmPkRlcCfgCfmInfo ARGS ((
-RlcCfgCfmInfo  *param,
-Pst            *pst,
-Buffer         *mBuf
-));
+	 RlcCfgCfmInfo  *param,
+	 Pst            *pst,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmPkCkwUeInfo ARGS ((
-CkwUeInfo *param,
-Buffer    *mBuf
-));
+	 CkwUeInfo *param,
+	 Buffer    *mBuf
+	 ));
 
 EXTERN S16 cmPkCkwBndReq ARGS ((
-Pst *pst,
-SuId suId,
-SpId spId
-));
+	 Pst *pst,
+	 SuId suId,
+	 SpId spId
+	 ));
 
 EXTERN S16 cmPkCkwUbndReq ARGS ((
-Pst *pst,
-SpId spId,
-Reason reason
-));
+	 Pst *pst,
+	 SpId spId,
+	 Reason reason
+	 ));
 
 EXTERN S16 cmPkCkwBndCfm ARGS ((
-Pst *pst,
-SuId suId,
-U8 status
-));
+	 Pst *pst,
+	 SuId suId,
+	 U8 status
+	 ));
 
 EXTERN S16 packUeCreateReq ARGS ((
-Pst               *pst,
-RlcCfgInfo        *cfgInfo
-));
+	 Pst               *pst,
+	 RlcCfgInfo        *cfgInfo
+	 ));
 
 EXTERN S16 cmPkRlcCfgCfm ARGS ((
-Pst               *pst,
-SuId              suId,
-RlcCfgCfmInfo     *cfgCfmInfo
-));
+	 Pst               *pst,
+	 SuId              suId,
+	 RlcCfgCfmInfo     *cfgCfmInfo
+	 ));
 
 EXTERN S16 cmPkCkwUeIdChgReq ARGS ((
-Pst                *pst, 
-SpId               spId, 
-U32                transId,
-CkwUeInfo          *ueInfo,
-CkwUeInfo          *newUeInfo
-));
+	 Pst                *pst, 
+	 SpId               spId, 
+	 U32                transId,
+	 CkwUeInfo          *ueInfo,
+	 CkwUeInfo          *newUeInfo
+	 ));
 
 EXTERN S16 cmPkCkwUeIdChgCfm  ARGS ((
-Pst                *pst, 
-SuId               suId, 
-U32                transId, 
-CkwUeInfo          *ueInfo, 
-CmStatus           status
-));
+	 Pst                *pst, 
+	 SuId               suId, 
+	 U32                transId, 
+	 CkwUeInfo          *ueInfo, 
+	 CmStatus           status
+	 ));
 
 /* Unpacking functions */
 EXTERN S16 cmUnpkRlcTmInfo ARGS ((
-RlcTmInfo      *param,
-Buffer         *mBuf
-));
+	 RlcTmInfo      *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkRlcUmInfo ARGS ((
-RlcEntCfgInfo  *param,
-Buffer         *mBuf
-));
+	 RlcEntCfgInfo  *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkRlcAmInfo ARGS ((
-RlcAmInfo      *param,
-Buffer         *mBuf
-));
+	 RlcAmInfo      *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCkwLInfo ARGS ((
-CkwLChInfo     *param,
-Buffer         *mBuf
-));
+	 CkwLChInfo     *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkRlcCfgCfmInfo ARGS ((
-RlcCfgCfmInfo  *param,
-Pst            *pst,
-Buffer         *mBuf
-));
+	 RlcCfgCfmInfo  *param,
+	 Pst            *pst,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCkwBndReq ARGS ((
-CkwBndReq      func,
-Pst            *pst,
-Buffer         *mBuf
-));
+	 CkwBndReq      func,
+	 Pst            *pst,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCkwLChInfo ARGS ((
-CkwLChInfo     *param,
-Buffer         *mBuf
-));
+	 CkwLChInfo     *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkRlcEntCfgInfo ARGS ((
-RlcEntCfgInfo  *param,
-Buffer         *mBuf
-));
+	 RlcEntCfgInfo  *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkRlcCfgInfo ARGS ((
-RlcCfgInfo     *param,
-Pst            *pst,
-Buffer         *mBuf
-));
+	 RlcCfgInfo     *param,
+	 Pst            *pst,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCkwUeInfo ARGS ((
-CkwUeInfo      *param,
-Buffer         *mBuf
-));
+	 CkwUeInfo      *param,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkRlcCfgCfm ARGS ((
-RlcCfgCfm         func,
-Pst               *pst,
-Buffer            *mBuf
-));
+	 RlcCfgCfm         func,
+	 Pst               *pst,
+	 Buffer            *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCkwUbndReq ARGS ((
-CkwUbndReq     func,
-Pst            *pst,
-Buffer         *mBuf
-));
+	 CkwUbndReq     func,
+	 Pst            *pst,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCkwBndCfm ARGS ((
-CkwBndCfm      func,
-Pst            *pst,
-Buffer         *mBuf
-));
+	 CkwBndCfm      func,
+	 Pst            *pst,
+	 Buffer         *mBuf
+	 ));
 
 EXTERN S16 unpackUeCreateReq ARGS ((
-RlcCfgReq         func,
-Pst               *pst,
-Buffer            *mBuf
-));
+	 RlcCfgReq         func,
+	 Pst               *pst,
+	 Buffer            *mBuf
+	 ));
 
 EXTERN S16 cmUnpkRlcEntCfgCfmInfo ARGS ((
-RlcEntCfgCfmInfo  *param,
-Buffer            *mBuf
-));
+	 RlcEntCfgCfmInfo  *param,
+	 Buffer            *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCkwUeIdChgReq ARGS ((
-CkwUeIdChgReq      func,
-Pst                *pst, 
-Buffer             *mBuf
-));
+	 CkwUeIdChgReq      func,
+	 Pst                *pst, 
+	 Buffer             *mBuf
+	 ));
 
 EXTERN S16 cmUnpkCkwUeIdChgCfm  ARGS ((
-CkwUeIdChgCfm      func,
-Pst                *pst, 
-Buffer             *mBuf
-));
+	 CkwUeIdChgCfm      func,
+	 Pst                *pst, 
+	 Buffer             *mBuf
+	 ));
 #endif /* LCCKW */
 #ifdef __cplusplus
 }
@@ -606,5 +606,5 @@ Buffer             *mBuf
 
   
 /********************************************************************30**
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

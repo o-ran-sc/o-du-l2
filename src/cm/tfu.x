@@ -59,13 +59,13 @@ typedef enum
    TFU_DCI_FORMAT_3,       /*!< DCI format 3 */
    TFU_DCI_FORMAT_3A       /*!< DCI format 3A */
 #ifdef TFU_5GTF
-   ,TFU_DCI_FORMAT_A1,      /*!< 5GTF: DCI format A1 */
+      ,TFU_DCI_FORMAT_A1,      /*!< 5GTF: DCI format A1 */
    TFU_DCI_FORMAT_A2,       /*!< 5GTF: DCI format A2 */
    TFU_DCI_FORMAT_B1,       /*!< 5GTF: DCI format B1 */
    TFU_DCI_FORMAT_B2        /*!< 5GTF: DCI format B2 */
 #endif
 #ifdef EMTC_ENABLE
-   ,TFU_DCI_FORMAT_6_0A,    /*!< DCI format 6-0 A */
+      ,TFU_DCI_FORMAT_6_0A,    /*!< DCI format 6-0 A */
    TFU_DCI_FORMAT_6_0B,    /*!< DCI format 6-0 B */
    TFU_DCI_FORMAT_6_1A,    /*!< DCI format 6-1 A */
    TFU_DCI_FORMAT_6_1B,    /*!< DCI format 6-1 B */
@@ -73,7 +73,7 @@ typedef enum
 #endif   
       /*tfu_x_001.main_6 - Added support for SPS*/
 #ifdef LTEMAC_SPS
-   ,TFU_DCI_FORMAT_INVALID  /*!< Invalid DCI format value */
+      ,TFU_DCI_FORMAT_INVALID  /*!< Invalid DCI format value */
 #endif
 } TfuDciFormat;
 
@@ -191,7 +191,7 @@ typedef struct tfuRbAssignB1Val324
    Bool		  ndi;		  /*!< 1 bit for new data indicator */
    U8         RV;         /*!< 2 bits Redundancy version */
    U8         bmiHqAckNack; /* BMI: Bit Mapping Index for Harq-Ack
-                                Refer sec 8.5 of 213 spec */ 
+			       Refer sec 8.5 of 213 spec */ 
 } TfuRbAssignB1Val324;
 
 /* Considers case where RIV is == 326 */
@@ -208,15 +208,15 @@ typedef struct tfuDciFormatA1Info
 {
    Bool        formatType;    /* Format Descriminator 00: A1, 01:A2 */
    U8          xPUSCHRange;  /* 0 : the stopping of xPUSCH is the 12th symbol, 
-                                                    1 : the stopping of xPUSCH is the 13th symbol,
-                                                    2 : the stopping of xPUSCH is the final (14th) symbol */
+1 : the stopping of xPUSCH is the 13th symbol,
+2 : the stopping of xPUSCH is the final (14th) symbol */
    U8          xPUSCH_TxTiming; /* Transmission timing of xPUSCH Value: 0->7 
-                                   l E {0,1,...,7}*/
+				   l E {0,1,...,7}*/
    U16         RBAssign;        /*!< same as phy i/f RBAssign: RIV as defined in V5G.213
-                                     Value <= 324: this field assigns morethan zero RB.
-                                     Value ==325: this format assigns zero RB.
-                                     Value ==326: this format assigns zero RB and used 
-                                     for Randon Access procedure initiated by xPDCCH order. */
+				  Value <= 324: this field assigns morethan zero RB.
+				  Value ==325: this format assigns zero RB.
+				  Value ==326: this format assigns zero RB and used 
+				  for Randon Access procedure initiated by xPDCCH order. */
    U8          beamIndex;       /*!< transmit beam index: Value: 0->7 */
    U8          symbIdx;         /*!< OFDM symbol index for the xPDCCH: Value: 0->1 */
    U8          rv;              /*!< HARQ redundancy version,  Value: 0 -> 3 */
@@ -230,7 +230,7 @@ typedef struct tfuDciFormatA1Info
 
    U8          CSI_BSI_BRI_Req; /* CSI / BSI / BRI request Value:0 -> 7 */
    U8          CSIRS_BRRS_TxTiming; /* Transmission timing of CSI-RS / BRRS, Value:0 -> 3
-                                        m E {0,1,2,3} */
+				       m E {0,1,2,3} */
 #ifdef FIVEGTF_PHY_API
    U16         rbgStart;
    U16         rbgSize;
@@ -238,9 +238,9 @@ typedef struct tfuDciFormatA1Info
 
    /* ToDo: following 4 fields can be made as union with an indicator type*/
    U8          CSIRS_BRRS_SymbIdx; /* Indication of OFDM symbol index for CSI-RS / BRRS allocations
-                                                         Value:0 -> 3 */
+Value:0 -> 3 */
    U8          CSI_BRRS_Indicator; /* If this DCI format allocates either of 
-                                      CSI-RS or BRRS transmission Value:0 -> 3 */
+				      CSI-RS or BRRS transmission Value:0 -> 3 */
    U8          CSIRS_BRRS_ProcInd; /* Process indicator : Value:0 -> 3 */
    U8          numBSI_Reports;  /* Number of BSI reports Value:0 -> 3 */
 
@@ -248,20 +248,20 @@ typedef struct tfuDciFormatA1Info
    Bool        beamSwitch;    /* beam switch indication. Value:0 -> 1 */
 
    U8          SRS_Config; /* Indication of SRS configurations Value:0 -> 3
-                              00 : {No SRS request}, 01 : {Config. #0},
-                              10 : {Config. #1}, 11 : {Config. #2} */
+00 : {No SRS request}, 01 : {Config. #0},
+10 : {Config. #1}, 11 : {Config. #2} */
    Bool        SRS_Symbol;  /* If SRS is requested, 0: SRS transmission on the 13th OFDM symbol
-                              and 1: SRS transmission on the 14th OFDM symbol */   
+			       and 1: SRS transmission on the 14th OFDM symbol */   
 
    U8          REMapIdx_DMRS_PCRS_numLayers; /* RE Mapping index, Ki for DMRS/PCRS and number of layers
-                                                Value: 0 -> 7 
-                                                0: 1 Layer, k0 = 0, 1: 1 Layer, k0 = 1
-                                                2: 1 Layer, k0 = 2, 3: 1 Layer, k0 = 3
-                                                4: 2 Layers, k0 = 0 and k1 = 1
-                                                5: 2 Layers, k0 = 2 and k1 = 3
-                                                6,7: Reserved */
+Value: 0 -> 7 
+0: 1 Layer, k0 = 0, 1: 1 Layer, k0 = 1
+2: 1 Layer, k0 = 2, 3: 1 Layer, k0 = 3
+4: 2 Layers, k0 = 0 and k1 = 1
+5: 2 Layers, k0 = 2 and k1 = 3
+6,7: Reserved */
    Bool        SCID;         /* nSCID is applied for both DMRS in subframe n and
-   	                          CSI-RS in subframe n+m Value: 0 -> 1 */
+				CSI-RS in subframe n+m Value: 0 -> 1 */
    U8          PMI;          /* Precoding matrix indicator Value:0 -> 7 */
 #ifdef FIVEGTF_PHY_API
    U8          AntPorts_numLayers;
@@ -279,14 +279,14 @@ typedef struct tfuDciFormatB1Info
 {
    Bool        formatType;    /* Format Descriminator 2: B1, 3:B2 */
    U8          xPDSCHRange;  /* MSB (starting of xPDSCH including DMRS symbol) :
-                                0 is the second symbol, 1 is the third symbol.
-                                LSB (stopping of xPDSCH): 0 is the 12th symbol,
-                                1 is the 14th symbol */
+				0 is the second symbol, 1 is the third symbol.
+				LSB (stopping of xPDSCH): 0 is the 12th symbol,
+				1 is the 14th symbol */
    U16         RBAssign;        /*!< same as phy i/f RBAssign: RIV as defined in V5G.213
-                                     Value <= 324: this field assigns morethan zero RB.
-                                     Value ==325: this format assigns zero RB.
-                                     Value ==326: this format assigns zero RB and used 
-                                     for Randon Access procedure initiated by xPDCCH order. */
+				  Value <= 324: this field assigns morethan zero RB.
+				  Value ==325: this format assigns zero RB.
+				  Value ==326: this format assigns zero RB and used 
+				  for Randon Access procedure initiated by xPDCCH order. */
    U8          beamIndex;       /*!< transmit beam index: Value: 0->7 */
    U8          symbIdx;         /*!< OFDM symbol index for the xPDCCH: Value: 0->1 */
    /* Based on RBAssign/RIV value*/
@@ -298,12 +298,12 @@ typedef struct tfuDciFormatB1Info
 
    U8          CSI_BSI_BRI_Req; /* CSI / BSI / BRI request Value:0 -> 7 */
    U8          CSIRS_BRRS_TxTiming; /* Transmission timing of CSI-RS / BRRS, Value:0 -> 3
-                                        m E {0,1,2,3} */
+				       m E {0,1,2,3} */
    /* ToDo: following 4 fields can be made as union with an indicator type*/
    U8          CSIRS_BRRS_SymbIdx; /* Indication of OFDM symbol index for CSI-RS / BRRS allocations
-                                                         Value:0 -> 3 */
+Value:0 -> 3 */
    U8          CSI_BRRS_Indicator; /* If this DCI format allocates either of 
-                                      CSI-RS or BRRS transmission Value:0 -> 3 */
+				      CSI-RS or BRRS transmission Value:0 -> 3 */
    U8          CSIRS_BRRS_ProcInd; /* Process indicator : Value:0 -> 3 */
    U8          numBSI_Reports;  /* Number of BSI reports Value:0 -> 3 */
 
@@ -312,19 +312,19 @@ typedef struct tfuDciFormatB1Info
    Bool        beamSwitch;    /* beam switch indication. Value:0 -> 1 */
 
    U8          SRS_Config; /* Indication of SRS configurations Value:0 -> 3
-                              00 : {No SRS request}, 01 : {Config. #0},
-                              10 : {Config. #1}, 11 : {Config. #2} */
+00 : {No SRS request}, 01 : {Config. #0},
+10 : {Config. #1}, 11 : {Config. #2} */
    Bool        SRS_Symbol;  /* If SRS is requested, 0: SRS transmission on the 13th OFDM symbol
-                              and 1: SRS transmission on the 14th OFDM symbol */   
+			       and 1: SRS transmission on the 14th OFDM symbol */   
 
    U8          AntPorts_numLayers; 
 
    Bool        SCID;         /* nSCID is applied for both DMRS in subframe n and
-   	                          CSI-RS in subframe n+m Value: 0 -> 1 */
+				CSI-RS in subframe n+m Value: 0 -> 1 */
    U8          tpcCmd;       /*!< 2 bits for TPC command for xPUCCH, Values: 0->3  */													  
    Bool	      DL_PCRS;      /* DL PCRS 	Value: 0 -> 3 
-                                00 : {No PCRS }, 01 : {PCRS on AP 60},
-                                10 : {PCRS on AP 61}, 11 : {PCRS on AP 60 and 61}*/
+00 : {No PCRS }, 01 : {PCRS on AP 60},
+10 : {PCRS on AP 61}, 11 : {PCRS on AP 60 and 61}*/
 
 } TfuDciFormatB1Info;
 
@@ -338,26 +338,26 @@ typedef struct tfuDciFormat0Info
 {
    Bool          isSrGrant;    /*!< This is to aid a counter which prints num successful SR Grants SR_RACH_STATS */
    Bool        isMsg4PdcchWithCrnti; /* This is to aid rgNumMsg4PdcchWithCrnti counter which counts
-                                       num of PDCCH scrambled with CRNTI for CRNTI Based contention resolution */
+					num of PDCCH scrambled with CRNTI for CRNTI Based contention resolution */
    Bool        hoppingEnbld;  /*!< TRUE, if hopping is enabled */
    U8          rbStart;       /*!< Starting RB */
    U8          numRb;         /*!< Number of RBs */
 #ifdef TFU_UPGRADE
    U32         riv;           /*!< RIV as defined in 213 
-                               section 7.1.6.3 - used only for
-                               SPS release */
+				section 7.1.6.3 - used only for
+				SPS release */
 #endif 
    U8          hoppingBits;   /*!< Hopping bits as mentioned in 213 section 8.4 */
    U8          mcs;           /*!< 5 bits for MCS and RV */
    Bool        ndi;           /*!< 1 bit for new data indicator */
    U8          tpcCmd;        /*!< 2 bits for TPC command */
-/** @name TFU_TDD  */
-/** @{ */
+   /** @name TFU_TDD  */
+   /** @{ */
 #ifdef TFU_TDD
    U8          ulIdx;         /*!< UL index applicable only for TDD */
    U8          dai;           /*!< The downlink assignement index */
 #endif
-/** @} */
+   /** @} */
    U8          nDmrs;         /*!< 3 bits for DMRS cyclic shift */
    U8          cqiReq;        /*!< 1 bit for CQI non-CA while value 00, 01, 10 and 11 for CA */
    U8          numCqiBit;     /*!< Number of CsiReq Bit(s) Values : 1 or 2(CA)*/
@@ -389,8 +389,8 @@ typedef struct tfuAllocMapOrRiv
       /*tfu_x_001.main_8 - ADD - TFU_RESMAP_CHANGE support */
 #ifndef TFU_RESMAP_CHANGE
       U8                  resAllocMap[TFU_MAX_ALLOC_BYTES]; /*!< Resource 
-                                      allocation bitmap. LSB aligns with the
-                                      LSB of the allocation bits.*/
+							      allocation bitmap. LSB aligns with the
+							      LSB of the allocation bits.*/
 #else /* TFU_RESMAP_CHANGE */
       TfuAllocMap         allocMap;   /*!< Allocation Map. */
 #endif
@@ -416,21 +416,21 @@ typedef enum
 typedef struct tfuAllocMap
 {
    TfuAllocSubType           type;       /*!< Allocation type: 0/1 */
-  union
-  {
-     struct 
-     {
-        U32               allocMask;  /*!< Allocation Mask for RBGs */
-     } allocType0;
-     struct
-     {
-        U8                rbgSubset;  /*!< RBG Subset number: Value in set
-                                           {0,1,2,3} */
-        U8                shift;      /*!< Shift value for RBG mask: Value in 
-                                           set {0,1} */
-        U32               allocMask;  /*!< Allocation bitmask */
-     } allocType1;
-  } u; 
+   union
+   {
+      struct 
+      {
+	 U32               allocMask;  /*!< Allocation Mask for RBGs */
+      } allocType0;
+      struct
+      {
+	 U8                rbgSubset;  /*!< RBG Subset number: Value in set
+					 {0,1,2,3} */
+	 U8                shift;      /*!< Shift value for RBG mask: Value in 
+					 set {0,1} */
+	 U32               allocMask;  /*!< Allocation bitmask */
+      } allocType1;
+   } u; 
 } TfuAllocMap;
 #endif
 
@@ -445,8 +445,8 @@ typedef struct tfuDciFormat1AllocInfo
 {
    Bool        isAllocType0;  /*!< TRUE, if allocation type is 0 */
    U8          resAllocMap[TFU_MAX_ALLOC_BYTES];   /*!< Resource allocation bitmap.
-                                                LSB aligns with the LSB of the
-                                                allocation bits.*/
+						     LSB aligns with the LSB of the
+						     allocation bits.*/
    U8          harqProcId;    /*!< HARQ process ID */
    Bool        ndi;           /*!< 1 bit for new data indicator */
    U8          mcs;           /*!< 5 bits for MCS */
@@ -462,17 +462,17 @@ typedef struct tfuDciFormat1AllocInfo
 typedef struct tfuDciFormat1Info
 {
    TfuDciFormat1AllocInfo  allocInfo;     /*!< Allocation Information to map data on PDSCH */
-/** @name TFU_TDD  */
-/** @{ */
+   /** @name TFU_TDD  */
+   /** @{ */
 #ifdef TFU_TDD
    U8                      dai;           /*!< The downlink assignement index */
 #endif
-/** @} */
+   /** @} */
    U8                      tpcCmd;        /*!< 2 bits for TPC command */
 } TfuDciFormat1Info;
 
 /** @brief This structure contains the TB level DCI signalling
-  * parameters in case of DCI formats 2 and 2A */
+ * parameters in case of DCI formats 2 and 2A */
 typedef struct tfuDciFormatTbInfo
 {
    Bool                   ndi; /*!< New data indicator */
@@ -481,20 +481,20 @@ typedef struct tfuDciFormatTbInfo
 }TfuDciFormatTbInfo;
 /** @} */
 /** @brief This structure contains only the allocation information, that is part
-  * of DCI format 2A. 
-  * @details Allocation information also contains parameters necessary
-  * for Physical layer to process Downlink data. This structure accompanies the
-  * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
-  * @sa TfuDciFormat2AInfo
-  */
+ * of DCI format 2A. 
+ * @details Allocation information also contains parameters necessary
+ * for Physical layer to process Downlink data. This structure accompanies the
+ * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
+ * @sa TfuDciFormat2AInfo
+ */
 typedef struct tfuDciFormat2AAllocInfo
 {
    Bool        isAllocType0;  /*!< TRUE, if allocation type is 0 */
-      /*tfu_x_001.main_8 - ADD - TFU_RESMAP_CHANGE support */
+   /*tfu_x_001.main_8 - ADD - TFU_RESMAP_CHANGE support */
 #ifndef TFU_RESMAP_CHANGE
    U8          resAllocMap[TFU_MAX_ALLOC_BYTES];   /*!< Resource allocation bitmap.
-                                                LSB aligns with the LSB of the
-                                                allocation bits.*/
+						     LSB aligns with the LSB of the
+						     allocation bits.*/
 #else
    TfuAllocMap allocMap;   /*!< Allocation Map */
 #endif /* TFU_RESMAP_CHANGE */
@@ -511,99 +511,99 @@ typedef struct tfuDciFormat2AAllocInfo
 typedef struct tfuDciFormat2AInfo
 {
    TfuDciFormat2AAllocInfo  allocInfo;     /*!< Allocation Information to map data on PDSCH */
-/** @name TFU_TDD  */
-/** @{ */
+   /** @name TFU_TDD  */
+   /** @{ */
 #ifdef TFU_TDD
    U8                       dai;           /*!< The downlink assignement index */
 #endif
-/** @} */
+   /** @} */
    U8                       tpcCmd;        /*!< 2 bits for TPC command */
 } TfuDciFormat2AInfo;
 
 /** @brief This structure contains only the allocation information, that is part
-  * of DCI format 2. 
-  * @details Allocation information also contains parameters necessary
-  * for Physical layer to process Downlink data. This structure accompanies the
-  * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
-  * @sa TfuDciFormat2Info
-  */
+ * of DCI format 2. 
+ * @details Allocation information also contains parameters necessary
+ * for Physical layer to process Downlink data. This structure accompanies the
+ * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
+ * @sa TfuDciFormat2Info
+ */
 typedef struct tfuDciFormat2AllocInfo
 {
    Bool                   isAllocType0;  /*!< TRUE, if allocation type is 0 */
 #ifndef TFU_RESMAP_CHANGE
    U8                     resAllocMap[TFU_MAX_ALLOC_BYTES]; /*!< Resource 
-                                              allocation bitmap. LSB aligns
-                                              with the LSB of the allocation
-                                              bits.*/
+							      allocation bitmap. LSB aligns
+							      with the LSB of the allocation
+							      bits.*/
 #else
    TfuAllocMap             allocMap;   /*!< Allocation Map.*/
 #endif
-/** @} */
-/** @name TFU_TDD  */
-/** @{ */
+   /** @} */
+   /** @name TFU_TDD  */
+   /** @{ */
 #ifdef TFU_TDD
    U8                     dai;           /*!< The downlink assignement index */
 #endif
-/** @} */
+   /** @} */
    Bool                   transSwap;     /*!< Transport block to codeword swap
-                                              flag */
+					   flag */
    U8                     precoding;     /*!< Precoding information bit */
    U8                     harqProcId;    /*!< HARQ process ID */
    TfuDciFormatTbInfo     tbInfo[2];     /*!< DCI Format 2/2A info per TB */
-} TfuDciFormat2AllocInfo;
+   } TfuDciFormat2AllocInfo;
 
 
- /** @brief This structure contains the information carried by DCI format 2.
+/** @brief This structure contains the information carried by DCI format 2.
  * @details Allocation information is separated from the other control
  * information carried in this format. This separation is needed as Data must
  * also carry some control information, essentially, allocation information
  * along with it, in order to aid physical layer processing of the data. 
-  */
+ */
 typedef struct tfuDciFormat2Info
 {
    TfuDciFormat2AllocInfo  allocInfo;     /*!< Allocation Information to map 
-                                               data on PDSCH */
+					    data on PDSCH */
    U8                      tpcCmd;        /*!< 2 bits for TPC command */
-/** @{ */
-/** @name TFU_TDD  */
-/** @{ */
+   /** @{ */
+   /** @name TFU_TDD  */
+   /** @{ */
 #ifdef TFU_TDD
    U8                      dai;            /*!< The downlink assignment index */
 #endif
-/** @} */
-/** @} */
+   /** @} */
+   /** @} */
 } TfuDciFormat2Info;
 
- /** @brief This structure contains the information carried in DCI format 3.
-  */
+/** @brief This structure contains the information carried in DCI format 3.
+ */
 typedef struct tfuDciFormat3Info
 {
    U8          tpcCmd[TFU_MAX_2BIT_TPC]; /*!< 2 bits for TPC command. 
-                                           LSB corresponds to the 1st bit of the 1st
-                                          byte.*/
+					   LSB corresponds to the 1st bit of the 1st
+					   byte.*/
    U8          isPucch;                  /*!< 1 if the TPC meant for PUCCH, 0 if the TPC meant for PUSCH */                                          
 
 } TfuDciFormat3Info;
 
- /** @brief This structure contains the information carried by DCI format 3A.
-  */
+/** @brief This structure contains the information carried by DCI format 3A.
+ */
 typedef struct tfuDciFormat3AInfo
 {
    U8          tpcCmd[TFU_MAX_1BIT_TPC]; /*!< 1 bit for TPC command. 
-                                           LSB corresponds to the 1st bit of the
-                                          1st byte.*/
+					   LSB corresponds to the 1st bit of the
+					   1st byte.*/
    U8          isPucch;                  /*!< 1 if the TPC meant for PUCCH, 0 if the TPC meant for PUSCH */                                          
 } TfuDciFormat3AInfo;
 
 
 
- /** @brief This structure contains only the allocation information that is part
-  * of DCI format 1D. 
-  * @details Allocation information also contains parameters necessary
-  * for Physical layer to process Downlink data. This structure accompanies the
-  * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
-  * @sa TfuDciFormat1dInfo
-  */
+/** @brief This structure contains only the allocation information that is part
+ * of DCI format 1D. 
+ * @details Allocation information also contains parameters necessary
+ * for Physical layer to process Downlink data. This structure accompanies the
+ * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
+ * @sa TfuDciFormat1dInfo
+ */
 typedef struct tfuDciFormat1dAllocInfo
 {
    Bool              isLocal;       /*!< TRUE, if localised VRB */
@@ -614,35 +614,35 @@ typedef struct tfuDciFormat1dAllocInfo
    U8                tPmi;          /*!< PMI */
 } TfuDciFormat1dAllocInfo;
 
- /** @brief This structure contains the information carried by DCI format 1D.
+/** @brief This structure contains the information carried by DCI format 1D.
  * @details Allocation information is separated from the other control
  * information carried in this format. This separation is needed as Data must
  * also carry some control information, essentially, allocation information
  * along with it, in order to aid physical layer processing of the data. 
-  */
+ */
 typedef struct tfuDciFormat1dInfo
 {
    TfuDciFormat1dAllocInfo allocInfo;     /*!< Allocation information */
    U8                      harqProcId;    /*!< HARQ process ID */
    Bool                    ndi;           /*!< 1 bit for new data indicator */
    U8                      tpcCmd;        /*!< 2 bits for TPC command */
-/** @name TFU_TDD  */
-/** @{ */
+   /** @name TFU_TDD  */
+   /** @{ */
 #ifdef TFU_TDD
    U8                      dai;           /*!< The downlink assignement index */
 #endif
-/** @} */
+   /** @} */
    U8                      dlPwrOffset;   /*!< Downlink power offset */
 } TfuDciFormat1dInfo;
 
 
- /** @brief This structure contains only the allocation information, that is part
-  * of DCI format 1C. 
-  * @details Allocation information also contains parameters necessary
-  * for Physical layer to process Downlink data. This structure accompanies the
-  * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
-  * @sa TfuDciFormat1CInfo
-  */
+/** @brief This structure contains only the allocation information, that is part
+ * of DCI format 1C. 
+ * @details Allocation information also contains parameters necessary
+ * for Physical layer to process Downlink data. This structure accompanies the
+ * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
+ * @sa TfuDciFormat1CInfo
+ */
 typedef struct tfuDciFormat1cInfo
 {
    TknU8             nGap2;         /*!< 1 indicates Ngap=Ngap,1 and 2 indicates Ngap,2 */
@@ -651,13 +651,13 @@ typedef struct tfuDciFormat1cInfo
 } TfuDciFormat1cInfo;
 
 
- /** @brief This structure contains only the allocation information, that is part
-  * of DCI format 1 B. 
-  * @details Allocation information also contains parameters necessary
-  * for Physical layer to process Downlink data. This structure accompanies the
-  * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
-  * @sa TfuDciFormat1BInfo
-  */
+/** @brief This structure contains only the allocation information, that is part
+ * of DCI format 1 B. 
+ * @details Allocation information also contains parameters necessary
+ * for Physical layer to process Downlink data. This structure accompanies the
+ * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
+ * @sa TfuDciFormat1BInfo
+ */
 typedef struct tfuDciFormat1bAllocInfo
 {
    Bool              isLocal;       /*!< TRUE, if localised VRB */
@@ -672,23 +672,23 @@ typedef struct tfuDciFormat1bAllocInfo
 } TfuDciFormat1bAllocInfo;
 
 
- /** @brief This structure contains the information that is carried in DCI
-  * format 1A for a PDCCH order. 
-  */
+/** @brief This structure contains the information that is carried in DCI
+ * format 1A for a PDCCH order. 
+ */
 typedef struct tfuPdcchOrderInfo
 {
    U8          preambleIdx;    /*!< Dedicated preamble index */
    U8          prachMaskIdx;   /*!< PRACH Mask index used to determine the
-                                    subframe to be used for RACH */
+				 subframe to be used for RACH */
 } TfuPdcchOrderInfo;
 
- /** @brief This structure contains only the allocation information that is part
-  * of DCI format 1A. 
-  * @details Allocation information also contains parameters necessary
-  * for Physical layer to process Downlink data. This structure accompanies the
-  * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
-  * @sa TfuDciFormat1AInfo
-  */
+/** @brief This structure contains only the allocation information that is part
+ * of DCI format 1A. 
+ * @details Allocation information also contains parameters necessary
+ * for Physical layer to process Downlink data. This structure accompanies the
+ * Data that is sent from MAC to PHY in the TfUiTfuDatReq primitive.
+ * @sa TfuDciFormat1AInfo
+ */
 typedef struct tfuDciFormat1aAllocInfo
 {
    Bool              isLocal;       /*!< TRUE, if localised VRB */
@@ -697,23 +697,23 @@ typedef struct tfuDciFormat1aAllocInfo
    U8                mcs;           /*!< 5 bits for MCS */
    U8                rv;            /*!< Redundancy version */
    TknU8             harqProcId;    /*!< HARQ process ID. Reserved
-                                         if RA-RNTI, P-RNTI, SI-RNTI is used */
+				      if RA-RNTI, P-RNTI, SI-RNTI is used */
    Bool              ndi;           /*!< 1 bit for new data indicator */
 } TfuDciFormat1aAllocInfo;
 
- /** @brief This structure contains the information carried in DCI format 1A
-  * when it is NOT used for a PDCCH order. 
-  */
+/** @brief This structure contains the information carried in DCI format 1A
+ * when it is NOT used for a PDCCH order. 
+ */
 typedef struct tfudciformat1aPdsch
 {
    TfuDciFormat1aAllocInfo allocInfo;     /*!< Allocation information. */
-/** @name TFU_TDD  */
-/** @{ */
+   /** @name TFU_TDD  */
+   /** @{ */
 #ifdef TFU_TDD
    TknU8                   dai;   /*!< The downlink assignement index. Reserved
-                                   if RA-RNTI, P-RNTI, SI-RNTI is used. */
+				    if RA-RNTI, P-RNTI, SI-RNTI is used. */
 #endif
-/** @} */
+   /** @} */
    U8                      tpcCmd;        /*!< 2 bits for TPC command. */
    Bool                 isTBMsg4; /*!< This field is added to help counting num of Msg4 Tx failures */
 } Tfudciformat1aPdsch;
@@ -744,12 +744,12 @@ typedef struct tfuDciFormat1aInfo
 typedef struct tfuDciFormat1bInfo
 {
    TfuDciFormat1bAllocInfo allocInfo;     /*!< Allocation information */
-/** @name TFU_TDD  */
-/** @{ */
+   /** @name TFU_TDD  */
+   /** @{ */
 #ifdef TFU_TDD
    U8          dai;                       /*!< The downlink assignement index */
 #endif
-/** @} */
+   /** @} */
    U8                      tpcCmd;        /*!< 2 bits for TPC command */
 } TfuDciFormat1bInfo;
 #ifdef EMTC_ENABLE
@@ -766,7 +766,7 @@ typedef struct tfuDciFormat60aInfo
    U8                rv;            /*!< 2 bits - Redundancy version */
    U8                tpcCmd;        /*!< 2 bits for TPC command */
 #ifdef TFU_TDD
-/* TODO_Mavericks: Check if DAI is required for FDD also */
+   /* TODO_Mavericks: Check if DAI is required for FDD also */
    U8               ulIdx;         /*!< UL index applicable only for TDD */
    U8               dai;           /*!< The downlink assignement index */
 #endif
@@ -784,17 +784,17 @@ typedef struct tfuDciFormat60aInfo
 typedef struct tfuDciFormat61AllocInfo
 {
    U32         riv;           /*!<9 bits, type2 allocation, RIV as defined in 213 section 7.1.6.3. */
-/* TODO_EMTC: Add start RB, number of RB, Narrow band if required */
+   /* TODO_EMTC: Add start RB, number of RB, Narrow band if required */
    U8          harqProcId;    /*!< HARQ process ID */
    Bool        ndi;           /*!< 1 bit for new data indicator */
    U8          mcs;           /*!< 4 bits for MCS and RV */
    U8          rv;            /*!< 2 bits - Redundancy version */
-	U32 		   scramblerInitValue; /*!< Scrambler init(Cinit) value as per 36.211 */
+   U32 		   scramblerInitValue; /*!< Scrambler init(Cinit) value as per 36.211 */
 } TfuDciFormat61AllocInfo;
 
- /** @brief This structure contains the information carried in DCI format 6-1A
-  * when it is NOT used for a PDCCH order. 
-  */
+/** @brief This structure contains the information carried in DCI format 6-1A
+ * when it is NOT used for a PDCCH order. 
+ */
 typedef struct tfudciformat61aPdsch
 {
    TfuDciFormat61AllocInfo allocInfo;   /* Allocation info for 6-1A */
@@ -802,7 +802,7 @@ typedef struct tfudciformat61aPdsch
    U8                  rep;           /*!< 2 bits, repetion number */
    U8                  tpcCmd;        /*!< 2 bits for TPC command */
 #ifdef TFU_TDD
-/* TODO_Maveri: Check if DAI is required for FDD also */
+   /* TODO_Maveri: Check if DAI is required for FDD also */
    U8                  dai;           /*!< The downlink assignement index */
 #endif
    U8                  antPortAndScrId; /*!< 2 bits - Antenna port(s) and scrambling identity  */
@@ -818,7 +818,7 @@ typedef struct tfuPdcchOrderInfoEmtc
    U32         riv;             /*!<9 bits, type2 allocation, RIV as defined in 213 section 7.1.6.3. */
    U8          preambleIdx;    /*!< Dedicated preamble index */
    U8          prachMaskIdx;   /*!< PRACH Mask index used to determine the
-                                    subframe to be used for RACH */
+				 subframe to be used for RACH */
    U8          ceLevel;        /*!< 2 bits, Starting CE level */
 } TfuPdcchOrderInfoEmtc;
 
@@ -853,18 +853,18 @@ typedef struct tfuDirectIndication
 
 typedef struct tfuDciFormat62AllocInfo
 {
-  U8 riv;                         /*!< Narrow Band Index*/ 
-  U8 mcs;                         /*!<MCS */
-  U32         scramblerInitValue; /*!< Scrambler init(Cinit) value as per 36.211 */
-  U8          rv;                  /*!<Redundancy version */ 
+   U8 riv;                         /*!< Narrow Band Index*/ 
+   U8 mcs;                         /*!<MCS */
+   U32         scramblerInitValue; /*!< Scrambler init(Cinit) value as per 36.211 */
+   U8          rv;                  /*!<Redundancy version */ 
 }TfuDciFormat62AllocInfo;
 
 typedef struct tfudciformat62Pdsch
 {
-    TfuDciFormat62AllocInfo format62AllocInfo;
-    U8 repNum;                       /*!< 3 bits, repetion number */
-    U8 dciSubRepNum;                 /*!< 2 bits for DCI Subframe repetition */
-     
+   TfuDciFormat62AllocInfo format62AllocInfo;
+   U8 repNum;                       /*!< 3 bits, repetion number */
+   U8 dciSubRepNum;                 /*!< 2 bits for DCI Subframe repetition */
+
 
 }Tfudciformat62Pdsch;
 
@@ -920,10 +920,10 @@ typedef struct tfuDciInfo
       TfuDciFormat62Info  format62Info;  /*!< Formra 62  Information */
 #endif /* EMTC_ENABLE */
 #ifdef TFU_5GTF
-	  TfuDciFormatA1Info  formatA1Info;  /*!< 5GTF: Format A1 information */
-	  TfuDciFormatA2Info  formatA2Info;  /*!< 5GTF: Format A1 information */
-	  TfuDciFormatB1Info  formatB1Info;  /*!< 5GTF: Format B1 information */
-	  TfuDciFormatB2Info  formatB2Info;  /*!< 5GTF: Format B2 information */
+      TfuDciFormatA1Info  formatA1Info;  /*!< 5GTF: Format A1 information */
+      TfuDciFormatA2Info  formatA2Info;  /*!< 5GTF: Format A1 information */
+      TfuDciFormatB1Info  formatB1Info;  /*!< 5GTF: Format B1 information */
+      TfuDciFormatB2Info  formatB2Info;  /*!< 5GTF: Format B2 information */
 #endif
    } u;
 } TfuDciInfo;
@@ -962,9 +962,9 @@ typedef struct tfuPdcchCceInfo
    CmLteAggrLvl   aggrLvl;  /*!< Aggregation level */
 } TfuPdcchCceInfo;
 
- /** @brief This structure maps to the CQI mode 10. The report can either
-  * convey a Rank index or a wide-band CQI. 
-  */
+/** @brief This structure maps to the CQI mode 10. The report can either
+ * convey a Rank index or a wide-band CQI. 
+ */
 typedef struct tfuCqiPucchMode10
 {
    TfuRptType       type;   /*!< Either RI or CQI reported */
@@ -976,9 +976,9 @@ typedef struct tfuCqiPucchMode10
 } TfuCqiPucchMode10;
 
 
- /** @brief This structure contains a wide-band CQI, PMI, and optionally a
-  * wide-band differential CQI. 
-  */
+/** @brief This structure contains a wide-band CQI, PMI, and optionally a
+ * wide-band differential CQI. 
+ */
 typedef struct tfuCqiMode11Cqi
 {
    U8       cqi;           /*!< Wide-band CQI */
@@ -986,9 +986,9 @@ typedef struct tfuCqiMode11Cqi
    TknU8    wideDiffCqi;   /*!< Wide-band differential CQI */
 } TfuCqiMode11Cqi;
 
- /** @brief This structure maps to the CQI mode 11. The report can either
-  * convey a Rank index or a CQI report. 
-  */
+/** @brief This structure maps to the CQI mode 11. The report can either
+ * convey a Rank index or a CQI report. 
+ */
 typedef struct tfuCqiPucchMode11
 {
    TfuRptType       type;   /*!< Either RI or CQI reported */
@@ -999,17 +999,17 @@ typedef struct tfuCqiPucchMode11
    }u;
 } TfuCqiPucchMode11;
 
- /** @brief This structure contains the sub-band CQI for mode 2-0. 
-  */
+/** @brief This structure contains the sub-band CQI for mode 2-0. 
+ */
 typedef struct tfuCqiMode20SubCqi
 {
    U8      cqi;      /*!< CQI value */
    U8       l;       /*!< L bit sub-band label */
 } TfuCqiMode20SubCqi;
 
- /** @brief This structure contains Mode 20 CQI report. It can either be a
-  * wide-band CQI or a sub-band CQI. 
-  */
+/** @brief This structure contains Mode 20 CQI report. It can either be a
+ * wide-band CQI or a sub-band CQI. 
+ */
 typedef struct tfuCqiMode20Cqi
 {
    Bool     isWideband;             /*!< TRUE, if wide-band CQI is reported */
@@ -1021,9 +1021,9 @@ typedef struct tfuCqiMode20Cqi
 } TfuCqiMode20Cqi;
 
 
- /** @brief This structure maps to CQI mode 20. The report either contains a
-  * Rank Index or a CQI report. 
-  */
+/** @brief This structure maps to CQI mode 20. The report either contains a
+ * Rank Index or a CQI report. 
+ */
 typedef struct tfuCqiPucchMode20
 {
    TfuRptType       type;   /*!< Either RI or CQI reported */
@@ -1034,9 +1034,9 @@ typedef struct tfuCqiPucchMode20
    }u;
 } TfuCqiPucchMode20;
 
- /** @brief This structure contains the sub-band CQI report for mode 2-1. 
-  * It carries a CQI, 'L' bit sub-band label, and optionally a differential CQI.
-  */
+/** @brief This structure contains the sub-band CQI report for mode 2-1. 
+ * It carries a CQI, 'L' bit sub-band label, and optionally a differential CQI.
+ */
 typedef struct tfuCqiMode21SubCqi
 {
    U8       cqi;     /*!< CQI */
@@ -1045,9 +1045,9 @@ typedef struct tfuCqiMode21SubCqi
 } TfuCqiMode21SubCqi;
 
 
- /** @brief This structure contains the wide-band CQI report for mode 2-1.
-  * It carries a wide-band CQI, PMI and optionally a differential CQI. 
-  */
+/** @brief This structure contains the wide-band CQI report for mode 2-1.
+ * It carries a wide-band CQI, PMI and optionally a differential CQI. 
+ */
 typedef struct tfuCqiMode21WideCqi
 {
    U8       cqi;        /*!< CQI */
@@ -1056,9 +1056,9 @@ typedef struct tfuCqiMode21WideCqi
 } TfuCqiMode21WideCqi;
 
 
- /** @brief This structure conveys CQI report for mode 2-1. The reported value
-  * can either be wide-band or sub-band. 
-  */
+/** @brief This structure conveys CQI report for mode 2-1. The reported value
+ * can either be wide-band or sub-band. 
+ */
 typedef struct tfuCqiMode21Cqi
 {
    Bool     isWideband;             /*!< TRUE, if wide-band CQI is reported. */
@@ -1070,9 +1070,9 @@ typedef struct tfuCqiMode21Cqi
 } TfuCqiMode21Cqi;
 
 
- /** @brief This structure maps to the CQI reporting mode 2-1. The report either
-  * conveys a Rank Indicator or a CQI report. 
-  */
+/** @brief This structure maps to the CQI reporting mode 2-1. The report either
+ * conveys a Rank Indicator or a CQI report. 
+ */
 typedef struct tfuCqiPucchMode21
 {
    TfuRptType       type;   /*!< Either RI or CQI reported */
@@ -1100,9 +1100,9 @@ typedef struct tfuDlCqiPucch
 } TfuDlCqiPucch;
 
 
- /** @brief This structure carries sub-band information and PMI, in the CQI
-  * reporting format 1-2. 
-  */
+/** @brief This structure carries sub-band information and PMI, in the CQI
+ * reporting format 1-2. 
+ */
 typedef struct tfuSubbandMode12
 {
    U8             pmi;             /*!< PMI for this sub-band */
@@ -1116,7 +1116,7 @@ typedef struct tfuCqiPuschMode12
 {
    U8               numSubband;                     /*!< Number of sub-bands */
    U8               cqiIdx[TFU_MAX_TB];             /*!< Single Wide-band CQI per
-                                                     codeword */
+						      codeword */
    TfuSubbandMode12 subbandArr[TFU_MAX_DL_SUBBAND]; /*!< Sub-band information array */
 } TfuCqiPuschMode12;
 
@@ -1127,9 +1127,9 @@ typedef struct tfuCqiPuschMode12
 typedef struct tfuCqiPuschMode20
 {
    U8             cqiIdx;                         /*!< CQI index transmission
-                                                    over M sub-bands */
+						    over M sub-bands */
    U8             wideBandCqi;                    /*!< Wide-band CQI index, that is,
-                                                    transmission over S sub-bands */
+						    transmission over S sub-bands */
    U8             numSubband;                     /*!< Number of sub-bands */
    TfuSubbandInfo subbandArr[TFU_MAX_DL_SUBBAND]; /*!< Sub-band information array */
 } TfuCqiPuschMode20;
@@ -1140,9 +1140,9 @@ typedef struct tfuCqiPuschMode20
 typedef struct tfuCqiPuschMode22
 {
    U8                cqi[TFU_MAX_TB];                 /*!< CQI index over M preferred
-                                                         Sub-bands */
+							Sub-bands */
    U8                pmi;                             /*!< PMI preferred PMI over M
-                                                         sub-bands */
+							sub-bands */
    U8                wideBandCqi[TFU_MAX_TB];         /*!< Wide-band CQI */
    U8                wideBandPmi;                     /*!< PMI */
    U8                numSubband;                      /*!< Number of sub-bands, that is, M mentioned in 213, each of size k */
@@ -1187,8 +1187,8 @@ typedef struct tfuCqiPuschMode31
    U8                     wideBandCqi[TFU_MAX_TB];  /*!< Wide-band CQI per CW */
    U8                     numSubband;               /*!< Number of sub-bands */
    TfuSubbandDlCqiInfo    subbandCqiArr[TFU_MAX_DL_SUBBAND];  /*!< Array of 
-                                                         sub-bands and CQI for
-                                                         each of them */
+								sub-bands and CQI for
+								each of them */
 } TfuCqiPuschMode31;
 
 /** @enum TfuDlCqiPuschMode
@@ -1313,7 +1313,7 @@ typedef struct tfuRawCqiRpt
 #else
    U8                     cqiConfBitMask;
    U8                     cqiBits[TFU_MAX_CQI_BYTES]; /*!< An array of bits
-                                              corresponding to the Raw CQI report */
+							corresponding to the Raw CQI report */
    U8                     ri[CM_LTE_MAX_CELLS]; /*!< Array of bits comprising of a Rank */                                              
 #endif
 } TfuRawCqiRpt;
@@ -1351,7 +1351,7 @@ typedef enum
    TFU_PUCCH_HARQ_SR_CQI_SRS,
    TFU_PUCCH_SR_CQI_SRS
 #ifdef TFU_5GTF
-   ,
+      ,
    /* 5GTF TODO: Order of encoding should be as per 212 5.2.3.6 */
    TFU_XPUCCH_UCI_INFO,   /*!< HQ+CQI+RI */
    TFU_PUCCH_BSI_BRI
@@ -1366,9 +1366,9 @@ typedef struct tfuUePucchHqRecpInfo
    TfuAckNackMode         hqFdbkMode;    /*!< Feedback mode in TDD */
    U8                     hqSz;          /*!< Size of feedback in bits */
    U8                     pucchResCnt;   /*!< Number of ACK/NACK responses
-                                              received in this subframe [0-4] */
+					   received in this subframe [0-4] */
    U16                    hqRes[TFU_MAX_HQ_RES]; /*!< (n^1PUCCH(0-3))
-                                              values [0-2047] */
+						   values [0-2047] */
    U8                     a;             /*!< A value to interpret Hq feedback */ 
 } TfuUePucchHqRecpInfo;
 
@@ -1379,7 +1379,7 @@ typedef struct tfuUePucchSrRecpInfo
 {
    U16                    n1PucchIdx;    /*!< (n^1PUCCH) value [0-2047] */
 } TfuUePucchSrRecpInfo;
- 
+
 /** @brief This structure is sent from scheduler to PHY in order to request the
  * reception of CQI information on PUCCH.
  */
@@ -1421,23 +1421,23 @@ typedef enum tfuUlSrsCycShiftInfo
    TFU_ULSRS_CYSHIFT_7 = 7   
 } TfuUlSrsCycShiftInfo;
 
- 
+
 /** @brief This structure is sent from scheduler to PHY in order to request the
  * reception of SRS information on PUCCH.
  */
 typedef struct tfuUePucchSrsRecpInfo
 {
    TfuUlSrsBwInfo  srsBw;         /*!< UE specific SRS Bandwidth (B,srs)
-                                              parameter. Given by RRC[0-3] */
+				    parameter. Given by RRC[0-3] */
    U8                     nRrc;          /*!< Frequency Domain position given by
-                                              RRC per UE.[0-23]*/
+					   RRC per UE.[0-23]*/
    TfuUlSrsHoBwInfo  srsHopBw;      /*!< SRS Hopping BW given by RRC per
-                                              UE (b,Hop)[0-3] */
+				      UE (b,Hop)[0-3] */
    U8                     transComb;     /*!< Frequency location given by RRC
-                                              per UE (k,TC) [0-1] */
+					   per UE (k,TC) [0-1] */
    U16                    srsCfgIdx;     /*!< (Isrs) - defines SRS periodicity
-                                              and subframe offset,given by RRC
-                                              [0-1023] */
+					   and subframe offset,given by RRC
+					   [0-1023] */
    TfuUlSrsCycShiftInfo   srsCyclicShft; /*!< (n^cs,srs) given by RRC [0-7] */
    /*Need to add U8 AntPort for Rel10 when SRS is supported */
 } TfuUePucchSrsRecpInfo;
@@ -1449,10 +1449,10 @@ typedef struct tfuUePucchSrsRecpInfo
 typedef struct tfuUePucchBsiBriRecpInfo
 {
    U8                     puschFlag;  /*!< UCI is carried in xPUSCH or not
-                                           0 -> UCI is in xPUCCH, 
-                                           1 -> UCI is in xPUSCH */
+					0 -> UCI is in xPUCCH, 
+					1 -> UCI is in xPUSCH */
    U8                     pucchIndex; /*!< Frequency resource index of xPUCCH 
-                                           for UCI report. [0-15] */
+					for UCI report. [0-15] */
    U8                     SCID;       /*!< SCID : 0 or 1 */
    U8                     bsiRpt;     /*!< total num of BSI report[0,1,2,4] */
    U8                     briRpt;     /*!< total num of BRI report[0,1,2,4] */
@@ -1470,40 +1470,40 @@ typedef struct tfuUePucchUciRecpInfo
 #endif
 
 /** @brief This structure is sent from scheduler to PHY in order to request the
-  * reception of UCI on PUCCH. This may contain the following:
-  * -# HARQ
-  * -# SR
-  * -# SRS
-  * -# CQI
-  * -# HARQ+SR
-  * -# HARQ+SRS
-  * -# HARQ+CQI
-  * -# HARQ+SR+SRS
-  * -# HARQ+SR+CQI
-  * -# SR+SRS
-  * -# SR+CQI  
-  */
+ * reception of UCI on PUCCH. This may contain the following:
+ * -# HARQ
+ * -# SR
+ * -# SRS
+ * -# CQI
+ * -# HARQ+SR
+ * -# HARQ+SRS
+ * -# HARQ+CQI
+ * -# HARQ+SR+SRS
+ * -# HARQ+SR+CQI
+ * -# SR+SRS
+ * -# SR+CQI  
+ */
 typedef struct tfuUePucchRecpReq
 {
    TfuUePucchRecpType     uciInfo;       /*!< Bitmask for the combination of UCI
-                                              to be received */
+					   to be received */
    TfuUePucchCqiRecpInfo  cqiInfo;       /*!< Info needed to receive CQI. Valid
-                                              if CQI is included in uciInfo */
+					   if CQI is included in uciInfo */
    TfuUePucchSrRecpInfo   srInfo;        /*!< Info needed to receive SR. Valid
-                                              if SR is included in uciInfo */
+					   if SR is included in uciInfo */
    TfuUePucchHqRecpInfo   hqInfo;        /*!< Info needed to receive Harq-Valid
-                                              if HQ is included in uciInfo */
+					   if HQ is included in uciInfo */
    TfuUePucchSrsRecpInfo  srsInfo;       /*!< Info needed to receive SRS. Valid
-                                              if SRS is included in uciInfo */
+					   if SRS is included in uciInfo */
 #ifdef TFU_5GTF
    TfuUePucchBsiBriRecpInfo  bsiBriInfo; /*!< Info needed to receive BSI_BRI. Valid
-                                              if BSI_BRI is included in uciInfo */
+					   if BSI_BRI is included in uciInfo */
    TfuUePucchUciRecpInfo     uciPduInfo; /*!< Info needed to receive HQ/CQI/RI.*/
 #endif                                              
 #ifdef EMTC_ENABLE
-	U16							format1aRepNumber;
-	U16							format2aRepNumber;
-	U32							catMScramblerInitVal;
+   U16							format1aRepNumber;
+   U16							format2aRepNumber;
+   U32							catMScramblerInitVal;
 #endif
 } TfuUePucchRecpReq;
 
@@ -1518,38 +1518,38 @@ typedef enum
    TFU_PUSCH_DATA_CQI_HARQ,
    TFU_PUSCH_DATA_CQI_HARQ_SRS
 #ifdef TFU_5GTF
-   /* Message types possible on xPUCCH and xPUSCH : UL Data, UCIs: HARQ-ACK, SR, BSI, BRI, CQI/PMI/RI etc  */
-   /* for now only TFU_PUSCH_DATA can be considered */ 
+      /* Message types possible on xPUCCH and xPUSCH : UL Data, UCIs: HARQ-ACK, SR, BSI, BRI, CQI/PMI/RI etc  */
+      /* for now only TFU_PUSCH_DATA can be considered */ 
 #endif
 } TfuUePuschRecpType;
 
- /** @brief This structure is sent from scheduler to PHY in order to request the
-  * reception of UEs data on ULSCH.
-  */
+/** @brief This structure is sent from scheduler to PHY in order to request the
+ * reception of UEs data on ULSCH.
+ */
 typedef struct tfuUeUlSchRecpInfo
 {
    U16                    size;         /*!< Length of the Data in bytes*/
    /* ToDo : rbStart and numRb is kept for legacy, need to remove later */
    U8                     rbStart;      /*!< Start of Resource Block of 
-                                             allocation */
+					  allocation */
    U8                     numRb;        /*!< Number of RBs allocated */
    TfuModScheme           modType;      /*!< Modulation order */
    U8                     nDmrs;        /*!< 3 bits for DMRS cyclic shift */
    Bool                   hoppingEnbld; /*!< TRUE, if hopping is enabled */
    U8                     hoppingBits;  /*!< Hopping bits as mentioned in 
-                                             213 8.4 */
+					  213 8.4 */
    Bool                   isRtx;        /*!< TRUE, if this is a retx */
    Bool                   ndi;          /*!< New Data Indication */   
    U8                     rv;           /*!< Redundancy version */
    U8                     harqProcId;   /*!< HARQ process ID */
    U8                     txMode;       /*!< UE's UL transmission mode: 
-                                             0 = SISO/SIMO, 1 = MIMO */
+					  0 = SISO/SIMO, 1 = MIMO */
    U8                     crntTxNb;     /*!< Current Harq Tx Cntr of this TB.
-                                             Valid if frequency hopping is 
-                                             enabled */
+					  Valid if frequency hopping is 
+					  enabled */
    Bool                   nSrs;         /*!< Indicates if RBs for this TB
-                                             overlap with SRS configuration. 
-                                             FALSE = No overlap,TRUE=overlap */
+					  overlap with SRS configuration. 
+					  FALSE = No overlap,TRUE=overlap */
    U8                     mcs;          /*!< MCS */
 #ifdef EMTC_ENABLE
    U32 			  repetitionNumber;
@@ -1557,55 +1557,55 @@ typedef struct tfuUeUlSchRecpInfo
 #endif
 #ifdef TFU_5GTF
    U8                     rbgStart; /* The starting resource block group for
-                                       this xPUSCH allocation.*/
+				       this xPUSCH allocation.*/
    U8                     numRbg; /* The number of resource block groups
-                                       allocated to this ULSCH grant.*/
+				     allocated to this ULSCH grant.*/
    U8                     xPUSCHRange; /* 0 : the stopping of xPUSCH is the 12th symbol,
-                                                                    1 : the stopping of xPUSCH is the 13th symbol
-                                                                    2 : the stopping of xPUSCH is the final (14th) symbol */
+1 : the stopping of xPUSCH is the 13th symbol
+2 : the stopping of xPUSCH is the final (14th) symbol */
    U8                     nAntPortLayer;/* 0:1 Layer, port 40 1:1 Layer, port 41 2:1 Layer, port 42
-                                           3:1 Layer, port 43 4:2 Layers, ports {40, 41} 
-                                           5:2 Layers, ports {42, 43} */
+3:1 Layer, port 43 4:2 Layers, ports {40, 41} 
+5:2 Layers, ports {42, 43} */
    U8                     SCID;        /*SCID : 0 or 1 */
    U8                     PMI;         /* Precoding matrix indicator, see V5G.211 section Table 5.3.3A.2-1 */
    Bool                   uciWoTBFlag;      /* 0: UCI without transmit block
-                                               1: with transmit block */
+1: with transmit block */
    U8                     beamIndex;   /* Receiving beam index Value: 0->7 */
 #endif
 } TfuUeUlSchRecpInfo;
 
 /** @brief This structure is sent from scheduler to PHY in order to request the
-  * reception of CQI_RI information on PUSCH.
-  */
+ * reception of CQI_RI information on PUSCH.
+ */
 typedef struct tfuUePuschCqiRecpInfo
 {
    U8                     reportType;      /*! Type of CSI report.
-                                            0 = periodic report.
-                                            1 = aperiodic report */
+					     0 = periodic report.
+					     1 = aperiodic report */
    U8                     cCNum;           /*! The number of CC in the aperiodic report.
-                                              Value: 1->5 */
+Value: 1->5 */
    U8                     cqiPmiSzR1[CM_LTE_MAX_CELLS];   /*!< Size of DL CQI/PMI in bits for
-                                             rank 1 report[0-255] */
+							    rank 1 report[0-255] */
    U8                     cqiPmiSzRn1[CM_LTE_MAX_CELLS];  /*!< Size of DL CQI/PMI in bits for 
-                                             rank > 1 report[0-255] */
+							    rank > 1 report[0-255] */
    TknU8                  riSz[CM_LTE_MAX_CELLS];         /*!< Size of RI in bits[1-2]. Value will
-                                         be 0 (present flag-false) in frames
-                                         with no RI Occasion*/
+							    be 0 (present flag-false) in frames
+							    with no RI Occasion*/
    U8                     cqiBetaOff;    /*!< Beta offset for CQI[0-15]. Given  
-                                             by RRC */
+					   by RRC */
    U8                     riBetaOff;     /*!< Beta offset for RI[0-15]. Given 
-                                             by RRC */
+					   by RRC */
 } TfuUePuschCqiRecpInfo;
 
 /** @brief This structure is sent from scheduler to PHY in order to request the
-  * reception of HARQ information on PUSCH.
-  */
+ * reception of HARQ information on PUSCH.
+ */
 typedef struct tfuUePuschHqRecpInfo
 {
    U8                     hqSz;         /*!< Number of feedback bits: 
-                                         FDD- 1 or 2 TDD- 1 to 4*/
+					  FDD- 1 or 2 TDD- 1 to 4*/
    U8                     hqBetaOff;     /*!< Beta offset for Harq[0-15]. Given
-                                             by RRC */
+					   by RRC */
 #ifdef TFU_TDD
    TfuAckNackMode         hqFdbkMode;   /*!< Feedback mode in TDD */
    U8                     nBundled;     /*!< nBundled value intended for PHY */
@@ -1614,39 +1614,39 @@ typedef struct tfuUePuschHqRecpInfo
 } TfuUePuschHqRecpInfo;
 
 typedef TfuUePucchSrsRecpInfo TfuUePuschSrsRecpInfo;
- /** @brief This structure is sent from scheduler to PHY in order to request the
-  * reception of UEs data on PUSCH. This may contain the following: 
-  * -# Data
-  * -# Data + SRS
-  * -# Data + HARQ
-  * -# Data + HARQ + SRS
-  * -# Data + CQI/RI
-  * -# Data + CQI/RI + SRS
-  * -# Data + CQI/RI + HARQ
-  * -# Data + CQI/RI + HARQ + SRS
-  */
+/** @brief This structure is sent from scheduler to PHY in order to request the
+ * reception of UEs data on PUSCH. This may contain the following: 
+ * -# Data
+ * -# Data + SRS
+ * -# Data + HARQ
+ * -# Data + HARQ + SRS
+ * -# Data + CQI/RI
+ * -# Data + CQI/RI + SRS
+ * -# Data + CQI/RI + HARQ
+ * -# Data + CQI/RI + HARQ + SRS
+ */
 typedef struct tfuUePuschRecpReq
 { 
    TfuUePuschRecpType     rcpInfo;      /*!< Bitmask for the combination of
-                                             information to be received */ 
+					  information to be received */ 
    TfuUeUlSchRecpInfo     ulSchInfo;    /*!< Info needed to receive data pdu
-                                             on PUSCH. Valid if data is included
-                                             in rcpInfo */
+					  on PUSCH. Valid if data is included
+					  in rcpInfo */
    TfuUePuschCqiRecpInfo  cqiRiInfo;    /*!< Info needed to receive CQI/RI on
-                                             PUSCH. Valid if CQI is included
-                                             in rcpInfo */
+					  PUSCH. Valid if CQI is included
+					  in rcpInfo */
    TfuUePuschHqRecpInfo   hqInfo;       /*!< Info needed to receive Harq on
-                                             PUSCH. Valid if HARQ is included
-                                             in rcpInfo */
+					  PUSCH. Valid if HARQ is included
+					  in rcpInfo */
    TfuUePuschSrsRecpInfo  srsInfo;      /*!< Info needed to receive SRS. Valid
-                                             if SRS is included in rcpInfo */
+					  if SRS is included in rcpInfo */
    TknU8                  initialNSrs;  /*!< Not present in case of only data
-                                             [0/1]. 0 = last OFDM symbol is 
-                                             not punctured. 1 = last OFDM
-                                             symbol is punctured */
+					  [0/1]. 0 = last OFDM symbol is 
+					  not punctured. 1 = last OFDM
+					  symbol is punctured */
    TknU8                  initialNumRbs; /*!< Number of RBs for initial
-                                              transmission of this TB. Not  
-                                              present in case of only data */
+					   transmission of this TB. Not  
+					   present in case of only data */
 } TfuUePuschRecpReq;
 
 /** @enum TfuRecpReqType
@@ -1703,57 +1703,57 @@ typedef enum
 
 
 
- /** @brief This structure is sent from Scheduler to PHY in order to request the
-  * reception of an UE's data on PUCCH. This may contain the following: 
-  * -# HARQ-ACK 
-  * -# Scheduling Request (SR)
-  * -# HARQ-ACK and SR
-  * -# CQI
-  * -# CQI and HARQ-ACK
-  */
+/** @brief This structure is sent from Scheduler to PHY in order to request the
+ * reception of an UE's data on PUCCH. This may contain the following: 
+ * -# HARQ-ACK 
+ * -# Scheduling Request (SR)
+ * -# HARQ-ACK and SR
+ * -# CQI
+ * -# CQI and HARQ-ACK
+ */
 typedef struct tfuUePucchRecpReq
 {
-    
+
    TfuHqRecpReqType   hqType;   /*!< Type of HARQ Reception Request */
    union
    {
-/** @name TFU_TDD */
-/** @{ */
+      /** @name TFU_TDD */
+      /** @{ */
 #ifndef TFU_TDD
       U16    nCce;            /*!< Number of first CCE used for transmission of
-                                the corresponding DCI assignment. Used to decode
-                                HARQ-ACK. */
+				the corresponding DCI assignment. Used to decode
+				HARQ-ACK. */
 #else
       U16             nCce[TFU_MAX_M];   /*!< nCCE is an array in the case of TDD
-                                           HARQ ACK multiplexing. This value is
-                                           needed for the calculation of 
-                                           (n^1 PUCCH,i) for i = {0,1,2,3} */
+					   HARQ ACK multiplexing. This value is
+					   needed for the calculation of 
+					   (n^1 PUCCH,i) for i = {0,1,2,3} */
 #endif
-/** @} */
+      /** @} */
       U16                 n1Pucch;  /*!< n1 PUCCH for ACK NACK repetition. 
-                                              This is the resource that UE must
-                                              transmit the HARQ Feedback except
-                                              the first one. */
+				      This is the resource that UE must
+				      transmit the HARQ Feedback except
+				      the first one. */
    }t;
-  TfuUciType      type;      /*!< Type of Uplink control information - value
-                                must be one of the following: 
-                                 -# TFU_UCI_SR
-                                 -# TFU_UCI_HARQ
-                                 -# TFU_UCI_CQI
-                                 -# TFU_UCI_HARQ_CQI
-                                 -# TFU_UCI_HARQ_SR
-                                */
-/** @name TFU_TDD  */
-/** @{ */
+   TfuUciType      type;      /*!< Type of Uplink control information - value
+				must be one of the following: 
+				-# TFU_UCI_SR
+				-# TFU_UCI_HARQ
+				-# TFU_UCI_CQI
+				-# TFU_UCI_HARQ_CQI
+				-# TFU_UCI_HARQ_SR
+			       */
+   /** @name TFU_TDD  */
+   /** @{ */
 #ifdef TFU_TDD
    U8             multCnt;       /*!< Number of ACK/NACK resources present */
    U8             M;             /*!< Number of elements in the set K - tb.
-                                   10.1-1 213 */
+				   10.1-1 213 */
    U8             m[TFU_MAX_M];  /*!< Values utilized for TDD HARQ-ACK bundling
-                                   mode */
+				   mode */
    U8             p[TFU_MAX_M];  /*!< "p" from 10.1 in 213 */
 #endif
-/** @} */
+   /** @} */
 } TfuUePucchRecpReq;
 
 
@@ -1768,9 +1768,9 @@ typedef enum
 } TfuRecpReqType;
 
 
- /** @brief This structure is sent from scheduler to PHY in order to request the
-  * reception of UEs data sent as MSG3 for Random access.
-  */
+/** @brief This structure is sent from scheduler to PHY in order to request the
+ * reception of UEs data sent as MSG3 for Random access.
+ */
 typedef struct tfuUeMsg3RecpReq
 {  
    Bool                 hoppingEnbld; /*!< TRUE, if hopping is enabled */
@@ -1778,7 +1778,7 @@ typedef struct tfuUeMsg3RecpReq
    U8                   numRb;        /*!< Number of RBs allocated */
    U8                   mcs;          /*!< 3 bits for MCS */
    Bool                 expCqi;       /*!< TRUE, if CQI report along
-                                        with PUSCH data is expected */
+					with PUSCH data is expected */
    Bool                 ulDelay;      /*!< UL Delay bit 6.2 of 213 */
    /* tfu_x_001.main_2: Presently not used, it is useful when
     * Non-adaptive retransmission is implemented */
@@ -1793,12 +1793,12 @@ typedef struct tfuUeMsg3RecpReq
    TfuModScheme         modType;      /*!< Modulation order */
 } TfuUeMsg3RecpReq;
 
- /** @brief This structure is sent from scheduler to PHY in order to request the
-  * reception of UEs data on PUSCH. This may contain the following: 
-  * -# Data
-  * -# Data + CQI and RI
-  * -# Data + CQI and HARQ
-  */
+/** @brief This structure is sent from scheduler to PHY in order to request the
+ * reception of UEs data on PUSCH. This may contain the following: 
+ * -# Data
+ * -# Data + CQI and RI
+ * -# Data + CQI and HARQ
+ */
 typedef struct tfuUePuschRecpReq
 {  
    Bool                 hoppingEnbld; /*!< TRUE, if hopping is enabled */
@@ -1812,12 +1812,12 @@ typedef struct tfuUePuschRecpReq
    U8                   rv;           /*!< Redundancy version */
    U8                   nDmrs;        /*!< 3 bits for DMRS cyclic shift */
    Bool                 expCqi;       /*!< TRUE, if CQI report along
-                                        with PUSCH data is expected */
+					with PUSCH data is expected */
    Bool                 expHarq;      /*!< TRUE, if HARQ feedback along
-                                        with PUSCH data is expected */
+					with PUSCH data is expected */
    TfuDlCqiPuschMode    mode;         /*!< CQI reporting mode configured. Note
-                                        this value is valid, only if expCqi is
-                                        TRUE. */
+					this value is valid, only if expCqi is
+					TRUE. */
    /* tfu_x_001.main_2:107387:To include the size and ModOrder in DataRecp Req.*/
    U16                  size;         /*!< Length of the Data in bytes*/
    TfuModScheme         modType;      /*!< Modulation order */
@@ -1868,25 +1868,25 @@ typedef struct tfuRecpReqInfo
    CmLteCellId       cellId;        /*!< Cell ID */
    CmLteTimingInfo   timingInfo;    /*!< Timing information */
    CmLListCp         ueRecpReqLst;  /*!< Linked List of reception requests
-                                      TfuUeRecpReqInfo */
+				      TfuUeRecpReqInfo */
 #ifdef EMTC_ENABLE
    CmLListCp         emtcUeRecpReqLst;  /*!< Linked List of reception requests
-                                      TfuUeRecpReqInfo */
+					  TfuUeRecpReqInfo */
 #endif
    /*tfu_x_001.main_8 - ADD - New Pucch RR Info Combination support */
    /*ccpu00116923 - ADD - SRS present support*/
 #ifdef TFU_UPGRADE   
    Bool                srsPres;       /*!< SRS present information (For Cell
-                                        Specific SRS notification)
-                                      0: No SRS in this subframe
-                                      1: SRS present in this subframe */
+					Specific SRS notification)
+0: No SRS in this subframe
+1: SRS present in this subframe */
 #endif
 } TfuRecpReqInfo;
 
- /** @brief This structure contains the PDCCH to be sent on PHY, that is, DCI
-  * formats. This information is associated with an RNTI. 
-  */
- typedef struct tfuPdcchInfo
+/** @brief This structure contains the PDCCH to be sent on PHY, that is, DCI
+ * formats. This information is associated with an RNTI. 
+ */
+typedef struct tfuPdcchInfo
 {
    CmLList           lnk;             /*!< Link of Linked List */
    CmLteRnti         rnti;            /*!< RNTI of the allocation */
@@ -1896,17 +1896,17 @@ typedef struct tfuRecpReqInfo
 #endif
    U16               nCce;            /*!< CCE index */
    CmLteAggrLvl      aggrLvl;         /*!< Aggregation level possible values are
-                                        {1, 2, ...,8}. */
+					{1, 2, ...,8}. */
    U8                dciNumOfBits;    /*!< The size of DCI in bits */
    TfuDciInfo        dci;             /*!< PDCCH DCI format */
 #ifdef EMTC_ENABLE
-	U8 					distributedAlloc;
-	U8						localizedAntPortIndex;
-	U16					dmrs_txpowerControl; 
-	U8						nRBxm;
-	U8 					startRB;
-	U32					scramblerInit;
-	U32					demodRSInitValue;
+   U8 					distributedAlloc;
+   U8						localizedAntPortIndex;
+   U16					dmrs_txpowerControl; 
+   U8						nRBxm;
+   U8 					startRB;
+   U32					scramblerInit;
+   U32					demodRSInitValue;
 #endif
 #ifdef TFU_5GTF
    U8               sectorId;        /* Sector index of the 5GNB. Value: 0->2 */
@@ -1932,9 +1932,9 @@ typedef struct tfuPhichInfo
    Bool              isForMsg3;
 #ifdef TFU_TDD
    U8                     iPhich;        /*!< Needed to Calculate PHICH
-                                           location. For TDD only */
+					   location. For TDD only */
 #endif
-/* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
+   /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
    U16                    txPower;        /*!< Offset to the ref. signal power */
 #endif
@@ -1967,9 +1967,9 @@ typedef struct tfuCntrlReqInfo
 
 } TfuCntrlReqInfo;
 
- /** @brief This structure carries the control information that is needed
-  * by the Physical layer to process the data to be sent on PDSCH. 
-  */
+/** @brief This structure carries the control information that is needed
+ * by the Physical layer to process the data to be sent on PDSCH. 
+ */
 typedef struct tfuPdschDciInfo
 {   
    TfuDciFormat               format;            /*!< Selector for the union*/   
@@ -1987,10 +1987,10 @@ typedef struct tfuPdschDciInfo
       TfuDciFormat62AllocInfo format62AllocInfo;  /*!< Formtat 6-2 allocation information */
 #endif
 #ifdef TFU_5GTF
-	   TfuDciFormatA1Info      formatA1Info;  /*!< 5GTF: Format A1 information */
-	   TfuDciFormatA2Info      formatA2Info;  /*!< 5GTF: Format A1 information */
-	   TfuDciFormatB1Info      formatB1Info;  /*!< 5GTF: Format B1 information */
-	   TfuDciFormatB2Info      formatB2Info;  /*!< 5GTF: Format B2 information */
+      TfuDciFormatA1Info      formatA1Info;  /*!< 5GTF: Format A1 information */
+      TfuDciFormatA2Info      formatA2Info;  /*!< 5GTF: Format A1 information */
+      TfuDciFormatB1Info      formatB1Info;  /*!< 5GTF: Format B1 information */
+      TfuDciFormatB2Info      formatB2Info;  /*!< 5GTF: Format B2 information */
 #endif
    } u;
 } TfuPdschDciInfo;
@@ -2010,17 +2010,17 @@ typedef enum tfuTxMode
 
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
- /** @brief This structure carries the Beam Forming Vector Information
-   * needed by the Physical layer to process the data to be sent on PDSCH. 
-   */
- typedef struct tfuBfVectorInfo
- {
+/** @brief This structure carries the Beam Forming Vector Information
+ * needed by the Physical layer to process the data to be sent on PDSCH. 
+ */
+typedef struct tfuBfVectorInfo
+{
    U8             sbIndex;    /** Subband Index */
    U8             numPhyAnt;  /** Number of Physical Antennas */
    U16            bfValue[TFU_MAX_PHY_ANTENNA];  /** Beam forming vector element for 
-                                      physical antenna #i real 8 bits followed by imaginary 8 bits */ 
- }TfuBfVectorInfo;
- #endif
+						   physical antenna #i real 8 bits followed by imaginary 8 bits */ 
+}TfuBfVectorInfo;
+#endif
 
 #ifdef L2_OPTMZ
 /**
@@ -2031,7 +2031,7 @@ typedef struct tfuDatReqLchInfo
    Bool              freeBuff; /* !< If TRUE, the buffer is to be freed by MAC */
    U32               numPdu;  /*!< No of PDUs */
    Buffer           *mBuf[TFU_MAX_PDU]; /*!<SIncMsgRef in MAC. 
-                                           Freed by CL as well*/
+					  Freed by CL as well*/
 }TfuDatReqLchInfo;
 
 /** @brief This structure contains a single MAC TB Headers and RLC PDU
@@ -2050,18 +2050,18 @@ typedef struct tfuDatReqTbInfo
 }TfuDatReqTbInfo;
 #endif
 
- /** @brief This structure contains a single MAC TB.
-  * @details Data is accompanied with control information pertaining to the
-  * allocation and what is required by physical layer for its processing. 
-  */
+/** @brief This structure contains a single MAC TB.
+ * @details Data is accompanied with control information pertaining to the
+ * allocation and what is required by physical layer for its processing. 
+ */
 typedef struct tfuDatReqPduInfo
 {
    CmLList              lnk;                 /*!< Link of Linked List */
    CmLteRnti            rnti;                /*!< RNTI of the UE */
    TfuPdschDciInfo      dciInfo;             /*!< Carries the control data
-                                                  needed for processing PDSCH data */
+					       needed for processing PDSCH data */
    U8                   nmbOfTBs;            /*!< Number of TBs, in cases where
-                                                  one TB is disabled */
+					       one TB is disabled */
 #ifdef FIVEGTF_PHY_API
    U16                  crcResult;
 #endif
@@ -2072,39 +2072,39 @@ typedef struct tfuDatReqPduInfo
 #endif
    Bool                 puschRptUsd;         /*!< If PUSCH Rpt used for scheduling */
    TfuDlCqiPuschInfo    puschPmiInfo;        /*!< Explicitly inform PHY of the
-                                                  PMI details for the entire 
-                                                  DL BW */
+					       PMI details for the entire 
+					       DL BW */
    TfuTxMode            transMode;           /*!< Transmission Mode of this UE */                        
    TknU32               doa;                 /*!< DOA indicator for this UE */
    Bool                 isTApres;
 #ifdef TFU_UPGRADE
    /*tfu_x_001.main_8 - ADD - Detailed comments for fields */
    U8                   numLayers;           /*!< Number of Layers. Note: Field
-                                               specified at Interface. Value
-                                               not set from LTE MAC */
+					       specified at Interface. Value
+					       not set from LTE MAC */
    U8                   deltaPowOffIdx;      /*!< Delta power offset. Note:
-                                               Field specified at Interface. Value
-                                              not set from LTE MAC */
+					       Field specified at Interface. Value
+					       not set from LTE MAC */
    U8                   numBfPrbPerSb;       /*!< Number of PRBs that are
-                                               treated as one Subband. Note:
-                                               Field specified at interface.
-                                               Value not set from LTE MAC */
+					       treated as one Subband. Note:
+					       Field specified at interface.
+					       Value not set from LTE MAC */
    U8                   numBfVectors;        /*!< Number of Beam Forming
-                                               vectors. Note: Field specified at
-                                              Interface. Value not set from LTE
-                                              MAC */
+					       vectors. Note: Field specified at
+					       Interface. Value not set from LTE
+					       MAC */
    TfuBfVectorInfo      bfVector[TFU_MAX_DL_SUBBAND]; /*!< BeamForming vector
-                                                        information. Note: Field
-                                                       specified at Interface.
-                                                       Value not set from LTE
-                                                       MAC */
+							information. Note: Field
+							specified at Interface.
+							Value not set from LTE
+							MAC */
    U16                  txPwrOffset;          /*!< Offset to the reference 
-                                                  signal power. Value 0->10000,
-                                                  representing -6 dB to 4 dB in
-                                                  0.001 dB steps */      
-/* LTE_ADV_FLAG_REMOVED_START */
-	U8                   pa;                  /*!< ratio of PDSCH EPRE to cell-specific RS 
-	                                              EPRE among PDSCH REs */
+						signal power. Value 0->10000,
+						representing -6 dB to 4 dB in
+						0.001 dB steps */      
+   /* LTE_ADV_FLAG_REMOVED_START */
+   U8                   pa;                  /*!< ratio of PDSCH EPRE to cell-specific RS 
+					       EPRE among PDSCH REs */
 #endif
    U8 isEnbSFR;             /*to tell if SFR is enabled*/
 } TfuDatReqPduInfo;
@@ -2121,16 +2121,16 @@ typedef struct tfuDatReqInfo
    CmLteCellId          cellId;        /*!< Cell ID */
    CmLteTimingInfo      timingInfo;    /*!< Timing information */
    TknBuf               bchDat;        /*!< BCCH mapped onto BCH Buffer, if
-                                            present */
+					 present */
 #ifdef EMTC_ENABLE
    TknBuf               emtcBcchDat;  /*!< BCCH mapped onto BCH Buffer, if
-                                            present */
+					present */
 #endif
    CmLListCp            pdus;          /*!< Linked List of TfuDatReqPduInfo PDUs */
 } TfuDatReqInfo;
 
- /** @brief This structure contains the Data PDU and the RNTI of the UE.
-  */
+/** @brief This structure contains the Data PDU and the RNTI of the UE.
+ */
 typedef struct tfuDatInfo
 {
    CmLList        lnk;    /*!< Link of Linked List */
@@ -2157,20 +2157,20 @@ typedef struct tfuDatIndInfo
 #endif
 } TfuDatIndInfo;
 
- /** @brief This structure contains the SR indication for an UE, identified by
-  * the given RNTI. The structure also contains a PUCCH Delta power, that is
-  * calculated by the physical layer, and is used by the scheduler for Power
-  * control of the UE. 
-  */
+/** @brief This structure contains the SR indication for an UE, identified by
+ * the given RNTI. The structure also contains a PUCCH Delta power, that is
+ * calculated by the physical layer, and is used by the scheduler for Power
+ * control of the UE. 
+ */
 typedef struct tfuSrInfo
 {
    CmLList        lnk;             /*!< Link of Linked List */
    CmLteRnti      rnti;            /*!< UEs RNTI */
 } TfuSrInfo;
 
- /** @brief This structure contains all the Scheduling Requests (SR) indications
-  * received in a subframe. 
-  */
+/** @brief This structure contains all the Scheduling Requests (SR) indications
+ * received in a subframe. 
+ */
 typedef struct tfuSrIndInfo
 {
    CmMemListCp          memCp;      /*!< Memory control point */
@@ -2197,11 +2197,11 @@ typedef enum
 } TfuHqFdbk;
 //#endif
 
- /** @brief This structure contains the HARQ feedback for a single UE. 
-  * @details RNTI is present to identify the UE. 
-  * For FDD, a single feedback is present. 
-  * For TDD HARQ multiplexing, a list of HARQ feedbacks is present.
-  */
+/** @brief This structure contains the HARQ feedback for a single UE. 
+ * @details RNTI is present to identify the UE. 
+ * For FDD, a single feedback is present. 
+ * For TDD HARQ multiplexing, a list of HARQ feedbacks is present.
+ */
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 typedef struct tfuHqInfo
 {
@@ -2214,15 +2214,15 @@ typedef struct tfuHqInfo
 #endif /* TFU_TDD */
    TfuHqFdbk              isAck[TFU_MAX_HARQ_FDBKS];  /*!< Harq feedbacks */ 
    Bool                   isPusch;       /*!< Indicates if this HARQ feedback is
-                                              received on PUSCH */
-                                         /* Note: isPusch is not a field
-                                          * specified by Femto Forum. */
+					   received on PUSCH */
+   /* Note: isPusch is not a field
+    * specified by Femto Forum. */
 } TfuHqInfo;
 
- /** @brief This structure contains a list of HARQ feedbacks for a number of UEs.
-  * @details All the HARQ feedback received in the subframe are clubbed together
-  * in this data structure and given to the scheduler for processing. 
-  */
+/** @brief This structure contains a list of HARQ feedbacks for a number of UEs.
+ * @details All the HARQ feedback received in the subframe are clubbed together
+ * in this data structure and given to the scheduler for processing. 
+ */
 typedef struct tfuHqIndInfo
 {
    CmMemListCp          memCp;         /*!< Memory control point */
@@ -2239,15 +2239,15 @@ typedef struct tfuUlCqiInfo
    TfuSubbandCqiInfo subbandCqi; /*!< CQI associated with a sub-band */
 } TfuUlCqiInfo;
 
- /** @brief This structure contains the UL CQI estimated by the physical layer. 
-  * @details The report can be wide-band CQI or sub-band CQI or both. 
-  */
+/** @brief This structure contains the UL CQI estimated by the physical layer. 
+ * @details The report can be wide-band CQI or sub-band CQI or both. 
+ */
 typedef struct tfuUlCqiRpt
 {
    CmLList           lnk;                              /*!< Link of Linked List */
    CmLteRnti         rnti;                             /*!< RNTI */
    Bool              isTxPort0;                        /*!< TRUE, if TX port is
-                                                         0, else TX port is 1  */
+							 0, else TX port is 1  */
    U8                wideCqi;                          /*!< Wide-band CQI*/
    U8                numSubband;                       /*!< Number of sub-bands */
    TfuUlCqiInfo      ulCqiInfoArr[TFU_MAX_UL_SUBBAND]; /*!< UL CQI information array */
@@ -2267,9 +2267,9 @@ typedef struct tfuUlCqiIndInfo
    CmLListCp         ulCqiRpt;      /*!< List of UL CQI reports - TfuUlCqiRpt */
 } TfuUlCqiIndInfo;
 
- /** @brief This structure contains the DOA estimated by the physical layer. 
-  * @details DOA for a given UE. 
-  */
+/** @brief This structure contains the DOA estimated by the physical layer. 
+ * @details DOA for a given UE. 
+ */
 typedef struct tfuDoaRpt
 {
    CmLList                lnk;           /*!< Link of Linked List */
@@ -2290,10 +2290,10 @@ typedef struct tfuDoaIndInfo
    CmLListCp              doaRpt;        /*!< List of DOA reports - TfuDoaRpt */
 } TfuDoaIndInfo;
 /** @} */
- /** @brief This structure contains the DL CQI report for a single UE. 
-  * @details The report can either be described on PUCCH or PUSCH, a flag
-  * conveys this information. 
-  */
+/** @brief This structure contains the DL CQI report for a single UE. 
+ * @details The report can either be described on PUCCH or PUSCH, a flag
+ * conveys this information. 
+ */
 typedef struct tfuDlCqiRpt
 {
    CmLList           lnk;         /*!< Link of Linked List */
@@ -2314,9 +2314,9 @@ typedef struct tfuDlCqiIndInfo
    CmLListCp         dlCqiRptsLst;     /*!< List of DL CQI reports TfuDlCqiRpt */
 } TfuDlCqiIndInfo;
 
- /** @brief This structure contains the CRC indication for a single
-  * UE. 
-  */
+/** @brief This structure contains the CRC indication for a single
+ * UE. 
+ */
 typedef struct tfuCrcInfo
 {
    CmLList           lnk;         /*!< Link of Linked List */
@@ -2343,10 +2343,10 @@ typedef struct tfuCrcIndInfo
 #endif
 } TfuCrcIndInfo;
 
- /** @brief This structure contains the timing advance information for a single
-  * UE. 
-  */
- typedef struct tfuTimingAdvInfo
+/** @brief This structure contains the timing advance information for a single
+ * UE. 
+ */
+typedef struct tfuTimingAdvInfo
 {
    CmLList           lnk;         /*!< Link of Linked List */
    CmLteRnti         rnti;        /*!< RNTI */
@@ -2377,7 +2377,7 @@ typedef struct tfuTtiCellInfo
    Bool             isDummyTti;   /*!< Flag to indicate dummy TTI */                       
    /* 4UE_TTI_DELTA */             
    U8               schTickDelta; /*!< Dynamic Delta for SCH. Value will vary
-                                       according to num of active UEs */                
+				    according to num of active UEs */                
    U8               dlBlankSf;    /*!< TODO */  
    U8               ulBlankSf;    /*!< TODO */        
 
@@ -2405,17 +2405,17 @@ typedef struct tfuRaReqInfo
 {
    U8           rapId;     /*!< ID of the preamble choosen by the UE for Random Acess.*/
    U16          ta;        /*!< Amount of Timing advance needed by the UE for it
-                             to be uplink synchronized, this is calculated by Physical layer. */
+			     to be uplink synchronized, this is calculated by Physical layer. */
    U8           tpc;       /*!< Transmit power control command that the physical
-                            layer calculates from the RA request received.*/ 
+			     layer calculates from the RA request received.*/ 
    Bool         cqiPres;   /*!< TRUE, if CQI present. */
    U8           cqiIdx;    /*!< This is the Channel Quality Index of the UL channel estimated by the
-                              physical layer. This aids MAC in the scheduling of this UE. */
+			     physical layer. This aids MAC in the scheduling of this UE. */
 
 } TfuRaReqInfo;
 
- /** @brief This structure contains RACH request information for a single RA-RNTI.
-  */
+/** @brief This structure contains RACH request information for a single RA-RNTI.
+ */
 typedef struct tfuRachInfo
 {
    CmLteRnti       raRnti;       /*!< RA-RNTI */
@@ -2453,10 +2453,10 @@ typedef struct tfuRaReqIndInfo
    CmLteCellId     cellId;        /*!< Cell ID */
    CmLteTimingInfo timingInfo;    /*!< Timing information */
    U8              nmbOfRaRnti;   /*!< Number of RA-RNTIs present for FDD this
-                                    must be 1 for TDD, it can be a max of 6.  */
+				    must be 1 for TDD, it can be a max of 6.  */
    TfuRachInfo     *rachInfoArr;   /*!< Array of
-                                         RACH information per
-                                         RA-RNTI */
+				     RACH information per
+				     RA-RNTI */
 } TfuRaReqIndInfo;
 
 /** @brief This structure contains PUCCH Delta power for a single UE.
@@ -2479,12 +2479,12 @@ typedef struct tfuPucchDeltaPwrIndInfo
    CmLteCellId       cellId;        /*!< Cell ID */
    CmLteTimingInfo   timingInfo;    /*!< Timing information */
    CmLListCp         pucchDeltaPwrLst;  /*!< List of PUCCH Delta power
-                                        TfuPucchDeltaPwr */
+					  TfuPucchDeltaPwr */
 } TfuPucchDeltaPwrIndInfo; /* TODO renamed this from Del -> Delta. not changed tfu.c */
 
- /** @brief LAA:This structure contains the cell Id and subframe information for
-  * which the transmission failed. 
-  */
+/** @brief LAA:This structure contains the cell Id and subframe information for
+ * which the transmission failed. 
+ */
 typedef struct tfuErrIndInfo
 {
    CmLteCellId          cellId;        /*!< Cell ID */
@@ -2493,9 +2493,9 @@ typedef struct tfuErrIndInfo
 
 #ifdef L2_OPTMZ
 /** @brief :This structure contains the cell Id and UeId to inform CL
-  * to delete datReq if it exists in CL but UeId got changed or similar other
-  * scenarios.These scenarios are possible only when L2_OPTMZ flag is enabled.
-  */
+ * to delete datReq if it exists in CL but UeId got changed or similar other
+ * scenarios.These scenarios are possible only when L2_OPTMZ flag is enabled.
+ */
 typedef struct tfuDelDatReqInfo
 {
    CmLteCellId          cellId;        /*!< Cell ID */
@@ -2504,139 +2504,139 @@ typedef struct tfuDelDatReqInfo
 #endif
 
 typedef S16 (*TfuBndReq) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId));
 typedef S16 (*TfuBndCfm) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status));
 typedef S16 (*TfuUbndReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason));
 
 typedef S16 (*TfuSchBndReq) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId));
 typedef S16 (*TfuSchBndCfm) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status));
 typedef S16 (*TfuSchUbndReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason));
 
 typedef S16 (*TfuRaReqInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuRaReqIndInfo      *raReqInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuRaReqIndInfo      *raReqInd));
 
 typedef S16 (*TfuRecpReq) ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuRecpReqInfo   *recpReq));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuRecpReqInfo   *recpReq));
 
 typedef S16 (*TfuUlCqiInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuUlCqiIndInfo *    ulCqiInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuUlCqiIndInfo *    ulCqiInd));
 
 typedef S16 (*TfuDoaInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuDoaIndInfo *      doaInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuDoaIndInfo *      doaInd));
 typedef S16 (*TfuHqInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuHqIndInfo *  hqInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuHqIndInfo *  hqInd));
 
 typedef S16 (*TfuSrInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuSrIndInfo *       srInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuSrIndInfo *       srInd));
 
 typedef S16 (*TfuDlCqiInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuDlCqiIndInfo *    dlCqiInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuDlCqiIndInfo *    dlCqiInd));
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
 typedef S16 (*TfuRawCqiInd) ARGS((
-         Pst               *pst,
-         SuId              suId,
-         TfuRawCqiIndInfo  *rawCqiInd));
-         
+	 Pst               *pst,
+	 SuId              suId,
+	 TfuRawCqiIndInfo  *rawCqiInd));
+
 typedef S16 (*TfuSrsInd) ARGS((
-         Pst               *pst,
-         SuId              suId,
-         TfuSrsIndInfo     *srsInd));
+	 Pst               *pst,
+	 SuId              suId,
+	 TfuSrsIndInfo     *srsInd));
 #endif /* TFU_UPGRADE */ 
 
 typedef S16 (*TfuDatInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuDatIndInfo *      datInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuDatIndInfo *      datInd));
 
 typedef S16 (*TfuCrcInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuCrcIndInfo *  crcInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuCrcIndInfo *  crcInd));
 
 typedef S16 (*TfuTimingAdvInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuTimingAdvIndInfo * timingAdvInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuTimingAdvIndInfo * timingAdvInd));
 
 typedef S16 (*TfuDatReq) ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuDatReqInfo *      datReq));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuDatReqInfo *      datReq));
 
 #ifdef L2_OPTMZ   
 typedef S16 (*TfuDelDatReq) ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuDelDatReqInfo *      datReq));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuDelDatReqInfo *      datReq));
 #endif
 
 typedef S16 (*TfuCntrlReq) ARGS((
-         Pst                  *pst,
-         SpId                 spId,
-         TfuCntrlReqInfo      *cntrlReq));
+	 Pst                  *pst,
+	 SpId                 spId,
+	 TfuCntrlReqInfo      *cntrlReq));
 /* CA dev Start */
 typedef S16 (*TfuTtiCell) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuTtiCellInfo *      ttiInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuTtiCellInfo *      ttiInd));
 /* CA dev End */
 typedef S16 (*TfuTtiInd) ARGS((
-   Pst *                pst,
-   SlotIndInfo *      slotInd));
+	 Pst *                pst,
+	 SlotIndInfo *      slotInd));
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
 typedef S16 (*TfuNonRtInd) ARGS((
-   Pst *                pst,
-   SuId                 suId));
+	 Pst *                pst,
+	 SuId                 suId));
 #endif
 
 typedef S16 (*TfuSchTtiInd) ARGS((
-   Pst *                pst,
-//   SuId                 suId,
-   SlotIndInfo*         slotInd));
+	 Pst *                pst,
+	 //   SuId                 suId,
+	 SlotIndInfo*         slotInd));
 
 typedef S16 (*TfuPucchDeltaPwrInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuPucchDeltaPwrIndInfo *  pucchDeltaPwr));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuPucchDeltaPwrIndInfo *  pucchDeltaPwr));
 
 /*LAA: Error Indication on LAA SCell*/
 typedef S16 (*TfuErrInd) ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuErrIndInfo *  errInd));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuErrIndInfo *  errInd));
 
 /** @brief This API is used to send a Bind Request from MAC to PHY.
  * @param pst Pointer to the post structure.
@@ -2700,7 +2700,7 @@ EXTERN S16 TfUiTfuSchUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuRaReqInd ARGS((Pst *pst, SuId suId, TfuRaReqIndInfo 
-         *raReqInd));
+	 *raReqInd));
 
 
 /** @brief This primitive is sent from Scheduler to PHY.
@@ -2725,46 +2725,46 @@ EXTERN S16 TfUiTfuRaReqInd ARGS((Pst *pst, SuId suId, TfuRaReqIndInfo
  */
 EXTERN S16 TfUiTfuRecpReq ARGS((Pst *pst, SpId spId, TfuRecpReqInfo *recpReq));
 
- /** @brief This primitive is sent from Scheduler to PHY. It provides PHY with
-  * all the control information.
-  * @details This primitive carries the information sent on the following
-  * channels: 
-  * -# PDCCH
-  * -# PHICH
-  * -# PCFICH
-  * 
-  * @param pst
-  * @param spId
-  * @param cntrlReq pointer to TfuCntrlReqInfo
-  * @return ROK/RFAILED
-  */
+/** @brief This primitive is sent from Scheduler to PHY. It provides PHY with
+ * all the control information.
+ * @details This primitive carries the information sent on the following
+ * channels: 
+ * -# PDCCH
+ * -# PHICH
+ * -# PCFICH
+ * 
+ * @param pst
+ * @param spId
+ * @param cntrlReq pointer to TfuCntrlReqInfo
+ * @return ROK/RFAILED
+ */
 EXTERN S16 TfUiTfuCntrlReq ARGS((Pst *pst, SpId spId, TfuCntrlReqInfo *cntrlReq));
 
- /** @brief This primitive carries the Data PDUs from MAC to PHY for transmission. 
-  * @details The data being sent in this primitive is meant to be transmitted on
-  * the downlink channel PDSCH and PBCH (if present). To facilitate physical
-  * layer processing, requisite control information is also sent along with the
-  * data. 
-  * @sa TfUiTfuCntrlReq
-  * @param pst 
-  * @param spId
-  * @param datReq pointer to TfuDatReqInfo
-  * @return 
-  */
+/** @brief This primitive carries the Data PDUs from MAC to PHY for transmission. 
+ * @details The data being sent in this primitive is meant to be transmitted on
+ * the downlink channel PDSCH and PBCH (if present). To facilitate physical
+ * layer processing, requisite control information is also sent along with the
+ * data. 
+ * @sa TfUiTfuCntrlReq
+ * @param pst 
+ * @param spId
+ * @param datReq pointer to TfuDatReqInfo
+ * @return 
+ */
 EXTERN S16 TfUiTfuDatReq ARGS((Pst *pst, SpId spId, TfuDatReqInfo *datReq));
 
 #ifdef L2_OPTMZ
 /** @brief This primitive carries the cellId and UeId for which datReq need to
-  * deleted in CL. 
-  * @details This primitive is used to delete datReq PDUs present in CL for
-  * which got changed or similar other scenarios. These scenarios are possible
-  * only when L2_OPTMZ flag is enabled.
-  * @sa TfUiTfuDelDatReq
-  * @param pst 
-  * @param spId
-  * @param datReq pointer to TfuDelDatReqInfo
-  * @return 
-  */
+ * deleted in CL. 
+ * @details This primitive is used to delete datReq PDUs present in CL for
+ * which got changed or similar other scenarios. These scenarios are possible
+ * only when L2_OPTMZ flag is enabled.
+ * @sa TfUiTfuDelDatReq
+ * @param pst 
+ * @param spId
+ * @param datReq pointer to TfuDelDatReqInfo
+ * @return 
+ */
 
 EXTERN S16 TfUiTfuDelDatReq ARGS((Pst *pst, SpId spId, TfuDelDatReqInfo *datReq));
 #endif
@@ -2815,7 +2815,7 @@ EXTERN S16 TfUiTfuSrInd ARGS((Pst *pst, SuId suId, TfuSrIndInfo *srInd));
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuUlCqiInd ARGS((Pst *pst, SuId suId, 
-         TfuUlCqiIndInfo *ulCqiInd));
+	 TfuUlCqiIndInfo *ulCqiInd));
 
 /** @brief This API is used by the Physical layer to indicate if the CRC Check
  * on the PUSCH Data is successful or not.
@@ -2831,7 +2831,7 @@ EXTERN S16 TfUiTfuUlCqiInd ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuCrcInd ARGS((Pst *pst, SuId suId, 
-         TfuCrcIndInfo *crcIndInfo));
+	 TfuCrcIndInfo *crcIndInfo));
 
 /** @brief This API is used to indicate a Timing Advance from PHY to Scheduler.
  * @details This primitive carries timing advance information for a number of
@@ -2844,7 +2844,7 @@ EXTERN S16 TfUiTfuCrcInd ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuTimingAdvInd ARGS((Pst *pst, SuId suId, 
-         TfuTimingAdvIndInfo *timingAdvInd));
+	 TfuTimingAdvIndInfo *timingAdvInd));
 
 /* CA dev Start */
 /** @brief This API is the TTI indication from CL to MAC and SCH 
@@ -2856,7 +2856,7 @@ EXTERN S16 TfUiTfuTimingAdvInd ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuTtiCell ARGS((Pst *pst, SuId suId, 
-         TfuTtiCellInfo *ttiInd));
+	 TfuTtiCellInfo *ttiInd));
 /* CA dev End */
 
 /** @brief This API is the TTI indication from CL to MAC and SCH 
@@ -2868,7 +2868,7 @@ EXTERN S16 TfUiTfuTtiCell ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuTtiInd ARGS((Pst *pst, SuId suId, 
-         TfuTtiIndInfo *ttiInd));
+	 TfuTtiIndInfo *ttiInd));
 
 /** @brief This API is the TTI indication from PHY to Scheduler. 
  * @details This primitive provides the timing information (SFN and subframe)
@@ -2879,7 +2879,7 @@ EXTERN S16 TfUiTfuTtiInd ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuSchTtiInd ARGS((Pst *pst, SuId suId, 
-         TfuTtiIndInfo *ttiInd));
+	 TfuTtiIndInfo *ttiInd));
 
 
 /** @brief This API is used to indicate the reception of CQI report from PHY to
@@ -2893,7 +2893,7 @@ EXTERN S16 TfUiTfuSchTtiInd ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuDlCqiInd ARGS((Pst *pst, SuId suId, 
-         TfuDlCqiIndInfo *dlCqiInd));
+	 TfuDlCqiIndInfo *dlCqiInd));
 /** @brief This API is used to indicate the calculated DOA value report from PHY to
  * Scheduler.
  * @details This primitive carries the DOA(Direction of arrival) report
@@ -2904,7 +2904,7 @@ EXTERN S16 TfUiTfuDlCqiInd ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuDoaInd ARGS((Pst *pst, SuId suId, 
-         TfuDoaIndInfo *doaInd));
+	 TfuDoaIndInfo *doaInd));
 
 
 /** @brief This primitive is used to convey PUCCH Delta Power calculated by the
@@ -2918,7 +2918,7 @@ EXTERN S16 TfUiTfuDoaInd ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuPucchDeltaPwrInd ARGS((Pst *pst, SuId suId, 
-         TfuPucchDeltaPwrIndInfo *pucchDeltaPwr));
+	 TfuPucchDeltaPwrIndInfo *pucchDeltaPwr));
 
 /** @brief LAA:This primitive carries the Error Indication from PHY to Scheduler.
  * This primitive is invoked when the transmission on the unlicensed Scell
@@ -2930,7 +2930,7 @@ EXTERN S16 TfUiTfuPucchDeltaPwrInd ARGS((Pst *pst, SuId suId,
  */
 
 EXTERN S16 TfUiTfuErrInd ARGS((Pst *pst, SuId suId, 
-         TfuErrIndInfo *errInd));
+	 TfuErrIndInfo *errInd));
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
 
@@ -2945,7 +2945,7 @@ EXTERN S16 TfUiTfuErrInd ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuSrsInd ARGS((Pst *pst, SuId suId, 
-         TfuSrsIndInfo *srsInd));
+	 TfuSrsIndInfo *srsInd));
 
 
 /** @brief This primitive is used to convey the Raw CQI information 
@@ -2960,147 +2960,147 @@ EXTERN S16 TfUiTfuSrsInd ARGS((Pst *pst, SuId suId,
  * @return ROK/RFAILED
  */
 EXTERN S16 TfUiTfuRawCqiInd ARGS((Pst *pst, SuId suId, 
-         TfuRawCqiIndInfo *cqiInd));
+	 TfuRawCqiIndInfo *cqiInd));
 
 #endif /* TFU_UPGRADE */
 
 #ifdef RG
 EXTERN S16 RgLiTfuBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 EXTERN S16 RgLiTfuBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 EXTERN S16 RgLiTfuUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 
 EXTERN S16 RgLiTfuSchBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 EXTERN S16 RgLiTfuSchBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 EXTERN S16 RgLiTfuSchUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 
 EXTERN S16 RgLiTfuRaReqInd ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuRaReqIndInfo *  raReq
-));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuRaReqIndInfo *  raReq
+	 ));
 
 
 EXTERN S16 RgLiTfuRecpReq ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuRecpReqInfo *  recpReq
-));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuRecpReqInfo *  recpReq
+	 ));
 
 EXTERN S16 RgLiTfuUlCqiInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuUlCqiIndInfo *    ulCqiInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuUlCqiIndInfo *    ulCqiInd
+	 ));
 
 EXTERN S16 RgLiTfuDoaInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuDoaIndInfo *      doaInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuDoaIndInfo *      doaInd
+	 ));
 
 EXTERN S16 RgLiTfuHqInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuHqIndInfo *  hqInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuHqIndInfo *  hqInd
+	 ));
 
 EXTERN S16 RgLiTfuSrInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuSrIndInfo *       srInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuSrIndInfo *       srInd
+	 ));
 
 EXTERN S16 RgLiTfuDlCqiInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuDlCqiIndInfo *    dlCqiInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuDlCqiIndInfo *    dlCqiInd
+	 ));
 
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
 EXTERN S16 RgLiTfuRawCqiInd ARGS((
-         Pst            *pst,
-         SuId           suId,
-         TfuRawCqiIndInfo  *rawCqiInd
-         ));  
+	 Pst            *pst,
+	 SuId           suId,
+	 TfuRawCqiIndInfo  *rawCqiInd
+	 ));  
 EXTERN S16 RgLiTfuSrsInd ARGS((
-         Pst            *pst,
-         SuId           suId,
-         TfuSrsIndInfo  *srsIndInfo
-         ));  
+	 Pst            *pst,
+	 SuId           suId,
+	 TfuSrsIndInfo  *srsIndInfo
+	 ));  
 #endif
 EXTERN S16 RgLiTfuDatInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuDatIndInfo *      datInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuDatIndInfo *      datInd
+	 ));
 
 EXTERN S16 RgLiTfuCrcInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuCrcIndInfo *  crcInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuCrcIndInfo *  crcInd
+	 ));
 
 EXTERN S16 RgLiTfuTimingAdvInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuTimingAdvIndInfo * timingAdvInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuTimingAdvIndInfo * timingAdvInd
+	 ));
 
 EXTERN S16 RgLiTfuDatReq ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuDatReqInfo *      datReq
-));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuDatReqInfo *      datReq
+	 ));
 
 EXTERN S16 RgLiTfuCntrlReq ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuCntrlReqInfo *    cntrlReq
-));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuCntrlReqInfo *    cntrlReq
+	 ));
 
 EXTERN S16 RgLiTfuTtiInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuTtiIndInfo *      ttiInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuTtiIndInfo *      ttiInd
+	 ));
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
 EXTERN S16 RgLiTfuNonRtInd ARGS((
-   Pst *                pst,
-   SuId                 suId
-));
+	 Pst *                pst,
+	 SuId                 suId
+	 ));
 #endif
 
 EXTERN S16 RgLiTfuPucchDeltaPwrInd ARGS((
-   Pst *                   pst,
-   SuId                    suId,
-   TfuPucchDeltaPwrIndInfo   *pucchDeltaPwr
-   ));
+	 Pst *                   pst,
+	 SuId                    suId,
+	 TfuPucchDeltaPwrIndInfo   *pucchDeltaPwr
+	 ));
 #endif
 
 /** @brief LAA:This primitive carries the Error Indication from PHY to Scheduler.
@@ -3115,16 +3115,16 @@ EXTERN S16 RgLiTfuErrInd ARGS((Pst *pst, SuId suId, TfuErrIndInfo *errInd));
 
 #ifdef L2_OPTMZ
 /** @brief This primitive carries the cellId and UeId for which datReq need to
-  * deleted in CL. 
-  * @details This primitive is used to delete datReq PDUs present in CL for
-  * which got changed or similar other scenarios. These scenarios are possible
-  * only when L2_OPTMZ flag is enabled.
-  * @sa TfUiTfuDelDatReq
-  * @param pst 
-  * @param spId
-  * @param datReq pointer to TfuDelDatReqInfo
-  * @return 
-  */
+ * deleted in CL. 
+ * @details This primitive is used to delete datReq PDUs present in CL for
+ * which got changed or similar other scenarios. These scenarios are possible
+ * only when L2_OPTMZ flag is enabled.
+ * @sa TfUiTfuDelDatReq
+ * @param pst 
+ * @param spId
+ * @param datReq pointer to TfuDelDatReqInfo
+ * @return 
+ */
 EXTERN S16 RgLiTfuDelDatReq ARGS((Pst *pst, SuId suId, TfuDelDatReqInfo *delDatReq));
 #endif
 
@@ -3133,1225 +3133,1225 @@ EXTERN S16 RgLiTfuDelDatReq ARGS((Pst *pst, SuId suId, TfuDelDatReqInfo *delDatR
  */
 #ifdef TFU_5GTF
 EXTERN S16 cmPkTfuRbAssignA1Val324 ARGS((
-TfuRbAssignA1Val324 *param,
-Buffer *mBuf
-));
+	 TfuRbAssignA1Val324 *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkTfuRbAssignB1Val324 ARGS((
-TfuRbAssignB1Val324 *param,
-Buffer *mBuf
-));
+	 TfuRbAssignB1Val324 *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkTfuRbAssignVal326 ARGS((
-TfuRbAssignVal326 *param,
-Buffer *mBuf
-));
+	 TfuRbAssignVal326 *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuRbAssignA1Val324 ARGS((
-TfuRbAssignA1Val324 *param,
-Buffer *mBuf
-));
+	 TfuRbAssignA1Val324 *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuRbAssignB1Val324 ARGS((
-TfuRbAssignB1Val324 *param,
-Buffer *mBuf
-));
+	 TfuRbAssignB1Val324 *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuRbAssignVal326 ARGS((
-TfuRbAssignVal326 *param,
-Buffer *mBuf
-));
+	 TfuRbAssignVal326 *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormatA1A2Info ARGS((
-TfuDciFormatA1Info *param,
-Buffer *mBuf
-));
+	 TfuDciFormatA1Info *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormatB1B2Info ARGS((
-TfuDciFormatB1Info *param,
-Buffer *mBuf
-));
+	 TfuDciFormatB1Info *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormatA1A2Info ARGS((
-TfuDciFormatA1Info *param,
-Buffer *mBuf
-));
+	 TfuDciFormatA1Info *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormatB1B2Info ARGS((
-TfuDciFormatB1Info *param,
-Buffer *mBuf
-));
+	 TfuDciFormatB1Info *param,
+	 Buffer *mBuf
+	 ));
 #endif /* TFU_5GTF */
 
 EXTERN S16 cmPkTfuBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 /** @brief This API is used to send a Bind Request from MAC to PHY.
  */
 EXTERN S16 cmUnpkTfuBndReq ARGS((
-   TfuBndReq            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 TfuBndReq            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to MAC.
  */
 EXTERN S16 cmPkTfuBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to MAC.
  */
 EXTERN S16 cmUnpkTfuBndCfm ARGS((
-   TfuBndCfm            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 TfuBndCfm            func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to send an Unbind Request from MAC to PHY.
  */
 EXTERN S16 cmPkTfuUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 /** @brief This API is used to send an Unbind Request from MAC to PHY.
  */
 EXTERN S16 cmUnpkTfuUbndReq ARGS((
-   TfuUbndReq           func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 TfuUbndReq           func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to send a Bind Request from SCH to PHY.
  */
 EXTERN S16 cmPkTfuSchBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 SpId                 spId
+	 ));
 /** @brief This API is used to send a Bind Request from SCH to PHY.
  */
 EXTERN S16 cmUnpkTfuSchBndReq ARGS((
-   TfuSchBndReq         func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 TfuSchBndReq         func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to SCH.
  */
 EXTERN S16 cmPkTfuSchBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   U8                   status
-));
+	 Pst*                 pst,
+	 SuId                 suId,
+	 U8                   status
+	 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to SCH.
  */
 EXTERN S16 cmUnpkTfuSchBndCfm ARGS((
-   TfuSchBndCfm         func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 TfuSchBndCfm         func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to send an Unbind Request from SCH to PHY.
  */
 EXTERN S16 cmPkTfuSchUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
+	 Pst*                 pst,
+	 SpId                 spId,
+	 Reason               reason
+	 ));
 /** @brief This API is used to send an Unbind Request from SCH to PHY.
  */
 EXTERN S16 cmUnpkTfuSchUbndReq ARGS((
-   TfuSchUbndReq        func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
+	 TfuSchUbndReq        func,
+	 Pst*                 pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to indication Random Access Request reception from
  * PHY to MAC.
  */
 EXTERN S16 cmPkTfuRaReqInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuRaReqIndInfo *    raReqInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuRaReqIndInfo *    raReqInd
+	 ));
 /** @brief This API is used to indication Random Access Request reception from
  * PHY to MAC.
  */
 EXTERN S16 cmUnpkTfuRaReqInd ARGS((
-   TfuRaReqInd          func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuRaReqInd          func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to indication Random Access Request reception from
  * PHY to MAC.
  */
 EXTERN S16 cmPkTfuRecpReq ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuRecpReqInfo *     recpReq
-));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuRecpReqInfo *     recpReq
+	 ));
 /** @brief This API is used to indication Random Access Request reception from
  * PHY to MAC.
  */
 EXTERN S16 cmUnpkTfuRecpReq ARGS((
-   TfuRecpReq           func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuRecpReq           func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to indicate CQI reporting from PHY to MAC.
  */
 EXTERN S16 cmPkTfuUlCqiInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuUlCqiIndInfo *    ulCqiInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuUlCqiIndInfo *    ulCqiInd
+	 ));
 /** @brief This API is used to indicate CQI reporting from PHY to MAC.
  */
 EXTERN S16 cmUnpkTfuUlCqiInd ARGS((
-   TfuUlCqiInd          func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuUlCqiInd          func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuHqInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuHqIndInfo *       hqInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuHqIndInfo *       hqInd
+	 ));
 
 EXTERN S16 cmUnpkTfuHqInd ARGS((
-   TfuHqInd             func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuHqInd             func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to indicate a SR reception from PHY to MAC.
  */
 EXTERN S16 cmPkTfuSrInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuSrIndInfo *       srInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuSrIndInfo *       srInd
+	 ));
 /** @brief This API is used to indicate a SR reception from PHY to MAC.
  */
 EXTERN S16 cmUnpkTfuSrInd ARGS((
-   TfuSrInd             func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuSrInd             func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to indicate the reception of CQI report from PHY to
  * MAC.
  */
 EXTERN S16 cmPkTfuDlCqiInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuDlCqiIndInfo *    dlCqiInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuDlCqiIndInfo *    dlCqiInd
+	 ));
 /** @brief This API is used to indicate the reception of CQI report from PHY to
  * MAC.
  */
 EXTERN S16 cmUnpkTfuDlCqiInd ARGS((
-   TfuDlCqiInd          func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuDlCqiInd          func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 
 /** @brief This API is used to indicate the Calculated DOA value report from PHY to
  * MAC.*/
 EXTERN S16 cmUnpkTfuDoaInd ARGS((
-   TfuDoaInd            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuDoaInd            func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to indicate the calculated DOA Value report from PHY to
  * MAC.
  */
 EXTERN S16 cmPkTfuDoaInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuDoaIndInfo *      doaInd
-   ));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuDoaIndInfo *      doaInd
+	 ));
 
 /** @brief This API is used to indicate Data Reception from PHY to MAC.
  */
 EXTERN S16 cmPkTfuDatInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuDatIndInfo *      datInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuDatIndInfo *      datInd
+	 ));
 /** @brief This API is used to indicate Data Reception from PHY to MAC.
  */
 EXTERN S16 cmUnpkTfuDatInd ARGS((
-   TfuDatInd            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuDatInd            func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to indicate Decode failure from PHY to MAC.
  */
 EXTERN S16 cmPkTfuCrcInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuCrcIndInfo *  crcInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuCrcIndInfo *  crcInd
+	 ));
 /** @brief This API is used to indicate Decode failure from PHY to MAC.
  */
 EXTERN S16 cmUnpkTfuCrcInd ARGS((
-   TfuCrcInd        func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuCrcInd        func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuCntrlReq ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuCntrlReqInfo *    cntrlReq
-));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuCntrlReqInfo *    cntrlReq
+	 ));
 
 EXTERN S16 cmUnpkTfuCntrlReq ARGS((
-   TfuCntrlReq          func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuCntrlReq          func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to indicate a Timing Advance from PHY to MAC.
  */
 EXTERN S16 cmPkTfuTimingAdvInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuTimingAdvIndInfo * timingAdvInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuTimingAdvIndInfo * timingAdvInd
+	 ));
 /** @brief This API is used to indicate a Timing Advance from PHY to MAC.
  */
 EXTERN S16 cmUnpkTfuTimingAdvInd ARGS((
-   TfuTimingAdvInd      func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuTimingAdvInd      func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This API is used to send Data Request from MAC to PHY.
  */
 EXTERN S16 cmPkTfuDatReq ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuDatReqInfo *      datReq
-));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuDatReqInfo *      datReq
+	 ));
 /** @brief This API is used to send Data Request from MAC to PHY.
  */
 EXTERN S16 cmUnpkTfuDatReq ARGS((
-   TfuDatReq            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuDatReq            func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /* CA dev Start */
 /** @brief This API is the TTI indication from CL to MAC and SCH.
  */
 EXTERN S16 cmPkTfuTtiCell ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuTtiCellInfo *      ttiInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuTtiCellInfo *      ttiInd
+	 ));
 /** @brief This API is the TTI indication from CL to MAC and SCH.
  */
 EXTERN S16 cmUnpkTfuTtiCell ARGS((
-   TfuTtiCell            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuTtiCell            func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /* CA dev End */
 
 /** @brief This API is the TTI indication from PHY to MAC.
  */
 EXTERN S16 cmPkTfuTtiInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuTtiIndInfo *      ttiInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuTtiIndInfo *      ttiInd
+	 ));
 /** @brief This API is the TTI indication from PHY to MAC.
  */
 EXTERN S16 cmUnpackSlotInd ARGS((
-   TfuTtiInd            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuTtiInd            func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
 /** @brief This API is the non-rt indication from PHY to MAC.
-  */
+ */
 EXTERN S16 cmPkTfuNonRtInd ARGS((
-   Pst *                pst,
-   SuId                 suId
-));
+	 Pst *                pst,
+	 SuId                 suId
+	 ));
 
 /** @brief This API is the non-rt indication from PHY to MAC.
-  */
+ */
 EXTERN S16 cmUnpkTfuNonRtInd ARGS((
-   TfuNonRtInd          func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuNonRtInd          func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 #endif
 
 /** @brief This API is the TTI indication from PHY to SCH.
  */
 EXTERN S16 cmPkTfuSchTtiInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuTtiIndInfo *      ttiInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuTtiIndInfo *      ttiInd
+	 ));
 /** @brief This API is used to convey the PUCCH delta power from PHY to SCH.
  */
 EXTERN S16 cmPkTfuPucchDeltaPwrInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuPucchDeltaPwrIndInfo *  pucchDeltaPwr
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuPucchDeltaPwrIndInfo *  pucchDeltaPwr
+	 ));
 /** @brief This API is used to indicate Decode failure from PHY to MAC.
  */
 EXTERN S16 cmUnpkTfuPucchDeltaPwrInd ARGS((
-   TfuPucchDeltaPwrInd       func,
-   Pst *                   pst,
-   Buffer                  *mBuf
-));
+	 TfuPucchDeltaPwrInd       func,
+	 Pst *                   pst,
+	 Buffer                  *mBuf
+	 ));
 
 
 #ifdef TFU_PHASE_2
 /** @brief This API is used to send Group Power Control Request from MAC to PHY.
  */
 EXTERN S16 cmPkTfuGrpPwrCntrlReq ARGS((
-   Pst *                pst,
-   SpId                 spId,
-   TfuGrpPwrCntrlReqInfo * grpPwrCntrlReq
-));
+	 Pst *                pst,
+	 SpId                 spId,
+	 TfuGrpPwrCntrlReqInfo * grpPwrCntrlReq
+	 ));
 /** @brief This API is used to send Group Power Control Request from MAC to PHY.
  */
 EXTERN S16 cmUnpkTfuGrpPwrCntrlReq ARGS((
-   TfuGrpPwrCntrlReq    func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuGrpPwrCntrlReq    func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 #endif
 EXTERN S16 cmPkTfuDciFormat0Info ARGS((
-   TfuDciFormat0Info    *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat0Info    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat0Info ARGS((
-   TfuDciFormat0Info    *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat0Info    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuAllocMapOrRiv ARGS((
-   TfuAllocMapOrRiv     *param,
-   Buffer               *mBuf
-));
+	 TfuAllocMapOrRiv     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuAllocMapOrRiv ARGS((
-   TfuAllocMapOrRiv     *param,
-   Buffer               *mBuf
-));
+	 TfuAllocMapOrRiv     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat1AllocInfo ARGS((
-   TfuDciFormat1AllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1AllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat1AllocInfo ARGS((
-   TfuDciFormat1AllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1AllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat1Info ARGS((
-   TfuDciFormat1Info    *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1Info    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat1Info ARGS((
-   TfuDciFormat1Info    *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1Info    *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuDciFormatTbInfo ARGS((
-   TfuDciFormatTbInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormatTbInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormatTbInfo ARGS((
-   TfuDciFormatTbInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormatTbInfo   *param,
+	 Buffer               *mBuf
+	 ));
 /** @} */
 EXTERN S16 cmPkTfuDciFormat2AAllocInfo ARGS((
-   TfuDciFormat2AAllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat2AAllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat2AAllocInfo ARGS((
-   TfuDciFormat2AAllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat2AAllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat2AInfo ARGS((
-   TfuDciFormat2AInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat2AInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat2AInfo ARGS((
-   TfuDciFormat2AInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat2AInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat2AllocInfo ARGS((
-   TfuDciFormat2AllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat2AllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat2AllocInfo ARGS((
-   TfuDciFormat2AllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat2AllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat2Info ARGS((
-   TfuDciFormat2Info    *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat2Info    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat2Info ARGS((
-   TfuDciFormat2Info    *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat2Info    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat3Info ARGS((
-   TfuDciFormat3Info    *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat3Info    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat3Info ARGS((
-   TfuDciFormat3Info    *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat3Info    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat3AInfo ARGS((
-   TfuDciFormat3AInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat3AInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat3AInfo ARGS((
-   TfuDciFormat3AInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat3AInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat1dAllocInfo ARGS((
-   TfuDciFormat1dAllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1dAllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat1dAllocInfo ARGS((
-   TfuDciFormat1dAllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1dAllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat1dInfo ARGS((
-   TfuDciFormat1dInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1dInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat1dInfo ARGS((
-   TfuDciFormat1dInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1dInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat1cInfo ARGS((
-   TfuDciFormat1cInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1cInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat1cInfo ARGS((
-   TfuDciFormat1cInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1cInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat1bAllocInfo ARGS((
-   TfuDciFormat1bAllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1bAllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat1bAllocInfo ARGS((
-   TfuDciFormat1bAllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1bAllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuPdcchOrderInfo ARGS((
-   TfuPdcchOrderInfo    *param,
-   Buffer               *mBuf
-));
+	 TfuPdcchOrderInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuPdcchOrderInfo ARGS((
-   TfuPdcchOrderInfo    *param,
-   Buffer               *mBuf
-));
+	 TfuPdcchOrderInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat1aAllocInfo ARGS((
-   TfuDciFormat1aAllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1aAllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat1aAllocInfo ARGS((
-   TfuDciFormat1aAllocInfo *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1aAllocInfo *param,
+	 Buffer               *mBuf
+	 ));
 /*tfu_x_001.main_6 - Added for SPS support*/
 EXTERN S16 cmPkTfudciformat1aPdsch ARGS((
-   Tfudciformat1aPdsch  *param,
-   Buffer               *mBuf
-));
+	 Tfudciformat1aPdsch  *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfudciformat1aPdsch ARGS((
-   Tfudciformat1aPdsch  *param,
-   Buffer               *mBuf
-));
+	 Tfudciformat1aPdsch  *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat1aInfo ARGS((
-   TfuDciFormat1aInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1aInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat1aInfo ARGS((
-   TfuDciFormat1aInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1aInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat1bInfo ARGS((
-   TfuDciFormat1bInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1bInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat1bInfo ARGS((
-   TfuDciFormat1bInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuDciFormat1bInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciInfo ARGS((
-   TfuDciInfo           *param,
-   Buffer               *mBuf
-));
+	 TfuDciInfo           *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciInfo ARGS((
-   TfuDciInfo           *param,
-   Buffer               *mBuf
-));
+	 TfuDciInfo           *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuSubbandInfo ARGS((
-   TfuSubbandInfo       *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSubbandInfo ARGS((
-   TfuSubbandInfo       *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuSubbandDlCqiInfo ARGS((
-   TfuSubbandDlCqiInfo    *param,
-   Buffer                 *mBuf
-));
+	 TfuSubbandDlCqiInfo    *param,
+	 Buffer                 *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSubbandDlCqiInfo ARGS((
-   TfuSubbandDlCqiInfo    *param,
-   Buffer                 *mBuf
-));
+	 TfuSubbandDlCqiInfo    *param,
+	 Buffer                 *mBuf
+	 ));
 /** @} */
 EXTERN S16 cmPkTfuSubbandCqiInfo ARGS((
-   TfuSubbandCqiInfo    *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandCqiInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSubbandCqiInfo ARGS((
-   TfuSubbandCqiInfo    *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandCqiInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuPdcchCceInfo ARGS((
-   TfuPdcchCceInfo      *param,
-   Buffer               *mBuf
-));
+	 TfuPdcchCceInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuPdcchCceInfo ARGS((
-   TfuPdcchCceInfo      *param,
-   Buffer               *mBuf
-));
+	 TfuPdcchCceInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiPucchMode10 ARGS((
-   TfuCqiPucchMode10    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPucchMode10    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiPucchMode10 ARGS((
-   TfuCqiPucchMode10    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPucchMode10    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiMode11Cqi ARGS((
-   TfuCqiMode11Cqi      *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode11Cqi      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiMode11Cqi ARGS((
-   TfuCqiMode11Cqi      *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode11Cqi      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiPucchMode11 ARGS((
-   TfuCqiPucchMode11    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPucchMode11    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiPucchMode11 ARGS((
-   TfuCqiPucchMode11    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPucchMode11    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiMode20SubCqi ARGS((
-   TfuCqiMode20SubCqi   *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode20SubCqi   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiMode20SubCqi ARGS((
-   TfuCqiMode20SubCqi   *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode20SubCqi   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiMode20Cqi ARGS((
-   TfuCqiMode20Cqi      *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode20Cqi      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiMode20Cqi ARGS((
-   TfuCqiMode20Cqi      *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode20Cqi      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiPucchMode20 ARGS((
-   TfuCqiPucchMode20    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPucchMode20    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiPucchMode20 ARGS((
-   TfuCqiPucchMode20    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPucchMode20    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiMode21SubCqi ARGS((
-   TfuCqiMode21SubCqi   *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode21SubCqi   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiMode21SubCqi ARGS((
-   TfuCqiMode21SubCqi   *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode21SubCqi   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiMode21WideCqi ARGS((
-   TfuCqiMode21WideCqi  *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode21WideCqi  *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiMode21WideCqi ARGS((
-   TfuCqiMode21WideCqi  *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode21WideCqi  *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiMode21Cqi ARGS((
-   TfuCqiMode21Cqi      *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode21Cqi      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiMode21Cqi ARGS((
-   TfuCqiMode21Cqi      *param,
-   Buffer               *mBuf
-));
+	 TfuCqiMode21Cqi      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiPucchMode21 ARGS((
-   TfuCqiPucchMode21    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPucchMode21    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiPucchMode21 ARGS((
-   TfuCqiPucchMode21    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPucchMode21    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDlCqiPucch ARGS((
-   TfuDlCqiPucch        *param,
-   Buffer               *mBuf
-));
+	 TfuDlCqiPucch        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDlCqiPucch ARGS((
-   TfuDlCqiPucch        *param,
-   Buffer               *mBuf
-));
+	 TfuDlCqiPucch        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuSubbandMode12 ARGS((
-   TfuSubbandMode12     *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandMode12     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSubbandMode12 ARGS((
-   TfuSubbandMode12     *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandMode12     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiPuschMode12 ARGS((
-   TfuCqiPuschMode12    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode12    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiPuschMode12 ARGS((
-   TfuCqiPuschMode12    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode12    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiPuschMode20 ARGS((
-   TfuCqiPuschMode20    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode20    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiPuschMode20 ARGS((
-   TfuCqiPuschMode20    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode20    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiPuschMode22 ARGS((
-   TfuCqiPuschMode22    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode22    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiPuschMode22 ARGS((
-   TfuCqiPuschMode22    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode22    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuSubbandMode30 ARGS((
-   TfuSubbandMode30     *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandMode30     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSubbandMode30 ARGS((
-   TfuSubbandMode30     *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandMode30     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiPuschMode30 ARGS((
-   TfuCqiPuschMode30    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode30    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiPuschMode30 ARGS((
-   TfuCqiPuschMode30    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode30    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuSubbandMode31 ARGS((
-   TfuSubbandMode31     *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandMode31     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSubbandMode31 ARGS((
-   TfuSubbandMode31     *param,
-   Buffer               *mBuf
-));
+	 TfuSubbandMode31     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCqiPuschMode31 ARGS((
-   TfuCqiPuschMode31    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode31    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCqiPuschMode31 ARGS((
-   TfuCqiPuschMode31    *param,
-   Buffer               *mBuf
-));
+	 TfuCqiPuschMode31    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDlCqiPusch ARGS((
-   TfuDlCqiPusch        *param,
-   Buffer               *mBuf
-));
+	 TfuDlCqiPusch        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDlCqiPusch ARGS((
-   TfuDlCqiPusch        *param,
-   Buffer               *mBuf
-));
+	 TfuDlCqiPusch        *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuDlCqiPuschInfo ARGS((
-   TfuDlCqiPuschInfo    *param,
-   Buffer               *mBuf
-));
+	 TfuDlCqiPuschInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDlCqiPuschInfo ARGS((
-   TfuDlCqiPuschInfo    *param,
-   Buffer               *mBuf
-));
+	 TfuDlCqiPuschInfo    *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuDoaRpt ARGS((
-   TfuDoaRpt            *param,
-   Buffer               *mBuf
-));
+	 TfuDoaRpt            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDoaRpt ARGS((
-   TfuDoaRpt            *param,
-   Buffer               *mBuf
-));
+	 TfuDoaRpt            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDoaIndInfo ARGS((
-   TfuDoaIndInfo        *param,
-   Buffer               *mBuf
-));
+	 TfuDoaIndInfo        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDoaIndInfo ARGS((
-   TfuDoaIndInfo        *param,
-   Ptr                  memCp,
-   Buffer               *mBuf
-));
+	 TfuDoaIndInfo        *param,
+	 Ptr                  memCp,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuDlCqiInfo ARGS((
-   U8                   selector,
-   TfuDlCqiInfo         *param,
-   Buffer               *mBuf
-));
+	 U8                   selector,
+	 TfuDlCqiInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDlCqiInfo ARGS((
-   U8                   selector,
-   TfuDlCqiInfo         *param,
-   Buffer               *mBuf
-));
+	 U8                   selector,
+	 TfuDlCqiInfo         *param,
+	 Buffer               *mBuf
+	 ));
 
 
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifndef TFU_UPGRADE
 EXTERN S16 cmPkTfuUeMsg3RecpReq ARGS((
-   TfuUeMsg3RecpReq     *param,
-   Buffer               *mBuf
-));
+	 TfuUeMsg3RecpReq     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUeMsg3RecpReq ARGS((
-   TfuUeMsg3RecpReq     *param,
-   Buffer               *mBuf
-));
+	 TfuUeMsg3RecpReq     *param,
+	 Buffer               *mBuf
+	 ));
 #endif
 
 
 /*tfu_x_001.main_8 - ADD - Prototype for TfuUePuschRecpReq Pk/Unpk functions */
 EXTERN S16 cmPkTfuUePuschRecpReq ARGS((
-   TfuUePuschRecpReq *param,
-   Buffer               *mBuf
-));
+	 TfuUePuschRecpReq *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUePuschRecpReq ARGS((
-   TfuUePuschRecpReq *param,
-   Buffer               *mBuf
-));
+	 TfuUePuschRecpReq *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuUePucchRecpReq ARGS((
-   TfuUePucchRecpReq *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchRecpReq *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUePucchRecpReq ARGS((
-   TfuUePucchRecpReq *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchRecpReq *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuRecpReqInfo ARGS((
-   TfuRecpReqInfo       *param,
-   Buffer               *mBuf
-));
+	 TfuRecpReqInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuRecpReqInfo ARGS((
-   TfuRecpReqInfo       *param,
-   Ptr                   memCp,
-   Buffer               *mBuf
-));
+	 TfuRecpReqInfo       *param,
+	 Ptr                   memCp,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuPdcchInfo ARGS((
-   TfuPdcchInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuPdcchInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuPdcchInfo ARGS((
-   TfuPdcchInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuPdcchInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuPhichInfo ARGS((
-   TfuPhichInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuPhichInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuPhichInfo ARGS((
-   TfuPhichInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuPhichInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCntrlReqInfo ARGS((
-   TfuCntrlReqInfo      *param,
-   Buffer               *mBuf
-));
+	 TfuCntrlReqInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCntrlReqInfo ARGS((
-   TfuCntrlReqInfo      *param,
-   Ptr                   memCp,
-   Buffer               *mBuf
-));
+	 TfuCntrlReqInfo      *param,
+	 Ptr                   memCp,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuPdschDciInfo ARGS((
-   TfuPdschDciInfo      *param,
-   Buffer               *mBuf
-));
+	 TfuPdschDciInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuPdschDciInfo ARGS((
-   TfuPdschDciInfo      *param,
-   Buffer               *mBuf
-));
+	 TfuPdschDciInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDatReqPduInfo ARGS((
-   TfuDatReqPduInfo     *param,
-   Buffer               *mBuf
-));
+	 TfuDatReqPduInfo     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDatReqPduInfo ARGS((
-   TfuDatReqPduInfo     *param,
-   Buffer               *mBuf
-));
+	 TfuDatReqPduInfo     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDatReqInfo ARGS((
-   TfuDatReqInfo        *param,
-   Buffer               *mBuf
-));
+	 TfuDatReqInfo        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDatReqInfo ARGS((
-   TfuDatReqInfo        *param,
-   Ptr                   memCp,
-   Buffer               *mBuf
-));
+	 TfuDatReqInfo        *param,
+	 Ptr                   memCp,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDatInfo ARGS((
-   TfuDatInfo           *param,
-   Buffer               *mBuf
-));
+	 TfuDatInfo           *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDatInfo ARGS((
-   TfuDatInfo           *param,
-   Buffer               *mBuf
-));
+	 TfuDatInfo           *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDatIndInfo ARGS((
-   TfuDatIndInfo        *param,
-   Buffer               *mBuf
-));
+	 TfuDatIndInfo        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDatIndInfo ARGS((
-   TfuDatIndInfo        *param,
-   Ptr                  memCp,
-   Buffer               *mBuf
-));
+	 TfuDatIndInfo        *param,
+	 Ptr                  memCp,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuSrInfo ARGS((
-   TfuSrInfo            *param,
-   Buffer               *mBuf
-));
+	 TfuSrInfo            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSrInfo ARGS((
-   TfuSrInfo            *param,
-   Buffer               *mBuf
-));
+	 TfuSrInfo            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuSrIndInfo ARGS((
-   TfuSrIndInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuSrIndInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSrIndInfo ARGS((
-   TfuSrIndInfo         *param,
-   Ptr                  memCp,
-   Buffer               *mBuf
-));
+	 TfuSrIndInfo         *param,
+	 Ptr                  memCp,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuHqInfo ARGS((
-   TfuHqInfo            *param,
-   Buffer               *mBuf
-));
+	 TfuHqInfo            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuHqInfo ARGS((
-   TfuHqInfo            *param,
-   Buffer               *mBuf
-));
+	 TfuHqInfo            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuHqIndInfo ARGS((
-   TfuHqIndInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuHqIndInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuHqIndInfo ARGS((
-   TfuHqIndInfo         *param,
-   Ptr                  memCpm,
-   Buffer               *mBuf
-));
+	 TfuHqIndInfo         *param,
+	 Ptr                  memCpm,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuUlCqiInfo ARGS((
-   TfuUlCqiInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuUlCqiInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUlCqiInfo ARGS((
-   TfuUlCqiInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuUlCqiInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuUlCqiRpt ARGS((
-   TfuUlCqiRpt          *param,
-   Buffer               *mBuf
-));
+	 TfuUlCqiRpt          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUlCqiRpt ARGS((
-   TfuUlCqiRpt          *param,
-   Buffer               *mBuf
-));
+	 TfuUlCqiRpt          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuUlCqiIndInfo ARGS((
-   TfuUlCqiIndInfo      *param,
-   Buffer               *mBuf
-));
+	 TfuUlCqiIndInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUlCqiIndInfo ARGS((
-   TfuUlCqiIndInfo      *param,
-   Ptr                  memCp,
-   Buffer               *mBuf
-));
+	 TfuUlCqiIndInfo      *param,
+	 Ptr                  memCp,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDlCqiRpt ARGS((
-   TfuDlCqiRpt          *param,
-   Buffer               *mBuf
-));
+	 TfuDlCqiRpt          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDlCqiRpt ARGS((
-   TfuDlCqiRpt          *param,
-   Buffer               *mBuf
-));
+	 TfuDlCqiRpt          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuDlCqiIndInfo ARGS((
-   TfuDlCqiIndInfo      *param,
-   Buffer               *mBuf
-));
+	 TfuDlCqiIndInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDlCqiIndInfo ARGS((
-   TfuDlCqiIndInfo      *param,
-   Ptr                  memCp,
-   Buffer               *mBuf
-));
+	 TfuDlCqiIndInfo      *param,
+	 Ptr                  memCp,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuPucchDeltaPwr ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuPucchDeltaPwrIndInfo * pucchDeltaPwr));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuPucchDeltaPwrIndInfo * pucchDeltaPwr));
 
 EXTERN S16 cmPkTfuPucchDeltaPwrInfo ARGS((
-   TfuPucchDeltaPwr       *param,
-   Buffer               *mBuf
-));
+	 TfuPucchDeltaPwr       *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmUnpkTfuPucchDeltaPwr ARGS((
-   TfuPucchDeltaPwrInd     func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuPucchDeltaPwrInd     func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuPucchDeltaPwrInfo ARGS((
-   TfuPucchDeltaPwr     *param,
-   Buffer               *mBuf
-));
+	 TfuPucchDeltaPwr     *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuCrcInfo ARGS((
-   TfuCrcInfo       *param,
-   Buffer               *mBuf
-));
+	 TfuCrcInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCrcInfo ARGS((
-   TfuCrcInfo       *param,
-   Buffer               *mBuf
-));
+	 TfuCrcInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuCrcIndInfo ARGS((
-   TfuCrcIndInfo    *param,
-   Buffer               *mBuf
-));
+	 TfuCrcIndInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuCrcIndInfo ARGS((
-   TfuCrcIndInfo    *param,
-   Ptr                  memCp,
-   Buffer               *mBuf
-));
+	 TfuCrcIndInfo    *param,
+	 Ptr                  memCp,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuPucchDeltaPwrIndInfo ARGS((
-   TfuPucchDeltaPwrIndInfo    *param,
-   Buffer               *mBuf
-));
+	 TfuPucchDeltaPwrIndInfo    *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuPucchDeltaPwrIndInfo ARGS((
-   TfuPucchDeltaPwrIndInfo    *param,
-   Ptr                  memCp,
-   Buffer               *mBuf
-));
+	 TfuPucchDeltaPwrIndInfo    *param,
+	 Ptr                  memCp,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuTimingAdvInfo ARGS((
-   TfuTimingAdvInfo     *param,
-   Buffer               *mBuf
-));
+	 TfuTimingAdvInfo     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuTimingAdvInfo ARGS((
-   TfuTimingAdvInfo     *param,
-   Buffer               *mBuf
-));
+	 TfuTimingAdvInfo     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuTimingAdvIndInfo ARGS((
-   TfuTimingAdvIndInfo  *param,
-   Buffer               *mBuf
-));
+	 TfuTimingAdvIndInfo  *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuTimingAdvIndInfo ARGS((
-   TfuTimingAdvIndInfo  *param,
-   Ptr                   memCp,
-   Buffer               *mBuf
-));
+	 TfuTimingAdvIndInfo  *param,
+	 Ptr                   memCp,
+	 Buffer               *mBuf
+	 ));
 /* CA dev Start */
 EXTERN S16 cmPkTfuTtiCellInfo ARGS((
-   TfuTtiCellInfo       *param,
-   Buffer               *mBuf
-));
+	 TfuTtiCellInfo       *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuTtiCellInfo ARGS((
-   TfuTtiCellInfo       *param,
-   Buffer               *mBuf
-));
+	 TfuTtiCellInfo       *param,
+	 Buffer               *mBuf
+	 ));
 /* CA dev End */
 EXTERN S16 cmPkTfuTtiIndInfo ARGS((
-   TfuTtiIndInfo        *param,
-   Buffer               *mBuf
-));
+	 TfuTtiIndInfo        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpackSlotIndInfo ARGS((
-   SlotIndInfo          *param,
-   Buffer               *mBuf
-));
+	 SlotIndInfo          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuRaReqInfo ARGS((
-   TfuRaReqInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuRaReqInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuRaReqInfo ARGS((
-   TfuRaReqInfo         *param,
-   Buffer               *mBuf
-));
+	 TfuRaReqInfo         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuRachInfo ARGS((
-   CmMemListCp          memCp,
-   TfuRachInfo          *param,
-   Buffer               *mBuf
-));
+	 CmMemListCp          memCp,
+	 TfuRachInfo          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuRachInfo ARGS((
-   CmMemListCp          memCp,
-   TfuRachInfo          *param,
-   Buffer               *mBuf
-));
+	 CmMemListCp          memCp,
+	 TfuRachInfo          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuRaReqIndInfo ARGS((
-   TfuRaReqIndInfo      *param,
-   Buffer               *mBuf
-));
+	 TfuRaReqIndInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuRaReqIndInfo ARGS((
-   TfuRaReqIndInfo      *param,
-   Buffer               *mBuf
-));
+	 TfuRaReqIndInfo      *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkBuffer ARGS((
-   Buffer **param,
-   Buffer *mBuf
-));
+	 Buffer **param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkBuffer ARGS((
-   Buffer **param,
-   Buffer *mBuf
-));
+	 Buffer **param,
+	 Buffer *mBuf
+	 ));
 
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
 EXTERN S16 cmPkTfuSrsRpt ARGS((
-   TfuSrsRpt            *param,
-   Buffer               *mBuf
-));
+	 TfuSrsRpt            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSrsRpt ARGS((
-   TfuSrsRpt            *param,
-   Buffer               *mBuf
-));
+	 TfuSrsRpt            *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuSrsIndInfo ARGS((
-   TfuSrsIndInfo        *param,
-   Buffer               *mBuf
-));
+	 TfuSrsIndInfo        *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuSrsIndInfo ARGS((
-   TfuSrsIndInfo        *param,
-   Ptr                  memCp,
-   Buffer               *mBuf
-));
+	 TfuSrsIndInfo        *param,
+	 Ptr                  memCp,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuRawCqiRpt ARGS((
-   TfuRawCqiRpt         *param,
-   Buffer               *mBuf
-));
+	 TfuRawCqiRpt         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuRawCqiRpt ARGS((
-   TfuRawCqiRpt         *param,
-   Buffer               *mBuf
-));
+	 TfuRawCqiRpt         *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuRawCqiIndInfo ARGS((
-   TfuRawCqiIndInfo     *param,
-   Buffer               *mBuf
-));
+	 TfuRawCqiIndInfo     *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuRawCqiIndInfo ARGS((
-   TfuRawCqiIndInfo     *param,
-   Ptr                  memCp,
-   Buffer               *mBuf
-));
+	 TfuRawCqiIndInfo     *param,
+	 Ptr                  memCp,
+	 Buffer               *mBuf
+	 ));
 
 #ifdef TFU_TDD
 
 EXTERN S16 cmPkTfuUePucchHqRecpInfo ARGS((
-   TfuUePucchHqRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchHqRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUePucchHqRecpInfo ARGS((
-   TfuUePucchHqRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchHqRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 
 #endif
 
 #ifndef TFU_TDD  /* else of TFU_TDD */
 
 EXTERN S16 cmPkTfuUePucchHqRecpInfo ARGS((
-   TfuUePucchHqRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchHqRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUePucchHqRecpInfo ARGS((
-   TfuUePucchHqRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchHqRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 
 
 #endif
 EXTERN S16 cmPkTfuUePucchSrRecpInfo ARGS((
-   TfuUePucchSrRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchSrRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUePucchSrRecpInfo ARGS((
-   TfuUePucchSrRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchSrRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuUePucchCqiRecpInfo ARGS((
-   TfuUePucchCqiRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchCqiRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUePucchCqiRecpInfo ARGS((
-   TfuUePucchCqiRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchCqiRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuUePucchSrsRecpInfo ARGS((
-   TfuUePucchSrsRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchSrsRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUePucchSrsRecpInfo ARGS((
-   TfuUePucchSrsRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePucchSrsRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuUeUlSchRecpInfo ARGS((
-   TfuUeUlSchRecpInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuUeUlSchRecpInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUeUlSchRecpInfo ARGS((
-   TfuUeUlSchRecpInfo   *param,
-   Buffer               *mBuf
-));
+	 TfuUeUlSchRecpInfo   *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuUePuschCqiRecpInfo ARGS((
-   TfuUePuschCqiRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePuschCqiRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUePuschCqiRecpInfo ARGS((
-   TfuUePuschCqiRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePuschCqiRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmPkTfuUePuschHqRecpInfo ARGS((
-   TfuUePuschHqRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePuschHqRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUePuschHqRecpInfo ARGS((
-   TfuUePuschHqRecpInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUePuschHqRecpInfo *param,
+	 Buffer               *mBuf
+	 ));
 
 EXTERN S16 cmPkTfuBfVectorInfo ARGS ((
-TfuBfVectorInfo *param,
-Buffer *mBuf
-));
+	 TfuBfVectorInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkTfuBfVectorInfo ARGS ((
-   TfuBfVectorInfo *param,
-   Buffer *mBuf
-));
+	 TfuBfVectorInfo *param,
+	 Buffer *mBuf
+	 ));
 #endif /* TFU_UPGRADE */
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 EXTERN S16 cmPkTfuUeRecpReqInfo ARGS((
-   TfuUeRecpReqInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUeRecpReqInfo *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuUeRecpReqInfo ARGS((
-   TfuUeRecpReqInfo *param,
-   Buffer               *mBuf
-));
+	 TfuUeRecpReqInfo *param,
+	 Buffer               *mBuf
+	 ));
 
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
@@ -4367,10 +4367,10 @@ EXTERN S16 cmUnpkTfuUeRecpReqInfo ARGS((
  * @return ROK/RFAILED
  */
 EXTERN S16 cmPkTfuRawCqiInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuRawCqiIndInfo *   rawCqiInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuRawCqiIndInfo *   rawCqiInd
+	 ));
 /** @brief This primitive is used to convey the Raw CQI information 
  * transmitted by the UE.
  * @details Raw CQI report is the actual bits transmitted by the UE when
@@ -4383,10 +4383,10 @@ EXTERN S16 cmPkTfuRawCqiInd ARGS((
  * @return ROK/RFAILED
  */
 EXTERN S16 cmUnpkTfuRawCqiInd ARGS((
-   TfuRawCqiInd         func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuRawCqiInd         func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 /** @brief This primitive is used to convey the information derived by the
  * physical layer from the SRS transmission from the UE.
  * @details This primitive carries information derived from the SRS transmission
@@ -4398,10 +4398,10 @@ EXTERN S16 cmUnpkTfuRawCqiInd ARGS((
  * @return ROK/RFAILED
  */
 EXTERN S16 cmPkTfuSrsInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuSrsIndInfo *      srsInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuSrsIndInfo *      srsInd
+	 ));
 /** @brief This primitive is used to convey the information derived by the
  * physical layer from the SRS transmission from the UE.
  * @details This primitive carries information derived from the SRS transmission
@@ -4413,48 +4413,48 @@ EXTERN S16 cmPkTfuSrsInd ARGS((
  * @return ROK/RFAILED
  */
 EXTERN S16 cmUnpkTfuSrsInd ARGS((
-   TfuSrsInd            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuSrsInd            func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 #endif
 
 /*tfu_x_001.main_6 - Added for SPS support*/
 #ifdef LTEMAC_SPS
 EXTERN S16 cmPkTfuAllocMap ARGS((
-   TfuAllocMap          *param,
-   Buffer               *mBuf
-));
+	 TfuAllocMap          *param,
+	 Buffer               *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuAllocMap ARGS((
-         TfuAllocMap          *param,
-         Buffer               *mBuf
-         ));
+	 TfuAllocMap          *param,
+	 Buffer               *mBuf
+	 ));
 #ifdef EMTC_ENABLE
 EXTERN S16 cmPkTfuDciFormat6AAllocInfo ARGS((
-         TfuDciFormat61AllocInfo *param,
-         Buffer *mBuf
-         ));
+	 TfuDciFormat61AllocInfo *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat6AAllocInfo ARGS((
-         TfuDciFormat61AllocInfo *param,
-         Buffer *mBuf
-         ));
+	 TfuDciFormat61AllocInfo *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat61aInfo ARGS((
-         TfuDciFormat61aInfo *param,
-         Buffer *mBuf
-         ));
+	 TfuDciFormat61aInfo *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmUnpkTfuDciFormat62Info ARGS((
-         TfuDciFormat62Info *param,
-         Buffer *mBuf
-         ));
+	 TfuDciFormat62Info *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkTfudciformat61aPdsch ARGS((
-         Tfudciformat61aPdsch *param,
-         Buffer *mBuf
-         ));
+	 Tfudciformat61aPdsch *param,
+	 Buffer *mBuf
+	 ));
 EXTERN S16 cmPkTfuDciFormat61aInfo ARGS((
-         TfuDciFormat61aInfo *param,
-         Buffer *mBuf
-         ));
+	 TfuDciFormat61aInfo *param,
+	 Buffer *mBuf
+	 ));
 
 #endif
 
@@ -4462,16 +4462,16 @@ EXTERN S16 cmPkTfuDciFormat61aInfo ARGS((
 
 /* LTE_UNLICENSED */
 EXTERN S16 cmPkTfuErrInd ARGS((
-   Pst *                pst,
-   SuId                 suId,
-   TfuErrIndInfo *       errInd
-));
+	 Pst *                pst,
+	 SuId                 suId,
+	 TfuErrIndInfo *       errInd
+	 ));
 
 EXTERN S16 cmUnpkTfuErrInd ARGS((
-   TfuErrInd             func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
+	 TfuErrInd             func,
+	 Pst *                pst,
+	 Buffer               *mBuf
+	 ));
 #endif /*LCTFU*/
 
 
@@ -4482,5 +4482,5 @@ EXTERN S16 cmUnpkTfuErrInd ARGS((
 
 /********************************************************************30**
 
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

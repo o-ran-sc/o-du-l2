@@ -102,10 +102,10 @@ typedef U8 CmLteContResId[6];
 /** @brief RLC ID */
 typedef struct cmLteRlcId
 {
-  CmLteRbId     rbId;   /*!< Radio Bearer ID */
-  U8            rbType; /*!< RB Type */
-  CmLteRnti     ueId;   /*!< UE ID */
-  CmLteCellId   cellId; /*!< Cell ID */
+   CmLteRbId     rbId;   /*!< Radio Bearer ID */
+   U8            rbType; /*!< RB Type */
+   CmLteRnti     ueId;   /*!< UE ID */
+   CmLteCellId   cellId; /*!< Cell ID */
 }CmLteRlcId;
 
 /** @brief LTE Timing Info */
@@ -228,47 +228,47 @@ EXTERN PUBLIC S16 SGetRegPoolInfo(U8* numRegion, U8* numPool);
 
 /* Packing Functions */
 EXTERN S16 cmPkLteRlcId ARGS ((
-CmLteRlcId *param,
-Buffer *mBuf
-));
+	 CmLteRlcId *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkLteTimingInfo ARGS ((
-CmLteTimingInfo *param,
-Buffer *mBuf
-));
+	 CmLteTimingInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmPkLtePdcpId ARGS ((
-CmLtePdcpId *param,
-Buffer *mBuf
-));
+	 CmLtePdcpId *param,
+	 Buffer *mBuf
+	 ));
 
 /* Unpack Function */
 EXTERN S16 cmUnpkLteRlcId ARGS ((
-CmLteRlcId *param,
-Buffer *mBuf
-));
+	 CmLteRlcId *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkLteTimingInfo ARGS ((
-CmLteTimingInfo *param,
-Buffer *mBuf
-));
+	 CmLteTimingInfo *param,
+	 Buffer *mBuf
+	 ));
 
 EXTERN S16 cmUnpkLtePdcpId ARGS ((
-CmLtePdcpId *param,
-Buffer *mBuf
-));
+	 CmLtePdcpId *param,
+	 Buffer *mBuf
+	 ));
 
 #ifdef TENB_TTI_PERF
 
 typedef struct cmTtiProc 
 {
-	U32 totTtiProcessingTime;
-	U32 numOfTti;
-	U32 maxTtiProcessingTime;
-	U32 ttiStretchCount;
-	U32 ttiThresholdExceedCount;
-	/* this count is added to compare phy reported tti stretch and calculated tti stretch */
-	U32 phyReptTtiStretchCount;
+   U32 totTtiProcessingTime;
+   U32 numOfTti;
+   U32 maxTtiProcessingTime;
+   U32 ttiStretchCount;
+   U32 ttiThresholdExceedCount;
+   /* this count is added to compare phy reported tti stretch and calculated tti stretch */
+   U32 phyReptTtiStretchCount;
 }CmTtiProc;
 
 EXTERN CmTtiProc ttiProc;
@@ -283,6 +283,6 @@ EXTERN Void cmResetTtiCounters(Void);
 #endif /* __CM_LTE_X__ */
 
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

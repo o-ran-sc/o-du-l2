@@ -111,9 +111,9 @@ Buffer *mBuf;             /* message buffer */
 {
    TRC2(cmPkDateTime)
 
-   /*-- cm_gen_c_001.main_36 - added for micro seconds --*/
+      /*-- cm_gen_c_001.main_36 - added for micro seconds --*/
 #ifdef SS_DATETIME_USEC
-   CMCHKPK(SPkU32, dateTime->usec, mBuf);
+      CMCHKPK(SPkU32, dateTime->usec, mBuf);
 #endif /*-- SS_DATETIME_USEC --*/
    CMCHKPK(SPkU8, dateTime->tenths, mBuf);
    CMCHKPK(SPkU8, dateTime->sec, mBuf); 
@@ -128,34 +128,34 @@ Buffer *mBuf;             /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkDuration
-*
-*       Desc:  This function packs the Duration structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkDuration
+ *
+ *       Desc:  This function packs the Duration structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkDuration
+   PUBLIC S16 cmPkDuration
 (
-Duration *duration,        /* duration */
-Buffer   *mBuf             /* message buffer */
-)
+ Duration *duration,        /* duration */
+ Buffer   *mBuf             /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkDuration(duration, mBuf)
-Duration *duration;        /* duration */
-Buffer   *mBuf;            /* message buffer */
+   Duration *duration;        /* duration */
+   Buffer   *mBuf;            /* message buffer */
 #endif
 {
    TRC2(cmPkDuration)
 
-   CMCHKPK(SPkU8, duration->tenths, mBuf);
+      CMCHKPK(SPkU8, duration->tenths, mBuf);
    CMCHKPK(SPkU8, duration->secs,   mBuf);
    CMCHKPK(SPkU8, duration->mins,   mBuf);
    CMCHKPK(SPkU8, duration->hours,  mBuf);
@@ -165,29 +165,29 @@ Buffer   *mBuf;            /* message buffer */
 } /* end of cmPkDuration */
 
 /*
-*
-*       Fun:   cmPkPtr
-*
-*       Desc:  This function packs the pointer
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
- 
+ *
+ *       Fun:   cmPkPtr
+ *
+ *       Desc:  This function packs the pointer
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkPtr
+   PUBLIC S16 cmPkPtr
 (
-PTR      ptr,              /* pointer */
-Buffer   *mBuf             /* message buffer */
-)
+ PTR      ptr,              /* pointer */
+ Buffer   *mBuf             /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkPtr(ptr, mBuf)
-PTR      ptr;              /* pointer */
-Buffer   *mBuf;            /* message buffer */
+   PTR      ptr;              /* pointer */
+   Buffer   *mBuf;            /* message buffer */
 #endif
 {
    Data pkArray[PTRSIZE];   /* array for packing */
@@ -199,79 +199,79 @@ Buffer   *mBuf;            /* message buffer */
 #endif
 
    TRC2(cmPkPtr)
-   
-   ret = ROK;
+
+      ret = ROK;
    switch (PTRSIZE)
    {
       case 2:
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-         pkArray[0] = (Data) GetHiByte(ptr);
-         pkArray[1] = (Data) GetLoByte(ptr);
+	 pkArray[0] = (Data) GetHiByte(ptr);
+	 pkArray[1] = (Data) GetLoByte(ptr);
 #else                       /* forward compatibility, packing order */
-         pkArray[1] = (Data) GetHiByte(ptr);
-         pkArray[0] = (Data) GetLoByte(ptr);
+	 pkArray[1] = (Data) GetHiByte(ptr);
+	 pkArray[0] = (Data) GetLoByte(ptr);
 #endif
-         ret = SAddPreMsgMult(pkArray, (MsgLen) 2, mBuf);
-         break;
-    
+	 ret = SAddPreMsgMult(pkArray, (MsgLen) 2, mBuf);
+	 break;
+
       case 4: 
 #ifndef FCSPKINT        /* backward compatibility, packing order */
-         tmp = (U16) GetHiWord(ptr);
-         pkArray[0] = (Data) GetHiByte(tmp);
-         pkArray[1] = (Data) GetLoByte(tmp);
-         tmp = (U16) GetLoWord(ptr);
-         pkArray[2] = (Data) GetHiByte(tmp);
-         pkArray[3] = (Data) GetLoByte(tmp);
+	 tmp = (U16) GetHiWord(ptr);
+	 pkArray[0] = (Data) GetHiByte(tmp);
+	 pkArray[1] = (Data) GetLoByte(tmp);
+	 tmp = (U16) GetLoWord(ptr);
+	 pkArray[2] = (Data) GetHiByte(tmp);
+	 pkArray[3] = (Data) GetLoByte(tmp);
 #else                   /* forward compatibility, packing order */
-         tmp = (U16) GetHiWord(ptr);
-         pkArray[3] = (Data) GetHiByte(tmp);
-         pkArray[2] = (Data) GetLoByte(tmp);
-         tmp = (U16) GetLoWord(ptr);
-         pkArray[1] = (Data) GetHiByte(tmp);
-         pkArray[0] = (Data) GetLoByte(tmp);
+	 tmp = (U16) GetHiWord(ptr);
+	 pkArray[3] = (Data) GetHiByte(tmp);
+	 pkArray[2] = (Data) GetLoByte(tmp);
+	 tmp = (U16) GetLoWord(ptr);
+	 pkArray[1] = (Data) GetHiByte(tmp);
+	 pkArray[0] = (Data) GetLoByte(tmp);
 #endif
-         ret = SAddPreMsgMult(pkArray, (MsgLen) 4, mBuf);
-         break;
+	 ret = SAddPreMsgMult(pkArray, (MsgLen) 4, mBuf);
+	 break;
 
       case 8:
 #if (defined(ALPHA) || defined(BIT_64))
 #ifndef FCSPKINT        /* backward compatibility, packing order */
-         tmp32 = (U32) GetHi32Bit(ptr);
-         tmp = (U16) GetHiWord(tmp32);
-         pkArray[0] = (Data) GetHiByte(tmp);
-         pkArray[1] = (Data) GetLoByte(tmp);
-         tmp = (U16) GetLoWord(tmp32);
-         pkArray[2] = (Data) GetHiByte(tmp);
-         pkArray[3] = (Data) GetLoByte(tmp);
-         tmp32 = (U32) GetLo32Bit(ptr);
-         tmp = (U16) GetHiWord(tmp32);
-         pkArray[4] = (Data) GetHiByte(tmp);
-         pkArray[5] = (Data) GetLoByte(tmp);
-         tmp = (U16) GetLoWord(tmp32);
-         pkArray[6] = (Data) GetHiByte(tmp);
-         pkArray[7] = (Data) GetLoByte(tmp);
+	 tmp32 = (U32) GetHi32Bit(ptr);
+	 tmp = (U16) GetHiWord(tmp32);
+	 pkArray[0] = (Data) GetHiByte(tmp);
+	 pkArray[1] = (Data) GetLoByte(tmp);
+	 tmp = (U16) GetLoWord(tmp32);
+	 pkArray[2] = (Data) GetHiByte(tmp);
+	 pkArray[3] = (Data) GetLoByte(tmp);
+	 tmp32 = (U32) GetLo32Bit(ptr);
+	 tmp = (U16) GetHiWord(tmp32);
+	 pkArray[4] = (Data) GetHiByte(tmp);
+	 pkArray[5] = (Data) GetLoByte(tmp);
+	 tmp = (U16) GetLoWord(tmp32);
+	 pkArray[6] = (Data) GetHiByte(tmp);
+	 pkArray[7] = (Data) GetLoByte(tmp);
 #else                   /* forward compatibility, packing order */
-         tmp32 = (U32) GetHi32Bit(ptr);
-         tmp = (U16) GetHiWord(tmp32);
-         pkArray[7] = (Data) GetHiByte(tmp);
-         pkArray[6] = (Data) GetLoByte(tmp);
-         tmp = (U16) GetLoWord(tmp32);
-         pkArray[5] = (Data) GetHiByte(tmp);
-         pkArray[4] = (Data) GetLoByte(tmp);
-         tmp32 = (U32) GetLo32Bit(ptr);
-         tmp = (U16) GetHiWord(tmp32);
-         pkArray[3] = (Data) GetHiByte(tmp);
-         pkArray[2] = (Data) GetLoByte(tmp);
-         tmp = (U16) GetLoWord(tmp32);
-         pkArray[1] = (Data) GetHiByte(tmp);
-         pkArray[0] = (Data) GetLoByte(tmp);
+	 tmp32 = (U32) GetHi32Bit(ptr);
+	 tmp = (U16) GetHiWord(tmp32);
+	 pkArray[7] = (Data) GetHiByte(tmp);
+	 pkArray[6] = (Data) GetLoByte(tmp);
+	 tmp = (U16) GetLoWord(tmp32);
+	 pkArray[5] = (Data) GetHiByte(tmp);
+	 pkArray[4] = (Data) GetLoByte(tmp);
+	 tmp32 = (U32) GetLo32Bit(ptr);
+	 tmp = (U16) GetHiWord(tmp32);
+	 pkArray[3] = (Data) GetHiByte(tmp);
+	 pkArray[2] = (Data) GetLoByte(tmp);
+	 tmp = (U16) GetLoWord(tmp32);
+	 pkArray[1] = (Data) GetHiByte(tmp);
+	 pkArray[0] = (Data) GetLoByte(tmp);
 #endif
-         ret = SAddPreMsgMult(pkArray, (MsgLen) 8, mBuf);
-         break;
+	 ret = SAddPreMsgMult(pkArray, (MsgLen) 8, mBuf);
+	 break;
 #endif
       default:
-         /* no support for U64 */
-         ret = RFAILED;
+	 /* no support for U64 */
+	 ret = RFAILED;
    }
 
    RETVALUE(ret);
@@ -279,34 +279,34 @@ Buffer   *mBuf;            /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkEntityId
-*
-*       Desc:  This function packs the EntityId structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkEntityId
+ *
+ *       Desc:  This function packs the EntityId structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkEntityId
+   PUBLIC S16 cmPkEntityId
 (
-EntityId *entityId,        /* entity id */
-Buffer   *mBuf             /* message buffer */
-)
+ EntityId *entityId,        /* entity id */
+ Buffer   *mBuf             /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkEntityId(entityId, mBuf)
-EntityId *entityId;        /* entity id */
-Buffer   *mBuf;            /* message buffer */
+   EntityId *entityId;        /* entity id */
+   Buffer   *mBuf;            /* message buffer */
 #endif
 {
    TRC2(cmPkEntityId)
 
-   CMCHKPK(cmPkInst, entityId->inst, mBuf);
+      CMCHKPK(cmPkInst, entityId->inst, mBuf);
    CMCHKPK(cmPkEnt, entityId->ent, mBuf);
 
    RETVALUE(ROK);
@@ -314,34 +314,34 @@ Buffer   *mBuf;            /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkElmntId
-*
-*       Desc:  This function packs the ElmntId structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkElmntId
+ *
+ *       Desc:  This function packs the ElmntId structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkElmntId
+   PUBLIC S16 cmPkElmntId
 (
-ElmntId *elmntId,         /* element id */
-Buffer  *mBuf             /* message buffer */
-)
+ ElmntId *elmntId,         /* element id */
+ Buffer  *mBuf             /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkElmntId(elmntId, mBuf)
-ElmntId *elmntId;         /* element id */
-Buffer  *mBuf;            /* message buffer */
+   ElmntId *elmntId;         /* element id */
+   Buffer  *mBuf;            /* message buffer */
 #endif
 {
    TRC2(cmPkElmntId)
 
-   CMCHKPK(cmPkElmntInst3, elmntId->elmntInst3, mBuf); 
+      CMCHKPK(cmPkElmntInst3, elmntId->elmntInst3, mBuf); 
    CMCHKPK(cmPkElmntInst2, elmntId->elmntInst2, mBuf); 
    CMCHKPK(cmPkElmntInst1, elmntId->elmntInst1, mBuf); 
    CMCHKPK(cmPkElmnt, elmntId->elmnt, mBuf);
@@ -351,34 +351,34 @@ Buffer  *mBuf;            /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkMemoryId
-*
-*       Desc:  This function packs the MemoryId structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkMemoryId
+ *
+ *       Desc:  This function packs the MemoryId structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkMemoryId
+   PUBLIC S16 cmPkMemoryId
 (
-MemoryId *memoryId,        /* memoryId */
-Buffer   *mBuf             /* message buffer */
-)
+ MemoryId *memoryId,        /* memoryId */
+ Buffer   *mBuf             /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkMemoryId(memoryId, mBuf)
-MemoryId *memoryId;        /* memoryId */
-Buffer   *mBuf;            /* message buffer */
+   MemoryId *memoryId;        /* memoryId */
+   Buffer   *mBuf;            /* message buffer */
 #endif
 {
    TRC2(cmPkMemoryId)
 
-   CMCHKPK(cmPkPool, memoryId->pool, mBuf); 
+      CMCHKPK(cmPkPool, memoryId->pool, mBuf); 
    CMCHKPK(cmPkRegion, memoryId->region, mBuf);
 
    RETVALUE(ROK);
@@ -386,43 +386,43 @@ Buffer   *mBuf;            /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkSystemId
-*
-*       Desc:  This function packs the System Id structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkSystemId
+ *
+ *       Desc:  This function packs the System Id structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkSystemId
+   PUBLIC S16 cmPkSystemId
 (
-SystemId *systemId,         /* system id */
-Buffer   *mBuf              /* message buffer */
-)
+ SystemId *systemId,         /* system id */
+ Buffer   *mBuf              /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkSystemId(systemId, mBuf)
-SystemId *systemId;         /* system id */
-Buffer   *mBuf;             /* message buffer */
+   SystemId *systemId;         /* system id */
+   Buffer   *mBuf;             /* message buffer */
 #endif
 {
    Txt *p;                  /* part number string */
 
    TRC2(cmPkSystemId)
 
-   for (p = systemId->ptNmb; *p; p++);
+      for (p = systemId->ptNmb; *p; p++);
 
    for (; p != systemId->ptNmb; p--)
    {
       CMCHKPK(cmPkTxt, *p, mBuf);
    }
    CMCHKPK(cmPkTxt, *p, mBuf);
-   
+
    CMCHKPK(SPkS16, systemId->bRev, mBuf);
    CMCHKPK(SPkS16, systemId->bVer, mBuf);
    CMCHKPK(SPkS16, systemId->mRev, mBuf);
@@ -444,20 +444,20 @@ Buffer   *mBuf;             /* message buffer */
  *
  *       Notes: None
  *
-         File:  cm_gen.c
+File:  cm_gen.c
  *
  */
 
 #ifdef ANSI
-PUBLIC S16 cmPkProtAddr
+   PUBLIC S16 cmPkProtAddr
 (
-ProtAddr     *pAddr,     /* protocol address */
-Buffer       *mBuf       /* buffer */
-)
+ ProtAddr     *pAddr,     /* protocol address */
+ Buffer       *mBuf       /* buffer */
+ )
 #else
 PUBLIC S16 cmPkProtAddr(pAddr, mBuf)
-ProtAddr     *pAddr;      /* protocol address */
-Buffer       *mBuf;          /* buffer */
+   ProtAddr     *pAddr;      /* protocol address */
+   Buffer       *mBuf;          /* buffer */
 #endif
 {
    U8              j;                  /* Index */
@@ -465,7 +465,7 @@ Buffer       *mBuf;          /* buffer */
    TRC3(cmPkProtAddr)
 
 #ifdef CM_ARI2
-   CMCHKPK(SPkU32, pAddr->autoSysId, mBuf);  
+      CMCHKPK(SPkU32, pAddr->autoSysId, mBuf);  
    CMCHKPK(cmPkBool, pAddr->autoSysIdPres, mBuf);  
 #endif /* CM_ARI2 */
 
@@ -475,11 +475,11 @@ Buffer       *mBuf;          /* buffer */
    CMCHKPK(SPkU8,  pAddr->preLen, mBuf);  
    CMCHKPK(SPkU8,  pAddr->len, mBuf);  
    CMCHKPK(SPkU16, pAddr->protType, mBuf);  
-       
+
    RETVALUE(ROK);
 
 } /* end of cmPkProtAddr */
-   
+
 
 
 /*
@@ -493,20 +493,20 @@ Buffer       *mBuf;          /* buffer */
  *
  *       Notes: None
  *
-         File:  cm_gen.c
+File:  cm_gen.c
  *
  */
 
 #ifdef ANSI
-PUBLIC S16 cmPkProtAddrTbl
+   PUBLIC S16 cmPkProtAddrTbl
 (
-ProtAddrTbl  *protAddr,      /* protocol address table */
-Buffer       *mBuf          /* buffer */
-)
+ ProtAddrTbl  *protAddr,      /* protocol address table */
+ Buffer       *mBuf          /* buffer */
+ )
 #else
 PUBLIC S16 cmPkProtAddrTbl(protAddr, mBuf)
-ProtAddrTbl  *protAddr;      /* protocol address table */
-Buffer       *mBuf;          /* buffer */
+   ProtAddrTbl  *protAddr;      /* protocol address table */
+   Buffer       *mBuf;          /* buffer */
 #endif
 {
    U8              i;                  /* index */
@@ -515,65 +515,65 @@ Buffer       *mBuf;          /* buffer */
 
    TRC3(cmPkProtAddrTbl)
 
-   if (protAddr->count > MAX_PROT_ADDRS)
-      RETVALUE(RFAILED);
+      if (protAddr->count > MAX_PROT_ADDRS)
+	 RETVALUE(RFAILED);
 
    for (i = protAddr->count; i; i--)
    {
-       pAddr = &(protAddr->addr[i - 1]);
+      pAddr = &(protAddr->addr[i - 1]);
 
 #ifdef CM_ARI2
-       CMCHKPK(SPkU32, pAddr->autoSysId, mBuf);  
-       CMCHKPK(cmPkBool, pAddr->autoSysIdPres, mBuf);  
+      CMCHKPK(SPkU32, pAddr->autoSysId, mBuf);  
+      CMCHKPK(cmPkBool, pAddr->autoSysIdPres, mBuf);  
 #endif /* CM_ARI2 */
 
-       for (j = pAddr->len; j; j--)
-          CMCHKPK(SPkU8, pAddr->address[j - 1], mBuf);  
-        
-       CMCHKPK(SPkU8, pAddr->preLen, mBuf);  
-       CMCHKPK(SPkU8,  pAddr->len, mBuf);  
-       CMCHKPK(SPkU16,  pAddr->protType, mBuf);  
-       
+      for (j = pAddr->len; j; j--)
+	 CMCHKPK(SPkU8, pAddr->address[j - 1], mBuf);  
+
+      CMCHKPK(SPkU8, pAddr->preLen, mBuf);  
+      CMCHKPK(SPkU8,  pAddr->len, mBuf);  
+      CMCHKPK(SPkU16,  pAddr->protType, mBuf);  
+
    }
    CMCHKPK(SPkU8, protAddr->count, mBuf);  
 
    RETVALUE(ROK);
 } /* end of cmPkProtAddrTbl */
-   
+
 
 /*
-*
-*       Fun:   cmPkAddrs
-*
-*       Desc:  This function packs the address structure for a loosely 
-*              coupled interface
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkAddrs
+ *
+ *       Desc:  This function packs the address structure for a loosely 
+ *              coupled interface
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkAddrs
+   PUBLIC S16 cmPkAddrs
 (
-Addrs *addrs,           /* address */
-Buffer *mBuf            /* message buffer */
-)
+ Addrs *addrs,           /* address */
+ Buffer *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkAddrs(addrs, mBuf)
-Addrs *addrs;           /* address */
-Buffer *mBuf;           /* message buffer */
+   Addrs *addrs;           /* address */
+   Buffer *mBuf;           /* message buffer */
 #endif
 {
    U8 i;                /* loop counter */
 
    TRC2(cmPkAddrs)
 
-   if (addrs->length > ADRLEN)
-      RETVALUE(RFAILED);
+      if (addrs->length > ADRLEN)
+	 RETVALUE(RFAILED);
 
    for (i = addrs->length; i; i--)
    {
@@ -587,38 +587,38 @@ Buffer *mBuf;           /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkShrtAddrs
-*
-*       Desc:  This function packs the short address structure for a loosely 
-*              coupled interface
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkShrtAddrs
+ *
+ *       Desc:  This function packs the short address structure for a loosely 
+ *              coupled interface
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkShrtAddrs
+   PUBLIC S16 cmPkShrtAddrs
 (
-ShrtAddrs *addrs,          /* address */
-Buffer    *mBuf            /* message buffer */
-)
+ ShrtAddrs *addrs,          /* address */
+ Buffer    *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkShrtAddrs(addrs, mBuf)
-ShrtAddrs *addrs;          /* address */
-Buffer    *mBuf;           /* message buffer */
+   ShrtAddrs *addrs;          /* address */
+   Buffer    *mBuf;           /* message buffer */
 #endif 
 {
    U8 i;                /* loop counter */
 
    TRC2(cmPkShrtAddrs)
 
-   if (addrs->length > SHRTADRLEN)
-      RETVALUE(RFAILED);
+      if (addrs->length > SHRTADRLEN)
+	 RETVALUE(RFAILED);
 
    for (i = addrs->length; i; i--)
    {
@@ -632,76 +632,76 @@ Buffer    *mBuf;           /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkAddrMask
-*
-*       Desc:  This function address mask array.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkAddrMask
+ *
+ *       Desc:  This function address mask array.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkAddrMask
+   PUBLIC S16 cmPkAddrMask
 (
-U8 *mask,             /* pointer to address mask array */
-Buffer  *mBuf         /* message buffer */
-)
+ U8 *mask,             /* pointer to address mask array */
+ Buffer  *mBuf         /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkAddrMask(mask, mBuf)
-U8 *mask;             /* pointer to address mask array */
-Buffer  *mBuf;        /* message buffer */
+   U8 *mask;             /* pointer to address mask array */
+   Buffer  *mBuf;        /* message buffer */
 #endif
 {
    S16 i;             /* counter */
 
    TRC2(cmPkAddrMask)
 
-   /* pack address mask */
-   for (i = (ADRLEN - 1); i >= 0; i--)
-   {
-      CMCHKPK(SPkU8, mask[i], mBuf);
-   }
+      /* pack address mask */
+      for (i = (ADRLEN - 1); i >= 0; i--)
+      {
+	 CMCHKPK(SPkU8, mask[i], mBuf);
+      }
 
    RETVALUE(ROK);
 } /* end of cmPkAddrMask */
 
 
 /*
-*
-*       Fun:   cmPkBndCfg
-*
-*       Desc:  This function packs the BndCfg structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkBndCfg
+ *
+ *       Desc:  This function packs the BndCfg structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkBndCfg
+   PUBLIC S16 cmPkBndCfg
 (
-BndCfg *bndCfg,         /* bndCfg */
-Buffer *mBuf            /* message buffer */
-)
+ BndCfg *bndCfg,         /* bndCfg */
+ Buffer *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkBndCfg(bndCfg, mBuf)
-BndCfg *bndCfg;         /* bndCfg */
-Buffer *mBuf;           /* message buffer */
+   BndCfg *bndCfg;         /* bndCfg */
+   Buffer *mBuf;           /* message buffer */
 #endif
 {
    Txt *p;              /* temporary */
 
    TRC2(cmPkBndCfg)
 
-   CMCHKPK(cmPkSelector, bndCfg->selector, mBuf);
+      CMCHKPK(cmPkSelector, bndCfg->selector, mBuf);
    CMCHKPK(cmPkAddrs, &bndCfg->sapAdr, mBuf);
    CMCHKPK(cmPkRoute, bndCfg->route, mBuf);
    CMCHKPK(cmPkPrior, bndCfg->prior, mBuf);
@@ -722,33 +722,33 @@ Buffer *mBuf;           /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkPst
-*
-*       Desc:  pack post structure 
-*
-*       Ret:   ROK
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
+ *
+ *       Fun:   cmPkPst
+ *
+ *       Desc:  pack post structure 
+ *
+ *       Ret:   ROK
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmPkPst
+   PUBLIC S16 cmPkPst
 (
-Pst *pst,
-Buffer *mBuf
-)
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmPkPst(pst, mBuf)
-Pst *pst;
-Buffer *mBuf;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    TRC2(cmPkPst)
-   
-   CMCHKPK(cmPkEvent, pst->event, mBuf);
+
+      CMCHKPK(cmPkEvent, pst->event, mBuf);
    CMCHKPK(cmPkInst, pst->srcInst, mBuf);
    CMCHKPK(cmPkEnt, pst->srcEnt, mBuf); 
    CMCHKPK(cmPkProcId, pst->srcProcId, mBuf);
@@ -777,24 +777,24 @@ Buffer *mBuf;
  *
  *      Notes:  None
  *
-        File:   cm_gen.c
+File:   cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkElmtHdr
+   PUBLIC S16 cmPkElmtHdr
 (
-ElmtHdr *m,                  /* element header */
-Buffer  *mBuf                /* message buffer */
-)
+ ElmtHdr *m,                  /* element header */
+ Buffer  *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkElmtHdr(m, mBuf)
-ElmtHdr *m;                  /* element header */
-Buffer  *mBuf;               /* message buffer */
+   ElmtHdr *m;                  /* element header */
+   Buffer  *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkElmtHdr)
- 
+
 #if (LCAMT || ATM_BISUP)
       CMCHKPK(SPkU16, m->compInd, mBuf);
 #endif /* LCAMT || ATM_BISUP */
@@ -803,7 +803,7 @@ Buffer  *mBuf;               /* message buffer */
    /* Pack action indicator field */
    if (m->pres)
    {
-     CMCHKPK(SPkU8, m->actnInd, mBuf);
+      CMCHKPK(SPkU8, m->actnInd, mBuf);
    }
 #endif
 
@@ -824,29 +824,29 @@ Buffer  *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknU8
+   PUBLIC S16 cmPkTknU8
 (
-TknU8  *tknU8,              /* token U8 */
-Buffer *mBuf                /* message buffer */
-)
+ TknU8  *tknU8,              /* token U8 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknU8(tknU8, mBuf)
-TknU8  *tknU8;              /* token U8 */
-Buffer *mBuf;               /* message buffer */
+   TknU8  *tknU8;              /* token U8 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknU8)
 
-   if (tknU8->pres)
-   {
-      /* Value */
-      CMCHKPK(SPkU8, tknU8->val, mBuf);
-   }
+      if (tknU8->pres)
+      {
+	 /* Value */
+	 CMCHKPK(SPkU8, tknU8->val, mBuf);
+      }
 
    /* Token Header */
    CMCHKPK(SPkU8, tknU8->pres, mBuf);
@@ -865,33 +865,33 @@ Buffer *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknS8
+   PUBLIC S16 cmPkTknS8
 (
-TknS8  *tknS8,              /* token S8 */
-Buffer *mBuf                /* message buffer */
-)
+ TknS8  *tknS8,              /* token S8 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknS8(tknS8, mBuf)
-TknS8  *tknS8;              /* token S8 */
-Buffer *mBuf;               /* message buffer */
+   TknS8  *tknS8;              /* token S8 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknS8)
- 
-   if (tknS8->pres)
-   {
-      /* Value */
-      CMCHKPK(SPkS8, tknS8->val, mBuf);
-   }
- 
+
+      if (tknS8->pres)
+      {
+	 /* Value */
+	 CMCHKPK(SPkS8, tknS8->val, mBuf);
+      }
+
    /* Token Header */
    CMCHKPK(SPkU8, tknS8->pres, mBuf);
- 
+
    RETVALUE(ROK);
 } /* end of cmPkTknS8 */
 
@@ -906,29 +906,29 @@ Buffer *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknU16
+   PUBLIC S16 cmPkTknU16
 (
-TknU16 *tknU16,             /* token U16 */
-Buffer *mBuf                /* message buffer */
-)
+ TknU16 *tknU16,             /* token U16 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknU16(tknU16, mBuf)
-TknU16 *tknU16;             /* token U16 */
-Buffer *mBuf;               /* message buffer */
+   TknU16 *tknU16;             /* token U16 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknU16)
 
-   if (tknU16->pres)
-   {
-      /* Value */
-      CMCHKPK(SPkU16, tknU16->val, mBuf);
-   }
+      if (tknU16->pres)
+      {
+	 /* Value */
+	 CMCHKPK(SPkU16, tknU16->val, mBuf);
+      }
 
    /* Token Header */
    CMCHKPK(SPkU8, tknU16->pres, mBuf);
@@ -947,29 +947,29 @@ Buffer *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknU32
+   PUBLIC S16 cmPkTknU32
 (
-TknU32 *tknU32,             /* token U32 */
-Buffer *mBuf                /* message buffer */
-)
+ TknU32 *tknU32,             /* token U32 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknU32(tknU32, mBuf)
-TknU32 *tknU32;             /* token U32 */
-Buffer *mBuf;               /* message buffer */
+   TknU32 *tknU32;             /* token U32 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknU32)
 
-   if (tknU32->pres)
-   {
-      /* Value */
-      CMCHKPK(SPkU32, tknU32->val, mBuf);
-   }
+      if (tknU32->pres)
+      {
+	 /* Value */
+	 CMCHKPK(SPkU32, tknU32->val, mBuf);
+      }
 
    /* Token Header */
    CMCHKPK(SPkU8, tknU32->pres, mBuf);
@@ -988,38 +988,38 @@ Buffer *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr
+   PUBLIC S16 cmPkTknStr
 (
-TknStr *tknStr,             /* token string */
-Buffer *mBuf                /* message buffer */
-)
+ TknStr *tknStr,             /* token string */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStr(tknStr, mBuf)
-TknStr *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
+   TknStr *tknStr;             /* token string */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Cntr i;                    /* counter */
 
    TRC2(cmPkTknStr)
 
-   if (tknStr->pres)
-   {
-      /* Value */
-      for (i = 0; i < (S16) tknStr->len; i++)
+      if (tknStr->pres)
       {
-         CMCHKPK(SPkU8, tknStr->val[i], mBuf);
+	 /* Value */
+	 for (i = 0; i < (S16) tknStr->len; i++)
+	 {
+	    CMCHKPK(SPkU8, tknStr->val[i], mBuf);
+	 }
+
+	 /* Length */
+	 CMCHKPK(SPkU8, tknStr->len, mBuf);
       }
 
-      /* Length */
-      CMCHKPK(SPkU8, tknStr->len, mBuf);
-   }
- 
    /* Token Header */
    CMCHKPK(SPkU8, tknStr->pres, mBuf);
 
@@ -1037,38 +1037,38 @@ Buffer *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStrM
+   PUBLIC S16 cmPkTknStrM
 (
-TknStrM *tknStr,             /* token string */
-Buffer *mBuf                /* message buffer */
-)
+ TknStrM *tknStr,             /* token string */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStrM(tknStr, mBuf)
-TknStrM *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
+   TknStrM *tknStr;             /* token string */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Cntr i;                    /* counter */
 
    TRC2(cmPkTknStrM)
 
-   if(tknStr->pres)
-   {
-      /* Value */
-      for (i = 0; i < (S16) tknStr->len; i++)
+      if(tknStr->pres)
       {
-         CMCHKPK(SPkU8, tknStr->val[i], mBuf);
+	 /* Value */
+	 for (i = 0; i < (S16) tknStr->len; i++)
+	 {
+	    CMCHKPK(SPkU8, tknStr->val[i], mBuf);
+	 }
+
+	 /* Length */
+	 CMCHKPK(SPkU8, tknStr->len, mBuf);
       }
 
-      /* Length */
-      CMCHKPK(SPkU8, tknStr->len, mBuf);
-   }
- 
    /* Token Header */
    CMCHKPK(SPkU8, tknStr->pres, mBuf);
 
@@ -1086,38 +1086,38 @@ Buffer *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStrS
+   PUBLIC S16 cmPkTknStrS
 (
-TknStrS *tknStr,             /* token string */
-Buffer *mBuf                /* message buffer */
-)
+ TknStrS *tknStr,             /* token string */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStrS(tknStr, mBuf)
-TknStrS *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
+   TknStrS *tknStr;             /* token string */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Cntr i;                    /* counter */
 
    TRC2(cmPkTknStrS)
 
-   if(tknStr->pres)
-   {
-      /* Value */
-      for (i = 0; i < (S16) tknStr->len; i++)
+      if(tknStr->pres)
       {
-         CMCHKPK(SPkU8, tknStr->val[i], mBuf);
+	 /* Value */
+	 for (i = 0; i < (S16) tknStr->len; i++)
+	 {
+	    CMCHKPK(SPkU8, tknStr->val[i], mBuf);
+	 }
+
+	 /* Length */
+	 CMCHKPK(SPkU8, tknStr->len, mBuf);
       }
 
-      /* Length */
-      CMCHKPK(SPkU8, tknStr->len, mBuf);
-   }
- 
    /* Token Header */
    CMCHKPK(SPkU8, tknStr->pres, mBuf);
 
@@ -1135,38 +1135,38 @@ Buffer *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStrE
+   PUBLIC S16 cmPkTknStrE
 (
-TknStrE *tknStr,             /* token string */
-Buffer *mBuf                /* message buffer */
-)
+ TknStrE *tknStr,             /* token string */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStrE(tknStr, mBuf)
-TknStrE *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
+   TknStrE *tknStr;             /* token string */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Cntr i;                    /* counter */
 
    TRC2(cmPkTknStrE)
 
-   if(tknStr->pres)
-   {
-      /* Value */
-      for (i = 0; i < (S16) tknStr->len; i++)
+      if(tknStr->pres)
       {
-         CMCHKPK(SPkU8, tknStr->val[i], mBuf);
+	 /* Value */
+	 for (i = 0; i < (S16) tknStr->len; i++)
+	 {
+	    CMCHKPK(SPkU8, tknStr->val[i], mBuf);
+	 }
+
+	 /* Length */
+	 CMCHKPK(SPkU8, tknStr->len, mBuf);
       }
 
-      /* Length */
-      CMCHKPK(SPkU8, tknStr->len, mBuf);
-   }
- 
    /* Token Header */
    CMCHKPK(SPkU8, tknStr->pres, mBuf);
 
@@ -1177,40 +1177,40 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkPnNodeId
-*
-*       Desc:  This function packs a PnNodeId structure into a buffer
-*
-*       Ret:   Void
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkPnNodeId
+ *
+ *       Desc:  This function packs a PnNodeId structure into a buffer
+ *
+ *       Ret:   Void
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkPnNodeId
+   PUBLIC S16 cmPkPnNodeId
 (
-PnNodeId  *src,     /* source PNNI Node Id */
-Buffer *mBuf        /* message buffer */
-)
+ PnNodeId  *src,     /* source PNNI Node Id */
+ Buffer *mBuf        /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkPnNodeId (src, mBuf)
-PnNodeId  *src;     /* source PNNI Node Id */
-Buffer *mBuf;       /* message buffer */
+   PnNodeId  *src;     /* source PNNI Node Id */
+   Buffer *mBuf;       /* message buffer */
 #endif
 {
    S16 i;
-   
+
    TRC3(cmPkPnNodeId);
-   
+
    for (i = PN_NODEID_LEN - 1; i >= 0; i--)
    {
       CMCHKPK(SPkU8, src->id[i], mBuf);
    }
-   
+
    RETVALUE(ROK);
 } /* cmPkPnNodeId */
 
@@ -1227,25 +1227,25 @@ Buffer *mBuf;       /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr4
+   PUBLIC S16 cmPkTknStr4
 (
-TknStr4 *tknStr,             /* token string */
-Buffer  *mBuf                /* message buffer */
-)
+ TknStr4 *tknStr,             /* token string */
+ Buffer  *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStr4(tknStr, mBuf)
-TknStr4 *tknStr;             /* token string */
-Buffer  *mBuf;               /* message buffer */
+   TknStr4 *tknStr;             /* token string */
+   Buffer  *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknStr4)
 
-   CMPKTKNSTR(tknStr, mBuf);
+      CMPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -1263,25 +1263,25 @@ Buffer  *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr12
+   PUBLIC S16 cmPkTknStr12
 (
-TknStr12 *tknStr,             /* token string */
-Buffer   *mBuf                /* message buffer */
-)
+ TknStr12 *tknStr,             /* token string */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStr12(tknStr, mBuf)
-TknStr12 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
+   TknStr12 *tknStr;             /* token string */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknStr12)
 
-   CMPKTKNSTR(tknStr, mBuf);
+      CMPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -1298,25 +1298,25 @@ Buffer   *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr32
+   PUBLIC S16 cmPkTknStr32
 (
-TknStr32 *tknStr,             /* token string */
-Buffer   *mBuf                /* message buffer */
-)
+ TknStr32 *tknStr,             /* token string */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStr32(tknStr, mBuf)
-TknStr32 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
+   TknStr32 *tknStr;             /* token string */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknStr32)
 
-   CMPKTKNSTR(tknStr, mBuf);
+      CMPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -1333,25 +1333,25 @@ Buffer   *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr64
+   PUBLIC S16 cmPkTknStr64
 (
-TknStr64 *tknStr,             /* token string */
-Buffer   *mBuf                /* message buffer */
-)
+ TknStr64 *tknStr,             /* token string */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStr64(tknStr, mBuf)
-TknStr64 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
+   TknStr64 *tknStr;             /* token string */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknStr64)
 
-   CMPKTKNSTR(tknStr, mBuf);
+      CMPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -1368,25 +1368,25 @@ Buffer   *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr132
+   PUBLIC S16 cmPkTknStr132
 (
-TknStr132 *tknStr,             /* token string */
-Buffer   *mBuf                /* message buffer */
-)
+ TknStr132 *tknStr,             /* token string */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStr132(tknStr, mBuf)
-TknStr132 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
+   TknStr132 *tknStr;             /* token string */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknStr132)
 
-   CMPKTKNSTR(tknStr, mBuf);
+      CMPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -1403,25 +1403,25 @@ Buffer   *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknStr256
+   PUBLIC S16 cmPkTknStr256
 (
-TknStr256 *tknStr,             /* token string */
-Buffer    *mBuf                /* message buffer */
-)
+ TknStr256 *tknStr,             /* token string */
+ Buffer    *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknStr256(tknStr, mBuf)
-TknStr256 *tknStr;             /* token string */
-Buffer    *mBuf;               /* message buffer */
+   TknStr256 *tknStr;             /* token string */
+   Buffer    *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknStr256)
 
-   CMPKTKNSTR(tknStr, mBuf);
+      CMPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -1438,42 +1438,42 @@ Buffer    *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknOid
+   PUBLIC S16 cmPkTknOid
 (
-TknOid   *tknOid,             /* Object Identifier token */
-Buffer   *mBuf                /* message buffer */
-)
+ TknOid   *tknOid,             /* Object Identifier token */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknOid(tknOid, mBuf)
-TknOid   *tknOid;             /* Object Identifier token */
-Buffer   *mBuf;               /* message buffer */
+   TknOid   *tknOid;             /* Object Identifier token */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    U16    i;
 
    TRC2(cmPkTknOid)
- 
-   if (tknOid->pres == TRUE)
-   {
-      /* Pack the value */
-      for (i = 0; i < (U16)tknOid->len; i++)
+
+      if (tknOid->pres == TRUE)
       {
-         /* cm_gen_c_001.main_33: changes for TknOid value from U16 to U32
-          * with compilation flag TKNOID_U16 */
+	 /* Pack the value */
+	 for (i = 0; i < (U16)tknOid->len; i++)
+	 {
+	    /* cm_gen_c_001.main_33: changes for TknOid value from U16 to U32
+	     * with compilation flag TKNOID_U16 */
 #ifndef TKNOID_U16
-         CMCHKPK(SPkU32, tknOid->val[i], mBuf);
+	    CMCHKPK(SPkU32, tknOid->val[i], mBuf);
 #else
-         CMCHKPK(SPkU16, tknOid->val[i], mBuf);
+	    CMCHKPK(SPkU16, tknOid->val[i], mBuf);
 #endif  /* !TKNOID_U16 */
+	 }
+	 /* Pack the length */
+	 CMCHKPK(SPkU8, tknOid->len, mBuf);
       }
-      /* Pack the length */
-      CMCHKPK(SPkU8, tknOid->len, mBuf);
-   }
    /* Pack the token header */
    CMCHKPK(SPkU8, tknOid->pres, mBuf);
 
@@ -1482,38 +1482,38 @@ Buffer   *mBuf;               /* message buffer */
 
 
 /*
-*
-*      Fun:   cmPkTknS32
-*
-*      Desc:  This function packs a token S32
-*
-*      Ret:   ROK      - ok
-*
-*      Notes: None
-*
-*      File:  cm_gen.c
-*
-*/
-  
+ *
+ *      Fun:   cmPkTknS32
+ *
+ *      Desc:  This function packs a token S32
+ *
+ *      Ret:   ROK      - ok
+ *
+ *      Notes: None
+ *
+ *      File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknS32
+   PUBLIC S16 cmPkTknS32
 (
-TknS32 *tknS32,             /* token S32 */
-Buffer *mBuf                /* message buffer */
-)
+ TknS32 *tknS32,             /* token S32 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknS32(tknS32, mBuf)
-TknS32 *tknS32;             /* token S32 */
-Buffer *mBuf;               /* message buffer */
+   TknS32 *tknS32;             /* token S32 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknS32)
 
-   if (tknS32->pres)
-   {
-      /* Value */
-      CMCHKPK(SPkS32, tknS32->val, mBuf);
-   }
+      if (tknS32->pres)
+      {
+	 /* Value */
+	 CMCHKPK(SPkS32, tknS32->val, mBuf);
+      }
 
    /* Token Header */
    CMCHKPK(SPkU8, tknS32->pres, mBuf);
@@ -1523,35 +1523,35 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkHeader
-*
-*       Desc:  This function packs the header structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkHeader
+ *
+ *       Desc:  This function packs the header structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkHeader
+   PUBLIC S16 cmPkHeader
 (
-Header *header,             /* header */
-Buffer *mBuf                /* message buffer */
-)
+ Header *header,             /* header */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkHeader(header, mBuf)
-Header *header;             /* header */
-Buffer *mBuf;               /* message buffer */
+   Header *header;             /* header */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkHeader)
 
 #ifdef LMINT3
-   CMCHKPK(cmPkMemoryId, &header->response.mem, mBuf);
+      CMCHKPK(cmPkMemoryId, &header->response.mem, mBuf);
    CMCHKPK(cmPkRoute, header->response.route, mBuf);
    CMCHKPK(cmPkPriority, header->response.prior, mBuf);
    CMCHKPK(cmPkSelector, header->response.selector, mBuf);
@@ -1569,34 +1569,34 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkCmStatus
-*
-*       Desc:  This function packs common management status structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkCmStatus
+ *
+ *       Desc:  This function packs common management status structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkCmStatus
+   PUBLIC S16 cmPkCmStatus
 (
-CmStatus *sta,              /* status structure */
-Buffer *mBuf                /* message buffer */
-)
+ CmStatus *sta,              /* status structure */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkCmStatus(sta, mBuf)
-CmStatus *sta;              /* status structure */
-Buffer *mBuf;               /* message buffer */
+   CmStatus *sta;              /* status structure */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkCmStatus)
 
-   CMCHKPK(SPkU16, sta->reason, mBuf);
+      CMCHKPK(SPkU16, sta->reason, mBuf);
    CMCHKPK(SPkU16, sta->status, mBuf);
 
    RETVALUE(ROK);
@@ -1604,34 +1604,34 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkCmAlarm
-*
-*       Desc:  This function packs common management alarm structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkCmAlarm
+ *
+ *       Desc:  This function packs common management alarm structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkCmAlarm
+   PUBLIC S16 cmPkCmAlarm
 (
-CmAlarm *alarm,            /* alarm structure */
-Buffer  *mBuf              /* message buffer */
-)
+ CmAlarm *alarm,            /* alarm structure */
+ Buffer  *mBuf              /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkCmAlarm(alarm, mBuf)
-CmAlarm *alarm;             /* alarm structure */
-Buffer *mBuf;               /* message buffer */
+   CmAlarm *alarm;             /* alarm structure */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkCmAlarm)
 
-   CMCHKPK(SPkU16, alarm->cause, mBuf);
+      CMCHKPK(SPkU16, alarm->cause, mBuf);
    CMCHKPK(SPkU16, alarm->event, mBuf);
    CMCHKPK(SPkU16, alarm->category, mBuf);
    CMCHKPK(cmPkDateTime, &alarm->dt, mBuf);
@@ -1641,34 +1641,34 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkSmCfg
-*
-*       Desc:  This function packs the stack manager structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkSmCfg
+ *
+ *       Desc:  This function packs the stack manager structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkSmCfg
+   PUBLIC S16 cmPkSmCfg
 (
-SmCfg *smCfg,           /* stack manager */
-Buffer *mBuf            /* message buffer */
-)
+ SmCfg *smCfg,           /* stack manager */
+ Buffer *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkSmCfg(smCfg, mBuf)
-SmCfg *smCfg;           /* stack manager */
-Buffer *mBuf;           /* message buffer */
+   SmCfg *smCfg;           /* stack manager */
+   Buffer *mBuf;           /* message buffer */
 #endif
 {
    TRC2(cmPkSmCfg)
 
-   CMCHKPK(cmPkSelector, smCfg->selector, mBuf); 
+      CMCHKPK(cmPkSelector, smCfg->selector, mBuf); 
    CMCHKPK(cmPkRoute, smCfg->route, mBuf); 
    CMCHKPK(cmPkPrior, smCfg->prior, mBuf); 
    CMCHKPK(cmPkPool, smCfg->pool, mBuf); 
@@ -1681,34 +1681,34 @@ Buffer *mBuf;           /* message buffer */
 
 
 /*
-*
-*       Fun:   cmPkTmrCfg
-*
-*       Desc:  This function packs the timer configuration structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkTmrCfg
+ *
+ *       Desc:  This function packs the timer configuration structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkTmrCfg
+   PUBLIC S16 cmPkTmrCfg
 (
-TmrCfg *tmrCfg,         /* timer configuration */
-Buffer *mBuf            /* message buffer */
-)
+ TmrCfg *tmrCfg,         /* timer configuration */
+ Buffer *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTmrCfg(tmrCfg, mBuf)
-TmrCfg *tmrCfg;         /* timer configuration */
-Buffer *mBuf;           /* message buffer */
+   TmrCfg *tmrCfg;         /* timer configuration */
+   Buffer *mBuf;           /* message buffer */
 #endif
 {
    TRC2(cmPkTmrCfg)
 
-   CMCHKPK(SPkU16, tmrCfg->val, mBuf);
+      CMCHKPK(SPkU16, tmrCfg->val, mBuf);
    CMCHKPK(cmPkBool, tmrCfg->enb, mBuf);
 
    RETVALUE(ROK);
@@ -1725,37 +1725,37 @@ Buffer *mBuf;           /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmPkTknBuf
+   PUBLIC S16 cmPkTknBuf
 (
-TknBuf *tknBuf,                /* token string */
-Buffer    *mBuf                /* message buffer */
-)
+ TknBuf *tknBuf,                /* token string */
+ Buffer    *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkTknBuf(tknBuf, mBuf)
-TknBuf *tknBuf;                /* token string */
-Buffer    *mBuf;               /* message buffer */
+   TknBuf *tknBuf;                /* token string */
+   Buffer    *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmPkTknBuf)
 
-   if(tknBuf->pres)
-   {
-      MsgLen msgLen;
-
-      SFndLenMsg(tknBuf->val, &msgLen);
-      if( SCatMsg(mBuf, tknBuf->val, M2M1) != ROK )
+      if(tknBuf->pres)
       {
-         RETVALUE(RFAILED);
+	 MsgLen msgLen;
+
+	 SFndLenMsg(tknBuf->val, &msgLen);
+	 if( SCatMsg(mBuf, tknBuf->val, M2M1) != ROK )
+	 {
+	    RETVALUE(RFAILED);
+	 }
+	 cmPkMsgLen(msgLen, mBuf);
+	 SPutMsg(tknBuf->val);
       }
-      cmPkMsgLen(msgLen, mBuf);
-      SPutMsg(tknBuf->val);
-   }
-  
+
    /* Token Header */
    CMCHKPK(SPkU8, tknBuf->pres, mBuf);
 
@@ -1764,34 +1764,34 @@ Buffer    *mBuf;               /* message buffer */
 
 #ifdef TDS_ROLL_UPGRADE_SUPPORT
 /*
-*
-*       Fun:   cmPkIntf
-*
-*       Desc:  This function packs the interface information
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmPkIntf
+ *
+ *       Desc:  This function packs the interface information
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmPkIntf
+   PUBLIC S16 cmPkIntf
 (
-CmIntf *intf,           /* interface info */
-Buffer *mBuf            /* message buffer */
-)
+ CmIntf *intf,           /* interface info */
+ Buffer *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmPkIntf(intf, mBuf)
-CmIntf *intf;           /* interface info */
-Buffer *mBuf;           /* message buffer */
+   CmIntf *intf;           /* interface info */
+   Buffer *mBuf;           /* message buffer */
 #endif
 {
    TRC2(cmPkIntf)
 
-   CMCHKPK(cmPkIntfId,  intf->intfId,  mBuf); 
+      CMCHKPK(cmPkIntfId,  intf->intfId,  mBuf); 
    CMCHKPK(cmPkIntfVer, intf->intfVer, mBuf); 
 
    RETVALUE(ROK);
@@ -1805,34 +1805,34 @@ Buffer *mBuf;           /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkDateTime
-*
-*       Desc:  This function is used to Unpack Pack Date Time structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkDateTime
+ *
+ *       Desc:  This function is used to Unpack Pack Date Time structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkDateTime
+   PUBLIC S16 cmUnpkDateTime
 (
-DateTime *dateTime,  /* date/time structure */
-Buffer *mBuf         /* message buffer */
-)
+ DateTime *dateTime,  /* date/time structure */
+ Buffer *mBuf         /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkDateTime(dateTime, mBuf)
-DateTime *dateTime;  /* date/time structure */
-Buffer *mBuf;        /* message buffer */
+   DateTime *dateTime;  /* date/time structure */
+   Buffer *mBuf;        /* message buffer */
 #endif
 {
    TRC2(cmUnpDateTime)
 
-   CMCHKUNPK(SUnpkU8, &dateTime->month, mBuf); 
+      CMCHKUNPK(SUnpkU8, &dateTime->month, mBuf); 
    CMCHKUNPK(SUnpkU8, &dateTime->day, mBuf); 
    CMCHKUNPK(SUnpkU8, &dateTime->year, mBuf); 
    CMCHKUNPK(SUnpkU8, &dateTime->hour, mBuf); 
@@ -1850,34 +1850,34 @@ Buffer *mBuf;        /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkDuration
-*
-*       Desc:  This function is used to Unpack Pack Duration structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkDuration
+ *
+ *       Desc:  This function is used to Unpack Pack Duration structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkDuration
+   PUBLIC S16 cmUnpkDuration
 (
-Duration *duration,  /* duration structure */
-Buffer *mBuf         /* message buffer */
-)
+ Duration *duration,  /* duration structure */
+ Buffer *mBuf         /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkDuration(duration, mBuf)
-Duration *duration;  /* duration structure */
-Buffer *mBuf;        /* message buffer */
+   Duration *duration;  /* duration structure */
+   Buffer *mBuf;        /* message buffer */
 #endif
 {
    TRC2(cmUnpDuration)
 
-   CMCHKUNPK(SUnpkU8, &duration->days, mBuf); 
+      CMCHKUNPK(SUnpkU8, &duration->days, mBuf); 
    CMCHKUNPK(SUnpkU8, &duration->hours, mBuf); 
    CMCHKUNPK(SUnpkU8, &duration->mins, mBuf); 
    CMCHKUNPK(SUnpkU8, &duration->secs, mBuf); 
@@ -1887,29 +1887,29 @@ Buffer *mBuf;        /* message buffer */
 } /* end of cmUnpkDuration */
 
 /*
-*
-*       Fun:   cmUnpkPtr
-*
-*       Desc:  This function is used to Unpack Ptr type
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkPtr
+ *
+ *       Desc:  This function is used to Unpack Ptr type
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkPtr
+   PUBLIC S16 cmUnpkPtr
 (
-PTR *ptr,  /* duration structure */
-Buffer *mBuf    /* message buffer */
-)
+ PTR *ptr,  /* duration structure */
+ Buffer *mBuf    /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkPtr(ptr, mBuf)
-PTR *ptr;  /* duration structure */
-Buffer *mBuf;   /* message buffer */
+   PTR *ptr;  /* duration structure */
+   Buffer *mBuf;   /* message buffer */
 #endif
 {
    U16 tmp16;               /* temporary value */
@@ -1920,133 +1920,133 @@ Buffer *mBuf;   /* message buffer */
 #if (defined(ALPHA) || defined(BIT_64))
    U64 tmp64;
 #endif
-   
+
    TRC2(cmUnpkPtr)
 
-   switch (PTRSIZE)
-   {
-      case 2:
-         ret = SRemPreMsgMult(unpkArray, (MsgLen) 2, mBuf);
-         if (ret != ROK)
-            RETVALUE(ret);
+      switch (PTRSIZE)
+      {
+	 case 2:
+	    ret = SRemPreMsgMult(unpkArray, (MsgLen) 2, mBuf);
+	    if (ret != ROK)
+	       RETVALUE(ret);
 
-         tmp16 = 0; 
+	    tmp16 = 0; 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
 #else                       /* forward compatibility, packing order */
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
 #endif
-         *ptr = tmp16;
-         break;
+	    *ptr = tmp16;
+	    break;
 
-      case 4:
-         ret = SRemPreMsgMult(unpkArray, (MsgLen) 4, mBuf);
-         if (ret != ROK)
-            RETVALUE(ret);
+	 case 4:
+	    ret = SRemPreMsgMult(unpkArray, (MsgLen) 4, mBuf);
+	    if (ret != ROK)
+	       RETVALUE(ret);
 
-         tmp16 = 0;
-         tmp32 = 0; 
+	    tmp16 = 0;
+	    tmp32 = 0; 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[3]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[2]);
-         tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
-         tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[3]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[2]);
+	    tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
+	    tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
 #else                       /* forward compatibility, packing order */
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
-         tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[2]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[3]);
-         tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
+	    tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[2]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[3]);
+	    tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
 #endif
-         *ptr = tmp32;
-         break;
+	    *ptr = tmp32;
+	    break;
 
-      case 8:
+	 case 8:
 #if(defined(ALPHA) || defined(BIT_64))
-         ret = SRemPreMsgMult(unpkArray, (MsgLen) 8, mBuf);
-         if (ret != ROK)
-            RETVALUE(ret);
+	    ret = SRemPreMsgMult(unpkArray, (MsgLen) 8, mBuf);
+	    if (ret != ROK)
+	       RETVALUE(ret);
 
-         tmp16 = 0;
-         tmp32 = 0; 
-         tmp64 = 0;
+	    tmp16 = 0;
+	    tmp32 = 0; 
+	    tmp64 = 0;
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[7]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[6]);
-         tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[5]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[4]);
-         tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
-         tmp64 = (U64) PutHi32Bit(tmp64, tmp32);
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[3]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[2]);
-         tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
-         tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
-         tmp64 = (U64) PutLo32Bit(tmp64, tmp32);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[7]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[6]);
+	    tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[5]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[4]);
+	    tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+	    tmp64 = (U64) PutHi32Bit(tmp64, tmp32);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[3]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[2]);
+	    tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
+	    tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+	    tmp64 = (U64) PutLo32Bit(tmp64, tmp32);
 #else                       /* forward compatibility, packing order */
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
-         tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[2]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[3]);
-         tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
-         tmp64 = (U64) PutHi32Bit(tmp64, tmp32);
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[4]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[5]);
-         tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-         tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[6]);
-         tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[7]);
-         tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
-         tmp64 = (U64) PutLo32Bit(tmp64, tmp32);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
+	    tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[2]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[3]);
+	    tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+	    tmp64 = (U64) PutHi32Bit(tmp64, tmp32);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[4]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[5]);
+	    tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
+	    tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[6]);
+	    tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[7]);
+	    tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+	    tmp64 = (U64) PutLo32Bit(tmp64, tmp32);
 #endif
-         *ptr = tmp64;
-         break;
+	    *ptr = tmp64;
+	    break;
 #endif
-      default:
-         /* no support for U64 */
-         ret = RFAILED;
-   }
+	 default:
+	    /* no support for U64 */
+	    ret = RFAILED;
+      }
 
    RETVALUE(ret);
 } /* end of cmUnpkPtr */
 
 
 /*
-*
-*       Fun:   cmUnpkEntityId
-*
-*       Desc:  This function unpacks the EntityId structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkEntityId
+ *
+ *       Desc:  This function unpacks the EntityId structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkEntityId
+   PUBLIC S16 cmUnpkEntityId
 (
-EntityId *entityId,        /* entity id */
-Buffer   *mBuf             /* message buffer */
-)
+ EntityId *entityId,        /* entity id */
+ Buffer   *mBuf             /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkEntityId(entityId, mBuf)
-EntityId *entityId;        /* entity id */
-Buffer   *mBuf;            /* message buffer */
+   EntityId *entityId;        /* entity id */
+   Buffer   *mBuf;            /* message buffer */
 #endif
 {
    TRC2(cmUnpkEntityId)
 
-   CMCHKUNPK(cmUnpkEnt, &entityId->ent, mBuf); 
+      CMCHKUNPK(cmUnpkEnt, &entityId->ent, mBuf); 
    CMCHKUNPK(cmUnpkInst, &entityId->inst, mBuf);
 
    RETVALUE(ROK);
@@ -2054,34 +2054,34 @@ Buffer   *mBuf;            /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkElmntId
-*
-*       Desc:  This function unpacks the ElmntId structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkElmntId
+ *
+ *       Desc:  This function unpacks the ElmntId structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkElmntId
+   PUBLIC S16 cmUnpkElmntId
 (
-ElmntId *elmntId,         /* element id */
-Buffer  *mBuf             /* message buffer */
-)
+ ElmntId *elmntId,         /* element id */
+ Buffer  *mBuf             /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkElmntId(elmntId, mBuf)
-ElmntId *elmntId;         /* element id */
-Buffer  *mBuf;            /* message buffer */
+   ElmntId *elmntId;         /* element id */
+   Buffer  *mBuf;            /* message buffer */
 #endif
 {
    TRC2(cmUnpkElmntId)
 
-   CMCHKUNPK(cmUnpkElmnt, &elmntId->elmnt, mBuf); 
+      CMCHKUNPK(cmUnpkElmnt, &elmntId->elmnt, mBuf); 
    CMCHKUNPK(cmUnpkElmntInst1, &elmntId->elmntInst1, mBuf); 
    CMCHKUNPK(cmUnpkElmntInst2, &elmntId->elmntInst2, mBuf); 
    CMCHKUNPK(cmUnpkElmntInst3, &elmntId->elmntInst3, mBuf);
@@ -2091,34 +2091,34 @@ Buffer  *mBuf;            /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkMemoryId
-*
-*       Desc:  This function unpacks the MemoryId structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkMemoryId
+ *
+ *       Desc:  This function unpacks the MemoryId structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkMemoryId
+   PUBLIC S16 cmUnpkMemoryId
 (
-MemoryId *memoryId,        /* memoryId */
-Buffer   *mBuf             /* message buffer */
-)
+ MemoryId *memoryId,        /* memoryId */
+ Buffer   *mBuf             /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkMemoryId(memoryId, mBuf)
-MemoryId *memoryId;        /* memoryId */
-Buffer   *mBuf;            /* message buffer */
+   MemoryId *memoryId;        /* memoryId */
+   Buffer   *mBuf;            /* message buffer */
 #endif
 {
    TRC2(cmUnpkMemoryId)
 
-   CMCHKUNPK(cmUnpkRegion, &memoryId->region,   mBuf); 
+      CMCHKUNPK(cmUnpkRegion, &memoryId->region,   mBuf); 
    CMCHKUNPK(cmUnpkPool, &memoryId->pool, mBuf);
 
    RETVALUE(ROK);
@@ -2126,48 +2126,48 @@ Buffer   *mBuf;            /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkSystemId
-*
-*       Desc:  This function packs the System Id structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkSystemId
+ *
+ *       Desc:  This function packs the System Id structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkSystemId
+   PUBLIC S16 cmUnpkSystemId
 (
-SystemId *systemId,         /* system id */
-Buffer   *mBuf              /* message buffer */
-)
+ SystemId *systemId,         /* system id */
+ Buffer   *mBuf              /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkSystemId(systemId, mBuf)
-SystemId *systemId;         /* system id */
-Buffer   *mBuf;             /* message buffer */
+   SystemId *systemId;         /* system id */
+   Buffer   *mBuf;             /* message buffer */
 #endif
 {
    S16 i;               /* loop counter */
    MsgLen len;
-   
+
    TRC2(cmUnpkSystemId)
 
-   CMCHKUNPK(SUnpkS16, &systemId->mVer, mBuf); 
+      CMCHKUNPK(SUnpkS16, &systemId->mVer, mBuf); 
    CMCHKUNPK(SUnpkS16, &systemId->mRev, mBuf); 
    CMCHKUNPK(SUnpkS16, &systemId->bVer, mBuf); 
    CMCHKUNPK(SUnpkS16, &systemId->bRev, mBuf);
 
    SFndLenMsg(mBuf, &len);
-   
+
    for (i = 0; i < len; i++)
    {
-     CMCHKUNPK(cmUnpkTxt, &systemId->ptNmb[i], mBuf);
+      CMCHKUNPK(cmUnpkTxt, &systemId->ptNmb[i], mBuf);
    }
-   
+
    RETVALUE(ROK);
 } /* end of cmUnpkSystemId */
 
@@ -2184,33 +2184,33 @@ Buffer   *mBuf;             /* message buffer */
  *
  *       Notes: None
  *
-         File:  cm_gen.c
+File:  cm_gen.c
  *
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkProtAddr
+   PUBLIC S16 cmUnpkProtAddr
 (
-ProtAddr     *pAddr,         /* protocol address */
-Buffer       *mBuf           /* buffer */
-)
+ ProtAddr     *pAddr,         /* protocol address */
+ Buffer       *mBuf           /* buffer */
+ )
 #else
 PUBLIC S16 cmUnpkProtAddr(pAddr, mBuf)
-ProtAddr     *pAddr;         /* protocol address table */
-Buffer       *mBuf;          /* buffer */
+   ProtAddr     *pAddr;         /* protocol address table */
+   Buffer       *mBuf;          /* buffer */
 #endif
 {
    U8               j;                  /* Index */
 
    TRC3(cmUnpkProtAddr)
 
-   CMCHKUNPK(SUnpkU16,  &(pAddr->protType), mBuf);  
+      CMCHKUNPK(SUnpkU16,  &(pAddr->protType), mBuf);  
    CMCHKUNPK(SUnpkU8,   &(pAddr->len), mBuf);  
    CMCHKUNPK(SUnpkU8,   &(pAddr->preLen), mBuf);  
 
    for (j =0; j <  pAddr->len; j++)
       CMCHKUNPK(SUnpkU8, &pAddr->address[j], mBuf);  
-   
+
 #ifdef CM_ARI2
    CMCHKUNPK(cmUnpkBool,   &(pAddr->autoSysIdPres), mBuf);  
    CMCHKUNPK(SUnpkU32,  &(pAddr->autoSysId), mBuf);  
@@ -2218,7 +2218,7 @@ Buffer       *mBuf;          /* buffer */
    RETVALUE(ROK);
 
 } /* end of cmUnpkProtAddr */
-   
+
 
 /*
  *
@@ -2231,20 +2231,20 @@ Buffer       *mBuf;          /* buffer */
  *
  *       Notes: None
  *
-         File:  cm_gen.c
+File:  cm_gen.c
  *
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkProtAddrTbl
+   PUBLIC S16 cmUnpkProtAddrTbl
 (
-ProtAddrTbl  *protAddr,      /* protocol address table */
-Buffer       *mBuf           /* buffer */
-)
+ ProtAddrTbl  *protAddr,      /* protocol address table */
+ Buffer       *mBuf           /* buffer */
+ )
 #else
 PUBLIC S16 cmUnpkProtAddrTbl(protAddr, mBuf)
-ProtAddrTbl  *protAddr;      /* protocol address table */
-Buffer       *mBuf;          /* buffer */
+   ProtAddrTbl  *protAddr;      /* protocol address table */
+   Buffer       *mBuf;          /* buffer */
 #endif
 {
    U8               i;                  /* index */
@@ -2253,63 +2253,63 @@ Buffer       *mBuf;          /* buffer */
 
    TRC3(cmUnpkProtAddrTbl)
 
-   CMCHKUNPK(SUnpkU8, &protAddr->count, mBuf);  
+      CMCHKUNPK(SUnpkU8, &protAddr->count, mBuf);  
    for (i = 0;  i < protAddr->count; i++)
    {
-       pAddr = &(protAddr->addr[i]);
+      pAddr = &(protAddr->addr[i]);
 
-       CMCHKUNPK(SUnpkU16,  &(pAddr->protType), mBuf);  
-       CMCHKUNPK(SUnpkU8,  &(pAddr->len), mBuf);  
-       CMCHKUNPK(SUnpkU8, &(pAddr->preLen), mBuf);  
+      CMCHKUNPK(SUnpkU16,  &(pAddr->protType), mBuf);  
+      CMCHKUNPK(SUnpkU8,  &(pAddr->len), mBuf);  
+      CMCHKUNPK(SUnpkU8, &(pAddr->preLen), mBuf);  
 
-        
-       for (j =0; j <  pAddr->len; j++)
-          CMCHKUNPK(SUnpkU8, &pAddr->address[j], mBuf);  
+
+      for (j =0; j <  pAddr->len; j++)
+	 CMCHKUNPK(SUnpkU8, &pAddr->address[j], mBuf);  
 
 #ifdef CM_ARI2
-       CMCHKUNPK(cmUnpkBool,   &(pAddr->autoSysIdPres), mBuf);
-       CMCHKUNPK(SUnpkU32,  &(pAddr->autoSysId), mBuf);
+      CMCHKUNPK(cmUnpkBool,   &(pAddr->autoSysIdPres), mBuf);
+      CMCHKUNPK(SUnpkU32,  &(pAddr->autoSysId), mBuf);
 #endif /* CM_ARI2 */
    }
    RETVALUE(ROK);
 } /* end of cmUnpkProtAddrTbl */
-   
+
 
 /*
-*
-*       Fun:   cmUnpkAddrs
-*
-*       Desc:  This function is used to unpack the Addrs structure
-*
-*       Ret:   ROK - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkAddrs
+ *
+ *       Desc:  This function is used to unpack the Addrs structure
+ *
+ *       Ret:   ROK - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkAddrs
+   PUBLIC S16 cmUnpkAddrs
 (
-Addrs *addrs,     /* address */
-Buffer *mBuf      /* message buffer */
-)
+ Addrs *addrs,     /* address */
+ Buffer *mBuf      /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkAddrs(addrs, mBuf)
-Addrs *addrs;     /* address */
-Buffer *mBuf;     /* message buffer */
+   Addrs *addrs;     /* address */
+   Buffer *mBuf;     /* message buffer */
 #endif
 {
    U8 i;          /* loop counter */
 
    TRC2(cmUnpAddrs)
 
-   CMCHKUNPK(SUnpkU8, &addrs->length, mBuf);
+      CMCHKUNPK(SUnpkU8, &addrs->length, mBuf);
 
    if (addrs->length > ADRLEN)
       RETVALUE(RFAILED);
-   
+
    for(i = 0; i < addrs->length; i++)
    {
       CMCHKUNPK(SUnpkU8, &addrs->strg[i], mBuf);
@@ -2319,40 +2319,40 @@ Buffer *mBuf;     /* message buffer */
 } /* end of cmUnpkAddrs */
 
 /*
-*
-*       Fun:   cmUnpkShrtAddrs
-*
-*       Desc:  This function is used to unpack the ShrtAddrs structure
-*
-*       Ret:   ROK - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkShrtAddrs
+ *
+ *       Desc:  This function is used to unpack the ShrtAddrs structure
+ *
+ *       Ret:   ROK - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkShrtAddrs
+   PUBLIC S16 cmUnpkShrtAddrs
 (
-ShrtAddrs *addrs,    /* address */
-Buffer    *mBuf      /* message buffer */
-)
+ ShrtAddrs *addrs,    /* address */
+ Buffer    *mBuf      /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkShrtAddrs(addrs, mBuf)
-ShrtAddrs *addrs;    /* address */
-Buffer    *mBuf;     /* message buffer */
+   ShrtAddrs *addrs;    /* address */
+   Buffer    *mBuf;     /* message buffer */
 #endif
 {
    U8 i;          /* loop counter */
 
    TRC2(cmUnpShrtAddrs)
 
-   CMCHKUNPK(SUnpkU8, &addrs->length, mBuf);
+      CMCHKUNPK(SUnpkU8, &addrs->length, mBuf);
 
    if (addrs->length > SHRTADRLEN)
       RETVALUE(RFAILED);
-   
+
    for(i = 0; i < addrs->length; i++)
    {
       CMCHKUNPK(SUnpkU8, &addrs->strg[i], mBuf);
@@ -2362,75 +2362,75 @@ Buffer    *mBuf;     /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkAddrMask
-*
-*       Desc:  This unpacks address mask.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkAddrMask
+ *
+ *       Desc:  This unpacks address mask.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkAddrMask
+   PUBLIC S16 cmUnpkAddrMask
 (
-U8 *mask,             /* pointer to address mask */
-Buffer  *mBuf         /* message buffer */
-)
+ U8 *mask,             /* pointer to address mask */
+ Buffer  *mBuf         /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkAddrMask(mask, mBuf)
-U8 *mask;             /* pointer to address mask */
-Buffer  *mBuf;        /* message buffer */
+   U8 *mask;             /* pointer to address mask */
+   Buffer  *mBuf;        /* message buffer */
 #endif
 {
    S16 i;             /* counter */
 
    TRC2(cmUnpAddrMask)
 
-   /* unpack address mask */
-   for (i = 0; i< ADRLEN; i++) 
-   {
-      CMCHKUNPK(SUnpkU8, &mask[i], mBuf);
-   }
+      /* unpack address mask */
+      for (i = 0; i< ADRLEN; i++) 
+      {
+	 CMCHKUNPK(SUnpkU8, &mask[i], mBuf);
+      }
    RETVALUE(ROK);
 } /* end of cmUnpkAddrMask */
 
 
 /*
-*
-*       Fun:   cmUnpkBndCfg
-*
-*       Desc:  This function unpacks the BndCfg structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkBndCfg
+ *
+ *       Desc:  This function unpacks the BndCfg structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkBndCfg
+   PUBLIC S16 cmUnpkBndCfg
 (
-BndCfg *bndCfg,         /* bndCfg */
-Buffer *mBuf            /* message buffer */
-)
+ BndCfg *bndCfg,         /* bndCfg */
+ Buffer *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkBndCfg(bndCfg, mBuf)
-BndCfg *bndCfg;         /* bndCfg */
-Buffer *mBuf;           /* message buffer */
+   BndCfg *bndCfg;         /* bndCfg */
+   Buffer *mBuf;           /* message buffer */
 #endif
 {
    S16 i;               /* loop counter */
 
    TRC2(cmUnpBndCfg)
 
-   for (i = 0; bndCfg->usrId[i]; i++);
+      for (i = 0; bndCfg->usrId[i]; i++);
    CMCHKUNPK(cmUnpkTxt, bndCfg->usrId+i, mBuf);
 
    CMCHKUNPK(SUnpkU8, &bndCfg->bufOwnshp, mBuf); 
@@ -2450,34 +2450,34 @@ Buffer *mBuf;           /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkPst
-*
-*       Desc:  pack post structure 
-*
-*       Ret:   ROK
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
+ *
+ *       Fun:   cmUnpkPst
+ *
+ *       Desc:  pack post structure 
+ *
+ *       Ret:   ROK
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmUnpkPst
+   PUBLIC S16 cmUnpkPst
 (
-Pst *pst,
-Buffer *mBuf
-)
+ Pst *pst,
+ Buffer *mBuf
+ )
 #else
 PUBLIC S16 cmUnpkPst(pst, mBuf)
-Pst *pst;
-Buffer *mBuf;
+   Pst *pst;
+   Buffer *mBuf;
 #endif
 {
    TRC2(cmUnpkPst)
 
 #ifdef TDS_ROLL_UPGRADE_SUPPORT
-   CMCHKUNPK(cmUnpkIntfVer, &pst->intfVer, mBuf);
+      CMCHKUNPK(cmUnpkIntfVer, &pst->intfVer, mBuf);
 #endif
    CMCHKUNPK(cmUnpkSelector, &pst->selector, mBuf); 
    CMCHKUNPK(cmUnpkRegion, &pst->region, mBuf); 
@@ -2496,35 +2496,35 @@ Buffer *mBuf;
 } /* end of cmUnpkPst */
 
 /*
-*
-*       Fun:    cmUnpkElmtHdr
-*
-*       Desc:   Unpack element header
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:  None
-*
-*       File:   cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:    cmUnpkElmtHdr
+ *
+ *       Desc:   Unpack element header
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:  None
+ *
+ *       File:   cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkElmtHdr
+   PUBLIC S16 cmUnpkElmtHdr
 (
-ElmtHdr *m,                  /* element header */
-Buffer  *mBuf                /* message buffer */
-)
+ ElmtHdr *m,                  /* element header */
+ Buffer  *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkElmtHdr(m, mBuf)
-ElmtHdr *m;                  /* element header */
-Buffer  *mBuf;               /* message buffer */
+   ElmtHdr *m;                  /* element header */
+   Buffer  *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpElmtHdr)
- 
-   /* Present */
-   CMCHKUNPK(cmUnpkBool, &m->pres , mBuf);
+
+      /* Present */
+      CMCHKUNPK(cmUnpkBool, &m->pres , mBuf);
 
 #if (LCAMT || ATM_BISUP)
    /* Unpack action indicator field */
@@ -2535,7 +2535,7 @@ Buffer  *mBuf;               /* message buffer */
 #endif
 
 #if (LCAMT || ATM_BISUP)
-      CMCHKUNPK(SUnpkU16, &m->compInd, mBuf);
+   CMCHKUNPK(SUnpkU16, &m->compInd, mBuf);
 #endif /* LCAMT || ATM_BISUP */
 
    RETVALUE(ROK);
@@ -2543,35 +2543,35 @@ Buffer  *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkTknU8
-*
-*       Desc:  This function unpacks a token U8
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTknU8
+ *
+ *       Desc:  This function unpacks a token U8
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknU8
+   PUBLIC S16 cmUnpkTknU8
 (
-TknU8 *tknU8,               /* token U8 */
-Buffer *mBuf                /* message buffer */
-)
+ TknU8 *tknU8,               /* token U8 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknU8(tknU8, mBuf)
-TknU8 *tknU8;               /* token U8 */
-Buffer *mBuf;               /* message buffer */
+   TknU8 *tknU8;               /* token U8 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpTknU8)
 
-   /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknU8->pres, mBuf);
+      /* Token Header */
+      CMCHKUNPK(SUnpkU8, &tknU8->pres, mBuf);
 
    if (tknU8->pres)
    {
@@ -2584,76 +2584,76 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkTknS8
-*
-*       Desc:  This function unpacks a token S8
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTknS8
+ *
+ *       Desc:  This function unpacks a token S8
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknS8
+   PUBLIC S16 cmUnpkTknS8
 (
-TknS8 *tknS8,               /* token S8 */
-Buffer *mBuf                /* message buffer */
-)
+ TknS8 *tknS8,               /* token S8 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknS8(tknS8, mBuf)
-TknS8 *tknS8;               /* token S8 */
-Buffer *mBuf;               /* message buffer */
+   TknS8 *tknS8;               /* token S8 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpTknS8)
- 
-   /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknS8->pres, mBuf);
- 
+
+      /* Token Header */
+      CMCHKUNPK(SUnpkU8, &tknS8->pres, mBuf);
+
    if (tknS8->pres)
    {
       /* Value */
       CMCHKUNPK(SUnpkS8, &tknS8->val, mBuf);
    }
- 
+
    RETVALUE(ROK);
 } /* end of cmUnpkTknS8 */
 
 
 /*
-*
-*       Fun:   cmUnpkTknU16
-*
-*       Desc:  This function unpacks a token U16
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTknU16
+ *
+ *       Desc:  This function unpacks a token U16
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknU16
+   PUBLIC S16 cmUnpkTknU16
 (
-TknU16 *tknU16,             /* token U16 */
-Buffer *mBuf                /* message buffer */
-)
+ TknU16 *tknU16,             /* token U16 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknU16(tknU16, mBuf)
-TknU16 *tknU16;             /* token U16 */
-Buffer *mBuf;               /* message buffer */
+   TknU16 *tknU16;             /* token U16 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpTknU16)
 
-   /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknU16->pres, mBuf);
+      /* Token Header */
+      CMCHKUNPK(SUnpkU8, &tknU16->pres, mBuf);
 
    if (tknU16->pres)
    {
@@ -2666,35 +2666,35 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkTknU32
-*
-*       Desc:  This function unpacks a token U32
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTknU32
+ *
+ *       Desc:  This function unpacks a token U32
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknU32
+   PUBLIC S16 cmUnpkTknU32
 (
-TknU32 *tknU32,             /* token U32 */
-Buffer *mBuf                /* message buffer */
-)
+ TknU32 *tknU32,             /* token U32 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknU32(tknU32, mBuf)
-TknU32 *tknU32;             /* token U32 */
-Buffer *mBuf;               /* message buffer */
+   TknU32 *tknU32;             /* token U32 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpTknU32)
 
-   /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknU32->pres, mBuf);
+      /* Token Header */
+      CMCHKUNPK(SUnpkU8, &tknU32->pres, mBuf);
 
    if (tknU32->pres)
    {
@@ -2706,37 +2706,37 @@ Buffer *mBuf;               /* message buffer */
 } /* end of cmUnpkTknU32 */
 
 /*
-*
-*       Fun:   cmUnpkTknStr
-*
-*       Desc:  This function unpacks a token string - regular size
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTknStr
+ *
+ *       Desc:  This function unpacks a token string - regular size
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr
+   PUBLIC S16 cmUnpkTknStr
 (
-TknStr *tknStr,             /* token string */
-Buffer *mBuf                /* message buffer */
-)
+ TknStr *tknStr,             /* token string */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStr(tknStr, mBuf)
-TknStr *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
+   TknStr *tknStr;             /* token string */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Cntr i;                     /* counter */
 
    TRC2(cmUnpTknStr)
 
-   /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+      /* Token Header */
+      CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
 
    if (tknStr->pres)
    {
@@ -2746,7 +2746,7 @@ Buffer *mBuf;               /* message buffer */
       /* Value */
       for (i = (tknStr->len - 1); i >= 0; i--)
       {
-         CMCHKUNPK(SUnpkU8, &tknStr->val[i], mBuf);
+	 CMCHKUNPK(SUnpkU8, &tknStr->val[i], mBuf);
       }
    }
    else
@@ -2756,37 +2756,37 @@ Buffer *mBuf;               /* message buffer */
 } /* end of cmUnpkTknStr */
 
 /*
-*
-*       Fun:   cmUnpkTknStrM
-*
-*       Desc:  This function unpacks a token string - medium size
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTknStrM
+ *
+ *       Desc:  This function unpacks a token string - medium size
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStrM
+   PUBLIC S16 cmUnpkTknStrM
 (
-TknStrM *tknStr,             /* token string */
-Buffer *mBuf                /* message buffer */
-)
+ TknStrM *tknStr,             /* token string */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStrM(tknStr, mBuf)
-TknStrM *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
+   TknStrM *tknStr;             /* token string */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Cntr i;                     /* counter */
 
    TRC2(cmUnpTknStrM)
 
-   /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+      /* Token Header */
+      CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
 
    if (tknStr->pres)
    {
@@ -2796,7 +2796,7 @@ Buffer *mBuf;               /* message buffer */
       /* Value */
       for (i = (tknStr->len - 1); i >= 0; i--)
       {
-         CMCHKUNPK(SUnpkU8, &tknStr->val[i], mBuf);
+	 CMCHKUNPK(SUnpkU8, &tknStr->val[i], mBuf);
       }
    }
    else
@@ -2807,37 +2807,37 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkTknStrS
-*
-*       Desc:  This function unpacks a token string - small size
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTknStrS
+ *
+ *       Desc:  This function unpacks a token string - small size
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStrS
+   PUBLIC S16 cmUnpkTknStrS
 (
-TknStrS *tknStr,             /* token string */
-Buffer *mBuf                /* message buffer */
-)
+ TknStrS *tknStr,             /* token string */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStrS(tknStr, mBuf)
-TknStrS *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
+   TknStrS *tknStr;             /* token string */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Cntr i;                     /* counter */
 
    TRC2(cmUnpTknStrS)
 
-   /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+      /* Token Header */
+      CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
 
    if (tknStr->pres)
    {
@@ -2847,7 +2847,7 @@ Buffer *mBuf;               /* message buffer */
       /* Value */
       for (i = (tknStr->len - 1); i >= 0; i--)
       {
-         CMCHKUNPK(SUnpkU8, &tknStr->val[i], mBuf);
+	 CMCHKUNPK(SUnpkU8, &tknStr->val[i], mBuf);
       }
    }
    else
@@ -2858,37 +2858,37 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkTknStrE
-*
-*       Desc:  This function unpacks a token string - extended size
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTknStrE
+ *
+ *       Desc:  This function unpacks a token string - extended size
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStrE
+   PUBLIC S16 cmUnpkTknStrE
 (
-TknStrE *tknStr,             /* token string */
-Buffer *mBuf                /* message buffer */
-)
+ TknStrE *tknStr,             /* token string */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStrE(tknStr, mBuf)
-TknStrE *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
+   TknStrE *tknStr;             /* token string */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    Cntr i;                     /* counter */
 
    TRC2(cmUnpTknStrE)
 
-   /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
+      /* Token Header */
+      CMCHKUNPK(SUnpkU8, &tknStr->pres, mBuf);
 
    if (tknStr->pres)
    {
@@ -2898,7 +2898,7 @@ Buffer *mBuf;               /* message buffer */
       /* Value */
       for (i = (tknStr->len - 1); i >= 0; i--)
       {
-         CMCHKUNPK(SUnpkU8, &tknStr->val[i], mBuf);
+	 CMCHKUNPK(SUnpkU8, &tknStr->val[i], mBuf);
       }
    }
    else
@@ -2911,40 +2911,40 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkPnNodeId
-*
-*       Desc:  This function unpacks a PnNodeId structure from a buffer
-*
-*       Ret:   Void
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkPnNodeId
+ *
+ *       Desc:  This function unpacks a PnNodeId structure from a buffer
+ *
+ *       Ret:   Void
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkPnNodeId
+   PUBLIC S16 cmUnpkPnNodeId
 (
-PnNodeId  *dst,     /* source PNNI Node Id */
-Buffer *mBuf        /* message buffer */
-)
+ PnNodeId  *dst,     /* source PNNI Node Id */
+ Buffer *mBuf        /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkPnNodeId (dst, mBuf)
-PnNodeId  *dst;     /* source PNNI Node Id */
-Buffer *mBuf;       /* message buffer */
+   PnNodeId  *dst;     /* source PNNI Node Id */
+   Buffer *mBuf;       /* message buffer */
 #endif
 {
    S16 i;
-   
+
    TRC3(cmUnpkPnNodeId);
-   
+
    for (i = 0; i < PN_NODEID_LEN; i++)
    {
       CMCHKUNPK(SUnpkU8, &dst->id[i], mBuf);
    }
-   
+
    RETVALUE(ROK);
 } /* cmUnpkPnNodeId */
 
@@ -2961,25 +2961,25 @@ Buffer *mBuf;       /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr4
+   PUBLIC S16 cmUnpkTknStr4
 (
-TknStr4 *tknStr,             /* token string */
-Buffer  *mBuf                /* message buffer */
-)
+ TknStr4 *tknStr,             /* token string */
+ Buffer  *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStr4(tknStr, mBuf)
-TknStr4 *tknStr;             /* token string */
-Buffer  *mBuf;               /* message buffer */
+   TknStr4 *tknStr;             /* token string */
+   Buffer  *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpkTknStr4)
 
-   CMUNPKTKNSTR(tknStr, mBuf);
+      CMUNPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -2997,25 +2997,25 @@ Buffer  *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr12
+   PUBLIC S16 cmUnpkTknStr12
 (
-TknStr12 *tknStr,             /* token string */
-Buffer   *mBuf                /* message buffer */
-)
+ TknStr12 *tknStr,             /* token string */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStr12(tknStr, mBuf)
-TknStr12 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
+   TknStr12 *tknStr;             /* token string */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpkTknStr12)
 
-   CMUNPKTKNSTR(tknStr, mBuf);
+      CMUNPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -3032,25 +3032,25 @@ Buffer   *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr32
+   PUBLIC S16 cmUnpkTknStr32
 (
-TknStr32 *tknStr,             /* token string */
-Buffer   *mBuf                /* message buffer */
-)
+ TknStr32 *tknStr,             /* token string */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStr32(tknStr, mBuf)
-TknStr32 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
+   TknStr32 *tknStr;             /* token string */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpkTknStr32)
 
-   CMUNPKTKNSTR(tknStr, mBuf);
+      CMUNPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -3067,25 +3067,25 @@ Buffer   *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr64
+   PUBLIC S16 cmUnpkTknStr64
 (
-TknStr64 *tknStr,             /* token string */
-Buffer   *mBuf                /* message buffer */
-)
+ TknStr64 *tknStr,             /* token string */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStr64(tknStr, mBuf)
-TknStr64 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
+   TknStr64 *tknStr;             /* token string */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpkTknStr64)
 
-   CMUNPKTKNSTR(tknStr, mBuf);
+      CMUNPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -3102,25 +3102,25 @@ Buffer   *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr132
+   PUBLIC S16 cmUnpkTknStr132
 (
-TknStr132 *tknStr,             /* token string */
-Buffer   *mBuf                /* message buffer */
-)
+ TknStr132 *tknStr,             /* token string */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStr132(tknStr, mBuf)
-TknStr132 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
+   TknStr132 *tknStr;             /* token string */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpkTknStr132)
 
-   CMUNPKTKNSTR(tknStr, mBuf);
+      CMUNPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -3137,25 +3137,25 @@ Buffer   *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknStr256
+   PUBLIC S16 cmUnpkTknStr256
 (
-TknStr256 *tknStr,             /* token string */
-Buffer    *mBuf                /* message buffer */
-)
+ TknStr256 *tknStr,             /* token string */
+ Buffer    *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknStr256(tknStr, mBuf)
-TknStr256 *tknStr;             /* token string */
-Buffer    *mBuf;               /* message buffer */
+   TknStr256 *tknStr;             /* token string */
+   Buffer    *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpkTknStr256)
 
-   CMUNPKTKNSTR(tknStr, mBuf);
+      CMUNPKTKNSTR(tknStr, mBuf);
 
    RETVALUE(ROK);
 
@@ -3172,28 +3172,28 @@ Buffer    *mBuf;               /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+ File:  cm_gen.c
  *
  */
-  
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknOid
+   PUBLIC S16 cmUnpkTknOid
 (
-TknOid   *tknOid,             /* Object Identifier token */
-Buffer   *mBuf                /* message buffer */
-)
+ TknOid   *tknOid,             /* Object Identifier token */
+ Buffer   *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknOid(tknOid, mBuf)
-TknOid   *tknOid;             /* Object Identifier token */
-Buffer   *mBuf;               /* message buffer */
+   TknOid   *tknOid;             /* Object Identifier token */
+   Buffer   *mBuf;               /* message buffer */
 #endif
 {
    U16    i;
 
    TRC2(cmUnpkTknOid)
- 
-   /* Unpack the token header */
-   CMCHKUNPK(SUnpkU8, &tknOid->pres, mBuf);
+
+      /* Unpack the token header */
+      CMCHKUNPK(SUnpkU8, &tknOid->pres, mBuf);
 
    if (tknOid->pres == TRUE)
    {
@@ -3203,12 +3203,12 @@ Buffer   *mBuf;               /* message buffer */
       /* Pack the value */
       for (i = 1; i <= (U16)tknOid->len; i++)
       {
-         /* cm_gen_c_001.main_33: changes for TknOid value from U16 to U32
-          * with compilation flag TKNOID_U16 */
+	 /* cm_gen_c_001.main_33: changes for TknOid value from U16 to U32
+	  * with compilation flag TKNOID_U16 */
 #ifndef TKNOID_U16
-         CMCHKUNPK(SUnpkU32, &tknOid->val[tknOid->len - i], mBuf);
+	 CMCHKUNPK(SUnpkU32, &tknOid->val[tknOid->len - i], mBuf);
 #else
-         CMCHKUNPK(SUnpkU16, &tknOid->val[tknOid->len - i], mBuf);
+	 CMCHKUNPK(SUnpkU16, &tknOid->val[tknOid->len - i], mBuf);
 #endif /* !TKNOID_U16 */
       }
    }
@@ -3218,35 +3218,35 @@ Buffer   *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkTknS32
-*
-*       Desc:  This function unpacks a token S32
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTknS32
+ *
+ *       Desc:  This function unpacks a token S32
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknS32
+   PUBLIC S16 cmUnpkTknS32
 (
-TknS32 *tknS32,             /* token S32 */
-Buffer *mBuf                /* message buffer */
-)
+ TknS32 *tknS32,             /* token S32 */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknS32(tknS32, mBuf)
-TknS32 *tknS32;             /* token S32 */
-Buffer *mBuf;               /* message buffer */
+   TknS32 *tknS32;             /* token S32 */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpTknS32)
 
-   /* Token Header */
-   CMCHKUNPK(SUnpkU8, &tknS32->pres, mBuf);
+      /* Token Header */
+      CMCHKUNPK(SUnpkU8, &tknS32->pres, mBuf);
 
    if (tknS32->pres)
    {
@@ -3259,34 +3259,34 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkHeader
-*
-*       Desc:  This function is used to Unpack Header structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkHeader
+ *
+ *       Desc:  This function is used to Unpack Header structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkHeader
+   PUBLIC S16 cmUnpkHeader
 (
-Header *header,   /* header structure */
-Buffer *mBuf      /* message buffer */
-)
+ Header *header,   /* header structure */
+ Buffer *mBuf      /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkHeader(header, mBuf)
-Header *header;   /* header structure */
-Buffer *mBuf;     /* message buffer */
+   Header *header;   /* header structure */
+   Buffer *mBuf;     /* message buffer */
 #endif
 {
    TRC2(cmUnpHeader)
 
-   CMCHKUNPK(SUnpkU16, &header->msgLen, mBuf); 
+      CMCHKUNPK(SUnpkU16, &header->msgLen, mBuf); 
    CMCHKUNPK(SUnpkU8, &header->msgType, mBuf); 
    CMCHKUNPK(SUnpkU8, &header->version, mBuf); 
    CMCHKUNPK(SUnpkU16, &header->seqNmb, mBuf); 
@@ -3305,34 +3305,34 @@ Buffer *mBuf;     /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkCmStatus
-*
-*       Desc:  This function unpacks common management status structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkCmStatus
+ *
+ *       Desc:  This function unpacks common management status structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmStatus
+   PUBLIC S16 cmUnpkCmStatus
 (
-CmStatus *sta,              /* status structure */
-Buffer *mBuf                /* message buffer */
-)
+ CmStatus *sta,              /* status structure */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkCmStatus(sta, mBuf)
-CmStatus *sta;              /* status structure */
-Buffer *mBuf;               /* message buffer */
+   CmStatus *sta;              /* status structure */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpkCmStatus)
 
-   CMCHKUNPK(SUnpkU16, &sta->status, mBuf);
+      CMCHKUNPK(SUnpkU16, &sta->status, mBuf);
    CMCHKUNPK(SUnpkU16, &sta->reason, mBuf);
 
    RETVALUE(ROK);
@@ -3340,34 +3340,34 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkCmAlarm
-*
-*       Desc:  This function unpacks common management alarm structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkCmAlarm
+ *
+ *       Desc:  This function unpacks common management alarm structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmAlarm
+   PUBLIC S16 cmUnpkCmAlarm
 (
-CmAlarm *alarm,             /* alarm structure */
-Buffer *mBuf                /* message buffer */
-)
+ CmAlarm *alarm,             /* alarm structure */
+ Buffer *mBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkCmAlarm(alarm, mBuf)
-CmAlarm *alarm;             /* alarm structure */
-Buffer *mBuf;               /* message buffer */
+   CmAlarm *alarm;             /* alarm structure */
+   Buffer *mBuf;               /* message buffer */
 #endif
 {
    TRC2(cmUnpkCmAlarm)
 
-   CMCHKUNPK(cmUnpkDateTime, &alarm->dt, mBuf);
+      CMCHKUNPK(cmUnpkDateTime, &alarm->dt, mBuf);
    CMCHKUNPK(SUnpkU16, &alarm->category, mBuf);
    CMCHKUNPK(SUnpkU16, &alarm->event, mBuf);
    CMCHKUNPK(SUnpkU16, &alarm->cause, mBuf);
@@ -3377,34 +3377,34 @@ Buffer *mBuf;               /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkSmCfg
-*
-*       Desc:  This function unpacks the stack manager structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkSmCfg
+ *
+ *       Desc:  This function unpacks the stack manager structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkSmCfg
+   PUBLIC S16 cmUnpkSmCfg
 (
-SmCfg *smCfg,           /* stack manager */
-Buffer *mBuf            /* message buffer */
-)
+ SmCfg *smCfg,           /* stack manager */
+ Buffer *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkSmCfg(smCfg, mBuf)
-SmCfg *smCfg;           /* stack manager */
-Buffer *mBuf;           /* message buffer */
+   SmCfg *smCfg;           /* stack manager */
+   Buffer *mBuf;           /* message buffer */
 #endif
 {
    TRC2(cmUnpSmCfg)
 
-   CMCHKUNPK(cmUnpkEnt, &smCfg->ent, mBuf); 
+      CMCHKUNPK(cmUnpkEnt, &smCfg->ent, mBuf); 
    CMCHKUNPK(cmUnpkInst, &smCfg->inst, mBuf); 
    CMCHKUNPK(cmUnpkRegion, &smCfg->region, mBuf); 
    CMCHKUNPK(cmUnpkPool, &smCfg->pool, mBuf); 
@@ -3417,34 +3417,34 @@ Buffer *mBuf;           /* message buffer */
 
 
 /*
-*
-*       Fun:   cmUnpkTmrCfg
-*
-*       Desc:  This function unpacks the timer configuration structure
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkTmrCfg
+ *
+ *       Desc:  This function unpacks the timer configuration structure
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkTmrCfg
+   PUBLIC S16 cmUnpkTmrCfg
 (
-TmrCfg *tmrCfg,         /* timer configuration */
-Buffer *mBuf            /* message buffer */
-)
+ TmrCfg *tmrCfg,         /* timer configuration */
+ Buffer *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTmrCfg(tmrCfg, mBuf)
-TmrCfg *tmrCfg;         /* timer configuration */
-Buffer *mBuf;           /* message buffer */
+   TmrCfg *tmrCfg;         /* timer configuration */
+   Buffer *mBuf;           /* message buffer */
 #endif
 {
    TRC2(cmUnpTmrCfg)
 
-   CMCHKUNPK(cmUnpkBool, &tmrCfg->enb, mBuf); 
+      CMCHKUNPK(cmUnpkBool, &tmrCfg->enb, mBuf); 
    CMCHKUNPK(SUnpkU16, &tmrCfg->val, mBuf);
 
    RETVALUE(ROK);
@@ -3460,20 +3460,20 @@ Buffer *mBuf;           /* message buffer */
  *
  *      Notes: None
  *
-        File:  cm_gen.c
+File:  cm_gen.c
  *
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkTknBuf
+   PUBLIC S16 cmUnpkTknBuf
 (
-TknBuf *tknBuf,                /* token string */
-Buffer    **tBuf                /* message buffer */
-)
+ TknBuf *tknBuf,                /* token string */
+ Buffer    **tBuf                /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkTknBuf(tknBuf, tBuf)
-TknBuf *tknBuf;                /* token string */
-Buffer    **tBuf;               /* message buffer */
+   TknBuf *tknBuf;                /* token string */
+   Buffer    **tBuf;               /* message buffer */
 #endif
 {
    Buffer *mBuf;
@@ -3481,8 +3481,8 @@ Buffer    **tBuf;               /* message buffer */
 
    TRC2(cmUnpkTknBuf)
 
-   mBuf = *tBuf;
-  
+      mBuf = *tBuf;
+
    /* Token Header */
    CMCHKUNPK(SUnpkU8, &tknBuf->pres, mBuf);
 
@@ -3496,21 +3496,21 @@ Buffer    **tBuf;               /* message buffer */
       SFndLenMsg(mBuf, &buflen);
       if (buflen > msgLen)
       {
-         if( SSegMsg(mBuf, msgLen, &tknBuf->val) != ROK )
-         {
-            RETVALUE(RFAILED);
-         }
+	 if( SSegMsg(mBuf, msgLen, &tknBuf->val) != ROK )
+	 {
+	    RETVALUE(RFAILED);
+	 }
       }
       else
       {
-          /* Allocate the buffer for tknbuf->val */
-          SGetBufRegionPool(mBuf, &region, &pool);
-          SGetMsg(region, pool, &(tknBuf->val));
+	 /* Allocate the buffer for tknbuf->val */
+	 SGetBufRegionPool(mBuf, &region, &pool);
+	 SGetMsg(region, pool, &(tknBuf->val));
       }
-      
-     /* now Swap the two Buffer pointers */
+
+      /* now Swap the two Buffer pointers */
       SSwapMsg(mBuf,tknBuf->val);
-      
+
    }
 
    *tBuf = mBuf;
@@ -3520,34 +3520,34 @@ Buffer    **tBuf;               /* message buffer */
 
 #ifdef TDS_ROLL_UPGRADE_SUPPORT
 /*
-*
-*       Fun:   cmUnpkIntf
-*
-*       Desc:  This function unpacks the interface information
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: None.
-*
-*       File:  cm_gen.c
-*
-*/
-  
+ *
+ *       Fun:   cmUnpkIntf
+ *
+ *       Desc:  This function unpacks the interface information
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: None.
+ *
+ *       File:  cm_gen.c
+ *
+ */
+
 #ifdef ANSI
-PUBLIC S16 cmUnpkIntf
+   PUBLIC S16 cmUnpkIntf
 (
-CmIntf *intf,           /* interface info */
-Buffer *mBuf            /* message buffer */
-)
+ CmIntf *intf,           /* interface info */
+ Buffer *mBuf            /* message buffer */
+ )
 #else
 PUBLIC S16 cmUnpkIntf(intf, mBuf)
-CmIntf *intf;           /* interface info */
-Buffer *mBuf;           /* message buffer */
+   CmIntf *intf;           /* interface info */
+   Buffer *mBuf;           /* message buffer */
 #endif
 {
    TRC2(cmUnpkIntf)
 
-   CMCHKUNPK(cmUnpkIntfVer, &intf->intfVer, mBuf); 
+      CMCHKUNPK(cmUnpkIntfVer, &intf->intfVer, mBuf); 
    CMCHKUNPK(cmUnpkIntfId,  &intf->intfId,  mBuf); 
 
    RETVALUE(ROK);
@@ -3555,21 +3555,21 @@ Buffer *mBuf;           /* message buffer */
 #endif /* TDS_ROLL_UPGRADE_SUPPORT */
 
 /*
-*
-*       Fun:   getTransId
-*
-*       Desc:  This function return the transaction ID used for interface transactions 
-*
-*       Ret: gTransId
-*
-*       File:  cm_gen.c
-*
-*/
+ *
+ *       Fun:   getTransId
+ *
+ *       Desc:  This function return the transaction ID used for interface transactions 
+ *
+ *       Ret: gTransId
+ *
+ *       File:  cm_gen.c
+ *
+ */
 U16 getTransId()
 {
    gTransId = (gTransId%65535) + 1;
    return gTransId; 
 }
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

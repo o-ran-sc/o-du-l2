@@ -69,9 +69,9 @@ typedef struct tsInfL2CellStats
       U32   dlPdbRatio[10];
       U32   avgTtiProcTime; /* In us */
       U32   cntTtiProcTime1000; /* Count of instances where TTI proc time was
-      greater than 1000us */
+				   greater than 1000us */
       U32   cntTtiProcTime900; /* Count of instances where TTI proc time was
-      greater than 900us and less than 1000us */
+				  greater than 900us and less than 1000us */
       U32   cntTtiProcTime800;
       U32   cntTtiProcTime700;
       U32   cntTtiProcTime600;
@@ -116,46 +116,46 @@ typedef struct tsInfL2UeStats
    U32 rnti;
    struct nonPersistentUeStats{
       struct schUeStats{
-         U32 dlTxOccns;
-         U32 dlRetxOccns;
-         U32 dlPrbUsg;
-         U32 dlNackCnt[2]; /* [CW_CNT] */
-         U32 dlAckNackCnt[2]; /* [CW_CNT] */
-         U32 dlDtxCnt[2]; /* [CW_CNT] */
-         U32 dlSumCw0Cqi;
-         U32 dlNumCw0Cqi;
-         U32 dlSumCw1Cqi;
-         U32 dlNumCw1Cqi;
-         U32 dlSumCw0iTbs;
-         U32 dlNumCw0iTbs;
-         U32 dlSumCw1iTbs;
-         U32 dlNumCw1iTbs;
-         U32 cqiDropCnt;
-         U32 dlPdbLvl[5]; /* PDB Levels */ 
-         U32 riCnt[4]; /* Rank = 1..4 */
-         U32 dlBo;
-         U32 dlTpt;
-         U32 ulTxOccns;
-         U32 ulRetxOccns;
-         U32 ulPrbUsg;
-         U32 ulAckNackCnt;
-         U32 ulNackCnt;
-         U32 ulDtxCnt;
-         U32 ulSumCqi;
-         U32 ulNumCqi;
-         U32 ulSumiTbs;
-         U32 ulNumiTbs;
-         U32 ulTpt;
+	 U32 dlTxOccns;
+	 U32 dlRetxOccns;
+	 U32 dlPrbUsg;
+	 U32 dlNackCnt[2]; /* [CW_CNT] */
+	 U32 dlAckNackCnt[2]; /* [CW_CNT] */
+	 U32 dlDtxCnt[2]; /* [CW_CNT] */
+	 U32 dlSumCw0Cqi;
+	 U32 dlNumCw0Cqi;
+	 U32 dlSumCw1Cqi;
+	 U32 dlNumCw1Cqi;
+	 U32 dlSumCw0iTbs;
+	 U32 dlNumCw0iTbs;
+	 U32 dlSumCw1iTbs;
+	 U32 dlNumCw1iTbs;
+	 U32 cqiDropCnt;
+	 U32 dlPdbLvl[5]; /* PDB Levels */ 
+	 U32 riCnt[4]; /* Rank = 1..4 */
+	 U32 dlBo;
+	 U32 dlTpt;
+	 U32 ulTxOccns;
+	 U32 ulRetxOccns;
+	 U32 ulPrbUsg;
+	 U32 ulAckNackCnt;
+	 U32 ulNackCnt;
+	 U32 ulDtxCnt;
+	 U32 ulSumCqi;
+	 U32 ulNumCqi;
+	 U32 ulSumiTbs;
+	 U32 ulNumiTbs;
+	 U32 ulTpt;
       }sch[L2_STATS_MAX_CELLS];
       struct pdcpUeStats{
-         U32 dlPdcpDropCnt;
-         U32 dlPdcpAckWaitDropCnt;
-         U32 dlFlowCtrlDropCnt;
+	 U32 dlPdcpDropCnt;
+	 U32 dlPdcpAckWaitDropCnt;
+	 U32 dlFlowCtrlDropCnt;
       }pdcp;
       struct rlcUeStats{
-         U32 ulReOdrTmrExpCnt;
-         U32 dlMaxPktsInSduQ;
-         U32 dlMaxWindowSz;
+	 U32 ulReOdrTmrExpCnt;
+	 U32 dlMaxPktsInSduQ;
+	 U32 dlMaxWindowSz;
       }rlc;
    }nonPersistent;
    struct persistentUeStats{
@@ -181,49 +181,49 @@ typedef struct tsInfStatsCb
 }TSInfStatsCb;
 
 typedef Void (*TSInfL2UeStatsInd) ARGS((
- Pst *, 
- SuId , 
- TSInfL2UeStats *
-));
+	 Pst *, 
+	 SuId , 
+	 TSInfL2UeStats *
+	 ));
 EXTERN Void TSInfHdlL2UeStatsInd ARGS((
- Pst               *pst,
- SuId              suId,
- TSInfL2UeStats     *stats 
-));
+	 Pst               *pst,
+	 SuId              suId,
+	 TSInfL2UeStats     *stats 
+	 ));
 EXTERN Void TSInfUnpkL2UeStats ARGS((
- TSInfL2UeStatsInd   func,
- Pst                *pst,
- Buffer             *mBuf
-));
+	 TSInfL2UeStatsInd   func,
+	 Pst                *pst,
+	 Buffer             *mBuf
+	 ));
 typedef Void (*TSInfL2CellStatsInd) ARGS((
- Pst *, 
- SuId , 
- TSInfL2CellStats *
-));
+	 Pst *, 
+	 SuId , 
+	 TSInfL2CellStats *
+	 ));
 EXTERN Void TSInfHdlL2CellStatsInd ARGS((
- Pst                 *pst,
- SuId                suId,
- TSInfL2CellStats    *stats 
-));
+	 Pst                 *pst,
+	 SuId                suId,
+	 TSInfL2CellStats    *stats 
+	 ));
 EXTERN Void TSInfUnpkL2CellStats ARGS((
- TSInfL2CellStatsInd   func,
- Pst                  *pst,
- Buffer               *mBuf
-));
+	 TSInfL2CellStatsInd   func,
+	 Pst                  *pst,
+	 Buffer               *mBuf
+	 ));
 EXTERN Void TSInfPkSndL2UeStats ARGS((
- Pst               *pst,
- SuId              suId,
- TSInfL2UeStats     *stats 
-));
+	 Pst               *pst,
+	 SuId              suId,
+	 TSInfL2UeStats     *stats 
+	 ));
 EXTERN Void TSInfPkSndL2CellStats ARGS((
- Pst                 *pst,
- SuId                suId,
- TSInfL2CellStats     *stats 
-));
+	 Pst                 *pst,
+	 SuId                suId,
+	 TSInfL2CellStats     *stats 
+	 ));
 EXTERN Void TSInfTrigStats ARGS((
- Region    region,
- Pool      pool
-));
+	 Region    region,
+	 Pool      pool
+	 ));
 
 #ifdef __cplusplus
 }
@@ -232,5 +232,5 @@ EXTERN Void TSInfTrigStats ARGS((
 #endif /* TENB_STATS */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

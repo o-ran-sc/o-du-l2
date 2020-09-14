@@ -214,24 +214,24 @@ PTR          len;
    TRC2(cmMemcpy)
 
 #ifdef MS_MBUF_CORRUPTION /* checking for valid memory address */
-if ((tgt > startPtr128) && (tgt < (startPtr128+regMemSize)))
-{
-   if ((*((U32 *)(tgt + 4)) == 0xDEADDEAD) || (*((U32 *)(tgt + 24)) == 0xDEADDEAD) ||
-      (*((U32 *)(tgt + 44)) == 0xDEADDEAD) || (*((U32 *)(tgt + 80)) == 0xDEADDEAD))
+      if ((tgt > startPtr128) && (tgt < (startPtr128+regMemSize)))
+      {
+	 if ((*((U32 *)(tgt + 4)) == 0xDEADDEAD) || (*((U32 *)(tgt + 24)) == 0xDEADDEAD) ||
+	       (*((U32 *)(tgt + 44)) == 0xDEADDEAD) || (*((U32 *)(tgt + 80)) == 0xDEADDEAD))
+	 {
+	    Data *crashPtr=NULLP;
+	    *crashPtr = 9;
+	 }
+      }
+   if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
    {
-      Data *crashPtr=NULLP;
-      *crashPtr = 9;
+      if ((*((U32 *)(src + 4)) == 0xDEADDEAD) || (*((U32 *)(src + 24)) == 0xDEADDEAD) ||
+	    (*((U32 *)(src + 44)) == 0xDEADDEAD) || (*((U32 *)(src + 80)) == 0xDEADDEAD))
+      {
+	 Data *crashPtr=NULLP;
+	 *crashPtr = 9;
+      }
    }
-}
-if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
-{
-   if ((*((U32 *)(src + 4)) == 0xDEADDEAD) || (*((U32 *)(src + 24)) == 0xDEADDEAD) ||
-      (*((U32 *)(src + 44)) == 0xDEADDEAD) || (*((U32 *)(src + 80)) == 0xDEADDEAD))
-   {
-      Data *crashPtr=NULLP;
-      *crashPtr = 9;
-   }
-}
 #endif 
 #if (MEMCPY_AVAIL) /* memcpy is available */
    RETVALUE((U8 *) memcpy((Void *)tgt, (CONSTANT Void *)src, (size_t)len));
@@ -246,45 +246,45 @@ if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 
 
 /*
-*
-*       Fun:   cmMemcmp
-*
-*       Desc:  common primitive to compare a contiguous string of bytes
-*              optimized for when memcmp is available. It uses memcmp
-*              when available. Otherwise, compares in a 'for' loop.
-*
-*       Ret:    < 0 => s1 < s2
-*               > 0 => s1 > s2
-*               = 0 => s1 = s2
-*
-*       Notes: None
-*
-*       File:  cm_lib.c
-*
-*/
+ *
+ *       Fun:   cmMemcmp
+ *
+ *       Desc:  common primitive to compare a contiguous string of bytes
+ *              optimized for when memcmp is available. It uses memcmp
+ *              when available. Otherwise, compares in a 'for' loop.
+ *
+ *       Ret:    < 0 => s1 < s2
+ *               > 0 => s1 > s2
+ *               = 0 => s1 = s2
+ *
+ *       Notes: None
+ *
+ *       File:  cm_lib.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmMemcmp
+   PUBLIC S16 cmMemcmp
 (
-CONSTANT U8     *s1,
-CONSTANT U8     *s2,
-PTR             len
-)
+ CONSTANT U8     *s1,
+ CONSTANT U8     *s2,
+ PTR             len
+ )
 #else
 PUBLIC S16 cmMemcmp (s1, s2, len)
-CONSTANT U8     *s1;
-CONSTANT U8     *s2;
-PTR             len;
+   CONSTANT U8     *s1;
+   CONSTANT U8     *s2;
+   PTR             len;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmMemcmp)
 #if MEMCMP_AVAIL /* memcmp is available */
-   RETVALUE((S16) memcmp((CONSTANT Void *)s1, (CONSTANT Void *)s2, (size_t)len));
+      RETVALUE((S16) memcmp((CONSTANT Void *)s1, (CONSTANT Void *)s2, (size_t)len));
 #else  /* MEMCMP_AVAIL: memcmp is not available */
    while (len--)
    {
       if (*s1 ^ *s2)
-         RETVALUE((S16) (*s1 - *s2));
+	 RETVALUE((S16) (*s1 - *s2));
       s1++;
       s2++;
    }
@@ -294,49 +294,49 @@ PTR             len;
 
 
 /*
-*
-*       Fun:   cmMemset
-*
-*       Desc:  common primitive to set a contiguous string of bytes
-*              with a specified value optimized for when memset is available.
-*              It uses memset when available. Otherwise, uses a 'for' loop.
-*
-*              sets "len" memory locations starting from "str" to the value
-*              "val".
-* 
-*       Ret:   pointer to string
-*
-*       Notes: None
-*
-*       File:  cm_lib.c
-*
-*/
+ *
+ *       Fun:   cmMemset
+ *
+ *       Desc:  common primitive to set a contiguous string of bytes
+ *              with a specified value optimized for when memset is available.
+ *              It uses memset when available. Otherwise, uses a 'for' loop.
+ *
+ *              sets "len" memory locations starting from "str" to the value
+ *              "val".
+ * 
+ *       Ret:   pointer to string
+ *
+ *       Notes: None
+ *
+ *       File:  cm_lib.c
+ *
+ */
 #ifdef ANSI
-PUBLIC U8 *cmMemset
+   PUBLIC U8 *cmMemset
 (
-U8           *str,
-U8           val,
-PTR          len
-)
+ U8           *str,
+ U8           val,
+ PTR          len
+ )
 #else
 PUBLIC U8 *cmMemset(str, val, len)
-U8           *str;
-U8           val;
-PTR          len;
+   U8           *str;
+   U8           val;
+   PTR          len;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmMemset)
 #if MS_MBUF_CORRUPTION /* checking for valid memory address */
-if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
-{
-   if ((*((U32 *)(str + 4)) == 0xDEADDEAD) || (*((U32 *)(str + 24)) == 0xDEADDEAD) ||
-      (*((U32 *)(str + 44)) == 0xDEADDEAD) || (*((U32 *)(str + 80)) == 0xDEADDEAD))
-   {
-      Data *crashPtr=NULLP;
-      *crashPtr = 9;
-   }
-}
+      if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
+      {
+	 if ((*((U32 *)(str + 4)) == 0xDEADDEAD) || (*((U32 *)(str + 24)) == 0xDEADDEAD) ||
+	       (*((U32 *)(str + 44)) == 0xDEADDEAD) || (*((U32 *)(str + 80)) == 0xDEADDEAD))
+	 {
+	    Data *crashPtr=NULLP;
+	    *crashPtr = 9;
+	 }
+      }
 #endif
 #if (MEMSET_AVAIL) /* memset is available */
    if (val==0)
@@ -357,61 +357,61 @@ if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
 
 
 /*
-*
-*       Fun:   cmStrcmp
-*
-*       Desc:  common primitive to compare a contiguous string of characters
-*              terminated by the '\0' character.
-*
-*              when strcmp is available, it uses that. otherwise, it
-*              compares the strings using a for loop.
-*
-*              The following is the "strcmp" description from the SunOS 5.4
-*              man-page. cmStrcmp follows this.
-*
-*             strcmp() compares two strings byte-by-byte, according to the
-*             ordering  of  your  machine's  character  set.  The function
-*             returns an integer greater than, equal to, or less  than  0,
-*             if the string pointed to by s1 is greater than, equal to, or
-*             less than the string pointed to by s2 respectively. The sign
-*             of  a non-zero return value is determined by the sign of the
-*             difference between the values of the  first  pair  of  bytes
-*             that  differ in the strings being compared.
-*
-*             Bytes following a null byte are not compared.
-*
-*
-*       Ret:    < 0 => s1 < s2
-*               > 0 => s1 > s2
-*               = 0 => s1 = s2
-*
-*       Notes: None
-*
-*       File:  cm_lib.c
-*
-*/
+ *
+ *       Fun:   cmStrcmp
+ *
+ *       Desc:  common primitive to compare a contiguous string of characters
+ *              terminated by the '\0' character.
+ *
+ *              when strcmp is available, it uses that. otherwise, it
+ *              compares the strings using a for loop.
+ *
+ *              The following is the "strcmp" description from the SunOS 5.4
+ *              man-page. cmStrcmp follows this.
+ *
+ *             strcmp() compares two strings byte-by-byte, according to the
+ *             ordering  of  your  machine's  character  set.  The function
+ *             returns an integer greater than, equal to, or less  than  0,
+ *             if the string pointed to by s1 is greater than, equal to, or
+ *             less than the string pointed to by s2 respectively. The sign
+ *             of  a non-zero return value is determined by the sign of the
+ *             difference between the values of the  first  pair  of  bytes
+ *             that  differ in the strings being compared.
+ *
+ *             Bytes following a null byte are not compared.
+ *
+ *
+ *       Ret:    < 0 => s1 < s2
+ *               > 0 => s1 > s2
+ *               = 0 => s1 = s2
+ *
+ *       Notes: None
+ *
+ *       File:  cm_lib.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmStrcmp
+   PUBLIC S16 cmStrcmp
 (
-CONSTANT U8 *s1,
-CONSTANT U8 *s2
-)
+ CONSTANT U8 *s1,
+ CONSTANT U8 *s2
+ )
 #else
 PUBLIC S16 cmStrcmp (s1, s2)
-CONSTANT U8 *s1;
-CONSTANT U8 *s2;
+   CONSTANT U8 *s1;
+   CONSTANT U8 *s2;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmStrcmp)
 #if (STRCMP_AVAIL)
-   RETVALUE(strcmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2));
+      RETVALUE(strcmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2));
 #else   /* STRCMP_AVAIL */
-  
+
    while (*s1 && *s2)
    {
       if (*s1 ^ *s2)
-         RETVALUE(*s1 - *s2);
+	 RETVALUE(*s1 - *s2);
       s1++;
       s2++;
    }
@@ -423,62 +423,62 @@ CONSTANT U8 *s2;
 
 
 /*
-*
-*       Fun:   cmStrncmp
-*
-*       Desc:  common primitive to compare a contiguous string of characters
-*              terminated by the '\0' character.
-*              
-*              when strncmp is available, it uses that. otherwise, it
-*              compares the strings using a for loop.
-*              
-*              The following is the "strncmp" description from the SunOS 5.4
-*              man-page. cmStrncmp follows this.
-*
-*              strcmp() compares two strings byte-by-byte, according to the
-*              ordering  of  your  machine's  character  set.  The function
-*              returns an integer greater than, equal to, or less  than  0,
-*              if the string pointed to by s1 is greater than, equal to, or
-*              less than the string pointed to by s2 respectively. The sign
-*              of  a non-zero return value is determined by the sign of the
-*              difference between the values of the  first  pair  of  bytes
-*              that  differ in the strings being compared.  strncmp() makes
-*              the same comparison but looks  at  a  maximum  of  n  bytes.
-*              Bytes following a null byte are not compared.
-*
-*       Ret:    < 0 => s1 < s2
-*               > 0 => s1 > s2
-*               = 0 => s1 = s2
-*
-*       Notes: None
-*
-*       File:  cm_lib.c
-*
-*/
+ *
+ *       Fun:   cmStrncmp
+ *
+ *       Desc:  common primitive to compare a contiguous string of characters
+ *              terminated by the '\0' character.
+ *              
+ *              when strncmp is available, it uses that. otherwise, it
+ *              compares the strings using a for loop.
+ *              
+ *              The following is the "strncmp" description from the SunOS 5.4
+ *              man-page. cmStrncmp follows this.
+ *
+ *              strcmp() compares two strings byte-by-byte, according to the
+ *              ordering  of  your  machine's  character  set.  The function
+ *              returns an integer greater than, equal to, or less  than  0,
+ *              if the string pointed to by s1 is greater than, equal to, or
+ *              less than the string pointed to by s2 respectively. The sign
+ *              of  a non-zero return value is determined by the sign of the
+ *              difference between the values of the  first  pair  of  bytes
+ *              that  differ in the strings being compared.  strncmp() makes
+ *              the same comparison but looks  at  a  maximum  of  n  bytes.
+ *              Bytes following a null byte are not compared.
+ *
+ *       Ret:    < 0 => s1 < s2
+ *               > 0 => s1 > s2
+ *               = 0 => s1 = s2
+ *
+ *       Notes: None
+ *
+ *       File:  cm_lib.c
+ *
+ */
 #ifdef ANSI
-PUBLIC S16 cmStrncmp
+   PUBLIC S16 cmStrncmp
 (
-CONSTANT U8  *s1,
-CONSTANT U8  *s2,
-MsgLen       len /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
-)
+ CONSTANT U8  *s1,
+ CONSTANT U8  *s2,
+ MsgLen       len /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
+ )
 #else
 PUBLIC S16 cmStrncmp (s1, s2, len)
-CONSTANT U8  *s1;
-CONSTANT U8  *s2;
-MsgLen       len;
+   CONSTANT U8  *s1;
+   CONSTANT U8  *s2;
+   MsgLen       len;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmStrncmp)
 #if (STRNCMP_AVAIL)
-   RETVALUE(strncmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2, (size_t) len));
+      RETVALUE(strncmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2, (size_t) len));
 #else   /* STRNCMP_AVAIL */
-  
+
    while (*s1 && *s2 && len--)
    {
       if (*s1 ^ *s2)
-         RETVALUE(*s1 - *s2);
+	 RETVALUE(*s1 - *s2);
       s1++;
       s2++;
    }
@@ -488,54 +488,54 @@ MsgLen       len;
 
 
 /*
-*
-*       Fun:   cmStrlen
-*
-*       Desc:  common primitive to compute the length of a NULL terminated
-*              string.
-*              
-*              when strlen is available, it uses that. otherwise, it
-*              inspects the string using a for loop.
-*              
-*              The following is the "strlen" description from the SunOS 5.4
-*              man-page. cmStrlen follows this.
-*
-*              strlen() returns the number of bytes in s, not including the
-*              terminating null character.
-*
-*       Ret:   length of string
-*
-*       Notes: None
-*
-*       File:  cm_lib.c
-*
-*/
+ *
+ *       Fun:   cmStrlen
+ *
+ *       Desc:  common primitive to compute the length of a NULL terminated
+ *              string.
+ *              
+ *              when strlen is available, it uses that. otherwise, it
+ *              inspects the string using a for loop.
+ *              
+ *              The following is the "strlen" description from the SunOS 5.4
+ *              man-page. cmStrlen follows this.
+ *
+ *              strlen() returns the number of bytes in s, not including the
+ *              terminating null character.
+ *
+ *       Ret:   length of string
+ *
+ *       Notes: None
+ *
+ *       File:  cm_lib.c
+ *
+ */
 #ifdef ANSI
-PUBLIC MsgLen cmStrlen
+   PUBLIC MsgLen cmStrlen
 (
-CONSTANT U8 *s
-)
+ CONSTANT U8 *s
+ )
 #else
-/* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
+   /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
 PUBLIC MsgLen cmStrlen (s)
-CONSTANT U8 *s;
+   CONSTANT U8 *s;
 #endif
 {
 #if (STRLEN_AVAIL)
    /*cm_lib_c_001.main_15 : Fix for warning due to mixed declation*/
    TRC2(cmStrlen)
-   RETVALUE((MsgLen)strlen((CONSTANT S8 *)s));
+      RETVALUE((MsgLen)strlen((CONSTANT S8 *)s));
 #else   /* STRLEN_AVAIL */
    MsgLen i;
-  
+
    /*cm_lib_c_001.main_15 : Fix for warning due to mixed declation*/
    TRC2(cmStrlen)
 
-   for (i = 0; *s; i++, s++);
+      for (i = 0; *s; i++, s++);
    RETVALUE(i);
 #endif   /* strlen is not available */
 } /* end of cmStrlen */
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -97,8 +97,8 @@ typedef TknStrOSXL TknStrBSXL;
 
 
 /*****************************************************
- Token structure for BMP Character Strings
-******************************************************/
+  Token structure for BMP Character Strings
+ ******************************************************/
 
 /* Token TknStrBMP4 */
 typedef struct tknStrBMP4         /* token string */
@@ -126,8 +126,8 @@ typedef struct tknStrBMPXL
 
 
 /*****************************************************
- Token structure for UNIVERSAL Character Strings
-******************************************************/
+  Token structure for UNIVERSAL Character Strings
+ ******************************************************/
 
 /* Token TknStrUNI4 */
 typedef struct tknStrUNI4         /* token string */
@@ -174,15 +174,15 @@ EXTERN S16 cmUnpkTknBStr32    ARGS((TknBStr32    *tknBStr32,     Buffer *mBuf));
 EXTERN S16 cmUnpkTknStr8      ARGS((TknStr8      *tknStr8,       Buffer *mBuf));
 EXTERN S16 cmUnpkTknStr16     ARGS((TknStr16     *tknStr16,      Buffer *mBuf));
 EXTERN S16 cmUnpkTknStrOSXL   ARGS((TknStrOSXL   *tknStrOSXL,    Buffer *mBuf,
-                                       Ptr ptr));
+	 Ptr ptr));
 EXTERN S16 cmUnpkTknStrBSXL   ARGS((TknStrBSXL   *tknStrBSXL,    Ptr ptr, 
-                                       Buffer *mBuf));
+	 Buffer *mBuf));
 EXTERN S16 cmUnpkTknStrBMP4   ARGS((TknStrBMP4   *tknStrBMP4,    Buffer *mBuf));
 EXTERN S16 cmUnpkTknStrBMPXL  ARGS((TknStrBMPXL  *tknStrBMPXL,   Buffer *mBuf,
-                                       Ptr ptr));
+	 Ptr ptr));
 EXTERN S16 cmUnpkTknStrUNI4   ARGS((TknStrUNI4   *tknStrUNI4,    Buffer *mBuf));
 EXTERN S16 cmUnpkTknStrUNIXL  ARGS((TknStrUNIXL  *tknStrUNIXL,   Buffer *mBuf,
-                                       Ptr ptr));
+	 Ptr ptr));
 
 
 #ifdef __cplusplus
@@ -192,6 +192,6 @@ EXTERN S16 cmUnpkTknStrUNIXL  ARGS((TknStrUNIXL  *tknStrUNIXL,   Buffer *mBuf,
 
   
 /********************************************************************30**
-  
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/
