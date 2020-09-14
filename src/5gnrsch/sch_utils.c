@@ -467,8 +467,8 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
  *     
  *     This function finds the TBSize from table Table 5.1.3.2-1 spec 38.214
  *     
- *  @param[in]  payLoadSize - size of payload
- *  @return     TBsize from the Table
+ *  @param[in]  payLoadSize - size of payload in bytes
+ *  @return     TBsize from the Table in bytes
  **/
 uint16_t schCalcTbSize(uint16_t payLoadSize)
 {
@@ -481,7 +481,7 @@ uint16_t schCalcTbSize(uint16_t payLoadSize)
    }
 
    /* return the TBsize in bytes */
-   return (tbSizeTable[tbsIndex]);
+   return (tbSizeTable[tbsIndex]/8);
 }
 
 /**
@@ -493,7 +493,7 @@ uint16_t schCalcTbSize(uint16_t payLoadSize)
  *     
  *     This function calculates the number of PRbs 
  *     
- *  @param[in]  tbSize
+ *  @param[in]  tbSize in bytes
  *  @param[in]  mcs
  *  @param[in]  number of symbols
  *  @return   number PRBs
@@ -506,6 +506,8 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
    uint8_t  qm     = mcsTable[mcs][1];
    uint16_t rValue = mcsTable[mcs][2];
    uint8_t  numLayer = 1;       /* v value */
+
+   tbSize = tbSize * 8; //Calculate tbSize in bits
 
    /* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
     * Ninfo = Nre . R . Qm . v                                       *

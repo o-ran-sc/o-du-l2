@@ -112,7 +112,7 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
       uint8_t numSib1Prb      = 0;
       schDlSlotInfo->sib1Pres = true;
 
-      tbSize = schCalcTbSize(95); /* send this value to the func in bytes when considering sib1 size */
+      tbSize = schCalcTbSize(cell->cellCfg.sib1SchCfg.sib1PduLen); /* send this value to the func in bytes when considering sib1 size */
       numSib1Prb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
       for(idx=0; idx<SCH_SYMBOL_PER_SLOT; idx++)
       {
