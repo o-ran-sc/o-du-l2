@@ -790,7 +790,7 @@ uint8_t duReadCfg()
    pst.pool= DU_POOL;
 
 
-   if(ODU_GET_MSG(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(DFLT_REGION, DU_POOL, &mBuf) != ROK)
    {
       DU_LOG("\nDU_APP : Memory allocation failed in duReadCfg");
       return RFAILED;

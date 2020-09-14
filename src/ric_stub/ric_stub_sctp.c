@@ -430,11 +430,11 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
          else if(connUp & (pollParams->port == ricParams.destPort))
          {  
             E2APMsgHdlr(pollParams->mBuf);
-            ODU_PUT_MSG(pollParams->mBuf);
+            ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
          else
          {
-            ODU_PUT_MSG(pollParams->mBuf);
+            ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
       } 
   }
