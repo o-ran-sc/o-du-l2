@@ -36,7 +36,9 @@
 
 #include "du_app_rlc_inf.h"
 #include "rlc.h"
+#include "rlc_utils.h"
 
+uint64_t sduId = 0;
 extern U16 getTransId();
 
 /*******************************************************************
@@ -211,6 +213,62 @@ uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
       RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
       return ret;
 }
+
+/*******************************************************************
+ *
+ * @brief Process the DL RRC Message from DU APP
+ *
+ * @details
+ *
+ *    Function : RlcProcDlRrcMsgTrans
+ *
+ *    Functionality: Process the DL RRC Message from DU APP
+ *
+ * @params[in] Post structure
+ *             DL RRC Message info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t RlcProcDlRrcMsgTrans(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
+{
+   uint16_t      copyLen;
+   Buffer        *mBuf;
+   KwuDatReqInfo *datReqInfo;
+
+   RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
+   if(!datReqInfo)
+   {
+      DU_LOG("\nRLC : Memory allocation failed in RlcProcDlRrcMsgTrans");
+      return RFAILED;
+   }
+
+   datReqInfo->rlcId.rbId = dlRrcMsgInfo->rbId;
+   datReqInfo->rlcId.rbType = dlRrcMsgInfo->rbType;
+   datReqInfo->rlcId.ueId = dlRrcMsgInfo->ueIdx;
+   datReqInfo->rlcId.cellId = dlRrcMsgInfo->cellId;
+   datReqInfo->lcType = dlRrcMsgInfo->lcType;
+   datReqInfo->sduId = ++sduId;
+
+   /* Copy fixed buffer to message */
+   if(SGetMsg(RLC_MEM_REGION_UL, RLC_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nRLC : Memory allocation failed at RlcMacProcUlData");
+      return RFAILED;
+   }
+   reverseFixBuf(dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
+   SCpyFixMsg(dlRrcMsgInfo->rrcMsg, mBuf, 0, dlRrcMsgInfo->msgLen, \
+	 (MsgLen *)&copyLen);
+
+   KwUiKwuDatReq(pst, datReqInfo, mBuf);
+
+   /* Free memory allocated by du app */
+   RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
+   RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
+   RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
+   return ROK;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

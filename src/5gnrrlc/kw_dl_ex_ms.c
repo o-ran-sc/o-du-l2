@@ -58,6 +58,7 @@ static int RLOG_FILE_ID=195;
 #include "kw.x"
 #include "kw_udx.x"
 #include "kw_dl.x"
+#include "du_app_rlc_inf.h"
 
 #include "ctf.h"
 PUBLIC S16 kwUtlDlBatchProcPkts(Void);
@@ -287,6 +288,12 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
 #endif /* LCKWU */
+               
+               case EVENT_DL_RRC_MSG_TRANS_TO_RLC:
+	          {
+		     ret = unpackDlRrcMsgToRlc(RlcProcDlRrcMsgTrans, pst, mBuf);
+		     break;
+		  }
                default:
                   SPutMsg(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
