@@ -84,7 +84,7 @@ PRIVATE Void cmAddMemNode ARGS((CmMemListCp *lCp,CmMemList *node));
 */
   
 #ifdef ANSI
-PUBLIC S16 cmAllocEvnt
+S16 cmAllocEvnt
 (
 Size            evntSize,    /* Size of the Event structure */
 Size            maxBlkSize,  /* Chunk Memory size */
@@ -92,7 +92,7 @@ Mem             *sMem,       /* Static memory region and pool */
 Ptr             *ptr         /* Location to place allocated event ptr */
 )
 #else
-PUBLIC S16 cmAllocEvnt (evntSize,maxBlkSize,sMem,ptr)
+S16 cmAllocEvnt (evntSize,maxBlkSize,sMem,ptr)
 Size            evntSize;   /* Size of the Event structure */
 Size            maxBlkSize; /* Memory size requested */
 Mem             *sMem;      /* Static Memory region and pool */
@@ -201,14 +201,14 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
 */
   
 #ifdef ANSI
-PUBLIC Void cmInitMemCp
+Void cmInitMemCp
 (
 CmMemListCp     *memCp,     /* Memory control pointer */
 Size            maxBlkSize, /* Chunk Memory size */
 Mem             *sMem       /* Static memory region and pool */
 )
 #else
-PUBLIC Void cmInitMemCp (memCp,maxBlkSize,sMem)
+Void cmInitMemCp (memCp,maxBlkSize,sMem)
 CmMemListCp     *memCp;     /* Memory control pointer */
 Size            maxBlkSize; /* Memory size requested */
 Mem             *sMem;      /* Static Memory region and pool */
@@ -241,14 +241,14 @@ Mem             *sMem;      /* Static Memory region and pool */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmGetMem
+S16 cmGetMem
 (
 Ptr           memPtr,    /* Pointer to memCp */
 Size          size,      /* Memory size requested */
 Ptr           *allocPtr  /* location to place pointer */
 )
 #else
-PUBLIC S16 cmGetMem (memPtr,size,allocPtr)
+S16 cmGetMem (memPtr,size,allocPtr)
 Ptr          memPtr;    /* Pointer to memCp */
 Size         size;      /* Memory size requested */
 Ptr          *allocPtr; /* location to place pointer */
@@ -360,7 +360,7 @@ Ptr          *allocPtr; /* location to place pointer */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmAllocEvntNoInit
+S16 cmAllocEvntNoInit
 (
 Size            evntSize,    /* Size of the Event structure */
 Size            maxBlkSize,  /* Chunk Memory size */
@@ -368,7 +368,7 @@ Mem             *sMem,       /* Static memory region and pool */
 Ptr             *ptr         /* Location to place allocated event ptr */
 )
 #else
-PUBLIC S16 cmAllocEvntNoInit (evntSize,maxBlkSize,sMem,ptr)
+S16 cmAllocEvntNoInit (evntSize,maxBlkSize,sMem,ptr)
 Size            evntSize;   /* Size of the Event structure */
 Size            maxBlkSize; /* Memory size requested */
 Mem             *sMem;      /* Static Memory region and pool */
@@ -464,14 +464,14 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
 */
   
 #ifdef ANSI
-PUBLIC S16 cmGetMemNoInit
+S16 cmGetMemNoInit
 (
 Ptr           memPtr,    /* Pointer to memCp */
 Size          size,      /* Memory size requested */
 Ptr           *allocPtr  /* location to place pointer */
 )
 #else
-PUBLIC S16 cmGetMemNoInit (memPtr,size,allocPtr)
+S16 cmGetMemNoInit (memPtr,size,allocPtr)
 Ptr          memPtr;    /* Pointer to memCp */
 Size         size;      /* Memory size requested */
 Ptr          *allocPtr; /* location to place pointer */
@@ -584,12 +584,12 @@ Ptr          *allocPtr; /* location to place pointer */
 */
   
 #ifdef ANSI
-PUBLIC Void cmFreeMem
+Void cmFreeMem
 (
 Ptr    memPtr      /* Link List CP */
 )
 #else
-PUBLIC Void cmFreeMem (memPtr)
+Void cmFreeMem (memPtr)
 Ptr    memPtr;     /* Link List CP */
 #endif
 {
@@ -705,13 +705,13 @@ CmMemList   *node;              /* node to be added */
 */
   
 #ifdef ANSI
-PUBLIC Void cmGetMemStatus
+Void cmGetMemStatus
 (
 Ptr             memPtr,    /* Memory control pointer */
 CmMemStatus     *status    /* memory region,pool and status */
 )
 #else
-PUBLIC Void cmGetMemStatus (memPtr,status)
+Void cmGetMemStatus (memPtr,status)
 Ptr             memPtr;   /* Memory control pointer */
 CmMemStatus     *status;  /* memory region,pool and status */
 #endif

@@ -95,16 +95,16 @@ EXTERN TSL2UeStatsCb* TSL2MapUeStatsBlk (U16 rnti);
  *     -# RFAILED 
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmDlInit
+S16 rlcDbmDlInit
 (
 RlcCb *gCb
 )
 #else
-PUBLIC S16 kwDbmDlInit(gCb)
+S16 rlcDbmDlInit(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(kwDbmDlInit)
+   TRC3(rlcDbmDlInit)
 
    /* Initialize ueCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.dlCb->ueLstCp), 
@@ -168,7 +168,7 @@ RlcCb *gCb;
 #endif /* LTE_L2_MEAS */
 
    RETVALUE(ROK);
-} /* kwDbmDlInit */
+} /* rlcDbmDlInit */
 
 
 /**
@@ -179,16 +179,16 @@ RlcCb *gCb;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDlDeInit
+Void rlcDbmDlDeInit
 (
 RlcCb *gCb
 )
 #else
-PUBLIC Void kwDbmDlDeInit(gCb)
+Void rlcDbmDlDeInit(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(kwDbmDlDeInit);
+   TRC3(rlcDbmDlDeInit);
 
 
    /* De Initialize ueCb Hash List */
@@ -208,7 +208,7 @@ RlcCb *gCb;
 #endif /* LTE_L2_MEAS */
 
    RETVOID;
-} /* kwDbmDlDeInit */
+} /* rlcDbmDlDeInit */
 
 
 /**
@@ -225,20 +225,20 @@ RlcCb *gCb;
  *  @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmFetchDlRbCbByRbId
+Void rlcDbmFetchDlRbCbByRbId
 (
 RlcCb         *gCb,
 CmLteRlcId   *rlcId,
 RlcDlRbCb     **rbCb
 )
 #else
-PUBLIC Void kwDbmFetchDlRbCbByRbId(gCb, rlcId, rbCb)
+Void rlcDbmFetchDlRbCbByRbId(gCb, rlcId, rbCb)
 RlcCb         *gCb;
 CmLteRlcId   *rlcId;
 RlcDlRbCb     **rbCb;
 #endif
 {
-   TRC3(kwDbmFetchDlRbCbByRbId)
+   TRC3(rlcDbmFetchDlRbCbByRbId)
 
    *rbCb= NULLP;
    
@@ -257,7 +257,7 @@ RlcDlRbCb     **rbCb;
          RETVOID;
       }
 
-      kwDbmFetchDlCellCb(gCb,rlcId->cellId, &cellCb);
+      rlcDbmFetchDlCellCb(gCb,rlcId->cellId, &cellCb);
       if(!cellCb)
       {
          RLOG_ARG2(L_ERROR,DBG_CELLID,rlcId->cellId,
@@ -282,7 +282,7 @@ RlcDlRbCb     **rbCb;
          RETVOID;
       }
       
-      if (ROK != kwDbmFetchDlUeCb(gCb,rlcId->ueId, rlcId->cellId, &ueCb))
+      if (ROK != rlcDbmFetchDlUeCb(gCb,rlcId->ueId, rlcId->cellId, &ueCb))
       {
          RLOG_ARG2(L_ERROR,DBG_CELLID, rlcId->cellId,
                "UeId [%d]: UeCb not found RBID:%d",
@@ -295,7 +295,7 @@ RlcDlRbCb     **rbCb;
    }
 
    RETVOID;
-} /* kwDbmFetchDlRbCbByRbId */
+} /* rlcDbmFetchDlRbCbByRbId */
 
 
 /**
@@ -315,7 +315,7 @@ RlcDlRbCb     **rbCb;
  *
 */
 #ifdef ANSI
-PUBLIC Void kwDbmFetchDlRbCbFromLchId
+Void rlcDbmFetchDlRbCbFromLchId
 (
 RlcCb          *gCb,
 CmLteRnti     ueId,  
@@ -324,7 +324,7 @@ CmLteLcId     lcId,
 RlcDlRbCb      **rbCb
 )
 #else
-PUBLIC Void kwDbmFetchDlRbCbFromLchId(gCb, ueId, cellId, lcId, rbCb)
+Void rlcDbmFetchDlRbCbFromLchId(gCb, ueId, cellId, lcId, rbCb)
 RlcCb          *gCb;
 CmLteRnti     ueId;  
 CmLteCellId   cellId;
@@ -334,7 +334,7 @@ RlcDlRbCb      **rbCb;
 {
    RlcDlUeCb *ueCb;
    
-   TRC3(kwDbmFetchDlRbCbFromLchId)
+   TRC3(rlcDbmFetchDlRbCbFromLchId)
 
 
    /* Check for UE CB or CELL CB */
@@ -342,7 +342,7 @@ RlcDlRbCb      **rbCb;
    {
       RlcDlCellCb *cellCb;
       
-      kwDbmFetchDlCellCb(gCb, cellId, &cellCb);
+      rlcDbmFetchDlCellCb(gCb, cellId, &cellCb);
       if(!cellCb)
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cellId,"CellCb not found UEID:%d",ueId);
@@ -353,7 +353,7 @@ RlcDlRbCb      **rbCb;
       RETVOID;
    }
 
-   if (kwDbmFetchDlUeCb(gCb, ueId, cellId, &ueCb) != ROK)
+   if (rlcDbmFetchDlUeCb(gCb, ueId, cellId, &ueCb) != ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID, cellId,"UeId [%d]: UeCb not found",ueId);
       RETVOID;
@@ -362,7 +362,7 @@ RlcDlRbCb      **rbCb;
    *rbCb = ueCb->lCh[lcId - 1].dlRbCb;
 
    RETVOID;
-} /* kwDbmFetchDlRbCbFromLchId */
+} /* rlcDbmFetchDlRbCbFromLchId */
 
 
 /**
@@ -379,14 +379,14 @@ RlcDlRbCb      **rbCb;
  *
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelAllDlRb
+Void rlcDbmDelAllDlRb
 (
 RlcCb       *gCb,
 RlcDlRbCb   **rbCbLst,
 U8         numRbCb 
 )
 #else
-PUBLIC Void kwDbmDelAllDlRb(gCb, rbCbLst, numRbCb)
+Void rlcDbmDelAllDlRb(gCb, rbCbLst, numRbCb)
 RlcCb       *gCb;
 RlcDlRbCb   **rbCbLst;
 U8         numRbCb;   
@@ -394,7 +394,7 @@ U8         numRbCb;
 {
    U32 idx;
 
-   TRC3(kwDbmDelAllDlRb)
+   TRC3(rlcDbmDelAllDlRb)
 
 
    for (idx = 0; idx < numRbCb; idx++)
@@ -406,13 +406,13 @@ U8         numRbCb;
 #endif
          if( CM_LTE_MODE_UM == rbCbLst[idx]->mode)
          {
-            kwUmmFreeDlRbCb(gCb,rbCbLst[idx]);
+            rlcUmmFreeDlRbCb(gCb,rbCbLst[idx]);
 
             RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcDlRbCb));       
          }
          else if( CM_LTE_MODE_AM == rbCbLst[idx]->mode)
          {
-            kwAmmFreeDlRbCb(gCb,rbCbLst[idx]);
+            rlcAmmFreeDlRbCb(gCb,rbCbLst[idx]);
          }
          /* ccpu00136940 */
          else if(CM_LTE_MODE_TM == rbCbLst[idx]->mode)
@@ -426,7 +426,7 @@ U8         numRbCb;
    }
 
    RETVOID;
-} /* kwDbmDelAllDlRb */
+} /* rlcDbmDelAllDlRb */
 
 
 /**
@@ -447,7 +447,7 @@ U8         numRbCb;
  *
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmCreateDlUeCb
+S16 rlcDbmCreateDlUeCb
 (
 RlcCb          *gCb,
 CmLteRnti     ueId,  
@@ -455,7 +455,7 @@ CmLteCellId   cellId,
 RlcDlUeCb      **ueCb 
 )
 #else
-PUBLIC S16 kwDbmCreateDlUeCb(gCb,ueId, cellId, ueCb)
+S16 rlcDbmCreateDlUeCb(gCb,ueId, cellId, ueCb)
 RlcCb          *gCb;
 CmLteRnti     ueId;
 CmLteCellId   cellId;
@@ -464,7 +464,7 @@ RlcDlUeCb      **ueCb;
 {
    RlcDlUeCb *tUeCb;        
 
-   TRC3(kwDbmCreateDlUeCb)
+   TRC3(rlcDbmCreateDlUeCb)
 
 
    RLC_ALLOC(gCb,*ueCb, sizeof(RlcDlUeCb));
@@ -518,7 +518,7 @@ RlcDlUeCb      **ueCb;
  *    -# RFAILED 
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmFetchDlUeCb
+S16 rlcDbmFetchDlUeCb
 (
 RlcCb          *gCb,
 CmLteRnti     ueId, 
@@ -526,7 +526,7 @@ CmLteCellId   cellId,
 RlcDlUeCb      **ueCb
 )
 #else
-PUBLIC S16 kwDbmFetchDlUeCb(gCb,ueId, cellId, ueCb)
+S16 rlcDbmFetchDlUeCb(gCb,ueId, cellId, ueCb)
 RlcCb          *gCb;
 CmLteRnti     ueId;  
 CmLteCellId   cellId;
@@ -534,7 +534,7 @@ RlcDlUeCb      **ueCb;
 #endif
 {
 
-   TRC3(kwDbmFetchDlUeCb)
+   TRC3(rlcDbmFetchDlUeCb)
 
 
    RETVALUE(cmHashListFind(&(gCb->u.dlCb->ueLstCp), 
@@ -542,7 +542,7 @@ RlcDlUeCb      **ueCb;
                            sizeof(CmLteRnti),
                            KW_DEF_SEQ_NUM, 
                            (PTR *) ueCb));
-} /* kwDbmFetchDlUeCb */
+} /* rlcDbmFetchDlUeCb */
 
 
 /**
@@ -561,20 +561,20 @@ RlcDlUeCb      **ueCb;
  *
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelDlUeCb
+Void rlcDbmDelDlUeCb
 (
 RlcCb       *gCb,
 RlcDlUeCb   *ueCb,   
 Bool       abortFlag 
 )
 #else
-PUBLIC Void kwDbmDelDlUeCb(gCb,eCb, abortFlag)
+Void rlcDbmDelDlUeCb(gCb,eCb, abortFlag)
 RlcCb       *gCb;
 RlcDlUeCb   *ueCb; 
 Bool       abortFlag;
 #endif
 {
-   TRC3(kwDbmDelDlUeCb)
+   TRC3(rlcDbmDelDlUeCb)
 
 
 #if  (!defined(KW_PDCP) || !(defined(PJ_SEC_ASYNC) || defined(PJ_CMP_ASYNC)))
@@ -586,10 +586,10 @@ Bool       abortFlag;
    KW_MEM_ZERO(ueCb->lCh,sizeof(RlcDlLch) * KW_MAX_LCH_PER_UE);
 
    /* Delete all SRB RbCbs in UeCb */
-   kwDbmDelAllDlRb(gCb,ueCb->srbCb, KW_MAX_SRB_PER_UE);
+   rlcDbmDelAllDlRb(gCb,ueCb->srbCb, KW_MAX_SRB_PER_UE);
 
    /* Delete all DRB RbCbs in UeCb */
-   kwDbmDelAllDlRb(gCb,ueCb->drbCb, KW_MAX_DRB_PER_UE);
+   rlcDbmDelAllDlRb(gCb,ueCb->drbCb, KW_MAX_DRB_PER_UE);
 
    /* Delete ueCb entry from ueLstCp */
    if(ROK != cmHashListDelete(&(gCb->u.dlCb->ueLstCp), (PTR) ueCb))
@@ -620,18 +620,18 @@ Bool       abortFlag;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelAllDlUe
+Void rlcDbmDelAllDlUe
 (
 RlcCb  *gCb
 )
 #else
-PUBLIC Void kwDbmDelAllDlUe(gCb)
+Void rlcDbmDelAllDlUe(gCb)
 RlcCb  *gCb;
 #endif
 {
    RlcDlUeCb *ueCb = NULLP; 
 
-   TRC3(kwDbmDelAllDlUe)
+   TRC3(rlcDbmDelAllDlUe)
 
 
    /* Until no more ueCb is ueLstCp hash list get and delete ueCb */
@@ -640,7 +640,7 @@ RlcCb  *gCb;
                                    (PTR *)&ueCb))
    {
       /* Delete ueCb */
-      kwDbmDelDlUeCb(gCb,ueCb, TRUE);
+      rlcDbmDelDlUeCb(gCb,ueCb, TRUE);
 
       ueCb = NULLP;
    }
@@ -651,13 +651,13 @@ RlcCb  *gCb;
 /* kw005.201 added support for L2 Measurement */         
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC Void kwDbmDelAllDlL2MeasTbFrmUe
+Void rlcDbmDelAllDlL2MeasTbFrmUe
 (
 RlcCb      *gCb,
 RlcDlUeCb  *ueCb
 )
 #else
-PUBLIC Void kwDbmDelAllDlL2MeasTbFrmUe(gCb,ueCb)
+Void rlcDbmDelAllDlL2MeasTbFrmUe(gCb,ueCb)
 RlcCb      *gCb;
 RlcDlUeCb  *ueCb;
 #endif
@@ -693,14 +693,14 @@ RlcDlUeCb  *ueCb;
  *     -# RFAILED 
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmCreateDlCellCb
+S16 rlcDbmCreateDlCellCb
 (
 RlcCb          *gCb,
 CmLteCellId   cellId, 
 RlcDlCellCb    **cellCb 
 )
 #else
-PUBLIC S16 kwDbmCreateDlCellCb(gCb,cellId, cellCb)
+S16 rlcDbmCreateDlCellCb(gCb,cellId, cellCb)
 RlcCb          *gCb;
 CmLteCellId   cellId;   
 RlcDlCellCb    **cellCb;
@@ -708,7 +708,7 @@ RlcDlCellCb    **cellCb;
 {
    RlcDlCellCb *tCellCb; 
    
-   TRC3(kwDbmCreateDlCellCb)
+   TRC3(rlcDbmCreateDlCellCb)
 
    RLC_ALLOC(gCb,*cellCb, sizeof(RlcDlCellCb));
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -732,7 +732,7 @@ RlcDlCellCb    **cellCb;
    }
 
    RETVALUE(ROK);
-} /* kwDbmCreateDlCellCb */
+} /* rlcDbmCreateDlCellCb */
 
 
 /**
@@ -752,20 +752,20 @@ RlcDlCellCb    **cellCb;
  *
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmFetchDlCellCb
+S16 rlcDbmFetchDlCellCb
 (
 RlcCb          *gCb,
 CmLteCellId   cellId, 
 RlcDlCellCb    **cellCb
 )
 #else
-PUBLIC S16 kwDbmFetchDlCellCb(gCb,cellId, cellCb)
+S16 rlcDbmFetchDlCellCb(gCb,cellId, cellCb)
 RlcCb          *gCb;
 CmLteCellId   cellId;  
 RlcDlCellCb    **cellCb;
 #endif
 {
-   TRC3(kwDbmFetchDlCellCb)
+   TRC3(rlcDbmFetchDlCellCb)
 
 
    *cellCb = NULLP;
@@ -797,22 +797,22 @@ RlcDlCellCb    **cellCb;
  *  @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelDlCellCb
+Void rlcDbmDelDlCellCb
 (
 RlcCb         *gCb,
 RlcDlCellCb   *cellCb  
 )
 #else
-PUBLIC Void kwDbmDelDlCellCb(gCb,cellCb)
+Void rlcDbmDelDlCellCb(gCb,cellCb)
 RlcCb         *gCb;
 RlcDlCellCb   *cellCb;
 #endif
 {
-   TRC3(kwDbmDelDlCellCb)
+   TRC3(rlcDbmDelDlCellCb)
 
 
    /* Delete all rbCbs in cellCb */
-   kwDbmDelAllDlRb(gCb,cellCb->rbCb, KW_MAX_RB_PER_CELL);
+   rlcDbmDelAllDlRb(gCb,cellCb->rbCb, KW_MAX_RB_PER_CELL);
    
    /* Delete cellCb entry in hash list cellLstCp */
    if(ROK != cmHashListDelete(&(gCb->u.dlCb->cellLstCp), (PTR) cellCb))
@@ -838,18 +838,18 @@ RlcDlCellCb   *cellCb;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelAllDlCell
+Void rlcDbmDelAllDlCell
 (
 RlcCb *gCb
 )
 #else
-PUBLIC Void kwDbmDelAllDlCell(gCb)
+Void rlcDbmDelAllDlCell(gCb)
 RlcCb *gCb;
 #endif
 {
    RlcDlCellCb *cellCb = NULLP;
 
-   TRC3(kwDbmDelAllDlCell)
+   TRC3(rlcDbmDelAllDlCell)
 
 
    /* Until no more cellCb is ueLstCp hash list get and delete cellCb */
@@ -857,13 +857,13 @@ RlcCb *gCb;
                                    (PTR) cellCb, 
                                    (PTR *)&cellCb))
    {
-      kwDbmDelDlCellCb(gCb, cellCb);
+      rlcDbmDelDlCellCb(gCb, cellCb);
       
       cellCb = NULLP;
    }
 
    RETVOID;
-} /* kwDbmDelAllDlCell */
+} /* rlcDbmDelAllDlCell */
 
 
 /**
@@ -878,22 +878,22 @@ RlcCb *gCb;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmDlShutdown
+S16 rlcDbmDlShutdown
 (
 RlcCb *gCb
 )
 #else
-PUBLIC S16 kwDbmDlShutdown(gCb)
+S16 rlcDbmDlShutdown(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(kwDbmDlShutdown)
+   TRC3(rlcDbmDlShutdown)
 
-   kwDbmDelAllDlCell(gCb);
+   rlcDbmDelAllDlCell(gCb);
 
-   kwDbmDelAllDlUe(gCb);
+   rlcDbmDelAllDlUe(gCb);
 
-   kwDbmDlDeInit(gCb);
+   rlcDbmDlDeInit(gCb);
 
 
    RETVALUE(ROK);

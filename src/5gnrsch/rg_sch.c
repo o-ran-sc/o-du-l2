@@ -101,13 +101,13 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchCntrlReq
+S16 RgMiLrgSchCntrlReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cntrl   /* control structure  */
 )
 #else
-PUBLIC S16 RgMiLrgSchCntrlReq(pst, cntrl)
+S16 RgMiLrgSchCntrlReq(pst, cntrl)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cntrl;  /* control structure  */
 #endif    
@@ -193,13 +193,13 @@ RgMngmt  *cntrl;  /* control structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchL2MeasReq
+S16 RgMiLrgSchL2MeasReq
 (
 Pst               *pst,     /* post structure  */
 LrgSchMeasReqInfo *measInfo /* Meas Req Info */
 )
 #else
-PUBLIC S16 RgMiLrgSchL2MeasReq(pst, measInfo)
+S16 RgMiLrgSchL2MeasReq(pst, measInfo)
    Pst               *pst;     /* post structure  */
    LrgSchMeasReqInfo *measInfo; /* Meas Req Info */
 #endif    
@@ -309,13 +309,13 @@ PUBLIC S16 RgMiLrgSchL2MeasReq(pst, measInfo)
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchL2MeasStopReq
+S16 RgMiLrgSchL2MeasStopReq
 (
 Pst               *pst,     /* post structure  */
 LrgSchMeasStopReqInfo *measInfo /* Meas Req Info */
 )
 #else
-PUBLIC S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
+S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
    Pst               *pst;     /* post structure  */
    LrgSchMeasStopReqInfo *measInfo; /* Meas Req Info */
 #endif
@@ -394,13 +394,13 @@ PUBLIC S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchL2MeasSendReq
+S16 RgMiLrgSchL2MeasSendReq
 (
 Pst               *pst,     /* post structure  */
 LrgSchMeasSndReqInfo *measInfo /* Meas Req Info */
 )
 #else
-PUBLIC S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
+S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
    Pst               *pst;     /* post structure  */
    LrgSchMeasSndReqInfo *measInfo; /* Meas Req Info */
 #endif
@@ -476,14 +476,14 @@ PUBLIC S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrBndReq
+S16 RgUiRgrBndReq
 (
  Pst   *pst, 
  SuId  suId,
  SpId  spId
  )
 #else
-PUBLIC S16 RgUiRgrBndReq(pst, suId, spId)
+S16 RgUiRgrBndReq(pst, suId, spId)
    Pst   *pst; 
    SuId  suId;
    SpId  spId;
@@ -575,14 +575,14 @@ PUBLIC S16 RgUiRgrBndReq(pst, suId, spId)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrUbndReq
+S16 RgUiRgrUbndReq
 (
  Pst    *pst,
  SpId   spId,
  Reason reason
  )
 #else
-PUBLIC S16 RgUiRgrUbndReq(pst, spId, reason)
+S16 RgUiRgrUbndReq(pst, spId, reason)
    Pst    *pst; 
    SpId   spId;
    Reason reason;
@@ -646,7 +646,7 @@ PUBLIC S16 RgUiRgrUbndReq(pst, spId, reason)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrSiCfgReq
+S16 RgUiRgrSiCfgReq
 (
 Pst           *pst, 
 SpId          spId,
@@ -654,7 +654,7 @@ RgrCfgTransId transId,
 RgrSiCfgReqInfo *cfgReqInfo
 )
 #else
-PUBLIC S16 RgUiRgrSiCfgReq(pst, spId, transId, cfgReqInfo)
+S16 RgUiRgrSiCfgReq(pst, spId, transId, cfgReqInfo)
 Pst           *pst; 
 SpId          spId;
 RgrCfgTransId transId;
@@ -760,7 +760,7 @@ else
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrWarningSiCfgReq
+S16 RgUiRgrWarningSiCfgReq
 (
 Pst           *pst, 
 SpId          spId,
@@ -768,7 +768,7 @@ RgrCfgTransId transId,
 RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
 )
 #else
-PUBLIC S16 RgUiRgrWarningSiCfgReq(pst, spId, transId, warningSiCfgReqInfo)
+S16 RgUiRgrWarningSiCfgReq(pst, spId, transId, warningSiCfgReqInfo)
 Pst           *pst; 
 SpId          spId;
 RgrCfgTransId transId;
@@ -877,7 +877,7 @@ else
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrWarningSiStopReq
+S16 RgUiRgrWarningSiStopReq
 (
 Pst           *pst,
 SpId          spId,
@@ -885,7 +885,7 @@ RgrCfgTransId transId,
 U8            siId
 )
 #else
-PUBLIC S16 RgUiRgrWarningSiStopReq(pst,spId, transId, siId)
+S16 RgUiRgrWarningSiStopReq(pst,spId, transId, siId)
 Pst           *pst;
 SpId          spId;
 RgrCfgTransId transId;
@@ -951,7 +951,7 @@ U8            siId;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrLoadInfReq
+S16 RgUiRgrLoadInfReq
 (
  Pst               *pst,
  SpId              spId,
@@ -959,7 +959,7 @@ PUBLIC S16 RgUiRgrLoadInfReq
  RgrLoadInfReqInfo *loadInfReq
  )
 #else
-PUBLIC S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
+S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
    Pst               *pst;
    SpId              spId;
    RgrCfgTransId     transId;
@@ -1042,13 +1042,13 @@ PUBLIC S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchDedBoUpdtReq
+S16 RgMacSchDedBoUpdtReq
 (
 Pst*           pst,
 RgInfDedBoRpt  *boRpt
 )
 #else
-PUBLIC S16 RgMacSchDedBoUpdtReq(pst, boRpt)
+S16 RgMacSchDedBoUpdtReq(pst, boRpt)
 Pst*           pst;
 RgInfDedBoRpt  *boRpt;
 #endif
@@ -1181,13 +1181,13 @@ RgInfDedBoRpt  *boRpt;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchCmnBoUpdtReq
+S16 RgMacSchCmnBoUpdtReq
 (
 Pst*           pst,
 RgInfCmnBoRpt  *boRpt
 )
 #else
-PUBLIC S16 RgMacSchCmnBoUpdtReq(pst, boRpt)
+S16 RgMacSchCmnBoUpdtReq(pst, boRpt)
 Pst*           pst;
 RgInfCmnBoRpt  *boRpt;
 #endif
@@ -1239,13 +1239,13 @@ RgInfCmnBoRpt  *boRpt;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchUeDelInd
+S16 RgMacSchUeDelInd
 (
 Pst*             pst,
 RgInfUeDelInd    *ueDelInd
 )
 #else
-PUBLIC S16 RgMacSchUeDelInd(pst, ueDelInd)
+S16 RgMacSchUeDelInd(pst, ueDelInd)
 Pst*             pst;
 RgInfUeDelInd    *ueDelInd;
 #endif
@@ -1327,13 +1327,13 @@ RgInfUeDelInd    *ueDelInd;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchSfRecpInd
+S16 RgMacSchSfRecpInd
 (
 Pst*             pst,
 RgInfSfDatInd    *subfrmInfo
 )
 #else
-PUBLIC S16 RgMacSchSfRecpInd(pst, subfrmInfo)
+S16 RgMacSchSfRecpInd(pst, subfrmInfo)
 Pst*             pst;
 RgInfSfDatInd    *subfrmInfo;
 #endif
@@ -1603,13 +1603,13 @@ RgInfSfDatInd    *subfrmInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchSpsRelInd
+S16 RgMacSchSpsRelInd
 (
 Pst                *pst, 
 RgInfSpsRelInfo    *relInfo
 )
 #else
-PUBLIC S16 RgMacSchSpsRelInd(pst, relInfo)
+S16 RgMacSchSpsRelInd(pst, relInfo)
 Pst                *pst;
 RgInfSpsRelInfo    *relInfo;
 #endif
@@ -1664,13 +1664,13 @@ RgInfSpsRelInfo    *relInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchL2MeasCfm
+S16 RgMacSchL2MeasCfm
 (
 Pst                *pst, 
 RgInfL2MeasCfm     *measCfm
 )
 #else
-PUBLIC S16 RgMacSchL2MeasCfm(pst, measCfm)
+S16 RgMacSchL2MeasCfm(pst, measCfm)
 Pst                *pst;
 RgInfL2MeasCfm     *measCfm;
 #endif
@@ -1791,13 +1791,13 @@ RgInfL2MeasCfm     *measCfm;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchL2MeasStopCfm
+S16 RgMacSchL2MeasStopCfm
 (
 Pst                *pst,
 RgInfL2MeasCfm     *measCfm
 )
 #else
-PUBLIC S16 RgMacSchL2MeasStopCfm(pst, measCfm)
+S16 RgMacSchL2MeasStopCfm(pst, measCfm)
 Pst                *pst;
 RgInfL2MeasCfm     *measCfm;
 #endif
@@ -1838,14 +1838,14 @@ RgInfL2MeasCfm     *measCfm;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSchBndCfm 
+S16 RgLiTfuSchBndCfm 
 (
 Pst     *pst,
 SuId    suId, 
 U8      status
 )
 #else
-PUBLIC S16 RgLiTfuSchBndCfm(pst, suId, status)
+S16 RgLiTfuSchBndCfm(pst, suId, status)
 Pst     *pst; 
 SuId    suId; 
 U8      status;
@@ -1895,14 +1895,14 @@ U8      status;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuRaReqInd
+S16 RgLiTfuRaReqInd
 (
 Pst              *pst, 
 SuId             suId, 
 TfuRaReqIndInfo  *raReqInd
 )
 #else
-PUBLIC S16 RgLiTfuRaReqInd(pst, suId, raReqInd)
+S16 RgLiTfuRaReqInd(pst, suId, raReqInd)
 Pst              *pst; 
 SuId             suId; 
 TfuRaReqIndInfo  *raReqInd;
@@ -1959,14 +1959,14 @@ TfuRaReqIndInfo  *raReqInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuUlCqiInd
+S16 RgLiTfuUlCqiInd
 (
 Pst              *pst, 
 SuId             suId, 
 TfuUlCqiIndInfo  *ulCqiInd
 )
 #else
-PUBLIC S16 RgLiTfuUlCqiInd(pst, suId, ulCqiInd)
+S16 RgLiTfuUlCqiInd(pst, suId, ulCqiInd)
 Pst              *pst; 
 SuId             suId; 
 TfuUlCqiIndInfo  *ulCqiInd;
@@ -2016,14 +2016,14 @@ TfuUlCqiIndInfo  *ulCqiInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuPucchDeltaPwrInd
+S16 RgLiTfuPucchDeltaPwrInd
 (
 Pst                     *pst,
 SuId                    suId,
 TfuPucchDeltaPwrIndInfo *pucchDeltaPwr
 )
 #else
-PUBLIC S16 RgLiTfuPucchDeltaPwrInd(pst, suId, pucchDeltaPwr)
+S16 RgLiTfuPucchDeltaPwrInd(pst, suId, pucchDeltaPwr)
 Pst                     *pst;
 SuId                    suId;
 TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
@@ -2074,14 +2074,14 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuHqInd
+S16 RgLiTfuHqInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuHqIndInfo       *harqAckInd
 )
 #else
-PUBLIC S16 RgLiTfuHqInd(pst, suId, harqAckInd)
+S16 RgLiTfuHqInd(pst, suId, harqAckInd)
 Pst                *pst; 
 SuId               suId; 
 TfuHqIndInfo       *harqAckInd;
@@ -2134,14 +2134,14 @@ TfuHqIndInfo       *harqAckInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSrInd
+S16 RgLiTfuSrInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuSrIndInfo       *srInd
 )
 #else 
-PUBLIC S16 RgLiTfuSrInd(pst, suId, srInd)
+S16 RgLiTfuSrInd(pst, suId, srInd)
 Pst                *pst; 
 SuId               suId; 
 TfuSrIndInfo       *srInd;
@@ -2193,14 +2193,14 @@ TfuSrIndInfo       *srInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuDlCqiInd
+S16 RgLiTfuDlCqiInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuDlCqiIndInfo    *dlCqiInd
 )
 #else
-PUBLIC S16 RgLiTfuDlCqiInd(pst, suId, dlCqiInd)
+S16 RgLiTfuDlCqiInd(pst, suId, dlCqiInd)
 Pst                *pst; 
 SuId               suId; 
 TfuDlCqiIndInfo    *dlCqiInd;
@@ -2250,14 +2250,14 @@ TfuDlCqiIndInfo    *dlCqiInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuRawCqiInd
+S16 RgLiTfuRawCqiInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuRawCqiIndInfo    *rawCqiInd
 )
 #else
-PUBLIC S16 RgLiTfuRawCqiInd(pst, suId, rawCqiInd)
+S16 RgLiTfuRawCqiInd(pst, suId, rawCqiInd)
 Pst                *pst; 
 SuId               suId; 
 TfuRawCqiIndInfo    *rawCqiInd;
@@ -2308,14 +2308,14 @@ TfuRawCqiIndInfo    *rawCqiInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSrsInd
+S16 RgLiTfuSrsInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuSrsIndInfo    *srsInd
 )
 #else
-PUBLIC S16 RgLiTfuSrsInd(pst, suId, srsInd)
+S16 RgLiTfuSrsInd(pst, suId, srsInd)
 Pst                *pst; 
 SuId               suId; 
 TfuSrsIndInfo    *srsInd;
@@ -2366,14 +2366,14 @@ TfuSrsIndInfo    *srsInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuDoaInd 
+S16 RgLiTfuDoaInd 
 (
 Pst                *pst, 
 SuId               suId, 
 TfuDoaIndInfo      *doaInd
 )
 #else
-PUBLIC S16 RgLiTfuDoaInd(pst, suId, doaInd)
+S16 RgLiTfuDoaInd(pst, suId, doaInd)
 Pst                *pst; 
 SuId               suId; 
 TfuDoaIndInfo      *doaInd;
@@ -2420,14 +2420,14 @@ TfuDoaIndInfo      *doaInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuCrcInd
+S16 RgLiTfuCrcInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuCrcIndInfo  *crcInd
 )
 #else
-PUBLIC S16 RgLiTfuCrcInd (pst, suId, crcInd)
+S16 RgLiTfuCrcInd (pst, suId, crcInd)
 Pst                *pst; 
 SuId               suId; 
 TfuCrcIndInfo  *crcInd;
@@ -2484,14 +2484,14 @@ gettimeofday(&end6, NULL);
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuTimingAdvInd
+S16 RgLiTfuTimingAdvInd
 (
 Pst                  *pst, 
 SuId                 suId, 
 TfuTimingAdvIndInfo  *timingAdvInd
 )
 #else
-PUBLIC S16 RgLiTfuTimingAdvInd(pst, suId, timingAdvInd)
+S16 RgLiTfuTimingAdvInd(pst, suId, timingAdvInd)
 Pst                  *pst; 
 SuId                 suId; 
 TfuTimingAdvIndInfo  *timingAdvInd;
@@ -2543,14 +2543,14 @@ TfuTimingAdvIndInfo  *timingAdvInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmBndReq
+S16 RgUiRgmBndReq
 (
 Pst   *pst, 
 SuId  suId,
 SpId  spId
 )
 #else
-PUBLIC S16 RgUiRgmBndReq(pst, suId, spId)
+S16 RgUiRgmBndReq(pst, suId, spId)
 Pst   *pst; 
 SuId  suId;
 SpId  spId;
@@ -2644,14 +2644,14 @@ SpId  spId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmUbndReq
+S16 RgUiRgmUbndReq
 (
 Pst    *pst,
 SpId   spId,
 Reason reason
 )
 #else
-PUBLIC S16 RgUiRgmUbndReq(pst, spId, reason)
+S16 RgUiRgmUbndReq(pst, spId, reason)
 Pst    *pst; 
 SpId   spId;
 Reason reason;
@@ -2713,14 +2713,14 @@ Reason reason;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmCfgPrbRprt
+S16 RgUiRgmCfgPrbRprt
 (
 Pst   *pst, 
 SpId  spId,
 RgmPrbRprtCfg   *prbRprtCfg
 )
 #else
-PUBLIC S16 RgUiRgmCfgPrbRprt(pst, spId, prbRprtCfg)
+S16 RgUiRgmCfgPrbRprt(pst, spId, prbRprtCfg)
 Pst   *pst; 
 SpId  spId;
 RgmPrbRprtCfg   *prbRprtCfg;
@@ -2772,14 +2772,14 @@ RgmPrbRprtCfg   *prbRprtCfg;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuErrInd
+S16 RgLiTfuErrInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuErrIndInfo       *errInd
 )
 #else
-PUBLIC S16 RgLiTfuErrInd(pst, suId, errInd)
+S16 RgLiTfuErrInd(pst, suId, errInd)
 Pst                *pst; 
 SuId               suId; 
 TfuErrIndInfo       *errInd;

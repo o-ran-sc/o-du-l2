@@ -1700,12 +1700,12 @@ void rlUpdateRlogTti(Void)
 */
 
 #ifdef ANSI
-PUBLIC Void rlProcessLogBufFromL2
+Void rlProcessLogBufFromL2
 (
  void *mBuf
  )
 #else
-PUBLIC Void rlProcessLogBufFromL2(mBuf)
+Void rlProcessLogBufFromL2(mBuf)
    void *mBuf;
 #endif
 {
@@ -1729,7 +1729,7 @@ PUBLIC Void rlProcessLogBufFromL2(mBuf)
 
 /* This function will get tick from RLC/CL and will process logs
    according to tick threshold. Tick threshold is SOC specific */
-PUBLIC Void rlProcessTicks(void)
+Void rlProcessTicks(void)
 {
    static U32 rlogTickCount;
    numTtiTicks++;
@@ -1771,7 +1771,7 @@ PUBLIC Void rlProcessTicks(void)
 //  @out         : void
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC Void readL2LogBuff(void)
+Void readL2LogBuff(void)
 {
    /* Validate global buffer pointer and length */
    U8 ret;
@@ -1799,9 +1799,9 @@ PUBLIC Void readL2LogBuff(void)
 //////////////////////////////////////////////////////////////////////////
 
 #ifdef ANSI
-PUBLIC S16 rlValidateL2LogBuf(void)
+S16 rlValidateL2LogBuf(void)
 #else
-PUBLIC S16 rlValidateL2LogBuf(void)
+S16 rlValidateL2LogBuf(void)
 #endif
 {
    S16 ret = ROK;
@@ -1833,13 +1833,13 @@ PUBLIC S16 rlValidateL2LogBuf(void)
 //////////////////////////////////////////////////////////////////////////
 
 #ifdef ANSI
-PUBLIC void rlSetL2LogBuf
+void rlSetL2LogBuf
 (
 U8 *l2LogBuf,
 U32 l2logLen
 )
 #else
-PUBLIC void rlSetL2LogBuf(l2LogBuf,l2logLen)
+void rlSetL2LogBuf(l2LogBuf,l2logLen)
 U8 *l2LogBuf;
 U32 l2logLen;
 #endif
@@ -1856,12 +1856,12 @@ U32 l2logLen;
 //////////////////////////////////////////////////////////////////////////
 
 #ifdef ANSI
-PUBLIC void rlResetL2LogBuf
+void rlResetL2LogBuf
 (
 void
 )
 #else
-PUBLIC void rlResetL2LogBuf(void)
+void rlResetL2LogBuf(void)
 #endif
 {
    g_logBufRcvdFromL2      = NULL;

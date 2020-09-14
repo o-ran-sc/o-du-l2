@@ -122,7 +122,7 @@ S16 egtpActvTsk(Pst *pst, Buffer *mBuf)
          }
          break;
       }
-      case ENTKW:
+      case ENTRLC:
       {
          switch(pst->event)
          {

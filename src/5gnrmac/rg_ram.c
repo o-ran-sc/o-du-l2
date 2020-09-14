@@ -83,13 +83,13 @@ static int RLOG_MODULE_ID=4096;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgRAMFreeUeCb
+Void rgRAMFreeUeCb
 (
 Inst        inst,
 RgUeCb      *ue
 )
 #else
-PUBLIC Void rgRAMFreeUeCb(inst,ue)
+Void rgRAMFreeUeCb(inst,ue)
 Inst        inst;
 RgUeCb      *ue;
 #endif
@@ -123,7 +123,7 @@ RgUeCb      *ue;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgRAMCreateUeCb
+RgUeCb* rgRAMCreateUeCb
 (
 RgCellCb       *cell,
 CmLteRnti      tmpCrnti,
@@ -131,7 +131,7 @@ Bool           insert,
 RgErrInfo      *err
 )
 #else
-PUBLIC RgUeCb* rgRAMCreateUeCb(cell, tmpCrnti, insert, err)
+RgUeCb* rgRAMCreateUeCb(cell, tmpCrnti, insert, err)
 RgCellCb       *cell;
 CmLteRnti      tmpCrnti;
 Bool           insert;
@@ -197,12 +197,12 @@ RgErrInfo      *err;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgRAMFreeCell
+S16 rgRAMFreeCell
 (
 RgCellCb    *cell
 )
 #else
-PUBLIC S16 rgRAMFreeCell(cell)
+S16 rgRAMFreeCell(cell)
 RgCellCb    *cell;
 #endif
 {
@@ -244,7 +244,7 @@ RgCellCb    *cell;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgHndlRaResp
+S16 rgHndlRaResp
 (
 RgCellCb            *cell,
 CmLteTimingInfo     timingInfo,
@@ -252,7 +252,7 @@ RgInfRarInfo        *rarInfo,
 RgErrInfo           *err
 )
 #else
-PUBLIC S16 rgHndlRaResp(cell, timingInfo, rarInfo, err)
+S16 rgHndlRaResp(cell, timingInfo, rarInfo, err)
 RgCellCb            *cell;
 CmLteTimingInfo     timingInfo;
 RgInfRarInfo        *rarInfo;

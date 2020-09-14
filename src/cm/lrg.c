@@ -57,13 +57,13 @@ Configuration Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgCfgReq
+S16 cmPkLrgCfgReq
 (
 Pst * pst,
 RgMngmt * cfg
 )
 #else
-PUBLIC S16 cmPkLrgCfgReq(pst, cfg)
+S16 cmPkLrgCfgReq(pst, cfg)
 Pst * pst;
 RgMngmt * cfg;
 #endif
@@ -109,14 +109,14 @@ Configuration Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgCfgReq
+S16 cmUnpkLrgCfgReq
 (
 LrgCfgReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgCfgReq(func, pst, mBuf)
+S16 cmUnpkLrgCfgReq(func, pst, mBuf)
 LrgCfgReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -155,13 +155,13 @@ Configuration Request from LM to SCH.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchCfgReq
+S16 cmPkLrgSchCfgReq
 (
 Pst * pst,
 RgMngmt * cfg
 )
 #else
-PUBLIC S16 cmPkLrgSchCfgReq(pst, cfg)
+S16 cmPkLrgSchCfgReq(pst, cfg)
 Pst * pst;
 RgMngmt * cfg;
 #endif
@@ -207,14 +207,14 @@ Configuration Request from LM to SCH.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchCfgReq
+S16 cmUnpkLrgSchCfgReq
 (
 LrgSchCfgReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchCfgReq(func, pst, mBuf)
+S16 cmUnpkLrgSchCfgReq(func, pst, mBuf)
 LrgSchCfgReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -253,13 +253,13 @@ Configuration Confirm from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgCfgCfm
+S16 cmPkLrgCfgCfm
 (
 Pst * pst,
 RgMngmt * cfm
 )
 #else
-PUBLIC S16 cmPkLrgCfgCfm(pst, cfm)
+S16 cmPkLrgCfgCfm(pst, cfm)
 Pst * pst;
 RgMngmt * cfm;
 #endif
@@ -306,14 +306,14 @@ Configuration Confirm from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgCfgCfm
+S16 cmUnpkLrgCfgCfm
 (
 LrgCfgCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgCfgCfm(func, pst, mBuf)
+S16 cmUnpkLrgCfgCfm(func, pst, mBuf)
 LrgCfgCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -351,13 +351,13 @@ Configuration Confirm from SCH to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchCfgCfm
+S16 cmPkLrgSchCfgCfm
 (
 Pst * pst,
 RgMngmt * cfg
 )
 #else
-PUBLIC S16 cmPkLrgSchCfgCfm(pst, cfg)
+S16 cmPkLrgSchCfgCfm(pst, cfg)
 Pst * pst;
 RgMngmt * cfg;
 #endif
@@ -404,14 +404,14 @@ Configuration Confirm from SCH to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchCfgCfm
+S16 cmUnpkLrgSchCfgCfm
 (
 LrgSchCfgCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchCfgCfm(func, pst, mBuf)
+S16 cmUnpkLrgSchCfgCfm(func, pst, mBuf)
 LrgSchCfgCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -449,13 +449,13 @@ Statistics Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgStsReq
+S16 cmPkLrgStsReq
 (
 Pst * pst,
 RgMngmt * sts
 )
 #else
-PUBLIC S16 cmPkLrgStsReq(pst, sts)
+S16 cmPkLrgStsReq(pst, sts)
 Pst * pst;
 RgMngmt * sts;
 #endif
@@ -502,14 +502,14 @@ Statistics Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgStsReq
+S16 cmUnpkLrgStsReq
 (
 LrgStsReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgStsReq(func, pst, mBuf)
+S16 cmUnpkLrgStsReq(func, pst, mBuf)
 LrgStsReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -547,13 +547,13 @@ Statistics Confirm from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgStsCfm
+S16 cmPkLrgStsCfm
 (
 Pst * pst,
 RgMngmt * cfm
 )
 #else
-PUBLIC S16 cmPkLrgStsCfm(pst, cfm)
+S16 cmPkLrgStsCfm(pst, cfm)
 Pst * pst;
 RgMngmt * cfm;
 #endif
@@ -600,14 +600,14 @@ Statistics Confirm from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgStsCfm
+S16 cmUnpkLrgStsCfm
 (
 LrgStsCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgStsCfm(func, pst, mBuf)
+S16 cmUnpkLrgStsCfm(func, pst, mBuf)
 LrgStsCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -645,13 +645,13 @@ Status Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgStaReq
+S16 cmPkLrgStaReq
 (
 Pst * pst,
 RgMngmt * sta
 )
 #else
-PUBLIC S16 cmPkLrgStaReq(pst, sta)
+S16 cmPkLrgStaReq(pst, sta)
 Pst * pst;
 RgMngmt * sta;
 #endif
@@ -696,14 +696,14 @@ Status Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgStaReq
+S16 cmUnpkLrgStaReq
 (
 LrgStaReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgStaReq(func, pst, mBuf)
+S16 cmUnpkLrgStaReq(func, pst, mBuf)
 LrgStaReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -742,13 +742,13 @@ Status Confirm from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgStaCfm
+S16 cmPkLrgStaCfm
 (
 Pst * pst,
 RgMngmt * cfm
 )
 #else
-PUBLIC S16 cmPkLrgStaCfm(pst, cfm)
+S16 cmPkLrgStaCfm(pst, cfm)
 Pst * pst;
 RgMngmt * cfm;
 #endif
@@ -793,14 +793,14 @@ Status Confirm from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgStaCfm
+S16 cmUnpkLrgStaCfm
 (
 LrgStaCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgStaCfm(func, pst, mBuf)
+S16 cmUnpkLrgStaCfm(func, pst, mBuf)
 LrgStaCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -839,13 +839,13 @@ Status Indication from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgStaInd
+S16 cmPkLrgStaInd
 (
 Pst * pst,
 RgMngmt * usta
 )
 #else
-PUBLIC S16 cmPkLrgStaInd(pst, usta)
+S16 cmPkLrgStaInd(pst, usta)
 Pst * pst;
 RgMngmt * usta;
 #endif
@@ -892,14 +892,14 @@ Status Indication from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgStaInd
+S16 cmUnpkLrgStaInd
 (
 LrgStaInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgStaInd(func, pst, mBuf)
+S16 cmUnpkLrgStaInd(func, pst, mBuf)
 LrgStaInd func;
 Pst *pst;
 Buffer *mBuf;
@@ -937,13 +937,13 @@ Status Indication from SCH to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchStaInd
+S16 cmPkLrgSchStaInd
 (
 Pst * pst,
 RgMngmt * sta
 )
 #else
-PUBLIC S16 cmPkLrgSchStaInd(pst, sta)
+S16 cmPkLrgSchStaInd(pst, sta)
 Pst * pst;
 RgMngmt * sta;
 #endif
@@ -990,14 +990,14 @@ Status Indication from SCH to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchStaInd
+S16 cmUnpkLrgSchStaInd
 (
 LrgSchStaInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchStaInd(func, pst, mBuf)
+S16 cmUnpkLrgSchStaInd(func, pst, mBuf)
 LrgSchStaInd func;
 Pst *pst;
 Buffer *mBuf;
@@ -1035,13 +1035,13 @@ Control Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgCntrlReq
+S16 cmPkLrgCntrlReq
 (
 Pst * pst,
 RgMngmt * cntrl
 )
 #else
-PUBLIC S16 cmPkLrgCntrlReq(pst, cntrl)
+S16 cmPkLrgCntrlReq(pst, cntrl)
 Pst * pst;
 RgMngmt * cntrl;
 #endif
@@ -1088,14 +1088,14 @@ Control Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgCntrlReq
+S16 cmUnpkLrgCntrlReq
 (
 LrgCntrlReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgCntrlReq(func, pst, mBuf)
+S16 cmUnpkLrgCntrlReq(func, pst, mBuf)
 LrgCntrlReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -1133,13 +1133,13 @@ Control Request from LM to SCH.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchCntrlReq
+S16 cmPkLrgSchCntrlReq
 (
 Pst * pst,
 RgMngmt * cntrl
 )
 #else
-PUBLIC S16 cmPkLrgSchCntrlReq(pst, cntrl)
+S16 cmPkLrgSchCntrlReq(pst, cntrl)
 Pst * pst;
 RgMngmt * cntrl;
 #endif
@@ -1186,14 +1186,14 @@ Control Request from LM to SCH.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchCntrlReq
+S16 cmUnpkLrgSchCntrlReq
 (
 LrgSchCntrlReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchCntrlReq(func, pst, mBuf)
+S16 cmUnpkLrgSchCntrlReq(func, pst, mBuf)
 LrgSchCntrlReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -1231,13 +1231,13 @@ Control Confirm from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgCntrlCfm
+S16 cmPkLrgCntrlCfm
 (
 Pst * pst,
 RgMngmt * cfm
 )
 #else
-PUBLIC S16 cmPkLrgCntrlCfm(pst, cfm)
+S16 cmPkLrgCntrlCfm(pst, cfm)
 Pst * pst;
 RgMngmt * cfm;
 #endif
@@ -1284,14 +1284,14 @@ Control Confirm from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgCntrlCfm
+S16 cmUnpkLrgCntrlCfm
 (
 LrgCntrlCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgCntrlCfm(func, pst, mBuf)
+S16 cmUnpkLrgCntrlCfm(func, pst, mBuf)
 LrgCntrlCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -1329,13 +1329,13 @@ Control Confirm from SCH to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchCntrlCfm
+S16 cmPkLrgSchCntrlCfm
 (
 Pst * pst,
 RgMngmt * cntrl
 )
 #else
-PUBLIC S16 cmPkLrgSchCntrlCfm(pst, cntrl)
+S16 cmPkLrgSchCntrlCfm(pst, cntrl)
 Pst * pst;
 RgMngmt * cntrl;
 #endif
@@ -1382,14 +1382,14 @@ Control Confirm from SCH to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchCntrlCfm
+S16 cmUnpkLrgSchCntrlCfm
 (
 LrgSchCntrlCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchCntrlCfm(func, pst, mBuf)
+S16 cmUnpkLrgSchCntrlCfm(func, pst, mBuf)
 LrgSchCntrlCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -1428,14 +1428,14 @@ Trace Indication from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgTrcInd
+S16 cmPkLrgTrcInd
 (
 Pst * pst,
 RgMngmt * trc,
 Buffer * trcBuf
 )
 #else
-PUBLIC S16 cmPkLrgTrcInd(pst, trc, trcBuf)
+S16 cmPkLrgTrcInd(pst, trc, trcBuf)
 Pst * pst;
 RgMngmt * trc;
 Buffer * trcBuf;
@@ -1507,14 +1507,14 @@ Trace Indication from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgTrcInd
+S16 cmUnpkLrgTrcInd
 (
 LrgTrcInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgTrcInd(func, pst, mBuf)
+S16 cmUnpkLrgTrcInd(func, pst, mBuf)
 LrgTrcInd func;
 Pst *pst;
 Buffer *mBuf;
@@ -1564,13 +1564,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgGenCfg
+S16 cmPkRgGenCfg
 (
 RgGenCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgGenCfg(param, mBuf)
+S16 cmPkRgGenCfg(param, mBuf)
 RgGenCfg *param;
 Buffer *mBuf;
 #endif
@@ -1608,13 +1608,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgGenCfg
+S16 cmUnpkRgGenCfg
 (
 RgGenCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgGenCfg(param, mBuf)
+S16 cmUnpkRgGenCfg(param, mBuf)
 RgGenCfg *param;
 Buffer *mBuf;
 #endif
@@ -1652,13 +1652,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgUpSapCfg
+S16 cmPkRgUpSapCfg
 (
 RgUpSapCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgUpSapCfg(param, mBuf)
+S16 cmPkRgUpSapCfg(param, mBuf)
 RgUpSapCfg *param;
 Buffer *mBuf;
 #endif
@@ -1696,13 +1696,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgUpSapCfg
+S16 cmUnpkRgUpSapCfg
 (
 RgUpSapCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgUpSapCfg(param, mBuf)
+S16 cmUnpkRgUpSapCfg(param, mBuf)
 RgUpSapCfg *param;
 Buffer *mBuf;
 #endif
@@ -1740,13 +1740,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgLowSapCfg
+S16 cmPkRgLowSapCfg
 (
 RgLowSapCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgLowSapCfg(param, mBuf)
+S16 cmPkRgLowSapCfg(param, mBuf)
 RgLowSapCfg *param;
 Buffer *mBuf;
 #endif
@@ -1785,13 +1785,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgLowSapCfg
+S16 cmUnpkRgLowSapCfg
 (
 RgLowSapCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgLowSapCfg(param, mBuf)
+S16 cmUnpkRgLowSapCfg(param, mBuf)
 RgLowSapCfg *param;
 Buffer *mBuf;
 #endif
@@ -1831,13 +1831,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgAckNack
+S16 cmPkRgAckNack
 (
 RgAckNack *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgAckNack (param, mBuf)
+S16 cmPkRgAckNack (param, mBuf)
 RgAckNack *param;
 Buffer *mBuf;
 #endif
@@ -1869,13 +1869,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgSchNackAckStats
+S16 cmPkRgSchNackAckStats
 (
 RgSchNackAckStats *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgSchNackAckStats (param, mBuf)
+S16 cmPkRgSchNackAckStats (param, mBuf)
 RgSchNackAckStats *param;
 Buffer *mBuf;
 #endif
@@ -1912,13 +1912,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgHqNumRetx
+S16 cmPkRgHqNumRetx
 (
 RgSchHqNumRetx *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgHqNumRetx (param, mBuf)
+S16 cmPkRgHqNumRetx (param, mBuf)
 RgSchHqNumRetx *param;
 Buffer *mBuf;
 #endif
@@ -1952,13 +1952,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgSchHqRetxStats
+S16 cmPkRgSchHqRetxStats
 (
 RgSchHqRetxStats *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgSchHqRetxStats (param, mBuf)
+S16 cmPkRgSchHqRetxStats (param, mBuf)
 RgSchHqRetxStats *param;
 Buffer *mBuf;
 #endif
@@ -1996,13 +1996,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgAckNack
+S16 cmUnpkRgAckNack
 (
 RgAckNack *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgAckNack (param, mBuf)
+S16 cmUnpkRgAckNack (param, mBuf)
 RgAckNack *param;
 Buffer *mBuf;
 #endif
@@ -2034,13 +2034,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgSchNackAckStats
+S16 cmUnpkRgSchNackAckStats
 (
 RgSchNackAckStats *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgSchNackAckStats (param, mBuf)
+S16 cmUnpkRgSchNackAckStats (param, mBuf)
 RgSchNackAckStats *param;
 Buffer *mBuf;
 #endif
@@ -2076,13 +2076,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgHqNumRetx
+S16 cmUnpkRgHqNumRetx
 (
 RgSchHqNumRetx *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgHqNumRetx (param, mBuf)
+S16 cmUnpkRgHqNumRetx (param, mBuf)
 RgSchHqNumRetx *param;
 Buffer *mBuf;
 #endif
@@ -2116,13 +2116,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgSchHqRetxStats
+S16 cmUnpkRgSchHqRetxStats
 (
 RgSchHqRetxStats *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgSchHqRetxStats (param, mBuf)
+S16 cmUnpkRgSchHqRetxStats (param, mBuf)
 RgSchHqRetxStats *param;
 Buffer *mBuf;
 #endif
@@ -2160,13 +2160,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgGenSts
+S16 cmPkRgGenSts
 (
 RgGenSts *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgGenSts(param, mBuf)
+S16 cmPkRgGenSts(param, mBuf)
 RgGenSts *param;
 Buffer *mBuf;
 #endif
@@ -2202,13 +2202,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgGenSts
+S16 cmUnpkRgGenSts
 (
 RgGenSts *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgGenSts(param, mBuf)
+S16 cmUnpkRgGenSts(param, mBuf)
 RgGenSts *param;
 Buffer *mBuf;
 #endif
@@ -2244,13 +2244,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgSapSts
+S16 cmPkRgSapSts
 (
 RgSapSts *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgSapSts(param, mBuf)
+S16 cmPkRgSapSts(param, mBuf)
 RgSapSts *param;
 Buffer *mBuf;
 #endif
@@ -2282,13 +2282,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgSapSts
+S16 cmUnpkRgSapSts
 (
 RgSapSts *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgSapSts(param, mBuf)
+S16 cmUnpkRgSapSts(param, mBuf)
 RgSapSts *param;
 Buffer *mBuf;
 #endif
@@ -2320,13 +2320,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgSchInstCfg
+S16 cmPkRgSchInstCfg
 (
 RgSchInstCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgSchInstCfg(param, mBuf)
+S16 cmPkRgSchInstCfg(param, mBuf)
 RgSchInstCfg *param;
 Buffer *mBuf;
 #endif
@@ -2368,13 +2368,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgSchInstCfg
+S16 cmUnpkRgSchInstCfg
 (
 RgSchInstCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgSchInstCfg(param, mBuf)
+S16 cmUnpkRgSchInstCfg(param, mBuf)
 RgSchInstCfg *param;
 Buffer *mBuf;
 #endif
@@ -2416,14 +2416,14 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgCfg
+S16 cmPkRgCfg
 (
 RgCfg *param,
 S16 elmnt,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgCfg(param, elmnt, mBuf)
+S16 cmPkRgCfg(param, elmnt, mBuf)
 RgCfg *param;
 S16 elmnt;
 Buffer *mBuf;
@@ -2472,14 +2472,14 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgCfg
+S16 cmUnpkRgCfg
 (
 RgCfg *param,
 S16 elmnt,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgCfg(param, elmnt, mBuf)
+S16 cmUnpkRgCfg(param, elmnt, mBuf)
 RgCfg *param;
 S16 elmnt;
 Buffer *mBuf;
@@ -2528,13 +2528,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgSapSta
+S16 cmPkRgSapSta
 (
 RgSapSta *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgSapSta(param, mBuf)
+S16 cmPkRgSapSta(param, mBuf)
 RgSapSta *param;
 Buffer *mBuf;
 #endif
@@ -2564,13 +2564,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgSapSta
+S16 cmUnpkRgSapSta
 (
 RgSapSta *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgSapSta(param, mBuf)
+S16 cmUnpkRgSapSta(param, mBuf)
 RgSapSta *param;
 Buffer *mBuf;
 #endif
@@ -2600,14 +2600,14 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgSts
+S16 cmPkRgSts
 (
 RgSts *param,
 S16 elmnt,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgSts(param, elmnt, mBuf)
+S16 cmPkRgSts(param, elmnt, mBuf)
 RgSts *param;
 S16 elmnt;
 Buffer *mBuf;
@@ -2659,14 +2659,14 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgSts
+S16 cmUnpkRgSts
 (
 RgSts *param,
 S16 elmnt,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgSts(param, elmnt, mBuf)
+S16 cmUnpkRgSts(param, elmnt, mBuf)
 RgSts *param;
 S16 elmnt;
 Buffer *mBuf;
@@ -2718,7 +2718,7 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgSsta
+S16 cmPkRgSsta
 (
 Pst *pst,
 RgSsta *param,
@@ -2729,7 +2729,7 @@ U8 eventType,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgSsta(pst, param, elmnt, eventType, mBuf)
+S16 cmPkRgSsta(pst, param, elmnt, eventType, mBuf)
 Pst *pst;
 RgSsta *param;
 S16 elmnt;
@@ -2803,7 +2803,7 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgSsta
+S16 cmUnpkRgSsta
 (
 Pst    *pst,
 RgSsta *param,
@@ -2811,7 +2811,7 @@ S16 elmnt,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgSsta(pst, param, elmnt, mBuf)
+S16 cmUnpkRgSsta(pst, param, elmnt, mBuf)
 Pst    *pst;
 RgSsta *param;
 S16 elmnt;
@@ -2883,13 +2883,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgUstaDgn
+S16 cmPkRgUstaDgn
 (
 RgUstaDgn *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgUstaDgn(param, mBuf)
+S16 cmPkRgUstaDgn(param, mBuf)
 RgUstaDgn *param;
 Buffer *mBuf;
 #endif
@@ -2926,13 +2926,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgUstaDgn
+S16 cmUnpkRgUstaDgn
 (
 RgUstaDgn *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgUstaDgn(param, mBuf)
+S16 cmUnpkRgUstaDgn(param, mBuf)
 RgUstaDgn *param;
 Buffer *mBuf;
 #endif
@@ -2969,13 +2969,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgUsta
+S16 cmPkRgUsta
 (
 RgUsta *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgUsta(param, mBuf)
+S16 cmPkRgUsta(param, mBuf)
 RgUsta *param;
 Buffer *mBuf;
 #endif
@@ -3006,13 +3006,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgUsta
+S16 cmUnpkRgUsta
 (
 RgUsta *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgUsta(param, mBuf)
+S16 cmUnpkRgUsta(param, mBuf)
 RgUsta *param;
 Buffer *mBuf;
 #endif
@@ -3043,13 +3043,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgTrc
+S16 cmPkRgTrc
 (
 RgTrc *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgTrc(param, mBuf)
+S16 cmPkRgTrc(param, mBuf)
 RgTrc *param;
 Buffer *mBuf;
 #endif
@@ -3080,13 +3080,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgTrc
+S16 cmUnpkRgTrc
 (
 RgTrc *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgTrc(param, mBuf)
+S16 cmUnpkRgTrc(param, mBuf)
 RgTrc *param;
 Buffer *mBuf;
 #endif
@@ -3117,13 +3117,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgDbgCntrl
+S16 cmPkRgDbgCntrl
 (
 RgDbgCntrl *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgDbgCntrl(param, mBuf)
+S16 cmPkRgDbgCntrl(param, mBuf)
 RgDbgCntrl *param;
 Buffer *mBuf;
 #endif
@@ -3152,13 +3152,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgSchUlAllocCntrl
+S16 cmPkRgSchUlAllocCntrl
 (
 RgSchUlAllocCntrl *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgSchUlAllocCntrl(param, mBuf)
+S16 cmPkRgSchUlAllocCntrl(param, mBuf)
 RgSchUlAllocCntrl *param;
 Buffer *mBuf;
 #endif
@@ -3191,13 +3191,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgSchUlAllocCntrl
+S16 cmUnpkRgSchUlAllocCntrl
 (
 RgSchUlAllocCntrl *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgSchUlAllocCntrl(param, mBuf)
+S16 cmUnpkRgSchUlAllocCntrl(param, mBuf)
 RgSchUlAllocCntrl *param;
 Buffer *mBuf;
 #endif
@@ -3233,13 +3233,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgDbgCntrl
+S16 cmUnpkRgDbgCntrl
 (
 RgDbgCntrl *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgDbgCntrl(param, mBuf)
+S16 cmUnpkRgDbgCntrl(param, mBuf)
 RgDbgCntrl *param;
 Buffer *mBuf;
 #endif
@@ -3269,13 +3269,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgSapCntrl
+S16 cmPkRgSapCntrl
 (
 RgSapCntrl *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgSapCntrl(param, mBuf)
+S16 cmPkRgSapCntrl(param, mBuf)
 RgSapCntrl *param;
 Buffer *mBuf;
 #endif
@@ -3306,13 +3306,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgSapCntrl
+S16 cmUnpkRgSapCntrl
 (
 RgSapCntrl *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgSapCntrl(param, mBuf)
+S16 cmUnpkRgSapCntrl(param, mBuf)
 RgSapCntrl *param;
 Buffer *mBuf;
 #endif
@@ -3343,14 +3343,14 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgCntrl
+S16 cmPkRgCntrl
 (
 RgCntrl *param,
 S16 elmnt,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgCntrl(param, elmnt, mBuf)
+S16 cmPkRgCntrl(param, elmnt, mBuf)
 RgCntrl *param;
 S16 elmnt;
 Buffer *mBuf;
@@ -3421,14 +3421,14 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgCntrl
+S16 cmUnpkRgCntrl
 (
 RgCntrl *param,
 S16 elmnt,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgCntrl(param, elmnt, mBuf)
+S16 cmUnpkRgCntrl(param, elmnt, mBuf)
 RgCntrl *param;
 S16 elmnt;
 Buffer *mBuf;
@@ -3499,7 +3499,7 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRgMngmt
+S16 cmPkRgMngmt
 (
 Pst *pst,
 RgMngmt *param,
@@ -3507,7 +3507,7 @@ U8 eventType,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRgMngmt(pst, param, eventType, mBuf)
+S16 cmPkRgMngmt(pst, param, eventType, mBuf)
 Pst *pst;
 RgMngmt *param;
 U8 eventType;
@@ -3585,7 +3585,7 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRgMngmt
+S16 cmUnpkRgMngmt
 (
 Pst *pst,
 RgMngmt *param,
@@ -3593,7 +3593,7 @@ U8 eventType,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRgMngmt(pst, param, eventType, mBuf)
+S16 cmUnpkRgMngmt(pst, param, eventType, mBuf)
 Pst *pst;
 RgMngmt *param;
 U8 eventType;
@@ -3736,13 +3736,13 @@ L2 Measurement Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchL2MeasReq
+S16 cmPkLrgSchL2MeasReq
 (
 Pst * pst,
 LrgSchMeasReqInfo  *measInfo
 )
 #else
-PUBLIC S16 cmPkLrgSchL2MeasReq(pst, measInfo)
+S16 cmPkLrgSchL2MeasReq(pst, measInfo)
 Pst * pst;
 LrgSchMeasReqInfo  *measInfo;
 #endif
@@ -3796,13 +3796,13 @@ L2 Measurement Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchL2MeasStopReq
+S16 cmPkLrgSchL2MeasStopReq
 (
 Pst * pst,
 LrgSchMeasStopReqInfo *measInfo
 )
 #else
-PUBLIC S16 cmPkLrgSchL2MeasStopReq(pst, measInfo)
+S16 cmPkLrgSchL2MeasStopReq(pst, measInfo)
 Pst * pst;
 LrgSchMeasStopReqInfo *measInfo;
 #endif
@@ -3840,13 +3840,13 @@ L2 Measurement Request from LM to MAC.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchL2MeasSendReq
+S16 cmPkLrgSchL2MeasSendReq
 (
 Pst * pst,
 LrgSchMeasSndReqInfo *measInfo
 )
 #else
-PUBLIC S16 cmPkLrgSchL2MeasSendReq(pst, measInfo)
+S16 cmPkLrgSchL2MeasSendReq(pst, measInfo)
 Pst * pst;
 LrgSchMeasSndReqInfo *measInfo;
 #endif
@@ -3959,14 +3959,14 @@ Measurement  Request from LM to SCH.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchL2MeasReq
+S16 cmUnpkLrgSchL2MeasReq
 (
 LrgSchL2MeasReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchL2MeasReq(func, pst, mBuf)
+S16 cmUnpkLrgSchL2MeasReq(func, pst, mBuf)
 LrgSchL2MeasReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -4015,14 +4015,14 @@ Measurement  Request from LM to SCH.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchL2MeasStopReq
+S16 cmUnpkLrgSchL2MeasStopReq
 (
 LrgSchL2MeasStopReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchL2MeasStopReq(func, pst, mBuf)
+S16 cmUnpkLrgSchL2MeasStopReq(func, pst, mBuf)
 LrgSchL2MeasStopReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -4055,14 +4055,14 @@ Measurement  Request from LM to SCH.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchL2MeasSendReq
+S16 cmUnpkLrgSchL2MeasSendReq
 (
 LrgSchL2MeasSendReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchL2MeasSendReq(func, pst, mBuf)
+S16 cmUnpkLrgSchL2MeasSendReq(func, pst, mBuf)
 LrgSchL2MeasSendReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -4091,13 +4091,13 @@ L2 Measurement confirm from MAC to LM
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchL2MeasStopCfm
+S16 cmPkLrgSchL2MeasStopCfm
 (
 Pst * pst,
 LrgSchMeasCfmInfo  *measInfo
 )
 #else
-PUBLIC S16 cmPkLrgSchL2MeasStopCfm(pst, measInfo)
+S16 cmPkLrgSchL2MeasStopCfm(pst, measInfo)
 Pst * pst;
 LrgSchMeasCfmInfo  *measInfo;
 #endif
@@ -4134,14 +4134,14 @@ Measurement  Confirm from SCH to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchL2MeasStopCfm
+S16 cmUnpkLrgSchL2MeasStopCfm
 (
 LrgSchL2MeasStopCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchL2MeasStopCfm(func, pst, mBuf)
+S16 cmUnpkLrgSchL2MeasStopCfm(func, pst, mBuf)
 LrgSchL2MeasStopCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -4313,13 +4313,13 @@ L2 Measurement confirm from MAC to LM
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkLrgSchL2MeasCfm
+S16 cmPkLrgSchL2MeasCfm
 (
 Pst * pst,
 LrgSchMeasCfmInfo  *measInfo
 )
 #else
-PUBLIC S16 cmPkLrgSchL2MeasCfm(pst, measInfo)
+S16 cmPkLrgSchL2MeasCfm(pst, measInfo)
 Pst * pst;
 LrgSchMeasCfmInfo  *measInfo;
 #endif
@@ -4543,14 +4543,14 @@ Measurement  Confirm from LM to SCH.
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLrgSchL2MeasCfm
+S16 cmUnpkLrgSchL2MeasCfm
 (
 LrgSchL2MeasCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLrgSchL2MeasCfm(func, pst, mBuf)
+S16 cmUnpkLrgSchL2MeasCfm(func, pst, mBuf)
 LrgSchL2MeasCfm func;
 Pst *pst;
 Buffer *mBuf;

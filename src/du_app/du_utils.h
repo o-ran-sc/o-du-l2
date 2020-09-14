@@ -90,7 +90,7 @@
 {                                                           \
    _pst.selector  = ODU_SELECTOR_LWLC;                      \
    _pst.srcEnt    = ENTDUAPP;                               \
-   _pst.dstEnt    = ENTRG;                                  \
+   _pst.dstEnt    = ENTMAC;                                  \
    _pst.dstInst   = 0;                                      \
    _pst.srcInst   = 0;                                      \
    _pst.dstProcId = DU_PROC;                                \
@@ -108,7 +108,7 @@
 {                                                           \
    _pst.selector  = ODU_SELECTOR_LWLC;                      \
    _pst.srcEnt    = ENTDUAPP;                               \
-   _pst.dstEnt    = ENTKW;                                  \
+   _pst.dstEnt    = ENTRLC;                                  \
    _pst.dstInst   = _dstInst;                               \
    _pst.srcInst   = DU_INST;                                \
    _pst.dstProcId = DU_PROC;                                \

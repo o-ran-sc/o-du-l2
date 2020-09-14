@@ -207,7 +207,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
  *
  * ****************************************************************/
 
-PUBLIC void l1HdlParamReq(uint32_t msgLen, void *msg)
+void l1HdlParamReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    DU_LOG("\nPHY_STUB: Received Param Request in PHY");
@@ -239,7 +239,7 @@ PUBLIC void l1HdlParamReq(uint32_t msgLen, void *msg)
  *
  * ****************************************************************/
 
-PUBLIC void l1HdlConfigReq(uint32_t msgLen, void *msg)
+void l1HdlConfigReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_config_req_t *configReq = (fapi_config_req_t *)msg;
@@ -558,7 +558,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
  * @return void
  *
  * ****************************************************************/
-PUBLIC uint16_t l1BuildAndSendSlotIndication()
+uint16_t l1BuildAndSendSlotIndication()
 {
 #ifdef INTEL_FAPI
    fapi_slot_ind_t *slotIndMsg;
@@ -615,7 +615,7 @@ PUBLIC uint16_t l1BuildAndSendSlotIndication()
  *
  * ****************************************************************/
 
-PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
+S16 l1HdlStartReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_start_req_t *startReq = (fapi_start_req_t *)msg;
@@ -652,7 +652,7 @@ PUBLIC S16 l1HdlStartReq(uint32_t msgLen, void *msg)
  *
  * ****************************************************************/
 
-PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
+S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_dl_tti_req_t *dlTtiReq;
@@ -713,7 +713,7 @@ PUBLIC S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
  *
  * ****************************************************************/
 
-PUBLIC S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
+S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_tx_data_req_t *txDataReq;
@@ -893,7 +893,7 @@ uint8_t l1BuildAndSendUciInd(uint16_t slot, uint16_t sfn, fapi_ul_pucch_pdu_t pu
  *
  * ****************************************************************/
 
-PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
+S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_ul_tti_req_t *ulTtiReq = NULLP;
@@ -954,7 +954,7 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
  * @return void
  *
  * ****************************************************************/
-PUBLIC uint16_t l1BuildAndSendStopInd()
+uint16_t l1BuildAndSendStopInd()
 {
 #ifdef INTEL_FAPI
    fapi_stop_ind_t *stopIndMsg = NULLP;
@@ -996,7 +996,7 @@ PUBLIC uint16_t l1BuildAndSendStopInd()
  *
  * ****************************************************************/
 
-PUBLIC S16 l1HdlStopReq(uint32_t msgLen, void *msg)
+S16 l1HdlStopReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_stop_req_t *stopReq = (fapi_stop_req_t *)msg;
@@ -1139,7 +1139,7 @@ uint8_t l1BuildAndSendMsg5(uint16_t sfn, uint16_t slot)
  *
  * ****************************************************************/
 
-PUBLIC S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
+S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_ul_dci_req_t *ulDciReq = NULLP;

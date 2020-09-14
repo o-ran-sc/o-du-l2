@@ -68,18 +68,18 @@
    EXTERN U32 gUlCrcPassCounter;
    EXTERN U32 gUlCrcFailCounter;*/
 #endif
-PUBLIC U8 rgRvIdxTable[] = {0, 3, 1, 2}; /* This gives rvIdx for a given rv */
-PUBLIC U8 rgRvTable[] = {0, 2, 3 ,1};    /* This gives rv for a given rvIdx */
+U8 rgRvIdxTable[] = {0, 3, 1, 2}; /* This gives rvIdx for a given rv */
+U8 rgRvTable[] = {0, 2, 3 ,1};    /* This gives rv for a given rvIdx */
 
 #ifdef EMTC_ENABLE
-PUBLIC Void rgSCHCmnEmtcHdlHarqProcFail
+Void rgSCHCmnEmtcHdlHarqProcFail
 (
 RgSchCellCb       *cell,
 RgSchUeCb         *ue,
 RgSchUlHqProcCb   *hqProc,
 CmLteTimingInfo   frm
 );
-PUBLIC Void rgSCHEmtcInitUlUeHqEnt
+Void rgSCHEmtcInitUlUeHqEnt
 (
 RgSchCellCb      *cell,
 RgrUeCfg         *ueCfg,
@@ -107,21 +107,21 @@ RgSchUeCb        *ueCb
  **/
 #ifndef MAC_SCH_STATS
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcDatInd
+Void rgSCHUhmProcDatInd
 (
 RgSchCellCb          *cell,
 RgSchUeCb            *ue,
 CmLteTimingInfo      frm
 )
 #else
-PUBLIC Void rgSCHUhmProcDatInd(cell, ue, frm)
+Void rgSCHUhmProcDatInd(cell, ue, frm)
 RgSchCellCb          *cell;
 RgSchUeCb            *ue;
 CmLteTimingInfo      frm;
 #endif
 #else  /* MAC_SCH_STATS */
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcDatInd
+Void rgSCHUhmProcDatInd
 (
 RgSchCellCb          *cell,
 RgSchUeCb            *ue,
@@ -129,7 +129,7 @@ CmLteTimingInfo      frm,
 U8                   cqi
 )
 #else
-PUBLIC Void rgSCHUhmProcDatInd(cell, ue, frm, cqi)
+Void rgSCHUhmProcDatInd(cell, ue, frm, cqi)
 RgSchCellCb          *cell;
 RgSchUeCb            *ue;
 CmLteTimingInfo      frm;
@@ -206,12 +206,12 @@ U8                   cqi;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcMsg3DatInd
+Void rgSCHUhmProcMsg3DatInd
 (
 RgSchUlHqProcCb *hqProc
 )
 #else
-PUBLIC Void rgSCHUhmProcMsg3DatInd(hqProc)
+Void rgSCHUhmProcMsg3DatInd(hqProc)
 RgSchUlHqProcCb *hqProc;
 #endif
 {
@@ -238,12 +238,12 @@ RgSchUlHqProcCb *hqProc;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcMsg3Failure
+Void rgSCHUhmProcMsg3Failure
 (
 RgSchUlHqProcCb *hqProc
 )
 #else
-PUBLIC Void rgSCHUhmProcMsg3Failure(hqProc)
+Void rgSCHUhmProcMsg3Failure(hqProc)
 RgSchUlHqProcCb *hqProc;
 #endif
 {
@@ -281,7 +281,7 @@ RgSchUlHqProcCb *hqProc;
  **/
 #ifndef MAC_SCH_STATS
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcHqFailure
+Void rgSCHUhmProcHqFailure
 (
 RgSchCellCb          *cell,
 RgSchUeCb            *ue,
@@ -289,7 +289,7 @@ CmLteTimingInfo      frm,
 TknU8                rv
 )
 #else
-PUBLIC Void rgSCHUhmProcHqFailure(cell, ue, frm, rv)
+Void rgSCHUhmProcHqFailure(cell, ue, frm, rv)
 RgSchCellCb          *cell;
 RgSchUeCb            *ue;
 CmLteTimingInfo      frm;
@@ -297,7 +297,7 @@ TknU8                rv;
 #endif
 #else /* MAC_SCH_STATS */
 #ifdef ANSI
-PUBLIC Void rgSCHUhmProcHqFailure
+Void rgSCHUhmProcHqFailure
 (
 RgSchCellCb          *cell,
 RgSchUeCb            *ue,
@@ -306,7 +306,7 @@ TknU8                rv,
 U8                   cqi
 )
 #else
-PUBLIC Void rgSCHUhmProcHqFailure(cell, ue, frm, rv, cqi)
+Void rgSCHUhmProcHqFailure(cell, ue, frm, rv, cqi)
 RgSchCellCb          *cell;
 RgSchUeCb            *ue;
 CmLteTimingInfo      frm;
@@ -387,14 +387,14 @@ U8                   cqi;
  *      -# NULL
  **/
 #ifdef ANSI
-PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlHqProc
+RgSchUlHqProcCb* rgSCHUhmGetUlHqProc
 (
 RgSchCellCb      *cell,
 RgSchUeCb        *ue, 
 U8               idx
 )
 #else
-PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlHqProc(cell, ue, idx)
+RgSchUlHqProcCb* rgSCHUhmGetUlHqProc(cell, ue, idx)
 RgSchCellCb      *cell;
 RgSchUeCb        *ue; 
 U8               idx;
@@ -430,14 +430,14 @@ U8               idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmNewTx
+Void rgSCHUhmNewTx
 (
 RgSchUlHqProcCb *hqProc,
 U8              maxHqRetx,
 RgSchUlAlloc    *alloc
 )
 #else
-PUBLIC Void rgSCHUhmNewTx(hqProc, maxHqRetx, alloc)
+Void rgSCHUhmNewTx(hqProc, maxHqRetx, alloc)
 RgSchUlHqProcCb *hqProc;
 U8              maxHqRetx;
 RgSchUlAlloc    *alloc;
@@ -477,13 +477,13 @@ RgSchUlAlloc    *alloc;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmFreeProc
+Void rgSCHUhmFreeProc
 (
 RgSchUlHqProcCb *hqProc,
 RgSchCellCb      *cell
 )
 #else
-PUBLIC Void rgSCHUhmFreeProc(hqProc, cell)
+Void rgSCHUhmFreeProc(hqProc, cell)
 RgSchUlHqProcCb *hqProc;
 RgSchCellCb      *cell;
 #endif
@@ -569,13 +569,13 @@ RgSchCellCb      *cell;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmRetx
+Void rgSCHUhmRetx
 (
 RgSchUlHqProcCb *hqProc,
 RgSchUlAlloc    *alloc
 )
 #else
-PUBLIC Void rgSCHUhmRetx(hqProc, alloc) 
+Void rgSCHUhmRetx(hqProc, alloc) 
 RgSchUlHqProcCb *hqProc;
 RgSchUlAlloc    *alloc;
 #endif
@@ -609,14 +609,14 @@ RgSchUlAlloc    *alloc;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmRgrUeCfg
+Void rgSCHUhmRgrUeCfg
 (
 RgSchCellCb       *cellCb,
 RgSchUeCb         *ueCb,
 RgrUeCfg          *ueCfg
 )
 #else
-PUBLIC Void rgSCHUhmRgrUeCfg(cellCb, ueCb, ueCfg) 
+Void rgSCHUhmRgrUeCfg(cellCb, ueCb, ueCfg) 
 RgSchCellCb       *cellCb;
 RgSchUeCb         *ueCb;
 RgrUeCfg          *ueCfg;
@@ -675,14 +675,14 @@ RgrUeCfg          *ueCfg;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmRgrUeRecfg
+Void rgSCHUhmRgrUeRecfg
 (
 RgSchCellCb       *cellCb,
 RgSchUeCb         *ueCb,
 RgrUeRecfg        *ueRecfg
 )
 #else
-PUBLIC Void rgSCHUhmRgrUeRecfg(cellCb, ueCb, ueRecfg) 
+Void rgSCHUhmRgrUeRecfg(cellCb, ueCb, ueRecfg) 
 RgSchCellCb       *cellCb;
 RgSchUeCb         *ueCb;
 RgrUeRecfg        *ueRecfg;
@@ -716,13 +716,13 @@ RgrUeRecfg        *ueRecfg;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHUhmFreeUe
+Void rgSCHUhmFreeUe
 (
 RgSchCellCb       *cellCb,
 RgUeUlHqCb        *hqEnt
 )
 #else
-PUBLIC Void rgSCHUhmFreeUe(cellCb, hqEnt) 
+Void rgSCHUhmFreeUe(cellCb, hqEnt) 
 RgSchCellCb       *cellCb;
 RgUeUlHqCb       *hqEnt;
 #endif
@@ -758,14 +758,14 @@ RgUeUlHqCb       *hqEnt;
 *  @return  Void
 */
 #ifdef ANSI
-PUBLIC S16 rgSCHUhmAppendPhich
+S16 rgSCHUhmAppendPhich
 (
 RgSchCellCb            *cellCb,
 CmLteTimingInfo        frm,
 U8                     idx
 )
 #else
-PUBLIC S16 rgSCHUhmAppendPhich (cellCb, frm, idx)
+S16 rgSCHUhmAppendPhich (cellCb, frm, idx)
 RgSchCellCb            *cellCb;
 CmLteTimingInfo        frm;
 U8                     idx;
@@ -887,13 +887,13 @@ U8                     idx;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHUhmHqEntInit
+S16 rgSCHUhmHqEntInit
 (
 RgSchCellCb       *cellCb,
 RgSchUeCb           *ueCb
 )
 #else
-PUBLIC S16 rgSCHUhmHqEntInit(cellCb, ueCb)
+S16 rgSCHUhmHqEntInit(cellCb, ueCb)
 RgSchCellCb       *cellCb;
 RgSchUeCb           *ueCb;
 #endif
@@ -949,14 +949,14 @@ RgSchUeCb           *ueCb;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHUhmGetAvlHqProc
+S16 rgSCHUhmGetAvlHqProc
 (
 RgSchCellCb           *cell,
 RgSchUeCb               *ue,
 RgSchUlHqProcCb         **hqP
 )
 #else
-PUBLIC S16 rgSCHUhmGetAvlHqProc (cell, ue, hqP)
+S16 rgSCHUhmGetAvlHqProc (cell, ue, hqP)
 RgSchCellCb           *cell;
 RgSchUeCb             *ue;
 RgSchUlHqProcCb       **hqP;
@@ -1022,14 +1022,14 @@ RgSchUlHqProcCb       **hqP;
  *      -# NULL
  **/
 #ifdef ANSI
-PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlProcByTime 
+RgSchUlHqProcCb* rgSCHUhmGetUlProcByTime 
 (
 RgSchCellCb      *cell,
 RgSchUeCb        *ue, 
 CmLteTimingInfo  frm
 )
 #else
-PUBLIC RgSchUlHqProcCb* rgSCHUhmGetUlProcByTime(cell, ue, frm)
+RgSchUlHqProcCb* rgSCHUhmGetUlProcByTime(cell, ue, frm)
 RgSchCellCb      *cell;
 RgSchUeCb        *ue; 
 CmLteTimingInfo  frm;

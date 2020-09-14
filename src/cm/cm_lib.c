@@ -197,14 +197,14 @@ EXTERN Size regMemSize;
 *
 */
 #ifdef ANSI
-PUBLIC U8 *cmMemcpy
+U8 *cmMemcpy
 (
 U8           *tgt,
 CONSTANT U8  *src,
 PTR          len
 )
 #else
-PUBLIC U8 *cmMemcpy(tgt, src, len)
+U8 *cmMemcpy(tgt, src, len)
 U8           *tgt;
 CONSTANT U8  *src;
 PTR          len;
@@ -263,14 +263,14 @@ if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmMemcmp
+S16 cmMemcmp
 (
 CONSTANT U8     *s1,
 CONSTANT U8     *s2,
 PTR             len
 )
 #else
-PUBLIC S16 cmMemcmp (s1, s2, len)
+S16 cmMemcmp (s1, s2, len)
 CONSTANT U8     *s1;
 CONSTANT U8     *s2;
 PTR             len;
@@ -312,14 +312,14 @@ PTR             len;
 *
 */
 #ifdef ANSI
-PUBLIC U8 *cmMemset
+U8 *cmMemset
 (
 U8           *str,
 U8           val,
 PTR          len
 )
 #else
-PUBLIC U8 *cmMemset(str, val, len)
+U8 *cmMemset(str, val, len)
 U8           *str;
 U8           val;
 PTR          len;
@@ -391,13 +391,13 @@ if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmStrcmp
+S16 cmStrcmp
 (
 CONSTANT U8 *s1,
 CONSTANT U8 *s2
 )
 #else
-PUBLIC S16 cmStrcmp (s1, s2)
+S16 cmStrcmp (s1, s2)
 CONSTANT U8 *s1;
 CONSTANT U8 *s2;
 #endif
@@ -456,14 +456,14 @@ CONSTANT U8 *s2;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmStrncmp
+S16 cmStrncmp
 (
 CONSTANT U8  *s1,
 CONSTANT U8  *s2,
 MsgLen       len /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
 )
 #else
-PUBLIC S16 cmStrncmp (s1, s2, len)
+S16 cmStrncmp (s1, s2, len)
 CONSTANT U8  *s1;
 CONSTANT U8  *s2;
 MsgLen       len;
@@ -511,13 +511,13 @@ MsgLen       len;
 *
 */
 #ifdef ANSI
-PUBLIC MsgLen cmStrlen
+MsgLen cmStrlen
 (
 CONSTANT U8 *s
 )
 #else
 /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
-PUBLIC MsgLen cmStrlen (s)
+MsgLen cmStrlen (s)
 CONSTANT U8 *s;
 #endif
 {

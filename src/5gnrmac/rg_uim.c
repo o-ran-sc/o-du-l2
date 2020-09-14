@@ -74,10 +74,10 @@ static int RLOG_FILE_ID=178;
 /* forward references */
 
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-PUBLIC S16 rgBatchProc(Void);
+S16 rgBatchProc(Void);
 #endif
-PUBLIC U8 rgRguDlSap;
-PUBLIC U8 rgRguUlSap;
+U8 rgRguDlSap;
+U8 rgRguUlSap;
 /**
  * @brief Handler for Bind request.
  *
@@ -96,14 +96,14 @@ PUBLIC U8 rgRguUlSap;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguBndReq
+S16 RgUiRguBndReq
 (
 Pst  *pst,
 SuId suId,
 SpId spId
 )
 #else
-PUBLIC S16 RgUiRguBndReq(pst, suId, spId)
+S16 RgUiRguBndReq(pst, suId, spId)
 Pst  *pst;
 SuId suId;
 SpId spId;
@@ -204,14 +204,14 @@ SpId spId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguUbndReq
+S16 RgUiRguUbndReq
 (
 Pst    *pst,
 SpId   spId,
 Reason reason
 )
 #else
-PUBLIC S16 RgUiRguUbndReq(pst, spId, reason)
+S16 RgUiRguUbndReq(pst, spId, reason)
 Pst    *pst;
 SpId   spId;
 Reason reason;
@@ -271,14 +271,14 @@ Reason reason;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMRguBndCfm
+S16 rgUIMRguBndCfm
 (
 Inst inst,
 SpId spId,
 U8 status
 )
 #else
-PUBLIC S16 rgUIMRguBndCfm(inst,spId, status)
+S16 rgUIMRguBndCfm(inst,spId, status)
 Inst          inst;
 SpId          spId;
 U8            status;
@@ -318,14 +318,14 @@ U8            status;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguDDatReq
+S16 RgUiRguDDatReq
 (
 Pst             *pst,
 SpId            spId,
 RguDDatReqInfo  *datReq
 )
 #else
-PUBLIC S16 RgUiRguDDatReq(pst, spId, datReq)
+S16 RgUiRguDDatReq(pst, spId, datReq)
 Pst             *pst;
 SpId            spId;
 RguDDatReqInfo  *datReq;
@@ -440,14 +440,14 @@ RguDDatReqInfo  *datReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguCDatReq
+S16 RgUiRguCDatReq
 (
 Pst             *pst,
 SpId            spId,
 RguCDatReqInfo  *datReq
 )
 #else
-PUBLIC S16 RgUiRguCDatReq(pst, spId, datReq)
+S16 RgUiRguCDatReq(pst, spId, datReq)
 Pst             *pst;
 SpId            spId;
 RguCDatReqInfo  *datReq;
@@ -531,14 +531,14 @@ RguCDatReqInfo  *datReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguDStaRsp
+S16 RgUiRguDStaRsp
 (
 Pst             *pst,
 SpId            spId,
 RguDStaRspInfo  *staRsp
 )
 #else
-PUBLIC S16 RgUiRguDStaRsp(pst, spId, staRsp)
+S16 RgUiRguDStaRsp(pst, spId, staRsp)
 Pst             *pst;
 SpId            spId;
 RguDStaRspInfo  *staRsp;
@@ -589,14 +589,14 @@ RguDStaRspInfo  *staRsp;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguCStaRsp
+S16 RgUiRguCStaRsp
 (
 Pst             *pst,
 SpId            spId,
 RguCStaRspInfo  *staRsp
 )
 #else
-PUBLIC S16 RgUiRguCStaRsp(pst, spId, staRsp)
+S16 RgUiRguCStaRsp(pst, spId, staRsp)
 Pst             *pst;
 SpId            spId;
 RguCStaRspInfo  *staRsp;
@@ -672,14 +672,14 @@ RguCStaRspInfo  *staRsp;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguL2MUlThrpMeasReq 
+S16 RgUiRguL2MUlThrpMeasReq 
 (
 Pst             *pst,
 SpId            spId,
 RguL2MUlThrpMeasReqInfo  *measReq
 )
 #else
-PUBLIC S16 RgUiRguL2MUlThrpMeasReq(pst, spId, measReq)
+S16 RgUiRguL2MUlThrpMeasReq(pst, spId, measReq)
 Pst             *pst;
 SpId            spId;
 RguL2MUlThrpMeasReqInfo  *measReq;
@@ -756,14 +756,14 @@ RguL2MUlThrpMeasReqInfo  *measReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMSndDedStaInd
+S16 rgUIMSndDedStaInd
 (
 Inst         inst,
 RgUpSapCb    *rguSap,
 RgRguDedStaInd  *staInd
 )
 #else
-PUBLIC S16 rgUIMSndDedStaInd(inst,rguSap,staInd)
+S16 rgUIMSndDedStaInd(inst,rguSap,staInd)
 Inst         inst;
 RgUpSapCb    *rguSap;
 RgRguDedStaInd  *staInd;
@@ -805,14 +805,14 @@ RgRguDedStaInd  *staInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMSndCmnStaInd
+S16 rgUIMSndCmnStaInd
 (
 Inst            inst,
 RgUpSapCb    *rguDlSap,
 RgRguCmnStaInd  *staInd
 )
 #else
-PUBLIC S16 rgUIMSndCmnStaInd(inst,rguDlSap,staInd)
+S16 rgUIMSndCmnStaInd(inst,rguDlSap,staInd)
 Inst          inst,
 RgUpSapCb    *rguDlSap,
 RgRguCmnStaInd  *staInd;
@@ -854,14 +854,14 @@ RgRguCmnStaInd  *staInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMSndDedDatInd
+S16 rgUIMSndDedDatInd
 (
 Inst         inst,
 RgUpSapCb    *rguUlSap,
 RgRguDedDatInd  *datInd
 )
 #else
-PUBLIC S16 rgUIMSndDedDatInd(datInd)
+S16 rgUIMSndDedDatInd(datInd)
 Inst         inst;
 RgUpSapCb    *rguUlSap;
 RgRguDedDatInd  *datInd;
@@ -909,14 +909,14 @@ RgRguDedDatInd  *datInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMSndCmnDatInd
+S16 rgUIMSndCmnDatInd
 (
 Inst         inst,
 RgUpSapCb    *rguUlSap,
 RgRguCmnDatInd  *datInd
 )
 #else
-PUBLIC S16 rgUIMSndCmnDatInd(datInd)
+S16 rgUIMSndCmnDatInd(datInd)
 Inst         inst;
 RgUpSapCb    *rguUlSap;
 RgRguCmnDatInd  *datInd;
@@ -963,14 +963,14 @@ RgRguCmnDatInd  *datInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgBndReq
+S16 RgUiCrgBndReq
 (
 Pst   *pst, 
 SuId  suId,
 SpId  spId
 )
 #else
-PUBLIC S16 RgUiCrgBndReq(pst, suId, spId)
+S16 RgUiCrgBndReq(pst, suId, spId)
 Pst   *pst; 
 SuId  suId;
 SpId  spId;
@@ -1071,14 +1071,14 @@ SpId  spId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgUbndReq
+S16 RgUiCrgUbndReq
 (
 Pst    *pst,
 SpId   spId,
 Reason reason
 )
 #else
-PUBLIC S16 RgUiCrgUbndReq(pst, spId, reason)
+S16 RgUiCrgUbndReq(pst, spId, reason)
 Pst    *pst; 
 SpId   spId;
 Reason reason;
@@ -1139,14 +1139,14 @@ Reason reason;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMCrgBndCfm
+S16 rgUIMCrgBndCfm
 (
 Inst  inst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 rgUIMCrgBndCfm(inst,suId, status)
+S16 rgUIMCrgBndCfm(inst,suId, status)
 Inst          inst;
 SuId          suId;
 U8            status;
@@ -1185,7 +1185,7 @@ U8            status;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgCfgReq
+S16 RgUiCrgCfgReq
 (
 Pst           *pst, 
 SpId          spId,
@@ -1193,7 +1193,7 @@ CrgCfgTransId transId,
 CrgCfgReqInfo *cfgReqInfo
 )
 #else
-PUBLIC S16 RgUiCrgCfgReq(pst, spId, transId, cfgReqInfo)
+S16 RgUiCrgCfgReq(pst, spId, transId, cfgReqInfo)
 Pst           *pst; 
 SpId          spId;
 CrgCfgTransId transId;
@@ -1287,14 +1287,14 @@ CrgCfgReqInfo *cfgReqInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUIMCrgCfgCfm
+S16 rgUIMCrgCfgCfm
 (
 Inst      inst,
 CrgCfgTransId transId,
 U8            status
 )
 #else
-PUBLIC S16 rgUIMCrgCfgCfm(inst,transId, status)
+S16 rgUIMCrgCfgCfm(inst,transId, status)
 Inst      inst;
 CrgCfgTransId transId;
 U8            status;
@@ -1321,12 +1321,12 @@ U8            status;
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
 
 #ifdef ANSI
-PUBLIC S16 rgBatchProc
+S16 rgBatchProc
 (
 Void
 )
 #else
-PUBLIC S16 rgBatchProc()
+S16 rgBatchProc()
 Void;
 #endif
 {
@@ -1339,9 +1339,9 @@ Void;
 /* Fill pst */
    pst.srcProcId = 1;
    pst.dstProcId = 1;
-   pst.dstEnt = ENTRG;
+   pst.dstEnt = ENTMAC;
    pst.dstInst = 0;
-   pst.srcEnt = ENTKW;
+   pst.srcEnt = ENTRLC;
    pst.srcInst = 1;
    pst.prior = PRIOR0;
    pst.route = RTESPEC;

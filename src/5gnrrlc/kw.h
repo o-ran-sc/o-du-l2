@@ -315,20 +315,20 @@
 }
 #define KW_SEND_SAPID_ALARM(_cb,_sapId, _evnt, _cause) \
 { \
-   kwLmmSendAlarm(_cb,LCM_CATEGORY_INTERFACE, _evnt, _cause, _sapId, 0, 0); \
+   rlcLmmSendAlarm(_cb,LCM_CATEGORY_INTERFACE, _evnt, _cause, _sapId, 0, 0); \
 }
 #define KW_SEND_UEID_ALARM(_cb,_ueId, _qci, _evnt, _cause) \
 { \
-   kwLmmSendAlarm(_cb,LCM_CATEGORY_INTERFACE, _evnt, _cause, 0, _ueId, _qci); \
+   rlcLmmSendAlarm(_cb,LCM_CATEGORY_INTERFACE, _evnt, _cause, 0, _ueId, _qci); \
 }
 #else /* LTE_L2_MEAS */
 #define KW_SEND_SAPID_ALARM(_cb,_sapId, _evnt, _cause) \
 { \
-   kwLmmSendAlarm(_cb,LCM_CATEGORY_INTERFACE, _evnt, _cause, _sapId, 0); \
+   rlcLmmSendAlarm(_cb,LCM_CATEGORY_INTERFACE, _evnt, _cause, _sapId, 0); \
 }
 #define KW_SEND_UEID_ALARM(_cb,_ueId, _evnt, _cause) \
 { \
-   kwLmmSendAlarm(_cb,LCM_CATEGORY_INTERFACE, _evnt, _cause, 0, _ueId); \
+   rlcLmmSendAlarm(_cb,LCM_CATEGORY_INTERFACE, _evnt, _cause, 0, _ueId); \
 }
 #endif /* LTE_L2_MEAS */
 

@@ -1724,7 +1724,7 @@ EXTERN Void ssRegMainThread(Void);
 
 #ifdef T2K_MEM_LEAK_DBG
 #define ssGetDBufOfSize(region,size,dBuf) ssGetDBufOfSizeNew(region,size,dBuf,__FILE__,__LINE__)
-PUBLIC S16 ssGetDBufOfSizeNew ARGS((Region region, Size size, Buffer **dBuf,char*,U32));
+S16 ssGetDBufOfSizeNew ARGS((Region region, Size size, Buffer **dBuf,char*,U32));
 #else
 EXTERN  S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
 #endif

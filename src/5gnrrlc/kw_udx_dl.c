@@ -83,14 +83,14 @@ EXTERN S16 rlcDlmHndlStaRsp ARGS (( RlcCb  *gCb,RlcDlRbCb  *rbCb,
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxBndReq 
+S16 rlcDlUdxBndReq 
 (
 Pst    *pst,  
 SuId   suId, 
 SpId   spId 
 )
 #else
-PUBLIC S16 rlcDlUdxBndReq (pst, suId, spId)
+S16 rlcDlUdxBndReq (pst, suId, spId)
 Pst    *pst;   
 SuId   suId;  
 SpId   spId; 
@@ -182,14 +182,14 @@ SpId   spId;
  *      -# ROK 
  */
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxUbndReq
+S16 rlcDlUdxUbndReq
 (
 Pst      *pst,    
 SpId     spId,   
 Reason   reason 
 )
 #else
-PUBLIC S16 rlcDlUdxUbndReq(pst, spId, reason)
+S16 rlcDlUdxUbndReq(pst, spId, reason)
 Pst      *pst;   
 SpId     spId;   
 Reason   reason; 
@@ -245,14 +245,14 @@ Reason   reason;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxCfgReq
+S16 rlcDlUdxCfgReq
 (
 Pst          *pst,
 SpId         spId,
 RlcCfgInfo   *cfg
 )
 #else
-PUBLIC S16 rlcDlUdxCfgReq(pst, spId, cfg)
+S16 rlcDlUdxCfgReq(pst, spId, cfg)
 Pst          *pst;
 SpId         spId;
 RlcCfgInfo   *cfg;
@@ -434,7 +434,7 @@ RlcCfgInfo   *cfg;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxUeIdChgReq
+S16 rlcDlUdxUeIdChgReq
 (
 Pst         *pst, 
 SpId        spId, 
@@ -443,7 +443,7 @@ CkwUeInfo   *ueInfo,
 CkwUeInfo   *newUeInfo
 )
 #else
-PUBLIC S16 rlcDlUdxUeIdChgReq(pst,spId,transId,ueInfo,newUeInfo)
+S16 rlcDlUdxUeIdChgReq(pst,spId,transId,ueInfo,newUeInfo)
 Pst         *pst;
 SpId        spId;
 U32         transId;
@@ -502,7 +502,7 @@ CkwUeInfo   *newUeInfo;
 *    -# RFAILED
 **/
 #ifdef ANSI
-PUBLIC S16  rlcDlUdxStaPduReq
+S16  rlcDlUdxStaPduReq
 (
 Pst             *pst,
 SpId            spId,
@@ -510,7 +510,7 @@ CmLteRlcId      *rlcId,
 KwUdxDlStaPdu   *pStaPdu
 )
 #else
-PUBLIC S16  rlcDlUdxStaPduReq(pst, spId, rlcId, pStaPdu)
+S16  rlcDlUdxStaPduReq(pst, spId, rlcId, pStaPdu)
 Pst             *pst;
 SpId            spId;
 CmLteRlcId      *rlcId;
@@ -522,7 +522,7 @@ KwUdxDlStaPdu   *pStaPdu;
 
    tRlcCb =  RLC_GET_RLCCB (pst->dstInst);
 
-   kwDbmFetchDlRbCbByRbId(tRlcCb, rlcId, &rbCb); /* Fetch DBM RbCb */
+   rlcDbmFetchDlRbCbByRbId(tRlcCb, rlcId, &rbCb); /* Fetch DBM RbCb */
    if (!rbCb)
    {
       RLOG_ARG2(L_ERROR, DBG_UEID,rlcId->ueId, "CellId [%u]:RbId[%d] not found",
@@ -546,7 +546,7 @@ KwUdxDlStaPdu   *pStaPdu;
    }
    
    AMDL.pStaPdu = pStaPdu;
-   kwAmmSendDStaRsp(tRlcCb, rbCb, &AMDL);             
+   rlcAmmSendDStaRsp(tRlcCb, rbCb, &AMDL);             
 
    RETVALUE (ROK);
 }
@@ -565,7 +565,7 @@ KwUdxDlStaPdu   *pStaPdu;
 *    -# RFAILED
 **/
 #ifdef ANSI
-PUBLIC S16  rlcDlUdxStaUpdReq
+S16  rlcDlUdxStaUpdReq
 (
 Pst*          pst,
 SpId          spId,
@@ -573,7 +573,7 @@ CmLteRlcId    *rlcId,
 KwUdxStaPdu   *pStaPdu
 )
 #else
-PUBLIC S16 rlcDlUdxStaUpdReq(pst, spId, rlcId,pStaPdu)
+S16 rlcDlUdxStaUpdReq(pst, spId, rlcId,pStaPdu)
 Pst*          pst;
 SpId          spId;
 CmLteRlcId    *rlcId;
@@ -585,7 +585,7 @@ KwUdxStaPdu   *pStaPdu;
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   kwDbmFetchDlRbCbByRbId(tRlcCb, rlcId, &rbCb);
+   rlcDbmFetchDlRbCbByRbId(tRlcCb, rlcId, &rbCb);
    if (!rbCb)
    {
       RLOG_ARG2(L_ERROR, DBG_UEID,rlcId->ueId, "CellId [%u]:RbId[%d] not found",
@@ -593,7 +593,7 @@ KwUdxStaPdu   *pStaPdu;
       RETVALUE(RFAILED);
    }
 
-   kwAmmDlHndlStatusPdu(tRlcCb, rbCb, pStaPdu);
+   rlcAmmDlHndlStatusPdu(tRlcCb, rbCb, pStaPdu);
 
    RLC_FREE_SHRABL_BUF(pst->region,
 		      pst->pool, 
@@ -607,13 +607,13 @@ KwUdxStaPdu   *pStaPdu;
 /**
 */
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxL2MeasReq 
+S16 rlcDlUdxL2MeasReq 
 (
 Pst            *pst, 
 KwL2MeasReqEvt *measReqEvt 
 )
 #else
-PUBLIC S16 rlcDlUdxL2MeasReq (pst, measReqEvt)
+S16 rlcDlUdxL2MeasReq (pst, measReqEvt)
 Pst            *pst; 
 KwL2MeasReqEvt *measReqEvt;
 #endif
@@ -682,13 +682,13 @@ After receving this request, RLC stops L2 Measurement
 */
 
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxL2MeasStopReq
+S16 rlcDlUdxL2MeasStopReq
 (
 Pst            *pst,
 U8             measType
 )
 #else
-PUBLIC S16 rlcDlUdxL2MeasStopReq (pst, measType)
+S16 rlcDlUdxL2MeasStopReq (pst, measType)
 Pst            *pst;
 U8             measType;
 #endif
@@ -713,7 +713,7 @@ U8             measType;
       measEvtCb = &(tRlcCb->u.dlCb->kwL2Cb.kwL2EvtCb[cntr]);
       if(measEvtCb->measCb.measType & measType)
       {
-         kwUtlResetDlL2MeasInKwRb(tRlcCb, &measEvtCb->measCb, measType);
+         rlcUtlResetDlL2MeasInKwRb(tRlcCb, &measEvtCb->measCb, measType);
 
       }
    }
@@ -744,13 +744,13 @@ After receving this request, RLC sends L2 Measurement
 */
 
 #ifdef ANSI
-PUBLIC S16 rlcDlUdxL2MeasSendReq
+S16 rlcDlUdxL2MeasSendReq
 (
 Pst            *pst,
 U8             measType
 )
 #else
-PUBLIC S16 rlcDlUdxL2MeasSendReq (pst, measType)
+S16 rlcDlUdxL2MeasSendReq (pst, measType)
 Pst            *pst;
 U8             measType;
 #endif
@@ -771,7 +771,7 @@ U8             measType;
          /*starting Task*/
          SStartTask(&startTime, PID_RLC_MEAS_REPORT);
 
-         kwUtlSndDlL2MeasCfm(tRlcCb, measEvtCb);
+         rlcUtlSndDlL2MeasCfm(tRlcCb, measEvtCb);
 
          /*stopping Task*/
          SStopTask(startTime, PID_RLC_MEAS_REPORT);

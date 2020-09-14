@@ -64,14 +64,14 @@
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfBndReq
+S16 cmPkCtfBndReq
 (
 Pst* pst,
 SuId suId,
 SpId spId
 )
 #else
-PUBLIC S16 cmPkCtfBndReq(pst, suId, spId)
+S16 cmPkCtfBndReq(pst, suId, spId)
 Pst* pst;
 SuId suId;
 SpId spId;
@@ -128,14 +128,14 @@ SpId spId;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfBndReq
+S16 cmUnpkCtfBndReq
 (
 CtfBndReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfBndReq(func, pst, mBuf)
+S16 cmUnpkCtfBndReq(func, pst, mBuf)
 CtfBndReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -186,14 +186,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfBndCfm
+S16 cmPkCtfBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 cmPkCtfBndCfm(pst, suId, status)
+S16 cmPkCtfBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -251,14 +251,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfBndCfm
+S16 cmUnpkCtfBndCfm
 (
 CtfBndCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfBndCfm(func, pst, mBuf)
+S16 cmUnpkCtfBndCfm(func, pst, mBuf)
 CtfBndCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -308,14 +308,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfUbndReq
+S16 cmPkCtfUbndReq
 (
 Pst* pst,
 SpId spId,
 Reason reason
 )
 #else
-PUBLIC S16 cmPkCtfUbndReq(pst, spId, reason)
+S16 cmPkCtfUbndReq(pst, spId, reason)
 Pst* pst;
 SpId spId;
 Reason reason;
@@ -372,14 +372,14 @@ Reason reason;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfUbndReq
+S16 cmUnpkCtfUbndReq
 (
 CtfUbndReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfUbndReq(func, pst, mBuf)
+S16 cmUnpkCtfUbndReq(func, pst, mBuf)
 CtfUbndReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -475,13 +475,13 @@ CtfCfgReqInfo *param;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfNhKeyInfo
+S16 cmPkCtfNhKeyInfo
 (
 CtfNhKeyInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfNhKeyInfo(param, mBuf)
+S16 cmPkCtfNhKeyInfo(param, mBuf)
 CtfNhKeyInfo *param;
 Buffer *mBuf;
 #endif
@@ -522,13 +522,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfKenbStarInfo
+S16 cmPkCtfKenbStarInfo
 (
 CtfKenbStarInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfKenbStarInfo(param, mBuf)
+S16 cmPkCtfKenbStarInfo(param, mBuf)
 CtfKenbStarInfo *param;
 Buffer *mBuf;
 #endif
@@ -570,13 +570,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfAskeyInfo
+S16 cmPkCtfAskeyInfo
 (
 CtfAsKeyInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfAskeyInfo(param, mBuf)
+S16 cmPkCtfAskeyInfo(param, mBuf)
 CtfAsKeyInfo *param;
 Buffer *mBuf;
 #endif
@@ -618,13 +618,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfKdfReqInfo
+S16 cmPkCtfKdfReqInfo
 (
 CtfKdfReqInfo *param,
 Buffer *mBuf
  )
 #else
-PUBLIC S16 cmPkCtfKdfReqInfo(param, mBuf)
+S16 cmPkCtfKdfReqInfo(param, mBuf)
 CtfKdfReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -667,7 +667,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfKdfReq
+S16 cmPkCtfKdfReq
 (
 Pst* pst,
 SpId spId,
@@ -675,7 +675,7 @@ CtfCfgTransId transId,
 CtfKdfReqInfo* kdfReqInfo
 )
 #else
-PUBLIC S16 cmPkCtfKdfReq(pst, spId, transId, kdfReqInfo)
+S16 cmPkCtfKdfReq(pst, spId, transId, kdfReqInfo)
 Pst* pst;
 SpId spId;
 CtfCfgTransId transId;
@@ -755,7 +755,7 @@ CtfKdfReqInfo* kdfReqInfo;
                               /*START OF CNM PACK & UNPACK FUNCTIONS*/
 /********************************************************************************************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCnmVendorSpecificInfo
+S16 cmPkCtfCnmVendorSpecificInfo
 (
 CtfCnmVendorSpecificInfo *param,
 Buffer *mBuf
@@ -779,13 +779,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCtfCnmCellSyncReq
+S16 cmPkCtfCtfCnmCellSyncReq
 (
 CtfCnmCellSyncReq *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCtfCnmCellSyncReq(param, mBuf)
+S16 cmPkCtfCtfCnmCellSyncReq(param, mBuf)
 CtfCnmCellSyncReq *param;
 Buffer *mBuf;
 #endif
@@ -804,13 +804,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkCtfcfgReqInfo
+S16 cmPkCtfcfgReqInfo
 (
 CtfCnmInitSyncReq *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfcfgReqInfo(param, mBuf)
+S16 cmPkCtfcfgReqInfo(param, mBuf)
 CtfCnmInitSyncReq *param;
 Buffer *mBuf;
 #endif
@@ -834,13 +834,13 @@ Buffer *mBuf;
 
 }
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCnmVendorSpecificInfo
+S16 cmUnpkCtfCnmVendorSpecificInfo
 (
 CtfCnmVendorSpecificInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCnmVendorSpecificInfo(param, mBuf)
+S16 cmUnpkCtfCnmVendorSpecificInfo(param, mBuf)
 CtfCnmVendorSpecificInfo *param;
 Buffer *mBuf;
 #endif
@@ -857,13 +857,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCtfCnmCellSyncReq
+S16 cmUnpkCtfCtfCnmCellSyncReq
 (
 CtfCnmCellSyncReq *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCtfCnmCellSyncReq(param, mBuf)
+S16 cmUnpkCtfCtfCnmCellSyncReq(param, mBuf)
 CtfCnmCellSyncReq *param;
 Buffer *mBuf;
 #endif
@@ -883,13 +883,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfsyncReqInfo
+S16 cmUnpkCtfsyncReqInfo
 (
 CtfCnmInitSyncReq *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfsyncReqInfo(param, mBuf)
+S16 cmUnpkCtfsyncReqInfo(param, mBuf)
 CtfCnmInitSyncReq *param;
 Buffer *mBuf;
 #endif
@@ -925,7 +925,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCnmCellSyncReq
+S16 cmPkCtfCnmCellSyncReq
 (
 Pst* pst,
 SpId spId,
@@ -933,7 +933,7 @@ CtfCfgTransId *transId,
 CtfCnmCellSyncReq * cfgReqInfo
 )
 #else
-PUBLIC S16 cmPkCtfCnmCellSyncReq(pst, spId, transId, cfgReqInfo)
+S16 cmPkCtfCnmCellSyncReq(pst, spId, transId, cfgReqInfo)
 Pst* pst;
 SpId spId;
 CtfCfgTransId *transId;
@@ -1027,14 +1027,14 @@ CtfCnmCellSyncReq * cfgReqInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCnmCellSyncReq
+S16 cmUnpkCtfCnmCellSyncReq
 (
 CtfCnmCellSyncReqMsg func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCnmCellSyncReq(func, pst, mBuf)
+S16 cmUnpkCtfCnmCellSyncReq(func, pst, mBuf)
 CtfCnmCellSyncReqMsg func;
 Pst *pst;
 Buffer *mBuf;
@@ -1119,7 +1119,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCnmInitSyncReq
+S16 cmPkCtfCnmInitSyncReq
 (
 Pst* pst,
 SpId spId,
@@ -1127,7 +1127,7 @@ CtfCfgTransId *transId,
 CtfCnmInitSyncReq * cfgReqInfo
 )
 #else
-PUBLIC S16 cmPkCtfCnmInitSyncReq(pst, spId, transId, cfgReqInfo)
+S16 cmPkCtfCnmInitSyncReq(pst, spId, transId, cfgReqInfo)
 Pst* pst;
 SpId spId;
 CtfCfgTransId *transId;
@@ -1222,14 +1222,14 @@ CtfCnmInitSyncReq * cfgReqInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCnmInitSyncReq
+S16 cmUnpkCtfCnmInitSyncReq
 (
 CtfCnmInitSyncReqMsg func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCnmInitSyncReq(func, pst, mBuf)
+S16 cmUnpkCtfCnmInitSyncReq(func, pst, mBuf)
 CtfCnmInitSyncReqMsg func;
 Pst *pst;
 Buffer *mBuf;
@@ -1297,13 +1297,13 @@ Buffer *mBuf;
 /*-----------------------------------------------------------------------------*/
 
 #ifdef ANSI
-PUBLIC S16 cmPkCtfctfCnmMibInfo
+S16 cmPkCtfctfCnmMibInfo
 (
 CtfCnmMibInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfctfCnmMibInfo(param, mBuf)
+S16 cmPkCtfctfCnmMibInfo(param, mBuf)
 CtfCnmMibInfo *param;
 Buffer *mBuf;
 #endif
@@ -1320,13 +1320,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkCtfctfCnmInitSyncInfo
+S16 cmPkCtfctfCnmInitSyncInfo
 (
 CtfCnmInitSyncInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfctfCnmInitSyncInfo(param, mBuf)
+S16 cmPkCtfctfCnmInitSyncInfo(param, mBuf)
 CtfCnmInitSyncInfo *param;
 Buffer *mBuf;
 #endif
@@ -1344,13 +1344,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkCtfcfgRspInfo
+S16 cmPkCtfcfgRspInfo
 (
 CtfCnmInitSyncRsp *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfcfgRspInfo(param, mBuf)
+S16 cmPkCtfcfgRspInfo(param, mBuf)
 CtfCnmInitSyncRsp *param;
 Buffer *mBuf;
 #endif
@@ -1389,7 +1389,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCnmInitSyncRsp
+S16 cmPkCtfCnmInitSyncRsp
 (
 Pst* pst,
 SpId spId,
@@ -1397,7 +1397,7 @@ CtfCfgTransId *transId,
 CtfCnmInitSyncRsp * cfgRspInfo
 )
 #else
-PUBLIC S16 cmPkCtfCnmInitSyncRsp(pst, spId, transId, cfgRspInfo)
+S16 cmPkCtfCnmInitSyncRsp(pst, spId, transId, cfgRspInfo)
 Pst* pst;
 SpId spId;
 CtfCfgTransId *transId;
@@ -1477,13 +1477,13 @@ CtfCnmInitSyncRsp * cfgRspInfo;
 /*-----------------------------------------------------------------------------*/
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfctfCnmMibInfo
+S16 cmUnpkCtfctfCnmMibInfo
 (
 CtfCnmMibInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfctfCnmMibInfo(param, mBuf)
+S16 cmUnpkCtfctfCnmMibInfo(param, mBuf)
 CtfCnmMibInfo *param;
 Buffer *mBuf;
 #endif
@@ -1501,13 +1501,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkctfCnmInitSyncInfo
+S16 cmUnpkctfCnmInitSyncInfo
 (
 CtfCnmInitSyncInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkctfCnmInitSyncInfo(param, mBuf)
+S16 cmUnpkctfCnmInitSyncInfo(param, mBuf)
 CtfCnmInitSyncInfo *param;
 Buffer *mBuf;
 #endif
@@ -1525,13 +1525,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCnmInitSyncRspMsg
+S16 cmUnpkCtfCnmInitSyncRspMsg
 (
 CtfCnmInitSyncRsp *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCnmInitSyncRspMsg(param, mBuf)
+S16 cmUnpkCtfCnmInitSyncRspMsg(param, mBuf)
 CtfCnmInitSyncRsp *param;
 Buffer *mBuf;
 #endif
@@ -1565,14 +1565,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCnmInitSyncRsp
+S16 cmUnpkCtfCnmInitSyncRsp
 (
 CtfCnmInitSyncRspMsg func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCnmInitSyncRsp(func, pst, mBuf)
+S16 cmUnpkCtfCnmInitSyncRsp(func, pst, mBuf)
 CtfCnmInitSyncRspMsg func;
 Pst *pst;
 Buffer *mBuf;
@@ -1641,13 +1641,13 @@ Buffer *mBuf;
 /*-----------------------------------------------------------------------*/
 
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCellSyncRsp 
+S16 cmPkCtfCellSyncRsp 
 (
 CtfCnmCellSyncRsp *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCellSyncRsp(param, mBuf)
+S16 cmPkCtfCellSyncRsp(param, mBuf)
 CtfCnmCellSyncRsp *param;
 Buffer *mBuf;
 #endif
@@ -1675,7 +1675,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCnmCellSyncRsp
+S16 cmPkCtfCnmCellSyncRsp
 (
 Pst* pst,
 SpId spId,
@@ -1683,7 +1683,7 @@ CtfCfgTransId *transId,
 CtfCnmCellSyncRsp * cfgRspInfo
 )
 #else
-PUBLIC S16 cmPkCtfCnmCellSyncRsp(pst, spId, transId, cfgRspInfo)
+S16 cmPkCtfCnmCellSyncRsp(pst, spId, transId, cfgRspInfo)
 Pst* pst;
 SpId spId;
 CtfCfgTransId *transId;
@@ -1765,13 +1765,13 @@ CtfCnmCellSyncRsp * cfgRspInfo;
 /*------------------------------------------------------------*/
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCnmSyncRspMsg
+S16 cmUnpkCtfCnmSyncRspMsg
 (
 CtfCnmCellSyncRsp *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCnmSyncRspMsg(param, mBuf)
+S16 cmUnpkCtfCnmSyncRspMsg(param, mBuf)
 CtfCnmCellSyncRsp *param;
 Buffer *mBuf;
 #endif
@@ -1798,14 +1798,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCnmCellSyncRsp
+S16 cmUnpkCtfCnmCellSyncRsp
 (
 CtfCnmCellSyncRspMsg func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCnmCellSyncRsp(func, pst, mBuf)
+S16 cmUnpkCtfCnmCellSyncRsp(func, pst, mBuf)
 CtfCnmCellSyncRspMsg func;
 Pst *pst;
 Buffer *mBuf;
@@ -1874,13 +1874,13 @@ Buffer *mBuf;
 /*---------------------------------------------------------------*/
 
 #ifdef ANSI
-PUBLIC S16 cmPkCtfcfgIndInfo
+S16 cmPkCtfcfgIndInfo
 (
 CtfCnmCellSyncInd *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfcfgIndInfo(param, mBuf)
+S16 cmPkCtfcfgIndInfo(param, mBuf)
 CtfCnmCellSyncInd *param;
 Buffer *mBuf;
 #endif
@@ -1909,7 +1909,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCnmCellSyncInd
+S16 cmPkCtfCnmCellSyncInd
 (
 Pst* pst,
 SpId spId,
@@ -1917,7 +1917,7 @@ CtfCfgTransId *transId,
 CtfCnmCellSyncInd * cfgIndInfo
 )
 #else
-PUBLIC S16 cmPkCtfCnmCellSyncInd(pst, spId, transId, cfgIndInfo)
+S16 cmPkCtfCnmCellSyncInd(pst, spId, transId, cfgIndInfo)
 Pst* pst;
 SpId spId;
 CtfCfgTransId *transId;
@@ -1999,13 +1999,13 @@ CtfCnmCellSyncInd * cfgIndInfo;
 /*---------------------------------------------------------------*/
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCnmSyncIndMsg
+S16 cmUnpkCtfCnmSyncIndMsg
 (
 CtfCnmCellSyncInd *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCnmSyncIndMsg(param, mBuf)
+S16 cmUnpkCtfCnmSyncIndMsg(param, mBuf)
 CtfCnmCellSyncInd *param;
 Buffer *mBuf;
 #endif
@@ -2033,14 +2033,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCnmCellSyncInd
+S16 cmUnpkCtfCnmCellSyncInd
 (
 CtfCnmCellSyncIndMsg func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCnmCellSyncInd(func, pst, mBuf)
+S16 cmUnpkCtfCnmCellSyncInd(func, pst, mBuf)
 CtfCnmCellSyncIndMsg func;
 Pst *pst;
 Buffer *mBuf;
@@ -2130,7 +2130,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCfgReq
+S16 cmPkCtfCfgReq
 (
 Pst* pst,
 SpId spId,
@@ -2138,7 +2138,7 @@ CtfCfgTransId transId,
 CtfCfgReqInfo* cfgReqInfo
 )
 #else
-PUBLIC S16 cmPkCtfCfgReq(pst, spId, transId, cfgReqInfo)
+S16 cmPkCtfCfgReq(pst, spId, transId, cfgReqInfo)
 Pst* pst;
 SpId spId;
 CtfCfgTransId transId;
@@ -2233,13 +2233,13 @@ CtfCfgReqInfo* cfgReqInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfNhKeyInfo
+S16 cmUnpkCtfNhKeyInfo
 (
 CtfNhKeyInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfNhKeyInfo(param, mBuf)
+S16 cmUnpkCtfNhKeyInfo(param, mBuf)
 CtfNhKeyInfo *param;
 Buffer *mBuf;
 #endif
@@ -2277,13 +2277,13 @@ Buffer *mBuf;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfKenbStarInfo
+S16 cmUnpkCtfKenbStarInfo
 (
 CtfKenbStarInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfKenbStarInfo(param, mBuf)
+S16 cmUnpkCtfKenbStarInfo(param, mBuf)
 CtfKenbStarInfo *param;
 Buffer *mBuf;
 #endif
@@ -2322,13 +2322,13 @@ Buffer *mBuf;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfAskeyInfo
+S16 cmUnpkCtfAskeyInfo
 (
 CtfAsKeyInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfAskeyInfo(param, mBuf)
+S16 cmUnpkCtfAskeyInfo(param, mBuf)
 CtfAskeyInfo *param;
 Buffer *mBuf;
 #endif
@@ -2366,13 +2366,13 @@ Buffer *mBuf;
  *
  *  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfKdfReqInfo
+S16 cmUnpkCtfKdfReqInfo
 (
 CtfKdfReqInfo *param,
 Buffer *mBuf
  )
 #else
-PUBLIC S16 cmUnpkCtfKdfReqInfo(param, mBuf)
+S16 cmUnpkCtfKdfReqInfo(param, mBuf)
 CtfKdfReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -2414,14 +2414,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfKdfReq
+S16 cmUnpkCtfKdfReq
 (
 CtfKdfReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfKdfReq(func, pst, mBuf)
+S16 cmUnpkCtfKdfReq(func, pst, mBuf)
 CtfKdfReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -2510,14 +2510,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCfgReq
+S16 cmUnpkCtfCfgReq
 (
 CtfCfgReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCfgReq(func, pst, mBuf)
+S16 cmUnpkCtfCfgReq(func, pst, mBuf)
 CtfCfgReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -2603,13 +2603,13 @@ Buffer *mBuf;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfNhKeyCfmInfo
+S16 cmPkCtfNhKeyCfmInfo
 (
 CtfNhKeyCfmInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfNhKeyCfmInfo(param, mBuf)
+S16 cmPkCtfNhKeyCfmInfo(param, mBuf)
 CtfNhKeyCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -2645,13 +2645,13 @@ Buffer *mBuf;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfKenbStarCfmInfo
+S16 cmPkCtfKenbStarCfmInfo
 (
 CtfKenbStarCfmInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfKenbStarCfmInfo(param, mBuf)
+S16 cmPkCtfKenbStarCfmInfo(param, mBuf)
 CtfKenbStarCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -2688,13 +2688,13 @@ Buffer *mBuf;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfAskeyCfmInfo
+S16 cmPkCtfAskeyCfmInfo
 (
 CtfAskeyCfmInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfAskeyCfmInfo(param, mBuf)
+S16 cmPkCtfAskeyCfmInfo(param, mBuf)
 CtfAskeyCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -2738,13 +2738,13 @@ Buffer *mBuf;
  *
  *  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfKdfCfmInfo
+S16 cmPkCtfKdfCfmInfo
 (
 CtfKdfCfmInfo *param,
 Buffer *mBuf
  )
 #else
-PUBLIC S16 cmPkCtfKdfCfmInfo(param, mBuf)
+S16 cmPkCtfKdfCfmInfo(param, mBuf)
 CtfKdfCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -2785,7 +2785,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfKdfCfm
+S16 cmPkCtfKdfCfm
 (
 Pst* pst,
 SuId suId,
@@ -2794,7 +2794,7 @@ CtfKdfCfmInfo *kdfCfmInfo,
 U8 status
 )
 #else
-PUBLIC S16 cmPkCtfKdfCfm(pst, suId, transId, status)
+S16 cmPkCtfKdfCfm(pst, suId, transId, status)
 Pst* pst;
 SuId suId;
 CtfCfgTransId transId;
@@ -2895,7 +2895,7 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCfgCfm
+S16 cmPkCtfCfgCfm
 (
 Pst* pst,
 SuId suId,
@@ -2903,7 +2903,7 @@ CtfCfgTransId transId,
 U8 status
 )
 #else
-PUBLIC S16 cmPkCtfCfgCfm(pst, suId, transId, status)
+S16 cmPkCtfCfgCfm(pst, suId, transId, status)
 Pst* pst;
 SuId suId;
 CtfCfgTransId transId;
@@ -2970,14 +2970,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfEnbStopInd
+S16 cmPkCtfEnbStopInd
 (
 Pst* pst,
 SuId suId,
 CtfCfgTransId transId
 )
 #else
-PUBLIC S16 cmPkCtfEnbStopInd(pst, suId, transId)
+S16 cmPkCtfEnbStopInd(pst, suId, transId)
 Pst* pst;
 SuId suId;
 CtfCfgTransId transId;
@@ -3039,13 +3039,13 @@ CtfCfgTransId transId;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfNhKeyCfmInfo
+S16 cmUnpkCtfNhKeyCfmInfo
 (
 CtfNhKeyCfmInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfNhKeyCfmInfo(param, mBuf)
+S16 cmUnpkCtfNhKeyCfmInfo(param, mBuf)
 CtfNhKeyCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -3081,13 +3081,13 @@ Buffer *mBuf;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfKenbStarCfmInfo
+S16 cmUnpkCtfKenbStarCfmInfo
 (
 CtfKenbStarCfmInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfKenbStarCfmInfo(param, mBuf)
+S16 cmUnpkCtfKenbStarCfmInfo(param, mBuf)
 CtfKenbStarCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -3124,13 +3124,13 @@ Buffer *mBuf;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfAskeyCfmInfo
+S16 cmUnpkCtfAskeyCfmInfo
 (
 CtfAskeyCfmInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfAskeyCfmInfo(param, mBuf)
+S16 cmUnpkCtfAskeyCfmInfo(param, mBuf)
 CtfAskeyCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -3174,13 +3174,13 @@ Buffer *mBuf;
  *
  *  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfKdfCfmInfo
+S16 cmUnpkCtfKdfCfmInfo
 (
 CtfKdfCfmInfo *param,
 Buffer *mBuf
  )
 #else
-PUBLIC S16 cmUnpkCtfKdfCfmInfo(param, mBuf)
+S16 cmUnpkCtfKdfCfmInfo(param, mBuf)
 CtfKdfCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -3221,14 +3221,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfKdfCfm
+S16 cmUnpkCtfKdfCfm
 (
 CtfKdfCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCfgCfm(func, pst, mBuf)
+S16 cmUnpkCtfCfgCfm(func, pst, mBuf)
 CtfKdfCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -3303,14 +3303,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCfgCfm
+S16 cmUnpkCtfCfgCfm
 (
 CtfCfgCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCfgCfm(func, pst, mBuf)
+S16 cmUnpkCtfCfgCfm(func, pst, mBuf)
 CtfCfgCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -3370,14 +3370,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfEnbStopInd
+S16 cmUnpkCtfEnbStopInd
 (
 CtfEnbStopInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfEnbStopInd(func, pst, mBuf)
+S16 cmUnpkCtfEnbStopInd(func, pst, mBuf)
 CtfEnbStopInd func;
 Pst *pst;
 Buffer *mBuf;
@@ -3429,7 +3429,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfUeIdChgReq
+S16 cmPkCtfUeIdChgReq
 (
 Pst* pst,
 SpId spId,
@@ -3438,7 +3438,7 @@ CtfUeInfo * ueInfo,
 CtfUeInfo * newUeInfo
 )
 #else
-PUBLIC S16 cmPkCtfUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
+S16 cmPkCtfUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
 Pst* pst;
 SpId spId;
 CtfCfgTransId transId;
@@ -3583,14 +3583,14 @@ CtfUeInfo * newUeInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfUeIdChgReq
+S16 cmUnpkCtfUeIdChgReq
 (
 CtfUeIdChgReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfUeIdChgReq(func, pst, mBuf)
+S16 cmUnpkCtfUeIdChgReq(func, pst, mBuf)
 CtfUeIdChgReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -3706,7 +3706,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfUeIdChgCfm
+S16 cmPkCtfUeIdChgCfm
 (
 Pst* pst,
 SuId suId,
@@ -3715,7 +3715,7 @@ CtfUeInfo * ueInfo,
 CmStatus status
 )
 #else
-PUBLIC S16 cmPkCtfUeIdChgCfm(pst, suId, transId, ueInfo, status)
+S16 cmPkCtfUeIdChgCfm(pst, suId, transId, ueInfo, status)
 Pst* pst;
 SuId suId;
 CtfCfgTransId transId;
@@ -3828,14 +3828,14 @@ CmStatus status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfUeIdChgCfm
+S16 cmUnpkCtfUeIdChgCfm
 (
 CtfUeIdChgCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfUeIdChgCfm(func, pst, mBuf)
+S16 cmUnpkCtfUeIdChgCfm(func, pst, mBuf)
 CtfUeIdChgCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -3930,13 +3930,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCfgTransId
+S16 cmPkCtfCfgTransId
 (
 CtfCfgTransId *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCfgTransId(param, mBuf)
+S16 cmPkCtfCfgTransId(param, mBuf)
 CtfCfgTransId *param;
 Buffer *mBuf;
 #endif
@@ -3969,13 +3969,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCfgTransId
+S16 cmUnpkCtfCfgTransId
 (
 CtfCfgTransId *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCfgTransId(param, mBuf)
+S16 cmUnpkCtfCfgTransId(param, mBuf)
 CtfCfgTransId *param;
 Buffer *mBuf;
 #endif
@@ -4008,13 +4008,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfUeInfo
+S16 cmPkCtfUeInfo
 (
 CtfUeInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfUeInfo(param, mBuf)
+S16 cmPkCtfUeInfo(param, mBuf)
 CtfUeInfo *param;
 Buffer *mBuf;
 #endif
@@ -4045,13 +4045,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfUeInfo
+S16 cmUnpkCtfUeInfo
 (
 CtfUeInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfUeInfo(param, mBuf)
+S16 cmUnpkCtfUeInfo(param, mBuf)
 CtfUeInfo *param;
 Buffer *mBuf;
 #endif
@@ -4084,13 +4084,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfBwCfgInfo
+S16 cmPkCtfBwCfgInfo
 (
 CtfBwCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfBwCfgInfo(param, mBuf)
+S16 cmPkCtfBwCfgInfo(param, mBuf)
 CtfBwCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4125,13 +4125,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfBwCfgInfo
+S16 cmUnpkCtfBwCfgInfo
 (
 CtfBwCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfBwCfgInfo(param, mBuf)
+S16 cmUnpkCtfBwCfgInfo(param, mBuf)
 CtfBwCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4168,13 +4168,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfTxSchemeCfg
+S16 cmPkCtfTxSchemeCfg
 (
 CtfTxSchemeCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfTxSchemeCfg(param, mBuf)
+S16 cmPkCtfTxSchemeCfg(param, mBuf)
 CtfTxSchemeCfg *param;
 Buffer *mBuf;
 #endif
@@ -4208,13 +4208,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfTxSchemeCfg
+S16 cmUnpkCtfTxSchemeCfg
 (
 CtfTxSchemeCfg *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfTxSchemeCfg(param, mBuf)
+S16 cmUnpkCtfTxSchemeCfg(param, mBuf)
 CtfTxSchemeCfg *param;
 Buffer *mBuf;
 #endif
@@ -4253,13 +4253,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfAntennaCfgInfo
+S16 cmPkCtfAntennaCfgInfo
 (
 CtfAntennaCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfAntennaCfgInfo(param, mBuf)
+S16 cmPkCtfAntennaCfgInfo(param, mBuf)
 CtfAntennaCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4291,13 +4291,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfAntennaCfgInfo
+S16 cmUnpkCtfAntennaCfgInfo
 (
 CtfAntennaCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfAntennaCfgInfo(param, mBuf)
+S16 cmUnpkCtfAntennaCfgInfo(param, mBuf)
 CtfAntennaCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4336,13 +4336,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfPrachCfgInfo
+S16 cmPkCtfPrachCfgInfo
 (
 CtfPrachCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfPrachCfgInfo(param, mBuf)
+S16 cmPkCtfPrachCfgInfo(param, mBuf)
 CtfPrachCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4389,13 +4389,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfPrachCfgInfo
+S16 cmUnpkCtfPrachCfgInfo
 (
 CtfPrachCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfPrachCfgInfo(param, mBuf)
+S16 cmUnpkCtfPrachCfgInfo(param, mBuf)
 CtfPrachCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4436,13 +4436,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfPdschCfgInfo
+S16 cmPkCtfPdschCfgInfo
 (
 CtfPdschCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfPdschCfgInfo(param, mBuf)
+S16 cmPkCtfPdschCfgInfo(param, mBuf)
 CtfPdschCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4479,13 +4479,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfPdschCfgInfo
+S16 cmUnpkCtfPdschCfgInfo
 (
 CtfPdschCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfPdschCfgInfo(param, mBuf)
+S16 cmUnpkCtfPdschCfgInfo(param, mBuf)
 CtfPdschCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4523,13 +4523,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfPuschCfgBasic
+S16 cmPkCtfPuschCfgBasic
 (
 CtfPuschCfgBasic *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfPuschCfgBasic(param, mBuf)
+S16 cmPkCtfPuschCfgBasic(param, mBuf)
 CtfPuschCfgBasic *param;
 Buffer *mBuf;
 #endif
@@ -4564,13 +4564,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfPuschCfgBasic
+S16 cmUnpkCtfPuschCfgBasic
 (
 CtfPuschCfgBasic *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfPuschCfgBasic(param, mBuf)
+S16 cmUnpkCtfPuschCfgBasic(param, mBuf)
 CtfPuschCfgBasic *param;
 Buffer *mBuf;
 #endif
@@ -4607,13 +4607,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfPuschUlRS
+S16 cmPkCtfPuschUlRS
 (
 CtfPuschUlRS *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfPuschUlRS(param, mBuf)
+S16 cmPkCtfPuschUlRS(param, mBuf)
 CtfPuschUlRS *param;
 Buffer *mBuf;
 #endif
@@ -4648,13 +4648,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfPuschUlRS
+S16 cmUnpkCtfPuschUlRS
 (
 CtfPuschUlRS *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfPuschUlRS(param, mBuf)
+S16 cmUnpkCtfPuschUlRS(param, mBuf)
 CtfPuschUlRS *param;
 Buffer *mBuf;
 #endif
@@ -4689,13 +4689,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfPuschCfgInfo
+S16 cmPkCtfPuschCfgInfo
 (
 CtfPuschCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfPuschCfgInfo(param, mBuf)
+S16 cmPkCtfPuschCfgInfo(param, mBuf)
 CtfPuschCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4733,13 +4733,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfPuschCfgInfo
+S16 cmUnpkCtfPuschCfgInfo
 (
 CtfPuschCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfPuschCfgInfo(param, mBuf)
+S16 cmUnpkCtfPuschCfgInfo(param, mBuf)
 CtfPuschCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4777,13 +4777,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfPhichCfgInfo
+S16 cmPkCtfPhichCfgInfo
 (
 CtfPhichCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfPhichCfgInfo(param, mBuf)
+S16 cmPkCtfPhichCfgInfo(param, mBuf)
 CtfPhichCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4821,13 +4821,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfPhichCfgInfo
+S16 cmUnpkCtfPhichCfgInfo
 (
 CtfPhichCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfPhichCfgInfo(param, mBuf)
+S16 cmUnpkCtfPhichCfgInfo(param, mBuf)
 CtfPhichCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4868,13 +4868,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfPucchCfgInfo
+S16 cmPkCtfPucchCfgInfo
 (
 CtfPucchCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfPucchCfgInfo(param, mBuf)
+S16 cmPkCtfPucchCfgInfo(param, mBuf)
 CtfPucchCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4914,13 +4914,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfPucchCfgInfo
+S16 cmUnpkCtfPucchCfgInfo
 (
 CtfPucchCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfPucchCfgInfo(param, mBuf)
+S16 cmUnpkCtfPucchCfgInfo(param, mBuf)
 CtfPucchCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -4962,13 +4962,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfSrsUlCfgInfo
+S16 cmPkCtfSrsUlCfgInfo
 (
 CtfSrsUlCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfSrsUlCfgInfo(param, mBuf)
+S16 cmPkCtfSrsUlCfgInfo(param, mBuf)
 CtfSrsUlCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5009,13 +5009,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfSrsUlCfgInfo
+S16 cmUnpkCtfSrsUlCfgInfo
 (
 CtfSrsUlCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfSrsUlCfgInfo(param, mBuf)
+S16 cmUnpkCtfSrsUlCfgInfo(param, mBuf)
 CtfSrsUlCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5056,13 +5056,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfTddSfCfgInfo
+S16 cmPkCtfTddSfCfgInfo
 (
 CtfTddSfCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfTddSfCfgInfo(param, mBuf)
+S16 cmPkCtfTddSfCfgInfo(param, mBuf)
 CtfTddSfCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5100,13 +5100,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfVendorSpecParams
+S16 cmPkCtfVendorSpecParams
 (
 CtfVendorSpecific *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfVendorSpecParams(param, mBuf)
+S16 cmPkCtfVendorSpecParams(param, mBuf)
 CtfVendorSpecific *param;
 Buffer *mBuf;
 #endif
@@ -5139,14 +5139,14 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfVendorSpecParams
+S16 cmUnpkCtfVendorSpecParams
 (
 Pst *pst,
 CtfVendorSpecific *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfVendorSpecParams(pst, param, mBuf)
+S16 cmUnpkCtfVendorSpecParams(pst, param, mBuf)
 Pst *pst;
 CtfVendorSpecific *param;
 Buffer *mBuf;
@@ -5194,13 +5194,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfTddSfCfgInfo
+S16 cmUnpkCtfTddSfCfgInfo
 (
 CtfTddSfCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfTddSfCfgInfo(param, mBuf)
+S16 cmUnpkCtfTddSfCfgInfo(param, mBuf)
 CtfTddSfCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5287,13 +5287,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCellCfgInfo
+S16 cmPkCtfCellCfgInfo
 (
 CtfCellCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCellCfgInfo(param, mBuf)
+S16 cmPkCtfCellCfgInfo(param, mBuf)
 CtfCellCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5467,13 +5467,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCellCfgInfo
+S16 cmUnpkCtfCellCfgInfo
 (
 CtfCellCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCellCfgInfo(param, mBuf)
+S16 cmUnpkCtfCellCfgInfo(param, mBuf)
 CtfCellCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5601,13 +5601,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCellRecfgInfo
+S16 cmPkCtfCellRecfgInfo
 (
 CtfCellRecfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCellRecfgInfo(param, mBuf)
+S16 cmPkCtfCellRecfgInfo(param, mBuf)
 CtfCellRecfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5708,13 +5708,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCellRecfgInfo
+S16 cmUnpkCtfCellRecfgInfo
 (
 CtfCellRecfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCellRecfgInfo(param, mBuf)
+S16 cmUnpkCtfCellRecfgInfo(param, mBuf)
 CtfCellRecfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5818,13 +5818,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfDedPdschCfgInfo
+S16 cmPkCtfDedPdschCfgInfo
 (
 CtfDedPdschCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfDedPdschCfgInfo(param, mBuf)
+S16 cmPkCtfDedPdschCfgInfo(param, mBuf)
 CtfDedPdschCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5859,13 +5859,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfDedPdschCfgInfo
+S16 cmUnpkCtfDedPdschCfgInfo
 (
 CtfDedPdschCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfDedPdschCfgInfo(param, mBuf)
+S16 cmUnpkCtfDedPdschCfgInfo(param, mBuf)
 CtfDedPdschCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5903,13 +5903,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfDedPucchCfgInfo
+S16 cmPkCtfDedPucchCfgInfo
 (
 CtfDedPucchCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfDedPucchCfgInfo(param, mBuf)
+S16 cmPkCtfDedPucchCfgInfo(param, mBuf)
 CtfDedPucchCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -5967,13 +5967,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfDedPucchCfgInfo
+S16 cmUnpkCtfDedPucchCfgInfo
 (
 CtfDedPucchCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfDedPucchCfgInfo(param, mBuf)
+S16 cmUnpkCtfDedPucchCfgInfo(param, mBuf)
 CtfDedPucchCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6031,13 +6031,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfDedPuschCfgInfo
+S16 cmPkCtfDedPuschCfgInfo
 (
 CtfDedPuschCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfDedPuschCfgInfo(param, mBuf)
+S16 cmPkCtfDedPuschCfgInfo(param, mBuf)
 CtfDedPuschCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6076,13 +6076,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfDedPuschCfgInfo
+S16 cmUnpkCtfDedPuschCfgInfo
 (
 CtfDedPuschCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfDedPuschCfgInfo(param, mBuf)
+S16 cmUnpkCtfDedPuschCfgInfo(param, mBuf)
 CtfDedPuschCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6122,13 +6122,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCqiRptModePeriodic
+S16 cmPkCtfCqiRptModePeriodic
 (
 CtfCqiRptModePeriodic *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCqiRptModePeriodic(param, mBuf)
+S16 cmPkCtfCqiRptModePeriodic(param, mBuf)
 CtfCqiRptModePeriodic *param;
 Buffer *mBuf;
 #endif
@@ -6171,13 +6171,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCqiRptModePeriodic
+S16 cmUnpkCtfCqiRptModePeriodic
 (
 CtfCqiRptModePeriodic *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCqiRptModePeriodic(param, mBuf)
+S16 cmUnpkCtfCqiRptModePeriodic(param, mBuf)
 CtfCqiRptModePeriodic *param;
 Buffer *mBuf;
 #endif
@@ -6224,13 +6224,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCqiReportCfgInfo
+S16 cmPkCtfCqiReportCfgInfo
 (
 CtfCqiReportCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCqiReportCfgInfo(param, mBuf)
+S16 cmPkCtfCqiReportCfgInfo(param, mBuf)
 CtfCqiReportCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6304,13 +6304,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCqiReportCfgInfo
+S16 cmUnpkCtfCqiReportCfgInfo
 (
 CtfCqiReportCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCqiReportCfgInfo(param, mBuf)
+S16 cmUnpkCtfCqiReportCfgInfo(param, mBuf)
 CtfCqiReportCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6388,13 +6388,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfDedSrsUlCfgInfo
+S16 cmPkCtfDedSrsUlCfgInfo
 (
 CtfDedSrsUlCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfDedSrsUlCfgInfo(param, mBuf)
+S16 cmPkCtfDedSrsUlCfgInfo(param, mBuf)
 CtfDedSrsUlCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6438,13 +6438,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfDedSrsUlCfgInfo
+S16 cmUnpkCtfDedSrsUlCfgInfo
 (
 CtfDedSrsUlCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfDedSrsUlCfgInfo(param, mBuf)
+S16 cmUnpkCtfDedSrsUlCfgInfo(param, mBuf)
 CtfDedSrsUlCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6488,13 +6488,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfDedSRCfgInfo
+S16 cmPkCtfDedSRCfgInfo
 (
 CtfDedSRCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfDedSRCfgInfo(param, mBuf)
+S16 cmPkCtfDedSRCfgInfo(param, mBuf)
 CtfDedSRCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6533,13 +6533,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfDedSRCfgInfo
+S16 cmUnpkCtfDedSRCfgInfo
 (
 CtfDedSRCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfDedSRCfgInfo(param, mBuf)
+S16 cmUnpkCtfDedSRCfgInfo(param, mBuf)
 CtfDedSRCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6579,13 +6579,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfDedAntCfgInfo
+S16 cmPkCtfDedAntCfgInfo
 (
 CtfDedAntCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfDedAntCfgInfo(param, mBuf)
+S16 cmPkCtfDedAntCfgInfo(param, mBuf)
 CtfDedAntCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6681,13 +6681,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfDedAntCfgInfo
+S16 cmUnpkCtfDedAntCfgInfo
 (
 CtfDedAntCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfDedAntCfgInfo(param, mBuf)
+S16 cmUnpkCtfDedAntCfgInfo(param, mBuf)
 CtfDedAntCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6786,13 +6786,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfUeSecCellCfgInfo
+S16 cmPkCtfUeSecCellCfgInfo
 (
 CtfUeSecCellCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfUeSecCellCfgInfo(*param, mBuf)
+S16 cmPkCtfUeSecCellCfgInfo(*param, mBuf)
 CtfUeSecCellCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6819,13 +6819,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfSecCellCfgInfo
+S16 cmPkCtfSecCellCfgInfo
 (
 CtfSecCellCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfSecCellCfgInfo(*param, mBuf)
+S16 cmPkCtfSecCellCfgInfo(*param, mBuf)
 CtfSecCellCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6859,13 +6859,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfUeSecCellCfgInfo
+S16 cmUnpkCtfUeSecCellCfgInfo
 (
 CtfUeSecCellCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfUeSecCellCfgInfo(*param, mBuf)
+S16 cmUnpkCtfUeSecCellCfgInfo(*param, mBuf)
 CtfUeSecCellCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6894,13 +6894,13 @@ Buffer *mBuf;
 **********************************************************/
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfSecCellCfgInfo
+S16 cmUnpkCtfSecCellCfgInfo
 (
 CtfSecCellCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfSecCellCfgInfo(*param, mBuf)
+S16 cmUnpkCtfSecCellCfgInfo(*param, mBuf)
 CtfSecCellCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6936,13 +6936,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfUeCatCfgInfo
+S16 cmPkCtfUeCatCfgInfo
 (
 CtfUeCatCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfUeCatCfgInfo(param, mBuf)
+S16 cmPkCtfUeCatCfgInfo(param, mBuf)
 CtfUeCatCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -6977,13 +6977,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfUeCatCfgInfo
+S16 cmUnpkCtfUeCatCfgInfo
 (
 CtfUeCatCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfUeCatCfgInfo(param, mBuf)
+S16 cmUnpkCtfUeCatCfgInfo(param, mBuf)
 CtfUeCatCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7018,13 +7018,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfDedCfgInfo
+S16 cmPkCtfDedCfgInfo
 (
 CtfDedCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfDedCfgInfo(param, mBuf)
+S16 cmPkCtfDedCfgInfo(param, mBuf)
 CtfDedCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7069,13 +7069,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfDedCfgInfo
+S16 cmUnpkCtfDedCfgInfo
 (
 CtfDedCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfDedCfgInfo(param, mBuf)
+S16 cmUnpkCtfDedCfgInfo(param, mBuf)
 CtfDedCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7121,13 +7121,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfDedRecfgInfo
+S16 cmPkCtfDedRecfgInfo
 (
 CtfDedRecfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfDedRecfgInfo(param, mBuf)
+S16 cmPkCtfDedRecfgInfo(param, mBuf)
 CtfDedRecfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7178,13 +7178,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfDedRecfgInfo
+S16 cmUnpkCtfDedRecfgInfo
 (
 CtfDedRecfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfDedRecfgInfo(param, mBuf)
+S16 cmUnpkCtfDedRecfgInfo(param, mBuf)
 CtfDedRecfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7237,13 +7237,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCellReleaseInfo
+S16 cmPkCtfCellReleaseInfo
 (
 CtfCellReleaseInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCellReleaseInfo(param, mBuf)
+S16 cmPkCtfCellReleaseInfo(param, mBuf)
 CtfCellReleaseInfo *param;
 Buffer *mBuf;
 #endif
@@ -7275,13 +7275,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCellReleaseInfo
+S16 cmUnpkCtfCellReleaseInfo
 (
 CtfCellReleaseInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCellReleaseInfo(param, mBuf)
+S16 cmUnpkCtfCellReleaseInfo(param, mBuf)
 CtfCellReleaseInfo *param;
 Buffer *mBuf;
 #endif
@@ -7313,13 +7313,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfDedReleaseInfo
+S16 cmPkCtfDedReleaseInfo
 (
 CtfDedReleaseInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfDedReleaseInfo(param, mBuf)
+S16 cmPkCtfDedReleaseInfo(param, mBuf)
 CtfDedReleaseInfo *param;
 Buffer *mBuf;
 #endif
@@ -7352,13 +7352,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfDedReleaseInfo
+S16 cmUnpkCtfDedReleaseInfo
 (
 CtfDedReleaseInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfDedReleaseInfo(param, mBuf)
+S16 cmUnpkCtfDedReleaseInfo(param, mBuf)
 CtfDedReleaseInfo *param;
 Buffer *mBuf;
 #endif
@@ -7392,13 +7392,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCfgInfo
+S16 cmPkCtfCfgInfo
 (
 CtfCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCfgInfo(param, mBuf)
+S16 cmPkCtfCfgInfo(param, mBuf)
 CtfCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7440,13 +7440,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCfgInfo
+S16 cmUnpkCtfCfgInfo
 (
 CtfCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCfgInfo(param, mBuf)
+S16 cmUnpkCtfCfgInfo(param, mBuf)
 CtfCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7488,13 +7488,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfReCfgInfo
+S16 cmPkCtfReCfgInfo
 (
 CtfReCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfReCfgInfo(param, mBuf)
+S16 cmPkCtfReCfgInfo(param, mBuf)
 CtfReCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7545,13 +7545,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfReCfgInfo
+S16 cmUnpkCtfReCfgInfo
 (
 CtfReCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfReCfgInfo(param, mBuf)
+S16 cmUnpkCtfReCfgInfo(param, mBuf)
 CtfReCfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7601,13 +7601,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfReleaseInfo
+S16 cmPkCtfReleaseInfo
 (
 CtfReleaseInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfReleaseInfo(param, mBuf)
+S16 cmPkCtfReleaseInfo(param, mBuf)
 CtfReleaseInfo *param;
 Buffer *mBuf;
 #endif
@@ -7649,13 +7649,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfReleaseInfo
+S16 cmUnpkCtfReleaseInfo
 (
 CtfReleaseInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfReleaseInfo(param, mBuf)
+S16 cmUnpkCtfReleaseInfo(param, mBuf)
 CtfReleaseInfo *param;
 Buffer *mBuf;
 #endif
@@ -7700,13 +7700,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCfgReqInfo
+S16 cmPkCtfCfgReqInfo
 (
 CtfCfgReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCfgReqInfo(param, mBuf)
+S16 cmPkCtfCfgReqInfo(param, mBuf)
 CtfCfgReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -7760,14 +7760,14 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCfgReqInfo
+S16 cmUnpkCtfCfgReqInfo
 (
 Pst  *pst,
 CtfCfgReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCfgReqInfo(param, mBuf)
+S16 cmUnpkCtfCfgReqInfo(param, mBuf)
 Pst  *pst;
 CtfCfgReqInfo *param;
 Buffer *mBuf;
@@ -7820,13 +7820,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCellPwrcfgInfo
+S16 cmPkCtfCellPwrcfgInfo
 (
 CtfCellRecfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCellPwrcfgInfo(param, mBuf)
+S16 cmPkCtfCellPwrcfgInfo(param, mBuf)
 CtfCellRecfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7865,13 +7865,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCellPwrcfgInfo
+S16 cmUnpkCtfCellPwrcfgInfo
 (
 CtfCellRecfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCellPwrcfgInfo(param, mBuf)
+S16 cmUnpkCtfCellPwrcfgInfo(param, mBuf)
 CtfCellRecfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7909,13 +7909,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfCellStop
+S16 cmPkCtfCellStop
 (
 CtfCellRecfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfCellStop(param, mBuf)
+S16 cmPkCtfCellStop(param, mBuf)
 CtfCellRecfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7952,13 +7952,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfCellStop
+S16 cmUnpkCtfCellStop
 (
 CtfCellRecfgInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfCellStop(param, mBuf)
+S16 cmUnpkCtfCellStop(param, mBuf)
 CtfCellRecfgInfo *param;
 Buffer *mBuf;
 #endif
@@ -7995,13 +7995,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkPerRemScanCellInfo
+S16 cmPkPerRemScanCellInfo
 (
 CtfPeriodicRemCellInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkPerRemScanCellInfo(param, mBuf)
+S16 cmPkPerRemScanCellInfo(param, mBuf)
 CtfPeriodicRemCellInfo *param;
 Buffer *mBuf;
 #endif
@@ -8033,13 +8033,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfPeriodicCellSearchRsp
+S16 cmPkCtfPeriodicCellSearchRsp
 (
 CtfPeriodicRemCellSearchRsp *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkCtfPeriodicCellSearchRsp(param, mBuf)
+S16 cmPkCtfPeriodicCellSearchRsp(param, mBuf)
 CtfPeriodicRemCellSearchRsp *param;
 Buffer *mBuf;
 #endif
@@ -8072,7 +8072,7 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkCtfPeriodicRemCellSearchRsp
+S16 cmPkCtfPeriodicRemCellSearchRsp
 (
 Pst* pst,
 SpId spId,
@@ -8080,7 +8080,7 @@ CtfCfgTransId *transId,
 CtfPeriodicRemCellSearchRsp *CellCfgRsp
 )
 #else
-PUBLIC S16 cmPkCtfPeriodicRemCellSearchRsp(pst, spId, transId, CellCfgRsp)
+S16 cmPkCtfPeriodicRemCellSearchRsp(pst, spId, transId, CellCfgRsp)
 Pst* pst;
 SpId spId;
 CtfCfgTransId *transId;
@@ -8164,13 +8164,13 @@ CtfPeriodicRemCellSearchRsp *CellCfgRsp;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfPerRemScanCellInfo
+S16 cmUnpkCtfPerRemScanCellInfo
 (
 CtfPeriodicRemCellInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfPerRemScanCellInfo(param, mBuf)
+S16 cmUnpkCtfPerRemScanCellInfo(param, mBuf)
 CtfPeriodicRemCellInfo *param;
 Buffer *mBuf;
 #endif
@@ -8185,13 +8185,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkCtfPerRemCellSrch
+S16 cmUnpkCtfPerRemCellSrch
 (
 CtfPeriodicRemCellSearchRsp *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkCtfPerRemCellSrch(param, mBuf)
+S16 cmUnpkCtfPerRemCellSrch(param, mBuf)
 CtfPeriodicRemCellSearchRsp *param;
 Buffer *mBuf;
 #endif
@@ -8222,14 +8222,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkPerRemCellSrchRsp
+S16 cmUnpkPerRemCellSrchRsp
 (
 CtfPerRemCellSrchRsp func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkPerRemCellSrchRsp(func, pst, mBuf)
+S16 cmUnpkPerRemCellSrchRsp(func, pst, mBuf)
 CtfPerRemCellSrchRsp func;
 Pst *pst;
 Buffer *mBuf;

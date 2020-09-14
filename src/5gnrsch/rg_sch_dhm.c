@@ -63,13 +63,13 @@ static int RLOG_MODULE_ID=4096;
 extern U32 rgNumSPSSchedDropMaxRetx;
 extern U32 rgNumActDtx;
 #endif
-PUBLIC U32  nackSf[10];
+U32  nackSf[10];
 
 
 
 #ifdef MAC_SCH_STATS
-PUBLIC RgSchNackAckStats hqFailStats;
-PUBLIC RgSchHqRetxStats  hqRetxStats;
+RgSchNackAckStats hqFailStats;
+RgSchHqRetxStats  hqRetxStats;
 #endif /* MAC_SCH_STATS */
 //Chandan Stats Collection
 #ifdef DLHQ_STATS
@@ -103,7 +103,7 @@ U8 rgSchNumOfAcksToAckNack[RG_SCH_MAX_NUM_EXPECTED_ACKS][RG_SCH_NUM_FDBK_VALUE] 
 
 PRIVATE Void rgSCHDhmFdbkIndHndlTa ARGS((RgSchDlHqProcCb *hqP, U8 tbIdx, U8 fdbk,
             Bool maxHqRetxReached));
-PUBLIC void rgEmtcsetNullSubFrm ARGS((RgSchDlHqProcCb *hqP));
+void rgEmtcsetNullSubFrm ARGS((RgSchDlHqProcCb *hqP));
 #ifndef LTE_TDD
 PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep ARGS((
 RgSchDlHqProcCb      *hqP,
@@ -150,7 +150,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM234 ARGS((
 
 /* Freeing up the HARQ proc blocked for
  * indefinite time in case of Retx */
-PUBLIC S16 rgSCHDhmDlRetxAllocFail ARGS((
+S16 rgSCHDhmDlRetxAllocFail ARGS((
 RgSchUeCb        *ue, 
 RgSchDlHqProcCb  *proc
 ));
@@ -204,12 +204,12 @@ EXTERN Void rgSCHEmtcHqInfoAlloc ARGS((RgSchCellCb *cell, RgSchDlHqProcCb *hqP))
  **/
 /*MS_WORKAROUND for ccpu00122893*/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqEntReset
+Void rgSCHDhmHqEntReset
 (
    RgSchDlHqEnt      *hqE
 )
 #else
-PUBLIC Void rgSCHDhmHqEntReset(hqE)
+Void rgSCHDhmHqEntReset(hqE)
    RgSchDlHqEnt      *hqE;
 #endif
 {
@@ -276,13 +276,13 @@ PUBLIC Void rgSCHDhmHqEntReset(hqE)
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmAssgnUeHqEntFrmRaCb 
+Void rgSCHDhmAssgnUeHqEntFrmRaCb 
 (
 RgSchUeCb       *ue,
 RgSchRaCb       *raCb
 )
 #else
-PUBLIC Void rgSCHDhmAssgnUeHqEntFrmRaCb(ue, raCb)
+Void rgSCHDhmAssgnUeHqEntFrmRaCb(ue, raCb)
 RgSchUeCb       *ue;
 RgSchRaCb       *raCb;
 #endif
@@ -318,13 +318,13 @@ RgSchRaCb       *raCb;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmDelHqEnt 
+Void rgSCHDhmDelHqEnt 
 (
 RgSchCellCb       *cell,
 RgSchDlHqEnt      **hqE
 )
 #else
-PUBLIC Void rgSCHDhmDelHqEnt(cell, hqE)
+Void rgSCHDhmDelHqEnt(cell, hqE)
 RgSchCellCb       *cell;
 RgSchDlHqEnt      **hqE;
 #endif
@@ -345,12 +345,12 @@ RgSchDlHqEnt      **hqE;
 }
 
 #ifdef ANSI
-PUBLIC RgSchDlHqEnt *rgSCHDhmHqEntInit
+RgSchDlHqEnt *rgSCHDhmHqEntInit
 (
 RgSchCellCb           *cell
 )
 #else
-PUBLIC RgSchDlHqEnt *rgSCHDhmHqEntInit(cell)
+RgSchDlHqEnt *rgSCHDhmHqEntInit(cell)
 RgSchCellCb           *cell;
 #endif
 {
@@ -423,7 +423,7 @@ RgSchCellCb           *cell;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmGetAvlHqProc
+S16 rgSCHDhmGetAvlHqProc
 (
 RgSchCellCb           *cell,
 RgSchUeCb               *ue,
@@ -431,7 +431,7 @@ CmLteTimingInfo         timingInfo,
 RgSchDlHqProcCb         **hqP
 )
 #else
-PUBLIC S16 rgSCHDhmGetAvlHqProc (cell, ue, timingInfo, hqP)
+S16 rgSCHDhmGetAvlHqProc (cell, ue, timingInfo, hqP)
 RgSchCellCb           *cell;
 RgSchUeCb               *ue;
 CmLteTimingInfo         timingInfo;
@@ -548,7 +548,7 @@ RgSchDlHqProcCb         **hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqTbRetx
+Void rgSCHDhmHqTbRetx
 (
 RgSchDlHqEnt            *hqE,
 CmLteTimingInfo         timingInfo,
@@ -556,7 +556,7 @@ RgSchDlHqProcCb         *hqP,
 U8                      tbIdx
 )
 #else
-PUBLIC Void rgSCHDhmHqTbRetx(hqE, timingInfo, hqP, tbIdx)
+Void rgSCHDhmHqTbRetx(hqE, timingInfo, hqP, tbIdx)
 RgSchDlHqEnt            *hqE;
 CmLteTimingInfo         timingInfo;
 RgSchDlHqProcCb         *hqP;
@@ -616,12 +616,12 @@ U8                      tbIdx;
  *
  **/
 #ifdef ANSI
-PUBLIC RgSchDlHqProcCb * rgSCHDhmLastSchedHqProc
+RgSchDlHqProcCb * rgSCHDhmLastSchedHqProc
 (
 RgSchDlHqEnt            *hqE
 )
 #else
-PUBLIC RgSchDlHqProcCb * rgSCHDhmLastSchedHqProc(hqE)
+RgSchDlHqProcCb * rgSCHDhmLastSchedHqProc(hqE)
 RgSchDlHqEnt            *hqE;
 #endif
 {
@@ -662,14 +662,14 @@ RgSchDlHqEnt            *hqE;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmGetCcchSduHqProc
+S16 rgSCHDhmGetCcchSduHqProc
 (
 RgSchUeCb               *ueCb,
 CmLteTimingInfo         timingInfo,
 RgSchDlHqProcCb         **hqP
 )
 #else
-PUBLIC S16 rgSCHDhmGetCcchSduHqProc (ueCb, timingInfo, hqP)
+S16 rgSCHDhmGetCcchSduHqProc (ueCb, timingInfo, hqP)
 RgSchUeCb               *ueCb;
 CmLteTimingInfo         timingInfo;
 RgSchDlHqProcCb         **hqP;
@@ -736,13 +736,13 @@ RgSchDlHqProcCb         **hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmGetMsg4HqProc
+S16 rgSCHDhmGetMsg4HqProc
 (
 RgSchRaCb               *raCb,
 CmLteTimingInfo         timingInfo
 )
 #else
-PUBLIC S16 rgSCHDhmGetMsg4HqProc (raCb, timingInfo)
+S16 rgSCHDhmGetMsg4HqProc (raCb, timingInfo)
 RgSchRaCb               *raCb;
 CmLteTimingInfo         timingInfo;
 #endif
@@ -792,14 +792,14 @@ CmLteTimingInfo         timingInfo;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRlsHqpTb
+Void rgSCHDhmRlsHqpTb
 (
 RgSchDlHqProcCb         *hqP,
 U8                      tbIdx,
 Bool                    togNdi
 ) 
 #else
-PUBLIC Void rgSCHDhmRlsHqpTb(hqP, tbIdx, togNdi) 
+Void rgSCHDhmRlsHqpTb(hqP, tbIdx, togNdi) 
 RgSchDlHqProcCb         *hqP;
 U8                      tbIdx;
 Bool                    togNdi;
@@ -1033,12 +1033,12 @@ rgEmtcsetNullSubFrm(hqP);
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRlsHqProc
+Void rgSCHDhmRlsHqProc
 (
 RgSchDlHqProcCb         *hqP
 )
 #else
-PUBLIC Void rgSCHDhmRlsHqProc(hqP)
+Void rgSCHDhmRlsHqProc(hqP)
 RgSchDlHqProcCb         *hqP;
 #endif
 {
@@ -1115,7 +1115,7 @@ rgEmtcsetNullSubFrm(hqP);
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmGetHqProcFrmId
+S16 rgSCHDhmGetHqProcFrmId
 (
 RgSchCellCb           *cell,
 RgSchUeCb               *ue,
@@ -1123,7 +1123,7 @@ U8                      idx,
 RgSchDlHqProcCb         **hqP
 )
 #else
-PUBLIC S16 rgSCHDhmGetHqProcFrmId(cell, ue, idx, hqP)
+S16 rgSCHDhmGetHqProcFrmId(cell, ue, idx, hqP)
 RgSchCellCb           *cell;
 RgSchUeCb               *ue;
 U8                      idx;
@@ -1154,14 +1154,14 @@ RgSchDlHqProcCb         **hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC RgSchDlHqProcCb* rgSCHDhmSpsDlGetHqProc
+RgSchDlHqProcCb* rgSCHDhmSpsDlGetHqProc
 (
 RgSchCellCb           *cell,
 RgSchUeCb               *ue,
 CmLteTimingInfo         timingInfo
 )
 #else
-PUBLIC RgSchDlHqProcCb* rgSCHDhmSpsDlGetHqProc(cell, ue, timingInfo)
+RgSchDlHqProcCb* rgSCHDhmSpsDlGetHqProc(cell, ue, timingInfo)
 RgSchCellCb           *cell,
 RgSchUeCb               *ue;
 CmLteTimingInfo         timingInfo;
@@ -1336,13 +1336,13 @@ Bool              maxHqRetxReached;
  *      -# None.
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmSchdTa
+Void rgSCHDhmSchdTa
 (
 RgSchUeCb         *ueCb,
 RgSchDlHqTbCb     *tbInfo
 )
 #else
-PUBLIC Void rgSCHDhmSchdTa(ueCb, tbInfo)
+Void rgSCHDhmSchdTa(ueCb, tbInfo)
 RgSchUeCb         *ueCb;
 RgSchDlHqTbCb     *tbInfo;
 #endif
@@ -1521,7 +1521,7 @@ RgSchCellCb             *cell;
  *      -# NULLP 
  **/
 #ifdef ANSI
-PUBLIC RgSchDlHqProcCb *rgSCHDhmHqProcByTime
+RgSchDlHqProcCb *rgSCHDhmHqProcByTime
 (
 RgSchDlHqEnt            *hqE,
 CmLteTimingInfo         timeInfo,
@@ -1529,7 +1529,7 @@ Bool                    *isMsg4,
 RgSchDlSf               *sf
 )
 #else
-PUBLIC RgSchDlHqProcCb *rgSCHDhmHqProcByTime(hqE, timeInfo,
+RgSchDlHqProcCb *rgSCHDhmHqProcByTime(hqE, timeInfo,
                                               isMsg4,sf)
 RgSchDlHqEnt            *hqE;
 CmLteTimingInfo         timeInfo;
@@ -1569,7 +1569,7 @@ RgSchDlSf               *sf;
  *      
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqTbTrnsFail
+Void rgSCHDhmHqTbTrnsFail
 (
 RgSchCellCb             *cell,
 RgSchDlHqProcCb         *hqP,
@@ -1577,7 +1577,7 @@ U8                      tbCnt,
 Bool                    *isMaxRetx
 )
 #else
-PUBLIC Void rgSCHDhmHqTbTrnsFail(cell, hqP, tbCnt, isMaxRetx)
+Void rgSCHDhmHqTbTrnsFail(cell, hqP, tbCnt, isMaxRetx)
 RgSchCellCb             *cell;
 RgSchDlHqProcCb         *hqP;
 U8                      tbCnt;
@@ -1747,7 +1747,7 @@ Bool                    *isMaxRetx;
    RETVOID;
 } /* rgSCHDhmHqTbTrnsFail */
 
-PUBLIC U32 rgHqRvStats[2][4][2] = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}}, 
+U32 rgHqRvStats[2][4][2] = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}}, 
                                    {{0, 0}, {0, 0}, {0, 0}, {0, 0}}};
 #ifdef LTE_TDD
 #ifdef LTE_ADV
@@ -2058,7 +2058,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmHqFdbkInd
+S16 rgSCHDhmHqFdbkInd
 (
 Void                 *cb,
 U8                   cbType,
@@ -2069,7 +2069,7 @@ RgInfRlsHqInfo       *rlsHqBufs,
 RgSchErrInfo         *err
 )
 #else
-PUBLIC S16 rgSCHDhmHqFdbkInd(cb, cbType, cellCb, timeInfo, fdbk, rlsHqBufs, err)
+S16 rgSCHDhmHqFdbkInd(cb, cbType, cellCb, timeInfo, fdbk, rlsHqBufs, err)
 Void                    *cb;
 U8                      cbType;
 RgSchCellCb             *cellCb;
@@ -2757,7 +2757,7 @@ RgSchErrInfo            *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmPrcFdbkForTb
+S16 rgSCHDhmPrcFdbkForTb
 (
 RgSchCellCb          *cell,
 RgSchUeCb            *ue,
@@ -2772,7 +2772,7 @@ RgInfRlsHqInfo       *rlsHqBufs,
 RgSchErrInfo         *err
 )
 #else
-PUBLIC S16 rgSCHDhmPrcFdbkForTb(cell, ue, hqP, sf, isMsg4, rnti, tbCnt, timingInfo, isAck, rlsHqBufs, err)
+S16 rgSCHDhmPrcFdbkForTb(cell, ue, hqP, sf, isMsg4, rnti, tbCnt, timingInfo, isAck, rlsHqBufs, err)
 RgSchCellCb             *cell;
 RgSchUeCb               *ue;
 RgSchDlHqProcCb         *hqP;
@@ -3039,7 +3039,7 @@ RgSchErrInfo            *err;
  *  @return     RETVOID
  **/
 #ifdef ANSI
-PUBLIC Void rgSchGetHqFdbkPos
+Void rgSchGetHqFdbkPos
 (
  RgSchCellCb          *cell,
  RgSchUeCb            *ue,
@@ -3049,7 +3049,7 @@ PUBLIC Void rgSchGetHqFdbkPos
  RgTfuHqInfo          *fdbk
  )
 #else
-PUBLIC Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
+Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
  RgSchCellCb          *cell;
  RgSchUeCb            *ue;
  RgSchDlHqProcCb      *hqP;
@@ -3220,14 +3220,14 @@ PUBLIC Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
 }/* End of rgSchGetHqFdbkPos */
 #ifdef LTE_ADV
 #ifdef ANSI
-PUBLIC Void rgSchGetHqFdbkPosFormat3
+Void rgSchGetHqFdbkPosFormat3
 (
  RgSchDlHqProcCb      *hqP,
  U8                   *isAck,
  TfuHqFdbk            *fdbk
  )
 #else
-PUBLIC Void rgSchGetHqFdbkPosFormat3(hqP,isAck,fdbk)
+Void rgSchGetHqFdbkPosFormat3(hqP,isAck,fdbk)
  RgSchDlHqProcCb      *hqP;
  U8                  *isAck;
  TfuHqFdbk           *fdbk;
@@ -3260,7 +3260,7 @@ PUBLIC Void rgSchGetHqFdbkPosFormat3(hqP,isAck,fdbk)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhm5gtfHqFdbkInd 
+S16 rgSCHDhm5gtfHqFdbkInd 
 (
 RgSchUeCb            *ue,
 RgSchCellCb          *cell,
@@ -3269,7 +3269,7 @@ TfuHqFdbk            fdbk,
 RgSchErrInfo         *err
 )
 #else
-PUBLIC S16 rgSCHDhm5gtfHqFdbkInd(ue, cell, timingInfo, fdbk, err)
+S16 rgSCHDhm5gtfHqFdbkInd(ue, cell, timingInfo, fdbk, err)
 RgSchUeCb            *ue;
 RgSchCellCb          *cell;
 CmLteTimingInfo      timingInfo;
@@ -3348,7 +3348,7 @@ RgSchErrInfo         *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmHqFdbkInd
+S16 rgSCHDhmHqFdbkInd
 (
 Void                 *cb, 
 U8                   cbType,
@@ -3359,7 +3359,7 @@ RgInfRlsHqInfo       *rlsHqBufs,
 RgSchErrInfo         *err
 )
 #else
-PUBLIC S16 rgSCHDhmHqFdbkInd(cb, cbType, cell, timingInfo, fdbk, rlsHqBufs, err)
+S16 rgSCHDhmHqFdbkInd(cb, cbType, cell, timingInfo, fdbk, rlsHqBufs, err)
 Void                    *cb;
 U8                      cbType;
 RgSchCellCb             *cell;
@@ -3636,7 +3636,7 @@ RgSchErrInfo            *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRgrUeCfg
+Void rgSCHDhmRgrUeCfg
 (
 RgSchCellCb       *cell,
 RgSchUeCb         *ueCb,
@@ -3644,7 +3644,7 @@ RgrUeCfg          *ueCfg,
 RgSchErrInfo      *err
 )
 #else
-PUBLIC Void rgSCHDhmRgrUeCfg(cell, ueCb, ueCfg, err)
+Void rgSCHDhmRgrUeCfg(cell, ueCb, ueCfg, err)
 RgSchCellCb       *cell;
 RgSchUeCb         *ueCb;
 RgrUeCfg          *ueCfg;
@@ -3704,14 +3704,14 @@ RgSchErrInfo      *err;
  *                -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRgrCellCfg
+Void rgSCHDhmRgrCellCfg
 (
 RgSchCellCb    *cell,
 RgrCellCfg     *cellCfg,
 RgSchErrInfo   *err
 )
 #else
-PUBLIC Void rgSCHDhmRgrCellCfg(cell, cellCfg, err)
+Void rgSCHDhmRgrCellCfg(cell, cellCfg, err)
 RgSchCellCb    *cell;
 RgrCellCfg     *cellCfg;
 RgSchErrInfo   *err;
@@ -3791,14 +3791,14 @@ RgSchErrInfo   *err;
  *                -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmRgrCellRecfg
+Void rgSCHDhmRgrCellRecfg
 (
 RgSchCellCb    *cell,
 RgrCellRecfg   *cellRecfg,
 RgSchErrInfo   *err
 )
 #else
-PUBLIC Void rgSCHDhmRgrCellRecfg(cell, cellRecfg, err)
+Void rgSCHDhmRgrCellRecfg(cell, cellRecfg, err)
 RgSchCellCb    *cell;
 RgrCellRecfg   *cellRecfg;
 RgSchErrInfo   *err;
@@ -3854,12 +3854,12 @@ RgSchErrInfo   *err;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmFreeUe
+Void rgSCHDhmFreeUe
 (
 RgSchUeCb          *ueCb
 )
 #else
-PUBLIC Void rgSCHDhmFreeUe(ueCb)
+Void rgSCHDhmFreeUe(ueCb)
 RgSchUeCb          *ueCb;
 #endif
 {
@@ -3924,14 +3924,14 @@ RgSchUeCb          *ueCb;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmUpdTa
+Void rgSCHDhmUpdTa
 (
 RgSchCellCb    *cell,
 RgSchUeCb      *ueCb,
 U8             ta
 )
 #else
-PUBLIC Void rgSCHDhmUpdTa(cell, ueCb, ta)
+Void rgSCHDhmUpdTa(cell, ueCb, ta)
 RgSchCellCb    *cell;
 RgSchUeCb      *ueCb;
 U8             ta;
@@ -3987,12 +3987,12 @@ U8             ta;
   *      -#None.
   */
 #ifdef ANSI
-PUBLIC Void rgSCHDhmProcTAExp 
+Void rgSCHDhmProcTAExp 
 (
  RgSchUeCb  *ueCb
  )
 #else
-PUBLIC Void rgSCHDhmProcTAExp (ueCb)
+Void rgSCHDhmProcTAExp (ueCb)
  RgSchUeCb  *ueCb;
 #endif
 {
@@ -4023,14 +4023,14 @@ PUBLIC Void rgSCHDhmProcTAExp (ueCb)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmAddLcData
+S16 rgSCHDhmAddLcData
 (
 Inst               inst,
 RgSchLchAllocInfo  *lchData,
 RgSchDlHqTbCb      *tbInfo
 )
 #else
-PUBLIC S16 rgSCHDhmAddLcData(inst, lchData, tbInfo)
+S16 rgSCHDhmAddLcData(inst, lchData, tbInfo)
 Inst               inst;
 RgSchLchAllocInfo  *lchData;
 RgSchDlHqTbCb      *tbInfo;
@@ -4070,13 +4070,13 @@ RgSchDlHqTbCb      *tbInfo;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmTddRlsSubFrm
+S16 rgSCHDhmTddRlsSubFrm
 (
 RgSchCellCb          *cellCb,
 CmLteTimingInfo      uciTimingInfo
 )
 #else
-PUBLIC S16 rgSCHDhmTddRlsSubFrm(cellCb, uciTimingInfo)
+S16 rgSCHDhmTddRlsSubFrm(cellCb, uciTimingInfo)
 RgSchCellCb          *cellCb;
 CmLteTimingInfo      uciTimingInfo;
 #endif
@@ -4127,13 +4127,13 @@ U32 macDtx = 0;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmRlsDlsfHqProc
+S16 rgSCHDhmRlsDlsfHqProc
 (
 RgSchCellCb          *cellCb,
 CmLteTimingInfo      uciTimingInfo
 )
 #else
-PUBLIC S16 rgSCHDhmRlsDlsfHqProc(cellCb, uciTimingInfo)
+S16 rgSCHDhmRlsDlsfHqProc(cellCb, uciTimingInfo)
 RgSchCellCb          *cellCb;
 CmLteTimingInfo      uciTimingInfo;
 #endif
@@ -4414,13 +4414,13 @@ CmLteTimingInfo      uciTimingInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmRlsDlsfHqProc
+S16 rgSCHDhmRlsDlsfHqProc
 (
 RgSchCellCb          *cell,
 CmLteTimingInfo      timingInfo
 )
 #else
-PUBLIC S16 rgSCHDhmRlsDlsfHqProc(cell, timingInfo)
+S16 rgSCHDhmRlsDlsfHqProc(cell, timingInfo)
 RgSchCellCb          *cell;
 CmLteTimingInfo      timingInfo;
 #endif
@@ -4580,13 +4580,13 @@ CmLteTimingInfo      timingInfo;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmMarkSpsHqProc
+S16 rgSCHDhmMarkSpsHqProc
 (
 RgSchUeCb               *ue,
 U8                      idx
 )
 #else
-PUBLIC S16 rgSCHDhmMarkSpsHqProc(ue, idx)
+S16 rgSCHDhmMarkSpsHqProc(ue, idx)
 RgSchUeCb               *ue;
 U8                      idx;
 #endif
@@ -4692,13 +4692,13 @@ U8                   *isAck;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmDlRetxAllocFail 
+S16 rgSCHDhmDlRetxAllocFail 
 (
 RgSchUeCb               *ue,
 RgSchDlHqProcCb         *hqP
 )
 #else
-PUBLIC S16 rgSCHDhmDlRetxAllocFail(ue, hqP)
+S16 rgSCHDhmDlRetxAllocFail(ue, hqP)
 RgSchUeCb               *ue;
 RgSchDlHqProcCb         *hqP;
 #endif
@@ -4857,14 +4857,14 @@ U8                      tbCnt;
 }
 
 #ifdef ANSI
-PUBLIC S16 rgSCHDhmUpdBlerBasediTbsEff
+S16 rgSCHDhmUpdBlerBasediTbsEff
 (
 RgSchCellCb             *cell,
 RgSchUeCb               *ueCb,
 U8                      tbCnt
 )
 #else
-PUBLIC S16 rgSCHDhmUpdBlerBasediTbsEff(cell, ueCb, tbCnt)
+S16 rgSCHDhmUpdBlerBasediTbsEff(cell, ueCb, tbCnt)
 (
 RgSchCellCb             *cell;
 RgSchUeCb               *ueCb;
@@ -5006,12 +5006,12 @@ U8            hqCnt;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqPAdd2FreeLst
+Void rgSCHDhmHqPAdd2FreeLst
 (
 RgSchDlHqProcCb         *hqP
 )
 #else
-PUBLIC Void rgSCHDhmHqPAdd2FreeLst(hqP)
+Void rgSCHDhmHqPAdd2FreeLst(hqP)
 RgSchDlHqProcCb         *hqP;
 #endif
 {
@@ -5063,12 +5063,12 @@ RgSchDlHqProcCb         *hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqPAdd2InUseLst
+Void rgSCHDhmHqPAdd2InUseLst
 (
 RgSchDlHqProcCb         *hqP
 )
 #else
-PUBLIC Void rgSCHDhmHqPAdd2InUseLst(hqP)
+Void rgSCHDhmHqPAdd2InUseLst(hqP)
 RgSchDlHqProcCb         *hqP;
 #endif
 {
@@ -5115,12 +5115,12 @@ RgSchDlHqProcCb         *hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqPDelFrmFreeLst
+Void rgSCHDhmHqPDelFrmFreeLst
 (
 RgSchDlHqProcCb         *hqP
 )
 #else
-PUBLIC Void rgSCHDhmHqPDelFrmFreeLst(hqP)
+Void rgSCHDhmHqPDelFrmFreeLst(hqP)
 RgSchDlHqProcCb         *hqP;
 #endif
 {
@@ -5178,12 +5178,12 @@ RgSchDlHqProcCb         *hqP;
  *
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHDhmHqPDelFrmInUseLst
+Void rgSCHDhmHqPDelFrmInUseLst
 (
 RgSchDlHqProcCb         *hqP
 )
 #else
-PUBLIC Void rgSCHDhmHqPDelFrmInUseLst(hqP)
+Void rgSCHDhmHqPDelFrmInUseLst(hqP)
 RgSchDlHqProcCb         *hqP;
 #endif
 {

@@ -672,7 +672,7 @@ typedef enum
 {                                                                                                \
    if(rgCb[_inst].rgInit.logMask & SS_DIAG_LVL0)                                                         \
    {                                                                                             \
-      ssDiagFix(_tknId, _splArgEnum, ENTRG, rgCb[_inst].rgInit.inst, SS_DIAG_LVL0, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
+      ssDiagFix(_tknId, _splArgEnum, ENTMAC, rgCb[_inst].rgInit.inst, SS_DIAG_LVL0, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
    }                                                                                             \
 }
 
@@ -683,7 +683,7 @@ typedef enum
 {                                                                 \
    if(rgCb[_inst].rgInit.logMask & SS_DIAG_LVL1)                             \
    {                                                              \
-      ssDiagFix(_tknId, _splArgEnum, ENTRG, rgCb[_inst].rgInit.inst, SS_DIAG_LVL1, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
+      ssDiagFix(_tknId, _splArgEnum, ENTMAC, rgCb[_inst].rgInit.inst, SS_DIAG_LVL1, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
    }                                                              \
 }
 
@@ -694,7 +694,7 @@ typedef enum
 {                                                              \
    if(rgCb[_inst].rgInit.logMask & SS_DIAG_LVL2)                            \
    {                                                              \
-      ssDiagFix(_tknId, _splArgEnum, ENTRG, rgCb[_inst].rgInit.inst, SS_DIAG_LVL2, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
+      ssDiagFix(_tknId, _splArgEnum, ENTMAC, rgCb[_inst].rgInit.inst, SS_DIAG_LVL2, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
    }                                                              \
 }
 
@@ -705,7 +705,7 @@ typedef enum
 {                                                              \
    if(rgCb[_inst].rgInit.logMask & SS_DIAG_LVL3)                            \
    {                                                              \
-      ssDiagFix(_tknId, _splArgEnum, ENTRG, rgCb[_inst].rgInit.inst, SS_DIAG_LVL3, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
+      ssDiagFix(_tknId, _splArgEnum, ENTMAC, rgCb[_inst].rgInit.inst, SS_DIAG_LVL3, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
    }                                                              \
 }
 
@@ -716,7 +716,7 @@ typedef enum
 {                                                              \
    if(rgCb[_inst].rgInit.logMask & SS_DIAG_LVL4)                            \
    {                                                              \
-      ssDiagFix(_tknId, _splArgEnum, ENTRG, rgCb[_inst].rgInit.inst, SS_DIAG_LVL4, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
+      ssDiagFix(_tknId, _splArgEnum, ENTMAC, rgCb[_inst].rgInit.inst, SS_DIAG_LVL4, SS_DIAG_MSG_TYPE_FIXED, _splArg, _arg1, _arg2, _arg3, _arg4, _string);\
    }                                                              \
 }
   

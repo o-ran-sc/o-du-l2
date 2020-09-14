@@ -373,7 +373,7 @@ RgErrInfo      *err;
 U32 padSize = 0;
 #endif
 #ifdef ANSI
-PUBLIC S16 rgMUXAddPadd
+S16 rgMUXAddPadd
 (
 Inst           inst,
 MsgLen         *schdTbSz,
@@ -382,7 +382,7 @@ Bool           isRar,
 RgErrInfo      *err
 )
 #else
-PUBLIC S16 rgMUXAddPadd(inst,schdTbSz, sduBuf, isRar, err)
+S16 rgMUXAddPadd(inst,schdTbSz, sduBuf, isRar, err)
 Inst           inst;
 MsgLen         *schdTbSz;
 Buffer         *sduBuf;
@@ -650,7 +650,7 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgMUXBldPdu
+S16 rgMUXBldPdu
 (
 Inst           inst,
 RgBldPduInfo   *pdu,
@@ -658,7 +658,7 @@ Buffer         **txPdu,
 RgErrInfo      *err
 )
 #else
-PUBLIC S16 rgMUXBldPdu(inst, pdu, txPdu, err)
+S16 rgMUXBldPdu(inst, pdu, txPdu, err)
 Inst           inst;
 RgBldPduInfo   *pdu;
 Buffer         **txPdu;
@@ -957,7 +957,7 @@ RgErrInfo           *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgMUXBldPdu
+S16 rgMUXBldPdu
 (
 Inst               inst,
 RgBldPduInfo       *pdu,
@@ -965,7 +965,7 @@ RgTfuDatReqTbInfo  *tb,
 RgErrInfo          *err
 )
 #else
-PUBLIC S16 rgMUXBldPdu(inst, pdu, tb, err)
+S16 rgMUXBldPdu(inst, pdu, tb, err)
 Inst               inst;
 RgBldPduInfo       *pdu;
 RgTfuDatReqTbInfo  *tb;
@@ -1037,7 +1037,7 @@ RgErrInfo          *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgMUXBldRarPdu
+S16 rgMUXBldRarPdu
 (
 RgCellCb        *cell,
 RgInfRaRntiInfo *alloc,
@@ -1045,7 +1045,7 @@ Buffer          **txPdu,
 RgErrInfo       *err
 )
 #else
-PUBLIC S16 rgMUXBldRarPdu(cell, alloc, txPdu, err)
+S16 rgMUXBldRarPdu(cell, alloc, txPdu, err)
 RgCellCb        *cell;
 RgInfRaRntiInfo *alloc;
 Buffer          **txPdu;
@@ -1226,14 +1226,14 @@ U8             *grnt;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC U16 rgMUXCalcRiv
+U16 rgMUXCalcRiv
 (
 U8           bw,
 U8           rbStart,
 U8           numRb
 )
 #else
-PUBLIC U16 rgMUXCalcRiv(bw, rbStart, numRb)
+U16 rgMUXCalcRiv(bw, rbStart, numRb)
 U8           bw;
 U8           rbStart;
 U8           numRb;

@@ -29,7 +29,7 @@
 #define FILL_PST_RLC_TO_DUAPP(_pst, _procId, _srcInst, _event) \
 {                                                              \
    _pst.selector    = ODU_SELECTOR_LWLC;                       \
-   _pst.srcEnt      = ENTKW;                                   \
+   _pst.srcEnt      = ENTRLC;                                   \
    _pst.dstEnt      = ENTDUAPP;                                \
    _pst.dstInst     = 0;                                       \
    _pst.srcInst     = _srcInst;                                \

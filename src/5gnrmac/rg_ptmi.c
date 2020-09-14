@@ -280,13 +280,13 @@ PRIVATE CONSTANT LrgSchL2MeasStopCfm RgMiLrgSchL2mMeasStopCfmMt[RG_MAX_LRG_USR] 
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgCfgCfm
+S16 RgMiLrgCfgCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* config confirm structure  */
 )
 #else
-PUBLIC S16 RgMiLrgCfgCfm(pst, cfm)
+S16 RgMiLrgCfgCfm(pst, cfm)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cfm;    /* config confirm structure  */
 #endif    
@@ -318,13 +318,13 @@ RgMngmt  *cfm;    /* config confirm structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchCfgCfm
+S16 RgMiLrgSchCfgCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* config confirm structure  */
 )
 #else
-PUBLIC S16 RgMiLrgSchCfgCfm(pst, cfm)
+S16 RgMiLrgSchCfgCfm(pst, cfm)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cfm;    /* config confirm structure  */
 #endif    
@@ -358,13 +358,13 @@ RgMngmt  *cfm;    /* config confirm structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgStsCfm
+S16 RgMiLrgStsCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* statistics confirm structure  */
 )
 #else
-PUBLIC S16 RgMiLrgStsCfm(pst, cfm)
+S16 RgMiLrgStsCfm(pst, cfm)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cfm;    /* statistics confirm structure  */
 #endif    
@@ -397,13 +397,13 @@ RgMngmt  *cfm;    /* statistics confirm structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgStaCfm
+S16 RgMiLrgStaCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* status confirm structure  */
 )
 #else
-PUBLIC S16 RgMiLrgStaCfm(pst, cfm)
+S16 RgMiLrgStaCfm(pst, cfm)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cfm;    /* status confirm structure  */
 #endif    
@@ -436,13 +436,13 @@ RgMngmt  *cfm;    /* status confirm structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgCntrlCfm
+S16 RgMiLrgCntrlCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* control confirm structure  */
 )
 #else
-PUBLIC S16 RgMiLrgCntrlCfm(pst, cfm)
+S16 RgMiLrgCntrlCfm(pst, cfm)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cfm;    /* control confirm structure  */
 #endif    
@@ -474,13 +474,13 @@ RgMngmt  *cfm;    /* control confirm structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchCntrlCfm
+S16 RgMiLrgSchCntrlCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* control confirm structure  */
 )
 #else
-PUBLIC S16 RgMiLrgSchCntrlCfm(pst, cfm)
+S16 RgMiLrgSchCntrlCfm(pst, cfm)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cfm;    /* control confirm structure  */
 #endif    
@@ -513,13 +513,13 @@ RgMngmt  *cfm;    /* control confirm structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgStaInd
+S16 RgMiLrgStaInd
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *usta    /* status indication structure  */
 )
 #else
-PUBLIC S16 RgMiLrgStaInd(pst, usta)
+S16 RgMiLrgStaInd(pst, usta)
 Pst      *pst;    /* post structure  */
 RgMngmt  *usta;    /* status indication structure  */
 #endif    
@@ -551,13 +551,13 @@ RgMngmt  *usta;    /* status indication structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchStaInd
+S16 RgMiLrgSchStaInd
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *usta    /* status indication structure  */
 )
 #else
-PUBLIC S16 RgMiLrgSchStaInd(pst, usta)
+S16 RgMiLrgSchStaInd(pst, usta)
 Pst      *pst;    /* post structure  */
 RgMngmt  *usta;    /* status indication structure  */
 #endif    
@@ -591,14 +591,14 @@ RgMngmt  *usta;    /* status indication structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgTrcInd
+S16 RgMiLrgTrcInd
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *trc,    /* Trace event  */
 Buffer   *mBuf    /* Trace message  */
 )
 #else
-PUBLIC S16 RgMiLrgTrcInd(pst, trc, mBuf)
+S16 RgMiLrgTrcInd(pst, trc, mBuf)
 Pst      *pst;    /* post structure  */
 RgMngmt  *trc;    /* Trace event  */
 Buffer   *mBuf;   /* Trace message  */
@@ -617,13 +617,13 @@ Buffer   *mBuf;   /* Trace message  */
 
 /* TODO: Function header */
 #ifdef ANSI
-PUBLIC S16 RgMiLrgSchL2MeasCfm
+S16 RgMiLrgSchL2MeasCfm
 (
 Pst               *pst,          /* post structure  */
 LrgSchMeasCfmInfo *cfm       /* Meas Cfm Info */
 )
 #else
-PUBLIC S16 RgMiLrgSchL2MeasCfm(pst, cfm)
+S16 RgMiLrgSchL2MeasCfm(pst, cfm)
 Pst               *pst;          /* post structure  */
 LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
 #endif    
@@ -654,13 +654,13 @@ LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
  **/
 
 #ifdef ANSI 
-PUBLIC S16 RgMiLrgSchL2MeasStopCfm
+S16 RgMiLrgSchL2MeasStopCfm
 (        
 Pst               *pst,          /* post structure  */
 LrgSchMeasCfmInfo *cfm       /* Meas Cfm Info */
 )        
 #else    
-PUBLIC S16 RgMiLrgSchL2MeasStopCfm(pst, cfm)
+S16 RgMiLrgSchL2MeasStopCfm(pst, cfm)
 Pst               *pst;          /* post structure  */
 LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
 #endif    
@@ -699,13 +699,13 @@ LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgCfgCfm
+S16 PtMiLrgCfgCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Config Confirm */
 )
 #else
-PUBLIC S16 PtMiLrgCfgCfm  (pst, cfm)
+S16 PtMiLrgCfgCfm  (pst, cfm)
 Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Config Confirm */
 #endif
@@ -735,13 +735,13 @@ RgMngmt *cfm;           /* Config Confirm */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgSchCfgCfm
+S16 PtMiLrgSchCfgCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Config Confirm */
 )
 #else
-PUBLIC S16 PtMiLrgSchCfgCfm  (pst, cfm)
+S16 PtMiLrgSchCfgCfm  (pst, cfm)
 Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Config Confirm */
 #endif
@@ -773,13 +773,13 @@ RgMngmt *cfm;           /* Config Confirm */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgStsCfm
+S16 PtMiLrgStsCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Statistics Confirm */
 )
 #else
-PUBLIC S16 PtMiLrgStsCfm  (pst, cfm)
+S16 PtMiLrgStsCfm  (pst, cfm)
 Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Statistics Confirm */
 #endif
@@ -811,13 +811,13 @@ RgMngmt *cfm;           /* Statistics Confirm */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgStaCfm
+S16 PtMiLrgStaCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Status Confirm */
 )
 #else
-PUBLIC S16 PtMiLrgStaCfm  (pst, cfm)
+S16 PtMiLrgStaCfm  (pst, cfm)
 Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Status Confirm */
 #endif
@@ -848,13 +848,13 @@ RgMngmt *cfm;           /* Status Confirm */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgStaInd
+S16 PtMiLrgStaInd
 (
 Pst *pst,               /* post structure */
 RgMngmt *usta           /* Status Indication */
 )
 #else
-PUBLIC S16 PtMiLrgStaInd  (pst, usta)
+S16 PtMiLrgStaInd  (pst, usta)
 Pst *pst;               /* post structure */
 RgMngmt *usta;          /* Status indication */
 #endif
@@ -883,13 +883,13 @@ RgMngmt *usta;          /* Status indication */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgSchStaInd
+S16 PtMiLrgSchStaInd
 (
 Pst *pst,               /* post structure */
 RgMngmt *usta           /* Status Indication */
 )
 #else
-PUBLIC S16 PtMiLrgSchStaInd  (pst, usta)
+S16 PtMiLrgSchStaInd  (pst, usta)
 Pst *pst;               /* post structure */
 RgMngmt *usta;          /* Status indication */
 #endif
@@ -919,13 +919,13 @@ RgMngmt *usta;          /* Status indication */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgCntrlCfm
+S16 PtMiLrgCntrlCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Control Confirm */
 )
 #else
-PUBLIC S16 PtMiLrgCntrlCfm (pst, cfm)
+S16 PtMiLrgCntrlCfm (pst, cfm)
 Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Control Confirm */
 #endif
@@ -954,13 +954,13 @@ RgMngmt *cfm;           /* Control Confirm */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgSchCntrlCfm
+S16 PtMiLrgSchCntrlCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Control Confirm */
 )
 #else
-PUBLIC S16 PtMiLrgSchCntrlCfm (pst, cfm)
+S16 PtMiLrgSchCntrlCfm (pst, cfm)
 Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Control Confirm */
 #endif
@@ -990,14 +990,14 @@ RgMngmt *cfm;           /* Control Confirm */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgTrcInd
+S16 PtMiLrgTrcInd
 (
 Pst *pst,               /* post structure */
 RgMngmt *trc,           /* Trace Event */
 Buffer *mBuf            /* Trace message */
 )
 #else
-PUBLIC S16 PtMiLrgTrcInd (pst, trc,mBuf)
+S16 PtMiLrgTrcInd (pst, trc,mBuf)
 Pst *pst;               /* post structure */
 RgMngmt *trc;           /* Trace Event */
 Buffer *mBuf;           /* Trace message */
@@ -1022,13 +1022,13 @@ Buffer *mBuf;           /* Trace message */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgSchL2MeasCfm
+S16 PtMiLrgSchL2MeasCfm
 (
 Pst *pst,               /* post structure */
 LrgSchMeasCfmInfo *cfm  /* Measurement Confirm */
 )
 #else
-PUBLIC S16 PtMiLrgSchL2MeasCfm(pst, cfm)
+S16 PtMiLrgSchL2MeasCfm(pst, cfm)
 Pst *pst;               /* post structure */
 LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
 #endif
@@ -1053,13 +1053,13 @@ LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtMiLrgSchL2MeasStopCfm
+S16 PtMiLrgSchL2MeasStopCfm
 (
 Pst *pst,               /* post structure */
 LrgSchMeasCfmInfo *cfm  /* Measurement Confirm */
 )
 #else
-PUBLIC S16 PtMiLrgSchL2MeasStopCfm(pst, cfm)
+S16 PtMiLrgSchL2MeasStopCfm(pst, cfm)
 Pst *pst;               /* post structure */
 LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
 #endif

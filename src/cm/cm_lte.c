@@ -70,7 +70,7 @@
 
 
 /* public variable declarations */
-PUBLIC U32 cmLteTime;
+U32 cmLteTime;
 
 
 /***********************************************************
@@ -89,13 +89,13 @@ PUBLIC U32 cmLteTime;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkLteRlcId
+S16 cmPkLteRlcId
 (
 CmLteRlcId *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkLteRlcId(param, mBuf)
+S16 cmPkLteRlcId(param, mBuf)
 CmLteRlcId *param;
 Buffer *mBuf;
 #endif
@@ -128,13 +128,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLteRlcId
+S16 cmUnpkLteRlcId
 (
 CmLteRlcId *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLteRlcId(param, mBuf)
+S16 cmUnpkLteRlcId(param, mBuf)
 CmLteRlcId *param;
 Buffer *mBuf;
 #endif
@@ -167,13 +167,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkLteTimingInfo
+S16 cmPkLteTimingInfo
 (
 CmLteTimingInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkLteTimingInfo(param, mBuf)
+S16 cmPkLteTimingInfo(param, mBuf)
 CmLteTimingInfo *param;
 Buffer *mBuf;
 #endif
@@ -205,13 +205,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLteTimingInfo
+S16 cmUnpkLteTimingInfo
 (
 CmLteTimingInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLteTimingInfo(param, mBuf)
+S16 cmUnpkLteTimingInfo(param, mBuf)
 CmLteTimingInfo *param;
 Buffer *mBuf;
 #endif
@@ -243,13 +243,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkLtePdcpId
+S16 cmPkLtePdcpId
 (
 CmLtePdcpId *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkLtePdcpId(param, mBuf)
+S16 cmPkLtePdcpId(param, mBuf)
 CmLtePdcpId *param;
 Buffer *mBuf;
 #endif
@@ -282,13 +282,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkLtePdcpId
+S16 cmUnpkLtePdcpId
 (
 CmLtePdcpId *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLtePdcpId(param, mBuf)
+S16 cmUnpkLtePdcpId(param, mBuf)
 CmLtePdcpId *param;
 Buffer *mBuf;
 #endif
@@ -304,12 +304,12 @@ Buffer *mBuf;
 }
 #ifdef LTE_L2_MEAS 
 #ifdef ANSI
-PUBLIC S16 cmUpdateSsiMemInfo
+S16 cmUpdateSsiMemInfo
 (
 CmLteMemInfo *mInfo
 )
 #else
-PUBLIC S16 cmUpdateSsiMemInfo(mInfo)
+S16 cmUpdateSsiMemInfo(mInfo)
 CmLteMemInfo *mInfo;
 #endif
 {
@@ -356,13 +356,13 @@ CmLteMemInfo *mInfo;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmFillMemUtilizationMeas
+S16 cmFillMemUtilizationMeas
 (
  CmLteMemInfo *memoryInfo,
 CmLteMemInfo *memInfo
 )
 #else
-PUBLIC S16 cmFillMemUtilizationMeas(memoryInfo,memInfo)
+S16 cmFillMemUtilizationMeas(memoryInfo,memInfo)
 CmLteMemInfo *memoryInfo;
 CmLteMemInfo *memInfo;
 #endif
@@ -391,12 +391,12 @@ CmLteMemInfo *memInfo;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmClearMemUtilizationCounter
+S16 cmClearMemUtilizationCounter
 (
 CmLteMemInfo *memInfo
 )
 #else
-PUBLIC S16 cmClearMemUtilizationCounter(memInfo)
+S16 cmClearMemUtilizationCounter(memInfo)
 CmLteMemInfo *memInfo;
 #endif
 {
@@ -423,12 +423,12 @@ CmLteMemInfo *memInfo;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmClearCpuUtilizationCounter
+S16 cmClearCpuUtilizationCounter
 (
 CmCpuStatsInfo *cpuInfo
 )
 #else
-PUBLIC S16 cmClearCpuUtilizationCounter(cpuInfo)
+S16 cmClearCpuUtilizationCounter(cpuInfo)
 CmCpuStatsInfo *cpuInfo
 #endif
 {
@@ -444,13 +444,13 @@ CmCpuStatsInfo *cpuInfo
 }
 
 #ifdef ANSI
-PUBLIC S16 cmFillCpuUtilizationMeas
+S16 cmFillCpuUtilizationMeas
 (
 CmLteCpuInfo *cpuMeasInfo,
 CmCpuStatsInfo *cpuInfo
 )
 #else
-PUBLIC S16 cmFillCpuUtilizationMeas(cpuMeasInfo,cpuInfo)
+S16 cmFillCpuUtilizationMeas(cpuMeasInfo,cpuInfo)
 CmLteCpuInfo *cpuMeasInfo;
 CmCpuStatsInfo *cpuInfo;
 #endif
@@ -471,7 +471,7 @@ CmCpuStatsInfo *cpuInfo;
 CmTtiProc ttiProc;
 #define TTI_1MS 950
 
-PUBLIC Void cmUpdateTtiCounters(U32 ttiProcessingTime)
+Void cmUpdateTtiCounters(U32 ttiProcessingTime)
 {
    ttiProc.numOfTti++;
    ttiProc.totTtiProcessingTime += ttiProcessingTime;
@@ -490,7 +490,7 @@ PUBLIC Void cmUpdateTtiCounters(U32 ttiProcessingTime)
    RETVOID;    
 }
 
-PUBLIC Void cmResetTtiCounters(Void)
+Void cmResetTtiCounters(Void)
 {
 	ttiProc.totTtiProcessingTime = 0;
 	ttiProc.numOfTti = 0;

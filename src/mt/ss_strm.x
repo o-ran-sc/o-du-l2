@@ -77,22 +77,22 @@ typedef struct ssfree_rtn SsFrtn;
 
 
 /* STREAMS functions prototypes */
-PUBLIC S16      ssStrmCfg ARGS((Region, Region));
-PUBLIC S32      ssAdjMsg ARGS((SsMblk *, S32));
-PUBLIC SsMblk   *ssAllocB ARGS((S32, U32));
-PUBLIC SsMblk   *ssCopyB ARGS((SsMblk *));
-PUBLIC SsMblk   *ssCopyMsg ARGS((SsMblk *));
-PUBLIC SsMblk   *ssDupB ARGS((SsMblk *));
-PUBLIC SsMblk   *ssDupMsg ARGS((SsMblk *));
-PUBLIC SsMblk   *ssESBAlloc ARGS((U8 *, S32, S32, SsFrtn *));
-PUBLIC void     ssFreeB ARGS((SsMblk *));
-PUBLIC void     ssFreeMsg ARGS((SsMblk *));
-PUBLIC void     ssLinkB ARGS((SsMblk *, SsMblk *));
-PUBLIC S32      ssMsgDSize ARGS((SsMblk *));
-PUBLIC S32      ssPullupMsg ARGS((SsMblk *, S32));
-PUBLIC SsMblk   *ssRmvB ARGS((SsMblk *, SsMblk *));
-PUBLIC S32      ssTestB ARGS((S32, U32));
-PUBLIC SsMblk   *ssUnlinkB ARGS((SsMblk *));
+S16      ssStrmCfg ARGS((Region, Region));
+S32      ssAdjMsg ARGS((SsMblk *, S32));
+SsMblk   *ssAllocB ARGS((S32, U32));
+SsMblk   *ssCopyB ARGS((SsMblk *));
+SsMblk   *ssCopyMsg ARGS((SsMblk *));
+SsMblk   *ssDupB ARGS((SsMblk *));
+SsMblk   *ssDupMsg ARGS((SsMblk *));
+SsMblk   *ssESBAlloc ARGS((U8 *, S32, S32, SsFrtn *));
+void     ssFreeB ARGS((SsMblk *));
+void     ssFreeMsg ARGS((SsMblk *));
+void     ssLinkB ARGS((SsMblk *, SsMblk *));
+S32      ssMsgDSize ARGS((SsMblk *));
+S32      ssPullupMsg ARGS((SsMblk *, S32));
+SsMblk   *ssRmvB ARGS((SsMblk *, SsMblk *));
+S32      ssTestB ARGS((S32, U32));
+SsMblk   *ssUnlinkB ARGS((SsMblk *));
 
 
 #ifdef __cplusplus

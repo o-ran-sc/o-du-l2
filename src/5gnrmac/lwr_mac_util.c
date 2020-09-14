@@ -37,7 +37,7 @@
   *         NULLP - failure
   *
   * ****************************************************************/
-PUBLIC LwrMacCellCb * lwrMacGetCellCb
+LwrMacCellCb * lwrMacGetCellCb
 (
    uint16_t cellId
 )

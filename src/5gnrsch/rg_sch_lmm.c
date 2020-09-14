@@ -65,7 +65,7 @@ static int RLOG_FILE_ID=167;
 #include "rg_sch_cmn.x"    /* typedefs for Scheduler */
 #endif 
 #ifndef LTE_L2_MEAS
-PUBLIC Void rgSCHCmnInit ARGS((Void));
+Void rgSCHCmnInit ARGS((Void));
 #endif 
 /* forward references */
 extern int schActvInit(Ent entity, Inst instId, Region region, Reason reason);
@@ -82,7 +82,7 @@ PRIVATE Void rgSCHLmmShutdown ARGS((
 ));
 
 
-PUBLIC void printSchCellInfo(void)
+void printSchCellInfo(void)
 {
    U8 idx=0;
    U8 inst=0;
@@ -439,14 +439,14 @@ Inst inst;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgSCHLmmGenCntrl 
+Void rgSCHLmmGenCntrl 
 (
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 )
 #else
-PUBLIC Void rgSCHLmmGenCntrl(cntrl, cfm, cfmPst)
+Void rgSCHLmmGenCntrl(cntrl, cfm, cfmPst)
 RgMngmt       *cntrl;
 RgMngmt       *cfm;
 Pst           *cfmPst;
@@ -568,14 +568,14 @@ Pst           *cfmPst;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgSCHLmmSapCntrl 
+Void rgSCHLmmSapCntrl 
 (
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 )
 #else
-PUBLIC Void rgSCHLmmSapCntrl(cntrl, cfm, cfmPst)
+Void rgSCHLmmSapCntrl(cntrl, cfm, cfmPst)
 RgMngmt       *cntrl;
 RgMngmt       *cfm;
 Pst           *cfmPst;
@@ -761,14 +761,14 @@ Pst           *cfmPst;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void SchFillCfmPst
+Void SchFillCfmPst
 (
 Pst           *reqPst,
 Pst           *cfmPst,
 RgMngmt       *cfm
 )
 #else
-PUBLIC Void SchFillCfmPst(reqPst, cfmPst, cfm)
+Void SchFillCfmPst(reqPst, cfmPst, cfm)
 Pst           *reqPst;
 Pst           *cfmPst;
 RgMngmt       *cfm;
@@ -780,10 +780,10 @@ RgMngmt       *cfm;
 
    inst = (reqPst->dstInst - SCH_INST_START);
 
-   cfmPst->srcEnt    = ENTRG;
+   cfmPst->srcEnt    = ENTMAC;
    cfmPst->srcInst   = (Inst) 1;
    cfmPst->srcProcId = rgSchCb[inst].rgSchInit.procId;
-   cfmPst->dstEnt    = ENTRG;
+   cfmPst->dstEnt    = ENTMAC;
    cfmPst->dstInst   = (Inst) 0;
    cfmPst->dstProcId = reqPst->srcProcId;
 
@@ -814,7 +814,7 @@ RgMngmt       *cfm;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHLmmStartTmr
+S16 rgSCHLmmStartTmr
 (
 Inst               inst,
 S16                tmrEvnt,            /* Timer Event */
@@ -822,7 +822,7 @@ U32                tmrVal,             /* Wait Time */
 PTR                cb                  /* Entry for which Timer Expired */
 )
 #else
-PUBLIC S16 rgSCHLmmStartTmr(inst, tmrEvnt, tmrVal, cb)
+S16 rgSCHLmmStartTmr(inst, tmrEvnt, tmrVal, cb)
 Inst               inst;             /* scheduler instance ID */
 S16                tmrEvnt;            /* Timer Event */
 U32                tmrVal;             /* Wait Time */
@@ -873,14 +873,14 @@ PTR                cb;                 /* Entry for which Timer Expired */
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHLmmStopTmr
+S16 rgSCHLmmStopTmr
 (
 Inst               inst,             /* Scheduler instance */
 S16                tmrEvnt,            /* Timer Event */
 PTR                cb                  /* Entry for which Timer Expired */
 )
 #else
-PUBLIC S16 rgSCHLmmStopTmr(inst, tmrEvnt, cb)
+S16 rgSCHLmmStopTmr(inst, tmrEvnt, cb)
 Inst               inst;             /* Scheduler instance */
 S16                tmrEvnt;            /* Timer Event */
 PTR                cb;                 /* Entry for which Timer Expired */
@@ -939,13 +939,13 @@ PTR                cb;                 /* Entry for which Timer Expired */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHLmmTmrExpiry
+S16 rgSCHLmmTmrExpiry
 (
 PTR cb,               /* Pointer to timer control block */
 S16 tmrEvnt           /* Timer Event */
 )
 #else
-PUBLIC S16 rgSCHLmmTmrExpiry(cb,tmrEvnt)
+S16 rgSCHLmmTmrExpiry(cb,tmrEvnt)
 PTR cb;               /* Pointer to timer control block */
 S16 tmrEvnt;          /* Timer Event */
 #endif
@@ -1014,14 +1014,14 @@ S16 tmrEvnt;          /* Timer Event */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHLmmBndCfm
+S16 rgSCHLmmBndCfm
 (
 Pst *pst,               /* Post Structure */
 SuId suId,              /* Service user ID */
 U8 status               /* Status */
 )
 #else
-PUBLIC S16 rgSCHLmmBndCfm(pst,suId,status)
+S16 rgSCHLmmBndCfm(pst,suId,status)
 Pst *pst;               /* Post Structure */
 SuId suId;              /* Service user Id */
 U8 status;              /* Status */
@@ -1113,7 +1113,7 @@ U8 status;              /* Status */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHLmmStaInd
+S16 rgSCHLmmStaInd
 (
 Inst inst,
 U16  category,
@@ -1122,7 +1122,7 @@ U16  cause,
 RgUstaDgn *dgn
 )
 #else
-PUBLIC S16 rgSCHLmmStaInd(inst, category, event, cause, dgn) 
+S16 rgSCHLmmStaInd(inst, category, event, cause, dgn) 
 Inst inst;
 U16 category;
 U16 event;
@@ -1183,13 +1183,13 @@ RgUstaDgn *dgn;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 schActvTmr
+S16 schActvTmr
 (
 Ent ent,
 Inst inst
 )
 #else
-PUBLIC S16 schActvTmr(ent, inst)
+S16 schActvTmr(ent, inst)
 Ent ent;
 Inst inst;
 #endif

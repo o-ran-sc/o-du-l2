@@ -110,9 +110,9 @@
 
 /*ss014.301: SSI-4GMX related changes*/
 #ifdef SS_4GMX_LCORE
-PUBLIC VOLATILE SsOs     osCp;           /* common OS control point */
+VOLATILE SsOs     osCp;           /* common OS control point */
 #else
-PUBLIC SsOs     osCp;           /* common OS control point */
+SsOs     osCp;           /* common OS control point */
 #endif
 
  
@@ -132,17 +132,17 @@ PRIVATE S16 SULockOsCp ARGS((Void));
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
 PRIVATE void InitializeForStaticMemLeak ARGS((void));
 PRIVATE void InitializeStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo));
-PUBLIC U32 GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
-PUBLIC void FreeIdx ARGS((U8* ptr, U32 idx, StaticMemAllocInfo* memAllocInfo,U32 size, char*
+U32 GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
+void FreeIdx ARGS((U8* ptr, U32 idx, StaticMemAllocInfo* memAllocInfo,U32 size, char*
       file, U32 line));
-PUBLIC void LogForStaticMemLeak ARGS((StaticMemAllocInfo* memAllocInfo, char* file,
+void LogForStaticMemLeak ARGS((StaticMemAllocInfo* memAllocInfo, char* file,
       U32 line, U32 size, void* ptr, U32 idx));
 PRIVATE void PrintStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo, FILE
       *opFile));
 #endif
 /* ss001.301: additions */
 
-PUBLIC void DumpSSIDemandQDebugInformation()
+void DumpSSIDemandQDebugInformation()
 {
    U32 i,j;
    RTLIN_DUMP_DEBUG("Demand Q Information\n");
@@ -165,7 +165,7 @@ PUBLIC void DumpSSIDemandQDebugInformation()
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
 pthread_mutex_t dumpingLock = PTHREAD_MUTEX_INITIALIZER;
 
-PUBLIC Void mtSigSegvHndlr()
+Void mtSigSegvHndlr()
 {
    int i;
 
@@ -183,7 +183,7 @@ PUBLIC Void mtSigSegvHndlr()
    sleep(5);
 }
 
-PUBLIC Void mtSigUsr2Hndlr()
+Void mtSigUsr2Hndlr()
 {
    printf("Backtrace for thread Id (%lu) cause:SIGUSR2(%d)\n",(unsigned long) pthread_self(),SIGUSR2);   
 
@@ -217,12 +217,12 @@ PUBLIC Void mtSigUsr2Hndlr()
 *
 */
 #ifdef ANSI
-PUBLIC S16 SInit
+S16 SInit
 (
 void
 )
 #else
-PUBLIC S16 SInit()
+S16 SInit()
 #endif
 {
    S16 ret;
@@ -745,12 +745,12 @@ cleanup0:
 *
 */
 #ifdef ANSI
-PUBLIC S16 SDeInit
+S16 SDeInit
 (
 void
 )
 #else
-PUBLIC S16 SDeInit()
+S16 SDeInit()
 #endif
 {
   /* ss007.301 */
@@ -809,12 +809,12 @@ PUBLIC S16 SDeInit()
 /* ss001.301: additions */
 #ifdef SS_LOGGER_SUPPORT 
 #ifdef ANSI
-PUBLIC S16 SWrtLogBuf
+S16 SWrtLogBuf
 (
 Txt *buf                        /* buffer */
 )
 #else
-PUBLIC S16 SWrtLogBuf(buf)
+S16 SWrtLogBuf(buf)
 Txt *buf;                       /* buffer */
 #endif
 {
@@ -871,12 +871,12 @@ Txt *buf;                       /* buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 SPrint
+S16 SPrint
 (
 Txt *buf                        /* buffer */
 )
 #else
-PUBLIC S16 SPrint(buf)
+S16 SPrint(buf)
 Txt *buf;                       /* buffer */
 #endif
 {
@@ -909,13 +909,13 @@ Txt *buf;                       /* buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 SError
+S16 SError
 (
 Seq seq,                    /* sequence */
 Reason reason               /* reason */
 )
 #else
-PUBLIC S16 SError(seq, reason)
+S16 SError(seq, reason)
 Seq seq;                    /* sequence */
 Reason reason;              /* reason */
 #endif
@@ -956,7 +956,7 @@ Reason reason;              /* reason */
 *
 */
 #ifdef ANSI
-PUBLIC Void SLogError
+Void SLogError
 (
 Ent ent,                    /* Calling layer's entity id */
 Inst inst,                  /* Calling layer's instance id */
@@ -969,7 +969,7 @@ ErrVal errVal,              /* error value */
 Txt *errDesc                /* description of error */
 )
 #else
-PUBLIC Void SLogError(ent, inst, procId, file, line,
+Void SLogError(ent, inst, procId, file, line,
                         errCls, errCode, errVal, errDesc)
 Ent ent;                    /* Calling layer's entity id */
 Inst inst;                  /* Calling layer's instance id */
@@ -1027,12 +1027,12 @@ Txt *errDesc;               /* description of error */
 *
 */
 #ifdef ANSI
-PUBLIC ProcId SFndProcId
+ProcId SFndProcId
 (
 void
 )
 #else
-PUBLIC ProcId SFndProcId()
+ProcId SFndProcId()
 #endif
 {
    TRC1(SFndProcId);
@@ -1055,12 +1055,12 @@ PUBLIC ProcId SFndProcId()
 *
 */
 #ifdef ANSI
-PUBLIC Void SSetProcId
+Void SSetProcId
 (
 ProcId procId
 )
 #else
-PUBLIC Void SSetProcId(procId)
+Void SSetProcId(procId)
 ProcId procId;
 #endif
 {
@@ -1090,12 +1090,12 @@ ProcId procId;
 *
 */
 #ifdef ANSI
-PUBLIC U16 SGetProcIdIdx
+U16 SGetProcIdIdx
 (
 ProcId proc
 )
 #else
-PUBLIC U16 SGetProcIdIdx(proc)
+U16 SGetProcIdIdx(proc)
 ProcId proc; 
 #endif
 {
@@ -1337,13 +1337,13 @@ PRIVATE S16 SULockOsCp(Void)
 *
 */
 #ifdef ANSI
-PUBLIC S16 SAddProcIdLst
+S16 SAddProcIdLst
 (
 U16 numPIds,
 ProcId *pIdLst
 )
 #else
-PUBLIC S16 SAddProcIdLst(numPIds, pIdLst)
+S16 SAddProcIdLst(numPIds, pIdLst)
 U16 numPIds;
 ProcId *pIdLst;
 #endif
@@ -1433,13 +1433,13 @@ exceeds");
 *
 */
 #ifdef ANSI
-PUBLIC S16 SRemProcIdLst
+S16 SRemProcIdLst
 (
 U16 numPIds,
 ProcId *pIdLst
 )
 #else
-PUBLIC S16 SRemProcIdLst(numPIds, pIdLst)
+S16 SRemProcIdLst(numPIds, pIdLst)
 U16 numPIds;
 ProcId *pIdLst;
 #endif
@@ -1498,13 +1498,13 @@ ProcId *pIdLst;
 *
 */
 #ifdef ANSI
-PUBLIC S16 SGetProcIdLst
+S16 SGetProcIdLst
 (
 U16 *numPIds,
 ProcId *pIdLst
 )
 #else
-PUBLIC S16 SGetProcIdLst(numPIds, pIdLst)
+S16 SGetProcIdLst(numPIds, pIdLst)
 U16 *numPIds;
 ProcId *pIdLst;
 #endif
@@ -1558,7 +1558,7 @@ ProcId *pIdLst;
 *
 */
 #ifdef ANSI
-PUBLIC S16 SGetXxCb
+S16 SGetXxCb
 (
 ProcId proc,
 Ent ent,
@@ -1566,7 +1566,7 @@ Inst inst,
 Void **xxCb
 )
 #else
-PUBLIC S16 SGetXxCb(proc, ent, inst, xxCb)
+S16 SGetXxCb(proc, ent, inst, xxCb)
 ProcId proc;
 Ent ent;
 Inst inst;
@@ -1636,12 +1636,12 @@ Void **xxCb;
 *
 */
 #ifdef ANSI
-PUBLIC S16 SFillEntIds
+S16 SFillEntIds
 (
 Void
 )
 #else
-PUBLIC S16 SFillEntIds(Void)
+S16 SFillEntIds(Void)
 #endif
 {
 
@@ -1712,7 +1712,7 @@ PUBLIC S16 SFillEntIds(Void)
                               W      X      Y      Z */
                            {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
                   /* K */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                            ENTKW, ENTNC, ENTNC, ENTNC},
+                            ENTRLC, ENTNC, ENTNC, ENTNC},
                            /* A      B      C      D      E      F      G      H      I      J      K  *
                               L      M      N      O      P      Q      R      S      T      U      V  *
                               W      X      Y      Z */
@@ -1829,13 +1829,13 @@ PUBLIC S16 SFillEntIds(Void)
 *
 */
 #ifdef ANSI
-PUBLIC S16 SGetEntInd 
+S16 SGetEntInd 
 (
 Ent      *entId,
 U8       *fileName
 )
 #else
-PUBLIC S16 SGetEntInd(entId, fileName)
+S16 SGetEntInd(entId, fileName)
 Ent      *entId;
 U8       *fileName;
 #endif
@@ -1935,14 +1935,14 @@ U8       *fileName;
 *
 */
 #ifdef ANSI
-PUBLIC S16 SLockNew 
+S16 SLockNew 
 (
 SLockInfo *lockId,
 U8         lockType
 
 )
 #else
-PUBLIC S16 SLockNew(lockId, lockType)
+S16 SLockNew(lockId, lockType)
 SLockInfo *lockId;
 U8         lockType;
 #endif
@@ -1973,13 +1973,13 @@ U8         lockType;
 *
 */
 #ifdef ANSI
-PUBLIC S16 SInitLockNew 
+S16 SInitLockNew 
 (
 SLockInfo *lockId,
 U8         lockType
 )
 #else
-PUBLIC S16 SInitLockNew(lockId, lockType)
+S16 SInitLockNew(lockId, lockType)
 SLockInfo *lockId;
 U8         lockType;
 #endif
@@ -2010,13 +2010,13 @@ U8         lockType;
 *
 */
 #ifdef ANSI
-PUBLIC S16 SUnlockNew 
+S16 SUnlockNew 
 (
 SLockInfo *lockId,
 U8         lockType
 )
 #else
-PUBLIC S16 SUnlockNew(lockId, lockType)
+S16 SUnlockNew(lockId, lockType)
 SLockInfo *lockId;
 U8         lockType;
 #endif
@@ -2047,13 +2047,13 @@ U8         lockType;
 *
 */
 #ifdef ANSI
-PUBLIC S16 SDestroyLockNew 
+S16 SDestroyLockNew 
 (
 SLockInfo *lockId,
 U8         lockType
 )
 #else
-PUBLIC S16 SDestroyLockNew(lockId, lockType)
+S16 SDestroyLockNew(lockId, lockType)
 SLockInfo *lockId;
 U8         lockType;
 #endif
@@ -2206,7 +2206,7 @@ void InitializeForStaticMemLeak()
    }
 }
 
-PUBLIC void DumpStaticMemLeakFiles()
+void DumpStaticMemLeakFiles()
 {
    int i;
 
@@ -2233,12 +2233,12 @@ PUBLIC void DumpStaticMemLeakFiles()
  *
  */
 #ifdef ANSI
-PUBLIC S16 SReInitTmr
+S16 SReInitTmr
 (
 void
 )
 #else
-PUBLIC S16 SReInitTmr()
+S16 SReInitTmr()
 #endif
 {
    U8 ret = ROK;
@@ -2269,7 +2269,7 @@ PUBLIC S16 SReInitTmr()
  *       File: ss_gen.c
  *
  */
-PUBLIC S8* SGetConfigPath(Void)
+S8* SGetConfigPath(Void)
 {
    return osCp.configFilePath;
 }

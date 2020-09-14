@@ -90,38 +90,38 @@ extern U32  isMemThreshReached(Region region);
 
 /* private function declarations */
 
-PRIVATE Void kwAmmUlAssembleCntrlInfo ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
+PRIVATE Void rlcAmmUlAssembleCntrlInfo ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
 
-PRIVATE S16 kwAmmExtractHdr ARGS ((RlcCb *gCb,
+PRIVATE S16 rlcAmmExtractHdr ARGS ((RlcCb *gCb,
                                 RlcUlRbCb   *rbCb,
                                 Buffer *pdu,
                                 KwAmHdr *amHdr,
                                 U8 *fByte));
 
-PRIVATE Bool kwAmmUlPlacePduInRecBuf ARGS ((RlcCb *gCb,
+PRIVATE Bool rlcAmmUlPlacePduInRecBuf ARGS ((RlcCb *gCb,
                                             Buffer *pdu,
                                             RlcUlRbCb *rbCb,
                                             KwAmHdr *amHdr));
 
-PRIVATE Void kwAmmTriggerStatus ARGS ((RlcCb *gCb,
+PRIVATE Void rlcAmmTriggerStatus ARGS ((RlcCb *gCb,
                                     RlcUlRbCb *rbCb,
                                     KwSn sn,
                                     Bool discFlg));
 
-PRIVATE S16  kwAmmUlReassembleSdus ARGS ((RlcCb *gCb,
+PRIVATE S16  rlcAmmUlReassembleSdus ARGS ((RlcCb *gCb,
                                      RlcUlRbCb *rbCb,
                                      KwAmRecBuf *recBuf));
 
-PRIVATE Void kwAmmProcPduOrSeg ARGS ((RlcCb *gCb,
+PRIVATE Void rlcAmmProcPduOrSeg ARGS ((RlcCb *gCb,
                                       RlcUlRbCb *rbCb,
                                       KwAmHdr *amHdr,
                                       Buffer *pdu));
 
-PRIVATE Void kwAmmUpdExpByteSeg ARGS ((RlcCb *gCb,KwAmUl *amUl, KwSeg* newSeg));
+PRIVATE Void rlcAmmUpdExpByteSeg ARGS ((RlcCb *gCb,KwAmUl *amUl, KwSeg* newSeg));
 
-PRIVATE Void kwAmmExtractElmnt ARGS ((RlcCb *gCb, Buffer *pdu, KwExtHdr *hdrInfo));
+PRIVATE Void rlcAmmExtractElmnt ARGS ((RlcCb *gCb, Buffer *pdu, KwExtHdr *hdrInfo));
 
-PRIVATE Void kwAmmUlHndlStatusPdu ARGS ((RlcCb *gCb,
+PRIVATE Void rlcAmmUlHndlStatusPdu ARGS ((RlcCb *gCb,
                                          RlcUlRbCb *rbCb,
                                          Buffer *cntrlPdu,
                                          U8 *fByte));
@@ -130,15 +130,15 @@ PRIVATE Void kwAmmUlHndlStatusPdu ARGS ((RlcCb *gCb,
 
   AM Module contains the following funcitons:
 
-  -  kwAmmProcessSdus
-     -  kwAmmUlAssembleCntrlInfo
-     -  kwResegRetxPdus
-     -  kwAssembleSdus
+  -  rlcAmmProcessSdus
+     -  rlcAmmUlAssembleCntrlInfo
+     -  rlcResegRetxPdus
+     -  rlcAssembleSdus
      -  kwChkandSetPoll
-  -  kwAmmProcessPdus
-     -  kwAmmUlHndlStatusPdu
-     -  kwAmmTriggerStatus
-     -  kwAmmUlReassembleSdus
+  -  rlcAmmProcessPdus
+     -  rlcAmmUlHndlStatusPdu
+     -  rlcAmmTriggerStatus
+     -  rlcAmmUlReassembleSdus
 
 *******************************************************************************/
 /** @addtogroup ammode */
@@ -160,7 +160,7 @@ PRIVATE Void kwAmmUlHndlStatusPdu ARGS ((RlcCb *gCb,
  *
  */
 #ifdef ANSI
-PRIVATE S16 kwAmmUlSetNackInfo
+PRIVATE S16 rlcAmmUlSetNackInfo
 (
 RlcUlRbCb      *rbCb,
 KwSn          sn,
@@ -171,7 +171,7 @@ KwUdxDlStaPdu *statusPdu,
 KwSn          *prevNackSn
 )
 #else
-PRIVATE S16 kwAmmUlSetNackInfo(rbCb, sn, isSegment, soStart, statusPdu, prevNackSn)
+PRIVATE S16 rlcAmmUlSetNackInfo(rbCb, sn, isSegment, soStart, statusPdu, prevNackSn)
 RlcUlRbCb      *rbCb;
 KwSn          sn;
 Bool          isSegment;
@@ -184,7 +184,7 @@ KwSn          *prevNackSn;
    KwNackInfo   *nackInfo = (statusPdu->nackInfo + statusPdu->nackCount);
    S16           sizeToBeEncd = 0; /* Status PDu size to be encoded */
 
-   TRC2(kwAmmUlSetNackInfo)
+   TRC2(rlcAmmUlSetNackInfo)
 
       /* In following cases we should increment the nackCnt & fill new NACK_SN info:
        *    1) First NACK_SN of the statusdPdu
@@ -300,13 +300,13 @@ KwSn          *prevNackSn;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmUlAssembleCntrlInfo
+PRIVATE Void rlcAmmUlAssembleCntrlInfo
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb
 )
 #else
-PRIVATE Void kwAmmUlAssembleCntrlInfo(gCb, rbCb)
+PRIVATE Void rlcAmmUlAssembleCntrlInfo(gCb, rbCb)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;
 #endif
@@ -326,7 +326,7 @@ RlcUlRbCb   *rbCb;
    KwAmRecBuf      *recBuf = NULLP;
    KwSn            prevNackSn = 0xffffffff;
 
-   TRC2(kwAmmUlAssembleCntrlInfo)
+   TRC2(rlcAmmUlAssembleCntrlInfo)
 
 
    sapCb = KW_GET_UDX_SAP(gCb);
@@ -360,7 +360,7 @@ RlcUlRbCb   *rbCb;
                   sn,
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
-         staPduEncSize += kwAmmUlSetNackInfo(rbCb,
+         staPduEncSize += rlcAmmUlSetNackInfo(rbCb,
                                              sn,
                                              FALSE, /* isSegment */
                                              0,     /* SOStart */
@@ -381,7 +381,7 @@ RlcUlRbCb   *rbCb;
             /* For missing byte segments */
             if (seg->amHdr.so != seqSo)
             {
-               staPduEncSize += kwAmmUlSetNackInfo(rbCb,
+               staPduEncSize += rlcAmmUlSetNackInfo(rbCb,
                                                    sn,
                                                    TRUE,
                                                    seqSo,
@@ -412,7 +412,7 @@ RlcUlRbCb   *rbCb;
          if ((seg != NULLP) &&
              (seg->amHdr.si != KW_SI_LAST_SEG && nackCnt < KW_MAX_NACK_CNT))
          {
-            staPduEncSize += kwAmmUlSetNackInfo(rbCb,
+            staPduEncSize += rlcAmmUlSetNackInfo(rbCb,
                                                 sn,
                                                 TRUE,
                                                 seqSo,
@@ -421,7 +421,7 @@ RlcUlRbCb   *rbCb;
                                                 &prevNackSn);
 
             RLOG_ARG3(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                          "kwAmmUlAssembleCntrlInfo: Missing (last) byte " 
+                          "rlcAmmUlAssembleCntrlInfo: Missing (last) byte " 
                           "segment's SN:%d UEID:%d CELLID:%d",
                           sn,
                           rbCb->rlcId.ueId,
@@ -488,7 +488,7 @@ RlcUlRbCb   *rbCb;
    }
 
    RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId,
-            "kwAmmUlAssembleCntrlInfo: ACK PDU's SN = %d"
+            "rlcAmmUlAssembleCntrlInfo: ACK PDU's SN = %d"
             "UEID:%d CELLID:%d",
             pStatusPdu->ackSn,
             rbCb->rlcId.ueId,
@@ -523,7 +523,7 @@ extern U32  gRlcDatIndUL;
 #endif
 
 #ifdef T2K_TRIGGER_RLC_REEST
-PUBLIC U32 drpRlcDrbPack;
+U32 drpRlcDrbPack;
 #endif
 /**
  * @brief Handler to process the PDUs received from MAC and send it to PDCP
@@ -543,7 +543,7 @@ PUBLIC U32 drpRlcDrbPack;
  */
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC Void kwAmmProcessPdus
+Void rlcAmmProcessPdus
 (
 RlcCb                    *gCb,
 RlcUlRbCb                *rbCb,
@@ -551,7 +551,7 @@ KwPduInfo               *pduInfo,
 U32                     ttiCnt
 )
 #else
-PUBLIC Void kwAmmProcessPdus(gCb, rbCb, pduInfo, ulTimeInfo)
+Void rlcAmmProcessPdus(gCb, rbCb, pduInfo, ulTimeInfo)
 RlcCb                    *gCb;
 RlcUlRbCb                *rbCb;
 KwPduInfo               *pduInfo;
@@ -559,14 +559,14 @@ U32                     ttiCnt;
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void kwAmmProcessPdus
+Void rlcAmmProcessPdus
 (
 RlcCb        *gCb,
 RlcUlRbCb    *rbCb,
 KwPduInfo   *pduInfo
 )
 #else
-PUBLIC Void kwAmmProcessPdus(gCb, rbCb, pduInfo)
+Void rlcAmmProcessPdus(gCb, rbCb, pduInfo)
 RlcCb        *gCb;
 RlcUlRbCb    *rbCb;
 KwPduInfo   *pduInfo;
@@ -587,7 +587,7 @@ KwPduInfo   *pduInfo;
    MsgLen              rlcSduSz;  /*Holds length of Rlc Sdu*/
 #endif /* LTE_L2_MEAS */
 
-   TRC2(kwAmmProcessPdus)
+   TRC2(rlcAmmProcessPdus)
 
 
    amUl = &AMUL;
@@ -630,7 +630,7 @@ KwPduInfo   *pduInfo;
       KW_MEM_ZERO(&amHdr, sizeof(KwAmHdr));
       /* Avoided the allocation of amHdr and sending
          a single pointer */
-      if (kwAmmExtractHdr(gCb, rbCb, pdu, &amHdr, &fByte) != ROK)
+      if (rlcAmmExtractHdr(gCb, rbCb, pdu, &amHdr, &fByte) != ROK)
       {
          RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
                   "Header Extraction Failed UEID:%d CELLID:%d",
@@ -643,14 +643,14 @@ KwPduInfo   *pduInfo;
       /* Check if its a control PDU */
       if (amHdr.dc == 0)
       {
-         kwAmmUlHndlStatusPdu(gCb, rbCb, pdu, &fByte);
+         rlcAmmUlHndlStatusPdu(gCb, rbCb, pdu, &fByte);
          RLC_FREE_BUF(pdu);
          continue;
       }
       if((amHdr.si == KW_SI_LAST_SEG) && (!amHdr.so))
       {
          RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId,
-               "kwAmmProcessPdus: Dropping PDU because SO can't be zero for last segment sn:%u "
+               "rlcAmmProcessPdus: Dropping PDU because SO can't be zero for last segment sn:%u "
                "UEID:%d CELLID:%d",
                amHdr.sn,
                rbCb->rlcId.ueId,
@@ -701,7 +701,7 @@ KwPduInfo   *pduInfo;
 #endif
       /* Reordering data PDU */
       sn = amHdr.sn;
-      if (kwAmmUlPlacePduInRecBuf(gCb,pdu, rbCb, &amHdr) == TRUE)
+      if (rlcAmmUlPlacePduInRecBuf(gCb,pdu, rbCb, &amHdr) == TRUE)
       {
          KwAmRecBuf      *recBuf;
          Bool   tmrRunning;
@@ -709,7 +709,7 @@ KwPduInfo   *pduInfo;
          KwSn   mrxNextHighestRcvd;
 
 #ifdef LTE_L2_MEAS
-         kwUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt);
+         rlcUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt);
 #endif /* LTE_L2_MEAS */
 
          /* Update rxNextHighestRcvd */
@@ -720,7 +720,7 @@ KwPduInfo   *pduInfo;
             amUl->rxNextHighestRcvd = ((sn + 1) & (amUl->snModMask)); 
 
             RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId,
-                  "kwAmmProcessPdus: Updated rxNextHighestRcvd = %d UEID:%d CELLID:%d",
+                  "rlcAmmProcessPdus: Updated rxNextHighestRcvd = %d UEID:%d CELLID:%d",
                   amUl->rxNextHighestRcvd,
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
@@ -731,7 +731,7 @@ KwPduInfo   *pduInfo;
          {
             /* deliver the reassembled RLC SDU to upper layer, 
  	       But not removed from the table */
-            kwAmmUlReassembleSdus(gCb, rbCb, recBuf);
+            rlcAmmUlReassembleSdus(gCb, rbCb, recBuf);
             recBuf->isDelvUpperLayer = TRUE;
 
             MODAMR(amUl->vrMr, tVrMr, amUl->rxNext, amUl->snModMask);
@@ -749,7 +749,7 @@ KwPduInfo   *pduInfo;
                   if ((NULLP == recBuf) || (!recBuf->allRcvd))
                   {
                      RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId,
-                           "kwAmmProcessPdus: Updated rxHighestStatus:%d "
+                           "rlcAmmProcessPdus: Updated rxHighestStatus:%d "
                            "UEID:%d CELLID:%d",
                            tSn,
                            rbCb->rlcId.ueId,
@@ -780,7 +780,7 @@ KwPduInfo   *pduInfo;
 	             /* RecBuf should remove from table 
 			since PDU is already sent to upper layer */
  		      recBuf->isDelvUpperLayer = FALSE;
-                      kwUtlDelRecBuf(amUl->recBufLst, recBuf, gCb);
+                      rlcUtlDelRecBuf(amUl->recBufLst, recBuf, gCb);
                   }
                   else
                   {
@@ -796,7 +796,7 @@ KwPduInfo   *pduInfo;
          }
 
          /* Check if reOrdTmr is running and update rxNextStatusTrig accordingly */
-         tmrRunning = kwChkTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
+         tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
          if (tmrRunning)
          {
             Bool snInWin = KW_AM_CHK_SN_WITHIN_RECV_WINDOW(amUl->rxNextStatusTrig, amUl);
@@ -804,7 +804,7 @@ KwPduInfo   *pduInfo;
             if ( (amUl->rxNextStatusTrig == amUl->rxNext) || ( (!snInWin) &&
                                              (amUl->rxNextStatusTrig != amUl->vrMr) ) )
             {
-               kwStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
+               rlcStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
                tmrRunning = FALSE;
             }
          }
@@ -813,11 +813,11 @@ KwPduInfo   *pduInfo;
          {
             if (amUl->rxNextHighestRcvd > amUl->rxNext)
             {
-               kwStartTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
+               rlcStartTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
                amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
 
                RLOG_ARG3(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                        "kwAmmProcessPdus: Updated rxNextStatusTrig = %d UEID:%d CELLID:%d",
+                        "rlcAmmProcessPdus: Updated rxNextStatusTrig = %d UEID:%d CELLID:%d",
                         amUl->rxNextStatusTrig,
                         rbCb->rlcId.ueId,
                         rbCb->rlcId.cellId);
@@ -832,17 +832,17 @@ KwPduInfo   *pduInfo;
 
       if (amHdr.p)
       {
-         kwAmmTriggerStatus(gCb,rbCb, sn, discFlg);
+         rlcAmmTriggerStatus(gCb,rbCb, sn, discFlg);
       }
    }
 
 #ifdef LTE_L2_MEAS
-   kwUtlCalUlIpThrPutIncTTI(gCb, rbCb,ttiCnt);
+   rlcUtlCalUlIpThrPutIncTTI(gCb, rbCb,ttiCnt);
 #endif /* LTE_L2_MEAS */
    gCb->genSts.pdusRecv += pduInfo->numPdu;
    if (amUl->gatherStaPduInfo)
    {
-      kwAmmUlAssembleCntrlInfo(gCb,rbCb);
+      rlcAmmUlAssembleCntrlInfo(gCb,rbCb);
    }
 
    RETVOID;
@@ -871,7 +871,7 @@ KwPduInfo   *pduInfo;
  *
  */
 #ifdef ANSI
-PRIVATE S16 kwAmmExtractHdr
+PRIVATE S16 rlcAmmExtractHdr
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb,
@@ -880,7 +880,7 @@ KwAmHdr    *amHdr,
 U8         *fByte
 )
 #else
-PRIVATE S16 kwAmmExtractHdr(gCb, rbCb, pdu, amHdr, fByte)
+PRIVATE S16 rlcAmmExtractHdr(gCb, rbCb, pdu, amHdr, fByte)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;
 Buffer     *pdu;
@@ -893,7 +893,7 @@ U8         *fByte;
    MsgLen     pduSz;
    KwExtHdr   hdrInfo;
 
-   TRC2(kwAmmExtractHdr)
+   TRC2(rlcAmmExtractHdr)
 
 
    KW_MEM_ZERO(&hdrInfo, sizeof(KwExtHdr));
@@ -932,7 +932,7 @@ U8         *fByte;
    if ((amHdr->si != 0) && (amHdr->si != 0x01))
    {
       hdrInfo.len = KW_SO_LEN_5GNR;
-      kwAmmExtractElmnt(gCb, pdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, pdu, &hdrInfo);
       amHdr->so = hdrInfo.val;
       pduSz -= 2;
    }
@@ -964,7 +964,7 @@ U8         *fByte;
  *
  */
 #ifdef ANSI
-PRIVATE S16 kwAmmExtractHdrOld
+PRIVATE S16 rlcAmmExtractHdrOld
 (
 RlcCb       *gCb,
 Buffer     *pdu,
@@ -972,7 +972,7 @@ KwAmHdr    *amHdr,
 U8         *fByte
 )
 #else
-PRIVATE S16 kwAmmExtractHdrOld(gCb, pdu, amHdr, fByte)
+PRIVATE S16 rlcAmmExtractHdrOld(gCb, pdu, amHdr, fByte)
 RlcCb       *gCb;
 Buffer     *pdu;
 KwAmHdr    *amHdr;
@@ -986,7 +986,7 @@ U8         *fByte;
    MsgLen     totalSz = 0;
    KwExtHdr   hdrInfo;
 
-   TRC2(kwAmmExtractHdrOld)
+   TRC2(rlcAmmExtractHdrOld)
 
 
    KW_MEM_ZERO(&hdrInfo, sizeof(KwExtHdr));
@@ -1013,11 +1013,11 @@ U8         *fByte;
    {
       /* Extract extn part of the header */
       hdrInfo.len = KW_LSF_LEN;
-      kwAmmExtractElmnt(gCb, pdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, pdu, &hdrInfo);
       amHdr->lsf = (U8)hdrInfo.val;
 
       hdrInfo.len = KW_SO_LEN;
-      kwAmmExtractElmnt(gCb, pdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, pdu, &hdrInfo);
       amHdr->so = hdrInfo.val;
       pduSz -= 2;
    }
@@ -1027,12 +1027,12 @@ U8         *fByte;
    while (e && (amHdr->numLi < KW_MAX_UL_LI))
    {
       hdrInfo.len = KW_E_LEN;
-      kwAmmExtractElmnt(gCb, pdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, pdu, &hdrInfo);
       e = amHdr->e = (U8)hdrInfo.val;
 
       /* Extract LI value*/
       hdrInfo.len = KW_LI_LEN;
-      kwAmmExtractElmnt(gCb, pdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, pdu, &hdrInfo);
       /* li = hdrInfo.val;*/
 
       /* check if LI is zero */
@@ -1073,7 +1073,7 @@ U8         *fByte;
  * @brief Private handler to process the status PDU
  *
  * @details
- *    Private handler invokded by kwAmmProcessPdus to process the
+ *    Private handler invokded by rlcAmmProcessPdus to process the
  *    control PDU (status report) received from its peer RLC entity.
  *
  *        - Decode the values from the received control pdu
@@ -1089,7 +1089,7 @@ U8         *fByte;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmUlHndlStatusPdu
+PRIVATE Void rlcAmmUlHndlStatusPdu
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb,
@@ -1097,7 +1097,7 @@ Buffer     *cntrlPdu,
 U8         *fByte
 )
 #else
-PRIVATE Void kwAmmUlHndlStatusPdu(gCb, rbCb, cntrlPdu, fByte)
+PRIVATE Void rlcAmmUlHndlStatusPdu(gCb, rbCb, cntrlPdu, fByte)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;
 Buffer     *cntrlPdu;
@@ -1114,7 +1114,7 @@ U8         *fByte;
    U32            resrvdBitsAckSn=0;
    U32            resrvdBitsNackSn=0;
 
-   TRC2(kwAmmUlHndlStatusPdu)
+   TRC2(rlcAmmUlHndlStatusPdu)
 
 
    KW_MEM_ZERO(&hdrInfo, sizeof(KwExtHdr));
@@ -1174,40 +1174,40 @@ U8         *fByte;
 
    /* ACK Sn */
    hdrInfo.len = snLen;
-   kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+   rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
    pStaPdu->ackSn = hdrInfo.val;
 
    //printf ("++++++++++++ 5GNRLOG HNDL STATUS acksn %d : \n",  pStaPdu->ackSn);
    /* Check if NACK Exists */
    hdrInfo.len = KW_E1_LEN;
-   kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+   rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
    e1 = (U8)hdrInfo.val;
    RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-            "kwAmmUlHndlStatusPdu: ACK SN = %d UEID:%d CELLID:%d",
+            "rlcAmmUlHndlStatusPdu: ACK SN = %d UEID:%d CELLID:%d",
             pStaPdu->ackSn,
             rbCb->rlcId.ueId,
             rbCb->rlcId.cellId);
 
    /* Extract the Reserved Bits after ACK SN field */
    hdrInfo.len = resrvdBitsAckSn;
-   kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+   rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
 
    /* If NACK exists in control PDU */
    /* For ACKs and NACKs */
    while (e1 && (pStaPdu->nackCnt < KW_MAX_NACK_CNT))
    {
       hdrInfo.len = snLen;
-      kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
       pStaPdu->nackInfo[pStaPdu->nackCnt].sn = hdrInfo.val;
 
       hdrInfo.len = KW_E1_LEN;
-      kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
       e1 = (U8)hdrInfo.val;
 
       /* Extract e2 */
       /* hdrInfo.len = KW_E1_LEN; --> previusly stored value (for e1) is
          already present*/
-      kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
       /*  e2 = (U8) hdrInfo.val;*/
 
       /* Store e2 value */
@@ -1216,25 +1216,25 @@ U8         *fByte;
       /* Extract e3 : 5GNR */
       /* hdrInfo.len = KW_E1_LEN; --> previusly stored value (for e1) is
          already present*/
-      kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
       e3 = (U8) hdrInfo.val;
 
       /* Extract Reserved Bits after NACK SN */
       hdrInfo.len = resrvdBitsNackSn;
-      kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+      rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
 
       /* Test for resegmentation */
       if (pStaPdu->nackInfo[pStaPdu->nackCnt].isSegment)
       {
          hdrInfo.len = KW_SO_LEN_5GNR; /* 5GNR : SO Len 16 Bits */
-         kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+         rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
          pStaPdu->nackInfo[pStaPdu->nackCnt].soStart = hdrInfo.val;
 
-         kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+         rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
          pStaPdu->nackInfo[pStaPdu->nackCnt].soEnd   = hdrInfo.val;
 
          RLOG_ARG4(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                       "kwAmmUlHndlStatusPdu: soStart and soEnd = %d %d"
+                       "rlcAmmUlHndlStatusPdu: soStart and soEnd = %d %d"
                        "UEID:%d CELLID:%d",
                        pStaPdu->nackInfo[pStaPdu->nackCnt].soStart,
                        pStaPdu->nackInfo[pStaPdu->nackCnt].soEnd,      
@@ -1253,7 +1253,7 @@ U8         *fByte;
       {
          /* Extract NACK range field */
          hdrInfo.len = KW_NACK_RANGE_LEN;
-         kwAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
+         rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
          snRange = (U8)hdrInfo.val;
 
          pStaPdu->nackInfo[pStaPdu->nackCnt].nackRange = snRange;
@@ -1283,7 +1283,7 @@ U8         *fByte;
  * @brief Private handler to release all stored segments
  *
  * @details
- *    Private handler invokded by kwAmmUlPlacePduInRecBuf to release the
+ *    Private handler invokded by rlcAmmUlPlacePduInRecBuf to release the
  *    stored segements in case a complete PDU is received later.
  *
  * @param[in]  gCb      RLC instance control block
@@ -1293,20 +1293,20 @@ U8         *fByte;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmUlRlsAllSegs
+PRIVATE Void rlcAmmUlRlsAllSegs
 (
 RlcCb         *gCb,
 KwAmRecBuf   *recBuf
 )
 #else
-PRIVATE Void kwAmmUlRlsAllSegs(gCb,recBuf)
+PRIVATE Void rlcAmmUlRlsAllSegs(gCb,recBuf)
 RlcCb         *gCb;
 KwAmRecBuf   *recBuf;
 #endif
 {
    KwSeg *seg;
 
-   TRC2(kwAmmUlRlsAllSegs)
+   TRC2(rlcAmmUlRlsAllSegs)
 
    KW_LLIST_FIRST_SEG(recBuf->segLst, seg);
    while (seg != NULLP)
@@ -1324,7 +1324,7 @@ KwAmRecBuf   *recBuf;
  * @brief Private handler to store the received segment
  *
  * @details
- *    Private handler invokded by kwAmmUlPlacePduInRecBuf to add a received
+ *    Private handler invokded by rlcAmmUlPlacePduInRecBuf to add a received
  *    segment in reception buffer of a RBCB.
  *    - It is responsible for detecting duplicate segments
  *    - Adding it at appropriate position in the received buffer
@@ -1341,7 +1341,7 @@ KwAmRecBuf   *recBuf;
  *   -#FALSE Possibly a duplicate segment
  */
 #ifdef ANSI
-PRIVATE Bool kwAmmAddRcvdSeg
+PRIVATE Bool rlcAmmAddRcvdSeg
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb,
@@ -1350,7 +1350,7 @@ Buffer     *pdu,
 U16        pduSz
 )
 #else
-PRIVATE Bool kwAmmAddRcvdSeg(gCb, rbCb, amHdr, pdu, pduSz)
+PRIVATE Bool rlcAmmAddRcvdSeg(gCb, rbCb, amHdr, pdu, pduSz)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;
 KwAmHdr    *amHdr;
@@ -1364,7 +1364,7 @@ U16        pduSz;
    U16          soEnd;       /* Holds the SoEnd of received segment */
    U16          expSo = 0;   /* Expected SO */
 
-   TRC2(kwAmmAddRcvdSeg)
+   TRC2(rlcAmmAddRcvdSeg)
 
    soEnd = amHdr->so + pduSz - 1;
    recBuf =  kwUtlGetRecBuf(AMUL.recBufLst, amHdr->sn);
@@ -1384,7 +1384,7 @@ U16        pduSz;
          RETVALUE(FALSE);
       }
 #endif /* ERRCLASS & ERRCLS_RES */
-      kwUtlStoreRecBuf(AMUL.recBufLst, recBuf, amHdr->sn);
+      rlcUtlStoreRecBuf(AMUL.recBufLst, recBuf, amHdr->sn);
    }
    else
    {
@@ -1454,7 +1454,7 @@ U16        pduSz;
       cmLListInsCrnt(&recBuf->segLst, &tseg->lstEnt);
    }
    tseg->lstEnt.node = (PTR)tseg;
-   kwAmmUpdExpByteSeg(gCb,&AMUL,tseg);
+   rlcAmmUpdExpByteSeg(gCb,&AMUL,tseg);
 
    RETVALUE(TRUE);
 }
@@ -1478,7 +1478,7 @@ U16        pduSz;
  *
  */
 #ifdef ANSI
-PRIVATE Bool kwAmmUlPlacePduInRecBuf
+PRIVATE Bool rlcAmmUlPlacePduInRecBuf
 (
 RlcCb       *gCb,
 Buffer     *pdu,
@@ -1486,7 +1486,7 @@ RlcUlRbCb   *rbCb,
 KwAmHdr    *amHdr
 )
 #else
-PRIVATE Bool kwAmmUlPlacePduInRecBuf(gCb, pdu, rbCb, amHdr)
+PRIVATE Bool rlcAmmUlPlacePduInRecBuf(gCb, pdu, rbCb, amHdr)
 RlcCb       *gCb;
 Buffer     *pdu;
 RlcUlRbCb   *rbCb;
@@ -1497,7 +1497,7 @@ KwAmHdr    *amHdr;
    MsgLen   pduSz;
    KwAmUl   *amUl = &(rbCb->m.amUl);
 
-   TRC2(kwAmmUlPlacePduInRecBuf)
+   TRC2(rlcAmmUlPlacePduInRecBuf)
 
 
    sn = amHdr->sn;
@@ -1509,7 +1509,7 @@ KwAmHdr    *amHdr;
    {
       gRlcStats.amRlcStats.numRlcAmCellDropOutWinRx++;
       RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId,
-                    "kwAmmUlPlacePduInRecBuf: SN  %d outside the window"
+                    "rlcAmmUlPlacePduInRecBuf: SN  %d outside the window"
                     "UEID:%d CELLID:%d",
                     sn,
                     rbCb->rlcId.ueId,
@@ -1541,11 +1541,11 @@ KwAmHdr    *amHdr;
             RETVALUE(FALSE);
          }
 #endif /* ERRCLASS & ERRCLS_RES */
-         kwUtlStoreRecBuf(AMUL.recBufLst, recBuf, sn);
+         rlcUtlStoreRecBuf(AMUL.recBufLst, recBuf, sn);
       }
       else if (recBuf->allRcvd != TRUE)
       {
-         kwAmmUlRlsAllSegs(gCb,recBuf);
+         rlcAmmUlRlsAllSegs(gCb,recBuf);
       }
       else
       {
@@ -1566,7 +1566,7 @@ KwAmHdr    *amHdr;
    {
       /* We received a segment. We need to add that to the existing */
       /* segments, if any.                                          */
-      RETVALUE(kwAmmAddRcvdSeg(gCb,rbCb, amHdr, pdu, pduSz));
+      RETVALUE(rlcAmmAddRcvdSeg(gCb,rbCb, amHdr, pdu, pduSz));
    }
 }
 
@@ -1574,7 +1574,7 @@ KwAmHdr    *amHdr;
  * @brief Private handler to trigger status report
  *
  * @details
- *    Private handler invokded by kwAmmProcessPdus to check if the
+ *    Private handler invokded by rlcAmmProcessPdus to check if the
  *    status report need to be sent, and update the status trigger
  *    flag accordingly based on status prohibit timer.
  *
@@ -1594,7 +1594,7 @@ KwAmHdr    *amHdr;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmTriggerStatus
+PRIVATE Void rlcAmmTriggerStatus
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb,
@@ -1602,7 +1602,7 @@ KwSn       sn,
 Bool       discFlg
 )
 #else
-PRIVATE Void kwAmmTriggerStatus(gCb,rbCb, sn, discFlg)
+PRIVATE Void rlcAmmTriggerStatus(gCb,rbCb, sn, discFlg)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;
 KwSn       sn;
@@ -1615,7 +1615,7 @@ Bool       discFlg;
    KwSn     trxHighestStatus;
    KwAmUl   *amUl = &(rbCb->m.amUl);
 
-   TRC2(kwAmmTriggerStatus)
+   TRC2(rlcAmmTriggerStatus)
 
 
    MODAMR(amUl->vrMr, tVrMr, amUl->rxNext, amUl->snModMask);
@@ -1627,7 +1627,7 @@ Bool       discFlg;
    if ((discFlg) || (tSn < trxHighestStatus) || (tSn >= tVrMr))
    {
       RLOG_ARG2(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-               "kwAmmTriggerStatus: Set Status Trigger UEID:%d CELLID:%d",
+               "rlcAmmTriggerStatus: Set Status Trigger UEID:%d CELLID:%d",
                      rbCb->rlcId.ueId,
                      rbCb->rlcId.cellId);
 
@@ -1635,7 +1635,7 @@ Bool       discFlg;
       amUl->gatherStaPduInfo = FALSE;
 
       /* Check if staProhTmr is running */
-      tmrRunning = kwChkTmr(gCb,(PTR) rbCb, KW_EVT_AMUL_STA_PROH_TMR);
+      tmrRunning = rlcChkTmr(gCb,(PTR) rbCb, KW_EVT_AMUL_STA_PROH_TMR);
 
       if (!tmrRunning)
       {
@@ -1665,7 +1665,7 @@ Bool       discFlg;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmProcPduOrSeg
+PRIVATE Void rlcAmmProcPduOrSeg
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb,
@@ -1673,7 +1673,7 @@ KwAmHdr    *amHdr,
 Buffer     *pdu
 )
 #else
-PRIVATE Void kwAmmProcPduOrSeg(gCb, rbCb, amHdr, pdu)
+PRIVATE Void rlcAmmProcPduOrSeg(gCb, rbCb, amHdr, pdu)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;
 KwAmHdr    *amHdr;
@@ -1681,7 +1681,7 @@ Buffer     *pdu;
 #endif
 {
 
-   TRC2(kwAmmProcPduOrSeg)
+   TRC2(rlcAmmProcPduOrSeg)
 
    if ((AMUL.expSn != amHdr->sn) || (AMUL.expSo != amHdr->so))
    {
@@ -1716,7 +1716,7 @@ Buffer     *pdu;
    if (pdu != NULLP)
    {
       AMUL.partialSdu = NULLP;
-      kwUtlSndDatInd(gCb,rbCb, pdu);
+      rlcUtlSndDatInd(gCb,rbCb, pdu);
    }
 
    RETVOID;
@@ -1727,7 +1727,7 @@ Buffer     *pdu;
  * @brief Private handler to reassemble SDUs
  *
  * @details
- *    Private handler invokded by kwAmmProcessPdus with the PDU
+ *    Private handler invokded by rlcAmmProcessPdus with the PDU
  *    from the reception buffer in sequence to reassemble SDUs and
  *    send it to PDCP.
  *
@@ -1743,14 +1743,14 @@ Buffer     *pdu;
  *
  */
 #ifdef ANSI
-PRIVATE S16 kwAmmUlReassembleSdus
+PRIVATE S16 rlcAmmUlReassembleSdus
 (
 RlcCb         *gCb,
 RlcUlRbCb     *rbCb,
 KwAmRecBuf   *recBuf
 )
 #else
-PRIVATE S16 kwAmmUlReassembleSdus(gCb, rbCb, recBuf)
+PRIVATE S16 rlcAmmUlReassembleSdus(gCb, rbCb, recBuf)
 RlcCb         *gCb;
 RlcUlRbCb     *rbCb;
 KwAmRecBuf   *recBuf;
@@ -1758,12 +1758,12 @@ KwAmRecBuf   *recBuf;
 {
    KwSeg        *seg;
 
-   TRC2(kwAmmUlReassembleSdus)
+   TRC2(rlcAmmUlReassembleSdus)
    //if (recBuf->amHdr.rf == 0)
    if (recBuf->amHdr.si == 0)
    {
       /* This is a PDU */
-      kwAmmProcPduOrSeg(gCb,rbCb, &recBuf->amHdr, recBuf->pdu);
+      rlcAmmProcPduOrSeg(gCb,rbCb, &recBuf->amHdr, recBuf->pdu);
       /* Assign NULLP to recBuf->pdu as this PDU is sent to PDCP */
       recBuf->pdu = NULLP;
       AMUL.expSn = (recBuf->amHdr.sn + 1) & (AMUL.snModMask); /* MOD 1024 */
@@ -1777,7 +1777,7 @@ KwAmRecBuf   *recBuf;
       AMUL.expSo = 0;
       while(seg)
       {
-         kwAmmProcPduOrSeg(gCb,rbCb, &seg->amHdr, seg->seg);
+         rlcAmmProcPduOrSeg(gCb,rbCb, &seg->amHdr, seg->seg);
          AMUL.expSo = seg->soEnd + 1;
 
          cmLListDelFrm(&(recBuf->segLst),&(seg->lstEnt));
@@ -1804,7 +1804,7 @@ KwAmRecBuf   *recBuf;
  *
  */
 #ifdef ANSI
-PUBLIC Void kwAmmUlReEstablish
+Void rlcAmmUlReEstablish
 (
 RlcCb         *gCb,
 CmLteRlcId   rlcId,
@@ -1812,7 +1812,7 @@ Bool         sendReEst,
 RlcUlRbCb     *rbCb
 )
 #else
-PUBLIC Void kwAmmUlReEstablish(gCb, rlcId, sendReEst, rbCb)
+Void rlcAmmUlReEstablish(gCb, rlcId, sendReEst, rbCb)
 RlcCb         *gCb;
 CmLteRlcId   rlcId;
 Bool         sendReEst;
@@ -1828,7 +1828,7 @@ RlcUlRbCb     *rbCb;
 #endif
    KwAmRecBuf   *recBuf = NULLP;
 
-   TRC2(kwAmmUlReEstablish);
+   TRC2(rlcAmmUlReEstablish);
 
 
    sn = AMUL.rxNext;
@@ -1844,7 +1844,7 @@ RlcUlRbCb     *rbCb;
       {
          if (recBuf->allRcvd == TRUE)
          {
-            kwAmmUlReassembleSdus(gCb,rbCb, recBuf);
+            rlcAmmUlReassembleSdus(gCb,rbCb, recBuf);
          }
          else
          {
@@ -1854,9 +1854,9 @@ RlcUlRbCb     *rbCb;
                RLC_FREE_BUF_WC(recBuf->pdu);
             }
             /* Release all the segments*/
-            kwAmmUlRlsAllSegs(gCb,recBuf);
+            rlcAmmUlRlsAllSegs(gCb,recBuf);
          }
-         kwUtlDelRecBuf(AMUL.recBufLst, recBuf, gCb);
+         rlcUtlDelRecBuf(AMUL.recBufLst, recBuf, gCb);
       }
       sn = (sn + 1) & (AMUL.snModMask); /* MOD 1024 */
       MODAMR(sn, mSn, AMUL.rxNext, AMUL.snModMask);
@@ -1864,13 +1864,13 @@ RlcUlRbCb     *rbCb;
    /* Discard remaining PDUs and bytesegments in recBuf */
 
    /* Stop all timers and reset variables */
-   if(TRUE == kwChkTmr(gCb,(PTR)rbCb,KW_EVT_AMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,KW_EVT_AMUL_REORD_TMR))
    {
-       kwStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
+       rlcStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
    }
-   if(TRUE == kwChkTmr(gCb,(PTR)rbCb,KW_EVT_AMUL_STA_PROH_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,KW_EVT_AMUL_STA_PROH_TMR))
    {
-       kwStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_STA_PROH_TMR);
+       rlcStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_STA_PROH_TMR);
    }
 
    AMUL.rxNext  = 0;
@@ -1890,7 +1890,7 @@ RlcUlRbCb     *rbCb;
 
    if(sendReEst)
    {
-      KwUiKwuReEstCmpInd(&kwKwSap->pst, kwKwSap->suId, rlcId);
+      rlcUiKwuReEstCmpInd(&kwKwSap->pst, kwKwSap->suId, rlcId);
       rbCb->m.amUl.isOutOfSeq = FALSE;
    }
 
@@ -1911,13 +1911,13 @@ RlcUlRbCb     *rbCb;
  */
 
 #ifdef ANSI
-PUBLIC Void kwAmmReOrdTmrExp
+Void rlcAmmReOrdTmrExp
 (
 RlcCb        *gCb,
 RlcUlRbCb    *rbCb
 )
 #else
-PUBLIC Void kwAmmReOrdTmrExp(rbCb)
+Void rlcAmmReOrdTmrExp(rbCb)
 RlcCb        *gCb;
 RlcUlRbCb    *rbCb;
 #endif
@@ -1931,7 +1931,7 @@ RlcUlRbCb    *rbCb;
    Bool tmrRunning = FALSE;
    KwAmRecBuf   *recBuf = NULLP;
 
-   TRC2(kwAmmReOrdTmrExp);
+   TRC2(rlcAmmReOrdTmrExp);
 
 
    /* Update rxHighestStatus */
@@ -1951,13 +1951,13 @@ RlcUlRbCb    *rbCb;
          amUl->gatherStaPduInfo = FALSE;
 
          /* Check if staProhTmr is running */
-         tmrRunning = kwChkTmr(gCb,(PTR) rbCb, KW_EVT_AMUL_STA_PROH_TMR);
+         tmrRunning = rlcChkTmr(gCb,(PTR) rbCb, KW_EVT_AMUL_STA_PROH_TMR);
 
          if (!tmrRunning)
          {
             gRlcStats.amRlcStats.numULReOrdTimerExpires++;
             amUl->gatherStaPduInfo = TRUE;
-            kwAmmUlAssembleCntrlInfo(gCb, rbCb);
+            rlcAmmUlAssembleCntrlInfo(gCb, rbCb);
          }
 
          break;
@@ -1971,12 +1971,12 @@ RlcUlRbCb    *rbCb;
    MODAMR(amUl->rxHighestStatus, mrxHighestStatus, amUl->rxNext, amUl->snModMask);
    if (mrxNextHighestRcvd > mrxHighestStatus)
    {
-      kwStartTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
+      rlcStartTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
       amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
    }
 
    RETVOID;
-} /* kwAmmReOrdTmrExp */
+} /* rlcAmmReOrdTmrExp */
 
 /**
  * @brief  Handler for status prohibit timer expiry
@@ -1993,20 +1993,20 @@ RlcUlRbCb    *rbCb;
  */
 
 #ifdef ANSI
-PUBLIC Void kwAmmStaProTmrExp
+Void rlcAmmStaProTmrExp
 (
 RlcCb        *gCb,
 RlcUlRbCb    *rbCb
 )
 #else
-PUBLIC Void kwAmmStaProTmrExp(gCb, rbCb)
+Void rlcAmmStaProTmrExp(gCb, rbCb)
 RlcCb        *gCb;
 RlcUlRbCb    *rbCb;
 #endif
 {
    KwAmUl *amUl = &(rbCb->m.amUl);
 
-   TRC2(kwAmmStaProTmrExp);
+   TRC2(rlcAmmStaProTmrExp);
 
 
    amUl->gatherStaPduInfo = FALSE;
@@ -2015,11 +2015,11 @@ RlcUlRbCb    *rbCb;
    {
       amUl->gatherStaPduInfo = TRUE;
       /* kw002.201 : Sending StaRsp after StaProhibit tmr expiry */
-      kwAmmUlAssembleCntrlInfo(gCb,rbCb);
+      rlcAmmUlAssembleCntrlInfo(gCb,rbCb);
    }
 
    RETVOID;
-} /* kwAmmStaProTmrExp */
+} /* rlcAmmStaProTmrExp */
 
 /**
  * @brief  Handler to extract an element of AM Header
@@ -2035,14 +2035,14 @@ RlcUlRbCb    *rbCb;
  */
 
 #ifdef ANSI
-PRIVATE Void kwAmmExtractElmnt
+PRIVATE Void rlcAmmExtractElmnt
 (
 RlcCb       *gCb,
 Buffer     *pdu,
 KwExtHdr   *hdrInfo
 )
 #else
-PRIVATE Void kwAmmExtractElmnt(gCb, pdu, hdrInfo)
+PRIVATE Void rlcAmmExtractElmnt(gCb, pdu, hdrInfo)
 RlcCb       *gCb;
 Buffer     *pdu;
 KwExtHdr   *hdrInfo;
@@ -2058,7 +2058,7 @@ KwExtHdr   *hdrInfo;
    /* U8   rLen1 = 0; */
    U16  tVal;
 
-   TRC2(kwAmmExtractElmnt);
+   TRC2(rlcAmmExtractElmnt);
 
    hdr = hdrInfo->hdr;
 
@@ -2132,14 +2132,14 @@ KwExtHdr   *hdrInfo;
  */
 
 #ifdef ANSI
-PRIVATE Void kwAmmUpdExpByteSeg
+PRIVATE Void rlcAmmUpdExpByteSeg
 (
 RlcCb     *gCb,
 KwAmUl   *amUl,
 KwSeg    *seg
 )
 #else
-PRIVATE Void kwAmmUpdExpByteSeg(gCb, amUl, seg)
+PRIVATE Void rlcAmmUpdExpByteSeg(gCb, amUl, seg)
 RlcCb     *gCb;
 KwAmUl   *amUl;
 KwSeg    *seg;
@@ -2150,7 +2150,7 @@ KwSeg    *seg;
    Bool   lstRcvd=FALSE;
    KwAmRecBuf *recBuf = NULLP;
    
-   TRC2(kwAmmUpdExpByteSeg);
+   TRC2(rlcAmmUpdExpByteSeg);
 
 
    recBuf = kwUtlGetRecBuf(amUl->recBufLst, sn);
@@ -2212,13 +2212,13 @@ KwSeg    *seg;
  * @return   void
  */
 #ifdef ANSI
-PUBLIC Void kwAmmFreeUlRbCb
+Void rlcAmmFreeUlRbCb
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb
 )
 #else
-PUBLIC Void kwAmmFreeUlRbCb(gCb,rbCb)
+Void rlcAmmFreeUlRbCb(gCb,rbCb)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;
 #endif
@@ -2227,18 +2227,18 @@ RlcUlRbCb   *rbCb;
    KwSn         windSz;              /* PDU window size */
    KwAmRecBuf *recBuf = NULLP;
 
-   TRC2(kwAmmFreeUlRbCb)
+   TRC2(rlcAmmFreeUlRbCb)
 
 
    windSz  =  (KW_AM_GET_WIN_SZ(rbCb->m.amUl.snLen)) << 1;
 
-   if(TRUE == kwChkTmr(gCb,(PTR)rbCb,KW_EVT_AMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,KW_EVT_AMUL_REORD_TMR))
    {
-      kwStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
+      rlcStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_REORD_TMR);
    }
-   if(TRUE == kwChkTmr(gCb,(PTR)rbCb,KW_EVT_AMUL_STA_PROH_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,KW_EVT_AMUL_STA_PROH_TMR))
    {
-      kwStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_STA_PROH_TMR);
+      rlcStopTmr(gCb,(PTR)rbCb, KW_EVT_AMUL_STA_PROH_TMR);
    }
 
 
@@ -2254,8 +2254,8 @@ RlcUlRbCb   *rbCb;
             RLC_FREE_BUF_WC(recBuf->pdu);
          }
          /* Release all the segments */
-         kwAmmUlRlsAllSegs(gCb,recBuf);
-         kwUtlDelRecBuf(rbCb->m.amUl.recBufLst, recBuf, gCb);
+         rlcAmmUlRlsAllSegs(gCb,recBuf);
+         rlcUtlDelRecBuf(rbCb->m.amUl.recBufLst, recBuf, gCb);
       }
       curSn++;
    }while ( curSn < windSz );
@@ -2270,7 +2270,7 @@ RlcUlRbCb   *rbCb;
       RLC_FREE_BUF_WC(rbCb->m.amUl.partialSdu);
    }
    RETVOID;
-} /* kwAmmFreeUlRbCb */
+} /* rlcAmmFreeUlRbCb */
 
 
 /*@}*/

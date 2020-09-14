@@ -212,19 +212,19 @@ typedef enum cmLteUeCategory
  *                         PACK/UNPACK Functions
  ***************************************************************************/
 
-EXTERN PUBLIC S16 cmUpdateSsiMemInfo(CmLteMemInfo *mInfo);
+EXTERN S16 cmUpdateSsiMemInfo(CmLteMemInfo *mInfo);
 
-EXTERN PUBLIC S16 cmFillMemUtilizationMeas(CmLteMemInfo *memoryInfo,CmLteMemInfo *memInfo);
+EXTERN S16 cmFillMemUtilizationMeas(CmLteMemInfo *memoryInfo,CmLteMemInfo *memInfo);
 
-EXTERN PUBLIC S16 cmClearMemUtilizationCounter(CmLteMemInfo *memInfo);
-EXTERN PUBLIC S16 UpdateSocMemInfo(U8 area , CmLteMemInfo *mInfo);
+EXTERN S16 cmClearMemUtilizationCounter(CmLteMemInfo *memInfo);
+EXTERN S16 UpdateSocMemInfo(U8 area , CmLteMemInfo *mInfo);
 
 EXTERN S16 cmFillCpuUtilizationMeas(CmLteCpuInfo *cpuMeasInfo,CmCpuStatsInfo *cpuInfo);
 
 EXTERN S16 cmClearCpuUtilizationCounter(CmCpuStatsInfo *cpuInfo);
-EXTERN PUBLIC Void UpdateSocCpuInfo(CmCpuStatsInfo *cpuInfo,U8 Idx);
+EXTERN Void UpdateSocCpuInfo(CmCpuStatsInfo *cpuInfo,U8 Idx);
 
-EXTERN PUBLIC S16 SGetRegPoolInfo(U8* numRegion, U8* numPool);
+EXTERN S16 SGetRegPoolInfo(U8* numRegion, U8* numPool);
 
 /* Packing Functions */
 EXTERN S16 cmPkLteRlcId ARGS ((

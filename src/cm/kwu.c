@@ -56,14 +56,14 @@
  *                      Packing Functions
  ***************************************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkKwuBndReq
+S16 cmPkKwuBndReq
 (
 Pst * pst,
 SuId suId,
 SpId spId
 )
 #else
-PUBLIC S16 cmPkKwuBndReq(pst, suId, spId)
+S16 cmPkKwuBndReq(pst, suId, spId)
 Pst * pst;
 SuId suId;
 SpId spId;
@@ -96,14 +96,14 @@ SpId spId;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuBndCfm
+S16 cmPkKwuBndCfm
 (
 Pst * pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 cmPkKwuBndCfm(pst, suId, status)
+S16 cmPkKwuBndCfm(pst, suId, status)
 Pst * pst;
 SuId suId;
 U8 status;
@@ -137,14 +137,14 @@ U8 status;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuUbndReq
+S16 cmPkKwuUbndReq
 (
 Pst * pst,
 SuId suId,
 Reason reason
 )
 #else
-PUBLIC S16 cmPkKwuUbndReq(pst, suId, reason)
+S16 cmPkKwuUbndReq(pst, suId, reason)
 Pst * pst;
 SuId suId;
 Reason reason;
@@ -512,13 +512,13 @@ Buffer * mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDatCfmInfo
+S16 cmPkKwuDatCfmInfo
 (
 KwuDatCfmInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkKwuDatCfmInfo(param, mBuf)
+S16 cmPkKwuDatCfmInfo(param, mBuf)
 KwuDatCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -537,14 +537,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDatCfm
+S16 cmPkKwuDatCfm
 (
 Pst * pst,
 SuId suId,
 KwuDatCfmInfo* datCfm
 )
 #else
-PUBLIC S16 cmPkKwuDatCfm(pst, suId, datCfm)
+S16 cmPkKwuDatCfm(pst, suId, datCfm)
 Pst * pst;
 SuId suId;
 KwuDatCfmInfo* datCfm;
@@ -611,14 +611,14 @@ KwuDatCfmInfo* datCfm;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDiscSduReq
+S16 cmPkKwuDiscSduReq
 (
 Pst * pst,
 SpId spId,
 KwuDiscSduInfo* discSdu
 )
 #else
-PUBLIC S16 cmPkKwuDiscSduReq(pst, spId, discSdu)
+S16 cmPkKwuDiscSduReq(pst, spId, discSdu)
 Pst * pst;
 SpId spId;
 KwuDiscSduInfo* discSdu;
@@ -690,13 +690,13 @@ KwuDiscSduInfo* discSdu;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuStaIndInfo
+S16 cmPkKwuStaIndInfo
 (
 KwuStaIndInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkKwuStaIndInfo(param, mBuf)
+S16 cmPkKwuStaIndInfo(param, mBuf)
 KwuStaIndInfo *param;
 Buffer *mBuf;
 #endif
@@ -715,13 +715,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuFlowCntrlIndInfo
+S16 cmPkKwuFlowCntrlIndInfo
 (
 KwuFlowCntrlIndInfo *param,
 Buffer              *mBuf
 )
 #else
-PUBLIC S16 cmPkKwuFlowCntrlIndInfo(param, mBuf)
+S16 cmPkKwuFlowCntrlIndInfo(param, mBuf)
 KwuFlowCntrlIndInfo  *param;
 Buffer               *mBuf;
 #endif
@@ -735,13 +735,13 @@ Buffer               *mBuf;
 } /* cmPkKwuFlowCntrlIndInfo */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuFlowCntrlIndInfo
+S16 cmUnpkKwuFlowCntrlIndInfo
 (
 KwuFlowCntrlIndInfo *param,
 Buffer              *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuFlowCntrlIndInfo(param, mBuf)
+S16 cmUnpkKwuFlowCntrlIndInfo(param, mBuf)
 KwuFlowCntrlIndInfo  *param;
 Buffer               *mBuf;
 #endif
@@ -756,14 +756,14 @@ Buffer               *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuStaInd
+S16 cmPkKwuStaInd
 (
 Pst * pst,
 SuId suId,
 KwuStaIndInfo* staInd
 )
 #else
-PUBLIC S16 cmPkKwuStaInd(pst, suId, staInd)
+S16 cmPkKwuStaInd(pst, suId, staInd)
 Pst * pst;
 SuId suId;
 KwuStaIndInfo* staInd;
@@ -832,14 +832,14 @@ KwuStaIndInfo* staInd;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuReEstCmpInd
+S16 cmPkKwuReEstCmpInd
 (
 Pst * pst,
 SuId suId,
 CmLteRlcId rlcId
 )
 #else
-PUBLIC S16 cmPkKwuReEstCmpInd(pst, suId, rlcId)
+S16 cmPkKwuReEstCmpInd(pst, suId, rlcId)
 Pst * pst;
 SuId suId;
 CmLteRlcId rlcId;
@@ -891,14 +891,14 @@ CmLteRlcId rlcId;
 
 /* kwu_c_001.main_3 added support for L2 Measurement */
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDiscSduCfm
+S16 cmPkKwuDiscSduCfm
 (
 Pst            *pst,
 SpId           spId,
 KwuDiscSduInfo *discCfmSdu
 )
 #else
-PUBLIC S16 cmPkKwuDiscSduCfm(pst, spId, discCfmSdu)
+S16 cmPkKwuDiscSduCfm(pst, spId, discCfmSdu)
 Pst            *pst;
 SpId           spId;
 KwuDiscSduInfo *discCfmSdu;
@@ -964,14 +964,14 @@ KwuDiscSduInfo *discCfmSdu;
 } /* cmPkKwuDiscSduCfm */
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuFlowCntrlInd
+S16 cmPkKwuFlowCntrlInd
 (
 Pst            *pst,
 SuId           suId,
 KwuFlowCntrlIndInfo *flowCntrlIndInfo
 )
 #else
-PUBLIC S16 cmPkKwuFlowCntrlInd(pst, suId, flowCntrlIndInfo)
+S16 cmPkKwuFlowCntrlInd(pst, suId, flowCntrlIndInfo)
 Pst            *pst;
 SuId           suId;
 KwuFlowCntrlIndInfo *flowCntrlIndInfo;
@@ -1025,13 +1025,13 @@ KwuFlowCntrlIndInfo *flowCntrlIndInfo;
 
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDatAckInfo
+S16 cmPkKwuDatAckInfo
 (
 KwuDatAckInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkKwuDatAckInfo(param, mBuf)
+S16 cmPkKwuDatAckInfo(param, mBuf)
 KwuDatAckInfo *param;
 Buffer *mBuf;
 #endif
@@ -1044,14 +1044,14 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwuDatAckInd
+S16 cmPkKwuDatAckInd
 (
 Pst * pst,
 SuId suId,
 KwuDatAckInfo* datInd
 )
 #else
-PUBLIC S16 cmPkKwuDatAckInd(pst, suId, datInd)
+S16 cmPkKwuDatAckInd(pst, suId, datInd)
 Pst * pst;
 SuId suId;
 KwuDatAckInfo* datInd;
@@ -1096,14 +1096,14 @@ KwuDatAckInfo* datInd;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuBndReq
+S16 cmUnpkKwuBndReq
 (
 KwuBndReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuBndReq(func, pst, mBuf)
+S16 cmUnpkKwuBndReq(func, pst, mBuf)
 KwuBndReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -1123,14 +1123,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuBndCfm
+S16 cmUnpkKwuBndCfm
 (
 KwuBndCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuBndCfm(func, pst, mBuf)
+S16 cmUnpkKwuBndCfm(func, pst, mBuf)
 KwuBndCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -1150,14 +1150,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuUbndReq
+S16 cmUnpkKwuUbndReq
 (
 KwuUbndReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuUbndReq(func, pst, mBuf)
+S16 cmUnpkKwuUbndReq(func, pst, mBuf)
 KwuUbndReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -1177,13 +1177,13 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDatReqInfo
+S16 cmUnpkKwuDatReqInfo
 (
 KwuDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDatReqInfo(param, mBuf)
+S16 cmUnpkKwuDatReqInfo(param, mBuf)
 KwuDatReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -1221,14 +1221,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDatReq
+S16 cmUnpkKwuDatReq
 (
 KwuDatReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDatReq(func, pst, mBuf)
+S16 cmUnpkKwuDatReq(func, pst, mBuf)
 KwuDatReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -1402,13 +1402,13 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDatCfmInfo
+S16 cmUnpkKwuDatCfmInfo
 (
 KwuDatCfmInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDatCfmInfo(param, mBuf)
+S16 cmUnpkKwuDatCfmInfo(param, mBuf)
 KwuDatCfmInfo *param;
 Buffer *mBuf;
 #endif
@@ -1431,14 +1431,14 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDatCfm
+S16 cmUnpkKwuDatCfm
 (
 KwuDatCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDatCfm(func, pst, mBuf)
+S16 cmUnpkKwuDatCfm(func, pst, mBuf)
 KwuDatCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -1506,14 +1506,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDiscSduReq
+S16 cmUnpkKwuDiscSduReq
 (
 KwuDiscSduReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDiscSduReq(func, pst, mBuf)
+S16 cmUnpkKwuDiscSduReq(func, pst, mBuf)
 KwuDiscSduReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -1577,13 +1577,13 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuStaIndInfo
+S16 cmUnpkKwuStaIndInfo
 (
 KwuStaIndInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuStaIndInfo(param, mBuf)
+S16 cmUnpkKwuStaIndInfo(param, mBuf)
 KwuStaIndInfo *param;
 Buffer *mBuf;
 #endif
@@ -1604,14 +1604,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuStaInd
+S16 cmUnpkKwuStaInd
 (
 KwuStaInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuStaInd(func, pst, mBuf)
+S16 cmUnpkKwuStaInd(func, pst, mBuf)
 KwuStaInd func;
 Pst *pst;
 Buffer *mBuf;
@@ -1679,14 +1679,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuReEstCmpInd
+S16 cmUnpkKwuReEstCmpInd
 (
 KwuReEstCmpInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuReEstCmpInd(func, pst, mBuf)
+S16 cmUnpkKwuReEstCmpInd(func, pst, mBuf)
 KwuReEstCmpInd func;
 Pst *pst;
 Buffer *mBuf;
@@ -1732,14 +1732,14 @@ Buffer *mBuf;
 
 /* kwu_c_001.main_3 added support for L2 Measurement */
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDiscSduCfm
+S16 cmUnpkKwuDiscSduCfm
 (
 KwuDiscSduCfm  func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDiscSduCfm(func, pst, mBuf)
+S16 cmUnpkKwuDiscSduCfm(func, pst, mBuf)
 KwuDiscSduCfm  func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1803,14 +1803,14 @@ Buffer         *mBuf;
    RETVALUE((*func)(pst, spId, discSdu));
 } /* cmUnpkKwuDiscSduCfm */
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuFlowCntrlInd
+S16 cmUnpkKwuFlowCntrlInd
 (
 KwuFlowCntrlInd  func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuFlowCntrlInd(func, pst, mBuf)
+S16 cmUnpkKwuFlowCntrlInd(func, pst, mBuf)
 KwuFlowCntrlInd  func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1855,13 +1855,13 @@ Buffer         *mBuf;
 #ifdef LTE_L2_MEAS
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDatAckInfo
+S16 cmUnpkKwuDatAckInfo
 (
 KwuDatAckInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDatAckInfo(param, mBuf)
+S16 cmUnpkKwuDatAckInfo(param, mBuf)
 KwuDatAckInfo *param;
 Buffer *mBuf;
 #endif
@@ -1876,14 +1876,14 @@ Buffer *mBuf;
 
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwuDatAckInd
+S16 cmUnpkKwuDatAckInd
 (
 KwuDatAckInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwuDatAckInd(func, pst, mBuf)
+S16 cmUnpkKwuDatAckInd(func, pst, mBuf)
 KwuDatAckInd func;
 Pst *pst;
 Buffer *mBuf;

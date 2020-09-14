@@ -25,14 +25,14 @@
      Desc:     Source code for RLC Upper Interface Module
                This file contains following functions
       
-        --KwUiCkwBndReq
-        --KwUiCkwUbndReq
+        --rlcUiCkwBndReq
+        --rlcUiCkwUbndReq
         --RlcProcCfgReq
 
-        --KwUiKwuBndReq
-        --KwUiKwuUbndReq
-        --KwUiKwuDatReq
-        --KwUiKwuDiscSduReq 
+        --rlcUiKwuBndReq
+        --rlcUiKwuUbndReq
+        --rlcUiKwuDatReq
+        --rlcUiKwuDiscSduReq 
 
      File:     kw_uim.c
 
@@ -98,14 +98,14 @@ static int RLOG_FILE_ID=205;
  *
 */
 #ifdef ANSI
-PUBLIC S16 KwUiCkwBndReq 
+S16 rlcUiCkwBndReq 
 (
 Pst    *pst,
 SuId   suId,
 SpId   spId 
 )
 #else
-PUBLIC S16 KwUiCkwBndReq (pst, suId, spId)
+S16 rlcUiCkwBndReq (pst, suId, spId)
 Pst    *pst; 
 SuId   suId;
 SpId   spId;
@@ -114,7 +114,7 @@ SpId   spId;
    KwCkwSapCb   *ckwSap;  
    RlcCb         *tRlcCb;
 
-   TRC3(KwUiCkwBndReq);
+   TRC3(rlcUiCkwBndReq);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
@@ -143,7 +143,7 @@ SpId   spId;
          /* Update the State */
          ckwSap->state = KW_SAP_BND;
 
-         RLOG1(L_DEBUG, "KwUiCkwBndReq: state (%d)", ckwSap->state);
+         RLOG1(L_DEBUG, "rlcUiCkwBndReq: state (%d)", ckwSap->state);
          break;
       }
       case KW_SAP_BND:
@@ -161,7 +161,7 @@ SpId   spId;
                                 LCM_CAUSE_INV_PAR_VAL);
 
             RLOG0(L_ERROR, "CKW SAP already Bound");
-            KwUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_NOK);
+            rlcUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_NOK);
             RETVALUE(RFAILED);
          }
          break;
@@ -175,13 +175,13 @@ SpId   spId;
                              LKW_EVENT_CKW_BND_REQ, 
                              LCM_CAUSE_INV_STATE);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-         KwUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_NOK);
+         rlcUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_NOK);
          RETVALUE(RFAILED);
          break;
       }
    }
 
-   KwUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_OK);
+   rlcUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_OK);
    RETVALUE(ROK);
 } 
 
@@ -205,14 +205,14 @@ SpId   spId;
  *    -# RFAILED
 */ 
 #ifdef ANSI
-PUBLIC S16 KwUiCkwUbndReq
+S16 rlcUiCkwUbndReq
 (
 Pst      *pst,   
 SpId     spId,  
 Reason   reason 
 )
 #else
-PUBLIC S16 KwUiCkwUbndReq(pst, spId, reason)
+S16 rlcUiCkwUbndReq(pst, spId, reason)
 Pst      *pst; 
 SpId     spId; 
 Reason   reason;
@@ -220,7 +220,7 @@ Reason   reason;
 {
    RlcCb *tRlcCb;
 
-   TRC3(KwUiCkwUbndReq)
+   TRC3(rlcUiCkwUbndReq)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
@@ -240,7 +240,7 @@ Reason   reason;
    KW_GET_AND_VALIDATE_CKWSAP(tRlcCb, 
                               (&(tRlcCb->u.ulCb->ckwSap)), 
                               EKW208, 
-                              "KwUiCkwUbndReq");
+                              "rlcUiCkwUbndReq");
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    /* disable upper sap (CKW) */
@@ -265,13 +265,13 @@ Reason   reason;
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 RlcProcCfgReq
+S16 RlcProcCfgReq
 (
 Pst          *pst,
 RlcCfgInfo   *cfg
 )
 #else
-PUBLIC S16 RlcProcCfgReq(pst, cfg)
+S16 RlcProcCfgReq(pst, cfg)
 Pst          *pst;
 RlcCfgInfo   *cfg;
 #endif
@@ -307,7 +307,7 @@ RlcCfgInfo   *cfg;
    cfgTmpData->cfgInfo  = cfg;
 
  
-   if (kwDbmAddUlTransaction(tRlcCb, cfgTmpData) != ROK)
+   if (rlcDbmAddUlTransaction(tRlcCb, cfgTmpData) != ROK)
    {
       RLOG0(L_ERROR, "Addition to UL transId Lst Failed");
       RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo));
@@ -341,7 +341,7 @@ RlcCfgInfo   *cfg;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiCkwUeIdChgReq
+S16 rlcUiCkwUeIdChgReq
 (
 Pst         *pst, 
 SpId        spId, 
@@ -350,7 +350,7 @@ CkwUeInfo   *ueInfo,
 CkwUeInfo   *newUeInfo
 )
 #else
-PUBLIC S16 KwUiCkwUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
+S16 rlcUiCkwUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
 Pst         *pst;
 SpId        spId;
 U32         transId;
@@ -362,7 +362,7 @@ CkwUeInfo   *newUeInfo;
    RlcCb             *tRlcCb;
    RlcUlCfgTmpData   *cfgTmpData = NULLP;
 
-   TRC3(KwUiCkwUeIdChgReq)
+   TRC3(rlcUiCkwUeIdChgReq)
 
    do
    {
@@ -377,12 +377,12 @@ CkwUeInfo   *newUeInfo;
       tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 #ifndef ALIGN_64BIT
       RLOG_ARG2(L_DEBUG,DBG_CELLID,newUeInfo->cellId,
-                   "KwUiCkwUeIdChgReq(pst, spId(%d), transId(%ld))", 
+                   "rlcUiCkwUeIdChgReq(pst, spId(%d), transId(%ld))", 
                    spId, 
                    transId);
 #else
       RLOG_ARG2(L_DEBUG,DBG_CELLID,newUeInfo->cellId, 
-                   "KwUiCkwUeIdChgReq(pst, spId(%d), transId(%d))\n", 
+                   "rlcUiCkwUeIdChgReq(pst, spId(%d), transId(%d))\n", 
                    spId, 
                    transId);
 #endif
@@ -398,7 +398,7 @@ CkwUeInfo   *newUeInfo;
       cfgTmpData->ueInfo  = ueInfo;
       cfgTmpData->newUeInfo  = newUeInfo; 
 
-      if (kwDbmAddUlTransaction(tRlcCb, cfgTmpData))
+      if (rlcDbmAddUlTransaction(tRlcCb, cfgTmpData))
       {
          RLOG0(L_ERROR, "Addition to UL transId Lst Failed");
          ret = RFAILED;
@@ -451,14 +451,14 @@ CkwUeInfo   *newUeInfo;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC Void rlcUlHdlCfgReq
+Void rlcUlHdlCfgReq
 (
 RlcCb             *gCb,
 RlcUlCfgTmpData   *cfgTmpData,
 RlcCfgInfo       *cfg
 )
 #else
-PUBLIC Void rlcUlHdlCfgReq(gCb, cfgTmpData, cfg)
+Void rlcUlHdlCfgReq(gCb, cfgTmpData, cfg)
 RlcCb             *gCb;
 RlcUlCfgTmpData   *cfgTmpData;
 RlcCfgInfo       *cfg;
@@ -607,14 +607,14 @@ RlcCfgInfo       *cfg;
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuBndReq 
+S16 rlcUiKwuBndReq 
 (
 Pst    *pst,  
 SuId   suId, 
 SpId   spId 
 )
 #else
-PUBLIC S16 KwUiKwuBndReq (pst, suId, spId)
+S16 rlcUiKwuBndReq (pst, suId, spId)
 Pst    *pst;  
 SuId   suId; 
 SpId   spId; 
@@ -623,7 +623,7 @@ SpId   spId;
    KwKwuSapCb   *kwuSap;     /* SAP Config Block */
    RlcCb         *tRlcCb;
    
-   TRC3(KwUiKwuBndReq)
+   TRC3(rlcUiKwuBndReq)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
@@ -632,7 +632,7 @@ SpId   spId;
    }
 #endif
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
-   RLOG2(L_DEBUG, "KwUiKwuBndReq(pst, spId(%d), suId(%d))", spId, suId);
+   RLOG2(L_DEBUG, "rlcUiKwuBndReq(pst, spId(%d), suId(%d))", spId, suId);
 
     /* Validation of input parameters */
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -665,7 +665,7 @@ SpId   spId;
          /* Update the State */
          kwuSap->state = KW_SAP_BND;
 
-         RLOG1(L_DEBUG, "KwUiKwuBndReq: state (%d)", kwuSap->state);
+         RLOG1(L_DEBUG, "rlcUiKwuBndReq: state (%d)", kwuSap->state);
          break;
       }
       case KW_SAP_BND:
@@ -682,7 +682,7 @@ SpId   spId;
                                 LCM_CAUSE_INV_PAR_VAL);
             RLOG1(L_ERROR,"RLC Mode [%d] : KWU SAP already Bound",
                   tRlcCb->genCfg.rlcMode);
-            KwUiKwuBndCfm(&(kwuSap->pst), kwuSap->suId, CM_BND_NOK);
+            rlcUiKwuBndCfm(&(kwuSap->pst), kwuSap->suId, CM_BND_NOK);
             RETVALUE(RFAILED);
          }
          break;
@@ -698,11 +698,11 @@ SpId   spId;
                              LKW_EVENT_KWU_BND_REQ, 
                              LCM_CAUSE_INV_STATE);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-         KwUiKwuBndCfm(&(kwuSap->pst), kwuSap->suId, CM_BND_NOK);
+         rlcUiKwuBndCfm(&(kwuSap->pst), kwuSap->suId, CM_BND_NOK);
          RETVALUE(RFAILED);
       }
    }
-   KwUiKwuBndCfm(&(kwuSap->pst), kwuSap->suId, CM_BND_OK);
+   rlcUiKwuBndCfm(&(kwuSap->pst), kwuSap->suId, CM_BND_OK);
    RETVALUE(ROK);
 } 
 
@@ -726,14 +726,14 @@ SpId   spId;
  *     -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuUbndReq
+S16 rlcUiKwuUbndReq
 (
 Pst      *pst,  
 SpId     spId, 
 Reason   reason 
 )
 #else
-PUBLIC S16 KwUiKwuUbndReq(pst, spId, reason)
+S16 rlcUiKwuUbndReq(pst, spId, reason)
 Pst      *pst; 
 SpId     spId; 
 Reason   reason; 
@@ -742,7 +742,7 @@ Reason   reason;
    KwKwuSapCb   *kwuSap;   /* KWU SAP control block */
    RlcCb         *tRlcCb;
 
-   TRC3(KwUiKwuUbndReq)
+   TRC3(rlcUiKwuUbndReq)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((pst->dstInst >= MAX_RLC_INSTANCES) ||
@@ -786,14 +786,14 @@ Reason   reason;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuDatReq
+S16 rlcUiKwuDatReq
 (
 Pst             *pst,   
 KwuDatReqInfo   *datReq, 
 Buffer          *mBuf   
 )
 #else
-PUBLIC S16 KwUiKwuDatReq(pst, datReq, mBuf)
+S16 rlcUiKwuDatReq(pst, datReq, mBuf)
 Pst             *pst;  
 KwuDatReqInfo   *datReq; 
 Buffer          *mBuf;  
@@ -803,7 +803,7 @@ Buffer          *mBuf;
    RlcDlRbCb     *rbCb;       /* RB Control Block */
    RlcCb         *tRlcCb;
 
-   TRC3(KwUiKwuDatReq)
+   TRC3(rlcUiKwuDatReq)
 
    DU_LOG("\nRLC : Received DL Data");
 
@@ -818,7 +818,7 @@ Buffer          *mBuf;
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
    /* Fetch the RbCb */
-   kwDbmFetchDlRbCbByRbId(tRlcCb, &datReq->rlcId, &rbCb);
+   rlcDbmFetchDlRbCbByRbId(tRlcCb, &datReq->rlcId, &rbCb);
    if(!rbCb)
    {
       RLOG_ARG2(L_WARNING, DBG_UEID,datReq->rlcId.ueId, "CellId[%u]:DL RbId [%d] not found",
@@ -844,18 +844,18 @@ Buffer          *mBuf;
             RETVALUE(RFAILED);
          }
 
-         kwTmmQSdu(tRlcCb,rbCb, datReq, mBuf);
+         rlcTmmQSdu(tRlcCb,rbCb, datReq, mBuf);
          break;
       }
       case CM_LTE_MODE_UM:
       {
-         kwUmmQSdu(tRlcCb,rbCb, datReq, mBuf);
+         rlcUmmQSdu(tRlcCb,rbCb, datReq, mBuf);
 
          break;
       }
       case CM_LTE_MODE_AM:
       {
-         kwAmmQSdu(tRlcCb,rbCb, mBuf, datReq);
+         rlcAmmQSdu(tRlcCb,rbCb, mBuf, datReq);
          break;
       }
       default:
@@ -887,14 +887,14 @@ Buffer          *mBuf;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuDiscSduReq 
+S16 rlcUiKwuDiscSduReq 
 (
 Pst              *pst,   
 SpId             spId,  
 KwuDiscSduInfo   *discSdu 
 )
 #else
-PUBLIC S16 KwUiKwuDiscSduReq(pst, spId, discSdu)
+S16 rlcUiKwuDiscSduReq(pst, spId, discSdu)
 Pst              *pst;   
 SpId             spId;  
 KwuDiscSduInfo   *discSdu; 

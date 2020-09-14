@@ -166,25 +166,25 @@ S16 sctpInit(SSTskId sysTskId)
 S16 rlcDlInit(SSTskId sysTskId)
 {
    /* Register RLC DL TAPA Task */
-   if(SRegTTsk((Ent)ENTKW, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(SRegTTsk((Ent)ENTRLC, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
             rlcDlActvInit, (ActvTsk)rlcDlActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach RLC DL Task */
-   if (SAttachTTsk((Ent)ENTKW, (Inst)1, sysTskId)!= ROK)
+   if (SAttachTTsk((Ent)ENTRLC, (Inst)1, sysTskId)!= ROK)
    {
       return RFAILED;
    }
 
    /* Register MAC TAPA Task */
-   if(SRegTTsk((Ent)ENTRG, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(SRegTTsk((Ent)ENTMAC, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
             rgActvInit, (ActvTsk)rgActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach MAC Task */
-   if (SAttachTTsk((Ent)ENTRG, (Inst)0, sysTskId)!= ROK)
+   if (SAttachTTsk((Ent)ENTMAC, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -213,13 +213,13 @@ S16 rlcDlInit(SSTskId sysTskId)
 S16 rlcUlInit(SSTskId sysTskId)
 {
    /* Register RLC UL TAPA Task */
-   if(SRegTTsk((Ent)ENTKW, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(SRegTTsk((Ent)ENTRLC, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
             rlcUlActvInit, (ActvTsk)rlcUlActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach RLC DL Task */
-   if (SAttachTTsk((Ent)ENTKW, (Inst)0, sysTskId)!= ROK)
+   if (SAttachTTsk((Ent)ENTRLC, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }

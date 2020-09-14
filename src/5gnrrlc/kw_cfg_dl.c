@@ -82,7 +82,7 @@ static int RLOG_FILE_ID=191;
  *      -# RFAILED 
  *
 */
-PRIVATE S16 kwHdlMeasDlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
+PRIVATE S16 rlcHdlMeasDlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
 {
    KwL2MeasEvtCb *measEvtCb = NULLP;
    KwL2MeasCb    *measCb    = NULLP;
@@ -123,7 +123,7 @@ PRIVATE S16 kwHdlMeasDlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
  *      -# RFAILED 
  *
 */
-PRIVATE S16 kwDelFrmDlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
+PRIVATE S16 rlcDelFrmDlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
 {
    KwL2MeasEvtCb *measEvtCb = NULLP;
    KwL2MeasCb    *measCb    = NULLP;
@@ -160,7 +160,7 @@ PRIVATE S16 kwDelFrmDlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
 }
 
 
-PRIVATE S16 kwAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *kwRbCb,U8 cellId,U8 ueId)
+PRIVATE S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *kwRbCb,U8 cellId,U8 ueId)
 {
    KwL2MeasEvtCb *measEvtCb = NULLP;
    KwL2MeasCb    *measCb    = NULLP;
@@ -285,13 +285,13 @@ PRIVATE S16 kwAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *kwRbCb,U8 cellId,U8 ueId)
             (*numQci)++;
          }
 
-         kwUtlPlcMeasDatInL2Sts(&measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[kwRbCb->qci],
+         rlcUtlPlcMeasDatInL2Sts(&measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[kwRbCb->qci],
                &kwRbCb->rbL2Cb, measCb->measType);
       }
       else if (measCb->measType & 
          (LKW_L2MEAS_DL_DISC | LKW_L2MEAS_DL_DELAY | LKW_L2MEAS_UU_LOSS))
       {
-         kwUtlPlcMeasDatInL2Sts(&measCb->val.nonIpThMeas.measData[kwRbCb->qci],
+         rlcUtlPlcMeasDatInL2Sts(&measCb->val.nonIpThMeas.measData[kwRbCb->qci],
                &kwRbCb->rbL2Cb, measCb->measType);
          measCb->val.nonIpThMeas.qci[kwRbCb->qci] = kwRbCb->qci;
          measCb->val.nonIpThMeas.measData[kwRbCb->qci].totDrbsPerQci++;
@@ -299,7 +299,7 @@ PRIVATE S16 kwAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *kwRbCb,U8 cellId,U8 ueId)
       kwRbCb->rbL2Cb.measOn |= measCb->measType;      
    }
    RETVALUE(ROK);
-}/*kwAddToDlL2Meas*/ 
+}/*rlcAddToDlL2Meas*/ 
 #endif /*LTE_L2_MEAS*/
 
 /** 
@@ -549,7 +549,7 @@ RlcEntCfgInfo   *entCfg;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcCfgAddDlRb
+S16 rlcCfgAddDlRb
 (
 RlcCb               *gCb,
 CmLteRnti          ueId,
@@ -558,7 +558,7 @@ RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
 #else
-PUBLIC S16 rlcCfgAddDlRb(gCb,ueId, cellId, entCfg, entCfm)
+S16 rlcCfgAddDlRb(gCb,ueId, cellId, entCfg, entCfm)
 RlcCb               *gCb;
 CmLteRnti          ueId;
 CmLteCellId        cellId;
@@ -620,7 +620,7 @@ RlcEntCfgCfmInfo   *entCfm;
           (entCfg->entMode == CM_LTE_MODE_TM))
       {
          /* Cell CB present */
-         kwDbmFetchDlCellCb(gCb, cellId, &cellCb);
+         rlcDbmFetchDlCellCb(gCb, cellId, &cellCb);
          if(cellCb)
          {
             /* Get rbCb from cellCb->rbCb List */
@@ -640,7 +640,7 @@ RlcEntCfgCfmInfo   *entCfm;
          else  /* Cell CB UNKNOWN */
          {
             /* Create CELL CB */
-            if ( ROK != kwDbmCreateDlCellCb(gCb,cellId, &cellCb))
+            if ( ROK != rlcDbmCreateDlCellCb(gCb,cellId, &cellCb))
             {
                /* Fill entCfm structure */
                KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
@@ -717,7 +717,7 @@ RlcEntCfgCfmInfo   *entCfm;
           (entCfg->entMode != CM_LTE_MODE_TM))
       {
          /* UE CB present */
-         if ( kwDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb) == ROK)
+         if ( rlcDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb) == ROK)
          {
             /* Get rbCb from ueCb->rbCb list */
             KW_DBM_GET_RBCB_FROM_UECB(entCfg->rbId, entCfg->rbType, ueCb, kwRbCb);
@@ -737,7 +737,7 @@ RlcEntCfgCfmInfo   *entCfm;
          else  /* UE CB UNKNOWN */
          {
             /* Create UE CB */
-            if ( kwDbmCreateDlUeCb(gCb,ueId, cellId, &ueCb) != ROK)
+            if ( rlcDbmCreateDlUeCb(gCb,ueId, cellId, &ueCb) != ROK)
             {
                /* Fill entCfm structure */
                KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
@@ -833,7 +833,7 @@ RlcEntCfgCfmInfo   *entCfm;
    if (entCfg->lCh[0].type == CM_LTE_LCH_DTCH)
    {
       /* ccpu00129778 */
-      kwAddToDlL2Meas(gCb, kwRbCb,cellId,ueId); 
+      rlcAddToDlL2Meas(gCb, kwRbCb,cellId,ueId); 
    }
 #endif /* LTE_L2_MEAS */
 
@@ -876,7 +876,7 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -#RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcCfgReCfgDlRb
+S16 rlcCfgReCfgDlRb
 (
 RlcCb               *gCb,
 CmLteRnti          ueId,
@@ -885,7 +885,7 @@ RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
 #else
-PUBLIC S16 rlcCfgReCfgDlRb(gCb,ueId, cellId, entCfg, entCfm)
+S16 rlcCfgReCfgDlRb(gCb,ueId, cellId, entCfg, entCfm)
 RlcCb               *gCb;
 CmLteRnti          ueId;
 CmLteCellId        cellId;
@@ -922,7 +922,7 @@ RlcEntCfgCfmInfo   *entCfm;
          RETVALUE(RFAILED);
       }
       /* Get cellCb */
-      kwDbmFetchDlCellCb(gCb,cellId, &cellCb);
+      rlcDbmFetchDlCellCb(gCb,cellId, &cellCb);
       if(!cellCb)
       {
          /* Fill entCfm structure */
@@ -991,7 +991,7 @@ RlcEntCfgCfmInfo   *entCfm;
          RETVALUE(RFAILED);
       }
       /* Get ueCb */
-      ret = kwDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb);
+      ret = rlcDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb);
       if (ret != ROK)
       {
          /* Fill entCfm structure */
@@ -1079,7 +1079,7 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -#RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcCfgDelDlRb
+S16 rlcCfgDelDlRb
 (
 RlcCb               *gCb,
 CmLteRnti          ueId,
@@ -1088,7 +1088,7 @@ RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
 #else
-PUBLIC S16 rlcCfgDelRb(gCb,ueId, cellId, entCfg, entCfm)
+S16 rlcCfgDelRb(gCb,ueId, cellId, entCfg, entCfm)
 RlcCb               *gCb;
 CmLteRnti          ueId;
 CmLteCellId        cellId;
@@ -1127,7 +1127,7 @@ RlcEntCfgCfmInfo   *entCfm;
          RETVALUE(RFAILED);
       }
       /* Get cellCb */
-      kwDbmFetchDlCellCb(gCb,cellId, &cellCb);
+      rlcDbmFetchDlCellCb(gCb,cellId, &cellCb);
       if (!cellCb)
       {
          /* Fill entCfm structure */
@@ -1180,7 +1180,7 @@ RlcEntCfgCfmInfo   *entCfm;
       }
 
       /* Get ueCb */
-      ret = kwDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb);
+      ret = rlcDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb);
       if (ret != ROK)
       {
          /* Fill entCfm structure */
@@ -1216,13 +1216,13 @@ RlcEntCfgCfmInfo   *entCfm;
       /* Free the Buffers of RbCb */
       if( CM_LTE_MODE_UM == kwRbCb->mode)
       {
-         kwUmmFreeDlRbCb(gCb,kwRbCb);
+         rlcUmmFreeDlRbCb(gCb,kwRbCb);
          /* Delete RbCb  */
          RLC_FREE(gCb,kwRbCb, sizeof(RlcDlRbCb));     
       }
       else if( CM_LTE_MODE_AM == kwRbCb->mode)
       {
-         kwAmmFreeDlRbCb(gCb,kwRbCb);
+         rlcAmmFreeDlRbCb(gCb,kwRbCb);
       }
 
       /* Assign NULLP to rbCb in rbCbLst */
@@ -1275,7 +1275,7 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcCfgReEstDlRb
+S16 rlcCfgReEstDlRb
 (
 RlcCb               *gCb,
 CmLteRnti          ueId,
@@ -1285,7 +1285,7 @@ RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
 #else
-PUBLIC S16 rlcCfgReEstDlRb(gCb,ueId, cellId,sndReEstInd,entCfg, entCfm)
+S16 rlcCfgReEstDlRb(gCb,ueId, cellId,sndReEstInd,entCfg, entCfm)
 RlcCb               *gCb;
 CmLteRnti          ueId;
 CmLteCellId        cellId;
@@ -1311,7 +1311,7 @@ RlcEntCfgCfmInfo   *entCfm;
    rlcId.rbId = entCfg->rbId;
    rlcId.rbType = entCfg->rbType;
 
-   kwDbmFetchDlRbCbByRbId(gCb,&rlcId, &rbCb);
+   rlcDbmFetchDlRbCbByRbId(gCb,&rlcId, &rbCb);
    if (rbCb == NULLP)
    {
       /* Fill entCfm structure */
@@ -1342,7 +1342,7 @@ RlcEntCfgCfmInfo   *entCfm;
 
       case CM_LTE_MODE_AM:
          {           
-            kwAmmDlReEstablish(gCb, rlcId, rbCb);
+            rlcAmmDlReEstablish(gCb, rlcId, rbCb);
             break;
          }
    }
@@ -1378,7 +1378,7 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -#RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcCfgDelDlUe
+S16 rlcCfgDelDlUe
 (
 RlcCb               *gCb,
 CmLteRnti          ueId,
@@ -1387,7 +1387,7 @@ RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
 #else
-PUBLIC S16 rlcCfgDelDlUe(ueId, cellId, entCfg, entCfm)
+S16 rlcCfgDelDlUe(ueId, cellId, entCfg, entCfm)
 RlcCb               *gCb;
 CmLteRnti          ueId;
 CmLteCellId        cellId;
@@ -1422,7 +1422,7 @@ RlcEntCfgCfmInfo   *entCfm;
    }
 
    /* Fetch Ue Cb */
-   ret = kwDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb);
+   ret = rlcDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb);
    if (ret != ROK)
    {
       /* Fill entCfm structure */
@@ -1436,11 +1436,11 @@ RlcEntCfgCfmInfo   *entCfm;
    }
 
 #ifdef LTE_L2_MEAS
-   kwDelFrmDlL2Meas(gCb,cellId,ueId);
-   kwDbmDelAllDlL2MeasTbFrmUe(gCb,ueCb);
+   rlcDelFrmDlL2Meas(gCb,cellId,ueId);
+   rlcDbmDelAllDlL2MeasTbFrmUe(gCb,ueCb);
 #endif
    /* Delete Ue Cb */
-   kwDbmDelDlUeCb(gCb,ueCb, FALSE);
+   rlcDbmDelDlUeCb(gCb,ueCb, FALSE);
 
    /* Fill entCfm structure */
    KW_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType,
@@ -1471,7 +1471,7 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -#RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcCfgDelDlCell
+S16 rlcCfgDelDlCell
 (
 RlcCb               *gCb,
 CmLteCellId        cellId,
@@ -1479,7 +1479,7 @@ RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
 #else
-PUBLIC S16 rlcCfgDelCell(gCb,cellId, entCfg, entCfm)
+S16 rlcCfgDelCell(gCb,cellId, entCfg, entCfm)
 RlcCb               *gCb;
 CmLteCellId        cellId;
 RlcEntCfgInfo      *entCfg;
@@ -1512,7 +1512,7 @@ RlcEntCfgCfmInfo   *entCfm;
    }
 
    /* Fetch Ue Cb */
-   kwDbmFetchDlCellCb(gCb,cellId, &cellCb);
+   rlcDbmFetchDlCellCb(gCb,cellId, &cellCb);
    if (!cellCb)
    {
       /* Fill entCfm structure */
@@ -1525,7 +1525,7 @@ RlcEntCfgCfmInfo   *entCfm;
    }
 
    /* Delete Ue Cb */
-   kwDbmDelDlCellCb(gCb,cellCb);
+   rlcDbmDelDlCellCb(gCb,cellCb);
 
    /* Fill entCfm structure */
   /* kw005.201 added support for L2 Measurement */         
@@ -1557,7 +1557,7 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rlcCfgDlUeIdChng
+S16 rlcCfgDlUeIdChng
 (
 RlcCb        *gCb,
 CkwUeInfo   *ueInfo,
@@ -1565,7 +1565,7 @@ CkwUeInfo   *newUeInfo,
 CmStatus    *status
 )
 #else
-PUBLIC S16 rlcCfgDlUeIdChng(gCb,ueInfo,newUeInfo,status)
+S16 rlcCfgDlUeIdChng(gCb,ueInfo,newUeInfo,status)
 RlcCb        *gCb;
 CkwUeInfo   *ueInfo;
 CkwUeInfo   *newUeInfo;
@@ -1588,7 +1588,7 @@ CmStatus    *status;
       RETVALUE(RFAILED);
    } 
    
-   if(ROK == kwDbmFetchDlUeCb(gCb,newUeInfo->ueId, newUeInfo->cellId, &ueCb))
+   if(ROK == rlcDbmFetchDlUeCb(gCb,newUeInfo->ueId, newUeInfo->cellId, &ueCb))
    {
       RLOG_ARG1(L_ERROR, DBG_CELLID, newUeInfo->cellId, 
             "NewUeId[%d]:ueCb already exists",
@@ -1598,7 +1598,7 @@ CmStatus    *status;
       RETVALUE(RFAILED);
    }
   
-   if(ROK != kwDbmFetchDlUeCb(gCb,ueInfo->ueId, ueInfo->cellId, &ueCb))
+   if(ROK != rlcDbmFetchDlUeCb(gCb,ueInfo->ueId, ueInfo->cellId, &ueCb))
    {
 
       RLOG_ARG1(L_ERROR,DBG_CELLID,ueInfo->cellId,
@@ -1610,7 +1610,7 @@ CmStatus    *status;
    }
   
 #ifdef LTE_L2_MEAS
-   kwHdlMeasDlUeIdChg(gCb, ueInfo->cellId, ueInfo->ueId, newUeInfo->ueId);
+   rlcHdlMeasDlUeIdChg(gCb, ueInfo->cellId, ueInfo->ueId, newUeInfo->ueId);
 #endif   
    if(ROK != cmHashListDelete(&(gCb->u.dlCb->ueLstCp), (PTR) ueCb))
    {

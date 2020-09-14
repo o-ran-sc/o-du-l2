@@ -115,13 +115,13 @@ extern "C" {
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmIpv4TptAddr
+S16 cmPkCmIpv4TptAddr
 (
 CmIpv4TptAddr            *pkParam,  /* IPv4 Address structure */
 Buffer                   *mBuf      /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmIpv4TptAddr (pkParam, mBuf)
+S16 cmPkCmIpv4TptAddr (pkParam, mBuf)
 CmIpv4TptAddr            *pkParam;  /* IPv4 Address structure */
 Buffer                   *mBuf;     /* message buffer */
 #endif
@@ -221,13 +221,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmNetAddrTbl
+S16 cmPkCmNetAddrTbl
 (
 CmNetAddrTbl            *pkParam,      /* Network Address Table */
 Buffer                  *mBuf          /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmNetAddrTbl (pkParam, mBuf)
+S16 cmPkCmNetAddrTbl (pkParam, mBuf)
 CmNetAddrTbl            *pkParam;      /* Network Address Table */
 Buffer                  *mBuf;         /* message buffer */
 #endif
@@ -270,13 +270,13 @@ Buffer                  *mBuf;         /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmNetAddr
+S16 cmPkCmNetAddr
 (
 CmNetAddr                *pkParam,     
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmNetAddr (pkParam, mBuf)
+S16 cmPkCmNetAddr (pkParam, mBuf)
 CmNetAddr                *pkParam;     
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -319,13 +319,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmTptAddr
+S16 cmPkCmTptAddr
 (
 CmTptAddr                *pkParam,     
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmTptAddr (pkParam, mBuf)
+S16 cmPkCmTptAddr (pkParam, mBuf)
 CmTptAddr                *pkParam;     
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -370,13 +370,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmTptLocalInf
+S16 cmPkCmTptLocalInf
 (
 CmTptLocalInf           *pkParam,   /* local interface info */
 Buffer                  *mBuf       /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmTptLocalInf (pkParam, mBuf)
+S16 cmPkCmTptLocalInf (pkParam, mBuf)
 CmTptLocalInf           *pkParam;   /* local interface info */
 Buffer                  *mBuf;      /* message buffer */
 #endif
@@ -412,13 +412,13 @@ Buffer                  *mBuf;      /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmNetMCastInf6
+S16 cmPkCmNetMCastInf6
 (
 CmNetMCastInf6            *pkParam,     /* IPv6 multicast information */
 Buffer                    *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmNetMCastInf6(pkParam, mBuf)
+S16 cmPkCmNetMCastInf6(pkParam, mBuf)
 CmNetMCastInf6            *pkParam;     /* IPv6 multicast information */
 Buffer                    *mBuf;        /* message buffer */
 #endif
@@ -605,13 +605,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmTptParam
+S16 cmPkCmTptParam
 (
 CmTptParam               *pkParam,     
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmTptParam (pkParam, mBuf)
+S16 cmPkCmTptParam (pkParam, mBuf)
 CmTptParam               *pkParam;     
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -669,13 +669,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmIpv4TptAddr 
+S16 cmUnpkCmIpv4TptAddr 
 (
 CmIpv4TptAddr            *unpkParam,     /* IPv4 Address */
 Buffer                   *mBuf           /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmIpv4TptAddr (unpkParam, mBuf)
+S16 cmUnpkCmIpv4TptAddr (unpkParam, mBuf)
 CmIpv4TptAddr            *unpkParam;     /* IPv4 Address */
 Buffer                   *mBuf;          /* message buffer */
 #endif
@@ -778,13 +778,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmNetAddrTbl
+S16 cmUnpkCmNetAddrTbl
 (
 CmNetAddrTbl            *unpkParam,    /* Network Address Table */
 Buffer                  *mBuf          /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmNetAddrTbl (unpkParam, mBuf )
+S16 cmUnpkCmNetAddrTbl (unpkParam, mBuf )
 CmNetAddrTbl            *unpkParam;    /* Network Address Table */
 Buffer                  *mBuf;         /* message buffer */
 #endif
@@ -825,13 +825,13 @@ Buffer                  *mBuf;         /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmNetAddr
+S16 cmUnpkCmNetAddr
 (
 CmNetAddr                *unpkParam,   
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmNetAddr (unpkParam, mBuf )
+S16 cmUnpkCmNetAddr (unpkParam, mBuf )
 CmNetAddr                *unpkParam;   
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -875,13 +875,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmTptAddr
+S16 cmUnpkCmTptAddr
 (
 CmTptAddr                *unpkParam,   
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmTptAddr (unpkParam, mBuf)
+S16 cmUnpkCmTptAddr (unpkParam, mBuf)
 CmTptAddr                *unpkParam;   
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -927,13 +927,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmNetMCastInf6
+S16 cmUnpkCmNetMCastInf6
 (
 CmNetMCastInf6            *unpkParam,   /* IPv6 multicast information */
 Buffer                    *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmNetMCastInf6(unpkParam, mBuf)
+S16 cmUnpkCmNetMCastInf6(unpkParam, mBuf)
 CmNetMCastInf6            *unpkParam;   /* IPv6 multicast information */
 Buffer                    *mBuf;        /* message buffer */
 #endif
@@ -1126,13 +1126,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmTptParam
+S16 cmUnpkCmTptParam
 (
 CmTptParam               *unpkParam,   /* transport parameters */
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmTptParam (unpkParam, mBuf)
+S16 cmUnpkCmTptParam (unpkParam, mBuf)
 CmTptParam               *unpkParam;   /* transport parameters */
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -1187,13 +1187,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmIpHdrParm
+S16 cmPkCmIpHdrParm
 (
 CmIpHdrParm             *pkParam,   /* IP hdr parameters */ 
 Buffer                  *mBuf       /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmIpHdrParm (pkParam, mBuf)
+S16 cmPkCmIpHdrParm (pkParam, mBuf)
 CmIpHdrParm             *pkParam;   /* IP hdr parameters */
 Buffer                  *mBuf;      /* message buffer */
 #endif
@@ -1258,13 +1258,13 @@ Buffer                  *mBuf;      /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmTptLocalInf
+S16 cmUnpkCmTptLocalInf
 (
 CmTptLocalInf           *unpkParam, /* local interface info */
 Buffer                  *mBuf       /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmTptLocalInf (unpkParam, mBuf)
+S16 cmUnpkCmTptLocalInf (unpkParam, mBuf)
 CmTptLocalInf           *unpkParam; /* local interface info */
 Buffer                  *mBuf;      /* message buffer */
 #endif
@@ -1301,13 +1301,13 @@ Buffer                  *mBuf;      /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmIpv6ExtHdr
+S16 cmPkCmIpv6ExtHdr
 (
 CmIpv6ExtHdr             *pkParam,   /* IPV6 extension hdrs */
 Buffer                   *mBuf       /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmIpv6ExtHdr (pkParam, mBuf)
+S16 cmPkCmIpv6ExtHdr (pkParam, mBuf)
 CmIpv6ExtHdr             *pkParam;   /*IPV6 extension hdrs */
 Buffer                   *mBuf;      /* message buffer */
 #endif
@@ -1347,13 +1347,13 @@ Buffer                   *mBuf;      /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmIpv6RtHdr
+S16 cmPkCmIpv6RtHdr
 (
 CmIpv6RtHdr             *pkParam,   /* IPV6 Route hdr */
 Buffer                   *mBuf      /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmIpv6RtHdr (pkParam, mBuf)
+S16 cmPkCmIpv6RtHdr (pkParam, mBuf)
 CmIpv6RtHdr             *pkParam;   /* IPV6 Route hdr */
 Buffer                   *mBuf;     /* message buffer */
 #endif
@@ -1390,14 +1390,14 @@ Buffer                   *mBuf;     /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmIpv6RtHdr
+S16 cmUnpkCmIpv6RtHdr
 (
 CmIpv6RtHdr             *unpkParam,  /* IPV6 Route hdr */
 Buffer                  *mBuf,       /* message buffer */
 Mem                     *memInfo     /* meminfo to allocate for Route hdr */
 )
 #else
-PUBLIC S16 cmUnpkCmIpv6RtHdr (unpkParam, mBuf, memInfo)
+S16 cmUnpkCmIpv6RtHdr (unpkParam, mBuf, memInfo)
 CmIpv6RtHdr             *unpkParam;  /* IPV6 Route hdr */
 Buffer                  *mBuf;       /* message buffer */
 Mem                     *memInfo;    /* meminfo to allocate for Route hdr */
@@ -1447,14 +1447,14 @@ Mem                     *memInfo;    /* meminfo to allocate for Route hdr */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmIpv6ExtHdr
+S16 cmUnpkCmIpv6ExtHdr
 (
 CmIpv6ExtHdr             *unpkParam,  /* IPV6 extension hdrs */
 Buffer                   *mBuf,       /* message buffer */
 Mem                      *memInfo     /* meminfo to allocate for IPV6 ext hdr */
 )
 #else
-PUBLIC S16 cmUnpkCmIpv6ExtHdr (unpkParam, mBuf, memInfo)
+S16 cmUnpkCmIpv6ExtHdr (unpkParam, mBuf, memInfo)
 CmIpv6ExtHdr             *unpkParam; /* IPV6 extension hdrs */
 Buffer                   *mBuf;      /* message buffer */
 Mem                      *memInfo;   /* meminfo to allocate for IPV6 ext hdr */
@@ -1495,13 +1495,13 @@ Mem                      *memInfo;   /* meminfo to allocate for IPV6 ext hdr */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmIpv6DestOptsArr
+S16 cmPkCmIpv6DestOptsArr
 (
 CmIpv6DestOptsArr       *pkParam,  /* IPV6 Dest hdr array */
 Buffer                  *mBuf      /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmIpv6DestOptsArr (pkParam, mBuf)
+S16 cmPkCmIpv6DestOptsArr (pkParam, mBuf)
 CmIpv6DestOptsArr       *pkParam;  /* IPV6 Dest hdr array */
 Buffer                  *mBuf;     /* message buffer */
 #endif
@@ -1534,13 +1534,13 @@ Buffer                  *mBuf;     /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmIpv6DestOptsHdr
+S16 cmPkCmIpv6DestOptsHdr
 (
 CmIpv6DestOptsHdr       *pkParam,  /* IPV6 Dest opt */
 Buffer                  *mBuf      /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmIpv6DestOptsHdr (pkParam, mBuf)
+S16 cmPkCmIpv6DestOptsHdr (pkParam, mBuf)
 CmIpv6DestOptsHdr       *pkParam;  /* IPV6 Dest opt */
 Buffer                  *mBuf;     /* message buffer */
 #endif
@@ -1574,14 +1574,14 @@ Buffer                  *mBuf;     /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmIpv6DestOptsHdr
+S16 cmUnpkCmIpv6DestOptsHdr
 (
 CmIpv6DestOptsHdr       *unpkParam,/* IPV6 Dest Option */
 Buffer                  *mBuf,     /* message buffer */
 Mem                     *memInfo   /* meminfo to allocate mem for dest opt */
 )
 #else
-PUBLIC S16 cmUnpkCmIpv6DestOptsHdr (unpkParam, mBuf, memInfo)
+S16 cmUnpkCmIpv6DestOptsHdr (unpkParam, mBuf, memInfo)
 CmIpv6DestOptsHdr       *unpkParam;/* IPV6 Dest Option */
 Buffer                  *mBuf;     /* message buffer */
 Mem                     *memInfo;  /* meminfo to allocate mem for dest opt */
@@ -1629,14 +1629,14 @@ Mem                     *memInfo;  /* meminfo to allocate mem for dest opt */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmIpv6DestOptsArr
+S16 cmUnpkCmIpv6DestOptsArr
 (
 CmIpv6DestOptsArr       *unpkParam, /* all IPV6 Destination Options */
 Buffer                  *mBuf,      /* message buffer */
 Mem                     *memInfo    /* meminfo to allocate mem for dest opts */
 )
 #else
-PUBLIC S16 cmUnpkCmIpv6DestOptsArr (unpkParam, mBuf, memInfo)
+S16 cmUnpkCmIpv6DestOptsArr (unpkParam, mBuf, memInfo)
 CmIpv6DestOptsArr       *unpkParam; /* all IPV6 Destination Options */
 Buffer                  *mBuf;      /* message buffer */
 Mem                     *memInfo;   /* meminfo to allocate mem for dest opts */
@@ -1686,13 +1686,13 @@ Mem                     *memInfo;   /* meminfo to allocate mem for dest opts */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmIpv6HBHHdrArr
+S16 cmPkCmIpv6HBHHdrArr
 (
 CmIpv6HBHHdrArr         *pkParam,  /* all IPV6 HopByHop options */
 Buffer                  *mBuf      /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmIpv6HBHHdrArr (pkParam, mBuf)
+S16 cmPkCmIpv6HBHHdrArr (pkParam, mBuf)
 CmIpv6HBHHdrArr         *pkParam;  /* IPV6 HopByHop options */
 Buffer                  *mBuf;     /* message buffer */
 #endif
@@ -1724,13 +1724,13 @@ Buffer                  *mBuf;     /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmIpv6HBHHdr
+S16 cmPkCmIpv6HBHHdr
 (
 CmIpv6HBHHdr            *pkParam,  /* individual IPV6 HBH options */
 Buffer                  *mBuf      /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmIpv6HBHHdr (pkParam, mBuf)
+S16 cmPkCmIpv6HBHHdr (pkParam, mBuf)
 CmIpv6HBHHdr            *pkParam;  /* individual IPV6 HBH options */
 Buffer                  *mBuf;     /* message buffer */
 #endif
@@ -1767,14 +1767,14 @@ Buffer                  *mBuf;     /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmIpv6HBHHdr
+S16 cmUnpkCmIpv6HBHHdr
 (
 CmIpv6HBHHdr            *unpkParam,/* individual IPV6 HBH Option */
 Buffer                  *mBuf,     /* message buffer */
 Mem                     *memInfo   /* meminfo to allocate mem for HBH opt */
 )
 #else
-PUBLIC S16 cmUnpkCmIpv6HBHHdr (unpkParam, mBuf, memInfo)
+S16 cmUnpkCmIpv6HBHHdr (unpkParam, mBuf, memInfo)
 CmIpv6HBHHdr            *unpkParam;/* individual IPV6 HBH Option */
 Buffer                  *mBuf;     /* message buffer */
 Mem                     *memInfo;  /* meminfo to allocate mem for HBH opt */
@@ -1821,14 +1821,14 @@ Mem                     *memInfo;  /* meminfo to allocate mem for HBH opt */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmIpv6HBHHdrArr
+S16 cmUnpkCmIpv6HBHHdrArr
 (
 CmIpv6HBHHdrArr       *unpkParam,  /* all HBH options */
 Buffer                *mBuf,       /* message buffer */
 Mem                   *memInfo     /* meminfo to allocate space for HBH opt */
 )
 #else
-PUBLIC S16 cmUnpkCmIpv6HBHHdrArr (unpkParam, mBuf, memInfo)
+S16 cmUnpkCmIpv6HBHHdrArr (unpkParam, mBuf, memInfo)
 CmIpv6HBHHdrArr       *unpkParam;  /*  all HBH options */
 Buffer                *mBuf;       /* message buffer */
 Mem                   *memInfo;    /* meminfo to allocate space for HBH opt */
@@ -1877,14 +1877,14 @@ Mem                   *memInfo;    /* meminfo to allocate space for HBH opt */
 #ifdef ANSI
 /* added */
 #ifdef IPV6_OPTS_SUPPORTED
-PUBLIC S16 cmUnpkCmIpHdrParm
+S16 cmUnpkCmIpHdrParm
 (
 CmIpHdrParm              *unpkParam,/* ip hdr parameters */
 Buffer                   *mBuf,     /* message buffer */
 Mem                      *memInfo   /* meminfo to allocate mem for ipHdrParam */
 )
 #else
-PUBLIC S16 cmUnpkCmIpHdrParm
+S16 cmUnpkCmIpHdrParm
 (
 CmIpHdrParm              *unpkParam,/* ip hdr parameters */
 Buffer                   *mBuf     /* message buffer */
@@ -1893,12 +1893,12 @@ Buffer                   *mBuf     /* message buffer */
 #else
 /* added */
 #ifdef IPV6_OPTS_SUPPORTED
-PUBLIC S16 cmUnpkCmIpHdrParm (unpkParam, mBuf, memInfo)
+S16 cmUnpkCmIpHdrParm (unpkParam, mBuf, memInfo)
 CmIpHdrParm              *unpkParam;/* ip hdr parameters */
 Buffer                   *mBuf;     /* message buffer */
 Mem                      *memInfo;  /* meminfo to allocate mem for ipHdrParam */
 #else
-PUBLIC S16 cmUnpkCmIpHdrParm (unpkParam, mBuf)
+S16 cmUnpkCmIpHdrParm (unpkParam, mBuf)
 CmIpHdrParm              *unpkParam;/* ip hdr parameters */
 Buffer                   *mBuf;     /* message buffer */
 #endif /* IPV6_OPTS_SUPPORTED */
@@ -1962,13 +1962,13 @@ Buffer                   *mBuf;     /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkCmIcmpFilter
+S16 cmPkCmIcmpFilter
 (
 CmIcmpFilter             *pkParam,   
 Buffer                   *mBuf       /* message buffer */
 )
 #else
-PUBLIC S16 cmPkCmIcmpFilter (pkParam, mBuf)
+S16 cmPkCmIcmpFilter (pkParam, mBuf)
 CmIcmpFilter             *pkParam;   
 Buffer                   *mBuf;      /* message buffer */
 #endif
@@ -2037,13 +2037,13 @@ Buffer                   *mBuf;      /* message buffer */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkCmIcmpFilter
+S16 cmUnpkCmIcmpFilter
 (
 CmIcmpFilter             *unpkParam,   
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkCmIcmpFilter (unpkParam, mBuf)
+S16 cmUnpkCmIcmpFilter (unpkParam, mBuf)
 CmIcmpFilter             *unpkParam;   
 Buffer                   *mBuf;        /* message buffer */
 #endif

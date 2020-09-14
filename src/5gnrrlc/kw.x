@@ -356,10 +356,10 @@ typedef struct kwOutStngSduInfo
 }KwOutStngSduInfo;
 
 /** 
-* @struct kwL2MeasDlIpTh
+* @struct rlcL2MeasDlIpTh
 * Structure to hold parameters for DL ip 
 * throughput for a RB */
-typedef struct kwL2MeasDlIpTh
+typedef struct rlcL2MeasDlIpTh
 {
    Bool            isBurstAct;            /*!< Set to TRUE when burst is active in DL */
    U64             burstStartTime;        /*!< Holds the starting time of the burst */
@@ -369,10 +369,10 @@ typedef struct kwL2MeasDlIpTh
 }KwL2MeasDlIpTh;
 
 /** 
-* @struct kwL2MeasIpThruput
+* @struct rlcL2MeasIpThruput
 * Structure to hold parameters for UL/DL ip 
 * throughput for a RB */
-typedef struct kwL2MeasIpThruput
+typedef struct rlcL2MeasIpThruput
 {
    U32             dataVol;                 /*!< Holds volume of new data in bytes
                                               for UL IP throughput */
@@ -390,7 +390,7 @@ typedef struct kwL2MeasIpThruput
  *    - ueId    : UE Id
  *    - cellId  : Cell Id 
 */
-typedef struct kwUeKey
+typedef struct rlcUeKey
 {
    CmLteRnti     ueId;     /*!< UE Id */
    CmLteCellId   cellId;   /*!< Cell Id */
@@ -406,7 +406,7 @@ typedef struct kwUeKey
  *    - state : State of the SAP
  *    - sts   : SAP specific statistics 
 */
-typedef struct kwCkwSapCb
+typedef struct rlcCkwSapCb
 {
    Pst           pst;     /*!< Service user post structure */
    SpId          spId;    /*!< Service provider Id */
@@ -425,7 +425,7 @@ typedef struct kwCkwSapCb
  *    - state : State of the SAP
  *    - sts   : SAP specific statistics 
 */
-typedef struct kwKwuSapCb
+typedef struct rlcKwuSapCb
 {
    Pst           pst;     /*!< Service user post structure */
    SpId          spId;    /*!< Service provider Id */
@@ -446,7 +446,7 @@ typedef struct kwKwuSapCb
  *    - bndTmrInt : Timer Interval
  *    - retryCnt  : Bind Retry Count
 */
-typedef struct kwRguSapCb
+typedef struct rlcRguSapCb
 {
    Pst       pst;         /*!< Service user post structure */
    SpId      spId;        /*!< Service provider Id */
@@ -469,7 +469,7 @@ typedef struct kwRguSapCb
  *    - bndTmrInt : Timer Interval
  *    - retryCnt  : Bind Retry Count
 */
-typedef struct kwUdxUlSapCb
+typedef struct rlcUdxUlSapCb
 {
    Pst       pst;         /*!< Service user post structure */
    SpId      spId;        /*!< Service provider Id */
@@ -489,7 +489,7 @@ typedef struct kwUdxUlSapCb
  *    - suId      : Service user Id
  *    - state     : State of the SAP
 */
-typedef struct kwUdxDlSapCb
+typedef struct rlcUdxDlSapCb
 {
    Pst    pst;     /*!< Service user post structure */
    SpId   spId;    /*!< Service provider Id */
@@ -617,20 +617,20 @@ EXTERN RlcCb *rlcCb[MAX_RLC_INSTANCES];   /*!< RLC global control block */
 /****************************************************************************
  *                      EXTERN Declarations
  ***************************************************************************/
-EXTERN S16 kwGetSId ARGS((SystemId *s));
+EXTERN S16 rlcGetSId ARGS((SystemId *s));
 
-EXTERN Void kwTmrExpiry ARGS((PTR cb, S16 tmrEvnt));
+EXTERN Void rlcTmrExpiry ARGS((PTR cb, S16 tmrEvnt));
 
-EXTERN S16 kwLmmSendTrc ARGS ((RlcCb *gCb, Event event, Buffer *mBuf));
+EXTERN S16 rlcLmmSendTrc ARGS ((RlcCb *gCb, Event event, Buffer *mBuf));
 
-EXTERN Void kwStartTmr ARGS((RlcCb *gCb, PTR cb, S16 tmrEvnt));
+EXTERN Void rlcStartTmr ARGS((RlcCb *gCb, PTR cb, S16 tmrEvnt));
 
-EXTERN Void kwStopTmr  ARGS((RlcCb *gCb, PTR cb, U8 tmrType));
+EXTERN Void rlcStopTmr  ARGS((RlcCb *gCb, PTR cb, U8 tmrType));
 
-EXTERN Bool kwChkTmr ARGS((RlcCb *gCb,PTR cb, S16 tmrEvnt));
+EXTERN Bool rlcChkTmr ARGS((RlcCb *gCb,PTR cb, S16 tmrEvnt));
 
 #ifdef LTE_L2_MEAS
-EXTERN Void kwLmmSendAlarm ARGS (( RlcCb *gCb,
+EXTERN Void rlcLmmSendAlarm ARGS (( RlcCb *gCb,
                                    U16 category, 
                                    U16 event, 
                                    U16 cause, 
@@ -638,17 +638,17 @@ EXTERN Void kwLmmSendAlarm ARGS (( RlcCb *gCb,
                                    U32 ueId, 
                                    U8 qci));
 
-EXTERN S16 KwMiRlcDlL2MeasReq ARGS (( Pst *pst, KwL2MeasReqEvt *measReqEvt ));
-EXTERN S16 KwMiRlcDlL2MeasSendReq ARGS((Pst *pst,U8 measType));
-EXTERN S16 KwMiRlcDlL2MeasStopReq ARGS((Pst *pst,U8 measType));
-EXTERN S16 KwMiRlcUlL2MeasReq ARGS (( Pst *pst, KwL2MeasReqEvt *measReqEvt ));
-EXTERN S16 KwMiRlcUlL2MeasSendReq ARGS((Pst *pst,U8 measType));
-EXTERN S16 KwMiRlcUlL2MeasStopReq ARGS((Pst *pst,U8 measType));
-EXTERN Void kwUtlPlcMeasDatInL2Sts ARGS((KwL2Cntr *measData, 
+EXTERN S16 rlcMiRlcDlL2MeasReq ARGS (( Pst *pst, KwL2MeasReqEvt *measReqEvt ));
+EXTERN S16 rlcMiRlcDlL2MeasSendReq ARGS((Pst *pst,U8 measType));
+EXTERN S16 rlcMiRlcDlL2MeasStopReq ARGS((Pst *pst,U8 measType));
+EXTERN S16 rlcMiRlcUlL2MeasReq ARGS (( Pst *pst, KwL2MeasReqEvt *measReqEvt ));
+EXTERN S16 rlcMiRlcUlL2MeasSendReq ARGS((Pst *pst,U8 measType));
+EXTERN S16 rlcMiRlcUlL2MeasStopReq ARGS((Pst *pst,U8 measType));
+EXTERN Void rlcUtlPlcMeasDatInL2Sts ARGS((KwL2Cntr *measData, 
                                          KwL2MeasRbCb *rbL2Cb,
                                          U8 measType));
 #else /* LTE_L2_MEAS */
-EXTERN Void kwLmmSendAlarm ARGS ((RlcCb *gCb,
+EXTERN Void rlcLmmSendAlarm ARGS ((RlcCb *gCb,
                                   U16 category, 
                                   U16 event, 
                                   U16 cause, 

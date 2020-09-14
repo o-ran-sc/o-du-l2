@@ -90,16 +90,16 @@ EXTERN "C" {
  *             Forward Declartion for KWU Porting Functions
  ********************************************************************/
 #if defined(PDCP_RLC_DL_RBUF) || defined(SS_RBUF)
-PUBLIC S16 rlcDlBatchProc ARGS ((Void));
-PUBLIC S16 kwUtlDlFreeRlcRBuf ARGS((Void));
-EXTERN void kwUtlDlBatchProcHqStaInd ARGS ((Void));
-EXTERN Void kwUtlFreeDlMem ARGS((Void));
+S16 rlcDlBatchProc ARGS ((Void));
+S16 rlcUtlDlFreeRlcRBuf ARGS((Void));
+EXTERN void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
+EXTERN Void rlcUtlFreeDlMem ARGS((Void));
 EXTERN SsRngBufCnt rngCb;
-EXTERN S16 kwUtlDlBatchProcPkts ARGS((Void));
+EXTERN S16 rlcUtlDlBatchProcPkts ARGS((Void));
 #endif
 
 #if (defined(L2_L3_SPLIT) && defined(ICC_RECV_TSK_RBUF))
-PUBLIC S16 rlcDlBatchProcSplit  ARGS((Void));
+S16 rlcDlBatchProcSplit  ARGS((Void));
 #endif
 
   
@@ -109,7 +109,7 @@ PUBLIC S16 rlcDlBatchProcSplit  ARGS((Void));
 
 /* KWU Bind Confirm primitive */
 
-PUBLIC KwuBndCfm kwUiKwuBndCfmMt[] =
+KwuBndCfm kwUiKwuBndCfmMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuBndCfm,            /* 0 - loosely coupled */
@@ -131,7 +131,7 @@ PUBLIC KwuBndCfm kwUiKwuBndCfmMt[] =
 
 /* KWU Data Indication primitive */
 
-PUBLIC KwuDatInd kwUiKwuDatIndMt[] =
+KwuDatInd kwUiKwuDatIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuDatInd,            /* 0 - loosely coupled */
@@ -153,7 +153,7 @@ PUBLIC KwuDatInd kwUiKwuDatIndMt[] =
 };
 
 #ifndef KW_PDCP
-PUBLIC KwuDatCfm kwUiKwuDatCfmMt[] =
+KwuDatCfm kwUiKwuDatCfmMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuDatCfm,            /* 0 - loosely coupled */
@@ -170,7 +170,7 @@ PUBLIC KwuDatCfm kwUiKwuDatCfmMt[] =
 
 /* KWU AM Status Indication primitive */
 
-PUBLIC KwuStaInd kwUiKwuStaIndMt[] =
+KwuStaInd kwUiKwuStaIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuStaInd,            /* 0 - loosely coupled */
@@ -185,7 +185,7 @@ PUBLIC KwuStaInd kwUiKwuStaIndMt[] =
 #endif /*TENB_ACC*/
 };
 
-PUBLIC KwuReEstCmpInd kwUiKwuReEstCmpIndMt[] =
+KwuReEstCmpInd kwUiKwuReEstCmpIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuReEstCmpInd,            /* 0 - loosely coupled */
@@ -202,7 +202,7 @@ PUBLIC KwuReEstCmpInd kwUiKwuReEstCmpIndMt[] =
 };
 
 /* kw005.201 added support for L2 measurement */
-PUBLIC KwuDiscSduCfm kwUiKwuDiscSduCfmMt[] =
+KwuDiscSduCfm kwUiKwuDiscSduCfmMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuDiscSduCfm,            /* 0 - loosely coupled */
@@ -216,7 +216,7 @@ PUBLIC KwuDiscSduCfm kwUiKwuDiscSduCfmMt[] =
 #endif /* PJ */
 #endif /*TENB_ACC*/
 };
-PUBLIC KwuFlowCntrlInd kwUiKwuFlowCntrlIndMt[] =
+KwuFlowCntrlInd kwUiKwuFlowCntrlIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuFlowCntrlInd,            /* 0 - loosely coupled */
@@ -229,7 +229,7 @@ PUBLIC KwuFlowCntrlInd kwUiKwuFlowCntrlIndMt[] =
 #endif /* LCKWUIKWU */
 };
 #ifdef LTE_L2_MEAS
-PUBLIC KwuDatAckInd kwUiKwuDatAckIndMt[] =
+KwuDatAckInd kwUiKwuDatAckIndMt[] =
 {
 #ifdef LCKWUIKWU
    cmPkKwuDatAckInd,            /* 0 - loosely coupled */
@@ -273,27 +273,27 @@ PUBLIC KwuDatAckInd kwUiKwuDatAckIndMt[] =
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuBndCfm
+S16 rlcUiKwuBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
 U8   status                     /* Status */
 )
 #else
-PUBLIC S16 KwUiKwuBndCfm(pst, suId, status)
+S16 rlcUiKwuBndCfm(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId suId;                      /* Service User Id */
 U8   status;                    /* Status */
 #endif
 {
-   TRC3(KwUiKwuBndCfm)
+   TRC3(rlcUiKwuBndCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuBndCfmMt[pst->selector])(pst, suId, status);
 
    RETVALUE(ROK);
 
-} /* end of KwUiKwuBndCfm */
+} /* end of rlcUiKwuBndCfm */
 
 
 /**
@@ -317,29 +317,29 @@ U8   status;                    /* Status */
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuDatInd
+S16 rlcUiKwuDatInd
 (
 Pst               *pst,
 KwuDatIndInfo     *datInd,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 KwUiKwuDatInd(pst, datInd, mBuf)
+S16 rlcUiKwuDatInd(pst, datInd, mBuf)
 Pst               *pst;
 KwuDatIndInfo     *datInd;
 Buffer            *mBuf;
 #endif
 {
-   TRC3(KwUiKwuDatInd)
+   TRC3(rlcUiKwuDatInd)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatIndMt[pst->selector])(pst, datInd, mBuf);
 
    RETVALUE(ROK);
 
-} /* end of KwUiKwuDatInd */
+} /* end of rlcUiKwuDatInd */
 
-   PUBLIC int rlcDatCfmsSent = 0;
+   int rlcDatCfmsSent = 0;
 
 #ifndef KW_PDCP
 /**
@@ -362,28 +362,28 @@ Buffer            *mBuf;
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuDatCfm
+S16 rlcUiKwuDatCfm
 (
 Pst               *pst,
 SuId              suId,
 KwuDatCfmInfo     *datCfm
 )
 #else
-PUBLIC S16 KwUiKwuDatCfm(pst, suId, datCfm)
+S16 rlcUiKwuDatCfm(pst, suId, datCfm)
 Pst               *pst;
 SuId              suId;
 KwuDatCfmInfo     *datCfm;
 #endif
 {
    rlcDatCfmsSent++;
-   TRC3(KwUiKwuDatCfm)
+   TRC3(rlcUiKwuDatCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatCfmMt[pst->selector])(pst, suId, datCfm);
 
    RETVALUE(ROK);
 
-} /* end of KwUiKwuDatCfm */
+} /* end of rlcUiKwuDatCfm */
 
 
 /**
@@ -407,27 +407,27 @@ KwuDatCfmInfo     *datCfm;
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuStaInd
+S16 rlcUiKwuStaInd
 (
 Pst               *pst,
 SuId              suId,
 KwuStaIndInfo     *staInd
 )
 #else
-PUBLIC S16 KwUiKwuStaInd(pst, suId, staInd)
+S16 rlcUiKwuStaInd(pst, suId, staInd)
 Pst               *pst;
 SuId              suId;
 KwuStaIndInfo     *staInd;
 #endif
 {
-   TRC3(KwUiKwuStaInd)
+   TRC3(rlcUiKwuStaInd)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuStaIndMt[pst->selector])(pst, suId, staInd);
 
    RETVALUE(ROK);
 
-} /* end of KwUiKwuStaInd */
+} /* end of rlcUiKwuStaInd */
 
 
 /**
@@ -451,28 +451,28 @@ KwuStaIndInfo     *staInd;
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuReEstCmpInd
+S16 rlcUiKwuReEstCmpInd
 (
 Pst               *pst,
 SuId              suId,
 CmLteRlcId        rlcId
 )
 #else
-PUBLIC S16 KwUiKwuReEstCmpInd(pst, suId, rlcId)
+S16 rlcUiKwuReEstCmpInd(pst, suId, rlcId)
 Pst               *pst;
 SuId              suId;
 CmLteRlcId        rlcId;
 #endif
 {
-   TRC3(KwUiKwuReEstCmpInd)
-   RLOG0(L_DEBUG, "In KwUiKwuReEstCmpInd");
+   TRC3(rlcUiKwuReEstCmpInd)
+   RLOG0(L_DEBUG, "In rlcUiKwuReEstCmpInd");
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuReEstCmpIndMt[pst->selector])(pst, suId, rlcId);
 
    RETVALUE(ROK);
 
-} /* end of KwUiKwuReEstCmpInd */
+} /* end of rlcUiKwuReEstCmpInd */
 /* kw005.201 added support for L2 Measurement */
 
 /**
@@ -494,27 +494,27 @@ CmLteRlcId        rlcId;
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuDiscSduCfm
+S16 rlcUiKwuDiscSduCfm
 (
 Pst               *pst,
 SuId              suId,
 KwuDiscSduInfo    *discCfm
 )
 #else
-PUBLIC S16 KwUiKwuDiscSduCfm(pst, suId, discCfm)
+S16 rlcUiKwuDiscSduCfm(pst, suId, discCfm)
 Pst               *pst;
 SuId              suId;
 KwuDiscSduInfo    *discCfm;
 #endif
 {
-   TRC3(KwUiKwuDiscSduCfm)
+   TRC3(rlcUiKwuDiscSduCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDiscSduCfmMt[pst->selector])(pst, suId, discCfm);
 
    RETVALUE(ROK);
 
-} /* end of KwUiKwuDiscSduCfm */ 
+} /* end of rlcUiKwuDiscSduCfm */ 
 
 /**
  *
@@ -536,27 +536,27 @@ KwuDiscSduInfo    *discCfm;
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuFlowCntrlInd
+S16 rlcUiKwuFlowCntrlInd
 (
 Pst                   *pst,
 SuId                  suId,
 KwuFlowCntrlIndInfo   *flowCntrlIndInfo
 )
 #else
-PUBLIC S16 KwUiKwuFlowCntrlInd(pst, suId, flowCntrlIndInfo)
+S16 rlcUiKwuFlowCntrlInd(pst, suId, flowCntrlIndInfo)
 Pst                   *pst;
 SuId                  suId;
 KwuFlowCntrlIndInfo   *flowCntrlIndInfo;
 #endif
 {
-   TRC3(KwUiKwuFlowCntrlInd)
+   TRC3(rlcUiKwuFlowCntrlInd)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlIndInfo);
 
    RETVALUE(ROK);
 
-} /* end of KwUiKwuFlowCntrlInd */ 
+} /* end of rlcUiKwuFlowCntrlInd */ 
 #ifdef LTE_L2_MEAS
 
 /**
@@ -578,27 +578,27 @@ KwuFlowCntrlIndInfo   *flowCntrlIndInfo;
  *      -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 KwUiKwuDatAckInd
+S16 rlcUiKwuDatAckInd
 (
 Pst               *pst,
 SuId              suId,
 KwuDatAckInfo     *datAckInd
 )
 #else
-PUBLIC S16 KwUiKwuDatAckInd(pst, suId, datAckInd)
+S16 rlcUiKwuDatAckInd(pst, suId, datAckInd)
 Pst               *pst;
 SuId              suId;
 KwuDatAckInfo     *datAckInd;
 #endif
 {
-   TRC3(KwUiKwuDatAckInd)
+   TRC3(rlcUiKwuDatAckInd)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatAckIndMt[pst->selector])(pst, suId, datAckInd);
 
    RETVALUE(ROK);
 
-} /* end of KwUiKwuDatAckInd */ 
+} /* end of rlcUiKwuDatAckInd */ 
 #endif /* LTE_L2_MEAS */
 #endif /* KW_PDCP */
 
@@ -610,7 +610,7 @@ KwuDatAckInfo     *datAckInd;
 
 /* CKW Bind Confirm primitive */
 
-PUBLIC CkwBndCfm kwUiCkwBndCfmMt[] =
+CkwBndCfm kwUiCkwBndCfmMt[] =
 {
 #ifdef LCKWUICKW
    cmPkCkwBndCfm,            /* 0 - loosely coupled */
@@ -622,7 +622,7 @@ PUBLIC CkwBndCfm kwUiCkwBndCfmMt[] =
 
 /* CKW Configuration confirm primitive */
 
-PUBLIC RlcCfgCfm kwUiRlcCfgCfmMt[] =
+RlcCfgCfm kwUiRlcCfgCfmMt[] =
 {
 #ifdef LCKWUICKW
    cmPkRlcCfgCfm,            /* 0 - loosely coupled */
@@ -632,7 +632,7 @@ PUBLIC RlcCfgCfm kwUiRlcCfgCfmMt[] =
 #endif /* NH */
 };
 
-PUBLIC CkwUeIdChgCfm kwUiCkwUeIdChgCfmMt[] =
+CkwUeIdChgCfm kwUiCkwUeIdChgCfmMt[] =
 {
 #ifdef LCKWUICKW
    cmPkCkwUeIdChgCfm,            /* 0 - loosely coupled */
@@ -667,27 +667,27 @@ PUBLIC CkwUeIdChgCfm kwUiCkwUeIdChgCfmMt[] =
  *      -# ROK 
  */
 #ifdef ANSI
-PUBLIC S16 KwUiCkwBndCfm
+S16 rlcUiCkwBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
 U8   status                     /* Status */
 )
 #else
-PUBLIC S16 KwUiCkwBndCfm(pst, suId, status)
+S16 rlcUiCkwBndCfm(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId suId;                      /* Service User Id */
 U8   status;                    /* Status */
 #endif
 {
-   TRC3(KwUiCkwBndCfm)
+   TRC3(rlcUiCkwBndCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiCkwBndCfmMt[pst->selector])(pst, suId, status);
 
    RETVALUE(ROK);
 
-} /* end of KwUiCkwBndCfm */
+} /* end of rlcUiCkwBndCfm */
 
 
 /**
@@ -711,27 +711,27 @@ U8   status;                    /* Status */
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwUiRlcCfgCfm
+S16 rlcUiRlcCfgCfm
 (
 Pst            *pst,                      /* post structure */
 SuId           suId,                      /* Service User Id */
 RlcCfgCfmInfo  *cfmInfo                    /* Configuration Confirm */
 )
 #else
-PUBLIC S16 KwUiRlcCfgCfm(pst, suId, cfmInfo)
+S16 rlcUiRlcCfgCfm(pst, suId, cfmInfo)
 Pst            *pst;                      /* post structure */
 SuId           suId;                      /* Service User Id */
 RlcCfgCfmInfo  *cfmInfo;                   /* Configuration Confirm */
 #endif
 {
-   TRC3(KwUiRlcCfgCfm)
+   TRC3(rlcUiRlcCfgCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiRlcCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
 
    RETVALUE(ROK);
 
-} /* end of KwUiRlcCfgCfm */
+} /* end of rlcUiRlcCfgCfm */
 
 
 /**
@@ -755,7 +755,7 @@ RlcCfgCfmInfo  *cfmInfo;                   /* Configuration Confirm */
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwUiCkwUeIdChgCfm 
+S16 rlcUiCkwUeIdChgCfm 
 (
 Pst            *pst,                      /* post structure */
 SuId           suId,                      /* Service User Id */
@@ -764,7 +764,7 @@ CkwUeInfo      *ueInfo,
 CmStatus       status
 )
 #else
-PUBLIC S16 KwUiCkwUeIdChgCfm(pst, suId, transId,ueInfo,status)
+S16 rlcUiCkwUeIdChgCfm(pst, suId, transId,ueInfo,status)
 Pst            *pst;                      /* post structure */
 SuId           suId;                      /* Service User Id */
 U32            transId;
@@ -772,14 +772,14 @@ CkwUeInfo      *ueInfo;
 CmStatus       status;
 #endif
 {
-   TRC3(KwUiCkwUeIdChgCfm)
+   TRC3(rlcUiCkwUeIdChgCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiCkwUeIdChgCfmMt[pst->selector])(pst, suId, transId, ueInfo, status);
 
    RETVALUE(ROK);
 
-} /* end of KwUiRlcCfgCfm */
+} /* end of rlcUiRlcCfgCfm */
 
 
 #if (defined(L2_L3_SPLIT) && defined(ICC_RECV_TSK_RBUF))
@@ -793,12 +793,12 @@ CmStatus       status;
  *      -# ROK 
  */
 #ifdef ANSI
-PUBLIC S16 rlcDlBatchProcSplit 
+S16 rlcDlBatchProcSplit 
 (
 Void
 )
 #else
-PUBLIC S16 rlcDlBatchProcSplit()
+S16 rlcDlBatchProcSplit()
 Void;
 #endif
 {
@@ -835,13 +835,13 @@ Void;
       datReq = (RxmBufReq *)elmIndx;
       if(datReq->mBuf != NULLP)
       {
-        cmUnpkKwuDatReq(KwUiKwuDatReq, &datReq->pst, datReq->mBuf);
+        cmUnpkKwuDatReq(rlcUiKwuDatReq, &datReq->pst, datReq->mBuf);
       }
       else
       {
          RLOG0(L_ERROR, "mBuf is NULL");
          if(datReq->mBuf)
-          cmUnpkKwuDatReq(KwUiKwuDatReq, &datReq->pst, datReq->mBuf);
+          cmUnpkKwuDatReq(rlcUiKwuDatReq, &datReq->pst, datReq->mBuf);
 
       }
       SsRngInfoTbl[SS_RNG_BUF_RX_TO_DLRLC].nPktProc++;//Number of pkt processed in tti
@@ -873,12 +873,12 @@ Void;
 
 #if defined(PDCP_RLC_DL_RBUF) || defined(SS_RBUF)
 #ifdef ANSI
-PUBLIC S16 rlcDlBatchProc
+S16 rlcDlBatchProc
 (
 Void
 )
 #else
-PUBLIC S16 rlcDlBatchProc()
+S16 rlcDlBatchProc()
 Void;
 #endif
 {
@@ -892,9 +892,9 @@ Void;
    /* Memory regions different for BRCM and Intel */
    /*dstProcId,srcProcId,dstEnt,dstInst,srcEnt,srcInst,prior,route,event,region,pool,selector*/
 #ifdef SS_RBUF
-   PRIVATE Pst rlcDlRbfuPst ={1,1,ENTKW,1,ENTPJ,1,PRIOR0,RTESPEC,KWU_EVT_DAT_REQ,1,1,0,0};
+   PRIVATE Pst rlcDlRbfuPst ={1,1,ENTRLC,1,ENTPJ,1,PRIOR0,RTESPEC,KWU_EVT_DAT_REQ,1,1,0,0};
 #else
-   PRIVATE Pst rlcDlRbfuPst ={1,1,ENTKW,1,ENTPJ,1,PRIOR0,RTESPEC,KWU_EVT_DAT_REQ,2,1,0,0};
+   PRIVATE Pst rlcDlRbfuPst ={1,1,ENTRLC,1,ENTPJ,1,PRIOR0,RTESPEC,KWU_EVT_DAT_REQ,2,1,0,0};
 #endif
    Void *elmIndx = NULLP;
    KwuDatReqDetl *kwuDatReqDetl = NULLP;
@@ -926,7 +926,7 @@ Void;
       SsRngInfoTbl[SS_RNG_BUF_DLPDCP_TO_DLRLC].nPktProc++;;//Number of pkt processed in tti
       if(kwuDatReqDetl->mBuf != NULLP)
       {
-         KwUiKwuDatReq(&rlcDlRbfuPst, kwuDatReqDetl->spId, &datReq, kwuDatReqDetl->mBuf);
+         rlcUiKwuDatReq(&rlcDlRbfuPst, kwuDatReqDetl->spId, &datReq, kwuDatReqDetl->mBuf);
       }
       SRngIncrRIndx(SS_RNG_BUF_DLPDCP_TO_DLRLC);
       rngBufDeqIndx++;
@@ -943,33 +943,33 @@ Void;
 
 
 #ifdef ANSI
-PUBLIC S16 kwUtlDlBatchProcPkts
+S16 rlcUtlDlBatchProcPkts
 (
 Void
 )
 #else
-PUBLIC S16 kwUtlDlBatchProcPkts
+S16 rlcUtlDlBatchProcPkts
 Void;
 #endif
 {
     rlcDlBatchProc();
 #ifdef SS_RBUF
 #ifdef LTE_L2_MEAS
-    kwUtlDlBatchProcHqStaInd();
+    rlcUtlDlBatchProcHqStaInd();
 #endif
-    kwUtlFreeDlMem();
+    rlcUtlFreeDlMem();
 #endif
     RETVALUE(ROK);
 }   
 
 
 #ifdef ANSI
-PUBLIC S16 kwUtlDlFreeRlcRBuf
+S16 rlcUtlDlFreeRlcRBuf
 (
 Void
 )
 #else
-PUBLIC S16 kwUtlDlFreeRlcRBuf
+S16 rlcUtlDlFreeRlcRBuf
 Void;
 #endif
 {

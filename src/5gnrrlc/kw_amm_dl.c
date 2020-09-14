@@ -81,7 +81,7 @@ U32 kwStatusPduCnt, kwStatusAckCnt, kwStatusNcnt, kwSduSndCnt;
 /* local externs */
 
 /* forward references */
-EXTERN Void kwAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
+EXTERN Void rlcAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
                                         RlcDlRbCb  *rbCb,
                                         KwUdxStaPdu *pStaPdu));
 
@@ -104,77 +104,77 @@ EXTERN Void kwAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
 
 /* private function declarations */
 
-PRIVATE Void  kwResegRetxPdus ARGS ((RlcCb *gCb,
+PRIVATE Void  rlcResegRetxPdus ARGS ((RlcCb *gCb,
                                      RlcDlRbCb *rbCb, 
                                      KwDatReq *kwDatReq));
 
-PRIVATE Void kwRemRetxPdu ARGS ((RlcCb *gCb, 
+PRIVATE Void rlcRemRetxPdu ARGS ((RlcCb *gCb, 
                                  RlcDlRbCb *rbCb, 
                                  KwRetx *retx));
 
-PRIVATE Void kwAmmCreateStatusPdu ARGS ((RlcCb *gCb, 
+PRIVATE Void rlcAmmCreateStatusPdu ARGS ((RlcCb *gCb, 
                                          RlcDlRbCb *rbCb,
                                          KwDatReq *kwDatReq));
 
-PRIVATE Void kwAmmDlMarkPduForReTx ARGS ((RlcCb *gCb,
+PRIVATE Void rlcAmmDlMarkPduForReTx ARGS ((RlcCb *gCb,
                                           RlcDlRbCb *rbCb,
                                           KwRetx *retx));
 
-PRIVATE Void kwAmmDlProcessSuccessfulTxPdu ARGS((RlcCb *gCb, 
+PRIVATE Void rlcAmmDlProcessSuccessfulTxPdu ARGS((RlcCb *gCb, 
                                                  RlcDlRbCb *rbCb,
                                                  KwSn  sn,
                                                  KwuDatCfmInfo **datCfm));
 
-PRIVATE Void kwAmmDlSetTxNextAck ARGS((KwAmDl *amDl, KwSn sn));
+PRIVATE Void rlcAmmDlSetTxNextAck ARGS((KwAmDl *amDl, KwSn sn));
 
-PRIVATE Void kwAmmDlCheckAndStopPollTmr ARGS((RlcCb *gCb,
+PRIVATE Void rlcAmmDlCheckAndStopPollTmr ARGS((RlcCb *gCb,
                                               RlcDlRbCb *rbCb,
                                               KwSn mAckSn));
 
-PRIVATE Void  kwAssembleSdus ARGS ((RlcCb *gCb,
+PRIVATE Void  rlcAssembleSdus ARGS ((RlcCb *gCb,
                                     RlcDlRbCb *rbCb, 
                                     KwDatReq *kwDatReq));
 
-PRIVATE Bool kwAmmDlCheckAndSetPoll ARGS ((RlcCb *gCb,
+PRIVATE Bool rlcAmmDlCheckAndSetPoll ARGS ((RlcCb *gCb,
                                            RlcDlRbCb *rbCb, 
                                            Bool newPdu, 
                                            MsgLen bufSz));
 
-PRIVATE Void kwAmmCreatePdu ARGS ((RlcCb *gCb,
+PRIVATE Void rlcAmmCreatePdu ARGS ((RlcCb *gCb,
                                    RlcDlRbCb *rbCb, 
                                    KwAmHdr *amHdr, 
                                    RlcDlPduInfo *pduInfo,
                                    Buffer *pdu));
 
-PRIVATE Void kwAmmSndStaInd ARGS ((RlcCb *gCb,RlcDlRbCb *rbCb, KwRetx *retx));
+PRIVATE Void rlcAmmSndStaInd ARGS ((RlcCb *gCb,RlcDlRbCb *rbCb, KwRetx *retx));
 
-PRIVATE Void kwGetNxtRetx ARGS ((RlcCb *gCb, KwRetx **retx));
+PRIVATE Void rlcGetNxtRetx ARGS ((RlcCb *gCb, KwRetx **retx));
 
-PRIVATE Void kwConstructAmHdr ARGS ((KwAmHdr *amHdr, 
+PRIVATE Void rlcConstructAmHdr ARGS ((KwAmHdr *amHdr, 
                                      U8 *hdr,
                                      U8  snLen,
                                      U16 *idx));
 
-PRIVATE Void kwAmmDlUpdateTxAndReTxBufForAckSn ARGS ((RlcCb *gCb,
+PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForAckSn ARGS ((RlcCb *gCb,
                                                       RlcDlRbCb *rbCb, 
                                                       KwSn mAckSn,
                                                       CmLList *retx,
                                                       KwuDatCfmInfo **datCfm));
 
-PRIVATE Void kwAmmDlMoveFrmTxtoRetxBuffer ARGS ((RlcCb *gCb,
+PRIVATE Void rlcAmmDlMoveFrmTxtoRetxBuffer ARGS ((RlcCb *gCb,
                                                  KwAmDl *amDl, 
                                                  KwRetx **retx, 
                                                  KwSn sn));
  
-PRIVATE Void kwAmmDlCheckIsSDUDelivered ARGS((RlcCb *gCb,
+PRIVATE Void rlcAmmDlCheckIsSDUDelivered ARGS((RlcCb *gCb,
                                               RlcDlRbCb *rbCb, 
                                               KwSduMap *sduMap, 
                                               KwuDatCfmInfo **datCfm));
 
-PRIVATE Void kwAmmAddPduToRetxLst ARGS((KwAmDl   *amDl,
+PRIVATE Void rlcAmmAddPduToRetxLst ARGS((KwAmDl   *amDl,
                                         KwRetx   *retx));
 
-PRIVATE Void kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer ARGS(
+PRIVATE Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer ARGS(
 (
 RlcCb          *gCb,
 KwAmDl        *amDl,
@@ -182,7 +182,7 @@ KwRetx        **retx,
 RlcDlPduInfo   *pduInfo
 ));
 
-PRIVATE Void kwAmmDlHndlStatus4SduByteSegInTxBuf ARGS(
+PRIVATE Void rlcAmmDlHndlStatus4SduByteSegInTxBuf ARGS(
 (
 RlcCb          *gCb,
 RlcDlRbCb      *rbCb,
@@ -191,7 +191,7 @@ KwRetx        **retx,
 KwuDatCfmInfo **datCfm
 ));
 
-PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn ARGS(
+PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn ARGS(
 (
  RlcCb          *gCb,
  RlcDlRbCb      *rbCb,
@@ -209,7 +209,7 @@ KwNackInfo    *nackSnInfo,
 U8            idx
 ));
 
-PRIVATE Void kwAmmDlUpdTxAndReTxBufForLessThanNackSn ARGS(
+PRIVATE Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn ARGS(
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -222,13 +222,13 @@ KwuDatCfmInfo   **datCfm
 
   AM Module contains the following funcitons:
 
-  -  kwAmmQSdu 
-  -  kwAmmProcessSdus
-     -  kwAmmDlAssembleCntrlInfo
-     -  kwResegRetxPdus
-     -  kwAssembleSdus
-     -  kwAmmDlCheckAndSetPoll
-  -  kwAmmProcessPdus
+  -  rlcAmmQSdu 
+  -  rlcAmmProcessSdus
+     -  rlcAmmDlAssembleCntrlInfo
+     -  rlcResegRetxPdus
+     -  rlcAssembleSdus
+     -  rlcAmmDlCheckAndSetPoll
+  -  rlcAmmProcessPdus
      -  rlcDlmHndlStaRsp
      -  kwTriggerStatus
      -  kwReassembleSdus
@@ -252,24 +252,24 @@ KwuDatCfmInfo   **datCfm
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwAmmSendDStaRsp
+Void rlcAmmSendDStaRsp
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 KwAmDl     *amDl
 )
 #else
-PUBLIC Void kwAmmSendDStaRsp(gCb, rbCb, amDl)
+Void rlcAmmSendDStaRsp(gCb, rbCb, amDl)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwAmDl     *amDl;
 #endif
 {
-   S32 bo = kwAmmCalculateBo(amDl);
+   S32 bo = rlcAmmCalculateBo(amDl);
 
    if(bo)
    {
-      kwUtlSndDStaRsp(gCb, rbCb, bo, amDl->estHdrSz, amDl->cntrlBo ?TRUE:FALSE,amDl->cntrlBo);
+      rlcUtlSndDStaRsp(gCb, rbCb, bo, amDl->estHdrSz, amDl->cntrlBo ?TRUE:FALSE,amDl->cntrlBo);
    }
    
    RETVOID;
@@ -286,14 +286,14 @@ KwAmDl     *amDl;
  * @return  Void
 */
 #ifdef ANSI
-PRIVATE Void kwAmmDlCheckAndStopPollTmr
+PRIVATE Void rlcAmmDlCheckAndStopPollTmr
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 KwSn       mAckSn
 )
 #else
-PRIVATE Void kwAmmDlCheckAndStopPollTmr(gCb, rbCb, mAckSn)
+PRIVATE Void rlcAmmDlCheckAndStopPollTmr(gCb, rbCb, mAckSn)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwSn       mAckSn;
@@ -305,9 +305,9 @@ KwSn       mAckSn;
                                                                    
    if (mPollSn <= mAckSn)                                        
    {                                                               
-      if (kwChkTmr(gCb, (PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR))    
+      if (rlcChkTmr(gCb, (PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR))    
       {                                                            
-         kwStopTmr(gCb, (PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);    
+         rlcStopTmr(gCb, (PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);    
       }                                                            
    }
 
@@ -323,13 +323,13 @@ KwSn       mAckSn;
  * @return  Void
 */
 #ifdef ANSI
-PRIVATE Void kwAmmDlSetTxNextAck
+PRIVATE Void rlcAmmDlSetTxNextAck
 (
 KwAmDl   *amDl,
 KwSn      sn
 )
 #else
-PRIVATE Void kwAmmDlSetTxNextAck(amDl, sn)
+PRIVATE Void rlcAmmDlSetTxNextAck(amDl, sn)
 KwAmDl   *amDl;
 KwSn     sn
 #endif
@@ -353,7 +353,7 @@ KwSn     sn
  * @return  Void
 */
 #ifdef ANSI
-PRIVATE Void kwAmmDlProcessSuccessfulReTx
+PRIVATE Void rlcAmmDlProcessSuccessfulReTx
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -361,16 +361,16 @@ KwRetx          *retx,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void kwAmmDlProcessSuccessfulReTx(gCb, rbCb, retx, datCfm)
+PRIVATE Void rlcAmmDlProcessSuccessfulReTx(gCb, rbCb, retx, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 KwRetx          *retx;
 KwuDatCfmInfo   **datCfm;
 #endif
 {
-   kwAmmDlCheckIsSDUDelivered(gCb, rbCb, &(retx->sduMap), datCfm);
+   rlcAmmDlCheckIsSDUDelivered(gCb, rbCb, &(retx->sduMap), datCfm);
    
-   kwRemRetxPdu(gCb, rbCb, retx);
+   rlcRemRetxPdu(gCb, rbCb, retx);
 
    RETVOID;
 }
@@ -392,7 +392,7 @@ KwuDatCfmInfo   **datCfm;
  */
 
 #ifdef ANSI
-PRIVATE Void kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer
+PRIVATE Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer
 (
 RlcCb          *gCb,
 KwAmDl        *amDl,
@@ -400,14 +400,14 @@ KwRetx        **retx,
 RlcDlPduInfo   *pduInfo
 )
 #else
-PRIVATE Void kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, amDl, retx, pduInfo)
+PRIVATE Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, amDl, retx, pduInfo)
 RlcCb          *gCb;
 KwAmDl        *amDl;
 KwRetx        **retx;
 RlcDlPduInfo   *pduInfo;
 #endif
 {
-   TRC2(kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer);
+   TRC2(rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer);
 
 
    RLC_ALLOC_WC(gCb,*retx, sizeof(KwRetx));
@@ -439,7 +439,7 @@ RlcDlPduInfo   *pduInfo;
 		   sizeof(KwSduMap));
 
    KW_MEM_CPY(&((*retx)->amHdr), &pduInfo->amHdr, sizeof(KwAmHdr));
-   kwAmmAddPduToRetxLst(amDl, (*retx));
+   rlcAmmAddPduToRetxLst(amDl, (*retx));
 
    /* Update the BO appropriately */
    amDl->retxBo   += (*retx)->segSz;
@@ -448,7 +448,7 @@ RlcDlPduInfo   *pduInfo;
    gRlcStats.amRlcStats.numDLRetransPdus++;
 
    RETVOID;
-} /*kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer */
+} /*rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer */
 
 /**
  * @brief Function to handle Status of Sdu byte segment for a nackSn 
@@ -468,7 +468,7 @@ RlcDlPduInfo   *pduInfo;
  */
 
 #ifdef ANSI
-PRIVATE Void kwAmmDlHndlStatus4SduByteSegInTxBuf
+PRIVATE Void rlcAmmDlHndlStatus4SduByteSegInTxBuf
 (
 RlcCb          *gCb,
 RlcDlRbCb      *rbCb,
@@ -477,7 +477,7 @@ KwRetx        **retx,
 KwuDatCfmInfo ** datCfm
 )
 #else
-PRIVATE Void kwAmmDlHndlStatus4SduByteSegInTxBuf(gCb, rbCb, nackSnInfo, retx, datCfm)
+PRIVATE Void rlcAmmDlHndlStatus4SduByteSegInTxBuf(gCb, rbCb, nackSnInfo, retx, datCfm)
 (
 RlcCb          *gCb;
 RlcDlRbCb      *rbCb;
@@ -491,7 +491,7 @@ KwuDatCfmInfo **datCfm;
    CmLList *lnk;
    CmLList *nextLnk;
 
-   TRC2(kwAmmDlHndlStatus4SduByteSegInTxBuf)
+   TRC2(rlcAmmDlHndlStatus4SduByteSegInTxBuf)
 
    txBuf = kwUtlGetTxBuf(AMDL.txBufLst, nackSnInfo->sn);
    if (txBuf == NULLP)
@@ -508,7 +508,7 @@ KwuDatCfmInfo **datCfm;
          soStart that means it's ACKED*/
       if(pduSoEnd < nackSnInfo->soStart) 
       {
-         kwAmmDlCheckIsSDUDelivered(gCb,
+         rlcAmmDlCheckIsSDUDelivered(gCb,
                rbCb,  
                &(pduInfo->sduMap), 
                datCfm);
@@ -517,7 +517,7 @@ KwuDatCfmInfo **datCfm;
       else if (pduSoEnd <= nackSnInfo->soEnd)
       {
          /* Move Sdu byte segment from TX buf to retx buf*/
-         kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, 
+         rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, 
                &rbCb->m.amDl, 
                retx, 
                pduInfo);
@@ -536,7 +536,7 @@ KwuDatCfmInfo **datCfm;
    if(!txBuf->pduLst.count)
    {
       /*No more Sdu byte segment are left. Hence delete txBuf*/
-      kwUtlDelTxBuf(AMDL.txBufLst, txBuf,gCb);
+      rlcUtlDelTxBuf(AMDL.txBufLst, txBuf,gCb);
    }
 
    RETVOID;
@@ -559,7 +559,7 @@ KwuDatCfmInfo **datCfm;
  *            
  */
 #ifdef ANSI
-PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn
+PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn
 (
  RlcCb          *gCb,
  RlcDlRbCb      *rbCb,
@@ -568,7 +568,7 @@ PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn
  KwuDatCfmInfo **datCfm
  )
 #else
-PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode, datCfm)
+PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode, datCfm)
 (
  RlcCb          *gCb;
  RlcDlRbCb      *rbCb;
@@ -581,7 +581,7 @@ PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode,
    KwTx    *txBuf;
    KwRetx  *retx;
 
-   TRC2(kwAmmDlUpdateTxAndReTxBufForNackSn)
+   TRC2(rlcAmmDlUpdateTxAndReTxBufForNackSn)
 
    /* Now process the NACK_SN received. Now the NACK_SN is    */
    /* either the first element of RETX or is in TX array      */
@@ -597,12 +597,12 @@ PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode,
          /* Go through all the AMD PDUs of a particular SN
             and check if segment is ACKED if yes then mark succesfully sent,
             if segment is NACKed then move it to to retx lst */
-         kwAmmDlHndlStatus4SduByteSegInTxBuf(gCb, rbCb, nackSnInfo, &retx, datCfm);
+         rlcAmmDlHndlStatus4SduByteSegInTxBuf(gCb, rbCb, nackSnInfo, &retx, datCfm);
       }
       else
       {
          /*e2= 0 and e3= 0: Move complete PDU from TX buf to retx buf*/
-         kwAmmDlMoveFrmTxtoRetxBuffer(gCb, 
+         rlcAmmDlMoveFrmTxtoRetxBuffer(gCb, 
                &rbCb->m.amDl, 
                &retx, 
                nackSnInfo->sn);
@@ -643,7 +643,7 @@ PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode,
                rbCb->rlcId.cellId);
 
          (*retxNode) = (*retxNode)->next;
-         kwAmmDlProcessSuccessfulReTx(gCb,rbCb, retx, datCfm);
+         rlcAmmDlProcessSuccessfulReTx(gCb,rbCb, retx, datCfm);
       }
       else if((!nackSnInfo->isSegment) || (retx->soEnd <= nackSnInfo->soEnd))
       {
@@ -653,7 +653,7 @@ PRIVATE Void kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode,
 
          (*retxNode) = (*retxNode)->next;
          /* Mark the retx PDU we found for further retransmission  */
-         kwAmmDlMarkPduForReTx(gCb, rbCb, retx);
+         rlcAmmDlMarkPduForReTx(gCb, rbCb, retx);
       }
       else
       { 
@@ -794,14 +794,14 @@ U8            idx;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwAmmDlHndlStatusPdu
+Void rlcAmmDlHndlStatusPdu
 (
 RlcCb          *gCb,
 RlcDlRbCb      *rbCb,
 KwUdxStaPdu   *pStaPdu
 )
 #else
-PUBLIC Void kwAmmDlHndlStatusPdu(gCb, rbCb, pStaPdu)
+Void rlcAmmDlHndlStatusPdu(gCb, rbCb, pStaPdu)
 RlcCb          *gCb;
 RlcDlRbCb      *rbCb;
 KwUdxStaPdu   *pStaPdu;
@@ -814,7 +814,7 @@ KwUdxStaPdu   *pStaPdu;
    KwKwuSapCb    *kwuSap;
    KwSn       mTxNext;
 
-   TRC2(kwAmmDlHndlStatusPdu)
+   TRC2(rlcAmmDlHndlStatusPdu)
    kwStatusPduCnt++;
 
    kwuSap = gCb->u.dlCb->kwuDlSap + KW_UI_PDCP;
@@ -859,7 +859,7 @@ KwUdxStaPdu   *pStaPdu;
  
    /* Venki - stopping the poll retx timer */
    /*Stop PollRetx Tmr */
-   kwAmmDlCheckAndStopPollTmr(gCb, rbCb, mAckSn);
+   rlcAmmDlCheckAndStopPollTmr(gCb, rbCb, mAckSn);
 
    /* Set the first node in retx list to retxNode */
    retxNode = AMDL.retxLst.first;
@@ -921,12 +921,12 @@ KwUdxStaPdu   *pStaPdu;
          }
 
          /* clear all the SNs < NACK_SN from re-transmission list */   
-         kwAmmDlUpdTxAndReTxBufForLessThanNackSn(gCb, rbCb, sn, mNackSn,
+         rlcAmmDlUpdTxAndReTxBufForLessThanNackSn(gCb, rbCb, sn, mNackSn,
                                                  &retxNode, &datCfm);
          
          if(!nackSnInfo.nackRange)
          {
-            kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, &nackSnInfo, &retxNode, &datCfm);
+            rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, &nackSnInfo, &retxNode, &datCfm);
             gRlcStats.amRlcStats.numRlcAmCellNackRx++;
          }
          else
@@ -939,7 +939,7 @@ KwUdxStaPdu   *pStaPdu;
                RlcDlAmmGetNackSnInfoFrmNackRangeIdx(&AMDL, &pStaPdu->nackInfo[idx],
                                                    retxNode, &nackSnInfo, idx1);
                
-               kwAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, &nackSnInfo,
+               rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, &nackSnInfo,
                                                   &retxNode, &datCfm);
                nackSnInfo.sn = ((nackSnInfo.sn + 1) & (AMDL.snModMask)); 
                gRlcStats.amRlcStats.numRlcAmCellNackRx++;
@@ -952,10 +952,10 @@ KwUdxStaPdu   *pStaPdu;
 
       /* Remove the PDUs with are further acked by the ACK_SN after taking
          care of all the NACK_SN related acknowledgments*/
-      kwAmmDlUpdateTxAndReTxBufForAckSn(gCb,rbCb, mAckSn, retxNode, &datCfm);
+      rlcAmmDlUpdateTxAndReTxBufForAckSn(gCb,rbCb, mAckSn, retxNode, &datCfm);
 
       /* Update txNextAck */
-      kwAmmDlSetTxNextAck(&AMDL,txNextAck);
+      rlcAmmDlSetTxNextAck(&AMDL,txNextAck);
    }
    else
    {
@@ -967,10 +967,10 @@ KwUdxStaPdu   *pStaPdu;
                rbCb->rlcId.cellId);
 
       /* For the remaining ACKs  after last nackSn */
-      kwAmmDlUpdateTxAndReTxBufForAckSn(gCb,rbCb, mAckSn, retxNode, &datCfm);
+      rlcAmmDlUpdateTxAndReTxBufForAckSn(gCb,rbCb, mAckSn, retxNode, &datCfm);
       
       /* update txNextAck */
-      kwAmmDlSetTxNextAck(&AMDL, pStaPdu->ackSn); 
+      rlcAmmDlSetTxNextAck(&AMDL, pStaPdu->ackSn); 
    }
 
    if(datCfm->numSduIds != 0)
@@ -988,7 +988,7 @@ KwUdxStaPdu   *pStaPdu;
       }
       kwSduSndCnt += datCfm->numSduIds;
       /* Sap control block */
-      KwUiKwuDatCfm(&kwuSap->pst, kwuSap->suId, datCfm);
+      rlcUiKwuDatCfm(&kwuSap->pst, kwuSap->suId, datCfm);
    }
    else
    {
@@ -1001,7 +1001,7 @@ KwUdxStaPdu   *pStaPdu;
       canged inside the above called functions */
    if (oldRetxBo != AMDL.retxBo)
    {
-      kwAmmSendDStaRsp(gCb, rbCb, &AMDL);
+      rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);
    }
 
    RETVOID;
@@ -1022,12 +1022,12 @@ KwUdxStaPdu   *pStaPdu;
  *      Calculated bo
 */
 #ifdef ANSI
-PUBLIC S32 kwAmmCalculateBo
+S32 rlcAmmCalculateBo
 (
 KwAmDl *amDl
 )
 #else
-PUBLIC S32 kwAmmCalculateBo(amDl)
+S32 rlcAmmCalculateBo(amDl)
 KwAmDl *amDl;
 #endif
 {
@@ -1084,7 +1084,7 @@ U32 kwRxSdu;
  *      -# RETVOID
 */
 #ifdef ANSI
-PUBLIC Void kwAmmQSdu
+Void rlcAmmQSdu
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -1092,7 +1092,7 @@ Buffer          *mBuf,
 KwuDatReqInfo   *datReq
 )
 #else
-PUBLIC Void kwAmmQSdu(gCb, rbCb, mBuf, datReq)
+Void rlcAmmQSdu(gCb, rbCb, mBuf, datReq)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 Buffer          *mBuf;
@@ -1107,7 +1107,7 @@ KwuDatReqInfo   *datReq;
 #endif
 #endif
 #endif
-   TRC2(kwAmmQSdu)
+   TRC2(rlcAmmQSdu)
 
    /* Allocate sdu */
    RLC_ALLOC_WC(gCb,sdu, sizeof(KwSdu)); 
@@ -1125,7 +1125,7 @@ KwuDatReqInfo   *datReq;
 
    KW_UPD_L2_DL_TOT_SDU_STS(gCb,rbCb);
    /* Discard new changes starts */
-   kwUtlGetCurrTime(&sdu->arrTime);
+   rlcUtlGetCurrTime(&sdu->arrTime);
    /* Discard new changes ends */
    /* Assign values to sdu */
    SFndLenMsg(mBuf, &sdu->sduSz);
@@ -1149,7 +1149,7 @@ dlrate_kwu += sdu->sduSz;
    if (AMDL.nxtTx == NULLP)
    {
       RLOG_ARG2(L_UNUSED,DBG_RBID, rbCb->rlcId.rbId,
-               "kwAmmQSdu: Received SDU will be transmitted next"
+               "rlcAmmQSdu: Received SDU will be transmitted next"
                "UEID:%d CELLID:%d",
                 rbCb->rlcId.ueId,
                 rbCb->rlcId.cellId);
@@ -1199,7 +1199,7 @@ dlrate_kwu += sdu->sduSz;
 
    if(!rlcDlUtlIsReestInProgress(rbCb))
    {
-      kwAmmSendDStaRsp(gCb, rbCb, &AMDL);
+      rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);
    }
 
    RETVOID;
@@ -1222,14 +1222,14 @@ dlrate_kwu += sdu->sduSz;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmDlAssembleCntrlInfo 
+PRIVATE Void rlcAmmDlAssembleCntrlInfo 
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 KwDatReq   *kwDatReq
 )
 #else
-PRIVATE Void kwAmmDlAssembleCntrlInfo(gCb, rbCb, kwDatReq)
+PRIVATE Void rlcAmmDlAssembleCntrlInfo(gCb, rbCb, kwDatReq)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
@@ -1238,7 +1238,7 @@ KwDatReq   *kwDatReq;
    KwUdxDlSapCb   *sapCb;
    MsgLen         macHdrEstmt;
 
-   TRC2(kwAmmDlAssembleCntrlInfo)
+   TRC2(rlcAmmDlAssembleCntrlInfo)
 
    macHdrEstmt = (rbCb->m.amDl.cntrlBo < 256) ?
                   KW_MAC_HDR_SZ2 : KW_MAC_HDR_SZ3;
@@ -1252,7 +1252,7 @@ KwDatReq   *kwDatReq;
       kwDatReq->pduSz -= macHdrEstmt;
       
       /* Create the status Pdu with the required NACKs */
-      kwAmmCreateStatusPdu(gCb,rbCb,kwDatReq);
+      rlcAmmCreateStatusPdu(gCb,rbCb,kwDatReq);
 
       sapCb = KW_GET_DL_SAPCB(gCb, rbCb);
 	   rlcDlUdxStaProhTmrStart(&(gCb->u.dlCb->udxDlSap->pst), 
@@ -1289,9 +1289,9 @@ KwDatReq   *kwDatReq;
  *    - Check if the control BO is available and call kwAssembleCntrlInfo 
  *      to assemble control Information
  *    - Check if the pdu size is available to form PDUs from retransmission 
- *      buffer and call kwResegRetxPdus
+ *      buffer and call rlcResegRetxPdus
  *    - Check if the pdu size is available and assemble SDUs from sduQ 
- *      if exist, using kwAssembleSdus
+ *      if exist, using rlcAssembleSdus
  *    - PDU Info and bo are filled in and then sent to MAC from the 
  *      utility function
  *
@@ -1304,7 +1304,7 @@ KwDatReq   *kwDatReq;
  *
  */
 #ifdef ANSI
-PUBLIC Void kwAmmProcessSdus
+Void rlcAmmProcessSdus
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
@@ -1312,14 +1312,14 @@ KwDatReq   *kwDatReq,
 Bool       fillCtrlPdu
 )
 #else
-PUBLIC Void kwAmmProcessSdus(gCb, rbCb, kwDatReq,fillCtrlPdu)
+Void rlcAmmProcessSdus(gCb, rbCb, kwDatReq,fillCtrlPdu)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
 Bool       fillCtrlPdu;
 #endif    
 {
-   TRC2(kwAmmProcessSdus)
+   TRC2(rlcAmmProcessSdus)
 
 
    /* Assemble control information. fillCtrlPdu parameter check is added for CA
@@ -1338,7 +1338,7 @@ Bool       fillCtrlPdu;
 
       if (AMDL.pStaPdu != NULLP)
       {
-         kwAmmDlAssembleCntrlInfo (gCb, rbCb, kwDatReq);
+         rlcAmmDlAssembleCntrlInfo (gCb, rbCb, kwDatReq);
       }
       else
       {
@@ -1353,13 +1353,13 @@ Bool       fillCtrlPdu;
    /* Retransmit PDUs /portions of PDUs available in retxLst */
    if ((kwDatReq->pduSz > 0) && (AMDL.nxtRetx != NULLP))
    {
-      kwResegRetxPdus (gCb,rbCb, kwDatReq);
+      rlcResegRetxPdus (gCb,rbCb, kwDatReq);
    }
 
    /* Assemble SDUs to form new PDUs */ 
    if ((kwDatReq->pduSz > 0) && (AMDL.nxtTx != 0))
    {
-      kwAssembleSdus(gCb,rbCb, kwDatReq); 
+      rlcAssembleSdus(gCb,rbCb, kwDatReq); 
    }
   
    if (AMDL.nxtRetx != NULLP)
@@ -1371,7 +1371,7 @@ Bool       fillCtrlPdu;
       kwDatReq->boRep.oldestSduArrTime = AMDL.nxtTx->arrTime;
    }
    /* Accumulate bo */
-   kwDatReq->boRep.bo = kwAmmCalculateBo(&AMDL);
+   kwDatReq->boRep.bo = rlcAmmCalculateBo(&AMDL);
    kwDatReq->boRep.staPduBo = AMDL.cntrlBo;
 
    /* Hdr estimation is moved to kwAmmCreatePDu */
@@ -1403,7 +1403,7 @@ Bool       fillCtrlPdu;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwSplitPdu
+PRIVATE Void rlcSplitPdu
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
@@ -1412,7 +1412,7 @@ KwRetx     *next,
 U16        size
 )
 #else
-PRIVATE Void kwSplitPdu(gCb, rbCb, crnt, next, size)
+PRIVATE Void rlcSplitPdu(gCb, rbCb, crnt, next, size)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwRetx     *crnt;
@@ -1423,7 +1423,7 @@ U16        size;
    U8            si;
    KwAmDl        *amDl = &AMDL;
 
-   TRC2(kwSplitPdu)
+   TRC2(rlcSplitPdu)
    /* Set the SN for the new segment */
    next->amHdr.sn = crnt->amHdr.sn;
 
@@ -1511,7 +1511,7 @@ U16        size;
  *    - While pdusize is available and retxBuf has data (pdu or portion 
  *      of pdu) to be sent, form the pdu as it is if it matches with the 
  *      pdusize else segment the PDUs/portion of PDUs
- *    - Call kwAmmDlCheckAndSetPoll function to check and set the poll bit as 
+ *    - Call rlcAmmDlCheckAndSetPoll function to check and set the poll bit as 
  *      required 
  *    - Concatenate data and header info and fill pduInfo 
  *    - Update retxCnt and send indication to PDCP if it reaches maxRetx 
@@ -1525,14 +1525,14 @@ U16        size;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwResegRetxPdus 
+PRIVATE Void rlcResegRetxPdus 
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 KwDatReq   *kwDatReq
 )
 #else
-PRIVATE Void kwResegRetxPdus(gCb, rbCb, kwDatReq)
+PRIVATE Void rlcResegRetxPdus(gCb, rbCb, kwDatReq)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
@@ -1551,7 +1551,7 @@ KwDatReq   *kwDatReq;
    U8         numSdus;
 #endif
 
-   TRC2(kwResegRetxPdus)
+   TRC2(rlcResegRetxPdus)
 
 
    amDl  = &AMDL;
@@ -1594,7 +1594,7 @@ KwDatReq   *kwDatReq;
       {
          RETVOID;
       }
-      kwGetNxtRetx(gCb, &(amDl->nxtRetx));
+      rlcGetNxtRetx(gCb, &(amDl->nxtRetx));
 
       /* Send retx buf without segmentation */
       if (kwDatReq->pduSz >= pduSz)
@@ -1602,7 +1602,7 @@ KwDatReq   *kwDatReq;
          U8 pollBit;
          
          RLOG_ARG2(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId, 
-                  "kwResegRetxPdus: Send retx buf without segmentation "
+                  "rlcResegRetxPdus: Send retx buf without segmentation "
                   "UEID:%d CELLID:%d", 
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
@@ -1610,7 +1610,7 @@ KwDatReq   *kwDatReq;
          if (retx->yetToConst)
          {
             /* Construct hdr with the available hdr values */ 
-            kwConstructAmHdr(&retx->amHdr, hdr, amDl->snLen, &idx);
+            rlcConstructAmHdr(&retx->amHdr, hdr, amDl->snLen, &idx);
             /* Add header to the pdu/segment */
             SAddPreMsgMultInOrder(hdr, idx + 1, retx->seg);
             retx->yetToConst = FALSE;
@@ -1618,7 +1618,7 @@ KwDatReq   *kwDatReq;
 
          /* kw003.201 - Check if poll bit needs to be set. Retx size does */
          /* not affect the poll bit so it is being passed as zero         */ 
-         pollBit = kwAmmDlCheckAndSetPoll(gCb,rbCb, FALSE, 0);
+         pollBit = rlcAmmDlCheckAndSetPoll(gCb,rbCb, FALSE, 0);
          KW_UPD_POLL_BIT(gCb, retx, pollBit);
 
          kwDatReq->pduSz  -= pduSz;
@@ -1646,7 +1646,7 @@ KwDatReq   *kwDatReq;
          /* Segment this pdu / portion of pdu. Insert this segment into */
          /* retxLst and update offset                                   */
          RLOG_ARG2(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                  "kwResegRetxPdus: Segment retx buf UEID:%d CELLID:%d",
+                  "rlcResegRetxPdus: Segment retx buf UEID:%d CELLID:%d",
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
 
@@ -1700,7 +1700,7 @@ KwDatReq   *kwDatReq;
          KW_AM_RMV_HDR(gCb, rbCb, retx);
 
          /* kw003.201 - Split the payload and update other fields */
-         kwSplitPdu(gCb,rbCb, retx, tNode, kwDatReq->pduSz); 
+         rlcSplitPdu(gCb,rbCb, retx, tNode, kwDatReq->pduSz); 
 
 #ifdef LTE_L2_MEAS
          numSdus = 0;
@@ -1721,7 +1721,7 @@ KwDatReq   *kwDatReq;
          }
 #endif
          /* Construct hdr with the available hdr values */
-         kwConstructAmHdr(&retx->amHdr, hdr, amDl->snLen, &idx);
+         rlcConstructAmHdr(&retx->amHdr, hdr, amDl->snLen, &idx);
          SAddPreMsgMultInOrder(hdr, idx + 1, retx->seg);
 
          retx->hdrSz = idx + 1;
@@ -1747,14 +1747,14 @@ KwDatReq   *kwDatReq;
    }
 #ifndef ALIGN_64BIT
    RLOG_ARG3(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId, 
-                 "kwResegRetxPdus: retxBo after resegmentation = %ld"
+                 "rlcResegRetxPdus: retxBo after resegmentation = %ld"
                  "UEID:%d CELLID:%d", 
                  amDl->retxBo,
                  rbCb->rlcId.ueId,
                  rbCb->rlcId.cellId);
 #else
    RLOG_ARG3(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                 "kwResegRetxPdus: retxBo after resegmentation = %d "
+                 "rlcResegRetxPdus: retxBo after resegmentation = %d "
                  "UEID:%d CELLID:%d", 
                  amDl->retxBo,
                  rbCb->rlcId.ueId,
@@ -1775,7 +1775,7 @@ KwDatReq   *kwDatReq;
  *    - While pdusize is available, segment/concatenate SDUs or else if it
  *      matches the pdu size form PDUs accordingly.
  *    - RLC header and MAC header size are eliminated while forming the PDUs
- *    - Call kwAmmDlCheckAndSetPoll function to check and set the poll bit 
+ *    - Call rlcAmmDlCheckAndSetPoll function to check and set the poll bit 
  *      as required 
  *    - Concatenate data and header info and fill pduInfo  
  *
@@ -1786,14 +1786,14 @@ KwDatReq   *kwDatReq;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAssembleSdus 
+PRIVATE Void rlcAssembleSdus 
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 KwDatReq   *kwDatReq
 )
 #else
-PRIVATE Void kwAssembleSdus (gCb, rbCb, kwDatReq)
+PRIVATE Void rlcAssembleSdus (gCb, rbCb, kwDatReq)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
@@ -1837,7 +1837,7 @@ KwDatReq   *kwDatReq;
    KwAmHdr              *amHdr = NULLP;
    RlcDlPduInfo          *pduInfo = NULLP;
 
-   TRC2(kwAssembleSdus)
+   TRC2(rlcAssembleSdus)
 
 
 #ifdef LTE_L2_MEAS   
@@ -1868,7 +1868,7 @@ KwDatReq   *kwDatReq;
    discSduInfo->numSduIds = 0;
    discSduInfo->rlcId = rbCb->rlcId;
 
-   kwUtlGetCurrTime(&curTime);
+   rlcUtlGetCurrTime(&curTime);
    amDl->sduQ.crnt =  &sdu->lstEnt;
    /* Eliminate fixed header size */
    /*5GNR: value of KW_AM_PDU_FIXED_HDRSZ will be 2 or 3 depending on SN Size*/
@@ -1925,8 +1925,8 @@ KwDatReq   *kwDatReq;
 
             cmLListDelFrm(&amDl->sduQ, &sdu->lstEnt);
 
-            kwUtlAddSduToBeFreedQueue(gCb, sdu);
-            kwUtlRaiseDlCleanupEvent(gCb);
+            rlcUtlAddSduToBeFreedQueue(gCb, sdu);
+            rlcUtlRaiseDlCleanupEvent(gCb);
 
             /* We need to restore the crnt in the linked list which
              * would have become NULL in the DelFrm above */
@@ -2002,7 +2002,7 @@ KwDatReq   *kwDatReq;
          }
 #endif /* ERRCLASS & ERRCLS_RES */
 
-         kwUtlStoreTxBuf(amDl->txBufLst, txBuf, amDl->txNext);
+         rlcUtlStoreTxBuf(amDl->txBufLst, txBuf, amDl->txNext);
       }
       else
       {
@@ -2060,7 +2060,7 @@ KwDatReq   *kwDatReq;
          }
          amHdr          = &pduInfo->amHdr; 
          /* Create PDU with hdr and data */
-         kwAmmCreatePdu(gCb,rbCb, amHdr, pduInfo, pdu);
+         rlcAmmCreatePdu(gCb,rbCb, amHdr, pduInfo, pdu);
 
          //printf("\n Segmentation not required case: numPdu %d pdu  %p \n",kwDatReq->pduInfo.numPdu, pdu);
 
@@ -2069,7 +2069,7 @@ KwDatReq   *kwDatReq;
 #endif /*  LTE_L2_MEAS */
 
          /* kw005.201 ccpu00117318, updating the statistics */
-         kwUtlIncrementKwuStsSduTx(gCb->u.dlCb->kwuDlSap + rbCb->kwuSapId);
+         rlcUtlIncrementKwuStsSduTx(gCb->u.dlCb->kwuDlSap + rbCb->kwuSapId);
 #ifdef LTE_L2_MEAS
          if(KW_MEAS_IS_DL_ANY_MEAS_ON_FOR_RB(gCb,rbCb))
          {
@@ -2082,8 +2082,8 @@ KwDatReq   *kwDatReq;
                KW_GETSDUIDX(*sduIdx);
                newIdx = TRUE;
             }
-            kwUtlUpdateContainedSduLst(*sduIdx, &contSduLst);
-            kwUtlUpdateOutStandingSduLst(dlIpThPut, *sduIdx, sdu->actSz, 
+            rlcUtlUpdateContainedSduLst(*sduIdx, &contSduLst);
+            rlcUtlUpdateOutStandingSduLst(dlIpThPut, *sduIdx, sdu->actSz, 
                   sdu->mode.am.sduId, newIdx);
             /* Update the arrival time for each SDU */
             /* ccpu00143043 */
@@ -2122,8 +2122,8 @@ KwDatReq   *kwDatReq;
             {
                *sduIdx    = dlIpThPut->lastSduIdx;
             }
-            kwUtlUpdateContainedSduLst(*sduIdx, &contSduLst);
-            kwUtlUpdateOutStandingSduLst(dlIpThPut, *sduIdx, sdu->actSz, 
+            rlcUtlUpdateContainedSduLst(*sduIdx, &contSduLst);
+            rlcUtlUpdateOutStandingSduLst(dlIpThPut, *sduIdx, sdu->actSz, 
                   sdu->mode.am.sduId, newIdx);
             if(KW_MEAS_IS_DL_UU_LOSS_MEAS_ON_FOR_RB(gCb,rbCb))
             {
@@ -2168,7 +2168,7 @@ KwDatReq   *kwDatReq;
 
          amHdr = &pduInfo->amHdr; 
          /* Create PDU with hdr and data */
-         kwAmmCreatePdu(gCb,rbCb, amHdr, pduInfo, pdu);
+         rlcAmmCreatePdu(gCb,rbCb, amHdr, pduInfo, pdu);
 
          sdu->mode.am.isSegmented = TRUE;
          sdu->sduSz -= macGrntSz;
@@ -2216,7 +2216,7 @@ KwDatReq   *kwDatReq;
       numSdus = 0;
       currSduIdx = 0;
       l2MeasTb = kwUtlGetCurMeasTb(gCb, rbCb);
-      kwUtlUpdateBurstSdus(gCb, rbCb, &contSduLst, dataVol, *totMacGrant);
+      rlcUtlUpdateBurstSdus(gCb, rbCb, &contSduLst, dataVol, *totMacGrant);
       if ((lchInfo.numSdus != 0) && (l2MeasTb != NULLP))
       {
          for (lchIdx = 0; ((lchIdx < l2MeasTb->numLchInfo)
@@ -2260,7 +2260,7 @@ KwDatReq   *kwDatReq;
    if(discSduInfo->numSduIds != 0)
    {
       /* Sap control block */
-      KwUiKwuDiscSduCfm(&kwuSap->pst, kwuSap->suId, discSduInfo);
+      rlcUiKwuDiscSduCfm(&kwuSap->pst, kwuSap->suId, discSduInfo);
    }
    else
    {
@@ -2270,13 +2270,13 @@ KwDatReq   *kwDatReq;
 
 #ifndef ALIGN_64BIT
    RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-         "kwAssembleSdus: BO after assembly = %ld UEID:%d CELLID:%d",
+         "rlcAssembleSdus: BO after assembly = %ld UEID:%d CELLID:%d",
          amDl->bo,
          rbCb->rlcId.ueId,
          rbCb->rlcId.cellId);
 #else
    RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId,
-         "kwAssembleSdus: BO after assembly = %d UEID:%d CELLID:%d",
+         "rlcAssembleSdus: BO after assembly = %d UEID:%d CELLID:%d",
          amDl->bo,
          rbCb->rlcId.ueId,
          rbCb->rlcId.cellId);
@@ -2309,7 +2309,7 @@ KwDatReq   *kwDatReq;
  *
  */
 #ifdef ANSI
-PRIVATE Bool kwAmmDlCheckAndSetPoll
+PRIVATE Bool rlcAmmDlCheckAndSetPoll
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
@@ -2317,7 +2317,7 @@ Bool       newPdu,
 MsgLen     bufSz
 )
 #else
-PRIVATE Bool kwAmmDlCheckAndSetPoll(gCb, rbCb, newPdu, bufSz)
+PRIVATE Bool rlcAmmDlCheckAndSetPoll(gCb, rbCb, newPdu, bufSz)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 Bool       newPdu;
@@ -2327,7 +2327,7 @@ MsgLen     bufSz;
    Bool     pollBit = FALSE;
    KwAmDl   *amDl = &(rbCb->m.amDl);
 
-   TRC2(kwAmmDlCheckAndSetPoll)
+   TRC2(rlcAmmDlCheckAndSetPoll)
 
  
    /* If it's a new PDU increment PDU without poll and bytes without poll
@@ -2360,7 +2360,7 @@ MsgLen     bufSz;
       amDl->pollSn = (amDl->txNext - 1) & amDl->snModMask;
 
       RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-                "kwAmmDlCheckAndSetPoll: Poll SN = %d UEID:%d CELLID:%d", 
+                "rlcAmmDlCheckAndSetPoll: Poll SN = %d UEID:%d CELLID:%d", 
                 amDl->pollSn,
                 rbCb->rlcId.ueId,
                 rbCb->rlcId.cellId);
@@ -2370,12 +2370,12 @@ MsgLen     bufSz;
        * then starting the timer. Fixes crs 
        * ccpu00117216 and ccpu00118284 .
        * */
-      if( TRUE == kwChkTmr(gCb,(PTR)rbCb,KW_EVT_AMDL_POLL_RETX_TMR) )
+      if( TRUE == rlcChkTmr(gCb,(PTR)rbCb,KW_EVT_AMDL_POLL_RETX_TMR) )
       {
-         kwStopTmr(gCb,(PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);
+         rlcStopTmr(gCb,(PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);
       }
 
-      kwStartTmr(gCb,(PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);
+      rlcStartTmr(gCb,(PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);
    }
 
    RETVALUE(pollBit);
@@ -2398,7 +2398,7 @@ MsgLen     bufSz;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmCreatePdu
+PRIVATE Void rlcAmmCreatePdu
 (  
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
@@ -2407,7 +2407,7 @@ RlcDlPduInfo *pduInfo,
 Buffer     *pdu
 )
 #else
-PRIVATE Void kwAmmCreatePdu(gCb, rbCb, pduInfo, amHdr, pdu)
+PRIVATE Void rlcAmmCreatePdu(gCb, rbCb, pduInfo, amHdr, pdu)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwAmHdr    *amHdr;
@@ -2421,7 +2421,7 @@ Buffer     *pdu;
    MsgLen   pduSz;
    KwAmDl   *amDl = &(rbCb->m.amDl);
 
-   TRC2(kwAmmCreatePdu)
+   TRC2(rlcAmmCreatePdu)
 
 
    /* Update sn */
@@ -2439,10 +2439,10 @@ Buffer     *pdu;
    SFndLenMsg(pdu, &pduSz);
 
    /* passing newPDU = TRUE*/
-   amHdr->p = kwAmmDlCheckAndSetPoll(gCb,rbCb, TRUE, pduSz);
+   amHdr->p = rlcAmmDlCheckAndSetPoll(gCb,rbCb, TRUE, pduSz);
 
    /* Construct header with the available hdr Info, set isSegment to FALSE */
-   kwConstructAmHdr(amHdr, hdr, amDl->snLen, &idx);
+   rlcConstructAmHdr(amHdr, hdr, amDl->snLen, &idx);
 
    /* Concatenate hdr and data */
    SAddPreMsgMultInOrder(hdr, idx+1, pdu);
@@ -2484,20 +2484,20 @@ Buffer     *pdu;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwRemRetxPdu
+PRIVATE Void rlcRemRetxPdu
 (  
 RlcCb          *gCb,
 RlcDlRbCb      *rbCb,
 KwRetx        *retx
 )
 #else
-PRIVATE Void kwRemRetxPdu(gCb, rbCb, retx)
+PRIVATE Void rlcRemRetxPdu(gCb, rbCb, retx)
 RlcCb          *gCb;
 RlcDlRbCb      *rbCb;
 KwRetx        *retx;
 #endif
 {
-   TRC2(kwRemRetxPdu)
+   TRC2(rlcRemRetxPdu)
 
    cmLListDelFrm(&AMDL.retxLst, &retx->lstEnt); 
 
@@ -2512,8 +2512,8 @@ KwRetx        *retx;
       AMDL.estHdrSz -= retx->hdrSz;
    }
 
-   kwUtlAddReTxPduToBeFreedQueue(gCb, retx);
-   kwUtlRaiseDlCleanupEvent(gCb);
+   rlcUtlAddReTxPduToBeFreedQueue(gCb, retx);
+   rlcUtlRaiseDlCleanupEvent(gCb);
 
    RETVOID;
 }
@@ -2535,20 +2535,20 @@ KwRetx        *retx;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmDlMarkPduForReTx
+PRIVATE Void rlcAmmDlMarkPduForReTx
 (
 RlcCb          *gCb,
 RlcDlRbCb      *rbCb,
 KwRetx        *retx
 )
 #else
-PRIVATE Void kwAmmDlMarkPduForReTx(*gCb, rbCb, retx)
+PRIVATE Void rlcAmmDlMarkPduForReTx(*gCb, rbCb, retx)
 RlcCb          *gCb;
 RlcDlRbCb      *rbCb;
 KwRetx        *retx;
 #endif
 {
-   TRC2(kwAmmDlMarkPduForReTx)
+   TRC2(rlcAmmDlMarkPduForReTx)
    if (AMDL.maxReTxReached == TRUE)
    {
       RETVOID;
@@ -2575,12 +2575,12 @@ KwRetx        *retx;
             rbCb->m.amDl.cntrlBo = 0;
             rbCb->m.amDl.retxBo = 0;
             /* Sending BO update to SCH */
-            kwUtlSndDStaRsp(gCb, rbCb, 0,0,0,0);
-            kwAmmSndStaInd(gCb, rbCb, retx);
+            rlcUtlSndDStaRsp(gCb, rbCb, 0,0,0,0);
+            rlcAmmSndStaInd(gCb, rbCb, retx);
             gRlcStats.amRlcStats.numDLMaxRetx++;
          }
 
-         kwRemRetxPdu(gCb,rbCb, retx);
+         rlcRemRetxPdu(gCb,rbCb, retx);
          
          RETVOID;
       }
@@ -2615,7 +2615,7 @@ KwRetx        *retx;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmDlCheckIsSDUDelivered
+PRIVATE Void rlcAmmDlCheckIsSDUDelivered
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -2623,7 +2623,7 @@ KwSduMap        *sduMap,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void kwAmmDlCheckIsSDUDelivered(gCb, rbCb, sduMap, datCfm)
+PRIVATE Void rlcAmmDlCheckIsSDUDelivered(gCb, rbCb, sduMap, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 KwSduMap        *sduMap;
@@ -2632,7 +2632,7 @@ KwuDatCfmInfo   **datCfm;
 {
    KwSdu *sdu;
    
-   TRC2(kwAmmDlCheckIsSDUDelivered)
+   TRC2(rlcAmmDlCheckIsSDUDelivered)
    
    sdu = sduMap->sdu;
 
@@ -2655,7 +2655,7 @@ KwuDatCfmInfo   **datCfm;
           */
          KwKwuSapCb    *kwuSap;
          kwuSap = gCb->u.dlCb->kwuDlSap + KW_UI_PDCP;
-         KwUiKwuDatCfm(&kwuSap->pst, kwuSap->suId, *datCfm);
+         rlcUiKwuDatCfm(&kwuSap->pst, kwuSap->suId, *datCfm);
 
          RLC_SHRABL_STATIC_BUF_ALLOC(kwuSap->pst.region, kwuSap->pst.pool, *datCfm, sizeof(KwuDatCfmInfo));
 
@@ -2679,8 +2679,8 @@ KwuDatCfmInfo   **datCfm;
 
       /* Remove SDU from the sduQ */
       cmLListDelFrm(&AMDL.sduQ, &sdu->lstEnt);
-      kwUtlAddSduToBeFreedQueue(gCb, sdu);
-      kwUtlRaiseDlCleanupEvent(gCb);
+      rlcUtlAddSduToBeFreedQueue(gCb, sdu);
+      rlcUtlRaiseDlCleanupEvent(gCb);
    }
 
    RETVOID;
@@ -2702,7 +2702,7 @@ KwuDatCfmInfo   **datCfm;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmDlProcessSuccessfulTxPdu
+PRIVATE Void rlcAmmDlProcessSuccessfulTxPdu
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -2710,14 +2710,14 @@ KwSn            sn,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void kwAmmDlProcessSuccessfulTxPdu(gCb, rbCb, sn, datCfm)
+PRIVATE Void rlcAmmDlProcessSuccessfulTxPdu(gCb, rbCb, sn, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 KwSn            sn;
 KwuDatCfmInfo   **datCfm;
 #endif
 {
-   TRC2(kwAmmDlProcessSuccessfulTxPdu)
+   TRC2(rlcAmmDlProcessSuccessfulTxPdu)
    CmLList *pduNode;
   
    KwTx *txBuf = kwUtlGetTxBuf(AMDL.txBufLst, sn);
@@ -2730,17 +2730,17 @@ KwuDatCfmInfo   **datCfm;
    while(pduNode)
    {
       RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(pduNode->node);
-      kwAmmDlCheckIsSDUDelivered(gCb,
+      rlcAmmDlCheckIsSDUDelivered(gCb,
                               rbCb,  
                               &(pduInfo->sduMap), 
                               datCfm);
       pduNode = pduNode->next;
    }
    
-   kwUtlAddTxPduToBeFreedQueue(gCb, txBuf);
-   kwUtlRaiseDlCleanupEvent(gCb);
+   rlcUtlAddTxPduToBeFreedQueue(gCb, txBuf);
+   rlcUtlRaiseDlCleanupEvent(gCb);
    /* so that it is not processed again */
-   kwUtlRemovTxBuf(AMDL.txBufLst, txBuf, gCb);
+   rlcUtlRemovTxBuf(AMDL.txBufLst, txBuf, gCb);
 
    RETVOID;
 }
@@ -2760,14 +2760,14 @@ KwuDatCfmInfo   **datCfm;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmSndStaInd
+PRIVATE Void rlcAmmSndStaInd
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 KwRetx     *retx
 )
 #else
-PRIVATE Void kwAmmSndStaInd(gCb, rbCb, retx)
+PRIVATE Void rlcAmmSndStaInd(gCb, rbCb, retx)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwRetx     *retx;
@@ -2776,7 +2776,7 @@ KwRetx     *retx;
    KwuStaIndInfo   *staInd;
    KwKwuSapCb      *kwuSap;
 
-   TRC2(kwAmmSndStaInd);
+   TRC2(rlcAmmSndStaInd);
 
 
    /* Sap control block */
@@ -2804,7 +2804,7 @@ KwRetx     *retx;
 
 #ifdef KW_PDCP
 #else
-   KwUiKwuStaInd(&kwuSap->pst, kwuSap->suId, staInd);
+   rlcUiKwuStaInd(&kwuSap->pst, kwuSap->suId, staInd);
 #endif /* KW_PDCP */
 
    RETVOID;
@@ -2825,20 +2825,20 @@ KwRetx     *retx;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwGetNxtRetx 
+PRIVATE Void rlcGetNxtRetx 
 (
 RlcCb     *gCb,
 KwRetx   **retx
 )
 #else
-PRIVATE Void kwGetNxtRetx(gCb, retx)
+PRIVATE Void rlcGetNxtRetx(gCb, retx)
 RlcCb     *gCb;
 KwRetx   **retx;
 #endif
 {
    CmLList *tNode;
 
-   TRC2(kwGetNxtRetx);
+   TRC2(rlcGetNxtRetx);
 
    do
    {
@@ -2872,14 +2872,14 @@ KwRetx   **retx;
  *
  */
 #ifdef ANSI
-PUBLIC Void kwAmmDlReEstablish
+Void rlcAmmDlReEstablish
 (
 RlcCb         *gCb,
 CmLteRlcId   rlcId,
 RlcDlRbCb     *rbCb
 )
 #else
-PUBLIC Void kwAmmDlReEstablish(gCb, rlcId, rbCb)
+Void rlcAmmDlReEstablish(gCb, rlcId, rbCb)
 RlcCb         *gCb;
 CmLteRlcId   rlcId;
 RlcDlRbCb     *rbCb;
@@ -2917,7 +2917,7 @@ RlcDlRbCb     *rbCb;
    cmInitTimers(&(resetRb->m.amDl.pollRetxTmr), 1); 
 /* AGHOSH changes end */
  
-   if (ROK != kwDbmFetchDlUeCb(gCb,rlcId.ueId, rlcId.cellId, &ueCb))
+   if (ROK != rlcDbmFetchDlUeCb(gCb,rlcId.ueId, rlcId.cellId, &ueCb))
    {
       RLOG_ARG2(L_ERROR,DBG_CELLID, rlcId.cellId,
                "UeId [%d]: UeCb not found RBID;%d",
@@ -2960,7 +2960,7 @@ RlcDlRbCb     *rbCb;
    }
 #endif
    /* send the old rb of deletion */
-   kwAmmFreeDlRbCb(gCb,rbCb); 
+   rlcAmmFreeDlRbCb(gCb,rbCb); 
 
 
    /* TODO: for now we are re-settting the re-establishment flag here
@@ -2995,20 +2995,20 @@ RlcDlRbCb     *rbCb;
  *     -# RFAILED  In case the SDU is not found or already mapped
  */
 #ifdef ANSI
-PUBLIC S16 kwAmmDiscSdu
+S16 rlcAmmDiscSdu
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 U32        sduId 
 )
 #else
-PUBLIC S16 kwAmmDiscSdu(gCb, rbCb, sduId)
+S16 rlcAmmDiscSdu(gCb, rbCb, sduId)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;  
 U32        sduId; 
 #endif
 {
-   TRC2(kwAmmDiscSdu);
+   TRC2(rlcAmmDiscSdu);
    RETVALUE(RFAILED);
 } 
 
@@ -3025,13 +3025,13 @@ U32        sduId;
  * @return  Void 
  */
 #ifdef ANSI
-PUBLIC Void kwAmmPollRetxTmrExp
+Void rlcAmmPollRetxTmrExp
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb
 )
 #else
-PUBLIC Void kwAmmPollRetxTmrExp(gCb, rbCb)
+Void rlcAmmPollRetxTmrExp(gCb, rbCb)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 #endif
@@ -3040,7 +3040,7 @@ RlcDlRbCb   *rbCb;
    KwAmDl        *amDl = &(rbCb->m.amDl);
    KwSn          sn;
    KwTx          *txBuf;
-   TRC2(kwAmmPollRetxTmrExp);
+   TRC2(rlcAmmPollRetxTmrExp);
 
    
    /* kw003.201 - Correcting the logic for determmining whether to do   */
@@ -3067,14 +3067,14 @@ RlcDlRbCb   *rbCb;
 
       if (txBuf != NULLP)
       {
-         kwAmmDlMoveFrmTxtoRetxBuffer(gCb,amDl, &retx, sn); 
+         rlcAmmDlMoveFrmTxtoRetxBuffer(gCb,amDl, &retx, sn); 
          
          if (AMDL.nxtRetx == NULLP)
          {
             AMDL.nxtRetx = retx;
          }
          
-         kwAmmSendDStaRsp(gCb, rbCb, &AMDL);         
+         rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);         
          RETVOID;
       }
       /* Get the last node in retxLst */
@@ -3083,8 +3083,8 @@ RlcDlRbCb   *rbCb;
       /* Unset wtForAck flag for the NACK PDUs */ 
       if (retx != NULLP)
       {
-         kwAmmDlMarkPduForReTx(gCb, rbCb, retx);
-         kwAmmSendDStaRsp(gCb, rbCb, &AMDL);         
+         rlcAmmDlMarkPduForReTx(gCb, rbCb, retx);
+         rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);         
       }
    }
 
@@ -3110,7 +3110,7 @@ RlcDlRbCb   *rbCb;
  */
 
 #ifdef ANSI
-PRIVATE Void kwAmmDlUpdateTxAndReTxBufForAckSn
+PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForAckSn
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -3119,7 +3119,7 @@ CmLList         *retxNode,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void kwAmmDlUpdateTxAndReTxBufForAckSn(gCb, rbCb, mAckSn, retxNode, datCfm)
+PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForAckSn(gCb, rbCb, mAckSn, retxNode, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 KwSn            mAckSn;
@@ -3132,7 +3132,7 @@ KwuDatCfmInfo   **datCfm;
    KwRetx  *retx;
    KwTx    *txBuf;
 
-   TRC2(kwAmmDlUpdateTxAndReTxBufForAckSn);
+   TRC2(rlcAmmDlUpdateTxAndReTxBufForAckSn);
 
    /* Remove pdus/segs from retxLst */ 
    while (retxNode)
@@ -3142,7 +3142,7 @@ KwuDatCfmInfo   **datCfm;
       MODAMT(retx->amHdr.sn, mSn, AMDL.txNextAck,AMDL.snModMask);
       if (mSn < mAckSn) 
       {
-         kwAmmDlProcessSuccessfulReTx(gCb,rbCb, retx, datCfm);
+         rlcAmmDlProcessSuccessfulReTx(gCb,rbCb, retx, datCfm);
       }
    }
 
@@ -3158,13 +3158,13 @@ KwuDatCfmInfo   **datCfm;
       if (txBuf != NULLP)
       {
          RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-                 "kwAmmDlUpdateTxAndReTxBufForAckSn: ACK for PDU "
+                 "rlcAmmDlUpdateTxAndReTxBufForAckSn: ACK for PDU "
                  "with sn = %ld UEID:%ld CELLID:%ld",
                  sn,
                  rbCb->rlcId.ueId,
                  rbCb->rlcId.cellId);
 
-         kwAmmDlProcessSuccessfulTxPdu(gCb,rbCb, sn, datCfm);
+         rlcAmmDlProcessSuccessfulTxPdu(gCb,rbCb, sn, datCfm);
       }
       
       sn = (sn + 1) & AMDL.snModMask;
@@ -3192,7 +3192,7 @@ KwuDatCfmInfo   **datCfm;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmDlUpdTxAndReTxBufForLessThanNackSn
+PRIVATE Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -3202,7 +3202,7 @@ CmLList         **retxNode,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void kwAmmDlUpdTxAndReTxBufForLessThanNackSn(gCb, rbCb, sn, mNackSn, retxNode, datCfm)
+PRIVATE Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn(gCb, rbCb, sn, mNackSn, retxNode, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 KwSn            sn;
@@ -3215,7 +3215,7 @@ KwuDatCfmInfo   **datCfm;
    KwRetx  *retx;
    KwTx    *txBuf=NULLP;
 
-   TRC2(kwAmmDlUpdTxAndReTxBufForLessThanNackSn);
+   TRC2(rlcAmmDlUpdTxAndReTxBufForLessThanNackSn);
 
    while (*retxNode)
    {
@@ -3224,7 +3224,7 @@ KwuDatCfmInfo   **datCfm;
       if (mSn < mNackSn)
       {
          (*retxNode) = (*retxNode)->next;
-         kwAmmDlProcessSuccessfulReTx(gCb,rbCb, retx, datCfm);
+         rlcAmmDlProcessSuccessfulReTx(gCb,rbCb, retx, datCfm);
       }
       else
       {
@@ -3248,7 +3248,7 @@ KwuDatCfmInfo   **datCfm;
                rbCb->rlcId.cellId);
 
          /* Remove pdus from txBuf */
-         kwAmmDlProcessSuccessfulTxPdu(gCb,rbCb, sn, datCfm);
+         rlcAmmDlProcessSuccessfulTxPdu(gCb,rbCb, sn, datCfm);
       }
 
       sn = (sn + 1) & AMDL.snModMask;
@@ -3276,7 +3276,7 @@ KwuDatCfmInfo   **datCfm;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwConstructAmHdr
+PRIVATE Void rlcConstructAmHdr
 (
 KwAmHdr   *amHdr,
 U8        *hdr,
@@ -3284,14 +3284,14 @@ U8         snLen,
 U16       *idx
 )
 #else
-PRIVATE Void kwConstructAmHdr(amHdr, hdr, snLen, idx)
+PRIVATE Void rlcConstructAmHdr(amHdr, hdr, snLen, idx)
 KwAmHdr   *amHdr;
 U8        *hdr;
 U8         snLen;
 U16       *idx;
 #endif
 {
-   TRC2(kwConstructAmHdr);
+   TRC2(rlcConstructAmHdr);
                                                             
    *idx = 0;
     hdr[0] = KW_DATA_BITMASK;
@@ -3339,13 +3339,13 @@ U16       *idx;
  *            
  */
 #ifdef ANSI
-PRIVATE Void kwAmmAddPduToRetxLst
+PRIVATE Void rlcAmmAddPduToRetxLst
 (
 KwAmDl   *amDl,
 KwRetx   *retx
 )
 #else
-PRIVATE Void kwAmmAddPduToRetxLst(amDl, retx)
+PRIVATE Void rlcAmmAddPduToRetxLst(amDl, retx)
 KwAmDl   *amDl;
 KwRetx   *retx;
 #endif
@@ -3355,7 +3355,7 @@ KwRetx   *retx;
    KwSn      tMSn;
    KwSn      retxMSn;
    
-   TRC2(kwAmmAddPduToRetxLst);
+   TRC2(rlcAmmAddPduToRetxLst);
  
    node = amDl->retxLst.last;
    MODAMT(retx->amHdr.sn, retxMSn, amDl->txNextAck,amDl->snModMask);
@@ -3410,7 +3410,7 @@ KwRetx   *retx;
  */
 
 #ifdef ANSI
-PRIVATE Void kwAmmDlMoveFrmTxtoRetxBuffer
+PRIVATE Void rlcAmmDlMoveFrmTxtoRetxBuffer
 (
 RlcCb          *gCb,
 KwAmDl        *amDl,
@@ -3418,7 +3418,7 @@ KwRetx        **retx,
 KwSn          sn
 )
 #else
-PRIVATE Void kwAmmDlMoveFrmTxtoRetxBuffer(gCb, amDl, retx, sn)
+PRIVATE Void rlcAmmDlMoveFrmTxtoRetxBuffer(gCb, amDl, retx, sn)
 RlcCb          *gCb;
 KwAmDl        *amDl;
 KwRetx        **retx;
@@ -3426,7 +3426,7 @@ KwSn          sn;
 #endif
 {
    KwTx* txBuf = kwUtlGetTxBuf(amDl->txBufLst, sn);
-   TRC2(kwAmmDlMoveFrmTxtoRetxBuffer);
+   TRC2(rlcAmmDlMoveFrmTxtoRetxBuffer);
 
    if (txBuf == NULLP)
    {
@@ -3446,7 +3446,7 @@ KwSn          sn;
 #endif /* ERRCLASS & ERRCLS_RES */
 
       /* Move Sdu byte segment from TX buf to retx buf*/
-      kwAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, 
+      rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, 
             amDl, 
             retx, 
             pduInfo);
@@ -3456,7 +3456,7 @@ KwSn          sn;
       RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
    }
    /* Remove PDU from txBuf */
-   kwUtlDelTxBuf(amDl->txBufLst, txBuf,gCb); 
+   rlcUtlDelTxBuf(amDl->txBufLst, txBuf,gCb); 
    
    RETVOID;
 }
@@ -3477,21 +3477,21 @@ KwSn          sn;
  * @return Void
  */
 #ifdef ANSI
-PUBLIC Void kwAmmFreeDlRbCb
+Void rlcAmmFreeDlRbCb
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb
 )
 #else
-PUBLIC Void kwAmmFreeDlRbCb(gCb,rbCb)
+Void rlcAmmFreeDlRbCb(gCb,rbCb)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 #endif
 {
    /* stop the re-transmission timer */
-   if(TRUE == kwChkTmr(gCb,(PTR)rbCb,KW_EVT_AMDL_POLL_RETX_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,KW_EVT_AMDL_POLL_RETX_TMR))
    {
-      kwStopTmr(gCb,(PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);
+      rlcStopTmr(gCb,(PTR)rbCb, KW_EVT_AMDL_POLL_RETX_TMR);
    }
 
    /* store the entire Rb pointer */      
@@ -3501,7 +3501,7 @@ RlcDlRbCb   *rbCb;
    /* the sdu queue */
    cmLListCatLList(&(gCb->u.dlCb->toBeFreed.sduLst),&(rbCb->m.amDl.sduQ));
 
-   kwUtlRaiseDlCleanupEvent(gCb);
+   rlcUtlRaiseDlCleanupEvent(gCb);
    
    RETVOID;
 }
@@ -3520,14 +3520,14 @@ RlcDlRbCb   *rbCb;
  *
  */
 #ifdef ANSI
-PRIVATE Void kwAmmCreateStatusPdu
+PRIVATE Void rlcAmmCreateStatusPdu
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 KwDatReq   *kwDatReq
 )
 #else
-PRIVATE Void kwAmmCreateStatusPdu(gCb, rbCb, kwDatReq)
+PRIVATE Void rlcAmmCreateStatusPdu(gCb, rbCb, kwDatReq)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 KwDatReq   *kwDatReq;
@@ -3545,7 +3545,7 @@ KwDatReq   *kwDatReq;
     KwNackInfo      *kwNackInfo;
     U16           nkCnt = 0;
 
-    TRC2(kwAmmCreateStatusPdu)
+    TRC2(rlcAmmCreateStatusPdu)
 
 
     pStaPdu = AMDL.pStaPdu;
@@ -3836,7 +3836,7 @@ KwDatReq   *kwDatReq;
 
 #ifdef RLC_STA_PROC_IN_MAC/* RLC Status PDU Processing */
 
-S16 kwProcDlStatusPdu(Pst *udxPst,SuId suId,
+S16 rlcProcDlStatusPdu(Pst *udxPst,SuId suId,
       CmLteCellId cellId,CmLteRnti rnti,CmLteLcId lcId,Buffer *rlcSdu);
 
 #ifdef ANSI
@@ -3863,7 +3863,7 @@ KwExtHdr   *hdrInfo;
    /* U8   rLen1 = 0; */
    U16  tVal;
 
-   TRC2(kwAmmExtractElmnt);
+   TRC2(rlcAmmExtractElmnt);
 
    hdr = hdrInfo->hdr;
 
@@ -4105,7 +4105,7 @@ U8         *fByte;
    RETVOID;
 }
 
-PUBLIC S16 kwProcDlStatusPdu(Pst *udxPst,SuId suId,
+S16 rlcProcDlStatusPdu(Pst *udxPst,SuId suId,
       CmLteCellId cellId,CmLteRnti rnti,CmLteLcId lcId,Buffer *rlcSdu)
 {
    RlcDlRbCb      *rbCb = NULLP;   
@@ -4118,7 +4118,7 @@ PUBLIC S16 kwProcDlStatusPdu(Pst *udxPst,SuId suId,
 
    gCb = RLC_GET_RLCCB(1); /* DL RLC instance */
 
-   if( ROK != kwDbmFetchDlUeCb(gCb,rnti,cellId,&(ueCb)))
+   if( ROK != rlcDbmFetchDlUeCb(gCb,rnti,cellId,&(ueCb)))
    {
      printf("\n RLC UECb Not found...\n");
      RETVALUE(RFAILED);

@@ -393,39 +393,39 @@ typedef S16 (*LkwL2MeasStopCfm)   ARGS((Pst *pst, U8 measType,U8 status));
 @return ROK if success , RFAILED if failure
 
 */
-EXTERN S16 KwMiRlcConfigReq ARGS((Pst *pst, KwMngmt *cfg));
+EXTERN S16 rlcMiRlcConfigReq ARGS((Pst *pst, KwMngmt *cfg));
 
 /**
-@details This function is called by the KwMiRlcConfigReq function for responding to configuration requests.The cfm field in the KwMngmt  structure contains the response value.
+@details This function is called by the rlcMiRlcConfigReq function for responding to configuration requests.The cfm field in the KwMngmt  structure contains the response value.
 
 @param[in] pst  - Pointer to post structure
 @param[in] cfm  - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiRlcConfigCfm ARGS((Pst *pst, KwMngmt *cfgCfm));
+EXTERN S16 rlcMiRlcConfigCfm ARGS((Pst *pst, KwMngmt *cfgCfm));
 
 /**
 @details
 The layer manager initiates and uses the management-control procedure to control
-RLC elements.The RLC control request primitive (KwMiLkwCntrlReq) is called
+RLC elements.The RLC control request primitive (rlcMiLkwCntrlReq) is called
 more than once and at any time after the management-configuration procedure.The
-control request primitive is confirmed by a KwMiLkwCntrlCfm primitive.
+control request primitive is confirmed by a rlcMiLkwCntrlCfm primitive.
 
 @param[in] pst  - Pointer to post structure
 @param[in] cntl - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiLkwCntrlReq ARGS((Pst *pst, KwMngmt *cntl));
+EXTERN S16 rlcMiLkwCntrlReq ARGS((Pst *pst, KwMngmt *cntl));
 
 /**
 @details
-This function is called by the KwMiLkwCntrlReq function to send a control confirm to the layer management module.
+This function is called by the rlcMiLkwCntrlReq function to send a control confirm to the layer management module.
 
 @param[in] pst  - Pointer to post structure
 @param[in] cfm  - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiLkwCntrlCfm ARGS((Pst *pst, KwMngmt *cntlCfm));
+EXTERN S16 rlcMiLkwCntrlCfm ARGS((Pst *pst, KwMngmt *cntlCfm));
 
 /**
 @details
@@ -436,18 +436,18 @@ P,KWSAP, or CKSAP.
 @param[in] cfg  - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiLkwStaReq ARGS((Pst *pst, KwMngmt *staInd));
+EXTERN S16 rlcMiLkwStaReq ARGS((Pst *pst, KwMngmt *staInd));
 
 /**
 @details
-This function is called by the KwMiLkwStaReq function to send the requested stat
+This function is called by the rlcMiLkwStaReq function to send the requested stat
 us information to the layer manager.
 
 @param[in] pst   - Pointer to post structure
 @param[in] stacfm - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiLkwStaCfm ARGS((Pst *pst, KwMngmt *staCfm));
+EXTERN S16 rlcMiLkwStaCfm ARGS((Pst *pst, KwMngmt *staCfm));
 
 /**
 @details
@@ -458,10 +458,10 @@ This function processes statistics requests received from the layer manager. Aft
 @param[in] sts   - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiLkwStsReq ARGS((Pst *pst, Action, KwMngmt *sts));
+EXTERN S16 rlcMiLkwStsReq ARGS((Pst *pst, Action, KwMngmt *sts));
 /**
 @details
-This function is called by the KwMiLkwStsReq function for responding to statisti
+This function is called by the rlcMiLkwStsReq function for responding to statisti
 cs requests.
 
 @param[in] pst   - Pointer to post structure
@@ -469,7 +469,7 @@ cs requests.
 @param[in] cfg  - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiLkwStsCfm ARGS((Pst *pst, Action action, KwMngmt *stsCfm));
+EXTERN S16 rlcMiLkwStsCfm ARGS((Pst *pst, Action action, KwMngmt *stsCfm));
 /**
 @details
 This function is used by RLC module to send unsolicited trace indications to
@@ -480,7 +480,7 @@ the layer manager, when tracing is enabled by the layer manager through a previo
 @param[in] buf  - buffer 
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiLkwTrcInd ARGS ((Pst *pst, KwMngmt *trc, Buffer *mBuf));
+EXTERN S16 rlcMiLkwTrcInd ARGS ((Pst *pst, KwMngmt *trc, Buffer *mBuf));
 
 /**
 @details This function is used by RLC to send unsolicited status information to the layer manager, when the unsolicited status flag is enabled by the layer manager through a previous control request.
@@ -499,8 +499,8 @@ for Measurement  responding to statisti cs requests.
 @param[in] measEvt - Measurement Request structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 KwMiLkwL2MeasReq ARGS((Pst *pst, KwL2MeasReqEvt *measEvt));
-EXTERN S16 KwMiLkwL2MeasStopReq ARGS((Pst *pst,U8 measType));
+EXTERN S16 rlcMiLkwL2MeasReq ARGS((Pst *pst, KwL2MeasReqEvt *measEvt));
+EXTERN S16 rlcMiLkwL2MeasStopReq ARGS((Pst *pst,U8 measType));
 EXTERN S16 KwMiLkwL2MeasSendReq ARGS((Pst *pst,U8 measType));
 /**
 @details This function can be used by PDCP to send the measurement values
@@ -511,12 +511,12 @@ after doing L2 measurement that was requested by the layer manager.
 @return ROK if success , RFAILED if failure
 */
 EXTERN S16 KwMiLkwL2MeasCfm ARGS((Pst *pst, KwL2MeasCfmEvt *measCfm));
-EXTERN S16 KwMiLkwL2MeasStopCfm ARGS((Pst *pst, U8 measType, U8 status));
+EXTERN S16 rlcMiLkwL2MeasStopCfm ARGS((Pst *pst, U8 measType, U8 status));
 #endif /*  LTE_L2_MEAS */
 
-EXTERN S16 KwMiLkwStaInd ARGS((Pst *pst, KwMngmt *staReq));
+EXTERN S16 rlcMiLkwStaInd ARGS((Pst *pst, KwMngmt *staReq));
 
-EXTERN Void kwSendLmAlarm ARGS ((
+EXTERN Void rlcSendLmAlarm ARGS ((
       U16 category,
       U16  event,
       U16 cause,

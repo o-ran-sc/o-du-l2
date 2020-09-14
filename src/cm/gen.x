@@ -1637,12 +1637,12 @@ EXTERN S16 cmPkTknStr64  ARGS((TknStr64  *tknStr,   Buffer *mBuf));
 EXTERN S16 cmPkTknStr132 ARGS((TknStr132 *tknStr,   Buffer *mBuf));
 EXTERN S16 cmPkTknStr256 ARGS((TknStr256 *tknStr,   Buffer *mBuf));
 
-PUBLIC  S16  cmPkTknS32    ARGS((TknS32 *tknS32, Buffer *mBuf));
-PUBLIC  S16  cmPkTknOid    ARGS((TknOid *tknOid, Buffer *mBuf));
-PUBLIC  S16  cmPkTknBuf    ARGS((TknBuf *tknBuf, Buffer *mBuf));
+ S16  cmPkTknS32    ARGS((TknS32 *tknS32, Buffer *mBuf));
+ S16  cmPkTknOid    ARGS((TknOid *tknOid, Buffer *mBuf));
+ S16  cmPkTknBuf    ARGS((TknBuf *tknBuf, Buffer *mBuf));
 
 #ifdef TDS_ROLL_UPGRADE_SUPPORT
-PUBLIC  S16  cmPkIntf      ARGS((CmIntf *intf, Buffer *mBuf));
+ S16  cmPkIntf      ARGS((CmIntf *intf, Buffer *mBuf));
 #endif
 
 /* layer management structures */
@@ -1689,12 +1689,12 @@ EXTERN S16 cmUnpkTknStr64  ARGS((TknStr64  *tknStr,   Buffer *mBuf));
 EXTERN S16 cmUnpkTknStr132 ARGS((TknStr132 *tknStr,   Buffer *mBuf));
 EXTERN S16 cmUnpkTknStr256 ARGS((TknStr256 *tknStr,   Buffer *mBuf));
 
-PUBLIC  S16  cmUnpkTknS32  ARGS((TknS32 *tknS32, Buffer *mBuf));
-PUBLIC  S16  cmUnpkTknOid  ARGS((TknOid *tknOid, Buffer *mBuf));
-PUBLIC  S16  cmUnpkTknBuf  ARGS((TknBuf *tknBuf, Buffer **mBuf));
+ S16  cmUnpkTknS32  ARGS((TknS32 *tknS32, Buffer *mBuf));
+ S16  cmUnpkTknOid  ARGS((TknOid *tknOid, Buffer *mBuf));
+ S16  cmUnpkTknBuf  ARGS((TknBuf *tknBuf, Buffer **mBuf));
 
 #ifdef TDS_ROLL_UPGRADE_SUPPORT
-PUBLIC  S16  cmUnpkIntf    ARGS((CmIntf *intf, Buffer *mBuf));
+ S16  cmUnpkIntf    ARGS((CmIntf *intf, Buffer *mBuf));
 #endif
 
 /* layer management structures */

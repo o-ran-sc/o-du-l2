@@ -204,7 +204,7 @@ typedef S16 (*CkwUbndReq)    ARGS((Pst *pst, SpId spId, Reason reason));
  * @details The primitive binds the RLC service user entity to the RLC product.
  * The RLC service user must bind each CKW SAP individually before sending any
  * other request. RLC acknowledges the receipt of the bind request by sending
- * a KwUiCkwBndCfm primitive.
+ * a rlcUiCkwBndCfm primitive.
 
  * @param[in] pst       -  For the bind request, the event field in the Pst
  *                         structure is set to EVTCKWBNDREQ
@@ -216,11 +216,11 @@ typedef S16 (*CkwUbndReq)    ARGS((Pst *pst, SpId spId, Reason reason));
  *                         Allowable values: 0 to 32767.
  * @return ROK
  */
-EXTERN S16 KwUiCkwBndReq ARGS((Pst *pst, SuId suId, SpId spId));
+EXTERN S16 rlcUiCkwBndReq ARGS((Pst *pst, SuId suId, SpId spId));
 
 /** 
  * @details RLC invokes the bind confirm primitive to acknowledge the receipt
- * of the KwUiCkwBndReq primitive from the service user. The status field
+ * of the rlcUiCkwBndReq primitive from the service user. The status field
  * indicates whether the bind request succeeded or failed. The bind request
  * may fail due to invalid parameters in the bind request from the
  * service user (for example, an invalid spId).
@@ -235,7 +235,7 @@ CM_BND_OK: Bind request succeeded\n
 CM_BND_NOK: Error encountered during the processing of the bind request.
  * @return ROK
  */
-EXTERN S16 KwUiCkwBndCfm ARGS((Pst *pst, SuId suId, U8 status));
+EXTERN S16 rlcUiCkwBndCfm ARGS((Pst *pst, SuId suId, U8 status));
 
 /** 
  * @details The RLC service user initiates this primitive for performing
@@ -252,7 +252,7 @@ EXTERN S16 KwUiCkwBndCfm ARGS((Pst *pst, SuId suId, U8 status));
  *                            Allowable value: CKW_UBND_REQ.
  * @return ROK
  */
-EXTERN S16 KwUiCkwUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
+EXTERN S16 rlcUiCkwUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
 
 /* Layer interface Control Primitives */
 /**
@@ -294,7 +294,7 @@ EXTERN S16 RlcProcCfgReq ARGS((Pst *pst, RlcCfgInfo *cfgInfo));
  * information.
  * @return ROK
  */
-EXTERN S16 KwUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
+EXTERN S16 rlcUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
 /**
  *@details This primitive is used by RRC to change the UeId for the existing UE
@@ -308,7 +308,7 @@ EXTERN S16 KwUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
  * @param[in] newUeInfo -  New UE Id Info for existing UE context. 
  * @return ROK
  */
-EXTERN S16 KwUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId,
+EXTERN S16 rlcUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId,
                                    CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
 /**
@@ -333,7 +333,7 @@ EXTERN S16 KwUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId,
  * information.
  * @return ROK
  */
-EXTERN S16 KwUiCkwUeIdChgCfm  ARGS((Pst *pst, SuId suId, U32 transId, 
+EXTERN S16 rlcUiCkwUeIdChgCfm  ARGS((Pst *pst, SuId suId, U32 transId, 
                                    CkwUeInfo *ueInfo, CmStatus status));
 
 /* RRC Extern declarations */

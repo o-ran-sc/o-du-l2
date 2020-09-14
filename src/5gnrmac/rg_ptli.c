@@ -402,14 +402,14 @@ PRIVATE CONSTANT TfuDelDatReq RgLiTfuDelDatReqMt[RG_MAX_TFU_PROV] =
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuBndReq
+S16 RgLiTfuBndReq
 (
 Pst * pst,
 SuId suId,
 SpId spId
 )
 #else
-PUBLIC S16 RgLiTfuBndReq(pst, suId, spId)
+S16 RgLiTfuBndReq(pst, suId, spId)
 Pst * pst;
 SuId suId;
 SpId spId;
@@ -444,14 +444,14 @@ SpId spId;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSchBndReq
+S16 RgLiTfuSchBndReq
 (
 Pst * pst,
 SuId suId,
 SpId spId
 )
 #else
-PUBLIC S16 RgLiTfuSchBndReq(pst, suId, spId)
+S16 RgLiTfuSchBndReq(pst, suId, spId)
 Pst * pst;
 SuId suId;
 SpId spId;
@@ -486,14 +486,14 @@ SpId spId;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuUbndReq
+S16 RgLiTfuUbndReq
 (
 Pst * pst,
 SpId spId,
 Reason reason
 )
 #else
-PUBLIC S16 RgLiTfuUbndReq(pst, spId, reason)
+S16 RgLiTfuUbndReq(pst, spId, reason)
 Pst * pst;
 SpId spId;
 Reason reason;
@@ -528,14 +528,14 @@ Reason reason;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuSchUbndReq
+S16 RgLiTfuSchUbndReq
 (
 Pst * pst,
 SpId spId,
 Reason reason
 )
 #else
-PUBLIC S16 RgLiTfuSchUbndReq(pst, spId, reason)
+S16 RgLiTfuSchUbndReq(pst, spId, reason)
 Pst * pst;
 SpId spId;
 Reason reason;
@@ -584,14 +584,14 @@ Reason reason;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuRecpReq
+S16 RgLiTfuRecpReq
 (
 Pst * pst,
 SpId spId,
 TfuRecpReqInfo * recpReq
 )
 #else
-PUBLIC S16 RgLiTfuRecpReq(pst, spId, recpReq)
+S16 RgLiTfuRecpReq(pst, spId, recpReq)
 Pst * pst;
 SpId spId;
 TfuRecpReqInfo * recpReq;
@@ -633,14 +633,14 @@ TfuRecpReqInfo * recpReq;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuCntrlReq
+S16 RgLiTfuCntrlReq
 (
 Pst * pst,
 SpId spId,
 TfuCntrlReqInfo * cntrlReq
 )
 #else
-PUBLIC S16 RgLiTfuCntrlReq(pst, spId, cntrlReq)
+S16 RgLiTfuCntrlReq(pst, spId, cntrlReq)
 Pst * pst;
 SpId spId;
 TfuCntrlReqInfo * cntrlReq;
@@ -681,14 +681,14 @@ TfuCntrlReqInfo * cntrlReq;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuDatReq
+S16 RgLiTfuDatReq
 (
 Pst * pst,
 SpId spId,
 TfuDatReqInfo * datReq
 )
 #else
-PUBLIC S16 RgLiTfuDatReq(pst, spId, datReq)
+S16 RgLiTfuDatReq(pst, spId, datReq)
 Pst * pst;
 SpId spId;
 TfuDatReqInfo * datReq;
@@ -727,14 +727,14 @@ TfuDatReqInfo * datReq;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuDelDatReq
+S16 RgLiTfuDelDatReq
 (
 Pst * pst,
 SpId spId,
 TfuDelDatReqInfo * delDatReq
 )
 #else
-PUBLIC S16 RgLiTfuDelDatReq(pst, spId, delDatReq)
+S16 RgLiTfuDelDatReq(pst, spId, delDatReq)
 Pst * pst;
 SpId spId;
 TfuDelDatReqInfo * delDatReq;
@@ -774,14 +774,14 @@ TfuDelDatReqInfo * delDatReq;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuBndReq
+S16 PtLiTfuBndReq
 (
 Pst * pst,
 SuId suId,
 SpId spId
 )
 #else
-PUBLIC S16 PtLiTfuBndReq(pst, suId, spId)
+S16 PtLiTfuBndReq(pst, suId, spId)
 Pst * pst;
 SuId suId;
 SpId spId;
@@ -820,14 +820,14 @@ SpId spId;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuSchBndReq
+S16 PtLiTfuSchBndReq
 (
 Pst * pst,
 SuId suId,
 SpId spId
 )
 #else
-PUBLIC S16 PtLiTfuSchBndReq(pst, suId, spId)
+S16 PtLiTfuSchBndReq(pst, suId, spId)
 Pst * pst;
 SuId suId;
 SpId spId;
@@ -866,14 +866,14 @@ SpId spId;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuUbndReq
+S16 PtLiTfuUbndReq
 (
 Pst * pst,
 SpId spId,
 Reason reason
 )
 #else
-PUBLIC S16 PtLiTfuUbndReq(pst, spId, reason)
+S16 PtLiTfuUbndReq(pst, spId, reason)
 Pst * pst;
 SpId spId;
 Reason reason;
@@ -912,14 +912,14 @@ Reason reason;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuSchUbndReq
+S16 PtLiTfuSchUbndReq
 (
 Pst * pst,
 SpId spId,
 Reason reason
 )
 #else
-PUBLIC S16 PtLiTfuSchUbndReq(pst, spId, reason)
+S16 PtLiTfuSchUbndReq(pst, spId, reason)
 Pst * pst;
 SpId spId;
 Reason reason;
@@ -972,14 +972,14 @@ Reason reason;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuRecpReq
+S16 PtLiTfuRecpReq
 (
 Pst * pst,
 SpId spId,
 TfuRecpReqInfo * recpReq
 )
 #else
-PUBLIC S16 PtLiTfuRecpReq(pst, spId, recpReq)
+S16 PtLiTfuRecpReq(pst, spId, recpReq)
 Pst * pst;
 SpId spId;
 TfuRecpReqInfo * recpReq;
@@ -1025,14 +1025,14 @@ TfuRecpReqInfo * recpReq;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuCntrlReq
+S16 PtLiTfuCntrlReq
 (
 Pst * pst,
 SpId spId,
 TfuCntrlReqInfo * cntrlReq
 )
 #else
-PUBLIC S16 PtLiTfuCntrlReq(pst, spId, cntrlReq)
+S16 PtLiTfuCntrlReq(pst, spId, cntrlReq)
 Pst * pst;
 SpId spId;
 TfuCntrlReqInfo * cntrlReq;
@@ -1077,14 +1077,14 @@ TfuCntrlReqInfo * cntrlReq;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuDatReq
+S16 PtLiTfuDatReq
 (
 Pst * pst,
 SpId spId,
 TfuDatReqInfo * datReq
 )
 #else
-PUBLIC S16 PtLiTfuDatReq(pst, spId, datReq)
+S16 PtLiTfuDatReq(pst, spId, datReq)
 Pst * pst;
 SpId spId;
 TfuDatReqInfo * datReq;
@@ -1128,14 +1128,14 @@ TfuDatReqInfo * datReq;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 PtLiTfuDelDatReq
+S16 PtLiTfuDelDatReq
 (
 Pst * pst,
 SpId spId,
 TfuDelDatReqInfo * delDatReq
 )
 #else
-PUBLIC S16 PtLiTfuDelDatReq(pst, spId, delDatReq)
+S16 PtLiTfuDelDatReq(pst, spId, delDatReq)
 Pst * pst;
 SpId spId;
 TfuDelDatReqInfo * DelDatReq;

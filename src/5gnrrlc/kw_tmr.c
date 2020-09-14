@@ -24,10 +24,10 @@
   
         Desc:    Source code for timer functions such as, 
 
-                 - kwStartTmr
-                 - kwStopTmr
-                 - kwTmrExpiry
-                 - kwBndTmrExpiry  
+                 - rlcStartTmr
+                 - rlcStopTmr
+                 - rlcTmrExpiry
+                 - rlcBndTmrExpiry  
                   
         File:    kw_tmr.c
   
@@ -90,7 +90,7 @@ static int RLOG_FILE_ID=202;
 }
 
 /* private function declarations */
-PRIVATE Void kwBndTmrExpiry(PTR cb);
+PRIVATE Void rlcBndTmrExpiry(PTR cb);
 
 /**
  * @brief Handler to start timer
@@ -103,14 +103,14 @@ PRIVATE Void kwBndTmrExpiry(PTR cb);
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwStartTmr
+Void rlcStartTmr
 (
 RlcCb  *gCb,
 PTR   cb,          
 S16   tmrEvnt     
 )
 #else
-PUBLIC Void kwStartTmr (gCb,cb, tmrEvnt)
+Void rlcStartTmr (gCb,cb, tmrEvnt)
 RlcCb  *gCb;
 PTR   cb;        
 S16   tmrEvnt;  
@@ -124,7 +124,7 @@ S16   tmrEvnt;
    CmTmrArg arg;
    arg.wait = 0;
 
-   TRC2(kwStartTmr)
+   TRC2(rlcStartTmr)
 
    /* kw002.201 Adjusting the wait time as per timeRes configured by layer manager */
    switch (tmrEvnt)
@@ -229,14 +229,14 @@ S16   tmrEvnt;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwStopTmr
+Void rlcStopTmr
 (
 RlcCb   *gCb,
 PTR    cb,
 U8     tmrType
 )
 #else
-PUBLIC Void kwStopTmr (gCb, cb, tmrType)
+Void rlcStopTmr (gCb, cb, tmrType)
 RlcCb   *gCb;
 PTR    cb; 
 U8     tmrType;
@@ -247,7 +247,7 @@ U8     tmrType;
 #ifdef LTE_L2_MEAS
    KwL2MeasEvtCb *measEvtCb = NULLP;
 #endif
-   TRC2(kwStopTmr)
+   TRC2(rlcStopTmr)
 
    arg.timers = NULLP;
 
@@ -326,39 +326,39 @@ U8     tmrType;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwTmrExpiry
+Void rlcTmrExpiry
 (
 PTR   cb,
 S16   tmrEvnt 
 )
 #else
-PUBLIC Void kwTmrExpiry (cb, tmrEvnt)
+Void rlcTmrExpiry (cb, tmrEvnt)
 PTR   cb;
 S16   tmrEvnt;
 #endif
 {
 /* kw005.201 added support for L2 Measurement */
-   TRC2(kwTmrExpiry)
+   TRC2(rlcTmrExpiry)
 
    switch (tmrEvnt)
    {
       case KW_EVT_UMUL_REORD_TMR:
       {
          RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
-         kwUmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
+         rlcUmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
          break;
       }
       case KW_EVT_AMUL_REORD_TMR:
       {
          RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
-         kwAmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
+         rlcAmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
          break;
       }
       case KW_EVT_AMUL_STA_PROH_TMR:
       {
          RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
-         kwAmmStaProTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
+         rlcAmmStaProTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
          break;
       }
@@ -367,14 +367,14 @@ S16   tmrEvnt;
          RlcDlRbCb *dlRbCb = (RlcDlRbCb *)cb;
          RlcCb *gCb = RLC_GET_RLCCB(dlRbCb->inst);
          
-         kwAmmPollRetxTmrExp(gCb, dlRbCb);
+         rlcAmmPollRetxTmrExp(gCb, dlRbCb);
 
          gCb->genSts.protTimeOut++;
          break;
       }
       case KW_EVT_WAIT_BNDCFM:
       {
-         kwBndTmrExpiry(cb);
+         rlcBndTmrExpiry(cb);
          break;
       }
       /* kw005.201 L2 Measurement support */
@@ -400,20 +400,20 @@ S16   tmrEvnt;
  *      -# RFAILED 
 */
 #ifdef ANSI
-PUBLIC Bool kwChkTmr
+Bool rlcChkTmr
 (
 RlcCb   *gCb,
 PTR    cb,
 S16    tmrEvnt
 )
 #else
-PUBLIC Bool kwChkTmr(gCb,cb, tmrEvnt)
+Bool rlcChkTmr(gCb,cb, tmrEvnt)
 RlcCb   *gCb;
 PTR    cb;
 S16    tmrEvnt;
 #endif
 {
-   TRC2(kwChkTmr)
+   TRC2(rlcChkTmr)
 
    switch (tmrEvnt)
    {
@@ -463,18 +463,18 @@ S16    tmrEvnt;
  * @return  Void
 */
 #ifdef ANSI
-PRIVATE Void kwBndTmrExpiry
+PRIVATE Void rlcBndTmrExpiry
 (
 PTR cb
 )
 #else
-PRIVATE Void kwBndTmrExpiry(cb)
+PRIVATE Void rlcBndTmrExpiry(cb)
 PTR cb;
 #endif
 {
    KwRguSapCb *rguSapCb; 
 
-   TRC2(kwBndTmrExpiry)
+   TRC2(rlcBndTmrExpiry)
 
    rguSapCb = (KwRguSapCb *) cb;
 
@@ -483,13 +483,13 @@ PTR cb;
       if (rguSapCb->retryCnt < KW_MAX_SAP_BND_RETRY)
       {
          /* start timer to wait for bind confirm */
-         kwStartTmr(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
+         rlcStartTmr(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                     (PTR)rguSapCb, 
                     KW_EVT_WAIT_BNDCFM);
          
          /* Send bind request */
          rguSapCb->retryCnt++;
-         KwLiRguBndReq (&rguSapCb->pst, rguSapCb->suId, rguSapCb->spId);
+         rlcLiRguBndReq (&rguSapCb->pst, rguSapCb->suId, rguSapCb->spId);
       }
       else
       {
@@ -498,7 +498,7 @@ PTR cb;
 
          /* Send alarm to the layer manager */
 #ifdef LTE_L2_MEAS
-         kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
+         rlcLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                         LCM_CATEGORY_INTERFACE, 
                         LCM_EVENT_BND_FAIL,
                         LCM_CAUSE_TMR_EXPIRED, 
@@ -506,7 +506,7 @@ PTR cb;
                         0, 
                         0);
 #else
-         kwLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
+         rlcLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                         LCM_CATEGORY_INTERFACE, 
                         LCM_EVENT_BND_FAIL,
                         LCM_CAUSE_TMR_EXPIRED, 

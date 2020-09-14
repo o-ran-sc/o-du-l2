@@ -150,7 +150,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 
 	    break;
 	 }
-      case ENTKW:
+      case ENTRLC:
 	 {
 	    switch(pst->event)
 	    {
@@ -185,7 +185,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
                   }
 	       default:
 		  {
-		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTKW", \
+		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTRLC", \
 			   pst->event);
 		     SPutMsg(mBuf);
 		     ret = RFAILED;
@@ -193,7 +193,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 	    }
 	    break;
 	 }
-      case ENTRG:
+      case ENTMAC:
 	 {
 	    switch(pst->event)
 	    {
@@ -245,7 +245,7 @@ S16 duActvTsk(Pst *pst, Buffer *mBuf)
 
 	       default:
 		  {
-		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTRG");
+		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTMAC");
 		     SPutMsg(mBuf);
 		     ret = RFAILED;
 		  }

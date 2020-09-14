@@ -251,13 +251,13 @@ PRIVATE CONSTANT L2MeasStopCfm RgMacSchL2MeasStopCfmMt[RG_MAX_SCH] =
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacCellReg
+S16 RgSchMacCellReg
 (
 Pst* pst,
 RgInfCellReg*   regReq
 )
 #else
-PUBLIC S16 RgSchMacCellReg(pst, regReq)
+S16 RgSchMacCellReg(pst, regReq)
 Pst* pst;
 RgInfCellReg*   regReq;
 #endif
@@ -283,13 +283,13 @@ RgInfCellReg*   regReq;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchDedBoUpdt
+S16 RgMacSchDedBoUpdt
 (
 Pst* pst,
 RgInfDedBoRpt*  boRpt
 )
 #else
-PUBLIC S16 RgMacSchDedBoUpdt(pst, boRpt)
+S16 RgMacSchDedBoUpdt(pst, boRpt)
 Pst* pst;
 RgInfDedBoRpt*  boRpt;
 #endif
@@ -315,13 +315,13 @@ RgInfDedBoRpt*  boRpt;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchCmnBoUpdt
+S16 RgMacSchCmnBoUpdt
 (
 Pst* pst,
 RgInfCmnBoRpt*  boRpt
 )
 #else
-PUBLIC S16 RgMacSchCmnBoUpdt(pst, boRpt)
+S16 RgMacSchCmnBoUpdt(pst, boRpt)
 Pst* pst;
 RgInfCmnBoRpt*  boRpt;
 #endif
@@ -347,13 +347,13 @@ RgInfCmnBoRpt*  boRpt;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchUeDel
+S16 RgMacSchUeDel
 (
 Pst* pst,
 RgInfUeDelInd*  ueDelInd
 )
 #else
-PUBLIC S16 RgMacSchUeDel(pst, datInd)
+S16 RgMacSchUeDel(pst, datInd)
 Pst* pst;
 RgInfUeDelInd*  ueDelInd;
 #endif
@@ -379,13 +379,13 @@ RgInfUeDelInd*  ueDelInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchSfRecp
+S16 RgMacSchSfRecp
 (
 Pst* pst,
 RgInfSfDatInd*  datInd
 )
 #else
-PUBLIC S16 RgMacSchSfRecp(pst, datInd)
+S16 RgMacSchSfRecp(pst, datInd)
 Pst* pst;
 RgInfSfDatInd*  datInd;
 #endif
@@ -411,13 +411,13 @@ RgInfSfDatInd*  datInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSfAlloc
+S16 RgSchMacSfAlloc
 (
 Pst* pst,
 RgInfSfAlloc*   resAllocReq
 )
 #else
-PUBLIC S16 RgSchMacSfAlloc(pst, resAllocReq)
+S16 RgSchMacSfAlloc(pst, resAllocReq)
 Pst* pst;
 RgInfSfAlloc*   resAllocReq;
 #endif
@@ -441,13 +441,13 @@ RgInfSfAlloc*   resAllocReq;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRstHqEnt
+S16 RgSchMacRstHqEnt
 (
 Pst*                 pst,    
 RgInfResetHqEnt*     hqEntInfo
 )
 #else
-PUBLIC S16 RgSchMacRstHqEnt(pst, hqEntInfo)
+S16 RgSchMacRstHqEnt(pst, hqEntInfo)
 Pst*                 pst;
 RgInfResetHqEnt*     hqEntInfo;
 #endif
@@ -473,13 +473,13 @@ RgInfResetHqEnt*     hqEntInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRlsHq
+S16 RgSchMacRlsHq
 (
 Pst* pst,
 RgInfRlsHqInfo* sfHqInfo
 )
 #else
-PUBLIC S16 RgSchMacRlsHq(pst, sfHqInfo)
+S16 RgSchMacRlsHq(pst, sfHqInfo)
 Pst* pst;
 RgInfRlsHqInfo* sfHqInfo;
 #endif
@@ -505,13 +505,13 @@ RgInfRlsHqInfo* sfHqInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRlsRnti
+S16 RgSchMacRlsRnti
 (
 Pst* pst,
 RgInfRlsRnti*   rlsRnti
 )
 #else
-PUBLIC S16 RgSchMacRlsRnti(pst, rlsRnti)
+S16 RgSchMacRlsRnti(pst, rlsRnti)
 Pst* pst;
 RgInfRlsRnti*   rlsRnti;
 #endif
@@ -535,13 +535,13 @@ RgInfRlsRnti*   rlsRnti;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacLcgReg
+S16 RgSchMacLcgReg
 (
 Pst*                pst,
 RgInfLcgRegReq      *lcgRegReq
 )
 #else
-PUBLIC S16 RgSchMacLcgReg(pst, lcgRegReq)
+S16 RgSchMacLcgReg(pst, lcgRegReq)
 Pst*                pst;
 RgInfLcgRegReq       *lcgRegReq;
 #endif
@@ -567,13 +567,13 @@ RgInfLcgRegReq       *lcgRegReq;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchSpsRel
+S16 RgMacSchSpsRel
 (
 Pst*                pst,
 RgInfSpsRelInfo*    relInfo
 )
 #else
-PUBLIC S16 RgMacSchSpsRel(pst, relInfo)
+S16 RgMacSchSpsRel(pst, relInfo)
 Pst*                pst;
 RgInfSpsRelInfo*    relInfo;
 #endif
@@ -597,13 +597,13 @@ RgInfSpsRelInfo*    relInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcReg
+S16 RgSchMacSpsLcReg
 (
 Pst*                pst,
 RgInfSpsLcInfo      *lcInfo
 )
 #else
-PUBLIC S16 RgSchMacSpsLcReg(pst, lcInfo)
+S16 RgSchMacSpsLcReg(pst, lcInfo)
 Pst*                pst;
 RgInfSpsLcInfo      *lcInfo;
 #endif
@@ -629,13 +629,13 @@ RgInfSpsLcInfo      *lcInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacUlSpsReset
+S16 RgSchMacUlSpsReset
 (
 Pst*                pst,
 RgInfUlSpsReset      *ulSpsResetInfo
 )
 #else
-PUBLIC S16 RgSchMacUlSpsReset(pst, ulSpsResetInfo)
+S16 RgSchMacUlSpsReset(pst, ulSpsResetInfo)
 Pst*                pst;
 RgInfUlSpsReset      *ulSpsResetInfo;
 #endif
@@ -661,14 +661,14 @@ RgInfUlSpsReset      *ulSpsResetInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcDereg
+S16 RgSchMacSpsLcDereg
 (
 Pst*                pst,
 CmLteCellId         cellId,
 CmLteRnti           crnti
 )
 #else
-PUBLIC S16 RgSchMacSpsLcDereg(pst, cellId, crnti)
+S16 RgSchMacSpsLcDereg(pst, cellId, crnti)
 Pst*                pst;
 CmLteCellId         cellId;
 CmLteRnti           crnti;
@@ -695,13 +695,13 @@ CmLteRnti           crnti;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacL2Meas
+S16 RgSchMacL2Meas
 (
 Pst*                pst,
 RgInfL2MeasReq      *measInfo
 )
 #else
-PUBLIC S16 RgSchMacL2Meas(pst, measInfo)
+S16 RgSchMacL2Meas(pst, measInfo)
 Pst*                pst;
 RgInfL2MeasReq      *measInfo;
 #endif
@@ -725,13 +725,13 @@ RgInfL2MeasReq      *measInfo;
 *      -# ROK
 **/   
 #ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasStop
+S16 RgSchMacL2MeasStop
 (       
 Pst*                pst,
 RgInfL2MeasStopReq *measInfo
 )     
 #else 
-PUBLIC S16 RgSchMacL2MeasStop(pst, measInfo)
+S16 RgSchMacL2MeasStop(pst, measInfo)
 Pst*                pst;
 RgInfL2MeasStopReq *measInfo;
 #endif
@@ -755,13 +755,13 @@ RgInfL2MeasStopReq *measInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasSend
+S16 RgSchMacL2MeasSend
 (
 Pst*                pst,
 RgInfL2MeasSndReq *measInfo
 )
 #else
-PUBLIC S16 RgSchMacL2MeasSend(pst, measInfo)
+S16 RgSchMacL2MeasSend(pst, measInfo)
 Pst*                pst;
 RgInfL2MeasSndReq *measInfo;
 #endif
@@ -785,13 +785,13 @@ RgInfL2MeasSndReq *measInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchL2Meas
+S16 RgMacSchL2Meas
 (
 Pst*                pst,
 RgInfL2MeasCfm      *measInfo
 )
 #else
-PUBLIC S16 RgMacSchL2Meas(pst, measInfo)
+S16 RgMacSchL2Meas(pst, measInfo)
 Pst*                pst;
 RgInfL2MeasCfm      *measInfo;
 #endif
@@ -814,13 +814,13 @@ RgInfL2MeasCfm      *measInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgMacSchL2MeasStop
+S16 RgMacSchL2MeasStop
 (
 Pst*                pst,   
 RgInfL2MeasCfm      *measInfo
 )
 #else
-PUBLIC S16 RgMacSchL2MeasStop(pst, measInfo)
+S16 RgMacSchL2MeasStop(pst, measInfo)
 Pst*                pst;
 RgInfL2MeasCfm      *measInfo;
 #endif

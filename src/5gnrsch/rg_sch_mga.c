@@ -125,14 +125,14 @@ U8                *noSubfrms));
  **/
 
 #ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepUeCfg
+S16 rgSCHMeasGapANRepUeCfg
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue,
 RgrUeCfg    *ueCfg
 )
 #else
-PUBLIC S16 rgSCHMeasGapANRepUeCfg(cell, ue, ueCfg)
+S16 rgSCHMeasGapANRepUeCfg(cell, ue, ueCfg)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 RgrUeCfg    *ueCfg;
@@ -201,14 +201,14 @@ RgrUeCfg    *ueCfg;
  **/
 
 #ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepUeRecfg
+S16 rgSCHMeasGapANRepUeRecfg
 (
 RgSchCellCb    *cell,
 RgSchUeCb      *ue,
 RgrUeRecfg     *ueRecfg
 )
 #else
-PUBLIC S16 rgSCHMeasGapANRepUeRecfg(cell, ue, ueRecfg)
+S16 rgSCHMeasGapANRepUeRecfg(cell, ue, ueRecfg)
 RgSchCellCb    *cell;
 RgSchUeCb      *ue;
 RgrUeRecfg     *ueRecfg;
@@ -424,14 +424,14 @@ RgSchUeCb          *ue;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepUeDel
+Void rgSCHMeasGapANRepUeDel
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue,
 Bool        isUeDel
 )
 #else
-PUBLIC Void rgSCHMeasGapANRepUeDel(cell, ue, isUeDel)
+Void rgSCHMeasGapANRepUeDel(cell, ue, isUeDel)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 Bool        isUeDel;
@@ -618,12 +618,12 @@ PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
  **/
 
 #ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepTtiHndl
+S16 rgSCHMeasGapANRepTtiHndl
 (
 RgSchCellCb *cell
 )
 #else
-PUBLIC S16 rgSCHMeasGapANRepTtiHndl(cell)
+S16 rgSCHMeasGapANRepTtiHndl(cell)
 RgSchCellCb *cell;
 #endif
 {
@@ -822,13 +822,13 @@ CmLListCp   *measGapQ;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepGetDlInactvUe
+S16 rgSCHMeasGapANRepGetDlInactvUe
 (
 RgSchCellCb *cell,
 CmLListCp   *dlInactvUeLst
 )
 #else
-PUBLIC S16 rgSCHMeasGapANRepGetDlInactvUe(cell, dlInactvUeLst)
+S16 rgSCHMeasGapANRepGetDlInactvUe(cell, dlInactvUeLst)
 RgSchCellCb *cell;
 CmLListCp   *dlInactvUeLst;
 #endif
@@ -1029,13 +1029,13 @@ CmLListCp   *dlInactvUeLst;
  **/
 
 #ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepGetUlInactvUe
+S16 rgSCHMeasGapANRepGetUlInactvUe
 (
 RgSchCellCb *cell,
 CmLListCp   *ulInactvUeLst
 )
 #else
-PUBLIC S16 rgSCHMeasGapANRepGetUlInactvUe(cell, ulInactvUeLst)
+S16 rgSCHMeasGapANRepGetUlInactvUe(cell, ulInactvUeLst)
 RgSchCellCb *cell;
 CmLListCp   *ulInactvUeLst;
 #endif
@@ -1208,13 +1208,13 @@ CmLListCp   *ulInactvUeLst;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepDlInactvTmrExpry
+Void rgSCHMeasGapANRepDlInactvTmrExpry
 (
 RgSchUeCb *ue,
 U8         tmrEvnt
 )
 #else
-PUBLIC Void rgSCHMeasGapANRepDlInactvTmrExpry(ue, tmrEvnt)
+Void rgSCHMeasGapANRepDlInactvTmrExpry(ue, tmrEvnt)
 RgSchUeCb *ue;
 U8         tmrEvnt;
 #endif
@@ -1268,13 +1268,13 @@ U8         tmrEvnt;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepUlInactvTmrExpry
+Void rgSCHMeasGapANRepUlInactvTmrExpry
 (
 RgSchUeCb *ue,
 U8         tmrEvnt
 )
 #else
-PUBLIC Void rgSCHMeasGapANRepUlInactvTmrExpry(ue, tmrEvnt)
+Void rgSCHMeasGapANRepUlInactvTmrExpry(ue, tmrEvnt)
 RgSchUeCb *ue;
 U8         tmrEvnt;
 #endif
@@ -1322,12 +1322,12 @@ U8         tmrEvnt;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepTmrExpry
+Void rgSCHMeasGapANRepTmrExpry
 (
 RgSchUeCb *ue
 )
 #else
-PUBLIC Void rgSCHMeasGapANRepTmrExpry(ue)
+Void rgSCHMeasGapANRepTmrExpry(ue)
 RgSchUeCb *ue;
 #endif
 {
@@ -1363,12 +1363,12 @@ RgSchUeCb *ue;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHAckNakRepTmrExpry
+Void rgSCHAckNakRepTmrExpry
 (
 RgSchUeCb *ue
 )
 #else
-PUBLIC Void rgSCHAckNakRepTmrExpry(ue)
+Void rgSCHAckNakRepTmrExpry(ue)
 RgSchUeCb *ue;
 #endif
 {
@@ -1414,13 +1414,13 @@ RgSchUeCb *ue;
  **/
 
 #ifdef ANSI
-PUBLIC Void rgSCHAckNakRepAddToQ
+Void rgSCHAckNakRepAddToQ
 (
 RgSchCellCb       *cell,
 RgSchDlSf         *crntDlSf
 )
 #else
-PUBLIC Void rgSCHAckNakRepAddToQ(cell, crntDlSf)
+Void rgSCHAckNakRepAddToQ(cell, crntDlSf)
 RgSchCellCb          *cell;
 RgSchDlSf            *crntDlSf;
 #endif

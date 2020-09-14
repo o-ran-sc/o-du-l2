@@ -836,7 +836,7 @@ CmListEnt *entry;                       /* entry to delete */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmHashListInit
+S16 cmHashListInit
 (
 CmHashListCp *hashListCp,  /* hash list to initialize */
 U16          nmbBins,      /* number of hash list bins */
@@ -847,7 +847,7 @@ Region       region,       /* memory region to allocate bins */
 Pool         pool          /* memory pool to allocate bins */
 )
 #else
-PUBLIC S16 cmHashListInit(hashListCp, nmbBins, offset, dupFlg, keyType, region, pool)
+S16 cmHashListInit(hashListCp, nmbBins, offset, dupFlg, keyType, region, pool)
 CmHashListCp *hashListCp;  /* hash list to initialize */
 U16          nmbBins;      /* number of hash list bins */
 U16          offset;       /* offset of CmHashListEnt in entries */
@@ -995,12 +995,12 @@ Pool         pool;         /* memory pool to allocate bins */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmHashListDeinit
+S16 cmHashListDeinit
 (
 CmHashListCp *hashListCp   /* hash list to deinitialize */
 )
 #else
-PUBLIC S16 cmHashListDeinit(hashListCp)
+S16 cmHashListDeinit(hashListCp)
 CmHashListCp *hashListCp;  /* hash list to deinitialize */
 #endif
 {
@@ -1064,7 +1064,7 @@ CmHashListCp *hashListCp;  /* hash list to deinitialize */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmHashListInsert
+S16 cmHashListInsert
 (
 CmHashListCp *hashListCp,  /* hash list to add to */
 PTR          entry,        /* entry to add */
@@ -1072,7 +1072,7 @@ U8           *key,         /* pointer to key */
 U16          keyLen        /* length of key */
 )
 #else
-PUBLIC S16 cmHashListInsert(hashListCp, entry, key, keyLen)
+S16 cmHashListInsert(hashListCp, entry, key, keyLen)
 CmHashListCp *hashListCp;  /* hash list to add to */
 PTR          entry;        /* entry to add */
 U8           *key;         /* pointer to key */
@@ -1148,13 +1148,13 @@ U16          keyLen;       /* length of key */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmHashListDelete
+S16 cmHashListDelete
 (
 CmHashListCp *hashListCp,  /* hash list to delete from */
 PTR          entry         /* entry to delete */
 )
 #else
-PUBLIC S16 cmHashListDelete(hashListCp, entry)
+S16 cmHashListDelete(hashListCp, entry)
 CmHashListCp *hashListCp;  /* hash list to delete from */
 PTR          entry;        /* entry to delete */
 #endif
@@ -1232,7 +1232,7 @@ PTR          entry;        /* entry to delete */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmHashListFind
+S16 cmHashListFind
 (
 CmHashListCp *hashListCp,  /* hash list to search */
 U8           *key,         /* pointer to key */
@@ -1241,7 +1241,7 @@ U16          seqNmb,       /* used in case of duplicate keys */
 PTR          *entry        /* entry to be returned */
 )
 #else
-PUBLIC S16 cmHashListFind(hashListCp, key, keyLen, seqNmb, entry)
+S16 cmHashListFind(hashListCp, key, keyLen, seqNmb, entry)
 CmHashListCp *hashListCp;  /* hash list to search */
 U8           *key;         /* pointer to key */
 U16          keyLen;       /* length of key */
@@ -1338,14 +1338,14 @@ PTR          *entry;       /* entry to be returned */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmHashListGetNext
+S16 cmHashListGetNext
 (
 CmHashListCp *hashListCp,    /* hash list to get from */
 PTR          prevEnt,        /* previous entry */
 PTR          *entry          /* entry to be returned */
 )
 #else
-PUBLIC S16 cmHashListGetNext(hashListCp, prevEnt, entry)
+S16 cmHashListGetNext(hashListCp, prevEnt, entry)
 CmHashListCp *hashListCp;    /* hash list to get from */
 PTR          prevEnt;        /* previous entry */
 PTR          *entry;         /* entry to be returned */
@@ -1456,7 +1456,7 @@ PTR          *entry;         /* entry to be returned */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmHashListBinGetNextEntry
+S16 cmHashListBinGetNextEntry
 (
 CmHashListCp *hashListCp,    /* hash list to get from */
 U16          binIdx,         /* Bin Index to retreive the entry */
@@ -1464,7 +1464,7 @@ PTR          prevEnt,        /* previous entry */
 PTR          *entry          /* entry to be returned */
 )
 #else
-PUBLIC S16 cmHashListBinGetNextEntry(hashListCp, binIdx, prevEnt, entry)
+S16 cmHashListBinGetNextEntry(hashListCp, binIdx, prevEnt, entry)
 CmHashListCp *hashListCp;    /* hash list to get from */
 U16          binIdx;         /* Bin Index to retreive the entry */
 PTR          prevEnt;        /* previous entry */
@@ -1547,14 +1547,14 @@ PTR          *entry;         /* entry to be returned */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmHashListQuery
+S16 cmHashListQuery
 (
 CmHashListCp *hashListCp,    /* hash list to query */
 U8           queryType,      /* type of query */
 U16          *result         /* result of query */
 )
 #else
-PUBLIC S16 cmHashListQuery(hashListCp, queryType, result)
+S16 cmHashListQuery(hashListCp, queryType, result)
 CmHashListCp *hashListCp;    /* hash list to query */
 U8           queryType;      /* type of query */
 U16          *result;        /* result of query */
@@ -1658,7 +1658,7 @@ U16          *result;        /* result of query */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmHashListOAInsert
+S16 cmHashListOAInsert
 (
 CmHashListCp *hashListCp,  /* hash table to add to */
 PTR          entry,        /* entry to add */
@@ -1666,7 +1666,7 @@ U8           *key,         /* pointer to key */
 U16          keyLen        /* length of key */
 )
 #else
-PUBLIC S16 cmHashListOAInsert(hashListCp, entry, key, keyLen)
+S16 cmHashListOAInsert(hashListCp, entry, key, keyLen)
 CmHashListCp *hashListCp;  /* hash table to add to */
 PTR          entry;        /* entry to add */
 U8           *key;         /* pointer to key */

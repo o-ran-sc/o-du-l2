@@ -55,7 +55,7 @@
    if(_ret != ROK) \
    { \
       KWLOGERROR(ERRCLS_INT_PAR, EKWxxx, (ErrVal) spId, \
-            "KwUiKwuBndReq: KWU SAP State is Invalid during Bind Req"); \
+            "rlcUiKwuBndReq: KWU SAP State is Invalid during Bind Req"); \
       KW_SEND_SAPID_ALARM(spId, LKW_EVENT_KWU_BND_REQ, LCM_CAUSE_INV_SAP);\
       RETVALUE(RFAILED); \
    } \
@@ -79,7 +79,7 @@
    if(_ret != ROK) \
    { \
       KWLOGERROR(_cb,ERRCLS_INT_PAR, EKWxxx, (ErrVal) spId,\
-            "KwUiCkwBndReq: CKW SAP State is Invalid during Bind Req");\
+            "rlcUiCkwBndReq: CKW SAP State is Invalid during Bind Req");\
       KW_SEND_SAPID_ALARM(_cb,spId, LKW_EVENT_CKW_BND_REQ, LCM_CAUSE_INV_STATE);\
       RETVALUE(RFAILED); \
    } \
@@ -97,7 +97,7 @@
    if(_ret != ROK) \
    { \
       KWLOGERROR(_cb,ERRCLS_INT_PAR, EKWxxx, (ErrVal) spId,\
-            "KwUiCkwBndReq: UDX SAP State is Invalid during Bind Req");\
+            "rlcUiCkwBndReq: UDX SAP State is Invalid during Bind Req");\
       KW_SEND_SAPID_ALARM(_cb,spId, LKW_EVENT_UDX_BND_REQ, LCM_CAUSE_INV_STATE);\
       RETVALUE(RFAILED); \
    } \

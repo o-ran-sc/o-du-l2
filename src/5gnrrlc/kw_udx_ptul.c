@@ -505,14 +505,14 @@ PRIVATE CONSTANT UdxL2MeasStopReq rlcUlUdxL2MeasStopReqMt[KW_MAX_UDX] =
  *
  */
 #ifdef ANSI
-PUBLIC S16 rlcUlUdxBndReq
+S16 rlcUlUdxBndReq
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
 SpId spId                     /* Status */
 )
 #else
-PUBLIC S16 rlcUlUdxBndReq(pst, suId, status)
+S16 rlcUlUdxBndReq(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId suId;                      /* Service User Id */
 SpId spId;                    /* Status */
@@ -548,14 +548,14 @@ SpId spId;                    /* Status */
  *
  */
 #ifdef ANSI
-PUBLIC S16 rlcUlUdxUbndReq
+S16 rlcUlUdxUbndReq
 (
 Pst *pst,                       /* post structure */
 SpId spId,                      /* Service User Id */
 Reason   reason                     /* Status */
 )
 #else
-PUBLIC S16 rlcUlUdxUbndReq(pst, suId, status)
+S16 rlcUlUdxUbndReq(pst, suId, status)
 Pst *pst;                       /* post structure */
 SpId spId;                      /* Service User Id */
 Reason Reason;                    /* Status */
@@ -571,14 +571,14 @@ Reason Reason;                    /* Status */
 } /* end of rlcDlUdxBndReq */
 
 #ifdef ANSI
-PUBLIC S16 rlcUlUdxCfgReq
+S16 rlcUlUdxCfgReq
 (
 Pst *pst,                       /* post structure */
 SpId spId,                      /* Service User Id */
 RlcCfgInfo *cfmInfo             /* Config Info */
 )
 #else
-PUBLIC S16 rlcUlUdxCfgReq(pst, suId, status)
+S16 rlcUlUdxCfgReq(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId spId;                      /* Service User Id */
 RlcCfgInfo *cfmInfo;              /* Config Info */
@@ -594,7 +594,7 @@ RlcCfgInfo *cfmInfo;              /* Config Info */
 } /* end of rlcDlUdxCfgReq */
 
 #ifdef ANSI
-PUBLIC S16 rlcUlUdxUeIdChgReq
+S16 rlcUlUdxUeIdChgReq
 (
 Pst *pst,                      /* post structure */
 SpId spId,                     /* Service User Id */
@@ -603,7 +603,7 @@ CkwUeInfo *ueInfo,             /* Config Info */
 CkwUeInfo *newUeInfo           /* Config Info */
 )
 #else
-PUBLIC S16 rlcUlUdxUeIdChgReq(pst, spId,transId, ueInfo, newUeInfo)
+S16 rlcUlUdxUeIdChgReq(pst, spId,transId, ueInfo, newUeInfo)
 Pst *pst;                      /* post structure */
 SpId spId;                     /* Service User Id */
 U32      transId;              /* transaction Id */
@@ -622,7 +622,7 @@ CkwUeInfo *newUeInfo;          /* Config Info */
 
 
 
-PUBLIC S16  rlcUlUdxStaPduReq
+S16  rlcUlUdxStaPduReq
 (
 Pst*                pst,
 SpId                spId,
@@ -648,7 +648,7 @@ KwUdxDlStaPdu       *pStaPdu
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16  rlcUlUdxStaUpdReq
+S16  rlcUlUdxStaUpdReq
 (
 Pst*                pst,
 SpId                spId,
@@ -656,7 +656,7 @@ CmLteRlcId          *rlcId,
 KwUdxStaPdu         *pStaPdu
 )
 #else
-PUBLIC S16 rlcUlUdxStaUpdReq(pst, rlcId, pStaPdu)
+S16 rlcUlUdxStaUpdReq(pst, rlcId, pStaPdu)
 Pst*                pst;
 SpId                spId;
 CmLteRlcId          *rlcId;
@@ -683,13 +683,13 @@ KwUdxStaPdu         *pStaPdu;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16  rlcUlUdxL2MeasReq
+S16  rlcUlUdxL2MeasReq
 (
 Pst*                pst,
 KwL2MeasReqEvt      *measReqEvt 
 )
 #else
-PUBLIC S16 rlcUlUdxL2MeasReq(pst,measReqEvt)
+S16 rlcUlUdxL2MeasReq(pst,measReqEvt)
 Pst*                pst;
 KwL2MeasReqEvt      *measReqEvt; 
 #endif
@@ -713,13 +713,13 @@ KwL2MeasReqEvt      *measReqEvt;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16  rlcUlUdxL2MeasSendReq
+S16  rlcUlUdxL2MeasSendReq
 (
 Pst*                pst,
 U8                  measType
 )
 #else
-PUBLIC S16 rlcUlUdxL2MeasSendReq(pst,measReqEvt)
+S16 rlcUlUdxL2MeasSendReq(pst,measReqEvt)
 Pst*                pst;
 U8                  measType;
 #endif
@@ -743,13 +743,13 @@ U8                  measType;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16  rlcUlUdxL2MeasStopReq
+S16  rlcUlUdxL2MeasStopReq
 (
 Pst*                pst,
 U8                  measType
 )
 #else
-PUBLIC S16 rlcUlUdxL2MeasStopReq(pst,measReqEvt)
+S16 rlcUlUdxL2MeasStopReq(pst,measReqEvt)
 Pst*                pst;
 U8                  measType;
 #endif

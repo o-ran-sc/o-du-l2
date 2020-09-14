@@ -112,13 +112,13 @@ PRIVATE S16 cmUnpkRguSapSta ARGS ((KwRguSapSta *mkSap, Buffer *mBuf));
  */
 
 #ifdef ANSI
-PUBLIC S16 packRlcConfigReq
+S16 packRlcConfigReq
 (
 Pst *pst,                    /* post structure */
 KwMngmt *cfg                 /* RLC LM structure */
 )
 #else
-PUBLIC S16 packRlcConfigReq(pst, cfg)
+S16 packRlcConfigReq(pst, cfg)
 Pst *pst;                    /* post structure */
 KwMngmt *cfg;                /* RLC LM structure */
 #endif
@@ -176,14 +176,14 @@ KwMngmt *cfg;                /* RLC LM structure */
  */
  
 #ifdef ANSI
-PUBLIC S16 unpackRlcConfigReq
+S16 unpackRlcConfigReq
 (
 RlcConfigReq func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 unpackRlcConfigReq(func, pst, mBuf)
+S16 unpackRlcConfigReq(func, pst, mBuf)
 RlcConfigReq func;              /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -230,13 +230,13 @@ Buffer *mBuf;                /* message buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwCntrlReq
+S16 cmPkLkwCntrlReq
 (
 Pst *pst,                    /* post structure */
 KwMngmt *cntrl               /* RLC LM structure */  
 )
 #else
-PUBLIC S16 cmPkLkwCntrlReq(pst,cntrl)
+S16 cmPkLkwCntrlReq(pst,cntrl)
 Pst *pst;                    /* post structure */
 KwMngmt *cntrl;              /* RLC LM structure */
 #endif
@@ -294,14 +294,14 @@ KwMngmt *cntrl;              /* RLC LM structure */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwCntrlReq
+S16 cmUnpkLkwCntrlReq
 (
 LkwCntrlReq func,            /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwCntrlReq(func, pst, mBuf)
+S16 cmUnpkLkwCntrlReq(func, pst, mBuf)
 LkwCntrlReq func;            /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -343,13 +343,13 @@ Buffer *mBuf;                /* message buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwCntrlCfm
+S16 cmPkLkwCntrlCfm
 (
 Pst *pst,                    /* post structure */
 KwMngmt *cfm                 /* RLC LM structure */
 )
 #else
-PUBLIC S16 cmPkLkwCntrlCfm(pst, cfm)
+S16 cmPkLkwCntrlCfm(pst, cfm)
 Pst *pst;                    /* post structure */
 KwMngmt *cfm;                /* RLC LM structure */
 #endif
@@ -408,14 +408,14 @@ KwMngmt *cfm;                /* RLC LM structure */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwCntrlCfm
+S16 cmUnpkLkwCntrlCfm
 (
 LkwCntrlCfm func,            /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwCntrlCfm(func, pst, mBuf)
+S16 cmUnpkLkwCntrlCfm(func, pst, mBuf)
 LkwCntrlCfm func;            /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -459,14 +459,14 @@ Buffer *mBuf;                /* message buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwStsCfm
+S16 cmUnpkLkwStsCfm
 (
 LkwStsCfm func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwStsCfm(func, pst, mBuf)
+S16 cmUnpkLkwStsCfm(func, pst, mBuf)
 LkwStsCfm func;              /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -511,13 +511,13 @@ Buffer *mBuf;                /* message buffer */
 
 
 #ifdef ANSI
-PUBLIC S16 packRlcConfigCfm
+S16 packRlcConfigCfm
 (
 Pst *pst,                    /* post structure */
 KwMngmt *cfm                 /* RLC LM structure */
 )
 #else
-PUBLIC S16 packRlcConfigCfm(pst,cfm)
+S16 packRlcConfigCfm(pst,cfm)
 Pst *pst;                    /* post structure */
 KwMngmt *cfm;                /* RLC LM structure */
 #endif
@@ -575,14 +575,14 @@ KwMngmt *cfm;                /* RLC LM structure */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 unpackRlcConfigCfm
+S16 unpackRlcConfigCfm
 (
 RlcConfigCfm func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 unpackRlcConfigCfm(func, pst, mBuf)
+S16 unpackRlcConfigCfm(func, pst, mBuf)
 RlcConfigCfm func;              /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -627,13 +627,13 @@ Buffer *mBuf;                /* message buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwStaInd
+S16 cmPkLkwStaInd
 (
 Pst *pst,                    /* post structure */
 KwMngmt *usta                /* RLC LM structure */
 )
 #else
-PUBLIC S16 cmPkLkwStaInd(pst,usta)
+S16 cmPkLkwStaInd(pst,usta)
 Pst *pst;                    /* post structure */
 KwMngmt *usta;               /* RLC LM structure */
 #endif
@@ -692,14 +692,14 @@ KwMngmt *usta;               /* RLC LM structure */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwStaInd
+S16 cmUnpkLkwStaInd
 (
 LkwStaInd func,             /* primitive pointer */
 Pst *pst,                   /* post structure */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwStaInd(func, pst, mBuf)
+S16 cmUnpkLkwStaInd(func, pst, mBuf)
 LkwStaInd func;             /* primitive pointer */
 Pst *pst;                   /* post structure */
 Buffer *mBuf;               /* message buffer */
@@ -742,13 +742,13 @@ Buffer *mBuf;               /* message buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwStaReq
+S16 cmPkLkwStaReq
 (
 Pst *pst,                    /* post structure */
 KwMngmt *sta                 /* status */
 )
 #else
-PUBLIC S16 cmPkLkwStaReq(pst,sta)
+S16 cmPkLkwStaReq(pst,sta)
 Pst *pst;                    /* post structure */
 KwMngmt *sta;                /* status */
 #endif
@@ -805,14 +805,14 @@ KwMngmt *sta;                /* status */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwStaCfm
+S16 cmUnpkLkwStaCfm
 (
 LkwStaReq func,              /* primitive pointer */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwStaCfm(func, pst, mBuf)
+S16 cmUnpkLkwStaCfm(func, pst, mBuf)
 LkwStaReq func;              /* primitive pointer */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -856,14 +856,14 @@ Buffer *mBuf;                /* message buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwStsReq
+S16 cmUnpkLkwStsReq
 (
 LkwStsReq func,              /* primitive pointer */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwStsReq(func, pst, mBuf)
+S16 cmUnpkLkwStsReq(func, pst, mBuf)
 LkwStsReq func;              /* primitive pointer */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -910,14 +910,14 @@ Buffer *mBuf;                /* message buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwStaReq
+S16 cmUnpkLkwStaReq
 (
 LkwStaReq func,              /* primitive pointer */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwStaReq(func, pst, mBuf)
+S16 cmUnpkLkwStaReq(func, pst, mBuf)
 LkwStaReq func;              /* primitive pointer */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -962,14 +962,14 @@ Buffer *mBuf;                /* message buffer */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwTrcInd
+S16 cmUnpkLkwTrcInd
 (
 LkwTrcInd func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-PUBLIC S16 cmUnpkLkwTrcInd(func, pst, mBuf)
+S16 cmUnpkLkwTrcInd(func, pst, mBuf)
 LkwTrcInd func;              /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -1199,13 +1199,13 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 cmPkLkwStaCfm
+S16 cmPkLkwStaCfm
 (
 Pst *pst,                    /* post structure */
 KwMngmt *cfm                 /* solicited status confirm */
 )
 #else
-PUBLIC S16 cmPkLkwStaCfm(pst, cfm)
+S16 cmPkLkwStaCfm(pst, cfm)
 Pst *pst;                    /* post structure */
 KwMngmt *cfm;                /* solicited status confirm */
 #endif
@@ -1261,14 +1261,14 @@ KwMngmt *cfm;                /* solicited status confirm */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 cmPkLkwTrcInd
+S16 cmPkLkwTrcInd
 (
 Pst *pst,                    /* post structure */
 KwMngmt *trc,                /* trace */
 Buffer *trcBuf                 /* trace buffer */
 )
 #else
-PUBLIC S16 cmPkLkwTrcInd(pst, trc, trcBuf)
+S16 cmPkLkwTrcInd(pst, trc, trcBuf)
 Pst *pst;                     /* post structure */
 KwMngmt *trc;                 /* trace */
 Buffer *trcBuf;               /* trace buffer */
@@ -1347,14 +1347,14 @@ Buffer *trcBuf;               /* trace buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 cmPkLkwStsReq
+S16 cmPkLkwStsReq
 (
 Pst *pst,                    /* post structure */
 Action action,               /* action */
 KwMngmt *sts                 /* statistics request */
 )
 #else
-PUBLIC S16 cmPkLkwStsReq(pst, action, sts)
+S16 cmPkLkwStsReq(pst, action, sts)
 Pst *pst;                    /* post structure */
 Action action;               /* action */
 KwMngmt *sts;                /* statistics request */
@@ -1414,14 +1414,14 @@ KwMngmt *sts;                /* statistics request */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 cmPkLkwStsCfm
+S16 cmPkLkwStsCfm
 (
 Pst *pst,                    /* post structure */
 Action action,               /* action */
 KwMngmt *cfm                 /* statistics confirmation */
 )
 #else
-PUBLIC S16 cmPkLkwStsCfm(pst, action, cfm)
+S16 cmPkLkwStsCfm(pst, action, cfm)
 Pst *pst;                    /* post structure */
 Action action;               /* action */
 KwMngmt *cfm;                /* statistics confirmation */
@@ -2555,13 +2555,13 @@ Buffer *mBuf;
 /* lkw_c_001.main_2 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC S16 cmPkLkwL2MeasReq
+S16 cmPkLkwL2MeasReq
 (
 Pst * pst,
 KwL2MeasReqEvt *measReqEvt
 )
 #else
-PUBLIC S16 cmPkLkwL2MeasReq(pst, measReqEvt)
+S16 cmPkLkwL2MeasReq(pst, measReqEvt)
 Pst * pst;
 KwL2MeasReqEvt *measReqEvt;
 #endif
@@ -2614,13 +2614,13 @@ KwL2MeasReqEvt *measReqEvt;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwL2MeasReqInfo
+S16 cmPkKwL2MeasReqInfo
 (
 KwL2MeasReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkKwL2MeasReqInfo(param, mBuf)
+S16 cmPkKwL2MeasReqInfo(param, mBuf)
 KwL2MeasReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -2662,13 +2662,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwL2MeasStopReq
+S16 cmPkLkwL2MeasStopReq
 (
 Pst *pst,
 U8  measType
 )
 #else
-PUBLIC S16 cmPkLkwL2MeasStopReq(pst, measType)
+S16 cmPkLkwL2MeasStopReq(pst, measType)
 Pst *pst;
 U8 measType;
 #endif
@@ -2690,13 +2690,13 @@ U8 measType;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwL2MeasSendReq
+S16 cmPkLkwL2MeasSendReq
 (
 Pst *pst,
 U8  measType
 )
 #else
-PUBLIC S16 cmPkLkwL2MeasSendReq(pst, measType)
+S16 cmPkLkwL2MeasSendReq(pst, measType)
 Pst *pst;
 U8 measType;
 #endif
@@ -2718,14 +2718,14 @@ U8 measType;
 }
 #ifdef TENB_SPLIT_ARCH
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwL2MeasReq
+S16 cmUnpkLkwL2MeasReq
 (
 LkwL2MeasReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLkwL2MeasReq(func, pst, mBuf)
+S16 cmUnpkLkwL2MeasReq(func, pst, mBuf)
 LkwL2MeasReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -2769,14 +2769,14 @@ Buffer *mBuf;
 }
 #else
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwL2MeasReq
+S16 cmUnpkLkwL2MeasReq
 (
 LkwL2MeasReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLkwL2MeasReq(func, pst, mBuf)
+S16 cmUnpkLkwL2MeasReq(func, pst, mBuf)
 LkwL2MeasReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -2834,13 +2834,13 @@ Buffer *mBuf;
 #endif
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwL2MeasReqInfo
+S16 cmUnpkKwL2MeasReqInfo
 (
 KwL2MeasReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkKwL2MeasReqInfo(param, mBuf)
+S16 cmUnpkKwL2MeasReqInfo(param, mBuf)
 KwL2MeasReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -2884,14 +2884,14 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwL2MeasStopReq
+S16 cmUnpkLkwL2MeasStopReq
 (
 LkwL2MeasStopReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLkwL2MeasStopReq(func, pst, mBuf)
+S16 cmUnpkLkwL2MeasStopReq(func, pst, mBuf)
 LkwL2MeasStopReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -2906,14 +2906,14 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwL2MeasSendReq
+S16 cmUnpkLkwL2MeasSendReq
 (
 LkwL2MeasSendReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLkwL2MeasSendReq(func, pst, mBuf)
+S16 cmUnpkLkwL2MeasSendReq(func, pst, mBuf)
 LkwL2MeasSendReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -2929,13 +2929,13 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwL2MeasCfm
+S16 cmPkLkwL2MeasCfm
 (
 Pst * pst,
 KwL2MeasCfmEvt *measCfmEvt
 )
 #else
-PUBLIC S16 cmPkLkwL2MeasCfm(pst, measCfmEvt)
+S16 cmPkLkwL2MeasCfm(pst, measCfmEvt)
 Pst * pst;
 KwL2MeasCfmEvt *measCfmEvt;
 #endif
@@ -3036,14 +3036,14 @@ KwL2MeasCfmEvt *measCfmEvt;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkKwL2MeasCfmInfo
+S16 cmPkKwL2MeasCfmInfo
 (
 KwL2MeasCfmInfo *param,
 Buffer *mBuf,
 U8 measType
 )
 #else
-PUBLIC S16 cmPkKwL2MeasCfmInfo(param, mBuf, measType)
+S16 cmPkKwL2MeasCfmInfo(param, mBuf, measType)
 KwL2MeasCfmInfo *param;
 Buffer *mBuf;
 U8 measType;
@@ -3071,14 +3071,14 @@ U8 measType;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwL2MeasCfm
+S16 cmUnpkLkwL2MeasCfm
 (
 LkwL2MeasCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLkwL2MeasCfm(func, pst, mBuf)
+S16 cmUnpkLkwL2MeasCfm(func, pst, mBuf)
 LkwL2MeasCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -3168,14 +3168,14 @@ Buffer *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkKwL2MeasCfmInfo
+S16 cmUnpkKwL2MeasCfmInfo
 (
 KwL2MeasCfmInfo *param,
 Buffer *mBuf,
 U8 measType
 )
 #else
-PUBLIC S16 cmUnpkKwL2MeasCfmInfo(param, mBuf, measType)
+S16 cmUnpkKwL2MeasCfmInfo(param, mBuf, measType)
 KwL2MeasCfmInfo *param;
 Buffer *mBuf;
 U8 measType;
@@ -3204,14 +3204,14 @@ U8 measType;
 
 
 #ifdef ANSI
-PUBLIC S16 cmPkLkwL2MeasStopCfm
+S16 cmPkLkwL2MeasStopCfm
 (
 Pst * pst,
 U8 measType,
 U8 status
 )
 #else
-PUBLIC S16 cmPkLkwL2MeasStopCfm(pst, measType,status)
+S16 cmPkLkwL2MeasStopCfm(pst, measType,status)
 Pst * pst;
 U8  measType;
 U8  status
@@ -3235,14 +3235,14 @@ U8  status
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkLkwL2MeasStopCfm
+S16 cmUnpkLkwL2MeasStopCfm
 (
 LkwL2MeasStopCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkLkwL2MeasStopCfm(func, pst, mBuf)
+S16 cmUnpkLkwL2MeasStopCfm(func, pst, mBuf)
 LkwL2MeasStopCfm func;
 Pst *pst;
 Buffer *mBuf;
