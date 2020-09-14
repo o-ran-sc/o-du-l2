@@ -94,7 +94,7 @@
 *
 */
 #ifdef ANSI
-PUBLIC S16 SRegDrvrTsk
+S16 SRegDrvrTsk
 (
 Inst channel,                   /* channel instance */
 ProcId low,                     /* processor ID -- low */
@@ -103,7 +103,7 @@ ActvTsk actvTsk,                /* activation function */
 ISTsk isTsk                     /* interrupt service function */
 )
 #else
-PUBLIC S16 SRegDrvrTsk(channel, low, high, actvTsk, isTsk)
+S16 SRegDrvrTsk(channel, low, high, actvTsk, isTsk)
 Inst channel;                   /* channel instance */
 ProcId low;                     /* processor ID -- low */
 ProcId high;                    /* processor ID -- high */
@@ -243,12 +243,12 @@ ISTsk isTsk;                    /* interrupt service function */
 *
 */
 #ifdef ANSI
-PUBLIC S16 SDeregDrvrTsk
+S16 SDeregDrvrTsk
 (
 Inst channel                   /* channel instance */
 )
 #else
-PUBLIC S16 SDeregDrvrTsk(channel)
+S16 SDeregDrvrTsk(channel)
 Inst channel;
 #endif
 {

@@ -83,14 +83,14 @@
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgUHMCrgUeCfg
+Void rgUHMCrgUeCfg
 (
 RgCellCb       *cellCb,
 RgUeCb         *ueCb,
 CrgUeCfg       *ueCfg
 )
 #else
-PUBLIC Void rgUHMCrgUeCfg(cellCb, ueCb, ueCfg) 
+Void rgUHMCrgUeCfg(cellCb, ueCb, ueCfg) 
 RgCellCb       *cellCb;
 RgUeCb         *ueCb;
 CrgUeCfg       *ueCfg;
@@ -121,14 +121,14 @@ CrgUeCfg       *ueCfg;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgUHMCrgUeRecfg
+Void rgUHMCrgUeRecfg
 (
 RgCellCb       *cellCb,
 RgUeCb         *ueCb,
 CrgUeRecfg     *ueRecfg
 )
 #else
-PUBLIC Void rgUHMCrgUeRecfg(cellCb, ueCb, ueRecfg) 
+Void rgUHMCrgUeRecfg(cellCb, ueCb, ueRecfg) 
 RgCellCb       *cellCb;
 RgUeCb         *ueCb;
 CrgUeRecfg     *ueRecfg;

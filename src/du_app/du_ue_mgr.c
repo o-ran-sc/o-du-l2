@@ -99,7 +99,7 @@ uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
    /* Filling pst and Sending to RLC DL */
    pst.selector  = ODU_SELECTOR_LWLC;
    pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTKW;
+   pst.dstEnt    = ENTRLC;
    pst.dstInst   = RLC_DL_INST;
    pst.dstProcId = DU_PROC;
    pst.srcProcId = DU_PROC;

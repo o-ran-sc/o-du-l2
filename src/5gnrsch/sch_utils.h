@@ -75,8 +75,8 @@
 {                                                            \
    _pst.srcProcId = SFndProcId();                            \
    _pst.dstProcId = SFndProcId();                            \
-   _pst.srcEnt    = ENTRG;                                   \
-   _pst.dstEnt    = ENTRG;                                   \
+   _pst.srcEnt    = ENTMAC;                                   \
+   _pst.dstEnt    = ENTMAC;                                   \
    _pst.srcInst   = 1;                                       \
    _pst.dstInst   = 0;                                       \
    _pst.selector  = ODU_SELECTOR_TC;                         \

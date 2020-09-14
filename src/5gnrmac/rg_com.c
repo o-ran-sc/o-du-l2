@@ -98,14 +98,14 @@ PRIVATE S16 rgCOMHndlResetReq ARGS((Inst inst,CrgRst *reset,RgErrInfo *errInfo))
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgCOMCfgReq
+S16 rgCOMCfgReq
 (
 Inst          inst,
 CrgCfgTransId transId,
 CrgCfgReqInfo *crgCfgReq
 )
 #else
-PUBLIC S16 rgCOMCfgReq(inst,transId, crgCfgReq)
+S16 rgCOMCfgReq(inst,transId, crgCfgReq)
 Inst          inst;
 CrgCfgTransId transId;
 CrgCfgReqInfo *crgCfgReq;
@@ -571,13 +571,13 @@ CrgCfgTransId transId;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellCfgReq
+S16 RgPrgPMacSMacUeSCellCfgReq
 (
 Pst         *pst,    
 RgPrgUeSCellCfgInfo *ueSCellCb
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeSCellCfgReq(pst, ueSCellCb)
+S16 RgPrgPMacSMacUeSCellCfgReq(pst, ueSCellCb)
 Pst         *pst;    
 RgPrgUeSCellCfgInfo *ueSCellCb;
 #endif
@@ -653,13 +653,13 @@ RgPrgUeSCellCfgInfo *ueSCellCb;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgPrgSMacPMacCfgCfm
+S16 RgPrgSMacPMacCfgCfm
 (
 Pst             *pst,    
 RgPrgCfgCfmInfo *cfgCfm
 )
 #else
-PUBLIC S16 RgPrgSMacPMacCfgCfm(pst, cfgCfm)
+S16 RgPrgSMacPMacCfgCfm(pst, cfgCfm)
 Pst             *pst;    
 RgPrgCfgCfmInfo *cfgCfm;
 #endif
@@ -753,13 +753,13 @@ RgPrgCfgCfmInfo *cfgCfm;
  *  @return  ROK is SUCCESS 
  **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellDelReq
+S16 RgPrgPMacSMacUeSCellDelReq
 (
 Pst                 *pst,
 RgPrgUeSCellDelInfo *ueSCellDelInfo
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeSCellDelReq(pst, ueSCellDelInfo)
+S16 RgPrgPMacSMacUeSCellDelReq(pst, ueSCellDelInfo)
 Pst                 *pst;
 RgPrgUeSCellDelInfo *ueSCellDelInfo;
 #endif

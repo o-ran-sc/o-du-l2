@@ -146,7 +146,7 @@ PRIVATE S16 STmrDeregHndlr ARGS((
 /* ss029.103: addition: procId added and timer function type modified */ 
 #ifndef SS_MULTIPLE_PROCS
 #ifdef ANSI
-PUBLIC S16 SRegCfgTmr
+S16 SRegCfgTmr
 (
 Ent ent,                    /* entity */
 Inst inst,                  /* instance */
@@ -155,7 +155,7 @@ S16 units,                  /* period units */
 PFS16 tmrFnct               /* timer function, typically SActvTmr */
 )
 #else
-PUBLIC S16 SRegCfgTmr(ent, inst, period, units, tmrFnct)
+S16 SRegCfgTmr(ent, inst, period, units, tmrFnct)
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */
 S16 period;                 /* period */
@@ -180,7 +180,7 @@ PFS16 tmrFnct;              /* timer function, typically SActvTmr */
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PUBLIC S16 SRegCfgTmr
+S16 SRegCfgTmr
 (
 ProcId proc,                /* processor */
 Ent ent,                    /* entity */
@@ -190,7 +190,7 @@ S16 units,                  /* period units */
 PAIFTMRS16 tmrFnct               /* timer function, typically SActvTmr */
 )
 #else
-PUBLIC S16 SRegCfgTmr(proc, ent, inst, period, units, tmrFnct)
+S16 SRegCfgTmr(proc, ent, inst, period, units, tmrFnct)
 ProcId proc;                /* processor */
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */
@@ -240,7 +240,7 @@ PAIFTMRS16 tmrFnct;              /* timer function, typically SActvTmr */
 *
 */
 #ifdef ANSI
-PUBLIC S16 SRegCfgTmrMt
+S16 SRegCfgTmrMt
 (
 Ent ent,                    /* entity */
 Inst inst,                  /* instance */
@@ -249,7 +249,7 @@ S16 units,                  /* period units */
 PAIFTMRS16 tmrFnctMt        /* timer function, typically SActvTmr */
 )
 #else
-PUBLIC S16 SRegCfgTmrMt(ent, inst, period, units, tmrFnctMt)
+S16 SRegCfgTmrMt(ent, inst, period, units, tmrFnctMt)
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */
 S16 period;                 /* period */
@@ -625,7 +625,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #ifndef SS_MULTIPLE_PROCS
 
 #ifdef ANSI
-PUBLIC S16 SDeregCfgTmr
+S16 SDeregCfgTmr
 (
 Ent ent,                    /* entity */
 Inst inst,                  /* instance */
@@ -634,7 +634,7 @@ S16 units,                  /* period units */
 PFS16 tmrFnct               /* timer function */
 )
 #else
-PUBLIC S16 SDeregCfgTmr(ent, inst, period, units, tmrFnct)
+S16 SDeregCfgTmr(ent, inst, period, units, tmrFnct)
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */
 S16 period;                 /* period */
@@ -659,7 +659,7 @@ PFS16 tmrFnct;              /* timer function */
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PUBLIC S16 SDeregCfgTmr
+S16 SDeregCfgTmr
 (
 ProcId proc,                /* processor */
 Ent ent,                    /* entity */
@@ -669,7 +669,7 @@ S16 units,                  /* period units */
 PAIFTMRS16 tmrFnct               /* timer function */
 )
 #else
-PUBLIC S16 SDeregCfgTmr(proc, ent, inst, period, units, tmrFnct)
+S16 SDeregCfgTmr(proc, ent, inst, period, units, tmrFnct)
 ProcId proc;                /* processor */
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */
@@ -714,7 +714,7 @@ PAIFTMRS16 tmrFnct;              /* timer function */
 *
 */
 #ifdef ANSI
-PUBLIC S16 SDeregCfgTmrMt
+S16 SDeregCfgTmrMt
 (
 Ent ent,                    /* entity */
 Inst inst,                  /* instance */
@@ -723,7 +723,7 @@ S16 units,                  /* period units */
 PAIFTMRS16 tmrFnctMt               /* timer function */
 )
 #else
-PUBLIC S16 SDeregCfgTmrMt(ent, inst, period, units, tmrFnctMt)
+S16 SDeregCfgTmrMt(ent, inst, period, units, tmrFnctMt)
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */
 S16 period;                 /* period */

@@ -81,7 +81,7 @@ PRIVATE Void rgUtlHndlCrntiRls ARGS((
          RgInfRlsRnti    *rlsRnti
          ));
 
-PUBLIC S16 rgDelUeFrmAllSCell ARGS((
+S16 rgDelUeFrmAllSCell ARGS((
          RgCellCb       *cell,
          RgUeCb         *ue
          ));
@@ -113,14 +113,14 @@ PRIVATE S16 rgUtlSndCrntiChngReq2AllSMacs ARGS((
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgAllocShrablSBuf
+S16 rgAllocShrablSBuf
 (
 Inst    inst,
 Data    **pData,            /* Pointer of the data to be returned */
 Size    size                /* size */
 )
 #else
-PUBLIC S16 rgAllocShrablSBuf(inst,pData, size)
+S16 rgAllocShrablSBuf(inst,pData, size)
 Inst    inst;
 Data    **pData;            /* Pointer of the data to be returned */
 Size    size;               /* size */
@@ -185,14 +185,14 @@ Size    size;               /* size */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgAllocSBuf
+S16 rgAllocSBuf
 (
 Inst    inst,
 Data    **pData,            /* Pointer of the data to be returned */
 Size    size                /* size */
 )
 #else
-PUBLIC S16 rgAllocSBuf(inst,pData, size)
+S16 rgAllocSBuf(inst,pData, size)
 Inst    inst;
 Data    **pData;            /* Pointer of the data to be returned */
 Size    size;               /* size */
@@ -250,14 +250,14 @@ Size    size;               /* size */
 *       File:  rg_utl.c
 */
 #ifdef ANSI
-PUBLIC Void rgFreeSharableSBuf
+Void rgFreeSharableSBuf
 (
 Inst inst,
 Data **data,         /* address of pointer to data */
 Size size            /* size */
 )
 #else
-PUBLIC Void rgFreeSharableSBuf(inst,data, size)
+Void rgFreeSharableSBuf(inst,data, size)
 Inst inst;
 Data **data;         /* address of pointer to data */
 Size size;          /* size */
@@ -306,14 +306,14 @@ Size size;          /* size */
 *       File:  rg_utl.c
 */
 #ifdef ANSI
-PUBLIC Void rgFreeSBuf
+Void rgFreeSBuf
 (
 Inst inst,
 Data **data,         /* address of pointer to data */
 Size size            /* size */
 )
 #else
-PUBLIC Void rgFreeSBuf(inst,data, size)
+Void rgFreeSBuf(inst,data, size)
 Inst  inst;
 Data **data;         /* address of pointer to data */
 Size size;          /* size */
@@ -366,13 +366,13 @@ Size size;          /* size */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgGetMsg
+S16 rgGetMsg
 (
 Inst    inst,
 Buffer  **mBuf            /* Message Buffer pointer be returned */
 )
 #else
-PUBLIC S16 rgGetMsg(inst,mBuf)
+S16 rgGetMsg(inst,mBuf)
 Inst    inst;
 Buffer  **mBuf;           /* Message Buffer pointer be returned */
 #endif
@@ -419,14 +419,14 @@ Buffer  **mBuf;           /* Message Buffer pointer be returned */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgFillDgnParams
+Void rgFillDgnParams
 (
 Inst        inst,
 RgUstaDgn   *dgn,
 U8          dgnType
 )
 #else
-PUBLIC Void rgFillDgnParams(inst,dgn, dgnType)
+Void rgFillDgnParams(inst,dgn, dgnType)
 Inst        inst;
 RgUstaDgn   *dgn;
 U8          dgnType;
@@ -468,7 +468,7 @@ U8          dgnType;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgUpdtRguDedSts
+Void rgUpdtRguDedSts
 (
 Inst           inst,
 RgUpSapCb     *rguDlSap,
@@ -476,7 +476,7 @@ U8             stsType,   /* Statistics type to update */
 RgRguDedDatReq *datReq    /* DatReq pointer */
 )
 #else
-PUBLIC Void rgUpdtRguDedSts(inst,rguDlSap,stsType, datReq)
+Void rgUpdtRguDedSts(inst,rguDlSap,stsType, datReq)
 Inst           inst;
 RgUpSapCb     *rguDlSap;
 U8             stsType;   /* Statistics type to update */
@@ -547,14 +547,14 @@ RgRguDedDatReq *datReq;   /* DatReq pointer */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgUpdtRguCmnSts
+Void rgUpdtRguCmnSts
 (
 Inst           inst,
 RgUpSapCb     *rguDlSap,
 U8             stsType   /* Statistics type to update */
 )
 #else
-PUBLIC Void rgUpdtRguCmnSts(inst,rguDlSap,stsType)
+Void rgUpdtRguCmnSts(inst,rguDlSap,stsType)
 Inst           inst;
 RgUpSapCb     *rguDlSap;
 U8             stsType;   /* Statistics type to update */
@@ -597,13 +597,13 @@ U8             stsType;   /* Statistics type to update */
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgUpdtCellCnt
+Void rgUpdtCellCnt
 (
 Inst inst,
 U8 updtType
 )
 #else
-PUBLIC Void rgUpdtCellCnt(inst,updtType)
+Void rgUpdtCellCnt(inst,updtType)
 Inst inst;
 U8 updtType;
 #endif
@@ -644,13 +644,13 @@ U8 updtType;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgUpdtUeCnt
+Void rgUpdtUeCnt
 (
 Inst inst,
 U8 updtType
 )
 #else
-PUBLIC Void rgUpdtUeCnt (inst,updtType)
+Void rgUpdtUeCnt (inst,updtType)
 Inst inst;
 U8 updtType;
 #endif
@@ -686,14 +686,14 @@ U8 updtType;
 *
 */
 #ifdef ANSI
-PUBLIC S16 rgAllocEventMem
+S16 rgAllocEventMem
 (
 Inst     inst,
 Ptr       *memPtr,
 Size      memSize
 )
 #else
-PUBLIC S16 rgAllocEventMem(inst,memPtr, memSize)
+S16 rgAllocEventMem(inst,memPtr, memSize)
 Inst     inst;
 Ptr       *memPtr;
 Size      memSize;
@@ -754,7 +754,7 @@ Size      memSize;
 *
 */
 #ifdef ANSI
-PUBLIC S16 rgGetEventMem
+S16 rgGetEventMem
 (
 Inst      inst,
 Ptr       *ptr,
@@ -762,7 +762,7 @@ Size      len,
 Ptr       memCp
 )
 #else
-PUBLIC S16 rgGetEventMem(inst,ptr, len, memCp)
+S16 rgGetEventMem(inst,ptr, len, memCp)
 Inst      inst;
 Ptr       *ptr;
 Size      len;
@@ -798,14 +798,14 @@ Ptr       memCp;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgGetPstToInst
+Void rgGetPstToInst
 (
 Pst           *pst,
 Inst          srcInst,
 Inst          dstInst
 )
 #else
-PUBLIC Void rgGetPstToInst (pst, srcInst, dstInst)
+Void rgGetPstToInst (pst, srcInst, dstInst)
 Pst           *pst;
 Inst          srcInst;
 Inst          dstInst;
@@ -852,13 +852,13 @@ Inst          dstInst;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgSchMacLcgRegReq
+S16 RgSchMacLcgRegReq
 (
 Pst            *pst,
 RgInfLcgRegReq *lcgRegReq
 )
 #else
-PUBLIC S16 RgSchMacLcgRegReq (pst, lcgRegReq)
+S16 RgSchMacLcgRegReq (pst, lcgRegReq)
 Pst            *pst;
 RgInfLcgRegReq *lcgRegReq;
 #endif
@@ -911,13 +911,13 @@ RgInfLcgRegReq *lcgRegReq;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgSchMacUlSpsResetReq
+S16 RgSchMacUlSpsResetReq
 (
 Pst            *pst,
 RgInfUlSpsReset *ulSpsResetInfo
 )
 #else
-PUBLIC S16 RgSchMacUlSpsResetReq (pst, lcInfo)
+S16 RgSchMacUlSpsResetReq (pst, lcInfo)
 Pst            *pst;
 RgInfUlSpsReset *ulSpsResetInfo;
 #endif
@@ -981,13 +981,13 @@ RgInfUlSpsReset *ulSpsResetInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcRegReq
+S16 RgSchMacSpsLcRegReq
 (
 Pst            *pst,
 RgInfSpsLcInfo *lcInfo
 )
 #else
-PUBLIC S16 RgSchMacSpsLcRegReq (pst, lcInfo)
+S16 RgSchMacSpsLcRegReq (pst, lcInfo)
 Pst            *pst;
 RgInfSpsLcInfo *lcInfo;
 #endif
@@ -1064,14 +1064,14 @@ RgInfSpsLcInfo *lcInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcDeregReq
+S16 RgSchMacSpsLcDeregReq
 (
 Pst            *pst,
 CmLteCellId    cellId,
 CmLteRnti      crnti
 )
 #else
-PUBLIC S16 RgSchMacSpsLcDeregReq (pst, cellId, crnti)
+S16 RgSchMacSpsLcDeregReq (pst, cellId, crnti)
 Pst            *pst;
 CmLteCellId    cellId;
 CmLteRnti      crnti;
@@ -1200,13 +1200,13 @@ CmLteRnti       newRnti;
  *  @return  ROK is SUCCESS 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDelUeFrmAllSCell
+S16 rgDelUeFrmAllSCell
 (
 RgCellCb      *cell,
 RgUeCb        *ue
 )
 #else
-PUBLIC S16 rgDelUeFrmAllSCell(cell, ue)
+S16 rgDelUeFrmAllSCell(cell, ue)
 RgCellCb      *cell;
 RgUeCb        *ue;
 #endif
@@ -1257,14 +1257,14 @@ RgUeCb        *ue;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgUtlVltdAddSCellCfg
+S16 rgUtlVltdAddSCellCfg
 (
  RgPrgUeSCellCfgInfo *ueSCellCb,
  RgCellCb    *cell,
  Inst        inst
 )
 #else
-PUBLIC S16 rgUtlVltdAddSCellCfg(ueSCellCb, cell, inst)
+S16 rgUtlVltdAddSCellCfg(ueSCellCb, cell, inst)
  RgPrgUeSCellCfgInfo *ueSCellCb;
  RgCellCb    *cell;
  Inst        inst;
@@ -1490,13 +1490,13 @@ CmLteRnti       *rlsRnti;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacRlsRntiReq
+S16 RgSchMacRlsRntiReq
 (
 Pst                 *pst,
 RgInfRlsRnti        *rlsRnti
 )
 #else
-PUBLIC S16 RgSchMacRlsRntiReq(pst, rlsRnti)
+S16 RgSchMacRlsRntiReq(pst, rlsRnti)
 Pst                 *pst;
 RgInfRlsRnti        *rlsRnti;
 #endif
@@ -1587,12 +1587,12 @@ TfuDelDatReqInfo delDatReq;
 
 #ifdef L2_OPTMZ
 #ifdef ANSI
-PUBLIC Bool RgUtlIsTbMuxed
+Bool RgUtlIsTbMuxed
 (
  TfuDatReqTbInfo *tb
 )
 #else
-PUBLIC Bool RgUtlIsTbMuxed()
+Bool RgUtlIsTbMuxed()
    TfuDatReqTbInfo *tb
 #endif
 {

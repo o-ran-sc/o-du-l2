@@ -76,13 +76,13 @@ PRIVATE CONSTANT RgPrgUeSCellCfgReq RgPrgPMacSMacUeSCellCfgReqMt[RG_PRG_MAX] =
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellCfg
+S16 RgPrgPMacSMacUeSCellCfg
 (
  Pst         *pst,
  RgPrgUeSCellCfgInfo *ueSCellCfgInfo
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeSCellCfg(pst, ueSCellCfgInfo)
+S16 RgPrgPMacSMacUeSCellCfg(pst, ueSCellCfgInfo)
  Pst         *pst;
  RgPrgUeSCellCfgInfo *ueSCellCfgInfo;
 #endif
@@ -116,13 +116,13 @@ PRIVATE CONSTANT RgSMacPMacCfgCfm RgPrgSMacPMacCfgCfmMt[RG_PRG_MAX] =
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgPrgSMacPMacCfg
+S16 RgPrgSMacPMacCfg
 (
  Pst             *pst,
  RgPrgCfgCfmInfo *cfgCfm
 )
 #else
-PUBLIC S16 RgPrgSMacPMacCfg(pst, cfgCfm)
+S16 RgPrgSMacPMacCfg(pst, cfgCfm)
  Pst             *pst;
  RgPrgCfgCfmInfo *cfgCfm;
 #endif
@@ -156,13 +156,13 @@ PRIVATE CONSTANT RgUeSCellDelReq RgPrgPMacSMacUeSCellDelReqMt[RG_PRG_MAX] =
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellDel
+S16 RgPrgPMacSMacUeSCellDel
 (
  Pst                 *pst,
  RgPrgUeSCellDelInfo *ueSCellDelInfo
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeSCellDel(pst, ueSCellDelInfo)
+S16 RgPrgPMacSMacUeSCellDel(pst, ueSCellDelInfo)
  Pst                 *pst;
  RgPrgUeSCellDelInfo *ueSCellDelInfo;
 #endif
@@ -199,13 +199,13 @@ PRIVATE CONSTANT RgPrgUeScellModLchReq RgPrgPMacSMacUeScellModLchReqMt[RG_PRG_MA
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeScellLchMod
+S16 RgPrgPMacSMacUeScellLchMod
 (
  Pst                      *pst,
  RgPrgUeSCellLchModInfo   *lchCfgInfo
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeScellLchMod(pst, lchCfgInfo)
+S16 RgPrgPMacSMacUeScellLchMod(pst, lchCfgInfo)
  Pst                      *pst;
  RgPrgUeSCellLchModInfo   *lchCfgInfo;
 #endif
@@ -241,13 +241,13 @@ PRIVATE CONSTANT RgPrgUeScellDelLchReq RgPrgPMacSMacUeScellDelLchReqMt[RG_PRG_MA
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeScellLchDel
+S16 RgPrgPMacSMacUeScellLchDel
 (
  Pst                       *pst,
  RgPrgUeSCellLchDelInfo    *delLcCb
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeScellLchDel(pst, delLcCb)
+S16 RgPrgPMacSMacUeScellLchDel(pst, delLcCb)
  Pst                       *pst;
  RgPrgUeSCellLchDelInfo    *delLcCb;
 #endif
@@ -283,13 +283,13 @@ PRIVATE CONSTANT RgPrgUeScellAddLchReq RgPrgPMacSMacUeScellAddLchReqMt[RG_PRG_MA
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeScellLchAdd
+S16 RgPrgPMacSMacUeScellLchAdd
 (
  Pst                      *pst,
  RgPrgUeSCellLchAddInfo   *lchCfgInfo
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeScellLchAdd(pst, lchCfgInfo)
+S16 RgPrgPMacSMacUeScellLchAdd(pst, lchCfgInfo)
  Pst                      *pst;
  RgPrgUeSCellLchAddInfo   *lchCfgInfo;
 #endif

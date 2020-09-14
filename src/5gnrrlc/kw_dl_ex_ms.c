@@ -60,11 +60,11 @@ static int RLOG_FILE_ID=195;
 #include "kw_dl.x"
 
 #include "ctf.h"
-PUBLIC S16 kwUtlDlBatchProcPkts(Void);
-PUBLIC S16 rlcDlBatchProc(Void);
+S16 rlcUtlDlBatchProcPkts(Void);
+S16 rlcDlBatchProc(Void);
 #if (defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS))
 U32 isDatReqProcessed;
-PUBLIC void kwUtlDlBatchProcHqStaInd ARGS ((Void));
+void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
 #endif
 
 #if (defined(L2_L3_SPLIT) && defined(ICC_RECV_TSK_RBUF))
@@ -72,10 +72,10 @@ EXTERN S16 rlcDlBatchProcSplit  ARGS((Void));
 #endif
 //UDAY
 #ifdef L2_OPTMZ
-U32 kwAmmStaPduList[512] = {0};
+U32 rlcAmmStaPduList[512] = {0};
 EXTERN S16 ssGetDBufOfSize ARGS((Region region, Size size, Buffer **dBuf));
 #endif
-PUBLIC S16 rlcDlInitExt ARGS (( Void ));
+S16 rlcDlInitExt ARGS (( Void ));
 
 /**
  *
@@ -92,11 +92,11 @@ PUBLIC S16 rlcDlInitExt ARGS (( Void ));
 */
   
 #ifdef ANSI
-PUBLIC S16 rlcDlInitExt 
+S16 rlcDlInitExt 
 (
 )
 #else
-PUBLIC S16 rlcDlInitExt()
+S16 rlcDlInitExt()
 #endif
 {
    TRC2(rlcDlInitExt);
@@ -134,7 +134,7 @@ PUBLIC S16 rlcDlInitExt()
  *
  */
 #ifdef ANSI
-PUBLIC S16 rlcDlActvInit
+S16 rlcDlActvInit
 (
 Ent    ent,                 /* entity */
 Inst   inst,                /* instance */
@@ -142,7 +142,7 @@ Region region,              /* region */
 Reason reason               /* reason */
 )
 #else
-PUBLIC S16 rlcDlActvInit(ent, inst, region, reason)
+S16 rlcDlActvInit(ent, inst, region, reason)
 Ent    ent;                 /* entity */
 Inst   inst;                /* instance */
 Region region;              /* region */
@@ -194,7 +194,7 @@ Reason reason;              /* reason */
       SGetMsg(1, 0 , &mBuf);
       ssGetDBufOfSize(1 , 1800, &bufPtr);
       SUpdMsg(mBuf, bufPtr, 0);
-      kwAmmStaPduList[i] = (U32)mBuf; 
+      rlcAmmStaPduList[i] = (U32)mBuf; 
    }
 #endif
    /* call external function for intialization */
@@ -229,13 +229,13 @@ Reason reason;              /* reason */
 pthread_t gRlcTId = 0;
 #endif
 #ifdef ANSI
-PUBLIC S16 rlcDlActvTsk
+S16 rlcDlActvTsk
 (
 Pst *pst,              /* pst structure */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 rlcDlActvTsk(pst, mBuf)
+S16 rlcDlActvTsk(pst, mBuf)
 Pst *pst;              /* pst structure */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -256,25 +256,25 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCLKW
                case LKW_EVT_CFG_REQ:
                   {
-                     ret = unpackRlcConfigReq(KwMiRlcConfigReq, pst, mBuf);
+                     ret = unpackRlcConfigReq(RlcMiRlcConfigReq, pst, mBuf);
                      break;
                   }
 
                case LKW_EVT_CNTRL_REQ:
                   {
-                     ret = cmUnpkLkwCntrlReq(KwMiLkwCntrlReq, pst, mBuf);
+                     ret = cmUnpkLkwCntrlReq(RlcMiLkwCntrlReq, pst, mBuf);
                      break;
                   }
 
                case LKW_EVT_STS_REQ:
                   {
-                     ret = cmUnpkLkwStsReq(KwMiLkwStsReq, pst, mBuf);
+                     ret = cmUnpkLkwStsReq(RlcMiLkwStsReq, pst, mBuf);
                      break;
                   }
 
                case LKW_EVT_STA_REQ:
                   {
-                     ret = cmUnpkLkwStaReq(KwMiLkwStaReq, pst, mBuf);
+                     ret = cmUnpkLkwStaReq(RlcMiLkwStaReq, pst, mBuf);
                      break;
                   }
                   /* kw005.201 added support for L2 Measurement */
@@ -283,7 +283,7 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCKWU
                case KWU_EVT_DAT_REQ:              /* Data request */
                   {
-                     ret = cmUnpkKwuDatReq(KwUiKwuDatReq, pst, mBuf);
+                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
                      break;
                   }
 #endif /* LCKWU */
@@ -301,7 +301,7 @@ Buffer *mBuf;           /* message buffer */
             break;
          }
 
-      case ENTKW:
+      case ENTRLC:
          {
 
             switch(pst->event)
@@ -365,7 +365,7 @@ Buffer *mBuf;           /* message buffer */
 #endif  /* LCCKW */
                case UDX_EVT_DL_CLEANUP_MEM:
                   {
-                     kwUtlFreeDlMemory(RLC_GET_RLCCB(pst->dstInst));
+                     rlcUtlFreeDlMemory(RLC_GET_RLCCB(pst->dstInst));
                      break;
                   }
                
@@ -390,31 +390,31 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCKWU
                case KWU_EVT_BND_REQ:              /* Bind request */
                   {
-                     ret = cmUnpkKwuBndReq(KwUiKwuBndReq, pst, mBuf );
+                     ret = cmUnpkKwuBndReq(RlcUiKwuBndReq, pst, mBuf );
                      break;
                   }
 
                case KWU_EVT_UBND_REQ:             /* Unbind request */
                   {
-                     ret = cmUnpkKwuUbndReq(KwUiKwuUbndReq, pst, mBuf );
+                     ret = cmUnpkKwuUbndReq(RlcUiKwuUbndReq, pst, mBuf );
                      break;
                   }
 #ifdef L2_L3_SPLIT
                case KWU_EVT_CPLANE_DAT_REQ:       /* C-Plane Data request */
                   {
-                     ret = cmUnpkKwuDatReq(KwUiKwuDatReq, pst, mBuf);
+                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
                      break;
                   }
 #else
                case KWU_EVT_DAT_REQ:              /* Data request */
                   {
-                     ret = cmUnpkKwuDatReq(KwUiKwuDatReq, pst, mBuf);
+                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
                      break;
                   }
 #endif
                case KWU_EVT_DISC_SDU_REQ:         /* Discard SDU request */
                   {
-                     ret = cmUnpkKwuDiscSduReq(KwUiKwuDiscSduReq, pst, mBuf);
+                     ret = cmUnpkKwuDiscSduReq(RlcUiKwuDiscSduReq, pst, mBuf);
                      break;
                   }
 
@@ -440,32 +440,32 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCKWU
                case KWU_EVT_BND_REQ:              /* Bind request */
                   {
-                     ret = cmUnpkKwuBndReq(KwUiKwuBndReq, pst, mBuf );
+                     ret = cmUnpkKwuBndReq(RlcUiKwuBndReq, pst, mBuf );
                      break;
                   }
 
                case KWU_EVT_UBND_REQ:             /* Unbind request */
                   {
-                     ret = cmUnpkKwuUbndReq(KwUiKwuUbndReq, pst, mBuf );
+                     ret = cmUnpkKwuUbndReq(RlcUiKwuUbndReq, pst, mBuf );
                      break;
                   }
 #ifdef L2_L3_SPLIT
                case KWU_EVT_CPLANE_DAT_REQ:       /* C-Plane Data request */
                case KWU_EVT_UPLANE_DAT_REQ:       /* U-Plane Data request */
                   {
-                     ret = cmUnpkKwuDatReq(KwUiKwuDatReq, pst, mBuf);
+                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
                      break;
                   }
 #else
                case KWU_EVT_DAT_REQ:              /* Data request */
                   {
-                     ret = cmUnpkKwuDatReq(KwUiKwuDatReq, pst, mBuf);
+                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
                      break;
                   }
 #endif
                case KWU_EVT_DISC_SDU_REQ:         /* Discard SDU request */
                   {
-                     ret = cmUnpkKwuDiscSduReq(KwUiKwuDiscSduReq, pst, mBuf);
+                     ret = cmUnpkKwuDiscSduReq(RlcUiKwuDiscSduReq, pst, mBuf);
                      break;
                   }
 
@@ -483,14 +483,14 @@ Buffer *mBuf;           /* message buffer */
             break;
          }
 
-      case ENTRG:
+      case ENTMAC:
          {
             switch(pst->event)
             {
 #ifdef LCRGU
                case EVTRGUBNDCFM:     /* Bind request */
                   {
-                     ret = cmUnpkRguBndCfm(KwLiRguBndCfm, pst, mBuf );
+                     ret = cmUnpkRguBndCfm(RlcLiRguBndCfm, pst, mBuf );
                      break;
                   }
                case EVTSCHREP:    /* Dedicated Channel Status Response */
@@ -502,13 +502,13 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LTE_L2_MEAS
                case EVTRGUHQSTAIND:    /* Harq status indication */
                   {
-                     ret = cmUnpkRguHqStaInd(KwLiRguHqStaInd, pst, mBuf);
+                     ret = cmUnpkRguHqStaInd(RlcLiRguHqStaInd, pst, mBuf);
                      break;
                   }
 #endif
                case EVTRGUFLOWCNTRLIND:
                   {
-                     ret = cmUnpkRguFlowCntrlInd(KwLiRguFlowCntrlInd,pst,mBuf);
+                     ret = cmUnpkRguFlowCntrlInd(RlcLiRguFlowCntrlInd,pst,mBuf);
                      break;
                   }   
 #endif  /* LCRGU */
@@ -533,13 +533,13 @@ Buffer *mBuf;           /* message buffer */
             break;
          }
 #ifdef SS_RBUF 
-      case ENTTF:
+      case ENTLWRMAC:
       {
             switch(pst->event)
             {
                case EVTCTFBTCHPROCTICK:
                {
-                  kwUtlDlBatchProcPkts();
+                  rlcUtlDlBatchProcPkts();
                   break;
                }
              }
@@ -563,12 +563,12 @@ Buffer *mBuf;           /* message buffer */
 
 #if (defined(SPLIT_RLC_DL_TASK) && defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS))
                      //RlcDlHarqStaBatchProc();
-                     kwUtlDlBatchProcHqStaInd();
+                     rlcUtlDlBatchProcHqStaInd();
 #endif 
 #ifndef KWSELFPSTDLCLEAN
                      /* Revanth_chg */
                      /* Moving Cleanup from self post event to TTI event */
-                     kwUtlFreeDlMem();
+                     rlcUtlFreeDlMem();
 #endif 
 
                      ODU_PUT_MSG(mBuf);

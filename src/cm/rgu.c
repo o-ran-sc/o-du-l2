@@ -63,14 +63,14 @@
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguBndReq
+S16 cmPkRguBndReq
 (
 Pst* pst,
 SuId suId,
 SpId spId
 )
 #else
-PUBLIC S16 cmPkRguBndReq(pst, suId, spId)
+S16 cmPkRguBndReq(pst, suId, spId)
 Pst* pst;
 SuId suId;
 SpId spId;
@@ -124,14 +124,14 @@ SpId spId;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguBndReq
+S16 cmUnpkRguBndReq
 (
 RguBndReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguBndReq(func, pst, mBuf)
+S16 cmUnpkRguBndReq(func, pst, mBuf)
 RguBndReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -179,14 +179,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguUbndReq
+S16 cmPkRguUbndReq
 (
 Pst* pst,
 SpId spId,
 Reason reason
 )
 #else
-PUBLIC S16 cmPkRguUbndReq(pst, spId, reason)
+S16 cmPkRguUbndReq(pst, spId, reason)
 Pst* pst;
 SpId spId;
 Reason reason;
@@ -240,14 +240,14 @@ Reason reason;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguUbndReq
+S16 cmUnpkRguUbndReq
 (
 RguUbndReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguUbndReq(func, pst, mBuf)
+S16 cmUnpkRguUbndReq(func, pst, mBuf)
 RguUbndReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -296,14 +296,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguBndCfm
+S16 cmPkRguBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 cmPkRguBndCfm(pst, suId, status)
+S16 cmPkRguBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -358,14 +358,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguBndCfm
+S16 cmUnpkRguBndCfm
 (
 RguBndCfm func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguBndCfm(func, pst, mBuf)
+S16 cmUnpkRguBndCfm(func, pst, mBuf)
 RguBndCfm func;
 Pst *pst;
 Buffer *mBuf;
@@ -413,7 +413,7 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-PUBLIC uint16_t packDlData
+uint16_t packDlData
 (
 Pst* pst,
 SpId spId,
@@ -502,7 +502,7 @@ RlcMacData  *dlData
 *  @return   S16
 *      -# ROK
 **/
-PUBLIC S16 unpackDlData
+S16 unpackDlData
 (
 RlcMacDlData func,
 Pst *pst,
@@ -698,13 +698,13 @@ uint8_t unpackRcvdUlData(RlcMacUlDataFunc func, Pst *pst, Buffer *mBuf)
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguL2MUlThrpMeasReqInfo 
+S16 cmPkRguL2MUlThrpMeasReqInfo 
 (
 RguL2MUlThrpMeasReqInfo* param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguL2MUlThrpMeasReqInfo(param, mBuf)
+S16 cmPkRguL2MUlThrpMeasReqInfo(param, mBuf)
 RguL2MUlThrpMeasReqInfo* param;
 Buffer *mBuf;
 #endif
@@ -742,13 +742,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguL2MUlThrpMeasReqInfo 
+S16 cmUnpkRguL2MUlThrpMeasReqInfo 
 (
 RguL2MUlThrpMeasReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguL2MUlThrpMeasReqInfo(param, mBuf)
+S16 cmUnpkRguL2MUlThrpMeasReqInfo(param, mBuf)
 RguL2MUlThrpMeasReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -783,14 +783,14 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguL2MUlThrpMeasReq 
+S16 cmPkRguL2MUlThrpMeasReq 
 (
 Pst* pst,
 SpId spId,
 RguL2MUlThrpMeasReqInfo* measReq
 )
 #else
-PUBLIC S16 cmPkRguL2MUlThrpMeasReq(pst, spId, measReq)
+S16 cmPkRguL2MUlThrpMeasReq(pst, spId, measReq)
 Pst* pst;
 SpId spId;
 RguL2MUlThrpMeasReqInfo* measReq;
@@ -874,14 +874,14 @@ RguL2MUlThrpMeasReqInfo* measReq;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguL2MUlThrpMeasReq 
+S16 cmUnpkRguL2MUlThrpMeasReq 
 (
 RguL2MUlThrpMeasReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguL2MUlThrpMeasReq(func, pst, mBuf)
+S16 cmUnpkRguL2MUlThrpMeasReq(func, pst, mBuf)
 RguL2MUlThrpMeasReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -952,7 +952,7 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-PUBLIC uint16_t packBOStatus
+uint16_t packBOStatus
 (
 Pst* pst,
 SpId spId,
@@ -1039,7 +1039,7 @@ RlcMacBOStatus  *boStatus
 *  @return   S16
 *      -# ROK
 **/
-PUBLIC uint16_t unpackBOStatus
+uint16_t unpackBOStatus
 (
 RlcMacBoStatus func,
 Pst *pst,
@@ -1112,14 +1112,14 @@ Buffer *mBuf
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguHqStaInd
+S16 cmPkRguHqStaInd
 (
 Pst* pst,
 SuId suId,
 RguHarqStatusInd  *harqStatusInd
 )
 #else
-PUBLIC S16 cmPkRguHqStaInd(pst, suId, harqStatusInd)
+S16 cmPkRguHqStaInd(pst, suId, harqStatusInd)
 Pst* pst;
 SuId suId;
 RguHarqStatusInd  *harqStatusInd;
@@ -1236,14 +1236,14 @@ RguHarqStatusInd  *harqStatusInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguHqStaInd
+S16 cmUnpkRguHqStaInd
 (
 RguHqStaInd  func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguHqStaInd(func, pst, mBuf)
+S16 cmUnpkRguHqStaInd(func, pst, mBuf)
 RguHqStaInd   func;
 Pst *pst;
 Buffer *mBuf;
@@ -1328,7 +1328,7 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-PUBLIC S16 packSchedRep
+S16 packSchedRep
 (
 Pst* pst,
 SuId suId,
@@ -1411,7 +1411,7 @@ RlcMacSchedRepInfo  * schRep
 *  @return   S16
 *      -# ROK
 **/
-PUBLIC S16 unpackSchedRep
+S16 unpackSchedRep
 (
 RlcMacSchedRep func,
 Pst *pst,
@@ -1463,13 +1463,13 @@ Buffer *mBuf
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkRguLcFlowCntrlInfo
+S16 cmPkRguLcFlowCntrlInfo
 (
 RguLcFlowCntrlInfo *param,
 Buffer             *mBuf
 )
 #else
-PUBLIC S16 cmPkRguLcFlowCntrlInfo (param,mBuf)
+S16 cmPkRguLcFlowCntrlInfo (param,mBuf)
 RguLcFlowCntrlInfo *param;
 Buffer             *mBuf;
 #endif
@@ -1483,13 +1483,13 @@ Buffer             *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkRguUeFlowCntrlInfo
+S16 cmPkRguUeFlowCntrlInfo
 (
 RguUeFlowCntrlInfo *param,
 Buffer             *mBuf
 )
 #else
-PUBLIC S16 cmPkRguUeFlowCntrlInfo (param,mBuf)
+S16 cmPkRguUeFlowCntrlInfo (param,mBuf)
 RguUeFlowCntrlInfo *param;
 Buffer             *mBuf;
 #endif
@@ -1508,13 +1508,13 @@ Buffer             *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmPkRguFlowCntrlInfo
+S16 cmPkRguFlowCntrlInfo
 (
 RguFlowCntrlInd *param, 
 Buffer          *mBuf
 )
 #else
-PUBLIC S16 cmPkRguFlowCntrlInfo(flowCntrlInd, mBuf)
+S16 cmPkRguFlowCntrlInfo(flowCntrlInd, mBuf)
 RguFlowCntrlInd *param;
 Buffer          *mBuf;
 #endif
@@ -1548,14 +1548,14 @@ Buffer          *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkRguFlowCntrlInd
+S16 cmPkRguFlowCntrlInd
 (
 Pst* pst,
 SuId suId,
 RguFlowCntrlInd  *flowCntrlInd
 )
 #else
-PUBLIC S16 cmPkRguFlowCntrlInd(pst, suId, flowCntrlInd)
+S16 cmPkRguFlowCntrlInd(pst, suId, flowCntrlInd)
 Pst* pst;
 SuId suId;
 RguFlowCntrlInd   *flowCntrlInd;
@@ -1603,13 +1603,13 @@ RguFlowCntrlInd   *flowCntrlInd;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguLcFlowCntrlInfo
+S16 cmUnpkRguLcFlowCntrlInfo
 (
 RguLcFlowCntrlInfo *param,
 Buffer           *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguLcFlowCntrlInfo (param,mBuf)
+S16 cmUnpkRguLcFlowCntrlInfo (param,mBuf)
 RguLcFlowCntrlInfo *param;
 Buffer           *mBuf;
 #endif
@@ -1623,13 +1623,13 @@ Buffer           *mBuf;
   return ROK;
 }
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguUeFlowCntrlInfo
+S16 cmUnpkRguUeFlowCntrlInfo
 (
 RguUeFlowCntrlInfo *param,
 Buffer           *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguUeFlowCntrlInfo (param,mBuf)
+S16 cmUnpkRguUeFlowCntrlInfo (param,mBuf)
 RguUeFlowCntrlInfo *param;
 Buffer           *mBuf;
 #endif
@@ -1646,13 +1646,13 @@ Buffer           *mBuf;
 }
 
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguFlowCntrlInfo
+S16 cmUnpkRguFlowCntrlInfo
 (
 RguFlowCntrlInd *param, 
 Buffer           *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguFlowCntrlInfo(flowCntrlInfo, mBuf)
+S16 cmUnpkRguFlowCntrlInfo(flowCntrlInfo, mBuf)
 RguFlowCntrlInd *param;
 Buffer           *mBuf;
 #endif
@@ -1686,14 +1686,14 @@ Buffer           *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguFlowCntrlInd
+S16 cmUnpkRguFlowCntrlInd
 (
 RguFlowCntrlIndInfo func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguFlowCntrlInd(func, pst, mBuf)
+S16 cmUnpkRguFlowCntrlInd(func, pst, mBuf)
 RguFlowCntrlIndInfo func;
 Pst *pst;
 Buffer *mBuf;
@@ -1760,13 +1760,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguPduInfo
+S16 cmPkRguPduInfo
 (
 RguPduInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguPduInfo(param, mBuf)
+S16 cmPkRguPduInfo(param, mBuf)
 RguPduInfo *param;
 Buffer *mBuf;
 #endif
@@ -1808,13 +1808,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguPduInfo
+S16 cmUnpkRguPduInfo
 (
 RguPduInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguPduInfo(param, mBuf)
+S16 cmUnpkRguPduInfo(param, mBuf)
 RguPduInfo *param;
 Buffer *mBuf;
 #endif
@@ -1854,13 +1854,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguDBoReport
+S16 cmPkRguDBoReport
 (
 RguDBoReport *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguDBoReport(param, mBuf)
+S16 cmPkRguDBoReport(param, mBuf)
 RguDBoReport *param;
 Buffer *mBuf;
 #endif
@@ -1897,13 +1897,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDBoReport
+S16 cmUnpkRguDBoReport
 (
 RguDBoReport *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDBoReport(param, mBuf)
+S16 cmUnpkRguDBoReport(param, mBuf)
 RguDBoReport *param;
 Buffer *mBuf;
 #endif
@@ -1940,13 +1940,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguCDatReqInfo
+S16 cmPkRguCDatReqInfo
 (
 RguCDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguCDatReqInfo(param, mBuf)
+S16 cmPkRguCDatReqInfo(param, mBuf)
 RguCDatReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -2004,13 +2004,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguCDatReqInfo
+S16 cmUnpkRguCDatReqInfo
 (
 RguCDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguCDatReqInfo(param, mBuf)
+S16 cmUnpkRguCDatReqInfo(param, mBuf)
 RguCDatReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -2068,13 +2068,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguLchDatReq
+S16 cmPkRguLchDatReq
 (
 RguLchDatReq *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguLchDatReq(param, mBuf)
+S16 cmPkRguLchDatReq(param, mBuf)
 RguLchDatReq *param;
 Buffer *mBuf;
 #endif
@@ -2111,13 +2111,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguLchDatReq
+S16 cmUnpkRguLchDatReq
 (
 RguLchDatReq *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguLchDatReq(param, mBuf)
+S16 cmUnpkRguLchDatReq(param, mBuf)
 RguLchDatReq *param;
 Buffer *mBuf;
 #endif
@@ -2153,13 +2153,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguDatReqTb
+S16 cmPkRguDatReqTb
 (
 RguDatReqTb *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguDatReqTb(param, mBuf)
+S16 cmPkRguDatReqTb(param, mBuf)
 RguDatReqTb *param;
 Buffer *mBuf;
 #endif
@@ -2198,27 +2198,27 @@ Buffer *mBuf;
 **********************************************************/
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDatReqTb
+S16 cmUnpkRguDatReqTb
 (
 Pst         *pst, 
 RguDatReqTb *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDatReqTb(pst, param, mBuf)
+S16 cmUnpkRguDatReqTb(pst, param, mBuf)
 Pst         *pst;   
 RguDatReqTb *param;
 Buffer *mBuf;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDatReqTb
+S16 cmUnpkRguDatReqTb
 (
 RguDatReqTb *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDatReqTb(param, mBuf)
+S16 cmUnpkRguDatReqTb(param, mBuf)
 RguDatReqTb *param;
 Buffer *mBuf;
 #endif
@@ -2259,27 +2259,27 @@ Buffer *mBuf;
    /*rgu_c_001.main_5 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC S16 cmPkRguDDatReqInfo
+S16 cmPkRguDDatReqInfo
 (
 Pst            *pst,
 RguDDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguDDatReqInfo(pst, param, mBuf)
+S16 cmPkRguDDatReqInfo(pst, param, mBuf)
 Pst            *pst;
 RguDDatReqInfo *param;
 Buffer *mBuf;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 cmPkRguDDatReqInfo
+S16 cmPkRguDDatReqInfo
 (
 RguDDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguDDatReqInfo(param, mBuf)
+S16 cmPkRguDDatReqInfo(param, mBuf)
 RguDDatReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -2326,27 +2326,27 @@ Buffer *mBuf;
 **********************************************************/
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDDatReqInfo
+S16 cmUnpkRguDDatReqInfo
 (
 Pst            *pst, 
 RguDDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDDatReqInfo(pst, param, mBuf)
+S16 cmUnpkRguDDatReqInfo(pst, param, mBuf)
 Pst            *pst;
 RguDDatReqInfo *param;
 Buffer *mBuf;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguDDatReqInfo
+S16 cmUnpkRguDDatReqInfo
 (
 RguDDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguDDatReqInfo(param, mBuf)
+S16 cmUnpkRguDDatReqInfo(param, mBuf)
 RguDDatReqInfo *param;
 Buffer *mBuf;
 #endif
@@ -2413,13 +2413,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguCDatIndInfo
+S16 cmPkRguCDatIndInfo
 (
 RguCDatIndInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguCDatIndInfo(param, mBuf)
+S16 cmPkRguCDatIndInfo(param, mBuf)
 RguCDatIndInfo *param;
 Buffer *mBuf;
 #endif
@@ -2459,13 +2459,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguCDatIndInfo
+S16 cmUnpkRguCDatIndInfo
 (
 RguCDatIndInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguCDatIndInfo(param, mBuf)
+S16 cmUnpkRguCDatIndInfo(param, mBuf)
 RguCDatIndInfo *param;
 Buffer *mBuf;
 #endif
@@ -2504,13 +2504,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguLchDatInd
+S16 cmPkRguLchDatInd
 (
 RguLchDatInd *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguLchDatInd(param, mBuf)
+S16 cmPkRguLchDatInd(param, mBuf)
 RguLchDatInd *param;
 Buffer *mBuf;
 #endif
@@ -2541,13 +2541,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguLchDatInd
+S16 cmUnpkRguLchDatInd
 (
 RguLchDatInd *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguLchDatInd(param, mBuf)
+S16 cmUnpkRguLchDatInd(param, mBuf)
 RguLchDatInd *param;
 Buffer *mBuf;
 #endif
@@ -2578,13 +2578,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 packRlcMacDataInfo
+S16 packRlcMacDataInfo
 (
 RlcMacData *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 packRlcMacDataInfo(param, mBuf)
+S16 packRlcMacDataInfo(param, mBuf)
 RlcMacData *param;
 Buffer *mBuf;
 #endif
@@ -2631,13 +2631,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 unpackRlcMacDataInfo
+S16 unpackRlcMacDataInfo
 (
 RlcMacData *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 unpackRlcMacDataInfo(param, mBuf)
+S16 unpackRlcMacDataInfo(param, mBuf)
 RlcMacData *param;
 Buffer *mBuf;
 #endif
@@ -2683,13 +2683,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguCStaRspInfo
+S16 cmPkRguCStaRspInfo
 (
 RguCStaRspInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguCStaRspInfo(param, mBuf)
+S16 cmPkRguCStaRspInfo(param, mBuf)
 RguCStaRspInfo *param;
 Buffer *mBuf;
 #endif
@@ -2738,13 +2738,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguCStaRspInfo
+S16 cmUnpkRguCStaRspInfo
 (
 RguCStaRspInfo *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguCStaRspInfo(param, mBuf)
+S16 cmUnpkRguCStaRspInfo(param, mBuf)
 RguCStaRspInfo *param;
 Buffer *mBuf;
 #endif
@@ -2793,13 +2793,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 packBOStatusInfo
+S16 packBOStatusInfo
 (
 RlcMacBOStatus *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 packBOStatusInfo(param, mBuf)
+S16 packBOStatusInfo(param, mBuf)
 RlcMacBOStatus *param;
 Buffer *mBuf;
 #endif
@@ -2834,13 +2834,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 unpackBOStatusInfo
+S16 unpackBOStatusInfo
 (
 RlcMacBOStatus *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 unpackBOStatusInfo(param, mBuf)
+S16 unpackBOStatusInfo(param, mBuf)
 RlcMacBOStatus *param;
 Buffer *mBuf;
 #endif
@@ -2874,13 +2874,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguLchStaInd
+S16 cmPkRguLchStaInd
 (
 RguLchStaInd *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguLchStaInd(param, mBuf)
+S16 cmPkRguLchStaInd(param, mBuf)
 RguLchStaInd *param;
 Buffer *mBuf;
 #endif
@@ -2912,13 +2912,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguLchStaInd
+S16 cmUnpkRguLchStaInd
 (
 RguLchStaInd *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguLchStaInd(param, mBuf)
+S16 cmUnpkRguLchStaInd(param, mBuf)
 RguLchStaInd *param;
 Buffer *mBuf;
 #endif
@@ -2949,13 +2949,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmPkRguStaIndTb
+S16 cmPkRguStaIndTb
 (
 RguStaIndTb *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmPkRguStaIndTb(param, mBuf)
+S16 cmPkRguStaIndTb(param, mBuf)
 RguStaIndTb *param;
 Buffer *mBuf;
 #endif
@@ -2994,13 +2994,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PUBLIC S16 cmUnpkRguStaIndTb
+S16 cmUnpkRguStaIndTb
 (
 RguStaIndTb *param,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkRguStaIndTb(param, mBuf)
+S16 cmUnpkRguStaIndTb(param, mBuf)
 RguStaIndTb *param;
 Buffer *mBuf;
 #endif
@@ -3037,7 +3037,7 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-PUBLIC S16 packSchedRepInfo
+S16 packSchedRepInfo
 (
 RlcMacSchedRepInfo *param,
 Buffer *mBuf
@@ -3078,7 +3078,7 @@ Buffer *mBuf
 *     File  : 
 *
 **********************************************************/
-PUBLIC S16 unpackSchedRepInfo
+S16 unpackSchedRepInfo
 (
 RlcMacSchedRepInfo *param,
 Buffer *mBuf

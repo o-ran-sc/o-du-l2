@@ -346,17 +346,17 @@ typedef struct rgSchIotResMngmtCb
    RgSchIotResCb pucchHqFdbkCb;
 } RgSchIotResMngmtCb;
 
-PUBLIC S16 rgSCHUtlIotResPrcTti ARGS((
+S16 rgSCHUtlIotResPrcTti ARGS((
 RgSchCellCb *cell
 ));
 
-PUBLIC Void rgSCHUtlIotInsAlloc2Lst ARGS((
+Void rgSCHUtlIotInsAlloc2Lst ARGS((
 CmLListCp       *allocList,
 RgSchIotRes     *alloc,
 CmLList         *lnk
 ));
 
-PUBLIC S16 rgSCHUtlIotResMngmtInit ARGS((
+S16 rgSCHUtlIotResMngmtInit ARGS((
    RgSchCellCb *cell,
    U32         pdcchPoolSz,
    U32         pdcchDelta,
@@ -369,11 +369,11 @@ PUBLIC S16 rgSCHUtlIotResMngmtInit ARGS((
    U32         puschMaxFreqSz
    ));
 
-PUBLIC Void rgSCHUtlIotResMngmtDeinit ARGS((
+Void rgSCHUtlIotResMngmtDeinit ARGS((
    RgSchCellCb *cell
    ));
 
-PUBLIC RgSchIotRes *rgSCHUtlIotAllocRes ARGS((
+RgSchIotRes *rgSCHUtlIotAllocRes ARGS((
    RgSchIotResCb   *resCb,
    U32             fStart,
    U32             fSize,
@@ -382,23 +382,23 @@ PUBLIC RgSchIotRes *rgSCHUtlIotAllocRes ARGS((
    Bool            isForEnable
    ));
 
-PUBLIC RgSchIotRes *rgSCHUtlIotFirstAllocForTx ARGS((
+RgSchIotRes *rgSCHUtlIotFirstAllocForTx ARGS((
    RgSchIotResCb   *resCb,
    CmLteTimingInfo txTime
    ));
 
-PUBLIC RgSchIotRes *rgSCHUtlIotNextAllocForTx ARGS((
+RgSchIotRes *rgSCHUtlIotNextAllocForTx ARGS((
    RgSchIotResCb   *resCb,
    RgSchIotRes     *prevAlloc,
    CmLteTimingInfo txTime
    ));
 
-PUBLIC Void rgSCHUtlIotAllocRls ARGS((
+Void rgSCHUtlIotAllocRls ARGS((
    RgSchIotResCb   *resCb,
    RgSchIotRes     *alloc
    ));
 
-PUBLIC RgSchIotRes *rgSCHUtlEmtcAllocRes ARGS((
+RgSchIotRes *rgSCHUtlEmtcAllocRes ARGS((
    RgSchIotResCb   *resCb,
    U32             *fStart,
    U32             *fEnd,
@@ -408,11 +408,11 @@ PUBLIC RgSchIotRes *rgSCHUtlEmtcAllocRes ARGS((
    Bool            isRetx
    ));
 
-PUBLIC S16 rgSCHUtlEmtcResPrcTti ARGS((
+S16 rgSCHUtlEmtcResPrcTti ARGS((
    RgSchCellCb *cell
    ));
 
-PUBLIC S16 rgSCHUtlEmtcResMngmtInit ARGS((
+S16 rgSCHUtlEmtcResMngmtInit ARGS((
    RgSchCellCb *cell,
    U32         pdschPoolSz,
    U32         pdschDelta,
@@ -425,7 +425,7 @@ PUBLIC S16 rgSCHUtlEmtcResMngmtInit ARGS((
    U32         pucchMaxFreqSz
    ));
 
-PUBLIC Void rgSCHUtlEmtcResMngmtDeinit ARGS((
+Void rgSCHUtlEmtcResMngmtDeinit ARGS((
    RgSchCellCb *cell
    ));
 
@@ -4341,7 +4341,7 @@ EXTERN S16 rgSCHCfgEmtcCellCfg ARGS ((RgSchCellCb   *cell,
          RgrEmtcCellCfg *emtcCellCfg));
 EXTERN S16 rgSCHCfgVldtRgrEmtcCellCfg ARGS ((RgrCellCfg *cellCfg));
 
-EXTERN PUBLIC Void rgSchTomTtiEmtcSched ARGS((RgSchCellCb        *cell));
+EXTERN Void rgSchTomTtiEmtcSched ARGS((RgSchCellCb        *cell));
 EXTERN S16 rgSCHCfgVldtEmtcUeCfg ARGS((RgSchCellCb *cell, RgrUeEmtcCfg *emtcUeCfg));
 EXTERN S16 rgSCHUtlUpdUeEmtcInfo ARGS((RgSchCellCb *cell, RgrUeCfg *ueCfg, RgSchUeCb *ueCb));
 EXTERN S16 rgSCHEmtcCellDel ARGS((RgSchCellCb        *cell));
@@ -4658,7 +4658,7 @@ EXTERN S16 rgSCHDhmHqFdbkInd ARGS((Void *cb, U8 cbType, RgSchCellCb *cellCb,
 EXTERN S16 rgSCHDhmEmtcHqFdbkInd ARGS((Void *cb, U8 cbType, RgSchCellCb *cellCb,
                      CmLteTimingInfo timingInfo, RgTfuHqInfo *fdbk, RgInfRlsHqInfo
                                     *rlsHqBufs,RgSchErrInfo *err));
-EXTERN PUBLIC S16 rgSCHUtlAddToResLst 
+EXTERN S16 rgSCHUtlAddToResLst 
 (
  CmLListCp   *cp, 
  RgSchIotRes *iotRes
@@ -5049,16 +5049,16 @@ EXTERN Void rgSCHUtlUpdACqiTrigWt ARGS((RgSchUeCb *ue,RgSchUeCellInfo *sCellInfo
 #endif
 /* Nprb indication at PHY for common Ch */
 /* Corrected allocation for common channels */
-EXTERN PUBLIC S32 rgSCHUtlGetAllwdCchTbSz ARGS((U32 bo, U8 *nPrb, U8 *mcs
+EXTERN S32 rgSCHUtlGetAllwdCchTbSz ARGS((U32 bo, U8 *nPrb, U8 *mcs
 ));
 /* CR timer changes*/
-EXTERN PUBLIC S16 rgSCHUtlUpdtBo ARGS((RgSchCellCb  *cell,
+EXTERN S16 rgSCHUtlUpdtBo ARGS((RgSchCellCb  *cell,
                                RgInfCmnBoRpt     *staRsp));
-EXTERN PUBLIC S16 rgSCHUtlAddUeToCcchSduLst ARGS(
+EXTERN S16 rgSCHUtlAddUeToCcchSduLst ARGS(
                           (RgSchCellCb       *cell,
                             RgSchUeCb         *ueCb));
 #ifdef EMTC_ENABLE
-EXTERN PUBLIC S16 rgSCHUtlAddUeToEmtcCcchSduLst ARGS(
+EXTERN S16 rgSCHUtlAddUeToEmtcCcchSduLst ARGS(
       (RgSchCellCb       *cell,
        RgSchUeCb         *ueCb));
 
@@ -5332,9 +5332,9 @@ EXTERN Void rgSCHDrxUeHqReset ARGS((RgSchCellCb   *cell,
 
 #ifdef TFU_UPGRADE
 #ifdef LTE_TDD
-EXTERN CONSTANT PUBLIC RgSchTddCellSpSrsSubfrmTbl rgSchTddCellSpSrsSubfrmTbl;
+EXTERN CONSTANT RgSchTddCellSpSrsSubfrmTbl rgSchTddCellSpSrsSubfrmTbl;
 #else
-EXTERN CONSTANT PUBLIC RgSchFddCellSpSrsSubfrmTbl rgSchFddCellSpSrsSubfrmTbl;
+EXTERN CONSTANT RgSchFddCellSpSrsSubfrmTbl rgSchFddCellSpSrsSubfrmTbl;
 #endif
 #endif
 
@@ -5376,24 +5376,24 @@ EXTERN Void rgSCHHdFddGetSfn ARGS((
 /* ccpu00117452 - MOD - Changed macro name from
    RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
-PUBLIC S16 rgSCHUtlRgrStaInd ARGS((
+S16 rgSCHUtlRgrStaInd ARGS((
 RgSchCellCb          *cell,
 RgrStaIndInfo        *rgrSta
 ));
 
-PUBLIC S16 rgSCHUtlFillSndStaInd ARGS((
+S16 rgSCHUtlFillSndStaInd ARGS((
 RgSchCellCb        *cell,
 RgSchUeCb          *ue,
 RgrStaIndInfo      *staInfo,
 U8                 numCqiRept
 ));
 #endif /* End of RGR_CQI_REPT */
-PUBLIC S16 rgSCHUtlRgrUeStaInd ARGS((
+S16 rgSCHUtlRgrUeStaInd ARGS((
 RgSchCellCb          *cell,
 RgrUeStaIndInfo        *rgrUeSta
 ));
 
-PUBLIC S16 rgSCHUtlFillSndUeStaInd ARGS((
+S16 rgSCHUtlFillSndUeStaInd ARGS((
 RgSchCellCb        *cell,
 RgSchUeCb          *ue,
 RgrUeStaIndInfo    *ueStaInfo
@@ -5401,14 +5401,14 @@ RgrUeStaIndInfo    *ueStaInfo
 
 
 /* LTE_ADV_FLAG_REMOVED_START */
-PUBLIC S16 rgSCHUtlRgrLoadInfInd ARGS((
+S16 rgSCHUtlRgrLoadInfInd ARGS((
 RgSchCellCb          *cell,
 RgrLoadInfIndInfo        *rgrLoadInf
 ));
 /* LTE_ADV_FLAG_REMOVED_END */
 #ifdef LTE_ADV
 #ifdef TFU_UPGRADE
-PUBLIC TfuAckNackMode rgSchUtlGetFdbkMode ARGS((
+TfuAckNackMode rgSchUtlGetFdbkMode ARGS((
 RgrSchFrmt1b3TypEnum fdbkType
 ));
 
@@ -5419,42 +5419,42 @@ RgrSchFrmt1b3TypEnum fdbkType
 #endif /*TFU_UPGRADE */
 #endif /* LTE_ADV */
 /* FIX */
-PUBLIC Void rgSCHUtlRlsRnti  ARGS((
+Void rgSCHUtlRlsRnti  ARGS((
 RgSchCellCb    *cellCb,
 RgSchRntiLnk   *rntiLnk,
 Bool           ueIdChngd,
 CmLteRnti      newRnti
 ));
-PUBLIC S16 rgSCHUtlRgmBndCfm ARGS((
+S16 rgSCHUtlRgmBndCfm ARGS((
 Inst          instId,
 SuId          suId,
 U8            status
 ));
-PUBLIC Void rgSCHDhmDelHqEnt ARGS((
+Void rgSCHDhmDelHqEnt ARGS((
 RgSchCellCb       *cell,
 RgSchDlHqEnt      **hqE
 ));
-PUBLIC Void rgSCHDhmAssgnUeHqEntFrmRaCb ARGS((
+Void rgSCHDhmAssgnUeHqEntFrmRaCb ARGS((
 RgSchUeCb       *ue,
 RgSchRaCb       *raCb
 ));
-PUBLIC  Void rgSCHUtlReTxTa ARGS((
+ Void rgSCHUtlReTxTa ARGS((
 RgSchCellCb *cellCb, 
 RgSchUeCb *ueCb));
 /* LTE_ADV_FLAG_REMOVED_START */
-PUBLIC Void rgSchSFRTotalPoolFree ARGS((
+Void rgSchSFRTotalPoolFree ARGS((
 RgSchSFRTotalPoolInfo  *sfrTotalPoolInfo,
 RgSchCellCb             *cell));
-PUBLIC Void rgSchDSFRPwrCheck ARGS((
+Void rgSchDSFRPwrCheck ARGS((
 RgSchDlSf               *sf,
 Bool                    *isAllUePwrHigh));
 /* LTE_ADV_FLAG_REMOVED_END */
 
-PUBLIC S16 rgSCHUtlUpdAvgPrbUsage ARGS((
+S16 rgSCHUtlUpdAvgPrbUsage ARGS((
 RgSchCellCb          *cell
 ));
 
-PUBLIC U8 rgSchUtlCfg0ReTxIdx ARGS((
+U8 rgSchUtlCfg0ReTxIdx ARGS((
 RgSchCellCb    *cell,
 CmLteTimingInfo phichTime,
 U8              hqFdbkIdx
@@ -5475,7 +5475,7 @@ EXTERN Void rgSCHDynCfiReCfg ARGS((
          RgSchCellCb   *cell,
          Bool          isDynCfiEnb
 ));
-PUBLIC Void rgSchUtlCalcTotalPrbReq ARGS((RgSchCellCb  *cell,
+Void rgSchUtlCalcTotalPrbReq ARGS((RgSchCellCb  *cell,
                                           RgSchUeCb    *ue,
                                           U32           bo,
                                           U32          *prbReqrd));
@@ -5543,7 +5543,7 @@ EXTERN Void rgSchCmnPstDlSch ARGS ((
  RgSchCellCb        *cell
  ));
 
-EXTERN PUBLIC U8 rgSCHCmnGetBiIndex ARGS ((
+EXTERN U8 rgSCHCmnGetBiIndex ARGS ((
 RgSchCellCb   *cell,
 U32           ueCount
 ));

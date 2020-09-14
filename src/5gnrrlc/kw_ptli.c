@@ -81,11 +81,11 @@ EXTERN "C" {
 
 
 #ifdef RLC_MAC_DAT_REQ_RBUF
-PUBLIC S16 kwLiRguDatReqRbuf(Pst *Post,SpId spId,Void *datReq);
+S16 rlcLiRguDatReqRbuf(Pst *Post,SpId spId,Void *datReq);
 #endif
 
 #ifdef RLC_MAC_STA_RSP_RBUF
-PUBLIC S16 kwLiRguStaRspRbuf(Pst *Post,SpId spId,Void  *staRsp);
+S16 rlcLiRguStaRspRbuf(Pst *Post,SpId spId,Void  *staRsp);
 #endif
 #if defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS)
 EXTERN S16 RlcDlHarqStaBatchProc (Void);
@@ -98,7 +98,7 @@ EXTERN S16 RlcDlHarqStaBatchProc (Void);
 
 /* RGU Bind Request primitive */
 
-PUBLIC RguBndReq kwLiRguBndReqMt[] =
+RguBndReq kwLiRguBndReqMt[] =
 {
 #ifdef LCKWLIRGU
    cmPkRguBndReq,            /* 0 - loosely coupled */
@@ -113,7 +113,7 @@ PUBLIC RguBndReq kwLiRguBndReqMt[] =
 
 /* RGU Unbind Request primitive */
 
-PUBLIC RguBndReq kwLiRguUbndReqMt[] =
+RguBndReq kwLiRguUbndReqMt[] =
 {
 #ifdef LCKWLIRGU
    cmPkRguUbndReq,            /* 0 - loosely coupled */
@@ -128,7 +128,7 @@ PUBLIC RguBndReq kwLiRguUbndReqMt[] =
 
 /* RGU Dedicated Channel Data Request primitive */
 
-PUBLIC RlcMacDlData rlcMacSendDlDataOpts[] =
+RlcMacDlData rlcMacSendDlDataOpts[] =
 {
 #ifdef EGTP_TEST
    macStubSendDlData,
@@ -150,7 +150,7 @@ PUBLIC RlcMacDlData rlcMacSendDlDataOpts[] =
 
 /* RLC logical Channel Status primitive */
 
-PUBLIC RlcMacBoStatus rlcMacSendBOStatusOpts[] =
+RlcMacBoStatus rlcMacSendBOStatusOpts[] =
 {
 #ifdef EGTP_TEST
    macStubBOStatus,
@@ -174,7 +174,7 @@ PUBLIC RlcMacBoStatus rlcMacSendBOStatusOpts[] =
 #ifdef LTE_RLC_R9
 /* RGU L2 Measurement Ul Ip Throughput Measurement Request primitive */
 
-PUBLIC RguL2MUlThrpMeasReq kwLiRguL2MUlThrpMeasReqMt[] =
+RguL2MUlThrpMeasReq kwLiRguL2MUlThrpMeasReqMt[] =
 {
 #ifdef LCKWLIRGU
    cmPkRguL2MUlThrpMeasReq,            /* 0 - loosely coupled */
@@ -211,27 +211,27 @@ PUBLIC RguL2MUlThrpMeasReq kwLiRguL2MUlThrpMeasReqMt[] =
  */
 
 #ifdef ANSI
-PUBLIC S16 KwLiRguBndReq
+S16 RlcLiRguBndReq
 (
 Pst  *post,                       /* post structure */
 SuId suId,                      /* Service User Id */
 SpId spId                       /* Service Provider Id */
 )
 #else
-PUBLIC S16 KwLiRguBndReq(post, suId, spId)
+S16 RlcLiRguBndReq(post, suId, spId)
 Pst  *post;                       /* post structure */
 SuId suId;                      /* Service User Id */
 SpId spId;                      /* Service Provider Id */
 #endif
 {
-   TRC3(KwLiRguBndReq)
+   TRC3(RlcLiRguBndReq)
 
    /* jump to specific primitive depending on configured selector */
    (*kwLiRguBndReqMt[post->selector])(post, suId, spId);
 
    return ROK;
 
-} /* end of KwLiRguBndReq */
+} /* end of RlcLiRguBndReq */
 
 
 /**
@@ -254,27 +254,27 @@ SpId spId;                      /* Service Provider Id */
  */
 
 #ifdef ANSI
-PUBLIC S16 KwLiRguUbndReq
+S16 RlcLiRguUbndReq
 (
 Pst         *post,
 SpId        spId,
 Reason      reason
 )
 #else
-PUBLIC S16 KwLiRguUbndReq(post, spId, reason)
+S16 RlcLiRguUbndReq(post, spId, reason)
 Pst         *post;
 SpId        spId;
 Reason      reason;
 #endif
 {
-   TRC3(KwLiRguUbndReq)
+   TRC3(RlcLiRguUbndReq)
 
    /* jump to specific primitive depending on configured selector */
    (*kwLiRguUbndReqMt[post->selector])(post, spId, reason);
 
    return ROK;
 
-} /* end of KwLiRguUbndReq */
+} /* end of RlcLiRguUbndReq */
 
   
 /**
@@ -299,14 +299,14 @@ Reason      reason;
  *
  */
 #ifdef ANSI
-PUBLIC S16 RlcMacSendDlData
+S16 RlcMacSendDlData
 (
 Pst               *post,
 SpId              spId,
 RlcMacData       *dlData
 )
 #else
-PUBLIC S16 RlcMacSendDlData(post, spId, dlData)
+S16 RlcMacSendDlData(post, spId, dlData)
 Pst               *post;
 SpId              spId;
 RlcMacData        *dlData;
@@ -315,7 +315,7 @@ RlcMacData        *dlData;
    TRC3(RlcMacSendDlData)
 #ifdef RLC_MAC_DAT_REQ_RBUF
         post->event=EVTRGUDDATREQ;
-      if((kwLiRguDatReqRbuf(post, spId, datReq)) != ROK)
+      if((rlcLiRguDatReqRbuf(post, spId, datReq)) != ROK)
       {
 
       SPutStaticBuffer(post->region, post->pool,                      
@@ -328,7 +328,7 @@ RlcMacData        *dlData;
 #endif 
    return ROK;
 
-} /* end of KwLiRguDDatReq */
+} /* end of RlcLiRguDDatReq */
 
 
   
@@ -354,14 +354,14 @@ RlcMacData        *dlData;
  *
  */
 #ifdef ANSI
-PUBLIC S16 RlcMacSendBOStatus
+S16 RlcMacSendBOStatus
 (
 Pst               *post,
 SpId              spId,
 RlcMacBOStatus    *boSta
 )
 #else
-PUBLIC S16 RlcMacSendBOStatus(post, spId, staRsp)
+S16 RlcMacSendBOStatus(post, spId, staRsp)
 Pst               *post;
 SpId              spId;
 RlcMacBOStatus    *boSta;
@@ -370,7 +370,7 @@ RlcMacBOStatus    *boSta;
    TRC3(RlcMacSendBOStatus)
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
        post->event= EVTRGUDSTARSP;
-      if((kwLiRguStaRspRbuf(post, spId, staRsp)) != ROK)
+      if((rlcLiRguStaRspRbuf(post, spId, staRsp)) != ROK)
       {
          return RFAILED;
       }
@@ -409,50 +409,50 @@ RlcMacBOStatus    *boSta;
  *
  */
 #ifdef ANSI
-PUBLIC S16 KwLiRguL2MUlThrpMeasReq
+S16 RlcLiRguL2MUlThrpMeasReq
 (
 Pst                     *post,
 SpId                    spId,
 RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq
 )
 #else
-PUBLIC S16 KwLiRguL2MUlThrpMeasReq(post, spId, l2mUlThrpMeasReq)
+S16 RlcLiRguL2MUlThrpMeasReq(post, spId, l2mUlThrpMeasReq)
 Pst                     *post;
 SpId                    spId;
 RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq;
 #endif
 {
-   TRC3(KwLiRguL2MUlThrpMeasReq)
+   TRC3(RlcLiRguL2MUlThrpMeasReq)
 
    /* jump to specific primitive depending on configured selector */
    (*kwLiRguL2MUlThrpMeasReqMt[post->selector])(post, spId, l2mUlThrpMeasReq);
 
    return ROK;
 
-} /* end of KwLiRguL2MUlThrpMeasReq */
+} /* end of RlcLiRguL2MUlThrpMeasReq */
 
 #endif /* LTE_RLC_R9 */
 #endif /* LTE_L2_MEAS */
 
 
 #ifdef MAC_RLC_UL_RBUF
-PUBLIC S16 rlcUlBatchProc ARGS ((Void));
-EXTERN Void kwUtlFreeUlRBuf ARGS((void));
+S16 rlcUlBatchProc ARGS ((Void));
+EXTERN Void rlcUtlFreeUlRBuf ARGS((void));
 
 #ifdef ANSI
-PUBLIC S16 rlcUlBatchProc
+S16 rlcUlBatchProc
 (
 Void
 )
 #else
-PUBLIC S16 rlcUlBatchProc()
+S16 rlcUlBatchProc()
 Void;
 #endif
 {
 /* Read from Ring Buffer and process PDCP packets */
    RguDDatIndInfo   *datInd;
    Void *elmIndx = NULLP;
-   PRIVATE Pst rlcUlRbfuPst={1,1,ENTKW,0,ENTRG,0,PRIOR0,RTESPEC,EVTRLCULDAT,0,0,0,0};
+   PRIVATE Pst rlcUlRbfuPst={1,1,ENTRLC,0,ENTMAC,0,PRIOR0,RTESPEC,EVTRLCULDAT,0,0,0,0};
 /* Read from Ring Buffer and process PDCP packets */
 
 #ifndef SS_RBUF
@@ -467,7 +467,7 @@ Void;
       SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].nPktProc++;;//Number of pkt processed in tti
       if(datInd != NULLP)
       {
-         KwLiRguDDatInd(&rlcUlRbfuPst, 0, datInd);
+         RlcLiRguDDatInd(&rlcUlRbfuPst, 0, datInd);
       }
       else
       {
@@ -491,7 +491,7 @@ Void;
    while(NULLP != elmIndx)
    {
       datInd = (RguDDatIndInfo *)elmIndx;
-      KwLiRguDDatInd(&rlcUlRbfuPst, 0, datInd);
+      RlcLiRguDDatInd(&rlcUlRbfuPst, 0, datInd);
 
       elmIndx = NULLP;
       datInd = NULLP;
@@ -519,9 +519,9 @@ Void;
  *
  */
 #ifdef ANSI
-PUBLIC Void kwUtlFreeUlRBuf(void)
+Void rlcUtlFreeUlRBuf(void)
 #else
-PUBLIC Void kwUtlFreeUlRBuf()  
+Void rlcUtlFreeUlRBuf()  
 #endif
 {
    RguDDatIndInfo *datInd;
@@ -529,7 +529,7 @@ PUBLIC Void kwUtlFreeUlRBuf()
    U8             numLch;
    U8             numPdu;
 
-   TRC2(kwUtlFreeUlRBuf)
+   TRC2(rlcUtlFreeUlRBuf)
    /* Free SS_RNG_BUF_ULMAC_TO_ULRLC  */
    while((SDeqSRngBuf (SS_RNG_BUF_ULMAC_TO_ULRLC, &elem) == ROK))
    {
@@ -550,14 +550,14 @@ PUBLIC Void kwUtlFreeUlRBuf()
 #endif
 #ifdef RLC_MAC_STA_RSP_RBUF
 #ifdef ANSI
-PUBLIC S16 kwLiRguStaRspRbuf
+S16 rlcLiRguStaRspRbuf
 (
 Pst               *post,
 SpId              spId,
 Void             *staRsp
 )
 #else
-PUBLIC S16 kwLiRguStaRspRbuf(post, spId, staRsp)
+S16 rlcLiRguStaRspRbuf(post, spId, staRsp)
 Pst               *post;
 SpId              spId;
 Void              *staRsp;
@@ -589,14 +589,14 @@ Void              *staRsp;
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
 #ifdef ANSI
-PUBLIC S16 kwLiRguDatReqRbuf
+S16 rlcLiRguDatReqRbuf
 (
 Pst               *post,
 SpId              spId,
 Void             *datReq
 )
 #else
-PUBLIC S16 kwLiRguDatReqRbuf(post, spId, datReq)
+S16 rlcLiRguDatReqRbuf(post, spId, datReq)
 Pst               *post;
 SpId              spId;
 Void             *datReq;

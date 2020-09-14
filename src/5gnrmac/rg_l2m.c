@@ -94,7 +94,7 @@ PRIVATE RgL2MeasCb * rgL2mAllocMeasCb ARGS((
  *
  */
 #ifdef ANSI
-PUBLIC S16 rgL2mCreateMeasCb 
+S16 rgL2mCreateMeasCb 
 (
 RgCellCb       *cell,
 RgInfL2MeasReq *measInfo, 
@@ -102,7 +102,7 @@ U8              measType,
 RgErrInfo      *err
 )
 #else
-PUBLIC S16 rgL2mCreateMeasCb(cell, measInfo, measType, err)
+S16 rgL2mCreateMeasCb(cell, measInfo, measType, err)
 RgCellCb       *cell;
 RgInfL2MeasReq *measInfo; 
 U8              measType;
@@ -167,14 +167,14 @@ RgErrInfo      *err;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgL2mMeasReq 
+S16 rgL2mMeasReq 
 (
 RgCellCb       *cell,
 RgInfL2MeasReq *measInfo,
 RgErrInfo      *err
 )
 #else
-PUBLIC S16 rgL2mMeasReq(cell, measInfo, err)
+S16 rgL2mMeasReq(cell, measInfo, err)
 RgCellCb       *cell;
 RgInfL2MeasReq *measInfo; 
 RgErrInfo      *err;
@@ -273,13 +273,13 @@ RgInfL2MeasCfm    *measCfm;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasReq
+S16 RgSchMacL2MeasReq
 (
 Pst               *pst,          /* post structure  */
 RgInfL2MeasReq    *measInfo      /* Meas Req Info */
 )
 #else
-PUBLIC S16 RgSchMacL2MeasReq(pst, measInfo)
+S16 RgSchMacL2MeasReq(pst, measInfo)
 Pst               *pst;          /* post structure  */
 RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
 #endif    
@@ -337,13 +337,13 @@ RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasStopReq
+S16 RgSchMacL2MeasStopReq
 (
 Pst               *pst,          /* post structure  */
 RgInfL2MeasStopReq *measInfo      /* Meas Req Info */
 )
 #else
-PUBLIC S16 RgSchMacL2MeasStopReq(pst, measInfo)
+S16 RgSchMacL2MeasStopReq(pst, measInfo)
 Pst               *pst;          /* post structure  */
 RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
 #endif
@@ -411,13 +411,13 @@ RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasSendReq
+S16 RgSchMacL2MeasSendReq
 (
 Pst               *pst,          /* post structure  */
 RgInfL2MeasSndReq *measInfo      /* Meas Req Info */
 )
 #else
-PUBLIC S16 RgSchMacL2MeasSendReq(pst, measInfo)
+S16 RgSchMacL2MeasSendReq(pst, measInfo)
 Pst               *pst;          /* post structure  */
 RgInfL2MeasSndReq *measInfo;      /* Meas Req Info */
 #endif
@@ -577,12 +577,12 @@ RgErrInfo      *err;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgL2Meas
+S16 rgL2Meas
 (
 RgCellCb  *cell
 )
 #else
-PUBLIC S16 rgL2Meas(cell)
+S16 rgL2Meas(cell)
 RgCellCb  *cell;
 #endif
 {

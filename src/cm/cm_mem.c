@@ -135,19 +135,19 @@ The following functions are provided in this file.
 #endif
 
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
-PUBLIC U32 memFreeCount=0;
-PUBLIC U32 cmFreeCaller[4]={0};
-PUBLIC U32 cmAllocCaller[4]={0};
-PUBLIC Data *startPtr256=NULLP;
-PUBLIC Data *startPtr128=NULLP;
-PUBLIC U32 cmMemInfo128[100000][2]={0, 0};
-PUBLIC U32 cmMemInfo256[100000][2]={0, 0};
-PUBLIC Data *startPtr512=NULLP;
-PUBLIC Data *startPtr768=NULLP;
-PUBLIC Data *startPtr1664=NULLP;
-PUBLIC Data *startPtr4800=NULLP;
-PUBLIC Data *startPtr9920=NULLP;
-PUBLIC Size regMemSize=0;
+U32 memFreeCount=0;
+U32 cmFreeCaller[4]={0};
+U32 cmAllocCaller[4]={0};
+Data *startPtr256=NULLP;
+Data *startPtr128=NULLP;
+U32 cmMemInfo128[100000][2]={0, 0};
+U32 cmMemInfo256[100000][2]={0, 0};
+Data *startPtr512=NULLP;
+Data *startPtr768=NULLP;
+Data *startPtr1664=NULLP;
+Data *startPtr4800=NULLP;
+Data *startPtr9920=NULLP;
+Size regMemSize=0;
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 //extern CmMmRegCb *mtCMMRegCb[SS_MAX_REGS];
@@ -462,14 +462,14 @@ U32 cmDblFreeAttempts = 0;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmMmRegInit
+S16 cmMmRegInit
 (
 Region       region,
 CmMmRegCb   *regCb,
 CmMmRegCfg  *cfg
 )
 #else
-PUBLIC S16 cmMmRegInit(region, regCb, cfg)
+S16 cmMmRegInit(region, regCb, cfg)
 Region       region;
 CmMmRegCb   *regCb;
 CmMmRegCfg  *cfg;
@@ -799,12 +799,12 @@ CmMmRegCfg  *cfg;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmMmRegDeInit
+S16 cmMmRegDeInit
 (
 CmMmRegCb   *regCb
 )
 #else
-PUBLIC S16 cmMmRegDeInit(regCb)
+S16 cmMmRegDeInit(regCb)
 CmMmRegCb   *regCb;
 #endif
 {
@@ -2251,7 +2251,7 @@ Size    size;
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+S16  cmAllocNL
 (
 Void   *regionCb,
 Size   *size,
@@ -2264,7 +2264,7 @@ U8      entId,
 Bool    hstReg
 )
 #else
-PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr, memType, 
+S16  cmAllocNL(regionCb, size, flags, ptr, memType, 
       line, fileName, entId, hstReg)
 Void   *regionCb;
 Size   *size;
@@ -2278,7 +2278,7 @@ Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+S16  cmAllocNL
 (
 Void   *regionCb,
 Size   *size,
@@ -2290,7 +2290,7 @@ U8      entId,
 Bool    hstReg
 )
 #else
-PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr, line, 
+S16  cmAllocNL(regionCb, size, flags, ptr, line, 
       fileName, entId, hstReg)
 Void   *regionCb;
 Size   *size;
@@ -2306,7 +2306,7 @@ Bool    hstReg;
 #else
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+S16  cmAllocNL
 (
 Void   *regionCb,
 Size   *size,
@@ -2317,7 +2317,7 @@ U32     lineNo,
 U8     *funcName
 )
 #else
-PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr ,memType, lineNo, funcName)
+S16  cmAllocNL(regionCb, size, flags, ptr ,memType, lineNo, funcName)
 Void   *regionCb;
 Size   *size;
 U32     flags;
@@ -2329,7 +2329,7 @@ U8     *funcName;
 #else /*SS_LIGHT_MEM_LEAK_STS */
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+S16  cmAllocNL
 (
 Void   *regionCb,
 Size   *size,
@@ -2338,7 +2338,7 @@ Data  **ptr,
 U32     memType
 )
 #else
-PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr, memType)
+S16  cmAllocNL(regionCb, size, flags, ptr, memType)
 Void   *regionCb;
 Size   *size;
 U32     flags;
@@ -2348,7 +2348,7 @@ U32     memType;
 #else
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+S16  cmAllocNL
 (
 Void   *regionCb,
 Size   *size,
@@ -2357,7 +2357,7 @@ Data  **ptr,
 U32     memType
 )
 #else
-PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr, memType)
+S16  cmAllocNL(regionCb, size, flags, ptr, memType)
 Void   *regionCb;
 Size   *size;
 U32     flags;
@@ -2366,7 +2366,7 @@ U32     memType;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16  cmAllocNL
+S16  cmAllocNL
 (
 Void   *regionCb,
 Size   *size,
@@ -2374,7 +2374,7 @@ U32     flags,
 Data  **ptr 
 )
 #else
-PUBLIC S16  cmAllocNL(regionCb, size, flags, ptr)
+S16  cmAllocNL(regionCb, size, flags, ptr)
 Void   *regionCb;
 Size   *size;
 U32     flags;
@@ -2819,7 +2819,7 @@ Data  **ptr;
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PUBLIC S16  cmFreeNL
+S16  cmFreeNL
 (
 Void   *regionCb,
 Data   *ptr, 
@@ -2828,7 +2828,7 @@ U32     lineNo,
 U8      *funcName
 )
 #else
-PUBLIC S16  cmFreeNL(regionCb, ptr, size, lineNo, funcName)
+S16  cmFreeNL(regionCb, ptr, size, lineNo, funcName)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -2839,7 +2839,7 @@ U8      *funcName;
 
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef ANSI
-PUBLIC S16  cmFreeNL
+S16  cmFreeNL
 (
 Void   *regionCb,
 Data   *ptr,
@@ -2850,7 +2850,7 @@ U8      entId,
 Bool    hstReg
 )
 #else
-PUBLIC S16  cmFreeNL(regionCb, ptr, size, line, fileName, entId, hstReg)
+S16  cmFreeNL(regionCb, ptr, size, line, fileName, entId, hstReg)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -2863,14 +2863,14 @@ Bool    hstReg;
 #else
 
 #ifdef ANSI
-PUBLIC S16  cmFreeNL
+S16  cmFreeNL
 (
 Void   *regionCb,
 Data   *ptr, 
 Size    size
 )
 #else
-PUBLIC S16  cmFreeNL(regionCb, ptr, size)
+S16  cmFreeNL(regionCb, ptr, size)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -4741,12 +4741,12 @@ Size         size;
 #endif/*USE_PURE*/
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PUBLIC U32 cmGetFreeIndx
+U32 cmGetFreeIndx
 (
 Void
 )
 #else
-PUBLIC U32 cmGetFreeIndx(Void)
+U32 cmGetFreeIndx(Void)
 #endif
 {
 
@@ -4764,12 +4764,12 @@ PUBLIC U32 cmGetFreeIndx(Void)
  
 }
 #ifdef ANSI
-PUBLIC U32 cmPutFreeIndx
+U32 cmPutFreeIndx
 (
 U32   allocQIndx
 )
 #else
-PUBLIC U32 cmPutFreeIndx(allocQIndx)
+U32 cmPutFreeIndx(allocQIndx)
 U32   allocQIndx;
 #endif
 
@@ -4803,12 +4803,12 @@ U32   allocQIndx;
 *
 */
 #ifdef ANSI
-PUBLIC Void cmInitMemLeak
+Void cmInitMemLeak
 (
 Void
 )
 #else
-PUBLIC Void cmInitMemLeak (Void)
+Void cmInitMemLeak (Void)
 #endif
 {
    U32   indx;  
@@ -4843,12 +4843,12 @@ PUBLIC Void cmInitMemLeak (Void)
  * 
  **/
 #ifdef ANSI
-PUBLIC Void cmDeinitMemLeak
+Void cmDeinitMemLeak
 (
 Void
 )
 #else
-PUBLIC Void cmDeinitMemLeak (Void)
+Void cmDeinitMemLeak (Void)
 #endif
 {
    U32   indx;  
@@ -4881,12 +4881,12 @@ PUBLIC Void cmDeinitMemLeak (Void)
 *
 */
 #ifdef ANSI
-PUBLIC U32 cmStorAllocBlk
+U32 cmStorAllocBlk
 (
 Void    *addr
 )
 #else
-PUBLIC U32 cmStorAllocBlk (addr)
+U32 cmStorAllocBlk (addr)
 Void    *addr;
 #endif /* ANSI */
 
@@ -4923,12 +4923,12 @@ Void    *addr;
 *
 */
 #ifdef ANSI
-PUBLIC Void cmRlsAllocBlk
+Void cmRlsAllocBlk
 (
 U32    allocQIndx
 )
 #else
-PUBLIC Void cmRlsAllocBlk(allocQIndx)
+Void cmRlsAllocBlk(allocQIndx)
 U32    allocQIndx;
 #endif
 {
@@ -4960,12 +4960,12 @@ U32    allocQIndx;
 *
 */
 #ifdef ANSI
-PUBLIC Void cmStartStopLeakLog
+Void cmStartStopLeakLog
 (
 Void
 )
 #else
-PUBLIC Void cmStartStopLeakLog(Void)
+Void cmStartStopLeakLog(Void)
 #endif
 {
    if (FALSE == gmemLkCb.isStarted)
@@ -4996,12 +4996,12 @@ PUBLIC Void cmStartStopLeakLog(Void)
 *
 */
 #ifdef ANSI
-PUBLIC Void cmPrintLeakLog
+Void cmPrintLeakLog
 (
 Void
 )
 #else
-PUBLIC Void cmPrintLeakLog(Void)
+Void cmPrintLeakLog(Void)
 #endif
 {
  
@@ -5057,19 +5057,19 @@ PUBLIC Void cmPrintLeakLog(Void)
 */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 #ifdef ANSI
-PUBLIC Void cmRlsAllocBlk
+Void cmRlsAllocBlk
 (
 CmMmBlkHdr  *ptrHdr,
 CmMmRegCb *regCb
 )
 #else
-PUBLIC Void cmRlsAllocBlk(ptrHdr, regCb)
+Void cmRlsAllocBlk(ptrHdr, regCb)
 CmMmBlkHdr  *ptrHdr;
 CmMmRegCb *regCb;
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void cmRlsAllocBlk
+Void cmRlsAllocBlk
 (
 #ifdef BIT_64
 U64    addr
@@ -5078,7 +5078,7 @@ U32    addr
 #endif
 )
 #else
-PUBLIC Void cmRlsAllocBlk(addr)
+Void cmRlsAllocBlk(addr)
 #ifdef BIT_64
 U64    addr;
 #else
@@ -5238,7 +5238,7 @@ U32    addr;
 */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 #ifdef ANSI
-PUBLIC Void cmStorAllocBlk
+Void cmStorAllocBlk
 (
 CmMmBlkHdr    *ptrHdr, 
 Size          reqSz,
@@ -5247,7 +5247,7 @@ U16           bktIdx,
 CmMmRegCb     *regCb
 )
 #else
-PUBLIC Void cmStorAllocBlk (ptrHdr, reqSz, allocSz, bktIdx, regCb)
+Void cmStorAllocBlk (ptrHdr, reqSz, allocSz, bktIdx, regCb)
 CmMmBlkHdr    *ptrHdr;
 Size          reqSz;
 Size          allocSz;
@@ -5256,7 +5256,7 @@ CmMmRegCb     *regCb;
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void cmStorAllocBlk
+Void cmStorAllocBlk
 (
 #ifdef BIT_64
 U64    addr,
@@ -5268,7 +5268,7 @@ Size   allocSz,
 U16    bktIdx
 )
 #else
-PUBLIC Void cmStorAllocBlk (addr, reqSz, allocSz, bktIdx)
+Void cmStorAllocBlk (addr, reqSz, allocSz, bktIdx)
 #ifdef BIT_64
 U64    addr;
 #else
@@ -5384,12 +5384,12 @@ U16    bktIdx;
 *
 */
 #ifdef ANSI
-PUBLIC Void SLogLkInfo
+Void SLogLkInfo
 (
 Void
 )
 #else
-PUBLIC Void SLogLkInfo (Void)
+Void SLogLkInfo (Void)
 #endif
 {
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
@@ -5543,12 +5543,12 @@ PUBLIC Void SLogLkInfo (Void)
 *
 */
 #ifdef ANSI
-PUBLIC Void cmInitMemLeakMdl
+Void cmInitMemLeakMdl
 (
 Void
 )
 #else
-PUBLIC Void cmInitMemLeakMdl (Void)
+Void cmInitMemLeakMdl (Void)
 #endif
 {
    U8   memMdl;
@@ -5592,12 +5592,12 @@ PUBLIC Void cmInitMemLeakMdl (Void)
  * 
  **/
 #ifdef ANSI
-PUBLIC Void cmDeinitMemLeakMdl
+Void cmDeinitMemLeakMdl
 (
 Void
 )
 #else
-PUBLIC Void cmDeinitMemLeakMdl (Void)
+Void cmDeinitMemLeakMdl (Void)
 #endif
 {
   U8   memMdl;
@@ -5633,12 +5633,12 @@ PUBLIC Void cmDeinitMemLeakMdl (Void)
 *
 */
 #ifdef ANSI
-PUBLIC Void cmMemOpenMemLkFile
+Void cmMemOpenMemLkFile
 (
 S8 *arg
 )
 #else
-PUBLIC Void cmMemOpenMemLkFile (arg)
+Void cmMemOpenMemLkFile (arg)
 S8 *msOptArg;
 #endif
 {
@@ -5663,12 +5663,12 @@ S8 *msOptArg;
 *
 */
 #ifdef ANSI
-PUBLIC Void SFlushLkInfo
+Void SFlushLkInfo
 (
 Void
 )
 #else
-PUBLIC Void SFlushLkInfo (Void)
+Void SFlushLkInfo (Void)
 #endif
 {
    MemAllocInfo      *newMemInfo;
@@ -5741,13 +5741,13 @@ PUBLIC Void SFlushLkInfo (Void)
 *
 */
 #ifdef ANSI
-PUBLIC U8 cmMemGetModuleId
+U8 cmMemGetModuleId
 (
 S8     **funNm,
 S32    traceSize
 )
 #else
-PUBLIC U8 cmMemGetModuleId (funNm, traceSize)
+U8 cmMemGetModuleId (funNm, traceSize)
 S8     **funNm;
 S32    traceSize;
 #endif /* ANSI */
@@ -5818,7 +5818,7 @@ S32    traceSize;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmMemGetStrMtchIdx  
+S16 cmMemGetStrMtchIdx  
 (
 U8 strtIdx, 
 U8 endIdx,
@@ -5826,7 +5826,7 @@ S8 *str,
 S8 **strLst
 )
 #else
-PUBLIC S16 cmMemGetStrMtchIdx(strtIdx, endIdx, str, strLst)
+S16 cmMemGetStrMtchIdx(strtIdx, endIdx, str, strLst)
 U8 strtIdx;
 U8 endIdx;
 S8 *str;
@@ -5892,14 +5892,14 @@ S8 **strLst;
 *
 */
 #ifdef ANSI
-PUBLIC S32 cmAddrToSymStr
+S32 cmAddrToSymStr
 (
 Void   *pc, 
 S8     *buffer, 
 S32    size
 )
 #else
-PUBLIC S32 cmAddrToSymStr(pc, buffer, size)
+S32 cmAddrToSymStr(pc, buffer, size)
 Void   *pc;
 S8     *buffer;
 S32    size;
@@ -5949,14 +5949,14 @@ S32    size;
 *
 */
 #ifdef ANSI
-PUBLIC S32 cmLeakCallBack
+S32 cmLeakCallBack
 (
 uintptr_t pc,
 S32       sigNo, 
 Void      *arg
 )
 #else
-PUBLIC S32 cmLeakCallBack(pc, sigNo, arg)
+S32 cmLeakCallBack(pc, sigNo, arg)
 uintptr_t pc;
 S32       sigNo;
 Void      *arg;
@@ -6005,24 +6005,24 @@ Void      *arg;
 */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
 #ifdef ANSI
-PUBLIC S16 cmMmRegIsBlkSane
+S16 cmMmRegIsBlkSane
 (
 CmMmBlkHdr *blkPtr,
 Size       size
 )
 #else
-PUBLIC S16 cmMmRegIsBlkSane(blkPtr, size)
+S16 cmMmRegIsBlkSane(blkPtr, size)
 CmMmBlkHdr *blkPtr;
 Size       size;
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 cmMmRegIsBlkSane
+S16 cmMmRegIsBlkSane
 (
 CmMmBlkHdr *blkPtr
 )
 #else
-PUBLIC S16 cmMmRegIsBlkSane(blkPtr)
+S16 cmMmRegIsBlkSane(blkPtr)
 CmMmBlkHdr *blkPtr;
 #endif
 #endif
