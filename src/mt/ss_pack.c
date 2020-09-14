@@ -89,13 +89,13 @@
 */
 
 #ifdef ANSI
-PUBLIC S16 SPkS8
+S16 SPkS8
 (
 S8 val,                     /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SPkS8(val, mBuf)
+S16 SPkS8(val, mBuf)
 S8 val;                     /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -129,13 +129,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 oduUnpackUInt8
+S16 oduUnpackUInt8
 (
 U8 val,                     /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 oduUnpackUInt8(val, mBuf)
+S16 oduUnpackUInt8(val, mBuf)
 U8 val;                     /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -167,13 +167,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 SPkS16
+S16 SPkS16
 (
 S16 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SPkS16(val, mBuf)
+S16 SPkS16(val, mBuf)
 S16 val;                    /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -215,13 +215,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 oduUnpackUInt16
+S16 oduUnpackUInt16
 (
 U16 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 oduUnpackUInt16(val, mBuf)
+S16 oduUnpackUInt16(val, mBuf)
 U16 val;                    /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -263,13 +263,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 SPkS32
+S16 SPkS32
 (
 S32 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SPkS32(val, mBuf)
+S16 SPkS32(val, mBuf)
 S32 val;                    /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -320,13 +320,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 oduUnpackUInt32
+S16 oduUnpackUInt32
 (
 U32 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 oduUnpackUInt32(val, mBuf)
+S16 oduUnpackUInt32(val, mBuf)
 U32 val;                    /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -378,13 +378,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 SPkF32
+S16 SPkF32
 (
 F32 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SPkF32(val, mBuf)
+S16 SPkF32(val, mBuf)
 F32 val;                    /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -437,13 +437,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 SPkF64
+S16 SPkF64
 (
 F64 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SPkF64(val, mBuf)
+S16 SPkF64(val, mBuf)
 F64 val;                    /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -497,13 +497,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 SUnpkS8
+S16 SUnpkS8
 (
 S8 *val,                    /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SUnpkS8(val, mBuf)
+S16 SUnpkS8(val, mBuf)
 S8 *val;                    /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -547,13 +547,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 oduPackUInt8
+S16 oduPackUInt8
 (
 U8 *val,                    /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 oduPackUInt8(val, mBuf)
+S16 oduPackUInt8(val, mBuf)
 U8 *val;                    /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -596,13 +596,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 SUnpkS16
+S16 SUnpkS16
 (
 S16 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SUnpkS16(val, mBuf)
+S16 SUnpkS16(val, mBuf)
 S16 *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -655,13 +655,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 oduPackUInt16
+S16 oduPackUInt16
 (
 U16 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 oduPackUInt16(val, mBuf)
+S16 oduPackUInt16(val, mBuf)
 U16 *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -714,13 +714,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 SUnpkS32
+S16 SUnpkS32
 (
 S32 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SUnpkS32(val, mBuf)
+S16 SUnpkS32(val, mBuf)
 S32 *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -783,13 +783,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 oduPackUInt32
+S16 oduPackUInt32
 (
 U32 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 oduPackUInt32(val, mBuf)
+S16 oduPackUInt32(val, mBuf)
 U32 *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -856,13 +856,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 SUnpkF32
+S16 SUnpkF32
 (
 F32 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SUnpkF32(val, mBuf)
+S16 SUnpkF32(val, mBuf)
 F32 *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
@@ -922,13 +922,13 @@ Buffer *mBuf;               /* message buffer */
 */
   
 #ifdef ANSI
-PUBLIC S16 SUnpkF64
+S16 SUnpkF64
 (
 F64 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
-PUBLIC S16 SUnpkF64(val, mBuf)
+S16 SUnpkF64(val, mBuf)
 F64 *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif

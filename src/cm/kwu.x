@@ -144,7 +144,7 @@ typedef S16 (*KwuDiscSduCfm) ARGS((Pst *pst, SuId suId, KwuDiscSduInfo *discCfmI
  * @details This primitive binds the RLC service user entity to the RLC product.
  * The RLC service user must bind each KWU SAP individually before sending any
  * other request. RLC acknowledges the receipt of the bind request by sending
- * a KwUiKwuBndCfm primitive.
+ * a RlcUiKwuBndCfm primitive.
 
  * @param[in] pst    -  For the bind request, the event field in the Pst structure is set to
 EVTKWUBNDREQ
@@ -156,13 +156,13 @@ Allowable values: 0 to 32767.
  *    -# ROK
  *    -# RFAILED
  */
-EXTERN S16 KwUiKwuBndReq ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuBndReq ARGS((Pst *pst,
          SuId suId,
          SpId spId));
 
 /** 
  * @details RLC invokes the bind confirm primitive to acknowledge the receipt
- * of the KwUiKwuBndReq primitive from the service user. The status field
+ * of the RlcUiKwuBndReq primitive from the service user. The status field
  * indicates whether the bind request succeeded or failed. The bind request
  * may fail due to invalid parameters in the bind request from the
  * service user (for example, an invalid spId).
@@ -178,7 +178,7 @@ CM_BND_NOK: Error encountered during the processing of the bind request.
  *    -# ROK
  *    -# RFAILED
  */
-EXTERN S16 KwUiKwuBndCfm ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuBndCfm ARGS((Pst *pst,
          SuId suId,
          U8 status));
 
@@ -196,7 +196,7 @@ disassociated from its service user SAP. Allowable values: 0 to 32767.
  *    -# ROK
  *    -# RFAILED
  */
-EXTERN S16 KwUiKwuUbndReq ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuUbndReq ARGS((Pst *pst,
          SpId spId,
          Reason reason));
 
@@ -214,7 +214,7 @@ EXTERN S16 KwUiKwuUbndReq ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuDatReq ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuDatReq ARGS((Pst *pst,
          KwuDatReqInfo* datReq,
          Buffer *buf));
 
@@ -231,12 +231,12 @@ EXTERN S16 KwUiKwuDatReq ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuDatInd ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuDatInd ARGS((Pst *pst,
          KwuDatIndInfo* datInd,
          Buffer *mBuf));
 
 /**
- *@details This primitive is used by RLC as the confirmation for the KwUiKwuDatReq
+ *@details This primitive is used by RLC as the confirmation for the RlcUiKwuDatReq
  to the service user (RLC/PDCP). It is used only in AM mode data transfers for
  RLC.
 
@@ -247,7 +247,7 @@ EXTERN S16 KwUiKwuDatInd ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED 
  */
-EXTERN S16 KwUiKwuDatCfm ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuDatCfm ARGS((Pst *pst,
          SuId suId,
          KwuDatCfmInfo* datCfm));
 
@@ -263,7 +263,7 @@ EXTERN S16 KwUiKwuDatCfm ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuDiscSduReq ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuDiscSduReq ARGS((Pst *pst,
          SpId spId,
          KwuDiscSduInfo* discSdu));
 
@@ -279,7 +279,7 @@ EXTERN S16 KwUiKwuDiscSduReq ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuStaInd ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuStaInd ARGS((Pst *pst,
          SuId suId,
          KwuStaIndInfo* staInd));
 
@@ -295,7 +295,7 @@ EXTERN S16 KwUiKwuStaInd ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuDiscSduCfm ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuDiscSduCfm ARGS((Pst *pst,
          SpId spId,
          KwuDiscSduInfo* discCfmSdu));
 
@@ -310,7 +310,7 @@ EXTERN S16 KwUiKwuDiscSduCfm ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuFlowCntrlInd ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuFlowCntrlInd ARGS((Pst *pst,
          SuId suId,
          KwuFlowCntrlIndInfo* flowCntrlIndInfo));
 #ifdef LTE_L2_MEAS
@@ -326,12 +326,12 @@ EXTERN S16 KwUiKwuFlowCntrlInd ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuDatAckInd ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuDatAckInd ARGS((Pst *pst,
          SuId suId,
          KwuDatAckInfo* ackInd));
 #endif /* LTE_L2_MEAS */
 
-EXTERN S16 KwUiKwuReEstCmpInd ARGS((Pst *pst,
+EXTERN S16 RlcUiKwuReEstCmpInd ARGS((Pst *pst,
          SuId suId,
          CmLteRlcId rlcId
 ));
@@ -443,7 +443,7 @@ EXTERN S16 PjLiKwuDatAckInd ARGS((Pst *pst,
 
 #endif /* PJ */
 #ifdef MAC_RLC_UL_RBUF
-EXTERN S16 kwUlBatchProc ARGS((Void));
+EXTERN S16 rlcUlBatchProc ARGS((Void));
 #endif 
 /*****************************************************************************
  *                      PACK/UNPACK FUNCTIONS

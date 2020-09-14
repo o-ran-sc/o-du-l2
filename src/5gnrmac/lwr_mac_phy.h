@@ -65,7 +65,7 @@ EXTERN void freeWlsBlockList(uint8_t idx);
 EXTERN void LwrMacEnqueueWlsBlock();
 #endif /* INTEL_WLS */
 
-EXTERN uint16_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg);
+EXTERN uint8_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg);
 #endif
 
 /**********************************************************************

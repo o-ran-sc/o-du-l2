@@ -61,12 +61,12 @@
 *
 */
 #ifdef ANSI
-PUBLIC Void cmLListInit
+Void cmLListInit
 (
 CmLListCp *lCp                /* list control point */
 )
 #else 
-PUBLIC Void cmLListInit(lCp)
+Void cmLListInit(lCp)
 CmLListCp *lCp;               /* list control point */
 #endif
 {
@@ -97,13 +97,13 @@ CmLListCp *lCp;               /* list control point */
 *
 */
 #ifdef ANSI
-PUBLIC Void cmLListAdd2Head
+Void cmLListAdd2Head
 (
 CmLListCp *lCp,               /* list control point */
 CmLList   *node               /* node to be added */
 )
 #else 
-PUBLIC Void cmLListAdd2Head(lCp, node)
+Void cmLListAdd2Head(lCp, node)
 CmLListCp *lCp;               /* list control point */
 CmLList   *node;              /* node to be added */
 #endif
@@ -146,13 +146,13 @@ CmLList   *node;              /* node to be added */
 *
 */
 #ifdef ANSI
-PUBLIC Void cmLListAdd2Tail
+Void cmLListAdd2Tail
 (
 CmLListCp *lCp,               /* list control point */
 CmLList   *node               /* node to be added */
 )
 #else 
-PUBLIC Void cmLListAdd2Tail(lCp, node)
+Void cmLListAdd2Tail(lCp, node)
 CmLListCp *lCp;               /* list control point */
 CmLList   *node;              /* node to be added */
 #endif
@@ -195,13 +195,13 @@ CmLList   *node;              /* node to be added */
 *
 */
 #ifdef ANSI
-PUBLIC Void cmLListInsCrnt
+Void cmLListInsCrnt
 (
 CmLListCp *lCp,               /* list control point */
 CmLList   *node               /* node to be added */
 )
 #else 
-PUBLIC Void cmLListInsCrnt(lCp, node)
+Void cmLListInsCrnt(lCp, node)
 CmLListCp *lCp;               /* list control point */
 CmLList   *node;              /* node to be added */
 #endif
@@ -250,13 +250,13 @@ CmLList   *node;              /* node to be added */
 *
 */
 #ifdef ANSI
-PUBLIC Void cmLListInsAfterCrnt
+Void cmLListInsAfterCrnt
 (
 CmLListCp *lCp,               /* list control point */
 CmLList   *node               /* node to be added */
 )
 #else 
-PUBLIC Void cmLListInsAfterCrnt(lCp, node)
+Void cmLListInsAfterCrnt(lCp, node)
 CmLListCp *lCp;               /* list control point */
 CmLList   *node;              /* node to be added */
 #endif
@@ -307,13 +307,13 @@ CmLList   *node;              /* node to be added */
 *
 */
 #ifdef ANSI
-PUBLIC CmLList *cmLListDelFrm
+CmLList *cmLListDelFrm
 (
 CmLListCp *lCp,                /* list control pointer */
 CmLList *node                  /* node to be removed */
 )
 #else 
-PUBLIC CmLList *cmLListDelFrm(lCp, node)
+CmLList *cmLListDelFrm(lCp, node)
 CmLListCp *lCp;               /* list control pointer */
 CmLList *node;                /* node to be removed */
 #endif
@@ -377,13 +377,13 @@ CmLList *node;                /* node to be removed */
   *
   --*/
 #ifdef ANSI
-PUBLIC Void cmLListCatLList
+Void cmLListCatLList
 (
  CmLListCp *list1,              /*-- list control point --*/
  CmLListCp *list2               /*-- node to be added --*/
  )
 #else 
-PUBLIC Void cmLListCatLList(list1, list2)
+Void cmLListCatLList(list1, list2)
    CmLListCp *list1;              /*-- list control point --*/
    CmLListCp *list2;              /*-- node to be added --*/
 #endif

@@ -1572,8 +1572,8 @@ RgSchRaCb                  *raCb
 
 /* Added periodic BSR timer */
 
-/*ccpu00117180 - ADD - Added Prototype in .x since the function access is now PUBLIC */
-PUBLIC Void rgSCHCmnUpdVars ARGS((
+/*ccpu00117180 - ADD - Added Prototype in .x since the function access is now */
+Void rgSCHCmnUpdVars ARGS((
 RgSchCellCb *cell
 ));
 
@@ -1814,10 +1814,10 @@ U32                        *effBo,
 RgSchDlHqProcCb            *proc,
 RgSchCmnDlRbAllocInfo      *cellWdAllocInfo
 ));
-EXTERN PUBLIC Bool rgSCHCmnIsDlCsgPrio ARGS((
+EXTERN Bool rgSCHCmnIsDlCsgPrio ARGS((
 RgSchCellCb    *cell
 ));
-EXTERN PUBLIC Bool rgSCHCmnIsUlCsgPrio ARGS((
+EXTERN Bool rgSCHCmnIsUlCsgPrio ARGS((
 RgSchCellCb    *cell
 ));
 EXTERN S16 rgSCHCmnDlAllocRetxRb ARGS((
@@ -1841,7 +1841,7 @@ U8                      *iTbs,
 Bool                    isSpsBo,
 RgSchDlSf               *sf 
 ));
-PUBLIC U32 rgSCHCmnCalcRiv ARGS((
+U32 rgSCHCmnCalcRiv ARGS((
 U8           bw,
 U8           rbStart,
 U8           numRb
@@ -2157,18 +2157,18 @@ RgSchCellCb  *cell,
 RgSchDlHqEnt  *hqEnt
 ));
 
-EXTERN PUBLIC Void rgSchCmnDlSfHqDel 
+EXTERN Void rgSchCmnDlSfHqDel 
 ARGS((
 RgSchUeCb    *ue,
 RgSchCellCb  *cell
 ));
 
-EXTERN PUBLIC Void rgSCHCmnDlDeInitHqEnt 
+EXTERN Void rgSCHCmnDlDeInitHqEnt 
 ARGS((
 RgSchCellCb  *cell,
 RgSchDlHqEnt *hqE
 ));
-EXTERN PUBLIC U8 rgSCHCmnUlGetCqi
+EXTERN U8 rgSCHCmnUlGetCqi
 ARGS ((
 RgSchCellCb  *cell,
 RgSchUeCb *ue,

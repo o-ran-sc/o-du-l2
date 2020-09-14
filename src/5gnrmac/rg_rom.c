@@ -79,7 +79,7 @@ PRIVATE S16 rgROMHndlBcchPcchStaRsp ARGS((RgCellCb *cell,
 #ifdef LTEMAC_DLUE_TMGOPTMZ
 PRIVATE S16 rgROMUpdDlSfRemDataCnt ARGS((RgCellCb  *cellCb,
                                     RgDlSf    *dlSf));
-PUBLIC S16 rgTOMUtlProcDlSf ARGS(( RgDlSf     *dlSf,
+S16 rgTOMUtlProcDlSf ARGS(( RgDlSf     *dlSf,
                                    RgCellCb   *cellCb,
                                    RgErrInfo  *err));
 #endif
@@ -105,13 +105,13 @@ PUBLIC S16 rgTOMUtlProcDlSf ARGS(( RgDlSf     *dlSf,
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgROMDedDatReq
+S16 rgROMDedDatReq
 (
 Inst      inst,
 RgRguDedDatReq *datReq
 )
 #else
-PUBLIC S16 rgROMDedDatReq(inst,datReq)
+S16 rgROMDedDatReq(inst,datReq)
 Inst      inst;
 RgRguDedDatReq *datReq;
 #endif
@@ -331,13 +331,13 @@ RgRguDedDatReq *datReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgROMCmnDatReq
+S16 rgROMCmnDatReq
 (
 Inst            inst,
 RgRguCmnDatReq *datReq
 )
 #else
-PUBLIC S16 rgROMCmnDatReq(inst,datReq)
+S16 rgROMCmnDatReq(inst,datReq)
 Inst            inst;
 RgRguCmnDatReq *datReq;
 #endif
@@ -641,13 +641,13 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgROMDedStaRsp
+S16 rgROMDedStaRsp
 (
 Inst           inst,
 RgRguDedStaRsp *staRsp
 )
 #else
-PUBLIC S16 rgROMDedStaRsp(inst,staRsp)
+S16 rgROMDedStaRsp(inst,staRsp)
 Inst           inst;
 RgRguDedStaRsp *staRsp;
 #endif
@@ -736,13 +736,13 @@ S32 bo
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgROMCmnStaRsp
+S16 rgROMCmnStaRsp
 (
 Inst            inst, 
 RgRguCmnStaRsp *staRsp
 )
 #else
-PUBLIC S16 rgROMCmnStaRsp(inst,staRsp)
+S16 rgROMCmnStaRsp(inst,staRsp)
 Inst            inst;
 RgRguCmnStaRsp *staRsp;
 #endif
@@ -798,13 +798,13 @@ RgRguCmnStaRsp *staRsp;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgROML2MUlThrpMeasReq 
+S16 rgROML2MUlThrpMeasReq 
 (
 Inst                  inst,
 RgRguL2MUlThrpMeasReq *measReq
 )
 #else
-PUBLIC S16 rgROML2MUlThrpMeasReq(inst,measReq)
+S16 rgROML2MUlThrpMeasReq(inst,measReq)
 Inst                  inst;
 RgRguL2MUlThrpMeasReq *measReq;
 #endif

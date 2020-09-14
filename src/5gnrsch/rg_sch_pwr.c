@@ -369,12 +369,12 @@ PRIVATE S8 rgSCHPwrGetPCMaxValFromPCMax ARGS((
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrInit
+Void rgSCHPwrInit
 (
 Void
 )
 #else
-PUBLIC Void rgSCHPwrInit()
+Void rgSCHPwrInit()
 #endif
 {
    U8             idx;
@@ -512,13 +512,13 @@ U32                 eff;
  *  @return  U8
  **/
 #ifdef ANSI
-PUBLIC U8 rgSCHPwrPuschTpcForUe
+U8 rgSCHPwrPuschTpcForUe
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue
 )
 #else
-PUBLIC U8 rgSCHPwrPuschTpcForUe(cell, ue)
+U8 rgSCHPwrPuschTpcForUe(cell, ue)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 #endif
@@ -555,13 +555,13 @@ RgSchUeCb   *ue;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC U8 rgSCHPwrGetMaxUlRb
+U8 rgSCHPwrGetMaxUlRb
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue
 )
 #else
-PUBLIC U8 rgSCHPwrGetMaxUlRb(cell, ue)
+U8 rgSCHPwrGetMaxUlRb(cell, ue)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 #endif
@@ -706,13 +706,13 @@ RgSchUeCb   *ue;
  *  @return  U8
  **/
 #ifdef ANSI
-PUBLIC U8 rgSCHPwrPucchTpcForUe
+U8 rgSCHPwrPucchTpcForUe
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue
 )
 #else
-PUBLIC U8 rgSCHPwrPucchTpcForUe(cell, ue)
+U8 rgSCHPwrPucchTpcForUe(cell, ue)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 #endif
@@ -999,13 +999,13 @@ RgSchUeCb   *ue;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrGrpCntrlPucch
+Void rgSCHPwrGrpCntrlPucch
 (
 RgSchCellCb *cell,
 RgSchDlSf   *dlSf
 )
 #else
-PUBLIC Void rgSCHPwrGrpCntrlPucch(cell, dlSf)
+Void rgSCHPwrGrpCntrlPucch(cell, dlSf)
 RgSchCellCb *cell;
 RgSchDlSf   *dlSf;
 #endif
@@ -1082,14 +1082,14 @@ RgSchDlSf   *dlSf;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrGrpCntrlPusch
+Void rgSCHPwrGrpCntrlPusch
 (
 RgSchCellCb *cell,
 RgSchDlSf   *dlSf,
 RgSchUlSf   *ulSf
 )
 #else
-PUBLIC Void rgSCHPwrGrpCntrlPusch(cell, dlSf, ulSf)
+Void rgSCHPwrGrpCntrlPusch(cell, dlSf, ulSf)
 RgSchCellCb *cell;
 RgSchDlSf   *dlSf;
 RgSchUlSf   *ulSf;
@@ -1968,14 +1968,14 @@ RgSchUlSf            *sf;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrPucchDeltaInd
+Void rgSCHPwrPucchDeltaInd
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue,
 S8          pwrDelta
 )
 #else
-PUBLIC Void rgSCHPwrPucchDeltaInd(cell, ue, pwrDelta)
+Void rgSCHPwrPucchDeltaInd(cell, ue, pwrDelta)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 S8          pwrDelta;
@@ -2161,7 +2161,7 @@ RgSchUeCb             *ue;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrUpdExtPhr
+Void rgSCHPwrUpdExtPhr
 (
 RgSchCellCb           *cell,
 RgSchUeCb             *ue,
@@ -2169,7 +2169,7 @@ RgInfExtPhrCEInfo     *extPhr,
 RgSchCmnAllocRecord   *allocInfo
 )
 #else
-PUBLIC Void rgSCHPwrUpdExtPhr(cell, ue, extPhr, allocInfo)
+Void rgSCHPwrUpdExtPhr(cell, ue, extPhr, allocInfo)
 RgSchCellCb           *cell;
 RgSchUeCb             *ue;
 RgInfExtPhrCEInfo     *extPhr;
@@ -2238,7 +2238,7 @@ RgSchCmnAllocRecord   *allocInfo;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrUpdPhr
+Void rgSCHPwrUpdPhr
 (
 RgSchCellCb           *cell,
 RgSchUeCb             *ue,
@@ -2247,7 +2247,7 @@ RgSchCmnAllocRecord   *allocInfo,
 S8                     maxUePwr 
 )
 #else
-PUBLIC Void rgSCHPwrUpdPhr(cell, ue, phr, allocInfo, maxUePwr)
+Void rgSCHPwrUpdPhr(cell, ue, phr, allocInfo, maxUePwr)
 RgSchCellCb           *cell;
 RgSchUeCb             *ue;
 U8                     phr;
@@ -2316,13 +2316,13 @@ S8                     maxUePwr;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrUlCqiInd
+Void rgSCHPwrUlCqiInd
 (
 RgSchCellCb           *cell,
 RgSchUeCb             *ue
 )
 #else
-PUBLIC Void rgSCHPwrUlCqiInd(cell, ue)
+Void rgSCHPwrUlCqiInd(cell, ue)
 RgSchCellCb           *cell;
 RgSchUeCb             *ue;
 #endif
@@ -2397,14 +2397,14 @@ RgSchUeCb             *ue;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrRecordRbAlloc
+Void rgSCHPwrRecordRbAlloc
 (
 RgSchCellCb           *cell,
 RgSchUeCb             *ue,
 U8                     numRb
 )
 #else
-PUBLIC Void rgSCHPwrRecordRbAlloc(cell, ue, numRb)
+Void rgSCHPwrRecordRbAlloc(cell, ue, numRb)
 RgSchCellCb           *cell;
 RgSchUeCb             *ue;
 U8                     numRb;
@@ -2451,13 +2451,13 @@ U8                     numRb;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHPwrCellCfg
+S16 rgSCHPwrCellCfg
 (
 RgSchCellCb          *cell,
 RgrCellCfg           *cfg
 )
 #else
-PUBLIC S16 rgSCHPwrCellCfg(cell, cfg)
+S16 rgSCHPwrCellCfg(cell, cfg)
 RgSchCellCb          *cell;
 RgrCellCfg           *cfg;
 #endif
@@ -2543,13 +2543,13 @@ RgrCellCfg           *cfg;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHPwrCellRecfg
+S16 rgSCHPwrCellRecfg
 (
 RgSchCellCb          *cell,
 RgrCellRecfg         *recfg
 )
 #else
-PUBLIC S16 rgSCHPwrCellRecfg(cell, recfg)
+S16 rgSCHPwrCellRecfg(cell, recfg)
 RgSchCellCb          *cell;
 RgrCellRecfg         *recfg;
 #endif
@@ -2577,12 +2577,12 @@ RgrCellRecfg         *recfg;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrCellDel
+Void rgSCHPwrCellDel
 (
 RgSchCellCb *cell
 )
 #else
-PUBLIC Void rgSCHPwrCellDel(cell)
+Void rgSCHPwrCellDel(cell)
 RgSchCellCb *cell;
 #endif
 {
@@ -2610,14 +2610,14 @@ RgSchCellCb *cell;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHPwrUeSCellCfg
+S16 rgSCHPwrUeSCellCfg
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue,
 RgrUeSecCellCfg  *sCellInfoCfg
 )
 #else
-PUBLIC S16 rgSCHPwrUeSCellCfg(cell, ue, sCellInfoCfg)
+S16 rgSCHPwrUeSCellCfg(cell, ue, sCellInfoCfg)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 RgrUeSecCellCfg  *sCellInfoCfg;
@@ -2699,14 +2699,14 @@ RgrUeSecCellCfg  *sCellInfoCfg;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHPwrUeCfg
+S16 rgSCHPwrUeCfg
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue,
 RgrUeCfg    *cfg
 )
 #else
-PUBLIC S16 rgSCHPwrUeCfg(cell, ue, cfg)
+S16 rgSCHPwrUeCfg(cell, ue, cfg)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 RgrUeCfg    *cfg;
@@ -2762,14 +2762,14 @@ RgrUeCfg    *cfg;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHPwrUeRecfg
+S16 rgSCHPwrUeRecfg
 (
 RgSchCellCb   *cell,
 RgSchUeCb     *ue,
 RgrUeRecfg    *recfg
 )
 #else
-PUBLIC S16 rgSCHPwrUeRecfg(cell, ue, recfg)
+S16 rgSCHPwrUeRecfg(cell, ue, recfg)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 RgrUeRecfg  *recfg;
@@ -2972,13 +2972,13 @@ RgrUeUlPwrCfg        *pwrCfg;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrUeDel
+Void rgSCHPwrUeDel
 (
 RgSchCellCb           *cell,
 RgSchUeCb             *ue
 )
 #else
-PUBLIC Void rgSCHPwrUeDel(cell, ue)
+Void rgSCHPwrUeDel(cell, ue)
 RgSchCellCb           *cell;
 RgSchUeCb             *ue;
 #endif
@@ -3018,13 +3018,13 @@ RgSchUeCb             *ue;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHPwrUeReset
+Void rgSCHPwrUeReset
 (
 RgSchCellCb           *cell,
 RgSchUeCb             *ue
 )
 #else
-PUBLIC Void rgSCHPwrUeReset(cell, ue)
+Void rgSCHPwrUeReset(cell, ue)
 RgSchCellCb           *cell;
 RgSchUeCb             *ue;
 #endif

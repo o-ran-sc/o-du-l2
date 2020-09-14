@@ -112,7 +112,7 @@ EXTERN S16 PtUiRguFlowCntrlInd ARGS((Pst* pst,SuId suId,
 S16 RgUiRguFlowCntrlInd(Pst* pst, SuId suId, RguFlowCntrlInd *flowCntrlInd);
 #ifdef LTE_L2_MEAS
 #ifdef MAC_RLC_HARQ_STA_RBUF
-PUBLIC S16 RgUiRguHqStaIndRbuf ARGS((Pst* pst,SuId suId,RguHarqStatusInd *harqStatusInd));
+S16 RgUiRguHqStaIndRbuf ARGS((Pst* pst,SuId suId,RguHarqStatusInd *harqStatusInd));
 #endif 
 #endif
 
@@ -157,14 +157,14 @@ EXTERN S16 PtUiRgrWarningSiCfgCfm ARGS((Pst* pst, SuId suId,
 #endif /*--#ifdef PTRGUIRGR--*/
 
 #ifdef PTRGUIRGM
-PUBLIC S16 PtUiRgmPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
-PUBLIC S16 PtUiRgmBndCfm ARGS((Pst* pst, SuId suId, U8 status));
-PUBLIC S16 PtUiRgmTransModeInd  ARGS((Pst* pst, SuId suId, RgmTransModeInd *transModeInd));
+S16 PtUiRgmPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
+S16 PtUiRgmBndCfm ARGS((Pst* pst, SuId suId, U8 status));
+S16 PtUiRgmTransModeInd  ARGS((Pst* pst, SuId suId, RgmTransModeInd *transModeInd));
 #endif
-PUBLIC S16 RgUiRgmSendPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
-PUBLIC S16 RgUiRgmChangeTransModeInd ARGS((Pst* pst, SuId suId, RgmTransModeInd *transModeInd));
+S16 RgUiRgmSendPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
+S16 RgUiRgmChangeTransModeInd ARGS((Pst* pst, SuId suId, RgmTransModeInd *transModeInd));
 
-PUBLIC S16 RgUiRguFlowCntrlInd ARGS((Pst* pst, SuId suId, RguFlowCntrlInd *flowCntrlInd));
+S16 RgUiRguFlowCntrlInd ARGS((Pst* pst, SuId suId, RguFlowCntrlInd *flowCntrlInd));
 /* Added for sending TTI tick to RRM */
 /** @brief TTI indication from MAC to RRM */
 PRIVATE CONSTANT RgrTtiInd RgUiRgrTtiIndMt[RG_MAX_RGR_USR] =
@@ -304,7 +304,7 @@ PRIVATE CONSTANT RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
    PtUiRguBndCfm,
 #endif
 #ifdef KW
-   KwLiRguBndCfm,
+   RlcLiRguBndCfm,
 #else
    PtUiRguBndCfm,
 #endif
@@ -325,7 +325,7 @@ PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguCDatInd,
 #endif
 #ifdef KW
-   KwLiRguCDatInd,
+   RlcLiRguCDatInd,
 #else
    PtUiRguCDatInd,
 #endif
@@ -346,7 +346,7 @@ PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguDDatInd,
 #endif
 #ifdef KW
-   KwLiRguDDatInd,
+   RlcLiRguDDatInd,
 #else
    PtUiRguDDatInd,
 #endif
@@ -416,7 +416,7 @@ PRIVATE CONSTANT RguHqStaInd RgUiRguHqStaIndMt[RG_MAX_RGU_USR] =
    PtUiRguHqStaInd,
 #endif
 #ifdef KW
-   KwLiRguHqStaInd,
+   RlcLiRguHqStaInd,
 #else
    PtUiRguHqStaInd,
 #endif
@@ -518,7 +518,7 @@ PRIVATE CONSTANT RguFlowCntrlIndInfo RgUiRguFlowCntrlIndMt[RG_MAX_RGU_USR] =
    PtUiRguFlowCntrlInd,
 #endif
 #ifdef KW
-   KwLiRguFlowCntrlInd,
+   RlcLiRguFlowCntrlInd,
 #else
    PtUiRguFlowCntrlInd,
 #endif
@@ -549,14 +549,14 @@ PRIVATE CONSTANT RguFlowCntrlIndInfo RgUiRguFlowCntrlIndMt[RG_MAX_RGU_USR] =
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrBndCfm
+S16 RgUiRgrBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 RgUiRgrBndCfm(pst, suId, status)
+S16 RgUiRgrBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -583,14 +583,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmBndCfm
+S16 RgUiRgmBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 RgUiRgmBndCfm(pst, suId, status)
+S16 RgUiRgmBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -621,14 +621,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrTtiInd
+S16 RgUiRgrTtiInd
 (
 Pst* pst,
 SuId suId,
 RgrTtiIndInfo  *ttiInd
 )
 #else
-PUBLIC S16 RgUiRgrTtiInd(pst, suId, ttiInd)
+S16 RgUiRgrTtiInd(pst, suId, ttiInd)
 Pst* pst;
 SuId suId;
 RgrTtiIndInfo *ttiInd;
@@ -658,14 +658,14 @@ RgrTtiIndInfo *ttiInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrCfgCfm
+S16 RgUiRgrCfgCfm
 (
 Pst* pst,
 RgrCfgTransId transId,
 U8 status
 )
 #else
-PUBLIC S16 RgUiRgrCfgCfm(pst, transId, status)
+S16 RgUiRgrCfgCfm(pst, transId, status)
 Pst* pst;
 RgrCfgTransId transId;
 U8 status;
@@ -694,14 +694,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgBndCfm
+S16 RgUiCrgBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 RgUiCrgBndCfm(pst, suId, status)
+S16 RgUiCrgBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -731,7 +731,7 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiCrgCfgCfm
+S16 RgUiCrgCfgCfm
 (
 Pst* pst,
 SuId suId,
@@ -739,7 +739,7 @@ CrgCfgTransId transId,
 U8 status
 )
 #else
-PUBLIC S16 RgUiCrgCfgCfm(pst, suId, transId, status)
+S16 RgUiCrgCfgCfm(pst, suId, transId, status)
 Pst* pst;
 SuId suId;
 CrgCfgTransId transId;
@@ -769,14 +769,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguBndCfm
+S16 RgUiRguBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 RgUiRguBndCfm(pst, suId, status)
+S16 RgUiRguBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -789,8 +789,8 @@ U8 status;
 
 }
 
-PUBLIC int macDDatIndSnt;
-PUBLIC int macCDatIndSnt;
+int macDDatIndSnt;
+int macCDatIndSnt;
 
 
 /**
@@ -808,14 +808,14 @@ PUBLIC int macCDatIndSnt;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguCDatInd
+S16 RgUiRguCDatInd
 (
 Pst* pst,
 SuId suId,
 RguCDatIndInfo  * datInd
 )
 #else
-PUBLIC S16 RgUiRguCDatInd(pst, suId, datInd)
+S16 RgUiRguCDatInd(pst, suId, datInd)
 Pst* pst;
 SuId suId;
 RguCDatIndInfo  * datInd;
@@ -845,14 +845,14 @@ RguCDatIndInfo  * datInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguDDatInd
+S16 RgUiRguDDatInd
 (
 Pst* pst,
 SuId suId,
 RguDDatIndInfo  * datInd
 )
 #else
-PUBLIC S16 RgUiRguDDatInd(pst, suId, datInd)
+S16 RgUiRguDDatInd(pst, suId, datInd)
 Pst* pst;
 SuId suId;
 RguDDatIndInfo  * datInd;
@@ -888,14 +888,14 @@ RguDDatIndInfo  * datInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguCStaInd
+S16 RgUiRguCStaInd
 (
 Pst* pst,
 SuId suId,
 RguCStaIndInfo  * staInd
 )
 #else
-PUBLIC S16 RgUiRguCStaInd(pst, suId, staInd)
+S16 RgUiRguCStaInd(pst, suId, staInd)
 Pst* pst;
 SuId suId;
 RguCStaIndInfo  * staInd;
@@ -927,14 +927,14 @@ RguCStaIndInfo  * staInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRguDStaInd
+S16 RgUiRguDStaInd
 (
 Pst* pst,
 SuId suId,
 RguDStaIndInfo  * staInd
 )
 #else
-PUBLIC S16 RgUiRguDStaInd(pst, suId, staInd)
+S16 RgUiRguDStaInd(pst, suId, staInd)
 Pst* pst;
 SuId suId;
 RguDStaIndInfo  * staInd;
@@ -949,14 +949,14 @@ RguDStaIndInfo  * staInd;
 #ifdef LTE_L2_MEAS
 /* TODO: Function header */
 #ifdef ANSI
-PUBLIC S16 RgUiRguHqStaInd
+S16 RgUiRguHqStaInd
 (
 Pst* pst,
 SuId suId,
 RguHarqStatusInd *harqStatusInd
 )
 #else
-PUBLIC S16 RgUiRguHqStaInd(pst, suId, harqStatusInd)
+S16 RgUiRguHqStaInd(pst, suId, harqStatusInd)
 Pst* pst;
 SuId suId;
 RguHarqStatusInd *harqStatusInd;
@@ -976,14 +976,14 @@ RguHarqStatusInd *harqStatusInd;
 #endif /* LTE_L2_MEAS */
 
 #ifdef ANSI
-PUBLIC S16 RgUiRguFlowCntrlInd
+S16 RgUiRguFlowCntrlInd
 (
 Pst* pst,
 SuId suId,
 RguFlowCntrlInd *flowCntrlInd
 )
 #else
-PUBLIC S16 RgUiRguFlowCntrlInd(pst, suId, harqStatusInd)
+S16 RgUiRguFlowCntrlInd(pst, suId, harqStatusInd)
 Pst* pst;
 SuId suId;
 RguFlowCntrlInd *flowCntrlInd;
@@ -1008,7 +1008,7 @@ RguFlowCntrlInd *flowCntrlInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrSiCfgCfm
+S16 RgUiRgrSiCfgCfm
 (
 Pst* pst,
 SuId suId,
@@ -1016,7 +1016,7 @@ RgrCfgTransId transId,
 U8 status
 )
 #else
-PUBLIC S16 RgUiRgrSiCfgCfm(pst, suId, transId, status)
+S16 RgUiRgrSiCfgCfm(pst, suId, transId, status)
 Pst* pst;
 SuId suId;
 RgrCfgTransId transId;
@@ -1046,7 +1046,7 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrWarningSiCfgCfm
+S16 RgUiRgrWarningSiCfgCfm
 (
 Pst* pst,
 SuId suId,
@@ -1055,7 +1055,7 @@ U8   siId,
 U8 status
 )
 #else
-PUBLIC S16 RgUiRgrWarningSiCfgCfm(pst, suId, transId, siId,status)
+S16 RgUiRgrWarningSiCfgCfm(pst, suId, transId, siId,status)
 Pst* pst;
 SuId suId;
 RgrCfgTransId transId;
@@ -1089,14 +1089,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrStaInd
+S16 RgUiRgrStaInd
 (
 Pst* pst,
 SuId suId,
 RgrStaIndInfo  *staInd
 )
 #else
-PUBLIC S16 RgUiRgrStaInd(pst, suId, staInd)
+S16 RgUiRgrStaInd(pst, suId, staInd)
 Pst* pst;
 SuId suId;
 RgrStaIndInfo *staInd;
@@ -1125,14 +1125,14 @@ RgrStaIndInfo *staInd;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrLoadInfInd
+S16 RgUiRgrLoadInfInd
 (
  Pst* pst,
  SuId suId,
  RgrLoadInfIndInfo  *loadInfInd
  )
 #else
-PUBLIC S16 RgUiRgrLoadInfInd(pst, suId, loadInfInd)
+S16 RgUiRgrLoadInfInd(pst, suId, loadInfInd)
    Pst* pst;
    SuId suId;
    RgrLoadInfIndInfo *loadInfInd;
@@ -1160,14 +1160,14 @@ PUBLIC S16 RgUiRgrLoadInfInd(pst, suId, loadInfInd)
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgrUeStaInd
+S16 RgUiRgrUeStaInd
 (
 Pst             *pst,
 SuId            suId,
 RgrUeStaIndInfo *ueStaInd
 )
 #else
-PUBLIC S16 RgUiRgrUeStaInd(pst, suId, ueStaInd)
+S16 RgUiRgrUeStaInd(pst, suId, ueStaInd)
 Pst             *pst;
 SuId            suId;
 RgrUeStaIndInfo *ueStaInd;
@@ -1198,14 +1198,14 @@ RgrUeStaIndInfo *ueStaInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiCrgBndCfm
+S16 PtUiCrgBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 PtUiCrgBndCfm(pst, suId, status)
+S16 PtUiCrgBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -1239,7 +1239,7 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiCrgCfgCfm
+S16 PtUiCrgCfgCfm
 (
 Pst* pst,
 SuId suId,
@@ -1247,7 +1247,7 @@ CrgCfgTransId transId,
 U8 status
 )
 #else
-PUBLIC S16 PtUiCrgCfgCfm(pst, suId, transId, status)
+S16 PtUiCrgCfgCfm(pst, suId, transId, status)
 Pst* pst;
 SuId suId;
 CrgCfgTransId transId;
@@ -1284,14 +1284,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguBndCfm
+S16 PtUiRguBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 PtUiRguBndCfm(pst, suId, status)
+S16 PtUiRguBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -1325,14 +1325,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguCDatInd
+S16 PtUiRguCDatInd
 (
 Pst* pst,
 SuId suId,
 RguCDatIndInfo  * datInd
 )
 #else
-PUBLIC S16 PtUiRguCDatInd(pst, suId, datInd)
+S16 PtUiRguCDatInd(pst, suId, datInd)
 Pst* pst;
 SuId suId;
 RguCDatIndInfo  * datInd;
@@ -1366,14 +1366,14 @@ RguCDatIndInfo  * datInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguDDatInd
+S16 PtUiRguDDatInd
 (
 Pst* pst,
 SuId suId,
 RguDDatIndInfo  * datInd
 )
 #else
-PUBLIC S16 PtUiRguDDatInd(pst, suId, datInd)
+S16 PtUiRguDDatInd(pst, suId, datInd)
 Pst* pst;
 SuId suId;
 RguDDatIndInfo  * datInd;
@@ -1409,14 +1409,14 @@ RguDDatIndInfo  * datInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguCStaInd
+S16 PtUiRguCStaInd
 (
 Pst* pst,
 SuId suId,
 RguCStaIndInfo  * staInd
 )
 #else
-PUBLIC S16 PtUiRguCStaInd(pst, suId, staInd)
+S16 PtUiRguCStaInd(pst, suId, staInd)
 Pst* pst;
 SuId suId;
 RguCStaIndInfo  * staInd;
@@ -1452,14 +1452,14 @@ RguCStaIndInfo  * staInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRguDStaInd
+S16 PtUiRguDStaInd
 (
 Pst* pst,
 SuId suId,
 RguDStaIndInfo  * staInd
 )
 #else
-PUBLIC S16 PtUiRguDStaInd(pst, suId, staInd)
+S16 PtUiRguDStaInd(pst, suId, staInd)
 Pst* pst;
 SuId suId;
 RguDStaIndInfo  * staInd;
@@ -1478,14 +1478,14 @@ RguDStaIndInfo  * staInd;
 #ifdef LTE_L2_MEAS
 /* TODO: Function Header */
 #ifdef ANSI
-PUBLIC S16 PtUiRguHqStaInd
+S16 PtUiRguHqStaInd
 (
 Pst* pst,
 SuId suId,
 RguHarqStatusInd *harqStatusInd
 )
 #else
-PUBLIC S16 PtUiRguHqStaInd(pst, suId, harqStatusInd)
+S16 PtUiRguHqStaInd(pst, suId, harqStatusInd)
 Pst* pst;
 SuId suId;
 RguHarqStatusInd *harqStatusInd;
@@ -1504,14 +1504,14 @@ RguHarqStatusInd *harqStatusInd;
 #endif /* LTE_L2_MEAS */
 
 #ifdef ANSI
-PUBLIC S16 PtUiRguFlowCntrlInd
+S16 PtUiRguFlowCntrlInd
 (
 Pst* pst,
 SuId suId,
 RguFlowCntrlInd *flowCntrlInd
 )
 #else
-PUBLIC S16 PtUiRguFlowCntrlInd(pst, suId, flowCntrlInd)
+S16 PtUiRguFlowCntrlInd(pst, suId, flowCntrlInd)
 Pst* pst;
 SuId suId;
 RguHarqStatusInd *flowCntrlInd;
@@ -1547,14 +1547,14 @@ RguHarqStatusInd *flowCntrlInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrBndCfm
+S16 PtUiRgrBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 PtUiRgrBndCfm(pst, suId, status)
+S16 PtUiRgrBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -1587,14 +1587,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrTtiInd
+S16 PtUiRgrTtiInd
 (
 Pst* pst,
 SuId suId,
 RgrTtiIndInfo *ttiInd
 )
 #else
-PUBLIC S16 PtUiRgrTtiInd(pst, suId, ttiInd)
+S16 PtUiRgrTtiInd(pst, suId, ttiInd)
 Pst* pst;
 SuId suId;
 RgrTtiIndInfo *ttiInd;
@@ -1628,7 +1628,7 @@ RgrTtiIndInfo *ttiInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrCfgCfm
+S16 PtUiRgrCfgCfm
 (
 Pst* pst,
 SuId suId,
@@ -1636,7 +1636,7 @@ RgrCfgTransId transId,
 U8 status
 )
 #else
-PUBLIC S16 PtUiRgrCfgCfm(pst, suId, transId, status)
+S16 PtUiRgrCfgCfm(pst, suId, transId, status)
 Pst* pst;
 SuId suId;
 RgrCfgTransId transId;
@@ -1672,7 +1672,7 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrSiCfgCfm
+S16 PtUiRgrSiCfgCfm
 (
 Pst* pst,
 SuId suId,
@@ -1680,7 +1680,7 @@ RgrCfgTransId transId,
 U8 status
 )
 #else
-PUBLIC S16 PtUiRgrSiCfgCfm(pst, suId, transId, status)
+S16 PtUiRgrSiCfgCfm(pst, suId, transId, status)
 Pst* pst;
 SuId suId;
 RgrCfgTransId transId;
@@ -1715,7 +1715,7 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrWarningSiCfgCfm
+S16 PtUiRgrWarningSiCfgCfm
 (
 Pst* pst,
 SuId suId,
@@ -1724,7 +1724,7 @@ U8 siId,
 U8 status
 )
 #else
-PUBLIC S16 PtUiRgrWarningSiCfgCfm(pst, suId, transId, siId, status)
+S16 PtUiRgrWarningSiCfgCfm(pst, suId, transId, siId, status)
 Pst* pst;
 SuId suId;
 RgrCfgTransId transId;
@@ -1762,14 +1762,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrStaInd
+S16 PtUiRgrStaInd
 (
 Pst* pst,
 SuId suId,
 RgrStaIndInfo  *staInd
 )
 #else
-PUBLIC S16 PtUiRgrStaInd(pst, suId, staInd)
+S16 PtUiRgrStaInd(pst, suId, staInd)
 Pst* pst;
 SuId suId;
 RgrStaIndInfo *staInd;
@@ -1801,14 +1801,14 @@ RgrStaIndInfo *staInd;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrLoadInfInd
+S16 PtUiRgrLoadInfInd
 (
  Pst* pst,
  SuId suId,
  RgrLoadInfIndInfo  *loadInfInd
  )
 #else
-PUBLIC S16 PtUiRgrLoadInfInd(pst, suId, loadInfInd)
+S16 PtUiRgrLoadInfInd(pst, suId, loadInfInd)
    Pst* pst;
    SuId suId;
    RgrLoadInfIndInfo *loadInfInd;
@@ -1840,14 +1840,14 @@ PUBLIC S16 PtUiRgrLoadInfInd(pst, suId, loadInfInd)
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgrUeStaInd
+S16 PtUiRgrUeStaInd
 (
 Pst* pst,
 SuId suId,
 RgrUeStaIndInfo  *ueStaInd
 )
 #else
-PUBLIC S16 PtUiRgrUeStaInd(pst, suId, ueStaInd)
+S16 PtUiRgrUeStaInd(pst, suId, ueStaInd)
 Pst* pst;
 SuId suId;
 RgrUeStaIndInfo *ueStaInd;
@@ -1882,14 +1882,14 @@ RgrUeStaIndInfo *ueStaInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgmBndCfm
+S16 PtUiRgmBndCfm
 (
 Pst* pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 PtUiRgmBndCfm(pst, suId, status)
+S16 PtUiRgmBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
 U8 status;
@@ -1920,14 +1920,14 @@ U8 status;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgmPrbRprtInd
+S16 PtUiRgmPrbRprtInd
 (
 Pst* pst,
 SuId suId,
 RgmPrbRprtInd *prbRprtInd
 )
 #else
-PUBLIC S16 PtUiRgmPrbRprtInd(pst, suId, prbRprtInd)
+S16 PtUiRgmPrbRprtInd(pst, suId, prbRprtInd)
 Pst* pst;
 SuId suId;
 RgmPrbRprtInd *prbRprtInd;
@@ -1958,14 +1958,14 @@ RgmPrbRprtInd *prbRprtInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 PtUiRgmTransModeInd
+S16 PtUiRgmTransModeInd
 (
 Pst* pst,
 SuId suId,
 RgmTransModeInd *transModeInd
 )
 #else
-PUBLIC S16 PtUiRgmTransModeInd(pst, suId, transModeInd)
+S16 PtUiRgmTransModeInd(pst, suId, transModeInd)
 Pst* pst;
 SuId suId;
 RgmTransModeInd *transModeInd;
@@ -1997,14 +1997,14 @@ RgmTransModeInd *transModeInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmSendPrbRprtInd
+S16 RgUiRgmSendPrbRprtInd
 (
 Pst* pst,
 SuId suId,
 RgmPrbRprtInd *prbRprtInd
 )
 #else
-PUBLIC S16 RgUiRgmSendPrbRprtInd(pst, suId, prbRprtInd)
+S16 RgUiRgmSendPrbRprtInd(pst, suId, prbRprtInd)
 Pst* pst;
 SuId suId;
 RgmPrbRprtInd *prbRprtInd;
@@ -2029,14 +2029,14 @@ RgmPrbRprtInd *prbRprtInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 RgUiRgmChangeTransModeInd
+S16 RgUiRgmChangeTransModeInd
 (
 Pst* pst,
 SuId suId,
 RgmTransModeInd *transModeInd
 )
 #else
-PUBLIC S16 RgUiRgmChangeTransModeInd(pst, suId, transModeInd)
+S16 RgUiRgmChangeTransModeInd(pst, suId, transModeInd)
 Pst* pst;
 SuId suId;
 RgmTransModeInd *transModeInd;
@@ -2083,20 +2083,20 @@ PRIVATE S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
 #ifdef ANSI
-PUBLIC S16 rgDlDatReqBatchProc
+S16 rgDlDatReqBatchProc
 (
 Void
 )
 #else
-PUBLIC S16 rgDlDatReqBatchProc()
+S16 rgDlDatReqBatchProc()
 Void;
 #endif
 {
 /* Read from Ring Buffer and process PDCP packets */
 
    U8 rngBufDeqIndx = 0;
-   PRIVATE Pst rgDDatRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUDDATREQ,0,0,2,0};
-   PRIVATE Pst rgCDatRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUCDATREQ,0,0,2,0};
+   PRIVATE Pst rgDDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDDATREQ,0,0,2,0};
+   PRIVATE Pst rgCDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCDATREQ,0,0,2,0};
    Void *elmIndx = NULLP;
    RguInfoRingElem *datReqRing=NULLP;
    elmIndx = SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ);
@@ -2153,20 +2153,20 @@ Void;
 
 #ifdef RLC_MAC_STA_RSP_RBUF
 #ifdef ANSI
-PUBLIC S16 rgDlStaRspBatchProc
+S16 rgDlStaRspBatchProc
 (
 Void
 )
 #else
-PUBLIC S16 rgDlStaRspBatchProc()
+S16 rgDlStaRspBatchProc()
 Void;
 #endif
 {
 /* Read from Ring Buffer and process PDCP packets */
 
    U8 rngBufDeqIndx = 0;
-   PRIVATE Pst rgDStaRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUDSTARSP,0,0,2,0};
-   PRIVATE Pst rgCStaRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUCSTARSP,0,0,2,0};
+   PRIVATE Pst rgDStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDSTARSP,0,0,2,0};
+   PRIVATE Pst rgCStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCSTARSP,0,0,2,0};
    Void *elmIndx = NULLP;
    RguInfoRingElem *staRspRing=NULLP;
 
@@ -2225,14 +2225,14 @@ Void;
 #ifdef LTE_L2_MEAS
 #ifdef MAC_RLC_HARQ_STA_RBUF
 #ifdef ANSI
-PUBLIC S16 RgUiRguHqStaIndRbuf 
+S16 RgUiRguHqStaIndRbuf 
 (
 Pst* pst,
 SuId suId,
 RguHarqStatusInd *harqStatusInd
 )
 #else
-PUBLIC S16 RgUiRguHqStaIndRbuf(pst, suId, harqStatusInd)
+S16 RgUiRguHqStaIndRbuf(pst, suId, harqStatusInd)
 Pst* pst;
 SuId suId;
 RguHarqStatusInd *harqStatusInd;

@@ -166,25 +166,25 @@ uint8_t sctpInit(SSTskId sysTskId)
 uint8_t rlcDlInit(SSTskId sysTskId)
 {
    /* Register RLC DL TAPA Task */
-   if(ODU_REG_TTSK((Ent)ENTKW, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(ODU_REG_TTSK((Ent)ENTRLC, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
             rlcDlActvInit, (ActvTsk)rlcDlActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach RLC DL Task */
-   if (ODU_ATTACH_TTSK((Ent)ENTKW, (Inst)1, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTRLC, (Inst)1, sysTskId)!= ROK)
    {
       return RFAILED;
    }
 
    /* Register MAC TAPA Task */
-   if(ODU_REG_TTSK((Ent)ENTRG, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(ODU_REG_TTSK((Ent)ENTMAC, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
             rgActvInit, (ActvTsk)rgActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach MAC Task */
-   if (ODU_ATTACH_TTSK((Ent)ENTRG, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTMAC, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }
@@ -213,13 +213,13 @@ uint8_t rlcDlInit(SSTskId sysTskId)
 uint8_t rlcUlInit(SSTskId sysTskId)
 {
    /* Register RLC UL TAPA Task */
-   if(ODU_REG_TTSK((Ent)ENTKW, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(ODU_REG_TTSK((Ent)ENTRLC, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
             rlcUlActvInit, (ActvTsk)rlcUlActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach RLC DL Task */
-   if (ODU_ATTACH_TTSK((Ent)ENTKW, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTRLC, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }

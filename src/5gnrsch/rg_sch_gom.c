@@ -136,7 +136,7 @@ U16                     idx
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHGomHndlCfg
+S16 rgSCHGomHndlCfg
 (
 Pst           *pst,
 RgSchCb       *instCb,
@@ -144,7 +144,7 @@ RgrCfgTransId transId,
 RgrCfgReqInfo *cfgReqInfo
 )
 #else
-PUBLIC S16 rgSCHGomHndlCfg(pst, instCb, transId, cfgReqInfo)
+S16 rgSCHGomHndlCfg(pst, instCb, transId, cfgReqInfo)
 Pst           *pst;
 RgSchCb       *instCb;
 RgrCfgTransId transId;
@@ -490,13 +490,13 @@ RgrCfgReqInfo *rgrCfgReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHGomTtiHndlr
+S16 rgSCHGomTtiHndlr
 (
 RgSchCellCb      *cell,
 SpId             spId
 )
 #else
-PUBLIC S16 rgSCHGomTtiHndlr(cell, spId)
+S16 rgSCHGomTtiHndlr(cell, spId)
 RgSchCellCb      *cell;
 SpId             spId;
 #endif
@@ -1135,7 +1135,7 @@ CmLteCellId   *cellId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHGomHndlSiCfg
+S16 rgSCHGomHndlSiCfg
 (
 Region        reg,
 Pool          pool,
@@ -1145,7 +1145,7 @@ RgrCfgTransId transId,
 RgrSiCfgReqInfo *cfgReqInfo
 )
 #else
-PUBLIC S16 rgSCHGomHndlSiCfg(reg, pool, instCb, spId, transId, cfgReqInfo)
+S16 rgSCHGomHndlSiCfg(reg, pool, instCb, spId, transId, cfgReqInfo)
 Region        reg;
 Pool          pool;
 RgSchCb       *instCb;
@@ -1439,7 +1439,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHGomHndlWarningSiCfg
+S16 rgSCHGomHndlWarningSiCfg
 (
 Region        reg,
 Pool          pool,
@@ -1449,7 +1449,7 @@ RgrCfgTransId transId,
 RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
 )
 #else
-PUBLIC S16 rgSCHGomHndlWarningSiCfg(reg, pool, instCb, spId, transId, 
+S16 rgSCHGomHndlWarningSiCfg(reg, pool, instCb, spId, transId, 
 warningSiCfgReqInfo)
 Region        reg;
 Pool          pool;
@@ -1636,7 +1636,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
  *  @return  void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHGomHndlWarningSiStopReq 
+Void rgSCHGomHndlWarningSiStopReq 
 (
 Region        reg,
 Pool          pool,
@@ -1646,7 +1646,7 @@ RgrCfgTransId transId,
 SpId          spId
 )
 #else
-PUBLIC Void rgSCHGomHndlWarningSiStopReq(reg, pool, instCb, siId, transId, spId)
+Void rgSCHGomHndlWarningSiStopReq(reg, pool, instCb, siId, transId, spId)
 Region        reg;
 Pool          pool;
 RgSchCb       *instCb;
@@ -1710,7 +1710,7 @@ SpId          spId;
  *
  **/
 #ifdef ANSI
-PUBLIC S16 rgSchUpdtRNTPInfo
+S16 rgSchUpdtRNTPInfo
 (
  RgSchCellCb             *cell,
  RgSchDlSf               *sf,
@@ -1777,7 +1777,7 @@ PRIVATE Void rgSchUpdtRNTPInfo(cell, sf)
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHGomHndlLoadInf
+S16 rgSCHGomHndlLoadInf
 (
  Region            reg,
  Pool              pool,
@@ -1787,7 +1787,7 @@ PUBLIC S16 rgSCHGomHndlLoadInf
  RgrLoadInfReqInfo *loadInfReq
  )
 #else
-PUBLIC S16 rgSCHGomHndlLoadInf(reg, pool, instCb, spId, transId, loadInfReq)
+S16 rgSCHGomHndlLoadInf(reg, pool, instCb, spId, transId, loadInfReq)
    Region            reg;
    Pool              pool;
    RgSchCb           *instCb;

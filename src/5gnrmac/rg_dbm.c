@@ -86,12 +86,12 @@ U16            numBins
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMInitCell
+S16 rgDBMInitCell
 (
 RgCellCb       *cellCb
 )
 #else
-PUBLIC S16 rgDBMInitCell(cellCb)
+S16 rgDBMInitCell(cellCb)
 RgCellCb       *cellCb;
 #endif
 {
@@ -169,12 +169,12 @@ U16            numBins;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMDeInitUeCbLst
+S16 rgDBMDeInitUeCbLst
 (
 RgCellCb       *cellCb
 )
 #else
-PUBLIC S16 rgDBMDeInitUeCbLst(cellCb)
+S16 rgDBMDeInitUeCbLst(cellCb)
 RgCellCb       *cellCb;
 #endif
 {
@@ -234,12 +234,12 @@ U16            numBins;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMDeInitSpsUeCbLst
+S16 rgDBMDeInitSpsUeCbLst
 (
 RgCellCb       *cellCb
 )
 #else
-PUBLIC S16 rgDBMDeInitSpsUeCbLst(cellCb)
+S16 rgDBMDeInitSpsUeCbLst(cellCb)
 RgCellCb       *cellCb;
 #endif
 {
@@ -266,13 +266,13 @@ RgCellCb       *cellCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMInsUeCb
+S16 rgDBMInsUeCb
 (
 RgCellCb       *cellCb,
 RgUeCb         *ueCb
 )
 #else
-PUBLIC S16 rgDBMInsUeCb(cellCb, ueCb)
+S16 rgDBMInsUeCb(cellCb, ueCb)
 RgCellCb       *cellCb;
 RgUeCb         *ueCb;
 #endif
@@ -300,13 +300,13 @@ RgUeCb         *ueCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMInsSpsUeCb
+S16 rgDBMInsSpsUeCb
 (
 RgCellCb       *cellCb,
 RgUeCb         *ueCb
 )
 #else
-PUBLIC S16 rgDBMInsSpsUeCb(cellCb, ueCb)
+S16 rgDBMInsSpsUeCb(cellCb, ueCb)
 RgCellCb       *cellCb;
 RgUeCb         *ueCb;
 #endif
@@ -334,13 +334,13 @@ RgUeCb         *ueCb;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetUeCb
+RgUeCb* rgDBMGetUeCb
 (
 RgCellCb       *cellCb, 
 CmLteRnti      ueId
 )
 #else
-PUBLIC RgUeCb* rgDBMGetUeCb(cellCb, ueId)
+RgUeCb* rgDBMGetUeCb(cellCb, ueId)
 RgCellCb       *cellCb;
 CmLteRnti      ueId;
 #endif
@@ -369,13 +369,13 @@ CmLteRnti      ueId;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetSpsUeCb
+RgUeCb* rgDBMGetSpsUeCb
 (
 RgCellCb       *cellCb, 
 CmLteRnti      spsRnti
 )
 #else
-PUBLIC RgUeCb* rgDBMGetSpsUeCb(cellCb, spsRnti)
+RgUeCb* rgDBMGetSpsUeCb(cellCb, spsRnti)
 RgCellCb       *cellCb;
 CmLteRnti      spsRnti;
 #endif
@@ -405,13 +405,13 @@ CmLteRnti      spsRnti;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetNextUeCb
+RgUeCb* rgDBMGetNextUeCb
 (
 RgCellCb       *cellCb, 
 RgUeCb         *ueCb
 )
 #else
-PUBLIC RgUeCb* rgDBMGetNextUeCb(cellCb, ueCb)
+RgUeCb* rgDBMGetNextUeCb(cellCb, ueCb)
 RgCellCb       *cellCb;
 RgUeCb         *ueCb;
 #endif
@@ -439,13 +439,13 @@ RgUeCb         *ueCb;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetNextSpsUeCb
+RgUeCb* rgDBMGetNextSpsUeCb
 (
 RgCellCb       *cellCb, 
 RgUeCb         *ueCb
 )
 #else
-PUBLIC RgUeCb* rgDBMGetNextSpsUeCb(cellCb, ueCb)
+RgUeCb* rgDBMGetNextSpsUeCb(cellCb, ueCb)
 RgCellCb       *cellCb;
 RgUeCb         *ueCb;
 #endif
@@ -477,13 +477,13 @@ RgUeCb         *ueCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMDelUeCb
+S16 rgDBMDelUeCb
 (
 RgCellCb       *cellCb,
 RgUeCb         *ueCb
 )
 #else
-PUBLIC S16 rgDBMDelUeCb(cellCb, ueCb)
+S16 rgDBMDelUeCb(cellCb, ueCb)
 RgCellCb       *cellCb;
 RgUeCb         *ueCb;
 #endif
@@ -510,13 +510,13 @@ RgUeCb         *ueCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMDelSpsUeCb
+S16 rgDBMDelSpsUeCb
 (
 RgCellCb       *cellCb,
 RgUeCb         *ueCb
 )
 #else
-PUBLIC S16 rgDBMDelSpsUeCb(cellCb, ueCb)
+S16 rgDBMDelSpsUeCb(cellCb, ueCb)
 RgCellCb       *cellCb;
 RgUeCb         *ueCb;
 #endif
@@ -544,12 +544,12 @@ RgUeCb         *ueCb;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInitUe
+Void rgDBMInitUe
 (
 RgUeCb       *ueCb
 )
 #else
-PUBLIC Void rgDBMInitUe(ueCb)
+Void rgDBMInitUe(ueCb)
 RgUeCb       *ueCb;
 #endif
 {
@@ -678,12 +678,12 @@ RgCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMFreeCmnLcLst
+Void rgDBMFreeCmnLcLst
 (
 RgCellCb       *cellCb
 )
 #else
-PUBLIC Void rgDBMFreeCmnLcLst(cellCb)
+Void rgDBMFreeCmnLcLst(cellCb)
 RgCellCb       *cellCb;
 #endif
 {
@@ -717,13 +717,13 @@ RgCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsDlDedLcCb
+Void rgDBMInsDlDedLcCb
 (
 RgUeCb         *ueCb, 
 CmLteLcId        idx
 )
 #else
-PUBLIC Void rgDBMInsDlDedLcCb(ueCb, idx)
+Void rgDBMInsDlDedLcCb(ueCb, idx)
 RgUeCb         *ueCb; 
 CmLteLcId        idx;
 #endif
@@ -749,13 +749,13 @@ CmLteLcId        idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMDelDlDedLcCb
+Void rgDBMDelDlDedLcCb
 (
 RgUeCb         *ueCb, 
 RgDlLcCb       *dlLcCb 
 )
 #else
-PUBLIC Void rgDBMDelDlDedLcCb(ueCb, dlLcCb)
+Void rgDBMDelDlDedLcCb(ueCb, dlLcCb)
 RgUeCb         *ueCb; 
 RgDlLcCb       *dlLcCb; 
 #endif
@@ -782,13 +782,13 @@ RgDlLcCb       *dlLcCb;
  *  @return  RgDlLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgDlLcCb* rgDBMGetDlDedLcCb
+RgDlLcCb* rgDBMGetDlDedLcCb
 (
 RgUeCb         *ueCb, 
 CmLteLcId        idx
 )
 #else
-PUBLIC RgDlLcCb* rgDBMGetDlDedLcCb(ueCb, idx)
+RgDlLcCb* rgDBMGetDlDedLcCb(ueCb, idx)
 RgUeCb         *ueCb; 
 CmLteLcId        idx;
 #endif
@@ -823,7 +823,7 @@ CmLteLcId        idx;
  **/
 #ifdef LTE_L2_MEAS
 #ifdef ANSI
-PUBLIC Void rgDBMInsUlDedLcCb
+Void rgDBMInsUlDedLcCb
 (
 RgUeCb         *ueCb, 
 CmLteLcId      idx,
@@ -831,7 +831,7 @@ LteLcgId       gId,
 U8             qci
 )
 #else
-PUBLIC Void rgDBMInsUlDedLcCb(ueCb, idx, gId, qci)
+Void rgDBMInsUlDedLcCb(ueCb, idx, gId, qci)
 RgUeCb         *ueCb; 
 CmLteLcId      idx;
 LteLcgId       gId;
@@ -839,14 +839,14 @@ U8             qci;
 #endif
 #else
 #ifdef ANSI
-PUBLIC Void rgDBMInsUlDedLcCb
+Void rgDBMInsUlDedLcCb
 (
 RgUeCb         *ueCb, 
 CmLteLcId      idx,
 LteLcgId       gId
 )
 #else
-PUBLIC Void rgDBMInsUlDedLcCb(ueCb, idx, gId)
+Void rgDBMInsUlDedLcCb(ueCb, idx, gId)
 RgUeCb         *ueCb; 
 CmLteLcId      idx;
 LteLcgId       gId;
@@ -888,14 +888,14 @@ LteLcgId       gId;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMUpdUlDedLcCb
+Void rgDBMUpdUlDedLcCb
 (
 RgUeCb         *ueCb, 
 RgUlLcCb       *ulLcCb,
 LteLcgId       gId
 )
 #else
-PUBLIC Void rgDBMUpdUlDedLcCb(ueCb, ulLcCb, gId)
+Void rgDBMUpdUlDedLcCb(ueCb, ulLcCb, gId)
 RgUeCb         *ueCb; 
 RgUlLcCb       *ulLcCb; 
 LteLcgId       gId;
@@ -934,13 +934,13 @@ LteLcgId       gId;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMDelUlDedLcCb
+Void rgDBMDelUlDedLcCb
 (
 RgUeCb         *ueCb, 
 RgUlLcCb       *ulLcCb 
 )
 #else
-PUBLIC Void rgDBMDelUlDedLcCb(ueCb, ulLcCb)
+Void rgDBMDelUlDedLcCb(ueCb, ulLcCb)
 RgUeCb         *ueCb; 
 RgUlLcCb       *ulLcCb; 
 #endif
@@ -974,13 +974,13 @@ RgUlLcCb       *ulLcCb;
  *  @return  RgUlLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgUlLcCb* rgDBMGetUlDedLcCb
+RgUlLcCb* rgDBMGetUlDedLcCb
 (
 RgUeCb         *ueCb, 
 CmLteLcId        idx
 )
 #else
-PUBLIC RgUlLcCb* rgDBMGetUlDedLcCb(ueCb, idx)
+RgUlLcCb* rgDBMGetUlDedLcCb(ueCb, idx)
 RgUeCb         *ueCb; 
 CmLteLcId        idx;
 #endif
@@ -1015,13 +1015,13 @@ CmLteLcId        idx;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgDBMChkCmnLcCb
+S16 rgDBMChkCmnLcCb
 (
 RgCellCb       *cellCb, 
 CmLteLcId        lcId
 )
 #else
-PUBLIC S16 rgDBMChkCmnLcCb(cellCb, lcId)
+S16 rgDBMChkCmnLcCb(cellCb, lcId)
 RgCellCb       *cellCb;
 CmLteLcId        lcId;
 #endif
@@ -1062,12 +1062,12 @@ CmLteLcId        lcId;
  *  @return  RgBcchBchLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgBcchBchLcCb* rgDBMGetBcchOnBch
+RgBcchBchLcCb* rgDBMGetBcchOnBch
 (
 RgCellCb       *cellCb 
 )
 #else
-PUBLIC RgBcchBchLcCb* rgDBMGetBcchOnBch(cellCb)
+RgBcchBchLcCb* rgDBMGetBcchOnBch(cellCb)
 RgCellCb       *cellCb;
 #endif
 {
@@ -1094,13 +1094,13 @@ RgCellCb       *cellCb;
  *  @return  RgBcchDlschLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgBcchDlschLcCb* rgDBMGetBcchOnDlsch
+RgBcchDlschLcCb* rgDBMGetBcchOnDlsch
 (
 RgCellCb       *cellCb,
 CmLteLcId      lcId
 )
 #else
-PUBLIC RgBcchDlschLcCb* rgDBMGetBcchOnDlsch(cellCb,lcId)
+RgBcchDlschLcCb* rgDBMGetBcchOnDlsch(cellCb,lcId)
 RgCellCb       *cellCb;
 CmLteLcId      lcId;
 #endif
@@ -1131,12 +1131,12 @@ CmLteLcId      lcId;
  *  @return  RgPcchLcCb*
  **/
 #ifdef ANSI
-PUBLIC RgPcchLcCb* rgDBMGetPcch
+RgPcchLcCb* rgDBMGetPcch
 (
 RgCellCb       *cellCb
 )
 #else
-PUBLIC RgPcchLcCb* rgDBMGetPcch(cellCb)
+RgPcchLcCb* rgDBMGetPcch(cellCb)
 RgCellCb       *cellCb;
 #endif
 {
@@ -1162,13 +1162,13 @@ RgCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsBcchOnBch
+Void rgDBMInsBcchOnBch
 (
 RgCellCb       *cellCb, 
 CmLteLcId      idx
 )
 #else
-PUBLIC Void rgDBMInsBcchOnBch(cellCb, idx)
+Void rgDBMInsBcchOnBch(cellCb, idx)
 RgCellCb       *cellCb;
 CmLteLcId      idx;
 #endif
@@ -1194,13 +1194,13 @@ CmLteLcId      idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsBcchOnDlsch
+Void rgDBMInsBcchOnDlsch
 (
 RgCellCb       *cellCb, 
 CmLteLcId      idx
 )
 #else
-PUBLIC Void rgDBMInsBcchOnDlsch(cellCb, idx)
+Void rgDBMInsBcchOnDlsch(cellCb, idx)
 RgCellCb       *cellCb;
 CmLteLcId      idx;
 #endif
@@ -1227,13 +1227,13 @@ CmLteLcId      idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsPcch
+Void rgDBMInsPcch
 (
 RgCellCb       *cellCb, 
 CmLteLcId      idx
 )
 #else
-PUBLIC Void rgDBMInsPcch(cellCb, idx)
+Void rgDBMInsPcch(cellCb, idx)
 RgCellCb       *cellCb;
 CmLteLcId      idx;
 #endif
@@ -1286,13 +1286,13 @@ RgCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMInsUeCbInRachLst
+Void rgDBMInsUeCbInRachLst
 (
 RgCellCb       *cellCb, 
 RgUeCb         *ueCb
 )
 #else
-PUBLIC Void rgDBMInsUeCbInRachLst(cellCb, ueCb)
+Void rgDBMInsUeCbInRachLst(cellCb, ueCb)
 RgCellCb       *cellCb; 
 RgUeCb         *ueCb;
 #endif
@@ -1317,13 +1317,13 @@ RgUeCb         *ueCb;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetUeCbFromRachLst
+RgUeCb* rgDBMGetUeCbFromRachLst
 (
 RgCellCb       *cellCb, 
 CmLteRnti      key
 )
 #else
-PUBLIC RgUeCb* rgDBMGetUeCbFromRachLst(cellCb, key)
+RgUeCb* rgDBMGetUeCbFromRachLst(cellCb, key)
 RgCellCb       *cellCb; 
 CmLteRnti      key;
 #endif
@@ -1357,13 +1357,13 @@ CmLteRnti      key;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC RgUeCb* rgDBMGetNextUeCbFromRachLst
+RgUeCb* rgDBMGetNextUeCbFromRachLst
 (
 RgCellCb       *cellCb,
 RgUeCb         *ueCb
 )
 #else
-PUBLIC RgUeCb* rgDBMGetNextUeCbFromRachLst(cellCb, ueCb)
+RgUeCb* rgDBMGetNextUeCbFromRachLst(cellCb, ueCb)
 RgCellCb       *cellCb; 
 RgUeCb         *ueCb;
 #endif
@@ -1392,13 +1392,13 @@ RgUeCb         *ueCb;
  *  @return  RgUeCb*
  **/
 #ifdef ANSI
-PUBLIC Void rgDBMDelUeCbFromRachLst
+Void rgDBMDelUeCbFromRachLst
 (
 RgCellCb       *cellCb, 
 RgUeCb         *ueCb 
 )
 #else
-PUBLIC Void rgDBMDelUeCbFromRachLst(cellCb, ueCb)
+Void rgDBMDelUeCbFromRachLst(cellCb, ueCb)
 RgCellCb       *cellCb; 
 RgUeCb         *ueCb;
 #endif

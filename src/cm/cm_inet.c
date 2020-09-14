@@ -321,7 +321,7 @@ Txt   prntBuf[CMINET_PRNT_BUF_SIZE];
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPoll
+S16 cmInetPoll
 (
 CmInetPollFd  *pollFdArr,               /* poll FD Array */
 U32               numFds,               /* Number of Fds to be monitored */
@@ -329,7 +329,7 @@ S16              *numRdyFds,            /* number of ready descriptors */
 U32              timeout                /* timeout value for Poll */
 )
 #else
-PUBLIC S16 cmInetPoll(pollFdArr,numFds,numRdyFds,timeout)
+S16 cmInetPoll(pollFdArr,numFds,numRdyFds,timeout)
 CmInetPollFd  *pollFdArr;               /* poll FD Array */
 U32               numFds;               /* Number of Fds to be monitored */
 S16              *numRdyFds;            /* number of ready descriptors */
@@ -415,7 +415,7 @@ U32               timeout;              /* timeout value for Poll */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPollSetFd
+S16 cmInetPollSetFd
 (
 CmInetFd         *sockFd,               /* socket file descriptor */
 CmInetPollFd  *pollFdArr,               /* poll FD Array */
@@ -423,7 +423,7 @@ S16               idx,                  /* poll Fd Array Index */
 U16               eventMask             /* Event Mask to be set */
 )
 #else
-PUBLIC S16 cmInetPollSetFd(sockFd,pollFdArr,idx,eventMask)
+S16 cmInetPollSetFd(sockFd,pollFdArr,idx,eventMask)
 CmInetFd         *sockFd;               /* socket file descriptor */
 CmInetPollFd  *pollFdArr;               /* poll FD Array */
 S16              idx;                   /* poll Fd Array Index */
@@ -512,14 +512,14 @@ U16              eventMask;             /* Event Mask to be set */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPollFdIsSet
+S16 cmInetPollFdIsSet
 (
 CmInetPollFd  *pollFdArr,            /* poll FD Array */
 S16               idx,               /* poll Fd Array Index */
 U16               eventMask          /* Event Mask to be set */
 )
 #else
-PUBLIC S16 cmInetPollFdIsSet(pollFdArr,idx,eventMask)
+S16 cmInetPollFdIsSet(pollFdArr,idx,eventMask)
 CmInetPollFd  *pollFdArr;            /* poll FD Array */
 S16               idx;               /* poll Fd Array Index */
 U16               eventMask;         /* Event Mask to be set */
@@ -572,14 +572,14 @@ U16               eventMask;         /* Event Mask to be set */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPollClearFdREvent
+S16 cmInetPollClearFdREvent
 (
 CmInetPollFd  *pollFdArr,            /* poll FD Array */
 S16               idx,               /* poll Fd Array Index */
 U16               eventMask          /* Event Mask to be set */
 )
 #else
-PUBLIC S16 cmInetPollClearFdREvent(sockFd,pollFdArr,eventMask)
+S16 cmInetPollClearFdREvent(sockFd,pollFdArr,eventMask)
 CmInetPollFd  *pollFdArr;            /* poll FD Array */
 S16               idx;               /* poll Fd Array Index */
 U16               eventMask;         /* Event Mask to be set */
@@ -664,14 +664,14 @@ U16               eventMask;         /* Event Mask to be set */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPollClearFdEvent
+S16 cmInetPollClearFdEvent
 (
 CmInetPollFd  *pollFdArr,            /* poll FD Array */
 S16               idx,               /* poll Fd Array Index */
 U16               eventMask          /* Event Mask to be set */
 )
 #else
-PUBLIC S16 cmInetPollClearFdEvent(sockFd,pollFdArr,eventMask)
+S16 cmInetPollClearFdEvent(sockFd,pollFdArr,eventMask)
 CmInetPollFd   *pollFdArr;            /* poll FD Array */
 S16             idx;                  /* poll Fd Array Index */
 U16             eventMask;            /* Event Mask to be set */
@@ -763,14 +763,14 @@ U16             eventMask;            /* Event Mask to be set */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPollDelFd
+S16 cmInetPollDelFd
 (
 CmInetPollFd  *pollFdArr,             /* poll FD Array */
 S16               delIdx,             /* poll Fd Array Index for which fd has to be deleted*/
 S16               lastIdx             /* Last index of poll Fd Array */
 )
 #else
-PUBLIC S16 cmInetPollDelFd(pollFdArr, delIdx, lastIdx)
+S16 cmInetPollDelFd(pollFdArr, delIdx, lastIdx)
 CmInetPollFd  *pollFdArr;            /* poll FD Array */
 S16               delIdx;            /* poll Fd Array Index for which fd has to be deleted*/
 S16               lastIdx;           /* Last index of poll Fd Array */
@@ -846,12 +846,12 @@ S16               lastIdx;           /* Last index of poll Fd Array */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPollInitFdArr
+S16 cmInetPollInitFdArr
 (
 CmInetPollFd  *pollFdArr             /* poll FD Array */
 )
 #else
-PUBLIC S16 cmInetPollInitFdArr(pollFdArr)
+S16 cmInetPollInitFdArr(pollFdArr)
 CmInetPollFd  *pollFdArr;            /* poll FD Array */
 #endif
 {
@@ -1302,7 +1302,7 @@ MsgLen         *ioLen;          /* cm_inet_c_001.main_50 - Len of dbuf packed in
 #ifdef ANSI
 #ifdef CM_INET2  
 #ifdef IPV6_SUPPORTED
-PUBLIC S16 cmInetSocket
+S16 cmInetSocket
 (
 U8        type,                 /* socket type */
 CmInetFd *sockFd,               /* socket file descriptor */
@@ -1310,7 +1310,7 @@ U8       protocol,              /* protocol value */
 U8       domain                 /* domain */
 )
 #else
-PUBLIC S16 cmInetSocket
+S16 cmInetSocket
 (
 U8        type,                 /* socket type */
 CmInetFd *sockFd,               /* socket file descriptor */
@@ -1318,7 +1318,7 @@ U8       protocol               /* protocol value */
 )
 #endif /* IPV6_SUPPORTED */
 #else   /* CM_INET2 */ 
-PUBLIC S16 cmInetSocket
+S16 cmInetSocket
 (
 U8        type,                 /* socket type */
 CmInetFd *sockFd                /* socket file descriptor */
@@ -1327,19 +1327,19 @@ CmInetFd *sockFd                /* socket file descriptor */
 #else
 #ifdef CM_INET2  
 #ifdef IPV6_SUPPORTED
-PUBLIC S16 cmInetSocket(type, sockFd, protocol, domain)
+S16 cmInetSocket(type, sockFd, protocol, domain)
 U8        type;                 /* socket type */
 CmInetFd *sockFd;               /* socket file descriptor */
 U8        protocol;             /* protocol value */
 U8        domain;               /* domain */
 #else
-PUBLIC S16 cmInetSocket(type, sockFd, protocol)
+S16 cmInetSocket(type, sockFd, protocol)
 U8        type;                 /* socket type */
 CmInetFd *sockFd;               /* socket file descriptor */
 U8        protocol;             /* protocol value */
 #endif /* IPV6_SUPPORTED */
 #else /* CM_INET2 */ 
-PUBLIC S16 cmInetSocket(type, sockFd)
+S16 cmInetSocket(type, sockFd)
 U8        type;                 /* socket type */
 CmInetFd *sockFd;               /* socket file descriptor */
 #endif /* CM_INET2 */ 
@@ -1493,13 +1493,13 @@ CmInetFd *sockFd;               /* socket file descriptor */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetBind
+S16 cmInetBind
 (
 CmInetFd   *sockFd,             /* socket file descriptor */ 
 CmInetAddr *myAddr              /* locale Internet address/port */
 )
 #else
-PUBLIC S16 cmInetBind(sockFd, myAddr)
+S16 cmInetBind(sockFd, myAddr)
 CmInetFd   *sockFd;             /* socket file descriptor */ 
 CmInetAddr *myAddr;             /* locale Internet address/port */
 #endif
@@ -1619,14 +1619,14 @@ CmInetAddr *myAddr;             /* locale Internet address/port */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetSctpBindx
+S16 cmInetSctpBindx
 (
 CmInetFd          *sockFd,       /* socket file descriptor */ 
 CmInetNetAddrLst  *addrLst,      /* local Internet address list */
 U16                port          /* port number */
 )
 #else
-PUBLIC S16 cmInetSctpBindx(sockFd, addrLst, port)
+S16 cmInetSctpBindx(sockFd, addrLst, port)
 CmInetFd          *sockFd;       /* socket file descriptor */ 
 CmInetNetAddrLst  *addrLst;      /* locale Internet address list */
 U16                port;         /* port number */
@@ -1898,7 +1898,7 @@ U16                port;         /* port number */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetSctpConnectx
+S16 cmInetSctpConnectx
 (
 CmInetFd          *sockFd,       /* socket file descriptor */ 
 CmInetNetAddr     *primAddr,     /* primary destination Internet address */
@@ -1906,7 +1906,7 @@ CmInetNetAddrLst  *addrLst,      /* destination Internet address list */
 U16                port          /* port number */
 )
 #else
-PUBLIC S16 cmInetSctpConnectx(sockFd, primAddr, addrLst, port)
+S16 cmInetSctpConnectx(sockFd, primAddr, addrLst, port)
 CmInetFd          *sockFd;       /* socket file descriptor */ 
 CmInetNetAddr     *primAddr;     /* primary destination Internet address */
 CmInetNetAddrLst  *addrLst;      /* destination Internet address list */
@@ -2362,14 +2362,14 @@ U16                port;         /* port number */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetSctpPeelOff
+S16 cmInetSctpPeelOff
 (
 CmInetFd          *sockFd,       /* socket file descriptor */ 
 U32                assocId,      /* association id */
 CmInetFdType      *assocFd       /* association fd */
 )
 #else
-PUBLIC S16 cmInetSctpPeelOff(sockFd, assocId, assocFd)
+S16 cmInetSctpPeelOff(sockFd, assocId, assocFd)
 CmInetFd          *sockFd;       /* socket file descriptor */ 
 U32                assocId;      /* association id */
 CmInetFdType      *assocFd;      /* association fd */
@@ -2428,7 +2428,7 @@ CmInetFdType      *assocFd;      /* association fd */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetSctpSendMsg
+S16 cmInetSctpSendMsg
 (
 CmInetFd        *sockFd,       /* socket file descriptor */ 
 CmInetNetAddr   *dstAddr,      /* destination Internet address/port */
@@ -2443,7 +2443,7 @@ U32              ppId,         /* opaque value passed along with the message */
 U32              context       /* value to be passed back, if error occurs */
 )
 #else
-PUBLIC S16 cmInetSctpSendMsg(sockFd, dstAddr, port, info, mBuf, len, strmId, 
+S16 cmInetSctpSendMsg(sockFd, dstAddr, port, info, mBuf, len, strmId, 
                              unorderFlg, ttl, ppId, context)
 CmInetFd        *sockFd;       /* socket file descriptor */ 
 CmInetNetAddr   *dstAddr;      /* destination Internet address/port */
@@ -2684,7 +2684,7 @@ U32              context;      /* value to be passed back, if error occurs */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetSctpRecvMsg
+S16 cmInetSctpRecvMsg
 (
 CmInetFd               *sockFd,       /* socket file descriptor */ 
 CmInetNetAddr          *srcAddr,      /* source Internet address/port */
@@ -2697,7 +2697,7 @@ U32                    *flag,         /* flags */
 CmInetSctpNotification *ntfy        /* notification parameters */
 )
 #else
-PUBLIC S16 cmInetSctpRecvMsg(sockFd, srcAddr, port, meminfo, mBuf, len, 
+S16 cmInetSctpRecvMsg(sockFd, srcAddr, port, meminfo, mBuf, len, 
                              sinfo, flag, ntfy)
 CmInetFd               *sockFd;       /* socket file descriptor */ 
 CmInetNetAddr          *srcAddr;      /* source Internet address/port */
@@ -3054,14 +3054,14 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetSctpGetPAddrs
+S16 cmInetSctpGetPAddrs
 (
 CmInetFd             *sockFd,       /* socket file descriptor */ 
 U32                   assocId,      /* association id */
 CmInetNetAddrLst     *addrlst       /* peer address list */
 )
 #else
-PUBLIC S16 cmInetSctpGetPAddrs(sockFd, assocId, addrlst)
+S16 cmInetSctpGetPAddrs(sockFd, assocId, addrlst)
 CmInetFd             *sockFd;       /* socket file descriptor */ 
 U32                   assocId;      /* association id */
 CmInetNetAddrLst     *addrlst;      /* peer address list */
@@ -3174,7 +3174,7 @@ CmInetNetAddrLst     *addrlst;      /* peer address list */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetGetOpt
+S16 cmInetGetOpt
 (
 CmInetFd *sockFd,               /* socket file descriptor */ 
 U32       level,                /* option level */
@@ -3182,7 +3182,7 @@ U32       type,                 /* option type */
 Ptr       value                 /* option value */ 
 ) 
 #else
-PUBLIC S16 cmInetGetOpt(sockFd, level, type, value)
+S16 cmInetGetOpt(sockFd, level, type, value)
 CmInetFd *sockFd;               /* socket file descriptor */ 
 U32       level;                /* option level */
 U32       type;                 /* option type */
@@ -3625,12 +3625,12 @@ Ptr       value;                /* option value */
  *
  */
 #ifdef ANSI
-PUBLIC S16 cmInetShutDownSctp
+S16 cmInetShutDownSctp
 (
  CmInetFd          *sockFd       /* socket file descriptor */ 
  )
 #else
-PUBLIC S16 cmInetShutDownSctp(sockFd)
+S16 cmInetShutDownSctp(sockFd)
    CmInetFd          *sockFd;       /* socket file descriptor */ 
 #endif
 {
@@ -3690,13 +3690,13 @@ PUBLIC S16 cmInetShutDownSctp(sockFd)
  *
  */
 #ifdef ANSI
-PUBLIC S16 cmInetAbortSctpAssoc
+S16 cmInetAbortSctpAssoc
 (
  CmInetFd          *sockFd,       /* socket file descriptor */
  UConnId           assocId          /* Association ID */
  )
 #else
-PUBLIC S16 cmInetAbortSctpAssoc(sockFd, assocId)
+S16 cmInetAbortSctpAssoc(sockFd, assocId)
    CmInetFd          *sockFd;       /* socket file descriptor */
    UConnId           assocId;          /* Association ID */
 #endif
@@ -3765,13 +3765,13 @@ PUBLIC S16 cmInetAbortSctpAssoc(sockFd, assocId)
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetConnect
+S16 cmInetConnect
 (
 CmInetFd   *sockFd,             /* socket file descriptor */
 CmInetAddr *servAddr            /* foreign Internet address/port */  
 )
 #else
-PUBLIC S16 cmInetConnect(sockFd, servAddr)
+S16 cmInetConnect(sockFd, servAddr)
    CmInetFd   *sockFd;             /* socket file descriptor */
    CmInetAddr *servAddr;           /* foreign Internet address/port */  
 #endif
@@ -3929,13 +3929,13 @@ PUBLIC S16 cmInetConnect(sockFd, servAddr)
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetListen
+S16 cmInetListen
 (
 CmInetFd *sockFd,               /* socket file descriptor */ 
 S16       backLog               /* max. number of outstandig connections 0..5 */
 )
 #else
-PUBLIC S16 cmInetListen(sockFd, backLog)
+S16 cmInetListen(sockFd, backLog)
 CmInetFd *sockFd;               /* socket file descriptor */ 
 S16       backLog;              /* max. number of outstandig connections 0..5 */
 #endif
@@ -3997,14 +3997,14 @@ S16       backLog;              /* max. number of outstandig connections 0..5 */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetAccept
+S16 cmInetAccept
 (
 CmInetFd   *sockFd,     /* socket file descriptor */ 
 CmInetAddr *fromAddr,   /* calling Internet address/port */
 CmInetFd   *newSockFd   /* socket file descriptor for new connection*/
 )
 #else
-PUBLIC S16 cmInetAccept(sockFd, fromAddr, newSockFd)
+S16 cmInetAccept(sockFd, fromAddr, newSockFd)
 CmInetFd   *sockFd;     /* socket file descriptor */ 
 CmInetAddr *fromAddr;   /* calling Internet address/port */
 CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
@@ -4227,7 +4227,7 @@ U32 *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetSendDscpMsg
+S16 cmInetSendDscpMsg
 (
 CmInetFd       *sockFd,         /* socket file descriptor */
 CmInetAddr     *dstAddr,        /* destination Internet address/port */
@@ -4240,7 +4240,7 @@ S16             flags           /* additional control flags, unused */
 )
 #else
 /* added for IPv6 ext hdr */
-PUBLIC S16 cmInetSendDscpMsg(sockFd, dstAddr, info, mBuf, len, ipHdrParams, flags)
+S16 cmInetSendDscpMsg(sockFd, dstAddr, info, mBuf, len, ipHdrParams, flags)
 CmInetFd       *sockFd;         /* socket file descriptor */
 CmInetAddr     *dstAddr;        /* destination Internet address/port */
 CmInetMemInfo  *info;           /* buffer allocation info */
@@ -4726,7 +4726,7 @@ S16             flags;          /* additional control flags, unused */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetSendMsg
+S16 cmInetSendMsg
 (
 CmInetFd       *sockFd,         /* socket file descriptor */
 CmInetAddr     *dstAddr,        /* destination Internet address/port */
@@ -4742,7 +4742,7 @@ S16             flags           /* additional control flags, unused */
 #else
 /* added for IPv6 ext hdr */
 #ifdef IPV6_OPTS_SUPPORTED
-PUBLIC S16 cmInetSendMsg(sockFd, dstAddr, info, mBuf, len, ipHdrParams, flags)
+S16 cmInetSendMsg(sockFd, dstAddr, info, mBuf, len, ipHdrParams, flags)
 CmInetFd       *sockFd;         /* socket file descriptor */
 CmInetAddr     *dstAddr;        /* destination Internet address/port */
 CmInetMemInfo  *info;           /* buffer allocation info */
@@ -4751,7 +4751,7 @@ MsgLen         *len;            /* number of actually sent octets */
 CmInetIpHdrParm *ipHdrParams;   /* IPv6 extensions headers */
 S16             flags;          /* additional control flags, unused */
 #else
-PUBLIC S16 cmInetSendMsg(sockFd, dstAddr, info, mBuf, len, flags)
+S16 cmInetSendMsg(sockFd, dstAddr, info, mBuf, len, flags)
 CmInetFd       *sockFd;         /* socket file descriptor */
 CmInetAddr     *dstAddr;        /* destination Internet address/port */
 CmInetMemInfo  *info;           /* buffer allocation info */
@@ -6010,7 +6010,7 @@ CmInetIpv6HdrParm *ipv6HdrParam; /* ipv6 header parameters */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetRecvMsg
+S16 cmInetRecvMsg
 (
 CmInetFd        *sockFd,        /* socket file descriptor */ 
 CmInetAddr      *fromAddr,      /* sender Internet address/port */ 
@@ -6030,7 +6030,7 @@ S32              flags          /* additional control flags */
 /*  added for IPv6 */
 #ifdef IPV6_OPTS_SUPPORTED
 #ifdef LOCAL_INTF
-PUBLIC S16 cmInetRecvMsg(sockFd, fromAddr, info, mPtr, len,
+S16 cmInetRecvMsg(sockFd, fromAddr, info, mPtr, len,
       ipHdrParams, localIf, flags)
 CmInetFd        *sockFd;        /* socket file descriptor */ 
 CmInetAddr      *fromAddr;      /* sender Internet address/port */ 
@@ -6041,7 +6041,7 @@ CmInetIpHdrParm *ipHdrParams;   /* IPv6 extensions headers */
 CmInetLocalInf  *localIf;       /* local interface on which pkt was recvd */
 S32              flags;         /* additional control flags */
 #else
-PUBLIC S16 cmInetRecvMsg(sockFd, fromAddr, info, mPtr, len, ipHdrParams, flags)
+S16 cmInetRecvMsg(sockFd, fromAddr, info, mPtr, len, ipHdrParams, flags)
 CmInetFd        *sockFd;        /* socket file descriptor */ 
 CmInetAddr      *fromAddr;      /* sender Internet address/port */ 
 CmInetMemInfo   *info;          /* buffer allocation info */
@@ -6052,7 +6052,7 @@ S32              flags;         /* additional control flags */
 #endif /* LOCAL_INTF */
 #else
 #ifdef LOCAL_INTF
-PUBLIC S16 cmInetRecvMsg(sockFd, fromAddr, info, mPtr, len, localIf, flags)
+S16 cmInetRecvMsg(sockFd, fromAddr, info, mPtr, len, localIf, flags)
 CmInetFd        *sockFd;        /* socket file descriptor */ 
 CmInetAddr      *fromAddr;      /* sender Internet address/port */ 
 CmInetMemInfo   *info;          /* buffer allocation info */
@@ -6061,7 +6061,7 @@ MsgLen          *len;           /* number of octets to read */
 CmInetLocalInf  *localIf;       /* local interface on which pkt was recvd */
 S32              flags;         /* additional control flags */
 #else
-PUBLIC S16 cmInetRecvMsg(sockFd, fromAddr, info, mPtr, len, flags)
+S16 cmInetRecvMsg(sockFd, fromAddr, info, mPtr, len, flags)
 CmInetFd        *sockFd;        /* socket file descriptor */ 
 CmInetAddr      *fromAddr;      /* sender Internet address/port */ 
 CmInetMemInfo   *info;          /* buffer allocation info */
@@ -7089,7 +7089,7 @@ S32              flags;         /* additional control flags */
  */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPeekNew
+S16 cmInetPeekNew
 (
  CmInetFd        *sockFd,        /* socket file descriptor */ 
  CmInetAddr      *fromAddr,      /* sender Internet address/port */ 
@@ -7099,7 +7099,7 @@ PUBLIC S16 cmInetPeekNew
  Data            *data           /* read data */
  )
 #else
-PUBLIC S16 cmInetPeekNew(sockFd, fromAddr, info, dataPos, dataLen, data)
+S16 cmInetPeekNew(sockFd, fromAddr, info, dataPos, dataLen, data)
    CmInetFd        *sockFd;        /* socket file descriptor */ 
    CmInetAddr      *fromAddr;      /* sender Internet address/port */ 
    CmInetMemInfo   *info;          /* buffer allocation info */
@@ -7271,7 +7271,7 @@ PUBLIC S16 cmInetPeekNew(sockFd, fromAddr, info, dataPos, dataLen, data)
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPeek
+S16 cmInetPeek
 (
 CmInetFd        *sockFd,        /* socket file descriptor */ 
 CmInetAddr      *fromAddr,      /* sender Internet address/port */ 
@@ -7281,7 +7281,7 @@ MsgLen           dataLen,       /* length of read data */
 Data            *data           /* read data */
 )
 #else
-PUBLIC S16 cmInetPeek(sockFd, fromAddr, info, dataPos, dataLen, data)
+S16 cmInetPeek(sockFd, fromAddr, info, dataPos, dataLen, data)
 CmInetFd        *sockFd;        /* socket file descriptor */ 
 CmInetAddr      *fromAddr;      /* sender Internet address/port */ 
 CmInetMemInfo   *info;          /* buffer allocation info */
@@ -7562,12 +7562,12 @@ Data            *data;          /* read data */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetClose
+S16 cmInetClose
 (
 CmInetFd *sockFd                /* socket file descriptor */
 )
 #else
-PUBLIC S16 cmInetClose(sockFd)
+S16 cmInetClose(sockFd)
 CmInetFd *sockFd;               /* socket file descriptor */
 #endif
 {
@@ -7636,13 +7636,13 @@ CmInetFd *sockFd;               /* socket file descriptor */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetShutdown
+S16 cmInetShutdown
 (
 CmInetFd *sockFd,               /* socket file descriptor */
 S32       howTo                 /* operation flag */
 )
 #else
-PUBLIC S16 cmInetShutdown(sockFd, howTo)
+S16 cmInetShutdown(sockFd, howTo)
 CmInetFd *sockFd;               /* socket file descriptor */
 S32       howTo;                /* operation flag */
 #endif
@@ -7714,7 +7714,7 @@ S32       howTo;                /* operation flag */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetSelect
+S16 cmInetSelect
 (
 CmInetFdSet *readFdS,           /* read socket descriptor file set */  
 CmInetFdSet *writeFdS,          /* write socket descriptor file set */
@@ -7722,7 +7722,7 @@ U32         *mSecTimeout,       /* timeout in msecs */
 S16         *numFdS             /* number of ready descriptors */
 )
 #else
-PUBLIC S16 cmInetSelect(readFdS, writeFdS, mSecTimeout, numFdS)
+S16 cmInetSelect(readFdS, writeFdS, mSecTimeout, numFdS)
 CmInetFdSet *readFdS;           /* read socket descriptor file set */  
 CmInetFdSet *writeFdS;          /* write socket descriptor file set */
 U32         *mSecTimeout;       /* timeout in msecs */
@@ -7966,7 +7966,7 @@ S16         *numFdS;            /* number of ready descriptors */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetSetOpt
+S16 cmInetSetOpt
 (
 CmInetFd *sockFd,               /* socket file descriptor */ 
 U32       level,                /* option level */
@@ -7974,7 +7974,7 @@ U32       type,                 /* option type */
 Ptr       value                 /* option value */ 
 ) 
 #else
-PUBLIC S16 cmInetSetOpt(sockFd, level, type, value)
+S16 cmInetSetOpt(sockFd, level, type, value)
 CmInetFd *sockFd;               /* socket file descriptor */ 
 U32       level;                /* option level */
 U32       type;                 /* option type */
@@ -8943,14 +8943,14 @@ Ptr       value;                /* option value */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetGetNumRead
+S16 cmInetGetNumRead
 (
 CmInetFd *sockFd,               /* socket file descriptor */
 U32      *dataLen               /* number of pending octets */
 /* removed 3rd argument memInfo */
 )
 #else
-PUBLIC S16 cmInetGetNumRead(sockFd, dataLen)
+S16 cmInetGetNumRead(sockFd, dataLen)
 CmInetFd *sockFd;               /* socket file descriptor */
 U32      *dataLen;              /* number of pending octets */
 /* removed 3rd argument memInfo */
@@ -9074,13 +9074,13 @@ U32      *dataLen;              /* number of pending octets */
 */
  
 #ifdef ANSI
-PUBLIC S16 cmInetGetHostByName
+S16 cmInetGetHostByName
 (
 S8              *hostName,         /* host name */  
 CmInetIpAddrTbl *addrTbl           /* Address Table of IPV4 Addresses */
 )
 #else
-PUBLIC S16 cmInetGetHostByName (hostName, addrTbl)
+S16 cmInetGetHostByName (hostName, addrTbl)
 S8              *hostName;         /* host name */  
 CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
 #endif
@@ -9233,13 +9233,13 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetGetIpNodeByName
+S16 cmInetGetIpNodeByName
 (
 S8              *hostName,         /* host name */  
 CmInetIpAddrArr *addrArr           /* Array of addressed filled in */
 )
 #else
-PUBLIC S16 cmInetGetIpNodeByName(hostName, addrArr)
+S16 cmInetGetIpNodeByName(hostName, addrArr)
 S8              *hostName;         /* host name */  
 CmInetIpAddrArr *addrArr;          /* Array of addressed filled in */
 #endif
@@ -9376,12 +9376,12 @@ CmInetIpAddrArr *addrArr;          /* Array of addressed filled in */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetAddr(
+S16 cmInetAddr(
 S8           *asciiAddr,        /* ascii address representation */
 CmInetIpAddr *address           /* 4 byte interent address */
 )
 #else
-PUBLIC S16 cmInetAddr(asciiAddr, address)
+S16 cmInetAddr(asciiAddr, address)
 S8           *asciiAddr;        /* ascii address representation */
 CmInetIpAddr *address;          /* 4 byte interent address */
 #endif
@@ -9427,12 +9427,12 @@ CmInetIpAddr *address;          /* 4 byte interent address */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetNtoa(
+S16 cmInetNtoa(
 CmInetIpAddr   address,         /* 4 byte interent address */
 S8           **asciiAddr        /* ascii address representation */
 )
 #else
-PUBLIC S16 cmInetNtoa(address, asciiAddr)
+S16 cmInetNtoa(address, asciiAddr)
 CmInetIpAddr   address;         /* 4 byte interent address */
 S8           **asciiAddr;       /* ascii address representation */
 #endif
@@ -9478,14 +9478,14 @@ S8           **asciiAddr;       /* ascii address representation */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetNtop(
+S16 cmInetNtop(
 U8             type,              /* ip address type */
 Void           *address,         /* 4/16 byte interent address */
 S8             *asciiAddr,      /* ascii adress representation */
 U32            len
 )
 #else
-PUBLIC S16 cmInetNtop(type,address, asciiAddr,len)
+S16 cmInetNtop(type,address, asciiAddr,len)
 U8             type;              /* ip address type */  
 Void           *address;         /* 4/16 byte interent address */
 S8             *asciiAddr;      /* ascii adress representation */
@@ -9545,12 +9545,12 @@ U32            len;
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetPton(
+S16 cmInetPton(
 CmInetIpAddr  *address,         /* 4 byte interent address */
 S8           *asciiAddr         /* ascii address representation */
 )
 #else
-PUBLIC S16 cmInetPton(address, asciiAddr)
+S16 cmInetPton(address, asciiAddr)
 CmInetIpAddr  *address;         /* 4 byte interent address */
 S8            *asciiAddr;       /* ascii address representation */
 #endif
@@ -9596,12 +9596,12 @@ S8            *asciiAddr;       /* ascii address representation */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetPton6(
+S16 cmInetPton6(
 CmInetIpAddr6  *address6,       /* 16 byte interent address */
 S8             *asciiAddr       /* ascii address representation */
 )
 #else 
-PUBLIC S16 cmInetPton6(address6, asciiAddr)
+S16 cmInetPton6(address6, asciiAddr)
 CmInetIpAddr6 *address6;        /* 16 byte interent address */
 S8            *asciiAddr;       /* ascii address representation */
 #endif
@@ -9657,11 +9657,11 @@ S8            *asciiAddr;       /* ascii address representation */
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetGetMemSize(
+S16 cmInetGetMemSize(
 S32 *size                       /* max used memory size */
 )
 #else
-PUBLIC S16 cmInetGetMemSize(size)
+S16 cmInetGetMemSize(size)
 S32 *size;                      /* max used memory size */
 #endif
 {
@@ -9693,11 +9693,11 @@ S32 *size;                      /* max used memory size */
 */
  
 #ifdef ANSI
-PUBLIC S16 cmInetInit(
+S16 cmInetInit(
 Void
 )
 #else
-PUBLIC S16 cmInetInit(Void)
+S16 cmInetInit(Void)
 #endif
 {
 #ifdef WIN32
@@ -9735,11 +9735,11 @@ PUBLIC S16 cmInetInit(Void)
 */
  
 #ifdef ANSI
-PUBLIC S16 cmInetDeInit(
+S16 cmInetDeInit(
 Void
 )
 #else
-PUBLIC S16 cmInetDeInit(Void)
+S16 cmInetDeInit(Void)
 #endif
 {
 #ifdef WIN32
@@ -9776,13 +9776,13 @@ PUBLIC S16 cmInetDeInit(Void)
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetGetSockName
+S16 cmInetGetSockName
 (
 CmInetFd *sockFd,               /* socket file descriptor */ 
 CmInetAddr *locAddr
 ) 
 #else
-PUBLIC S16 cmInetGetSockName(sockFd, locAddr)
+S16 cmInetGetSockName(sockFd, locAddr)
 CmInetFd *sockFd;               /* socket file descriptor */ 
 CmInetAddr *locAddr;
 #endif
@@ -9908,12 +9908,12 @@ CmInetAddr *locAddr;
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetFdSetInfoInit
+S16 cmInetFdSetInfoInit
 (
 CmInetFdSetInfo *fdSetInfo
 ) 
 #else
-PUBLIC S16 cmInetFdSetInfoInit(fdSetInfo)
+S16 cmInetFdSetInfoInit(fdSetInfo)
 CmInetFdSetInfo *fdSetInfo;
 #endif
 {
@@ -10003,14 +10003,14 @@ CmInetFdSetInfo *fdSetInfo;
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetGetFd
+S16 cmInetGetFd
 (
 CmInetFdSetInfo *fdSetInfo,
 CmInetFdSet     *fdSet,
 CmInetFdType    *sockFd
 ) 
 #else
-PUBLIC S16 cmInetGetFd(fdSetInfo, fdSet, sockFd)
+S16 cmInetGetFd(fdSetInfo, fdSet, sockFd)
 CmInetFdSetInfo *fdSetInfo;
 CmInetFdSet     *fdSet;
 CmInetFdType    *sockFd;
@@ -10140,14 +10140,14 @@ CmInetFdType    *sockFd;
 */
 
 #ifdef ANSI
-PUBLIC S16 cmInetConvertStrToIpAddr
+S16 cmInetConvertStrToIpAddr
 (
 U16                len,                /* Length of IP address */
 U8                 *val,               /* Domain Name String */
 CmInetNetAddr      *address            /* IP Address */
 )
 #else
-PUBLIC S16 cmInetConvertStrToIpAddr(len, val, address)
+S16 cmInetConvertStrToIpAddr(len, val, address)
 U16                len;                /* Length of IP address */
 U8                 *val;               /* Domain Name String */
 CmInetNetAddr      *address;           /* IP Address */
@@ -10363,7 +10363,7 @@ CmInetNetAddr      *address;           /* IP Address */
 *
 */
 #ifdef ANSI 
-PUBLIC S16  cmInetAsciiToIpv4
+S16  cmInetAsciiToIpv4
 (
 U8                 numBytes,           /* number of Byte to convert */
 U8                 *ipv4Addr,          /* IPV4 Address */
@@ -10371,7 +10371,7 @@ U16                len,                /* Length of IP address */
 U8                 *val                /* Domain Name String */
 )
 #else
-PUBLIC S16 cmInetAsciiToIpv4(numBytes, ipv4Addr, len, val)
+S16 cmInetAsciiToIpv4(numBytes, ipv4Addr, len, val)
 U8                 numBytes;           /* number of Byte to convert */
 U8                 *ipv4Addr;          /* IPV4 Address */
 U16                len;                /* Length of IP address */
@@ -10427,7 +10427,7 @@ U8                 *val;               /* Domain Name String */
 */
 
 #ifdef ANSI
-PUBLIC S32 cmInetGetAddrInfo
+S32 cmInetGetAddrInfo
 (
 CONSTANT S8              *node,          /* Network addr which has to be resolved */
 CONSTANT S8              *service,       /* Sets the port number in network addr */
@@ -10435,7 +10435,7 @@ CONSTANT CmInetAddrInfo  *hints,         /* Specifies preferred socket type or p
 CmInetAddrInfo           **res           /* Link list of addrInfo structure */
 )
 #else
-PUBLIC S32 cmInetGetAddrInfo(node,service,hints,res)
+S32 cmInetGetAddrInfo(node,service,hints,res)
 CONSTANT S8              *node;          /* Network addr which has to be resolved */
 CONSTANT S8              *service;       /* Sets the port number in network addr */
 CONSTANT CmInetAddrInfo  *hints;         /* Specifies preferred socket type or protocol */
@@ -10492,12 +10492,12 @@ CmInetAddrInfo           **res;          /* Link list of addrInfo structure */
 */
 
 #ifdef ANSI
-PUBLIC Void cmInetFreeAddrInfo
+Void cmInetFreeAddrInfo
 (
 CmInetAddrInfo           *res           /* Link list of addrInfo structure */
 )
 #else
-PUBLIC Void cmInetFreeAddrInfo(res)
+Void cmInetFreeAddrInfo(res)
 CmInetAddrInfo           *res;          /* Link list of addrInfo structure */
 #endif
 {
@@ -10537,14 +10537,14 @@ CmInetAddrInfo           *res;          /* Link list of addrInfo structure */
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmInetFlushRecvBuf
+S16 cmInetFlushRecvBuf
 (
 CmInetFd        *sockFd,        /* socket file descriptor */ 
 MsgLen          *len,           /* number of octects to be flushed */
 S32              flags          /* additional control flags */
 )
 #else
-PUBLIC S16 cmInetFlushRecvBuf(sockFd, len, flags)
+S16 cmInetFlushRecvBuf(sockFd, len, flags)
 CmInetFd        *sockFd;        /* socket file descriptor */ 
 MsgLen          *len;           /* number of octects to be flushed */
 S32              flags;         /* additional control flags */

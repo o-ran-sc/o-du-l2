@@ -60,13 +60,13 @@
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkMacSchUeDelInd
+S16 cmPkMacSchUeDelInd
 (
 Pst* pst,
 RgInfUeDelInd*  ueDelInd
 )
 #else
-PUBLIC S16 cmPkMacSchUeDelInd(pst, ueDelInd)
+S16 cmPkMacSchUeDelInd(pst, ueDelInd)
 Pst* pst;
 RgInfUeDelInd*  ueDelInd;
 #endif
@@ -108,14 +108,14 @@ RgInfUeDelInd*  ueDelInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkMacSchUeDelInd
+S16 cmUnpkMacSchUeDelInd
 (
 UeDelInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkMacSchUeDelInd(func, pst, mBuf)
+S16 cmUnpkMacSchUeDelInd(func, pst, mBuf)
 UeDelInd func;
 Pst *pst;
 Buffer *mBuf;
@@ -152,13 +152,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkMacSchDedBoUpdtReq
+S16 cmPkMacSchDedBoUpdtReq
 (
 Pst* pst,
 RgInfDedBoRpt* boRpt
 )
 #else
-PUBLIC S16 cmPkMacSchDedBoUpdtReq(pst, boRpt)
+S16 cmPkMacSchDedBoUpdtReq(pst, boRpt)
 Pst* pst;
 RgInfDedBoRpt* boRpt;
 #endif
@@ -199,14 +199,14 @@ RgInfDedBoRpt* boRpt;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkMacSchDedBoUpdtReq
+S16 cmUnpkMacSchDedBoUpdtReq
 (
 DedBoUpdtReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkMacSchDedBoUpdtReq(func, pst, mBuf)
+S16 cmUnpkMacSchDedBoUpdtReq(func, pst, mBuf)
 DedBoUpdtReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -240,13 +240,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkMacSchCmnBoUpdtReq
+S16 cmPkMacSchCmnBoUpdtReq
 (
 Pst* pst,
 RgInfCmnBoRpt* boRpt
 )
 #else
-PUBLIC S16 cmPkMacSchCmnBoUpdtReq(pst, boRpt)
+S16 cmPkMacSchCmnBoUpdtReq(pst, boRpt)
 Pst* pst;
 RgInfCmnBoRpt* boRpt;
 #endif
@@ -287,14 +287,14 @@ RgInfCmnBoRpt* boRpt;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkMacSchCmnBoUpdtReq
+S16 cmUnpkMacSchCmnBoUpdtReq
 (
 CmnBoUpdtReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkMacSchCmnBoUpdtReq(func, pst, mBuf)
+S16 cmUnpkMacSchCmnBoUpdtReq(func, pst, mBuf)
 CmnBoUpdtReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -328,13 +328,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkMacSchSfRecpInd
+S16 cmPkMacSchSfRecpInd
 (
 Pst* pst,
 RgInfSfDatInd*  datInd
 )
 #else
-PUBLIC S16 cmPkMacSchSfRecpInd(pst, datInd)
+S16 cmPkMacSchSfRecpInd(pst, datInd)
 Pst* pst;
 RgInfSfDatInd*  datInd;
 #endif
@@ -372,14 +372,14 @@ RgInfSfDatInd*  datInd;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkMacSchSfRecpInd
+S16 cmUnpkMacSchSfRecpInd
 (
 SfRecpInd func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkMacSchSfRecpInd(func, pst, mBuf)
+S16 cmUnpkMacSchSfRecpInd(func, pst, mBuf)
 SfRecpInd func;
 Pst *pst;
 Buffer *mBuf;
@@ -414,13 +414,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkMacSchSpsRelInd
+S16 cmPkMacSchSpsRelInd
 (
 Pst*                 pst,
 RgInfSpsRelInfo*     relInfo
 )
 #else
-PUBLIC S16 cmPkMacSchSpsRelInd(pst, relInfo)
+S16 cmPkMacSchSpsRelInd(pst, relInfo)
 Pst*                 pst;
 RgInfSpsRelInfo*     relInfo;
 #endif
@@ -457,14 +457,14 @@ RgInfSpsRelInfo*     relInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkMacSchSpsRelInd
+S16 cmUnpkMacSchSpsRelInd
 (
 SpsRelInd      func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkMacSchSpsRelInd(func, pst, mBuf)
+S16 cmUnpkMacSchSpsRelInd(func, pst, mBuf)
 SpsRelInd      func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -502,13 +502,13 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacSfAllocReq
+S16 cmPkSchMacSfAllocReq
 (
 Pst* pst,
 RgInfSfAlloc*   resAllocReq
 )
 #else
-PUBLIC S16 cmPkSchMacSfAllocReq(pst, resAllocReq)
+S16 cmPkSchMacSfAllocReq(pst, resAllocReq)
 Pst* pst;
 RgInfSfAlloc*   resAllocReq;
 #endif
@@ -546,14 +546,14 @@ RgInfSfAlloc*   resAllocReq;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacSfAllocReq
+S16 cmUnpkSchMacSfAllocReq
 (
 SfAllocReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacSfAllocReq(func, pst, mBuf)
+S16 cmUnpkSchMacSfAllocReq(func, pst, mBuf)
 SfAllocReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -585,13 +585,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacRstHqEntReq
+S16 cmPkSchMacRstHqEntReq
 (
 Pst*                 pst,
 RgInfResetHqEnt*     hqEntInfo
 )
 #else
-PUBLIC S16 cmPkSchMacRstHqEntReq(pst, sfHqInfo)
+S16 cmPkSchMacRstHqEntReq(pst, sfHqInfo)
 Pst*                 pst,    
 RgInfResetHqEnt*     hqEntInfo
 #endif
@@ -626,14 +626,14 @@ RgInfResetHqEnt*     hqEntInfo
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacRstHqEntReq
+S16 cmUnpkSchMacRstHqEntReq
 (
 RstHqEntReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacRstHqEntReq(func, pst, mBuf)
+S16 cmUnpkSchMacRstHqEntReq(func, pst, mBuf)
 RstHqEntReq func,
 Pst *pst,
 Buffer *mBuf
@@ -668,13 +668,13 @@ Buffer *mBuf
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacRlsHqReq
+S16 cmPkSchMacRlsHqReq
 (
 Pst* pst,
 RgInfRlsHqInfo* sfHqInfo
 )
 #else
-PUBLIC S16 cmPkSchMacRlsHqReq(pst, sfHqInfo)
+S16 cmPkSchMacRlsHqReq(pst, sfHqInfo)
 Pst* pst;
 RgInfRlsHqInfo* sfHqInfo;
 #endif
@@ -711,14 +711,14 @@ RgInfRlsHqInfo* sfHqInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacRlsHqReq
+S16 cmUnpkSchMacRlsHqReq
 (
 RlsHqReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacRlsHqReq(func, pst, mBuf)
+S16 cmUnpkSchMacRlsHqReq(func, pst, mBuf)
 RlsHqReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -752,13 +752,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacRlsRntiReq
+S16 cmPkSchMacRlsRntiReq
 (
 Pst* pst,
 RgInfRlsRnti* rlsRnti
 )
 #else
-PUBLIC S16 cmPkSchMacRlsRntiReq(pst, rlsRnti)
+S16 cmPkSchMacRlsRntiReq(pst, rlsRnti)
 Pst* pst;
 RgInfRlsRnti* rlsRnti;
 #endif
@@ -798,14 +798,14 @@ RgInfRlsRnti* rlsRnti;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacRlsRntiReq
+S16 cmUnpkSchMacRlsRntiReq
 (
 RlsRntiReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacRlsRntiReq(func, pst, mBuf)
+S16 cmUnpkSchMacRlsRntiReq(func, pst, mBuf)
 RlsRntiReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -840,13 +840,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacCellRegReq
+S16 cmPkSchMacCellRegReq
 (
 Pst* pst,
 RgInfCellReg* regReq
 )
 #else
-PUBLIC S16 cmPkSchMacCellRegReq(pst, regReq)
+S16 cmPkSchMacCellRegReq(pst, regReq)
 Pst* pst;
 RgInfCellReg* regReq;
 #endif
@@ -886,14 +886,14 @@ RgInfCellReg* regReq;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacCellRegReq
+S16 cmUnpkSchMacCellRegReq
 (
 CellRegReq func,
 Pst *pst,
 Buffer *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacCellRegReq(func, pst, mBuf)
+S16 cmUnpkSchMacCellRegReq(func, pst, mBuf)
 CellRegReq func;
 Pst *pst;
 Buffer *mBuf;
@@ -926,13 +926,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacLcgRegReq
+S16 cmPkSchMacLcgRegReq
 (
 Pst*                 pst,
 RgInfLcgRegReq       *lcgRegReq
 )
 #else
-PUBLIC S16 cmPkSchMacLcgRegReq(pst, lcgRegReq)
+S16 cmPkSchMacLcgRegReq(pst, lcgRegReq)
 Pst*                 pst;
 RgInfLcgRegReq       *lcgRegReq;
 #endif
@@ -969,14 +969,14 @@ RgInfLcgRegReq       *lcgRegReq;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacLcgRegReq
+S16 cmUnpkSchMacLcgRegReq
 (
 LcgReg         func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacLcgRegReq(func, pst, mBuf)
+S16 cmUnpkSchMacLcgRegReq(func, pst, mBuf)
 LcgReg         func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1011,13 +1011,13 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacSpsLcRegReq
+S16 cmPkSchMacSpsLcRegReq
 (
 Pst*                 pst,
 RgInfSpsLcInfo       *lcInfo
 )
 #else
-PUBLIC S16 cmPkSchMacSpsLcRegReq(pst, lcInfo)
+S16 cmPkSchMacSpsLcRegReq(pst, lcInfo)
 Pst*                 pst;
 RgInfSpsLcInfo       *lcInfo;
 #endif
@@ -1053,13 +1053,13 @@ RgInfSpsLcInfo       *lcInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacUlSpsResetReq
+S16 cmPkSchMacUlSpsResetReq
 (
 Pst*                 pst,
 RgInfUlSpsReset      *ulSpsResetInfo
 )
 #else
-PUBLIC S16 cmPkSchMacUlSpsResetReq(pst, ulSpsResetInfo)
+S16 cmPkSchMacUlSpsResetReq(pst, ulSpsResetInfo)
 Pst*                 pst;
 RgInfUlSpsReset       *ulSpsResetInfo;
 #endif
@@ -1096,14 +1096,14 @@ RgInfUlSpsReset       *ulSpsResetInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacSpsLcRegReq
+S16 cmUnpkSchMacSpsLcRegReq
 (
 SpsLcReg       func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacSpsLcRegReq(func, pst, mBuf)
+S16 cmUnpkSchMacSpsLcRegReq(func, pst, mBuf)
 SpsLcReg       func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1139,14 +1139,14 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacUlSpsResetReq
+S16 cmUnpkSchMacUlSpsResetReq
 (
 UlSpsReset       func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacUlSpsResetReq(func, pst, mBuf)
+S16 cmUnpkSchMacUlSpsResetReq(func, pst, mBuf)
 UlSpsReset       func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1182,14 +1182,14 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacSpsLcDeregReq
+S16 cmPkSchMacSpsLcDeregReq
 (
 Pst*                 pst,
 CmLteCellId          cellId,
 CmLteRnti            crnti
 )
 #else
-PUBLIC S16 cmPkSchMacSpsLcDeregReq(pst, cellId, crnti)
+S16 cmPkSchMacSpsLcDeregReq(pst, cellId, crnti)
 Pst*                 pst;
 CmLteCellId          cellId;
 CmLteRnti            crnti;
@@ -1224,14 +1224,14 @@ CmLteRnti            crnti;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacSpsLcDeregReq
+S16 cmUnpkSchMacSpsLcDeregReq
 (
 SpsLcDereg     func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacSpsLcDeregReq(func, pst, mBuf)
+S16 cmUnpkSchMacSpsLcDeregReq(func, pst, mBuf)
 SpsLcDereg     func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1265,13 +1265,13 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacL2MeasReq
+S16 cmPkSchMacL2MeasReq
 (
 Pst*                 pst,
 RgInfL2MeasReq      *measInfo
 )
 #else
-PUBLIC S16 cmPkSchMacL2MeasReq(pst, measInfo)
+S16 cmPkSchMacL2MeasReq(pst, measInfo)
 Pst*                 pst;
 RgInfL2MeasReq      *measInfo;
 #endif
@@ -1306,13 +1306,13 @@ RgInfL2MeasReq      *measInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacL2MeasStopReq
+S16 cmPkSchMacL2MeasStopReq
 (
 Pst*                 pst,
 RgInfL2MeasStopReq *measInfo
 )
 #else
-PUBLIC S16 cmPkSchMacL2MeasStopReq(pst, measInfo)
+S16 cmPkSchMacL2MeasStopReq(pst, measInfo)
 Pst*                 pst;
 RgInfL2MeasStopReq *measInfo;
 #endif
@@ -1346,13 +1346,13 @@ RgInfL2MeasStopReq *measInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkSchMacL2MeasSendReq
+S16 cmPkSchMacL2MeasSendReq
 (
 Pst*                 pst,
 RgInfL2MeasSndReq *measInfo
 )
 #else
-PUBLIC S16 cmPkSchMacL2MeasSendReq(pst, measInfo)
+S16 cmPkSchMacL2MeasSendReq(pst, measInfo)
 Pst*                 pst;
 RgInfL2MeasSndReq *measInfo;
 #endif
@@ -1388,14 +1388,14 @@ RgInfL2MeasSndReq *measInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacL2MeasReq
+S16 cmUnpkSchMacL2MeasReq
 (
 L2MeasReq      func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacL2MeasReq(func, pst, mBuf)
+S16 cmUnpkSchMacL2MeasReq(func, pst, mBuf)
 L2MeasReq      func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1429,14 +1429,14 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacL2MeasStopReq
+S16 cmUnpkSchMacL2MeasStopReq
 (
 L2MeasStopReq func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacL2MeasStopReq(func, pst, mBuf)
+S16 cmUnpkSchMacL2MeasStopReq(func, pst, mBuf)
 L2MeasStopReq      func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1468,14 +1468,14 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkSchMacL2MeasSendReq
+S16 cmUnpkSchMacL2MeasSendReq
 (
 L2MeasSendReq      func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkSchMacL2MeasSendReq(func, pst, mBuf)
+S16 cmUnpkSchMacL2MeasSendReq(func, pst, mBuf)
 L2MeasSendReq func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1507,13 +1507,13 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkMacSchL2MeasCfm
+S16 cmPkMacSchL2MeasCfm
 (
 Pst*                 pst,
 RgInfL2MeasCfm       *measCfm
 )
 #else
-PUBLIC S16 cmPkMacSchL2MeasCfm(pst, measCfm)
+S16 cmPkMacSchL2MeasCfm(pst, measCfm)
 Pst*                 pst;
 RgInfL2MeasCfm       *measCfm;
 #endif
@@ -1550,13 +1550,13 @@ RgInfL2MeasCfm       *measCfm;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmPkMacSchL2MeasStopCfm
+S16 cmPkMacSchL2MeasStopCfm
 (
 Pst*                 pst,
 RgInfL2MeasCfm       *measCfm
 )
 #else
-PUBLIC S16 cmPkMacSchL2MeasStopCfm(pst, measCfm)
+S16 cmPkMacSchL2MeasStopCfm(pst, measCfm)
 Pst*                 pst;
 RgInfL2MeasCfm       *measCfm;
 #endif
@@ -1591,14 +1591,14 @@ RgInfL2MeasCfm       *measCfm;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkMacSchL2MeasCfm
+S16 cmUnpkMacSchL2MeasCfm
 (
 L2MeasCfm      func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkMacSchL2MeasCfm(func, pst, mBuf)
+S16 cmUnpkMacSchL2MeasCfm(func, pst, mBuf)
 L2MeasCfm      func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1632,14 +1632,14 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PUBLIC S16 cmUnpkMacSchL2MeasStopCfm
+S16 cmUnpkMacSchL2MeasStopCfm
 (
 L2MeasCfm      func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkMacSchL2MeasStopCfm(func, pst, mBuf)
+S16 cmUnpkMacSchL2MeasStopCfm(func, pst, mBuf)
 L2MeasCfm      func;
 Pst            *pst;
 Buffer         *mBuf;

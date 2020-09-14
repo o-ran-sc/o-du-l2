@@ -303,12 +303,12 @@ RgUeUlHqCb   *hqE
  * @return 
  */
 #ifdef ANSI
-PUBLIC Void rgSCHDrxTtiInd 
+Void rgSCHDrxTtiInd 
 (
 RgSchCellCb  *cell
 )
 #else
-PUBLIC Void rgSCHDrxTtiInd (cell)
+Void rgSCHDrxTtiInd (cell)
 RgSchCellCb  *cell;
 #endif
 {
@@ -445,14 +445,14 @@ U16           ulIndex;
  */
 
 #ifdef ANSI
-PUBLIC S16 rgSCHDrxTtiHdlInActv
+S16 rgSCHDrxTtiHdlInActv
 (
 RgSchCellCb  *cell,
 U16 dlIndex,
 U16 ulIndex
 )
 #else
-PUBLIC S16 rgSCHDrxTtiHdlInActv(cell, dlIndex, ulIndex)
+S16 rgSCHDrxTtiHdlInActv(cell, dlIndex, ulIndex)
 RgSchCellCb  *cell;
 U16 dlIndex;
 U16 ulIndex;
@@ -686,14 +686,14 @@ U16 ulIndex;
  */
 
 #ifdef ANSI
-PUBLIC S16 rgSCHDrxTtiHdlShortCycle 
+S16 rgSCHDrxTtiHdlShortCycle 
 (
 RgSchCellCb  *cell,
 U16           dlIndex,
 U16           ulIndex
 )
 #else
-PUBLIC S16 rgSCHDrxTtiHdlShortCycle (cell, dlIndex, ulIndex)
+S16 rgSCHDrxTtiHdlShortCycle (cell, dlIndex, ulIndex)
 RgSchCellCb  *cell;
 U16           dlIndex;
 U16           ulIndex;
@@ -829,14 +829,14 @@ U16                   ulIndex;
   */
 
 #ifdef ANSI
-PUBLIC Void rgSCHDrxStrtInActvTmr
+Void rgSCHDrxStrtInActvTmr
 (
 RgSchCellCb  *cell,
 CmLListCp    *ueLst,
 U8            direction
 )
 #else
-PUBLIC Void rgSCHDrxStrtInActvTmr(cell, ueLst, direction)
+Void rgSCHDrxStrtInActvTmr(cell, ueLst, direction)
 RgSchCellCb  *cell;
 CmLListCp    *ueLst;
 U8            direction;
@@ -1028,14 +1028,14 @@ U8            direction;
   * @return Void 
   */
 #ifdef ANSI
-PUBLIC Void rgSCHDrxStartHarqRTTTmr
+Void rgSCHDrxStartHarqRTTTmr
 (
 RgSchCellCb            *cell,
 RgSchDlHqProcCb        *hqP,
 U8                     tbCnt
 )
 #else
-PUBLIC Void rgSCHDrxStartHarqRTTTmr(cell, hqP, tbCnt)
+Void rgSCHDrxStartHarqRTTTmr(cell, hqP, tbCnt)
 RgSchCellCb             *cell;
 RgSchDlHqProcCb         *hqP;
 U8                      tbCnt;
@@ -1157,14 +1157,14 @@ U8                      tbCnt;
  * -# RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rgSCHDrxUeCfg 
+S16 rgSCHDrxUeCfg 
 (
  RgSchCellCb *cell,
  RgSchUeCb   *ue,
  RgrUeCfg    *ueCfg
  )
 #else
-PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
+S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
  RgSchCellCb *cell;
  RgSchUeCb   *ue;
  RgrUeCfg    *ueCfg;
@@ -1499,14 +1499,14 @@ PRIVATE S16 rgSCHDrxCpyUeCfg (ueCb, drxCfg)
  * @return  ROK/RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rgSCHDrxUeReCfg 
+S16 rgSCHDrxUeReCfg 
 (
  RgSchCellCb *cell, 
  RgSchUeCb   *ue, 
  RgrUeRecfg  *ueReCfg
  )
 #else
-PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
+S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
  RgSchCellCb *cell; 
  RgSchUeCb   *ue; 
  RgrUeRecfg  *ueReCfg;
@@ -1749,7 +1749,7 @@ PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
  * @return ROK/RFAILED
  */
 #ifdef ANSI
-PUBLIC Void rgSCHDrxUeHqReset
+Void rgSCHDrxUeHqReset
 (
  RgSchCellCb   *cell,
  RgSchUeCb     *ue,
@@ -1757,7 +1757,7 @@ PUBLIC Void rgSCHDrxUeHqReset
  U8            cellIdx
  )
 #else
-PUBLIC Void rgSCHDrxUeHqReset(cell, ue, hqE, cellIdx)
+Void rgSCHDrxUeHqReset(cell, ue, hqE, cellIdx)
  RgSchCellCb   *cell; 
  RgSchUeCb     *ue;
  RgSchDlHqEnt  *hqE;
@@ -1821,13 +1821,13 @@ PUBLIC Void rgSCHDrxUeHqReset(cell, ue, hqE, cellIdx)
  * @return ROK/RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rgSCHDrxUeDel
+S16 rgSCHDrxUeDel
 (
  RgSchCellCb   *cell,
  RgSchUeCb      *ue
  )
 #else
-PUBLIC S16 rgSCHDrxUeDel (cell, ue)
+S16 rgSCHDrxUeDel (cell, ue)
  RgSchCellCb   *cell; 
  RgSchUeCb     *ue;
 #endif
@@ -1919,13 +1919,13 @@ PUBLIC S16 rgSCHDrxUeDel (cell, ue)
  * @return ROK/RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rgSCHDrxCellCfg 
+S16 rgSCHDrxCellCfg 
 (
  RgSchCellCb   *cell,
  RgrCellCfg    *cellCfg
  )
 #else
-PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
+S16 rgSCHDrxCellCfg (cell, cellCfg)
  RgSchCellCb   *cell; 
  RgrCellCfg    *cellCfg;
 #endif
@@ -1996,12 +1996,12 @@ PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
  * @return Void
  */
 #ifdef ANSI
-PUBLIC Void rgSCHDrxCellDel 
+Void rgSCHDrxCellDel 
 (
  RgSchCellCb *cell
  )
 #else
-PUBLIC Void rgSCHDrxCellDel (cell)
+Void rgSCHDrxCellDel (cell)
  RgSchCellCb *cell;
 #endif
 {
@@ -2047,13 +2047,13 @@ PUBLIC Void rgSCHDrxCellDel (cell)
  * @return  ROK/RFAILED
  */
 #ifdef ANSI
-PUBLIC S16 rgSCHDrxSrInd 
+S16 rgSCHDrxSrInd 
 (
  RgSchCellCb   *cell, 
  RgSchUeCb     *ue
  )
 #else
-PUBLIC S16 rgSCHDrxSrInd (cell, ue)
+S16 rgSCHDrxSrInd (cell, ue)
  RgSchCellCb   *cell; 
  RgSchUeCb     *ue;
 #endif
@@ -2116,13 +2116,13 @@ PUBLIC S16 rgSCHDrxSrInd (cell, ue)
  * @return Void 
  */
 #ifdef ANSI
-PUBLIC Void rgSCHDrxDedRa 
+Void rgSCHDrxDedRa 
 (
 RgSchCellCb   *cellCb, 
 RgSchUeCb     *ueCb
  )
 #else
-PUBLIC Void rgSCHDrxDedRa (cellCb, ueCb)
+Void rgSCHDrxDedRa (cellCb, ueCb)
 RgSchCellCb   *cellCb; 
 RgSchUeCb     *ueCb;
 #endif
@@ -2520,7 +2520,7 @@ PRIVATE Void rgSCHDrxCalcNxtTmrExpry (cell,ue,delta,tmrLen,distance,idx)
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtTddDrxCycCfg
+S16 rgSCHCfgVldtTddDrxCycCfg
 (
 RgSchCellCb  *cell,
 U16           drxCycle,
@@ -2528,7 +2528,7 @@ U8            onDurTmr,
 U16           offSet
 )
 #else
-PUBLIC S16 rgSCHCfgVldtTddDrxCycCfg(cell, drxCycle, onDurTmr, offSet)
+S16 rgSCHCfgVldtTddDrxCycCfg(cell, drxCycle, onDurTmr, offSet)
 RgSchCellCb  *cell;
 U16           drxCycle;
 U8            onDurTmr;

@@ -23,7 +23,7 @@
 uint8_t rlcDatSn = 0;
 uint64_t ulDatNum = 0;
 
-PUBLIC uint8_t macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
+uint8_t macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
 {
   Pst rspPst;
   RlcMacSchedRepInfo *schRep;
@@ -59,7 +59,7 @@ PUBLIC uint8_t macStubBOStatus(Pst *pst, SpId spId, RlcMacBOStatus *boSta)
 
 }
 
-PUBLIC uint8_t macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
+uint8_t macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
 {
    U32 availmem;
 

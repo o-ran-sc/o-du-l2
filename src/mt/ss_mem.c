@@ -112,13 +112,13 @@
 *
 */
 #ifdef ANSI
-PUBLIC S16 SRegDynRegion
+S16 SRegDynRegion
 (
 Region region,                  /* region ID */
 SRegInfo *regInfo               /* information about the region */
 )
 #else
-PUBLIC S16 SRegDynRegion(region, regInfo)
+S16 SRegDynRegion(region, regInfo)
 Region region;                  /* region ID */
 SRegInfo *regInfo;              /* information about the region */
 #endif
@@ -210,13 +210,13 @@ SRegInfo *regInfo;              /* information about the region */
 *
 */
 #ifdef ANSI
-PUBLIC S16 SRegRegion
+S16 SRegRegion
 (
 Region region,                  /* region ID */
 SRegInfo *regInfo               /* information about the region */
 )
 #else
-PUBLIC S16 SRegRegion(region, regInfo)
+S16 SRegRegion(region, regInfo)
 Region region;                  /* region ID */
 SRegInfo *regInfo;              /* information about the region */
 #endif
@@ -306,12 +306,12 @@ SRegInfo *regInfo;              /* information about the region */
 *
 */
 #ifdef ANSI
-PUBLIC S16 SDeregRegion
+S16 SDeregRegion
 (
 Region region                   /* region ID */
 )
 #else
-PUBLIC S16 SDeregRegion(region)
+S16 SDeregRegion(region)
 Region region;                  /* region ID */
 #endif
 {
@@ -397,7 +397,7 @@ Region region;                  /* region ID */
 /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef ANSI
-PUBLIC S16 SAlloc
+S16 SAlloc
 (
 Region region,                  /* region ID */
 Size *size,                     /* size of block required/allocated */
@@ -408,7 +408,7 @@ U8    *fileName,
 U8    entId
 )
 #else
-PUBLIC S16 SAlloc(region, size, flags, ptr, line, fileName, entId)
+S16 SAlloc(region, size, flags, ptr, line, fileName, entId)
 Region region;                  /* region ID */
 Size *size;                     /* size of block required/allocated */
 U32 flags;                      /* allocation flags */
@@ -419,7 +419,7 @@ U8    entId;
 #endif
 #else
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SAllocNew
+S16 SAllocNew
 (
 Region region,                  /* region ID */
 Size *size,                     /* size of block required/allocated */
@@ -430,7 +430,7 @@ U32 line
 )
 #else
 #ifdef ANSI
-PUBLIC S16 SAlloc
+S16 SAlloc
 (
 Region region,                  /* region ID */
 Size *size,                     /* size of block required/allocated */
@@ -438,7 +438,7 @@ U32 flags,                      /* allocation flags */
 Data **ptr                      /* filled with pointer to block */
 )
 #else
-PUBLIC S16 SAlloc(region, size, flags, ptr)
+S16 SAlloc(region, size, flags, ptr)
 Region region;                  /* region ID */
 Size *size;                     /* size of block required/allocated */
 U32 flags;                      /* allocation flags */
@@ -598,7 +598,7 @@ Data **ptr;                     /* filled with pointer to block */
 /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef ANSI
-PUBLIC S16 SFree
+S16 SFree
 (
 Region region,                  /* region ID */
 Data *ptr,                      /* pointer to the allocated block */
@@ -608,7 +608,7 @@ U8   *fileName,
 U8   entId
 )
 #else
-PUBLIC S16 SFree(region, ptr, size, line, fileName, entId)
+S16 SFree(region, ptr, size, line, fileName, entId)
 Region region;                  /* region ID */
 Data *ptr;                      /* pointer to the allocated block */
 Size size;                      /* size of block */
@@ -619,7 +619,7 @@ U8   entId;
 #else
 #ifdef ANSI
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SFreeNew
+S16 SFreeNew
 (
 Region region,                  /* region ID */
 Data *ptr,                      /* pointer to the allocated block */
@@ -628,7 +628,7 @@ char* file,
 U32 line
 )
 #else
-PUBLIC S16 SFree
+S16 SFree
 (
 Region region,                  /* region ID */
 Data *ptr,                      /* pointer to the allocated block */
@@ -636,7 +636,7 @@ Size size                       /* size of block */
 )
 #endif
 #else
-PUBLIC S16 SFree(region, ptr, size)
+S16 SFree(region, ptr, size)
 Region region;                  /* region ID */
 Data *ptr;                      /* pointer to the allocated block */
 Size size;                      /* size of block */
@@ -809,12 +809,12 @@ Size size;                      /* size of block */
 *
 */
 #ifdef ANSI
-PUBLIC S16 SHstGrmInfoShow 
+S16 SHstGrmInfoShow 
 (
 Ent      *entId
 )
 #else
-PUBLIC S16 SHstGrmInfoShow(entId)
+S16 SHstGrmInfoShow(entId)
 Ent      *entId;
 #endif
 {

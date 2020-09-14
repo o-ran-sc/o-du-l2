@@ -60,11 +60,11 @@
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHCmnSpsInit
+Void rgSCHCmnSpsInit
 (
 )
 #else /* ANSI */
-PUBLIC Void rgSCHCmnSpsInit ()
+Void rgSCHCmnSpsInit ()
 #endif /* ANSI */
 {
    TRC2(rgSCHCmnSpsInit);
@@ -83,7 +83,7 @@ PUBLIC Void rgSCHCmnSpsInit ()
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsUeCfg
+S16 rgSCHCmnSpsUeCfg
 (
 RgSchCellCb        *cell,
 RgSchUeCb          *ue,
@@ -91,7 +91,7 @@ RgrUeCfg           *ueCfg,
 RgSchErrInfo       *err
 )
 #else /* ANSI */
-PUBLIC S16 rgSCHCmnSpsUeCfg (cell, ue, ueCfg, err)
+S16 rgSCHCmnSpsUeCfg (cell, ue, ueCfg, err)
 RgSchCellCb        *cell;
 RgSchUeCb          *ue;
 RgrUeCfg           *ueCfg;
@@ -115,7 +115,7 @@ RgSchErrInfo       *err;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsUeRecfg
+S16 rgSCHCmnSpsUeRecfg
 (
 RgSchCellCb        *cell,
 RgSchUeCb          *ue,
@@ -123,7 +123,7 @@ RgrUeRecfg         *ueRecfg,
 RgSchErrInfo       *err
 )
 #else /* ANSI */
-PUBLIC S16 rgSCHCmnSpsUeRecfg (cell, ue, ueCfg, err)
+S16 rgSCHCmnSpsUeRecfg (cell, ue, ueCfg, err)
 RgSchCellCb        *cell;
 RgSchUeCb          *ue;
 RgrUeRecfg         *ueRecfg;
@@ -147,13 +147,13 @@ RgSchErrInfo       *err;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHCmnSpsUeDel
+Void rgSCHCmnSpsUeDel
 (
 RgSchCellCb        *cell,
 RgSchUeCb          *ue
 )
 #else /* ANSI */
-PUBLIC Void rgSCHCmnSpsUeDel (cell, ue)
+Void rgSCHCmnSpsUeDel (cell, ue)
 RgSchCellCb        *cell;
 RgSchUeCb          *ue;
 #endif /* ANSI */
@@ -174,14 +174,14 @@ RgSchUeCb          *ue;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsCellCfg
+S16 rgSCHCmnSpsCellCfg
 (
 RgSchCellCb        *cell,
 RgrCellCfg         *cellCfg,
 RgSchErrInfo       *err
 )
 #else /* ANSI */
-PUBLIC S16 rgSCHCmnSpsCellCfg(cell, cellCfg, err)
+S16 rgSCHCmnSpsCellCfg(cell, cellCfg, err)
 RgSchCellCb        *cell;
 RgrCellCfg         *cellCfg;
 RgSchErrInfo       *err;
@@ -203,12 +203,12 @@ RgSchErrInfo       *err;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHCmnSpsCellDel
+Void rgSCHCmnSpsCellDel
 (
 RgSchCellCb        *cell
 )
 #else /* ANSI */
-PUBLIC Void rgSCHCmnSpsCellDel (cell)
+Void rgSCHCmnSpsCellDel (cell)
 RgSchCellCb        *cell;
 #endif /* ANSI */
 {
@@ -228,7 +228,7 @@ RgSchCellCb        *cell;
  *  @return Void
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsDlLcCfg 
+S16 rgSCHCmnSpsDlLcCfg 
 (
 RgSchCellCb        *cell,
 RgSchUeCb          *ue,
@@ -237,7 +237,7 @@ RgrLchCfg          *lcCfg,
 RgSchErrInfo       *err
 )
 #else /* ANSI */
-PUBLIC S16 rgSCHCmnSpsDlLcCfg(cell, ue, dlLc, lcCfg, err)
+S16 rgSCHCmnSpsDlLcCfg(cell, ue, dlLc, lcCfg, err)
 RgSchCellCb        *cell;
 RgSchUeCb          *ue;
 RgSchDlLcCb        *dlLc;

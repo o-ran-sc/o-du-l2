@@ -132,13 +132,13 @@ EXTERN Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamVldtUeCfg 
+S16 rgSCHRamVldtUeCfg 
 (
 RgSchCellCb  *cell,
 RgrUeCfg     *ueCfg
 )
 #else
-PUBLIC S16 rgSCHRamVldtUeCfg(cell, ueCfg)
+S16 rgSCHRamVldtUeCfg(cell, ueCfg)
 RgSchCellCb  *cell;
 RgrUeCfg     *ueCfg;
 #endif
@@ -185,7 +185,7 @@ RgrUeCfg     *ueCfg;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamProcRaReq
+S16 rgSCHRamProcRaReq
 (
 U8                raReqCnt,
 RgSchCellCb       *cell,
@@ -196,7 +196,7 @@ RgSchUeCb         *ue,
 RgSchErrInfo      *err
 )
 #else
-PUBLIC S16 rgSCHRamProcRaReq(raReqCnt, cell, raRnti, raReqInd, timingInfo, ue, err)
+S16 rgSCHRamProcRaReq(raReqCnt, cell, raRnti, raReqInd, timingInfo, ue, err)
 U8                raReqCnt;
 RgSchCellCb       *cell;
 CmLteRnti         raRnti;
@@ -322,14 +322,14 @@ RgSchErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamCreateRaCb
+S16 rgSCHRamCreateRaCb
 (
 RgSchCellCb       *cell,
 RgSchRaCb         **raCb,
 RgSchErrInfo      *err
 )
 #else
-PUBLIC S16 rgSCHRamCreateRaCb(cell, raCb, err)
+S16 rgSCHRamCreateRaCb(cell, raCb, err)
 RgSchCellCb       *cell;
 RgSchRaCb         **raCb;
 RgSchErrInfo      *err;
@@ -425,7 +425,7 @@ RgSchErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamRgrUeCfg
+S16 rgSCHRamRgrUeCfg
 (
 RgSchCellCb    *cell,
 RgSchUeCb      *ue,
@@ -433,7 +433,7 @@ RgSchRaCb      *raCb,
 RgSchErrInfo   *err
 )
 #else
-PUBLIC S16 rgSCHRamRgrUeCfg(cell, ue, raCb, err)
+S16 rgSCHRamRgrUeCfg(cell, ue, raCb, err)
 RgSchCellCb    *cell;
 RgSchUeCb      *ue;
 RgSchRaCb      *raCb;
@@ -633,7 +633,7 @@ RgSchRaCb *raCb;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamProcMsg3
+S16 rgSCHRamProcMsg3
 (
 RgSchCellCb     *cell,
 RgSchUeCb       *ue,
@@ -642,7 +642,7 @@ RgInfUeDatInd   *pdu,
 RgSchErrInfo    *err
 )
 #else
-PUBLIC S16 rgSCHRamProcMsg3(cell, ue, raCb, pdu, err)
+S16 rgSCHRamProcMsg3(cell, ue, raCb, pdu, err)
 RgSchCellCb     *cell;
 RgSchUeCb       *ue;
 RgSchRaCb       *raCb;
@@ -699,14 +699,14 @@ RgSchErrInfo    *err;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamUpdtBo
+S16 rgSCHRamUpdtBo
 (
 RgSchCellCb       *cell,
 RgSchRaCb         *raCb,
 RgInfCmnBoRpt     *staRsp
 )
 #else
-PUBLIC S16 rgSCHRamUpdtBo(cell, raCb, staRsp)
+S16 rgSCHRamUpdtBo(cell, raCb, staRsp)
 RgSchCellCb       *cell;
 RgSchRaCb         *raCb;
 RgInfCmnBoRpt     *staRsp;
@@ -743,12 +743,12 @@ RgInfCmnBoRpt     *staRsp;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamMsg3DatInd
+S16 rgSCHRamMsg3DatInd
 (
 RgSchRaCb      *raCb
 )
 #else
-PUBLIC S16 rgSCHRamMsg3DatInd(raCb)
+S16 rgSCHRamMsg3DatInd(raCb)
 RgSchRaCb      *raCb;
 #endif
 {
@@ -778,12 +778,12 @@ RgSchRaCb      *raCb;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamMsg3FailureInd
+S16 rgSCHRamMsg3FailureInd
 (
 RgSchRaCb      *raCb
 )
 #else
-PUBLIC S16 rgSCHRamMsg3FailureInd(raCb)
+S16 rgSCHRamMsg3FailureInd(raCb)
 RgSchRaCb      *raCb;
 #endif
 {
@@ -811,12 +811,12 @@ RgSchRaCb      *raCb;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamMsg4FdbkInd
+S16 rgSCHRamMsg4FdbkInd
 (
 RgSchRaCb      *raCb
 )
 #else
-PUBLIC S16 rgSCHRamMsg4FdbkInd(raCb)
+S16 rgSCHRamMsg4FdbkInd(raCb)
 RgSchRaCb      *raCb;
 #endif
 {
@@ -844,13 +844,13 @@ RgSchRaCb      *raCb;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamMsg4Done
+S16 rgSCHRamMsg4Done
 (
 RgSchCellCb    *cell,
 RgSchRaCb      *raCb
 )
 #else
-PUBLIC S16 rgSCHRamMsg4Done(cell, raCb)
+S16 rgSCHRamMsg4Done(cell, raCb)
 RgSchCellCb    *cell;
 RgSchRaCb      *raCb;
 #endif
@@ -938,14 +938,14 @@ RgSchRaCb      *raCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamDelRaCb
+S16 rgSCHRamDelRaCb
 (
 RgSchCellCb *cell,
 RgSchRaCb   *raCb,
 Bool        rlsRnti
 )
 #else
-PUBLIC S16 rgSCHRamDelRaCb(cell, raCb, rlsRnti)
+S16 rgSCHRamDelRaCb(cell, raCb, rlsRnti)
 RgSchCellCb *cell;
 RgSchRaCb   *raCb;
 Bool        rlsRnti;
@@ -1066,12 +1066,12 @@ Bool        rlsRnti;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamTtiHndlr
+S16 rgSCHRamTtiHndlr
 (
 RgSchCellCb  *cell
 )
 #else
-PUBLIC S16 rgSCHRamTtiHndlr(cell)
+S16 rgSCHRamTtiHndlr(cell)
 RgSchCellCb  *cell;
 #endif
 {
@@ -1196,12 +1196,12 @@ RgSchCellCb  *cell;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamFreeCell
+S16 rgSCHRamFreeCell
 (
 RgSchCellCb    *cell
 )
 #else
-PUBLIC S16 rgSCHRamFreeCell(cell)
+S16 rgSCHRamFreeCell(cell)
 RgSchCellCb    *cell;
 #endif
 {
@@ -1465,14 +1465,14 @@ RgSchCellCb        *cell;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHRamDelRaReq
+S16 rgSCHRamDelRaReq
 (
 RgSchCellCb          *cell,
 CmLteTimingInfo      timingInfo,
 U8                   raIdx
 )
 #else
-PUBLIC S16 rgSCHRamDelRaReq(cell, timingInfo, raIdx)
+S16 rgSCHRamDelRaReq(cell, timingInfo, raIdx)
 RgSchCellCb          *cell;
 CmLteTimingInfo      timingInfo;
 U8                   raIdx;
@@ -1540,13 +1540,13 @@ U8                   raIdx;
 
 /*MSG4 Fix Start */
 #ifdef ANSI
-PUBLIC S16 rgSCHRamAddToRaInfoSchdLst
+S16 rgSCHRamAddToRaInfoSchdLst
 (
 RgSchCellCb       *cell,
 RgSchRaCb         *raCb
 )
 #else
-PUBLIC S16 rgSCHRamAddToRaInfoSchdLst(cell, raCb)
+S16 rgSCHRamAddToRaInfoSchdLst(cell, raCb)
 RgSchCellCb       *cell;
 RgSchRaCb         *raCb;
 #endif
@@ -1570,13 +1570,13 @@ RgSchRaCb         *raCb;
 
 
 #ifdef ANSI
-PUBLIC S16 rgSCHRamRmvFrmRaInfoSchdLst
+S16 rgSCHRamRmvFrmRaInfoSchdLst
 (
 RgSchCellCb       *cell,
 RgSchRaCb         *raCb
 )
 #else
-PUBLIC S16 rgSCHRamRmvFrmRaInfoSchdLst(cell, raCb)
+S16 rgSCHRamRmvFrmRaInfoSchdLst(cell, raCb)
 RgSchCellCb       *cell;
 RgSchRaCb         *raCb;
 #endif

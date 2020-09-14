@@ -671,27 +671,27 @@ RguL2MUlThrpMeasReqInfo  *l2mUlThrpMeasReq));
 
 #ifdef KW
 /** @brief Request from RLC to MAC to bind the interface saps */
-EXTERN S16 KwLiRguBndReq ARGS((
+EXTERN S16 RlcLiRguBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Request from RLC to MAC to Unbind the interface saps */
-EXTERN S16 KwLiRguUbndReq ARGS((
+EXTERN S16 RlcLiRguUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 KwLiRguBndCfm ARGS((
+EXTERN S16 RlcLiRguBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    U8                   status
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
-EXTERN S16 KwLiRguCDatReq ARGS((
+EXTERN S16 RlcLiRguCDatReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    RguCDatReqInfo  *    datReq
@@ -714,21 +714,21 @@ EXTERN uint8_t RlcProcUlData ARGS((
 
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-EXTERN S16 KwLiRguCDatInd ARGS((
+EXTERN S16 RlcLiRguCDatInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RguCDatIndInfo  *    datInd
 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
-EXTERN S16 KwLiRguDDatInd ARGS((
+EXTERN S16 RlcLiRguDDatInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RguDDatIndInfo  *    datInd
 ));
 /** @brief Primitive invoked from RLC to MAC to 
  * inform the BO report for common channels*/
-EXTERN S16 KwLiRguCStaRsp ARGS((
+EXTERN S16 RlcLiRguCStaRsp ARGS((
    Pst*                 pst,
    SpId                 spId,
    RguCStaRspInfo  *    staRsp
@@ -752,7 +752,7 @@ EXTERN uint16_t RlcMacProcSchedRep ARGS((
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels. */
-EXTERN S16 KwLiRguCStaInd ARGS((
+EXTERN S16 RlcLiRguCStaInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RguCStaIndInfo  *    staInd
@@ -761,7 +761,7 @@ EXTERN S16 KwLiRguCStaInd ARGS((
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels. */
-EXTERN S16 KwLiRguDStaInd ARGS((
+EXTERN S16 RlcLiRguDStaInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RguDStaIndInfo  *    staInd
@@ -771,7 +771,7 @@ EXTERN S16 KwLiRguDStaInd ARGS((
 /** @brief HARQ Status Indication from MAC to RLC  
  * as a response to the Data Req from RLC.
  * Informs HARQ feedback for the PDU with sn. */
-EXTERN S16 KwLiRguHqStaInd ARGS((
+EXTERN S16 RlcLiRguHqStaInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RguHarqStatusInd     *harqStatusInd));
@@ -780,7 +780,7 @@ EXTERN S16 KwLiRguHqStaInd ARGS((
 /** @brief Request for measuring the timing Info for a LC from RLC to MAC  
  * When the status is ON then Timing Info for data bursts 
  * shall be captured and provided to RLC on DDatInd. */
-EXTERN S16 KwLiRguL2MUlThrpMeasReq ARGS((
+EXTERN S16 RlcLiRguL2MUlThrpMeasReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq));
@@ -788,7 +788,7 @@ EXTERN S16 KwLiRguL2MUlThrpMeasReq ARGS((
 #endif /* LTE_L2_MEAS */
 
 /** @brief flowCntrl Indication from MAC to RLC  */
-EXTERN S16 KwLiRguFlowCntrlInd ARGS((
+EXTERN S16 RlcLiRguFlowCntrlInd ARGS((
 Pst              *pst, 
 SuId             suId, 
 RguFlowCntrlInd  *flowCntrlInd

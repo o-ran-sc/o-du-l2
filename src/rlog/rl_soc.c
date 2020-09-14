@@ -59,7 +59,7 @@
 //  @out         : void
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void rlInitL2SocSpecific(void)
+void rlInitL2SocSpecific(void)
 {
 #ifndef RLOG_ENABLE_TEXT_LOGGING
 
@@ -90,7 +90,7 @@ PUBLIC void rlInitL2SocSpecific(void)
 //  @out         : void
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void processL2LogBuff(void)
+void processL2LogBuff(void)
 {
 #ifndef RLOG_ENABLE_TEXT_LOGGING
    if(g_l2LogBufLen > 0)
@@ -133,7 +133,7 @@ PUBLIC void processL2LogBuff(void)
 //                 logPtr   - Address of log Buffer
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void rlGetL2LogBufPtr
+void rlGetL2LogBufPtr
 (
    void *mBuf,
    U32 *logLen,
@@ -154,7 +154,7 @@ PUBLIC void rlGetL2LogBufPtr
 //  @out         : void
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void rlInvalidateL2LogsInCache
+void rlInvalidateL2LogsInCache
 (
    Data *ptr,
    U32   len

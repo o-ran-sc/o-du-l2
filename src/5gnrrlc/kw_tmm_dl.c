@@ -25,9 +25,9 @@
      Desc:     Source code for RLC Transparent mode assembly and
                reassembly.This file contains following functions
                 
-                  --kwTmmQSdu
-                  --kwTmmSndToLi
-                  --kwTmmRcvFrmLi
+                  --rlcTmmQSdu
+                  --rlcTmmSndToLi
+                  --rlcTmmRcvFrmLi
                   --kwTmmReEstablish 
 
      File:     kw_tmm_dl.c
@@ -64,9 +64,9 @@ static int RLOG_FILE_ID=200;
 #include "kw_udx.x"
 #include "kw_dl.x"
 
-#define KW_MODULE (KW_DBGMASK_TM | KW_DBGMASK_DL)
+#define RLC_MODULE (RLC_DBGMASK_TM | RLC_DBGMASK_DL)
 
-PRIVATE Void kwTmmSndStaRsp ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, 
+PRIVATE Void rlcTmmSndStaRsp ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, 
                                  MsgLen bo, KwuDatReqInfo *datReqInfo));
 extern U32 rgMacGT ;  
 /** @addtogroup tmmode */
@@ -91,7 +91,7 @@ extern U32 rgMacGT ;
  *      -# RFAILED 
  */
 #ifdef ANSI
-PUBLIC Void kwTmmQSdu
+Void rlcTmmQSdu
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,      
@@ -99,19 +99,19 @@ KwuDatReqInfo   *datReqInfo,
 Buffer          *mBuf       
 )
 #else
-PUBLIC Void kwTmmQSdu(gCb,rbCb,datReqInfo,mBuf)
+Void rlcTmmQSdu(gCb,rbCb,datReqInfo,mBuf)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;       
 KwuDatReqInfo   *datReqInfo;  
 Buffer          *mBuf;         
 #endif
 {
-   KwSdu   *sdu;              
+   RlcSdu   *sdu;              
  
-   TRC2(kwTmmQSdu) 
+   TRC2(rlcTmmQSdu) 
 
 
-   RLC_ALLOC(gCb,sdu,sizeof(KwSdu));
+   RLC_ALLOC(gCb,sdu,sizeof(RlcSdu));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
    {
@@ -147,7 +147,7 @@ Buffer          *mBuf;
    cmLListAdd2Tail(&(rbCb->m.tm.sduQ), &(sdu->lstEnt));  
    sdu->lstEnt.node = (PTR)sdu; 
 
-   kwTmmSndStaRsp(gCb, rbCb, sdu->sduSz, datReqInfo); 
+   rlcTmmSndStaRsp(gCb, rbCb, sdu->sduSz, datReqInfo); 
    RETVOID;
 }
 
@@ -168,7 +168,7 @@ Buffer          *mBuf;
 *    -# RFAILED         
 */
 #ifdef ANSI
-PUBLIC Void kwTmmSndToLi
+Void rlcTmmSndToLi
 (
 RlcCb             *gCb,
 SuId             suId,
@@ -176,7 +176,7 @@ RlcDlRbCb         *rbCb,
 RguCStaIndInfo   *staInd
 )
 #else
-PUBLIC Void kwTmmSndToLi(gCb, suId, rbCb, staInd)
+Void rlcTmmSndToLi(gCb, suId, rbCb, staInd)
 RlcCb             *gCb;
 SuId             suId;
 RlcDlRbCb         *rbCb;             
@@ -184,12 +184,12 @@ RguCStaIndInfo   *staInd;
 #endif
 {
    CmLList          *node;          /* Current Link List Node */
-   KwSdu            *sdu;           /* SDU */
+   RlcSdu            *sdu;           /* SDU */
    RlcMacData       *dlData;
    S16   timeDiff = 0;
    Ticks curTime  = 0;
 
-   TRC2(kwTmmSndToLi)
+   TRC2(rlcTmmSndToLi)
 
 
    CM_LLIST_FIRST_NODE(&(rbCb->m.tm.sduQ), 
@@ -199,7 +199,7 @@ RguCStaIndInfo   *staInd;
     * validated with alloted (sfn,slot)in the MAC layer */
    while (node != NULLP)
    {
-      sdu = (KwSdu *)(node->node);
+      sdu = (RlcSdu *)(node->node);
       if ( rbCb->lch.lChType == CM_LTE_LCH_BCCH ||
             rbCb->lch.lChType == CM_LTE_LCH_PCCH )
       {
@@ -256,7 +256,7 @@ RguCStaIndInfo   *staInd;
                   rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
             RLC_FREE_BUF(sdu->mBuf);
-            RLC_FREE(gCb, sdu, sizeof(KwSdu));
+            RLC_FREE(gCb, sdu, sizeof(RlcSdu));
          }
          else
          {
@@ -300,7 +300,7 @@ RguCStaIndInfo   *staInd;
                   rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
             RLC_FREE_BUF(sdu->mBuf);
-            RLC_FREE(gCb, sdu, sizeof(KwSdu));
+            RLC_FREE(gCb, sdu, sizeof(RlcSdu));
             continue;
          }
 
@@ -351,7 +351,7 @@ RguCStaIndInfo   *staInd;
                rbCb->rlcId.cellId);   
       RETVOID;
    }
-   sdu = (KwSdu *)node->node;
+   sdu = (RlcSdu *)node->node;
 
     RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[suId].pst.region,
                         gCb->u.dlCb->rguDlSap[suId].pst.pool,
@@ -380,19 +380,19 @@ RguCStaIndInfo   *staInd;
    gCb->genSts.bytesSent += sdu->sduSz;
    gCb->genSts.pdusSent++;
 
-   kwUtlIncrementKwuStsSduTx(gCb->u.dlCb->kwuDlSap + rbCb->kwuSapId);   
+   rlcUtlIncrementKwuStsSduTx(gCb->u.dlCb->rlcKwuDlSap + rbCb->k1wuSapId);   
 
    /* remove SDU from queue */ 
    sdu->mBuf = NULLP;
    cmLListDelFrm(&(rbCb->m.tm.sduQ),
                  &sdu->lstEnt); 
-   RLC_FREE(gCb,sdu, sizeof(KwSdu));
+   RLC_FREE(gCb,sdu, sizeof(RlcSdu));
 
    /* If trace flag is enabled send the trace indication */
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      kwLmmSendTrc(gCb,EVTRLCDLDAT, NULLP);
+      rlcLmmSendTrc(gCb,EVTRLCDLDAT, NULLP);
    }
    
    RlcMacSendDlData(&(gCb->u.dlCb->rguDlSap[suId].pst),
@@ -417,13 +417,13 @@ RguCStaIndInfo   *staInd;
  *    -# ROK 
  */
 #ifdef ANSI
-PUBLIC Void rlcDlTmmReEstablish
+Void rlcDlTmmReEstablish
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb    
 )
 #else
-PUBLIC Void rlcDlTmmReEstablish(gCb,rbCb)
+Void rlcDlTmmReEstablish(gCb,rbCb)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;     
 #endif
@@ -432,9 +432,9 @@ RlcDlRbCb   *rbCb;
 
 
 #ifdef LTE_L2_MEAS_RLC
-   kwUtlEmptySduQ(gCb, rbCb, &rbCb->m.tm.sduQ);
+   rlcUtlEmptySduQ(gCb, rbCb, &rbCb->m.tm.sduQ);
 #else
-   kwUtlEmptySduQ(gCb,&rbCb->m.tm.sduQ);
+   rlcUtlEmptySduQ(gCb,&rbCb->m.tm.sduQ);
 #endif
    
    RETVOID;
@@ -459,7 +459,7 @@ RlcDlRbCb   *rbCb;
  */
 
 #ifdef ANSI
-PRIVATE Void kwTmmSndStaRsp
+PRIVATE Void rlcTmmSndStaRsp
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,                 
@@ -467,7 +467,7 @@ MsgLen          bo,
 KwuDatReqInfo   *datReqInfo         
 )
 #else
-PRIVATE Void kwTmmSndStaRsp(rbCb,bo,datReqInfo)
+PRIVATE Void rlcTmmSndStaRsp(rbCb,bo,datReqInfo)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;               
 MsgLen          bo;                
@@ -476,9 +476,9 @@ KwuDatReqInfo   *datReqInfo;
 {
 //   RguCStaRspInfo   *staRspInfo;   /* Status Response Information */
    RlcMacBOStatus   *boStatus;      /* Buffer occupancy status information */
-   KwRguSapCb       *rguSap;       /* SAP Information */
+   RlcRguSapCb       *rguSap;       /* SAP Information */
 
-   TRC3(kwTmmSndStaRsp)
+   TRC3(rlcTmmSndStaRsp)
 
 
    rguSap = &(gCb->u.dlCb->rguDlSap[rbCb->rguSapId]);
@@ -507,7 +507,7 @@ KwuDatReqInfo   *datReqInfo;
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      kwLmmSendTrc(gCb, EVTRLCBOSTA, NULLP);
+      rlcLmmSendTrc(gCb, EVTRLCBOSTA, NULLP);
    }
 
    RlcMacSendBOStatus(&rguSap->pst, rguSap->spId, boStatus);

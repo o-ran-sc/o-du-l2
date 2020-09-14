@@ -145,13 +145,13 @@ PRIVATE Void TSInfTrigL2Stats(region, pool)
 *
 */
 #ifdef ANSI
-PUBLIC Void TSInfTrigStats
+Void TSInfTrigStats
 (
  Region    region,
  Pool      pool
 )
 #else
-PUBLIC Void TSInfTrigStats(region, pool)
+Void TSInfTrigStats(region, pool)
  Region    region;
  Pool      pool;
 #endif
@@ -584,14 +584,14 @@ PRIVATE Void TSInfUtlUnpkCellInfo(mBuf, stats)
 }
 
 #ifdef ANSI
-PUBLIC Void TSInfPkSndL2UeStats
+Void TSInfPkSndL2UeStats
 (
  Pst               *pst,
  SuId              suId,
  TSInfL2UeStats     *stats  
 )
 #else
-PUBLIC Void TSInfPkSndL2UeStats(pst, suId, stats)
+Void TSInfPkSndL2UeStats(pst, suId, stats)
  Pst               *pst;
  SuId              suId;
  TSInfL2UeStats     *stats;
@@ -610,14 +610,14 @@ PUBLIC Void TSInfPkSndL2UeStats(pst, suId, stats)
 }
 
 #ifdef ANSI
-PUBLIC Void TSInfUnpkL2UeStats
+Void TSInfUnpkL2UeStats
 (
  TSInfL2UeStatsInd   func,
  Pst                *pst,
  Buffer             *mBuf
 )
 #else
-PUBLIC Void TSInfUnpkL2UeStats(func, pst, mBuf)
+Void TSInfUnpkL2UeStats(func, pst, mBuf)
  TSInfL2UeStatsInd   func;
  Pst                *pst;
  Buffer             *mBuf;
@@ -636,14 +636,14 @@ PUBLIC Void TSInfUnpkL2UeStats(func, pst, mBuf)
 }
 
 #ifdef ANSI
-PUBLIC Void TSInfPkSndL2CellStats
+Void TSInfPkSndL2CellStats
 (
  Pst                 *pst,
  SuId                suId,
  TSInfL2CellStats   *stats 
 )
 #else
-PUBLIC Void TSInfPkSndL2CellStats(pst, suId, stats)
+Void TSInfPkSndL2CellStats(pst, suId, stats)
  Pst                 *pst;
  SuId                suId;
  TSInfL2Cellstats   *stats;
@@ -662,14 +662,14 @@ PUBLIC Void TSInfPkSndL2CellStats(pst, suId, stats)
 }
 
 #ifdef ANSI
-PUBLIC Void TSInfUnpkL2CellStats
+Void TSInfUnpkL2CellStats
 (
  TSInfL2CellStatsInd   func,
  Pst                *pst,
  Buffer             *mBuf
 )
 #else
-PUBLIC Void TSInfUnpkL2CellStats(func, pst, mBuf)
+Void TSInfUnpkL2CellStats(func, pst, mBuf)
  TSInfL2CellStatsInd   func;
  Pst                *pst;
  Buffer             *mBuf;

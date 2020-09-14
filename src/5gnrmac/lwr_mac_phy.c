@@ -243,10 +243,10 @@ void LwrMacRecvPhyMsg()
  * 
  * *****************************************************************/
 
-PUBLIC uint16_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg)
+uint8_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_WLS
-   int ret;
+   uint8_t ret;
    unsigned long long pMsg;
 
    pMsg = WLS_VA2PA(mtGetWlsHdl(), msg);
