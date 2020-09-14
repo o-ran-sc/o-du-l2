@@ -47,8 +47,8 @@ uint8_t macCfg = 0;
 uint8_t macCfgInst = 0;
 
 extern DuCfgParams duCfgParam;
-extern uint8_t packRlcConfigReq(Pst *pst, KwMngmt *cfg);
-extern uint8_t cmPkLkwCntrlReq(Pst *pst, KwMngmt *cfg);
+extern uint8_t packRlcConfigReq(Pst *pst, RlcMngmt *cfg);
+extern uint8_t cmPkLkwCntrlReq(Pst *pst, RlcMngmt *cfg);
 extern uint8_t cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
 extern uint8_t BuildAndSendE2SetupReq();
 extern uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
@@ -94,14 +94,14 @@ DuMacCellStopReq packMacCellStopReqOpts[] =
  ***************************************************************************/
 uint8_t duBuildRlcCfg(Inst inst)
 {
-   KwMngmt   kwMngmt;
-   KwGenCfg  *genCfg = NULLP;
+   RlcMngmt   rlcMngmt;
+   RlcGenCfg  *genCfg = NULLP;
    Pst pst;
 
-   DU_SET_ZERO(&kwMngmt, sizeof(KwMngmt));
+   DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
    DU_SET_ZERO(&pst, sizeof(Pst));
 
-   genCfg   = &(kwMngmt.t.cfg.s.gen);
+   genCfg   = &(rlcMngmt.t.cfg.s.gen);
 
    /*----------- Fill General Configuration Parameters ---------*/
    genCfg->maxUe       = duCfgParam.maxUe;
@@ -118,7 +118,7 @@ uint8_t duBuildRlcCfg(Inst inst)
    genCfg->lmPst.srcProcId = DU_PROC;
    genCfg->lmPst.dstEnt    = ENTDUAPP;
    genCfg->lmPst.dstInst   = DU_INST;
-   genCfg->lmPst.srcEnt    = ENTKW;
+   genCfg->lmPst.srcEnt    = ENTRLC;
    genCfg->lmPst.srcInst   = inst;
    genCfg->lmPst.prior     = PRIOR0;
    genCfg->lmPst.route     = RTESPEC;
@@ -128,25 +128,25 @@ uint8_t duBuildRlcCfg(Inst inst)
    genCfg->lmPst.selector  = ODU_SELECTOR_LC;
 
    /* Fill Header */
-   kwMngmt.hdr.msgType             = TCFG;
-   kwMngmt.hdr.msgLen              = 0;
-   kwMngmt.hdr.entId.ent           = ENTKW;
-   kwMngmt.hdr.entId.inst          = (Inst)0;
-   kwMngmt.hdr.elmId.elmnt         = STGEN;
-   kwMngmt.hdr.seqNmb              = 0;
-   kwMngmt.hdr.version             = 0;
-   kwMngmt.hdr.transId             = 0;
-   kwMngmt.hdr.response.prior      = PRIOR0;
-   kwMngmt.hdr.response.route      = RTESPEC;
-   kwMngmt.hdr.response.mem.region = (inst == RLC_UL_INST) ?
+   rlcMngmt.hdr.msgType             = TCFG;
+   rlcMngmt.hdr.msgLen              = 0;
+   rlcMngmt.hdr.entId.ent           = ENTRLC;
+   rlcMngmt.hdr.entId.inst          = (Inst)0;
+   rlcMngmt.hdr.elmId.elmnt         = STGEN;
+   rlcMngmt.hdr.seqNmb              = 0;
+   rlcMngmt.hdr.version             = 0;
+   rlcMngmt.hdr.transId             = 0;
+   rlcMngmt.hdr.response.prior      = PRIOR0;
+   rlcMngmt.hdr.response.route      = RTESPEC;
+   rlcMngmt.hdr.response.mem.region = (inst == RLC_UL_INST) ?
       RLC_UL_MEM_REGION:RLC_DL_MEM_REGION;
-   kwMngmt.hdr.response.mem.pool   = DU_POOL;
-   kwMngmt.hdr.response.selector   = ODU_SELECTOR_LC;
+   rlcMngmt.hdr.response.mem.pool   = DU_POOL;
+   rlcMngmt.hdr.response.selector   = ODU_SELECTOR_LC;
 
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTKW;
+   pst.dstEnt    = ENTRLC;
    pst.dstInst   = inst;
    pst.dstProcId = DU_PROC;
    pst.srcProcId = DU_PROC;
@@ -155,7 +155,7 @@ uint8_t duBuildRlcCfg(Inst inst)
    DU_LOG("\nDU_APP : RLC Gen Cfg Req sent for inst %d", inst);
 
    /* Send the request to RLC */
-   packRlcConfigReq(&pst, &kwMngmt);
+   packRlcConfigReq(&pst, &rlcMngmt);
 
    return ROK;
 }
@@ -178,30 +178,30 @@ uint8_t duBuildRlcCfg(Inst inst)
 uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, uint8_t lsapInst)
 {
 
-   KwMngmt    kwMngmt;
-   KwSapCfg   *lSap = NULLP;
+   RlcMngmt    rlcMngmt;
+   RlcSapCfg   *lSap = NULLP;
    Pst        pst;
 
-   DU_SET_ZERO(&kwMngmt, sizeof(KwMngmt));
+   DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
    DU_SET_ZERO(&pst, sizeof(Pst));
 
    /* Fill Header */
-   kwMngmt.hdr.msgType             = TCFG;
-   kwMngmt.hdr.entId.ent           = ENTKW;
-   kwMngmt.hdr.response.mem.region = (inst == RLC_UL_INST) ?
+   rlcMngmt.hdr.msgType             = TCFG;
+   rlcMngmt.hdr.entId.ent           = ENTRLC;
+   rlcMngmt.hdr.response.mem.region = (inst == RLC_UL_INST) ?
       RLC_UL_MEM_REGION:RLC_DL_MEM_REGION;
 
-   kwMngmt.hdr.response.mem.pool   = RLC_POOL;
+   rlcMngmt.hdr.response.mem.pool   = RLC_POOL;
 
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTKW;
+   pst.dstEnt    = ENTRLC;
    pst.dstProcId = DU_PROC;
    pst.dstInst   = inst;
    pst.srcProcId = DU_PROC;
    pst.region    = duCb.init.region;
-   lSap   = &(kwMngmt.t.cfg.s.sap);
+   lSap   = &(rlcMngmt.t.cfg.s.sap);
 
    lSap->mem.region = (inst == RLC_UL_INST) ?
       RLC_UL_MEM_REGION:RLC_DL_MEM_REGION;
@@ -210,30 +210,30 @@ uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, uint8_t lsapInst)
    lSap->bndTmrIntvl = 10;
    lSap->priority    = PRIOR0;
    lSap->route       = RTESPEC;
-   if (ent == ENTRG)
+   if (ent == ENTMAC)
    {
       lSap->procId      = DU_PROC;
-      lSap->ent         = ENTRG;
+      lSap->ent         = ENTMAC;
       lSap->inst        = lsapInst;
       lSap->sapId       = lsapInst;      /* SapId will be stored as suId in MAC */
       lSap->selector    = (inst == RLC_UL_INST) ? ODU_SELECTOR_LWLC : ODU_SELECTOR_TC;
-      kwMngmt.hdr.elmId.elmnt  = STRGUSAP;
+      rlcMngmt.hdr.elmId.elmnt  = STRGUSAP;
       DU_LOG("\nDU_APP : RLC MAC Lower Sap Cfg Req sent for inst %d", inst);
 
    }
    else
    {
       lSap->procId    = DU_PROC;
-      lSap->ent       = ENTKW;
+      lSap->ent       = ENTRLC;
       lSap->inst      = (inst == RLC_UL_INST) ?
 	 RLC_DL_INST : RLC_UL_INST;
       lSap->sapId       = 0;
       lSap->selector = ODU_SELECTOR_LC;
-      kwMngmt.hdr.elmId.elmnt  = STUDXSAP;
+      rlcMngmt.hdr.elmId.elmnt  = STUDXSAP;
       DU_LOG("\nDU_APP : RLC DL/UL Lower Sap Cfg Req sent for inst %d", inst);
    }
 
-   packRlcConfigReq(&pst, &kwMngmt);
+   packRlcConfigReq(&pst, &rlcMngmt);
    return ROK;
 }
 
@@ -254,14 +254,14 @@ uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, uint8_t lsapInst)
  ***************************************************************************/
 uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
 {
-   KwMngmt    kwMngmt;
-   KwSapCfg   *uSap = NULLP;
+   RlcMngmt    rlcMngmt;
+   RlcSapCfg   *uSap = NULLP;
    Pst        pst;
 
-   DU_SET_ZERO(&kwMngmt, sizeof(KwMngmt));
+   DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
    DU_SET_ZERO(&pst, sizeof(Pst));
 
-   uSap   = &(kwMngmt.t.cfg.s.sap);
+   uSap   = &(rlcMngmt.t.cfg.s.sap);
 
    uSap->selector   = ODU_SELECTOR_LC;
    uSap->mem.region = (inst == RLC_UL_INST) ?
@@ -270,7 +270,7 @@ uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
    uSap->mem.spare = 0;
 
    uSap->procId = DU_PROC;
-   uSap->ent = ENTKW;
+   uSap->ent = ENTRLC;
    uSap->sapId = 0;
 
    uSap->inst = (inst == RLC_UL_INST) ?
@@ -280,25 +280,25 @@ uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
    uSap->route = RTESPEC;
 
    /* Fill Header */
-   kwMngmt.hdr.msgType             = TCFG;
-   kwMngmt.hdr.entId.ent           = ENTKW;
-   kwMngmt.hdr.elmId.elmnt         = STUDXSAP;
-   kwMngmt.hdr.response.mem.region = (inst == RLC_UL_INST) ?
+   rlcMngmt.hdr.msgType             = TCFG;
+   rlcMngmt.hdr.entId.ent           = ENTRLC;
+   rlcMngmt.hdr.elmId.elmnt         = STUDXSAP;
+   rlcMngmt.hdr.response.mem.region = (inst == RLC_UL_INST) ?
       RLC_UL_MEM_REGION:RLC_DL_MEM_REGION;
 
-   kwMngmt.hdr.response.mem.pool   = RLC_POOL;
+   rlcMngmt.hdr.response.mem.pool   = RLC_POOL;
 
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTKW;
+   pst.dstEnt    = ENTRLC;
    pst.dstProcId = DU_PROC;
    pst.dstInst = inst;
    pst.srcProcId = DU_PROC;
    pst.region = duCb.init.region;
 
    DU_LOG("\nDU_APP : RLC Kwu Upper Sap Cfg Req sent for inst %d", inst);
-   packRlcConfigReq(&pst, &kwMngmt);
+   packRlcConfigReq(&pst, &rlcMngmt);
 
    return ROK;
 }
@@ -394,9 +394,9 @@ uint8_t duSendRlcUlCfg()
    duBuildRlcCfg((Inst)RLC_UL_INST);
    for(cellIdx = 0; cellIdx < DEFAULT_CELLS; cellIdx++)
    {
-      duBuildRlcLsapCfg(ENTRG, (Inst)RLC_UL_INST, cellIdx);
+      duBuildRlcLsapCfg(ENTMAC, (Inst)RLC_UL_INST, cellIdx);
    }
-   duBuildRlcLsapCfg(ENTKW, (Inst)RLC_UL_INST, 0);
+   duBuildRlcLsapCfg(ENTRLC, (Inst)RLC_UL_INST, 0);
 
    return ROK;
 }
@@ -421,10 +421,10 @@ uint8_t duSendRlcDlCfg()
    uint8_t cellIdx; 
 
    duBuildRlcCfg((Inst)RLC_DL_INST);
-   duBuildRlcUsapCfg(STUDXSAP, ENTKW, (Inst)RLC_DL_INST);
+   duBuildRlcUsapCfg(STUDXSAP, ENTRLC, (Inst)RLC_DL_INST);
    for(cellIdx = 0; cellIdx < DEFAULT_CELLS; cellIdx++)
    {
-      duBuildRlcLsapCfg(ENTRG, (Inst)RLC_DL_INST, cellIdx);
+      duBuildRlcLsapCfg(ENTMAC, (Inst)RLC_DL_INST, cellIdx);
    }
 
    return ROK;
@@ -440,12 +440,12 @@ uint8_t duSendRlcDlCfg()
  *           Handles Gen Config Confirm from RLC
  *     
  * @param[in]  Pst     *pst, Post structure of the primitive.     
- * @param[in]  KwMngmt *cfm, Unpacked primitive info received from RLC
+ * @param[in]  RlcMngmt *cfm, Unpacked primitive info received from RLC
  * @return ROK     - success
  *         RFAILED - failure
  *
  ***************************************************************************/
-uint8_t DuHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm)
+uint8_t DuHdlRlcCfgComplete(Pst *pst, RlcMngmt *cfm)
 {
    uint8_t ret = ROK;
    if (pst->srcInst == RLC_UL_INST)
@@ -470,12 +470,12 @@ uint8_t DuHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm)
  *           Handles Control Config Confirm from RLC
  *     
  * @param[in]  Pst     *pst, Post structure of the primitive.     
- * @param[in]  KwMngmt *cfm, Unpacked primitive info received from RLC
+ * @param[in]  RlcMngmt *cfm, Unpacked primitive info received from RLC
  * @return ROK     - success
  *         RFAILED - failure
  *
  ***************************************************************************/
-uint8_t duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cntrl)
+uint8_t duHdlRlcCntrlCfgComplete(Pst *pst, RlcMngmt *cntrl)
 {
    uint8_t ret = ROK;
 
@@ -530,12 +530,12 @@ uint8_t duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cntrl)
  *           Handles Config Confirm from RLC UL
  *     
  * @param[in]  Pst     *pst, Post structure of the primitive.     
- * @param[in]  KwMngmt *cfm, Unpacked primitive info received from RLC UL
+ * @param[in]  RlcMngmt *cfm, Unpacked primitive info received from RLC UL
  * @return ROK     - success
  *         RFAILED - failure
  *
  ***************************************************************************/
-uint8_t duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
+uint8_t duProcRlcUlCfgComplete(Pst *pst, RlcMngmt *cfm)
 {
    uint8_t ret;
 
@@ -597,12 +597,12 @@ uint8_t duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
  *           Handles Config Confirm from RLC DL
  *     
  * @param[in]  Pst     *pst, Post structure of the primitive.     
- * @param[in]  KwMngmt *cfm, Unpacked primitive info received from RLC DL
+ * @param[in]  RlcMngmt *cfm, Unpacked primitive info received from RLC DL
  * @return ROK     - success
  *         RFAILED - failure
  *
  ***************************************************************************/
-uint8_t duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm)
+uint8_t duProcRlcDlCfgComplete(Pst *pst, RlcMngmt *cfm)
 {
    DU_LOG("\nDU_APP : RLC DL Cfg Status %d", cfm->cfm.status);
    if (cfm->cfm.status == LCM_PRIM_OK)
@@ -710,7 +710,7 @@ uint8_t duBuildMacGenCfg()
    genCfg->lmPst.srcProcId = DU_PROC;
    genCfg->lmPst.dstEnt    = ENTDUAPP;
    genCfg->lmPst.dstInst   = 0;
-   genCfg->lmPst.srcEnt    = ENTRG;
+   genCfg->lmPst.srcEnt    = ENTMAC;
    genCfg->lmPst.srcInst   = macCfgInst;
    genCfg->lmPst.prior     = PRIOR0;
    genCfg->lmPst.route     = RTESPEC;
@@ -721,7 +721,7 @@ uint8_t duBuildMacGenCfg()
    /* Fill Header */
    rgMngmt.hdr.msgType             = TCFG;
    rgMngmt.hdr.msgLen              = 0;
-   rgMngmt.hdr.entId.ent           = ENTRG;
+   rgMngmt.hdr.entId.ent           = ENTMAC;
    rgMngmt.hdr.entId.inst          = (Inst)0;
    rgMngmt.hdr.elmId.elmnt         = STGEN;
    rgMngmt.hdr.seqNmb              = 0;
@@ -737,7 +737,7 @@ uint8_t duBuildMacGenCfg()
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTRG;
+   pst.dstEnt    = ENTMAC;
    pst.dstInst   = macCfgInst;
    pst.dstProcId = DU_PROC;
    pst.srcProcId = DU_PROC;
@@ -782,7 +782,7 @@ uint8_t duBuildMacUsapCfg(SpId sapId)
    uSap->suId       = 0;
    uSap->spId       = sapId;
    uSap->procId     = DU_PROC;
-   uSap->ent        = ENTKW;
+   uSap->ent        = ENTRLC;
    uSap->inst       = sapId;
    uSap->prior      = PRIOR0;
    uSap->route      = RTESPEC;
@@ -790,7 +790,7 @@ uint8_t duBuildMacUsapCfg(SpId sapId)
 
    /* fill header */
    rgMngmt.hdr.msgType             = TCFG;
-   rgMngmt.hdr.entId.ent           = ENTRG;
+   rgMngmt.hdr.entId.ent           = ENTMAC;
    rgMngmt.hdr.entId.inst          = (Inst)0;
    rgMngmt.hdr.elmId.elmnt         = STRGUSAP;
    rgMngmt.hdr.response.mem.region = MAC_MEM_REGION;
@@ -799,7 +799,7 @@ uint8_t duBuildMacUsapCfg(SpId sapId)
    /* fill pst */
    pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTRG;
+   pst.dstEnt    = ENTMAC;
    pst.dstInst   = macCfgInst;
    pst.dstProcId = DU_PROC;
    pst.srcProcId = DU_PROC;
@@ -887,13 +887,13 @@ uint8_t duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
  ***************************************************************************/
 uint8_t duBindUnbindRlcToMacSap(uint8_t inst, uint8_t action)
 {
-   KwCntrl  *cntrl = NULLP;
-   KwMngmt  kwMngmt;
+   RlcCntrl  *cntrl = NULLP;
+   RlcMngmt  rlcMngmt;
    Pst      pst;
 
    TRC2(smBindKwToRguSap)
 
-      DU_SET_ZERO(&kwMngmt, sizeof(KwMngmt));
+      DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
    DU_SET_ZERO(&pst, sizeof(Pst));
 
    if (action == ABND)
@@ -904,7 +904,7 @@ uint8_t duBindUnbindRlcToMacSap(uint8_t inst, uint8_t action)
    {
       DU_LOG("\nDU_APP : Cntrl Req to RLC inst %d to unbind MAC sap", inst);
    }
-   cntrl = &(kwMngmt.t.cntrl);
+   cntrl = &(rlcMngmt.t.cntrl);
 
    cntrl->action            =  action;
    cntrl->subAction         =  DU_ZERO_VAL;
@@ -912,24 +912,24 @@ uint8_t duBindUnbindRlcToMacSap(uint8_t inst, uint8_t action)
    cntrl->s.sapCntrl.spId   =  inst;
 
    /* Fill header */
-   kwMngmt.hdr.msgType             = TCNTRL;
-   kwMngmt.hdr.entId.ent           = ENTKW;
-   kwMngmt.hdr.entId.inst          = inst;
-   kwMngmt.hdr.elmId.elmnt         = 186; /* ambiguous defines in lkw.h and lrg.h so direct hardcoded*/
-   kwMngmt.hdr.response.mem.region = (inst == RLC_UL_INST) ?
+   rlcMngmt.hdr.msgType             = TCNTRL;
+   rlcMngmt.hdr.entId.ent           = ENTRLC;
+   rlcMngmt.hdr.entId.inst          = inst;
+   rlcMngmt.hdr.elmId.elmnt         = 186; /* ambiguous defines in lkw.h and lrg.h so direct hardcoded*/
+   rlcMngmt.hdr.response.mem.region = (inst == RLC_UL_INST) ?
       RLC_UL_MEM_REGION:RLC_DL_MEM_REGION;
-   kwMngmt.hdr.response.mem.pool   = RLC_POOL;
+   rlcMngmt.hdr.response.mem.pool   = RLC_POOL;
 
    /* Fill pst */
    pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTKW;
+   pst.dstEnt    = ENTRLC;
    pst.dstProcId = DU_PROC;
    pst.dstInst   = inst;
    pst.srcProcId = DU_PROC;
    pst.region    = duCb.init.region;
 
-   cmPkLkwCntrlReq(&pst, &kwMngmt);
+   cmPkLkwCntrlReq(&pst, &rlcMngmt);
 
    return ROK;
 }
@@ -1395,7 +1395,7 @@ uint8_t duSendSchCfg()
    cfg->genCfg.lmPst.srcProcId = DU_PROC;
    cfg->genCfg.lmPst.dstEnt    = ENTDUAPP;
    cfg->genCfg.lmPst.dstInst   = DU_INST;
-   cfg->genCfg.lmPst.srcEnt    = ENTRG;
+   cfg->genCfg.lmPst.srcEnt    = ENTMAC;
    cfg->genCfg.lmPst.srcInst   = DEFAULT_CELLS + 1;
    cfg->genCfg.lmPst.prior     = PRIOR0;
    cfg->genCfg.lmPst.route     = RTESPEC;
@@ -1405,7 +1405,7 @@ uint8_t duSendSchCfg()
 
    /* Fill Header */
    rgMngmt.hdr.msgType             = TCFG;
-   rgMngmt.hdr.entId.ent           = ENTRG;
+   rgMngmt.hdr.entId.ent           = ENTMAC;
    rgMngmt.hdr.entId.inst          = DU_INST;
    rgMngmt.hdr.elmId.elmnt         = STSCHINST;
    rgMngmt.hdr.response.mem.region = MAC_MEM_REGION;
@@ -1414,7 +1414,7 @@ uint8_t duSendSchCfg()
    /* Fill Pst */
    pst.selector  = ODU_SELECTOR_LC;
    pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTRG;
+   pst.dstEnt    = ENTMAC;
    pst.dstProcId = DU_PROC;
    pst.srcProcId = DU_PROC;
    pst.srcInst   = DU_INST;

@@ -85,14 +85,14 @@ PRIVATE Void rgLIMUtlFreeDatReqEvnt ARGS((TfuDatReqInfo *datReq,
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgLIMTfuBndReq
+S16 rgLIMTfuBndReq
 (
 Inst    inst,
 SuId    suId, 
 SpId    spId
 )
 #else
-PUBLIC S16 rgLIMTfuBndReq(inst,suId, spId)
+S16 rgLIMTfuBndReq(inst,suId, spId)
 Inst    inst;
 SuId    suId; 
 SpId    spId;
@@ -134,14 +134,14 @@ SpId    spId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgLIMTfuUbndReq
+S16 rgLIMTfuUbndReq
 (
 Inst    inst,
 SpId    spId, 
 Reason  reason
 )
 #else
-PUBLIC S16 rgLIMTfuUbndReq(inst,spId, reason)
+S16 rgLIMTfuUbndReq(inst,spId, reason)
 Inst    inst;
 SpId    spId; 
 Reason  reason;
@@ -183,14 +183,14 @@ Reason  reason;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuBndCfm 
+S16 RgLiTfuBndCfm 
 (
 Pst     *pst,
 SuId    suId, 
 U8      status
 )
 #else
-PUBLIC S16 RgLiTfuBndCfm(pst, suId, status)
+S16 RgLiTfuBndCfm(pst, suId, status)
 Pst     *pst; 
 SuId    suId; 
 U8      status;
@@ -330,14 +330,14 @@ PRIVATE Void rgLIMUtlFreeDatIndEvnt(datInd, error)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuDatInd
+S16 RgLiTfuDatInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuDatIndInfo    *datInd
 )
 #else
-PUBLIC S16 RgLiTfuDatInd(pst, suId, datInd)
+S16 RgLiTfuDatInd(pst, suId, datInd)
 Pst                *pst; 
 SuId               suId; 
 TfuDatIndInfo    *datInd;
@@ -467,13 +467,13 @@ PRIVATE Void rgLIMUtlFreeDatReqEvnt(datReq, error)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgLIMTfuDatReq 
+S16 rgLIMTfuDatReq 
 (
 Inst          inst,
 TfuDatReqInfo *datReq
 )
 #else
-PUBLIC S16 rgLIMTfuDatReq(inst,datReq)
+S16 rgLIMTfuDatReq(inst,datReq)
 Inst          inst;
 TfuDatReqInfo *datReq;
 #endif
@@ -529,13 +529,13 @@ TfuDatReqInfo *datReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgLIMTfuDelDatReq 
+S16 rgLIMTfuDelDatReq 
 (
 Inst          inst,
 TfuDelDatReqInfo *delDatReq
 )
 #else
-PUBLIC S16 rgLIMTfuDatReq(inst,delDatReq)
+S16 rgLIMTfuDatReq(inst,delDatReq)
 Inst          inst;
 TfuDelDatReqInfo *delDatReq;
 #endif
@@ -583,13 +583,13 @@ TfuDelDatReqInfo *delDatReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 RgLiTfuNonRtInd
+S16 RgLiTfuNonRtInd
 (
 Pst                 *pst,
 SuId                suId
 )
 #else
-PUBLIC S16 RgLiTfuNonRtInd(pst, suId)
+S16 RgLiTfuNonRtInd(pst, suId)
 Pst                 *pst;
 SuId                suId;
 #endif

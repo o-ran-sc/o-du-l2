@@ -62,12 +62,12 @@
 *
 */
 #ifdef ANSI
-PUBLIC U32 cmAbs
+U32 cmAbs
 (
 F64          val
 )
 #else
-PUBLIC U32 cmAbs(val)
+U32 cmAbs(val)
 F64          val;
 #endif
 {
@@ -93,13 +93,13 @@ F64          val;
 *
 */
 #ifdef ANSI
-PUBLIC F64 cmPow
+F64 cmPow
 (
 F64          x,
 F64          y
 )
 #else
-PUBLIC F64 cmPow(x, y)
+F64 cmPow(x, y)
 F64           x;
 F64           y;
 #endif
@@ -126,12 +126,12 @@ F64           y;
 *
 */
 #ifdef ANSI
-PUBLIC F64 cmFloor
+F64 cmFloor
 (
 F64          x
 )
 #else
-PUBLIC F64 cmFloor(x)
+F64 cmFloor(x)
 F64           x;
 #endif
 {
@@ -157,12 +157,12 @@ F64           x;
 *
 */
 #ifdef ANSI
-PUBLIC F64 cmLog
+F64 cmLog
 (
 F64          x
 )
 #else
-PUBLIC F64 cmLog(x)
+F64 cmLog(x)
 F64           x;
 #endif
 {
@@ -188,12 +188,12 @@ F64           x;
 *
 */
 #ifdef ANSI
-PUBLIC F64 cmLog10
+F64 cmLog10
 (
 F64          x
 )
 #else
-PUBLIC F64 cmLog10(x)
+F64 cmLog10(x)
 F64           x;
 #endif
 {

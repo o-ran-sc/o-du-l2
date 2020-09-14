@@ -78,7 +78,7 @@
 #define FILL_PST_MAC_TO_DUAPP(_pst, _event)                     \
 {                                                           \
    _pst.selector  = ODU_SELECTOR_LWLC;                      \
-   _pst.srcEnt    = ENTRG;                                  \
+   _pst.srcEnt    = ENTMAC;                                  \
    _pst.dstEnt    = ENTDUAPP;                               \
    _pst.dstInst   = 0;                                      \
    _pst.srcInst   = macCb.macInst;                          \
@@ -96,8 +96,8 @@
 #define FILL_PST_MAC_TO_SCH(_pst, _event)                       \
 {                                                           \
    _pst.selector  = ODU_SELECTOR_TC;                        \
-   _pst.srcEnt    = ENTRG;                                  \
-   _pst.dstEnt    = ENTRG;                                  \
+   _pst.srcEnt    = ENTMAC;                                  \
+   _pst.dstEnt    = ENTMAC;                                  \
    _pst.dstInst   = 1;                                      \
    _pst.srcInst   = macCb.macInst;                          \
    _pst.dstProcId = macCb.procId;                           \
@@ -114,8 +114,8 @@
 #define FILL_PST_MAC_TO_RLC(_pst, _dstInst, _event)        \
 {                                                      \
    pst.selector  = ODU_SELECTOR_LWLC;                  \
-   pst.srcEnt    = ENTRG;                              \
-   pst.dstEnt    = ENTKW;                              \
+   pst.srcEnt    = ENTMAC;                              \
+   pst.dstEnt    = ENTRLC;                              \
    pst.dstInst   = _dstInst;                           \
    pst.srcInst   = macCb.macInst;                      \
    pst.dstProcId = macCb.procId;                       \

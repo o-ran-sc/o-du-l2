@@ -43,40 +43,40 @@ interface.
 extern "C" {
 #endif /* __cplusplus */
 
-typedef struct kwNackInfo
+typedef struct rlcNackInfo
 {
    U8 nackRange;
    U8 isSegment;
    U32 sn;      /*!< Nack Sn */
    U16 soStart; /*!< Segment offset start */
    U16 soEnd;   /*!< Segment offset End */
-}KwNackInfo;
+}RlcNackInfo;
 
-typedef struct kwUdxStaPdu
+typedef struct rlcUdxStaPdu
 {
    U32 ackSn;
-   /* TODO : KW_MAX_NACK_CNT should set to MAx SR delay 
+   /* TODO : RLC_MAX_NACK_CNT should set to MAx SR delay 
       It is tradeoff to consider array based instead of dynamic
       as there are chances where we might loose Status information
       on spill over*/
    U8 nackCnt;         /* Cnt of Nacks in the array*/
-   KwNackInfo nackInfo[KW_MAX_NACK_CNT];
-}KwUdxStaPdu;
+   RlcNackInfo nackInfo[RLC_MAX_NACK_CNT];
+}RlcUdxStaPdu;
 
-typedef struct kwUdxBufLst
+typedef struct rlcUdxBufLst
 {
    CmLListCp rlsTxLst;      /*!< Stores to be released Tx PDUs */
    CmLListCp rlsRetxLst;    /*!< Stores to be released Retx PDUs */
    CmLListCp rlsSduLst;     /*!< Stores to be released SDUs*/
-}KwUdxBufLst;
+}RlcUdxBufLst;
 
-typedef struct kwStatusPdu
+typedef struct rlcStatusPdu
 {
    U32         ackSn;
-   KwNackInfo  nackInfo[KW_MAX_NACK_CNT];
+   RlcNackInfo  nackInfo[RLC_MAX_NACK_CNT];
    U16         nackCount;
    U16         controlBo;
-}KwUdxDlStaPdu;
+}RlcUdxDlStaPdu;
 /* ### Umapathi*/
 
 /**
@@ -96,7 +96,7 @@ typedef S16 (*UdxCfgCfm) ARGS((Pst* pst,SuId suId,RlcCfgCfmInfo *cfmInfo));
 typedef S16 (*UdxStaUpdReq) ARGS((Pst* pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxStaPdu *pStaPdu ));
+                                  RlcUdxStaPdu *pStaPdu ));
 
 typedef S16 (*UdxUeIdChgReq) ARGS((Pst *pst, 
                                    SpId spId, 
@@ -112,12 +112,12 @@ typedef S16 (*UdxUeIdChgCfm) ARGS((Pst *pst,
 typedef S16 (*UdxStaUpdCfm) ARGS((Pst* pst,
                                   SuId  suId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxBufLst *pBufLst));
+                                  RlcUdxBufLst *pBufLst));
 
 typedef S16 (*UdxStaPduReq) ARGS((Pst* pst,
                                   SpId  spId, 
                                   CmLteRlcId *rlcId,
-                                  KwUdxDlStaPdu *pStaPdu));
+                                  RlcUdxDlStaPdu *pStaPdu));
 
 typedef S16 (*UdxStaProhTmrStart) ARGS((Pst* pst,
                                          SuId  suId,
@@ -125,7 +125,7 @@ typedef S16 (*UdxStaProhTmrStart) ARGS((Pst* pst,
 
 #ifdef LTE_L2_MEAS
 typedef S16 (*UdxL2MeasReq) ARGS((Pst* pst,
-                                KwL2MeasReqEvt *measReqEvt));
+                                rlcL2MeasReqEvt *measReqEvt));
 
 typedef S16 (*UdxL2MeasSendReq) ARGS((Pst* pst,
                                     U8 measType));
@@ -141,7 +141,7 @@ EXTERN S16 cmPkUdxUbndReq ARGS((Pst* pst, SuId suId,Reason reason));
 EXTERN S16 cmPkUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
 EXTERN S16 cmPkUdxCfgCfm ARGS(( Pst* pst,SuId suId,RlcCfgCfmInfo *cfmInfo));
 EXTERN S16 cmPkUdxStaUpdReq ARGS((Pst* pst,SpId spId,CmLteRlcId *rlcId,
-                               KwUdxStaPdu         *pStaPdu ));
+                               RlcUdxStaPdu         *pStaPdu ));
 EXTERN S16 cmPkUdxUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId, 
                                   CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 EXTERN S16 cmPkUdxUeIdChgCfm ARGS((Pst *pst, SuId suId, U32 transId, 
@@ -149,16 +149,16 @@ EXTERN S16 cmPkUdxUeIdChgCfm ARGS((Pst *pst, SuId suId, U32 transId,
 
 
 EXTERN S16 cmPkUdxStaUpdCfm ARGS((Pst* pst,SuId  suId,CmLteRlcId  *rlcId,
-                             KwUdxBufLst  *pBufLst));
+                             RlcUdxBufLst  *pBufLst));
 
 EXTERN S16 cmPkUdxStaPduReq ARGS(( Pst* pst,SpId  spId, CmLteRlcId *rlcId,
-                             KwUdxDlStaPdu  *pStaPdu ));
+                             RlcUdxDlStaPdu  *pStaPdu ));
 EXTERN S16 cmPkUdxStaProhTmrStart ARGS((Pst *pst, 
                                         SpId spId, 
                                         CmLteRlcId *rlcId));
 
 #ifdef LTE_L2_MEAS
-EXTERN S16 cmPkUdxL2MeasReq ARGS((Pst *pst, KwL2MeasReqEvt *measReqEvt)); 
+EXTERN S16 cmPkUdxL2MeasReq ARGS((Pst *pst, rlcL2MeasReqEvt *measReqEvt)); 
 EXTERN S16 cmPkUdxL2MeasSendReq ARGS((Pst *pst, U8 measType)); 
 EXTERN S16 cmPkUdxL2MeasStopReq ARGS((Pst *pst, U8 measType)); 
 #endif
@@ -227,32 +227,32 @@ EXTERN S16 rlcDlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
 EXTERN S16 rlcUlUdxStaUpdReq ARGS((Pst* pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxStaPdu *pStaPdu));
+                                  RlcUdxStaPdu *pStaPdu));
 
 EXTERN S16 rlcDlUdxStaUpdReq ARGS((Pst* pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxStaPdu *pStaPdu));
+                                  RlcUdxStaPdu *pStaPdu));
 
 EXTERN S16 rlcDlUdxStaUpdCfm ARGS((Pst* pst,
                                   SuId suId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxBufLst *pBufLst));
+                                  RlcUdxBufLst *pBufLst));
 
 EXTERN S16 rlcUlUdxStaUpdCfm ARGS((Pst* pst,
                                   SuId suId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxBufLst *pBufLst));
+                                  RlcUdxBufLst *pBufLst));
 
 EXTERN S16 rlcUlUdxStaPduReq ARGS((Pst *pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxDlStaPdu *pStaPdu ));
+                                  RlcUdxDlStaPdu *pStaPdu ));
 
 EXTERN S16 rlcDlUdxStaPduReq ARGS((Pst *pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxDlStaPdu *pStaPdu));
+                                  RlcUdxDlStaPdu *pStaPdu));
 
 EXTERN S16 rlcDlUdxUeIdChgReq ARGS((Pst *pst, 
                                    SpId spId, 
@@ -266,12 +266,12 @@ EXTERN S16 rlcDlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
 EXTERN S16 rlcUlUdxStaUpdCfm ARGS((Pst* pst,
                                   SuId suId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxBufLst *pBufLst));
+                                  RlcUdxBufLst *pBufLst));
 
 EXTERN S16 rlcDlUdxStaPduReq ARGS((Pst *pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
-                                  KwUdxDlStaPdu *pStaPdu));
+                                  RlcUdxDlStaPdu *pStaPdu));
 
 EXTERN S16 rlcUlUdxStaProhTmrStart ARGS((Pst *pst,
                                         SpId spId,
@@ -282,13 +282,13 @@ EXTERN S16 rlcDlUdxStaProhTmrStart ARGS((Pst *pst,
                                         CmLteRlcId *rlcId ));
 
 #ifdef LTE_L2_MEAS
-EXTERN S16 rlcDlUdxL2MeasReq ARGS((Pst *pst, KwL2MeasReqEvt *measReqEvt)); 
+EXTERN S16 rlcDlUdxL2MeasReq ARGS((Pst *pst, rlcL2MeasReqEvt *measReqEvt)); 
 
 EXTERN S16 rlcDlUdxL2MeasSendReq ARGS((Pst *pst, U8 status)); 
 
 EXTERN S16 rlcDlUdxL2MeasStopReq ARGS((Pst *pst, U8 status)); 
 
-EXTERN S16 rlcUlUdxL2MeasReq ARGS((Pst* pst, KwL2MeasReqEvt *measReqEvt));
+EXTERN S16 rlcUlUdxL2MeasReq ARGS((Pst* pst, rlcL2MeasReqEvt *measReqEvt));
 
 EXTERN S16 rlcUlUdxL2MeasSendReq ARGS((Pst *pst, U8 status));
 

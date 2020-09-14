@@ -39,15 +39,15 @@
         SLogError(cb->init.ent, cb->init.inst, cb->init.procId, \
                    __FILE__, __LINE__, errCls, errCode, errVal, errDesc)
 
-#define KW_GET_AND_VALIDATE_KWUSAP(_spId, _kwuSap, _errCode, _fn) \
+#define RLC_GET_AND_VALIDATE_KWUSAP(_spId, _rlckwuSap, _errCode, _fn) \
 { \
    S16 _ret; \
    _ret = RFAILED; \
-   _kwuSap = NULLP; \
+   _rlckwuSap = NULLP; \
    if((_spId < (S16) rlcCb.genCfg.maxKwuSaps) && (_spId >= 0)) \
    { \
-      _kwuSap = rlcCb.kwuSap + _spId; \
-      if((_kwuSap != NULLP) && (_kwuSap->state == KW_SAP_BND)) \
+      _rlckwuSap = rlcCb.rlckwuSap + _spId; \
+      if((_rlckwuSap != NULLP) && (_rlckwuSap->state == RLC_SAP_BND)) \
       { \
          _ret = ROK; \
       } \
@@ -55,50 +55,50 @@
    if(_ret != ROK) \
    { \
       KWLOGERROR(ERRCLS_INT_PAR, EKWxxx, (ErrVal) spId, \
-            "KwUiKwuBndReq: KWU SAP State is Invalid during Bind Req"); \
-      KW_SEND_SAPID_ALARM(spId, LKW_EVENT_KWU_BND_REQ, LCM_CAUSE_INV_SAP);\
+            "RlcUiKwuBndReq: KWU SAP State is Invalid during Bind Req"); \
+      RLC_SEND_SAPID_ALARM(spId, LKW_EVENT_KWU_BND_REQ, LCM_CAUSE_INV_SAP);\
       return RFAILED; \
    } \
 }
 #else
-#define KW_GET_AND_VALIDATE_KWUSAP(_spId, _kwuSap, _errCode, _fn) \
-   _kwuSap = rlcCb.kwuSap + _spId;
+#define RLC_GET_AND_VALIDATE_KWUSAP(_spId, _rlckwuSap, _errCode, _fn) \
+   _rlckwuSap = rlcCb.rlckwuSap + _spId;
 #define KWLOGERROR(cb, errCls, errCode, errVal, errDesc)
 
 #endif
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-#define KW_GET_AND_VALIDATE_CKWSAP(_cb,_ckwSap, _errCode, _fn) \
+#define RLC_GET_AND_VALIDATE_CKWSAP(_cb,_ckwSap, _errCode, _fn) \
 { \
    S16 _ret; \
    _ret = RFAILED; \
-   if((_ckwSap != NULLP) && (_ckwSap->state == KW_SAP_BND)) \
+   if((_ckwSap != NULLP) && (_ckwSap->state == RLC_SAP_BND)) \
    { \
       _ret = ROK; \
    } \
    if(_ret != ROK) \
    { \
       KWLOGERROR(_cb,ERRCLS_INT_PAR, EKWxxx, (ErrVal) spId,\
-            "KwUiCkwBndReq: CKW SAP State is Invalid during Bind Req");\
-      KW_SEND_SAPID_ALARM(_cb,spId, LKW_EVENT_CKW_BND_REQ, LCM_CAUSE_INV_STATE);\
+            "RlcUiCkwBndReq: CKW SAP State is Invalid during Bind Req");\
+      RLC_SEND_SAPID_ALARM(_cb,spId, LKW_EVENT_CKW_BND_REQ, LCM_CAUSE_INV_STATE);\
       return RFAILED; \
    } \
 }
 #endif
 #if (ERRCLASS & ERRCLS_INT_PAR)
-#define KW_GET_AND_VALIDATE_UDXSAP(_cb,_udxSap, _errCode, _fn) \
+#define RLC_GET_AND_VALIDATE_UDXSAP(_cb,_udxSap, _errCode, _fn) \
 { \
    S16 _ret; \
    _ret = RFAILED; \
-   if((_udxSap != NULLP) && (_udxSap->state == KW_SAP_BND)) \
+   if((_udxSap != NULLP) && (_udxSap->state == RLC_SAP_BND)) \
    { \
       _ret = ROK; \
    } \
    if(_ret != ROK) \
    { \
       KWLOGERROR(_cb,ERRCLS_INT_PAR, EKWxxx, (ErrVal) spId,\
-            "KwUiCkwBndReq: UDX SAP State is Invalid during Bind Req");\
-      KW_SEND_SAPID_ALARM(_cb,spId, LKW_EVENT_UDX_BND_REQ, LCM_CAUSE_INV_STATE);\
+            "RlcUiCkwBndReq: UDX SAP State is Invalid during Bind Req");\
+      RLC_SEND_SAPID_ALARM(_cb,spId, LKW_EVENT_UDX_BND_REQ, LCM_CAUSE_INV_STATE);\
       return RFAILED; \
    } \
 }

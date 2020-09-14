@@ -138,7 +138,7 @@ Pst           *cfmPst
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgActvInit
+S16 rgActvInit
 (
 Ent entity,            /* entity */
 Inst inst,             /* instance */
@@ -146,7 +146,7 @@ Region region,         /* region */
 Reason reason          /* reason */
 )
 #else
-PUBLIC S16 rgActvInit(entity, inst, region, reason)
+S16 rgActvInit(entity, inst, region, reason)
 Ent entity;            /* entity */
 Inst inst;             /* instance */
 Region region;         /* region */
@@ -207,7 +207,7 @@ Reason reason;         /* reason */
    lwrMacCb.phyState = PHY_STATE_IDLE; 
 
    /* Initialize Scheduler as well */
-   schActvInit(ENTRG, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
+   schActvInit(ENTMAC, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
 
    /* Initialize lower mac */
    lwrMacInit();
@@ -235,13 +235,13 @@ Reason reason;         /* reason */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgCfgReq
+S16 RgMiLrgCfgReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfg     /* config structure  */
 )
 #else
-PUBLIC S16 RgMiLrgCfgReq(pst, cfg)
+S16 RgMiLrgCfgReq(pst, cfg)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cfg;    /* config structure  */
 #endif    
@@ -325,13 +325,13 @@ RgMngmt  *cfg;    /* config structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgStsReq
+S16 RgMiLrgStsReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *sts     /* statistics structure  */
 )
 #else
-PUBLIC S16 RgMiLrgStsReq(pst, sts)
+S16 RgMiLrgStsReq(pst, sts)
 Pst      *pst;    /* post structure  */
 RgMngmt  *sts;    /* statistics structure  */
 #endif    
@@ -500,13 +500,13 @@ RgMngmt  *sts;    /* statistics structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgStaReq
+S16 RgMiLrgStaReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *sta     /* status structure  */
 )
 #else
-PUBLIC S16 RgMiLrgStaReq(pst, sta)
+S16 RgMiLrgStaReq(pst, sta)
 Pst      *pst;    /* post structure  */
 RgMngmt  *sta;    /* status structure  */
 #endif    
@@ -631,13 +631,13 @@ RgMngmt  *sta;    /* status structure  */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 RgMiLrgCntrlReq
+S16 RgMiLrgCntrlReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cntrl   /* control structure  */
 )
 #else
-PUBLIC S16 RgMiLrgCntrlReq(pst, cntrl)
+S16 RgMiLrgCntrlReq(pst, cntrl)
 Pst      *pst;    /* post structure  */
 RgMngmt  *cntrl;  /* control structure  */
 #endif    
@@ -1401,7 +1401,7 @@ RgMngmt       *cfm;
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgLMMStartTmr
+S16 rgLMMStartTmr
 (
 Inst               inst,
 S16                tmrEvnt,            /* Timer Event */
@@ -1409,7 +1409,7 @@ U32                tmrVal,             /* Wait Time */
 PTR                cb                  /* Entry for which Timer Expired */
 )
 #else
-PUBLIC S16 rgLMMStartTmr(tmrEvnt, tmrVal, cb)
+S16 rgLMMStartTmr(tmrEvnt, tmrVal, cb)
 Inst               inst;
 S16                tmrEvnt;            /* Timer Event */
 U32                tmrVal;             /* Wait Time */
@@ -1460,14 +1460,14 @@ PTR                cb;                 /* Entry for which Timer Expired */
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgLMMStopTmr
+S16 rgLMMStopTmr
 (
 Inst               inst,             /* Scheduler instance */
 S16                tmrEvnt,            /* Timer Event */
 PTR                cb                  /* Entry for which Timer Expired */
 )
 #else
-PUBLIC S16 rgLMMStopTmr(inst,tmrEvnt, cb)
+S16 rgLMMStopTmr(inst,tmrEvnt, cb)
 Inst               inst;             /* Scheduler instance */
 S16                tmrEvnt;            /* Timer Event */
 PTR                cb;                 /* Entry for which Timer Expired */
@@ -1527,13 +1527,13 @@ PTR                cb;                 /* Entry for which Timer Expired */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgLMMTmrExpiry
+S16 rgLMMTmrExpiry
 (
 PTR cb,               /* Pointer to timer control block */
 S16 tmrEvnt           /* Timer Event */
 )
 #else
-PUBLIC S16 rgLMMTmrExpiry(cb,tmrEvnt)
+S16 rgLMMTmrExpiry(cb,tmrEvnt)
 PTR cb;               /* Pointer to timer control block */
 S16 tmrEvnt;          /* Timer Event */
 #endif
@@ -1597,7 +1597,7 @@ S16 tmrEvnt;          /* Timer Event */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgLMMStaInd
+S16 rgLMMStaInd
 (
 Inst inst,
 U16 category,
@@ -1606,7 +1606,7 @@ U16 cause,
 RgUstaDgn *dgn
 )
 #else
-PUBLIC S16 rgLMMStaInd(inst,category, event, cause, dgn) 
+S16 rgLMMStaInd(inst,category, event, cause, dgn) 
 Inst inst;
 U16 category;
 U16 event;
@@ -1661,14 +1661,14 @@ RgUstaDgn *dgn;
  *  @return Void 
  **/
 #ifdef ANSI
-PUBLIC Void rgLMMTrcInd
+Void rgLMMTrcInd
 (
 Inst   inst,
 Buffer *srcMbuf,    /* Message Buffer */
 U8 event            /* event */
 )
 #else
-PUBLIC Void rgLMMTrcInd(inst,srcMbuf,event)
+Void rgLMMTrcInd(inst,srcMbuf,event)
 Inst   inst;
 Buffer *srcMbuf;    /* Message Buffer */
 U8 event;           /* event */
@@ -1814,14 +1814,14 @@ U8 event;           /* event */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgLMMBndCfm
+S16 rgLMMBndCfm
 (
 Pst *pst,               /* Post Structure */
 SuId suId,              /* Service user ID */
 U8 status               /* Status */
 )
 #else
-PUBLIC S16 rgLMMBndCfm(pst,suId,status)
+S16 rgLMMBndCfm(pst,suId,status)
 Pst *pst;               /* Post Structure */
 SuId suId;              /* Service user ID */
 U8 status;              /* Status */
@@ -1914,13 +1914,13 @@ U8 status;              /* Status */
  *      -# ROK
  **/
 #ifdef ANSI
-PUBLIC S16 rgActvTmr
+S16 rgActvTmr
 (
  Ent     ent,
  Inst    inst
 )
 #else
-PUBLIC S16 rgActvTmr(ent, inst)
+S16 rgActvTmr(ent, inst)
 Ent     ent;
 Inst    inst;
 #endif

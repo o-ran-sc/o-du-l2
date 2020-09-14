@@ -37,7 +37,7 @@
 #define __KW_ULH__
 
 /**
- * @def KW_MEAS_IS_UL_IP_MEAS_ON_FOR_RB
+ * @def RLC_MEAS_IS_UL_IP_MEAS_ON_FOR_RB
  *
  *    This macro is used to check if UL IP throughput measurement is ON
  *    or off for the passed rb
@@ -48,7 +48,7 @@
  * @param[in] _rbCb    RLC uplink control block
  *
 */ 
-#define KW_MEAS_IS_UL_IP_MEAS_ON_FOR_RB(_gCb, _rbCb)  \
+#define RLC_MEAS_IS_UL_IP_MEAS_ON_FOR_RB(_gCb, _rbCb)  \
      ((_rbCb->rlcId.rbType == CM_LTE_DRB) && \
      (_gCb->u.ulCb->kwL2Cb.measOn[_rbCb->qci] & LKW_L2MEAS_UL_IP) && \
      (_rbCb->rbL2Cb.measOn & LKW_L2MEAS_UL_IP))

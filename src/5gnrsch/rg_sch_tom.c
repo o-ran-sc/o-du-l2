@@ -63,7 +63,7 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_sch_emtc_ext.x"
 #endif 
 U8 rgSCHCmnCalcPcqiBitSz(RgSchUeCb    *ueCb,U8 numTxAnt);
-PUBLIC S16 rgSCHDhm5gtfHqFdbkInd(RgSchUeCb *ue,RgSchCellCb *cell,CmLteTimingInfo timingInfo,TfuHqFdbk fdbk,RgSchErrInfo *err);
+S16 rgSCHDhm5gtfHqFdbkInd(RgSchUeCb *ue,RgSchCellCb *cell,CmLteTimingInfo timingInfo,TfuHqFdbk fdbk,RgSchErrInfo *err);
 /* local defines */
 #ifdef EMTC_ENABLE
 EXTERN  Bool rgSCHEmtcChkEmtcUe ARGS(
@@ -206,7 +206,7 @@ RgSchCellCb           *cell,
 U16                   rapId,
 CmLteTimingInfo       timingInfo
 );
-PUBLIC S16 rgSCHTomUtlFillDatAperRecpReq ARGS(
+S16 rgSCHTomUtlFillDatAperRecpReq ARGS(
 (
  RgSchCellCb       *cell,
  U8                cqiReq,
@@ -217,7 +217,7 @@ PUBLIC S16 rgSCHTomUtlFillDatAperRecpReq ARGS(
  U16                validIdx
  ));
 
-PUBLIC S16 rgSCHTomUtlFillDatPriRecpReq ARGS(
+S16 rgSCHTomUtlFillDatPriRecpReq ARGS(
 (
  RgSchCellCb       *cell,
  RgSchUlAlloc      *alloc,
@@ -227,7 +227,7 @@ PUBLIC S16 rgSCHTomUtlFillDatPriRecpReq ARGS(
  U16               validIdx
  ));
 
-PUBLIC S16 rgSCHTomUtlFillDatPCqiRecpReq ARGS(
+S16 rgSCHTomUtlFillDatPCqiRecpReq ARGS(
 (
  RgSchCellCb       *cell,
  RgSchUlAlloc      *alloc,
@@ -237,7 +237,7 @@ PUBLIC S16 rgSCHTomUtlFillDatPCqiRecpReq ARGS(
  U16                validIdx
  ));
 
-PUBLIC S16 rgSCHTomUtlFillDatSrsRecpReq ARGS(
+S16 rgSCHTomUtlFillDatSrsRecpReq ARGS(
 (
  RgSchCellCb       *cell,
  RgSchUlAlloc      *alloc,
@@ -246,7 +246,7 @@ PUBLIC S16 rgSCHTomUtlFillDatSrsRecpReq ARGS(
  Bool              hqPres
  ));
 
-PUBLIC void schFillCrntTime(
+void schFillCrntTime(
    SlotIndInfo slotInd,
    Inst        schInst);
 
@@ -351,8 +351,8 @@ RgSchCellCb        *cells[]
 #endif
 
 /* local typedefs */
-PUBLIC U32 rgBwAlloInfo[RGSCH_NUM_SUB_FRAMES]; /* Num of Rbs Allocated in each SF */ 
-PUBLIC U32 rgBwAlcnt[RGSCH_NUM_SUB_FRAMES];   /*Num of times Allocation done in each Subframe */
+U32 rgBwAlloInfo[RGSCH_NUM_SUB_FRAMES]; /* Num of Rbs Allocated in each SF */ 
+U32 rgBwAlcnt[RGSCH_NUM_SUB_FRAMES];   /*Num of times Allocation done in each Subframe */
 
 /* local externs */
 /* rg006.201: [ccpu000111706, ccpu00112394]: Separated UL and DL TTI
@@ -418,7 +418,7 @@ PRIVATE S16 rgSCHTomUtlFillHqFdbkRecpReq ARGS((
 #endif
 #ifdef TFU_UPGRADE
 
-PUBLIC S16 rgSCHTomFillOnlySrsRecpReq ARGS
+S16 rgSCHTomFillOnlySrsRecpReq ARGS
 ((
  RgSchCellCb       *cell,
  RgSchUlAlloc      *alloc,
@@ -434,19 +434,19 @@ PRIVATE S16 rgSCHTomUtlFillCqiSrSrsWithHq ARGS
  Bool                 isDatPresOnSecCell
  ));
 
-PUBLIC S16 rgSCHTomUtlFillRiBitWidthInfo ARGS
+S16 rgSCHTomUtlFillRiBitWidthInfo ARGS
 ((
  RgSchUeCb          *ueCb
 ));
 
-PUBLIC U8 rgSCHTomUtlFetchPcqiBitSz ARGS
+U8 rgSCHTomUtlFetchPcqiBitSz ARGS
 ((
 RgSchUeCb          *ueCb, 
 U8                 numTxAnt,
 U8                 *ri
 ));
 
-PUBLIC U8 rgSCHTomUtlFetchPcqiBitSzPucchMode21 ARGS
+U8 rgSCHTomUtlFetchPcqiBitSzPucchMode21 ARGS
 ((
 RgSchUeCb          *ueCb, 
 TfuCqiPucchMode21   *mode21Info,
@@ -454,7 +454,7 @@ U8                 numTxAnt,
 U8                 *ri
 ));
 
-PUBLIC S16 rgSCHTomUtlMoveNxtOccasion ARGS
+S16 rgSCHTomUtlMoveNxtOccasion ARGS
 ((
 RgSchCellCb        *cell,
 RgSchUeCb          *ueCb,
@@ -573,7 +573,7 @@ PRIVATE S16 rgSCHTomUtlFillSfHqFdbkForOneUe ARGS((
       ));
 #endif
 #ifdef LTEMAC_SPS
-EXTERN PUBLIC Void rgSCHCmnDlSpsSch (RgSchCellCb *cell);
+EXTERN Void rgSCHCmnDlSpsSch (RgSchCellCb *cell);
 #ifndef LTE_TDD
 #ifdef UNUSED_FUNC
 #ifdef TFU_UPGRADE
@@ -670,7 +670,7 @@ PRIVATE Void rgSCHTomUtlFillSfHqFdbkForFrmt1BCSForM234 ARGS
 #endif/*LTE_ADV*/
 #endif/*LTE_TDD*/
 
-PUBLIC U32 rgDlCqiRptCnt[16], rgTotDlCqiRpt;
+U32 rgDlCqiRptCnt[16], rgTotDlCqiRpt;
 
 #ifdef RG_5GTF
 U32 rgSch5gtfCqi2Mcs[15] = 
@@ -697,7 +697,7 @@ the existing usage in MAC (and its Acceptance), its being considered*/
 /*Tables Derived from 3GPP TS 36.211 Section 5.5.3.3 */
 /* Table 5.5.3.3-1 */
 #ifndef LTE_TDD
-CONSTANT PUBLIC RgSchFddCellSpSrsSubfrmTbl rgSchFddCellSpSrsSubfrmTbl = {
+CONSTANT RgSchFddCellSpSrsSubfrmTbl rgSchFddCellSpSrsSubfrmTbl = {
    {TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE},
    {TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE},
    {FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE},
@@ -717,7 +717,7 @@ CONSTANT PUBLIC RgSchFddCellSpSrsSubfrmTbl rgSchFddCellSpSrsSubfrmTbl = {
 };
 #else
 /* Table 5.5.3.3-2 */
-CONSTANT PUBLIC RgSchTddCellSpSrsSubfrmTbl rgSchTddCellSpSrsSubfrmTbl = {
+CONSTANT RgSchTddCellSpSrsSubfrmTbl rgSchTddCellSpSrsSubfrmTbl = {
    {FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE},
    {FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE},
    {FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE},
@@ -736,8 +736,8 @@ CONSTANT PUBLIC RgSchTddCellSpSrsSubfrmTbl rgSchTddCellSpSrsSubfrmTbl = {
    {FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE}
 };
 #endif
-PUBLIC S8 rgSchCmnAper20n22DiffCqi[4] = {1, 2, 3, 4};
-PUBLIC S8 rgSchCmnAper30n31DiffCqi[4] = {0, 1, 2, -1};
+S8 rgSchCmnAper20n22DiffCqi[4] = {1, 2, 3, 4};
+S8 rgSchCmnAper30n31DiffCqi[4] = {0, 1, 2, -1};
 #endif 
 
 /**
@@ -756,7 +756,7 @@ PUBLIC S8 rgSchCmnAper30n31DiffCqi[4] = {0, 1, 2, -1};
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHGetDedPrmUe 
+S16 rgSCHGetDedPrmUe 
 (
 RgSchCellCb     *cell,
 U16             rapId,
@@ -764,7 +764,7 @@ CmLteTimingInfo timingInfo,
 RgSchUeCb       **ue
 )
 #else
-PUBLIC S16 rgSCHGetDedPrmUe(cell, rapId, timingInfo, ue)
+S16 rgSCHGetDedPrmUe(cell, rapId, timingInfo, ue)
 RgSchCellCb     *cell; 
 U16             rapId;
 CmLteTimingInfo timingInfo;
@@ -815,13 +815,13 @@ RgSchUeCb       **ue;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomRaReqInd
+S16 rgSCHTomRaReqInd
 (
 RgSchCellCb     *cell,
 TfuRaReqIndInfo *raReqInd
 )
 #else
-PUBLIC S16 rgSCHTomRaReqInd(cell, raReqInd)
+S16 rgSCHTomRaReqInd(cell, raReqInd)
 RgSchCellCb     *cell; 
 TfuRaReqIndInfo *raReqInd;
 #endif
@@ -915,13 +915,13 @@ TfuRaReqIndInfo *raReqInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUlCqiInd
+S16 rgSCHTomUlCqiInd
 ( 
 RgSchCellCb     *cell,
 TfuUlCqiIndInfo *ulCqiInd
 )
 #else
-PUBLIC S16 rgSCHTomUlCqiInd(cell, ulCqiInd)
+S16 rgSCHTomUlCqiInd(cell, ulCqiInd)
 RgSchCellCb     *cell; 
 TfuUlCqiIndInfo *ulCqiInd;
 #endif
@@ -991,13 +991,13 @@ TfuUlCqiIndInfo *ulCqiInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomPucchDeltaPwrInd
+S16 rgSCHTomPucchDeltaPwrInd
 ( 
 RgSchCellCb             *cell,
 TfuPucchDeltaPwrIndInfo *pucchDeltaPwr
 )
 #else
-PUBLIC S16 rgSCHTomPucchDeltaPwrInd(cell, pucchDeltaPwr)
+S16 rgSCHTomPucchDeltaPwrInd(cell, pucchDeltaPwr)
 RgSchCellCb             *cell; 
 TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
 #endif
@@ -1060,13 +1060,13 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomHarqAckInd
+S16 rgSCHTomHarqAckInd
 (
 RgSchCellCb     *cell,
 TfuHqIndInfo    *harqAckInd
 )
 #else
-PUBLIC S16 rgSCHTomHarqAckInd(cell, harqAckInd)
+S16 rgSCHTomHarqAckInd(cell, harqAckInd)
 RgSchCellCb     *cell; 
 TfuHqIndInfo    *harqAckInd;
 #endif
@@ -1253,13 +1253,13 @@ TfuHqIndInfo    *harqAckInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomSrInd
+S16 rgSCHTomSrInd
 (
 RgSchCellCb     *cell,
 TfuSrIndInfo    *srInd
 )
 #else
-PUBLIC S16 rgSCHTomSrInd(cell, srInd)
+S16 rgSCHTomSrInd(cell, srInd)
 RgSchCellCb     *cell; 
 TfuSrIndInfo    *srInd;
 #endif
@@ -1336,13 +1336,13 @@ TfuSrIndInfo    *srInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomDoaInd
+S16 rgSCHTomDoaInd
 (
 RgSchCellCb     *cell,
 TfuDoaIndInfo   *doaInd
 )
 #else
-PUBLIC S16 rgSCHTomDoaInd(cell, doaInd )
+S16 rgSCHTomDoaInd(cell, doaInd )
 RgSchCellCb     *cell;
 TfuDoaIndInfo   *doaInd;
 #endif
@@ -1398,13 +1398,13 @@ TfuDoaIndInfo   *doaInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomDlCqiInd
+S16 rgSCHTomDlCqiInd
 (
 RgSchCellCb     *cell,
 TfuDlCqiIndInfo *dlCqiInd
 )
 #else
-PUBLIC S16 rgSCHTomDlCqiInd(cell, dlCqiInd)
+S16 rgSCHTomDlCqiInd(cell, dlCqiInd)
 RgSchCellCb     *cell;
 TfuDlCqiIndInfo *dlCqiInd;
 #endif
@@ -1801,13 +1801,13 @@ PRIVATE S16 rgSCHTomUtlMoveSrsNxtOccasion(cell, ue)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomRawCqiInd
+S16 rgSCHTomRawCqiInd
 (
  RgSchCellCb     *cell,
  TfuRawCqiIndInfo *rawCqiInd
 )
 #else
-PUBLIC S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
+S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
    RgSchCellCb     *cell;
    TfuRawCqiIndInfo *rawCqiInd;
 #endif
@@ -2076,13 +2076,13 @@ PUBLIC S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomSrsInd
+S16 rgSCHTomSrsInd
 (
  RgSchCellCb     *cell,
  TfuSrsIndInfo *srsInd
  )
 #else
-PUBLIC S16 rgSCHTomSrsInd(cell, srsInd)
+S16 rgSCHTomSrsInd(cell, srsInd)
    RgSchCellCb     *cell;
    TfuSrsIndInfo *srsInd;
 #endif
@@ -2201,13 +2201,13 @@ PRIVATE S16 rgSCHTomUtlGenIndices(label, posM, valN, valK, sbInfo)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomCrcInd
+S16 rgSCHTomCrcInd
 (
 RgSchCellCb       *cell,
 TfuCrcIndInfo *crcInd
 )
 #else
-PUBLIC S16 rgSCHTomCrcInd(cell, crcInd)
+S16 rgSCHTomCrcInd(cell, crcInd)
 RgSchCellCb       *cell;
 TfuCrcIndInfo *crcInd;
 #endif
@@ -2463,13 +2463,13 @@ TfuCrcIndInfo *crcInd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomTimingAdvInd
+S16 rgSCHTomTimingAdvInd
 (
 RgSchCellCb         *cell,
 TfuTimingAdvIndInfo *timingAdvInd
  )
 #else
-PUBLIC S16 rgSCHTomTimingAdvInd(cell, timingAdvInd)
+S16 rgSCHTomTimingAdvInd(cell, timingAdvInd)
 RgSchCellCb         *cell;
 TfuTimingAdvIndInfo *timingAdvInd;
 #endif
@@ -2527,13 +2527,13 @@ TfuTimingAdvIndInfo *timingAdvInd;
  *  @return  Void
  **/
 #ifdef ANSI
-PUBLIC Void rgSCHTomTtiInd
+Void rgSCHTomTtiInd
 (
 SlotIndInfo        *slotInd,
 Inst               schInst
 )
 #else
-PUBLIC Void rgSCHTomTtiInd(slotInd, schInst)
+Void rgSCHTomTtiInd(slotInd, schInst)
 SlotIndInfo        *slotInd;
 Inst               schInst;
 #endif
@@ -3603,7 +3603,7 @@ RgSchCellCb    *cell;
  */
 #ifdef TFU_UPGRADE
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUtlFillHqFdbkInfo
+S16 rgSCHTomUtlFillHqFdbkInfo
 (
  TfuRecpReqInfo          *recpReqInfo,
  RgSchCellCb             *cell,
@@ -3615,7 +3615,7 @@ PUBLIC S16 rgSCHTomUtlFillHqFdbkInfo
  RgSchErrInfo            *err
  )
 #else
-PUBLIC S16 rgSCHTomUtlFillHqFdbkInfo (recpReqInfo, cell, validIdx, hqCb, nxtDlsf, pucchRecpInfo, prvHqCb, err)
+S16 rgSCHTomUtlFillHqFdbkInfo (recpReqInfo, cell, validIdx, hqCb, nxtDlsf, pucchRecpInfo, prvHqCb, err)
    TfuRecpReqInfo          *recpReqInfo;
    RgSchCellCb             *cell;
    U16                     validIdx; 
@@ -3627,7 +3627,7 @@ PUBLIC S16 rgSCHTomUtlFillHqFdbkInfo (recpReqInfo, cell, validIdx, hqCb, nxtDlsf
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUtlFillHqFdbkInfo
+S16 rgSCHTomUtlFillHqFdbkInfo
 (
 TfuRecpReqInfo          *recpReqInfo,
 RgSchCellCb             *cell,
@@ -3638,7 +3638,7 @@ RgSchDlHqProcCb         *prvHqCb,
 RgSchErrInfo            *err
 )
 #else
-PUBLIC S16 rgSCHTomUtlFillHqFdbkInfo (recpReqInfo, cell, hqCb, nxtDlsf, pucchRecpInfo, prvHqCb, err)
+S16 rgSCHTomUtlFillHqFdbkInfo (recpReqInfo, cell, hqCb, nxtDlsf, pucchRecpInfo, prvHqCb, err)
 TfuRecpReqInfo          *recpReqInfo;
 RgSchCellCb             *cell;
 RgSchDlHqProcCb         *hqCb;
@@ -5299,12 +5299,12 @@ PRIVATE S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, validIdx, err)
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUtlFillRiBitWidthInfo
+S16 rgSCHTomUtlFillRiBitWidthInfo
 (
  RgSchUeCb     *ueCb
  )
 #else
-PUBLIC S16 rgSCHTomUtlFillRiBitWidthInfo(ueCb)
+S16 rgSCHTomUtlFillRiBitWidthInfo(ueCb)
    RgSchUeCb   *ueCb;
 #endif
 {
@@ -5366,14 +5366,14 @@ PUBLIC S16 rgSCHTomUtlFillRiBitWidthInfo(ueCb)
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC U8 rgSCHTomUtlFetchPcqiBitSz
+U8 rgSCHTomUtlFetchPcqiBitSz
 (
  RgSchUeCb    *ueCb, 
  U8           numTxAnt,
  U8           *ri
  )
 #else
-PUBLIC U8 rgSCHTomUtlFetchPcqiBitSz(ueCb, numTxAnt, ri)
+U8 rgSCHTomUtlFetchPcqiBitSz(ueCb, numTxAnt, ri)
    RgSchUeCb     *ueCb;
    U8            numTxAnt;
    U8            *ri;
@@ -5517,14 +5517,14 @@ PUBLIC U8 rgSCHTomUtlFetchPcqiBitSz(ueCb, numTxAnt, ri)
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUtlPcqiSbCalcBpIdx
+S16 rgSCHTomUtlPcqiSbCalcBpIdx
 (
  CmLteTimingInfo    crntTimInfo,
  RgSchUeCb          *ueCb,
  RgSchUePCqiCb   *cqiCb
  )
 #else
-PUBLIC S16 rgSCHTomUtlPcqiSbCalcBpIdx(crntTimInfo, ueCb, cqiCb)
+S16 rgSCHTomUtlPcqiSbCalcBpIdx(crntTimInfo, ueCb, cqiCb)
    CmLteTimingInfo  crntTimInfo;
    RgSchUeCb        *ueCb;
    RgSchUePCqiCb   *cqiCb;
@@ -5580,14 +5580,14 @@ PUBLIC S16 rgSCHTomUtlPcqiSbCalcBpIdx(crntTimInfo, ueCb, cqiCb)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUtlMoveNxtOccasion
+S16 rgSCHTomUtlMoveNxtOccasion
 (
  RgSchCellCb    *cell,
  RgSchUeCb      *ue,
  U16            validIdx
  )
 #else
-PUBLIC S16 rgSCHTomUtlMoveNxtOccasion(cell, ue, validIdx)
+S16 rgSCHTomUtlMoveNxtOccasion(cell, ue, validIdx)
    RgSchCellCb    *cell;
    RgSchUeCb      *ue;
    U16            validIdx;
@@ -5670,7 +5670,7 @@ PUBLIC S16 rgSCHTomUtlMoveNxtOccasion(cell, ue, validIdx)
  *
  **********************************************************/
 #ifdef ANSI
-PUBLIC Void rgSCHTomPrepareAcqiRecp
+Void rgSCHTomPrepareAcqiRecp
 (
  RgSchUeCb			   *ueCb, 
  RgSchCellCb			*cell,
@@ -5678,7 +5678,7 @@ PUBLIC Void rgSCHTomPrepareAcqiRecp
  U8                    ccIdx
  )
 #else
-PUBLIC  Void rgSCHTomPrepareAcqiRecp(ueCb, cell, cqiRecpReqInfo, ccIdx)
+ Void rgSCHTomPrepareAcqiRecp(ueCb, cell, cqiRecpReqInfo, ccIdx)
  RgSchUeCb			   *ueCb;
  RgSchCellCb		   *cell;
  TfuUePuschCqiRecpInfo *cqiRecpReqInfo;
@@ -5863,7 +5863,7 @@ PUBLIC  Void rgSCHTomPrepareAcqiRecp(ueCb, cell, cqiRecpReqInfo, ccIdx)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUtlFillDatAperRecpReq
+S16 rgSCHTomUtlFillDatAperRecpReq
 (
  RgSchCellCb       *cell,
  U8                cqiReq,
@@ -5874,7 +5874,7 @@ PUBLIC S16 rgSCHTomUtlFillDatAperRecpReq
  U16                validIdx
  )
 #else
-PUBLIC S16 rgSCHTomUtlFillDatAperRecpReq(cell, cqiReq, alloc, datRecpInfo, timeInfo, hqPres, validIdx)
+S16 rgSCHTomUtlFillDatAperRecpReq(cell, cqiReq, alloc, datRecpInfo, timeInfo, hqPres, validIdx)
    RgSchCellCb       *cell;
    U8                cqiReq;
    RgSchUlAlloc      *alloc;
@@ -5975,7 +5975,7 @@ PUBLIC S16 rgSCHTomUtlFillDatAperRecpReq(cell, cqiReq, alloc, datRecpInfo, timeI
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUtlFillDatPriRecpReq
+S16 rgSCHTomUtlFillDatPriRecpReq
 (
  RgSchCellCb       *cell,
  RgSchUlAlloc      *alloc,
@@ -5985,7 +5985,7 @@ PUBLIC S16 rgSCHTomUtlFillDatPriRecpReq
  U16               validIdx
  )
 #else
-PUBLIC S16 rgSCHTomUtlFillDatPriRecpReq(cell, alloc, datRecpInfo, timeInfo, 
+S16 rgSCHTomUtlFillDatPriRecpReq(cell, alloc, datRecpInfo, timeInfo, 
 hqPres, validIdx)
    RgSchCellCb       *cell;
    RgSchUlAlloc      *alloc;
@@ -6071,7 +6071,7 @@ hqPres, validIdx)
  **/
 
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUtlFillDatPCqiRecpReq
+S16 rgSCHTomUtlFillDatPCqiRecpReq
 (
  RgSchCellCb       *cell,
  RgSchUlAlloc      *alloc,
@@ -6081,7 +6081,7 @@ PUBLIC S16 rgSCHTomUtlFillDatPCqiRecpReq
  U16                validIdx
  )
 #else
-PUBLIC S16 rgSCHTomUtlFillDatPCqiRecpReq(cell, alloc, datRecpInfo, 
+S16 rgSCHTomUtlFillDatPCqiRecpReq(cell, alloc, datRecpInfo, 
       timeInfo, hqPres, validIdx)
    RgSchCellCb       *cell;
    RgSchUlAlloc      *alloc;
@@ -6186,7 +6186,7 @@ PUBLIC S16 rgSCHTomUtlFillDatPCqiRecpReq(cell, alloc, datRecpInfo,
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomUtlFillDatSrsRecpReq
+S16 rgSCHTomUtlFillDatSrsRecpReq
 (
  RgSchCellCb       *cell,
  RgSchUlAlloc      *alloc,
@@ -6195,7 +6195,7 @@ PUBLIC S16 rgSCHTomUtlFillDatSrsRecpReq
  Bool              hqPres
  )
 #else
-PUBLIC S16 rgSCHTomUtlFillDatSrsRecpReq(cell, alloc, datRecpInfo, timeInfo, 
+S16 rgSCHTomUtlFillDatSrsRecpReq(cell, alloc, datRecpInfo, timeInfo, 
       hqPres)
    RgSchCellCb       *cell;
    RgSchUlAlloc      *alloc;
@@ -6246,14 +6246,14 @@ PUBLIC S16 rgSCHTomUtlFillDatSrsRecpReq(cell, alloc, datRecpInfo, timeInfo,
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgSCHTomFillOnlySrsRecpReq
+S16 rgSCHTomFillOnlySrsRecpReq
 (
  RgSchCellCb       *cell,
  RgSchUlAlloc      *alloc,
  TfuUeRecpReqInfo  *datRecpInfo
  )
 #else
-PUBLIC S16 rgSCHTomFillOnlySrsRecpReq(cell, alloc, datRecpInfo)  
+S16 rgSCHTomFillOnlySrsRecpReq(cell, alloc, datRecpInfo)  
    RgSchCellCb       *cell;
    RgSchUlAlloc      *alloc;
    TfuUeRecpReqInfo  *datRecpInfo;

@@ -66,7 +66,7 @@ invoked by PHY towards MAC
 PRIVATE S16 rgTOMUtlProcDlSf ARGS(( RgDlSf *dlSf, RgCellCb   *cellCb,
                                     RgErrInfo  *err));
 #else
-PUBLIC S16 rgTOMUtlProcDlSf ARGS((RgDlSf *dlSf, RgCellCb *cellCb,
+S16 rgTOMUtlProcDlSf ARGS((RgDlSf *dlSf, RgCellCb *cellCb,
                                   RgErrInfo  *err));
 #endif
 PRIVATE S16 rgTOMProcCrntiCEInDatInd ARGS((
@@ -87,7 +87,7 @@ RgInfCeInfo       *ceInfo,
 U16               slot
 ));
 
-PUBLIC S16 rgHndlFlowCntrl
+S16 rgHndlFlowCntrl
 (
 RgCellCb       *cell,
 RgInfSfAlloc        *sfInfo
@@ -156,7 +156,7 @@ PRIVATE U32 rgLwrBsrTbl[64] = {
 }
 
 /* global variables */
-PUBLIC U32 rgUlrate_tfu;
+U32 rgUlrate_tfu;
 #ifdef EMTC_ENABLE
 EXTERN U32 grgUlrate_tfu;
 #endif
@@ -387,14 +387,14 @@ PRIVATE S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
 #endif
 #else
 #ifdef ANSI
-PUBLIC S16 rgTOMUtlProcDlSf
+S16 rgTOMUtlProcDlSf
 (
  RgDlSf     *dlSf,
  RgCellCb   *cellCb,
  RgErrInfo  *err
  )
 #else
-PUBLIC S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
+S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
  RgDlSf     *dlSf;
  RgCellCb   *cellCb;
  RgErrInfo  *err;
@@ -936,10 +936,10 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
       }
 #ifdef RLC_STA_PROC_IN_MAC/* RLC Status PDU Processing */
       {
-         extern S16 kwProcDlStatusPdu(Pst       *udxPst,SuId      suId,
+         extern S16 rlcProcDlStatusPdu(Pst       *udxPst,SuId      suId,
                CmLteCellId cellId,CmLteRnti rnti,CmLteLcId lcId,Buffer *rlcSdu);
 
-         if(ROK == kwProcDlStatusPdu(&(cellCb->rguDlSap->sapCfg.sapPst),
+         if(ROK == rlcProcDlStatusPdu(&(cellCb->rguDlSap->sapCfg.sapPst),
                   cellCb->rguDlSap->sapCfg.suId,
                   cellCb->cellId,ueCb->ueId,sdu->lcId,sdu->mBuf))
          {
@@ -1248,13 +1248,13 @@ U32         *lcgBytes;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgTOMDatInd
+S16 rgTOMDatInd
 (
 Inst           inst,
  TfuDatIndInfo *datInd
  )
 #else
-PUBLIC S16 rgTOMDatInd(inst,datInd)
+S16 rgTOMDatInd(inst,datInd)
 Inst             inst;
  TfuDatIndInfo *datInd;
 #endif
@@ -1862,13 +1862,13 @@ RgInfUlUeInfo       *ueInfo;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC Void rgTOMRlsSf
+Void rgTOMRlsSf
 (
 Inst                inst,
 RgDlSf              *dlSf
 )
 #else
-PUBLIC Void rgTOMRlsSf(dlSf)
+Void rgTOMRlsSf(dlSf)
 Inst                inst;
 RgDlSf              *dlSf;
 #endif
@@ -1960,13 +1960,13 @@ RgDlSf              *dlSf;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgHndlFlowCntrl
+S16 rgHndlFlowCntrl
 (
 RgCellCb       *cell,
 RgInfSfAlloc        *sfInfo
 )
 #else
-PUBLIC S16 rgHndlFlowCntrl(cell, sfInfo)
+S16 rgHndlFlowCntrl(cell, sfInfo)
 RgCellCb            *cell;
 RgInfSfAlloc        *sfInfo;
 #endif
@@ -2029,13 +2029,13 @@ RgInfSfAlloc        *sfInfo;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 RgSchMacSfAllocReq
+S16 RgSchMacSfAllocReq
 (
 Pst                 *pst,
 RgInfSfAlloc        *sfInfo
 )
 #else
-PUBLIC S16 RgSchMacSfAllocReq(pst, sfInfo)
+S16 RgSchMacSfAllocReq(pst, sfInfo)
 Pst                 *pst;
 RgInfSfAlloc        *sfInfo;
 #endif

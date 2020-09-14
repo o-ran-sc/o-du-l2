@@ -117,7 +117,7 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
  *      -# LCM_REASON_INVALID_MSGTYPE
  *      -# LCM_REASON_MEM_NOAVAIL
  **/
-PUBLIC uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
+uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
 {
    uint16_t ret = LCM_REASON_NOT_APPL;
    Inst     inst = (dInst - SCH_INST_START);

@@ -65,17 +65,17 @@
 EXTERN "C" {
 #endif /* CPLUSPLUS */
 
-EXTERN S16 kwGetSId ARGS((SystemId *s));
+EXTERN S16 rlcGetSId ARGS((SystemId *s));
 #ifdef __cplusplus
 }
 #endif /* CPLUSPLUS */
 
 /* copyright banner */
 
-PUBLIC CONSTANT Txt kwBan1[] =
+CONSTANT Txt kwBan1[] =
    {"(c) COPYRIGHT 1989-2002, Trillium Digital Systems, Inc."};
 
-PUBLIC CONSTANT Txt kwBan2[] =
+CONSTANT Txt kwBan2[] =
    {"                 All rights reserved."};
 
 /* system id */
@@ -108,16 +108,16 @@ PRIVATE CONSTANT SystemId sId ={
 */
 
 #ifdef ANSI
-PUBLIC S16 kwGetSId
+S16 rlcGetSId
 (
 SystemId *s                 /* system id */
 )
 #else
-PUBLIC S16 kwGetSId(s)
+S16 rlcGetSId(s)
 SystemId *s;                /* system id */
 #endif
 {
-   TRC2(kwGetSId);
+   TRC2(rlcGetSId);
 
    s->mVer = sId.mVer;
    s->mRev = sId.mRev;
@@ -127,7 +127,7 @@ SystemId *s;                /* system id */
 
    return (TRUE);
 
-} /* end of kwGetSId */
+} /* end of rlcGetSId */
 
   
 /********************************************************************30**

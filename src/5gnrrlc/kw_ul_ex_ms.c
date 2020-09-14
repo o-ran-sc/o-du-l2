@@ -64,7 +64,7 @@ static int RLOG_FILE_ID=206;
 #include "l2_tenb_stats.x"   
 #endif
 
-PUBLIC S16 rlcUlInitExt ARGS (( Void ));
+S16 rlcUlInitExt ARGS (( Void ));
 
 /**
  *
@@ -81,11 +81,11 @@ PUBLIC S16 rlcUlInitExt ARGS (( Void ));
 */
   
 #ifdef ANSI
-PUBLIC S16 rlcUlInitExt 
+S16 rlcUlInitExt 
 (
 )
 #else
-PUBLIC S16 rlcUlInitExt()
+S16 rlcUlInitExt()
 #endif
 {
    TRC2(rlcUlInitExt);
@@ -123,7 +123,7 @@ PUBLIC S16 rlcUlInitExt()
  *
  */
 #ifdef ANSI
-PUBLIC S16 rlcUlActvInit
+S16 rlcUlActvInit
 (
 Ent    ent,                 /* entity */
 Inst   inst,                /* instance */
@@ -131,7 +131,7 @@ Region region,              /* region */
 Reason reason               /* reason */
 )
 #else
-PUBLIC S16 rlcUlActvInit(ent, inst, region, reason)
+S16 rlcUlActvInit(ent, inst, region, reason)
 Ent    ent;                 /* entity */
 Inst   inst;                /* instance */
 Region region;              /* region */
@@ -205,13 +205,13 @@ Reason reason;              /* reason */
  *
  */
 #ifdef ANSI
-PUBLIC S16 rlcUlActvTsk
+S16 rlcUlActvTsk
 (
 Pst *pst,              /* pst structure */
 Buffer *mBuf            /* message buffer */
 )
 #else
-PUBLIC S16 rlcUlActvTsk(pst, mBuf)
+S16 rlcUlActvTsk(pst, mBuf)
 Pst *pst;              /* pst structure */
 Buffer *mBuf;           /* message buffer */
 #endif
@@ -229,13 +229,13 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCLKW
                case LKW_EVT_CFG_REQ:
                   {
-                     ret = unpackRlcConfigReq(KwMiRlcConfigReq, pst, mBuf);
+                     ret = unpackRlcConfigReq(RlcMiRlcConfigReq, pst, mBuf);
                      break;
                   }
 
                case LKW_EVT_CNTRL_REQ:
                   {
-                     ret = cmUnpkLkwCntrlReq(KwMiLkwCntrlReq, pst, mBuf);
+                     ret = cmUnpkLkwCntrlReq(RlcMiLkwCntrlReq, pst, mBuf);
                      break;
                   }
                
@@ -247,32 +247,32 @@ Buffer *mBuf;           /* message buffer */
 
                case LKW_EVT_STS_REQ:
                   {
-                     ret = cmUnpkLkwStsReq(KwMiLkwStsReq, pst, mBuf);
+                     ret = cmUnpkLkwStsReq(RlcMiLkwStsReq, pst, mBuf);
                      break;
                   }
 
                case LKW_EVT_STA_REQ:
                   {
-                     ret = cmUnpkLkwStaReq(KwMiLkwStaReq, pst, mBuf);
+                     ret = cmUnpkLkwStaReq(RlcMiLkwStaReq, pst, mBuf);
                      break;
                   }
                   /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
                case LKW_EVT_L2MEAS_REQ:
                   {
-                     ret = cmUnpkLkwL2MeasReq(KwMiLkwL2MeasReq, pst, mBuf);
+                     ret = cmUnpkLkwL2MeasReq(RlcMiLkwL2MeasReq, pst, mBuf);
                      break;
                   }
                case LKW_EVT_L2MEAS_SEND_REQ:
                  {
 
-                    ret = cmUnpkLkwL2MeasSendReq(KwMiLkwL2MeasSendReq, pst, mBuf); 
+                    ret = cmUnpkLkwL2MeasSendReq(RlcMiLkwL2MeasSendReq, pst, mBuf); 
   
                      break;
                  }
                case LKW_EVT_L2MEAS_STOP_REQ:
                  {
-                     ret = cmUnpkLkwL2MeasStopReq(KwMiLkwL2MeasStopReq, pst, mBuf);
+                     ret = cmUnpkLkwL2MeasStopReq(RlcMiLkwL2MeasStopReq, pst, mBuf);
                      break;
                  }
 #endif
@@ -291,7 +291,7 @@ Buffer *mBuf;           /* message buffer */
             break;
          }
 
-      case ENTKW:
+      case ENTRLC:
          {
             switch(pst->event)
             {
@@ -343,19 +343,19 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCCKW
                case CKW_EVT_BND_REQ:              /* Bind request */
                   {
-                     ret = cmUnpkCkwBndReq(KwUiCkwBndReq, pst, mBuf );
+                     ret = cmUnpkCkwBndReq(RlcUiCkwBndReq, pst, mBuf );
                      break;
                   }
 
                case CKW_EVT_UBND_REQ:             /* Unbind request */
                   {
-                     ret = cmUnpkCkwUbndReq(KwUiCkwUbndReq, pst, mBuf );
+                     ret = cmUnpkCkwUbndReq(RlcUiCkwUbndReq, pst, mBuf );
                      break;
                   }
 
                case CKW_EVT_UEIDCHG_REQ:              /* Configuration request */
                   {
-                     ret = cmUnpkCkwUeIdChgReq(KwUiCkwUeIdChgReq, pst, mBuf);
+                     ret = cmUnpkCkwUeIdChgReq(RlcUiCkwUeIdChgReq, pst, mBuf);
                      break;
                   }
 
@@ -364,13 +364,13 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCKWU
                case KWU_EVT_BND_REQ:              /* Bind request */
                   {
-                     ret = cmUnpkKwuBndReq(KwUiKwuBndReq, pst, mBuf );
+                     ret = cmUnpkKwuBndReq(RlcUiKwuBndReq, pst, mBuf );
                      break;
                   }
 
                case KWU_EVT_UBND_REQ:             /* Unbind request */
                   {
-                     ret = cmUnpkKwuUbndReq(KwUiKwuUbndReq, pst, mBuf );
+                     ret = cmUnpkKwuUbndReq(RlcUiKwuUbndReq, pst, mBuf );
                      break;
                   }
 #endif  /* LCKWU */
@@ -395,13 +395,13 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCKWU
                case KWU_EVT_BND_REQ:              /* Bind request */
                   {
-                     ret = cmUnpkKwuBndReq(KwUiKwuBndReq, pst, mBuf );
+                     ret = cmUnpkKwuBndReq(RlcUiKwuBndReq, pst, mBuf );
                      break;
                   }
 
                case KWU_EVT_UBND_REQ:             /* Unbind request */
                   {
-                     ret = cmUnpkKwuUbndReq(KwUiKwuUbndReq, pst, mBuf );
+                     ret = cmUnpkKwuUbndReq(RlcUiKwuUbndReq, pst, mBuf );
                      break;
                   }
 
@@ -419,14 +419,14 @@ Buffer *mBuf;           /* message buffer */
             break;
          }
 
-      case ENTRG:
+      case ENTMAC:
          {
             switch(pst->event)
             {
 #ifdef LCRGU
                case EVTRGUBNDCFM:     /* Bind request */
                   {
-                     ret = cmUnpkRguBndCfm(KwLiRguBndCfm, pst, mBuf );
+                     ret = cmUnpkRguBndCfm(RlcLiRguBndCfm, pst, mBuf );
                      break;
                   }
 

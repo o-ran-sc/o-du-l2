@@ -568,7 +568,7 @@ RgErrInfo   *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PUBLIC S16 rgDUXDemuxData
+S16 rgDUXDemuxData
 (
 Inst          inst,
 RgMacPdu      *pdu,
@@ -577,7 +577,7 @@ Buffer        **mBuf,
 RgErrInfo     *err
 )
 #else
-PUBLIC S16 rgDUXDemuxData(inst,pdu, ceInfo, mBuf, err)
+S16 rgDUXDemuxData(inst,pdu, ceInfo, mBuf, err)
 Inst          inst;
 RgMacPdu      *pdu;
 RgInfCeInfo   *ceInfo;

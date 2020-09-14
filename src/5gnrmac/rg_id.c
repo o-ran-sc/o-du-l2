@@ -98,12 +98,12 @@ PRIVATE CONSTANT SystemId sId ={
 */
  
 #ifdef ANSI
-PUBLIC Void rgGetSId
+Void rgGetSId
 (
 SystemId *s                 /* system id */
 )
 #else
-PUBLIC Void rgGetSId(s)
+Void rgGetSId(s)
 SystemId *s;                /* system id */
 #endif
 {

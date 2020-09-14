@@ -85,13 +85,13 @@ PRIVATE S16 rgPomUeSCellDedLcCfg ARGS((RgCellCb                   *cell,
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellLchModReq
+S16 RgPrgPMacSMacUeSCellLchModReq
 (
 Pst                      *pst,    
 RgPrgUeSCellLchModInfo   *lchCfgCb
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeSCellLchModReq(pst, lchCfgCb)
+S16 RgPrgPMacSMacUeSCellLchModReq(pst, lchCfgCb)
 Pst                      *pst;    
 RgPrgUeSCellLchModInfo   *lchCfgCb;
 #endif
@@ -172,14 +172,14 @@ RgPrgUeSCellLchModInfo   *lchCfgCb;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgPomSndUeSCellLchDelToSmac
+S16 rgPomSndUeSCellLchDelToSmac
 (
 Inst            inst,
 CrgDel          *lcDel,
 Bool            *isCfmRqrd
 )
 #else
-PUBLIC S16 rgPomSndUeSCellLchDelToSmac(inst,lcDel,isCfmRqrd)
+S16 rgPomSndUeSCellLchDelToSmac(inst,lcDel,isCfmRqrd)
 Inst            inst;
 CrgDel          *lcDel;
 Bool            *isCfmRqrd;
@@ -264,7 +264,7 @@ Bool            *isCfmRqrd;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgPomSndUeSCellLchModToSmac
+S16 rgPomSndUeSCellLchModToSmac
 (
 Inst           inst,
 RgCellCb       *cell,
@@ -273,7 +273,7 @@ CrgLchRecfg    *lchRecfg,
 Bool           *isCfmRqrd
 )
 #else
-PUBLIC S16 rgPomSndUeSCellLchModToSmac(inst, cell, ue, lchRecfg, isCfmRqrd)
+S16 rgPomSndUeSCellLchModToSmac(inst, cell, ue, lchRecfg, isCfmRqrd)
 Inst           inst;
 RgCellCb       *cell;
 RgUeCb         *ue;
@@ -333,7 +333,7 @@ Bool           *isCfmRqrd;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgPomSndUeSCellLchAddToSmac
+S16 rgPomSndUeSCellLchAddToSmac
 (
 Inst           inst,
 RgCellCb       *cell,
@@ -342,7 +342,7 @@ CrgLchCfg      *lchCfg,
 Bool           *isCfmRqrd
 )
 #else
-PUBLIC S16 rgPomSndUeSCellLchAddToSmac(inst, cell, ue, lchCfg, isCfmRqrd)
+S16 rgPomSndUeSCellLchAddToSmac(inst, cell, ue, lchCfg, isCfmRqrd)
 Inst           inst;
 RgCellCb       *cell;
 RgUeCb         *ue;
@@ -403,13 +403,13 @@ Bool           *isCfmRqrd;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellLchDelReq
+S16 RgPrgPMacSMacUeSCellLchDelReq
 (
 Pst                       *pst,    
 RgPrgUeSCellLchDelInfo    *delLcCb
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeSCellLchDelReq(pst, delLcCb)
+S16 RgPrgPMacSMacUeSCellLchDelReq(pst, delLcCb)
 Pst                       *pst;    
 RgPrgUeSCellLchDelInfo    *delLcCb;
 #endif
@@ -484,13 +484,13 @@ RgPrgUeSCellLchDelInfo    *delLcCb;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellLchAddReq
+S16 RgPrgPMacSMacUeSCellLchAddReq
 (
 Pst                      *pst,    
 RgPrgUeSCellLchAddInfo   *lchCfgCb
 )
 #else
-PUBLIC S16 RgPrgPMacSMacUeSCellLchAddReq(pst, lchCfgCb)
+S16 RgPrgPMacSMacUeSCellLchAddReq(pst, lchCfgCb)
 Pst                      *pst;    
 RgPrgUeSCellLchAddInfo   *lchCfgCb;
 #endif
@@ -565,7 +565,7 @@ RgPrgUeSCellLchAddInfo   *lchCfgCb;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgPomVldtAddLch
+S16 rgPomVldtAddLch
 (
 Inst                    inst, 
 RgPrgUeSCellLchAddInfo  *lcCfg,
@@ -573,7 +573,7 @@ RgCellCb                **cell,
 RgUeCb                  **ue
 )
 #else
-PUBLIC S16 rgPomVldtAddLch(inst,lcCfg, cell, ue)
+S16 rgPomVldtAddLch(inst,lcCfg, cell, ue)
 Inst                    inst;
 RgPrgUeSCellLchAddInfo  *lcCfg;
 RgCellCb                **cell;
@@ -640,7 +640,7 @@ RgUeCb                  **ue;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgPomUeSCellLcAdd
+S16 rgPomUeSCellLcAdd
 (
 Inst                     inst,
 RgCellCb                 *cell,
@@ -648,7 +648,7 @@ RgUeCb                   *ue,
 RgPrgUeSCellLchAddInfo   *lcCfg
 )
 #else
-PUBLIC S16 rgPomUeSCellLcAdd(inst,cell, ue, lcCfg)
+S16 rgPomUeSCellLcAdd(inst,cell, ue, lcCfg)
 Inst                     inst;
 RgCellCb                 *cell;
 RgUeCb                   *ue;
@@ -860,7 +860,7 @@ RgPrgUeSCellLchAddInfo     *lcCfg;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgPomVltdModLch
+S16 rgPomVltdModLch
 (
  Inst                     inst,
  RgPrgUeSCellLchModInfo   *lchCfgCb,
@@ -869,7 +869,7 @@ PUBLIC S16 rgPomVltdModLch
  RgUlLcCb                 **ulLc
 )
 #else
-PUBLIC S16 rgPomVltdModLch(inst, lchCfgCb, cell, ue, ulLc)
+S16 rgPomVltdModLch(inst, lchCfgCb, cell, ue, ulLc)
  Inst                     inst;
  RgPrgUeSCellLchModInfo   *lchCfgCb;
  RgCellCb                 **cell;
@@ -932,7 +932,7 @@ PUBLIC S16 rgPomVltdModLch(inst, lchCfgCb, cell, ue, ulLc)
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgPomUeSCellLcMod
+S16 rgPomUeSCellLcMod
 (
 Inst                    inst,
 RgUeCb                  *ue,
@@ -940,7 +940,7 @@ RgUlLcCb                *ulLc,
 RgPrgUeSCellLchModInfo  *lchCfgCb
 )
 #else
-PUBLIC S16 rgPomUeSCellLcMod(inst,cell, ue, ulLc, lchCfgCb)
+S16 rgPomUeSCellLcMod(inst,cell, ue, ulLc, lchCfgCb)
 Inst                    inst;
 RgUeCb                  *ue;
 RgUlLcCb                *ulLc;
@@ -979,7 +979,7 @@ RgPrgUeSCellLchModInfo  *lchCfgCb;
  *      -# ROK 
  **/
 #ifdef ANSI
-PUBLIC S16 rgPomVltdDelLch
+S16 rgPomVltdDelLch
 (
  Inst                      inst,
  RgPrgUeSCellLchDelInfo    *delLcCb,
@@ -989,7 +989,7 @@ PUBLIC S16 rgPomVltdDelLch
  RgDlLcCb                  **dlLc
 )
 #else
-PUBLIC S16 rgPomVltdDelLch(inst, delLcCb, cell, ue, ulLc, dlLc)
+S16 rgPomVltdDelLch(inst, delLcCb, cell, ue, ulLc, dlLc)
  Inst                      inst;
  RgPrgUeSCellLchDelInfo    *delLcCb;
  RgCellCb                  **cell;
@@ -1053,7 +1053,7 @@ PUBLIC S16 rgPomVltdDelLch(inst, delLcCb, cell, ue, ulLc, dlLc)
  *      -# RFAILED
  **/
 #ifdef ANSI
-PUBLIC S16 rgPomUeSCellLcDel
+S16 rgPomUeSCellLcDel
 (
 Inst                      inst,
 RgPrgUeSCellLchDelInfo    *delLcCb,
@@ -1062,7 +1062,7 @@ RgUlLcCb                  *ulLc,
 RgDlLcCb                  *dlLc
 )
 #else
-PUBLIC S16 rgPomUeSCellLcDel(inst,delLcCb,ue,ulLc,dlLc)
+S16 rgPomUeSCellLcDel(inst,delLcCb,ue,ulLc,dlLc)
 Inst                      inst;
 RgPrgUeSCellLchDelInfo    *delLcCb;
 RgUeCb                    *ue;

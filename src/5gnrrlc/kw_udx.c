@@ -122,14 +122,14 @@ Buffer *dstMBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxBndReq
+S16 cmPkUdxBndReq
 (
 Pst *pst,
 SuId suId,
 SpId spId
 )
 #else
-PUBLIC S16 cmPkUdxBndReq(pst, suId, spId)
+S16 cmPkUdxBndReq(pst, suId, spId)
 Pst *pst;
 SuId suId;
 SpId spId;
@@ -173,14 +173,14 @@ SpId spId;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxUbndReq
+S16 cmPkUdxUbndReq
 (
 Pst *pst,
 SpId spId,
 Reason reason
 )
 #else
-PUBLIC S16 cmPkUdxUbndReq(pst, spId, reason)
+S16 cmPkUdxUbndReq(pst, spId, reason)
 Pst *pst;
 SpId spId;
 Reason reason;
@@ -224,14 +224,14 @@ Reason reason;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxBndCfm
+S16 cmPkUdxBndCfm
 (
 Pst *pst,
 SuId suId,
 U8 status
 )
 #else
-PUBLIC S16 cmPkUdxBndCfm(pst, suId, status)
+S16 cmPkUdxBndCfm(pst, suId, status)
 Pst *pst;
 SuId suId;
 U8 status;
@@ -277,14 +277,14 @@ U8 status;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxCfgReq
+S16 cmPkUdxCfgReq
 (
 Pst               *pst,
 SpId              spId,
 RlcCfgInfo        *cfgInfo
 )
 #else
-PUBLIC S16 cmPkUdxCfgReq(pst, spId, cfgInfo)
+S16 cmPkUdxCfgReq(pst, spId, cfgInfo)
 Pst               *pst;
 SpId              spId;
 RlcCfgInfo        *cfgInfo;
@@ -347,14 +347,14 @@ RlcCfgInfo        *cfgInfo;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxCfgCfm
+S16 cmPkUdxCfgCfm
 (
 Pst               *pst,
 SuId              suId,
 RlcCfgCfmInfo     *cfgCfmInfo
 )
 #else
-PUBLIC S16 cmPkUdxCfgCfm(pst, suId, cfgCfmInfo)
+S16 cmPkUdxCfgCfm(pst, suId, cfgCfmInfo)
 Pst               *pst;
 SuId              suId;
 RlcCfgCfmInfo     *cfgCfmInfo;
@@ -419,7 +419,7 @@ RlcCfgCfmInfo     *cfgCfmInfo;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxUeIdChgReq
+S16 cmPkUdxUeIdChgReq
 (
 Pst               *pst,
 SpId              spId,
@@ -428,7 +428,7 @@ CkwUeInfo         *ueInfo,
 CkwUeInfo         *newUeInfo
 )
 #else
-PUBLIC S16 cmPkUdxUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
+S16 cmPkUdxUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
 Pst               *pst;
 SpId              spId;
 U32               transId;
@@ -500,7 +500,7 @@ CkwUeInfo         *newUeInfo;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxUeIdChgCfm
+S16 cmPkUdxUeIdChgCfm
 (
 Pst               *pst,
 SuId              suId,
@@ -508,7 +508,7 @@ U32               transId,
 CmStatus          status
 )
 #else
-PUBLIC S16 cmPkUdxUeIdChgCfm(pst, suId, transId, status)
+S16 cmPkUdxUeIdChgCfm(pst, suId, transId, status)
 Pst               *pst;
 SuId              suId;
 U32               transId;
@@ -556,19 +556,19 @@ CmStatus          status;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxStaUpdCfm
+S16 cmPkUdxStaUpdCfm
 (
 Pst               *pst,
 SuId              suId,
 CmLteRlcId        *rlcId,
-KwUdxBufLst       *pStaPdu
+RlcUdxBufLst       *pStaPdu
 )
 #else
-PUBLIC S16 cmPkUdxStaUpdCfm(pst, suId, rlcId,pStaPdu)
+S16 cmPkUdxStaUpdCfm(pst, suId, rlcId,pStaPdu)
 Pst               *pst;
 SuId              suId;
 CmLteRlcId        *rlcId;
-KwUdxBufLst       *pStaPdu;
+RlcUdxBufLst       *pStaPdu;
 #endif
 {
     S16    ret1;
@@ -594,7 +594,7 @@ KwUdxBufLst       *pStaPdu;
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)pStaPdu, sizeof(KwUdxBufLst),mBuf);
+         cmPkUdxStruct((U8 *)pStaPdu, sizeof(RlcUdxBufLst),mBuf);
          cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
          break;
        }
@@ -626,14 +626,14 @@ KwUdxBufLst       *pStaPdu;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxStaProhTmrStart
+S16 cmPkUdxStaProhTmrStart
 (
 Pst               *pst,
 SpId              spId,
 CmLteRlcId        *rlcId
 )
 #else
-PUBLIC S16 cmPkUdxStaProhTmrStart(pst, suId, rlcId)
+S16 cmPkUdxStaProhTmrStart(pst, suId, rlcId)
 Pst               *pst;
 SpId              spId;
 CmLteRlcId        *rlcId;
@@ -692,19 +692,19 @@ CmLteRlcId        *rlcId;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxStaUpdReq
+S16 cmPkUdxStaUpdReq
 (
 Pst               *pst,
 SpId              spId,
 CmLteRlcId        *rlcId,
-KwUdxStaPdu      *pStaPdu
+RlcUdxStaPdu      *pStaPdu
 )
 #else
-PUBLIC S16 cmPkUdxStaUpdReq(pst, suId, rlcId,pStaPdu)
+S16 cmPkUdxStaUpdReq(pst, suId, rlcId,pStaPdu)
 Pst               *pst;
 SpId              spId;
 CmLteRlcId        *rlcId;
-KwUdxStaPdu       *pStaPdu;
+RlcUdxStaPdu       *pStaPdu;
 #endif
 {
     S16    ret1;
@@ -730,10 +730,10 @@ KwUdxStaPdu       *pStaPdu;
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)pStaPdu, sizeof(KwUdxStaPdu),mBuf);
+         cmPkUdxStruct((U8 *)pStaPdu, sizeof(RlcUdxStaPdu),mBuf);
          cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
          SPutStaticBuffer(pst->region,pst->pool,(Data *) pStaPdu,
-                          sizeof(KwUdxStaPdu),0);
+                          sizeof(RlcUdxStaPdu),0);
 
          break;
        }
@@ -765,19 +765,19 @@ KwUdxStaPdu       *pStaPdu;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxStaPduReq
+S16 cmPkUdxStaPduReq
 (
 Pst               *pst,
 SpId              spId,
 CmLteRlcId        *rlcId,
-KwUdxDlStaPdu     *pStaPdu
+RlcUdxDlStaPdu     *pStaPdu
 )
 #else
-PUBLIC S16 cmPkUdxStaPduReq(pst, suId, rlcId,pStaPdu)
+S16 cmPkUdxStaPduReq(pst, suId, rlcId,pStaPdu)
 Pst               *pst;
 SpId              spId;
 CmLteRlcId        *rlcId;
-KwUdxDlStaPdu     *pStaPdu;
+RlcUdxDlStaPdu     *pStaPdu;
 #endif
 {
     S16    ret1;
@@ -803,11 +803,11 @@ KwUdxDlStaPdu     *pStaPdu;
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)pStaPdu, sizeof(KwUdxDlStaPdu),mBuf);
+         cmPkUdxStruct((U8 *)pStaPdu, sizeof(RlcUdxDlStaPdu),mBuf);
          cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
          /* Free status Pdu here for LC */
          SPutStaticBuffer(pst->region,pst->pool,(Data *) pStaPdu,
-                          sizeof(KwUdxDlStaPdu),0);
+                          sizeof(RlcUdxDlStaPdu),0);
          break;
        }
        case UDX_SEL_LWLC:
@@ -836,15 +836,15 @@ KwUdxDlStaPdu     *pStaPdu;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxL2MeasReq
+S16 cmPkUdxL2MeasReq
 (
 Pst               *pst,
-KwL2MeasReqEvt    *measReqEvt 
+rlcL2MeasReqEvt    *measReqEvt 
 )
 #else
-PUBLIC S16 cmPkUdxL2MeasReq(pst, measReqEvt)
+S16 cmPkUdxL2MeasReq(pst, measReqEvt)
 Pst               *pst;
-KwL2MeasReqEvt    *measReqEvt; 
+rlcL2MeasReqEvt    *measReqEvt; 
 #endif
 {
     S16    ret1;
@@ -870,7 +870,7 @@ KwL2MeasReqEvt    *measReqEvt;
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)measReqEvt, sizeof(KwL2MeasReqEvt),mBuf);
+         cmPkUdxStruct((U8 *)measReqEvt, sizeof(rlcL2MeasReqEvt),mBuf);
          break;
        }
        case UDX_SEL_LWLC:
@@ -896,13 +896,13 @@ KwL2MeasReqEvt    *measReqEvt;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxL2MeasSendReq
+S16 cmPkUdxL2MeasSendReq
 (
 Pst              *pst,
 U8               measType
 )
 #else
-PUBLIC S16 cmPkUdxL2MeasSendReq(pst, measReqEvt)
+S16 cmPkUdxL2MeasSendReq(pst, measReqEvt)
 Pst               *pst;
 U8                measType
 #endif
@@ -952,13 +952,13 @@ U8                measType
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmPkUdxL2MeasStopReq
+S16 cmPkUdxL2MeasStopReq
 (
 Pst              *pst,
 U8               measType
 )
 #else
-PUBLIC S16 cmPkUdxL2MeasStopReq(pst, measType)
+S16 cmPkUdxL2MeasStopReq(pst, measType)
 Pst               *pst;
 U8                measType
 #endif
@@ -1015,14 +1015,14 @@ U8                measType
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxBndReq
+S16 cmUnpkUdxBndReq
 (
 UdxBndReq      func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxBndReq(func, pst, mBuf)
+S16 cmUnpkUdxBndReq(func, pst, mBuf)
 UdxBndReq      func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1054,14 +1054,14 @@ Buffer         *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxUbndReq
+S16 cmUnpkUdxUbndReq
 (
 UdxUbndReq     func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxUbndReq(func, pst, mBuf)
+S16 cmUnpkUdxUbndReq(func, pst, mBuf)
 UdxUbndReq     func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1092,14 +1092,14 @@ Buffer         *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxBndCfm
+S16 cmUnpkUdxBndCfm
 (
 UdxBndCfm      func,
 Pst            *pst,
 Buffer         *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxBndCfm(func, pst, mBuf)
+S16 cmUnpkUdxBndCfm(func, pst, mBuf)
 UdxBndCfm      func;
 Pst            *pst;
 Buffer         *mBuf;
@@ -1132,14 +1132,14 @@ Buffer         *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxCfgReq
+S16 cmUnpkUdxCfgReq
 (
 UdxCfgReq         func,
 Pst               *pst,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxCfgReq(func, pst, mBuf)
+S16 cmUnpkUdxCfgReq(func, pst, mBuf)
 UdxCfgReq         func;
 Pst               *pst;
 Buffer            *mBuf;
@@ -1203,14 +1203,14 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxCfgCfm
+S16 cmUnpkUdxCfgCfm
 (
 UdxCfgCfm         func,
 Pst               *pst,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxCfgCfm(func, pst, mBuf)
+S16 cmUnpkUdxCfgCfm(func, pst, mBuf)
 UdxCfgCfm         func;
 Pst               *pst;
 Buffer            *mBuf;
@@ -1282,14 +1282,14 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxUeIdChgReq
+S16 cmUnpkUdxUeIdChgReq
 (
 UdxUeIdChgReq     func,
 Pst               *pst,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxUeIdChgReq(func, pst, mBuf)
+S16 cmUnpkUdxUeIdChgReq(func, pst, mBuf)
 UdxUeIdChgReq     func;
 Pst               *pst;
 Buffer            *mBuf;
@@ -1354,14 +1354,14 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxUeIdChgCfm
+S16 cmUnpkUdxUeIdChgCfm
 (
 UdxUeIdChgCfm     func,
 Pst               *pst,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxUeIdChgCfm(func, pst, mBuf)
+S16 cmUnpkUdxUeIdChgCfm(func, pst, mBuf)
 UdxUeIdChgCfm     func;
 Pst               *pst;
 Buffer            *mBuf;
@@ -1400,14 +1400,14 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxStaUpdCfm
+S16 cmUnpkUdxStaUpdCfm
 (
 UdxStaUpdCfm     func,
 Pst               *pst,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxStaUpdCfm(func, pst, mBuf)
+S16 cmUnpkUdxStaUpdCfm(func, pst, mBuf)
 UdxStaUpdCfm     func;
 Pst               *pst;
 Buffer            *mBuf;
@@ -1415,7 +1415,7 @@ Buffer            *mBuf;
 {
     SuId      suId = 0;
     CmLteRlcId *rlcId = NULLP;  /* KW_FIX */
-    KwUdxBufLst *pBufLst = NULLP; /* KW_FIX*/
+    RlcUdxBufLst *pBufLst = NULLP; /* KW_FIX*/
     
     TRC3(cmUnpkUdxStaUpdCfm)
 
@@ -1454,14 +1454,14 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxStaUpdReq
+S16 cmUnpkUdxStaUpdReq
 (
 UdxStaUpdReq     func,
 Pst               *pst,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxStaUpdReq(func, pst, mBuf)
+S16 cmUnpkUdxStaUpdReq(func, pst, mBuf)
 UdxStaUpdReq     func;
 Pst               *pst;
 Buffer            *mBuf;
@@ -1469,7 +1469,7 @@ Buffer            *mBuf;
 {
     SpId      spId = 0;
     CmLteRlcId *rlcId = NULLP; /* KW_FIX */ 
-    KwUdxStaPdu *pStaPdu = NULLP; /* KW_FIX */
+    RlcUdxStaPdu *pStaPdu = NULLP; /* KW_FIX */
     S16 ret1;
     CmLteRlcId tmpRlcId;
     
@@ -1481,7 +1481,7 @@ Buffer            *mBuf;
        case UDX_SEL_LC:
        {
            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&pStaPdu,
-                       sizeof(KwUdxStaPdu),0)) != ROK)
+                       sizeof(RlcUdxStaPdu),0)) != ROK)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
               if(ret1 != ROK)
@@ -1493,8 +1493,8 @@ Buffer            *mBuf;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
               return (ret1);
            }
-          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)pStaPdu, sizeof(KwUdxStaPdu));
-          ret1 = cmUnpkUdxStruct(mBuf,sizeof(KwUdxStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
+          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)pStaPdu, sizeof(RlcUdxStaPdu));
+          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
           rlcId = &tmpRlcId; 
           break;
        }
@@ -1526,14 +1526,14 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxStaPduReq
+S16 cmUnpkUdxStaPduReq
 (
 UdxStaPduReq     func,
 Pst               *pst,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxStaPduReq(func, pst, mBuf)
+S16 cmUnpkUdxStaPduReq(func, pst, mBuf)
 UdxStaPduReq     func;
 Pst               *pst;
 Buffer            *mBuf;
@@ -1543,7 +1543,7 @@ Buffer            *mBuf;
     SpId      spId = 0;
     CmLteRlcId tmpRlcId;
     CmLteRlcId *rlcId = NULLP;  /* KW_FIX */
-    KwUdxDlStaPdu *pStaPdu = NULLP; /* KW_FIX */
+    RlcUdxDlStaPdu *pStaPdu = NULLP; /* KW_FIX */
     
     TRC3(cmUnpkUdxStaUpdCfm)
 
@@ -1553,7 +1553,7 @@ Buffer            *mBuf;
        case UDX_SEL_LC:
        {
            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&pStaPdu,
-                       sizeof(KwUdxDlStaPdu),0)) != ROK)
+                       sizeof(RlcUdxDlStaPdu),0)) != ROK)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
               if(ret1 != ROK)
@@ -1565,8 +1565,8 @@ Buffer            *mBuf;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
               return (ret1);
            }
-          ret1 = cmUnpkUdxStruct(mBuf,0, (U8 *)pStaPdu, sizeof(KwUdxDlStaPdu));
-          ret1 = cmUnpkUdxStruct(mBuf,sizeof(KwUdxDlStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
+          ret1 = cmUnpkUdxStruct(mBuf,0, (U8 *)pStaPdu, sizeof(RlcUdxDlStaPdu));
+          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxDlStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
           rlcId = &tmpRlcId; 
            break;
        }
@@ -1597,14 +1597,14 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxStaProhTmrStart
+S16 cmUnpkUdxStaProhTmrStart
 (
 UdxStaProhTmrStart     func,
 Pst               *pst,
 Buffer            *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxStaProhTmrStart(func, pst, mBuf)
+S16 cmUnpkUdxStaProhTmrStart(func, pst, mBuf)
 UdxStaProhTmrStart     func;
 Pst               *pst;
 Buffer            *mBuf;
@@ -1651,21 +1651,21 @@ Buffer            *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxL2MeasReq
+S16 cmUnpkUdxL2MeasReq
 (
 UdxL2MeasReq     func,
 Pst              *pst,
 Buffer           *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxL2MeasReq(func, pst, mBuf)
+S16 cmUnpkUdxL2MeasReq(func, pst, mBuf)
 UdxL2MeasReq     func;
 Pst              *pst;
 Buffer           *mBuf;
 #endif
 {
-    KwL2MeasReqEvt    tmpMeasReqEvt;
-    KwL2MeasReqEvt    *measReqEvt = NULLP;  /* KW_FIX */
+    rlcL2MeasReqEvt    tmpMeasReqEvt;
+    rlcL2MeasReqEvt    *measReqEvt = NULLP;  /* KW_FIX */
 
     TRC3(cmUnpkUdxL2MeasReq)
 
@@ -1673,7 +1673,7 @@ Buffer           *mBuf;
     {
        case UDX_SEL_LC:
        {
-          cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpMeasReqEvt,sizeof(KwL2MeasReqEvt));
+          cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpMeasReqEvt,sizeof(rlcL2MeasReqEvt));
           measReqEvt = &tmpMeasReqEvt;
           break;
        }
@@ -1700,14 +1700,14 @@ Buffer           *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxL2MeasSendReq
+S16 cmUnpkUdxL2MeasSendReq
 (
 UdxL2MeasSendReq   func,
 Pst                *pst,
 Buffer             *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxL2MeasSendReq(func, pst, mBuf)
+S16 cmUnpkUdxL2MeasSendReq(func, pst, mBuf)
 UdxL2MeasSendReq   func;
 Pst                *pst;
 Buffer             *mBuf;
@@ -1743,14 +1743,14 @@ Buffer             *mBuf;
 *
 */
 #ifdef ANSI
-PUBLIC S16 cmUnpkUdxL2MeasStopReq
+S16 cmUnpkUdxL2MeasStopReq
 (
 UdxL2MeasStopReq   func,
 Pst                *pst,
 Buffer             *mBuf
 )
 #else
-PUBLIC S16 cmUnpkUdxL2MeasStopReq(func, pst, mBuf)
+S16 cmUnpkUdxL2MeasStopReq(func, pst, mBuf)
 UdxL2MeasSendReq     func;
 Pst                  *pst;
 Buffer               *mBuf;

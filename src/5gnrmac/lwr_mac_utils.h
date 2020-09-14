@@ -21,7 +21,7 @@
 {                                                           \
    _pst.selector  = ODU_SELECTOR_TC;                        \
    _pst.srcEnt    = ENTTF;                                  \
-   _pst.dstEnt    = ENTRG;                                  \
+   _pst.dstEnt    = ENTMAC;                                  \
    _pst.dstInst   = 0;                                      \
    _pst.srcInst   = 0;                                      \
    _pst.dstProcId = SFndProcId();                           \

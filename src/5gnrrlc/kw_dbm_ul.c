@@ -58,7 +58,7 @@ static int RLOG_FILE_ID=194;
  * @brief RLC Uplink database module
 */
 
-#define KW_MODULE KW_DBGMASK_DUT
+#define RLC_MODULE RLC_DBGMASK_DUT
 
 
 /**
@@ -74,12 +74,12 @@ static int RLOG_FILE_ID=194;
  *     -# RFAILED 
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmUlInit
+S16 rlcDbmUlInit
 (
 RlcCb *gCb
 )
 #else
-PUBLIC S16 kwDbmUlInit(gCb)
+S16 rlcDbmUlInit(gCb)
 RlcCb *gCb;
 #endif
 {
@@ -87,12 +87,12 @@ RlcCb *gCb;
 
    /* Initialize ueCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.ulCb->ueLstCp), 
-                            (U16) KW_UE_LIST_BUCKET_SIZE,
+                            (U16) RLC_UE_LIST_BUCKET_SIZE,
                             (U16) 0, 
                             (Bool) FALSE, 
                             (U16) CM_HASH_KEYTYPE_CONID,
-                            KW_GET_MEM_REGION(gCb), 
-                            KW_GET_MEM_POOL(gCb)))
+                            RLC_GET_MEM_REGION(gCb), 
+                            RLC_GET_MEM_POOL(gCb)))
    {
       RLOG0(L_ERROR, "UeLstCp Initialization Failed");
       return RFAILED;
@@ -100,12 +100,12 @@ RlcCb *gCb;
 
    /* Initialize cellCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.ulCb->cellLstCp), 
-                            (U16) KW_CELL_LIST_BUCKET_SIZE,
+                            (U16) RLC_CELL_LIST_BUCKET_SIZE,
                             (U16) 0, 
                             (Bool) FALSE, 
                             (U16) CM_HASH_KEYTYPE_CONID,
-                            KW_GET_MEM_REGION(gCb), 
-                            KW_GET_MEM_POOL(gCb)))
+                            RLC_GET_MEM_REGION(gCb), 
+                            RLC_GET_MEM_POOL(gCb)))
    {
       cmHashListDeinit(&gCb->u.ulCb->ueLstCp);
       RLOG0(L_ERROR, "CellLstCp Initialization Failed");
@@ -113,12 +113,12 @@ RlcCb *gCb;
    }
 
    if(ROK != cmHashListInit(&(gCb->u.ulCb->transIdLstCp), 
-                            (U16) KW_TRANS_ID_LST_BKT_SIZE,
+                            (U16) RLC_TRANS_ID_LST_BKT_SIZE,
                             (U16) 0, 
                             (Bool) FALSE, 
                             (U16) CM_HASH_KEYTYPE_CONID,
-                            KW_GET_MEM_REGION(gCb), 
-                            KW_GET_MEM_POOL(gCb)))
+                            RLC_GET_MEM_REGION(gCb), 
+                            RLC_GET_MEM_POOL(gCb)))
    {
       cmHashListDeinit(&gCb->u.ulCb->ueLstCp);
       cmHashListDeinit(&gCb->u.ulCb->cellLstCp);
@@ -131,8 +131,8 @@ RlcCb *gCb;
    /* Initialize qcI Hash List */
 #endif /* LTE_L2_MEAS */
 
-   return ROK;
-} /* kwDbmUlInit */
+   return (ROK);
+} /* rlcDbmUlInit */
 
 
 /**
@@ -143,16 +143,16 @@ RlcCb *gCb;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmUlDeInit
+Void rlcDbmUlDeInit
 (
 RlcCb *gCb
 )
 #else
-PUBLIC Void kwDbmUlDeInit(gCb)
+Void rlcDbmUlDeInit(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(kwDbmUlDeInit);
+   TRC3(rlcDbmUlDeInit);
 
 
    /* De Initialize ueCb Hash List */
@@ -187,20 +187,20 @@ RlcCb *gCb;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmFetchUlRbCbByRbId
+Void rlcDbmFetchUlRbCbByRbId
 (
 RlcCb         *gCb,
 CmLteRlcId   *rlcId,  
 RlcUlRbCb     **rbCb  
 )
 #else
-PUBLIC Void kwDbmFetchUlRbCbByRbId(gCb, rlcId, rbCb)
+Void rlcDbmFetchUlRbCbByRbId(gCb, rlcId, rbCb)
 RlcCb         *gCb;
 CmLteRlcId   *rlcId;    
 RlcUlRbCb     **rbCb;   
 #endif
 {
-   TRC3(kwDbmFetchUlRbCbByRbId)
+   TRC3(rlcDbmFetchUlRbCbByRbId)
 
    *rbCb= NULLP;
 
@@ -209,17 +209,17 @@ RlcUlRbCb     **rbCb;
    {
       RlcUlCellCb *cellCb;
 
-      if(rlcId->rbId >= KW_MAX_RB_PER_CELL)
+      if(rlcId->rbId >= RLC_MAX_RB_PER_CELL)
       {
          RLOG_ARG3(L_ERROR,DBG_RBID,rlcId->rbId ,
                "Invalid RbId, cellId:%d UEID:%d Max is [%d]",
                rlcId->cellId, 
                rlcId->ueId,
-               KW_MAX_RB_PER_CELL);
+               RLC_MAX_RB_PER_CELL);
          RETVOID;
       }
 
-      kwDbmFetchUlCellCb(gCb,rlcId->cellId, &cellCb);
+      rlcDbmFetchUlCellCb(gCb,rlcId->cellId, &cellCb);
       if(!cellCb)
       {
          RLOG_ARG2(L_ERROR,DBG_CELLID,rlcId->cellId,
@@ -235,7 +235,7 @@ RlcUlRbCb     **rbCb;
    {
       RlcUlUeCb *ueCb;
 
-      if (!(KW_VALIDATE_UE_RBID(rlcId->rbType, rlcId->rbId)))
+      if (!(RLC_VALIDATE_UE_RBID(rlcId->rbType, rlcId->rbId)))
       {
          RLOG_ARG3(L_ERROR,DBG_RBID, rlcId->rbId,
                "Invalid RbId for RbType[%d] CELLID:%d UEID:%d", 
@@ -245,7 +245,7 @@ RlcUlRbCb     **rbCb;
          RETVOID;
       }
 
-      if (kwDbmFetchUlUeCb(gCb,rlcId->ueId, rlcId->cellId, &ueCb) != ROK)
+      if (rlcDbmFetchUlUeCb(gCb,rlcId->ueId, rlcId->cellId, &ueCb) != ROK)
       {
          RLOG_ARG2(L_ERROR,DBG_CELLID, rlcId->cellId,
                "UeId [%d]: UeCb not found RBID:%d",
@@ -254,10 +254,10 @@ RlcUlRbCb     **rbCb;
          RETVOID;
       }
 
-      KW_DBM_GET_RBCB_FROM_UECB(rlcId->rbId, rlcId->rbType, ueCb, *rbCb);
+      RLC_DBM_GET_RBCB_FROM_UECB(rlcId->rbId, rlcId->rbType, ueCb, *rbCb);
    }
    RETVOID;
-} /* kwDbmFetchUlRbCbByRbId */
+} /* rlcDbmFetchUlRbCbByRbId */
 
 
 /**
@@ -277,7 +277,7 @@ RlcUlRbCb     **rbCb;
  *
 */
 #ifdef ANSI
-PUBLIC Void kwDbmFetchUlRbCbFromLchId
+Void rlcDbmFetchUlRbCbFromLchId
 (
 RlcCb          *gCb,
 CmLteRnti     ueId,      
@@ -286,7 +286,7 @@ CmLteLcId     lcId,
 RlcUlRbCb      **rbCb  
 )
 #else
-PUBLIC Void kwDbmFetchUlRbCbFromLchId(gCb, ueId, cellId, lcId, rbCb)
+Void rlcDbmFetchUlRbCbFromLchId(gCb, ueId, cellId, lcId, rbCb)
 RlcCb          *gCb;
 CmLteRnti     ueId;     
 CmLteCellId   cellId;  
@@ -296,7 +296,7 @@ RlcUlRbCb      **rbCb;
 {
    RlcUlUeCb *ueCb;
 
-   TRC3(kwDbmFetchUlRbCbFromLchId)
+   TRC3(rlcDbmFetchUlRbCbFromLchId)
 
 
    *rbCb = NULLP;
@@ -306,7 +306,7 @@ RlcUlRbCb      **rbCb;
    {
       RlcUlCellCb *cellCb;
       
-      kwDbmFetchUlCellCb(gCb,cellId, &cellCb);
+      rlcDbmFetchUlCellCb(gCb,cellId, &cellCb);
       if(!cellCb)
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cellId,"CellCb not found UEID:%d",ueId);
@@ -317,7 +317,7 @@ RlcUlRbCb      **rbCb;
       RETVOID;
    }
    
-   if (kwDbmFetchUlUeCb(gCb,ueId, cellId, &ueCb) != ROK)
+   if (rlcDbmFetchUlUeCb(gCb,ueId, cellId, &ueCb) != ROK)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID, cellId,"UeId [%d]: UeCb not found",ueId);
       RETVOID;
@@ -343,14 +343,14 @@ RlcUlRbCb      **rbCb;
  *
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelAllUlRb
+Void rlcDbmDelAllUlRb
 (
 RlcCb       *gCb,
 RlcUlRbCb   **rbCbLst,          
 U8         numRbCb            
 )
 #else
-PUBLIC Void kwDbmDelAllUlRb(gCb, rbCbLst, numRbCb)
+Void rlcDbmDelAllUlRb(gCb, rbCbLst, numRbCb)
 RlcCb       *gCb;
 RlcUlRbCb   **rbCbLst;        
 U8         numRbCb;         
@@ -358,7 +358,7 @@ U8         numRbCb;
 {
    U32 idx; /* Index */
 
-   TRC3(kwDbmDelAllUlRb)
+   TRC3(rlcDbmDelAllUlRb)
 
 
    for (idx = 0; idx < numRbCb; idx++)
@@ -368,11 +368,11 @@ U8         numRbCb;
          /* Free the Buffers of RbCb */
          if( CM_LTE_MODE_UM == rbCbLst[idx]->mode ) 
          {
-            kwUmmFreeUlRbCb(gCb,rbCbLst[idx]);
+            rlcUmmFreeUlRbCb(gCb,rbCbLst[idx]);
          }
          else if(CM_LTE_MODE_AM == rbCbLst[idx]->mode) 
          {
-            kwAmmFreeUlRbCb(gCb,rbCbLst[idx]);
+            rlcAmmFreeUlRbCb(gCb,rbCbLst[idx]);
          }
      
          RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcUlRbCb));
@@ -401,7 +401,7 @@ U8         numRbCb;
  *
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmAddUlUeCb
+S16 rlcDbmAddUlUeCb
 (
 RlcCb          *gCb,
 CmLteRnti     ueId,       
@@ -409,14 +409,14 @@ CmLteCellId   cellId,
 RlcUlUeCb      *ueCb    
 )
 #else
-PUBLIC S16 kwDbmAddUlUeCb(gCb, ueId, cellId, ueCb)
+S16 rlcDbmAddUlUeCb(gCb, ueId, cellId, ueCb)
 RlcCb          *gCb;
 CmLteRnti     ueId;    
 CmLteCellId   cellId; 
 RlcUlUeCb      *ueCb;
 #endif
 {
-   TRC3(kwDbmAddUlUeCb)
+   TRC3(rlcDbmAddUlUeCb)
 
 
    ueCb->ueId = ueId;
@@ -455,18 +455,18 @@ RlcUlUeCb      *ueCb;
  *
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmAddUlTransaction 
+S16 rlcDbmAddUlTransaction 
 (
 RlcCb        *gCb,
 RlcUlCfgTmpData   *cfg
 )
 #else
-PUBLIC S16 kwDbmAddUlTransaction(gCb, cfg)
+S16 rlcDbmAddUlTransaction(gCb, cfg)
 RlcCb        *gCb;
 RlcUlCfgTmpData   *cfg;
 #endif
 {
-   TRC3(kwDbmAddUlTransaction)
+   TRC3(rlcDbmAddUlTransaction)
 
 #ifndef ALIGN_64BIT
    RLOG1(L_DEBUG, "(transId(%ld)", cfg->transId);
@@ -498,25 +498,25 @@ RlcUlCfgTmpData   *cfg;
  *
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmFindUlTransaction
+S16 rlcDbmFindUlTransaction
 (
 RlcCb             *gCb,
 U32              transId,
 RlcUlCfgTmpData   **cfg
 )
 #else
-PUBLIC S16 kwDbmFindUlTransaction(gCb, cfg)
+S16 rlcDbmFindUlTransaction(gCb, cfg)
 RlcCb             *gCb;
 U32              transId;
 RlcUlCfgTmpData   **cfg;
 #endif
 {
-   TRC3(kwDbmFindUlTransaction)
+   TRC3(rlcDbmFindUlTransaction)
 
    if(ROK != cmHashListFind(&(gCb->u.ulCb->transIdLstCp),
                             (U8 *) &transId, 
                             sizeof (transId), 
-                            KW_DEF_SEQ_NUM,(PTR *) cfg))
+                            RLC_DEF_SEQ_NUM,(PTR *) cfg))
    {
       RLOG1(L_ERROR,"TransId [%ld] not found",transId);
       return RFAILED;
@@ -542,18 +542,18 @@ RlcUlCfgTmpData   **cfg;
  *
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmDelUlTransaction
+S16 rlcDbmDelUlTransaction
 (
 RlcCb             *gCb,
 RlcUlCfgTmpData   *cfg       
 )
 #else
-PUBLIC S16 kwDbmDelUlTransaction(gCb, cfg)
+S16 rlcDbmDelUlTransaction(gCb, cfg)
 RlcCb             *gCb;
 RlcUlCfgTmpData   *cfg;     
 #endif
 {
-   TRC3(kwDbmDelUlTransaction)
+   TRC3(rlcDbmDelUlTransaction)
 
 
    if(cmHashListDelete(&(gCb->u.ulCb->transIdLstCp),(PTR) (cfg)) != ROK) 
@@ -580,12 +580,12 @@ RlcUlCfgTmpData   *cfg;
  *
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmDelAllUlTransactions
+S16 rlcDbmDelAllUlTransactions
 (
 RlcCb *gCb
 )
 #else
-PUBLIC S16 kwDbmDelAllUlTransactions(gCb)
+S16 rlcDbmDelAllUlTransactions(gCb)
 RlcCb *gCb;
 #endif
 {
@@ -598,7 +598,7 @@ RlcCb *gCb;
                                    (PTR) cfg, 
                                    (PTR *)&cfg))
    {
-      if(kwDbmDelUlTransaction(gCb, cfg) != ROK)
+      if(rlcDbmDelUlTransaction(gCb, cfg) != ROK)
       {
          return RFAILED;
       }
@@ -627,7 +627,7 @@ RlcCb *gCb;
  *    -# RFAILED 
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmFetchUlUeCb
+S16 rlcDbmFetchUlUeCb
 (
 RlcCb          *gCb,
 CmLteRnti     ueId,  
@@ -635,19 +635,19 @@ CmLteCellId   cellId,
 RlcUlUeCb      **ueCb   
 )
 #else
-PUBLIC S16 kwDbmFetchUlUeCb(gCb,ueId, cellId, ueCb)
+S16 rlcDbmFetchUlUeCb(gCb,ueId, cellId, ueCb)
 RlcCb          *gCb;
 CmLteRnti     ueId;     
 CmLteCellId   cellId;    
 RlcUlUeCb      **ueCb;     
 #endif
 {
-   TRC3(kwDbmFetchUlUeCb)
+   TRC3(rlcDbmFetchUlUeCb)
 
 
    return (cmHashListFind(&(gCb->u.ulCb->ueLstCp), 
                            (U8 *)&(ueId), sizeof(CmLteRnti),
-                           KW_DEF_SEQ_NUM, 
+                           RLC_DEF_SEQ_NUM, 
                            (PTR *) ueCb));
 }
 
@@ -668,20 +668,20 @@ RlcUlUeCb      **ueCb;
  *
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelUlUeCb
+Void rlcDbmDelUlUeCb
 (
 RlcCb       *gCb,
 RlcUlUeCb   *ueCb,       
 Bool       abortFlag   
 )
 #else
-PUBLIC Void kwDbmDelUlUeCb(gCb,eCb, abortFlag)
+Void rlcDbmDelUlUeCb(gCb,eCb, abortFlag)
 RlcCb       *gCb;
 RlcUlUeCb   *ueCb;      
 Bool       abortFlag; 
 #endif
 {
-   TRC3(kwDbmDelUlUeCb)
+   TRC3(rlcDbmDelUlUeCb)
 
 
 #if  (!defined(KW_PDCP) || !(defined(PJ_SEC_ASYNC) || defined(PJ_CMP_ASYNC)))
@@ -689,13 +689,13 @@ Bool       abortFlag;
 #endif /* (!defined(KW_PDCP) || ! (defined(PJ_SEC_ASYNC) || defined(PJ_CMP_ASYNC)))*/
 
    /* Delete all logical channels */
-   KW_MEM_ZERO(ueCb->lCh,sizeof(RlcUlLch) * KW_MAX_LCH_PER_UE);
+   RLC_MEM_ZERO(ueCb->lCh,sizeof(RlcUlLch) * RLC_MAX_LCH_PER_UE);
 
    /* Delete all SRB RbCbs in UeCb */
-   kwDbmDelAllUlRb(gCb,ueCb->srbCb, KW_MAX_SRB_PER_UE);
+   rlcDbmDelAllUlRb(gCb,ueCb->srbCb, RLC_MAX_SRB_PER_UE);
 
    /* Delete all DRB RbCbs in UeCb */
-   kwDbmDelAllUlRb(gCb,ueCb->drbCb, KW_MAX_DRB_PER_UE);
+   rlcDbmDelAllUlRb(gCb,ueCb->drbCb, RLC_MAX_DRB_PER_UE);
 
    /* Delete ueCb entry from ueLstCp */
    if(ROK != cmHashListDelete(&(gCb->u.ulCb->ueLstCp), (PTR) ueCb))
@@ -724,18 +724,18 @@ Bool       abortFlag;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelAllUlUe
+Void rlcDbmDelAllUlUe
 (
 RlcCb *gCb
 )
 #else
-PUBLIC Void kwDbmDelAllUlUe(gCb)
+Void rlcDbmDelAllUlUe(gCb)
 RlcCb *gCb;
 #endif
 {
    RlcUlUeCb *ueCb = NULLP;  /* UE Control Block */
 
-   TRC3(kwDbmDelAllUlUe)
+   TRC3(rlcDbmDelAllUlUe)
 
 
    /* Until no more ueCb is ueLstCp hash list get and delete ueCb */
@@ -743,7 +743,7 @@ RlcCb *gCb;
                                    (PTR) ueCb, 
                                    (PTR *)&ueCb))
    {
-      kwDbmDelUlUeCb(gCb,ueCb, TRUE);
+      rlcDbmDelUlUeCb(gCb,ueCb, TRUE);
 
       ueCb = NULLP;
    }
@@ -768,14 +768,14 @@ RlcCb *gCb;
  *     -# RFAILED 
 */
 #ifdef ANSI
-PUBLIC S16 kwDbmAddUlCellCb
+S16 rlcDbmAddUlCellCb
 (
 RlcCb          *gCb,
 CmLteCellId   cellId,    
 RlcUlCellCb    *cellCb  
 )
 #else
-PUBLIC S16 kwDbmAddUlCellCb(gCb, cellId, cellCb)
+S16 rlcDbmAddUlCellCb(gCb, cellId, cellCb)
 RlcCb          *gCb;
 CmLteCellId   cellId;    
 RlcUlCellCb    *cellCb;  
@@ -783,7 +783,7 @@ RlcUlCellCb    *cellCb;
 {
    RlcUlCellCb *tCellCb; 
 
-   TRC3(kwDbmAddUlCellCb)
+   TRC3(rlcDbmAddUlCellCb)
 
 
 
@@ -821,26 +821,26 @@ RlcUlCellCb    *cellCb;
  *
 */
 #ifdef ANSI
-PUBLIC Void kwDbmFetchUlCellCb
+Void rlcDbmFetchUlCellCb
 (
 RlcCb          *gCb,
 CmLteCellId   cellId,     
 RlcUlCellCb    **cellCb   
 )
 #else
-PUBLIC Void kwDbmFetchUlCellCb(gCb, cellId, cellCb)
+Void rlcDbmFetchUlCellCb(gCb, cellId, cellCb)
 RlcCb          *gCb;
 CmLteCellId   cellId;    
 RlcUlCellCb    **cellCb;  
 #endif
 {
-   TRC3(kwDbmFetchUlCellCb)
+   TRC3(rlcDbmFetchUlCellCb)
 
 
    *cellCb = NULLP;
    if(ROK != cmHashListFind(&(gCb->u.ulCb->cellLstCp), 
                             (U8 *)&(cellId),sizeof(CmLteCellId), 
-                            KW_DEF_SEQ_NUM, (PTR*) cellCb))
+                            RLC_DEF_SEQ_NUM, (PTR*) cellCb))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID, cellId,"CellCb not found");
    }
@@ -862,22 +862,22 @@ RlcUlCellCb    **cellCb;
  *  @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelUlCellCb
+Void rlcDbmDelUlCellCb
 (
 RlcCb         *gCb,
 RlcUlCellCb   *cellCb     
 )
 #else
-PUBLIC Void kwDbmDelUlCellCb(gCb, cellCb)
+Void rlcDbmDelUlCellCb(gCb, cellCb)
 RlcCb         *gCb;
 RlcUlCellCb   *cellCb;     
 #endif
 {
-   TRC3(kwDbmDelUlCellCb)
+   TRC3(rlcDbmDelUlCellCb)
 
 
    /* Delete all rbCbs in cellCb */
-   kwDbmDelAllUlRb(gCb,cellCb->rbCb, KW_MAX_RB_PER_CELL);
+   rlcDbmDelAllUlRb(gCb,cellCb->rbCb, RLC_MAX_RB_PER_CELL);
 
    /* Delete cellCb entry in hash list cellLstCp */
    if(ROK != cmHashListDelete(&(gCb->u.ulCb->cellLstCp), (PTR) cellCb))
@@ -903,18 +903,18 @@ RlcUlCellCb   *cellCb;
  * @return  Void
 */
 #ifdef ANSI
-PUBLIC Void kwDbmDelAllUlCell
+Void rlcDbmDelAllUlCell
 (
 RlcCb *gCb
 )
 #else
-PUBLIC Void kwDbmDelAllUlCell(gCb)
+Void rlcDbmDelAllUlCell(gCb)
 RlcCb *gCb;
 #endif
 {
    RlcUlCellCb *cellCb = NULLP; /* Cell Control Block */
 
-   TRC3(kwDbmDelAllUlCell)
+   TRC3(rlcDbmDelAllUlCell)
 
 
    /* Until no more cellCb is ueLstCp hash list get and delete cellCb */
@@ -922,7 +922,7 @@ RlcCb *gCb;
                                    (PTR) cellCb, 
                                    (PTR *)&cellCb))
    {
-      kwDbmDelUlCellCb(gCb,cellCb);
+      rlcDbmDelUlCellCb(gCb,cellCb);
 
       cellCb = NULLP;
    }
@@ -942,22 +942,22 @@ RlcCb *gCb;
  *
 */
 #ifdef ANSI
-PUBLIC Void kwDbmUlShutdown
+Void rlcDbmUlShutdown
 (
 RlcCb *gCb
 )
 #else
-PUBLIC Void kwDbmUlShutdown(gCb)
+Void rlcDbmUlShutdown(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(kwDbmUlShutdown)
+   TRC3(rlcDbmUlShutdown)
 
-   kwDbmDelAllUlCell(gCb);
+   rlcDbmDelAllUlCell(gCb);
 
-   kwDbmDelAllUlUe(gCb);
+   rlcDbmDelAllUlUe(gCb);
 
-   kwDbmUlDeInit(gCb);
+   rlcDbmUlDeInit(gCb);
 
    RETVOID;
 }
