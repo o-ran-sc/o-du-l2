@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7881b34e_0b05b374",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1112,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T17:01:16Z",
+      "side": 1,
+      "message": "As this is common function used in du/f1ap and cu/f1ap, it can move \nto be moved to odu_common_code.c",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "217cacf0_31f94475",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5250,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T17:01:16Z",
+      "side": 1,
+      "message": "The function and variable datatypes to be renamed according to coding convenction",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d14fb917_8d9b9f16",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T17:01:16Z",
+      "side": 1,
+      "message": "process the below- \n -if the cell status is activated\n  -if the UE state is also active",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a229add7_83496e3f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T17:01:16Z",
+      "side": 1,
+      "message": "MAX_NUM_UE can be replaced with numActvUes maintained in cellCb,\nas we are updating numActvUes on successful creation of ueCb",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9cefaae3_2a2165f4",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-14T17:01:16Z",
+      "side": 1,
+      "message": "pass the srbid received in the IE above",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
