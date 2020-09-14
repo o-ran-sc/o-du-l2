@@ -41,7 +41,7 @@ uint8_t cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
 {
    Buffer *mBuf;
 
-   if(ODU_GET_MSG(pst->region, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
    {
       printf("\nSCTP : Failed to allocate memory");
       return RFAILED;

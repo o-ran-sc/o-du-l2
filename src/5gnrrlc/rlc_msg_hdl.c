@@ -36,8 +36,7 @@
 
 #include "du_app_rlc_inf.h"
 #include "rlc.h"
-
-extern U16 getTransId();
+#include "rlc_utils.h"
 
 /*******************************************************************
  *
@@ -211,6 +210,65 @@ uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
       RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
       return ret;
 }
+
+/*******************************************************************
+ *
+ * @brief Process the DL RRC Message from DU APP
+ *
+ * @details
+ *
+ *    Function : RlcProcDlRrcMsgTransfer
+ *
+ *    Functionality: Process the DL RRC Message from DU APP
+ *
+ * @params[in] Post structure
+ *             DL RRC Message info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
+{
+   uint16_t      copyLen;
+   Buffer        *mBuf;
+   KwuDatReqInfo *datReqInfo;
+
+   RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
+   if(!datReqInfo)
+   {
+      DU_LOG("\nRLC : Memory allocation failed in RlcProcDlRrcMsgTransfer");
+      return RFAILED;
+   }
+
+   datReqInfo->rlcId.rbType = dlRrcMsgInfo->rbType;
+   datReqInfo->rlcId.rbId = dlRrcMsgInfo->rbId;
+   datReqInfo->rlcId.ueId = dlRrcMsgInfo->ueIdx;
+   datReqInfo->rlcId.cellId = dlRrcMsgInfo->cellId;
+   datReqInfo->lcType = dlRrcMsgInfo->lcType;
+   datReqInfo->sduId = ++(rlcCb[pst->dstInst]->dlSduId);
+
+   /* Copy fixed buffer to message */
+   if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nRLC : Memory allocation failed at RlcMacProcUlData");
+      RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
+      return RFAILED;
+   }
+   /* ODU_COPY_FIX_BUF_TO_MSG copies fixed buffer in reverse order. Hence reversing the
+    * fixed buffer before copying in order to maintain the actual order*/
+   reverseFixBuf(dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
+   ODU_COPY_FIX_BUF_TO_MSG(dlRrcMsgInfo->rrcMsg, mBuf, 0, dlRrcMsgInfo->msgLen, \
+	 (MsgLen *)&copyLen);
+
+   RlcUiKwuDatReq(pst, datReqInfo, mBuf);
+
+   /* Free memory allocated by du app */
+   RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
+   RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
+   RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
+   return ROK;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

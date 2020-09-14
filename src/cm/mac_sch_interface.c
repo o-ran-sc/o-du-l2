@@ -23,7 +23,7 @@
 uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    Buffer *mBuf = NULLP;
-   if (ODU_GET_MSG(pst->region, pst->pool, &mBuf) != ROK)
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
    {
       return RFAILED;
    }
