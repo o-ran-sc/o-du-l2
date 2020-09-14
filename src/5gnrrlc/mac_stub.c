@@ -69,7 +69,7 @@ uint8_t macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
 
    DU_LOG("\nMAC_STUB : Received DL data from RLC to be sent to PHY"); 
 
-   ODU_PUT_MSG(dlData->pduInfo[0].pduBuf);
+   ODU_PUT_MSG_BUF(dlData->pduInfo[0].pduBuf);
    dlData->pduInfo[0].pduBuf = NULL;
 
 #if 0
@@ -84,7 +84,7 @@ uint8_t macStubSendDlData(Pst *pst, SpId spId, RlcMacData *dlData)
 #endif
    
    ulData = dlData;
-   ODU_GET_MSG(pst->region, pst->pool, &mBuf);
+   ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf);
    macStubBuildUlData(mBuf);
    ulData->pduInfo[0].pduBuf = mBuf;
 

@@ -28,19 +28,20 @@
 #define DU_PORT 38472
 
 /* allocate and zero out a static buffer */
-#define CU_ALLOC(_datPtr, _size)                                \
-{                                                               \
-   S16 _ret;                                                    \
+#define CU_ALLOC(_datPtr, _size)                             \
+{                                                            \
+   S16 _ret;                                                 \
    _ret = SGetSBuf(CU_APP_MEM_REG, CU_POOL,                  \
-                     (Data **)&_datPtr, _size);                  \
-   if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
-   else                                                         \
-      _datPtr = NULLP;                                          \
+                     (Data **)&_datPtr, _size);              \
+   if(_ret == ROK)                                           \
+      cmMemset((U8*)_datPtr, 0, _size);                      \
+   else                                                      \
+      _datPtr = NULLP;                                       \
 }
  
 /* free a static buffer */
-#define CU_FREE(_datPtr, _size)                                 \
+#define CU_FREE(_datPtr, _size)                              \
+   if(_datPtr)                                               \
    SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
          (Data *)_datPtr, _size);
 
@@ -91,6 +92,7 @@ CuCfgParams cuCfgParams; //global variable to hold all configs
 void readCuCfg();
 void cuAppInmsgHdlr(Buffer *mBuf);
 void sctpNtfyInd(CmInetSctpNotification *ntfy);
+uint8_t egtpInitReq();
 
 #endif
 

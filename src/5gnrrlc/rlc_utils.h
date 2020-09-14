@@ -51,6 +51,7 @@
 }
 
 void reverseFixBuf(uint8_t *buf, uint16_t len);
+uint16_t getTransId();
 
 /**********************************************************************
          End of file

@@ -110,13 +110,13 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
             case EVTSLOTIND:
             {
                ret = unpackEgtpSlotInd(egtpSlotInd, pst, mBuf);
-               ODU_PUT_MSG(mBuf);
+               ODU_PUT_MSG_BUF(mBuf);
                break;
             }
             default:
             {
                DU_LOG("\nEGTP : Invalid event %d", pst->event);
-               ODU_PUT_MSG(mBuf);
+               ODU_PUT_MSG_BUF(mBuf);
                ret = RFAILED;
             }
          }
@@ -606,7 +606,7 @@ uint8_t egtpHdlDatInd(EgtpMsg egtpMsg)
 
    /* Send over UDP */
    egtpSendMsg(egtpMsg.msg);
-   ODU_PUT_MSG(egtpMsg.msg);
+   ODU_PUT_MSG_BUF(egtpMsg.msg);
 
    return ROK;
 }/* EgtpHdlDatInd */

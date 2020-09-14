@@ -31,7 +31,6 @@
 #define ENCODE_FAIL -1
 #define TRANS_ID 1
 #define RRC_SIZE 1
-#define ENC_BUF_MAX_LEN 100
 #define SUL_BAND_COUNT 0
 #define UL_SRBID        1
 #define DL_SRBID        0
@@ -41,24 +40,11 @@
 #define CELL_INDEX      0
 #define SRB1 1
 
-/* allocate and zero out a static buffer */
-#define CU_ALLOC(_datPtr, _size)                                \
-{                                                               \
-   S16 _ret;                                                    \
-   _ret = SGetSBuf(CU_APP_MEM_REG, CU_POOL,                  \
-                    (Data **)&_datPtr, _size);                  \
-   if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
-   else                                                         \
-      _datPtr = NULLP;                                          \
-}
-
-/* free a static buffer */
-#define CU_FREE(_datPtr, _size)                                 \
-   if(_datPtr)                                                  \
-      SPutSBuf(CU_APP_MEM_REG, CU_POOL,                      \
-         (Data *)_datPtr, _size);
-
+#define CU_UE_F1AP_ID 0
+#define DU_UE_F1AP_ID 1
+#define SP_CELL_ID     2
+#define SERV_CELL_IDX 3
+#define CU_TO_DU_RRC_INF 4
 
 typedef struct f1apDb
 {
