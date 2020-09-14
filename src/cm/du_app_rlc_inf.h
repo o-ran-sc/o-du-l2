@@ -20,11 +20,14 @@
 #ifndef __RLC_INF_H__
 #define __RLC_INF_H__
 
-/* Macro for Ue Context */
-#define MAX_NUM_LOGICAL_CHANNELS 11
+/* Events */
 #define EVENT_RLC_UL_UE_CREATE_REQ  210
 #define EVENT_RLC_UL_UE_CREATE_RSP 211    /*!< Config Confirm */
 #define EVENT_UL_RRC_MSG_TRANS_TO_DU  212
+#define EVENT_DL_RRC_MSG_TRANS_TO_RLC 213
+
+/* Macro for Ue Context */
+#define MAX_NUM_LOGICAL_CHANNELS 11
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -500,6 +503,21 @@ typedef struct ulRrcMsgInfo
    uint8_t    *rrcMsg;      /* RRC Message (UL-DCCH Message) */
 }RlcUlRrcMsgInfo;
 
+/* DL RRC Message from DU APP to RLC */
+typedef struct dlRrcMsgInfo
+{
+   uint16_t   cellId;         /* Cell Id */
+   uint16_t   ueIdx;          /* UE index */
+   uint8_t    rbType;         /* Radio Bearer Type */
+   uint8_t    rbId;           /* Radio Bearer Id */
+   uint8_t    lcType;         /* Logical channel type */
+   uint8_t    lcId;           /* Logical channel Id */
+   bool       execDup;        /* Execution duplication enabled */
+   bool       deliveryStaRpt;  /* Reporting of delivery status by RLC to DU-APP enabled */
+   uint16_t   msgLen;         /* RRC Message length */
+   uint8_t    *rrcMsg;        /* RRC Message (DL-DCCH Message) */
+}RlcDlRrcMsgInfo;
+
 /* Function Pointers */
 /* UE create Request from DU APP to RLC*/
 typedef uint8_t (*DuRlcUlUeCreateReq) ARGS((
@@ -516,16 +534,26 @@ typedef uint8_t (*RlcUlRrcMsgToDuFunc) ARGS((
    Pst           *pst,
    RlcUlRrcMsgInfo *ulRrcMsgInfo));
 
-/* Function Declarations */
+/* DL RRC Message from DU APP to RLC */
+typedef uint8_t (*DuDlRrcMsgToRlcFunc) ARGS((
+   Pst           *pst,
+   RlcDlRrcMsgInfo *dlRrcMsgInfo));
+
+/* Pack/Unpack function declarations */
 uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf);
-uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfgRsp);
 uint8_t unpackRlcUlUeCreateRsp(RlcUlDuUeCreateRsp func, Pst *pst, Buffer *mBuf);
-uint8_t DuProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
 uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
-uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packDlRrcMsgToRlc(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo);
+uint8_t unpackDlRrcMsgToRlc(DuDlRrcMsgToRlcFunc func, Pst *pst, Buffer *mBuf);
+
+/* Event Handler function declarations */
+uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
+uint8_t DuProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
+uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
+uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo);
 
 #endif /* RLC_INF_H */
 

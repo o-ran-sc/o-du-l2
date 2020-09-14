@@ -278,7 +278,7 @@ Buffer *mBuf;           /* message buffer */
 #endif
 #endif  /* LCLKW */
                default:
-                  ODU_PUT_MSG(mBuf);
+                  ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                      RLOG1(L_FATAL,"Received Invalid Event[%d] from SM",
@@ -323,7 +323,7 @@ Buffer *mBuf;           /* message buffer */
 #endif  /* LCCKW */
 
                default:
-                  ODU_PUT_MSG(mBuf);
+                  ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                       RLOG1(L_ERROR,"Received Invalid Event[%d] from RLC UL",
@@ -375,7 +375,7 @@ Buffer *mBuf;           /* message buffer */
                   }
 #endif  /* LCKWU */
                default:
-                  ODU_PUT_MSG(mBuf);
+                  ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                       RLOG1(L_ERROR,"Received Invalid Event[%d] from RRC", 
@@ -406,7 +406,7 @@ Buffer *mBuf;           /* message buffer */
                   }
 
                default:
-                  ODU_PUT_MSG(mBuf);
+                  ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                       RLOG1(L_ERROR,"Received Invalid Event[%d] from PDCP", 
@@ -439,7 +439,7 @@ Buffer *mBuf;           /* message buffer */
 #endif  /* LCRGU */
 
                default:
-                  ODU_PUT_MSG(mBuf);
+                  ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
                       RLOG1(L_ERROR,"Received Invalid Event[%d] from MAC",
@@ -458,7 +458,7 @@ Buffer *mBuf;           /* message buffer */
                case KWU_EVT_TTI_IND:
                   {
                      rlcUlBatchProc();
-                     ODU_PUT_MSG(mBuf);
+                     ODU_PUT_MSG_BUF(mBuf);
                      break;
                   }
             }
@@ -478,14 +478,14 @@ Buffer *mBuf;           /* message buffer */
                   tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
                   TSL2SendStatsToApp(&(tRlcCb->genCfg.lmPst), 0);
-                  ODU_PUT_MSG(mBuf);
+                  ODU_PUT_MSG_BUF(mBuf);
                   break;
                }
                default:
                {
                   printf("\n ERROR Invalid Event[%d] from CL to PDCPUL\n", 
                          pst->event);
-                  ODU_PUT_MSG(mBuf);
+                  ODU_PUT_MSG_BUF(mBuf);
                   break;
                }
             }
@@ -499,7 +499,7 @@ Buffer *mBuf;           /* message buffer */
            {
               RLOG1(L_ERROR, "Received Invalid Source Entity[%d]",pst->event);
            }
-            ODU_PUT_MSG(mBuf);
+            ODU_PUT_MSG_BUF(mBuf);
             ret = RFAILED;
             break;
          }

@@ -610,6 +610,7 @@ typedef struct rlcCb
       RlcUlCb   *ulCb;   /*!< Ul Control Block */
       RlcDlCb   *dlCb;   /*!< Dl Control Block */
    } u;
+   uint8_t    dlSduId;   /*!< Downlink SDU ID */
 }RlcCb;
 
 EXTERN RlcCb *rlcCb[MAX_RLC_INSTANCES];   /*!< RLC global control block */

@@ -92,7 +92,7 @@ uint8_t packEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 {
    Buffer *mBuf;
 
-   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       return RFAILED;
@@ -160,7 +160,7 @@ uint8_t unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
       oduPackUInt32(&(egtpCfg.localIp.ipV4Addr), mBuf);
    }
    
-   ODU_PUT_MSG(mBuf);
+   ODU_PUT_MSG_BUF(mBuf);
  
    return ((*func)(pst, egtpCfg));
 }
@@ -188,7 +188,7 @@ uint8_t packEgtpCfgCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
   
-   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
       return RFAILED;
@@ -247,7 +247,7 @@ uint8_t packEgtpSrvOpenReq(Pst *pst)
 {
    Buffer *mBuf;
  
-   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       return RFAILED;
@@ -300,7 +300,7 @@ uint8_t packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
  
-   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
       return RFAILED;
@@ -362,7 +362,7 @@ uint8_t packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    Buffer *mBuf;
 
-   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       return RFAILED;
@@ -432,7 +432,7 @@ uint8_t packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    Buffer *mBuf;
 
-   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
       return RFAILED;
@@ -502,7 +502,7 @@ uint8_t packEgtpSlotInd(Pst *pst)
 {
    Buffer *mBuf;
 
-   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
       return RFAILED;
