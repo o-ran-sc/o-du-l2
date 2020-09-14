@@ -79,6 +79,7 @@
 #define ODU_ATTACH_TTSK SAttachTTsk
 #define ODU_POST_TASK SPstTsk
 #define ODU_COPY_MSG_TO_FIX_BUF SCpyMsgFix
+#define ODU_COPY_FIX_BUF_TO_MSG SCpyFixMsg
 #define ODU_REG_TTSK SRegTTsk
 #define ODU_SET_PROC_ID SSetProcId
 #define ODU_FIND_MSG_LEN SFndLenMsg

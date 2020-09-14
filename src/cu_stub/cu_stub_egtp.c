@@ -73,9 +73,9 @@ S16 egtpActvInit()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 egtpInitReq()
+uint8_t egtpInitReq()
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
    EgtpTnlEvt tnlEvt;
 
    ret = cuEgtpCfgReq();
@@ -102,8 +102,7 @@ S16 egtpInitReq()
       return RFAILED;
    }
 
-   return (ret);
-
+   return ret;
 } /* egtpInitReq */
 
 /**************************************************************************
@@ -175,7 +174,7 @@ S16 cuEgtpSrvOpenReq(Pst *pst)
    DU_LOG("\nEGTP : Received open server request");
  
    sockType = CM_INET_DGRAM;
-   if(ret = (cmInetSocket(sockType, &(egtpCb.recvTptSrvr.sockFd), protType)) != ROK)
+   if((ret = (cmInetSocket(sockType, &(egtpCb.recvTptSrvr.sockFd), protType))) != ROK)
    {
       DU_LOG("\nEGTP : Failed to open UDP socket");
       return RFAILED;
@@ -513,7 +512,6 @@ S16 cuEgtpHdlRecvMsg(Buffer *mBuf)
 S16 cuEgtpDecodeHdr(Buffer *mBuf)
 {
    EgtpMsg  egtpMsg;
-   S16      retVal  = ROK;       /* Holds the return value */
    U8       tmpByte[5];         /* Holds one byte of data after Dec */
    U8       version = 0;         /* Holds the version type, decoded */
    MsgLen   msgLen  = 0;         /* Holds the msgLen from the Hdr */
@@ -750,7 +748,7 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
    egtpMsg->msgHdr.teId = 10;
    egtpMsg->msg = mBuf;
 
-   return ROK;
+   return ret;
 }
 
 
