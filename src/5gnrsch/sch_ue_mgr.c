@@ -194,7 +194,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   puschSlot = (pdcchSlot + k2) % SCH_NUM_SLOTS;
 
   startRb = cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb;
-  tbSize  = schCalcTbSize((dataVol + buffer)/8); /*  2 bytes header + some buffer */
+  tbSize  = schCalcTbSize(dataVol + buffer); /*  2 bytes header + some buffer */
   numRb   = schCalcNumPrb(tbSize, mcs, numPdschSymbols);
   /* increment PUSCH PRB */
 

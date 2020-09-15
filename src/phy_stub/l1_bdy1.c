@@ -922,8 +922,13 @@ PUBLIC S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {
 	 DU_LOG("\nPHY STUB: PUCCH PDU");
-	 l1BuildAndSendUciInd((ulTtiReq->slot + SLOT_DELAY), ulTtiReq->sfn, \
-	       ulTtiReq->pdus[numPdus-1].pdu.pucch_pdu); 
+         fapi_ul_tti_req_t ulTtiSlotInd;
+	 memset(&ulTtiSlotInd, 0, sizeof(fapi_ul_tti_req_t));
+	 ulTtiSlotInd.slot = ulTtiReq->slot;
+	 ulTtiSlotInd.sfn  = ulTtiReq->sfn;
+         ADD_DELTA_TO_TIME(ulTtiSlotInd, ulTtiSlotInd, SLOT_DELAY);
+	 l1BuildAndSendUciInd(ulTtiSlotInd.slot, ulTtiSlotInd.sfn, \
+	       ulTtiReq->pdus[numPdus-1].pdu.pucch_pdu);
       }
       numPdus--;
    }
