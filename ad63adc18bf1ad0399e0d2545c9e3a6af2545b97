@@ -1,0 +1,310 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c88aa109_834ee721",
+        "filename": "src/5gnrmac/rg_prg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "change to return. Applicable to complete file",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c137946d_601a8476",
+        "filename": "src/5gnrmac/rg_uim.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "SSI functions in all RLC files need to be renamed. Can be done later.",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ea19589_2dc2c840",
+        "filename": "src/5gnrsch/rg_sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1876,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "replace RETVALUE with return. Missed out at multiple places in multiple files",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f35509b_3efec79f",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11440,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "change the remaining RETVALUE as well in this file",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d64044a0_c1cb0301",
+        "filename": "src/5gnrsch/rg_sch_ex_ms.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "can we replace SExitTsk also everywhere",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c26eb709_fa075853",
+        "filename": "src/5gnrsch/rg_sch_inf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "replace the missed out retvalue",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93d534a7_8fff675e",
+        "filename": "src/cm/crg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "recheck RETVALUE missed in all files",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a16fa7e0_ed608627",
+        "filename": "src/cm/legtp.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "change all function pointers as well to uint8",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04ed7dda_96feeb30",
+        "filename": "src/cm/lphy_stub.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "change return type to uint8",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6265e8f4_a8053b37",
+        "filename": "src/cm/lsctp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "use memset instead of cmMemset. Recheck all new files\nuse uint8_t instead of U8",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3af25f37_5ed8e0d8",
+        "filename": "src/cm/lsctp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "return",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6525b3e7_fbefd199",
+        "filename": "src/cm/lsctp.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "change return type to uin8_t",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fd0c6ae_1216d221",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "all function in this file can have uint8_t return type",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06d5b7f9_0f0ad808",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "uint8_t",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ab57d54_ff650ac1",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "uint8_t",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2efd2fa_25d7a6db",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "uint16_t",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19260c4b_2e838fa6",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "Lets replace SSI functions in all cu stub files as well",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e65ce44c_4b4d0455",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-15T05:37:43Z",
+      "side": 1,
+      "message": "replace SRemPreMsg",
+      "revId": "ad63adc18bf1ad0399e0d2545c9e3a6af2545b97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
