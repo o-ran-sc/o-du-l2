@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "bba97c22_b9a1a2ce",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "add a comment as to why we are reversing..it could be for our reference too",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "494bf997_9ab41928",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "why are we still using this logic?this logic was updated in du app..we can do it here as well.",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7881b34e_0b05b374",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -37,6 +71,57 @@
     },
     {
       "key": {
+        "uuid": "ad4ae1d9_51ad5466",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1445,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "how have these values been filled?",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e83d28e_631ff8da",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1729,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "change to while(true)",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "162c755d_0952fc05",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "similarly named functions. this and buildAndSendUeContextSetupReq",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "217cacf0_31f94475",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -69,6 +154,108 @@
       "revId": "e1995b919a642b99c80e76a8112c29529a416382",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "585c3d15_1fe79993",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5250,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "return type must be uint8_t. Same holds for ret variable below",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3886d348_954f8bba",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5269,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "dont use RETVALUE. holds good for all files and functions",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0053597a_b8c3f038",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "Trans may be conflicted with transaction",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5cd40d0_b929ecfd",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "why is delivery status report false?",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74c8ae62_74426b25",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "is this cellIdx or cellId?",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e1c1793_da28265c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-16T12:54:35Z",
+      "side": 1,
+      "message": "if rrcMsgLen is available, we can try memcpy itself instead of adding a for loop everywhere",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     },
     {
       "key": {
