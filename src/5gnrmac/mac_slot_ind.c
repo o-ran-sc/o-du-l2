@@ -340,7 +340,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    DU_LOG("\nMAC : Slot Indication received");
 
    /*starting Task*/
-   SStartTask(&startTime, PID_MAC_TTI_IND);
+   ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
 
    /* send slot indication to scheduler */
    ret = sendSlotIndMacToSch(slotInd);
@@ -366,7 +366,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    }
 
    /*stoping Task*/
-   SStopTask(startTime, PID_MAC_TTI_IND);
+   ODU_STOP_TASK(startTime, PID_MAC_TTI_IND);
 
    return ret;
 }  /* fapiMacSlotInd */

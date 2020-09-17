@@ -364,7 +364,7 @@ RgSchCellCb           *cell;
    {
       RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
                                          "rgSCHDhmHqEntInit hqE alloc fail"); 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #ifdef LTE_TDD
    /* Init the HARQ processes */
@@ -374,7 +374,7 @@ RgSchCellCb           *cell;
    {
       RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
                                          "rgSCHDhmHqEntInit hqP alloc fail in hqE"); 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #else
    hqE->numHqPrcs = RGSCH_NUM_DL_HQ_PROC;
@@ -394,7 +394,7 @@ RgSchCellCb           *cell;
    hqE->cell = cell;
    /* CA Dev End*/
 
-   RETVALUE(hqE);
+   return (hqE);
 } /* rgSCHDhmHqEntInit */
 
 /**
@@ -449,7 +449,7 @@ RgSchDlHqProcCb         **hqP;
    {   
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHDhmGetAvlHqProc hqE NULL ue %d"
                            , ue->ueId);     
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -461,7 +461,7 @@ RgSchDlHqProcCb         **hqP;
                         "rgSCHDhmGetAvlHqProc free %ld inUse %ld ue %d"
                                            , hqE->free.count, hqE->inUse.count, ue->ueId);
       /* No Harq Process available in the free queue. */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    tmpHqProc = (RgSchDlHqProcCb *)(tmp->node);
@@ -483,7 +483,7 @@ RgSchDlHqProcCb         **hqP;
       if (!tmp)
       {
          /* No Harq Process available in the free queue. */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 #endif
@@ -519,7 +519,7 @@ RgSchDlHqProcCb         **hqP;
    tmpHqProc->itbsAtEstimate[1] = 0;
    tmpHqProc->prbAtEstimate = 0;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHDhmGetAvlHqProc */
 
 
@@ -630,9 +630,9 @@ RgSchDlHqEnt            *hqE;
     * until RACH procedure is completed */
    if ((hqE == NULLP) || (hqE->inUse.last == NULLP))
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
-   RETVALUE((RgSchDlHqProcCb *)hqE->inUse.last->node);
+   return ((RgSchDlHqProcCb *)hqE->inUse.last->node);
 } /* rgSCHDhmLastSchedHqProc */
 
 #ifdef RGR_V1
@@ -686,7 +686,7 @@ RgSchDlHqProcCb         **hqP;
    if (NULLP == tmp)
    {
       /* No Harq Process available in the free queue. */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Remove the element from the free Queue and */
@@ -706,7 +706,7 @@ RgSchDlHqProcCb         **hqP;
    //cmLListAdd2Tail(&hqE->inUse, &tmpHqProc->lnk);
    rgSCHDhmHqPAdd2InUseLst(tmpHqProc);
    
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHDhmGetCcchSduHqProc */
 #endif
 
@@ -758,7 +758,7 @@ CmLteTimingInfo         timingInfo;
    if (NULLP == tmp)
    {
       /* No Harq Process available in the free queue. */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Remove the element from the free Queue and */
@@ -769,7 +769,7 @@ CmLteTimingInfo         timingInfo;
    tmpHqProc->tbInfo[0].timingInfo = timingInfo;
    hqE->msg4Proc         = tmpHqProc;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHDhmGetMsg4HqProc */
 
 /**
@@ -1137,7 +1137,7 @@ RgSchDlHqProcCb         **hqP;
    /* Pick the proc based on the index provided */
    *hqP = &(hqE->procs[idx]);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHDhmGetHqProcFrmId */
 
 /**
@@ -1181,7 +1181,7 @@ CmLteTimingInfo         timingInfo;
    if (NULLP == tmp)
    {
       /* No Harq Process available in the free queue. */
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
    idx = ((timingInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G + timingInfo.slot)/
@@ -1204,7 +1204,7 @@ CmLteTimingInfo         timingInfo;
    if (!tmp)
    {
       /* No Harq Process available in the free queue. */
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
    hqProc->tbInfo[0].timingInfo = timingInfo;
@@ -1222,7 +1222,7 @@ CmLteTimingInfo         timingInfo;
    rgSCHLaaResetDlHqProcCb(hqProc);
 #endif
 
-   RETVALUE(hqProc);
+   return (hqProc);
 } /* rgSCHDhmSpsDlGetHqProc */
 #endif /* LTEMAC_SPS */
 
@@ -1423,7 +1423,7 @@ RgSchCellCb             *cell;
           tbStrtIdx[*cntHqPrcs] = 0;
           numTbs[*cntHqPrcs] = 1;
           (*cntHqPrcs)++;
-          RETVALUE(ROK);
+          return ROK;
       }
    }
    ascIdx = rgSchTddDlAscSetIdxKTbl[cell->ulDlCfgIdx][timeInfo.slot];
@@ -1500,7 +1500,7 @@ RgSchCellCb             *cell;
    }
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #else  /* LTE_TDD */
 /** * @brief Handler for fetching Harq Proc given the timming information.
@@ -1542,11 +1542,11 @@ RgSchDlSf               *sf;
       if (RGSCH_TIMEINFO_SAME(hqE->msg4Proc->tbInfo[0].timingInfo, timeInfo))
       {
           *isMsg4    = TRUE;
-          RETVALUE(hqE->msg4Proc);
+          return (hqE->msg4Proc);
       }
    }
    
-   RETVALUE(NULLP);
+   return (NULLP);
 }
 #endif
 
@@ -2186,7 +2186,7 @@ RgSchErrInfo            *err;
    {
       err->errType   = RGSCHERR_DHM_FDBK_IND;
       err->errCause  = RGSCHERR_DHM_FDBK_IND_INVALID_CB;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* ccpu00147469 : This code is moved below as here this code always try to
@@ -2265,7 +2265,7 @@ RgSchErrInfo            *err;
         {
            RGSCHDBGINFO(cellCb->instIdx,(rgSchPBuf(cellCb->instIdx), 
                     "Ack Rcvd. No Ack/Nack feedback available \n"));
-           RETVALUE(RFAILED);
+           return RFAILED;
         }
      }
 
@@ -2704,7 +2704,7 @@ RgSchErrInfo            *err;
          ue->ueId,timeInfo.sfn, timeInfo.slot);
          err->errType   = RGSCHERR_DHM_FDBK_IND;
          err->errCause  = RGSCHERR_DHM_FDBK_IND_INVALID_CB;
-         RETVALUE(RFAILED);
+         return RFAILED;
          }
        */
    }/*if(hqCnt==0)*/
@@ -2736,7 +2736,7 @@ RgSchErrInfo            *err;
 #endif
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 //#endif /* LTEMAC_SPS */
 
@@ -2905,7 +2905,7 @@ RgSchErrInfo            *err;
    {
       if((rgSCHDhmProcHqFdbkAckNackRep(hqP,sf,tbCnt,&isAck)) != ROK)
       {
-         RETVALUE(ret);
+         return (ret);
       }
    }
    else
@@ -3022,7 +3022,7 @@ RgSchErrInfo            *err;
    {
       rgSCHDhmFdbkIndHndlTa(hqP, tbCnt, isAck, maxHqRetxReached);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHDhmPrcFdbkForTb */
 /** * @brief Function to decode the position of HarqFb for eachCell.
  *
@@ -3323,7 +3323,7 @@ RgSchErrInfo         *err;
       hqPCount--;
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHDhm5gtfHqFdbkInd */
 
 /** * @brief Handler for HARQ feedback received for DL transmission.
@@ -3512,7 +3512,7 @@ RgSchErrInfo            *err;
                   "CRNTI:%d NO HARQ proc available for feedback: TimingInfo: "
                   "sfn %d slot %d", ue->ueId, timingInfo.sfn,
                   timingInfo.slot);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
 
             isAck[0] = fdbk->isAck[0];
@@ -3523,7 +3523,7 @@ RgSchErrInfo            *err;
             /* Remove release PDCCH from the subframe */
             rgSCHUtlPdcchPut(cell, &sf->pdcchInfo, sf->relPdcch);
             sf->relPdcch = NULLP;
-            RETVALUE(ROK);
+            return ROK;
          }
       }
    }
@@ -3611,7 +3611,7 @@ RgSchErrInfo            *err;
       node = node->next;
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgSCHDhmHqFdbkInd */
 #endif /* LTE_FDD */
 
@@ -4041,14 +4041,14 @@ RgSchDlHqTbCb      *tbInfo;
 
    if(tbInfo->numLch >= RGSCH_MAX_NUM_DED_LC)
    {
-     RETVALUE(RFAILED);
+     return RFAILED;
    } 
 
    tbInfo->lchSchdDataArr[tbInfo->numLch]   = *lchData;
 
    tbInfo->numLch++;
 
-   RETVALUE(ROK);
+   return ROK;
 
 }  /* rgSCHDhmAddLcData */
 
@@ -4102,7 +4102,7 @@ CmLteTimingInfo      uciTimingInfo;
       RGSCHDECRFRMCRNTTIME(uciTimingInfo, dlSfTime, ascIdx.subfrmNum[i]);
       rgSCHUtlDlRlsSubFrm(cellCb, dlSfTime);
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* rgSCHDhmTddRlsSubFrm */
 
 #ifdef TFU_TDD
@@ -4344,7 +4344,7 @@ CmLteTimingInfo      uciTimingInfo;
 #endif
             if(anInfo == NULLP)
             {
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             RGSCH_NULL_CHECK(cellCb->instIdx, nxtDlsf);
             RGSCH_UPD_HQAN_FDBKTIME(tbCb, nxtDlsf, nxtfrm);
@@ -4393,7 +4393,7 @@ CmLteTimingInfo      uciTimingInfo;
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }/* rgSCHDhmRlsDlsfHqProc */
 #else /* ifdef LTE_TDD */
 /**
@@ -4554,7 +4554,7 @@ CmLteTimingInfo      timingInfo;
    }
    /*CA Dev End*/
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHDhmRlsDlsfHqProc */
 #endif
 #ifdef LTEMAC_SPS
@@ -4597,7 +4597,7 @@ U8                      idx;
    /* Pick the proc based on the index provided */
    rgSCHDhmGetHqProcFrmId(ue->cell, ue, idx, &hqP);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHDhmMarkSpsHqProc */
 #endif /* RG_UNUSED */
 #endif /* LTEMAC_SPS */
@@ -4646,7 +4646,7 @@ U8                   *isAck;
         /* Update timingInfo for this hqP so that next subframe its picked up */
         RG_SCH_ADD_TO_CRNT_TIME(hqP->tbInfo[tbCnt].timingInfo, \
                                hqP->tbInfo[tbCnt].timingInfo, 1);
-        RETVALUE(RFAILED);
+        return RFAILED;
     }
     
     /* Take decision here based on the number
@@ -4671,7 +4671,7 @@ U8                   *isAck;
       
        
     hqP->tbInfo[tbCnt].isAckNackDtx = *isAck; 
-    RETVALUE(ROK);
+    return ROK;
 }
 #endif /* ifndef LTE_TDD */
 
@@ -4807,7 +4807,7 @@ RgSchDlHqProcCb         *hqP;
       RgSchMacRlsHq(&pst, rlsHqInfo);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef DL_LA
@@ -4853,7 +4853,7 @@ U8                      tbCnt;
    */
    rgSCHDhmUpdBlerBasediTbsEff(cell, ueCb, tbCnt); 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -4913,7 +4913,7 @@ U8                      tbCnt;
       (*(RgSchCmnTbSzEff *)(cellSch->dl.cqiToEffTbl[1][cfi]))\
       [ueDl->mimoInfo.cwInfo[tbCnt].iTbs[1]];
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 

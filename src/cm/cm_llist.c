@@ -324,7 +324,7 @@ CmLList *node;                /* node to be removed */
    /* cm_llist_c_001.main_8 : added null check for node */
    if (lCp == (CmLListCp *)NULLP || lCp->count == 0 || !node)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -332,7 +332,7 @@ CmLList *node;                /* node to be removed */
    {
       lCp->first = lCp->crnt = lCp->last = (CmLList *)NULLP;
       lCp->count = 0;
-      RETVALUE(node);
+      return (node);
    }
    
    lCp->count--;
@@ -343,7 +343,7 @@ CmLList *node;                /* node to be removed */
          node->next->prev = (CmLList *)NULLP;
       lCp->first = node->next;
       node->next = node->prev = (CmLList *)NULLP;
-      RETVALUE(node);
+      return (node);
    }
    
    if (lCp->last == node)
@@ -352,13 +352,13 @@ CmLList *node;                /* node to be removed */
          node->prev->next = (CmLList *)NULLP;
       lCp->last = node->prev;
       node->next = node->prev = (CmLList *)NULLP;
-      RETVALUE(node);
+      return (node);
    }
 
    node->prev->next = node->next;
    node->next->prev = node->prev;
    node->next = node->prev = (CmLList *)NULLP;
-   RETVALUE(node);
+   return (node);
 } /* end of cmLListDelFrm */
 
 

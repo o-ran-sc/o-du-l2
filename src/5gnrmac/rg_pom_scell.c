@@ -141,7 +141,7 @@ RgPrgUeSCellLchModInfo   *lchCfgCb;
 
   /* Send positive confirmation to primary cell*/
   RgPrgSMacPMacCfg(&cfmPst, &cfgCfm);
-  RETVALUE(ROK);
+  return ROK;
 }  /* RgPrgPMacSMacUeSCellLchModReq */
 
 
@@ -201,7 +201,7 @@ Bool            *isCfmRqrd;
       RGDBGERRNEW(inst,(rgPBuf(inst), 
                        "[%d]Active Cell does not exist %d\n",
                                   lcDel->u.lchDel.crnti, lcDel->u.lchDel.cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    RGDBGPRM(inst,(rgPBuf(inst), 
@@ -212,7 +212,7 @@ Bool            *isCfmRqrd;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), 
                "[%d]Ue does not exist\n", lcDel->u.lchDel.crnti));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    for(idx = 0; idx < RG_MAX_SCELL_PER_UE ; idx++)
    {
@@ -231,7 +231,7 @@ Bool            *isCfmRqrd;
          *isCfmRqrd = FALSE;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -305,7 +305,7 @@ Bool           *isCfmRqrd;
          *isCfmRqrd = FALSE;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -381,7 +381,7 @@ Bool           *isCfmRqrd;
          *isCfmRqrd = FALSE;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgPomSndUeSCellLchAddToSmac */
 
 /**
@@ -460,7 +460,7 @@ RgPrgUeSCellLchDelInfo    *delLcCb;
 
   /* Send positive confirmation to primary cell*/
   RgPrgSMacPMacCfg(&cfmPst, &cfgCfm);
-  RETVALUE(ROK);
+  return ROK;
 }  /* RgPrgPMacSMacUeSCellLchDelReq */
 
 
@@ -539,7 +539,7 @@ RgPrgUeSCellLchAddInfo   *lchCfgCb;
 
   /* Send positive confirmation to primary cell*/
   RgPrgSMacPMacCfg(&cfmPst, &cfgCfm);
-  RETVALUE(ROK);
+  return ROK;
 }  /* RgPrgPMacSMacUeSCellLchAddReq */
 /**
  * @brief Validates the logical channel configuration request from PMAC to SMAC.
@@ -593,14 +593,14 @@ RgUeCb                  **ue;
       {
          RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UEID Validation for dedicated LC failed\n",
                   lcCfg->crnti));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    else
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UEID Invalid logical channel type %d\n",\
                lcCfg->crnti, lcCfg->lcType));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef LTE_L2_MEAS
    if ( lcCfg->qci <  RG_QCI_MIN ||
@@ -609,14 +609,14 @@ RgUeCb                  **ue;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UEID Invalid qci %x\n",
                lcCfg->crnti, lcCfg->qci));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*validate qci */
 #endif /*LTE_L2_MEAS */
 
    RGDBGINFONEW(inst,(rgPBuf(inst),"[%d]UEID CRG LCconfig validation done:cellId:%d lcId:%d\n",
             lcCfg->crnti, lcCfg->cellId, lcCfg->lcId));
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief Handler for the logical channel configuration request from
@@ -665,12 +665,12 @@ RgPrgUeSCellLchAddInfo   *lcCfg;
       {
          RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Dedicated logical channel configuration"
                   "failed in SCell%d\n", lcCfg->crnti, lcCfg->lcId));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
    RGDBGINFONEW(inst,(rgPBuf(inst), "[%d]SCell LC config done: cellId %d lcId %d\n",
           lcCfg->crnti, lcCfg->cellId, lcCfg->lcId));
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgPomUeSCellLcAdd */
 
 /***********************************************************
@@ -720,7 +720,7 @@ RgUeCb                     **ue;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Active Cell does not exist: Cell %d\n",
                lcCfg->crnti, lcCfg->cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Fetch the Ue */
@@ -728,7 +728,7 @@ RgUeCb                     **ue;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UE  does not exist for dedicated logical"
                "channel %d\n", lcCfg->crnti, lcCfg->lcId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Validate logical channel Id */
@@ -737,7 +737,7 @@ RgUeCb                     **ue;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Invalid logical channel Id %d\n",
                 lcCfg->crnti, lcCfg->lcId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }*/
    /* Validate downlink info */
    if (lcCfg->dir & PRG_DIR_TX)
@@ -746,7 +746,7 @@ RgUeCb                     **ue;
       {
          RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UE: Dedicated DL LC %d already configured\n",
                    lcCfg->crnti, lcCfg->lcId));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 /*      dirVld = TRUE;*/
    }
@@ -758,13 +758,13 @@ RgUeCb                     **ue;
       {
          RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UE: Invalid lcgId for uplink logical"
                   "channel %d\n", lcCfg->crnti, lcCfg->ulInfo.lcgId));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       if (rgDBMGetUlDedLcCb((*ue), lcCfg->lcId) != NULLP)
       {
          RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UE: Dedicated UL LC %d already configured\n",
                    lcCfg->crnti, lcCfg->lcId));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 /*      dirVld = TRUE;*/
    }
@@ -773,12 +773,12 @@ RgUeCb                     **ue;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Invalid Direction %d \n",
                lcCfg->crnti, lcCfg->dir));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 */
    RGDBGINFONEW(inst,(rgPBuf(inst), "[%d]Dedicated logical channel %d validated"
             "for cell %d\n", lcCfg->crnti, lcCfg->lcId, lcCfg->cellId));
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgPomVldtSCellDedLchCfg */
 /***********************************************************
  *
@@ -839,7 +839,7 @@ RgPrgUeSCellLchAddInfo     *lcCfg;
       rgDBMInsDlDedLcCb(ue, lcCfg->lcId);
    }
    RGDBGINFO(inst,(rgPBuf(inst), "Dedicated LC config done\n"));
-   RETVALUE(ROK);
+   return ROK;
 
   }  /* rgPomUeSCellDedLcCfg */
 /**
@@ -887,28 +887,28 @@ PUBLIC S16 rgPomVltdModLch(inst, lchCfgCb, cell, ue, ulLc)
          || ((*cell)->cellId != lchCfgCb->cellId))
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Active Cell does not exist %d\n",lchCfgCb->crnti, lchCfgCb->cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Fetch the Ue for dedicated channels */
    if ((*ue = rgDBMGetUeCb(*cell, lchCfgCb->crnti)) == NULLP)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Ue does not exist for dedicated logical channel\n",
                lchCfgCb->crnti));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((*ulLc = rgDBMGetUlDedLcCb((*ue), lchCfgCb->lcId)) == NULLP)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Dedicated UL LC does not exist %d\n",
                lchCfgCb->crnti, lchCfgCb->lcId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
   /* if (lchCfgCb->ulLchRecfg.lcgId > (RG_MAX_LCG_PER_UE - 1))
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Invalid lcgId for uplink logical channel: lcg %d"
                "lc %d\n",lchCfgCb->crnti, lchCfgCb->ulLchRecfg.lcgId, lchCfgCb->lcId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }*/
-   RETVALUE(ROK);
+   return ROK;
 } /*rgPomVltdModLch*/
 /**
  * @brief Handler for the logical channel re-configuration request from
@@ -959,7 +959,7 @@ RgPrgUeSCellLchModInfo  *lchCfgCb;
 
    RGDBGINFO(inst,(rgPBuf(inst), "LC %d of Ue %d of cell %d Reconfigured\n", 
             lchCfgCb->lcId, ue->ueId, cell->cellId));
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgPomUeSCellLcMod */
 /**
  * @brief Function to validate SCellLchDel.
@@ -1008,28 +1008,28 @@ PUBLIC S16 rgPomVltdDelLch(inst, delLcCb, cell, ue, ulLc, dlLc)
          || ((*cell)->cellId != delLcCb->cellId))
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Active Cell does not exist %d\n",delLcCb->crnti, delLcCb->cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Fetch the Ue for dedicated channels */
    if ((*ue = rgDBMGetUeCb(*cell, delLcCb->crnti)) == NULLP)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Ue does not exist for dedicated logical channel\n",
                delLcCb->crnti));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((*ulLc = rgDBMGetUlDedLcCb((*ue), delLcCb->lcId)) == NULLP)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Dedicated UL LC does not exist %d\n",
                delLcCb->crnti, delLcCb->lcId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ((*dlLc = rgDBMGetDlDedLcCb((*ue), delLcCb->lcId)) == NULLP)
    {
          RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]DL LC %d does not exist\n",
                delLcCb->crnti, delLcCb->lcId));
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /*rgPomVltdDelLch*/
 /**
  * @brief Handler for the logical channel delete request from
@@ -1096,12 +1096,12 @@ RgDlLcCb                  *dlLc;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Invalid direction %d for LC Delete\n",
             delLcCb->crnti, delLcCb->dir));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }*/
    RGDBGINFONEW(inst,(rgPBuf(inst), "[%d]UE's Logical channel %d deleted from cell %d\n",
          delLcCb->crnti, delLcCb->lcId,
          delLcCb->cellId));
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgPomUeSCellLcDel */
 #endif /*LTE_ADV */
 /**********************************************************************

@@ -37,7 +37,7 @@
 #include "du_f1ap_msg_hdl.h"
 
 extern DuCfgParams duCfgParam;
-extern S16 duBuildAndSendMacCellCfg();
+extern uint8_t duBuildAndSendMacCellCfg();
 
 /*******************************************************************
  *
@@ -55,15 +55,15 @@ extern S16 duBuildAndSendMacCellCfg();
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
+uint8_t procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 {
-   U16 idx = 0;
-   S16 ret = ROK;
+   uint16_t idx = 0;
+   uint8_t ret = ROK;
 
    for(idx=0; idx<cellsToActivate.list.count; idx++)
    {
-      U16 nci = 0;
-      U16 pci = 0;
+      uint16_t nci = 0;
+      uint16_t pci = 0;
       DuCellCb *cellCb = NULLP;
 
       Cells_to_be_Activated_List_Item_t cell = cellsToActivate.list.array[idx]->\
@@ -129,7 +129,7 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
    F1SetupRsp    f1SetRspDb;
    GNB_CU_Name_t *cuName;
    RRC_Version_t *rrc_Ver;
-   U16 idx;
+   uint16_t idx;
 
    DU_LOG("\nDU_APP : F1 Setup Response received"); 
  	printf("\nDU_APP : F1 Setup Response received");
@@ -177,11 +177,9 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
  
    /* TODO :Check the deallocation */
 #if 0
-   SPutSBuf(DU_APP_MEM_REGION, DU_POOL,(Data *)&(f1SetupRsp->protocolIEs.list.array),\
-         (Size)elementCnt * sizeof(F1SetupResponseIEs_t *));
-   SPutSBuf(DU_APP_MEM_REGION, DU_POOL,(Data *)&(f1apMsg->choice.successfulOutcome),\
-         (Size)sizeof(SuccessfulOutcome_t));
-   SPutSBuf(DU_APP_MEM_REGION, DU_POOL,(Data *)&f1apMsg,(Size)sizeof(F1AP_PDU_t));
+   DU_FREE(f1SetupRsp->protocolIEs.list.array,(Size)elementCnt * sizeof(F1SetupResponseIEs_t *));
+   DU_FREE(f1apMsg->choice.successfulOutcome,(Size)sizeof(SuccessfulOutcome_t));
+   DU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
 #endif
  
    return ret;
@@ -202,17 +200,14 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
+uint8_t procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
 {
    DU_LOG("\nF1AP : GNB-DU config update acknowledgment received");
 /* TODO :Check the deallocation */
 #if 0
-   SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data*)&(gNBDuCfgAck->protocolIEs.list.array),\
-           (Size)elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t
-));
-   SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data*)&(f1apMsg->choice.successfulOutcome),\
-           (Size)sizeof(SuccessfulOutcome_t));
-   SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data*)&f1apMsg,(Size)sizeof(F1AP_PDU_t));
+   DU_FREE(gNBDuCfgAck->protocolIEs.list.array,(Size)elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t));
+   DU_FREE(f1apMsg->choice.successfulOutcome,(Size)sizeof(SuccessfulOutcome_t));
+   DU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
 #endif
     return ROK;
 }

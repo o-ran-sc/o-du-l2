@@ -288,7 +288,7 @@ U32 macHeader[2];
   if (_padBuf == NULLP) \
   { \
     RLOG0(L_ERROR, "RGERR_MUX_BLD_CEHDR_FAIL");\
-    RETVALUE(RFAILED);\
+    return RFAILED;\
   } \
   if (mInfo->endptr == NULLP) { \
     sduEnd = _sduBuf; \
@@ -644,7 +644,7 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 {\
    if(_inst >= RG_MAX_INST)\
    {\
-      RETVALUE(RFAILED);\
+      return RFAILED;\
    }\
 }
 

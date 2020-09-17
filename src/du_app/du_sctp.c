@@ -50,10 +50,10 @@
  * @return ROK     - success
  *         RFAILED - failure
  ***************************************************************************/
-S16 sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
+uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
 {
    DU_LOG("\n\nSCTP : Initializing");
-   SSetProcId(DU_PROC);
+   ODU_SET_PROC_ID(DU_PROC);
    connUp = FALSE;
    f1Params.assocId = -1;
    ricParams.assocId = -1;
@@ -81,7 +81,7 @@ S16 sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 sctpActvTsk(Pst *pst, Buffer *mBuf)
+uint8_t sctpActvTsk(Pst *pst, Buffer *mBuf)
 {
    switch(pst->srcEnt)
    {
@@ -98,7 +98,7 @@ S16 sctpActvTsk(Pst *pst, Buffer *mBuf)
             break;
          }
    }
-   SExitTsk();
+   ODU_EXIT_TASK();
    return ROK;
 }
 /*******************************************************************
@@ -117,15 +117,15 @@ S16 sctpActvTsk(Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  ******************************************************************/
-S16 duCheckReqStatus(CmStatus *cfm)
+uint8_t duCheckReqStatus(CmStatus *cfm)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
    if(cfm->status != LCM_PRIM_OK)
    {
       DU_LOG("\nDU_APP : Failed to process the request successfully");
       ret = RFAILED;
    }
-   RETVALUE(ret); 
+   return (ret); 
 }
 
 /**************************************************************************
@@ -147,9 +147,9 @@ S16 duCheckReqStatus(CmStatus *cfm)
  *
  ***************************************************************************/
 
-S16 duSctpCfgReq(SctpParams sctpCfg)
+uint8_t duSctpCfgReq(SctpParams sctpCfg)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 	CmStatus cfm;
 
 /* Fill F1 Params */
@@ -159,7 +159,7 @@ S16 duSctpCfgReq(SctpParams sctpCfg)
    f1Params.itfState             = DU_SCTP_DOWN;
    f1Params.srcPort              = sctpCfg.duPort[F1_INTERFACE];
    f1Params.recvMsgSet           = ROK;
-   cmMemset ((U8 *)&f1Params.sockFd, -1, sizeof(CmInetFd));
+   memset ((uint8_t *)&f1Params.sockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&f1Params.destIpNetAddr, &f1Params.destIpAddr);
    fillAddrLst(&f1Params.destAddrLst, &f1Params.destIpAddr);
 
@@ -170,7 +170,7 @@ S16 duSctpCfgReq(SctpParams sctpCfg)
    ricParams.itfState            = DU_SCTP_DOWN;
    ricParams.srcPort             = sctpCfg.duPort[E2_INTERFACE];
    ricParams.recvMsgSet          = ROK;
-   cmMemset ((U8 *)&ricParams.sockFd, -1, sizeof(CmInetFd));
+   memset ((uint8_t *)&ricParams.sockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&ricParams.destIpNetAddr, &ricParams.destIpAddr);
    fillAddrLst(&ricParams.destAddrLst, &ricParams.destIpAddr);
 
@@ -186,7 +186,7 @@ S16 duSctpCfgReq(SctpParams sctpCfg)
 
    ret = duCheckReqStatus(&cfm);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /*******************************************************************
@@ -208,13 +208,13 @@ S16 duSctpCfgReq(SctpParams sctpCfg)
  *
  ******************************************************************/
 
-S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr)
+uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr)
 { 
    addrLstPtr->count++;
    addrLstPtr->addrs[(addrLstPtr->count - 1)].type = CM_INET_IPV4ADDR_TYPE;
    addrLstPtr->addrs[(addrLstPtr->count - 1)].u.ipv4NetAddr = CM_INET_NTOH_U32(ipAddr->ipV4Addr);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /******************************************************************************
@@ -235,12 +235,12 @@ S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr)
  *         RFAILED - failure
  *
  *******************************************************************************/
-S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr)
+uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr)
 {
    /* Filling destination address */
    destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
    destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_U32(dstIpPtr->ipV4Addr);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /******************************************************************************
@@ -261,10 +261,10 @@ S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr)
  *
  *******************************************************************************/
 
-S16 establishReq(DuSctpDestCb *paramPtr)
+uint8_t establishReq(DuSctpDestCb *paramPtr)
 {
    Pst pst;
-   S16 ret = ROK;
+   uint8_t ret = ROK;
    socket_type = CM_INET_STREAM;
 
    if((ret = cmInetSocket(socket_type, &paramPtr->sockFd, IPPROTO_SCTP)) != ROK)
@@ -308,7 +308,7 @@ S16 establishReq(DuSctpDestCb *paramPtr)
       duFillSctpPst(&pst, EVTSTARTPOLL);
    }
    
-   RETVALUE(ret);
+   return (ret);
 }
 
 /******************************************************************************
@@ -330,9 +330,9 @@ S16 establishReq(DuSctpDestCb *paramPtr)
  *
  *******************************************************************************/
 
-S16 duSctpAssocReq(U8 itfType)
+uint8_t duSctpAssocReq(uint8_t itfType)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 	CmStatus cfm;
    DuSctpDestCb *paramPtr = NULLP;
 
@@ -340,7 +340,7 @@ S16 duSctpAssocReq(U8 itfType)
    if(paramPtr == NULLP)
    {
       printf("\nDU_APP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    switch(itfType)
    {
@@ -375,7 +375,7 @@ S16 duSctpAssocReq(U8 itfType)
    }
    ret = duCheckReqStatus(&cfm);
 
-   RETVALUE(ret);
+   return (ret);
 }
 /*******************************************************************
  *
@@ -393,15 +393,15 @@ S16 duSctpAssocReq(U8 itfType)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duFillSctpPst(Pst *pst, Event event)
+uint8_t duFillSctpPst(Pst *pst, Event event)
 {
    Buffer *mBuf;
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, DU_POOL, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   cmMemset((U8 *)pst, 0, sizeof(Pst));
+   memset((uint8_t *)pst, 0, sizeof(Pst));
    pst->srcEnt = (Ent)ENTDUAPP;
    pst->srcInst = (Inst)DU_INST;
    pst->srcProcId = DU_PROC;
@@ -411,9 +411,9 @@ S16 duFillSctpPst(Pst *pst, Event event)
    pst->event = event;
    pst->selector = ODU_SELECTOR_LC;
    pst->pool= DU_POOL;
-   SPstTsk(pst, mBuf); 
+   ODU_POST_TASK(pst, mBuf); 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -432,9 +432,9 @@ S16 duFillSctpPst(Pst *pst, Event event)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 sctpSetSockOpts(CmInetFd *sock_Fd)
+uint8_t sctpSetSockOpts(CmInetFd *sock_Fd)
 {
-    S16 ret = ROK;
+    uint8_t ret = ROK;
     CmSctpEvent sctpEvent;
 
    sctpEvent.dataIoEvent          = TRUE;
@@ -451,7 +451,7 @@ S16 sctpSetSockOpts(CmInetFd *sock_Fd)
      ret = RFAILED;
    }
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /*******************************************************************
@@ -476,10 +476,10 @@ void sendToDuApp(Buffer *mBuf, Event event)
 {
    Pst pst;
    DU_LOG("\nSCTP : Forwarding received message to duApp");
-   SPrntMsg(mBuf, 0, 0);
+   ODU_PRINT_MSG(mBuf, 0, 0);
 
 
-   cmMemset((U8 *)&(pst), 0, sizeof(Pst));
+   memset((uint8_t *)&(pst), 0, sizeof(Pst));
    pst.srcEnt = (Ent)ENTSCTP;
    pst.srcInst = (Inst)SCTP_INST;
    pst.srcProcId = DU_PROC;
@@ -491,9 +491,9 @@ void sendToDuApp(Buffer *mBuf, Event event)
    pst.pool= DU_POOL;
    pst.region = DFLT_REGION;
 
-   if (SPstTsk(&pst, mBuf) != ROK)
+   if (ODU_POST_TASK(&pst, mBuf) != ROK)
    {
-      DU_LOG("\nSCTP : SPstTsk failed in duReadCfg");
+      DU_LOG("\nSCTP : ODU_POST_TASK failed in duReadCfg");
    }
 }
 
@@ -513,7 +513,7 @@ void sendToDuApp(Buffer *mBuf, Event event)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
+uint8_t sctpNtfyHdlr(CmInetSctpNotification *ntfy, uint8_t *itfState)
 {
    Pst pst;
 
@@ -577,7 +577,7 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
    /* Pack notification and send to APP */
    DU_LOG("\nSCTP : Forwarding received message to duApp");
     
-   cmMemset((U8 *)&(pst), 0, sizeof(Pst));
+   memset((uint8_t *)&(pst), 0, sizeof(Pst));
    pst.srcEnt = (Ent)ENTSCTP;
    pst.srcInst = (Inst)SCTP_INST;
    pst.srcProcId = DU_PROC;
@@ -592,9 +592,9 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
    if(cmPkSctpNtfy(&pst, ntfy) != ROK)
    {
       DU_LOG("\nSCTP : Failed to pack SCTP notification");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -620,9 +620,9 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy, U8 *itfState)
  *
  * ****************************************************************/
 
-S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo, Bool recvMsgSet)
+uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo, bool recvMsgSet)
 {
-   U16 ret = ROK;
+   uint8_t ret = ROK;
    CM_INET_FD_SET(sockFd, &pollParams->readFd);
    ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFd);
    if(CM_INET_FD_ISSET(sockFd, &pollParams->readFd))
@@ -654,7 +654,7 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
             else
             {
                DU_LOG("\nSCTP : Failed to fill AssocId\n");
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             if(ret != ROK)
             {
@@ -672,11 +672,11 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
 
          else
          {
-            SPutMsg(pollParams->mBuf);
+            ODU_PUT_MSG(pollParams->mBuf);
          }
       }
   }
-  RETVALUE(ROK);
+  return ROK;
 }
 /*******************************************************************
  *
@@ -694,11 +694,11 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 sctpSockPoll()
+uint8_t sctpSockPoll()
 {
-   U16 ret       = ROK;
-   U32           timeout;
-   U32           *timeout_Ptr;
+   uint8_t ret       = ROK;
+   uint32_t           timeout;
+   uint32_t           *timeout_Ptr;
    CmInetMemInfo memInfo;
    sctpSockPollParams f1PollParams, e2PollParams;
 
@@ -723,7 +723,7 @@ S16 sctpSockPoll()
    CM_INET_FD_ZERO(&e2PollParams.readFd);
 
    DU_LOG("\nSCTP : Polling started at DU\n");
-   while(1)
+   while(true)
    {
       if(f1Params.itfState)
       {
@@ -740,7 +740,7 @@ S16 sctpSockPoll()
          }
       }
    };
-   RETVALUE(ret);
+   return (ret);
 }/* End of sctpSockPoll() */
 
 /*******************************************************************
@@ -759,9 +759,9 @@ S16 sctpSockPoll()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 sctpSend(Buffer *mBuf, U8 itfType)
+uint8_t sctpSend(Buffer *mBuf, uint8_t itfType)
 {
-   U8               ret;
+   uint8_t          ret;
    MsgLen           len;          /* number of actually sent octets */
    CmInetMemInfo    memInfo;                        
    
@@ -783,10 +783,10 @@ S16 sctpSend(Buffer *mBuf, U8 itfType)
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("\nSCTP : Failed sending the message");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* End of sctpSend */
 
 /**********************************************************************

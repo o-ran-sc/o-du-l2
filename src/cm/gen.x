@@ -1606,7 +1606,7 @@ typedef U8  CmIpAddr6[16];   /* 16 byte IPV6 address */
 /* system services structures */
 EXTERN S16 cmPkDateTime ARGS((DateTime *dateTime, Buffer *mBuf));
 EXTERN S16 cmPkDuration ARGS((Duration *duration, Buffer *mBuf));
-EXTERN S16 cmPkPtr ARGS((PTR ptr, Buffer *mBuf));
+EXTERN S16 oduPackPointer ARGS((PTR ptr, Buffer *mBuf));
 EXTERN S16 cmPkEntityId ARGS((EntityId *entityId, Buffer *mBuf));
 EXTERN S16 cmPkElmntId  ARGS((ElmntId  *elmntId,  Buffer *mBuf));
 EXTERN S16 cmPkMemoryId ARGS((MemoryId *memoryId, Buffer *mBuf));
@@ -1658,7 +1658,7 @@ EXTERN S16 cmPkCmAlarm  ARGS((CmAlarm  *alrm,     Buffer *mBuf));
 /* system services structures */
 EXTERN S16 cmUnpkDateTime ARGS((DateTime *dateTime, Buffer *mBuf));
 EXTERN S16 cmUnpkDuration ARGS((Duration *duration, Buffer *mBuf));
-EXTERN S16 cmUnpkPtr ARGS((PTR *ptr, Buffer *mBuf));
+EXTERN S16 oduUnpackPointer ARGS((PTR *ptr, Buffer *mBuf));
 EXTERN S16 cmUnpkEntityId ARGS((EntityId *entityId, Buffer *mBuf));
 EXTERN S16 cmUnpkElmntId  ARGS((ElmntId  *elmntId,  Buffer *mBuf));
 EXTERN S16 cmUnpkMemoryId ARGS((MemoryId *memoryId, Buffer *mBuf));

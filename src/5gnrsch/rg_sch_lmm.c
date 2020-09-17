@@ -257,7 +257,7 @@ Elmnt sapType;            /* SAP Type */
          /* would never reach here */
          break;
    }
-   RETVALUE(ret);
+   return (ret);
 }
 #endif
 
@@ -849,7 +849,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
    arg.wait = tmrVal;      
    cmPlcCbTq(&arg);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -918,7 +918,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
    }
 
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -989,7 +989,7 @@ S16 tmrEvnt;          /* Timer Event */
          ret = RFAILED;
          break;
    }
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1042,9 +1042,9 @@ U8 status;              /* Status */
          break;
       case LRG_BND:
          /* SAP is already bound */
-         RETVALUE(ROK);
+         return ROK;
       default:
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    cfmPst = rgSchCb[inst].rgSchInit.lmPst;
@@ -1092,7 +1092,7 @@ U8 status;              /* Status */
 
    ret = RgMiLrgSchCntrlCfm(&cfmPst, &cntrlCfm);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /**
@@ -1136,7 +1136,7 @@ RgUstaDgn *dgn;
 
    if(rgSchCb[inst].rgSchInit.usta == FALSE)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    cmMemset((U8 *)&usta, 0, sizeof(RgMngmt));
@@ -1162,7 +1162,7 @@ RgUstaDgn *dgn;
                        rgSchCb[inst].genCfg.ustaResp.response.mem.pool;
    usta.hdr.transId = rgSchCb[inst].genCfg.ustaResp.transId;
 
-   RETVALUE(RgMiLrgSchStaInd(&rgSchCb[inst].rgSchInit.lmPst, &usta));
+   return (RgMiLrgSchStaInd(&rgSchCb[inst].rgSchInit.lmPst, &usta));
 }
 
 
@@ -1201,7 +1201,7 @@ Inst inst;
    cmPrcTmr(&rgSchCb[schInst].tmrTqCp,
             rgSchCb[schInst].tmrTq, (PFV) rgSCHLmmTmrExpiry);
  
-   RETVALUE(ROK);
+   return ROK;
  
 } /* end of schActvTmr */
 

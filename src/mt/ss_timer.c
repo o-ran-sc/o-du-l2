@@ -174,7 +174,7 @@ PFS16 tmrFnct;              /* timer function, typically SActvTmr */
    ssTmrActvFn.actvFnc.tmrActvFn = tmrFnct;
    ret = STmrRegHndlr(ent, inst, period, units, ssTmrActvFn);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 #else /* SS_MULTIPLE_PROCS */
@@ -211,7 +211,7 @@ PAIFTMRS16 tmrFnct;              /* timer function, typically SActvTmr */
    ssTmrActvFn.actvFnc.tmrActvFn = tmrFnct;
    ret = STmrRegHndlr(proc, ent, inst, period, units, ssTmrActvFn);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -267,7 +267,7 @@ PAIFTMRS16 tmrFnctMt;       /* timer function, typically SActvTmr */
    ssTmrActvFn.mtFlag = TRUE;
    ret = STmrRegHndlr(ent, inst, period, units, ssTmrActvFn);
 
-   RETVALUE(ret);
+   return (ret);
 }
 #endif /* SS_MT_TMR */
 #endif /* not SS_MULTIPLE_PROCS */
@@ -361,13 +361,13 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    if ((proc == SS_INV_PROCID) || (ent >= SS_MAX_ENT) ||  (inst >= SS_MAX_INST))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS528, ERRZERO, "Invalid processor/entity/instance");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #else /* SS_MULTIPLE_PROCS */
    if (ent >= SS_MAX_ENT ||  inst >= SS_MAX_INST)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS529, ERRZERO, "Invalid entity/instance");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* SS_MULTIPLE_PROCS */
 
@@ -375,14 +375,14 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    if (period <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS530, ERRZERO, "Invalid period");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* check period units*/
    if ((units < 1) || (units > SS_TICKS_SEC))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS531, ERRZERO, "Invalid period units");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(ssTmrActvFn.mtFlag == TRUE) 
@@ -393,13 +393,13 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
       if (ssTmrActvFn.actvFnc.tmrActvFnMt == NULLP)  
       {
          SSLOGERROR(ERRCLS_INT_PAR, ESS532, ERRZERO, "Null pointer");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #else
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 #else
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
    else
@@ -407,7 +407,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
       if (ssTmrActvFn.actvFnc.tmrActvFn == NULLP)  
       {
           SSLOGERROR(ERRCLS_INT_PAR, ESS532, ERRZERO, "Null pointer");
-          RETVALUE(RFAILED);
+          return RFAILED;
       }
    } 
 
@@ -419,7 +419,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS533, ERRZERO,
                      "Could not find proc id index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* SS_MULTIPLE_PROCS */
 
@@ -431,7 +431,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS534, ERRZERO,
                      "Could not lock TAPA task table");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef SS_MULTIPLE_PROCS
@@ -445,18 +445,18 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS535, ERRZERO,
                      "Could not release the semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
       }
       SSLOGERROR(ERRCLS_INT_PAR, ESS536, ERRZERO, "Unknown task");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS537, ERRZERO,
                      "Could not release the semaphore");
-   RETVALUE(RFAILED);
+   return RFAILED;
 #endif
    }
 
@@ -471,7 +471,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
       SSLOGERROR(ERRCLS_DEBUG, ESS538, (ErrVal) ret,
                      "Could not lock timer table");
 #endif
-      RETVALUE(ret);
+      return (ret);
    }
 
 
@@ -483,7 +483,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS539, ERRZERO,
                      "Could not unlock the semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 
@@ -491,7 +491,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
       SSLOGERROR(ERRCLS_DEBUG, ESS540, ERRZERO, "Too many timers");
 #endif
 
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -528,10 +528,10 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
             {
 #if (ERRCLASS & ERRCLS_DEBUG)
    SSLOGERROR(ERRCLS_DEBUG, ESS541, ERRZERO, "Could not unlock the semaphore");
-   RETVALUE(RFAILED);
+   return RFAILED;
 #endif
             }
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
    }
@@ -598,11 +598,11 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS542, ERRZERO,
                      "Could not unlock the semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -653,7 +653,7 @@ PFS16 tmrFnct;              /* timer function */
    ssTmrActvFn.actvFnc.tmrActvFn = tmrFnct;  
    ret = STmrDeregHndlr(ent, inst, period, units, ssTmrActvFn);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 #else /* SS_MULTIPLE_PROCS */
@@ -690,7 +690,7 @@ PAIFTMRS16 tmrFnct;              /* timer function */
    ssTmrActvFn.actvFnc.tmrActvFn = tmrFnct;  
    ret = STmrDeregHndlr(proc, ent, inst, period, units, ssTmrActvFn);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -742,7 +742,7 @@ PAIFTMRS16 tmrFnctMt;              /* timer function */
 
    ret = STmrDeregHndlr(ent, inst, period, units, ssTmrActvFn);
 
-   RETVALUE(ret);
+   return (ret);
 }
 #endif /* SS_MT_TMR */
 #endif /* not SS_MULTIPLE_PROCS */
@@ -836,28 +836,28 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    if ((proc == SS_INV_PROCID) || (ent >= SS_MAX_ENT) ||  (inst >= SS_MAX_INST))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS543, ERRZERO, "Invalid processor/entity/instance");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #else /* SS_MULTIPLE_PROCS */
    if (ent >= SS_MAX_ENT ||  inst >= SS_MAX_INST)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS544, ERRZERO, "Invalid entity/instance");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* SS_MULTIPLE_PROCS */
    /* check period */
    if (period <= 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS545, ERRZERO, "Invalid period");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* check period units */
    if ((units < 1) || (units > SS_TICKS_SEC))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS546, ERRZERO, "Invalid period units");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* check timer function */
@@ -868,13 +868,13 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    if (ssTmrActvFn.actvFnc.tmrActvFnMt == NULLP)  
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS547, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #else
-    RETVALUE(RFAILED);
+    return RFAILED;
 #endif
 #else
-    RETVALUE(RFAILED);
+    return RFAILED;
 #endif
  
    }
@@ -883,7 +883,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    if (ssTmrActvFn.actvFnc.tmrActvFn == NULLP)  
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS547, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
   }
 
@@ -895,7 +895,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS548, ERRZERO,
                      "Could not find proc id index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* SS_MULTIPLE_PROCS */
 
@@ -906,7 +906,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS549, ERRZERO,
                      "Could not lock TAPA task table");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef SS_MULTIPLE_PROCS
@@ -920,18 +920,18 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS550, ERRZERO,
                      "Could not release the semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
       SSLOGERROR(ERRCLS_INT_PAR, ESS551, ERRZERO, "Unknown task");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if ( SS_RELEASE_SEMA(&osCp.tTskTblSem) != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS552, ERRZERO,
                      "Could not release the semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
     }
 
@@ -946,7 +946,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
       SSLOGERROR(ERRCLS_DEBUG, ESS553, (ErrVal) ret,
                      "Could not lock timer table");
 #endif
-      RETVALUE(ret);
+      return (ret);
    }
 
 
@@ -993,7 +993,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS554, ERRZERO,
                      "Could not unlock the semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 
@@ -1001,7 +1001,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
       SSLOGERROR(ERRCLS_DEBUG, ESS555, ERRZERO, "Could not locate timer");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -1041,12 +1041,12 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS556, ERRZERO,
                      "Could not unlock the semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /**********************************************************************

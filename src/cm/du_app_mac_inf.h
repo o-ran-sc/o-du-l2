@@ -432,12 +432,12 @@ typedef struct failureCause
 
 typedef struct carrierCfg
 {
-   Bool  pres;
-   U16   bw;             /* DL/UL bandwidth */
-   U32   freq;           /* Absolute frequency of DL/UL point A in KHz */
-   U16   k0[NUM_NUMEROLOGY];          /* K0 for DL/UL */
-   U16   gridSize[NUM_NUMEROLOGY];    /* DL/UL Grid size for each numerologies */
-   U16   numAnt;         /* Number of Tx/Rx antennas */
+   bool  pres;
+   uint16_t   bw;             /* DL/UL bandwidth */
+   uint32_t   freq;           /* Absolute frequency of DL/UL point A in KHz */
+   uint16_t   k0[NUM_NUMEROLOGY];          /* K0 for DL/UL */
+   uint16_t   gridSize[NUM_NUMEROLOGY];    /* DL/UL Grid size for each numerologies */
+   uint16_t   numAnt;         /* Number of Tx/Rx antennas */
 }CarrierCfg;
 
 typedef struct ssbCfg
@@ -452,23 +452,23 @@ typedef struct ssbCfg
    uint8_t     mibPdu[3];           /* MIB payload */
    uint32_t    ssbMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
    uint8_t     beamId[NUM_SSB];
-   Bool        multCarrBand;     /* Multiple carriers in a band */
-   Bool        multCellCarr;     /* Multiple cells in single carrier */
+   bool        multCarrBand;     /* Multiple carriers in a band */
+   bool        multCellCarr;     /* Multiple cells in single carrier */
 }SsbCfg;
 
 typedef struct fdmInfo
 {
-   U16   rootSeqIdx;        /* Root sequence index */
-   U8    numRootSeq;        /* Number of root sequences required for FD */
-   U16   k1;                /* Frequency Offset for each FD */
-   U8    zeroCorrZoneCfg;   /* Zero correlation zone cofig */
-   U8    numUnusedRootSeq;  /* Number of unused root sequence */
-   U8    *unsuedRootSeq;     /* Unused root sequence per FD */
+   uint16_t   rootSeqIdx;        /* Root sequence index */
+   uint8_t    numRootSeq;        /* Number of root sequences required for FD */
+   uint16_t   k1;                /* Frequency Offset for each FD */
+   uint8_t    zeroCorrZoneCfg;   /* Zero correlation zone cofig */
+   uint8_t    numUnusedRootSeq;  /* Number of unused root sequence */
+   uint8_t    *unsuedRootSeq;     /* Unused root sequence per FD */
 }PrachFdmInfo;
 
 typedef struct prachCfg
 {
-   Bool          pres;
+   bool          pres;
    uint8_t       prachCfgIdx;         /* PRACH Cfg Index */
    PrachSeqLen   prachSeqLen;         /* RACH Sequence length: Long/short */
    uint8_t       prachSubcSpacing;    /* Subcarrier spacing of RACH */
@@ -478,7 +478,7 @@ typedef struct prachCfg
    uint8_t       rootSeqLen;          /* Root sequence length */
    PrachFdmInfo  fdm[8];              /* FDM info */
    uint8_t       ssbPerRach;          /* SSB per RACH occassion */
-   Bool          prachMultCarrBand;   /* Multiple carriers in Band */
+   bool          prachMultCarrBand;   /* Multiple carriers in Band */
    uint8_t       prachRestrictedSet; /* Support for PRACH restricted set */
    uint8_t       raContResTmr;        /* RA Contention Resoultion Timer */
    uint8_t       rsrpThreshSsb;       /* RSRP Threshold SSB */
@@ -487,7 +487,7 @@ typedef struct prachCfg
 
 typedef struct tddCfg
 {
-   Bool               pres;
+   bool               pres;
    DlUlTxPeriodicity  tddPeriod;      /* DL UL Transmission periodicity */
    SlotConfig         slotCfg[MAXIMUM_TDD_PERIODICITY][MAX_SYMB_PER_SLOT]; 
 }TDDCfg;
@@ -577,14 +577,14 @@ typedef struct bwpUlConfig
 
 typedef struct macCellCfg
 {
-   U16            cellId;           /* Cell Id */
-   U8             numTlv;           /* Number of configuration TLVs */
-   U8             carrierId;        /* Carrired Index */
-   U16            phyCellId;        /* Physical cell id */
+   uint16_t            cellId;           /* Cell Id */
+   uint8_t             numTlv;           /* Number of configuration TLVs */
+   uint8_t             carrierId;        /* Carrired Index */
+   uint16_t            phyCellId;        /* Physical cell id */
    DuplexMode     dupType;          /* Duplex type: TDD/FDD */
    CarrierCfg     dlCarrCfg;        /* DL Carrier configuration */
    CarrierCfg     ulCarrCfg;        /* UL Carrier configuration */
-   Bool           freqShft;         /* Indicates presence of 7.5kHz frequency shift */
+   bool           freqShft;         /* Indicates presence of 7.5kHz frequency shift */
    SsbCfg         ssbCfg;           /* SSB configuration */          
    PrachCfg       prachCfg;         /* PRACH Configuration */
    TDDCfg         tddCfg;           /* TDD periodicity and slot configuration */
@@ -597,7 +597,7 @@ typedef struct macCellCfg
 
 typedef struct macCellCfgCfm
 {
-   U16            cellId;
+   uint16_t            cellId;
    uint8_t        rsp; 
 }MacCellCfgCfm;
 

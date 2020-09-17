@@ -105,9 +105,9 @@ Buffer *mBuf;
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
-   CMCHKPK(SPkU8, param->rbType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->rbType, mBuf);
    CMCHKPK(cmPkLteRbId, param->rbId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -143,10 +143,10 @@ Buffer *mBuf;
    TRC3(cmUnpkLteRlcId);
 
    CMCHKUNPK(cmUnpkLteRbId, &param->rbId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->rbType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->rbType, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -181,10 +181,10 @@ Buffer *mBuf;
 
    TRC3(cmPkLteTimingInfo);
 
-   CMCHKPK(SPkU16, param->slot, mBuf);
-   CMCHKPK(SPkU16, param->sfn, mBuf);
-   //CMCHKPK(SPkU16, param->hSfn, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, param->slot, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->sfn, mBuf);
+   //CMCHKPK(oduUnpackUInt16, param->hSfn, mBuf);
+   return ROK;
 }
 
 
@@ -219,10 +219,10 @@ Buffer *mBuf;
 
    TRC3(cmUnpkLteTimingInfo);
 
-   //CMCHKUNPK(SUnpkU16, &param->hSfn, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->sfn, mBuf);
-   CMCHKUNPK(SUnpkU16,&param->slot, mBuf);
-   RETVALUE(ROK);
+   //CMCHKUNPK(oduPackUInt16, &param->hSfn, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->sfn, mBuf);
+   CMCHKUNPK(oduPackUInt16,&param->slot, mBuf);
+   return ROK;
 }
 
 
@@ -257,11 +257,11 @@ Buffer *mBuf;
 
    TRC3(cmPkLtePdcpId);
 
-   CMCHKPK(SPkU8, param->rbType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->rbType, mBuf);
    CMCHKPK(cmPkLteRbId, param->rbId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -299,8 +299,8 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
    CMCHKUNPK(cmUnpkLteRbId, &param->rbId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->rbType, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->rbType, mBuf);
+   return ROK;
 }
 #ifdef LTE_L2_MEAS 
 #ifdef ANSI
@@ -352,7 +352,7 @@ CmLteMemInfo *mInfo;
          mInfo->regInfo[idxReg].isGenMemInfoUpdated = TRUE; 
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -387,7 +387,7 @@ CmLteMemInfo *memInfo;
          memoryInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed  = memInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -419,7 +419,7 @@ CmLteMemInfo *memInfo;
          memInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed  = 0;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -440,7 +440,7 @@ CmCpuStatsInfo *cpuInfo
       cpuInfo->cpuUtil[idx].numSamples = 0;
    }
    cpuInfo->numCores = 0;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -462,7 +462,7 @@ CmCpuStatsInfo *cpuInfo;
       cpuMeasInfo->cpuUtil[idx].avgCpuUtil = cpuInfo->cpuUtil[idx].totCpuUtil/cpuInfo->cpuUtil[idx].numSamples;
       cpuMeasInfo->cpuUtil[idx].maxCpuUtil = cpuInfo->cpuUtil[idx].maxCpuUtil;
    }
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif

@@ -332,7 +332,7 @@ void RemoveFromT2kMemLeakInfo(U64 address, char *file, U32 line,Region region)
 
    /* if(!startMemLeak)
    {
-      RETVALUE(ROK);
+      return ROK;
    }*/
 
    U32 index1 = getT2kMemLeakIndex(address, region);
@@ -496,14 +496,14 @@ CmMmRegCfg  *cfg;
    /* error check on parameters */
    if ((regCb == NULLP) || (cfg == NULLP)) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    /* Error check on the configuration fields */
    if ((!cfg->size) || (cfg->vAddr == NULLP) || 
         (cfg->numBkts > CMM_MAX_BKT_ENT)) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Check if the quantum size is power of 2 */
    if ((cfg->numBkts) &&
@@ -512,7 +512,7 @@ CmMmRegCfg  *cfg;
       /* cm_mem_c_001.main_20 Addition */
 		sprintf(errMsg,"\n cmMmRegInit() failed, check if BktQuantum size might not be power of 2 \n");
 		SPrint(errMsg);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* 
@@ -538,7 +538,7 @@ CmMmRegCfg  *cfg;
 			 				\n",bktIdx,cfg->bktCfg[bktIdx].size,cfg->bktQnSize);
 #endif                     
 			 SPrint(errMsg);
-          RETVALUE(RFAILED);
+          return RFAILED;
       }
 
       if ((bktBlkSize = cfg->bktCfg[bktIdx].size) < lstQnSize)
@@ -549,7 +549,7 @@ CmMmRegCfg  *cfg;
           /* cm_mem_c_001.main_20 Addition */
 			 sprintf(errMsg,"\n cmMmRegInit() failed, Two consecutive buckets are not separated by quantum size \n");
 			 SPrint(errMsg);
-          RETVALUE(RFAILED);
+          return RFAILED;
       }
       /* cm_mem_c_001.main_20 Addition */
 		if (((cfg->bktCfg[bktIdx].size) /\
@@ -565,7 +565,7 @@ CmMmRegCfg  *cfg;
 				\n	should be less than CMM_MAX_MAP_ENT:%d \n",cfg->bktQnSize,CMM_MAX_MAP_ENT);
 #endif                     
 				SPrint(errMsg);
-		  	  RETVALUE(RFAILED);
+		  	  return RFAILED;
 		}
 
 
@@ -578,7 +578,7 @@ CmMmRegCfg  *cfg;
 		
 			sprintf(errMsg,"\n cmMmRegInit() failed, Size of the memory region is less than the required size \n");
 			SPrint(errMsg);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       lstQnSize = ((bktBlkSize / cfg->bktQnSize) + 1) * cfg->bktQnSize;
@@ -680,7 +680,7 @@ CmMmRegCfg  *cfg;
 #endif
             }
 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          cmMmBktInit( &memAddr, regCb, cfg, bktIdx, &lstMapIdx); 
@@ -736,7 +736,7 @@ CmMmRegCfg  *cfg;
              }
           }
 
-          RETVALUE(RFAILED);
+          return RFAILED;
        }
         
        regCb->heapFlag = TRUE;
@@ -746,7 +746,7 @@ CmMmRegCfg  *cfg;
     /* Call SRegRegion to register the memory region with SSI */
     if (SRegRegion(region, &regCb->regInfo) != ROK)
     {
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
 
 /* cm_mem_c_001.main_12 - addition for initializing the hash table */
@@ -754,7 +754,7 @@ CmMmRegCfg  *cfg;
     /* Initialize the region level hash table for debug info storage */
     if (cmMmHashListInit(&regCb->hashListCp, CMM_STAT_HASH_TBL_LEN, region, 0) != ROK)
     {
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
 #endif /* SSI_DEBUG_LEVEL1 */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
@@ -764,11 +764,11 @@ CmMmRegCfg  *cfg;
     if(cmHashListInit(&regCb->brdcmSsiLstCp, 1000, offset, FALSE, 
        CM_HASH_KEYTYPE_U32MOD, region, 0) != ROK)
     {
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
 #endif /* SSI_DEBUG_LEVEL1 */
 
-    RETVALUE(ROK);
+    return ROK;
 } /* end of cmMmRegInit*/
 
 
@@ -817,7 +817,7 @@ CmMmRegCb   *regCb;
    /* error check on parameters */
    if (regCb == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -827,14 +827,14 @@ CmMmRegCb   *regCb;
     /* Deinitialize the hash table used for debug info storage at region level */
     if (cmMmHashListDeinit(&regCb->hashListCp, regCb->region, 0) != ROK)
     {
-        RETVALUE(RFAILED);
+        return RFAILED;
     }
 #endif /* SSI_DEBUG_LEVEL1 */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
     /* Deinitialize the hash table used for broadcom ssi instrumentation */
     if (cmHashListDeinit(&regCb->brdcmSsiLstCp) != ROK)
     {
-        RETVALUE(RFAILED);
+        return RFAILED;
     }
 #endif
 
@@ -878,7 +878,7 @@ CmMmRegCb   *regCb;
 #endif
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmMmRegDeInit */
 
@@ -1127,7 +1127,7 @@ Data  **prevptr;
    /* error check on parameters */
    if ((regCb == NULLP) || (size == NULLP) || !(*size) || (ptr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
   
@@ -1136,7 +1136,7 @@ Data  **prevptr;
 #if (ERRCLASS & ERRCLS_INT_PAR)
       if ((memType != CMM_STATIC_MEM_FLAG) && (memType != CMM_DYNAMIC_MEM_FLAG))
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif /* (ERRCLASS & ERRCLS_INT_PAR) */
 #endif /* SSI_DEBUG_LEVEL1 */
@@ -1180,7 +1180,7 @@ Data  **prevptr;
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
          /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif
 
@@ -1265,7 +1265,7 @@ Data  **prevptr;
                   (Void) SUnlock(&(bkt->bktLock));
 #endif
                   /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
-                  RETVALUE(RTRAMPLINGNOK);
+                  return (RTRAMPLINGNOK);
                }
                else
 #endif
@@ -1278,7 +1278,7 @@ Data  **prevptr;
                   (Void) SUnlock(&(bkt->bktLock));
 #endif
                   /* return RFAILED */
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
          }
       }
@@ -1488,7 +1488,7 @@ Data  **prevptr;
             (Void) SUnlock(&(bkt->bktLock));
 #endif
 
-            RETVALUE(ROK);
+            return ROK;
          }
          else if (flags)
          {
@@ -1555,22 +1555,22 @@ Data  **prevptr;
 #ifdef SS_HISTOGRAM_SUPPORT  
 /* cm_mem_c_001.main_12 - addition for passing an extra parameter */
 #ifdef SSI_DEBUG_LEVEL1
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, memType, line, fileName, entId, hstReg));
+       return (cmHeapAlloc(&(regCb->heapCb), ptr, size, memType, line, fileName, entId, hstReg));
 #else
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, line, fileName, entId, hstReg));
+       return (cmHeapAlloc(&(regCb->heapCb), ptr, size, line, fileName, entId, hstReg));
 #endif /* SSI_DEBUG_LEVEL1 */
 #else
 /* cm_mem_c_001.main_12 - addition for passing an extra parameter */
 #ifdef SSI_DEBUG_LEVEL1
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, memType));
+       return (cmHeapAlloc(&(regCb->heapCb), ptr, size, memType));
 #else
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size));
+       return (cmHeapAlloc(&(regCb->heapCb), ptr, size));
 #endif /* SSI_DEBUG_LEVEL1 */
 #endif /* SS_HISTOGRAM_SUPPORT */
    }
 
    /* No memory available */
-   RETVALUE(RFAILED);
+   return RFAILED;
 #else /* use pure is on */
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
@@ -1580,9 +1580,9 @@ Data  **prevptr;
    *ptr = (Data*) malloc(*size);
 #endif
    if ( (*ptr) == NULLP)
-       RETVALUE(RFAILED);
+       return RFAILED;
    avail_size -= *size;
-   RETVALUE(ROK);
+   return ROK;
 #endif /* USE_PURE */
 
 } /* end of cmAlloc */
@@ -1714,7 +1714,7 @@ Size    size;
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
                ((CmMmRegCb *)regCb)->regInfo.size) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -1722,7 +1722,7 @@ Size    size;
    /* error check on parameters */
    if ((regCb == NULLP) || (!size) || (ptr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
@@ -1730,13 +1730,13 @@ Size    size;
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
                ((CmMmRegCb *)regCb)->regInfo.size) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 	/* cm_mem_c_001.main_20 Addition */
 	if (ptr < regCb->regInfo.start)
 	{
-	  RETVALUE(RFAILED);
+	  return RFAILED;
 	}
 
 #endif
@@ -1763,7 +1763,7 @@ Size    size;
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
          /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif
 
@@ -1863,7 +1863,7 @@ Size    size;
               (Void) SUnlock(&(bkt->bktLock));
 #endif
 
-              RETVALUE(ROK);
+              return ROK;
            }
            else
 #endif
@@ -1880,7 +1880,7 @@ Size    size;
 #endif
 
                 /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-                RETVALUE(RTRAMPLINGNOK);
+                return (RTRAMPLINGNOK);
            }
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
          printf("Memory signature is invalid\n");
@@ -1924,7 +1924,7 @@ Size    size;
           abort();
 #endif
           /* handle RDBLFREE in SFree/SPutSBuf */
-          RETVALUE(RDBLFREE);
+          return (RDBLFREE);
       }
       if (CMM_IS_STATIC(ptrHdr->memFlags))
       {
@@ -1965,7 +1965,7 @@ Size    size;
 #else
             (Void) SUnlock(&(bkt->bktLock));
 #endif
-            RETVALUE(ROK);
+            return ROK;
          }
          else
 #endif
@@ -1982,7 +1982,7 @@ Size    size;
 #endif
 
             /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-            RETVALUE(RTRAMPLINGNOK);
+            return (RTRAMPLINGNOK);
          }
       }
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
@@ -2190,15 +2190,15 @@ Size    size;
       (Void) SUnlock(&(bkt->bktLock));
 #endif
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* The memory block was allocated from the heap pool */ 
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-   RETVALUE(cmHeapFree (&(regCb->heapCb), ptr, size, line, fileName, entId, hstReg));
+   return (cmHeapFree (&(regCb->heapCb), ptr, size, line, fileName, entId, hstReg));
 #else
-   RETVALUE(cmHeapFree (&(regCb->heapCb), ptr, size));
+   return (cmHeapFree (&(regCb->heapCb), ptr, size));
 #endif /* SS_HISTOGRAM_SUPPORT */
 #else /* use pure is on */
    TRC2(cmFree);
@@ -2209,7 +2209,7 @@ Size    size;
    (Void)free(ptr);
 #endif
    avail_size += size;
-   RETVALUE(ROK);
+   return ROK;
 #endif /* USE_PURE */
 
 
@@ -2430,7 +2430,7 @@ Data  **ptr;
    /* error check on parameters */
    if ((regCb == NULLP) || (size == NULLP) || !(*size) || (ptr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -2439,7 +2439,7 @@ Data  **ptr;
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((memType != CMM_STATIC_MEM_FLAG) && (memType != CMM_DYNAMIC_MEM_FLAG))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* (ERRCLASS & ERRCLS_INT_PAR) */
 #endif /* SSI_DEBUG_LEVEL1 */
@@ -2484,7 +2484,7 @@ Data  **ptr;
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
          /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif
 
@@ -2554,12 +2554,12 @@ Data  **ptr;
                if (cmMmBktSanityChk(bkt) == RTRAMPLINGNOK)
                {
                   /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
-                  RETVALUE(RTRAMPLINGNOK);
+                  return (RTRAMPLINGNOK);
                }
                else
                {
                   /* return RFAILED */
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
 #endif
             }
@@ -2697,7 +2697,7 @@ Data  **ptr;
 
             /* cm_mem_c_008.104 - Addition for memory calculator tool */
 
-            RETVALUE(ROK);
+            return ROK;
          }
          else if (flags)
          {
@@ -2759,24 +2759,24 @@ Data  **ptr;
 #ifdef SS_HISTOGRAM_SUPPORT  
       /* cm_mem_c_001.main_12 - addition for passing an extra parameter */
 #ifdef SSI_DEBUG_LEVEL1
-      RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, 
+      return (cmHeapAlloc(&(regCb->heapCb), ptr, size, 
                memType, line, fileName, entId, hstReg));
 #else
-      RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, 
+      return (cmHeapAlloc(&(regCb->heapCb), ptr, size, 
                line, fileName, entId, hstReg));
 #endif /* SSI_DEBUG_LEVEL1 */
 #else
       /* cm_mem_c_001.main_12 - addition for passing an extra parameter */
 #ifdef SSI_DEBUG_LEVEL1
-      RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size, memType));
+      return (cmHeapAlloc(&(regCb->heapCb), ptr, size, memType));
 #else
-      RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size));
+      return (cmHeapAlloc(&(regCb->heapCb), ptr, size));
 #endif /* SSI_DEBUG_LEVEL1 */
 #endif /* SS_HISTOGRAM_SUPPORT */
    }
 
    /* No memory available */
-   RETVALUE(RFAILED);
+   return RFAILED;
 #else /* use pure is on */
    /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
@@ -2786,9 +2786,9 @@ Data  **ptr;
    *ptr = (Data*) malloc(*size);
 #endif
    if ( (*ptr) == NULLP)
-      RETVALUE(RFAILED);
+      return RFAILED;
    avail_size -= *size;
-   RETVALUE(ROK);
+   return ROK;
 #endif /* USE_PURE */
 
 } /* end of cmAllocNL */
@@ -2907,7 +2907,7 @@ Size    size;
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
          ((CmMmRegCb *)regCb)->regInfo.size) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -2915,20 +2915,20 @@ Size    size;
    /* error check on parameters */
    if ((regCb == NULLP) || (!size) || (ptr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
    /* Check if the memory block is from the memory region */
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
          ((CmMmRegCb *)regCb)->regInfo.size) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    /* cm_mem_c_001.main_20 Addition */
    if (ptr < regCb->regInfo.start)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -2948,7 +2948,7 @@ Size    size;
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
          /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif
 
@@ -3025,12 +3025,12 @@ Size    size;
          {
             bkt->numAlloc--;
 
-            RETVALUE(ROK);
+            return ROK;
          }
          else
          {
             /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-            RETVALUE(RTRAMPLINGNOK);
+            return (RTRAMPLINGNOK);
          }
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
@@ -3070,7 +3070,7 @@ Size    size;
 #endif
 
          /* handle RDBLFREE in SFree/SPutSBuf */
-         RETVALUE(RDBLFREE);
+         return (RDBLFREE);
       }
       if (CMM_IS_STATIC(ptrHdr->memFlags))
       {
@@ -3104,12 +3104,12 @@ Size    size;
          {
             /* do not add to the free list */
             bkt->numAlloc--;
-            RETVALUE(ROK);
+            return ROK;
          }
          else
          {
             /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-            RETVALUE(RTRAMPLINGNOK);
+            return (RTRAMPLINGNOK);
          }
 #endif
       }
@@ -3186,15 +3186,15 @@ Size    size;
       cmRlsAllocBlk((PTR)ptr);
 #endif /* SS_MEM_LEAK_STS */
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* The memory block was allocated from the heap pool */ 
    /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-   RETVALUE(cmHeapFree (&(regCb->heapCb), ptr, size, line, fileName, entId, hstReg));
+   return (cmHeapFree (&(regCb->heapCb), ptr, size, line, fileName, entId, hstReg));
 #else
-   RETVALUE(cmHeapFree (&(regCb->heapCb), ptr, size));
+   return (cmHeapFree (&(regCb->heapCb), ptr, size));
 #endif /* SS_HISTOGRAM_SUPPORT */
 #else /* use pure is on */
    TRC2(cmFreeNL);
@@ -3205,7 +3205,7 @@ Size    size;
    (Void)free(ptr);
 #endif
    avail_size += size;
-   RETVALUE(ROK);
+   return ROK;
 #endif /* USE_PURE */
 } /* end of cmFreeNL */
 
@@ -3259,7 +3259,7 @@ Data  **ptr;
    /* error check on parameters */
    if ((regCb == NULLP) || (size == NULLP) || !(*size) || (ptr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
   
@@ -3300,7 +3300,7 @@ Data  **ptr;
             /* Update the size parameter */
             *size = bkt->size;
 
-            RETVALUE(ROK);
+            return ROK;
          }
       }
    }
@@ -3314,11 +3314,11 @@ Data  **ptr;
        * heap pool.
        */ 
        /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
-       RETVALUE(cmHeapAlloc(&(regCb->heapCb), ptr, size));
+       return (cmHeapAlloc(&(regCb->heapCb), ptr, size));
    }
 
    /* No memory available */
-   RETVALUE(RFAILED);
+   return RFAILED;
 #else /* use pure is on */
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
@@ -3328,9 +3328,9 @@ Data  **ptr;
    *ptr = (Data*) malloc(*size);
 #endif
    if ( (*ptr) == NULLP)
-       RETVALUE(RFAILED);
+       return RFAILED;
    avail_size -= *size;
-   RETVALUE(ROK);
+   return ROK;
 #endif /* USE_PURE */
 
 } /* end of cmAllocWL */
@@ -3380,14 +3380,14 @@ Size    size;
    /* error check on parameters */
    if ((regCb == NULLP) || (!size) || (ptr == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Check if the memory block is from the memory region */
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
                ((CmMmRegCb *)regCb)->regInfo.size) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -3407,7 +3407,7 @@ Size    size;
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
          /* Some fatal error in the map table initialization. */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 #endif
 
@@ -3436,11 +3436,11 @@ Size    size;
       */
       bkt->numAlloc--;
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* The memory block was allocated from the heap pool */ 
-   RETVALUE(cmHeapFree (&(regCb->heapCb), ptr, size));
+   return (cmHeapFree (&(regCb->heapCb), ptr, size));
 #else /* use pure is on */
    TRC2(cmFree);
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
@@ -3450,7 +3450,7 @@ Size    size;
    (Void)free(ptr);
 #endif
    avail_size += size;
-   RETVALUE(ROK);
+   return ROK;
 #endif /* USE_PURE */
 
 
@@ -3506,7 +3506,7 @@ SMemCtl *memCtl;
    /* error check on parameters */
    if ((regCb == NULLP) || (memCtl == NULLP))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -3521,7 +3521,7 @@ SMemCtl *memCtl;
          if ((memCtl->u.vtop.vaddr == NULLP) || 
              (memCtl->u.vtop.paddr == NULLP))
          {
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 #endif
    
@@ -3531,7 +3531,7 @@ SMemCtl *memCtl;
             offset = memCtl->u.vtop.vaddr - regCb->regInfo.start;
             *(memCtl->u.vtop.paddr) = regCb->pAddr + offset;
    
-            RETVALUE(ROK);
+            return ROK;
          }
          break;
       }
@@ -3543,7 +3543,7 @@ SMemCtl *memCtl;
          if (!(memCtl->u.chkres.size) || 
             (memCtl->u.chkres.status == NULLP))
          {
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 #endif
 #ifndef USE_PURE
@@ -3578,11 +3578,11 @@ SMemCtl *memCtl;
                                           (regCb->heapSize/10)); 
          }
 
-         RETVALUE(ROK);
+         return ROK;
 #else /* use pure is on */
             *(memCtl->u.chkres.status) = ((avail_size) /
                                           (regCb->regInfo.size/10));
-         RETVALUE(ROK);
+         return ROK;
 #endif /* USE_PURE */
 
       }
@@ -3590,12 +3590,12 @@ SMemCtl *memCtl;
       default:
       {
          /* No other event is supported currently */
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
    /* shouldn't reach here */
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* end of cmCtl */
 
 
@@ -4103,7 +4103,7 @@ Size        *size;
 #else
                         (Void) SUnlock (&(heapCb->heapLock));
 #endif
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
    }
 
 
@@ -4199,7 +4199,7 @@ Size        *size;
                         (Void) SUnlock (&(heapCb->heapLock));
 #endif
                         /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
-                        RETVALUE(RTRAMPLINGNOK);
+                        return (RTRAMPLINGNOK);
                      }
                      else
                      {
@@ -4211,7 +4211,7 @@ Size        *size;
 #else
                         (Void) SUnlock (&(heapCb->heapLock));
 #endif
-                        RETVALUE(RFAILED);
+                        return RFAILED;
                      }
                }
             }
@@ -4282,7 +4282,7 @@ Size        *size;
 
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-         RETVALUE(ROK);
+         return ROK;
       }
    }
 
@@ -4300,7 +4300,7 @@ Size        *size;
    (Void) SUnlock (&(heapCb->heapLock));
 #endif
 
-   RETVALUE(ROUTRES);
+   return (ROUTRES);
 
 } /* end of cmHeapAlloc */
 
@@ -4447,7 +4447,7 @@ Size         size;
          (Void) SUnlock (&(heapCb->heapLock));
 #endif
          /* handle RTRAMPLINGNOK in SAlloc/SGetSBuf */
-         RETVALUE(RTRAMPLINGNOK);
+         return (RTRAMPLINGNOK);
       }
       else
       {
@@ -4461,7 +4461,7 @@ Size         size;
          (Void) SUnlock (&(heapCb->heapLock));
 #endif
 
-         RETVALUE(ROK);
+         return ROK;
       }
    }
 
@@ -4486,7 +4486,7 @@ Size         size;
          (Void) SUnlock (&(heapCb->heapLock));
 #endif
 
-      RETVALUE(RDBLFREE);
+      return (RDBLFREE);
    }
 #endif /* SSI_DEBUG_LEVEL1 */
 
@@ -4544,7 +4544,7 @@ Size         size;
 #endif
 
                    /* This block is already freed in the heap */
-                   RETVALUE(RDBLFREE);
+                   return (RDBLFREE);
                 }
                 /* update the flags as it is a new node */
                 if (CMM_IS_STATIC(p->memFlags))
@@ -4605,7 +4605,7 @@ Size         size;
             }
          }/* End of if */
 #endif /* SS_HISTOGRAM_SUPPORT */
-            RETVALUE(ROK);
+            return ROK;
          }
       }
       else if (p < curHBlk)
@@ -4676,7 +4676,7 @@ Size         size;
             }
          }/* End of if */
 #endif /* SS_HISTOGRAM_SUPPORT */
-         RETVALUE(ROK);
+         return ROK;
       }
 
    }
@@ -4725,7 +4725,7 @@ Size         size;
             }
          }/* End of if */
 #endif /* SS_HISTOGRAM_SUPPORT */
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* Release the lock */
@@ -4736,7 +4736,7 @@ Size         size;
    (Void) SUnlock (&(heapCb->heapLock));
 #endif
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* end of cmHeapFree */
 #endif/*USE_PURE*/
 #ifdef SS_LIGHT_MEM_LEAK_STS
@@ -4753,13 +4753,13 @@ PUBLIC U32 cmGetFreeIndx(Void)
     if(gmemLkCb.head == gmemLkCb.tail)
     {
        allocQueueEmptyCnt++;
-       RETVALUE(CM_MAX_ALLOC_ENTERIES);
+       return (CM_MAX_ALLOC_ENTERIES);
     }
     else
     {
        U32 allocQIndx = gmemLkCb.queue[gmemLkCb.head];
        gmemLkCb.head = (gmemLkCb.head +1) % CM_MAX_ALLOC_ENTERIES;
-       RETVALUE(allocQIndx);
+       return (allocQIndx);
     }
  
 }
@@ -4778,13 +4778,13 @@ U32   allocQIndx;
     if(tmpTail == gmemLkCb.head)
     {
        allocQueueFullCnt++;
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
     else
     {
        gmemLkCb.queue[gmemLkCb.tail]  = allocQIndx;
        gmemLkCb.tail = tmpTail;
-       RETVALUE(ROK);
+       return ROK;
     }
 }
 /*
@@ -4903,7 +4903,7 @@ Void    *addr;
    }
   (Void) SUnlock(&(gmemLkCb.memLock));
    
-   RETVALUE(allocQIndx);
+   return (allocQIndx);
 } /* cmStorAllocBlk */
 
 
@@ -5338,7 +5338,7 @@ U16    bktIdx;
    /* check if hashListCp is initialised yet */
    if ( regCb->brdcmSsiLstCp.nmbBins == 0)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    ptrHdr->reqSz      = reqSz;
    ptrHdr->allocSz    = allocSz;
@@ -5782,7 +5782,7 @@ S32    traceSize;
                                         funNm);
          if(memReqIdx >= 0)
          {
-            RETVALUE(mdlFunStrIdx);
+            return (mdlFunStrIdx);
          }
          mdlFunStrIdx++;
       }
@@ -5793,13 +5793,13 @@ S32    traceSize;
                                (const S8 *)memUsrMdlStr[mdlFunStrIdx].fPStr);
          if(retVal == NULLD)
          {
-            RETVALUE(mdlFunStrIdx);
+            return (mdlFunStrIdx);
          } 
          mdlFunStrIdx++;
       }
    }
 
-   RETVALUE(0);
+   return (0);
 } /* cmMemGetModuleId */
 
 /*
@@ -5870,9 +5870,9 @@ S8 **strLst;
 
    if(!found)
    {
-     RETVALUE(-1); 
+     return (-1); 
    }
-   RETVALUE(strtIdx);
+   return (strtIdx);
 
 }  /* cmMemGetStrMtchIdx */
 #ifdef SS_MEM_LEAK_SOL
@@ -5913,20 +5913,20 @@ S32    size;
 
    if (dladdr1(pc, &info, (Void **)&sym, RTLD_DL_SYMENT) == 0)
    {
-       RETVALUE(snprintf(buffer, size, "[0x%p]", pc));
+       return (snprintf(buffer, size, "[0x%p]", pc));
    }
 
    if ((info.dli_fname != NULLP && info.dli_sname != NULLP) &&
        ((uintptr_t)pc - (uintptr_t)info.dli_saddr < sym->st_size))
    {
-      RETVALUE(snprintf(buffer, size, "%s(%s+0x%x) [0x%p]",
+      return (snprintf(buffer, size, "%s(%s+0x%x) [0x%p]",
                        info.dli_fname,
                        info.dli_sname,
                        (unsigned long)pc - (unsigned long)info.dli_saddr, pc));
    }
    else
    {
-      RETVALUE(snprintf(buffer, size, "%s(0x%p [0x%p]",
+      return (snprintf(buffer, size, "%s(0x%p [0x%p]",
                       info.dli_fname,
                       (unsigned long)pc - (unsigned long)info.dli_fbase, pc));
    }
@@ -5967,7 +5967,7 @@ Void      *arg;
 
     Backtrace_t *bt = (Backtrace_t *)arg;
     if (bt->bt_actcount >= bt->bt_maxcount)
-         RETVALUE(-1);
+         return (-1);
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
     buffer = (S8 *)MxHeapAlloc(SsiHeap, 510); 
@@ -5979,7 +5979,7 @@ Void      *arg;
     (void) cmAddrToSymStr((void *)pc, buffer, 505);
     bt->bt_buffer[bt->bt_actcount++] = (S8 *)buffer;
 
-    RETVALUE(0);
+    return (0);
 } /* cmLeakCallBack */
 #endif /* SS_MEM_LEAK_SOL */
 
@@ -6037,7 +6037,7 @@ CmMmBlkHdr *blkPtr;
    {
       if (blkPtr->trSignature[sigCnt] != 0xAB)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
@@ -6046,11 +6046,11 @@ CmMmBlkHdr *blkPtr;
    {
       if (tailPtr->trSignature[sigCnt] != 0xFE)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 #ifdef SSI_DEBUG_LEVEL1
@@ -6101,7 +6101,7 @@ CmMmBkt  *bkt;
          if (bkt->trampleCount > CMM_TRAMPLING_THRESHOLD)
          {
             /* Take action to invalidate the entire bucket */
-            RETVALUE(RTRAMPLINGNOK);
+            return (RTRAMPLINGNOK);
          }
       }
       /* reach next memory block in this bucket manually */
@@ -6114,7 +6114,7 @@ CmMmBkt  *bkt;
    SDisplay(0, dbgPrntBuf);
  #endif /* DEBUGP */
 
-   RETVALUE(RTRAMPLINGOK);
+   return (RTRAMPLINGOK);
 }
 
 /*
@@ -6154,10 +6154,10 @@ CmMmHeapCb  *heapCb;
 
    if (heapCb->trampleCount > CMM_TRAMPLING_THRESHOLD)
    {
-      RETVALUE(RTRAMPLINGNOK);
+      return (RTRAMPLINGNOK);
    }
 
-   RETVALUE(RTRAMPLINGOK);
+   return (RTRAMPLINGOK);
 }
 /*
 *
@@ -6193,7 +6193,7 @@ U16 *idx; /* idx to return */
 
    *idx = (U16)(key % hashListCp->numOfbins);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmMmHashFunc () */
 
@@ -6249,7 +6249,7 @@ Pool         pool;         /* memory pool to allocate bins */
    {
       if (SGetSBuf(region, pool, (Data **) &hashListCp->hashList,
                (Size)(nmbBins * sizeof(CmMmHashListEnt))) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
       /* initialize bin pointers */
       hl = hashListCp->hashList;
@@ -6262,7 +6262,7 @@ Pool         pool;         /* memory pool to allocate bins */
       hashListCp->numOfbins = nmbBins;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -6311,7 +6311,7 @@ Pool         pool;         /* memory pool to allocate bins */
    hashListCp->numOfbins = 0;
    hashListCp->numOfEntries = 0;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmMmHashListDeinit */
 
 /*
@@ -6351,11 +6351,11 @@ U32           key;         /* pointer to key */
 
    /* check if hashListCp is initialised yet */
    if ( hashListCp->numOfbins == 0)
-      RETVALUE(ROK);
+      return ROK;
 
    /* compute index for insertion */
    if (cmMmHashFunc(hashListCp, key, &idx) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    hashListEnt = hashListCp->hashList;
 
@@ -6391,11 +6391,11 @@ U32           key;         /* pointer to key */
    if (i == CMM_STAT_HASH_TBL_LEN)
    {
       /* there is no free slot for this key */
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmMmHashListInsert */
 
 #endif /* SSI_DEBUG_LEVEL1 */
@@ -6439,7 +6439,7 @@ CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
     SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
     memset(hashListCp, 0, sizeof(CmHstGrmHashListCp));
-    RETVALUE(ROK);
+    return ROK;
 }
 
 /*
@@ -6480,7 +6480,7 @@ CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
     SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
     memset(hashListCp, 0, sizeof(CmHstGrmHashListCp));
-    RETVALUE(ROK);
+    return ROK;
 }
 
 /*
@@ -6539,14 +6539,14 @@ U8        entId; /* Tapa task which frees the memory */
    {
 		entry->freedBytes += blkSz;
       entry->bucketFreeReq++;
-      RETVALUE(ROK);
+      return ROK;
    } /* End of if */
 
    /* If hash list is full then print the error tna continue */
    if(hashListCp->totalNumEntries == (CMM_HIST_MAX_MEM_BIN * CMM_HIST_MAX_MEM_ENTRY_PER_BIN))
    {
         printf("No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN \n");
-        RETVALUE(RFAILED);
+        return RFAILED;
    } /* End of if */
 
    /* Take the address of next free entry in the hash bin */
@@ -6564,7 +6564,7 @@ U8        entId; /* Tapa task which frees the memory */
    /* Increase the total number of entries in the hash list */
    hashListCp->totalNumEntries++;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHstGrmFreeInsert */
 
 
@@ -6625,13 +6625,13 @@ U8        entId;
 	   entry->allocBytes += blkSz;
       entry->bucketAllocReq++;
       entry->wastedBytes += (blkSz - *reqSz);
-      RETVALUE(ROK);
+      return ROK;
    } /* End of if */
 
    if(hashListCp->totalNumEntries == (CMM_HIST_MAX_MEM_BIN * CMM_HIST_MAX_MEM_ENTRY_PER_BIN))
    {
         printf("No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN\n");
-        RETVALUE(RFAILED);
+        return RFAILED;
    } /* End of if */
 
    /* Take the address of next free entry in the hash bin */
@@ -6652,7 +6652,7 @@ U8        entId;
    /* Increase the total number of entries in the hash list */
    hashListCp->totalNumEntries++;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHstGrmAllocInsert */
 
 
@@ -6700,7 +6700,7 @@ U32                *key;
    }/* End of for */
        *key += line;
    *binIdx = ( *key % CMM_HIST_MAX_MEM_BIN);
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHstGrmFillEntry */
 
 /*
@@ -6752,7 +6752,7 @@ U8                 entId;
       entry->fileName[idx] = fileName[idx];
    }
    entry->fileName[idx] = '\0';
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHstGrmFillEntry */
 
 /*
@@ -6807,7 +6807,7 @@ CmMemEntries        **entry;
          if(tmpBin->entries[numEnt].key == key)
          {
             *entry = &(tmpBin->entries[numEnt]);
-            RETVALUE(ROK);
+            return ROK;
          }/* End of if (tmpBin->entries[numEnt].key) */
       }/* end of for (numEnt = 0) */
 
@@ -6830,12 +6830,12 @@ CmMemEntries        **entry;
       else
       {
          printf ("Unable to find the entry in hash list\n");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }/* End of else (numEnt) */
    }/* end of for (numBin = 0) */
 
    printf("Unable to find the entry in the hash list\n");
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* end of cmHstGrmFindEntry */
 
 #endif /* SS_HISTOGRAM_SUPPORT */

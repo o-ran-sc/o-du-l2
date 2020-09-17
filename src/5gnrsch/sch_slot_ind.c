@@ -69,7 +69,7 @@ extern int schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t
  *         RFAILED - failure
  *
  * ****************************************************************/
-int sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
+uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
 {
    Pst pst;
 
@@ -200,7 +200,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       if(ret != ROK)
       {
 	 DU_LOG("\nschBroadcastAlloc failed");
-	 RETVALUE(ret);
+	 return (ret);
       }
    }
 
@@ -305,7 +305,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    if(ret != ROK)
    {
       DU_LOG("\nSending DL Broadcast allocation from SCH to MAC failed");
-      RETVALUE(ret);
+      return (ret);
    }
 
    schInitDlSlot(cell->schDlSlotInfo[slot]);

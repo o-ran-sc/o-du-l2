@@ -265,7 +265,7 @@ RgInfCellReg*   regReq;
 
    TRC3(RgSchMacCellReg);
 
-   RETVALUE((*RgSchMacCellRegReqMt[0])(pst, regReq));
+   return ((*RgSchMacCellRegReqMt[0])(pst, regReq));
 }
 
 /**
@@ -297,7 +297,7 @@ RgInfDedBoRpt*  boRpt;
 
    TRC3(RgMacSchDedBoUpdt);
 
-   RETVALUE((*RgMacSchDedBoUpdtReqMt[0])(pst, boRpt));
+   return ((*RgMacSchDedBoUpdtReqMt[0])(pst, boRpt));
 }
 
 /**
@@ -329,7 +329,7 @@ RgInfCmnBoRpt*  boRpt;
 
    TRC3(RgMacSchCmnBoUpdt);
 
-   RETVALUE((*RgMacSchCmnBoUpdtReqMt[0])(pst, boRpt));
+   return ((*RgMacSchCmnBoUpdtReqMt[0])(pst, boRpt));
 }
 
 /*Fix: start: Inform UE delete to scheduler*/
@@ -361,7 +361,7 @@ RgInfUeDelInd*  ueDelInd;
 
    TRC3(RgMacSchUeDel);
 
-   RETVALUE((*RgMacSchUeDelIndMt[0])(pst, ueDelInd));
+   return ((*RgMacSchUeDelIndMt[0])(pst, ueDelInd));
 }
 /*Fix: end: Inform UE delete to scheduler*/
 /**
@@ -393,7 +393,7 @@ RgInfSfDatInd*  datInd;
 
    TRC3(RgMacSchSfRecp);
 
-   RETVALUE((*RgMacSchSfRecpIndMt[0])(pst, datInd));
+   return ((*RgMacSchSfRecpIndMt[0])(pst, datInd));
 }
 
 /**
@@ -425,7 +425,7 @@ RgInfSfAlloc*   resAllocReq;
 
    TRC3(RgSchMacSfAlloc);
 
-   RETVALUE((*RgSchMacSfAllocReqMt[0])(pst, resAllocReq));
+   return ((*RgSchMacSfAllocReqMt[0])(pst, resAllocReq));
 }
 
 /**
@@ -455,7 +455,7 @@ RgInfResetHqEnt*     hqEntInfo;
 
    TRC3(RgSchMacRstHqEnt)
 
-   RETVALUE((*RgSchMacRstHqEntReqMt[0])(pst, hqEntInfo));
+   return ((*RgSchMacRstHqEntReqMt[0])(pst, hqEntInfo));
 }
 
 /**
@@ -487,7 +487,7 @@ RgInfRlsHqInfo* sfHqInfo;
 
    TRC3(RgSchMacRlsHq);
 
-   RETVALUE((*RgSchMacRlsHqReqMt[0])(pst, sfHqInfo));
+   return ((*RgSchMacRlsHqReqMt[0])(pst, sfHqInfo));
 }
 
 /**
@@ -519,7 +519,7 @@ RgInfRlsRnti*   rlsRnti;
 
    TRC3(RgSchMacRlsRnti);
 
-   RETVALUE((*RgSchMacRlsRntiReqMt[0])(pst, rlsRnti));
+   return ((*RgSchMacRlsRntiReqMt[0])(pst, rlsRnti));
 }
 
 /**
@@ -549,7 +549,7 @@ RgInfLcgRegReq       *lcgRegReq;
 
    TRC3(RgSchMacLcgReg);
 
-   RETVALUE((*RgSchMacLcgRegReqMt[0])(pst, lcgRegReq));
+   return ((*RgSchMacLcgRegReqMt[0])(pst, lcgRegReq));
 } /* end of RgSchMacLcgReg */
 
 #ifdef LTEMAC_SPS
@@ -581,7 +581,7 @@ RgInfSpsRelInfo*    relInfo;
 
    TRC3(RgMacSchS);
 
-   RETVALUE((*RgMacSchSpsRelIndMt[0])(pst, relInfo));
+   return ((*RgMacSchSpsRelIndMt[0])(pst, relInfo));
 } /* end of RgMacSchSpsRel */
 
 /**
@@ -611,7 +611,7 @@ RgInfSpsLcInfo      *lcInfo;
 
    TRC3(RgSchMacSpsLcReg);
 
-   RETVALUE((*RgSchMacSpsLcRegReqMt[0])(pst, lcInfo));
+   return ((*RgSchMacSpsLcRegReqMt[0])(pst, lcInfo));
 } /* end of RgSchMacSpsLcReg */
 
 
@@ -643,7 +643,7 @@ RgInfUlSpsReset      *ulSpsResetInfo;
 
    TRC3(RgSchMacUlSpsReset);
 
-   RETVALUE((*RgSchMacUlSpsResetMt[0])(pst, ulSpsResetInfo));
+   return ((*RgSchMacUlSpsResetMt[0])(pst, ulSpsResetInfo));
 } /* end of RgSchMacUlSpsReset */
 
 
@@ -677,7 +677,7 @@ CmLteRnti           crnti;
 
    TRC3(RgSchMacSpsLcDereg);
 
-   RETVALUE((*RgSchMacSpsLcDeregReqMt[0])(pst, cellId, crnti));
+   return ((*RgSchMacSpsLcDeregReqMt[0])(pst, cellId, crnti));
 } /* end of RgSchMacSpsLcDereg */
 
 #endif /* LTEMAC_SPS */
@@ -709,7 +709,7 @@ RgInfL2MeasReq      *measInfo;
 
    TRC3(RgSchMacL2Meas);
 
-   RETVALUE((*RgSchMacL2MeasReqMt[0])(pst, measInfo));
+   return ((*RgSchMacL2MeasReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 
 /**
@@ -739,7 +739,7 @@ RgInfL2MeasStopReq *measInfo;
      
    TRC3(RgSchMacL2MeasStop);
         
-   RETVALUE((*RgSchMacL2MeasStopReqMt[0])(pst, measInfo));
+   return ((*RgSchMacL2MeasStopReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 
 /**
@@ -769,7 +769,7 @@ RgInfL2MeasSndReq *measInfo;
 
    TRC3(RgSchMacL2MeasSend);
 
-   RETVALUE((*RgSchMacL2MeasSendReqMt[0])(pst, measInfo));
+   return ((*RgSchMacL2MeasSendReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2MeasSend */
 
 /**
@@ -799,7 +799,7 @@ RgInfL2MeasCfm      *measInfo;
 
    TRC3(RgMacSchL2Meas);
 
-   RETVALUE((*RgMacSchL2MeasCfmMt[0])(pst, measInfo));
+   return ((*RgMacSchL2MeasCfmMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 /**
 * @brief Request from MAC to SCH for L2 Measurement
@@ -828,7 +828,7 @@ RgInfL2MeasCfm      *measInfo;
     
    TRC3(RgMacSchL2MeasStop);
 
-   RETVALUE((*RgMacSchL2MeasStopCfmMt[0])(pst, measInfo));
+   return ((*RgMacSchL2MeasStopCfmMt[0])(pst, measInfo));
 } /* end of RgSchMacL2MeasStop*/
 #endif/*LTE_L2_MEAS*/
 /**********************************************************************

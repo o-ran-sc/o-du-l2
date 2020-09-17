@@ -212,7 +212,7 @@ Reason reason;         /* reason */
    /* Initialize lower mac */
    lwrMacInit();
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* rgActvInit */
 
@@ -301,7 +301,7 @@ RgMngmt  *cfg;    /* config structure  */
 
    RgMiLrgCfgCfm(&cfmPst, &cfm);
    
-   RETVALUE(ROK);
+   return ROK;
 }/*-- RgMiLrgCfgReq --*/
 
 
@@ -366,7 +366,7 @@ RgMngmt  *sts;    /* statistics structure  */
       cfm.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       RgMiLrgStsCfm(&cfmPst,&cfm);
       RLOG0(L_ERROR, "Gen Cfg not done");
-      RETVALUE(ROK);
+      return ROK;
    }
 
    switch(sts->hdr.elmId.elmnt)
@@ -477,7 +477,7 @@ RgMngmt  *sts;    /* statistics structure  */
          break;     
    }
    RgMiLrgStsCfm(&cfmPst,&cfm);
-   RETVALUE(ROK);
+   return ROK;
 }/*-- RgMiLrgStsReq --*/
 
 
@@ -545,7 +545,7 @@ RgMngmt  *sta;    /* status structure  */
          != ROK)
       {
          RLOG0(L_ERROR, "Memory Unavailable for Confirmation");
-         RETVALUE(ROK);
+         return ROK;
       } 
       cmMemset((U8 *)(cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
       rgGetSId(&cfm.t.ssta.s.sysId);
@@ -554,7 +554,7 @@ RgMngmt  *sta;    /* status structure  */
       cfm.hdr.elmId.elmnt = sta->hdr.elmId.elmnt;
       RgMiLrgStaCfm(&cfmPst, &cfm);
       RLOG0(L_ERROR, "Gen Cfg not done");
-      RETVALUE(ROK);
+      return ROK;
    }
 
    switch(sta->hdr.elmId.elmnt)
@@ -566,7 +566,7 @@ RgMngmt  *sta;    /* status structure  */
             != ROK)
          {
             RLOG0(L_ERROR, "Memory Unavailable for Confirmation");
-            RETVALUE(ROK);
+            return ROK;
          } 
          cmMemset((U8 *)(cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
          rgGetSId(&cfm.t.ssta.s.sysId);
@@ -606,7 +606,7 @@ RgMngmt  *sta;    /* status structure  */
          RLOG1(L_ERROR, "Invalid elmnt=%d",sta->hdr.elmId.elmnt);
          break;     
    }
-   RETVALUE(ROK);
+   return ROK;
 }/*-- RgMiLrgStaReq --*/
 
 
@@ -672,7 +672,7 @@ RgMngmt  *cntrl;  /* control structure  */
       cfm.hdr.elmId.elmnt = cntrl->hdr.elmId.elmnt;
       RgMiLrgCntrlCfm(&cfmPst, &cfm);
       RLOG0(L_ERROR, "Gen Cfg not done");
-      RETVALUE(ROK);
+      return ROK;
    }
  
    /* General Config done, process the Control request */   
@@ -693,7 +693,7 @@ RgMngmt  *cntrl;  /* control structure  */
          RLOG1(L_ERROR, "invalid elmnt=%d",cntrl->hdr.elmId.elmnt);
          break;
    }
-   RETVALUE(ret);
+   return (ret);
 }/*-- RgMiLrgCntrlReq --*/
 
 
@@ -739,7 +739,7 @@ Elmnt sapType;            /* Sap Type */
 
    /* Check if Gen Config has been done */
    if(rgCb[inst].rgInit.cfgDone != TRUE)
-      RETVALUE(LCM_REASON_GENCFG_NOT_DONE);
+      return (LCM_REASON_GENCFG_NOT_DONE);
 
    switch(sapType)
    {   
@@ -841,7 +841,7 @@ Elmnt sapType;            /* Sap Type */
          /* would never reach here */
          break;
    }
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -883,13 +883,13 @@ RgCfg *cfg;            /* Configuaration information */
    /* Check if General Configuration is done already */
    if (rgCb[inst].rgInit.cfgDone == TRUE)
    {
-      RETVALUE(LCM_REASON_INVALID_MSGTYPE);
+      return (LCM_REASON_INVALID_MSGTYPE);
    }
    if ((cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_TC) &&
        (cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_LC))
    {
       RLOG0(L_ERROR, "unsupported Selector value for RGU");
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    /* Update the Pst structure for LM interface */
    cmMemcpy((U8 *)&rgCb[inst].rgInit.lmPst, (U8 *)&cfg->s.genCfg.lmPst,
@@ -913,7 +913,7 @@ RgCfg *cfg;            /* Configuaration information */
    if(cfg->s.genCfg.numRguSaps == 0)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "\nrgGenCfg(): Invalid numRguSap.\n"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* allocate RGR saps */
@@ -923,7 +923,7 @@ RgCfg *cfg;            /* Configuaration information */
                 (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps)) != ROK)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "\nrgGenCfg(): Failed to allocate mem for RGU SAP's.\n"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    rgCb[inst].numRguSaps = cfg->s.genCfg.numRguSaps;
 
@@ -953,13 +953,13 @@ RgCfg *cfg;            /* Configuaration information */
                 (Data *)rgCb[inst].rguSap,
                 (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps));
 
-      RETVALUE(LCM_REASON_MEM_NOAVAIL);
+      return (LCM_REASON_MEM_NOAVAIL);
    }
 #endif
    /* Set Config done in TskInit */
    rgCb[inst].rgInit.cfgDone = TRUE;
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1435,7 +1435,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
    arg.wait = tmrVal;      
    cmPlcCbTq(&arg);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1506,7 +1506,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
    }
 
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1573,7 +1573,7 @@ S16 tmrEvnt;          /* Timer Event */
          ret = RFAILED;
          break;
    }
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1620,7 +1620,7 @@ RgUstaDgn *dgn;
 
    if(rgCb[inst].rgInit.usta == FALSE)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    cmMemset((U8 *)&usta, 0, sizeof(RgMngmt));
@@ -1641,7 +1641,7 @@ RgUstaDgn *dgn;
    rgCb[inst].rgInit.lmPst.pool = rgCb[inst].genCfg.ustaResp.response.mem.pool;
    usta.hdr.transId = rgCb[inst].genCfg.ustaResp.transId;
 
-   RETVALUE(RgMiLrgStaInd(&rgCb[inst].rgInit.lmPst, &usta));
+   return (RgMiLrgStaInd(&rgCb[inst].rgInit.lmPst, &usta));
 }
 
 
@@ -1840,7 +1840,7 @@ U8 status;              /* Status */
    if(rgCb[inst].tfuSap.sapCfg.suId != suId)
    {
       RLOG0(L_ERROR, "Invalid SuId");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* check the Sap State */
@@ -1850,9 +1850,9 @@ U8 status;              /* Status */
          break;
       case LRG_BND:
          /* SAP is already bound */
-         RETVALUE(ROK);
+         return ROK;
       default:
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    cfmPst = rgCb[inst].rgInit.lmPst;
@@ -1896,7 +1896,7 @@ U8 status;              /* Status */
 
    ret = RgMiLrgCntrlCfm(&cfmPst, &cntrlCfm);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1931,7 +1931,7 @@ Inst    inst;
    /* Check if any MAC timer has expired */ 
    cmPrcTmr(&rgCb[macInst].tmrTqCp, rgCb[macInst].tmrTq, (PFV) rgLMMTmrExpiry);
  
-   RETVALUE(ROK);
+   return ROK;
  
 } /* end of rgActvTmr */
 

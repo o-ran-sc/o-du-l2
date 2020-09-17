@@ -405,7 +405,7 @@ U16           ulIndex;
 #if ( ERRCLASS & ERRCLS_INT_PAR )
    if ( cell == (RgSchCellCb* )NULLP )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -413,7 +413,7 @@ U16           ulIndex;
   
    rgSCHDrxTtiHdlOnDurUl(cell, ulIndex);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }/*rgSCHDrxTtiHdlOnDur*/
 
@@ -473,7 +473,7 @@ U16 ulIndex;
 #if ( ERRCLASS & ERRCLS_INT_PAR )   
    if ( cell == (RgSchCellCb* )NULLP) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -661,7 +661,7 @@ U16 ulIndex;
    cellSch = RG_SCH_CMN_GET_CELL(cell);
    cellSch->apisDl->rgSCHDlInactvtUes(cell,&dlInactvLst);
 
-      RETVALUE(ROK);
+      return ROK;
 }/*rgSCHDrxTtiHdlInActv*/
 
  /** @brief This function handles the per TTI processing for DRX short cycle
@@ -709,7 +709,7 @@ U16           ulIndex;
 #if ( ERRCLASS & ERRCLS_INT_PAR )
    if ( cell == (RgSchCellCb* )NULLP )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -745,7 +745,7 @@ U16           ulIndex;
       rgSCHDrxMvToNxtOnDurOcc(cell,ue,RG_SCH_DRX_DL_DELTA,TRUE);
    }/*while(node)...*/
 
-   RETVALUE(ROK);
+   return ROK;
 }/*rgSCHDrxTtiHdlShortCycle*/
 
 
@@ -795,7 +795,7 @@ U16                   ulIndex;
 #if ( ERRCLASS & ERRCLS_INT_PAR)
    if ( cell == (RgSchCellCb *)NULLP )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /*ERRCLASS & ERRCLS_INT_PAR*/
 
@@ -806,7 +806,7 @@ U16                   ulIndex;
 
    rgSCHDrxTtiHdlUlHarqRTT(cell, ulIndex);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
  /** @brief This function is called by the common scheduler as part of
@@ -1185,7 +1185,7 @@ PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
 #if ( ERRCLASS & ERRCLS_INT_PAR )   
    if ( cell == (RgSchCellCb* )NULLP) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((ue == (RgSchUeCb* )NULLP)
@@ -1194,7 +1194,7 @@ PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHDrxUeCfg():"
                "Invalid params.cell or ue or ueCfg is NULL ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1207,7 +1207,7 @@ PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "Memory allocation FAILED for DRX UECB CRBTI:%d",ue->ueId);
-      RETVALUE(ret);
+      return (ret);
    }
 
    ueDrxCb = ue->drxCb;
@@ -1290,7 +1290,7 @@ PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
       ueDrxCb->shortCycleEnt.node = (PTR)ue;
    }
 
-   RETVALUE(ret);
+   return (ret);
 } /* end of rgSCHDrxUeCfg */
 
 /** @brief This function gets the next occurance of onDurationTimer from the
@@ -1346,7 +1346,7 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
 #if ( ERRCLASS & ERRCLS_INT_PAR ) 
    if ( cell == (RgSchCellCb* )NULLP ) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if( (drxCb == (RgSchDrxUeCb* )NULLP)
@@ -1357,7 +1357,7 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
                         "rgSCHDrxGetNxOnDur():Invalid params."
                         "cell/drxCb/nxtOnDur is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1415,7 +1415,7 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
       nxtOnDur->sfn      = (U16)nxtDist / RGSCH_NUM_SUB_FRAMES_5G;
       nxtOnDur->slot = (U16)nxtDist % RGSCH_NUM_SUB_FRAMES_5G;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHDrxGetNxtOnDur */ 
 
 /** @brief This function is a utility function to copy the UE configuration from
@@ -1453,7 +1453,7 @@ PRIVATE S16 rgSCHDrxCpyUeCfg (ueCb, drxCfg)
         (drxCfg == (RgrUeDrxCfg* )NULLP)
       )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1471,7 +1471,7 @@ PRIVATE S16 rgSCHDrxCpyUeCfg (ueCb, drxCfg)
    ueCb->shortDrxCycle        = drxCfg->drxShortDrx.shortDrxCycle;
    ueCb->shortCycleTmrLen     = drxCfg->drxShortDrx.drxShortCycleTmr;
    
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHDrxCpyUeCfg */ 
 
 #ifdef RGR_V2
@@ -1547,7 +1547,7 @@ PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
            "rgSCHdrxUeReCfg():""Memory allocation FAILED for DRX UE Cb CRNTI:%d",
                   ue->ueId);
-        RETVALUE(ret);
+        return (ret);
      }
 
      ue->isDrxEnabled = TRUE;    /* sachin */
@@ -1578,7 +1578,7 @@ PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
   }
   if( ue->drxCb == NULLP ) 
   { 
-     RETVALUE(RFAILED); 
+     return RFAILED; 
   }
    ueDrxCb = ue->drxCb;
    
@@ -1730,7 +1730,7 @@ PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
       }   
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rgSCHDrxUeReCfg */
 #endif
@@ -1900,7 +1900,7 @@ PUBLIC S16 rgSCHDrxUeDel (cell, ue)
    ueDrxCb->drxDlInactvMask = DRX_UE_INACTIVE;
    ueDrxCb->drxUlInactvMask = DRX_UE_INACTIVE;
 
-   RETVALUE(ROK);
+   return ROK;
 }/*rgSCHDrxUeDel*/
 
 /** @brief This function is called at the time of RGR cell configuration.
@@ -1943,7 +1943,7 @@ PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
                 "rgSCHDrxCellCfg():Invalid Params. cell/cellCfg is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1955,7 +1955,7 @@ PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHDrxCellCfg():"
                "Memory allocation FAILED for DRX cell Cb");
-      RETVALUE(ret);
+      return (ret);
    }
 
    /* delInUlScan determines which index scans the queue last.
@@ -1975,7 +1975,7 @@ PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
       cell->drxCb->delInUlScan = TRUE;
    }
 
-   RETVALUE(ret);
+   return (ret);
 } /* end of rgSchDrxCellCfg */
 
 
@@ -2066,14 +2066,14 @@ PUBLIC S16 rgSCHDrxSrInd (cell, ue)
 #if ( ERRCLASS & ERRCLS_INT_PAR )
    if ( cell == (RgSchCellCb* )NULLP)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    if( (ue == (RgSchUeCb* )NULLP))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
                  "rgSCHDrxSrInd():Invalid Params. cell/ue is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  #endif
    /* KWork fix - shifted this down */
@@ -2087,7 +2087,7 @@ PUBLIC S16 rgSCHDrxSrInd (cell, ue)
    /* Update UE's inactive mask and if required move UE to ACTIVE state */
    RG_SCH_CMN_UL_UPDT_INACTV_MASK( cell, ue, RG_DRX_INACTIVE);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHDrxSrInd */
 
 
@@ -2313,7 +2313,7 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
          (tmrExpryIdx == (CmLteTimingInfo* )NULLP)
       )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -2411,7 +2411,7 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
       tmrExpryIdx->sfn = tmrExpryIdx->sfn - (RG_SCH_CMN_MAX_SFN_NUM + 1);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }/*rgSCHDrxGetNxtTmrExpry*/
 
 /** @brief This function calculates the next onDuration Occurence
@@ -2550,7 +2550,7 @@ U16           offSet;
       if(((RGSCH_MAX_SUBFRM_5G + endTimeInSf- startTime) % RGSCH_MAX_SUBFRM_5G) >= 
           drxCycle)
       {
-          RETVALUE(RFAILED);
+          return RFAILED;
       }
       
       startTime = (startTime + drxCycle);
@@ -2562,7 +2562,7 @@ U16           offSet;
    }while((drxCycle % RGSCH_NUM_SUB_FRAMES) && 
        (startTime < (drxCycle * RGSCH_NUM_SUB_FRAMES/2)));
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #endif /*LTE_TDD */

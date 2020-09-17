@@ -39,22 +39,22 @@
 #include "lphy_stub.h"
 #include "du_utils.h"
 
-U8 rlcDlCfg = 0;
-U8 numRlcDlSaps = 0;
-U8 rlcUlCfg = 0;
-U8 numRlcMacSaps = 0;
-U8 macCfg = 0;
-U8 macCfgInst = 0;
+uint8_t rlcDlCfg = 0;
+uint8_t numRlcDlSaps = 0;
+uint8_t rlcUlCfg = 0;
+uint8_t numRlcMacSaps = 0;
+uint8_t macCfg = 0;
+uint8_t macCfgInst = 0;
 
 extern DuCfgParams duCfgParam;
-extern S16 packRlcConfigReq(Pst *pst, KwMngmt *cfg);
-extern S16 cmPkLkwCntrlReq(Pst *pst, KwMngmt *cfg);
-extern S16 cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
-extern S16 BuildAndSendE2SetupReq();
-extern S16 egtpHdlDatInd(EgtpMsg egtpMsg);
+extern uint8_t packRlcConfigReq(Pst *pst, KwMngmt *cfg);
+extern uint8_t cmPkLkwCntrlReq(Pst *pst, KwMngmt *cfg);
+extern uint8_t cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
+extern uint8_t BuildAndSendE2SetupReq();
+extern uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
 extern uint8_t BuildAndSendDUConfigUpdate();
-extern U16 getTransId();
-extern S16 cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
+extern uint16_t getTransId();
+extern uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
 
 packMacCellCfgReq packMacCellCfgOpts[] =
 {
@@ -92,7 +92,7 @@ DuMacCellStopReq packMacCellStopReqOpts[] =
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duBuildRlcCfg(Inst inst)
+uint8_t duBuildRlcCfg(Inst inst)
 {
    KwMngmt   kwMngmt;
    KwGenCfg  *genCfg = NULLP;
@@ -175,7 +175,7 @@ S16 duBuildRlcCfg(Inst inst)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst)
+uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, uint8_t lsapInst)
 {
 
    KwMngmt    kwMngmt;
@@ -252,7 +252,7 @@ S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst)
+uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
 {
    KwMngmt    kwMngmt;
    KwSapCfg   *uSap = NULLP;
@@ -319,11 +319,11 @@ S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duProcCfgComplete()
+uint8_t duProcCfgComplete()
 {
-   S16 ret = ROK;
-   static U16 cellId = 0;
-   U16 idx;
+   uint8_t ret = ROK;
+   static uint16_t cellId = 0;
+   uint16_t idx;
    for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
       DuCellCb *cell = NULLP;
@@ -335,8 +335,8 @@ S16 duProcCfgComplete()
 	 }
 	 else
 	 {
-	    U32 nci;
-	    U8 idx1; 
+	    uint32_t nci;
+	    uint8_t idx1; 
 	    memset(cell, 0, sizeof(DuCellCb));
 	    cell->cellId = ++cellId;
 	    cell->cellInfo.nrEcgi.plmn.mcc[0] = PLMN_MCC0;
@@ -359,7 +359,7 @@ S16 duProcCfgComplete()
 	    }
 	    cell->cellInfo.maxUe = duCfgParam.maxUe;
 	    cell->cellStatus = CELL_OUT_OF_SERVICE;
-	    nci = (U16)cell->cellInfo.nrEcgi.cellId;
+	    nci = (uint16_t)cell->cellInfo.nrEcgi.cellId;
 
 	    duCb.cfgCellLst[nci-1] = cell;
 	    duCb.numCfgCells++;
@@ -387,9 +387,9 @@ S16 duProcCfgComplete()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duSendRlcUlCfg()
+uint8_t duSendRlcUlCfg()
 {
-   U8 cellIdx; 
+   uint8_t cellIdx; 
 
    duBuildRlcCfg((Inst)RLC_UL_INST);
    for(cellIdx = 0; cellIdx < DEFAULT_CELLS; cellIdx++)
@@ -416,9 +416,9 @@ S16 duSendRlcUlCfg()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duSendRlcDlCfg()
+uint8_t duSendRlcDlCfg()
 {
-   U8 cellIdx; 
+   uint8_t cellIdx; 
 
    duBuildRlcCfg((Inst)RLC_DL_INST);
    duBuildRlcUsapCfg(STUDXSAP, ENTKW, (Inst)RLC_DL_INST);
@@ -445,9 +445,9 @@ S16 duSendRlcDlCfg()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 DuHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm)
+uint8_t DuHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
    if (pst->srcInst == RLC_UL_INST)
    {
       ret = duProcRlcUlCfgComplete(pst, cfm);
@@ -475,9 +475,9 @@ S16 DuHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cntrl)
+uint8_t duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cntrl)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 
    if (cntrl->cfm.status == LCM_PRIM_OK)
    {
@@ -535,9 +535,9 @@ S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cntrl)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
+uint8_t duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
 {
-   S16 ret;
+   uint8_t ret;
 
    DU_LOG("\nDU_APP : RLC UL Cfg Status %d", cfm->cfm.status);
    if (cfm->cfm.status == LCM_PRIM_OK)
@@ -602,7 +602,7 @@ S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm)
+uint8_t duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm)
 {
    DU_LOG("\nDU_APP : RLC DL Cfg Status %d", cfm->cfm.status);
    if (cfm->cfm.status == LCM_PRIM_OK)
@@ -665,7 +665,7 @@ S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duSendMacCfg()
+uint8_t duSendMacCfg()
 {
    duBuildMacGenCfg();
    duBuildMacUsapCfg(RLC_UL_INST);
@@ -689,7 +689,7 @@ S16 duSendMacCfg()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duBuildMacGenCfg()
+uint8_t duBuildMacGenCfg()
 {
    RgMngmt       rgMngmt;
    RgGenCfg      *genCfg=NULLP;
@@ -766,7 +766,7 @@ S16 duBuildMacGenCfg()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duBuildMacUsapCfg(SpId sapId)
+uint8_t duBuildMacUsapCfg(SpId sapId)
 {
    RgMngmt     rgMngmt;
    RgUpSapCfg  *uSap = NULLP;
@@ -829,9 +829,9 @@ S16 duBuildMacUsapCfg(SpId sapId)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
+uint8_t duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 
    if (cfm->cfm.status == LCM_PRIM_OK)
    {
@@ -885,7 +885,7 @@ S16 duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duBindUnbindRlcToMacSap(U8 inst, U8 action)
+uint8_t duBindUnbindRlcToMacSap(uint8_t inst, uint8_t action)
 {
    KwCntrl  *cntrl = NULLP;
    KwMngmt  kwMngmt;
@@ -952,7 +952,7 @@ S16 duBindUnbindRlcToMacSap(U8 inst, U8 action)
  *
  * ****************************************************************/
 
-S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
+uint8_t duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
 {
    if(f1Params.assocId == ntfy->u.assocChange.assocId)
    {
@@ -992,9 +992,9 @@ S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duFillEgtpPst(Pst *pst, Event event)
+uint8_t duFillEgtpPst(Pst *pst, Event event)
 {
-   cmMemset((U8 *)pst, 0, sizeof(Pst));
+   memset((uint8_t *)pst, 0, sizeof(Pst));
    pst->srcEnt = (Ent)ENTDUAPP;
    pst->srcInst = (Inst)DU_INST;
    pst->srcProcId = DU_PROC;
@@ -1005,7 +1005,7 @@ S16 duFillEgtpPst(Pst *pst, Event event)
    pst->selector = ODU_SELECTOR_LC;
    pst->pool= DU_POOL;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1026,20 +1026,20 @@ S16 duFillEgtpPst(Pst *pst, Event event)
  *
  * ****************************************************************/
 
-S16 duBuildEgtpCfgReq()
+uint8_t duBuildEgtpCfgReq()
 {
    Pst pst;
    EgtpConfig egtpCfg;
 
    DU_LOG("\nDU_APP : Sending EGTP config request");
 
-   cmMemset((U8 *)&egtpCfg, 0, sizeof(EgtpConfig));
-   cmMemcpy((U8 *)&egtpCfg, (U8 *)&duCfgParam.egtpParams, (PTR)sizeof(EgtpConfig));
+   memset((uint8_t *)&egtpCfg, 0, sizeof(EgtpConfig));
+   memcpy((uint8_t *)&egtpCfg, (uint8_t *)&duCfgParam.egtpParams, (PTR)sizeof(EgtpConfig));
 
    duFillEgtpPst(&pst, EVTCFGREQ);
    packEgtpCfgReq(&pst, egtpCfg);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -1058,9 +1058,9 @@ S16 duBuildEgtpCfgReq()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duHdlEgtpCfgComplete(CmStatus cfm)
+uint8_t duHdlEgtpCfgComplete(CmStatus cfm)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 
    if(cfm.status == LCM_PRIM_OK)
    {
@@ -1075,7 +1075,7 @@ S16 duHdlEgtpCfgComplete(CmStatus cfm)
       ret = RFAILED;
    }
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /*******************************************************************
@@ -1095,7 +1095,7 @@ S16 duHdlEgtpCfgComplete(CmStatus cfm)
  *
  * ****************************************************************/
 
-S16 duSendEgtpSrvOpenReq()
+uint8_t duSendEgtpSrvOpenReq()
 {
    Pst pst;
 
@@ -1104,7 +1104,7 @@ S16 duSendEgtpSrvOpenReq()
    duFillEgtpPst(&pst, EVTSRVOPENREQ);
    packEgtpSrvOpenReq(&pst);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -1124,9 +1124,9 @@ S16 duSendEgtpSrvOpenReq()
  *
  *****************************************************************/
 
-S16 duHdlEgtpSrvOpenComplete(CmStatus cfm)
+uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 
    if(cfm.status == LCM_PRIM_OK)
    {
@@ -1141,7 +1141,7 @@ S16 duHdlEgtpSrvOpenComplete(CmStatus cfm)
       ret = RFAILED;
    }
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 /*******************************************************************
@@ -1163,7 +1163,7 @@ S16 duHdlEgtpSrvOpenComplete(CmStatus cfm)
  *
  * ****************************************************************/
 
-S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid)
+uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t lclTeid, uint32_t remTeid)
 {
    Pst pst;
    EgtpTnlEvt tnlEvt;
@@ -1177,7 +1177,7 @@ S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid)
    duFillEgtpPst(&pst, EVTTNLMGMTREQ);
    packEgtpTnlMgmtReq(&pst, tnlEvt);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -1196,9 +1196,9 @@ S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
+uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 
    if(tnlEvtCfm.cfmStatus.status == LCM_PRIM_OK)
    {
@@ -1216,10 +1216,10 @@ S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
       ret = RFAILED;
    }
 
-   RETVALUE(ret);
+   return (ret);
 }
 
-S16 duSendEgtpDatInd(Buffer *mBuf)
+uint8_t duSendEgtpDatInd(Buffer *mBuf)
 {
    EgtpMsg  egtpMsg;
 
@@ -1255,26 +1255,26 @@ S16 duSendEgtpDatInd(Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duSendEgtpTestData()
+uint8_t duSendEgtpTestData()
 {
    char data[30] = "This is EGTP data from DU";
    int datSize = 30;
 
    Buffer   *mBuf;
 
-   if(SGetMsg(DU_APP_MEM_REGION, DU_POOL, &mBuf) == ROK)
+   if(ODU_GET_MSG(DU_APP_MEM_REGION, DU_POOL, &mBuf) == ROK)
    {
-      if(SAddPstMsgMult((Data *)data, datSize, mBuf) != ROK)
+      if(ODU_ADD_POST_MSG_MULT((Data *)data, datSize, mBuf) != ROK)
       {
-	 DU_LOG("\nDU_APP : SAddPstMsgMult failed");
-	 SPutMsg(mBuf);
-	 RETVALUE(RFAILED);
+	 DU_LOG("\nDU_APP : ODU_ADD_POST_MSG_MULT failed");
+	 ODU_PUT_MSG(mBuf);
+	 return RFAILED;
       }
    }
    else
    {
       DU_LOG("\nDU_APP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* filling IPv4 header */ 
@@ -1282,9 +1282,9 @@ S16 duSendEgtpTestData()
    MsgLen    mLen;
 
    mLen = 0;
-   SFndLenMsg(mBuf, &mLen);
+   ODU_FIND_MSG_LEN(mBuf, &mLen);
 
-   cmMemset((U8 *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
+   memset((uint8_t *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
@@ -1292,14 +1292,14 @@ S16 duSendEgtpTestData()
    ipv4Hdr.destAddr = CM_INET_NTOH_U32(duCfgParam.egtpParams.destIp.ipV4Addr);
 
    /* Packing IPv4 header into buffer */
-   S16          ret, cnt, idx;
+   uint8_t          ret, cnt, idx;
    Data         revPkArray[CM_IPV4_HDRLEN];
    Data         pkArray[CM_IPV4_HDRLEN];
 
    /* initialize locals */
    cnt = 0;
-   cmMemset(revPkArray, 0, CM_IPV4_HDRLEN);
-   cmMemset(pkArray, 0, CM_IPV4_HDRLEN);
+   memset(revPkArray, 0, CM_IPV4_HDRLEN);
+   memset(pkArray, 0, CM_IPV4_HDRLEN);
 
    /* Pack Header Version */
    pkArray[cnt++] = ipv4Hdr.hdrVer;
@@ -1344,11 +1344,11 @@ S16 duSendEgtpTestData()
       revPkArray[idx] = pkArray[CM_IPV4_HDRLEN - idx -1];
 
    /* this function automatically reverses revPkArray */
-   ret = SAddPreMsgMult(revPkArray, (MsgLen)cnt, mBuf);
+   ret = ODU_ADD_PRE_MSG_MULT(revPkArray, (MsgLen)cnt, mBuf);
 
    duSendEgtpDatInd(mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* EGTP_TEST */
 
@@ -1368,7 +1368,7 @@ S16 duSendEgtpTestData()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duSendSchCfg()
+uint8_t duSendSchCfg()
 {
    RgMngmt       rgMngmt;
    RgSchInstCfg  *cfg = NULLP;
@@ -1448,9 +1448,9 @@ S16 duSendSchCfg()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duLayerConfigComplete()
+uint8_t duLayerConfigComplete()
 {
-   S16 ret = ROK;
+   uint8_t ret = ROK;
 
    DU_LOG("\nDU_APP : Configuring all Layer is complete");
 
@@ -1470,7 +1470,7 @@ S16 duLayerConfigComplete()
       ret = RFAILED;
    }
 
-   RETVALUE(ret); 
+   return (ret); 
 } 
 
 /**************************************************************************
@@ -1489,7 +1489,7 @@ S16 duLayerConfigComplete()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
+uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
 {
    if (cfm->cfm.status == LCM_PRIM_OK)
    {
@@ -1525,14 +1525,14 @@ S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duSendEgtpSlotInd()
+uint8_t duSendEgtpSlotInd()
 {
    Pst pst;
 
    duFillEgtpPst(&pst, EVTSLOTIND);
    packEgtpSlotInd(&pst);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1551,7 +1551,7 @@ S16 duSendEgtpSlotInd()
  *         RFAILED - failure
  *
  ***************************************************************************/
-S16 duBuildAndSendMacCellCfg()
+uint8_t duBuildAndSendMacCellCfg()
 {
    Pst pst;
    DU_SET_ZERO(&pst, sizeof(Pst));

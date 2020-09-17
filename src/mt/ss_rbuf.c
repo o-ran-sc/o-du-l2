@@ -88,7 +88,7 @@ U32 rngSize;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, id, "Invalid RBUF ID");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if(SsRngInfoTbl[id].r_addr != 0)
    {
@@ -96,7 +96,7 @@ U32 rngSize;
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, id, 
             "Failed to Create Ring Buffer Id Ring already exist");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Get Element Size */
    
@@ -108,7 +108,7 @@ U32 rngSize;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "Allocating Ring  Failed!!!")
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ring, 
@@ -128,7 +128,7 @@ U32 rngSize;
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "Allocating Ring  Failed!!!")
 #endif
       free(ring);
-      RETVALUE(RFAILED);
+      return RFAILED;
     }
     /* Update Buffer Id Table */
     SsRngInfoTbl[id].r_addr   = ring;
@@ -141,7 +141,7 @@ U32 rngSize;
 #else
     printf("Ring Buffer Created with id =%d rSize:%d eSize:%d %lx\n",id,ring->size,ring->type,(PTR)ring);
 #endif
-    RETVALUE(ROK);
+    return ROK;
 }
 
 /*
@@ -169,7 +169,7 @@ U32 txRx;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, id, "Invalid RBUF ID");
 #endif
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
     if(SsRngInfoTbl[id].rngState < SS_RNG_CREATED)
     {
@@ -184,7 +184,7 @@ U32 txRx;
        printf("Attach Request in Invalid Ring State %d id%d \n",
          SsRngInfoTbl[id].rngState,id);
 #endif
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
     if(txRx == SS_RNG_TX)
     {
@@ -196,7 +196,7 @@ U32 txRx;
         SsRngInfoTbl[id].rxEnt = ent;
         SsRngInfoTbl[id].rngState = SS_RNG_RX_ATTACHED;
     }
-    RETVALUE(ROK);
+    return ROK;
 }
 /* 
 Func: SConnectSRngBuf
@@ -216,7 +216,7 @@ U32 rxEnt;
 #endif
 {
    /* Send to Reciever ENT*/ 
-   RETVALUE(ROK); 
+   return ROK; 
 }
 
 /*
@@ -281,7 +281,7 @@ Void* elem;
    if (IsFull(ring))
    {
         SsRngInfoTbl[id].nWriteFail++;
-        RETVALUE(RFAILED);
+        return RFAILED;
    }
    /* TBD Avoid multiplication for optimisation */
    w_ptr = (U8*)ring->elem + (ring->write * ring->type);
@@ -297,7 +297,7 @@ Void* elem;
     ring->write = (wrIndex == ring->size)?0: wrIndex;
    /* Update Statistics */
    SsRngInfoTbl[id].n_write++;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -313,7 +313,7 @@ U32 id;
 
    S16 freeDist = (SsRngInfoTbl[id].n_write- SsRngInfoTbl[id].n_read);
 
-	RETVALUE(freeDist);
+	return (freeDist);
 }
 /*
 Func: SDeqSRngBuf
@@ -340,7 +340,7 @@ Void *elem;
    if(IsEmpty(ring))
    {  
        SsRngInfoTbl[id].nReadFail++;
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
    r_ptr = (U8*)ring->elem + (ring->read * ring->type);
    for(i=0; i<ring->type; i++)
@@ -353,7 +353,7 @@ Void *elem;
    rdIndex= ring->read + 1;
    ring->read = (rdIndex == ring->size)?0:rdIndex;
    SsRngInfoTbl[id].n_read++;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -384,7 +384,7 @@ Pool pool;
       SsRngInfoTbl[id].rngState = SS_RNG_DESTROYED;
       SsRngInfoTbl[id].r_addr = 0;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef ANSI
@@ -402,7 +402,7 @@ U32 i;
    Txt   prntBuf[100];
 
 #ifdef RGL_SPECIFIC_CHANGES
-   RETVALUE(ROK);
+   return ROK;
 #endif
    for(i=0; i< SS_RNG_BUF_MAX;i++)
    {
@@ -458,7 +458,7 @@ U32 i;
 #endif
       }
    }
-   RETVALUE(ROK); 
+   return ROK; 
 }
 
 #ifdef ANSI
@@ -476,11 +476,11 @@ U32 rngId;
    if (IsFull(ring))
    {
       SsRngInfoTbl[rngId].nWriteFail++;
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    else
    {
-      RETVALUE(((U8 *)ring->elem) + (ring->type * ring->write));
+      return (((U8 *)ring->elem) + (ring->type * ring->write));
    }
 }
 
@@ -499,11 +499,11 @@ U32 rngId;
    if(IsEmpty(ring))
    {
       SsRngInfoTbl[rngId].nReadFail++;
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    else
    {
-      RETVALUE(((U8 *)ring->elem) + (ring->type * ring->read));
+      return (((U8 *)ring->elem) + (ring->type * ring->read));
    }
 }
 
@@ -572,7 +572,7 @@ S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType)
       SsRngInfoTbl[ringId].pktDrop++;
       ret1 = RFAILED;
    }
-   RETVALUE(ret1);
+   return (ret1);
 }
 #endif
 #endif

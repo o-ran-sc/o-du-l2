@@ -44,9 +44,9 @@ int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 buildPlmnId(Plmn plmn, OCTET_STRING_t *octe)
+uint8_t buildPlmnId(Plmn plmn, OCTET_STRING_t *octe)
 {
-   U8 mncCnt;
+   uint8_t mncCnt;
    mncCnt = 2;
    octe->buf[0] = ((plmn.mcc[1] << 4) | (plmn.mcc[0]));
    if(mncCnt == 2)
@@ -59,7 +59,7 @@ S16 buildPlmnId(Plmn plmn, OCTET_STRING_t *octe)
       octe->buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
       octe->buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -73,21 +73,21 @@ S16 buildPlmnId(Plmn plmn, OCTET_STRING_t *octe)
  *    Functionality: Fills the RicId
  *
  * @params[in] BIT_STRING_t *nbid,
- *             U8 unusedBits
- *             U8 byteSize
- *             U8 val
+ *             uint8_t unusedBits
+ *             uint8_t byteSize
+ *             uint8_t val
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-S16 fillBitString(BIT_STRING_t *id, U8 unusedBits, U8 byteSize, U8 val)
+uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, uint8_t val)
 {
-   U8 tmp;
+   uint8_t tmp;
    if(id->buf == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for (tmp = 0 ; tmp < (byteSize-1); tmp++)
@@ -96,7 +96,7 @@ S16 fillBitString(BIT_STRING_t *id, U8 unusedBits, U8 byteSize, U8 val)
    }
    id->buf[byteSize-1]   = val;
    id->bits_unused = unusedBits;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -115,9 +115,9 @@ S16 fillBitString(BIT_STRING_t *id, U8 unusedBits, U8 byteSize, U8 val)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 bitStringToInt(BIT_STRING_t *bitString, U16 *val)
+uint8_t bitStringToInt(BIT_STRING_t *bitString, uint16_t *val)
 {
-   U16 idx;
+   uint16_t idx;
    if(bitString->buf == NULL || bitString->size <= 0)
    {
       DU_LOG("\nDU_APP : Bit string is empty");

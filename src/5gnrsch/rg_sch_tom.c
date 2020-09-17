@@ -8266,7 +8266,7 @@ RgSchCellCb          *cell;
  *     Function: rgSCHDynTDDMrkCrntSfIdx 
  *     Purpose:  update the dyn tdd sunframe index
  *  @param[in]  Inst   schInst
- *  @RETVALUE   None
+ *  @return    None
  */
 #ifdef UNUSED_FUNC
 #ifdef ANSI

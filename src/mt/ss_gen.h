@@ -238,7 +238,7 @@ extern "C" {
          {\
             SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ERRZERO,\
                          "Could not unlock the Semaphore");\
-            RETVALUE(RFAILED);\
+            return RFAILED;\
          }\
       }\
    }

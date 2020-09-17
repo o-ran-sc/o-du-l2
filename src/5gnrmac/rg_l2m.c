@@ -122,7 +122,7 @@ RgErrInfo      *err;
       if ((measCb = rgL2mAllocMeasCb(cell, measInfo, err)) == NULLP)
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Allocation of RgL2MeasCb failed");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    //Memcpy is already done in rgL2mAllocMeasCb
    /*cmMemcpy((U8 *)&measCb->measReq, (CONSTANT U8 *)measInfo,\
@@ -144,7 +144,7 @@ RgErrInfo      *err;
       }
       cell->qciArray[measInfo->t.prbReq.qci[idx]].mask = TRUE;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgL2mCreateMeasCb */
 
 
@@ -188,9 +188,9 @@ RgErrInfo      *err;
                LRG_L2MEAS_AVG_PRB_PER_QCI_UL, err)) != ROK)
    {
       /* Clear Downlink MeasCb created Above If exists*/
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgL2mMeasReq */
 /** @brief This function sends the measurement confirm
  *  from mac to scheduler
@@ -301,7 +301,7 @@ RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
        (cellCb->cellId != measInfo->cellId))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,"unable to get the cellCb");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Call L2M Function to store Meas req */
    ret = rgL2mMeasReq(cellCb, measInfo, &err);
@@ -317,9 +317,9 @@ RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
       RLOG_ARG2(L_ERROR,DBG_CELLID,measInfo->cellId,
                "Meas req Failed  errType(%d) errCause(%d)",
                err.errType, err.errCause);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ret);
+   return (ret);
 } /* -- RgSchMacL2MeasReq-- */
 
 /**
@@ -371,7 +371,7 @@ RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
       
       RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,
             "Unable to get the cellCb");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    node = cellCb->l2mList.first; 
    while(node != NULLP)
@@ -393,7 +393,7 @@ RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
    measCfm.measType    = measInfo->measType;
    measCfm.cfm.status  = LCM_PRIM_OK;
    rgSndL2MeasStopCfm(cellCb, &measCfm);
-   RETVALUE(ret);
+   return (ret);
 } /* -- RgSchMacL2MeasStopReq-- */
 
 /**
@@ -439,12 +439,12 @@ RgInfL2MeasSndReq *measInfo;      /* Meas Req Info */
       
       RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,
             "Unable to get the cellCb");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*set sndL2Meas as applicatoin sent l2 meas info request*/
    cellCb->sndL2Meas = TRUE;
 
-   RETVALUE(ret);
+   return (ret);
 }/*RgSchMacL2MeasSendReq*/ 
 
 /** @brief This function inserts the MeasCb in to data base
@@ -504,7 +504,7 @@ RgInfL2MeasReq *measInfo;
       {
          cell->l2mList.crnt = lnk;
          cmLListInsCrnt(&(cell->l2mList), node);
-         RETVALUE(ROK);
+         return ROK;
       }
       else
       {
@@ -513,7 +513,7 @@ RgInfL2MeasReq *measInfo;
    }  /* End of While */
 
    cmLListAdd2Tail(&(cell->l2mList), node);
-   RETVALUE(ROK);
+   return ROK;
 } /* rgL2mInsertMeasCb */
 
 /** @brief This function allocates memory from the heap
@@ -553,12 +553,12 @@ RgErrInfo      *err;
                    "Allocation of RgL2MeasCb failed");
          err->errType  = RGERR_L2M_MEASREQ;
          err->errCause = RGERR_RAM_MEM_EXHAUST;
-         RETVALUE(NULLP);
+         return (NULLP);
       }
    cmMemcpy((U8 *)&measCb->measReq, (U8 *)measInfo, sizeof(RgInfL2MeasReq));
    RGCPYTIMEINFO(cell->crntTime, measCb->startTime);
 
-   RETVALUE(measCb);
+   return (measCb);
 } /* rgL2mAllocMeasCb */
 
 
@@ -652,7 +652,7 @@ RgCellCb  *cell;
          continue;
       } 
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgL2MEas */
 
 #endif /* LTE_L2_MEAS */

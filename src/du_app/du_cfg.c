@@ -82,8 +82,8 @@ extern char encBuf[ENC_BUF_MAX_LEN];
  * ****************************************************************/
 void FillSlotConfig()
 {
-   U8 slot;
-   U8 symbol;
+   uint8_t slot;
+   uint8_t symbol;
 
    for(slot = 0; slot <= 3; slot++)
    {
@@ -121,7 +121,7 @@ void FillSlotConfig()
 
 
 /* This function is used to fill up the cell configuration for CL */
-S16 readMacCfg()
+uint8_t readMacCfg()
 {
    duCfgParam.macCellCfg.carrierId = CARRIER_IDX;
 
@@ -210,7 +210,7 @@ S16 readMacCfg()
         if(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq == NULLP)
 	{
 	    DU_LOG("\nDU_APP : Memory allocation failed");
-	    RETVALUE(RFAILED);
+	    return RFAILED;
 	}
 	*(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq) = UNUSED_ROOT_SEQ;
     }
@@ -295,7 +295,7 @@ S16 readMacCfg()
       (number of mandatory parameters) + (number of otional parameters being filled) */
    duCfgParam.macCellCfg.numTlv = 40;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -314,12 +314,12 @@ S16 readMacCfg()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 fillDuPort(U16 *duPort)
+uint8_t fillDuPort(uint16_t *duPort)
 {
    duPort[F1_INTERFACE]   = DU_PORT;     /* DU Port idx  0 38472 */
    duPort[E2_INTERFACE]   = RIC_PORT;    /* RIC Port idx 1 38482 */
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -370,7 +370,7 @@ uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol)
  *         RFAILED - failure
  * 
  ** ****************************************************************/
-S16 fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
+uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 {
    PdcchCfgCommon   pdcchCfg;
    PdschCfgCommon   pdschCfg;
@@ -511,10 +511,10 @@ S16 fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
  *
  * ****************************************************************/
 
-S16 readCfg()
+uint8_t readCfg()
 {
-   U8 i,j,k;
-   U32 ipv4_du, ipv4_cu, ipv4_ric;
+   uint8_t i,j,k;
+   uint32_t ipv4_du, ipv4_cu, ipv4_ric;
    MibParams mib;
    Sib1Params sib1;	
 
@@ -741,10 +741,10 @@ S16 readCfg()
    if(readMacCfg() != ROK)
    {
       DU_LOG("\nDU_APP : Failed while reading MAC config");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -764,21 +764,21 @@ S16 readCfg()
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 duReadCfg()
+uint8_t duReadCfg()
 {
    Pst pst;
    Buffer *mBuf;
 
-   cmMemset((U8 *)&duCfgParam, 0, sizeof(DuCfgParams));
+   memset((uint8_t *)&duCfgParam, 0, sizeof(DuCfgParams));
    //Read configs into duCfgParams
    if(readCfg() != ROK)
    {
       DU_LOG("\nDU_APP : Reading configuration failed");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    //Fill pst structure
-   cmMemset((U8 *)&(pst), 0, sizeof(Pst));
+   memset((uint8_t *)&(pst), 0, sizeof(Pst));
    pst.srcEnt = (Ent)ENTDUAPP;
    pst.srcInst = (Inst)DU_INST;
    pst.srcProcId = DU_PROC;
@@ -790,15 +790,15 @@ S16 duReadCfg()
    pst.pool= DU_POOL;
 
 
-   if(SGetMsg(DFLT_REGION, DU_POOL, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, DU_POOL, &mBuf) != ROK)
    {
       DU_LOG("\nDU_APP : Memory allocation failed in duReadCfg");
       return RFAILED;
    }
 
-   if (SPstTsk(&pst, mBuf) != ROK)
+   if (ODU_POST_TASK(&pst, mBuf) != ROK)
    {
-      DU_LOG("\nDU_APP : SPstTsk failed in duReadCfg");
+      DU_LOG("\nDU_APP : ODU_POST_TASK failed in duReadCfg");
       return RFAILED;
    }
 

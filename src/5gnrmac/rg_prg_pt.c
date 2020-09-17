@@ -90,7 +90,7 @@ PUBLIC S16 RgPrgPMacSMacUeSCellCfg(pst, ueSCellCfgInfo)
 
    TRC3(RgPrgPMacSMacUeSCellCfg);
 
-   RETVALUE((*RgPrgPMacSMacUeSCellCfgReqMt[0])(pst, ueSCellCfgInfo));
+   return ((*RgPrgPMacSMacUeSCellCfgReqMt[0])(pst, ueSCellCfgInfo));
 }
 
 /* Matrix for config confirm from SMac to Pmac*/
@@ -130,7 +130,7 @@ PUBLIC S16 RgPrgSMacPMacCfg(pst, cfgCfm)
 
    TRC3(RgPrgSMacPMacCfg);
 
-   RETVALUE((*RgPrgSMacPMacCfgCfmMt[0])(pst, cfgCfm));
+   return ((*RgPrgSMacPMacCfgCfmMt[0])(pst, cfgCfm));
 }
 
 /* Matrix for Ue SCell delete req/Ue Id change req from PMac to SMac */
@@ -170,7 +170,7 @@ PUBLIC S16 RgPrgPMacSMacUeSCellDel(pst, ueSCellDelInfo)
 
    TRC3(RgPrgPMacSMacUeSCellDel);
 
-   RETVALUE((*RgPrgPMacSMacUeSCellDelReqMt[0])(pst, ueSCellDelInfo));
+   return ((*RgPrgPMacSMacUeSCellDelReqMt[0])(pst, ueSCellDelInfo));
 }
 
 
@@ -213,7 +213,7 @@ PUBLIC S16 RgPrgPMacSMacUeScellLchMod(pst, lchCfgInfo)
 
    TRC3(RgPrgPMacSMacUeScellLchMod);
 
-   RETVALUE((*RgPrgPMacSMacUeScellModLchReqMt[0])(pst, lchCfgInfo));
+   return ((*RgPrgPMacSMacUeScellModLchReqMt[0])(pst, lchCfgInfo));
 }
 
 
@@ -255,7 +255,7 @@ PUBLIC S16 RgPrgPMacSMacUeScellLchDel(pst, delLcCb)
 
    TRC3(RgPrgPMacSMacUeScellLchDel);
 
-   RETVALUE((*RgPrgPMacSMacUeScellDelLchReqMt[0])(pst, delLcCb));
+   return ((*RgPrgPMacSMacUeScellDelLchReqMt[0])(pst, delLcCb));
 }
 
 
@@ -297,7 +297,7 @@ PUBLIC S16 RgPrgPMacSMacUeScellLchAdd(pst, lchCfgInfo)
 
    TRC3(RgPrgPMacSMacUeScellLchAdd);
 
-   RETVALUE((*RgPrgPMacSMacUeScellAddLchReqMt[0])(pst, lchCfgInfo));
+   return ((*RgPrgPMacSMacUeScellAddLchReqMt[0])(pst, lchCfgInfo));
 }
 
 #endif /* LTE_ADV */

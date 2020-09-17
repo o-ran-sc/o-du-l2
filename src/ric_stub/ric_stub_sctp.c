@@ -151,7 +151,7 @@ S16 sctpStartReq()
    {
       DU_LOG("\nSCTP: Polling failed to start at RIC");
    }
-   RETVALUE(ret);
+   return (ret);
 }
 /*******************************************************************
  *
@@ -188,7 +188,7 @@ S16 sctpSetSockOpts(CmInetFd *sock_Fd)
      ret = RFAILED;
    }
   
-   RETVALUE(ret);
+   return (ret);
 }
 
 /*******************************************************************
@@ -377,7 +377,7 @@ S16 sctpSockPoll()
          DU_LOG("\nSCTP : Failed to RecvMsg for E2 at RIC \n");
       }
    };
-   RETVALUE(ret);
+   return (ret);
 }/* End of sctpSockPoll() */
 
 /*******************************************************************
@@ -430,11 +430,11 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
          else if(connUp & (pollParams->port == ricParams.destPort))
          {  
             E2APMsgHdlr(pollParams->mBuf);
-            SPutMsg(pollParams->mBuf);
+            ODU_PUT_MSG(pollParams->mBuf);
          }
          else
          {
-            SPutMsg(pollParams->mBuf);
+            ODU_PUT_MSG(pollParams->mBuf);
          }
       } 
   }

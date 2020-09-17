@@ -37,12 +37,12 @@
  *         RFAILED - failure
  *
  ******************************************************************/
-S16 packEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
+uint8_t packEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
 {
-   SPkU16(cfm.status, mBuf);
-   SPkU16(cfm.reason, mBuf);
+   oduUnpackUInt16(cfm.status, mBuf);
+   oduUnpackUInt16(cfm.reason, mBuf);
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -63,12 +63,12 @@ S16 packEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
  *
  ******************************************************************/
 
-S16 unpackEgtpCfmStatus(CmStatus *cfm, Buffer *mBuf)
+uint8_t unpackEgtpCfmStatus(CmStatus *cfm, Buffer *mBuf)
 {
-   SUnpkU16(&(cfm->reason), mBuf);
-   SUnpkU16(&(cfm->status), mBuf);
+   oduPackUInt16(&(cfm->reason), mBuf);
+   oduPackUInt16(&(cfm->status), mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -88,35 +88,35 @@ S16 unpackEgtpCfmStatus(CmStatus *cfm, Buffer *mBuf)
  *         RFAILED - failure
  *
  ******************************************************************/
-S16 packEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
+uint8_t packEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if(egtpCfg.localIp.ipV4Pres)
    {
-      SPkU32(egtpCfg.localIp.ipV4Addr, mBuf);
+      oduUnpackUInt32(egtpCfg.localIp.ipV4Addr, mBuf);
    }
-   cmPkBool(egtpCfg.localIp.ipV4Pres, mBuf);
-   SPkU16(egtpCfg.localPort, mBuf);
+   oduPackBool(egtpCfg.localIp.ipV4Pres, mBuf);
+   oduUnpackUInt16(egtpCfg.localPort, mBuf);
 
    if(egtpCfg.destIp.ipV4Pres)
    {
-      SPkU32(egtpCfg.destIp.ipV4Addr, mBuf);
+      oduUnpackUInt32(egtpCfg.destIp.ipV4Addr, mBuf);
    }
-   cmPkBool(egtpCfg.destIp.ipV4Pres, mBuf);
-   SPkU16(egtpCfg.destPort, mBuf);
+   oduPackBool(egtpCfg.destIp.ipV4Pres, mBuf);
+   oduUnpackUInt16(egtpCfg.destPort, mBuf);
 
-   SPkU32(egtpCfg.minTunnelId, mBuf);
-   SPkU32(egtpCfg.maxTunnelId, mBuf);
+   oduUnpackUInt32(egtpCfg.minTunnelId, mBuf);
+   oduUnpackUInt32(egtpCfg.maxTunnelId, mBuf);
 
-   SPstTsk(pst, mBuf);
+   ODU_POST_TASK(pst, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -137,32 +137,32 @@ S16 packEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
+uint8_t unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
 {
    EgtpConfig egtpCfg;
 
-   cmMemset((U8 *)&egtpCfg, 0, sizeof(EgtpConfig));
+   memset((uint8_t *)&egtpCfg, 0, sizeof(EgtpConfig));
 
-   SUnpkU32(&(egtpCfg.maxTunnelId), mBuf);
-   SUnpkU32(&(egtpCfg.minTunnelId), mBuf);
+   oduPackUInt32(&(egtpCfg.maxTunnelId), mBuf);
+   oduPackUInt32(&(egtpCfg.minTunnelId), mBuf);
   
-   SUnpkU16(&(egtpCfg.destPort), mBuf);
-   cmUnpkBool(&(egtpCfg.destIp.ipV4Pres), mBuf);
+   oduPackUInt16(&(egtpCfg.destPort), mBuf);
+   oduUnpackBool(&(egtpCfg.destIp.ipV4Pres), mBuf);
    if(egtpCfg.destIp.ipV4Pres)
    {  
-      SUnpkU32(&(egtpCfg.destIp.ipV4Addr), mBuf);
+      oduPackUInt32(&(egtpCfg.destIp.ipV4Addr), mBuf);
    }
 
-   SUnpkU16(&(egtpCfg.localPort), mBuf);
-   cmUnpkBool(&(egtpCfg.localIp.ipV4Pres), mBuf);
+   oduPackUInt16(&(egtpCfg.localPort), mBuf);
+   oduUnpackBool(&(egtpCfg.localIp.ipV4Pres), mBuf);
    if(egtpCfg.localIp.ipV4Pres)
    {
-      SUnpkU32(&(egtpCfg.localIp.ipV4Addr), mBuf);
+      oduPackUInt32(&(egtpCfg.localIp.ipV4Addr), mBuf);
    }
    
-   SPutMsg(mBuf);
+   ODU_PUT_MSG(mBuf);
  
-   RETVALUE((*func)(pst, egtpCfg));
+   return ((*func)(pst, egtpCfg));
 }
 
 
@@ -184,19 +184,19 @@ S16 unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
  *
  ******************************************************************/
 
-S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm)
+uint8_t packEgtpCfgCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
   
-   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    packEgtpCfmStatus(cfm, mBuf); 
-   SPstTsk(pst, mBuf); 
-   RETVALUE(ROK); 
+   ODU_POST_TASK(pst, mBuf); 
+   return ROK; 
 }
 
 /*******************************************************************
@@ -217,14 +217,14 @@ S16 packEgtpCfgCfm(Pst *pst, CmStatus cfm)
  *
  ******************************************************************/
  
-S16 unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
+uint8_t unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
 {
    CmStatus cfm;
    
-   cmMemset((U8 *)&cfm, 0, sizeof(CmStatus));
+   memset((uint8_t *)&cfm, 0, sizeof(CmStatus));
    unpackEgtpCfmStatus(&cfm, mBuf);
 
-   RETVALUE((*func)(cfm));
+   return ((*func)(cfm));
 }
 
 /*******************************************************************
@@ -243,18 +243,18 @@ S16 unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
  *         RFAILED - failure
  *
   *******************************************************************/ 
-S16 packEgtpSrvOpenReq(Pst *pst)
+uint8_t packEgtpSrvOpenReq(Pst *pst)
 {
    Buffer *mBuf;
  
-   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
   
-   SPstTsk(pst, mBuf);
-   RETVALUE(ROK);
+   ODU_POST_TASK(pst, mBuf);
+   return ROK;
 }
 
 /*******************************************************************
@@ -274,9 +274,9 @@ S16 packEgtpSrvOpenReq(Pst *pst)
  *         RFAILED - failure
  *
  ******************************************************************/
-S16 unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf)
+uint8_t unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf)
 {
-    RETVALUE((*func)(pst));
+    return ((*func)(pst));
 }
 
 
@@ -296,19 +296,19 @@ S16 unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  *******************************************************************/
-S16 packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
+uint8_t packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
 {
    Buffer *mBuf;
  
-   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    packEgtpCfmStatus(cfm, mBuf); 
-   SPstTsk(pst, mBuf);
-   RETVALUE(ROK);
+   ODU_POST_TASK(pst, mBuf);
+   return ROK;
 
 }
 
@@ -329,14 +329,14 @@ S16 packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
  *         RFAILED - failure
  *
  *******************************************************************/
-S16 unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf)
+uint8_t unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf)
 {
    CmStatus cfm;
     
-   cmMemset((U8 *)&cfm, 0, sizeof(CmStatus));
+   memset((uint8_t *)&cfm, 0, sizeof(CmStatus));
    unpackEgtpCfmStatus(&cfm, mBuf);
 
-   RETVALUE((*func)(cfm));
+   return ((*func)(cfm));
 }
 
 /*******************************************************************
@@ -358,22 +358,22 @@ S16 unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf)
  *         RFAILED - failure
  *
  *******************************************************************/
-S16 packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
+uint8_t packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   SPkU8(tnlEvt.action, mBuf);
-   SPkU32(tnlEvt.lclTeid, mBuf);
-   SPkU32(tnlEvt.remTeid, mBuf);
+   oduUnpackUInt8(tnlEvt.action, mBuf);
+   oduUnpackUInt32(tnlEvt.lclTeid, mBuf);
+   oduUnpackUInt32(tnlEvt.remTeid, mBuf);
 
-   SPstTsk(pst, mBuf);
-   RETVALUE(ROK);
+   ODU_POST_TASK(pst, mBuf);
+   return ROK;
 }
 
 
@@ -395,17 +395,17 @@ S16 packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
  *         RFAILED - failure
  * 
  * *******************************************************************/
-S16 unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
+uint8_t unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
 {
    EgtpTnlEvt tnlEvt;
 
-   cmMemset((U8 *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
+   memset((uint8_t *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
-   SUnpkU32(&(tnlEvt.remTeid), mBuf);
-   SUnpkU32(&(tnlEvt.lclTeid), mBuf);
-   SUnpkU8(&(tnlEvt.action), mBuf);
+   oduPackUInt32(&(tnlEvt.remTeid), mBuf);
+   oduPackUInt32(&(tnlEvt.lclTeid), mBuf);
+   oduPackUInt8(&(tnlEvt.action), mBuf);
 
-   RETVALUE((* func)(pst, tnlEvt));
+   return ((* func)(pst, tnlEvt));
 
 }
 
@@ -428,24 +428,24 @@ S16 unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
  *
  ********************************************************************/
 
-S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
+uint8_t packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nEGTP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
     
-   SPkU8(tnlEvt.action, mBuf);
-   SPkU32(tnlEvt.lclTeid, mBuf);
-   SPkU32(tnlEvt.remTeid, mBuf);
+   oduUnpackUInt8(tnlEvt.action, mBuf);
+   oduUnpackUInt32(tnlEvt.lclTeid, mBuf);
+   oduUnpackUInt32(tnlEvt.remTeid, mBuf);
    
    packEgtpCfmStatus(tnlEvt.cfmStatus, mBuf);
     
-   SPstTsk(pst, mBuf);
-   RETVALUE(ROK);
+   ODU_POST_TASK(pst, mBuf);
+   return ROK;
 
 }
 
@@ -467,18 +467,18 @@ S16 packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
  *         RFAILED - failure
  * 
  * *******************************************************************/
-S16 unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
+uint8_t unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
 {
    EgtpTnlEvt tnlEvt;
  
-   cmMemset((U8 *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
+   memset((uint8_t *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
    unpackEgtpCfmStatus(&(tnlEvt.cfmStatus), mBuf); 
-   SUnpkU32(&(tnlEvt.remTeid), mBuf);
-   SUnpkU32(&(tnlEvt.lclTeid), mBuf);
-   SUnpkU8(&(tnlEvt.action), mBuf);
+   oduPackUInt32(&(tnlEvt.remTeid), mBuf);
+   oduPackUInt32(&(tnlEvt.lclTeid), mBuf);
+   oduPackUInt8(&(tnlEvt.action), mBuf);
  
-   RETVALUE((* func)(tnlEvt));
+   return ((* func)(tnlEvt));
  
 }
 
@@ -498,18 +498,18 @@ S16 unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
  *         RFAILED - failure
  *
  *******************************************************************/
-S16 packEgtpSlotInd(Pst *pst)
+uint8_t packEgtpSlotInd(Pst *pst)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(DFLT_REGION, pst->pool, &mBuf) != ROK)
+   if(ODU_GET_MSG(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
       printf("\nDU_APP : Failed to allocate memory");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   SPstTsk(pst, mBuf);
-   RETVALUE(ROK);
+   ODU_POST_TASK(pst, mBuf);
+   return ROK;
  
 }
 
@@ -529,7 +529,7 @@ S16 packEgtpSlotInd(Pst *pst)
  *         RFAILED - failure
  *
 ******************************************************************/
-S16 unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf)
+uint8_t unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf)
 {
-    RETVALUE((*func)());
+    return ((*func)());
 }

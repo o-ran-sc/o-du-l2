@@ -23,16 +23,16 @@
 uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    Buffer *mBuf = NULLP;
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+   if (ODU_GET_MSG(pst->region, pst->pool, &mBuf) != ROK)
    {
       return RFAILED;
    }
 
    /* pack SFN and slot value */
-   CMCHKPK(SPkU16,slotInd->sfn, mBuf);
-   CMCHKPK(SPkU16,slotInd->slot, mBuf);
+   CMCHKPK(oduUnpackUInt16,slotInd->sfn, mBuf);
+   CMCHKPK(oduUnpackUInt16,slotInd->slot, mBuf);
 
-   return SPstTsk(pst,mBuf);
+   return ODU_POST_TASK(pst,mBuf);
 }
 
 /**
