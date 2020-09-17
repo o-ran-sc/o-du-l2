@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f1dd0936_0be59dab",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-17T14:04:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bba97c22_b9a1a2ce",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "494bf997_9ab41928",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "e1995b919a642b99c80e76a8112c29529a416382",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9967e86_7bf62ee1",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-17T14:04:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "494bf997_9ab41928",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -88,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "f1538178_c70c89a8",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1445,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-17T14:04:35Z",
+      "side": 1,
+      "message": "This is the old code written by Gokul. Copied here just to trigger UE context setup so as to continue with DL RRC msg coding and testing.\n\nUE context setup request is being updated by Mamtha with the required IEs and values",
+      "parentUuid": "ad4ae1d9_51ad5466",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4e83d28e_631ff8da",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -105,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "81710612_a4bb13d8",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1729,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-17T14:04:35Z",
+      "side": 1,
+      "message": "Removed this function altogether since not needed.",
+      "parentUuid": "4e83d28e_631ff8da",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "162c755d_0952fc05",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -119,6 +191,24 @@
       "revId": "e1995b919a642b99c80e76a8112c29529a416382",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "136d7629_22251064",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-17T14:04:35Z",
+      "side": 1,
+      "message": "buildAndSendUeContextSetupReq was an unued function in comments. Removed now.",
+      "parentUuid": "162c755d_0952fc05",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -191,6 +281,24 @@
     },
     {
       "key": {
+        "uuid": "b99aa348_3d03a452",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5269,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-17T14:04:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3886d348_954f8bba",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0053597a_b8c3f038",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -208,6 +316,24 @@
     },
     {
       "key": {
+        "uuid": "53c431eb_2b74f611",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-17T14:04:35Z",
+      "side": 1,
+      "message": "Renamed to RlcProcDlRrcMsgTransfer",
+      "parentUuid": "0053597a_b8c3f038",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a5cd40d0_b929ecfd",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -222,6 +348,24 @@
       "revId": "e1995b919a642b99c80e76a8112c29529a416382",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b4f2794_fd5a9c3d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-17T14:04:35Z",
+      "side": 1,
+      "message": "Set to true",
+      "parentUuid": "a5cd40d0_b929ecfd",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -256,6 +400,24 @@
       "revId": "e1995b919a642b99c80e76a8112c29529a416382",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34965795_c7101c5f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-17T14:04:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e1c1793_da28265c",
+      "revId": "e1995b919a642b99c80e76a8112c29529a416382",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
