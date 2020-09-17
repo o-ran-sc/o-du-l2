@@ -3623,6 +3623,7 @@ PUBLIC S16 ssdCreateSTsk(sTsk)
 SsSTskEntry *sTsk;          /* pointer to system task entry */
 #endif
 {
+   S16  ret;
    pthread_attr_t attr;
    /* struct sched_param param_sched;*/
 
@@ -3710,7 +3711,8 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
       while(threadCreated == FALSE)
       {
 #endif
-         if ((pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk)) != 0)
+         ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
+         if (ret != 0)
          {
 
             /* mt020.201 - Addition for destroying thread attribute object attr */
