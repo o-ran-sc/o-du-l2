@@ -254,18 +254,34 @@ uint8_t commonInit()
    ODU_SET_PROC_ID(DU_PROC);
 
    /* system task for DU APP */
-   SCreateSTsk(PRIOR0, &du_app_stsk);
+   if(SCreateSTsk(PRIOR0, &du_app_stsk) != ROK)
+   {
+      DU_LOG("\nDU_APP : System Task creation for DU APP failed");
+      return RFAILED;
+   }
 
    /* system task for RLC_DL and MAC */
-   SCreateSTsk(PRIOR0, &rlc_mac_cl_stsk);
+   if(SCreateSTsk(PRIOR0, &rlc_mac_cl_stsk) != ROK)
+   {
+      DU_LOG("\nDU_APP : System Task creation for RLC DL/MAC failed");
+      return RFAILED;
+   }
    pthread_attr_init(&attr);
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
    /* system task for RLC UL */
-   SCreateSTsk(PRIOR1, &rlc_ul_stsk);
+   if(SCreateSTsk(PRIOR1, &rlc_ul_stsk) != ROK)
+   {
+      DU_LOG("\nDU_APP : System Task creation for RLC UL failed");
+      return RFAILED;
+   }
 
    /* system task for SCTP receiver thread */
-   SCreateSTsk(PRIOR0, &sctp_stsk);
+   if(SCreateSTsk(PRIOR0, &sctp_stsk) != ROK)
+   {
+      DU_LOG("\nDU_APP : System Task creation for SCTP failed");
+      return RFAILED;
+   }
 
    /* Create TAPA tasks */
    if(duAppInit(du_app_stsk) != ROK)

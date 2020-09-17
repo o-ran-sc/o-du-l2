@@ -36,9 +36,6 @@
 #define _POSIX_C_SOURCE         199309L
 #endif
 /* mt003.301 moved env files to use the __USE_UNIX98 flag in sys includes */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
 
 #include <fcntl.h>
 #include <pthread.h>
@@ -62,11 +59,7 @@
 /* header include files (.h) */
 
 
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
-
-#include "cm5.h"           /* common timers */
-
+#include "common_def.h"
 #include "mt_ss.h"         /* MTSS specific */
 #include "mt_err.h"        /* MTSS error defines */
 
@@ -78,7 +71,6 @@
 /* mt003.301 Additions - Task deregistration */
 #include "ss_err.h"        /* error */
 #include "cm_mem.h"        /* common memory manager */
-#include "cm_lte.h"        /* common lte param */
 /* mt001.301 : Additions */
 #ifdef SS_THREAD_PROFILE
 #include "ss_err.h"
@@ -3623,6 +3615,7 @@ PUBLIC S16 ssdCreateSTsk(sTsk)
 SsSTskEntry *sTsk;          /* pointer to system task entry */
 #endif
 {
+   S16  ret;
    pthread_attr_t attr;
    /* struct sched_param param_sched;*/
 
@@ -3680,9 +3673,10 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
       while(threadCreated == FALSE)
       {
 #endif
-         if ((pthread_create(&sTsk->dep.tId, &attr, mtTskHdlrT2kL2, (Ptr)sTsk)) != 0)
+         ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
+         if (ret != 0)
          {
-
+            DU_LOG("\nDU APP : Failed to create thread. Cause[%d]",ret);
             pthread_attr_destroy(&attr);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
@@ -3710,7 +3704,8 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
       while(threadCreated == FALSE)
       {
 #endif
-         if ((pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk)) != 0)
+         ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
+         if (ret != 0)
          {
 
             /* mt020.201 - Addition for destroying thread attribute object attr */
