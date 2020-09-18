@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "e5bab300_5c17985c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-18T06:55:29Z",
+      "side": 1,
+      "message": "memset ueCb and pointers to NULLP",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "eaa70e78_b721c122",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 2
