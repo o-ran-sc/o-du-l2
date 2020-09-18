@@ -1,0 +1,1156 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd81ac38_5a1699db",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "return type could be uint8_t",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b5ee2e0_b3c4decc",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "uint8_t",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6221af6_f36f6f72",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "uint8_t",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b577b52_424c926f",
+        "filename": "src/5gnrrlc/kw.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1018,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "Do we not need to rename these?",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68fd5978_68b24d3a",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename variable",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6129adc9_8f5547dc",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename above variables",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "665aea28_bfcb4326",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "Make sure if uppercase Kw is used in old code then rename it with uppercase Rlc and same for lowercase. correction needed for rlcL2MeasReqEvt",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8506dd9c_bf0a2bce",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "use upper case Rlc for rlcL2MeasReqEvt",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f09bb184_3e209112",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "Should we remove PRIVATE as well(as done for PUBLIC). Lets discuss. Can be done later",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a9acd66_ca8d363d",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "correct the names in prints as well. We may/may not re-use these prints in future",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e3c86ce_c908eb59",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUtlGetTxBuf",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75003f80_a3c76e51",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "correct log",
+      "range": {
+        "startLine": 892,
+        "startChar": 19,
+        "endLine": 892,
+        "endChar": 31
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40abfd7d_ba47d0e5",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1171,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwWinSz",
+      "range": {
+        "startLine": 1171,
+        "startChar": 6,
+        "endLine": 1171,
+        "endChar": 14
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28ec52a3_40537803",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1561,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUtlGetCurMeasTb",
+      "range": {
+        "startLine": 1561,
+        "startChar": 14,
+        "endLine": 1561,
+        "endChar": 31
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c47fd67_c5840c58",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2178,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUtlUpdSduSnMap",
+      "range": {
+        "startLine": 2178,
+        "startChar": 9,
+        "endLine": 2178,
+        "endChar": 25
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "721efd93_7d50be73",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2451,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwCpyMsg",
+      "range": {
+        "startLine": 2451,
+        "startChar": 3,
+        "endLine": 2451,
+        "endChar": 11
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68097c9e_48b43b63",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3245,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "fix the print",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "428d5090_39e45576",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3672,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "fix the print",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4cdcbf0a_2358c438",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3794,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "fix the print",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad4de632_7435fc88",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3811,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "fix the print",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d21a265f_6d469f3b",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename KwPduInfo",
+      "range": {
+        "startLine": 557,
+        "startChar": 0,
+        "endLine": 557,
+        "endChar": 24
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5c4a64b_4e9b995d",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1007,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename KW_E_POS and KW_E_SHT",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28a9e4be_aa27223c",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1827,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "Rename this variable to rlcKwuSap to avoid any confusion",
+      "range": {
+        "startLine": 1827,
+        "startChar": 16,
+        "endLine": 1827,
+        "endChar": 24
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20b65712_73e8c1ae",
+        "filename": "src/5gnrrlc/kw_dbm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwDbmInit",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc309037_4e099e92",
+        "filename": "src/5gnrrlc/kw_dbm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwDbmInit",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a617dd1_39472ebf",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename KwLchMapInfo",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90be67ad_2f7b5fef",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename KwDStaIndInfo",
+      "range": {
+        "startLine": 743,
+        "startChar": 55,
+        "endLine": 743,
+        "endChar": 69
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71a621f8_60545576",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename to rlcUtlResetDlL2MeasInRlcRb",
+      "range": {
+        "startLine": 827,
+        "startChar": 12,
+        "endLine": 827,
+        "endChar": 38
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78fb6427_1ee49687",
+        "filename": "src/5gnrrlc/kw_id.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "Why are the above not renamed?",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14e990b4_7f26637e",
+        "filename": "src/5gnrrlc/kw_id.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "renaming of kwBan1 and kwBan2?",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba73ee50_3d3f1613",
+        "filename": "src/5gnrrlc/kw_lmm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "Above variables to be renamed",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fdb9c88_b045ab58",
+        "filename": "src/5gnrrlc/kw_ptli.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwLiRguBndReqMt",
+      "range": {
+        "startLine": 101,
+        "startChar": 10,
+        "endLine": 101,
+        "endChar": 25
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "887c8890_0b69f167",
+        "filename": "src/5gnrrlc/kw_ptli.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwLiRguUbndReqMt",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12160eeb_99504f58",
+        "filename": "src/5gnrrlc/kw_ptli.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwLiRguL2MUlThrpMeasReqMt",
+      "range": {
+        "startLine": 177,
+        "startChar": 20,
+        "endLine": 177,
+        "endChar": 45
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c8e1f82_e56a6996",
+        "filename": "src/5gnrrlc/kw_ptmi.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwMiLkwCntrlCfmMt",
+      "range": {
+        "startLine": 112,
+        "startChar": 20,
+        "endLine": 112,
+        "endChar": 37
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9ac262e_04539587",
+        "filename": "src/5gnrrlc/kw_ptmi.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwMiLkwStaIndMt",
+      "range": {
+        "startLine": 128,
+        "startChar": 18,
+        "endLine": 128,
+        "endChar": 33
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6442d356_c28b98b5",
+        "filename": "src/5gnrrlc/kw_ptmi.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwMiLkwStaCfmMt",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "901a440b_89cb88db",
+        "filename": "src/5gnrrlc/kw_ptmi.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwMiLkwStsCfmMt",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e9b8e82_4d87fefd",
+        "filename": "src/5gnrrlc/kw_ptmi.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwMiLkwTrcIndMt",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9aef353_1ab58177",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiKwuBndCfmMt",
+      "range": {
+        "startLine": 112,
+        "startChar": 10,
+        "endLine": 112,
+        "endChar": 25
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e34f8b2_2922a7ca",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiKwuDatIndMt",
+      "range": {
+        "startLine": 134,
+        "startChar": 10,
+        "endLine": 134,
+        "endChar": 25
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fb91d3c_e83bb56a",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiKwuDatCfmMt",
+      "range": {
+        "startLine": 156,
+        "startChar": 10,
+        "endLine": 156,
+        "endChar": 25
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1452613d_87f45df7",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiKwuStaIndMt",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d794be6e_30948aa3",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiKwuReEstCmpIndMt",
+      "range": {
+        "startLine": 188,
+        "startChar": 15,
+        "endLine": 188,
+        "endChar": 35
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecedc178_75910fad",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiKwuReEstCmpIndMt",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fe8820c_3c38771d",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiKwuFlowCntrlIndMt",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90330caf_9cb1f2f0",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiKwuDatAckIndMt",
+      "range": {
+        "startLine": 232,
+        "startChar": 13,
+        "endLine": 232,
+        "endChar": 31
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b17a81f7_cba5ad45",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiCkwBndCfmMt",
+      "range": {
+        "startLine": 613,
+        "startChar": 10,
+        "endLine": 613,
+        "endChar": 25
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81035c12_434193e8",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiRlcCfgCfmMt",
+      "range": {
+        "startLine": 625,
+        "startChar": 10,
+        "endLine": 625,
+        "endChar": 25
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "084e281b_96ac4490",
+        "filename": "src/5gnrrlc/kw_ptui.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename kwUiCkwUeIdChgCfmMt",
+      "range": {
+        "startLine": 635,
+        "startChar": 14,
+        "endLine": 635,
+        "endChar": 33
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1053c6b9_200553cd",
+        "filename": "src/5gnrrlc/kw_tmm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename KwRbCb",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb51c15e_2bfe4408",
+        "filename": "src/5gnrrlc/kw_ul.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename rlcUtlResetUlL2MeasInKwRb to --RlcRb",
+      "range": {
+        "startLine": 577,
+        "startChar": 12,
+        "endLine": 577,
+        "endChar": 38
+      },
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "461f3300_361cbd20",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1901,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "fix logs",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f12f135_b28318fd",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename these variables",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e21c4e9e_0ae2fc90",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "rename KwUeCb",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f73375a9_44e4f256",
+        "filename": "src/cm/kwu.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "Kwu shouldn\u0027t be renamed to Rlcu",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b8cd3cb_d1cce3a6",
+        "filename": "src/cm/kwu.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f95792b_cc2c3019",
+        "filename": "src/cm/kwu.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "same as abbove",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa44f589_1c9cf3b5",
+        "filename": "src/cm/kwu.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c87e2590_0f832f85",
+        "filename": "src/cm/lkw.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-18T13:35:24Z",
+      "side": 1,
+      "message": "why cmPkKwSsta and cmPkKwUsta not renamed",
+      "revId": "b7ac73e28e938db3a002b1addb02f22accb250cd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
