@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "785ab8e3_f10946f9",
+        "filename": "src/5gnrmac/lwr_mac_phy.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T11:30:59Z",
+      "side": 1,
+      "message": "remove all extern keyword in header file",
+      "revId": "a763aa302c7f5e39a3f7acd8004310163fd3f074",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e50d64ea_d9309338",
+        "filename": "src/5gnrmac/lwr_mac_utils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T11:30:59Z",
+      "side": 1,
+      "message": "Rename ENTTF to ENTLWRMAC",
+      "revId": "a763aa302c7f5e39a3f7acd8004310163fd3f074",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98e78634_254a753a",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T11:30:59Z",
+      "side": 1,
+      "message": "rename to RlcUeCb",
+      "revId": "a763aa302c7f5e39a3f7acd8004310163fd3f074",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
