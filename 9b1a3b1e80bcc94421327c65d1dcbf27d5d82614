@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fd8b6cc2_466ce62f",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-21T14:43:03Z",
+      "side": 1,
+      "message": "can we not do away with global variables?",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ab56f95_a0a9fa12",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-21T14:43:03Z",
+      "side": 1,
+      "message": "datReqInfo must be freed",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d60a4412_202f1c37",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-21T14:43:03Z",
+      "side": 1,
+      "message": "this is only a temp fix. We must take care that ODU_COPY_FIX_BUF_TO_MSG copies in the right order and not reverse.",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e7cb1d4_67990837",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-21T14:43:03Z",
+      "side": 1,
+      "message": "lcType before lcId",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5597c13_223b72d0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1264,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-21T14:43:03Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83c31436_139fd19d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-21T14:43:03Z",
+      "side": 1,
+      "message": "this is already present in some common file in codec_utils. \nalso, move function declarations to header file.",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
