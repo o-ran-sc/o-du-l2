@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9e45ec37_d25f6fbd",
+        "filename": "docs/README",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T07:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f08c2df0_3e27aa2d",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a2b8dca9_b62da9c2",
         "filename": "src/5gnrrlc/rlc_msg_hdl.c",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "b8f107971300166962559a80c9f5de50ade555a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50899f1e_e3efa829",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T07:09:35Z",
+      "side": 1,
+      "message": "Renamed ODU_GET_MSG to ODU_GET_MSG_BUF and ODU_PUT_MSG to ODU_PUT_MSG_BUF",
+      "parentUuid": "a2b8dca9_b62da9c2",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "a74c4fde_51928a26",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T07:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5299b497_103d60fd",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db32ce51_c4657032",
         "filename": "src/cm/du_app_rlc_inf.h",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "b8f107971300166962559a80c9f5de50ade555a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "230cb631_0956232e",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T07:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db32ce51_c4657032",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "47d339b2_0492a5f8",
+        "filename": "src/codec_utils/F1AP/CUtoDURRCInformation.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T07:09:35Z",
+      "side": 1,
+      "message": "Mamtha is looking into it.",
+      "parentUuid": "317a3714_b8313eed",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "51c1c4ef_e32ff0f7",
         "filename": "src/cu_stub/cu_stub.h",
         "patchSetId": 2
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "ca66b406_efefa287",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T07:09:35Z",
+      "side": 1,
+      "message": "For SGetSBuf and SPutSBuf, no new macro has been created since CU_ALLOC/CU_FREE itself has been used as the wrapper.",
+      "parentUuid": "51c1c4ef_e32ff0f7",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e5bab300_5c17985c",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 2
@@ -118,6 +226,24 @@
       "revId": "b8f107971300166962559a80c9f5de50ade555a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a94bd047_8921bf3b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T07:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5bab300_5c17985c",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -152,6 +278,42 @@
       "revId": "b8f107971300166962559a80c9f5de50ade555a5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b81fb7f_649b0c80",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T07:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "937f039d_b60a1ff6",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d89f7c29_66649a1f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-21T07:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaa70e78_b721c122",
+      "revId": "b8f107971300166962559a80c9f5de50ade555a5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
