@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1224963f_4671e6b1",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-22T11:01:34Z",
+      "side": 1,
+      "message": "Done. Moved to RlcCb",
+      "parentUuid": "fd8b6cc2_466ce62f",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7ab56f95_a0a9fa12",
         "filename": "src/5gnrrlc/rlc_msg_hdl.c",
         "patchSetId": 4
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "aa83819c_79a3c0f9",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-22T11:01:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ab56f95_a0a9fa12",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d60a4412_202f1c37",
         "filename": "src/5gnrrlc/rlc_msg_hdl.c",
         "patchSetId": 4
@@ -50,6 +86,24 @@
       "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "580ac08a_c8c76707",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-22T11:01:34Z",
+      "side": 1,
+      "message": "Noted.",
+      "parentUuid": "d60a4412_202f1c37",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "a07f9463_c4a9f4dd",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1264,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-22T11:01:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5597c13_223b72d0",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "83c31436_139fd19d",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 4
@@ -101,6 +173,24 @@
       "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe376e87_0f671216",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-09-22T11:01:34Z",
+      "side": 1,
+      "message": "Removed encBuf\nFunction declaration clean-up would require moving lot of code. Noted as pending action.",
+      "parentUuid": "83c31436_139fd19d",
+      "revId": "9b1a3b1e80bcc94421327c65d1dcbf27d5d82614",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
