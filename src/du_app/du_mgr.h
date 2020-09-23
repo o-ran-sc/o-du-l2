@@ -80,13 +80,26 @@ typedef struct cellCfgParams
    uint32_t    maxUe;          /* max UE per slot */
 }CellCfgParams;
 
+typedef struct duUeCfg
+{
+   uint8_t numRlcLcs;        /* Rlc Ue Cfg */
+   RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
+   uint8_t numMacLcs;        /* Mac Ue Cfg */
+   LcCfg   macLcCfg[MAX_NUM_LC];
+}DuUeCfg;
+
 typedef struct duUeCb
 {
-   uint32_t    gnbDuUeF1apId; /* GNB DU UE F1AP ID */
-   uint32_t    gnbCuUeF1apId; /* GNB CU UE F1AP ID */
-   UeState     ueState;
-   MacUeCfg    macUeCfg;
-   RlcUeCfg    rlcUeCfg;
+   uint16_t crnti;
+   uint32_t gnbDuUeF1apId;   /* GNB DU UE F1AP ID */
+   uint32_t gnbCuUeF1apId;   /* GNB CU UE F1AP ID */
+   void     *cellGrpCfg;     /* Cell Group Info sent by CU */
+   UeState  ueState;         /* UE Active/ Ue Inactive state */
+   DuUeCfg duUeCfg;          /* Du Ue Cfg */
+   MacUeCfg macUeCfg;        /* Mac Ue Cfg */
+   RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
+   UeCfgState macUeCfgState; /* InActive / Completed */
+   UeCfgState rlcUeCfgState; /* InActive / Completed */
 }DuUeCb;
 
 typedef struct duCellCb

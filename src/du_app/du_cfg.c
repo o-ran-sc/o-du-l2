@@ -324,38 +324,6 @@ uint8_t fillDuPort(uint16_t *duPort)
 
 /*******************************************************************
  *
- * @brief Configures the DU Parameters
- *
- * @details
- *
- *    Function : calcSliv
- *
- *    Functionality:
- *       - calculate SLIV value from start and length field
- *
- * @params[in] start symbol
- * @params[in] length of symbols
- * @return SLIV value
- *
- * ****************************************************************/
-uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol)
-{
-   uint16_t sliv = 0;
-   if((lengthSymbol-1) <= 7)
-   {
-      sliv = NUM_SYMBOLS_PER_SLOT * (lengthSymbol-1) + startSymbol;
-   }
-   else
-   {
-      sliv = NUM_SYMBOLS_PER_SLOT * (NUM_SYMBOLS_PER_SLOT - lengthSymbol + 1) \
-	     + (NUM_SYMBOLS_PER_SLOT - 1 - startSymbol);
-   }
-   return sliv;
-}
-
-
-/*******************************************************************
- *
  * @brief Configures serving cell config common in sib1
  *
  * @details

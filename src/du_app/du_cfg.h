@@ -75,9 +75,11 @@
 #define UL_P_MAX  23
 #define BANDWIDTH 20
 #define DMRS_TYPE_A_POS 2
+#if 0
 #define NUM_SYMBOLS_PER_SLOT 14       /* Number of symbols within a slot */
 #define CORESET0_END_PRB   48
 #define CORESET1_NUM_PRB   24
+#endif
 
 /* MACRO defines for PRACH Configuration */
 #define PRACH_CONFIG_IDX   88
@@ -103,6 +105,7 @@
 #define PRACH_RESTRICTED_SET 0 /* Unrestricted */
 #define ROOT_SEQ_LEN 139
 
+#if 0
 /* MACRCO Ddefine for PDCCH Configuration */
 #define PDCCH_CTRL_RSRC_SET_ZERO   13   /* Control resouce set zero */
 #define PDCCH_SEARCH_SPACE_ZERO    0    /* Search space zero */
@@ -123,10 +126,11 @@
 #define PDCCH_SRCH_SPC_TWO_AGG_LVL16_CANDIDATE 1  /* Num of candidate at aggregation level 16 */
 #define PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT  0  /* format 0-0 and 1-0 */
 #define PDCCH_SYMBOL_WITHIN_SLOT 128     /* Symbol within Slot Value */
-
+#endif
 
 #define SIB1_VALUE_TAG 10
 
+#if 0
 /* MACRO Ddefine for PDSCH Configuration */
 #define PDSCH_K0  0
 #define PDSCH_START_SYMBOL  2
@@ -140,6 +144,7 @@
 #define PUSCH_K2  3
 #define PUSCH_START_SYMBOL  0
 #define PUSCH_LENGTH_SYMBOL 14
+#endif
 
 #define PUSCH_MSG3_DELTA_PREAMBLE 0
 #define PUSCH_P0_NOMINAL_WITH_GRANT -70
@@ -218,6 +223,7 @@
 #define DU_RANAC 1
 #define CELL_IDENTITY 32
 
+#if 0
 /* Macro definitions for DUtoCuRrcContainer */
 #define CELL_GRP_ID 1
 #define SCH_REQ_ID  0
@@ -252,6 +258,7 @@
 #define SCRAMBLING_ID  NR_PCI
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
+#endif 
 
 #ifdef EGTP_TEST
 #define UE_ID 1
@@ -990,6 +997,23 @@ typedef struct f1EgtpParams
    uint32_t  minTunnelId;
    uint32_t  maxTunnelId;
 }F1EgtpParams;
+
+typedef struct f1UeSetupReq
+{
+   uint8_t  cellIdx;
+   uint32_t gnbDuUeF1apId; 
+   uint32_t gnbCuUeF1apId;
+   void     *cellGrpCfg;
+   uint16_t rrcMsgLen;
+   uint8_t  *rrcMsg;
+   bool     deliveryStaReq; 
+   uint8_t  numMacLcs;
+   LcCfg    macLcCfgToAddMod[MAX_NUM_LC];
+   uint8_t  numRlcLcs;
+   RlcBearerCfg rlcLcCfgToAddMod[MAX_NUM_LC];
+   MaxAggrBitRate *maxAggrBitRate;
+}F1UeSetupReq;
+
 
 typedef struct schedulerCfg
 {

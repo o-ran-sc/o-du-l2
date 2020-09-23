@@ -142,6 +142,19 @@ typedef struct schUlLcCtxt
    uint8_t bsd;        // bucketSizeDuration
 }SchUlLcCtxt;
 
+typedef struct schDlCfg
+{
+   uint8_t lcId;
+   SchLcState lcState;
+}SchDlCfg;
+
+typedef struct schDlCb
+{
+   uint8_t numDlLc;
+   SchDlCfg dlLcCfgList[MAX_NUM_LC];
+
+}SchDlCb;
+
 /**
  * @brief
  * UE control block
@@ -159,6 +172,7 @@ typedef struct schUeCb
    SchUlLcCtxt   ulLcCtxt[MAX_NUM_LC];
    uint8_t       numDlLc;
    SchDlLcCtxt   dlLcCtxt[MAX_NUM_LC];
+   SchDlCb    dlInfo;
 }SchUeCb;
 
 /**

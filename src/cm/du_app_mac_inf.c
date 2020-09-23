@@ -769,7 +769,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
  *
  * @details
  *
- *    Function : packDuMacUeCreateRsp
+ *    Function : packDuMacUeCfgRsp
  *
  *    Functionality:
  *       Pack and send UE config response from MAC to DU APP
@@ -779,7 +779,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 {
    Buffer *mBuf = NULLP;
 
@@ -808,7 +808,7 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *
  * @details
  *
- *    Function : unpackDuMacUeCreateRsp
+ *    Function : unpackDuMacUeCfgRsp
  *
  *    Functionality: Unpack UE Config Response from MAC to DU APP
  *
@@ -817,7 +817,7 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf)
+uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
@@ -833,6 +833,392 @@ uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf
    return RFAILED;
 }
 
+/*******************************************************************
+ *
+ * @brief Packs and Sends UE Reconig Request from DUAPP to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacUeReconfigReq
+ *
+ *    Functionality:
+ *       Packs and Sends UE Reconfig Request from DUAPP to MAC
+ *
+ *
+ * @params[in] Post structure pointer
+ *             MacUeCfg pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	 DU_LOG("\nMAC : Memory allocation failed at packDuMacUeReconfigReq");
+	 return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nMAC: Only LWLC supported for packDuMacUeReconfigReq");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+/*******************************************************************
+ *
+ * @brief Unpacks UE Reconfig Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacUeReconfigReq
+ *
+ *    Functionality:
+ *         Unpacks UE Reconfig Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacUeCfg *ueCfg;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, ueCfg);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\n Only LWLC supported for UE Create Request ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
+   return RFAILED;
+}
+
+/******************************************************************
+ *
+ * @brief Fills Default UL LC Cfg
+ *
+ * @details
+ *
+ *    Function : fillDefUlLcCfg
+ *
+ *    Functionality: Fills Default UL LC Cfg
+ *
+ *
+ *****************************************************************/
+void fillDefUlLcCfg(UlLcCfg *ulLcCfg)
+{
+   ulLcCfg->priority = LC_PRIORITY_1;
+   ulLcCfg->lcGroup =  0;
+   ulLcCfg->schReqId = 0;
+   ulLcCfg->pbr = PBR_KBPS_INFINITY;
+   ulLcCfg->bsd = BSD_MS_1000;
+}
+
+/******************************************************************
+ *
+ * @brief Fills Initial DL Bandwidth Part
+ *
+ * @details
+ *
+ *    Function : fillDefInitDlBwp
+ *
+ *    Functionality: Fills Initial DL Bandwidth Part
+ *
+ *
+ *****************************************************************/
+void fillDefInitDlBwp(InitialDlBwp *initDlBwp)
+{
+   uint8_t idx = 0;
+   uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
+   uint8_t coreset0EndPrb, coreset1StartPrb, coreset1NumPrb;
+
+
+   if(initDlBwp)
+   {
+      /* Filling PDCCH Config */
+      initDlBwp->pdcchPresent = TRUE;
+      if(initDlBwp->pdcchPresent)
+      {
+	 initDlBwp->pdcchCfg.numCRsetToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
+	 memset(initDlBwp->pdcchCfg.cRSetToAddModList, 0, MAX_NUM_CRSET);
+	 if(initDlBwp->pdcchCfg.numCRsetToAddMod <= MAX_NUM_CRSET)
+	 {
+	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cRSetId = \
+	       PDCCH_CTRL_RSRC_SET_ONE_ID;
+	    memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
+	       FREQ_DOM_RSRC_SIZE); 
+	    coreset0EndPrb = CORESET0_END_PRB;
+	    coreset1StartPrb = coreset0EndPrb +6;
+	    coreset1NumPrb = CORESET1_NUM_PRB;
+	    /* calculate the PRBs */
+	    freqDomRscAllocType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+	    memcpy(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, freqDomainResource,
+	       FREQ_DOM_RSRC_SIZE);
+
+	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].duration = \
+	       PDCCH_CTRL_RSRC_SET_ONE_DURATION;
+	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cceRegMappingType = \
+	       CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED;
+	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].precoderGranularity = \
+	       ALL_CONTIGUOUS_RBS;
+	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].dmrsScramblingId = \
+	       SCRAMBLING_ID;
+	 }
+	 initDlBwp->pdcchCfg.numCRsetToRel = 0;
+	 /* Filling Serach Space */
+	 initDlBwp->pdcchCfg.numSearchSpcToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
+	 memset(initDlBwp->pdcchCfg.searchSpcToAddModList, 0, MAX_NUM_CRSET);
+	 if(initDlBwp->pdcchCfg.numSearchSpcToAddMod <= MAX_NUM_CRSET)
+	 {
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceId =\
+	       PDCCH_SRCH_SPC_TWO_ID;
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].cRSetId = \
+	       PDCCH_CTRL_RSRC_SET_ONE_ID;
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].\
+	       mSlotPeriodicityAndOffset = SLOTPERIODICITYANDOFFSET_PR_SL1;
+	    memset(initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, 0,\
+	       MONITORING_SYMB_WITHIN_SLOT_SIZE);
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot[idx] =\
+	       PDCCH_SYMBOL_WITHIN_SLOT;
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1 =\
+	       AGGREGATIONLEVEL_N8; 
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel2 =\
+	       AGGREGATIONLEVEL_N8; 
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel4 =\
+	       AGGREGATIONLEVEL_N4; 
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel8 =\
+	       AGGREGATIONLEVEL_N2; 
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel16 =\
+	       AGGREGATIONLEVEL_N1;
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceType = \
+	       SEARCHSPACETYPE_PR_UE_SPECIFIC;
+	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].ueSpecificDciFormat =\
+	       PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT;
+
+	    initDlBwp->pdcchCfg.numSearchSpcToRel = 0;
+
+	 }
+      }
+      /* Filling PDSCH Config */
+      initDlBwp->pdschPresent = TRUE;
+      if(initDlBwp->pdschPresent)
+      {
+	 initDlBwp->pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos = ADDITIONALPOSITION_POS0;
+	 initDlBwp->pdschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
+	 initDlBwp->pdschCfg.numTimeDomRsrcAlloc = 1;
+	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = \
+	    MAPPING_TYPEA;
+	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 
+	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].symbolLength = PDSCH_LENGTH_SYMBOL;
+	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = \
+	    calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
+	 initDlBwp->pdschCfg.rbgSize = RBG_SIZE_CONFIG1;
+	 initDlBwp->pdschCfg.numCodeWordsSchByDci = CODEWORDS_SCHED_BY_DCI_N1;
+	 initDlBwp->pdschCfg.bundlingType = TYPE_STATIC_BUNDLING;
+	 initDlBwp->pdschCfg.bundlingInfo.StaticBundling.size = 0;
+      }
+   }
+
+}
+
+/******************************************************************
+ *
+ * @brief Fills Initial UL Bandwidth Part
+ *
+ * @details
+ *
+ *    Function : fillDefInitUlBwp
+ *
+ *    Functionality: Fills Initial UL Bandwidth Part
+ *
+ *
+ *****************************************************************/
+void fillDefInitUlBwp(InitialUlBwp *initUlBwp)
+{
+   uint8_t idx;
+   if(initUlBwp)
+   {
+      initUlBwp->pucchPresent = FALSE;
+
+      /*Filling PUSCH Config */
+      initUlBwp->puschPresent = TRUE;
+      if(initUlBwp->puschPresent)
+      {
+         initUlBwp->puschCfg.dataScramblingId = SCRAMBLING_ID;
+	 initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.addPos = ADDITIONALPOSITION_POS0; 
+	 initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.transPrecodDisabled. \
+	    scramblingId0 = SCRAMBLING_ID; 
+	 initUlBwp->puschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
+	 initUlBwp->puschCfg.numTimeDomRsrcAlloc = 1;
+	 idx = 0;
+	 if(initUlBwp->puschCfg.numTimeDomRsrcAlloc <= MAX_NUM_UL_ALLOC)
+	 {
+	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2;
+	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType =\
+	       MAPPING_TYPEA;
+	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbol = PUSCH_START_SYMBOL;
+	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].symbolLength = PUSCH_LENGTH_SYMBOL;
+	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
+	       calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
+	 }
+	 initUlBwp->puschCfg.transformPrecoder = TRANSFORM_PRECODER_DISABLED;
+      }
+   }
+   else
+   {
+      DU_LOG("\n DUAPP: Memory is NULL of InitalUlBwp");
+   }
+
+}
+/******************************************************************
+ *
+ * @brief Fills SpCell Group Info
+ *
+ * @details
+ *
+ *    Function : fillDefSpCellGrpInfo
+ *
+ *    Functionality: Fills Sp Cell Group Info
+ *
+ *
+ *****************************************************************/
+void fillDefSpCellGrpInfo(SpCellCfg *spCell)
+{
+   if(spCell)
+   {
+      spCell->servCellIdx = SERV_CELL_IDX;
+      /* Filling Initial Dl Bwp */
+      fillDefInitDlBwp(&spCell->servCellCfg.initDlBwp);
+
+      spCell->servCellCfg.numDlBwpToAdd    = 0; 
+      spCell->servCellCfg.firstActvDlBwpId = ACTIVE_DL_BWP_ID;
+      spCell->servCellCfg.defaultDlBwpId   = ACTIVE_DL_BWP_ID;
+      spCell->servCellCfg.bwpInactivityTmr = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.maxMimoLayers = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.maxCodeBlkGrpPerTb = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.codeBlkGrpFlushInd = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.xOverhead = NULLP;
+      spCell->servCellCfg.pdschServCellCfg.numHarqProcForPdsch =\
+         NUM_HARQ_PROC_FOR_PDSCH_N_16;
+      /* Filling Initial UL Bwp*/
+      fillDefInitUlBwp(&spCell->servCellCfg.initUlBwp);
+      spCell->servCellCfg.numUlBwpToAdd     = 0; 
+      spCell->servCellCfg.firstActvUlBwpId  = ACTIVE_DL_BWP_ID; 
+   }
+   else
+   {
+      DU_LOG("\n DU_APP: Memory is NULL for SpCellGrp");
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Fills Physical Cell Group Info
+ *
+ * @details
+ *
+ *    Function : fillDefPhyCellGrpInfo
+ *
+ *    Functionality: Fills Physical Cell Group Info
+ *
+ *
+ *****************************************************************/
+void fillDefPhyCellGrpInfo(PhyCellGrpCfg *cellGrp)
+{
+   if(cellGrp)
+   {
+      cellGrp->pdschHarqAckCodebook = PDSCH_HARQ_ACK_CODEBOOK_DYNAMIC;
+      cellGrp->pNrFr1 = P_NR_FR1;
+   }
+   else
+   {
+      DU_LOG("\nDUAPP: Memory is NULL for Physical Cell Group");
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Fills Mac Cell Group Info
+ *
+ * @details
+ *
+ *    Function : fillDefMacCellGrpInfo
+ *
+ *    Functionality: Fills Mac Cell Group Info
+ *
+ *
+ *****************************************************************/
+void fillDefMacCellGrpInfo(MacCellGrpCfg *cellGrp)
+{
+   uint8_t idx;
+
+   if(cellGrp)
+   {
+      /* Filling Scheduling Request Config */
+      cellGrp->schReqCfg.addModListCount = 1;
+      if(cellGrp->schReqCfg.addModListCount <= MAX_NUM_SR_CFG_PER_CELL_GRP)
+      {
+	 for(idx = 0; idx < cellGrp->schReqCfg.addModListCount; idx++)
+	 {
+	    cellGrp->schReqCfg.addModList[idx].schedReqId    = SCH_REQ_ID;
+	    cellGrp->schReqCfg.addModList[idx].srProhibitTmr = SR_PROHIBIT_MS_32;
+	    cellGrp->schReqCfg.addModList[idx].srTransMax    = SR_TRANS_MAX_N_16;
+	 }
+      }
+      cellGrp->schReqCfg.relListCount = 0;
+
+      /* Filling Tag config */
+      cellGrp->tagCfg.addModListCount = 1;
+      if(cellGrp->tagCfg.addModListCount <= MAC_NUM_TAGS)
+      {
+	 for(idx = 0; idx < cellGrp->tagCfg.addModListCount; idx++)
+	 {
+	    cellGrp->tagCfg.addModList[idx].tagId = TAG_ID;
+	    cellGrp->tagCfg.addModList[idx].timeAlignTimer = TIME_ALIGNMENT_TIMER_INFINITY;
+	 }
+      }
+      cellGrp->tagCfg.relListCount = 0;
+
+      /* Filling BSR config */
+      cellGrp->bsrTmrCfg.periodicTimer = BSR_PERIODIC_TIMER_SF_10;
+      cellGrp->bsrTmrCfg.retxTimer = BSR_RETX_TIMER_SF_320;
+      cellGrp->bsrTmrCfg.srDelayTimer = BSR_SR_DELAY_TMR_2560;
+
+      /* Filling PHR config */
+      cellGrp->phrCfgSetupPres = true;
+      cellGrp->phrCfg.periodicTimer = PHR_PERIODIC_TIMER_INFINITY;
+      cellGrp->phrCfg.prohibitTimer = PHR_PROHIBIT_TIMER_SF_0;
+      cellGrp->phrCfg.txPowerFactor = PHR_TX_PWR_FACTOR_CHANGE_INFINITY;
+      cellGrp->phrCfg.multiplePHR   = false;
+      cellGrp->phrCfg.dummy         = false;
+      cellGrp->phrCfg.phrType2OtherCell = false;
+      cellGrp->phrCfg.phrOtherCG = PHR_MODE_OTHER_CG_REAL;  
+
+   }
+   else
+   {
+      DU_LOG("\nDUAPP: Memory is NULL for Master Cell Group");
+   }
+}
 /**********************************************************************
   End of file
  **********************************************************************/
