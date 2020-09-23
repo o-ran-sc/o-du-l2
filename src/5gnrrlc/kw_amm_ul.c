@@ -1716,7 +1716,7 @@ Buffer     *pdu;
    if (pdu != NULLP)
    {
       AMUL.partialSdu = NULLP;
-      rlcUtlSndDatInd(gCb,rbCb, pdu);
+      rlcUtlSendUlDataToDu(gCb,rbCb, pdu);
    }
 
    RETVOID;

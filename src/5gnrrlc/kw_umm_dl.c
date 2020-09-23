@@ -170,7 +170,7 @@ Buffer          *mBuf;
 
    if(!rlcDlUtlIsReestInProgress(rbCb))
    {
-      rlcUtlSndDStaRsp(gCb,rbCb,rbCb->m.umDl.bo,rbCb->m.umDl.estHdrSz,FALSE,0);
+      rlcUtlSendDedLcBoSta(gCb,rbCb,rbCb->m.umDl.bo,rbCb->m.umDl.estHdrSz,FALSE,0);
    }
    
    /* kw005.201 added support for L2 Measurement */

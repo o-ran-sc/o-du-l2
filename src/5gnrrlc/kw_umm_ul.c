@@ -497,7 +497,7 @@ RlcUmRecBuf   *umRecBuf;
                RLC_FREE_BUF(sdu);
                if (liCount > 0 || !(fi & 1))
                {
-                  rlcUtlSndDatInd(gCb,rbCb,*partialSdu);
+                  rlcUtlSendUlDataToDu(gCb,rbCb,*partialSdu);
                   *partialSdu = NULLP;
                }
             }
@@ -524,7 +524,7 @@ RlcUmRecBuf   *umRecBuf;
             
             if (liCount > 0 || !( fi & 1))
             {
-               rlcUtlSndDatInd(gCb,rbCb,sdu);
+               rlcUtlSendUlDataToDu(gCb,rbCb,sdu);
             }
             else
             {
@@ -545,7 +545,7 @@ RlcUmRecBuf   *umRecBuf;
          }
          else
          {
-            rlcUtlSndDatInd(gCb, rbCb, sdu);
+            rlcUtlSendUlDataToDu(gCb, rbCb, sdu);
          }
       }
       /*  
@@ -553,7 +553,7 @@ RlcUmRecBuf   *umRecBuf;
          just send the SDU to the upper layer */
       else
       {
-         rlcUtlSndDatInd(gCb, rbCb, sdu);
+         rlcUtlSendUlDataToDu(gCb, rbCb, sdu);
       }
    }
    rbCb->m.umUl.sn = sn;

@@ -16,14 +16,10 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains the definitions for Upper Interface APIs that are
- * invoked from MAC */
+/* This file stores defines used at RLC lower mac interface */
 
-uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo);
-uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId);
-uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
-uint8_t MacSendUlDataToRlc(Pst *pst, RlcData *ulData);
-uint8_t MacSendSchedResultRptToRlc(Pst *pst, RlcSchedResultRpt *schedRpt);
+uint8_t RlcSendBoStatusToMac(Pst *pst, RlcBoStatus *staRsp);
+uint8_t RlcSendDlDataToMac(Pst *pst, RlcData *dlData);
 
 /**********************************************************************
          End of file
