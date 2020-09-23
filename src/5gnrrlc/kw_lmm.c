@@ -566,13 +566,13 @@ Header    *hdr;
  */
 
 #ifdef ANSI
-S16 RlcMiRlcConfigReq 
+uint8_t RlcMiRlcConfigReq 
 (
 Pst       *pst, 
 RlcMngmt   *cfg
 )
 #else
-S16 RlcMiRlcConfigReq (pst, cfg)
+uint8_t RlcMiRlcConfigReq (pst, cfg)
 Pst       *pst;
 RlcMngmt   *cfg;
 #endif
@@ -722,13 +722,13 @@ RlcMngmt   *cfg;
  *    -# RFAILED
  */
 #ifdef ANSI
-S16 RlcMiLkwCntrlReq
+uint8_t RlcMiLkwCntrlReq
 (
 Pst       *pst, 
 RlcMngmt   *cntrl
 )
 #else
-S16 RlcMiLkwCntrlReq(pst, cntrl)
+uint8_t RlcMiLkwCntrlReq(pst, cntrl)
 Pst       *pst;
 RlcMngmt   *cntrl;
 #endif

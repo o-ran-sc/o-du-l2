@@ -47,6 +47,7 @@ extern uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
  * ****************************************************************/
 uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu)
 {
+   uint8_t   ueIdx;       /* Iterator for UE list */
    uint8_t   lcId;        /* LC ID of a sub pdu */
    uint8_t   fBit = 0;    /* Value of F Bit in MAC sub-header */
    uint8_t   idx = 0;     /* Iterator for received PDU */
@@ -92,7 +93,8 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	       idx = idx + length;
 
 	       /* store msg3 pdu in macRaCb for CRI value */
-	       memcpy(macCb.macCell[cellIdx]->macRaCb[0].msg3Pdu, pdu, length);
+	       GET_UE_IDX(rxDataIndPdu->rnti, ueIdx);
+	       memcpy(macCb.macCell[cellIdx]->macRaCb[ueIdx -1].msg3Pdu, pdu, length);
 
 	       /* Send UL-CCCH Indication to DU APP */
 	       ret = macProcUlCcchInd(macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti, length, pdu);

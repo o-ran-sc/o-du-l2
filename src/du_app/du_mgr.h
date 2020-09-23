@@ -74,19 +74,19 @@ typedef enum
 typedef struct cellCfgParams
 {
    NrEcgi      nrEcgi;         /* ECGI */
-   uint16_t         nrPci;          /* PCI */
-   uint16_t         fiveGsTac;         /* 5gSTac */
-   Plmn      plmn[MAX_PLMN]; /* List of serving PLMN IDs */
-   uint32_t         maxUe;          /* max UE per slot */
+   uint16_t    nrPci;          /* PCI */
+   uint16_t    fiveGsTac;         /* 5gSTac */
+   Plmn        plmn[MAX_PLMN]; /* List of serving PLMN IDs */
+   uint32_t    maxUe;          /* max UE per slot */
 }CellCfgParams;
 
 typedef struct duUeCb
 {
-   uint32_t gnbDuUeF1apId; /* GNB DU UE F1AP ID */
-   uint32_t gnbCuUeF1apId; /* GNB CU UE F1AP ID */
-   UeState  ueState;
-   MacUeCfg macUeCfg;
-   RlcUeCfg rlcUeCfg;
+   uint32_t    gnbDuUeF1apId; /* GNB DU UE F1AP ID */
+   uint32_t    gnbCuUeF1apId; /* GNB CU UE F1AP ID */
+   UeState     ueState;
+   MacUeCfg    macUeCfg;
+   RlcUeCfg    rlcUeCfg;
 }DuUeCb;
 
 typedef struct duCellCb
@@ -107,8 +107,8 @@ typedef struct duLSapCb
    State       sapState;
    Mem         mem;
    CmTimer     timer;
-   uint8_t          bndRetryCnt;
-   uint8_t          maxBndRetry;
+   uint8_t     bndRetryCnt;
+   uint8_t     maxBndRetry;
    TmrCfg      bndTmr;
 }DuLSapCb;
 

@@ -60,9 +60,9 @@ static int RLOG_FILE_ID=204;
 #include "kw_dl.x"
 #include "kw_ul.x"
 
-#include "rlc_utils.h"
 #include "du_app_rlc_inf.h"
 #include "rlc_mgr.h"
+#include "rlc_utils.h"
 
 #define RLC_MODULE RLC_DBGMASK_UDX
 /* local defines */

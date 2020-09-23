@@ -63,6 +63,9 @@ static int RLOG_FILE_ID=200;
 #include "kw.x"
 #include "kw_udx.x"
 #include "kw_dl.x"
+#include "rlc_utils.h"
+#include "rlc_mac_inf.h"
+#include "rlc_lwr_inf_api.h"
 
 #define RLC_MODULE (RLC_DBGMASK_TM | RLC_DBGMASK_DL)
 
@@ -183,9 +186,12 @@ RlcDlRbCb         *rbCb;
 RguCStaIndInfo   *staInd;
 #endif
 {
+   Pst              pst;
    CmLList          *node;          /* Current Link List Node */
-   RlcSdu            *sdu;           /* SDU */
-   RlcMacData       *dlData;
+   RlcSdu           *sdu;           /* SDU */
+   RlcData          *dlData;
+   uint16_t         pduLen;
+   uint16_t         copyLen;
    S16   timeDiff = 0;
    Ticks curTime  = 0;
 
@@ -353,9 +359,8 @@ RguCStaIndInfo   *staInd;
    }
    sdu = (RlcSdu *)node->node;
 
-    RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[suId].pst.region,
-                        gCb->u.dlCb->rguDlSap[suId].pst.pool,
-                        dlData,(Size)sizeof(RlcMacData));
+    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+                        dlData,(Size)sizeof(RlcData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( dlData == NULLP )
    {
@@ -374,7 +379,22 @@ RguCStaIndInfo   *staInd;
    dlData->numPdu = 1;
    dlData->pduInfo[0].commCh = TRUE;
    dlData->pduInfo[0].lcId = rbCb->lch.lChId;
-   dlData->pduInfo[0].pduBuf =  sdu->mBuf;
+
+   /* Copy Message to fixed buffer to send */
+   ODU_FIND_MSG_LEN(sdu->mBuf, (MsgLen *)&pduLen);
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+      dlData->pduInfo[0].pduBuf, pduLen);
+   if (dlData->pduInfo[0].pduBuf == NULLP )
+   {
+      DU_LOG("Memory allocation failed");
+      RETVOID;
+   }
+   ODU_COPY_MSG_TO_FIX_BUF(sdu->mBuf, 0, pduLen, \
+      dlData->pduInfo[0].pduBuf, (MsgLen *)&copyLen);
+   dlData->pduInfo[0].pduLen = pduLen;
+
+   /* Free message */
+   ODU_PUT_MSG_BUF(sdu->mBuf);
 
    /* kw005.201 ccpu00117318, updating the statistics */
    gCb->genSts.bytesSent += sdu->sduSz;
@@ -392,12 +412,22 @@ RguCStaIndInfo   *staInd;
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      rlcLmmSendTrc(gCb,EVTRLCDLDAT, NULLP);
+      rlcLmmSendTrc(gCb, EVENT_DL_DATA_TO_MAC, NULLP);
    }
-   
-   RlcMacSendDlData(&(gCb->u.dlCb->rguDlSap[suId].pst),
-                   gCb->u.dlCb->rguDlSap[suId].spId,
-                   dlData);
+
+   /* Fill Pst structure. Copying rguSap->pst to pst to avoid any
+    * changes in rguSap->pst */
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_RLC_TO_MAC(pst, gCb->u.dlCb->rguDlSap[suId].pst.dstProcId, \
+      RLC_DL_INST, EVENT_DL_DATA_TO_MAC);
+
+   if(RlcSendDlDataToMac(&pst, dlData) != ROK)
+   {
+      RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[0].pduBuf, \
+         dlData->pduInfo[0].pduLen);
+      RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+   } 
+
    RETVOID;
 }
 
@@ -474,18 +504,17 @@ MsgLen          bo;
 KwuDatReqInfo   *datReqInfo;   
 #endif
 {
-//   RguCStaRspInfo   *staRspInfo;   /* Status Response Information */
-   RlcMacBOStatus   *boStatus;      /* Buffer occupancy status information */
-   RlcRguSapCb       *rguSap;       /* SAP Information */
+   Pst              pst;            /* Post structure */    
+   RlcBoStatus      *boStatus;      /* Buffer occupancy status information */
+   RlcRguSapCb      *rguSap;        /* SAP Information */
 
    TRC3(rlcTmmSndStaRsp)
 
 
    rguSap = &(gCb->u.dlCb->rguDlSap[rbCb->rguSapId]);
 
-   RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.region,
-                       gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.pool,
-                       boStatus, sizeof(RguCStaRspInfo));
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+                       boStatus, sizeof(RlcBoStatus));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( boStatus == NULLP )
    {
@@ -498,7 +527,7 @@ KwuDatReqInfo   *datReqInfo;
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
    boStatus->cellId = rbCb->rlcId.cellId;
-   boStatus->rnti = rbCb->rlcId.ueId;
+   boStatus->ueIdx = rbCb->rlcId.ueId;
    boStatus->commCh = TRUE;
    boStatus->lcId = rbCb->lch.lChId;
    boStatus->bo = bo;
@@ -507,10 +536,19 @@ KwuDatReqInfo   *datReqInfo;
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      rlcLmmSendTrc(gCb, EVTRLCBOSTA, NULLP);
+      rlcLmmSendTrc(gCb, EVENT_BO_STATUS_TO_MAC, NULLP);
    }
 
-   RlcMacSendBOStatus(&rguSap->pst, rguSap->spId, boStatus);
+   /* Fill Pst structure. Copying rguSap->pst to pst to avoid any
+    * changes in rguSap->pst */
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_RLC_TO_MAC(pst, rguSap->pst.dstProcId, \
+      RLC_DL_INST, EVENT_DL_DATA_TO_MAC);
+
+   if(RlcSendBoStatusToMac(&pst, boStatus) != ROK)
+   {
+      RLC_FREE_SHRABL_BUF(pst.region, pst.pool, boStatus, sizeof(RlcBoStatus));
+   }
 
    RETVOID;
 } 

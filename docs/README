@@ -24,7 +24,10 @@ Pre-requisite for Compilation :
 2. GCC version 4.6.3 and above
 3. Install LKSCTP
    a. On Ubuntu : sudo apt-get install -y libsctp-dev
-   b. On CentOS : yum install lksctp-tools
+   b. On CentOS : yum install lksctp-tools-devel
+4. Install PCAP:
+   a. On ubuntu : sudo apt-get install -y libpcap-dev
+   b. On CentOS : yum install libpcap-devel
 
 
 How to Clean and Build:
