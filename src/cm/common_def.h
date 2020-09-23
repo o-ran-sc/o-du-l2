@@ -57,6 +57,7 @@
 /* MAX values */
 #define MAX_NUM_CELL 1
 #define MAX_NUM_UE   1
+#define MAX_NUM_LC   11
 
 /* 5G ORAN phy delay */
 #define PHY_DELTA 2
@@ -69,10 +70,19 @@
 #define ODU_START_CRNTI   100
 #define ODU_END_CRNTI     500
 
+/* LCID */
+#define SRB0_LCID  0
+#define SRB1_LCID  1
+#define SRB2_LCID  2
+#define SRB3_LCID  3
+#define MIN_DRB_LCID 4
+#define MAX_DRB_LCID 10
+
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg
 #define ODU_ADD_PRE_MSG_MULT SAddPreMsgMult
+#define ODU_ADD_PRE_MSG_MULT_IN_ORDER SAddPreMsgMultInOrder
 #define ODU_ADD_POST_MSG_MULT SAddPstMsgMult
 #define ODU_START_TASK SStartTask
 #define ODU_STOP_TASK SStopTask
@@ -86,7 +96,11 @@
 #define ODU_EXIT_TASK SExitTsk
 #define ODU_PRINT_MSG SPrntMsg
 #define ODU_REM_PRE_MSG SRemPreMsg
+#define ODU_REM_PRE_MSG_MULT SRemPreMsgMult
 #define ODU_REG_TMR_MT SRegTmrMt
+#define ODU_SEGMENT_MSG SSegMsg
+#define ODU_CAT_MSG SCatMsg
+#define ODU_FIND_PROCID SFndProcId
 
 #define GET_UE_IDX( _crnti,_ueIdx)         \
 {                                          \
@@ -95,7 +109,7 @@
 
 #define GET_CRNTI( _crnti,_ueIdx)          \
 {                                          \
-   _crnti = _ueIdx + ODU_START_CRTNI - 1;  \
+   _crnti = _ueIdx + ODU_START_CRNTI - 1;  \
 }
 
 /* Calculates cellIdx from cellId */
@@ -116,6 +130,23 @@
        _byte <<= _startBit;                          \
 }
 
+/* this MACRO set 1 bit at the bit position */
+#define SET_ONE_BIT(_bitPos, _out)            \
+{                                             \
+   _out = ((1<<_bitPos) | _out);              \
+}
+
+/* this MACRO un-set 1 bit at the bit position */
+#define UNSET_ONE_BIT(_bitPos, _out)            \
+{                                               \
+   _out = (~(1<<_bitPos) & _out);               \
+}
+
+/* this MACRO finds the index of the rightmost set bit */
+#define GET_RIGHT_MOST_SET_BIT( _in,_bitPos)        \
+{                                                \
+   _bitPos = __builtin_ctz(_in);                 \
+}
 
 typedef struct slotIndInfo
 {

@@ -348,65 +348,65 @@ typedef struct rlcUlCfgTmpData
  *                    Configuration Functions 
  ***************************************************************************/
 
-EXTERN S16 rlcValidateRbCfgParams ARGS ((RlcCb *gCb,
+S16 rlcValidateRbCfgParams ARGS ((RlcCb *gCb,
                                         CmLteRnti   ueId,
                                         CmLteCellId cellId,
                                         RlcEntCfgInfo  *cfgToValidate,
                                         CmStatus        *status));
-EXTERN S16 rlcCfgValidateUlRb ARGS (( RlcCb *gCb,
+S16 rlcCfgValidateUlRb ARGS (( RlcCb *gCb,
                                     RlcEntCfgInfo *cfgToValidate,
                                     RlcUlEntTmpData *cfgInfo, 
                                     RlcUlCfgTmpData *cfg));
 
-EXTERN S16 rlcCfgRollBackUlRb ARGS ((RlcCb *gCb,
+S16 rlcCfgRollBackUlRb ARGS ((RlcCb *gCb,
                                     CmLteRnti ueId,
                                     RlcEntCfgInfo *cfgToValidate,
                                     RlcUlEntTmpData *cfgTempData));
 
-EXTERN Void rlcCfgApplyUlRb ARGS ((RlcCb *gCb,
+Void rlcCfgApplyUlRb ARGS ((RlcCb *gCb,
                                   RlcEntCfgInfo *cfgToAply,
                                   RlcUlEntTmpData *cfgTmpData,
                                   RlcUlCfgTmpData *cfgTmpInfo));
 
-EXTERN S16 rlcCfgValidateReEstRb ARGS ((RlcCb *gCb,
+S16 rlcCfgValidateReEstRb ARGS ((RlcCb *gCb,
                                        CmLteRnti  ueId,
                                        CmLteCellId cellId,
                                        RlcEntCfgInfo *cfgToValidate,
                                        RlcUlEntTmpData   *cfgTmpData));
 
-EXTERN Void rlcCfgApplyReEstUlRb ARGS ((RlcCb *gCb,
+Void rlcCfgApplyReEstUlRb ARGS ((RlcCb *gCb,
                                       CmLteRnti ueId,
                                       CmLteCellId cellId,
                                       Bool sndReEstInd,
                                       RlcUlEntTmpData *cfgTmpData));
 
-EXTERN Void rlcCfgApplyDelUlCell ARGS ((RlcCb *gCb,
+Void rlcCfgApplyDelUlCell ARGS ((RlcCb *gCb,
                                       RlcUlCfgTmpData *cfgTmpData));
 
-EXTERN S16 rlcCfgValidateDelUlCell ARGS ((RlcCb *gCb,
+S16 rlcCfgValidateDelUlCell ARGS ((RlcCb *gCb,
                                          CmLteCellId cellId,
                                          RlcEntCfgInfo *cfgToValidate,
                                          RlcUlEntTmpData   *cfgTmpData,
                                          RlcUlCfgTmpData *cfgInfo));
 
-EXTERN S16 rlcCfgValidateDelUlUe ARGS ((RlcCb *gCb,
+S16 rlcCfgValidateDelUlUe ARGS ((RlcCb *gCb,
                                        RlcEntCfgInfo *cfgToValidate,
                                        RlcUlEntTmpData *cfgTmpData,
                                        RlcUlCfgTmpData *cfgInfo));
 
-EXTERN Void rlcCfgApplyDelUlUe ARGS ((RlcCb *gCb,
+Void rlcCfgApplyDelUlUe ARGS ((RlcCb *gCb,
                                     RlcUlCfgTmpData *cfgTmpData));
 
-EXTERN Void rlcUlHdlCfgReq ARGS ((RlcCb *gCb,
+Void rlcUlHdlCfgReq ARGS ((RlcCb *gCb,
                                      RlcUlCfgTmpData *cfgInfo,
                                      RlcCfgInfo *cfg));
 
-EXTERN Void rlcCfgApplyUlUeIdChng ARGS ((RlcCb *gCb,
+Void rlcCfgApplyUlUeIdChng ARGS ((RlcCb *gCb,
                                         CkwUeInfo *ueInfo,
                                         CkwUeInfo *newUeInfo,
                                         RlcUlCfgTmpData *cfgTmpInfo));
 
-EXTERN S16 rlcCfgValidateUeIdChng ARGS ((RlcCb *gCb,
+S16 rlcCfgValidateUeIdChng ARGS ((RlcCb *gCb,
                                         CkwUeInfo *ueInfo,
                                         CkwUeInfo *newUeInfo,
                                         RlcUlCfgTmpData *cfgTmpInfo));
@@ -414,188 +414,192 @@ EXTERN S16 rlcCfgValidateUeIdChng ARGS ((RlcCb *gCb,
 /****************************************************************************
  *                    DBM module Functions 
  ***************************************************************************/
-EXTERN S16 rlcDbmUlInit ARGS ((RlcCb *gCb));
+S16 rlcDbmUlInit ARGS ((RlcCb *gCb));
 
-EXTERN Void rlcDbmUlDeInit ARGS ((RlcCb *gCb));
+Void rlcDbmUlDeInit ARGS ((RlcCb *gCb));
 
-EXTERN S16 rlcDbmAddUlUeCb ARGS ((RlcCb *gCb,
+S16 rlcDbmAddUlUeCb ARGS ((RlcCb *gCb,
                                     CmLteRnti ueId,
                                     CmLteCellId cellId,
                                     RlcUlUeCb *ueCb));
 
-EXTERN S16 rlcDbmFetchUlUeCb ARGS ((RlcCb *gCb,
+uint8_t rlcDbmFetchUlUeCb ARGS ((RlcCb *gCb,
                                    CmLteRnti ueId,
                                    CmLteCellId cellId,
                                    RlcUlUeCb **ueCb));
 
-EXTERN Void rlcDbmDelUlUeCb ARGS ((RlcCb *gCb,   
+Void rlcDbmDelUlUeCb ARGS ((RlcCb *gCb,   
                                   RlcUlUeCb *ueCb,
                                   Bool abortFlag));
 
-EXTERN Void rlcDbmDelAllUlUe ARGS ((RlcCb *gCb));
+Void rlcDbmDelAllUlUe ARGS ((RlcCb *gCb));
 
-EXTERN S16 rlcDbmAddUlCellCb ARGS ((RlcCb *gCb,
+S16 rlcDbmAddUlCellCb ARGS ((RlcCb *gCb,
                                       CmLteCellId cellId,
                                       RlcUlCellCb *cellCb));
 
-EXTERN Void rlcDbmFetchUlCellCb ARGS ((RlcCb *gCb, 
+Void rlcDbmFetchUlCellCb ARGS ((RlcCb *gCb, 
                                       CmLteCellId cellId,
                                       RlcUlCellCb **cellCb));
 
-EXTERN Void rlcDbmDelUlCellCb ARGS ((RlcCb *gCb,  
+Void rlcDbmDelUlCellCb ARGS ((RlcCb *gCb,  
                                    RlcUlCellCb *cellCb));
 
-EXTERN Void rlcDbmDelAllUlCell ARGS ((RlcCb *gCb));
+Void rlcDbmDelAllUlCell ARGS ((RlcCb *gCb));
 
-EXTERN Void rlcDbmFetchUlRbCbByRbId ARGS ((RlcCb *gCb, 
+Void rlcDbmFetchUlRbCbByRbId ARGS ((RlcCb *gCb, 
                                           CmLteRlcId *rlcId, 
                                           RlcUlRbCb **rbCb));
 
-EXTERN Void rlcDbmFetchUlRbCbFromLchId ARGS ((RlcCb *gCb, 
+Void rlcDbmFetchUlRbCbFromLchId ARGS ((RlcCb *gCb, 
                                              CmLteRnti ueId, 
                                              CmLteCellId cellId, 
                                              CmLteLcId lcId,  
                                              RlcUlRbCb **rbCb));
 
-EXTERN Void rlcDbmDelAllUlRb ARGS ((RlcCb *gCb, 
+Void rlcDbmDelAllUlRb ARGS ((RlcCb *gCb, 
                                    RlcUlRbCb **rbCbLst, 
                                    U8 numRbCb));
 
-EXTERN S16 rlcDbmAddUlTransaction ARGS((RlcCb *gCb, RlcUlCfgTmpData *cfg));
+S16 rlcDbmAddUlTransaction ARGS((RlcCb *gCb, RlcUlCfgTmpData *cfg));
 
-EXTERN S16 rlcDbmFindUlTransaction ARGS((RlcCb *gCb, 
+S16 rlcDbmFindUlTransaction ARGS((RlcCb *gCb, 
                                         U32 transId, 
                                         RlcUlCfgTmpData **cfg));
 
-EXTERN S16 rlcDbmDelUlTransaction ARGS((RlcCb *gCb, RlcUlCfgTmpData *cfg));
+S16 rlcDbmDelUlTransaction ARGS((RlcCb *gCb, RlcUlCfgTmpData *cfg));
 
-EXTERN S16 rlcDbmDelAllUlTransactions ARGS((RlcCb *gCb));
+S16 rlcDbmDelAllUlTransactions ARGS((RlcCb *gCb));
 
-EXTERN Void rlcDbmUlShutdown ARGS ((RlcCb *gCb));
+Void rlcDbmUlShutdown ARGS ((RlcCb *gCb));
 
 /****************************************************************************
  *                    Transparent Mode Functions 
  ***************************************************************************/
 #ifdef CCPU_OPT
-EXTERN Void rlcTmmRcvFrmLi ARGS ((RlcCb *gCb, 
-                                       RlcUlRbCb *rbCb,
-                                       CmLteRnti tCrnti, 
-                                       Buffer *pdu));
-#else /* CCPU_OPT */
-EXTERN Void rlcTmmRcvFrmLi ARGS ((RlcCb *gCb,
-                                       RlcUlRbCb *rbCb,
-                                       Buffer *pdu));
-#endif /* CCPU_OPT */
+void rlcTmmRcvFrmMac ARGS ((RlcCb *gCb,
+                            RlcUlRbCb *rbCb,
+			    CmLteRnti   tCrnti,
+                            Buffer *pdu));
 
-EXTERN Void rlcTmmUlReEstablish ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
+#else
+void rlcTmmRcvFrmMac ARGS ((RlcCb *gCb,
+                            RlcUlRbCb *rbCb,
+                            Buffer *pdu));
+#endif				       
+
+Void rlcTmmUlReEstablish ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
 
 /****************************************************************************
  *                    Unacknowledged Mode Functions 
  ***************************************************************************/
 #ifdef LTE_L2_MEAS
-EXTERN Void rlcUmmProcessPdus ARGS((RlcCb *gCb,
+Void rlcUmmProcessPdus ARGS((RlcCb *gCb,
                                   RlcUlRbCb *rbCb, 
                                   KwPduInfo *pduInfo,
                                   U32 ttiCnt));
 #else 
-EXTERN Void rlcUmmProcessPdus ARGS ((RlcCb *gCb, 
+Void rlcUmmProcessPdus ARGS ((RlcCb *gCb, 
                                     RlcUlRbCb *rbCb,
                                     KwPduInfo *pduInfo));
 #endif 
-EXTERN Void rlcUmmUlReEstablish ARGS ((RlcCb *gCb, 
+Void rlcUmmUlReEstablish ARGS ((RlcCb *gCb, 
                                      CmLteRlcId *rlcId, 
                                      RlcUlRbCb *rbCb));
 
-EXTERN Void rlcUmmReOrdTmrExp ARGS((RlcCb *gCb, RlcUlRbCb  *rbCb));
+Void rlcUmmReOrdTmrExp ARGS((RlcCb *gCb, RlcUlRbCb  *rbCb));
 
 
-EXTERN Void rlcUmmFreeUlRbCb ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb)); 
+Void rlcUmmFreeUlRbCb ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb)); 
 
 /****************************************************************************
  *                    Acknowledged Mode Functions 
  ***************************************************************************/
-EXTERN Void rlcAmmUlReEstablish ARGS((RlcCb *gCb, 
+Void rlcAmmUlReEstablish ARGS((RlcCb *gCb, 
                                      CmLteRlcId rlcId, 
                                      Bool sndReEst,
                                      RlcUlRbCb *rbCb));
 #ifdef LTE_L2_MEAS
-EXTERN Void rlcAmmProcessPdus ARGS((RlcCb *gCb,
+Void rlcAmmProcessPdus ARGS((RlcCb *gCb,
                                   RlcUlRbCb *rbCb, 
                                   KwPduInfo *pduInfo,
                                   U32 ttiCnt));
 #else
-EXTERN Void rlcAmmProcessPdus ARGS((RlcCb *gCb, 
+Void rlcAmmProcessPdus ARGS((RlcCb *gCb, 
                                   RlcUlRbCb *rbCb,
                                   KwPduInfo *pduInfo));
 #endif 
 
-EXTERN Void rlcAmmReOrdTmrExp ARGS((RlcCb *gCb, RlcUlRbCb *rbCb));
+Void rlcAmmReOrdTmrExp ARGS((RlcCb *gCb, RlcUlRbCb *rbCb));
 
-EXTERN Void rlcAmmStaProTmrExp ARGS((RlcCb *gCb, RlcUlRbCb *rbCb));
+Void rlcAmmStaProTmrExp ARGS((RlcCb *gCb, RlcUlRbCb *rbCb));
 
-EXTERN Void rlcAmmFreeUlRbCb ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
+Void rlcAmmFreeUlRbCb ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
 
 /****************************************************************************
  *                    Utility Functions 
  ***************************************************************************/
-EXTERN Void rlcUtlStoreRecBuf ARGS ((CmLListCp        *recBufLst,
+Void rlcUtlStoreRecBuf ARGS ((CmLListCp        *recBufLst,
                                     RlcAmRecBuf       *recBuf,
                                     RlcSn              sn
                                    ));
-EXTERN RlcAmRecBuf* rlcUtlGetRecBuf ARGS ((CmLListCp        *recBufLst,
+RlcAmRecBuf* rlcUtlGetRecBuf ARGS ((CmLListCp        *recBufLst,
                                   RlcSn              sn
                                   ));
-EXTERN Void rlcUtlDelRecBuf ARGS ((CmLListCp        *recBufLst,
+Void rlcUtlDelRecBuf ARGS ((CmLListCp        *recBufLst,
                                   RlcAmRecBuf       *recBuf,
                                   RlcCb              *gCb
                                   ));
 
-EXTERN S16 rlcUtlRcvFrmLi ARGS ((RlcCb *gCb, KwDatIndInfo *datIndInfo));
+uint8_t rlcUtlRcvFrmMac ARGS ((RlcCb *gCb, KwDatIndInfo *datIndInfo));
 
-EXTERN S16 rlcUtlSndDatInd ARGS ((RlcCb *gCb,RlcUlRbCb *rbCb, Buffer *sdu));
+uint8_t rlcUtlSendUlDataToDu ARGS ((RlcCb *gCb,RlcUlRbCb *rbCb, Buffer *sdu));
 
 #ifdef LTE_L2_MEAS
-EXTERN S16 rlcUtlHdlL2TmrExp   ARGS (( RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));
+S16 rlcUtlHdlL2TmrExp   ARGS (( RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));
 
-EXTERN  Void rlcUtlCalUlIpThrPutIncTTI ARGS ((RlcCb *gCb, 
+Void rlcUtlCalUlIpThrPutIncTTI ARGS ((RlcCb *gCb, 
                                              RlcUlRbCb  *rbCb,
                                              U32 ttiCnt));
 
-EXTERN Void rlcUtlCalUlIpThrPut ARGS((RlcCb *gCb, 
+Void rlcUtlCalUlIpThrPut ARGS((RlcCb *gCb, 
                                      RlcUlRbCb *rbCb, 
                                      Buffer *pdu, 
                                      U32 ttiCnt));
 
-EXTERN S16 rlcUtlSndUlL2MeasCfm  ARGS ((RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));
+S16 rlcUtlSndUlL2MeasCfm  ARGS ((RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));
 
-EXTERN S16 rlcUtlSndUlL2MeasNCfm ARGS ((RlcCb *gCb, 
+S16 rlcUtlSndUlL2MeasNCfm ARGS ((RlcCb *gCb, 
                                        RlcL2MeasReqEvt *measReqEvt,
                                        RlcL2MeasCfmEvt *measCfmEvt));
 
-EXTERN S16 rlcUtlL2MeasUlInit ARGS((RlcCb *gCb));
+S16 rlcUtlL2MeasUlInit ARGS((RlcCb *gCb));
 
-EXTERN Void rlcUtlResetUlL2MeasInRlcRb ARGS((RlcCb *gCb,
+Void rlcUtlResetUlL2MeasInRlcRb ARGS((RlcCb *gCb,
                                            RlcL2MeasCb *measCb,
                                            U8 measType));
 
-EXTERN S16 rlcUtlValidateIpThL2Meas ARGS ((RlcL2MeasReqEvt *measReqEvt,
+S16 rlcUtlValidateIpThL2Meas ARGS ((RlcL2MeasReqEvt *measReqEvt,
          RlcL2MeasCfmEvt *measCfmEvt));
 
 #endif /*  LTE_L2_MEAS */
 /****************************************************************************
  *                    Activation Functions 
  ***************************************************************************/
-EXTERN S16 rlcUlActvInit ARGS ((Ent ent, 
+S16 rlcUlActvInit ARGS ((Ent ent, 
                                Inst inst, 
                                Region region, 
                                Reason reason));
 
-EXTERN S16 rlcUlActvTsk ARGS ((Pst *pst, Buffer *mBuf));
+S16 rlcUlActvTsk ARGS ((Pst *pst, Buffer *mBuf));
 
 /****************************************************************************
  *                    Debug Functions 
  ***************************************************************************/
-EXTERN Void DumpRLCUlDebugInformation ARGS((Void));
+Void DumpRLCUlDebugInformation ARGS((Void));
+
+uint8_t rlcProcCommLcUlData(Pst *pst, SuId suId, RguCDatIndInfo  *datInd);
+uint8_t rlcProcDedLcUlData(Pst *pst, SuId suId, RguDDatIndInfo  *datInd);
 
 #ifdef __cplusplus
 }

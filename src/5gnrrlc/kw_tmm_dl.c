@@ -26,16 +26,13 @@
                reassembly.This file contains following functions
                 
                   --rlcTmmQSdu
-                  --rlcTmmSndToLi
-                  --rlcTmmRcvFrmLi
+                  --rlcTmmSendToMac
+                  --rlcTmmRcvFrmMac
                   --kwTmmReEstablish 
 
      File:     kw_tmm_dl.c
 
 **********************************************************************/
-static const char* RLOG_MODULE_NAME="TMM";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=200;
 /** 
  * @file kw_tmm_dl.c
  * @brief RLC Transparent Mode module
@@ -63,10 +60,13 @@ static int RLOG_FILE_ID=200;
 #include "kw.x"
 #include "kw_udx.x"
 #include "kw_dl.x"
+#include "rlc_utils.h"
+#include "rlc_mac_inf.h"
+#include "rlc_lwr_inf_api.h"
 
 #define RLC_MODULE (RLC_DBGMASK_TM | RLC_DBGMASK_DL)
 
-PRIVATE Void rlcTmmSndStaRsp ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, 
+PRIVATE Void rlcTmmSendBoSta ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, 
                                  MsgLen bo, KwuDatReqInfo *datReqInfo));
 extern U32 rgMacGT ;  
 /** @addtogroup tmmode */
@@ -147,7 +147,7 @@ Buffer          *mBuf;
    cmLListAdd2Tail(&(rbCb->m.tm.sduQ), &(sdu->lstEnt));  
    sdu->lstEnt.node = (PTR)sdu; 
 
-   rlcTmmSndStaRsp(gCb, rbCb, sdu->sduSz, datReqInfo); 
+   rlcTmmSendBoSta(gCb, rbCb, sdu->sduSz, datReqInfo); 
    RETVOID;
 }
 
@@ -167,30 +167,16 @@ Buffer          *mBuf;
 *    -# ROK 
 *    -# RFAILED         
 */
-#ifdef ANSI
-Void rlcTmmSndToLi
-(
-RlcCb             *gCb,
-SuId             suId,
-RlcDlRbCb         *rbCb,              
-RguCStaIndInfo   *staInd
-)
-#else
-Void rlcTmmSndToLi(gCb, suId, rbCb, staInd)
-RlcCb             *gCb;
-SuId             suId;
-RlcDlRbCb         *rbCb;             
-RguCStaIndInfo   *staInd;
-#endif
+void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *staInd)
 {
+   Pst              pst;
    CmLList          *node;          /* Current Link List Node */
-   RlcSdu            *sdu;           /* SDU */
-   RlcMacData       *dlData;
-   S16   timeDiff = 0;
-   Ticks curTime  = 0;
-
-   TRC2(rlcTmmSndToLi)
-
+   RlcSdu           *sdu;           /* SDU */
+   RlcData          *dlData;
+   uint16_t         pduLen;
+   uint16_t         copyLen;
+   int16_t          timeDiff = 0;
+   Ticks            curTime  = 0;
 
    CM_LLIST_FIRST_NODE(&(rbCb->m.tm.sduQ), 
                        node);
@@ -203,7 +189,7 @@ RguCStaIndInfo   *staInd;
       if ( rbCb->lch.lChType == CM_LTE_LCH_BCCH ||
             rbCb->lch.lChType == CM_LTE_LCH_PCCH )
       {
-         U16 sfn, slot;
+         uint16_t sfn, slot;
          /* MS_FIX: syed sfn is of 10 bytes rather than 8 */
 #ifdef EMTC_ENABLE
          /* As part of CATM feature cross slot scheduling is implemented , so there is some delta(currently 2)
@@ -242,18 +228,11 @@ RguCStaIndInfo   *staInd;
                (sdu->mode.tm.slot != ((slot+TFU_DELTA)%10)))
          {
             node = node->next;
-            RLOG_ARG4(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                  "Releasing SDU of RNTI = %d for RNTI = %d UEID:%d CELLID:%d",
-                  sdu->mode.tm.rnti, 
-                  staInd->rnti,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);   
-            RLOG_ARG4(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                  "sfn %d slot %d  UEID:%d CELLID:%d",
-                  sfn, 
-                  slot,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);   
+            DU_LOG("\nRLC: rlcTmmSendToMac: Releasing SDU of RNTI = %d for RNTI = %d \
+	       UEID:%d CELLID:%d", sdu->mode.tm.rnti, staInd->rnti, rbCb->rlcId.ueId,
+               rbCb->rlcId.cellId);   
+            DU_LOG("\nRLC: rlcTmmSendToMac: sfn %d slot %d  UEID:%d CELLID:%d",
+                  sfn, slot, rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
             RLC_FREE_BUF(sdu->mBuf);
             RLC_FREE(gCb, sdu, sizeof(RlcSdu));
@@ -274,30 +253,19 @@ RguCStaIndInfo   *staInd;
          {
             timeDiff = curTime - sdu->arrTime;
          }
-         RLOG_ARG4(L_DEBUG, DBG_RBID,rbCb->rlcId.rbId,
-               "TMM: TmSdu Sta Indication received for Rnti %d Sdu Rnti %d "
-               " UEID:%d CELLID:%d", 
-               staInd->rnti, 
-               sdu->mode.tm.rnti,
-               rbCb->rlcId.ueId,
-               rbCb->rlcId.cellId);   
-         RLOG_ARG4(L_DEBUG, DBG_RBID,rbCb->rlcId.rbId,
-               "TMM: TmSdu Sta Indication received : timeDiff %d SduQCnt %lu"
-               " UEID:%d CELLID:%d", 
-               timeDiff, 
-               rbCb->m.tm.sduQ.count,
-               rbCb->rlcId.ueId,
-               rbCb->rlcId.cellId);   
+         DU_LOG("\nRLC: rlcTmmSendToMac: TMM: TmSdu Sta Indication received \
+	    for Rnti %d Sdu Rnti %d UEID:%d CELLID:%d", staInd->rnti, 
+            sdu->mode.tm.rnti, rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
+	 DU_LOG("\nRLC: rlcTmmSendToMac: TMM: TmSdu Sta Indication received : \
+	    timeDiff %d SduQCnt %d UEID:%d CELLID:%d", timeDiff, rbCb->m.tm.sduQ.count,
+            rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
          if (timeDiff > 40)
          {
             /* Memory leak needs to be fixed */
             node = node->next;
-            RLOG_ARG3(L_DEBUG, DBG_RBID,rbCb->rlcId.rbId,
-                  " timeDiff greater than 40, so deleting the Sdu %u "
-                  " UEID:%d CELLID:%d", 
-                  sdu->mode.tm.rnti,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);   
+            DU_LOG("\nRLC: rlcTmmSendToMac: timeDiff greater than 40, so deleting\
+	       the Sdu %u UEID:%d CELLID:%d", sdu->mode.tm.rnti, rbCb->rlcId.ueId,
+               rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
             RLC_FREE_BUF(sdu->mBuf);
             RLC_FREE(gCb, sdu, sizeof(RlcSdu));
@@ -308,36 +276,20 @@ RguCStaIndInfo   *staInd;
          {
             /* Memory leak needs to be fixed */
             node = node->next;
-            RLOG_ARG4(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId, 
-                  "TMM: Searching for Rnti %d Skipping Sdu for Rnti %d"
-                  " UEID:%d CELLID:%d", 
-                  staInd->rnti,
-                  sdu->mode.tm.rnti, 
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);   
-            RLOG_ARG4(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId, 
-                  " timeDiff %d sdu->arrTime %d"
-                  " UEID:%d CELLID:%d", 
-                  timeDiff, 
-                  sdu->arrTime,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);   
-            RLOG_ARG4(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId, 
-                  "curTime %d SduQCnt %lu and continuing"
-                  " UEID:%d CELLID:%d", 
-                   curTime, 
-                   rbCb->m.tm.sduQ.count,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);   
+	    DU_LOG("\nRLC: rlcTmmSendToMac: TMM: Searching for Rnti %d Skipping \
+	       Sdu for Rnti %d UEID:%d CELLID:%d", staInd->rnti, sdu->mode.tm.rnti, 
+               rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
+	    DU_LOG("\nRLC: rlcTmmSendToMac: timeDiff %d sdu->arrTime %d UEID:%d CELLID:%d", 
+                timeDiff, sdu->arrTime, rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
+            DU_LOG("\nRLC: rlcTmmSendToMac: curTime %d SduQCnt %d and continuing"
+               " UEID:%d CELLID:%d", curTime, rbCb->m.tm.sduQ.count, rbCb->rlcId.ueId,
+               rbCb->rlcId.cellId);   
             continue;
          }
          else
          {
-            RLOG_ARG3(L_DEBUG, DBG_RBID,rbCb->rlcId.rbId,
-                  "TMM: TmSdu found %u UEID:%d CELLID:%d",
-                  sdu->mode.tm.rnti,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);   
+            DU_LOG("\nRLC: rlcTmmSendToMac: TMM: TmSdu found %u UEID:%d CELLID:%d",
+               sdu->mode.tm.rnti, rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
             break;
          }
       }
@@ -345,25 +297,20 @@ RguCStaIndInfo   *staInd;
    }
    if ( node == NULLP )
    {
-      RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-               "SDU not found TM Queue is empty UEID:%d CELLID:%d",
-               rbCb->rlcId.ueId,
-               rbCb->rlcId.cellId);   
-      RETVOID;
+      DU_LOG("\nRLC: rlcTmmSendToMac: SDU not found TM Queue is empty UEID:%d CELLID:%d",
+         rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
+      return;
    }
    sdu = (RlcSdu *)node->node;
 
-    RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[suId].pst.region,
-                        gCb->u.dlCb->rguDlSap[suId].pst.pool,
-                        dlData,(Size)sizeof(RlcMacData));
+    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+                        dlData,(Size)sizeof(RlcData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( dlData == NULLP )
    {
-      RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
-            "Memory Allocation failed UEID:%d CELLID:%d",   
-               rbCb->rlcId.ueId,
-               rbCb->rlcId.cellId);   
-      RETVOID; 
+      DU_LOG("\nRLC: rlcTmmSendToMac: Memory Allocation failed UEID:%d CELLID:%d",   
+         rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
+      return; 
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
@@ -374,7 +321,22 @@ RguCStaIndInfo   *staInd;
    dlData->numPdu = 1;
    dlData->pduInfo[0].commCh = TRUE;
    dlData->pduInfo[0].lcId = rbCb->lch.lChId;
-   dlData->pduInfo[0].pduBuf =  sdu->mBuf;
+
+   /* Copy Message to fixed buffer to send */
+   ODU_FIND_MSG_LEN(sdu->mBuf, (MsgLen *)&pduLen);
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+      dlData->pduInfo[0].pduBuf, pduLen);
+   if (dlData->pduInfo[0].pduBuf == NULLP )
+   {
+      DU_LOG("Memory allocation failed");
+      return;
+   }
+   ODU_COPY_MSG_TO_FIX_BUF(sdu->mBuf, 0, pduLen, \
+      dlData->pduInfo[0].pduBuf, (MsgLen *)&copyLen);
+   dlData->pduInfo[0].pduLen = pduLen;
+
+   /* Free message */
+   ODU_PUT_MSG_BUF(sdu->mBuf);
 
    /* kw005.201 ccpu00117318, updating the statistics */
    gCb->genSts.bytesSent += sdu->sduSz;
@@ -388,17 +350,20 @@ RguCStaIndInfo   *staInd;
                  &sdu->lstEnt); 
    RLC_FREE(gCb,sdu, sizeof(RlcSdu));
 
-   /* If trace flag is enabled send the trace indication */
-   if(gCb->init.trc == TRUE)
+   /* Fill Pst structure. Copying rguSap->pst to pst to avoid any
+    * changes in rguSap->pst */
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_RLC_TO_MAC(pst, gCb->u.dlCb->rguDlSap[suId].pst.dstProcId, \
+      RLC_DL_INST, EVENT_DL_DATA_TO_MAC);
+
+   if(RlcSendDlDataToMac(&pst, dlData) != ROK)
    {
-      /* Populate the trace params */
-      rlcLmmSendTrc(gCb,EVTRLCDLDAT, NULLP);
-   }
-   
-   RlcMacSendDlData(&(gCb->u.dlCb->rguDlSap[suId].pst),
-                   gCb->u.dlCb->rguDlSap[suId].spId,
-                   dlData);
-   RETVOID;
+      RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[0].pduBuf, \
+         dlData->pduInfo[0].pduLen);
+      RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+   } 
+
+   return;
 }
 
 /**
@@ -459,7 +424,7 @@ RlcDlRbCb   *rbCb;
  */
 
 #ifdef ANSI
-PRIVATE Void rlcTmmSndStaRsp
+PRIVATE Void rlcTmmSendBoSta
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,                 
@@ -467,25 +432,24 @@ MsgLen          bo,
 KwuDatReqInfo   *datReqInfo         
 )
 #else
-PRIVATE Void rlcTmmSndStaRsp(rbCb,bo,datReqInfo)
+PRIVATE Void rlcTmmSendBoSta(rbCb,bo,datReqInfo)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;               
 MsgLen          bo;                
 KwuDatReqInfo   *datReqInfo;   
 #endif
 {
-//   RguCStaRspInfo   *staRspInfo;   /* Status Response Information */
-   RlcMacBOStatus   *boStatus;      /* Buffer occupancy status information */
-   RlcRguSapCb       *rguSap;       /* SAP Information */
+   Pst              pst;            /* Post structure */    
+   RlcBoStatus      *boStatus;      /* Buffer occupancy status information */
+   RlcRguSapCb      *rguSap;        /* SAP Information */
 
-   TRC3(rlcTmmSndStaRsp)
+   TRC3(rlcTmmSendBoSta)
 
 
    rguSap = &(gCb->u.dlCb->rguDlSap[rbCb->rguSapId]);
 
-   RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.region,
-                       gCb->u.dlCb->rguDlSap[rbCb->rguSapId].pst.pool,
-                       boStatus, sizeof(RguCStaRspInfo));
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+                       boStatus, sizeof(RlcBoStatus));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( boStatus == NULLP )
    {
@@ -498,7 +462,7 @@ KwuDatReqInfo   *datReqInfo;
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
    boStatus->cellId = rbCb->rlcId.cellId;
-   boStatus->rnti = rbCb->rlcId.ueId;
+   boStatus->ueIdx = rbCb->rlcId.ueId;
    boStatus->commCh = TRUE;
    boStatus->lcId = rbCb->lch.lChId;
    boStatus->bo = bo;
@@ -507,10 +471,19 @@ KwuDatReqInfo   *datReqInfo;
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      rlcLmmSendTrc(gCb, EVTRLCBOSTA, NULLP);
+      rlcLmmSendTrc(gCb, EVENT_BO_STATUS_TO_MAC, NULLP);
    }
 
-   RlcMacSendBOStatus(&rguSap->pst, rguSap->spId, boStatus);
+   /* Fill Pst structure. Copying rguSap->pst to pst to avoid any
+    * changes in rguSap->pst */
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_RLC_TO_MAC(pst, rguSap->pst.dstProcId, \
+      RLC_DL_INST, EVENT_DL_DATA_TO_MAC);
+
+   if(RlcSendBoStatusToMac(&pst, boStatus) != ROK)
+   {
+      RLC_FREE_SHRABL_BUF(pst.region, pst.pool, boStatus, sizeof(RlcBoStatus));
+   }
 
    RETVOID;
 } 

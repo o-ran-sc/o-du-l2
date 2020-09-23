@@ -31,7 +31,7 @@
 
         --RlcUiKwuBndReq
         --RlcUiKwuUbndReq
-        --RlcUiKwuDatReq
+        --rlcProcDlData
         --RlcUiKwuDiscSduReq 
 
      File:     kw_uim.c
@@ -781,36 +781,22 @@ Reason   reason;
  * @param[in] datreq  Data Request Information
  * @param[in] mBuf        Data Buffer (SDU) 
  *
- * @return  S16
+ * @return  uint8_t
  *    -# ROK 
  *    -# RFAILED
  */
-#ifdef ANSI
-S16 RlcUiKwuDatReq
-(
-Pst             *pst,   
-KwuDatReqInfo   *datReq, 
-Buffer          *mBuf   
-)
-#else
-S16 RlcUiKwuDatReq(pst, datReq, mBuf)
-Pst             *pst;  
-KwuDatReqInfo   *datReq; 
-Buffer          *mBuf;  
-#endif
+uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
 {
-   S16          ret = ROK;   /* Return Value */
+   uint8_t       ret = ROK;   /* Return Value */
    RlcDlRbCb     *rbCb;       /* RB Control Block */
    RlcCb         *tRlcCb;
-
-   TRC3(RlcUiKwuDatReq)
 
    DU_LOG("\nRLC : Received DL Data");
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(pst->dstInst >= MAX_RLC_INSTANCES)
    {
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return RFAILED;
    }
 #endif
@@ -821,7 +807,7 @@ Buffer          *mBuf;
    rlcDbmFetchDlRbCbByRbId(tRlcCb, &datReq->rlcId, &rbCb);
    if(!rbCb)
    {
-      RLOG_ARG2(L_WARNING, DBG_UEID,datReq->rlcId.ueId, "CellId[%u]:DL RbId [%d] not found",
+      DU_LOG("\nRLC : CellId[%u]:DL RbId [%d] not found",
             datReq->rlcId.cellId,datReq->rlcId.rbId);
       RLC_FREE_BUF(mBuf);
 
@@ -860,11 +846,11 @@ Buffer          *mBuf;
       }
       default:
       {
-         RLOG0(L_ERROR, "Invalid RB Mode");
+         DU_LOG("\nRLC : Invalid RB Mode");
          break;
       }
    }
-   return (ret);
+   return ret;
 } 
 
 

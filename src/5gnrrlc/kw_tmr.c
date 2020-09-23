@@ -32,10 +32,6 @@
         File:    kw_tmr.c
   
 *********************************************************************21*/
-static const char* RLOG_MODULE_NAME="TMR";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=202;
-
 
 /* header (.h) include files */
 #include "common_def.h"
@@ -102,19 +98,7 @@ PRIVATE Void rlcBndTmrExpiry(PTR cb);
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcStartTmr
-(
-RlcCb  *gCb,
-PTR   cb,          
-S16   tmrEvnt     
-)
-#else
-Void rlcStartTmr (gCb,cb, tmrEvnt)
-RlcCb  *gCb;
-PTR   cb;        
-S16   tmrEvnt;  
-#endif
+void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
 {
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
@@ -123,8 +107,6 @@ S16   tmrEvnt;
 
    CmTmrArg arg;
    arg.wait = 0;
-
-   TRC2(rlcStartTmr)
 
    /* kw002.201 Adjusting the wait time as per timeRes configured by layer manager */
    switch (tmrEvnt)
@@ -200,7 +182,7 @@ S16   tmrEvnt;
 #endif
       default:
       {
-         RLOG0(L_ERROR, "Invalid tmr Evnt");
+         DU_LOG("\nRLC : rlcStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
       }
    } 
 
@@ -215,7 +197,7 @@ S16   tmrEvnt;
       cmPlcCbTq(&arg);
    }
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -228,26 +210,13 @@ S16   tmrEvnt;
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcStopTmr
-(
-RlcCb   *gCb,
-PTR    cb,
-U8     tmrType
-)
-#else
-Void rlcStopTmr (gCb, cb, tmrType)
-RlcCb   *gCb;
-PTR    cb; 
-U8     tmrType;
-#endif
+void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
 {
    CmTmrArg   arg;
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    RlcL2MeasEvtCb *measEvtCb = NULLP;
 #endif
-   TRC2(rlcStopTmr)
 
    arg.timers = NULLP;
 
@@ -295,7 +264,7 @@ U8     tmrType;
 #endif
       default:
       {
-         RLOG0(L_ERROR, "Invalid tmr Evnt");
+         DU_LOG("\nRLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
       }
    } 
    if (tmrType != TMR0)
@@ -309,7 +278,7 @@ U8     tmrType;
       cmRmvCbTq(&arg);
    }
    
-   RETVOID;
+   return;
 }
 
 /**
@@ -399,22 +368,8 @@ S16   tmrEvnt;
  *      -# ROK 
  *      -# RFAILED 
 */
-#ifdef ANSI
-Bool rlcChkTmr
-(
-RlcCb   *gCb,
-PTR    cb,
-S16    tmrEvnt
-)
-#else
-Bool rlcChkTmr(gCb,cb, tmrEvnt)
-RlcCb   *gCb;
-PTR    cb;
-S16    tmrEvnt;
-#endif
+bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
 {
-   TRC2(rlcChkTmr)
-
    switch (tmrEvnt)
    {
       case RLC_EVT_UMUL_REORD_TMR:
@@ -443,11 +398,11 @@ S16    tmrEvnt;
       }
       default:
       {
-         RLOG0(L_ERROR, "Invalid tmr Evnt");
+         DU_LOG("\nRLC : rlcChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
       }
    } 
 
-   return (FALSE);
+   return FALSE;
 }
 
 /**

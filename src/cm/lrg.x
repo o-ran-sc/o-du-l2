@@ -533,12 +533,12 @@ typedef uint8_t (*LrgSchCfgReq)     ARGS((
         RgMngmt    *cfg                /* Management Structure */
      ));
 
-typedef S16 (*LrgCfgCfm)     ARGS((
+typedef uint8_t (*LrgCfgCfm)     ARGS((
         Pst        *pst,               /* Post Structure */
         RgMngmt    *cfg                /* Management Structure */
      ));
 
-typedef S16 (*LrgSchCfgCfm)     ARGS((
+typedef uint8_t (*LrgSchCfgCfm)     ARGS((
         Pst        *pst,               /* Post Structure */
         RgMngmt    *cfg                /* Management Structure */
      ));
@@ -643,7 +643,7 @@ typedef S16 (*LrgSchL2MeasStopCfm)     ARGS((
   * @param cfg pointer to RgMngmt
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+S16 RgMiLrgCfgReq ARGS((Pst *pst, RgMngmt *cfg));
 
  /** @brief This primitive carries the Configuration Request
   * for Scheduler sent from the DU APP to MAC.
@@ -653,7 +653,7 @@ EXTERN S16 RgMiLrgCfgReq ARGS((Pst *pst, RgMngmt *cfg));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN uint8_t MacSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+uint8_t MacSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
 
  /** @brief This primitive carries the Confirmation for a Configuration Request
   * sent from the layer manager to MAC.
@@ -663,7 +663,7 @@ EXTERN uint8_t MacSchGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 RgMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
 
  /** @brief This primitive is sent from Layer manager to Scheduler. It carries
   * configuration information towards MAC.
@@ -677,7 +677,7 @@ EXTERN S16 RgMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
   * @param cfg pointer to RgMngmt
   * @return ROK/RFAILED
   */
-EXTERN uint8_t  SchProcGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+uint8_t  SchProcGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
 
  /** @brief This primitive carries the Confirmation for a Configuration Request
   * sent from the layer manager to Scheduler.
@@ -687,7 +687,7 @@ EXTERN uint8_t  SchProcGenCfgReq ARGS((Pst *pst, RgMngmt *cfg));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 RgMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
 
  /** @brief This primitive carries the Request for statistics from MAC layer
   * sent from the layer manager.
@@ -701,7 +701,7 @@ EXTERN S16 RgMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
   * @param sts pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
+S16 RgMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
 
  /** @brief This primitive carries the Statistics for a Statistics Request
   * sent from the layer manager to MAC.
@@ -711,7 +711,7 @@ EXTERN S16 RgMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 RgMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
 
  /** @brief This primitive carries the Status request 
   * sent from the layer manager to MAC.
@@ -721,7 +721,7 @@ EXTERN S16 RgMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
+S16 RgMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
 
  /** @brief This primitive carries the Confirmation for a Status Request
   * sent from the layer manager to MAC.
@@ -731,7 +731,7 @@ EXTERN S16 RgMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 RgMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
 
  /** @brief This primitive carries the Unsolicited status indications from MAC
   * to the layer manager i.e. Alarms.
@@ -741,7 +741,7 @@ EXTERN S16 RgMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
   * @param usta pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
+S16 RgMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
  /** @brief This primitive carries the Unsolicited status indications from
   * scheduler to the layer manager i.e. Alarms.
   * @details This primitive is used by Scheduler to inform Layer manager about some
@@ -750,7 +750,7 @@ EXTERN S16 RgMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
   * @param usta pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
+S16 RgMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
 
  /** @brief This primitive carries the control request sent from the layer
   * manager to MAC layer.
@@ -763,7 +763,7 @@ EXTERN S16 RgMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
+S16 RgMiLrgCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
  /** @brief This primitive carries the Confirmation for a Control Request
   * sent from the layer manager to MAC.
   * @details This primitive is used by MAC to inform Layer manager about the
@@ -772,7 +772,7 @@ EXTERN S16 RgMiLrgCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
+S16 RgMiLrgCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
  /** @brief This primitive carries the control request sent from the layer
   * manager to MAC layer.
   * @details This primitive is sent from the layer manager to control the MAC
@@ -784,7 +784,7 @@ EXTERN S16 RgMiLrgCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgSchCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
+S16 RgMiLrgSchCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
  /** @brief This primitive carries the Confirmation for a Control Request
   * sent from the layer manager to MAC.
   * @details This primitive is used by MAC to inform Layer manager about the
@@ -793,7 +793,7 @@ EXTERN S16 RgMiLrgSchCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
   * @param cfm pointer to RgMngmt 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgSchCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
+S16 RgMiLrgSchCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
  /** @brief This primitive carries the a copy of the received buffer from MAC to
   * the layer manager. This is called the Tracing functionality of the layer.
   * @details This primitive is used by MAC to send a copy of the received buffer
@@ -803,7 +803,7 @@ EXTERN S16 RgMiLrgSchCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
   * @param mBuf pointer to Buffer contains the portion of the received message. 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc, Buffer *mBuf));
+S16 RgMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc, Buffer *mBuf));
 #ifdef LTE_L2_MEAS
  /** @brief This primitive is to enable L2 (layer 2) measurements at the MAC
   * layer.
@@ -814,7 +814,7 @@ EXTERN S16 RgMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc, Buffer *mBuf));
   * @param schL2MeasInfo pointer to LrgSchMeasReqInfo 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgSchL2MeasReq ARGS((Pst *pst, LrgSchMeasReqInfo *schL2MeasInfo));
+S16 RgMiLrgSchL2MeasReq ARGS((Pst *pst, LrgSchMeasReqInfo *schL2MeasInfo));
  /** @brief This primitive carries the results of the L2 Measurements gathered
   * by MAC to the layer manager.
   * 
@@ -824,7 +824,7 @@ EXTERN S16 RgMiLrgSchL2MeasReq ARGS((Pst *pst, LrgSchMeasReqInfo *schL2MeasInfo)
   * @param schL2MeasCfm pointer to LrgSchMeasCfmInfo 
   * @return ROK/RFAILED
   */
-EXTERN S16 RgMiLrgSchL2MeasCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *schL2MeasCfm));
+S16 RgMiLrgSchL2MeasCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *schL2MeasCfm));
  /** @brief This primitive is to Stop L2 (layer 2) measurements at the MAC
   * layer.
   *
@@ -835,7 +835,7 @@ EXTERN S16 RgMiLrgSchL2MeasCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *schL2MeasCfm))
   * @return ROK/RFAILED
   */
 
-EXTERN S16 RgMiLrgSchL2MeasStopReq ARGS((Pst *pst, LrgSchMeasStopReqInfo *schL2MeasInfo));
+S16 RgMiLrgSchL2MeasStopReq ARGS((Pst *pst, LrgSchMeasStopReqInfo *schL2MeasInfo));
  /** @brief This primitive is to used to send  L2 (layer 2) measurements at the MAC
   * layer.
   *
@@ -846,7 +846,7 @@ EXTERN S16 RgMiLrgSchL2MeasStopReq ARGS((Pst *pst, LrgSchMeasStopReqInfo *schL2M
   * @return ROK/RFAILED
   */
 
-EXTERN S16 RgMiLrgSchL2MeasSendReq ARGS((Pst *pst,LrgSchMeasSndReqInfo *schL2MeasInfo));
+S16 RgMiLrgSchL2MeasSendReq ARGS((Pst *pst,LrgSchMeasSndReqInfo *schL2MeasInfo));
  /** @brief This primitive carries the confrmratoin  of the L2 Measurements gathered
   * by MAC to the layer manager.
   *
@@ -857,38 +857,38 @@ EXTERN S16 RgMiLrgSchL2MeasSendReq ARGS((Pst *pst,LrgSchMeasSndReqInfo *schL2Mea
   * @return ROK/RFAILED
   */
 
-EXTERN S16 RgMiLrgSchL2MeasStopCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *schL2MeasCfm));
+S16 RgMiLrgSchL2MeasStopCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *schL2MeasCfm));
 #endif /* LTE_L2_MEAS */
 #endif /* RG. */
 
 #ifdef SM 
-EXTERN S16 smRgActvInit ARGS((Ent ent,Inst inst, Region region,Reason reason));
-EXTERN S16 smRgActvTsk ARGS((Pst *pst, Buffer *mBuf));
-EXTERN S16 SmMiLrgCfgReq ARGS((Pst *pst, RgMngmt *cfg));
-EXTERN S16 SmMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 SmMiLrgSchCfgReq ARGS((Pst *pst, RgMngmt *cfg));
-EXTERN S16 SmMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 SmMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
-EXTERN S16 SmMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 SmMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
-EXTERN S16 SmMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 SmMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
-EXTERN S16 SmMiLrgCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
-EXTERN S16 SmMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
-EXTERN S16 SmMiLrgCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
-EXTERN S16 SmMiLrgSchCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
-EXTERN S16 SmMiLrgSchCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
-EXTERN S16 SmMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc, Buffer *mBuf));
+S16 smRgActvInit ARGS((Ent ent,Inst inst, Region region,Reason reason));
+S16 smRgActvTsk ARGS((Pst *pst, Buffer *mBuf));
+S16 SmMiLrgCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+S16 SmMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 SmMiLrgSchCfgReq ARGS((Pst *pst, RgMngmt *cfg));
+S16 SmMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 SmMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
+S16 SmMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 SmMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
+S16 SmMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 SmMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
+S16 SmMiLrgCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
+S16 SmMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
+S16 SmMiLrgCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
+S16 SmMiLrgSchCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
+S16 SmMiLrgSchCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
+S16 SmMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc, Buffer *mBuf));
 /* lrg_x_001.main_3 - ADD -  Added the following functions for LTE_L2_MEAS */
 #ifdef LTE_L2_MEAS
-EXTERN S16 SmMiLrgSchL2MeasStartReq ARGS((Pst *pst, LrgSchMeasReqInfo *schL2MeasReq));
-EXTERN S16 SmMiLrgSchL2MeasCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *schL2MeasCfm));
-EXTERN S16 SmMiLrgSchL2MeasStopReq ARGS((Pst *pst, LrgSchMeasStopReqInfo *schL2MeasReq));
-EXTERN S16 SmMiLrgSchL2MeasSendReq ARGS((Pst *pst, LrgSchMeasSndReqInfo *schL2MeasReq));
-EXTERN S16 SmMiLrgSchL2MeasStopCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *schL2MeasCfm));
-EXTERN S16 SmMiLrgSchL2MeasReq ARGS((Pst *pst, LrgSchMeasReqInfo *meas));
-EXTERN S16 SmMiLrgSchL2SendMeasReq ARGS((Pst *pst, LrgSchMeasSndReqInfo *meas));
-EXTERN S16 SmMiLrgSchL2StopMeasReq ARGS((Pst *pst, LrgSchMeasStopReqInfo *meas));
+S16 SmMiLrgSchL2MeasStartReq ARGS((Pst *pst, LrgSchMeasReqInfo *schL2MeasReq));
+S16 SmMiLrgSchL2MeasCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *schL2MeasCfm));
+S16 SmMiLrgSchL2MeasStopReq ARGS((Pst *pst, LrgSchMeasStopReqInfo *schL2MeasReq));
+S16 SmMiLrgSchL2MeasSendReq ARGS((Pst *pst, LrgSchMeasSndReqInfo *schL2MeasReq));
+S16 SmMiLrgSchL2MeasStopCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *schL2MeasCfm));
+S16 SmMiLrgSchL2MeasReq ARGS((Pst *pst, LrgSchMeasReqInfo *meas));
+S16 SmMiLrgSchL2SendMeasReq ARGS((Pst *pst, LrgSchMeasSndReqInfo *meas));
+S16 SmMiLrgSchL2StopMeasReq ARGS((Pst *pst, LrgSchMeasStopReqInfo *meas));
 #endif /* LTE_L2_MEAS */
 #endif /* SM. */
 
@@ -898,26 +898,26 @@ EXTERN S16 SmMiLrgSchL2StopMeasReq ARGS((Pst *pst, LrgSchMeasStopReqInfo *meas))
 #if (defined(LCLRG))
 /** @brief This API is used to send a 
 Config Request from LM to MAC.*/
-EXTERN S16 cmPkLrgCfgReq ARGS((
+S16 cmPkLrgCfgReq ARGS((
    Pst *                pst,
    RgMngmt *            cfg
 ));
 /** @brief This API is used to send a 
 Configuration Request from LM to MAC. */
-EXTERN S16 cmUnpkLrgCfgReq ARGS((
+S16 cmUnpkLrgCfgReq ARGS((
    LrgCfgReq            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Configuration Request from LM to SCH. */
-EXTERN S16 cmPkLrgSchCfgReq ARGS((
+S16 cmPkLrgSchCfgReq ARGS((
    Pst *                pst,
    RgMngmt *            cfg
 ));
 /** @brief This API is used to send a 
 Configuration Request from LM to SCH. */
-EXTERN S16 cmUnpkLrgSchCfgReq ARGS((
+S16 cmUnpkLrgSchCfgReq ARGS((
    LrgSchCfgReq         func,
    Pst *                pst,
    Buffer               *mBuf
@@ -926,72 +926,72 @@ EXTERN S16 cmUnpkLrgSchCfgReq ARGS((
 #ifdef LTE_L2_MEAS
 /** @brief This API is used to send a 
 L2 Measurement Request from LM to SCH. */
-EXTERN S16 cmPkLrgSchL2MeasReq ARGS((
+S16 cmPkLrgSchL2MeasReq ARGS((
    Pst *                pst,
    LrgSchMeasReqInfo *  meas
 ));
 /** @brief This API is used to send a 
 L2 Measurement Request from LM to SCH. */
-EXTERN S16 cmUnpkLrgSchL2MeasReq ARGS((
+S16 cmUnpkLrgSchL2MeasReq ARGS((
    LrgSchL2MeasReq         func,
    Pst *                 pst,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkLrgSchL2MeasCfm ARGS((
+S16 cmPkLrgSchL2MeasCfm ARGS((
     Pst * pst,
     LrgSchMeasCfmInfo  *measInfo
 ));
-EXTERN S16 cmUnpkLrgSchL2MeasCfm ARGS((
+S16 cmUnpkLrgSchL2MeasCfm ARGS((
     LrgSchL2MeasCfm func,
     Pst *pst,
     Buffer *mBuf
 ));
-EXTERN S16 cmPkLrgSchL2MeasReq ARGS((
+S16 cmPkLrgSchL2MeasReq ARGS((
    Pst *                pst,
    LrgSchMeasReqInfo *  meas
 ));
 /** @brief This API is used to send a 
 L2 Measurement Request from LM to SCH. */
-EXTERN S16 cmUnpkLrgSchL2MeasReq ARGS((
+S16 cmUnpkLrgSchL2MeasReq ARGS((
    LrgSchL2MeasReq         func,
    Pst *                 pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a
 L2 Measurement Stop Request from LM to SCH. */
-EXTERN S16 cmPkLrgSchL2MeasSendReq ARGS((
+S16 cmPkLrgSchL2MeasSendReq ARGS((
    Pst *                pst,
    LrgSchMeasSndReqInfo *  meas
 ));
 /** @brief This API is used to send a 
 L2 Measurement Request from LM to SCH. */
-EXTERN S16 cmUnpkLrgSchL2MeasSendReq ARGS((
+S16 cmUnpkLrgSchL2MeasSendReq ARGS((
    LrgSchL2MeasSendReq         func,
    Pst *                 pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a
 L2 Measurement Stop Request from LM to SCH. */
-EXTERN S16 cmPkLrgSchL2MeasStopReq ARGS((
+S16 cmPkLrgSchL2MeasStopReq ARGS((
    Pst *                pst,
    LrgSchMeasStopReqInfo *  meas
 ));
 /** @brief This API is used to send a 
 L2 Measurement Request from LM to SCH. */
-EXTERN S16 cmUnpkLrgSchL2MeasStopReq ARGS((
+S16 cmUnpkLrgSchL2MeasStopReq ARGS((
    LrgSchL2MeasStopReq         func,
    Pst *                 pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to carry
 L2 Measurement Cfm  from SCH. */
-EXTERN S16 cmPkLrgSchL2MeasStopCfm ARGS((
+S16 cmPkLrgSchL2MeasStopCfm ARGS((
     Pst * pst,
     LrgSchMeasCfmInfo  *measInfo
 ));
 /** @brief This API is used to carrya
 L2 Measurement Cfm  from SCH. */
-EXTERN S16 cmUnpkLrgSchL2MeasStopCfm ARGS((
+S16 cmUnpkLrgSchL2MeasStopCfm ARGS((
     LrgSchL2MeasStopCfm func,
     Pst *pst,
     Buffer *mBuf
@@ -999,290 +999,290 @@ EXTERN S16 cmUnpkLrgSchL2MeasStopCfm ARGS((
 #endif
 /** @brief This API is used to send a 
 Configuration Confirm from MAC to LM. */
-EXTERN S16 cmPkLrgCfgCfm ARGS((
+uint8_t cmPkLrgCfgCfm ARGS((
    Pst *                pst,
    RgMngmt *            cfm
 ));
 /** @brief This API is used to send a 
 Configuration Confirm from MAC to LM. */
-EXTERN S16 cmUnpkLrgCfgCfm ARGS((
+S16 cmUnpkLrgCfgCfm ARGS((
    LrgCfgCfm            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Configuration Confirm from SCH to LM. */
-EXTERN S16 cmPkLrgSchCfgCfm ARGS((
+ uint8_t cmPkLrgSchCfgCfm ARGS((
    Pst *                pst,
    RgMngmt *            cfg
 ));
 /** @brief This API is used to send a 
 Configuration Confirm from SCH to LM. */
-EXTERN S16 cmUnpkLrgSchCfgCfm ARGS((
+S16 cmUnpkLrgSchCfgCfm ARGS((
    LrgSchCfgCfm         func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Statistics Request from LM to MAC. */
-EXTERN S16 cmPkLrgStsReq ARGS((
+ S16 cmPkLrgStsReq ARGS((
    Pst *                pst,
    RgMngmt *            sts
 ));
 /** @brief This API is used to send a 
 Statistics Request from LM to MAC. */
-EXTERN S16 cmUnpkLrgStsReq ARGS((
+S16 cmUnpkLrgStsReq ARGS((
    LrgStsReq            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Statistics Confirm from MAC to LM. */
-EXTERN S16 cmPkLrgStsCfm ARGS((
+S16 cmPkLrgStsCfm ARGS((
    Pst *                pst,
    RgMngmt *            cfm
 ));
 /** @brief This API is used to send a 
 Statistics Confirm from MAC to LM. */
-EXTERN S16 cmUnpkLrgStsCfm ARGS((
+S16 cmUnpkLrgStsCfm ARGS((
    LrgStsCfm            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Status Request from LM to MAC. */
-EXTERN S16 cmPkLrgStaReq ARGS((
+S16 cmPkLrgStaReq ARGS((
    Pst *                pst,
    RgMngmt *            sta
 ));
 /** @brief This API is used to send a 
 Status Request from LM to MAC. */
-EXTERN S16 cmUnpkLrgStaReq ARGS((
+S16 cmUnpkLrgStaReq ARGS((
    LrgStaReq            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Status Confirm from MAC to LM. */
-EXTERN S16 cmPkLrgStaCfm ARGS((
+S16 cmPkLrgStaCfm ARGS((
    Pst *                pst,
    RgMngmt *            cfm
 ));
 /** @brief This API is used to send a 
 Status Confirm from MAC to LM. */
-EXTERN S16 cmUnpkLrgStaCfm ARGS((
+S16 cmUnpkLrgStaCfm ARGS((
    LrgStaCfm            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Status Indication from MAC to LM. */
-EXTERN S16 cmPkLrgStaInd ARGS((
+S16 cmPkLrgStaInd ARGS((
    Pst *                pst,
    RgMngmt *            usta
 ));
 /** @brief This API is used to send a 
 Status Indication from MAC to LM. */
-EXTERN S16 cmUnpkLrgStaInd ARGS((
+S16 cmUnpkLrgStaInd ARGS((
    LrgStaInd            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Status Indication from SCH to LM. */
-EXTERN S16 cmPkLrgSchStaInd ARGS((
+S16 cmPkLrgSchStaInd ARGS((
    Pst *                pst,
    RgMngmt *            sta
 ));
 /** @brief This API is used to send a 
 Status Indication from SCH to LM. */
-EXTERN S16 cmUnpkLrgSchStaInd ARGS((
+S16 cmUnpkLrgSchStaInd ARGS((
    LrgSchStaInd         func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Control Request from LM to MAC. */
-EXTERN S16 cmPkLrgCntrlReq ARGS((
+S16 cmPkLrgCntrlReq ARGS((
    Pst *                pst,
    RgMngmt *            cntrl
 ));
 /** @brief This API is used to send a 
 Control Request from LM to MAC. */
-EXTERN S16 cmUnpkLrgCntrlReq ARGS((
+S16 cmUnpkLrgCntrlReq ARGS((
    LrgCntrlReq          func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Control Request from LM to SCH. */
-EXTERN S16 cmPkLrgSchCntrlReq ARGS((
+S16 cmPkLrgSchCntrlReq ARGS((
    Pst *                pst,
    RgMngmt *            cntrl
 ));
 /** @brief This API is used to send a 
 Control Request from LM to SCH. */
-EXTERN S16 cmUnpkLrgSchCntrlReq ARGS((
+S16 cmUnpkLrgSchCntrlReq ARGS((
    LrgSchCntrlReq       func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Control Confirm from MAC to LM.*/
-EXTERN S16 cmPkLrgCntrlCfm ARGS((
+S16 cmPkLrgCntrlCfm ARGS((
    Pst *                pst,
    RgMngmt *            cfm
 ));
 /** @brief This API is used to send a 
 Control Confirm from MAC to LM. */
-EXTERN S16 cmUnpkLrgCntrlCfm ARGS((
+S16 cmUnpkLrgCntrlCfm ARGS((
    LrgCntrlCfm          func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Control Confirm from SCH to LM. */
-EXTERN S16 cmPkLrgSchCntrlCfm ARGS((
+S16 cmPkLrgSchCntrlCfm ARGS((
    Pst *                pst,
    RgMngmt *            cntrl
 ));
 /** @brief This API is used to send a 
 Control Confirm from SCH to LM. */
-EXTERN S16 cmUnpkLrgSchCntrlCfm ARGS((
+S16 cmUnpkLrgSchCntrlCfm ARGS((
    LrgSchCntrlCfm       func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
 Trace Indication from MAC to LM. */
-EXTERN S16 cmPkLrgTrcInd ARGS((
+S16 cmPkLrgTrcInd ARGS((
    Pst *                pst,
    RgMngmt *            trc,
    Buffer *             trcBuf
 ));
 /** @brief This API is used to send a 
 Trace Indication from MAC to LM. */
-EXTERN S16 cmUnpkLrgTrcInd ARGS((
+S16 cmUnpkLrgTrcInd ARGS((
    LrgTrcInd            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgGenCfg ARGS((
+S16 cmPkRgGenCfg ARGS((
    RgGenCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgGenCfg ARGS((
+S16 cmUnpkRgGenCfg ARGS((
    RgGenCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgUpSapCfg ARGS((
+S16 cmPkRgUpSapCfg ARGS((
    RgUpSapCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgUpSapCfg ARGS((
+S16 cmUnpkRgUpSapCfg ARGS((
    RgUpSapCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgLowSapCfg ARGS((
+S16 cmPkRgLowSapCfg ARGS((
    RgLowSapCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgLowSapCfg ARGS((
+S16 cmUnpkRgLowSapCfg ARGS((
    RgLowSapCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgGenSts ARGS((
+S16 cmPkRgGenSts ARGS((
    RgGenSts             *param,
    Buffer               *mBuf
 ));
 
 #ifdef MAC_SCH_STATS
-EXTERN S16 cmPkRgSchHqRetxStats ARGS((
+S16 cmPkRgSchHqRetxStats ARGS((
    RgSchHqRetxStats     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgSchNackAckStats ARGS((
+S16 cmPkRgSchNackAckStats ARGS((
    RgSchNackAckStats    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgHqNumRetx ARGS((
+S16 cmPkRgHqNumRetx ARGS((
    RgSchHqNumRetx       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgAckNack ARGS((
+S16 cmPkRgAckNack ARGS((
    RgAckNack            *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmUnpkRgSchHqRetxStats ARGS((
+S16 cmUnpkRgSchHqRetxStats ARGS((
    RgSchHqRetxStats     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgSchNackAckStats ARGS((
+S16 cmUnpkRgSchNackAckStats ARGS((
    RgSchNackAckStats    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgHqNumRetx ARGS((
+S16 cmUnpkRgHqNumRetx ARGS((
    RgSchHqNumRetx       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgAckNack ARGS((
+S16 cmUnpkRgAckNack ARGS((
    RgAckNack            *param,
    Buffer               *mBuf
 ));
 #endif /* MAC_SCH_STATS */
 
-EXTERN S16 cmUnpkRgGenSts ARGS((
+S16 cmUnpkRgGenSts ARGS((
    RgGenSts             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgSapSts ARGS((
+S16 cmPkRgSapSts ARGS((
    RgSapSts             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgSapSts ARGS((
+S16 cmUnpkRgSapSts ARGS((
    RgSapSts             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgSchInstCfg ARGS((
+S16 cmPkRgSchInstCfg ARGS((
    RgSchInstCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgSchInstCfg ARGS((
+S16 cmUnpkRgSchInstCfg ARGS((
    RgSchInstCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgCfg ARGS((
+S16 cmPkRgCfg ARGS((
    RgCfg                *param,
    S16                  elmnt,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgCfg ARGS((
+S16 cmUnpkRgCfg ARGS((
    RgCfg                *param,
    S16                  elmnt,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgSapSta ARGS((
+S16 cmPkRgSapSta ARGS((
    RgSapSta             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgSapSta ARGS((
+S16 cmUnpkRgSapSta ARGS((
    RgSapSta             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgSts ARGS((
+S16 cmPkRgSts ARGS((
    RgSts                *param,
    S16                  elmnt,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgSts ARGS((
+S16 cmUnpkRgSts ARGS((
    RgSts                *param,
    S16                  elmnt,
    Buffer               *mBuf
 ));
 /* lrg_x_001.main_3 - MODIFY -  Modified the below function to hold the event type */
 #ifdef LRG_V1
-EXTERN S16 cmPkRgSsta ARGS((
+S16 cmPkRgSsta ARGS((
    Pst                  *pst,
    RgSsta               *param,
    S16                  elmnt,
@@ -1291,76 +1291,76 @@ EXTERN S16 cmPkRgSsta ARGS((
    Buffer               *mBuf
 ));
 #else /*LRG_V1 not defined */
-EXTERN S16 cmPkRgSsta ARGS((
+S16 cmPkRgSsta ARGS((
    Pst                  *pst,
    RgSsta               *param,
    S16                  elmnt,
    Buffer               *mBuf
 ));
 #endif /* LRG_V1 endif */
-EXTERN S16 cmUnpkRgSsta ARGS((
+S16 cmUnpkRgSsta ARGS((
    Pst                  *pst,
    RgSsta               *param,
    S16                  elmnt,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgUstaDgn ARGS((
+S16 cmPkRgUstaDgn ARGS((
    RgUstaDgn            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgUstaDgn ARGS((
+S16 cmUnpkRgUstaDgn ARGS((
    RgUstaDgn            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgUsta ARGS((
+S16 cmPkRgUsta ARGS((
    RgUsta               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgUsta ARGS((
+S16 cmUnpkRgUsta ARGS((
    RgUsta               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgTrc ARGS((
+S16 cmPkRgTrc ARGS((
    RgTrc                *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgTrc ARGS((
+S16 cmUnpkRgTrc ARGS((
    RgTrc                *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgDbgCntrl ARGS((
+S16 cmPkRgDbgCntrl ARGS((
    RgDbgCntrl           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgDbgCntrl ARGS((
+S16 cmUnpkRgDbgCntrl ARGS((
    RgDbgCntrl           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgSapCntrl ARGS((
+S16 cmPkRgSapCntrl ARGS((
    RgSapCntrl           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgSapCntrl ARGS((
+S16 cmUnpkRgSapCntrl ARGS((
    RgSapCntrl           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgCntrl ARGS((
+S16 cmPkRgCntrl ARGS((
    RgCntrl              *param,
    S16                  elmnt,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgCntrl ARGS((
+S16 cmUnpkRgCntrl ARGS((
    RgCntrl              *param,
    S16                  elmnt,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgMngmt ARGS((
+S16 cmPkRgMngmt ARGS((
    Pst *pst,
    RgMngmt *param,
    U8 eventType,
    Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgMngmt ARGS((
+S16 cmUnpkRgMngmt ARGS((
    Pst *pst,
    RgMngmt *param,
    U8 eventType,
@@ -1368,12 +1368,12 @@ EXTERN S16 cmUnpkRgMngmt ARGS((
 ));
 
 #ifdef PHY_ERROR_LOGING
-EXTERN S16 cmPkRgSchUlAllocCntrl ARGS((
+S16 cmPkRgSchUlAllocCntrl ARGS((
    RgSchUlAllocCntrl *param,
    Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgSchUlAllocCntrl ARGS((
+S16 cmUnpkRgSchUlAllocCntrl ARGS((
    RgSchUlAllocCntrl *param,
    Buffer *mBuf
 ));
