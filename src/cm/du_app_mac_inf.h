@@ -42,11 +42,7 @@
 #define SS_MONITORING_SYMBOL     0x2000; /* symbol-0, set 14th bit */
 #define SIB1_MCS  4
 
-#define SRB_ID_0 0
-#define SRB_ID_1 1
-
 /* Macro for Ue Context */
-#define MAX_NUM_LOGICAL_CHANNELS 11
 #define MAX_NUM_SR_CFG_PER_CELL_GRP 8   /* Max number of scheduling request config per cell group */
 #define MAC_NUM_TAGS 4                  /* Max number of timing advance groups */
 #define MAX_NUM_BWP  4                  /* Max number of BWP per serving cell */
@@ -963,7 +959,7 @@ typedef struct macUeCfg
    SpCellCfg spCellCfg;
    MaxAggrBitRate *maxAggrBitRate;
    uint8_t numLcs;
-   LcCfg lcCfgList[MAX_NUM_LOGICAL_CHANNELS];
+   LcCfg lcCfgList[MAX_NUM_LC];
 }MacUeCfg;
 
 typedef struct nrcgi

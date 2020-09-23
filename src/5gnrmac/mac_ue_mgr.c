@@ -664,10 +664,10 @@ uint8_t sendAddUeCreateReqToSch(MacUeCfg *ueCfg)
    }
 
    schUeCfg.numLc = ueCfg->numLcs;
-   if(schUeCfg.numLc > MAX_NUM_LOGICAL_CHANNELS)
+   if(schUeCfg.numLc > MAX_NUM_LC)
    {
       DU_LOG("\nMAC : Number of Logical channels %d exceeds max limit %d",\
-	    schUeCfg.numLc, MAX_NUM_LOGICAL_CHANNELS);
+	    schUeCfg.numLc, MAX_NUM_LC);
    }  
    for(idx = 0; idx < schUeCfg.numLc; idx++)
    {
@@ -862,17 +862,17 @@ uint8_t createUeCb(MacUeCfg *ueCfg)
    }
 
    /* Fill SRB1 info */
-   if(ueCfg->numLcs > MAX_NUM_LOGICAL_CHANNELS)
+   if(ueCfg->numLcs > MAX_NUM_LC)
    {
       DU_LOG("\nMAC : Number of LC to configure[%d] exceeds limit[%d]",\
-	    ueCfg->numLcs, MAX_NUM_LOGICAL_CHANNELS);
+	    ueCfg->numLcs, MAX_NUM_LC);
       return RFAILED;
    }
 
    for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
    {
       ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcId = ueCfg->lcCfgList[lcIdx].lcId;
-      ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcState = LC_STATE_ACTIVE;
+      ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcState = MAC_LC_STATE_ACTIVE;
       ueCb->dlInfo.numDlLc++;
    }
 

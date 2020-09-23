@@ -130,7 +130,7 @@ uint8_t packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
+uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {

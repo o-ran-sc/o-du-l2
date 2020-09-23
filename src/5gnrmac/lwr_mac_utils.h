@@ -20,12 +20,12 @@
 #define FILL_PST_LWR_MAC_TO_MAC(_pst, _event)               \
 {                                                           \
    _pst.selector  = ODU_SELECTOR_TC;                        \
-   _pst.srcEnt    = ENTLWRMAC;                                  \
-   _pst.dstEnt    = ENTMAC;                                  \
+   _pst.srcEnt    = ENTLWRMAC;                              \
+   _pst.dstEnt    = ENTMAC;                                 \
    _pst.dstInst   = 0;                                      \
    _pst.srcInst   = 0;                                      \
-   _pst.dstProcId = SFndProcId();                           \
-   _pst.srcProcId = SFndProcId();                           \
+   _pst.dstProcId = ODU_FIND_PROCID();                      \
+   _pst.srcProcId = ODU_FIND_PROCID();                      \
    _pst.region = MAC_MEM_REGION;                            \
    _pst.pool = MAC_POOL;                                    \
    _pst.event = _event;                                     \

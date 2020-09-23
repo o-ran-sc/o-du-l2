@@ -119,34 +119,6 @@ uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
    return ROK;
 }
 
-/*******************************************************************
- *
- * @brief Handles UL data and send to CU
- *
- * @details
- *
- *    Function : duHdlRlcUlData
- *
- *    Functionality: 
- *     Processes UL Data from RLC and sends to CU
- * 
- *  @params[in]  Pointer to EGTP Message 
- *  @return ROK     - success
- *          RFAILED - failure
- * 
- *****************************************************************/
-
-uint8_t duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
-{
-   DU_LOG("\nDU_APP : Received UL Data at DU_APP");
-
-   /* Send UL data to CU via EGTP */
-   duSendEgtpDatInd(mBuf);
-   ODU_PUT_MSG_BUF(mBuf);
-
-   return ROK;
-}
-
 /******************************************************************
  *
  * @brief Builds and Sends DL CCCH Ind to MAC
@@ -163,7 +135,7 @@ uint8_t duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
  *
  * ****************************************************************/
 uint8_t duBuildAndSendDlCcchInd(uint16_t *cellId, uint16_t *crnti, \
-      DlCcchMsgType msgType, uint8_t *dlCcchMsg, uint16_t dlCcchMsgSize)
+      DlCcchMsgType msgType, uint16_t dlCcchMsgSize, uint8_t *dlCcchMsg)
 {
    uint8_t ret                  = ROK;
    uint16_t idx2;
@@ -237,7 +209,7 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t *cellId, uint16_t *crnti, \
  *
  * ****************************************************************/
 uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, \
-   uint8_t lcId, bool deliveryStaReq, uint16_t rrcMsgLen, uint8_t *rrcMsg)
+   uint8_t lcId, bool execDup, bool deliveryStaReq, uint16_t rrcMsgLen, uint8_t *rrcMsg)
 {
    Pst  pst;
    uint8_t ret;
@@ -256,7 +228,7 @@ uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, \
    /* Filling up the RRC msg info */
    dlRrcMsgInfo->cellId = cellId;
    dlRrcMsgInfo->ueIdx = ueCfg.ueIdx;
-   for(lcIdx = 0; lcIdx <= MAX_NUM_LOGICAL_CHANNELS; lcIdx++)
+   for(lcIdx = 0; lcIdx <= MAX_NUM_LC; lcIdx++)
    {
       if(ueCfg.rlcBearerCfg[lcIdx].lcId == lcId)
       {
@@ -267,7 +239,7 @@ uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, \
 	 break;
       }
    }
-   dlRrcMsgInfo->execDup = false;
+   dlRrcMsgInfo->execDup = execDup;
    dlRrcMsgInfo->deliveryStaRpt = deliveryStaReq;
    dlRrcMsgInfo->rrcMsg = rrcMsg;
    dlRrcMsgInfo->msgLen = rrcMsgLen;
@@ -304,7 +276,7 @@ uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, \
 uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg)
 {
    uint8_t    ret = ROK;
-   uint8_t    ieIdx, byteIdx, ueIdx;
+   uint8_t    ieIdx, ueIdx;
    uint8_t    *rrcMsg = NULLP;
    uint16_t   rrcMsgLen;
    uint16_t   cellId, cellIdx;
@@ -339,6 +311,11 @@ uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg)
          case ProtocolIE_ID_id_RRCContainer: 
             {
                rrcMsgLen = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size;
+	       if(rrcMsgLen <= 0)
+	       {
+	          DU_LOG("\nDU APP : Invalid RRC Msg Length %d in Ue Ctxt Setup Req", rrcMsgLen);
+		  return RFAILED;
+	       }
                DU_ALLOC_SHRABL_BUF(rrcMsg, rrcMsgLen);
 	       if(!rrcMsg)
 	       {
@@ -378,8 +355,8 @@ uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg)
    /* Sending DL RRC Message to RLC */
    if(ueIdx != MAX_NUM_UE)
    {
-      ret = duBuildAndSendDlRrcMsgToRlc(cellId, ueCb->rlcUeCfg, SRB_ID_1, \
-               deliveryStaReq,  rrcMsgLen, rrcMsg); 
+      ret = duBuildAndSendDlRrcMsgToRlc(cellId, ueCb->rlcUeCfg, SRB1_LCID, \
+               false, deliveryStaReq,  rrcMsgLen, rrcMsg); 
    }
    else
    {
@@ -410,77 +387,97 @@ uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg)
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 {
    DLRRCMessageTransfer_t *dlRrcMsg = NULLP;
-   uint8_t                *dlCcchMsg = NULLP;
-   uint8_t                idx, ret, srbId;
-   uint16_t               idx2, crnti, cellId, dlCcchMsgSize;
+   uint8_t                *rrcMsgPdu = NULLP;
+   uint8_t                ieIdx, ueIdx, cellIdx;
+   uint8_t                ret, srbId;
+   uint16_t               byteIdx, crnti, cellId, rrcMsgSize;
    uint32_t               gnbCuUeF1apId, gnbDuUeF1apId;
-
+   bool                   execDup = false;
+   bool                   deliveryStaRpt = false;
+   bool                   ueFound = false;
+   bool                   ueCcchCtxtFound = false; 
 
    DU_LOG("\nDU_APP : DL RRC message transfer Recevied");
    dlRrcMsg = &f1apMsg->choice.initiatingMessage->value.choice.DLRRCMessageTransfer;
 
    ret = ROK;
 
-   for(idx=0; idx<dlRrcMsg->protocolIEs.list.count; idx++)
+   for(ieIdx=0; ieIdx<dlRrcMsg->protocolIEs.list.count; ieIdx++)
    {
-      switch(dlRrcMsg->protocolIEs.list.array[idx]->id)
+      switch(dlRrcMsg->protocolIEs.list.array[ieIdx]->id)
       {
 	 case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
 	    {
-	       gnbCuUeF1apId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID;
+	       gnbCuUeF1apId = dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID;
 	       break;
 	    }
 	 case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
 	    {
-	       gnbDuUeF1apId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
+	       gnbDuUeF1apId = dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID;
 	       break;
 	    }
 	 case ProtocolIE_ID_id_SRBID:
 	    {
-	       srbId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.SRBID;
+	       srbId = dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.SRBID;
 	       break;
 	    }
 	 case ProtocolIE_ID_id_ExecuteDuplication:
-	    break;
-
+	    {
+	       execDup = true;
+	       break;
+	    }
 	 case ProtocolIE_ID_id_RRCContainer:
 	    {
-	       if(dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size > 0)
+	       if(dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size > 0)
 	       {
-		  dlCcchMsgSize = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size;
-		  DU_ALLOC(dlCcchMsg, dlCcchMsgSize);
-		  for(idx2 = 0; idx2 < dlCcchMsgSize; idx2++)
+		  rrcMsgSize = dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size;
+		  DU_ALLOC(rrcMsgPdu, rrcMsgSize);
+		  if(!rrcMsgPdu)
 		  {
-		     dlCcchMsg[idx2] = \
-		        dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf[idx2];
+		      DU_LOG("\nDU_APP : Memory allocation failed in procDlRrcMsgTrans"); 
+		      return RFAILED;
+		  }
+		  for(byteIdx = 0; byteIdx < rrcMsgSize; byteIdx++)
+		  {
+		     rrcMsgPdu[byteIdx] = \
+		        dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf[byteIdx];
 		  }
 	       }
 	       else
 	       {
 		  DU_LOG("\nDU_APP : RRC Container Size is invalid:%ld",\
-			dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
+			dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size);
+                  return RFAILED;
 	       }
 	       break;
 	    }
-
+         case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
+	    {
+	       deliveryStaRpt = true;
+	       break;
+	    }
 	 default:
 	    DU_LOG("\nDU_APP : Invalid IE received in DL RRC Msg Transfer:%ld",
-		  dlRrcMsg->protocolIEs.list.array[idx]->id);
+		  dlRrcMsg->protocolIEs.list.array[ieIdx]->id);
       }
    }
 
-   for(idx=0; idx<duCb.numUe; idx++)
+   if(srbId == SRB1_LCID) //RRC connection setup
    {
-      if(gnbDuUeF1apId == duCb.ueCcchCtxt[idx].gnbDuUeF1apId)
+      for(ueIdx=0; ueIdx < duCb.numUe; ueIdx++)
       {
-	 crnti  = duCb.ueCcchCtxt[idx].crnti;
-	 cellId = duCb.ueCcchCtxt[idx].cellId;
-	 break;
+         if(gnbDuUeF1apId == duCb.ueCcchCtxt[ueIdx].gnbDuUeF1apId)
+         {
+	    ueCcchCtxtFound = true;
+	    crnti  = duCb.ueCcchCtxt[ueIdx].crnti;
+	    cellId = duCb.ueCcchCtxt[ueIdx].cellId;
+	    break;
+         }
       }
    }
-   if(srbId == SRB_ID_1) //RRC connection setup
+   if(ueCcchCtxtFound)
    {
-      ret = duBuildAndSendDlCcchInd(&cellId, &crnti, RRC_SETUP, dlCcchMsg, dlCcchMsgSize);
+      ret = duBuildAndSendDlCcchInd(&cellId, &crnti, RRC_SETUP, rrcMsgSize, rrcMsgPdu);
       if(ret)
       {
 	 DU_LOG("\nDU_APP: Falied at duBuildAndSendDlCcchInd()");
@@ -489,10 +486,11 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
       {
 	 if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
 	 {
-	    ret = duCreateUeCb(&duCb.ueCcchCtxt[idx], gnbCuUeF1apId);
+	    ret = duCreateUeCb(&duCb.ueCcchCtxt[ueIdx], gnbCuUeF1apId);
 	    if(ret)
 	    {
-	       DU_LOG("\nDU_APP: Failed at duCreateUeCb for cellId [%d]", duCb.ueCcchCtxt[idx].cellId);
+	       DU_LOG("\nDU_APP: Failed at duCreateUeCb for cellId [%d]", \
+		     duCb.ueCcchCtxt[ueIdx].cellId);
 	       ret = RFAILED;
 	    }
 	 }
@@ -502,7 +500,29 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 	    ret = RFAILED;
 	 }
       }
-   }            
+   }
+   else
+   {
+      for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
+      {
+	 for(ueIdx = 0 ; ueIdx < MAX_NUM_UE; ueIdx++)
+	 {
+	    if((gnbCuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId)
+		  && (gnbDuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId))
+	    {
+	       ueFound = true;
+	       ret = duBuildAndSendDlRrcMsgToRlc(duCb.actvCellLst[cellIdx]->cellId, \
+		     duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg, srbId, \
+		     execDup, deliveryStaRpt,  rrcMsgSize, rrcMsgPdu);
+	       break; 
+	    }
+	 }
+	 if(ueFound)
+	    break;
+      }
+      if(!ueFound)
+	 ret = RFAILED;
+   }
    return ret;
 }
 
@@ -872,7 +892,7 @@ void fillLcCfgList(LcCfg *lcCfgInfo)
 {
    if(lcCfgInfo)
    {
-      lcCfgInfo->lcId = SRB_ID_1;
+      lcCfgInfo->lcId = SRB1_LCID;
       lcCfgInfo->drbQos = NULLP;
       lcCfgInfo->snssai = NULLP;
       lcCfgInfo->ulLcCfg = NULLP;
@@ -947,8 +967,8 @@ void fillMacUeCfg(uint16_t cellId, uint8_t ueIdx,\
    /* Filling AMBR for UL and DL */ 
    ueCfg->maxAggrBitRate = NULLP;
    /* Filling LC Context */
-   ueCfg->numLcs = SRB_ID_1;
-   if(ueCfg->numLcs < MAX_NUM_LOGICAL_CHANNELS)
+   ueCfg->numLcs = SRB1_LCID;
+   if(ueCfg->numLcs < MAX_NUM_LC)
    {
       for(idx = 0; idx < ueCfg->numLcs; idx++)
       {   
@@ -1061,13 +1081,13 @@ void fillRlcBearerCfg(uint16_t cellId, uint8_t ueIdx, RlcUeCfg *ueCfg)
    uint8_t idx;
    ueCfg->cellId       = cellId;
    ueCfg->ueIdx        = ueIdx;
-   ueCfg->numLcs       = SRB_ID_1; 
+   ueCfg->numLcs       = SRB1_LCID; 
 
    for(idx = 0; idx < ueCfg->numLcs; idx++)
    {
       ueCfg->rlcBearerCfg[idx].rbId         = RB_ID_SRB;
       ueCfg->rlcBearerCfg[idx].rbType       = RB_TYPE_SRB;
-      ueCfg->rlcBearerCfg[idx].lcId         = SRB_ID_1;
+      ueCfg->rlcBearerCfg[idx].lcId         = SRB1_LCID;
       ueCfg->rlcBearerCfg[idx].lcType       = LCH_DCCH;
       ueCfg->rlcBearerCfg[idx].rlcMode      = RLC_AM;
       switch(ueCfg->rlcBearerCfg[idx].rlcMode)
@@ -1330,6 +1350,7 @@ uint8_t DuProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
    }
    return ret;
 }
+
 /**********************************************************************
   End of file
  ***********************************************************************/

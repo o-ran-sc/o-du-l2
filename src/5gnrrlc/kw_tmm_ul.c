@@ -26,8 +26,8 @@
                reassembly.This file contains following functions
                 
                   --rlcTmmQSdu
-                  --rlcTmmSndToLi
-                  --rlcTmmRcvFrmLi
+                  --rlcTmmSendToMac
+                  --rlcTmmRcvFrmMac
                   --kwTmmReEstablish 
 
      File:     kw_tmm_ul.c
@@ -109,7 +109,7 @@ U8 rrcUeCapabilityInfo[] =
 #ifdef PJ
    Pst ulPst2 ={100,100,217,0,216,0,PRIOR0,0,68,0,1,0,0};
 #endif
-  TRC2(rlcTmmRcvFrmLi) 
+  TRC2(rlcTmmRcvFrmMac) 
 
   if(1 == rrcMsgType)
   {
@@ -129,7 +129,7 @@ U8 rrcUeCapabilityInfo[] =
 
    RLOG1(L_INFO,"Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
    printf("Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
-   RlcUiKwuDatInd(&ulPst1, datIndInfo, pdu);
+   rlcSendUlDataToDu(&ulPst1, datIndInfo, pdu);
  }
  else if(2 == rrcMsgType)
  {
@@ -245,53 +245,19 @@ U8 rrcUeCapabilityInfo[] =
  *    -# RFAILED 
  */
 #ifdef CCPU_OPT
-#ifdef ANSI
-Void rlcTmmRcvFrmLi
-(
-RlcCb        *gCb,
-RlcUlRbCb    *rbCb,  
-CmLteRnti   tCrnti,  
-Buffer      *pdu      
-)
+void rlcTmmRcvFrmMac(RlcCb *gCb, RlcUlRbCb *rbCb, CmLteRnti tCrnti, Buffer *pdu)
 #else
-Void rlcTmmRcvFrmLi(gCb,rbCb, tCrnti, pdu)
-RlcCb        *gCb;
-RlcUlRbCb    *rbCb;  
-CmLteRnti   tCrnti; 
-Buffer      *pdu;  
+void rlcTmmRcvFrmMac(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu)
 #endif
-#else
-#ifdef ANSI
-Void rlcTmmRcvFrmLi
-(
-RlcCb       *gCb,
-RlcUlRbCb   *rbCb,         
-Buffer     *pdu            
-)
-#else
-Void rlcTmmRcvFrmLi(gCb,rbCb, pdu)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb;         
-Buffer     *pdu;         
-#endif
-#endif 
 {
    RlcUlRrcMsgInfo  *ulRrcMsgInfo;
    uint16_t         msgLen;
    uint16_t         copyLen;    /* Number of bytes copied */
    Pst              pst;
  
-   TRC2(rlcTmmRcvFrmLi) 
-
    gCb->genSts.pdusRecv++;
-   SFndLenMsg(pdu, (MsgLen *)&msgLen);
+   ODU_FIND_MSG_LEN(pdu, (MsgLen *)&msgLen);
    gCb->genSts.bytesRecv += msgLen;
-   /* If trace flag is enabled send the trace indication */
-   if(gCb->init.trc == TRUE)
-   {
-      /* Populate the trace params */
-      rlcLmmSendTrc(gCb, EVENT_UL_RRC_MSG_TRANS_TO_DU, pdu);
-   }
   
    /* Filling UL RRC Message Info */
    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
@@ -305,25 +271,25 @@ Buffer     *pdu;
          ulRrcMsgInfo->rrcMsg, msgLen);
       if (ulRrcMsgInfo->rrcMsg)
       {
-         SCpyMsgFix(pdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
+         ODU_COPY_MSG_TO_FIX_BUF(pdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
          ulRrcMsgInfo->msgLen = msgLen;
 
          /* Sending UL RRC Message transfeer to DU APP */
          memset(&pst, 0, sizeof(Pst));
-         FILL_PST_RLC_TO_DUAPP(pst, SFndProcId(), RLC_UL_INST, EVENT_UL_RRC_MSG_TRANS_TO_DU);
+         FILL_PST_RLC_TO_DUAPP(pst, ODU_FIND_PROCID(), RLC_UL_INST, EVENT_UL_RRC_MSG_TRANS_TO_DU);
          rlcSendUlRrcMsgToDu(&pst, ulRrcMsgInfo);
       }
       else
       {
-         DU_LOG("\nRLC : Memory allocation failed");
+         DU_LOG("\nRLC : rlcTmmRcvFrmMac: Memory allocation failed for UL RRC Msg");
       }
    }
    else
    {
-      DU_LOG("\nRLC : Memory allocation failed");
+      DU_LOG("\nRLC : rlcTmmRcvFrmMac: Memory allocation failed for ulRrcMsgInfo");
    }
  
-   RETVOID;
+   return;
 }
 
 /**

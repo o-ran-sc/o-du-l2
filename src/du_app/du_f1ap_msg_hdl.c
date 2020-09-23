@@ -74,7 +74,6 @@
 #include "du_f1ap_msg_hdl.h"
 
 extern DuCfgParams duCfgParam;
-uint8_t ServedCellListreturn=RFAILED;
 
 uint8_t procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
@@ -959,23 +958,21 @@ void FreeF1SetupReq(F1AP_PDU_t *f1apMsg)
 	    {
 	       if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf !=  NULLP)
 	       {
+	          DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf,\
+		     f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.size);
 		  idx1++;
 		  if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf != NULLP)
 		  {
-		     idx1=4;
-		     if(ServedCellListreturn == ROK)
-		     {
-			FreeRrcVer(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.RRC_Version);
-		     }
-		     idx1--;
-		     FreeServedCellList(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Served_Cells_List);
-		     idx1--;
 		     DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf,
-			   strlen((char *)duCfgParam.duName));
+		        strlen((char *)duCfgParam.duName));
+
+		     idx1++;
+		     FreeServedCellList(&f1SetupReq->protocolIEs.list.array[idx1]->value.\
+		        choice.GNB_DU_Served_Cells_List);
+
+		     idx1++;
+	             FreeRrcVer(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.RRC_Version);
 		  }
-		  idx1--;
-		  DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf,\
-			f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.size);
 	       }
 	    }
 	    for(idx=0; idx<f1SetupReq->protocolIEs.list.count; idx++)
@@ -1123,9 +1120,8 @@ uint8_t BuildAndSendF1SetupReq()
       f1SetupReq->protocolIEs.list.array[idx2]->value.present = \
 								F1SetupRequestIEs__value_PR_GNB_DU_Served_Cells_List;
       duServedCell = &f1SetupReq->protocolIEs.list.\
-		     array[idx2]->value.choice.GNB_DU_Served_Cells_List;
-      ServedCellListreturn = BuildServedCellList(duServedCell);
-      if(ServedCellListreturn != ROK)
+                  array[idx2]->value.choice.GNB_DU_Served_Cells_List;
+      if((BuildServedCellList(duServedCell)) != ROK)
       {
 	 break;
       }
@@ -2457,17 +2453,20 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
    }
 
    idx = 0;
-   rlcBearerList->list.array[idx]->logicalChannelIdentity = RLC_LCID;
+   rlcBearerList->list.array[idx]->logicalChannelIdentity = SRB1_LCID;
 
-   DU_ALLOC(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
+   DU_ALLOC(rlcBearerList->list.array[idx]->servedRadioBearer, \
+      sizeof(struct RLC_BearerConfig__servedRadioBearer));
    if(!rlcBearerList->list.array[idx]->servedRadioBearer)
    {
       DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
       return RFAILED;
    }
 
-   rlcBearerList->list.array[idx]->servedRadioBearer->present = RLC_BearerConfig__servedRadioBearer_PR_srb_Identity;
-   rlcBearerList->list.array[idx]->servedRadioBearer->choice.srb_Identity = SRB_ID_1;
+   rlcBearerList->list.array[idx]->servedRadioBearer->present = \
+      RLC_BearerConfig__servedRadioBearer_PR_srb_Identity;
+   rlcBearerList->list.array[idx]->servedRadioBearer->choice.srb_Identity = \
+      SRB1_LCID;
 
    rlcBearerList->list.array[idx]->reestablishRLC = NULLP;
    rlcBearerList->list.array[idx]->rlc_Config = NULLP;
@@ -2485,7 +2484,8 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
    }
 
    rlcBearerList->list.array[idx]->mac_LogicalChannelConfig = NULLP;
-   DU_ALLOC(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
+   DU_ALLOC(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, \
+      sizeof(struct LogicalChannelConfig));
    if(!rlcBearerList->list.array[idx]->mac_LogicalChannelConfig)
    {
       DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");

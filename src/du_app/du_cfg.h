@@ -232,8 +232,6 @@
 #define PHR_PROHIBHIT_TMR 0
 #define PHR_PWR_FACTOR_CHANGE 3
 #define PHR_MODE_OTHER_CG 0
-#define RLC_LCID 1 
-#define SRB_ID_1 1
 #define SN_FIELD_LEN 0
 #define T_POLL_RETRANSMIT 8 
 #define POLL_PDU 0

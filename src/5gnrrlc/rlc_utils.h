@@ -50,7 +50,30 @@
    _pst.intfVer     = 0;                                       \
 }
 
-void reverseFixBuf(uint8_t *buf, uint16_t len);
+#define FILL_PST_RLC_TO_MAC(_pst, _procId, _srcInst, _event)    \
+{                                                      \
+   pst.selector  = ODU_SELECTOR_LWLC;                  \
+   pst.srcEnt    = ENTRLC;                             \
+   pst.dstEnt    = ENTMAC;                             \
+   pst.dstInst   = 0;                                  \
+   pst.srcInst   = _srcInst;                           \
+   pst.dstProcId = _procId;                            \
+   pst.srcProcId = _procId;                            \
+   if(_srcInst == RLC_UL_INST)                         \
+   {                                                   \
+      pst.region    = RLC_MEM_REGION_UL;               \
+   }                                                   \
+   else if(_srcInst == RLC_DL_INST)                    \
+   {                                                   \
+      pst.region    = RLC_MEM_REGION_DL;               \
+   }                                                   \
+   pst.pool      = RLC_POOL;                           \
+   pst.event     = _event;                             \
+   pst.route     = 0;                                  \
+   pst.prior     = 0;                                  \
+   pst.intfVer   = 0;                                  \
+}
+
 uint16_t getTransId();
 
 /**********************************************************************

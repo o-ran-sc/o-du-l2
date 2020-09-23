@@ -325,7 +325,7 @@ PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguCDatInd,
 #endif
 #ifdef KW
-   RlcLiRguCDatInd,
+   //RlcProcCommLcUlData,
 #else
    PtUiRguCDatInd,
 #endif
@@ -346,7 +346,7 @@ PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguDDatInd,
 #endif
 #ifdef KW
-   RlcLiRguDDatInd,
+   //RlcProcDedLcUlData,
 #else
    PtUiRguDDatInd,
 #endif

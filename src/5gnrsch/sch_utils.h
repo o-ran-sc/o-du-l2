@@ -73,10 +73,10 @@
 /* Fill post structure for msg from SCH to MAC */
 #define FILL_PST_SCH_TO_MAC(_pst, _inst)                     \
 {                                                            \
-   _pst.srcProcId = SFndProcId();                            \
-   _pst.dstProcId = SFndProcId();                            \
-   _pst.srcEnt    = ENTMAC;                                   \
-   _pst.dstEnt    = ENTMAC;                                   \
+   _pst.srcProcId = ODU_FIND_PROCID();                       \
+   _pst.dstProcId = ODU_FIND_PROCID();                       \
+   _pst.srcEnt    = ENTMAC;                                  \
+   _pst.dstEnt    = ENTMAC;                                  \
    _pst.srcInst   = 1;                                       \
    _pst.dstInst   = 0;                                       \
    _pst.selector  = ODU_SELECTOR_TC;                         \

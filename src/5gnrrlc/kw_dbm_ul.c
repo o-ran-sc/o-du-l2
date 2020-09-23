@@ -276,28 +276,10 @@ RlcUlRbCb     **rbCb;
  * @return  Void
  *
 */
-#ifdef ANSI
-Void rlcDbmFetchUlRbCbFromLchId
-(
-RlcCb          *gCb,
-CmLteRnti     ueId,      
-CmLteCellId   cellId,   
-CmLteLcId     lcId,    
-RlcUlRbCb      **rbCb  
-)
-#else
-Void rlcDbmFetchUlRbCbFromLchId(gCb, ueId, cellId, lcId, rbCb)
-RlcCb          *gCb;
-CmLteRnti     ueId;     
-CmLteCellId   cellId;  
-CmLteLcId     lcId;   
-RlcUlRbCb      **rbCb;
-#endif
+void rlcDbmFetchUlRbCbFromLchId(RlcCb *gCb, CmLteRnti ueId, CmLteCellId cellId,\
+   CmLteLcId lcId, RlcUlRbCb **rbCb)
 {
    RlcUlUeCb *ueCb;
-
-   TRC3(rlcDbmFetchUlRbCbFromLchId)
-
 
    *rbCb = NULLP;
    
@@ -309,23 +291,24 @@ RlcUlRbCb      **rbCb;
       rlcDbmFetchUlCellCb(gCb,cellId, &cellCb);
       if(!cellCb)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellId,"CellCb not found UEID:%d",ueId);
-         RETVOID;
+         DU_LOG("\nRLC : rlcDbmFetchUlRbCbFromLchId: CellCb[%d] not found UEID:%d",\
+	    cellId, ueId);
+         return;
       }
 
       *rbCb = cellCb->lCh[lcId - 1].ulRbCb;
-      RETVOID;
+      return;
    }
    
    if (rlcDbmFetchUlUeCb(gCb,ueId, cellId, &ueCb) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID, cellId,"UeId [%d]: UeCb not found",ueId);
-      RETVOID;
+      DU_LOG("\nRLC : rlcDbmFetchUlRbCbFromLchId: UeId [%d]: UeCb not found",ueId);
+      return;
    }
 
    *rbCb = ueCb->lCh[lcId - 1].ulRbCb;
 
-   RETVOID;
+   return;
 } /* kwDbmFetchRbCbFromLchId */
 
 
@@ -626,27 +609,10 @@ RlcCb *gCb;
  *    -# ROK 
  *    -# RFAILED 
 */
-#ifdef ANSI
-S16 rlcDbmFetchUlUeCb
-(
-RlcCb          *gCb,
-CmLteRnti     ueId,  
-CmLteCellId   cellId, 
-RlcUlUeCb      **ueCb   
-)
-#else
-S16 rlcDbmFetchUlUeCb(gCb,ueId, cellId, ueCb)
-RlcCb          *gCb;
-CmLteRnti     ueId;     
-CmLteCellId   cellId;    
-RlcUlUeCb      **ueCb;     
-#endif
+uint8_t rlcDbmFetchUlUeCb(RlcCb *gCb, CmLteRnti ueId, CmLteCellId  cellId, RlcUlUeCb **ueCb)
 {
-   TRC3(rlcDbmFetchUlUeCb)
-
-
    return (cmHashListFind(&(gCb->u.ulCb->ueLstCp), 
-                           (U8 *)&(ueId), sizeof(CmLteRnti),
+                           (uint8_t *)&(ueId), sizeof(CmLteRnti),
                            RLC_DEF_SEQ_NUM, 
                            (PTR *) ueCb));
 }
@@ -820,32 +786,17 @@ RlcUlCellCb    *cellCb;
  *    -# RFAILED 
  *
 */
-#ifdef ANSI
-Void rlcDbmFetchUlCellCb
-(
-RlcCb          *gCb,
-CmLteCellId   cellId,     
-RlcUlCellCb    **cellCb   
-)
-#else
-Void rlcDbmFetchUlCellCb(gCb, cellId, cellCb)
-RlcCb          *gCb;
-CmLteCellId   cellId;    
-RlcUlCellCb    **cellCb;  
-#endif
+void rlcDbmFetchUlCellCb(RlcCb *gCb, CmLteCellId cellId, RlcUlCellCb **cellCb)
 {
-   TRC3(rlcDbmFetchUlCellCb)
-
-
    *cellCb = NULLP;
    if(ROK != cmHashListFind(&(gCb->u.ulCb->cellLstCp), 
-                            (U8 *)&(cellId),sizeof(CmLteCellId), 
+                            (uint8_t *)&(cellId),sizeof(CmLteCellId), 
                             RLC_DEF_SEQ_NUM, (PTR*) cellCb))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID, cellId,"CellCb not found");
+      DU_LOG("\nRLC : rlcDbmFetchUlCellCb : CellCb[%d] not found", cellId);
    }
 
-   RETVOID;
+   return;
 }
 
 

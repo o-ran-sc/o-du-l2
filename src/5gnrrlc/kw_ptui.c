@@ -62,25 +62,6 @@ static int RLOG_FILE_ID=199;
 #include "mt_plat_t33.x"
 #endif
 
-#ifndef LCKWUIKWU
-#define PTKWKWU
-#endif
-
-#ifndef LCKWUICKW
-#define PTKWCKW
-#endif
-
-#ifndef NH
-#define PTKWKWU
-#define PTKWCKW
-#endif
-
-#ifndef PJ 
-#define PTKWKWU
-#define PTKWCKW
-#endif
-
-
 #ifdef __cplusplus
 EXTERN "C" {
 #endif /* __cplusplus */
@@ -317,27 +298,27 @@ U8   status;                    /* Status */
  *      -# RFAILED
  */
 #ifdef ANSI
-S16 RlcUiKwuDatInd
+S16 rlcSendUlDataToDu
 (
 Pst               *pst,
 KwuDatIndInfo     *datInd,
 Buffer            *mBuf
 )
 #else
-S16 RlcUiKwuDatInd(pst, datInd, mBuf)
+S16 rlcSendUlDataToDu(pst, datInd, mBuf)
 Pst               *pst;
 KwuDatIndInfo     *datInd;
 Buffer            *mBuf;
 #endif
 {
-   TRC3(RlcUiKwuDatInd)
+   TRC3(rlcSendUlDataToDu)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatIndMt[pst->selector])(pst, datInd, mBuf);
 
    return ROK;
 
-} /* end of RlcUiKwuDatInd */
+} /* end of rlcSendUlDataToDu */
 
    int rlcDatCfmsSent = 0;
 
@@ -835,13 +816,13 @@ Void;
       datReq = (RxmBufReq *)elmIndx;
       if(datReq->mBuf != NULLP)
       {
-        cmUnpkKwuDatReq(RlcUiKwuDatReq, &datReq->pst, datReq->mBuf);
+        cmUnpkKwuDatReq(rlcProcDlData, &datReq->pst, datReq->mBuf);
       }
       else
       {
          RLOG0(L_ERROR, "mBuf is NULL");
          if(datReq->mBuf)
-          cmUnpkKwuDatReq(RlcUiKwuDatReq, &datReq->pst, datReq->mBuf);
+          cmUnpkKwuDatReq(rlcProcDlData, &datReq->pst, datReq->mBuf);
 
       }
       SsRngInfoTbl[SS_RNG_BUF_RX_TO_DLRLC].nPktProc++;//Number of pkt processed in tti
@@ -926,7 +907,7 @@ Void;
       SsRngInfoTbl[SS_RNG_BUF_DLPDCP_TO_DLRLC].nPktProc++;;//Number of pkt processed in tti
       if(kwuDatReqDetl->mBuf != NULLP)
       {
-         RlcUiKwuDatReq(&rlcDlRbfuPst, kwuDatReqDetl->spId, &datReq, kwuDatReqDetl->mBuf);
+         rlcProcDlData(&rlcDlRbfuPst, kwuDatReqDetl->spId, &datReq, kwuDatReqDetl->mBuf);
       }
       SRngIncrRIndx(SS_RNG_BUF_DLPDCP_TO_DLRLC);
       rngBufDeqIndx++;

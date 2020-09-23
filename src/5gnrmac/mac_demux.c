@@ -47,6 +47,7 @@ extern uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
  * ****************************************************************/
 uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu)
 {
+   uint8_t   ueIdx;       /* Iterator for UE list */
    uint8_t   lcId;        /* LC ID of a sub pdu */
    uint8_t   fBit = 0;    /* Value of F Bit in MAC sub-header */
    uint8_t   idx = 0;     /* Iterator for received PDU */
@@ -60,6 +61,8 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
    GET_CELL_IDX(cellId, cellIdx);
    pduLen = rxDataIndPdu->pduLength;
    rxDataPdu = rxDataIndPdu->pduData;
+   GET_UE_IDX(rxDataIndPdu->rnti, ueIdx);
+   ueIdx = ueIdx -1;
 
    while(pduLen > 0)
    {
@@ -92,7 +95,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	       idx = idx + length;
 
 	       /* store msg3 pdu in macRaCb for CRI value */
-	       memcpy(macCb.macCell[cellIdx]->macRaCb[0].msg3Pdu, pdu, length);
+	       memcpy(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg3Pdu, pdu, length);
 
 	       /* Send UL-CCCH Indication to DU APP */
 	       ret = macProcUlCcchInd(macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti, length, pdu);
@@ -126,6 +129,16 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	       memcpy(pdu, &rxDataPdu[idx], length);
 	       pduLen -= length;
 	       idx = idx + length;
+
+	       /* Delete RA cb once RRC setup complete received */
+	       if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == rxDataIndPdu->rnti)
+	       {
+	          MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu, \
+		     macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
+                  MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
+                      macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize);
+	          memset(&macCb.macCell[cellIdx]->macRaCb[ueIdx], 0, sizeof(MacRaCbInfo));
+	       }
 	       
 	       /* Send UL Data to RLC */
 	       ret = macProcUlData(cellId, rxDataIndPdu->rnti, slotInfo, lcId, length, pdu);
