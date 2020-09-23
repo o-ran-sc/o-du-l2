@@ -25,10 +25,10 @@
      Desc:     Source code for RLC Utility Module
                This file contains following functions
 
-                  --rlcUtlSndToLi
-                  --rlcUtlRcvFrmLi
+                  --rlcUtlSendToMac
+                  --rlcUtlRcvFrmMac
                   --rlcUtlEmptySduQ
-                  --rlcUtlSndDatInd 
+                  --rlcUtlSendUlDataToDu 
                   --kwUtlShutDown
 
      File:     kw_utl_ul.c
@@ -69,6 +69,10 @@ static int RLOG_FILE_ID=210;
 #include "kw_ul.x"         /* RLC uplink includes */
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
+#include "rlc_utils.h"
+#include "du_app_rlc_inf.h"
+#include "rlc_upr_inf_api.h"
+
 #ifdef SS_RBUF
 S16 SMrkUlPkt(Buffer *mbuf);
 #endif
@@ -96,13 +100,13 @@ RlcAmRecBuf* rlcUtlGetRecBuf(CmLListCp *recBufLst, RlcSn sn);
  *
  */
 #ifdef ANSI
-S16 rlcUtlRcvFrmLi
+S16 rlcUtlRcvFrmMac
 (
 RlcCb           *gCb,                              
 KwDatIndInfo   *datIndInfo                       
 )
 #else
-S16 rlcUtlRcvFrmLi(gCb,datIndInfo)  
+S16 rlcUtlRcvFrmMac(gCb,datIndInfo)  
 RlcCb           *gCb;                     
 KwDatIndInfo   *datIndInfo;             
 #endif
@@ -113,7 +117,7 @@ KwDatIndInfo   *datIndInfo;
    RlcUlUeCb    *ueCb;      /* UE Control Block */
 /* kw005.201 added support for L2 Measurement */
 
-   TRC2(rlcUtlRcvFrmLi)
+   TRC2(rlcUtlRcvFrmMac)
 
 
    ueCb = NULLP;
@@ -215,14 +219,14 @@ KwDatIndInfo   *datIndInfo;
  *      -# ROK 
  */
 #ifdef ANSI
-S16 rlcUtlSndDatInd
+S16 rlcUtlSendUlDataToDu
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb,                   
 Buffer     *sdu                    
 )
 #else
-S16 rlcUtlSndDatInd(gCb,rbCb,sdu)
+S16 rlcUtlSendUlDataToDu(gCb,rbCb,sdu)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;                  
 Buffer     *sdu;                    
@@ -232,8 +236,11 @@ Buffer     *sdu;
    KwuDatIndInfo   *datIndInfo;   /* Data Indication Information */
    KwuDatIndInfo datIndInfoTmp;
 #endif
+   RlcUlRrcMsgInfo *ulRrcMsgInfo;
+   uint16_t        msgLen, copyLen;
+   Pst             pst;
 
-   TRC3(rlcUtlSndDatInd)
+   TRC3(rlcUtlSendUlDataToDu)
 
 
 #ifndef KW_PDCP
@@ -263,14 +270,44 @@ Buffer     *sdu;
    if(gCb->init.trc == TRUE)
    {
       /* Populate the trace params */
-      rlcLmmSendTrc(gCb,KWU_EVT_DAT_IND, sdu);
+      rlcLmmSendTrc(gCb, EVENT_UL_RRC_MSG_TRANS_TO_DU, sdu);
    }
-#ifndef KW_PDCP
 
-   RlcUiKwuDatInd(&gCb->genCfg.lmPst, datIndInfo, sdu);
-#endif   
+   /* Filling UL RRC Message Info */
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
+      ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
+   if (ulRrcMsgInfo)
+   {
+       ulRrcMsgInfo->cellId = rbCb->rlcId.cellId;
+       ulRrcMsgInfo->ueIdx = rbCb->rlcId.ueId;
+       ulRrcMsgInfo->lcId = rbCb->lch.lChId;
+       RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
+          ulRrcMsgInfo->rrcMsg, msgLen);
+       if (ulRrcMsgInfo->rrcMsg)
+       {
+          ODU_FIND_MSG_LEN(sdu, (MsgLen *)&msgLen);
+          ODU_COPY_MSG_TO_FIX_BUF(sdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
+          ulRrcMsgInfo->msgLen = msgLen;
+
+          /* Sending UL RRC Message transfeer to DU APP */
+          memset(&pst, 0, sizeof(Pst));
+          FILL_PST_RLC_TO_DUAPP(pst, SFndProcId(), RLC_UL_INST, EVENT_UL_RRC_MSG_TRANS_TO_DU);
+          rlcSendUlRrcMsgToDu(&pst, ulRrcMsgInfo);
+       }
+       else
+       {
+          DU_LOG("\nRLC : Memory allocation failed");
+	  return RFAILED;
+       }
+    }
+    else
+    {
+       DU_LOG("\nRLC : Memory allocation failed");
+       return RFAILED;
+    }
+
    return (ROK);
-} /* rlcUtlSndDatInd */
+} /* rlcUtlSendUlDataToDu */
 
 
 PRIVATE Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)

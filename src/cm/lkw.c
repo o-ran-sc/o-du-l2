@@ -176,14 +176,14 @@ RlcMngmt *cfg;                /* RLC LM structure */
  */
  
 #ifdef ANSI
-S16 unpackRlcConfigReq
+uint8_t unpackRlcConfigReq
 (
 RlcConfigReq func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-S16 unpackRlcConfigReq(func, pst, mBuf)
+uint8_t unpackRlcConfigReq(func, pst, mBuf)
 RlcConfigReq func;              /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */
@@ -343,13 +343,13 @@ Buffer *mBuf;                /* message buffer */
  */
 
 #ifdef ANSI
-S16 cmPkLkwCntrlCfm
+uint8_t cmPkLkwCntrlCfm
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *cfm                 /* RLC LM structure */
 )
 #else
-S16 cmPkLkwCntrlCfm(pst, cfm)
+uint8_t cmPkLkwCntrlCfm(pst, cfm)
 Pst *pst;                    /* post structure */
 RlcMngmt *cfm;                /* RLC LM structure */
 #endif
@@ -511,13 +511,13 @@ Buffer *mBuf;                /* message buffer */
 
 
 #ifdef ANSI
-S16 packRlcConfigCfm
+uint8_t packRlcConfigCfm
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *cfm                 /* RLC LM structure */
 )
 #else
-S16 packRlcConfigCfm(pst,cfm)
+uint8_t packRlcConfigCfm(pst,cfm)
 Pst *pst;                    /* post structure */
 RlcMngmt *cfm;                /* RLC LM structure */
 #endif
@@ -575,14 +575,14 @@ RlcMngmt *cfm;                /* RLC LM structure */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-S16 unpackRlcConfigCfm
+uint8_t unpackRlcConfigCfm
 (
 RlcConfigCfm func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
 #else
-S16 unpackRlcConfigCfm(func, pst, mBuf)
+uint8_t unpackRlcConfigCfm(func, pst, mBuf)
 RlcConfigCfm func;              /* primitive to call */
 Pst *pst;                    /* post structure */
 Buffer *mBuf;                /* message buffer */

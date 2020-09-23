@@ -71,8 +71,6 @@
 #ifdef PTKWLKW
 /* portable functions */
 
-PRIVATE S16 PtMiRlcConfigCfm    ARGS((Pst *pst, RlcMngmt *cfm));
-PRIVATE S16 PtMiLkwCntrlCfm  ARGS((Pst *pst, RlcMngmt *cfm));
 PRIVATE S16 PtMiLkwStaInd    ARGS((Pst *pst, RlcMngmt *usta));
 
 PRIVATE S16 PtMiLkwStaCfm    ARGS((Pst *pst, RlcMngmt *cfm));
@@ -98,12 +96,12 @@ PRIVATE RlcConfigCfm rlcMiRlcConfigCfmMt[MAXKWMI] =
 #ifdef LCKWMILKW
    packRlcConfigCfm,            /* 0 - loosely coupled - fc */
 #else
-   PtMiRlcConfigCfm,            /* 0 - tightly coupled portable */
+   //PtMiRlcConfigCfm,            /* 0 - tightly coupled portable */
 #endif /* LCRLMILKW */
 #ifdef SM
    SmMiRlcConfigCfm,            /* 1 - tightly coupled layer management*/
 #else
-   PtMiRlcConfigCfm,            /* 1 - tightly coupled portable */
+   //PtMiRlcConfigCfm,            /* 1 - tightly coupled portable */
 #endif /* SM */
 };
 
@@ -114,12 +112,12 @@ PRIVATE LkwCntrlCfm kwMiLkwCntrlCfmMt[MAXKWMI] =
 #ifdef LCKWMILKW 
    cmPkLkwCntrlCfm,          /* 0 - loosely coupled - fc */
 #else
-   PtMiLkwCntrlCfm,          /* 0 - tightly coupled portable */
+   //PtMiLkwCntrlCfm,          /* 0 - tightly coupled portable */
 #endif /* LCRLMILKW */
 #ifdef SM
    SmMiLkwCntrlCfm,          /* 1 - tightly coupled layer management*/
 #else
-   PtMiLkwCntrlCfm,          /* 1 - tightly coupled portable */
+   //PtMiLkwCntrlCfm,          /* 1 - tightly coupled portable */
 #endif /* SM */
 };
 
@@ -501,81 +499,6 @@ U8  status;
 /*************************************************************************
  *                         Porting Functions
  ************************************************************************/
-/*
- *
- *       Fun:   configuration  Confirm
- *
- *       Desc:  This function is used to confirm the receipt of configuration
- *              request from layer management.
- *
- *       Ret:   ROK      - ok
- *
- *       Notes: None
- *
- *       File:  kw_ptmi.c
- *
- */
-
-#ifdef ANSI
-S16 PtMiRlcConfigCfm
-(
-Pst *pst,                    /* post structure */
-RlcMngmt *cfm                 /* Layer Management structure */
-)
-#else
-S16 PtMiRlcConfigCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-RlcMngmt *cfm;                /* Layer Management structure */
-#endif
-{
-   TRC3(PtMiRlcConfigCfm)
-
-   UNUSED(pst);
-   UNUSED(cfm);
-
-   TRC2(PtMiRlcConfigCfm() : function is not implemented)
-
-   return ROK;
-} /* end of PtMiRlcConfigCfm */
-
-/*
- *
- *       Fun:   Control Confirmation
- *
- *       Desc:  This function is the portable version of used to
- *              confirm the receipt of configuration request from
- *              layer management.
- *
- *       Ret:   ROK      - ok
- *
- *       Notes: None
- *
- *       File:  kw_ptmi.c
- *
- */
-
-#ifdef ANSI
-PRIVATE S16 PtMiLkwCntrlCfm
-(
-Pst *pst,                 /* Post structure */
-RlcMngmt *cfm              /* Layer Management structure */
-)
-#else
-PRIVATE S16 PtMiLkwCntrlCfm(pst, cfm)
-Pst *pst;                 /* Post structure */
-RlcMngmt *cfm;             /* Layer Management structure */
-#endif
-{
-   TRC3(PtMiLkwCntrlCfm);
-
-   UNUSED(pst);
-   UNUSED(cfm);
-
-   TRC2(PtMiLkwCntrlCfm() :  function is not implemented)
-
-   return ROK;
-} /* end of PtMiLkwCntrlCfm */
-
 
 /*
  *

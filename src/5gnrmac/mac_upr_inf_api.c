@@ -19,9 +19,8 @@
 /* This file contains the definitions for Upper Interface APIs that are
  * invoked from MAC */
 #include "common_def.h"
-#include "rgu.h"
-#include "rgu.x"
 #include "du_app_mac_inf.h"
+#include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 
 /* Funtion pointer options for slot indication */
@@ -54,6 +53,15 @@ RlcMacUlDataFunc rlcMacSendUlDataOpts[] =
    RlcProcUlData,
    packRlcUlData
 };
+
+/* Funtion pointer options for schedule result reporting */
+RlcMacSchedResultRptFunc rlcMacSchedResultRptOpts[] =
+{
+   packRlcSchedResultRpt,
+   RlcProcSchedResultRpt,
+   packRlcSchedResultRpt
+};
+	 
 
 /*******************************************************************
  *
@@ -137,11 +145,31 @@ uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSendUlDataToRlc(Pst *pst, RlcMacData *ulData)
+uint8_t MacSendUlDataToRlc(Pst *pst, RlcData *ulData)
 {
    return (*rlcMacSendUlDataOpts[pst->selector])(pst, ulData);
 }
 
+/*******************************************************************
+ *
+ * @brief Send Schedule result report to RLC
+ *
+ * @details
+ *
+ *    Function : MacSendSchedResultRptToRlc
+ *
+ *    Functionality: Send Schedule result report to RLC
+ *
+ * @params[in] Post structure
+ *             Schedule result report
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSendSchedResultRptToRlc(Pst *pst, RlcSchedResultRpt *schedRpt)
+{
+   return (*rlcMacSchedResultRptOpts[pst->selector])(pst, schedRpt);
+}
 
 /**********************************************************************
   End of file

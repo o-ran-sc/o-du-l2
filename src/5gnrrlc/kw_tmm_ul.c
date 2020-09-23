@@ -26,8 +26,8 @@
                reassembly.This file contains following functions
                 
                   --rlcTmmQSdu
-                  --rlcTmmSndToLi
-                  --rlcTmmRcvFrmLi
+                  --rlcTmmSendToMac
+                  --rlcTmmRcvFrmMac
                   --kwTmmReEstablish 
 
      File:     kw_tmm_ul.c
@@ -109,7 +109,7 @@ U8 rrcUeCapabilityInfo[] =
 #ifdef PJ
    Pst ulPst2 ={100,100,217,0,216,0,PRIOR0,0,68,0,1,0,0};
 #endif
-  TRC2(rlcTmmRcvFrmLi) 
+  TRC2(rlcTmmRcvFrmMac) 
 
   if(1 == rrcMsgType)
   {
@@ -129,7 +129,7 @@ U8 rrcUeCapabilityInfo[] =
 
    RLOG1(L_INFO,"Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
    printf("Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
-   RlcUiKwuDatInd(&ulPst1, datIndInfo, pdu);
+   rlcSendUlDataToDu(&ulPst1, datIndInfo, pdu);
  }
  else if(2 == rrcMsgType)
  {
@@ -246,7 +246,7 @@ U8 rrcUeCapabilityInfo[] =
  */
 #ifdef CCPU_OPT
 #ifdef ANSI
-Void rlcTmmRcvFrmLi
+Void rlcTmmRcvFrmMac
 (
 RlcCb        *gCb,
 RlcUlRbCb    *rbCb,  
@@ -254,7 +254,7 @@ CmLteRnti   tCrnti,
 Buffer      *pdu      
 )
 #else
-Void rlcTmmRcvFrmLi(gCb,rbCb, tCrnti, pdu)
+Void rlcTmmRcvFrmMac(gCb,rbCb, tCrnti, pdu)
 RlcCb        *gCb;
 RlcUlRbCb    *rbCb;  
 CmLteRnti   tCrnti; 
@@ -262,14 +262,14 @@ Buffer      *pdu;
 #endif
 #else
 #ifdef ANSI
-Void rlcTmmRcvFrmLi
+Void rlcTmmRcvFrmMac
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb,         
 Buffer     *pdu            
 )
 #else
-Void rlcTmmRcvFrmLi(gCb,rbCb, pdu)
+Void rlcTmmRcvFrmMac(gCb,rbCb, pdu)
 RlcCb       *gCb;
 RlcUlRbCb   *rbCb;         
 Buffer     *pdu;         
@@ -281,10 +281,10 @@ Buffer     *pdu;
    uint16_t         copyLen;    /* Number of bytes copied */
    Pst              pst;
  
-   TRC2(rlcTmmRcvFrmLi) 
+   TRC2(rlcTmmRcvFrmMac) 
 
    gCb->genSts.pdusRecv++;
-   SFndLenMsg(pdu, (MsgLen *)&msgLen);
+   ODU_FIND_MSG_LEN(pdu, (MsgLen *)&msgLen);
    gCb->genSts.bytesRecv += msgLen;
    /* If trace flag is enabled send the trace indication */
    if(gCb->init.trc == TRUE)
@@ -305,7 +305,7 @@ Buffer     *pdu;
          ulRrcMsgInfo->rrcMsg, msgLen);
       if (ulRrcMsgInfo->rrcMsg)
       {
-         SCpyMsgFix(pdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
+         ODU_COPY_MSG_TO_FIX_BUF(pdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
          ulRrcMsgInfo->msgLen = msgLen;
 
          /* Sending UL RRC Message transfeer to DU APP */

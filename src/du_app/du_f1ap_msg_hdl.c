@@ -74,7 +74,6 @@
 #include "du_f1ap_msg_hdl.h"
 
 extern DuCfgParams duCfgParam;
-uint8_t ServedCellListreturn=RFAILED;
 
 uint8_t procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
@@ -943,55 +942,53 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
  * ****************************************************************/
 void FreeF1SetupReq(F1AP_PDU_t *f1apMsg)
 {
-    uint8_t idx =0;
-	 uint8_t idx1=1;
-	 F1SetupRequest_t           *f1SetupReq=NULLP;
-	
-	
-    if(f1apMsg != NULLP)
-    {
-         if(f1apMsg->choice.initiatingMessage != NULLP)
-         {
-			     f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
-              if(f1SetupReq->protocolIEs.list.array != NULLP)
-	           {
-				       if(f1SetupReq->protocolIEs.list.array[idx1]!=NULLP)
-						 {
-	                     if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf !=  NULLP)
-	                     {
-	                         idx1++;
-	                         if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf != NULLP)
-	                         {
-	                              idx1=4;
-											if(ServedCellListreturn == ROK)
-	                              {
-	                                  FreeRrcVer(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.RRC_Version);
-	                              }
-											idx1--;
-	                              FreeServedCellList(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Served_Cells_List);
-	                              idx1--;
-											DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf,
-	                              strlen((char *)duCfgParam.duName));
-	                         }
-	                         idx1--;
-	                         DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf,\
-	                         f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.size);
-							   }
-	                }
-	                for(idx=0; idx<f1SetupReq->protocolIEs.list.count; idx++)
-	                {
-	                     if(f1SetupReq->protocolIEs.list.array[idx]!=NULLP)
-	                     {
-	                          DU_FREE(f1SetupReq->protocolIEs.list.array[idx],sizeof(F1SetupRequestIEs_t));
-	                      }
-	    				 }
-	                DU_FREE(f1SetupReq->protocolIEs.list.array,\
-		             f1SetupReq->protocolIEs.list.size);
-		        }
-		        DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
-		   }
-		   DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-   	}
+   uint8_t idx =0;
+   uint8_t idx1=1;
+   F1SetupRequest_t           *f1SetupReq=NULLP;
+
+
+   if(f1apMsg != NULLP)
+   {
+      if(f1apMsg->choice.initiatingMessage != NULLP)
+      {
+	 f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
+	 if(f1SetupReq->protocolIEs.list.array != NULLP)
+	 {
+	    if(f1SetupReq->protocolIEs.list.array[idx1]!=NULLP)
+	    {
+	       if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf !=  NULLP)
+	       {
+	          DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.buf,\
+		     f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_ID.size);
+		  idx1++;
+		  if(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf != NULLP)
+		  {
+		     DU_FREE(f1SetupReq->protocolIEs.list.array[idx1]->value.choice.GNB_DU_Name.buf,
+		        strlen((char *)duCfgParam.duName));
+
+		     idx1++;
+		     FreeServedCellList(&f1SetupReq->protocolIEs.list.array[idx1]->value.\
+		        choice.GNB_DU_Served_Cells_List);
+
+		     idx1++;
+	             FreeRrcVer(&f1SetupReq->protocolIEs.list.array[idx1]->value.choice.RRC_Version);
+		  }
+	       }
+	    }
+	    for(idx=0; idx<f1SetupReq->protocolIEs.list.count; idx++)
+	    {
+	       if(f1SetupReq->protocolIEs.list.array[idx]!=NULLP)
+	       {
+		  DU_FREE(f1SetupReq->protocolIEs.list.array[idx],sizeof(F1SetupRequestIEs_t));
+	       }
+	    }
+	    DU_FREE(f1SetupReq->protocolIEs.list.array,\
+		  f1SetupReq->protocolIEs.list.size);
+	 }
+	 DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+      }
+      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+   }
 
 }
 /*******************************************************************
@@ -1124,8 +1121,7 @@ uint8_t BuildAndSendF1SetupReq()
                             F1SetupRequestIEs__value_PR_GNB_DU_Served_Cells_List;
       duServedCell = &f1SetupReq->protocolIEs.list.\
                   array[idx2]->value.choice.GNB_DU_Served_Cells_List;
-      ServedCellListreturn = BuildServedCellList(duServedCell);
-      if(ServedCellListreturn != ROK)
+      if((BuildServedCellList(duServedCell)) != ROK)
       {
          break;
       }

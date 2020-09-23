@@ -31,7 +31,7 @@
 
         --RlcUiKwuBndReq
         --RlcUiKwuUbndReq
-        --RlcUiKwuDatReq
+        --RlcProcDlData
         --RlcUiKwuDiscSduReq 
 
      File:     kw_uim.c
@@ -786,14 +786,14 @@ Reason   reason;
  *    -# RFAILED
  */
 #ifdef ANSI
-S16 RlcUiKwuDatReq
+S16 RlcProcDlData
 (
 Pst             *pst,   
 KwuDatReqInfo   *datReq, 
 Buffer          *mBuf   
 )
 #else
-S16 RlcUiKwuDatReq(pst, datReq, mBuf)
+S16 RlcProcDlData(pst, datReq, mBuf)
 Pst             *pst;  
 KwuDatReqInfo   *datReq; 
 Buffer          *mBuf;  
@@ -803,7 +803,7 @@ Buffer          *mBuf;
    RlcDlRbCb     *rbCb;       /* RB Control Block */
    RlcCb         *tRlcCb;
 
-   TRC3(RlcUiKwuDatReq)
+   TRC3(RlcProcDlData)
 
    DU_LOG("\nRLC : Received DL Data");
 

@@ -361,11 +361,11 @@ typedef struct rlcL2MeasCfmEvt
 
 /* Control primitives towards LTE RLC */
 /* Pointer functions to pack/unpack primitives */
-typedef S16 (*RlcConfigReq)   ARGS((Pst *pst, RlcMngmt *cfg));
-typedef S16 (*RlcConfigCfm)   ARGS((Pst *pst, RlcMngmt *cfgCfm));
+typedef uint8_t (*RlcConfigReq)   ARGS((Pst *pst, RlcMngmt *cfg));
+typedef uint8_t (*RlcConfigCfm)   ARGS((Pst *pst, RlcMngmt *cfgCfm));
 
-typedef S16 (*LkwCntrlReq) ARGS((Pst *pst, RlcMngmt *cntl));
-typedef S16 (*LkwCntrlCfm) ARGS((Pst *pst, RlcMngmt *cntlCfm));
+typedef uint8_t (*LkwCntrlReq) ARGS((Pst *pst, RlcMngmt *cntl));
+typedef uint8_t (*LkwCntrlCfm) ARGS((Pst *pst, RlcMngmt *cntlCfm));
 
 typedef S16 (*LkwStaInd)   ARGS((Pst *pst, RlcMngmt *staInd)); 
 typedef S16 (*LkwStaReq)   ARGS((Pst *pst, RlcMngmt *staReq));
@@ -393,7 +393,7 @@ typedef S16 (*LkwL2MeasStopCfm)   ARGS((Pst *pst, U8 measType,U8 status));
 @return ROK if success , RFAILED if failure
 
 */
-EXTERN S16 RlcMiRlcConfigReq ARGS((Pst *pst, RlcMngmt *cfg));
+EXTERN uint8_t RlcMiRlcConfigReq ARGS((Pst *pst, RlcMngmt *cfg));
 
 /**
 @details This function is called by the RlcMiRlcConfigReq function for responding to configuration requests.The cfm field in the RlcMngmt  structure contains the response value.
@@ -415,7 +415,7 @@ control request primitive is confirmed by a RlcMiLkwCntrlCfm primitive.
 @param[in] cntl - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwCntrlReq ARGS((Pst *pst, RlcMngmt *cntl));
+EXTERN uint8_t RlcMiLkwCntrlReq ARGS((Pst *pst, RlcMngmt *cntl));
 
 /**
 @details
@@ -614,7 +614,7 @@ EXTERN S16 packRlcConfigReq     ARGS((
        RlcMngmt *
        ));
 
-EXTERN S16 packRlcConfigCfm     ARGS((
+EXTERN uint8_t packRlcConfigCfm     ARGS((
        Pst *,
        RlcMngmt *
        ));
@@ -625,7 +625,7 @@ EXTERN S16 cmPkLkwCntrlReq   ARGS((
        RlcMngmt *
        ));
 
-EXTERN S16 cmPkLkwCntrlCfm   ARGS((
+EXTERN uint8_t cmPkLkwCntrlCfm   ARGS((
        Pst *,
        RlcMngmt *
        ));
@@ -663,13 +663,13 @@ EXTERN S16 cmPkLkwTrcInd     ARGS((
        Buffer *
        ));
 
-EXTERN S16 unpackRlcConfigReq   ARGS((
+EXTERN uint8_t unpackRlcConfigReq   ARGS((
        RlcConfigReq,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 unpackRlcConfigCfm   ARGS((
+EXTERN uint8_t unpackRlcConfigCfm   ARGS((
        RlcConfigCfm,
        Pst *,
        Buffer *

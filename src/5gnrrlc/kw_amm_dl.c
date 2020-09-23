@@ -252,14 +252,14 @@ KwuDatCfmInfo   **datCfm
  * @return  Void
 */
 #ifdef ANSI
-Void rlcAmmSendDStaRsp
+Void rlcAmmSendDedLcBoSta
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 RlcAmDl     *amDl
 )
 #else
-Void rlcAmmSendDStaRsp(gCb, rbCb, amDl)
+Void rlcAmmSendDedLcBoSta(gCb, rbCb, amDl)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 RlcAmDl     *amDl;
@@ -269,7 +269,7 @@ RlcAmDl     *amDl;
 
    if(bo)
    {
-      rlcUtlSndDStaRsp(gCb, rbCb, bo, amDl->estHdrSz, amDl->cntrlBo ?TRUE:FALSE,amDl->cntrlBo);
+      rlcUtlSendDedLcBoSta(gCb, rbCb, bo, amDl->estHdrSz, amDl->cntrlBo ?TRUE:FALSE,amDl->cntrlBo);
    }
    
    RETVOID;
@@ -1001,7 +1001,7 @@ RlcUdxStaPdu   *pStaPdu;
       canged inside the above called functions */
    if (oldRetxBo != AMDL.retxBo)
    {
-      rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);
+      rlcAmmSendDedLcBoSta(gCb, rbCb, &AMDL);
    }
 
    RETVOID;
@@ -1199,7 +1199,7 @@ dlrate_kwu += sdu->sduSz;
 
    if(!rlcDlUtlIsReestInProgress(rbCb))
    {
-      rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);
+      rlcAmmSendDedLcBoSta(gCb, rbCb, &AMDL);
    }
 
    RETVOID;
@@ -2575,7 +2575,7 @@ RlcRetx        *retx;
             rbCb->m.amDl.cntrlBo = 0;
             rbCb->m.amDl.retxBo = 0;
             /* Sending BO update to SCH */
-            rlcUtlSndDStaRsp(gCb, rbCb, 0,0,0,0);
+            rlcUtlSendDedLcBoSta(gCb, rbCb, 0,0,0,0);
             rlcAmmSndStaInd(gCb, rbCb, retx);
             gRlcStats.amRlcStats.numDLMaxRetx++;
          }
@@ -3074,7 +3074,7 @@ RlcDlRbCb   *rbCb;
             AMDL.nxtRetx = retx;
          }
          
-         rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);         
+         rlcAmmSendDedLcBoSta(gCb, rbCb, &AMDL);         
          RETVOID;
       }
       /* Get the last node in retxLst */
@@ -3084,7 +3084,7 @@ RlcDlRbCb   *rbCb;
       if (retx != NULLP)
       {
          rlcAmmDlMarkPduForReTx(gCb, rbCb, retx);
-         rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);         
+         rlcAmmSendDedLcBoSta(gCb, rbCb, &AMDL);         
       }
    }
 
